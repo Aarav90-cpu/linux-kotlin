@@ -25,17 +25,26 @@
 static void test_sys_enter_exit(void)
 {
 	struct task_local_storage *skel;
+<<<<<<< HEAD
 	pid_t pid = sys_gettid();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	skel = task_local_storage__open_and_load();
 	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
 		return;
 
+<<<<<<< HEAD
+=======
+	skel->bss->target_pid = sys_gettid();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = task_local_storage__attach(skel);
 	if (!ASSERT_OK(err, "skel_attach"))
 		goto out;
 
+<<<<<<< HEAD
 	/* Set target_pid after attach so that syscalls made during
 	 * attach are not counted.
 	 */
@@ -49,6 +58,14 @@ static void test_sys_enter_exit(void)
 	/* 2x gettid syscalls */
 	ASSERT_EQ(skel->bss->enter_cnt, 2, "enter_cnt");
 	ASSERT_EQ(skel->bss->exit_cnt, 2, "exit_cnt");
+=======
+	sys_gettid();
+	sys_gettid();
+
+	/* 3x syscalls: 1x attach and 2x gettid */
+	ASSERT_EQ(skel->bss->enter_cnt, 3, "enter_cnt");
+	ASSERT_EQ(skel->bss->exit_cnt, 3, "exit_cnt");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT_EQ(skel->bss->mismatch_cnt, 0, "mismatch_cnt");
 out:
 	task_local_storage__destroy(skel);

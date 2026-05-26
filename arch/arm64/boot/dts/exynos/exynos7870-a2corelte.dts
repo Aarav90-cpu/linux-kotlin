@@ -158,6 +158,12 @@
 };
 
 &hsi2c0 {
+<<<<<<< HEAD
+=======
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	pmic@66 {
@@ -391,6 +397,12 @@
 };
 
 &i2c5 {
+<<<<<<< HEAD
+=======
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	samsung,i2c-sda-delay = <100>;
 	samsung,i2c-max-bus-freq = <400000>;
 
@@ -422,6 +434,12 @@
 };
 
 &i2c6 {
+<<<<<<< HEAD
+=======
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	samsung,i2c-sda-delay = <100>;
 	samsung,i2c-max-bus-freq = <400000>;
 

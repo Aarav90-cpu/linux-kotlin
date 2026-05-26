@@ -735,6 +735,7 @@ static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
 	return (ret & VM_FAULT_OOM) ? -ENOMEM : 0;
 }
 
+<<<<<<< HEAD
 static bool ksm_compatible(const struct file *file, vma_flags_t vma_flags)
 {
 	/* Just ignore the advice. */
@@ -753,6 +754,23 @@ static bool ksm_compatible(const struct file *file, vma_flags_t vma_flags)
 #endif
 #ifdef VM_SPARC_ADI
 	if (vma_flags_test(&vma_flags, VMA_SPARC_ADI_BIT))
+=======
+static bool ksm_compatible(const struct file *file, vm_flags_t vm_flags)
+{
+	if (vm_flags & (VM_SHARED  | VM_MAYSHARE | VM_SPECIAL |
+			VM_HUGETLB | VM_DROPPABLE))
+		return false;		/* just ignore the advice */
+
+	if (file_is_dax(file))
+		return false;
+
+#ifdef VM_SAO
+	if (vm_flags & VM_SAO)
+		return false;
+#endif
+#ifdef VM_SPARC_ADI
+	if (vm_flags & VM_SPARC_ADI)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 #endif
 
@@ -761,7 +779,11 @@ static bool ksm_compatible(const struct file *file, vma_flags_t vma_flags)
 
 static bool vma_ksm_compatible(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	return ksm_compatible(vma->vm_file, vma->flags);
+=======
+	return ksm_compatible(vma->vm_file, vma->vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
@@ -2828,17 +2850,30 @@ static int ksm_scan_thread(void *nothing)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
 {
 	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
 		return false;
 
 	return ksm_compatible(file, vma_flags);
+=======
+static bool __ksm_should_add_vma(const struct file *file, vm_flags_t vm_flags)
+{
+	if (vm_flags & VM_MERGEABLE)
+		return false;
+
+	return ksm_compatible(file, vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __ksm_add_vma(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	if (__ksm_should_add_vma(vma->vm_file, vma->flags))
+=======
+	if (__ksm_should_add_vma(vma->vm_file, vma->vm_flags))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vm_flags_set(vma, VM_MERGEABLE);
 }
 
@@ -2863,6 +2898,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
  *
  * @mm:       Proposed VMA's mm_struct
  * @file:     Proposed VMA's file-backed mapping, if any.
+<<<<<<< HEAD
  * @vma_flags: Proposed VMA"s flags.
  *
  * Returns: @vma_flags possibly updated to mark mergeable.
@@ -2873,6 +2909,18 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
 	    __ksm_should_add_vma(file, vma_flags)) {
 		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
+=======
+ * @vm_flags: Proposed VMA"s flags.
+ *
+ * Returns: @vm_flags possibly updated to mark mergeable.
+ */
+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+			 vm_flags_t vm_flags)
+{
+	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
+	    __ksm_should_add_vma(file, vm_flags)) {
+		vm_flags |= VM_MERGEABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Generally, the flags here always include MMF_VM_MERGEABLE.
 		 * However, in rare cases, this flag may be cleared by ksmd who
@@ -2882,7 +2930,11 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
 			__ksm_enter(mm);
 	}
 
+<<<<<<< HEAD
 	return vma_flags;
+=======
+	return vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ksm_add_vmas(struct mm_struct *mm)
@@ -3171,8 +3223,11 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
 		return;
 again:
 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+<<<<<<< HEAD
 		/* Ignore the stable/unstable/sqnr flags */
 		const unsigned long addr = rmap_item->address & PAGE_MASK;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct anon_vma *anon_vma = rmap_item->anon_vma;
 		struct anon_vma_chain *vmac;
 		struct vm_area_struct *vma;
@@ -3185,13 +3240,25 @@ again:
 			}
 			anon_vma_lock_read(anon_vma);
 		}
+<<<<<<< HEAD
 
 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
 					       0, ULONG_MAX) {
+=======
+		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+					       0, ULONG_MAX) {
+			unsigned long addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			cond_resched();
 			vma = vmac->vma;
 
+<<<<<<< HEAD
+=======
+			/* Ignore the stable/unstable/sqnr flags */
+			addr = rmap_item->address & PAGE_MASK;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (addr < vma->vm_start || addr >= vma->vm_end)
 				continue;
 			/*

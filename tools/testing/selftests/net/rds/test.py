@@ -11,8 +11,14 @@ import signal
 import socket
 import subprocess
 import sys
+<<<<<<< HEAD
 import tempfile
 import shutil
+=======
+import atexit
+from pwd import getpwuid
+from os import stat
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Allow utils module to be imported from different directory
 this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -22,16 +28,25 @@ from lib.py.utils import ip
 libc = ctypes.cdll.LoadLibrary('libc.so.6')
 setns = libc.setns
 
+<<<<<<< HEAD
 NET0 = 'net0'
 NET1 = 'net1'
 
 VETH0 = 'veth0'
 VETH1 = 'veth1'
+=======
+net0 = 'net0'
+net1 = 'net1'
+
+veth0 = 'veth0'
+veth1 = 'veth1'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Helper function for creating a socket inside a network namespace.
 # We need this because otherwise RDS will detect that the two TCP
 # sockets are on the same interface and use the loop transport instead
 # of the TCP transport.
+<<<<<<< HEAD
 def netns_socket(netns, *sock_args):
     """
     Creates sockets inside of network namespace
@@ -39,27 +54,44 @@ def netns_socket(netns, *sock_args):
     :param netns: the name of the network namespace
     :param sock_args: socket family and type
     """
+=======
+def netns_socket(netns, *args):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     u0, u1 = socket.socketpair(socket.AF_UNIX, socket.SOCK_SEQPACKET)
 
     child = os.fork()
     if child == 0:
         # change network namespace
+<<<<<<< HEAD
         with open(f'/var/run/netns/{netns}', encoding='utf-8') as f:
             try:
                 setns(f.fileno(), 0)
+=======
+        with open(f'/var/run/netns/{netns}') as f:
+            try:
+                ret = setns(f.fileno(), 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             except IOError as e:
                 print(e.errno)
                 print(e)
 
         # create socket in target namespace
+<<<<<<< HEAD
         sock = socket.socket(*sock_args)
 
         # send resulting socket to parent
         socket.send_fds(u0, [], [sock.fileno()])
+=======
+        s = socket.socket(*args)
+
+        # send resulting socket to parent
+        socket.send_fds(u0, [], [s.fileno()])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         sys.exit(0)
 
     # receive socket from child
+<<<<<<< HEAD
     _, fds, _, _ = socket.recv_fds(u1, 0, 1)
     os.waitpid(child, 0)
     u0.close()
@@ -70,6 +102,15 @@ def signal_handler(_sig, _frame):
     """
     Test timed out signal handler
     """
+=======
+    _, s, _, _ = socket.recv_fds(u1, 0, 1)
+    os.waitpid(child, 0)
+    u0.close()
+    u1.close()
+    return socket.fromfd(s[0], *args)
+
+def signal_handler(sig, frame):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     print('Test timed out')
     sys.exit(1)
 
@@ -89,6 +130,7 @@ parser.add_argument('-u', '--duplicate', help="Simulate tcp packet duplication",
                     type=int, default=0)
 args = parser.parse_args()
 logdir=args.logdir
+<<<<<<< HEAD
 PACKET_LOSS=str(args.loss)+'%'
 PACKET_CORRUPTION=str(args.corruption)+'%'
 PACKET_DUPLICATE=str(args.duplicate)+'%'
@@ -96,6 +138,15 @@ PACKET_DUPLICATE=str(args.duplicate)+'%'
 ip(f"netns add {NET0}")
 ip(f"netns add {NET1}")
 ip("link add type veth")
+=======
+packet_loss=str(args.loss)+'%'
+packet_corruption=str(args.corruption)+'%'
+packet_duplicate=str(args.duplicate)+'%'
+
+ip(f"netns add {net0}")
+ip(f"netns add {net1}")
+ip(f"link add type veth")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 addrs = [
     # we technically don't need different port numbers, but this will
@@ -107,12 +158,18 @@ addrs = [
 # move interfaces to separate namespaces so they can no longer be
 # bound directly; this prevents rds from switching over from the tcp
 # transport to the loop transport.
+<<<<<<< HEAD
 ip(f"link set {VETH0} netns {NET0} up")
 ip(f"link set {VETH1} netns {NET1} up")
+=======
+ip(f"link set {veth0} netns {net0} up")
+ip(f"link set {veth1} netns {net1} up")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 
 # add addresses
+<<<<<<< HEAD
 ip(f"-n {NET0} addr add {addrs[0][0]}/32 dev {VETH0}")
 ip(f"-n {NET1} addr add {addrs[1][0]}/32 dev {VETH1}")
 
@@ -139,6 +196,34 @@ for net, iface in [(NET0, VETH0), (NET1, VETH1)]:
     ip(f"netns exec {net} /usr/sbin/tc qdisc add dev {iface} root netem  \
          corrupt {PACKET_CORRUPTION} loss {PACKET_LOSS} duplicate  \
          {PACKET_DUPLICATE}")
+=======
+ip(f"-n {net0} addr add {addrs[0][0]}/32 dev {veth0}")
+ip(f"-n {net1} addr add {addrs[1][0]}/32 dev {veth1}")
+
+# add routes
+ip(f"-n {net0} route add {addrs[1][0]}/32 dev {veth0}")
+ip(f"-n {net1} route add {addrs[0][0]}/32 dev {veth1}")
+
+# sanity check that our two interfaces/addresses are correctly set up
+# and communicating by doing a single ping
+ip(f"netns exec {net0} ping -c 1 {addrs[1][0]}")
+
+# Start a packet capture on each network
+for net in [net0, net1]:
+    tcpdump_pid = os.fork()
+    if tcpdump_pid == 0:
+        pcap = logdir+'/'+net+'.pcap'
+        subprocess.check_call(['touch', pcap])
+        user = getpwuid(stat(pcap).st_uid).pw_name
+        ip(f"netns exec {net} /usr/sbin/tcpdump -Z {user} -i any -w {pcap}")
+        sys.exit(0)
+
+# simulate packet loss, duplication and corruption
+for net, iface in [(net0, veth0), (net1, veth1)]:
+    ip(f"netns exec {net} /usr/sbin/tc qdisc add dev {iface} root netem  \
+         corrupt {packet_corruption} loss {packet_loss} duplicate  \
+         {packet_duplicate}")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # add a timeout
 if args.timeout > 0:
@@ -146,8 +231,13 @@ if args.timeout > 0:
     signal.signal(signal.SIGALRM, signal_handler)
 
 sockets = [
+<<<<<<< HEAD
     netns_socket(NET0, socket.AF_RDS, socket.SOCK_SEQPACKET),
     netns_socket(NET1, socket.AF_RDS, socket.SOCK_SEQPACKET),
+=======
+    netns_socket(net0, socket.AF_RDS, socket.SOCK_SEQPACKET),
+    netns_socket(net1, socket.AF_RDS, socket.SOCK_SEQPACKET),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ]
 
 for s, addr in zip(sockets, addrs):
@@ -158,7 +248,13 @@ fileno_to_socket = {
     s.fileno(): s for s in sockets
 }
 
+<<<<<<< HEAD
 addr_to_socket = dict(zip(addrs, sockets))
+=======
+addr_to_socket = {
+    addr: s for addr, s in zip(addrs, sockets)
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 socket_to_addr = {
     s: addr for addr, s in zip(addrs, sockets)
@@ -172,6 +268,7 @@ ep = select.epoll()
 for s in sockets:
     ep.register(s, select.EPOLLRDNORM)
 
+<<<<<<< HEAD
 NUM_PACKETS = 50000
 nr_send = 0
 nr_recv = 0
@@ -180,6 +277,16 @@ while nr_send < NUM_PACKETS:
     # Send as much as we can without blocking
     print("sending...", nr_send, nr_recv)
     while nr_send < NUM_PACKETS:
+=======
+n = 50000
+nr_send = 0
+nr_recv = 0
+
+while nr_send < n:
+    # Send as much as we can without blocking
+    print("sending...", nr_send, nr_recv)
+    while nr_send < n:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         send_data = hashlib.sha256(
             f'packet {nr_send}'.encode('utf-8')).hexdigest().encode('utf-8')
 
@@ -218,7 +325,11 @@ while nr_send < NUM_PACKETS:
                         break
 
     # exercise net/rds/tcp.c:rds_tcp_sysctl_reset()
+<<<<<<< HEAD
     for net in [NET0, NET1]:
+=======
+    for net in [net0, net1]:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         ip(f"netns exec {net} /usr/sbin/sysctl net.rds.tcp.rds_tcp_rcvbuf=10000")
         ip(f"netns exec {net} /usr/sbin/sysctl net.rds.tcp.rds_tcp_sndbuf=10000")
 
@@ -248,11 +359,15 @@ for s in sockets:
 print(f"getsockopt(): {nr_success}/{nr_error}")
 
 print("Stopping network packet captures")
+<<<<<<< HEAD
 for p, pcap_tmp, pcap, fd in tcpdump_procs:
     p.terminate()
     p.wait()
     os.close(fd)
     shutil.move(pcap_tmp, pcap)
+=======
+subprocess.check_call(['killall', '-q', 'tcpdump'])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # We're done sending and receiving stuff, now let's check if what
 # we received is what we sent.

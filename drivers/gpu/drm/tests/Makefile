@@ -7,6 +7,10 @@ obj-$(CONFIG_DRM_KUNIT_TEST) += \
 	drm_atomic_test.o \
 	drm_atomic_state_test.o \
 	drm_bridge_test.o \
+<<<<<<< HEAD
+=======
+	drm_buddy_test.o \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_cmdline_parser_test.o \
 	drm_connector_test.o \
 	drm_damage_helper_test.o \

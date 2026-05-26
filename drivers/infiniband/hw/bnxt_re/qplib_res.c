@@ -46,7 +46,11 @@
 #include <linux/if_vlan.h>
 #include <linux/vmalloc.h>
 #include <rdma/ib_verbs.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "roce_hsi.h"
 #include "qplib_res.h"
@@ -683,6 +687,7 @@ static int bnxt_qplib_alloc_pd_tbl(struct bnxt_qplib_res *res,
 }
 
 /* DPIs */
+<<<<<<< HEAD
 int bnxt_qplib_alloc_uc_dpi(struct bnxt_qplib_res *res, struct bnxt_qplib_dpi *dpi)
 {
 	struct bnxt_qplib_dpi_tbl *dpit = &res->dpi_tbl;
@@ -726,6 +731,8 @@ unlock:
 	return rc;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int bnxt_qplib_alloc_dpi(struct bnxt_qplib_res *res,
 			 struct bnxt_qplib_dpi *dpi,
 			 void *app, u8 type)
@@ -833,7 +840,11 @@ static int bnxt_qplib_alloc_dpi_tbl(struct bnxt_qplib_res *res,
 	if (dev_attr->max_dpi)
 		dpit->max = min_t(u32, dpit->max, dev_attr->max_dpi);
 
+<<<<<<< HEAD
 	dpit->app_tbl = kzalloc_objs(void *, dpit->max);
+=======
+	dpit->app_tbl = kcalloc(dpit->max,  sizeof(void *), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dpit->app_tbl)
 		return -ENOMEM;
 

@@ -22,9 +22,12 @@
 #include "panthor_hw.h"
 #include "panthor_regs.h"
 
+<<<<<<< HEAD
 #define CREATE_TRACE_POINTS
 #include "panthor_trace.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct panthor_gpu - GPU block management data.
  */
@@ -51,9 +54,12 @@ struct panthor_gpu {
 	 GPU_IRQ_RESET_COMPLETED | \
 	 GPU_IRQ_CLEAN_CACHES_COMPLETED)
 
+<<<<<<< HEAD
 #define GPU_POWER_INTERRUPTS_MASK	\
 	(GPU_IRQ_POWER_CHANGED | GPU_IRQ_POWER_CHANGED_ALL)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void panthor_gpu_coherency_set(struct panthor_device *ptdev)
 {
 	gpu_write(ptdev, GPU_COHERENCY_PROTOCOL,
@@ -86,12 +92,15 @@ static void panthor_gpu_irq_handler(struct panthor_device *ptdev, u32 status)
 {
 	gpu_write(ptdev, GPU_INT_CLEAR, status);
 
+<<<<<<< HEAD
 	if (tracepoint_enabled(gpu_power_status) && (status & GPU_POWER_INTERRUPTS_MASK))
 		trace_gpu_power_status(ptdev->base.dev,
 				       gpu_read64(ptdev, SHADER_READY),
 				       gpu_read64(ptdev, TILER_READY),
 				       gpu_read64(ptdev, L2_READY));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (status & GPU_IRQ_FAULT) {
 		u32 fault_status = gpu_read(ptdev, GPU_FAULT_STATUS);
 		u64 address = gpu_read64(ptdev, GPU_FAULT_ADDR);
@@ -169,6 +178,7 @@ int panthor_gpu_init(struct panthor_device *ptdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 int panthor_gpu_power_changed_on(struct panthor_device *ptdev)
 {
 	guard(pm_runtime_active)(ptdev->base.dev);
@@ -185,6 +195,8 @@ void panthor_gpu_power_changed_off(struct panthor_device *ptdev)
 	panthor_gpu_irq_disable_events(&ptdev->gpu->irq, GPU_POWER_INTERRUPTS_MASK);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * panthor_gpu_block_power_off() - Power-off a specific block of the GPU
  * @ptdev: Device.
@@ -423,7 +435,11 @@ void panthor_gpu_suspend(struct panthor_device *ptdev)
  */
 void panthor_gpu_resume(struct panthor_device *ptdev)
 {
+<<<<<<< HEAD
 	panthor_gpu_irq_resume(&ptdev->gpu->irq);
+=======
+	panthor_gpu_irq_resume(&ptdev->gpu->irq, GPU_INTERRUPTS_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	panthor_hw_l2_power_on(ptdev);
 }
 

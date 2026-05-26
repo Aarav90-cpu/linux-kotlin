@@ -63,24 +63,42 @@ enum adreno_family {
 #define ADRENO_QUIRK_PREEMPTION			BIT(5)
 #define ADRENO_QUIRK_4GB_VA			BIT(6)
 #define ADRENO_QUIRK_IFPC			BIT(7)
+<<<<<<< HEAD
 #define ADRENO_QUIRK_SOFTFUSE			BIT(8)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Helper for formating the chip_id in the way that userspace tools like
  * crashdec expect.
  */
+<<<<<<< HEAD
 #define ADRENO_CHIPID_FMT "08x"
 #define ADRENO_CHIPID_ARGS(_c) (_c)
+=======
+#define ADRENO_CHIPID_FMT "u.%u.%u.%u"
+#define ADRENO_CHIPID_ARGS(_c) \
+	(((_c) >> 24) & 0xff), \
+	(((_c) >> 16) & 0xff), \
+	(((_c) >> 8)  & 0xff), \
+	((_c) & 0xff)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct adreno_gpu;
 
 struct adreno_gpu_funcs {
 	struct msm_gpu_funcs base;
 	struct msm_gpu *(*init)(struct drm_device *dev);
+<<<<<<< HEAD
 	u64 (*get_timestamp)(struct msm_gpu *gpu);
 	void (*bus_halt)(struct adreno_gpu *adreno_gpu, bool gx_off);
 	int (*mmu_fault_handler)(void *arg, unsigned long iova, int flags, void *data);
 	bool (*gx_is_on)(struct adreno_gpu *adreno_gpu);
 	bool (*aqe_is_enabled)(struct adreno_gpu *adreno_gpu);
+=======
+	int (*get_timestamp)(struct msm_gpu *gpu, uint64_t *value);
+	void (*bus_halt)(struct adreno_gpu *adreno_gpu, bool gx_off);
+	int (*mmu_fault_handler)(void *arg, unsigned long iova, int flags, void *data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct adreno_reglist {

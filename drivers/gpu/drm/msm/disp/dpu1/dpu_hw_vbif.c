@@ -230,12 +230,20 @@ struct dpu_hw_vbif *dpu_hw_vbif_init(struct drm_device *dev,
 	if (!c)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	c->hw.blk_addr = addr;
+=======
+	c->hw.blk_addr = addr + cfg->base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	c->hw.log_mask = DPU_DBG_MASK_VBIF;
 
 	/*
 	 * Assign ops
 	 */
+<<<<<<< HEAD
+=======
+	c->idx = cfg->id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	c->cap = cfg;
 	_setup_vbif_ops(&c->ops, c->cap->features);
 

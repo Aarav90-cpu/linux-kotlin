@@ -23,12 +23,18 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/cpufeature.h>
 #include <linux/cpufreq.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/mm.h>
+=======
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/moduleparam.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/fs.h>
 #include <linux/cleanup.h>
 
@@ -38,11 +44,14 @@
 
 #include "amd-pstate.h"
 
+<<<<<<< HEAD
 static char *test_list;
 module_param(test_list, charp, 0444);
 MODULE_PARM_DESC(test_list,
 	"Comma-delimited list of tests to run (empty means run all tests)");
 DEFINE_FREE(cleanup_page, void *, if (_T) free_page((unsigned long)_T))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct amd_pstate_ut_struct {
 	const char *name;
@@ -56,6 +65,7 @@ static int amd_pstate_ut_acpi_cpc_valid(u32 index);
 static int amd_pstate_ut_check_enabled(u32 index);
 static int amd_pstate_ut_check_perf(u32 index);
 static int amd_pstate_ut_check_freq(u32 index);
+<<<<<<< HEAD
 static int amd_pstate_ut_epp(u32 index);
 static int amd_pstate_ut_check_driver(u32 index);
 static int amd_pstate_ut_check_freq_attrs(u32 index);
@@ -89,6 +99,18 @@ static bool test_in_list(const char *list, const char *name)
 	return false;
 }
 
+=======
+static int amd_pstate_ut_check_driver(u32 index);
+
+static struct amd_pstate_ut_struct amd_pstate_ut_cases[] = {
+	{"amd_pstate_ut_acpi_cpc_valid",   amd_pstate_ut_acpi_cpc_valid   },
+	{"amd_pstate_ut_check_enabled",    amd_pstate_ut_check_enabled    },
+	{"amd_pstate_ut_check_perf",       amd_pstate_ut_check_perf       },
+	{"amd_pstate_ut_check_freq",       amd_pstate_ut_check_freq       },
+	{"amd_pstate_ut_check_driver",	   amd_pstate_ut_check_driver     }
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool get_shared_mem(void)
 {
 	bool result = false;
@@ -272,6 +294,7 @@ static int amd_pstate_set_mode(enum amd_pstate_mode mode)
 	return amd_pstate_update_status(mode_str, strlen(mode_str));
 }
 
+<<<<<<< HEAD
 static int amd_pstate_ut_epp(u32 index)
 {
 	static const char * const epp_strings[] = {
@@ -399,6 +422,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int amd_pstate_ut_check_driver(u32 index)
 {
 	enum amd_pstate_mode mode1, mode2 = AMD_PSTATE_DISABLE;
@@ -428,6 +453,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 enum attr_category {
 	ATTR_ALWAYS,
 	ATTR_PREFCORE,
@@ -553,11 +579,14 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init amd_pstate_ut_init(void)
 {
 	u32 i = 0, arr_size = ARRAY_SIZE(amd_pstate_ut_cases);
 
 	for (i = 0; i < arr_size; i++) {
+<<<<<<< HEAD
 		int ret;
 
 		if (test_list && *test_list &&
@@ -565,6 +594,9 @@ static int __init amd_pstate_ut_init(void)
 			continue;
 
 		ret = amd_pstate_ut_cases[i].func(i);
+=======
+		int ret = amd_pstate_ut_cases[i].func(i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (ret)
 			pr_err("%-4d %-20s\t fail: %d!\n", i+1, amd_pstate_ut_cases[i].name, ret);

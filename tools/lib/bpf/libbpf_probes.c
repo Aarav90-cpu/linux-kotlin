@@ -218,6 +218,7 @@ int libbpf_probe_bpf_prog_type(enum bpf_prog_type prog_type, const void *opts)
 	return libbpf_err(ret);
 }
 
+<<<<<<< HEAD
 int libbpf__load_raw_btf_hdr(const struct btf_header *hdr, const char *raw_types,
 			     const char *str_sec, const char *layout_sec,
 			     int token_fd)
@@ -246,6 +247,8 @@ int libbpf__load_raw_btf_hdr(const struct btf_header *hdr, const char *raw_types
 	return btf_fd;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int libbpf__load_raw_btf(const char *raw_types, size_t types_len,
 			 const char *str_sec, size_t str_len,
 			 int token_fd)
@@ -258,8 +261,31 @@ int libbpf__load_raw_btf(const char *raw_types, size_t types_len,
 		.str_off = types_len,
 		.str_len = str_len,
 	};
+<<<<<<< HEAD
 
 	return libbpf__load_raw_btf_hdr(&hdr, raw_types, str_sec, NULL, token_fd);
+=======
+	LIBBPF_OPTS(bpf_btf_load_opts, opts,
+		.token_fd = token_fd,
+		.btf_flags = token_fd ? BPF_F_TOKEN_FD : 0,
+	);
+	int btf_fd, btf_len;
+	__u8 *raw_btf;
+
+	btf_len = hdr.hdr_len + hdr.type_len + hdr.str_len;
+	raw_btf = malloc(btf_len);
+	if (!raw_btf)
+		return -ENOMEM;
+
+	memcpy(raw_btf, &hdr, sizeof(hdr));
+	memcpy(raw_btf + hdr.hdr_len, raw_types, hdr.type_len);
+	memcpy(raw_btf + hdr.hdr_len + hdr.type_len, str_sec, hdr.str_len);
+
+	btf_fd = bpf_btf_load(raw_btf, btf_len, &opts);
+
+	free(raw_btf);
+	return btf_fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int load_local_storage_btf(void)

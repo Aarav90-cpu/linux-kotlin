@@ -14,7 +14,10 @@
 #include <linux/math64.h>
 #include <linux/minmax.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/stringify.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/usb.h>
 
 #define	PID_EFFECTS_MAX		64
@@ -83,7 +86,11 @@ static const u8 pidff_set_envelope[] = { 0x22, 0x5b, 0x5c, 0x5d, 0x5e };
 #define PID_NEG_COEFFICIENT	4
 #define PID_POS_SATURATION	5
 #define PID_NEG_SATURATION	6
+<<<<<<< HEAD
 #define PID_DEADBAND		7
+=======
+#define PID_DEAD_BAND		7
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const u8 pidff_set_condition[] = {
 	0x22, 0x23, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65
 };
@@ -622,6 +629,7 @@ static void pidff_set_condition_report(struct pidff_device *pidff,
 				 effect->u.condition[i].center);
 		pidff_set_signed(&pidff->set_condition[PID_POS_COEFFICIENT],
 				 effect->u.condition[i].right_coeff);
+<<<<<<< HEAD
 		pidff_set(&pidff->set_condition[PID_POS_SATURATION],
 			  effect->u.condition[i].right_saturation);
 
@@ -640,6 +648,16 @@ static void pidff_set_condition_report(struct pidff_device *pidff,
 			pidff_set(&pidff->set_condition[PID_DEADBAND],
 				effect->u.condition[i].deadband);
 
+=======
+		pidff_set_signed(&pidff->set_condition[PID_NEG_COEFFICIENT],
+				 effect->u.condition[i].left_coeff);
+		pidff_set(&pidff->set_condition[PID_POS_SATURATION],
+			  effect->u.condition[i].right_saturation);
+		pidff_set(&pidff->set_condition[PID_NEG_SATURATION],
+			  effect->u.condition[i].left_saturation);
+		pidff_set(&pidff->set_condition[PID_DEAD_BAND],
+			  effect->u.condition[i].deadband);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hid_hw_request(pidff->hid, pidff->reports[PID_SET_CONDITION],
 			       HID_REQ_SET_REPORT);
 	}
@@ -1067,11 +1085,14 @@ static int pidff_find_field_with_usage(int *usage_index,
 	return -1;
 }
 
+<<<<<<< HEAD
 #define PIDFF_MISSING_FIELD(name, quirks) \
 	({ pr_debug("%s field not found, but that's OK\n", __stringify(name)); \
 	   pr_debug("Setting MISSING_%s quirk\n", __stringify(name)); \
 	   *quirks |= HID_PIDFF_QUIRK_MISSING_ ## name; })
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Find fields from a report and fill a pidff_usage
  */
@@ -1079,6 +1100,12 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
 			     struct hid_report *report, int count, int strict,
 			     u32 *quirks)
 {
+<<<<<<< HEAD
+=======
+	const u8 block_offset = pidff_set_condition[PID_PARAM_BLOCK_OFFSET];
+	const u8 delay = pidff_set_effect[PID_START_DELAY];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!report) {
 		pr_debug("%s, null report\n", __func__);
 		return -1;
@@ -1096,6 +1123,7 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
 			continue;
 		}
 
+<<<<<<< HEAD
 		/* Field quirks auto-detection */
 		if (table[i] == pidff_set_effect[PID_START_DELAY])
 			PIDFF_MISSING_FIELD(DELAY, quirks);
@@ -1113,6 +1141,19 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
 			PIDFF_MISSING_FIELD(DEADBAND, quirks);
 
 		else if (strict) {
+=======
+		if (table[i] == delay) {
+			pr_debug("Delay field not found, but that's OK\n");
+			pr_debug("Setting MISSING_DELAY quirk\n");
+			*quirks |= HID_PIDFF_QUIRK_MISSING_DELAY;
+
+		} else if (table[i] == block_offset) {
+			pr_debug("PBO field not found, but that's OK\n");
+			pr_debug("Setting MISSING_PBO quirk\n");
+			*quirks |= HID_PIDFF_QUIRK_MISSING_PBO;
+
+		} else if (strict) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_debug("failed to locate %d\n", i);
 			return -1;
 		}

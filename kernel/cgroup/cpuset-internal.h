@@ -167,6 +167,7 @@ struct cpuset {
 	 */
 	int nr_deadline_tasks;
 	int nr_migrate_dl_tasks;
+<<<<<<< HEAD
 	/* DL bandwidth that needs destination reservation for this attach. */
 	u64 sum_migrate_dl_bw;
 	/*
@@ -174,6 +175,9 @@ struct cpuset {
 	 * -1 if no DL bandwidth was allocated in the current attach.
 	 */
 	int dl_bw_cpu;
+=======
+	u64 sum_migrate_dl_bw;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Invalid partition error code, not lock protected */
 	enum prs_errcode prs_err;

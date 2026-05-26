@@ -84,6 +84,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	panel_lvds: display {
 		compatible = "edt,etml0700z9ndha", "panel-lvds";
 		enable-gpios = <&gpioi 4 GPIO_ACTIVE_HIGH>;
@@ -120,6 +121,8 @@
 		status = "okay";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -160,6 +163,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &i2c2 {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c2_pins_b>;
@@ -226,11 +230,14 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &scmi_regu {
 	scmi_vddio1: regulator@0 {
 		regulator-min-microvolt = <1800000>;
 		regulator-max-microvolt = <3300000>;
 	};
+<<<<<<< HEAD
 	scmi_vddcore: regulator@11 {
 		reg = <VOLTD_SCMI_STPMIC2_BUCK2>;
 		regulator-name = "vddcore";
@@ -259,6 +266,8 @@
 		reg = <VOLTD_SCMI_STPMIC2_LDO6>;
 		regulator-name = "v5v_vconn";
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	scmi_vdd_sdcard: regulator@23 {
 		reg = <VOLTD_SCMI_STPMIC2_LDO7>;
 		regulator-name = "vdd_sdcard";

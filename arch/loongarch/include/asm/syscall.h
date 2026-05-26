@@ -78,11 +78,15 @@ static inline void syscall_set_arguments(struct task_struct *task,
 
 static inline int syscall_get_arch(struct task_struct *task)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_32BIT
 	return AUDIT_ARCH_LOONGARCH32;
 #else
 	return AUDIT_ARCH_LOONGARCH64;
 #endif
+=======
+	return AUDIT_ARCH_LOONGARCH64;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)

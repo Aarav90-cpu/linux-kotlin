@@ -6,6 +6,10 @@
 menuconfig IP_SCTP
 	tristate "The SCTP Protocol"
 	depends on INET
+<<<<<<< HEAD
+=======
+	depends on IPV6 || IPV6=n
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_LIB_SHA1
 	select CRYPTO_LIB_SHA256
 	select CRYPTO_LIB_UTILS

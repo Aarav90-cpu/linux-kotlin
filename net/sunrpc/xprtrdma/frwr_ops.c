@@ -244,10 +244,16 @@ int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device)
 	}
 	ep->re_attr.cap.max_send_wr += RPCRDMA_BACKWARD_WRS;
 	ep->re_attr.cap.max_send_wr += 1; /* for ib_drain_sq */
+<<<<<<< HEAD
 	ep->re_recv_batch = ep->re_max_requests >> 2;
 	ep->re_attr.cap.max_recv_wr = ep->re_max_requests;
 	ep->re_attr.cap.max_recv_wr += RPCRDMA_BACKWARD_WRS;
 	ep->re_attr.cap.max_recv_wr += ep->re_recv_batch;
+=======
+	ep->re_attr.cap.max_recv_wr = ep->re_max_requests;
+	ep->re_attr.cap.max_recv_wr += RPCRDMA_BACKWARD_WRS;
+	ep->re_attr.cap.max_recv_wr += RPCRDMA_MAX_RECV_BATCH;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ep->re_attr.cap.max_recv_wr += 1; /* for ib_drain_rq */
 
 	ep->re_max_rdma_segs =
@@ -269,9 +275,16 @@ int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device)
 }
 
 /**
+<<<<<<< HEAD
  * frwr_map - Register a memory region from an xdr_buf cursor
  * @r_xprt: controlling transport
  * @cur: cursor tracking position within the xdr_buf
+=======
+ * frwr_map - Register a memory region
+ * @r_xprt: controlling transport
+ * @seg: memory region co-ordinates
+ * @nsegs: number of segments remaining
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @writing: true when RDMA Write will be used
  * @xid: XID of RPC using the registered memory
  * @mr: MR to fill in
@@ -279,6 +292,7 @@ int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device)
  * Prepare a REG_MR Work Request to register a memory region
  * for remote access via RDMA READ or RDMA WRITE.
  *
+<<<<<<< HEAD
  * Returns 0 on success (cursor advanced past consumed data,
  * @mr populated) or a negative errno on failure.
  */
@@ -291,11 +305,23 @@ int frwr_map(struct rpcrdma_xprt *r_xprt,
 	const struct xdr_buf *xdrbuf = cur->xc_buf;
 	bool sg_gaps = ep->re_mrtype == IB_MR_TYPE_SG_GAPS;
 	unsigned int max_depth = ep->re_max_fr_depth;
+=======
+ * Returns the next segment or a negative errno pointer.
+ * On success, @mr is filled in.
+ */
+struct rpcrdma_mr_seg *frwr_map(struct rpcrdma_xprt *r_xprt,
+				struct rpcrdma_mr_seg *seg,
+				int nsegs, bool writing, __be32 xid,
+				struct rpcrdma_mr *mr)
+{
+	struct rpcrdma_ep *ep = r_xprt->rx_ep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ib_reg_wr *reg_wr;
 	int i, n, dma_nents;
 	struct ib_mr *ibmr;
 	u8 key;
 
+<<<<<<< HEAD
 	i = 0;
 
 	/* Head kvec */
@@ -377,6 +403,22 @@ int frwr_map(struct rpcrdma_xprt *r_xprt,
 	}
 
 finish:
+=======
+	if (nsegs > ep->re_max_fr_depth)
+		nsegs = ep->re_max_fr_depth;
+	for (i = 0; i < nsegs;) {
+		sg_set_page(&mr->mr_sg[i], seg->mr_page,
+			    seg->mr_len, seg->mr_offset);
+
+		++seg;
+		++i;
+		if (ep->re_mrtype == IB_MR_TYPE_SG_GAPS)
+			continue;
+		if ((i < nsegs && seg->mr_offset) ||
+		    offset_in_page((seg-1)->mr_offset + (seg-1)->mr_len))
+			break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mr->mr_dir = rpcrdma_data_dir(writing);
 	mr->mr_nents = i;
 
@@ -408,6 +450,7 @@ finish:
 	mr->mr_offset = ibmr->iova;
 	trace_xprtrdma_mr_map(mr);
 
+<<<<<<< HEAD
 	return 0;
 
 out_dmamap_err:
@@ -417,6 +460,17 @@ out_dmamap_err:
 out_mapmr_err:
 	trace_xprtrdma_frwr_maperr(mr, n);
 	return -EIO;
+=======
+	return seg;
+
+out_dmamap_err:
+	trace_xprtrdma_frwr_sgerr(mr, i);
+	return ERR_PTR(-EIO);
+
+out_mapmr_err:
+	trace_xprtrdma_frwr_maperr(mr, n);
+	return ERR_PTR(-EIO);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -739,6 +793,7 @@ void frwr_unmap_async(struct rpcrdma_xprt *r_xprt, struct rpcrdma_req *req)
  */
 int frwr_wp_create(struct rpcrdma_xprt *r_xprt)
 {
+<<<<<<< HEAD
 	struct rpcrdma_buffer *buf = &r_xprt->rx_buf;
 	struct rpcrdma_ep *ep = r_xprt->rx_ep;
 	struct ib_reg_wr *reg_wr;
@@ -746,6 +801,11 @@ int frwr_wp_create(struct rpcrdma_xprt *r_xprt)
 	struct ib_mr *ibmr;
 	int dma_nents;
 	int ret;
+=======
+	struct rpcrdma_ep *ep = r_xprt->rx_ep;
+	struct rpcrdma_mr_seg seg;
+	struct rpcrdma_mr *mr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mr = rpcrdma_mr_get(r_xprt);
 	if (!mr)
@@ -753,6 +813,7 @@ int frwr_wp_create(struct rpcrdma_xprt *r_xprt)
 	mr->mr_req = NULL;
 	ep->re_write_pad_mr = mr;
 
+<<<<<<< HEAD
 	sg_init_table(mr->mr_sg, 1);
 	sg_set_page(mr->mr_sg, virt_to_page(ep->re_write_pad),
 		    XDR_UNIT, offset_in_page(ep->re_write_pad));
@@ -786,6 +847,13 @@ int frwr_wp_create(struct rpcrdma_xprt *r_xprt)
 	mr->mr_length = ibmr->length;
 	mr->mr_offset = ibmr->iova;
 
+=======
+	seg.mr_len = XDR_UNIT;
+	seg.mr_page = virt_to_page(ep->re_write_pad);
+	seg.mr_offset = offset_in_page(ep->re_write_pad);
+	if (IS_ERR(frwr_map(r_xprt, &seg, 1, true, xdr_zero, mr)))
+		return -EIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_xprtrdma_mr_fastreg(mr);
 
 	mr->mr_cqe.done = frwr_wc_fastreg;
@@ -795,6 +863,7 @@ int frwr_wp_create(struct rpcrdma_xprt *r_xprt)
 	mr->mr_regwr.wr.opcode = IB_WR_REG_MR;
 	mr->mr_regwr.wr.send_flags = 0;
 
+<<<<<<< HEAD
 	ret = ib_post_send(ep->re_id->qp, &mr->mr_regwr.wr, NULL);
 	if (!ret)
 		return 0;
@@ -807,4 +876,7 @@ out_mr:
 	rpcrdma_mr_push(mr, &buf->rb_mrs);
 	spin_unlock(&buf->rb_lock);
 	return ret;
+=======
+	return ib_post_send(ep->re_id->qp, &mr->mr_regwr.wr, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

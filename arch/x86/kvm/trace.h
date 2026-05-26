@@ -154,7 +154,11 @@ TRACE_EVENT(kvm_xen_hypercall,
 		__entry->a2 = a2;
 		__entry->a3 = a3;
 		__entry->a4 = a4;
+<<<<<<< HEAD
 		__entry->a5 = a5;
+=======
+		__entry->a4 = a5;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_printk("cpl %d nr 0x%lx a0 0x%lx a1 0x%lx a2 0x%lx a3 0x%lx a4 0x%lx a5 %lx",

@@ -18,6 +18,11 @@
 #include <linux/property.h>
 #include <linux/spinlock.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static LIST_HEAD(mbox_cons);
 static DEFINE_MUTEX(con_mutex);
 
@@ -50,7 +55,11 @@ static void msg_submit(struct mbox_chan *chan)
 	int err = -EBUSY;
 
 	scoped_guard(spinlock_irqsave, &chan->lock) {
+<<<<<<< HEAD
 		if (!chan->msg_count || chan->active_req != MBOX_NO_MSG)
+=======
+		if (!chan->msg_count || chan->active_req)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		count = chan->msg_count;
@@ -72,7 +81,11 @@ static void msg_submit(struct mbox_chan *chan)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!err && (chan->txdone_method & MBOX_TXDONE_BY_POLL)) {
+=======
+	if (!err && (chan->txdone_method & TXDONE_BY_POLL)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* kick start the timer immediately to avoid delays */
 		scoped_guard(spinlock_irqsave, &chan->mbox->poll_hrt_lock)
 			hrtimer_start(&chan->mbox->poll_hrt, 0, HRTIMER_MODE_REL);
@@ -85,13 +98,21 @@ static void tx_tick(struct mbox_chan *chan, int r)
 
 	scoped_guard(spinlock_irqsave, &chan->lock) {
 		mssg = chan->active_req;
+<<<<<<< HEAD
 		chan->active_req = MBOX_NO_MSG;
+=======
+		chan->active_req = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Submit next message */
 	msg_submit(chan);
 
+<<<<<<< HEAD
 	if (mssg == MBOX_NO_MSG)
+=======
+	if (!mssg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* Notify the client */
@@ -112,7 +133,11 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
 	for (i = 0; i < mbox->num_chans; i++) {
 		struct mbox_chan *chan = &mbox->chans[i];
 
+<<<<<<< HEAD
 		if (chan->active_req != MBOX_NO_MSG && chan->cl) {
+=======
+		if (chan->active_req && chan->cl) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			txdone = chan->mbox->ops->last_tx_done(chan);
 			if (txdone)
 				tx_tick(chan, 0);
@@ -162,7 +187,11 @@ EXPORT_SYMBOL_GPL(mbox_chan_received_data);
  */
 void mbox_chan_txdone(struct mbox_chan *chan, int r)
 {
+<<<<<<< HEAD
 	if (unlikely(!(chan->txdone_method & MBOX_TXDONE_BY_IRQ))) {
+=======
+	if (unlikely(!(chan->txdone_method & TXDONE_BY_IRQ))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(chan->mbox->dev,
 		       "Controller can't run the TX ticker\n");
 		return;
@@ -183,7 +212,11 @@ EXPORT_SYMBOL_GPL(mbox_chan_txdone);
  */
 void mbox_client_txdone(struct mbox_chan *chan, int r)
 {
+<<<<<<< HEAD
 	if (unlikely(!(chan->txdone_method & MBOX_TXDONE_BY_ACK))) {
+=======
+	if (unlikely(!(chan->txdone_method & TXDONE_BY_ACK))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(chan->mbox->dev, "Client can't run the TX ticker\n");
 		return;
 	}
@@ -217,6 +250,7 @@ bool mbox_client_peek_data(struct mbox_chan *chan)
 EXPORT_SYMBOL_GPL(mbox_client_peek_data);
 
 /**
+<<<<<<< HEAD
  * mbox_chan_tx_slots_available - Query the number of available TX queue slots.
  * @chan: Mailbox channel to query.
  *
@@ -240,6 +274,8 @@ unsigned int mbox_chan_tx_slots_available(struct mbox_chan *chan)
 EXPORT_SYMBOL_GPL(mbox_chan_tx_slots_available);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * mbox_send_message -	For client to submit a message to be
  *				sent to the remote.
  * @chan: Mailbox channel assigned to this client.
@@ -267,7 +303,11 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
 {
 	int t;
 
+<<<<<<< HEAD
 	if (!chan || !chan->cl || mssg == MBOX_NO_MSG)
+=======
+	if (!chan || !chan->cl)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	t = add_to_rbuf(chan, mssg);
@@ -340,12 +380,21 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
 	scoped_guard(spinlock_irqsave, &chan->lock) {
 		chan->msg_free = 0;
 		chan->msg_count = 0;
+<<<<<<< HEAD
 		chan->active_req = MBOX_NO_MSG;
 		chan->cl = cl;
 		init_completion(&chan->tx_complete);
 
 		if (chan->txdone_method	== MBOX_TXDONE_BY_POLL && cl->knows_txdone)
 			chan->txdone_method = MBOX_TXDONE_BY_ACK;
+=======
+		chan->active_req = NULL;
+		chan->cl = cl;
+		init_completion(&chan->tx_complete);
+
+		if (chan->txdone_method	== TXDONE_BY_POLL && cl->knows_txdone)
+			chan->txdone_method = TXDONE_BY_ACK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (chan->mbox->ops->startup) {
@@ -362,7 +411,11 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
 }
 
 /**
+<<<<<<< HEAD
  * mbox_bind_client - Bind client to a mailbox channel.
+=======
+ * mbox_bind_client - Request a mailbox channel.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @chan: The mailbox channel to bind the client to.
  * @cl: Identity of the client requesting the channel.
  *
@@ -498,9 +551,15 @@ void mbox_free_channel(struct mbox_chan *chan)
 	/* The queued TX requests are simply aborted, no callbacks are made */
 	scoped_guard(spinlock_irqsave, &chan->lock) {
 		chan->cl = NULL;
+<<<<<<< HEAD
 		chan->active_req = MBOX_NO_MSG;
 		if (chan->txdone_method == MBOX_TXDONE_BY_ACK)
 			chan->txdone_method = MBOX_TXDONE_BY_POLL;
+=======
+		chan->active_req = NULL;
+		if (chan->txdone_method == TXDONE_BY_ACK)
+			chan->txdone_method = TXDONE_BY_POLL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	module_put(chan->mbox->dev->driver->owner);
@@ -526,6 +585,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
 {
 	int i, txdone;
 
+<<<<<<< HEAD
 	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
 		return -EINVAL;
 
@@ -537,6 +597,20 @@ int mbox_controller_register(struct mbox_controller *mbox)
 		txdone = MBOX_TXDONE_BY_ACK;
 
 	if (txdone == MBOX_TXDONE_BY_POLL) {
+=======
+	/* Sanity check */
+	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
+		return -EINVAL;
+
+	if (mbox->txdone_irq)
+		txdone = TXDONE_BY_IRQ;
+	else if (mbox->txdone_poll)
+		txdone = TXDONE_BY_POLL;
+	else /* It has to be ACK then */
+		txdone = TXDONE_BY_ACK;
+
+	if (txdone == TXDONE_BY_POLL) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!mbox->ops->last_tx_done) {
 			dev_err(mbox->dev, "last_tx_done method is absent\n");
@@ -552,7 +626,10 @@ int mbox_controller_register(struct mbox_controller *mbox)
 
 		chan->cl = NULL;
 		chan->mbox = mbox;
+<<<<<<< HEAD
 		chan->active_req = MBOX_NO_MSG;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		chan->txdone_method = txdone;
 		spin_lock_init(&chan->lock);
 	}

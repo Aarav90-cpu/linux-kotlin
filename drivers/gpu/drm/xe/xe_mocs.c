@@ -600,7 +600,10 @@ static unsigned int get_mocs_settings(struct xe_device *xe,
 		info->wb_index = 4;
 		info->unused_entries_index = 4;
 		break;
+<<<<<<< HEAD
 	case XE_NOVALAKE_P:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case XE_NOVALAKE_S:
 	case XE_PANTHERLAKE:
 	case XE_LUNARLAKE:

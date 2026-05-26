@@ -45,8 +45,13 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	np = of_get_available_child_by_name(dev->of_node, "zap-shader");
 	if (!np) {
+=======
+	np = of_get_child_by_name(dev->of_node, "zap-shader");
+	if (!of_device_is_available(np)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		zap_available = false;
 		return -ENODEV;
 	}
@@ -391,11 +396,21 @@ int adreno_get_param(struct msm_gpu *gpu, struct msm_context *ctx,
 		return 0;
 	case MSM_PARAM_TIMESTAMP:
 		if (adreno_gpu->funcs->get_timestamp) {
+<<<<<<< HEAD
 			pm_runtime_get_sync(&gpu->pdev->dev);
 			*value = adreno_gpu->funcs->get_timestamp(gpu);
 			pm_runtime_put_autosuspend(&gpu->pdev->dev);
 
 			return 0;
+=======
+			int ret;
+
+			pm_runtime_get_sync(&gpu->pdev->dev);
+			ret = adreno_gpu->funcs->get_timestamp(gpu, value);
+			pm_runtime_put_autosuspend(&gpu->pdev->dev);
+
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		return -EINVAL;
 	case MSM_PARAM_PRIORITIES:
@@ -447,10 +462,13 @@ int adreno_get_param(struct msm_gpu *gpu, struct msm_context *ctx,
 	case MSM_PARAM_HAS_PRR:
 		*value = adreno_smmu_has_prr(gpu);
 		return 0;
+<<<<<<< HEAD
 	case MSM_PARAM_AQE:
 		*value = !!(adreno_gpu->funcs->aqe_is_enabled &&
 			    adreno_gpu->funcs->aqe_is_enabled(adreno_gpu));
 		return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return UERR(EINVAL, drm, "%s: invalid param: %u", gpu->name, param);
 	}
@@ -1192,6 +1210,10 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 	struct msm_gpu_config adreno_gpu_config  = { 0 };
 	struct msm_gpu *gpu = &adreno_gpu->base;
 	const char *gpu_name;
+<<<<<<< HEAD
+=======
+	u32 speedbin;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	adreno_gpu->funcs = funcs;
@@ -1220,6 +1242,13 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 			devm_pm_opp_set_clkname(dev, "core");
 	}
 
+<<<<<<< HEAD
+=======
+	if (adreno_read_speedbin(dev, &speedbin) || !speedbin)
+		speedbin = 0xffff;
+	adreno_gpu->speedbin = (uint16_t) (0xffff & speedbin);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_name = devm_kasprintf(dev, GFP_KERNEL, "%"ADRENO_CHIPID_FMT,
 			ADRENO_CHIPID_ARGS(config->chip_id));
 	if (!gpu_name)

@@ -7,13 +7,19 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/align.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/fs.h>
 #include <linux/dmi.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/string.h>
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/wmi.h>
 #include "dell-wmi-sysman.h"
 #include "../../firmware_attributes_class.h"
@@ -75,9 +81,19 @@ size_t calculate_string_buffer(const char *str)
  *
  * Currently only supported type is Admin password
  */
+<<<<<<< HEAD
 size_t calculate_security_buffer(const char *authentication)
 {
 	return sizeof(u32) * 2 + ALIGN(strlen(authentication), 2);
+=======
+size_t calculate_security_buffer(char *authentication)
+{
+	if (strlen(authentication) > 0) {
+		return (sizeof(u32) * 2) + strlen(authentication) +
+			strlen(authentication) % 2;
+	}
+	return sizeof(u32) * 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -87,6 +103,7 @@ size_t calculate_security_buffer(const char *authentication)
  *
  * Currently only supported type is PLAIN TEXT
  */
+<<<<<<< HEAD
 void populate_security_buffer(char *buffer, const char *authentication)
 {
 	size_t seclen = strlen(authentication);
@@ -99,6 +116,20 @@ void populate_security_buffer(char *buffer, const char *authentication)
 
 	/* plain text */
 	memcpy(auth, authentication, seclen);
+=======
+void populate_security_buffer(char *buffer, char *authentication)
+{
+	char *auth = buffer + sizeof(u32) * 2;
+	u32 *sectype = (u32 *) buffer;
+	u32 *seclen = sectype + 1;
+
+	*sectype = strlen(authentication) > 0 ? 1 : 0;
+	*seclen = strlen(authentication);
+
+	/* plain text */
+	if (strlen(authentication) > 0)
+		memcpy(auth, authentication, *seclen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -142,17 +173,30 @@ int map_wmi_error(int error_code)
  */
 static ssize_t reset_bios_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	ssize_t len = 0;
+=======
+	char *start = buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	for (i = 0; i < MAX_TYPES; i++) {
 		if (i == reset_option)
+<<<<<<< HEAD
 			len += sysfs_emit_at(buf, len, "[%s] ", reset_types[i]);
 		else
 			len += sysfs_emit_at(buf, len, "%s ", reset_types[i]);
 	}
 	len += sysfs_emit_at(buf, len, "\n");
 	return len;
+=======
+			buf += sprintf(buf, "[%s] ", reset_types[i]);
+		else
+			buf += sprintf(buf, "%s ", reset_types[i]);
+	}
+	buf += sprintf(buf, "\n");
+	return buf-start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -193,7 +237,11 @@ static ssize_t reset_bios_store(struct kobject *kobj,
 static ssize_t pending_reboot_show(struct kobject *kobj, struct kobj_attribute *attr,
 				   char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", wmi_priv.pending_changes);
+=======
+	return sprintf(buf, "%d\n", wmi_priv.pending_changes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kobj_attribute reset_bios = __ATTR_RW(reset_bios);
@@ -219,6 +267,38 @@ static int create_attributes_level_sysfs_files(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static ssize_t wmi_sysman_attr_show(struct kobject *kobj, struct attribute *attr,
+				    char *buf)
+{
+	struct kobj_attribute *kattr;
+	ssize_t ret = -EIO;
+
+	kattr = container_of(attr, struct kobj_attribute, attr);
+	if (kattr->show)
+		ret = kattr->show(kobj, kattr, buf);
+	return ret;
+}
+
+static ssize_t wmi_sysman_attr_store(struct kobject *kobj, struct attribute *attr,
+				     const char *buf, size_t count)
+{
+	struct kobj_attribute *kattr;
+	ssize_t ret = -EIO;
+
+	kattr = container_of(attr, struct kobj_attribute, attr);
+	if (kattr->store)
+		ret = kattr->store(kobj, kattr, buf, count);
+	return ret;
+}
+
+static const struct sysfs_ops wmi_sysman_kobj_sysfs_ops = {
+	.show	= wmi_sysman_attr_show,
+	.store	= wmi_sysman_attr_store,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void attr_name_release(struct kobject *kobj)
 {
 	kfree(kobj);
@@ -226,7 +306,11 @@ static void attr_name_release(struct kobject *kobj)
 
 static const struct kobj_type attr_name_ktype = {
 	.release	= attr_name_release,
+<<<<<<< HEAD
 	.sysfs_ops	= &kobj_sysfs_ops,
+=======
+	.sysfs_ops	= &wmi_sysman_kobj_sysfs_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -313,7 +397,11 @@ static int alloc_attributes_data(int attr_type)
  * destroy_attribute_objs() - Free a kset of kobjects
  * @kset: The kset to destroy
  *
+<<<<<<< HEAD
  * Frees kobjects created for each attribute_name under attribute type kset.
+=======
+ * Fress kobjects created for each attribute_name under attribute type kset
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void destroy_attribute_objs(struct kset *kset)
 {

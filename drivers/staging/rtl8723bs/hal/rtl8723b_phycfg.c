@@ -575,7 +575,10 @@ static void phy_SetRegBW_8723B(
 )
 {
 	u16 RegRfMod_BW, u2tmp = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RegRfMod_BW = rtw_read16(Adapter, REG_TRXPTCL_CTL_8723B);
 
 	switch (CurrentBW) {

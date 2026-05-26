@@ -53,7 +53,11 @@ struct samsung_galaxybook {
 	void *i8042_filter_ptr;
 
 	struct work_struct block_recording_hotkey_work;
+<<<<<<< HEAD
 	struct input_dev *input;
+=======
+	struct input_dev *camera_lens_cover_switch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct acpi_battery_hook battery_hook;
 
@@ -197,9 +201,12 @@ static const guid_t performance_mode_guid =
 #define GB_ACPI_NOTIFY_DEVICE_ON_TABLE          0x6c
 #define GB_ACPI_NOTIFY_DEVICE_OFF_TABLE         0x6d
 #define GB_ACPI_NOTIFY_HOTKEY_PERFORMANCE_MODE  0x70
+<<<<<<< HEAD
 #define GB_ACPI_NOTIFY_HOTKEY_KBD_BACKLIGHT     0x7d
 #define GB_ACPI_NOTIFY_HOTKEY_MICMUTE           0x6e
 #define GB_ACPI_NOTIFY_HOTKEY_CAMERA            0x6f
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define GB_KEY_KBD_BACKLIGHT_KEYDOWN    0x2c
 #define GB_KEY_KBD_BACKLIGHT_KEYUP      0xac
@@ -862,13 +869,20 @@ static int block_recording_acpi_set(struct samsung_galaxybook *galaxybook, const
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	input_report_switch(galaxybook->input,
 			    SW_CAMERA_LENS_COVER, value ? 1 : 0);
 	input_sync(galaxybook->input);
+=======
+	input_report_switch(galaxybook->camera_lens_cover_switch,
+			    SW_CAMERA_LENS_COVER, value ? 1 : 0);
+	input_sync(galaxybook->camera_lens_cover_switch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int galaxybook_input_init(struct samsung_galaxybook *galaxybook)
 {
 	galaxybook->input = devm_input_allocate_device(&galaxybook->platform->dev);
@@ -885,6 +899,8 @@ static int galaxybook_input_init(struct samsung_galaxybook *galaxybook)
 	return input_register_device(galaxybook->input);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int galaxybook_block_recording_init(struct samsung_galaxybook *galaxybook)
 {
 	bool value;
@@ -906,8 +922,29 @@ static int galaxybook_block_recording_init(struct samsung_galaxybook *galaxybook
 		return GB_NOT_SUPPORTED;
 	}
 
+<<<<<<< HEAD
 	input_report_switch(galaxybook->input, SW_CAMERA_LENS_COVER, value ? 1 : 0);
 	input_sync(galaxybook->input);
+=======
+	galaxybook->camera_lens_cover_switch =
+		devm_input_allocate_device(&galaxybook->platform->dev);
+	if (!galaxybook->camera_lens_cover_switch)
+		return -ENOMEM;
+
+	galaxybook->camera_lens_cover_switch->name = "Samsung Galaxy Book Camera Lens Cover";
+	galaxybook->camera_lens_cover_switch->phys = DRIVER_NAME "/input0";
+	galaxybook->camera_lens_cover_switch->id.bustype = BUS_HOST;
+
+	input_set_capability(galaxybook->camera_lens_cover_switch, EV_SW, SW_CAMERA_LENS_COVER);
+
+	err = input_register_device(galaxybook->camera_lens_cover_switch);
+	if (err)
+		return err;
+
+	input_report_switch(galaxybook->camera_lens_cover_switch,
+			    SW_CAMERA_LENS_COVER, value ? 1 : 0);
+	input_sync(galaxybook->camera_lens_cover_switch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1263,6 +1300,7 @@ static void galaxybook_acpi_notify(acpi_handle handle, u32 event, void *data)
 		if (galaxybook->has_performance_mode)
 			platform_profile_cycle();
 		break;
+<<<<<<< HEAD
 	case GB_ACPI_NOTIFY_HOTKEY_KBD_BACKLIGHT:
 		if (galaxybook->has_kbd_backlight)
 			schedule_work(&galaxybook->kbd_backlight_hotkey_work);
@@ -1282,6 +1320,8 @@ static void galaxybook_acpi_notify(acpi_handle handle, u32 event, void *data)
 			input_sync(galaxybook->input);
 		}
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		dev_warn(&galaxybook->platform->dev,
 			 "unknown ACPI notification event: 0x%x\n", event);
@@ -1414,11 +1454,14 @@ static int galaxybook_probe(struct platform_device *pdev)
 		return dev_err_probe(&galaxybook->platform->dev, err,
 				     "failed to initialize kbd_backlight\n");
 
+<<<<<<< HEAD
 	err = galaxybook_input_init(galaxybook);
 	if (err)
 		return dev_err_probe(&galaxybook->platform->dev, err,
 				     "failed to initialize input device\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = galaxybook_fw_attrs_init(galaxybook);
 	if (err)
 		return dev_err_probe(&galaxybook->platform->dev, err,

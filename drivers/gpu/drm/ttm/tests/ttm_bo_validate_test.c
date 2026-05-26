@@ -251,7 +251,11 @@ static void ttm_bo_validate_basic(struct kunit *test)
 				   NULL, &dummy_ttm_bo_destroy);
 	KUNIT_EXPECT_EQ(test, err, 0);
 
+<<<<<<< HEAD
 	snd_place = ttm_place_kunit_init(test, snd_mem, GPU_BUDDY_TOPDOWN_ALLOCATION);
+=======
+	snd_place = ttm_place_kunit_init(test, snd_mem, DRM_BUDDY_TOPDOWN_ALLOCATION);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snd_placement = ttm_placement_kunit_init(test, snd_place, 1);
 
 	err = ttm_bo_validate(bo, snd_placement, &ctx_val);
@@ -263,7 +267,11 @@ static void ttm_bo_validate_basic(struct kunit *test)
 	KUNIT_EXPECT_TRUE(test, ttm_tt_is_populated(bo->ttm));
 	KUNIT_EXPECT_EQ(test, bo->resource->mem_type, snd_mem);
 	KUNIT_EXPECT_EQ(test, bo->resource->placement,
+<<<<<<< HEAD
 			GPU_BUDDY_TOPDOWN_ALLOCATION);
+=======
+			DRM_BUDDY_TOPDOWN_ALLOCATION);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_bo_fini(bo);
 	ttm_mock_manager_fini(priv->ttm_dev, snd_mem);
@@ -759,6 +767,7 @@ static void ttm_bo_validate_move_fence_not_signaled(struct kunit *test)
 	ttm_mock_manager_fini(priv->ttm_dev, snd_mem);
 }
 
+<<<<<<< HEAD
 static void ttm_bo_validate_swapout(struct kunit *test)
 {
 	u32 mem_type = TTM_PL_TT;
@@ -799,6 +808,8 @@ static void ttm_bo_validate_swapout(struct kunit *test)
 	ttm_mock_manager_fini(priv->ttm_dev, mem_type);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ttm_bo_validate_happy_evict(struct kunit *test)
 {
 	u32 mem_type = TTM_PL_VRAM, mem_multihop = TTM_PL_TT,
@@ -1193,7 +1204,10 @@ static struct kunit_case ttm_bo_validate_test_cases[] = {
 	KUNIT_CASE(ttm_bo_validate_move_fence_signaled),
 	KUNIT_CASE_PARAM(ttm_bo_validate_move_fence_not_signaled,
 			 ttm_bo_validate_wait_gen_params),
+<<<<<<< HEAD
 	KUNIT_CASE(ttm_bo_validate_swapout),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE(ttm_bo_validate_happy_evict),
 	KUNIT_CASE(ttm_bo_validate_all_pinned_evict),
 	KUNIT_CASE(ttm_bo_validate_allowed_only_evict),

@@ -70,7 +70,10 @@ static int add_hist_entries(struct evlist *evlist,
 			};
 			struct hists *hists = evsel__hists(evsel);
 
+<<<<<<< HEAD
 			sample.evsel = evsel;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* make sure it has no filter at first */
 			hists->thread_filter = NULL;
 			hists->dso_filter = NULL;

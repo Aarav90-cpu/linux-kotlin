@@ -26,7 +26,10 @@ dtb-$(CONFIG_ARCH_EXYNOS4) += \
 	exynos4412-trats2.dtb
 dtb-$(CONFIG_ARCH_EXYNOS5) += \
 	exynos5250-arndale.dtb \
+<<<<<<< HEAD
 	exynos5250-manta.dtb \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exynos5250-smdk5250.dtb \
 	exynos5250-snow.dtb \
 	exynos5250-snow-rev5.dtb \

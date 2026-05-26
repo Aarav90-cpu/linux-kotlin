@@ -27,6 +27,7 @@ bool intel_display_needs_wa_16023588340(struct intel_display *display);
  * number.
  */
 enum intel_display_wa {
+<<<<<<< HEAD
 	INTEL_DISPLAY_WA_1409120013,
 	INTEL_DISPLAY_WA_1409767108,
 	INTEL_DISPLAY_WA_13012396614,
@@ -60,11 +61,24 @@ enum intel_display_wa {
 	INTEL_DISPLAY_WA_22012358565,
 	INTEL_DISPLAY_WA_22014263786,
 	INTEL_DISPLAY_WA_22021048059,
+=======
+	INTEL_DISPLAY_WA_13012396614,
+	INTEL_DISPLAY_WA_14011503117,
+	INTEL_DISPLAY_WA_14025769978,
+	INTEL_DISPLAY_WA_15018326506,
+	INTEL_DISPLAY_WA_16023588340,
+	INTEL_DISPLAY_WA_16025573575,
+	INTEL_DISPLAY_WA_22014263786,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 bool __intel_display_wa(struct intel_display *display, enum intel_display_wa wa, const char *name);
 
 #define intel_display_wa(__display, __wa) \
+<<<<<<< HEAD
 	__intel_display_wa((__display), __wa, __stringify(__wa))
+=======
+	__intel_display_wa((__display), INTEL_DISPLAY_WA_##__wa, __stringify(__wa))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

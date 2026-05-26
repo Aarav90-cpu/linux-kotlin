@@ -174,6 +174,7 @@ ifeq ($(KBUILD_EXTMOD),)
 # this hack.
 prepare: vdso_prepare
 vdso_prepare: prepare0
+<<<<<<< HEAD
 ifdef CONFIG_64BIT
 	$(Q)$(MAKE) $(build)=arch/parisc/kernel/vdso64 include/generated/vdso64-offsets.h
 	$(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
@@ -189,6 +190,15 @@ vdso-install-$(CONFIG_COMPAT)	+= arch/parisc/kernel/vdso32/vdso32.so
 else
 vdso-install-y			+= arch/parisc/kernel/vdso32/vdso32.so
 endif
+=======
+	$(if $(CONFIG_64BIT),$(Q)$(MAKE) \
+		$(build)=arch/parisc/kernel/vdso64 include/generated/vdso64-offsets.h)
+	$(Q)$(MAKE) $(build)=arch/parisc/kernel/vdso32 include/generated/vdso32-offsets.h
+endif
+
+vdso-install-y			+= arch/parisc/kernel/vdso32/vdso32.so
+vdso-install-$(CONFIG_64BIT)	+= arch/parisc/kernel/vdso64/vdso64.so
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 install: KBUILD_IMAGE := vmlinux
 zinstall: KBUILD_IMAGE := vmlinuz

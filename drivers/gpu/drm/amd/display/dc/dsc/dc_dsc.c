@@ -680,6 +680,12 @@ static void get_dsc_enc_caps(
 	} else {
 		build_dsc_enc_caps(dsc, dsc_enc_caps);
 	}
+<<<<<<< HEAD
+=======
+
+	if (dsc->ctx->dc->debug.native422_support)
+		dsc_enc_caps->color_formats.bits.YCBCR_NATIVE_422 = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Returns 'false' if no intersection was found for at least one capability.
@@ -1097,6 +1103,7 @@ static bool setup_dsc_config(
 		branch_max_throughput_mps = dsc_sink_caps->branch_overall_throughput_0_mps;
 		break;
 	case PIXEL_ENCODING_YCBCR422:
+<<<<<<< HEAD
 		if (policy.ycbcr422_simple) {
 			is_dsc_possible = (bool)dsc_common_caps.color_formats.bits.YCBCR_SIMPLE_422;
 			dsc_cfg->ycbcr422_simple = is_dsc_possible;
@@ -1105,6 +1112,15 @@ static bool setup_dsc_config(
 			is_dsc_possible = (bool)dsc_common_caps.color_formats.bits.YCBCR_NATIVE_422;
 			sink_per_slice_throughput_mps = dsc_sink_caps->throughput_mode_1_mps;
 			branch_max_throughput_mps = dsc_sink_caps->branch_overall_throughput_1_mps;
+=======
+		is_dsc_possible = (bool)dsc_common_caps.color_formats.bits.YCBCR_NATIVE_422;
+		sink_per_slice_throughput_mps = dsc_sink_caps->throughput_mode_1_mps;
+		branch_max_throughput_mps = dsc_sink_caps->branch_overall_throughput_1_mps;
+		if (!is_dsc_possible) {
+			is_dsc_possible = (bool)dsc_common_caps.color_formats.bits.YCBCR_SIMPLE_422;
+			dsc_cfg->ycbcr422_simple = is_dsc_possible;
+			sink_per_slice_throughput_mps = dsc_sink_caps->throughput_mode_0_mps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	case PIXEL_ENCODING_YCBCR420:
@@ -1404,7 +1420,10 @@ void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
 		policy->min_target_bpp = 8;
 		/* DP specs limits to 3 x bpc */
 		policy->max_target_bpp = 3 * bpc;
+<<<<<<< HEAD
 		policy->ycbcr422_simple = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case PIXEL_ENCODING_YCBCR420:
 		/* DP specs limits to 6 */

@@ -249,5 +249,9 @@
 };
 
 &usdhc2 {
+<<<<<<< HEAD
+=======
+	vmmc-supply = <&reg_vdd_3v3>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };

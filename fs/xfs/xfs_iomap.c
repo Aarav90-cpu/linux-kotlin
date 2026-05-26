@@ -143,6 +143,7 @@ xfs_bmbt_to_iomap(
 	}
 	iomap->offset = XFS_FSB_TO_B(mp, imap->br_startoff);
 	iomap->length = XFS_FSB_TO_B(mp, imap->br_blockcount);
+<<<<<<< HEAD
 	iomap->flags = iomap_flags;
 	if (mapping_flags & IOMAP_DAX) {
 		iomap->dax_dev = target->bt_daxdev;
@@ -151,6 +152,13 @@ xfs_bmbt_to_iomap(
 		if (bdev_has_integrity_csum(iomap->bdev))
 			iomap->flags |= IOMAP_F_INTEGRITY;
 	}
+=======
+	if (mapping_flags & IOMAP_DAX)
+		iomap->dax_dev = target->bt_daxdev;
+	else
+		iomap->bdev = target->bt_bdev;
+	iomap->flags = iomap_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If the inode is dirty for datasync purposes, let iomap know so it
@@ -1593,7 +1601,10 @@ xfs_zoned_buffered_write_iomap_begin(
 {
 	struct iomap_iter	*iter =
 		container_of(iomap, struct iomap_iter, iomap);
+<<<<<<< HEAD
 	struct address_space	*mapping = inode->i_mapping;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_zone_alloc_ctx *ac = iter->private;
 	struct xfs_inode	*ip = XFS_I(inode);
 	struct xfs_mount	*mp = ip->i_mount;
@@ -1618,7 +1629,10 @@ xfs_zoned_buffered_write_iomap_begin(
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 restart:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = xfs_ilock_for_iomap(ip, flags, &lockmode);
 	if (error)
 		return error;
@@ -1656,6 +1670,17 @@ restart:
 				&smap))
 			smap.br_startoff = end_fsb; /* fake hole until EOF */
 		if (smap.br_startoff > offset_fsb) {
+<<<<<<< HEAD
+=======
+			/*
+			 * We never need to allocate blocks for zeroing a hole.
+			 */
+			if (flags & IOMAP_ZERO) {
+				xfs_hole_to_iomap(ip, iomap, offset_fsb,
+						smap.br_startoff);
+				goto out_unlock;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			end_fsb = min(end_fsb, smap.br_startoff);
 		} else {
 			end_fsb = min(end_fsb,
@@ -1688,6 +1713,7 @@ restart:
 			 XFS_B_TO_FSB(mp, 1024 * PAGE_SIZE));
 
 	/*
+<<<<<<< HEAD
 	 * When zeroing, don't allocate blocks for holes as they are already
 	 * zeroes, but we need to ensure that no extents exist in both the data
 	 * and COW fork to ensure this really is a hole.
@@ -1715,6 +1741,8 @@ restart:
 	}
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * The block reservation is supposed to cover all blocks that the
 	 * operation could possible write, but there is a nasty corner case
 	 * where blocks could be stolen from underneath us:
@@ -1788,8 +1816,11 @@ xfs_buffered_write_iomap_begin(
 	struct xfs_mount	*mp = ip->i_mount;
 	xfs_fileoff_t		offset_fsb = XFS_B_TO_FSBT(mp, offset);
 	xfs_fileoff_t		end_fsb = xfs_iomap_end_fsb(mp, offset, count);
+<<<<<<< HEAD
 	xfs_fileoff_t		cow_fsb = NULLFILEOFF;
 	xfs_fileoff_t		eof_fsb = XFS_B_TO_FSB(mp, XFS_ISIZE(ip));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_bmbt_irec	imap, cmap;
 	struct xfs_iext_cursor	icur, ccur;
 	xfs_fsblock_t		prealloc_blocks = 0;
@@ -1834,6 +1865,7 @@ xfs_buffered_write_iomap_begin(
 		goto out_unlock;
 
 	/*
+<<<<<<< HEAD
 	 * Search the data fork first to look up our source mapping. We always
 	 * need the data fork map, as we have to return it to the iomap code so
 	 * that the higher level write code can read data in to perform
@@ -1845,10 +1877,17 @@ xfs_buffered_write_iomap_begin(
 	 * block adjacent to shared blocks instead of just the shared blocks
 	 * themselves. Second the lookup in the extent list is generally faster
 	 * than going out to the shared extent tree.
+=======
+	 * Search the data fork first to look up our source mapping.  We
+	 * always need the data fork map, as we have to return it to the
+	 * iomap code so that the higher level write code can read data in to
+	 * perform read-modify-write cycles for unaligned writes.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	eof = !xfs_iext_lookup_extent(ip, &ip->i_df, offset_fsb, &icur, &imap);
 	if (eof)
 		imap.br_startoff = end_fsb; /* fake hole until the end */
+<<<<<<< HEAD
 	if (xfs_is_cow_inode(ip)) {
 		if (!ip->i_cowfp) {
 			ASSERT(!xfs_is_reflink_inode(ip));
@@ -1862,11 +1901,18 @@ xfs_buffered_write_iomap_begin(
 
 	/* We never need to allocate blocks for unsharing a hole. */
 	if ((flags & IOMAP_UNSHARE) && imap.br_startoff > offset_fsb) {
+=======
+
+	/* We never need to allocate blocks for zeroing or unsharing a hole. */
+	if ((flags & (IOMAP_UNSHARE | IOMAP_ZERO)) &&
+	    imap.br_startoff > offset_fsb) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xfs_hole_to_iomap(ip, iomap, offset_fsb, imap.br_startoff);
 		goto out_unlock;
 	}
 
 	/*
+<<<<<<< HEAD
 	 * We may need to zero over a hole in the data fork if it's fronted by
 	 * COW blocks and dirty pagecache. Scan such file ranges for dirty
 	 * cache and fill the iomap batch with folios that need zeroing.
@@ -1919,11 +1965,18 @@ xfs_buffered_write_iomap_begin(
 	}
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * For zeroing, trim extents that extend beyond the EOF block. If a
 	 * delalloc extent starts beyond the EOF block, convert it to an
 	 * unwritten extent.
 	 */
 	if (flags & IOMAP_ZERO) {
+<<<<<<< HEAD
+=======
+		xfs_fileoff_t eof_fsb = XFS_B_TO_FSB(mp, XFS_ISIZE(ip));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (isnullstartblock(imap.br_startblock) &&
 		    offset_fsb >= eof_fsb)
 			goto convert_delay;
@@ -1956,6 +2009,7 @@ xfs_buffered_write_iomap_begin(
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Now that we've handled any operation specific special cases, at this
 	 * point we can report a COW mapping if found.
 	 */
@@ -1963,6 +2017,26 @@ xfs_buffered_write_iomap_begin(
 	    !cow_eof && cmap.br_startoff <= offset_fsb) {
 		trace_xfs_reflink_cow_found(ip, &cmap);
 		goto found_cow;
+=======
+	 * Search the COW fork extent list even if we did not find a data fork
+	 * extent.  This serves two purposes: first this implements the
+	 * speculative preallocation using cowextsize, so that we also unshare
+	 * block adjacent to shared blocks instead of just the shared blocks
+	 * themselves.  Second the lookup in the extent list is generally faster
+	 * than going out to the shared extent tree.
+	 */
+	if (xfs_is_cow_inode(ip)) {
+		if (!ip->i_cowfp) {
+			ASSERT(!xfs_is_reflink_inode(ip));
+			xfs_ifork_init_cow(ip);
+		}
+		cow_eof = !xfs_iext_lookup_extent(ip, ip->i_cowfp, offset_fsb,
+				&ccur, &cmap);
+		if (!cow_eof && cmap.br_startoff <= offset_fsb) {
+			trace_xfs_reflink_cow_found(ip, &cmap);
+			goto found_cow;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (imap.br_startoff <= offset_fsb) {

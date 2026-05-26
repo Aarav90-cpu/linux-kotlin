@@ -370,7 +370,11 @@ int atmel_i2c_probe(struct i2c_client *client)
 		}
 	}
 
+<<<<<<< HEAD
 	if (bus_clk_rate > I2C_MAX_FAST_MODE_PLUS_FREQ) {
+=======
+	if (bus_clk_rate > 1000000L) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "%u exceeds maximum supported clock frequency (1MHz)\n",
 			bus_clk_rate);
 		return -EINVAL;

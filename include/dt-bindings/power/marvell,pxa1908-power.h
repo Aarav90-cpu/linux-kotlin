@@ -13,6 +13,9 @@
 #define PXA1908_POWER_DOMAIN_GPU2D	2
 #define PXA1908_POWER_DOMAIN_DSI	3
 #define PXA1908_POWER_DOMAIN_ISP	4
+<<<<<<< HEAD
 #define PXA1908_POWER_DOMAIN_AUDIO	5
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

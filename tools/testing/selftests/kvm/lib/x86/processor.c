@@ -21,6 +21,7 @@
 #define KERNEL_DS	0x10
 #define KERNEL_TSS	0x18
 
+<<<<<<< HEAD
 gva_t exception_handlers;
 bool host_cpu_is_amd;
 bool host_cpu_is_intel;
@@ -28,6 +29,13 @@ bool host_cpu_is_hygon;
 bool host_cpu_is_amd_compatible;
 bool is_forced_emulation_enabled;
 u64 guest_tsc_khz;
+=======
+vm_vaddr_t exception_handlers;
+bool host_cpu_is_amd;
+bool host_cpu_is_intel;
+bool is_forced_emulation_enabled;
+uint64_t guest_tsc_khz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 const char *ex_str(int vector)
 {
@@ -62,7 +70,11 @@ const char *ex_str(int vector)
 	}
 }
 
+<<<<<<< HEAD
 static void regs_dump(FILE *stream, struct kvm_regs *regs, u8 indent)
+=======
+static void regs_dump(FILE *stream, struct kvm_regs *regs, uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	fprintf(stream, "%*srax: 0x%.16llx rbx: 0x%.16llx "
 		"rcx: 0x%.16llx rdx: 0x%.16llx\n",
@@ -86,7 +98,11 @@ static void regs_dump(FILE *stream, struct kvm_regs *regs, u8 indent)
 }
 
 static void segment_dump(FILE *stream, struct kvm_segment *segment,
+<<<<<<< HEAD
 			 u8 indent)
+=======
+			 uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	fprintf(stream, "%*sbase: 0x%.16llx limit: 0x%.8x "
 		"selector: 0x%.4x type: 0x%.2x\n",
@@ -103,7 +119,11 @@ static void segment_dump(FILE *stream, struct kvm_segment *segment,
 }
 
 static void dtable_dump(FILE *stream, struct kvm_dtable *dtable,
+<<<<<<< HEAD
 			u8 indent)
+=======
+			uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	fprintf(stream, "%*sbase: 0x%.16llx limit: 0x%.4x "
 		"padding: 0x%.4x 0x%.4x 0x%.4x\n",
@@ -111,7 +131,11 @@ static void dtable_dump(FILE *stream, struct kvm_dtable *dtable,
 		dtable->padding[0], dtable->padding[1], dtable->padding[2]);
 }
 
+<<<<<<< HEAD
 static void sregs_dump(FILE *stream, struct kvm_sregs *sregs, u8 indent)
+=======
+static void sregs_dump(FILE *stream, struct kvm_sregs *sregs, uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int i;
 
@@ -207,6 +231,7 @@ void tdp_mmu_init(struct kvm_vm *vm, int pgtable_levels,
 }
 
 static void *virt_get_pte(struct kvm_vm *vm, struct kvm_mmu *mmu,
+<<<<<<< HEAD
 			  u64 *parent_pte, gva_t gva, int level)
 {
 	u64 pt_gpa = PTE_GET_PA(*parent_pte);
@@ -216,10 +241,22 @@ static void *virt_get_pte(struct kvm_vm *vm, struct kvm_mmu *mmu,
 	TEST_ASSERT((*parent_pte == mmu->pgd) || is_present_pte(mmu, parent_pte),
 		    "Parent PTE (level %d) not PRESENT for gva: 0x%08lx",
 		    level + 1, gva);
+=======
+			  uint64_t *parent_pte, uint64_t vaddr, int level)
+{
+	uint64_t pt_gpa = PTE_GET_PA(*parent_pte);
+	uint64_t *page_table = addr_gpa2hva(vm, pt_gpa);
+	int index = (vaddr >> PG_LEVEL_SHIFT(level)) & 0x1ffu;
+
+	TEST_ASSERT((*parent_pte == mmu->pgd) || is_present_pte(mmu, parent_pte),
+		    "Parent PTE (level %d) not PRESENT for gva: 0x%08lx",
+		    level + 1, vaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return &page_table[index];
 }
 
+<<<<<<< HEAD
 static u64 *virt_create_upper_pte(struct kvm_vm *vm,
 				  struct kvm_mmu *mmu,
 				  u64 *parent_pte,
@@ -231,13 +268,30 @@ static u64 *virt_create_upper_pte(struct kvm_vm *vm,
 	u64 *pte = virt_get_pte(vm, mmu, parent_pte, gva, current_level);
 
 	gpa = vm_untag_gpa(vm, gpa);
+=======
+static uint64_t *virt_create_upper_pte(struct kvm_vm *vm,
+				       struct kvm_mmu *mmu,
+				       uint64_t *parent_pte,
+				       uint64_t vaddr,
+				       uint64_t paddr,
+				       int current_level,
+				       int target_level)
+{
+	uint64_t *pte = virt_get_pte(vm, mmu, parent_pte, vaddr, current_level);
+
+	paddr = vm_untag_gpa(vm, paddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_present_pte(mmu, pte)) {
 		*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
 		       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
 		       PTE_ALWAYS_SET_MASK(mmu);
 		if (current_level == target_level)
+<<<<<<< HEAD
 			*pte |= PTE_HUGE_MASK(mmu) | (gpa & PHYSICAL_PAGE_MASK);
+=======
+			*pte |= PTE_HUGE_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			*pte |= vm_alloc_page_table(vm) & PHYSICAL_PAGE_MASK;
 	} else {
@@ -247,25 +301,42 @@ static u64 *virt_create_upper_pte(struct kvm_vm *vm,
 		 * this level.
 		 */
 		TEST_ASSERT(current_level != target_level,
+<<<<<<< HEAD
 			    "Cannot create hugepage at level: %u, gva: 0x%lx",
 			    current_level, gva);
 		TEST_ASSERT(!is_huge_pte(mmu, pte),
 			    "Cannot create page table at level: %u, gva: 0x%lx",
 			    current_level, gva);
+=======
+			    "Cannot create hugepage at level: %u, vaddr: 0x%lx",
+			    current_level, vaddr);
+		TEST_ASSERT(!is_huge_pte(mmu, pte),
+			    "Cannot create page table at level: %u, vaddr: 0x%lx",
+			    current_level, vaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return pte;
 }
 
+<<<<<<< HEAD
 void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
 		   gpa_t gpa, int level)
 {
 	const u64 pg_size = PG_LEVEL_SIZE(level);
 	u64 *pte = &mmu->pgd;
+=======
+void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, uint64_t vaddr,
+		   uint64_t paddr, int level)
+{
+	const uint64_t pg_size = PG_LEVEL_SIZE(level);
+	uint64_t *pte = &mmu->pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int current_level;
 
 	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
 
+<<<<<<< HEAD
 	TEST_ASSERT((gva % pg_size) == 0,
 		    "Virtual address not aligned,\n"
 		    "gva: 0x%lx page size: 0x%lx", gva, pg_size);
@@ -280,6 +351,22 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
 		    gpa, vm->max_gfn, vm->page_size);
 	TEST_ASSERT(vm_untag_gpa(vm, gpa) == gpa,
 		    "Unexpected bits in gpa: %lx", gpa);
+=======
+	TEST_ASSERT((vaddr % pg_size) == 0,
+		    "Virtual address not aligned,\n"
+		    "vaddr: 0x%lx page size: 0x%lx", vaddr, pg_size);
+	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (vaddr >> vm->page_shift)),
+		    "Invalid virtual address, vaddr: 0x%lx", vaddr);
+	TEST_ASSERT((paddr % pg_size) == 0,
+		    "Physical address not aligned,\n"
+		    "  paddr: 0x%lx page size: 0x%lx", paddr, pg_size);
+	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
+		    "Physical address beyond maximum supported,\n"
+		    "  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
+		    paddr, vm->max_gfn, vm->page_size);
+	TEST_ASSERT(vm_untag_gpa(vm, paddr) == paddr,
+		    "Unexpected bits in paddr: %lx", paddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(!PTE_EXECUTABLE_MASK(mmu) || !PTE_NX_MASK(mmu),
 		    "X and NX bit masks cannot be used simultaneously");
@@ -291,30 +378,48 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
 	for (current_level = mmu->pgtable_levels;
 	     current_level > PG_LEVEL_4K;
 	     current_level--) {
+<<<<<<< HEAD
 		pte = virt_create_upper_pte(vm, mmu, pte, gva, gpa,
+=======
+		pte = virt_create_upper_pte(vm, mmu, pte, vaddr, paddr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    current_level, level);
 		if (is_huge_pte(mmu, pte))
 			return;
 	}
 
 	/* Fill in page table entry. */
+<<<<<<< HEAD
 	pte = virt_get_pte(vm, mmu, pte, gva, PG_LEVEL_4K);
 	TEST_ASSERT(!is_present_pte(mmu, pte),
 		    "PTE already present for 4k page at gva: 0x%lx", gva);
 	*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
 	       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
 	       PTE_ALWAYS_SET_MASK(mmu) | (gpa & PHYSICAL_PAGE_MASK);
+=======
+	pte = virt_get_pte(vm, mmu, pte, vaddr, PG_LEVEL_4K);
+	TEST_ASSERT(!is_present_pte(mmu, pte),
+		    "PTE already present for 4k page at vaddr: 0x%lx", vaddr);
+	*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
+	       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
+	       PTE_ALWAYS_SET_MASK(mmu) | (paddr & PHYSICAL_PAGE_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Neither SEV nor TDX supports shared page tables, so only the final
 	 * leaf PTE needs manually set the C/S-bit.
 	 */
+<<<<<<< HEAD
 	if (vm_is_gpa_protected(vm, gpa))
+=======
+	if (vm_is_gpa_protected(vm, paddr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*pte |= PTE_C_BIT_MASK(mmu);
 	else
 		*pte |= PTE_S_BIT_MASK(mmu);
 }
 
+<<<<<<< HEAD
 void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 {
 	__virt_pg_map(vm, &vm->mmu, gva, gpa, PG_LEVEL_4K);
@@ -325,6 +430,18 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
 {
 	u64 pg_size = PG_LEVEL_SIZE(level);
 	u64 nr_pages = nr_bytes / pg_size;
+=======
+void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
+{
+	__virt_pg_map(vm, &vm->mmu, vaddr, paddr, PG_LEVEL_4K);
+}
+
+void virt_map_level(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
+		    uint64_t nr_bytes, int level)
+{
+	uint64_t pg_size = PG_LEVEL_SIZE(level);
+	uint64_t nr_pages = nr_bytes / pg_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	TEST_ASSERT(nr_bytes % pg_size == 0,
@@ -332,6 +449,7 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
 		    nr_bytes, pg_size);
 
 	for (i = 0; i < nr_pages; i++) {
+<<<<<<< HEAD
 		__virt_pg_map(vm, &vm->mmu, gva, gpa, level);
 		sparsebit_set_num(vm->vpages_mapped, gva >> vm->page_shift,
 				  nr_bytes / PAGE_SIZE);
@@ -342,6 +460,18 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
 }
 
 static bool vm_is_target_pte(struct kvm_mmu *mmu, u64 *pte,
+=======
+		__virt_pg_map(vm, &vm->mmu, vaddr, paddr, level);
+		sparsebit_set_num(vm->vpages_mapped, vaddr >> vm->page_shift,
+				  nr_bytes / PAGE_SIZE);
+
+		vaddr += pg_size;
+		paddr += pg_size;
+	}
+}
+
+static bool vm_is_target_pte(struct kvm_mmu *mmu, uint64_t *pte,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     int *level, int current_level)
 {
 	if (is_huge_pte(mmu, pte)) {
@@ -354,6 +484,7 @@ static bool vm_is_target_pte(struct kvm_mmu *mmu, u64 *pte,
 	return *level == current_level;
 }
 
+<<<<<<< HEAD
 static u64 *__vm_get_page_table_entry(struct kvm_vm *vm,
 				      struct kvm_mmu *mmu,
 				      gva_t gva,
@@ -361,6 +492,15 @@ static u64 *__vm_get_page_table_entry(struct kvm_vm *vm,
 {
 	int va_width = 12 + (mmu->pgtable_levels) * 9;
 	u64 *pte = &mmu->pgd;
+=======
+static uint64_t *__vm_get_page_table_entry(struct kvm_vm *vm,
+					   struct kvm_mmu *mmu,
+					   uint64_t vaddr,
+					   int *level)
+{
+	int va_width = 12 + (mmu->pgtable_levels) * 9;
+	uint64_t *pte = &mmu->pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int current_level;
 
 	TEST_ASSERT(!vm->arch.is_pt_protected,
@@ -371,32 +511,56 @@ static u64 *__vm_get_page_table_entry(struct kvm_vm *vm,
 
 	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
+<<<<<<< HEAD
 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
 		    "Invalid virtual address, gva: 0x%lx", gva);
 	/*
 	 * Check that the gva is a sign-extended va_width value.
 	 */
 	TEST_ASSERT(gva == (((s64)gva << (64 - va_width) >> (64 - va_width))),
+=======
+	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid,
+		(vaddr >> vm->page_shift)),
+		"Invalid virtual address, vaddr: 0x%lx",
+		vaddr);
+	/*
+	 * Check that the vaddr is a sign-extended va_width value.
+	 */
+	TEST_ASSERT(vaddr ==
+		    (((int64_t)vaddr << (64 - va_width) >> (64 - va_width))),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    "Canonical check failed.  The virtual address is invalid.");
 
 	for (current_level = mmu->pgtable_levels;
 	     current_level > PG_LEVEL_4K;
 	     current_level--) {
+<<<<<<< HEAD
 		pte = virt_get_pte(vm, mmu, pte, gva, current_level);
+=======
+		pte = virt_get_pte(vm, mmu, pte, vaddr, current_level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vm_is_target_pte(mmu, pte, level, current_level))
 			return pte;
 	}
 
+<<<<<<< HEAD
 	return virt_get_pte(vm, mmu, pte, gva, PG_LEVEL_4K);
 }
 
 u64 *tdp_get_pte(struct kvm_vm *vm, u64 l2_gpa)
+=======
+	return virt_get_pte(vm, mmu, pte, vaddr, PG_LEVEL_4K);
+}
+
+uint64_t *tdp_get_pte(struct kvm_vm *vm, uint64_t l2_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int level = PG_LEVEL_4K;
 
 	return __vm_get_page_table_entry(vm, &vm->stage2_mmu, l2_gpa, &level);
 }
 
+<<<<<<< HEAD
 u64 *vm_get_pte(struct kvm_vm *vm, gva_t gva)
 {
 	int level = PG_LEVEL_4K;
@@ -411,6 +575,22 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 	u64 *pdpe, *pdpe_start;
 	u64 *pde, *pde_start;
 	u64 *pte, *pte_start;
+=======
+uint64_t *vm_get_pte(struct kvm_vm *vm, uint64_t vaddr)
+{
+	int level = PG_LEVEL_4K;
+
+	return __vm_get_page_table_entry(vm, &vm->mmu, vaddr, &level);
+}
+
+void virt_arch_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
+{
+	struct kvm_mmu *mmu = &vm->mmu;
+	uint64_t *pml4e, *pml4e_start;
+	uint64_t *pdpe, *pdpe_start;
+	uint64_t *pde, *pde_start;
+	uint64_t *pte, *pte_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!mmu->pgd_created)
 		return;
@@ -420,8 +600,13 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 	fprintf(stream, "%*s      index hvaddr         gpaddr         "
 		"addr         w exec dirty\n",
 		indent, "");
+<<<<<<< HEAD
 	pml4e_start = (u64 *)addr_gpa2hva(vm, mmu->pgd);
 	for (u16 n1 = 0; n1 <= 0x1ffu; n1++) {
+=======
+	pml4e_start = (uint64_t *) addr_gpa2hva(vm, mmu->pgd);
+	for (uint16_t n1 = 0; n1 <= 0x1ffu; n1++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pml4e = &pml4e_start[n1];
 		if (!is_present_pte(mmu, pml4e))
 			continue;
@@ -433,7 +618,11 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 			is_writable_pte(mmu, pml4e), is_nx_pte(mmu, pml4e));
 
 		pdpe_start = addr_gpa2hva(vm, *pml4e & PHYSICAL_PAGE_MASK);
+<<<<<<< HEAD
 		for (u16 n2 = 0; n2 <= 0x1ffu; n2++) {
+=======
+		for (uint16_t n2 = 0; n2 <= 0x1ffu; n2++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pdpe = &pdpe_start[n2];
 			if (!is_present_pte(mmu, pdpe))
 				continue;
@@ -446,7 +635,11 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 				is_nx_pte(mmu, pdpe));
 
 			pde_start = addr_gpa2hva(vm, *pdpe & PHYSICAL_PAGE_MASK);
+<<<<<<< HEAD
 			for (u16 n3 = 0; n3 <= 0x1ffu; n3++) {
+=======
+			for (uint16_t n3 = 0; n3 <= 0x1ffu; n3++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pde = &pde_start[n3];
 				if (!is_present_pte(mmu, pde))
 					continue;
@@ -458,7 +651,11 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 					is_nx_pte(mmu, pde));
 
 				pte_start = addr_gpa2hva(vm, *pde & PHYSICAL_PAGE_MASK);
+<<<<<<< HEAD
 				for (u16 n4 = 0; n4 <= 0x1ffu; n4++) {
+=======
+				for (uint16_t n4 = 0; n4 <= 0x1ffu; n4++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					pte = &pte_start[n4];
 					if (!is_present_pte(mmu, pte))
 						continue;
@@ -472,10 +669,17 @@ void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 						is_writable_pte(mmu, pte),
 						is_nx_pte(mmu, pte),
 						is_dirty_pte(mmu, pte),
+<<<<<<< HEAD
 						((u64)n1 << 27)
 							| ((u64)n2 << 18)
 							| ((u64)n3 << 9)
 							| ((u64)n4));
+=======
+						((uint64_t) n1 << 27)
+							| ((uint64_t) n2 << 18)
+							| ((uint64_t) n3 << 9)
+							| ((uint64_t) n4));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				}
 			}
 		}
@@ -495,11 +699,17 @@ bool kvm_cpu_has_tdp(void)
 	return kvm_cpu_has_ept() || kvm_cpu_has_npt();
 }
 
+<<<<<<< HEAD
 void __tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size, int level)
+=======
+void __tdp_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr,
+	       uint64_t size, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t page_size = PG_LEVEL_SIZE(level);
 	size_t npages = size / page_size;
 
+<<<<<<< HEAD
 	TEST_ASSERT(l2_gpa + size > l2_gpa, "L2 GPA overflow");
 	TEST_ASSERT(gpa + size > gpa, "GPA overflow");
 
@@ -513,6 +723,22 @@ void __tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size, int level)
 void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size)
 {
 	__tdp_map(vm, l2_gpa, gpa, size, PG_LEVEL_4K);
+=======
+	TEST_ASSERT(nested_paddr + size > nested_paddr, "Vaddr overflow");
+	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
+
+	while (npages--) {
+		__virt_pg_map(vm, &vm->stage2_mmu, nested_paddr, paddr, level);
+		nested_paddr += page_size;
+		paddr += page_size;
+	}
+}
+
+void tdp_map(struct kvm_vm *vm, uint64_t nested_paddr, uint64_t paddr,
+	     uint64_t size)
+{
+	__tdp_map(vm, nested_paddr, paddr, size, PG_LEVEL_4K);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Prepare an identity extended page table that maps all the
@@ -520,7 +746,11 @@ void tdp_map(struct kvm_vm *vm, gpa_t l2_gpa, gpa_t gpa, u64 size)
  */
 void tdp_identity_map_default_memslots(struct kvm_vm *vm)
 {
+<<<<<<< HEAD
 	u32 s, memslot = 0;
+=======
+	uint32_t s, memslot = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sparsebit_idx_t i, last;
 	struct userspace_mem_region *region = memslot2region(vm, memslot);
 
@@ -535,13 +765,22 @@ void tdp_identity_map_default_memslots(struct kvm_vm *vm)
 		if (i > last)
 			break;
 
+<<<<<<< HEAD
 		tdp_map(vm, (u64)i << vm->page_shift,
 			(u64)i << vm->page_shift, 1 << vm->page_shift);
+=======
+		tdp_map(vm, (uint64_t)i << vm->page_shift,
+			(uint64_t)i << vm->page_shift, 1 << vm->page_shift);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 /* Identity map a region with 1GiB Pages. */
+<<<<<<< HEAD
 void tdp_identity_map_1g(struct kvm_vm *vm, u64 addr, u64 size)
+=======
+void tdp_identity_map_1g(struct kvm_vm *vm, uint64_t addr, uint64_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__tdp_map(vm, addr, addr, size, PG_LEVEL_1G);
 }
@@ -613,10 +852,17 @@ static void kvm_seg_set_kernel_data_64bit(struct kvm_segment *segp)
 	segp->present = true;
 }
 
+<<<<<<< HEAD
 gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
 {
 	int level = PG_LEVEL_NONE;
 	u64 *pte = __vm_get_page_table_entry(vm, &vm->mmu, gva, &level);
+=======
+vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
+{
+	int level = PG_LEVEL_NONE;
+	uint64_t *pte = __vm_get_page_table_entry(vm, &vm->mmu, gva, &level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(is_present_pte(&vm->mmu, pte),
 		    "Leaf PTE not PRESENT for gva: 0x%08lx", gva);
@@ -628,7 +874,11 @@ gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
 	return vm_untag_gpa(vm, PTE_GET_PA(*pte)) | (gva & ~HUGEPAGE_MASK(level));
 }
 
+<<<<<<< HEAD
 static void kvm_seg_set_tss_64bit(gva_t base, struct kvm_segment *segp)
+=======
+static void kvm_seg_set_tss_64bit(vm_vaddr_t base, struct kvm_segment *segp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	memset(segp, 0, sizeof(*segp));
 	segp->base = base;
@@ -741,16 +991,27 @@ static void vm_init_descriptor_tables(struct kvm_vm *vm)
 	struct kvm_segment seg;
 	int i;
 
+<<<<<<< HEAD
 	vm->arch.gdt = __vm_alloc_page(vm, MEM_REGION_DATA);
 	vm->arch.idt = __vm_alloc_page(vm, MEM_REGION_DATA);
 	vm->handlers = __vm_alloc_page(vm, MEM_REGION_DATA);
 	vm->arch.tss = __vm_alloc_page(vm, MEM_REGION_DATA);
+=======
+	vm->arch.gdt = __vm_vaddr_alloc_page(vm, MEM_REGION_DATA);
+	vm->arch.idt = __vm_vaddr_alloc_page(vm, MEM_REGION_DATA);
+	vm->handlers = __vm_vaddr_alloc_page(vm, MEM_REGION_DATA);
+	vm->arch.tss = __vm_vaddr_alloc_page(vm, MEM_REGION_DATA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Handlers have the same address in both address spaces.*/
 	for (i = 0; i < NUM_INTERRUPTS; i++)
 		set_idt_entry(vm, i, (unsigned long)(&idt_handlers)[i], 0, KERNEL_CS);
 
+<<<<<<< HEAD
 	*(gva_t *)addr_gva2hva(vm, (gva_t)(&exception_handlers)) = vm->handlers;
+=======
+	*(vm_vaddr_t *)addr_gva2hva(vm, (vm_vaddr_t)(&exception_handlers)) = vm->handlers;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_seg_set_kernel_code_64bit(&seg);
 	kvm_seg_fill_gdt_64bit(vm, &seg);
@@ -765,9 +1026,15 @@ static void vm_init_descriptor_tables(struct kvm_vm *vm)
 void vm_install_exception_handler(struct kvm_vm *vm, int vector,
 			       void (*handler)(struct ex_regs *))
 {
+<<<<<<< HEAD
 	gva_t *handlers = (gva_t *)addr_gva2hva(vm, vm->handlers);
 
 	handlers[vector] = (gva_t)handler;
+=======
+	vm_vaddr_t *handlers = (vm_vaddr_t *)addr_gva2hva(vm, vm->handlers);
+
+	handlers[vector] = (vm_vaddr_t)handler;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
@@ -790,8 +1057,11 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
 
 	sync_global_to_guest(vm, host_cpu_is_intel);
 	sync_global_to_guest(vm, host_cpu_is_amd);
+<<<<<<< HEAD
 	sync_global_to_guest(vm, host_cpu_is_hygon);
 	sync_global_to_guest(vm, host_cpu_is_amd_compatible);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sync_global_to_guest(vm, is_forced_emulation_enabled);
 	sync_global_to_guest(vm, pmu_errata_mask);
 
@@ -816,6 +1086,7 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
 	vcpu_regs_set(vcpu, &regs);
 }
 
+<<<<<<< HEAD
 struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 {
 	struct kvm_mp_state mp_state;
@@ -827,6 +1098,20 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
 
 	stack_gva += DEFAULT_STACK_PGS * getpagesize();
+=======
+struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
+{
+	struct kvm_mp_state mp_state;
+	struct kvm_regs regs;
+	vm_vaddr_t stack_vaddr;
+	struct kvm_vcpu *vcpu;
+
+	stack_vaddr = __vm_vaddr_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
+				       DEFAULT_GUEST_STACK_VADDR_MIN,
+				       MEM_REGION_DATA);
+
+	stack_vaddr += DEFAULT_STACK_PGS * getpagesize();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Align stack to match calling sequence requirements in section "The
@@ -837,9 +1122,15 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 	 * If this code is ever used to launch a vCPU with 32-bit entry point it
 	 * may need to subtract 4 bytes instead of 8 bytes.
 	 */
+<<<<<<< HEAD
 	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
 		    "__vm_alloc() did not provide a page-aligned address");
 	stack_gva -= 8;
+=======
+	TEST_ASSERT(IS_ALIGNED(stack_vaddr, PAGE_SIZE),
+		    "__vm_vaddr_alloc() did not provide a page-aligned address");
+	stack_vaddr -= 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu = __vm_vcpu_add(vm, vcpu_id);
 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
@@ -849,7 +1140,11 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 	/* Setup guest general purpose registers */
 	vcpu_regs_get(vcpu, &regs);
 	regs.rflags = regs.rflags | 0x2;
+<<<<<<< HEAD
 	regs.rsp = stack_gva;
+=======
+	regs.rsp = stack_vaddr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vcpu_regs_set(vcpu, &regs);
 
 	/* Setup the MP state */
@@ -866,7 +1161,11 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 	return vcpu;
 }
 
+<<<<<<< HEAD
 struct kvm_vcpu *vm_arch_vcpu_recreate(struct kvm_vm *vm, u32 vcpu_id)
+=======
+struct kvm_vcpu *vm_arch_vcpu_recreate(struct kvm_vm *vm, uint32_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu = __vm_vcpu_add(vm, vcpu_id);
 
@@ -901,9 +1200,15 @@ const struct kvm_cpuid2 *kvm_get_supported_cpuid(void)
 	return kvm_supported_cpuid;
 }
 
+<<<<<<< HEAD
 static u32 __kvm_cpu_has(const struct kvm_cpuid2 *cpuid,
 			 u32 function, u32 index,
 			 u8 reg, u8 lo, u8 hi)
+=======
+static uint32_t __kvm_cpu_has(const struct kvm_cpuid2 *cpuid,
+			      uint32_t function, uint32_t index,
+			      uint8_t reg, uint8_t lo, uint8_t hi)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct kvm_cpuid_entry2 *entry;
 	int i;
@@ -930,14 +1235,23 @@ bool kvm_cpuid_has(const struct kvm_cpuid2 *cpuid,
 			     feature.reg, feature.bit, feature.bit);
 }
 
+<<<<<<< HEAD
 u32 kvm_cpuid_property(const struct kvm_cpuid2 *cpuid,
 		       struct kvm_x86_cpu_property property)
+=======
+uint32_t kvm_cpuid_property(const struct kvm_cpuid2 *cpuid,
+			    struct kvm_x86_cpu_property property)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __kvm_cpu_has(cpuid, property.function, property.index,
 			     property.reg, property.lo_bit, property.hi_bit);
 }
 
+<<<<<<< HEAD
 u64 kvm_get_feature_msr(u64 msr_index)
+=======
+uint64_t kvm_get_feature_msr(uint64_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct {
 		struct kvm_msrs header;
@@ -956,7 +1270,11 @@ u64 kvm_get_feature_msr(u64 msr_index)
 	return buffer.entry.data;
 }
 
+<<<<<<< HEAD
 void __vm_xsave_require_permission(u64 xfeature, const char *name)
+=======
+void __vm_xsave_require_permission(uint64_t xfeature, const char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int kvm_fd;
 	u64 bitmask;
@@ -1013,7 +1331,11 @@ void vcpu_init_cpuid(struct kvm_vcpu *vcpu, const struct kvm_cpuid2 *cpuid)
 
 void vcpu_set_cpuid_property(struct kvm_vcpu *vcpu,
 			     struct kvm_x86_cpu_property property,
+<<<<<<< HEAD
 			     u32 value)
+=======
+			     uint32_t value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_cpuid_entry2 *entry;
 
@@ -1028,7 +1350,11 @@ void vcpu_set_cpuid_property(struct kvm_vcpu *vcpu,
 	TEST_ASSERT_EQ(kvm_cpuid_property(vcpu->cpuid, property), value);
 }
 
+<<<<<<< HEAD
 void vcpu_clear_cpuid_entry(struct kvm_vcpu *vcpu, u32 function)
+=======
+void vcpu_clear_cpuid_entry(struct kvm_vcpu *vcpu, uint32_t function)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_cpuid_entry2 *entry = vcpu_get_cpuid_entry(vcpu, function);
 
@@ -1057,7 +1383,11 @@ void vcpu_set_or_clear_cpuid_feature(struct kvm_vcpu *vcpu,
 	vcpu_set_cpuid(vcpu);
 }
 
+<<<<<<< HEAD
 u64 vcpu_get_msr(struct kvm_vcpu *vcpu, u64 msr_index)
+=======
+uint64_t vcpu_get_msr(struct kvm_vcpu *vcpu, uint64_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct {
 		struct kvm_msrs header;
@@ -1072,7 +1402,11 @@ u64 vcpu_get_msr(struct kvm_vcpu *vcpu, u64 msr_index)
 	return buffer.entry.data;
 }
 
+<<<<<<< HEAD
 int _vcpu_set_msr(struct kvm_vcpu *vcpu, u64 msr_index, u64 msr_value)
+=======
+int _vcpu_set_msr(struct kvm_vcpu *vcpu, uint64_t msr_index, uint64_t msr_value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct {
 		struct kvm_msrs header;
@@ -1100,6 +1434,7 @@ void vcpu_args_set(struct kvm_vcpu *vcpu, unsigned int num, ...)
 	vcpu_regs_get(vcpu, &regs);
 
 	if (num >= 1)
+<<<<<<< HEAD
 		regs.rdi = va_arg(ap, u64);
 
 	if (num >= 2)
@@ -1116,12 +1451,34 @@ void vcpu_args_set(struct kvm_vcpu *vcpu, unsigned int num, ...)
 
 	if (num >= 6)
 		regs.r9 = va_arg(ap, u64);
+=======
+		regs.rdi = va_arg(ap, uint64_t);
+
+	if (num >= 2)
+		regs.rsi = va_arg(ap, uint64_t);
+
+	if (num >= 3)
+		regs.rdx = va_arg(ap, uint64_t);
+
+	if (num >= 4)
+		regs.rcx = va_arg(ap, uint64_t);
+
+	if (num >= 5)
+		regs.r8 = va_arg(ap, uint64_t);
+
+	if (num >= 6)
+		regs.r9 = va_arg(ap, uint64_t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu_regs_set(vcpu, &regs);
 	va_end(ap);
 }
 
+<<<<<<< HEAD
 void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+=======
+void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_regs regs;
 	struct kvm_sregs sregs;
@@ -1190,7 +1547,11 @@ const struct kvm_msr_list *kvm_get_feature_msr_index_list(void)
 	return list;
 }
 
+<<<<<<< HEAD
 bool kvm_msr_is_in_save_restore_list(u32 msr_index)
+=======
+bool kvm_msr_is_in_save_restore_list(uint32_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct kvm_msr_list *list = kvm_get_msr_index_list();
 	int i;
@@ -1321,7 +1682,11 @@ void kvm_init_vm_address_properties(struct kvm_vm *vm)
 }
 
 const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
+<<<<<<< HEAD
 					       u32 function, u32 index)
+=======
+					       uint32_t function, uint32_t index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -1338,7 +1703,11 @@ const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
 
 #define X86_HYPERCALL(inputs...)					\
 ({									\
+<<<<<<< HEAD
 	u64 r;							\
+=======
+	uint64_t r;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 									\
 	asm volatile("test %[use_vmmcall], %[use_vmmcall]\n\t"		\
 		     "jnz 1f\n\t"					\
@@ -1347,23 +1716,40 @@ const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
 		     "1: vmmcall\n\t"					\
 		     "2:"						\
 		     : "=a"(r)						\
+<<<<<<< HEAD
 		     : [use_vmmcall] "r" (host_cpu_is_amd_compatible),	\
 		       inputs);						\
+=======
+		     : [use_vmmcall] "r" (host_cpu_is_amd), inputs);	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 									\
 	r;								\
 })
 
+<<<<<<< HEAD
 u64 kvm_hypercall(u64 nr, u64 a0, u64 a1, u64 a2, u64 a3)
+=======
+uint64_t kvm_hypercall(uint64_t nr, uint64_t a0, uint64_t a1, uint64_t a2,
+		       uint64_t a3)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return X86_HYPERCALL("a"(nr), "b"(a0), "c"(a1), "d"(a2), "S"(a3));
 }
 
+<<<<<<< HEAD
 u64 __xen_hypercall(u64 nr, u64 a0, void *a1)
+=======
+uint64_t __xen_hypercall(uint64_t nr, uint64_t a0, void *a1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return X86_HYPERCALL("a"(nr), "D"(a0), "S"(a1));
 }
 
+<<<<<<< HEAD
 void xen_hypercall(u64 nr, u64 a0, void *a1)
+=======
+void xen_hypercall(uint64_t nr, uint64_t a0, void *a1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	GUEST_ASSERT(!__xen_hypercall(nr, a0, a1));
 }
@@ -1372,7 +1758,11 @@ unsigned long vm_compute_max_gfn(struct kvm_vm *vm)
 {
 	const unsigned long num_ht_pages = 12 << (30 - vm->page_shift); /* 12 GiB */
 	unsigned long ht_gfn, max_gfn, max_pfn;
+<<<<<<< HEAD
 	u8 maxphyaddr, guest_maxphyaddr;
+=======
+	uint8_t maxphyaddr, guest_maxphyaddr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Use "guest MAXPHYADDR" from KVM if it's available.  Guest MAXPHYADDR
@@ -1387,8 +1777,13 @@ unsigned long vm_compute_max_gfn(struct kvm_vm *vm)
 
 	max_gfn = (1ULL << (guest_maxphyaddr - vm->page_shift)) - 1;
 
+<<<<<<< HEAD
 	/* Avoid reserved HyperTransport region on AMD or Hygon processors. */
 	if (!host_cpu_is_amd_compatible)
+=======
+	/* Avoid reserved HyperTransport region on AMD processors.  */
+	if (!host_cpu_is_amd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return max_gfn;
 
 	/* On parts with <40 physical address bits, the area is fully hidden */
@@ -1402,7 +1797,11 @@ unsigned long vm_compute_max_gfn(struct kvm_vm *vm)
 
 	/*
 	 * Otherwise it's at the top of the physical address space, possibly
+<<<<<<< HEAD
 	 * reduced due to SME or CSV by bits 11:6 of CPUID[0x8000001f].EBX.  Use
+=======
+	 * reduced due to SME by bits 11:6 of CPUID[0x8000001f].EBX.  Use
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * the old conservative value if MAXPHYADDR is not enumerated.
 	 */
 	if (!this_cpu_has_p(X86_PROPERTY_MAX_PHY_ADDR))
@@ -1423,8 +1822,11 @@ void kvm_selftest_arch_init(void)
 {
 	host_cpu_is_intel = this_cpu_is_intel();
 	host_cpu_is_amd = this_cpu_is_amd();
+<<<<<<< HEAD
 	host_cpu_is_hygon = this_cpu_is_hygon();
 	host_cpu_is_amd_compatible = host_cpu_is_amd || host_cpu_is_hygon;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	is_forced_emulation_enabled = kvm_is_forced_emulation_enabled();
 
 	kvm_init_pmu_errata();
@@ -1446,7 +1848,12 @@ bool kvm_arch_has_default_irqchip(void)
 	return true;
 }
 
+<<<<<<< HEAD
 void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu, u64 smram_gpa,
+=======
+void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu,
+		 uint64_t smram_gpa,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 const void *smi_handler, size_t handler_size)
 {
 	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, smram_gpa,

@@ -149,6 +149,17 @@ static void kvm_lose_pmu(struct kvm_vcpu *vcpu)
 	kvm_restore_host_pmu(vcpu);
 }
 
+<<<<<<< HEAD
+=======
+static void kvm_check_pmu(struct kvm_vcpu *vcpu)
+{
+	if (kvm_check_request(KVM_REQ_PMU, vcpu)) {
+		kvm_own_pmu(vcpu);
+		vcpu->arch.aux_inuse |= KVM_LARCH_PMU;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
 {
 	u32 version;
@@ -224,6 +235,7 @@ static int kvm_check_requests(struct kvm_vcpu *vcpu)
 static void kvm_late_check_requests(struct kvm_vcpu *vcpu)
 {
 	lockdep_assert_irqs_disabled();
+<<<<<<< HEAD
 
 	if (!kvm_request_pending(vcpu))
 		return;
@@ -233,6 +245,8 @@ static void kvm_late_check_requests(struct kvm_vcpu *vcpu)
 		vcpu->arch.aux_inuse |= KVM_LARCH_PMU;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (kvm_check_request(KVM_REQ_TLB_FLUSH_GPA, vcpu))
 		if (vcpu->arch.flush_gpa != INVALID_GPA) {
 			kvm_flush_tlb_gpa(vcpu, vcpu->arch.flush_gpa);
@@ -313,6 +327,10 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcpu)
 		/* Make sure the vcpu mode has been written */
 		smp_store_mb(vcpu->mode, IN_GUEST_MODE);
 		kvm_check_vpid(vcpu);
+<<<<<<< HEAD
+=======
+		kvm_check_pmu(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Called after function kvm_check_vpid()
@@ -320,6 +338,10 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcpu)
 		 * and it may also clear KVM_REQ_TLB_FLUSH_GPA pending bit
 		 */
 		kvm_late_check_requests(vcpu);
+<<<<<<< HEAD
+=======
+		vcpu->arch.host_eentry = csr_read64(LOONGARCH_CSR_EENTRY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Clear KVM_LARCH_SWCSR_LATEST as CSR will change when enter guest */
 		vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
 
@@ -1627,11 +1649,17 @@ static int _kvm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
 	 * If not, any old guest state from this vCPU will have been clobbered.
 	 */
 	context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
+<<<<<<< HEAD
 	if (migrated || (context->last_vcpu != vcpu)) {
 		context->last_vcpu = vcpu;
 		vcpu->arch.aux_inuse &= ~KVM_LARCH_HWCSR_USABLE;
 		vcpu->arch.host_eentry = csr_read64(LOONGARCH_CSR_EENTRY);
 	}
+=======
+	if (migrated || (context->last_vcpu != vcpu))
+		vcpu->arch.aux_inuse &= ~KVM_LARCH_HWCSR_USABLE;
+	context->last_vcpu = vcpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Restore timer state regardless */
 	kvm_restore_timer(vcpu);
@@ -1699,7 +1727,10 @@ static int _kvm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
 
 	/* Restore Root.GINTC from unused Guest.GINTC register */
 	write_csr_gintc(csr->csrs[LOONGARCH_CSR_GINTC]);
+<<<<<<< HEAD
 	write_csr_gstat(csr->csrs[LOONGARCH_CSR_GSTAT]);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * We should clear linked load bit to break interrupted atomics. This
@@ -1795,7 +1826,10 @@ static int _kvm_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
 		kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ISR3);
 	}
 
+<<<<<<< HEAD
 	csr->csrs[LOONGARCH_CSR_GSTAT] = read_csr_gstat();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vcpu->arch.aux_inuse |= KVM_LARCH_SWCSR_LATEST;
 
 out:

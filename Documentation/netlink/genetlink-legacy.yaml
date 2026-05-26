@@ -83,6 +83,7 @@ properties:
         header:
           description: For C-compatible languages, header which already defines this value.
           type: string
+<<<<<<< HEAD
         scope:
           description: |
             Visibility of this definition. "uapi" (default) renders into
@@ -92,6 +93,8 @@ properties:
             definition is not rendered, and the named header is
             included only by code matching the scope.
           enum: [ uapi, kernel, user ]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type:
           enum: [ const, enum, flags, struct ] # Trim
         doc:

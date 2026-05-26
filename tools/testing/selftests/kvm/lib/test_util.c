@@ -30,15 +30,25 @@ void __attribute__((used)) expect_sigbus_handler(int signum)
  * Park-Miller LCG using standard constants.
  */
 
+<<<<<<< HEAD
 struct guest_random_state new_guest_random_state(u32 seed)
+=======
+struct guest_random_state new_guest_random_state(uint32_t seed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct guest_random_state s = {.seed = seed};
 	return s;
 }
 
+<<<<<<< HEAD
 u32 guest_random_u32(struct guest_random_state *state)
 {
 	state->seed = (u64)state->seed * 48271 % ((u32)(1 << 31) - 1);
+=======
+uint32_t guest_random_u32(struct guest_random_state *state)
+{
+	state->seed = (uint64_t)state->seed * 48271 % ((uint32_t)(1 << 31) - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return state->seed;
 }
 
@@ -83,12 +93,21 @@ size_t parse_size(const char *size)
 	return base << shift;
 }
 
+<<<<<<< HEAD
 s64 timespec_to_ns(struct timespec ts)
 {
 	return (s64)ts.tv_nsec + 1000000000LL * (s64)ts.tv_sec;
 }
 
 struct timespec timespec_add_ns(struct timespec ts, s64 ns)
+=======
+int64_t timespec_to_ns(struct timespec ts)
+{
+	return (int64_t)ts.tv_nsec + 1000000000LL * (int64_t)ts.tv_sec;
+}
+
+struct timespec timespec_add_ns(struct timespec ts, int64_t ns)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct timespec res;
 
@@ -101,15 +120,25 @@ struct timespec timespec_add_ns(struct timespec ts, s64 ns)
 
 struct timespec timespec_add(struct timespec ts1, struct timespec ts2)
 {
+<<<<<<< HEAD
 	s64 ns1 = timespec_to_ns(ts1);
 	s64 ns2 = timespec_to_ns(ts2);
+=======
+	int64_t ns1 = timespec_to_ns(ts1);
+	int64_t ns2 = timespec_to_ns(ts2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return timespec_add_ns((struct timespec){0}, ns1 + ns2);
 }
 
 struct timespec timespec_sub(struct timespec ts1, struct timespec ts2)
 {
+<<<<<<< HEAD
 	s64 ns1 = timespec_to_ns(ts1);
 	s64 ns2 = timespec_to_ns(ts2);
+=======
+	int64_t ns1 = timespec_to_ns(ts1);
+	int64_t ns2 = timespec_to_ns(ts2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return timespec_add_ns((struct timespec){0}, ns1 - ns2);
 }
 
@@ -123,7 +152,11 @@ struct timespec timespec_elapsed(struct timespec start)
 
 struct timespec timespec_div(struct timespec ts, int divisor)
 {
+<<<<<<< HEAD
 	s64 ns = timespec_to_ns(ts) / divisor;
+=======
+	int64_t ns = timespec_to_ns(ts) / divisor;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return timespec_add_ns((struct timespec){0}, ns);
 }
@@ -225,7 +258,11 @@ size_t get_def_hugetlb_pagesz(void)
 #define ANON_FLAGS	(MAP_PRIVATE | MAP_ANONYMOUS)
 #define ANON_HUGE_FLAGS	(ANON_FLAGS | MAP_HUGETLB)
 
+<<<<<<< HEAD
 const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(u32 i)
+=======
+const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(uint32_t i)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	static const struct vm_mem_backing_src_alias aliases[] = {
 		[VM_MEM_SRC_ANONYMOUS] = {
@@ -317,9 +354,15 @@ const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(u32 i)
 
 #define MAP_HUGE_PAGE_SIZE(x) (1ULL << ((x >> MAP_HUGE_SHIFT) & MAP_HUGE_MASK))
 
+<<<<<<< HEAD
 size_t get_backing_src_pagesz(u32 i)
 {
 	u32 flag = vm_mem_backing_src_alias(i)->flag;
+=======
+size_t get_backing_src_pagesz(uint32_t i)
+{
+	uint32_t flag = vm_mem_backing_src_alias(i)->flag;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (i) {
 	case VM_MEM_SRC_ANONYMOUS:
@@ -335,7 +378,11 @@ size_t get_backing_src_pagesz(u32 i)
 	}
 }
 
+<<<<<<< HEAD
 bool is_backing_src_hugetlb(u32 i)
+=======
+bool is_backing_src_hugetlb(uint32_t i)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return !!(vm_mem_backing_src_alias(i)->flag & MAP_HUGETLB);
 }

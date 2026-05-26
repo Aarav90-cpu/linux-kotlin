@@ -38,6 +38,10 @@ extern void timer_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs
 extern void uml_pm_wake(void);
 
 extern int start_uml(void);
+<<<<<<< HEAD
+=======
+extern void paging_init(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern void uml_cleanup(void);
 extern void do_uml_exitcalls(void);

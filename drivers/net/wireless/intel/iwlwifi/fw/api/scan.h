@@ -985,7 +985,10 @@ struct iwl_scan_probe_params_v4 {
 } __packed; /* SCAN_PROBE_PARAMS_API_S_VER_4 */
 
 #define SCAN_MAX_NUM_CHANS_V3 67
+<<<<<<< HEAD
 #define SCAN_MAX_NUM_CHANS_V4 68
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct iwl_scan_channel_params_v4 - channel params
@@ -1029,6 +1032,7 @@ struct iwl_scan_channel_params_v7 {
 } __packed; /* SCAN_CHANNEL_PARAMS_API_S_VER_6 */
 
 /**
+<<<<<<< HEAD
  * struct iwl_scan_channel_params_v8 - channel params
  * @flags: channel flags &enum iwl_scan_channel_flags
  * @count: num of channels in scan request
@@ -1047,6 +1051,8 @@ struct iwl_scan_channel_params_v8 {
 } __packed; /* SCAN_CHANNEL_PARAMS_API_S_VER_8 */
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct iwl_scan_general_params_v11 - channel params
  * @flags: &enum iwl_umac_scan_general_flags_v2
  * @reserved: reserved for future
@@ -1129,6 +1135,7 @@ struct iwl_scan_req_params_v17 {
 } __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_17 - 14 */
 
 /**
+<<<<<<< HEAD
  * struct iwl_scan_req_params_v18 - scan request parameters (v18)
  * @general_params: &struct iwl_scan_general_params_v11
  * @channel_params: &struct iwl_scan_channel_params_v8
@@ -1143,6 +1150,8 @@ struct iwl_scan_req_params_v18 {
 } __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_18 */
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct iwl_scan_req_umac_v12 - scan request command (v12)
  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
  * @ooc_priority: out of channel priority - &enum iwl_scan_priority
@@ -1167,6 +1176,7 @@ struct iwl_scan_req_umac_v17 {
 } __packed; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_17 - 14 */
 
 /**
+<<<<<<< HEAD
  * struct iwl_scan_req_umac_v18 - scan request command (v18)
  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
  * @ooc_priority: out of channel priority - &enum iwl_scan_priority
@@ -1179,6 +1189,8 @@ struct iwl_scan_req_umac_v18 {
 } __packed; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_18 */
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct iwl_umac_scan_abort - scan abort command
  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
  * @flags: reserved

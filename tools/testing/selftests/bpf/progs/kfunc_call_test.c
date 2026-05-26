@@ -2,6 +2,7 @@
 /* Copyright (c) 2021 Facebook */
 #include <vmlinux.h>
 #include <bpf/bpf_helpers.h>
+<<<<<<< HEAD
 #include "bpf_misc.h"
 #include "../test_kmods/bpf_testmod_kfunc.h"
 
@@ -103,6 +104,11 @@ __naked int kfunc_call_test5_asm(void)
 }
 
 SEC("tc")
+=======
+#include "../test_kmods/bpf_testmod_kfunc.h"
+
+SEC("tc")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kfunc_call_test4(struct __sk_buff *skb)
 {
 	struct bpf_sock *sk = skb->sk;

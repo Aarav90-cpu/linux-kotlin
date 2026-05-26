@@ -307,7 +307,11 @@ static const struct snd_soc_component_driver mpc5200_audio_dma_component = {
 	.close		= psc_dma_close,
 	.pointer	= psc_dma_pointer,
 	.trigger	= psc_dma_trigger,
+<<<<<<< HEAD
 	.pcm_new	= psc_dma_new,
+=======
+	.pcm_construct	= psc_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int mpc5200_audio_dma_create(struct platform_device *op)
@@ -326,7 +330,11 @@ int mpc5200_audio_dma_create(struct platform_device *op)
 		dev_err(&op->dev, "Missing reg property\n");
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	regs = devm_ioremap(&op->dev, res.start, resource_size(&res));
+=======
+	regs = ioremap(res.start, resource_size(&res));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!regs) {
 		dev_err(&op->dev, "Could not map registers\n");
 		return -ENODEV;
@@ -334,8 +342,15 @@ int mpc5200_audio_dma_create(struct platform_device *op)
 
 	/* Allocate and initialize the driver private data */
 	psc_dma = kzalloc_obj(*psc_dma);
+<<<<<<< HEAD
 	if (!psc_dma)
 		return -ENOMEM;
+=======
+	if (!psc_dma) {
+		ret = -ENOMEM;
+		goto out_unmap;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get the PSC ID */
 	prop = of_get_property(op->dev.of_node, "cell-index", &size);
@@ -422,6 +437,11 @@ out_irq:
 	free_irq(psc_dma->playback.irq, &psc_dma->playback);
 out_free:
 	kfree(psc_dma);
+<<<<<<< HEAD
+=======
+out_unmap:
+	iounmap(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(mpc5200_audio_dma_create);
@@ -440,6 +460,10 @@ int mpc5200_audio_dma_destroy(struct platform_device *op)
 	free_irq(psc_dma->capture.irq, &psc_dma->capture);
 	free_irq(psc_dma->playback.irq, &psc_dma->playback);
 
+<<<<<<< HEAD
+=======
+	iounmap(psc_dma->psc_regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(psc_dma);
 	dev_set_drvdata(&op->dev, NULL);
 

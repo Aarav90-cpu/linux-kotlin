@@ -917,11 +917,16 @@ static int ocfs2_validate_extent_block(struct super_block *sb,
 		goto bail;
 	}
 
+<<<<<<< HEAD
 	if (le32_to_cpu(eb->h_fs_generation) != OCFS2_SB(sb)->fs_generation) {
+=======
+	if (le32_to_cpu(eb->h_fs_generation) != OCFS2_SB(sb)->fs_generation)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = ocfs2_error(sb,
 				 "Extent block #%llu has an invalid h_fs_generation of #%u\n",
 				 (unsigned long long)bh->b_blocknr,
 				 le32_to_cpu(eb->h_fs_generation));
+<<<<<<< HEAD
 		goto bail;
 	}
 
@@ -943,6 +948,8 @@ static int ocfs2_validate_extent_block(struct super_block *sb,
 		goto bail;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bail:
 	return rc;
 }
@@ -1878,6 +1885,21 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
 		eb = (struct ocfs2_extent_block *) bh->b_data;
 		el = &eb->h_list;
 
+<<<<<<< HEAD
+=======
+		if (le16_to_cpu(el->l_next_free_rec) >
+		    le16_to_cpu(el->l_count)) {
+			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+				    "Owner %llu has bad count in extent list at block %llu (next free=%u, count=%u)\n",
+				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
+				    (unsigned long long)bh->b_blocknr,
+				    le16_to_cpu(el->l_next_free_rec),
+				    le16_to_cpu(el->l_count));
+			ret = -EROFS;
+			goto out;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (func)
 			func(data, bh);
 	}
@@ -7327,7 +7349,11 @@ start:
 		 * to check it up here before changing the tree.
 		*/
 		if (root_el->l_tree_depth && rec->e_int_clusters == 0) {
+<<<<<<< HEAD
 			mlog(ML_ERROR, "Inode %llu has an empty "
+=======
+			mlog(ML_ERROR, "Inode %lu has an empty "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    "extent record, depth %u\n", inode->i_ino,
 				    le16_to_cpu(root_el->l_tree_depth));
 			status = ocfs2_remove_rightmost_empty_extent(osb,

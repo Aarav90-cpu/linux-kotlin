@@ -55,6 +55,10 @@
  * Status:
  *
  *	Untested with multiple scanners.
+<<<<<<< HEAD
+=======
+ *	Untested on SMP.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	Untested on a bigendian machine.
  *
  * History:
@@ -169,13 +173,33 @@ static struct usb_driver mts_usb_driver = {
 #define MTS_VERSION	"0.4.3"
 #define MTS_NAME	"microtek usb (rev " MTS_VERSION "): "
 
+<<<<<<< HEAD
+=======
+#define MTS_WARNING(x...) \
+	printk( KERN_WARNING MTS_NAME x )
+#define MTS_ERROR(x...) \
+	printk( KERN_ERR MTS_NAME x )
+#define MTS_INT_ERROR(x...) \
+	MTS_ERROR(x)
+#define MTS_MESSAGE(x...) \
+	printk( KERN_INFO MTS_NAME x )
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined MTS_DO_DEBUG
 
 #define MTS_DEBUG(x...) \
 	printk( KERN_DEBUG MTS_NAME x )
 
+<<<<<<< HEAD
 #define MTS_DEBUG_INT() \
 	do { MTS_DEBUG("transfer = 0x%x context = 0x%x\n",(int)transfer,(int)context ); \
+=======
+#define MTS_DEBUG_GOT_HERE() \
+	MTS_DEBUG("got to %s:%d (%s)\n", __FILE__, (int)__LINE__, __func__ )
+#define MTS_DEBUG_INT() \
+	do { MTS_DEBUG_GOT_HERE(); \
+	     MTS_DEBUG("transfer = 0x%x context = 0x%x\n",(int)transfer,(int)context ); \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     MTS_DEBUG("status = 0x%x data-length = 0x%x sent = 0x%x\n",transfer->status,(int)context->data_length, (int)transfer->actual_length ); \
              mts_debug_dump(context->instance);\
 	   } while(0)
@@ -184,6 +208,10 @@ static struct usb_driver mts_usb_driver = {
 #define MTS_NUL_STATEMENT do { } while(0)
 
 #define MTS_DEBUG(x...)	MTS_NUL_STATEMENT
+<<<<<<< HEAD
+=======
+#define MTS_DEBUG_GOT_HERE() MTS_NUL_STATEMENT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MTS_DEBUG_INT() MTS_NUL_STATEMENT
 
 #endif
@@ -302,6 +330,10 @@ static inline void mts_debug_dump(struct mts_desc* dummy)
 #endif
 
 static inline void mts_urb_abort(struct mts_desc* desc) {
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mts_debug_dump(desc);
 
 	usb_kill_urb( desc->urb );
@@ -317,6 +349,11 @@ static int mts_scsi_abort(struct scsi_cmnd *srb)
 {
 	struct mts_desc* desc = (struct mts_desc*)(srb->device->host->hostdata[0]);
 
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mts_urb_abort(desc);
 
 	return FAILED;
@@ -327,6 +364,10 @@ static int mts_scsi_host_reset(struct scsi_cmnd *srb)
 	struct mts_desc* desc = (struct mts_desc*)(srb->device->host->hostdata[0]);
 	int result;
 
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mts_debug_dump(desc);
 
 	result = usb_lock_device_for_reset(desc->usb_dev, desc->usb_intf);
@@ -368,8 +409,12 @@ void mts_int_submit_urb (struct urb* transfer,
 
 	res = usb_submit_urb( transfer, GFP_ATOMIC );
 	if ( unlikely(res) ) {
+<<<<<<< HEAD
 		dev_err(&context->instance->usb_dev->dev,
 			"could not submit URB! Error was %d\n",(int)res );
+=======
+		MTS_INT_ERROR( "could not submit URB! Error was %d\n",(int)res );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_host_byte(context->srb, DID_ERROR);
 		mts_transfer_cleanup(transfer);
 	}
@@ -435,9 +480,18 @@ static void mts_command_done( struct urb *transfer )
 	if ( unlikely(status) ) {
 	        if (status == -ENOENT) {
 		        /* We are being killed */
+<<<<<<< HEAD
 			set_host_byte(context->srb, DID_ABORT);
                 } else {
 		        /* A genuine error has occurred */
+=======
+			MTS_DEBUG_GOT_HERE();
+			set_host_byte(context->srb, DID_ABORT);
+                } else {
+		        /* A genuine error has occurred */
+			MTS_DEBUG_GOT_HERE();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		        set_host_byte(context->srb, DID_ERROR);
                 }
 		mts_transfer_cleanup(transfer);
@@ -503,6 +557,11 @@ mts_build_transfer_context(struct scsi_cmnd *srb, struct mts_desc* desc)
 {
 	int pipe;
 
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc->context.instance = desc;
 	desc->context.srb = srb;
 
@@ -543,6 +602,10 @@ static enum scsi_qc_status mts_scsi_queuecommand_lck(struct scsi_cmnd *srb)
 	struct mts_desc* desc = (struct mts_desc*)(srb->device->host->hostdata[0]);
 	int res;
 
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mts_show_command(srb);
 	mts_debug_dump(desc);
 
@@ -578,7 +641,11 @@ static enum scsi_qc_status mts_scsi_queuecommand_lck(struct scsi_cmnd *srb)
 	res=usb_submit_urb(desc->urb, GFP_ATOMIC);
 
 	if(unlikely(res)){
+<<<<<<< HEAD
 		dev_err(&desc->usb_dev->dev, "error %d submitting URB\n",(int)res);
+=======
+		MTS_ERROR("error %d submitting URB\n",(int)res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_host_byte(srb, DID_ERROR);
 
 		if(likely(callback != NULL))
@@ -643,12 +710,17 @@ static int mts_usb_probe(struct usb_interface *intf,
 	/* the current altsetting on the interface we're probing */
 	struct usb_host_interface *altsetting;
 
+<<<<<<< HEAD
+=======
+	MTS_DEBUG_GOT_HERE();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MTS_DEBUG( "usb-device descriptor at %x\n", (int)dev );
 
 	MTS_DEBUG( "product id = 0x%x, vendor id = 0x%x\n",
 		   le16_to_cpu(dev->descriptor.idProduct),
 		   le16_to_cpu(dev->descriptor.idVendor) );
 
+<<<<<<< HEAD
 	/* the current altsetting on the interface we're probing */
 	altsetting = intf->cur_altsetting;
 
@@ -656,11 +728,24 @@ static int mts_usb_probe(struct usb_interface *intf,
 
 	if ( altsetting->desc.bNumEndpoints != MTS_EP_TOTAL ) {
 		dev_warn(&dev->dev, "expecting %d got %d endpoints! Bailing out.\n",
+=======
+	MTS_DEBUG_GOT_HERE();
+
+	/* the current altsetting on the interface we're probing */
+	altsetting = intf->cur_altsetting;
+
+
+	/* Check if the config is sane */
+
+	if ( altsetting->desc.bNumEndpoints != MTS_EP_TOTAL ) {
+		MTS_WARNING( "expecting %d got %d endpoints! Bailing out.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     (int)MTS_EP_TOTAL, (int)altsetting->desc.bNumEndpoints );
 		return -ENODEV;
 	}
 
 	for( i = 0; i < altsetting->desc.bNumEndpoints; i++ ) {
+<<<<<<< HEAD
 		if (usb_endpoint_is_bulk_in(&altsetting->endpoint[i].desc)) {
 			*ep_in_current++ = usb_endpoint_num(&altsetting->endpoint[i].desc);
 		} else if (usb_endpoint_is_bulk_out(&altsetting->endpoint[i].desc)) {
@@ -679,11 +764,43 @@ static int mts_usb_probe(struct usb_interface *intf,
 
 	if (ep_in_current != &ep_in_set[2]) {
 		dev_warn(&dev->dev, "couldn't find two input bulk endpoints. Bailing out.\n");
+=======
+		if ((altsetting->endpoint[i].desc.bmAttributes &
+		     USB_ENDPOINT_XFERTYPE_MASK) != USB_ENDPOINT_XFER_BULK) {
+
+			MTS_WARNING( "can only deal with bulk endpoints; endpoint %d is not bulk.\n",
+			     (int)altsetting->endpoint[i].desc.bEndpointAddress );
+		} else {
+			if (altsetting->endpoint[i].desc.bEndpointAddress &
+			    USB_DIR_IN)
+				*ep_in_current++
+					= altsetting->endpoint[i].desc.bEndpointAddress &
+					USB_ENDPOINT_NUMBER_MASK;
+			else {
+				if ( ep_out != -1 ) {
+					MTS_WARNING( "can only deal with one output endpoints. Bailing out." );
+					return -ENODEV;
+				}
+
+				ep_out = altsetting->endpoint[i].desc.bEndpointAddress &
+					USB_ENDPOINT_NUMBER_MASK;
+			}
+		}
+
+	}
+
+	if (ep_in_current != &ep_in_set[2]) {
+		MTS_WARNING("couldn't find two input bulk endpoints. Bailing out.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
 	if ( ep_out == -1 ) {
+<<<<<<< HEAD
 		dev_warn(&dev->dev, "couldn't find an output bulk endpoint. Bailing out.\n" );
+=======
+		MTS_WARNING( "couldn't find an output bulk endpoint. Bailing out.\n" );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -709,6 +826,7 @@ static int mts_usb_probe(struct usb_interface *intf,
 	new_desc->ep_image = ep_in_set[1];
 
 	if ( new_desc->ep_out != MTS_EP_OUT )
+<<<<<<< HEAD
 		dev_warn(&dev->dev, "will this work? Command EP is not usually %d\n",
 			     (int)new_desc->ep_out );
 
@@ -718,6 +836,17 @@ static int mts_usb_probe(struct usb_interface *intf,
 
 	if ( new_desc->ep_image != MTS_EP_IMAGE )
 		dev_warn(&dev->dev, "will this work? Image data EP is not usually %d\n",
+=======
+		MTS_WARNING( "will this work? Command EP is not usually %d\n",
+			     (int)new_desc->ep_out );
+
+	if ( new_desc->ep_response != MTS_EP_RESPONSE )
+		MTS_WARNING( "will this work? Response EP is not usually %d\n",
+			     (int)new_desc->ep_response );
+
+	if ( new_desc->ep_image != MTS_EP_IMAGE )
+		MTS_WARNING( "will this work? Image data EP is not usually %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     (int)new_desc->ep_image );
 
 	new_desc->host = scsi_host_alloc(&mts_scsi_host_template,

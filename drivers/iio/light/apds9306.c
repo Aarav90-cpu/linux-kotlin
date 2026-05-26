@@ -168,6 +168,10 @@ struct apds9306_regfields {
  *         respectively.
  * @regmap: Regmap structure pointer
  * @rf: Regmap register fields structure
+<<<<<<< HEAD
+=======
+ * @nlux_per_count: Nano lux per ADC count for a particular model
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @read_data_available: Flag set by IRQ handler for ADC data available
  */
 struct apds9306_data {
@@ -179,6 +183,10 @@ struct apds9306_data {
 	struct regmap *regmap;
 	struct apds9306_regfields rf;
 
+<<<<<<< HEAD
+=======
+	int nlux_per_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int read_data_available;
 };
 
@@ -1174,7 +1182,11 @@ static int apds9306_init_iio_gts(struct apds9306_data *data)
 
 static void apds9306_powerdown(void *ptr)
 {
+<<<<<<< HEAD
 	struct apds9306_data *data = ptr;
+=======
+	struct apds9306_data *data = (struct apds9306_data *)ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct apds9306_regfields *rf = &data->rf;
 	int ret;
 

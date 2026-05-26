@@ -15,7 +15,10 @@
 #include <linux/platform_device.h>
 #include <net/ip.h>
 #include <net/ipv6.h>
+<<<<<<< HEAD
 #include <net/page_pool/helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "bcmasp.h"
 #include "bcmasp_intf_defs.h"
@@ -483,14 +486,20 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 	struct bcmasp_desc *desc;
 	struct sk_buff *skb;
 	dma_addr_t valid;
+<<<<<<< HEAD
 	struct page *page;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *data;
 	u64 flags;
 	u32 len;
 
+<<<<<<< HEAD
 	/* Hardware advances DMA_VALID as it writes each descriptor
 	 * (RBUF_4K streaming mode); software chases with rx_edpkt_dma_read.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	valid = rx_edpkt_dma_rq(intf, RX_EDPKT_DMA_VALID) + 1;
 	if (valid == intf->rx_edpkt_dma_addr + DESC_RING_SIZE)
 		valid = intf->rx_edpkt_dma_addr;
@@ -498,12 +507,21 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 	while ((processed < budget) && (valid != intf->rx_edpkt_dma_read)) {
 		desc = &intf->rx_edpkt_cpu[intf->rx_edpkt_index];
 
+<<<<<<< HEAD
 		/* Ensure the descriptor has been fully written to DRAM by
 		 * the hardware before the CPU reads it.
 		 */
 		rmb();
 
 		/* Locate the packet data inside the streaming ring buffer. */
+=======
+		/* Ensure that descriptor has been fully written to DRAM by
+		 * hardware before reading by the CPU
+		 */
+		rmb();
+
+		/* Calculate virt addr by offsetting from physical addr */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data = intf->rx_ring_cpu +
 			(DESC_ADDR(desc->buf) - intf->rx_ring_dma);
 
@@ -529,6 +547,7 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 
 		len = desc->size;
 
+<<<<<<< HEAD
 		/* Allocate a page pool page as the SKB data area so the
 		 * kernel can recycle it efficiently after the packet is
 		 * consumed, avoiding repeated slab allocations.
@@ -543,11 +562,15 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 		}
 
 		skb = napi_build_skb(page_address(page), PAGE_SIZE);
+=======
+		skb = napi_alloc_skb(napi, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!skb) {
 			u64_stats_update_begin(&stats->syncp);
 			u64_stats_inc(&stats->rx_dropped);
 			u64_stats_update_end(&stats->syncp);
 			intf->mib.alloc_rx_skb_failed++;
+<<<<<<< HEAD
 			page_pool_recycle_direct(intf->rx_page_pool, page);
 			goto next;
 		}
@@ -561,6 +584,15 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 		skb_mark_for_recycle(skb);
 
 		/* Skip the 2-byte hardware alignment pad. */
+=======
+
+			goto next;
+		}
+
+		skb_put(skb, len);
+		memcpy(skb->data, data, len);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		skb_pull(skb, 2);
 		len -= 2;
 		if (likely(intf->crc_fwd)) {
@@ -582,7 +614,10 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
 		u64_stats_update_end(&stats->syncp);
 
 next:
+<<<<<<< HEAD
 		/* Return this portion of the streaming ring buffer to HW. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rx_edpkt_cfg_wq(intf, (DESC_ADDR(desc->buf) + desc->size),
 				RX_EDPKT_RING_BUFFER_READ);
 
@@ -686,6 +721,7 @@ static void bcmasp_adj_link(struct net_device *dev)
 		phy_print_status(phydev);
 }
 
+<<<<<<< HEAD
 static struct page_pool *
 bcmasp_rx_page_pool_create(struct bcmasp_intf *intf)
 {
@@ -711,6 +747,14 @@ static int bcmasp_alloc_rx_buffers(struct bcmasp_intf *intf)
 	int ret;
 
 	/* Contiguous streaming ring that hardware writes packet data into. */
+=======
+static int bcmasp_alloc_buffers(struct bcmasp_intf *intf)
+{
+	struct device *kdev = &intf->parent->pdev->dev;
+	struct page *buffer_pg;
+
+	/* Alloc RX */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intf->rx_buf_order = get_order(RING_BUFFER_SIZE);
 	buffer_pg = alloc_pages(GFP_KERNEL, intf->rx_buf_order);
 	if (!buffer_pg)
@@ -719,6 +763,7 @@ static int bcmasp_alloc_rx_buffers(struct bcmasp_intf *intf)
 	intf->rx_ring_cpu = page_to_virt(buffer_pg);
 	intf->rx_ring_dma = dma_map_page(kdev, buffer_pg, 0, RING_BUFFER_SIZE,
 					 DMA_FROM_DEVICE);
+<<<<<<< HEAD
 	if (dma_mapping_error(kdev, intf->rx_ring_dma)) {
 		ret = -ENOMEM;
 		goto free_ring_pages;
@@ -768,6 +813,15 @@ static int bcmasp_alloc_buffers(struct bcmasp_intf *intf)
 						GFP_KERNEL);
 	if (!intf->rx_edpkt_cpu)
 		goto free_rx_buffers;
+=======
+	if (dma_mapping_error(kdev, intf->rx_ring_dma))
+		goto free_rx_buffer;
+
+	intf->rx_edpkt_cpu = dma_alloc_coherent(kdev, DESC_RING_SIZE,
+						&intf->rx_edpkt_dma_addr, GFP_KERNEL);
+	if (!intf->rx_edpkt_cpu)
+		goto free_rx_buffer_dma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Alloc TX */
 	intf->tx_spb_cpu = dma_alloc_coherent(kdev, DESC_RING_SIZE,
@@ -787,8 +841,16 @@ free_tx_spb_dma:
 free_rx_edpkt_dma:
 	dma_free_coherent(kdev, DESC_RING_SIZE, intf->rx_edpkt_cpu,
 			  intf->rx_edpkt_dma_addr);
+<<<<<<< HEAD
 free_rx_buffers:
 	bcmasp_reclaim_rx_buffers(intf);
+=======
+free_rx_buffer_dma:
+	dma_unmap_page(kdev, intf->rx_ring_dma, RING_BUFFER_SIZE,
+		       DMA_FROM_DEVICE);
+free_rx_buffer:
+	__free_pages(buffer_pg, intf->rx_buf_order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -ENOMEM;
 }
@@ -800,7 +862,13 @@ static void bcmasp_reclaim_free_buffers(struct bcmasp_intf *intf)
 	/* RX buffers */
 	dma_free_coherent(kdev, DESC_RING_SIZE, intf->rx_edpkt_cpu,
 			  intf->rx_edpkt_dma_addr);
+<<<<<<< HEAD
 	bcmasp_reclaim_rx_buffers(intf);
+=======
+	dma_unmap_page(kdev, intf->rx_ring_dma, RING_BUFFER_SIZE,
+		       DMA_FROM_DEVICE);
+	__free_pages(virt_to_page(intf->rx_ring_cpu), intf->rx_buf_order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* TX buffers */
 	dma_free_coherent(kdev, DESC_RING_SIZE, intf->tx_spb_cpu,
@@ -819,7 +887,11 @@ static void bcmasp_init_rx(struct bcmasp_intf *intf)
 	/* Make sure channels are disabled */
 	rx_edpkt_cfg_wl(intf, 0x0, RX_EDPKT_CFG_ENABLE);
 
+<<<<<<< HEAD
 	/* Streaming data ring: hardware writes raw packet bytes here. */
+=======
+	/* Rx SPB */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rx_edpkt_cfg_wq(intf, intf->rx_ring_dma, RX_EDPKT_RING_BUFFER_READ);
 	rx_edpkt_cfg_wq(intf, intf->rx_ring_dma, RX_EDPKT_RING_BUFFER_WRITE);
 	rx_edpkt_cfg_wq(intf, intf->rx_ring_dma, RX_EDPKT_RING_BUFFER_BASE);
@@ -828,9 +900,13 @@ static void bcmasp_init_rx(struct bcmasp_intf *intf)
 	rx_edpkt_cfg_wq(intf, intf->rx_ring_dma_valid,
 			RX_EDPKT_RING_BUFFER_VALID);
 
+<<<<<<< HEAD
 	/* EDPKT descriptor ring: hardware fills descriptors pointing into
 	 * the streaming ring buffer above (RBUF_4K mode).
 	 */
+=======
+	/* EDPKT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rx_edpkt_cfg_wl(intf, (RX_EDPKT_CFG_CFG0_RBUF_4K <<
 			RX_EDPKT_CFG_CFG0_DBUF_SHIFT) |
 		       (RX_EDPKT_CFG_CFG0_64_ALN <<

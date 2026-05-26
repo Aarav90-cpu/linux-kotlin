@@ -167,12 +167,22 @@ static int dai_list_show(struct seq_file *m, void *v)
 {
 	struct snd_soc_component *component;
 	struct snd_soc_dai *dai;
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
+=======
+
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_component(component)
 		for_each_component_dais(component, dai)
 			seq_printf(m, "%s\n", dai->name);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 DEFINE_SHOW_ATTRIBUTE(dai_list);
@@ -180,11 +190,21 @@ DEFINE_SHOW_ATTRIBUTE(dai_list);
 static int component_list_show(struct seq_file *m, void *v)
 {
 	struct snd_soc_component *component;
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
+=======
+
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_component(component)
 		seq_printf(m, "%s\n", component->name);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 DEFINE_SHOW_ATTRIBUTE(component_list);
@@ -388,6 +408,7 @@ EXPORT_SYMBOL_GPL(snd_soc_lookup_component_nolocked);
 struct snd_soc_component *snd_soc_lookup_component(struct device *dev,
 						   const char *driver_name)
 {
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
 	return snd_soc_lookup_component_nolocked(dev, driver_name);
@@ -406,6 +427,17 @@ struct snd_soc_component *snd_soc_lookup_component_by_name(const char *component
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(snd_soc_lookup_component_by_name);
+=======
+	struct snd_soc_component *component;
+
+	mutex_lock(&client_mutex);
+	component = snd_soc_lookup_component_nolocked(dev, driver_name);
+	mutex_unlock(&client_mutex);
+
+	return component;
+}
+EXPORT_SYMBOL_GPL(snd_soc_lookup_component);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct snd_soc_pcm_runtime
 *snd_soc_get_pcm_runtime(struct snd_soc_card *card,
@@ -939,9 +971,19 @@ EXPORT_SYMBOL_GPL(snd_soc_find_dai);
 struct snd_soc_dai *snd_soc_find_dai_with_mutex(
 	const struct snd_soc_dai_link_component *dlc)
 {
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
 	return snd_soc_find_dai(dlc);
+=======
+	struct snd_soc_dai *dai;
+
+	mutex_lock(&client_mutex);
+	dai = snd_soc_find_dai(dlc);
+	mutex_unlock(&client_mutex);
+
+	return dai;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(snd_soc_find_dai_with_mutex);
 
@@ -2153,6 +2195,11 @@ static void snd_soc_unbind_card(struct snd_soc_card *card)
 {
 	if (snd_soc_card_is_instantiated(card)) {
 		card->instantiated = false;
+<<<<<<< HEAD
+=======
+		snd_soc_flush_all_delayed_work(card);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		soc_cleanup_card_resources(card);
 	}
 }
@@ -2572,13 +2619,21 @@ int snd_soc_register_card(struct snd_soc_card *card)
 	INIT_LIST_HEAD(&card->list);
 	INIT_LIST_HEAD(&card->rtd_list);
 	INIT_LIST_HEAD(&card->dapm_dirty);
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&card->dobj_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	card->instantiated = 0;
 	mutex_init(&card->mutex);
 	mutex_init(&card->dapm_mutex);
 	mutex_init(&card->pcm_mutex);
 
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
+=======
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (card->devres_dev) {
 		ret = devm_snd_soc_bind_card(card->devres_dev, card);
@@ -2590,6 +2645,11 @@ int snd_soc_register_card(struct snd_soc_card *card)
 		ret = snd_soc_bind_card(card);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(snd_soc_register_card);
@@ -2602,11 +2662,18 @@ EXPORT_SYMBOL_GPL(snd_soc_register_card);
  */
 void snd_soc_unregister_card(struct snd_soc_card *card)
 {
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
 	snd_soc_unbind_card(card);
 	list_del(&card->list);
 
+=======
+	mutex_lock(&client_mutex);
+	snd_soc_unbind_card(card);
+	list_del(&card->list);
+	mutex_unlock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(card->dev, "ASoC: Unregistered card '%s'\n", card->name);
 }
 EXPORT_SYMBOL_GPL(snd_soc_unregister_card);
@@ -2884,7 +2951,12 @@ int snd_soc_add_component(struct snd_soc_component *component,
 	struct snd_soc_card *card, *c;
 	int ret;
 	int i;
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
+=======
+
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (component->driver->endianness) {
 		for (i = 0; i < num_dai; i++) {
@@ -2904,6 +2976,11 @@ int snd_soc_add_component(struct snd_soc_component *component,
 		if (!component->regmap)
 			component->regmap = dev_get_regmap(component->dev,
 							   NULL);
+<<<<<<< HEAD
+=======
+		if (component->regmap)
+			snd_soc_component_setup_regmap(component);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* see for_each_component */
@@ -2916,6 +2993,10 @@ err_cleanup:
 	if (ret < 0)
 		snd_soc_del_component_unlocked(component);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(snd_soc_add_component);
@@ -2955,8 +3036,12 @@ void snd_soc_unregister_component_by_driver(struct device *dev,
 	if (component_driver)
 		driver_name = component_driver->name;
 
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
+=======
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (1) {
 		struct snd_soc_component *component = snd_soc_lookup_component_nolocked(dev, driver_name);
 
@@ -2965,6 +3050,10 @@ void snd_soc_unregister_component_by_driver(struct device *dev,
 
 		snd_soc_del_component_unlocked(component);
 	}
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(snd_soc_unregister_component_by_driver);
 
@@ -3500,6 +3589,10 @@ EXPORT_SYMBOL_GPL(snd_soc_get_stream_cpu);
 
 int snd_soc_get_dai_id(struct device_node *ep)
 {
+<<<<<<< HEAD
+=======
+	struct snd_soc_component *component;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_soc_dai_link_component dlc = {
 		.of_node = of_graph_get_port_parent(ep),
 	};
@@ -3513,6 +3606,7 @@ int snd_soc_get_dai_id(struct device_node *ep)
 	 * Then, it should have .of_xlate_dai_id
 	 */
 	ret = -ENOTSUPP;
+<<<<<<< HEAD
 
 	scoped_guard(mutex, &client_mutex) {
 		struct snd_soc_component *component = soc_find_component(&dlc);
@@ -3520,6 +3614,13 @@ int snd_soc_get_dai_id(struct device_node *ep)
 		if (component)
 			ret = snd_soc_component_of_xlate_dai_id(component, ep);
 	}
+=======
+	mutex_lock(&client_mutex);
+	component = soc_find_component(&dlc);
+	if (component)
+		ret = snd_soc_component_of_xlate_dai_id(component, ep);
+	mutex_unlock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	of_node_put(dlc.of_node);
 
@@ -3531,8 +3632,13 @@ int snd_soc_get_dlc(const struct of_phandle_args *args, struct snd_soc_dai_link_
 {
 	struct snd_soc_component *pos;
 	int ret = -EPROBE_DEFER;
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
+=======
+
+	mutex_lock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_component(pos) {
 		struct device_node *component_of_node = soc_component_to_node(pos);
 
@@ -3587,6 +3693,10 @@ int snd_soc_get_dlc(const struct of_phandle_args *args, struct snd_soc_dai_link_
 	if (ret == 0)
 		dlc->of_node = args->np;
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&client_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(snd_soc_get_dlc);
@@ -3641,6 +3751,7 @@ struct snd_soc_dai *snd_soc_get_dai_via_args(const struct of_phandle_args *dai_a
 {
 	struct snd_soc_dai *dai;
 	struct snd_soc_component *component;
+<<<<<<< HEAD
 	guard(mutex)(&client_mutex);
 
 	for_each_component(component) {
@@ -3649,6 +3760,19 @@ struct snd_soc_dai *snd_soc_get_dai_via_args(const struct of_phandle_args *dai_a
 				return dai;
 	}
 	return NULL;
+=======
+
+	mutex_lock(&client_mutex);
+	for_each_component(component) {
+		for_each_component_dais(component, dai)
+			if (snd_soc_is_match_dai_args(dai->driver->dai_args, dai_args))
+				goto found;
+	}
+	dai = NULL;
+found:
+	mutex_unlock(&client_mutex);
+	return dai;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(snd_soc_get_dai_via_args);
 

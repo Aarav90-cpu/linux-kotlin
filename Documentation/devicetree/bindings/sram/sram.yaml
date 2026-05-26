@@ -34,9 +34,13 @@ properties:
         - nvidia,tegra186-sysram
         - nvidia,tegra194-sysram
         - nvidia,tegra234-sysram
+<<<<<<< HEAD
         - qcom,hawi-imem
         - qcom,kaanapali-imem
         - qcom,milos-imem
+=======
+        - qcom,kaanapali-imem
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - qcom,rpm-msg-ram
         - rockchip,rk3288-pmu-sram
 
@@ -67,7 +71,11 @@ properties:
     type: boolean
 
 patternProperties:
+<<<<<<< HEAD
   "^([a-z0-9]+-)*sram(-section)?@[a-f0-9]+$":
+=======
+  "^([a-z0-9]*-)?sram(-section)?@[a-f0-9]+$":
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     type: object
     description:
       Each child of the sram node specifies a region of reserved memory.

@@ -332,7 +332,11 @@
 			interrupt-controller;
 			interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-parent = <&gic>;
+<<<<<<< HEAD
 			gpio-ranges = <&pio 0 0 57>;
+=======
+			gpio-ranges = <&pio 0 0 56>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpio-controller;
 			#gpio-cells = <2>;
 			#interrupt-cells = <2>;

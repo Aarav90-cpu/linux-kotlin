@@ -61,6 +61,11 @@ source "drivers/macintosh/Kconfig"
 
 source "drivers/net/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/isdn/Kconfig"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # input before char - char/joystick depends on it. As does USB.
 
 source "drivers/input/Kconfig"

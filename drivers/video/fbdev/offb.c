@@ -640,6 +640,7 @@ static void offb_init_nodriver(struct platform_device *parent, struct device_nod
 			vid = be32_to_cpup(vidp);
 			did = be32_to_cpup(didp);
 			pdev = pci_get_device(vid, did, NULL);
+<<<<<<< HEAD
 			if (!pdev)
 				return;
 
@@ -647,6 +648,10 @@ static void offb_init_nodriver(struct platform_device *parent, struct device_nod
 				pci_dev_put(pdev);
 				return;
 			}
+=======
+			if (!pdev || pci_enable_device(pdev))
+				return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 #endif
 		/* kludge for valkyrie */

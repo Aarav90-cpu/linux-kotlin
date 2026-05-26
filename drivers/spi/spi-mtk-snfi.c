@@ -1303,6 +1303,7 @@ static const struct spi_controller_mem_caps mtk_snand_mem_caps = {
 	.ecc = true,
 };
 
+<<<<<<< HEAD
 static void mtk_unregister_ecc_engine(void *data)
 {
 	struct nand_ecc_engine *eng = data;
@@ -1310,6 +1311,8 @@ static void mtk_unregister_ecc_engine(void *data)
 	nand_ecc_unregister_on_host_hw_engine(eng);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static irqreturn_t mtk_snand_irq(int irq, void *id)
 {
 	struct mtk_snand *snf = id;
@@ -1447,6 +1450,7 @@ static int mtk_snand_probe(struct platform_device *pdev)
 	ret = nand_ecc_register_on_host_hw_engine(&ms->ecc_eng);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to register ecc engine.\n");
+<<<<<<< HEAD
 		goto free_buf;
 	}
 
@@ -1455,6 +1459,9 @@ static int mtk_snand_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err_probe(&pdev->dev, ret, "failed to add ECC unregister action\n");
 		goto free_buf;
+=======
+		goto release_ecc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ctlr->num_chipselect = 1;
@@ -1465,12 +1472,19 @@ static int mtk_snand_probe(struct platform_device *pdev)
 	ret = spi_register_controller(ctlr);
 	if (ret) {
 		dev_err(&pdev->dev, "spi_register_controller failed.\n");
+<<<<<<< HEAD
 		goto free_buf;
 	}
 
 	return 0;
 free_buf:
 	kfree(ms->buf);
+=======
+		goto release_ecc;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 release_ecc:
 	mtk_ecc_release(ms->ecc);
 	return ret;

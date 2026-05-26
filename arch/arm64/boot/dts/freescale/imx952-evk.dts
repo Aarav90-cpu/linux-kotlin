@@ -43,21 +43,27 @@
 		spi6 = &lpspi7;
 	};
 
+<<<<<<< HEAD
 	bt_sco_codec: audio-codec-bt-sco {
 		#sound-dai-cells = <1>;
 		compatible = "linux,bt-sco";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chosen {
 		stdout-path = &lpuart1;
 	};
 
+<<<<<<< HEAD
 	dmic: dmic {
 		compatible = "dmic-codec";
 		#sound-dai-cells = <0>;
 		num-channels = <2>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0x0 0x80000000 0 0x80000000>;
@@ -121,6 +127,7 @@
 		regulator-max-microvolt = <1800000>;
 	};
 
+<<<<<<< HEAD
 	reg_audio_pwr: regulator-audio-pwr {
 		compatible = "regulator-fixed";
 		regulator-name = "audio-pwr";
@@ -130,6 +137,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_usdhc2_vmmc: regulator-usdhc2 {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
@@ -151,6 +160,7 @@
 		enable-active-high;
 	};
 
+<<<<<<< HEAD
 	sound-bt-sco {
 		compatible = "simple-audio-card";
 		simple-audio-card,bitclock-inversion;
@@ -233,6 +243,8 @@
 			       <393216000>, <361267200>, <49152000>;
 	fsl,asrc-rate  = <48000>;
 	status = "okay";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* pin conflict with PDM */
@@ -287,6 +299,7 @@
 	pinctrl-0 = <&pinctrl_lpi2c4>;
 	status = "okay";
 
+<<<<<<< HEAD
 	wm8962: audio-codec@1a {
 		compatible = "wlf,wm8962";
 		reg = <0x1a>;
@@ -308,6 +321,8 @@
 		SPKVDD2-supply = <&reg_audio_pwr>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c4_pcal6408: gpio@21 {
 		compatible = "nxp,pcal6408";
 		reg = <0x21>;
@@ -435,6 +450,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &micfil {
 	assigned-clocks = <&scmi_clk IMX952_CLK_AUDIOPLL1_VCO>,
 			  <&scmi_clk IMX952_CLK_AUDIOPLL2_VCO>,
@@ -486,6 +502,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &scmi_misc {
 	nxp,ctrl-ids = <BRD_SM_CTRL_SD3_WAKE		1
 			BRD_SM_CTRL_M2E_WAKE		1
@@ -576,12 +594,15 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_hp: hpgrp {
 		fsl,pins = <
 			IMX952_PAD_GPIO_IO11__WAKEUPMIX_TOP_GPIO2_IO_11		0x31e
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_lpi2c2: lpi2c2grp {
 		fsl,pins = <
 			IMX952_PAD_I2C2_SCL__AONMIX_TOP_LPI2C2_SCL		0x40000b9e
@@ -644,6 +665,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_pdm: pdmgrp {
 		fsl,pins = <
 			IMX952_PAD_PDM_CLK__AONMIX_TOP_PDM_CLK				0x31e
@@ -658,6 +680,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_ptn5110: ptn5110grp {
 		fsl,pins = <
 			IMX952_PAD_GPIO_IO34__WAKEUPMIX_TOP_GPIO5_IO_14		     0x31e
@@ -670,6 +694,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_sai1: sai1grp {
 		fsl,pins = <
 			IMX952_PAD_SAI1_RXD0__AONMIX_TOP_SAI1_RX_DATA_0		0x31e
@@ -708,6 +733,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_tpm3: tpm3grp {
 		fsl,pins = <
 			IMX952_PAD_GPIO_IO12__WAKEUPMIX_TOP_TPM3_CH2		0x51e
@@ -825,6 +852,7 @@
 			IMX952_PAD_SD2_CD_B__WAKEUPMIX_TOP_GPIO3_IO_0		0x31e
 		>;
 	};
+<<<<<<< HEAD
 
 	pinctrl_xspi1: xspi1grp {
 		fsl,pins = <
@@ -866,4 +894,6 @@
 		spi-tx-bus-width = <8>;
 		spi-rx-bus-width = <8>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

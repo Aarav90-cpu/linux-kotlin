@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #pragma once
 
+<<<<<<< HEAD
 #include <getopt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "actions.h"
 #include "timerlat_u.h"
 #include "trace.h"
@@ -108,9 +111,13 @@ struct common_params {
 	struct timerlat_u_params user;
 };
 
+<<<<<<< HEAD
 extern int nr_cpus;
 
 #define for_each_monitored_cpu(cpu, common) \
+=======
+#define for_each_monitored_cpu(cpu, nr_cpus, common) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (cpu = 0; cpu < nr_cpus; cpu++) \
 		if (!(common)->cpus || CPU_ISSET(cpu, &(common)->monitored_cpus))
 
@@ -146,6 +153,7 @@ struct tool_ops {
 	void (*free)(struct osnoise_tool *tool);
 };
 
+<<<<<<< HEAD
 /**
  * should_continue_tracing - check if tracing should continue after threshold
  * @params: pointer to the common parameters structure
@@ -164,6 +172,8 @@ should_continue_tracing(const struct common_params *params)
 int
 common_threshold_handler(const struct osnoise_tool *tool);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int osnoise_set_cpus(struct osnoise_context *context, char *cpus);
 void osnoise_restore_cpus(struct osnoise_context *context);
 
@@ -177,7 +187,10 @@ int osnoise_set_stop_us(struct osnoise_context *context, long long stop_us);
 int osnoise_set_stop_total_us(struct osnoise_context *context,
 			      long long stop_total_us);
 
+<<<<<<< HEAD
 int getopt_auto(int argc, char **argv, const struct option *long_opts);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int common_parse_options(int argc, char **argv, struct common_params *common);
 int common_apply_config(struct osnoise_tool *tool, struct common_params *params);
 int top_main_loop(struct osnoise_tool *tool);

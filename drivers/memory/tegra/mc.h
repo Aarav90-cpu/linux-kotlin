@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
+<<<<<<< HEAD
  * Copyright (C) 2014-2026 NVIDIA CORPORATION.  All rights reserved.
+=======
+ * Copyright (C) 2014-2025 NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #ifndef MEMORY_TEGRA_MC_H
@@ -13,6 +17,7 @@
 #include <soc/tegra/mc.h>
 
 #define MC_INTSTATUS					0x00
+<<<<<<< HEAD
 /* Bit field of MC_INTSTATUS register */
 #define MC_INT_DECERR_EMEM				BIT(6)
 #define MC_INT_INVALID_GART_PAGE			BIT(7)
@@ -43,6 +48,17 @@
 #define MC_EMEM_ARB_OUTSTANDING_REQ_LIMIT_ENABLE	BIT(31)
 #define MC_EMEM_ARB_OUTSTANDING_REQ_MAX_MASK		0x1ff
 
+=======
+#define MC_INTMASK					0x04
+#define MC_ERR_STATUS					0x08
+#define MC_ERR_ADR					0x0c
+#define MC_GART_ERROR_REQ				0x30
+#define MC_EMEM_ADR_CFG					0x54
+#define MC_DECERR_EMEM_OTHERS_STATUS			0x58
+#define MC_SECURITY_VIOLATION_STATUS			0x74
+#define MC_EMEM_ARB_CFG					0x90
+#define MC_EMEM_ARB_OUTSTANDING_REQ			0x94
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MC_EMEM_ARB_TIMING_RCD				0x98
 #define MC_EMEM_ARB_TIMING_RP				0x9c
 #define MC_EMEM_ARB_TIMING_RC				0xa0
@@ -62,6 +78,7 @@
 #define MC_EMEM_ARB_MISC1				0xdc
 #define MC_EMEM_ARB_RING1_THROTTLE			0xe0
 #define MC_EMEM_ARB_OVERRIDE				0xe8
+<<<<<<< HEAD
 #define MC_EMEM_ARB_OVERRIDE_EACK_MASK			0x3
 
 #define MC_TIMING_CONTROL_DBG				0xf8
@@ -153,6 +170,62 @@
 #define ERR_GENERALIZED_CARVEOUT_APERTURE_ID_SHIFT	5
 #define ERR_GENERALIZED_CARVEOUT_APERTURE_ID_MASK	0x1F
 
+=======
+#define MC_TIMING_CONTROL_DBG				0xf8
+#define MC_TIMING_CONTROL				0xfc
+#define MC_ERR_VPR_STATUS				0x654
+#define MC_ERR_VPR_ADR					0x658
+#define MC_ERR_SEC_STATUS				0x67c
+#define MC_ERR_SEC_ADR					0x680
+#define MC_ERR_MTS_STATUS				0x9b0
+#define MC_ERR_MTS_ADR					0x9b4
+#define MC_ERR_ROUTE_SANITY_STATUS			0x9c0
+#define MC_ERR_ROUTE_SANITY_ADR				0x9c4
+#define MC_ERR_GENERALIZED_CARVEOUT_STATUS		0xc00
+#define MC_ERR_GENERALIZED_CARVEOUT_ADR			0xc04
+#define MC_EMEM_ADR_CFG_CHANNEL_ENABLE			0xdf8
+#define MC_GLOBAL_INTSTATUS				0xf24
+#define MC_ERR_ADR_HI					0x11fc
+
+#define MC_INT_DECERR_ROUTE_SANITY			BIT(20)
+#define MC_INT_DECERR_GENERALIZED_CARVEOUT		BIT(17)
+#define MC_INT_DECERR_MTS				BIT(16)
+#define MC_INT_SECERR_SEC				BIT(13)
+#define MC_INT_DECERR_VPR				BIT(12)
+#define MC_INT_INVALID_APB_ASID_UPDATE			BIT(11)
+#define MC_INT_INVALID_SMMU_PAGE			BIT(10)
+#define MC_INT_ARBITRATION_EMEM				BIT(9)
+#define MC_INT_SECURITY_VIOLATION			BIT(8)
+#define MC_INT_INVALID_GART_PAGE			BIT(7)
+#define MC_INT_DECERR_EMEM				BIT(6)
+
+#define MC_ERR_STATUS_TYPE_SHIFT			28
+#define MC_ERR_STATUS_TYPE_INVALID_SMMU_PAGE		(0x6 << 28)
+#define MC_ERR_STATUS_TYPE_MASK				(0x7 << 28)
+#define MC_ERR_STATUS_READABLE				BIT(27)
+#define MC_ERR_STATUS_WRITABLE				BIT(26)
+#define MC_ERR_STATUS_NONSECURE				BIT(25)
+#define MC_ERR_STATUS_ADR_HI_SHIFT			20
+#define MC_ERR_STATUS_ADR_HI_MASK			0x3
+#define MC_ERR_STATUS_SECURITY				BIT(17)
+#define MC_ERR_STATUS_RW				BIT(16)
+
+#define MC_EMEM_ADR_CFG_EMEM_NUMDEV			BIT(0)
+
+#define MC_EMEM_ARB_CFG_CYCLES_PER_UPDATE(x)		((x) & 0x1ff)
+#define MC_EMEM_ARB_CFG_CYCLES_PER_UPDATE_MASK		0x1ff
+
+#define MC_EMEM_ARB_OUTSTANDING_REQ_MAX_MASK		0x1ff
+#define MC_EMEM_ARB_OUTSTANDING_REQ_HOLDOFF_OVERRIDE	BIT(30)
+#define MC_EMEM_ARB_OUTSTANDING_REQ_LIMIT_ENABLE	BIT(31)
+
+#define MC_EMEM_ARB_OVERRIDE_EACK_MASK			0x3
+
+#define MC_TIMING_UPDATE				BIT(0)
+
+#define MC_BROADCAST_CHANNEL				~0
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline u32 tegra_mc_scale_percents(u64 val, unsigned int percents)
 {
 	val = val * percents;
@@ -261,9 +334,14 @@ extern const struct tegra_mc_ops tegra186_mc_ops;
 #endif
 
 irqreturn_t tegra30_mc_handle_irq(int irq, void *data);
+<<<<<<< HEAD
 extern const irq_handler_t tegra30_mc_irq_handlers[1];
 extern const char * const tegra_mc_status_names[32];
 extern const char * const tegra20_mc_error_names[8];
+=======
+extern const char * const tegra_mc_status_names[32];
+extern const char * const tegra_mc_error_names[8];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * These IDs are for internal use of Tegra ICC drivers. The ID numbers are

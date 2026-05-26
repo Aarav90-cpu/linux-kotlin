@@ -123,8 +123,12 @@ static bool valid_kwork_class_type(enum kwork_class_type type)
 static int setup_filters(struct perf_kwork *kwork)
 {
 	if (kwork->cpu_list) {
+<<<<<<< HEAD
 		unsigned int idx;
 		int nr_cpus, fd;
+=======
+		int idx, nr_cpus, fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct perf_cpu_map *map;
 		struct perf_cpu cpu;
 

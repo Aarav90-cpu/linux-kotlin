@@ -8,6 +8,10 @@
 #include <linux/ceph/ceph_debug.h>
 
 #include <crypto/aead.h>
+<<<<<<< HEAD
+=======
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/sha2.h>
 #include <crypto/utils.h>
 #include <linux/bvec.h>
@@ -2351,6 +2355,7 @@ bad:
 }
 
 /*
+<<<<<<< HEAD
  * Align con_secret to avoid GFP_ATOMIC allocation inside
  * crypto_aead_setkey() called from setup_crypto().  __aligned(16)
  * isn't guaranteed to work for stack objects, so do it by hand.
@@ -2359,6 +2364,18 @@ static int process_auth_done(struct ceph_connection *con, void *p, void *end)
 {
 	u8 session_key[CEPH_MAX_KEY_LEN];
 	u8 con_secret_buf[CEPH_MAX_CON_SECRET_LEN + 16];
+=======
+ * Align session_key and con_secret to avoid GFP_ATOMIC allocation
+ * inside crypto_shash_setkey() and crypto_aead_setkey() called from
+ * setup_crypto().  __aligned(16) isn't guaranteed to work for stack
+ * objects, so do it by hand.
+ */
+static int process_auth_done(struct ceph_connection *con, void *p, void *end)
+{
+	u8 session_key_buf[CEPH_MAX_KEY_LEN + 16];
+	u8 con_secret_buf[CEPH_MAX_CON_SECRET_LEN + 16];
+	u8 *session_key = PTR_ALIGN(&session_key_buf[0], 16);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *con_secret = PTR_ALIGN(&con_secret_buf[0], 16);
 	int session_key_len, con_secret_len;
 	int payload_len;
@@ -2412,7 +2429,11 @@ static int process_auth_done(struct ceph_connection *con, void *p, void *end)
 	con->state = CEPH_CON_S_V2_AUTH_SIGNATURE;
 
 out:
+<<<<<<< HEAD
 	memzero_explicit(session_key, sizeof(session_key));
+=======
+	memzero_explicit(session_key_buf, sizeof(session_key_buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memzero_explicit(con_secret_buf, sizeof(con_secret_buf));
 	return ret;
 

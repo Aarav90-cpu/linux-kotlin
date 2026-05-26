@@ -265,8 +265,11 @@ void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object *shmem)
 				  shmem->pages_mark_dirty_on_put,
 				  shmem->pages_mark_accessed_on_put);
 		shmem->pages = NULL;
+<<<<<<< HEAD
 		shmem->pages_mark_accessed_on_put = false;
 		shmem->pages_mark_dirty_on_put = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 EXPORT_SYMBOL_GPL(drm_gem_shmem_put_pages_locked);
@@ -399,8 +402,11 @@ int drm_gem_shmem_vmap_locked(struct drm_gem_shmem_object *shmem,
 		} else {
 			iosys_map_set_vaddr(map, shmem->vaddr);
 			refcount_set(&shmem->vmap_use_count, 1);
+<<<<<<< HEAD
 			shmem->pages_mark_accessed_on_put = true;
 			shmem->pages_mark_dirty_on_put = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -554,6 +560,7 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
 }
 EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
 
+<<<<<<< HEAD
 static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
 {
 	struct vm_area_struct *vma = vmf->vma;
@@ -569,6 +576,8 @@ static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
 	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
 				 unsigned long pfn)
 {
@@ -581,6 +590,7 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
 
 		if (aligned &&
 		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+<<<<<<< HEAD
 			vm_fault_t ret;
 
 			pfn &= PMD_MASK >> PAGE_SHIFT;
@@ -598,6 +608,10 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
 				drm_gem_shmem_record_mkwrite(vmf);
 
 			return ret;
+=======
+			pfn &= PMD_MASK >> PAGE_SHIFT;
+			return vmf_insert_pfn_pmd(vmf, pfn, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 #endif
 	}
@@ -608,6 +622,7 @@ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_gem_object *obj = vma->vm_private_data;
+<<<<<<< HEAD
 	struct drm_device *dev = obj->dev;
 	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
 	loff_t num_pages = obj->size >> PAGE_SHIFT;
@@ -616,11 +631,19 @@ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
 	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
 	struct page *page;
 	struct folio *folio;
+=======
+	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+	loff_t num_pages = obj->size >> PAGE_SHIFT;
+	vm_fault_t ret;
+	struct page **pages = shmem->pages;
+	pgoff_t page_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long pfn;
 
 	if (order && order != PMD_ORDER)
 		return VM_FAULT_FALLBACK;
 
+<<<<<<< HEAD
 	dma_resv_lock(obj->resv, NULL);
 
 	if (page_offset >= num_pages || drm_WARN_ON_ONCE(dev, !shmem->pages) ||
@@ -640,6 +663,25 @@ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
 
 out:
 	dma_resv_unlock(obj->resv);
+=======
+	/* Offset to faulty address in the VMA. */
+	page_offset = vmf->pgoff - vma->vm_pgoff;
+
+	dma_resv_lock(shmem->base.resv, NULL);
+
+	if (page_offset >= num_pages ||
+	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+	    shmem->madv < 0) {
+		ret = VM_FAULT_SIGBUS;
+		goto out;
+	}
+
+	pfn = page_to_pfn(pages[page_offset]);
+	ret = try_insert_pfn(vmf, order, pfn);
+
+ out:
+	dma_resv_unlock(shmem->base.resv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -683,12 +725,15 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
 	drm_gem_vm_close(vma);
 }
 
+<<<<<<< HEAD
 static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
 {
 	drm_gem_shmem_record_mkwrite(vmf);
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct vm_operations_struct drm_gem_shmem_vm_ops = {
 	.fault = drm_gem_shmem_fault,
 #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
@@ -696,7 +741,10 @@ const struct vm_operations_struct drm_gem_shmem_vm_ops = {
 #endif
 	.open = drm_gem_shmem_vm_open,
 	.close = drm_gem_shmem_vm_close,
+<<<<<<< HEAD
 	.pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
 

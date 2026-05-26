@@ -420,6 +420,27 @@ static void keyspan_close(struct input_dev *dev)
 	usb_kill_urb(remote->irq_urb);
 }
 
+<<<<<<< HEAD
+=======
+static struct usb_endpoint_descriptor *keyspan_get_in_endpoint(struct usb_host_interface *iface)
+{
+
+	struct usb_endpoint_descriptor *endpoint;
+	int i;
+
+	for (i = 0; i < iface->desc.bNumEndpoints; ++i) {
+		endpoint = &iface->endpoint[i].desc;
+
+		if (usb_endpoint_is_int_in(endpoint)) {
+			/* we found our interrupt in endpoint */
+			return endpoint;
+		}
+	}
+
+	return NULL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Routine that sets up the driver to handle a specific USB device detected on the bus.
  */
@@ -431,8 +452,13 @@ static int keyspan_probe(struct usb_interface *interface, const struct usb_devic
 	struct input_dev *input_dev;
 	int i, error;
 
+<<<<<<< HEAD
 	error = usb_find_int_in_endpoint(interface->cur_altsetting, &endpoint);
 	if (error)
+=======
+	endpoint = keyspan_get_in_endpoint(interface->cur_altsetting);
+	if (!endpoint)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	remote = kzalloc_obj(*remote);

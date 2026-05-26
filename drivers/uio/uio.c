@@ -850,6 +850,7 @@ static int uio_mmap(struct file *filep, struct vm_area_struct *vma)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (idev->info->mmap_prepare) {
 		struct vm_area_desc desc;
 
@@ -858,6 +859,10 @@ static int uio_mmap(struct file *filep, struct vm_area_struct *vma)
 		if (ret)
 			goto out;
 		ret = __compat_vma_mmap(&desc, vma);
+=======
+	if (idev->info->mmap) {
+		ret = idev->info->mmap(idev->info, vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 

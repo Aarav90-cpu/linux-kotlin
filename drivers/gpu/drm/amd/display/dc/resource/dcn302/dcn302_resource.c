@@ -922,7 +922,10 @@ static struct link_encoder *dcn302_link_encoder_create(
 	struct dc_context *ctx,
 	const struct encoder_init_data *enc_init_data)
 {
+<<<<<<< HEAD
 	(void)ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_link_encoder *enc20 = kzalloc_obj(struct dcn20_link_encoder);
 
 	if (!enc20 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
@@ -1189,8 +1192,12 @@ static struct resource_funcs dcn302_res_pool_funcs = {
 		.update_bw_bounding_box = dcn302_update_bw_bounding_box,
 		.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
 		.get_panel_config_defaults = dcn302_get_panel_config_defaults,
+<<<<<<< HEAD
 		.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe,
 		.get_default_tiling_info = dcn10_get_default_tiling_info
+=======
+		.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct dc_cap_funcs cap_funcs = {
@@ -1252,7 +1259,11 @@ static bool dcn302_resource_construct(
 	/*************************************************
 	 *  Resource + asic cap harcoding                *
 	 *************************************************/
+<<<<<<< HEAD
 	pool->underlay_pipe_index = (unsigned int)NO_UNDERLAY_PIPE;
+=======
+	pool->underlay_pipe_index = NO_UNDERLAY_PIPE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pool->pipe_count = pool->res_cap->num_timing_generator;
 	pool->mpcc_count = pool->res_cap->num_timing_generator;
 	dc->caps.max_downscale_ratio = 600;

@@ -98,6 +98,7 @@ MSM_ACCESSOR(ctl)
 MSM_ACCESSOR(io)
 MSM_ACCESSOR(intr_cfg)
 MSM_ACCESSOR(intr_status)
+<<<<<<< HEAD
 
 static u32 msm_readl_intr_target(struct msm_pinctrl *pctrl,
 				 const struct msm_pingroup *g)
@@ -114,6 +115,9 @@ static void msm_writel_intr_target(u32 val, struct msm_pinctrl *pctrl,
 
 	writel(val, pctrl->regs[g->tile] + reg);
 }
+=======
+MSM_ACCESSOR(intr_target)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void msm_ack_intr_status(struct msm_pinctrl *pctrl,
 				const struct msm_pingroup *g)
@@ -1093,8 +1097,12 @@ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 		intr_target_mask = GENMASK(g->intr_target_width - 1, 0);
 
 	if (pctrl->intr_target_use_scm) {
+<<<<<<< HEAD
 		u32 reg = g->intr_target_reg ? g->intr_target_reg : g->intr_cfg_reg;
 		u32 addr = pctrl->phys_base[0] + reg;
+=======
+		u32 addr = pctrl->phys_base[0] + g->intr_target_reg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int ret;
 
 		qcom_scm_io_readl(addr, &val);

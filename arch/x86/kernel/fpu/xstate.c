@@ -1080,7 +1080,12 @@ void __user *get_xsave_addr_user(struct xregs_state __user *xsave, int xfeature_
  * This will go out and modify PKRU register to set the access
  * rights for @pkey to @init_val.
  */
+<<<<<<< HEAD
 int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+=======
+int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+			      unsigned long init_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 old_pkru, new_pkru_bits = 0;
 	int pkey_shift;

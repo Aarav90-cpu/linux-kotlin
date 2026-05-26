@@ -462,7 +462,10 @@ retry:
 			}
 
 			futex_q_unlock(hb);
+<<<<<<< HEAD
 			__release(q->lock_ptr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		__set_current_state(TASK_RUNNING);
 
@@ -629,7 +632,10 @@ retry_private:
 
 		if (ret) {
 			futex_q_unlock(hb);
+<<<<<<< HEAD
 			__release(q->lock_ptr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			ret = get_user(uval, uaddr);
 			if (ret)
@@ -643,13 +649,19 @@ retry_private:
 
 		if (uval != val) {
 			futex_q_unlock(hb);
+<<<<<<< HEAD
 			__release(q->lock_ptr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EWOULDBLOCK;
 		}
 
 		if (key2 && futex_match(&q->key, key2)) {
 			futex_q_unlock(hb);
+<<<<<<< HEAD
 			__release(q->lock_ptr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 

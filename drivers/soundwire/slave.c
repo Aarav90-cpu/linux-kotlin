@@ -115,9 +115,12 @@ static bool find_slave(struct sdw_bus *bus,
 	u64 addr;
 	int ret;
 
+<<<<<<< HEAD
 	if (acpi_bus_get_status(adev) || !acpi_dev_ready_for_enumeration(adev))
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = acpi_get_local_u64_address(adev->handle, &addr);
 	if (ret < 0)
 		return false;

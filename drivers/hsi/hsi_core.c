@@ -342,6 +342,10 @@ static void hsi_controller_release(struct device *dev)
 {
 	struct hsi_controller *hsi = to_hsi_controller(dev);
 
+<<<<<<< HEAD
+=======
+	kfree(hsi->port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(hsi);
 }
 
@@ -445,7 +449,11 @@ void hsi_put_controller(struct hsi_controller *hsi)
 		return;
 
 	for (i = 0; i < hsi->num_ports; i++)
+<<<<<<< HEAD
 		if (hsi->port[i])
+=======
+		if (hsi->port && hsi->port[i])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			put_device(&hsi->port[i]->device);
 	put_device(&hsi->device);
 }
@@ -461,20 +469,38 @@ EXPORT_SYMBOL_GPL(hsi_put_controller);
 struct hsi_controller *hsi_alloc_controller(unsigned int n_ports, gfp_t flags)
 {
 	struct hsi_controller	*hsi;
+<<<<<<< HEAD
+=======
+	struct hsi_port		**port;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		i;
 
 	if (!n_ports)
 		return NULL;
 
+<<<<<<< HEAD
 	hsi = kzalloc_flex(*hsi, port, n_ports, flags);
 	if (!hsi)
 		return NULL;
 
 	hsi->num_ports = n_ports;
+=======
+	hsi = kzalloc_obj(*hsi, flags);
+	if (!hsi)
+		return NULL;
+	port = kzalloc_objs(*port, n_ports, flags);
+	if (!port) {
+		kfree(hsi);
+		return NULL;
+	}
+	hsi->num_ports = n_ports;
+	hsi->port = port;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hsi->device.release = hsi_controller_release;
 	device_initialize(&hsi->device);
 
 	for (i = 0; i < n_ports; i++) {
+<<<<<<< HEAD
 		hsi->port[i] = kzalloc_obj(**hsi->port, flags);
 		if (hsi->port[i] == NULL)
 			goto out;
@@ -488,6 +514,21 @@ struct hsi_controller *hsi_alloc_controller(unsigned int n_ports, gfp_t flags)
 		mutex_init(&hsi->port[i]->lock);
 		BLOCKING_INIT_NOTIFIER_HEAD(&hsi->port[i]->n_head);
 		dev_set_name(&hsi->port[i]->device, "port%d", i);
+=======
+		port[i] = kzalloc_obj(**port, flags);
+		if (port[i] == NULL)
+			goto out;
+		port[i]->num = i;
+		port[i]->async = hsi_dummy_msg;
+		port[i]->setup = hsi_dummy_cl;
+		port[i]->flush = hsi_dummy_cl;
+		port[i]->start_tx = hsi_dummy_cl;
+		port[i]->stop_tx = hsi_dummy_cl;
+		port[i]->release = hsi_dummy_cl;
+		mutex_init(&port[i]->lock);
+		BLOCKING_INIT_NOTIFIER_HEAD(&port[i]->n_head);
+		dev_set_name(&port[i]->device, "port%d", i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hsi->port[i]->device.release = hsi_port_release;
 		device_initialize(&hsi->port[i]->device);
 	}

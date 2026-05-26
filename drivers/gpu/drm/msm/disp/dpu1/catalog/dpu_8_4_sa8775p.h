@@ -310,11 +310,19 @@ static const struct dpu_wb_cfg sa8775p_wb[] = {
 		.num_formats = ARRAY_SIZE(wb2_formats_rgb_yuv),
 		.clk_ctrl = DPU_CLK_CTRL_WB2,
 		.xin_id = 6,
+<<<<<<< HEAD
+=======
+		.vbif_idx = VBIF_RT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.maxlinewidth = 4096,
 		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
 	},
 };
 
+<<<<<<< HEAD
+=======
+/* TODO: INTF 3, 6, 7 and 8 are used for MST, marked as INTF_NONE for now */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dpu_intf_cfg sa8775p_intf[] = {
 	{
 		.name = "intf_0", .id = INTF_0,
@@ -345,7 +353,11 @@ static const struct dpu_intf_cfg sa8775p_intf[] = {
 	}, {
 		.name = "intf_3", .id = INTF_3,
 		.base = 0x37000, .len = 0x280,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 30),
@@ -361,7 +373,11 @@ static const struct dpu_intf_cfg sa8775p_intf[] = {
 	}, {
 		.name = "intf_6", .id = INTF_6,
 		.base = 0x3A000, .len = 0x280,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16),
@@ -369,7 +385,11 @@ static const struct dpu_intf_cfg sa8775p_intf[] = {
 	}, {
 		.name = "intf_7", .id = INTF_7,
 		.base = 0x3b000, .len = 0x280,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 18),
@@ -377,7 +397,11 @@ static const struct dpu_intf_cfg sa8775p_intf[] = {
 	}, {
 		.name = "intf_8", .id = INTF_8,
 		.base = 0x3c000, .len = 0x280,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_1,	/* pair with intf_4 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 12),
@@ -443,7 +467,12 @@ const struct dpu_mdss_cfg dpu_sa8775p_cfg = {
 	.wb = sa8775p_wb,
 	.intf_count = ARRAY_SIZE(sa8775p_intf),
 	.intf = sa8775p_intf,
+<<<<<<< HEAD
 	.vbif = &sdm845_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+	.vbif = sdm845_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &sa8775p_perf_data,
 };
 

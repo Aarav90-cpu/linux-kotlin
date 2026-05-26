@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.  *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -1296,6 +1300,11 @@ lpfc_nvme_prep_io_cmd(struct lpfc_vport *vport,
 	/* Word 10 */
 	bf_set(wqe_xchg, &wqe->fcp_iwrite.wqe_com, LPFC_NVME_XCHG);
 
+<<<<<<< HEAD
+=======
+	/* Words 13 14 15 are for PBDE support */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* add the VMID tags as per switch response */
 	if (unlikely(lpfc_ncmd->cur_iocbq.cmd_flag & LPFC_IO_VMID)) {
 		if (phba->pport->vmid_priority_tagging) {
@@ -1333,6 +1342,7 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 {
 	struct lpfc_hba *phba = vport->phba;
 	struct nvmefc_fcp_req *nCmd = lpfc_ncmd->nvmeCmd;
+<<<<<<< HEAD
 	struct sli4_sge *sgl = lpfc_ncmd->dma_sgl;
 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
 	struct scatterlist *data_sg;
@@ -1340,6 +1350,18 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 	uint32_t dma_len = 0;
 	uint32_t dma_offset = 0;
 	int nseg, i, j, k;
+=======
+	union lpfc_wqe128 *wqe = &lpfc_ncmd->cur_iocbq.wqe;
+	struct sli4_sge *sgl = lpfc_ncmd->dma_sgl;
+	struct sli4_hybrid_sgl *sgl_xtra = NULL;
+	struct scatterlist *data_sg;
+	struct sli4_sge *first_data_sgl;
+	struct ulp_bde64 *bde;
+	dma_addr_t physaddr = 0;
+	uint32_t dma_len = 0;
+	uint32_t dma_offset = 0;
+	int nseg, i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool lsp_just_set = false;
 
 	/* Fix up the command and response DMA stuff. */
@@ -1356,6 +1378,10 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 		 */
 		sgl += 2;
 
+<<<<<<< HEAD
+=======
+		first_data_sgl = sgl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpfc_ncmd->seg_cnt = nCmd->sg_cnt;
 		if (lpfc_ncmd->seg_cnt > lpfc_nvme_template.max_sgl_segments) {
 			lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
@@ -1379,9 +1405,12 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 
 		/* for tracking the segment boundaries */
 		j = 2;
+<<<<<<< HEAD
 		k = 5;
 		if (unlikely(!phba->cfg_xpsgl))
 			k = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < nseg; i++) {
 			if (data_sg == NULL) {
 				lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
@@ -1400,8 +1429,14 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 				bf_set(lpfc_sli4_sge_last, sgl, 0);
 
 				/* expand the segment */
+<<<<<<< HEAD
 				if (!lsp_just_set && (nseg != (i + k)) &&
 				    !((j + k) % phba->border_sge_num)) {
+=======
+				if (!lsp_just_set &&
+				    !((j + 1) % phba->border_sge_num) &&
+				    ((nseg - 1) != i)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					/* set LSP type */
 					bf_set(lpfc_sli4_sge_type, sgl,
 					       LPFC_SGE_TYPE_LSP);
@@ -1424,8 +1459,13 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 				}
 			}
 
+<<<<<<< HEAD
 			if (bf_get(lpfc_sli4_sge_type, sgl) !=
 			    LPFC_SGE_TYPE_LSP) {
+=======
+			if (!(bf_get(lpfc_sli4_sge_type, sgl) &
+				     LPFC_SGE_TYPE_LSP)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if ((nseg - 1) == i)
 					bf_set(lpfc_sli4_sge_last, sgl, 1);
 
@@ -1446,6 +1486,7 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 				sgl++;
 
 				lsp_just_set = false;
+<<<<<<< HEAD
 				j++;
 			} else {
 				sgl->word2 = cpu_to_le32(sgl->word2);
@@ -1457,15 +1498,49 @@ lpfc_nvme_prep_io_dma(struct lpfc_vport *vport,
 				else
 					sgl->sge_len =
 						cpu_to_le32(phba->cfg_sg_dma_buf_size);
+=======
+			} else {
+				sgl->word2 = cpu_to_le32(sgl->word2);
+
+				sgl->sge_len = cpu_to_le32(
+						     phba->cfg_sg_dma_buf_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
 				i = i - 1;
 
 				lsp_just_set = true;
+<<<<<<< HEAD
 				j += k;
 				k = 1;
 			}
 		}
+=======
+			}
+
+			j++;
+		}
+
+		/* PBDE support for first data SGE only */
+		if (nseg == 1 && phba->cfg_enable_pbde) {
+			/* Words 13-15 */
+			bde = (struct ulp_bde64 *)
+				&wqe->words[13];
+			bde->addrLow = first_data_sgl->addr_lo;
+			bde->addrHigh = first_data_sgl->addr_hi;
+			bde->tus.f.bdeSize =
+				le32_to_cpu(first_data_sgl->sge_len);
+			bde->tus.f.bdeFlags = BUFF_TYPE_BDE_64;
+			bde->tus.w = cpu_to_le32(bde->tus.w);
+
+			/* Word 11 - set PBDE bit */
+			bf_set(wqe_pbde, &wqe->generic.wqe_com, 1);
+		} else {
+			memset(&wqe->words[13], 0, (sizeof(uint32_t) * 3));
+			/* Word 11 - PBDE bit disabled by default template */
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		lpfc_ncmd->seg_cnt = 0;
 
@@ -2829,6 +2904,7 @@ lpfc_nvme_cancel_iocb(struct lpfc_hba *phba, struct lpfc_iocbq *pwqeIn,
 }
 
 /**
+<<<<<<< HEAD
  * lpfc_nvme_flush_abts_list - Clean up nvme commands from the abts list
  * @phba: Pointer to HBA context object.
  *
@@ -2877,6 +2953,8 @@ lpfc_nvme_flush_abts_list(struct lpfc_hba *phba)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * lpfc_nvmels_flush_cmd - Clean up outstanding nvmels commands for a port
  * @phba: Pointer to HBA context object.
  *

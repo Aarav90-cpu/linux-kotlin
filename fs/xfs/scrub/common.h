@@ -25,8 +25,11 @@ bool xchk_fblock_xref_process_error(struct xfs_scrub *sc,
 void xchk_block_set_preen(struct xfs_scrub *sc,
 		struct xfs_buf *bp);
 void xchk_ino_set_preen(struct xfs_scrub *sc, xfs_ino_t ino);
+<<<<<<< HEAD
 void xchk_fblock_set_preen(struct xfs_scrub *sc,
 		int whichfork, xfs_fileoff_t offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void xchk_set_corrupt(struct xfs_scrub *sc);
 void xchk_block_set_corrupt(struct xfs_scrub *sc,

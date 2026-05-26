@@ -113,6 +113,10 @@ then
 		then
 			print_warning $title `cat $T.seq`
 		fi
+<<<<<<< HEAD
+=======
+		exit 2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi
 fi | tee -a $file.diags
 

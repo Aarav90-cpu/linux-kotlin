@@ -29,6 +29,7 @@ refactorings already and are an expert in the specific area
 Subsystem-wide refactorings
 ===========================
 
+<<<<<<< HEAD
 Open-code drm_simple_encoder_init()
 -----------------------------------
 
@@ -61,6 +62,8 @@ Contact: Thomas Zimmermann, respective driver maintainer
 
 Level: Easy
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Remove custom dumb_map_offset implementations
 ---------------------------------------------
 

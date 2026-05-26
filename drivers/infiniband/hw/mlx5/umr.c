@@ -2,7 +2,10 @@
 /* Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. */
 
 #include <rdma/ib_umem_odp.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mlx5_ib.h"
 #include "umr.h"
 #include "wr.h"
@@ -147,7 +150,11 @@ int mlx5r_umr_resource_init(struct mlx5_ib_dev *dev)
 	 * UMR qp is set once, never changed until device unload.
 	 * Avoid taking the mutex if initialization is already done.
 	 */
+<<<<<<< HEAD
 	if (smp_load_acquire(&dev->umrc.qp))
+=======
+	if (dev->umrc.qp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	mutex_lock(&dev->umrc.init_lock);
@@ -185,7 +192,11 @@ int mlx5r_umr_resource_init(struct mlx5_ib_dev *dev)
 	sema_init(&dev->umrc.sem, MAX_UMR_WR);
 	mutex_init(&dev->umrc.lock);
 	dev->umrc.state = MLX5_UMR_STATE_ACTIVE;
+<<<<<<< HEAD
 	smp_store_release(&dev->umrc.qp, qp);
+=======
+	dev->umrc.qp = qp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&dev->umrc.init_lock);
 	return 0;

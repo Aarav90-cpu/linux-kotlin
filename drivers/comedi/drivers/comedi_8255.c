@@ -259,6 +259,20 @@ unsigned long subdev_8255_regbase(struct comedi_subdevice *s)
 }
 EXPORT_SYMBOL_GPL(subdev_8255_regbase);
 
+<<<<<<< HEAD
+=======
+static int __init comedi_8255_module_init(void)
+{
+	return 0;
+}
+module_init(comedi_8255_module_init);
+
+static void __exit comedi_8255_module_exit(void)
+{
+}
+module_exit(comedi_8255_module_exit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Comedi https://www.comedi.org");
 MODULE_DESCRIPTION("Comedi: Generic 8255 digital I/O support");
 MODULE_LICENSE("GPL");

@@ -43,6 +43,7 @@ xe_tlb_inval_fence_wait(struct xe_tlb_inval_fence *fence)
 
 void xe_tlb_inval_done_handler(struct xe_tlb_inval *tlb_inval, int seqno);
 
+<<<<<<< HEAD
 bool xe_tlb_inval_idle(struct xe_tlb_inval *tlb_inval);
 
 int xe_tlb_inval_range_tilemask_submit(struct xe_device *xe, u32 asid,
@@ -51,4 +52,6 @@ int xe_tlb_inval_range_tilemask_submit(struct xe_device *xe, u32 asid,
 
 void xe_tlb_inval_batch_wait(struct xe_tlb_inval_batch *batch);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _XE_TLB_INVAL_ */

@@ -3,6 +3,7 @@
 #ifndef __STATMOUNT_H
 #define __STATMOUNT_H
 
+<<<<<<< HEAD
 #include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -11,6 +12,12 @@
 
 #define STATMOUNT_BUFSIZE (1 << 15)
 
+=======
+#include <stdint.h>
+#include <linux/mount.h>
+#include <asm/unistd.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __NR_statmount
 	#if defined __alpha__
 		#define __NR_statmount 567
@@ -88,6 +95,7 @@ static inline ssize_t listmount(uint64_t mnt_id, uint64_t mnt_ns_id,
 	return syscall(__NR_listmount, &req, list, num, flags);
 }
 
+<<<<<<< HEAD
 static inline struct statmount *statmount_alloc(uint64_t mnt_id, uint64_t mnt_ns_id,
 						 uint64_t mask, unsigned int flags)
 {
@@ -135,4 +143,6 @@ static inline struct statmount *statmount_alloc_by_fd(int fd, uint64_t mask)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __STATMOUNT_H */

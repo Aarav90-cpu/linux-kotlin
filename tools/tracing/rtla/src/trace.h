@@ -45,6 +45,11 @@ void trace_events_destroy(struct trace_instance *instance,
 int trace_events_enable(struct trace_instance *instance,
 			  struct trace_events *events);
 
+<<<<<<< HEAD
 void trace_event_add_filter(struct trace_events *event, char *filter);
 void trace_event_add_trigger(struct trace_events *event, char *trigger);
+=======
+int trace_event_add_filter(struct trace_events *event, char *filter);
+int trace_event_add_trigger(struct trace_events *event, char *trigger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int trace_set_buffer_size(struct trace_instance *trace, int size);

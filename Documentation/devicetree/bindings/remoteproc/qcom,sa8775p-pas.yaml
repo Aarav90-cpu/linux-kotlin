@@ -51,6 +51,10 @@ properties:
     description: Reference to the AOSS side-channel message RAM.
 
   firmware-name:
+<<<<<<< HEAD
+=======
+    $ref: /schemas/types.yaml#/definitions/string-array
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: Firmware name of the Hexagon core
 

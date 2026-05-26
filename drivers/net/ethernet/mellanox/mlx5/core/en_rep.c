@@ -38,6 +38,10 @@
 #include <net/pkt_cls.h>
 #include <net/act_api.h>
 #include <net/devlink.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "eswitch.h"
 #include "en.h"
@@ -1368,8 +1372,11 @@ static void mlx5e_uplink_rep_disable(struct mlx5e_priv *priv)
 	netdev_unlock(priv->netdev);
 	rtnl_unlock();
 
+<<<<<<< HEAD
 	/* clean-up uplink's mpfs mac table */
 	queue_work(priv->wq, &priv->set_rx_mode_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5e_rep_bridge_cleanup(priv);
 	mlx5e_dcbnl_delete_app(priv);
 	mlx5_notifier_unregister(mdev, &priv->events_nb);

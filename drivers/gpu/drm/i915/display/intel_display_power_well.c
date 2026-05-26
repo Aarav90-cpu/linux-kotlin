@@ -6,8 +6,13 @@
 #include <linux/iopoll.h>
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
+=======
+
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_backlight_regs.h"
 #include "intel_combo_phy.h"
 #include "intel_combo_phy_regs.h"
@@ -18,7 +23,10 @@
 #include "intel_display_regs.h"
 #include "intel_display_rpm.h"
 #include "intel_display_types.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_dkl_phy.h"
 #include "intel_dkl_phy_regs.h"
 #include "intel_dmc.h"
@@ -28,6 +36,10 @@
 #include "intel_dpll.h"
 #include "intel_hotplug.h"
 #include "intel_parent.h"
+<<<<<<< HEAD
+=======
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_pps.h"
 #include "intel_psr.h"
 #include "intel_tc.h"
@@ -195,6 +207,7 @@ int intel_power_well_refcount(struct i915_power_well *power_well)
 	return power_well->count;
 }
 
+<<<<<<< HEAD
 static u32 dss_pipe_gating_bits(u8 irq_pipe_mask)
 {
 	u32 bits = 0;
@@ -237,6 +250,8 @@ static void dss_pipe_gating_enable_disable(struct intel_display *display,
 		    intel_de_read(display, CLKGATE_DIS_DSSDSC));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Starting with Haswell, we have a "Power Down Well" that can be turned off
  * when not needed anymore. We have 4 registers that can request the power well
@@ -244,6 +259,7 @@ static void dss_pipe_gating_enable_disable(struct intel_display *display,
  * requesting it to be enabled.
  */
 static void hsw_power_well_post_enable(struct intel_display *display,
+<<<<<<< HEAD
 				       u8 irq_pipe_mask)
 {
 	if (irq_pipe_mask) {
@@ -252,17 +268,31 @@ static void hsw_power_well_post_enable(struct intel_display *display,
 		if (intel_display_wa(display, INTEL_DISPLAY_WA_22021048059))
 			dss_pipe_gating_enable_disable(display, irq_pipe_mask, false);
 	}
+=======
+				       u8 irq_pipe_mask, bool has_vga)
+{
+	if (has_vga)
+		intel_vga_reset_io_mem(display);
+
+	if (irq_pipe_mask)
+		gen8_irq_power_well_post_enable(display, irq_pipe_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hsw_power_well_pre_disable(struct intel_display *display,
 				       u8 irq_pipe_mask)
 {
+<<<<<<< HEAD
 	if (irq_pipe_mask) {
 		if (intel_display_wa(display, INTEL_DISPLAY_WA_22021048059))
 			dss_pipe_gating_enable_disable(display, irq_pipe_mask, true);
 
 		gen8_irq_power_well_pre_disable(display, irq_pipe_mask);
 	}
+=======
+	if (irq_pipe_mask)
+		gen8_irq_power_well_pre_disable(display, irq_pipe_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define ICL_AUX_PW_TO_PHY(pw_idx)	\
@@ -465,7 +495,12 @@ static void hsw_power_well_enable(struct intel_display *display,
 	}
 
 	hsw_power_well_post_enable(display,
+<<<<<<< HEAD
 				   power_well->desc->irq_pipe_mask);
+=======
+				   power_well->desc->irq_pipe_mask,
+				   power_well->desc->has_vga);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hsw_power_well_disable(struct intel_display *display,
@@ -568,7 +603,11 @@ static void icl_tc_cold_exit(struct intel_display *display)
 	int ret, tries = 0;
 
 	while (1) {
+<<<<<<< HEAD
 		ret = intel_parent_pcode_write(display, ICL_PCODE_EXIT_TCCOLD, 0);
+=======
+		ret = intel_pcode_write(display->drm, ICL_PCODE_EXIT_TCCOLD, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret != -EAGAIN || ++tries == 3)
 			break;
 		msleep(1);
@@ -1276,7 +1315,11 @@ static void vlv_init_display_clock_gating(struct intel_display *display)
 	 * Disable trickle feed and enable pnd deadline calculation
 	 */
 	intel_de_write(display, MI_ARB_VLV,
+<<<<<<< HEAD
 		       MI_ARB_DISPLAY_TRICKLE_FEED_DISABLE_VLV);
+=======
+		       MI_ARB_DISPLAY_TRICKLE_FEED_DISABLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_de_write(display, CBR1_VLV, 0);
 
 	drm_WARN_ON(display->drm, DISPLAY_RUNTIME_INFO(display)->rawclk_freq == 0);
@@ -1841,7 +1884,11 @@ tgl_tc_cold_request(struct intel_display *display, bool block)
 		 * Spec states that we should timeout the request after 200us
 		 * but the function below will timeout after 500us
 		 */
+<<<<<<< HEAD
 		ret = intel_parent_pcode_read(display, TGL_PCODE_TCCOLD, &low_val, &high_val);
+=======
+		ret = intel_pcode_read(display->drm, TGL_PCODE_TCCOLD, &low_val, &high_val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret == 0) {
 			if (block &&
 			    (low_val & TGL_PCODE_EXIT_TCCOLD_DATA_L_EXIT_FAILED))

@@ -34,7 +34,10 @@
 
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
+<<<<<<< HEAD
 #include <linux/mtd/concat.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "mtdcore.h"
 
@@ -1121,12 +1124,15 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
 			goto out;
 	}
 
+<<<<<<< HEAD
 	if (IS_REACHABLE(CONFIG_MTD_VIRT_CONCAT)) {
 		ret = mtd_virt_concat_node_create();
 		if (ret < 0)
 			goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Prefer parsed partitions over driver-provided fallback */
 	ret = parse_mtd_partitions(mtd, types, parser_data);
 	if (ret == -EPROBE_DEFER)
@@ -1144,11 +1150,14 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	if (IS_REACHABLE(CONFIG_MTD_VIRT_CONCAT)) {
 		ret = mtd_virt_concat_create_join();
 		if (ret < 0)
 			goto out;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * FIXME: some drivers unfortunately call this function more than once.
 	 * So we have to check if we've already assigned the reboot notifier.
@@ -1198,11 +1207,14 @@ int mtd_device_unregister(struct mtd_info *master)
 	nvmem_unregister(master->otp_user_nvmem);
 	nvmem_unregister(master->otp_factory_nvmem);
 
+<<<<<<< HEAD
 	if (IS_REACHABLE(CONFIG_MTD_VIRT_CONCAT)) {
 		err = mtd_virt_concat_destroy(master);
 		if (err)
 			return err;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = del_mtd_partitions(master);
 	if (err)
 		return err;
@@ -2638,10 +2650,13 @@ err_reg:
 
 static void __exit cleanup_mtd(void)
 {
+<<<<<<< HEAD
 	if (IS_REACHABLE(CONFIG_MTD_VIRT_CONCAT)) {
 		mtd_virt_concat_destroy_joins();
 		mtd_virt_concat_destroy_items();
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove_recursive(dfs_dir_mtd);
 	cleanup_mtdchar();
 	if (proc_mtd)

@@ -27,7 +27,11 @@
 #define FT1_DA0_MASK	0x8
 #define FT1_DA1_MASK	0xc
 
+<<<<<<< HEAD
 #define FT1_N_REG(slice, n, reg)	\
+=======
+#define FT1_N_REG(slize, n, reg)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(offs[slice].ft1_slot_base + FT1_SLOT_SIZE * (n) + (reg))
 
 #define FT1_LEN_MASK		GENMASK(19, 16)
@@ -62,7 +66,11 @@ enum ft1_cfg_type {
 #define FT3_T			0x18
 #define FT3_T_MASK		0x1c
 
+<<<<<<< HEAD
 #define FT3_N_REG(slice, n, reg)	\
+=======
+#define FT3_N_REG(slize, n, reg)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(offs[slice].ft3_slot_base + FT3_SLOT_SIZE * (n) + (reg))
 
 /* offsets from rx_class n's base */
@@ -74,9 +82,12 @@ enum ft1_cfg_type {
 #define RX_CLASS_N_REG(slice, n, reg)	\
 	(offs[slice].rx_class_base + RX_CLASS_EN_SIZE * (n) + (reg))
 
+<<<<<<< HEAD
 #define RX_CLASS_OR_REG(slice, n, reg)	\
 	(offs[slice].rx_class_or_base + RX_CLASS_EN_SIZE * (n) + (reg))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* RX Class Gates */
 #define RX_CLASS_GATES_SIZE	0x4	/* bytes */
 
@@ -105,6 +116,7 @@ enum ft1_cfg_type {
 	((BIT(slot) << RX_CLASS_FT_FT1_MATCH_SHIFT) & \
 	RX_CLASS_FT_FT1_MATCH_MASK)
 
+<<<<<<< HEAD
 /* HSR/PRP protocol frame filtering */
 #define HSR_PTP_ETHERTYPE_OFFSET	0x12
 #define PRP_PTP_ETHERTYPE_OFFSET	0x0C
@@ -121,6 +133,8 @@ enum ft1_cfg_type {
 #define CLASSIFIER_HSR_TAG		11
 #define FT3_PTP_SLOT			14
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* RX class type */
 enum rx_class_sel_type {
 	RX_CLASS_SEL_TYPE_OR = 0,
@@ -152,7 +166,10 @@ struct miig_rt_offsets {
 	u32 ft3_p_base;
 	u32 ft_rx_ptr;
 	u32 rx_class_base;
+<<<<<<< HEAD
 	u32 rx_class_or_base;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 rx_class_cfg1;
 	u32 rx_class_cfg2;
 	u32 rx_class_gates_base;
@@ -181,7 +198,10 @@ static const struct miig_rt_offsets offs[] = {
 		0x308,
 		0x408,
 		0x40c,
+<<<<<<< HEAD
 		0x410,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		0x48c,
 		0x490,
 		0x494,
@@ -207,7 +227,10 @@ static const struct miig_rt_offsets offs[] = {
 		0x8d4,
 		0x9d4,
 		0x9d8,
+<<<<<<< HEAD
 		0x9dc,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		0xa58,
 		0xa5c,
 		0xa60,
@@ -489,6 +512,7 @@ void icssg_ft1_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac_addr)
 	rx_class_ft1_cfg_set_type(miig_rt, slice, 0, FT1_CFG_TYPE_EQ);
 }
 EXPORT_SYMBOL_GPL(icssg_ft1_set_mac_addr);
+<<<<<<< HEAD
 
 /**
  * icssg_ft3_hsr_configurations - Configure filter table for HSR/PRP protocol frames
@@ -532,3 +556,5 @@ void icssg_ft3_hsr_configurations(struct regmap *miig_rt, int slice,
 	}
 }
 EXPORT_SYMBOL_GPL(icssg_ft3_hsr_configurations);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

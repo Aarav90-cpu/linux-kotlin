@@ -438,6 +438,7 @@ static void ims_pcu_handle_response(struct ims_pcu *pcu)
 	}
 }
 
+<<<<<<< HEAD
 static void ims_pcu_reset_packet(struct ims_pcu *pcu)
 {
 	pcu->have_stx = true;
@@ -446,6 +447,8 @@ static void ims_pcu_reset_packet(struct ims_pcu *pcu)
 	pcu->check_sum = 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 {
 	int i;
@@ -458,6 +461,7 @@ static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 			continue;
 
 		if (pcu->have_dle) {
+<<<<<<< HEAD
 			if (pcu->read_pos >= IMS_PCU_BUF_SIZE) {
 				dev_warn(pcu->dev,
 					 "Packet too long (%d bytes), discarding\n",
@@ -466,6 +470,8 @@ static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 				continue;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pcu->have_dle = false;
 			pcu->read_buf[pcu->read_pos++] = data;
 			pcu->check_sum += data;
@@ -478,8 +484,15 @@ static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 				dev_warn(pcu->dev,
 					 "Unexpected STX at byte %d, discarding old data\n",
 					 pcu->read_pos);
+<<<<<<< HEAD
 			ims_pcu_reset_packet(pcu);
 			pcu->have_stx = true;
+=======
+			pcu->have_stx = true;
+			pcu->have_dle = false;
+			pcu->read_pos = 0;
+			pcu->check_sum = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		case IMS_PCU_PROTOCOL_DLE:
@@ -499,6 +512,7 @@ static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 				ims_pcu_handle_response(pcu);
 			}
 
+<<<<<<< HEAD
 			ims_pcu_reset_packet(pcu);
 			break;
 
@@ -511,6 +525,14 @@ static void ims_pcu_process_data(struct ims_pcu *pcu, struct urb *urb)
 				continue;
 			}
 
+=======
+			pcu->have_stx = false;
+			pcu->have_dle = false;
+			pcu->read_pos = 0;
+			break;
+
+		default:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pcu->read_buf[pcu->read_pos++] = data;
 			pcu->check_sum += data;
 			break;

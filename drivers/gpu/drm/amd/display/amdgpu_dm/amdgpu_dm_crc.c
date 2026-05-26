@@ -812,6 +812,10 @@ void amdgpu_dm_crtc_handle_crc_window_irq(struct drm_crtc *crtc)
 	unsigned long flags1;
 	bool forward_roi_change = false;
 	bool notify_ta = false;
+<<<<<<< HEAD
+=======
+	bool all_crc_ready = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_stream_state *stream_state;
 	int i;
 
@@ -935,6 +939,12 @@ void amdgpu_dm_crtc_handle_crc_window_irq(struct drm_crtc *crtc)
 			continue;
 		}
 
+<<<<<<< HEAD
+=======
+		if (!crtc_ctx->crc_info.crc[i].crc_ready)
+			all_crc_ready = false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (reset_crc_frame_count[i] || crtc_ctx->crc_info.crc[i].frame_count == UINT_MAX)
 			/* Reset the reference frame count after user update the ROI
 			 * or it reaches the maximum value.
@@ -944,6 +954,12 @@ void amdgpu_dm_crtc_handle_crc_window_irq(struct drm_crtc *crtc)
 			crtc_ctx->crc_info.crc[i].frame_count += 1;
 	}
 	spin_unlock_irqrestore(&crtc_ctx->crc_info.lock, flags1);
+<<<<<<< HEAD
+=======
+
+	if (all_crc_ready)
+		complete_all(&crtc_ctx->crc_info.completion);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void amdgpu_dm_crtc_secure_display_create_contexts(struct amdgpu_device *adev)

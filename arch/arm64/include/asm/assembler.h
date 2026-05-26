@@ -371,13 +371,21 @@ alternative_endif
  * [start, end) with dcache line size explicitly provided.
  *
  * 	op:		operation passed to dc instruction
+<<<<<<< HEAD
+=======
+ * 	domain:		domain used in dsb instruction
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * 	start:          starting virtual address of the region
  * 	end:            end virtual address of the region
  *	linesz:		dcache line size
  * 	fixup:		optional label to branch to on user fault
  * 	Corrupts:       start, end, tmp
  */
+<<<<<<< HEAD
 	.macro dcache_by_myline_op_nosync op, start, end, linesz, tmp, fixup
+=======
+	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sub	\tmp, \linesz, #1
 	bic	\start, \start, \tmp
 alternative_if ARM64_WORKAROUND_4311569
@@ -411,12 +419,17 @@ alternative_if ARM64_WORKAROUND_4311569
 	cbnz	\start, .Ldcache_op\@
 	.endif
 alternative_else_nop_endif
+<<<<<<< HEAD
+=======
+	dsb	\domain
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	_cond_uaccess_extable .Ldcache_op\@, \fixup
 	.endm
 
 /*
  * Macro to perform a data cache maintenance for the interval
+<<<<<<< HEAD
  * [start, end) without waiting for completion
  *
  * 	op:		operation passed to dc instruction
@@ -433,6 +446,9 @@ alternative_else_nop_endif
 /*
  * Macro to perform a data cache maintenance for the interval
  * [start, end) and wait for completion
+=======
+ * [start, end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * 	op:		operation passed to dc instruction
  * 	domain:		domain used in dsb instruction
@@ -442,8 +458,13 @@ alternative_else_nop_endif
  * 	Corrupts:       start, end, tmp1, tmp2
  */
 	.macro dcache_by_line_op op, domain, start, end, tmp1, tmp2, fixup
+<<<<<<< HEAD
 	dcache_by_line_op_nosync \op, \start, \end, \tmp1, \tmp2, \fixup
 	dsb \domain
+=======
+	dcache_line_size \tmp1, \tmp2
+	dcache_by_myline_op \op, \domain, \start, \end, \tmp1, \tmp2, \fixup
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.endm
 
 /*
@@ -761,6 +782,31 @@ alternative_else_nop_endif
 	set_sctlr sctlr_el2, \reg
 .endm
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Check whether asm code should yield as soon as it is able. This is
+	 * the case if we are currently running in task context, and the
+	 * TIF_NEED_RESCHED flag is set. (Note that the TIF_NEED_RESCHED flag
+	 * is stored negated in the top word of the thread_info::preempt_count
+	 * field)
+	 */
+	.macro		cond_yield, lbl:req, tmp:req, tmp2
+#ifdef CONFIG_PREEMPT_VOLUNTARY
+	get_current_task \tmp
+	ldr		\tmp, [\tmp, #TSK_TI_PREEMPT]
+	/*
+	 * If we are serving a softirq, there is no point in yielding: the
+	 * softirq will not be preempted no matter what we do, so we should
+	 * run to completion as quickly as we can. The preempt_count field will
+	 * have BIT(SOFTIRQ_SHIFT) set in this case, so the zero check will
+	 * catch this case too.
+	 */
+	cbz		\tmp, \lbl
+#endif
+	.endm
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Branch Target Identifier (BTI)
  */

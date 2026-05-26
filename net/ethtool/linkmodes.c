@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include "bitset.h"
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+#include "bitset.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* LINKMODES_GET */
 

@@ -1361,6 +1361,7 @@ to match what strlen() would return if it was ran on the string.
 
 However, if the string is freely accessible for the duration of inode's
 lifetime, consider using inode_set_cached_link() instead.
+<<<<<<< HEAD
 
 ---
 
@@ -1385,3 +1386,5 @@ for_each_alias(dentry, inode) instead of hlist_for_each_entry; better
 yet, see if any of the exported primitives could be used instead of
 the entire loop.  You still need to hold ->i_lock of the inode over
 either form of manual loop.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

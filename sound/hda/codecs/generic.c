@@ -863,7 +863,11 @@ static void sync_power_state_change(struct hda_codec *codec, hda_nid_t nid)
 {
 	if (nid) {
 		msleep(10);
+<<<<<<< HEAD
 		snd_hda_codec_write_sync(codec, nid, 0, AC_VERB_GET_POWER_STATE, 0);
+=======
+		snd_hda_codec_read(codec, nid, 0, AC_VERB_GET_POWER_STATE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

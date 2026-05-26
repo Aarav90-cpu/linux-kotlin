@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include <net/netdev_queues.h>
 
 #include "common.h"
 #include "netlink.h"
+=======
+#include <net/xdp_sock_drv.h>
+
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct channels_req_info {
 	struct ethnl_req_info		base;
@@ -109,7 +116,11 @@ ethnl_set_channels_validate(struct ethnl_req_info *req_info,
 static int
 ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 {
+<<<<<<< HEAD
 	unsigned int old_combined, old_rx, old_tx, i;
+=======
+	unsigned int from_channel, old_total, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool mod = false, mod_combined = false;
 	struct net_device *dev = req_info->dev;
 	struct ethtool_channels channels = {};
@@ -118,9 +129,14 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 	int ret;
 
 	dev->ethtool_ops->get_channels(dev, &channels);
+<<<<<<< HEAD
 	old_combined = channels.combined_count;
 	old_rx = channels.rx_count;
 	old_tx = channels.tx_count;
+=======
+	old_total = channels.combined_count +
+		    max(channels.rx_count, channels.tx_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ethnl_update_u32(&channels.rx_count, tb[ETHTOOL_A_CHANNELS_RX_COUNT],
 			 &mod);
@@ -170,6 +186,7 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* ensure channels are not busy at the moment */
 	for (i = channels.combined_count + channels.rx_count;
 	     i < old_combined + old_rx; i++) {
@@ -183,6 +200,16 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 				      info->extack))
 			return -EINVAL;
 	}
+=======
+	/* Disabling channels, query zero-copy AF_XDP sockets */
+	from_channel = channels.combined_count +
+		       min(channels.rx_count, channels.tx_count);
+	for (i = from_channel; i < old_total; i++)
+		if (xsk_get_pool_from_qid(dev, i)) {
+			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
+			return -EINVAL;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = dev->ethtool_ops->set_channels(dev, &channels);
 	return ret < 0 ? ret : 1;

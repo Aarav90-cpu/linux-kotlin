@@ -626,7 +626,11 @@ retry:
 		 */
 		dev->mode_config.delayed_event = true;
 		if (dev->mode_config.poll_enabled)
+<<<<<<< HEAD
 			mod_delayed_work(system_percpu_wq,
+=======
+			mod_delayed_work(system_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 &dev->mode_config.output_poll_work,
 					 0);
 	}

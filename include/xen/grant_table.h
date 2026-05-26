@@ -84,6 +84,7 @@ struct gntab_unmap_queue_data
 };
 
 int gnttab_init(void);
+<<<<<<< HEAD
 #ifdef CONFIG_HIBERNATE_CALLBACKS
 int gnttab_suspend(void);
 int gnttab_resume(void);
@@ -98,6 +99,10 @@ static inline int gnttab_resume(void)
 	return 0;
 }
 #endif
+=======
+int gnttab_suspend(void);
+int gnttab_resume(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int gnttab_grant_foreign_access(domid_t domid, unsigned long frame,
 				int readonly);

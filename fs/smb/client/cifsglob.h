@@ -23,6 +23,10 @@
 #include <linux/fcntl.h>
 #include "cifs_fs_sb.h"
 #include "cifsacl.h"
+<<<<<<< HEAD
+=======
+#include <crypto/internal/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/cifs/cifs_mount.h>
 #include "../common/smbglob.h"
 #include "../common/smb2pdu.h"
@@ -220,8 +224,15 @@ struct session_key {
 	char *response;
 };
 
+<<<<<<< HEAD
 /* encryption related structure/fields, not specific to a sec mech */
 struct cifs_secmech {
+=======
+/* crypto hashing related structure/fields, not specific to a sec mech */
+struct cifs_secmech {
+	struct shash_desc *aes_cmac; /* block-cipher based MAC function, for SMB3 signatures */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct crypto_aead *enc; /* smb3 encryption AEAD TFM (AES-CCM and AES-GCM) */
 	struct crypto_aead *dec; /* smb3 decryption AEAD TFM (AES-CCM and AES-GCM) */
 };
@@ -1531,6 +1542,7 @@ int cifs_file_set_size(const unsigned int xid, struct dentry *dentry,
 #define CIFS_CACHE_RW_FLG	(CIFS_CACHE_READ_FLG | CIFS_CACHE_WRITE_FLG)
 #define CIFS_CACHE_RHW_FLG	(CIFS_CACHE_RW_FLG | CIFS_CACHE_HANDLE_FLG)
 
+<<<<<<< HEAD
 enum cifs_inode_flags {
 	CIFS_INODE_PENDING_OPLOCK_BREAK,	/* oplock break in progress */
 	CIFS_INODE_PENDING_WRITERS,		/* Writes in progress */
@@ -1541,6 +1553,11 @@ enum cifs_inode_flags {
 	CIFS_INO_TMPFILE,			/* for O_TMPFILE inodes */
 	CIFS_INO_CLOSE_ON_LOCK,			/* Not to defer the close when lock is set */
 };
+=======
+/*
+ * One of these for each file inode
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct cifsInodeInfo {
 	struct netfs_inode netfs; /* Netfslib context and vfs inode */
@@ -1558,6 +1575,16 @@ struct cifsInodeInfo {
 	__u32 cifsAttrs; /* e.g. DOS archive bit, sparse, compressed, system */
 	unsigned int oplock;		/* oplock/lease level we have */
 	__u16 epoch;		/* used to track lease state changes */
+<<<<<<< HEAD
+=======
+#define CIFS_INODE_PENDING_OPLOCK_BREAK   (0) /* oplock break in progress */
+#define CIFS_INODE_PENDING_WRITERS	  (1) /* Writes in progress */
+#define CIFS_INODE_FLAG_UNUSED		  (2) /* Unused flag */
+#define CIFS_INO_DELETE_PENDING		  (3) /* delete pending on server */
+#define CIFS_INO_INVALID_MAPPING	  (4) /* pagecache is invalid */
+#define CIFS_INO_LOCK			  (5) /* lock bit for synchronization */
+#define CIFS_INO_CLOSE_ON_LOCK            (7) /* Not to defer the close when lock is set */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	spinlock_t writers_lock;
 	unsigned int writers;		/* Number of writers on this inode */
@@ -2256,7 +2283,10 @@ struct smb2_compound_vars {
 	struct kvec qi_iov;
 	struct kvec io_iov[SMB2_IOCTL_IOV_SIZE];
 	struct kvec si_iov[SMB2_SET_INFO_IOV_SIZE];
+<<<<<<< HEAD
 	struct kvec hl_iov[SMB2_SET_INFO_IOV_SIZE];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvec unlink_iov[SMB2_SET_INFO_IOV_SIZE];
 	struct kvec rename_iov[SMB2_SET_INFO_IOV_SIZE];
 	struct kvec close_iov;
@@ -2321,7 +2351,11 @@ static inline void mid_execute_callback(struct TCP_Server_Info *server,
 struct cifs_calc_sig_ctx {
 	struct md5_ctx *md5;
 	struct hmac_sha256_ctx *hmac;
+<<<<<<< HEAD
 	struct aes_cmac_ctx *cmac;
+=======
+	struct shash_desc *shash;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define CIFS_RECONN_DELAY_SECS	30
@@ -2381,8 +2415,11 @@ static inline int cifs_open_create_options(unsigned int oflags, int opts)
 		opts |= CREATE_WRITE_THROUGH;
 	if (oflags & O_DIRECT)
 		opts |= CREATE_NO_BUFFER;
+<<<<<<< HEAD
 	if (oflags & O_TMPFILE)
 		opts |= CREATE_DELETE_ON_CLOSE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return opts;
 }
 

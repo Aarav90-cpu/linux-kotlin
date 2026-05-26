@@ -49,6 +49,10 @@ static void rvt_mcast_qp_free(struct rvt_mcast_qp *mqp)
 {
 	struct rvt_qp *qp = mqp->qp;
 
+<<<<<<< HEAD
+=======
+	/* Notify hfi1_destroy_qp() if it is waiting. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvt_put_qp(qp);
 
 	kfree(mqp);

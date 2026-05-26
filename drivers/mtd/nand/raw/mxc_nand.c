@@ -4,7 +4,10 @@
  * Copyright 2008 Sascha Hauer, kernel@pengutronix.de
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/slab.h>
 #include <linux/init.h>
@@ -1715,6 +1718,7 @@ static int mxcnd_probe(struct platform_device *pdev)
 	this->legacy.chip_delay = 5;
 
 	nand_set_controller_data(this, host);
+<<<<<<< HEAD
 
 	struct device_node *np __free(device_node) =
 		of_get_next_child_with_prefix(pdev->dev.of_node, NULL, "nand");
@@ -1723,6 +1727,9 @@ static int mxcnd_probe(struct platform_device *pdev)
 		nand_set_flash_node(this, np);
 	else
 		nand_set_flash_node(this, pdev->dev.of_node);
+=======
+	nand_set_flash_node(this, pdev->dev.of_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	host->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(host->clk))

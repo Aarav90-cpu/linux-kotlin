@@ -941,6 +941,17 @@ static void bpf_map_free_rcu_gp(struct rcu_head *rcu)
 	bpf_map_free_in_work(container_of(rcu, struct bpf_map, rcu));
 }
 
+<<<<<<< HEAD
+=======
+static void bpf_map_free_mult_rcu_gp(struct rcu_head *rcu)
+{
+	if (rcu_trace_implies_rcu_gp())
+		bpf_map_free_rcu_gp(rcu);
+	else
+		call_rcu(rcu, bpf_map_free_rcu_gp);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* decrement map refcnt and schedule it for freeing via workqueue
  * (underlying map implementation ops->map_free() might sleep)
  */
@@ -951,9 +962,14 @@ void bpf_map_put(struct bpf_map *map)
 		bpf_map_free_id(map);
 
 		WARN_ON_ONCE(atomic64_read(&map->sleepable_refcnt));
+<<<<<<< HEAD
 		/* RCU tasks trace grace period implies RCU grace period. */
 		if (READ_ONCE(map->free_after_mult_rcu_gp))
 			call_rcu_tasks_trace(&map->rcu, bpf_map_free_rcu_gp);
+=======
+		if (READ_ONCE(map->free_after_mult_rcu_gp))
+			call_rcu_tasks_trace(&map->rcu, bpf_map_free_mult_rcu_gp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else if (READ_ONCE(map->free_after_rcu_gp))
 			call_rcu(&map->rcu, bpf_map_free_rcu_gp);
 		else
@@ -2825,7 +2841,11 @@ static int bpf_prog_verify_signature(struct bpf_prog *prog, union bpf_attr *attr
 	sig = kvmemdup_bpfptr(usig, attr->signature_size);
 	if (IS_ERR(sig)) {
 		bpf_key_put(key);
+<<<<<<< HEAD
 		return PTR_ERR(sig);
+=======
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	bpf_dynptr_init(&sig_ptr, sig, BPF_DYNPTR_TYPE_LOCAL, 0,
@@ -3083,6 +3103,13 @@ static int bpf_prog_load(union bpf_attr *attr, bpfptr_t uattr, u32 uattr_size)
 	if (err < 0)
 		goto free_used_maps;
 
+<<<<<<< HEAD
+=======
+	prog = bpf_prog_select_runtime(prog, &err);
+	if (err < 0)
+		goto free_used_maps;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = bpf_prog_mark_insn_arrays_ready(prog);
 	if (err < 0)
 		goto free_used_maps;
@@ -3262,6 +3289,17 @@ static bool bpf_link_is_tracepoint(struct bpf_link *link)
 	       (link->type == BPF_LINK_TYPE_TRACING && link->attach_type == BPF_TRACE_RAW_TP);
 }
 
+<<<<<<< HEAD
+=======
+static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
+{
+	if (rcu_trace_implies_rcu_gp())
+		bpf_link_defer_dealloc_rcu_gp(rcu);
+	else
+		call_rcu(rcu, bpf_link_defer_dealloc_rcu_gp);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bpf_link_free is guaranteed to be called from process context */
 static void bpf_link_free(struct bpf_link *link)
 {
@@ -3287,8 +3325,12 @@ static void bpf_link_free(struct bpf_link *link)
 		 * faultable case, since it exclusively uses RCU Tasks Trace.
 		 */
 		if (link->sleepable || (link->prog && link->prog->sleepable))
+<<<<<<< HEAD
 			/* RCU Tasks Trace grace period implies RCU grace period. */
 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
+=======
+			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* We need to do a SRCU grace period wait for non-faultable tracepoint BPF links. */
 		else if (bpf_link_is_tracepoint(link))
 			call_tracepoint_unregister_atomic(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
@@ -3736,6 +3778,7 @@ static int bpf_tracing_prog_attach(struct bpf_prog *prog,
 		tr = prog->aux->dst_trampoline;
 		tgt_prog = prog->aux->dst_prog;
 	}
+<<<<<<< HEAD
 	/*
 	 * It is to prevent modifying struct pt_regs via kprobe_write_ctx=true
 	 * freplace prog. Without this check, kprobe_write_ctx=true freplace
@@ -3753,6 +3796,8 @@ static int bpf_tracing_prog_attach(struct bpf_prog *prog,
 		err = -EINVAL;
 		goto out_unlock;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = bpf_link_prime(&link->link.link, &link_primer);
 	if (err)
@@ -6368,7 +6413,12 @@ static bool syscall_prog_is_valid_access(int off, int size,
 {
 	if (off < 0 || off >= U16_MAX)
 		return false;
+<<<<<<< HEAD
 	/* No alignment requirements for syscall ctx accesses. */
+=======
+	if (off % size != 0)
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 

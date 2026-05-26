@@ -31,6 +31,7 @@
 
 extern unsigned char sw_bp, sw_bp2, hw_bp, hw_bp2, bp_svc, bp_brk, hw_wp, ss_start, hw_bp_ctx;
 extern unsigned char iter_ss_begin, iter_ss_end;
+<<<<<<< HEAD
 static volatile u64 sw_bp_addr, hw_bp_addr;
 static volatile u64 wp_addr, wp_data_addr;
 static volatile u64 svc_addr;
@@ -39,6 +40,16 @@ static volatile u64 ss_addr[4], ss_idx;
 
 #define GEN_DEBUG_WRITE_REG(reg_name)			\
 static void write_##reg_name(int num, u64 val)	\
+=======
+static volatile uint64_t sw_bp_addr, hw_bp_addr;
+static volatile uint64_t wp_addr, wp_data_addr;
+static volatile uint64_t svc_addr;
+static volatile uint64_t ss_addr[4], ss_idx;
+#define  PC(v)  ((uint64_t)&(v))
+
+#define GEN_DEBUG_WRITE_REG(reg_name)			\
+static void write_##reg_name(int num, uint64_t val)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {							\
 	switch (num) {					\
 	case 0:						\
@@ -102,8 +113,13 @@ GEN_DEBUG_WRITE_REG(dbgwvr)
 
 static void reset_debug_state(void)
 {
+<<<<<<< HEAD
 	u8 brps, wrps, i;
 	u64 dfr0;
+=======
+	uint8_t brps, wrps, i;
+	uint64_t dfr0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("msr daifset, #8");
 
@@ -140,7 +156,11 @@ static void enable_os_lock(void)
 
 static void enable_monitor_debug_exceptions(void)
 {
+<<<<<<< HEAD
 	u64 mdscr;
+=======
+	uint64_t mdscr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("msr daifclr, #8");
 
@@ -149,9 +169,15 @@ static void enable_monitor_debug_exceptions(void)
 	isb();
 }
 
+<<<<<<< HEAD
 static void install_wp(u8 wpn, u64 addr)
 {
 	u32 wcr;
+=======
+static void install_wp(uint8_t wpn, uint64_t addr)
+{
+	uint32_t wcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wcr = DBGWCR_LEN8 | DBGWCR_RD | DBGWCR_WR | DBGWCR_EL1 | DBGWCR_E;
 	write_dbgwcr(wpn, wcr);
@@ -162,9 +188,15 @@ static void install_wp(u8 wpn, u64 addr)
 	enable_monitor_debug_exceptions();
 }
 
+<<<<<<< HEAD
 static void install_hw_bp(u8 bpn, u64 addr)
 {
 	u32 bcr;
+=======
+static void install_hw_bp(uint8_t bpn, uint64_t addr)
+{
+	uint32_t bcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bcr = DBGBCR_LEN8 | DBGBCR_EXEC | DBGBCR_EL1 | DBGBCR_E;
 	write_dbgbcr(bpn, bcr);
@@ -174,10 +206,18 @@ static void install_hw_bp(u8 bpn, u64 addr)
 	enable_monitor_debug_exceptions();
 }
 
+<<<<<<< HEAD
 static void install_wp_ctx(u8 addr_wp, u8 ctx_bp, u64 addr, u64 ctx)
 {
 	u32 wcr;
 	u64 ctx_bcr;
+=======
+static void install_wp_ctx(uint8_t addr_wp, uint8_t ctx_bp, uint64_t addr,
+			   uint64_t ctx)
+{
+	uint32_t wcr;
+	uint64_t ctx_bcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup a context-aware breakpoint for Linked Context ID Match */
 	ctx_bcr = DBGBCR_LEN8 | DBGBCR_EXEC | DBGBCR_EL1 | DBGBCR_E |
@@ -187,7 +227,11 @@ static void install_wp_ctx(u8 addr_wp, u8 ctx_bp, u64 addr, u64 ctx)
 
 	/* Setup a linked watchpoint (linked to the context-aware breakpoint) */
 	wcr = DBGWCR_LEN8 | DBGWCR_RD | DBGWCR_WR | DBGWCR_EL1 | DBGWCR_E |
+<<<<<<< HEAD
 	      DBGWCR_WT_LINK | ((u32)ctx_bp << DBGWCR_LBN_SHIFT);
+=======
+	      DBGWCR_WT_LINK | ((uint32_t)ctx_bp << DBGWCR_LBN_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	write_dbgwcr(addr_wp, wcr);
 	write_dbgwvr(addr_wp, addr);
 	isb();
@@ -195,9 +239,16 @@ static void install_wp_ctx(u8 addr_wp, u8 ctx_bp, u64 addr, u64 ctx)
 	enable_monitor_debug_exceptions();
 }
 
+<<<<<<< HEAD
 void install_hw_bp_ctx(u8 addr_bp, u8 ctx_bp, u64 addr, u64 ctx)
 {
 	u32 addr_bcr, ctx_bcr;
+=======
+void install_hw_bp_ctx(uint8_t addr_bp, uint8_t ctx_bp, uint64_t addr,
+		       uint64_t ctx)
+{
+	uint32_t addr_bcr, ctx_bcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup a context-aware breakpoint for Linked Context ID Match */
 	ctx_bcr = DBGBCR_LEN8 | DBGBCR_EXEC | DBGBCR_EL1 | DBGBCR_E |
@@ -211,7 +262,11 @@ void install_hw_bp_ctx(u8 addr_bp, u8 ctx_bp, u64 addr, u64 ctx)
 	 */
 	addr_bcr = DBGBCR_LEN8 | DBGBCR_EXEC | DBGBCR_EL1 | DBGBCR_E |
 		   DBGBCR_BT_ADDR_LINK_CTX |
+<<<<<<< HEAD
 		   ((u32)ctx_bp << DBGBCR_LBN_SHIFT);
+=======
+		   ((uint32_t)ctx_bp << DBGBCR_LBN_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	write_dbgbcr(addr_bp, addr_bcr);
 	write_dbgbvr(addr_bp, addr);
 	isb();
@@ -221,7 +276,11 @@ void install_hw_bp_ctx(u8 addr_bp, u8 ctx_bp, u64 addr, u64 ctx)
 
 static void install_ss(void)
 {
+<<<<<<< HEAD
 	u64 mdscr;
+=======
+	uint64_t mdscr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("msr daifclr, #8");
 
@@ -232,9 +291,15 @@ static void install_ss(void)
 
 static volatile char write_data;
 
+<<<<<<< HEAD
 static void guest_code(u8 bpn, u8 wpn, u8 ctx_bpn)
 {
 	u64 ctx = 0xabcdef;	/* a random context number */
+=======
+static void guest_code(uint8_t bpn, uint8_t wpn, uint8_t ctx_bpn)
+{
+	uint64_t ctx = 0xabcdef;	/* a random context number */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Software-breakpoint */
 	reset_debug_state();
@@ -375,8 +440,13 @@ static void guest_svc_handler(struct ex_regs *regs)
 
 static void guest_code_ss(int test_cnt)
 {
+<<<<<<< HEAD
 	u64 i;
 	u64 bvr, wvr, w_bvr, w_wvr;
+=======
+	uint64_t i;
+	uint64_t bvr, wvr, w_bvr, w_wvr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < test_cnt; i++) {
 		/* Bits [1:0] of dbg{b,w}vr are RES0 */
@@ -414,12 +484,20 @@ static void guest_code_ss(int test_cnt)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static int debug_version(u64 id_aa64dfr0)
+=======
+static int debug_version(uint64_t id_aa64dfr0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return FIELD_GET(ID_AA64DFR0_EL1_DebugVer, id_aa64dfr0);
 }
 
+<<<<<<< HEAD
 static void test_guest_debug_exceptions(u8 bpn, u8 wpn, u8 ctx_bpn)
+=======
+static void test_guest_debug_exceptions(uint8_t bpn, uint8_t wpn, uint8_t ctx_bpn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
@@ -466,8 +544,13 @@ void test_single_step_from_userspace(int test_cnt)
 	struct kvm_vm *vm;
 	struct ucall uc;
 	struct kvm_run *run;
+<<<<<<< HEAD
 	u64 pc, cmd;
 	u64 test_pc = 0;
+=======
+	uint64_t pc, cmd;
+	uint64_t test_pc = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool ss_enable = false;
 	struct kvm_guest_debug debug = {};
 
@@ -504,7 +587,11 @@ void test_single_step_from_userspace(int test_cnt)
 			    "Unexpected pc 0x%lx (expected 0x%lx)",
 			    pc, test_pc);
 
+<<<<<<< HEAD
 		if ((pc + 4) == (u64)&iter_ss_end) {
+=======
+		if ((pc + 4) == (uint64_t)&iter_ss_end) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			test_pc = 0;
 			debug.control = KVM_GUESTDBG_ENABLE;
 			ss_enable = false;
@@ -517,8 +604,13 @@ void test_single_step_from_userspace(int test_cnt)
 		 * iter_ss_end, the pc for the next KVM_EXIT_DEBUG should
 		 * be the current pc + 4.
 		 */
+<<<<<<< HEAD
 		if ((pc >= (u64)&iter_ss_begin) &&
 		    (pc < (u64)&iter_ss_end))
+=======
+		if ((pc >= (uint64_t)&iter_ss_begin) &&
+		    (pc < (uint64_t)&iter_ss_end))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			test_pc = pc + 4;
 		else
 			test_pc = 0;
@@ -531,9 +623,15 @@ void test_single_step_from_userspace(int test_cnt)
  * Run debug testing using the various breakpoint#, watchpoint# and
  * context-aware breakpoint# with the given ID_AA64DFR0_EL1 configuration.
  */
+<<<<<<< HEAD
 void test_guest_debug_exceptions_all(u64 aa64dfr0)
 {
 	u8 brp_num, wrp_num, ctx_brp_num, normal_brp_num, ctx_brp_base;
+=======
+void test_guest_debug_exceptions_all(uint64_t aa64dfr0)
+{
+	uint8_t brp_num, wrp_num, ctx_brp_num, normal_brp_num, ctx_brp_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int b, w, c;
 
 	/* Number of breakpoints */
@@ -578,7 +676,11 @@ int main(int argc, char *argv[])
 	struct kvm_vm *vm;
 	int opt;
 	int ss_iteration = 10000;
+<<<<<<< HEAD
 	u64 aa64dfr0;
+=======
+	uint64_t aa64dfr0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
 	aa64dfr0 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ID_AA64DFR0_EL1));

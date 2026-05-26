@@ -14,6 +14,12 @@
 #include <asm/page.h>
 #include <asm-generic/pgtable-nopmd.h>
 
+<<<<<<< HEAD
+=======
+/* A handy thing to have if one has the RAM. Declared in head.S */
+extern unsigned long empty_zero_page;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The PTE model described here is that of the Hexagon Virtual Machine,
  * which autonomously walks 2-level page tables.  At a lower level, we
@@ -345,6 +351,12 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
 	return (unsigned long)__va(pmd_val(pmd) & PAGE_MASK);
 }
 
+<<<<<<< HEAD
+=======
+/* ZERO_PAGE - returns the globally shared zero page */
+#define ZERO_PAGE(vaddr) (virt_to_page(&empty_zero_page))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
  * are !pte_none() && !pte_present().

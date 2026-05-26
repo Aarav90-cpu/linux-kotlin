@@ -46,6 +46,7 @@ static const struct class mux_class = {
 	.name = "mux",
 };
 
+<<<<<<< HEAD
 /**
  * struct devm_mux_state_state -	Tracks managed resources for mux-state objects.
  * @mstate:				Pointer to a mux state.
@@ -56,6 +57,8 @@ struct devm_mux_state_state {
 	int (*exit)(struct mux_state *mstate);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEFINE_IDA(mux_ida);
 
 static int __init mux_init(void)
@@ -526,12 +529,17 @@ static struct mux_chip *of_find_mux_chip_by_node(struct device_node *np)
 	return dev ? to_mux_chip(dev) : NULL;
 }
 
+<<<<<<< HEAD
 /**
+=======
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * mux_get() - Get the mux-control for a device.
  * @dev: The device that needs a mux-control.
  * @mux_name: The name identifying the mux-control.
  * @state: Pointer to where the requested state is returned, or NULL when
  *         the required multiplexer states are handled by other means.
+<<<<<<< HEAD
  * @optional: Whether to return NULL and silence errors when mux doesn't exist.
  *
  * Return: Pointer to the mux-control on success, an ERR_PTR with a negative
@@ -539,6 +547,13 @@ static struct mux_chip *of_find_mux_chip_by_node(struct device_node *np)
  */
 static struct mux_control *mux_get(struct device *dev, const char *mux_name,
 				   unsigned int *state, bool optional)
+=======
+ *
+ * Return: A pointer to the mux-control, or an ERR_PTR with a negative errno.
+ */
+static struct mux_control *mux_get(struct device *dev, const char *mux_name,
+				   unsigned int *state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device_node *np = dev->of_node;
 	struct of_phandle_args args;
@@ -554,9 +569,13 @@ static struct mux_control *mux_get(struct device *dev, const char *mux_name,
 		else
 			index = of_property_match_string(np, "mux-control-names",
 							 mux_name);
+<<<<<<< HEAD
 		if (index < 0 && optional) {
 			return NULL;
 		} else if (index < 0) {
+=======
+		if (index < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev_err(dev, "mux controller '%s' not found\n",
 				mux_name);
 			return ERR_PTR(index);
@@ -572,12 +591,17 @@ static struct mux_control *mux_get(struct device *dev, const char *mux_name,
 						 "mux-controls", "#mux-control-cells",
 						 index, &args);
 	if (ret) {
+<<<<<<< HEAD
 		if (optional && ret == -ENOENT)
 			return NULL;
 
 		dev_err(dev, "%pOF: failed to get mux-%s %s(%i)\n",
 			np, state ? "state" : "control",
 			mux_name ?: "", index);
+=======
+		dev_err(dev, "%pOF: failed to get mux-%s %s(%i)\n",
+			np, state ? "state" : "control", mux_name ?: "", index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ERR_PTR(ret);
 	}
 
@@ -635,16 +659,21 @@ static struct mux_control *mux_get(struct device *dev, const char *mux_name,
  */
 struct mux_control *mux_control_get(struct device *dev, const char *mux_name)
 {
+<<<<<<< HEAD
 	struct mux_control *mux = mux_get(dev, mux_name, NULL, false);
 
 	if (!mux)
 		return ERR_PTR(-ENOENT);
 
 	return mux;
+=======
+	return mux_get(dev, mux_name, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(mux_control_get);
 
 /**
+<<<<<<< HEAD
  * mux_control_get_optional() - Get the optional mux-control for a device.
  * @dev: The device that needs a mux-control.
  * @mux_name: The name identifying the mux-control.
@@ -659,6 +688,8 @@ struct mux_control *mux_control_get_optional(struct device *dev, const char *mux
 EXPORT_SYMBOL_GPL(mux_control_get_optional);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * mux_control_put() - Put away the mux-control for good.
  * @mux: The mux-control to put away.
  *
@@ -707,6 +738,7 @@ struct mux_control *devm_mux_control_get(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_mux_control_get);
 
+<<<<<<< HEAD
 /**
  * mux_state_get() - Get the mux-state for a device.
  * @dev: The device that needs a mux-state.
@@ -717,6 +749,16 @@ EXPORT_SYMBOL_GPL(devm_mux_control_get);
  * errno on error, or NULL if optional is true and mux doesn't exist.
  */
 static struct mux_state *mux_state_get(struct device *dev, const char *mux_name, bool optional)
+=======
+/*
+ * mux_state_get() - Get the mux-state for a device.
+ * @dev: The device that needs a mux-state.
+ * @mux_name: The name identifying the mux-state.
+ *
+ * Return: A pointer to the mux-state, or an ERR_PTR with a negative errno.
+ */
+static struct mux_state *mux_state_get(struct device *dev, const char *mux_name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mux_state *mstate;
 
@@ -724,15 +766,22 @@ static struct mux_state *mux_state_get(struct device *dev, const char *mux_name,
 	if (!mstate)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	mstate->mux = mux_get(dev, mux_name, &mstate->state, optional);
+=======
+	mstate->mux = mux_get(dev, mux_name, &mstate->state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(mstate->mux)) {
 		int err = PTR_ERR(mstate->mux);
 
 		kfree(mstate);
 		return ERR_PTR(err);
+<<<<<<< HEAD
 	} else if (!mstate->mux) {
 		kfree(mstate);
 		return optional ? NULL : ERR_PTR(-ENOENT);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return mstate;
@@ -752,6 +801,7 @@ static void mux_state_put(struct mux_state *mstate)
 
 static void devm_mux_state_release(struct device *dev, void *res)
 {
+<<<<<<< HEAD
 	struct devm_mux_state_state *devm_state = res;
 
 	if (devm_state->exit)
@@ -812,6 +862,11 @@ err_mux_state_init:
 err_devres_alloc:
 	mux_state_put(mstate);
 	return ERR_PTR(ret);
+=======
+	struct mux_state *mstate = *(struct mux_state **)res;
+
+	mux_state_put(mstate);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -821,6 +876,7 @@ err_devres_alloc:
  * @mux_name: The name identifying the mux-control.
  *
  * Return: Pointer to the mux-state, or an ERR_PTR with a negative errno.
+<<<<<<< HEAD
  *
  * The mux-state will automatically be freed on release.
  */
@@ -885,6 +941,31 @@ struct mux_state *devm_mux_state_get_optional_selected(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_mux_state_get_optional_selected);
 
+=======
+ */
+struct mux_state *devm_mux_state_get(struct device *dev,
+				     const char *mux_name)
+{
+	struct mux_state **ptr, *mstate;
+
+	ptr = devres_alloc(devm_mux_state_release, sizeof(*ptr), GFP_KERNEL);
+	if (!ptr)
+		return ERR_PTR(-ENOMEM);
+
+	mstate = mux_state_get(dev, mux_name);
+	if (IS_ERR(mstate)) {
+		devres_free(ptr);
+		return mstate;
+	}
+
+	*ptr = mstate;
+	devres_add(dev, ptr);
+
+	return mstate;
+}
+EXPORT_SYMBOL_GPL(devm_mux_state_get);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Using subsys_initcall instead of module_init here to try to ensure - for
  * the non-modular case - that the subsystem is initialized when mux consumers

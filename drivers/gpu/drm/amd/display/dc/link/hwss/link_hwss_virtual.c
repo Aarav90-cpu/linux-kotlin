@@ -27,26 +27,38 @@
 
 void virtual_setup_stream_encoder(struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)pipe_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void virtual_setup_stream_attribute(struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)pipe_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void virtual_reset_stream_encoder(struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)pipe_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void virtual_disable_link_output(struct dc_link *link,
 	const struct link_resource *link_res,
 	enum signal_type signal)
 {
+<<<<<<< HEAD
 	(void)link;
 	(void)link_res;
 	(void)signal;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct link_hwss virtual_link_hwss = {

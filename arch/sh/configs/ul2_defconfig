@@ -79,3 +79,7 @@ CONFIG_NLS_CODEPAGE_437=y
 CONFIG_NLS_CODEPAGE_932=y
 CONFIG_NLS_ISO8859_1=y
 # CONFIG_ENABLE_MUST_CHECK is not set
+<<<<<<< HEAD
+=======
+CONFIG_CRYPTO_MICHAEL_MIC=y
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

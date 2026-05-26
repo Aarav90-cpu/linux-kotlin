@@ -24,7 +24,10 @@ properties:
   compatible:
     items:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-dwc3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,glymur-dwc3
           - qcom,glymur-dwc3-mp
           - qcom,ipq4019-dwc3
@@ -154,6 +157,11 @@ properties:
 
   wakeup-source: true
 
+<<<<<<< HEAD
+=======
+# Required child node:
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -174,7 +182,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 3
         clock-names:
           items:
@@ -203,7 +214,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,ipq5424-dwc3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,ipq9574-dwc3
               - qcom,kaanapali-dwc3
               - qcom,msm8953-dwc3
@@ -223,7 +237,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 5
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 5
         clock-names:
           items:
@@ -266,7 +283,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 4
         clock-names:
           items:
@@ -286,7 +306,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 4
         clock-names:
           items:
@@ -307,7 +330,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 9
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 9
         clock-names:
           items:
@@ -351,17 +377,25 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,eliza-dwc3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,milos-dwc3
               - qcom,qcm2290-dwc3
               - qcom,qcs615-dwc3
               - qcom,sar2130p-dwc3
               - qcom,sc8180x-dwc3
               - qcom,sc8180x-dwc3-mp
+<<<<<<< HEAD
               - qcom,sm4250-dwc3
               - qcom,sm6115-dwc3
               - qcom,sm6125-dwc3
               - qcom,sm6375-dwc3
+=======
+              - qcom,sm6115-dwc3
+              - qcom,sm6125-dwc3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8150-dwc3
               - qcom,sm8250-dwc3
               - qcom,sm8450-dwc3
@@ -371,7 +405,10 @@ allOf:
       properties:
         clocks:
           minItems: 6
+<<<<<<< HEAD
           maxItems: 6
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         clock-names:
           items:
             - const: cfg_noc
@@ -413,7 +450,10 @@ allOf:
     then:
       properties:
         clocks:
+<<<<<<< HEAD
           minItems: 7
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 7
         clock-names:
           items:
@@ -456,7 +496,10 @@ allOf:
               - qcom,msm8996-dwc3
               - qcom,qcs404-dwc3
               - qcom,sdm660-dwc3
+<<<<<<< HEAD
               - qcom,sm4250-dwc3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm6115-dwc3
               - qcom,sm6125-dwc3
     then:
@@ -483,7 +526,10 @@ allOf:
     then:
       properties:
         interrupts:
+<<<<<<< HEAD
           minItems: 4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 4
         interrupt-names:
           items:
@@ -497,6 +543,7 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,ipq5424-dwc3
               - qcom,ipq9574-dwc3
     then:
@@ -517,6 +564,8 @@ allOf:
         compatible:
           contains:
             enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,glymur-dwc3
               - qcom,milos-dwc3
               - qcom,x1e80100-dwc3
@@ -532,14 +581,21 @@ allOf:
             - const: pwr_event
             - const: dp_hs_phy_irq
             - const: dm_hs_phy_irq
+<<<<<<< HEAD
             - enum: [hs_phy_irq, ss_phy_irq]
+=======
+            - const: ss_phy_irq
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   - if:
       properties:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,eliza-dwc3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,ipq4019-dwc3
               - qcom,ipq8064-dwc3
               - qcom,kaanapali-dwc3
@@ -556,8 +612,13 @@ allOf:
               - qcom,sdx55-dwc3
               - qcom,sdx65-dwc3
               - qcom,sdx75-dwc3
+<<<<<<< HEAD
               - qcom,sm6350-dwc3
               - qcom,sm6375-dwc3
+=======
+              - qcom,sm4250-dwc3
+              - qcom,sm6350-dwc3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8150-dwc3
               - qcom,sm8250-dwc3
               - qcom,sm8350-dwc3

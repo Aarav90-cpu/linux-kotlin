@@ -41,6 +41,7 @@ static const struct snd_pcm_hw_constraint_list fsl_sai_rate_constraints = {
 	.list = fsl_sai_rates,
 };
 
+<<<<<<< HEAD
 static const char * const inc_mode[] = {
 	"On enabled and bitcount increment", "On enabled"
 };
@@ -87,6 +88,8 @@ static const struct snd_kcontrol_new fsl_sai_timestamp_ctrls[] = {
 				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
  *
@@ -1056,6 +1059,7 @@ static int fsl_sai_dai_resume(struct snd_soc_component *component)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int fsl_sai_component_probe(struct snd_soc_component *component)
 {
 	struct fsl_sai *sai = snd_soc_component_get_drvdata(component);
@@ -1067,6 +1071,8 @@ static int fsl_sai_component_probe(struct snd_soc_component *component)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
 	{
 		.name = "sai-tx-rx",
@@ -1120,7 +1126,10 @@ static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
 
 static const struct snd_soc_component_driver fsl_component = {
 	.name			= "fsl-sai",
+<<<<<<< HEAD
 	.probe			= fsl_sai_component_probe,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.resume			= fsl_sai_dai_resume,
 	.legacy_dai_naming	= 1,
 };
@@ -1269,6 +1278,7 @@ static bool fsl_sai_volatile_reg(struct device *dev, unsigned int reg)
 	case FSL_SAI_RDR5:
 	case FSL_SAI_RDR6:
 	case FSL_SAI_RDR7:
+<<<<<<< HEAD
 	case FSL_SAI_TTCTN:
 	case FSL_SAI_RTCTN:
 	case FSL_SAI_TTCTL:
@@ -1277,6 +1287,8 @@ static bool fsl_sai_volatile_reg(struct device *dev, unsigned int reg)
 	case FSL_SAI_RTCTL:
 	case FSL_SAI_RBCTN:
 	case FSL_SAI_RTCAP:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	default:
 		return false;

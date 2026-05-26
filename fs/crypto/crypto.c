@@ -365,7 +365,11 @@ void fscrypt_msg(const struct inode *inode, const char *level,
 	vaf.fmt = fmt;
 	vaf.va = &args;
 	if (inode && inode->i_ino)
+<<<<<<< HEAD
 		printk("%sfscrypt (%s, inode %llu): %pV\n",
+=======
+		printk("%sfscrypt (%s, inode %lu): %pV\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       level, inode->i_sb->s_id, inode->i_ino, &vaf);
 	else if (inode)
 		printk("%sfscrypt (%s): %pV\n", level, inode->i_sb->s_id, &vaf);

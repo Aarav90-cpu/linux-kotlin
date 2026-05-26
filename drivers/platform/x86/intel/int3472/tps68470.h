@@ -17,7 +17,10 @@ struct tps68470_regulator_platform_data;
 struct int3472_tps68470_board_data {
 	const char *dev_name;
 	const struct tps68470_regulator_platform_data *tps68470_regulator_pdata;
+<<<<<<< HEAD
 	const struct software_node *tps68470_gpio_swnode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int n_gpiod_lookups;
 	struct gpiod_lookup_table *tps68470_gpio_lookup_tables[];
 };

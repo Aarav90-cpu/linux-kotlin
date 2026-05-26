@@ -15,7 +15,10 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <errno.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FRAME_RATE 8000
 #define PERIOD_SIZE 4410
@@ -53,6 +56,7 @@ FIXTURE_SETUP(timer_f) {
 	timer_dev_fd = open("/dev/snd/timer", O_RDONLY);
 	ASSERT_GE(timer_dev_fd, 0);
 
+<<<<<<< HEAD
 	if (ioctl(timer_dev_fd, SNDRV_TIMER_IOCTL_CREATE, self->utimer_info) < 0) {
 		int err = errno;
 
@@ -61,6 +65,9 @@ FIXTURE_SETUP(timer_f) {
 			SKIP(return, "CONFIG_SND_UTIMER not enabled");
 		ASSERT_EQ(err, 0);
 	}
+=======
+	ASSERT_EQ(ioctl(timer_dev_fd, SNDRV_TIMER_IOCTL_CREATE, self->utimer_info), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT_GE(self->utimer_info->fd, 0);
 
 	close(timer_dev_fd);

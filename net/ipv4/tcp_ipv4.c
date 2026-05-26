@@ -105,7 +105,11 @@ static DEFINE_PER_CPU(struct sock_bh_locked, ipv4_tcp_sk) = {
 
 static DEFINE_MUTEX(tcp_exit_batch_mutex);
 
+<<<<<<< HEAD
 INDIRECT_CALLABLE_SCOPE union tcp_seq_and_ts_off
+=======
+static union tcp_seq_and_ts_off
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 tcp_v4_init_seq_and_ts_off(const struct net *net, const struct sk_buff *skb)
 {
 	return secure_tcp_seq_and_ts_off(net,
@@ -201,6 +205,10 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_twsk_unique);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int tcp_v4_pre_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
 			      int addr_len)
@@ -361,6 +369,10 @@ failure:
 	inet->inet_dport = 0;
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_connect);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This routine reacts to ICMP_FRAG_NEEDED mtu indications as defined in RFC1191.
@@ -400,6 +412,10 @@ void tcp_v4_mtu_reduced(struct sock *sk)
 		tcp_simple_retransmit(sk);
 	} /* else let the usual retransmit timer handle it */
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_mtu_reduced);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void do_redirect(struct sk_buff *skb, struct sock *sk)
 {
@@ -433,6 +449,10 @@ void tcp_req_err(struct sock *sk, u32 seq, bool abort)
 	}
 	reqsk_put(req);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_req_err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* TCP-LD (RFC 6069) logic */
 void tcp_ld_RTO_revert(struct sock *sk, u32 seq)
@@ -471,6 +491,10 @@ void tcp_ld_RTO_revert(struct sock *sk, u32 seq)
 		tcp_retransmit_timer(sk);
 	}
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_ld_RTO_revert);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This routine is called by the ICMP module when it gets some
@@ -655,6 +679,27 @@ out:
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+void __tcp_v4_send_check(struct sk_buff *skb, __be32 saddr, __be32 daddr)
+{
+	struct tcphdr *th = tcp_hdr(skb);
+
+	th->check = ~tcp_v4_check(skb->len, saddr, daddr, 0);
+	skb->csum_start = skb_transport_header(skb) - skb->head;
+	skb->csum_offset = offsetof(struct tcphdr, check);
+}
+
+/* This routine computes an IPv4 TCP checksum. */
+void tcp_v4_send_check(struct sock *sk, struct sk_buff *skb)
+{
+	const struct inet_sock *inet = inet_sk(sk);
+
+	__tcp_v4_send_check(skb, inet->inet_saddr, inet->inet_daddr);
+}
+EXPORT_IPV6_MOD(tcp_v4_send_check);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define REPLY_OPTIONS_LEN      (MAX_TCP_OPTION_SPACE / sizeof(__be32))
 
 static bool tcp_v4_ao_sign_reset(const struct sock *sk, struct sk_buff *skb,
@@ -1217,6 +1262,10 @@ static void tcp_v4_reqsk_destructor(struct request_sock *req)
  */
 
 DEFINE_STATIC_KEY_DEFERRED_FALSE(tcp_md5_needed, HZ);
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_needed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static bool better_md5_match(struct tcp_md5sig_key *old, struct tcp_md5sig_key *new)
 {
@@ -1275,6 +1324,10 @@ struct tcp_md5sig_key *__tcp_md5_do_lookup(const struct sock *sk, int l3index,
 	}
 	return best_match;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(__tcp_md5_do_lookup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct tcp_md5sig_key *tcp_md5_do_lookup_exact(const struct sock *sk,
 						      const union tcp_md5_addr *addr,
@@ -1321,6 +1374,10 @@ struct tcp_md5sig_key *tcp_v4_md5_lookup(const struct sock *sk,
 	addr = (const union tcp_md5_addr *)&addr_sk->sk_daddr;
 	return tcp_md5_do_lookup(sk, l3index, addr, AF_INET);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_md5_lookup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int tcp_md5sig_info_add(struct sock *sk, gfp_t gfp)
 {
@@ -1415,6 +1472,10 @@ int tcp_md5_do_add(struct sock *sk, const union tcp_md5_addr *addr,
 	return __tcp_md5_do_add(sk, addr, family, prefixlen, l3index, flags,
 				newkey, newkeylen, GFP_KERNEL);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_do_add);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int tcp_md5_key_copy(struct sock *sk, const union tcp_md5_addr *addr,
 		     int family, u8 prefixlen, int l3index,
@@ -1442,6 +1503,10 @@ int tcp_md5_key_copy(struct sock *sk, const union tcp_md5_addr *addr,
 				key->flags, key->key, key->keylen,
 				sk_gfp_mask(sk, GFP_ATOMIC));
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_key_copy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int tcp_md5_do_del(struct sock *sk, const union tcp_md5_addr *addr, int family,
 		   u8 prefixlen, int l3index, u8 flags)
@@ -1456,6 +1521,10 @@ int tcp_md5_do_del(struct sock *sk, const union tcp_md5_addr *addr, int family,
 	kfree_rcu(key, rcu);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_do_del);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_clear_md5_list(struct sock *sk)
 {
@@ -1593,6 +1662,10 @@ tcp_v4_md5_hash_skb(char *md5_hash, const struct tcp_md5sig_key *key,
 	tcp_md5_hash_key(&ctx, key);
 	md5_final(&ctx, md5_hash);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_md5_hash_skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif
 
@@ -1662,6 +1735,10 @@ drop:
 	tcp_listendrop(sk);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_conn_request);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 /*
@@ -1787,6 +1864,10 @@ put_and_exit:
 	tcp_done(newsk);
 	goto exit;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_syn_recv_sock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct sock *tcp_v4_cookie_check(struct sock *sk, struct sk_buff *skb)
 {
@@ -1827,6 +1908,10 @@ INDIRECT_CALLABLE_DECLARE(struct dst_entry *ipv4_dst_check(struct dst_entry *,
 int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
 {
 	enum skb_drop_reason reason;
+<<<<<<< HEAD
+=======
+	struct sock *rsk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reason = psp_sk_rx_policy_check(sk, skb);
 	if (reason)
@@ -1840,7 +1925,11 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
 
 		sock_rps_save_rxhash(sk, skb);
 		sk_mark_napi_id(sk, skb);
+<<<<<<< HEAD
 		if (dst && unlikely(dst != skb_dst(skb))) {
+=======
+		if (dst) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (sk->sk_rx_dst_ifindex != skb->skb_iif ||
 			    !INDIRECT_CALL_1(dst->ops->check, ipv4_dst_check,
 					     dst, 0)) {
@@ -1862,21 +1951,39 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
 			return 0;
 		if (nsk != sk) {
 			reason = tcp_child_process(sk, nsk, skb);
+<<<<<<< HEAD
 			sock_put(nsk);
 			if (reason)
 				goto reset;
+=======
+			if (reason) {
+				rsk = nsk;
+				goto reset;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		}
 	} else
 		sock_rps_save_rxhash(sk, skb);
 
 	reason = tcp_rcv_state_process(sk, skb);
+<<<<<<< HEAD
 	if (reason)
 		goto reset;
 	return 0;
 
 reset:
 	tcp_v4_send_reset(sk, skb, sk_rst_convert_drop_reason(reason));
+=======
+	if (reason) {
+		rsk = sk;
+		goto reset;
+	}
+	return 0;
+
+reset:
+	tcp_v4_send_reset(rsk, skb, sk_rst_convert_drop_reason(reason));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 discard:
 	sk_skb_reason_drop(sk, skb, reason);
 	/* Be careful here. If this function gets more complicated and
@@ -1896,7 +2003,50 @@ err_discard:
 }
 EXPORT_SYMBOL(tcp_v4_do_rcv);
 
+<<<<<<< HEAD
 enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+=======
+int tcp_v4_early_demux(struct sk_buff *skb)
+{
+	struct net *net = dev_net_rcu(skb->dev);
+	const struct iphdr *iph;
+	const struct tcphdr *th;
+	struct sock *sk;
+
+	if (skb->pkt_type != PACKET_HOST)
+		return 0;
+
+	if (!pskb_may_pull(skb, skb_transport_offset(skb) + sizeof(struct tcphdr)))
+		return 0;
+
+	iph = ip_hdr(skb);
+	th = tcp_hdr(skb);
+
+	if (th->doff < sizeof(struct tcphdr) / 4)
+		return 0;
+
+	sk = __inet_lookup_established(net, iph->saddr, th->source,
+				       iph->daddr, ntohs(th->dest),
+				       skb->skb_iif, inet_sdif(skb));
+	if (sk) {
+		skb->sk = sk;
+		skb->destructor = sock_edemux;
+		if (sk_fullsock(sk)) {
+			struct dst_entry *dst = rcu_dereference(sk->sk_rx_dst);
+
+			if (dst)
+				dst = dst_check(dst, 0);
+			if (dst &&
+			    sk->sk_rx_dst_ifindex == skb->skb_iif)
+				skb_dst_set_noref(skb, dst);
+		}
+	}
+	return 0;
+}
+
+bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+		     enum skb_drop_reason *reason)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 tail_gso_size, tail_gso_segs;
 	struct skb_shared_info *shinfo;
@@ -1924,9 +2074,16 @@ enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
 	if (unlikely(tcp_checksum_complete(skb))) {
 		bh_unlock_sock(sk);
 		trace_tcp_bad_csum(skb);
+<<<<<<< HEAD
 		__TCP_INC_STATS(sock_net(sk), TCP_MIB_CSUMERRORS);
 		__TCP_INC_STATS(sock_net(sk), TCP_MIB_INERRS);
 		return SKB_DROP_REASON_TCP_CSUM;
+=======
+		*reason = SKB_DROP_REASON_TCP_CSUM;
+		__TCP_INC_STATS(sock_net(sk), TCP_MIB_CSUMERRORS);
+		__TCP_INC_STATS(sock_net(sk), TCP_MIB_INERRS);
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Attempt coalescing to last skb in backlog, even if we are
@@ -2000,7 +2157,11 @@ enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
 		__NET_INC_STATS(sock_net(sk),
 				LINUX_MIB_TCPBACKLOGCOALESCE);
 		kfree_skb_partial(skb, fragstolen);
+<<<<<<< HEAD
 		return SKB_NOT_DROPPED_YET;
+=======
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	__skb_push(skb, hdrlen);
 
@@ -2025,6 +2186,7 @@ no_coalesce:
 	if (unlikely(err)) {
 		bh_unlock_sock(sk);
 		if (err == -ENOMEM) {
+<<<<<<< HEAD
 			__NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
 			return SKB_DROP_REASON_PFMEMALLOC;
 		}
@@ -2033,6 +2195,19 @@ no_coalesce:
 	}
 	return SKB_NOT_DROPPED_YET;
 }
+=======
+			*reason = SKB_DROP_REASON_PFMEMALLOC;
+			__NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
+		} else {
+			*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
+			__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
+		}
+		return true;
+	}
+	return false;
+}
+EXPORT_IPV6_MOD(tcp_add_backlog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tcp_v4_restore_cb(struct sk_buff *skb)
 {
@@ -2156,8 +2331,12 @@ lookup:
 		}
 		refcounted = true;
 		nsk = NULL;
+<<<<<<< HEAD
 		drop_reason = tcp_filter(sk, skb);
 		if (!drop_reason) {
+=======
+		if (!tcp_filter(sk, skb, &drop_reason)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			th = (const struct tcphdr *)skb->data;
 			iph = ip_hdr(skb);
 			tcp_v4_fill_cb(skb, iph, th);
@@ -2189,10 +2368,15 @@ lookup:
 
 				rst_reason = sk_rst_convert_drop_reason(drop_reason);
 				tcp_v4_send_reset(nsk, skb, rst_reason);
+<<<<<<< HEAD
 				sock_put(nsk);
 				goto discard_and_relse;
 			}
 			sock_put(nsk);
+=======
+				goto discard_and_relse;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sock_put(sk);
 			return 0;
 		}
@@ -2221,8 +2405,12 @@ process:
 
 	nf_reset_ct(skb);
 
+<<<<<<< HEAD
 	drop_reason = tcp_filter(sk, skb);
 	if (drop_reason)
+=======
+	if (tcp_filter(sk, skb, &drop_reason))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto discard_and_relse;
 
 	th = (const struct tcphdr *)skb->data;
@@ -2245,8 +2433,12 @@ process:
 	if (!sock_owned_by_user(sk)) {
 		ret = tcp_v4_do_rcv(sk, skb);
 	} else {
+<<<<<<< HEAD
 		drop_reason = tcp_add_backlog(sk, skb);
 		if (drop_reason)
+=======
+		if (tcp_add_backlog(sk, skb, &drop_reason))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto discard_and_relse;
 	}
 	bh_unlock_sock(sk);
@@ -2350,9 +2542,17 @@ void inet_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
 		sk->sk_rx_dst_ifindex = skb->skb_iif;
 	}
 }
+<<<<<<< HEAD
 
 const struct inet_connection_sock_af_ops ipv4_specific = {
 	.queue_xmit	   = ip_queue_xmit,
+=======
+EXPORT_IPV6_MOD(inet_sk_rx_dst_set);
+
+const struct inet_connection_sock_af_ops ipv4_specific = {
+	.queue_xmit	   = ip_queue_xmit,
+	.send_check	   = tcp_v4_send_check,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.rebuild_header	   = inet_sk_rebuild_header,
 	.sk_rx_dst_set	   = inet_sk_rx_dst_set,
 	.conn_request	   = tcp_v4_conn_request,
@@ -2362,6 +2562,10 @@ const struct inet_connection_sock_af_ops ipv4_specific = {
 	.getsockopt	   = ip_getsockopt,
 	.mtu_reduced	   = tcp_v4_mtu_reduced,
 };
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(ipv4_specific);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
 static const struct tcp_sock_af_ops tcp_sock_ipv4_specific = {
@@ -2454,6 +2658,10 @@ void tcp_v4_destroy_sock(struct sock *sk)
 
 	sk_sockets_allocated_dec(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_v4_destroy_sock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PROC_FS
 /* Proc filesystem TCP sock list dumping. */
@@ -2689,6 +2897,10 @@ out:
 	st->last_pos = *pos;
 	return rc;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_seq_start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 {
@@ -2719,6 +2931,10 @@ out:
 	st->last_pos = *pos;
 	return rc;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_seq_next);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_seq_stop(struct seq_file *seq, void *v)
 {
@@ -2736,6 +2952,10 @@ void tcp_seq_stop(struct seq_file *seq, void *v)
 		break;
 	}
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_seq_stop);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void get_openreq4(const struct request_sock *req,
 			 struct seq_file *f, int i)
@@ -2807,7 +3027,11 @@ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
 				      READ_ONCE(tp->copied_seq), 0);
 
 	seq_printf(f, "%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX "
+<<<<<<< HEAD
 			"%08X %5u %8d %llu %d %pK %lu %lu %u %u %d",
+=======
+			"%08X %5u %8d %lu %d %pK %lu %lu %u %u %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		i, src, srcp, dest, destp, state,
 		READ_ONCE(tp->write_seq) - tp->snd_una,
 		rx_queue,

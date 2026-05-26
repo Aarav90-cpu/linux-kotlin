@@ -44,7 +44,10 @@ struct affs_inode_info {
 	struct mutex i_link_lock;		/* Protects internal inode access. */
 	struct mutex i_ext_lock;		/* Protects internal inode access. */
 #define i_hash_lock i_ext_lock
+<<<<<<< HEAD
 	struct mapping_metadata_bhs i_metadata_bhs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32	 i_blkcnt;			/* block count */
 	u32	 i_extcnt;			/* extended block count */
 	u32	*i_lc;				/* linear cache of extended blocks */
@@ -152,7 +155,10 @@ extern bool	affs_nofilenametruncate(const struct dentry *dentry);
 extern int	affs_check_name(const unsigned char *name, int len,
 				bool notruncate);
 extern int	affs_copy_name(unsigned char *bstr, struct dentry *dentry);
+<<<<<<< HEAD
 struct mapping_metadata_bhs *affs_get_metadata_bhs(struct inode *inode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* bitmap. c */
 
@@ -186,7 +192,11 @@ extern int	affs_rename2(struct mnt_idmap *idmap,
 /* inode.c */
 
 extern struct inode		*affs_new_inode(struct inode *dir);
+<<<<<<< HEAD
 extern int			 affs_setattr(struct mnt_idmap *idmap,
+=======
+extern int			 affs_notify_change(struct mnt_idmap *idmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					struct dentry *dentry, struct iattr *attr);
 extern void			 affs_evict_inode(struct inode *inode);
 extern struct inode		*affs_iget(struct super_block *sb,

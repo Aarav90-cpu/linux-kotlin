@@ -60,7 +60,10 @@
 	 PDO_VAR_MAX_VOLT(max_mv) | PDO_VAR_MAX_CURR(max_ma))
 
 #define APDO_TYPE_PPS		0
+<<<<<<< HEAD
 #define APDO_TYPE_SPR_AVS	2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define PDO_APDO_TYPE_SHIFT	28	/* Only valid value currently is 0x0 - PPS */
 #define PDO_APDO_TYPE_MASK	0x3
@@ -86,6 +89,7 @@
 	 PDO_PPS_APDO_MIN_VOLT(min_mv) | PDO_PPS_APDO_MAX_VOLT(max_mv) |	\
 	 PDO_PPS_APDO_MAX_CURR(max_ma))
 
+<<<<<<< HEAD
 #define PDO_SPR_AVS_APDO_9V_TO_15V_MAX_CURR_SHIFT	10	/* 10mA units */
 #define PDO_SPR_AVS_APDO_15V_TO_20V_MAX_CURR_SHIFT	0	/* 10mA units */
 #define PDO_SPR_AVS_APDO_MAX_CURR_MASK			0x3ff
@@ -103,6 +107,8 @@
 	PDO_SPR_AVS_APDO_9V_TO_15V_MAX_CURR(max_cur_9v_to_15v_ma) |		\
 	PDO_SPR_AVS_APDO_15V_TO_20V_MAX_CURR(max_cur_15v_to_20v_ma))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  /*
   * Based on "Table 6-14 Fixed Supply PDO - Sink" of "USB Power Delivery Specification Revision 3.0,
   * Version 1.2"
@@ -483,6 +489,7 @@
 	 | ((vbm) & 0x3) << 15 | (curr) << 14 | ((vbi) & 0x3f) << 7	\
 	 | ((gi) & 0x3f) << 1 | (ct))
 
+<<<<<<< HEAD
 /*
  * Sink Load Characteristics
  * -------------------------
@@ -501,4 +508,6 @@
 #define COMPLIANCE_PS1		(1 << 1)
 #define COMPLIANCE_PS2		(1 << 2)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __DT_POWER_DELIVERY_H */

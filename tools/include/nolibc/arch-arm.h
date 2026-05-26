@@ -50,7 +50,11 @@
 
 #endif /* end THUMB */
 
+<<<<<<< HEAD
 #define __nolibc_syscall0(num)                                                \
+=======
+#define my_syscall0(num)                                                      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0");                                   \
@@ -67,7 +71,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall1(num, arg1)                                          \
+=======
+#define my_syscall1(num, arg1)                                                \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \
@@ -84,7 +92,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall2(num, arg1, arg2)                                    \
+=======
+#define my_syscall2(num, arg1, arg2)                                          \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \
@@ -102,7 +114,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall3(num, arg1, arg2, arg3)                              \
+=======
+#define my_syscall3(num, arg1, arg2, arg3)                                    \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \
@@ -121,7 +137,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall4(num, arg1, arg2, arg3, arg4)                        \
+=======
+#define my_syscall4(num, arg1, arg2, arg3, arg4)                              \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \
@@ -141,7 +161,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall5(num, arg1, arg2, arg3, arg4, arg5)                  \
+=======
+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)                        \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \
@@ -162,7 +186,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)            \
+=======
+#define my_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)                  \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__(_NOLIBC_SYSCALL_REG) = (num);             \
 	register long _arg1 __asm__ ("r0") = (long)(arg1);                    \

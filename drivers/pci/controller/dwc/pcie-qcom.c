@@ -170,7 +170,11 @@
 #define QCOM_PCIE_CRC8_POLYNOMIAL		(BIT(2) | BIT(1) | BIT(0))
 
 #define QCOM_PCIE_LINK_SPEED_TO_BW(speed) \
+<<<<<<< HEAD
 		Mbps_to_icc(PCIE_SPEED2MBS_ENC(pcie_get_link_speed(speed)))
+=======
+		Mbps_to_icc(PCIE_SPEED2MBS_ENC(pcie_link_speed[speed]))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct qcom_pcie_resources_1_0_0 {
 	struct clk_bulk_data *clks;
@@ -320,7 +324,11 @@ static int qcom_pcie_start_link(struct dw_pcie *pci)
 
 	qcom_pcie_common_set_equalization(pci);
 
+<<<<<<< HEAD
 	if (pcie_get_link_speed(pci->max_link_speed) == PCIE_SPEED_16_0GT)
+=======
+	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qcom_pcie_common_set_16gt_lane_margining(pci);
 
 	/* Enable Link Training state machine */
@@ -350,13 +358,18 @@ static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
 	dw_pcie_dbi_ro_wr_dis(pci);
 }
 
+<<<<<<< HEAD
 static void qcom_pcie_set_slot_nccs(struct dw_pcie *pci)
+=======
+static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
 	u32 val;
 
 	dw_pcie_dbi_ro_wr_en(pci);
 
+<<<<<<< HEAD
 	/*
 	 * Qcom PCIe Root Ports do not support generating command completion
 	 * notifications for the Hot-Plug commands. So set the NCCS field to
@@ -364,6 +377,10 @@ static void qcom_pcie_set_slot_nccs(struct dw_pcie *pci)
 	 */
 	val = readl(pci->dbi_base + offset + PCI_EXP_SLTCAP);
 	val |= PCI_EXP_SLTCAP_NCCS;
+=======
+	val = readl(pci->dbi_base + offset + PCI_EXP_SLTCAP);
+	val &= ~PCI_EXP_SLTCAP_HPC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	writel(val, pci->dbi_base + offset + PCI_EXP_SLTCAP);
 
 	dw_pcie_dbi_ro_wr_dis(pci);
@@ -563,7 +580,11 @@ static int qcom_pcie_post_init_2_1_0(struct qcom_pcie *pcie)
 	writel(CFG_BRIDGE_SB_INIT,
 	       pci->dbi_base + AXI_MSTR_RESP_COMP_CTRL1);
 
+<<<<<<< HEAD
 	qcom_pcie_set_slot_nccs(pcie->pci);
+=======
+	qcom_pcie_clear_hpc(pcie->pci);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -643,7 +664,11 @@ static int qcom_pcie_post_init_1_0_0(struct qcom_pcie *pcie)
 		writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT);
 	}
 
+<<<<<<< HEAD
 	qcom_pcie_set_slot_nccs(pcie->pci);
+=======
+	qcom_pcie_clear_hpc(pcie->pci);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -736,7 +761,11 @@ static int qcom_pcie_post_init_2_3_2(struct qcom_pcie *pcie)
 	val |= EN;
 	writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT_V2);
 
+<<<<<<< HEAD
 	qcom_pcie_set_slot_nccs(pcie->pci);
+=======
+	qcom_pcie_clear_hpc(pcie->pci);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1042,7 +1071,11 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
 		writel(WR_NO_SNOOP_OVERRIDE_EN | RD_NO_SNOOP_OVERRIDE_EN,
 				pcie->parf + PARF_NO_SNOOP_OVERRIDE);
 
+<<<<<<< HEAD
 	qcom_pcie_set_slot_nccs(pcie->pci);
+=======
+	qcom_pcie_clear_hpc(pcie->pci);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1584,7 +1617,11 @@ static void qcom_pcie_icc_opp_update(struct qcom_pcie *pcie)
 				ret);
 		}
 	} else if (pcie->use_pm_opp) {
+<<<<<<< HEAD
 		freq_mbps = pcie_dev_speed_mbps(pcie_get_link_speed(speed));
+=======
+		freq_mbps = pcie_dev_speed_mbps(pcie_link_speed[speed]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (freq_mbps < 0)
 			return;
 

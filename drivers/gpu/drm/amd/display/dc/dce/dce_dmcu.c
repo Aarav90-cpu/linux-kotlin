@@ -71,7 +71,10 @@ static const uint32_t abm_gain_stepsize = 0x0060;
 
 static bool dce_dmcu_init(struct dmcu *dmcu)
 {
+<<<<<<< HEAD
 	(void)dmcu;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// Do nothing
 	return true;
 }

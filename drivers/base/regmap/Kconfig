@@ -56,7 +56,11 @@ config REGMAP_W1
 
 config REGMAP_MDIO
 	tristate
+<<<<<<< HEAD
 	depends on PHYLIB
+=======
+	select MDIO_BUS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config REGMAP_MMIO
 	tristate

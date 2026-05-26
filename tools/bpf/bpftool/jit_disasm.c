@@ -93,6 +93,7 @@ init_context(disasm_ctx_t *ctx, const char *arch,
 		p_err("Failed to retrieve triple");
 		return -1;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Enable all aarch64 ISA extensions so the disassembler can handle any
@@ -103,6 +104,9 @@ init_context(disasm_ctx_t *ctx, const char *arch,
 						   symbol_lookup_callback);
 	else
 		*ctx = LLVMCreateDisasm(triple, NULL, 0, NULL, symbol_lookup_callback);
+=======
+	*ctx = LLVMCreateDisasm(triple, NULL, 0, NULL, symbol_lookup_callback);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LLVMDisposeMessage(triple);
 
 	if (!*ctx) {

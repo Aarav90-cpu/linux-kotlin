@@ -647,6 +647,7 @@ static inline int check_devmap_hash(void)
 	return 1;
 }
 
+<<<<<<< HEAD
 struct bpf_ringbuf {
 	unsigned long consumer_pos;
 	unsigned long producer_pos;
@@ -655,6 +656,10 @@ struct bpf_ringbuf {
 struct bpf_ringbuf_map {
 	struct bpf_map map;
 	struct bpf_ringbuf *rb;
+=======
+struct bpf_ringbuf_map {
+	struct bpf_map map;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __attribute__((preserve_access_index));
 
 struct {
@@ -665,6 +670,7 @@ static inline int check_ringbuf(void)
 {
 	struct bpf_ringbuf_map *ringbuf = (struct bpf_ringbuf_map *)&m_ringbuf;
 	struct bpf_map *map = (struct bpf_map *)&m_ringbuf;
+<<<<<<< HEAD
 	struct bpf_ringbuf *rb;
 	void *ptr;
 
@@ -679,6 +685,11 @@ static inline int check_ringbuf(void)
 	VERIFY(rb->consumer_pos == 0);
 	VERIFY(rb->producer_pos == 128 + BPF_RINGBUF_HDR_SZ);
 
+=======
+
+	VERIFY(check(&ringbuf->map, map, 0, 0, page_size));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 

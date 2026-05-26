@@ -88,7 +88,11 @@ static int jffs2_do_readpage_nolock(struct inode *inode, struct folio *folio)
 	unsigned char *kaddr;
 	int ret;
 
+<<<<<<< HEAD
 	jffs2_dbg(2, "%s(): ino #%llu, page at offset 0x%lx\n",
+=======
+	jffs2_dbg(2, "%s(): ino #%lu, page at offset 0x%lx\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, inode->i_ino, folio->index << PAGE_SHIFT);
 
 	BUG_ON(!folio_test_locked(folio));
@@ -259,7 +263,11 @@ static int jffs2_write_end(const struct kiocb *iocb,
 	uint32_t writtenlen = 0;
 	void *buf;
 
+<<<<<<< HEAD
 	jffs2_dbg(1, "%s(): ino #%llu, page at 0x%llx, range %d-%d, flags %lx\n",
+=======
+	jffs2_dbg(1, "%s(): ino #%lu, page at 0x%llx, range %d-%d, flags %lx\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, inode->i_ino, folio_pos(folio),
 		  start, end, folio->flags.f);
 

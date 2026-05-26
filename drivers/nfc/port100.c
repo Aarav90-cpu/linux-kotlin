@@ -1489,17 +1489,30 @@ MODULE_DEVICE_TABLE(usb, port100_table);
 static int port100_probe(struct usb_interface *interface,
 			 const struct usb_device_id *id)
 {
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep_in, *ep_out;
 	struct port100 *dev;
 	int rc;
 	u16 fw_version;
 	u64 cmd_type_mask;
+=======
+	struct port100 *dev;
+	int rc;
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	int in_endpoint;
+	int out_endpoint;
+	u16 fw_version;
+	u64 cmd_type_mask;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev = devm_kzalloc(&interface->dev, sizeof(struct port100), GFP_KERNEL);
 	if (!dev)
 		return -ENOMEM;
 
 	mutex_init(&dev->out_urb_lock);
+<<<<<<< HEAD
 	dev->udev = interface_to_usbdev(interface);
 	dev->interface = interface;
 	usb_set_intfdata(interface, dev);
@@ -1509,6 +1522,28 @@ static int port100_probe(struct usb_interface *interface,
 	if (rc) {
 		nfc_err(&interface->dev,
 			"Could not find bulk-in or bulk-out endpoint\n");
+=======
+	dev->udev = usb_get_dev(interface_to_usbdev(interface));
+	dev->interface = interface;
+	usb_set_intfdata(interface, dev);
+
+	in_endpoint = out_endpoint = 0;
+	iface_desc = interface->cur_altsetting;
+	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+		endpoint = &iface_desc->endpoint[i].desc;
+
+		if (!in_endpoint && usb_endpoint_is_bulk_in(endpoint))
+			in_endpoint = endpoint->bEndpointAddress;
+
+		if (!out_endpoint && usb_endpoint_is_bulk_out(endpoint))
+			out_endpoint = endpoint->bEndpointAddress;
+	}
+
+	if (!in_endpoint || !out_endpoint) {
+		nfc_err(&interface->dev,
+			"Could not find bulk-in or bulk-out endpoint\n");
+		rc = -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto error;
 	}
 
@@ -1522,10 +1557,17 @@ static int port100_probe(struct usb_interface *interface,
 	}
 
 	usb_fill_bulk_urb(dev->in_urb, dev->udev,
+<<<<<<< HEAD
 			  usb_rcvbulkpipe(dev->udev, usb_endpoint_num(ep_in)),
 			  NULL, 0, NULL, dev);
 	usb_fill_bulk_urb(dev->out_urb, dev->udev,
 			  usb_sndbulkpipe(dev->udev, usb_endpoint_num(ep_out)),
+=======
+			  usb_rcvbulkpipe(dev->udev, in_endpoint),
+			  NULL, 0, NULL, dev);
+	usb_fill_bulk_urb(dev->out_urb, dev->udev,
+			  usb_sndbulkpipe(dev->udev, out_endpoint),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  NULL, 0, port100_send_complete, dev);
 	dev->out_urb->transfer_flags = URB_ZERO_PACKET;
 
@@ -1601,6 +1643,10 @@ error:
 	usb_free_urb(dev->in_urb);
 	usb_kill_urb(dev->out_urb);
 	usb_free_urb(dev->out_urb);
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return rc;
 }
@@ -1620,6 +1666,10 @@ static void port100_disconnect(struct usb_interface *interface)
 
 	usb_free_urb(dev->in_urb);
 	usb_free_urb(dev->out_urb);
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(dev->cmd);
 

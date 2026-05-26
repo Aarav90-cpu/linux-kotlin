@@ -290,10 +290,20 @@ static int amdgpu_ras_mgr_sw_init(struct amdgpu_ip_block *ip_block)
 	/* Disabled by default */
 	con->uniras_enabled = false;
 
+<<<<<<< HEAD
 	if (amdgpu_ip_version(adev, MP0_HWIP, 0) == IP_VERSION(13, 0, 14) ||
 	    adev->debug_enable_ras_aca)
 		con->uniras_enabled = true;
 	else
+=======
+	/* Enabled only in debug mode */
+	if (adev->debug_enable_ras_aca) {
+		con->uniras_enabled = true;
+		RAS_DEV_INFO(adev, "Debug amdgpu uniras!");
+	}
+
+	if (!con->uniras_enabled)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	ras_mgr = kzalloc_obj(*ras_mgr);
@@ -532,6 +542,7 @@ int amdgpu_ras_mgr_handle_controller_interrupt(struct amdgpu_device *adev, void 
 	return ret;
 }
 
+<<<<<<< HEAD
 int amdgpu_ras_mgr_dispatch_interrupt(struct amdgpu_device *adev, struct ras_ih_info *ih_info)
 {
 	struct amdgpu_ras_mgr *ras_mgr = amdgpu_ras_mgr_get_context(adev);
@@ -563,6 +574,8 @@ int amdgpu_ras_mgr_dispatch_interrupt(struct amdgpu_device *adev, struct ras_ih_
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_ras_mgr_handle_consumer_interrupt(struct amdgpu_device *adev, void *data)
 {
 	if (!amdgpu_ras_mgr_is_ready(adev))
@@ -599,9 +612,12 @@ bool amdgpu_ras_mgr_check_eeprom_safety_watermark(struct amdgpu_device *adev)
 	if (!amdgpu_ras_mgr_is_ready(adev))
 		return false;
 
+<<<<<<< HEAD
 	if (ras_fw_eeprom_supported(ras_mgr->ras_core))
 		return ras_fw_eeprom_check_safety_watermark(ras_mgr->ras_core);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ras_eeprom_check_safety_watermark(ras_mgr->ras_core);
 }
 

@@ -24,9 +24,13 @@
 #include <linux/intel_vsec.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/overflow.h>
 #include <linux/pci.h>
 #include <linux/string.h>
+=======
+#include <linux/pci.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #define PMT_XA_START			0
@@ -44,7 +48,11 @@ enum vsec_device_state {
 };
 
 struct vsec_priv {
+<<<<<<< HEAD
 	const struct intel_vsec_platform_info *info;
+=======
+	struct intel_vsec_platform_info *info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *suppliers[VSEC_FEATURE_COUNT];
 	struct oobmsm_plat_info plat_info;
 	enum vsec_device_state state[VSEC_FEATURE_COUNT];
@@ -111,7 +119,10 @@ static void intel_vsec_dev_release(struct device *dev)
 
 	ida_free(intel_vsec_dev->ida, intel_vsec_dev->auxdev.id);
 
+<<<<<<< HEAD
 	kfree(intel_vsec_dev->acpi_disc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(intel_vsec_dev->resource);
 	kfree(intel_vsec_dev);
 }
@@ -161,23 +172,33 @@ static bool vsec_driver_present(int cap_id)
  */
 static const struct pci_device_id intel_vsec_pci_ids[];
 
+<<<<<<< HEAD
 static int intel_vsec_link_devices(struct device *parent, struct device *dev,
+=======
+static int intel_vsec_link_devices(struct pci_dev *pdev, struct device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   int consumer_id)
 {
 	const struct vsec_feature_dependency *deps;
 	enum vsec_device_state *state;
 	struct device **suppliers;
 	struct vsec_priv *priv;
+<<<<<<< HEAD
 	struct pci_dev *pdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int supplier_id;
 
 	if (!consumer_id)
 		return 0;
 
+<<<<<<< HEAD
 	if (!dev_is_pci(parent))
 		return 0;
 
 	pdev = to_pci_dev(parent);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pci_match_id(intel_vsec_pci_ids, pdev))
 		return 0;
 
@@ -212,7 +233,11 @@ static int intel_vsec_link_devices(struct device *parent, struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 int intel_vsec_add_aux(struct device *parent,
+=======
+int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       struct intel_vsec_device *intel_vsec_dev,
 		       const char *name)
 {
@@ -260,7 +285,11 @@ int intel_vsec_add_aux(struct device *parent,
 	if (ret)
 		goto cleanup_aux;
 
+<<<<<<< HEAD
 	ret = intel_vsec_link_devices(parent, &auxdev->dev, intel_vsec_dev->cap_id);
+=======
+	ret = intel_vsec_link_devices(pdev, &auxdev->dev, intel_vsec_dev->cap_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto cleanup_aux;
 
@@ -277,32 +306,54 @@ cleanup_aux:
 }
 EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, "INTEL_VSEC");
 
+<<<<<<< HEAD
 static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *header,
 			      const struct intel_vsec_platform_info *info,
 			      unsigned long cap_id, u64 base_addr)
+=======
+static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *header,
+			      struct intel_vsec_platform_info *info,
+			      unsigned long cap_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct intel_vsec_device __free(kfree) *intel_vsec_dev = NULL;
 	struct resource __free(kfree) *res = NULL;
 	struct resource *tmp;
 	struct device *parent;
 	unsigned long quirks = info->quirks;
+<<<<<<< HEAD
+=======
+	u64 base_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	if (info->parent)
 		parent = info->parent;
 	else
+<<<<<<< HEAD
 		parent = dev;
+=======
+		parent = &pdev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!intel_vsec_supported(header->id, info->caps))
 		return -EINVAL;
 
 	if (!header->num_entries) {
+<<<<<<< HEAD
 		dev_dbg(dev, "Invalid 0 entry count for header id %d\n", header->id);
+=======
+		dev_dbg(&pdev->dev, "Invalid 0 entry count for header id %d\n", header->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
 	if (!header->entry_size) {
+<<<<<<< HEAD
 		dev_dbg(dev, "Invalid 0 entry size for header id %d\n", header->id);
+=======
+		dev_dbg(&pdev->dev, "Invalid 0 entry size for header id %d\n", header->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -317,12 +368,21 @@ static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *head
 	if (quirks & VSEC_QUIRK_TABLE_SHIFT)
 		header->offset >>= TABLE_OFFSET_SHIFT;
 
+<<<<<<< HEAD
+=======
+	if (info->base_addr)
+		base_addr = info->base_addr;
+	else
+		base_addr = pdev->resource[header->tbir].start;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The DVSEC/VSEC contains the starting offset and count for a block of
 	 * discovery tables. Create a resource array of these tables to the
 	 * auxiliary device driver.
 	 */
 	for (i = 0, tmp = res; i < header->num_entries; i++, tmp++) {
+<<<<<<< HEAD
 		/*
 		 * Skip resource mapping check for ACPI-based discovery
 		 * since those tables are read from _DSD, not MMIO.
@@ -330,6 +390,8 @@ static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *head
 		if (info->src == INTEL_VSEC_DISC_ACPI)
 			break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tmp->start = base_addr + header->offset + i * (header->entry_size * sizeof(u32));
 		tmp->end = tmp->start + (header->entry_size * sizeof(u32)) - 1;
 		tmp->flags = IORESOURCE_MEM;
@@ -341,13 +403,18 @@ static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *head
 		release_mem_region(tmp->start, resource_size(tmp));
 	}
 
+<<<<<<< HEAD
 	intel_vsec_dev->dev = dev;
+=======
+	intel_vsec_dev->pcidev = pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_vsec_dev->resource = no_free_ptr(res);
 	intel_vsec_dev->num_resources = header->num_entries;
 	intel_vsec_dev->quirks = info->quirks;
 	intel_vsec_dev->base_addr = info->base_addr;
 	intel_vsec_dev->priv_data = info->priv_data;
 	intel_vsec_dev->cap_id = cap_id;
+<<<<<<< HEAD
 	intel_vsec_dev->src = info->src;
 
 	if (info->src == INTEL_VSEC_DISC_ACPI) {
@@ -361,6 +428,8 @@ static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *head
 		if (!intel_vsec_dev->acpi_disc)
 			return -ENOMEM;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (header->id == VSEC_ID_SDSI)
 		intel_vsec_dev->ida = &intel_vsec_sdsi_ida;
@@ -371,7 +440,11 @@ static int intel_vsec_add_dev(struct device *dev, struct intel_vsec_header *head
 	 * Pass the ownership of intel_vsec_dev and resource within it to
 	 * intel_vsec_add_aux()
 	 */
+<<<<<<< HEAD
 	return intel_vsec_add_aux(parent, no_free_ptr(intel_vsec_dev),
+=======
+	return intel_vsec_add_aux(pdev, parent, no_free_ptr(intel_vsec_dev),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  intel_vsec_name(header->id));
 }
 
@@ -432,6 +505,7 @@ static int get_cap_id(u32 header_id, unsigned long *cap_id)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int intel_vsec_register_device(struct device *dev,
 				      struct intel_vsec_header *header,
 				      const struct intel_vsec_platform_info *info,
@@ -440,6 +514,14 @@ static int intel_vsec_register_device(struct device *dev,
 	const struct vsec_feature_dependency *consumer_deps;
 	struct vsec_priv *priv;
 	struct pci_dev *pdev;
+=======
+static int intel_vsec_register_device(struct pci_dev *pdev,
+				      struct intel_vsec_header *header,
+				      struct intel_vsec_platform_info *info)
+{
+	const struct vsec_feature_dependency *consumer_deps;
+	struct vsec_priv *priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long cap_id;
 	int ret;
 
@@ -451,12 +533,17 @@ static int intel_vsec_register_device(struct device *dev,
 	 * Only track dependencies for devices probed by the VSEC driver.
 	 * For others using the exported APIs, add the device directly.
 	 */
+<<<<<<< HEAD
 	if (!dev_is_pci(dev))
 		return intel_vsec_add_dev(dev, header, info, cap_id, base_addr);
 
 	pdev = to_pci_dev(dev);
 	if (!pci_match_id(intel_vsec_pci_ids, pdev))
 		return intel_vsec_add_dev(dev, header, info, cap_id, base_addr);
+=======
+	if (!pci_match_id(intel_vsec_pci_ids, pdev))
+		return intel_vsec_add_dev(pdev, header, info, cap_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = pci_get_drvdata(pdev);
 	if (priv->state[cap_id] == STATE_REGISTERED ||
@@ -472,7 +559,11 @@ static int intel_vsec_register_device(struct device *dev,
 
 	consumer_deps = get_consumer_dependencies(priv, cap_id);
 	if (!consumer_deps || suppliers_ready(priv, consumer_deps, cap_id)) {
+<<<<<<< HEAD
 		ret = intel_vsec_add_dev(dev, header, info, cap_id, base_addr);
+=======
+		ret = intel_vsec_add_dev(pdev, header, info, cap_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			priv->state[cap_id] = STATE_SKIP;
 		else
@@ -484,6 +575,7 @@ static int intel_vsec_register_device(struct device *dev,
 	return -EAGAIN;
 }
 
+<<<<<<< HEAD
 static int intel_vsec_walk_header(struct device *dev,
 				  const struct intel_vsec_platform_info *info)
 {
@@ -501,6 +593,26 @@ static int intel_vsec_walk_header(struct device *dev,
 
 static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
 				  const struct intel_vsec_platform_info *info)
+=======
+static bool intel_vsec_walk_header(struct pci_dev *pdev,
+				   struct intel_vsec_platform_info *info)
+{
+	struct intel_vsec_header **header = info->headers;
+	bool have_devices = false;
+	int ret;
+
+	for ( ; *header; header++) {
+		ret = intel_vsec_register_device(pdev, *header, info);
+		if (!ret)
+			have_devices = true;
+	}
+
+	return have_devices;
+}
+
+static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
+				  struct intel_vsec_platform_info *info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool have_devices = false;
 	int pos = 0;
@@ -539,8 +651,12 @@ static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
 		pci_read_config_dword(pdev, pos + PCI_DVSEC_HEADER2, &hdr);
 		header.id = PCI_DVSEC_HEADER2_ID(hdr);
 
+<<<<<<< HEAD
 		ret = intel_vsec_register_device(&pdev->dev, &header, info,
 						 pci_resource_start(pdev, header.tbir));
+=======
+		ret = intel_vsec_register_device(pdev, &header, info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			continue;
 
@@ -551,7 +667,11 @@ static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
 }
 
 static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
+<<<<<<< HEAD
 				 const struct intel_vsec_platform_info *info)
+=======
+				 struct intel_vsec_platform_info *info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool have_devices = false;
 	int pos = 0;
@@ -585,8 +705,12 @@ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
 		header.tbir = INTEL_DVSEC_TABLE_BAR(table);
 		header.offset = INTEL_DVSEC_TABLE_OFFSET(table);
 
+<<<<<<< HEAD
 		ret = intel_vsec_register_device(&pdev->dev, &header, info,
 						 pci_resource_start(pdev, header.tbir));
+=======
+		ret = intel_vsec_register_device(pdev, &header, info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			continue;
 
@@ -596,6 +720,7 @@ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
 	return have_devices;
 }
 
+<<<<<<< HEAD
 int intel_vsec_register(struct device *dev,
 			const struct intel_vsec_platform_info *info)
 {
@@ -603,11 +728,27 @@ int intel_vsec_register(struct device *dev,
 		return -EINVAL;
 
 	return intel_vsec_walk_header(dev, info);
+=======
+int intel_vsec_register(struct pci_dev *pdev,
+			 struct intel_vsec_platform_info *info)
+{
+	if (!pdev || !info || !info->headers)
+		return -EINVAL;
+
+	if (!intel_vsec_walk_header(pdev, info))
+		return -ENODEV;
+	else
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_NS_GPL(intel_vsec_register, "INTEL_VSEC");
 
 static bool intel_vsec_get_features(struct pci_dev *pdev,
+<<<<<<< HEAD
 				    const struct intel_vsec_platform_info *info)
+=======
+				    struct intel_vsec_platform_info *info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool found = false;
 
@@ -625,7 +766,11 @@ static bool intel_vsec_get_features(struct pci_dev *pdev,
 		found = true;
 
 	if (info && (info->quirks & VSEC_QUIRK_NO_DVSEC) &&
+<<<<<<< HEAD
 	    intel_vsec_walk_header(&pdev->dev, info))
+=======
+	    intel_vsec_walk_header(pdev, info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		found = true;
 
 	return found;
@@ -651,11 +796,43 @@ static void intel_vsec_skip_missing_dependencies(struct pci_dev *pdev)
 
 static int intel_vsec_pci_init(struct pci_dev *pdev)
 {
+<<<<<<< HEAD
 	struct vsec_priv *priv = pci_get_drvdata(pdev);
 	const struct intel_vsec_platform_info *info = priv->info;
 	int run_once = 0;
 	bool found_any = false;
 	int num_caps;
+=======
+<<<<<<< HEAD
+	const struct intel_vsec_platform_info *info;
+=======
+	struct intel_vsec_platform_info *info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	struct vsec_priv *priv;
+	int num_caps, ret;
+	int run_once = 0;
+	bool found_any = false;
+
+	ret = pcim_enable_device(pdev);
+	if (ret)
+		return ret;
+
+	pci_save_state(pdev);
+<<<<<<< HEAD
+	info = (const struct intel_vsec_platform_info *)id->driver_data;
+=======
+	info = (struct intel_vsec_platform_info *)id->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	if (!info)
+		return -EINVAL;
+
+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+	if (!priv)
+		return -ENOMEM;
+
+	priv->info = info;
+	pci_set_drvdata(pdev, priv);
+>>>>>>> 7fb39c93c52e (Sync)
 
 	num_caps = hweight_long(info->caps);
 	while (num_caps--) {
@@ -706,10 +883,14 @@ int intel_vsec_set_mapping(struct oobmsm_plat_info *plat_info,
 {
 	struct vsec_priv *priv;
 
+<<<<<<< HEAD
 	if (!dev_is_pci(vsec_dev->dev))
 		return -ENODEV;
 
 	priv = pci_get_drvdata(to_pci_dev(vsec_dev->dev));
+=======
+	priv = pci_get_drvdata(vsec_dev->pcidev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!priv)
 		return -EINVAL;
 
@@ -856,7 +1037,11 @@ static pci_ers_result_t intel_vsec_pci_slot_reset(struct pci_dev *pdev)
 
 	xa_for_each(&auxdev_array, index, intel_vsec_dev) {
 		/* check if pdev doesn't match */
+<<<<<<< HEAD
 		if (&pdev->dev != intel_vsec_dev->dev)
+=======
+		if (pdev != intel_vsec_dev->pcidev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		devm_release_action(&pdev->dev, intel_vsec_remove_aux,
 				    &intel_vsec_dev->auxdev);

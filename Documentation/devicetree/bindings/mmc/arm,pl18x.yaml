@@ -11,7 +11,11 @@ maintainers:
   - Ulf Hansson <ulf.hansson@linaro.org>
 
 description:
+<<<<<<< HEAD
   The ARM PrimeCell MMCI PL180 and PL181 provides an interface for
+=======
+  The ARM PrimeCells MMCI PL180 and PL181 provides an interface for
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reading and writing to MultiMedia and SD cards alike. Over the years
   vendors have use the VHDL code from ARM to create derivative MMC/SD/SDIO
   host controllers with very similar characteristics.

@@ -21,7 +21,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/scatterlist.h>
 #include <linux/sched.h>
 #include <linux/slab.h>
@@ -1245,6 +1248,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
 	bool write_then_read_en = false;
 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
 
+<<<<<<< HEAD
 	if (i2c->adap.bus_regulator) {
 		ret = regulator_enable(i2c->adap.bus_regulator);
 		if (ret)
@@ -1254,6 +1258,11 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
 	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
 	if (ret)
 		goto err_regulator;
+=======
+	ret = clk_bulk_enable(I2C_MT65XX_CLK_MAX, i2c->clocks);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	i2c->auto_restart = i2c->dev_comp->auto_restart;
 
@@ -1308,10 +1317,13 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
 
 err_exit:
 	clk_bulk_disable(I2C_MT65XX_CLK_MAX, i2c->clocks);
+<<<<<<< HEAD
 err_regulator:
 	if (i2c->adap.bus_regulator)
 		regulator_disable(i2c->adap.bus_regulator);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

@@ -277,7 +277,11 @@ The CFMWS field of the CEDT has special restriction bits which describe whether
 the described memory region allows volatile or persistent memory (or both). If
 the platform intends to support either:
 
+<<<<<<< HEAD
 1) A device with multiple media, or
+=======
+1) A device with multiple medias, or
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 2) Using a persistent memory device as normal memory
 
 A platform may wish to create multiple CEDT CFMWS entries to describe the same

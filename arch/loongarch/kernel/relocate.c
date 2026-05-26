@@ -128,18 +128,28 @@ static inline __init unsigned long get_random_boot(void)
 
 static int __init nokaslr(char *p)
 {
+<<<<<<< HEAD
 	return 0; /* Just silence the boot warning */
 }
 early_param("nokaslr", nokaslr);
 
 #define KASLR_DISABLED_MESSAGE "KASLR is disabled by %s in %s cmdline.\n"
 
+=======
+	pr_info("KASLR is disabled.\n");
+
+	return 0; /* Print a notice and silence the boot warning */
+}
+early_param("nokaslr", nokaslr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline __init bool kaslr_disabled(void)
 {
 	char *str;
 	const char *builtin_cmdline = CONFIG_CMDLINE;
 
 	str = strstr(builtin_cmdline, "nokaslr");
+<<<<<<< HEAD
 	if (str == builtin_cmdline || (str > builtin_cmdline && *(str - 1) == ' ')) {
 		pr_info(KASLR_DISABLED_MESSAGE, "\'nokaslr\'", "built-in");
 		return true;
@@ -150,6 +160,14 @@ static inline __init bool kaslr_disabled(void)
 		pr_info(KASLR_DISABLED_MESSAGE, "\'nokaslr\'", "bootloader");
 		return true;
 	}
+=======
+	if (str == builtin_cmdline || (str > builtin_cmdline && *(str - 1) == ' '))
+		return true;
+
+	str = strstr(boot_command_line, "nokaslr");
+	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_HIBERNATION
 	str = strstr(builtin_cmdline, "nohibernate");
@@ -169,6 +187,7 @@ static inline __init bool kaslr_disabled(void)
 		return false;
 
 	str = strstr(builtin_cmdline, "resume=");
+<<<<<<< HEAD
 	if (str == builtin_cmdline || (str > builtin_cmdline && *(str - 1) == ' ')) {
 		pr_info(KASLR_DISABLED_MESSAGE, "\'resume=\'", "built-in");
 		return true;
@@ -186,6 +205,19 @@ static inline __init bool kaslr_disabled(void)
 		pr_info(KASLR_DISABLED_MESSAGE, "\'kexec_file\'", "bootloader");
 		return true;
 	}
+=======
+	if (str == builtin_cmdline || (str > builtin_cmdline && *(str - 1) == ' '))
+		return true;
+
+	str = strstr(boot_command_line, "resume=");
+	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
+		return true;
+#endif
+
+	str = strstr(boot_command_line, "kexec_file");
+	if (str == boot_command_line || (str > boot_command_line && *(str - 1) == ' '))
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }

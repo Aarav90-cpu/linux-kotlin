@@ -9,14 +9,18 @@
 #include <linux/bpf_mprog.h>
 #include <linux/indirect_call_wrapper.h>
 
+<<<<<<< HEAD
 #include <net/netdev_lock.h>
 #include <net/netdev_queues.h>
 #include <net/netdev_rx_queue.h>
 #include <net/xdp_sock_drv.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/netkit.h>
 #include <net/dst.h>
 #include <net/tcx.h>
 
+<<<<<<< HEAD
 #define NETKIT_DRV_NAME	"netkit"
 
 #define NETKIT_NUM_RX_QUEUES_MAX  1024
@@ -24,6 +28,9 @@
 
 #define NETKIT_NUM_RX_QUEUES_REAL 1
 #define NETKIT_NUM_TX_QUEUES_REAL 1
+=======
+#define DRV_NAME "netkit"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct netkit {
 	__cacheline_group_begin(netkit_fastpath);
@@ -36,7 +43,10 @@ struct netkit {
 
 	__cacheline_group_begin(netkit_slowpath);
 	enum netkit_mode mode;
+<<<<<<< HEAD
 	enum netkit_pairing pair;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool primary;
 	u32 headroom;
 	__cacheline_group_end(netkit_slowpath);
@@ -47,8 +57,11 @@ struct netkit_link {
 	struct net_device *dev;
 };
 
+<<<<<<< HEAD
 static struct rtnl_link_ops netkit_link_ops;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline int
 netkit_run(const struct bpf_mprog_entry *entry, struct sk_buff *skb,
 	   enum netkit_action ret)
@@ -148,10 +161,13 @@ static int netkit_open(struct net_device *dev)
 	struct netkit *nk = netkit_priv(dev);
 	struct net_device *peer = rtnl_dereference(nk->peer);
 
+<<<<<<< HEAD
 	if (nk->pair == NETKIT_DEVICE_SINGLE) {
 		netif_carrier_on(dev);
 		return 0;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!peer)
 		return -ENOTCONN;
 	if (peer->flags & IFF_UP) {
@@ -186,9 +202,13 @@ static int netkit_get_iflink(const struct net_device *dev)
 	return iflink;
 }
 
+<<<<<<< HEAD
 static void netkit_set_multicast(struct net_device *dev,
 				 struct netdev_hw_addr_list *uc,
 				 struct netdev_hw_addr_list *mc)
+=======
+static void netkit_set_multicast(struct net_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Nothing to do, we receive whatever gets pushed to us! */
 }
@@ -213,6 +233,7 @@ static void netkit_set_headroom(struct net_device *dev, int headroom)
 
 	rcu_read_lock();
 	peer = rcu_dereference(nk->peer);
+<<<<<<< HEAD
 	if (!peer) {
 		nk->headroom = headroom;
 		dev->needed_headroom = headroom;
@@ -224,6 +245,18 @@ static void netkit_set_headroom(struct net_device *dev, int headroom)
 		peer->needed_headroom = headroom;
 		dev->needed_headroom = headroom;
 	}
+=======
+	if (unlikely(!peer))
+		goto out;
+
+	nk2 = netkit_priv(peer);
+	nk->headroom = headroom;
+	headroom = max(nk->headroom, nk2->headroom);
+
+	peer->needed_headroom = headroom;
+	dev->needed_headroom = headroom;
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 }
 
@@ -239,6 +272,7 @@ static void netkit_get_stats(struct net_device *dev,
 	stats->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
 }
 
+<<<<<<< HEAD
 static bool netkit_xsk_supported_at_phys(const struct net_device *dev)
 {
 	if (!dev->netdev_ops->ndo_bpf ||
@@ -333,27 +367,44 @@ static const struct net_device_ops netkit_netdev_ops = {
 	.ndo_stop		= netkit_close,
 	.ndo_start_xmit		= netkit_xmit,
 	.ndo_set_rx_mode_async	= netkit_set_multicast,
+=======
+static void netkit_uninit(struct net_device *dev);
+
+static const struct net_device_ops netkit_netdev_ops = {
+	.ndo_open		= netkit_open,
+	.ndo_stop		= netkit_close,
+	.ndo_start_xmit		= netkit_xmit,
+	.ndo_set_rx_mode	= netkit_set_multicast,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_set_rx_headroom	= netkit_set_headroom,
 	.ndo_set_mac_address	= netkit_set_macaddr,
 	.ndo_get_iflink		= netkit_get_iflink,
 	.ndo_get_peer_dev	= netkit_peer_dev,
 	.ndo_get_stats64	= netkit_get_stats,
 	.ndo_uninit		= netkit_uninit,
+<<<<<<< HEAD
 	.ndo_bpf		= netkit_xsk,
 	.ndo_xsk_wakeup		= netkit_xsk_wakeup,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_features_check	= passthru_features_check,
 };
 
 static void netkit_get_drvinfo(struct net_device *dev,
 			       struct ethtool_drvinfo *info)
 {
+<<<<<<< HEAD
 	strscpy(info->driver, NETKIT_DRV_NAME, sizeof(info->driver));
+=======
+	strscpy(info->driver, DRV_NAME, sizeof(info->driver));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct ethtool_ops netkit_ethtool_ops = {
 	.get_drvinfo		= netkit_get_drvinfo,
 };
 
+<<<<<<< HEAD
 static int netkit_queue_create(struct net_device *dev,
 			       struct netlink_ext_ack *extack)
 {
@@ -437,6 +488,8 @@ static void netkit_queue_unlease(struct net_device *dev)
 	netdev_unlock(dev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void netkit_setup(struct net_device *dev)
 {
 	static const netdev_features_t netkit_features_hw_vlan =
@@ -467,9 +520,14 @@ static void netkit_setup(struct net_device *dev)
 	dev->priv_flags |= IFF_DISABLE_NETPOLL;
 	dev->lltx = true;
 
+<<<<<<< HEAD
 	dev->netdev_ops     = &netkit_netdev_ops;
 	dev->ethtool_ops    = &netkit_ethtool_ops;
 	dev->queue_mgmt_ops = &netkit_queue_mgmt_ops;
+=======
+	dev->ethtool_ops = &netkit_ethtool_ops;
+	dev->netdev_ops  = &netkit_netdev_ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev->features |= netkit_features;
 	dev->hw_features = netkit_features;
@@ -518,6 +576,11 @@ static int netkit_validate(struct nlattr *tb[], struct nlattr *data[],
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static struct rtnl_link_ops netkit_link_ops;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int netkit_new_link(struct net_device *dev,
 			   struct rtnl_newlink_params *params,
 			   struct netlink_ext_ack *extack)
@@ -526,17 +589,26 @@ static int netkit_new_link(struct net_device *dev,
 	enum netkit_scrub scrub_prim = NETKIT_SCRUB_DEFAULT;
 	enum netkit_scrub scrub_peer = NETKIT_SCRUB_DEFAULT;
 	struct nlattr *peer_tb[IFLA_MAX + 1], **tbp, *attr;
+<<<<<<< HEAD
 	enum netkit_pairing pair = NETKIT_DEVICE_PAIR;
 	enum netkit_action policy_prim = NETKIT_PASS;
 	enum netkit_action policy_peer = NETKIT_PASS;
 	bool seen_peer = false, seen_scrub = false;
+=======
+	enum netkit_action policy_prim = NETKIT_PASS;
+	enum netkit_action policy_peer = NETKIT_PASS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nlattr **data = params->data;
 	enum netkit_mode mode = NETKIT_L3;
 	unsigned char ifname_assign_type;
 	struct nlattr **tb = params->tb;
 	u16 headroom = 0, tailroom = 0;
 	struct ifinfomsg *ifmp = NULL;
+<<<<<<< HEAD
 	struct net_device *peer = NULL;
+=======
+	struct net_device *peer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char ifname[IFNAMSIZ];
 	struct netkit *nk;
 	int err;
@@ -573,6 +645,7 @@ static int netkit_new_link(struct net_device *dev,
 			headroom = nla_get_u16(data[IFLA_NETKIT_HEADROOM]);
 		if (data[IFLA_NETKIT_TAILROOM])
 			tailroom = nla_get_u16(data[IFLA_NETKIT_TAILROOM]);
+<<<<<<< HEAD
 		if (data[IFLA_NETKIT_PAIRING])
 			pair = nla_get_u32(data[IFLA_NETKIT_PAIRING]);
 
@@ -580,6 +653,8 @@ static int netkit_new_link(struct net_device *dev,
 		seen_peer = data[IFLA_NETKIT_PEER_INFO] ||
 			    data[IFLA_NETKIT_PEER_SCRUB] ||
 			    data[IFLA_NETKIT_PEER_POLICY];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ifmp && tbp[IFLA_IFNAME]) {
@@ -592,6 +667,7 @@ static int netkit_new_link(struct net_device *dev,
 	if (mode != NETKIT_L2 &&
 	    (tb[IFLA_ADDRESS] || tbp[IFLA_ADDRESS]))
 		return -EOPNOTSUPP;
+<<<<<<< HEAD
 	if (pair == NETKIT_DEVICE_SINGLE &&
 	    (tb != tbp || seen_peer || seen_scrub ||
 	     policy_prim != NETKIT_PASS))
@@ -633,6 +709,47 @@ static int netkit_new_link(struct net_device *dev,
 		if (err < 0)
 			goto err_configure_peer;
 	}
+=======
+
+	peer = rtnl_create_link(peer_net, ifname, ifname_assign_type,
+				&netkit_link_ops, tbp, extack);
+	if (IS_ERR(peer))
+		return PTR_ERR(peer);
+
+	netif_inherit_tso_max(peer, dev);
+	if (headroom) {
+		peer->needed_headroom = headroom;
+		dev->needed_headroom = headroom;
+	}
+	if (tailroom) {
+		peer->needed_tailroom = tailroom;
+		dev->needed_tailroom = tailroom;
+	}
+
+	if (mode == NETKIT_L2 && !(ifmp && tbp[IFLA_ADDRESS]))
+		eth_hw_addr_random(peer);
+	if (ifmp && dev->ifindex)
+		peer->ifindex = ifmp->ifi_index;
+
+	nk = netkit_priv(peer);
+	nk->primary = false;
+	nk->policy = policy_peer;
+	nk->scrub = scrub_peer;
+	nk->mode = mode;
+	nk->headroom = headroom;
+	bpf_mprog_bundle_init(&nk->bundle);
+
+	err = register_netdevice(peer);
+	if (err < 0)
+		goto err_register_peer;
+	netif_carrier_off(peer);
+	if (mode == NETKIT_L2)
+		dev_change_flags(peer, peer->flags & ~IFF_NOARP, NULL);
+
+	err = rtnl_configure_link(peer, NULL, 0, NULL);
+	if (err < 0)
+		goto err_configure_peer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mode == NETKIT_L2 && !tb[IFLA_ADDRESS])
 		eth_hw_addr_random(dev);
@@ -640,16 +757,20 @@ static int netkit_new_link(struct net_device *dev,
 		nla_strscpy(dev->name, tb[IFLA_IFNAME], IFNAMSIZ);
 	else
 		strscpy(dev->name, "nk%d", IFNAMSIZ);
+<<<<<<< HEAD
 	if (headroom)
 		dev->needed_headroom = headroom;
 	if (tailroom)
 		dev->needed_tailroom = tailroom;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nk = netkit_priv(dev);
 	nk->primary = true;
 	nk->policy = policy_prim;
 	nk->scrub = scrub_prim;
 	nk->mode = mode;
+<<<<<<< HEAD
 	nk->pair = pair;
 	nk->headroom = headroom;
 	bpf_mprog_bundle_init(&nk->bundle);
@@ -657,6 +778,11 @@ static int netkit_new_link(struct net_device *dev,
 	if (pair == NETKIT_DEVICE_SINGLE)
 		xdp_set_features_flag(dev, NETDEV_XDP_ACT_XSK);
 
+=======
+	nk->headroom = headroom;
+	bpf_mprog_bundle_init(&nk->bundle);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = register_netdevice(dev);
 	if (err < 0)
 		goto err_configure_peer;
@@ -665,12 +791,19 @@ static int netkit_new_link(struct net_device *dev,
 		dev_change_flags(dev, dev->flags & ~IFF_NOARP, NULL);
 
 	rcu_assign_pointer(netkit_priv(dev)->peer, peer);
+<<<<<<< HEAD
 	if (peer)
 		rcu_assign_pointer(netkit_priv(peer)->peer, dev);
 	return 0;
 err_configure_peer:
 	if (peer)
 		unregister_netdevice(peer);
+=======
+	rcu_assign_pointer(netkit_priv(peer)->peer, dev);
+	return 0;
+err_configure_peer:
+	unregister_netdevice(peer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 err_register_peer:
 	free_netdev(peer);
@@ -730,8 +863,11 @@ static struct net_device *netkit_dev_fetch(struct net *net, u32 ifindex, u32 whi
 	nk = netkit_priv(dev);
 	if (!nk->primary)
 		return ERR_PTR(-EACCES);
+<<<<<<< HEAD
 	if (nk->pair == NETKIT_DEVICE_SINGLE)
 		return ERR_PTR(-EOPNOTSUPP);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (which == BPF_NETKIT_PEER) {
 		dev = rcu_dereference_rtnl(nk->peer);
 		if (!dev)
@@ -1058,7 +1194,10 @@ static void netkit_release_all(struct net_device *dev)
 static void netkit_uninit(struct net_device *dev)
 {
 	netkit_release_all(dev);
+<<<<<<< HEAD
 	netkit_queue_unlease(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void netkit_del_link(struct net_device *dev, struct list_head *head)
@@ -1071,6 +1210,7 @@ static void netkit_del_link(struct net_device *dev, struct list_head *head)
 	if (peer) {
 		nk = netkit_priv(peer);
 		RCU_INIT_POINTER(nk->peer, NULL);
+<<<<<<< HEAD
 		/* Guard against the peer already being in an unregister
 		 * list (e.g. same-namespace teardown where the peer is
 		 * in the caller's dev_kill_list). list_move_tail() on an
@@ -1080,6 +1220,9 @@ static void netkit_del_link(struct net_device *dev, struct list_head *head)
 		 */
 		if (!unregister_netdevice_queued(peer))
 			unregister_netdevice_queue(peer, head);
+=======
+		unregister_netdevice_queue(peer, head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1102,7 +1245,10 @@ static int netkit_change_link(struct net_device *dev, struct nlattr *tb[],
 		{ IFLA_NETKIT_PEER_INFO,  "peer info" },
 		{ IFLA_NETKIT_HEADROOM,   "headroom" },
 		{ IFLA_NETKIT_TAILROOM,   "tailroom" },
+<<<<<<< HEAD
 		{ IFLA_NETKIT_PAIRING,    "pairing" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	if (!nk->primary) {
@@ -1122,11 +1268,17 @@ static int netkit_change_link(struct net_device *dev, struct nlattr *tb[],
 	}
 
 	if (data[IFLA_NETKIT_POLICY]) {
+<<<<<<< HEAD
 		err = -EOPNOTSUPP;
 		attr = data[IFLA_NETKIT_POLICY];
 		policy = nla_get_u32(attr);
 		if (nk->pair == NETKIT_DEVICE_PAIR)
 			err = netkit_check_policy(policy, attr, extack);
+=======
+		attr = data[IFLA_NETKIT_POLICY];
+		policy = nla_get_u32(attr);
+		err = netkit_check_policy(policy, attr, extack);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 		WRITE_ONCE(nk->policy, policy);
@@ -1147,6 +1299,7 @@ static int netkit_change_link(struct net_device *dev, struct nlattr *tb[],
 	return 0;
 }
 
+<<<<<<< HEAD
 static void netkit_check_lease_unregister(struct net_device *dev)
 {
 	LIST_HEAD(list_kill);
@@ -1191,6 +1344,8 @@ static int netkit_notifier(struct notifier_block *this,
 	return NOTIFY_DONE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static size_t netkit_get_size(const struct net_device *dev)
 {
 	return nla_total_size(sizeof(u32)) + /* IFLA_NETKIT_POLICY */
@@ -1201,7 +1356,10 @@ static size_t netkit_get_size(const struct net_device *dev)
 	       nla_total_size(sizeof(u8))  + /* IFLA_NETKIT_PRIMARY */
 	       nla_total_size(sizeof(u16)) + /* IFLA_NETKIT_HEADROOM */
 	       nla_total_size(sizeof(u16)) + /* IFLA_NETKIT_TAILROOM */
+<<<<<<< HEAD
 	       nla_total_size(sizeof(u32)) + /* IFLA_NETKIT_PAIRING */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       0;
 }
 
@@ -1216,15 +1374,22 @@ static int netkit_fill_info(struct sk_buff *skb, const struct net_device *dev)
 		return -EMSGSIZE;
 	if (nla_put_u32(skb, IFLA_NETKIT_MODE, nk->mode))
 		return -EMSGSIZE;
+<<<<<<< HEAD
 	if (nk->pair == NETKIT_DEVICE_PAIR &&
 	    nla_put_u32(skb, IFLA_NETKIT_SCRUB, nk->scrub))
+=======
+	if (nla_put_u32(skb, IFLA_NETKIT_SCRUB, nk->scrub))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EMSGSIZE;
 	if (nla_put_u16(skb, IFLA_NETKIT_HEADROOM, dev->needed_headroom))
 		return -EMSGSIZE;
 	if (nla_put_u16(skb, IFLA_NETKIT_TAILROOM, dev->needed_tailroom))
 		return -EMSGSIZE;
+<<<<<<< HEAD
 	if (nla_put_u32(skb, IFLA_NETKIT_PAIRING, nk->pair))
 		return -EMSGSIZE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (peer) {
 		nk = netkit_priv(peer);
@@ -1246,15 +1411,23 @@ static const struct nla_policy netkit_policy[IFLA_NETKIT_MAX + 1] = {
 	[IFLA_NETKIT_TAILROOM]		= { .type = NLA_U16 },
 	[IFLA_NETKIT_SCRUB]		= NLA_POLICY_MAX(NLA_U32, NETKIT_SCRUB_DEFAULT),
 	[IFLA_NETKIT_PEER_SCRUB]	= NLA_POLICY_MAX(NLA_U32, NETKIT_SCRUB_DEFAULT),
+<<<<<<< HEAD
 	[IFLA_NETKIT_PAIRING]		= NLA_POLICY_MAX(NLA_U32, NETKIT_DEVICE_SINGLE),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[IFLA_NETKIT_PRIMARY]		= { .type = NLA_REJECT,
 					    .reject_message = "Primary attribute is read-only" },
 };
 
 static struct rtnl_link_ops netkit_link_ops = {
+<<<<<<< HEAD
 	.kind		= NETKIT_DRV_NAME,
 	.priv_size	= sizeof(struct netkit),
 	.alloc		= netkit_alloc,
+=======
+	.kind		= DRV_NAME,
+	.priv_size	= sizeof(struct netkit),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.setup		= netkit_setup,
 	.newlink	= netkit_new_link,
 	.dellink	= netkit_del_link,
@@ -1268,6 +1441,7 @@ static struct rtnl_link_ops netkit_link_ops = {
 	.maxtype	= IFLA_NETKIT_MAX,
 };
 
+<<<<<<< HEAD
 static struct notifier_block netkit_netdev_notifier = {
 	.notifier_call	= netkit_notifier,
 };
@@ -1276,11 +1450,16 @@ static __init int netkit_mod_init(void)
 {
 	int ret;
 
+=======
+static __init int netkit_init(void)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BUILD_BUG_ON((int)NETKIT_NEXT != (int)TCX_NEXT ||
 		     (int)NETKIT_PASS != (int)TCX_PASS ||
 		     (int)NETKIT_DROP != (int)TCX_DROP ||
 		     (int)NETKIT_REDIRECT != (int)TCX_REDIRECT);
 
+<<<<<<< HEAD
 	ret = rtnl_link_register(&netkit_link_ops);
 	if (ret)
 		return ret;
@@ -1298,9 +1477,25 @@ static __exit void netkit_mod_exit(void)
 
 module_init(netkit_mod_init);
 module_exit(netkit_mod_exit);
+=======
+	return rtnl_link_register(&netkit_link_ops);
+}
+
+static __exit void netkit_exit(void)
+{
+	rtnl_link_unregister(&netkit_link_ops);
+}
+
+module_init(netkit_init);
+module_exit(netkit_exit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_DESCRIPTION("BPF-programmable network device");
 MODULE_AUTHOR("Daniel Borkmann <daniel@iogearbox.net>");
 MODULE_AUTHOR("Nikolay Aleksandrov <razor@blackwall.org>");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
 MODULE_ALIAS_RTNL_LINK(NETKIT_DRV_NAME);
+=======
+MODULE_ALIAS_RTNL_LINK(DRV_NAME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

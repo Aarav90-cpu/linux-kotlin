@@ -38,7 +38,11 @@ To quote the overview comment::
 	for the mapping from a vma to a process. Since this case is expected
 	to be rare we hope we can get away with this.
 
+<<<<<<< HEAD
 The code consists of the high level handler in mm/memory-failure.c,
+=======
+The code consists of a the high level handler in mm/memory-failure.c,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 a new page poison bit and various checks in the VM to handle poisoned
 pages.
 

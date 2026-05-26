@@ -28,7 +28,11 @@
  *
  */
 
+<<<<<<< HEAD
 #define __nolibc_syscall0(num)						\
+=======
+#define my_syscall0(num)						\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _rc __asm__ ("2");				\
@@ -42,7 +46,11 @@
 	_rc;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall1(num, arg1)					\
+=======
+#define my_syscall1(num, arg1)						\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -56,7 +64,11 @@
 	_arg1;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall2(num, arg1, arg2)				\
+=======
+#define my_syscall2(num, arg1, arg2)					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -71,7 +83,11 @@
 	_arg1;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall3(num, arg1, arg2, arg3)			\
+=======
+#define my_syscall3(num, arg1, arg2, arg3)				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -87,7 +103,11 @@
 	_arg1;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall4(num, arg1, arg2, arg3, arg4)			\
+=======
+#define my_syscall4(num, arg1, arg2, arg3, arg4)			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -104,7 +124,11 @@
 	_arg1;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall5(num, arg1, arg2, arg3, arg4, arg5)		\
+=======
+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -123,7 +147,11 @@
 	_arg1;								\
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)	\
+=======
+#define my_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({									\
 	register long _num __asm__ ("1") = (num);			\
 	register long _arg1 __asm__ ("2") = (long)(arg1);		\
@@ -167,8 +195,13 @@ struct s390_mmap_arg_struct {
 };
 
 static __attribute__((unused))
+<<<<<<< HEAD
 void *_sys_mmap(void *addr, size_t length, int prot, int flags, int fd,
 		off_t offset)
+=======
+void *sys_mmap(void *addr, size_t length, int prot, int flags, int fd,
+	       off_t offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct s390_mmap_arg_struct args = {
 		.addr = (unsigned long)addr,
@@ -179,6 +212,7 @@ void *_sys_mmap(void *addr, size_t length, int prot, int flags, int fd,
 		.offset = (unsigned long)offset
 	};
 
+<<<<<<< HEAD
 	return (void *)__nolibc_syscall1(__NR_mmap, &args);
 }
 #define _sys_mmap _sys_mmap
@@ -196,5 +230,24 @@ pid_t _sys_vfork(void)
 	return __nolibc_syscall5(__NR_clone, 0, CLONE_VM | CLONE_VFORK | SIGCHLD, 0, 0, 0);
 }
 #define _sys_vfork _sys_vfork
+=======
+	return (void *)my_syscall1(__NR_mmap, &args);
+}
+#define sys_mmap sys_mmap
+
+static __attribute__((unused))
+pid_t sys_fork(void)
+{
+	return my_syscall5(__NR_clone, 0, SIGCHLD, 0, 0, 0);
+}
+#define sys_fork sys_fork
+
+static __attribute__((unused))
+pid_t sys_vfork(void)
+{
+	return my_syscall5(__NR_clone, 0, CLONE_VM | CLONE_VFORK | SIGCHLD, 0, 0, 0);
+}
+#define sys_vfork sys_vfork
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _NOLIBC_ARCH_S390_H */

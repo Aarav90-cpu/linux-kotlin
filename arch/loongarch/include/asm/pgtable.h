@@ -23,10 +23,13 @@
 #include <asm-generic/pgtable-nop4d.h>
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 #include <asm/highmem.h>
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if CONFIG_PGTABLE_LEVELS == 2
 #define PGDIR_SHIFT	(PAGE_SHIFT + (PAGE_SHIFT - PTRLOG))
 #elif CONFIG_PGTABLE_LEVELS == 3
@@ -78,6 +81,7 @@
 struct mm_struct;
 struct vm_area_struct;
 
+<<<<<<< HEAD
 #ifdef CONFIG_32BIT
 
 #define VMALLOC_START	(vm_map_base + PCI_IOSIZE + (2 * PAGE_SIZE))
@@ -90,6 +94,21 @@ struct vm_area_struct;
 
 #define PKMAP_BASE	(PKMAP_END - (PAGE_SIZE * LAST_PKMAP))
 #define PKMAP_END	((FIXADDR_START) & ~((LAST_PKMAP << PAGE_SHIFT)-1))
+=======
+/*
+ * ZERO_PAGE is a global shared page that is always zero; used
+ * for zero-mapped memory areas etc..
+ */
+
+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+
+#define ZERO_PAGE(vaddr)	virt_to_page(empty_zero_page)
+
+#ifdef CONFIG_32BIT
+
+#define VMALLOC_START	(vm_map_base + PCI_IOSIZE + (2 * PAGE_SIZE))
+#define VMALLOC_END	(FIXADDR_START - (2 * PAGE_SIZE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif
 
@@ -116,8 +135,12 @@ struct vm_area_struct;
 	 min(PTRS_PER_PGD * PTRS_PER_PUD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE, (1UL << cpu_vabits) / 2) - PMD_SIZE - VMEMMAP_SIZE - KFENCE_AREA_SIZE)
 #endif
 
+<<<<<<< HEAD
 #define VMEMMAP_ALIGN	max(PMD_SIZE, MAX_FOLIO_VMEMMAP_ALIGN)
 #define vmemmap		((struct page *)(ALIGN(VMALLOC_END, VMEMMAP_ALIGN)))
+=======
+#define vmemmap		((struct page *)((VMALLOC_END + PMD_SIZE) & PMD_MASK))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VMEMMAP_END	((unsigned long)vmemmap + VMEMMAP_SIZE - 1)
 
 #define KFENCE_AREA_START	(VMEMMAP_END + 1)

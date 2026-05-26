@@ -315,7 +315,11 @@ static const struct snd_soc_component_driver stm32_adfsdm_soc_platform = {
 	.hw_params	= stm32_adfsdm_pcm_hw_params,
 	.trigger	= stm32_adfsdm_trigger,
 	.pointer	= stm32_adfsdm_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= stm32_adfsdm_pcm_new,
+=======
+	.pcm_construct	= stm32_adfsdm_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct of_device_id stm32_adfsdm_of_match[] = {

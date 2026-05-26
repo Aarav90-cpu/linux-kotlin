@@ -295,6 +295,7 @@ static int cobalt_lcdfb_probe(struct platform_device *dev)
 	if (!info)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	info->screen_base = devm_platform_get_and_ioremap_resource(dev, 0, &res);
 	if (IS_ERR(info->screen_base)) {
 		framebuffer_release(info);
@@ -302,6 +303,21 @@ static int cobalt_lcdfb_probe(struct platform_device *dev)
 	}
 
 	info->screen_size = resource_size(res);
+=======
+	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
+	if (!res) {
+		framebuffer_release(info);
+		return -EBUSY;
+	}
+
+	info->screen_size = resource_size(res);
+	info->screen_base = devm_ioremap(&dev->dev, res->start,
+					 info->screen_size);
+	if (!info->screen_base) {
+		framebuffer_release(info);
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	info->fbops = &cobalt_lcd_fbops;
 	info->fix = cobalt_lcdfb_fix;

@@ -22,6 +22,20 @@
 #define VMCS12_IDX_TO_ENC(idx) ROL16(idx, 10)
 #define ENC_TO_VMCS12_IDX(enc) ROL16(enc, 6)
 
+<<<<<<< HEAD
+=======
+struct vmcs_hdr {
+	u32 revision_id:31;
+	u32 shadow_vmcs:1;
+};
+
+struct vmcs {
+	struct vmcs_hdr hdr;
+	u32 abort;
+	char data[];
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DECLARE_PER_CPU(struct vmcs *, current_vmcs);
 
 /*

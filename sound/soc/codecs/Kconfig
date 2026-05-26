@@ -398,6 +398,7 @@ config SND_SOC_WM_HUBS
 	default m if SND_SOC_WM8993=m || SND_SOC_WM8994=m
 
 config SND_SOC_WM_ADSP
+<<<<<<< HEAD
 	tristate "Cirrus Logic wm_adsp driver" if KUNIT
 	select FW_CS_DSP
 	select SND_SOC_COMPRESS
@@ -413,6 +414,33 @@ config SND_SOC_WM_ADSP_TEST
 	  please refer to the KUnit documentation in
 	  Documentation/dev-tools/kunit/.
 	  If in doubt, say "N".
+=======
+	tristate
+	select FW_CS_DSP
+	select SND_SOC_COMPRESS
+	default y if SND_SOC_MADERA=y
+	default y if SND_SOC_CS47L24=y
+	default y if SND_SOC_WM5102=y
+	default y if SND_SOC_WM5110=y
+	default y if SND_SOC_WM2200=y
+	default y if SND_SOC_CS35L41_SPI=y
+	default y if SND_SOC_CS35L41_I2C=y
+	default y if SND_SOC_CS35L45_SPI=y
+	default y if SND_SOC_CS35L45_I2C=y
+	default y if SND_SOC_CS35L56=y
+	default y if SND_SOC_CS48L32=y
+	default m if SND_SOC_MADERA=m
+	default m if SND_SOC_CS47L24=m
+	default m if SND_SOC_WM5102=m
+	default m if SND_SOC_WM5110=m
+	default m if SND_SOC_WM2200=m
+	default m if SND_SOC_CS35L41_SPI=m
+	default m if SND_SOC_CS35L41_I2C=m
+	default m if SND_SOC_CS35L45_SPI=m
+	default m if SND_SOC_CS35L45_I2C=m
+	default m if SND_SOC_CS35L56=m
+	default m if SND_SOC_CS48L32=m
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_AB8500_CODEC
 	tristate
@@ -812,7 +840,10 @@ config SND_SOC_CS35L41_LIB
 
 config SND_SOC_CS35L41
 	tristate
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_CS35L41_SPI
 	tristate "Cirrus Logic CS35L41 CODEC (SPI)"
@@ -831,7 +862,10 @@ config SND_SOC_CS35L41_I2C
 config SND_SOC_CS35L45
 	tristate
 	select REGMAP_IRQ
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_CS35L45_SPI
 	tristate "Cirrus Logic CS35L45 CODEC (SPI)"
@@ -855,7 +889,10 @@ config SND_SOC_CS35L45_I2C
 
 config SND_SOC_CS35L56
 	tristate
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_CS35L56_SHARED
 	select SND_SOC_CS_AMP_LIB
@@ -919,6 +956,7 @@ config SND_SOC_CS35L56_CAL_SET_CTRL
 
 	  If unsure select "N".
 
+<<<<<<< HEAD
 config SND_SOC_CS35L56_CAL_PERFORM_CTRL
 	bool "CS35L56 ALSA control to perform factory calibration"
 	select SND_SOC_CS35L56_CAL_DEBUGFS_COMMON
@@ -931,6 +969,8 @@ config SND_SOC_CS35L56_CAL_PERFORM_CTRL
 
 	  If unsure select "N".
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SND_SOC_CS35L56_TEST
 	tristate "KUnit test for Cirrus Logic cs35l56 driver" if !KUNIT_ALL_TESTS
 	depends on SND_SOC_CS35L56 && KUNIT
@@ -1103,7 +1143,10 @@ config SND_SOC_CS47L15
 config SND_SOC_CS47L24
 	tristate
 	depends on MFD_CS47L24 && MFD_ARIZONA
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_CS47L35
 	tristate
@@ -1125,7 +1168,10 @@ config SND_SOC_CS48L32
 	tristate "Cirrus Logic CS48L32 audio DSP"
 	depends on SPI_MASTER
 	select REGMAP_SPI
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Build the codec driver for the Cirrus Logic CS48L32 audio DSP.
 
@@ -1384,7 +1430,10 @@ config SND_SOC_LOCHNAGAR_SC
 
 config SND_SOC_MADERA
 	tristate
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if SND_SOC_CS47L15=y
 	default y if SND_SOC_CS47L35=y
 	default y if SND_SOC_CS47L85=y
@@ -2370,11 +2419,17 @@ config SND_SOC_UDA1342
 	  mic inputs), stereo audio DAC, with basic audio processing.
 
 config SND_SOC_UDA1380
+<<<<<<< HEAD
 	tristate "Philips UDA1380 CODEC"
 	depends on I2C
 	help
 	  The UDA1380 codec is used in the HTC Magician and on a number of
 	  Samsung reference boards, as well as the LPC32xx series.
+=======
+	tristate
+	depends on I2C
+	depends on GPIOLIB_LEGACY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_WCD_CLASSH
 	tristate
@@ -2485,7 +2540,10 @@ config SND_SOC_WM2000
 config SND_SOC_WM2200
 	tristate
 	depends on I2C
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_WM5100
 	tristate
@@ -2494,12 +2552,18 @@ config SND_SOC_WM5100
 config SND_SOC_WM5102
 	tristate
 	depends on MFD_WM5102 && MFD_ARIZONA
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_WM5110
 	tristate
 	depends on MFD_WM5110 && MFD_ARIZONA
+<<<<<<< HEAD
 	select SND_SOC_WM_ADSP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SND_SOC_WM8350
 	tristate

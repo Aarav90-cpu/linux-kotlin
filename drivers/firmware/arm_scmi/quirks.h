@@ -20,10 +20,17 @@
  * named as _qn.
  */
 #define SCMI_QUIRK(_qn, _blk)						\
+<<<<<<< HEAD
 	({								\
 		if (static_branch_unlikely(&(scmi_quirk_ ## _qn)))	\
 			(_blk);						\
 	})
+=======
+	do {								\
+		if (static_branch_unlikely(&(scmi_quirk_ ## _qn)))	\
+			(_blk);						\
+	} while (0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void scmi_quirks_initialize(void);
 void scmi_quirks_enable(struct device *dev, const char *vend,
@@ -34,10 +41,17 @@ void scmi_quirks_enable(struct device *dev, const char *vend,
 #define DECLARE_SCMI_QUIRK(_qn)
 /* Force quirks compilation even when SCMI Quirks are disabled */
 #define SCMI_QUIRK(_qn, _blk)						\
+<<<<<<< HEAD
 	({								\
 		if (0)							\
 			(_blk);						\
 	})
+=======
+	do {								\
+		if (0)							\
+			(_blk);						\
+	} while (0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void scmi_quirks_initialize(void) { }
 static inline void scmi_quirks_enable(struct device *dev, const char *vend,

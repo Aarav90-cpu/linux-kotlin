@@ -212,7 +212,11 @@ static void __init parse_header(char *s)
 	hdr_csum = parsed[12];
 }
 
+<<<<<<< HEAD
 /* Finite-state machine */
+=======
+/* FSM */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __initdata enum state {
 	Start,
@@ -652,6 +656,16 @@ disable:
 
 void __weak __init free_initrd_mem(unsigned long start, unsigned long end)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
+	unsigned long aligned_start = ALIGN_DOWN(start, PAGE_SIZE);
+	unsigned long aligned_end = ALIGN(end, PAGE_SIZE);
+
+	memblock_free((void *)aligned_start, aligned_end - aligned_start);
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_reserved_area((void *)start, (void *)end, POISON_FREE_INITMEM,
 			"initrd");
 }

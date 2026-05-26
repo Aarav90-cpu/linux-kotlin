@@ -13,7 +13,10 @@
 #include <linux/bitops.h>
 #include <linux/blkdev.h>
 #include <linux/completion.h>
+<<<<<<< HEAD
 #include <linux/ctype.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kernel.h>
 #include <linux/export.h>
 #include <linux/init.h>
@@ -3462,6 +3465,7 @@ int scsi_vpd_lun_id(struct scsi_device *sdev, char *id, size_t id_len)
 EXPORT_SYMBOL(scsi_vpd_lun_id);
 
 /**
+<<<<<<< HEAD
  * scsi_vpd_lun_serial - return a unique device serial number
  * @sdev: SCSI device
  * @sn:   buffer for the serial number
@@ -3508,6 +3512,8 @@ int scsi_vpd_lun_serial(struct scsi_device *sdev, char *sn, size_t sn_size)
 EXPORT_SYMBOL(scsi_vpd_lun_serial);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * scsi_vpd_tpg_id - return a target port group identifier
  * @sdev: SCSI device
  * @rel_id: pointer to return relative target port in if not %NULL

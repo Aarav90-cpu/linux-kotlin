@@ -12,6 +12,7 @@
  * for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/container_of.h>
 #include <linux/kd.h>
 #include <linux/module.h>
@@ -247,6 +248,15 @@ EXPORT_SYMBOL_GPL(font_data_export);
 /*
  * Font lookup
  */
+=======
+#include <linux/module.h>
+#include <linux/types.h>
+#include <linux/string.h>
+#if defined(__mc68000__)
+#include <asm/setup.h>
+#endif
+#include <linux/font.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct font_desc *fonts[] = {
 #ifdef CONFIG_FONT_8x8

@@ -5,7 +5,10 @@
 #include <linux/perf_event.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct evsel;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct machine;
 struct thread;
 
@@ -71,6 +74,7 @@ struct aux_sample {
 };
 
 struct simd_flags {
+<<<<<<< HEAD
 	u8	arch:  2,	/* architecture (isa) */
 		pred:  3,	/* predication */
 		resv:  3;	/* reserved */
@@ -242,6 +246,60 @@ struct perf_sample {
 	 */
 	struct aux_sample aux_sample;
 	/** @simd_flags: SIMD flag information from ARM SPE auxiliary events. */
+=======
+	u8	arch:1,	/* architecture (isa) */
+		pred:2;	/* predication */
+};
+
+/* simd architecture flags */
+#define SIMD_OP_FLAGS_ARCH_SVE		0x01	/* ARM SVE */
+
+/* simd predicate flags */
+#define SIMD_OP_FLAGS_PRED_PARTIAL	0x01	/* partial predicate */
+#define SIMD_OP_FLAGS_PRED_EMPTY	0x02	/* empty predicate */
+
+struct perf_sample {
+	u64 ip;
+	u32 pid, tid;
+	u64 time;
+	u64 addr;
+	u64 id;
+	u64 stream_id;
+	u64 period;
+	u64 weight;
+	u64 transaction;
+	u64 insn_cnt;
+	u64 cyc_cnt;
+	u32 cpu;
+	u32 raw_size;
+	u64 data_src;
+	u64 phys_addr;
+	u64 data_page_size;
+	u64 code_page_size;
+	u64 cgroup;
+	u32 flags;
+	u32 machine_pid;
+	u32 vcpu;
+	u16 insn_len;
+	u8  cpumode;
+	u16 misc;
+	u16 ins_lat;
+	/** @weight3: On x86 holds retire_lat, on powerpc holds p_stage_cyc. */
+	u16 weight3;
+	bool no_hw_idx;		/* No hw_idx collected in branch_stack */
+	bool deferred_callchain;	/* Has deferred user callchains */
+	u64 deferred_cookie;
+	char insn[MAX_INSN];
+	void *raw_data;
+	struct ip_callchain *callchain;
+	struct branch_stack *branch_stack;
+	u64 *branch_stack_cntr;
+	struct regs_dump  *user_regs;
+	struct regs_dump  *intr_regs;
+	struct stack_dump user_stack;
+	struct sample_read read;
+	struct aux_sample aux_sample;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct simd_flags simd_flags;
 };
 

@@ -9,7 +9,10 @@
 #include <linux/mutex.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include "chan.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "out.h"
 #include "ref.h"
 #include "regs.h"
@@ -19,6 +22,7 @@ struct device;
 struct regmap;
 struct zl3073x_dpll;
 
+<<<<<<< HEAD
 
 enum zl3073x_flags {
 	ZL3073X_FLAG_REF_PHASE_COMP_32_BIT,
@@ -41,17 +45,38 @@ struct zl3073x_chip_info {
 	u8		num_channels;
 	unsigned long	flags;
 };
+=======
+/*
+ * Hardware limits for ZL3073x chip family
+ */
+#define ZL3073X_MAX_CHANNELS	5
+#define ZL3073X_NUM_REFS	10
+#define ZL3073X_NUM_OUTS	10
+#define ZL3073X_NUM_SYNTHS	5
+#define ZL3073X_NUM_INPUT_PINS	ZL3073X_NUM_REFS
+#define ZL3073X_NUM_OUTPUT_PINS	(ZL3073X_NUM_OUTS * 2)
+#define ZL3073X_NUM_PINS	(ZL3073X_NUM_INPUT_PINS + \
+				 ZL3073X_NUM_OUTPUT_PINS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct zl3073x_dev - zl3073x device
  * @dev: pointer to device
  * @regmap: regmap to access device registers
+<<<<<<< HEAD
  * @info: detected chip info
  * @multiop_lock: to serialize multiple register operations
  * @ref: array of input references' invariants
  * @out: array of outs' invariants
  * @synth: array of synths' invariants
  * @chan: array of DPLL channels' state
+=======
+ * @multiop_lock: to serialize multiple register operations
+ * @chip_id: chip ID read from hardware
+ * @ref: array of input references' invariants
+ * @out: array of outs' invariants
+ * @synth: array of synths' invariants
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @dplls: list of DPLLs
  * @kworker: thread for periodic work
  * @work: periodic work
@@ -59,16 +84,26 @@ struct zl3073x_chip_info {
  * @phase_avg_factor: phase offset measurement averaging factor
  */
 struct zl3073x_dev {
+<<<<<<< HEAD
 	struct device			*dev;
 	struct regmap			*regmap;
 	const struct zl3073x_chip_info	*info;
 	struct mutex			multiop_lock;
+=======
+	struct device		*dev;
+	struct regmap		*regmap;
+	struct mutex		multiop_lock;
+	u16			chip_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Invariants */
 	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
 	struct zl3073x_out	out[ZL3073X_NUM_OUTS];
 	struct zl3073x_synth	synth[ZL3073X_NUM_SYNTHS];
+<<<<<<< HEAD
 	struct zl3073x_chan	chan[ZL3073X_MAX_CHANNELS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* DPLL channels */
 	struct list_head	dplls;
@@ -82,10 +117,29 @@ struct zl3073x_dev {
 	u8			phase_avg_factor;
 };
 
+<<<<<<< HEAD
 extern const struct regmap_config zl3073x_regmap_config;
 
 struct zl3073x_dev *zl3073x_devm_alloc(struct device *dev);
 int zl3073x_dev_probe(struct zl3073x_dev *zldev);
+=======
+struct zl3073x_chip_info {
+	const u16	*ids;
+	size_t		num_ids;
+	int		num_channels;
+};
+
+extern const struct zl3073x_chip_info zl30731_chip_info;
+extern const struct zl3073x_chip_info zl30732_chip_info;
+extern const struct zl3073x_chip_info zl30733_chip_info;
+extern const struct zl3073x_chip_info zl30734_chip_info;
+extern const struct zl3073x_chip_info zl30735_chip_info;
+extern const struct regmap_config zl3073x_regmap_config;
+
+struct zl3073x_dev *zl3073x_devm_alloc(struct device *dev);
+int zl3073x_dev_probe(struct zl3073x_dev *zldev,
+		      const struct zl3073x_chip_info *chip_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int zl3073x_dev_start(struct zl3073x_dev *zldev, bool full);
 void zl3073x_dev_stop(struct zl3073x_dev *zldev);
@@ -160,7 +214,22 @@ int zl3073x_ref_phase_offsets_update(struct zl3073x_dev *zldev, int channel);
 static inline bool
 zl3073x_dev_is_ref_phase_comp_32bit(struct zl3073x_dev *zldev)
 {
+<<<<<<< HEAD
 	return zldev->info->flags & ZL3073X_FLAG_REF_PHASE_COMP_32;
+=======
+	switch (zldev->chip_id) {
+	case 0x0E30:
+	case 0x0E93:
+	case 0x0E94:
+	case 0x0E95:
+	case 0x0E96:
+	case 0x0E97:
+	case 0x1F60:
+		return true;
+	default:
+		return false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool

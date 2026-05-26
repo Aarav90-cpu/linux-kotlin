@@ -95,6 +95,7 @@ livepatch: '$MOD_LIVEPATCH': completing unpatching transition
 livepatch: '$MOD_LIVEPATCH': unpatching complete
 % rmmod $MOD_LIVEPATCH"
 
+<<<<<<< HEAD
 
 # - trace a function
 # - verify livepatch can load targgeting on the same traced function
@@ -131,4 +132,6 @@ livepatch: '$MOD_LIVEPATCH': completing unpatching transition
 livepatch: '$MOD_LIVEPATCH': unpatching complete
 % rmmod $MOD_LIVEPATCH"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit 0

@@ -718,10 +718,18 @@
 
 &gpu {
 	status = "okay";
+<<<<<<< HEAD
 };
 
 &gpu_zap_shader {
 	firmware-name = "qcom/x1e80100/microsoft/qcdxkmsuc8380.mbn";
+=======
+
+	zap-shader {
+		memory-region = <&gpu_microcode_mem>;
+		firmware-name = "qcom/x1e80100/microsoft/qcdxkmsuc8380.mbn";
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &i2c0 {
@@ -1275,11 +1283,21 @@
 };
 
 &usb_1_ss0 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss0_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss0_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss0_hs_in>;
 };
@@ -1305,11 +1323,21 @@
 };
 
 &usb_1_ss1 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss1_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss1_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss1_hs_in>;
 };

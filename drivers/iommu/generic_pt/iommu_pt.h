@@ -51,6 +51,7 @@ static void gather_range_pages(struct iommu_iotlb_gather *iotlb_gather,
 		iommu_pages_stop_incoherent_list(free_list,
 						 iommu_table->iommu_device);
 
+<<<<<<< HEAD
 	/*
 	 * If running in DMA-FQ mode then the unmap will be followed by an IOTLB
 	 * flush all so we need to optimize by never flushing the IOTLB here.
@@ -72,6 +73,18 @@ static void gather_range_pages(struct iommu_iotlb_gather *iotlb_gather,
 		iommu_iotlb_gather_add_range(iotlb_gather, iova, len);
 	}
 
+=======
+	if (pt_feature(common, PT_FEAT_FLUSH_RANGE_NO_GAPS) &&
+	    iommu_iotlb_gather_is_disjoint(iotlb_gather, iova, len)) {
+		iommu_iotlb_sync(&iommu_table->domain, iotlb_gather);
+		/*
+		 * Note that the sync frees the gather's free list, so we must
+		 * not have any pages on that list that are covered by iova/len
+		 */
+	}
+
+	iommu_iotlb_gather_add_range(iotlb_gather, iova, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iommu_pages_list_splice(free_list, &iotlb_gather->freelist);
 }
 
@@ -477,7 +490,10 @@ struct pt_iommu_map_args {
 	pt_oaddr_t oa;
 	unsigned int leaf_pgsize_lg2;
 	unsigned int leaf_level;
+<<<<<<< HEAD
 	pt_vaddr_t num_leaves;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -530,6 +546,7 @@ static int clear_contig(const struct pt_state *start_pts,
 static int __map_range_leaf(struct pt_range *range, void *arg,
 			    unsigned int level, struct pt_table_p *table)
 {
+<<<<<<< HEAD
 	struct pt_iommu *iommu_table = iommu_from_common(range->common);
 	struct pt_state pts = pt_init(range, level, table);
 	struct pt_iommu_map_args *map = arg;
@@ -541,6 +558,13 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
 	unsigned int orig_end;
 	unsigned int step_lg2;
 	pt_vaddr_t last_va;
+=======
+	struct pt_state pts = pt_init(range, level, table);
+	struct pt_iommu_map_args *map = arg;
+	unsigned int leaf_pgsize_lg2 = map->leaf_pgsize_lg2;
+	unsigned int start_index;
+	pt_oaddr_t oa = map->oa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int step;
 	bool need_contig;
 	int ret = 0;
@@ -548,6 +572,7 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
 	PT_WARN_ON(map->leaf_level != level);
 	PT_WARN_ON(!pt_can_have_leaf(&pts));
 
+<<<<<<< HEAD
 	step_lg2 = leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts);
 	step = log2_to_int_t(unsigned int, step_lg2);
 	need_contig = step_lg2 != 0;
@@ -567,6 +592,14 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
 
 	PT_WARN_ON(
 		log2_mod_t(unsigned int, pts.end_index - pts.index, step_lg2));
+=======
+	step = log2_to_int_t(unsigned int,
+			     leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts));
+	need_contig = leaf_pgsize_lg2 != pt_table_item_lg2sz(&pts);
+
+	_pt_iter_first(&pts);
+	start_index = pts.index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		pts.type = pt_load_entry_raw(&pts);
 		if (pts.type != PT_ENTRY_EMPTY || need_contig) {
@@ -592,6 +625,7 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
 	flush_writes_range(&pts, start_index, pts.index);
 
 	map->oa = oa;
+<<<<<<< HEAD
 	map->num_leaves = num_leaves;
 	if (ret || num_leaves)
 		return ret;
@@ -626,6 +660,9 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
 		return -EAGAIN;
 	}
 	return 0;
+=======
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __map_range(struct pt_range *range, void *arg, unsigned int level,
@@ -648,9 +685,20 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
 			if (pts.type != PT_ENTRY_EMPTY)
 				return -EADDRINUSE;
 			ret = pt_iommu_new_table(&pts, &map->attrs);
+<<<<<<< HEAD
 			/* EAGAIN on a race will loop again */
 			if (ret)
 				return ret;
+=======
+			if (ret) {
+				/*
+				 * Racing with another thread installing a table
+				 */
+				if (ret == -EAGAIN)
+					continue;
+				return ret;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			pts.table_lower = pt_table_ptr(&pts);
 			/*
@@ -674,12 +722,19 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
 		 * The already present table can possibly be shared with another
 		 * concurrent map.
 		 */
+<<<<<<< HEAD
 		do {
 			if (map->leaf_level == level - 1)
 				ret = pt_descend(&pts, arg, __map_range_leaf);
 			else
 				ret = pt_descend(&pts, arg, __map_range);
 		} while (ret == -EAGAIN);
+=======
+		if (map->leaf_level == level - 1)
+			ret = pt_descend(&pts, arg, __map_range_leaf);
+		else
+			ret = pt_descend(&pts, arg, __map_range);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 
@@ -687,6 +742,7 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
 		pt_index_to_va(&pts);
 		if (pts.index >= pts.end_index)
 			break;
+<<<<<<< HEAD
 
 		/*
 		 * This level is currently running __map_range_leaf() which is
@@ -695,6 +751,8 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
 		 */
 		if (map->leaf_level == level)
 			return -EAGAIN;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (true);
 	return 0;
 }
@@ -866,13 +924,20 @@ static int check_map_range(struct pt_iommu *iommu_table, struct pt_range *range,
 static int do_map(struct pt_range *range, struct pt_common *common,
 		  bool single_page, struct pt_iommu_map_args *map)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The __map_single_page() fast path does not support DMA_INCOHERENT
 	 * flushing to keep its .text small.
 	 */
 	if (single_page && !pt_feature(common, PT_FEAT_DMA_INCOHERENT)) {
+<<<<<<< HEAD
+=======
+		int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = pt_walk_range(range, __map_single_page, map);
 		if (ret != -EAGAIN)
@@ -880,6 +945,7 @@ static int do_map(struct pt_range *range, struct pt_common *common,
 		/* EAGAIN falls through to the full path */
 	}
 
+<<<<<<< HEAD
 	do {
 		if (map->leaf_level == range->top_level)
 			ret = pt_walk_range(range, __map_range_leaf, map);
@@ -899,6 +965,52 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 	struct pt_iommu_map_args map = {
 		.iotlb_gather = &iotlb_gather,
 		.oa = paddr,
+=======
+	if (map->leaf_level == range->top_level)
+		return pt_walk_range(range, __map_range_leaf, map);
+	return pt_walk_range(range, __map_range, map);
+}
+
+/**
+ * map_pages() - Install translation for an IOVA range
+ * @domain: Domain to manipulate
+ * @iova: IO virtual address to start
+ * @paddr: Physical/Output address to start
+ * @pgsize: Length of each page
+ * @pgcount: Length of the range in pgsize units starting from @iova
+ * @prot: A bitmap of IOMMU_READ/WRITE/CACHE/NOEXEC/MMIO
+ * @gfp: GFP flags for any memory allocations
+ * @mapped: Total bytes successfully mapped
+ *
+ * The range starting at IOVA will have paddr installed into it. The caller
+ * must specify a valid pgsize and pgcount to segment the range into compatible
+ * blocks.
+ *
+ * On error the caller will probably want to invoke unmap on the range from iova
+ * up to the amount indicated by @mapped to return the table back to an
+ * unchanged state.
+ *
+ * Context: The caller must hold a write range lock that includes the whole
+ * range.
+ *
+ * Returns: -ERRNO on failure, 0 on success. The number of bytes of VA that were
+ * mapped are added to @mapped, @mapped is not zerod first.
+ */
+int DOMAIN_NS(map_pages)(struct iommu_domain *domain, unsigned long iova,
+			 phys_addr_t paddr, size_t pgsize, size_t pgcount,
+			 int prot, gfp_t gfp, size_t *mapped)
+{
+	struct pt_iommu *iommu_table =
+		container_of(domain, struct pt_iommu, domain);
+	pt_vaddr_t pgsize_bitmap = iommu_table->domain.pgsize_bitmap;
+	struct pt_common *common = common_from_iommu(iommu_table);
+	struct iommu_iotlb_gather iotlb_gather;
+	pt_vaddr_t len = pgsize * pgcount;
+	struct pt_iommu_map_args map = {
+		.iotlb_gather = &iotlb_gather,
+		.oa = paddr,
+		.leaf_pgsize_lg2 = vaffs(pgsize),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	bool single_page = false;
 	struct pt_range range;
@@ -926,13 +1038,22 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 		return ret;
 
 	/* Calculate target page size and level for the leaves */
+<<<<<<< HEAD
 	if (pt_has_system_page_size(common) && len == PAGE_SIZE &&
 		likely(pgsize_bitmap & PAGE_SIZE)) {
+=======
+	if (pt_has_system_page_size(common) && pgsize == PAGE_SIZE &&
+	    pgcount == 1) {
+		PT_WARN_ON(!(pgsize_bitmap & PAGE_SIZE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (log2_mod(iova | paddr, PAGE_SHIFT))
 			return -ENXIO;
 		map.leaf_pgsize_lg2 = PAGE_SHIFT;
 		map.leaf_level = 0;
+<<<<<<< HEAD
 		map.num_leaves = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		single_page = true;
 	} else {
 		map.leaf_pgsize_lg2 = pt_compute_best_pgsize(
@@ -941,9 +1062,12 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 			return -ENXIO;
 		map.leaf_level =
 			pt_pgsz_lg2_to_level(common, map.leaf_pgsize_lg2);
+<<<<<<< HEAD
 		map.num_leaves = pt_pgsz_count(pgsize_bitmap, range.va,
 					       range.last_va, paddr,
 					       map.leaf_pgsize_lg2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = check_map_range(iommu_table, &range, &map);
@@ -966,6 +1090,10 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 	*mapped += map.oa - paddr;
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(map_pages), "GENERIC_PT_IOMMU");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct pt_unmap_args {
 	struct iommu_pages_list free_list;
@@ -1067,12 +1195,43 @@ start_oa:
 	return ret;
 }
 
+<<<<<<< HEAD
 static size_t NS(unmap_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 			      dma_addr_t len,
 			      struct iommu_iotlb_gather *iotlb_gather)
 {
 	struct pt_unmap_args unmap = { .free_list = IOMMU_PAGES_LIST_INIT(
 					       unmap.free_list) };
+=======
+/**
+ * unmap_pages() - Make a range of IOVA empty/not present
+ * @domain: Domain to manipulate
+ * @iova: IO virtual address to start
+ * @pgsize: Length of each page
+ * @pgcount: Length of the range in pgsize units starting from @iova
+ * @iotlb_gather: Gather struct that must be flushed on return
+ *
+ * unmap_pages() will remove a translation created by map_pages(). It cannot
+ * subdivide a mapping created by map_pages(), so it should be called with IOVA
+ * ranges that match those passed to map_pages(). The IOVA range can aggregate
+ * contiguous map_pages() calls so long as no individual range is split.
+ *
+ * Context: The caller must hold a write range lock that includes
+ * the whole range.
+ *
+ * Returns: Number of bytes of VA unmapped. iova + res will be the point
+ * unmapping stopped.
+ */
+size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
+			      size_t pgsize, size_t pgcount,
+			      struct iommu_iotlb_gather *iotlb_gather)
+{
+	struct pt_iommu *iommu_table =
+		container_of(domain, struct pt_iommu, domain);
+	struct pt_unmap_args unmap = { .free_list = IOMMU_PAGES_LIST_INIT(
+					       unmap.free_list) };
+	pt_vaddr_t len = pgsize * pgcount;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pt_range range;
 	int ret;
 
@@ -1087,6 +1246,10 @@ static size_t NS(unmap_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
 
 	return unmap.unmapped;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(unmap_pages), "GENERIC_PT_IOMMU");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void NS(get_info)(struct pt_iommu *iommu_table,
 			 struct pt_iommu_info *info)
@@ -1134,8 +1297,11 @@ static void NS(deinit)(struct pt_iommu *iommu_table)
 }
 
 static const struct pt_iommu_ops NS(ops) = {
+<<<<<<< HEAD
 	.map_range = NS(map_range),
 	.unmap_range = NS(unmap_range),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IOMMUFD_DRIVER) && defined(pt_entry_is_write_dirty) && \
 	IS_ENABLED(CONFIG_IOMMUFD_TEST) && defined(pt_entry_make_write_dirty)
 	.set_dirty = NS(set_dirty),
@@ -1198,7 +1364,10 @@ static int pt_iommu_init_domain(struct pt_iommu *iommu_table,
 
 	domain->type = __IOMMU_DOMAIN_PAGING;
 	domain->pgsize_bitmap = info.pgsize_bitmap;
+<<<<<<< HEAD
 	domain->is_iommupt = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pt_feature(common, PT_FEAT_DYNAMIC_TOP))
 		range = _pt_top_range(common,

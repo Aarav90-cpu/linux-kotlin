@@ -10,7 +10,10 @@
 #include <linux/acpi.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/ptp_clock_kernel.h>
 #include <asm/hypervisor.h>
 #include <asm/vmware.h>
@@ -84,7 +87,11 @@ static struct ptp_clock_info ptp_vmw_clock_info = {
  * ACPI driver ops for VMware "precision clock" virtual device.
  */
 
+<<<<<<< HEAD
 static int ptp_vmw_acpi_probe(struct platform_device *pdev)
+=======
+static int ptp_vmw_acpi_add(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	ptp_vmw_clock = ptp_clock_register(&ptp_vmw_clock_info, NULL);
 	if (IS_ERR(ptp_vmw_clock)) {
@@ -92,11 +99,19 @@ static int ptp_vmw_acpi_probe(struct platform_device *pdev)
 		return PTR_ERR(ptp_vmw_clock);
 	}
 
+<<<<<<< HEAD
 	ptp_vmw_acpi_device = ACPI_COMPANION(&pdev->dev);
 	return 0;
 }
 
 static void ptp_vmw_acpi_remove(struct platform_device *pdev)
+=======
+	ptp_vmw_acpi_device = device;
+	return 0;
+}
+
+static void ptp_vmw_acpi_remove(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	ptp_clock_unregister(ptp_vmw_clock);
 }
@@ -108,12 +123,21 @@ static const struct acpi_device_id ptp_vmw_acpi_device_ids[] = {
 
 MODULE_DEVICE_TABLE(acpi, ptp_vmw_acpi_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver ptp_vmw_acpi_driver = {
 	.probe = ptp_vmw_acpi_probe,
 	.remove = ptp_vmw_acpi_remove,
 	.driver = {
 		.name = "ptp_vmw_acpi",
 		.acpi_match_table = ptp_vmw_acpi_device_ids,
+=======
+static struct acpi_driver ptp_vmw_acpi_driver = {
+	.name = "ptp_vmw",
+	.ids = ptp_vmw_acpi_device_ids,
+	.ops = {
+		.add = ptp_vmw_acpi_add,
+		.remove	= ptp_vmw_acpi_remove
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -121,12 +145,20 @@ static int __init ptp_vmw_init(void)
 {
 	if (x86_hyper_type != X86_HYPER_VMWARE)
 		return -1;
+<<<<<<< HEAD
 	return platform_driver_register(&ptp_vmw_acpi_driver);
+=======
+	return acpi_bus_register_driver(&ptp_vmw_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit ptp_vmw_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&ptp_vmw_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&ptp_vmw_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(ptp_vmw_init);

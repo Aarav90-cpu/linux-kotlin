@@ -16,9 +16,15 @@
  * (https://eprint.iacr.org/2021/1441.pdf)
  */
 
+<<<<<<< HEAD
 #include <crypto/gf128hash.h>
 #include <crypto/internal/cipher.h>
 #include <crypto/internal/skcipher.h>
+=======
+#include <crypto/internal/cipher.h>
+#include <crypto/internal/skcipher.h>
+#include <crypto/polyval.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/scatterwalk.h>
 #include <linux/module.h>
 

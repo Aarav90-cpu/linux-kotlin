@@ -290,14 +290,21 @@ EXPORT_SYMBOL(disk_check_media_change);
  * Should be called when the media changes for @disk.  Generates a uevent
  * and attempts to free all dentries and inodes and invalidates all block
  * device page cache entries in that case.
+<<<<<<< HEAD
  *
  * Callers that need a partition re-scan should arrange for one explicitly.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void disk_force_media_change(struct gendisk *disk)
 {
 	disk_event_uevent(disk, DISK_EVENT_MEDIA_CHANGE);
 	inc_diskseq(disk);
 	bdev_mark_dead(disk->part0, true);
+<<<<<<< HEAD
+=======
+	set_bit(GD_NEED_PART_SCAN, &disk->state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(disk_force_media_change);
 

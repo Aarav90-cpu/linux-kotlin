@@ -24,7 +24,14 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
 	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
 	struct kvm_gstage gstage;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock(&kvm->mmu_lock);
 	kvm_riscv_gstage_wp_range(&gstage, start, end);
@@ -46,7 +53,14 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
 	struct kvm_gstage_mapping map;
 	struct kvm_gstage gstage;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	end = (gpa + size + PAGE_SIZE - 1) & PAGE_MASK;
 	pfn = __phys_to_pfn(hpa);
@@ -61,7 +75,11 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
 		if (!writable)
 			map.pte = pte_wrprotect(map.pte);
 
+<<<<<<< HEAD
 		ret = kvm_mmu_topup_memory_cache(&pcache, kvm->arch.pgd_levels);
+=======
+		ret = kvm_mmu_topup_memory_cache(&pcache, kvm_riscv_gstage_pgd_levels);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto out;
 
@@ -83,7 +101,14 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
 {
 	struct kvm_gstage gstage;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock(&kvm->mmu_lock);
 	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
@@ -100,7 +125,14 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
 	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
 	struct kvm_gstage gstage;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_riscv_gstage_wp_range(&gstage, start, end);
 }
@@ -129,7 +161,14 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
 	phys_addr_t size = slot->npages << PAGE_SHIFT;
 	struct kvm_gstage gstage;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock(&kvm->mmu_lock);
 	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
@@ -171,7 +210,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 	 * space addressable by the KVM guest GPA space.
 	 */
 	if ((new->base_gfn + new->npages) >=
+<<<<<<< HEAD
 	     kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels) >> PAGE_SHIFT)
+=======
+	    (kvm_riscv_gstage_gpa_size >> PAGE_SHIFT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 
 	hva = new->userspace_addr;
@@ -235,7 +278,14 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 	if (!kvm->arch.pgd)
 		return false;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mmu_locked = spin_trylock(&kvm->mmu_lock);
 	kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
 				     (range->end - range->start) << PAGE_SHIFT,
@@ -257,7 +307,14 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 
 	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
 				       &ptep, &ptep_level))
 		return false;
@@ -277,7 +334,14 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 
 	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
 				       &ptep, &ptep_level))
 		return false;
@@ -439,13 +503,24 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
 	struct kvm_gstage gstage;
 	struct page *page;
 
+<<<<<<< HEAD
 	kvm_riscv_gstage_init(&gstage, kvm);
+=======
+	gstage.kvm = kvm;
+	gstage.flags = 0;
+	gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+	gstage.pgd = kvm->arch.pgd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup initial state of output mapping */
 	memset(out_map, 0, sizeof(*out_map));
 
 	/* We need minimum second+third level pages */
+<<<<<<< HEAD
 	ret = kvm_mmu_topup_memory_cache(pcache, kvm->arch.pgd_levels);
+=======
+	ret = kvm_mmu_topup_memory_cache(pcache, kvm_riscv_gstage_pgd_levels);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		kvm_err("Failed to topup G-stage cache\n");
 		return ret;
@@ -548,7 +623,10 @@ int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
 		return -ENOMEM;
 	kvm->arch.pgd = page_to_virt(pgd_page);
 	kvm->arch.pgd_phys = page_to_phys(pgd_page);
+<<<<<<< HEAD
 	kvm->arch.pgd_levels = kvm_riscv_gstage_max_pgd_levels;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -560,6 +638,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
 
 	spin_lock(&kvm->mmu_lock);
 	if (kvm->arch.pgd) {
+<<<<<<< HEAD
 		kvm_riscv_gstage_init(&gstage, kvm);
 		kvm_riscv_gstage_unmap_range(&gstage, 0UL,
 			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
@@ -567,6 +646,16 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
 		kvm->arch.pgd = NULL;
 		kvm->arch.pgd_phys = 0;
 		kvm->arch.pgd_levels = 0;
+=======
+		gstage.kvm = kvm;
+		gstage.flags = 0;
+		gstage.vmid = READ_ONCE(kvm->arch.vmid.vmid);
+		gstage.pgd = kvm->arch.pgd;
+		kvm_riscv_gstage_unmap_range(&gstage, 0UL, kvm_riscv_gstage_gpa_size, false);
+		pgd = READ_ONCE(kvm->arch.pgd);
+		kvm->arch.pgd = NULL;
+		kvm->arch.pgd_phys = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	spin_unlock(&kvm->mmu_lock);
 
@@ -576,12 +665,20 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
 
 void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	struct kvm_arch *ka = &vcpu->kvm->arch;
 	unsigned long hgatp = kvm_riscv_gstage_mode(ka->pgd_levels)
 			      << HGATP_MODE_SHIFT;
 
 	hgatp |= (READ_ONCE(ka->vmid.vmid) << HGATP_VMID_SHIFT) & HGATP_VMID;
 	hgatp |= (ka->pgd_phys >> PAGE_SHIFT) & HGATP_PPN;
+=======
+	unsigned long hgatp = kvm_riscv_gstage_mode << HGATP_MODE_SHIFT;
+	struct kvm_arch *k = &vcpu->kvm->arch;
+
+	hgatp |= (READ_ONCE(k->vmid.vmid) << HGATP_VMID_SHIFT) & HGATP_VMID;
+	hgatp |= (k->pgd_phys >> PAGE_SHIFT) & HGATP_PPN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ncsr_write(CSR_HGATP, hgatp);
 

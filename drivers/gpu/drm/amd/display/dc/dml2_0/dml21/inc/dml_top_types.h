@@ -19,8 +19,11 @@ enum dml2_project_id {
 	dml2_project_dcn4x_stage1,
 	dml2_project_dcn4x_stage2,
 	dml2_project_dcn4x_stage2_auto_drr_svp,
+<<<<<<< HEAD
 	dml2_project_dcn40,
 	dml2_project_dcn42,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum dml2_pstate_change_support {
@@ -81,7 +84,10 @@ struct dml2_options {
 	struct dml2_pmo_options pmo_options;
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dml2_initialize_instance_in_out {
 	struct dml2_instance *dml2_instance;
 	struct dml2_options options;

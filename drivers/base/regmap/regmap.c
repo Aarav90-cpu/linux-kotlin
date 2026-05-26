@@ -1182,9 +1182,15 @@ err:
 }
 EXPORT_SYMBOL_GPL(__regmap_init);
 
+<<<<<<< HEAD
 static void devm_regmap_release(void *regmap)
 {
 	regmap_exit(regmap);
+=======
+static void devm_regmap_release(struct device *dev, void *res)
+{
+	regmap_exit(*(struct regmap **)res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct regmap *__devm_regmap_init(struct device *dev,
@@ -1194,6 +1200,7 @@ struct regmap *__devm_regmap_init(struct device *dev,
 				  struct lock_class_key *lock_key,
 				  const char *lock_name)
 {
+<<<<<<< HEAD
 	struct regmap *regmap;
 	int ret;
 
@@ -1205,6 +1212,22 @@ struct regmap *__devm_regmap_init(struct device *dev,
 	ret = devm_add_action_or_reset(dev, devm_regmap_release, regmap);
 	if (ret)
 		return ERR_PTR(ret);
+=======
+	struct regmap **ptr, *regmap;
+
+	ptr = devres_alloc(devm_regmap_release, sizeof(*ptr), GFP_KERNEL);
+	if (!ptr)
+		return ERR_PTR(-ENOMEM);
+
+	regmap = __regmap_init(dev, bus, bus_context, config,
+			       lock_key, lock_name);
+	if (!IS_ERR(regmap)) {
+		*ptr = regmap;
+		devres_add(dev, ptr);
+	} else {
+		devres_free(ptr);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return regmap;
 }

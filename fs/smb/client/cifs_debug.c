@@ -23,6 +23,10 @@
 #endif
 #ifdef CONFIG_CIFS_SMB_DIRECT
 #include "smbdirect.h"
+<<<<<<< HEAD
+=======
+#include "../common/smbdirect/smbdirect_pdu.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 #include "cifs_swn.h"
 #include "cached_dir.h"
@@ -306,9 +310,12 @@ static int cifs_debug_dirs_proc_show(struct seq_file *m, void *v)
 	LIST_HEAD(entry);
 
 	seq_puts(m, "# Version:1\n");
+<<<<<<< HEAD
 #ifdef CONFIG_CIFS_DEBUG
 	seq_puts(m, "# Write 0 to this file to drop all cached directory entries\n");
 #endif /* CONFIG_CIFS_DEBUG */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seq_puts(m, "# Format:\n");
 	seq_puts(m, "# <tree id> <sess id> <persistent fid> <lease-key> <path>\n");
 
@@ -356,6 +363,7 @@ static int cifs_debug_dirs_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CIFS_DEBUG
 static int cifs_debug_dirs_proc_open(struct inode *inode, struct file *file)
 {
@@ -401,6 +409,8 @@ static const struct proc_ops cifs_debug_dirs_proc_ops = {
 };
 #endif /* CONFIG_CIFS_DEBUG */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline const char *compression_alg_str(__le16 alg)
 {
 	switch (alg) {
@@ -499,6 +509,14 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
 	c = 0;
 	spin_lock(&cifs_tcp_ses_lock);
 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_CIFS_SMB_DIRECT
+		struct smbdirect_socket *sc;
+		struct smbdirect_socket_parameters *sp;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* channel info will be printed as a part of sessions below */
 		if (SERVER_IS_CHAN(server))
 			continue;
@@ -513,7 +531,70 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
 		seq_printf(m, "\nClientGUID: %pUL", server->client_guid);
 		spin_unlock(&server->srv_lock);
 #ifdef CONFIG_CIFS_SMB_DIRECT
+<<<<<<< HEAD
 		smbd_debug_proc_show(server, m);
+=======
+		if (!server->rdma)
+			goto skip_rdma;
+
+		if (!server->smbd_conn) {
+			seq_printf(m, "\nSMBDirect transport not available");
+			goto skip_rdma;
+		}
+		sc = &server->smbd_conn->socket;
+		sp = &sc->parameters;
+
+		seq_printf(m, "\nSMBDirect protocol version: 0x%x "
+			"transport status: %s (%u)",
+			SMBDIRECT_V1,
+			smbdirect_socket_status_string(sc->status),
+			sc->status);
+		seq_printf(m, "\nConn receive_credit_max: %u "
+			"send_credit_target: %u max_send_size: %u",
+			sp->recv_credit_max,
+			sp->send_credit_target,
+			sp->max_send_size);
+		seq_printf(m, "\nConn max_fragmented_recv_size: %u "
+			"max_fragmented_send_size: %u max_receive_size:%u",
+			sp->max_fragmented_recv_size,
+			sp->max_fragmented_send_size,
+			sp->max_recv_size);
+		seq_printf(m, "\nConn keep_alive_interval: %u "
+			"max_readwrite_size: %u rdma_readwrite_threshold: %u",
+			sp->keepalive_interval_msec * 1000,
+			sp->max_read_write_size,
+			server->rdma_readwrite_threshold);
+		seq_printf(m, "\nDebug count_get_receive_buffer: %llu "
+			"count_put_receive_buffer: %llu count_send_empty: %llu",
+			sc->statistics.get_receive_buffer,
+			sc->statistics.put_receive_buffer,
+			sc->statistics.send_empty);
+		seq_printf(m, "\nRead Queue "
+			"count_enqueue_reassembly_queue: %llu "
+			"count_dequeue_reassembly_queue: %llu "
+			"reassembly_data_length: %u "
+			"reassembly_queue_length: %u",
+			sc->statistics.enqueue_reassembly_queue,
+			sc->statistics.dequeue_reassembly_queue,
+			sc->recv_io.reassembly.data_length,
+			sc->recv_io.reassembly.queue_length);
+		seq_printf(m, "\nCurrent Credits send_credits: %u "
+			"receive_credits: %u receive_credit_target: %u",
+			atomic_read(&sc->send_io.credits.count),
+			atomic_read(&sc->recv_io.credits.count),
+			sc->recv_io.credits.target);
+		seq_printf(m, "\nPending send_pending: %u ",
+			atomic_read(&sc->send_io.pending.count));
+		seq_printf(m, "\nMR responder_resources: %u "
+			"max_frmr_depth: %u mr_type: 0x%x",
+			sp->responder_resources,
+			sp->max_frmr_depth,
+			sc->mr_io.type);
+		seq_printf(m, "\nMR mr_ready_count: %u mr_used_count: %u",
+			atomic_read(&sc->mr_io.ready.count),
+			atomic_read(&sc->mr_io.used.count));
+skip_rdma:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 		seq_printf(m, "\nNumber of credits: %d,%d,%d Dialect 0x%x",
 			server->credits,
@@ -933,11 +1014,17 @@ cifs_proc_init(void)
 	proc_create_single("open_files", 0400, proc_fs_cifs,
 			cifs_debug_files_proc_show);
 
+<<<<<<< HEAD
 #ifdef CONFIG_CIFS_DEBUG
 	proc_create("open_dirs", 0600, proc_fs_cifs, &cifs_debug_dirs_proc_ops);
 #else /* CONFIG_CIFS_DEBUG */
 	proc_create_single("open_dirs", 0400, proc_fs_cifs, cifs_debug_dirs_proc_show);
 #endif /* !CONFIG_CIFS_DEBUG */
+=======
+	proc_create_single("open_dirs", 0400, proc_fs_cifs,
+			cifs_debug_dirs_proc_show);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	proc_create("Stats", 0644, proc_fs_cifs, &cifs_stats_proc_ops);
 	proc_create("cifsFYI", 0644, proc_fs_cifs, &cifsFYI_proc_ops);
 	proc_create("traceSMB", 0644, proc_fs_cifs, &traceSMB_proc_ops);

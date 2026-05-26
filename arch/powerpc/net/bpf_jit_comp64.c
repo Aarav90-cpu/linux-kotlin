@@ -179,6 +179,7 @@ static int bpf_jit_stack_offsetof(struct codegen_context *ctx, int reg)
 	BUG();
 }
 
+<<<<<<< HEAD
 void prepare_for_fsession_fentry(u32 *image, struct codegen_context *ctx, int cookie_cnt,
 				int cookie_off, int retval_off)
 {
@@ -204,10 +205,13 @@ void store_func_meta(u32 *image, struct codegen_context *ctx,
 	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, func_meta_off));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bpf_jit_realloc_regs(struct codegen_context *ctx)
 {
 }
 
+<<<<<<< HEAD
 static void emit_fp_priv_stack(u32 *image, struct codegen_context *ctx)
 {
 	PPC_LI64(bpf_to_ppc(BPF_REG_FP), (__force long)ctx->priv_sp);
@@ -226,6 +230,8 @@ static void emit_fp_priv_stack(u32 *image, struct codegen_context *ctx)
 			PRIV_STACK_GUARD_SZ + round_up(ctx->priv_stack_size, 16)));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * For exception boundary & exception_cb progs:
  *     return increased size to accommodate additional NVRs.
@@ -350,6 +356,7 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
 	 * Exception_cb not restricted from using stack area or arena.
 	 * Setup frame pointer to point to the bpf stack area
 	 */
+<<<<<<< HEAD
 	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP))) {
 		if (ctx->priv_sp) {
 			/* Set up fp in private stack */
@@ -360,6 +367,11 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
 				STACK_FRAME_MIN_SIZE + ctx->stack_size));
 		}
 	}
+=======
+	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+			STACK_FRAME_MIN_SIZE + ctx->stack_size));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctx->arena_vm_start)
 		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
@@ -1709,6 +1721,7 @@ emit_clear:
 			break;
 
 		/*
+<<<<<<< HEAD
 		 * JUMP reg
 		 */
 		case BPF_JMP | BPF_JA | BPF_X:
@@ -1717,6 +1730,8 @@ emit_clear:
 			break;
 
 		/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * Return/Exit
 		 */
 		case BPF_JMP | BPF_EXIT:

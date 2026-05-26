@@ -119,6 +119,7 @@ properties:
         items:
           - const: arm,foundation-aarch64
           - const: arm,vexpress
+<<<<<<< HEAD
       - description: Arm Zena Compute Subsystem Platforms
           Arm Zena Compute Subsystem (CSS) is a compute platform targeting
           the automotive sector. Arm Zena CSS is a high-performance Arm
@@ -129,6 +130,8 @@ properties:
               - arm,zena-css-fvp
           - const: arm,zena-css
           - const: arm,vexpress
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   arm,vexpress,position:
     description: When daughterboards are stacked on one site, their position

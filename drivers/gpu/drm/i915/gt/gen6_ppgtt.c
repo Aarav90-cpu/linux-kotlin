@@ -67,7 +67,11 @@ void gen6_ppgtt_enable(struct intel_gt *gt)
 	if (HAS_PPGTT(uncore->i915)) /* may be disabled for VT-d */
 		intel_uncore_write(uncore,
 				   GFX_MODE,
+<<<<<<< HEAD
 				   REG_MASKED_FIELD_ENABLE(GFX_PPGTT_ENABLE));
+=======
+				   _MASKED_BIT_ENABLE(GFX_PPGTT_ENABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* PPGTT support for Sandybdrige/Gen6 and later */

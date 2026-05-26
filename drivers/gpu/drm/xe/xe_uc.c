@@ -13,7 +13,10 @@
 #include "xe_gt_sriov_vf.h"
 #include "xe_guc.h"
 #include "xe_guc_pc.h"
+<<<<<<< HEAD
 #include "xe_guc_rc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_guc_engine_activity.h"
 #include "xe_huc.h"
 #include "xe_sriov.h"
@@ -157,12 +160,17 @@ static int vf_uc_load_hw(struct xe_uc *uc)
 
 	err = xe_gt_sriov_vf_connect(uc_to_gt(uc));
 	if (err)
+<<<<<<< HEAD
 		return err;
+=======
+		goto err_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	uc->guc.submission_state.enabled = true;
 
 	err = xe_guc_opt_in_features_enable(&uc->guc);
 	if (err)
+<<<<<<< HEAD
 		return err;
 
 	err = xe_gt_record_default_lrcs(uc_to_gt(uc));
@@ -170,6 +178,19 @@ static int vf_uc_load_hw(struct xe_uc *uc)
 		return err;
 
 	return 0;
+=======
+		goto err_out;
+
+	err = xe_gt_record_default_lrcs(uc_to_gt(uc));
+	if (err)
+		goto err_out;
+
+	return 0;
+
+err_out:
+	xe_guc_sanitize(&uc->guc);
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -201,6 +222,7 @@ int xe_uc_load_hw(struct xe_uc *uc)
 
 	ret = xe_gt_record_default_lrcs(uc_to_gt(uc));
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	ret = xe_guc_post_load_init(&uc->guc);
@@ -214,6 +236,17 @@ int xe_uc_load_hw(struct xe_uc *uc)
 	ret = xe_guc_rc_enable(&uc->guc);
 	if (ret)
 		return ret;
+=======
+		goto err_out;
+
+	ret = xe_guc_post_load_init(&uc->guc);
+	if (ret)
+		goto err_out;
+
+	ret = xe_guc_pc_start(&uc->guc.pc);
+	if (ret)
+		goto err_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_guc_engine_activity_enable_stats(&uc->guc);
 
@@ -228,6 +261,13 @@ int xe_uc_load_hw(struct xe_uc *uc)
 	xe_gsc_load_start(&uc->gsc);
 
 	return 0;
+<<<<<<< HEAD
+=======
+
+err_out:
+	xe_guc_sanitize(&uc->guc);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int xe_uc_reset_prepare(struct xe_uc *uc)
@@ -239,6 +279,14 @@ int xe_uc_reset_prepare(struct xe_uc *uc)
 	return xe_guc_reset_prepare(&uc->guc);
 }
 
+<<<<<<< HEAD
+=======
+void xe_uc_gucrc_disable(struct xe_uc *uc)
+{
+	XE_WARN_ON(xe_guc_pc_gucrc_disable(&uc->guc.pc));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_uc_stop_prepare(struct xe_uc *uc)
 {
 	xe_gsc_stop_prepare(&uc->gsc);

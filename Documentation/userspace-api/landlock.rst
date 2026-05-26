@@ -77,8 +77,12 @@ to be explicit about the denied-by-default access rights.
             LANDLOCK_ACCESS_FS_MAKE_SYM |
             LANDLOCK_ACCESS_FS_REFER |
             LANDLOCK_ACCESS_FS_TRUNCATE |
+<<<<<<< HEAD
             LANDLOCK_ACCESS_FS_IOCTL_DEV |
             LANDLOCK_ACCESS_FS_RESOLVE_UNIX,
+=======
+            LANDLOCK_ACCESS_FS_IOCTL_DEV,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         .handled_access_net =
             LANDLOCK_ACCESS_NET_BIND_TCP |
             LANDLOCK_ACCESS_NET_CONNECT_TCP,
@@ -128,10 +132,13 @@ version, and only use the available subset of access rights:
         /* Removes LANDLOCK_SCOPE_* for ABI < 6 */
         ruleset_attr.scoped &= ~(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
                                  LANDLOCK_SCOPE_SIGNAL);
+<<<<<<< HEAD
         __attribute__((fallthrough));
     case 6 ... 8:
         /* Removes LANDLOCK_ACCESS_FS_RESOLVE_UNIX for ABI < 9 */
         ruleset_attr.handled_access_fs &= ~LANDLOCK_ACCESS_FS_RESOLVE_UNIX;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
 This enables the creation of an inclusive ruleset that will contain our rules.
@@ -383,8 +390,13 @@ Truncating files
 
 The operations covered by ``LANDLOCK_ACCESS_FS_WRITE_FILE`` and
 ``LANDLOCK_ACCESS_FS_TRUNCATE`` both change the contents of a file and sometimes
+<<<<<<< HEAD
 overlap in non-intuitive ways.  It is strongly recommended to always specify
 both of these together (either granting both, or granting none).
+=======
+overlap in non-intuitive ways.  It is recommended to always specify both of
+these together.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 A particularly surprising example is :manpage:`creat(2)`.  The name suggests
 that this system call requires the rights to create and write files.  However,
@@ -396,10 +408,13 @@ It should also be noted that truncating files does not require the
 system call, this can also be done through :manpage:`open(2)` with the flags
 ``O_RDONLY | O_TRUNC``.
 
+<<<<<<< HEAD
 At the same time, on some filesystems, :manpage:`fallocate(2)` offers a way to
 shorten file contents with ``FALLOC_FL_COLLAPSE_RANGE`` when the file is opened
 for writing, sidestepping the ``LANDLOCK_ACCESS_FS_TRUNCATE`` right.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 The truncate right is associated with the opened file (see below).
 
 Rights associated with file descriptors
@@ -709,6 +724,7 @@ enforce Landlock rulesets across all threads of the calling process
 using the ``LANDLOCK_RESTRICT_SELF_TSYNC`` flag passed to
 sys_landlock_restrict_self().
 
+<<<<<<< HEAD
 Pathname UNIX sockets (ABI < 9)
 -------------------------------
 
@@ -716,6 +732,8 @@ Starting with the Landlock ABI version 9, it is possible to restrict
 connections to pathname UNIX domain sockets (:manpage:`unix(7)`) using
 the new ``LANDLOCK_ACCESS_FS_RESOLVE_UNIX`` right.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _kernel_support:
 
 Kernel support

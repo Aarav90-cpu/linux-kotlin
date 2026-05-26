@@ -60,7 +60,12 @@ int vdo_make_priority_table(unsigned int max_priority, struct priority_table **t
 	if (max_priority > MAX_PRIORITY)
 		return UDS_INVALID_ARGUMENT;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(max_priority + 1, buckets, __func__, &table);
+=======
+	result = vdo_allocate_extended(struct priority_table, max_priority + 1,
+				       struct bucket, __func__, &table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

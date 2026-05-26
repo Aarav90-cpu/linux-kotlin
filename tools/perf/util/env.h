@@ -112,7 +112,10 @@ struct perf_env {
 	struct cpu_cache_level	*caches;
 	struct cpu_domain_map	**cpu_domain;
 	int			 caches_cnt;
+<<<<<<< HEAD
 	unsigned int		cln_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32			comp_ratio;
 	u32			comp_ver;
 	u32			comp_type;

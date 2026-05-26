@@ -45,6 +45,10 @@
 #include <net/inet_common.h>
 #include <net/tcp.h>
 #include <net/udp.h>
+<<<<<<< HEAD
+=======
+#include <net/udplite.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/xfrm.h>
 #include <net/compat.h>
 #include <net/seg6.h>
@@ -562,8 +566,15 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
 			if (sk->sk_type == SOCK_RAW)
 				break;
 
+<<<<<<< HEAD
 			if (sk->sk_protocol == IPPROTO_UDP) {
 				if (udp_sk(sk)->pending == AF_INET6) {
+=======
+			if (sk->sk_protocol == IPPROTO_UDP ||
+			    sk->sk_protocol == IPPROTO_UDPLITE) {
+				struct udp_sock *up = udp_sk(sk);
+				if (up->pending == AF_INET6) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					retv = -EBUSY;
 					break;
 				}
@@ -604,11 +615,24 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
 				WRITE_ONCE(sk->sk_family, PF_INET);
 				tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
 			} else {
+<<<<<<< HEAD
 				sock_prot_inuse_add(net, sk->sk_prot, -1);
 				sock_prot_inuse_add(net, &udp_prot, 1);
 
 				/* Paired with READ_ONCE(sk->sk_prot) in inet6_dgram_ops */
 				WRITE_ONCE(sk->sk_prot, &udp_prot);
+=======
+				struct proto *prot = &udp_prot;
+
+				if (sk->sk_protocol == IPPROTO_UDPLITE)
+					prot = &udplite_prot;
+
+				sock_prot_inuse_add(net, sk->sk_prot, -1);
+				sock_prot_inuse_add(net, prot, 1);
+
+				/* Paired with READ_ONCE(sk->sk_prot) in inet6_dgram_ops */
+				WRITE_ONCE(sk->sk_prot, prot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				WRITE_ONCE(sk->sk_socket->ops, &inet_dgram_ops);
 				WRITE_ONCE(sk->sk_family, PF_INET);
 			}
@@ -1090,6 +1114,10 @@ int do_ipv6_getsockopt(struct sock *sk, int level, int optname,
 	switch (optname) {
 	case IPV6_ADDRFORM:
 		if (sk->sk_protocol != IPPROTO_UDP &&
+<<<<<<< HEAD
+=======
+		    sk->sk_protocol != IPPROTO_UDPLITE &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    sk->sk_protocol != IPPROTO_TCP)
 			return -ENOPROTOOPT;
 		if (sk->sk_state != TCP_ESTABLISHED)

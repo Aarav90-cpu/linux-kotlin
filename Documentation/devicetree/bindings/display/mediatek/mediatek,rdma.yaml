@@ -36,7 +36,10 @@ properties:
           - enum:
               - mediatek,mt7623-disp-rdma
               - mediatek,mt2712-disp-rdma
+<<<<<<< HEAD
               - mediatek,mt8167-disp-rdma
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: mediatek,mt2701-disp-rdma
       - items:
           - enum:

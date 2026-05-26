@@ -5,12 +5,17 @@
 use crate::transaction::Transaction;
 
 use kernel::bindings::{rust_binder_transaction, task_struct};
+<<<<<<< HEAD
 use kernel::error::Result;
 use kernel::ffi::{c_int, c_uint, c_ulong};
+=======
+use kernel::ffi::{c_uint, c_ulong};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 use kernel::task::Task;
 use kernel::tracepoint::declare_trace;
 
 declare_trace! {
+<<<<<<< HEAD
     unsafe fn binder_ioctl(cmd: c_uint, arg: c_ulong);
     unsafe fn binder_ioctl_done(ret: c_int);
     unsafe fn binder_read_done(ret: c_int);
@@ -22,6 +27,10 @@ declare_trace! {
     unsafe fn binder_transaction_fd_recv(t_debug_id: c_int, fd: c_int, offset: usize);
     unsafe fn binder_command(cmd: u32);
     unsafe fn binder_return(ret: u32);
+=======
+    unsafe fn rust_binder_ioctl(cmd: c_uint, arg: c_ulong);
+    unsafe fn rust_binder_transaction(reply: bool, t: rust_binder_transaction, thread: *mut task_struct);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #[inline]
@@ -30,6 +39,7 @@ fn raw_transaction(t: &Transaction) -> rust_binder_transaction {
 }
 
 #[inline]
+<<<<<<< HEAD
 fn to_errno(ret: Result) -> i32 {
     match ret {
         Ok(()) => 0,
@@ -63,6 +73,11 @@ pub(crate) fn trace_write_done(ret: Result) {
 pub(crate) fn trace_wait_for_work(proc_work: bool, transaction_stack: bool, thread_todo: bool) {
     // SAFETY: Always safe to call.
     unsafe { binder_wait_for_work(proc_work, transaction_stack, thread_todo) }
+=======
+pub(crate) fn trace_ioctl(cmd: u32, arg: usize) {
+    // SAFETY: Always safe to call.
+    unsafe { rust_binder_ioctl(cmd, arg as c_ulong) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #[inline]
@@ -73,6 +88,7 @@ pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Ta
     };
     // SAFETY: The raw transaction is valid for the duration of this call. The thread pointer is
     // valid or null.
+<<<<<<< HEAD
     unsafe { binder_transaction(reply, raw_transaction(t), thread) }
 }
 
@@ -102,4 +118,7 @@ pub(crate) fn trace_command(cmd: u32) {
 pub(crate) fn trace_return(ret: u32) {
     // SAFETY: This function is always safe to call.
     unsafe { binder_return(ret) }
+=======
+    unsafe { rust_binder_transaction(reply, raw_transaction(t), thread) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

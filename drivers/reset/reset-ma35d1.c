@@ -19,6 +19,10 @@
 
 struct ma35d1_reset_data {
 	struct reset_controller_dev rcdev;
+<<<<<<< HEAD
+=======
+	struct notifier_block restart_handler;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void __iomem *base;
 	/* protect registers against concurrent read-modify-write */
 	spinlock_t lock;
@@ -124,9 +128,16 @@ static const struct {
 	[MA35D1_RESET_SSPCC] =   {0x2C, 31}
 };
 
+<<<<<<< HEAD
 static int ma35d1_restart_handler(struct sys_off_data *sys_off_data)
 {
 	struct ma35d1_reset_data *data = sys_off_data->cb_data;
+=======
+static int ma35d1_restart_handler(struct notifier_block *this, unsigned long mode, void *cmd)
+{
+	struct ma35d1_reset_data *data =
+				 container_of(this, struct ma35d1_reset_data, restart_handler);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 id = MA35D1_RESET_CHIP;
 
 	writel_relaxed(BIT(ma35d1_reset_map[id].bit),
@@ -211,10 +222,18 @@ static int ma35d1_reset_probe(struct platform_device *pdev)
 	reset_data->rcdev.nr_resets = MA35D1_RESET_COUNT;
 	reset_data->rcdev.ops = &ma35d1_reset_ops;
 	reset_data->rcdev.of_node = dev->of_node;
+<<<<<<< HEAD
 	spin_lock_init(&reset_data->lock);
 
 	err = devm_register_sys_off_handler(dev, SYS_OFF_MODE_RESTART, 192,
 					    ma35d1_restart_handler, reset_data);
+=======
+	reset_data->restart_handler.notifier_call = ma35d1_restart_handler;
+	reset_data->restart_handler.priority = 192;
+	spin_lock_init(&reset_data->lock);
+
+	err = register_restart_handler(&reset_data->restart_handler);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		dev_warn(&pdev->dev, "failed to register restart handler\n");
 

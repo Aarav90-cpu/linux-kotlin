@@ -2729,7 +2729,11 @@ static int get_wave_state(struct device_queue_manager *dqm,
 			ctl_stack, ctl_stack_used_size, save_area_used_size);
 }
 
+<<<<<<< HEAD
 static int get_queue_checkpoint_info(struct device_queue_manager *dqm,
+=======
+static void get_queue_checkpoint_info(struct device_queue_manager *dqm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			const struct queue *q,
 			u32 *mqd_size,
 			u32 *ctl_stack_size)
@@ -2737,7 +2741,10 @@ static int get_queue_checkpoint_info(struct device_queue_manager *dqm,
 	struct mqd_manager *mqd_mgr;
 	enum KFD_MQD_TYPE mqd_type =
 			get_mqd_type_from_queue_type(q->properties.type);
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dqm_lock(dqm);
 	mqd_mgr = dqm->mqd_mgrs[mqd_type];
@@ -2745,11 +2752,17 @@ static int get_queue_checkpoint_info(struct device_queue_manager *dqm,
 	*ctl_stack_size = 0;
 
 	if (q->properties.type == KFD_QUEUE_TYPE_COMPUTE && mqd_mgr->get_checkpoint_info)
+<<<<<<< HEAD
 		ret = mqd_mgr->get_checkpoint_info(mqd_mgr, q->mqd, ctl_stack_size);
 
 	dqm_unlock(dqm);
 
 	return ret;
+=======
+		mqd_mgr->get_checkpoint_info(mqd_mgr, q->mqd, ctl_stack_size);
+
+	dqm_unlock(dqm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int checkpoint_mqd(struct device_queue_manager *dqm,

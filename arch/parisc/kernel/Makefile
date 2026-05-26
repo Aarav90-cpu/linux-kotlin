@@ -46,9 +46,14 @@ obj-$(CONFIG_KEXEC_FILE)		+= kexec_file.o
 
 # vdso
 obj-y			+= vdso.o
+<<<<<<< HEAD
 ifdef CONFIG_64BIT
 obj-y			+= vdso64/
 obj-$(CONFIG_COMPAT)	+= vdso32/
 else
 obj-y			+= vdso32/
 endif
+=======
+obj-$(CONFIG_64BIT)	+= vdso64/
+obj-y			+= vdso32/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

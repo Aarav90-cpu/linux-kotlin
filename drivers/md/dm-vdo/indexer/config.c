@@ -325,7 +325,11 @@ int uds_make_configuration(const struct uds_parameters *params,
 	if (result != UDS_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, __func__, &config);
+=======
+	result = vdo_allocate(1, struct uds_configuration, __func__, &config);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

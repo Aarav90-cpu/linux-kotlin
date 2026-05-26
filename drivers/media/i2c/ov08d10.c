@@ -8,12 +8,19 @@
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
 #include <linux/regulator/consumer.h>
+<<<<<<< HEAD
 #include <linux/reset.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-fwnode.h>
 
 #define OV08D10_SCLK			144000000ULL
+<<<<<<< HEAD
+=======
+#define OV08D10_XVCLK_19_2		19200000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV08D10_ROWCLK			36000
 #define OV08D10_DATA_LANES		2
 #define OV08D10_RGB_DEPTH		10
@@ -77,6 +84,7 @@ struct ov08d10_reg_list {
 	const struct ov08d10_reg *regs;
 };
 
+<<<<<<< HEAD
 static const u32 ov08d10_xvclk_freqs[] = {
 	19200000,
 	24000000
@@ -84,6 +92,10 @@ static const u32 ov08d10_xvclk_freqs[] = {
 
 struct ov08d10_link_freq_config {
 	const struct ov08d10_reg_list reg_list[ARRAY_SIZE(ov08d10_xvclk_freqs)];
+=======
+struct ov08d10_link_freq_config {
+	const struct ov08d10_reg_list reg_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ov08d10_mode {
@@ -93,6 +105,7 @@ struct ov08d10_mode {
 	/* Frame height in pixels */
 	u32 height;
 
+<<<<<<< HEAD
 	/* Horizontal timing size */
 	u32 hts;
 
@@ -100,6 +113,15 @@ struct ov08d10_mode {
 	u32 vts_def;
 
 	/* Min vertical timing size */
+=======
+	/* Horizontal timining size */
+	u32 hts;
+
+	/* Default vertical timining size */
+	u32 vts_def;
+
+	/* Min vertical timining size */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 vts_min;
 
 	/* Link frequency needed for this resolution */
@@ -112,8 +134,13 @@ struct ov08d10_mode {
 	u8 data_lanes;
 };
 
+<<<<<<< HEAD
 /* 3280x2460, 3264x2448 need 720Mbps/lane, 2 lanes - 19.2 MHz */
 static const struct ov08d10_reg mipi_data_rate_720mbps_19_2[] = {
+=======
+/* 3280x2460, 3264x2448 need 720Mbps/lane, 2 lanes */
+static const struct ov08d10_reg mipi_data_rate_720mbps[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{0xfd, 0x00},
 	{0x11, 0x2a},
 	{0x14, 0x43},
@@ -123,8 +150,13 @@ static const struct ov08d10_reg mipi_data_rate_720mbps_19_2[] = {
 	{0xb7, 0x02}
 };
 
+<<<<<<< HEAD
 /* 1632x1224 needs 360Mbps/lane, 2 lanes - 19.2 MHz */
 static const struct ov08d10_reg mipi_data_rate_360mbps_19_2[] = {
+=======
+/* 1632x1224 needs 360Mbps/lane, 2 lanes */
+static const struct ov08d10_reg mipi_data_rate_360mbps[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{0xfd, 0x00},
 	{0x1a, 0x04},
 	{0x1b, 0xe1},
@@ -136,6 +168,7 @@ static const struct ov08d10_reg mipi_data_rate_360mbps_19_2[] = {
 	{0xb7, 0x02}
 };
 
+<<<<<<< HEAD
 /* 3280x2460, 3264x2448 need 720Mbps/lane, 2 lanes - 24 MHz */
 static const struct ov08d10_reg mipi_data_rate_720mbps_24_0[] = {
 	{0xfd, 0x00},
@@ -160,6 +193,8 @@ static const struct ov08d10_reg mipi_data_rate_360mbps_24_0[] = {
 	{0xb7, 0x02}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ov08d10_reg lane_2_mode_3280x2460[] = {
 	/* 3280x2460 resolution */
 	{0xfd, 0x01},
@@ -410,6 +445,10 @@ static const struct ov08d10_reg lane_2_mode_1632x1224[] = {
 	{0x07, 0x05},
 	{0x21, 0x02},
 	{0x24, 0x30},
+<<<<<<< HEAD
+=======
+	{0x33, 0x03},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{0x31, 0x06},
 	{0x33, 0x03},
 	{0x01, 0x03},
@@ -542,6 +581,7 @@ static const char * const ov08d10_test_pattern_menu[] = {
 	"Standard Color Bar",
 };
 
+<<<<<<< HEAD
 static const char *const ov08d10_supply_names[] = {
 	"dovdd",	/* Digital I/O power */
 	"avdd",		/* Analog power */
@@ -554,6 +594,11 @@ struct ov08d10 {
 	struct reset_control *reset;
 	struct regulator_bulk_data supplies[ARRAY_SIZE(ov08d10_supply_names)];
 	u8 xvclk_index;
+=======
+struct ov08d10 {
+	struct device *dev;
+	struct clk *clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct v4l2_subdev sd;
 	struct media_pad pad;
@@ -571,7 +616,11 @@ struct ov08d10 {
 	/* Current mode */
 	const struct ov08d10_mode *cur_mode;
 
+<<<<<<< HEAD
 	/* To serialize asynchronous callbacks */
+=======
+	/* To serialize asynchronus callbacks */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex mutex;
 
 	/* lanes index */
@@ -594,6 +643,7 @@ static const struct ov08d10_lane_cfg lane_cfg_2 = {
 	},
 	{{
 		.reg_list = {
+<<<<<<< HEAD
 		{
 			.num_of_regs =
 				ARRAY_SIZE(mipi_data_rate_720mbps_19_2),
@@ -617,6 +667,19 @@ static const struct ov08d10_lane_cfg lane_cfg_2 = {
 				ARRAY_SIZE(mipi_data_rate_360mbps_24_0),
 			.regs = mipi_data_rate_360mbps_24_0,
 		}}
+=======
+			.num_of_regs =
+				ARRAY_SIZE(mipi_data_rate_720mbps),
+			.regs = mipi_data_rate_720mbps,
+		}
+	},
+	{
+		.reg_list = {
+			.num_of_regs =
+				ARRAY_SIZE(mipi_data_rate_360mbps),
+			.regs = mipi_data_rate_360mbps,
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}},
 	{{
 		.width = 3280,
@@ -714,7 +777,11 @@ static int ov08d10_write_reg_list(struct ov08d10 *ov08d10,
 						r_list->regs[i].val);
 		if (ret) {
 			dev_err_ratelimited(ov08d10->dev,
+<<<<<<< HEAD
 					    "failed to write reg 0x%2.2x. error = %d\n",
+=======
+					    "failed to write reg 0x%2.2x. error = %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    r_list->regs[i].address, ret);
 			return ret;
 		}
@@ -913,7 +980,11 @@ static int ov08d10_set_ctrl(struct v4l2_ctrl *ctrl)
 					 exposure_max);
 	}
 
+<<<<<<< HEAD
 	/* V4L2 control values will be applied only when power is already up */
+=======
+	/* V4L2 controls values will be applied only when power is already up */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pm_runtime_get_if_in_use(ov08d10->dev))
 		return 0;
 
@@ -1069,38 +1140,62 @@ static int ov08d10_start_streaming(struct ov08d10 *ov08d10)
 
 	link_freq_index = ov08d10->cur_mode->link_freq_index;
 	reg_list =
+<<<<<<< HEAD
 		&ov08d10->priv_lane->link_freq_configs[link_freq_index]
 			 .reg_list[ov08d10->xvclk_index];
+=======
+	    &ov08d10->priv_lane->link_freq_configs[link_freq_index].reg_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* soft reset */
 	ret = i2c_smbus_write_byte_data(client, OV08D10_REG_PAGE, 0x00);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to reset sensor\n");
+=======
+		dev_err(ov08d10->dev, "failed to reset sensor");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 	ret = i2c_smbus_write_byte_data(client, 0x20, 0x0e);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to reset sensor\n");
+=======
+		dev_err(ov08d10->dev, "failed to reset sensor");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 	usleep_range(3000, 4000);
 	ret = i2c_smbus_write_byte_data(client, 0x20, 0x0b);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to reset sensor\n");
+=======
+		dev_err(ov08d10->dev, "failed to reset sensor");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
 	/* update sensor setting */
 	ret = ov08d10_write_reg_list(ov08d10, reg_list);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to set plls\n");
+=======
+		dev_err(ov08d10->dev, "failed to set plls");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
 	reg_list = &ov08d10->cur_mode->reg_list;
 	ret = ov08d10_write_reg_list(ov08d10, reg_list);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to set mode\n");
+=======
+		dev_err(ov08d10->dev, "failed to set mode");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -1127,19 +1222,31 @@ static void ov08d10_stop_streaming(struct ov08d10 *ov08d10)
 
 	ret = i2c_smbus_write_byte_data(client, OV08D10_REG_PAGE, 0x00);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to stop streaming\n");
+=======
+		dev_err(ov08d10->dev, "failed to stop streaming");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 	ret = i2c_smbus_write_byte_data(client, OV08D10_REG_MODE_SELECT,
 					OV08D10_MODE_STANDBY);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to stop streaming\n");
+=======
+		dev_err(ov08d10->dev, "failed to stop streaming");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
 	ret = i2c_smbus_write_byte_data(client, OV08D10_REG_PAGE, 0x01);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to stop streaming\n");
+=======
+		dev_err(ov08d10->dev, "failed to stop streaming");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 }
@@ -1316,6 +1423,7 @@ static const struct v4l2_subdev_internal_ops ov08d10_internal_ops = {
 	.open = ov08d10_open,
 };
 
+<<<<<<< HEAD
 static int ov08d10_power_off(struct device *dev)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
@@ -1366,6 +1474,8 @@ static int ov08d10_power_on(struct device *dev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ov08d10_identify_module(struct ov08d10 *ov08d10)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov08d10->sd);
@@ -1425,7 +1535,11 @@ static int ov08d10_get_hwcfg(struct ov08d10 *ov08d10)
 
 	/* Get number of data lanes */
 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 2) {
+<<<<<<< HEAD
 		dev_err(dev, "number of CSI2 data lanes %d is not supported\n",
+=======
+		dev_err(dev, "number of CSI2 data lanes %d is not supported",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bus_cfg.bus.mipi_csi2.num_data_lanes);
 		ret = -EINVAL;
 		goto check_hwcfg_error;
@@ -1437,7 +1551,11 @@ static int ov08d10_get_hwcfg(struct ov08d10 *ov08d10)
 	ov08d10->modes_size = ov08d10_modes_num(ov08d10);
 
 	if (!bus_cfg.nr_of_link_frequencies) {
+<<<<<<< HEAD
 		dev_err(dev, "no link frequencies defined\n");
+=======
+		dev_err(dev, "no link frequencies defined");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto check_hwcfg_error;
 	}
@@ -1450,7 +1568,11 @@ static int ov08d10_get_hwcfg(struct ov08d10 *ov08d10)
 		}
 
 		if (j == bus_cfg.nr_of_link_frequencies) {
+<<<<<<< HEAD
 			dev_err(dev, "no link frequency %lld supported\n",
+=======
+			dev_err(dev, "no link frequency %lld supported",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ov08d10->priv_lane->link_freq_menu[i]);
 			ret = -EINVAL;
 			goto check_hwcfg_error;
@@ -1472,10 +1594,13 @@ static void ov08d10_remove(struct i2c_client *client)
 	media_entity_cleanup(&sd->entity);
 	v4l2_ctrl_handler_free(sd->ctrl_handler);
 	pm_runtime_disable(ov08d10->dev);
+<<<<<<< HEAD
 	if (!pm_runtime_status_suspended(ov08d10->dev)) {
 		ov08d10_power_off(ov08d10->dev);
 		pm_runtime_set_suspended(ov08d10->dev);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_destroy(&ov08d10->mutex);
 }
 
@@ -1483,7 +1608,10 @@ static int ov08d10_probe(struct i2c_client *client)
 {
 	struct ov08d10 *ov08d10;
 	unsigned long freq;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ov08d10 = devm_kzalloc(&client->dev, sizeof(*ov08d10), GFP_KERNEL);
@@ -1498,6 +1626,7 @@ static int ov08d10_probe(struct i2c_client *client)
 				     "failed to get clock\n");
 
 	freq = clk_get_rate(ov08d10->clk);
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(ov08d10_xvclk_freqs); i++) {
 		if (freq == ov08d10_xvclk_freqs[i])
 			break;
@@ -1511,10 +1640,20 @@ static int ov08d10_probe(struct i2c_client *client)
 	ret = ov08d10_get_hwcfg(ov08d10);
 	if (ret) {
 		dev_err(ov08d10->dev, "failed to get HW configuration: %d\n",
+=======
+	if (freq != OV08D10_XVCLK_19_2)
+		dev_warn(ov08d10->dev,
+			 "external clock rate %lu is not supported\n", freq);
+
+	ret = ov08d10_get_hwcfg(ov08d10);
+	if (ret) {
+		dev_err(ov08d10->dev, "failed to get HW configuration: %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ov08d10->reset = devm_reset_control_get_optional_exclusive(ov08d10->dev, NULL);
 	if (IS_ERR(ov08d10->reset))
 		return dev_err_probe(ov08d10->dev, PTR_ERR(ov08d10->reset),
@@ -1541,13 +1680,25 @@ static int ov08d10_probe(struct i2c_client *client)
 	if (ret) {
 		dev_err(ov08d10->dev, "failed to find sensor: %d\n", ret);
 		goto probe_error_power_off;
+=======
+	v4l2_i2c_subdev_init(&ov08d10->sd, client, &ov08d10_subdev_ops);
+
+	ret = ov08d10_identify_module(ov08d10);
+	if (ret) {
+		dev_err(ov08d10->dev, "failed to find sensor: %d", ret);
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_init(&ov08d10->mutex);
 	ov08d10->cur_mode = &ov08d10->priv_lane->sp_modes[0];
 	ret = ov08d10_init_controls(ov08d10);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to init controls: %d\n", ret);
+=======
+		dev_err(ov08d10->dev, "failed to init controls: %d", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto probe_error_v4l2_ctrl_handler_free;
 	}
 
@@ -1557,7 +1708,11 @@ static int ov08d10_probe(struct i2c_client *client)
 	ov08d10->pad.flags = MEDIA_PAD_FL_SOURCE;
 	ret = media_entity_pads_init(&ov08d10->sd.entity, 1, &ov08d10->pad);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to init entity pads: %d\n", ret);
+=======
+		dev_err(ov08d10->dev, "failed to init entity pads: %d", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto probe_error_v4l2_ctrl_handler_free;
 	}
 
@@ -1566,7 +1721,11 @@ static int ov08d10_probe(struct i2c_client *client)
 
 	ret = v4l2_async_register_subdev_sensor(&ov08d10->sd);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ov08d10->dev, "failed to register V4L2 subdev: %d\n",
+=======
+		dev_err(ov08d10->dev, "failed to register V4L2 subdev: %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret);
 		goto probe_error_media_entity_cleanup;
 	}
@@ -1584,6 +1743,7 @@ probe_error_v4l2_ctrl_handler_free:
 	v4l2_ctrl_handler_free(ov08d10->sd.ctrl_handler);
 	mutex_destroy(&ov08d10->mutex);
 
+<<<<<<< HEAD
 probe_error_power_off:
 	ov08d10_power_off(ov08d10->dev);
 
@@ -1593,6 +1753,11 @@ probe_error_power_off:
 static DEFINE_RUNTIME_DEV_PM_OPS(ov08d10_pm_ops,
 				 ov08d10_power_off, ov08d10_power_on, NULL);
 
+=======
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id ov08d10_acpi_ids[] = {
 	{ "OVTI08D1" },
@@ -1602,6 +1767,7 @@ static const struct acpi_device_id ov08d10_acpi_ids[] = {
 MODULE_DEVICE_TABLE(acpi, ov08d10_acpi_ids);
 #endif
 
+<<<<<<< HEAD
 static const struct of_device_id ov08d10_of_match[] = {
 	{ .compatible = "ovti,ov08d10" },
 	{ /* sentinel */ }
@@ -1614,6 +1780,12 @@ static struct i2c_driver ov08d10_i2c_driver = {
 		.pm = pm_ptr(&ov08d10_pm_ops),
 		.acpi_match_table = ACPI_PTR(ov08d10_acpi_ids),
 		.of_match_table = ov08d10_of_match,
+=======
+static struct i2c_driver ov08d10_i2c_driver = {
+	.driver = {
+		.name = "ov08d10",
+		.acpi_match_table = ACPI_PTR(ov08d10_acpi_ids),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	.probe = ov08d10_probe,
 	.remove = ov08d10_remove,

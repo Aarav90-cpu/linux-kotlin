@@ -3917,7 +3917,11 @@ EXPORT_SYMBOL(__xfrm_route_forward);
 
 static struct dst_entry *xfrm_dst_check(struct dst_entry *dst, u32 cookie)
 {
+<<<<<<< HEAD
 	/* Code (such as xfrm_bundle_create()) sets dst->obsolete
+=======
+	/* Code (such as __xfrm4_bundle_create()) sets dst->obsolete
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * to DST_OBSOLETE_FORCE_CHK to force all XFRM destinations to
 	 * get validated by dst_ops->check on every use.  We do this
 	 * because when a normal route referenced by an XFRM dst is

@@ -19,9 +19,13 @@
 #include <linux/jump_label.h>
 
 #include <linux/irqchip/arm-gic-v4.h>
+<<<<<<< HEAD
 #include <linux/irqchip/arm-gic-v5.h>
 
 #define VGIC_V5_MAX_CPUS	512
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VGIC_V3_MAX_CPUS	512
 #define VGIC_V2_MAX_CPUS	8
 #define VGIC_NR_IRQS_LEGACY     256
@@ -33,6 +37,7 @@
 #define VGIC_MIN_LPI		8192
 #define KVM_IRQCHIP_NUM_PINS	(1020 - 32)
 
+<<<<<<< HEAD
 /*
  * GICv5 supports 128 PPIs, but only the first 64 are architected. We only
  * support the timers and PMU in KVM, both of which are architected. Rather than
@@ -123,6 +128,11 @@
 #define __vgic_is_v(k, v) ((k)->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V##v)
 #define vgic_is_v3(k) (__vgic_is_v(k, 3))
 #define vgic_is_v5(k) (__vgic_is_v(k, 5))
+=======
+#define irq_is_ppi(irq) ((irq) >= VGIC_NR_SGIS && (irq) < VGIC_NR_PRIVATE_IRQS)
+#define irq_is_spi(irq) ((irq) >= VGIC_NR_PRIVATE_IRQS && \
+			 (irq) <= VGIC_MAX_SPI)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum vgic_type {
 	VGIC_V2,		/* Good ol' GICv2 */
@@ -190,8 +200,11 @@ enum vgic_irq_config {
 	VGIC_CONFIG_LEVEL
 };
 
+<<<<<<< HEAD
 struct vgic_irq;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Per-irq ops overriding some common behavious.
  *
@@ -210,6 +223,7 @@ struct irq_ops {
 	 * peaking into the physical GIC.
 	 */
 	bool (*get_input_level)(int vintid);
+<<<<<<< HEAD
 
 	/*
 	 * Function pointer to override the queuing of an IRQ.
@@ -223,6 +237,8 @@ struct irq_ops {
 	 */
 	void (*set_direct_injection)(struct kvm_vcpu *vcpu,
 				     struct vgic_irq *irq, bool direct);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct vgic_irq {
@@ -342,6 +358,7 @@ struct vgic_redist_region {
 	struct list_head list;
 };
 
+<<<<<<< HEAD
 struct vgic_v5_vm {
 	/*
 	 * We only expose a subset of PPIs to the guest. This subset is a
@@ -362,6 +379,8 @@ struct vgic_v5_vm {
 	DECLARE_BITMAP(vgic_ppi_hmr, VGIC_V5_NR_PRIVATE_IRQS);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct vgic_dist {
 	bool			in_kernel;
 	bool			ready;
@@ -434,11 +453,14 @@ struct vgic_dist {
 	 * else.
 	 */
 	struct its_vm		its_vm;
+<<<<<<< HEAD
 
 	/*
 	 * GICv5 per-VM data.
 	 */
 	struct vgic_v5_vm	gicv5_vm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct vgic_v2_cpu_if {
@@ -469,6 +491,7 @@ struct vgic_v3_cpu_if {
 	unsigned int used_lrs;
 };
 
+<<<<<<< HEAD
 struct vgic_v5_cpu_if {
 	u64	vgic_apr;
 	u64	vgic_vmcr;
@@ -497,12 +520,17 @@ struct vgic_v5_ppi_caps {
 	DECLARE_BITMAP(impl_ppi_mask, VGIC_V5_NR_PRIVATE_IRQS);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct vgic_cpu {
 	/* CPU vif control registers for world switch */
 	union {
 		struct vgic_v2_cpu_if	vgic_v2;
 		struct vgic_v3_cpu_if	vgic_v3;
+<<<<<<< HEAD
 		struct vgic_v5_cpu_if	vgic_v5;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	struct vgic_irq *private_irqs;
@@ -550,17 +578,25 @@ int kvm_vgic_create(struct kvm *kvm, u32 type);
 void kvm_vgic_destroy(struct kvm *kvm);
 void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu);
 int kvm_vgic_map_resources(struct kvm *kvm);
+<<<<<<< HEAD
 void kvm_vgic_finalize_idregs(struct kvm *kvm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kvm_vgic_hyp_init(void);
 void kvm_vgic_init_cpu_hardware(void);
 
 int kvm_vgic_inject_irq(struct kvm *kvm, struct kvm_vcpu *vcpu,
 			unsigned int intid, bool level, void *owner);
+<<<<<<< HEAD
 void kvm_vgic_set_irq_ops(struct kvm_vcpu *vcpu, u32 vintid,
 			  struct irq_ops *ops);
 void kvm_vgic_clear_irq_ops(struct kvm_vcpu *vcpu, u32 vintid);
 int kvm_vgic_map_phys_irq(struct kvm_vcpu *vcpu, unsigned int host_irq,
 			  u32 vintid);
+=======
+int kvm_vgic_map_phys_irq(struct kvm_vcpu *vcpu, unsigned int host_irq,
+			  u32 vintid, struct irq_ops *ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kvm_vgic_unmap_phys_irq(struct kvm_vcpu *vcpu, unsigned int vintid);
 int kvm_vgic_get_map(struct kvm_vcpu *vcpu, unsigned int vintid);
 bool kvm_vgic_map_is_active(struct kvm_vcpu *vcpu, unsigned int vintid);
@@ -576,6 +612,7 @@ u64 vgic_v3_get_misr(struct kvm_vcpu *vcpu);
 
 #define irqchip_in_kernel(k)	(!!((k)->arch.vgic.in_kernel))
 #define vgic_initialized(k)	((k)->arch.vgic.initialized)
+<<<<<<< HEAD
 #define vgic_valid_spi(k, i)						\
 	({								\
 		bool __ret = irq_is_spi(k, i);				\
@@ -590,6 +627,10 @@ u64 vgic_v3_get_misr(struct kvm_vcpu *vcpu);
 									\
 		__ret;							\
 	})
+=======
+#define vgic_valid_spi(k, i)	(((i) >= VGIC_NR_PRIVATE_IRQS) && \
+			((i) < (k)->arch.vgic.nr_spis + VGIC_NR_PRIVATE_IRQS))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool kvm_vcpu_has_pending_irqs(struct kvm_vcpu *vcpu);
 void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu);
@@ -629,11 +670,14 @@ int vgic_v4_load(struct kvm_vcpu *vcpu);
 void vgic_v4_commit(struct kvm_vcpu *vcpu);
 int vgic_v4_put(struct kvm_vcpu *vcpu);
 
+<<<<<<< HEAD
 int vgic_v5_finalize_ppi_state(struct kvm *kvm);
 bool vgic_v5_ppi_queue_irq_unlock(struct kvm *kvm, struct vgic_irq *irq,
 				  unsigned long flags);
 void vgic_v5_set_ppi_dvi(struct kvm_vcpu *vcpu, struct vgic_irq *irq, bool dvi);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
 
 /* CPU HP callbacks */

@@ -1062,6 +1062,7 @@ Conclusion
 
 You have reached the end of the step-by-step guide.
 
+<<<<<<< HEAD
 Did you run into trouble following the step-by-step guide not cleared up by the
 reference section below? Did you spot errors? Or do you have ideas on how to
 improve the guide?
@@ -1071,6 +1072,18 @@ or a patch to Thorsten Leemhuis <linux@leemhuis.info> while ideally CCing the
 public Linux docs mailing list <linux-doc@vger.kernel.org>. Such feedback is
 vital to improve this text further, which is in everybody's interest, as it will
 enable more people to master the task described here.
+=======
+Did you run into trouble following any of the above steps not cleared up by the
+reference section below? Did you spot errors? Or do you have ideas how to
+improve the guide?
+
+If any of that applies, please take a moment and let the maintainer of this
+document know by email (Thorsten Leemhuis <linux@leemhuis.info>), ideally while
+CCing the Linux docs mailing list (linux-doc@vger.kernel.org). Such feedback is
+vital to improve this text further, which is in everybody's interest, as it
+will enable more people to master the task described here -- and hopefully also
+improve similar guides inspired by this one.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 Reference section for the step-by-step guide

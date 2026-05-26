@@ -212,7 +212,11 @@ static int __init load_uefi_certs(void)
 	}
 
 	/* the MOK/MOKx can not be trusted when secure boot is disabled */
+<<<<<<< HEAD
 	if (!arch_get_secureboot())
+=======
+	if (!arch_ima_get_secureboot())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);

@@ -89,7 +89,11 @@ static irqreturn_t eeti_ts_isr(int irq, void *dev_id)
 	struct eeti_ts *eeti = dev_id;
 	int error;
 
+<<<<<<< HEAD
 	guard(mutex)(&eeti->mutex);
+=======
+	mutex_lock(&eeti->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		/*
@@ -109,12 +113,20 @@ static irqreturn_t eeti_ts_isr(int irq, void *dev_id)
 
 	} while (eeti->running && eeti->attn_gpio);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&eeti->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return IRQ_HANDLED;
 }
 
 static void eeti_ts_start(struct eeti_ts *eeti)
 {
+<<<<<<< HEAD
 	guard(mutex)(&eeti->mutex);
+=======
+	mutex_lock(&eeti->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	eeti->running = true;
 	enable_irq(eeti->client->irq);
@@ -126,6 +138,11 @@ static void eeti_ts_start(struct eeti_ts *eeti)
 	 */
 	if (eeti->attn_gpio && gpiod_get_value_cansleep(eeti->attn_gpio))
 		eeti_ts_read(eeti);
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&eeti->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void eeti_ts_stop(struct eeti_ts *eeti)
@@ -235,10 +252,19 @@ static int eeti_ts_suspend(struct device *dev)
 	struct eeti_ts *eeti = i2c_get_clientdata(client);
 	struct input_dev *input_dev = eeti->input;
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &input_dev->mutex) {
 		if (input_device_enabled(input_dev))
 			eeti_ts_stop(eeti);
 	}
+=======
+	mutex_lock(&input_dev->mutex);
+
+	if (input_device_enabled(input_dev))
+		eeti_ts_stop(eeti);
+
+	mutex_unlock(&input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (device_may_wakeup(&client->dev))
 		enable_irq_wake(client->irq);
@@ -255,10 +281,19 @@ static int eeti_ts_resume(struct device *dev)
 	if (device_may_wakeup(&client->dev))
 		disable_irq_wake(client->irq);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &input_dev->mutex) {
 		if (input_device_enabled(input_dev))
 			eeti_ts_start(eeti);
 	}
+=======
+	mutex_lock(&input_dev->mutex);
+
+	if (input_device_enabled(input_dev))
+		eeti_ts_start(eeti);
+
+	mutex_unlock(&input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

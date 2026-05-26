@@ -31,6 +31,19 @@ void cache_error_setup(void)
 	set_merr_handler(0x0, &except_vec_cex, 0x80);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * LoongArch maintains ICache/DCache coherency by hardware,
+ * we just need "ibar" to avoid instruction hazard here.
+ */
+void local_flush_icache_range(unsigned long start, unsigned long end)
+{
+	asm volatile ("\tibar 0\n"::);
+}
+EXPORT_SYMBOL(local_flush_icache_range);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void flush_cache_leaf(unsigned int leaf)
 {
 	int i, j, nr_nodes;

@@ -55,7 +55,10 @@ properties:
       - const: chg_isense
       - const: batti
 
+<<<<<<< HEAD
   monitored-battery: true
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   power-supplies: true
 
 required:

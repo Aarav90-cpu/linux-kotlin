@@ -49,6 +49,7 @@
 #include "ddc_service_types.h"
 #include "clk_mgr.h"
 
+<<<<<<< HEAD
 #define MCCS_DEST_ADDR (0x6E >> 1)
 #define MCCS_SRC_ADDR	0x51
 #define MCCS_LENGTH_OFFSET 0x80
@@ -88,6 +89,8 @@ union vcp_reply {
 	unsigned char raw[11];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u32 edid_extract_panel_id(struct edid *edid)
 {
 	return (u32)edid->mfg_id[0] << 24   |
@@ -1032,6 +1035,7 @@ dm_helpers_read_acpi_edid(struct amdgpu_dm_connector *aconnector)
 	return drm_edid_read_custom(connector, dm_helpers_probe_acpi_edid, connector);
 }
 
+<<<<<<< HEAD
 static const struct drm_edid *
 dm_helpers_read_vbios_hardcoded_edid(struct dc_link *link, struct amdgpu_dm_connector *aconnector)
 {
@@ -1071,6 +1075,8 @@ dm_helpers_read_vbios_hardcoded_edid(struct dc_link *link, struct amdgpu_dm_conn
 	return edid;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void populate_hdmi_info_from_connector(struct drm_hdmi_info *hdmi, struct dc_edid_caps *edid_caps)
 {
 	edid_caps->scdc_present = hdmi->scdc.supported;
@@ -1091,6 +1097,7 @@ enum dc_edid_status dm_helpers_read_local_edid(
 
 	if (link->aux_mode)
 		ddc = &aconnector->dm_dp_aux.aux.ddc;
+<<<<<<< HEAD
 	else if (link->ddc_hw_inst == GPIO_DDC_LINE_UNKNOWN &&
 		 dc_is_embedded_signal(link->connector_signal))
 		ddc = NULL;
@@ -1100,6 +1107,11 @@ enum dc_edid_status dm_helpers_read_local_edid(
 	if (link->dc->hwss.prepare_ddc)
 		link->dc->hwss.prepare_ddc(link);
 
+=======
+	else
+		ddc = &aconnector->i2c->base;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* some dongles read edid incorrectly the first time,
 	 * do check sum and retry to make sure read correct edid.
 	 */
@@ -1107,8 +1119,11 @@ enum dc_edid_status dm_helpers_read_local_edid(
 		drm_edid = dm_helpers_read_acpi_edid(aconnector);
 		if (drm_edid)
 			drm_info(connector->dev, "Using ACPI provided EDID for %s\n", connector->name);
+<<<<<<< HEAD
 		else if (!ddc)
 			drm_edid = dm_helpers_read_vbios_hardcoded_edid(link, aconnector);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			drm_edid = drm_edid_read_ddc(connector, ddc);
 		drm_edid_connector_update(connector, drm_edid);
@@ -1248,9 +1263,15 @@ void dm_helpers_override_panel_settings(
 		link->panel_config.dsc.disable_dsc_edp = true;
 
 	if (dc_get_edp_link_panel_inst(ctx->dc, link, &panel_inst) && panel_inst == 1) {
+<<<<<<< HEAD
 		link->panel_config.psr.disable_psr = true;
 		link->panel_config.psr.disallow_psrsu = true;
 		link->panel_config.psr.disallow_replay = true;
+=======
+			link->panel_config.psr.disable_psr = true;
+			link->panel_config.psr.disallow_psrsu = true;;
+			link->panel_config.psr.disallow_replay = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1483,8 +1504,11 @@ static bool dm_is_freesync_pcon_whitelist(const uint32_t branch_dev_id)
 	case DP_BRANCH_DEVICE_ID_0060AD:
 	case DP_BRANCH_DEVICE_ID_00E04C:
 	case DP_BRANCH_DEVICE_ID_90CC24:
+<<<<<<< HEAD
 	case DP_BRANCH_DEVICE_ID_001CF8:
 	case DP_BRANCH_DEVICE_ID_001FF2:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret_val = true;
 		break;
 	default:
@@ -1524,6 +1548,7 @@ bool dm_helpers_is_hdr_on(struct dc_context *ctx, struct dc_stream_state *stream
 	// TODO
 	return false;
 }
+<<<<<<< HEAD
 
 static int mccs_operation_vcp_request(unsigned int vcp_code, struct dc_link *link,
 				union vcp_reply *reply)
@@ -1724,3 +1749,5 @@ void dm_helpers_mccs_vcp_set(struct dc_context *ctx, struct dc_link *link,
 				sink->edid_caps.freesync_vcp_code);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

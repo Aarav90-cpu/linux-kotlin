@@ -395,9 +395,12 @@ bool dcn314_are_clock_states_equal(struct dc_clocks *a,
 static void dcn314_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
 		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
 {
+<<<<<<< HEAD
 	(void)regs_and_bypass;
 	(void)clk_mgr_base;
 	(void)log_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return;
 }
 
@@ -845,8 +848,12 @@ void dcn314_clk_mgr_construct(
 	/* TODO: Check we get what we expect during bringup */
 	clk_mgr->base.base.dentist_vco_freq_khz = get_vco_frequency_from_reg(&clk_mgr->base);
 
+<<<<<<< HEAD
 	if (ctx->dc_bios->integrated_info &&
 	    ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType)
+=======
+	if (ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dcn314_bw_params.wm_table = lpddr5_wm_table;
 	else
 		dcn314_bw_params.wm_table = ddr5_wm_table;

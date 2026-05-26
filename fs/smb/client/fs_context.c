@@ -80,7 +80,11 @@ const struct fs_parameter_spec smb3_fs_parameters[] = {
 	fsparam_flag_no("forcegid", Opt_forcegid),
 	fsparam_flag("noblocksend", Opt_noblocksend),
 	fsparam_flag("noautotune", Opt_noautotune),
+<<<<<<< HEAD
 	fsparam_flag_no("lease", Opt_lease),
+=======
+	fsparam_flag("nolease", Opt_nolease),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fsparam_flag_no("hard", Opt_hard),
 	fsparam_flag_no("soft", Opt_soft),
 	fsparam_flag_no("perm", Opt_perm),
@@ -536,6 +540,40 @@ cifs_parse_smb_version(struct fs_context *fc, char *value, struct smb3_fs_contex
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int smb3_parse_opt(const char *options, const char *key, char **val)
+{
+	int rc = -ENOENT;
+	char *opts, *orig, *p;
+
+	orig = opts = kstrdup(options, GFP_KERNEL);
+	if (!opts)
+		return -ENOMEM;
+
+	while ((p = strsep(&opts, ","))) {
+		char *nval;
+
+		if (!*p)
+			continue;
+		if (strncasecmp(p, key, strlen(key)))
+			continue;
+		nval = strchr(p, '=');
+		if (nval) {
+			if (nval == p)
+				continue;
+			*nval++ = 0;
+			*val = kstrdup(nval, GFP_KERNEL);
+			rc = !*val ? -ENOMEM : 0;
+			goto out;
+		}
+	}
+out:
+	kfree(orig);
+	return rc;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Remove duplicate path delimiters. Windows is supposed to do that
  * but there are some bugs that prevent rename from working if there are
@@ -631,6 +669,7 @@ smb3_parse_devname(const char *devname, struct smb3_fs_context *ctx)
 
 	/* make sure we have a valid UNC double delimiter prefix */
 	len = strspn(devname, delims);
+<<<<<<< HEAD
 	if (len != 2) {
 		cifs_dbg(VFS, "UNC: path must begin with // or \\\\\n");
 		return -EINVAL;
@@ -642,6 +681,15 @@ smb3_parse_devname(const char *devname, struct smb3_fs_context *ctx)
 		cifs_dbg(VFS, "UNC: missing delimiter between hostname and share name\n");
 		return -EINVAL;
 	}
+=======
+	if (len != 2)
+		return -EINVAL;
+
+	/* find delimiter between host and sharename */
+	pos = strpbrk(devname + 2, delims);
+	if (!pos)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* record the server hostname */
 	kfree(ctx->server_hostname);
@@ -654,10 +702,15 @@ smb3_parse_devname(const char *devname, struct smb3_fs_context *ctx)
 
 	/* now go until next delimiter or end of string */
 	len = strcspn(pos, delims);
+<<<<<<< HEAD
 	if (!len) {
 		cifs_dbg(VFS, "UNC: missing share name\n");
 		return -EINVAL;
 	}
+=======
+	if (!len)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* move "pos" up to delimiter or NULL */
 	pos += len;
@@ -736,7 +789,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
 static int smb3_fs_context_parse_monolithic(struct fs_context *fc,
 					    void *data);
 static int smb3_get_tree(struct fs_context *fc);
+<<<<<<< HEAD
 static void smb3_sync_ses_chan_max(struct cifs_ses *ses, size_t max_channels);
+=======
+static void smb3_sync_ses_chan_max(struct cifs_ses *ses, unsigned int max_channels);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int smb3_reconfigure(struct fs_context *fc);
 
 static const struct fs_context_operations smb3_fs_context_ops = {
@@ -1010,6 +1067,7 @@ do {									\
 
 int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
 {
+<<<<<<< HEAD
 	char *password = NULL, *password2 = NULL;
 
 	if (ses->password &&
@@ -1017,11 +1075,20 @@ int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_se
 	    strcmp(ses->password, cifs_sb->ctx->password)) {
 		password = kstrdup(ses->password, GFP_KERNEL);
 		if (!password)
+=======
+	if (ses->password &&
+	    cifs_sb->ctx->password &&
+	    strcmp(ses->password, cifs_sb->ctx->password)) {
+		kfree_sensitive(cifs_sb->ctx->password);
+		cifs_sb->ctx->password = kstrdup(ses->password, GFP_KERNEL);
+		if (!cifs_sb->ctx->password)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOMEM;
 	}
 	if (ses->password2 &&
 	    cifs_sb->ctx->password2 &&
 	    strcmp(ses->password2, cifs_sb->ctx->password2)) {
+<<<<<<< HEAD
 		password2 = kstrdup(ses->password2, GFP_KERNEL);
 		if (!password2) {
 			kfree_sensitive(password);
@@ -1038,6 +1105,16 @@ int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_se
 		cifs_sb->ctx->password2 = password2;
 	}
 
+=======
+		kfree_sensitive(cifs_sb->ctx->password2);
+		cifs_sb->ctx->password2 = kstrdup(ses->password2, GFP_KERNEL);
+		if (!cifs_sb->ctx->password2) {
+			kfree_sensitive(cifs_sb->ctx->password);
+			cifs_sb->ctx->password = NULL;
+			return -ENOMEM;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1050,7 +1127,11 @@ int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_se
  * with the session's channel lock. This should be called whenever the maximum
  * allowed channels for a session changes (e.g., after a remount or reconfigure).
  */
+<<<<<<< HEAD
 static void smb3_sync_ses_chan_max(struct cifs_ses *ses, size_t max_channels)
+=======
+static void smb3_sync_ses_chan_max(struct cifs_ses *ses, unsigned int max_channels)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	spin_lock(&ses->chan_lock);
 	ses->chan_max = max_channels;
@@ -1060,15 +1141,21 @@ static void smb3_sync_ses_chan_max(struct cifs_ses *ses, size_t max_channels)
 static int smb3_reconfigure(struct fs_context *fc)
 {
 	struct smb3_fs_context *ctx = smb3_fc2context(fc);
+<<<<<<< HEAD
 	struct smb3_fs_context *new_ctx = NULL;
 	struct smb3_fs_context *old_ctx = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dentry *root = fc->root;
 	struct cifs_sb_info *cifs_sb = CIFS_SB(root->d_sb);
 	struct cifs_ses *ses = cifs_sb_master_tcon(cifs_sb)->ses;
 	unsigned int rsize = ctx->rsize, wsize = ctx->wsize;
 	char *new_password = NULL, *new_password2 = NULL;
 	bool need_recon = false;
+<<<<<<< HEAD
 	bool need_mchan_update;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	if (ses->expired_pwd)
@@ -1078,6 +1165,7 @@ static int smb3_reconfigure(struct fs_context *fc)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	old_ctx = kzalloc_obj(*old_ctx);
 	if (!old_ctx)
 		return -ENOMEM;
@@ -1088,6 +1176,8 @@ static int smb3_reconfigure(struct fs_context *fc)
 		return rc;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We can not change UNC/username/password/domainname/
 	 * workstation_name/nodename/iocharset
@@ -1097,6 +1187,7 @@ static int smb3_reconfigure(struct fs_context *fc)
 	STEAL_STRING(cifs_sb, ctx, UNC);
 	STEAL_STRING(cifs_sb, ctx, source);
 	STEAL_STRING(cifs_sb, ctx, username);
+<<<<<<< HEAD
 	STEAL_STRING(cifs_sb, ctx, domainname);
 	STEAL_STRING(cifs_sb, ctx, nodename);
 	STEAL_STRING(cifs_sb, ctx, iocharset);
@@ -1113,6 +1204,18 @@ static int smb3_reconfigure(struct fs_context *fc)
 		} else {
 			STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
 		}
+=======
+
+	if (need_recon == false)
+		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
+	else  {
+		if (ctx->password) {
+			new_password = kstrdup(ctx->password, GFP_KERNEL);
+			if (!new_password)
+				return -ENOMEM;
+		} else
+			STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1122,6 +1225,7 @@ static int smb3_reconfigure(struct fs_context *fc)
 	if (ctx->password2) {
 		new_password2 = kstrdup(ctx->password2, GFP_KERNEL);
 		if (!new_password2) {
+<<<<<<< HEAD
 			rc = -ENOMEM;
 			goto restore_ctx;
 		}
@@ -1145,6 +1249,13 @@ static int smb3_reconfigure(struct fs_context *fc)
 
 	need_mchan_update = ctx->multichannel != cifs_sb->ctx->multichannel ||
 			    ctx->max_channels != cifs_sb->ctx->max_channels;
+=======
+			kfree_sensitive(new_password);
+			return -ENOMEM;
+		}
+	} else
+		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * we may update the passwords in the ses struct below. Make sure we do
@@ -1155,24 +1266,57 @@ static int smb3_reconfigure(struct fs_context *fc)
 	/*
 	 * smb2_reconnect may swap password and password2 in case session setup
 	 * failed. First get ctx passwords in sync with ses passwords. It should
+<<<<<<< HEAD
 	 * be done before committing new passwords.
+=======
+	 * be okay to do this even if this function were to return an error at a
+	 * later stage
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	rc = smb3_sync_session_ctx_passwords(cifs_sb, ses);
 	if (rc) {
 		mutex_unlock(&ses->session_mutex);
+<<<<<<< HEAD
 		goto cleanup_new_ctx;
+=======
+		kfree_sensitive(new_password);
+		kfree_sensitive(new_password2);
+		return rc;
+	}
+
+	/*
+	 * now that allocations for passwords are done, commit them
+	 */
+	if (new_password) {
+		kfree_sensitive(ses->password);
+		ses->password = new_password;
+	}
+	if (new_password2) {
+		kfree_sensitive(ses->password2);
+		ses->password2 = new_password2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
 	 * If multichannel or max_channels has changed, update the session's channels accordingly.
 	 * This may add or remove channels to match the new configuration.
 	 */
+<<<<<<< HEAD
 	if (need_mchan_update) {
+=======
+	if ((ctx->multichannel != cifs_sb->ctx->multichannel) ||
+	    (ctx->max_channels != cifs_sb->ctx->max_channels)) {
+
+		/* Synchronize ses->chan_max with the new mount context */
+		smb3_sync_ses_chan_max(ses, ctx->max_channels);
+		/* Now update the session's channels to match the new configuration */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Prevent concurrent scaling operations */
 		spin_lock(&ses->ses_lock);
 		if (ses->flags & CIFS_SES_FLAG_SCALE_CHANNELS) {
 			spin_unlock(&ses->ses_lock);
 			mutex_unlock(&ses->session_mutex);
+<<<<<<< HEAD
 			rc = -EINVAL;
 			goto cleanup_new_ctx;
 		}
@@ -1204,6 +1348,18 @@ static int smb3_reconfigure(struct fs_context *fc)
 		smb3_update_ses_channels(ses, ses->server,
 					 false /* from_reconnect */,
 					 false /* disable_mchan */);
+=======
+			return -EINVAL;
+		}
+		ses->flags |= CIFS_SES_FLAG_SCALE_CHANNELS;
+		spin_unlock(&ses->ses_lock);
+
+		mutex_unlock(&ses->session_mutex);
+
+		rc = smb3_update_ses_channels(ses, ses->server,
+					       false /* from_reconnect */,
+					       false /* disable_mchan */);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Clear scaling flag after operation */
 		spin_lock(&ses->ses_lock);
@@ -1213,12 +1369,25 @@ static int smb3_reconfigure(struct fs_context *fc)
 		mutex_unlock(&ses->session_mutex);
 	}
 
+<<<<<<< HEAD
 	smb3_cleanup_fs_context_contents(cifs_sb->ctx);
 	memcpy(cifs_sb->ctx, new_ctx, sizeof(*new_ctx));
 	kfree(new_ctx);
 	new_ctx = NULL;
 	smb3_cleanup_fs_context(old_ctx);
 	old_ctx = NULL;
+=======
+	STEAL_STRING(cifs_sb, ctx, domainname);
+	STEAL_STRING(cifs_sb, ctx, nodename);
+	STEAL_STRING(cifs_sb, ctx, iocharset);
+
+	/* if rsize or wsize not passed in on remount, use previous values */
+	ctx->rsize = rsize ? CIFS_ALIGN_RSIZE(fc, rsize) : cifs_sb->ctx->rsize;
+	ctx->wsize = wsize ? CIFS_ALIGN_WSIZE(fc, wsize) : cifs_sb->ctx->wsize;
+
+	smb3_cleanup_fs_context_contents(cifs_sb->ctx);
+	rc = smb3_fs_context_dup(cifs_sb->ctx, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smb3_update_mnt_flags(cifs_sb);
 #ifdef CONFIG_CIFS_DFS_UPCALL
 	if (!rc)
@@ -1226,6 +1395,7 @@ static int smb3_reconfigure(struct fs_context *fc)
 #endif
 
 	return rc;
+<<<<<<< HEAD
 
 cleanup_new_ctx:
 	smb3_cleanup_fs_context_contents(new_ctx);
@@ -1238,6 +1408,8 @@ restore_ctx:
 	kfree(old_ctx);
 
 	return rc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int smb3_fs_context_parse_param(struct fs_context *fc,
@@ -1364,8 +1536,13 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
 	case Opt_noautotune:
 		ctx->noautotune = 1;
 		break;
+<<<<<<< HEAD
 	case Opt_lease:
 		ctx->no_lease = result.negated;
+=======
+	case Opt_nolease:
+		ctx->no_lease = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case Opt_nosparse:
 		ctx->no_sparse = 1;

@@ -58,6 +58,7 @@ properties:
       - const: msi
 
   clocks:
+<<<<<<< HEAD
     minItems: 1
     items:
       - description: core clock
@@ -68,6 +69,14 @@ properties:
     items:
       - const: core
       - const: core_m
+=======
+    items:
+      - description: module clock
+
+  clock-names:
+    items:
+      - const: core
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   resets:
     items:

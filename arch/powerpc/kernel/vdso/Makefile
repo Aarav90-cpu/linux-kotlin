@@ -62,12 +62,15 @@ CC32FLAGSREMOVE += -fno-stack-clash-protection
 # 32-bit one. clang validates the values passed to these arguments during
 # parsing, even when -fno-stack-protector is passed afterwards.
 CC32FLAGSREMOVE += -mstack-protector-guard%
+<<<<<<< HEAD
 # ftrace is disabled for the vdso but arch/powerpc/Makefile adds this define to
 # KBUILD_CPPFLAGS, which enables use of the 'patchable_function_entry'
 # attribute in the 'inline' define via 'notrace'. This attribute is not
 # supported for the powerpcle target, resulting in many instances of
 # -Wunknown-attributes.
 CC32FLAGSREMOVE += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
 AS32FLAGS := -D__VDSO32__

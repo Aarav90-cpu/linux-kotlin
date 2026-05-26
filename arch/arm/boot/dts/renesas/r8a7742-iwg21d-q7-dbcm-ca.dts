@@ -85,7 +85,12 @@
 	status = "okay";
 
 	phy1: ethernet-phy@1 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id0022.1560";
+=======
+		compatible = "ethernet-phy-id0022.1560",
+			     "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <1>;
 		micrel,led-mode = <1>;
 	};

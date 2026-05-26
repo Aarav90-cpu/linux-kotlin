@@ -196,6 +196,7 @@
 #define FSL_SAI_MDIV_MASK	    0xFFFFF
 
 /* SAI timestamp and bitcounter */
+<<<<<<< HEAD
 #define FSL_SAI_xTCTL_TSEN_SHIFT   0
 #define FSL_SAI_xTCTL_TSEN         BIT(0)
 #define FSL_SAI_xTCTL_TSINC_SHIFT  1
@@ -203,6 +204,11 @@
 #define FSL_SAI_xTCTL_RTSC_SHIFT   8
 #define FSL_SAI_xTCTL_RTSC         BIT(8)
 #define FSL_SAI_xTCTL_RBC_SHIFT    9
+=======
+#define FSL_SAI_xTCTL_TSEN         BIT(0)
+#define FSL_SAI_xTCTL_TSINC        BIT(1)
+#define FSL_SAI_xTCTL_RTSC         BIT(8)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FSL_SAI_xTCTL_RBC          BIT(9)
 
 /* SAI type */

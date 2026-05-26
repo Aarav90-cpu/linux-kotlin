@@ -1942,6 +1942,7 @@ bail:
 
 void free_pio_map(struct hfi1_devdata *dd)
 {
+<<<<<<< HEAD
 	struct pio_vl_map *map;
 
 	/* Free PIO map if allocated */
@@ -1952,6 +1953,15 @@ void free_pio_map(struct hfi1_devdata *dd)
 		spin_unlock_irq(&dd->pio_map_lock);
 		synchronize_rcu();
 		pio_map_free(map);
+=======
+	/* Free PIO map if allocated */
+	if (rcu_access_pointer(dd->pio_map)) {
+		spin_lock_irq(&dd->pio_map_lock);
+		pio_map_free(rcu_access_pointer(dd->pio_map));
+		RCU_INIT_POINTER(dd->pio_map, NULL);
+		spin_unlock_irq(&dd->pio_map_lock);
+		synchronize_rcu();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	kfree(dd->kernel_send_context);
 	dd->kernel_send_context = NULL;

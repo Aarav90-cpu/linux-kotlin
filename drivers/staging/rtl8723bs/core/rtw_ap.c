@@ -367,6 +367,10 @@ void add_ratid(struct adapter *padapter, struct sta_info *psta, u8 rssi_level)
 void update_bmc_sta(struct adapter *padapter)
 {
 	unsigned char network_type;
+<<<<<<< HEAD
+=======
+	int support_rate_num = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int tx_ra_bitmap = 0;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -387,10 +391,19 @@ void update_bmc_sta(struct adapter *padapter)
 
 		psta->ieee8021x_blocked = false;
 
+<<<<<<< HEAD
 		memset(&psta->sta_stats, 0, sizeof(struct stainfo_stats));
 
 		/* prepare for add_ratid */
 		network_type = rtw_check_network_type((u8 *)&pcur_network->supported_rates,
+=======
+		memset((void *)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
+
+		/* prepare for add_ratid */
+		support_rate_num = rtw_get_rateset_len((u8 *)&pcur_network->supported_rates);
+		network_type = rtw_check_network_type((u8 *)&pcur_network->supported_rates,
+						      support_rate_num,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						      pcur_network->configuration.ds_config
 		);
 		if (is_supported_tx_cck(network_type)) {
@@ -542,7 +555,11 @@ void update_sta_info_apmode(struct adapter *padapter, struct sta_info *psta)
 
 	/* todo: init other variables */
 
+<<<<<<< HEAD
 	memset(&psta->sta_stats, 0, sizeof(struct stainfo_stats));
+=======
+	memset((void *)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* add ratid */
 	/* add_ratid(padapter, psta); move to ap_sta_info_defer_update() */
@@ -797,7 +814,11 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 {
 	int ret = _SUCCESS;
 	u8 *p;
+<<<<<<< HEAD
 	u8 *ht_caps_ie = NULL;
+=======
+	u8 *pHT_caps_ie = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *pHT_info_ie = NULL;
 	struct sta_info *psta = NULL;
 	u16 cap, ht_cap = false;
@@ -882,10 +903,19 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 		       WLAN_EID_EXT_SUPP_RATES,
 		       &ie_len,
 		       pbss_network->ie_length - _BEACON_IE_OFFSET_);
+<<<<<<< HEAD
 	if (p)
 		memcpy(support_rate + support_rate_num, p + 2, ie_len);
 
 	network_type = rtw_check_network_type(support_rate, channel);
+=======
+	if (p) {
+		memcpy(support_rate + support_rate_num, p + 2, ie_len);
+		support_rate_num += ie_len;
+	}
+
+	network_type = rtw_check_network_type(support_rate, support_rate_num, channel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw_set_supported_rate(pbss_network->supported_rates, network_type);
 
@@ -1001,17 +1031,28 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 		u8 max_rx_ampdu_factor = 0;
 		struct ieee80211_ht_cap *pht_cap = (struct ieee80211_ht_cap *)(p + 2);
 
+<<<<<<< HEAD
 		ht_caps_ie = p;
+=======
+		pHT_caps_ie = p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ht_cap = true;
 		network_type |= WIRELESS_11_24N;
 
 		rtw_ht_use_default_setting(padapter);
 
+<<<<<<< HEAD
 		if (!pmlmepriv->htpriv.sgi_20m)
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_20));
 
 		if (!pmlmepriv->htpriv.sgi_40m)
+=======
+		if (pmlmepriv->htpriv.sgi_20m == false)
+			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_20));
+
+		if (pmlmepriv->htpriv.sgi_40m == false)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pht_cap->cap_info &= cpu_to_le16(~(IEEE80211_HT_CAP_SGI_40));
 
 		if (!TEST_FLAG(pmlmepriv->htpriv.ldpc_cap, LDPC_HT_ENABLE_RX))
@@ -1089,7 +1130,11 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
 		if (pregistrypriv->ampdu_enable == 1)
 			pmlmepriv->htpriv.ampdu_enable = true;
 
+<<<<<<< HEAD
 		HT_caps_handler(padapter, (struct ndis_80211_var_ie *)ht_caps_ie);
+=======
+		HT_caps_handler(padapter, (struct ndis_80211_var_ie *)pHT_caps_ie);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		HT_info_handler(padapter, (struct ndis_80211_var_ie *)pHT_info_ie);
 	}
@@ -1151,7 +1196,11 @@ int rtw_acl_add_sta(struct adapter *padapter, u8 *addr)
 		paclnode = list_entry(plist, struct rtw_wlan_acl_node, list);
 
 		if (!memcmp(paclnode->addr, addr, ETH_ALEN)) {
+<<<<<<< HEAD
 			if (paclnode->valid) {
+=======
+			if (paclnode->valid == true) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				added = true;
 				break;
 			}
@@ -1364,6 +1413,7 @@ static void update_bcn_erpinfo_ie(struct adapter *padapter)
 		       &len,
 		       (pnetwork->ie_length - _BEACON_IE_OFFSET_));
 	if (p && len > 0) {
+<<<<<<< HEAD
 		struct ndis_80211_var_ie *ie = (struct ndis_80211_var_ie *)p;
 
 		if (pmlmepriv->num_sta_non_erp == 1)
@@ -1378,6 +1428,22 @@ static void update_bcn_erpinfo_ie(struct adapter *padapter)
 			ie->data[0] &= ~(RTW_ERP_INFO_BARKER_PREAMBLE_MODE);
 
 		ERP_IE_handler(padapter, ie);
+=======
+		struct ndis_80211_var_ie *pIE = (struct ndis_80211_var_ie *)p;
+
+		if (pmlmepriv->num_sta_non_erp == 1)
+			pIE->data[0] |= RTW_ERP_INFO_NON_ERP_PRESENT | RTW_ERP_INFO_USE_PROTECTION;
+		else
+			pIE->data[0] &= ~(RTW_ERP_INFO_NON_ERP_PRESENT |
+					  RTW_ERP_INFO_USE_PROTECTION);
+
+		if (pmlmepriv->num_sta_no_short_preamble > 0)
+			pIE->data[0] |= RTW_ERP_INFO_BARKER_PREAMBLE_MODE;
+		else
+			pIE->data[0] &= ~(RTW_ERP_INFO_BARKER_PREAMBLE_MODE);
+
+		ERP_IE_handler(padapter, pIE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1434,7 +1500,11 @@ static void update_bcn_wps_ie(struct adapter *padapter)
 
 	remainder_ielen = ielen - wps_offset - wps_ielen;
 
+<<<<<<< HEAD
 	if (remainder_ielen)
+=======
+	if (premainder_ie && remainder_ielen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pbackup_remainder_ie = kmemdup(premainder_ie, remainder_ielen, GFP_ATOMIC);
 
 	wps_ielen = (uint)pwps_ie_src[1];/* to get ie data len */
@@ -1568,8 +1638,13 @@ static int rtw_ht_operation_update(struct adapter *padapter)
 	if (pmlmepriv->htpriv.ht_option)
 		return 0;
 
+<<<<<<< HEAD
 	if (!(pmlmepriv->ht_op_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT) &&
 	    pmlmepriv->num_sta_ht_no_gf) {
+=======
+	if (!(pmlmepriv->ht_op_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT)
+	    && pmlmepriv->num_sta_ht_no_gf) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pmlmepriv->ht_op_mode |=
 			IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT;
 		op_mode_changes++;
@@ -1775,8 +1850,13 @@ u8 bss_cap_update_on_sta_leave(struct adapter *padapter, struct sta_info *psta)
 	if (psta->no_short_preamble_set) {
 		psta->no_short_preamble_set = 0;
 		pmlmepriv->num_sta_no_short_preamble--;
+<<<<<<< HEAD
 		if (pmlmeext->cur_wireless_mode > WIRELESS_11B &&
 		    pmlmepriv->num_sta_no_short_preamble == 0){
+=======
+		if (pmlmeext->cur_wireless_mode > WIRELESS_11B
+		    && pmlmepriv->num_sta_no_short_preamble == 0){
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			beacon_updated = true;
 			update_beacon(padapter, 0xFF, NULL, true);
 		}
@@ -1794,8 +1874,13 @@ u8 bss_cap_update_on_sta_leave(struct adapter *padapter, struct sta_info *psta)
 	if (psta->no_short_slot_time_set) {
 		psta->no_short_slot_time_set = 0;
 		pmlmepriv->num_sta_no_short_slot_time--;
+<<<<<<< HEAD
 		if (pmlmeext->cur_wireless_mode > WIRELESS_11B &&
 		    pmlmepriv->num_sta_no_short_slot_time == 0){
+=======
+		if (pmlmeext->cur_wireless_mode > WIRELESS_11B
+		    && pmlmepriv->num_sta_no_short_slot_time == 0){
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			beacon_updated = true;
 			update_beacon(padapter, 0xFF, NULL, true);
 		}

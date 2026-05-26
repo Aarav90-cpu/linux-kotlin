@@ -983,10 +983,17 @@ void gpiod_unexport(struct gpio_desc *desc)
 }
 EXPORT_SYMBOL_GPL(gpiod_unexport);
 
+<<<<<<< HEAD
 int gpiochip_sysfs_register(struct gpio_chip *gc)
 {
 	struct gpio_device *gdev = gc->gpiodev;
 	struct gpiodev_data *data;
+=======
+int gpiochip_sysfs_register(struct gpio_device *gdev)
+{
+	struct gpiodev_data *data;
+	struct gpio_chip *chip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *parent;
 	int err;
 
@@ -999,12 +1006,26 @@ int gpiochip_sysfs_register(struct gpio_chip *gc)
 	if (!class_is_registered(&gpio_class))
 		return 0;
 
+<<<<<<< HEAD
+=======
+	guard(srcu)(&gdev->srcu);
+
+	chip = srcu_dereference(gdev->chip, &gdev->srcu);
+	if (!chip)
+		return -ENODEV;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * For sysfs backward compatibility we need to preserve this
 	 * preferred parenting to the gpio_chip parent field, if set.
 	 */
+<<<<<<< HEAD
 	if (gc->parent)
 		parent = gc->parent;
+=======
+	if (chip->parent)
+		parent = chip->parent;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		parent = &gdev->dev;
 
@@ -1023,7 +1044,11 @@ int gpiochip_sysfs_register(struct gpio_chip *gc)
 						    MKDEV(0, 0), data,
 						    gpiochip_groups,
 						    GPIOCHIP_NAME "%d",
+<<<<<<< HEAD
 						    gc->base);
+=======
+						    chip->base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(data->cdev_base)) {
 		err = PTR_ERR(data->cdev_base);
 		kfree(data);
@@ -1047,11 +1072,19 @@ int gpiochip_sysfs_register(struct gpio_chip *gc)
 	return 0;
 }
 
+<<<<<<< HEAD
 void gpiochip_sysfs_unregister(struct gpio_chip *gc)
 {
 	struct gpio_device *gdev = gc->gpiodev;
 	struct gpiodev_data *data;
 	struct gpio_desc *desc;
+=======
+void gpiochip_sysfs_unregister(struct gpio_device *gdev)
+{
+	struct gpiodev_data *data;
+	struct gpio_desc *desc;
+	struct gpio_chip *chip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guard(mutex)(&sysfs_lock);
 
@@ -1059,8 +1092,18 @@ void gpiochip_sysfs_unregister(struct gpio_chip *gc)
 	if (!data)
 		return;
 
+<<<<<<< HEAD
 	/* unregister gpiod class devices owned by sysfs */
 	for_each_gpio_desc_with_flag(gc, desc, GPIOD_FLAG_SYSFS) {
+=======
+	guard(srcu)(&gdev->srcu);
+	chip = srcu_dereference(gdev->chip, &gdev->srcu);
+	if (!chip)
+		return;
+
+	/* unregister gpiod class devices owned by sysfs */
+	for_each_gpio_desc_with_flag(chip, desc, GPIOD_FLAG_SYSFS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gpiod_unexport_unlocked(desc);
 		gpiod_free(desc);
 	}
@@ -1079,9 +1122,16 @@ void gpiochip_sysfs_unregister(struct gpio_chip *gc)
  */
 static int gpiofind_sysfs_register(struct gpio_chip *gc, const void *data)
 {
+<<<<<<< HEAD
 	int ret;
 
 	ret = gpiochip_sysfs_register(gc);
+=======
+	struct gpio_device *gdev = gc->gpiodev;
+	int ret;
+
+	ret = gpiochip_sysfs_register(gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		gpiochip_err(gc, "failed to register the sysfs entry: %d\n", ret);
 

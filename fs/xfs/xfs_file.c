@@ -560,6 +560,7 @@ xfs_zoned_write_space_reserve(
 			flags, ac);
 }
 
+<<<<<<< HEAD
 /*
  * We need to lock the test/set EOF update as we can be racing with
  * other IO completions here to update the EOF. Failing to serialise
@@ -626,6 +627,8 @@ xfs_zoned_dio_write_end_io(
 	return error;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 xfs_dio_write_end_io(
 	struct kiocb		*iocb,
@@ -638,7 +641,12 @@ xfs_dio_write_end_io(
 	loff_t			offset = iocb->ki_pos;
 	unsigned int		nofs_flag;
 
+<<<<<<< HEAD
 	ASSERT(!xfs_is_zoned_inode(ip));
+=======
+	ASSERT(!xfs_is_zoned_inode(ip) ||
+	       !(flags & (IOMAP_DIO_UNWRITTEN | IOMAP_DIO_COW)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_xfs_end_io_direct_write(ip, offset, size);
 
@@ -688,8 +696,35 @@ xfs_dio_write_end_io(
 	 * with the on-disk inode size being outside the in-core inode size. We
 	 * have no other method of updating EOF for AIO, so always do it here
 	 * if necessary.
+<<<<<<< HEAD
 	 */
 	error = xfs_dio_endio_set_isize(inode, offset, size);
+=======
+	 *
+	 * We need to lock the test/set EOF update as we can be racing with
+	 * other IO completions here to update the EOF. Failing to serialise
+	 * here can result in EOF moving backwards and Bad Things Happen when
+	 * that occurs.
+	 *
+	 * As IO completion only ever extends EOF, we can do an unlocked check
+	 * here to avoid taking the spinlock. If we land within the current EOF,
+	 * then we do not need to do an extending update at all, and we don't
+	 * need to take the lock to check this. If we race with an update moving
+	 * EOF, then we'll either still be beyond EOF and need to take the lock,
+	 * or we'll be within EOF and we don't need to take it at all.
+	 */
+	if (offset + size <= i_size_read(inode))
+		goto out;
+
+	spin_lock(&ip->i_flags_lock);
+	if (offset + size > i_size_read(inode)) {
+		i_size_write(inode, offset + size);
+		spin_unlock(&ip->i_flags_lock);
+		error = xfs_setfilesize(ip, offset, size);
+	} else {
+		spin_unlock(&ip->i_flags_lock);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	memalloc_nofs_restore(nofs_flag);
@@ -731,7 +766,11 @@ xfs_dio_zoned_submit_io(
 static const struct iomap_dio_ops xfs_dio_zoned_write_ops = {
 	.bio_set	= &iomap_ioend_bioset,
 	.submit_io	= xfs_dio_zoned_submit_io,
+<<<<<<< HEAD
 	.end_io		= xfs_zoned_dio_write_end_io,
+=======
+	.end_io		= xfs_dio_write_end_io,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -1306,6 +1345,7 @@ xfs_falloc_insert_range(
 	if (offset >= isize)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/*
 	 * Let writeback clean up EOF folio state before we bump i_size. The
 	 * insert flushes before it starts shifting and under certain
@@ -1323,6 +1363,8 @@ xfs_falloc_insert_range(
 	if (error)
 		return error;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = xfs_falloc_setsize(file, isize + len);
 	if (error)
 		return error;

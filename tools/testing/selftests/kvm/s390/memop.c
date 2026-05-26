@@ -34,7 +34,11 @@ enum mop_access_mode {
 struct mop_desc {
 	uintptr_t gaddr;
 	uintptr_t gaddr_v;
+<<<<<<< HEAD
 	u64 set_flags;
+=======
+	uint64_t set_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int f_check : 1;
 	unsigned int f_inject : 1;
 	unsigned int f_key : 1;
@@ -42,6 +46,7 @@ struct mop_desc {
 	unsigned int _set_flags : 1;
 	unsigned int _sida_offset : 1;
 	unsigned int _ar : 1;
+<<<<<<< HEAD
 	u32 size;
 	enum mop_target target;
 	enum mop_access_mode mode;
@@ -55,6 +60,21 @@ struct mop_desc {
 };
 
 const u8 NO_KEY = 0xff;
+=======
+	uint32_t size;
+	enum mop_target target;
+	enum mop_access_mode mode;
+	void *buf;
+	uint32_t sida_offset;
+	void *old;
+	uint8_t old_value[16];
+	bool *cmpxchg_success;
+	uint8_t ar;
+	uint8_t key;
+};
+
+const uint8_t NO_KEY = 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct kvm_s390_mem_op ksmo_from_desc(struct mop_desc *desc)
 {
@@ -85,7 +105,11 @@ static struct kvm_s390_mem_op ksmo_from_desc(struct mop_desc *desc)
 			ksmo.op = KVM_S390_MEMOP_ABSOLUTE_WRITE;
 		if (desc->mode == CMPXCHG) {
 			ksmo.op = KVM_S390_MEMOP_ABSOLUTE_CMPXCHG;
+<<<<<<< HEAD
 			ksmo.old_addr = (u64)desc->old;
+=======
+			ksmo.old_addr = (uint64_t)desc->old;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			memcpy(desc->old_value, desc->old, desc->size);
 		}
 		break;
@@ -230,8 +254,13 @@ static void memop_ioctl(struct test_info info, struct kvm_s390_mem_op *ksmo,
 #define CR0_FETCH_PROTECTION_OVERRIDE	(1UL << (63 - 38))
 #define CR0_STORAGE_PROTECTION_OVERRIDE	(1UL << (63 - 39))
 
+<<<<<<< HEAD
 static u8 __aligned(PAGE_SIZE) mem1[65536];
 static u8 __aligned(PAGE_SIZE) mem2[65536];
+=======
+static uint8_t __aligned(PAGE_SIZE) mem1[65536];
+static uint8_t __aligned(PAGE_SIZE) mem2[65536];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct test_default {
 	struct kvm_vm *kvm_vm;
@@ -296,7 +325,11 @@ static void prepare_mem12(void)
 	TEST_ASSERT(!memcmp(p1, p2, size), "Memory contents do not match!")
 
 static void default_write_read(struct test_info copy_cpu, struct test_info mop_cpu,
+<<<<<<< HEAD
 			       enum mop_target mop_target, u32 size, u8 key)
+=======
+			       enum mop_target mop_target, uint32_t size, uint8_t key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	prepare_mem12();
 	CHECK_N_DO(MOP, mop_cpu, mop_target, WRITE, mem1, size,
@@ -308,7 +341,11 @@ static void default_write_read(struct test_info copy_cpu, struct test_info mop_c
 }
 
 static void default_read(struct test_info copy_cpu, struct test_info mop_cpu,
+<<<<<<< HEAD
 			 enum mop_target mop_target, u32 size, u8 key)
+=======
+			 enum mop_target mop_target, uint32_t size, uint8_t key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	prepare_mem12();
 	CHECK_N_DO(MOP, mop_cpu, mop_target, WRITE, mem1, size, GADDR_V(mem1));
@@ -318,12 +355,21 @@ static void default_read(struct test_info copy_cpu, struct test_info mop_cpu,
 	ASSERT_MEM_EQ(mem1, mem2, size);
 }
 
+<<<<<<< HEAD
 static void default_cmpxchg(struct test_default *test, u8 key)
 {
 	for (int size = 1; size <= 16; size *= 2) {
 		for (int offset = 0; offset < 16; offset += size) {
 			u8 __aligned(16) new[16] = {};
 			u8 __aligned(16) old[16];
+=======
+static void default_cmpxchg(struct test_default *test, uint8_t key)
+{
+	for (int size = 1; size <= 16; size *= 2) {
+		for (int offset = 0; offset < 16; offset += size) {
+			uint8_t __aligned(16) new[16] = {};
+			uint8_t __aligned(16) old[16];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bool succ;
 
 			prepare_mem12();
@@ -400,7 +446,11 @@ static void test_copy_access_register(void)
 	kvm_vm_free(t.kvm_vm);
 }
 
+<<<<<<< HEAD
 static void set_storage_key_range(void *addr, size_t len, u8 key)
+=======
+static void set_storage_key_range(void *addr, size_t len, uint8_t key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	uintptr_t _addr, abs, i;
 	int not_mapped = 0;
@@ -483,6 +533,7 @@ static __uint128_t cut_to_size(int size, __uint128_t val)
 {
 	switch (size) {
 	case 1:
+<<<<<<< HEAD
 		return (u8)val;
 	case 2:
 		return (u16)val;
@@ -490,6 +541,15 @@ static __uint128_t cut_to_size(int size, __uint128_t val)
 		return (u32)val;
 	case 8:
 		return (u64)val;
+=======
+		return (uint8_t)val;
+	case 2:
+		return (uint16_t)val;
+	case 4:
+		return (uint32_t)val;
+	case 8:
+		return (uint64_t)val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 16:
 		return val;
 	}
@@ -501,10 +561,17 @@ static bool popcount_eq(__uint128_t a, __uint128_t b)
 {
 	unsigned int count_a, count_b;
 
+<<<<<<< HEAD
 	count_a = __builtin_popcountl((u64)(a >> 64)) +
 		  __builtin_popcountl((u64)a);
 	count_b = __builtin_popcountl((u64)(b >> 64)) +
 		  __builtin_popcountl((u64)b);
+=======
+	count_a = __builtin_popcountl((uint64_t)(a >> 64)) +
+		  __builtin_popcountl((uint64_t)a);
+	count_b = __builtin_popcountl((uint64_t)(b >> 64)) +
+		  __builtin_popcountl((uint64_t)b);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return count_a == count_b;
 }
 
@@ -553,7 +620,11 @@ static __uint128_t permutate_bits(bool guest, int i, int size, __uint128_t old)
 	if (swap) {
 		int i, j;
 		__uint128_t new;
+<<<<<<< HEAD
 		u8 byte0, byte1;
+=======
+		uint8_t byte0, byte1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rand = rand * 3 + 1;
 		i = rand % size;
@@ -585,6 +656,7 @@ static bool _cmpxchg(int size, void *target, __uint128_t *old_addr, __uint128_t 
 
 	switch (size) {
 	case 4: {
+<<<<<<< HEAD
 			u32 old = *old_addr;
 
 			asm volatile ("cs %[old],%[new],%[address]"
@@ -594,10 +666,22 @@ static bool _cmpxchg(int size, void *target, __uint128_t *old_addr, __uint128_t 
 			    : "cc"
 			);
 			ret = old == (u32)*old_addr;
+=======
+			uint32_t old = *old_addr;
+
+			asm volatile ("cs %[old],%[new],%[address]"
+			    : [old] "+d" (old),
+			      [address] "+Q" (*(uint32_t *)(target))
+			    : [new] "d" ((uint32_t)new)
+			    : "cc"
+			);
+			ret = old == (uint32_t)*old_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*old_addr = old;
 			return ret;
 		}
 	case 8: {
+<<<<<<< HEAD
 			u64 old = *old_addr;
 
 			asm volatile ("csg %[old],%[new],%[address]"
@@ -607,6 +691,17 @@ static bool _cmpxchg(int size, void *target, __uint128_t *old_addr, __uint128_t 
 			    : "cc"
 			);
 			ret = old == (u64)*old_addr;
+=======
+			uint64_t old = *old_addr;
+
+			asm volatile ("csg %[old],%[new],%[address]"
+			    : [old] "+d" (old),
+			      [address] "+Q" (*(uint64_t *)(target))
+			    : [new] "d" ((uint64_t)new)
+			    : "cc"
+			);
+			ret = old == (uint64_t)*old_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*old_addr = old;
 			return ret;
 		}
@@ -811,10 +906,17 @@ static void test_errors_cmpxchg_key(void)
 static void test_termination(void)
 {
 	struct test_default t = test_default_init(guest_error_key);
+<<<<<<< HEAD
 	u64 prefix;
 	u64 teid;
 	u64 teid_mask = BIT(63 - 56) | BIT(63 - 60) | BIT(63 - 61);
 	u64 psw[2];
+=======
+	uint64_t prefix;
+	uint64_t teid;
+	uint64_t teid_mask = BIT(63 - 56) | BIT(63 - 60) | BIT(63 - 61);
+	uint64_t psw[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	HOST_SYNC(t.vcpu, STAGE_INITED);
 	HOST_SYNC(t.vcpu, STAGE_SKEYS_SET);
@@ -855,7 +957,11 @@ static void test_errors_key_storage_prot_override(void)
 	kvm_vm_free(t.kvm_vm);
 }
 
+<<<<<<< HEAD
 const u64 last_page_addr = -PAGE_SIZE;
+=======
+const uint64_t last_page_addr = -PAGE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void guest_copy_key_fetch_prot_override(void)
 {
@@ -878,10 +984,17 @@ static void guest_copy_key_fetch_prot_override(void)
 static void test_copy_key_fetch_prot_override(void)
 {
 	struct test_default t = test_default_init(guest_copy_key_fetch_prot_override);
+<<<<<<< HEAD
 	gva_t guest_0_page, guest_last_page;
 
 	guest_0_page = vm_alloc(t.kvm_vm, PAGE_SIZE, 0);
 	guest_last_page = vm_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+=======
+	vm_vaddr_t guest_0_page, guest_last_page;
+
+	guest_0_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, 0);
+	guest_last_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (guest_0_page != 0 || guest_last_page != last_page_addr) {
 		print_skip("did not allocate guest pages at required positions");
 		goto out;
@@ -917,10 +1030,17 @@ out:
 static void test_errors_key_fetch_prot_override_not_enabled(void)
 {
 	struct test_default t = test_default_init(guest_copy_key_fetch_prot_override);
+<<<<<<< HEAD
 	gva_t guest_0_page, guest_last_page;
 
 	guest_0_page = vm_alloc(t.kvm_vm, PAGE_SIZE, 0);
 	guest_last_page = vm_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+=======
+	vm_vaddr_t guest_0_page, guest_last_page;
+
+	guest_0_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, 0);
+	guest_last_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (guest_0_page != 0 || guest_last_page != last_page_addr) {
 		print_skip("did not allocate guest pages at required positions");
 		goto out;
@@ -938,10 +1058,17 @@ out:
 static void test_errors_key_fetch_prot_override_enabled(void)
 {
 	struct test_default t = test_default_init(guest_copy_key_fetch_prot_override);
+<<<<<<< HEAD
 	gva_t guest_0_page, guest_last_page;
 
 	guest_0_page = vm_alloc(t.kvm_vm, PAGE_SIZE, 0);
 	guest_last_page = vm_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+=======
+	vm_vaddr_t guest_0_page, guest_last_page;
+
+	guest_0_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, 0);
+	guest_last_page = vm_vaddr_alloc(t.kvm_vm, PAGE_SIZE, last_page_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (guest_0_page != 0 || guest_last_page != last_page_addr) {
 		print_skip("did not allocate guest pages at required positions");
 		goto out;

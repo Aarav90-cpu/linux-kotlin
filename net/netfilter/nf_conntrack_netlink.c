@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Connection tracking via netlink socket. Allows for user space
  * protocol helpers and general trouble making from userspace.
  *
@@ -11,6 +14,12 @@
  * generally made possible by Network Robots, Inc. (www.networkrobots.com)
  *
  * Further development of this code funded by Astaro AG (http://www.astaro.com)
+<<<<<<< HEAD
+=======
+ *
+ * This software may be used and distributed according to the terms
+ * of the GNU General Public License, incorporated herein by reference.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/init.h>
@@ -2634,7 +2643,10 @@ static const struct nla_policy exp_nla_policy[CTA_EXPECT_MAX+1] = {
 
 static struct nf_conntrack_expect *
 ctnetlink_alloc_expect(const struct nlattr *const cda[], struct nf_conn *ct,
+<<<<<<< HEAD
 		       const struct nf_conntrack_helper *assign_helper,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       struct nf_conntrack_tuple *tuple,
 		       struct nf_conntrack_tuple *mask);
 
@@ -2861,7 +2873,10 @@ static int
 ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
 			     u32 portid, u32 report)
 {
+<<<<<<< HEAD
 	struct nf_conntrack_helper *assign_helper = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nlattr *cda[CTA_EXPECT_MAX+1];
 	struct nf_conntrack_tuple tuple, mask;
 	struct nf_conntrack_expect *exp;
@@ -2872,14 +2887,18 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	if (!cda[CTA_EXPECT_TUPLE] || !cda[CTA_EXPECT_MASK])
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = ctnetlink_glue_exp_parse((const struct nlattr * const *)cda,
 				       ct, &tuple, &mask);
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	if (cda[CTA_EXPECT_HELP_NAME]) {
 		const char *helpname = nla_data(cda[CTA_EXPECT_HELP_NAME]);
 
@@ -2892,6 +2911,10 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
 
 	exp = ctnetlink_alloc_expect((const struct nlattr * const *)cda, ct,
 				     assign_helper, &tuple, &mask);
+=======
+	exp = ctnetlink_alloc_expect((const struct nlattr * const *)cda, ct,
+				     &tuple, &mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(exp))
 		return PTR_ERR(exp);
 
@@ -3530,7 +3553,10 @@ ctnetlink_parse_expect_nat(const struct nlattr *attr,
 
 static struct nf_conntrack_expect *
 ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+<<<<<<< HEAD
 		       const struct nf_conntrack_helper *assign_helper,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       struct nf_conntrack_tuple *tuple,
 		       struct nf_conntrack_tuple *mask)
 {
@@ -3584,7 +3610,10 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
 	exp->zone = ct->zone;
 #endif
 	rcu_assign_pointer(exp->helper, helper);
+<<<<<<< HEAD
 	rcu_assign_pointer(exp->assign_helper, assign_helper);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exp->tuple = *tuple;
 	exp->mask.src.u3 = mask->src.u3;
 	exp->mask.src.u.all = mask->src.u.all;
@@ -3640,7 +3669,11 @@ ctnetlink_create_expect(struct net *net,
 	ct = nf_ct_tuplehash_to_ctrack(h);
 
 	rcu_read_lock();
+<<<<<<< HEAD
 	exp = ctnetlink_alloc_expect(cda, ct, NULL, &tuple, &mask);
+=======
+	exp = ctnetlink_alloc_expect(cda, ct, &tuple, &mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(exp)) {
 		err = PTR_ERR(exp);
 		goto err_rcu;

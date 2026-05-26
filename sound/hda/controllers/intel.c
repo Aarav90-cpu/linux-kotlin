@@ -1396,6 +1396,12 @@ static void azx_free(struct azx *chip)
 	azx_free_streams(chip);
 	snd_hdac_bus_exit(bus);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SND_HDA_PATCH_LOADER
+	release_firmware(chip->fw);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	display_power(chip, false);
 
 	if (chip->driver_caps & AZX_DCAPS_I915_COMPONENT)
@@ -2077,6 +2083,27 @@ static int azx_first_init(struct azx *chip)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SND_HDA_PATCH_LOADER
+/* callback from request_firmware_nowait() */
+static void azx_firmware_cb(const struct firmware *fw, void *context)
+{
+	struct snd_card *card = context;
+	struct azx *chip = card->private_data;
+
+	if (fw)
+		chip->fw = fw;
+	else
+		dev_err(card->dev, "Cannot load firmware, continue without patching\n");
+	if (!chip->disabled) {
+		/* continue probing */
+		azx_probe_continue(chip);
+	}
+}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int disable_msi_reset_irq(struct azx *chip)
 {
 	struct hdac_bus *bus = azx_bus(chip);
@@ -2154,6 +2181,10 @@ static int azx_probe(struct pci_dev *pci,
 	struct snd_card *card;
 	struct hda_intel *hda;
 	struct azx *chip;
+<<<<<<< HEAD
+=======
+	bool schedule_probe;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int dev;
 	int err;
 
@@ -2249,7 +2280,26 @@ static int azx_probe(struct pci_dev *pci,
 		chip->disabled = true;
 	}
 
+<<<<<<< HEAD
 	if (!chip->disabled)
+=======
+	schedule_probe = !chip->disabled;
+
+#ifdef CONFIG_SND_HDA_PATCH_LOADER
+	if (patch[dev] && *patch[dev]) {
+		dev_info(card->dev, "Applying patch firmware '%s'\n",
+			 patch[dev]);
+		err = request_firmware_nowait(THIS_MODULE, true, patch[dev],
+					      &pci->dev, GFP_KERNEL, card,
+					      azx_firmware_cb);
+		if (err < 0)
+			goto out_free;
+		schedule_probe = false; /* continued in azx_firmware_cb() */
+	}
+#endif /* CONFIG_SND_HDA_PATCH_LOADER */
+
+	if (schedule_probe)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		schedule_delayed_work(&hda->probe_work, 0);
 
 	set_bit(dev, probed_devs);
@@ -2378,6 +2428,7 @@ static int azx_probe_continue(struct azx *chip)
 	}
 
 #ifdef CONFIG_SND_HDA_PATCH_LOADER
+<<<<<<< HEAD
 	if (patch[dev] && *patch[dev]) {
 		const struct firmware *fw = NULL;
 
@@ -2392,6 +2443,13 @@ static int azx_probe_continue(struct azx *chip)
 			if (err < 0)
 				goto out_free;
 		}
+=======
+	if (chip->fw) {
+		err = snd_hda_load_patch(&chip->bus, chip->fw->size,
+					 chip->fw->data);
+		if (err < 0)
+			goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 #endif
 
@@ -2452,7 +2510,24 @@ static void azx_remove(struct pci_dev *pci)
 		/* cancel the pending probing work */
 		chip = card->private_data;
 		hda = container_of(chip, struct hda_intel, chip);
+<<<<<<< HEAD
 		cancel_delayed_work_sync(&hda->probe_work);
+=======
+		/* FIXME: below is an ugly workaround.
+		 * Both device_release_driver() and driver_probe_device()
+		 * take *both* the device's and its parent's lock before
+		 * calling the remove() and probe() callbacks.  The codec
+		 * probe takes the locks of both the codec itself and its
+		 * parent, i.e. the PCI controller dev.  Meanwhile, when
+		 * the PCI controller is unbound, it takes its lock, too
+		 * ==> ouch, a deadlock!
+		 * As a workaround, we unlock temporarily here the controller
+		 * device during cancel_work_sync() call.
+		 */
+		device_unlock(&pci->dev);
+		cancel_delayed_work_sync(&hda->probe_work);
+		device_lock(&pci->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		clear_bit(chip->dev_index, probed_devs);
 		pci_set_drvdata(pci, NULL);

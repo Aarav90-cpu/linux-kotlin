@@ -6,7 +6,10 @@
 #define _LENOVO_WMI_CAPDATA_H_
 
 #include <linux/bits.h>
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #define LWMI_SUPP_VALID		BIT(0)
@@ -20,8 +23,11 @@
 
 #define LWMI_DEVICE_ID_FAN	0x04
 
+<<<<<<< HEAD
 #define LWMI_TYPE_ID_NONE 0x00
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct component_match;
 struct device;
 struct cd_list;
@@ -60,6 +66,7 @@ struct lwmi_cd_binder {
 	cd_list_cb_t cd_fan_list_cb;
 };
 
+<<<<<<< HEAD
 /**
  * lwmi_attr_id() - Formats a capability data attribute ID
  * @dev_id: The u8 corresponding to the device ID.
@@ -77,6 +84,8 @@ static inline u32 lwmi_attr_id(u8 dev_id, u8 feat_id, u8 mode_id, u8 type_id)
 		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, type_id));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void lwmi_cd_match_add_all(struct device *master, struct component_match **matchptr);
 int lwmi_cd00_get_data(struct cd_list *list, u32 attribute_id, struct capdata00 *output);
 int lwmi_cd01_get_data(struct cd_list *list, u32 attribute_id, struct capdata01 *output);

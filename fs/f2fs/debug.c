@@ -659,7 +659,10 @@ static int stat_show(struct seq_file *s, void *v)
 				si->bg_node_blks);
 		seq_printf(s, "BG skip : IO: %u, Other: %u\n",
 				si->io_skip_bggc, si->other_skip_bggc);
+<<<<<<< HEAD
 		seq_printf(s, "defrag blocks : %u\n", si->defrag_blks);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_puts(s, "\nExtent Cache (Read):\n");
 		seq_printf(s, "  - Hit Count: L1-1:%llu L1-2:%llu L2:%llu\n",
 				si->hit_largest, si->hit_cached[EX_READ],

@@ -53,6 +53,10 @@ static const u32 sdma_offsets[SDMA_MAX_INSTANCE] =
 static void cik_sdma_set_ring_funcs(struct amdgpu_device *adev);
 static void cik_sdma_set_irq_funcs(struct amdgpu_device *adev);
 static void cik_sdma_set_buffer_funcs(struct amdgpu_device *adev);
+<<<<<<< HEAD
+=======
+static void cik_sdma_set_vm_pte_funcs(struct amdgpu_device *adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cik_sdma_soft_reset(struct amdgpu_ip_block *ip_block);
 
 u32 amdgpu_cik_gpu_check_soft_reset(struct amdgpu_device *adev);
@@ -918,6 +922,7 @@ static void cik_enable_sdma_mgls(struct amdgpu_device *adev,
 	}
 }
 
+<<<<<<< HEAD
 static const struct amdgpu_vm_pte_funcs cik_sdma_vm_pte_funcs = {
 	.copy_pte_num_dw = 7,
 	.copy_pte = cik_sdma_vm_copy_pte,
@@ -926,6 +931,8 @@ static const struct amdgpu_vm_pte_funcs cik_sdma_vm_pte_funcs = {
 	.set_pte_pde = cik_sdma_vm_set_pte_pde,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cik_sdma_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -940,7 +947,11 @@ static int cik_sdma_early_init(struct amdgpu_ip_block *ip_block)
 	cik_sdma_set_ring_funcs(adev);
 	cik_sdma_set_irq_funcs(adev);
 	cik_sdma_set_buffer_funcs(adev);
+<<<<<<< HEAD
 	amdgpu_sdma_set_vm_pte_scheds(adev, &cik_sdma_vm_pte_funcs);
+=======
+	cik_sdma_set_vm_pte_funcs(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1344,6 +1355,29 @@ static void cik_sdma_set_buffer_funcs(struct amdgpu_device *adev)
 	adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].ring;
 }
 
+<<<<<<< HEAD
+=======
+static const struct amdgpu_vm_pte_funcs cik_sdma_vm_pte_funcs = {
+	.copy_pte_num_dw = 7,
+	.copy_pte = cik_sdma_vm_copy_pte,
+
+	.write_pte = cik_sdma_vm_write_pte,
+	.set_pte_pde = cik_sdma_vm_set_pte_pde,
+};
+
+static void cik_sdma_set_vm_pte_funcs(struct amdgpu_device *adev)
+{
+	unsigned i;
+
+	adev->vm_manager.vm_pte_funcs = &cik_sdma_vm_pte_funcs;
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		adev->vm_manager.vm_pte_scheds[i] =
+			&adev->sdma.instance[i].ring.sched;
+	}
+	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct amdgpu_ip_block_version cik_sdma_ip_block =
 {
 	.type = AMD_IP_BLOCK_TYPE_SDMA,

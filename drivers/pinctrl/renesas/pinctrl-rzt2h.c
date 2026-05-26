@@ -7,7 +7,10 @@
  * Copyright (C) 2025 Renesas Electronics Corporation.
  */
 
+<<<<<<< HEAD
 #include <linux/array_size.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
 #include <linux/bits.h>
@@ -44,7 +47,10 @@
 #define PMC(m)		(0x400 + (m))
 #define PFC(m)		(0x600 + 8 * (m))
 #define PIN(m)		(0x800 + (m))
+<<<<<<< HEAD
 #define DRCTL(n)	(0xa00 + 8 * (n))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RSELP(m)	(0xc00 + (m))
 
 #define PM_MASK			GENMASK(1, 0)
@@ -56,6 +62,7 @@
 #define PFC_PIN_MASK(pin)	(PFC_MASK << ((pin) * 8))
 #define PFC_FUNC_INTERRUPT	0
 
+<<<<<<< HEAD
 #define DRCTL_DRV_PIN_MASK(pin)	(GENMASK_ULL(1, 0) << ((pin) * 8))
 #define DRCTL_PUD_PIN_MASK(pin)	(GENMASK_ULL(3, 2) << ((pin) * 8))
 #define DRCTL_SMT_PIN_MASK(pin)	(BIT_ULL(4) << ((pin) * 8))
@@ -65,6 +72,8 @@
 #define DRCTL_PUD_PULL_UP	1
 #define DRCTL_PUD_PULL_DOWN	2
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Use 16 lower bits [15:0] for pin identifier
  * Use 8 higher bits [23:16] for pin mux function
@@ -102,8 +111,11 @@ struct rzt2h_pinctrl {
 	atomic_t			wakeup_path;
 };
 
+<<<<<<< HEAD
 static const unsigned int rzt2h_drive_strength_ua[] = { 2500, 5000, 9000, 11800 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RZT2H_GET_BASE(pctrl, port) \
 	((port) > RZT2H_MAX_SAFETY_PORTS ? (pctrl)->base0 : (pctrl)->base1)
 
@@ -123,6 +135,7 @@ RZT2H_PINCTRL_REG_ACCESS(b, u8)
 RZT2H_PINCTRL_REG_ACCESS(w, u16)
 RZT2H_PINCTRL_REG_ACCESS(q, u64)
 
+<<<<<<< HEAD
 static int rzt2h_drive_strength_ua_to_idx(unsigned int ua)
 {
 	unsigned int i;
@@ -154,6 +167,8 @@ static void rzt2h_pinctrl_drctl_rmwq(struct rzt2h_pinctrl *pctrl,
 	rzt2h_pinctrl_writeq(pctrl, port, drctl | val, offset);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzt2h_validate_pin(struct rzt2h_pinctrl *pctrl, unsigned int offset)
 {
 	u8 port = RZT2H_PIN_ID_TO_PORT(offset);
@@ -487,6 +502,7 @@ done:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int rzt2h_pinctrl_pinconf_get(struct pinctrl_dev *pctldev,
 				     unsigned int pin,
 				     unsigned long *config)
@@ -691,6 +707,8 @@ static int rzt2h_pinctrl_pinconf_group_set(struct pinctrl_dev *pctldev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct pinctrl_ops rzt2h_pinctrl_pctlops = {
 	.get_groups_count = pinctrl_generic_get_group_count,
 	.get_group_name = pinctrl_generic_get_group_name,
@@ -707,6 +725,7 @@ static const struct pinmux_ops rzt2h_pinctrl_pmxops = {
 	.strict = true,
 };
 
+<<<<<<< HEAD
 static const struct pinconf_ops rzt2h_pinctrl_confops = {
 	.is_generic = true,
 	.pin_config_get = rzt2h_pinctrl_pinconf_get,
@@ -716,6 +735,8 @@ static const struct pinconf_ops rzt2h_pinctrl_confops = {
 	.pin_config_config_dbg_show = pinconf_generic_dump_config,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzt2h_gpio_request(struct gpio_chip *chip, unsigned int offset)
 {
 	struct rzt2h_pinctrl *pctrl = gpiochip_get_data(chip);
@@ -1147,7 +1168,10 @@ static int rzt2h_pinctrl_register(struct rzt2h_pinctrl *pctrl)
 	desc->npins = pctrl->data->n_port_pins;
 	desc->pctlops = &rzt2h_pinctrl_pctlops;
 	desc->pmxops = &rzt2h_pinctrl_pmxops;
+<<<<<<< HEAD
 	desc->confops = &rzt2h_pinctrl_confops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc->owner = THIS_MODULE;
 
 	pins = devm_kcalloc(dev, desc->npins, sizeof(*pins), GFP_KERNEL);

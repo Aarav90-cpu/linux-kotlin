@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 """
 Tests for the netdev netlink family.
 """
@@ -10,6 +11,13 @@ from os import system
 from lib.py import ksft_run, ksft_exit
 from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_raises, ksft_busy_wait
 from lib.py import NetdevFamily, NetdevSimDev, NlError, ip
+=======
+import time
+from os import system
+from lib.py import ksft_run, ksft_exit, ksft_pr
+from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_busy_wait
+from lib.py import NetdevFamily, NetdevSimDev, ip
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 def empty_check(nf) -> None:
@@ -23,6 +31,7 @@ def lo_check(nf) -> None:
     ksft_eq(len(lo_info['xdp-rx-metadata-features']), 0)
 
 
+<<<<<<< HEAD
 def dev_dump_reject_attr(nf) -> None:
     """Test that dev-get dump rejects attributes (no dump request policy)."""
     with ksft_raises(NlError) as cm:
@@ -32,6 +41,8 @@ def dev_dump_reject_attr(nf) -> None:
     ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.ifindex')
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def napi_list_check(nf) -> None:
     with NetdevSimDev(queue_count=100) as nsimdev:
         nsim = nsimdev.nsims[0]
@@ -256,6 +267,7 @@ def page_pool_check(nf) -> None:
 
 
 def main() -> None:
+<<<<<<< HEAD
     """ Ksft boiler plate main """
     nf = NetdevFamily()
     ksft_run([empty_check,
@@ -266,6 +278,11 @@ def main() -> None:
               dev_set_threaded,
               nsim_rxq_reset_down,
               page_pool_check],
+=======
+    nf = NetdevFamily()
+    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
+              dev_set_threaded, napi_set_threaded, nsim_rxq_reset_down],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
              args=(nf, ))
     ksft_exit()
 

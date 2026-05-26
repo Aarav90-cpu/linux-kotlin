@@ -26,7 +26,10 @@
 #include <net/netdev_rx_queue.h>
 #include <net/netdev_queues.h>
 #include <net/xdp_sock_drv.h>
+<<<<<<< HEAD
 #include <net/page_pool/helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int napi_weight = NAPI_POLL_WEIGHT;
 module_param(napi_weight, int, 0444);
@@ -291,6 +294,17 @@ struct virtnet_interrupt_coalesce {
 	u32 max_usecs;
 };
 
+<<<<<<< HEAD
+=======
+/* The dma information of pages allocated at a time. */
+struct virtnet_rq_dma {
+	dma_addr_t addr;
+	u32 ref;
+	u16 len;
+	u16 need_sync;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Internal representation of a send virtqueue */
 struct send_queue {
 	/* Virtqueue associated with this send _queue */
@@ -349,10 +363,15 @@ struct receive_queue {
 	/* Average packet length for mergeable receive buffers. */
 	struct ewma_pkt_len mrg_avg_pkt_len;
 
+<<<<<<< HEAD
 	struct page_pool *page_pool;
 
 	/* True if page_pool handles DMA mapping via PP_FLAG_DMA_MAP */
 	bool use_page_pool_dma;
+=======
+	/* Page frag for packet buffer allocation. */
+	struct page_frag alloc_frag;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* RX: fragments + linear part + virtio header */
 	struct scatterlist sg[MAX_SKB_FRAGS + 2];
@@ -365,6 +384,12 @@ struct receive_queue {
 
 	struct xdp_rxq_info xdp_rxq;
 
+<<<<<<< HEAD
+=======
+	/* Record the last dma info to free after new pages is allocated. */
+	struct virtnet_rq_dma *last_dma;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xsk_buff_pool *xsk_pool;
 
 	/* xdp rxq used by xsk */
@@ -511,14 +536,21 @@ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
 			       struct virtnet_rq_stats *stats);
 static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
 				 struct sk_buff *skb, u8 flags);
+<<<<<<< HEAD
 static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
 					       struct sk_buff *head_skb,
+=======
+static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       struct sk_buff *curr_skb,
 					       struct page *page, void *buf,
 					       int len, int truesize);
 static void virtnet_xsk_completed(struct send_queue *sq, int num);
+<<<<<<< HEAD
 static void free_unused_bufs(struct virtnet_info *vi);
 static void virtnet_del_vqs(struct virtnet_info *vi);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum virtnet_xmit_type {
 	VIRTNET_XMIT_TYPE_SKB,
@@ -702,10 +734,19 @@ static struct page *get_a_page(struct receive_queue *rq, gfp_t gfp_mask)
 static void virtnet_rq_free_buf(struct virtnet_info *vi,
 				struct receive_queue *rq, void *buf)
 {
+<<<<<<< HEAD
 	if (!rq->page_pool)
 		give_pages(rq, buf);
 	else
 		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+=======
+	if (vi->mergeable_rx_bufs)
+		put_page(virt_to_head_page(buf));
+	else if (vi->big_packets)
+		give_pages(rq, buf);
+	else
+		put_page(virt_to_head_page(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void enable_rx_mode_work(struct virtnet_info *vi)
@@ -867,6 +908,7 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
 		skb = virtnet_build_skb(buf, truesize, p - buf, len);
 		if (unlikely(!skb))
 			return NULL;
+<<<<<<< HEAD
 		/* Big packets mode chains pages via page->private, which is
 		 * incompatible with the way page_pool uses page->private.
 		 * Currently, big packets mode doesn't use page pools.
@@ -877,6 +919,12 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
 				give_pages(rq, page);
 		}
 
+=======
+
+		page = (struct page *)page->private;
+		if (page)
+			give_pages(rq, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto ok;
 	}
 
@@ -922,16 +970,145 @@ ok:
 	hdr = skb_vnet_common_hdr(skb);
 	memcpy(hdr, hdr_p, hdr_len);
 	if (page_to_free)
+<<<<<<< HEAD
 		page_pool_put_page(rq->page_pool, page_to_free, -1, true);
+=======
+		put_page(page_to_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return skb;
 }
 
+<<<<<<< HEAD
 static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
 {
 	BUG_ON(!rq->page_pool);
 
 	return virtqueue_get_buf_ctx(rq->vq, len, ctx);
+=======
+static void virtnet_rq_unmap(struct receive_queue *rq, void *buf, u32 len)
+{
+	struct virtnet_info *vi = rq->vq->vdev->priv;
+	struct page *page = virt_to_head_page(buf);
+	struct virtnet_rq_dma *dma;
+	void *head;
+	int offset;
+
+	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+
+	head = page_address(page);
+
+	dma = head;
+
+	--dma->ref;
+
+	if (dma->need_sync && len) {
+		offset = buf - (head + sizeof(*dma));
+
+		virtqueue_map_sync_single_range_for_cpu(rq->vq, dma->addr,
+							offset, len,
+							DMA_FROM_DEVICE);
+	}
+
+	if (dma->ref)
+		return;
+
+	virtqueue_unmap_single_attrs(rq->vq, dma->addr, dma->len,
+				     DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
+	put_page(page);
+}
+
+static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
+{
+	struct virtnet_info *vi = rq->vq->vdev->priv;
+	void *buf;
+
+	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+
+	buf = virtqueue_get_buf_ctx(rq->vq, len, ctx);
+	if (buf)
+		virtnet_rq_unmap(rq, buf, *len);
+
+	return buf;
+}
+
+static void virtnet_rq_init_one_sg(struct receive_queue *rq, void *buf, u32 len)
+{
+	struct virtnet_info *vi = rq->vq->vdev->priv;
+	struct virtnet_rq_dma *dma;
+	dma_addr_t addr;
+	u32 offset;
+	void *head;
+
+	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+
+	head = page_address(rq->alloc_frag.page);
+
+	offset = buf - head;
+
+	dma = head;
+
+	addr = dma->addr - sizeof(*dma) + offset;
+
+	sg_init_table(rq->sg, 1);
+	sg_fill_dma(rq->sg, addr, len);
+}
+
+static void *virtnet_rq_alloc(struct receive_queue *rq, u32 size, gfp_t gfp)
+{
+	struct page_frag *alloc_frag = &rq->alloc_frag;
+	struct virtnet_info *vi = rq->vq->vdev->priv;
+	struct virtnet_rq_dma *dma;
+	void *buf, *head;
+	dma_addr_t addr;
+
+	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+
+	head = page_address(alloc_frag->page);
+
+	dma = head;
+
+	/* new pages */
+	if (!alloc_frag->offset) {
+		if (rq->last_dma) {
+			/* Now, the new page is allocated, the last dma
+			 * will not be used. So the dma can be unmapped
+			 * if the ref is 0.
+			 */
+			virtnet_rq_unmap(rq, rq->last_dma, 0);
+			rq->last_dma = NULL;
+		}
+
+		dma->len = alloc_frag->size - sizeof(*dma);
+
+		addr = virtqueue_map_single_attrs(rq->vq, dma + 1,
+						  dma->len, DMA_FROM_DEVICE, 0);
+		if (virtqueue_map_mapping_error(rq->vq, addr))
+			return NULL;
+
+		dma->addr = addr;
+		dma->need_sync = virtqueue_map_need_sync(rq->vq, addr);
+
+		/* Add a reference to dma to prevent the entire dma from
+		 * being released during error handling. This reference
+		 * will be freed after the pages are no longer used.
+		 */
+		get_page(alloc_frag->page);
+		dma->ref = 1;
+		alloc_frag->offset = sizeof(*dma);
+
+		rq->last_dma = dma;
+	}
+
+	++dma->ref;
+
+	buf = head + alloc_frag->offset;
+
+	get_page(alloc_frag->page);
+	alloc_frag->offset += size;
+
+	return buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
@@ -947,6 +1124,12 @@ static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!vi->big_packets || vi->mergeable_rx_bufs)
+		virtnet_rq_unmap(rq, buf, 0);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	virtnet_rq_free_buf(vi, rq, buf);
 }
 
@@ -1212,7 +1395,11 @@ static int xsk_append_merge_buffer(struct virtnet_info *vi,
 
 		truesize = len;
 
+<<<<<<< HEAD
 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+=======
+		curr_skb  = virtnet_skb_append_frag(head_skb, curr_skb, page,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    buf, len, truesize);
 		if (!curr_skb) {
 			put_page(page);
@@ -1331,6 +1518,7 @@ static int virtnet_add_recvbuf_xsk(struct virtnet_info *vi, struct receive_queue
 	xsk_buffs = rq->xsk_buffs;
 
 	num = xsk_buff_alloc_batch(pool, xsk_buffs, rq->vq->num_free);
+<<<<<<< HEAD
 	if (!num) {
 		if (xsk_uses_need_wakeup(pool)) {
 			xsk_set_rx_need_wakeup(pool);
@@ -1344,6 +1532,10 @@ static int virtnet_add_recvbuf_xsk(struct virtnet_info *vi, struct receive_queue
 	} else {
 		xsk_clear_rx_need_wakeup(pool);
 	}
+=======
+	if (!num)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = xsk_pool_get_rx_frame_size(pool) + vi->hdr_len;
 
@@ -1476,6 +1668,7 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
 	return sent;
 }
 
+<<<<<<< HEAD
 static void xsk_wakeup(struct napi_struct *napi, struct virtqueue *vq)
 {
 	if (napi_if_scheduled_mark_missed(napi))
@@ -1483,12 +1676,25 @@ static void xsk_wakeup(struct napi_struct *napi, struct virtqueue *vq)
 
 	local_bh_disable();
 	virtqueue_napi_schedule(napi, vq);
+=======
+static void xsk_wakeup(struct send_queue *sq)
+{
+	if (napi_if_scheduled_mark_missed(&sq->napi))
+		return;
+
+	local_bh_disable();
+	virtqueue_napi_schedule(&sq->napi, sq->vq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_bh_enable();
 }
 
 static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	struct send_queue *sq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!netif_running(dev))
 		return -ENETDOWN;
@@ -1496,6 +1702,7 @@ static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
 	if (qid >= vi->curr_queue_pairs)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (flag & XDP_WAKEUP_TX) {
 		struct send_queue *sq = &vi->sq[qid];
 
@@ -1508,6 +1715,11 @@ static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
 		xsk_wakeup(&rq->napi, rq->vq);
 	}
 
+=======
+	sq = &vi->sq[qid];
+
+	xsk_wakeup(sq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1519,7 +1731,11 @@ static void virtnet_xsk_completed(struct send_queue *sq, int num)
 	 * wakeup the tx napi to consume the xsk tx queue, because the tx
 	 * interrupt may not be triggered.
 	 */
+<<<<<<< HEAD
 	xsk_wakeup(&sq->napi, sq->vq);
+=======
+	xsk_wakeup(sq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __virtnet_xdp_xmit_one(struct virtnet_info *vi,
@@ -1667,7 +1883,11 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void put_xdp_frags(struct receive_queue *rq, struct xdp_buff *xdp)
+=======
+static void put_xdp_frags(struct xdp_buff *xdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct skb_shared_info *shinfo;
 	struct page *xdp_page;
@@ -1677,7 +1897,11 @@ static void put_xdp_frags(struct receive_queue *rq, struct xdp_buff *xdp)
 		shinfo = xdp_get_shared_info_from_buff(xdp);
 		for (i = 0; i < shinfo->nr_frags; i++) {
 			xdp_page = skb_frag_page(&shinfo->frags[i]);
+<<<<<<< HEAD
 			page_pool_put_page(rq->page_pool, xdp_page, -1, true);
+=======
+			put_page(xdp_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
@@ -1769,7 +1993,11 @@ static struct page *xdp_linearize_page(struct net_device *dev,
 	if (page_off + *len + tailroom > PAGE_SIZE)
 		return NULL;
 
+<<<<<<< HEAD
 	page = page_pool_alloc_pages(rq->page_pool, GFP_ATOMIC);
+=======
+	page = alloc_page(GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!page)
 		return NULL;
 
@@ -1792,12 +2020,17 @@ static struct page *xdp_linearize_page(struct net_device *dev,
 		p = virt_to_head_page(buf);
 		off = buf - page_address(p);
 
+<<<<<<< HEAD
 		if (rq->use_page_pool_dma)
 			page_pool_dma_sync_for_cpu(rq->page_pool, p,
 						   off, buflen);
 
 		if (check_mergeable_len(dev, ctx, buflen)) {
 			page_pool_put_page(rq->page_pool, p, -1, true);
+=======
+		if (check_mergeable_len(dev, ctx, buflen)) {
+			put_page(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto err_buf;
 		}
 
@@ -1805,36 +2038,61 @@ static struct page *xdp_linearize_page(struct net_device *dev,
 		 * is sending packet larger than the MTU.
 		 */
 		if ((page_off + buflen + tailroom) > PAGE_SIZE) {
+<<<<<<< HEAD
 			page_pool_put_page(rq->page_pool, p, -1, true);
+=======
+			put_page(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto err_buf;
 		}
 
 		memcpy(page_address(page) + page_off,
 		       page_address(p) + off, buflen);
 		page_off += buflen;
+<<<<<<< HEAD
 		page_pool_put_page(rq->page_pool, p, -1, true);
+=======
+		put_page(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Headroom does not contribute to packet length */
 	*len = page_off - XDP_PACKET_HEADROOM;
 	return page;
 err_buf:
+<<<<<<< HEAD
 	page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+	__free_pages(page, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 
 static struct sk_buff *receive_small_build_skb(struct virtnet_info *vi,
 					       unsigned int xdp_headroom,
 					       void *buf,
+<<<<<<< HEAD
 					       unsigned int len,
 					       unsigned int buflen)
 {
 	unsigned int header_offset;
 	unsigned int headroom;
+=======
+					       unsigned int len)
+{
+	unsigned int header_offset;
+	unsigned int headroom;
+	unsigned int buflen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sk_buff *skb;
 
 	header_offset = VIRTNET_RX_PAD + xdp_headroom;
 	headroom = vi->hdr_len + header_offset;
+<<<<<<< HEAD
+=======
+	buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+		SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = virtnet_build_skb(buf, buflen, headroom, len);
 	if (unlikely(!skb))
@@ -1853,7 +2111,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
 					 void *buf,
 					 unsigned int xdp_headroom,
 					 unsigned int len,
+<<<<<<< HEAD
 					 unsigned int buflen,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 unsigned int *xdp_xmit,
 					 struct virtnet_rq_stats *stats)
 {
@@ -1862,6 +2123,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
 	struct virtio_net_hdr_mrg_rxbuf *hdr = buf + header_offset;
 	struct page *page = virt_to_head_page(buf);
 	struct page *xdp_page;
+<<<<<<< HEAD
+=======
+	unsigned int buflen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xdp_buff xdp;
 	struct sk_buff *skb;
 	unsigned int metasize = 0;
@@ -1874,6 +2139,12 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
 	if (unlikely(hdr->hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
 		goto err_xdp;
 
+<<<<<<< HEAD
+=======
+	buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+		SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(xdp_headroom < virtnet_get_headroom(vi))) {
 		int offset = buf - page_address(page) + header_offset;
 		unsigned int tlen = len + vi->hdr_len;
@@ -1891,7 +2162,11 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
 			goto err_xdp;
 
 		buf = page_address(xdp_page);
+<<<<<<< HEAD
 		page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+		put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page = xdp_page;
 	}
 
@@ -1923,15 +2198,22 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
 	if (metasize)
 		skb_metadata_set(skb, metasize);
 
+<<<<<<< HEAD
 	skb_mark_for_recycle(skb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return skb;
 
 err_xdp:
 	u64_stats_inc(&stats->xdp_drops);
 err:
 	u64_stats_inc(&stats->drops);
+<<<<<<< HEAD
 	page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+	put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 xdp_xmit:
 	return NULL;
 }
@@ -1944,8 +2226,12 @@ static struct sk_buff *receive_small(struct net_device *dev,
 				     unsigned int *xdp_xmit,
 				     struct virtnet_rq_stats *stats)
 {
+<<<<<<< HEAD
 	unsigned int xdp_headroom = mergeable_ctx_to_headroom(ctx);
 	unsigned int buflen = mergeable_ctx_to_truesize(ctx);
+=======
+	unsigned int xdp_headroom = (unsigned long)ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct page *page = virt_to_head_page(buf);
 	struct sk_buff *skb;
 
@@ -1971,14 +2257,20 @@ static struct sk_buff *receive_small(struct net_device *dev,
 		xdp_prog = rcu_dereference(rq->xdp_prog);
 		if (xdp_prog) {
 			skb = receive_small_xdp(dev, vi, rq, xdp_prog, buf,
+<<<<<<< HEAD
 						xdp_headroom, len, buflen,
 						xdp_xmit, stats);
+=======
+						xdp_headroom, len, xdp_xmit,
+						stats);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rcu_read_unlock();
 			return skb;
 		}
 		rcu_read_unlock();
 	}
 
+<<<<<<< HEAD
 	skb = receive_small_build_skb(vi, xdp_headroom, buf, len, buflen);
 	if (likely(skb)) {
 		skb_mark_for_recycle(skb);
@@ -1988,6 +2280,15 @@ static struct sk_buff *receive_small(struct net_device *dev,
 err:
 	u64_stats_inc(&stats->drops);
 	page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+	skb = receive_small_build_skb(vi, xdp_headroom, buf, len);
+	if (likely(skb))
+		return skb;
+
+err:
+	u64_stats_inc(&stats->drops);
+	put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 
@@ -2042,7 +2343,11 @@ static void mergeable_buf_free(struct receive_queue *rq, int num_buf,
 		}
 		u64_stats_add(&stats->bytes, len);
 		page = virt_to_head_page(buf);
+<<<<<<< HEAD
 		page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+		put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2152,12 +2457,17 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
 		page = virt_to_head_page(buf);
 		offset = buf - page_address(page);
 
+<<<<<<< HEAD
 		if (rq->use_page_pool_dma)
 			page_pool_dma_sync_for_cpu(rq->page_pool, page,
 						   offset, len);
 
 		if (check_mergeable_len(dev, ctx, len)) {
 			page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+		if (check_mergeable_len(dev, ctx, len)) {
+			put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto err;
 		}
 
@@ -2176,7 +2486,11 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
 	return 0;
 
 err:
+<<<<<<< HEAD
 	put_xdp_frags(rq, xdp);
+=======
+	put_xdp_frags(xdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EINVAL;
 }
 
@@ -2241,7 +2555,11 @@ static void *mergeable_xdp_get_buf(struct virtnet_info *vi,
 		if (*len + xdp_room > PAGE_SIZE)
 			return NULL;
 
+<<<<<<< HEAD
 		xdp_page = page_pool_alloc_pages(rq->page_pool, GFP_ATOMIC);
+=======
+		xdp_page = alloc_page(GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!xdp_page)
 			return NULL;
 
@@ -2251,7 +2569,11 @@ static void *mergeable_xdp_get_buf(struct virtnet_info *vi,
 
 	*frame_sz = PAGE_SIZE;
 
+<<<<<<< HEAD
 	page_pool_put_page(rq->page_pool, *page, -1, true);
+=======
+	put_page(*page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*page = xdp_page;
 
@@ -2297,8 +2619,11 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
 		if (unlikely(!head_skb))
 			break;
+<<<<<<< HEAD
 
 		skb_mark_for_recycle(head_skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return head_skb;
 
 	case XDP_TX:
@@ -2309,10 +2634,17 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
 		break;
 	}
 
+<<<<<<< HEAD
 	put_xdp_frags(rq, &xdp);
 
 err_xdp:
 	page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+	put_xdp_frags(&xdp);
+
+err_xdp:
+	put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mergeable_buf_free(rq, num_buf, dev, stats);
 
 	u64_stats_inc(&stats->xdp_drops);
@@ -2320,8 +2652,12 @@ err_xdp:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
 					       struct sk_buff *head_skb,
+=======
+static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       struct sk_buff *curr_skb,
 					       struct page *page, void *buf,
 					       int len, int truesize)
@@ -2336,9 +2672,12 @@ static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
 		if (unlikely(!nskb))
 			return NULL;
 
+<<<<<<< HEAD
 		if (head_skb->pp_recycle)
 			skb_mark_for_recycle(nskb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (curr_skb == head_skb)
 			skb_shinfo(curr_skb)->frag_list = nskb;
 		else
@@ -2356,10 +2695,14 @@ static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
 
 	offset = buf - page_address(page);
 	if (skb_can_coalesce(curr_skb, num_skb_frags, page, offset)) {
+<<<<<<< HEAD
 		if (head_skb->pp_recycle)
 			page_pool_put_page(rq->page_pool, page, -1, true);
 		else
 			put_page(page);
+=======
+		put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		skb_coalesce_rx_frag(curr_skb, num_skb_frags - 1,
 				     len, truesize);
 	} else {
@@ -2388,7 +2731,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 	unsigned int headroom = mergeable_ctx_to_headroom(ctx);
 
 	head_skb = NULL;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
 
 	if (check_mergeable_len(dev, ctx, len))
@@ -2413,8 +2759,11 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 
 	if (unlikely(!curr_skb))
 		goto err_skb;
+<<<<<<< HEAD
 
 	skb_mark_for_recycle(head_skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (--num_buf) {
 		buf = virtnet_rq_get_buf(rq, &len, &ctx);
 		if (unlikely(!buf)) {
@@ -2429,17 +2778,24 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 		u64_stats_add(&stats->bytes, len);
 		page = virt_to_head_page(buf);
 
+<<<<<<< HEAD
 		if (rq->use_page_pool_dma) {
 			offset = buf - page_address(page);
 			page_pool_dma_sync_for_cpu(rq->page_pool, page,
 						   offset, len);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (check_mergeable_len(dev, ctx, len))
 			goto err_skb;
 
 		truesize = mergeable_ctx_to_truesize(ctx);
+<<<<<<< HEAD
 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+=======
+		curr_skb  = virtnet_skb_append_frag(head_skb, curr_skb, page,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    buf, len, truesize);
 		if (!curr_skb)
 			goto err_skb;
@@ -2449,7 +2805,11 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 	return head_skb;
 
 err_skb:
+<<<<<<< HEAD
 	page_pool_put_page(rq->page_pool, page, -1, true);
+=======
+	put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mergeable_buf_free(rq, num_buf, dev, stats);
 
 err_buf:
@@ -2551,6 +2911,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 		return;
 	}
 
+<<<<<<< HEAD
 	/* Sync the memory before touching anything through buf,
 	 * unless virtio core did it already.
 	 */
@@ -2561,6 +2922,8 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* About the flags below:
 	 * 1. Save the flags early, as the XDP program might overwrite them.
 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
@@ -2590,6 +2953,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 	virtnet_receive_done(vi, rq, skb, flags);
 }
 
+<<<<<<< HEAD
 static int virtnet_rq_submit(struct receive_queue *rq, char *buf,
 			     int len, void *ctx, gfp_t gfp)
 {
@@ -2612,32 +2976,63 @@ static int virtnet_rq_submit(struct receive_queue *rq, char *buf,
  * when the remaining page fragment can't fit another buffer. Encode
  * the actual allocation size in ctx so build_skb() gets the correct
  * buflen for truesize accounting.
+=======
+/* Unlike mergeable buffers, all buffers are allocated to the
+ * same size, except for the headroom. For this reason we do
+ * not need to use  mergeable_len_to_ctx here - it is enough
+ * to store the headroom as the context ignoring the truesize.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
 			     gfp_t gfp)
 {
+<<<<<<< HEAD
 	unsigned int xdp_headroom = virtnet_get_headroom(vi);
 	unsigned int len = vi->hdr_len + VIRTNET_RX_PAD + GOOD_PACKET_LEN + xdp_headroom;
 	unsigned int alloc_len;
 	char *buf;
 	void *ctx;
+=======
+	char *buf;
+	unsigned int xdp_headroom = virtnet_get_headroom(vi);
+	void *ctx = (void *)(unsigned long)xdp_headroom;
+	int len = vi->hdr_len + VIRTNET_RX_PAD + GOOD_PACKET_LEN + xdp_headroom;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	len = SKB_DATA_ALIGN(len) +
 	      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
 
+<<<<<<< HEAD
 	alloc_len = len;
 	buf = page_pool_alloc_va(rq->page_pool, &alloc_len, gfp);
+=======
+	if (unlikely(!skb_page_frag_refill(len, &rq->alloc_frag, gfp)))
+		return -ENOMEM;
+
+	buf = virtnet_rq_alloc(rq, len, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!buf))
 		return -ENOMEM;
 
 	buf += VIRTNET_RX_PAD + xdp_headroom;
 
+<<<<<<< HEAD
 	ctx = mergeable_len_to_ctx(alloc_len, xdp_headroom);
 	err = virtnet_rq_submit(rq, buf, vi->hdr_len + GOOD_PACKET_LEN, ctx, gfp);
 
 	if (err < 0)
 		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+=======
+	virtnet_rq_init_one_sg(rq, buf, vi->hdr_len + GOOD_PACKET_LEN);
+
+	err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1, buf, ctx, gfp);
+	if (err < 0) {
+		virtnet_rq_unmap(rq, buf, 0);
+		put_page(virt_to_head_page(buf));
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -2710,12 +3105,22 @@ static unsigned int get_mergeable_buf_len(struct receive_queue *rq,
 static int add_recvbuf_mergeable(struct virtnet_info *vi,
 				 struct receive_queue *rq, gfp_t gfp)
 {
+<<<<<<< HEAD
 	unsigned int headroom = virtnet_get_headroom(vi);
 	unsigned int tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
 	unsigned int room = SKB_DATA_ALIGN(headroom + tailroom);
 	unsigned int len, alloc_len;
 	char *buf;
 	void *ctx;
+=======
+	struct page_frag *alloc_frag = &rq->alloc_frag;
+	unsigned int headroom = virtnet_get_headroom(vi);
+	unsigned int tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
+	unsigned int room = SKB_DATA_ALIGN(headroom + tailroom);
+	unsigned int len, hole;
+	void *ctx;
+	char *buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	/* Extra tailroom is needed to satisfy XDP's assumption. This
@@ -2724,12 +3129,23 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
 	 */
 	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len, room);
 
+<<<<<<< HEAD
 	alloc_len = len + room;
 	buf = page_pool_alloc_va(rq->page_pool, &alloc_len, gfp);
+=======
+	if (unlikely(!skb_page_frag_refill(len + room, alloc_frag, gfp)))
+		return -ENOMEM;
+
+	if (!alloc_frag->offset && len + room + sizeof(struct virtnet_rq_dma) > alloc_frag->size)
+		len -= sizeof(struct virtnet_rq_dma);
+
+	buf = virtnet_rq_alloc(rq, len + room, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!buf))
 		return -ENOMEM;
 
 	buf += headroom; /* advance address leaving hole at front of pkt */
+<<<<<<< HEAD
 
 	if (!headroom)
 		len = alloc_len - room;
@@ -2740,13 +3156,41 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
 
 	if (err < 0)
 		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+=======
+	hole = alloc_frag->size - alloc_frag->offset;
+	if (hole < len + room) {
+		/* To avoid internal fragmentation, if there is very likely not
+		 * enough space for another buffer, add the remaining space to
+		 * the current buffer.
+		 * XDP core assumes that frame_size of xdp_buff and the length
+		 * of the frag are PAGE_SIZE, so we disable the hole mechanism.
+		 */
+		if (!headroom)
+			len += hole;
+		alloc_frag->offset += hole;
+	}
+
+	virtnet_rq_init_one_sg(rq, buf, len);
+
+	ctx = mergeable_len_to_ctx(len + room, headroom);
+	err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1, buf, ctx, gfp);
+	if (err < 0) {
+		virtnet_rq_unmap(rq, buf, 0);
+		put_page(virt_to_head_page(buf));
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
 /*
+<<<<<<< HEAD
  * Returns false if we couldn't fill entirely (OOM) and need to retry.
  * In XSK mode, it's when the receive buffer is not allocated and
  * xsk_use_need_wakeup is not set.
+=======
+ * Returns false if we couldn't fill entirely (OOM).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Normally run in the receive path, but can also be run from ndo_open
  * before we're receiving packets, or from refill_work which is
@@ -2893,7 +3337,11 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
 	int packets = 0;
 	void *buf;
 
+<<<<<<< HEAD
 	if (rq->page_pool) {
+=======
+	if (!vi->big_packets || vi->mergeable_rx_bufs) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		void *ctx;
 		while (packets < budget &&
 		       (buf = virtnet_rq_get_buf(rq, &len, &ctx))) {
@@ -3058,10 +3506,14 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
 		return err;
 
 	err = xdp_rxq_info_reg_mem_model(&vi->rq[qp_index].xdp_rxq,
+<<<<<<< HEAD
 					 vi->rq[qp_index].page_pool ?
 						MEM_TYPE_PAGE_POOL :
 						MEM_TYPE_PAGE_SHARED,
 					 vi->rq[qp_index].page_pool);
+=======
+					 MEM_TYPE_PAGE_SHARED, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0)
 		goto err_xdp_reg_mem_model;
 
@@ -3101,6 +3553,7 @@ static void virtnet_update_settings(struct virtnet_info *vi)
 		vi->duplex = duplex;
 }
 
+<<<<<<< HEAD
 static int virtnet_create_page_pools(struct virtnet_info *vi)
 {
 	int i, err;
@@ -3177,6 +3630,8 @@ static void virtnet_destroy_page_pools(struct virtnet_info *vi)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int virtnet_open(struct net_device *dev)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
@@ -3759,12 +4214,15 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
 			 queue_pairs);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	/* Keep max_tx_vq in sync so that a later RSS command does not
 	 * revert queue_pairs to a stale value.
 	 */
 	if (vi->has_rss)
 		vi->rss_trailer.max_tx_vq = cpu_to_le16(queue_pairs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 succ:
 	vi->curr_queue_pairs = queue_pairs;
 	if (dev->flags & IFF_UP) {
@@ -5735,10 +6193,13 @@ static int virtnet_restore_up(struct virtio_device *vdev)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	err = virtnet_create_page_pools(vi);
 	if (err)
 		goto err_del_vqs;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	virtio_device_ready(vdev);
 
 	enable_rx_mode_work(vi);
@@ -5748,12 +6209,17 @@ static int virtnet_restore_up(struct virtio_device *vdev)
 		err = virtnet_open(vi->dev);
 		rtnl_unlock();
 		if (err)
+<<<<<<< HEAD
 			goto err_destroy_pools;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	netif_tx_lock_bh(vi->dev);
 	netif_device_attach(vi->dev);
 	netif_tx_unlock_bh(vi->dev);
+<<<<<<< HEAD
 	return 0;
 
 err_destroy_pools:
@@ -5766,6 +6232,8 @@ err_destroy_pools:
 err_del_vqs:
 	virtio_reset_device(vdev);
 	virtnet_del_vqs(vi);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -5893,7 +6361,11 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
 	/* In big_packets mode, xdp cannot work, so there is no need to
 	 * initialize xsk of rq.
 	 */
+<<<<<<< HEAD
 	if (!vi->rq[qid].page_pool)
+=======
+	if (vi->big_packets && !vi->mergeable_rx_bufs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOENT;
 
 	if (qid >= vi->curr_queue_pairs)
@@ -6323,6 +6795,20 @@ static void free_receive_bufs(struct virtnet_info *vi)
 	rtnl_unlock();
 }
 
+<<<<<<< HEAD
+=======
+static void free_receive_page_frags(struct virtnet_info *vi)
+{
+	int i;
+	for (i = 0; i < vi->max_queue_pairs; i++)
+		if (vi->rq[i].alloc_frag.page) {
+			if (vi->rq[i].last_dma)
+				virtnet_rq_unmap(&vi->rq[i], vi->rq[i].last_dma, 0);
+			put_page(vi->rq[i].alloc_frag.page);
+		}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
 {
 	struct virtnet_info *vi = vq->vdev->priv;
@@ -6426,7 +6912,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
 	vqs_info = kzalloc_objs(*vqs_info, total_vqs);
 	if (!vqs_info)
 		goto err_vqs_info;
+<<<<<<< HEAD
 	if (vi->mergeable_rx_bufs || !vi->big_packets) {
+=======
+	if (!vi->big_packets || vi->mergeable_rx_bufs) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ctx = kzalloc_objs(*ctx, total_vqs);
 		if (!ctx)
 			goto err_ctx;
@@ -6466,8 +6956,15 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
 		vi->rq[i].min_buf_len = mergeable_min_buf_len(vi, vi->rq[i].vq);
 		vi->sq[i].vq = vqs[txq2vq(i)];
 	}
+<<<<<<< HEAD
 	/* run here: ret == 0. */
 
+=======
+
+	/* run here: ret == 0. */
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_find:
 	kfree(ctx);
 err_ctx:
@@ -6805,6 +7302,11 @@ static int virtnet_probe(struct virtio_device *vdev)
 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
 		dev->features |= NETIF_F_GRO_HW;
+<<<<<<< HEAD
+=======
+	if (virtio_has_feature(vdev, VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))
+		dev->hw_features |= NETIF_F_GRO_HW;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev->vlan_features = dev->features;
 	dev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
@@ -6966,6 +7468,7 @@ static int virtnet_probe(struct virtio_device *vdev)
 			goto free;
 	}
 
+<<<<<<< HEAD
 	/* Create page pools for receive queues.
 	 * Page pools are created at probe time so they can be used
 	 * with premapped DMA addresses throughout the device lifetime.
@@ -6974,6 +7477,8 @@ static int virtnet_probe(struct virtio_device *vdev)
 	if (err)
 		goto free_irq_moder;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SYSFS
 	if (vi->mergeable_rx_bufs)
 		dev->sysfs_rx_queue_group = &virtio_net_mrg_rx_group;
@@ -6987,7 +7492,11 @@ static int virtnet_probe(struct virtio_device *vdev)
 		vi->failover = net_failover_create(vi->dev);
 		if (IS_ERR(vi->failover)) {
 			err = PTR_ERR(vi->failover);
+<<<<<<< HEAD
 			goto free_page_pools;
+=======
+			goto free_vqs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -6996,6 +7505,7 @@ static int virtnet_probe(struct virtio_device *vdev)
 
 	enable_rx_mode_work(vi);
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(guest_offloads); i++) {
 		unsigned int fbit;
 
@@ -7009,6 +7519,8 @@ static int virtnet_probe(struct virtio_device *vdev)
 	    (vi->guest_offloads_capable & GUEST_OFFLOAD_GRO_HW_MASK))
 		dev->hw_features |= NETIF_F_GRO_HW;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
 	rtnl_lock();
 
@@ -7091,6 +7603,18 @@ static int virtnet_probe(struct virtio_device *vdev)
 		netif_carrier_on(dev);
 	}
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < ARRAY_SIZE(guest_offloads); i++) {
+		unsigned int fbit;
+
+		fbit = virtio_offload_to_feature(guest_offloads[i]);
+		if (virtio_has_feature(vi->vdev, fbit))
+			set_bit(guest_offloads[i], &vi->guest_offloads);
+	}
+	vi->guest_offloads_capable = vi->guest_offloads;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rtnl_unlock();
 
 	err = virtnet_cpu_notif_add(vi);
@@ -7108,11 +7632,17 @@ free_unregister_netdev:
 	unregister_netdev(dev);
 free_failover:
 	net_failover_destroy(vi->failover);
+<<<<<<< HEAD
 free_page_pools:
 	virtnet_destroy_page_pools(vi);
 free_irq_moder:
 	virtnet_free_irq_moder(vi);
 	virtio_reset_device(vdev);
+=======
+free_vqs:
+	virtio_reset_device(vdev);
+	free_receive_page_frags(vi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	virtnet_del_vqs(vi);
 free:
 	free_netdev(dev);
@@ -7137,7 +7667,11 @@ static void remove_vq_common(struct virtnet_info *vi)
 
 	free_receive_bufs(vi);
 
+<<<<<<< HEAD
 	virtnet_destroy_page_pools(vi);
+=======
+	free_receive_page_frags(vi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	virtnet_del_vqs(vi);
 }

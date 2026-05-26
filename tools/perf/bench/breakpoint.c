@@ -16,7 +16,11 @@
 #include "bench.h"
 #include "futex.h"
 
+<<<<<<< HEAD
 static struct {
+=======
+struct {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int nbreakpoints;
 	unsigned int nparallel;
 	unsigned int nthreads;
@@ -173,7 +177,11 @@ int bench_breakpoint_thread(int argc, const char **argv)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct {
+=======
+struct {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int npassive;
 	unsigned int nactive;
 } enable_params = {

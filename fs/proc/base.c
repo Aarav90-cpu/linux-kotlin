@@ -515,7 +515,11 @@ static int proc_pid_schedstat(struct seq_file *m, struct pid_namespace *ns,
 		seq_puts(m, "0 0 0\n");
 	else
 		seq_printf(m, "%llu %llu %lu\n",
+<<<<<<< HEAD
 		   (unsigned long long)task->se.sum_exec_runtime,
+=======
+		   (unsigned long long)tsk_seruntime(task),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   (unsigned long long)task->sched_info.run_delay,
 		   task->sched_info.pcount);
 
@@ -721,7 +725,11 @@ static bool proc_fd_access_allowed(struct inode *inode)
 	return allowed;
 }
 
+<<<<<<< HEAD
 int proc_nochmod_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+=======
+int proc_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 struct iattr *attr)
 {
 	int error;
@@ -794,7 +802,11 @@ static int proc_pid_permission(struct mnt_idmap *idmap,
 
 
 static const struct inode_operations proc_def_inode_operations = {
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int proc_single_show(struct seq_file *m, void *v)
@@ -1866,7 +1878,11 @@ out:
 const struct inode_operations proc_pid_link_inode_operations = {
 	.readlink	= proc_pid_readlink,
 	.get_link	= proc_pid_get_link,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 
@@ -2319,7 +2335,11 @@ proc_map_files_get_link(struct dentry *dentry,
 static const struct inode_operations proc_map_files_link_inode_operations = {
 	.readlink	= proc_pid_readlink,
 	.get_link	= proc_map_files_get_link,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct dentry *
@@ -2398,7 +2418,11 @@ out:
 static const struct inode_operations proc_map_files_inode_operations = {
 	.lookup		= proc_map_files_lookup,
 	.permission	= proc_fd_permission,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int
@@ -2885,7 +2909,11 @@ static struct dentry *proc_##LSM##_attr_dir_lookup(struct inode *dir, \
 static const struct inode_operations proc_##LSM##_attr_dir_inode_ops = { \
 	.lookup		= proc_##LSM##_attr_dir_lookup, \
 	.getattr	= pid_getattr, \
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr, \
+=======
+	.setattr	= proc_setattr, \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_SECURITY_SMACK
@@ -2944,7 +2972,11 @@ static struct dentry *proc_attr_dir_lookup(struct inode *dir,
 static const struct inode_operations proc_attr_dir_inode_operations = {
 	.lookup		= proc_attr_dir_lookup,
 	.getattr	= pid_getattr,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif
@@ -3453,7 +3485,11 @@ static struct dentry *proc_tgid_base_lookup(struct inode *dir, struct dentry *de
 static const struct inode_operations proc_tgid_base_inode_operations = {
 	.lookup		= proc_tgid_base_lookup,
 	.getattr	= pid_getattr,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.permission	= proc_pid_permission,
 };
 
@@ -3650,7 +3686,11 @@ static int proc_tid_comm_permission(struct mnt_idmap *idmap,
 }
 
 static const struct inode_operations proc_tid_comm_inode_operations = {
+<<<<<<< HEAD
 		.setattr	= proc_nochmod_setattr,
+=======
+		.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.permission	= proc_tid_comm_permission,
 };
 
@@ -3779,7 +3819,11 @@ static const struct file_operations proc_tid_base_operations = {
 static const struct inode_operations proc_tid_base_inode_operations = {
 	.lookup		= proc_tid_base_lookup,
 	.getattr	= pid_getattr,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct dentry *proc_task_instantiate(struct dentry *dentry,
@@ -3992,7 +4036,11 @@ static loff_t proc_dir_llseek(struct file *file, loff_t offset, int whence)
 static const struct inode_operations proc_task_inode_operations = {
 	.lookup		= proc_task_lookup,
 	.getattr	= proc_task_getattr,
+<<<<<<< HEAD
 	.setattr	= proc_nochmod_setattr,
+=======
+	.setattr	= proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.permission	= proc_pid_permission,
 };
 

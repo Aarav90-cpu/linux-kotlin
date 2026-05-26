@@ -118,11 +118,20 @@ int sys_enter(u64 *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int do_exit(long ret)
+=======
+SEC("tp_btf/sys_exit")
+int sys_exit(u64 *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int tid;
 	int key = 0;
 	u64 cgroup = 0;
+<<<<<<< HEAD
+=======
+	long ret = ctx[1]; /* return value of the syscall */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct syscall_trace *st;
 	s64 delta;
 
@@ -148,6 +157,7 @@ static int do_exit(long ret)
 	return 0;
 }
 
+<<<<<<< HEAD
 SEC("tp_btf/sys_exit")
 int sys_exit(u64 *ctx)
 {
@@ -162,4 +172,6 @@ int process_exit(u64 *ctx)
 	return do_exit(0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

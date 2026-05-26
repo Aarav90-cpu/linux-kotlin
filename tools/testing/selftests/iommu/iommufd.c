@@ -2275,6 +2275,7 @@ TEST_F(iommufd_dirty_tracking, set_dirty_tracking)
 	test_ioctl_destroy(hwpt_id);
 }
 
+<<<<<<< HEAD
 TEST_F(iommufd_dirty_tracking, pasid_set_dirty_tracking)
 {
 	uint32_t stddev_id, ioas_id, hwpt_id, pasid = 100;
@@ -2302,6 +2303,8 @@ TEST_F(iommufd_dirty_tracking, pasid_set_dirty_tracking)
 	test_ioctl_destroy(hwpt_id);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TEST_F(iommufd_dirty_tracking, device_dirty_capability)
 {
 	uint32_t caps = 0;

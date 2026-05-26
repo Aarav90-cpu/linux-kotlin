@@ -545,5 +545,9 @@ void panthor_pwr_resume(struct panthor_device *ptdev)
 	if (!ptdev->pwr)
 		return;
 
+<<<<<<< HEAD
 	panthor_pwr_irq_resume(&ptdev->pwr->irq);
+=======
+	panthor_pwr_irq_resume(&ptdev->pwr->irq, PWR_INTERRUPTS_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

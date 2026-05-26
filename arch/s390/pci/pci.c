@@ -266,7 +266,10 @@ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
 }
 
 resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+<<<<<<< HEAD
 				       const struct resource *empty_res,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       resource_size_t size,
 				       resource_size_t align)
 {

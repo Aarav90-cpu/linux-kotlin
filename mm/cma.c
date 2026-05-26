@@ -52,7 +52,10 @@ const char *cma_get_name(const struct cma *cma)
 {
 	return cma->name;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cma_get_name);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
 					     unsigned int align_order)
@@ -952,7 +955,10 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
 
 	return page;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cma_alloc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct cma_memrange *find_cma_memrange(struct cma *cma,
 		const struct page *pages, unsigned long count)
@@ -1032,7 +1038,10 @@ bool cma_release(struct cma *cma, const struct page *pages,
 
 	return true;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cma_release);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool cma_release_frozen(struct cma *cma, const struct page *pages,
 		unsigned long count)

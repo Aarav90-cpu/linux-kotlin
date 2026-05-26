@@ -7,6 +7,10 @@
 #include <hyp/switch.h>
 #include <hyp/sysreg-sr.h>
 
+<<<<<<< HEAD
+=======
+#include <linux/arm-smccc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kvm_host.h>
 #include <linux/types.h>
 #include <linux/jump_label.h>
@@ -20,7 +24,10 @@
 #include <asm/kvm_asm.h>
 #include <asm/kvm_emulate.h>
 #include <asm/kvm_hyp.h>
+<<<<<<< HEAD
 #include <asm/kvm_hypevents.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_mmu.h>
 #include <asm/fpsimd.h>
 #include <asm/debug-monitors.h>
@@ -44,9 +51,12 @@ struct fgt_masks hfgwtr2_masks;
 struct fgt_masks hfgitr2_masks;
 struct fgt_masks hdfgrtr2_masks;
 struct fgt_masks hdfgwtr2_masks;
+<<<<<<< HEAD
 struct fgt_masks ich_hfgrtr_masks;
 struct fgt_masks ich_hfgwtr_masks;
 struct fgt_masks ich_hfgitr_masks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern void kvm_nvhe_prepare_backtrace(unsigned long fp, unsigned long pc);
 
@@ -113,12 +123,15 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
 /* Save VGICv3 state on non-VHE systems */
 static void __hyp_vgic_save_state(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (vgic_is_v5(kern_hyp_va(vcpu->kvm))) {
 		__vgic_v5_save_state(&vcpu->arch.vgic_cpu.vgic_v5);
 		__vgic_v5_save_ppi_state(&vcpu->arch.vgic_cpu.vgic_v5);
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif)) {
 		__vgic_v3_save_state(&vcpu->arch.vgic_cpu.vgic_v3);
 		__vgic_v3_deactivate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
@@ -128,12 +141,15 @@ static void __hyp_vgic_save_state(struct kvm_vcpu *vcpu)
 /* Restore VGICv3 state on non-VHE systems */
 static void __hyp_vgic_restore_state(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (vgic_is_v5(kern_hyp_va(vcpu->kvm))) {
 		__vgic_v5_restore_state(&vcpu->arch.vgic_cpu.vgic_v5);
 		__vgic_v5_restore_ppi_state(&vcpu->arch.vgic_cpu.vgic_v5);
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif)) {
 		__vgic_v3_activate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
 		__vgic_v3_restore_state(&vcpu->arch.vgic_cpu.vgic_v3);
@@ -205,7 +221,10 @@ static const exit_handler_fn hyp_exit_handlers[] = {
 
 static const exit_handler_fn pvm_exit_handlers[] = {
 	[0 ... ESR_ELx_EC_MAX]		= NULL,
+<<<<<<< HEAD
 	[ESR_ELx_EC_HVC64]		= kvm_handle_pvm_hvc64,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[ESR_ELx_EC_SYS64]		= kvm_handle_pvm_sys64,
 	[ESR_ELx_EC_SVE]		= kvm_handle_pvm_restricted,
 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
@@ -294,7 +313,11 @@ int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	 * We're about to restore some new MMU state. Make sure
 	 * ongoing page-table walks that have started before we
 	 * trapped to EL2 have completed. This also synchronises the
+<<<<<<< HEAD
 	 * above disabling of BRBE.
+=======
+	 * above disabling of BRBE, SPE and TRBE.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * See DDI0487I.a D8.1.5 "Out-of-context translation regimes",
 	 * rule R_LFHQG and subsequent information statements.
@@ -324,13 +347,19 @@ int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	__debug_switch_to_guest(vcpu);
 
 	do {
+<<<<<<< HEAD
 		trace_hyp_exit(host_ctxt, HYP_REASON_ERET_GUEST);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Jump in the fire! */
 		exit_code = __guest_enter(vcpu);
 
 		/* And we're baaack! */
+<<<<<<< HEAD
 		trace_hyp_enter(host_ctxt, HYP_REASON_GUEST_EXIT);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (fixup_guest_exit(vcpu, &exit_code));
 
 	__sysreg_save_state_nvhe(guest_ctxt);

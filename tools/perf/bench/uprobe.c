@@ -58,7 +58,11 @@ static const char * const bench_uprobe_usage[] = {
 		goto cleanup; \
 	}
 
+<<<<<<< HEAD
 static struct bench_uprobe_bpf *skel;
+=======
+struct bench_uprobe_bpf *skel;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int bench_uprobe__setup_bpf_skel(enum bench_uprobe bench)
 {

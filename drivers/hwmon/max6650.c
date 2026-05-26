@@ -27,7 +27,10 @@
 #include <linux/hwmon-sysfs.h>
 #include <linux/err.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/thermal.h>
 
 /*
@@ -313,7 +316,11 @@ static ssize_t alarm_show(struct device *dev,
 		mutex_unlock(&data->update_lock);
 	}
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", alarm);
+=======
+	return sprintf(buf, "%d\n", alarm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static SENSOR_DEVICE_ATTR_RO(gpio1_alarm, alarm, MAX6650_ALRM_GPIO1);

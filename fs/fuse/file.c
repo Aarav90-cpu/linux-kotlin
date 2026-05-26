@@ -117,12 +117,15 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
 			fuse_simple_request(ff->fm, args);
 			fuse_release_end(ff->fm, args, 0);
 		} else {
+<<<<<<< HEAD
 			/*
 			 * DAX inodes may need to issue a number of synchronous
 			 * request for clearing the mappings.
 			 */
 			if (ra && ra->inode && FUSE_IS_DAX(ra->inode))
 				args->may_block = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			args->end = fuse_release_end;
 			if (fuse_simple_background(ff->fm, args,
 						   GFP_KERNEL | __GFP_NOFAIL))
@@ -953,8 +956,12 @@ static int fuse_iomap_read_folio_range_async(const struct iomap_iter *iter,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void fuse_iomap_submit_read(const struct iomap_iter *iter,
 		struct iomap_read_folio_ctx *ctx)
+=======
+static void fuse_iomap_read_submit(struct iomap_read_folio_ctx *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct fuse_fill_read_data *data = ctx->read_ctx;
 
@@ -965,7 +972,11 @@ static void fuse_iomap_submit_read(const struct iomap_iter *iter,
 
 static const struct iomap_read_ops fuse_iomap_read_ops = {
 	.read_folio_range = fuse_iomap_read_folio_range_async,
+<<<<<<< HEAD
 	.submit_read = fuse_iomap_submit_read,
+=======
+	.submit_read = fuse_iomap_read_submit,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int fuse_read_folio(struct file *file, struct folio *folio)
@@ -1249,6 +1260,10 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
 {
 	struct fuse_args_pages *ap = &ia->ap;
 	struct fuse_conn *fc = get_fuse_conn(mapping->host);
+<<<<<<< HEAD
+=======
+	unsigned offset = pos & (PAGE_SIZE - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t count = 0;
 	unsigned int num;
 	int err = 0;
@@ -1275,7 +1290,11 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
 		if (mapping_writably_mapped(mapping))
 			flush_dcache_folio(folio);
 
+<<<<<<< HEAD
 		folio_offset = offset_in_folio(folio, pos);
+=======
+		folio_offset = ((index - folio->index) << PAGE_SHIFT) + offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bytes = min(folio_size(folio) - folio_offset, num);
 
 		tmp = copy_folio_from_iter_atomic(folio, folio_offset, bytes, ii);
@@ -1305,6 +1324,12 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
 		count += tmp;
 		pos += tmp;
 		num -= tmp;
+<<<<<<< HEAD
+=======
+		offset += tmp;
+		if (offset == folio_size(folio))
+			offset = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* If we copied full folio, mark it uptodate */
 		if (tmp == folio_size(folio))
@@ -1316,9 +1341,13 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
 			ia->write.folio_locked = true;
 			break;
 		}
+<<<<<<< HEAD
 		if (!fc->big_writes)
 			break;
 		if (folio_offset + tmp != folio_size(folio))
+=======
+		if (!fc->big_writes || offset != 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 
@@ -2176,11 +2205,19 @@ static bool fuse_folios_need_send(struct fuse_conn *fc, loff_t pos,
 
 	WARN_ON(!ap->num_folios);
 
+<<<<<<< HEAD
 	/* Reached max pages or max folio slots */
 	if (ap->num_folios >= fc->max_pages)
 		return true;
 
+=======
+	/* Reached max pages */
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 	if (DIV_ROUND_UP(bytes, PAGE_SIZE) > fc->max_pages)
+=======
+	if ((bytes + PAGE_SIZE - 1) >> PAGE_SHIFT > fc->max_pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	if (bytes > max_bytes)

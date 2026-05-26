@@ -34,8 +34,12 @@ struct seq_file;
  * @ops: dma_fence_ops associated with this fence
  * @rcu: used for releasing fence with kfree_rcu
  * @cb_list: list of all callbacks to call
+<<<<<<< HEAD
  * @extern_lock: external spin_lock_irqsave used for locking (deprecated)
  * @inline_lock: alternative internal spin_lock_irqsave used for locking
+=======
+ * @lock: spin_lock_irqsave used for locking
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @context: execution context this fence belongs to, returned by
  *           dma_fence_context_alloc()
  * @seqno: the sequence number of this fence inside the execution context,
@@ -49,8 +53,11 @@ struct seq_file;
  * atomic ops (bit_*), so taking the spinlock will not be needed most
  * of the time.
  *
+<<<<<<< HEAD
  * DMA_FENCE_FLAG_INITIALIZED_BIT - fence was initialized
  * DMA_FENCE_FLAG_INLINE_LOCK_BIT - use inline spinlock instead of external one
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DMA_FENCE_FLAG_SIGNALED_BIT - fence is already signaled
  * DMA_FENCE_FLAG_TIMESTAMP_BIT - timestamp recorded for fence signaling
  * DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT - enable_signaling might have been called
@@ -68,11 +75,16 @@ struct seq_file;
  * been completed, or never called at all.
  */
 struct dma_fence {
+<<<<<<< HEAD
 	union {
 		spinlock_t *extern_lock;
 		spinlock_t inline_lock;
 	};
 	const struct dma_fence_ops __rcu *ops;
+=======
+	spinlock_t *lock;
+	const struct dma_fence_ops *ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We clear the callback list on kref_put so that by the time we
 	 * release the fence it is unused. No one should be adding to the
@@ -104,8 +116,11 @@ struct dma_fence {
 };
 
 enum dma_fence_flag_bits {
+<<<<<<< HEAD
 	DMA_FENCE_FLAG_INITIALIZED_BIT,
 	DMA_FENCE_FLAG_INLINE_LOCK_BIT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMA_FENCE_FLAG_SEQNO64_BIT,
 	DMA_FENCE_FLAG_SIGNALED_BIT,
 	DMA_FENCE_FLAG_TIMESTAMP_BIT,
@@ -226,10 +241,13 @@ struct dma_fence_ops {
 	 * timed out. Can also return other error values on custom implementations,
 	 * which should be treated as if the fence is signaled. For example a hardware
 	 * lockup could be reported like that.
+<<<<<<< HEAD
 	 *
 	 * Implementing this callback prevents the fence from detaching after
 	 * signaling and so it is necessary for the module providing the
 	 * dma_fence_ops to stay loaded as long as the dma_fence exists.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	signed long (*wait)(struct dma_fence *fence,
 			    bool intr, signed long timeout);
@@ -241,6 +259,7 @@ struct dma_fence_ops {
 	 * Can be called from irq context.  This callback is optional. If it is
 	 * NULL, then dma_fence_free() is instead called as the default
 	 * implementation.
+<<<<<<< HEAD
 	 *
 	 * Implementing this callback prevents the fence from detaching after
 	 * signaling and so it is necessary for the module providing the
@@ -248,6 +267,8 @@ struct dma_fence_ops {
 	 *
 	 * If the callback is implemented the memory backing the dma_fence
 	 * object must be freed RCU safe.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	void (*release)(struct dma_fence *fence);
 
@@ -283,6 +304,7 @@ void dma_fence_free(struct dma_fence *fence);
 void dma_fence_describe(struct dma_fence *fence, struct seq_file *seq);
 
 /**
+<<<<<<< HEAD
  * dma_fence_was_initialized - test if fence was initialized
  * @fence: fence to test
  *
@@ -296,6 +318,8 @@ static inline bool dma_fence_was_initialized(struct dma_fence *fence)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * dma_fence_put - decreases refcount of the fence
  * @fence: fence to reduce refcount of
  */
@@ -383,6 +407,7 @@ dma_fence_get_rcu_safe(struct dma_fence __rcu **fencep)
 	} while (1);
 }
 
+<<<<<<< HEAD
 /**
  * dma_fence_spinlock - return pointer to the spinlock protecting the fence
  * @fence: the fence to get the lock from
@@ -422,6 +447,8 @@ static inline spinlock_t *dma_fence_spinlock(struct dma_fence *fence)
 #define dma_fence_assert_held(fence)	\
 	lockdep_assert_held(dma_fence_spinlock(fence));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_LOCKDEP
 bool dma_fence_begin_signalling(void);
 void dma_fence_end_signalling(bool cookie);
@@ -510,6 +537,7 @@ dma_fence_test_signaled_flag(struct dma_fence *fence)
 static inline bool
 dma_fence_is_signaled_locked(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	const struct dma_fence_ops *ops;
 
 	if (dma_fence_test_signaled_flag(fence))
@@ -523,6 +551,15 @@ dma_fence_is_signaled_locked(struct dma_fence *fence)
 		return true;
 	}
 	rcu_read_unlock();
+=======
+	if (dma_fence_test_signaled_flag(fence))
+		return true;
+
+	if (fence->ops->signaled && fence->ops->signaled(fence)) {
+		dma_fence_signal_locked(fence);
+		return true;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
@@ -546,6 +583,7 @@ dma_fence_is_signaled_locked(struct dma_fence *fence)
 static inline bool
 dma_fence_is_signaled(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	const struct dma_fence_ops *ops;
 
 	if (dma_fence_test_signaled_flag(fence))
@@ -559,6 +597,15 @@ dma_fence_is_signaled(struct dma_fence *fence)
 		return true;
 	}
 	rcu_read_unlock();
+=======
+	if (dma_fence_test_signaled_flag(fence))
+		return true;
+
+	if (fence->ops->signaled && fence->ops->signaled(fence)) {
+		dma_fence_signal(fence);
+		return true;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
@@ -763,7 +810,11 @@ extern const struct dma_fence_ops dma_fence_chain_ops;
  */
 static inline bool dma_fence_is_array(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	return rcu_access_pointer(fence->ops) == &dma_fence_array_ops;
+=======
+	return fence->ops == &dma_fence_array_ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -774,7 +825,11 @@ static inline bool dma_fence_is_array(struct dma_fence *fence)
  */
 static inline bool dma_fence_is_chain(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	return rcu_access_pointer(fence->ops) == &dma_fence_chain_ops;
+=======
+	return fence->ops == &dma_fence_chain_ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

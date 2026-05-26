@@ -7,6 +7,7 @@
  *   3. call listen() for 1 server socket. (migration target)
  *   4. update a map to migrate all child sockets
  *        to the last server socket (migrate_map[cookie] = 4)
+<<<<<<< HEAD
  *   5. for TCP_ESTABLISHED and TCP_SYN_RECV cases, verify via epoll
  *        that the last server socket is not ready before migration.
  *   6. call shutdown() for first 4 server sockets
@@ -23,13 +24,30 @@
  *        and migrate the requests in the accept queue
  *        to the last server socket.
  *  12. call accept() for the last server socket.
+=======
+ *   5. call shutdown() for first 4 server sockets
+ *        and migrate the requests in the accept queue
+ *        to the last server socket.
+ *   6. call listen() for the second server socket.
+ *   7. call shutdown() for the last server
+ *        and migrate the requests in the accept queue
+ *        to the second server socket.
+ *   8. call listen() for the last server.
+ *   9. call shutdown() for the second server
+ *        and migrate the requests in the accept queue
+ *        to the last server socket.
+ *  10. call accept() for the last server socket.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Author: Kuniyuki Iwashima <kuniyu@amazon.co.jp>
  */
 
 #include <bpf/bpf.h>
 #include <bpf/libbpf.h>
+<<<<<<< HEAD
 #include <sys/epoll.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "test_progs.h"
 #include "test_migrate_reuseport.skel.h"
@@ -355,6 +373,7 @@ static int update_maps(struct migrate_reuseport_test_case *test_case,
 
 static int migrate_dance(struct migrate_reuseport_test_case *test_case)
 {
+<<<<<<< HEAD
 	struct epoll_event ev = {
 		.events = EPOLLIN,
 	};
@@ -377,19 +396,28 @@ static int migrate_dance(struct migrate_reuseport_test_case *test_case)
 			goto close_epoll;
 	}
 
+=======
+	int i, err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Migrate TCP_ESTABLISHED and TCP_SYN_RECV requests
 	 * to the last listener based on eBPF.
 	 */
 	for (i = 0; i < MIGRATED_TO; i++) {
 		err = shutdown(test_case->servers[i], SHUT_RDWR);
 		if (!ASSERT_OK(err, "shutdown"))
+<<<<<<< HEAD
 			goto close_epoll;
+=======
+			return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* No dance for TCP_NEW_SYN_RECV to migrate based on eBPF */
 	if (test_case->state == BPF_TCP_NEW_SYN_RECV)
 		return 0;
 
+<<<<<<< HEAD
 	nfds = epoll_wait(epoll, &ev, 1, 0);
 	if (!ASSERT_EQ(nfds, 1, "epoll_wait 2")) {
 close_epoll:
@@ -400,6 +428,8 @@ close_epoll:
 
 	close(epoll);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Note that we use the second listener instead of the
 	 * first one here.
 	 *

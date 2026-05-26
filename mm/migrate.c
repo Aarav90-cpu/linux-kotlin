@@ -321,7 +321,11 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
 	if (!pages_identical(page, ZERO_PAGE(0)))
 		return false;
 
+<<<<<<< HEAD
 	newpte = pte_mkspecial(pfn_pte(zero_pfn(pvmw->address),
+=======
+	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					pvmw->vma->vm_page_prot));
 
 	if (pte_swp_soft_dirty(old_pte))
@@ -672,7 +676,10 @@ static int __folio_migrate_mapping(struct address_space *mapping,
 		struct lruvec *old_lruvec, *new_lruvec;
 		struct mem_cgroup *memcg;
 
+<<<<<<< HEAD
 		rcu_read_lock();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memcg = folio_memcg(folio);
 		old_lruvec = mem_cgroup_lruvec(memcg, oldzone->zone_pgdat);
 		new_lruvec = mem_cgroup_lruvec(memcg, newzone->zone_pgdat);
@@ -700,7 +707,10 @@ static int __folio_migrate_mapping(struct address_space *mapping,
 			mod_lruvec_state(new_lruvec, NR_FILE_DIRTY, nr);
 			__mod_zone_page_state(newzone, NR_ZONE_WRITE_PENDING, nr);
 		}
+<<<<<<< HEAD
 		rcu_read_unlock();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	local_irq_enable();
 
@@ -2224,7 +2234,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
 	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_NUMA
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int store_status(int __user *status, int start, int value, int nr)
 {
 	while (nr-- > 0) {
@@ -2623,7 +2638,10 @@ SYSCALL_DEFINE6(move_pages, pid_t, pid, unsigned long, nr_pages,
 {
 	return kernel_move_pages(pid, nr_pages, pages, nodes, status, flags);
 }
+<<<<<<< HEAD
 #endif /* CONFIG_NUMA_MIGRATION */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_NUMA_BALANCING
 /*
@@ -2766,3 +2784,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
 	return nr_remaining ? -EAGAIN : 0;
 }
 #endif /* CONFIG_NUMA_BALANCING */
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_NUMA */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

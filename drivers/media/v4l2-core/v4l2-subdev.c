@@ -2545,6 +2545,7 @@ int v4l2_subdev_s_stream_helper(struct v4l2_subdev *sd, int enable)
 }
 EXPORT_SYMBOL_GPL(v4l2_subdev_s_stream_helper);
 
+<<<<<<< HEAD
 int __v4l2_subdev_get_frame_desc_passthrough(struct v4l2_subdev *sd,
 					     struct v4l2_subdev_state *state,
 					     unsigned int pad,
@@ -2664,6 +2665,8 @@ int v4l2_subdev_get_frame_desc_passthrough(struct v4l2_subdev *sd,
 }
 EXPORT_SYMBOL_GPL(v4l2_subdev_get_frame_desc_passthrough);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_VIDEO_V4L2_SUBDEV_API */
 
 #endif /* CONFIG_MEDIA_CONTROLLER */

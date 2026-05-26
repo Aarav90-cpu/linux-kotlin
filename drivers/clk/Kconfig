@@ -218,6 +218,7 @@ config COMMON_CLK_CS2000_CP
 	  If you say yes here you get support for the CS2000 clock multiplier.
 
 config COMMON_CLK_EN7523
+<<<<<<< HEAD
 	bool "Clock driver for Airoha/EcoNet SoC system clocks"
 	depends on OF
 	depends on ARCH_AIROHA || ECONET || COMPILE_TEST
@@ -225,6 +226,15 @@ config COMMON_CLK_EN7523
 	help
 	  This driver provides the fixed clocks and gates present on Airoha
 	  and EcoNet silicon.
+=======
+	bool "Clock driver for Airoha EN7523 SoC system clocks"
+	depends on OF
+	depends on ARCH_AIROHA || COMPILE_TEST
+	default ARCH_AIROHA
+	help
+	  This driver provides the fixed clocks and gates present on Airoha
+	  ARM silicon.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config COMMON_CLK_EP93XX
 	tristate "Clock driver for Cirrus Logic ep93xx SoC"
@@ -236,9 +246,15 @@ config COMMON_CLK_EP93XX
 
 config COMMON_CLK_EYEQ
 	bool "Clock driver for the Mobileye EyeQ platform"
+<<<<<<< HEAD
 	depends on EYEQ || COMPILE_TEST
 	select AUXILIARY_BUS
 	default EYEQ
+=======
+	depends on MACH_EYEQ5 || MACH_EYEQ6H || COMPILE_TEST
+	select AUXILIARY_BUS
+	default MACH_EYEQ5 || MACH_EYEQ6H
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver provides clocks found on Mobileye EyeQ5, EyeQ6L and Eye6H
 	  SoCs. Controllers live in shared register regions called OLB. Driver
@@ -255,7 +271,11 @@ config COMMON_CLK_FSL_FLEXSPI
 
 config COMMON_CLK_FSL_SAI
 	bool "Clock driver for BCLK of Freescale SAI cores"
+<<<<<<< HEAD
 	depends on ARCH_LAYERSCAPE || ARCH_MXC || COMPILE_TEST
+=======
+	depends on ARCH_LAYERSCAPE || COMPILE_TEST
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver supports the Freescale SAI (Synchronous Audio Interface)
 	  to be used as a generic clock output. Some SoCs have restrictions
@@ -502,8 +522,13 @@ config COMMON_CLK_RPMI
 source "drivers/clk/actions/Kconfig"
 source "drivers/clk/analogbits/Kconfig"
 source "drivers/clk/aspeed/Kconfig"
+<<<<<<< HEAD
 source "drivers/clk/bcm/Kconfig"
 source "drivers/clk/eswin/Kconfig"
+=======
+source "drivers/clk/baikal-t1/Kconfig"
+source "drivers/clk/bcm/Kconfig"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/clk/hisilicon/Kconfig"
 source "drivers/clk/imgtec/Kconfig"
 source "drivers/clk/imx/Kconfig"
@@ -531,7 +556,10 @@ source "drivers/clk/starfive/Kconfig"
 source "drivers/clk/sunxi/Kconfig"
 source "drivers/clk/sunxi-ng/Kconfig"
 source "drivers/clk/tegra/Kconfig"
+<<<<<<< HEAD
 source "drivers/clk/tenstorrent/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/clk/thead/Kconfig"
 source "drivers/clk/stm32/Kconfig"
 source "drivers/clk/ti/Kconfig"

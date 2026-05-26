@@ -1015,7 +1015,11 @@ static struct console ip22zilog_console = {
 
 static struct uart_driver ip22zilog_reg = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.driver_name	= "serial_ip22zilog",
+=======
+	.driver_name	= "serial",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dev_name	= "ttyS",
 	.major		= TTY_MAJOR,
 	.minor		= 64,
@@ -1025,7 +1029,11 @@ static struct uart_driver ip22zilog_reg = {
 #endif
 };
 
+<<<<<<< HEAD
 static void ip22zilog_prepare(struct uart_ip22zilog_port *up)
+=======
+static void __init ip22zilog_prepare(struct uart_ip22zilog_port *up)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned char sysrq_on = IS_ENABLED(CONFIG_SERIAL_IP22_ZILOG_CONSOLE);
 	int brg;

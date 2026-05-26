@@ -32,6 +32,7 @@ static inline unsigned int cpu_last_level_cache_line_size(void)
 }
 
 asmlinkage void __flush_cache_all(void);
+<<<<<<< HEAD
 
 /*
  * LoongArch maintains ICache/DCache coherency by hardware,
@@ -48,6 +49,10 @@ static inline void local_flush_icache_range(unsigned long start, unsigned long e
 }
 
 #define flush_icache_all	local_flush_icache_all
+=======
+void local_flush_icache_range(unsigned long start, unsigned long end);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define flush_icache_range	local_flush_icache_range
 #define flush_icache_user_range	local_flush_icache_range
 

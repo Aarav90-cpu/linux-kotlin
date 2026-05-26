@@ -747,12 +747,21 @@ static void mtk_hdmi_v2_change_video_resolution(struct mtk_hdmi *hdmi,
 
 	switch (conn_state->hdmi.output_format) {
 	default:
+<<<<<<< HEAD
 	case DRM_OUTPUT_COLOR_FORMAT_RGB444:
 	case DRM_OUTPUT_COLOR_FORMAT_YCBCR444:
 		/* Disable YUV420 downsampling for RGB and YUV444 */
 		mtk_hdmi_yuv420_downsampling(hdmi, false);
 		break;
 	case DRM_OUTPUT_COLOR_FORMAT_YCBCR422:
+=======
+	case HDMI_COLORSPACE_RGB:
+	case HDMI_COLORSPACE_YUV444:
+		/* Disable YUV420 downsampling for RGB and YUV444 */
+		mtk_hdmi_yuv420_downsampling(hdmi, false);
+		break;
+	case HDMI_COLORSPACE_YUV422:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * YUV420 downsampling is special and needs a bit of setup
 		 * so we disable everything there before doing anything else.
@@ -763,7 +772,11 @@ static void mtk_hdmi_v2_change_video_resolution(struct mtk_hdmi *hdmi,
 		regmap_set_bits(hdmi->regs, VID_DOWNSAMPLE_CONFIG,
 				C444_C422_CONFIG_ENABLE);
 		break;
+<<<<<<< HEAD
 	case DRM_OUTPUT_COLOR_FORMAT_YCBCR420:
+=======
+	case HDMI_COLORSPACE_YUV420:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mtk_hdmi_yuv420_downsampling(hdmi, true);
 		break;
 	}

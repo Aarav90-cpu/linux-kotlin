@@ -1933,9 +1933,13 @@ TRACE_EVENT(svc_stats_latency,
 	svc_xprt_flag(CONG_CTRL)					\
 	svc_xprt_flag(HANDSHAKE)					\
 	svc_xprt_flag(TLS_SESSION)					\
+<<<<<<< HEAD
 	svc_xprt_flag(PEER_AUTH)					\
 	svc_xprt_flag(PEER_VALID)					\
 	svc_xprt_flag_end(RPCB_UNREG)
+=======
+	svc_xprt_flag_end(PEER_AUTH)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #undef svc_xprt_flag
 #undef svc_xprt_flag_end

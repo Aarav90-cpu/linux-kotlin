@@ -12,23 +12,35 @@
 #include <linux/jump_label.h>
 #include <linux/llist.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/resctrl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/spinlock.h>
 #include <linux/srcu.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include <asm/mpam.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MPAM_MSC_MAX_NUM_RIS	16
 
 struct platform_device;
 
+<<<<<<< HEAD
+=======
+DECLARE_STATIC_KEY_FALSE(mpam_enabled);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MPAM_KUNIT_TEST
 #define PACKED_FOR_KUNIT __packed
 #else
 #define PACKED_FOR_KUNIT
 #endif
 
+<<<<<<< HEAD
 /*
  * This 'mon' values must not alias an actual monitor, so must be larger than
  * U16_MAX, but not be confused with an errno value, so smaller than
@@ -37,6 +49,8 @@ struct platform_device;
  */
 #define USE_PRE_ALLOCATED	(U16_MAX + 1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool mpam_is_enabled(void)
 {
 	return static_branch_likely(&mpam_enabled);
@@ -85,8 +99,11 @@ struct mpam_msc {
 	u8			pmg_max;
 	unsigned long		ris_idxs;
 	u32			ris_max;
+<<<<<<< HEAD
 	u32			iidr;
 	u16			quirks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * error_irq_lock is taken when registering/unregistering the error
@@ -130,9 +147,12 @@ struct mpam_msc {
 	void __iomem		*mapped_hwpage;
 	size_t			mapped_hwpage_sz;
 
+<<<<<<< HEAD
 	/* Values only used on some platforms for quirks */
 	u32			t241_id;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mpam_garbage	garbage;
 };
 
@@ -181,12 +201,20 @@ enum mpam_device_features {
 	mpam_feat_msmon_csu,
 	mpam_feat_msmon_csu_capture,
 	mpam_feat_msmon_csu_xcl,
+<<<<<<< HEAD
+=======
+	mpam_feat_msmon_csu_hw_nrdy,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mpam_feat_msmon_mbwu,
 	mpam_feat_msmon_mbwu_31counter,
 	mpam_feat_msmon_mbwu_44counter,
 	mpam_feat_msmon_mbwu_63counter,
 	mpam_feat_msmon_mbwu_capture,
 	mpam_feat_msmon_mbwu_rwbw,
+<<<<<<< HEAD
+=======
+	mpam_feat_msmon_mbwu_hw_nrdy,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mpam_feat_partid_nrw,
 	MPAM_FEATURE_LAST
 };
@@ -219,6 +247,7 @@ struct mpam_props {
 #define mpam_set_feature(_feat, x)	__set_bit(_feat, (x)->features)
 #define mpam_clear_feature(_feat, x)	__clear_bit(_feat, (x)->features)
 
+<<<<<<< HEAD
 /* Workaround bits for msc->quirks */
 enum mpam_device_quirks {
 	T241_SCRUB_SHADOW_REGS,
@@ -255,6 +284,8 @@ struct mpam_quirk {
 				 FIELD_PREP_CONST(MPAMF_IIDR_REVISION,    0)	 | \
 				 FIELD_PREP_CONST(MPAMF_IIDR_IMPLEMENTER, 0x43b))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* The values for MSMON_CFG_MBWU_FLT.RWBW */
 enum mon_filter_options {
 	COUNT_BOTH	= 0,
@@ -263,11 +294,15 @@ enum mon_filter_options {
 };
 
 struct mon_cfg {
+<<<<<<< HEAD
 	/*
 	 * mon must be large enough to hold out of range values like
 	 * USE_PRE_ALLOCATED
 	 */
 	u32			mon;
+=======
+	u16			mon;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8			pmg;
 	bool			match_pmg;
 	bool			csu_exclude_clean;
@@ -298,7 +333,10 @@ struct mpam_class {
 
 	struct mpam_props	props;
 	u32			nrdy_usec;
+<<<<<<< HEAD
 	u16			quirks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8			level;
 	enum mpam_class_types	type;
 
@@ -319,6 +357,13 @@ struct mpam_config {
 	u32	mbw_pbm;
 	u16	mbw_max;
 
+<<<<<<< HEAD
+=======
+	bool	reset_cpbm;
+	bool	reset_mbw_pbm;
+	bool	reset_mbw_max;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mpam_garbage	garbage;
 };
 
@@ -386,6 +431,7 @@ struct mpam_msc_ris {
 	struct mpam_garbage	garbage;
 };
 
+<<<<<<< HEAD
 struct mpam_resctrl_dom {
 	struct mpam_component		*ctrl_comp;
 
@@ -412,6 +458,8 @@ struct mpam_resctrl_mon {
 	/* per-class data that resctrl needs will live here */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int mpam_alloc_csu_mon(struct mpam_class *class)
 {
 	struct mpam_props *cprops = &class->props;
@@ -456,9 +504,12 @@ extern u8 mpam_pmg_max;
 void mpam_enable(struct work_struct *work);
 void mpam_disable(struct work_struct *work);
 
+<<<<<<< HEAD
 /* Reset all the RIS in a class under cpus_read_lock() */
 void mpam_reset_class_locked(struct mpam_class *class);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mpam_apply_config(struct mpam_component *comp, u16 partid,
 		      struct mpam_config *cfg);
 
@@ -469,6 +520,7 @@ void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx);
 int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
 				   cpumask_t *affinity);
 
+<<<<<<< HEAD
 #ifdef CONFIG_RESCTRL_FS
 int mpam_resctrl_setup(void);
 void mpam_resctrl_exit(void);
@@ -483,6 +535,8 @@ static inline void mpam_resctrl_offline_cpu(unsigned int cpu) { }
 static inline void mpam_resctrl_teardown_class(struct mpam_class *class) { }
 #endif /* CONFIG_RESCTRL_FS */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * MPAM MSCs have the following register layout. See:
  * Arm Memory System Resource Partitioning and Monitoring (MPAM) System

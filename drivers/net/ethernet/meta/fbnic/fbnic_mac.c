@@ -143,7 +143,10 @@ static void fbnic_mac_init_qm(struct fbnic_dev *fbd)
 #define FBNIC_DROP_EN_MASK	0x7d
 #define FBNIC_PAUSE_EN_MASK	0x14
 #define FBNIC_ECN_EN_MASK	0x10
+<<<<<<< HEAD
 #define FBNIC_PS_EN_MASK	0x01
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct fbnic_fifo_config {
 	unsigned int addr;
@@ -418,6 +421,7 @@ static void __fbnic_mac_stat_rd64(struct fbnic_dev *fbd, bool reset, u32 reg,
 	stat->reported = true;
 }
 
+<<<<<<< HEAD
 static void fbnic_mac_stat_rd32(struct fbnic_dev *fbd, bool reset, u32 reg,
 				struct fbnic_stat_counter *stat)
 {
@@ -441,6 +445,11 @@ bool fbnic_mac_check_tx_pause(struct fbnic_dev *fbd)
 	return !(command_config & FBNIC_MAC_COMMAND_CONFIG_TX_PAUSE_DIS);
 }
 
+=======
+#define fbnic_mac_stat_rd64(fbd, reset, __stat, __CSR) \
+	__fbnic_mac_stat_rd64(fbd, reset, FBNIC_##__CSR##_L, &(__stat))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void fbnic_mac_tx_pause_config(struct fbnic_dev *fbd, bool tx_pause)
 {
 	u32 rxb_pause_ctrl;
@@ -455,6 +464,7 @@ static void fbnic_mac_tx_pause_config(struct fbnic_dev *fbd, bool tx_pause)
 	wr32(fbd, FBNIC_RXB_PAUSE_DROP_CTRL, rxb_pause_ctrl);
 }
 
+<<<<<<< HEAD
 static void
 fbnic_mac_ps_protect_to_reset(struct fbnic_dev *fbd, u16 timeout_ms)
 {
@@ -498,6 +508,8 @@ fbnic_mac_ps_protect_config(struct fbnic_dev *fbd, bool ps_protect)
 	wr32(fbd, FBNIC_RXB_ERR_INTR_MASK, reg);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fbnic_mac_get_link_event(struct fbnic_dev *fbd)
 {
 	u32 intr_mask = rd32(fbd, FBNIC_SIG_PCS_INTR_STS);
@@ -722,7 +734,10 @@ static void fbnic_mac_link_up_asic(struct fbnic_dev *fbd,
 	u32 cmd_cfg, mac_ctrl;
 
 	fbnic_mac_tx_pause_config(fbd, tx_pause);
+<<<<<<< HEAD
 	fbnic_mac_ps_protect_config(fbd, tx_pause);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cmd_cfg = __fbnic_mac_cmd_config_asic(fbd, tx_pause, rx_pause);
 	mac_ctrl = rd32(fbd, FBNIC_SIG_MAC_IN0);
@@ -824,9 +839,12 @@ fbnic_mac_get_pause_stats(struct fbnic_dev *fbd, bool reset,
 			    MAC_STAT_TX_XOFF_STB);
 	fbnic_mac_stat_rd64(fbd, reset, pause_stats->rx_pause_frames,
 			    MAC_STAT_RX_XOFF_STB);
+<<<<<<< HEAD
 	fbnic_mac_stat_rd32(fbd, reset,
 			    FBNIC_RXB_INTR_PS_COUNT(FBNIC_RXB_INTF_NET),
 			    &pause_stats->tx_pause_storm_events);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -986,6 +1004,7 @@ int fbnic_mac_init(struct fbnic_dev *fbd)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 int fbnic_mac_ps_protect_to_config(struct fbnic_dev *fbd, u16 timeout_ms)
 {
@@ -1029,3 +1048,5 @@ void fbnic_mac_ps_protect_handler(struct fbnic_dev *fbd)
 		fbnic_mac_ps_protect_to_reset(fbd, fbd->ps_timeout);
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -167,7 +167,11 @@ static u8 halbtcoutsrc_IsWifiBusy(struct adapter *padapter)
 	if (check_fwstate(pmlmepriv, WIFI_ASOC_STATE) == true) {
 		if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 			return true;
+<<<<<<< HEAD
 		if (pmlmepriv->link_detect_info.busy_traffic)
+=======
+		if (pmlmepriv->LinkDetectInfo.bBusyTraffic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return true;
 	}
 
@@ -364,10 +368,16 @@ static u8 halbtcoutsrc_Get(void *pBtcContext, u8 getType, void *pOutBuf)
 	case BTC_GET_U4_WIFI_TRAFFIC_DIRECTION:
 		{
 			struct rt_link_detect_t *plinkinfo;
+<<<<<<< HEAD
 
 			plinkinfo = &padapter->mlmepriv.link_detect_info;
 
 			if (plinkinfo->num_tx_ok_in_period > plinkinfo->num_rx_ok_in_period)
+=======
+			plinkinfo = &padapter->mlmepriv.LinkDetectInfo;
+
+			if (plinkinfo->NumTxOkInPeriod > plinkinfo->NumRxOkInPeriod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				*pU4Tmp = BTC_WIFI_TRAFFIC_TX;
 			else
 				*pU4Tmp = BTC_WIFI_TRAFFIC_RX;

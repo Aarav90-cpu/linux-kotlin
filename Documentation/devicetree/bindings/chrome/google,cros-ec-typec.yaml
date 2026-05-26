@@ -8,14 +8,19 @@ title: Google Chrome OS EC(Embedded Controller) Type C port driver.
 
 maintainers:
   - Benson Leung <bleung@chromium.org>
+<<<<<<< HEAD
   - Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
   - Andrei Kuchynski <akuchynski@chromium.org>
   - Łukasz Bartosik <ukaszb@chromium.org>
   - Jameson Thies <jthies@google.com>
+=======
+  - Prashant Malani <pmalani@chromium.org>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 description:
   Chrome OS devices have an Embedded Controller(EC) which has access to
   Type C port state. This node is intended to allow the host to read and
+<<<<<<< HEAD
   control the Type C ports. This binding is compatible with both the
   cros-ec-typec and cros-ec-ucsi drivers. The cros-ec-typec driver
   supports the host command interface used by the Chrome OS EC with a
@@ -30,6 +35,14 @@ properties:
     enum:
       - google,cros-ec-typec
       - google,cros-ec-ucsi
+=======
+  control the Type C ports. The node for this device should be under a
+  cros-ec node like google,cros-ec-spi.
+
+properties:
+  compatible:
+    const: google,cros-ec-typec
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   '#address-cells':
     const: 1

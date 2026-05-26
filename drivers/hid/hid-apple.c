@@ -623,6 +623,7 @@ static int apple_fetch_battery(struct hid_device *hdev)
 	struct apple_sc *asc = hid_get_drvdata(hdev);
 	struct hid_report_enum *report_enum;
 	struct hid_report *report;
+<<<<<<< HEAD
 	struct hid_battery *bat;
 
 	bat = hid_get_battery(hdev);
@@ -631,11 +632,23 @@ static int apple_fetch_battery(struct hid_device *hdev)
 
 	report_enum = &hdev->report_enum[bat->report_type];
 	report = report_enum->report_id_hash[bat->report_id];
+=======
+
+	if (!(asc->quirks & APPLE_RDESC_BATTERY) || !hdev->battery)
+		return -1;
+
+	report_enum = &hdev->report_enum[hdev->battery_report_type];
+	report = report_enum->report_id_hash[hdev->battery_report_id];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!report || report->maxfield < 1)
 		return -1;
 
+<<<<<<< HEAD
 	if (bat->capacity == bat->max)
+=======
+	if (hdev->battery_capacity == hdev->battery_max)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 
 	hid_hw_request(hdev, report, HID_REQ_GET_REPORT);

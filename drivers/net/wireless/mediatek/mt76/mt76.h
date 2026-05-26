@@ -55,8 +55,11 @@
 				 FIELD_PREP(MT_QFLAG_WED_RING, _n))
 #define MT_NPU_Q_TX(_n)		__MT_NPU_Q(MT76_WED_Q_TX, _n)
 #define MT_NPU_Q_RX(_n)		__MT_NPU_Q(MT76_WED_Q_RX, _n)
+<<<<<<< HEAD
 #define MT_NPU_Q_TXFREE(_n)	(FIELD_PREP(MT_QFLAG_WED_TYPE, MT76_WED_Q_TXFREE) | \
 				 FIELD_PREP(MT_QFLAG_WED_RING, _n))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct mt76_dev;
 struct mt76_phy;
@@ -364,7 +367,10 @@ enum mt76_wcid_flags {
 };
 
 #define MT76_N_WCIDS 1088
+<<<<<<< HEAD
 #define MT76_BEACON_MON_MAX_MISS	7
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* stored in ieee80211_tx_info::hw_queue */
 #define MT_TX_HW_QUEUE_PHY		GENMASK(3, 2)
@@ -451,7 +457,10 @@ struct mt76_txwi_cache {
 	};
 
 	u8 qid;
+<<<<<<< HEAD
 	u8 phy_idx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mt76_rx_tid {
@@ -544,6 +553,10 @@ struct mt76_driver_ops {
 	u32 survey_flags;
 	u16 txwi_size;
 	u16 token_size;
+<<<<<<< HEAD
+=======
+	u8 mcs_rates;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int link_data_size;
 
@@ -834,8 +847,11 @@ struct mt76_vif_link {
 	u8 mcast_rates_idx;
 	u8 beacon_rates_idx;
 	bool offchannel;
+<<<<<<< HEAD
 	unsigned long beacon_mon_last;
 	u16 beacon_mon_interval;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_chanctx_conf *ctx;
 	struct mt76_wcid *wcid;
 	struct mt76_vif_data *mvif;
@@ -864,8 +880,11 @@ struct mt76_phy {
 	struct list_head tx_list;
 	struct mt76_queue *q_tx[__MT_TXQ_MAX];
 
+<<<<<<< HEAD
 	atomic_t mgmt_tx_pending;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cfg80211_chan_def chandef;
 	struct cfg80211_chan_def main_chandef;
 	bool offchannel;
@@ -1009,7 +1028,10 @@ struct mt76_dev {
 	u32 rxfilter;
 
 	struct delayed_work scan_work;
+<<<<<<< HEAD
 	spinlock_t scan_lock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		struct cfg80211_scan_request *req;
 		struct ieee80211_channel *chan;
@@ -1017,8 +1039,11 @@ struct mt76_dev {
 		struct mt76_vif_link *mlink;
 		struct mt76_phy *phy;
 		int chan_idx;
+<<<<<<< HEAD
 		bool beacon_wait;
 		bool beacon_received;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} scan;
 
 #ifdef CONFIG_NL80211_TESTMODE
@@ -1528,7 +1553,10 @@ void mt76_stop_tx_queues(struct mt76_phy *phy, struct ieee80211_sta *sta,
 void mt76_tx_check_agg_ssn(struct ieee80211_sta *sta, struct sk_buff *skb);
 void mt76_txq_schedule(struct mt76_phy *phy, enum mt76_txq_id qid);
 void mt76_txq_schedule_all(struct mt76_phy *phy);
+<<<<<<< HEAD
 void mt76_txq_schedule_pending(struct mt76_phy *phy);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mt76_tx_worker_run(struct mt76_dev *dev);
 void mt76_tx_worker(struct mt76_worker *w);
 void mt76_release_buffered_frames(struct ieee80211_hw *hw,
@@ -1607,9 +1635,12 @@ int mt76_get_rate(struct mt76_dev *dev,
 int mt76_hw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		 struct ieee80211_scan_request *hw_req);
 void mt76_cancel_hw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
+<<<<<<< HEAD
 void mt76_scan_rx_beacon(struct mt76_dev *dev, struct ieee80211_channel *chan);
 void mt76_rx_beacon(struct mt76_phy *phy, struct sk_buff *skb);
 void mt76_beacon_mon_check(struct mt76_phy *phy);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mt76_sw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		  const u8 *mac);
 void mt76_sw_scan_complete(struct ieee80211_hw *hw,
@@ -1663,9 +1694,12 @@ void mt76_npu_txdesc_cleanup(struct mt76_queue *q, int index);
 int mt76_npu_net_setup_tc(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			  struct net_device *dev, enum tc_setup_type type,
 			  void *type_data);
+<<<<<<< HEAD
 int mt76_npu_send_txrx_addr(struct mt76_dev *dev, int ifindex,
 			    u32 direction, u32 i_count_addr,
 			    u32 o_status_addr, u32 o_count_addr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline void mt76_npu_check_ppe(struct mt76_dev *dev,
 				      struct sk_buff *skb, u32 info)
@@ -1724,6 +1758,7 @@ static inline int mt76_npu_net_setup_tc(struct ieee80211_hw *hw,
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 
 static inline int mt76_npu_send_txrx_addr(struct mt76_dev *dev, int ifindex,
 					  u32 direction, u32 i_count_addr,
@@ -1731,6 +1766,8 @@ static inline int mt76_npu_send_txrx_addr(struct mt76_dev *dev, int ifindex,
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_MT76_NPU */
 
 static inline bool mt76_npu_device_active(struct mt76_dev *dev)
@@ -1799,6 +1836,7 @@ void mt76_queue_tx_complete(struct mt76_dev *dev, struct mt76_queue *q,
 			    struct mt76_queue_entry *e);
 int __mt76_set_channel(struct mt76_phy *phy, struct cfg80211_chan_def *chandef,
 		       bool offchannel);
+<<<<<<< HEAD
 
 static inline bool
 mt76_offchannel_chandef(struct mt76_phy *phy, struct ieee80211_channel *chan,
@@ -1811,6 +1849,8 @@ mt76_offchannel_chandef(struct mt76_phy *phy, struct ieee80211_channel *chan,
 	*chandef = phy->main_chandef;
 	return false;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mt76_set_channel(struct mt76_phy *phy, struct cfg80211_chan_def *chandef,
 		     bool offchannel);
 void mt76_scan_work(struct work_struct *work);
@@ -1822,7 +1862,10 @@ struct mt76_vif_link *mt76_get_vif_phy_link(struct mt76_phy *phy,
 					    struct ieee80211_vif *vif);
 void mt76_put_vif_phy_link(struct mt76_phy *phy, struct ieee80211_vif *vif,
 			   struct mt76_vif_link *mlink);
+<<<<<<< HEAD
 void mt76_offchannel_notify(struct mt76_phy *phy, bool offchannel);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* usb */
 static inline bool mt76u_urb_error(struct urb *urb)
@@ -2030,6 +2073,7 @@ static inline bool mt76_queue_is_npu_rx(struct mt76_queue *q)
 	       FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_RX;
 }
 
+<<<<<<< HEAD
 static inline bool mt76_queue_is_npu_txfree(struct mt76_queue *q)
 {
 	if (q->flags & MT_QFLAG_WED)
@@ -2038,6 +2082,8 @@ static inline bool mt76_queue_is_npu_txfree(struct mt76_queue *q)
 	return FIELD_GET(MT_QFLAG_WED_TYPE, q->flags) == MT76_WED_Q_TXFREE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mt76_txwi_cache *
 mt76_token_release(struct mt76_dev *dev, int token, bool *wake);
 int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi);

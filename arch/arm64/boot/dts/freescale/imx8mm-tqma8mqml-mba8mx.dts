@@ -76,6 +76,10 @@
 };
 
 &mipi_dsi {
+<<<<<<< HEAD
+=======
+	samsung,burst-clock-frequency = <891000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	samsung,esc-clock-frequency = <20000000>;
 };
 

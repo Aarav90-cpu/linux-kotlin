@@ -36,6 +36,11 @@ properties:
   port: true
   reset-gpios: true
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -44,8 +49,11 @@ required:
   - reset-gpios
   - port
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     dsi {

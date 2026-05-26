@@ -158,7 +158,11 @@ err_nopeer:
 }
 
 static int ovpn_tcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 			    int flags)
+=======
+			    int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err = 0, off, copied = 0, ret;
 	struct ovpn_socket *sock;

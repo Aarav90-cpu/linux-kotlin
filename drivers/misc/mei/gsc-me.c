@@ -23,12 +23,19 @@
 
 #define MEI_GSC_RPM_TIMEOUT 500
 
+<<<<<<< HEAD
 static int mei_gsc_read_hfs(const struct mei_device *dev, int where, const char *name, u32 *val)
+=======
+static int mei_gsc_read_hfs(const struct mei_device *dev, int where, u32 *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mei_me_hw *hw = to_me_hw(dev);
 
 	*val = ioread32(hw->mem_addr + where + 0xC00);
+<<<<<<< HEAD
 	trace_mei_reg_read(&dev->dev, name, where, *val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

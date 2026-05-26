@@ -164,7 +164,10 @@ enum ath12k_dbg_htt_ext_stats_type {
 	ATH12K_DBG_HTT_PDEV_MLO_IPC_STATS			= 64,
 	ATH12K_DBG_HTT_EXT_PDEV_RTT_RESP_STATS			= 65,
 	ATH12K_DBG_HTT_EXT_PDEV_RTT_INITIATOR_STATS		= 66,
+<<<<<<< HEAD
 	ATH12K_DBG_HTT_EXT_CHAN_SWITCH_STATS			= 76,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* keep this last */
 	ATH12K_DBG_HTT_NUM_EXT_STATS,
@@ -268,7 +271,10 @@ enum ath12k_dbg_htt_tlv_tag {
 	HTT_STATS_PDEV_RTT_HW_STATS_TAG			= 196,
 	HTT_STATS_PDEV_RTT_TBR_SELFGEN_QUEUED_STATS_TAG	= 197,
 	HTT_STATS_PDEV_RTT_TBR_CMD_RESULT_STATS_TAG	= 198,
+<<<<<<< HEAD
 	HTT_STATS_CHAN_SWITCH_STATS_TAG			= 213,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	HTT_STATS_MAX_TAG,
 };
@@ -2158,6 +2164,7 @@ struct htt_tx_hwq_stats_cmn_tlv {
 	__le32 txq_timeout;
 } __packed;
 
+<<<<<<< HEAD
 #define ATH12K_HTT_CHAN_SWITCH_STATS_BUF_LEN	10
 
 #define ATH12K_HTT_STATS_CHAN_SWITCH_BW_MHZ		GENMASK(15, 0)
@@ -2182,4 +2189,6 @@ struct ath12k_htt_chan_switch_stats_tlv {
 	__le32 switch_count; /* shows how many channel changes have occurred */
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

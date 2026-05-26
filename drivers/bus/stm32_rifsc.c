@@ -5,7 +5,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/bits.h>
+<<<<<<< HEAD
 #include <linux/bus/stm32_firewall.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/debugfs.h>
 #include <linux/device.h>
 #include <linux/err.h>
@@ -16,9 +19,16 @@
 #include <linux/of.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/string.h>
 #include <linux/types.h>
 
+=======
+#include <linux/types.h>
+
+#include "stm32_firewall.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * RIFSC offset register
  */
@@ -450,7 +460,11 @@ static void stm32_rifsc_fill_rimu_dbg_entry(struct rifsc_dbg_private *rifsc,
 	const struct stm32_rifsc_resources_names *dbg_names = rifsc->res_names;
 	u32 rimc_attr = readl_relaxed(rifsc->mmio + RIFSC_RIMC_ATTR0 + 0x4 * i);
 
+<<<<<<< HEAD
 	strscpy(dbg_entry->m_name, dbg_names->initiator_names[i]);
+=======
+	snprintf(dbg_entry->m_name, sizeof(dbg_entry->m_name), "%s", dbg_names->initiator_names[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbg_entry->m_cid = FIELD_GET(RIFSC_RIMC_MCID_MASK, rimc_attr);
 	dbg_entry->cidsel = rimc_attr & RIFSC_RIMC_CIDSEL;
 	dbg_entry->m_sec = rimc_attr & RIFSC_RIMC_MSEC;
@@ -469,7 +483,12 @@ static void stm32_rifsc_fill_dev_dbg_entry(struct rifsc_dbg_private *rifsc,
 	sec_cfgr = readl_relaxed(rifsc->mmio + RIFSC_RISC_SECCFGR0 + 0x4 * reg_id);
 	priv_cfgr = readl_relaxed(rifsc->mmio + RIFSC_RISC_PRIVCFGR0 + 0x4 * reg_id);
 
+<<<<<<< HEAD
 	strscpy(dbg_entry->dev_name, dbg_names->device_names[i]);
+=======
+	snprintf(dbg_entry->dev_name, sizeof(dbg_entry->dev_name), "%s",
+		 dbg_names->device_names[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbg_entry->dev_id = i;
 	dbg_entry->dev_cid_filt_en = cid_cfgr & CIDCFGR_CFEN;
 	dbg_entry->dev_sem_en = cid_cfgr & CIDCFGR_SEMEN;
@@ -687,6 +706,37 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32 
 	sec_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_SECCFGR0 + 0x4 * reg_id);
 	cid_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_PER0_CIDCFGR + 0x8 * firewall_id);
 
+<<<<<<< HEAD
+=======
+	/* First check conditions for semaphore mode, which doesn't take into account static CID. */
+	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
+		if (cid_reg_value & BIT(RIF_CID1 + SEMWL_SHIFT)) {
+			/* Static CID is irrelevant if semaphore mode */
+			goto skip_cid_check;
+		} else {
+			dev_dbg(rifsc_controller->dev,
+				"Invalid bus semaphore configuration: index %d\n", firewall_id);
+			return -EACCES;
+		}
+	}
+
+	/*
+	 * Skip CID check if CID filtering isn't enabled or filtering is enabled on CID0, which
+	 * corresponds to whatever CID.
+	 */
+	if (!(cid_reg_value & CIDCFGR_CFEN) ||
+	    FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) == RIF_CID0)
+		goto skip_cid_check;
+
+	/* Coherency check with the CID configuration */
+	if (FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) != RIF_CID1) {
+		dev_dbg(rifsc_controller->dev, "Invalid CID configuration for peripheral: %d\n",
+			firewall_id);
+		return -EACCES;
+	}
+
+skip_cid_check:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check security configuration */
 	if (sec_reg_value & BIT(reg_offset)) {
 		dev_dbg(rifsc_controller->dev,
@@ -694,6 +744,7 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32 
 		return -EACCES;
 	}
 
+<<<<<<< HEAD
 	/* Skip CID check if CID filtering isn't enabled */
 	if (!(cid_reg_value & CIDCFGR_CFEN))
 		goto skip_cid_check;
@@ -719,6 +770,21 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32 
 	}
 
 skip_cid_check:
+=======
+	/*
+	 * If the peripheral is in semaphore mode, take the semaphore so that
+	 * the CID1 has the ownership.
+	 */
+	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
+		rc = stm32_rif_acquire_semaphore(rifsc_controller, firewall_id);
+		if (rc) {
+			dev_err(rifsc_controller->dev,
+				"Couldn't acquire semaphore for peripheral: %d\n", firewall_id);
+			return rc;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

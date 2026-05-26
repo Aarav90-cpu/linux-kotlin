@@ -402,9 +402,15 @@ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
 extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
 				     void *buf, struct efi_mem_range *mem);
 
+<<<<<<< HEAD
 enum efi_secureboot_mode __x86_efi_boot_mode(void);
 
 #define arch_efi_boot_mode __x86_efi_boot_mode()
+=======
+extern enum efi_secureboot_mode __x86_ima_efi_boot_mode(void);
+
+#define arch_ima_efi_boot_mode	__x86_ima_efi_boot_mode()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_EFI_RUNTIME_MAP
 int efi_get_runtime_map_size(void);

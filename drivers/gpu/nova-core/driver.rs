@@ -14,6 +14,7 @@ use kernel::{
     },
     prelude::*,
     sizes::SZ_16M,
+<<<<<<< HEAD
     sync::{
         atomic::{
             Atomic,
@@ -21,13 +22,19 @@ use kernel::{
         },
         Arc,
     },
+=======
+    sync::Arc, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 use crate::gpu::Gpu;
 
+<<<<<<< HEAD
 /// Counter for generating unique auxiliary device IDs.
 static AUXILIARY_ID_COUNTER: Atomic<u32> = Atomic::new(0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #[pin_data]
 pub(crate) struct NovaCore {
     #[pin]
@@ -79,7 +86,11 @@ impl pci::Driver for NovaCore {
 
     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
         pin_init::pin_init_scope(move || {
+<<<<<<< HEAD
             dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
+=======
+            dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             pdev.enable_device_mem()?;
             pdev.set_master();
@@ -99,9 +110,13 @@ impl pci::Driver for NovaCore {
                 _reg <- auxiliary::Registration::new(
                     pdev.as_ref(),
                     c"nova-drm",
+<<<<<<< HEAD
                     // TODO[XARR]: Use XArray or perhaps IDA for proper ID allocation/recycling. For
                     // now, use a simple atomic counter that never recycles IDs.
                     AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
+=======
+                    0, // TODO[XARR]: Once it lands, use XArray; for now we don't use the ID.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     crate::MODULE_NAME
                 ),
             }))

@@ -28,15 +28,25 @@ static const char *data_usage[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static const char *to_json;
 static const char *to_ctf;
 static struct perf_data_convert_opts opts = {
+=======
+const char *to_json;
+const char *to_ctf;
+struct perf_data_convert_opts opts = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.force = false,
 	.all = false,
 	.time_str = NULL,
 };
 
+<<<<<<< HEAD
 static const struct option data_options[] = {
+=======
+const struct option data_options[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		OPT_INCR('v', "verbose", &verbose, "be more verbose"),
 		OPT_STRING('i', "input", &input_name, "file", "input file name"),
 		OPT_STRING(0, "to-json", &to_json, NULL, "Convert to JSON format"),

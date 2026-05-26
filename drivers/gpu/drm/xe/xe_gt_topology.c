@@ -205,6 +205,27 @@ load_l3_bank_mask(struct xe_gt *gt, xe_l3_bank_mask_t l3_bank_mask)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void
+get_num_dss_regs(struct xe_device *xe, int *geometry_regs, int *compute_regs)
+{
+	if (GRAPHICS_VER(xe) > 20) {
+		*geometry_regs = 3;
+		*compute_regs = 3;
+	} else if (GRAPHICS_VERx100(xe) == 1260) {
+		*geometry_regs = 0;
+		*compute_regs = 2;
+	} else if (GRAPHICS_VERx100(xe) >= 1250) {
+		*geometry_regs = 1;
+		*compute_regs = 1;
+	} else {
+		*geometry_regs = 1;
+		*compute_regs = 0;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void
 xe_gt_topology_init(struct xe_gt *gt)
 {
@@ -212,20 +233,34 @@ xe_gt_topology_init(struct xe_gt *gt)
 		XELP_GT_GEOMETRY_DSS_ENABLE,
 		XE2_GT_GEOMETRY_DSS_1,
 		XE2_GT_GEOMETRY_DSS_2,
+<<<<<<< HEAD
 		XE3P_XPC_GT_GEOMETRY_DSS_3,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	static const struct xe_reg compute_regs[] = {
 		XEHP_GT_COMPUTE_DSS_ENABLE,
 		XEHPC_GT_COMPUTE_DSS_ENABLE_EXT,
 		XE2_GT_COMPUTE_DSS_2,
+<<<<<<< HEAD
 		XE3P_XPC_GT_COMPUTE_DSS_3,
 	};
 	struct drm_printer p;
 
+=======
+	};
+	int num_geometry_regs, num_compute_regs;
+	struct xe_device *xe = gt_to_xe(gt);
+	struct drm_printer p;
+
+	get_num_dss_regs(xe, &num_geometry_regs, &num_compute_regs);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Register counts returned shouldn't exceed the number of registers
 	 * passed as parameters below.
 	 */
+<<<<<<< HEAD
 	xe_gt_assert(gt, gt->info.num_geometry_xecore_fuse_regs <= ARRAY_SIZE(geometry_regs));
 	xe_gt_assert(gt, gt->info.num_compute_xecore_fuse_regs <= ARRAY_SIZE(compute_regs));
 
@@ -233,6 +268,15 @@ xe_gt_topology_init(struct xe_gt *gt)
 		      gt->info.num_geometry_xecore_fuse_regs, geometry_regs);
 	load_dss_mask(gt, gt->fuse_topo.c_dss_mask,
 		      gt->info.num_compute_xecore_fuse_regs, compute_regs);
+=======
+	xe_gt_assert(gt, num_geometry_regs <= ARRAY_SIZE(geometry_regs));
+	xe_gt_assert(gt, num_compute_regs <= ARRAY_SIZE(compute_regs));
+
+	load_dss_mask(gt, gt->fuse_topo.g_dss_mask,
+		      num_geometry_regs, geometry_regs);
+	load_dss_mask(gt, gt->fuse_topo.c_dss_mask,
+		      num_compute_regs, compute_regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	load_eu_mask(gt, gt->fuse_topo.eu_mask_per_dss, &gt->fuse_topo.eu_type);
 	load_l3_bank_mask(gt, gt->fuse_topo.l3_bank_mask);
@@ -310,14 +354,25 @@ xe_l3_bank_mask_ffs(const xe_l3_bank_mask_t mask)
  */
 bool xe_gt_topology_has_dss_in_quadrant(struct xe_gt *gt, int quad)
 {
+<<<<<<< HEAD
 	xe_dss_mask_t all_dss;
 	int dss_per_quad, quad_first;
+=======
+	struct xe_device *xe = gt_to_xe(gt);
+	xe_dss_mask_t all_dss;
+	int g_dss_regs, c_dss_regs, dss_per_quad, quad_first;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bitmap_or(all_dss, gt->fuse_topo.g_dss_mask, gt->fuse_topo.c_dss_mask,
 		  XE_MAX_DSS_FUSE_BITS);
 
+<<<<<<< HEAD
 	dss_per_quad = 32 * max(gt->info.num_geometry_xecore_fuse_regs,
 				gt->info.num_compute_xecore_fuse_regs) / 4;
+=======
+	get_num_dss_regs(xe, &g_dss_regs, &c_dss_regs);
+	dss_per_quad = 32 * max(g_dss_regs, c_dss_regs) / 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	quad_first = xe_dss_mask_group_ffs(all_dss, dss_per_quad, quad);
 

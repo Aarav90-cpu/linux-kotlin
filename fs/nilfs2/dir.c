@@ -150,7 +150,11 @@ out:
 
 Ebadsize:
 	nilfs_error(sb,
+<<<<<<< HEAD
 		    "size of directory #%llu is not a multiple of chunk size",
+=======
+		    "size of directory #%lu is not a multiple of chunk size",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    dir->i_ino);
 	goto fail;
 Eshort:
@@ -169,7 +173,11 @@ Einumber:
 	error = "disallowed inode number";
 bad_entry:
 	nilfs_error(sb,
+<<<<<<< HEAD
 		    "bad entry in directory #%llu: %s - offset=%lu, inode=%lu, rec_len=%zd, name_len=%d",
+=======
+		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%zd, name_len=%d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    dir->i_ino, error, (folio->index << PAGE_SHIFT) + offs,
 		    (unsigned long)le64_to_cpu(p->inode),
 		    rec_len, p->name_len);
@@ -177,7 +185,11 @@ bad_entry:
 Eend:
 	p = (struct nilfs_dir_entry *)(kaddr + offs);
 	nilfs_error(sb,
+<<<<<<< HEAD
 		    "entry in directory #%llu spans the page boundary offset=%lu, inode=%lu",
+=======
+		    "entry in directory #%lu spans the page boundary offset=%lu, inode=%lu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    dir->i_ino, (folio->index << PAGE_SHIFT) + offs,
 		    (unsigned long)le64_to_cpu(p->inode));
 fail:
@@ -251,7 +263,11 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
 
 		kaddr = nilfs_get_folio(inode, n, &folio);
 		if (IS_ERR(kaddr)) {
+<<<<<<< HEAD
 			nilfs_error(sb, "bad page in #%llu", inode->i_ino);
+=======
+			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ctx->pos += PAGE_SIZE - offset;
 			return -EIO;
 		}
@@ -336,7 +352,11 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
 		/* next folio is past the blocks we've got */
 		if (unlikely(n > (dir->i_blocks >> (PAGE_SHIFT - 9)))) {
 			nilfs_error(dir->i_sb,
+<<<<<<< HEAD
 			       "dir %llu size %lld exceeds block count %llu",
+=======
+			       "dir %lu size %lld exceeds block count %llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       dir->i_ino, dir->i_size,
 			       (unsigned long long)dir->i_blocks);
 			goto out;
@@ -382,7 +402,11 @@ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct folio **foliop)
 	return next_de;
 
 fail:
+<<<<<<< HEAD
 	nilfs_error(dir->i_sb, "directory #%llu %s", dir->i_ino, msg);
+=======
+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folio_release_kmap(folio, de);
 	return NULL;
 }

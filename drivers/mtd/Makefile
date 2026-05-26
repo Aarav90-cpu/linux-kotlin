@@ -6,7 +6,10 @@
 # Core functionality.
 obj-$(CONFIG_MTD)		+= mtd.o
 mtd-y				:= mtdcore.o mtdsuper.o mtdconcat.o mtdpart.o mtdchar.o
+<<<<<<< HEAD
 mtd-$(CONFIG_MTD_VIRT_CONCAT)	+= mtd_virt_concat.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 obj-y				+= parsers/
 

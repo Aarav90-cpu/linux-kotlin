@@ -8,7 +8,10 @@
 #define __SCX_COMPAT_H
 
 #include <bpf/btf.h>
+<<<<<<< HEAD
 #include <bpf/libbpf.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -116,7 +119,10 @@ static inline bool __COMPAT_struct_has_field(const char *type, const char *field
 #define SCX_OPS_ENQ_MIGRATION_DISABLED SCX_OPS_FLAG(SCX_OPS_ENQ_MIGRATION_DISABLED)
 #define SCX_OPS_ALLOW_QUEUED_WAKEUP SCX_OPS_FLAG(SCX_OPS_ALLOW_QUEUED_WAKEUP)
 #define SCX_OPS_BUILTIN_IDLE_PER_NODE SCX_OPS_FLAG(SCX_OPS_BUILTIN_IDLE_PER_NODE)
+<<<<<<< HEAD
 #define SCX_OPS_ALWAYS_ENQ_IMMED SCX_OPS_FLAG(SCX_OPS_ALWAYS_ENQ_IMMED)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SCX_PICK_IDLE_FLAG(name) __COMPAT_ENUM_OR_ZERO("scx_pick_idle_cpu_flags", #name)
 
@@ -160,7 +166,10 @@ static inline long scx_hotplug_seq(void)
  * COMPAT:
  * - v6.17: ops.cgroup_set_bandwidth()
  * - v6.19: ops.cgroup_set_idle()
+<<<<<<< HEAD
  * - v7.1:  ops.sub_attach(), ops.sub_detach(), ops.sub_cgroup_id
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #define SCX_OPS_OPEN(__ops_name, __scx_name) ({					\
 	struct __scx_name *__skel;						\
@@ -182,6 +191,7 @@ static inline long scx_hotplug_seq(void)
 		fprintf(stderr, "WARNING: kernel doesn't support ops.cgroup_set_idle()\n"); \
 		__skel->struct_ops.__ops_name->cgroup_set_idle = NULL;	\
 	}									\
+<<<<<<< HEAD
 	if (__skel->struct_ops.__ops_name->sub_attach &&			\
 	    !__COMPAT_struct_has_field("sched_ext_ops", "sub_attach")) {	\
 		fprintf(stderr, "WARNING: kernel doesn't support ops.sub_attach()\n"); \
@@ -235,12 +245,24 @@ static inline void __scx_ops_assoc_prog(struct bpf_program *prog,
 		__scx_ops_assoc_prog(__prog, (__skel)->maps.__ops_name,		\
 				     #__ops_name);				\
 	}									\
+=======
+	__skel; 								\
+})
+
+#define SCX_OPS_LOAD(__skel, __ops_name, __scx_name, __uei_name) ({		\
+	UEI_SET_SIZE(__skel, __ops_name, __uei_name);				\
+	SCX_BUG_ON(__scx_name##__load((__skel)), "Failed to load skel");	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 /*
  * New versions of bpftool now emit additional link placeholders for BPF maps,
  * and set up BPF skeleton in such a way that libbpf will auto-attach BPF maps
+<<<<<<< HEAD
  * automatically, assuming libbpf is recent enough (v1.5+). Old libbpf will do
+=======
+ * automatically, assumming libbpf is recent enough (v1.5+). Old libbpf will do
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * nothing with those links and won't attempt to auto-attach maps.
  *
  * To maintain compatibility with older libbpf while avoiding trying to attach

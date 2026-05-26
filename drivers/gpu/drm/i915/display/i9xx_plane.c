@@ -10,6 +10,10 @@
 #include <drm/drm_fourcc.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_plane.h"
 #include "i9xx_plane_regs.h"
 #include "intel_atomic.h"

@@ -110,11 +110,16 @@ include::itrace.txt[]
 	Interleave source code with assembly code. Enabled by default,
 	disable with --no-source.
 
+<<<<<<< HEAD
 --symfs=<directory[,layout]>::
         Look for files with symbols relative to this directory. The optional
         layout can be 'hierarchy' (default, matches full path) or 'flat'
         (only matches base name). This is useful when debug files are stored
         in a flat directory structure.
+=======
+--symfs=<directory>::
+        Look for files with symbols relative to this directory.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 -M::
 --disassembler-style=:: Set disassembler style for objdump.

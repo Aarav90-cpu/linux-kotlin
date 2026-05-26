@@ -1517,9 +1517,15 @@ static void asus_input_exit(struct asus_laptop *asus)
 /*
  * ACPI driver
  */
+<<<<<<< HEAD
 static void asus_acpi_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct asus_laptop *asus = data;
+=======
+static void asus_acpi_notify(struct acpi_device *device, u32 event)
+{
+	struct asus_laptop *asus = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 count;
 
 	/* TODO Find a better way to handle events count. */
@@ -1824,9 +1830,18 @@ static void asus_dmi_check(void)
 
 static bool asus_device_present;
 
+<<<<<<< HEAD
 static int asus_acpi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int asus_acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct asus_laptop *asus;
 	int result;
 
@@ -1842,6 +1857,10 @@ static int asus_acpi_probe(struct platform_device *pdev)
 	asus->handle = device->handle;
 	strscpy(acpi_device_name(device), ASUS_LAPTOP_DEVICE_NAME);
 	strscpy(acpi_device_class(device), ASUS_LAPTOP_CLASS);
+<<<<<<< HEAD
+=======
+	device->driver_data = asus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asus->device = device;
 
 	asus_dmi_check();
@@ -1850,8 +1869,11 @@ static int asus_acpi_probe(struct platform_device *pdev)
 	if (result)
 		goto fail_platform;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, asus);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Need platform type detection first, then the platform
 	 * device.  It is used as a parent for the sub-devices below.
@@ -1887,11 +1909,14 @@ static int asus_acpi_probe(struct platform_device *pdev)
 	if (result && result != -ENODEV)
 		goto fail_pega_rfkill;
 
+<<<<<<< HEAD
 	result = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
 						 asus_acpi_notify, asus);
 	if (result)
 		goto fail_pega_rfkill;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asus_device_present = true;
 	return 0;
 
@@ -1913,12 +1938,19 @@ fail_platform:
 	return result;
 }
 
+<<<<<<< HEAD
 static void asus_acpi_remove(struct platform_device *pdev)
 {
 	struct asus_laptop *asus = platform_get_drvdata(pdev);
 
 	acpi_dev_remove_notify_handler(asus->device, ACPI_DEVICE_NOTIFY,
 				       asus_acpi_notify);
+=======
+static void asus_acpi_remove(struct acpi_device *device)
+{
+	struct asus_laptop *asus = acpi_driver_data(device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asus_backlight_exit(asus);
 	asus_rfkill_exit(asus);
 	asus_led_exit(asus);
@@ -1937,6 +1969,7 @@ static const struct acpi_device_id asus_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, asus_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver asus_acpi_driver = {
 	.probe = asus_acpi_probe,
 	.remove = asus_acpi_remove,
@@ -1944,6 +1977,18 @@ static struct platform_driver asus_acpi_driver = {
 		.name = ASUS_LAPTOP_NAME,
 		.acpi_match_table = asus_device_ids,
 	},
+=======
+static struct acpi_driver asus_acpi_driver = {
+	.name = ASUS_LAPTOP_NAME,
+	.class = ASUS_LAPTOP_CLASS,
+	.ids = asus_device_ids,
+	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+	.ops = {
+		.add = asus_acpi_add,
+		.remove = asus_acpi_remove,
+		.notify = asus_acpi_notify,
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init asus_laptop_init(void)
@@ -1954,7 +1999,11 @@ static int __init asus_laptop_init(void)
 	if (result < 0)
 		return result;
 
+<<<<<<< HEAD
 	result = platform_driver_register(&asus_acpi_driver);
+=======
+	result = acpi_bus_register_driver(&asus_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result < 0)
 		goto fail_acpi_driver;
 	if (!asus_device_present) {
@@ -1964,7 +2013,11 @@ static int __init asus_laptop_init(void)
 	return 0;
 
 fail_no_device:
+<<<<<<< HEAD
 	platform_driver_unregister(&asus_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&asus_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail_acpi_driver:
 	platform_driver_unregister(&platform_driver);
 	return result;
@@ -1972,7 +2025,11 @@ fail_acpi_driver:
 
 static void __exit asus_laptop_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&asus_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&asus_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_driver_unregister(&platform_driver);
 }
 

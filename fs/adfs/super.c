@@ -317,9 +317,12 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
 	if (adfs_checkdiscrecord(dr))
 		return -EILSEQ;
 
+<<<<<<< HEAD
 	if ((dr->nzones | dr->nzones_high << 8) == 0)
 		return -EILSEQ;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*drp = dr;
 	return 0;
 }

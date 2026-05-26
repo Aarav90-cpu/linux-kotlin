@@ -173,8 +173,11 @@ struct dma_edesc {
 	struct dma_desc basic;
 };
 
+<<<<<<< HEAD
 #define dma_desc_to_edesc(x) container_of(x, struct dma_edesc, basic)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Transmit checksum insertion control */
 #define	TX_CIC_FULL	3	/* Include IP header and pseudoheader */
 

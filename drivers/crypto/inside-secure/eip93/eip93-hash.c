@@ -2,7 +2,11 @@
 /*
  * Copyright (C) 2024
  *
+<<<<<<< HEAD
  * Christian Marangi <ansuelsmth@gmail.com>
+=======
+ * Christian Marangi <ansuelsmth@gmail.com
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <crypto/sha1.h>

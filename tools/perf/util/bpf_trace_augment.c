@@ -60,7 +60,11 @@ int augmented_syscalls__create_bpf_output(struct evlist *evlist)
 void augmented_syscalls__setup_bpf_output(void)
 {
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (bpf_output == NULL)
 		return;

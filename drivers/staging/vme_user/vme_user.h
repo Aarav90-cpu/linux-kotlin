@@ -14,6 +14,14 @@ struct vme_master {
 	__u32 aspace;		/* Address Space */
 	__u32 cycle;		/* Cycle properties */
 	__u32 dwidth;		/* Maximum Data Width */
+<<<<<<< HEAD
+=======
+#if 0
+	char prefetchenable;		/* Prefetch Read Enable State */
+	int prefetchsize;		/* Prefetch Read Size (Cache Lines) */
+	char wrpostenable;		/* Write Post State */
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 /*
@@ -30,6 +38,14 @@ struct vme_slave {
 	__u64 size;		/* Window Size */
 	__u32 aspace;		/* Address Space */
 	__u32 cycle;		/* Cycle properties */
+<<<<<<< HEAD
+=======
+#if 0
+	char wrpostenable;		/* Write Post State */
+	char rmwlock;			/* Lock PCI during RMW Cycles */
+	char data64bitcapable;		/* non-VMEbus capable of 64-bit Data */
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct vme_irq_id {

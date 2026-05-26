@@ -899,6 +899,7 @@ bail:
 
 static int ocfs2_journal_submit_inode_data_buffers(struct jbd2_inode *jinode)
 {
+<<<<<<< HEAD
 	struct address_space *mapping = jinode->i_vfs_inode->i_mapping;
 	loff_t range_start, range_end;
 
@@ -906,6 +907,10 @@ static int ocfs2_journal_submit_inode_data_buffers(struct jbd2_inode *jinode)
 		return 0;
 
 	return filemap_fdatawrite_range(mapping, range_start, range_end);
+=======
+	return filemap_fdatawrite_range(jinode->i_vfs_inode->i_mapping,
+			jinode->i_dirty_start, jinode->i_dirty_end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ocfs2_journal_init(struct ocfs2_super *osb, int *dirty)

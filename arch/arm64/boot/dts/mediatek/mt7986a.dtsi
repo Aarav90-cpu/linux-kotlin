@@ -187,7 +187,11 @@
 				    "iocfg_lb", "iocfg_tr", "iocfg_tl", "eint";
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pio 0 0 101>;
+=======
+			gpio-ranges = <&pio 0 0 100>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupt-controller;
 			interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-parent = <&gic>;

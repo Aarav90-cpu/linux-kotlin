@@ -108,7 +108,11 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
 				 * be locked in this case.
 				 */
 				nilfs_warn(inode->i_sb,
+<<<<<<< HEAD
 					   "%s (ino=%llu): a race condition while inserting a data block at offset=%llu",
+=======
+					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   __func__, inode->i_ino,
 					   (unsigned long long)blkoff);
 				err = -EAGAIN;
@@ -789,7 +793,11 @@ repeat:
 		goto repeat;
 
 failed:
+<<<<<<< HEAD
 	nilfs_warn(ii->vfs_inode.i_sb, "error %d truncating bmap (ino=%llu)",
+=======
+	nilfs_warn(ii->vfs_inode.i_sb, "error %d truncating bmap (ino=%lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   ret, ii->vfs_inode.i_ino);
 }
 
@@ -1026,7 +1034,11 @@ int nilfs_set_file_dirty(struct inode *inode, unsigned int nr_dirty)
 			 * this inode.
 			 */
 			nilfs_warn(inode->i_sb,
+<<<<<<< HEAD
 				   "cannot set file dirty (ino=%llu): the file is being freed",
+=======
+				   "cannot set file dirty (ino=%lu): the file is being freed",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   inode->i_ino);
 			spin_unlock(&nilfs->ns_inode_lock);
 			return -EINVAL; /*
@@ -1057,7 +1069,11 @@ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
 	err = nilfs_load_inode_block(inode, &ibh);
 	if (unlikely(err)) {
 		nilfs_warn(inode->i_sb,
+<<<<<<< HEAD
 			   "cannot mark inode dirty (ino=%llu): error %d loading inode block",
+=======
+			   "cannot mark inode dirty (ino=%lu): error %d loading inode block",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   inode->i_ino, err);
 		return err;
 	}

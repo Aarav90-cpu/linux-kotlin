@@ -51,7 +51,11 @@ bool dcn21_fast_validate_bw(
 		int *pipe_cnt_out,
 		int *pipe_split_from,
 		int *vlevel_out,
+<<<<<<< HEAD
 		enum dc_validate_mode validate_mode,
 		bool allow_self_refresh_only);
+=======
+		enum dc_validate_mode validate_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _DCN21_RESOURCE_H_ */

@@ -18,7 +18,10 @@ struct mlx5_sd {
 	u8 host_buses;
 	struct mlx5_devcom_comp_dev *devcom;
 	struct dentry *dfs;
+<<<<<<< HEAD
 	u8 state;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool primary;
 	union {
 		struct { /* primary */
@@ -32,11 +35,14 @@ struct mlx5_sd {
 	};
 };
 
+<<<<<<< HEAD
 enum mlx5_sd_state {
 	MLX5_SD_STATE_DOWN = 0,
 	MLX5_SD_STATE_UP,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mlx5_sd_get_host_buses(struct mlx5_core_dev *dev)
 {
 	struct mlx5_sd *sd = mlx5_get_sd(dev);
@@ -113,7 +119,11 @@ static bool mlx5_sd_is_supported(struct mlx5_core_dev *dev, u8 host_buses)
 	/* Disconnect secondaries from the network */
 	if (!MLX5_CAP_GEN(dev, eswitch_manager))
 		return false;
+<<<<<<< HEAD
 	if (!MLX5_CAP_GEN(dev, silent_mode_set))
+=======
+	if (!MLX5_CAP_GEN(dev, silent_mode))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/* RX steering from primary to secondaries */
@@ -276,6 +286,12 @@ static void sd_unregister(struct mlx5_core_dev *dev)
 {
 	struct mlx5_sd *sd = mlx5_get_sd(dev);
 
+<<<<<<< HEAD
+=======
+	mlx5_devcom_comp_lock(sd->devcom);
+	mlx5_devcom_comp_set_ready(sd->devcom, false);
+	mlx5_devcom_comp_unlock(sd->devcom);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_devcom_unregister_component(sd->devcom);
 }
 
@@ -429,7 +445,10 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 	struct mlx5_core_dev *primary, *pos, *to;
 	struct mlx5_sd *sd = mlx5_get_sd(dev);
 	u8 alias_key[ACCESS_KEY_LEN];
+<<<<<<< HEAD
 	struct mlx5_sd *primary_sd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err, i;
 
 	err = sd_init(dev);
@@ -444,6 +463,7 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 	if (err)
 		goto err_sd_cleanup;
 
+<<<<<<< HEAD
 	mlx5_devcom_comp_lock(sd->devcom);
 	if (!mlx5_devcom_comp_is_ready(sd->devcom))
 		goto out;
@@ -455,6 +475,12 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 	primary_sd = mlx5_get_sd(primary);
 	if (primary_sd->state != MLX5_SD_STATE_DOWN)
 		goto out;
+=======
+	if (!mlx5_devcom_comp_is_ready(sd->devcom))
+		return 0;
+
+	primary = mlx5_sd_get_primary(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ACCESS_KEY_LEN; i++)
 		alias_key[i] = get_random_u8();
@@ -463,6 +489,7 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 	if (err)
 		goto err_sd_unregister;
 
+<<<<<<< HEAD
 	primary_sd->dfs =
 		debugfs_create_dir("multi-pf",
 				   mlx5_debugfs_get_dev_root(primary));
@@ -470,6 +497,11 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 			   &primary_sd->group_id);
 	debugfs_create_file("primary", 0400, primary_sd->dfs, primary,
 			    &dev_fops);
+=======
+	sd->dfs = debugfs_create_dir("multi-pf", mlx5_debugfs_get_dev_root(primary));
+	debugfs_create_x32("group_id", 0400, sd->dfs, &sd->group_id);
+	debugfs_create_file("primary", 0400, sd->dfs, primary, &dev_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mlx5_sd_for_each_secondary(i, primary, pos) {
 		char name[32];
@@ -479,8 +511,12 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 			goto err_unset_secondaries;
 
 		snprintf(name, sizeof(name), "secondary_%d", i - 1);
+<<<<<<< HEAD
 		debugfs_create_file(name, 0400, primary_sd->dfs, pos,
 				    &dev_fops);
+=======
+		debugfs_create_file(name, 0400, sd->dfs, pos, &dev_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	}
 
@@ -488,9 +524,12 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
 		sd->group_id, mlx5_devcom_comp_get_size(sd->devcom));
 	sd_print_group(primary);
 
+<<<<<<< HEAD
 	primary_sd->state = MLX5_SD_STATE_UP;
 out:
 	mlx5_devcom_comp_unlock(sd->devcom);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_unset_secondaries:
@@ -498,6 +537,7 @@ err_unset_secondaries:
 	mlx5_sd_for_each_secondary_to(i, primary, to, pos)
 		sd_cmd_unset_secondary(pos);
 	sd_cmd_unset_primary(primary);
+<<<<<<< HEAD
 	debugfs_remove_recursive(primary_sd->dfs);
 	primary_sd->dfs = NULL;
 err_sd_unregister:
@@ -510,6 +550,10 @@ err_sd_unregister:
 	primary_sd->primary = false;
 	mlx5_devcom_comp_set_ready(sd->devcom, false);
 	mlx5_devcom_comp_unlock(sd->devcom);
+=======
+	debugfs_remove_recursive(sd->dfs);
+err_sd_unregister:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sd_unregister(dev);
 err_sd_cleanup:
 	sd_cleanup(dev);
@@ -520,12 +564,16 @@ void mlx5_sd_cleanup(struct mlx5_core_dev *dev)
 {
 	struct mlx5_sd *sd = mlx5_get_sd(dev);
 	struct mlx5_core_dev *primary, *pos;
+<<<<<<< HEAD
 	struct mlx5_sd *primary_sd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	if (!sd)
 		return;
 
+<<<<<<< HEAD
 	mlx5_devcom_comp_lock(sd->devcom);
 	if (!mlx5_devcom_comp_is_ready(sd->devcom))
 		goto out_unlock;
@@ -558,26 +606,46 @@ out_ready_false:
 	mlx5_devcom_comp_set_ready(sd->devcom, false);
 out_unlock:
 	mlx5_devcom_comp_unlock(sd->devcom);
+=======
+	if (!mlx5_devcom_comp_is_ready(sd->devcom))
+		goto out;
+
+	primary = mlx5_sd_get_primary(dev);
+	mlx5_sd_for_each_secondary(i, primary, pos)
+		sd_cmd_unset_secondary(pos);
+	sd_cmd_unset_primary(primary);
+	debugfs_remove_recursive(sd->dfs);
+
+	sd_info(primary, "group id %#x, uncombined\n", sd->group_id);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sd_unregister(dev);
 	sd_cleanup(dev);
 }
 
+<<<<<<< HEAD
 /* Lock order:
  *   primary:   actual_adev_lock -> SD devcom comp lock
  *   secondary: SD devcom comp lock -> (drop) -> actual_adev_lock
  * The two locks are never held together, so no ABBA.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct auxiliary_device *mlx5_sd_get_adev(struct mlx5_core_dev *dev,
 					  struct auxiliary_device *adev,
 					  int idx)
 {
 	struct mlx5_sd *sd = mlx5_get_sd(dev);
 	struct mlx5_core_dev *primary;
+<<<<<<< HEAD
 	struct mlx5_adev *primary_adev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sd)
 		return adev;
 
+<<<<<<< HEAD
 	mlx5_devcom_comp_lock(sd->devcom);
 	if (!mlx5_devcom_comp_is_ready(sd->devcom)) {
 		mlx5_devcom_comp_unlock(sd->devcom);
@@ -613,4 +681,14 @@ void mlx5_sd_put_adev(struct auxiliary_device *actual_adev,
 		device_unlock(&actual_adev->dev);
 		put_device(&actual_adev->dev);
 	}
+=======
+	if (!mlx5_devcom_comp_is_ready(sd->devcom))
+		return NULL;
+
+	primary = mlx5_sd_get_primary(dev);
+	if (dev == primary)
+		return adev;
+
+	return &primary->priv.adev[idx]->adev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

@@ -269,9 +269,12 @@ struct dml2_core_internal_mode_support_info {
 	bool global_dram_clock_change_supported;
 	bool global_fclk_change_supported;
 	bool global_temp_read_or_ppt_supported;
+<<<<<<< HEAD
 	bool fclk_pstate_schedule_admissible;
 	bool temp_read_pstate_schedule_admissible;
 	bool ppt_pstate_schedule_admissible;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool USRRetrainingSupport;
 	bool AvgBandwidthSupport;
 	bool UrgVactiveBandwidthSupport;
@@ -1066,8 +1069,11 @@ struct dml2_core_calcs_mode_support_locals {
 	bool dummy_boolean_array[2][DML2_MAX_PLANES];
 	double dummy_single[3];
 	double dummy_single_array[DML2_MAX_PLANES];
+<<<<<<< HEAD
 	double dummy_double_array[3][DML2_MAX_PLANES];
 	enum dml2_pstate_method dummy_pstate_method_array[DML2_MAX_PLANES];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dml2_core_internal_watermarks dummy_watermark;
 	double dummy_bw[dml2_core_internal_soc_state_max][dml2_core_internal_bw_max];
 	double surface_dummy_bw[dml2_core_internal_soc_state_max][dml2_core_internal_bw_max][DML2_MAX_PLANES];
@@ -1726,11 +1732,16 @@ struct dml2_core_calcs_CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport_param
 	double ReturnBW;
 	bool SynchronizeTimings;
 	bool SynchronizeDRRDisplaysForUCLKPStateChange;
+<<<<<<< HEAD
 	const unsigned int *dpte_group_bytes;
+=======
+	unsigned int *dpte_group_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dml2_core_internal_SOCParametersList mmSOCParameters;
 	unsigned int WritebackChunkSize;
 	double SOCCLK;
 	double DCFClkDeepSleep;
+<<<<<<< HEAD
 	const unsigned int *DETBufferSizeY;
 	const unsigned int *DETBufferSizeC;
 	const unsigned int *SwathHeightY;
@@ -1750,6 +1761,27 @@ struct dml2_core_calcs_CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport_param
 	const unsigned int *meta_row_height_l;
 	const unsigned int *meta_row_height_c;
 	const enum dml2_pstate_method *uclk_pstate_switch_modes;
+=======
+	unsigned int *DETBufferSizeY;
+	unsigned int *DETBufferSizeC;
+	unsigned int *SwathHeightY;
+	unsigned int *SwathHeightC;
+	unsigned int *SwathWidthY;
+	unsigned int *SwathWidthC;
+	unsigned int *DPPPerSurface;
+	double *BytePerPixelDETY;
+	double *BytePerPixelDETC;
+	unsigned int *DSTXAfterScaler;
+	unsigned int *DSTYAfterScaler;
+	bool UnboundedRequestEnabled;
+	unsigned int CompressedBufferSizeInkByte;
+	bool max_outstanding_when_urgent_expected;
+	unsigned int max_outstanding_requests;
+	unsigned int max_request_size_bytes;
+	unsigned int *meta_row_height_l;
+	unsigned int *meta_row_height_c;
+	enum dml2_pstate_method *uclk_pstate_switch_modes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// Output
 	struct dml2_core_internal_watermarks *Watermark;
@@ -1936,6 +1968,10 @@ struct dml2_core_calcs_CalculatePrefetchSchedule_params {
 	bool DynamicMetadataVMEnabled;
 	unsigned int DynamicMetadataLinesBeforeActiveRequired;
 	unsigned int DynamicMetadataTransmittedBytes;
+<<<<<<< HEAD
+=======
+	double UrgentLatency;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double ExtraLatencyPrefetch;
 	double TCalc;
 	unsigned int vm_bytes;

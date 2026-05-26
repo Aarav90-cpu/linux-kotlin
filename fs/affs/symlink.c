@@ -21,7 +21,11 @@ static int affs_symlink_read_folio(struct file *file, struct folio *folio)
 	char			 c;
 	char			 lc;
 
+<<<<<<< HEAD
 	pr_debug("get_link(ino=%llu)\n", inode->i_ino);
+=======
+	pr_debug("get_link(ino=%lu)\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bh = affs_bread(inode->i_sb, inode->i_ino);
 	if (!bh)
@@ -71,5 +75,9 @@ const struct address_space_operations affs_symlink_aops = {
 
 const struct inode_operations affs_symlink_inode_operations = {
 	.get_link	= page_get_link,
+<<<<<<< HEAD
 	.setattr	= affs_setattr,
+=======
+	.setattr	= affs_notify_change,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

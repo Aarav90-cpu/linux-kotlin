@@ -613,7 +613,10 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
 void memcg1_swapout(struct folio *folio, swp_entry_t entry)
 {
 	struct mem_cgroup *memcg, *swap_memcg;
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int nr_entries;
 
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
@@ -625,6 +628,7 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
 	if (!do_memsw_account())
 		return;
 
+<<<<<<< HEAD
 	objcg = folio_objcg(folio);
 	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
 	if (!objcg)
@@ -632,13 +636,29 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
 
 	rcu_read_lock();
 	memcg = obj_cgroup_memcg(objcg);
+=======
+	memcg = folio_memcg(folio);
+
+	VM_WARN_ON_ONCE_FOLIO(!memcg, folio);
+	if (!memcg)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * In case the memcg owning these pages has been offlined and doesn't
 	 * have an ID allocated to it anymore, charge the closest online
 	 * ancestor for the swap instead and transfer the memory+swap charge.
 	 */
+<<<<<<< HEAD
 	nr_entries = folio_nr_pages(folio);
 	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+=======
+	swap_memcg = mem_cgroup_private_id_get_online(memcg);
+	nr_entries = folio_nr_pages(folio);
+	/* Get references for the tail pages, too */
+	if (nr_entries > 1)
+		mem_cgroup_private_id_get_many(swap_memcg, nr_entries - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
 
 	swap_cgroup_record(folio, mem_cgroup_private_id(swap_memcg), entry);
@@ -646,7 +666,11 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
 	folio_unqueue_deferred_split(folio);
 	folio->memcg_data = 0;
 
+<<<<<<< HEAD
 	if (!obj_cgroup_is_root(objcg))
+=======
+	if (!mem_cgroup_is_root(memcg))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page_counter_uncharge(&memcg->memory, nr_entries);
 
 	if (memcg != swap_memcg) {
@@ -667,8 +691,12 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
 	preempt_enable_nested();
 	memcg1_check_events(memcg, folio_nid(folio));
 
+<<<<<<< HEAD
 	rcu_read_unlock();
 	obj_cgroup_put(objcg);
+=======
+	css_put(&memcg->css);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1887,6 +1915,7 @@ static const unsigned int memcg1_events[] = {
 	PGMAJFAULT,
 };
 
+<<<<<<< HEAD
 void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
 {
 	int i;
@@ -1903,6 +1932,8 @@ void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgr
 		reparent_memcg_lruvec_state_local(memcg, parent, i);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
 {
 	unsigned long memory, memsw;

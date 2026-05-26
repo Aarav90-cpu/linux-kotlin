@@ -291,6 +291,7 @@ int fseek(FILE *stream, long offset, int whence)
 }
 
 
+<<<<<<< HEAD
 /* printf(). Supports most of the normal integer and string formats.
  *  - %[#0-+ ][width|*[.precision|*}][{l,t,z,ll,L,j,q}]{c,d,i,u,o,x,X,p,s,m,%}
  *  - %% generates a single %
@@ -650,12 +651,162 @@ do_output:
 static int __nolibc_fprintf_cb(void *stream, const char *buf, size_t size)
 {
 	return _fwrite(buf, size, stream);
+=======
+/* minimal printf(). It supports the following formats:
+ *  - %[l*]{d,u,c,x,p}
+ *  - %s
+ *  - unknown modifiers are ignored.
+ */
+typedef int (*__nolibc_printf_cb)(intptr_t state, const char *buf, size_t size);
+
+static __attribute__((unused, format(printf, 4, 0)))
+int __nolibc_printf(__nolibc_printf_cb cb, intptr_t state, size_t n, const char *fmt, va_list args)
+{
+	char escape, lpref, c;
+	unsigned long long v;
+	unsigned int written, width;
+	size_t len, ofs, w;
+	char tmpbuf[21];
+	const char *outstr;
+
+	written = ofs = escape = lpref = 0;
+	while (1) {
+		c = fmt[ofs++];
+		width = 0;
+
+		if (escape) {
+			/* we're in an escape sequence, ofs == 1 */
+			escape = 0;
+
+			/* width */
+			while (c >= '0' && c <= '9') {
+				width *= 10;
+				width += c - '0';
+
+				c = fmt[ofs++];
+			}
+
+			if (c == 'c' || c == 'd' || c == 'u' || c == 'x' || c == 'p') {
+				char *out = tmpbuf;
+
+				if (c == 'p')
+					v = va_arg(args, unsigned long);
+				else if (lpref) {
+					if (lpref > 1)
+						v = va_arg(args, unsigned long long);
+					else
+						v = va_arg(args, unsigned long);
+				} else
+					v = va_arg(args, unsigned int);
+
+				if (c == 'd') {
+					/* sign-extend the value */
+					if (lpref == 0)
+						v = (long long)(int)v;
+					else if (lpref == 1)
+						v = (long long)(long)v;
+				}
+
+				switch (c) {
+				case 'c':
+					out[0] = v;
+					out[1] = 0;
+					break;
+				case 'd':
+					i64toa_r(v, out);
+					break;
+				case 'u':
+					u64toa_r(v, out);
+					break;
+				case 'p':
+					*(out++) = '0';
+					*(out++) = 'x';
+					__nolibc_fallthrough;
+				default: /* 'x' and 'p' above */
+					u64toh_r(v, out);
+					break;
+				}
+				outstr = tmpbuf;
+			}
+			else if (c == 's') {
+				outstr = va_arg(args, char *);
+				if (!outstr)
+					outstr="(null)";
+			}
+			else if (c == 'm') {
+#ifdef NOLIBC_IGNORE_ERRNO
+				outstr = "unknown error";
+#else
+				outstr = strerror(errno);
+#endif /* NOLIBC_IGNORE_ERRNO */
+			}
+			else if (c == '%') {
+				/* queue it verbatim */
+				continue;
+			}
+			else {
+				/* modifiers or final 0 */
+				if (c == 'l') {
+					/* long format prefix, maintain the escape */
+					lpref++;
+				} else if (c == 'j') {
+					lpref = 2;
+				}
+				escape = 1;
+				goto do_escape;
+			}
+			len = strlen(outstr);
+			goto flush_str;
+		}
+
+		/* not an escape sequence */
+		if (c == 0 || c == '%') {
+			/* flush pending data on escape or end */
+			escape = 1;
+			lpref = 0;
+			outstr = fmt;
+			len = ofs - 1;
+		flush_str:
+			if (n) {
+				w = len < n ? len : n;
+				n -= w;
+				while (width-- > w) {
+					if (cb(state, " ", 1) != 0)
+						return -1;
+					written += 1;
+				}
+				if (cb(state, outstr, w) != 0)
+					return -1;
+			}
+
+			written += len;
+		do_escape:
+			if (c == 0)
+				break;
+			fmt += ofs;
+			ofs = 0;
+			continue;
+		}
+
+		/* literal char, just queue it */
+	}
+	return written;
+}
+
+static int __nolibc_fprintf_cb(intptr_t state, const char *buf, size_t size)
+{
+	return _fwrite(buf, size, (FILE *)state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused, format(printf, 2, 0)))
 int vfprintf(FILE *stream, const char *fmt, va_list args)
 {
+<<<<<<< HEAD
 	return __nolibc_printf(__nolibc_fprintf_cb, stream, fmt, args);
+=======
+	return __nolibc_printf(__nolibc_fprintf_cb, (intptr_t)stream, SIZE_MAX, fmt, args);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused, format(printf, 1, 0)))
@@ -713,6 +864,7 @@ int dprintf(int fd, const char *fmt, ...)
 	return ret;
 }
 
+<<<<<<< HEAD
 struct __nolibc_sprintf_cb_state {
 	char *buf;
 	size_t space;
@@ -752,15 +904,34 @@ static int __nolibc_sprintf_cb(void *v_state, const char *buf, size_t size)
 		memcpy(tgt, buf, size);
 	}
 
+=======
+static int __nolibc_sprintf_cb(intptr_t _state, const char *buf, size_t size)
+{
+	char **state = (char **)_state;
+
+	memcpy(*state, buf, size);
+	*state += size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static __attribute__((unused, format(printf, 3, 0)))
 int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
 {
+<<<<<<< HEAD
 	struct __nolibc_sprintf_cb_state state = { .buf = buf, .space = size };
 
 	return __nolibc_printf(__nolibc_sprintf_cb, &state, fmt, args);
+=======
+	char *state = buf;
+	int ret;
+
+	ret = __nolibc_printf(__nolibc_sprintf_cb, (intptr_t)&state, size, fmt, args);
+	if (ret < 0)
+		return ret;
+	buf[(size_t)ret < size ? (size_t)ret : size - 1] = '\0';
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused, format(printf, 3, 4)))
@@ -795,6 +966,7 @@ int sprintf(char *buf, const char *fmt, ...)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __attribute__((unused, format(printf, 2, 0)))
 int __nolibc_vasprintf(char **strp, const char *fmt, va_list args1, va_list args2)
 {
@@ -845,6 +1017,8 @@ int asprintf(char **strp, const char *fmt, ...)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __attribute__((unused))
 int vsscanf(const char *str, const char *format, va_list args)
 {
@@ -976,6 +1150,7 @@ int setvbuf(FILE *stream __attribute__((unused)),
 }
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int strerror_r(int errnum, char *buf, size_t buflen)
 {
 	if (buflen < 18)
@@ -999,6 +1174,15 @@ const char *strerror(int errnum)
 	strerror_r(errnum, b, sizeof(buf));
 
 	return b;
+=======
+const char *strerror(int errno)
+{
+	static char buf[18] = "errno=";
+
+	i64toa_r(errno, &buf[6]);
+
+	return buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_STDIO_H */

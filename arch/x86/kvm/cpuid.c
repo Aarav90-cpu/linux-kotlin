@@ -1246,12 +1246,19 @@ void kvm_initialize_cpu_caps(void)
 		F(NULL_SEL_CLR_BASE),
 		/* UpperAddressIgnore */
 		F(AUTOIBRS),
+<<<<<<< HEAD
+=======
+		F(PREFETCHI),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		EMULATED_F(NO_SMM_CTL_MSR),
 		/* PrefetchCtlMsr */
 		/* GpOnUserCpuid */
 		/* EPSF */
+<<<<<<< HEAD
 		F(PREFETCHI),
 		F(AVX512_BMM),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		F(ERAPS),
 		SYNTHESIZED_F(SBPB),
 		SYNTHESIZED_F(IBPB_BRTYPE),
@@ -2161,8 +2168,12 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
 
+<<<<<<< HEAD
 	if (!is_smm(vcpu) && cpuid_fault_enabled(vcpu) &&
 	    !kvm_require_cpl(vcpu, 0))
+=======
+	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 
 	eax = kvm_rax_read(vcpu);

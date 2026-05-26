@@ -5,6 +5,7 @@
 
 /dts-v1/;
 /plugin/;
+<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/clock/qcom,gcc-sc7280.h>
 #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
@@ -36,6 +37,11 @@
        status = "disabled";
 };
 
+=======
+#include <dt-bindings/clock/qcom,gcc-sc7280.h>
+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &spi11 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -47,6 +53,7 @@
 		spi-max-frequency = <20000000>;
 	};
 };
+<<<<<<< HEAD
 
 &pcie0 {
 	perst-gpios = <&tlmm 87 GPIO_ACTIVE_LOW>;
@@ -288,3 +295,5 @@
 &wifi {
        status = "disabled";
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

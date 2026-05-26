@@ -239,13 +239,19 @@ static int add_event(struct evlist *evlist, struct list_head *events,
 
 	if (!sample.time) {
 		pr_debug("event with no time\n");
+<<<<<<< HEAD
 		perf_sample__exit(&sample);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 	}
 
 	node->event_time = sample.time;
 
+<<<<<<< HEAD
 	perf_sample__exit(&sample);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

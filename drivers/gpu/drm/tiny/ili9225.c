@@ -17,7 +17,10 @@
 #include <video/mipi_display.h>
 
 #include <drm/clients/drm_client_setup.h>
+<<<<<<< HEAD
 #include <drm/drm_atomic.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_damage_helper.h>
 #include <drm/drm_drv.h>
@@ -25,7 +28,13 @@
 #include <drm/drm_fbdev_dma.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_framebuffer.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_dma_helper.h>
+=======
+#include <drm/drm_gem_atomic_helper.h>
+#include <drm/drm_gem_dma_helper.h>
+#include <drm/drm_gem_framebuffer_helper.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_managed.h>
 #include <drm/drm_mipi_dbi.h>
 #include <drm/drm_print.h>
@@ -71,6 +80,7 @@
 #define ILI9225_GAMMA_CONTROL_9		0x58
 #define ILI9225_GAMMA_CONTROL_10	0x59
 
+<<<<<<< HEAD
 struct ili9225_device {
 	struct mipi_dbi_dev dbidev;
 
@@ -85,6 +95,8 @@ static struct ili9225_device *to_ili9225_device(struct drm_device *dev)
 	return container_of(drm_to_mipi_dbi_dev(dev), struct ili9225_device, dbidev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int ili9225_command(struct mipi_dbi *dbi, u8 cmd, u16 data)
 {
 	u8 par[2] = { data >> 8, data & 0xff };
@@ -170,6 +182,7 @@ err_msg:
 		dev_err_once(fb->dev->dev, "Failed to update display %d\n", ret);
 }
 
+<<<<<<< HEAD
 static const u32 ili9225_plane_formats[] = {
 	DRM_MIPI_DBI_PLANE_FORMATS,
 };
@@ -196,12 +209,31 @@ static void ili9225_plane_helper_atomic_update(struct drm_plane *plane,
 		return;
 
 	if (drm_atomic_helper_damage_merged(old_plane_state, plane_state, &rect))
+=======
+static void ili9225_pipe_update(struct drm_simple_display_pipe *pipe,
+				struct drm_plane_state *old_state)
+{
+	struct drm_plane_state *state = pipe->plane.state;
+	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(state);
+	struct drm_framebuffer *fb = state->fb;
+	struct drm_rect rect;
+	int idx;
+
+	if (!pipe->crtc.state->active)
+		return;
+
+	if (!drm_dev_enter(fb->dev, &idx))
+		return;
+
+	if (drm_atomic_helper_damage_merged(old_state, state, &rect))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ili9225_fb_dirty(&shadow_plane_state->data[0], fb, &rect,
 				 &shadow_plane_state->fmtcnv_state);
 
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_plane_helper_funcs ili9225_plane_helper_funcs = {
 	DRM_GEM_SHADOW_PLANE_HELPER_FUNCS,
 	.atomic_check = drm_mipi_dbi_plane_helper_atomic_check,
@@ -225,6 +257,27 @@ static void ili9225_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	u8 am_id;
 
 	if (!drm_dev_enter(drm, &idx))
+=======
+static void ili9225_pipe_enable(struct drm_simple_display_pipe *pipe,
+				struct drm_crtc_state *crtc_state,
+				struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(plane_state);
+	struct drm_framebuffer *fb = plane_state->fb;
+	struct device *dev = pipe->crtc.dev->dev;
+	struct mipi_dbi *dbi = &dbidev->dbi;
+	struct drm_rect rect = {
+		.x1 = 0,
+		.x2 = fb->width,
+		.y1 = 0,
+		.y2 = fb->height,
+	};
+	int ret, idx;
+	u8 am_id;
+
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	DRM_DEBUG_KMS("\n");
@@ -311,16 +364,28 @@ static void ili9225_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 
 	ili9225_command(dbi, ILI9225_DISPLAY_CONTROL_1, 0x1017);
 
+<<<<<<< HEAD
+=======
+	ili9225_fb_dirty(&shadow_plane_state->data[0], fb, &rect,
+			 &shadow_plane_state->fmtcnv_state);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static void ili9225_crtc_helper_atomic_disable(struct drm_crtc *crtc,
 					       struct drm_atomic_state *state)
 {
 	struct drm_device *drm = crtc->dev;
 	struct ili9225_device *ili9225 = to_ili9225_device(drm);
 	struct mipi_dbi_dev *dbidev = &ili9225->dbidev;
+=======
+static void ili9225_pipe_disable(struct drm_simple_display_pipe *pipe)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi *dbi = &dbidev->dbi;
 
 	DRM_DEBUG_KMS("\n");
@@ -339,6 +404,7 @@ static void ili9225_crtc_helper_atomic_disable(struct drm_crtc *crtc,
 	ili9225_command(dbi, ILI9225_POWER_CONTROL_1, 0x0a02);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs ili9225_crtc_helper_funcs = {
 	.mode_valid = drm_mipi_dbi_crtc_helper_mode_valid,
 	.atomic_check = drm_mipi_dbi_crtc_helper_atomic_check,
@@ -372,6 +438,8 @@ static const struct drm_mode_config_funcs ili9225_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ili9225_dbi_command(struct mipi_dbi *dbi, u8 *cmd, u8 *par,
 			       size_t num)
 {
@@ -400,6 +468,21 @@ static int ili9225_dbi_command(struct mipi_dbi *dbi, u8 *cmd, u8 *par,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static const struct drm_simple_display_pipe_funcs ili9225_pipe_funcs = {
+	.mode_valid	= mipi_dbi_pipe_mode_valid,
+	.enable		= ili9225_pipe_enable,
+	.disable	= ili9225_pipe_disable,
+	.update		= ili9225_pipe_update,
+	.begin_fb_access = mipi_dbi_pipe_begin_fb_access,
+	.end_fb_access	= mipi_dbi_pipe_end_fb_access,
+	.reset_plane	= mipi_dbi_pipe_reset_plane,
+	.duplicate_plane_state = mipi_dbi_pipe_duplicate_plane_state,
+	.destroy_plane_state = mipi_dbi_pipe_destroy_plane_state,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode ili9225_mode = {
 	DRM_SIMPLE_MODE(176, 220, 35, 44),
 };
@@ -432,11 +515,15 @@ MODULE_DEVICE_TABLE(spi, ili9225_id);
 static int ili9225_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
+<<<<<<< HEAD
 	struct ili9225_device *ili9225;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi_dev *dbidev;
 	struct drm_device *drm;
 	struct mipi_dbi *dbi;
 	struct gpio_desc *rs;
+<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
@@ -448,6 +535,16 @@ static int ili9225_probe(struct spi_device *spi)
 	if (IS_ERR(ili9225))
 		return PTR_ERR(ili9225);
 	dbidev = &ili9225->dbidev;
+=======
+	u32 rotation = 0;
+	int ret;
+
+	dbidev = devm_drm_dev_alloc(dev, &ili9225_driver,
+				    struct mipi_dbi_dev, drm);
+	if (IS_ERR(dbidev))
+		return PTR_ERR(dbidev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
 
@@ -468,6 +565,7 @@ static int ili9225_probe(struct spi_device *spi)
 	/* override the command function set in  mipi_dbi_spi_init() */
 	dbi->command = ili9225_dbi_command;
 
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &ili9225_mode, ili9225_plane_formats[0],
 				    rotation, 0);
 	if (ret)
@@ -515,6 +613,9 @@ static int ili9225_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &ili9225_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init(dbidev, &ili9225_pipe_funcs, &ili9225_mode, rotation);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

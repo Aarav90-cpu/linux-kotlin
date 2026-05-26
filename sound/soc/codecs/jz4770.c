@@ -179,6 +179,10 @@ struct jz_codec {
 	struct device *dev;
 	struct regmap *regmap;
 	void __iomem *base;
+<<<<<<< HEAD
+=======
+	struct clk *clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int jz4770_codec_set_bias_level(struct snd_soc_component *codec,
@@ -633,13 +637,33 @@ static void jz4770_codec_codec_init_regs(struct snd_soc_component *codec)
 
 static int jz4770_codec_codec_probe(struct snd_soc_component *codec)
 {
+<<<<<<< HEAD
+=======
+	struct jz_codec *jz_codec = snd_soc_component_get_drvdata(codec);
+
+	clk_prepare_enable(jz_codec->clk);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jz4770_codec_codec_init_regs(codec);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct snd_soc_component_driver jz4770_codec_soc_codec_dev = {
 	.probe			= jz4770_codec_codec_probe,
+=======
+static void jz4770_codec_codec_remove(struct snd_soc_component *codec)
+{
+	struct jz_codec *jz_codec = snd_soc_component_get_drvdata(codec);
+
+	clk_disable_unprepare(jz_codec->clk);
+}
+
+static const struct snd_soc_component_driver jz4770_codec_soc_codec_dev = {
+	.probe			= jz4770_codec_codec_probe,
+	.remove			= jz4770_codec_codec_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.set_bias_level		= jz4770_codec_set_bias_level,
 	.controls		= jz4770_codec_snd_controls,
 	.num_controls		= ARRAY_SIZE(jz4770_codec_snd_controls),
@@ -852,7 +876,10 @@ static int jz4770_codec_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct jz_codec *codec;
+<<<<<<< HEAD
 	struct clk *clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	codec = devm_kzalloc(dev, sizeof(*codec), GFP_KERNEL);
@@ -870,9 +897,15 @@ static int jz4770_codec_probe(struct platform_device *pdev)
 	if (IS_ERR(codec->regmap))
 		return PTR_ERR(codec->regmap);
 
+<<<<<<< HEAD
 	clk = devm_clk_get_enabled(dev, "aic");
 	if (IS_ERR(clk))
 		return PTR_ERR(clk);
+=======
+	codec->clk = devm_clk_get(dev, "aic");
+	if (IS_ERR(codec->clk))
+		return PTR_ERR(codec->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	platform_set_drvdata(pdev, codec);
 

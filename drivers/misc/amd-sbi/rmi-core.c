@@ -48,7 +48,11 @@
 /* CPUID MCAMSR mask & index */
 #define CPUID_MCA_THRD_INDEX	32
 #define CPUID_MCA_FUNC_MASK	GENMASK(31, 0)
+<<<<<<< HEAD
 #define CPUID_EXT_FUNC_INDEX	48
+=======
+#define CPUID_EXT_FUNC_INDEX	56
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* input for bulk write to CPUID protocol */
 struct cpu_msr_indata {
@@ -214,7 +218,10 @@ static int rmi_cpuid_read(struct sbrmi_data *data,
 			goto exit_unlock;
 		break;
 	case 0x21:
+<<<<<<< HEAD
 	case 0x31:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = rmi_cpuid_input_ext(data, msg, thread);
 		if (ret)
 			goto exit_unlock;
@@ -328,7 +335,10 @@ static int rmi_mca_msr_read(struct sbrmi_data *data,
 			goto exit_unlock;
 		break;
 	case 0x21:
+<<<<<<< HEAD
 	case 0x31:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = rmi_mcamsr_input_ext(data, msg, thread);
 		if (ret)
 			goto exit_unlock;

@@ -4838,7 +4838,11 @@ static int ipw2100_system_config(struct ipw2100_priv *priv, int batch_mode)
 
 /* If IPv6 is configured in the kernel then we don't want to filter out all
  * of the multicast packets as IPv6 needs some. */
+<<<<<<< HEAD
 #if !defined(CONFIG_IPV6)
+=======
+#if !defined(CONFIG_IPV6) && !defined(CONFIG_IPV6_MODULE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd.host_command = ADD_MULTICAST;
 	cmd.host_command_sequence = 0;
 	cmd.host_command_length = 0;

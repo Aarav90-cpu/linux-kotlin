@@ -410,12 +410,20 @@ static ssize_t lp5569_selftest(struct device *dev,
 	/* Test LED Open */
 	pos = lp5569_led_open_test(led, buf);
 	if (pos < 0)
+<<<<<<< HEAD
 		return sysfs_emit(buf, "FAIL\n");
+=======
+		return sprintf(buf, "FAIL\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Test LED Shorted */
 	pos += lp5569_led_short_test(led, buf);
 	if (pos < 0)
+<<<<<<< HEAD
 		return sysfs_emit(buf, "FAIL\n");
+=======
+		return sprintf(buf, "FAIL\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < chip->pdata->num_channels; i++) {
 		/* Restore current */

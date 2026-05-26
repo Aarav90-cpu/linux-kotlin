@@ -371,7 +371,12 @@ static const struct ib_device_ops efa_dev_ops = {
 	.alloc_hw_device_stats = efa_alloc_hw_device_stats,
 	.alloc_pd = efa_alloc_pd,
 	.alloc_ucontext = efa_alloc_ucontext,
+<<<<<<< HEAD
 	.create_user_cq = efa_create_user_cq,
+=======
+	.create_cq = efa_create_cq,
+	.create_cq_umem = efa_create_cq_umem,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.create_qp = efa_create_qp,
 	.create_user_ah = efa_create_ah,
 	.dealloc_pd = efa_dealloc_pd,

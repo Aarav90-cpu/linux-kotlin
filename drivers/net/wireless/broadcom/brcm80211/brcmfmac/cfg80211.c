@@ -2758,11 +2758,19 @@ done:
 }
 
 static s32
+<<<<<<< HEAD
 brcmf_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 		       int link_id, u8 key_idx, bool pairwise,
 		       const u8 *mac_addr)
 {
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+brcmf_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
+		       int link_id, u8 key_idx, bool pairwise,
+		       const u8 *mac_addr)
+{
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_wsec_key *key;
 	s32 err;
 
@@ -2796,12 +2804,20 @@ brcmf_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 static s32
+<<<<<<< HEAD
 brcmf_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+brcmf_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       int link_id, u8 key_idx, bool pairwise,
 		       const u8 *mac_addr, struct key_params *params)
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+<<<<<<< HEAD
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_pub *drvr = cfg->pub;
 	struct brcmf_wsec_key *key;
 	s32 val;
@@ -2822,7 +2838,11 @@ brcmf_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 	}
 
 	if (params->key_len == 0)
+<<<<<<< HEAD
 		return brcmf_cfg80211_del_key(wiphy, wdev, -1, key_idx,
+=======
+		return brcmf_cfg80211_del_key(wiphy, ndev, -1, key_idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      pairwise, mac_addr);
 
 	if (params->key_len > sizeof(key->data)) {
@@ -2918,7 +2938,11 @@ done:
 }
 
 static s32
+<<<<<<< HEAD
 brcmf_cfg80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+brcmf_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       int link_id, u8 key_idx, bool pairwise,
 		       const u8 *mac_addr, void *cookie,
 		       void (*callback)(void *cookie,
@@ -2926,7 +2950,11 @@ brcmf_cfg80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
 	struct key_params params;
+<<<<<<< HEAD
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_cfg80211_profile *profile = &ifp->vif->profile;
 	struct brcmf_pub *drvr = cfg->pub;
 	struct brcmf_cfg80211_security *sec;
@@ -2976,10 +3004,17 @@ done:
 
 static s32
 brcmf_cfg80211_config_default_mgmt_key(struct wiphy *wiphy,
+<<<<<<< HEAD
 				       struct wireless_dev *wdev, int link_id,
 				       u8 key_idx)
 {
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+				       struct net_device *ndev, int link_id,
+				       u8 key_idx)
+{
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	brcmf_dbg(TRACE, "Enter key_idx %d\n", key_idx);
 
@@ -3132,11 +3167,19 @@ brcmf_cfg80211_get_station_ibss(struct brcmf_if *ifp,
 }
 
 static s32
+<<<<<<< HEAD
 brcmf_cfg80211_get_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 			   const u8 *mac, struct station_info *sinfo)
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+brcmf_cfg80211_get_station(struct wiphy *wiphy, struct net_device *ndev,
+			   const u8 *mac, struct station_info *sinfo)
+{
+	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_pub *drvr = cfg->pub;
 	struct brcmf_scb_val_le scb_val;
 	s32 err = 0;
@@ -3255,11 +3298,19 @@ done:
 }
 
 static int
+<<<<<<< HEAD
 brcmf_cfg80211_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 			    int idx, u8 *mac, struct station_info *sinfo)
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+brcmf_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *ndev,
+			    int idx, u8 *mac, struct station_info *sinfo)
+{
+	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_pub *drvr = cfg->pub;
 	s32 err;
 
@@ -3284,8 +3335,12 @@ brcmf_cfg80211_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 	}
 	if (idx < le32_to_cpu(cfg->assoclist.count)) {
 		memcpy(mac, cfg->assoclist.mac[idx], ETH_ALEN);
+<<<<<<< HEAD
 		return brcmf_cfg80211_get_station(wiphy, wdev,
 						  mac, sinfo);
+=======
+		return brcmf_cfg80211_get_station(wiphy, ndev, mac, sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return -ENOENT;
 }
@@ -5453,13 +5508,20 @@ brcmf_cfg80211_change_beacon(struct wiphy *wiphy, struct net_device *ndev,
 }
 
 static int
+<<<<<<< HEAD
 brcmf_cfg80211_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+brcmf_cfg80211_del_station(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   struct station_del_parameters *params)
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
 	struct brcmf_pub *drvr = cfg->pub;
 	struct brcmf_scb_val_le scbval;
+<<<<<<< HEAD
 	struct net_device *ndev = wdev->netdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct brcmf_if *ifp = netdev_priv(ndev);
 	s32 err;
 
@@ -5486,12 +5548,20 @@ brcmf_cfg80211_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 static int
+<<<<<<< HEAD
 brcmf_cfg80211_change_station(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+brcmf_cfg80211_change_station(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      const u8 *mac, struct station_parameters *params)
 {
 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
 	struct brcmf_pub *drvr = cfg->pub;
+<<<<<<< HEAD
 	struct brcmf_if *ifp = netdev_priv(wdev->netdev);
+=======
+	struct brcmf_if *ifp = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s32 err;
 
 	brcmf_dbg(TRACE, "Enter, MAC %pM, mask 0x%04x set 0x%04x\n", mac,
@@ -6550,14 +6620,22 @@ brcmf_notify_connect_status_ap(struct brcmf_cfg80211_info *cfg,
 		sinfo->assoc_req_ies_len = e->datalen;
 		generation++;
 		sinfo->generation = generation;
+<<<<<<< HEAD
 		cfg80211_new_sta(ndev->ieee80211_ptr, e->addr, sinfo,
 				 GFP_KERNEL);
+=======
+		cfg80211_new_sta(ndev, e->addr, sinfo, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		kfree(sinfo);
 	} else if ((event == BRCMF_E_DISASSOC_IND) ||
 		   (event == BRCMF_E_DEAUTH_IND) ||
 		   (event == BRCMF_E_DEAUTH)) {
+<<<<<<< HEAD
 		cfg80211_del_sta(ndev->ieee80211_ptr, e->addr, GFP_KERNEL);
+=======
+		cfg80211_del_sta(ndev, e->addr, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }

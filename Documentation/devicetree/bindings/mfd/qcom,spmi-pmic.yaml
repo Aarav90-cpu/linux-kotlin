@@ -135,7 +135,10 @@ patternProperties:
   "^adc@[0-9a-f]+$":
     type: object
     oneOf:
+<<<<<<< HEAD
       - $ref: /schemas/iio/adc/qcom,spmi-adc5-gen3.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - $ref: /schemas/iio/adc/qcom,spmi-iadc.yaml#
       - $ref: /schemas/iio/adc/qcom,spmi-rradc.yaml#
       - $ref: /schemas/iio/adc/qcom,spmi-vadc.yaml#

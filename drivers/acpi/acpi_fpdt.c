@@ -141,9 +141,12 @@ static const struct attribute_group boot_attr_group = {
 	.name = "boot",
 };
 
+<<<<<<< HEAD
 static BIN_ATTR(FBPT, 0400, sysfs_bin_attr_simple_read, NULL, 0);
 static BIN_ATTR(S3PT, 0400, sysfs_bin_attr_simple_read, NULL, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kobject *fpdt_kobj;
 
 #if defined CONFIG_X86 && defined CONFIG_PHYS_ADDR_T_64BIT
@@ -257,6 +260,7 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
 			break;
 		}
 	}
+<<<<<<< HEAD
 
 	if (subtable_type == SUBTABLE_FBPT) {
 		bin_attr_FBPT.private = subtable_header;
@@ -285,6 +289,11 @@ err:
 		bin_attr_S3PT.private = NULL;
 	}
 
+=======
+	return 0;
+
+err:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (record_boot)
 		sysfs_remove_group(fpdt_kobj, &boot_attr_group);
 

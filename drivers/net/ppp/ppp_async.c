@@ -491,7 +491,11 @@ static void ppp_async_process(struct tasklet_struct *t)
 	/* process received packets */
 	while ((skb = skb_dequeue(&ap->rqueue)) != NULL) {
 		if (skb->cb[0])
+<<<<<<< HEAD
 			ppp_input_error(&ap->chan);
+=======
+			ppp_input_error(&ap->chan, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ppp_input(&ap->chan, skb);
 	}
 

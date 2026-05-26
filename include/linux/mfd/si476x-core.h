@@ -77,7 +77,10 @@ enum si476x_power_state {
  * underlying "core" device which all the MFD cell-devices use.
  *
  * @client: Actual I2C client used to transfer commands to the chip.
+<<<<<<< HEAD
  * @regmap: Regmap for accessing the device registers
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @chip_id: Last digit of the chip model(E.g. "1" for SI4761)
  * @cells: MFD cell devices created by this driver.
  * @cmd_lock: Mutex used to serialize all the requests to the core
@@ -101,18 +104,29 @@ enum si476x_power_state {
  * @stc: Similar to @cts, but for the STC bit of the status value.
  * @power_up_parameters: Parameters used as argument for POWER_UP
  * command when the device is started.
+<<<<<<< HEAD
  * @power_state: Current power state of the device.
  * @supplies: Structure containing handles to all power supplies used
+=======
+ * @state: Current power state of the device.
+ * @supplues: Structure containing handles to all power supplies used
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * by the device (NULL ones are ignored).
  * @gpio_reset: GPIO pin connectet to the RSTB pin of the chip.
  * @pinmux: Chip's configurable pins configuration.
  * @diversity_mode: Chips role when functioning in diversity mode.
+<<<<<<< HEAD
  * @is_alive: Chip is initialized and active.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @status_monitor: Polling worker used in polling use case scenarion
  * (when IRQ is not avalible).
  * @revision: Chip's running firmware revision number(Used for correct
  * command set support).
+<<<<<<< HEAD
  * @rds_fifo_depth: RDS FIFO size: 20 for IRQ mode or 5 for polling mode.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 struct si476x_core {
@@ -169,7 +183,10 @@ static inline struct si476x_core *i2c_mfd_cell_to_core(struct device *dev)
 /**
  * si476x_core_lock() - lock the core device to get an exclusive access
  * to it.
+<<<<<<< HEAD
  * @core: Core device structure
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline void si476x_core_lock(struct si476x_core *core)
 {
@@ -179,7 +196,10 @@ static inline void si476x_core_lock(struct si476x_core *core)
 /**
  * si476x_core_unlock() - unlock the core device to relinquish an
  * exclusive access to it.
+<<<<<<< HEAD
  * @core: Core device structure
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline void si476x_core_unlock(struct si476x_core *core)
 {
@@ -251,10 +271,16 @@ static inline int si476x_to_v4l2(struct si476x_core *core, u16 freq)
  * struct si476x_func_info - structure containing result of the
  * FUNC_INFO command.
  *
+<<<<<<< HEAD
  * @firmware: Firmware version numbers.
  * @firmware.major: Firmware major number.
  * @firmware.minor[...]: Firmware minor numbers.
  * @patch_id: Firmware patch level.
+=======
+ * @firmware.major: Firmware major number.
+ * @firmware.minor[...]: Firmware minor numbers.
+ * @patch_id:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @func: Mode tuner is working in.
  */
 struct si476x_func_info {
@@ -324,9 +350,14 @@ enum si476x_smoothmetrics {
  * @tp: Current channel's TP flag.
  * @pty: Current channel's PTY code.
  * @pi: Current channel's PI code.
+<<<<<<< HEAD
  * @rdsfifoused: Number of blocks remaining in the RDS FIFO (0 if empty).
  * @ble:
  * @rds: RDS data descriptor
+=======
+ * @rdsfifoused: Number of blocks remaining in the RDS FIFO (0 if
+ * empty).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct si476x_rds_status_report {
 	bool rdstpptyint, rdspiint, rdssyncint, rdsfifoint;

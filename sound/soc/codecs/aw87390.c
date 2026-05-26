@@ -544,7 +544,12 @@ static int aw87390_i2c_probe(struct i2c_client *i2c)
 	const struct snd_soc_component_driver *priv;
 	int ret;
 
+<<<<<<< HEAD
 	if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C))
+=======
+	ret = i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C);
+	if (!ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return dev_err_probe(&i2c->dev, -ENXIO, "check_functionality failed\n");
 
 	aw87390 = devm_kzalloc(&i2c->dev, sizeof(*aw87390), GFP_KERNEL);

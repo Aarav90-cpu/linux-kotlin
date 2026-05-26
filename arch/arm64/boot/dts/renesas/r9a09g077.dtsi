@@ -8,6 +8,7 @@
 #include <dt-bindings/clock/renesas,r9a09g077-cpg-mssr.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
+<<<<<<< HEAD
 /* The IRQ_NS lines start at offset 16 in the ICU interrupt space */
 #define RZT2H_IRQ0	16
 #define RZT2H_IRQ1	17
@@ -26,6 +27,8 @@
 #define RZT2H_IRQ14	30
 #define RZT2H_IRQ15	31
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 / {
 	compatible = "renesas,r9a09g077";
 	#address-cells = <2>;
@@ -218,10 +221,13 @@
 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
 				 <&cpg CPG_MOD 104>;
 			clock-names = "pclk", "pclkspi";
+<<<<<<< HEAD
 			dmas = <&dmac0 0x267a>, <&dmac0 0x267b>,
 			       <&dmac1 0x267a>, <&dmac1 0x267b>,
 			       <&dmac2 0x267a>, <&dmac2 0x267b>;
 			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&cpg>;
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -240,10 +246,13 @@
 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
 				 <&cpg CPG_MOD 105>;
 			clock-names = "pclk", "pclkspi";
+<<<<<<< HEAD
 			dmas = <&dmac0 0x267f>, <&dmac0 0x2680>,
 			       <&dmac1 0x267f>, <&dmac1 0x2680>,
 			       <&dmac2 0x267f>, <&dmac2 0x2680>;
 			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&cpg>;
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -262,10 +271,13 @@
 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
 				 <&cpg CPG_MOD 106>;
 			clock-names = "pclk", "pclkspi";
+<<<<<<< HEAD
 			dmas = <&dmac0 0x2684>, <&dmac0 0x2685>,
 			       <&dmac1 0x2684>, <&dmac1 0x2685>,
 			       <&dmac2 0x2684>, <&dmac2 0x2685>;
 			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&cpg>;
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -284,10 +296,13 @@
 			clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKM>,
 				 <&cpg CPG_MOD 602>;
 			clock-names = "pclk", "pclkspi";
+<<<<<<< HEAD
 			dmas = <&dmac0 0x2689>, <&dmac0 0x268a>,
 			       <&dmac1 0x2689>, <&dmac1 0x268a>,
 			       <&dmac2 0x2689>, <&dmac2 0x268a>;
 			dma-names = "rx", "tx", "rx", "tx", "rx", "tx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&cpg>;
 			#address-cells = <1>;
 			#size-cells = <0>;

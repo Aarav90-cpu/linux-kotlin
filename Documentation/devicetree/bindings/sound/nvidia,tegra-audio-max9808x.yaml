@@ -35,6 +35,7 @@ properties:
     items:
       enum:
         # Board Connectors
+<<<<<<< HEAD
         - Speakers
         - Int Spk
         - Headphone
@@ -44,6 +45,12 @@ properties:
         - Headset Mic
         - Mic Jack
         - Int Mic
+=======
+        - Int Spk
+        - Headphone Jack
+        - Earpiece
+        - Headset Mic
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - Internal Mic 1
         - Internal Mic 2
 

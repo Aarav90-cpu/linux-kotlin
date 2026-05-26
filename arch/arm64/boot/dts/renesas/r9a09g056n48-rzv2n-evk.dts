@@ -260,12 +260,20 @@
 
 &mdio0 {
 	phy0: ethernet-phy@0 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id0022.1640";
+=======
+		compatible = "ethernet-phy-id0022.1640", "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0>;
 		rxc-skew-psec = <0>;
 		txc-skew-psec = <0>;
 		rxdv-skew-psec = <0>;
+<<<<<<< HEAD
 		txen-skew-psec = <0>;
+=======
+		txdv-skew-psec = <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rxd0-skew-psec = <0>;
 		rxd1-skew-psec = <0>;
 		rxd2-skew-psec = <0>;
@@ -279,12 +287,20 @@
 
 &mdio1 {
 	phy1: ethernet-phy@1 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id0022.1640";
+=======
+		compatible = "ethernet-phy-id0022.1640", "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0>;
 		rxc-skew-psec = <0>;
 		txc-skew-psec = <0>;
 		rxdv-skew-psec = <0>;
+<<<<<<< HEAD
 		txen-skew-psec = <0>;
+=======
+		txdv-skew-psec = <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rxd0-skew-psec = <0>;
 		rxd1-skew-psec = <0>;
 		rxd2-skew-psec = <0>;
@@ -446,10 +462,13 @@
 	clock-frequency = <24000000>;
 };
 
+<<<<<<< HEAD
 &rtc {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &rtxin_clk {
 	clock-frequency = <32768>;
 };

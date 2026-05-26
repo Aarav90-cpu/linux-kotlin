@@ -17,6 +17,7 @@
 		linux,usable-memory-range = <0x00020000 0x1bfe0000>;
 	};
 };
+<<<<<<< HEAD
 
 &pcie0 {
 	status = "okay";
@@ -38,3 +39,5 @@
 		reg = <0x0000 0 0 0 0>;
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

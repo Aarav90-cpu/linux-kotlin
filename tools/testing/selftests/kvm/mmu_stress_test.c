@@ -20,19 +20,33 @@
 static bool mprotect_ro_done;
 static bool all_vcpus_hit_ro_fault;
 
+<<<<<<< HEAD
 static void guest_code(u64 start_gpa, u64 end_gpa, u64 stride)
 {
 	gpa_t gpa;
+=======
+static void guest_code(uint64_t start_gpa, uint64_t end_gpa, uint64_t stride)
+{
+	uint64_t gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	for (i = 0; i < 2; i++) {
 		for (gpa = start_gpa; gpa < end_gpa; gpa += stride)
+<<<<<<< HEAD
 			vcpu_arch_put_guest(*((volatile u64 *)gpa), gpa);
+=======
+			vcpu_arch_put_guest(*((volatile uint64_t *)gpa), gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		GUEST_SYNC(i);
 	}
 
 	for (gpa = start_gpa; gpa < end_gpa; gpa += stride)
+<<<<<<< HEAD
 		*((volatile u64 *)gpa);
+=======
+		*((volatile uint64_t *)gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	GUEST_SYNC(2);
 
 	/*
@@ -55,7 +69,11 @@ static void guest_code(u64 start_gpa, u64 end_gpa, u64 stride)
 #elif defined(__aarch64__)
 			asm volatile("str %0, [%0]" :: "r" (gpa) : "memory");
 #else
+<<<<<<< HEAD
 			vcpu_arch_put_guest(*((volatile u64 *)gpa), gpa);
+=======
+			vcpu_arch_put_guest(*((volatile uint64_t *)gpa), gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	} while (!READ_ONCE(mprotect_ro_done) || !READ_ONCE(all_vcpus_hit_ro_fault));
 
@@ -68,7 +86,11 @@ static void guest_code(u64 start_gpa, u64 end_gpa, u64 stride)
 #endif
 
 	for (gpa = start_gpa; gpa < end_gpa; gpa += stride)
+<<<<<<< HEAD
 		vcpu_arch_put_guest(*((volatile u64 *)gpa), gpa);
+=======
+		vcpu_arch_put_guest(*((volatile uint64_t *)gpa), gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	GUEST_SYNC(4);
 
 	GUEST_ASSERT(0);
@@ -76,8 +98,13 @@ static void guest_code(u64 start_gpa, u64 end_gpa, u64 stride)
 
 struct vcpu_info {
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	u64 start_gpa;
 	u64 end_gpa;
+=======
+	uint64_t start_gpa;
+	uint64_t end_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int nr_vcpus;
@@ -203,10 +230,17 @@ static void *vcpu_worker(void *data)
 }
 
 static pthread_t *spawn_workers(struct kvm_vm *vm, struct kvm_vcpu **vcpus,
+<<<<<<< HEAD
 				u64 start_gpa, u64 end_gpa)
 {
 	struct vcpu_info *info;
 	gpa_t gpa, nr_bytes;
+=======
+				uint64_t start_gpa, uint64_t end_gpa)
+{
+	struct vcpu_info *info;
+	uint64_t gpa, nr_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pthread_t *threads;
 	int i;
 
@@ -217,7 +251,11 @@ static pthread_t *spawn_workers(struct kvm_vm *vm, struct kvm_vcpu **vcpus,
 	TEST_ASSERT(info, "Failed to allocate vCPU gpa ranges");
 
 	nr_bytes = ((end_gpa - start_gpa) / nr_vcpus) &
+<<<<<<< HEAD
 			~((u64)vm->page_size - 1);
+=======
+			~((uint64_t)vm->page_size - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TEST_ASSERT(nr_bytes, "C'mon, no way you have %d CPUs", nr_vcpus);
 
 	for (i = 0, gpa = start_gpa; i < nr_vcpus; i++, gpa += nr_bytes) {
@@ -278,11 +316,19 @@ int main(int argc, char *argv[])
 	 * just below the 4gb boundary.  This test could create memory at
 	 * 1gb-3gb,but it's simpler to skip straight to 4gb.
 	 */
+<<<<<<< HEAD
 	const u64 start_gpa = SZ_4G;
 	const int first_slot = 1;
 
 	struct timespec time_start, time_run1, time_reset, time_run2, time_ro, time_rw;
 	u64 max_gpa, gpa, slot_size, max_mem, i;
+=======
+	const uint64_t start_gpa = SZ_4G;
+	const int first_slot = 1;
+
+	struct timespec time_start, time_run1, time_reset, time_run2, time_ro, time_rw;
+	uint64_t max_gpa, gpa, slot_size, max_mem, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int max_slots, slot, opt, fd;
 	bool hugepages = false;
 	struct kvm_vcpu **vcpus;
@@ -347,7 +393,11 @@ int main(int argc, char *argv[])
 
 	/* Pre-fault the memory to avoid taking mmap_sem on guest page faults. */
 	for (i = 0; i < slot_size; i += vm->page_size)
+<<<<<<< HEAD
 		((u8 *)mem)[i] = 0xaa;
+=======
+		((uint8_t *)mem)[i] = 0xaa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpa = 0;
 	for (slot = first_slot; slot < max_slots; slot++) {

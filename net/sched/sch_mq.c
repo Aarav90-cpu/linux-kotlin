@@ -201,7 +201,11 @@ static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
 	struct net_device *dev = qdisc_dev(sch);
 
 	if (dev->flags & IFF_UP)
+<<<<<<< HEAD
 		dev_deactivate(dev, false);
+=======
+		dev_deactivate(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*old = dev_graft_qdisc(dev_queue, new);
 	if (new)

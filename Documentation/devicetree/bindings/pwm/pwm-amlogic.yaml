@@ -39,10 +39,14 @@ properties:
           - amlogic,meson-s4-pwm
       - items:
           - enum:
+<<<<<<< HEAD
               - amlogic,a4-pwm
               - amlogic,a5-pwm
               - amlogic,c3-pwm
               - amlogic,t7-pwm
+=======
+              - amlogic,c3-pwm
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - amlogic,meson-a1-pwm
           - const: amlogic,meson-s4-pwm
       - items:

@@ -25,7 +25,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include <sched.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const int PORT = 8888;
 
@@ -157,6 +160,7 @@ static void test(int *rcv_fds, int count, int proto)
 	close(epfd);
 }
 
+<<<<<<< HEAD
 static void setup_netns(void)
 {
 	if (unshare(CLONE_NEWNET))
@@ -165,12 +169,17 @@ static void setup_netns(void)
 		error(1, 0, "failed to bring up lo interface in netns");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int main(void)
 {
 	int rcv_fds[32], i;
 
+<<<<<<< HEAD
 	setup_netns();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fprintf(stderr, "---- UDP IPv4 created before IPv6 ----\n");
 	build_rcv_fd(AF_INET, SOCK_DGRAM, rcv_fds, 5);
 	build_rcv_fd(AF_INET6, SOCK_DGRAM, &(rcv_fds[5]), 5);

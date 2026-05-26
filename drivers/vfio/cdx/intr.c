@@ -32,6 +32,7 @@ static int vfio_cdx_msi_enable(struct vfio_cdx_device *vdev, int nvec)
 		return -ENOMEM;
 
 	ret = cdx_enable_msi(cdx_dev);
+<<<<<<< HEAD
 	if (ret)
 		goto err_free;
 
@@ -39,11 +40,26 @@ static int vfio_cdx_msi_enable(struct vfio_cdx_device *vdev, int nvec)
 	ret = msi_domain_alloc_irqs(dev, MSI_DEFAULT_DOMAIN, nvec);
 	if (ret)
 		goto err_disable;
+=======
+	if (ret) {
+		kfree(vdev->cdx_irqs);
+		return ret;
+	}
+
+	/* Allocate cdx MSIs */
+	ret = msi_domain_alloc_irqs(dev, MSI_DEFAULT_DOMAIN, nvec);
+	if (ret) {
+		cdx_disable_msi(cdx_dev);
+		kfree(vdev->cdx_irqs);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (msi_idx = 0; msi_idx < nvec; msi_idx++)
 		vdev->cdx_irqs[msi_idx].irq_no = msi_get_virq(dev, msi_idx);
 
 	vdev->msi_count = nvec;
+<<<<<<< HEAD
 
 	return 0;
 
@@ -53,6 +69,11 @@ err_free:
 	kfree(vdev->cdx_irqs);
 	vdev->cdx_irqs = NULL;
 	return ret;
+=======
+	vdev->config_msi = 1;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int vfio_cdx_msi_set_vector_signal(struct vfio_cdx_device *vdev,
@@ -130,7 +151,11 @@ static void vfio_cdx_msi_disable(struct vfio_cdx_device *vdev)
 
 	vfio_cdx_msi_set_block(vdev, 0, vdev->msi_count, NULL);
 
+<<<<<<< HEAD
 	if (!vdev->cdx_irqs)
+=======
+	if (!vdev->config_msi)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
@@ -139,6 +164,10 @@ static void vfio_cdx_msi_disable(struct vfio_cdx_device *vdev)
 
 	vdev->cdx_irqs = NULL;
 	vdev->msi_count = 0;
+<<<<<<< HEAD
+=======
+	vdev->config_msi = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
@@ -163,7 +192,11 @@ static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
 		s32 *fds = data;
 		int ret;
 
+<<<<<<< HEAD
 		if (vdev->cdx_irqs)
+=======
+		if (vdev->config_msi)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return vfio_cdx_msi_set_block(vdev, start, count,
 						  fds);
 		ret = vfio_cdx_msi_enable(vdev, cdx_dev->num_msi);
@@ -177,7 +210,12 @@ static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!vdev->cdx_irqs)
+=======
+	/* Ensure MSI is configured before accessing cdx_irqs */
+	if (!vdev->config_msi)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	for (i = start; i < start + count; i++) {

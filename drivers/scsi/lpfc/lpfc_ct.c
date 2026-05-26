@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -2427,14 +2431,23 @@ lpfc_cmpl_ct_disc_fdmi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 
 			/* CGN is only for the physical port, no vports */
 			if (lpfc_fdmi_cmd(vport, ndlp, cmd,
+<<<<<<< HEAD
 					  LPFC_FDMI_VENDOR_ATTR_mi) == 0) {
 				phba->link_flag |= LS_CT_VEN_RPA;
 				lpfc_printf_log(phba, KERN_INFO,
+=======
+					  LPFC_FDMI_VENDOR_ATTR_mi) == 0)
+				phba->link_flag |= LS_CT_VEN_RPA;
+			lpfc_printf_log(phba, KERN_INFO,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					LOG_DISCOVERY | LOG_ELS,
 					"6458 Send MI FDMI:%x Flag x%x\n",
 					phba->sli4_hba.pc_sli4_params.mi_ver,
 					phba->link_flag);
+<<<<<<< HEAD
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			lpfc_printf_log(phba, KERN_INFO,
 					LOG_DISCOVERY | LOG_ELS,
@@ -3215,7 +3228,11 @@ lpfc_fdmi_cmd(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 		     struct lpfc_iocbq *rspiocb);
 
 	if (!ndlp)
+<<<<<<< HEAD
 		goto fdmi_cmd_exit;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cmpl = lpfc_cmpl_ct_disc_fdmi; /* called from discovery */
 
@@ -3321,7 +3338,11 @@ hba_out:
 		if (vport->port_type != LPFC_PHYSICAL_PORT) {
 			ndlp = lpfc_findnode_did(phba->pport, FDMI_DID);
 			if (!ndlp)
+<<<<<<< HEAD
 				goto fdmi_cmd_free_rspvirt;
+=======
+				return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		fallthrough;
 	case SLI_MGMT_RPA:
@@ -3397,7 +3418,11 @@ port_out:
 		if (vport->port_type != LPFC_PHYSICAL_PORT) {
 			ndlp = lpfc_findnode_did(phba->pport, FDMI_DID);
 			if (!ndlp)
+<<<<<<< HEAD
 				goto fdmi_cmd_free_rspvirt;
+=======
+				return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		fallthrough;
 	case SLI_MGMT_DPA:

@@ -35,7 +35,10 @@
  */
 #define cpu_has_cpucfg		cpu_opt(LOONGARCH_CPU_CPUCFG)
 #define cpu_has_lam		cpu_opt(LOONGARCH_CPU_LAM)
+<<<<<<< HEAD
 #define cpu_has_lam_bh		cpu_opt(LOONGARCH_CPU_LAM_BH)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define cpu_has_scq		cpu_opt(LOONGARCH_CPU_SCQ)
 #define cpu_has_ual		cpu_opt(LOONGARCH_CPU_UAL)
 #define cpu_has_fpu		cpu_opt(LOONGARCH_CPU_FPU)

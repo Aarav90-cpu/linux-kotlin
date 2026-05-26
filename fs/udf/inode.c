@@ -147,16 +147,24 @@ void udf_evict_inode(struct inode *inode)
 		if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB &&
 		    inode->i_size != iinfo->i_lenExtents) {
 			udf_warn(inode->i_sb,
+<<<<<<< HEAD
 				 "Inode %llu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
+=======
+				 "Inode %lu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 inode->i_ino, inode->i_mode,
 				 (unsigned long long)inode->i_size,
 				 (unsigned long long)iinfo->i_lenExtents);
 		}
 	}
 	truncate_inode_pages_final(&inode->i_data);
+<<<<<<< HEAD
 	if (!want_delete)
 		mmb_sync(&iinfo->i_metadata_bhs);
 	mmb_invalidate(&iinfo->i_metadata_bhs);
+=======
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 	kfree(iinfo->i_data);
 	iinfo->i_data = NULL;
@@ -733,7 +741,11 @@ static int inode_getblk(struct inode *inode, struct udf_map_rq *map)
 	sector_t offset = 0;
 	int8_t etype, tmpetype;
 	struct udf_inode_info *iinfo = UDF_I(inode);
+<<<<<<< HEAD
 	udf_pblk_t goal = 0, pgoal = 0;
+=======
+	udf_pblk_t goal = 0, pgoal = iinfo->i_location.logicalBlockNum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int lastblock = 0;
 	bool isBeyondEOF = false;
 	int ret = 0;
@@ -892,10 +904,18 @@ static int inode_getblk(struct inode *inode, struct udf_map_rq *map)
 	else { /* otherwise, allocate a new block */
 		if (iinfo->i_next_alloc_block == map->lblk)
 			goal = iinfo->i_next_alloc_goal;
+<<<<<<< HEAD
 		if (!goal)
 			goal = pgoal;
 		if (!goal)
 			goal = iinfo->i_location.logicalBlockNum + 1;
+=======
+
+		if (!goal) {
+			if (!(goal = pgoal)) /* XXX: what was intended here? */
+				goal = iinfo->i_location.logicalBlockNum + 1;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		newblocknum = udf_new_block(inode->i_sb, inode,
 				iinfo->i_location.partitionReferenceNum,
@@ -1259,7 +1279,11 @@ struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
 		memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
 		set_buffer_uptodate(bh);
 		unlock_buffer(bh);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(bh, &UDF_I(inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return bh;
 	}
 
@@ -1384,13 +1408,21 @@ reread:
 	 */
 	bh = udf_read_ptagged(inode->i_sb, iloc, 0, &ident);
 	if (!bh) {
+<<<<<<< HEAD
 		udf_err(inode->i_sb, "(ino %llu) failed !bh\n", inode->i_ino);
+=======
+		udf_err(inode->i_sb, "(ino %lu) failed !bh\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 
 	if (ident != TAG_IDENT_FE && ident != TAG_IDENT_EFE &&
 	    ident != TAG_IDENT_USE) {
+<<<<<<< HEAD
 		udf_err(inode->i_sb, "(ino %llu) failed ident=%u\n",
+=======
+		udf_err(inode->i_sb, "(ino %lu) failed ident=%u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, ident);
 		goto out;
 	}
@@ -1639,7 +1671,11 @@ reread:
 		udf_debug("METADATA BITMAP FILE-----\n");
 		break;
 	default:
+<<<<<<< HEAD
 		udf_err(inode->i_sb, "(ino %llu) failed unknown file type=%u\n",
+=======
+		udf_err(inode->i_sb, "(ino %lu) failed unknown file type=%u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, fe->icbTag.fileType);
 		goto out;
 	}
@@ -1940,7 +1976,11 @@ finish:
 	if (do_sync) {
 		sync_dirty_buffer(bh);
 		if (buffer_write_io_error(bh)) {
+<<<<<<< HEAD
 			udf_warn(inode->i_sb, "IO error syncing udf inode [%08llx]\n",
+=======
+			udf_warn(inode->i_sb, "IO error syncing udf inode [%08lx]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 inode->i_ino);
 			err = -EIO;
 		}
@@ -2007,7 +2047,11 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
 	memset(bh->b_data, 0x00, sb->s_blocksize);
 	set_buffer_uptodate(bh);
 	unlock_buffer(bh);
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(bh, &UDF_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	aed = (struct allocExtDesc *)(bh->b_data);
 	if (!UDF_QUERY_FLAG(sb, UDF_FLAG_STRICT)) {
@@ -2102,7 +2146,11 @@ int __udf_add_aext(struct inode *inode, struct extent_position *epos,
 		else
 			udf_update_tag(epos->bh->b_data,
 					sizeof(struct allocExtDesc));
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(epos->bh, &iinfo->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(epos->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -2186,7 +2234,11 @@ void udf_write_aext(struct inode *inode, struct extent_position *epos,
 				       le32_to_cpu(aed->lengthAllocDescs) +
 				       sizeof(struct allocExtDesc));
 		}
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(epos->bh, &iinfo->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(epos->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		mark_inode_dirty(inode);
 	}
@@ -2222,7 +2274,11 @@ int udf_next_aext(struct inode *inode, struct extent_position *epos,
 
 		if (++indirections > UDF_MAX_INDIR_EXTS) {
 			udf_err(inode->i_sb,
+<<<<<<< HEAD
 				"too many indirect extents in inode %llu\n",
+=======
+				"too many indirect extents in inode %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				inode->i_ino);
 			return -EFSCORRUPTED;
 		}
@@ -2394,7 +2450,11 @@ int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
 			else
 				udf_update_tag(oepos.bh->b_data,
 						sizeof(struct allocExtDesc));
+<<<<<<< HEAD
 			mmb_mark_buffer_dirty(oepos.bh, &iinfo->i_metadata_bhs);
+=======
+			mark_buffer_dirty_inode(oepos.bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		udf_write_aext(inode, &oepos, &eloc, elen, 1);
@@ -2411,7 +2471,11 @@ int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
 			else
 				udf_update_tag(oepos.bh->b_data,
 						sizeof(struct allocExtDesc));
+<<<<<<< HEAD
 			mmb_mark_buffer_dirty(oepos.bh, &iinfo->i_metadata_bhs);
+=======
+			mark_buffer_dirty_inode(oepos.bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

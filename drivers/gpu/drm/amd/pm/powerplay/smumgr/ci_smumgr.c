@@ -245,7 +245,11 @@ static void ci_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 		smu_data->power_tune_defaults = &defaults_hawaii_pro;
 		break;
 	case 0x67B8:
+<<<<<<< HEAD
 	case 0x67B0:
+=======
+	case 0x66B0:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		smu_data->power_tune_defaults = &defaults_hawaii_xt;
 		break;
 	case 0x6640:
@@ -543,11 +547,19 @@ static int ci_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
 {
 	struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
 	const struct ci_pt_defaults *defaults = smu_data->power_tune_defaults;
+<<<<<<< HEAD
+=======
+	uint32_t temp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ci_read_smc_sram_dword(hwmgr,
 			fuse_table_offset +
 			offsetof(SMU7_Discrete_PmFuses, TdcWaterfallCtl),
+<<<<<<< HEAD
 			(uint32_t *)&smu_data->power_tune_table.TdcWaterfallCtl, SMC_RAM_END))
+=======
+			(uint32_t *)&temp, SMC_RAM_END))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		PP_ASSERT_WITH_CODE(false,
 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
 				return -EINVAL);
@@ -1216,7 +1228,11 @@ static int ci_populate_single_memory_level(
 	}
 
 	memory_level->EnabledForThrottle = 1;
+<<<<<<< HEAD
 	memory_level->EnabledForActivity = 0;
+=======
+	memory_level->EnabledForActivity = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memory_level->UpH = data->current_profile_setting.mclk_up_hyst;
 	memory_level->DownH = data->current_profile_setting.mclk_down_hyst;
 	memory_level->VoltageDownH = 0;
@@ -1321,6 +1337,7 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
 			return result;
 	}
 
+<<<<<<< HEAD
 	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
 		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
 		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
@@ -1329,6 +1346,8 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
 
 	dev_id = adev->pdev->device;

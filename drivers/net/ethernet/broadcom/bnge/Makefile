@@ -11,5 +11,9 @@ bng_en-y := bnge_core.o \
 	    bnge_netdev.o \
 	    bnge_ethtool.o \
 	    bnge_auxr.o \
+<<<<<<< HEAD
 	    bnge_txrx.o \
 	    bnge_link.o
+=======
+	    bnge_txrx.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

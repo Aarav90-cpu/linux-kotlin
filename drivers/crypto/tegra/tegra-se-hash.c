@@ -4,7 +4,10 @@
  * Crypto driver to handle HASH algorithms using NVIDIA Security Engine.
  */
 
+<<<<<<< HEAD
 #include <linux/bottom_half.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/clk.h>
 #include <linux/dma-mapping.h>
 #include <linux/module.h>
@@ -547,9 +550,13 @@ static int tegra_sha_do_one_req(struct crypto_engine *engine, void *areq)
 	}
 
 out:
+<<<<<<< HEAD
 	local_bh_disable();
 	crypto_finalize_hash_request(se->engine, req, ret);
 	local_bh_enable();
+=======
+	crypto_finalize_hash_request(se->engine, req, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

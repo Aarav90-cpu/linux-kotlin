@@ -44,20 +44,31 @@ void ttm_backup_drop(struct file *backup, pgoff_t handle)
  * @dst: The struct page to copy into.
  * @handle: The handle returned when the page was backed up.
  * @intr: Try to perform waits interruptible or at least killable.
+<<<<<<< HEAD
  * @additional_gfp: GFP mask to add to the default GFP mask if any.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 on success, Negative error code on failure, notably
  * -EINTR if @intr was set to true and a signal is pending.
  */
 int ttm_backup_copy_page(struct file *backup, struct page *dst,
+<<<<<<< HEAD
 			 pgoff_t handle, bool intr, gfp_t additional_gfp)
+=======
+			 pgoff_t handle, bool intr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct address_space *mapping = backup->f_mapping;
 	struct folio *from_folio;
 	pgoff_t idx = ttm_backup_handle_to_shmem_idx(handle);
 
+<<<<<<< HEAD
 	from_folio = shmem_read_folio_gfp(mapping, idx, mapping_gfp_mask(mapping)
 					  | additional_gfp);
+=======
+	from_folio = shmem_read_folio(mapping, idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(from_folio))
 		return PTR_ERR(from_folio);
 

@@ -1131,6 +1131,10 @@ config CSRC_IOASIC
 	bool
 
 config CSRC_R4K
+<<<<<<< HEAD
+=======
+	select CLOCKSOURCE_WATCHDOG if CPU_FREQ
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool
 
 config CSRC_SB1250

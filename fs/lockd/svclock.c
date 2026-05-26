@@ -28,11 +28,25 @@
 #include <linux/sched.h>
 #include <linux/sunrpc/clnt.h>
 #include <linux/sunrpc/svc_xprt.h>
+<<<<<<< HEAD
 
 #include "lockd.h"
 
 #define NLMDBG_FACILITY		NLMDBG_SVCLOCK
 
+=======
+#include <linux/lockd/nlm.h>
+#include <linux/lockd/lockd.h>
+
+#define NLMDBG_FACILITY		NLMDBG_SVCLOCK
+
+#ifdef CONFIG_LOCKD_V4
+#define nlm_deadlock	nlm4_deadlock
+#else
+#define nlm_deadlock	nlm_lck_denied
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void nlmsvc_release_block(struct nlm_block *block);
 static void	nlmsvc_insert_block(struct nlm_block *block, unsigned long);
 static void	nlmsvc_remove_block(struct nlm_block *block);
@@ -74,11 +88,14 @@ static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
 
 	return buf;
 }
+<<<<<<< HEAD
 #else
 static inline const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
 {
 	return "???";
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /*
@@ -462,7 +479,11 @@ nlmsvc_defer_lock_rqst(struct svc_rqst *rqstp, struct nlm_block *block)
 		block->b_deferred_req =
 			rqstp->rq_chandle.defer(block->b_cache_req);
 		if (block->b_deferred_req != NULL)
+<<<<<<< HEAD
 			status = nlm__int__drop_reply;
+=======
+			status = nlm_drop_reply;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	dprintk("lockd: nlmsvc_defer_lock_rqst block %p flags %d status %d\n",
 		block, block->b_flags, ntohl(status));
@@ -486,7 +507,11 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
 	int			async_block = 0;
 	__be32			ret;
 
+<<<<<<< HEAD
 	dprintk("lockd: nlmsvc_lock(%s/%llu, ty=%d, pi=%d, %Ld-%Ld, bl=%d)\n",
+=======
+	dprintk("lockd: nlmsvc_lock(%s/%ld, ty=%d, pi=%d, %Ld-%Ld, bl=%d)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				inode->i_sb->s_id, inode->i_ino,
 				lock->fl.c.flc_type,
 				lock->fl.c.flc_pid,
@@ -530,7 +555,11 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
 			ret = nlm_lck_denied;
 			goto out;
 		}
+<<<<<<< HEAD
 		ret = nlm__int__drop_reply;
+=======
+		ret = nlm_drop_reply;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
@@ -588,7 +617,11 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
 			goto out;
 		case -EDEADLK:
 			nlmsvc_remove_block(block);
+<<<<<<< HEAD
 			ret = nlm__int__deadlock;
+=======
+			ret = nlm_deadlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		default:			/* includes ENOLCK */
 			nlmsvc_remove_block(block);
@@ -616,7 +649,11 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
 	int			mode;
 	__be32			ret;
 
+<<<<<<< HEAD
 	dprintk("lockd: nlmsvc_testlock(%s/%llu, ty=%d, %Ld-%Ld)\n",
+=======
+	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				nlmsvc_file_inode(file)->i_sb->s_id,
 				nlmsvc_file_inode(file)->i_ino,
 				lock->fl.c.flc_type,
@@ -675,7 +712,11 @@ nlmsvc_unlock(struct net *net, struct nlm_file *file, struct nlm_lock *lock)
 {
 	int	error = 0;
 
+<<<<<<< HEAD
 	dprintk("lockd: nlmsvc_unlock(%s/%llu, pi=%d, %Ld-%Ld)\n",
+=======
+	dprintk("lockd: nlmsvc_unlock(%s/%ld, pi=%d, %Ld-%Ld)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				nlmsvc_file_inode(file)->i_sb->s_id,
 				nlmsvc_file_inode(file)->i_ino,
 				lock->fl.c.flc_pid,
@@ -715,7 +756,11 @@ nlmsvc_cancel_blocked(struct net *net, struct nlm_file *file, struct nlm_lock *l
 	int status = 0;
 	int mode;
 
+<<<<<<< HEAD
 	dprintk("lockd: nlmsvc_cancel(%s/%llu, pi=%d, %Ld-%Ld)\n",
+=======
+	dprintk("lockd: nlmsvc_cancel(%s/%ld, pi=%d, %Ld-%Ld)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				nlmsvc_file_inode(file)->i_sb->s_id,
 				nlmsvc_file_inode(file)->i_ino,
 				lock->fl.c.flc_pid,

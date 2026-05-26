@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-16 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -300,6 +304,7 @@
 	ABM_SF(ABM0_DC_ABM1_HG_BIN_57_64_SHIFT_INDEX, \
 			ABM1_HG_BIN_57_64_SHIFT_INDEX, mask_sh)
 
+<<<<<<< HEAD
 #define ABM_MASK_SH_LIST_DCN42(mask_sh) \
 	ABM_SF(ABM0_DC_ABM1_HG_MISC_CTRL, \
 			ABM1_HG_NUM_OF_BINS_SEL, mask_sh), \
@@ -358,6 +363,8 @@
 	ABM_SF(ABM0_DC_ABM1_HG_BIN_57_64_SHIFT_INDEX, \
 			ABM1_HG_BIN_57_64_SHIFT_INDEX, mask_sh)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ABM_REG_FIELD_LIST(type) \
 	type ABM1_HG_NUM_OF_BINS_SEL; \
 	type ABM1_HG_VMAX_SEL; \

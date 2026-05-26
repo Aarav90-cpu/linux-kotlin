@@ -421,6 +421,7 @@ int use_nonstatic_global_other_sec(void *ctx)
 	return __nonstatic_global(in_user);
 }
 
+<<<<<<< HEAD
 SEC("syscall")
 int load_with_nonzero_offset(struct simple_ctx *ctx)
 {
@@ -451,6 +452,8 @@ l3:
 	return 5;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else /* __BPF_FEATURE_GOTOX */
 
 #define SKIP_TEST(TEST_NAME)				\
@@ -472,7 +475,10 @@ SKIP_TEST(use_static_global_other_sec);
 SKIP_TEST(use_nonstatic_global1);
 SKIP_TEST(use_nonstatic_global2);
 SKIP_TEST(use_nonstatic_global_other_sec);
+<<<<<<< HEAD
 SKIP_TEST(load_with_nonzero_offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __BPF_FEATURE_GOTOX */
 

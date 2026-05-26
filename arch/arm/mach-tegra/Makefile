@@ -15,3 +15,8 @@ obj-$(CONFIG_HOTPLUG_CPU)               += hotplug.o
 
 obj-$(CONFIG_ARCH_TEGRA_114_SOC)	+= pm-tegra30.o
 obj-$(CONFIG_ARCH_TEGRA_124_SOC)	+= pm-tegra30.o
+<<<<<<< HEAD
+=======
+
+obj-$(CONFIG_ARCH_TEGRA_2x_SOC)		+= board-paz00.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

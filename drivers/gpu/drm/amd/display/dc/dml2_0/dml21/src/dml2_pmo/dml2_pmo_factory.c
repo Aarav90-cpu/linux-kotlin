@@ -3,25 +3,39 @@
 // Copyright 2024 Advanced Micro Devices, Inc.
 
 #include "dml2_pmo_factory.h"
+<<<<<<< HEAD
 #include "dml2_pmo_dcn3.h"
 #include "dml2_pmo_dcn4_fams2.h"
+=======
+#include "dml2_pmo_dcn4_fams2.h"
+#include "dml2_pmo_dcn3.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "dml2_external_lib_deps.h"
 
 static bool dummy_init_for_stutter(struct dml2_pmo_init_for_stutter_in_out *in_out)
 {
+<<<<<<< HEAD
 	(void)in_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
 static bool dummy_test_for_stutter(struct dml2_pmo_test_for_stutter_in_out *in_out)
 {
+<<<<<<< HEAD
 	(void)in_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
 static bool dummy_optimize_for_stutter(struct dml2_pmo_optimize_for_stutter_in_out *in_out)
 {
+<<<<<<< HEAD
 	(void)in_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
@@ -40,7 +54,10 @@ bool dml2_pmo_create(enum dml2_project_id project_id, struct dml2_pmo_instance *
 		out->optimize_dcc_mcache = pmo_dcn4_fams2_optimize_dcc_mcache;
 		result = true;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn40:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_dcn4x_stage2:
 		out->initialize = pmo_dcn3_initialize;
 
@@ -60,7 +77,10 @@ bool dml2_pmo_create(enum dml2_project_id project_id, struct dml2_pmo_instance *
 
 		result = true;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn42:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_dcn4x_stage2_auto_drr_svp:
 		out->initialize = pmo_dcn4_fams2_initialize;
 

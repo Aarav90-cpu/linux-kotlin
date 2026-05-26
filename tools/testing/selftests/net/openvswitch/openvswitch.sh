@@ -26,7 +26,10 @@ tests="
 	netlink_checks				ovsnl: validate netlink attrs and settings
 	upcall_interfaces			ovs: test the upcall interfaces
 	tunnel_metadata				ovs: test extraction of tunnel metadata
+<<<<<<< HEAD
 	tunnel_refcount				ovs: test tunnel vport reference cleanup
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drop_reason				drop: test drop reasons are emitted
 	psample					psample: Sampling packets with psample"
 
@@ -831,6 +834,7 @@ test_tunnel_metadata() {
 	return 0
 }
 
+<<<<<<< HEAD
 test_tunnel_refcount() {
 	sbxname="test_tunnel_refcount"
 	sbx_add "${sbxname}" || return 1
@@ -867,6 +871,8 @@ test_tunnel_refcount() {
 	return 0
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 run_test() {
 	(
 	tname="$1"

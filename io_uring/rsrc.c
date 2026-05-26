@@ -168,7 +168,11 @@ bool io_rsrc_cache_init(struct io_ring_ctx *ctx)
 void io_rsrc_cache_free(struct io_ring_ctx *ctx)
 {
 	io_alloc_cache_free(&ctx->node_cache, kfree);
+<<<<<<< HEAD
 	io_alloc_cache_free(&ctx->imu_cache, kvfree);
+=======
+	io_alloc_cache_free(&ctx->imu_cache, kfree);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_clear_table_tags(struct io_rsrc_data *data)
@@ -238,9 +242,12 @@ static int __io_sqe_files_update(struct io_ring_ctx *ctx,
 			continue;
 
 		i = up->offset + done;
+<<<<<<< HEAD
 		if (i >= ctx->file_table.data.nr)
 			break;
 		i = array_index_nospec(i, ctx->file_table.data.nr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (io_reset_rsrc_node(ctx, &ctx->file_table.data, i))
 			io_file_bitmap_clear(&ctx->file_table, i);
 
@@ -298,7 +305,11 @@ static int __io_sqe_buffers_update(struct io_ring_ctx *ctx,
 		u64 tag = 0;
 
 		uvec = u64_to_user_ptr(user_data);
+<<<<<<< HEAD
 		iov = iovec_from_user(uvec, 1, 1, &fast_iov, io_is_compat(ctx));
+=======
+		iov = iovec_from_user(uvec, 1, 1, &fast_iov, ctx->compat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(iov)) {
 			err = PTR_ERR(iov);
 			break;
@@ -322,7 +333,11 @@ static int __io_sqe_buffers_update(struct io_ring_ctx *ctx,
 		i = array_index_nospec(up->offset + done, ctx->buf_table.nr);
 		io_reset_rsrc_node(ctx, &ctx->buf_table, i);
 		ctx->buf_table.nodes[i] = node;
+<<<<<<< HEAD
 		if (io_is_compat(ctx))
+=======
+		if (ctx->compat)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			user_data += sizeof(struct compat_iovec);
 		else
 			user_data += sizeof(struct iovec);
@@ -886,12 +901,20 @@ int io_sqe_buffers_register(struct io_ring_ctx *ctx, void __user *arg,
 
 		if (arg) {
 			uvec = (struct iovec __user *) arg;
+<<<<<<< HEAD
 			iov = iovec_from_user(uvec, 1, 1, &fast_iov, io_is_compat(ctx));
+=======
+			iov = iovec_from_user(uvec, 1, 1, &fast_iov, ctx->compat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (IS_ERR(iov)) {
 				ret = PTR_ERR(iov);
 				break;
 			}
+<<<<<<< HEAD
 			if (io_is_compat(ctx))
+=======
+			if (ctx->compat)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				arg += sizeof(struct compat_iovec);
 			else
 				arg += sizeof(struct iovec);
@@ -964,7 +987,11 @@ int io_buffer_register_bvec(struct io_uring_cmd *cmd, struct request *rq,
 	 */
 	imu = io_alloc_imu(ctx, blk_rq_nr_phys_segments(rq));
 	if (!imu) {
+<<<<<<< HEAD
 		io_cache_free(&ctx->node_cache, node);
+=======
+		kfree(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -ENOMEM;
 		goto unlock;
 	}
@@ -1276,7 +1303,11 @@ int io_register_clone_buffers(struct io_ring_ctx *ctx, void __user *arg)
 		return -EINVAL;
 
 	registered_src = (buf.flags & IORING_REGISTER_SRC_REGISTERED) != 0;
+<<<<<<< HEAD
 	file = io_uring_ctx_get_file(buf.src_fd, registered_src);
+=======
+	file = io_uring_register_get_file(buf.src_fd, registered_src);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(file))
 		return PTR_ERR(file);
 
@@ -1298,8 +1329,12 @@ out:
 	if (src_ctx != ctx)
 		mutex_unlock(&src_ctx->uring_lock);
 
+<<<<<<< HEAD
 	if (!registered_src)
 		fput(file);
+=======
+	fput(file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

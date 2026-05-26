@@ -7,10 +7,15 @@
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
 #include <linux/device.h>
 #include <linux/gfp.h>
 #include <linux/mutex.h>
+=======
+#include <linux/device.h>
+#include <linux/gfp.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <media/v4l2-subdev.h>
 
@@ -108,16 +113,32 @@ static const struct v4l2_ctrl_config sru_intensity_control = {
  * V4L2 Subdevice Operations
  */
 
+<<<<<<< HEAD
 static const unsigned int sru_codes[] = {
 	MEDIA_BUS_FMT_ARGB8888_1X32,
 	MEDIA_BUS_FMT_AYUV8_1X32,
 };
+=======
+static int sru_enum_mbus_code(struct v4l2_subdev *subdev,
+			      struct v4l2_subdev_state *sd_state,
+			      struct v4l2_subdev_mbus_code_enum *code)
+{
+	static const unsigned int codes[] = {
+		MEDIA_BUS_FMT_ARGB8888_1X32,
+		MEDIA_BUS_FMT_AYUV8_1X32,
+	};
+
+	return vsp1_subdev_enum_mbus_code(subdev, sd_state, code, codes,
+					  ARRAY_SIZE(codes));
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int sru_enum_frame_size(struct v4l2_subdev *subdev,
 			       struct v4l2_subdev_state *sd_state,
 			       struct v4l2_subdev_frame_size_enum *fse)
 {
 	struct vsp1_sru *sru = to_sru(subdev);
+<<<<<<< HEAD
 	int ret;
 
 	ret = vsp1_subdev_enum_frame_size(subdev, sd_state, fse);
@@ -137,6 +158,31 @@ static int sru_enum_frame_size(struct v4l2_subdev *subdev,
 
 		guard(mutex)(&sru->entity.lock);
 
+=======
+	struct v4l2_subdev_state *state;
+	struct v4l2_mbus_framefmt *format;
+	int ret = 0;
+
+	state = vsp1_entity_get_state(&sru->entity, sd_state, fse->which);
+	if (!state)
+		return -EINVAL;
+
+	format = v4l2_subdev_state_get_format(state, SRU_PAD_SINK);
+
+	mutex_lock(&sru->entity.lock);
+
+	if (fse->index || fse->code != format->code) {
+		ret = -EINVAL;
+		goto done;
+	}
+
+	if (fse->pad == SRU_PAD_SINK) {
+		fse->min_width = SRU_MIN_SIZE;
+		fse->max_width = SRU_MAX_SIZE;
+		fse->min_height = SRU_MIN_SIZE;
+		fse->max_height = SRU_MAX_SIZE;
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fse->min_width = format->width;
 		fse->min_height = format->height;
 		if (format->width <= SRU_MAX_SIZE / 2 &&
@@ -149,7 +195,13 @@ static int sru_enum_frame_size(struct v4l2_subdev *subdev,
 		}
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+done:
+	mutex_unlock(&sru->entity.lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sru_try_format(struct vsp1_sru *sru,
@@ -245,14 +297,21 @@ done:
 }
 
 static const struct v4l2_subdev_pad_ops sru_pad_ops = {
+<<<<<<< HEAD
 	.enum_mbus_code = vsp1_subdev_enum_mbus_code,
+=======
+	.enum_mbus_code = sru_enum_mbus_code,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.enum_frame_size = sru_enum_frame_size,
 	.get_fmt = vsp1_subdev_get_pad_format,
 	.set_fmt = sru_set_format,
 };
 
 static const struct v4l2_subdev_ops sru_ops = {
+<<<<<<< HEAD
 	.core	= &vsp1_entity_core_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pad    = &sru_pad_ops,
 };
 
@@ -359,12 +418,15 @@ struct vsp1_sru *vsp1_sru_create(struct vsp1_device *vsp1)
 
 	sru->entity.ops = &sru_entity_ops;
 	sru->entity.type = VSP1_ENTITY_SRU;
+<<<<<<< HEAD
 	sru->entity.codes = sru_codes;
 	sru->entity.num_codes = ARRAY_SIZE(sru_codes);
 	sru->entity.min_width = SRU_MIN_SIZE;
 	sru->entity.max_width = SRU_MAX_SIZE;
 	sru->entity.min_height = SRU_MIN_SIZE;
 	sru->entity.max_height = SRU_MAX_SIZE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vsp1_entity_init(vsp1, &sru->entity, "sru", 2, &sru_ops,
 			       MEDIA_ENT_F_PROC_VIDEO_SCALER);

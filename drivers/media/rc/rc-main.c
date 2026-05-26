@@ -1611,7 +1611,10 @@ static void rc_dev_release(struct device *device)
 {
 	struct rc_dev *dev = to_rc_dev(device);
 
+<<<<<<< HEAD
 	ir_raw_event_free(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev);
 }
 
@@ -1774,6 +1777,10 @@ struct rc_dev *devm_rc_allocate_device(struct device *dev,
 	}
 
 	rc->dev.parent = dev;
+<<<<<<< HEAD
+=======
+	rc->managed_alloc = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*dr = rc;
 	devres_add(dev, dr);
 
@@ -2042,7 +2049,15 @@ void rc_unregister_device(struct rc_dev *dev)
 	device_del(&dev->dev);
 
 	ida_free(&rc_ida, dev->minor);
+<<<<<<< HEAD
 }
+=======
+
+	if (!dev->managed_alloc)
+		rc_free_device(dev);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(rc_unregister_device);
 
 /*

@@ -98,7 +98,11 @@ static bool nfp_bpf_map_update_value_ok(struct bpf_verifier_env *env)
 
 	offmap = map_to_offmap(reg1->map_ptr);
 	nfp_map = offmap->dev_priv;
+<<<<<<< HEAD
 	off = reg3->var_off.value;
+=======
+	off = reg3->off + reg3->var_off.value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < offmap->map.value_size; i++) {
 		struct bpf_stack_state *stack_entry;
@@ -137,7 +141,11 @@ nfp_bpf_stack_arg_ok(const char *fname, struct bpf_verifier_env *env,
 		return false;
 	}
 
+<<<<<<< HEAD
 	off = reg->var_off.value;
+=======
+	off = reg->var_off.value + reg->off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (-off % 4) {
 		pr_vlog(env, "%s: unaligned stack pointer %lld\n", fname, -off);
 		return false;
@@ -147,7 +155,11 @@ nfp_bpf_stack_arg_ok(const char *fname, struct bpf_verifier_env *env,
 	if (!old_arg)
 		return true;
 
+<<<<<<< HEAD
 	old_off = old_arg->reg.var_off.value;
+=======
+	old_off = old_arg->reg.var_off.value + old_arg->reg.off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old_arg->var_off |= off != old_off;
 
 	return true;
@@ -358,8 +370,13 @@ nfp_bpf_check_stack_access(struct nfp_prog *nfp_prog,
 	if (meta->ptr.type == NOT_INIT)
 		return 0;
 
+<<<<<<< HEAD
 	old_off = meta->ptr.var_off.value;
 	new_off = reg->var_off.value;
+=======
+	old_off = meta->ptr.off + meta->ptr.var_off.value;
+	new_off = reg->off + reg->var_off.value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	meta->ptr_not_const |= old_off != new_off;
 
@@ -428,7 +445,11 @@ nfp_bpf_map_mark_used(struct bpf_verifier_env *env, struct nfp_insn_meta *meta,
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	off = reg->var_off.value + meta->insn.off;
+=======
+	off = reg->var_off.value + meta->insn.off + reg->off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size = BPF_LDST_BYTES(&meta->insn);
 	offmap = map_to_offmap(reg->map_ptr);
 	nfp_map = offmap->dev_priv;

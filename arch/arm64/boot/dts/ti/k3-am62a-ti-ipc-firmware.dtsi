@@ -66,7 +66,10 @@
 	mboxes = <&mailbox0_cluster0>, <&mbox_r5_0>;
 	memory-region = <&wkup_r5fss0_core0_dma_memory_region>,
 			<&wkup_r5fss0_core0_memory_region>;
+<<<<<<< HEAD
 	memory-region-names = "dma", "firmware";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -78,7 +81,10 @@
 	mboxes = <&mailbox0_cluster2>, <&mbox_mcu_r5_0>;
 	memory-region = <&mcu_r5fss0_core0_dma_memory_region>,
 			<&mcu_r5fss0_core0_memory_region>;
+<<<<<<< HEAD
 	memory-region-names = "dma", "firmware";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 

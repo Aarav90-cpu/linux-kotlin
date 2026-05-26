@@ -21,6 +21,7 @@ struct btrfs_block_group;
  * The higher the level, the more methods we try to reclaim space.
  */
 enum btrfs_reserve_flush_enum {
+<<<<<<< HEAD
 	/*
 	 * Used when we can't flush or don't need:
 	 *
@@ -39,6 +40,9 @@ enum btrfs_reserve_flush_enum {
 	 *    block reserve or rely on the global block reserve, like the above
 	 *    case.
 	 */
+=======
+	/* If we are in the transaction, we can't flush anything.*/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BTRFS_RESERVE_NO_FLUSH,
 
 	/*
@@ -113,7 +117,10 @@ enum btrfs_flush_state {
 	RUN_DELAYED_IPUTS	= 10,
 	COMMIT_TRANS		= 11,
 	RESET_ZONES		= 12,
+<<<<<<< HEAD
 	RECLAIM_ZONES		= 13,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum btrfs_space_info_sub_group {
@@ -292,7 +299,11 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
 				struct btrfs_block_group *block_group);
 void btrfs_update_space_info_chunk_size(struct btrfs_space_info *space_info,
 					u64 chunk_size);
+<<<<<<< HEAD
 struct btrfs_space_info *btrfs_find_space_info(const struct btrfs_fs_info *info,
+=======
+struct btrfs_space_info *btrfs_find_space_info(struct btrfs_fs_info *info,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       u64 flags);
 void btrfs_clear_space_info_full(struct btrfs_fs_info *info);
 void btrfs_dump_space_info(struct btrfs_space_info *info, u64 bytes,

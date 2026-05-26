@@ -18,9 +18,12 @@ struct sk_buff;
 struct sock;
 struct sockaddr;
 
+<<<<<<< HEAD
 struct dst_entry *inet6_csk_route_socket(struct sock *sk,
 					 struct flowi6 *fl6);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dst_entry *inet6_csk_route_req(const struct sock *sk,
 				      struct dst_entry *dst,
 				      struct flowi6 *fl6,
@@ -28,4 +31,8 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
 
 int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
 
+<<<<<<< HEAD
+=======
+struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _INET6_CONNECTION_SOCK_H */

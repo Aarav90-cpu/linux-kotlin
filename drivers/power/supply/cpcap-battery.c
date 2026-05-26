@@ -387,7 +387,11 @@ static const struct cpcap_battery_config cpcap_battery_bw8x_data = {
  * Safe values for any lipo battery likely to fit into a mapphone
  * battery bay.
  */
+<<<<<<< HEAD
 static const struct cpcap_battery_config cpcap_battery_unknown_data = {
+=======
+static const struct cpcap_battery_config cpcap_battery_unkown_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.cd_factor = 0x3cc,
 	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
 	.info.voltage_max_design = 4200000,
@@ -404,6 +408,7 @@ static int cpcap_battery_match_nvmem(struct device *dev, const void *data)
 		return 0;
 }
 
+<<<<<<< HEAD
 static void cpcap_battery_update_battery_data(struct cpcap_battery_ddata *ddata)
 {
 	struct power_supply_battery_info *info;
@@ -428,6 +433,8 @@ static void cpcap_battery_update_battery_data(struct cpcap_battery_ddata *ddata)
 			info->constant_charge_voltage_max_uv;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void cpcap_battery_detect_battery_type(struct cpcap_battery_ddata *ddata)
 {
 	struct nvmem_device *nvmem;
@@ -453,11 +460,16 @@ static void cpcap_battery_detect_battery_type(struct cpcap_battery_ddata *ddata)
 		ddata->config = cpcap_battery_bw8x_data;
 		break;
 	default:
+<<<<<<< HEAD
 		ddata->config = cpcap_battery_unknown_data;
 	}
 
 	if (ddata->psy)
 		cpcap_battery_update_battery_data(ddata);
+=======
+		ddata->config = cpcap_battery_unkown_data;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

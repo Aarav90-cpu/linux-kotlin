@@ -2529,7 +2529,11 @@ void __gfs2_free_blocks(struct gfs2_inode *ip, struct gfs2_rgrpd *rgd,
 	rgrp_unlock_local(rgd);
 
 	/* Directories keep their data in the metadata address space */
+<<<<<<< HEAD
 	if (meta || (ip->i_diskflags & GFS2_DIF_EXHASH) || gfs2_is_jdata(ip))
+=======
+	if (meta || ip->i_depth || gfs2_is_jdata(ip))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gfs2_journal_wipe(ip, bstart, blen);
 }
 

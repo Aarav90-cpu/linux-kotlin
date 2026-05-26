@@ -53,6 +53,7 @@ patternProperties:
 
     unevaluatedProperties: false
 
+<<<<<<< HEAD
   "^led@1[4-b]$":
     $ref: /schemas/leds/common.yaml#
     description: Output GPIO line with advanced LED features enabled.
@@ -69,6 +70,8 @@ patternProperties:
 
     unevaluatedProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -105,11 +108,14 @@ examples:
                 #size-cells = <0>;
                 reg = <1>;
             };
+<<<<<<< HEAD
 
             led@14 {
                 reg = <0x14>;
                 label = "phy0:green:indicator";
             };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
     };
 ...

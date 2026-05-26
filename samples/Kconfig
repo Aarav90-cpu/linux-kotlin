@@ -186,8 +186,11 @@ config SAMPLE_TIMER
 
 config SAMPLE_TSM_MR
 	tristate "TSM measurement sample"
+<<<<<<< HEAD
 	select CRYPTO_LIB_SHA256
 	select CRYPTO_LIB_SHA512
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select TSM_MEASUREMENTS
 	select VIRT_DRIVERS
 	help
@@ -323,6 +326,11 @@ config SAMPLE_HUNG_TASK
 	  detection by holding locks for a long time (256 seconds).
 
 source "samples/rust/Kconfig"
+<<<<<<< HEAD
+=======
+source "samples/kotlin/Kconfig"
+source "samples/android/Kconfig"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 source "samples/damon/Kconfig"
 

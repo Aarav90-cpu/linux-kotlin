@@ -9,7 +9,10 @@
 #include <linux/acpi.h>
 #include <linux/bitfield.h>
 #include <linux/debugfs.h>
+<<<<<<< HEAD
 #include <linux/i3c/master.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/idr.h>
 #include <linux/iopoll.h>
 #include <linux/kernel.h>
@@ -21,24 +24,33 @@
 #include <linux/pm_qos.h>
 #include <linux/pm_runtime.h>
 
+<<<<<<< HEAD
 #include "hci.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * There can up to 15 instances, but implementations have at most 2 at this
  * time.
  */
 #define INST_MAX 2
 
+<<<<<<< HEAD
 struct mipi_i3c_hci_pci_instance {
 	struct device *dev;
 	bool operational;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mipi_i3c_hci_pci {
 	struct pci_dev *pci;
 	void __iomem *base;
 	const struct mipi_i3c_hci_pci_info *info;
+<<<<<<< HEAD
 	struct mipi_i3c_hci_pci_instance instance[INST_MAX];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *private;
 };
 
@@ -49,7 +61,10 @@ struct mipi_i3c_hci_pci_info {
 	int id[INST_MAX];
 	u32 instance_offset[INST_MAX];
 	int instance_count;
+<<<<<<< HEAD
 	bool control_instance_pm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define INTEL_PRIV_OFFSET		0x2b0
@@ -174,7 +189,10 @@ static int intel_i3c_init(struct mipi_i3c_hci_pci *hci)
 	dma_set_mask_and_coherent(&hci->pci->dev, DMA_BIT_MASK(64));
 
 	hci->pci->d3cold_delay = 0;
+<<<<<<< HEAD
 	hci->pci->d3hot_delay = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hci->private = host;
 	host->priv = priv;
@@ -200,7 +218,10 @@ static const struct mipi_i3c_hci_pci_info intel_mi_1_info = {
 	.id = {0, 1},
 	.instance_offset = {0, 0x400},
 	.instance_count = 2,
+<<<<<<< HEAD
 	.control_instance_pm = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mipi_i3c_hci_pci_info intel_mi_2_info = {
@@ -210,7 +231,10 @@ static const struct mipi_i3c_hci_pci_info intel_mi_2_info = {
 	.id = {2, 3},
 	.instance_offset = {0, 0x400},
 	.instance_count = 2,
+<<<<<<< HEAD
 	.control_instance_pm = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mipi_i3c_hci_pci_info intel_si_2_info = {
@@ -220,6 +244,7 @@ static const struct mipi_i3c_hci_pci_info intel_si_2_info = {
 	.id = {2},
 	.instance_offset = {0},
 	.instance_count = 1,
+<<<<<<< HEAD
 	.control_instance_pm = true,
 };
 
@@ -342,6 +367,10 @@ static int mipi_i3c_hci_pci_resume(struct device *dev)
 	return ret;
 }
 
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mipi_i3c_hci_pci_rpm_allow(struct device *dev)
 {
 	pm_runtime_put(dev);
@@ -455,8 +484,11 @@ static void mipi_i3c_hci_pci_remove(struct pci_dev *pci)
 
 /* PM ops must exist for PCI to put a device to a low power state */
 static const struct dev_pm_ops mipi_i3c_hci_pci_pm_ops = {
+<<<<<<< HEAD
 	RUNTIME_PM_OPS(mipi_i3c_hci_pci_suspend, mipi_i3c_hci_pci_resume, NULL)
 	SYSTEM_SLEEP_PM_OPS(mipi_i3c_hci_pci_suspend, mipi_i3c_hci_pci_resume)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pci_device_id mipi_i3c_hci_pci_devices[] = {
@@ -472,9 +504,12 @@ static const struct pci_device_id mipi_i3c_hci_pci_devices[] = {
 	/* Nova Lake-S */
 	{ PCI_VDEVICE(INTEL, 0x6e2c), (kernel_ulong_t)&intel_mi_1_info},
 	{ PCI_VDEVICE(INTEL, 0x6e2d), (kernel_ulong_t)&intel_mi_2_info},
+<<<<<<< HEAD
 	/* Nova Lake-H */
 	{ PCI_VDEVICE(INTEL, 0xd37c), (kernel_ulong_t)&intel_mi_1_info},
 	{ PCI_VDEVICE(INTEL, 0xd36f), (kernel_ulong_t)&intel_mi_2_info},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ },
 };
 MODULE_DEVICE_TABLE(pci, mipi_i3c_hci_pci_devices);

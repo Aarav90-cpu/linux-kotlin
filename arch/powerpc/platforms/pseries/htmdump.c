@@ -16,7 +16,10 @@ static void *htm_buf;
 static void *htm_status_buf;
 static void *htm_info_buf;
 static void *htm_caps_buf;
+<<<<<<< HEAD
 static void *htm_mem_buf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u32 nodeindex;
 static u32 nodalchipindex;
 static u32 coreindexonchip;
@@ -87,7 +90,11 @@ static ssize_t htm_return_check(long rc)
 static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
 			     size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	void *htm_buf_data = filp->private_data;
+=======
+	void *htm_buf = filp->private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long page, read_size, available;
 	loff_t offset;
 	long rc, ret;
@@ -101,7 +108,11 @@ static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
 	 * - last three values are address, size and offset
 	 */
 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+<<<<<<< HEAD
 				   htmtype, H_HTM_OP_DUMP_DATA, virt_to_phys(htm_buf_data),
+=======
+				   htmtype, H_HTM_OP_DUMP_DATA, virt_to_phys(htm_buf),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   PAGE_SIZE, page);
 
 	ret = htm_return_check(rc);
@@ -113,6 +124,7 @@ static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
 	available = PAGE_SIZE;
 	read_size = min(count, available);
 	*ppos += read_size;
+<<<<<<< HEAD
 	return simple_read_from_buffer(ubuf, count, &offset, htm_buf_data, available);
 }
 
@@ -168,6 +180,9 @@ static ssize_t htmsystem_mem_read(struct file *filp, char __user *ubuf,
 
 	*ppos += to_copy;
 	return simple_read_from_buffer(ubuf, count, &offset, htm_mem_data, to_copy);
+=======
+	return simple_read_from_buffer(ubuf, count, &offset, htm_buf, available);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct file_operations htmdump_fops = {
@@ -176,12 +191,15 @@ static const struct file_operations htmdump_fops = {
 	.open	= simple_open,
 };
 
+<<<<<<< HEAD
 static const struct file_operations htmsystem_mem_fops = {
 	.llseek = NULL,
 	.read   = htmsystem_mem_read,
 	.open   = simple_open,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int  htmconfigure_set(void *data, u64 val)
 {
 	long rc, ret;
@@ -287,17 +305,25 @@ static int htmstart_get(void *data, u64 *val)
 static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
 			     size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	void *htm_status_data = filp->private_data;
+=======
+	void *htm_status_buf = filp->private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long rc, ret;
 	u64 *num_entries;
 	u64 to_copy;
 	int htmstatus_flag;
+<<<<<<< HEAD
 	loff_t offset = 0;
 	u64 status_offset = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Invoke H_HTM call with:
 	 * - operation as htm status (H_HTM_OP_STATUS)
+<<<<<<< HEAD
 	 * - last three values as addr, size and offset.
 	 *   "offset" is value from output buffer header
 	 *   that points to next entry to dump. 0 is the first
@@ -312,6 +338,13 @@ static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
 				   htmtype, H_HTM_OP_STATUS, virt_to_phys(htm_status_data),
 				   PAGE_SIZE, be64_to_cpu(status_offset));
+=======
+	 * - last three values as addr, size and offset
+	 */
+	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+				   htmtype, H_HTM_OP_STATUS, virt_to_phys(htm_status_buf),
+				   PAGE_SIZE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = htm_return_check(rc);
 	if (ret <= 0) {
@@ -327,15 +360,23 @@ static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
 	 * So total count to copy is:
 	 * 32 bytes (for first 7 fields) + (number of HTM entries * entry size)
 	 */
+<<<<<<< HEAD
 	num_entries = htm_status_data + 0x10;
+=======
+	num_entries = htm_status_buf + 0x10;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (htmtype == 0x2)
 		htmstatus_flag = 0x8;
 	else
 		htmstatus_flag = 0x6;
 	to_copy = 32 + (be64_to_cpu(*num_entries) * htmstatus_flag);
+<<<<<<< HEAD
 	*ppos += to_copy;
 
 	return simple_read_from_buffer(ubuf, count, &offset, htm_status_data, to_copy);
+=======
+	return simple_read_from_buffer(ubuf, count, ppos, htm_status_buf, to_copy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct file_operations htmstatus_fops = {
@@ -347,17 +388,25 @@ static const struct file_operations htmstatus_fops = {
 static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
 			     size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	void *htm_info_data = filp->private_data;
 	long rc, ret;
 	u64 *num_entries;
 	u64 to_copy;
 	loff_t offset = 0;
 	u64 info_offset = 0;
+=======
+	void *htm_info_buf = filp->private_data;
+	long rc, ret;
+	u64 *num_entries;
+	u64 to_copy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Invoke H_HTM call with:
 	 * - operation as htm status (H_HTM_OP_STATUS)
 	 * - last three values as addr, size and offset
+<<<<<<< HEAD
 	 *   "offset" is value from output buffer header
 	 *   that points to next entry to dump. 0 is the first
 	 *   entry to dump. next entry is read from the output
@@ -371,6 +420,12 @@ static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
 				   htmtype, H_HTM_OP_DUMP_SYSPROC_CONF, virt_to_phys(htm_info_data),
 				   PAGE_SIZE, be64_to_cpu(info_offset));
+=======
+	 */
+	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+				   htmtype, H_HTM_OP_DUMP_SYSPROC_CONF, virt_to_phys(htm_info_buf),
+				   PAGE_SIZE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = htm_return_check(rc);
 	if (ret <= 0) {
@@ -386,17 +441,27 @@ static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
 	 * So total count to copy is:
 	 * 32 bytes (for first 5 fields) + (number of HTM entries * entry size)
 	 */
+<<<<<<< HEAD
 	num_entries = htm_info_data + 0x10;
 	to_copy = 32 + (be64_to_cpu(*num_entries) * 16);
 
 	*ppos += to_copy;
 	return simple_read_from_buffer(ubuf, count, &offset, htm_info_data, to_copy);
+=======
+	num_entries = htm_info_buf + 0x10;
+	to_copy = 32 + (be64_to_cpu(*num_entries) * 16);
+	return simple_read_from_buffer(ubuf, count, ppos, htm_info_buf, to_copy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
 			     size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	void *htm_caps_data = filp->private_data;
+=======
+	void *htm_caps_buf = filp->private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long rc, ret;
 
 	/*
@@ -406,7 +471,11 @@ static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
 	 *   and zero
 	 */
 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+<<<<<<< HEAD
 				   htmtype, H_HTM_OP_CAPABILITIES, virt_to_phys(htm_caps_data),
+=======
+				   htmtype, H_HTM_OP_CAPABILITIES, virt_to_phys(htm_caps_buf),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   0x80, 0);
 
 	ret = htm_return_check(rc);
@@ -415,7 +484,11 @@ static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return simple_read_from_buffer(ubuf, count, ppos, htm_caps_data, 0x80);
+=======
+	return simple_read_from_buffer(ubuf, count, ppos, htm_caps_buf, 0x80);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct file_operations htminfo_fops = {
@@ -544,6 +617,7 @@ static int htmdump_init_debugfs(void)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	/* Memory to present HTM system memory configuration */
 	htm_mem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
 	if (!htm_mem_buf) {
@@ -555,6 +629,11 @@ static int htmdump_init_debugfs(void)
 	debugfs_create_file("htminfo", 0400, htmdump_debugfs_dir, htm_info_buf, &htminfo_fops);
 	debugfs_create_file("htmcaps", 0400, htmdump_debugfs_dir, htm_caps_buf, &htmcaps_fops);
 	debugfs_create_file("htmsystem_mem", 0400, htmdump_debugfs_dir, htm_mem_buf, &htmsystem_mem_fops);
+=======
+	debugfs_create_file("htmstatus", 0400, htmdump_debugfs_dir, htm_status_buf, &htmstatus_fops);
+	debugfs_create_file("htminfo", 0400, htmdump_debugfs_dir, htm_info_buf, &htminfo_fops);
+	debugfs_create_file("htmcaps", 0400, htmdump_debugfs_dir, htm_caps_buf, &htmcaps_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -577,10 +656,13 @@ static void __exit htmdump_exit(void)
 {
 	debugfs_remove_recursive(htmdump_debugfs_dir);
 	kfree(htm_buf);
+<<<<<<< HEAD
 	kfree(htm_status_buf);
 	kfree(htm_info_buf);
 	kfree(htm_caps_buf);
 	kfree(htm_mem_buf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(htmdump_init);

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 #include <errno.h>
 #include <regex.h>
 #include "../perf_regs.h"
@@ -8,6 +9,10 @@
 
 #include <linux/zalloc.h>
 #include <linux/kernel.h>
+=======
+#include "../perf_regs.h"
+#include "../../arch/s390/include/perf_regs.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 uint64_t __perf_reg_mask_s390(bool intr __maybe_unused)
 {
@@ -101,6 +106,7 @@ uint64_t __perf_reg_sp_s390(void)
 {
 	return PERF_REG_S390_R15;
 }
+<<<<<<< HEAD
 
 /* %rXX */
 #define SDT_OP_REGEX1  "^(%r([0-9]|1[0-5]))$"
@@ -173,3 +179,5 @@ int __perf_sdt_arg_parse_op_s390(char *old_op, char **new_op)
 
 	return SDT_ARG_VALID;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

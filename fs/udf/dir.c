@@ -157,6 +157,10 @@ const struct file_operations udf_dir_operations = {
 	.read			= generic_read_dir,
 	.iterate_shared		= udf_readdir,
 	.unlocked_ioctl		= udf_ioctl,
+<<<<<<< HEAD
 	.fsync			= udf_fsync,
+=======
+	.fsync			= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.setlease		= generic_setlease,
 };

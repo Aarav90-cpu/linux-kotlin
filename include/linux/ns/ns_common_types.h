@@ -7,7 +7,10 @@
 #include <linux/rbtree.h>
 #include <linux/refcount.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <uapi/linux/sched.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct cgroup_namespace;
 struct dentry;
@@ -185,6 +188,7 @@ struct ns_common {
 		struct user_namespace *:   (IS_ENABLED(CONFIG_USER_NS) ? &userns_operations   : NULL), \
 		struct uts_namespace *:    (IS_ENABLED(CONFIG_UTS_NS)  ? &utsns_operations    : NULL))
 
+<<<<<<< HEAD
 /*
  * FOR_EACH_NS_TYPE - Canonical list of namespace types
  *
@@ -218,5 +222,17 @@ struct ns_common {
 #define _NS_TYPE_ASSOC(struct_name, flag) , struct struct_name *: (flag)
 
 #define ns_common_type(__ns) _Generic((__ns)FOR_EACH_NS_TYPE(_NS_TYPE_ASSOC))
+=======
+#define ns_common_type(__ns)                                \
+	_Generic((__ns),                                    \
+		struct cgroup_namespace *: CLONE_NEWCGROUP, \
+		struct ipc_namespace *:    CLONE_NEWIPC,    \
+		struct mnt_namespace *:    CLONE_NEWNS,     \
+		struct net *:              CLONE_NEWNET,    \
+		struct pid_namespace *:    CLONE_NEWPID,    \
+		struct time_namespace *:   CLONE_NEWTIME,   \
+		struct user_namespace *:   CLONE_NEWUSER,   \
+		struct uts_namespace *:    CLONE_NEWUTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _LINUX_NS_COMMON_TYPES_H */

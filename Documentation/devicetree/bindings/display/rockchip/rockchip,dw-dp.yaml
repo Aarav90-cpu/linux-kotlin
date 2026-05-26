@@ -27,10 +27,19 @@ description: |
   * Pixel clock up to 594MHz
   * I2S, SPDIF audio interface
 
+<<<<<<< HEAD
 properties:
   compatible:
     enum:
       - rockchip,rk3576-dp
+=======
+allOf:
+  - $ref: /schemas/sound/dai-common.yaml#
+
+properties:
+  compatible:
+    enum:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - rockchip,rk3588-dp
 
   reg:
@@ -40,7 +49,10 @@ properties:
     maxItems: 1
 
   clocks:
+<<<<<<< HEAD
     minItems: 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: Peripheral/APB bus clock
       - description: DisplayPort AUX clock
@@ -49,7 +61,10 @@ properties:
       - description: SPDIF interfce clock
 
   clock-names:
+<<<<<<< HEAD
     minItems: 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - const: apb
       - const: aux
@@ -95,6 +110,7 @@ required:
   - ports
   - resets
 
+<<<<<<< HEAD
 allOf:
   - $ref: /schemas/sound/dai-common.yaml#
   - if:
@@ -116,6 +132,8 @@ allOf:
         clock-names:
           maxItems: 3
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

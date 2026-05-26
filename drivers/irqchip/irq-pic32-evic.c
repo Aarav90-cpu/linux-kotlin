@@ -15,10 +15,15 @@
 #include <linux/irq.h>
 #include <linux/platform_data/pic32.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_MIPS
 #include <asm/irq.h>
 #include <asm/traps.h>
 #endif
+=======
+#include <asm/irq.h>
+#include <asm/traps.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define REG_INTCON	0x0000
 #define REG_INTSTAT	0x0020
@@ -42,7 +47,10 @@ struct evic_chip_data {
 static struct irq_domain *evic_irq_domain;
 static void __iomem *evic_base;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MIPS
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 asmlinkage void __weak plat_irq_dispatch(void)
 {
 	unsigned int hwirq;
@@ -50,9 +58,12 @@ asmlinkage void __weak plat_irq_dispatch(void)
 	hwirq = readl(evic_base + REG_INTSTAT) & 0xFF;
 	do_domain_IRQ(evic_irq_domain, hwirq);
 }
+<<<<<<< HEAD
 #else
 static __maybe_unused void (*board_bind_eic_interrupt)(int irq, int regset);
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct evic_chip_data *irqd_to_priv(struct irq_data *data)
 {
@@ -202,7 +213,11 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
 
 	of_property_for_each_u32(node, pname, hwirq) {
 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
+<<<<<<< HEAD
 			pr_warn("More than %zu external irq, skip rest\n",
+=======
+			pr_warn("More than %d external irq, skip rest\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ARRAY_SIZE(priv->ext_irqs));
 			break;
 		}

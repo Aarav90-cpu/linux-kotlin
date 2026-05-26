@@ -108,6 +108,11 @@ int cs35l56_set_patch(struct cs35l56_base *cs35l56_base)
 EXPORT_SYMBOL_NS_GPL(cs35l56_set_patch, "SND_SOC_CS35L56_SHARED");
 
 static const struct reg_default cs35l56_reg_defaults[] = {
+<<<<<<< HEAD
+=======
+	/* no defaults for OTP_MEM - first read populates cache */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ CS35L56_ASP1_ENABLES1,		0x00000000 },
 	{ CS35L56_ASP1_CONTROL1,		0x00000028 },
 	{ CS35L56_ASP1_CONTROL2,		0x18180200 },
@@ -136,6 +141,11 @@ static const struct reg_default cs35l56_reg_defaults[] = {
 };
 
 static const struct reg_default cs35l63_reg_defaults[] = {
+<<<<<<< HEAD
+=======
+	/* no defaults for OTP_MEM - first read populates cache */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ CS35L56_ASP1_ENABLES1,		0x00000000 },
 	{ CS35L56_ASP1_CONTROL1,		0x00000028 },
 	{ CS35L56_ASP1_CONTROL2,		0x18180200 },
@@ -278,9 +288,12 @@ static bool cs35l56_common_volatile_reg(unsigned int reg)
 	case CS35L56_GLOBAL_ENABLES:		   /* owned by firmware */
 	case CS35L56_BLOCK_ENABLES:		   /* owned by firmware */
 	case CS35L56_BLOCK_ENABLES2:		   /* owned by firmware */
+<<<<<<< HEAD
 	case CS35L56_OTP_MEM_53:
 	case CS35L56_OTP_MEM_54:
 	case CS35L56_OTP_MEM_55:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case CS35L56_SYNC_GPIO1_CFG ... CS35L56_ASP2_DIO_GPIO13_CFG:
 	case CS35L56_UPDATE_REGS:
 	case CS35L56_REFCLK_INPUT:		   /* owned by firmware */
@@ -851,11 +864,17 @@ out_sync:
 err:
 	regcache_cache_only(cs35l56_base->regmap, true);
 
+<<<<<<< HEAD
 	if (cs35l56_base->can_hibernate) {
 		regmap_multi_reg_write_bypassed(cs35l56_base->regmap,
 						cs35l56_hibernate_seq,
 						ARRAY_SIZE(cs35l56_hibernate_seq));
 	}
+=======
+	regmap_multi_reg_write_bypassed(cs35l56_base->regmap,
+					cs35l56_hibernate_seq,
+					ARRAY_SIZE(cs35l56_hibernate_seq));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1186,6 +1205,7 @@ ssize_t cs35l56_calibrate_debugfs_write(struct cs35l56_base *cs35l56_base,
 }
 EXPORT_SYMBOL_NS_GPL(cs35l56_calibrate_debugfs_write, "SND_SOC_CS35L56_SHARED");
 
+<<<<<<< HEAD
 int cs35l56_factory_calibrate(struct cs35l56_base *cs35l56_base)
 {
 	if (!IS_ENABLED(CONFIG_SND_SOC_CS35L56_CAL_PERFORM_CTRL))
@@ -1195,6 +1215,8 @@ int cs35l56_factory_calibrate(struct cs35l56_base *cs35l56_base)
 }
 EXPORT_SYMBOL_NS_GPL(cs35l56_factory_calibrate, "SND_SOC_CS35L56_SHARED");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ssize_t cs35l56_cal_ambient_debugfs_write(struct cs35l56_base *cs35l56_base,
 					  const char __user *from, size_t count,
 					  loff_t *ppos)
@@ -1730,7 +1752,12 @@ int cs35l56_read_onchip_spkid(struct cs35l56_base *cs35l56_base)
 
 	ret = regmap_read(regmap, CS35L56_GPIO_STATUS1, &val);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(cs35l56_base->dev, "GPIO status read failed: %d\n", ret);
+=======
+		dev_err(cs35l56_base->dev, "GPIO%d status read failed: %d\n",
+			cs35l56_base->onchip_spkid_gpios[i] + 1, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 

@@ -77,7 +77,10 @@ static void apg31_se_audio_setup(
 	unsigned int az_inst,
 	struct audio_info *audio_info)
 {
+<<<<<<< HEAD
 	(void)az_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn31_apg *apg31 = DCN31_APG_FROM_APG(apg);
 
 	ASSERT(audio_info);

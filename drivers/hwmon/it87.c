@@ -16,7 +16,10 @@
  *            IT8622E  Super I/O chip w/LPC interface
  *            IT8623E  Super I/O chip w/LPC interface
  *            IT8628E  Super I/O chip w/LPC interface
+<<<<<<< HEAD
  *            IT8689E  Super I/O chip w/LPC interface
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *            IT8705F  Super I/O chip w/LPC interface
  *            IT8712F  Super I/O chip w/LPC interface
  *            IT8716F  Super I/O chip w/LPC interface
@@ -65,7 +68,11 @@
 
 enum chips { it87, it8712, it8716, it8718, it8720, it8721, it8728, it8732,
 	     it8771, it8772, it8781, it8782, it8783, it8786, it8790,
+<<<<<<< HEAD
 	     it8792, it8603, it8620, it8622, it8628, it8689, it87952 };
+=======
+	     it8792, it8603, it8620, it8622, it8628, it87952 };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct platform_device *it87_pdev[2];
 
@@ -163,7 +170,10 @@ static inline void superio_exit(int ioreg, bool noexit)
 #define IT8622E_DEVID 0x8622
 #define IT8623E_DEVID 0x8623
 #define IT8628E_DEVID 0x8628
+<<<<<<< HEAD
 #define IT8689E_DEVID 0x8689
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IT87952E_DEVID 0x8695
 
 /* Logical device 4 (Environmental Monitor) registers */
@@ -504,6 +514,7 @@ static const struct it87_devices it87_devices[] = {
 		  | FEAT_SIX_TEMP | FEAT_VIN3_5V | FEAT_FANCTL_ONOFF,
 		.peci_mask = 0x07,
 	},
+<<<<<<< HEAD
 	[it8689] = {
 		.name = "it8689",
 		.model = "IT8689E",
@@ -513,6 +524,8 @@ static const struct it87_devices it87_devices[] = {
 		  | FEAT_FANCTL_ONOFF,
 		.smbus_bitmap = BIT(1) | BIT(2),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[it87952] = {
 		.name = "it87952",
 		.model = "IT87952E",
@@ -2796,9 +2809,12 @@ static int __init it87_find(int sioaddr, unsigned short *address,
 	case IT8628E_DEVID:
 		sio_data->type = it8628;
 		break;
+<<<<<<< HEAD
 	case IT8689E_DEVID:
 		sio_data->type = it8689;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IT87952E_DEVID:
 		sio_data->type = it87952;
 		break;
@@ -3016,6 +3032,7 @@ static int __init it87_find(int sioaddr, unsigned short *address,
 
 		sio_data->beep_pin = superio_inb(sioaddr,
 						 IT87_SIO_BEEP_PIN_REG) & 0x3f;
+<<<<<<< HEAD
 	} else if (sio_data->type == it8689) {
 		int reg;
 
@@ -3061,6 +3078,8 @@ static int __init it87_find(int sioaddr, unsigned short *address,
 
 		sio_data->beep_pin = superio_inb(sioaddr,
 						 IT87_SIO_BEEP_PIN_REG) & 0x3f;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (sio_data->type == it8622) {
 		int reg;
 

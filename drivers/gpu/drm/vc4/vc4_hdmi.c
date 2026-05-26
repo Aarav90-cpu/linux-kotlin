@@ -133,7 +133,11 @@ static bool vc4_hdmi_supports_scrambling(struct vc4_hdmi *vc4_hdmi)
 
 static bool vc4_hdmi_mode_needs_scrambling(const struct drm_display_mode *mode,
 					   unsigned int bpc,
+<<<<<<< HEAD
 					   enum drm_output_color_format fmt)
+=======
+					   enum hdmi_colorspace fmt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long long clock = drm_hdmi_compute_mode_clock(mode, bpc, fmt);
 
@@ -444,7 +448,11 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
 		const struct drm_display_mode *mode;
 
 		list_for_each_entry(mode, &connector->probed_modes, head) {
+<<<<<<< HEAD
 			if (vc4_hdmi_mode_needs_scrambling(mode, 8, DRM_OUTPUT_COLOR_FORMAT_RGB444)) {
+=======
+			if (vc4_hdmi_mode_needs_scrambling(mode, 8, HDMI_COLORSPACE_RGB)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				drm_warn_once(drm, "The core clock cannot reach frequencies high enough to support 4k @ 60Hz.");
 				drm_warn_once(drm, "Please change your config.txt file to add hdmi_enable_4kp60.");
 			}
@@ -547,9 +555,15 @@ static int vc4_hdmi_connector_init(struct drm_device *dev,
 				       &vc4_hdmi_hdmi_connector_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       vc4_hdmi->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444) |
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422) |
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB) |
+				       BIT(HDMI_COLORSPACE_YUV422) |
+				       BIT(HDMI_COLORSPACE_YUV444),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       max_bpc);
 	if (ret)
 		return ret;
@@ -823,7 +837,11 @@ static void vc4_hdmi_enable_scrambling(struct drm_encoder *encoder)
 
 	vc4_hdmi->scdc_enabled = true;
 
+<<<<<<< HEAD
 	queue_delayed_work(system_percpu_wq, &vc4_hdmi->scrambling_work,
+=======
+	queue_delayed_work(system_wq, &vc4_hdmi->scrambling_work,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   msecs_to_jiffies(SCRAMBLING_POLLING_DELAY_MS));
 }
 
@@ -872,7 +890,11 @@ static void vc4_hdmi_scrambling_wq(struct work_struct *work)
 	drm_scdc_set_high_tmds_clock_ratio(connector, true);
 	drm_scdc_set_scrambling(connector, true);
 
+<<<<<<< HEAD
 	queue_delayed_work(system_percpu_wq, &vc4_hdmi->scrambling_work,
+=======
+	queue_delayed_work(system_wq, &vc4_hdmi->scrambling_work,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   msecs_to_jiffies(SCRAMBLING_POLLING_DELAY_MS));
 }
 
@@ -1214,13 +1236,21 @@ static void vc5_hdmi_csc_setup(struct vc4_hdmi *vc4_hdmi,
 	spin_lock_irqsave(&vc4_hdmi->hw_lock, flags);
 
 	switch (state->hdmi.output_format) {
+<<<<<<< HEAD
 	case DRM_OUTPUT_COLOR_FORMAT_YCBCR444:
+=======
+	case HDMI_COLORSPACE_YUV444:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		csc = vc5_hdmi_find_yuv_csc_coeffs(vc4_hdmi, state->colorspace, !!lim_range);
 
 		vc5_hdmi_set_csc_coeffs_swap(vc4_hdmi, csc);
 		break;
 
+<<<<<<< HEAD
 	case DRM_OUTPUT_COLOR_FORMAT_YCBCR422:
+=======
+	case HDMI_COLORSPACE_YUV422:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		csc = vc5_hdmi_find_yuv_csc_coeffs(vc4_hdmi, state->colorspace, !!lim_range);
 
 		csc_ctl |= VC4_SET_FIELD(VC5_MT_CP_CSC_CTL_FILTER_MODE_444_TO_422_STANDARD,
@@ -1237,7 +1267,11 @@ static void vc5_hdmi_csc_setup(struct vc4_hdmi *vc4_hdmi,
 		vc5_hdmi_set_csc_coeffs(vc4_hdmi, csc);
 		break;
 
+<<<<<<< HEAD
 	case DRM_OUTPUT_COLOR_FORMAT_RGB444:
+=======
+	case HDMI_COLORSPACE_RGB:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if_xbar = 0x354021;
 
 		vc5_hdmi_set_csc_coeffs(vc4_hdmi, vc5_hdmi_csc_full_rgb_to_rgb[lim_range]);
@@ -1394,7 +1428,11 @@ static void vc5_hdmi_set_timings(struct vc4_hdmi *vc4_hdmi,
 	 * YCC422 is always 36-bit and not considered deep colour so
 	 * doesn't signal in GCP.
 	 */
+<<<<<<< HEAD
 	if (state->hdmi.output_format == DRM_OUTPUT_COLOR_FORMAT_YCBCR422) {
+=======
+	if (state->hdmi.output_format == HDMI_COLORSPACE_YUV422) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gcp = 0;
 	}
 

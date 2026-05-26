@@ -61,7 +61,11 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
 {
 	unsigned long cr0 = 0L, cr2 = 0L, cr3 = 0L, cr4 = 0L;
 	unsigned long d0, d1, d2, d3, d6, d7;
+<<<<<<< HEAD
 	unsigned int gs;
+=======
+	unsigned short gs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	savesegment(gs, gs);
 

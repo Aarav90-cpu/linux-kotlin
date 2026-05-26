@@ -378,6 +378,7 @@ static void ice_ptp_cfg_sync_delay(const struct ice_hw *hw, u32 delay)
  */
 
 /**
+<<<<<<< HEAD
  * ice_ptp_init_phc_e825c - Perform E825C specific PHC initialization
  * @hw: pointer to HW struct
  *
@@ -403,6 +404,8 @@ static int ice_ptp_init_phc_e825c(struct ice_hw *hw)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_ptp_get_dest_dev_e825 - get destination PHY for given port number
  * @hw: pointer to the HW struct
  * @port: destination port
@@ -1872,8 +1875,11 @@ static int ice_phy_cfg_mac_eth56g(struct ice_hw *hw, u8 port)
  * @ena: enable or disable interrupt
  * @threshold: interrupt threshold
  *
+<<<<<<< HEAD
  * The threshold cannot be 0 while the interrupt is enabled.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Configure TX timestamp interrupt for the specified port
  *
  * Return:
@@ -1885,13 +1891,17 @@ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold)
 	int err;
 	u32 val;
 
+<<<<<<< HEAD
 	if (ena && !threshold)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, &val);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	val &= ~PHY_TS_INT_CONFIG_ENA_M;
 	if (ena) {
 		val &= ~PHY_TS_INT_CONFIG_THRESHOLD_M;
@@ -1924,6 +1934,17 @@ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold)
 	}
 
 	return 0;
+=======
+	if (ena) {
+		val |= PHY_TS_INT_CONFIG_ENA_M;
+		val &= ~PHY_TS_INT_CONFIG_THRESHOLD_M;
+		val |= FIELD_PREP(PHY_TS_INT_CONFIG_THRESHOLD_M, threshold);
+	} else {
+		val &= ~PHY_TS_INT_CONFIG_ENA_M;
+	}
+
+	return ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2180,6 +2201,7 @@ err_ptp_unlock:
 }
 
 /**
+<<<<<<< HEAD
  * ice_check_phy_tx_tstamp_ready_eth56g - Check Tx memory status for all ports
  * @hw: pointer to the HW struct
  *
@@ -2209,6 +2231,8 @@ static int ice_check_phy_tx_tstamp_ready_eth56g(struct ice_hw *hw)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_ptp_read_tx_hwtstamp_status_eth56g - Get TX timestamp status
  * @hw: pointer to the HW struct
  * @ts_status: the timestamp mask pointer
@@ -2230,6 +2254,7 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
 	*ts_status = 0;
 
 	for (phy = 0; phy < params->num_phys; phy++) {
+<<<<<<< HEAD
 		u8 port;
 		int err;
 
@@ -2243,6 +2268,15 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
 			return err;
 
 		*ts_status |= (status & mask) << port;
+=======
+		int err;
+
+		err = ice_read_phy_eth56g(hw, phy, PHY_PTP_INT_STATUS, &status);
+		if (err)
+			return err;
+
+		*ts_status |= (status & mask) << (phy * hw->ptp.ports_per_phy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ice_debug(hw, ICE_DBG_PTP, "PHY interrupt err: %x\n", *ts_status);
@@ -2251,6 +2285,7 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
 }
 
 /**
+<<<<<<< HEAD
  * ice_ptp_phy_soft_reset_eth56g - Perform a PHY soft reset on ETH56G
  * @hw: pointer to the HW structure
  * @port: PHY port number
@@ -2314,6 +2349,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_get_phy_tx_tstamp_ready_eth56g - Read the Tx memory status register
  * @hw: pointer to the HW struct
  * @port: the PHY port to read from
@@ -4365,6 +4402,7 @@ ice_get_phy_tx_tstamp_ready_e82x(struct ice_hw *hw, u8 quad, u64 *tstamp_ready)
 }
 
 /**
+<<<<<<< HEAD
  * ice_check_phy_tx_tstamp_ready_e82x - Check Tx memory status for all quads
  * @hw: pointer to the HW struct
  *
@@ -4394,6 +4432,8 @@ static int ice_check_phy_tx_tstamp_ready_e82x(struct ice_hw *hw)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_phy_cfg_intr_e82x - Configure TX timestamp interrupt
  * @hw: pointer to the HW struct
  * @quad: the timestamp quad
@@ -4945,6 +4985,7 @@ ice_get_phy_tx_tstamp_ready_e810(struct ice_hw *hw, u8 port, u64 *tstamp_ready)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * ice_check_phy_tx_tstamp_ready_e810 - Check Tx memory status register
  * @hw: pointer to the HW struct
@@ -4962,6 +5003,8 @@ static int ice_check_phy_tx_tstamp_ready_e810(struct ice_hw *hw)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* E810 SMA functions
  *
  * The following functions operate specifically on E810 hardware and are used
@@ -5217,6 +5260,7 @@ static void ice_get_phy_tx_tstamp_ready_e830(const struct ice_hw *hw, u8 port,
 }
 
 /**
+<<<<<<< HEAD
  * ice_check_phy_tx_tstamp_ready_e830 - Check Tx memory status register
  * @hw: pointer to the HW struct
  *
@@ -5232,6 +5276,8 @@ static int ice_check_phy_tx_tstamp_ready_e830(struct ice_hw *hw)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_ptp_init_phy_e830 - initialize PHY parameters
  * @ptp: pointer to the PTP HW struct
  */
@@ -5612,8 +5658,13 @@ int ice_ptp_write_incval_locked(struct ice_hw *hw, u64 incval)
  */
 int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
 {
+<<<<<<< HEAD
 	int err = 0;
 	u8 tmr_idx;
+=======
+	u8 tmr_idx;
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
 
@@ -5630,8 +5681,13 @@ int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
 		err = ice_ptp_prep_phy_adj_e810(hw, adj);
 		break;
 	case ICE_MAC_E830:
+<<<<<<< HEAD
 		/* E830 sync PHYs automatically after setting cmd register */
 		break;
+=======
+		/* E830 sync PHYs automatically after setting GLTSYN_SHADJ */
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ICE_MAC_GENERIC:
 		err = ice_ptp_prep_phy_adj_e82x(hw, adj);
 		break;
@@ -5795,7 +5851,11 @@ int ice_ptp_init_phc(struct ice_hw *hw)
 	case ICE_MAC_GENERIC:
 		return ice_ptp_init_phc_e82x(hw);
 	case ICE_MAC_GENERIC_3K_E825:
+<<<<<<< HEAD
 		return ice_ptp_init_phc_e825c(hw);
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -5833,6 +5893,7 @@ int ice_get_phy_tx_tstamp_ready(struct ice_hw *hw, u8 block, u64 *tstamp_ready)
 }
 
 /**
+<<<<<<< HEAD
  * ice_check_phy_tx_tstamp_ready - Check PHY Tx timestamp memory status
  * @hw: pointer to the HW struct
  *
@@ -5860,6 +5921,8 @@ int ice_check_phy_tx_tstamp_ready(struct ice_hw *hw)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_cgu_get_pin_desc_e823 - get pin description array
  * @hw: pointer to the hw struct
  * @input: if request is done against input or output pin

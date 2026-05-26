@@ -22,6 +22,11 @@
 #include <linux/pm_runtime.h>
 #include <linux/mailbox_controller.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAILBOX_REVISION		0x000
 #define MAILBOX_MESSAGE(m)		(0x040 + 4 * (m))
 #define MAILBOX_FIFOSTATUS(m)		(0x080 + 4 * (m))
@@ -238,7 +243,11 @@ static int omap_mbox_startup(struct omap_mbox *mbox)
 	}
 
 	if (mbox->send_no_irq)
+<<<<<<< HEAD
 		mbox->chan->txdone_method = MBOX_TXDONE_BY_ACK;
+=======
+		mbox->chan->txdone_method = TXDONE_BY_ACK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	omap_mbox_enable_irq(mbox, IRQ_RX);
 

@@ -182,7 +182,10 @@ static const char *const pmic_models[] = {
 	[72] = "PMR735D",
 	[73] = "PM8550",
 	[74] = "PMK8550",
+<<<<<<< HEAD
 	[76] = "PM7550BA",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[78] = "PMM8650AU",
 	[79] = "PMM8650AU_PSAIL",
 	[80] = "PM7550",
@@ -474,7 +477,10 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(IPQ5000) },
 	{ qcom_board_id(IPQ0509) },
 	{ qcom_board_id(IPQ0518) },
+<<<<<<< HEAD
 	{ qcom_board_id(SM7450) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ qcom_board_id(SM6375) },
 	{ qcom_board_id(IPQ9514) },
 	{ qcom_board_id(IPQ9550) },
@@ -490,12 +496,18 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(SM8475) },
 	{ qcom_board_id(SM8475P) },
 	{ qcom_board_id(SA8255P) },
+<<<<<<< HEAD
 	{ qcom_board_id(SA8650P) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ qcom_board_id(SA8775P) },
 	{ qcom_board_id(QRU1000) },
 	{ qcom_board_id(SM8475_2) },
 	{ qcom_board_id(QDU1000) },
+<<<<<<< HEAD
 	{ qcom_board_id(SM7450P) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ qcom_board_id(X1E80100) },
 	{ qcom_board_id(SM8650) },
 	{ qcom_board_id(SM4450) },
@@ -526,6 +538,7 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(QCS8275) },
 	{ qcom_board_id(QCS9075) },
 	{ qcom_board_id(QCS615) },
+<<<<<<< HEAD
 	{ qcom_board_id(CQ7790M) },
 	{ qcom_board_id(CQ7790S) },
 	{ qcom_board_id(IPQ5200) },
@@ -533,6 +546,8 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(QCF2200) },
 	{ qcom_board_id(QCF3200) },
 	{ qcom_board_id(QCF3210) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char *socinfo_machine(struct device *dev, unsigned int id)

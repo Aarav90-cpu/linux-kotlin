@@ -98,7 +98,11 @@ retry:
 	/* orig skb might be needed for retry, mcu_skb_send_msg consumes it */
 	if (orig_skb)
 		skb_get(orig_skb);
+<<<<<<< HEAD
 	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, wait_resp ? &seq : NULL);
+=======
+	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, &seq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto out;
 

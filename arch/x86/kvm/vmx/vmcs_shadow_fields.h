@@ -1,6 +1,11 @@
 #if !defined(SHADOW_FIELD_RO) && !defined(SHADOW_FIELD_RW)
+<<<<<<< HEAD
 #error Must #define at least one of SHADOW_FIELD_RO or SHADOW_FIELD_RW
 #else
+=======
+BUILD_BUG_ON(1)
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifndef SHADOW_FIELD_RO
 #define SHADOW_FIELD_RO(x, y)
@@ -74,7 +79,10 @@ SHADOW_FIELD_RW(HOST_GS_BASE, host_gs_base)
 /* 64-bit */
 SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS, guest_physical_address)
 SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS_HIGH, guest_physical_address)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #undef SHADOW_FIELD_RO
 #undef SHADOW_FIELD_RW

@@ -7,6 +7,7 @@
  * Written by Hitoshi Mitake <mitake@dcl.info.waseda.ac.jp>
  */
 
+<<<<<<< HEAD
 #include "bench.h"
 #include "../perf-sys.h"
 #include <subcmd/parse-options.h>
@@ -15,6 +16,15 @@
 #include "util/header.h"
 #include "util/stat.h"
 #include "util/string2.h"
+=======
+#include "debug.h"
+#include "../perf-sys.h"
+#include <subcmd/parse-options.h>
+#include "../util/header.h"
+#include "../util/cloexec.h"
+#include "../util/string2.h"
+#include "bench.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mem-memcpy-arch.h"
 #include "mem-memset-arch.h"
 
@@ -27,7 +37,10 @@
 #include <errno.h>
 #include <linux/time64.h>
 #include <linux/log2.h>
+<<<<<<< HEAD
 #include <pthread.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define K 1024
 
@@ -43,7 +56,10 @@ static unsigned int	nr_loops	= 1;
 static bool		use_cycles;
 static int		cycles_fd;
 static unsigned int	seed;
+<<<<<<< HEAD
 static unsigned int	nr_threads	= 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct option bench_common_options[] = {
 	OPT_STRING('s', "size", &size_str, "1MB",
@@ -124,8 +140,11 @@ static struct perf_event_attr cycle_attr = {
 	.config		= PERF_COUNT_HW_CPU_CYCLES
 };
 
+<<<<<<< HEAD
 static struct stats stats;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int init_cycles(void)
 {
 	cycles_fd = sys_perf_event_open(&cycle_attr, getpid(), -1, -1, perf_event_open_cloexec_flag());
@@ -179,11 +198,16 @@ static void clock_accum(union bench_clock *a, union bench_clock *b)
 
 static double timeval2double(struct timeval *ts)
 {
+<<<<<<< HEAD
 	return ((double)ts->tv_sec + (double)ts->tv_usec / (double)USEC_PER_SEC) / nr_threads;
+=======
+	return (double)ts->tv_sec + (double)ts->tv_usec / (double)USEC_PER_SEC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define print_bps(x) do {						\
 		if (x < K)						\
+<<<<<<< HEAD
 			printf(" %14lf bytes/sec", x);			\
 		else if (x < K * K)					\
 			printf(" %14lfd KB/sec", x / K);		\
@@ -191,6 +215,15 @@ static double timeval2double(struct timeval *ts)
 			printf(" %14lf MB/sec", x / K / K);		\
 		else							\
 			printf(" %14lf GB/sec", x / K / K / K);	\
+=======
+			printf(" %14lf bytes/sec\n", x);		\
+		else if (x < K * K)					\
+			printf(" %14lfd KB/sec\n", x / K);		\
+		else if (x < K * K * K)					\
+			printf(" %14lf MB/sec\n", x / K / K);		\
+		else							\
+			printf(" %14lf GB/sec\n", x / K / K / K);	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (0)
 
 static void __bench_mem_function(struct bench_mem_info *info, struct bench_params *p,
@@ -201,7 +234,10 @@ static void __bench_mem_function(struct bench_mem_info *info, struct bench_param
 	union bench_clock rt = { 0 };
 	void *src = NULL, *dst = NULL;
 
+<<<<<<< HEAD
 	init_stats(&stats);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	printf("# function '%s' (%s)\n", r->name, r->desc);
 
 	if (r->fn.init && r->fn.init(info, p, &src, &dst))
@@ -216,16 +252,23 @@ static void __bench_mem_function(struct bench_mem_info *info, struct bench_param
 	switch (bench_format) {
 	case BENCH_FORMAT_DEFAULT:
 		if (use_cycles) {
+<<<<<<< HEAD
 			printf(" %14lf cycles/byte", (double)rt.cycles/(double)p->size_total);
+=======
+			printf(" %14lf cycles/byte\n", (double)rt.cycles/(double)p->size_total);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			result_bps = (double)p->size_total/timeval2double(&rt.tv);
 			print_bps(result_bps);
 		}
+<<<<<<< HEAD
 		if (nr_threads > 1) {
 			printf("/thread\t( +- %6.2f%% )",
 			       rel_stddev_stats(stddev_stats(&stats), avg_stats(&stats)));
 		}
 		printf("\n");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	case BENCH_FORMAT_SIMPLE:
@@ -399,7 +442,11 @@ static void mem_free(struct bench_mem_info *info __maybe_unused,
 	*dst = *src = NULL;
 }
 
+<<<<<<< HEAD
 static struct function memcpy_functions[] = {
+=======
+struct function memcpy_functions[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .name		= "default",
 	  .desc		= "Default memcpy() provided by glibc",
 	  .fn.init	= mem_alloc,
@@ -505,6 +552,7 @@ static void mmap_page_touch(void *dst, size_t size, unsigned int page_shift, boo
 	}
 }
 
+<<<<<<< HEAD
 struct mmap_data {
 	pthread_t id;
 	const struct function *func;
@@ -526,6 +574,18 @@ static void *do_mmap_thread(void *arg)
 
 	if (data->seed)
 		srand(data->seed);
+=======
+static int do_mmap(const struct function *r, struct bench_params *p,
+		  void *src __maybe_unused, void *dst __maybe_unused,
+		  union bench_clock *accum)
+{
+	union bench_clock start, end, diff;
+	mmap_op_t fn = r->fn.mmap_op;
+	bool populate = strcmp(r->name, "populate") == 0;
+
+	if (p->seed)
+		srand(p->seed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (unsigned int i = 0; i < p->nr_loops; i++) {
 		clock_get(&start);
@@ -536,11 +596,16 @@ static void *do_mmap_thread(void *arg)
 		fn(dst, p->size, p->page_shift, p->seed);
 		clock_get(&end);
 		diff = clock_diff(&start, &end);
+<<<<<<< HEAD
 		clock_accum(&data->result, &diff);
+=======
+		clock_accum(accum, &diff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		bench_munmap(dst, p->size);
 	}
 
+<<<<<<< HEAD
 	return data;
 out:
 	data->error = -ENOMEM;
@@ -589,6 +654,13 @@ static int do_mmap(const struct function *r, struct bench_params *p,
 		       p->page_shift != PAGE_SHIFT_4KB ? "has insufficient hugepages" : "is too large");
 	}
 	return error ? -1 : 0;
+=======
+	return 0;
+out:
+	printf("# Memory allocation failed - maybe size (%s) %s?\n", size_str,
+			p->page_shift != PAGE_SHIFT_4KB ? "has insufficient hugepages" : "is too large");
+	return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const char * const bench_mem_mmap_usage[] = {
@@ -613,8 +685,11 @@ int bench_mem_mmap(int argc, const char **argv)
 	static const struct option bench_mmap_options[] = {
 		OPT_UINTEGER('r', "randomize", &seed,
 			    "Seed to randomize page access offset."),
+<<<<<<< HEAD
 		OPT_UINTEGER('t', "threads", &nr_threads,
 			    "Number of threads to run concurrently (default: 1)."),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		OPT_PARENT(bench_common_options),
 		OPT_END()
 	};

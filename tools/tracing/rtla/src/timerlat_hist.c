@@ -17,7 +17,10 @@
 #include "timerlat.h"
 #include "timerlat_aa.h"
 #include "timerlat_bpf.h"
+<<<<<<< HEAD
 #include "common.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct timerlat_hist_cpu {
 	int			*irq;
@@ -45,6 +48,10 @@ struct timerlat_hist_data {
 	struct timerlat_hist_cpu	*hist;
 	int				entries;
 	int				bucket_size;
+<<<<<<< HEAD
+=======
+	int				nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -56,7 +63,11 @@ timerlat_free_histogram(struct timerlat_hist_data *data)
 	int cpu;
 
 	/* one histogram for IRQ and one for thread, per CPU */
+<<<<<<< HEAD
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
+=======
+	for (cpu = 0; cpu < data->nr_cpus; cpu++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (data->hist[cpu].irq)
 			free(data->hist[cpu].irq);
 
@@ -83,7 +94,11 @@ static void timerlat_free_histogram_tool(struct osnoise_tool *tool)
  * timerlat_alloc_histogram - alloc runtime data
  */
 static struct timerlat_hist_data
+<<<<<<< HEAD
 *timerlat_alloc_histogram(int entries, int bucket_size)
+=======
+*timerlat_alloc_histogram(int nr_cpus, int entries, int bucket_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct timerlat_hist_data *data;
 	int cpu;
@@ -94,6 +109,10 @@ static struct timerlat_hist_data
 
 	data->entries = entries;
 	data->bucket_size = bucket_size;
+<<<<<<< HEAD
+=======
+	data->nr_cpus = nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* one set of histograms per CPU */
 	data->hist = calloc(1, sizeof(*data->hist) * nr_cpus);
@@ -203,17 +222,30 @@ static int timerlat_hist_bpf_pull_data(struct osnoise_tool *tool)
 {
 	struct timerlat_hist_data *data = tool->data;
 	int i, j, err;
+<<<<<<< HEAD
 	long long value_irq[nr_cpus],
 		  value_thread[nr_cpus],
 		  value_user[nr_cpus];
+=======
+	long long value_irq[data->nr_cpus],
+		  value_thread[data->nr_cpus],
+		  value_user[data->nr_cpus];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Pull histogram */
 	for (i = 0; i < data->entries; i++) {
 		err = timerlat_bpf_get_hist_value(i, value_irq, value_thread,
+<<<<<<< HEAD
 						  value_user);
 		if (err)
 			return err;
 		for (j = 0; j < nr_cpus; j++) {
+=======
+						  value_user, data->nr_cpus);
+		if (err)
+			return err;
+		for (j = 0; j < data->nr_cpus; j++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data->hist[j].irq[i] = value_irq[j];
 			data->hist[j].thread[i] = value_thread[j];
 			data->hist[j].user[i] = value_user[j];
@@ -222,50 +254,90 @@ static int timerlat_hist_bpf_pull_data(struct osnoise_tool *tool)
 
 	/* Pull summary */
 	err = timerlat_bpf_get_summary_value(SUMMARY_COUNT,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->hist[i].irq_count = value_irq[i];
 		data->hist[i].thread_count = value_thread[i];
 		data->hist[i].user_count = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_MIN,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->hist[i].min_irq = value_irq[i];
 		data->hist[i].min_thread = value_thread[i];
 		data->hist[i].min_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_MAX,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->hist[i].max_irq = value_irq[i];
 		data->hist[i].max_thread = value_thread[i];
 		data->hist[i].max_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_SUM,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->hist[i].sum_irq = value_irq[i];
 		data->hist[i].sum_thread = value_thread[i];
 		data->hist[i].sum_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_OVERFLOW,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->hist[i].irq[data->entries] = value_irq[i];
 		data->hist[i].thread[data->entries] = value_thread[i];
 		data->hist[i].user[data->entries] = value_user[i];
@@ -299,7 +371,11 @@ static void timerlat_hist_header(struct osnoise_tool *tool)
 	if (!params->common.hist.no_index)
 		trace_seq_printf(s, "Index");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -351,7 +427,11 @@ timerlat_print_summary(struct timerlat_params *params,
 	if (!params->common.hist.no_index)
 		trace_seq_printf(trace->seq, "count:");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -373,7 +453,11 @@ timerlat_print_summary(struct timerlat_params *params,
 	if (!params->common.hist.no_index)
 		trace_seq_printf(trace->seq, "min:  ");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -401,7 +485,11 @@ timerlat_print_summary(struct timerlat_params *params,
 	if (!params->common.hist.no_index)
 		trace_seq_printf(trace->seq, "avg:  ");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -429,7 +517,11 @@ timerlat_print_summary(struct timerlat_params *params,
 	if (!params->common.hist.no_index)
 		trace_seq_printf(trace->seq, "max:  ");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -474,7 +566,11 @@ timerlat_print_stats_all(struct timerlat_params *params,
 	sum.min_thread = ~0;
 	sum.min_user = ~0;
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -621,7 +717,11 @@ timerlat_print_stats(struct osnoise_tool *tool)
 			trace_seq_printf(trace->seq, "%-6d",
 					 bucket * data->bucket_size);
 
+<<<<<<< HEAD
 		for_each_monitored_cpu(cpu, &params->common) {
+=======
+		for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 				continue;
@@ -659,7 +759,11 @@ timerlat_print_stats(struct osnoise_tool *tool)
 	if (!params->common.hist.no_index)
 		trace_seq_printf(trace->seq, "over: ");
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(cpu, &params->common) {
+=======
+	for_each_monitored_cpu(cpu, data->nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
 			continue;
@@ -741,7 +845,10 @@ static void timerlat_hist_usage(void)
 		"	     --on-threshold <action>: define action to be executed at latency threshold, multiple are allowed",
 		"	     --on-end <action>: define action to be executed at measurement end, multiple are allowed",
 		"	     --bpf-action <program>: load and execute BPF program when latency threshold is exceeded",
+<<<<<<< HEAD
 		"	     --stack-format <format>: set the stack format (truncate, skip, full)",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		NULL,
 	};
 
@@ -761,7 +868,13 @@ static struct common_params
 	int c;
 	char *trace_output = NULL;
 
+<<<<<<< HEAD
 	params = calloc_fatal(1, sizeof(*params));
+=======
+	params = calloc(1, sizeof(*params));
+	if (!params)
+		exit(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	actions_init(&params->common.threshold_actions);
 	actions_init(&params->common.end_actions);
@@ -780,9 +893,12 @@ static struct common_params
 	/* default to BPF mode */
 	params->mode = TRACING_MODE_BPF;
 
+<<<<<<< HEAD
 	/* default to truncate stack format */
 	params->stack_format = STACK_FORMAT_TRUNCATE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (1) {
 		static struct option long_options[] = {
 			{"auto",		required_argument,	0, 'a'},
@@ -815,14 +931,22 @@ static struct common_params
 			{"on-threshold",	required_argument,	0, '\5'},
 			{"on-end",		required_argument,	0, '\6'},
 			{"bpf-action",		required_argument,	0, '\7'},
+<<<<<<< HEAD
 			{"stack-format",	required_argument,	0, '\10'},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			{0, 0, 0, 0}
 		};
 
 		if (common_parse_options(argc, argv, &params->common))
 			continue;
 
+<<<<<<< HEAD
 		c = getopt_auto(argc, argv, long_options);
+=======
+		c = getopt_long(argc, argv, "a:b:E:hi:knp:s:t::T:uU0123456:7:8:9\1\2:\3:",
+				 long_options, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* detect the end of the options. */
 		if (c == -1)
@@ -910,6 +1034,7 @@ static struct common_params
 			params->common.hist.with_zeros = 1;
 			break;
 		case '6': /* trigger */
+<<<<<<< HEAD
 			if (params->common.events)
 				trace_event_add_trigger(params->common.events, optarg);
 			else
@@ -920,6 +1045,24 @@ static struct common_params
 				trace_event_add_filter(params->common.events, optarg);
 			else
 				fatal("--filter requires a previous -e");
+=======
+			if (params->common.events) {
+				retval = trace_event_add_trigger(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding trigger %s", optarg);
+			} else {
+				fatal("--trigger requires a previous -e");
+			}
+			break;
+		case '7': /* filter */
+			if (params->common.events) {
+				retval = trace_event_add_filter(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding filter %s", optarg);
+			} else {
+				fatal("--filter requires a previous -e");
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case '8':
 			params->dma_latency = get_llong_from_str(optarg);
@@ -956,11 +1099,14 @@ static struct common_params
 		case '\7':
 			params->bpf_action_program = optarg;
 			break;
+<<<<<<< HEAD
 		case '\10':
 			params->stack_format = parse_stack_format(optarg);
 			if (params->stack_format == -1)
 				fatal("Invalid --stack-format option");
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			fatal("Invalid option");
 		}
@@ -1026,12 +1172,22 @@ static struct osnoise_tool
 *timerlat_init_hist(struct common_params *params)
 {
 	struct osnoise_tool *tool;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+
+	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tool = osnoise_init_tool("timerlat_hist");
 	if (!tool)
 		return NULL;
 
+<<<<<<< HEAD
 	tool->data = timerlat_alloc_histogram(params->hist.entries,
+=======
+	tool->data = timerlat_alloc_histogram(nr_cpus, params->hist.entries,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      params->hist.bucket_size);
 	if (!tool->data)
 		goto out_err;
@@ -1048,6 +1204,10 @@ out_err:
 
 static int timerlat_hist_bpf_main_loop(struct osnoise_tool *tool)
 {
+<<<<<<< HEAD
+=======
+	struct timerlat_params *params = to_timerlat_params(tool->params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int retval;
 
 	while (!stop_tracing) {
@@ -1055,6 +1215,7 @@ static int timerlat_hist_bpf_main_loop(struct osnoise_tool *tool)
 
 		if (!stop_tracing) {
 			/* Threshold overflow, perform actions on threshold */
+<<<<<<< HEAD
 			retval = common_threshold_handler(tool);
 			if (retval)
 				return retval;
@@ -1066,6 +1227,20 @@ static int timerlat_hist_bpf_main_loop(struct osnoise_tool *tool)
 				err_msg("Error restarting BPF trace\n");
 				return -1;
 			}
+=======
+			actions_perform(&params->common.threshold_actions);
+
+			if (!params->common.threshold_actions.continue_flag)
+				/* continue flag not set, break */
+				break;
+
+			/* continue action reached, re-enable tracing */
+			if (tool->record)
+				trace_instance_start(&tool->record->trace);
+			if (tool->aa)
+				trace_instance_start(&tool->aa->trace);
+			timerlat_bpf_restart_tracing();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	timerlat_bpf_detach();

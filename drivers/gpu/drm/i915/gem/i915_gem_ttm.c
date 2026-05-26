@@ -5,7 +5,11 @@
 
 #include <linux/shmem_fs.h>
 
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
+=======
+#include <drm/drm_buddy.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_print.h>
 #include <drm/ttm/ttm_placement.h>
 #include <drm/ttm/ttm_tt.h>

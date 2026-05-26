@@ -1000,8 +1000,11 @@
 			reg-io-width = <4>;
 			clocks = <&ccu CLK_BUS_UART0>;
 			resets = <&ccu RST_BUS_UART0>;
+<<<<<<< HEAD
 			dmas = <&dma 6>, <&dma 6>;
 			dma-names = "tx", "rx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -1013,8 +1016,11 @@
 			reg-io-width = <4>;
 			clocks = <&ccu CLK_BUS_UART1>;
 			resets = <&ccu RST_BUS_UART1>;
+<<<<<<< HEAD
 			dmas = <&dma 7>, <&dma 7>;
 			dma-names = "tx", "rx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -1026,8 +1032,11 @@
 			reg-io-width = <4>;
 			clocks = <&ccu CLK_BUS_UART2>;
 			resets = <&ccu RST_BUS_UART2>;
+<<<<<<< HEAD
 			dmas = <&dma 8>, <&dma 8>;
 			dma-names = "tx", "rx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -1039,8 +1048,11 @@
 			reg-io-width = <4>;
 			clocks = <&ccu CLK_BUS_UART3>;
 			resets = <&ccu RST_BUS_UART3>;
+<<<<<<< HEAD
 			dmas = <&dma 9>, <&dma 9>;
 			dma-names = "tx", "rx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -1052,8 +1064,11 @@
 			reg-io-width = <4>;
 			clocks = <&ccu CLK_BUS_UART4>;
 			resets = <&ccu RST_BUS_UART4>;
+<<<<<<< HEAD
 			dmas = <&dma 10>, <&dma 10>;
 			dma-names = "tx", "rx";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 

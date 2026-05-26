@@ -189,6 +189,7 @@ use crate::{
     alloc::{AllocError, Flags},
     container_of,
     prelude::*,
+<<<<<<< HEAD
     sync::{
         aref::{
             ARef,
@@ -201,6 +202,14 @@ use crate::{
     types::Opaque,
 };
 use core::{marker::PhantomData, ptr::NonNull};
+=======
+    sync::Arc,
+    sync::LockClassKey,
+    time::Jiffies,
+    types::Opaque,
+};
+use core::marker::PhantomData;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
 #[macro_export]
@@ -431,11 +440,18 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64>: RawWorkItem<ID> {}
 
 /// Defines the method that should be called directly when a work item is executed.
 ///
+<<<<<<< HEAD
 /// This trait is implemented by `Pin<KBox<T>>`, [`Arc<T>`] and [`ARef<T>`], and
 /// is mainly intended to be implemented for smart pointer types. For your own
 /// structs, you would implement [`WorkItem`] instead. The [`run`] method on
 /// this trait will usually just perform the appropriate `container_of`
 /// translation and then call into the [`run`][WorkItem::run] method from the
+=======
+/// This trait is implemented by `Pin<KBox<T>>` and [`Arc<T>`], and is mainly intended to be
+/// implemented for smart pointer types. For your own structs, you would implement [`WorkItem`]
+/// instead. The [`run`] method on this trait will usually just perform the appropriate
+/// `container_of` translation and then call into the [`run`][WorkItem::run] method from the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// [`WorkItem`] trait.
 ///
 /// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
@@ -941,6 +957,7 @@ where
 {
 }
 
+<<<<<<< HEAD
 // SAFETY: Like the `Arc<T>` implementation, the `__enqueue` implementation for
 // `ARef<T>` obtains a `work_struct` from the `Work` field using
 // `T::raw_get_work`, so the same safety reasoning applies:
@@ -1024,6 +1041,8 @@ where
 {
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Returns the system work queue (`system_wq`).
 ///
 /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are

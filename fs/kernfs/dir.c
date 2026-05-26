@@ -498,14 +498,21 @@ void kernfs_put_active(struct kernfs_node *kn)
 /**
  * kernfs_drain - drain kernfs_node
  * @kn: kernfs_node to drain
+<<<<<<< HEAD
  * @drop_supers: Set to true if this function is called with the
  *               kernfs_supers_rwsem locked.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Drain existing usages and nuke all existing mmaps of @kn.  Multiple
  * removers may invoke this function concurrently on @kn and all will
  * return after draining is complete.
  */
+<<<<<<< HEAD
 static void kernfs_drain(struct kernfs_node *kn, bool drop_supers)
+=======
+static void kernfs_drain(struct kernfs_node *kn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(&kernfs_root(kn)->kernfs_rwsem)
 	__acquires(&kernfs_root(kn)->kernfs_rwsem)
 {
@@ -525,8 +532,11 @@ static void kernfs_drain(struct kernfs_node *kn, bool drop_supers)
 		return;
 
 	up_write(&root->kernfs_rwsem);
+<<<<<<< HEAD
 	if (drop_supers)
 		up_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (kernfs_lockdep(kn)) {
 		rwsem_acquire(&kn->dep_map, 0, 0, _RET_IP_);
@@ -545,8 +555,11 @@ static void kernfs_drain(struct kernfs_node *kn, bool drop_supers)
 	if (kernfs_should_drain_open_files(kn))
 		kernfs_drain_open_files(kn);
 
+<<<<<<< HEAD
 	if (drop_supers)
 		down_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&root->kernfs_rwsem);
 }
 
@@ -570,8 +583,15 @@ static void kernfs_free_rcu(struct rcu_head *rcu)
 	/* If the whole node goes away, then name can't be used outside */
 	kfree_const(rcu_access_pointer(kn->name));
 
+<<<<<<< HEAD
 	if (kn->iattr)
 		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
+=======
+	if (kn->iattr) {
+		simple_xattrs_free(&kn->iattr->xattrs, NULL);
+		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kmem_cache_free(kernfs_node_cache, kn);
 }
@@ -605,12 +625,15 @@ void kernfs_put(struct kernfs_node *kn)
 	if (kernfs_type(kn) == KERNFS_LINK)
 		kernfs_put(kn->symlink.target_kn);
 
+<<<<<<< HEAD
 	if (kn->iattr && kn->iattr->xattrs) {
 		simple_xattrs_free(kn->iattr->xattrs, NULL);
 		kfree(kn->iattr->xattrs);
 		kn->iattr->xattrs = NULL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&root->kernfs_idr_lock);
 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
 	spin_unlock(&root->kernfs_idr_lock);
@@ -709,10 +732,14 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
 
  err_out4:
 	if (kn->iattr) {
+<<<<<<< HEAD
 		if (kn->iattr->xattrs) {
 			simple_xattrs_free(kn->iattr->xattrs, NULL);
 			kfree(kn->iattr->xattrs);
 		}
+=======
+		simple_xattrs_free(&kn->iattr->xattrs, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
 	}
  err_out3:
@@ -1498,12 +1525,17 @@ void kernfs_show(struct kernfs_node *kn, bool show)
 		kn->flags |= KERNFS_HIDDEN;
 		if (kernfs_active(kn))
 			atomic_add(KN_DEACTIVATED_BIAS, &kn->active);
+<<<<<<< HEAD
 		kernfs_drain(kn, false);
+=======
+		kernfs_drain(kn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	up_write(&root->kernfs_rwsem);
 }
 
+<<<<<<< HEAD
 /*
  * This function enables VFS to send fsnotify events for deletions.
  * There is gap in this implementation for certain file removals due their
@@ -1535,6 +1567,8 @@ static void kernfs_clear_inode_nlink(struct kernfs_node *kn)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __kernfs_remove(struct kernfs_node *kn)
 {
 	struct kernfs_node *pos, *parent;
@@ -1543,7 +1577,10 @@ static void __kernfs_remove(struct kernfs_node *kn)
 	if (!kn)
 		return;
 
+<<<<<<< HEAD
 	lockdep_assert_held_read(&kernfs_root(kn)->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockdep_assert_held_write(&kernfs_root(kn)->kernfs_rwsem);
 
 	/*
@@ -1556,14 +1593,20 @@ static void __kernfs_remove(struct kernfs_node *kn)
 	pr_debug("kernfs %s: removing\n", kernfs_rcu_name(kn));
 
 	/* prevent new usage by marking all nodes removing and deactivating */
+<<<<<<< HEAD
 	down_write(&kernfs_root(kn)->kernfs_iattr_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pos = NULL;
 	while ((pos = kernfs_next_descendant_post(pos, kn))) {
 		pos->flags |= KERNFS_REMOVING;
 		if (kernfs_active(pos))
 			atomic_add(KN_DEACTIVATED_BIAS, &pos->active);
 	}
+<<<<<<< HEAD
 	up_write(&kernfs_root(kn)->kernfs_iattr_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* deactivate and unlink the subtree node-by-node */
 	do {
@@ -1577,7 +1620,11 @@ static void __kernfs_remove(struct kernfs_node *kn)
 		 */
 		kernfs_get(pos);
 
+<<<<<<< HEAD
 		kernfs_drain(pos, true);
+=======
+		kernfs_drain(pos);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		parent = kernfs_parent(pos);
 		/*
 		 * kernfs_unlink_sibling() succeeds once per node.  Use it
@@ -1587,11 +1634,17 @@ static void __kernfs_remove(struct kernfs_node *kn)
 			struct kernfs_iattrs *ps_iattr =
 				parent ? parent->iattr : NULL;
 
+<<<<<<< HEAD
 			down_write(&kernfs_root(kn)->kernfs_iattr_rwsem);
 
 			kernfs_clear_inode_nlink(pos);
 
 			/* update timestamps on the parent */
+=======
+			/* update timestamps on the parent */
+			down_write(&kernfs_root(kn)->kernfs_iattr_rwsem);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ps_iattr) {
 				ktime_get_real_ts64(&ps_iattr->ia_ctime);
 				ps_iattr->ia_mtime = ps_iattr->ia_ctime;
@@ -1620,11 +1673,17 @@ void kernfs_remove(struct kernfs_node *kn)
 
 	root = kernfs_root(kn);
 
+<<<<<<< HEAD
 	down_read(&root->kernfs_supers_rwsem);
 	down_write(&root->kernfs_rwsem);
 	__kernfs_remove(kn);
 	up_write(&root->kernfs_rwsem);
 	up_read(&root->kernfs_supers_rwsem);
+=======
+	down_write(&root->kernfs_rwsem);
+	__kernfs_remove(kn);
+	up_write(&root->kernfs_rwsem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1715,7 +1774,10 @@ bool kernfs_remove_self(struct kernfs_node *kn)
 	bool ret;
 	struct kernfs_root *root = kernfs_root(kn);
 
+<<<<<<< HEAD
 	down_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&root->kernfs_rwsem);
 	kernfs_break_active_protection(kn);
 
@@ -1745,9 +1807,13 @@ bool kernfs_remove_self(struct kernfs_node *kn)
 				break;
 
 			up_write(&root->kernfs_rwsem);
+<<<<<<< HEAD
 			up_read(&root->kernfs_supers_rwsem);
 			schedule();
 			down_read(&root->kernfs_supers_rwsem);
+=======
+			schedule();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			down_write(&root->kernfs_rwsem);
 		}
 		finish_wait(waitq, &wait);
@@ -1762,7 +1828,10 @@ bool kernfs_remove_self(struct kernfs_node *kn)
 	kernfs_unbreak_active_protection(kn);
 
 	up_write(&root->kernfs_rwsem);
+<<<<<<< HEAD
 	up_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1789,7 +1858,10 @@ int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
 	}
 
 	root = kernfs_root(parent);
+<<<<<<< HEAD
 	down_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&root->kernfs_rwsem);
 
 	kn = kernfs_find_ns(parent, name, ns);
@@ -1800,7 +1872,10 @@ int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
 	}
 
 	up_write(&root->kernfs_rwsem);
+<<<<<<< HEAD
 	up_read(&root->kernfs_supers_rwsem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (kn)
 		return 0;

@@ -45,7 +45,11 @@
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_OPFW		(BIT(2))
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_ROM_LOCKDOWN	(BIT(10))
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_IML_LOCKDOWN	(BIT(11))
+<<<<<<< HEAD
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_WARNING	(BIT(12))
+=======
+#define BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_ERR		(BIT(12))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_ABORT_HANDLER	(BIT(13))
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_HALTED	(BIT(14))
 #define BTINTEL_PCIE_CSR_BOOT_STAGE_MAC_ACCESS_ON	(BIT(16))
@@ -175,6 +179,12 @@ enum {
 /* The size of DMA buffer for TX and RX in bytes */
 #define BTINTEL_PCIE_BUFFER_SIZE	4096
 
+<<<<<<< HEAD
+=======
+/* DMA allocation alignment */
+#define BTINTEL_PCIE_DMA_POOL_ALIGNMENT	256
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BTINTEL_PCIE_TX_WAIT_TIMEOUT_MS		500
 
 /* Doorbell vector for TFD */

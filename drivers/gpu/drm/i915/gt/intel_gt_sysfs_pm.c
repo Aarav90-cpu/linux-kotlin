@@ -7,8 +7,11 @@
 #include <linux/sysfs.h>
 #include <linux/printk.h>
 
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i915_drv.h"
 #include "i915_reg.h"
 #include "i915_sysfs.h"

@@ -224,6 +224,7 @@ static int ksz9477_pcs_read(struct mii_bus *bus, int phy, int mmd, int reg)
 				else
 					duplex = DUPLEX_HALF;
 
+<<<<<<< HEAD
 				if (!p->link || p->speed != speed ||
 				    p->duplex != duplex) {
 					u16 ctrl;
@@ -231,6 +232,16 @@ static int ksz9477_pcs_read(struct mii_bus *bus, int phy, int mmd, int reg)
 					p->link = true;
 					p->speed = speed;
 					p->duplex = duplex;
+=======
+				if (!p->phydev.link ||
+				    p->phydev.speed != speed ||
+				    p->phydev.duplex != duplex) {
+					u16 ctrl;
+
+					p->phydev.link = 1;
+					p->phydev.speed = speed;
+					p->phydev.duplex = duplex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					port_sgmii_r(dev, port, mmd, MII_BMCR,
 						     &ctrl);
 					ctrl &= BMCR_ANENABLE;
@@ -240,10 +251,17 @@ static int ksz9477_pcs_read(struct mii_bus *bus, int phy, int mmd, int reg)
 						     ctrl);
 				}
 			} else {
+<<<<<<< HEAD
 				p->link = false;
 			}
 		} else if (reg == MII_BMSR) {
 			p->link = !!(val & BMSR_LSTATUS);
+=======
+				p->phydev.link = 0;
+			}
+		} else if (reg == MII_BMSR) {
+			p->phydev.link = !!(val & BMSR_LSTATUS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -310,6 +328,7 @@ static int ksz9477_pcs_write(struct mii_bus *bus, int phy, int mmd, int reg,
 
 int ksz9477_pcs_create(struct ksz_device *dev)
 {
+<<<<<<< HEAD
 	int port = ksz_get_sgmii_port(dev);
 	struct ksz_port *p = &dev->ports[port];
 	struct phylink_pcs *pcs;
@@ -337,6 +356,38 @@ int ksz9477_pcs_create(struct ksz_device *dev)
 	if (IS_ERR(pcs))
 		return PTR_ERR(pcs);
 	p->pcs = pcs;
+=======
+	/* This chip has a SGMII port. */
+	if (ksz_has_sgmii_port(dev)) {
+		int port = ksz_get_sgmii_port(dev);
+		struct ksz_port *p = &dev->ports[port];
+		struct phylink_pcs *pcs;
+		struct mii_bus *bus;
+		int ret;
+
+		bus = devm_mdiobus_alloc(dev->dev);
+		if (!bus)
+			return -ENOMEM;
+
+		bus->name = "ksz_pcs_mdio_bus";
+		snprintf(bus->id, MII_BUS_ID_SIZE, "%s-pcs",
+			 dev_name(dev->dev));
+		bus->read_c45 = &ksz9477_pcs_read;
+		bus->write_c45 = &ksz9477_pcs_write;
+		bus->parent = dev->dev;
+		bus->phy_mask = ~0;
+		bus->priv = dev;
+
+		ret = devm_mdiobus_register(dev->dev, bus);
+		if (ret)
+			return ret;
+
+		pcs = xpcs_create_pcs_mdiodev(bus, 0);
+		if (IS_ERR(pcs))
+			return PTR_ERR(pcs);
+		p->pcs = pcs;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -525,7 +576,11 @@ int ksz9477_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data)
 	 * A fixed PHY can be setup in the device tree, but this function is
 	 * still called for that port during initialization.
 	 * For RGMII PHY there is no way to access it so the fixed PHY should
+<<<<<<< HEAD
 	 * be used.
+=======
+	 * be used.  For SGMII PHY the supporting code will be added later.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (!dev->info->internal_phy[addr]) {
 		struct ksz_port *p = &dev->ports[addr];
@@ -553,7 +608,11 @@ int ksz9477_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data)
 			val = 0x0700;
 			break;
 		case MII_STAT1000:
+<<<<<<< HEAD
 			if (p->speed == SPEED_1000)
+=======
+			if (p->phydev.speed == SPEED_1000)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				val = 0x3800;
 			else
 				val = 0;

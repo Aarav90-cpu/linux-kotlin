@@ -131,16 +131,23 @@ static const u32 err_inj_type_mask[] = {
  *				   supported in DWC RAS DES
  * @name: Name of the error counter
  * @group_no: Group number that the event belongs to. The value can range
+<<<<<<< HEAD
  *	      from 0 to 7
+=======
+ *	      from 0 to 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @event_no: Event number of the particular event. The value ranges are:
  *		Group 0: 0 - 10
  *		Group 1: 5 - 13
  *		Group 2: 0 - 7
  *		Group 3: 0 - 5
  *		Group 4: 0 - 1
+<<<<<<< HEAD
  *		Group 5: 0 - 13
  *		Group 6: 0 - 6
  *		Group 7: 0 - 25
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct dwc_pcie_event_counter {
 	const char *name;
@@ -184,6 +191,7 @@ static const struct dwc_pcie_event_counter event_list[] = {
 	{"completion_timeout", 0x3, 0x5},
 	{"ebuf_skp_add", 0x4, 0x0},
 	{"ebuf_skp_del", 0x4, 0x1},
+<<<<<<< HEAD
 	{"l0_to_recovery_entry", 0x5, 0x0},
 	{"l1_to_recovery_entry", 0x5, 0x1},
 	{"tx_l0s_entry", 0x5, 0x2},
@@ -231,6 +239,8 @@ static const struct dwc_pcie_event_counter event_list[] = {
 	{"rx_ccix_tlp", 0x7, 0x17},
 	{"tx_deferrable_memory_write_tlp", 0x7, 0x18},
 	{"rx_deferrable_memory_write_tlp", 0x7, 0x19},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static ssize_t lane_detect_read(struct file *file, char __user *buf,
@@ -258,11 +268,18 @@ static ssize_t lane_detect_write(struct file *file, const char __user *buf,
 	struct dw_pcie *pci = file->private_data;
 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
 	u32 lane, val;
+<<<<<<< HEAD
 	int ret;
 
 	ret = kstrtou32_from_user(buf, count, 0, &lane);
 	if (ret)
 		return ret;
+=======
+
+	val = kstrtou32_from_user(buf, count, 0, &lane);
+	if (val)
+		return val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = dw_pcie_readl_dbi(pci, rinfo->ras_cap_offset + SD_STATUS_L1LANE_REG);
 	val &= ~(LANE_SELECT);
@@ -398,11 +415,18 @@ static ssize_t counter_enable_write(struct file *file, const char __user *buf,
 	struct dw_pcie *pci = pdata->pci;
 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
 	u32 val, enable;
+<<<<<<< HEAD
 	int ret;
 
 	ret = kstrtou32_from_user(buf, count, 0, &enable);
 	if (ret)
 		return ret;
+=======
+
+	val = kstrtou32_from_user(buf, count, 0, &enable);
+	if (val)
+		return val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&rinfo->reg_event_lock);
 	set_event_number(pdata, pci, rinfo);
@@ -460,11 +484,18 @@ static ssize_t counter_lane_write(struct file *file, const char __user *buf,
 	struct dw_pcie *pci = pdata->pci;
 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
 	u32 val, lane;
+<<<<<<< HEAD
 	int ret;
 
 	ret = kstrtou32_from_user(buf, count, 0, &lane);
 	if (ret)
 		return ret;
+=======
+
+	val = kstrtou32_from_user(buf, count, 0, &lane);
+	if (val)
+		return val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&rinfo->reg_event_lock);
 	set_event_number(pdata, pci, rinfo);

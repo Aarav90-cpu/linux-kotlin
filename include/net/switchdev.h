@@ -15,7 +15,10 @@
 #define SWITCHDEV_F_NO_RECURSE		BIT(0)
 #define SWITCHDEV_F_SKIP_EOPNOTSUPP	BIT(1)
 #define SWITCHDEV_F_DEFER		BIT(2)
+<<<<<<< HEAD
 #define SWITCHDEV_F_NO_FOREIGN		BIT(3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum switchdev_attr_id {
 	SWITCHDEV_ATTR_ID_UNDEFINED,

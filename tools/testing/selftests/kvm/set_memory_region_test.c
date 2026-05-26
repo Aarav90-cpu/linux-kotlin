@@ -30,6 +30,7 @@
 #define MEM_REGION_GPA		0xc0000000
 #define MEM_REGION_SLOT		10
 
+<<<<<<< HEAD
 static const u64 MMIO_VAL = 0xbeefull;
 
 extern const u64 final_rip_start;
@@ -43,6 +44,21 @@ static inline u64 guest_spin_on_val(u64 spin_val)
 
 	do {
 		val = READ_ONCE(*((u64 *)MEM_REGION_GPA));
+=======
+static const uint64_t MMIO_VAL = 0xbeefull;
+
+extern const uint64_t final_rip_start;
+extern const uint64_t final_rip_end;
+
+static sem_t vcpu_ready;
+
+static inline uint64_t guest_spin_on_val(uint64_t spin_val)
+{
+	uint64_t val;
+
+	do {
+		val = READ_ONCE(*((uint64_t *)MEM_REGION_GPA));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (val == spin_val);
 
 	GUEST_SYNC(0);
@@ -54,7 +70,11 @@ static void *vcpu_worker(void *data)
 	struct kvm_vcpu *vcpu = data;
 	struct kvm_run *run = vcpu->run;
 	struct ucall uc;
+<<<<<<< HEAD
 	u64 cmd;
+=======
+	uint64_t cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Loop until the guest is done.  Re-enter the guest on all MMIO exits,
@@ -111,8 +131,13 @@ static struct kvm_vm *spawn_vm(struct kvm_vcpu **vcpu, pthread_t *vcpu_thread,
 			       void *guest_code)
 {
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 *hva;
 	gpa_t gpa;
+=======
+	uint64_t *hva;
+	uint64_t gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = vm_create_with_one_vcpu(vcpu, guest_code);
 
@@ -144,7 +169,11 @@ static struct kvm_vm *spawn_vm(struct kvm_vcpu **vcpu, pthread_t *vcpu_thread,
 
 static void guest_code_move_memory_region(void)
 {
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_SYNC(0);
 
@@ -180,7 +209,11 @@ static void test_move_memory_region(bool disable_slot_zap_quirk)
 	pthread_t vcpu_thread;
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 *hva;
+=======
+	uint64_t *hva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = spawn_vm(&vcpu, &vcpu_thread, guest_code_move_memory_region);
 
@@ -224,7 +257,11 @@ static void test_move_memory_region(bool disable_slot_zap_quirk)
 static void guest_code_delete_memory_region(void)
 {
 	struct desc_ptr idt;
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Clobber the IDT so that a #PF due to the memory region being deleted
@@ -345,8 +382,13 @@ static void test_zero_memory_regions(void)
 
 static void test_invalid_memory_region_flags(void)
 {
+<<<<<<< HEAD
 	u32 supported_flags = KVM_MEM_LOG_DIRTY_PAGES;
 	const u32 v2_only_flags = KVM_MEM_GUEST_MEMFD;
+=======
+	uint32_t supported_flags = KVM_MEM_LOG_DIRTY_PAGES;
+	const uint32_t v2_only_flags = KVM_MEM_GUEST_MEMFD;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 	int r, i;
 
@@ -410,10 +452,24 @@ static void test_add_max_memory_regions(void)
 {
 	int ret;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u32 max_mem_slots;
 	u32 slot;
 	void *mem, *mem_aligned, *mem_extra;
 	size_t alignment = 1;
+=======
+	uint32_t max_mem_slots;
+	uint32_t slot;
+	void *mem, *mem_aligned, *mem_extra;
+	size_t alignment;
+
+#ifdef __s390x__
+	/* On s390x, the host address must be aligned to 1M (due to PGSTEs) */
+	alignment = 0x100000;
+#else
+	alignment = 1;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	max_mem_slots = kvm_check_cap(KVM_CAP_NR_MEMSLOTS);
 	TEST_ASSERT(max_mem_slots > 0,
@@ -434,16 +490,26 @@ static void test_add_max_memory_regions(void)
 
 	for (slot = 0; slot < max_mem_slots; slot++)
 		vm_set_user_memory_region(vm, slot, 0,
+<<<<<<< HEAD
 					  ((u64)slot * MEM_REGION_SIZE),
 					  MEM_REGION_SIZE,
 					  mem_aligned + (u64)slot * MEM_REGION_SIZE);
+=======
+					  ((uint64_t)slot * MEM_REGION_SIZE),
+					  MEM_REGION_SIZE,
+					  mem_aligned + (uint64_t)slot * MEM_REGION_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Check it cannot be added memory slots beyond the limit */
 	mem_extra = kvm_mmap(MEM_REGION_SIZE, PROT_READ | PROT_WRITE,
 			     MAP_PRIVATE | MAP_ANONYMOUS, -1);
 
 	ret = __vm_set_user_memory_region(vm, max_mem_slots, 0,
+<<<<<<< HEAD
 					  (u64)max_mem_slots * MEM_REGION_SIZE,
+=======
+					  (uint64_t)max_mem_slots * MEM_REGION_SIZE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  MEM_REGION_SIZE, mem_extra);
 	TEST_ASSERT(ret == -1 && errno == EINVAL,
 		    "Adding one more memory slot should fail with EINVAL");
@@ -556,7 +622,11 @@ static void guest_code_mmio_during_vectoring(void)
 	set_idt(&idt_desc);
 
 	/* Generate a #GP by dereferencing a non-canonical address */
+<<<<<<< HEAD
 	*((u8 *)NONCANONICAL) = 0x1;
+=======
+	*((uint8_t *)NONCANONICAL) = 0x1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(0);
 }

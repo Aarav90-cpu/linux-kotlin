@@ -19,9 +19,14 @@ pub(crate) struct NovaObject {}
 
 impl gem::DriverObject for NovaObject {
     type Driver = NovaDriver;
+<<<<<<< HEAD
     type Args = ();
 
     fn new(_dev: &NovaDevice, _size: usize, _args: Self::Args) -> impl PinInit<Self, Error> {
+=======
+
+    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         try_pin_init!(NovaObject {})
     }
 }
@@ -34,7 +39,11 @@ impl NovaObject {
         }
         let aligned_size = page::page_align(size).ok_or(EINVAL)?;
 
+<<<<<<< HEAD
         gem::Object::new(dev, aligned_size, ())
+=======
+        gem::Object::new(dev, aligned_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.

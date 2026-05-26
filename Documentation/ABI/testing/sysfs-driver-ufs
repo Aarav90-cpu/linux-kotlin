@@ -1768,6 +1768,7 @@ Description:
 		====================   ===========================
 
 		The attribute is read only.
+<<<<<<< HEAD
 
 What:		/sys/bus/platform/drivers/ufshcd/*/dme_qos_notification
 What:		/sys/bus/platform/devices/*.ufs/dme_qos_notification
@@ -1791,3 +1792,5 @@ Description:
 		will be rejected.
 
 		The attribute is read/write.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

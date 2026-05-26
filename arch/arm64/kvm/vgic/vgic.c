@@ -86,10 +86,13 @@ static struct vgic_irq *vgic_get_lpi(struct kvm *kvm, u32 intid)
  */
 struct vgic_irq *vgic_get_irq(struct kvm *kvm, u32 intid)
 {
+<<<<<<< HEAD
 	/* Non-private IRQs are not yet implemented for GICv5 */
 	if (vgic_is_v5(kvm))
 		return NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* SPIs */
 	if (intid >= VGIC_NR_PRIVATE_IRQS &&
 	    intid < (kvm->arch.vgic.nr_spis + VGIC_NR_PRIVATE_IRQS)) {
@@ -98,7 +101,11 @@ struct vgic_irq *vgic_get_irq(struct kvm *kvm, u32 intid)
 	}
 
 	/* LPIs */
+<<<<<<< HEAD
 	if (irq_is_lpi(kvm, intid))
+=======
+	if (intid >= VGIC_MIN_LPI)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return vgic_get_lpi(kvm, intid);
 
 	return NULL;
@@ -109,6 +116,7 @@ struct vgic_irq *vgic_get_vcpu_irq(struct kvm_vcpu *vcpu, u32 intid)
 	if (WARN_ON(!vcpu))
 		return NULL;
 
+<<<<<<< HEAD
 	if (vgic_is_v5(vcpu->kvm)) {
 		u32 int_num, hwirq_id;
 
@@ -121,6 +129,8 @@ struct vgic_irq *vgic_get_vcpu_irq(struct kvm_vcpu *vcpu, u32 intid)
 		return &vcpu->arch.vgic_cpu.private_irqs[int_num];
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* SGIs and PPIs */
 	if (intid < VGIC_NR_PRIVATE_IRQS) {
 		intid = array_index_nospec(intid, VGIC_NR_PRIVATE_IRQS);
@@ -139,7 +149,11 @@ static void vgic_release_lpi_locked(struct vgic_dist *dist, struct vgic_irq *irq
 
 static __must_check bool __vgic_put_irq(struct kvm *kvm, struct vgic_irq *irq)
 {
+<<<<<<< HEAD
 	if (!irq_is_lpi(kvm, irq->intid))
+=======
+	if (irq->intid < VGIC_MIN_LPI)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return refcount_dec_and_test(&irq->refcount);
@@ -164,7 +178,11 @@ void vgic_put_irq(struct kvm *kvm, struct vgic_irq *irq)
 	 * Acquire/release it early on lockdep kernels to make locking issues
 	 * in rare release paths a bit more obvious.
 	 */
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_LOCKDEP) && irq_is_lpi(kvm, irq->intid)) {
+=======
+	if (IS_ENABLED(CONFIG_LOCKDEP) && irq->intid >= VGIC_MIN_LPI) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		guard(spinlock_irqsave)(&dist->lpi_xa.xa_lock);
 	}
 
@@ -202,7 +220,11 @@ void vgic_flush_pending_lpis(struct kvm_vcpu *vcpu)
 	raw_spin_lock_irqsave(&vgic_cpu->ap_list_lock, flags);
 
 	list_for_each_entry_safe(irq, tmp, &vgic_cpu->ap_list_head, ap_list) {
+<<<<<<< HEAD
 		if (irq_is_lpi(vcpu->kvm, irq->intid)) {
+=======
+		if (irq->intid >= VGIC_MIN_LPI) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			raw_spin_lock(&irq->irq_lock);
 			list_del(&irq->ap_list);
 			irq->vcpu = NULL;
@@ -420,9 +442,12 @@ bool vgic_queue_irq_unlock(struct kvm *kvm, struct vgic_irq *irq,
 
 	lockdep_assert_held(&irq->irq_lock);
 
+<<<<<<< HEAD
 	if (irq->ops && irq->ops->queue_irq_unlock)
 		return irq->ops->queue_irq_unlock(kvm, irq, flags);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 retry:
 	vcpu = vgic_target_oracle(irq);
 	if (irq->vcpu || !vcpu) {
@@ -540,12 +565,20 @@ int kvm_vgic_inject_irq(struct kvm *kvm, struct kvm_vcpu *vcpu,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!vcpu && irq_is_private(kvm, intid))
+=======
+	if (!vcpu && intid < VGIC_NR_PRIVATE_IRQS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	trace_vgic_update_irq_pending(vcpu ? vcpu->vcpu_idx : 0, intid, level);
 
+<<<<<<< HEAD
 	if (irq_is_private(kvm, intid))
+=======
+	if (intid < VGIC_NR_PRIVATE_IRQS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		irq = vgic_get_vcpu_irq(vcpu, intid);
 	else
 		irq = vgic_get_irq(kvm, intid);
@@ -572,6 +605,7 @@ int kvm_vgic_inject_irq(struct kvm *kvm, struct kvm_vcpu *vcpu,
 	return 0;
 }
 
+<<<<<<< HEAD
 void kvm_vgic_set_irq_ops(struct kvm_vcpu *vcpu, u32 vintid,
 			  struct irq_ops *ops)
 {
@@ -593,6 +627,12 @@ void kvm_vgic_clear_irq_ops(struct kvm_vcpu *vcpu, u32 vintid)
 /* @irq->irq_lock must be held */
 static int kvm_vgic_map_irq(struct kvm_vcpu *vcpu, struct vgic_irq *irq,
 			    unsigned int host_irq)
+=======
+/* @irq->irq_lock must be held */
+static int kvm_vgic_map_irq(struct kvm_vcpu *vcpu, struct vgic_irq *irq,
+			    unsigned int host_irq,
+			    struct irq_ops *ops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct irq_desc *desc;
 	struct irq_data *data;
@@ -612,16 +652,21 @@ static int kvm_vgic_map_irq(struct kvm_vcpu *vcpu, struct vgic_irq *irq,
 	irq->hw = true;
 	irq->host_irq = host_irq;
 	irq->hwintid = data->hwirq;
+<<<<<<< HEAD
 
 	if (irq->ops && irq->ops->set_direct_injection)
 		irq->ops->set_direct_injection(vcpu, irq, true);
 
+=======
+	irq->ops = ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 /* @irq->irq_lock must be held */
 static inline void kvm_vgic_unmap_irq(struct vgic_irq *irq)
 {
+<<<<<<< HEAD
 	if (irq->ops && irq->ops->set_direct_injection)
 		irq->ops->set_direct_injection(irq->target_vcpu, irq, false);
 
@@ -631,6 +676,15 @@ static inline void kvm_vgic_unmap_irq(struct vgic_irq *irq)
 
 int kvm_vgic_map_phys_irq(struct kvm_vcpu *vcpu, unsigned int host_irq,
 			  u32 vintid)
+=======
+	irq->hw = false;
+	irq->hwintid = 0;
+	irq->ops = NULL;
+}
+
+int kvm_vgic_map_phys_irq(struct kvm_vcpu *vcpu, unsigned int host_irq,
+			  u32 vintid, struct irq_ops *ops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vgic_irq *irq = vgic_get_vcpu_irq(vcpu, vintid);
 	unsigned long flags;
@@ -639,7 +693,11 @@ int kvm_vgic_map_phys_irq(struct kvm_vcpu *vcpu, unsigned int host_irq,
 	BUG_ON(!irq);
 
 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
+<<<<<<< HEAD
 	ret = kvm_vgic_map_irq(vcpu, irq, host_irq);
+=======
+	ret = kvm_vgic_map_irq(vcpu, irq, host_irq, ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
 	vgic_put_irq(vcpu->kvm, irq);
 
@@ -726,7 +784,11 @@ int kvm_vgic_set_owner(struct kvm_vcpu *vcpu, unsigned int intid, void *owner)
 		return -EAGAIN;
 
 	/* SGIs and LPIs cannot be wired up to any device */
+<<<<<<< HEAD
 	if (!irq_is_ppi(vcpu->kvm, intid) && !vgic_valid_spi(vcpu->kvm, intid))
+=======
+	if (!irq_is_ppi(intid) && !vgic_valid_spi(vcpu->kvm, intid))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	irq = vgic_get_vcpu_irq(vcpu, intid);
@@ -853,6 +915,7 @@ retry:
 		vgic_release_deleted_lpis(vcpu->kvm);
 }
 
+<<<<<<< HEAD
 static void vgic_fold_state(struct kvm_vcpu *vcpu)
 {
 	if (vgic_is_v5(vcpu->kvm)) {
@@ -860,6 +923,10 @@ static void vgic_fold_state(struct kvm_vcpu *vcpu)
 		return;
 	}
 
+=======
+static inline void vgic_fold_lr_state(struct kvm_vcpu *vcpu)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*host_data_ptr(last_lr_irq))
 		return;
 
@@ -1048,10 +1115,14 @@ static inline bool can_access_vgic_from_kernel(void)
 
 static inline void vgic_save_state(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	/* No switch statement here. See comment in vgic_restore_state() */
 	if (vgic_is_v5(vcpu->kvm))
 		vgic_v5_save_state(vcpu);
 	else if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+=======
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vgic_v2_save_state(vcpu);
 	else
 		__vgic_v3_save_state(&vcpu->arch.vgic_cpu.vgic_v3);
@@ -1060,6 +1131,7 @@ static inline void vgic_save_state(struct kvm_vcpu *vcpu)
 /* Sync back the hardware VGIC state into our emulation after a guest's run. */
 void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (vgic_is_v3(vcpu->kvm)) {
 		/* If nesting, emulate the HW effect from L0 to L1 */
 		if (vgic_state_is_nested(vcpu)) {
@@ -1078,6 +1150,22 @@ void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu)
 
 	if (!vgic_is_v5(vcpu->kvm))
 		vgic_prune_ap_list(vcpu);
+=======
+	/* If nesting, emulate the HW effect from L0 to L1 */
+	if (vgic_state_is_nested(vcpu)) {
+		vgic_v3_sync_nested(vcpu);
+		return;
+	}
+
+	if (vcpu_has_nv(vcpu))
+		vgic_v3_nested_update_mi(vcpu);
+
+	if (can_access_vgic_from_kernel())
+		vgic_save_state(vcpu);
+
+	vgic_fold_lr_state(vcpu);
+	vgic_prune_ap_list(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Sync interrupts that were deactivated through a DIR trap */
@@ -1093,6 +1181,7 @@ void kvm_vgic_process_async_update(struct kvm_vcpu *vcpu)
 
 static inline void vgic_restore_state(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	/*
 	 * As nice as it would be to restructure this code into a switch
 	 * statement as can be found elsewhere, the logic quickly gets ugly.
@@ -1105,11 +1194,15 @@ static inline void vgic_restore_state(struct kvm_vcpu *vcpu)
 	if (vgic_is_v5(vcpu->kvm))
 		vgic_v5_restore_state(vcpu);
 	else if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+=======
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vgic_v2_restore_state(vcpu);
 	else
 		__vgic_v3_restore_state(&vcpu->arch.vgic_cpu.vgic_v3);
 }
 
+<<<<<<< HEAD
 static void vgic_flush_state(struct kvm_vcpu *vcpu)
 {
 	if (vgic_is_v5(vcpu->kvm)) {
@@ -1121,6 +1214,8 @@ static void vgic_flush_state(struct kvm_vcpu *vcpu)
 		vgic_flush_lr_state(vcpu);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Flush our emulation state into the GIC hardware before entering the guest. */
 void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
 {
@@ -1157,25 +1252,38 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
 
 	DEBUG_SPINLOCK_BUG_ON(!irqs_disabled());
 
+<<<<<<< HEAD
 	vgic_flush_state(vcpu);
+=======
+	scoped_guard(raw_spinlock, &vcpu->arch.vgic_cpu.ap_list_lock)
+		vgic_flush_lr_state(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (can_access_vgic_from_kernel())
 		vgic_restore_state(vcpu);
 
+<<<<<<< HEAD
 	if (vgic_supports_direct_irqs(vcpu->kvm) && kvm_vgic_global_state.has_gicv4)
+=======
+	if (vgic_supports_direct_irqs(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vgic_v4_commit(vcpu);
 }
 
 void kvm_vgic_load(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	const struct vgic_dist *dist = &vcpu->kvm->arch.vgic;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !vgic_initialized(vcpu->kvm))) {
 		if (has_vhe() && static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
 			__vgic_v3_activate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
 		return;
 	}
 
+<<<<<<< HEAD
 	switch (dist->vgic_model) {
 	case KVM_DEV_TYPE_ARM_VGIC_V5:
 		vgic_v5_load(vcpu);
@@ -1192,18 +1300,28 @@ void kvm_vgic_load(struct kvm_vcpu *vcpu)
 	default:
 		BUG();
 	}
+=======
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+		vgic_v2_load(vcpu);
+	else
+		vgic_v3_load(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void kvm_vgic_put(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	const struct vgic_dist *dist = &vcpu->kvm->arch.vgic;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !vgic_initialized(vcpu->kvm))) {
 		if (has_vhe() && static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
 			__vgic_v3_deactivate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
 		return;
 	}
 
+<<<<<<< HEAD
 	switch (dist->vgic_model) {
 	case KVM_DEV_TYPE_ARM_VGIC_V5:
 		vgic_v5_put(vcpu);
@@ -1220,6 +1338,12 @@ void kvm_vgic_put(struct kvm_vcpu *vcpu)
 	default:
 		BUG();
 	}
+=======
+	if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+		vgic_v2_put(vcpu);
+	else
+		vgic_v3_put(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int kvm_vgic_vcpu_pending_irq(struct kvm_vcpu *vcpu)
@@ -1230,9 +1354,12 @@ int kvm_vgic_vcpu_pending_irq(struct kvm_vcpu *vcpu)
 	unsigned long flags;
 	struct vgic_vmcr vmcr;
 
+<<<<<<< HEAD
 	if (vgic_is_v5(vcpu->kvm))
 		return vgic_v5_has_pending_ppi(vcpu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vcpu->kvm->arch.vgic.enabled)
 		return false;
 

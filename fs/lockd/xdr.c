@@ -15,6 +15,7 @@
 #include <linux/sunrpc/clnt.h>
 #include <linux/sunrpc/svc.h>
 #include <linux/sunrpc/stats.h>
+<<<<<<< HEAD
 
 #include <uapi/linux/nfs2.h>
 
@@ -22,6 +23,15 @@
 #include "share.h"
 #include "svcxdr.h"
 
+=======
+#include <linux/lockd/lockd.h>
+
+#include <uapi/linux/nfs2.h>
+
+#include "svcxdr.h"
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline loff_t
 s32_to_loff_t(__s32 offset)
 {
@@ -275,7 +285,11 @@ nlmsvc_decode_shareargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
 
 	memset(lock, 0, sizeof(*lock));
 	locks_init_lock(&lock->fl);
+<<<<<<< HEAD
 	lock->svid = LOCKD_SHARE_SVID;
+=======
+	lock->svid = ~(u32)0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!svcxdr_decode_cookie(xdr, &argp->cookie))
 		return false;

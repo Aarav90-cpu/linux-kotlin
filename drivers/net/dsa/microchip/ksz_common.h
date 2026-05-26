@@ -129,9 +129,13 @@ struct ksz_port {
 	bool learning;
 	bool isolated;
 	int stp_state;
+<<<<<<< HEAD
 	int speed;
 	int duplex;
 	bool link;
+=======
+	struct phy_device phydev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u32 fiber:1;			/* port is fiber */
 	u32 force:1;

@@ -123,10 +123,17 @@ gpr_port_t *gpr_alloc_port(struct apr_device *gdev, struct device *dev,
 }
 EXPORT_SYMBOL_GPL(gpr_alloc_port);
 
+<<<<<<< HEAD
 static int pkt_router_send_svc_pkt(struct pkt_router_svc *svc, const struct gpr_pkt *pkt)
 {
 	struct packet_router *pr = svc->pr;
 	const struct gpr_hdr *hdr;
+=======
+static int pkt_router_send_svc_pkt(struct pkt_router_svc *svc, struct gpr_pkt *pkt)
+{
+	struct packet_router *pr = svc->pr;
+	struct gpr_hdr *hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	int ret;
 
@@ -139,13 +146,21 @@ static int pkt_router_send_svc_pkt(struct pkt_router_svc *svc, const struct gpr_
 	return ret ? ret : hdr->pkt_size;
 }
 
+<<<<<<< HEAD
 int gpr_send_pkt(struct apr_device *gdev, const struct gpr_pkt *pkt)
+=======
+int gpr_send_pkt(struct apr_device *gdev, struct gpr_pkt *pkt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pkt_router_send_svc_pkt(&gdev->svc, pkt);
 }
 EXPORT_SYMBOL_GPL(gpr_send_pkt);
 
+<<<<<<< HEAD
 int gpr_send_port_pkt(gpr_port_t *port, const struct gpr_pkt *pkt)
+=======
+int gpr_send_port_pkt(gpr_port_t *port, struct gpr_pkt *pkt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pkt_router_send_svc_pkt(port, pkt);
 }

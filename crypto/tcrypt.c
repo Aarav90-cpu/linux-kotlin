@@ -911,6 +911,7 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (klen) {
 			ret = crypto_ahash_setkey(tfm, tvmem[0], klen);
 			if (ret) {
@@ -919,6 +920,10 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 				break;
 			}
 		}
+=======
+		if (klen)
+			crypto_ahash_setkey(tfm, tvmem[0], klen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pr_info("test%3u "
 			"(%5u byte blocks,%5u bytes per update,%4u updates): ",
@@ -1563,6 +1568,13 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		ret = min(ret, tcrypt_test("ecb(arc4)"));
 		break;
 
+<<<<<<< HEAD
+=======
+	case 17:
+		ret = min(ret, tcrypt_test("michael_mic"));
+		break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 18:
 		ret = min(ret, tcrypt_test("crc32c"));
 		break;
@@ -1652,6 +1664,13 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		ret = min(ret, tcrypt_test("rfc4309(ccm(aes))"));
 		break;
 
+<<<<<<< HEAD
+=======
+	case 46:
+		ret = min(ret, tcrypt_test("ghash"));
+		break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 48:
 		ret = min(ret, tcrypt_test("sha3-224"));
 		break;
@@ -2249,6 +2268,14 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		test_hash_speed("blake2b-512", sec, generic_hash_speed_template);
 		if (mode > 300 && mode < 400) break;
 		fallthrough;
+<<<<<<< HEAD
+=======
+	case 318:
+		klen = 16;
+		test_hash_speed("ghash", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+		fallthrough;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 319:
 		test_hash_speed("crc32c", sec, generic_hash_speed_template);
 		if (mode > 300 && mode < 400) break;
@@ -2801,11 +2828,14 @@ static int __init tcrypt_mod_init(void)
 			goto err_free_tv;
 	}
 
+<<<<<<< HEAD
 	if (!num_mb) {
 		pr_warn("num_mb must be at least 1; forcing to 1\n");
 		num_mb = 1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = do_test(alg, type, mask, mode, num_mb);
 
 	if (err) {
@@ -2815,7 +2845,11 @@ static int __init tcrypt_mod_init(void)
 		pr_debug("all tests passed\n");
 	}
 
+<<<<<<< HEAD
 	/* We intentionally return -EAGAIN to prevent keeping the module,
+=======
+	/* We intentionaly return -EAGAIN to prevent keeping the module,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * unless we're running in fips mode. It does all its work from
 	 * init() and doesn't offer any runtime functionality, but in
 	 * the fips case, checking for a successful load is helpful.

@@ -22,10 +22,18 @@ properties:
   enable-gpios: true
   port: true
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - power-supply
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ...

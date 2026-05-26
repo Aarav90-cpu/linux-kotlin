@@ -177,7 +177,11 @@ new_device_store(const struct bus_type *bus, const char *buf, size_t count)
 		}
 		break;
 	default:
+<<<<<<< HEAD
 		pr_err("Format for adding new device is \"id port_count num_queues\" (uint uint uint).\n");
+=======
+		pr_err("Format for adding new device is \"id port_count num_queues\" (uint uint unit).\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 

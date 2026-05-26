@@ -15,6 +15,10 @@
 #include <linux/regulator/of_regulator.h>
 
 struct bq257xx_reg_data {
+<<<<<<< HEAD
+=======
+	struct bq257xx_device *bq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct regulator_dev *bq257xx_reg;
 	struct gpio_desc *otg_en_gpio;
 	struct regulator_desc desc;
@@ -22,11 +26,19 @@ struct bq257xx_reg_data {
 
 static int bq25703_vbus_get_cur_limit(struct regulator_dev *rdev)
 {
+<<<<<<< HEAD
 	struct regmap *regmap = rdev_get_regmap(rdev);
 	int ret;
 	unsigned int reg;
 
 	ret = regmap_read(regmap, BQ25703_OTG_CURRENT, &reg);
+=======
+	struct bq257xx_reg_data *pdata = rdev_get_drvdata(rdev);
+	int ret;
+	unsigned int reg;
+
+	ret = regmap_read(pdata->bq->regmap, BQ25703_OTG_CURRENT, &reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 	return FIELD_GET(BQ25703_OTG_CUR_MASK, reg) * BQ25703_OTG_CUR_STEP_UA;
@@ -39,7 +51,11 @@ static int bq25703_vbus_get_cur_limit(struct regulator_dev *rdev)
 static int bq25703_vbus_set_cur_limit(struct regulator_dev *rdev,
 				      int min_uA, int max_uA)
 {
+<<<<<<< HEAD
 	struct regmap *regmap = rdev_get_regmap(rdev);
+=======
+	struct bq257xx_reg_data *pdata = rdev_get_drvdata(rdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int reg;
 
 	if ((min_uA > BQ25703_OTG_CUR_MAX_UA) || (max_uA < 0))
@@ -51,7 +67,11 @@ static int bq25703_vbus_set_cur_limit(struct regulator_dev *rdev,
 	if ((reg * BQ25703_OTG_CUR_STEP_UA) < min_uA)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return regmap_write(regmap, BQ25703_OTG_CURRENT,
+=======
+	return regmap_write(pdata->bq->regmap, BQ25703_OTG_CURRENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    FIELD_PREP(BQ25703_OTG_CUR_MASK, reg));
 }
 
@@ -127,12 +147,15 @@ static void bq257xx_reg_dt_parse_gpio(struct platform_device *pdev)
 	of_node_put(subchild);
 
 	if (IS_ERR(pdata->otg_en_gpio)) {
+<<<<<<< HEAD
 		if (PTR_ERR(pdata->otg_en_gpio) == -ENOENT) {
 			/* No GPIO, will only use register writes for OTG */
 			pdata->otg_en_gpio = NULL;
 			return;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&pdev->dev, "Error getting enable gpio: %ld\n",
 			PTR_ERR(pdata->otg_en_gpio));
 		return;
@@ -142,6 +165,10 @@ static void bq257xx_reg_dt_parse_gpio(struct platform_device *pdev)
 static int bq257xx_regulator_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	struct bq257xx_device *bq = dev_get_drvdata(pdev->dev.parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bq257xx_reg_data *pdata;
 	struct device_node *np = dev->of_node;
 	struct regulator_config cfg = {};
@@ -152,6 +179,10 @@ static int bq257xx_regulator_probe(struct platform_device *pdev)
 	if (!pdata)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	pdata->bq = bq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdata->desc = bq25703_vbus_desc;
 
 	platform_set_drvdata(pdev, pdata);

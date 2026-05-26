@@ -585,7 +585,11 @@ static void kfd_procfs_add_sysfs_stats(struct kfd_process *p)
 		ret = kobject_init_and_add(pdd->kobj_stats,
 					   &procfs_stats_type,
 					   p->kobj,
+<<<<<<< HEAD
 					   "%s", stats_dir_filename);
+=======
+					   stats_dir_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (ret) {
 			pr_warn("Creating KFD proc/stats_%s folder failed",
@@ -632,7 +636,11 @@ static void kfd_procfs_add_sysfs_counters(struct kfd_process *p)
 			return;
 
 		ret = kobject_init_and_add(kobj_counters, &sysfs_counters_type,
+<<<<<<< HEAD
 					   p->kobj, "%s", counters_dir_filename);
+=======
+					   p->kobj, counters_dir_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			pr_warn("Creating KFD proc/%s folder failed",
 				counters_dir_filename);
@@ -679,7 +687,11 @@ static void kfd_procfs_add_sysfs_files(struct kfd_process *p)
 
 void kfd_procfs_del_queue(struct queue *q)
 {
+<<<<<<< HEAD
 	if (!q || !q->process->kobj)
+=======
+	if (!q)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	kobject_del(&q->kobj);
@@ -689,8 +701,12 @@ void kfd_procfs_del_queue(struct queue *q)
 int kfd_process_create_wq(void)
 {
 	if (!kfd_process_wq)
+<<<<<<< HEAD
 		kfd_process_wq = alloc_workqueue("kfd_process_wq", WQ_UNBOUND,
 						 0);
+=======
+		kfd_process_wq = alloc_workqueue("kfd_process_wq", 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kfd_restore_wq)
 		kfd_restore_wq = alloc_ordered_workqueue("kfd_restore_wq",
 							 WQ_FREEZABLE);
@@ -859,7 +875,10 @@ int kfd_create_process_sysfs(struct kfd_process *process)
 	if (ret) {
 		pr_warn("Creating procfs pid directory failed");
 		kobject_put(process->kobj);
+<<<<<<< HEAD
 		process->kobj = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 

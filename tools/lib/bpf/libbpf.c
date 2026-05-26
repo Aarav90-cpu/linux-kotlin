@@ -3138,6 +3138,7 @@ static bool btf_needs_sanitization(struct bpf_object *obj)
 	bool has_type_tag = kernel_supports(obj, FEAT_BTF_TYPE_TAG);
 	bool has_enum64 = kernel_supports(obj, FEAT_BTF_ENUM64);
 	bool has_qmark_datasec = kernel_supports(obj, FEAT_BTF_QMARK_DATASEC);
+<<<<<<< HEAD
 	bool has_layout = kernel_supports(obj, FEAT_BTF_LAYOUT);
 
 	return !has_func || !has_datasec || !has_func_global || !has_float ||
@@ -3146,6 +3147,14 @@ static bool btf_needs_sanitization(struct bpf_object *obj)
 }
 
 struct btf *bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *orig_btf)
+=======
+
+	return !has_func || !has_datasec || !has_func_global || !has_float ||
+	       !has_decl_tag || !has_type_tag || !has_enum64 || !has_qmark_datasec;
+}
+
+static int bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *btf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool has_func_global = kernel_supports(obj, FEAT_BTF_GLOBAL_FUNC);
 	bool has_datasec = kernel_supports(obj, FEAT_BTF_DATASEC);
@@ -3155,6 +3164,7 @@ struct btf *bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *orig_bt
 	bool has_type_tag = kernel_supports(obj, FEAT_BTF_TYPE_TAG);
 	bool has_enum64 = kernel_supports(obj, FEAT_BTF_ENUM64);
 	bool has_qmark_datasec = kernel_supports(obj, FEAT_BTF_QMARK_DATASEC);
+<<<<<<< HEAD
 	bool has_layout = kernel_supports(obj, FEAT_BTF_LAYOUT);
 	int enum64_placeholder_id = 0;
 	const struct btf_header *hdr;
@@ -3213,6 +3223,11 @@ struct btf *bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *orig_bt
 
 	/* enforce 8-byte pointers for BPF-targeted BTFs */
 	btf__set_pointer_size(btf, 8);
+=======
+	int enum64_placeholder_id = 0;
+	struct btf_type *t;
+	int i, j, vlen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 1; i < btf__type_cnt(btf); i++) {
 		t = (struct btf_type *)btf__type_by_id(btf, i);
@@ -3290,10 +3305,16 @@ struct btf *bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *orig_bt
 
 			if (enum64_placeholder_id == 0) {
 				enum64_placeholder_id = btf__add_int(btf, "enum64_placeholder", 1, 0);
+<<<<<<< HEAD
 				if (enum64_placeholder_id < 0) {
 					btf__free(btf);
 					return ERR_PTR(enum64_placeholder_id);
 				}
+=======
+				if (enum64_placeholder_id < 0)
+					return enum64_placeholder_id;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				t = (struct btf_type *)btf__type_by_id(btf, i);
 			}
 
@@ -3307,7 +3328,11 @@ struct btf *bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *orig_bt
 		}
 	}
 
+<<<<<<< HEAD
 	return btf;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool libbpf_needs_btf(const struct bpf_object *obj)
@@ -3658,9 +3683,27 @@ static int bpf_object__sanitize_and_load_btf(struct bpf_object *obj)
 
 	sanitize = btf_needs_sanitization(obj);
 	if (sanitize) {
+<<<<<<< HEAD
 		kern_btf = bpf_object__sanitize_btf(obj, obj->btf);
 		if (IS_ERR(kern_btf))
 			return PTR_ERR(kern_btf);
+=======
+		const void *raw_data;
+		__u32 sz;
+
+		/* clone BTF to sanitize a copy and leave the original intact */
+		raw_data = btf__raw_data(obj->btf, &sz);
+		kern_btf = btf__new(raw_data, sz);
+		err = libbpf_get_error(kern_btf);
+		if (err)
+			return err;
+
+		/* enforce 8-byte pointers for BPF-targeted BTFs */
+		btf__set_pointer_size(obj->btf, 8);
+		err = bpf_object__sanitize_btf(obj, kern_btf);
+		if (err)
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (obj->gen_loader) {
@@ -5203,12 +5246,17 @@ bool kernel_supports(const struct bpf_object *obj, enum kern_feature_id feat_id)
 		 */
 		return true;
 
+<<<<<<< HEAD
 	if (obj->feat_cache)
+=======
+	if (obj->token_fd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return feat_supported(obj->feat_cache, feat_id);
 
 	return feat_supported(NULL, feat_id);
 }
 
+<<<<<<< HEAD
 /* Used in testing to simulate missing features. */
 void bpf_object_set_feat_cache(struct bpf_object *obj, struct kern_feature_cache *cache)
 {
@@ -5217,6 +5265,8 @@ void bpf_object_set_feat_cache(struct bpf_object *obj, struct kern_feature_cache
 	obj->feat_cache = cache;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool map_is_reuse_compat(const struct bpf_map *map, int map_fd)
 {
 	struct bpf_map_info map_info;
@@ -5852,12 +5902,19 @@ static int load_module_btfs(struct bpf_object *obj)
 		info.name = ptr_to_u64(name);
 		info.name_len = sizeof(name);
 
+<<<<<<< HEAD
 		btf = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = bpf_btf_get_info_by_fd(fd, &info, &len);
 		if (err) {
 			err = -errno;
 			pr_warn("failed to get BTF object #%d info: %s\n", id, errstr(err));
+<<<<<<< HEAD
 			break;
+=======
+			goto err_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* ignore non-module BTFs */
@@ -5871,15 +5928,25 @@ static int load_module_btfs(struct bpf_object *obj)
 		if (err) {
 			pr_warn("failed to load module [%s]'s BTF object #%d: %s\n",
 				name, id, errstr(err));
+<<<<<<< HEAD
 			break;
+=======
+			goto err_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		err = libbpf_ensure_mem((void **)&obj->btf_modules, &obj->btf_module_cap,
 					sizeof(*obj->btf_modules), obj->btf_module_cnt + 1);
 		if (err)
+<<<<<<< HEAD
 			break;
 
 		mod_btf = &obj->btf_modules[obj->btf_module_cnt];
+=======
+			goto err_out;
+
+		mod_btf = &obj->btf_modules[obj->btf_module_cnt++];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		mod_btf->btf = btf;
 		mod_btf->id = id;
@@ -5887,6 +5954,7 @@ static int load_module_btfs(struct bpf_object *obj)
 		mod_btf->name = strdup(name);
 		if (!mod_btf->name) {
 			err = -ENOMEM;
+<<<<<<< HEAD
 			break;
 		}
 		obj->btf_module_cnt++;
@@ -5897,6 +5965,18 @@ static int load_module_btfs(struct bpf_object *obj)
 		close(fd);
 	}
 	return err;
+=======
+			goto err_out;
+		}
+		continue;
+
+err_out:
+		close(fd);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct bpf_core_cand_list *
@@ -9857,6 +9937,7 @@ __u32 bpf_program__line_info_cnt(const struct bpf_program *prog)
 	return prog->line_info_cnt;
 }
 
+<<<<<<< HEAD
 int bpf_program__clone(struct bpf_program *prog, const struct bpf_prog_load_opts *opts)
 {
 	LIBBPF_OPTS(bpf_prog_load_opts, attr);
@@ -9962,6 +10043,8 @@ int bpf_program__clone(struct bpf_program *prog, const struct bpf_prog_load_opts
 	return libbpf_err(fd);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SEC_DEF(sec_pfx, ptype, atype, flags, ...) {			    \
 	.sec = (char *)sec_pfx,						    \
 	.prog_type = BPF_PROG_TYPE_##ptype,				    \
@@ -11852,8 +11935,11 @@ bpf_program__attach_kprobe_opts(const struct bpf_program *prog,
 	default:
 		return libbpf_err_ptr(-EINVAL);
 	}
+<<<<<<< HEAD
 	if (!func_name && legacy)
 		return libbpf_err_ptr(-EOPNOTSUPP);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!legacy) {
 		pfd = perf_event_open_probe(false /* uprobe */, retprobe,
@@ -11873,21 +11959,36 @@ bpf_program__attach_kprobe_opts(const struct bpf_program *prog,
 						    offset, -1 /* pid */);
 	}
 	if (pfd < 0) {
+<<<<<<< HEAD
 		err = pfd;
 		pr_warn("prog '%s': failed to create %s '%s%s0x%zx' perf event: %s\n",
 			prog->name, retprobe ? "kretprobe" : "kprobe",
 			func_name ?: "", func_name ? "+" : "",
 			offset, errstr(err));
+=======
+		err = -errno;
+		pr_warn("prog '%s': failed to create %s '%s+0x%zx' perf event: %s\n",
+			prog->name, retprobe ? "kretprobe" : "kprobe",
+			func_name, offset,
+			errstr(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_out;
 	}
 	link = bpf_program__attach_perf_event_opts(prog, pfd, &pe_opts);
 	err = libbpf_get_error(link);
 	if (err) {
 		close(pfd);
+<<<<<<< HEAD
 		pr_warn("prog '%s': failed to attach to %s '%s%s0x%zx': %s\n",
 			prog->name, retprobe ? "kretprobe" : "kprobe",
 			func_name ?: "", func_name ? "+" : "",
 			offset, errstr(err));
+=======
+		pr_warn("prog '%s': failed to attach to %s '%s+0x%zx': %s\n",
+			prog->name, retprobe ? "kretprobe" : "kprobe",
+			func_name, offset,
+			errstr(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_clean_legacy;
 	}
 	if (legacy) {
@@ -12203,6 +12304,7 @@ bpf_program__attach_kprobe_multi_opts(const struct bpf_program *prog,
 	if (addrs && syms)
 		return libbpf_err_ptr(-EINVAL);
 
+<<<<<<< HEAD
 	/*
 	 * Exact function name (no wildcards) without unique_match:
 	 * bypass kallsyms parsing and pass the symbol directly to the
@@ -12213,6 +12315,9 @@ bpf_program__attach_kprobe_multi_opts(const struct bpf_program *prog,
 		syms = &pattern;
 		cnt = 1;
 	} else if (pattern) {
+=======
+	if (pattern) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (has_available_filter_functions_addrs())
 			err = libbpf_available_kprobes_parse(&res);
 		else
@@ -12255,6 +12360,7 @@ bpf_program__attach_kprobe_multi_opts(const struct bpf_program *prog,
 	link_fd = bpf_link_create(prog_fd, 0, attach_type, &lopts);
 	if (link_fd < 0) {
 		err = -errno;
+<<<<<<< HEAD
 		/*
 		 * Normalize error code: when exact name bypasses kallsyms
 		 * parsing, kernel returns ESRCH from ftrace_lookup_symbols().
@@ -12263,6 +12369,8 @@ bpf_program__attach_kprobe_multi_opts(const struct bpf_program *prog,
 		 */
 		if (err == -ESRCH)
 			err = -ENOENT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_warn("prog '%s': failed to attach: %s\n",
 			prog->name, errstr(err));
 		goto error;
@@ -12863,7 +12971,11 @@ bpf_program__attach_uprobe_opts(const struct bpf_program *prog, pid_t pid,
 						    binary_path, func_offset, pid);
 	}
 	if (pfd < 0) {
+<<<<<<< HEAD
 		err = pfd;
+=======
+		err = -errno;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_warn("prog '%s': failed to create %s '%s:0x%zx' perf event: %s\n",
 			prog->name, retprobe ? "uretprobe" : "uprobe",
 			binary_path, func_offset,

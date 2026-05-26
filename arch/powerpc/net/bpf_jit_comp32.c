@@ -123,6 +123,7 @@ void bpf_jit_realloc_regs(struct codegen_context *ctx)
 	}
 }
 
+<<<<<<< HEAD
 void prepare_for_fsession_fentry(u32 *image, struct codegen_context *ctx, int cookie_cnt,
 						int cookie_off, int retval_off)
 {
@@ -158,6 +159,8 @@ void store_func_meta(u32 *image, struct codegen_context *ctx,
 	EMIT(PPC_RAW_STW(bpf_to_ppc(TMP_REG), _R1, func_meta_off + 4));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
 {
 	int i;

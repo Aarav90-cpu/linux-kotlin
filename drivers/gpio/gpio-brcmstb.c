@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-only
+<<<<<<< HEAD
 // Copyright (C) 2015-2017, 2026 Broadcom
+=======
+// Copyright (C) 2015-2017 Broadcom
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/bitops.h>
 #include <linux/gpio/driver.h>
@@ -54,7 +58,10 @@ struct brcmstb_gpio_priv {
 	int parent_irq;
 	int num_gpios;
 	int parent_wake_irq;
+<<<<<<< HEAD
 	bool suspended;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define MAX_GPIO_PER_BANK       32
@@ -96,13 +103,23 @@ static int brcmstb_gpio_hwirq_to_offset(irq_hw_number_t hwirq,
 	return hwirq - bank->chip.gc.offset;
 }
 
+<<<<<<< HEAD
 static void __brcmstb_gpio_set_imask(struct brcmstb_gpio_bank *bank,
 				     irq_hw_number_t hwirq, bool enable)
+=======
+static void brcmstb_gpio_set_imask(struct brcmstb_gpio_bank *bank,
+		unsigned int hwirq, bool enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct brcmstb_gpio_priv *priv = bank->parent_priv;
 	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(hwirq, bank));
 	u32 imask;
 
+<<<<<<< HEAD
+=======
+	guard(gpio_generic_lock_irqsave)(&bank->chip);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	imask = gpio_generic_read_reg(&bank->chip,
 				      priv->reg_base + GIO_MASK(bank->id));
 	if (enable)
@@ -113,6 +130,7 @@ static void __brcmstb_gpio_set_imask(struct brcmstb_gpio_bank *bank,
 			       priv->reg_base + GIO_MASK(bank->id), imask);
 }
 
+<<<<<<< HEAD
 static void brcmstb_gpio_set_imask(struct brcmstb_gpio_bank *bank,
 				   irq_hw_number_t hwirq, bool enable)
 {
@@ -120,6 +138,8 @@ static void brcmstb_gpio_set_imask(struct brcmstb_gpio_bank *bank,
 	__brcmstb_gpio_set_imask(bank, hwirq, enable);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int brcmstb_gpio_to_irq(struct gpio_chip *gc, unsigned offset)
 {
 	struct brcmstb_gpio_priv *priv = brcmstb_gpio_gc_to_priv(gc);
@@ -138,6 +158,7 @@ static void brcmstb_gpio_irq_mask(struct irq_data *d)
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct brcmstb_gpio_bank *bank = gpiochip_get_data(gc);
 
+<<<<<<< HEAD
 	brcmstb_gpio_set_imask(bank, irqd_to_hwirq(d), false);
 }
 
@@ -153,6 +174,9 @@ static void brcmstb_gpio_irq_mask_ack(struct irq_data *d)
 	__brcmstb_gpio_set_imask(bank, hwirq, false);
 	gpio_generic_write_reg(&bank->chip,
 			       priv->reg_base + GIO_STAT(bank->id), mask);
+=======
+	brcmstb_gpio_set_imask(bank, d->hwirq, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void brcmstb_gpio_irq_unmask(struct irq_data *d)
@@ -160,7 +184,11 @@ static void brcmstb_gpio_irq_unmask(struct irq_data *d)
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct brcmstb_gpio_bank *bank = gpiochip_get_data(gc);
 
+<<<<<<< HEAD
 	brcmstb_gpio_set_imask(bank, irqd_to_hwirq(d), true);
+=======
+	brcmstb_gpio_set_imask(bank, d->hwirq, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void brcmstb_gpio_irq_ack(struct irq_data *d)
@@ -168,7 +196,11 @@ static void brcmstb_gpio_irq_ack(struct irq_data *d)
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct brcmstb_gpio_bank *bank = gpiochip_get_data(gc);
 	struct brcmstb_gpio_priv *priv = bank->parent_priv;
+<<<<<<< HEAD
 	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(irqd_to_hwirq(d), bank));
+=======
+	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(d->hwirq, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpio_generic_write_reg(&bank->chip,
 			       priv->reg_base + GIO_STAT(bank->id), mask);
@@ -179,7 +211,11 @@ static int brcmstb_gpio_irq_set_type(struct irq_data *d, unsigned int type)
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct brcmstb_gpio_bank *bank = gpiochip_get_data(gc);
 	struct brcmstb_gpio_priv *priv = bank->parent_priv;
+<<<<<<< HEAD
 	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(irqd_to_hwirq(d), bank));
+=======
+	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(d->hwirq, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 edge_insensitive, iedge_insensitive;
 	u32 edge_config, iedge_config;
 	u32 level, ilevel;
@@ -241,9 +277,12 @@ static int brcmstb_gpio_priv_set_wake(struct brcmstb_gpio_priv *priv,
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (priv->parent_wake_irq == priv->parent_irq)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (enable)
 		ret = enable_irq_wake(priv->parent_wake_irq);
 	else
@@ -259,7 +298,11 @@ static int brcmstb_gpio_irq_set_wake(struct irq_data *d, unsigned int enable)
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
 	struct brcmstb_gpio_bank *bank = gpiochip_get_data(gc);
 	struct brcmstb_gpio_priv *priv = bank->parent_priv;
+<<<<<<< HEAD
 	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(irqd_to_hwirq(d), bank));
+=======
+	u32 mask = BIT(brcmstb_gpio_hwirq_to_offset(d->hwirq, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Do not do anything specific for now, suspend/resume callbacks will
@@ -294,11 +337,14 @@ static void brcmstb_gpio_irq_bank_handler(struct brcmstb_gpio_bank *bank)
 	while ((status = brcmstb_gpio_get_active_irqs(bank))) {
 		unsigned int offset;
 
+<<<<<<< HEAD
 		if (priv->suspended && bank->wake_active & status) {
 			priv->suspended = false;
 			pm_wakeup_event(&priv->pdev->dev, 0);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for_each_set_bit(offset, &status, 32) {
 			if (offset >= bank->width)
 				dev_warn(&priv->pdev->dev,
@@ -472,6 +518,7 @@ static int brcmstb_gpio_irq_setup(struct platform_device *pdev,
 	}
 
 	if (of_property_read_bool(np, "wakeup-source")) {
+<<<<<<< HEAD
 		/*
 		 * Set wakeup capability so we can process boot-time
 		 * "wakeups" (e.g., from S5 cold boot).
@@ -484,6 +531,20 @@ static int brcmstb_gpio_irq_setup(struct platform_device *pdev,
 			dev_warn(dev,
 				"Couldn't get wake IRQ - GPIOs will not be able to wake from sleep");
 		} else {
+=======
+		priv->parent_wake_irq = platform_get_irq(pdev, 1);
+		if (priv->parent_wake_irq < 0) {
+			priv->parent_wake_irq = 0;
+			dev_warn(dev,
+				"Couldn't get wake IRQ - GPIOs will not be able to wake from sleep");
+		} else {
+			/*
+			 * Set wakeup capability so we can process boot-time
+			 * "wakeups" (e.g., from S5 cold boot)
+			 */
+			device_set_wakeup_capable(dev, true);
+			device_wakeup_enable(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = devm_request_irq(dev, priv->parent_wake_irq,
 					       brcmstb_gpio_wake_irq_handler,
 					       IRQF_SHARED,
@@ -494,17 +555,29 @@ static int brcmstb_gpio_irq_setup(struct platform_device *pdev,
 				goto out_free_domain;
 			}
 		}
+<<<<<<< HEAD
 		priv->irq_chip.irq_set_wake = brcmstb_gpio_irq_set_wake;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	priv->irq_chip.name = dev_name(dev);
 	priv->irq_chip.irq_disable = brcmstb_gpio_irq_mask;
 	priv->irq_chip.irq_mask = brcmstb_gpio_irq_mask;
+<<<<<<< HEAD
 	priv->irq_chip.irq_mask_ack = brcmstb_gpio_irq_mask_ack;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	priv->irq_chip.irq_unmask = brcmstb_gpio_irq_unmask;
 	priv->irq_chip.irq_ack = brcmstb_gpio_irq_ack;
 	priv->irq_chip.irq_set_type = brcmstb_gpio_irq_set_type;
 
+<<<<<<< HEAD
+=======
+	if (priv->parent_wake_irq)
+		priv->irq_chip.irq_set_wake = brcmstb_gpio_irq_set_wake;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	irq_set_chained_handler_and_data(priv->parent_irq,
 					 brcmstb_gpio_irq_handler, priv);
 	irq_set_status_flags(priv->parent_irq, IRQ_DISABLE_UNLAZY);
@@ -527,11 +600,24 @@ static void brcmstb_gpio_bank_save(struct brcmstb_gpio_priv *priv,
 					priv->reg_base + GIO_BANK_OFF(bank->id, i));
 }
 
+<<<<<<< HEAD
 static void brcmstb_gpio_quiesce(struct brcmstb_gpio_priv *priv, bool save)
 {
 	struct brcmstb_gpio_bank *bank;
 	u32 imask;
 
+=======
+static void brcmstb_gpio_quiesce(struct device *dev, bool save)
+{
+	struct brcmstb_gpio_priv *priv = dev_get_drvdata(dev);
+	struct brcmstb_gpio_bank *bank;
+	u32 imask;
+
+	/* disable non-wake interrupt */
+	if (priv->parent_irq >= 0)
+		disable_irq(priv->parent_irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(bank, &priv->bank_list, node) {
 		if (save)
 			brcmstb_gpio_bank_save(priv, bank);
@@ -549,6 +635,7 @@ static void brcmstb_gpio_quiesce(struct brcmstb_gpio_priv *priv, bool save)
 
 static void brcmstb_gpio_shutdown(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct brcmstb_gpio_priv *priv = dev_get_drvdata(&pdev->dev);
 
 	if (priv->parent_irq > 0)
@@ -556,6 +643,10 @@ static void brcmstb_gpio_shutdown(struct platform_device *pdev)
 
 	/* Enable GPIO for S5 cold boot */
 	brcmstb_gpio_quiesce(priv, false);
+=======
+	/* Enable GPIO for S5 cold boot */
+	brcmstb_gpio_quiesce(&pdev->dev, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void brcmstb_gpio_bank_restore(struct brcmstb_gpio_priv *priv,
@@ -571,6 +662,7 @@ static void brcmstb_gpio_bank_restore(struct brcmstb_gpio_priv *priv,
 
 static int brcmstb_gpio_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	struct brcmstb_gpio_priv *priv = dev_get_drvdata(dev);
 
 	if (priv->parent_irq > 0)
@@ -595,6 +687,9 @@ static int brcmstb_gpio_suspend_noirq(struct device *dev)
 	if (priv->parent_wake_irq)
 		enable_irq(priv->parent_irq);
 
+=======
+	brcmstb_gpio_quiesce(dev, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -602,6 +697,7 @@ static int brcmstb_gpio_resume(struct device *dev)
 {
 	struct brcmstb_gpio_priv *priv = dev_get_drvdata(dev);
 	struct brcmstb_gpio_bank *bank;
+<<<<<<< HEAD
 
 	if (priv->parent_wake_irq)
 		disable_irq(priv->parent_irq);
@@ -612,14 +708,32 @@ static int brcmstb_gpio_resume(struct device *dev)
 		brcmstb_gpio_bank_restore(priv, bank);
 
 	if (priv->parent_irq > 0)
+=======
+	bool need_wakeup_event = false;
+
+	list_for_each_entry(bank, &priv->bank_list, node) {
+		need_wakeup_event |= !!__brcmstb_gpio_get_active_irqs(bank);
+		brcmstb_gpio_bank_restore(priv, bank);
+	}
+
+	if (priv->parent_wake_irq && need_wakeup_event)
+		pm_wakeup_event(dev, 0);
+
+	/* enable non-wake interrupt */
+	if (priv->parent_irq >= 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enable_irq(priv->parent_irq);
 
 	return 0;
 }
 
 static const struct dev_pm_ops brcmstb_gpio_pm_ops = {
+<<<<<<< HEAD
 	.suspend = pm_sleep_ptr(brcmstb_gpio_suspend),
 	.suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend_noirq),
+=======
+	.suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.resume_noirq = pm_sleep_ptr(brcmstb_gpio_resume),
 };
 

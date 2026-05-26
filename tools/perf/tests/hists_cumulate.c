@@ -81,7 +81,11 @@ static int add_hist_entries(struct hists *hists, struct machine *machine)
 {
 	struct addr_location al;
 	struct evsel *evsel = hists_to_evsel(hists);
+<<<<<<< HEAD
 	struct perf_sample sample = { .evsel = evsel, .period = 1000, };
+=======
+	struct perf_sample sample = { .period = 1000, };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t i;
 
 	addr_location__init(&al);

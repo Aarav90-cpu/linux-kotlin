@@ -134,6 +134,24 @@
 
 #include <linux/page_table_check.h>
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_XIP_KERNEL
+#define XIP_FIXUP(addr) ({							\
+	extern char _sdata[], _start[], _end[];					\
+	uintptr_t __rom_start_data = CONFIG_XIP_PHYS_ADDR			\
+				+ (uintptr_t)&_sdata - (uintptr_t)&_start;	\
+	uintptr_t __rom_end_data = CONFIG_XIP_PHYS_ADDR				\
+				+ (uintptr_t)&_end - (uintptr_t)&_start;	\
+	uintptr_t __a = (uintptr_t)(addr);					\
+	(__a >= __rom_start_data && __a < __rom_end_data) ?			\
+		__a - __rom_start_data + CONFIG_PHYS_RAM_BASE :	__a;		\
+	})
+#else
+#define XIP_FIXUP(addr)		(addr)
+#endif /* CONFIG_XIP_KERNEL */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pt_alloc_ops {
 	pte_t *(*get_pte_virt)(phys_addr_t pa);
 	phys_addr_t (*alloc_pte)(uintptr_t va);
@@ -644,8 +662,13 @@ static inline void pte_clear(struct mm_struct *mm,
 extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
 				 pte_t *ptep, pte_t entry, int dirty);
 #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
+<<<<<<< HEAD
 bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep);
+=======
+extern int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long address,
+				     pte_t *ptep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
@@ -680,8 +703,13 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
 }
 
 #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
+=======
+static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+					 unsigned long address, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * This comment is borrowed from x86, but applies equally to RISC-V:
@@ -969,17 +997,29 @@ static inline void set_pud_at(struct mm_struct *mm, unsigned long addr,
 }
 
 #ifdef CONFIG_PAGE_TABLE_CHECK
+<<<<<<< HEAD
 static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
+=======
+static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pte_present(pte) && pte_user(pte);
 }
 
+<<<<<<< HEAD
 static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsigned long addr, pmd_t pmd)
+=======
+static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pmd_leaf(pmd) && pmd_user(pmd);
 }
 
+<<<<<<< HEAD
 static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long addr, pud_t pud)
+=======
+static inline bool pud_user_accessible_page(pud_t pud, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pud_leaf(pud) && pud_user(pud);
 }
@@ -1000,8 +1040,13 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
 }
 
 #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
+=======
+static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+					unsigned long address, pmd_t *pmdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
 }
@@ -1094,8 +1139,13 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
 	return ptep_set_access_flags(vma, address, (pte_t *)pudp, pud_pte(entry), dirty);
 }
 
+<<<<<<< HEAD
 static inline bool pudp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pud_t *pudp)
+=======
+static inline int pudp_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long address, pud_t *pudp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return ptep_test_and_clear_young(vma, address, (pte_t *)pudp);
 }
@@ -1257,14 +1307,34 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
 extern char _start[];
 extern void *_dtb_early_va;
 extern uintptr_t _dtb_early_pa;
+<<<<<<< HEAD
 #define dtb_early_va	_dtb_early_va
 #define dtb_early_pa	_dtb_early_pa
+=======
+#if defined(CONFIG_XIP_KERNEL) && defined(CONFIG_MMU)
+#define dtb_early_va	(*(void **)XIP_FIXUP(&_dtb_early_va))
+#define dtb_early_pa	(*(uintptr_t *)XIP_FIXUP(&_dtb_early_pa))
+#else
+#define dtb_early_va	_dtb_early_va
+#define dtb_early_pa	_dtb_early_pa
+#endif /* CONFIG_XIP_KERNEL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern u64 satp_mode;
 
 void paging_init(void);
 void misc_mem_init(void);
 
 /*
+<<<<<<< HEAD
+=======
+ * ZERO_PAGE is a global shared page that is always zero,
+ * used for zero-mapped memory areas, etc.
+ */
+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Use set_p*_safe(), and elide TLB flushing, when confident that *no*
  * TLB flush will be required as a result of the "set". For example, use
  * in scenarios where it is known ahead of time that the routine is

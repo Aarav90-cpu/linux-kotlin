@@ -134,6 +134,9 @@ void picolcd_exit_cir(struct picolcd_data *data)
 
 	data->rc_dev = NULL;
 	rc_unregister_device(rdev);
+<<<<<<< HEAD
 	rc_free_device(rdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 

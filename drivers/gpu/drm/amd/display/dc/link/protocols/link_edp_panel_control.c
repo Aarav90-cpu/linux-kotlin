@@ -100,7 +100,15 @@ void dp_set_panel_mode(struct dc_link *link, enum dp_panel_mode panel_mode)
 
 enum dp_panel_mode dp_get_panel_mode(struct dc_link *link)
 {
+<<<<<<< HEAD
 	if (link->ext_enc_id.id) {
+=======
+	/* We need to explicitly check that connector
+	 * is not DP. Some Travis_VGA get reported
+	 * by video bios as DP.
+	 */
+	if (link->connector_signal != SIGNAL_TYPE_DISPLAY_PORT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		switch (link->dpcd_caps.branch_dev_id) {
 		case DP_BRANCH_DEVICE_ID_0022B9:
@@ -120,7 +128,11 @@ enum dp_panel_mode dp_get_panel_mode(struct dc_link *link)
 			}
 			break;
 		case DP_BRANCH_DEVICE_ID_00001A:
+<<<<<<< HEAD
 			/* alternate scrambler reset is required for NUTMEG
+=======
+			/* alternate scrambler reset is required for Travis
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 * for the case when external chip does not provide
 			 * sink device id, alternate scrambler scheme will
 			 * be overriden later by querying Encoder feature
@@ -847,7 +859,10 @@ bool edp_setup_psr(struct dc_link *link,
 		case FAMILY_YELLOW_CARP:
 		case AMDGPU_FAMILY_GC_10_3_6:
 		case AMDGPU_FAMILY_GC_11_0_1:
+<<<<<<< HEAD
 		case AMDGPU_FAMILY_GC_11_5_4:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (dc->debug.disable_z10 || dc->debug.psr_skip_crtc_disable)
 				psr_context->psr_level.bits.SKIP_CRTC_DISABLE = true;
 			break;
@@ -1095,6 +1110,11 @@ bool edp_send_replay_cmd(struct dc_link *link,
 	if (!replay)
 		return false;
 
+<<<<<<< HEAD
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dp_pr_get_panel_inst(dc, link, &panel_inst))
 		cmd_data->panel_inst = panel_inst;
 	else {

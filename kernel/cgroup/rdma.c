@@ -173,7 +173,11 @@ uncharge_cg_locked(struct rdma_cgroup *cg,
 	 * the system.
 	 */
 	if (unlikely(!rpool)) {
+<<<<<<< HEAD
 		pr_warn("Invalid device %p or rdma cgroup %p\n", device, cg);
+=======
+		pr_warn("Invalid device %p or rdma cgroup %p\n", cg, device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -283,7 +287,11 @@ int rdmacg_try_charge(struct rdma_cgroup **rdmacg,
 			ret = PTR_ERR(rpool);
 			goto err;
 		} else {
+<<<<<<< HEAD
 			new = (s64)rpool->resources[index].usage + 1;
+=======
+			new = rpool->resources[index].usage + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (new > rpool->resources[index].max) {
 				ret = -EAGAIN;
 				goto err;

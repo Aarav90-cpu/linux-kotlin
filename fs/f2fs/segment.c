@@ -1606,9 +1606,12 @@ static void __issue_discard_cmd_orderly(struct f2fs_sb_info *sbi,
 		if (dc->state != D_PREP)
 			goto next;
 
+<<<<<<< HEAD
 		if (*issued > 0 && unlikely(freezing(current)))
 			break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dpolicy->io_aware && !is_idle(sbi, DISCARD_TIME)) {
 			io_interrupted = true;
 			break;
@@ -1648,7 +1651,10 @@ static int __issue_discard_cmd(struct f2fs_sb_info *sbi,
 	struct blk_plug plug;
 	int i, issued;
 	bool io_interrupted = false;
+<<<<<<< HEAD
 	bool suspended = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dpolicy->timeout)
 		f2fs_update_time(sbi, UMOUNT_DISCARD_TIMEOUT);
@@ -1679,11 +1685,14 @@ retry:
 		list_for_each_entry_safe(dc, tmp, pend_list, list) {
 			f2fs_bug_on(sbi, dc->state != D_PREP);
 
+<<<<<<< HEAD
 			if (issued > 0 && unlikely(freezing(current))) {
 				suspended = true;
 				break;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (dpolicy->timeout &&
 				f2fs_time_over(sbi, UMOUNT_DISCARD_TIMEOUT))
 				break;
@@ -1703,8 +1712,12 @@ retry:
 next:
 		mutex_unlock(&dcc->cmd_lock);
 
+<<<<<<< HEAD
 		if (issued >= dpolicy->max_requests || io_interrupted ||
 					suspended)
+=======
+		if (issued >= dpolicy->max_requests || io_interrupted)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 
@@ -3990,7 +4003,11 @@ static void do_write_page(struct f2fs_summary *sum, struct f2fs_io_info *fio)
 		if (fscrypt_inode_uses_fs_layer_crypto(folio->mapping->host))
 			fscrypt_finalize_bounce_page(&fio->encrypted_page);
 		folio_end_writeback(folio);
+<<<<<<< HEAD
 		if (f2fs_in_warm_node_list(folio))
+=======
+		if (f2fs_in_warm_node_list(fio->sbi, folio))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			f2fs_del_fsync_node_entry(fio->sbi, folio);
 		f2fs_bug_on(fio->sbi, !is_set_ckpt_flags(fio->sbi,
 							CP_ERROR_FLAG));

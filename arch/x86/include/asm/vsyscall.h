@@ -14,6 +14,7 @@ extern void set_vsyscall_pgtable_user_bits(pgd_t *root);
  * Called on instruction fetch fault in vsyscall page.
  * Returns true if handled.
  */
+<<<<<<< HEAD
 bool emulate_vsyscall_pf(unsigned long error_code, struct pt_regs *regs, unsigned long address);
 bool emulate_vsyscall_gp(struct pt_regs *regs);
 #else
@@ -25,6 +26,14 @@ static inline bool emulate_vsyscall_pf(unsigned long error_code,
 }
 
 static inline bool emulate_vsyscall_gp(struct pt_regs *regs)
+=======
+extern bool emulate_vsyscall(unsigned long error_code,
+			     struct pt_regs *regs, unsigned long address);
+#else
+static inline void map_vsyscall(void) {}
+static inline bool emulate_vsyscall(unsigned long error_code,
+				    struct pt_regs *regs, unsigned long address)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return false;
 }

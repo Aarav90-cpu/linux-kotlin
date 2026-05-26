@@ -2929,7 +2929,11 @@ sub process {
 			}
 			$checklicenseline = 1;
 
+<<<<<<< HEAD
 			if ($realfile !~ /^(MAINTAINERS|dev\/null)/) {
+=======
+			if ($realfile !~ /^MAINTAINERS/) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				my $last_binding_patch = $is_binding_patch;
 
 				$is_binding_patch = () = $realfile =~ m@^(?:Documentation/devicetree/|include/dt-bindings/)@;
@@ -3866,6 +3870,7 @@ sub process {
 			     "Misplaced SPDX-License-Identifier tag - use line $checklicenseline instead\n" . $herecurr);
 		}
 
+<<<<<<< HEAD
 # check for disallowed SPDX file tags
 		if ($rawline =~ /\bSPDX-.*:/ &&
 		    $rawline !~ /\bSPDX-License-Identifier:/ &&
@@ -3874,6 +3879,8 @@ sub process {
 			     "Disallowed SPDX tag\n" . $herecurr);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # line length limit (with some exclusions)
 #
 # There are a few types of lines that may extend beyond $max_line_length:
@@ -7520,10 +7527,17 @@ sub process {
 		}
 
 # check for various structs that are normally const (ops, kgdb, device_tree)
+<<<<<<< HEAD
 # and avoid what seem like struct definitions 'struct foo {' or forward declarations 'struct foo;'
 		if (defined($const_structs) &&
 		    $line !~ /\bconst\b/ &&
 		    $line =~ /\bstruct\s+($const_structs)\b(?!\s*[\{;])/) {
+=======
+# and avoid what seem like struct definitions 'struct foo {'
+		if (defined($const_structs) &&
+		    $line !~ /\bconst\b/ &&
+		    $line =~ /\bstruct\s+($const_structs)\b(?!\s*\{)/) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			WARN("CONST_STRUCT",
 			     "struct $1 should normally be const\n" . $herecurr);
 		}

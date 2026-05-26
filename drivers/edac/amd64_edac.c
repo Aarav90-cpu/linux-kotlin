@@ -3863,9 +3863,12 @@ static int per_family_init(struct amd64_pvt *pvt)
 				pvt->max_mcs		= 8;
 			}
 			break;
+<<<<<<< HEAD
 		case 0x40 ... 0x4f:
 			pvt->max_mcs			= 4;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case 0x60 ... 0x6f:
 			pvt->flags.zn_regs_v2		= 1;
 			break;

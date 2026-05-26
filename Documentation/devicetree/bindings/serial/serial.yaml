@@ -87,9 +87,12 @@ properties:
     description:
       TX FIFO threshold configuration (in bytes).
 
+<<<<<<< HEAD
   port:
     $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 patternProperties:
   "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
     if:

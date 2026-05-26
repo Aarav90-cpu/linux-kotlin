@@ -215,12 +215,15 @@ enum gdma_page_type {
 
 #define GDMA_INVALID_DMA_REGION 0
 
+<<<<<<< HEAD
 struct mana_serv_work {
 	struct work_struct serv_work;
 	struct pci_dev *pdev;
 	enum gdma_eqe_type type;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct gdma_mem_info {
 	struct device *dev;
 
@@ -392,7 +395,10 @@ struct gdma_irq_context {
 
 enum gdma_context_flags {
 	GC_PROBE_SUCCEEDED	= 0,
+<<<<<<< HEAD
 	GC_IN_SERVICE		= 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct gdma_context {
@@ -418,6 +424,7 @@ struct gdma_context {
 	u32			test_event_eq_id;
 
 	bool			is_pf;
+<<<<<<< HEAD
 
 	phys_addr_t		bar0_pa;
 	void __iomem		*bar0_va;
@@ -427,6 +434,16 @@ struct gdma_context {
 	phys_addr_t		phys_db_page_base;
 	u64 db_page_off;
 	u64 db_page_size;
+=======
+	bool			in_service;
+
+	phys_addr_t		bar0_pa;
+	void __iomem		*bar0_va;
+	void __iomem		*shm_base;
+	void __iomem		*db_page_base;
+	phys_addr_t		phys_db_page_base;
+	u32 db_page_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int                     numa_node;
 
 	/* Shared memory chanenl (used to bootstrap HWC) */
@@ -481,8 +498,11 @@ int mana_gd_poll_cq(struct gdma_queue *cq, struct gdma_comp *comp, int num_cqe);
 
 void mana_gd_ring_cq(struct gdma_queue *cq, u8 arm_bit);
 
+<<<<<<< HEAD
 int mana_schedule_serv_work(struct gdma_context *gc, enum gdma_eqe_type type);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct gdma_wqe {
 	u32 reserved	:24;
 	u32 last_vbytes	:8;
@@ -625,9 +645,12 @@ enum {
 /* Driver can handle hardware recovery events during probe */
 #define GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY BIT(22)
 
+<<<<<<< HEAD
 /* Driver supports self recovery on Hardware Channel timeouts */
 #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECOVERY BIT(25)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GDMA_DRV_CAP_FLAGS1 \
 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
 	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
@@ -641,8 +664,12 @@ enum {
 	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY | \
 	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE | \
 	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY | \
+<<<<<<< HEAD
 	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY | \
 	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECOVERY)
+=======
+	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define GDMA_DRV_CAP_FLAGS2 0
 
@@ -792,7 +819,10 @@ enum gdma_mr_access_flags {
 	GDMA_ACCESS_FLAG_REMOTE_READ = BIT_ULL(2),
 	GDMA_ACCESS_FLAG_REMOTE_WRITE = BIT_ULL(3),
 	GDMA_ACCESS_FLAG_REMOTE_ATOMIC = BIT_ULL(4),
+<<<<<<< HEAD
 	GDMA_ACCESS_FLAG_BIND_MW = BIT_ULL(5),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* GDMA_CREATE_DMA_REGION */
@@ -885,10 +915,13 @@ enum gdma_mr_type {
 	GDMA_MR_TYPE_ZBVA = 4,
 	/* Device address MRs */
 	GDMA_MR_TYPE_DM = 5,
+<<<<<<< HEAD
 	/* Memory Window type 1 */
 	GDMA_MR_TYPE_MW1 = 6,
 	/* Memory Window type 2 */
 	GDMA_MR_TYPE_MW2 = 7,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct gdma_create_mr_params {

@@ -60,6 +60,7 @@ int pkey_handler_register(struct pkey_handler *handler)
 
 	list_add_rcu(&handler->list, &handler_list);
 	spin_unlock(&handler_list_write_lock);
+<<<<<<< HEAD
 	/*
 	 * Fast path to push the info about the updated list to the other
 	 * CPUs. If removed, the other CPUs may get the updated list when the
@@ -67,6 +68,8 @@ int pkey_handler_register(struct pkey_handler *handler)
 	 * critical and the list update mostly only occurs at the early time in
 	 * system startup the focus is on concurrency versus performance.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	synchronize_rcu();
 
 	module_put(handler->module);

@@ -185,8 +185,13 @@ static void dw_mci_exynos_set_clksel_timing(struct dw_mci *host, u32 timing)
 	 * HOLD register should be bypassed in case there is no phase shift
 	 * applied on CMD/DATA that is sent to the card.
 	 */
+<<<<<<< HEAD
 	if (!SDMMC_CLKSEL_GET_DRV_WD3(clksel))
 		set_bit(DW_MMC_CARD_NO_USE_HOLD, &host->flags);
+=======
+	if (!SDMMC_CLKSEL_GET_DRV_WD3(clksel) && host->slot)
+		set_bit(DW_MMC_CARD_NO_USE_HOLD, &host->slot->flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int dw_mci_exynos_runtime_resume(struct device *dev)
@@ -530,10 +535,18 @@ out:
 	return loc;
 }
 
+<<<<<<< HEAD
 static int dw_mci_exynos_execute_tuning(struct dw_mci *host, u32 opcode)
 {
 	struct dw_mci_exynos_priv_data *priv = host->priv;
 	struct mmc_host *mmc = host->mmc;
+=======
+static int dw_mci_exynos_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
+{
+	struct dw_mci *host = slot->host;
+	struct dw_mci_exynos_priv_data *priv = host->priv;
+	struct mmc_host *mmc = slot->mmc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 start_smpl, smpl, candidates = 0;
 	s8 found;
 	int ret = 0;

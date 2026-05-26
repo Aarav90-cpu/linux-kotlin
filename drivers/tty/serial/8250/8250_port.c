@@ -2372,8 +2372,13 @@ void serial8250_do_shutdown(struct uart_port *port)
 
 	synchronize_irq(port->irq);
 
+<<<<<<< HEAD
 	serial8250_release_dma(up);
 	up->dma = NULL;
+=======
+	if (up->dma)
+		serial8250_release_dma(up);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scoped_guard(uart_port_lock_irqsave, port) {
 		if (port->flags & UPF_FOURPORT) {

@@ -10,14 +10,22 @@
 
 /**
  * struct omap_volt_data - Omap voltage specific data.
+<<<<<<< HEAD
  * @volt_nominal:	The possible voltage value in uV
+=======
+ * @voltage_nominal:	The possible voltage value in uV
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @sr_efuse_offs:	The offset of the efuse register(from system
  *			control module base address) from where to read
  *			the n-target value for the smartreflex module.
  * @sr_errminlimit:	Error min limit value for smartreflex. This value
  *			differs at differnet opp and thus is linked
  *			with voltage.
+<<<<<<< HEAD
  * @vp_errgain:		Error gain value for the voltage processor. This
+=======
+ * @vp_errorgain:	Error gain value for the voltage processor. This
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *			field also differs according to the voltage/opp.
  */
 struct omap_volt_data {

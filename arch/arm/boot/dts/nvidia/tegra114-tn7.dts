@@ -43,9 +43,13 @@
 				compatible = "lg,ld070wx3-sl01";
 				reg = <0>;
 
+<<<<<<< HEAD
 				vdd-supply = <&avdd_lcd>;
 				vcc-supply = <&dvdd_lcd>;
 
+=======
+				power-supply = <&vdd_lcd>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				backlight = <&backlight>;
 			};
 		};
@@ -103,10 +107,18 @@
 						regulator-boot-on;
 					};
 
+<<<<<<< HEAD
 					avdd_lcd: smps6 {
 						regulator-name = "va-lcd-hv";
 						regulator-min-microvolt = <3160000>;
 						regulator-max-microvolt = <3160000>;
+=======
+					smps6 {
+						regulator-name = "va-lcd-hv";
+						regulator-min-microvolt = <3000000>;
+						regulator-max-microvolt = <3000000>;
+						regulator-always-on;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						regulator-boot-on;
 					};
 
@@ -326,7 +338,11 @@
 		regulator-boot-on;
 	};
 
+<<<<<<< HEAD
 	dvdd_lcd: regulator-lcd {
+=======
+	vdd_lcd: regulator-lcd {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "VD_LCD_1V8";
 		regulator-min-microvolt = <1800000>;

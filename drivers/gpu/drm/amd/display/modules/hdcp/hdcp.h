@@ -501,7 +501,10 @@ static inline void callback_in_ms(uint16_t time, struct mod_hdcp_output *output)
 static inline void set_watchdog_in_ms(struct mod_hdcp *hdcp, uint16_t time,
 		struct mod_hdcp_output *output)
 {
+<<<<<<< HEAD
 	(void)hdcp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	output->watchdog_timer_needed = 1;
 	output->watchdog_timer_delay = time;
 }

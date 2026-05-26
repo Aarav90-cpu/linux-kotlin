@@ -18,10 +18,15 @@
 
 / {
 	aliases {
+<<<<<<< HEAD
 		ethernet0 = &eth;
 		mmc0 = &mmc0;
 		mmc1 = &mmc1;
 		serial0 = &uart0;
+=======
+		serial0 = &uart0;
+		ethernet0 = &eth;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {

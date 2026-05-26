@@ -117,8 +117,11 @@ enum imx_pcie_variants {
 #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
 #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
 #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
+<<<<<<< HEAD
 /* Preserve MSI capability for platforms that require it */
 #define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
 
@@ -903,14 +906,36 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
 
 	if (imx_pcie->drvdata->core_reset)
 		imx_pcie->drvdata->core_reset(imx_pcie, true);
+<<<<<<< HEAD
 }
 
 static void imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+=======
+
+	/* Some boards don't have PCIe reset GPIO. */
+	gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 1);
+}
+
+static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	reset_control_deassert(imx_pcie->pciephy_reset);
 
 	if (imx_pcie->drvdata->core_reset)
 		imx_pcie->drvdata->core_reset(imx_pcie, false);
+<<<<<<< HEAD
+=======
+
+	/* Some boards don't have PCIe reset GPIO. */
+	if (imx_pcie->reset_gpiod) {
+		msleep(100);
+		gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 0);
+		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
+		msleep(100);
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imx_pcie_wait_for_speed_change(struct imx_pcie *imx_pcie)
@@ -1222,6 +1247,7 @@ static void imx_pcie_disable_device(struct pci_host_bridge *bridge,
 	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
 }
 
+<<<<<<< HEAD
 static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
 {
 	if (assert) {
@@ -1235,6 +1261,8 @@ static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int imx_pcie_host_init(struct dw_pcie_rp *pp)
 {
 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
@@ -1257,7 +1285,10 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
 	}
 
 	imx_pcie_assert_core_reset(imx_pcie);
+<<<<<<< HEAD
 	imx_pcie_assert_perst(imx_pcie, true);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (imx_pcie->drvdata->init_phy)
 		imx_pcie->drvdata->init_phy(imx_pcie);
@@ -1295,8 +1326,16 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
 	/* Make sure that PCIe LTSSM is cleared */
 	imx_pcie_ltssm_disable(dev);
 
+<<<<<<< HEAD
 	imx_pcie_deassert_core_reset(imx_pcie);
 	imx_pcie_assert_perst(imx_pcie, false);
+=======
+	ret = imx_pcie_deassert_core_reset(imx_pcie);
+	if (ret < 0) {
+		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
+		goto err_phy_off;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (imx_pcie->drvdata->wait_pll_lock) {
 		ret = imx_pcie->drvdata->wait_pll_lock(imx_pcie);
@@ -1401,6 +1440,18 @@ static const struct dw_pcie_ops dw_pcie_ops = {
 	.stop_link = imx_pcie_stop_link,
 };
 
+<<<<<<< HEAD
+=======
+static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
+{
+	enum pci_barno bar;
+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+
+	for (bar = BAR_0; bar <= BAR_5; bar++)
+		dw_pcie_ep_reset_bar(pci, bar);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int imx_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
 				  unsigned int type, u16 interrupt_num)
 {
@@ -1424,19 +1475,32 @@ static int imx_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
 static const struct pci_epc_features imx8m_pcie_epc_features = {
 	DWC_EPC_COMMON_FEATURES,
 	.msi_capable = true,
+<<<<<<< HEAD
 	.bar[BAR_1] = { .type = BAR_DISABLED, },
 	.bar[BAR_3] = { .type = BAR_DISABLED, },
 	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
 	.bar[BAR_5] = { .type = BAR_DISABLED, },
+=======
+	.bar[BAR_1] = { .type = BAR_RESERVED, },
+	.bar[BAR_3] = { .type = BAR_RESERVED, },
+	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
+	.bar[BAR_5] = { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.align = SZ_64K,
 };
 
 static const struct pci_epc_features imx8q_pcie_epc_features = {
 	DWC_EPC_COMMON_FEATURES,
 	.msi_capable = true,
+<<<<<<< HEAD
 	.bar[BAR_1] = { .type = BAR_DISABLED, },
 	.bar[BAR_3] = { .type = BAR_DISABLED, },
 	.bar[BAR_5] = { .type = BAR_DISABLED, },
+=======
+	.bar[BAR_1] = { .type = BAR_RESERVED, },
+	.bar[BAR_3] = { .type = BAR_RESERVED, },
+	.bar[BAR_5] = { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.align = SZ_64K,
 };
 
@@ -1469,6 +1533,10 @@ imx_pcie_ep_get_features(struct dw_pcie_ep *ep)
 }
 
 static const struct dw_pcie_ep_ops pcie_ep_ops = {
+<<<<<<< HEAD
+=======
+	.init = imx_pcie_ep_init,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.raise_irq = imx_pcie_ep_raise_irq,
 	.get_features = imx_pcie_ep_get_features,
 };
@@ -1583,7 +1651,10 @@ static int imx_pcie_suspend_noirq(struct device *dev)
 		 * clock which saves some power.
 		 */
 		imx_pcie_assert_core_reset(imx_pcie);
+<<<<<<< HEAD
 		imx_pcie_assert_perst(imx_pcie, true);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		imx_pcie->drvdata->enable_ref_clk(imx_pcie, false);
 	} else {
 		return dw_pcie_suspend_noirq(imx_pcie->pci);
@@ -1604,8 +1675,14 @@ static int imx_pcie_resume_noirq(struct device *dev)
 		ret = imx_pcie->drvdata->enable_ref_clk(imx_pcie, true);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 		imx_pcie_deassert_core_reset(imx_pcie);
 		imx_pcie_assert_perst(imx_pcie, false);
+=======
+		ret = imx_pcie_deassert_core_reset(imx_pcie);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Using PCIE_TEST_PD seems to disable MSI and powers down the
@@ -1637,6 +1714,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct dw_pcie *pci;
 	struct imx_pcie *imx_pcie;
+<<<<<<< HEAD
+=======
+	struct device_node *np;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device_node *node = dev->of_node;
 	int i, ret, domain;
 	u16 val;
@@ -1663,8 +1744,12 @@ static int imx_pcie_probe(struct platform_device *pdev)
 		pci->pp.ops = &imx_pcie_host_dw_pme_ops;
 
 	/* Find the PHY if one is defined, only imx7d uses it */
+<<<<<<< HEAD
 	struct device_node *np __free(device_node) =
 		of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+=======
+	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (np) {
 		struct resource res;
 
@@ -1820,8 +1905,11 @@ static int imx_pcie_probe(struct platform_device *pdev)
 	} else {
 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
 			pci->pp.skip_l23_ready = true;
+<<<<<<< HEAD
 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_KEEP_MSI_CAP))
 			pci->pp.keep_rp_msi_en = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pci->pp.use_atu_msg = true;
 		ret = dw_pcie_host_init(&pci->pp);
 		if (ret < 0)
@@ -1845,7 +1933,10 @@ static void imx_pcie_shutdown(struct platform_device *pdev)
 
 	/* bring down link, so bootloader gets clean state in case of reboot */
 	imx_pcie_assert_core_reset(imx_pcie);
+<<<<<<< HEAD
 	imx_pcie_assert_perst(imx_pcie, true);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct imx_pcie_drvdata drvdata[] = {
@@ -1901,7 +1992,10 @@ static const struct imx_pcie_drvdata drvdata[] = {
 	[IMX7D] = {
 		.variant = IMX7D,
 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+<<<<<<< HEAD
 			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 IMX_PCIE_FLAG_HAS_APP_RESET |
 			 IMX_PCIE_FLAG_SKIP_L23_READY |
 			 IMX_PCIE_FLAG_HAS_PHY_RESET,
@@ -1914,7 +2008,10 @@ static const struct imx_pcie_drvdata drvdata[] = {
 	[IMX8MQ] = {
 		.variant = IMX8MQ,
 		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
+<<<<<<< HEAD
 			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 IMX_PCIE_FLAG_HAS_PHY_RESET |
 			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
 		.gpr = "fsl,imx8mq-iomuxc-gpr",
@@ -1929,7 +2026,10 @@ static const struct imx_pcie_drvdata drvdata[] = {
 	[IMX8MM] = {
 		.variant = IMX8MM,
 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+<<<<<<< HEAD
 			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 IMX_PCIE_FLAG_HAS_PHYDRV |
 			 IMX_PCIE_FLAG_HAS_APP_RESET,
 		.gpr = "fsl,imx8mm-iomuxc-gpr",

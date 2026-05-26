@@ -45,31 +45,43 @@
 
 void dcn303_dpp_pg_control(struct dce_hwseq *hws, unsigned int dpp_inst, bool power_on)
 {
+<<<<<<< HEAD
 	(void)dpp_inst;
 	(void)hws;
 	(void)power_on;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*DCN303 removes PG registers*/
 }
 
 void dcn303_hubp_pg_control(struct dce_hwseq *hws, unsigned int hubp_inst, bool power_on)
 {
+<<<<<<< HEAD
 	(void)hubp_inst;
 	(void)hws;
 	(void)power_on;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*DCN303 removes PG registers*/
 }
 
 void dcn303_dsc_pg_control(struct dce_hwseq *hws, unsigned int dsc_inst, bool power_on)
 {
+<<<<<<< HEAD
 	(void)dsc_inst;
 	(void)hws;
 	(void)power_on;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*DCN303 removes PG registers*/
 }
 
 void dcn303_enable_power_gating_plane(struct dce_hwseq *hws, bool enable)
 {
+<<<<<<< HEAD
 	(void)enable;
 	(void)hws;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*DCN303 removes PG registers*/
 }

@@ -95,9 +95,13 @@ static void iwl_pcie_gen2_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
 			      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
 }
 
+<<<<<<< HEAD
 static void
 _iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans,
 				   bool dump_on_timeout)
+=======
+void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	int ret;
@@ -135,7 +139,11 @@ _iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans,
 			"timeout waiting for FW reset ACK (inta_hw=0x%x, reset_done %d)\n",
 			inta_hw, reset_done);
 
+<<<<<<< HEAD
 		if (!reset_done && dump_on_timeout) {
+=======
+		if (!reset_done) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct iwl_fw_error_dump_mode mode = {
 				.type = IWL_ERR_TYPE_RESET_HS_TIMEOUT,
 				.context = IWL_ERR_CONTEXT_FROM_OPMODE,
@@ -149,11 +157,14 @@ _iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans,
 	trans_pcie->fw_reset_state = FW_RESET_IDLE;
 }
 
+<<<<<<< HEAD
 void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
 {
 	_iwl_trans_pcie_fw_reset_handshake(trans, false);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
@@ -170,7 +181,11 @@ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
 		 * should assume that the firmware is already dead.
 		 */
 		trans->state = IWL_TRANS_NO_FW;
+<<<<<<< HEAD
 		_iwl_trans_pcie_fw_reset_handshake(trans, true);
+=======
+		iwl_trans_pcie_fw_reset_handshake(trans);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	trans_pcie->is_down = true;

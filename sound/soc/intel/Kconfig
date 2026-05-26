@@ -95,7 +95,11 @@ config SND_SOC_INTEL_KEEMBAY
 
 config SND_SOC_INTEL_AVS
 	tristate "Intel AVS driver"
+<<<<<<< HEAD
 	depends on X86
+=======
+	depends on X86 || COMPILE_TEST
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on PCI
 	depends on COMMON_CLK
 	select ACPI_NHLT if ACPI

@@ -626,6 +626,13 @@ void btrfs_print_tree(const struct extent_buffer *c, bool follow)
 		next = read_tree_block(fs_info, btrfs_node_blockptr(c, i), &check);
 		if (IS_ERR(next))
 			continue;
+<<<<<<< HEAD
+=======
+		if (!extent_buffer_uptodate(next)) {
+			free_extent_buffer(next);
+			continue;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (btrfs_is_leaf(next) &&
 		   level != 1)

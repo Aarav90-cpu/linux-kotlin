@@ -28,10 +28,22 @@ static int get_fwu_request(struct device *dev, u32 *out)
 	__le32 *result;
 	int ret;
 
+<<<<<<< HEAD
 	ret = wmidev_query_block(to_wmi_device(dev), 0, &buffer, sizeof(*result));
 	if (ret < 0)
 		return ret;
 
+=======
+	ret = wmidev_query_block(to_wmi_device(dev), 0, &buffer);
+	if (ret < 0)
+		return ret;
+
+	if (buffer.length < sizeof(*result)) {
+		kfree(buffer.data);
+		return -ENODATA;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	result = buffer.data;
 	*out = le32_to_cpu(*result);
 	kfree(result);

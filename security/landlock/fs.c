@@ -27,7 +27,10 @@
 #include <linux/lsm_hooks.h>
 #include <linux/mount.h>
 #include <linux/namei.h>
+<<<<<<< HEAD
 #include <linux/net.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/path.h>
 #include <linux/pid.h>
 #include <linux/rcupdate.h>
@@ -37,7 +40,10 @@
 #include <linux/types.h>
 #include <linux/wait_bit.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <net/af_unix.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/fiemap.h>
 #include <uapi/linux/landlock.h>
 
@@ -121,8 +127,13 @@ static const struct landlock_object_underops landlock_fs_underops = {
  * Any new IOCTL commands that are implemented in fs/ioctl.c's do_vfs_ioctl()
  * should be considered for inclusion here.
  *
+<<<<<<< HEAD
  * Return: True if the IOCTL @cmd can not be restricted with Landlock for
  * device files, false otherwise.
+=======
+ * Returns: true if the IOCTL @cmd can not be restricted with Landlock for
+ * device files.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static __attribute_const__ bool is_masked_device_ioctl(const unsigned int cmd)
 {
@@ -316,8 +327,12 @@ retry:
 	LANDLOCK_ACCESS_FS_WRITE_FILE | \
 	LANDLOCK_ACCESS_FS_READ_FILE | \
 	LANDLOCK_ACCESS_FS_TRUNCATE | \
+<<<<<<< HEAD
 	LANDLOCK_ACCESS_FS_IOCTL_DEV | \
 	LANDLOCK_ACCESS_FS_RESOLVE_UNIX)
+=======
+	LANDLOCK_ACCESS_FS_IOCTL_DEV)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* clang-format on */
 
 /*
@@ -431,10 +446,17 @@ static bool may_refer(const struct layer_access_masks *const src_parent,
  * Check that a destination file hierarchy has more restrictions than a source
  * file hierarchy.  This is only used for link and rename actions.
  *
+<<<<<<< HEAD
  * Return: True if child1 may be moved from parent1 to parent2 without
  * increasing its access rights (if child2 is set, an additional condition is
  * that child2 may be used from parent2 to parent1 without increasing its access
  * rights), false otherwise.
+=======
+ * Returns: true if child1 may be moved from parent1 to parent2 without
+ * increasing its access rights.  If child2 is set, an additional condition is
+ * that child2 may be used from parent2 to parent1 without increasing its access
+ * rights.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static bool no_more_access(const struct layer_access_masks *const parent1,
 			   const struct layer_access_masks *const child1,
@@ -567,7 +589,11 @@ static void test_no_more_access(struct kunit *const test)
 
 static bool is_layer_masks_allowed(const struct layer_access_masks *masks)
 {
+<<<<<<< HEAD
 	return mem_is_zero(&masks->access, sizeof(masks->access));
+=======
+	return !memchr_inv(&masks->access, 0, sizeof(masks->access));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -737,7 +763,13 @@ static void test_is_eacces_with_write(struct kunit *const test)
  * checks that the collected accesses and the remaining ones are enough to
  * allow the request.
  *
+<<<<<<< HEAD
  * Return: True if the access request is granted, false otherwise.
+=======
+ * Returns:
+ * - true if the access request is granted;
+ * - false otherwise.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static bool
 is_access_to_paths_allowed(const struct landlock_ruleset *const domain,
@@ -1023,8 +1055,14 @@ static access_mask_t maybe_remove(const struct dentry *const dentry)
  * only handles walking on the same mount point and only checks one set of
  * accesses.
  *
+<<<<<<< HEAD
  * Return: True if all the domain access rights are allowed for @dir, false if
  * the walk reached @mnt_root.
+=======
+ * Returns:
+ * - true if all the domain access rights are allowed for @dir;
+ * - false if the walk reached @mnt_root.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static bool collect_domain_accesses(const struct landlock_ruleset *const domain,
 				    const struct dentry *const mnt_root,
@@ -1120,9 +1158,16 @@ static bool collect_domain_accesses(const struct landlock_ruleset *const domain,
  * ephemeral matrices take some space on the stack, which limits the number of
  * layers to a deemed reasonable number: 16.
  *
+<<<<<<< HEAD
  * Return: 0 if access is allowed, -EXDEV if @old_dentry would inherit new
  * access rights from @new_dir, or -EACCES if file removal or creation is
  * denied.
+=======
+ * Returns:
+ * - 0 if access is allowed;
+ * - -EXDEV if @old_dentry would inherit new access rights from @new_dir;
+ * - -EACCES if file removal or creation is denied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int current_check_refer_path(struct dentry *const old_dentry,
 				    const struct path *const new_dir,
@@ -1560,6 +1605,7 @@ static int hook_path_truncate(const struct path *const path)
 	return current_check_access_path(path, LANDLOCK_ACCESS_FS_TRUNCATE);
 }
 
+<<<<<<< HEAD
 /**
  * unmask_scoped_access - Remove access right bits in @masks in all layers
  *                        where @client and @server have the same domain
@@ -1687,6 +1733,8 @@ static int hook_unix_find(const struct path *const path, struct sock *other,
 	return -EACCES;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* File hooks */
 
 /**
@@ -1694,7 +1742,11 @@ static int hook_unix_find(const struct path *const path, struct sock *other,
  *
  * @file: File being opened.
  *
+<<<<<<< HEAD
  * Return: The access rights that are required for opening the given file,
+=======
+ * Returns the access rights that are required for opening the given file,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * depending on the file type and open mode.
  */
 static access_mask_t
@@ -1964,7 +2016,10 @@ static struct security_hook_list landlock_hooks[] __ro_after_init = {
 	LSM_HOOK_INIT(path_unlink, hook_path_unlink),
 	LSM_HOOK_INIT(path_rmdir, hook_path_rmdir),
 	LSM_HOOK_INIT(path_truncate, hook_path_truncate),
+<<<<<<< HEAD
 	LSM_HOOK_INIT(unix_find, hook_unix_find),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	LSM_HOOK_INIT(file_alloc_security, hook_file_alloc_security),
 	LSM_HOOK_INIT(file_open, hook_file_open),

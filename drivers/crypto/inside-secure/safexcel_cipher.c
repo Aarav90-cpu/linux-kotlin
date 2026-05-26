@@ -17,7 +17,10 @@
 #include <crypto/internal/des.h>
 #include <crypto/gcm.h>
 #include <crypto/ghash.h>
+<<<<<<< HEAD
 #include <crypto/md5.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/poly1305.h>
 #include <crypto/sha1.h>
 #include <crypto/sha2.h>
@@ -463,9 +466,12 @@ static int safexcel_aead_setkey(struct crypto_aead *ctfm, const u8 *key,
 
 	/* Auth key */
 	switch (ctx->hash_alg) {
+<<<<<<< HEAD
 	case CONTEXT_CONTROL_CRYPTO_ALG_MD5:
 		alg = "safexcel-md5";
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case CONTEXT_CONTROL_CRYPTO_ALG_SHA1:
 		alg = "safexcel-sha1";
 		break;
@@ -1666,6 +1672,7 @@ static int safexcel_aead_cra_init(struct crypto_tfm *tfm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int safexcel_aead_md5_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -1702,6 +1709,8 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_md5_cbc_aes = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int safexcel_aead_sha1_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -1882,6 +1891,7 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_sha384_cbc_aes = {
 	},
 };
 
+<<<<<<< HEAD
 static int safexcel_aead_md5_des3_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -1919,6 +1929,8 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_md5_cbc_des3_ede = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int safexcel_aead_sha1_des3_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -2104,6 +2116,7 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_sha384_cbc_des3_ede = {
 	},
 };
 
+<<<<<<< HEAD
 static int safexcel_aead_md5_des_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -2141,6 +2154,8 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_md5_cbc_des = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int safexcel_aead_sha1_des_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -2326,6 +2341,7 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_sha384_cbc_des = {
 	},
 };
 
+<<<<<<< HEAD
 static int safexcel_aead_md5_ctr_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
@@ -2361,6 +2377,8 @@ struct safexcel_alg_template safexcel_alg_authenc_hmac_md5_ctr_aes = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int safexcel_aead_sha1_ctr_cra_init(struct crypto_tfm *tfm)
 {
 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);

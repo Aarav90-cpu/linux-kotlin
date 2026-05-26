@@ -222,6 +222,7 @@ static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
 			imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts,
 };
 
+<<<<<<< HEAD
 static int
 imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
 					   u32 port_id,
@@ -237,18 +238,36 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
 	if (!port) {
 		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
 		return -ENODEV;
+=======
+static struct device_node *
+imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
+					   u32 port_id)
+{
+	struct device_node *port, *ep;
+	int ep_cnt;
+
+	port = of_graph_get_port_by_id(p2d->dev->of_node, port_id);
+	if (!port) {
+		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
+		return ERR_PTR(-ENODEV);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ep_cnt = of_get_available_child_count(port);
 	if (ep_cnt == 0) {
 		DRM_DEV_ERROR(p2d->dev, "no available endpoints of port@%u\n",
 			      port_id);
+<<<<<<< HEAD
 		ret = -ENODEV;
+=======
+		ep = ERR_PTR(-ENODEV);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	} else if (ep_cnt > 1) {
 		DRM_DEV_ERROR(p2d->dev,
 			      "invalid available endpoints of port@%u\n",
 			      port_id);
+<<<<<<< HEAD
 		ret = -EINVAL;
 		goto out;
 	}
@@ -259,21 +278,44 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
 			      "failed to get available endpoint of port@%u\n",
 			      port_id);
 		ret = -ENODEV;
+=======
+		ep = ERR_PTR(-EINVAL);
+		goto out;
+	}
+
+	ep = of_get_next_available_child(port, NULL);
+	if (!ep) {
+		DRM_DEV_ERROR(p2d->dev,
+			      "failed to get available endpoint of port@%u\n",
+			      port_id);
+		ep = ERR_PTR(-ENODEV);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 out:
 	of_node_put(port);
+<<<<<<< HEAD
 	return ret;
+=======
+	return ep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
 {
+<<<<<<< HEAD
 	struct device_node *ep __free(device_node) = NULL;
 	int ret;
 
 	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1, &ep);
 	if (ret)
 		return ret;
+=======
+	struct device_node *ep __free(device_node) =
+		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
+	if (IS_ERR(ep))
+		return PTR_ERR(ep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
 	if (!remote || !of_device_is_available(remote)) {
@@ -297,9 +339,15 @@ static int imx8qxp_pxl2dpi_set_pixel_link_sel(struct imx8qxp_pxl2dpi *p2d)
 	struct of_endpoint endpoint;
 	int ret;
 
+<<<<<<< HEAD
 	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0, &ep);
 	if (ret)
 		return ret;
+=======
+	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0);
+	if (IS_ERR(ep))
+		return PTR_ERR(ep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = of_graph_parse_endpoint(ep, &endpoint);
 	if (ret) {

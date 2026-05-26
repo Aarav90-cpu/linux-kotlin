@@ -58,7 +58,11 @@ struct xe_res_cursor {
 	/** @dma_addr: Current element in a struct drm_pagemap_addr array */
 	const struct drm_pagemap_addr *dma_addr;
 	/** @mm: Buddy allocator for VRAM cursor */
+<<<<<<< HEAD
 	struct gpu_buddy *mm;
+=======
+	struct drm_buddy *mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @dma_start: DMA start address for the current segment.
 	 * This may be different to @dma_addr.addr since elements in
@@ -69,7 +73,11 @@ struct xe_res_cursor {
 	u64 dma_seg_size;
 };
 
+<<<<<<< HEAD
 static struct gpu_buddy *xe_res_get_buddy(struct ttm_resource *res)
+=======
+static struct drm_buddy *xe_res_get_buddy(struct ttm_resource *res)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ttm_resource_manager *mgr;
 
@@ -104,30 +112,54 @@ static inline void xe_res_first(struct ttm_resource *res,
 	case XE_PL_STOLEN:
 	case XE_PL_VRAM0:
 	case XE_PL_VRAM1: {
+<<<<<<< HEAD
 		struct gpu_buddy_block *block;
 		struct list_head *head, *next;
 		struct gpu_buddy *mm = xe_res_get_buddy(res);
+=======
+		struct drm_buddy_block *block;
+		struct list_head *head, *next;
+		struct drm_buddy *mm = xe_res_get_buddy(res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		head = &to_xe_ttm_vram_mgr_resource(res)->blocks;
 
 		block = list_first_entry_or_null(head,
+<<<<<<< HEAD
 						 struct gpu_buddy_block,
+=======
+						 struct drm_buddy_block,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						 link);
 		if (!block)
 			goto fallback;
 
+<<<<<<< HEAD
 		while (start >= gpu_buddy_block_size(mm, block)) {
 			start -= gpu_buddy_block_size(mm, block);
 
 			next = block->link.next;
 			if (next != head)
 				block = list_entry(next, struct gpu_buddy_block,
+=======
+		while (start >= drm_buddy_block_size(mm, block)) {
+			start -= drm_buddy_block_size(mm, block);
+
+			next = block->link.next;
+			if (next != head)
+				block = list_entry(next, struct drm_buddy_block,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						   link);
 		}
 
 		cur->mm = mm;
+<<<<<<< HEAD
 		cur->start = gpu_buddy_block_offset(block) + start;
 		cur->size = min(gpu_buddy_block_size(mm, block) - start,
+=======
+		cur->start = drm_buddy_block_offset(block) + start;
+		cur->size = min(drm_buddy_block_size(mm, block) - start,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				size);
 		cur->remaining = size;
 		cur->node = block;
@@ -259,7 +291,11 @@ static inline void xe_res_first_dma(const struct drm_pagemap_addr *dma_addr,
  */
 static inline void xe_res_next(struct xe_res_cursor *cur, u64 size)
 {
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head *next;
 	u64 start;
 
@@ -295,6 +331,7 @@ static inline void xe_res_next(struct xe_res_cursor *cur, u64 size)
 		block = cur->node;
 
 		next = block->link.next;
+<<<<<<< HEAD
 		block = list_entry(next, struct gpu_buddy_block, link);
 
 
@@ -307,6 +344,20 @@ static inline void xe_res_next(struct xe_res_cursor *cur, u64 size)
 
 		cur->start = gpu_buddy_block_offset(block) + start;
 		cur->size = min(gpu_buddy_block_size(cur->mm, block) - start,
+=======
+		block = list_entry(next, struct drm_buddy_block, link);
+
+
+		while (start >= drm_buddy_block_size(cur->mm, block)) {
+			start -= drm_buddy_block_size(cur->mm, block);
+
+			next = block->link.next;
+			block = list_entry(next, struct drm_buddy_block, link);
+		}
+
+		cur->start = drm_buddy_block_offset(block) + start;
+		cur->size = min(drm_buddy_block_size(cur->mm, block) - start,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				cur->remaining);
 		cur->node = block;
 		break;

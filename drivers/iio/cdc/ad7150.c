@@ -306,7 +306,11 @@ static int ad7150_write_event_config(struct iio_dev *indio_dev,
 						dir);
 		if (ret)
 			goto error_ret;
+<<<<<<< HEAD
 		/* re-enable any IRQs we disabled whilst changing mode */
+=======
+		/* reenable any irq's we disabled whilst changing mode */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enable_irq(chip->interrupts[0]);
 		enable_irq(chip->interrupts[1]);
 	}

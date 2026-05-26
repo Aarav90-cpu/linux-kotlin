@@ -139,6 +139,7 @@ static int get(struct slot_map *m)
 /* used to describe mapped buffers */
 struct orangefs_bufmap_desc {
 	void __user *uaddr;		/* user space address pointer */
+<<<<<<< HEAD
 	struct folio **folio_array;
 	/*
 	 * folio_offsets could be needed when userspace sets custom
@@ -148,6 +149,11 @@ struct orangefs_bufmap_desc {
 	size_t *folio_offsets;
 	int folio_count;
 	bool is_two_2mib_chunks;
+=======
+	struct page **page_array;	/* array of mapped pages */
+	int array_count;		/* size of above arrays */
+	struct list_head list_link;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct orangefs_bufmap {
@@ -156,10 +162,15 @@ static struct orangefs_bufmap {
 	int desc_count;
 	int total_size;
 	int page_count;
+<<<<<<< HEAD
 	int folio_count;
 
 	struct page **page_array;
 	struct folio **folio_array;
+=======
+
+	struct page **page_array;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct orangefs_bufmap_desc *desc_array;
 
 	/* array to track usage of buffer descriptors */
@@ -182,6 +193,7 @@ orangefs_bufmap_unmap(struct orangefs_bufmap *bufmap)
 static void
 orangefs_bufmap_free(struct orangefs_bufmap *bufmap)
 {
+<<<<<<< HEAD
 	int i;
 
 	if (!bufmap)
@@ -193,6 +205,8 @@ orangefs_bufmap_free(struct orangefs_bufmap *bufmap)
 		bufmap->desc_array[i].folio_array = NULL;
 		bufmap->desc_array[i].folio_offsets = NULL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(bufmap->page_array);
 	kfree(bufmap->desc_array);
 	bitmap_free(bufmap->buffer_index_array);
@@ -232,10 +246,15 @@ orangefs_bufmap_alloc(struct ORANGEFS_dev_map_desc *user_desc)
 	bufmap->desc_count = user_desc->count;
 	bufmap->desc_size = user_desc->size;
 	bufmap->desc_shift = ilog2(bufmap->desc_size);
+<<<<<<< HEAD
 	bufmap->page_count = bufmap->total_size / PAGE_SIZE;
 
 	bufmap->buffer_index_array =
 		bitmap_zalloc(bufmap->desc_count, GFP_KERNEL);
+=======
+
+	bufmap->buffer_index_array = bitmap_zalloc(bufmap->desc_count, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!bufmap->buffer_index_array)
 		goto out_free_bufmap;
 
@@ -244,12 +263,18 @@ orangefs_bufmap_alloc(struct ORANGEFS_dev_map_desc *user_desc)
 	if (!bufmap->desc_array)
 		goto out_free_index_array;
 
+<<<<<<< HEAD
+=======
+	bufmap->page_count = bufmap->total_size / PAGE_SIZE;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* allocate storage to track our page mappings */
 	bufmap->page_array =
 		kzalloc_objs(struct page *, bufmap->page_count);
 	if (!bufmap->page_array)
 		goto out_free_desc_array;
 
+<<<<<<< HEAD
 	/* allocate folio array. */
 	bufmap->folio_array = kzalloc_objs(struct folio *, bufmap->page_count);
 	if (!bufmap->folio_array)
@@ -259,6 +284,10 @@ orangefs_bufmap_alloc(struct ORANGEFS_dev_map_desc *user_desc)
 
 out_free_page_array:
 	kfree(bufmap->page_array);
+=======
+	return bufmap;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_free_desc_array:
 	kfree(bufmap->desc_array);
 out_free_index_array:
@@ -269,6 +298,7 @@ out:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int orangefs_bufmap_group_folios(struct orangefs_bufmap *bufmap)
 {
 	int i = 0;
@@ -328,6 +358,18 @@ static int orangefs_bufmap_map(struct orangefs_bufmap *bufmap,
 		bufmap->page_count,
 		FOLL_WRITE,
 		bufmap->page_array);
+=======
+static int
+orangefs_bufmap_map(struct orangefs_bufmap *bufmap,
+		struct ORANGEFS_dev_map_desc *user_desc)
+{
+	int pages_per_desc = bufmap->desc_size / PAGE_SIZE;
+	int offset = 0, ret, i;
+
+	/* map the pages */
+	ret = pin_user_pages_fast((unsigned long)user_desc->ptr,
+			     bufmap->page_count, FOLL_WRITE, bufmap->page_array);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret < 0)
 		return ret;
@@ -335,6 +377,10 @@ static int orangefs_bufmap_map(struct orangefs_bufmap *bufmap,
 	if (ret != bufmap->page_count) {
 		gossip_err("orangefs error: asked for %d pages, only got %d.\n",
 				bufmap->page_count, ret);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < ret; i++)
 			unpin_user_page(bufmap->page_array[i]);
 		return -ENOMEM;
@@ -349,6 +395,7 @@ static int orangefs_bufmap_map(struct orangefs_bufmap *bufmap,
 	for (i = 0; i < bufmap->page_count; i++)
 		flush_dcache_page(bufmap->page_array[i]);
 
+<<<<<<< HEAD
 	/*
 	 * Group pages into folios.
 	 */
@@ -463,6 +510,18 @@ unpin:
 	}
 	unpin_user_pages(bufmap->page_array, bufmap->page_count);
 	return ret;
+=======
+	/* build a list of available descriptors */
+	for (offset = 0, i = 0; i < bufmap->desc_count; i++) {
+		bufmap->desc_array[i].page_array = &bufmap->page_array[offset];
+		bufmap->desc_array[i].array_count = pages_per_desc;
+		bufmap->desc_array[i].uaddr =
+		    (user_desc->ptr + (i * pages_per_desc * PAGE_SIZE));
+		offset += pages_per_desc;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -470,8 +529,11 @@ unpin:
  *
  * initializes the mapped buffer interface
  *
+<<<<<<< HEAD
  * user_desc is the parameters provided by userspace for the bufmap.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * returns 0 on success, -errno on failure
  */
 int orangefs_bufmap_initialize(struct ORANGEFS_dev_map_desc *user_desc)
@@ -480,8 +542,13 @@ int orangefs_bufmap_initialize(struct ORANGEFS_dev_map_desc *user_desc)
 	int ret = -EINVAL;
 
 	gossip_debug(GOSSIP_BUFMAP_DEBUG,
+<<<<<<< HEAD
 		     "%s: called (ptr (" "%p) sz (%d) cnt(%d).\n",
 		     __func__,
+=======
+		     "orangefs_bufmap_initialize: called (ptr ("
+		     "%p) sz (%d) cnt(%d).\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     user_desc->ptr,
 		     user_desc->size,
 		     user_desc->count);
@@ -551,7 +618,11 @@ int orangefs_bufmap_initialize(struct ORANGEFS_dev_map_desc *user_desc)
 	spin_unlock(&orangefs_bufmap_lock);
 
 	gossip_debug(GOSSIP_BUFMAP_DEBUG,
+<<<<<<< HEAD
 		     "%s: exiting normally\n", __func__);
+=======
+		     "orangefs_bufmap_initialize: exiting normally\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 out_unmap_bufmap:
@@ -651,6 +722,7 @@ int orangefs_bufmap_copy_from_iovec(struct iov_iter *iter,
 				size_t size)
 {
 	struct orangefs_bufmap_desc *to;
+<<<<<<< HEAD
 	size_t remaining = size;
 	int folio_index = 0;
 	struct folio *folio;
@@ -734,6 +806,24 @@ int orangefs_bufmap_copy_from_iovec(struct iov_iter *iter,
 		folio_index++;
 	}
 
+=======
+	int i;
+
+	gossip_debug(GOSSIP_BUFMAP_DEBUG,
+		     "%s: buffer_index:%d: size:%zu:\n",
+		     __func__, buffer_index, size);
+
+	to = &__orangefs_bufmap->desc_array[buffer_index];
+	for (i = 0; size; i++) {
+		struct page *page = to->page_array[i];
+		size_t n = size;
+		if (n > PAGE_SIZE)
+			n = PAGE_SIZE;
+		if (copy_page_from_iter(page, 0, n, iter) != n)
+			return -EFAULT;
+		size -= n;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -746,6 +836,7 @@ int orangefs_bufmap_copy_to_iovec(struct iov_iter *iter,
 				    size_t size)
 {
 	struct orangefs_bufmap_desc *from;
+<<<<<<< HEAD
 	size_t remaining = size;
 	int folio_index = 0;
 	struct folio *folio;
@@ -832,5 +923,25 @@ int orangefs_bufmap_copy_to_iovec(struct iov_iter *iter,
 		folio_index++;
 	}
 
+=======
+	int i;
+
+	from = &__orangefs_bufmap->desc_array[buffer_index];
+	gossip_debug(GOSSIP_BUFMAP_DEBUG,
+		     "%s: buffer_index:%d: size:%zu:\n",
+		     __func__, buffer_index, size);
+
+
+	for (i = 0; size; i++) {
+		struct page *page = from->page_array[i];
+		size_t n = size;
+		if (n > PAGE_SIZE)
+			n = PAGE_SIZE;
+		n = copy_page_to_iter(page, 0, n, iter);
+		if (!n)
+			return -EFAULT;
+		size -= n;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }

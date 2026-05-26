@@ -16,7 +16,10 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/seq_file.h>
 
@@ -57,7 +60,10 @@ static const struct pin_config_item conf_items[] = {
 	PCONFDUMP(PIN_CONFIG_SKEW_DELAY, "skew delay", NULL, true),
 	PCONFDUMP(PIN_CONFIG_SKEW_DELAY_INPUT_PS, "input skew delay", "ps", true),
 	PCONFDUMP(PIN_CONFIG_SKEW_DELAY_OUTPUT_PS, "output skew delay", "ps", true),
+<<<<<<< HEAD
 	PCONFDUMP(PIN_CONFIG_INPUT_VOLTAGE_UV, "input voltage in microvolt", "uV", true),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void pinconf_generic_dump_one(struct pinctrl_dev *pctldev,
@@ -204,31 +210,51 @@ static const struct pinconf_generic_params dt_params[] = {
 	{ "skew-delay", PIN_CONFIG_SKEW_DELAY, 0 },
 	{ "skew-delay-input-ps", PIN_CONFIG_SKEW_DELAY_INPUT_PS, 0 },
 	{ "skew-delay-output-ps", PIN_CONFIG_SKEW_DELAY_OUTPUT_PS, 0 },
+<<<<<<< HEAD
 	{ "input-threshold-voltage-microvolt", PIN_CONFIG_INPUT_VOLTAGE_UV, 0 },
 };
 
 /**
  * parse_fw_cfg() - Parse firmware pinconf parameters
  * @fwnode:	firmware node
+=======
+};
+
+/**
+ * parse_dt_cfg() - Parse DT pinconf parameters
+ * @np:	DT node
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @params:	Array of describing generic parameters
  * @count:	Number of entries in @params
  * @cfg:	Array of parsed config options
  * @ncfg:	Number of entries in @cfg
  *
+<<<<<<< HEAD
  * Parse the config options described in @params from @fwnode and puts the result
+=======
+ * Parse the config options described in @params from @np and puts the result
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * in @cfg. @cfg does not need to be empty, entries are added beginning at
  * @ncfg. @ncfg is updated to reflect the number of entries after parsing. @cfg
  * needs to have enough memory allocated to hold all possible entries.
  */
+<<<<<<< HEAD
 static int parse_fw_cfg(struct fwnode_handle *fwnode,
+=======
+static int parse_dt_cfg(struct device_node *np,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			const struct pinconf_generic_params *params,
 			unsigned int count, unsigned long *cfg,
 			unsigned int *ncfg)
 {
+<<<<<<< HEAD
 	unsigned long *properties;
 	int i, test;
 
 	properties = bitmap_zalloc(count, GFP_KERNEL);
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < count; i++) {
 		u32 val;
@@ -236,7 +262,11 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
 		const struct pinconf_generic_params *par = &params[i];
 
 		if (par->values && par->num_values) {
+<<<<<<< HEAD
 			ret = fwnode_property_match_property_string(fwnode,
+=======
+			ret = fwnode_property_match_property_string(of_fwnode_handle(np),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 								    par->property,
 								    par->values, par->num_values);
 			if (ret == -ENOENT)
@@ -246,7 +276,11 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
 				ret = 0;
 			}
 		} else {
+<<<<<<< HEAD
 			ret = fwnode_property_read_u32(fwnode, par->property, &val);
+=======
+			ret = of_property_read_u32(np, par->property, &val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* property not found */
@@ -257,6 +291,7 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
 		if (ret)
 			val = par->default_value;
 
+<<<<<<< HEAD
 		/* if param is greater than count, these are custom properties */
 		if (par->param <= count) {
 			ret = test_and_set_bit(par->param, properties);
@@ -268,11 +303,14 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
 			}
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("found %s with value %u\n", par->property, val);
 		cfg[*ncfg] = pinconf_to_config_packed(par->param, val);
 		(*ncfg)++;
 	}
 
+<<<<<<< HEAD
 	if (test_bit(PIN_CONFIG_DRIVE_STRENGTH, properties) &&
 			test_bit(PIN_CONFIG_DRIVE_STRENGTH_UA, properties))
 		pr_err("%pfw: cannot have multiple drive strength properties\n",
@@ -296,6 +334,8 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
 		       fwnode);
 
 	bitmap_free(properties);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -314,6 +354,7 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
 				    unsigned int **pid, unsigned int **pmux,
 				    unsigned int *npins)
 {
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode = of_fwnode_handle(np);
 	unsigned int *pid_t;
 	unsigned int *pmux_t;
@@ -330,6 +371,19 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
 	if (npins_t == 0) {
 		dev_info(dev, "pinmux property doesn't have entries\n");
 		return -ENODATA;
+=======
+	unsigned int *pid_t;
+	unsigned int *pmux_t;
+	struct property *prop;
+	unsigned int npins_t, i;
+	u32 value;
+	int ret;
+
+	prop = of_find_property(np, "pinmux", NULL);
+	if (!prop) {
+		dev_info(dev, "Missing pinmux property\n");
+		return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!pid || !pmux || !npins) {
@@ -337,12 +391,17 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	npins_t = prop->length / sizeof(u32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pid_t = devm_kcalloc(dev, npins_t, sizeof(*pid_t), GFP_KERNEL);
 	pmux_t = devm_kcalloc(dev, npins_t, sizeof(*pmux_t), GFP_KERNEL);
 	if (!pid_t || !pmux_t) {
 		dev_err(dev, "kalloc memory fail\n");
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 
 	ret = fwnode_property_read_u32_array(fwnode, "pinmux", pmux_t, npins_t);
 	if (ret) {
@@ -353,6 +412,16 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
 	for (i = 0; i < npins_t; i++) {
 		pid_t[i] = pmux_t[i] >> 8;
 		pmux_t[i] = pmux_t[i] & 0xff;
+=======
+	for (i = 0; i < npins_t; i++) {
+		ret = of_property_read_u32_index(np, "pinmux", i, &value);
+		if (ret) {
+			dev_err(dev, "get pinmux value fail\n");
+			goto exit;
+		}
+		pmux_t[i] = value & 0xff;
+		pid_t[i] = (value >> 8) & 0xffffff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	*pid = pid_t;
 	*pmux = pmux_t;
@@ -382,11 +451,17 @@ int pinconf_generic_parse_dt_config(struct device_node *np,
 {
 	unsigned long *cfg;
 	unsigned int max_cfg, ncfg = 0;
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode;
 	int ret;
 
 	fwnode = of_fwnode_handle(np);
 	if (!fwnode)
+=======
+	int ret;
+
+	if (!np)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/* allocate a temporary array big enough to hold one of each option */
@@ -397,12 +472,20 @@ int pinconf_generic_parse_dt_config(struct device_node *np,
 	if (!cfg)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = parse_fw_cfg(fwnode, dt_params, ARRAY_SIZE(dt_params), cfg, &ncfg);
+=======
+	ret = parse_dt_cfg(np, dt_params, ARRAY_SIZE(dt_params), cfg, &ncfg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto out;
 	if (pctldev && pctldev->desc->num_custom_params &&
 		pctldev->desc->custom_params) {
+<<<<<<< HEAD
 		ret = parse_fw_cfg(fwnode, pctldev->desc->custom_params,
+=======
+		ret = parse_dt_cfg(np, pctldev->desc->custom_params,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   pctldev->desc->num_custom_params, cfg, &ncfg);
 		if (ret)
 			goto out;

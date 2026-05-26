@@ -23,6 +23,55 @@
 #define RAA_DMPVR2_READ_VMON	0xc8
 #define MAX_CHANNELS            4
 
+<<<<<<< HEAD
+=======
+enum chips {
+	isl68137,
+	isl68220,
+	isl68221,
+	isl68222,
+	isl68223,
+	isl68224,
+	isl68225,
+	isl68226,
+	isl68227,
+	isl68229,
+	isl68233,
+	isl68239,
+	isl69222,
+	isl69223,
+	isl69224,
+	isl69225,
+	isl69227,
+	isl69228,
+	isl69234,
+	isl69236,
+	isl69239,
+	isl69242,
+	isl69243,
+	isl69247,
+	isl69248,
+	isl69254,
+	isl69255,
+	isl69256,
+	isl69259,
+	isl69260,
+	isl69268,
+	isl69269,
+	isl69298,
+	raa228000,
+	raa228004,
+	raa228006,
+	raa228228,
+	raa228244,
+	raa228246,
+	raa229001,
+	raa229004,
+	raa229141,
+	raa229621,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum variants {
 	raa_dmpvr1_2rail,
 	raa_dmpvr2_1rail,
@@ -44,6 +93,11 @@ struct isl68137_data {
 
 #define to_isl68137_data(x)	container_of(x, struct isl68137_data, info)
 
+<<<<<<< HEAD
+=======
+static const struct i2c_device_id raa_dmpvr_id[];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t isl68137_avs_enable_show_page(struct i2c_client *client,
 					     int page,
 					     char *buf)
@@ -345,7 +399,11 @@ static int isl68137_probe(struct i2c_client *client)
 	memcpy(&data->info, &raa_dmpvr_info, sizeof(data->info));
 	info = &data->info;
 
+<<<<<<< HEAD
 	switch ((uintptr_t)i2c_get_match_data(client)) {
+=======
+	switch (i2c_match_id(raa_dmpvr_id, client)->driver_data) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case raa_dmpvr1_2rail:
 		info->pages = 2;
 		info->R[PSC_VOLTAGE_IN] = 3;
@@ -450,8 +508,11 @@ static const struct i2c_device_id raa_dmpvr_id[] = {
 	{"raa228228", raa_dmpvr2_2rail_nontc},
 	{"raa228244", raa_dmpvr2_2rail_nontc},
 	{"raa228246", raa_dmpvr2_2rail_nontc},
+<<<<<<< HEAD
 	{"raa228942", raa_dmpvr2_2rail_nontc},
 	{"raa228943", raa_dmpvr2_2rail_nontc},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{"raa229001", raa_dmpvr2_2rail},
 	{"raa229004", raa_dmpvr2_2rail},
 	{"raa229141", raa_dmpvr2_2rail_pmbus},

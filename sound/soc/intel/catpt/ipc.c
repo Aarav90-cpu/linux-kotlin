@@ -5,7 +5,10 @@
 // Author: Cezary Rojewski <cezary.rojewski@intel.com>
 //
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/irqreturn.h>
 #include "core.h"
 #include "messages.h"
@@ -152,8 +155,11 @@ catpt_dsp_notify_stream(struct catpt_dev *cdev, union catpt_notify_msg msg)
 	struct catpt_notify_position pos;
 	struct catpt_notify_glitch glitch;
 
+<<<<<<< HEAD
 	guard(mutex)(&cdev->stream_mutex);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stream = catpt_stream_find(cdev, msg.stream_hw_id);
 	if (!stream) {
 		dev_warn(cdev->dev, "notify %d for non-existent stream %d\n",

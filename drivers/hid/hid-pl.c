@@ -24,6 +24,13 @@
  */
 
 
+<<<<<<< HEAD
+=======
+/* #define DEBUG */
+
+#define debug(format, arg...) pr_debug("hid-plff: " format "\n" , ## arg)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/input.h>
 #include <linux/slab.h>
 #include <linux/module.h>
@@ -49,14 +56,22 @@ static int hid_plff_play(struct input_dev *dev, void *data,
 
 	left = effect->u.rumble.strong_magnitude;
 	right = effect->u.rumble.weak_magnitude;
+<<<<<<< HEAD
 	hid_dbg(dev, "called with 0x%04x 0x%04x", left, right);
+=======
+	debug("called with 0x%04x 0x%04x", left, right);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	left = left * plff->maxval / 0xffff;
 	right = right * plff->maxval / 0xffff;
 
 	*plff->strong = left;
 	*plff->weak = right;
+<<<<<<< HEAD
 	hid_dbg(dev, "running with 0x%02x 0x%02x", left, right);
+=======
+	debug("running with 0x%02x 0x%02x", left, right);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hid_hw_request(hid, plff->report, HID_REQ_SET_REPORT);
 
 	return 0;
@@ -115,7 +130,11 @@ static int plff_init(struct hid_device *hid)
 			report->field[0]->value[1] = 0x00;
 			strong = &report->field[0]->value[2];
 			weak = &report->field[0]->value[3];
+<<<<<<< HEAD
 			hid_dbg(hid, "detected single-field device");
+=======
+			debug("detected single-field device");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (report->field[0]->maxusage == 1 &&
 			   report->field[0]->usage[0].hid ==
 				(HID_UP_LED | 0x43) &&
@@ -130,7 +149,11 @@ static int plff_init(struct hid_device *hid)
 			weak = &report->field[3]->value[0];
 			if (hid->vendor == USB_VENDOR_ID_JESS2)
 				maxval = 0xff;
+<<<<<<< HEAD
 			hid_dbg(hid, "detected 4-field device");
+=======
+			debug("detected 4-field device");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			hid_err(hid, "not enough fields or values\n");
 			return -ENODEV;

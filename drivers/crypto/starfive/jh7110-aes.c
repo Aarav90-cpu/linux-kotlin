@@ -1003,12 +1003,20 @@ static int starfive_aes_ctr_init_tfm(struct crypto_skcipher *tfm)
 
 static int starfive_aes_ccm_init_tfm(struct crypto_aead *tfm)
 {
+<<<<<<< HEAD
 	return starfive_aes_aead_init_tfm(tfm, "ccm_base(ctr(aes-lib),cbcmac-aes-lib)");
+=======
+	return starfive_aes_aead_init_tfm(tfm, "ccm_base(ctr(aes-lib),cbcmac(aes-lib))");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int starfive_aes_gcm_init_tfm(struct crypto_aead *tfm)
 {
+<<<<<<< HEAD
 	return starfive_aes_aead_init_tfm(tfm, "gcm_base(ctr(aes-lib),ghash-lib)");
+=======
+	return starfive_aes_aead_init_tfm(tfm, "gcm_base(ctr(aes-lib),ghash-generic)");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct skcipher_engine_alg skcipher_algs[] = {

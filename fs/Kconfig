@@ -152,7 +152,10 @@ menu "DOS/FAT/EXFAT/NT Filesystems"
 
 source "fs/fat/Kconfig"
 source "fs/exfat/Kconfig"
+<<<<<<< HEAD
 source "fs/ntfs/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "fs/ntfs3/Kconfig"
 
 endmenu

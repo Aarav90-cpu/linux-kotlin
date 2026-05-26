@@ -612,8 +612,11 @@ struct phy_oatc14_sqi_capability {
  * @advertising_eee: Currently advertised EEE linkmodes
  * @enable_tx_lpi: When True, MAC should transmit LPI to PHY
  * @eee_active: phylib private state, indicating that EEE has been negotiated
+<<<<<<< HEAD
  * @autonomous_eee_disabled: Set when autonomous EEE has been disabled,
  *	used to re-apply after PHY soft reset
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @eee_cfg: User configuration of EEE
  * @lp_advertising: Current link partner advertised linkmodes
  * @host_interfaces: PHY interface modes supported by host
@@ -741,7 +744,10 @@ struct phy_device {
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(eee_disabled_modes);
 	bool enable_tx_lpi;
 	bool eee_active;
+<<<<<<< HEAD
 	bool autonomous_eee_disabled;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct eee_config eee_cfg;
 
 	/* Host supported PHY interface types. Should be ignored if empty. */
@@ -1362,6 +1368,7 @@ struct phy_driver {
 	void (*get_stats)(struct phy_device *dev,
 			  struct ethtool_stats *stats, u64 *data);
 
+<<<<<<< HEAD
 	/**
 	 * @disable_autonomous_eee: Disable PHY-autonomous EEE
 	 *
@@ -1373,6 +1380,8 @@ struct phy_driver {
 	 */
 	int (*disable_autonomous_eee)(struct phy_device *dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Get and Set PHY tunables */
 	/** @get_tunable: Return the value of a tunable */
 	int (*get_tunable)(struct phy_device *dev,
@@ -2166,6 +2175,11 @@ int phy_suspend(struct phy_device *phydev);
 int phy_resume(struct phy_device *phydev);
 int __phy_resume(struct phy_device *phydev);
 int phy_loopback(struct phy_device *phydev, bool enable, int speed);
+<<<<<<< HEAD
+=======
+struct phy_device *phy_attach(struct net_device *dev, const char *bus_id,
+			      phy_interface_t interface);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct phy_device *phy_find_next(struct mii_bus *bus, struct phy_device *pos);
 int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
 		      u32 flags, phy_interface_t interface);
@@ -2460,6 +2474,12 @@ int __phy_hwtstamp_set(struct phy_device *phydev,
 
 struct phy_port *phy_get_sfp_port(struct phy_device *phydev);
 
+<<<<<<< HEAD
+=======
+extern const struct bus_type mdio_bus_type;
+extern const struct class mdio_bus_class;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * phy_module_driver() - Helper macro for registering PHY drivers
  * @__phy_drivers: array of PHY drivers to register

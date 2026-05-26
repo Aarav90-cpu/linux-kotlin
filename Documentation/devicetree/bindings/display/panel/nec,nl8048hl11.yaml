@@ -24,6 +24,13 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  label: true
+  port: true
+  reset-gpios: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   spi-max-frequency:
     maximum: 10000000
 

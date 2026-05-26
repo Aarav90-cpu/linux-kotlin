@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 /* Copyright © 2025 Intel Corporation */
 
+<<<<<<< HEAD
 #include <drm/intel/display_parent_interface.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i915_drv.h"
 #include "i915_gem_object_frontbuffer.h"
 
@@ -103,6 +106,7 @@ void i915_gem_object_frontbuffer_put(struct i915_frontbuffer *front)
 	kref_put_lock(&front->ref, frontbuffer_release,
 		      &i915->frontbuffer_lock);
 }
+<<<<<<< HEAD
 
 void __i915_gem_object_frontbuffer_flush(struct drm_i915_gem_object *obj,
 					 enum fb_op_origin origin)
@@ -170,3 +174,5 @@ const struct intel_display_frontbuffer_interface i915_display_frontbuffer_interf
 	.put = i915_frontbuffer_put,
 	.flush_for_display = i915_frontbuffer_flush_for_display,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

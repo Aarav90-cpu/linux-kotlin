@@ -279,6 +279,7 @@ static bool round_up_and_copy_to_next_dpm(unsigned long min_value, unsigned long
 	bool result = false;
 	int index = 0;
 
+<<<<<<< HEAD
 	/* Guard against empty clock tables (e.g. DTBCLK on DCN42B where the
 	 * clock is tied off and num_clk_values == 0).  Without this check the
 	 * else-if branch below would evaluate
@@ -299,6 +300,8 @@ static bool round_up_and_copy_to_next_dpm(unsigned long min_value, unsigned long
 		return false;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (clock_table->num_clk_values > 2) {
 		while (index < clock_table->num_clk_values && clock_table->clk_values_khz[index] < min_value)
 			index++;
@@ -552,7 +555,10 @@ static int get_displays_without_vactive_margin_mask(struct dml2_dpmm_map_mode_to
 
 static int get_displays_with_fams_mask(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out, int latency_hiding_requirement_us)
 {
+<<<<<<< HEAD
 	(void)latency_hiding_requirement_us;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i;
 	int displays_with_fams_mask = 0x0;
 
@@ -823,6 +829,7 @@ bool dpmm_dcn4_map_watermarks(struct dml2_dpmm_map_watermarks_params_in_out *in_
 
 	return true;
 }
+<<<<<<< HEAD
 bool dpmm_dcn42_map_watermarks(struct dml2_dpmm_map_watermarks_params_in_out *in_out)
 {
 	const struct dml2_display_cfg *display_cfg = &in_out->display_cfg->display_config;
@@ -856,3 +863,5 @@ bool dpmm_dcn42_map_watermarks(struct dml2_dpmm_map_watermarks_params_in_out *in
 
 	return true;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

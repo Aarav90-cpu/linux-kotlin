@@ -92,7 +92,11 @@ static ssize_t temp_input_show(struct device *dev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", data->temp_input * 1000);
+=======
+	return sprintf(buf, "%d\n", data->temp_input * 1000);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 static SENSOR_DEVICE_ATTR_RO(temp1_input, temp_input, 0);
 

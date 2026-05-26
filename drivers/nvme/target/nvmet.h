@@ -214,7 +214,10 @@ struct nvmet_port {
 	bool				enabled;
 	int				inline_data_size;
 	int				max_queue_size;
+<<<<<<< HEAD
 	int				mdts;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct nvmet_fabrics_ops	*tr_ops;
 	bool				pi_enable;
 };
@@ -551,8 +554,11 @@ void nvmet_stop_keep_alive_timer(struct nvmet_ctrl *ctrl);
 u16 nvmet_parse_connect_cmd(struct nvmet_req *req);
 u32 nvmet_connect_cmd_data_len(struct nvmet_req *req);
 void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id);
+<<<<<<< HEAD
 void nvmet_bdev_set_nvm_limits(struct block_device *bdev,
 			       struct nvme_id_ns_nvm *id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u16 nvmet_bdev_parse_io_cmd(struct nvmet_req *req);
 u16 nvmet_file_parse_io_cmd(struct nvmet_req *req);
 u16 nvmet_bdev_zns_parse_io_cmd(struct nvmet_req *req);
@@ -674,7 +680,10 @@ void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
 #define NVMET_MAX_QUEUE_SIZE	1024
 #define NVMET_NR_QUEUES		128
 #define NVMET_MAX_CMD(ctrl)	(NVME_CAP_MQES(ctrl->cap) + 1)
+<<<<<<< HEAD
 #define NVMET_MAX_MDTS		255
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Nice round number that makes a list of nsids fit into a page.
@@ -763,6 +772,7 @@ static inline bool nvmet_is_pci_ctrl(struct nvmet_ctrl *ctrl)
 	return ctrl->port->disc_addr.trtype == NVMF_TRTYPE_PCI;
 }
 
+<<<<<<< HEAD
 /* Limit MDTS according to port config or transport capability */
 static inline u8 nvmet_ctrl_mdts(struct nvmet_req *req)
 {
@@ -774,6 +784,8 @@ static inline u8 nvmet_ctrl_mdts(struct nvmet_req *req)
 	return min_not_zero(ctrl->ops->get_mdts(ctrl), mdts);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NVME_TARGET_PASSTHRU
 void nvmet_passthru_subsys_free(struct nvmet_subsys *subsys);
 int nvmet_passthru_ctrl_enable(struct nvmet_subsys *subsys);
@@ -911,7 +923,11 @@ void nvmet_execute_auth_receive(struct nvmet_req *req);
 int nvmet_auth_set_key(struct nvmet_host *host, const char *secret,
 		       bool set_ctrl);
 int nvmet_auth_set_host_hash(struct nvmet_host *host, const char *hash);
+<<<<<<< HEAD
 u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset);
+=======
+u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void nvmet_auth_sq_init(struct nvmet_sq *sq);
 void nvmet_destroy_auth(struct nvmet_ctrl *ctrl);
 void nvmet_auth_sq_free(struct nvmet_sq *sq);
@@ -928,11 +944,19 @@ static inline bool nvmet_has_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
 int nvmet_auth_ctrl_exponential(struct nvmet_req *req,
 				u8 *buf, int buf_size);
 int nvmet_auth_ctrl_sesskey(struct nvmet_req *req,
+<<<<<<< HEAD
 			    const u8 *pkey, int pkey_size);
 void nvmet_auth_insert_psk(struct nvmet_sq *sq);
 #else
 static inline u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl,
 				  struct nvmet_sq *sq, bool reset)
+=======
+			    u8 *buf, int buf_size);
+void nvmet_auth_insert_psk(struct nvmet_sq *sq);
+#else
+static inline u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl,
+				  struct nvmet_sq *sq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }

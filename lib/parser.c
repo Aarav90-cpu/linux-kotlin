@@ -315,7 +315,11 @@ bool match_wildcard(const char *pattern, const char *str)
 		}
 	}
 
+<<<<<<< HEAD
 	while (*p == '*')
+=======
+	if (*p == '*')
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		++p;
 	return !*p;
 }

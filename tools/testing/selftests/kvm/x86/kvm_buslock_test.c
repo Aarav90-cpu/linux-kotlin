@@ -73,7 +73,11 @@ static void guest_code(void *test_data)
 int main(int argc, char *argv[])
 {
 	const bool has_nested = kvm_cpu_has(X86_FEATURE_SVM) || kvm_cpu_has(X86_FEATURE_VMX);
+<<<<<<< HEAD
 	gva_t nested_test_data_gva;
+=======
+	vm_vaddr_t nested_test_data_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 	struct kvm_run *run;
 	struct kvm_vm *vm;

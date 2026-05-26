@@ -459,11 +459,24 @@ static void iwl_mvm_phy_filter_init(struct iwl_mvm *mvm,
 
 static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
 {
+<<<<<<< HEAD
 	int cmd_id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
 			     MCC_ALLOWED_AP_TYPE_CMD);
 	struct iwl_mcc_allowed_ap_type_cmd_v1 cmd = {};
 	u8 cmd_ver;
 	int ret;
+=======
+	u8 cmd_ver;
+	int ret;
+	struct iwl_host_cmd cmd = {
+		.id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
+			      MCC_ALLOWED_AP_TYPE_CMD),
+		.flags = 0,
+		.data[0] = &mvm->fwrt.uats_table,
+		.len[0] =  sizeof(mvm->fwrt.uats_table),
+		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mvm->trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210 ||
 	    !mvm->trans->cfg->uhb_supported) {
@@ -471,7 +484,11 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
 		return;
 	}
 
+<<<<<<< HEAD
 	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id,
+=======
+	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd.id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					IWL_FW_CMD_VER_UNKNOWN);
 	if (cmd_ver != 1) {
 		IWL_DEBUG_RADIO(mvm,
@@ -482,6 +499,7 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
 
 	iwl_uefi_get_uats_table(mvm->trans, &mvm->fwrt);
 
+<<<<<<< HEAD
 	if (!mvm->fwrt.ap_type_cmd_valid)
 		return;
 
@@ -493,6 +511,12 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
 	       sizeof(mvm->fwrt.ap_type_cmd.mcc_to_ap_type_map));
 
 	ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
+=======
+	if (!mvm->fwrt.uats_valid)
+		return;
+
+	ret = iwl_mvm_send_cmd(mvm, &cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		IWL_ERR(mvm, "failed to send MCC_ALLOWED_AP_TYPE_CMD (%d)\n",
 			ret);
@@ -909,7 +933,11 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
 
 int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
 {
+<<<<<<< HEAD
 	union iwl_geo_tx_power_profiles_cmd geo_tx_cmd = {};
+=======
+	union iwl_geo_tx_power_profiles_cmd geo_tx_cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iwl_geo_tx_power_profiles_resp *resp;
 	u16 len;
 	int ret;
@@ -961,7 +989,11 @@ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
 static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
 {
 	u32 cmd_id = WIDE_ID(PHY_OPS_GROUP, PER_CHAIN_LIMIT_OFFSET_CMD);
+<<<<<<< HEAD
 	union iwl_geo_tx_power_profiles_cmd cmd = {};
+=======
+	union iwl_geo_tx_power_profiles_cmd cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 len;
 	u32 n_bands;
 	u32 n_profiles;
@@ -1035,6 +1067,7 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
 	return iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, len, &cmd);
 }
 
+<<<<<<< HEAD
 static bool iwl_mvm_ppag_value_valid(struct iwl_fw_runtime *fwrt, int chain,
 				     int subband)
 {
@@ -1162,12 +1195,18 @@ static int iwl_mvm_fill_ppag_table(struct iwl_fw_runtime *fwrt,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
 {
 	union iwl_ppag_table_cmd cmd;
 	int ret, cmd_size;
 
+<<<<<<< HEAD
 	ret = iwl_mvm_fill_ppag_table(&mvm->fwrt, &cmd, &cmd_size);
+=======
+	ret = iwl_fill_ppag_table(&mvm->fwrt, &cmd, &cmd_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Not supporting PPAG table is a valid scenario */
 	if (ret < 0)
 		return 0;

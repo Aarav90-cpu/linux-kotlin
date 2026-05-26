@@ -74,6 +74,7 @@ Supported chips:
 	       https://us1.silergy.com/
 
 
+<<<<<<< HEAD
   * Texas Instruments INA234
 
     Prefix: 'ina234'
@@ -84,6 +85,8 @@ Supported chips:
 
 	       https://www.ti.com/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Author: Lothar Felten <lothar.felten@gmail.com>
 
 Description
@@ -99,7 +102,11 @@ interface. The INA220 monitors both shunt drop and supply voltage.
 The INA226 is a current shunt and power monitor with an I2C interface.
 The INA226 monitors both a shunt voltage drop and bus supply voltage.
 
+<<<<<<< HEAD
 INA230, INA231, and INA234 are high or low side current shunt and power monitors
+=======
+INA230 and INA231 are high or low side current shunt and power monitors
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 with an I2C interface. The chips monitor both a shunt voltage drop and
 bus supply voltage.
 
@@ -134,6 +141,7 @@ power1_input		Power(uW) measurement channel
 shunt_resistor		Shunt resistance(uOhm) channel (not for ina260)
 ======================= ===============================================
 
+<<<<<<< HEAD
 Additional sysfs entries
 ------------------------
 
@@ -145,6 +153,10 @@ Additional entries are available for the following chips:
   * ina234
   * ina260
   * sy24655
+=======
+Additional sysfs entries for ina226, ina230, ina231, ina260, and sy24655
+------------------------------------------------------------------------
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ======================= ====================================================
 curr1_lcrit		Critical low current

@@ -1435,16 +1435,24 @@ static void btt_submit_bio(struct bio *bio)
 {
 	struct bio_integrity_payload *bip = bio_integrity(bio);
 	struct btt *btt = bio->bi_bdev->bd_disk->private_data;
+<<<<<<< HEAD
 	unsigned int integrity_action;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bvec_iter iter;
 	unsigned long start;
 	struct bio_vec bvec;
 	int err = 0;
 	bool do_acct;
 
+<<<<<<< HEAD
 	integrity_action = bio_integrity_action(bio);
 	if (integrity_action)
 		bio_integrity_prep(bio, integrity_action);
+=======
+	if (!bio_integrity_prep(bio))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do_acct = blk_queue_io_stat(bio->bi_bdev->bd_disk->queue);
 	if (do_acct)

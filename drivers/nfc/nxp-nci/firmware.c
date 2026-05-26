@@ -211,7 +211,11 @@ int nxp_nci_fw_download(struct nci_dev *ndev, const char *firmware_name)
 		goto fw_download_exit;
 	}
 
+<<<<<<< HEAD
 	strscpy(fw_info->name, firmware_name);
+=======
+	strcpy(fw_info->name, firmware_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	r = request_firmware(&fw_info->fw, firmware_name,
 			     ndev->nfc_dev->dev.parent);

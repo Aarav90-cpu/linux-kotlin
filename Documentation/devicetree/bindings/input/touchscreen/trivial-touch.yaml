@@ -53,14 +53,23 @@ properties:
 
   wakeup-source: true
 
+<<<<<<< HEAD
+=======
+allOf:
+  - $ref: touchscreen.yaml
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
   - interrupts
 
+<<<<<<< HEAD
 allOf:
   - $ref: touchscreen.yaml
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

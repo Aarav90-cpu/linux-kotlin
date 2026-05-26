@@ -40,8 +40,13 @@ static int ddc_clear_irq(struct hdmi_i2c_adapter *hdmi_i2c)
 {
 	struct hdmi *hdmi = hdmi_i2c->hdmi;
 	struct drm_device *dev = hdmi->dev;
+<<<<<<< HEAD
 	u32 retry = 0xffff;
 	u32 ddc_int_ctrl;
+=======
+	uint32_t retry = 0xffff;
+	uint32_t ddc_int_ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		--retry;
@@ -71,7 +76,11 @@ static bool sw_done(struct hdmi_i2c_adapter *hdmi_i2c)
 	struct hdmi *hdmi = hdmi_i2c->hdmi;
 
 	if (!hdmi_i2c->sw_done) {
+<<<<<<< HEAD
 		u32 ddc_int_ctrl;
+=======
+		uint32_t ddc_int_ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ddc_int_ctrl = hdmi_read(hdmi, REG_HDMI_DDC_INT_CTRL);
 
@@ -92,13 +101,21 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
 	struct hdmi_i2c_adapter *hdmi_i2c = to_hdmi_i2c_adapter(i2c);
 	struct hdmi *hdmi = hdmi_i2c->hdmi;
 	struct drm_device *dev = hdmi->dev;
+<<<<<<< HEAD
 	static const u32 nack[] = {
+=======
+	static const uint32_t nack[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			HDMI_DDC_SW_STATUS_NACK0, HDMI_DDC_SW_STATUS_NACK1,
 			HDMI_DDC_SW_STATUS_NACK2, HDMI_DDC_SW_STATUS_NACK3,
 	};
 	int indices[MAX_TRANSACTIONS];
 	int ret, i, j, index = 0;
+<<<<<<< HEAD
 	u32 ddc_status, ddc_data, i2c_trans;
+=======
+	uint32_t ddc_status, ddc_data, i2c_trans;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	num = min(num, MAX_TRANSACTIONS);
 
@@ -119,7 +136,11 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
 
 	for (i = 0; i < num; i++) {
 		struct i2c_msg *p = &msgs[i];
+<<<<<<< HEAD
 		u32 raw_addr = p->addr << 1;
+=======
+		uint32_t raw_addr = p->addr << 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (p->flags & I2C_M_RD)
 			raw_addr |= 1;

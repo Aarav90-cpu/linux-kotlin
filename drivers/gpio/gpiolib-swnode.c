@@ -93,6 +93,7 @@ struct gpio_desc *swnode_find_gpio(struct fwnode_handle *fwnode,
 		ret = swnode_gpio_get_reference(fwnode, propname, idx, &args);
 		if (ret == 0)
 			break;
+<<<<<<< HEAD
 		if (ret == -ENOTCONN)
 			/*
 			 * -ENOTCONN for a software node reference lookup means
@@ -101,6 +102,8 @@ struct gpio_desc *swnode_find_gpio(struct fwnode_handle *fwnode,
 			 *  until this happens.
 			 */
 			return ERR_PTR(-EPROBE_DEFER);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (ret) {
 		pr_debug("%s: can't parse '%s' property of node '%pfwP[%d]'\n",

@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2022 Meta Platforms, Inc. and affiliates. */
 #include <linux/capability.h>
+<<<<<<< HEAD
 #include <linux/err.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdlib.h>
 #include <test_progs.h>
 #include <bpf/btf.h>
@@ -12,6 +15,7 @@
 #include "cap_helpers.h"
 #include "jit_disasm_helpers.h"
 
+<<<<<<< HEAD
 static inline const char *str_has_pfx(const char *str, const char *pfx)
 {
 	size_t len = strlen(pfx);
@@ -21,6 +25,41 @@ static inline const char *str_has_pfx(const char *str, const char *pfx)
 
 #define TEST_LOADER_LOG_BUF_SZ 2097152
 
+=======
+#define str_has_pfx(str, pfx) \
+	(strncmp(str, pfx, __builtin_constant_p(pfx) ? sizeof(pfx) - 1 : strlen(pfx)) == 0)
+
+#define TEST_LOADER_LOG_BUF_SZ 2097152
+
+#define TEST_TAG_EXPECT_FAILURE "comment:test_expect_failure"
+#define TEST_TAG_EXPECT_SUCCESS "comment:test_expect_success"
+#define TEST_TAG_EXPECT_MSG_PFX "comment:test_expect_msg="
+#define TEST_TAG_EXPECT_NOT_MSG_PFX "comment:test_expect_not_msg="
+#define TEST_TAG_EXPECT_XLATED_PFX "comment:test_expect_xlated="
+#define TEST_TAG_EXPECT_FAILURE_UNPRIV "comment:test_expect_failure_unpriv"
+#define TEST_TAG_EXPECT_SUCCESS_UNPRIV "comment:test_expect_success_unpriv"
+#define TEST_TAG_EXPECT_MSG_PFX_UNPRIV "comment:test_expect_msg_unpriv="
+#define TEST_TAG_EXPECT_NOT_MSG_PFX_UNPRIV "comment:test_expect_not_msg_unpriv="
+#define TEST_TAG_EXPECT_XLATED_PFX_UNPRIV "comment:test_expect_xlated_unpriv="
+#define TEST_TAG_LOG_LEVEL_PFX "comment:test_log_level="
+#define TEST_TAG_PROG_FLAGS_PFX "comment:test_prog_flags="
+#define TEST_TAG_DESCRIPTION_PFX "comment:test_description="
+#define TEST_TAG_RETVAL_PFX "comment:test_retval="
+#define TEST_TAG_RETVAL_PFX_UNPRIV "comment:test_retval_unpriv="
+#define TEST_TAG_AUXILIARY "comment:test_auxiliary"
+#define TEST_TAG_AUXILIARY_UNPRIV "comment:test_auxiliary_unpriv"
+#define TEST_BTF_PATH "comment:test_btf_path="
+#define TEST_TAG_ARCH "comment:test_arch="
+#define TEST_TAG_JITED_PFX "comment:test_jited="
+#define TEST_TAG_JITED_PFX_UNPRIV "comment:test_jited_unpriv="
+#define TEST_TAG_CAPS_UNPRIV "comment:test_caps_unpriv="
+#define TEST_TAG_LOAD_MODE_PFX "comment:load_mode="
+#define TEST_TAG_EXPECT_STDERR_PFX "comment:test_expect_stderr="
+#define TEST_TAG_EXPECT_STDERR_PFX_UNPRIV "comment:test_expect_stderr_unpriv="
+#define TEST_TAG_EXPECT_STDOUT_PFX "comment:test_expect_stdout="
+#define TEST_TAG_EXPECT_STDOUT_PFX_UNPRIV "comment:test_expect_stdout_unpriv="
+#define TEST_TAG_LINEAR_SIZE "comment:test_linear_size="
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Warning: duplicated in bpf_misc.h */
 #define POINTER_VALUE	0xbadcafe
@@ -46,7 +85,10 @@ enum load_mode {
 
 struct test_subspec {
 	char *name;
+<<<<<<< HEAD
 	char *description;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool expect_failure;
 	struct expected_msgs expect_msgs;
 	struct expected_msgs expect_xlated;
@@ -120,6 +162,7 @@ static void free_test_spec(struct test_spec *spec)
 	free_msgs(&spec->priv.stdout);
 
 	free(spec->priv.name);
+<<<<<<< HEAD
 	free(spec->priv.description);
 	free(spec->unpriv.name);
 	free(spec->unpriv.description);
@@ -127,6 +170,11 @@ static void free_test_spec(struct test_spec *spec)
 	spec->priv.description = NULL;
 	spec->unpriv.name = NULL;
 	spec->unpriv.description = NULL;
+=======
+	free(spec->unpriv.name);
+	spec->priv.name = NULL;
+	spec->unpriv.name = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Compiles regular expression matching pattern.
@@ -143,13 +191,18 @@ static void free_test_spec(struct test_spec *spec)
 static int compile_regex(const char *pattern, regex_t *regex)
 {
 	char err_buf[256], buf[256] = {}, *ptr, *buf_end;
+<<<<<<< HEAD
 	const char *original_pattern = pattern, *next;
+=======
+	const char *original_pattern = pattern;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool in_regex = false;
 	int err;
 
 	buf_end = buf + sizeof(buf);
 	ptr = buf;
 	while (*pattern && ptr < buf_end - 2) {
+<<<<<<< HEAD
 		if (!in_regex && (next = str_has_pfx(pattern, "{{"))) {
 			in_regex = true;
 			pattern = next;
@@ -158,6 +211,16 @@ static int compile_regex(const char *pattern, regex_t *regex)
 		if (in_regex && (next = str_has_pfx(pattern, "}}"))) {
 			in_regex = false;
 			pattern = next;
+=======
+		if (!in_regex && str_has_pfx(pattern, "{{")) {
+			in_regex = true;
+			pattern += 2;
+			continue;
+		}
+		if (in_regex && str_has_pfx(pattern, "}}")) {
+			in_regex = false;
+			pattern += 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 		if (in_regex) {
@@ -325,6 +388,7 @@ static void update_flags(int *flags, int flag, bool clear)
 		*flags |= flag;
 }
 
+<<<<<<< HEAD
 static const char *skip_decl_tag_pfx(const char *s)
 {
 	int n = 0;
@@ -368,6 +432,35 @@ static const char **collect_decl_tags(struct btf *btf, int id, int *cnt)
 	if (*cnt)
 		qsort(tags, *cnt, sizeof(*tags), compare_decl_tags);
 	return tags;
+=======
+/* Matches a string of form '<pfx>[^=]=.*' and returns it's suffix.
+ * Used to parse btf_decl_tag values.
+ * Such values require unique prefix because compiler does not add
+ * same __attribute__((btf_decl_tag(...))) twice.
+ * Test suite uses two-component tags for such cases:
+ *
+ *   <pfx> __COUNTER__ '='
+ *
+ * For example, two consecutive __msg tags '__msg("foo") __msg("foo")'
+ * would be encoded as:
+ *
+ *   [18] DECL_TAG 'comment:test_expect_msg=0=foo' type_id=15 component_idx=-1
+ *   [19] DECL_TAG 'comment:test_expect_msg=1=foo' type_id=15 component_idx=-1
+ *
+ * And the purpose of this function is to extract 'foo' from the above.
+ */
+static const char *skip_dynamic_pfx(const char *s, const char *pfx)
+{
+	const char *msg;
+
+	if (strncmp(s, pfx, strlen(pfx)) != 0)
+		return NULL;
+	msg = s + strlen(pfx);
+	msg = strchr(msg, '=');
+	if (!msg)
+		return NULL;
+	return msg + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 enum arch {
@@ -413,9 +506,13 @@ static int parse_test_spec(struct test_loader *tester,
 	bool stdout_on_next_line = true;
 	bool unpriv_stdout_on_next_line = true;
 	bool collect_jit = false;
+<<<<<<< HEAD
 	const char **tags = NULL;
 	int func_id, i, nr_tags;
 	int err = 0;
+=======
+	int func_id, i, err = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 arch_mask = 0;
 	u32 load_mask = 0;
 	struct btf *btf;
@@ -438,6 +535,7 @@ static int parse_test_spec(struct test_loader *tester,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	tags = collect_decl_tags(btf, func_id, &nr_tags);
 	if (IS_ERR(tags))
 		return PTR_ERR(tags);
@@ -473,26 +571,81 @@ static int parse_test_spec(struct test_loader *tester,
 			spec->auxiliary = true;
 			spec->mode_mask |= UNPRIV;
 		} else if ((msg = str_has_pfx(s, "test_expect_msg="))) {
+=======
+	for (i = 1; i < btf__type_cnt(btf); i++) {
+		const char *s, *val, *msg;
+		const struct btf_type *t;
+		bool clear;
+		int flags;
+
+		t = btf__type_by_id(btf, i);
+		if (!btf_is_decl_tag(t))
+			continue;
+
+		if (t->type != func_id || btf_decl_tag(t)->component_idx != -1)
+			continue;
+
+		s = btf__str_by_offset(btf, t->name_off);
+		if (str_has_pfx(s, TEST_TAG_DESCRIPTION_PFX)) {
+			description = s + sizeof(TEST_TAG_DESCRIPTION_PFX) - 1;
+		} else if (strcmp(s, TEST_TAG_EXPECT_FAILURE) == 0) {
+			spec->priv.expect_failure = true;
+			spec->mode_mask |= PRIV;
+		} else if (strcmp(s, TEST_TAG_EXPECT_SUCCESS) == 0) {
+			spec->priv.expect_failure = false;
+			spec->mode_mask |= PRIV;
+		} else if (strcmp(s, TEST_TAG_EXPECT_FAILURE_UNPRIV) == 0) {
+			spec->unpriv.expect_failure = true;
+			spec->mode_mask |= UNPRIV;
+			has_unpriv_result = true;
+		} else if (strcmp(s, TEST_TAG_EXPECT_SUCCESS_UNPRIV) == 0) {
+			spec->unpriv.expect_failure = false;
+			spec->mode_mask |= UNPRIV;
+			has_unpriv_result = true;
+		} else if (strcmp(s, TEST_TAG_AUXILIARY) == 0) {
+			spec->auxiliary = true;
+			spec->mode_mask |= PRIV;
+		} else if (strcmp(s, TEST_TAG_AUXILIARY_UNPRIV) == 0) {
+			spec->auxiliary = true;
+			spec->mode_mask |= UNPRIV;
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_MSG_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_msg(msg, false, &spec->priv.expect_msgs);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= PRIV;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_not_msg="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_NOT_MSG_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_msg(msg, true, &spec->priv.expect_msgs);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= PRIV;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_msg_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_MSG_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_msg(msg, false, &spec->unpriv.expect_msgs);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_not_msg_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_NOT_MSG_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_msg(msg, true, &spec->unpriv.expect_msgs);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_jited="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_JITED_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (arch_mask == 0) {
 				PRINT_FAIL("__jited used before __arch_*");
 				goto cleanup;
@@ -504,7 +657,11 @@ static int parse_test_spec(struct test_loader *tester,
 					goto cleanup;
 				spec->mode_mask |= PRIV;
 			}
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_jited_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_JITED_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (arch_mask == 0) {
 				PRINT_FAIL("__unpriv_jited used before __arch_*");
 				goto cleanup;
@@ -516,36 +673,65 @@ static int parse_test_spec(struct test_loader *tester,
 					goto cleanup;
 				spec->mode_mask |= UNPRIV;
 			}
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_xlated="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_XLATED_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &xlated_on_next_line,
 					      &spec->priv.expect_xlated);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= PRIV;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_xlated_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_XLATED_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &unpriv_xlated_on_next_line,
 					      &spec->unpriv.expect_xlated);
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_retval="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_RETVAL_PFX)) {
+			val = s + sizeof(TEST_TAG_RETVAL_PFX) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = parse_retval(val, &spec->priv.retval, "__retval");
 			if (err)
 				goto cleanup;
 			spec->priv.execute = true;
 			spec->mode_mask |= PRIV;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_retval_unpriv="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_RETVAL_PFX_UNPRIV)) {
+			val = s + sizeof(TEST_TAG_RETVAL_PFX_UNPRIV) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = parse_retval(val, &spec->unpriv.retval, "__retval_unpriv");
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
 			spec->unpriv.execute = true;
 			has_unpriv_retval = true;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_log_level="))) {
 			err = parse_int(val, &spec->log_level, "test log level");
 			if (err)
 				goto cleanup;
 		} else if ((val = str_has_pfx(s, "test_prog_flags="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_LOG_LEVEL_PFX)) {
+			val = s + sizeof(TEST_TAG_LOG_LEVEL_PFX) - 1;
+			err = parse_int(val, &spec->log_level, "test log level");
+			if (err)
+				goto cleanup;
+		} else if (str_has_pfx(s, TEST_TAG_PROG_FLAGS_PFX)) {
+			val = s + sizeof(TEST_TAG_PROG_FLAGS_PFX) - 1;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clear = val[0] == '!';
 			if (clear)
 				val++;
@@ -570,7 +756,12 @@ static int parse_test_spec(struct test_loader *tester,
 					goto cleanup;
 				update_flags(&spec->prog_flags, flags, clear);
 			}
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_arch="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_ARCH)) {
+			val = s + sizeof(TEST_TAG_ARCH) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (strcmp(val, "X86_64") == 0) {
 				arch = ARCH_X86_64;
 			} else if (strcmp(val, "ARM64") == 0) {
@@ -588,14 +779,26 @@ static int parse_test_spec(struct test_loader *tester,
 			collect_jit = get_current_arch() == arch;
 			unpriv_jit_on_next_line = true;
 			jit_on_next_line = true;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_btf_path="))) {
 			spec->btf_custom_path = val;
 		} else if ((val = str_has_pfx(s, "test_caps_unpriv="))) {
+=======
+		} else if (str_has_pfx(s, TEST_BTF_PATH)) {
+			spec->btf_custom_path = s + sizeof(TEST_BTF_PATH) - 1;
+		} else if (str_has_pfx(s, TEST_TAG_CAPS_UNPRIV)) {
+			val = s + sizeof(TEST_TAG_CAPS_UNPRIV) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = parse_caps(val, &spec->unpriv.caps, "test caps");
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "load_mode="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_LOAD_MODE_PFX)) {
+			val = s + sizeof(TEST_TAG_LOAD_MODE_PFX) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (strcmp(val, "jited") == 0) {
 				load_mask = JITED;
 			} else if (strcmp(val, "no_jited") == 0) {
@@ -605,31 +808,55 @@ static int parse_test_spec(struct test_loader *tester,
 				err = -EINVAL;
 				goto cleanup;
 			}
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_stderr="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_STDERR_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &stderr_on_next_line,
 					      &spec->priv.stderr);
 			if (err)
 				goto cleanup;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_stderr_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_STDERR_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &unpriv_stderr_on_next_line,
 					      &spec->unpriv.stderr);
 			if (err)
 				goto cleanup;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_stdout="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_STDOUT_PFX))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &stdout_on_next_line,
 					      &spec->priv.stdout);
 			if (err)
 				goto cleanup;
+<<<<<<< HEAD
 		} else if ((msg = str_has_pfx(s, "test_expect_stdout_unpriv="))) {
+=======
+		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_STDOUT_PFX_UNPRIV))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = push_disasm_msg(msg, &unpriv_stdout_on_next_line,
 					      &spec->unpriv.stdout);
 			if (err)
 				goto cleanup;
+<<<<<<< HEAD
 		} else if ((val = str_has_pfx(s, "test_linear_size="))) {
+=======
+		} else if (str_has_pfx(s, TEST_TAG_LINEAR_SIZE)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			switch (bpf_program__type(prog)) {
 			case BPF_PROG_TYPE_SCHED_ACT:
 			case BPF_PROG_TYPE_SCHED_CLS:
 			case BPF_PROG_TYPE_CGROUP_SKB:
+<<<<<<< HEAD
+=======
+				val = s + sizeof(TEST_TAG_LINEAR_SIZE) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				err = parse_int(val, &spec->linear_sz, "test linear size");
 				if (err)
 					goto cleanup;
@@ -648,13 +875,22 @@ static int parse_test_spec(struct test_loader *tester,
 	if (spec->mode_mask == 0)
 		spec->mode_mask = PRIV;
 
+<<<<<<< HEAD
 	if (spec->mode_mask & PRIV) {
 		spec->priv.name = strdup(spec->prog_name);
+=======
+	if (!description)
+		description = spec->prog_name;
+
+	if (spec->mode_mask & PRIV) {
+		spec->priv.name = strdup(description);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!spec->priv.name) {
 			PRINT_FAIL("failed to allocate memory for priv.name\n");
 			err = -ENOMEM;
 			goto cleanup;
 		}
+<<<<<<< HEAD
 
 		if (description) {
 			spec->priv.description = strdup(description);
@@ -673,12 +909,23 @@ static int parse_test_spec(struct test_loader *tester,
 		char *name;
 
 		name = malloc(name_len + suffix_len + 1);
+=======
+	}
+
+	if (spec->mode_mask & UNPRIV) {
+		int descr_len = strlen(description);
+		const char *suffix = " @unpriv";
+		char *name;
+
+		name = malloc(descr_len + strlen(suffix) + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!name) {
 			PRINT_FAIL("failed to allocate memory for unpriv.name\n");
 			err = -ENOMEM;
 			goto cleanup;
 		}
 
+<<<<<<< HEAD
 		strcpy(name, spec->prog_name);
 		strcpy(&name[name_len], suffix);
 		spec->unpriv.name = name;
@@ -698,6 +945,11 @@ static int parse_test_spec(struct test_loader *tester,
 			strcpy(&descr[descr_len], suffix);
 			spec->unpriv.description = descr;
 		}
+=======
+		strcpy(name, description);
+		strcpy(&name[descr_len], suffix);
+		spec->unpriv.name = name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (spec->mode_mask & (PRIV | UNPRIV)) {
@@ -723,11 +975,17 @@ static int parse_test_spec(struct test_loader *tester,
 
 	spec->valid = true;
 
+<<<<<<< HEAD
 	free(tags);
 	return 0;
 
 cleanup:
 	free(tags);
+=======
+	return 0;
+
+cleanup:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_test_spec(spec);
 	return err;
 }
@@ -1162,7 +1420,11 @@ void run_subtest(struct test_loader *tester,
 	int links_cnt = 0;
 	bool should_load;
 
+<<<<<<< HEAD
 	if (!test__start_subtest_with_desc(subspec->name, subspec->description))
+=======
+	if (!test__start_subtest(subspec->name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if ((get_current_arch() & spec->arch_mask) == 0) {

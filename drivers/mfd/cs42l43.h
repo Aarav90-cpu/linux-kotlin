@@ -9,7 +9,11 @@
 #ifndef CS42L43_CORE_INT_H
 #define CS42L43_CORE_INT_H
 
+<<<<<<< HEAD
 #define CS42L43_N_DEFAULTS 189
+=======
+#define CS42L43_N_DEFAULTS 176
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dev_pm_ops;
 struct device;

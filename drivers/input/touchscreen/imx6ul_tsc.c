@@ -551,11 +551,20 @@ static int imx6ul_tsc_suspend(struct device *dev)
 	struct imx6ul_tsc *tsc = platform_get_drvdata(pdev);
 	struct input_dev *input_dev = tsc->input;
 
+<<<<<<< HEAD
 	guard(mutex)(&input_dev->mutex);
+=======
+	mutex_lock(&input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(input_dev))
 		imx6ul_tsc_stop(tsc);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input_dev->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -564,6 +573,7 @@ static int imx6ul_tsc_resume(struct device *dev)
 	struct platform_device *pdev = to_platform_device(dev);
 	struct imx6ul_tsc *tsc = platform_get_drvdata(pdev);
 	struct input_dev *input_dev = tsc->input;
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&input_dev->mutex);
@@ -575,6 +585,18 @@ static int imx6ul_tsc_resume(struct device *dev)
 	}
 
 	return 0;
+=======
+	int retval = 0;
+
+	mutex_lock(&input_dev->mutex);
+
+	if (input_device_enabled(input_dev))
+		retval = imx6ul_tsc_start(tsc);
+
+	mutex_unlock(&input_dev->mutex);
+
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(imx6ul_tsc_pm_ops,

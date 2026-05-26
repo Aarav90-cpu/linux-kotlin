@@ -27,7 +27,11 @@ static void *uffd_handler_thread_fn(void *arg)
 {
 	struct uffd_reader_args *reader_args = (struct uffd_reader_args *)arg;
 	int uffd = reader_args->uffd;
+<<<<<<< HEAD
 	s64 pages = 0;
+=======
+	int64_t pages = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timespec start;
 	struct timespec ts_diff;
 	struct epoll_event evt;
@@ -100,8 +104,13 @@ static void *uffd_handler_thread_fn(void *arg)
 }
 
 struct uffd_desc *uffd_setup_demand_paging(int uffd_mode, useconds_t delay,
+<<<<<<< HEAD
 					   void *hva, u64 len,
 					   u64 num_readers,
+=======
+					   void *hva, uint64_t len,
+					   uint64_t num_readers,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   uffd_handler_t handler)
 {
 	struct uffd_desc *uffd_desc;
@@ -109,7 +118,11 @@ struct uffd_desc *uffd_setup_demand_paging(int uffd_mode, useconds_t delay,
 	int uffd;
 	struct uffdio_api uffdio_api;
 	struct uffdio_register uffdio_register;
+<<<<<<< HEAD
 	u64 expected_ioctls = ((u64)1) << _UFFDIO_COPY;
+=======
+	uint64_t expected_ioctls = ((uint64_t) 1) << _UFFDIO_COPY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret, i;
 
 	PER_PAGE_DEBUG("Userfaultfd %s mode, faults resolved with %s\n",
@@ -132,7 +145,11 @@ struct uffd_desc *uffd_setup_demand_paging(int uffd_mode, useconds_t delay,
 
 	/* In order to get minor faults, prefault via the alias. */
 	if (is_minor)
+<<<<<<< HEAD
 		expected_ioctls = ((u64)1) << _UFFDIO_CONTINUE;
+=======
+		expected_ioctls = ((uint64_t) 1) << _UFFDIO_CONTINUE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
 	TEST_ASSERT(uffd >= 0, "uffd creation failed, errno: %d", errno);
@@ -141,9 +158,15 @@ struct uffd_desc *uffd_setup_demand_paging(int uffd_mode, useconds_t delay,
 	uffdio_api.features = 0;
 	TEST_ASSERT(ioctl(uffd, UFFDIO_API, &uffdio_api) != -1,
 		    "ioctl UFFDIO_API failed: %" PRIu64,
+<<<<<<< HEAD
 		    (u64)uffdio_api.api);
 
 	uffdio_register.range.start = (u64)hva;
+=======
+		    (uint64_t)uffdio_api.api);
+
+	uffdio_register.range.start = (uint64_t)hva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uffdio_register.range.len = len;
 	uffdio_register.mode = uffd_mode;
 	TEST_ASSERT(ioctl(uffd, UFFDIO_REGISTER, &uffdio_register) != -1,

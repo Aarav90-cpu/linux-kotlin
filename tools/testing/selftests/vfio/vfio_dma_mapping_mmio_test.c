@@ -100,6 +100,10 @@ static void do_mmio_map_test(struct iommu *iommu,
 		iommu_unmap(iommu, &region);
 	} else {
 		VFIO_ASSERT_NE(__iommu_map(iommu, &region), 0);
+<<<<<<< HEAD
+=======
+		VFIO_ASSERT_NE(__iommu_unmap(iommu, &region, NULL), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

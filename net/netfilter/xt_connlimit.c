@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-or-later
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * netfilter module to limit the number of parallel tcp
  * connections per IP address.
@@ -10,7 +13,11 @@
  * based on ...
  *
  * Kernel module to match connection tracking information.
+<<<<<<< HEAD
  *   (C) 1999  Rusty Russell (rusty@rustcorp.com.au).
+=======
+ * GPL (C) 1999  Rusty Russell (rusty@rustcorp.com.au).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 

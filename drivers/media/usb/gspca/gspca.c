@@ -1701,6 +1701,22 @@ int gspca_resume(struct usb_interface *intf)
 EXPORT_SYMBOL(gspca_resume);
 #endif
 
+<<<<<<< HEAD
+=======
+/* -- module insert / remove -- */
+static int __init gspca_init(void)
+{
+	pr_info("v" GSPCA_VERSION " registered\n");
+	return 0;
+}
+static void __exit gspca_exit(void)
+{
+}
+
+module_init(gspca_init);
+module_exit(gspca_exit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_named(debug, gspca_debug, int, 0644);
 MODULE_PARM_DESC(debug,
 		"1:probe 2:config 3:stream 4:frame 5:packet 6:usbi 7:usbo");

@@ -399,6 +399,7 @@ struct bss_info_inband_discovery {
 	__le16 prob_rsp_len;
 } __packed __aligned(4);
 
+<<<<<<< HEAD
 struct bss_info_prot {
 	__le16 tag;
 	__le16 len;
@@ -410,6 +411,8 @@ struct bss_info_prot {
 	u8 rsv[5];
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	BSS_INFO_BCN_CSA,
 	BSS_INFO_BCN_BCC,

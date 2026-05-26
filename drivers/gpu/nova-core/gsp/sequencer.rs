@@ -67,7 +67,10 @@ const CMD_SIZE: usize = size_of::<fw::SequencerBufferCmd>();
 /// GSP Sequencer Command types with payload data.
 /// Commands have an opcode and an opcode-dependent struct.
 #[allow(clippy::enum_variant_names)]
+<<<<<<< HEAD
 #[derive(Debug)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub(crate) enum GspSeqCmd {
     RegWrite(fw::RegWritePayload),
     RegModify(fw::RegModifyPayload),
@@ -145,7 +148,16 @@ pub(crate) struct GspSequencer<'a> {
     dev: ARef<device::Device>,
 }
 
+<<<<<<< HEAD
 impl fw::RegWritePayload {
+=======
+/// Trait for running sequencer commands.
+pub(crate) trait GspSeqCmdRunner {
+    fn run(&self, sequencer: &GspSequencer<'_>) -> Result;
+}
+
+impl GspSeqCmdRunner for fw::RegWritePayload {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
         let addr = usize::from_safe_cast(self.addr());
 
@@ -153,7 +165,11 @@ impl fw::RegWritePayload {
     }
 }
 
+<<<<<<< HEAD
 impl fw::RegModifyPayload {
+=======
+impl GspSeqCmdRunner for fw::RegModifyPayload {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
         let addr = usize::from_safe_cast(self.addr());
 
@@ -165,7 +181,11 @@ impl fw::RegModifyPayload {
     }
 }
 
+<<<<<<< HEAD
 impl fw::RegPollPayload {
+=======
+impl GspSeqCmdRunner for fw::RegPollPayload {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
         let addr = usize::from_safe_cast(self.addr());
 
@@ -190,14 +210,22 @@ impl fw::RegPollPayload {
     }
 }
 
+<<<<<<< HEAD
 impl fw::DelayUsPayload {
+=======
+impl GspSeqCmdRunner for fw::DelayUsPayload {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, _sequencer: &GspSequencer<'_>) -> Result {
         fsleep(Delta::from_micros(i64::from(self.val())));
         Ok(())
     }
 }
 
+<<<<<<< HEAD
 impl fw::RegStorePayload {
+=======
+impl GspSeqCmdRunner for fw::RegStorePayload {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
         let addr = usize::from_safe_cast(self.addr());
 
@@ -205,7 +233,11 @@ impl fw::RegStorePayload {
     }
 }
 
+<<<<<<< HEAD
 impl GspSeqCmd {
+=======
+impl GspSeqCmdRunner for GspSeqCmd {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn run(&self, seq: &GspSequencer<'_>) -> Result {
         match self {
             GspSeqCmd::RegWrite(cmd) => cmd.run(seq),
@@ -356,9 +388,15 @@ pub(crate) struct GspSequencerParams<'a> {
 }
 
 impl<'a> GspSequencer<'a> {
+<<<<<<< HEAD
     pub(crate) fn run(cmdq: &Cmdq, params: GspSequencerParams<'a>) -> Result {
         let seq_info = loop {
             match cmdq.receive_msg::<GspSequence>(Cmdq::RECEIVE_TIMEOUT) {
+=======
+    pub(crate) fn run(cmdq: &mut Cmdq, params: GspSequencerParams<'a>) -> Result {
+        let seq_info = loop {
+            match cmdq.receive_msg::<GspSequence>(Delta::from_secs(10)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 Ok(seq_info) => break seq_info,
                 Err(ERANGE) => continue,
                 Err(e) => return Err(e),

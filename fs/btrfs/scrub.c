@@ -891,11 +891,24 @@ static void scrub_repair_read_endio(struct btrfs_bio *bbio)
 {
 	struct scrub_stripe *stripe = bbio->private;
 	struct btrfs_fs_info *fs_info = stripe->bg->fs_info;
+<<<<<<< HEAD
 	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
 	const u32 bio_size = bio_get_size(&bbio->bio);
 
 	ASSERT(sector_nr < stripe->nr_sectors);
 
+=======
+	struct bio_vec *bvec;
+	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
+	u32 bio_size = 0;
+	int i;
+
+	ASSERT(sector_nr < stripe->nr_sectors);
+
+	bio_for_each_bvec_all(bvec, &bbio->bio, i)
+		bio_size += bvec->bv_len;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (bbio->bio.bi_status) {
 		scrub_bitmap_set_io_error(stripe, sector_nr,
 					  bio_size >> fs_info->sectorsize_bits);
@@ -1244,11 +1257,23 @@ out:
 static void scrub_read_endio(struct btrfs_bio *bbio)
 {
 	struct scrub_stripe *stripe = bbio->private;
+<<<<<<< HEAD
 	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
 	int num_sectors;
 	const u32 bio_size = bio_get_size(&bbio->bio);
 
 	ASSERT(sector_nr < stripe->nr_sectors);
+=======
+	struct bio_vec *bvec;
+	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
+	int num_sectors;
+	u32 bio_size = 0;
+	int i;
+
+	ASSERT(sector_nr < stripe->nr_sectors);
+	bio_for_each_bvec_all(bvec, &bbio->bio, i)
+		bio_size += bvec->bv_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	num_sectors = bio_size >> stripe->bg->fs_info->sectorsize_bits;
 
 	if (bbio->bio.bi_status) {
@@ -1269,8 +1294,18 @@ static void scrub_write_endio(struct btrfs_bio *bbio)
 {
 	struct scrub_stripe *stripe = bbio->private;
 	struct btrfs_fs_info *fs_info = stripe->bg->fs_info;
+<<<<<<< HEAD
 	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
 	const u32 bio_size = bio_get_size(&bbio->bio);
+=======
+	struct bio_vec *bvec;
+	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
+	u32 bio_size = 0;
+	int i;
+
+	bio_for_each_bvec_all(bvec, &bbio->bio, i)
+		bio_size += bvec->bv_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (bbio->bio.bi_status) {
 		unsigned long flags;
@@ -1279,7 +1314,11 @@ static void scrub_write_endio(struct btrfs_bio *bbio)
 		bitmap_set(&stripe->write_error_bitmap, sector_nr,
 			   bio_size >> fs_info->sectorsize_bits);
 		spin_unlock_irqrestore(&stripe->write_error_lock, flags);
+<<<<<<< HEAD
 		for (int i = 0; i < (bio_size >> fs_info->sectorsize_bits); i++)
+=======
+		for (i = 0; i < (bio_size >> fs_info->sectorsize_bits); i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_dev_stat_inc_and_print(stripe->dev,
 						     BTRFS_DEV_STAT_WRITE_ERRS);
 	}
@@ -2974,7 +3013,11 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
 	struct page *page;
 	struct btrfs_fs_info *fs_info = sctx->fs_info;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+	if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EROFS;
 
 	page = alloc_page(GFP_KERNEL);

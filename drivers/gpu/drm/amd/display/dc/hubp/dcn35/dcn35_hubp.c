@@ -179,7 +179,10 @@ void hubp35_program_surface_config(
 	bool horizontal_mirror,
 	unsigned int compat_level)
 {
+<<<<<<< HEAD
 	(void)compat_level;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
 
 	hubp3_dcc_control_sienna_cichlid(hubp, dcc);

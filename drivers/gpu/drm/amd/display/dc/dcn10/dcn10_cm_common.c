@@ -381,10 +381,17 @@ bool cm_helper_translate_curve_to_hw_format(struct dc_context *ctx,
 	}
 
 	for (i = region_end - region_start; i < MAX_REGIONS_NUMBER ; i++)
+<<<<<<< HEAD
 		seg_distr[i] = (uint32_t)-1;
 
 	for (k = 0; k < MAX_REGIONS_NUMBER; k++) {
 		if (seg_distr[k] != (uint32_t)-1)
+=======
+		seg_distr[i] = -1;
+
+	for (k = 0; k < MAX_REGIONS_NUMBER; k++) {
+		if (seg_distr[k] != -1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hw_points += (1 << seg_distr[k]);
 	}
 
@@ -565,7 +572,11 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
 
 
 	for (i = region_end - region_start; i < MAX_REGIONS_NUMBER ; i++)
+<<<<<<< HEAD
 		seg_distr[i] = (uint32_t)-1;
+=======
+		seg_distr[i] = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* 12 segments
 	 * segments are from 2^-12 to 0
 	 */
@@ -573,7 +584,11 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
 		seg_distr[i] = 4;
 
 	for (k = 0; k < MAX_REGIONS_NUMBER; k++) {
+<<<<<<< HEAD
 		if (seg_distr[k] != (uint32_t)-1)
+=======
+		if (seg_distr[k] != -1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hw_points += (1 << seg_distr[k]);
 	}
 

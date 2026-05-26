@@ -4,15 +4,21 @@ use kernel::{
     device,
     devres::Devres,
     fmt,
+<<<<<<< HEAD
     io::Io,
     num::Bounded,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pci,
     prelude::*,
     sync::Arc, //
 };
 
 use crate::{
+<<<<<<< HEAD
     bounded_enum,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     driver::Bar0,
     falcon::{
         gsp::Gsp as GspFalcon,
@@ -95,7 +101,11 @@ define_chipset!({
 });
 
 impl Chipset {
+<<<<<<< HEAD
     pub(crate) const fn arch(self) -> Architecture {
+=======
+    pub(crate) fn arch(&self) -> Architecture {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         match self {
             Self::TU102 | Self::TU104 | Self::TU106 | Self::TU117 | Self::TU116 => {
                 Architecture::Turing
@@ -108,6 +118,7 @@ impl Chipset {
             }
         }
     }
+<<<<<<< HEAD
 
     /// Returns `true` if this chipset requires the PIO-loaded bootloader in order to boot FWSEC.
     ///
@@ -115,6 +126,8 @@ impl Chipset {
     pub(crate) const fn needs_fwsec_bootloader(self) -> bool {
         matches!(self.arch(), Architecture::Turing) || matches!(self, Self::GA100)
     }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 // TODO
@@ -131,6 +144,7 @@ impl fmt::Display for Chipset {
     }
 }
 
+<<<<<<< HEAD
 bounded_enum! {
     /// Enum representation of the GPU generation.
     #[derive(fmt::Debug, Copy, Clone)]
@@ -138,19 +152,62 @@ bounded_enum! {
         Turing = 0x16,
         Ampere = 0x17,
         Ada = 0x19,
+=======
+/// Enum representation of the GPU generation.
+///
+/// TODO: remove the `Default` trait implementation, and the `#[default]`
+/// attribute, once the register!() macro (which creates Architecture items) no
+/// longer requires it for read-only fields.
+#[derive(fmt::Debug, Default, Copy, Clone)]
+#[repr(u8)]
+pub(crate) enum Architecture {
+    #[default]
+    Turing = 0x16,
+    Ampere = 0x17,
+    Ada = 0x19,
+}
+
+impl TryFrom<u8> for Architecture {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        match value {
+            0x16 => Ok(Self::Turing),
+            0x17 => Ok(Self::Ampere),
+            0x19 => Ok(Self::Ada),
+            _ => Err(ENODEV),
+        }
+    }
+}
+
+impl From<Architecture> for u8 {
+    fn from(value: Architecture) -> Self {
+        // CAST: `Architecture` is `repr(u8)`, so this cast is always lossless.
+        value as u8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
 pub(crate) struct Revision {
+<<<<<<< HEAD
     major: Bounded<u8, 4>,
     minor: Bounded<u8, 4>,
+=======
+    major: u8,
+    minor: u8,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl From<regs::NV_PMC_BOOT_42> for Revision {
     fn from(boot0: regs::NV_PMC_BOOT_42) -> Self {
         Self {
+<<<<<<< HEAD
             major: boot0.major_revision().cast(),
             minor: boot0.minor_revision().cast(),
+=======
+            major: boot0.major_revision(),
+            minor: boot0.minor_revision(),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
     }
 }
@@ -187,13 +244,21 @@ impl Spec {
         //     from an earlier (pre-Fermi) era, and then using boot42 to precisely identify the GPU.
         //     Somewhere in the Rubin timeframe, boot0 will no longer have space to add new GPU IDs.
 
+<<<<<<< HEAD
         let boot0 = bar.read(regs::NV_PMC_BOOT_0);
+=======
+        let boot0 = regs::NV_PMC_BOOT_0::read(bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         if boot0.is_older_than_fermi() {
             return Err(ENODEV);
         }
 
+<<<<<<< HEAD
         let boot42 = bar.read(regs::NV_PMC_BOOT_42);
+=======
+        let boot42 = regs::NV_PMC_BOOT_42::read(bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         Spec::try_from(boot42).inspect_err(|_| {
             dev_err!(dev, "Unsupported chipset: {}\n", boot42);
         })
@@ -248,13 +313,21 @@ impl Gpu {
     ) -> impl PinInit<Self, Error> + 'a {
         try_pin_init!(Self {
             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
+<<<<<<< HEAD
                 dev_info!(pdev,"NVIDIA ({})\n", spec);
+=======
+                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             })?,
 
             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
             _: {
                 gfw::wait_gfw_boot_completion(bar)
+<<<<<<< HEAD
                     .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+=======
+                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             },
 
             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,

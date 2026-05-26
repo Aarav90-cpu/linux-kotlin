@@ -207,7 +207,11 @@ static void __exit_signal(struct release_task_post *post, struct task_struct *ts
 	sig->inblock += task_io_get_inblock(tsk);
 	sig->oublock += task_io_get_oublock(tsk);
 	task_io_accounting_add(&sig->ioac, &tsk->ioac);
+<<<<<<< HEAD
 	sig->sum_sched_runtime += tsk->se.sum_exec_runtime;
+=======
+	sig->sum_sched_runtime += tsk_seruntime(tsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sig->nr_threads--;
 	__unhash_process(post, tsk, group_dead);
 	write_sequnlock(&sig->stats_lock);
@@ -290,8 +294,13 @@ repeat:
 	/* @thread_pid can't go away until free_pids() below */
 	proc_flush_pid(thread_pid);
 	exit_cred_namespaces(p);
+<<<<<<< HEAD
 	add_device_randomness(&p->se.sum_exec_runtime,
 			      sizeof(p->se.sum_exec_runtime));
+=======
+	add_device_randomness((const void*) &tsk_seruntime(p),
+			      sizeof(unsigned long long));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_pids(post.pids);
 	release_thread(p);
 	/*
@@ -609,8 +618,12 @@ static struct task_struct *find_child_reaper(struct task_struct *father,
 
 	reaper = find_alive_thread(father);
 	if (reaper) {
+<<<<<<< HEAD
 		ASSERT_EXCLUSIVE_WRITER(pid_ns->child_reaper);
 		WRITE_ONCE(pid_ns->child_reaper, reaper);
+=======
+		pid_ns->child_reaper = reaper;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return reaper;
 	}
 
@@ -750,12 +763,23 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
 	tsk->exit_state = EXIT_ZOMBIE;
 
 	if (unlikely(tsk->ptrace)) {
+<<<<<<< HEAD
 		int sig = thread_group_empty(tsk) && !ptrace_reparented(tsk)
 			  ? tsk->exit_signal : SIGCHLD;
 		autoreap = do_notify_parent(tsk, sig);
 	} else if (thread_group_leader(tsk)) {
 		autoreap = thread_group_empty(tsk) &&
 			   do_notify_parent(tsk, tsk->exit_signal);
+=======
+		int sig = thread_group_leader(tsk) &&
+				thread_group_empty(tsk) &&
+				!ptrace_reparented(tsk) ?
+			tsk->exit_signal : SIGCHLD;
+		autoreap = do_notify_parent(tsk, sig);
+	} else if (thread_group_leader(tsk)) {
+		autoreap = thread_group_empty(tsk) &&
+			do_notify_parent(tsk, tsk->exit_signal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		autoreap = true;
 		/* untraced sub-thread */

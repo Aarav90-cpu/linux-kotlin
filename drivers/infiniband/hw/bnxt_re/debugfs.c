@@ -10,8 +10,13 @@
 #include <linux/pci.h>
 #include <linux/seq_file.h>
 #include <rdma/ib_addr.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
 
+=======
+
+#include "bnxt_ulp.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "roce_hsi.h"
 #include "qplib_res.h"
 #include "qplib_sp.h"

@@ -389,7 +389,11 @@ static int amd_mdb_setup_irq(struct amd_mdb_pcie *pcie,
 			       IRQF_NO_THREAD, NULL, pcie);
 	if (err) {
 		dev_err(dev, "Failed to request INTx IRQ %d, err=%d\n",
+<<<<<<< HEAD
 			pcie->intx_irq, err);
+=======
+			irq, err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 

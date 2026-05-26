@@ -35,13 +35,19 @@
 #include "xe_guc_klv_helpers.h"
 #include "xe_guc_log.h"
 #include "xe_guc_pc.h"
+<<<<<<< HEAD
 #include "xe_guc_rc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_guc_relay.h"
 #include "xe_guc_submit.h"
 #include "xe_memirq.h"
 #include "xe_mmio.h"
 #include "xe_platform_types.h"
+<<<<<<< HEAD
 #include "xe_sleep.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_sriov.h"
 #include "xe_sriov_pf_migration.h"
 #include "xe_uc.h"
@@ -98,9 +104,12 @@ static u32 guc_ctl_feature_flags(struct xe_guc *guc)
 	if (xe_guc_using_main_gamctrl_queues(guc))
 		flags |= GUC_CTL_MAIN_GAMCTRL_QUEUES;
 
+<<<<<<< HEAD
 	if (GRAPHICS_VER(xe) >= 35 && !IS_DGFX(xe) && xe_gt_is_media_type(guc_to_gt(guc)))
 		flags |= GUC_CTL_ENABLE_L2FLUSH_OPT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return flags;
 }
 
@@ -216,6 +225,12 @@ static u32 guc_ctl_wa_flags(struct xe_guc *guc)
 	    !xe_hw_engine_mask_per_class(gt, XE_ENGINE_CLASS_RENDER))
 		flags |= GUC_WA_RCS_REGS_IN_CCS_REGS_LIST;
 
+<<<<<<< HEAD
+=======
+	if (XE_GT_WA(gt, 1509372804))
+		flags |= GUC_WA_RENDER_RST_RC6_EXIT;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (XE_GT_WA(gt, 14018913170))
 		flags |= GUC_WA_ENABLE_TSC_CHECK_ON_RC6;
 
@@ -670,6 +685,7 @@ static void guc_fini_hw(void *arg)
 	guc_g2g_fini(guc);
 }
 
+<<<<<<< HEAD
 static void vf_guc_fini_hw(void *arg)
 {
 	struct xe_guc *guc = arg;
@@ -677,6 +693,8 @@ static void vf_guc_fini_hw(void *arg)
 	xe_gt_sriov_vf_reset(guc_to_gt(guc));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_guc_comm_init_early - early initialization of GuC communication
  * @guc: the &xe_guc to initialize
@@ -781,10 +799,13 @@ int xe_guc_init(struct xe_guc *guc)
 		xe->info.has_page_reclaim_hw_assist = false;
 
 	if (IS_SRIOV_VF(xe)) {
+<<<<<<< HEAD
 		ret = devm_add_action_or_reset(xe->drm.dev, vf_guc_fini_hw, guc);
 		if (ret)
 			goto out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = xe_guc_ct_init(&guc->ct);
 		if (ret)
 			goto out;
@@ -882,10 +903,13 @@ int xe_guc_init_post_hwconfig(struct xe_guc *guc)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = xe_guc_rc_init(guc);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = xe_guc_engine_activity_init(guc);
 	if (ret)
 		return ret;
@@ -917,6 +941,7 @@ int xe_guc_post_load_init(struct xe_guc *guc)
 	return xe_guc_submit_enable(guc);
 }
 
+<<<<<<< HEAD
 /*
  * Wa_14025883347: Prevent GuC firmware DMA failures during GuC-only reset by ensuring
  * SRAM save/restore operations are complete before reset.
@@ -952,6 +977,8 @@ static void guc_prevent_fw_dma_failure_on_reset(struct xe_guc *guc)
 			   sram_status);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_guc_reset(struct xe_guc *guc)
 {
 	struct xe_gt *gt = guc_to_gt(guc);
@@ -964,9 +991,12 @@ int xe_guc_reset(struct xe_guc *guc)
 	if (IS_SRIOV_VF(gt_to_xe(gt)))
 		return xe_gt_sriov_vf_bootstrap(gt);
 
+<<<<<<< HEAD
 	if (XE_GT_WA(gt, 14025883347))
 		guc_prevent_fw_dma_failure_on_reset(guc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_mmio_write32(mmio, GDRST, GRDOM_GUC);
 
 	ret = xe_mmio_wait32(mmio, GDRST, GRDOM_GUC, 0, 5000, &gdrst, false);
@@ -1465,21 +1495,32 @@ int xe_guc_auth_huc(struct xe_guc *guc, u32 rsa_addr)
 	return xe_guc_ct_send_block(&guc->ct, action, ARRAY_SIZE(action));
 }
 
+<<<<<<< HEAD
 #define MAX_RETRIES_ON_FLR	2
 #define MIN_SLEEP_MS_ON_FLR	256
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_guc_mmio_send_recv(struct xe_guc *guc, const u32 *request,
 			  u32 len, u32 *response_buf)
 {
 	struct xe_device *xe = guc_to_xe(guc);
 	struct xe_gt *gt = guc_to_gt(guc);
 	struct xe_mmio *mmio = &gt->mmio;
+<<<<<<< HEAD
 	struct xe_reg reply_reg = xe_gt_is_media_type(gt) ?
 		MED_VF_SW_FLAG(0) : VF_SW_FLAG(0);
 	const u32 LAST_INDEX = VF_SW_FLAG_COUNT - 1;
 	unsigned int sleep_period_ms = 1;
 	unsigned int lost = 0;
 	u32 header;
+=======
+	u32 header, reply;
+	struct xe_reg reply_reg = xe_gt_is_media_type(gt) ?
+		MED_VF_SW_FLAG(0) : VF_SW_FLAG(0);
+	const u32 LAST_INDEX = VF_SW_FLAG_COUNT - 1;
+	bool lost = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int i;
 
@@ -1511,6 +1552,7 @@ retry:
 
 	ret = xe_mmio_wait32(mmio, reply_reg, GUC_HXG_MSG_0_ORIGIN,
 			     FIELD_PREP(GUC_HXG_MSG_0_ORIGIN, GUC_HXG_ORIGIN_GUC),
+<<<<<<< HEAD
 			     50000, &header, false);
 	if (ret) {
 		/* scratch registers might be cleared during FLR, try once more */
@@ -1522,14 +1564,30 @@ retry:
 			}
 			xe_gt_dbg(gt, "GuC mmio request %#x: lost, trying again\n", request[0]);
 			xe_sleep_relaxed_ms(MIN_SLEEP_MS_ON_FLR);
+=======
+			     50000, &reply, false);
+	if (ret) {
+		/* scratch registers might be cleared during FLR, try once more */
+		if (!reply && !lost) {
+			xe_gt_dbg(gt, "GuC mmio request %#x: lost, trying again\n", request[0]);
+			lost = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto retry;
 		}
 timeout:
 		xe_gt_err(gt, "GuC mmio request %#x: no reply %#x\n",
+<<<<<<< HEAD
 			  request[0], header);
 		return ret;
 	}
 
+=======
+			  request[0], reply);
+		return ret;
+	}
+
+	header = xe_mmio_read32(mmio, reply_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (FIELD_GET(GUC_HXG_MSG_0_TYPE, header) ==
 	    GUC_HXG_TYPE_NO_RESPONSE_BUSY) {
 		/*
@@ -1565,8 +1623,11 @@ timeout:
 
 		xe_gt_dbg(gt, "GuC mmio request %#x: retrying, reason %#x\n",
 			  request[0], reason);
+<<<<<<< HEAD
 
 		xe_sleep_exponential_ms(&sleep_period_ms, 256);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto retry;
 	}
 

@@ -18,7 +18,11 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-regs -mdisable-fpregs -Os
 ifndef CONFIG_64BIT
 KBUILD_CFLAGS += -mfast-indirect-calls
 endif
+<<<<<<< HEAD
 KBUILD_CFLAGS += $(CC_FLAGS_DIALECT)
+=======
+KBUILD_CFLAGS += -std=gnu11 -fms-extensions
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 LDFLAGS_vmlinux := -X -e startup --as-needed -T
 $(obj)/vmlinux: $(obj)/vmlinux.lds $(addprefix $(obj)/, $(OBJECTS)) $(LIBGCC) FORCE

@@ -22,6 +22,7 @@
 #define DRV_NAME		"enic"
 #define DRV_DESCRIPTION		"Cisco VIC Ethernet NIC Driver"
 
+<<<<<<< HEAD
 #define PCI_SUBDEV_ID_CISCO_VIC_1225	0x085
 #define PCI_SUBDEV_ID_CISCO_VIC_1225T	0x0CE
 #define PCI_SUBDEV_ID_CISCO_VIC_1227	0x12E
@@ -61,6 +62,8 @@
 #define PCI_SUBDEV_ID_CISCO_VIC_15427	0x02E0
 #define PCI_SUBDEV_ID_CISCO_VIC_15428	0x02DD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ENIC_BARS_MAX		6
 
 #define ENIC_WQ_MAX		256
@@ -225,6 +228,7 @@ struct enic_rq {
 	struct page_pool *pool;
 } ____cacheline_aligned;
 
+<<<<<<< HEAD
 enum enic_vf_type {
 	ENIC_VF_TYPE_NONE,
 	ENIC_VF_TYPE_V1,
@@ -232,6 +236,8 @@ enum enic_vf_type {
 	ENIC_VF_TYPE_V2,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Per-instance private data structure */
 struct enic {
 	struct net_device *netdev;
@@ -259,8 +265,11 @@ struct enic {
 #ifdef CONFIG_PCI_IOV
 	u16 num_vfs;
 #endif
+<<<<<<< HEAD
 	enum enic_vf_type vf_type;
 	unsigned int enable_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spinlock_t enic_api_lock;
 	bool enic_api_busy;
 	struct enic_port_profile *pp;
@@ -289,6 +298,7 @@ struct enic {
 	u8 rss_key[ENIC_RSS_LEN];
 	struct vnic_gen_stats gen_stats;
 	enum ext_cq ext_cq;
+<<<<<<< HEAD
 
 	/* Admin channel resources for SR-IOV MBOX */
 	bool has_admin_channel;
@@ -296,6 +306,8 @@ struct enic {
 	struct vnic_rq admin_rq;
 	struct vnic_cq admin_cq[2];
 	struct vnic_intr admin_intr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
@@ -313,8 +325,11 @@ static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
 	dev_warn(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
 #define vdev_info(vdev, fmt, ...)					\
 	dev_info(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
+<<<<<<< HEAD
 #define vdev_dbg(vdev, fmt, ...)					\
 	dev_dbg(&(vdev)->pdev->dev, fmt, ##__VA_ARGS__)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define vdev_neterr(vdev, fmt, ...)					\
 	netdev_err(vnic_get_netdev(vdev), fmt, ##__VA_ARGS__)

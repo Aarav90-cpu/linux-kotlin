@@ -1647,10 +1647,13 @@ void bdc_sr_xsf(struct bdc *bdc, struct bdc_sr *sreport)
 	u8 ep_num;
 
 	ep_num = (le32_to_cpu(sreport->offset[3])>>4) & 0x1f;
+<<<<<<< HEAD
 	if (ep_num >= bdc->num_eps) {
 		dev_err(bdc->dev, "xsf for invalid ep %u\n", ep_num);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ep = bdc->bdc_ep_array[ep_num];
 	if (!ep || !(ep->flags & BDC_EP_ENABLED)) {
 		dev_err(bdc->dev, "xsf for ep not enabled\n");

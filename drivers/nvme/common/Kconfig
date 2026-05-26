@@ -7,6 +7,7 @@ config NVME_KEYRING
 config NVME_AUTH
 	tristate
 	select CRYPTO
+<<<<<<< HEAD
 	select CRYPTO_DH
 	select CRYPTO_DH_RFC7919_GROUPS
 	select CRYPTO_LIB_SHA256
@@ -19,3 +20,11 @@ config NVME_AUTH_KUNIT_TEST
 	help
 	  Enable KUnit tests for some of the common code for NVMe over Fabrics
 	  In-Band Authentication.
+=======
+	select CRYPTO_HMAC
+	select CRYPTO_SHA256
+	select CRYPTO_SHA512
+	select CRYPTO_DH
+	select CRYPTO_DH_RFC7919_GROUPS
+	select CRYPTO_HKDF
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -84,6 +84,16 @@ static int amdgpu_cs_job_idx(struct amdgpu_cs_parser *p,
 	if (r)
 		return r;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Abort if there is no run queue associated with this entity.
+	 * Possibly because of disabled HW IP.
+	 */
+	if (entity->rq == NULL)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check if we can add this IB to some existing job */
 	for (i = 0; i < p->gang_size; ++i)
 		if (p->entities[i] == entity)
@@ -908,8 +918,14 @@ static int amdgpu_cs_parser_bos(struct amdgpu_cs_parser *p,
 			goto out_free_user_pages;
 
 		amdgpu_bo_list_for_each_entry(e, p->bo_list) {
+<<<<<<< HEAD
 			r = drm_exec_prepare_obj(&p->exec, &e->bo->tbo.base,
 						 TTM_NUM_MOVE_FENCES + p->gang_size);
+=======
+			/* One fence for TTM and one for each CS job */
+			r = drm_exec_prepare_obj(&p->exec, &e->bo->tbo.base,
+						 1 + p->gang_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			drm_exec_retry_on_contention(&p->exec);
 			if (unlikely(r))
 				goto out_free_user_pages;
@@ -919,7 +935,11 @@ static int amdgpu_cs_parser_bos(struct amdgpu_cs_parser *p,
 
 		if (p->uf_bo) {
 			r = drm_exec_prepare_obj(&p->exec, &p->uf_bo->tbo.base,
+<<<<<<< HEAD
 						 TTM_NUM_MOVE_FENCES + p->gang_size);
+=======
+						 1 + p->gang_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			drm_exec_retry_on_contention(&p->exec);
 			if (unlikely(r))
 				goto out_free_user_pages;
@@ -1739,6 +1759,7 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
 	struct drm_amdgpu_fence *fences;
 	int r;
 
+<<<<<<< HEAD
 	/*
 	 * fence_count must be non-zero; dma_fence_wait_any_timeout()
 	 * does not accept an empty fence array.
@@ -1746,6 +1767,8 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
 	if (!wait->in.fence_count)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Get the fences from userspace */
 	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
 				   wait->in.fence_count,

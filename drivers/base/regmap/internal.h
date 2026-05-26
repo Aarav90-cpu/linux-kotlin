@@ -84,7 +84,10 @@ struct regmap {
 	bool debugfs_disable;
 	struct dentry *debugfs;
 	const char *debugfs_name;
+<<<<<<< HEAD
 	int debugfs_dummy_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int debugfs_reg_len;
 	unsigned int debugfs_val_len;
@@ -163,7 +166,11 @@ struct regmap {
 	bool no_sync_defaults;
 
 	struct reg_sequence *patch;
+<<<<<<< HEAD
 	unsigned int patch_regs;
+=======
+	int patch_regs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* if set, the regmap core can sleep */
 	bool can_sleep;

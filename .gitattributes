@@ -3,3 +3,13 @@
 *.dts diff=dts
 *.dts[io] diff=dts
 *.rs diff=rust
+kotlin-compiler-embeddable-1.9.0.jar[[:space:]]kotlin-compiler-embeddable-1.9.22.jar[[:space:]]libLLVM.so[[:space:]]kotlin-native-compiler-embeddable.jar[[:space:]]libllvmstubs.so[[:space:]]instrumented-kotlin-compiler-embeddable-1.9.0.jar[[:space:]]java.base.jmod[[:space:]]modules[[:space:]]libQt6WebEngineCoreAndroidEmu.so.6[[:space:]] filter=lfs diff=lfs merge=lfs -text
+libllvmstubs.so filter=lfs diff=lfs merge=lfs -text
+instrumented-kotlin-compiler-embeddable-1.9.0.jar filter=lfs diff=lfs merge=lfs -text
+java.base.jmod filter=lfs diff=lfs merge=lfs -text
+libQt6WebEngineCoreAndroidEmu.so.6 filter=lfs diff=lfs merge=lfs -text
+kotlin-compiler-embeddable-1.9.22.jar filter=lfs diff=lfs merge=lfs -text
+libLLVM.so filter=lfs diff=lfs merge=lfs -text
+kotlin-native-compiler-embeddable.jar filter=lfs diff=lfs merge=lfs -text
+modules filter=lfs diff=lfs merge=lfs -text
+kotlin-compiler-embeddable-1.9.0.jar filter=lfs diff=lfs merge=lfs -text

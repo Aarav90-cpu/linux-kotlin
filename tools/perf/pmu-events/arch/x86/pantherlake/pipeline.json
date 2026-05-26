@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of cycles when any of the floating point or integer dividers are active.",
         "Counter": "0,1,2,3,4,5,6,7",
         "CounterMask": "1",
@@ -10,6 +11,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles when divide unit is busy executing divide or square root operations.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "CounterMask": "1",
@@ -21,6 +24,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of cycles when any of the integer dividers are active.",
         "Counter": "0,1,2,3,4,5,6,7",
         "CounterMask": "1",
@@ -31,6 +35,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles when integer divide unit is busy executing divide or square root operations.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "CounterMask": "1",
@@ -42,6 +48,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts number of active integer dividers per cycle.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xcd",
@@ -60,6 +67,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Number of occurrences where a microcode assist is invoked by hardware.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc1",
@@ -97,6 +106,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "This event is deprecated. [This event is alias to BR_INST_RETIRED.NEAR_INDIRECT]",
         "Counter": "0,1,2,3,4,5,6,7",
         "Deprecated": "1",
@@ -129,6 +139,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
@@ -159,6 +171,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of taken conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc4",
@@ -169,6 +182,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Taken conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
@@ -179,6 +194,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of taken backward conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc4",
@@ -189,6 +205,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Taken backward conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
@@ -199,6 +217,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of taken forward conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc4",
@@ -209,6 +228,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Taken forward conditional branch instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
@@ -279,6 +300,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of near indirect JMP and near indirect CALL branch instructions retired. [This event is alias to BR_INST_RETIRED.ALL_NEAR_IND]",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc4",
@@ -289,6 +311,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Indirect near branch instructions retired (excluding returns) [This event is alias to BR_INST_RETIRED.INDIRECT]",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
@@ -319,6 +343,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of near indirect JMP, near indirect CALL, and RET branch instructions retired. [This event is alias to BR_INST_RETIRED.ALL_NEAR_IND_OR_RET]",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc4",
@@ -329,6 +354,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "This event is deprecated. [This event is alias to BR_INST_RETIRED.NEAR_INDIRECT_CALL]",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "Deprecated": "1",
@@ -403,7 +430,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Near Taken branch instructions retired.",
+=======
+        "BriefDescription": "Taken branch instructions retired.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc4",
         "EventName": "BR_INST_RETIRED.NEAR_TAKEN",
@@ -875,7 +906,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.THREAD]",
+=======
+        "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 1",
         "EventName": "CPU_CLK_UNHALTED.CORE",
         "SampleAfterValue": "2000003",
@@ -1670,6 +1705,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of CLFLUSH, CLWB, and CLDEMOTE instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xe0",
@@ -1680,6 +1716,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of LFENCE instructions retired.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xe0",
@@ -1751,6 +1789,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number issue slots not consumed  due to a  color request for an FCW or MXCSR control register when all 4 colors (copies) are already in use.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x75",
@@ -1760,6 +1799,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of issue slots where no uop could issue due to an IQ scoreboard that stalls allocation until a specified older uop retires or (in the case of jump scoreboard) executes. Commonly executed instructions with IQ scoreboards include LFENCE and MFENCE.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x75",
@@ -1872,6 +1913,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the total number of issue slots that were not consumed by the backend because allocation is stalled due to a machine clear (nuke) of any kind including memory ordering and memory disambiguation.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x73",
@@ -1881,6 +1923,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of issue slots every cycle that were not consumed by the backend due to Branch Mispredict",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x73",
@@ -1944,6 +1988,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of issue slots every cycle that were not consumed by the backend due to ROB full",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x74",
@@ -1953,6 +1998,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of issue slots every cycle that were not consumed by the backend due to iq/jeu scoreboards or ms scb",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x74",
@@ -2234,6 +2281,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of uops issued by the front end every cycle.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x0e",
@@ -2243,6 +2291,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Uops that RAT issues to RS",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xae",
@@ -2274,6 +2324,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of uops retired that are the last uop of a macro-instruction.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc2",
@@ -2284,6 +2335,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Retired uops except the last uop of each instruction.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc2",
@@ -2304,6 +2357,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of uops retired that originated from a loop stream detector.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc2",
@@ -2314,6 +2368,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of uops that are from the complex flows issued by the micro-sequencer (MS).  This includes uops from flows due to complex instructions, faults, assists, and inserted flows.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc2",
@@ -2348,6 +2404,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "UOPS_RETIRED.NANO_CODE",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xc2",
@@ -2358,6 +2415,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "This event counts a subset of the Topdown Slots event that are utilized by operations that eventually get retired (committed) by the processor pipeline. Usually, this event positively correlates with higher performance  for example, as measured by the instructions-per-cycle metric.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0xc2",

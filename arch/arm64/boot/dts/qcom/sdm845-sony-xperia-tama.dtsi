@@ -17,8 +17,13 @@
 	qcom,board-id = <8 0>;
 
 	aliases {
+<<<<<<< HEAD
 		serial0 = &uart9;
 		serial1 = &uart6;
+=======
+		serial0 = &uart6;
+		serial1 = &uart9;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
@@ -755,6 +760,7 @@
 
 &uart6 {
 	status = "okay";
+<<<<<<< HEAD
 
 	bluetooth {
 		compatible = "qcom,wcn3990-bt";
@@ -768,6 +774,8 @@
 
 		max-speed = <3200000>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart9 {

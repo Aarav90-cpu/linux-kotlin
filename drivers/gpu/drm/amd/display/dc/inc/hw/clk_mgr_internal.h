@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: MIT */
 /*
  * Copyright 2018-2026 Advanced Micro Devices, Inc.
+=======
+/*
+ * Copyright 2018 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -90,6 +95,14 @@ enum dentist_divider_range {
 	.DPREFCLK_CNTL = mmDPREFCLK_CNTL, \
 	.DENTIST_DISPCLK_CNTL = mmDENTIST_DISPCLK_CNTL
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_DRM_AMD_DC_SI)
+#define CLK_COMMON_REG_LIST_DCE60_BASE() \
+	SR(DENTIST_DISPCLK_CNTL)
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CLK_COMMON_REG_LIST_DCN_BASE() \
 	SR(DENTIST_DISPCLK_CNTL)
 
@@ -115,6 +128,15 @@ enum dentist_divider_range {
 	CLK_SF(DPREFCLK_CNTL, DPREFCLK_SRC_SEL, mask_sh), \
 	CLK_SF(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, mask_sh)
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_DRM_AMD_DC_SI)
+#define CLK_COMMON_MASK_SH_LIST_DCE60_COMMON_BASE(mask_sh) \
+	CLK_SF(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, mask_sh),\
+	CLK_SF(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_CHG_DONE, mask_sh)
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CLK_COMMON_MASK_SH_LIST_DCN_COMMON_BASE(mask_sh) \
 	CLK_SF(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, mask_sh),\
 	CLK_SF(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_CHG_DONE, mask_sh)
@@ -224,6 +246,7 @@ enum dentist_divider_range {
 #define CLK_COMMON_MASK_SH_LIST_DCN401(mask_sh) \
 	CLK_COMMON_MASK_SH_LIST_DCN321(mask_sh)
 
+<<<<<<< HEAD
 #define CLK_REG_LIST_DCN42()	  \
 	SR(DENTIST_DISPCLK_CNTL), \
 	CLK_SR_DCN42(CLK8_CLK_TICK_CNT_CONFIG_REG), \
@@ -263,6 +286,8 @@ enum dentist_divider_range {
 
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CLK_REG_FIELD_LIST(type) \
 	type DPREFCLK_SRC_SEL; \
 	type DENTIST_DPREFCLK_WDIVIDER; \
@@ -275,6 +300,7 @@ enum dentist_divider_range {
 	type FbMult_int; \
 	type FbMult_frac;
 
+<<<<<<< HEAD
 #define CLK42_REG_LIST(clkip_num, type) \
 	type CLK ## clkip_num ## _CLK_TICK_CNT_CONFIG_REG; \
 	type CLK ## clkip_num ## _CLK0_CURRENT_CNT; \
@@ -311,6 +337,8 @@ enum dentist_divider_range {
 	type CLK3_ALLOW_DS; \
 	type CLK4_ALLOW_DS;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  ***************************************************************************************
  ****************** Clock Manager Private Structures ***********************************
@@ -342,10 +370,17 @@ struct clk_mgr_registers {
 	uint32_t CLK2_CLK2_DFS_CNTL;
 
 	uint32_t CLK1_CLK0_CURRENT_CNT;
+<<<<<<< HEAD
 	uint32_t CLK1_CLK1_CURRENT_CNT;
 	uint32_t CLK1_CLK2_CURRENT_CNT;
 	uint32_t CLK1_CLK3_CURRENT_CNT;
 	uint32_t CLK1_CLK4_CURRENT_CNT;
+=======
+    uint32_t CLK1_CLK1_CURRENT_CNT;
+    uint32_t CLK1_CLK2_CURRENT_CNT;
+    uint32_t CLK1_CLK3_CURRENT_CNT;
+    uint32_t CLK1_CLK4_CURRENT_CNT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t CLK1_CLK5_CURRENT_CNT;
 
 	uint32_t CLK0_CLK0_DFS_CNTL;
@@ -374,19 +409,28 @@ struct clk_mgr_registers {
 	uint32_t CLK1_CLK5_ALLOW_DS;
 	uint32_t CLK5_spll_field_8;
 	uint32_t CLK6_spll_field_8;
+<<<<<<< HEAD
 	CLK42_REG_LIST(8, uint32_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct clk_mgr_shift {
 	CLK_REG_FIELD_LIST(uint8_t)
 	CLK20_REG_FIELD_LIST(uint8_t)
+<<<<<<< HEAD
 	CLK42_REG_FIELD_LIST(uint8_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct clk_mgr_mask {
 	CLK_REG_FIELD_LIST(uint32_t)
 	CLK20_REG_FIELD_LIST(uint32_t)
+<<<<<<< HEAD
 	CLK42_REG_FIELD_LIST(uint32_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum clock_type {
@@ -401,8 +445,11 @@ enum clock_type {
 	clock_type_dscclk,
 	clock_type_uclk,
 	clock_type_dramclk,
+<<<<<<< HEAD
 	clock_type_dprefclk,
 	clock_type_dtbclk,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 

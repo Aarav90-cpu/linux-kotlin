@@ -228,6 +228,11 @@ struct b43_dmaring {
 	const struct b43_dma_ops *ops;
 	/* Kernel virtual base address of the ring memory. */
 	void *descbase;
+<<<<<<< HEAD
+=======
+	/* Meta data about all descriptors. */
+	struct b43_dmadesc_meta *meta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Cache of TX headers for each TX frame.
 	 * This is to avoid an allocation on each TX.
 	 * This is NULL for an RX ring.
@@ -271,8 +276,11 @@ struct b43_dmaring {
 	/* Statistics: Total number of TX plus all retries. */
 	u64 nr_total_packet_tries;
 #endif /* CONFIG_B43_DEBUG */
+<<<<<<< HEAD
 	/* Meta data about all descriptors. */
 	struct b43_dmadesc_meta meta[] __counted_by(nr_slots);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline u32 b43_dma_read(struct b43_dmaring *ring, u16 offset)

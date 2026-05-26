@@ -72,7 +72,11 @@
 		#c, atomic_long_read(&(sem)->count),		\
 		(unsigned long) sem->magic,			\
 		atomic_long_read(&(sem)->owner), (long)current,	\
+<<<<<<< HEAD
 		rwsem_is_contended(sem) ? "" : "not "))		\
+=======
+		list_empty(&(sem)->wait_list) ? "" : "not "))	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			debug_locks_off();			\
 	} while (0)
 #else
@@ -320,10 +324,16 @@ void __init_rwsem(struct rw_semaphore *sem, const char *name,
 	sem->magic = sem;
 #endif
 	atomic_long_set(&sem->count, RWSEM_UNLOCKED_VALUE);
+<<<<<<< HEAD
 	atomic_long_set(&sem->owner, 0L);
 	scoped_guard (raw_spinlock_init, &sem->wait_lock) {
 		sem->first_waiter = NULL;
 	}
+=======
+	raw_spin_lock_init(&sem->wait_lock);
+	INIT_LIST_HEAD(&sem->wait_list);
+	atomic_long_set(&sem->owner, 0L);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_RWSEM_SPIN_ON_OWNER
 	osq_lock_init(&sem->osq);
 #endif
@@ -342,6 +352,11 @@ struct rwsem_waiter {
 	unsigned long timeout;
 	bool handoff_set;
 };
+<<<<<<< HEAD
+=======
+#define rwsem_first_waiter(sem) \
+	list_first_entry(&sem->wait_list, struct rwsem_waiter, list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum rwsem_wake_type {
 	RWSEM_WAKE_ANY,		/* Wake whatever's at head of wait list */
@@ -364,6 +379,7 @@ enum rwsem_wake_type {
  */
 #define MAX_READERS_WAKEUP	0x100
 
+<<<<<<< HEAD
 static inline
 bool __rwsem_del_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
 	__must_hold(&sem->wait_lock)
@@ -380,6 +396,14 @@ bool __rwsem_del_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
 	list_del(&waiter->list);
 
 	return true;
+=======
+static inline void
+rwsem_add_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
+{
+	lockdep_assert_held(&sem->wait_lock);
+	list_add_tail(&waiter->list, &sem->wait_list);
+	/* caller will set RWSEM_FLAG_WAITERS */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -394,12 +418,20 @@ static inline bool
 rwsem_del_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
 {
 	lockdep_assert_held(&sem->wait_lock);
+<<<<<<< HEAD
 	if (__rwsem_del_waiter(sem, waiter))
 		return true;
+=======
+	list_del(&waiter->list);
+	if (likely(!list_empty(&sem->wait_list)))
+		return true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_long_andnot(RWSEM_FLAG_HANDOFF | RWSEM_FLAG_WAITERS, &sem->count);
 	return false;
 }
 
+<<<<<<< HEAD
 static inline
 struct rwsem_waiter *next_waiter(const struct rw_semaphore *sem,
 				 const struct rwsem_waiter *waiter)
@@ -412,6 +444,8 @@ struct rwsem_waiter *next_waiter(const struct rw_semaphore *sem,
 	return next;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * handle the lock release when processes blocked on it that can now run
  * - if we come here from up_xxxx(), then the RWSEM_FLAG_WAITERS bit must
@@ -430,7 +464,11 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
 			    enum rwsem_wake_type wake_type,
 			    struct wake_q_head *wake_q)
 {
+<<<<<<< HEAD
 	struct rwsem_waiter *waiter, *next;
+=======
+	struct rwsem_waiter *waiter, *tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long oldcount, woken = 0, adjustment = 0;
 	struct list_head wlist;
 
@@ -440,7 +478,11 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
 	 * Take a peek at the queue head waiter such that we can determine
 	 * the wakeup(s) to perform.
 	 */
+<<<<<<< HEAD
 	waiter = sem->first_waiter;
+=======
+	waiter = rwsem_first_waiter(sem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (waiter->type == RWSEM_WAITING_FOR_WRITE) {
 		if (wake_type == RWSEM_WAKE_ANY) {
@@ -525,28 +567,43 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
 	 *    put them into wake_q to be woken up later.
 	 */
 	INIT_LIST_HEAD(&wlist);
+<<<<<<< HEAD
 	do {
 		next = next_waiter(sem, waiter);
+=======
+	list_for_each_entry_safe(waiter, tmp, &sem->wait_list, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (waiter->type == RWSEM_WAITING_FOR_WRITE)
 			continue;
 
 		woken++;
 		list_move_tail(&waiter->list, &wlist);
+<<<<<<< HEAD
 		if (sem->first_waiter == waiter)
 			sem->first_waiter = next;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Limit # of readers that can be woken up per wakeup call.
 		 */
 		if (unlikely(woken >= MAX_READERS_WAKEUP))
 			break;
+<<<<<<< HEAD
 	} while ((waiter = next) != NULL);
+=======
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adjustment = woken * RWSEM_READER_BIAS - adjustment;
 	lockevent_cond_inc(rwsem_wake_reader, woken);
 
 	oldcount = atomic_long_read(&sem->count);
+<<<<<<< HEAD
 	if (!sem->first_waiter) {
+=======
+	if (list_empty(&sem->wait_list)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Combined with list_move_tail() above, this implies
 		 * rwsem_del_waiter().
@@ -567,7 +624,11 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
 		atomic_long_add(adjustment, &sem->count);
 
 	/* 2nd pass */
+<<<<<<< HEAD
 	list_for_each_entry_safe(waiter, next, &wlist, list) {
+=======
+	list_for_each_entry_safe(waiter, tmp, &wlist, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct task_struct *tsk;
 
 		tsk = waiter->task;
@@ -599,7 +660,11 @@ rwsem_del_wake_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter,
 		      struct wake_q_head *wake_q)
 		      __releases(&sem->wait_lock)
 {
+<<<<<<< HEAD
 	bool first = sem->first_waiter == waiter;
+=======
+	bool first = rwsem_first_waiter(sem) == waiter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wake_q_init(wake_q);
 
@@ -624,9 +689,14 @@ rwsem_del_wake_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter,
  */
 static inline bool rwsem_try_write_lock(struct rw_semaphore *sem,
 					struct rwsem_waiter *waiter)
+<<<<<<< HEAD
 	__must_hold(&sem->wait_lock)
 {
 	struct rwsem_waiter *first = sem->first_waiter;
+=======
+{
+	struct rwsem_waiter *first = rwsem_first_waiter(sem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long count, new;
 
 	lockdep_assert_held(&sem->wait_lock);
@@ -662,7 +732,11 @@ static inline bool rwsem_try_write_lock(struct rw_semaphore *sem,
 			new |= RWSEM_WRITER_LOCKED;
 			new &= ~RWSEM_FLAG_HANDOFF;
 
+<<<<<<< HEAD
 			if (list_empty(&first->list))
+=======
+			if (list_is_singular(&sem->wait_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				new &= ~RWSEM_FLAG_WAITERS;
 		}
 	} while (!atomic_long_try_cmpxchg_acquire(&sem->count, &count, new));
@@ -682,8 +756,12 @@ static inline bool rwsem_try_write_lock(struct rw_semaphore *sem,
 	 * Have rwsem_try_write_lock() fully imply rwsem_del_waiter() on
 	 * success.
 	 */
+<<<<<<< HEAD
 	__rwsem_del_waiter(sem, waiter);
 
+=======
+	list_del(&waiter->list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rwsem_set_owner(sem);
 	return true;
 }
@@ -1018,7 +1096,11 @@ rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int stat
 {
 	long adjustment = -RWSEM_READER_BIAS;
 	long rcnt = (count >> RWSEM_READER_SHIFT);
+<<<<<<< HEAD
 	struct rwsem_waiter waiter, *first;
+=======
+	struct rwsem_waiter waiter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DEFINE_WAKE_Q(wake_q);
 
 	/*
@@ -1043,7 +1125,11 @@ rwsem_down_read_slowpath(struct rw_semaphore *sem, long count, unsigned int stat
 		 */
 		if ((rcnt == 1) && (count & RWSEM_FLAG_WAITERS)) {
 			raw_spin_lock_irq(&sem->wait_lock);
+<<<<<<< HEAD
 			if (sem->first_waiter)
+=======
+			if (!list_empty(&sem->wait_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rwsem_mark_wake(sem, RWSEM_WAKE_READ_OWNED,
 						&wake_q);
 			raw_spin_unlock_irq(&sem->wait_lock);
@@ -1059,8 +1145,12 @@ queue:
 	waiter.handoff_set = false;
 
 	raw_spin_lock_irq(&sem->wait_lock);
+<<<<<<< HEAD
 	first = sem->first_waiter;
 	if (!first) {
+=======
+	if (list_empty(&sem->wait_list)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * In case the wait queue is empty and the lock isn't owned
 		 * by a writer, this reader can exit the slowpath and return
@@ -1076,11 +1166,16 @@ queue:
 			return sem;
 		}
 		adjustment += RWSEM_FLAG_WAITERS;
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&waiter.list);
 		sem->first_waiter = &waiter;
 	} else {
 		list_add_tail(&waiter.list, &first->list);
 	}
+=======
+	}
+	rwsem_add_waiter(sem, &waiter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* we're now waiting on the lock, but no longer actively locking */
 	count = atomic_long_add_return(adjustment, &sem->count);
@@ -1138,7 +1233,11 @@ out_nolock:
 static struct rw_semaphore __sched *
 rwsem_down_write_slowpath(struct rw_semaphore *sem, int state)
 {
+<<<<<<< HEAD
 	struct rwsem_waiter waiter, *first;
+=======
+	struct rwsem_waiter waiter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DEFINE_WAKE_Q(wake_q);
 
 	/* do optimistic spinning and steal lock if possible */
@@ -1157,10 +1256,17 @@ rwsem_down_write_slowpath(struct rw_semaphore *sem, int state)
 	waiter.handoff_set = false;
 
 	raw_spin_lock_irq(&sem->wait_lock);
+<<<<<<< HEAD
 
 	first = sem->first_waiter;
 	if (first) {
 		list_add_tail(&waiter.list, &first->list);
+=======
+	rwsem_add_waiter(sem, &waiter);
+
+	/* we're now waiting on the lock */
+	if (rwsem_first_waiter(sem) != &waiter) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rwsem_cond_wake_waiter(sem, atomic_long_read(&sem->count),
 				       &wake_q);
 		if (!wake_q_empty(&wake_q)) {
@@ -1173,8 +1279,11 @@ rwsem_down_write_slowpath(struct rw_semaphore *sem, int state)
 			raw_spin_lock_irq(&sem->wait_lock);
 		}
 	} else {
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&waiter.list);
 		sem->first_waiter = &waiter;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		atomic_long_or(RWSEM_FLAG_WAITERS, &sem->count);
 	}
 
@@ -1248,7 +1357,11 @@ static struct rw_semaphore *rwsem_wake(struct rw_semaphore *sem)
 
 	raw_spin_lock_irqsave(&sem->wait_lock, flags);
 
+<<<<<<< HEAD
 	if (sem->first_waiter)
+=======
+	if (!list_empty(&sem->wait_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rwsem_mark_wake(sem, RWSEM_WAKE_ANY, &wake_q);
 
 	raw_spin_unlock_irqrestore(&sem->wait_lock, flags);
@@ -1269,7 +1382,11 @@ static struct rw_semaphore *rwsem_downgrade_wake(struct rw_semaphore *sem)
 
 	raw_spin_lock_irqsave(&sem->wait_lock, flags);
 
+<<<<<<< HEAD
 	if (sem->first_waiter)
+=======
+	if (!list_empty(&sem->wait_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rwsem_mark_wake(sem, RWSEM_WAKE_READ_OWNED, &wake_q);
 
 	raw_spin_unlock_irqrestore(&sem->wait_lock, flags);
@@ -1562,7 +1679,10 @@ static inline bool is_rwsem_reader_owned(struct rw_semaphore *sem)
  * lock for reading
  */
 void __sched down_read(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
@@ -1572,7 +1692,10 @@ void __sched down_read(struct rw_semaphore *sem)
 EXPORT_SYMBOL(down_read);
 
 int __sched down_read_interruptible(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
@@ -1587,7 +1710,10 @@ int __sched down_read_interruptible(struct rw_semaphore *sem)
 EXPORT_SYMBOL(down_read_interruptible);
 
 int __sched down_read_killable(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_read(&sem->dep_map, 0, 0, _RET_IP_);
@@ -1605,7 +1731,10 @@ EXPORT_SYMBOL(down_read_killable);
  * trylock for reading -- returns 1 if successful, 0 if contention
  */
 int down_read_trylock(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = __down_read_trylock(sem);
 
@@ -1619,7 +1748,10 @@ EXPORT_SYMBOL(down_read_trylock);
  * lock for writing
  */
 void __sched down_write(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire(&sem->dep_map, 0, 0, _RET_IP_);
@@ -1631,7 +1763,10 @@ EXPORT_SYMBOL(down_write);
  * lock for writing
  */
 int __sched down_write_killable(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire(&sem->dep_map, 0, 0, _RET_IP_);
@@ -1650,7 +1785,10 @@ EXPORT_SYMBOL(down_write_killable);
  * trylock for writing -- returns 1 if successful, 0 if contention
  */
 int down_write_trylock(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = __down_write_trylock(sem);
 
@@ -1665,7 +1803,10 @@ EXPORT_SYMBOL(down_write_trylock);
  * release a read lock
  */
 void up_read(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	rwsem_release(&sem->dep_map, _RET_IP_);
 	__up_read(sem);
@@ -1676,7 +1817,10 @@ EXPORT_SYMBOL(up_read);
  * release a write lock
  */
 void up_write(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	rwsem_release(&sem->dep_map, _RET_IP_);
 	__up_write(sem);
@@ -1687,7 +1831,10 @@ EXPORT_SYMBOL(up_write);
  * downgrade write lock to read lock
  */
 void downgrade_write(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lock_downgrade(&sem->dep_map, _RET_IP_);
 	__downgrade_write(sem);
@@ -1697,7 +1844,10 @@ EXPORT_SYMBOL(downgrade_write);
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 
 void down_read_nested(struct rw_semaphore *sem, int subclass)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_read(&sem->dep_map, subclass, 0, _RET_IP_);
@@ -1706,7 +1856,10 @@ void down_read_nested(struct rw_semaphore *sem, int subclass)
 EXPORT_SYMBOL(down_read_nested);
 
 int down_read_killable_nested(struct rw_semaphore *sem, int subclass)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_read(&sem->dep_map, subclass, 0, _RET_IP_);
@@ -1721,7 +1874,10 @@ int down_read_killable_nested(struct rw_semaphore *sem, int subclass)
 EXPORT_SYMBOL(down_read_killable_nested);
 
 void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire_nest(&sem->dep_map, 0, 0, nest, _RET_IP_);
@@ -1730,7 +1886,10 @@ void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest)
 EXPORT_SYMBOL(_down_write_nest_lock);
 
 void down_read_non_owner(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	__down_read(sem);
@@ -1745,7 +1904,10 @@ void down_read_non_owner(struct rw_semaphore *sem)
 EXPORT_SYMBOL(down_read_non_owner);
 
 void down_write_nested(struct rw_semaphore *sem, int subclass)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire(&sem->dep_map, subclass, 0, _RET_IP_);
@@ -1754,7 +1916,10 @@ void down_write_nested(struct rw_semaphore *sem, int subclass)
 EXPORT_SYMBOL(down_write_nested);
 
 int __sched down_write_killable_nested(struct rw_semaphore *sem, int subclass)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	might_sleep();
 	rwsem_acquire(&sem->dep_map, subclass, 0, _RET_IP_);
@@ -1770,7 +1935,10 @@ int __sched down_write_killable_nested(struct rw_semaphore *sem, int subclass)
 EXPORT_SYMBOL(down_write_killable_nested);
 
 void up_read_non_owner(struct rw_semaphore *sem)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	DEBUG_RWSEMS_WARN_ON(!is_rwsem_reader_owned(sem), sem);
 	__up_read(sem);

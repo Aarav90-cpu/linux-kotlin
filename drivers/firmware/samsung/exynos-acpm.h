@@ -8,10 +8,17 @@
 #define __EXYNOS_ACPM_H__
 
 struct acpm_xfer {
+<<<<<<< HEAD
 	const u32 *txd __counted_by_ptr(txcnt);
 	u32 *rxd __counted_by_ptr(rxcnt);
 	size_t txcnt;
 	size_t rxcnt;
+=======
+	const u32 *txd;
+	u32 *rxd;
+	size_t txlen;
+	size_t rxlen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int acpm_chan_id;
 };
 

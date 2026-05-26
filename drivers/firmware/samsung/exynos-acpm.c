@@ -205,7 +205,11 @@ static void acpm_get_saved_rx(struct acpm_chan *achan,
 	rx_seqnum = FIELD_GET(ACPM_PROTOCOL_SEQNUM, rx_data->cmd[0]);
 
 	if (rx_seqnum == tx_seqnum) {
+<<<<<<< HEAD
 		memcpy(xfer->rxd, rx_data->cmd, xfer->rxcnt * sizeof(*xfer->rxd));
+=======
+		memcpy(xfer->rxd, rx_data->cmd, xfer->rxlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clear_bit(rx_seqnum - 1, achan->bitmap_seqnum);
 	}
 }
@@ -258,7 +262,12 @@ static int acpm_get_rx(struct acpm_chan *achan, const struct acpm_xfer *xfer)
 
 		if (rx_data->response) {
 			if (rx_seqnum == tx_seqnum) {
+<<<<<<< HEAD
 				__ioread32_copy(xfer->rxd, addr, xfer->rxcnt);
+=======
+				__ioread32_copy(xfer->rxd, addr,
+						xfer->rxlen / 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rx_set = true;
 				clear_bit(seqnum, achan->bitmap_seqnum);
 			} else {
@@ -268,7 +277,12 @@ static int acpm_get_rx(struct acpm_chan *achan, const struct acpm_xfer *xfer)
 				 * clear yet the bitmap. It will be cleared
 				 * after the response is copied to the request.
 				 */
+<<<<<<< HEAD
 				__ioread32_copy(rx_data->cmd, addr, xfer->rxcnt);
+=======
+				__ioread32_copy(rx_data->cmd, addr,
+						xfer->rxlen / 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		} else {
 			clear_bit(seqnum, achan->bitmap_seqnum);
@@ -423,9 +437,13 @@ int acpm_do_xfer(struct acpm_handle *handle, const struct acpm_xfer *xfer)
 
 	achan = &acpm->chans[xfer->acpm_chan_id];
 
+<<<<<<< HEAD
 	if (!xfer->txd ||
 	    (xfer->txcnt * sizeof(*xfer->txd) > achan->mlen) ||
 	    (xfer->rxcnt * sizeof(*xfer->rxd) > achan->mlen))
+=======
+	if (!xfer->txd || xfer->txlen > achan->mlen || xfer->rxlen > achan->mlen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (!achan->poll_completion) {
@@ -448,7 +466,11 @@ int acpm_do_xfer(struct acpm_handle *handle, const struct acpm_xfer *xfer)
 
 		/* Write TX command. */
 		__iowrite32_copy(achan->tx.base + achan->mlen * tx_front,
+<<<<<<< HEAD
 				 xfer->txd, xfer->txcnt);
+=======
+				 xfer->txd, xfer->txlen / 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Advance TX front. */
 		writel(idx, achan->tx.front);

@@ -10,7 +10,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/pci_ids.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 static const struct acpi_device_id acer_wireless_acpi_ids[] = {
@@ -19,6 +22,7 @@ static const struct acpi_device_id acer_wireless_acpi_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, acer_wireless_acpi_ids);
 
+<<<<<<< HEAD
 static void acer_wireless_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct device *dev = data;
@@ -27,6 +31,15 @@ static void acer_wireless_notify(acpi_handle handle, u32 event, void *data)
 	dev_dbg(dev, "event=%#x\n", event);
 	if (event != 0x80) {
 		dev_notice(dev, "Unknown SMKB event: %#x\n", event);
+=======
+static void acer_wireless_notify(struct acpi_device *adev, u32 event)
+{
+	struct input_dev *idev = acpi_driver_data(adev);
+
+	dev_dbg(&adev->dev, "event=%#x\n", event);
+	if (event != 0x80) {
+		dev_notice(&adev->dev, "Unknown SMKB event: %#x\n", event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 	input_report_key(idev, KEY_RFKILL, 1);
@@ -35,6 +48,7 @@ static void acer_wireless_notify(acpi_handle handle, u32 event, void *data)
 	input_sync(idev);
 }
 
+<<<<<<< HEAD
 static int acer_wireless_probe(struct platform_device *pdev)
 {
 	struct acpi_device *adev;
@@ -50,6 +64,17 @@ static int acer_wireless_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	platform_set_drvdata(pdev, idev);
+=======
+static int acer_wireless_add(struct acpi_device *adev)
+{
+	struct input_dev *idev;
+
+	idev = devm_input_allocate_device(&adev->dev);
+	if (!idev)
+		return -ENOMEM;
+
+	adev->driver_data = idev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	idev->name = "Acer Wireless Radio Control";
 	idev->phys = "acer-wireless/input0";
 	idev->id.bustype = BUS_HOST;
@@ -58,6 +83,7 @@ static int acer_wireless_probe(struct platform_device *pdev)
 	set_bit(EV_KEY, idev->evbit);
 	set_bit(KEY_RFKILL, idev->keybit);
 
+<<<<<<< HEAD
 	ret = input_register_device(idev);
 	if (ret)
 		return ret;
@@ -83,6 +109,21 @@ static struct platform_driver acer_wireless_driver = {
 	},
 };
 module_platform_driver(acer_wireless_driver);
+=======
+	return input_register_device(idev);
+}
+
+static struct acpi_driver acer_wireless_driver = {
+	.name = "Acer Wireless Radio Control Driver",
+	.class = "hotkey",
+	.ids = acer_wireless_acpi_ids,
+	.ops = {
+		.add = acer_wireless_add,
+		.notify = acer_wireless_notify,
+	},
+};
+module_acpi_driver(acer_wireless_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_DESCRIPTION("Acer Wireless Radio Control Driver");
 MODULE_AUTHOR("Chris Chiu <chiu@gmail.com>");

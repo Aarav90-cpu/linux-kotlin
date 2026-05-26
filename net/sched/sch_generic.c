@@ -25,11 +25,18 @@
 #include <linux/skb_array.h>
 #include <linux/if_macvlan.h>
 #include <linux/bpf.h>
+<<<<<<< HEAD
 #include <trace/events/qdisc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/sch_generic.h>
 #include <net/pkt_sched.h>
 #include <net/dst.h>
 #include <net/hotdata.h>
+<<<<<<< HEAD
+=======
+#include <trace/events/qdisc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <trace/events/net.h>
 #include <net/xfrm.h>
 
@@ -37,6 +44,7 @@
 const struct Qdisc_ops *default_qdisc_ops = &pfifo_fast_ops;
 EXPORT_SYMBOL(default_qdisc_ops);
 
+<<<<<<< HEAD
 void __tcf_kfree_skb_list(struct sk_buff *skb, struct Qdisc *q,
 			  struct netdev_queue *txq, struct net_device *dev)
 {
@@ -62,6 +70,8 @@ void __tcf_kfree_skb_list(struct sk_buff *skb, struct Qdisc *q,
 }
 EXPORT_SYMBOL(__tcf_kfree_skb_list);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void qdisc_maybe_clear_missed(struct Qdisc *q,
 				     const struct netdev_queue *txq)
 {
@@ -766,7 +776,11 @@ static int pfifo_fast_enqueue(struct sk_buff *skb, struct Qdisc *qdisc,
 	err = skb_array_produce(q, skb);
 
 	if (unlikely(err)) {
+<<<<<<< HEAD
 		tcf_set_qdisc_drop_reason(skb, QDISC_DROP_OVERLIMIT);
+=======
+		tcf_set_drop_reason(skb, SKB_DROP_REASON_QDISC_OVERLIMIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (qdisc_is_percpu_stats(qdisc))
 			return qdisc_drop_cpu(skb, qdisc, to_free);
@@ -850,7 +864,11 @@ static void pfifo_fast_reset(struct Qdisc *qdisc)
 			continue;
 
 		while ((skb = __skb_array_consume(q)) != NULL)
+<<<<<<< HEAD
 			rtnl_kfree_skbs(skb, skb);
+=======
+			kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (qdisc_is_percpu_stats(qdisc)) {
@@ -1343,12 +1361,19 @@ static bool some_qdisc_is_busy(struct net_device *dev)
 /**
  * 	dev_deactivate_many - deactivate transmissions on several devices
  * 	@head: list of devices to deactivate
+<<<<<<< HEAD
  *	@reset_needed: qdisc should be reset if true.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *	This function returns only when all outstanding transmissions
  *	have completed, unless all devices are in dismantle phase.
  */
+<<<<<<< HEAD
 void dev_deactivate_many(struct list_head *head, bool reset_needed)
+=======
+void dev_deactivate_many(struct list_head *head)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool sync_needed = false;
 	struct net_device *dev;
@@ -1367,6 +1392,7 @@ void dev_deactivate_many(struct list_head *head, bool reset_needed)
 	if (sync_needed)
 		synchronize_net();
 
+<<<<<<< HEAD
 	if (reset_needed) {
 		list_for_each_entry(dev, head, close_list) {
 			netdev_for_each_tx_queue(dev, dev_reset_queue, NULL);
@@ -1375,6 +1401,13 @@ void dev_deactivate_many(struct list_head *head, bool reset_needed)
 				dev_reset_queue(dev, dev_ingress_queue(dev),
 						NULL);
 		}
+=======
+	list_for_each_entry(dev, head, close_list) {
+		netdev_for_each_tx_queue(dev, dev_reset_queue, NULL);
+
+		if (dev_ingress_queue(dev))
+			dev_reset_queue(dev, dev_ingress_queue(dev), NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Wait for outstanding qdisc_run calls. */
@@ -1389,12 +1422,20 @@ void dev_deactivate_many(struct list_head *head, bool reset_needed)
 	}
 }
 
+<<<<<<< HEAD
 void dev_deactivate(struct net_device *dev, bool reset_needed)
+=======
+void dev_deactivate(struct net_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	LIST_HEAD(single);
 
 	list_add(&dev->close_list, &single);
+<<<<<<< HEAD
 	dev_deactivate_many(&single, reset_needed);
+=======
+	dev_deactivate_many(&single);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_del(&single);
 }
 EXPORT_SYMBOL(dev_deactivate);
@@ -1450,7 +1491,11 @@ int dev_qdisc_change_tx_queue_len(struct net_device *dev)
 	int ret = 0;
 
 	if (up)
+<<<<<<< HEAD
 		dev_deactivate(dev, false);
+=======
+		dev_deactivate(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < dev->num_tx_queues; i++) {
 		ret = qdisc_change_tx_queue_len(dev, &dev->_tx[i]);

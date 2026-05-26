@@ -41,7 +41,11 @@ const struct file_operations ufs_file_operations = {
 	.write_iter	= generic_file_write_iter,
 	.mmap_prepare	= generic_file_mmap_prepare,
 	.open           = generic_file_open,
+<<<<<<< HEAD
 	.fsync		= simple_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.splice_read	= filemap_splice_read,
 	.splice_write	= iter_file_splice_write,
 	.setlease	= generic_setlease,

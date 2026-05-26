@@ -15,7 +15,10 @@ config DRM_IMX_PARALLEL_DISPLAY
 	depends on DRM_IMX
 	select DRM_BRIDGE
 	select DRM_BRIDGE_CONNECTOR
+<<<<<<< HEAD
 	select DRM_DISPLAY_HELPER
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select DRM_IMX_LEGACY_BRIDGE
 	select DRM_PANEL_BRIDGE
 	select VIDEOMODE_HELPERS

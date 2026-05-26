@@ -429,7 +429,10 @@ struct nix_rx_action {
 
 /* NPC_AF_INTFX_KEX_CFG field masks */
 #define NPC_PARSE_NIBBLE		GENMASK_ULL(30, 0)
+<<<<<<< HEAD
 #define NPC_TOTAL_NIBBLE		31
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* NPC_PARSE_KEX_S nibble definitions for each field */
 #define NPC_PARSE_NIBBLE_CHAN		GENMASK_ULL(2, 0)
@@ -644,7 +647,10 @@ struct rvu_npc_mcam_rule {
 	u16 chan;
 	u16 chan_mask;
 	u8 lxmb;
+<<<<<<< HEAD
 	u8 hw_prio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* NPC_H */

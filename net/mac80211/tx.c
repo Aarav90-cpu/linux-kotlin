@@ -287,7 +287,14 @@ ieee80211_tx_h_check_assoc(struct ieee80211_tx_data *tx)
 		 * active scan) are allowed, all other frames should not be
 		 * sent and we should not get here, but if we do
 		 * nonetheless, drop them to avoid sending them
+<<<<<<< HEAD
 		 * off-channel. See __ieee80211_start_scan() for more.
+=======
+		 * off-channel. See the link below and
+		 * ieee80211_start_scan() for more.
+		 *
+		 * http://article.gmane.org/gmane.linux.kernel.wireless.general/30089
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		return TX_DROP;
 
@@ -1313,19 +1320,26 @@ static struct txq_info *ieee80211_get_txq(struct ieee80211_local *local,
 	    unlikely(!ieee80211_is_data_present(hdr->frame_control))) {
 		if ((!ieee80211_is_mgmt(hdr->frame_control) ||
 		     ieee80211_is_bufferable_mmpdu(skb) ||
+<<<<<<< HEAD
 		     vif->type == NL80211_IFTYPE_STATION ||
 		     vif->type == NL80211_IFTYPE_NAN ||
 		     vif->type == NL80211_IFTYPE_NAN_DATA) &&
+=======
+		     vif->type == NL80211_IFTYPE_STATION) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    sta && sta->uploaded) {
 			/*
 			 * This will be NULL if the driver didn't set the
 			 * opt-in hardware flag.
 			 */
 			txq = sta->sta.txq[IEEE80211_NUM_TIDS];
+<<<<<<< HEAD
 		} else if ((!ieee80211_is_mgmt(hdr->frame_control) ||
 			    ieee80211_is_bufferable_mmpdu(skb)) &&
 			   !sta) {
 			txq = vif->txq_mgmt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else if (sta) {
 		u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
@@ -1518,6 +1532,7 @@ void ieee80211_txq_init(struct ieee80211_sub_if_data *sdata,
 	txqi->txq.vif = &sdata->vif;
 
 	if (!sta) {
+<<<<<<< HEAD
 		txqi->txq.tid = tid;
 
 		if (tid == IEEE80211_NUM_TIDS) {
@@ -1527,6 +1542,11 @@ void ieee80211_txq_init(struct ieee80211_sub_if_data *sdata,
 			sdata->vif.txq = &txqi->txq;
 			txqi->txq.ac = IEEE80211_AC_BE;
 		}
+=======
+		sdata->vif.txq = &txqi->txq;
+		txqi->txq.tid = 0;
+		txqi->txq.ac = IEEE80211_AC_BE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return;
 	}
@@ -2543,6 +2563,7 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
 		if (!sta)
 			return -ENOLINK;
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
 		if (is_multicast_ether_addr(skb->data)) {
 			*sta_out = ERR_PTR(-ENOENT);
@@ -2550,6 +2571,8 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
 		}
 		sta = sta_info_get(sdata, skb->data);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -2843,6 +2866,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
 		memcpy(hdr.addr3, sdata->u.ibss.bssid, ETH_ALEN);
 		hdrlen = 24;
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA: {
 		struct ieee80211_sub_if_data *nmi;
 
@@ -2858,12 +2882,15 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
 		hdrlen = 24;
 		break;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ret = -EINVAL;
 		goto free;
 	}
 
 	if (!chanctx_conf) {
+<<<<<<< HEAD
 		if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
 			 /* NAN operates on multiple bands */
 			band = NUM_NL80211_BANDS;
@@ -2874,6 +2901,14 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
 			/* MLD transmissions must not rely on the band */
 			band = 0;
 		}
+=======
+		if (!ieee80211_vif_is_mld(&sdata->vif)) {
+			ret = -ENOTCONN;
+			goto free;
+		}
+		/* MLD transmissions must not rely on the band */
+		band = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		band = chanctx_conf->def.chan->band;
 	}
@@ -5352,6 +5387,7 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
 	return 0;
 }
 
+<<<<<<< HEAD
 int ieee80211_encrypt_tx_skb(struct sk_buff *skb)
 {
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
@@ -5384,6 +5420,8 @@ int ieee80211_encrypt_tx_skb(struct sk_buff *skb)
 }
 EXPORT_SYMBOL_GPL(ieee80211_encrypt_tx_skb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 ieee80211_beacon_get_finish(struct ieee80211_hw *hw,
 			    struct ieee80211_vif *vif,
@@ -5906,17 +5944,25 @@ out:
 EXPORT_SYMBOL(ieee80211_proberesp_get);
 
 struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 						  struct ieee80211_vif *vif,
 						  unsigned int link_id)
+=======
+						  struct ieee80211_vif *vif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sk_buff *skb = NULL;
 	struct fils_discovery_data *tmpl = NULL;
 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+<<<<<<< HEAD
 	struct ieee80211_link_data *link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdata->vif.type != NL80211_IFTYPE_AP)
 		return NULL;
 
+<<<<<<< HEAD
 	if (link_id >= IEEE80211_MLD_MAX_NUM_LINKS)
 		return NULL;
 
@@ -5928,6 +5974,14 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
 	tmpl = rcu_dereference(link->u.ap.fils_discovery);
 	if (!tmpl)
 		return NULL;
+=======
+	rcu_read_lock();
+	tmpl = rcu_dereference(sdata->deflink.u.ap.fils_discovery);
+	if (!tmpl) {
+		rcu_read_unlock();
+		return NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = dev_alloc_skb(sdata->local->hw.extra_tx_headroom + tmpl->len);
 	if (skb) {
@@ -5935,23 +5989,35 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
 		skb_put_data(skb, tmpl->data, tmpl->len);
 	}
 
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return skb;
 }
 EXPORT_SYMBOL(ieee80211_get_fils_discovery_tmpl);
 
 struct sk_buff *
 ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 					  struct ieee80211_vif *vif,
 					  unsigned int link_id)
+=======
+					  struct ieee80211_vif *vif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sk_buff *skb = NULL;
 	struct unsol_bcast_probe_resp_data *tmpl = NULL;
 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+<<<<<<< HEAD
 	struct ieee80211_link_data *link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdata->vif.type != NL80211_IFTYPE_AP)
 		return NULL;
 
+<<<<<<< HEAD
 	if (link_id >= IEEE80211_MLD_MAX_NUM_LINKS)
 		return NULL;
 
@@ -5963,6 +6029,14 @@ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
 	tmpl = rcu_dereference(link->u.ap.unsol_bcast_probe_resp);
 	if (!tmpl)
 		return NULL;
+=======
+	rcu_read_lock();
+	tmpl = rcu_dereference(sdata->deflink.u.ap.unsol_bcast_probe_resp);
+	if (!tmpl) {
+		rcu_read_unlock();
+		return NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = dev_alloc_skb(sdata->local->hw.extra_tx_headroom + tmpl->len);
 	if (skb) {
@@ -5970,6 +6044,10 @@ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
 		skb_put_data(skb, tmpl->data, tmpl->len);
 	}
 
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return skb;
 }
 EXPORT_SYMBOL(ieee80211_get_unsol_bcast_probe_resp_tmpl);

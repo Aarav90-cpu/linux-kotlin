@@ -12,7 +12,10 @@
 #include <linux/time64.h>
 #include <linux/mutex.h>
 #include <linux/wait.h>
+<<<<<<< HEAD
 #include <linux/xarray.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "btrfs_inode.h"
 #include "delayed-ref.h"
 
@@ -163,8 +166,11 @@ struct btrfs_trans_handle {
 	struct btrfs_fs_info *fs_info;
 	struct list_head new_bgs;
 	struct btrfs_block_rsv delayed_rsv;
+<<<<<<< HEAD
 	/* Extent buffers with writeback inhibited by this handle. */
 	struct xarray writeback_inhibited_ebs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

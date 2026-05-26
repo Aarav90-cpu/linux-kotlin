@@ -17,8 +17,11 @@ bool dml2_initialize_instance(struct dml2_initialize_instance_in_out *in_out)
 	case dml2_project_dcn4x_stage1:
 	case dml2_project_dcn4x_stage2:
 	case dml2_project_dcn4x_stage2_auto_drr_svp:
+<<<<<<< HEAD
 	case dml2_project_dcn40:
 	case dml2_project_dcn42:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return dml2_top_soc15_initialize_instance(in_out);
 	case dml2_project_invalid:
 	default:

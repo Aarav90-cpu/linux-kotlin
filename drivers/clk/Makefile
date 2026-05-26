@@ -116,10 +116,17 @@ obj-y					+= aspeed/
 obj-$(CONFIG_COMMON_CLK_AT91)		+= at91/
 obj-$(CONFIG_ARCH_ARTPEC)		+= axis/
 obj-$(CONFIG_ARC_PLAT_AXS10X)		+= axs10x/
+<<<<<<< HEAD
 obj-y					+= bcm/
 obj-$(CONFIG_ARCH_BERLIN)		+= berlin/
 obj-$(CONFIG_ARCH_DAVINCI)		+= davinci/
 obj-$(CONFIG_COMMON_CLK_ESWIN)		+= eswin/
+=======
+obj-$(CONFIG_CLK_BAIKAL_T1)		+= baikal-t1/
+obj-y					+= bcm/
+obj-$(CONFIG_ARCH_BERLIN)		+= berlin/
+obj-$(CONFIG_ARCH_DAVINCI)		+= davinci/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_ARCH_HISI)			+= hisilicon/
 obj-y					+= imgtec/
 obj-y					+= imx/
@@ -155,7 +162,10 @@ obj-y					+= starfive/
 obj-$(CONFIG_ARCH_SUNXI)		+= sunxi/
 obj-y					+= sunxi-ng/
 obj-$(CONFIG_ARCH_TEGRA)		+= tegra/
+<<<<<<< HEAD
 obj-y					+= tenstorrent/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_ARCH_THEAD)		+= thead/
 obj-y					+= ti/
 obj-$(CONFIG_CLK_UNIPHIER)		+= uniphier/

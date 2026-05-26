@@ -157,7 +157,11 @@ static int kb3930_probe(struct i2c_client *client)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (of_device_is_system_power_controller(np)) {
+=======
+	if (of_property_read_bool(np, "system-power-controller")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ddata->off_gpios =
 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
 		if (IS_ERR(ddata->off_gpios))

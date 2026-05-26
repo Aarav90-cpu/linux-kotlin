@@ -1076,6 +1076,7 @@ int psp_update_fw_reservation(struct psp_context *psp)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	amdgpu_ttm_unmark_vram_reserved(adev, AMDGPU_RESV_FW);
 
 	reserv_size = roundup(reserv_size, SZ_1M);
@@ -1085,16 +1086,34 @@ int psp_update_fw_reservation(struct psp_context *psp)
 	ret = amdgpu_ttm_mark_vram_reserved(adev, AMDGPU_RESV_FW);
 	if (ret) {
 		dev_err(adev->dev, "reserve fw region failed(%d)!\n", ret);
+=======
+	amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory, NULL, NULL);
+
+	reserv_size = roundup(reserv_size, SZ_1M);
+
+	ret = amdgpu_bo_create_kernel_at(adev, reserv_addr, reserv_size, &adev->mman.fw_reserved_memory, NULL);
+	if (ret) {
+		dev_err(adev->dev, "reserve fw region failed(%d)!\n", ret);
+		amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory, NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
 	reserv_size_ext = roundup(reserv_size_ext, SZ_1M);
 
+<<<<<<< HEAD
 	amdgpu_ttm_init_vram_resv(adev, AMDGPU_RESV_FW_EXTEND,
 				  reserv_addr_ext, reserv_size_ext, false);
 	ret = amdgpu_ttm_mark_vram_reserved(adev, AMDGPU_RESV_FW_EXTEND);
 	if (ret) {
 		dev_err(adev->dev, "reserve extend fw region failed(%d)!\n", ret);
+=======
+	ret = amdgpu_bo_create_kernel_at(adev, reserv_addr_ext, reserv_size_ext,
+					 &adev->mman.fw_reserved_memory_extend, NULL);
+	if (ret) {
+		dev_err(adev->dev, "reserve extend fw region failed(%d)!\n", ret);
+		amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory_extend, NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -3097,6 +3116,7 @@ static int psp_load_non_psp_fw(struct psp_context *psp)
 			 */
 			continue;
 
+<<<<<<< HEAD
 		/* IMU ucode is part of IFWI and MP0 15.0.8 would load it */
 		if (amdgpu_ip_version(adev, MP0_HWIP, 0) ==
 		    IP_VERSION(15, 0, 8) &&
@@ -3104,6 +3124,8 @@ static int psp_load_non_psp_fw(struct psp_context *psp)
 		    ucode->ucode_id == AMDGPU_UCODE_ID_IMU_D))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		psp_print_fw_hdr(psp, ucode);
 
 		ret = psp_execute_ip_fw_load(psp, ucode);

@@ -12,7 +12,10 @@
 #include <linux/dmi.h>
 #include <linux/gpio/machine.h>
 #include <linux/platform_data/tps68470.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regulator/machine.h>
 #include "tps68470.h"
 
@@ -151,6 +154,11 @@ static const struct regulator_init_data dell_7212_tps68470_core_reg_init_data = 
 		.apply_uV = 1,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 	},
+<<<<<<< HEAD
+=======
+	.num_consumer_supplies = 0,
+	.consumer_supplies = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regulator_init_data dell_7212_tps68470_ana_reg_init_data = {
@@ -160,6 +168,11 @@ static const struct regulator_init_data dell_7212_tps68470_ana_reg_init_data = {
 		.apply_uV = 1,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 	},
+<<<<<<< HEAD
+=======
+	.num_consumer_supplies = 0,
+	.consumer_supplies = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regulator_init_data dell_7212_tps68470_vcm_reg_init_data = {
@@ -169,6 +182,11 @@ static const struct regulator_init_data dell_7212_tps68470_vcm_reg_init_data = {
 		.apply_uV = 1,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 	},
+<<<<<<< HEAD
+=======
+	.num_consumer_supplies = 0,
+	.consumer_supplies = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regulator_init_data dell_7212_tps68470_vio_reg_init_data = {
@@ -178,6 +196,11 @@ static const struct regulator_init_data dell_7212_tps68470_vio_reg_init_data = {
 		.apply_uV = 1,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 	},
+<<<<<<< HEAD
+=======
+	.num_consumer_supplies = 0,
+	.consumer_supplies = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regulator_init_data dell_7212_tps68470_vsio_reg_init_data = {
@@ -225,6 +248,7 @@ static const struct tps68470_regulator_platform_data dell_7212_tps68470_pdata = 
 	},
 };
 
+<<<<<<< HEAD
 /* Settings for MSI Prestige 14 AI+ Evo C2VMG laptop. */
 static struct regulator_consumer_supply ovti5675_avdd_consumer_supplies[] = {
 	REGULATOR_SUPPLY("avdd", "i2c-OVTI5675:00"),
@@ -289,6 +313,8 @@ static const struct tps68470_regulator_platform_data msi_p14_ai_evo_tps68470_pda
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct gpiod_lookup_table surface_go_int347a_gpios = {
 	.dev_id = "i2c-INT347A:00",
 	.table = {
@@ -315,6 +341,7 @@ static struct gpiod_lookup_table dell_7212_int3479_gpios = {
 	}
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table msi_p14_ai_evo_ovti5675_gpios = {
 	.dev_id = "i2c-OVTI5675:00",
 	.table = {
@@ -332,6 +359,8 @@ static const struct software_node msi_p14_ai_evo_tps68470_gpio_swnode = {
 	.properties = msi_p14_ai_evo_gpio_props,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct int3472_tps68470_board_data surface_go_tps68470_board_data = {
 	.dev_name = "i2c-INT3472:05",
 	.tps68470_regulator_pdata = &surface_go_tps68470_pdata,
@@ -361,6 +390,7 @@ static const struct int3472_tps68470_board_data dell_7212_tps68470_board_data = 
 	},
 };
 
+<<<<<<< HEAD
 static const struct int3472_tps68470_board_data msi_p14_ai_evo_tps68470_board_data = {
 	.dev_name = "i2c-INT3472:06",
 	.tps68470_regulator_pdata = &msi_p14_ai_evo_tps68470_pdata,
@@ -371,6 +401,8 @@ static const struct int3472_tps68470_board_data msi_p14_ai_evo_tps68470_board_da
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dmi_system_id int3472_tps68470_board_data_table[] = {
 	{
 		.matches = {
@@ -400,6 +432,7 @@ static const struct dmi_system_id int3472_tps68470_board_data_table[] = {
 		},
 		.driver_data = (void *)&dell_7212_tps68470_board_data,
 	},
+<<<<<<< HEAD
 	{
 		.matches = {
 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Micro-Star International Co., Ltd."),
@@ -407,6 +440,8 @@ static const struct dmi_system_id int3472_tps68470_board_data_table[] = {
 		},
 		.driver_data = (void *)&msi_p14_ai_evo_tps68470_board_data,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 

@@ -27,9 +27,13 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     enum:
       - spacemit,k1-dwc3
       - spacemit,k3-dwc3
+=======
+    const: spacemit,k1-dwc3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -44,13 +48,19 @@ properties:
     maxItems: 1
 
   phys:
+<<<<<<< HEAD
     minItems: 1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: phandle to USB2/HS PHY
       - description: phandle to USB3/SS PHY
 
   phy-names:
+<<<<<<< HEAD
     minItems: 1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - const: usb2-phy
       - const: usb3-phy

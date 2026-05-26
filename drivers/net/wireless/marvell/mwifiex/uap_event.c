@@ -130,8 +130,13 @@ int mwifiex_process_uap_event(struct mwifiex_private *priv)
 					le16_to_cpu(event->len) - (u16)len;
 			}
 		}
+<<<<<<< HEAD
 		cfg80211_new_sta(priv->netdev->ieee80211_ptr, event->sta_addr,
 				 sinfo, GFP_KERNEL);
+=======
+		cfg80211_new_sta(priv->netdev, event->sta_addr, sinfo,
+				 GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		node = mwifiex_add_sta_entry(priv, event->sta_addr);
 		if (!node) {
@@ -162,8 +167,12 @@ int mwifiex_process_uap_event(struct mwifiex_private *priv)
 	case EVENT_UAP_STA_DEAUTH:
 		deauth_mac = adapter->event_body +
 			     MWIFIEX_UAP_EVENT_EXTRA_HEADER;
+<<<<<<< HEAD
 		cfg80211_del_sta(priv->netdev->ieee80211_ptr, deauth_mac,
 				 GFP_KERNEL);
+=======
+		cfg80211_del_sta(priv->netdev, deauth_mac, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (priv->ap_11n_enabled) {
 			mwifiex_11n_del_rx_reorder_tbl_by_ta(priv, deauth_mac);

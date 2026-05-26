@@ -74,7 +74,11 @@ static inline int kbd_defleds(void)
 	k_self,		k_fn,		k_spec,		k_pad,\
 	k_dead,		k_cons,		k_cur,		k_shift,\
 	k_meta,		k_ascii,	k_lock,		k_lowercase,\
+<<<<<<< HEAD
 	k_slock,	k_dead2,	k_brl,		k_csi
+=======
+	k_slock,	k_dead2,	k_brl,		k_ignore
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 typedef void (k_handler_fn)(struct vc_data *vc, unsigned char value,
 			    char up_flag);
@@ -127,7 +131,10 @@ static const unsigned char max_vals[] = {
 	[ KT_SLOCK	] = NR_LOCK - 1,
 	[ KT_DEAD2	] = 255,
 	[ KT_BRL	] = NR_BRL - 1,
+<<<<<<< HEAD
 	[ KT_CSI	] = 99,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const int NR_TYPES = ARRAY_SIZE(max_vals);
@@ -645,6 +652,13 @@ static void fn_null(struct vc_data *vc)
 /*
  * Special key handlers
  */
+<<<<<<< HEAD
+=======
+static void k_ignore(struct vc_data *vc, unsigned char value, char up_flag)
+{
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void k_spec(struct vc_data *vc, unsigned char value, char up_flag)
 {
 	if (up_flag)
@@ -762,6 +776,7 @@ static void k_fn(struct vc_data *vc, unsigned char value, char up_flag)
 		pr_err("k_fn called with value=%d\n", value);
 }
 
+<<<<<<< HEAD
 /*
  * Compute xterm-style modifier parameter for CSI sequences.
  * Returns 1 + (shift ? 1 : 0) + (alt ? 2 : 0) + (ctrl ? 4 : 0)
@@ -783,10 +798,16 @@ static void k_cur(struct vc_data *vc, unsigned char value, char up_flag)
 {
 	static const char cur_chars[] = "BDCA";
 	int mod;
+=======
+static void k_cur(struct vc_data *vc, unsigned char value, char up_flag)
+{
+	static const char cur_chars[] = "BDCA";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (up_flag)
 		return;
 
+<<<<<<< HEAD
 	mod = csi_modifier_param();
 	if (mod > 1) {
 		char buf[] = { 0x1b, '[', '1', ';', '0' + mod, cur_chars[value], 0x00 };
@@ -795,6 +816,9 @@ static void k_cur(struct vc_data *vc, unsigned char value, char up_flag)
 	} else {
 		applkey(vc, cur_chars[value], vc_kbd_mode(kbd, VC_CKMODE));
 	}
+=======
+	applkey(vc, cur_chars[value], vc_kbd_mode(kbd, VC_CKMODE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void k_pad(struct vc_data *vc, unsigned char value, char up_flag)
@@ -1026,6 +1050,7 @@ static void k_brl(struct vc_data *vc, unsigned char value, char up_flag)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Handle KT_CSI keysym type: generate CSI tilde sequences with modifier
  * support. The value encodes the CSI parameter number, producing sequences
@@ -1057,6 +1082,8 @@ static void k_csi(struct vc_data *vc, unsigned char value, char up_flag)
 	puts_queue(vc, buf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_INPUT_LEDS) && IS_ENABLED(CONFIG_LEDS_TRIGGERS)
 
 struct kbd_led_trigger {
@@ -1498,6 +1525,7 @@ static void kbd_keycode(unsigned int keycode, int down, bool hw_raw)
 	param.ledstate = kbd->ledflagstate;
 	key_map = key_maps[shift_final];
 
+<<<<<<< HEAD
 	/*
 	 * Fall back to the plain map if modifiers are active, the modifier-
 	 * specific map is missing or has no entry, and the plain map has a
@@ -1513,6 +1541,8 @@ static void kbd_keycode(unsigned int keycode, int down, bool hw_raw)
 			key_map = key_maps[0];
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = atomic_notifier_call_chain(&keyboard_notifier_list,
 					KBD_KEYCODE, &param);
 	if (rc == NOTIFY_STOP || !key_map) {

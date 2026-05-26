@@ -21,7 +21,11 @@
  */
 #define RV_MON_TYPE RV_MON_%%MONITOR_TYPE%%
 #include "%%MODEL_NAME%%.h"
+<<<<<<< HEAD
 #include <rv/%%MONITOR_CLASS%%_monitor.h>
+=======
+#include <rv/da_monitor.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This is the instrumentation part of the monitor.

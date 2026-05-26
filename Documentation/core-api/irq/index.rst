@@ -9,4 +9,7 @@ IRQs
    irq-affinity
    irq-domain
    irqflags-tracing
+<<<<<<< HEAD
    managed_irq
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -13,8 +13,11 @@
 #include <linux/stringify.h>
 #include <asm/asm.h>
 
+<<<<<<< HEAD
 #define HAVE_JUMP_LABEL_BATCH
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define JUMP_LABEL_NOP_SIZE	4
 
 #ifdef CONFIG_32BIT

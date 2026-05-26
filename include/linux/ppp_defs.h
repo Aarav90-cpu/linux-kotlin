@@ -8,7 +8,10 @@
 #define _PPP_DEFS_H_
 
 #include <linux/crc-ccitt.h>
+<<<<<<< HEAD
 #include <linux/skbuff.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/ppp_defs.h>
 
 #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
@@ -26,6 +29,7 @@ static inline bool ppp_proto_is_valid(u16 proto)
 	return !!((proto & 0x0101) == 0x0001);
 }
 
+<<<<<<< HEAD
 /**
  * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
  * @skb: skb to check
@@ -41,4 +45,6 @@ static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
 	return unlikely(skb->data[0] & 0x01);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _PPP_DEFS_H_ */

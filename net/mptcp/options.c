@@ -1076,7 +1076,10 @@ static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
 	 * resync.
 	 */
 	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
+<<<<<<< HEAD
 	tcp_update_max_rcv_wnd_seq(tp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
 }
 
@@ -1339,9 +1342,14 @@ raise_win:
 		 */
 		rcv_wnd_new = rcv_wnd_old;
 		win = rcv_wnd_old - ack_seq;
+<<<<<<< HEAD
 		new_win = min_t(u64, win, U32_MAX);
 		tp->rcv_wnd = new_win;
 		tcp_update_max_rcv_wnd_seq(tp);
+=======
+		tp->rcv_wnd = min_t(u64, win, U32_MAX);
+		new_win = tp->rcv_wnd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Make sure we do not exceed the maximum possible
 		 * scaled window.

@@ -23,6 +23,7 @@
 #include <linux/fs.h>
 #include <linux/mm.h>
 #include <linux/sockptr.h>
+<<<<<<< HEAD
 #include <linux/uio.h>
 
 #include <uapi/linux/net.h>
@@ -47,6 +48,11 @@ typedef struct sockopt {
 	int optlen;
 } sockopt_t;
 
+=======
+
+#include <uapi/linux/net.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct poll_table_struct;
 struct pipe_inode_info;
 struct inode;
@@ -213,8 +219,11 @@ struct proto_ops {
 				      unsigned int optlen);
 	int		(*getsockopt)(struct socket *sock, int level,
 				      int optname, char __user *optval, int __user *optlen);
+<<<<<<< HEAD
 	int		(*getsockopt_iter)(struct socket *sock, int level,
 					   int optname, sockopt_t *opt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void		(*show_fdinfo)(struct seq_file *m, struct socket *sock);
 	int		(*sendmsg)   (struct socket *sock, struct msghdr *m,
 				      size_t total_len);
@@ -246,7 +255,10 @@ struct proto_ops {
 	int		(*sendmsg_locked)(struct sock *sk, struct msghdr *msg,
 					  size_t size);
 	int		(*set_rcvlowat)(struct sock *sk, int val);
+<<<<<<< HEAD
 	void		(*set_rcvbuf)(struct sock *sk, int val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DECLARE_SOCKADDR(type, dst, src)	\
@@ -328,8 +340,11 @@ do {									\
 
 #define net_get_random_once(buf, nbytes)			\
 	get_random_once((buf), (nbytes))
+<<<<<<< HEAD
 #define net_get_random_sleepable_once(buf, nbytes)		\
 	get_random_sleepable_once((buf), (nbytes))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * E.g. XFS meta- & log-data is in slab pages, or bcache meta

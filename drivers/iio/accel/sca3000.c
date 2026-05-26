@@ -7,7 +7,10 @@
  * See industrialio/accels/sca3000.h for comments.
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/interrupt.h>
 #include <linux/fs.h>
 #include <linux/device.h>
@@ -172,7 +175,10 @@ struct sca3000_state {
 
 /**
  * struct sca3000_chip_info - model dependent parameters
+<<<<<<< HEAD
  * @name:			name of the chip
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @scale:			scale * 10^-6
  * @temp_output:		some devices have temperature sensors.
  * @measurement_mode_freq:	normal mode sampling frequency
@@ -195,7 +201,10 @@ struct sca3000_state {
  * sca3000 variant.
  **/
 struct sca3000_chip_info {
+<<<<<<< HEAD
 	const char		*name;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		scale;
 	bool			temp_output;
 	int			measurement_mode_freq;
@@ -210,6 +219,7 @@ struct sca3000_chip_info {
 	int			mot_det_mult_y[7];
 };
 
+<<<<<<< HEAD
 static const struct sca3000_chip_info sca3000_chip_info_d01 = {
 	.name = "sca3000_d01",
 	.scale = 7357,
@@ -263,6 +273,71 @@ static const struct sca3000_chip_info sca3000_chip_info_e05 = {
 	.option_mode_2_3db_freq = 75,
 	.mot_det_mult_xz = { 600, 900, 1700, 3200, 6100, 11900 },
 	.mot_det_mult_y = { 300, 600, 1200, 2000, 4100, 7800, 15600 },
+=======
+enum sca3000_variant {
+	d01,
+	e02,
+	e04,
+	e05,
+};
+
+/*
+ * Note where option modes are not defined, the chip simply does not
+ * support any.
+ * Other chips in the sca3000 series use i2c and are not included here.
+ *
+ * Some of these devices are only listed in the family data sheet and
+ * do not actually appear to be available.
+ */
+static const struct sca3000_chip_info sca3000_spi_chip_info_tbl[] = {
+	[d01] = {
+		.scale = 7357,
+		.temp_output = true,
+		.measurement_mode_freq = 250,
+		.measurement_mode_3db_freq = 45,
+		.option_mode_1 = SCA3000_OP_MODE_BYPASS,
+		.option_mode_1_freq = 250,
+		.option_mode_1_3db_freq = 70,
+		.mot_det_mult_xz = {50, 100, 200, 350, 650, 1300},
+		.mot_det_mult_y = {50, 100, 150, 250, 450, 850, 1750},
+	},
+	[e02] = {
+		.scale = 9810,
+		.measurement_mode_freq = 125,
+		.measurement_mode_3db_freq = 40,
+		.option_mode_1 = SCA3000_OP_MODE_NARROW,
+		.option_mode_1_freq = 63,
+		.option_mode_1_3db_freq = 11,
+		.mot_det_mult_xz = {100, 150, 300, 550, 1050, 2050},
+		.mot_det_mult_y = {50, 100, 200, 350, 700, 1350, 2700},
+	},
+	[e04] = {
+		.scale = 19620,
+		.measurement_mode_freq = 100,
+		.measurement_mode_3db_freq = 38,
+		.option_mode_1 = SCA3000_OP_MODE_NARROW,
+		.option_mode_1_freq = 50,
+		.option_mode_1_3db_freq = 9,
+		.option_mode_2 = SCA3000_OP_MODE_WIDE,
+		.option_mode_2_freq = 400,
+		.option_mode_2_3db_freq = 70,
+		.mot_det_mult_xz = {200, 300, 600, 1100, 2100, 4100},
+		.mot_det_mult_y = {100, 200, 400, 7000, 1400, 2700, 54000},
+	},
+	[e05] = {
+		.scale = 61313,
+		.measurement_mode_freq = 200,
+		.measurement_mode_3db_freq = 60,
+		.option_mode_1 = SCA3000_OP_MODE_NARROW,
+		.option_mode_1_freq = 50,
+		.option_mode_1_3db_freq = 9,
+		.option_mode_2 = SCA3000_OP_MODE_WIDE,
+		.option_mode_2_freq = 400,
+		.option_mode_2_3db_freq = 75,
+		.mot_det_mult_xz = {600, 900, 1700, 3200, 6100, 11900},
+		.mot_det_mult_y = {300, 600, 1200, 2000, 4100, 7800, 15600},
+	},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int sca3000_write_reg(struct sca3000_state *st, u8 address, u8 val)
@@ -1428,6 +1503,7 @@ static const struct iio_info sca3000_info = {
 	.write_event_config = &sca3000_write_event_config,
 };
 
+<<<<<<< HEAD
 static void sca3000_stop_all_interrupts(void *data)
 {
 	struct iio_dev *indio_dev = data;
@@ -1455,15 +1531,34 @@ static int sca3000_probe(struct spi_device *spi)
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+=======
+static int sca3000_probe(struct spi_device *spi)
+{
+	int ret;
+	struct sca3000_state *st;
+	struct iio_dev *indio_dev;
+
+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!indio_dev)
 		return -ENOMEM;
 
 	st = iio_priv(indio_dev);
+<<<<<<< HEAD
 	st->us = spi;
 	mutex_init(&st->lock);
 	st->info = spi_get_device_match_data(spi);
 
 	indio_dev->name = st->info->name;
+=======
+	spi_set_drvdata(spi, indio_dev);
+	st->us = spi;
+	mutex_init(&st->lock);
+	st->info = &sca3000_spi_chip_info_tbl[spi_get_device_id(spi)
+					      ->driver_data];
+
+	indio_dev->name = spi_get_device_id(spi)->name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	indio_dev->info = &sca3000_info;
 	if (st->info->temp_output) {
 		indio_dev->channels = sca3000_channels_with_temp;
@@ -1475,21 +1570,36 @@ static int sca3000_probe(struct spi_device *spi)
 	}
 	indio_dev->modes = INDIO_DIRECT_MODE;
 
+<<<<<<< HEAD
 	ret = devm_iio_kfifo_buffer_setup(dev, indio_dev, &sca3000_ring_setup_ops);
+=======
+	ret = devm_iio_kfifo_buffer_setup(&spi->dev, indio_dev,
+					  &sca3000_ring_setup_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
 	if (spi->irq) {
+<<<<<<< HEAD
 		ret = devm_request_threaded_irq(dev, spi->irq, NULL,
 						&sca3000_event_handler,
 						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
 						"sca3000",
 						indio_dev);
+=======
+		ret = request_threaded_irq(spi->irq,
+					   NULL,
+					   &sca3000_event_handler,
+					   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+					   "sca3000",
+					   indio_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
 	ret = sca3000_clean_setup(st);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	ret = sca3000_print_rev(indio_dev);
@@ -1508,6 +1618,63 @@ static const struct spi_device_id sca3000_id[] = {
 	{ "sca3000_e02", (kernel_ulong_t)&sca3000_chip_info_e02 },
 	{ "sca3000_e04", (kernel_ulong_t)&sca3000_chip_info_e04 },
 	{ "sca3000_e05", (kernel_ulong_t)&sca3000_chip_info_e05 },
+=======
+		goto error_free_irq;
+
+	ret = sca3000_print_rev(indio_dev);
+	if (ret)
+		goto error_free_irq;
+
+	ret = iio_device_register(indio_dev);
+	if (ret)
+		goto error_free_irq;
+
+	return 0;
+
+error_free_irq:
+	if (spi->irq)
+		free_irq(spi->irq, indio_dev);
+
+	return ret;
+}
+
+static int sca3000_stop_all_interrupts(struct sca3000_state *st)
+{
+	int ret;
+
+	mutex_lock(&st->lock);
+	ret = sca3000_read_data_short(st, SCA3000_REG_INT_MASK_ADDR, 1);
+	if (ret)
+		goto error_ret;
+	ret = sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
+				(st->rx[0] &
+				 ~(SCA3000_REG_INT_MASK_RING_THREE_QUARTER |
+				   SCA3000_REG_INT_MASK_RING_HALF |
+				   SCA3000_REG_INT_MASK_ALL_INTS)));
+error_ret:
+	mutex_unlock(&st->lock);
+	return ret;
+}
+
+static void sca3000_remove(struct spi_device *spi)
+{
+	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+	struct sca3000_state *st = iio_priv(indio_dev);
+
+	iio_device_unregister(indio_dev);
+
+	/* Must ensure no interrupts can be generated after this! */
+	sca3000_stop_all_interrupts(st);
+	if (spi->irq)
+		free_irq(spi->irq, indio_dev);
+}
+
+static const struct spi_device_id sca3000_id[] = {
+	{"sca3000_d01", d01},
+	{"sca3000_e02", e02},
+	{"sca3000_e04", e04},
+	{"sca3000_e05", e05},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, sca3000_id);
@@ -1517,6 +1684,10 @@ static struct spi_driver sca3000_driver = {
 		.name = "sca3000",
 	},
 	.probe = sca3000_probe,
+<<<<<<< HEAD
+=======
+	.remove = sca3000_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.id_table = sca3000_id,
 };
 module_spi_driver(sca3000_driver);

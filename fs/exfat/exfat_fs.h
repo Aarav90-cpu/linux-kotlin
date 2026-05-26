@@ -10,7 +10,10 @@
 #include <linux/ratelimit.h>
 #include <linux/nls.h>
 #include <linux/blkdev.h>
+<<<<<<< HEAD
 #include <linux/backing-dev.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/exfat.h>
 
 #define EXFAT_ROOT_INO		1
@@ -80,10 +83,13 @@ enum {
 #define EXFAT_HINT_NONE		-1
 #define EXFAT_MIN_SUBDIR	2
 
+<<<<<<< HEAD
 #define EXFAT_BLK_RA_SIZE(sb)		\
 	(min_t(blkcnt_t, (sb)->s_bdi->ra_pages, (sb)->s_bdi->io_pages) \
 	<< (PAGE_SHIFT - (sb)->s_blocksize_bits))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * helpers for cluster size to byte conversion.
  */
@@ -122,9 +128,15 @@ enum {
 #define FAT_ENT_SIZE (4)
 #define FAT_ENT_SIZE_BITS (2)
 #define FAT_ENT_OFFSET_SECTOR(sb, loc) (EXFAT_SB(sb)->FAT1_start_sector + \
+<<<<<<< HEAD
 	(((u64)(loc) << FAT_ENT_SIZE_BITS) >> sb->s_blocksize_bits))
 #define FAT_ENT_OFFSET_BYTE_IN_SECTOR(sb, loc)	\
 	(((loc) << FAT_ENT_SIZE_BITS) & (sb->s_blocksize - 1))
+=======
+	(((u64)loc << FAT_ENT_SIZE_BITS) >> sb->s_blocksize_bits))
+#define FAT_ENT_OFFSET_BYTE_IN_SECTOR(sb, loc)	\
+	((loc << FAT_ENT_SIZE_BITS) & (sb->s_blocksize - 1))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * helpers for bitmap.
@@ -437,8 +449,12 @@ int exfat_set_volume_dirty(struct super_block *sb);
 int exfat_clear_volume_dirty(struct super_block *sb);
 
 /* fatent.c */
+<<<<<<< HEAD
 #define exfat_get_next_cluster(sb, pclu) \
 	exfat_cluster_walk(sb, (pclu), 1, ALLOC_FAT_CHAIN)
+=======
+#define exfat_get_next_cluster(sb, pclu) exfat_ent_get(sb, *(pclu), pclu, NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int exfat_alloc_cluster(struct inode *inode, unsigned int num_alloc,
 		struct exfat_chain *p_chain, bool sync_bmap);
@@ -454,6 +470,7 @@ int exfat_find_last_cluster(struct super_block *sb, struct exfat_chain *p_chain,
 		unsigned int *ret_clu);
 int exfat_count_num_clusters(struct super_block *sb,
 		struct exfat_chain *p_chain, unsigned int *ret_count);
+<<<<<<< HEAD
 int exfat_blk_readahead(struct super_block *sb, sector_t sec,
 		sector_t *ra, blkcnt_t *ra_cnt, sector_t end);
 
@@ -476,6 +493,8 @@ exfat_cluster_walk(struct super_block *sb, unsigned int *clu,
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* balloc.c */
 int exfat_load_bitmap(struct super_block *sb);
@@ -552,6 +571,7 @@ int exfat_read_volume_label(struct super_block *sb,
 int exfat_write_volume_label(struct super_block *sb,
 			     struct exfat_uni_name *label);
 
+<<<<<<< HEAD
 static inline int exfat_chain_advance(struct super_block *sb,
 		struct exfat_chain *chain, unsigned int step)
 {
@@ -573,6 +593,8 @@ static inline int exfat_chain_advance(struct super_block *sb,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* inode.c */
 extern const struct inode_operations exfat_file_inode_operations;
 void exfat_sync_inode(struct inode *inode);
@@ -626,7 +648,11 @@ void exfat_set_entry_time(struct exfat_sb_info *sbi, struct timespec64 *ts,
 		u8 *tz, __le16 *time, __le16 *date, u8 *time_cs);
 u16 exfat_calc_chksum16(void *data, int len, u16 chksum, int type);
 u32 exfat_calc_chksum32(void *data, int len, u32 chksum, int type);
+<<<<<<< HEAD
 int exfat_update_bh(struct buffer_head *bh, int sync);
+=======
+void exfat_update_bh(struct buffer_head *bh, int sync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int exfat_update_bhs(struct buffer_head **bhs, int nr_bhs, int sync);
 void exfat_chain_set(struct exfat_chain *ec, unsigned int dir,
 		unsigned int size, unsigned char flags);

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 //! Various assertions that happen during build-time.
 //!
 //! There are three types of build-time assertions that you can use:
@@ -67,10 +68,14 @@ pub use crate::{
     const_assert,
     static_assert, //
 };
+=======
+//! Build-time assert.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #[doc(hidden)]
 pub use build_error::build_error;
 
+<<<<<<< HEAD
 /// Static assert (i.e. compile-time assert).
 ///
 /// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
@@ -139,6 +144,8 @@ macro_rules! const_assert {
     };
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Fails the build if the code path calling `build_error!` can possibly be executed.
 ///
 /// If the macro is executed in const context, `build_error!` will panic.
@@ -172,6 +179,7 @@ macro_rules! build_error {
 /// will panic. If the compiler or optimizer cannot guarantee the condition will
 /// be evaluated to `true`, a build error will be triggered.
 ///
+<<<<<<< HEAD
 /// When a condition depends on a function argument, the function must be annotated with
 /// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
 /// function, preventing it from optimizing out the error path.
@@ -199,6 +207,46 @@ macro_rules! build_error {
 ///
 /// const _: () = const_bar(2);
 /// ```
+=======
+/// [`static_assert!`] should be preferred to `build_assert!` whenever possible.
+///
+/// # Examples
+///
+/// These examples show that different types of [`assert!`] will trigger errors
+/// at different stage of compilation. It is preferred to err as early as
+/// possible, so [`static_assert!`] should be used whenever possible.
+/// ```ignore
+/// fn foo() {
+///     static_assert!(1 > 1); // Compile-time error
+///     build_assert!(1 > 1); // Build-time error
+///     assert!(1 > 1); // Run-time error
+/// }
+/// ```
+///
+/// When the condition refers to generic parameters or parameters of an inline function,
+/// [`static_assert!`] cannot be used. Use `build_assert!` in this scenario.
+/// ```
+/// fn foo<const N: usize>() {
+///     // `static_assert!(N > 1);` is not allowed
+///     build_assert!(N > 1); // Build-time check
+///     assert!(N > 1); // Run-time check
+/// }
+/// ```
+///
+/// When a condition depends on a function argument, the function must be annotated with
+/// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
+/// function, preventing it from optimizing out the error path.
+/// ```
+/// #[inline(always)]
+/// fn bar(n: usize) {
+///     // `static_assert!(n > 1);` is not allowed
+///     build_assert!(n > 1); // Build-time check
+///     assert!(n > 1); // Run-time check
+/// }
+/// ```
+///
+/// [`static_assert!`]: crate::static_assert!
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #[macro_export]
 macro_rules! build_assert {
     ($cond:expr $(,)?) => {{

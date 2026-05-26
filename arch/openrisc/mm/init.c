@@ -188,6 +188,12 @@ void __init mem_init(void)
 {
 	BUG_ON(!mem_map);
 
+<<<<<<< HEAD
+=======
+	/* clear the zero-page */
+	memset((void *)empty_zero_page, 0, PAGE_SIZE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	printk("mem_init_done ...........................................\n");
 	mem_init_done = 1;
 	return;

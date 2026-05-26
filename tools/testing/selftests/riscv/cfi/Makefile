@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CFLAGS += $(KHDR_INCLUDES)
 CFLAGS += -I$(top_srcdir)/tools/include
 

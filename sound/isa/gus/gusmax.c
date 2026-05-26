@@ -328,6 +328,7 @@ static int snd_gusmax_probe(struct device *pdev, unsigned int dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_gusmax_suspend(struct device *dev, unsigned int n,
 			      pm_message_t state)
@@ -351,15 +352,21 @@ static int snd_gusmax_resume(struct device *dev, unsigned int n)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DEV_NAME "gusmax"
 
 static struct isa_driver snd_gusmax_driver = {
 	.match		= snd_gusmax_match,
 	.probe		= snd_gusmax_probe,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend	= snd_gusmax_suspend,
 	.resume		= snd_gusmax_resume,
 #endif
+=======
+	/* FIXME: suspend/resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver		= {
 		.name	= DEV_NAME
 	},

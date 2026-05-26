@@ -441,6 +441,13 @@ initial_pg_fixmap:
 swapper_pg_dir:
 	.fill 1024,4,0
 	.fill PTI_USER_PGD_FILL,4,0
+<<<<<<< HEAD
+=======
+.globl empty_zero_page
+empty_zero_page:
+	.fill 4096,1,0
+EXPORT_SYMBOL(empty_zero_page)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This starts the data section.

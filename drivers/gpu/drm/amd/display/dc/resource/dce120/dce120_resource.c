@@ -712,7 +712,10 @@ static struct link_encoder *dce120_link_encoder_create(
 	struct dc_context *ctx,
 	const struct encoder_init_data *enc_init_data)
 {
+<<<<<<< HEAD
 	(void)ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_link_encoder *enc110 =
 		kzalloc_obj(struct dce110_link_encoder);
 	int link_regs_id;
@@ -1082,7 +1085,11 @@ static bool dce120_resource_construct(
 	/* TODO: Fill more data from GreenlandAsicCapability.cpp */
 	pool->base.pipe_count = res_cap.num_timing_generator;
 	pool->base.timing_generator_count = pool->base.res_cap->num_timing_generator;
+<<<<<<< HEAD
 	pool->base.underlay_pipe_index = (unsigned int)NO_UNDERLAY_PIPE;
+=======
+	pool->base.underlay_pipe_index = NO_UNDERLAY_PIPE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dc->caps.max_downscale_ratio = 200;
 	dc->caps.i2c_speed_in_khz = 100;

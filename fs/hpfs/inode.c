@@ -250,8 +250,13 @@ void hpfs_write_inode_nolock(struct inode *i)
 			hpfs_brelse4(&qbh);
 		} else
 			hpfs_error(i->i_sb,
+<<<<<<< HEAD
 				"directory %08llx doesn't have '.' entry",
 				i->i_ino);
+=======
+				"directory %08lx doesn't have '.' entry",
+				(unsigned long)i->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	mark_buffer_dirty(bh);
 	brelse(bh);

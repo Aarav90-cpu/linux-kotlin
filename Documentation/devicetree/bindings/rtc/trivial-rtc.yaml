@@ -65,8 +65,11 @@ properties:
       - microcrystal,rv3029
       # Real Time Clock
       - microcrystal,rv8523
+<<<<<<< HEAD
       # OLPC XO-1 RTC
       - olpc,xo1-rtc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       # I2C bus SERIAL INTERFACE REAL-TIME CLOCK IC
       - ricoh,r2025sd
       # I2C bus SERIAL INTERFACE REAL-TIME CLOCK IC

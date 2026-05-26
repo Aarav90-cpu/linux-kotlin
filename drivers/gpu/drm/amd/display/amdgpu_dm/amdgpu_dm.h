@@ -53,6 +53,15 @@
 
 #define AMDGPU_DMUB_NOTIFICATION_MAX 8
 
+<<<<<<< HEAD
+=======
+#define HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_IEEE_REGISTRATION_ID 0x00001A
+#define AMD_VSDB_VERSION_3_FEATURECAP_REPLAYMODE 0x40
+#define AMD_VDSB_VERSION_3_PANEL_TYPE_MASK 0xC0
+#define AMD_VDSB_VERSION_3_PANEL_TYPE_SHIFT 6
+#define HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_VERSION_3 0x3
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum amd_vsdb_panel_type {
 	AMD_VSDB_PANEL_TYPE_DEFAULT = 0,
 	AMD_VSDB_PANEL_TYPE_MINILED,
@@ -91,6 +100,17 @@ struct dc_plane_state;
 struct dmub_notification;
 struct dmub_cmd_fused_request;
 
+<<<<<<< HEAD
+=======
+struct amd_vsdb_block {
+	unsigned char ieee_id[3];
+	unsigned char version;
+	unsigned char feature_caps;
+	unsigned char reserved[3];
+	unsigned char color_space_eotf_support;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct common_irq_params {
 	struct amdgpu_device *adev;
 	enum dc_irq_source irq_src;
@@ -109,6 +129,7 @@ struct dm_compressor_info {
 	uint64_t gpu_addr;
 };
 
+<<<<<<< HEAD
 /**
  * struct dm_boot_time_crc_info - Buffer info used by boot time CRC
  * @cpu_addr: MMIO cpu addr
@@ -123,6 +144,8 @@ struct dm_boot_time_crc_info {
 	uint32_t size;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef void (*dmub_notify_interrupt_callback_t)(struct amdgpu_device *adev, struct dmub_notification *notify);
 
 /**
@@ -698,6 +721,7 @@ struct amdgpu_display_manager {
 		struct completion replied;
 		char reply_data[0x40];  // Cannot include dmub_cmd here
 	} fused_io[8];
+<<<<<<< HEAD
 
 	/**
 	 * @dm_boot_time_crc_info:
@@ -705,6 +729,8 @@ struct amdgpu_display_manager {
 	 * Buffer info for the boot time crc.
 	 */
 	struct dm_boot_time_crc_info boot_time_crc_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum dsc_clock_force_state {
@@ -759,11 +785,14 @@ struct amdgpu_hdmi_vsdb_info {
 	unsigned int max_refresh_rate_hz;
 
 	/**
+<<<<<<< HEAD
 	 * @freesync_mccs_vcp_code: MCCS VCP code for freesync state
 	 */
 	unsigned int freesync_mccs_vcp_code;
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @replay_mode: Replay supported
 	 */
 	bool replay_mode;
@@ -1071,7 +1100,11 @@ void dm_restore_drm_connector_state(struct drm_device *dev,
 				    struct drm_connector *connector);
 
 void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+<<<<<<< HEAD
 				    const struct drm_edid *drm_edid, bool do_mccs);
+=======
+				    const struct drm_edid *drm_edid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void amdgpu_dm_trigger_timing_sync(struct drm_device *dev);
 

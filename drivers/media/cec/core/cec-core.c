@@ -338,8 +338,13 @@ int cec_register_adapter(struct cec_adapter *adap,
 	res = cec_devnode_register(&adap->devnode, adap->owner);
 	if (res) {
 #ifdef CONFIG_MEDIA_CEC_RC
+<<<<<<< HEAD
 		rc_unregister_device(adap->rc);
 		rc_free_device(adap->rc);
+=======
+		/* Note: rc_unregister also calls rc_free */
+		rc_unregister_device(adap->rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		adap->rc = NULL;
 #endif
 		return res;

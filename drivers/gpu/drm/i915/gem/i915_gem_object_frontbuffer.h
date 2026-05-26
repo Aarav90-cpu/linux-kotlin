@@ -20,6 +20,7 @@ struct i915_frontbuffer {
 	struct kref ref;
 };
 
+<<<<<<< HEAD
 void __i915_gem_object_frontbuffer_flush(struct drm_i915_gem_object *obj,
 					 enum fb_op_origin origin);
 void __i915_gem_object_frontbuffer_invalidate(struct drm_i915_gem_object *obj,
@@ -39,12 +40,34 @@ i915_gem_object_frontbuffer_invalidate(struct drm_i915_gem_object *obj,
 {
 	if (unlikely(rcu_access_pointer(obj->frontbuffer)))
 		__i915_gem_object_frontbuffer_invalidate(obj, origin);
+=======
+void __i915_gem_object_flush_frontbuffer(struct drm_i915_gem_object *obj,
+					 enum fb_op_origin origin);
+void __i915_gem_object_invalidate_frontbuffer(struct drm_i915_gem_object *obj,
+					      enum fb_op_origin origin);
+
+static inline void
+i915_gem_object_flush_frontbuffer(struct drm_i915_gem_object *obj,
+				  enum fb_op_origin origin)
+{
+	if (unlikely(rcu_access_pointer(obj->frontbuffer)))
+		__i915_gem_object_flush_frontbuffer(obj, origin);
+}
+
+static inline void
+i915_gem_object_invalidate_frontbuffer(struct drm_i915_gem_object *obj,
+				       enum fb_op_origin origin)
+{
+	if (unlikely(rcu_access_pointer(obj->frontbuffer)))
+		__i915_gem_object_invalidate_frontbuffer(obj, origin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct i915_frontbuffer *i915_gem_object_frontbuffer_get(struct drm_i915_gem_object *obj);
 void i915_gem_object_frontbuffer_ref(struct i915_frontbuffer *front);
 void i915_gem_object_frontbuffer_put(struct i915_frontbuffer *front);
 
+<<<<<<< HEAD
 static inline void i915_gem_object_frontbuffer_track(struct i915_frontbuffer *_old,
 						     struct i915_frontbuffer *_new,
 						     unsigned int frontbuffer_bits)
@@ -55,6 +78,8 @@ static inline void i915_gem_object_frontbuffer_track(struct i915_frontbuffer *_o
 	intel_frontbuffer_track(old, new, frontbuffer_bits);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * i915_gem_object_frontbuffer_lookup - Look up the object's frontbuffer
  * @obj: The object whose frontbuffer to look up.
@@ -91,6 +116,9 @@ i915_gem_object_frontbuffer_lookup(const struct drm_i915_gem_object *obj)
 	return front;
 }
 
+<<<<<<< HEAD
 extern const struct intel_display_frontbuffer_interface i915_display_frontbuffer_interface;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

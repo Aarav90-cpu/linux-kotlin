@@ -28,6 +28,10 @@ endif
 export BITS
 ifeq ($(CONFIG_ARCH_RV64I),y)
 	BITS := 64
+<<<<<<< HEAD
+=======
+	UTS_MACHINE := riscv64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KBUILD_CFLAGS += -mabi=lp64
 	KBUILD_AFLAGS += -mabi=lp64
@@ -38,14 +42,21 @@ ifeq ($(CONFIG_ARCH_RV64I),y)
 			    -Cno-redzone
 else
 	BITS := 32
+<<<<<<< HEAD
+=======
+	UTS_MACHINE := riscv32
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KBUILD_CFLAGS += -mabi=ilp32
 	KBUILD_AFLAGS += -mabi=ilp32
 	KBUILD_LDFLAGS += -melf32lriscv
 endif
 
+<<<<<<< HEAD
 UTS_MACHINE := riscv$(BITS)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # LLVM has an issue with target-features and LTO: https://github.com/llvm/llvm-project/issues/59350
 # Ensure it is aware of linker relaxation with LTO, otherwise relocations may
 # be incorrect: https://github.com/llvm/llvm-project/issues/65090
@@ -150,6 +161,10 @@ ifdef CONFIG_RISCV_M_MODE
 boot-image-$(CONFIG_SOC_CANAAN_K210)	:= loader.bin
 endif
 boot-image-$(CONFIG_EFI_ZBOOT)		:= vmlinuz.efi
+<<<<<<< HEAD
+=======
+boot-image-$(CONFIG_XIP_KERNEL)		:= xipImage
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 KBUILD_IMAGE				:= $(boot)/$(boot-image-y)
 
 libs-y += arch/riscv/lib/
@@ -217,6 +232,11 @@ define archhelp
   echo  '  Image.xz	- Compressed kernel image (arch/riscv/boot/Image.xz)'
   echo  '  vmlinuz.efi	- Compressed EFI kernel image (arch/riscv/boot/vmlinuz.efi)'
   echo  '		  Default when CONFIG_EFI_ZBOOT=y'
+<<<<<<< HEAD
+=======
+  echo  '  xipImage	- Execute-in-place kernel image (arch/riscv/boot/xipImage)'
+  echo  '		  Default when CONFIG_XIP_KERNEL=y'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   echo  '  install	- Install kernel using (your) ~/bin/$(INSTALLKERNEL) or'
   echo  '		  (distribution) /sbin/$(INSTALLKERNEL) or install to '
   echo  '		  $$(INSTALL_PATH)'

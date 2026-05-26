@@ -92,7 +92,11 @@ static int tv_probe(struct usb_interface *interface,
 		goto error;
 	}
 
+<<<<<<< HEAD
 	dev->udev = udev;
+=======
+	dev->udev = usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(interface, dev);
 
 	return 0;
@@ -108,6 +112,10 @@ static void tv_disconnect(struct usb_interface *interface)
 
 	dev = usb_get_intfdata (interface);
 	usb_set_intfdata(interface, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev);
 }
 

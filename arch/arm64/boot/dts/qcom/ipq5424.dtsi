@@ -572,6 +572,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		qpic_bam: dma-controller@7984000 {
 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
 			reg = <0x0 0x07984000 0x0 0x1c000>;
@@ -605,6 +606,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intc: interrupt-controller@f200000 {
 			compatible = "arm,gic-v3";
 			reg = <0 0xf200000 0 0x10000>, /* GICD */

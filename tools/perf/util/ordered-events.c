@@ -243,7 +243,11 @@ static int do_flush(struct ordered_events *oe, bool show_progress)
 		if (iter->timestamp > limit)
 			break;
 		ret = oe->deliver(oe, iter);
+<<<<<<< HEAD
 		if (ret < 0)
+=======
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 
 		ordered_events__delete(oe, iter);

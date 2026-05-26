@@ -50,7 +50,11 @@ static int mlx5_lag_create_port_sel_table(struct mlx5_lag *ldev,
 	if (first_idx < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ft_attr.max_fte = ldev->ports * ldev->buckets;
 	ft_attr.level = MLX5_LAG_FT_LEVEL_DEFINER;
 
@@ -84,12 +88,17 @@ static int mlx5_lag_create_port_sel_table(struct mlx5_lag *ldev,
 			idx = i * ldev->buckets + j;
 			affinity = ports[idx];
 
+<<<<<<< HEAD
 			/* affinity is 1-indexed device index,
 			 * use reverse lookup.
 			 */
 			dest.vport.vhca_id =
 				MLX5_CAP_GEN(mlx5_lag_pf_by_dev_idx(ldev, affinity - 1)->dev,
 					     vhca_id);
+=======
+			dest.vport.vhca_id = MLX5_CAP_GEN(ldev->pf[affinity - 1].dev,
+							  vhca_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			lag_definer->rules[idx] = mlx5_add_flow_rules(lag_definer->ft,
 								      NULL, &flow_act,
 								      &dest, 1);
@@ -311,7 +320,11 @@ mlx5_lag_create_definer(struct mlx5_lag *ldev, enum netdev_lag_hash hash,
 	if (first_idx < 0)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lag_definer = kzalloc_obj(*lag_definer);
 	if (!lag_definer)
 		return ERR_PTR(-ENOMEM);
@@ -360,8 +373,13 @@ static void mlx5_lag_destroy_definer(struct mlx5_lag *ldev,
 	if (first_idx < 0)
 		return;
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, first_idx)->dev;
 	mlx5_ldev_for_each(i, 0, ldev) {
+=======
+	dev = ldev->pf[first_idx].dev;
+	mlx5_ldev_for_each(i, first_idx, ldev) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (j = 0; j < ldev->buckets; j++) {
 			idx = i * ldev->buckets + j;
 			mlx5_del_flow_rules(lag_definer->rules[idx]);
@@ -524,7 +542,11 @@ static int mlx5_lag_create_ttc_table(struct mlx5_lag *ldev)
 	if (first_idx < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_lag_set_outer_ttc_params(ldev, &ttc_params);
 	port_sel->outer.ttc = mlx5_create_ttc_table(dev, &ttc_params);
 	return PTR_ERR_OR_ZERO(port_sel->outer.ttc);
@@ -540,7 +562,11 @@ static int mlx5_lag_create_inner_ttc_table(struct mlx5_lag *ldev)
 	if (first_idx < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_lag_set_inner_ttc_params(ldev, &ttc_params);
 	port_sel->inner.ttc = mlx5_create_inner_ttc_table(dev, &ttc_params);
 	return PTR_ERR_OR_ZERO(port_sel->inner.ttc);
@@ -598,12 +624,17 @@ static int __mlx5_lag_modify_definers_destinations(struct mlx5_lag *ldev,
 			if (ldev->v2p_map[idx] == ports[idx])
 				continue;
 
+<<<<<<< HEAD
 			/* ports[] contains 1-indexed device indices,
 			 * use reverse lookup.
 			 */
 			dest.vport.vhca_id =
 				MLX5_CAP_GEN(mlx5_lag_pf_by_dev_idx(ldev, ports[idx] - 1)->dev,
 					     vhca_id);
+=======
+			dest.vport.vhca_id = MLX5_CAP_GEN(ldev->pf[ports[idx] - 1].dev,
+							  vhca_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = mlx5_modify_rule_destination(def->rules[idx], &dest, NULL);
 			if (err)
 				return err;

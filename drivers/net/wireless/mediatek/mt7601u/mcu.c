@@ -403,18 +403,24 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 static const char * const mt7601u_fw_paths[] = {
 	"mediatek/" MT7601U_FIRMWARE,
 	MT7601U_FIRMWARE,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mt7601u_load_firmware(struct mt7601u_dev *dev)
 {
 	const struct firmware *fw;
 	const struct mt76_fw_header *hdr;
 	int len, ret;
 	u32 val;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt7601u_wr(dev, MT_USB_DMA_CFG, (MT_USB_DMA_CFG_RX_BULK_EN |
 					 MT_USB_DMA_CFG_TX_BULK_EN));
@@ -422,6 +428,7 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
 	if (firmware_running(dev))
 		return firmware_request_cache(dev->dev, MT7601U_FIRMWARE);
 
+<<<<<<< HEAD
 	/* Try loading firmware from multiple locations */
 	fw = NULL;
 	for (i = 0; i < MT7601U_FIRMWARE_PATHS; i++) {
@@ -430,6 +437,9 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
 			break;
 	}
 
+=======
+	ret = request_firmware(&fw, MT7601U_FIRMWARE, dev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

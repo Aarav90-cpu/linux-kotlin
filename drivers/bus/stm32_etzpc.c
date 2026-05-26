@@ -5,7 +5,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/bits.h>
+<<<<<<< HEAD
 #include <linux/bus/stm32_firewall.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/init.h>
@@ -17,6 +20,11 @@
 #include <linux/platform_device.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
+=======
+#include "stm32_firewall.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * ETZPC registers
  */

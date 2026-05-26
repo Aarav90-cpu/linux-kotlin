@@ -218,6 +218,10 @@ int gve_rx_alloc_ring_dqo(struct gve_priv *priv,
 {
 	struct device *hdev = &priv->pdev->dev;
 	struct page_pool *pool;
+<<<<<<< HEAD
+=======
+	int qpl_page_cnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t size;
 	u32 qpl_id;
 
@@ -245,7 +249,11 @@ int gve_rx_alloc_ring_dqo(struct gve_priv *priv,
 	XSK_CHECK_PRIV_TYPE(struct gve_xdp_buff);
 
 	rx->dqo.num_buf_states = cfg->raw_addressing ? buffer_queue_slots :
+<<<<<<< HEAD
 		cfg->pages_per_qpl;
+=======
+		gve_get_rx_pages_per_qpl_dqo(cfg->ring_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rx->dqo.buf_states = kvcalloc_node(rx->dqo.num_buf_states,
 					   sizeof(rx->dqo.buf_states[0]),
 					   GFP_KERNEL, priv->numa_node);
@@ -280,9 +288,16 @@ int gve_rx_alloc_ring_dqo(struct gve_priv *priv,
 		rx->dqo.page_pool = pool;
 	} else {
 		qpl_id = gve_get_rx_qpl_id(cfg->qcfg_tx, rx->q_num);
+<<<<<<< HEAD
 
 		rx->dqo.qpl = gve_alloc_queue_page_list(priv, qpl_id,
 							cfg->pages_per_qpl);
+=======
+		qpl_page_cnt = gve_get_rx_pages_per_qpl_dqo(cfg->ring_size);
+
+		rx->dqo.qpl = gve_alloc_queue_page_list(priv, qpl_id,
+							qpl_page_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!rx->dqo.qpl)
 			goto err;
 		rx->dqo.next_qpl_page_idx = 0;
@@ -942,6 +957,7 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
 			       struct gve_ptype ptype)
 {
 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+<<<<<<< HEAD
 	int rsc_segments, rsc_seg_len, hdr_len;
 	skb_frag_t *frag;
 	void *va;
@@ -954,6 +970,13 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
 	if (!rsc_seg_len)
 		return 0;
 
+=======
+
+	/* Only TCP is supported right now. */
+	if (ptype.l4_type != GVE_L4_TYPE_TCP)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (ptype.l3_type) {
 	case GVE_L3_TYPE_IPV4:
 		shinfo->gso_type = SKB_GSO_TCPV4;
@@ -965,6 +988,7 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (skb_headlen(skb)) {
 		/* With header-split, payload is in the non-linear part */
 		rsc_segments = DIV_ROUND_UP(skb->data_len, rsc_seg_len);
@@ -990,6 +1014,9 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
 	shinfo->gso_size = rsc_seg_len;
 	shinfo->gso_segs = rsc_segments;
 
+=======
+	shinfo->gso_size = le16_to_cpu(desc->rsc_seg_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1022,7 +1049,11 @@ static int gve_rx_complete_skb(struct gve_rx_ring *rx, struct napi_struct *napi,
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (rx->ctx.skb_head == napi->skb)
+=======
+	if (skb_headlen(rx->ctx.skb_head) == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		napi_gro_frags(napi);
 	else
 		napi_gro_receive(napi, rx->ctx.skb_head);

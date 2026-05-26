@@ -137,7 +137,12 @@ const struct dpu_mdss_cfg dpu_qcm2290_cfg = {
 	.pingpong = qcm2290_pp,
 	.intf_count = ARRAY_SIZE(qcm2290_intf),
 	.intf = qcm2290_intf,
+<<<<<<< HEAD
 	.vbif = &sdm845_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+	.vbif = sdm845_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &qcm2290_perf_data,
 };
 

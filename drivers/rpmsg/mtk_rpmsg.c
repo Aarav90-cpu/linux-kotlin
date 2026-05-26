@@ -135,7 +135,11 @@ static void mtk_rpmsg_destroy_ept(struct rpmsg_endpoint *ept)
 	kref_put(&ept->refcount, __mtk_ept_release);
 }
 
+<<<<<<< HEAD
 static int mtk_rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int mtk_rpmsg_send(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mtk_rpmsg_rproc_subdev *mtk_subdev =
 		to_mtk_rpmsg_endpoint(ept)->mtk_subdev;
@@ -144,7 +148,11 @@ static int mtk_rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int len)
 					  len, 0);
 }
 
+<<<<<<< HEAD
 static int mtk_rpmsg_trysend(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int mtk_rpmsg_trysend(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mtk_rpmsg_rproc_subdev *mtk_subdev =
 		to_mtk_rpmsg_endpoint(ept)->mtk_subdev;

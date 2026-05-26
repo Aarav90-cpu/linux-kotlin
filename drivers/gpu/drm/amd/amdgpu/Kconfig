@@ -103,6 +103,7 @@ config DRM_AMDGPU_WERROR
 	  Add -Werror to the build flags for amdgpu.ko.
 	  Only enable this if you are warning code for amdgpu.ko.
 
+<<<<<<< HEAD
 
 config GCOV_PROFILE_AMDGPU
 	bool "Enable GCOV profiling on amdgpu"
@@ -120,6 +121,8 @@ config GCOV_PROFILE_AMDGPU
 
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/gpu/drm/amd/acp/Kconfig"
 source "drivers/gpu/drm/amd/display/Kconfig"
 source "drivers/gpu/drm/amd/amdkfd/Kconfig"

@@ -88,10 +88,20 @@ static struct pmbus_driver_info pfe_driver_info[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int pfe_pmbus_probe(struct i2c_client *client)
 {
 	int model = (uintptr_t)i2c_get_match_data(client);
 
+=======
+static const struct i2c_device_id pfe_device_id[];
+
+static int pfe_pmbus_probe(struct i2c_client *client)
+{
+	int model;
+
+	model = (int)i2c_match_id(pfe_device_id, client)->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	client->dev.platform_data = &pfe_plat_data;
 
 	/*

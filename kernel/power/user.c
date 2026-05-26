@@ -322,6 +322,7 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
 		error = snapshot_write_finalize(&data->handle);
 		if (error)
 			break;
+<<<<<<< HEAD
 		if (data->mode != O_WRONLY || !data->frozen) {
 			error = -EPERM;
 			break;
@@ -330,6 +331,13 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
 			error = -ENODATA;
 			break;
 		}
+=======
+		if (data->mode != O_WRONLY || !data->frozen ||
+		    !snapshot_image_loaded(&data->handle)) {
+			error = -EPERM;
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		error = hibernation_restore(data->platform_support);
 		break;
 

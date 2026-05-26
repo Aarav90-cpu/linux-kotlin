@@ -3194,7 +3194,11 @@ static int xilinx_dma_probe(struct platform_device *pdev)
 					= axivdma_clk_init;
 	struct device_node *node = pdev->dev.of_node;
 	struct xilinx_dma_device *xdev;
+<<<<<<< HEAD
 	struct device_node *np = pdev->dev.of_node;
+=======
+	struct device_node *child, *np = pdev->dev.of_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 num_frames, addr_width = XILINX_DMA_DFAULT_ADDRWIDTH, len_width;
 	int i, err;
 
@@ -3334,10 +3338,19 @@ static int xilinx_dma_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, xdev);
 
 	/* Initialize the channels */
+<<<<<<< HEAD
 	for_each_child_of_node_scoped(node, child) {
 		err = xilinx_dma_child_probe(xdev, child);
 		if (err < 0)
 			goto error;
+=======
+	for_each_child_of_node(node, child) {
+		err = xilinx_dma_child_probe(xdev, child);
+		if (err < 0) {
+			of_node_put(child);
+			goto error;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (xdev->dma_config->dmatype == XDMA_TYPE_VDMA) {

@@ -3,8 +3,12 @@
 // inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs>
 #![allow(clippy::undocumented_unsafe_blocks)]
 #![cfg_attr(feature = "alloc", feature(allocator_api))]
+<<<<<<< HEAD
 #![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
 #![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+=======
+#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #[cfg(not(windows))]
 mod pthread_mtx {

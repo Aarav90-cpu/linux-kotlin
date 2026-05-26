@@ -4,7 +4,10 @@
 #include "pvr_ccb.h"
 #include "pvr_device.h"
 #include "pvr_drv.h"
+<<<<<<< HEAD
 #include "pvr_dump.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "pvr_free_list.h"
 #include "pvr_fw.h"
 #include "pvr_gem.h"
@@ -137,6 +140,7 @@ pvr_ccb_slot_available_locked(struct pvr_ccb *pvr_ccb, u32 *write_offset)
 static void
 process_fwccb_command(struct pvr_device *pvr_dev, struct rogue_fwif_fwccb_cmd *cmd)
 {
+<<<<<<< HEAD
 	struct drm_device *drm_dev = from_pvr_device(pvr_dev);
 
 	if ((cmd->cmd_type & ROGUE_CMD_MAGIC_DWORD_MASK) != ROGUE_CMD_MAGIC_DWORD_SHIFTED) {
@@ -145,6 +149,8 @@ process_fwccb_command(struct pvr_device *pvr_dev, struct rogue_fwif_fwccb_cmd *c
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (cmd->cmd_type) {
 	case ROGUE_FWIF_FWCCB_CMD_REQUEST_GPU_RESTART:
 		pvr_power_reset(pvr_dev, false);
@@ -159,6 +165,7 @@ process_fwccb_command(struct pvr_device *pvr_dev, struct rogue_fwif_fwccb_cmd *c
 		pvr_free_list_process_grow_req(pvr_dev, &cmd->cmd_data.cmd_free_list_gs);
 		break;
 
+<<<<<<< HEAD
 	case ROGUE_FWIF_FWCCB_CMD_UPDATE_STATS:
 		/*
 		 * We currently have no infrastructure for processing these
@@ -174,6 +181,11 @@ process_fwccb_command(struct pvr_device *pvr_dev, struct rogue_fwif_fwccb_cmd *c
 	default:
 		drm_info(drm_dev, "Received unknown FWCCB command (type=%d)\n",
 			 cmd->cmd_type & ~ROGUE_CMD_MAGIC_DWORD_MASK);
+=======
+	default:
+		drm_info(from_pvr_device(pvr_dev), "Received unknown FWCCB command %x\n",
+			 cmd->cmd_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 }

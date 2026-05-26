@@ -227,10 +227,17 @@ static bool loss_4state(struct netem_sched_data *q)
 		if (rnd < clg->a4) {
 			clg->state = LOST_IN_GAP_PERIOD;
 			return true;
+<<<<<<< HEAD
 		} else if (rnd < clg->a1 + clg->a4) {
 			clg->state = LOST_IN_BURST_PERIOD;
 			return true;
 		} else {
+=======
+		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
+			clg->state = LOST_IN_BURST_PERIOD;
+			return true;
+		} else if (clg->a1 + clg->a4 < rnd) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clg->state = TX_IN_GAP_PERIOD;
 		}
 
@@ -247,9 +254,15 @@ static bool loss_4state(struct netem_sched_data *q)
 	case LOST_IN_BURST_PERIOD:
 		if (rnd < clg->a3)
 			clg->state = TX_IN_BURST_PERIOD;
+<<<<<<< HEAD
 		else if (rnd < clg->a2 + clg->a3) {
 			clg->state = TX_IN_GAP_PERIOD;
 		} else {
+=======
+		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
+			clg->state = TX_IN_GAP_PERIOD;
+		} else if (clg->a2 + clg->a3 < rnd) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clg->state = LOST_IN_BURST_PERIOD;
 			return true;
 		}
@@ -524,7 +537,11 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 				1 << get_random_u32_below(8);
 	}
 
+<<<<<<< HEAD
 	if (unlikely(sch->q.qlen >= sch->limit)) {
+=======
+	if (unlikely(q->t_len >= sch->limit)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* re-link segs, so that qdisc_drop_all() frees them all */
 		skb->next = segs;
 		qdisc_drop_all(skb, sch, to_free);
@@ -659,8 +676,14 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
 
 	if (!q->slot_dist)
 		next_delay = q->slot_config.min_delay +
+<<<<<<< HEAD
 			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
 					get_random_u32(), 32);
+=======
+				(get_random_u32() *
+				 (q->slot_config.max_delay -
+				  q->slot_config.min_delay) >> 32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		next_delay = tabledist(q->slot_config.dist_delay,
 				       (s32)(q->slot_config.dist_jitter),
@@ -826,6 +849,7 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int validate_time(const struct nlattr *attr, const char *name,
 			 struct netlink_ext_ack *extack)
 {
@@ -859,6 +883,8 @@ static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *exta
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
 {
 	const struct tc_netem_slot *c = nla_data(attr);
@@ -1072,6 +1098,7 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
 			goto table_free;
 	}
 
+<<<<<<< HEAD
 	if (tb[TCA_NETEM_SLOT]) {
 		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
 		if (ret)
@@ -1090,6 +1117,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
 			goto table_free;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sch_tree_lock(sch);
 	/* backup q->clg and q->loss_model */
 	old_clg = q->clg;
@@ -1162,10 +1191,18 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
 	/* capping jitter to the range acceptable by tabledist() */
 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
 
+<<<<<<< HEAD
 	if (tb[TCA_NETEM_PRNG_SEED]) {
 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
 		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
 	}
+=======
+	if (tb[TCA_NETEM_PRNG_SEED])
+		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
+	else
+		q->prng.seed = get_random_u64();
+	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	sch_tree_unlock(sch);
@@ -1188,9 +1225,12 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
 		return -EINVAL;
 
 	q->loss_model = CLG_RANDOM;
+<<<<<<< HEAD
 	q->prng.seed = get_random_u64();
 	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = netem_change(sch, opt, extack);
 	if (ret)
 		pr_info("netem: change failed\n");

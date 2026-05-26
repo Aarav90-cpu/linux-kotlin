@@ -2,7 +2,11 @@ menu "SoC selection"
 
 config ARCH_ANDES
 	bool "Andes SoCs"
+<<<<<<< HEAD
 	depends on MMU
+=======
+	depends on MMU && !XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ERRATA_ANDES
 	help
 	  This enables support for Andes SoC platform hardware.
@@ -33,7 +37,11 @@ config ARCH_RENESAS
 
 config ARCH_SIFIVE
 	bool "SiFive SoCs"
+<<<<<<< HEAD
 	select ERRATA_SIFIVE
+=======
+	select ERRATA_SIFIVE if !XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This enables support for SiFive SoC platform hardware.
 
@@ -61,7 +69,11 @@ config SOC_STARFIVE
 
 config ARCH_SUNXI
 	bool "Allwinner sun20i SoCs"
+<<<<<<< HEAD
 	depends on MMU
+=======
+	depends on MMU && !XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ERRATA_THEAD
 	select SUN4I_TIMER
 	help
@@ -78,7 +90,11 @@ config ARCH_TENSTORRENT
 
 config ARCH_THEAD
 	bool "T-HEAD RISC-V SoCs"
+<<<<<<< HEAD
 	depends on MMU
+=======
+	depends on MMU && !XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ERRATA_THEAD
 	select PM_GENERIC_DOMAINS if PM
 	help

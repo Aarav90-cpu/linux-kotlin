@@ -1414,6 +1414,10 @@ exit_release_cir_addr:
 	release_region(itdev->cir_addr, itdev->params->io_region_size);
 exit_unregister_device:
 	rc_unregister_device(rdev);
+<<<<<<< HEAD
+=======
+	rdev = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit_free_dev_rdev:
 	rc_free_device(rdev);
 	kfree(itdev);
@@ -1438,7 +1442,10 @@ static void ite_remove(struct pnp_dev *pdev)
 	release_region(dev->cir_addr, dev->params->io_region_size);
 
 	rc_unregister_device(dev->rdev);
+<<<<<<< HEAD
 	rc_free_device(dev->rdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(dev);
 }

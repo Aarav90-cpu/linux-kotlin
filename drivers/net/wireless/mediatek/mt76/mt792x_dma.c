@@ -103,6 +103,7 @@ static void mt792x_dma_prefetch(struct mt792x_dev *dev)
 		mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x0400, 0x10));
 		mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x0500, 0x4));
 		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0540, 0x4));
+<<<<<<< HEAD
 	} else if (is_mt7902(&dev->mt76)) {
 		/* rx ring */
 		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0000, 0x4));
@@ -119,6 +120,8 @@ static void mt792x_dma_prefetch(struct mt792x_dev *dev)
 		mt76_wr(dev, MT_WFDMA0_TX_RING6_EXT_CTRL, PREFETCH(0x0280, 0x4));
 		mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x02c0, 0x4));
 		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0300, 0x4));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/* rx ring */
 		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0, 0x4));
@@ -372,7 +375,11 @@ EXPORT_SYMBOL_GPL(mt792x_poll_rx);
 
 int mt792x_wfsys_reset(struct mt792x_dev *dev)
 {
+<<<<<<< HEAD
 	u32 addr = is_connac2(&dev->mt76) ? 0x18000140 : 0x7c000140;
+=======
+	u32 addr = is_mt7921(&dev->mt76) ? 0x18000140 : 0x7c000140;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt76_clear(dev, addr, WFSYS_SW_RST_B);
 	msleep(50);

@@ -112,7 +112,10 @@ enum iwl_mld_traffic_load {
  * @traffic_load.status: The current traffic load status, see
  *	&enum iwl_mld_traffic_load
  * @cmd_size: size of %cmd.
+<<<<<<< HEAD
  * @cmd_ver: version of the scan command format.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @cmd: pointer to scan cmd buffer (allocated once in op mode start).
  * @last_6ghz_passive_jiffies: stores the last 6GHz passive scan time
  *	in jiffies.
@@ -138,7 +141,10 @@ struct iwl_mld_scan {
 	/* And here fields that survive a fw restart */
 	size_t cmd_size;
 	void *cmd;
+<<<<<<< HEAD
 	u8 cmd_ver;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long last_6ghz_passive_jiffies;
 	unsigned long last_start_time_jiffies;
 	u64 last_mlo_scan_start_time;

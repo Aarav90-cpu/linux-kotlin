@@ -60,6 +60,7 @@ config AD4030
 	tristate "Analog Devices AD4030 ADC Driver"
 	depends on SPI
 	depends on GPIOLIB
+<<<<<<< HEAD
 	depends on PWM
 	select REGMAP
 	select IIO_BUFFER
@@ -68,6 +69,11 @@ config AD4030
 	select IIO_TRIGGERED_BUFFER
 	select SPI_OFFLOAD
 	select SPI_OFFLOAD_TRIGGER_PWM
+=======
+	select REGMAP
+	select IIO_BUFFER
+	select IIO_TRIGGERED_BUFFER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say yes here to build support for Analog Devices AD4030 and AD4630 high speed
 	  SPI analog to digital converters (ADC).
@@ -418,10 +424,15 @@ config AD7768_1
 	select REGMAP_SPI
 	select RATIONAL
 	select IIO_BUFFER
+<<<<<<< HEAD
 	select IIO_BUFFER_DMAENGINE
 	select IIO_TRIGGER
 	select IIO_TRIGGERED_BUFFER
 	select SPI_OFFLOAD
+=======
+	select IIO_TRIGGER
+	select IIO_TRIGGERED_BUFFER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say yes here to build support for Analog Devices AD7768-1 SPI
 	  simultaneously sampling sigma-delta analog to digital converter (ADC).
@@ -1373,6 +1384,7 @@ config QCOM_SPMI_ADC5
 	  To compile this driver as a module, choose M here: the module will
 	  be called qcom-spmi-adc5.
 
+<<<<<<< HEAD
 config QCOM_SPMI_ADC5_GEN3
 	tristate "Qualcomm Technologies Inc. SPMI PMIC5 GEN3 ADC"
 	depends on SPMI && THERMAL
@@ -1399,6 +1411,8 @@ config QCOM_SPMI_ADC5_GEN3
 	  To compile this driver as a module, choose M here: the module will
 	  be called qcom-spmi-adc5-gen3.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config RCAR_GYRO_ADC
 	tristate "Renesas R-Car GyroADC driver"
 	depends on ARCH_RCAR_GEN2 || COMPILE_TEST

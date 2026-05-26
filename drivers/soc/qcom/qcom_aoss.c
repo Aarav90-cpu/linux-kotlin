@@ -355,7 +355,11 @@ static int qmp_cdev_set_cur_state(struct thermal_cooling_device *cdev,
 	/* Normalize state */
 	cdev_state = !!state;
 
+<<<<<<< HEAD
 	if (qmp_cdev->state == cdev_state)
+=======
+	if (qmp_cdev->state == state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	ret = qmp_send(qmp_cdev->qmp, "{class: volt_flr, event:zero_temp, res:%s, value:%s}",

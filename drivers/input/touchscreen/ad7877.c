@@ -376,14 +376,26 @@ static inline void ad7877_ts_event_release(struct ad7877 *ts)
 static void ad7877_timer(struct timer_list *t)
 {
 	struct ad7877 *ts = timer_container_of(ts, t, timer);
+<<<<<<< HEAD
 
 	guard(spinlock_irqsave)(&ts->lock);
 	ad7877_ts_event_release(ts);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&ts->lock, flags);
+	ad7877_ts_event_release(ts);
+	spin_unlock_irqrestore(&ts->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static irqreturn_t ad7877_irq(int irq, void *handle)
 {
 	struct ad7877 *ts = handle;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int error;
 
 	error = spi_sync(ts->spi, &ts->msg);
@@ -392,6 +404,7 @@ static irqreturn_t ad7877_irq(int irq, void *handle)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	scoped_guard(spinlock_irqsave, &ts->lock) {
 		error = ad7877_process_data(ts);
 		if (error)
@@ -399,6 +412,13 @@ static irqreturn_t ad7877_irq(int irq, void *handle)
 
 		mod_timer(&ts->timer, jiffies + TS_PEN_UP_TIMEOUT);
 	}
+=======
+	spin_lock_irqsave(&ts->lock, flags);
+	error = ad7877_process_data(ts);
+	if (!error)
+		mod_timer(&ts->timer, jiffies + TS_PEN_UP_TIMEOUT);
+	spin_unlock_irqrestore(&ts->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	return IRQ_HANDLED;
@@ -408,7 +428,11 @@ static void ad7877_disable(void *data)
 {
 	struct ad7877 *ts = data;
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
+=======
+	mutex_lock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ts->disabled) {
 		ts->disabled = true;
@@ -422,16 +446,30 @@ static void ad7877_disable(void *data)
 	 * We know the chip's in lowpower mode since we always
 	 * leave it that way after every request
 	 */
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ad7877_enable(struct ad7877 *ts)
 {
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
+=======
+	mutex_lock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ts->disabled) {
 		ts->disabled = false;
 		enable_irq(ts->spi->irq);
 	}
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define SHOW(name) static ssize_t \
@@ -504,9 +542,16 @@ static ssize_t ad7877_dac_store(struct device *dev,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
 	ts->dac = val & 0xFF;
 	ad7877_write(ts->spi, AD7877_REG_DAC, (ts->dac << 4) | AD7877_DAC_CONF);
+=======
+	mutex_lock(&ts->mutex);
+	ts->dac = val & 0xFF;
+	ad7877_write(ts->spi, AD7877_REG_DAC, (ts->dac << 4) | AD7877_DAC_CONF);
+	mutex_unlock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return count;
 }
@@ -533,10 +578,18 @@ static ssize_t ad7877_gpio3_store(struct device *dev,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
 	ts->gpio3 = !!val;
 	ad7877_write(ts->spi, AD7877_REG_EXTWRITE, AD7877_EXTW_GPIO_DATA |
 		 (ts->gpio4 << 4) | (ts->gpio3 << 5));
+=======
+	mutex_lock(&ts->mutex);
+	ts->gpio3 = !!val;
+	ad7877_write(ts->spi, AD7877_REG_EXTWRITE, AD7877_EXTW_GPIO_DATA |
+		 (ts->gpio4 << 4) | (ts->gpio3 << 5));
+	mutex_unlock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return count;
 }
@@ -563,10 +616,18 @@ static ssize_t ad7877_gpio4_store(struct device *dev,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
 	ts->gpio4 = !!val;
 	ad7877_write(ts->spi, AD7877_REG_EXTWRITE, AD7877_EXTW_GPIO_DATA |
 		     (ts->gpio4 << 4) | (ts->gpio3 << 5));
+=======
+	mutex_lock(&ts->mutex);
+	ts->gpio4 = !!val;
+	ad7877_write(ts->spi, AD7877_REG_EXTWRITE, AD7877_EXTW_GPIO_DATA |
+		     (ts->gpio4 << 4) | (ts->gpio3 << 5));
+	mutex_unlock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return count;
 }

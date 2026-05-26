@@ -592,7 +592,11 @@ static int ili9882t_unprepare(struct drm_panel *panel)
 {
 	struct ili9882t *ili = to_ili9882t(panel);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(ili->enable_gpio, 0);
+=======
+	gpiod_set_value(ili->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usleep_range(1000, 2000);
 	regulator_disable(ili->avee);
 	regulator_disable(ili->avdd);
@@ -608,7 +612,11 @@ static int ili9882t_prepare(struct drm_panel *panel)
 	struct ili9882t *ili = to_ili9882t(panel);
 	int ret;
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(ili->enable_gpio, 0);
+=======
+	gpiod_set_value(ili->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usleep_range(1000, 1500);
 
 	ret = regulator_enable(ili->pp3300);
@@ -638,11 +646,19 @@ static int ili9882t_prepare(struct drm_panel *panel)
 	}
 	usleep_range(1000, 2000);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(ili->enable_gpio, 1);
 	usleep_range(1000, 2000);
 	gpiod_set_value_cansleep(ili->enable_gpio, 0);
 	msleep(50);
 	gpiod_set_value_cansleep(ili->enable_gpio, 1);
+=======
+	gpiod_set_value(ili->enable_gpio, 1);
+	usleep_range(1000, 2000);
+	gpiod_set_value(ili->enable_gpio, 0);
+	msleep(50);
+	gpiod_set_value(ili->enable_gpio, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usleep_range(6000, 10000);
 
 	ret = ili->desc->init(ili);
@@ -652,7 +668,11 @@ static int ili9882t_prepare(struct drm_panel *panel)
 	return 0;
 
 poweroff:
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(ili->enable_gpio, 0);
+=======
+	gpiod_set_value(ili->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	regulator_disable(ili->avee);
 poweroffavdd:
 	regulator_disable(ili->avdd);
@@ -793,7 +813,11 @@ static int ili9882t_add(struct ili9882t *ili)
 		return PTR_ERR(ili->enable_gpio);
 	}
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(ili->enable_gpio, 0);
+=======
+	gpiod_set_value(ili->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = of_drm_get_panel_orientation(dev->of_node, &ili->orientation);
 	if (err < 0) {

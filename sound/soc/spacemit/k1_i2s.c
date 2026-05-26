@@ -93,8 +93,13 @@ static void spacemit_i2s_init(struct spacemit_i2s_dev *i2s)
 	u32 sscr_val, sspsp_val, ssfcr_val, ssrwt_val;
 
 	sscr_val = SSCR_TRAIL | SSCR_FRF_PSP;
+<<<<<<< HEAD
 	ssfcr_val = FIELD_PREP(SSFCR_FIELD_TFT, 0xF) |
 		    FIELD_PREP(SSFCR_FIELD_RFT, 0xF) |
+=======
+	ssfcr_val = FIELD_PREP(SSFCR_FIELD_TFT, 5) |
+		    FIELD_PREP(SSFCR_FIELD_RFT, 5) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    SSFCR_RSRE | SSFCR_TSRE;
 	ssrwt_val = SSRWT_RWOT;
 	sspsp_val = SSPSP_SFRMP;
@@ -106,6 +111,7 @@ static void spacemit_i2s_init(struct spacemit_i2s_dev *i2s)
 	writel(0, i2s->base + SSINTEN);
 }
 
+<<<<<<< HEAD
 static int spacemit_i2s_startup(struct snd_pcm_substream *substream,
 	struct snd_soc_dai *dai)
 {
@@ -137,6 +143,8 @@ static int spacemit_i2s_startup(struct snd_pcm_substream *substream,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int spacemit_i2s_hw_params(struct snd_pcm_substream *substream,
 				  struct snd_pcm_hw_params *params,
 				  struct snd_soc_dai *dai)
@@ -148,6 +156,13 @@ static int spacemit_i2s_hw_params(struct snd_pcm_substream *substream,
 	u32 val;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	val = readl(i2s->base + SSCR);
+	if (val & SSCR_SSE)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_data = &i2s->playback_dma_data;
 
 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -184,9 +199,28 @@ static int spacemit_i2s_hw_params(struct snd_pcm_substream *substream,
 			dma_data->maxburst = 32;
 			dma_data->addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
 		}
+<<<<<<< HEAD
 		break;
 	case SND_SOC_DAIFMT_DSP_A:
 	case SND_SOC_DAIFMT_DSP_B:
+=======
+
+		snd_pcm_hw_constraint_minmax(substream->runtime,
+					     SNDRV_PCM_HW_PARAM_CHANNELS,
+					     1, 2);
+		snd_pcm_hw_constraint_mask64(substream->runtime,
+					     SNDRV_PCM_HW_PARAM_FORMAT,
+					     SNDRV_PCM_FMTBIT_S16_LE);
+		break;
+	case SND_SOC_DAIFMT_DSP_A:
+	case SND_SOC_DAIFMT_DSP_B:
+		snd_pcm_hw_constraint_minmax(substream->runtime,
+					     SNDRV_PCM_HW_PARAM_CHANNELS,
+					     1, 1);
+		snd_pcm_hw_constraint_mask64(substream->runtime,
+					     SNDRV_PCM_HW_PARAM_FORMAT,
+					     SNDRV_PCM_FMTBIT_S32_LE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_dbg(i2s->dev, "unexpected format type");
@@ -195,9 +229,12 @@ static int spacemit_i2s_hw_params(struct snd_pcm_substream *substream,
 	}
 
 	val = readl(i2s->base + SSCR);
+<<<<<<< HEAD
 	if (val & SSCR_SSE)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	val &= ~SSCR_DW_32BYTE;
 	val |= data_width;
 	writel(val, i2s->base + SSCR);
@@ -320,7 +357,10 @@ static int spacemit_i2s_dai_remove(struct snd_soc_dai *dai)
 static const struct snd_soc_dai_ops spacemit_i2s_dai_ops = {
 	.probe = spacemit_i2s_dai_probe,
 	.remove = spacemit_i2s_dai_remove,
+<<<<<<< HEAD
 	.startup = spacemit_i2s_startup,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.hw_params = spacemit_i2s_hw_params,
 	.set_sysclk = spacemit_i2s_set_sysclk,
 	.set_fmt = spacemit_i2s_set_fmt,

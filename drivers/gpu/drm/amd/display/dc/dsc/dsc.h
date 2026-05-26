@@ -64,11 +64,14 @@ struct dcn_dsc_state {
 	uint32_t dsc_chunk_size;
 	uint32_t dsc_fw_en;
 	uint32_t dsc_opp_source;
+<<<<<<< HEAD
 	uint32_t dsc_block_pred_enable;
 	uint32_t dsc_line_buf_depth;
 	uint32_t dsc_version_minor;
 	uint32_t dsc_rc_buffer_size;
 	uint32_t dsc_simple_422;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn_dsc_reg_state {

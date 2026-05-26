@@ -83,6 +83,7 @@ int f2fs_update_extension_list(struct f2fs_sb_info *sbi, const char *name,
 	if (set) {
 		if (total_count == F2FS_MAX_EXTENSION)
 			return -EINVAL;
+<<<<<<< HEAD
 
 		if (hot) {
 			start = 0;
@@ -98,6 +99,8 @@ int f2fs_update_extension_list(struct f2fs_sb_info *sbi, const char *name,
 				return -EINVAL;
 			}
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		if (!hot && !cold_count)
 			return -EINVAL;
@@ -520,7 +523,11 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 	}
 
 	if (inode->i_nlink == 0) {
+<<<<<<< HEAD
 		f2fs_warn(F2FS_I_SB(inode), "%s: inode (ino=%llx) has zero i_nlink",
+=======
+		f2fs_warn(F2FS_I_SB(inode), "%s: inode (ino=%lx) has zero i_nlink",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  __func__, inode->i_ino);
 		err = -EFSCORRUPTED;
 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
@@ -530,7 +537,11 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
 	if (IS_ENCRYPTED(dir) &&
 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
 	    !fscrypt_has_permitted_context(dir, inode)) {
+<<<<<<< HEAD
 		f2fs_warn(F2FS_I_SB(inode), "Inconsistent encryption contexts: %llu/%llu",
+=======
+		f2fs_warn(F2FS_I_SB(inode), "Inconsistent encryption contexts: %lu/%lu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  dir->i_ino, inode->i_ino);
 		err = -EPERM;
 		goto out_iput;
@@ -588,11 +599,19 @@ static int f2fs_unlink(struct inode *dir, struct dentry *dentry)
 	}
 
 	if (unlikely(inode->i_nlink == 0)) {
+<<<<<<< HEAD
 		f2fs_warn(sbi, "%s: inode (ino=%llx) has zero i_nlink",
 			  __func__, inode->i_ino);
 		goto corrupted;
 	} else if (S_ISDIR(inode->i_mode) && unlikely(inode->i_nlink == 1)) {
 		f2fs_warn(sbi, "%s: directory inode (ino=%llx) has a single i_nlink",
+=======
+		f2fs_warn(sbi, "%s: inode (ino=%lx) has zero i_nlink",
+			  __func__, inode->i_ino);
+		goto corrupted;
+	} else if (S_ISDIR(inode->i_mode) && unlikely(inode->i_nlink == 1)) {
+		f2fs_warn(sbi, "%s: directory inode (ino=%lx) has a single i_nlink",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  __func__, inode->i_ino);
 		goto corrupted;
 	}

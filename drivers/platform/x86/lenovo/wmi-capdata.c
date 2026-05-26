@@ -27,6 +27,10 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/acpi.h>
+<<<<<<< HEAD
+=======
+#include <linux/bitfield.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bug.h>
 #include <linux/cleanup.h>
 #include <linux/component.h>
@@ -47,19 +51,32 @@
 #include <linux/wmi.h>
 
 #include "wmi-capdata.h"
+<<<<<<< HEAD
 #include "wmi-helpers.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define LENOVO_CAPABILITY_DATA_00_GUID "362A3AFE-3D96-4665-8530-96DAD5BB300E"
 #define LENOVO_CAPABILITY_DATA_01_GUID "7A8F5407-CB67-4D6E-B547-39B3BE018154"
 #define LENOVO_FAN_TEST_DATA_GUID "B642801B-3D21-45DE-90AE-6E86F164FB21"
 
+<<<<<<< HEAD
+=======
+#define ACPI_AC_CLASS "ac_adapter"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACPI_AC_NOTIFY_STATUS 0x80
 
 #define LWMI_FEATURE_ID_FAN_TEST 0x05
 
+<<<<<<< HEAD
 #define LWMI_ATTR_ID_FAN_TEST                                      \
 	lwmi_attr_id(LWMI_DEVICE_ID_FAN, LWMI_FEATURE_ID_FAN_TEST, \
 		     LWMI_GZ_THERMAL_MODE_NONE, LWMI_TYPE_ID_NONE)
+=======
+#define LWMI_ATTR_ID_FAN_TEST							\
+	(FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, LWMI_DEVICE_ID_FAN) |		\
+	 FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, LWMI_FEATURE_ID_FAN_TEST))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum lwmi_cd_type {
 	LENOVO_CAPABILITY_DATA_00,

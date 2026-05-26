@@ -147,23 +147,40 @@ static int get_value(struct bpf_map *map_irq,
 		     int key,
 		     long long *value_irq,
 		     long long *value_thread,
+<<<<<<< HEAD
 		     long long *value_user)
+=======
+		     long long *value_user,
+		     int cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 
 	err = bpf_map__lookup_elem(map_irq, &key,
 				   sizeof(unsigned int), value_irq,
+<<<<<<< HEAD
 				   sizeof(long long) * nr_cpus, 0);
+=======
+				   sizeof(long long) * cpus, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 	err = bpf_map__lookup_elem(map_thread, &key,
 				   sizeof(unsigned int), value_thread,
+<<<<<<< HEAD
 				   sizeof(long long) * nr_cpus, 0);
+=======
+				   sizeof(long long) * cpus, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 	err = bpf_map__lookup_elem(map_user, &key,
 				   sizeof(unsigned int), value_user,
+<<<<<<< HEAD
 				   sizeof(long long) * nr_cpus, 0);
+=======
+				   sizeof(long long) * cpus, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 	return 0;
@@ -175,12 +192,21 @@ static int get_value(struct bpf_map *map_irq,
 int timerlat_bpf_get_hist_value(int key,
 				long long *value_irq,
 				long long *value_thread,
+<<<<<<< HEAD
 				long long *value_user)
+=======
+				long long *value_user,
+				int cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return get_value(bpf->maps.hist_irq,
 			 bpf->maps.hist_thread,
 			 bpf->maps.hist_user,
+<<<<<<< HEAD
 			 key, value_irq, value_thread, value_user);
+=======
+			 key, value_irq, value_thread, value_user, cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -189,12 +215,21 @@ int timerlat_bpf_get_hist_value(int key,
 int timerlat_bpf_get_summary_value(enum summary_field key,
 				   long long *value_irq,
 				   long long *value_thread,
+<<<<<<< HEAD
 				   long long *value_user)
+=======
+				   long long *value_user,
+				   int cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return get_value(bpf->maps.summary_irq,
 			 bpf->maps.summary_thread,
 			 bpf->maps.summary_user,
+<<<<<<< HEAD
 			 key, value_irq, value_thread, value_user);
+=======
+			 key, value_irq, value_thread, value_user, cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

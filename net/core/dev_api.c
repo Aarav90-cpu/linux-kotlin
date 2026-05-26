@@ -66,7 +66,10 @@ int dev_change_flags(struct net_device *dev, unsigned int flags,
 
 	netdev_lock_ops(dev);
 	ret = netif_change_flags(dev, flags, extack);
+<<<<<<< HEAD
 	netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev_unlock_ops(dev);
 
 	return ret;
@@ -286,7 +289,10 @@ int dev_set_promiscuity(struct net_device *dev, int inc)
 
 	netdev_lock_ops(dev);
 	ret = netif_set_promiscuity(dev, inc);
+<<<<<<< HEAD
 	netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev_unlock_ops(dev);
 
 	return ret;
@@ -313,7 +319,10 @@ int dev_set_allmulti(struct net_device *dev, int inc)
 
 	netdev_lock_ops(dev);
 	ret = netif_set_allmulti(dev, inc, true);
+<<<<<<< HEAD
 	netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev_unlock_ops(dev);
 
 	return ret;

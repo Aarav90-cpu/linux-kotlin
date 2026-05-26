@@ -33,6 +33,10 @@ properties:
     description: Regulator for 1.8V IO power supply.
 
   backlight: true
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reset-gpios: true
   port: true
 

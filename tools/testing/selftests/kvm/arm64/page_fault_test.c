@@ -23,7 +23,11 @@
 #define TEST_PTE_GVA				0xb0000000
 #define TEST_DATA				0x0123456789ABCDEF
 
+<<<<<<< HEAD
 static u64 *guest_test_memory = (u64 *)TEST_GVA;
+=======
+static uint64_t *guest_test_memory = (uint64_t *)TEST_GVA;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CMD_NONE				(0)
 #define CMD_SKIP_TEST				(1ULL << 1)
@@ -48,7 +52,11 @@ static struct event_cnt {
 
 struct test_desc {
 	const char *name;
+<<<<<<< HEAD
 	u64 mem_mark_cmd;
+=======
+	uint64_t mem_mark_cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Skip the test if any prepare function returns false */
 	bool (*guest_prepare[PREPARE_FN_NR])(void);
 	void (*guest_test)(void);
@@ -59,8 +67,13 @@ struct test_desc {
 	void (*iabt_handler)(struct ex_regs *regs);
 	void (*mmio_handler)(struct kvm_vm *vm, struct kvm_run *run);
 	void (*fail_vcpu_run_handler)(int ret);
+<<<<<<< HEAD
 	u32 pt_memslot_flags;
 	u32 data_memslot_flags;
+=======
+	uint32_t pt_memslot_flags;
+	uint32_t data_memslot_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool skip;
 	struct event_cnt expected_events;
 };
@@ -70,9 +83,15 @@ struct test_params {
 	struct test_desc *test_desc;
 };
 
+<<<<<<< HEAD
 static inline void flush_tlb_page(gva_t gva)
 {
 	gva_t page = gva >> 12;
+=======
+static inline void flush_tlb_page(uint64_t vaddr)
+{
+	uint64_t page = vaddr >> 12;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsb(ishst);
 	asm volatile("tlbi vaae1is, %0" :: "r" (page));
@@ -82,7 +101,11 @@ static inline void flush_tlb_page(gva_t gva)
 
 static void guest_write64(void)
 {
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WRITE_ONCE(*guest_test_memory, TEST_DATA);
 	val = READ_ONCE(*guest_test_memory);
@@ -92,8 +115,13 @@ static void guest_write64(void)
 /* Check the system for atomic instructions. */
 static bool guest_check_lse(void)
 {
+<<<<<<< HEAD
 	u64 isar0 = read_sysreg(id_aa64isar0_el1);
 	u64 atomic;
+=======
+	uint64_t isar0 = read_sysreg(id_aa64isar0_el1);
+	uint64_t atomic;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic = FIELD_GET(ID_AA64ISAR0_EL1_ATOMIC, isar0);
 	return atomic >= 2;
@@ -101,8 +129,13 @@ static bool guest_check_lse(void)
 
 static bool guest_check_dc_zva(void)
 {
+<<<<<<< HEAD
 	u64 dczid = read_sysreg(dczid_el0);
 	u64 dzp = FIELD_GET(DCZID_EL0_DZP, dczid);
+=======
+	uint64_t dczid = read_sysreg(dczid_el0);
+	uint64_t dzp = FIELD_GET(DCZID_EL0_DZP, dczid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return dzp == 0;
 }
@@ -110,7 +143,11 @@ static bool guest_check_dc_zva(void)
 /* Compare and swap instruction. */
 static void guest_cas(void)
 {
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(guest_check_lse());
 	asm volatile(".arch_extension lse\n"
@@ -122,7 +159,11 @@ static void guest_cas(void)
 
 static void guest_read64(void)
 {
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = READ_ONCE(*guest_test_memory);
 	GUEST_ASSERT_EQ(val, 0);
@@ -131,7 +172,11 @@ static void guest_read64(void)
 /* Address translation instruction */
 static void guest_at(void)
 {
+<<<<<<< HEAD
 	u64 par;
+=======
+	uint64_t par;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("at s1e1r, %0" :: "r" (guest_test_memory));
 	isb();
@@ -148,7 +193,11 @@ static void guest_at(void)
  */
 static void guest_dc_zva(void)
 {
+<<<<<<< HEAD
 	u16 val;
+=======
+	uint16_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("dc zva, %0" :: "r" (guest_test_memory));
 	dsb(ish);
@@ -164,8 +213,13 @@ static void guest_dc_zva(void)
  */
 static void guest_ld_preidx(void)
 {
+<<<<<<< HEAD
 	u64 val;
 	u64 addr = TEST_GVA - 8;
+=======
+	uint64_t val;
+	uint64_t addr = TEST_GVA - 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * This ends up accessing "TEST_GVA + 8 - 8", where "TEST_GVA - 8" is
@@ -179,8 +233,13 @@ static void guest_ld_preidx(void)
 
 static void guest_st_preidx(void)
 {
+<<<<<<< HEAD
 	u64 val = TEST_DATA;
 	u64 addr = TEST_GVA - 8;
+=======
+	uint64_t val = TEST_DATA;
+	uint64_t addr = TEST_GVA - 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile("str %0, [%1, #8]!"
 		     : "+r" (val), "+r" (addr));
@@ -191,8 +250,13 @@ static void guest_st_preidx(void)
 
 static bool guest_set_ha(void)
 {
+<<<<<<< HEAD
 	u64 mmfr1 = read_sysreg(id_aa64mmfr1_el1);
 	u64 hadbs, tcr;
+=======
+	uint64_t mmfr1 = read_sysreg(id_aa64mmfr1_el1);
+	uint64_t hadbs, tcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Skip if HA is not supported. */
 	hadbs = FIELD_GET(ID_AA64MMFR1_EL1_HAFDBS, mmfr1);
@@ -208,7 +272,11 @@ static bool guest_set_ha(void)
 
 static bool guest_clear_pte_af(void)
 {
+<<<<<<< HEAD
 	*((u64 *)TEST_PTE_GVA) &= ~PTE_AF;
+=======
+	*((uint64_t *)TEST_PTE_GVA) &= ~PTE_AF;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	flush_tlb_page(TEST_GVA);
 
 	return true;
@@ -217,7 +285,11 @@ static bool guest_clear_pte_af(void)
 static void guest_check_pte_af(void)
 {
 	dsb(ish);
+<<<<<<< HEAD
 	GUEST_ASSERT_EQ(*((u64 *)TEST_PTE_GVA) & PTE_AF, PTE_AF);
+=======
+	GUEST_ASSERT_EQ(*((uint64_t *)TEST_PTE_GVA) & PTE_AF, PTE_AF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void guest_check_write_in_dirty_log(void)
@@ -302,26 +374,43 @@ static void no_iabt_handler(struct ex_regs *regs)
 static struct uffd_args {
 	char *copy;
 	void *hva;
+<<<<<<< HEAD
 	u64 paging_size;
+=======
+	uint64_t paging_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } pt_args, data_args;
 
 /* Returns true to continue the test, and false if it should be skipped. */
 static int uffd_generic_handler(int uffd_mode, int uffd, struct uffd_msg *msg,
 				struct uffd_args *args)
 {
+<<<<<<< HEAD
 	u64 addr = msg->arg.pagefault.address;
 	u64 flags = msg->arg.pagefault.flags;
+=======
+	uint64_t addr = msg->arg.pagefault.address;
+	uint64_t flags = msg->arg.pagefault.flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct uffdio_copy copy;
 	int ret;
 
 	TEST_ASSERT(uffd_mode == UFFDIO_REGISTER_MODE_MISSING,
 		    "The only expected UFFD mode is MISSING");
+<<<<<<< HEAD
 	TEST_ASSERT_EQ(addr, (u64)args->hva);
+=======
+	TEST_ASSERT_EQ(addr, (uint64_t)args->hva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_debug("uffd fault: addr=%p write=%d\n",
 		 (void *)addr, !!(flags & UFFD_PAGEFAULT_FLAG_WRITE));
 
+<<<<<<< HEAD
 	copy.src = (u64)args->copy;
+=======
+	copy.src = (uint64_t)args->copy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	copy.dst = addr;
 	copy.len = args->paging_size;
 	copy.mode = 0;
@@ -407,7 +496,11 @@ static bool punch_hole_in_backing_store(struct kvm_vm *vm,
 					struct userspace_mem_region *region)
 {
 	void *hva = (void *)region->region.userspace_addr;
+<<<<<<< HEAD
 	u64 paging_size = region->region.memory_size;
+=======
+	uint64_t paging_size = region->region.memory_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret, fd = region->fd;
 
 	if (fd != -1) {
@@ -438,7 +531,11 @@ static void mmio_on_test_gpa_handler(struct kvm_vm *vm, struct kvm_run *run)
 
 static void mmio_no_handler(struct kvm_vm *vm, struct kvm_run *run)
 {
+<<<<<<< HEAD
 	u64 data;
+=======
+	uint64_t data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memcpy(&data, run->mmio.data, sizeof(data));
 	pr_debug("addr=%lld len=%d w=%d data=%lx\n",
@@ -449,11 +546,19 @@ static void mmio_no_handler(struct kvm_vm *vm, struct kvm_run *run)
 
 static bool check_write_in_dirty_log(struct kvm_vm *vm,
 				     struct userspace_mem_region *region,
+<<<<<<< HEAD
 				     u64 host_pg_nr)
 {
 	unsigned long *bmap;
 	bool first_page_dirty;
 	u64 size = region->region.memory_size;
+=======
+				     uint64_t host_pg_nr)
+{
+	unsigned long *bmap;
+	bool first_page_dirty;
+	uint64_t size = region->region.memory_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* getpage_size() is not always equal to vm->page_size */
 	bmap = bitmap_zalloc(size / getpagesize());
@@ -468,7 +573,11 @@ static bool handle_cmd(struct kvm_vm *vm, int cmd)
 {
 	struct userspace_mem_region *data_region, *pt_region;
 	bool continue_test = true;
+<<<<<<< HEAD
 	u64 pte_gpa, pte_pg;
+=======
+	uint64_t pte_gpa, pte_pg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data_region = vm_get_mem_region(vm, MEM_REGION_TEST_DATA);
 	pt_region = vm_get_mem_region(vm, MEM_REGION_PT);
@@ -510,7 +619,11 @@ void fail_vcpu_run_mmio_no_syndrome_handler(int ret)
 	events.fail_vcpu_runs += 1;
 }
 
+<<<<<<< HEAD
 typedef u32 aarch64_insn_t;
+=======
+typedef uint32_t aarch64_insn_t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern aarch64_insn_t __exec_test[2];
 
 noinline void __return_0x77(void)
@@ -525,7 +638,11 @@ noinline void __return_0x77(void)
  */
 static void load_exec_code_for_test(struct kvm_vm *vm)
 {
+<<<<<<< HEAD
 	u64 *code;
+=======
+	uint64_t *code;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct userspace_mem_region *region;
 	void *hva;
 
@@ -552,7 +669,11 @@ static void setup_abort_handlers(struct kvm_vm *vm, struct kvm_vcpu *vcpu,
 static void setup_gva_maps(struct kvm_vm *vm)
 {
 	struct userspace_mem_region *region;
+<<<<<<< HEAD
 	u64 pte_gpa;
+=======
+	uint64_t pte_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	region = vm_get_mem_region(vm, MEM_REGION_TEST_DATA);
 	/* Map TEST_GVA first. This will install a new PTE. */
@@ -574,12 +695,21 @@ enum pf_test_memslots {
  */
 static void setup_memslots(struct kvm_vm *vm, struct test_params *p)
 {
+<<<<<<< HEAD
 	u64 backing_src_pagesz = get_backing_src_pagesz(p->src_type);
 	u64 guest_page_size = vm->page_size;
 	u64 max_gfn = vm_compute_max_gfn(vm);
 	/* Enough for 2M of code when using 4K guest pages. */
 	u64 code_npages = 512;
 	u64 pt_size, data_size, data_gpa;
+=======
+	uint64_t backing_src_pagesz = get_backing_src_pagesz(p->src_type);
+	uint64_t guest_page_size = vm->page_size;
+	uint64_t max_gfn = vm_compute_max_gfn(vm);
+	/* Enough for 2M of code when using 4K guest pages. */
+	uint64_t code_npages = 512;
+	uint64_t pt_size, data_size, data_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * This test requires 1 pgd, 2 pud, 4 pmd, and 6 pte pages when using

@@ -193,7 +193,13 @@ static void tifm_sd_transfer_data(struct tifm_sd *host)
 
 		pg = sg_page(&sg[host->sg_pos]) + (off >> PAGE_SHIFT);
 		p_off = offset_in_page(off);
+<<<<<<< HEAD
 		p_cnt = min3(PAGE_SIZE - p_off, cnt, t_size);
+=======
+		p_cnt = PAGE_SIZE - p_off;
+		p_cnt = min(p_cnt, cnt);
+		p_cnt = min(p_cnt, t_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (r_data->flags & MMC_DATA_READ)
 			tifm_sd_read_fifo(host, pg, p_off, p_cnt);

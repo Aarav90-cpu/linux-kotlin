@@ -81,7 +81,11 @@ config HALTPOLL_CPUIDLE
 	 before halting in the guest (more efficient than polling in the
 	 host via halt_poll_ns for some scenarios).
 
+<<<<<<< HEAD
 endif # CPU_IDLE
+=======
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config ARCH_NEEDS_CPU_IDLE_COUPLED
 	def_bool n

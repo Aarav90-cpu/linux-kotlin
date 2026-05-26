@@ -381,7 +381,10 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn,
 	__rds_ib_conn_error(conn, KERN_WARNING "RDS/IB: " fmt)
 
 /* ib_rdma.c */
+<<<<<<< HEAD
 struct rds_ib_device *rds_ib_get_device(__be32 ipaddr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rds_ib_update_ipaddr(struct rds_ib_device *rds_ibdev,
 			 struct in6_addr *ipaddr);
 void rds_ib_add_conn(struct rds_ib_device *rds_ibdev, struct rds_connection *conn);

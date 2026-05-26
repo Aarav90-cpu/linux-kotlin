@@ -235,9 +235,12 @@ static int pulse8_send_and_wait_once(struct pulse8 *pulse8,
 {
 	int err;
 
+<<<<<<< HEAD
 	if (!pulse8->serio)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (debug > 1)
 		dev_info(pulse8->dev, "transmit %s: %*ph\n",
 			 pulse8_msgname(cmd[0]), cmd_len, cmd);
@@ -658,10 +661,13 @@ static void pulse8_disconnect(struct serio *serio)
 {
 	struct pulse8 *pulse8 = serio_get_drvdata(serio);
 
+<<<<<<< HEAD
 	cancel_delayed_work_sync(&pulse8->ping_eeprom_work);
 	mutex_lock(&pulse8->lock);
 	pulse8->serio = NULL;
 	mutex_unlock(&pulse8->lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cec_unregister_adapter(pulse8->adap);
 	serio_set_drvdata(serio, NULL);
 	serio_close(serio);

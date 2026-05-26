@@ -9,7 +9,10 @@
 #include "rbtree_btf_fail__wrong_node_type.skel.h"
 #include "rbtree_btf_fail__add_wrong_type.skel.h"
 #include "rbtree_search.skel.h"
+<<<<<<< HEAD
 #include "rbtree_search_kptr.skel.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void test_rbtree_add_nodes(void)
 {
@@ -194,8 +197,11 @@ void test_rbtree_search(void)
 {
 	RUN_TESTS(rbtree_search);
 }
+<<<<<<< HEAD
 
 void test_rbtree_search_kptr(void)
 {
 	RUN_TESTS(rbtree_search_kptr);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

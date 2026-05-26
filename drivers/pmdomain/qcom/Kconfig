@@ -3,7 +3,11 @@ menu "Qualcomm PM Domains"
 
 config QCOM_CPR
 	tristate "QCOM Core Power Reduction (CPR) support"
+<<<<<<< HEAD
 	depends on (ARCH_QCOM || COMPILE_TEST) && HAS_IOMEM
+=======
+	depends on ARCH_QCOM && HAS_IOMEM
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select PM_OPP
 	select REGMAP
 	help

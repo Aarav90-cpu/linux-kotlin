@@ -241,12 +241,20 @@ struct intel_mpllb_state {
 };
 
 struct intel_c10pll_state {
+<<<<<<< HEAD
+=======
+	u32 clock; /* in KHz */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 tx;
 	u8 cmn;
 	u8 pll[20];
 };
 
 struct intel_c20pll_state {
+<<<<<<< HEAD
+=======
+	u32 clock; /* in kHz */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 tx[3];
 	u16 cmn[4];
 	union {
@@ -272,13 +280,20 @@ struct intel_cx0pll_state {
 };
 
 struct intel_lt_phy_pll_state {
+<<<<<<< HEAD
+=======
+	u32 clock; /* in kHz */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 addr_msb[13];
 	u8 addr_lsb[13];
 	u8 data[13][4];
 	u8 config[3];
 	bool ssc_enabled;
 	bool tbt_mode;
+<<<<<<< HEAD
 	int lane_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct intel_dpll_hw_state {

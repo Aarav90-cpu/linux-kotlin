@@ -26,7 +26,10 @@
 #include <linux/reboot.h>
 #include <linux/interrupt.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/cpumask.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/cpu.h>
 #include <linux/elfcore.h>
 #include <linux/pm.h>
@@ -52,7 +55,10 @@
 #include <asm/fpsimd.h>
 #include <asm/gcs.h>
 #include <asm/mmu_context.h>
+<<<<<<< HEAD
 #include <asm/mpam.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/mte.h>
 #include <asm/processor.h>
 #include <asm/pointer_auth.h>
@@ -341,6 +347,7 @@ void flush_thread(void)
 	flush_gcs();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_4193714
 
 static void arch_dup_tlbbatch_mask(struct task_struct *dst)
@@ -376,6 +383,10 @@ static void arch_release_tlbbatch_mask(struct task_struct *tsk)
 void arch_release_task_struct(struct task_struct *tsk)
 {
 	arch_release_tlbbatch_mask(tsk);
+=======
+void arch_release_task_struct(struct task_struct *tsk)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fpsimd_release_task(tsk);
 }
 
@@ -391,8 +402,11 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 
 	*dst = *src;
 
+<<<<<<< HEAD
 	arch_dup_tlbbatch_mask(dst);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Drop stale reference to src's sve_state and convert dst to
 	 * non-streaming FPSIMD mode.
@@ -736,6 +750,7 @@ void update_sctlr_el1(u64 sctlr)
 	isb();
 }
 
+<<<<<<< HEAD
 static inline void debug_switch_state(void)
 {
 	if (system_uses_irq_prio_masking()) {
@@ -759,6 +774,8 @@ static inline void debug_switch_state(void)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Thread switching.
  */
@@ -768,8 +785,11 @@ struct task_struct *__switch_to(struct task_struct *prev,
 {
 	struct task_struct *last;
 
+<<<<<<< HEAD
 	debug_switch_state();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fpsimd_thread_switch(next);
 	tls_thread_switch(next);
 	hw_breakpoint_thread_switch(next);
@@ -800,12 +820,15 @@ struct task_struct *__switch_to(struct task_struct *prev,
 	if (prev->thread.sctlr_user != next->thread.sctlr_user)
 		update_sctlr_el1(next->thread.sctlr_user);
 
+<<<<<<< HEAD
 	/*
 	 * MPAM thread switch happens after the DSB to ensure prev's accesses
 	 * use prev's MPAM settings.
 	 */
 	mpam_thread_switch(next);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* the actual thread switch */
 	last = cpu_switch_to(prev, next);
 

@@ -1497,6 +1497,7 @@ static void tunnel_group_destroy_state(struct drm_private_obj *obj, struct drm_p
 	free_group_state(to_group_state(state));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *tunnel_group_atomic_create_state(struct drm_private_obj *obj)
 {
 	struct drm_dp_tunnel_group_state *group_state;
@@ -1513,6 +1514,9 @@ static struct drm_private_state *tunnel_group_atomic_create_state(struct drm_pri
 
 static const struct drm_private_state_funcs tunnel_group_funcs = {
 	.atomic_create_state = tunnel_group_atomic_create_state,
+=======
+static const struct drm_private_state_funcs tunnel_group_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = tunnel_group_duplicate_state,
 	.atomic_destroy_state = tunnel_group_destroy_state,
 };
@@ -1596,11 +1600,26 @@ EXPORT_SYMBOL(drm_dp_tunnel_atomic_get_new_state);
 
 static bool init_group(struct drm_dp_tunnel_mgr *mgr, struct drm_dp_tunnel_group *group)
 {
+<<<<<<< HEAD
+=======
+	struct drm_dp_tunnel_group_state *group_state;
+
+	group_state = kzalloc_obj(*group_state);
+	if (!group_state)
+		return false;
+
+	INIT_LIST_HEAD(&group_state->tunnel_states);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	group->mgr = mgr;
 	group->available_bw = -1;
 	INIT_LIST_HEAD(&group->tunnels);
 
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(mgr->dev, &group->base,
+=======
+	drm_atomic_private_obj_init(mgr->dev, &group->base, &group_state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &tunnel_group_funcs);
 
 	return true;

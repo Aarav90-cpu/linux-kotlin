@@ -272,12 +272,20 @@ void __init pas_pci_init(void)
 {
 	struct device_node *root = of_find_node_by_path("/");
 	struct device_node *np;
+<<<<<<< HEAD
+=======
+	int res;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pci_set_flags(PCI_SCAN_ALL_PCIE_DEVS);
 
 	np = of_find_compatible_node(root, NULL, "pasemi,rootbus");
 	if (np) {
+<<<<<<< HEAD
 		pas_add_bridge(np);
+=======
+		res = pas_add_bridge(np);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		of_node_put(np);
 	}
 	of_node_put(root);

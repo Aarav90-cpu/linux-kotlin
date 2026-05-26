@@ -110,7 +110,10 @@ def damos_quota_to_dict(quota):
         ['reset_interval', int],
         ['ms', int], ['sz', int],
         ['goals', damos_quota_goals_to_list],
+<<<<<<< HEAD
         ['goal_tuner', int],
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         ['esz', int],
         ['weight_sz', int],
         ['weight_nr_accesses', int],

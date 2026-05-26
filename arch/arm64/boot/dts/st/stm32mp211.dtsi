@@ -112,6 +112,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		bsec: efuse@44000000 {
 			compatible = "st,stm32mp25-bsec";
 			reg = <0x44000000 0x0 0x1000>;
@@ -128,6 +129,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		syscfg: syscon@44230000 {
 			compatible = "st,stm32mp21-syscfg", "syscon";
 			reg = <0x44230000 0x0 0x10000>;

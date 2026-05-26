@@ -71,7 +71,11 @@ const struct inode_operations affs_dir_inode_operations = {
 	.mkdir		= affs_mkdir,
 	.rmdir		= affs_rmdir,
 	.rename		= affs_rename2,
+<<<<<<< HEAD
 	.setattr	= affs_setattr,
+=======
+	.setattr	= affs_notify_change,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int
@@ -90,7 +94,11 @@ affs_readdir(struct file *file, struct dir_context *ctx)
 	u32			 ino;
 	int			 error = 0;
 
+<<<<<<< HEAD
 	pr_debug("%s(ino=%llu,f_pos=%llx)\n", __func__, inode->i_ino, ctx->pos);
+=======
+	pr_debug("%s(ino=%lu,f_pos=%llx)\n", __func__, inode->i_ino, ctx->pos);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctx->pos < 2) {
 		data->ino = 0;
@@ -119,8 +127,11 @@ affs_readdir(struct file *file, struct dir_context *ctx)
 		pr_debug("readdir() left off=%d\n", ino);
 		goto inside;
 	}
+<<<<<<< HEAD
 	if (hash_pos >= AFFS_SB(sb)->s_hashsize)
 		goto done;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ino = be32_to_cpu(AFFS_HEAD(dir_bh)->table[hash_pos]);
 	for (i = 0; ino && i < chain_pos; i++) {

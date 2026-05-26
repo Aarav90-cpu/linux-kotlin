@@ -9,7 +9,11 @@ title: Texas Instruments DAC7612 family of DACs
 description:
   The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
   guaranteed 12-bit monotonicity performance over the industrial temperature
+<<<<<<< HEAD
   range. It is programmable through an SPI interface.
+=======
+  range. Is is programmable through an SPI interface.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 maintainers:
   - Ricardo Ribalda Delgado <ricardo@ribalda.com>

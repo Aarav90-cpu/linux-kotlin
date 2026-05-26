@@ -21,7 +21,11 @@
  */
 #define ASSERT_XFEATURE_DEPENDENCIES(supported_xcr0, xfeatures, dependencies)		\
 do {											\
+<<<<<<< HEAD
 	u64 __supported = (supported_xcr0) & ((xfeatures) | (dependencies));	\
+=======
+	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (dependencies));	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
 		       __supported == ((xfeatures) | (dependencies)),			\
@@ -39,7 +43,11 @@ do {											\
  */
 #define ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0, xfeatures)		\
 do {									\
+<<<<<<< HEAD
 	u64 __supported = (supported_xcr0) & (xfeatures);		\
+=======
+	uint64_t __supported = (supported_xcr0) & (xfeatures);		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 									\
 	__GUEST_ASSERT(!__supported || __supported == (xfeatures),	\
 		       "supported = 0x%lx, xfeatures = 0x%llx",		\
@@ -48,8 +56,13 @@ do {									\
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u64 initial_xcr0;
 	u64 supported_xcr0;
+=======
+	uint64_t initial_xcr0;
+	uint64_t supported_xcr0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, vector;
 
 	set_cr4(get_cr4() | X86_CR4_OSXSAVE);

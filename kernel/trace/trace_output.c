@@ -69,15 +69,23 @@ enum print_line_t trace_print_printk_msg_only(struct trace_iterator *iter)
 const char *
 trace_print_flags_seq(struct trace_seq *p, const char *delim,
 		      unsigned long flags,
+<<<<<<< HEAD
 		      const struct trace_print_flags *flag_array,
 		      size_t flag_array_size)
+=======
+		      const struct trace_print_flags *flag_array)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long mask;
 	const char *str;
 	const char *ret = trace_seq_buffer_ptr(p);
 	int i, first = 1;
 
+<<<<<<< HEAD
 	for (i = 0; i < flag_array_size && flags; i++) {
+=======
+	for (i = 0;  flag_array[i].name && flags; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		mask = flag_array[i].mask;
 		if ((flags & mask) != mask)
@@ -107,13 +115,21 @@ EXPORT_SYMBOL(trace_print_flags_seq);
 
 const char *
 trace_print_symbols_seq(struct trace_seq *p, unsigned long val,
+<<<<<<< HEAD
 			const struct trace_print_flags *symbol_array,
 			size_t symbol_array_size)
+=======
+			const struct trace_print_flags *symbol_array)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 	const char *ret = trace_seq_buffer_ptr(p);
 
+<<<<<<< HEAD
 	for (i = 0; i < symbol_array_size; i++) {
+=======
+	for (i = 0;  symbol_array[i].name; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (val != symbol_array[i].mask)
 			continue;
@@ -135,15 +151,23 @@ EXPORT_SYMBOL(trace_print_symbols_seq);
 const char *
 trace_print_flags_seq_u64(struct trace_seq *p, const char *delim,
 		      unsigned long long flags,
+<<<<<<< HEAD
 		      const struct trace_print_flags_u64 *flag_array,
 		      size_t flag_array_size)
+=======
+		      const struct trace_print_flags_u64 *flag_array)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long long mask;
 	const char *str;
 	const char *ret = trace_seq_buffer_ptr(p);
 	int i, first = 1;
 
+<<<<<<< HEAD
 	for (i = 0; i < flag_array_size && flags; i++) {
+=======
+	for (i = 0;  flag_array[i].name && flags; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		mask = flag_array[i].mask;
 		if ((flags & mask) != mask)
@@ -173,13 +197,21 @@ EXPORT_SYMBOL(trace_print_flags_seq_u64);
 
 const char *
 trace_print_symbols_seq_u64(struct trace_seq *p, unsigned long long val,
+<<<<<<< HEAD
 			    const struct trace_print_flags_u64 *symbol_array,
 			    size_t symbol_array_size)
+=======
+			 const struct trace_print_flags_u64 *symbol_array)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 	const char *ret = trace_seq_buffer_ptr(p);
 
+<<<<<<< HEAD
 	for (i = 0; i < symbol_array_size; i++) {
+=======
+	for (i = 0;  symbol_array[i].name; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (val != symbol_array[i].mask)
 			continue;
@@ -723,13 +755,20 @@ void print_function_args(struct trace_seq *s, unsigned long *args,
 {
 	const struct btf_param *param;
 	const struct btf_type *t;
+<<<<<<< HEAD
 	const struct btf_enum *enums;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *param_name;
 	char name[KSYM_NAME_LEN];
 	unsigned long arg;
 	struct btf *btf;
 	s32 tid, nr = 0;
+<<<<<<< HEAD
 	int a, p, x, i;
+=======
+	int a, p, x;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 encode;
 
 	trace_seq_printf(s, "(");
@@ -783,6 +822,7 @@ void print_function_args(struct trace_seq *s, unsigned long *args,
 			break;
 		case BTF_KIND_ENUM:
 			trace_seq_printf(s, "%ld", arg);
+<<<<<<< HEAD
 			enums = btf_enum(t);
 			for (i = 0; i < btf_vlen(t); i++) {
 				if (arg == enums[i].val) {
@@ -792,6 +832,8 @@ void print_function_args(struct trace_seq *s, unsigned long *args,
 					break;
 				}
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			/* This does not handle complex arguments */

@@ -38,6 +38,7 @@ extern int of_dma_controller_register(struct device_node *np,
 		void *data);
 extern void of_dma_controller_free(struct device_node *np);
 
+<<<<<<< HEAD
 static void __of_dma_controller_free(void *np)
 {
 	of_dma_controller_free(np);
@@ -58,6 +59,8 @@ devm_of_dma_controller_register(struct device *dev, struct device_node *np,
 	return devm_add_action_or_reset(dev, __of_dma_controller_free, np);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int of_dma_router_register(struct device_node *np,
 		void *(*of_dma_route_allocate)
 		(struct of_phandle_args *, struct of_dma *),
@@ -84,6 +87,7 @@ static inline void of_dma_controller_free(struct device_node *np)
 {
 }
 
+<<<<<<< HEAD
 static inline int
 devm_of_dma_controller_register(struct device *dev, struct device_node *np,
 				struct dma_chan *(*of_dma_xlate)
@@ -93,6 +97,8 @@ devm_of_dma_controller_register(struct device *dev, struct device_node *np,
 	return -ENODEV;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int of_dma_router_register(struct device_node *np,
 		void *(*of_dma_route_allocate)
 		(struct of_phandle_args *, struct of_dma *),

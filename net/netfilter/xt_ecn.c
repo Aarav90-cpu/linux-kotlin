@@ -30,10 +30,13 @@ static bool match_tcp(const struct sk_buff *skb, struct xt_action_param *par)
 	struct tcphdr _tcph;
 	const struct tcphdr *th;
 
+<<<<<<< HEAD
 	/* this is fine for IPv6 as ecn_mt_check6() enforces -p tcp */
 	if (par->fragoff)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* In practice, TCP match does this, so can't fail.  But let's
 	 * be good citizens.
 	 */

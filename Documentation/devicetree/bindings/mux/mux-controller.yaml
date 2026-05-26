@@ -63,12 +63,24 @@ description: |
 
 select:
   anyOf:
+<<<<<<< HEAD
+=======
+    - properties:
+        $nodename:
+          pattern: '^mux-controller'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     - required:
         - '#mux-control-cells'
     - required:
         - '#mux-state-cells'
 
 properties:
+<<<<<<< HEAD
+=======
+  $nodename:
+    pattern: '^mux-controller(@.*|-([0-9]|[1-9][0-9]+))?$'
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   '#mux-control-cells':
     enum: [ 0, 1 ]
 

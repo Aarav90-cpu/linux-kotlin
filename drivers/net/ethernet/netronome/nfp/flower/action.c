@@ -470,7 +470,11 @@ nfp_fl_set_tun(struct nfp_app *app, struct nfp_fl_set_tun *set_tun,
 
 		flow.daddr = ip_tun->key.u.ipv6.dst;
 		flow.flowi4_proto = IPPROTO_UDP;
+<<<<<<< HEAD
 		dst = ip6_dst_lookup_flow(net, NULL, &flow, NULL);
+=======
+		dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &flow, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!IS_ERR(dst)) {
 			set_tun->ttl = ip6_dst_hoplimit(dst);
 			dst_release(dst);

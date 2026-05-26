@@ -102,9 +102,22 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 	.stack		= init_stack,
 	.usage		= REFCOUNT_INIT(2),
 	.flags		= PF_KTHREAD,
+<<<<<<< HEAD
 	.prio		= MAX_PRIO - 20,
 	.static_prio	= MAX_PRIO - 20,
 	.normal_prio	= MAX_PRIO - 20,
+=======
+#ifdef CONFIG_SCHED_ALT
+	.on_cpu		= 1,
+	.prio		= DEFAULT_PRIO,
+	.static_prio	= DEFAULT_PRIO,
+	.normal_prio	= DEFAULT_PRIO,
+#else
+	.prio		= MAX_PRIO - 20,
+	.static_prio	= MAX_PRIO - 20,
+	.normal_prio	= MAX_PRIO - 20,
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.policy		= SCHED_NORMAL,
 	.cpus_ptr	= &init_task.cpus_mask,
 	.user_cpus_ptr	= NULL,
@@ -116,6 +129,19 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 	.restart_block	= {
 		.fn = do_no_restart_syscall,
 	},
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+	.sq_node	= LIST_HEAD_INIT(init_task.sq_node),
+#ifdef CONFIG_SCHED_BMQ
+	.boost_prio	= 0,
+#endif
+#ifdef CONFIG_SCHED_PDS
+	.deadline	= 0,
+#endif
+	.time_slice	= HZ,
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se		= {
 		.group_node 	= LIST_HEAD_INIT(init_task.se.group_node),
 	},
@@ -123,10 +149,20 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 		.run_list	= LIST_HEAD_INIT(init_task.rt.run_list),
 		.time_slice	= RR_TIMESLICE,
 	},
+<<<<<<< HEAD
 	.tasks		= LIST_HEAD_INIT(init_task.tasks),
 #ifdef CONFIG_SMP
 	.pushable_tasks	= PLIST_NODE_INIT(init_task.pushable_tasks, MAX_PRIO),
 #endif
+=======
+#endif
+	.tasks		= LIST_HEAD_INIT(init_task.tasks),
+#ifndef CONFIG_SCHED_ALT
+#ifdef CONFIG_SMP
+	.pushable_tasks	= PLIST_NODE_INIT(init_task.pushable_tasks, MAX_PRIO),
+#endif
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CGROUP_SCHED
 	.sched_task_group = &root_task_group,
 #endif
@@ -169,7 +205,10 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 	.journal_info	= NULL,
 	INIT_CPU_TIMERS(init_task)
 	.pi_lock	= __RAW_SPIN_LOCK_UNLOCKED(init_task.pi_lock),
+<<<<<<< HEAD
 	.blocked_lock	= __RAW_SPIN_LOCK_UNLOCKED(init_task.blocked_lock),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.timer_slack_ns = 50000, /* 50 usec default slack */
 	.thread_pid	= &init_struct_pid,
 	.thread_node	= LIST_HEAD_INIT(init_signals.thread_head),

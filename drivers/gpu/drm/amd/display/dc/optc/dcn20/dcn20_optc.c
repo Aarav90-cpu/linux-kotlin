@@ -181,7 +181,10 @@ void optc2_set_odm_bypass(struct timing_generator *optc,
 void optc2_set_odm_combine(struct timing_generator *optc, int *opp_id, int opp_cnt,
 		int segment_width, int last_segment_width)
 {
+<<<<<<< HEAD
 	(void)last_segment_width;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
 	uint32_t memory_mask;
 
@@ -262,7 +265,10 @@ static void optc2_align_vblanks(
 	uint8_t master_clock_divider,
 	uint8_t slave_clock_divider)
 {
+<<<<<<< HEAD
 	(void)slave_clock_divider;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* accessing slave OTG registers */
 	struct optc *optc1 = DCN10TG_FROM_TG(optc_slave);
 

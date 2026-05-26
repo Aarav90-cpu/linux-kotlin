@@ -879,7 +879,10 @@ static int unpack_tags(struct aa_ext *e, struct aa_tags_struct *tags,
 			*info = "failed to unpack profile tag.sets";
 			goto fail;
 		}
+<<<<<<< HEAD
 		error = -EPROTO;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!aa_unpack_nameX(e, AA_STRUCTEND, NULL))
 			goto fail;
 
@@ -1466,7 +1469,10 @@ static int verify_header(struct aa_ext *e, int required, const char **ns)
 		if (*ns && strcmp(*ns, name)) {
 			audit_iface(NULL, NULL, NULL, "invalid ns change", e,
 				    error);
+<<<<<<< HEAD
 			return error;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (!*ns) {
 			*ns = kstrdup(name, GFP_KERNEL);
 			if (!*ns)

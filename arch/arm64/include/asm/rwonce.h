@@ -20,6 +20,7 @@
 	ARM64_HAS_LDAPR)
 
 /*
+<<<<<<< HEAD
  * Replace this with typeof_unqual() when minimum compiler versions are
  * increased to GCC 14 and Clang 19. For the time being, we need this
  * workaround, which relies on function return values dropping qualifiers.
@@ -31,6 +32,8 @@
 	__diag_pop() }))
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * When building with LTO, there is an increased risk of the compiler
  * converting an address dependency headed by a READ_ONCE() invocation
  * into a control dependency and consequently allowing for harmful
@@ -42,12 +45,18 @@
  */
 #define __READ_ONCE(x)							\
 ({									\
+<<<<<<< HEAD
 	auto __x = &(x);						\
 	auto __ret = (__rwonce_typeof_unqual(*__x) *)__x;		\
 	/* Hides alias reassignment from Clang's -Wthread-safety. */	\
 	auto __retp = &__ret;						\
 	union { typeof(*__ret) __val; char __c[1]; } __u;		\
 	*__retp = &__u.__val;						\
+=======
+	typeof(&(x)) __x = &(x);					\
+	int atomic = 1;							\
+	union { __unqual_scalar_typeof(*__x) __val; char __c[1]; } __u;	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (sizeof(x)) {						\
 	case 1:								\
 		asm volatile(__LOAD_RCPC(b, %w0, %1)			\
@@ -70,9 +79,15 @@
 			: "Q" (*__x) : "memory");			\
 		break;							\
 	default:							\
+<<<<<<< HEAD
 		__u.__val = *(volatile typeof(*__x) *)__x;		\
 	}								\
 	*__ret;								\
+=======
+		atomic = 0;						\
+	}								\
+	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(*__x) *)__x);\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 #endif	/* !BUILD_VDSO */

@@ -9,10 +9,14 @@ use super::{
 };
 use crate::{
     fmt,
+<<<<<<< HEAD
     page::{
         AsPageIter,
         PAGE_SIZE, //
     },
+=======
+    page::AsPageIter, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 use core::{
     borrow::{Borrow, BorrowMut},
@@ -737,6 +741,7 @@ where
         self.truncate(num_kept);
     }
 }
+<<<<<<< HEAD
 // TODO: This is a temporary KVVec-specific implementation. It should be replaced with a generic
 // `shrink_to()` for `impl<T, A: Allocator> Vec<T, A>` that uses `A::realloc()` once the
 // underlying allocators properly support shrinking via realloc.
@@ -846,6 +851,8 @@ impl<T> Vec<T, KVmalloc> {
         Ok(())
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 impl<T: Clone, A: Allocator> Vec<T, A> {
     /// Extend the vector by `n` clones of `value`.
@@ -1510,6 +1517,7 @@ mod tests {
             func.push_within_capacity(false).unwrap();
         }
     }
+<<<<<<< HEAD
 
     #[test]
     fn test_kvvec_shrink_to() {
@@ -1612,4 +1620,6 @@ mod tests {
             assert_eq!(v[i as usize], i);
         }
     }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

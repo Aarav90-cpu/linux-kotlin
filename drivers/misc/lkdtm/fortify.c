@@ -10,6 +10,33 @@
 
 static volatile int fortify_scratch_space;
 
+<<<<<<< HEAD
+=======
+static void lkdtm_FORTIFY_STR_OBJECT(void)
+{
+	struct target {
+		char a[10];
+		int foo;
+	} target[3] = {};
+	/*
+	 * Using volatile prevents the compiler from determining the value of
+	 * 'size' at compile time. Without that, we would get a compile error
+	 * rather than a runtime error.
+	 */
+	volatile int size = 20;
+
+	pr_info("trying to strcmp() past the end of a struct\n");
+
+	strncpy(target[0].a, target[1].a, size);
+
+	/* Store result to global to prevent the code from being eliminated */
+	fortify_scratch_space = target[0].a[3];
+
+	pr_err("FAIL: fortify did not block a strncpy() object write overflow!\n");
+	pr_expected_config(CONFIG_FORTIFY_SOURCE);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void lkdtm_FORTIFY_STR_MEMBER(void)
 {
 	struct target {
@@ -23,6 +50,7 @@ static void lkdtm_FORTIFY_STR_MEMBER(void)
 	if (!src)
 		return;
 
+<<<<<<< HEAD
 	/* 15 bytes: past end of a[] but not target. */
 	strscpy(src, "over ten bytes", size);
 	size = strlen(src) + 1;
@@ -35,11 +63,28 @@ static void lkdtm_FORTIFY_STR_MEMBER(void)
 	 * volatile to force a runtime error.
 	 */
 	strscpy(target.a, src, size);
+=======
+	strscpy(src, "over ten bytes", size);
+	size = strlen(src) + 1;
+
+	pr_info("trying to strncpy() past the end of a struct member...\n");
+
+	/*
+	 * strncpy(target.a, src, 20); will hit a compile error because the
+	 * compiler knows at build time that target.a < 20 bytes. Use a
+	 * volatile to force a runtime error.
+	 */
+	strncpy(target.a, src, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Store result to global to prevent the code from being eliminated */
 	fortify_scratch_space = target.a[3];
 
+<<<<<<< HEAD
 	pr_err("FAIL: fortify did not block a strscpy() struct member write overflow!\n");
+=======
+	pr_err("FAIL: fortify did not block a strncpy() struct member write overflow!\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_expected_config(CONFIG_FORTIFY_SOURCE);
 
 	kfree(src);
@@ -187,6 +232,10 @@ static void lkdtm_FORTIFY_STRSCPY(void)
 }
 
 static struct crashtype crashtypes[] = {
+<<<<<<< HEAD
+=======
+	CRASHTYPE(FORTIFY_STR_OBJECT),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	CRASHTYPE(FORTIFY_STR_MEMBER),
 	CRASHTYPE(FORTIFY_MEM_OBJECT),
 	CRASHTYPE(FORTIFY_MEM_MEMBER),

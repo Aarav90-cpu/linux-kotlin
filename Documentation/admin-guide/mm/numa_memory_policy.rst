@@ -217,7 +217,11 @@ MPOL_PREFERRED
 	the MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES flags
 	described below.
 
+<<<<<<< HEAD
 MPOL_INTERLEAVE
+=======
+MPOL_INTERLEAVED
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	This mode specifies that page allocations be interleaved, on a
 	page granularity, across the nodes specified in the policy.
 	This mode also behaves slightly differently, based on the

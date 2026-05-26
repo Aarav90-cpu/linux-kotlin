@@ -778,6 +778,10 @@ struct pneigh_entry *pneigh_lookup(struct neigh_table *tbl,
 
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(pneigh_lookup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int pneigh_create(struct neigh_table *tbl, struct net *net,
 		  const void *pkey, struct net_device *dev,
@@ -3210,10 +3214,15 @@ int neigh_xmit(int index, struct net_device *dev,
 
 		rcu_read_lock();
 		tbl = rcu_dereference(neigh_tables[index]);
+<<<<<<< HEAD
 		if (!tbl) {
 			rcu_read_unlock();
 			goto out_kfree_skb;
 		}
+=======
+		if (!tbl)
+			goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (index == NEIGH_ARP_TABLE) {
 			u32 key = *((u32 *)addr);
 
@@ -3229,6 +3238,10 @@ int neigh_xmit(int index, struct net_device *dev,
 			goto out_kfree_skb;
 		}
 		err = READ_ONCE(neigh->output)(neigh, skb);
+<<<<<<< HEAD
+=======
+out_unlock:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_read_unlock();
 	}
 	else if (index == NEIGH_LINK_TABLE) {
@@ -3238,10 +3251,18 @@ int neigh_xmit(int index, struct net_device *dev,
 			goto out_kfree_skb;
 		err = dev_queue_xmit(skb);
 	}
+<<<<<<< HEAD
 	return err;
 out_kfree_skb:
 	kfree_skb(skb);
 	return err;
+=======
+out:
+	return err;
+out_kfree_skb:
+	kfree_skb(skb);
+	goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(neigh_xmit);
 

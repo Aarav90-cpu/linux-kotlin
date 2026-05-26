@@ -30,7 +30,10 @@ struct xe_device_desc {
 	u8 dma_mask_size;
 	u8 max_remote_tiles:2;
 	u8 max_gt_per_tile:2;
+<<<<<<< HEAD
 	u8 multi_lrc_mask;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 va_bits;
 	u8 vm_max_level;
 	u8 vram_flags;
@@ -67,15 +70,22 @@ struct xe_device_desc {
 struct xe_graphics_desc {
 	u64 hw_engine_mask;	/* hardware engines provided by graphics IP */
 	u16 multi_queue_engine_class_mask; /* bitmask of engine classes which support multi queue */
+<<<<<<< HEAD
 	u8 num_geometry_xecore_fuse_regs;
 	u8 num_compute_xecore_fuse_regs;
 
 	u8 has_access_counter:1;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 has_asid:1;
 	u8 has_atomic_enable_pte_bit:1;
 	u8 has_indirect_ring_state:1;
 	u8 has_range_tlb_inval:1;
+<<<<<<< HEAD
 	u8 has_ctx_tlb_inval:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 has_usm:1;
 	u8 has_64bit_timestamp:1;
 };

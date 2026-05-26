@@ -3126,7 +3126,10 @@ void blk_mq_submit_bio(struct bio *bio)
 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
 	struct blk_plug *plug = current->plug;
 	const int is_sync = op_is_sync(bio->bi_opf);
+<<<<<<< HEAD
 	unsigned int integrity_action;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct blk_mq_hw_ctx *hctx;
 	unsigned int nr_segs;
 	struct request *rq;
@@ -3179,9 +3182,14 @@ void blk_mq_submit_bio(struct bio *bio)
 	if (!bio)
 		goto queue_exit;
 
+<<<<<<< HEAD
 	integrity_action = bio_integrity_action(bio);
 	if (integrity_action)
 		bio_integrity_prep(bio, integrity_action);
+=======
+	if (!bio_integrity_prep(bio))
+		goto queue_exit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	blk_mq_bio_issue_init(q, bio);
 	if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
@@ -3291,6 +3299,7 @@ blk_status_t blk_insert_cloned_request(struct request *rq)
 		return BLK_STS_IOERR;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Integrity segment counting depends on the same queue limits
 	 * (virt_boundary_mask, seg_boundary_mask, max_segment_size) that
@@ -3310,6 +3319,8 @@ blk_status_t blk_insert_cloned_request(struct request *rq)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (q->disk && should_fail_request(q->disk->part0, blk_rq_bytes(rq)))
 		return BLK_STS_IOERR;
 
@@ -3427,6 +3438,7 @@ EXPORT_SYMBOL_GPL(blk_rq_prep_clone);
  */
 void blk_steal_bios(struct bio_list *list, struct request *rq)
 {
+<<<<<<< HEAD
 	struct bio *bio;
 
 	for (bio = rq->bio; bio; bio = bio->bi_next) {
@@ -3446,6 +3458,8 @@ void blk_steal_bios(struct bio_list *list, struct request *rq)
 		bio_clear_flag(bio, BIO_QOS_MERGED);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rq->bio) {
 		if (list->tail)
 			list->tail->bi_next = rq->bio;

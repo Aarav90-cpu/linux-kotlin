@@ -44,7 +44,10 @@
 #include <asm/traps.h>
 #include <asm/reboot.h>
 #include <asm/fpu/api.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <trace/events/ipi.h>
 
@@ -79,7 +82,10 @@ static bool erratum_383_found __read_mostly;
  * are published and we know what the new status bits are
  */
 static uint64_t osvw_len = 4, osvw_status;
+<<<<<<< HEAD
 static DEFINE_SPINLOCK(osvw_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static DEFINE_PER_CPU(u64, current_tsc_ratio);
 
@@ -113,6 +119,7 @@ static DEFINE_PER_CPU(u64, current_tsc_ratio);
  *	count only mode.
  */
 
+<<<<<<< HEAD
 static unsigned short __ro_after_init pause_filter_thresh = KVM_DEFAULT_PLE_GAP;
 module_param(pause_filter_thresh, ushort, 0444);
 
@@ -129,12 +136,31 @@ module_param(pause_filter_count_shrink, ushort, 0444);
 
 /* Default is to compute the maximum so we can never overflow. */
 static unsigned short __ro_after_init pause_filter_count_max = KVM_SVM_DEFAULT_PLE_WINDOW_MAX;
+=======
+static unsigned short pause_filter_thresh = KVM_DEFAULT_PLE_GAP;
+module_param(pause_filter_thresh, ushort, 0444);
+
+static unsigned short pause_filter_count = KVM_SVM_DEFAULT_PLE_WINDOW;
+module_param(pause_filter_count, ushort, 0444);
+
+/* Default doubles per-vcpu window every exit. */
+static unsigned short pause_filter_count_grow = KVM_DEFAULT_PLE_WINDOW_GROW;
+module_param(pause_filter_count_grow, ushort, 0444);
+
+/* Default resets per-vcpu window every exit to pause_filter_count. */
+static unsigned short pause_filter_count_shrink = KVM_DEFAULT_PLE_WINDOW_SHRINK;
+module_param(pause_filter_count_shrink, ushort, 0444);
+
+/* Default is to compute the maximum so we can never overflow. */
+static unsigned short pause_filter_count_max = KVM_SVM_DEFAULT_PLE_WINDOW_MAX;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(pause_filter_count_max, ushort, 0444);
 
 /*
  * Use nested page tables by default.  Note, NPT may get forced off by
  * svm_hardware_setup() if it's unsupported by hardware or the host kernel.
  */
+<<<<<<< HEAD
 bool __ro_after_init npt_enabled = true;
 module_param_named(npt, npt_enabled, bool, 0444);
 
@@ -159,6 +185,32 @@ int __ro_after_init lbrv = true;
 module_param(lbrv, int, 0444);
 
 static int __ro_after_init tsc_scaling = true;
+=======
+bool npt_enabled = true;
+module_param_named(npt, npt_enabled, bool, 0444);
+
+/* allow nested virtualization in KVM/SVM */
+static int nested = true;
+module_param(nested, int, 0444);
+
+/* enable/disable Next RIP Save */
+int nrips = true;
+module_param(nrips, int, 0444);
+
+/* enable/disable Virtual VMLOAD VMSAVE */
+static int vls = true;
+module_param(vls, int, 0444);
+
+/* enable/disable Virtual GIF */
+int vgif = true;
+module_param(vgif, int, 0444);
+
+/* enable/disable LBR virtualization */
+int lbrv = true;
+module_param(lbrv, int, 0444);
+
+static int tsc_scaling = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(tsc_scaling, int, 0444);
 
 module_param(enable_device_posted_irqs, bool, 0444);
@@ -167,19 +219,34 @@ bool __read_mostly dump_invalid_vmcb;
 module_param(dump_invalid_vmcb, bool, 0644);
 
 
+<<<<<<< HEAD
 bool __ro_after_init intercept_smi = true;
 module_param(intercept_smi, bool, 0444);
 
 bool __ro_after_init vnmi = true;
+=======
+bool intercept_smi = true;
+module_param(intercept_smi, bool, 0444);
+
+bool vnmi = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(vnmi, bool, 0444);
 
 module_param(enable_mediated_pmu, bool, 0444);
 
+<<<<<<< HEAD
 static bool __ro_after_init svm_gp_erratum_intercept = true;
 
 static u8 rsm_ins_bytes[] = "\x0f\xaa";
 
 static unsigned long __read_mostly iopm_base;
+=======
+static bool svm_gp_erratum_intercept = true;
+
+static u8 rsm_ins_bytes[] = "\x0f\xaa";
+
+static unsigned long iopm_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DEFINE_PER_CPU(struct svm_cpu_data, svm_data);
 
@@ -219,6 +286,7 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
 
 	if ((old_efer & EFER_SVME) != (efer & EFER_SVME)) {
 		if (!(efer & EFER_SVME)) {
+<<<<<<< HEAD
 			/*
 			 * Architecturally, clearing EFER.SVME while a guest is
 			 * running yields undefined behavior, i.e. KVM can do
@@ -232,6 +300,8 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
 			if (is_guest_mode(vcpu) && vcpu->wants_to_run)
 				kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			svm_leave_nested(vcpu);
 			/* #GP intercept is still needed for vmware backdoor */
 			if (!enable_vmware_backdoor)
@@ -257,11 +327,17 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
 			 * Never intercept #GP for SEV guests, KVM can't
 			 * decrypt guest memory to workaround the erratum.
 			 */
+<<<<<<< HEAD
 			if (svm_gp_erratum_intercept && !is_sev_guest(vcpu))
 				set_exception_intercept(svm, GP_VECTOR);
 		}
 
 		kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
+=======
+			if (svm_gp_erratum_intercept && !sev_guest(vcpu->kvm))
+				set_exception_intercept(svm, GP_VECTOR);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	svm->vmcb->save.efer = efer | EFER_SVME;
@@ -301,7 +377,11 @@ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
 	 * SEV-ES does not expose the next RIP. The RIP update is controlled by
 	 * the type of exit and the #VC handler in the guest.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto done;
 
 	if (nrips && svm->vmcb->control.next_rip != 0) {
@@ -438,6 +518,7 @@ static void svm_init_osvw(struct kvm_vcpu *vcpu)
 		vcpu->arch.osvw.status |= 1;
 }
 
+<<<<<<< HEAD
 static void svm_init_os_visible_workarounds(void)
 {
 	u64 len, status;
@@ -480,6 +561,8 @@ static void svm_init_os_visible_workarounds(void)
 	osvw_status &= (1ULL << osvw_len) - 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool __kvm_is_svm_supported(void)
 {
 	int cpu = smp_processor_id();
@@ -537,9 +620,33 @@ static __always_inline struct sev_es_save_area *sev_es_host_save_area(struct svm
 	return &sd->save_area->host_sev_es_save;
 }
 
+<<<<<<< HEAD
 static void svm_emergency_disable_virtualization_cpu(void)
 {
 	wrmsrq(MSR_VM_HSAVE_PA, 0);
+=======
+static inline void kvm_cpu_svm_disable(void)
+{
+	uint64_t efer;
+
+	wrmsrq(MSR_VM_HSAVE_PA, 0);
+	rdmsrq(MSR_EFER, efer);
+	if (efer & EFER_SVME) {
+		/*
+		 * Force GIF=1 prior to disabling SVM, e.g. to ensure INIT and
+		 * NMI aren't blocked.
+		 */
+		stgi();
+		wrmsrq(MSR_EFER, efer & ~EFER_SVME);
+	}
+}
+
+static void svm_emergency_disable_virtualization_cpu(void)
+{
+	kvm_rebooting = true;
+
+	kvm_cpu_svm_disable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void svm_disable_virtualization_cpu(void)
@@ -548,8 +655,12 @@ static void svm_disable_virtualization_cpu(void)
 	if (tsc_scaling)
 		__svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
 
+<<<<<<< HEAD
 	x86_virt_put_ref(X86_FEATURE_SVM);
 	wrmsrq(MSR_VM_HSAVE_PA, 0);
+=======
+	kvm_cpu_svm_disable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	amd_pmu_disable_virt();
 }
@@ -558,12 +669,21 @@ static int svm_enable_virtualization_cpu(void)
 {
 
 	struct svm_cpu_data *sd;
+<<<<<<< HEAD
 	int me = raw_smp_processor_id();
 	int r;
 
 	r = x86_virt_get_ref(X86_FEATURE_SVM);
 	if (r)
 		return r;
+=======
+	uint64_t efer;
+	int me = raw_smp_processor_id();
+
+	rdmsrq(MSR_EFER, efer);
+	if (efer & EFER_SVME)
+		return -EBUSY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sd = per_cpu_ptr(&svm_data, me);
 	sd->asid_generation = 1;
@@ -571,6 +691,11 @@ static int svm_enable_virtualization_cpu(void)
 	sd->next_asid = sd->max_asid + 1;
 	sd->min_asid = max_sev_asid + 1;
 
+<<<<<<< HEAD
+=======
+	wrmsrq(MSR_EFER, efer | EFER_SVME);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wrmsrq(MSR_VM_HSAVE_PA, sd->save_area_pa);
 
 	if (static_cpu_has(X86_FEATURE_TSCRATEMSR)) {
@@ -581,7 +706,38 @@ static int svm_enable_virtualization_cpu(void)
 		__svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
 	}
 
+<<<<<<< HEAD
 	svm_init_os_visible_workarounds();
+=======
+
+	/*
+	 * Get OSVW bits.
+	 *
+	 * Note that it is possible to have a system with mixed processor
+	 * revisions and therefore different OSVW bits. If bits are not the same
+	 * on different processors then choose the worst case (i.e. if erratum
+	 * is present on one processor and not on another then assume that the
+	 * erratum is present everywhere).
+	 */
+	if (cpu_has(&boot_cpu_data, X86_FEATURE_OSVW)) {
+		u64 len, status = 0;
+		int err;
+
+		err = native_read_msr_safe(MSR_AMD64_OSVW_ID_LENGTH, &len);
+		if (!err)
+			err = native_read_msr_safe(MSR_AMD64_OSVW_STATUS, &status);
+
+		if (err)
+			osvw_status = osvw_len = 0;
+		else {
+			if (len < osvw_len)
+				osvw_len = len;
+			osvw_status |= status;
+			osvw_status &= (1ULL << osvw_len) - 1;
+		}
+	} else
+		osvw_status = osvw_len = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm_init_erratum_383();
 
@@ -649,7 +805,11 @@ static void set_dr_intercepts(struct vcpu_svm *svm)
 	vmcb_set_intercept(&vmcb->control, INTERCEPT_DR7_READ);
 	vmcb_set_intercept(&vmcb->control, INTERCEPT_DR7_WRITE);
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void clr_dr_intercepts(struct vcpu_svm *svm)
@@ -658,7 +818,11 @@ static void clr_dr_intercepts(struct vcpu_svm *svm)
 
 	vmcb->control.intercepts[INTERCEPT_DR] = 0;
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool msr_write_intercepted(struct kvm_vcpu *vcpu, u32 msr)
@@ -724,7 +888,11 @@ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
 static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	bool intercept = !(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
+=======
+	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (intercept == svm->lbr_msrs_intercepted)
 		return;
@@ -734,7 +902,11 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTINTFROMIP, MSR_TYPE_RW, intercept);
 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTINTTOIP, MSR_TYPE_RW, intercept);
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_set_intercept_for_msr(vcpu, MSR_IA32_DEBUGCTLMSR, MSR_TYPE_RW, intercept);
 
 	svm->lbr_msrs_intercepted = intercept;
@@ -844,7 +1016,11 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
 		svm_set_intercept_for_msr(vcpu, MSR_IA32_PL3_SSP, MSR_TYPE_RW, !shstk_enabled);
 	}
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_es_recalc_msr_intercepts(vcpu);
 
 	svm_recalc_pmu_msr_intercepts(vcpu);
@@ -857,7 +1033,11 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
 
 static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	to_svm(vcpu)->vmcb->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_LBR;
+=======
+	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void svm_enable_lbrv(struct kvm_vcpu *vcpu)
@@ -868,17 +1048,29 @@ void svm_enable_lbrv(struct kvm_vcpu *vcpu)
 
 static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	KVM_BUG_ON(is_sev_es_guest(vcpu), vcpu->kvm);
 	to_svm(vcpu)->vmcb->control.misc_ctl2 &= ~SVM_MISC2_ENABLE_V_LBR;
+=======
+	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
+	to_svm(vcpu)->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void svm_update_lbrv(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	bool current_enable_lbrv = svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR;
 	bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
 			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
 			    (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR));
+=======
+	bool current_enable_lbrv = svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK;
+	bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
+			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+			    (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable_lbrv && !current_enable_lbrv)
 		__svm_enable_lbrv(vcpu);
@@ -913,6 +1105,7 @@ static void grow_ple_window(struct kvm_vcpu *vcpu)
 	struct vmcb_control_area *control = &svm->vmcb->control;
 	int old = control->pause_filter_count;
 
+<<<<<<< HEAD
 	/* Adjusting pause_filter_count makes no sense if PLE is disabled.  */
 	WARN_ON_ONCE(kvm_pause_in_guest(vcpu->kvm));
 
@@ -922,6 +1115,9 @@ static void grow_ple_window(struct kvm_vcpu *vcpu)
 	 * KVM should never handle a PAUSE intercept from L2.
 	 */
 	if (WARN_ON_ONCE(is_guest_mode(vcpu)))
+=======
+	if (kvm_pause_in_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	control->pause_filter_count = __grow_ple_window(old,
@@ -942,10 +1138,14 @@ static void shrink_ple_window(struct kvm_vcpu *vcpu)
 	struct vmcb_control_area *control = &svm->vmcb->control;
 	int old = control->pause_filter_count;
 
+<<<<<<< HEAD
 	/* Adjusting pause_filter_count makes no sense if PLE is disabled.  */
 	WARN_ON_ONCE(kvm_pause_in_guest(vcpu->kvm));
 
 	if (is_guest_mode(vcpu))
+=======
+	if (kvm_pause_in_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	control->pause_filter_count =
@@ -1023,6 +1223,7 @@ void svm_write_tsc_multiplier(struct kvm_vcpu *vcpu)
 	preempt_enable();
 }
 
+<<<<<<< HEAD
 static bool svm_has_pending_gif_event(struct vcpu_svm *svm)
 {
 	return svm->vcpu.arch.smi_pending ||
@@ -1031,6 +1232,8 @@ static bool svm_has_pending_gif_event(struct vcpu_svm *svm)
 	       kvm_apic_has_pending_init_or_sipi(&svm->vcpu);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Evaluate instruction intercepts that depend on guest CPUID features. */
 static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
 {
@@ -1056,6 +1259,7 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Intercept instructions that #UD if EFER.SVME=0, as SVME must be set
 	 * even when running the guest, i.e. hardware will only ever see
 	 * EFER.SVME=1.
@@ -1074,11 +1278,21 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
 		svm_set_intercept(svm, INTERCEPT_VMSAVE);
 		svm_set_intercept(svm, INTERCEPT_CLGI);
 		svm_set_intercept(svm, INTERCEPT_STGI);
+=======
+	 * No need to toggle VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK here, it is
+	 * always set if vls is enabled. If the intercepts are set, the bit is
+	 * meaningless anyway.
+	 */
+	if (guest_cpuid_is_intel_compatible(vcpu)) {
+		svm_set_intercept(svm, INTERCEPT_VMLOAD);
+		svm_set_intercept(svm, INTERCEPT_VMSAVE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * If hardware supports Virtual VMLOAD VMSAVE then enable it
 		 * in VMCB and clear intercepts to avoid #VMEXIT.
 		 */
+<<<<<<< HEAD
 		if (guest_cpuid_is_intel_compatible(vcpu)) {
 			svm_set_intercept(svm, INTERCEPT_VMLOAD);
 			svm_set_intercept(svm, INTERCEPT_VMSAVE);
@@ -1100,6 +1314,12 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
 			if (svm_has_pending_gif_event(svm))
 				kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
 		}
+=======
+		if (vls) {
+			svm_clr_intercept(svm, INTERCEPT_VMLOAD);
+			svm_clr_intercept(svm, INTERCEPT_VMSAVE);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (kvm_need_rdpmc_intercept(vcpu))
@@ -1212,7 +1432,11 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
 
 	if (npt_enabled) {
 		/* Setup VMCB for Nested Paging */
+<<<<<<< HEAD
 		control->misc_ctl |= SVM_MISC_ENABLE_NP;
+=======
+		control->nested_ctl |= SVM_NESTED_CTL_NP_ENABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_clr_intercept(svm, INTERCEPT_INVLPG);
 		clr_exception_intercept(svm, PF_VECTOR);
 		svm_clr_intercept(svm, INTERCEPT_CR3_READ);
@@ -1244,16 +1468,31 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
 	if (vnmi)
 		svm->vmcb->control.int_ctl |= V_NMI_ENABLE_MASK;
 
+<<<<<<< HEAD
 	if (vgif)
 		svm->vmcb->control.int_ctl |= V_GIF_ENABLE_MASK;
 
 	if (vls)
 		svm->vmcb->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+=======
+	if (vgif) {
+		svm_clr_intercept(svm, INTERCEPT_STGI);
+		svm_clr_intercept(svm, INTERCEPT_CLGI);
+		svm->vmcb->control.int_ctl |= V_GIF_ENABLE_MASK;
+	}
+
+	if (vls)
+		svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vcpu->kvm->arch.bus_lock_detection_enabled)
 		svm_set_intercept(svm, INTERCEPT_BUSLOCK);
 
+<<<<<<< HEAD
 	if (is_sev_guest(vcpu))
+=======
+	if (sev_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_init_vmcb(svm, init_event);
 
 	svm_hv_init_vmcb(vmcb);
@@ -1427,7 +1666,11 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
 	struct vcpu_svm *svm = to_svm(vcpu);
 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, vcpu->cpu);
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_es_unmap_ghcb(svm);
 
 	if (svm->guest_state_loaded)
@@ -1438,7 +1681,11 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
 	 * or subsequent vmload of host save area.
 	 */
 	vmsave(sd->save_area_pa);
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_es_prepare_switch_to_guest(svm, sev_es_host_save_area(sd));
 
 	if (tsc_scaling)
@@ -1451,7 +1698,11 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
 	 * all CPUs support TSC_AUX virtualization).
 	 */
 	if (likely(tsc_aux_uret_slot >= 0) &&
+<<<<<<< HEAD
 	    (!boot_cpu_has(X86_FEATURE_V_TSC_AUX) || !is_sev_es_guest(vcpu)))
+=======
+	    (!boot_cpu_has(X86_FEATURE_V_TSC_AUX) || !sev_es_guest(vcpu->kvm)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvm_set_user_return_msr(tsc_aux_uret_slot, svm->tsc_aux, -1ull);
 
 	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE) &&
@@ -1518,7 +1769,11 @@ static bool svm_get_if_flag(struct kvm_vcpu *vcpu)
 {
 	struct vmcb *vmcb = to_svm(vcpu)->vmcb;
 
+<<<<<<< HEAD
 	return is_sev_es_guest(vcpu)
+=======
+	return sev_es_guest(vcpu->kvm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		? vmcb->control.int_state & SVM_GUEST_INTERRUPT_MASK
 		: kvm_get_rflags(vcpu) & X86_EFLAGS_IF;
 }
@@ -1752,7 +2007,11 @@ static void sev_post_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3)
 	 * contents of the VMSA, and future VMCB save area updates won't be
 	 * seen.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu)) {
+=======
+	if (sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm->vmcb->save.cr3 = cr3;
 		vmcb_mark_dirty(svm->vmcb, VMCB_CR);
 	}
@@ -1807,7 +2066,11 @@ void svm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
 	 * SEV-ES guests must always keep the CR intercepts cleared. CR
 	 * tracking is done using the CR write traps.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (hcr0 == cr0) {
@@ -1918,7 +2181,11 @@ static void svm_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(is_sev_es_guest(vcpu)))
+=======
+	if (WARN_ON_ONCE(sev_es_guest(vcpu->kvm)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	get_debugreg(vcpu->arch.db[0], 0);
@@ -1997,7 +2264,11 @@ static int npf_interception(struct kvm_vcpu *vcpu)
 		}
 	}
 
+<<<<<<< HEAD
 	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
+=======
+	if (sev_snp_guest(vcpu->kvm) && (error_code & PFERR_GUEST_ENC_MASK))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		error_code |= PFERR_PRIVATE_ACCESS;
 
 	trace_kvm_page_fault(vcpu, gpa, error_code);
@@ -2142,7 +2413,11 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
 	 * The VM save area for SEV-ES guests has already been encrypted so it
 	 * cannot be reinitialized, i.e. synthesizing INIT is futile.
 	 */
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu)) {
+=======
+	if (!sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clear_page(svm->vmcb);
 #ifdef CONFIG_KVM_SMM
 		if (is_smm(vcpu))
@@ -2169,7 +2444,11 @@ static int io_interception(struct kvm_vcpu *vcpu)
 	size = (io_info & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT;
 
 	if (string) {
+<<<<<<< HEAD
 		if (is_sev_es_guest(vcpu))
+=======
+		if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return sev_es_string_io(svm, size, port, in);
 		else
 			return kvm_emulate_instruction(vcpu, 0);
@@ -2198,7 +2477,10 @@ static int intr_interception(struct kvm_vcpu *vcpu)
 
 static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
 {
+<<<<<<< HEAD
 	u64 vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vcpu_svm *svm = to_svm(vcpu);
 	struct vmcb *vmcb12;
 	struct kvm_host_map map;
@@ -2207,6 +2489,7 @@ static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
 	if (nested_svm_check_permissions(vcpu))
 		return 1;
 
+<<<<<<< HEAD
 	if (!page_address_valid(vcpu, vmcb12_gpa)) {
 		kvm_inject_gp(vcpu, 0);
 		return 1;
@@ -2215,6 +2498,15 @@ static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
 	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map))
 		return kvm_handle_memory_failure(vcpu, X86EMUL_IO_NEEDED, NULL);
 
+=======
+	ret = kvm_vcpu_map(vcpu, gpa_to_gfn(svm->vmcb->save.rax), &map);
+	if (ret) {
+		if (ret == -EINVAL)
+			kvm_inject_gp(vcpu, 0);
+		return 1;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmcb12 = map.hva;
 
 	ret = kvm_skip_emulated_instruction(vcpu);
@@ -2251,12 +2543,25 @@ static int vmrun_interception(struct kvm_vcpu *vcpu)
 	return nested_svm_vmrun(vcpu);
 }
 
+<<<<<<< HEAD
 /* Return 0 if not SVM instr, otherwise return associated exit_code */
 static u64 svm_get_decoded_instr_exit_code(struct kvm_vcpu *vcpu)
+=======
+enum {
+	NONE_SVM_INSTR,
+	SVM_INSTR_VMRUN,
+	SVM_INSTR_VMLOAD,
+	SVM_INSTR_VMSAVE,
+};
+
+/* Return NONE_SVM_INSTR if not SVM instrs, otherwise return decode result */
+static int svm_instr_opcode(struct kvm_vcpu *vcpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
 
 	if (ctxt->b != 0x1 || ctxt->opcode_len != 2)
+<<<<<<< HEAD
 		return 0;
 
 	BUILD_BUG_ON(!SVM_EXIT_VMRUN || !SVM_EXIT_VMLOAD || !SVM_EXIT_VMSAVE);
@@ -2268,11 +2573,47 @@ static u64 svm_get_decoded_instr_exit_code(struct kvm_vcpu *vcpu)
 		return SVM_EXIT_VMLOAD;
 	case 0xdb: /* VMSAVE */
 		return SVM_EXIT_VMSAVE;
+=======
+		return NONE_SVM_INSTR;
+
+	switch (ctxt->modrm) {
+	case 0xd8: /* VMRUN */
+		return SVM_INSTR_VMRUN;
+	case 0xda: /* VMLOAD */
+		return SVM_INSTR_VMLOAD;
+	case 0xdb: /* VMSAVE */
+		return SVM_INSTR_VMSAVE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return NONE_SVM_INSTR;
+}
+
+static int emulate_svm_instr(struct kvm_vcpu *vcpu, int opcode)
+{
+	const int guest_mode_exit_codes[] = {
+		[SVM_INSTR_VMRUN] = SVM_EXIT_VMRUN,
+		[SVM_INSTR_VMLOAD] = SVM_EXIT_VMLOAD,
+		[SVM_INSTR_VMSAVE] = SVM_EXIT_VMSAVE,
+	};
+	int (*const svm_instr_handlers[])(struct kvm_vcpu *vcpu) = {
+		[SVM_INSTR_VMRUN] = vmrun_interception,
+		[SVM_INSTR_VMLOAD] = vmload_interception,
+		[SVM_INSTR_VMSAVE] = vmsave_interception,
+	};
+	struct vcpu_svm *svm = to_svm(vcpu);
+
+	if (is_guest_mode(vcpu)) {
+		nested_svm_simple_vmexit(svm, guest_mode_exit_codes[opcode]);
+		return 1;
+	}
+	return svm_instr_handlers[opcode](vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2287,7 +2628,11 @@ static int gp_interception(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 	u32 error_code = svm->vmcb->control.exit_info_1;
+<<<<<<< HEAD
 	u64 svm_exit_code;
+=======
+	int opcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Both #GP cases have zero error_code */
 	if (error_code)
@@ -2297,6 +2642,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
 	if (x86_decode_emulated_instruction(vcpu, 0, NULL, 0) != EMULATION_OK)
 		goto reinject;
 
+<<<<<<< HEAD
 	/* FIXME: Handle SVM instructions through the emulator */
 	svm_exit_code = svm_get_decoded_instr_exit_code(vcpu);
 	if (svm_exit_code) {
@@ -2328,6 +2674,29 @@ static int gp_interception(struct kvm_vcpu *vcpu)
 
 	return kvm_emulate_instruction(vcpu, EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
 
+=======
+	opcode = svm_instr_opcode(vcpu);
+
+	if (opcode == NONE_SVM_INSTR) {
+		if (!enable_vmware_backdoor)
+			goto reinject;
+
+		/*
+		 * VMware backdoor emulation on #GP interception only handles
+		 * IN{S}, OUT{S}, and RDPMC.
+		 */
+		if (!is_guest_mode(vcpu))
+			return kvm_emulate_instruction(vcpu,
+				EMULTYPE_VMWARE_GP | EMULTYPE_NO_DECODE);
+	} else {
+		/* All SVM instructions expect page aligned RAX */
+		if (svm->vmcb->save.rax & ~PAGE_MASK)
+			goto reinject;
+
+		return emulate_svm_instr(vcpu, opcode);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 reinject:
 	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
 	return 1;
@@ -2348,7 +2717,14 @@ void svm_set_gif(struct vcpu_svm *svm, bool value)
 			svm_clear_vintr(svm);
 
 		enable_gif(svm);
+<<<<<<< HEAD
 		if (svm_has_pending_gif_event(svm))
+=======
+		if (svm->vcpu.arch.smi_pending ||
+		    svm->vcpu.arch.nmi_pending ||
+		    kvm_cpu_has_injectable_intr(&svm->vcpu) ||
+		    kvm_apic_has_pending_init_or_sipi(&svm->vcpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
 	} else {
 		disable_gif(svm);
@@ -2483,13 +2859,21 @@ static int task_switch_interception(struct kvm_vcpu *vcpu)
 
 static void svm_clr_iret_intercept(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	if (!is_sev_es_guest(&svm->vcpu))
+=======
+	if (!sev_es_guest(svm->vcpu.kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_clr_intercept(svm, INTERCEPT_IRET);
 }
 
 static void svm_set_iret_intercept(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	if (!is_sev_es_guest(&svm->vcpu))
+=======
+	if (!sev_es_guest(svm->vcpu.kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_set_intercept(svm, INTERCEPT_IRET);
 }
 
@@ -2497,7 +2881,11 @@ static int iret_interception(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 
+<<<<<<< HEAD
 	WARN_ON_ONCE(is_sev_es_guest(vcpu));
+=======
+	WARN_ON_ONCE(sev_es_guest(vcpu->kvm));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	++vcpu->stat.nmi_window_exits;
 	svm->awaiting_iret_completion = true;
@@ -2671,7 +3059,11 @@ static int dr_interception(struct kvm_vcpu *vcpu)
 	 * SEV-ES intercepts DR7 only to disable guest debugging and the guest issues a VMGEXIT
 	 * for DR7 write only. KVM cannot change DR7 (always swapped as type 'A') so return early.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 
 	if (vcpu->guest_debug == 0) {
@@ -2752,6 +3144,7 @@ static int svm_get_feature_msr(u32 msr, u64 *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static u64 *svm_vmcb_lbr(struct vcpu_svm *svm, u32 msr)
 {
 	switch (msr) {
@@ -2774,6 +3167,12 @@ static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
 				      struct msr_data *msr_info)
 {
 	return is_sev_es_guest(vcpu) && vcpu->arch.guest_state_protected &&
+=======
+static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
+				      struct msr_data *msr_info)
+{
+	return sev_es_guest(vcpu->kvm) && vcpu->arch.guest_state_protected &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       msr_info->index != MSR_IA32_XSS &&
 	       !msr_write_intercepted(vcpu, msr_info->index);
 }
@@ -2846,10 +3245,23 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 		msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
 		break;
 	case MSR_IA32_LASTBRANCHFROMIP:
+<<<<<<< HEAD
 	case MSR_IA32_LASTBRANCHTOIP:
 	case MSR_IA32_LASTINTFROMIP:
 	case MSR_IA32_LASTINTTOIP:
 		msr_info->data = lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
+=======
+		msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
+		break;
+	case MSR_IA32_LASTBRANCHTOIP:
+		msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
+		break;
+	case MSR_IA32_LASTINTFROMIP:
+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
+		break;
+	case MSR_IA32_LASTINTTOIP:
+		msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MSR_VM_HSAVE_PA:
 		msr_info->data = svm->nested.hsave_msr;
@@ -2903,7 +3315,11 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 static int svm_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	if (!err || !is_sev_es_guest(vcpu) || WARN_ON_ONCE(!svm->sev_es.ghcb))
+=======
+	if (!err || !sev_es_guest(vcpu->kvm) || WARN_ON_ONCE(!svm->sev_es.ghcb))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return kvm_complete_insn_gp(vcpu, err);
 
 	svm_vmgexit_inject_exception(svm, X86_TRAP_GP);
@@ -3084,7 +3500,11 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
 		 * required in this case because TSC_AUX is restored on #VMEXIT
 		 * from the host save area.
 		 */
+<<<<<<< HEAD
 		if (boot_cpu_has(X86_FEATURE_V_TSC_AUX) && is_sev_es_guest(vcpu))
+=======
+		if (boot_cpu_has(X86_FEATURE_V_TSC_AUX) && sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -3125,14 +3545,44 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
 		svm_update_lbrv(vcpu);
 		break;
 	case MSR_IA32_LASTBRANCHFROMIP:
+<<<<<<< HEAD
 	case MSR_IA32_LASTBRANCHTOIP:
 	case MSR_IA32_LASTINTFROMIP:
+=======
+		if (!lbrv)
+			return KVM_MSR_RET_UNSUPPORTED;
+		if (!msr->host_initiated)
+			return 1;
+		svm->vmcb->save.br_from = data;
+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+		break;
+	case MSR_IA32_LASTBRANCHTOIP:
+		if (!lbrv)
+			return KVM_MSR_RET_UNSUPPORTED;
+		if (!msr->host_initiated)
+			return 1;
+		svm->vmcb->save.br_to = data;
+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+		break;
+	case MSR_IA32_LASTINTFROMIP:
+		if (!lbrv)
+			return KVM_MSR_RET_UNSUPPORTED;
+		if (!msr->host_initiated)
+			return 1;
+		svm->vmcb->save.last_excp_from = data;
+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case MSR_IA32_LASTINTTOIP:
 		if (!lbrv)
 			return KVM_MSR_RET_UNSUPPORTED;
 		if (!msr->host_initiated)
 			return 1;
+<<<<<<< HEAD
 		*svm_vmcb_lbr(svm, ecx) = data;
+=======
+		svm->vmcb->save.last_excp_to = data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
 		break;
 	case MSR_VM_HSAVE_PA:
@@ -3183,6 +3633,23 @@ static int interrupt_window_interception(struct kvm_vcpu *vcpu)
 	kvm_make_request(KVM_REQ_EVENT, vcpu);
 	svm_clear_vintr(to_svm(vcpu));
 
+<<<<<<< HEAD
+=======
+	/*
+	 * If not running nested, for AVIC, the only reason to end up here is ExtINTs.
+	 * In this case AVIC was temporarily disabled for
+	 * requesting the IRQ window and we have to re-enable it.
+	 *
+	 * If running nested, still remove the VM wide AVIC inhibit to
+	 * support case in which the interrupt window was requested when the
+	 * vCPU was not running nested.
+
+	 * All vCPUs which run still run nested, will remain to have their
+	 * AVIC still inhibited due to per-cpu AVIC inhibition.
+	 */
+	kvm_clear_apicv_inhibit(vcpu->kvm, APICV_INHIBIT_REASON_IRQWIN);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	++vcpu->stat.irq_window_exits;
 	return 1;
 }
@@ -3195,7 +3662,11 @@ static int pause_interception(struct kvm_vcpu *vcpu)
 	 * vcpu->arch.preempted_in_kernel can never be true.  Just
 	 * set in_kernel to false as well.
 	 */
+<<<<<<< HEAD
 	in_kernel = !is_sev_es_guest(vcpu) && svm_get_cpl(vcpu) == 0;
+=======
+	in_kernel = !sev_es_guest(vcpu->kvm) && svm_get_cpl(vcpu) == 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	grow_ple_window(vcpu);
 
@@ -3262,7 +3733,11 @@ static int bus_lock_exit(struct kvm_vcpu *vcpu)
 	vcpu->arch.complete_userspace_io = complete_userspace_buslock;
 
 	if (is_guest_mode(vcpu))
+<<<<<<< HEAD
 		svm->nested.last_bus_lock_rip = vcpu->arch.cui_linear_rip;
+=======
+		svm->nested.ctl.bus_lock_rip = vcpu->arch.cui_linear_rip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3376,9 +3851,15 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 
 	guard(mutex)(&vmcb_dump_mutex);
 
+<<<<<<< HEAD
 	vm_type = is_sev_snp_guest(vcpu) ? "SEV-SNP" :
 		  is_sev_es_guest(vcpu) ? "SEV-ES" :
 		  is_sev_guest(vcpu) ? "SEV" : "SVM";
+=======
+	vm_type = sev_snp_guest(vcpu->kvm) ? "SEV-SNP" :
+		  sev_es_guest(vcpu->kvm) ? "SEV-ES" :
+		  sev_guest(vcpu->kvm) ? "SEV" : "SVM";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_err("%s vCPU%u VMCB %p, last attempted VMRUN on CPU %d\n",
 	       vm_type, vcpu->vcpu_id, svm->current_vmcb->ptr, vcpu->arch.last_vmentry_cpu);
@@ -3408,13 +3889,21 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 	pr_err("%-20s%016llx\n", "exit_info2:", control->exit_info_2);
 	pr_err("%-20s%08x\n", "exit_int_info:", control->exit_int_info);
 	pr_err("%-20s%08x\n", "exit_int_info_err:", control->exit_int_info_err);
+<<<<<<< HEAD
 	pr_err("%-20s%lld\n", "misc_ctl:", control->misc_ctl);
+=======
+	pr_err("%-20s%lld\n", "nested_ctl:", control->nested_ctl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_err("%-20s%016llx\n", "nested_cr3:", control->nested_cr3);
 	pr_err("%-20s%016llx\n", "avic_vapic_bar:", control->avic_vapic_bar);
 	pr_err("%-20s%016llx\n", "ghcb:", control->ghcb_gpa);
 	pr_err("%-20s%08x\n", "event_inj:", control->event_inj);
 	pr_err("%-20s%08x\n", "event_inj_err:", control->event_inj_err);
+<<<<<<< HEAD
 	pr_err("%-20s%lld\n", "misc_ctl2:", control->misc_ctl2);
+=======
+	pr_err("%-20s%lld\n", "virt_ext:", control->virt_ext);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_err("%-20s%016llx\n", "next_rip:", control->next_rip);
 	pr_err("%-20s%016llx\n", "avic_backing_page:", control->avic_backing_page);
 	pr_err("%-20s%016llx\n", "avic_logical_id:", control->avic_logical_id);
@@ -3423,7 +3912,11 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 	pr_err("%-20s%016llx\n", "allowed_sev_features:", control->allowed_sev_features);
 	pr_err("%-20s%016llx\n", "guest_sev_features:", control->guest_sev_features);
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu)) {
+=======
+	if (sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		save = sev_decrypt_vmsa(vcpu);
 		if (!save)
 			goto no_vmsa;
@@ -3506,7 +3999,11 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 	       "excp_from:", save->last_excp_from,
 	       "excp_to:", save->last_excp_to);
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu)) {
+=======
+	if (sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct sev_es_save_area *vmsa = (struct sev_es_save_area *)save;
 
 		pr_err("%-15s %016llx\n",
@@ -3567,7 +4064,11 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 	}
 
 no_vmsa:
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_free_decrypted_vmsa(vcpu, save);
 }
 
@@ -3656,7 +4157,11 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	struct kvm_run *kvm_run = vcpu->run;
 
 	/* SEV-ES guests must use the CR write traps to track CR registers. */
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu)) {
+=======
+	if (!sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!svm_is_intercept(svm, INTERCEPT_CR0_WRITE))
 			vcpu->arch.cr0 = svm->vmcb->save.cr0;
 		if (npt_enabled)
@@ -3718,7 +4223,11 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
 		svm->current_vmcb->cpu = vcpu->cpu;
         }
 
+<<<<<<< HEAD
 	if (is_sev_guest(vcpu))
+=======
+	if (sev_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return pre_sev_run(svm, vcpu->cpu);
 
 	/* FIXME: handle wraparound of asid_generation */
@@ -3797,6 +4306,7 @@ static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
 		type = SVM_EVTINJ_TYPE_INTR;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * If AVIC was inhibited in order to detect an IRQ window, and there's
 	 * no other injectable interrupts pending or L2 is active (see below),
@@ -3814,6 +4324,8 @@ static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
 		kvm_dec_apicv_irq_window_req(svm->vcpu.kvm);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
 	++vcpu->stat.irq_injections;
 
@@ -3824,7 +4336,11 @@ static void svm_fixup_nested_rips(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 
+<<<<<<< HEAD
 	if (!is_guest_mode(vcpu) || !vcpu->arch.nested_run_pending)
+=======
+	if (!is_guest_mode(vcpu) || !svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/*
@@ -3908,7 +4424,11 @@ static void svm_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
 	 * SEV-ES guests must always keep the CR intercepts cleared. CR
 	 * tracking is done using the CR write traps.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (nested_svm_virtualize_tpr(vcpu))
@@ -3972,7 +4492,11 @@ bool svm_nmi_blocked(struct kvm_vcpu *vcpu)
 static int svm_nmi_allowed(struct kvm_vcpu *vcpu, bool for_injection)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	if (vcpu->arch.nested_run_pending)
+=======
+	if (svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 
 	if (svm_nmi_blocked(vcpu))
@@ -4014,7 +4538,11 @@ static int svm_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 
+<<<<<<< HEAD
 	if (vcpu->arch.nested_run_pending)
+=======
+	if (svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 
 	if (svm_interrupt_blocked(vcpu))
@@ -4044,6 +4572,7 @@ static void svm_enable_irq_window(struct kvm_vcpu *vcpu)
 	 */
 	if (vgif || gif_set(svm)) {
 		/*
+<<<<<<< HEAD
 		 * KVM only enables IRQ windows when AVIC is enabled if there's
 		 * pending ExtINT since it cannot be injected via AVIC (ExtINT
 		 * bypasses the local APIC).  V_IRQ is ignored by hardware when
@@ -4066,6 +4595,19 @@ static void svm_enable_irq_window(struct kvm_vcpu *vcpu)
 			svm->avic_irq_window = true;
 			kvm_inc_apicv_irq_window_req(vcpu->kvm);
 		}
+=======
+		 * IRQ window is not needed when AVIC is enabled,
+		 * unless we have pending ExtINT since it cannot be injected
+		 * via AVIC. In such case, KVM needs to temporarily disable AVIC,
+		 * and fallback to injecting IRQ via V_IRQ.
+		 *
+		 * If running nested, AVIC is already locally inhibited
+		 * on this vCPU, therefore there is no need to request
+		 * the VM wide AVIC inhibition.
+		 */
+		if (!is_guest_mode(vcpu))
+			kvm_set_apicv_inhibit(vcpu->kvm, APICV_INHIBIT_REASON_IRQWIN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		svm_set_vintr(svm);
 	}
@@ -4108,7 +4650,11 @@ static void svm_enable_nmi_window(struct kvm_vcpu *vcpu)
 	 * ignores SEV-ES guest writes to EFER.SVME *and* CLGI/STGI are not
 	 * supported NAEs in the GHCB protocol.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (!gif_set(svm)) {
@@ -4237,7 +4783,11 @@ static void svm_complete_soft_interrupt(struct kvm_vcpu *vcpu, u8 vector,
 	 * the soft int and will reinject it via the standard injection flow,
 	 * and so KVM needs to grab the state from the pending nested VMRUN.
 	 */
+<<<<<<< HEAD
 	if (is_guest_mode(vcpu) && vcpu->arch.nested_run_pending)
+=======
+	if (is_guest_mode(vcpu) && svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_set_nested_run_soft_int_state(vcpu);
 
 	/*
@@ -4350,10 +4900,15 @@ static void svm_cancel_injection(struct kvm_vcpu *vcpu)
 
 static int svm_vcpu_pre_run(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_AMD_SEV
 	if (to_kvm_sev_info(vcpu->kvm)->need_init)
 		return -EINVAL;
 #endif
+=======
+	if (to_kvm_sev_info(vcpu->kvm)->need_init)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 1;
 }
@@ -4410,7 +4965,11 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
 
 	amd_clear_divider();
 
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__svm_sev_es_vcpu_run(svm, spec_ctrl_intercepted,
 				      sev_es_host_save_area(sd));
 	else
@@ -4493,7 +5052,11 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
 	 * VM-Exit), as running with the host's DEBUGCTL can negatively affect
 	 * guest state and can even be fatal, e.g. due to Bus Lock Detect.
 	 */
+<<<<<<< HEAD
 	if (!(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR) &&
+=======
+	if (!(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
 		update_debugctlmsr(svm->vmcb->save.dbgctl);
 
@@ -4513,7 +5076,11 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
 	if (!static_cpu_has(X86_FEATURE_V_SPEC_CTRL))
 		x86_spec_ctrl_restore_host(svm->virt_spec_ctrl);
 
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu)) {
+=======
+	if (!sev_es_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vcpu->arch.cr2 = svm->vmcb->save.cr2;
 		vcpu->arch.regs[VCPU_REGS_RAX] = svm->vmcb->save.rax;
 		vcpu->arch.regs[VCPU_REGS_RSP] = svm->vmcb->save.rsp;
@@ -4524,7 +5091,11 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
 		kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
 
+<<<<<<< HEAD
 	if (!(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR) &&
+=======
+	if (!(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
 		update_debugctlmsr(vcpu->arch.host_debugctl);
 
@@ -4542,11 +5113,19 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
 		nested_sync_control_from_vmcb02(svm);
 
 		/* Track VMRUNs that have made past consistency checking */
+<<<<<<< HEAD
 		if (vcpu->arch.nested_run_pending &&
 		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
                         ++vcpu->stat.nested_run;
 
 		vcpu->arch.nested_run_pending = 0;
+=======
+		if (svm->nested.nested_run_pending &&
+		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
+                        ++vcpu->stat.nested_run;
+
+		svm->nested.nested_run_pending = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
@@ -4636,6 +5215,7 @@ static bool svm_has_emulated_msr(struct kvm *kvm, u32 index)
 	case MSR_IA32_SMBASE:
 		if (!IS_ENABLED(CONFIG_KVM_SMM))
 			return false;
+<<<<<<< HEAD
 
 #ifdef CONFIG_KVM_AMD_SEV
 		/*
@@ -4647,6 +5227,11 @@ static bool svm_has_emulated_msr(struct kvm *kvm, u32 index)
 		if (kvm && ____sev_es_guest(kvm))
 			return false;
 #endif
+=======
+		/* SEV-ES guests do not support SMM, so report false */
+		if (kvm && sev_es_guest(kvm))
+			return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		break;
@@ -4681,7 +5266,11 @@ static void svm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
 	if (guest_cpuid_is_intel_compatible(vcpu))
 		guest_cpu_cap_clear(vcpu, X86_FEATURE_V_VMSAVE_VMLOAD);
 
+<<<<<<< HEAD
 	if (is_sev_guest(vcpu))
+=======
+	if (sev_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_vcpu_after_set_cpuid(svm);
 }
 
@@ -4923,7 +5512,11 @@ bool svm_smi_blocked(struct kvm_vcpu *vcpu)
 static int svm_smi_allowed(struct kvm_vcpu *vcpu, bool for_injection)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	if (vcpu->arch.nested_run_pending)
+=======
+	if (svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 
 	if (svm_smi_blocked(vcpu))
@@ -5037,11 +5630,20 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
 	if (nested_svm_check_cached_vmcb12(vcpu) < 0)
 		goto unmap_save;
 
+<<<<<<< HEAD
 	if (enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa, false) != 0)
 		goto unmap_save;
 
 	ret = 0;
 	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
+=======
+	if (enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa,
+				 vmcb12, false) != 0)
+		goto unmap_save;
+
+	ret = 0;
+	svm->nested.nested_run_pending = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unmap_save:
 	kvm_vcpu_unmap(vcpu, &map_save);
@@ -5077,7 +5679,11 @@ static int svm_check_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
 		return X86EMUL_UNHANDLEABLE_VECTORING;
 
 	/* Emulation is always possible when KVM has access to all guest state. */
+<<<<<<< HEAD
 	if (!is_sev_guest(vcpu))
+=======
+	if (!sev_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return X86EMUL_CONTINUE;
 
 	/* #UD and #GP should never be intercepted for SEV guests. */
@@ -5089,7 +5695,11 @@ static int svm_check_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
 	 * Emulation is impossible for SEV-ES guests as KVM doesn't have access
 	 * to guest register state.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu))
+=======
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return X86EMUL_RETRY_INSTR;
 
 	/*
@@ -5226,7 +5836,11 @@ static bool svm_apic_init_signal_blocked(struct kvm_vcpu *vcpu)
 
 static void svm_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
 {
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu))
+=======
+	if (!sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return kvm_vcpu_deliver_sipi_vector(vcpu, vector);
 
 	sev_vcpu_deliver_sipi_vector(vcpu, vector);
@@ -5242,7 +5856,21 @@ static void svm_vm_destroy(struct kvm *kvm)
 
 static int svm_vm_init(struct kvm *kvm)
 {
+<<<<<<< HEAD
 	sev_vm_init(kvm);
+=======
+	int type = kvm->arch.vm_type;
+
+	if (type != KVM_X86_DEFAULT_VM &&
+	    type != KVM_X86_SW_PROTECTED_VM) {
+		kvm->arch.has_protected_state =
+			(type == KVM_X86_SEV_ES_VM || type == KVM_X86_SNP_VM);
+		to_kvm_sev_info(kvm)->need_init = true;
+
+		kvm->arch.has_private_mem = (type == KVM_X86_SNP_VM);
+		kvm->arch.pre_fault_allowed = !kvm->arch.has_private_mem;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pause_filter_count || !pause_filter_thresh)
 		kvm_disable_exits(kvm, KVM_X86_DISABLE_EXITS_PAUSE);
@@ -5552,10 +6180,20 @@ static __init int svm_hardware_setup(void)
 		pr_err_ratelimited("NX (Execute Disable) not supported\n");
 		return -EOPNOTSUPP;
 	}
+<<<<<<< HEAD
+=======
+	kvm_enable_efer_bits(EFER_NX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_caps.supported_xcr0 &= ~(XFEATURE_MASK_BNDREGS |
 				     XFEATURE_MASK_BNDCSR);
 
+<<<<<<< HEAD
+=======
+	if (boot_cpu_has(X86_FEATURE_FXSR_OPT))
+		kvm_enable_efer_bits(EFER_FFXSR);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tsc_scaling) {
 		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
 			tsc_scaling = false;
@@ -5569,6 +6207,12 @@ static __init int svm_hardware_setup(void)
 
 	tsc_aux_uret_slot = kvm_add_user_return_msr(MSR_TSC_AUX);
 
+<<<<<<< HEAD
+=======
+	if (boot_cpu_has(X86_FEATURE_AUTOIBRS))
+		kvm_enable_efer_bits(EFER_AUTOIBRS);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check for pause filtering support */
 	if (!boot_cpu_has(X86_FEATURE_PAUSEFILTER)) {
 		pause_filter_count = 0;

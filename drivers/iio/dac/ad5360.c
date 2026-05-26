@@ -206,10 +206,21 @@ static int ad5360_write_unlocked(struct iio_dev *indio_dev,
 static int ad5360_write(struct iio_dev *indio_dev, unsigned int cmd,
 	unsigned int addr, unsigned int val, unsigned int shift)
 {
+<<<<<<< HEAD
 	struct ad5360_state *st = iio_priv(indio_dev);
 
 	guard(mutex)(&st->lock);
 	return ad5360_write_unlocked(indio_dev, cmd, addr, val, shift);
+=======
+	int ret;
+	struct ad5360_state *st = iio_priv(indio_dev);
+
+	mutex_lock(&st->lock);
+	ret = ad5360_write_unlocked(indio_dev, cmd, addr, val, shift);
+	mutex_unlock(&st->lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
@@ -228,7 +239,11 @@ static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
 		},
 	};
 
+<<<<<<< HEAD
 	guard(mutex)(&st->lock);
+=======
+	mutex_lock(&st->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	st->data[0].d32 = cpu_to_be32(AD5360_CMD(AD5360_CMD_SPECIAL_FUNCTION) |
 		AD5360_ADDR(AD5360_REG_SF_READBACK) |
@@ -236,10 +251,19 @@ static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
 		AD5360_READBACK_ADDR(addr));
 
 	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+<<<<<<< HEAD
 	if (ret < 0)
 		return ret;
 
 	return be32_to_cpu(st->data[1].d32) & 0xffff;
+=======
+	if (ret >= 0)
+		ret = be32_to_cpu(st->data[1].d32) & 0xffff;
+
+	mutex_unlock(&st->lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t ad5360_read_dac_powerdown(struct device *dev,
@@ -256,14 +280,29 @@ static int ad5360_update_ctrl(struct iio_dev *indio_dev, unsigned int set,
 	unsigned int clr)
 {
 	struct ad5360_state *st = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	guard(mutex)(&st->lock);
+=======
+	int ret;
+
+	mutex_lock(&st->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	st->ctrl |= set;
 	st->ctrl &= ~clr;
 
+<<<<<<< HEAD
 	return ad5360_write_unlocked(indio_dev, AD5360_CMD_SPECIAL_FUNCTION,
 				     AD5360_REG_SF_CTRL, st->ctrl, 0);
+=======
+	ret = ad5360_write_unlocked(indio_dev, AD5360_CMD_SPECIAL_FUNCTION,
+			AD5360_REG_SF_CTRL, st->ctrl, 0);
+
+	mutex_unlock(&st->lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t ad5360_write_dac_powerdown(struct device *dev,

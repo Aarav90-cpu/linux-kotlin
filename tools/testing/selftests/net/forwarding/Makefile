@@ -133,10 +133,13 @@ TEST_FILES := \
 	tc_common.sh \
 # end of TEST_FILES
 
+<<<<<<< HEAD
 TEST_GEN_PROGS := \
 	ipmr
 # end of TEST_GEN_PROGS
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TEST_INCLUDES := \
 	$(wildcard ../lib/sh/*.sh) \
 	../lib.sh \

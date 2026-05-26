@@ -677,32 +677,58 @@ static int uss720_probe(struct usb_interface *intf,
 	struct parport_uss720_private *priv;
 	struct parport *pp;
 	unsigned char reg;
+<<<<<<< HEAD
 	int ret = -ENODEV;
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
 		le16_to_cpu(usbdev->descriptor.idVendor),
 		le16_to_cpu(usbdev->descriptor.idProduct));
 
 	/* our known interfaces have 3 alternate settings */
+<<<<<<< HEAD
 	if (intf->num_altsetting != 3)
 		goto bail_out_early;
 
+=======
+	if (intf->num_altsetting != 3) {
+		usb_put_dev(usbdev);
+		return -ENODEV;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
 	dev_dbg(&intf->dev, "set interface result %d\n", ret);
 
 	interface = intf->cur_altsetting;
 
+<<<<<<< HEAD
 	if (interface->desc.bNumEndpoints < 2)
 		goto bail_out_early;
+=======
+	if (interface->desc.bNumEndpoints < 2) {
+		usb_put_dev(usbdev);
+		return -ENODEV;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Allocate parport interface 
 	 */
+<<<<<<< HEAD
 	ret = -ENOMEM;
 	priv = kzalloc_obj(struct parport_uss720_private);
 	if (!priv)
 		goto bail_out_early;
 
+=======
+	priv = kzalloc_obj(struct parport_uss720_private);
+	if (!priv) {
+		usb_put_dev(usbdev);
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	priv->pp = NULL;
 	priv->usbdev = usbdev;
 	kref_init(&priv->ref_count);
@@ -749,10 +775,13 @@ probe_abort:
 	kill_all_async_requests_priv(priv);
 	kref_put(&priv->ref_count, destroy_priv);
 	return -ENODEV;
+<<<<<<< HEAD
 
 bail_out_early:
 	usb_put_dev(usbdev);
 	return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void uss720_disconnect(struct usb_interface *intf)

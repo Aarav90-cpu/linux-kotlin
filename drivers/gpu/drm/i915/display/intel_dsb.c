@@ -8,7 +8,10 @@
 
 #include <drm/drm_print.h>
 #include <drm/drm_vblank.h>
+<<<<<<< HEAD
 #include <drm/intel/display_parent_interface.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "intel_crtc.h"
 #include "intel_de.h"
@@ -16,8 +19,13 @@
 #include "intel_display_rpm.h"
 #include "intel_display_types.h"
 #include "intel_dsb.h"
+<<<<<<< HEAD
 #include "intel_dsb_regs.h"
 #include "intel_psr.h"
+=======
+#include "intel_dsb_buffer.h"
+#include "intel_dsb_regs.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_vblank.h"
 #include "intel_vrr.h"
 #include "skl_watermark.h"
@@ -76,6 +84,7 @@ struct intel_dsb {
  * writes). There are no registers reads possible with DSB HW engine.
  */
 
+<<<<<<< HEAD
 /*
  * DSB buffer parent interface calls are here instead of intel_parent.[ch]
  * because they're not used outside of intel_dsb.c.
@@ -127,6 +136,8 @@ static void dsb_buffer_flush_map(struct intel_dsb *dsb)
 	display->parent->dsb->flush_map(dsb->dsb_buf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* DSB opcodes. */
 #define DSB_OPCODE_SHIFT		24
 #define DSB_OPCODE_NOOP			0x0
@@ -218,12 +229,17 @@ static int dsb_scanline_to_hw(struct intel_atomic_state *state,
  * definitely do not want to skip vblank wait. We also have concern what comes
  * to skipping vblank evasion. I.e. arming registers are latched before we have
  * managed writing them. Due to these reasons we are not setting
+<<<<<<< HEAD
  * DSB_SKIP_WAITS_EN except when using TRANS_PUSH mechanism to trigger
  * "frame change" event.
+=======
+ * DSB_SKIP_WAITS_EN.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static u32 dsb_chicken(struct intel_atomic_state *state,
 		       struct intel_crtc *crtc)
 {
+<<<<<<< HEAD
 	const struct intel_crtc_state *new_crtc_state =
 		intel_atomic_get_new_crtc_state(state, crtc);
 	u32 chicken = intel_psr_use_trans_push(new_crtc_state) ?
@@ -236,6 +252,15 @@ static u32 dsb_chicken(struct intel_atomic_state *state,
 			DSB_INST_NO_WAIT_VBLANK;
 
 	return chicken;
+=======
+	if (pre_commit_is_vrr_active(state, crtc))
+		return DSB_CTRL_WAIT_SAFE_WINDOW |
+			DSB_CTRL_NO_WAIT_VBLANK |
+			DSB_INST_WAIT_SAFE_WINDOW |
+			DSB_INST_NO_WAIT_VBLANK;
+	else
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool assert_dsb_has_room(struct intel_dsb *dsb)
@@ -269,10 +294,17 @@ static void intel_dsb_dump(struct intel_dsb *dsb)
 	for (i = 0; i < ALIGN(dsb->free_pos, 64 / 4); i += 4)
 		drm_dbg_kms(display->drm,
 			    " 0x%08x: 0x%08x 0x%08x 0x%08x 0x%08x\n", i * 4,
+<<<<<<< HEAD
 			    dsb_buffer_read(dsb, i),
 			    dsb_buffer_read(dsb, i + 1),
 			    dsb_buffer_read(dsb, i + 2),
 			    dsb_buffer_read(dsb, i + 3));
+=======
+			    intel_dsb_buffer_read(dsb->dsb_buf, i),
+			    intel_dsb_buffer_read(dsb->dsb_buf, i + 1),
+			    intel_dsb_buffer_read(dsb->dsb_buf, i + 2),
+			    intel_dsb_buffer_read(dsb->dsb_buf, i + 3));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_dbg_kms(display->drm, "}\n");
 }
 
@@ -289,12 +321,20 @@ unsigned int intel_dsb_size(struct intel_dsb *dsb)
 
 unsigned int intel_dsb_head(struct intel_dsb *dsb)
 {
+<<<<<<< HEAD
 	return dsb_buffer_ggtt_offset(dsb);
+=======
+	return intel_dsb_buffer_ggtt_offset(dsb->dsb_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned int intel_dsb_tail(struct intel_dsb *dsb)
 {
+<<<<<<< HEAD
 	return dsb_buffer_ggtt_offset(dsb) + intel_dsb_size(dsb);
+=======
+	return intel_dsb_buffer_ggtt_offset(dsb->dsb_buf) + intel_dsb_size(dsb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void intel_dsb_ins_align(struct intel_dsb *dsb)
@@ -321,8 +361,13 @@ static void intel_dsb_emit(struct intel_dsb *dsb, u32 ldw, u32 udw)
 	dsb->ins[0] = ldw;
 	dsb->ins[1] = udw;
 
+<<<<<<< HEAD
 	dsb_buffer_write(dsb, dsb->free_pos++, dsb->ins[0]);
 	dsb_buffer_write(dsb, dsb->free_pos++, dsb->ins[1]);
+=======
+	intel_dsb_buffer_write(dsb->dsb_buf, dsb->free_pos++, dsb->ins[0]);
+	intel_dsb_buffer_write(dsb->dsb_buf, dsb->free_pos++, dsb->ins[1]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool intel_dsb_prev_ins_is_write(struct intel_dsb *dsb,
@@ -393,12 +438,22 @@ void intel_dsb_reg_write_indexed(struct intel_dsb *dsb,
 
 	/* Update the count */
 	dsb->ins[0]++;
+<<<<<<< HEAD
 	dsb_buffer_write(dsb, dsb->ins_start_offset + 0, dsb->ins[0]);
 
 	dsb_buffer_write(dsb, dsb->free_pos++, val);
 	/* if number of data words is odd, then the last dword should be 0.*/
 	if (dsb->free_pos & 0x1)
 		dsb_buffer_write(dsb, dsb->free_pos, 0);
+=======
+	intel_dsb_buffer_write(dsb->dsb_buf, dsb->ins_start_offset + 0,
+			       dsb->ins[0]);
+
+	intel_dsb_buffer_write(dsb->dsb_buf, dsb->free_pos++, val);
+	/* if number of data words is odd, then the last dword should be 0.*/
+	if (dsb->free_pos & 0x1)
+		intel_dsb_buffer_write(dsb->dsb_buf, dsb->free_pos, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void intel_dsb_reg_write(struct intel_dsb *dsb,
@@ -578,7 +633,12 @@ static void intel_dsb_align_tail(struct intel_dsb *dsb)
 	aligned_tail = ALIGN(tail, CACHELINE_BYTES);
 
 	if (aligned_tail > tail)
+<<<<<<< HEAD
 		dsb_buffer_fill(dsb, dsb->free_pos, 0, aligned_tail - tail);
+=======
+		intel_dsb_buffer_memset(dsb->dsb_buf, dsb->free_pos, 0,
+					aligned_tail - tail);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsb->free_pos = aligned_tail / 4;
 }
@@ -597,7 +657,12 @@ static void intel_dsb_gosub_align(struct intel_dsb *dsb)
 	 * "Ensure GOSUB is not placed in cacheline QW slot 6 or 7 (numbered 0-7)"
 	 */
 	if (aligned_tail - tail <= 2 * 8)
+<<<<<<< HEAD
 		dsb_buffer_fill(dsb, dsb->free_pos, 0, aligned_tail - tail);
+=======
+		intel_dsb_buffer_memset(dsb->dsb_buf, dsb->free_pos, 0,
+					aligned_tail - tail);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsb->free_pos = aligned_tail / 4;
 }
@@ -661,14 +726,22 @@ void intel_dsb_gosub_finish(struct intel_dsb *dsb)
 	 */
 	intel_dsb_noop(dsb, 8);
 
+<<<<<<< HEAD
 	dsb_buffer_flush_map(dsb);
+=======
+	intel_dsb_buffer_flush_map(dsb->dsb_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void intel_dsb_finish(struct intel_dsb *dsb)
 {
 	intel_dsb_align_tail(dsb);
 
+<<<<<<< HEAD
 	dsb_buffer_flush_map(dsb);
+=======
+	intel_dsb_buffer_flush_map(dsb->dsb_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 dsb_error_int_status(struct intel_display *display)
@@ -972,7 +1045,11 @@ void intel_dsb_wait(struct intel_dsb *dsb)
 			      !is_busy,
 			      100, 1000, false);
 	if (ret) {
+<<<<<<< HEAD
 		u32 offset = dsb_buffer_ggtt_offset(dsb);
+=======
+		u32 offset = intel_dsb_buffer_ggtt_offset(dsb->dsb_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		intel_de_write_fw(display, DSB_CTRL(pipe, dsb->id),
 				  DSB_ENABLE | DSB_HALT);
@@ -1038,7 +1115,11 @@ struct intel_dsb *intel_dsb_prepare(struct intel_atomic_state *state,
 	/* ~1 qword per instruction, full cachelines */
 	size = ALIGN(max_cmds * 8, CACHELINE_BYTES);
 
+<<<<<<< HEAD
 	dsb_buf = dsb_buffer_create(display, size);
+=======
+	dsb_buf = intel_dsb_buffer_create(display->drm, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(dsb_buf))
 		goto out_put_rpm;
 
@@ -1076,7 +1157,11 @@ out:
  */
 void intel_dsb_cleanup(struct intel_dsb *dsb)
 {
+<<<<<<< HEAD
 	dsb_buffer_cleanup(dsb);
+=======
+	intel_dsb_buffer_cleanup(dsb->dsb_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dsb);
 }
 

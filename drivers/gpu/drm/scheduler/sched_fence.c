@@ -156,19 +156,31 @@ static void drm_sched_fence_set_deadline_finished(struct dma_fence *f,
 	struct dma_fence *parent;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	dma_fence_lock_irqsave(f, flags);
+=======
+	spin_lock_irqsave(&fence->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If we already have an earlier deadline, keep it: */
 	if (test_bit(DRM_SCHED_FENCE_FLAG_HAS_DEADLINE_BIT, &f->flags) &&
 	    ktime_before(fence->deadline, deadline)) {
+<<<<<<< HEAD
 		dma_fence_unlock_irqrestore(f, flags);
+=======
+		spin_unlock_irqrestore(&fence->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
 	fence->deadline = deadline;
 	set_bit(DRM_SCHED_FENCE_FLAG_HAS_DEADLINE_BIT, &f->flags);
 
+<<<<<<< HEAD
 	dma_fence_unlock_irqrestore(f, flags);
+=======
+	spin_unlock_irqrestore(&fence->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * smp_load_aquire() to ensure that if we are racing another
@@ -195,10 +207,17 @@ static const struct dma_fence_ops drm_sched_fence_ops_finished = {
 
 struct drm_sched_fence *to_drm_sched_fence(struct dma_fence *f)
 {
+<<<<<<< HEAD
 	if (rcu_access_pointer(f->ops) == &drm_sched_fence_ops_scheduled)
 		return container_of(f, struct drm_sched_fence, scheduled);
 
 	if (rcu_access_pointer(f->ops) == &drm_sched_fence_ops_finished)
+=======
+	if (f->ops == &drm_sched_fence_ops_scheduled)
+		return container_of(f, struct drm_sched_fence, scheduled);
+
+	if (f->ops == &drm_sched_fence_ops_finished)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return container_of(f, struct drm_sched_fence, finished);
 
 	return NULL;

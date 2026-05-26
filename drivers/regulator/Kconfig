@@ -1173,7 +1173,11 @@ config REGULATOR_QCOM_RPM
 	  "qcom_rpm-regulator".
 
 config REGULATOR_QCOM_RPMH
+<<<<<<< HEAD
 	tristate "Qualcomm RPMh regulator driver"
+=======
+	tristate "Qualcomm Technologies, Inc. RPMh regulator driver"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on QCOM_RPMH || (QCOM_RPMH=n && COMPILE_TEST)
 	depends on QCOM_COMMAND_DB || (QCOM_COMMAND_DB=n && COMPILE_TEST)
 	help
@@ -1231,8 +1235,13 @@ config REGULATOR_RASPBERRYPI_TOUCHSCREEN_ATTINY
 	tristate "Raspberry Pi 7-inch touchscreen panel ATTINY regulator"
 	depends on ARM || ARM64 || COMPILE_TEST
 	depends on BACKLIGHT_CLASS_DEVICE
+<<<<<<< HEAD
 	depends on GPIOLIB
 	depends on I2C
+=======
+	depends on I2C
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select REGMAP_I2C
 	help
 	  This driver supports ATTINY regulator on the Raspberry Pi 7-inch
@@ -1332,6 +1341,10 @@ config REGULATOR_RT5133
 	depends on I2C && GPIOLIB && OF
 	select REGMAP
 	select CRC8
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver adds support for RT5133 PMIC regulators.
 	  RT5133 is an integrated chip. It includes 8 LDOs and 3 GPOs that
@@ -1878,7 +1891,11 @@ config REGULATOR_WM8994
 	  WM8994 CODEC.
 
 config REGULATOR_QCOM_LABIBB
+<<<<<<< HEAD
 	tristate "Qualcomm LAB/IBB regulator support"
+=======
+	tristate "QCOM LAB/IBB regulator support"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on SPMI || COMPILE_TEST
 	help
 	  This driver supports Qualcomm's LAB/IBB regulators present on the

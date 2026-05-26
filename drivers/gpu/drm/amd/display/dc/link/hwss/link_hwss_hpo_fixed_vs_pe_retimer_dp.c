@@ -74,7 +74,10 @@ static void dp_hpo_fixed_vs_pe_retimer_set_tx_ffe(struct dc_link *link,
 static void dp_hpo_fixed_vs_pe_retimer_program_override_test_pattern(struct dc_link *link,
 		struct encoder_set_dp_phy_pattern_param *tp_params)
 {
+<<<<<<< HEAD
 	(void)tp_params;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint8_t clk_src = 0xC4;
 	uint8_t pattern = 0x4F; /* SQ128 */
 

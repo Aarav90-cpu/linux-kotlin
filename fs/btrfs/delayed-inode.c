@@ -596,7 +596,12 @@ static int btrfs_delayed_inode_reserve_metadata(
 	 */
 	if (!src_rsv || (!trans->bytes_reserved &&
 			 src_rsv->type != BTRFS_BLOCK_RSV_DELALLOC)) {
+<<<<<<< HEAD
 		ret = btrfs_qgroup_reserve_meta_prealloc(root, num_bytes, true, true);
+=======
+		ret = btrfs_qgroup_reserve_meta(root, num_bytes,
+					  BTRFS_QGROUP_RSV_META_PREALLOC, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 		ret = btrfs_block_rsv_add(fs_info, dst_rsv, num_bytes,

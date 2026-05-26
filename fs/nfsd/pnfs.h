@@ -11,9 +11,12 @@
 
 struct xdr_stream;
 
+<<<<<<< HEAD
 /* Cap exponential backoff between fence retries at 3 minutes */
 #define	MAX_FENCE_DELAY		((unsigned int)(3 * 60 * HZ))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nfsd4_deviceid_map {
 	struct list_head	hash;
 	u64			idx;
@@ -41,7 +44,11 @@ struct nfsd4_layout_ops {
 			struct svc_rqst *rqstp,
 			struct nfsd4_layoutcommit *lcp);
 
+<<<<<<< HEAD
 	bool (*fence_client)(struct nfs4_layout_stateid *ls,
+=======
+	void (*fence_client)(struct nfs4_layout_stateid *ls,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     struct nfsd_file *file);
 };
 

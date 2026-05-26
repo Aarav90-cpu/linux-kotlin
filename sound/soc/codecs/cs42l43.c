@@ -45,6 +45,7 @@ static SOC_VALUE_ENUM_SINGLE_DECL(cs42l43_##name##_enum, reg, \
 static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 		SOC_DAPM_ENUM("Route", cs42l43_##name##_enum)
 
+<<<<<<< HEAD
 #define CS42L43B_DECL_MUX(name, reg) \
 static SOC_VALUE_ENUM_SINGLE_DECL(cs42l43_##name##_enum, reg, \
 				  0, CS42L43_MIXER_SRC_MASK, \
@@ -52,18 +53,23 @@ static SOC_VALUE_ENUM_SINGLE_DECL(cs42l43_##name##_enum, reg, \
 static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 		SOC_DAPM_ENUM("Route", cs42l43_##name##_enum)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CS42L43_DECL_MIXER(name, reg) \
 	CS42L43_DECL_MUX(name##_in1, reg); \
 	CS42L43_DECL_MUX(name##_in2, reg + 0x4); \
 	CS42L43_DECL_MUX(name##_in3, reg + 0x8); \
 	CS42L43_DECL_MUX(name##_in4, reg + 0xC)
 
+<<<<<<< HEAD
 #define CS42L43B_DECL_MIXER(name, reg) \
 	CS42L43B_DECL_MUX(name##_in1, reg); \
 	CS42L43B_DECL_MUX(name##_in2, reg + 0x4); \
 	CS42L43B_DECL_MUX(name##_in3, reg + 0x8); \
 	CS42L43B_DECL_MUX(name##_in4, reg + 0xC)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CS42L43_DAPM_MUX(name_str, name) \
 	SND_SOC_DAPM_MUX(name_str " Input", SND_SOC_NOPM, 0, 0, &cs42l43_##name##_mux)
 
@@ -112,6 +118,7 @@ static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 	{ name_str,		"EQ1",			"EQ" }, \
 	{ name_str,		"EQ2",			"EQ" }
 
+<<<<<<< HEAD
 #define CS42L43B_BASE_ROUTES(name_str) \
 	{ name_str,		"Decimator 5",		"Decimator 5" }, \
 	{ name_str,		"Decimator 6",		"Decimator 6" }, \
@@ -120,15 +127,20 @@ static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 	{ name_str,		"ISRC2 DEC3",		"ISRC2DEC3" }, \
 	{ name_str,		"ISRC2 DEC4",		"ISRC2DEC4" }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CS42L43_MUX_ROUTES(name_str, widget) \
 	{ widget,		NULL,			name_str " Input" }, \
 	{ name_str " Input",	NULL,			"Mixer Core" }, \
 	CS42L43_BASE_ROUTES(name_str " Input")
 
+<<<<<<< HEAD
 #define CS42L43B_MUX_ROUTES(name_str, widget) \
 	CS42L43_MUX_ROUTES(name_str, widget), \
 	CS42L43B_BASE_ROUTES(name_str " Input")
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CS42L43_MIXER_ROUTES(name_str, widget) \
 	{ name_str " Mixer",	NULL,			name_str " Input 1" }, \
 	{ name_str " Mixer",	NULL,			name_str " Input 2" }, \
@@ -141,6 +153,7 @@ static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 	CS42L43_BASE_ROUTES(name_str " Input 3"), \
 	CS42L43_BASE_ROUTES(name_str " Input 4")
 
+<<<<<<< HEAD
 #define CS42L43B_MIXER_ROUTES(name_str, widget) \
 	CS42L43_MIXER_ROUTES(name_str, widget), \
 	CS42L43B_BASE_ROUTES(name_str " Input 1"), \
@@ -148,6 +161,8 @@ static const struct snd_kcontrol_new cs42l43_##name##_mux = \
 	CS42L43B_BASE_ROUTES(name_str " Input 3"), \
 	CS42L43B_BASE_ROUTES(name_str " Input 4")
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CS42L43_MIXER_VOLUMES(name_str, base) \
 	SOC_SINGLE_RANGE_TLV(name_str " Input 1 Volume", base, \
 			     CS42L43_MIXER_VOL_SHIFT, 0x20, 0x50, 0, \
@@ -332,7 +347,10 @@ static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_d
 	struct snd_soc_component *component = dai->component;
 	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
 	struct cs42l43 *cs42l43 = priv->core;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int provider = !dai->id || !!regmap_test_bits(cs42l43->regmap,
 						      CS42L43_ASP_CLK_CONFIG2,
 						      CS42L43_ASP_MASTER_MODE_MASK);
@@ -342,6 +360,7 @@ static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_d
 	else
 		priv->constraint.mask = CS42L43_CONSUMER_RATE_MASK;
 
+<<<<<<< HEAD
 	if (cs42l43->variant_id == CS42L43_DEVID_VAL && (dai->id == 3 || dai->id == 4)) {
 		ret = snd_pcm_hw_constraint_minmax(substream->runtime,
 						   SNDRV_PCM_HW_PARAM_CHANNELS,
@@ -350,6 +369,8 @@ static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_d
 			return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return snd_pcm_hw_constraint_list(substream->runtime, 0,
 					  SNDRV_PCM_HW_PARAM_RATE,
 					  &priv->constraint);
@@ -631,6 +652,7 @@ static int cs42l43_dai_probe(struct snd_soc_dai *dai)
 		"Decimator 2 Switch",
 		"Decimator 3 Switch",
 		"Decimator 4 Switch",
+<<<<<<< HEAD
 		"Decimator 5 Switch",
 		"Decimator 6 Switch",
 	};
@@ -650,6 +672,14 @@ static int cs42l43_dai_probe(struct snd_soc_dai *dai)
 	}
 
 	for (i = 0; i < control_size; i++) {
+=======
+	};
+	int i;
+
+	static_assert(ARRAY_SIZE(controls) == ARRAY_SIZE(priv->kctl));
+
+	for (i = 0; i < ARRAY_SIZE(controls); i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (priv->kctl[i])
 			continue;
 
@@ -757,7 +787,11 @@ static struct snd_soc_dai_driver cs42l43_dais[] = {
 		.capture = {
 			.stream_name	= "DP3 Capture",
 			.channels_min	= 1,
+<<<<<<< HEAD
 			.channels_max	= 4,
+=======
+			.channels_max	= 2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.rates		= SNDRV_PCM_RATE_KNOT,
 			.formats	= CS42L43_SDW_FORMATS,
 		},
@@ -769,7 +803,11 @@ static struct snd_soc_dai_driver cs42l43_dais[] = {
 		.capture = {
 			.stream_name	= "DP4 Capture",
 			.channels_min	= 1,
+<<<<<<< HEAD
 			.channels_max	= 4,
+=======
+			.channels_max	= 2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.rates		= SNDRV_PCM_RATE_KNOT,
 			.formats	= CS42L43_SDW_FORMATS,
 		},
@@ -862,10 +900,13 @@ static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL3
 			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
 static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_wnf_corner, CS42L43_DECIM_HPF_WNF_CTRL4,
 			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
+<<<<<<< HEAD
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec5_wnf_corner, CS42L43B_DECIM_HPF_WNF_CTRL5,
 			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec6_wnf_corner, CS42L43B_DECIM_HPF_WNF_CTRL6,
 			    CS42L43_DECIM_WNF_CF_SHIFT, cs42l43_wnf_corner_text);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * const cs42l43_hpf_corner_text[] = {
 	"3Hz", "12Hz", "48Hz", "96Hz",
@@ -879,10 +920,13 @@ static SOC_ENUM_SINGLE_DECL(cs42l43_dec3_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL3
 			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
 static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_hpf_corner, CS42L43_DECIM_HPF_WNF_CTRL4,
 			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
+<<<<<<< HEAD
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec5_hpf_corner, CS42L43B_DECIM_HPF_WNF_CTRL5,
 			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec6_hpf_corner, CS42L43B_DECIM_HPF_WNF_CTRL6,
 			    CS42L43_DECIM_HPF_CF_SHIFT, cs42l43_hpf_corner_text);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static SOC_ENUM_SINGLE_DECL(cs42l43_dec1_ramp_up, CS42L43_DECIM_VOL_CTRL_CH1_CH2,
 			    CS42L43_DECIM1_VI_RAMP_SHIFT, cs42l43_ramp_text);
@@ -901,6 +945,7 @@ static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_ramp_up, CS42L43_DECIM_VOL_CTRL_CH3_CH4
 static SOC_ENUM_SINGLE_DECL(cs42l43_dec4_ramp_down, CS42L43_DECIM_VOL_CTRL_CH3_CH4,
 			    CS42L43_DECIM4_VD_RAMP_SHIFT, cs42l43_ramp_text);
 
+<<<<<<< HEAD
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec1_ramp_up, CS42L43B_DECIM_VOL_CTRL_CH1_CH2,
 			    CS42L43_DECIM1_VI_RAMP_SHIFT, cs42l43_ramp_text);
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec1_ramp_down, CS42L43B_DECIM_VOL_CTRL_CH1_CH2,
@@ -926,6 +971,8 @@ static SOC_ENUM_SINGLE_DECL(cs42l43b_dec6_ramp_up, CS42L43B_DECIM_VOL_CTRL_CH5_C
 static SOC_ENUM_SINGLE_DECL(cs42l43b_dec6_ramp_down, CS42L43B_DECIM_VOL_CTRL_CH5_CH6,
 			    CS42L43B_DECIM6_PATH1_VOL_FALL_RATE_SHIFT, cs42l43_ramp_text);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DECLARE_TLV_DB_SCALE(cs42l43_speaker_tlv, -6400, 50, 0);
 
 static SOC_ENUM_SINGLE_DECL(cs42l43_speaker_ramp_up, CS42L43_AMP1_2_VOL_RAMP,
@@ -985,6 +1032,7 @@ static const unsigned int cs42l43_mixer_values[] = {
 	0x58, 0x59, // EQ1, 2
 };
 
+<<<<<<< HEAD
 static const char * const cs42l43b_mixer_texts[] = {
 	"None",
 	"Tone Generator 1", "Tone Generator 2",
@@ -1016,6 +1064,8 @@ static const unsigned int cs42l43b_mixer_values[] = {
 };
 
 /* A variant */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CS42L43_DECL_MUX(asptx1, CS42L43_ASPTX1_INPUT);
 CS42L43_DECL_MUX(asptx2, CS42L43_ASPTX2_INPUT);
 CS42L43_DECL_MUX(asptx3, CS42L43_ASPTX3_INPUT);
@@ -1064,6 +1114,7 @@ CS42L43_DECL_MIXER(amp2, CS42L43_AMP2MIX_INPUT1);
 CS42L43_DECL_MIXER(amp3, CS42L43_AMP3MIX_INPUT1);
 CS42L43_DECL_MIXER(amp4, CS42L43_AMP4MIX_INPUT1);
 
+<<<<<<< HEAD
 /* B variant */
 CS42L43B_DECL_MUX(b_asptx1, CS42L43_ASPTX1_INPUT);
 CS42L43B_DECL_MUX(b_asptx2, CS42L43_ASPTX2_INPUT);
@@ -1121,6 +1172,8 @@ CS42L43B_DECL_MIXER(b_amp2, CS42L43_AMP2MIX_INPUT1);
 CS42L43B_DECL_MIXER(b_amp3, CS42L43_AMP3MIX_INPUT1);
 CS42L43B_DECL_MIXER(b_amp4, CS42L43_AMP4MIX_INPUT1);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cs42l43_dapm_get_volsw(struct snd_kcontrol *kcontrol,
 				  struct snd_ctl_elem_value *ucontrol)
 {
@@ -1349,6 +1402,47 @@ static const struct snd_kcontrol_new cs42l43_controls[] = {
 	SOC_ENUM("Decimator 3 HPF Corner Frequency", cs42l43_dec3_hpf_corner),
 	SOC_ENUM("Decimator 4 HPF Corner Frequency", cs42l43_dec4_hpf_corner),
 
+<<<<<<< HEAD
+=======
+	SOC_SINGLE_TLV("Decimator 1 Volume", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
+		       CS42L43_DECIM1_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
+	SOC_SINGLE_EXT("Decimator 1 Switch", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
+		       CS42L43_DECIM1_MUTE_SHIFT, 1, 1,
+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
+	SOC_SINGLE_TLV("Decimator 2 Volume", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
+		       CS42L43_DECIM2_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
+	SOC_SINGLE_EXT("Decimator 2 Switch", CS42L43_DECIM_VOL_CTRL_CH1_CH2,
+		       CS42L43_DECIM2_MUTE_SHIFT, 1, 1,
+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
+	SOC_SINGLE_TLV("Decimator 3 Volume", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
+		       CS42L43_DECIM3_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
+	SOC_SINGLE_EXT("Decimator 3 Switch", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
+		       CS42L43_DECIM3_MUTE_SHIFT, 1, 1,
+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
+	SOC_SINGLE_TLV("Decimator 4 Volume", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
+		       CS42L43_DECIM4_VOL_SHIFT, 0xBF, 0, cs42l43_dec_tlv),
+	SOC_SINGLE_EXT("Decimator 4 Switch", CS42L43_DECIM_VOL_CTRL_CH3_CH4,
+		       CS42L43_DECIM4_MUTE_SHIFT, 1, 1,
+		       cs42l43_decim_get, cs42l43_dapm_put_volsw),
+
+	SOC_ENUM_EXT("Decimator 1 Ramp Up", cs42l43_dec1_ramp_up,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 1 Ramp Down", cs42l43_dec1_ramp_down,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 2 Ramp Up", cs42l43_dec2_ramp_up,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 2 Ramp Down", cs42l43_dec2_ramp_down,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 3 Ramp Up", cs42l43_dec3_ramp_up,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 3 Ramp Down", cs42l43_dec3_ramp_down,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 4 Ramp Up", cs42l43_dec4_ramp_up,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+	SOC_ENUM_EXT("Decimator 4 Ramp Down", cs42l43_dec4_ramp_down,
+		     cs42l43_dapm_get_enum, cs42l43_dapm_put_enum),
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SOC_DOUBLE_R_EXT("Speaker Digital Switch",
 			 CS42L43_INTP_VOLUME_CTRL1, CS42L43_INTP_VOLUME_CTRL2,
 			 CS42L43_AMP_MUTE_SHIFT, 1, 1,
@@ -1738,6 +1832,7 @@ static int cs42l43_mic_ev(struct snd_soc_dapm_widget *w,
 	unsigned int *val;
 	int ret;
 
+<<<<<<< HEAD
 	if (cs42l43->variant_id == CS42L43_DEVID_VAL) {
 		switch (w->shift) {
 		case CS42L43_ADC1_EN_SHIFT:
@@ -1813,6 +1908,37 @@ static int cs42l43_mic_ev(struct snd_soc_dapm_widget *w,
 			return -EINVAL;
 		}
 	} else {
+=======
+	switch (w->shift) {
+	case CS42L43_ADC1_EN_SHIFT:
+	case CS42L43_PDM1_DIN_L_EN_SHIFT:
+		reg = CS42L43_DECIM_VOL_CTRL_CH1_CH2;
+		ramp = CS42L43_DECIM1_VD_RAMP_MASK;
+		mute = CS42L43_DECIM1_MUTE_MASK;
+		val = &priv->decim_cache[0];
+		break;
+	case CS42L43_ADC2_EN_SHIFT:
+	case CS42L43_PDM1_DIN_R_EN_SHIFT:
+		reg = CS42L43_DECIM_VOL_CTRL_CH1_CH2;
+		ramp = CS42L43_DECIM2_VD_RAMP_MASK;
+		mute = CS42L43_DECIM2_MUTE_MASK;
+		val = &priv->decim_cache[1];
+		break;
+	case CS42L43_PDM2_DIN_L_EN_SHIFT:
+		reg = CS42L43_DECIM_VOL_CTRL_CH3_CH4;
+		ramp  = CS42L43_DECIM3_VD_RAMP_MASK;
+		mute = CS42L43_DECIM3_MUTE_MASK;
+		val = &priv->decim_cache[2];
+		break;
+	case CS42L43_PDM2_DIN_R_EN_SHIFT:
+		reg = CS42L43_DECIM_VOL_CTRL_CH3_CH4;
+		ramp = CS42L43_DECIM4_VD_RAMP_MASK;
+		mute = CS42L43_DECIM4_MUTE_MASK;
+		val = &priv->decim_cache[3];
+		break;
+	default:
+		dev_err(priv->dev, "Invalid microphone shift: %d\n", w->shift);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -1905,6 +2031,14 @@ static const struct snd_soc_dapm_widget cs42l43_widgets[] = {
 			   0, NULL, 0, cs42l43_mic_ev,
 			   SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
 
+<<<<<<< HEAD
+=======
+	SND_SOC_DAPM_MUX("Decimator 1 Mode", SND_SOC_NOPM, 0, 0,
+			 &cs42l43_dec_mode_ctl[0]),
+	SND_SOC_DAPM_MUX("Decimator 2 Mode", SND_SOC_NOPM, 0, 0,
+			 &cs42l43_dec_mode_ctl[1]),
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SND_SOC_DAPM_PGA("Decimator 1", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("Decimator 2", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("Decimator 3", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -2049,6 +2183,56 @@ static const struct snd_soc_dapm_widget cs42l43_widgets[] = {
 
 	SND_SOC_DAPM_SUPPLY("Mixer Core", CS42L43_BLOCK_EN6, CS42L43_MIXER_EN_SHIFT,
 			    0, NULL, 0),
+<<<<<<< HEAD
+=======
+	CS42L43_DAPM_MUX("ASPTX1", asptx1),
+	CS42L43_DAPM_MUX("ASPTX2", asptx2),
+	CS42L43_DAPM_MUX("ASPTX3", asptx3),
+	CS42L43_DAPM_MUX("ASPTX4", asptx4),
+	CS42L43_DAPM_MUX("ASPTX5", asptx5),
+	CS42L43_DAPM_MUX("ASPTX6", asptx6),
+
+	CS42L43_DAPM_MUX("DP1TX1", dp1tx1),
+	CS42L43_DAPM_MUX("DP1TX2", dp1tx2),
+	CS42L43_DAPM_MUX("DP1TX3", dp1tx3),
+	CS42L43_DAPM_MUX("DP1TX4", dp1tx4),
+	CS42L43_DAPM_MUX("DP2TX1", dp2tx1),
+	CS42L43_DAPM_MUX("DP2TX2", dp2tx2),
+	CS42L43_DAPM_MUX("DP3TX1", dp3tx1),
+	CS42L43_DAPM_MUX("DP3TX2", dp3tx2),
+	CS42L43_DAPM_MUX("DP4TX1", dp4tx1),
+	CS42L43_DAPM_MUX("DP4TX2", dp4tx2),
+
+	CS42L43_DAPM_MUX("ASRC INT1", asrcint1),
+	CS42L43_DAPM_MUX("ASRC INT2", asrcint2),
+	CS42L43_DAPM_MUX("ASRC INT3", asrcint3),
+	CS42L43_DAPM_MUX("ASRC INT4", asrcint4),
+	CS42L43_DAPM_MUX("ASRC DEC1", asrcdec1),
+	CS42L43_DAPM_MUX("ASRC DEC2", asrcdec2),
+	CS42L43_DAPM_MUX("ASRC DEC3", asrcdec3),
+	CS42L43_DAPM_MUX("ASRC DEC4", asrcdec4),
+
+	CS42L43_DAPM_MUX("ISRC1INT1", isrc1int1),
+	CS42L43_DAPM_MUX("ISRC1INT2", isrc1int2),
+	CS42L43_DAPM_MUX("ISRC1DEC1", isrc1dec1),
+	CS42L43_DAPM_MUX("ISRC1DEC2", isrc1dec2),
+	CS42L43_DAPM_MUX("ISRC2INT1", isrc2int1),
+	CS42L43_DAPM_MUX("ISRC2INT2", isrc2int2),
+	CS42L43_DAPM_MUX("ISRC2DEC1", isrc2dec1),
+	CS42L43_DAPM_MUX("ISRC2DEC2", isrc2dec2),
+
+	CS42L43_DAPM_MUX("SPDIF1", spdif1),
+	CS42L43_DAPM_MUX("SPDIF2", spdif2),
+
+	CS42L43_DAPM_MIXER("EQ1", eq1),
+	CS42L43_DAPM_MIXER("EQ2", eq2),
+
+	CS42L43_DAPM_MIXER("Speaker L", amp1),
+	CS42L43_DAPM_MIXER("Speaker R", amp2),
+
+	CS42L43_DAPM_MIXER("Headphone L", amp3),
+	CS42L43_DAPM_MIXER("Headphone R", amp4),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct snd_soc_dapm_route cs42l43_routes[] = {
@@ -2094,6 +2278,19 @@ static const struct snd_soc_dapm_route cs42l43_routes[] = {
 	{ "PDM2L",		NULL,	"PDM2_DIN" },
 	{ "PDM2R",		NULL,	"PDM2_DIN" },
 
+<<<<<<< HEAD
+=======
+	{ "Decimator 1 Mode",	"PDM",	"PDM1L" },
+	{ "Decimator 1 Mode",	"ADC",	"ADC1" },
+	{ "Decimator 2 Mode",	"PDM",	"PDM1R" },
+	{ "Decimator 2 Mode",	"ADC",	"ADC2" },
+
+	{ "Decimator 1",	NULL,	"Decimator 1 Mode" },
+	{ "Decimator 2",	NULL,	"Decimator 2 Mode" },
+	{ "Decimator 3",	NULL,	"PDM2L" },
+	{ "Decimator 4",	NULL,	"PDM2R" },
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "ASP Capture",	NULL,	"ASPTX1" },
 	{ "ASP Capture",	NULL,	"ASPTX2" },
 	{ "ASP Capture",	NULL,	"ASPTX3" },
@@ -2181,6 +2378,7 @@ static const struct snd_soc_dapm_route cs42l43_routes[] = {
 	{ "ASRC_DEC4",		NULL,	"ASRC_DEC" },
 
 	{ "EQ",			NULL,	"EQ Clock" },
+<<<<<<< HEAD
 };
 
 static const struct snd_kcontrol_new cs42l43_a_controls[] = {
@@ -2436,6 +2634,8 @@ static const struct snd_soc_dapm_route cs42l43_a_routes[] = {
 	{ "Decimator 2",	NULL,	"Decimator 2 Mode" },
 	{ "Decimator 3",	NULL,	"PDM2L" },
 	{ "Decimator 4",	NULL,	"PDM2R" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	CS42L43_MUX_ROUTES("ASPTX1", "ASPTX1"),
 	CS42L43_MUX_ROUTES("ASPTX2", "ASPTX2"),
@@ -2486,6 +2686,7 @@ static const struct snd_soc_dapm_route cs42l43_a_routes[] = {
 	CS42L43_MIXER_ROUTES("Headphone R", "HP"),
 };
 
+<<<<<<< HEAD
 static const struct snd_soc_dapm_route cs42l43_b_routes[] = {
 	{ "Decimator 1",	NULL,	"ADC1" },
 	{ "Decimator 2",	NULL,	"ADC2" },
@@ -2561,6 +2762,8 @@ static const struct snd_soc_dapm_route cs42l43_b_routes[] = {
 	CS42L43B_MIXER_ROUTES("Headphone R", "HP"),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cs42l43_set_sysclk(struct snd_soc_component *component, int clk_id,
 			      int src, unsigned int freq, int dir)
 {
@@ -2577,6 +2780,7 @@ static int cs42l43_set_sysclk(struct snd_soc_component *component, int clk_id,
 
 static int cs42l43_component_probe(struct snd_soc_component *component)
 {
+<<<<<<< HEAD
 	struct snd_soc_dapm_context *dapm = snd_soc_component_to_dapm(component);
 	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
 	unsigned int num_controls, num_widgets, num_routes;
@@ -2585,6 +2789,10 @@ static int cs42l43_component_probe(struct snd_soc_component *component)
 	const struct snd_soc_dapm_route *routes;
 	struct cs42l43 *cs42l43 = priv->core;
 	int ret;
+=======
+	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
+	struct cs42l43 *cs42l43 = priv->core;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	snd_soc_component_init_regmap(component, cs42l43->regmap);
 
@@ -2596,6 +2804,7 @@ static int cs42l43_component_probe(struct snd_soc_component *component)
 	priv->component = component;
 	priv->constraint = cs42l43_constraint;
 
+<<<<<<< HEAD
 	switch (cs42l43->variant_id) {
 	case CS42L43_DEVID_VAL:
 		controls = cs42l43_a_controls;
@@ -2629,6 +2838,8 @@ static int cs42l43_component_probe(struct snd_soc_component *component)
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

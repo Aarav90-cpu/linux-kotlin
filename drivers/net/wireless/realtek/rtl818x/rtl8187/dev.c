@@ -1475,6 +1475,11 @@ static int rtl8187_probe(struct usb_interface *intf,
 	usb_set_intfdata(intf, dev);
 	priv->udev = udev;
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_queue_head_init(&priv->rx_queue);
 
 	BUILD_BUG_ON(sizeof(priv->channels) != sizeof(rtl818x_channels));
@@ -1661,6 +1666,10 @@ static int rtl8187_probe(struct usb_interface *intf,
  err_free_dmabuf:
 	kfree(priv->io_dmabuf);
 	usb_set_intfdata(intf, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  err_free_dev:
 	ieee80211_free_hw(dev);
 	return err;
@@ -1682,6 +1691,10 @@ static void rtl8187_disconnect(struct usb_interface *intf)
 
 	priv = dev->priv;
 	usb_reset_device(priv->udev);
+<<<<<<< HEAD
+=======
+	usb_put_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(priv->io_dmabuf);
 	ieee80211_free_hw(dev);
 }

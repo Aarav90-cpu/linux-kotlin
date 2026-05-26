@@ -531,7 +531,11 @@ static unsigned int wpf_max_width(struct vsp1_entity *entity,
 {
 	struct vsp1_rwpf *wpf = to_rwpf(&entity->subdev);
 
+<<<<<<< HEAD
 	return wpf->flip.rotate ? 256 : wpf->entity.max_width;
+=======
+	return wpf->flip.rotate ? 256 : wpf->max_width;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void wpf_partition(struct vsp1_entity *entity,
@@ -567,6 +571,7 @@ struct vsp1_rwpf *vsp1_wpf_create(struct vsp1_device *vsp1, unsigned int index)
 	if (wpf == NULL)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	wpf->entity.min_width = RWPF_MIN_WIDTH;
 	wpf->entity.min_height = RWPF_MIN_HEIGHT;
 
@@ -576,6 +581,14 @@ struct vsp1_rwpf *vsp1_wpf_create(struct vsp1_device *vsp1, unsigned int index)
 	} else {
 		wpf->entity.max_width = WPF_GEN3_MAX_WIDTH;
 		wpf->entity.max_height = WPF_GEN3_MAX_HEIGHT;
+=======
+	if (vsp1->info->gen == 2) {
+		wpf->max_width = WPF_GEN2_MAX_WIDTH;
+		wpf->max_height = WPF_GEN2_MAX_HEIGHT;
+	} else {
+		wpf->max_width = WPF_GEN3_MAX_WIDTH;
+		wpf->max_height = WPF_GEN3_MAX_HEIGHT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	wpf->entity.ops = &wpf_entity_ops;

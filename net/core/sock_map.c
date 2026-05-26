@@ -530,7 +530,11 @@ static bool sock_map_redirect_allowed(const struct sock *sk)
 	if (sk_is_tcp(sk))
 		return sk->sk_state != TCP_LISTEN;
 	else
+<<<<<<< HEAD
 		return READ_ONCE(sk->sk_state) == TCP_ESTABLISHED;
+=======
+		return sk->sk_state == TCP_ESTABLISHED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool sock_map_sk_is_suitable(const struct sock *sk)
@@ -543,7 +547,11 @@ static bool sock_map_sk_state_allowed(const struct sock *sk)
 	if (sk_is_tcp(sk))
 		return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_LISTEN);
 	if (sk_is_stream_unix(sk))
+<<<<<<< HEAD
 		return (1 << READ_ONCE(sk->sk_state)) & TCPF_ESTABLISHED;
+=======
+		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sk_is_vsock(sk) &&
 	    (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET))
 		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
@@ -1630,23 +1638,35 @@ void sock_map_unhash(struct sock *sk)
 	void (*saved_unhash)(struct sock *sk);
 	struct sk_psock *psock;
 
+<<<<<<< HEAD
 retry:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	psock = sk_psock(sk);
 	if (unlikely(!psock)) {
 		rcu_read_unlock();
 		saved_unhash = READ_ONCE(sk->sk_prot)->unhash;
+<<<<<<< HEAD
 		if (unlikely(saved_unhash == sock_map_unhash))
 			goto retry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		saved_unhash = psock->saved_unhash;
 		sock_map_remove_links(sk, psock);
 		rcu_read_unlock();
+<<<<<<< HEAD
 
 		if (WARN_ON_ONCE(saved_unhash == sock_map_unhash))
 			return;
 	}
 
+=======
+	}
+	if (WARN_ON_ONCE(saved_unhash == sock_map_unhash))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (saved_unhash)
 		saved_unhash(sk);
 }
@@ -1657,25 +1677,37 @@ void sock_map_destroy(struct sock *sk)
 	void (*saved_destroy)(struct sock *sk);
 	struct sk_psock *psock;
 
+<<<<<<< HEAD
 retry:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	psock = sk_psock_get(sk);
 	if (unlikely(!psock)) {
 		rcu_read_unlock();
 		saved_destroy = READ_ONCE(sk->sk_prot)->destroy;
+<<<<<<< HEAD
 		if (unlikely(saved_destroy == sock_map_destroy))
 			goto retry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		saved_destroy = psock->saved_destroy;
 		sock_map_remove_links(sk, psock);
 		rcu_read_unlock();
 		sk_psock_stop(psock);
 		sk_psock_put(sk, psock);
+<<<<<<< HEAD
 
 		if (WARN_ON_ONCE(saved_destroy == sock_map_destroy))
 			return;
 	}
 
+=======
+	}
+	if (WARN_ON_ONCE(saved_destroy == sock_map_destroy))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (saved_destroy)
 		saved_destroy(sk);
 }
@@ -1686,6 +1718,7 @@ void sock_map_close(struct sock *sk, long timeout)
 	void (*saved_close)(struct sock *sk, long timeout);
 	struct sk_psock *psock;
 
+<<<<<<< HEAD
 retry:
 	lock_sock(sk);
 	rcu_read_lock();
@@ -1693,11 +1726,23 @@ retry:
 	if (likely(psock)) {
 		saved_close = psock->saved_close;
 		sock_map_remove_links(sk, psock);
+=======
+	lock_sock(sk);
+	rcu_read_lock();
+	psock = sk_psock(sk);
+	if (likely(psock)) {
+		saved_close = psock->saved_close;
+		sock_map_remove_links(sk, psock);
+		psock = sk_psock_get(sk);
+		if (unlikely(!psock))
+			goto no_psock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_read_unlock();
 		sk_psock_stop(psock);
 		release_sock(sk);
 		cancel_delayed_work_sync(&psock->work);
 		sk_psock_put(sk, psock);
+<<<<<<< HEAD
 
 		/* Make sure we do not recurse. This is a bug.
 		 * Leak the socket instead of crashing on a stack overflow.
@@ -1713,6 +1758,20 @@ retry:
 			goto retry;
 	}
 
+=======
+	} else {
+		saved_close = READ_ONCE(sk->sk_prot)->close;
+no_psock:
+		rcu_read_unlock();
+		release_sock(sk);
+	}
+
+	/* Make sure we do not recurse. This is a bug.
+	 * Leak the socket instead of crashing on a stack overflow.
+	 */
+	if (WARN_ON_ONCE(saved_close == sock_map_close))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	saved_close(sk, timeout);
 }
 EXPORT_SYMBOL_GPL(sock_map_close);

@@ -50,11 +50,14 @@
  *   memfds are always opened with ``O_RDWR`` and ``O_LARGEFILE``. This property
  *   is maintained.
  *
+<<<<<<< HEAD
  * Seals
  *   File seals set on the memfd are preserved and re-applied on restore.
  *   Only seals known to this LUO version (see ``MEMFD_LUO_ALL_SEALS``) may
  *   be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Non-Preserved Properties
  * ========================
  *
@@ -66,6 +69,13 @@
  *   A memfd can be created with the ``MFD_CLOEXEC`` flag that sets the
  *   ``FD_CLOEXEC`` on the file. This flag is not preserved and must be set
  *   again after restore via ``fcntl()``.
+<<<<<<< HEAD
+=======
+ *
+ * Seals
+ *   File seals are not preserved. The file is unsealed on restore and if
+ *   needed, must be sealed again via ``fcntl()``.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -80,8 +90,11 @@
 #include <linux/shmem_fs.h>
 #include <linux/vmalloc.h>
 #include <linux/memfd.h>
+<<<<<<< HEAD
 #include <uapi/linux/memfd.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "internal.h"
 
 static int memfd_luo_preserve_folios(struct file *file,
@@ -106,6 +119,10 @@ static int memfd_luo_preserve_folios(struct file *file,
 	if (!size) {
 		*nr_foliosp = 0;
 		*out_folios_ser = NULL;
+<<<<<<< HEAD
+=======
+		memset(kho_vmalloc, 0, sizeof(*kho_vmalloc));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -260,8 +277,13 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
 	struct inode *inode = file_inode(args->file);
 	struct memfd_luo_folio_ser *folios_ser;
 	struct memfd_luo_ser *ser;
+<<<<<<< HEAD
 	u64 nr_folios, inode_size;
 	int err = 0, seals;
+=======
+	u64 nr_folios;
+	int err = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	inode_lock(inode);
 	shmem_freeze(inode, true);
@@ -273,6 +295,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
 		goto err_unlock;
 	}
 
+<<<<<<< HEAD
 	seals = memfd_get_seals(args->file);
 	if (seals < 0) {
 		err = seals;
@@ -299,6 +322,10 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
 
 	ser->size = inode_size;
 	ser->seals = seals;
+=======
+	ser->pos = args->file->f_pos;
+	ser->size = i_size_read(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = memfd_luo_preserve_folios(args->file, &ser->folios,
 					&folios_ser, &nr_folios);
@@ -421,7 +448,10 @@ static int memfd_luo_retrieve_folios(struct file *file,
 	struct inode *inode = file_inode(file);
 	struct address_space *mapping = inode->i_mapping;
 	struct folio *folio;
+<<<<<<< HEAD
 	long npages, nr_added_pages = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = -EIO;
 	long i;
 
@@ -439,7 +469,10 @@ static int memfd_luo_retrieve_folios(struct file *file,
 		if (!folio) {
 			pr_err("Unable to restore folio at physical address: %llx\n",
 			       phys);
+<<<<<<< HEAD
 			err = -EIO;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto put_folios;
 		}
 		index = pfolio->index;
@@ -469,6 +502,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
 		if (flags & MEMFD_LUO_FOLIO_DIRTY)
 			folio_mark_dirty(folio);
 
+<<<<<<< HEAD
 		npages = folio_nr_pages(folio);
 		err = shmem_inode_acct_blocks(inode, npages);
 		if (err) {
@@ -478,17 +512,32 @@ static int memfd_luo_retrieve_folios(struct file *file,
 		}
 
 		nr_added_pages += npages;
+=======
+		err = shmem_inode_acct_blocks(inode, 1);
+		if (err) {
+			pr_err("shmem: failed to account folio index %ld: %d\n",
+			       i, err);
+			goto unlock_folio;
+		}
+
+		shmem_recalc_inode(inode, 1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		folio_add_lru(folio);
 		folio_unlock(folio);
 		folio_put(folio);
 	}
 
+<<<<<<< HEAD
 	shmem_recalc_inode(inode, nr_added_pages, 0);
 
 	return 0;
 
 remove_from_cache:
 	filemap_remove_folio(folio);
+=======
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock_folio:
 	folio_unlock(folio);
 	folio_put(folio);
@@ -510,8 +559,11 @@ put_folios:
 			folio_put(folio);
 	}
 
+<<<<<<< HEAD
 	shmem_recalc_inode(inode, nr_added_pages, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -526,6 +578,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
 	if (!ser)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Make sure the file only has seals supported by this version. */
 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
 		err = -EOPNOTSUPP;
@@ -537,12 +590,16 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
 	 * later.
 	 */
 	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
+=======
+	file = memfd_alloc_file("", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(file)) {
 		pr_err("failed to setup file: %pe\n", file);
 		err = PTR_ERR(file);
 		goto free_ser;
 	}
 
+<<<<<<< HEAD
 	err = memfd_add_seals(file, ser->seals);
 	if (err) {
 		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
@@ -551,6 +608,10 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
 
 	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
 	i_size_write(file_inode(file), ser->size);
+=======
+	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
+	file->f_inode->i_size = ser->size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ser->nr_folios) {
 		folios_ser = kho_restore_vmalloc(&ser->folios);
@@ -585,11 +646,14 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
 	return shmem_file(file) && !inode->i_nlink;
 }
 
+<<<<<<< HEAD
 static unsigned long memfd_luo_get_id(struct file *file)
 {
 	return (unsigned long)file_inode(file);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct liveupdate_file_ops memfd_luo_file_ops = {
 	.freeze = memfd_luo_freeze,
 	.finish = memfd_luo_finish,
@@ -597,7 +661,10 @@ static const struct liveupdate_file_ops memfd_luo_file_ops = {
 	.preserve = memfd_luo_preserve,
 	.unpreserve = memfd_luo_unpreserve,
 	.can_preserve = memfd_luo_can_preserve,
+<<<<<<< HEAD
 	.get_id = memfd_luo_get_id,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.owner = THIS_MODULE,
 };
 

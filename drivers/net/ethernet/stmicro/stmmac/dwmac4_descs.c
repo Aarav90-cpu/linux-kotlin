@@ -171,6 +171,19 @@ static int dwmac4_wrback_get_rx_status(struct stmmac_extra_stats *x,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int dwmac4_rd_get_tx_len(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des2) & TDES2_BUFFER1_SIZE_MASK);
+}
+
+static int dwmac4_get_tx_owner(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des3) & TDES3_OWN) >> TDES3_OWN_SHIFT;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dwmac4_set_tx_owner(struct dma_desc *p)
 {
 	p->des3 |= cpu_to_le32(TDES3_OWN);
@@ -186,6 +199,15 @@ static void dwmac4_set_rx_owner(struct dma_desc *p, int disable_rx_ic)
 	p->des3 |= cpu_to_le32(flags);
 }
 
+<<<<<<< HEAD
+=======
+static int dwmac4_get_tx_ls(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des3) & TDES3_LAST_DESCRIPTOR)
+		>> TDES3_LAST_DESCRIPTOR_SHIFT;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u16 dwmac4_wrback_get_rx_vlan_tci(struct dma_desc *p)
 {
 	return (le32_to_cpu(p->des0) & RDES0_VLAN_TAG_MASK);
@@ -289,13 +311,21 @@ exit:
 }
 
 static void dwmac4_rd_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
+<<<<<<< HEAD
 				   u8 descriptor_mode, int end, int bfsize)
+=======
+				   int mode, int end, int bfsize)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	dwmac4_set_rx_owner(p, disable_rx_ic);
 }
 
+<<<<<<< HEAD
 static void dwmac4_rd_init_tx_desc(struct dma_desc *p, u8 descriptor_mode,
 				   int end)
+=======
+static void dwmac4_rd_init_tx_desc(struct dma_desc *p, int mode, int end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	p->des0 = 0;
 	p->des1 = 0;
@@ -304,9 +334,14 @@ static void dwmac4_rd_init_tx_desc(struct dma_desc *p, u8 descriptor_mode,
 }
 
 static void dwmac4_rd_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
+<<<<<<< HEAD
 				      bool csum_flag, u8 descriptor_mode,
 				      bool tx_own, bool ls,
 				      unsigned int tot_pkt_len)
+=======
+				      bool csum_flag, int mode, bool tx_own,
+				      bool ls, unsigned int tot_pkt_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 tdes3 = le32_to_cpu(p->des3);
 
@@ -383,7 +418,11 @@ static void dwmac4_rd_prepare_tso_tx_desc(struct dma_desc *p, int is_fs,
 	p->des3 = cpu_to_le32(tdes3);
 }
 
+<<<<<<< HEAD
 static void dwmac4_release_tx_desc(struct dma_desc *p, u8 descriptor_mode)
+=======
+static void dwmac4_release_tx_desc(struct dma_desc *p, int mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	p->des0 = 0;
 	p->des1 = 0;
@@ -429,7 +468,11 @@ static void dwmac4_display_ring(void *head, unsigned int size, bool rx,
 			extp++;
 		}
 	} else if (desc_size == sizeof(struct dma_edesc)) {
+<<<<<<< HEAD
 		struct dma_edesc *ep = dma_desc_to_edesc(head);
+=======
+		struct dma_edesc *ep = (struct dma_edesc *)head;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (i = 0; i < size; i++) {
 			dma_addr = dma_rx_phy + i * sizeof(*ep);
@@ -537,8 +580,16 @@ static void dwmac4_set_tbs(struct dma_edesc *p, u32 sec, u32 nsec)
 const struct stmmac_desc_ops dwmac4_desc_ops = {
 	.tx_status = dwmac4_wrback_get_tx_status,
 	.rx_status = dwmac4_wrback_get_rx_status,
+<<<<<<< HEAD
 	.set_tx_owner = dwmac4_set_tx_owner,
 	.set_rx_owner = dwmac4_set_rx_owner,
+=======
+	.get_tx_len = dwmac4_rd_get_tx_len,
+	.get_tx_owner = dwmac4_get_tx_owner,
+	.set_tx_owner = dwmac4_set_tx_owner,
+	.set_rx_owner = dwmac4_set_rx_owner,
+	.get_tx_ls = dwmac4_get_tx_ls,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_rx_vlan_tci = dwmac4_wrback_get_rx_vlan_tci,
 	.get_rx_vlan_valid = dwmac4_wrback_get_rx_vlan_valid,
 	.get_rx_frame_len = dwmac4_wrback_get_rx_frame_len,

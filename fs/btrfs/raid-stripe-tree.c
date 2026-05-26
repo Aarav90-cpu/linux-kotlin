@@ -45,11 +45,16 @@ static int btrfs_partially_delete_raid_extent(struct btrfs_trans_handle *trans,
 
 	for (int i = 0; i < btrfs_num_raid_stripes(item_size); i++) {
 		struct btrfs_raid_stride *stride = &extent->strides[i];
+<<<<<<< HEAD
 		u64 devid;
 		u64 phys;
 
 		devid = btrfs_raid_stride_devid(leaf, stride);
 		btrfs_set_stack_raid_stride_devid(&newitem->strides[i], devid);
+=======
+		u64 phys;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		phys = btrfs_raid_stride_physical(leaf, stride) + frontpad;
 		btrfs_set_stack_raid_stride_physical(&newitem->strides[i], phys);
 	}
@@ -98,12 +103,17 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 	while (1) {
 		key.objectid = start;
 		key.type = BTRFS_RAID_STRIPE_KEY;
+<<<<<<< HEAD
 		key.offset = (u64)-1;
+=======
+		key.offset = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = btrfs_search_slot(trans, stripe_root, &key, path, -1, 1);
 		if (ret < 0)
 			break;
 
+<<<<<<< HEAD
 		/*
 		 * Search with offset=(u64)-1 ensures we land on the correct
 		 * leaf even when the target entry is the first item on a leaf.
@@ -118,6 +128,10 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 			break;
 		}
 		path->slots[0]--;
+=======
+		if (path->slots[0] == btrfs_header_nritems(path->nodes[0]))
+			path->slots[0]--;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		leaf = path->nodes[0];
 		slot = path->slots[0];
@@ -138,7 +152,11 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 		 */
 		if (found_start > start) {
 			if (slot == 0) {
+<<<<<<< HEAD
 				ret = btrfs_previous_item(stripe_root, path, 0,
+=======
+				ret = btrfs_previous_item(stripe_root, path, start,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							  BTRFS_RAID_STRIPE_KEY);
 				if (ret) {
 					if (ret > 0)
@@ -154,10 +172,14 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 			btrfs_item_key_to_cpu(leaf, &key, slot);
 			found_start = key.objectid;
 			found_end = found_start + key.offset;
+<<<<<<< HEAD
 			if (found_start > start || found_end <= start) {
 				ret = -ENOENT;
 				break;
 			}
+=======
+			ASSERT(found_start <= start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (key.type != BTRFS_RAID_STRIPE_KEY)
@@ -194,6 +216,7 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 
 			/* The "right" item. */
 			ret = btrfs_duplicate_item(trans, stripe_root, path, &newkey);
+<<<<<<< HEAD
 			if (ret == -EAGAIN) {
 				btrfs_release_path(path);
 				continue;
@@ -207,6 +230,11 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 			 * our leaf pointer from the path.
 			 */
 			leaf = path->nodes[0];
+=======
+			if (ret)
+				break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			item_size = btrfs_item_size(leaf, path->slots[0]);
 			extent = btrfs_item_ptr(leaf, path->slots[0],
 						struct btrfs_stripe_extent);
@@ -223,9 +251,14 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 			/* The "left" item. */
 			path->slots[0]--;
 			btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
+<<<<<<< HEAD
 			ret = btrfs_partially_delete_raid_extent(trans, path,
 								 &key,
 								 diff_start, 0);
+=======
+			btrfs_partially_delete_raid_extent(trans, path, &key,
+							   diff_start, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 
@@ -241,11 +274,16 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 		if (found_start < start) {
 			u64 diff_start = start - found_start;
 
+<<<<<<< HEAD
 			ret = btrfs_partially_delete_raid_extent(trans, path,
 								 &key,
 								 diff_start, 0);
 			if (ret)
 				break;
+=======
+			btrfs_partially_delete_raid_extent(trans, path, &key,
+							   diff_start, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			start += (key.offset - diff_start);
 			length -= (key.offset - diff_start);
@@ -268,10 +306,16 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 		if (found_end > end) {
 			u64 diff_end = found_end - end;
 
+<<<<<<< HEAD
 			ret = btrfs_partially_delete_raid_extent(trans, path,
 								 &key,
 								 key.offset - length,
 								 length);
+=======
+			btrfs_partially_delete_raid_extent(trans, path, &key,
+							   key.offset - length,
+							   length);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ASSERT(key.offset - diff_end == length);
 			break;
 		}
@@ -333,7 +377,11 @@ int btrfs_insert_one_raid_extent(struct btrfs_trans_handle *trans,
 	int ret;
 
 	stripe_extent = kzalloc(item_size, GFP_NOFS);
+<<<<<<< HEAD
 	if (unlikely(!stripe_extent)) {
+=======
+	if (!unlikely(stripe_extent)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_abort_transaction(trans, -ENOMEM);
 		btrfs_end_transaction(trans);
 		return -ENOMEM;

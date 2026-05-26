@@ -675,6 +675,7 @@ static inline u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
 }
 #endif
 
+<<<<<<< HEAD
 static void acpi_cpufreq_resolve_max_freq(struct cpufreq_policy *policy,
 					  unsigned int pss_max_freq)
 {
@@ -698,6 +699,8 @@ static void acpi_cpufreq_resolve_max_freq(struct cpufreq_policy *policy,
 	arch_set_max_freq_ratio(true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
 	struct cpufreq_frequency_table *freq_table;
@@ -872,7 +875,17 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 		policy->cpuinfo.max_freq = freq * max_boost_ratio >> SCHED_CAPACITY_SHIFT;
 	} else {
+<<<<<<< HEAD
 		acpi_cpufreq_resolve_max_freq(policy, freq_table[0].frequency);
+=======
+		/*
+		 * If the maximum "boost" frequency is unknown, ask the arch
+		 * scale-invariance code to use the "nominal" performance for
+		 * CPU utilization scaling so as to prevent the schedutil
+		 * governor from selecting inadequate CPU frequencies.
+		 */
+		arch_set_max_freq_ratio(true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	policy->freq_table = freq_table;

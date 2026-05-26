@@ -57,6 +57,11 @@
 #define CALC_PLL_CLK_SRC_ERR_TOLERANCE 1
 #define MAX_PLL_CALC_ERROR 0xFFFFFFFF
 
+<<<<<<< HEAD
+=======
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct spread_spectrum_data *get_ss_data_entry(
 		struct dce110_clk_src *clk_src,
 		enum signal_type signal,
@@ -537,7 +542,10 @@ static void dce112_get_pix_clk_dividers_helper (
 		struct pll_settings *pll_settings,
 		struct pixel_clk_params *pix_clk_params)
 {
+<<<<<<< HEAD
 	(void)clk_src;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t actual_pixel_clock_100hz;
 
 	actual_pixel_clock_100hz = pix_clk_params->requested_pix_clk_100hz;
@@ -609,7 +617,11 @@ static uint32_t dce112_get_pix_clk_dividers(
 			|| pix_clk_params->requested_pix_clk_100hz == 0) {
 		DC_LOG_ERROR(
 			"%s: Invalid parameters!!\n", __func__);
+<<<<<<< HEAD
 		return (uint32_t)-1;
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	memset(pll_settings, 0, sizeof(*pll_settings));
@@ -620,7 +632,11 @@ static uint32_t dce112_get_pix_clk_dividers(
 		pll_settings->calculated_pix_clk_100hz = clk_src->ext_clk_khz * 10;
 		pll_settings->actual_pix_clk_100hz =
 					pix_clk_params->requested_pix_clk_100hz;
+<<<<<<< HEAD
 		return (uint32_t)-1;
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	dce112_get_pix_clk_dividers_helper(clk_src,
@@ -846,7 +862,10 @@ static bool dce110_program_pix_clk(
 		enum dp_link_encoding encoding,
 		struct pll_settings *pll_settings)
 {
+<<<<<<< HEAD
 	(void)encoding;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_clk_src *clk_src = TO_DCE110_CLK_SRC(clock_source);
 	struct bp_pixel_clock_parameters bp_pc_params = {0};
 
@@ -921,7 +940,10 @@ static bool dce112_program_pix_clk(
 		enum dp_link_encoding encoding,
 		struct pll_settings *pll_settings)
 {
+<<<<<<< HEAD
 	(void)encoding;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_clk_src *clk_src = TO_DCE110_CLK_SRC(clock_source);
 	struct bp_pixel_clock_parameters bp_pc_params = {0};
 
@@ -1071,7 +1093,10 @@ static bool dcn401_program_pix_clk(
 		enum dp_link_encoding encoding,
 		struct pll_settings *pll_settings)
 {
+<<<<<<< HEAD
 	(void)encoding;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_clk_src *clk_src = TO_DCE110_CLK_SRC(clock_source);
 	unsigned int inst = pix_clk_params->controller_id - CONTROLLER_ID_D0;
 	const struct pixel_rate_range_table_entry *e =
@@ -1269,7 +1294,11 @@ const struct pixel_rate_range_table_entry *look_up_in_video_optimized_rate_tlb(
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(video_optimized_pixel_rates); i++) {
+=======
+	for (i = 0; i < NUM_ELEMENTS(video_optimized_pixel_rates); i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const struct pixel_rate_range_table_entry *e = &video_optimized_pixel_rates[i];
 
 		if (e->range_min_khz <= pixel_rate_khz && pixel_rate_khz <= e->range_max_khz) {
@@ -1378,7 +1407,11 @@ static uint32_t dcn3_get_pix_clk_dividers(
 			|| pix_clk_params->requested_pix_clk_100hz == 0) {
 		DC_LOG_ERROR(
 			"%s: Invalid parameters!!\n", __func__);
+<<<<<<< HEAD
 		return UINT_MAX;
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	memset(pll_settings, 0, sizeof(*pll_settings));

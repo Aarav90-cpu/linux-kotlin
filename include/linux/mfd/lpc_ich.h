@@ -37,6 +37,9 @@ struct lpc_ich_info {
 	u8 use_gpio;
 };
 
+<<<<<<< HEAD
 extern const struct software_node lpc_ich_gpio_swnode;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

@@ -564,6 +564,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	rng: rng@3b100000 {
 		compatible = "inside-secure,safexcel-eip76";
 		reg = <0x00 0x3b100000 0x00 0x7d>;
@@ -571,6 +572,8 @@
 		status = "reserved"; /* Reserved for OP-TEE */
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	oc_sram: sram@70800000 {
 		compatible = "mmio-sram";
 		reg = <0x00 0x70800000 0x00 0x10000>;

@@ -39,9 +39,15 @@
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_user_verbs.h>
 #include <rdma/iw_cm.h>
+<<<<<<< HEAD
 #include <rdma/ib_addr.h>
 #include <rdma/ib_cache.h>
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+#include <rdma/ib_addr.h>
+#include <rdma/ib_cache.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/uverbs_ioctl.h>
 
 #include <linux/qed/common_hsi.h>
@@ -264,7 +270,11 @@ int qedr_alloc_ucontext(struct ib_ucontext *uctx, struct ib_udata *udata)
 	int rc;
 	struct qedr_ucontext *ctx = get_qedr_ucontext(uctx);
 	struct qedr_alloc_ucontext_resp uresp = {};
+<<<<<<< HEAD
 	struct qedr_alloc_ucontext_req ureq;
+=======
+	struct qedr_alloc_ucontext_req ureq = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct qedr_dev *dev = get_qedr_dev(ibdev);
 	struct qed_rdma_add_user_out_params oparams;
 	struct qedr_user_mmap_entry *entry;
@@ -273,9 +283,18 @@ int qedr_alloc_ucontext(struct ib_ucontext *uctx, struct ib_udata *udata)
 		return -EFAULT;
 
 	if (udata->inlen) {
+<<<<<<< HEAD
 		rc = ib_copy_validate_udata_in(udata, ureq, reserved);
 		if (rc)
 			return rc;
+=======
+		rc = ib_copy_from_udata(&ureq, udata,
+					min(sizeof(ureq), udata->inlen));
+		if (rc) {
+			DP_ERR(dev, "Problem copying data from user space\n");
+			return -EFAULT;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ctx->edpm_mode = !!(ureq.context_flags &
 				    QEDR_ALLOC_UCTX_EDPM_MODE);
 		ctx->db_rec = !!(ureq.context_flags & QEDR_ALLOC_UCTX_DB_REC);
@@ -913,7 +932,11 @@ int qedr_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 	};
 	struct qedr_dev *dev = get_qedr_dev(ibdev);
 	struct qed_rdma_create_cq_in_params params;
+<<<<<<< HEAD
 	struct qedr_create_cq_ureq ureq;
+=======
+	struct qedr_create_cq_ureq ureq = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int vector = attr->comp_vector;
 	int entries = attr->cqe;
 	struct qedr_cq *cq = get_qedr_cq(ibcq);
@@ -946,9 +969,18 @@ int qedr_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 	db_offset = DB_ADDR_SHIFT(DQ_PWM_OFFSET_UCM_RDMA_CQ_CONS_32BIT);
 
 	if (udata) {
+<<<<<<< HEAD
 		rc = ib_copy_validate_udata_in(udata, ureq, len);
 		if (rc)
 			return rc;
+=======
+		if (ib_copy_from_udata(&ureq, udata, min(sizeof(ureq),
+							 udata->inlen))) {
+			DP_ERR(dev,
+			       "create cq: problem copying data from user space\n");
+			goto err0;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!ureq.len) {
 			DP_ERR(dev,
@@ -1541,7 +1573,11 @@ int qedr_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *init_attr,
 	struct qedr_dev *dev = get_qedr_dev(ibsrq->device);
 	struct qed_rdma_create_srq_out_params out_params;
 	struct qedr_pd *pd = get_qedr_pd(ibsrq->pd);
+<<<<<<< HEAD
 	struct qedr_create_srq_ureq ureq;
+=======
+	struct qedr_create_srq_ureq ureq = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 pbl_base_addr, phy_prod_pair_addr;
 	struct qedr_srq_hwq_info *hw_srq;
 	u32 page_cnt, page_size;
@@ -1569,9 +1605,18 @@ int qedr_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *init_attr,
 	hw_srq->max_sges = init_attr->attr.max_sge;
 
 	if (udata) {
+<<<<<<< HEAD
 		rc = ib_copy_validate_udata_in(udata, ureq, srq_len);
 		if (rc)
 			return rc;
+=======
+		if (ib_copy_from_udata(&ureq, udata, min(sizeof(ureq),
+							 udata->inlen))) {
+			DP_ERR(dev,
+			       "create srq: problem copying data from user space\n");
+			goto err0;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rc = qedr_init_srq_user_params(udata, srq, &ureq, 0);
 		if (rc)
@@ -1837,7 +1882,11 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 	struct qed_rdma_create_qp_in_params in_params;
 	struct qed_rdma_create_qp_out_params out_params;
 	struct qedr_create_qp_uresp uresp = {};
+<<<<<<< HEAD
 	struct qedr_create_qp_ureq ureq;
+=======
+	struct qedr_create_qp_ureq ureq = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int alloc_and_init = rdma_protocol_roce(&dev->ibdev, 1);
 	struct qedr_ucontext *ctx = NULL;
 	struct qedr_pd *pd = NULL;
@@ -1851,9 +1900,18 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
 	}
 
 	if (udata) {
+<<<<<<< HEAD
 		rc = ib_copy_validate_udata_in(udata, ureq, rq_len);
 		if (rc)
 			return rc;
+=======
+		rc = ib_copy_from_udata(&ureq, udata, min(sizeof(ureq),
+					udata->inlen));
+		if (rc) {
+			DP_ERR(dev, "Problem copying data from user space\n");
+			return rc;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (qedr_qp_has_sq(qp)) {

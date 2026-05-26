@@ -1622,7 +1622,11 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
 		return true;
 
 	objcg = current_obj_cgroup();
+<<<<<<< HEAD
 	if (!objcg || obj_cgroup_is_root(objcg))
+=======
+	if (!objcg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))

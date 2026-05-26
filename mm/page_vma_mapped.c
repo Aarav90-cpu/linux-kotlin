@@ -269,6 +269,14 @@ restart:
 			spin_unlock(pvmw->ptl);
 			pvmw->ptl = NULL;
 		} else if (!pmd_present(pmde)) {
+<<<<<<< HEAD
+=======
+			/*
+			 * If PVMW_SYNC, take and drop THP pmd lock so that we
+			 * cannot return prematurely, while zap_huge_pmd() has
+			 * cleared *pmd but not decremented compound_mapcount().
+			 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			const softleaf_t entry = softleaf_from_pmd(pmde);
 
 			if (softleaf_is_device_private(entry)) {
@@ -279,9 +287,17 @@ restart:
 			if ((pvmw->flags & PVMW_SYNC) &&
 			    thp_vma_suitable_order(vma, pvmw->address,
 						   PMD_ORDER) &&
+<<<<<<< HEAD
 			    (pvmw->nr_pages >= HPAGE_PMD_NR))
 				sync_with_folio_pmd_zap(mm, pvmw->pmd);
 
+=======
+			    (pvmw->nr_pages >= HPAGE_PMD_NR)) {
+				spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
+
+				spin_unlock(ptl);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			step_forward(pvmw, PMD_SIZE);
 			continue;
 		}

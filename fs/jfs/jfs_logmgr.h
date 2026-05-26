@@ -403,6 +403,7 @@ struct jfs_log {
 };
 
 /*
+<<<<<<< HEAD
  * log read/write serialization (per log)
  */
 #define LOG_LOCK_INIT(log)	mutex_init(&(log)->loglock)
@@ -410,6 +411,8 @@ struct jfs_log {
 #define LOG_UNLOCK(log)		mutex_unlock(&((log)->loglock))
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Log flag
  */
 #define log_INLINELOG	1

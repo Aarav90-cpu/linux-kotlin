@@ -13,6 +13,7 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - renesas,r9a08g046-rspi # RZ/G3L
           - renesas,r9a09g057-rspi # RZ/V2H(P)
           - renesas,r9a09g077-rspi # RZ/T2H
@@ -20,6 +21,12 @@ properties:
           - enum:
               - renesas,r9a09g047-rspi # RZ/G3E
               - renesas,r9a09g056-rspi # RZ/V2N
+=======
+          - renesas,r9a09g057-rspi # RZ/V2H(P)
+          - renesas,r9a09g077-rspi # RZ/T2H
+      - items:
+          - const: renesas,r9a09g056-rspi # RZ/V2N
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: renesas,r9a09g057-rspi
       - items:
           - const: renesas,r9a09g087-rspi # RZ/N2H
@@ -61,6 +68,7 @@ properties:
       - const: tresetn
 
   dmas:
+<<<<<<< HEAD
     minItems: 2
     maxItems: 10
     description:
@@ -74,6 +82,14 @@ properties:
       enum:
         - rx
         - tx
+=======
+    maxItems: 2
+
+  dma-names:
+    items:
+      - const: rx
+      - const: tx
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   power-domains:
     maxItems: 1
@@ -96,6 +112,7 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - renesas,r9a08g046-rspi
     then:
       properties:
@@ -124,6 +141,8 @@ allOf:
         compatible:
           contains:
             enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - renesas,r9a09g057-rspi
     then:
       properties:
@@ -159,12 +178,15 @@ allOf:
         resets: false
         reset-names: false
 
+<<<<<<< HEAD
         dmas:
           maxItems: 6
 
         dma-names:
           maxItems: 6
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

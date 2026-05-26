@@ -99,9 +99,12 @@ static inline size_t rust_binder_node_debug_id(rust_binder_node t)
 	return *(size_t *) (t + RUST_BINDER_LAYOUT.n.debug_id);
 }
 
+<<<<<<< HEAD
 static inline binder_uintptr_t rust_binder_node_ptr(rust_binder_node t)
 {
 	return *(binder_uintptr_t *) (t + RUST_BINDER_LAYOUT.n.ptr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

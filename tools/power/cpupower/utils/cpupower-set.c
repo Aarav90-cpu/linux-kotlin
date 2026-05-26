@@ -33,6 +33,11 @@ static void print_wrong_arg_exit(void)
 
 int cmd_set(int argc, char **argv)
 {
+<<<<<<< HEAD
+=======
+	extern char *optarg;
+	extern int optind, opterr, optopt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int cpu;
 	struct utsname uts;
 

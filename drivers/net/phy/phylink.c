@@ -1341,6 +1341,7 @@ static void phylink_major_config(struct phylink *pl, bool restart,
 	}
 
 	if (pl->phydev && pl->phy_ib_mode) {
+<<<<<<< HEAD
 		phylink_dbg(pl, "configuring PHY for inband%s%s%s\n",
 			    pl->phy_ib_mode & LINK_INBAND_DISABLE ?
 				" disable" : "",
@@ -1348,6 +1349,8 @@ static void phylink_major_config(struct phylink *pl, bool restart,
 				" enable" : "",
 			    pl->phy_ib_mode & LINK_INBAND_BYPASS ?
 				" bypass" : "");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = phy_config_inband(pl->phydev, pl->phy_ib_mode);
 		if (err < 0) {
 			phylink_err(pl, "phy_config_inband: %pe\n",
@@ -2295,12 +2298,22 @@ int phylink_fwnode_phy_connect(struct phylink *pl,
 	struct phy_device *phy_dev;
 	int ret;
 
+<<<<<<< HEAD
 	if (!phylink_expects_phy(pl))
+=======
+	/* Fixed links and 802.3z are handled without needing a PHY */
+	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
+	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
+	     phy_interface_mode_is_8023z(pl->link_interface)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	phy_fwnode = fwnode_get_phy_node(fwnode);
 	if (IS_ERR(phy_fwnode)) {
+<<<<<<< HEAD
 		/* PHY mode requires a PHY to be specified. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pl->cfg_link_an_mode == MLO_AN_PHY)
 			return -ENODEV;
 		return 0;

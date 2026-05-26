@@ -176,6 +176,7 @@ dpll_msg_add_phase_offset_monitor(struct sk_buff *msg, struct dpll_device *dpll,
 }
 
 static int
+<<<<<<< HEAD
 dpll_msg_add_freq_monitor(struct sk_buff *msg, struct dpll_device *dpll,
 			  struct netlink_ext_ack *extack)
 {
@@ -196,6 +197,8 @@ dpll_msg_add_freq_monitor(struct sk_buff *msg, struct dpll_device *dpll,
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dpll_msg_add_phase_offset_avg_factor(struct sk_buff *msg,
 				     struct dpll_device *dpll,
 				     struct netlink_ext_ack *extack)
@@ -420,6 +423,7 @@ static int dpll_msg_add_ffo(struct sk_buff *msg, struct dpll_pin *pin,
 			    ffo);
 }
 
+<<<<<<< HEAD
 static int dpll_msg_add_measured_freq(struct sk_buff *msg, struct dpll_pin *pin,
 				      struct dpll_pin_ref *ref,
 				      struct netlink_ext_ack *extack)
@@ -452,6 +456,8 @@ static int dpll_msg_add_measured_freq(struct sk_buff *msg, struct dpll_pin *pin,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 dpll_msg_add_pin_freq(struct sk_buff *msg, struct dpll_pin *pin,
 		      struct dpll_pin_ref *ref, struct netlink_ext_ack *extack)
@@ -724,9 +730,12 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
 	ret = dpll_msg_add_ffo(msg, pin, ref, extack);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = dpll_msg_add_measured_freq(msg, pin, ref, extack);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = dpll_msg_add_pin_esync(msg, pin, ref, extack);
 	if (ret)
 		return ret;
@@ -779,9 +788,12 @@ dpll_device_get_one(struct dpll_device *dpll, struct sk_buff *msg,
 	ret = dpll_msg_add_phase_offset_avg_factor(msg, dpll, extack);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 	ret = dpll_msg_add_freq_monitor(msg, dpll, extack);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -900,6 +912,7 @@ int dpll_pin_delete_ntf(struct dpll_pin *pin)
 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
 }
 
+<<<<<<< HEAD
 /**
  * __dpll_pin_change_ntf - notify that the pin has been changed
  * @pin: registered pin pointer
@@ -915,6 +928,13 @@ int __dpll_pin_change_ntf(struct dpll_pin *pin)
 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
 }
 EXPORT_SYMBOL_GPL(__dpll_pin_change_ntf);
+=======
+int __dpll_pin_change_ntf(struct dpll_pin *pin)
+{
+	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
+	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * dpll_pin_change_ntf - notify that the pin has been changed
@@ -1017,6 +1037,7 @@ dpll_phase_offset_avg_factor_set(struct dpll_device *dpll, struct nlattr *a,
 }
 
 static int
+<<<<<<< HEAD
 dpll_freq_monitor_set(struct dpll_device *dpll, struct nlattr *a,
 		      struct netlink_ext_ack *extack)
 {
@@ -1043,6 +1064,8 @@ dpll_freq_monitor_set(struct dpll_device *dpll, struct nlattr *a,
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
 		  struct netlink_ext_ack *extack)
 {
@@ -1972,12 +1995,15 @@ dpll_set_from_nlattr(struct dpll_device *dpll, struct genl_info *info)
 			if (ret)
 				return ret;
 			break;
+<<<<<<< HEAD
 		case DPLL_A_FREQUENCY_MONITOR:
 			ret = dpll_freq_monitor_set(dpll, a,
 						    info->extack);
 			if (ret)
 				return ret;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

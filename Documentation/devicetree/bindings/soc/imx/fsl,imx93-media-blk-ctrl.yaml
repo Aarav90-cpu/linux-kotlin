@@ -40,6 +40,7 @@ properties:
     minItems: 8
     maxItems: 10
 
+<<<<<<< HEAD
   dpi-bridge:
     type: object
     additionalProperties: false
@@ -92,6 +93,8 @@ properties:
       - compatible
       - ports
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 allOf:
   - if:
       properties:
@@ -164,6 +167,7 @@ examples:
                clock-names = "apb", "axi", "nic", "disp", "cam",
                              "pxp", "lcdif", "isi", "csi", "dsi";
       #power-domain-cells = <1>;
+<<<<<<< HEAD
 
       dpi-bridge {
         compatible = "nxp,imx93-pdfc";
@@ -190,4 +194,6 @@ examples:
           };
         };
       };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

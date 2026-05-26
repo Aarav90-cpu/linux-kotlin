@@ -111,7 +111,11 @@ static void test_fexit_bpf2bpf_common(const char *obj_file,
 		struct bpf_link_info link_info;
 		struct bpf_program *pos;
 		const char *pos_sec_name;
+<<<<<<< HEAD
 		const char *tgt_name;
+=======
+		char *tgt_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__s32 btf_id;
 
 		tgt_name = strstr(prog_name[i], "/");
@@ -347,6 +351,7 @@ static void test_func_sockmap_update(void)
 				  prog_name, false, NULL);
 }
 
+<<<<<<< HEAD
 static void test_func_replace_void(void)
 {
 	const char *prog_name[] = {
@@ -358,6 +363,8 @@ static void test_func_replace_void(void)
 				  prog_name, false, NULL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_obj_load_failure_common(const char *obj_file,
 					 const char *target_obj_file,
 					 const char *exp_msg)
@@ -443,6 +450,7 @@ static void test_func_replace_global_func(void)
 				  prog_name, false, NULL);
 }
 
+<<<<<<< HEAD
 static void test_func_replace_int_with_void(void)
 {
 	/* Make sure we can't freplace with the wrong type */
@@ -452,6 +460,8 @@ static void test_func_replace_int_with_void(void)
 				     " doesn't match type INT of global_func2()");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int find_prog_btf_id(const char *name, __u32 attach_prog_fd)
 {
 	struct bpf_prog_info info = {};
@@ -617,8 +627,11 @@ void serial_test_fexit_bpf2bpf(void)
 		test_fentry_to_cgroup_bpf();
 	if (test__start_subtest("func_replace_progmap"))
 		test_func_replace_progmap();
+<<<<<<< HEAD
 	if (test__start_subtest("freplace_int_with_void"))
 		test_func_replace_int_with_void();
 	if (test__start_subtest("freplace_void"))
 		test_func_replace_void();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

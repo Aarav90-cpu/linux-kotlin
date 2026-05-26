@@ -34,7 +34,11 @@ static ssize_t force_power_store(struct device *dev,
 	if (mode > 1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = wmidev_invoke_procedure(to_wmi_device(dev), 0, 1, &buffer);
+=======
+	ret = wmidev_invoke_method(to_wmi_device(dev), 0, 1, &buffer, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 

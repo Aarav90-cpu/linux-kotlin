@@ -55,7 +55,11 @@ static inline void amdgpu_res_first(struct ttm_resource *res,
 				    uint64_t start, uint64_t size,
 				    struct amdgpu_res_cursor *cur)
 {
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head *head, *next;
 	struct drm_mm_node *node;
 
@@ -71,7 +75,11 @@ static inline void amdgpu_res_first(struct ttm_resource *res,
 		head = &to_amdgpu_vram_mgr_resource(res)->blocks;
 
 		block = list_first_entry_or_null(head,
+<<<<<<< HEAD
 						 struct gpu_buddy_block,
+=======
+						 struct drm_buddy_block,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						 link);
 		if (!block)
 			goto fallback;
@@ -81,7 +89,11 @@ static inline void amdgpu_res_first(struct ttm_resource *res,
 
 			next = block->link.next;
 			if (next != head)
+<<<<<<< HEAD
 				block = list_entry(next, struct gpu_buddy_block, link);
+=======
+				block = list_entry(next, struct drm_buddy_block, link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		cur->start = amdgpu_vram_mgr_block_start(block) + start;
@@ -125,7 +137,11 @@ fallback:
  */
 static inline void amdgpu_res_next(struct amdgpu_res_cursor *cur, uint64_t size)
 {
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_mm_node *node;
 	struct list_head *next;
 
@@ -146,7 +162,11 @@ static inline void amdgpu_res_next(struct amdgpu_res_cursor *cur, uint64_t size)
 		block = cur->node;
 
 		next = block->link.next;
+<<<<<<< HEAD
 		block = list_entry(next, struct gpu_buddy_block, link);
+=======
+		block = list_entry(next, struct drm_buddy_block, link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		cur->node = block;
 		cur->start = amdgpu_vram_mgr_block_start(block);
@@ -175,7 +195,11 @@ static inline void amdgpu_res_next(struct amdgpu_res_cursor *cur, uint64_t size)
  */
 static inline bool amdgpu_res_cleared(struct amdgpu_res_cursor *cur)
 {
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (cur->mem_type) {
 	case TTM_PL_VRAM:

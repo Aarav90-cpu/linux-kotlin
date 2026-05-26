@@ -75,7 +75,10 @@
  */
 struct atmel_hlcdc {
 	struct regmap *regmap;
+<<<<<<< HEAD
 	struct clk *lvds_pll_clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct clk *periph_clk;
 	struct clk *sys_clk;
 	struct clk *slow_clk;

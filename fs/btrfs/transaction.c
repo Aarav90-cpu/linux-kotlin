@@ -15,7 +15,10 @@
 #include "misc.h"
 #include "ctree.h"
 #include "disk-io.h"
+<<<<<<< HEAD
 #include "extent_io.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "transaction.h"
 #include "locking.h"
 #include "tree-log.h"
@@ -275,7 +278,11 @@ static noinline int join_transaction(struct btrfs_fs_info *fs_info,
 	spin_lock(&fs_info->trans_lock);
 loop:
 	/* The file system has been taken offline. No new transactions. */
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+=======
+	if (BTRFS_FS_ERROR(fs_info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(&fs_info->trans_lock);
 		return -EROFS;
 	}
@@ -333,7 +340,11 @@ loop:
 		btrfs_lockdep_release(fs_info, btrfs_trans_num_writers);
 		kfree(cur_trans);
 		goto loop;
+<<<<<<< HEAD
 	} else if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+=======
+	} else if (BTRFS_FS_ERROR(fs_info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(&fs_info->trans_lock);
 		btrfs_lockdep_release(fs_info, btrfs_trans_num_extwriters);
 		btrfs_lockdep_release(fs_info, btrfs_trans_num_writers);
@@ -504,7 +515,11 @@ int btrfs_record_root_in_trans(struct btrfs_trans_handle *trans,
 		return 0;
 
 	mutex_lock(&fs_info->reloc_mutex);
+<<<<<<< HEAD
 	ret = record_root_in_trans(trans, root, false);
+=======
+	ret = record_root_in_trans(trans, root, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->reloc_mutex);
 
 	return ret;
@@ -612,7 +627,11 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
 	bool do_chunk_alloc = false;
 	int ret;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+	if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ERR_PTR(-EROFS);
 
 	if (current->journal_info) {
@@ -679,6 +698,7 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
 		 * here.
 		 */
 		ret = btrfs_delayed_refs_rsv_refill(fs_info, flush);
+<<<<<<< HEAD
 		if (ret == -EAGAIN) {
 			ASSERT(btrfs_is_zoned(fs_info));
 			ret = btrfs_commit_current_transaction(root);
@@ -687,6 +707,8 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
 			ret = btrfs_delayed_refs_rsv_refill(fs_info, flush);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto reserve_fail;
 	}
@@ -697,8 +719,11 @@ again:
 		goto alloc_fail;
 	}
 
+<<<<<<< HEAD
 	xa_init(&h->writeback_inhibited_ebs);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If we are JOIN_NOLOCK we're already committing a transaction and
 	 * waiting on this guy, so we don't need to do the sb_start_intwrite
@@ -1095,6 +1120,7 @@ static int __btrfs_end_transaction(struct btrfs_trans_handle *trans,
 	if (trans->type & __TRANS_FREEZABLE)
 		sb_end_intwrite(info->sb);
 
+<<<<<<< HEAD
 	/*
 	 * Uninhibit extent buffer writeback before decrementing num_writers,
 	 * since the decrement wakes the committing thread which needs all
@@ -1102,6 +1128,8 @@ static int __btrfs_end_transaction(struct btrfs_trans_handle *trans,
 	 */
 	btrfs_uninhibit_all_eb_writeback(trans);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON(cur_trans != info->running_transaction);
 	WARN_ON(atomic_read(&cur_trans->num_writers) < 1);
 	atomic_dec(&cur_trans->num_writers);
@@ -1120,7 +1148,11 @@ static int __btrfs_end_transaction(struct btrfs_trans_handle *trans,
 	if (throttle)
 		btrfs_run_delayed_iputs(info);
 
+<<<<<<< HEAD
 	if (unlikely(TRANS_ABORTED(trans) || BTRFS_FS_ERROR(info))) {
+=======
+	if (TRANS_ABORTED(trans) || BTRFS_FS_ERROR(info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wake_up_process(info->transaction_kthread);
 		if (TRANS_ABORTED(trans))
 			ret = trans->aborted;
@@ -1293,6 +1325,7 @@ static int btrfs_write_and_wait_transaction(struct btrfs_trans_handle *trans)
 	blk_finish_plug(&plug);
 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
 
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 	if (ret2)
@@ -1300,6 +1333,16 @@ static int btrfs_write_and_wait_transaction(struct btrfs_trans_handle *trans)
 
 	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
 	return 0;
+=======
+	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
+
+	if (ret)
+		return ret;
+	else if (ret2)
+		return ret2;
+	else
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1588,7 +1631,11 @@ static int qgroup_account_snapshot(struct btrfs_trans_handle *trans,
 	 * recorded root will never be updated again, causing an outdated root
 	 * item.
 	 */
+<<<<<<< HEAD
 	ret = record_root_in_trans(trans, src, true);
+=======
+	ret = record_root_in_trans(trans, src, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1611,16 +1658,27 @@ static int qgroup_account_snapshot(struct btrfs_trans_handle *trans,
 
 	ret = commit_fs_roots(trans);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 	ret = btrfs_qgroup_account_extents(trans);
 	if (ret < 0)
 		return ret;
+=======
+		goto out;
+	ret = btrfs_qgroup_account_extents(trans);
+	if (ret < 0)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now qgroup are all updated, we can inherit it to new qgroups */
 	ret = btrfs_qgroup_inherit(trans, btrfs_root_id(src), dst_objectid,
 				   btrfs_root_id(parent), inherit);
 	if (ret < 0)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Now we do a simplified commit transaction, which will:
@@ -1636,6 +1694,7 @@ static int qgroup_account_snapshot(struct btrfs_trans_handle *trans,
 	 */
 	ret = commit_cowonly_roots(trans);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 	switch_commit_roots(trans);
 	ret = btrfs_write_and_wait_transaction(trans);
@@ -1645,13 +1704,29 @@ static int qgroup_account_snapshot(struct btrfs_trans_handle *trans,
 		return ret;
 	}
 
+=======
+		goto out;
+	switch_commit_roots(trans);
+	ret = btrfs_write_and_wait_transaction(trans);
+	if (unlikely(ret))
+		btrfs_err(fs_info,
+"error while writing out transaction during qgroup snapshot accounting: %d", ret);
+
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Force parent root to be updated, as we recorded it before so its
 	 * last_trans == cur_transid.
 	 * Or it won't be committed again onto disk after later
 	 * insert_dir_item()
 	 */
+<<<<<<< HEAD
 	return record_root_in_trans(trans, parent, true);
+=======
+	if (!ret)
+		ret = record_root_in_trans(trans, parent, 1);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1678,7 +1753,11 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 	BTRFS_PATH_AUTO_FREE(path);
 	struct btrfs_dir_item *dir_item;
 	struct extent_buffer *tmp;
+<<<<<<< HEAD
 	struct extent_buffer *root_eb;
+=======
+	struct extent_buffer *old;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timespec64 cur_time;
 	int ret = 0;
 	u64 to_reserve = 0;
@@ -1735,7 +1814,11 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 				      trans->transid,
 				      trans->bytes_reserved, 1);
 	parent_root = parent_inode->root;
+<<<<<<< HEAD
 	ret = record_root_in_trans(trans, parent_root, false);
+=======
+	ret = record_root_in_trans(trans, parent_root, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret))
 		goto fail;
 	cur_time = current_time(&parent_inode->vfs_inode);
@@ -1753,7 +1836,11 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 	dir_item = btrfs_lookup_dir_item(NULL, parent_root, path,
 					 btrfs_ino(parent_inode),
 					 &fname.disk_name, 0);
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(dir_item)) {
+=======
+	if (unlikely(dir_item != NULL && !IS_ERR(dir_item))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pending->error = -EEXIST;
 		goto dir_item_existed;
 	} else if (IS_ERR(dir_item)) {
@@ -1783,7 +1870,11 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	ret = record_root_in_trans(trans, root, false);
+=======
+	ret = record_root_in_trans(trans, root, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto fail;
@@ -1816,10 +1907,27 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 	btrfs_set_stack_timespec_nsec(&new_root_item->otime, cur_time.tv_nsec);
 	btrfs_set_root_otransid(new_root_item, trans->transid);
 
+<<<<<<< HEAD
 	root_eb = btrfs_lock_root_node(root);
 	ret = btrfs_copy_root(trans, root, root_eb, &tmp, objectid);
 	btrfs_tree_unlock(root_eb);
 	free_extent_buffer(root_eb);
+=======
+	old = btrfs_lock_root_node(root);
+	ret = btrfs_cow_block(trans, root, old, NULL, 0, &old,
+			      BTRFS_NESTING_COW);
+	if (unlikely(ret)) {
+		btrfs_tree_unlock(old);
+		free_extent_buffer(old);
+		btrfs_abort_transaction(trans, ret);
+		goto fail;
+	}
+
+	ret = btrfs_copy_root(trans, root, old, &tmp, objectid);
+	/* clean up in any case */
+	btrfs_tree_unlock(old);
+	free_extent_buffer(old);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto fail;
@@ -1927,7 +2035,11 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
 		 */
 		if (ret == -EOVERFLOW)
 			ret = 0;
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (unlikely(ret && ret != -EEXIST)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_abort_transaction(trans, ret);
 			goto fail;
 		}
@@ -2133,7 +2245,10 @@ static void cleanup_transaction(struct btrfs_trans_handle *trans, int err)
 	if (!test_bit(BTRFS_FS_RELOC_RUNNING, &fs_info->flags))
 		btrfs_scrub_cancel(fs_info);
 
+<<<<<<< HEAD
 	btrfs_uninhibit_all_eb_writeback(trans);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kmem_cache_free(btrfs_trans_handle_cachep, trans);
 }
 
@@ -2350,7 +2465,11 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
 		 * abort to prevent writing a new superblock that reflects a
 		 * corrupt state (pointing to trees with unwritten nodes/leafs).
 		 */
+<<<<<<< HEAD
 		if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+=======
+		if (BTRFS_FS_ERROR(fs_info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_unlock(&fs_info->trans_lock);
 			ret = -EROFS;
 			goto lockdep_release;
@@ -2573,6 +2692,7 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
 	    fs_info->cleaner_kthread)
 		wake_up_process(fs_info->cleaner_kthread);
 
+<<<<<<< HEAD
 	/*
 	 * Uninhibit writeback on all extent buffers inhibited during this
 	 * transaction before writing them to disk. Inhibiting prevented
@@ -2581,6 +2701,8 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
 	 */
 	btrfs_uninhibit_all_eb_writeback(trans);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = btrfs_write_and_wait_transaction(trans);
 	if (unlikely(ret)) {
 		btrfs_err(fs_info, "error while writing out transaction: %d", ret);
@@ -2588,7 +2710,11 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
 		goto scrub_continue;
 	}
 
+<<<<<<< HEAD
 	ret = write_all_supers(trans);
+=======
+	ret = write_all_supers(fs_info, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * the super is written, we can safely allow the tree-loggers
 	 * to go about their business
@@ -2656,6 +2782,11 @@ cleanup_transaction:
 	btrfs_trans_release_chunk_metadata(trans);
 	trans->block_rsv = NULL;
 	btrfs_warn(fs_info, "Skipping commit of aborted transaction.");
+<<<<<<< HEAD
+=======
+	if (current->journal_info == trans)
+		current->journal_info = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cleanup_transaction(trans, ret);
 
 	return ret;

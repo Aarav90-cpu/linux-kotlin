@@ -3917,7 +3917,11 @@
 				};
 			};
 
+<<<<<<< HEAD
 			pcie1_port0: pcie@0 {
+=======
+			pcie@0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				device_type = "pci";
 				reg = <0x0 0x0 0x0 0x0 0x0>;
 				bus-range = <0x01 0xff>;
@@ -4393,8 +4397,11 @@
 			qcom,smem-state-names = "ipa-clock-enabled-valid",
 						"ipa-clock-enabled";
 
+<<<<<<< HEAD
 			sram = <&ipa_modem_tables>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -4959,7 +4966,11 @@
 
 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
 				 <&gcc GCC_SDCC2_APPS_CLK>,
+<<<<<<< HEAD
 				 <&bi_tcxo_div2>;
+=======
+				 <&rpmhcc RPMH_CXO_CLK>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clock-names = "iface",
 				      "core",
 				      "xo";
@@ -4978,6 +4989,12 @@
 
 			bus-width = <4>;
 
+<<<<<<< HEAD
+=======
+			/* Forbid SDR104/SDR50 - broken hw! */
+			sdhci-caps-mask = <0x3 0>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			qcom,dll-config = <0x0007642c>;
 			qcom,ddr-config = <0x80040868>;
 
@@ -5235,13 +5252,21 @@
 
 				opp-300000000 {
 					opp-hz = /bits/ 64 <300000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs>,
+=======
+					required-opps = <&rpmhpd_opp_low_svs>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_low_svs>;
 				};
 
 				opp-380000000 {
 					opp-hz = /bits/ 64 <380000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_svs>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_svs>;
 				};
 
@@ -5253,13 +5278,21 @@
 
 				opp-480000000 {
 					opp-hz = /bits/ 64 <480000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-533333334 {
 					opp-hz = /bits/ 64 <533333334>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 			};
@@ -5904,7 +5937,10 @@
 				phy-names = "dp";
 
 				#sound-dai-cells = <0>;
+<<<<<<< HEAD
 				sound-name-prefix = "DisplayPort0";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				status = "disabled";
 
@@ -7078,6 +7114,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		sram@14680000 {
 			compatible = "qcom,sm8650-imem", "syscon", "simple-mfd";
 			reg = <0 0x14680000 0 0x2c000>;
@@ -7092,6 +7129,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		apps_smmu: iommu@15000000 {
 			compatible = "qcom,sm8650-smmu-500", "qcom,smmu-500", "arm,mmu-500";
 			reg = <0 0x15000000 0 0x100000>;
@@ -7233,7 +7272,11 @@
 
 			gic_its: msi-controller@17140000 {
 				compatible = "arm,gic-v3-its";
+<<<<<<< HEAD
 				reg = <0 0x17140000 0 0x40000>;
+=======
+				reg = <0 0x17140000 0 0x20000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				msi-controller;
 				#msi-cells = <1>;
@@ -7860,7 +7903,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu2_top_thermal: cpu2-top-thermal {
+=======
+		cpu2-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens0 5>;
 
 			trips {
@@ -7884,7 +7931,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu3_top_thermal: cpu3-top-thermal {
+=======
+		cpu3-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens0 7>;
 
 			trips {
@@ -7908,7 +7959,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu4_top_thermal: cpu4-top-thermal {
+=======
+		cpu4-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens0 9>;
 
 			trips {
@@ -7932,7 +7987,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu5_top_thermal: cpu5-top-thermal {
+=======
+		cpu5-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens0 11>;
 
 			trips {
@@ -7956,7 +8015,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu6_top_thermal: cpu6-top-thermal {
+=======
+		cpu6-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens0 13>;
 
 			trips {
@@ -7998,7 +8061,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		cpu7_top_thermal: cpu7-top-thermal {
+=======
+		cpu7-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens1 1>;
 
 			trips {
@@ -8261,14 +8328,22 @@
 
 			thermal-sensors = <&tsens2 1>;
 
+<<<<<<< HEAD
 			gpu0_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu0_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu0_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu0_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8294,14 +8369,22 @@
 
 			thermal-sensors = <&tsens2 2>;
 
+<<<<<<< HEAD
 			gpu1_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu1_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu1_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu1_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8327,14 +8410,22 @@
 
 			thermal-sensors = <&tsens2 3>;
 
+<<<<<<< HEAD
 			gpu2_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu2_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu2_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu2_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8360,14 +8451,22 @@
 
 			thermal-sensors = <&tsens2 4>;
 
+<<<<<<< HEAD
 			gpu3_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu3_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu3_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu3_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8393,14 +8492,22 @@
 
 			thermal-sensors = <&tsens2 5>;
 
+<<<<<<< HEAD
 			gpu4_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu4_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu4_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu4_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8426,14 +8533,22 @@
 
 			thermal-sensors = <&tsens2 6>;
 
+<<<<<<< HEAD
 			gpu5_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu5_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu5_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu5_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8459,14 +8574,22 @@
 
 			thermal-sensors = <&tsens2 7>;
 
+<<<<<<< HEAD
 			gpu6_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu6_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu6_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu6_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;
@@ -8492,14 +8615,22 @@
 
 			thermal-sensors = <&tsens2 8>;
 
+<<<<<<< HEAD
 			gpu7_cooling_maps: cooling-maps {
+=======
+			cooling-maps {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				map0 {
 					trip = <&gpu7_alert0>;
 					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 
+<<<<<<< HEAD
 			gpu7_trips: trips {
+=======
+			trips {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gpu7_alert0: trip-point0 {
 					temperature = <95000>;
 					hysteresis = <1000>;

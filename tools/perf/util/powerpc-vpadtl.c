@@ -4,7 +4,10 @@
  */
 
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/zalloc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <errno.h>
 #include <inttypes.h>
 #include "color.h"
@@ -183,9 +186,13 @@ static int powerpc_vpadtl_sample(struct powerpc_vpadtl_entry *record,
 {
 	struct perf_sample sample;
 	union perf_event event;
+<<<<<<< HEAD
 	int ret;
 
 	perf_sample__init(&sample, /*all=*/true);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sample.ip = be64_to_cpu(record->srr0);
 	sample.period = 1;
 	sample.cpu = cpu;
@@ -201,12 +208,21 @@ static int powerpc_vpadtl_sample(struct powerpc_vpadtl_entry *record,
 	event.sample.header.misc = sample.cpumode;
 	event.sample.header.size = sizeof(struct perf_event_header);
 
+<<<<<<< HEAD
 	ret = perf_session__deliver_synth_event(vpa->session, &event, &sample);
 	if (ret)
 		pr_debug("Failed to create sample for dtl entry\n");
 
 	perf_sample__exit(&sample);
 	return ret;
+=======
+	if (perf_session__deliver_synth_event(vpa->session, &event, &sample)) {
+		pr_debug("Failed to create sample for dtl entry\n");
+		return -1;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue *vpaq)

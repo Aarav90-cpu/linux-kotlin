@@ -646,9 +646,12 @@ failure:
 enum gpio_ddc_line dal_ddc_get_line(
 	const struct ddc *ddc)
 {
+<<<<<<< HEAD
 	if (!ddc)
 		return GPIO_DDC_LINE_UNKNOWN;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return (enum gpio_ddc_line)dal_gpio_get_enum(ddc->pin_data);
 }
 

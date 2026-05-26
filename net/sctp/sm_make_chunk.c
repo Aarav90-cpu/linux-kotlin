@@ -2727,7 +2727,11 @@ __u32 sctp_generate_tag(const struct sctp_endpoint *ep)
 	__u32 x;
 
 	do {
+<<<<<<< HEAD
 		x = get_random_u32();
+=======
+		get_random_bytes(&x, sizeof(__u32));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (x == 0);
 
 	return x;
@@ -2738,7 +2742,11 @@ __u32 sctp_generate_tsn(const struct sctp_endpoint *ep)
 {
 	__u32 retval;
 
+<<<<<<< HEAD
 	retval = get_random_u32();
+=======
+	get_random_bytes(&retval, sizeof(__u32));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 }
 

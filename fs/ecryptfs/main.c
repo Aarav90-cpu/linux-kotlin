@@ -531,7 +531,10 @@ static int ecryptfs_get_tree(struct fs_context *fc)
 	s->s_blocksize = path.dentry->d_sb->s_blocksize;
 	s->s_magic = ECRYPTFS_SUPER_MAGIC;
 	s->s_stack_depth = path.dentry->d_sb->s_stack_depth + 1;
+<<<<<<< HEAD
 	s->s_time_gran = path.dentry->d_sb->s_time_gran;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = -EINVAL;
 	if (s->s_stack_depth > FILESYSTEM_MAX_STACK_DEPTH) {

@@ -21,7 +21,11 @@
  * too.
  *
  * The ->count variable represents how many more tasks can acquire this
+<<<<<<< HEAD
  * semaphore.  If it's zero, there may be waiters.
+=======
+ * semaphore.  If it's zero, there may be tasks waiting on the wait_list.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/compiler.h>
@@ -226,7 +230,11 @@ void __sched up(struct semaphore *sem)
 
 	hung_task_sem_clear_if_holder(sem);
 
+<<<<<<< HEAD
 	if (likely(!sem->first_waiter))
+=======
+	if (likely(list_empty(&sem->wait_list)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sem->count++;
 	else
 		__up(sem, &wake_q);
@@ -244,6 +252,7 @@ struct semaphore_waiter {
 	bool up;
 };
 
+<<<<<<< HEAD
 static inline
 void sem_del_waiter(struct semaphore *sem, struct semaphore_waiter *waiter)
 {
@@ -259,6 +268,8 @@ void sem_del_waiter(struct semaphore *sem, struct semaphore_waiter *waiter)
 	list_del(&waiter->list);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Because this function is inlined, the 'state' parameter will be
  * constant, and thus optimised away by the compiler.  Likewise the
@@ -267,6 +278,7 @@ void sem_del_waiter(struct semaphore *sem, struct semaphore_waiter *waiter)
 static inline int __sched ___down_common(struct semaphore *sem, long state,
 								long timeout)
 {
+<<<<<<< HEAD
 	struct semaphore_waiter waiter, *first;
 
 	first = sem->first_waiter;
@@ -276,6 +288,11 @@ static inline int __sched ___down_common(struct semaphore *sem, long state,
 		INIT_LIST_HEAD(&waiter.list);
 		sem->first_waiter = &waiter;
 	}
+=======
+	struct semaphore_waiter waiter;
+
+	list_add_tail(&waiter.list, &sem->wait_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	waiter.task = current;
 	waiter.up = false;
 
@@ -295,11 +312,19 @@ static inline int __sched ___down_common(struct semaphore *sem, long state,
 	}
 
  timed_out:
+<<<<<<< HEAD
 	sem_del_waiter(sem, &waiter);
 	return -ETIME;
 
  interrupted:
 	sem_del_waiter(sem, &waiter);
+=======
+	list_del(&waiter.list);
+	return -ETIME;
+
+ interrupted:
+	list_del(&waiter.list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EINTR;
 }
 
@@ -342,9 +367,15 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
 static noinline void __sched __up(struct semaphore *sem,
 				  struct wake_q_head *wake_q)
 {
+<<<<<<< HEAD
 	struct semaphore_waiter *waiter = sem->first_waiter;
 
 	sem_del_waiter(sem, waiter);
+=======
+	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
+						struct semaphore_waiter, list);
+	list_del(&waiter->list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	waiter->up = true;
 	wake_q_add(wake_q, waiter->task);
 }

@@ -211,6 +211,20 @@ void comedi_pci_driver_unregister(struct comedi_driver *comedi_driver,
 }
 EXPORT_SYMBOL_GPL(comedi_pci_driver_unregister);
 
+<<<<<<< HEAD
+=======
+static int __init comedi_pci_init(void)
+{
+	return 0;
+}
+module_init(comedi_pci_init);
+
+static void __exit comedi_pci_exit(void)
+{
+}
+module_exit(comedi_pci_exit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("https://www.comedi.org");
 MODULE_DESCRIPTION("Comedi PCI interface module");
 MODULE_LICENSE("GPL");

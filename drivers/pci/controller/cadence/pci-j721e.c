@@ -202,8 +202,12 @@ static int j721e_pcie_set_link_speed(struct j721e_pcie *pcie,
 	int ret;
 
 	link_speed = of_pci_get_max_link_speed(np);
+<<<<<<< HEAD
 	if ((link_speed < 2) ||
 	    (pcie_get_link_speed(link_speed) == PCI_SPEED_UNKNOWN))
+=======
+	if (link_speed < 2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		link_speed = 2;
 
 	val = link_speed - 1;

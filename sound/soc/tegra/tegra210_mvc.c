@@ -731,18 +731,32 @@ static int tegra210_mvc_platform_probe(struct platform_device *pdev)
 
 	mvc->regmap = devm_regmap_init_mmio(dev, regs,
 					    &tegra210_mvc_regmap_config);
+<<<<<<< HEAD
 	if (IS_ERR(mvc->regmap))
 		return dev_err_probe(dev, PTR_ERR(mvc->regmap),
 				     "regmap init failed\n");
+=======
+	if (IS_ERR(mvc->regmap)) {
+		dev_err(dev, "regmap init failed\n");
+		return PTR_ERR(mvc->regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(mvc->regmap, true);
 
 	err = devm_snd_soc_register_component(dev, &tegra210_mvc_cmpnt,
 					      tegra210_mvc_dais,
 					      ARRAY_SIZE(tegra210_mvc_dais));
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(dev, err,
 				     "can't register MVC component\n");
+=======
+	if (err) {
+		dev_err(dev, "can't register MVC component, err: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_enable(dev);
 

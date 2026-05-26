@@ -170,6 +170,7 @@ impl<T: AlwaysRefCounted> Drop for ARef<T> {
         unsafe { T::dec_ref(self.ptr) };
     }
 }
+<<<<<<< HEAD
 
 impl<T, U> PartialEq<ARef<U>> for ARef<T>
 where
@@ -192,3 +193,5 @@ where
         T::eq(&**self, other)
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

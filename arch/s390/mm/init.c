@@ -69,7 +69,11 @@ unsigned long empty_zero_page, zero_page_mask;
 EXPORT_SYMBOL(empty_zero_page);
 EXPORT_SYMBOL(zero_page_mask);
 
+<<<<<<< HEAD
 void __init arch_setup_zero_pages(void)
+=======
+static void __init setup_zero_pages(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long total_pages = memblock_estimated_nr_free_pages();
 	unsigned int order;
@@ -159,6 +163,11 @@ void __init arch_mm_preinit(void)
 	cpumask_set_cpu(0, mm_cpumask(&init_mm));
 
 	pv_init();
+<<<<<<< HEAD
+=======
+
+	setup_zero_pages();	/* Setup zeroed pages. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 unsigned long memory_block_size_bytes(void)

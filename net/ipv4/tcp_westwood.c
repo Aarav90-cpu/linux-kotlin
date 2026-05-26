@@ -244,11 +244,19 @@ static void tcp_westwood_event(struct sock *sk, enum tcp_ca_event event)
 
 	switch (event) {
 	case CA_EVENT_COMPLETE_CWR:
+<<<<<<< HEAD
 		WRITE_ONCE(tp->snd_ssthresh, tcp_westwood_bw_rttmin(sk));
 		tcp_snd_cwnd_set(tp, tp->snd_ssthresh);
 		break;
 	case CA_EVENT_LOSS:
 		WRITE_ONCE(tp->snd_ssthresh, tcp_westwood_bw_rttmin(sk));
+=======
+		tp->snd_ssthresh = tcp_westwood_bw_rttmin(sk);
+		tcp_snd_cwnd_set(tp, tp->snd_ssthresh);
+		break;
+	case CA_EVENT_LOSS:
+		tp->snd_ssthresh = tcp_westwood_bw_rttmin(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Update RTT_min when next ack arrives */
 		w->reset_rtt_min = 1;
 		break;

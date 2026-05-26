@@ -10,7 +10,11 @@
 #include "kvm_util.h"
 #include "processor.h"
 
+<<<<<<< HEAD
 static void guest_ins_port80(u8 *buffer, unsigned int count)
+=======
+static void guest_ins_port80(uint8_t *buffer, unsigned int count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long end;
 
@@ -26,7 +30,11 @@ static void guest_ins_port80(u8 *buffer, unsigned int count)
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u8 buffer[8192];
+=======
+	uint8_t buffer[8192];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	/*

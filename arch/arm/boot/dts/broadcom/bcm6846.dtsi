@@ -242,6 +242,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		i2c0: i2c@2100 {
 			compatible = "brcm,brcmper-i2c";
 			reg = <0x2100 0x60>;
@@ -251,6 +252,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pl081_dma: dma-controller@59000 {
 			compatible = "arm,pl081", "arm,primecell";
 			// The magic B105F00D info is missing

@@ -1507,7 +1507,11 @@ static int lbs_cfg_set_default_key(struct wiphy *wiphy,
 }
 
 
+<<<<<<< HEAD
 static int lbs_cfg_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int lbs_cfg_add_key(struct wiphy *wiphy, struct net_device *netdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   int link_id, u8 idx, bool pairwise,
 			   const u8 *mac_addr, struct key_params *params)
 {
@@ -1516,7 +1520,11 @@ static int lbs_cfg_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 	u16 key_type;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (wdev->netdev == priv->mesh_dev)
+=======
+	if (netdev == priv->mesh_dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	lbs_deb_assoc("add_key: cipher 0x%x, mac_addr %pM\n",
@@ -1568,7 +1576,11 @@ static int lbs_cfg_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 
+<<<<<<< HEAD
 static int lbs_cfg_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int lbs_cfg_del_key(struct wiphy *wiphy, struct net_device *netdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   int link_id, u8 key_index, bool pairwise,
 			   const u8 *mac_addr)
 {
@@ -1607,7 +1619,11 @@ static int lbs_cfg_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
  * Get station
  */
 
+<<<<<<< HEAD
 static int lbs_cfg_get_station(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int lbs_cfg_get_station(struct wiphy *wiphy, struct net_device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       const u8 *mac, struct station_info *sinfo)
 {
 	struct lbs_private *priv = wiphy_priv(wiphy);

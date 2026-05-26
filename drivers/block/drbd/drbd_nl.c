@@ -74,6 +74,7 @@ int drbd_adm_dump_peer_devices_done(struct netlink_callback *cb);
 int drbd_adm_get_initial_state(struct sk_buff *skb, struct netlink_callback *cb);
 
 #include <linux/drbd_genl_api.h>
+<<<<<<< HEAD
 
 static int drbd_pre_doit(const struct genl_split_ops *ops,
 			 struct sk_buff *skb, struct genl_info *info);
@@ -83,6 +84,9 @@ static void drbd_post_doit(const struct genl_split_ops *ops,
 #define GENL_MAGIC_FAMILY_PRE_DOIT	drbd_pre_doit
 #define GENL_MAGIC_FAMILY_POST_DOIT	drbd_post_doit
 
+=======
+#include "drbd_nla.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/genl_magic_func.h>
 
 static atomic_t drbd_genl_seq = ATOMIC_INIT(2); /* two. */
@@ -152,6 +156,7 @@ static int drbd_msg_sprintf_info(struct sk_buff *skb, const char *fmt, ...)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Flags for drbd_adm_prepare() */
 #define DRBD_ADM_NEED_MINOR	 (1 << 0)
 #define DRBD_ADM_NEED_RESOURCE	 (1 << 1)
@@ -188,10 +193,23 @@ static const unsigned int drbd_genl_cmd_flags[] = {
 };
 
 /*
+=======
+/* This would be a good candidate for a "pre_doit" hook,
+ * and per-family private info->pointers.
+ * But we need to stay compatible with older kernels.
+ * If it returns successfully, adm_ctx members are valid.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * At this point, we still rely on the global genl_lock().
  * If we want to avoid that, and allow "genl_family.parallel_ops", we may need
  * to add additional synchronization against object destruction/modification.
  */
+<<<<<<< HEAD
+=======
+#define DRBD_ADM_NEED_MINOR	1
+#define DRBD_ADM_NEED_RESOURCE	2
+#define DRBD_ADM_NEED_CONNECTION 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int drbd_adm_prepare(struct drbd_config_context *adm_ctx,
 	struct sk_buff *skb, struct genl_info *info, unsigned flags)
 {
@@ -199,6 +217,11 @@ static int drbd_adm_prepare(struct drbd_config_context *adm_ctx,
 	const u8 cmd = info->genlhdr->cmd;
 	int err;
 
+<<<<<<< HEAD
+=======
+	memset(adm_ctx, 0, sizeof(*adm_ctx));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* genl_rcv_msg only checks for CAP_NET_ADMIN on "GENL_ADMIN_PERM" :( */
 	if (cmd != DRBD_ADM_GET_STATUS && !capable(CAP_NET_ADMIN))
 	       return -EPERM;
@@ -238,6 +261,7 @@ static int drbd_adm_prepare(struct drbd_config_context *adm_ctx,
 			goto fail;
 
 		/* and assign stuff to the adm_ctx */
+<<<<<<< HEAD
 		nla = nested_attr_tb[T_ctx_volume];
 		if (nla)
 			adm_ctx->volume = nla_get_u32(nla);
@@ -246,6 +270,16 @@ static int drbd_adm_prepare(struct drbd_config_context *adm_ctx,
 			adm_ctx->resource_name = nla_data(nla);
 		adm_ctx->my_addr = nested_attr_tb[T_ctx_my_addr];
 		adm_ctx->peer_addr = nested_attr_tb[T_ctx_peer_addr];
+=======
+		nla = nested_attr_tb[__nla_type(T_ctx_volume)];
+		if (nla)
+			adm_ctx->volume = nla_get_u32(nla);
+		nla = nested_attr_tb[__nla_type(T_ctx_resource_name)];
+		if (nla)
+			adm_ctx->resource_name = nla_data(nla);
+		adm_ctx->my_addr = nested_attr_tb[__nla_type(T_ctx_my_addr)];
+		adm_ctx->peer_addr = nested_attr_tb[__nla_type(T_ctx_peer_addr)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if ((adm_ctx->my_addr &&
 		     nla_len(adm_ctx->my_addr) > sizeof(adm_ctx->connection->my_addr)) ||
 		    (adm_ctx->peer_addr &&
@@ -334,6 +368,7 @@ fail:
 	return err;
 }
 
+<<<<<<< HEAD
 static int drbd_pre_doit(const struct genl_split_ops *ops,
 			 struct sk_buff *skb, struct genl_info *info)
 {
@@ -373,6 +408,11 @@ static void drbd_post_doit(const struct genl_split_ops *ops,
 	if (adm_ctx->reply_skb)
 		drbd_adm_send_reply(adm_ctx->reply_skb, info);
 
+=======
+static int drbd_adm_finish(struct drbd_config_context *adm_ctx,
+	struct genl_info *info, int retcode)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (adm_ctx->device) {
 		kref_put(&adm_ctx->device->kref, drbd_destroy_device);
 		adm_ctx->device = NULL;
@@ -386,7 +426,16 @@ static void drbd_post_doit(const struct genl_split_ops *ops,
 		adm_ctx->resource = NULL;
 	}
 
+<<<<<<< HEAD
 	kfree(adm_ctx);
+=======
+	if (!adm_ctx->reply_skb)
+		return -ENOMEM;
+
+	adm_ctx->reply_dh->ret_code = retcode;
+	drbd_adm_send_reply(adm_ctx->reply_skb, info);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void setup_khelper_env(struct drbd_connection *connection, char **envp)
@@ -824,21 +873,35 @@ out:
 static const char *from_attrs_err_to_txt(int err)
 {
 	return	err == -ENOMSG ? "required attribute missing" :
+<<<<<<< HEAD
+=======
+		err == -EOPNOTSUPP ? "unknown mandatory attribute" :
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err == -EEXIST ? "can not change invariant setting" :
 		"invalid attribute value";
 }
 
 int drbd_adm_set_role(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct set_role_parms parms;
 	int err;
 	enum drbd_ret_code retcode;
 	enum drbd_state_rv rv;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode != NO_ERROR)
 		goto out;
 
@@ -847,11 +910,16 @@ int drbd_adm_set_role(struct sk_buff *skb, struct genl_info *info)
 		err = set_role_parms_from_attrs(&parms, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
 	genl_unlock();
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 
 	if (info->genlhdr->cmd == DRBD_ADM_PRIMARY)
@@ -865,6 +933,21 @@ int drbd_adm_set_role(struct sk_buff *skb, struct genl_info *info)
 	return 0;
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+
+	if (info->genlhdr->cmd == DRBD_ADM_PRIMARY)
+		rv = drbd_set_role(adm_ctx.device, R_PRIMARY, parms.assume_uptodate);
+	else
+		rv = drbd_set_role(adm_ctx.device, R_SECONDARY, 0);
+
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	genl_lock();
+	drbd_adm_finish(&adm_ctx, info, rv);
+	return 0;
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1576,7 +1659,11 @@ out:
 
 int drbd_adm_disk_opts(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct drbd_device *device;
 	struct disk_conf *new_disk_conf, *old_disk_conf;
@@ -1584,6 +1671,7 @@ int drbd_adm_disk_opts(struct sk_buff *skb, struct genl_info *info)
 	int err;
 	unsigned int fifo_size;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -1592,6 +1680,16 @@ int drbd_adm_disk_opts(struct sk_buff *skb, struct genl_info *info)
 
 	device = adm_ctx->device;
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+
+	device = adm_ctx.device;
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* we also need a disk
 	 * to change the options on */
@@ -1615,7 +1713,11 @@ int drbd_adm_disk_opts(struct sk_buff *skb, struct genl_info *info)
 	err = disk_conf_from_attrs_for_change(new_disk_conf, info);
 	if (err && err != -ENOMSG) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail_unlock;
 	}
 
@@ -1641,7 +1743,11 @@ int drbd_adm_disk_opts(struct sk_buff *skb, struct genl_info *info)
 	if (err) {
 		/* Could be just "busy". Ignore?
 		 * Introduce dedicated error code? */
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb,
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"Try again without changing current al-extents setting");
 		retcode = ERR_NOMEM;
 		goto fail_unlock;
@@ -1704,9 +1810,15 @@ fail_unlock:
 success:
 	put_ldev(device);
  out:
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
  finish:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+ finish:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1798,7 +1910,11 @@ void drbd_backing_dev_free(struct drbd_device *device, struct drbd_backing_dev *
 
 int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drbd_device *device;
 	struct drbd_peer_device *peer_device;
 	struct drbd_connection *connection;
@@ -1815,6 +1931,7 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 	enum drbd_state_rv rv;
 	struct net_conf *nc;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -1823,6 +1940,16 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 
 	device = adm_ctx->device;
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+
+	device = adm_ctx.device;
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	peer_device = first_peer_device(device);
 	connection = peer_device->connection;
 	conn_reconfig_start(connection);
@@ -1867,7 +1994,11 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 	err = disk_conf_from_attrs(new_disk_conf, info);
 	if (err) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 
@@ -2018,7 +2149,11 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 			drbd_warn(device, "truncating a consistent device during attach (%llu < %llu)\n", nsz, eff);
 		} else {
 			drbd_warn(device, "refusing to truncate a consistent device (%llu < %llu)\n", nsz, eff);
+<<<<<<< HEAD
 			drbd_msg_sprintf_info(adm_ctx->reply_skb,
+=======
+			drbd_msg_sprintf_info(adm_ctx.reply_skb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				"To-be-attached device has last effective > current size, and is consistent\n"
 				"(%llu > %llu sectors). Refusing to attach.", eff, nsz);
 			retcode = ERR_IMPLICIT_SHRINK;
@@ -2194,8 +2329,13 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 	kobject_uevent(&disk_to_dev(device->vdisk)->kobj, KOBJ_CHANGE);
 	put_ldev(device);
 	conn_reconfig_done(connection);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
  force_diskless_dec:
@@ -2214,9 +2354,15 @@ int drbd_adm_attach(struct sk_buff *skb, struct genl_info *info)
 	kfree(new_disk_conf);
 	lc_destroy(resync_lru);
 	kfree(new_plan);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
  finish:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+ finish:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2238,14 +2384,24 @@ static int adm_detach(struct drbd_device *device, int force)
  * Only then we have finally detached. */
 int drbd_adm_detach(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct detach_parms parms = { };
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode != NO_ERROR)
 		goto out;
 
@@ -2253,16 +2409,28 @@ int drbd_adm_detach(struct sk_buff *skb, struct genl_info *info)
 		err = detach_parms_from_attrs(&parms, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	retcode = adm_detach(adm_ctx->device, parms.force_detach);
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	retcode = adm_detach(adm_ctx.device, parms.force_detach);
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2436,7 +2604,11 @@ static void free_crypto(struct crypto *crypto)
 
 int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct drbd_connection *connection;
 	struct net_conf *old_net_conf, *new_net_conf = NULL;
@@ -2445,6 +2617,7 @@ int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
 	int rsr; /* re-sync running */
 	struct crypto crypto = { };
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -2453,6 +2626,16 @@ int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
 
 	connection = adm_ctx->connection;
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_CONNECTION);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+
+	connection = adm_ctx.connection;
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	new_net_conf = kzalloc_obj(struct net_conf);
 	if (!new_net_conf) {
@@ -2467,7 +2650,11 @@ int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
 	old_net_conf = connection->net_conf;
 
 	if (!old_net_conf) {
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, "net conf missing, try connect");
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, "net conf missing, try connect");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		retcode = ERR_INVALID_REQUEST;
 		goto fail;
 	}
@@ -2479,7 +2666,11 @@ int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
 	err = net_conf_from_attrs_for_change(new_net_conf, info);
 	if (err && err != -ENOMSG) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 
@@ -2549,9 +2740,15 @@ int drbd_adm_net_opts(struct sk_buff *skb, struct genl_info *info)
  done:
 	conn_reconfig_done(connection);
  out:
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
  finish:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+ finish:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2580,7 +2777,11 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	struct connection_info connection_info;
 	enum drbd_notification_type flags;
 	unsigned int peer_devices = 0;
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drbd_peer_device *peer_device;
 	struct net_conf *old_net_conf, *new_net_conf = NULL;
 	struct crypto crypto = { };
@@ -2591,6 +2792,7 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	int i;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -2598,6 +2800,16 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 		goto out;
 	if (!(adm_ctx->my_addr && adm_ctx->peer_addr)) {
 		drbd_msg_put_info(adm_ctx->reply_skb, "connection endpoint(s) missing");
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_RESOURCE);
+
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+	if (!(adm_ctx.my_addr && adm_ctx.peer_addr)) {
+		drbd_msg_put_info(adm_ctx.reply_skb, "connection endpoint(s) missing");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		retcode = ERR_INVALID_REQUEST;
 		goto out;
 	}
@@ -2607,15 +2819,25 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	 * concurrent reconfiguration/addition/deletion */
 	for_each_resource(resource, &drbd_resources) {
 		for_each_connection(connection, resource) {
+<<<<<<< HEAD
 			if (nla_len(adm_ctx->my_addr) == connection->my_addr_len &&
 			    !memcmp(nla_data(adm_ctx->my_addr), &connection->my_addr,
+=======
+			if (nla_len(adm_ctx.my_addr) == connection->my_addr_len &&
+			    !memcmp(nla_data(adm_ctx.my_addr), &connection->my_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    connection->my_addr_len)) {
 				retcode = ERR_LOCAL_ADDR;
 				goto out;
 			}
 
+<<<<<<< HEAD
 			if (nla_len(adm_ctx->peer_addr) == connection->peer_addr_len &&
 			    !memcmp(nla_data(adm_ctx->peer_addr), &connection->peer_addr,
+=======
+			if (nla_len(adm_ctx.peer_addr) == connection->peer_addr_len &&
+			    !memcmp(nla_data(adm_ctx.peer_addr), &connection->peer_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    connection->peer_addr_len)) {
 				retcode = ERR_PEER_ADDR;
 				goto out;
@@ -2623,8 +2845,13 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 		}
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	connection = first_connection(adm_ctx->resource);
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	connection = first_connection(adm_ctx.resource);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	conn_reconfig_start(connection);
 
 	if (connection->cstate > C_STANDALONE) {
@@ -2644,7 +2871,11 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	err = net_conf_from_attrs(new_net_conf, info);
 	if (err && err != -ENOMSG) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 
@@ -2660,11 +2891,19 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 
 	drbd_flush_workqueue(&connection->sender_work);
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->conf_update);
 	old_net_conf = connection->net_conf;
 	if (old_net_conf) {
 		retcode = ERR_NET_CONFIGURED;
 		mutex_unlock(&adm_ctx->resource->conf_update);
+=======
+	mutex_lock(&adm_ctx.resource->conf_update);
+	old_net_conf = connection->net_conf;
+	if (old_net_conf) {
+		retcode = ERR_NET_CONFIGURED;
+		mutex_unlock(&adm_ctx.resource->conf_update);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 	rcu_assign_pointer(connection->net_conf, new_net_conf);
@@ -2675,10 +2914,17 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	connection->csums_tfm = crypto.csums_tfm;
 	connection->verify_tfm = crypto.verify_tfm;
 
+<<<<<<< HEAD
 	connection->my_addr_len = nla_len(adm_ctx->my_addr);
 	memcpy(&connection->my_addr, nla_data(adm_ctx->my_addr), connection->my_addr_len);
 	connection->peer_addr_len = nla_len(adm_ctx->peer_addr);
 	memcpy(&connection->peer_addr, nla_data(adm_ctx->peer_addr), connection->peer_addr_len);
+=======
+	connection->my_addr_len = nla_len(adm_ctx.my_addr);
+	memcpy(&connection->my_addr, nla_data(adm_ctx.my_addr), connection->my_addr_len);
+	connection->peer_addr_len = nla_len(adm_ctx.peer_addr);
+	memcpy(&connection->peer_addr, nla_data(adm_ctx.peer_addr), connection->peer_addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	idr_for_each_entry(&connection->peer_devices, peer_device, i) {
 		peer_devices++;
@@ -2696,7 +2942,11 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 		notify_peer_device_state(NULL, 0, peer_device, &peer_device_info, NOTIFY_CREATE | flags);
 	}
 	mutex_unlock(&notification_mutex);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->conf_update);
+=======
+	mutex_unlock(&adm_ctx.resource->conf_update);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rcu_read_lock();
 	idr_for_each_entry(&connection->peer_devices, peer_device, i) {
@@ -2709,8 +2959,13 @@ int drbd_adm_connect(struct sk_buff *skb, struct genl_info *info)
 	rv = conn_request_state(connection, NS(conn, C_UNCONNECTED), CS_VERBOSE);
 
 	conn_reconfig_done(connection);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 	adm_ctx->reply_dh->ret_code = rv;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	drbd_adm_finish(&adm_ctx, info, rv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 fail:
@@ -2718,9 +2973,15 @@ fail:
 	kfree(new_net_conf);
 
 	conn_reconfig_done(connection);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2792,13 +3053,18 @@ repeat:
 
 int drbd_adm_disconnect(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct disconnect_parms parms;
 	struct drbd_connection *connection;
 	enum drbd_state_rv rv;
 	enum drbd_ret_code retcode;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -2806,26 +3072,51 @@ int drbd_adm_disconnect(struct sk_buff *skb, struct genl_info *info)
 		goto fail;
 
 	connection = adm_ctx->connection;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_CONNECTION);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto fail;
+
+	connection = adm_ctx.connection;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(&parms, 0, sizeof(parms));
 	if (info->attrs[DRBD_NLA_DISCONNECT_PARMS]) {
 		err = disconnect_parms_from_attrs(&parms, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto fail;
 		}
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	rv = conn_try_disconnect(connection, parms.force_disconnect);
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 	if (rv < SS_SUCCESS) {
 		adm_ctx->reply_dh->ret_code = rv;
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	rv = conn_try_disconnect(connection, parms.force_disconnect);
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	if (rv < SS_SUCCESS) {
+		drbd_adm_finish(&adm_ctx, info, rv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 	retcode = NO_ERROR;
  fail:
+<<<<<<< HEAD
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2847,7 +3138,11 @@ void resync_after_online_grow(struct drbd_device *device)
 
 int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct disk_conf *old_disk_conf, *new_disk_conf = NULL;
 	struct resize_parms rs;
 	struct drbd_device *device;
@@ -2858,6 +3153,7 @@ int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 	sector_t u_size;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -2866,6 +3162,16 @@ int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	device = adm_ctx->device;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!get_ldev(device)) {
 		retcode = ERR_NO_DISK;
 		goto fail;
@@ -2878,7 +3184,11 @@ int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 		err = resize_parms_from_attrs(&rs, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto fail_ldev;
 		}
 	}
@@ -2970,9 +3280,15 @@ int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 	}
 
  fail:
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
  finish:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+ finish:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
  fail_ldev:
@@ -2983,11 +3299,16 @@ int drbd_adm_resize(struct sk_buff *skb, struct genl_info *info)
 
 int drbd_adm_resource_opts(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct res_opts res_opts;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -2995,32 +3316,58 @@ int drbd_adm_resource_opts(struct sk_buff *skb, struct genl_info *info)
 		goto fail;
 
 	res_opts = adm_ctx->resource->res_opts;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_RESOURCE);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto fail;
+
+	res_opts = adm_ctx.resource->res_opts;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (should_set_defaults(info))
 		set_res_opts_defaults(&res_opts);
 
 	err = res_opts_from_attrs(&res_opts, info);
 	if (err && err != -ENOMSG) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
 		goto fail;
 	}
 
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	err = set_resource_options(adm_ctx->resource, &res_opts);
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+		goto fail;
+	}
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	err = set_resource_options(adm_ctx.resource, &res_opts);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		retcode = ERR_INVALID_REQUEST;
 		if (err == -ENOMEM)
 			retcode = ERR_NOMEM;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 
 fail:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+
+fail:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int drbd_adm_invalidate(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	struct drbd_device *device;
 	int retcode; /* enum drbd_ret_code rsp. enum drbd_state_rv */
@@ -3032,12 +3379,29 @@ int drbd_adm_invalidate(struct sk_buff *skb, struct genl_info *info)
 		goto out;
 
 	device = adm_ctx->device;
+=======
+	struct drbd_config_context adm_ctx;
+	struct drbd_device *device;
+	int retcode; /* enum drbd_ret_code rsp. enum drbd_state_rv */
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!get_ldev(device)) {
 		retcode = ERR_NO_DISK;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If there is still bitmap IO pending, probably because of a previous
 	 * resync just being finished, wait for it before requesting a new resync.
@@ -3060,16 +3424,24 @@ int drbd_adm_invalidate(struct sk_buff *skb, struct genl_info *info)
 	} else
 		retcode = drbd_request_state(device, NS(conn, C_STARTING_SYNC_T));
 	drbd_resume_io(device);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 	put_ldev(device);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	put_ldev(device);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int drbd_adm_simple_request_state(struct sk_buff *skb, struct genl_info *info,
 		union drbd_state mask, union drbd_state val)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	enum drbd_ret_code retcode;
 
@@ -3084,6 +3456,22 @@ static int drbd_adm_simple_request_state(struct sk_buff *skb, struct genl_info *
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	struct drbd_config_context adm_ctx;
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	retcode = drbd_request_state(adm_ctx.device, mask, val);
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3099,6 +3487,7 @@ static int drbd_bmio_set_susp_al(struct drbd_device *device,
 
 int drbd_adm_invalidate_peer(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	int retcode; /* drbd_ret_code, drbd_state_rv */
 	struct drbd_device *device;
@@ -3110,12 +3499,29 @@ int drbd_adm_invalidate_peer(struct sk_buff *skb, struct genl_info *info)
 		goto out;
 
 	device = adm_ctx->device;
+=======
+	struct drbd_config_context adm_ctx;
+	int retcode; /* drbd_ret_code, drbd_state_rv */
+	struct drbd_device *device;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!get_ldev(device)) {
 		retcode = ERR_NO_DISK;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If there is still bitmap IO pending, probably because of a previous
 	 * resync just being finished, wait for it before requesting a new resync.
@@ -3141,15 +3547,23 @@ int drbd_adm_invalidate_peer(struct sk_buff *skb, struct genl_info *info)
 	} else
 		retcode = drbd_request_state(device, NS(conn, C_STARTING_SYNC_S));
 	drbd_resume_io(device);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 	put_ldev(device);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+	put_ldev(device);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int drbd_adm_pause_sync(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	enum drbd_ret_code retcode;
 
@@ -3165,11 +3579,29 @@ int drbd_adm_pause_sync(struct sk_buff *skb, struct genl_info *info)
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	struct drbd_config_context adm_ctx;
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	if (drbd_request_state(adm_ctx.device, NS(user_isp, 1)) == SS_NOTHING_TO_DO)
+		retcode = ERR_PAUSE_IS_SET;
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int drbd_adm_resume_sync(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	union drbd_dev_state s;
 	enum drbd_ret_code retcode;
@@ -3183,6 +3615,21 @@ int drbd_adm_resume_sync(struct sk_buff *skb, struct genl_info *info)
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	if (drbd_request_state(adm_ctx->device, NS(user_isp, 0)) == SS_NOTHING_TO_DO) {
 		s = adm_ctx->device->state;
+=======
+	struct drbd_config_context adm_ctx;
+	union drbd_dev_state s;
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	if (drbd_request_state(adm_ctx.device, NS(user_isp, 0)) == SS_NOTHING_TO_DO) {
+		s = adm_ctx.device->state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (s.conn == C_PAUSED_SYNC_S || s.conn == C_PAUSED_SYNC_T) {
 			retcode = s.aftr_isp ? ERR_PIC_AFTER_DEP :
 				  s.peer_isp ? ERR_PIC_PEER_DEP : ERR_PAUSE_IS_CLEAR;
@@ -3190,9 +3637,15 @@ int drbd_adm_resume_sync(struct sk_buff *skb, struct genl_info *info)
 			retcode = ERR_PAUSE_IS_CLEAR;
 		}
 	}
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3203,6 +3656,7 @@ int drbd_adm_suspend_io(struct sk_buff *skb, struct genl_info *info)
 
 int drbd_adm_resume_io(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	struct drbd_device *device;
 	int retcode; /* enum drbd_ret_code rsp. enum drbd_state_rv */
@@ -3215,6 +3669,20 @@ int drbd_adm_resume_io(struct sk_buff *skb, struct genl_info *info)
 
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	device = adm_ctx->device;
+=======
+	struct drbd_config_context adm_ctx;
+	struct drbd_device *device;
+	int retcode; /* enum drbd_ret_code rsp. enum drbd_state_rv */
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (test_bit(NEW_CUR_UUID, &device->flags)) {
 		if (get_ldev_if_state(device, D_ATTACHING)) {
 			drbd_uuid_new_current(device);
@@ -3236,7 +3704,11 @@ int drbd_adm_resume_io(struct sk_buff *skb, struct genl_info *info)
 			 * matching real data uuid exists).
 			 */
 			u64 val;
+<<<<<<< HEAD
 			val = get_random_u64();
+=======
+			get_random_bytes(&val, sizeof(u64));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			drbd_set_ed_uuid(device, val);
 			drbd_warn(device, "Resumed without access to data; please tear down before attempting to re-configure.\n");
 		}
@@ -3251,9 +3723,15 @@ int drbd_adm_resume_io(struct sk_buff *skb, struct genl_info *info)
 			tl_restart(first_peer_device(device)->connection, FAIL_FROZEN_DISK_IO);
 	}
 	drbd_resume_io(device);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3301,13 +3779,21 @@ nla_put_failure:
 static struct nlattr *find_cfg_context_attr(const struct nlmsghdr *nlh, int attr)
 {
 	const unsigned hdrlen = GENL_HDRLEN + GENL_MAGIC_FAMILY_HDRSZ;
+<<<<<<< HEAD
+=======
+	const int maxtype = ARRAY_SIZE(drbd_cfg_context_nl_policy) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nlattr *nla;
 
 	nla = nla_find(nlmsg_attrdata(nlh, hdrlen), nlmsg_attrlen(nlh, hdrlen),
 		       DRBD_NLA_CFG_CONTEXT);
 	if (!nla)
 		return NULL;
+<<<<<<< HEAD
 	return nla_find_nested(nla, attr);
+=======
+	return drbd_nla_find_nested(maxtype, nla, __nla_type(attr));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void resource_to_info(struct resource_info *, struct drbd_resource *);
@@ -3440,10 +3926,15 @@ int drbd_adm_dump_devices(struct sk_buff *skb, struct netlink_callback *cb)
 		if (resource_filter) {
 			retcode = ERR_RES_NOT_KNOWN;
 			resource = drbd_find_resource(nla_data(resource_filter));
+<<<<<<< HEAD
 			if (!resource) {
 				rcu_read_lock();
 				goto put_result;
 			}
+=======
+			if (!resource)
+				goto put_result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cb->args[0] = (long)resource;
 		}
 	}
@@ -3692,10 +4183,15 @@ int drbd_adm_dump_peer_devices(struct sk_buff *skb, struct netlink_callback *cb)
 		if (resource_filter) {
 			retcode = ERR_RES_NOT_KNOWN;
 			resource = drbd_find_resource(nla_data(resource_filter));
+<<<<<<< HEAD
 			if (!resource) {
 				rcu_read_lock();
 				goto put_result;
 			}
+=======
+			if (!resource)
+				goto put_result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		cb->args[0] = (long)resource;
 	}
@@ -3909,6 +4405,7 @@ nla_put_failure:
 
 int drbd_adm_get_status(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	enum drbd_ret_code retcode;
 	int err;
@@ -3927,6 +4424,25 @@ int drbd_adm_get_status(struct sk_buff *skb, struct genl_info *info)
 	}
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	struct drbd_config_context adm_ctx;
+	enum drbd_ret_code retcode;
+	int err;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	err = nla_put_status_info(adm_ctx.reply_skb, adm_ctx.device, NULL);
+	if (err) {
+		nlmsg_free(adm_ctx.reply_skb);
+		return err;
+	}
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4065,6 +4581,10 @@ int drbd_adm_get_status_all(struct sk_buff *skb, struct netlink_callback *cb)
 	struct nlattr *nla;
 	const char *resource_name;
 	struct drbd_resource *resource;
+<<<<<<< HEAD
+=======
+	int maxtype;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Is this a followup call? */
 	if (cb->args[0]) {
@@ -4084,7 +4604,14 @@ int drbd_adm_get_status_all(struct sk_buff *skb, struct netlink_callback *cb)
 	/* No explicit context given.  Dump all. */
 	if (!nla)
 		goto dump;
+<<<<<<< HEAD
 	nla = nla_find_nested(nla, T_ctx_resource_name);
+=======
+	maxtype = ARRAY_SIZE(drbd_cfg_context_nl_policy) - 1;
+	nla = drbd_nla_find_nested(maxtype, nla, __nla_type(T_ctx_resource_name));
+	if (IS_ERR(nla))
+		return PTR_ERR(nla);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* context given, but no name present? */
 	if (!nla)
 		return -EINVAL;
@@ -4109,18 +4636,29 @@ dump:
 
 int drbd_adm_get_timeout_type(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct timeout_parms tp;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode != NO_ERROR)
 		goto out;
 
 	tp.timeout_type =
+<<<<<<< HEAD
 		adm_ctx->device->state.pdsk == D_OUTDATED ? UT_PEER_OUTDATED :
 		test_bit(USE_DEGR_WFC_T, &adm_ctx->device->flags) ? UT_DEGRADED :
 		UT_DEFAULT;
@@ -4133,16 +4671,34 @@ int drbd_adm_get_timeout_type(struct sk_buff *skb, struct genl_info *info)
 	}
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+		adm_ctx.device->state.pdsk == D_OUTDATED ? UT_PEER_OUTDATED :
+		test_bit(USE_DEGR_WFC_T, &adm_ctx.device->flags) ? UT_DEGRADED :
+		UT_DEFAULT;
+
+	err = timeout_parms_to_priv_skb(adm_ctx.reply_skb, &tp);
+	if (err) {
+		nlmsg_free(adm_ctx.reply_skb);
+		return err;
+	}
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int drbd_adm_start_ov(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drbd_device *device;
 	enum drbd_ret_code retcode;
 	struct start_ov_parms parms;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -4150,6 +4706,15 @@ int drbd_adm_start_ov(struct sk_buff *skb, struct genl_info *info)
 		goto out;
 
 	device = adm_ctx->device;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* resume from last known position, if possible */
 	parms.ov_start_sector = device->ov_start_sector;
@@ -4158,11 +4723,19 @@ int drbd_adm_start_ov(struct sk_buff *skb, struct genl_info *info)
 		int err = start_ov_parms_from_attrs(&parms, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
 			goto out;
 		}
 	}
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+			goto out;
+		}
+	}
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* w_make_ov_request expects position to be aligned */
 	device->ov_start_sector = parms.ov_start_sector & ~(BM_SECT_PER_BIT-1);
@@ -4175,22 +4748,33 @@ int drbd_adm_start_ov(struct sk_buff *skb, struct genl_info *info)
 	retcode = drbd_request_state(device, NS(conn, C_VERIFY_S));
 	drbd_resume_io(device);
 
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 
 int drbd_adm_new_c_uuid(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drbd_device *device;
 	enum drbd_ret_code retcode;
 	int skip_initial_sync = 0;
 	int err;
 	struct new_c_uuid_parms args;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -4198,17 +4782,34 @@ int drbd_adm_new_c_uuid(struct sk_buff *skb, struct genl_info *info)
 		goto out_nolock;
 
 	device = adm_ctx->device;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out_nolock;
+
+	device = adm_ctx.device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(&args, 0, sizeof(args));
 	if (info->attrs[DRBD_NLA_NEW_C_UUID_PARMS]) {
 		err = new_c_uuid_parms_from_attrs(&args, info);
 		if (err) {
 			retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_nolock;
 		}
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(device->state_mutex); /* Protects us against serialized state changes. */
 
 	if (!get_ldev(device)) {
@@ -4253,9 +4854,15 @@ out_dec:
 	put_ldev(device);
 out:
 	mutex_unlock(device->state_mutex);
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out_nolock:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out_nolock:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4288,14 +4895,24 @@ static void resource_to_info(struct resource_info *info,
 int drbd_adm_new_resource(struct sk_buff *skb, struct genl_info *info)
 {
 	struct drbd_connection *connection;
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum drbd_ret_code retcode;
 	struct res_opts res_opts;
 	int err;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, 0);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode != NO_ERROR)
 		goto out;
 
@@ -4303,6 +4920,7 @@ int drbd_adm_new_resource(struct sk_buff *skb, struct genl_info *info)
 	err = res_opts_from_attrs(&res_opts, info);
 	if (err && err != -ENOMSG) {
 		retcode = ERR_MANDATORY_TAG;
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, from_attrs_err_to_txt(err));
 		goto out;
 	}
@@ -4315,6 +4933,20 @@ int drbd_adm_new_resource(struct sk_buff *skb, struct genl_info *info)
 		if (info->nlhdr->nlmsg_flags & NLM_F_EXCL) {
 			retcode = ERR_INVALID_REQUEST;
 			drbd_msg_put_info(adm_ctx->reply_skb, "resource exists");
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, from_attrs_err_to_txt(err));
+		goto out;
+	}
+
+	retcode = drbd_check_resource_name(&adm_ctx);
+	if (retcode != NO_ERROR)
+		goto out;
+
+	if (adm_ctx.resource) {
+		if (info->nlhdr->nlmsg_flags & NLM_F_EXCL) {
+			retcode = ERR_INVALID_REQUEST;
+			drbd_msg_put_info(adm_ctx.reply_skb, "resource exists");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* else: still NO_ERROR */
 		goto out;
@@ -4322,7 +4954,11 @@ int drbd_adm_new_resource(struct sk_buff *skb, struct genl_info *info)
 
 	/* not yet safe for genl_family.parallel_ops */
 	mutex_lock(&resources_mutex);
+<<<<<<< HEAD
 	connection = conn_create(adm_ctx->resource_name, &res_opts);
+=======
+	connection = conn_create(adm_ctx.resource_name, &res_opts);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&resources_mutex);
 
 	if (connection) {
@@ -4337,7 +4973,11 @@ int drbd_adm_new_resource(struct sk_buff *skb, struct genl_info *info)
 		retcode = ERR_NOMEM;
 
 out:
+<<<<<<< HEAD
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4350,6 +4990,7 @@ static void device_to_info(struct device_info *info,
 
 int drbd_adm_new_minor(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	struct drbd_genlmsghdr *dh = genl_info_userhdr(info);
 	enum drbd_ret_code retcode;
@@ -4357,31 +4998,58 @@ int drbd_adm_new_minor(struct sk_buff *skb, struct genl_info *info)
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
+=======
+	struct drbd_config_context adm_ctx;
+	struct drbd_genlmsghdr *dh = genl_info_userhdr(info);
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_RESOURCE);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode != NO_ERROR)
 		goto out;
 
 	if (dh->minor > MINORMASK) {
+<<<<<<< HEAD
 		drbd_msg_put_info(adm_ctx->reply_skb, "requested minor out of range");
 		retcode = ERR_INVALID_REQUEST;
 		goto out;
 	}
 	if (adm_ctx->volume > DRBD_VOLUME_MAX) {
 		drbd_msg_put_info(adm_ctx->reply_skb, "requested volume id out of range");
+=======
+		drbd_msg_put_info(adm_ctx.reply_skb, "requested minor out of range");
+		retcode = ERR_INVALID_REQUEST;
+		goto out;
+	}
+	if (adm_ctx.volume > DRBD_VOLUME_MAX) {
+		drbd_msg_put_info(adm_ctx.reply_skb, "requested volume id out of range");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		retcode = ERR_INVALID_REQUEST;
 		goto out;
 	}
 
 	/* drbd_adm_prepare made sure already
 	 * that first_peer_device(device)->connection and device->vnr match the request. */
+<<<<<<< HEAD
 	if (adm_ctx->device) {
+=======
+	if (adm_ctx.device) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (info->nlhdr->nlmsg_flags & NLM_F_EXCL)
 			retcode = ERR_MINOR_OR_VOLUME_EXISTS;
 		/* else: still NO_ERROR */
 		goto out;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&adm_ctx->resource->adm_mutex);
 	retcode = drbd_create_device(adm_ctx, dh->minor);
+=======
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	retcode = drbd_create_device(&adm_ctx, dh->minor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retcode == NO_ERROR) {
 		struct drbd_device *device;
 		struct drbd_peer_device *peer_device;
@@ -4412,9 +5080,15 @@ int drbd_adm_new_minor(struct sk_buff *skb, struct genl_info *info)
 		}
 		mutex_unlock(&notification_mutex);
 	}
+<<<<<<< HEAD
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4457,6 +5131,7 @@ static enum drbd_ret_code adm_del_minor(struct drbd_device *device)
 
 int drbd_adm_del_minor(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	enum drbd_ret_code retcode;
 
@@ -4471,6 +5146,22 @@ int drbd_adm_del_minor(struct sk_buff *skb, struct genl_info *info)
 	mutex_unlock(&adm_ctx->resource->adm_mutex);
 out:
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	struct drbd_config_context adm_ctx;
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_MINOR);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto out;
+
+	mutex_lock(&adm_ctx.resource->adm_mutex);
+	retcode = adm_del_minor(adm_ctx.device);
+	mutex_unlock(&adm_ctx.resource->adm_mutex);
+out:
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4506,13 +5197,18 @@ static int adm_del_resource(struct drbd_resource *resource)
 
 int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
+=======
+	struct drbd_config_context adm_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drbd_resource *resource;
 	struct drbd_connection *connection;
 	struct drbd_device *device;
 	int retcode; /* enum drbd_ret_code rsp. enum drbd_state_rv */
 	unsigned i;
 
+<<<<<<< HEAD
 	if (!adm_ctx->reply_skb)
 		return 0;
 	retcode = adm_ctx->reply_dh->ret_code;
@@ -4520,6 +5216,15 @@ int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 		goto finish;
 
 	resource = adm_ctx->resource;
+=======
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_RESOURCE);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+
+	resource = adm_ctx.resource;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&resource->adm_mutex);
 	/* demote */
 	for_each_connection(connection, resource) {
@@ -4528,14 +5233,22 @@ int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 		idr_for_each_entry(&connection->peer_devices, peer_device, i) {
 			retcode = drbd_set_role(peer_device->device, R_SECONDARY, 0);
 			if (retcode < SS_SUCCESS) {
+<<<<<<< HEAD
 				drbd_msg_put_info(adm_ctx->reply_skb, "failed to demote");
+=======
+				drbd_msg_put_info(adm_ctx.reply_skb, "failed to demote");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto out;
 			}
 		}
 
 		retcode = conn_try_disconnect(connection, 0);
 		if (retcode < SS_SUCCESS) {
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, "failed to disconnect");
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, "failed to disconnect");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
@@ -4544,7 +5257,11 @@ int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 	idr_for_each_entry(&resource->devices, device, i) {
 		retcode = adm_detach(device, 0);
 		if (retcode < SS_SUCCESS || retcode > NO_ERROR) {
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, "failed to detach");
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, "failed to detach");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
@@ -4554,7 +5271,11 @@ int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 		retcode = adm_del_minor(device);
 		if (retcode != NO_ERROR) {
 			/* "can not happen" */
+<<<<<<< HEAD
 			drbd_msg_put_info(adm_ctx->reply_skb, "failed to delete volume");
+=======
+			drbd_msg_put_info(adm_ctx.reply_skb, "failed to delete volume");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
@@ -4563,12 +5284,17 @@ int drbd_adm_down(struct sk_buff *skb, struct genl_info *info)
 out:
 	mutex_unlock(&resource->adm_mutex);
 finish:
+<<<<<<< HEAD
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int drbd_adm_del_resource(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct drbd_config_context *adm_ctx = info->user_ptr[0];
 	struct drbd_resource *resource;
 	enum drbd_ret_code retcode;
@@ -4579,12 +5305,28 @@ int drbd_adm_del_resource(struct sk_buff *skb, struct genl_info *info)
 	if (retcode != NO_ERROR)
 		goto finish;
 	resource = adm_ctx->resource;
+=======
+	struct drbd_config_context adm_ctx;
+	struct drbd_resource *resource;
+	enum drbd_ret_code retcode;
+
+	retcode = drbd_adm_prepare(&adm_ctx, skb, info, DRBD_ADM_NEED_RESOURCE);
+	if (!adm_ctx.reply_skb)
+		return retcode;
+	if (retcode != NO_ERROR)
+		goto finish;
+	resource = adm_ctx.resource;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&resource->adm_mutex);
 	retcode = adm_del_resource(resource);
 	mutex_unlock(&resource->adm_mutex);
 finish:
+<<<<<<< HEAD
 	adm_ctx->reply_dh->ret_code = retcode;
+=======
+	drbd_adm_finish(&adm_ctx, info, retcode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

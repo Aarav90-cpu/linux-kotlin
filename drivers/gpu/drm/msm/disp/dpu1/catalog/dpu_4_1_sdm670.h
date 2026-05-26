@@ -144,7 +144,12 @@ const struct dpu_mdss_cfg dpu_sdm670_cfg = {
 	.dsc = sdm670_dsc,
 	.intf_count = ARRAY_SIZE(sdm845_intf),
 	.intf = sdm845_intf,
+<<<<<<< HEAD
 	.vbif = &sdm845_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+	.vbif = sdm845_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &sdm845_perf_data,
 };
 

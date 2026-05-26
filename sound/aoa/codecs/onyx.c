@@ -32,7 +32,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <sound/asoundef.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Johannes Berg <johannes@sipsolutions.net>");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("pcm3052 (onyx) codec driver for snd-aoa");
@@ -515,6 +518,7 @@ static int onyx_spdif_put(struct snd_kcontrol *kcontrol,
 	return 1;
 }
 
+<<<<<<< HEAD
 static int onyx_set_spdif_pcm_rate(struct onyx *onyx, unsigned int rate)
 {
 	u8 dig_info3, fs;
@@ -545,6 +549,10 @@ static int onyx_set_spdif_pcm_rate(struct onyx *onyx, unsigned int rate)
 static const struct snd_kcontrol_new onyx_spdif_ctrl = {
 	.access =	SNDRV_CTL_ELEM_ACCESS_READWRITE |
 			SNDRV_CTL_ELEM_ACCESS_VOLATILE,
+=======
+static const struct snd_kcontrol_new onyx_spdif_ctrl = {
+	.access =	SNDRV_CTL_ELEM_ACCESS_READWRITE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.iface =	SNDRV_CTL_ELEM_IFACE_PCM,
 	.name =		SNDRV_CTL_NAME_IEC958("",PLAYBACK,DEFAULT),
 	.info =		onyx_spdif_info,
@@ -724,9 +732,15 @@ static int onyx_prepare(struct codec_info_item *cii,
 	case 32000:
 	case 44100:
 	case 48000:
+<<<<<<< HEAD
 		if (onyx->codec.connected & 2)
 			return onyx_set_spdif_pcm_rate(onyx,
 						       substream->runtime->rate);
+=======
+		/* these rates are ok for all outputs */
+		/* FIXME: program spdif channel control bits here so that
+		 *	  userspace doesn't have to if it only plays pcm! */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	default:
 		/* got some rate that the digital output can't do,
@@ -1009,12 +1023,19 @@ static int onyx_i2c_probe(struct i2c_client *client)
 	onyx->codec.node = of_node_get(node);
 
 	if (aoa_codec_register(&onyx->codec)) {
+<<<<<<< HEAD
 		goto fail_put;
 	}
 	printk(KERN_DEBUG PFX "created and attached onyx instance\n");
 	return 0;
  fail_put:
 	of_node_put(onyx->codec.node);
+=======
+		goto fail;
+	}
+	printk(KERN_DEBUG PFX "created and attached onyx instance\n");
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  fail:
 	kfree(onyx);
 	return -ENODEV;

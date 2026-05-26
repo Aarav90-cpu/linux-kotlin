@@ -245,8 +245,11 @@ struct x86_emulate_ops {
 
 	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
 				  unsigned int flags);
+<<<<<<< HEAD
 
 	bool (*page_address_valid)(struct x86_emulate_ctxt *ctxt, gpa_t gpa);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Type, address-of, and value of an instruction's operand. */

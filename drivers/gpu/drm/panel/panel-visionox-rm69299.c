@@ -376,8 +376,11 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
 		return PTR_ERR(ctx->reset_gpio);
 	}
 
+<<<<<<< HEAD
 	ctx->panel.prepare_prev_first = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx->panel.backlight = visionox_rm69299_create_backlight(ctx);
 	if (IS_ERR(ctx->panel.backlight))
 		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),

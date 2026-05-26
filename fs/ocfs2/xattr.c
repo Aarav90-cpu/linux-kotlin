@@ -911,8 +911,13 @@ static int ocfs2_xattr_list_entry(struct super_block *sb,
 	total_len = prefix_len + name_len + 1;
 	*result += total_len;
 
+<<<<<<< HEAD
 	/* No buffer means we are only looking for the required size. */
 	if (!buffer)
+=======
+	/* we are just looking for how big our buffer needs to be */
+	if (!size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	if (*result > size)
@@ -3741,7 +3746,11 @@ static int ocfs2_xattr_get_rec(struct inode *inode,
 
 		if (el->l_tree_depth) {
 			ret = ocfs2_error(inode->i_sb,
+<<<<<<< HEAD
 					  "Inode %llu has non zero tree depth in xattr tree block %llu\n",
+=======
+					  "Inode %lu has non zero tree depth in xattr tree block %llu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  inode->i_ino,
 					  (unsigned long long)eb_bh->b_blocknr);
 			goto out;
@@ -3758,7 +3767,11 @@ static int ocfs2_xattr_get_rec(struct inode *inode,
 	}
 
 	if (!e_blkno) {
+<<<<<<< HEAD
 		ret = ocfs2_error(inode->i_sb, "Inode %llu has bad extent record (%u, %u, 0) in xattr\n",
+=======
+		ret = ocfs2_error(inode->i_sb, "Inode %lu has bad extent record (%u, %u, 0) in xattr\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  inode->i_ino,
 				  le32_to_cpu(rec->e_cpos),
 				  ocfs2_rec_clusters(el, rec));

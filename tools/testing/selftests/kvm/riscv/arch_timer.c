@@ -17,9 +17,15 @@ static int timer_irq = IRQ_S_TIMER;
 
 static void guest_irq_handler(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	u64 xcnt, xcnt_diff_us, cmp;
 	unsigned int intid = regs->cause & ~CAUSE_IRQ_FLAG;
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint64_t xcnt, xcnt_diff_us, cmp;
+	unsigned int intid = regs->cause & ~CAUSE_IRQ_FLAG;
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	timer_irq_disable();
@@ -40,7 +46,11 @@ static void guest_irq_handler(struct pt_regs *regs)
 
 static void guest_run(struct test_vcpu_shared_data *shared_data)
 {
+<<<<<<< HEAD
 	u32 irq_iter, config_iter;
+=======
+	uint32_t irq_iter, config_iter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	shared_data->nr_iter = 0;
 	shared_data->guest_stage = 0;
@@ -66,7 +76,11 @@ static void guest_run(struct test_vcpu_shared_data *shared_data)
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	timer_irq_disable();

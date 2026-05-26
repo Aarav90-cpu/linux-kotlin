@@ -14,6 +14,7 @@
 #include <linux/pci-epf.h>
 #include <linux/msi.h>
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/sizes.h>
 
 #include "dw-edma-core.h"
@@ -43,6 +44,16 @@
 #define DW_PCIE_XILINX_MDB_LL_SIZE		0x800
 #define DW_PCIE_XILINX_MDB_DT_OFF_GAP		0x100000
 #define DW_PCIE_XILINX_MDB_DT_SIZE		0x800
+=======
+
+#include "dw-edma-core.h"
+
+#define DW_PCIE_VSEC_DMA_ID			0x6
+#define DW_PCIE_VSEC_DMA_BAR			GENMASK(10, 8)
+#define DW_PCIE_VSEC_DMA_MAP			GENMASK(2, 0)
+#define DW_PCIE_VSEC_DMA_WR_CH			GENMASK(9, 0)
+#define DW_PCIE_VSEC_DMA_RD_CH			GENMASK(25, 16)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DW_BLOCK(a, b, c) \
 	{ \
@@ -71,7 +82,10 @@ struct dw_edma_pcie_data {
 	u8				irqs;
 	u16				wr_ch_cnt;
 	u16				rd_ch_cnt;
+<<<<<<< HEAD
 	u64				devmem_phys_off;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct dw_edma_pcie_data snps_edda_data = {
@@ -112,6 +126,7 @@ static const struct dw_edma_pcie_data snps_edda_data = {
 	.rd_ch_cnt			= 2,
 };
 
+<<<<<<< HEAD
 static const struct dw_edma_pcie_data xilinx_mdb_data = {
 	/* MDB registers location */
 	.rg.bar				= BAR_0,
@@ -170,6 +185,8 @@ static void dw_edma_set_chan_region_offset(struct dw_edma_pcie_data *pdata,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dw_edma_pcie_irq_vector(struct device *dev, unsigned int nr)
 {
 	return pci_irq_vector(to_pci_dev(dev), nr);
@@ -194,15 +211,24 @@ static const struct dw_edma_plat_ops dw_edma_pcie_plat_ops = {
 	.pci_address = dw_edma_pcie_address,
 };
 
+<<<<<<< HEAD
 static void dw_edma_pcie_get_synopsys_dma_data(struct pci_dev *pdev,
 					       struct dw_edma_pcie_data *pdata)
+=======
+static void dw_edma_pcie_get_vsec_dma_data(struct pci_dev *pdev,
+					   struct dw_edma_pcie_data *pdata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 val, map;
 	u16 vsec;
 	u64 off;
 
 	vsec = pci_find_vsec_capability(pdev, PCI_VENDOR_ID_SYNOPSYS,
+<<<<<<< HEAD
 					DW_PCIE_SYNOPSYS_VSEC_DMA_ID);
+=======
+					DW_PCIE_VSEC_DMA_ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vsec)
 		return;
 
@@ -211,9 +237,15 @@ static void dw_edma_pcie_get_synopsys_dma_data(struct pci_dev *pdev,
 	    PCI_VNDR_HEADER_LEN(val) != 0x18)
 		return;
 
+<<<<<<< HEAD
 	pci_dbg(pdev, "Detected Synopsys PCIe Vendor-Specific Extended Capability DMA\n");
 	pci_read_config_dword(pdev, vsec + 0x8, &val);
 	map = FIELD_GET(DW_PCIE_SYNOPSYS_VSEC_DMA_MAP, val);
+=======
+	pci_dbg(pdev, "Detected PCIe Vendor-Specific Extended Capability DMA\n");
+	pci_read_config_dword(pdev, vsec + 0x8, &val);
+	map = FIELD_GET(DW_PCIE_VSEC_DMA_MAP, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (map != EDMA_MF_EDMA_LEGACY &&
 	    map != EDMA_MF_EDMA_UNROLL &&
 	    map != EDMA_MF_HDMA_COMPAT &&
@@ -221,6 +253,7 @@ static void dw_edma_pcie_get_synopsys_dma_data(struct pci_dev *pdev,
 		return;
 
 	pdata->mf = map;
+<<<<<<< HEAD
 	pdata->rg.bar = FIELD_GET(DW_PCIE_SYNOPSYS_VSEC_DMA_BAR, val);
 
 	pci_read_config_dword(pdev, vsec + 0xc, &val);
@@ -228,6 +261,15 @@ static void dw_edma_pcie_get_synopsys_dma_data(struct pci_dev *pdev,
 				 FIELD_GET(DW_PCIE_SYNOPSYS_VSEC_DMA_WR_CH, val));
 	pdata->rd_ch_cnt = min_t(u16, pdata->rd_ch_cnt,
 				 FIELD_GET(DW_PCIE_SYNOPSYS_VSEC_DMA_RD_CH, val));
+=======
+	pdata->rg.bar = FIELD_GET(DW_PCIE_VSEC_DMA_BAR, val);
+
+	pci_read_config_dword(pdev, vsec + 0xc, &val);
+	pdata->wr_ch_cnt = min_t(u16, pdata->wr_ch_cnt,
+				 FIELD_GET(DW_PCIE_VSEC_DMA_WR_CH, val));
+	pdata->rd_ch_cnt = min_t(u16, pdata->rd_ch_cnt,
+				 FIELD_GET(DW_PCIE_VSEC_DMA_RD_CH, val));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pci_read_config_dword(pdev, vsec + 0x14, &val);
 	off = val;
@@ -237,6 +279,7 @@ static void dw_edma_pcie_get_synopsys_dma_data(struct pci_dev *pdev,
 	pdata->rg.off = off;
 }
 
+<<<<<<< HEAD
 static void dw_edma_pcie_get_xilinx_dma_data(struct pci_dev *pdev,
 					     struct dw_edma_pcie_data *pdata)
 {
@@ -304,6 +347,8 @@ static u64 dw_edma_get_phys_addr(struct pci_dev *pdev,
 	return pci_bus_address(pdev, bar);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dw_edma_pcie_probe(struct pci_dev *pdev,
 			      const struct pci_device_id *pid)
 {
@@ -312,7 +357,10 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 	struct dw_edma_chip *chip;
 	int err, nr_irqs;
 	int i, mask;
+<<<<<<< HEAD
 	bool non_ll = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct dw_edma_pcie_data *vsec_data __free(kfree) =
 		kmalloc_obj(*vsec_data);
@@ -332,6 +380,7 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 	 * Tries to find if exists a PCIe Vendor-Specific Extended Capability
 	 * for the DMA, if one exists, then reconfigures it.
 	 */
+<<<<<<< HEAD
 	dw_edma_pcie_get_synopsys_dma_data(pdev, vsec_data);
 
 	if (pdev->vendor == PCI_VENDOR_ID_XILINX) {
@@ -358,6 +407,9 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 						       DW_PCIE_XILINX_MDB_DT_OFF_GAP,
 						       DW_PCIE_XILINX_MDB_DT_SIZE);
 	}
+=======
+	dw_edma_pcie_get_vsec_dma_data(pdev, vsec_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Mapping PCI BAR regions */
 	mask = BIT(vsec_data->rg.bar);
@@ -404,7 +456,10 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 	chip->mf = vsec_data->mf;
 	chip->nr_irqs = nr_irqs;
 	chip->ops = &dw_edma_pcie_plat_ops;
+<<<<<<< HEAD
 	chip->cfg_non_ll = non_ll;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	chip->ll_wr_cnt = vsec_data->wr_ch_cnt;
 	chip->ll_rd_cnt = vsec_data->rd_ch_cnt;
@@ -413,7 +468,11 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 	if (!chip->reg_base)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	for (i = 0; i < chip->ll_wr_cnt && !non_ll; i++) {
+=======
+	for (i = 0; i < chip->ll_wr_cnt; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct dw_edma_region *ll_region = &chip->ll_region_wr[i];
 		struct dw_edma_region *dt_region = &chip->dt_region_wr[i];
 		struct dw_edma_block *ll_block = &vsec_data->ll_wr[i];
@@ -424,8 +483,12 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 			return -ENOMEM;
 
 		ll_region->vaddr.io += ll_block->off;
+<<<<<<< HEAD
 		ll_region->paddr = dw_edma_get_phys_addr(pdev, vsec_data,
 							 ll_block->bar);
+=======
+		ll_region->paddr = pci_bus_address(pdev, ll_block->bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ll_region->paddr += ll_block->off;
 		ll_region->sz = ll_block->sz;
 
@@ -434,13 +497,21 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 			return -ENOMEM;
 
 		dt_region->vaddr.io += dt_block->off;
+<<<<<<< HEAD
 		dt_region->paddr = dw_edma_get_phys_addr(pdev, vsec_data,
 							 dt_block->bar);
+=======
+		dt_region->paddr = pci_bus_address(pdev, dt_block->bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dt_region->paddr += dt_block->off;
 		dt_region->sz = dt_block->sz;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < chip->ll_rd_cnt && !non_ll; i++) {
+=======
+	for (i = 0; i < chip->ll_rd_cnt; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct dw_edma_region *ll_region = &chip->ll_region_rd[i];
 		struct dw_edma_region *dt_region = &chip->dt_region_rd[i];
 		struct dw_edma_block *ll_block = &vsec_data->ll_rd[i];
@@ -451,8 +522,12 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 			return -ENOMEM;
 
 		ll_region->vaddr.io += ll_block->off;
+<<<<<<< HEAD
 		ll_region->paddr = dw_edma_get_phys_addr(pdev, vsec_data,
 							 ll_block->bar);
+=======
+		ll_region->paddr = pci_bus_address(pdev, ll_block->bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ll_region->paddr += ll_block->off;
 		ll_region->sz = ll_block->sz;
 
@@ -461,8 +536,12 @@ static int dw_edma_pcie_probe(struct pci_dev *pdev,
 			return -ENOMEM;
 
 		dt_region->vaddr.io += dt_block->off;
+<<<<<<< HEAD
 		dt_region->paddr = dw_edma_get_phys_addr(pdev, vsec_data,
 							 dt_block->bar);
+=======
+		dt_region->paddr = pci_bus_address(pdev, dt_block->bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dt_region->paddr += dt_block->off;
 		dt_region->sz = dt_block->sz;
 	}
@@ -545,8 +624,11 @@ static void dw_edma_pcie_remove(struct pci_dev *pdev)
 
 static const struct pci_device_id dw_edma_pcie_id_table[] = {
 	{ PCI_DEVICE_DATA(SYNOPSYS, EDDA, &snps_edda_data) },
+<<<<<<< HEAD
 	{ PCI_VDEVICE(XILINX, PCI_DEVICE_ID_XILINX_B054),
 	  (kernel_ulong_t)&xilinx_mdb_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(pci, dw_edma_pcie_id_table);

@@ -57,7 +57,10 @@
 			#size-cells = <1>;
 			reg = <0x02200000 0x100000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			dcp: crypto@2280000 {
 				compatible = "fsl,imx6ull-dcp", "fsl,imx28-dcp";

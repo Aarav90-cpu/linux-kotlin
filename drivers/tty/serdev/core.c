@@ -12,7 +12,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_graph.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/of_device.h>
 #include <linux/pm_domain.h>
 #include <linux/pm_runtime.h>
@@ -515,6 +518,7 @@ err_free:
 }
 EXPORT_SYMBOL_GPL(serdev_controller_alloc);
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 /**
  * of_find_serdev_controller_by_node() - Find the serdev controller associated
@@ -534,6 +538,8 @@ struct serdev_controller *of_find_serdev_controller_by_node(struct device_node *
 EXPORT_SYMBOL_GPL(of_find_serdev_controller_by_node);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int of_serdev_register_devices(struct serdev_controller *ctrl)
 {
 	struct device_node *node;
@@ -562,6 +568,7 @@ static int of_serdev_register_devices(struct serdev_controller *ctrl)
 		} else
 			found = true;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * When the serdev controller is connected to an external connector like
@@ -569,6 +576,9 @@ static int of_serdev_register_devices(struct serdev_controller *ctrl)
 	 * connector driver.
 	 */
 	if (!found && !of_graph_is_present(dev_of_node(&ctrl->dev)))
+=======
+	if (!found)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	return 0;

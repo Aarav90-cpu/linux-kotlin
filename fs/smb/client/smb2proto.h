@@ -14,6 +14,10 @@
 #include <linux/key-type.h>
 #include "cached_dir.h"
 
+<<<<<<< HEAD
+=======
+struct statfs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct smb_rqst;
 
 /*
@@ -23,12 +27,15 @@ struct smb_rqst;
  */
 int map_smb2_to_linux_error(char *buf, bool log_err);
 int smb2_init_maperror(void);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SMB_KUNIT_TESTS)
 const struct status_to_posix_error *smb2_get_err_map_test(__u32 smb2_status);
 extern const struct status_to_posix_error *smb2_error_map_table_test;
 extern unsigned int smb2_error_map_num;
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smb2_check_message(char *buf, unsigned int pdu_len, unsigned int len,
 		       struct TCP_Server_Info *server);
 unsigned int smb2_calc_size(void *buf);
@@ -257,6 +264,10 @@ int smb2_validate_and_copy_iov(unsigned int offset, unsigned int buffer_length,
 			       char *data);
 void smb2_copy_fs_info_to_kstatfs(struct smb2_fs_full_size_info *pfs_inf,
 				  struct kstatfs *kst);
+<<<<<<< HEAD
+=======
+int smb3_crypto_shash_allocate(struct TCP_Server_Info *server);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void smb311_update_preauth_hash(struct cifs_ses *ses,
 				struct TCP_Server_Info *server,
 				struct kvec *iov, int nvec);

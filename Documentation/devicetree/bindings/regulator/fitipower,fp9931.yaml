@@ -66,7 +66,10 @@ properties:
 required:
   - compatible
   - reg
+<<<<<<< HEAD
   - vin-supply
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - pg-gpios
   - enable-gpios
 

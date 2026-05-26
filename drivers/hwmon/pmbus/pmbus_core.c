@@ -37,7 +37,12 @@
  * The type of operation used for picking the delay between
  * successive pmbus operations.
  */
+<<<<<<< HEAD
 /* PMBUS_OP_WRITE and PMBUS_OP_PAGE_CHANGE are defined in pmbus.h */
+=======
+#define PMBUS_OP_WRITE		BIT(0)
+#define PMBUS_OP_PAGE_CHANGE	BIT(1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int wp = -1;
 module_param(wp, int, 0444);
@@ -178,7 +183,11 @@ void pmbus_set_update(struct i2c_client *client, u8 reg, bool update)
 EXPORT_SYMBOL_NS_GPL(pmbus_set_update, "PMBUS");
 
 /* Some chips need a delay between accesses. */
+<<<<<<< HEAD
 void pmbus_wait(struct i2c_client *client)
+=======
+static void pmbus_wait(struct i2c_client *client)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
 	s64 delay = ktime_us_delta(data->next_access_backoff, ktime_get());
@@ -186,10 +195,16 @@ void pmbus_wait(struct i2c_client *client)
 	if (delay > 0)
 		fsleep(delay);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_NS_GPL(pmbus_wait, "PMBUS");
 
 /* Sets the last operation timestamp for pmbus_wait */
 void pmbus_update_ts(struct i2c_client *client, int op)
+=======
+
+/* Sets the last operation timestamp for pmbus_wait */
+static void pmbus_update_ts(struct i2c_client *client, int op)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
 	const struct pmbus_driver_info *info = data->info;
@@ -203,7 +218,10 @@ void pmbus_update_ts(struct i2c_client *client, int op)
 	if (delay > 0)
 		data->next_access_backoff = ktime_add_us(ktime_get(), delay);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_NS_GPL(pmbus_update_ts, "PMBUS");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int pmbus_set_page(struct i2c_client *client, int page, int phase)
 {
@@ -892,10 +910,13 @@ static s64 pmbus_reg2data_vid(struct pmbus_data *data,
 		if (val >= 0x0 && val <= 0xd8)
 			rv = DIV_ROUND_CLOSEST(155000 - val * 625, 100);
 		break;
+<<<<<<< HEAD
 	case nvidia195mv:
 		if (val >= 0x01)
 			rv = 195 + (val - 1) * 5;  /* VID step is 5mv */
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return rv;
 }
@@ -1161,11 +1182,20 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
 	int ret, status;
 	u16 regval;
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	status = pmbus_get_status(client, page, reg);
 	if (status < 0)
 		return status;
+=======
+	mutex_lock(&data->update_lock);
+	status = pmbus_get_status(client, page, reg);
+	if (status < 0) {
+		ret = status;
+		goto unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (s1)
 		pmbus_update_sensor_data(client, s1);
@@ -1177,7 +1207,11 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
 		if (data->revision >= PMBUS_REV_12) {
 			ret = _pmbus_write_byte_data(client, page, reg, regval);
 			if (ret)
+<<<<<<< HEAD
 				return ret;
+=======
+				goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			pmbus_clear_fault_page(client, page);
 		}
@@ -1185,10 +1219,21 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
 	if (s1 && s2) {
 		s64 v1, v2;
 
+<<<<<<< HEAD
 		if (s1->data < 0)
 			return s1->data;
 		if (s2->data < 0)
 			return s2->data;
+=======
+		if (s1->data < 0) {
+			ret = s1->data;
+			goto unlock;
+		}
+		if (s2->data < 0) {
+			ret = s2->data;
+			goto unlock;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		v1 = pmbus_reg2data(data, s1);
 		v2 = pmbus_reg2data(data, s2);
@@ -1196,6 +1241,11 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
 	} else {
 		ret = !!regval;
 	}
+<<<<<<< HEAD
+=======
+unlock:
+	mutex_unlock(&data->update_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1225,6 +1275,7 @@ static ssize_t pmbus_show_sensor(struct device *dev,
 	struct i2c_client *client = to_i2c_client(dev->parent);
 	struct pmbus_sensor *sensor = to_pmbus_sensor(devattr);
 	struct pmbus_data *data = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	s64 val;
 
 	scoped_guard(pmbus_lock, client) {
@@ -1235,6 +1286,18 @@ static ssize_t pmbus_show_sensor(struct device *dev,
 	}
 
 	return sysfs_emit(buf, "%lld\n", val);
+=======
+	ssize_t ret;
+
+	mutex_lock(&data->update_lock);
+	pmbus_update_sensor_data(client, sensor);
+	if (sensor->data < 0)
+		ret = sensor->data;
+	else
+		ret = sysfs_emit(buf, "%lld\n", pmbus_reg2data(data, sensor));
+	mutex_unlock(&data->update_lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t pmbus_set_sensor(struct device *dev,
@@ -1244,6 +1307,10 @@ static ssize_t pmbus_set_sensor(struct device *dev,
 	struct i2c_client *client = to_i2c_client(dev->parent);
 	struct pmbus_data *data = i2c_get_clientdata(client);
 	struct pmbus_sensor *sensor = to_pmbus_sensor(devattr);
+<<<<<<< HEAD
+=======
+	ssize_t rv = count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s64 val;
 	int ret;
 	u16 regval;
@@ -1251,6 +1318,7 @@ static ssize_t pmbus_set_sensor(struct device *dev,
 	if (kstrtos64(buf, 10, &val) < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	regval = pmbus_data2reg(data, sensor, val);
@@ -1260,6 +1328,17 @@ static ssize_t pmbus_set_sensor(struct device *dev,
 
 	sensor->data = -ENODATA;
 	return count;
+=======
+	mutex_lock(&data->update_lock);
+	regval = pmbus_data2reg(data, sensor, val);
+	ret = _pmbus_write_word_data(client, sensor->page, sensor->reg, regval);
+	if (ret < 0)
+		rv = ret;
+	else
+		sensor->data = -ENODATA;
+	mutex_unlock(&data->update_lock);
+	return rv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t pmbus_show_label(struct device *dev,
@@ -1361,7 +1440,11 @@ static int pmbus_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
 	struct pmbus_data *pmbus_data = tdata->pmbus_data;
 	struct i2c_client *client = to_i2c_client(pmbus_data->dev);
 	struct device *dev = pmbus_data->hwmon_dev;
+<<<<<<< HEAD
 	int _temp;
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!dev) {
 		/* May not even get to hwmon yet */
@@ -1369,6 +1452,7 @@ static int pmbus_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	scoped_guard(pmbus_lock, client) {
 		pmbus_update_sensor_data(client, sensor);
 		if (sensor->data < 0)
@@ -1378,6 +1462,17 @@ static int pmbus_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
 
 	*temp = _temp;
 	return 0;
+=======
+	mutex_lock(&pmbus_data->update_lock);
+	pmbus_update_sensor_data(client, sensor);
+	if (sensor->data < 0)
+		ret = sensor->data;
+	else
+		*temp = (int)pmbus_reg2data(pmbus_data, sensor);
+	mutex_unlock(&pmbus_data->update_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct thermal_zone_device_ops pmbus_thermal_ops = {
@@ -2409,12 +2504,22 @@ static ssize_t pmbus_show_samples(struct device *dev,
 	int val;
 	struct i2c_client *client = to_i2c_client(dev->parent);
 	struct pmbus_samples_reg *reg = to_samples_reg(devattr);
+<<<<<<< HEAD
 
 	scoped_guard(pmbus_lock, client) {
 		val = _pmbus_read_word_data(client, reg->page, 0xff, reg->attr->reg);
 		if (val < 0)
 			return val;
 	}
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+
+	mutex_lock(&data->update_lock);
+	val = _pmbus_read_word_data(client, reg->page, 0xff, reg->attr->reg);
+	mutex_unlock(&data->update_lock);
+	if (val < 0)
+		return val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return sysfs_emit(buf, "%d\n", val);
 }
@@ -2427,13 +2532,23 @@ static ssize_t pmbus_set_samples(struct device *dev,
 	long val;
 	struct i2c_client *client = to_i2c_client(dev->parent);
 	struct pmbus_samples_reg *reg = to_samples_reg(devattr);
+<<<<<<< HEAD
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (kstrtol(buf, 0, &val) < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	ret = _pmbus_write_word_data(client, reg->page, reg->attr->reg, val);
+=======
+	mutex_lock(&data->update_lock);
+	ret = _pmbus_write_word_data(client, reg->page, reg->attr->reg, val);
+	mutex_unlock(&data->update_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret ? : count;
 }
@@ -2945,9 +3060,20 @@ static int _pmbus_is_enabled(struct i2c_client *client, u8 page)
 
 static int __maybe_unused pmbus_is_enabled(struct i2c_client *client, u8 page)
 {
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	return _pmbus_is_enabled(client, page);
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+	int ret;
+
+	mutex_lock(&data->update_lock);
+	ret = _pmbus_is_enabled(client, page);
+	mutex_unlock(&data->update_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define to_dev_attr(_dev_attr) \
@@ -2977,6 +3103,7 @@ static void pmbus_notify(struct pmbus_data *data, int page, int reg, int flags)
 	}
 }
 
+<<<<<<< HEAD
 static int _pmbus_get_flags(struct i2c_client *client, u8 page, unsigned int *flags,
 			    unsigned int *event, bool notify)
 {
@@ -2984,6 +3111,16 @@ static int _pmbus_get_flags(struct i2c_client *client, u8 page, unsigned int *fl
 	int i, status;
 	const struct pmbus_status_category *cat;
 	const struct pmbus_status_assoc *bit;
+=======
+static int _pmbus_get_flags(struct pmbus_data *data, u8 page, unsigned int *flags,
+			    unsigned int *event, bool notify)
+{
+	int i, status;
+	const struct pmbus_status_category *cat;
+	const struct pmbus_status_assoc *bit;
+	struct device *dev = data->dev;
+	struct i2c_client *client = to_i2c_client(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int func = data->info->func[page];
 
 	*flags = 0;
@@ -3059,12 +3196,25 @@ static int _pmbus_get_flags(struct i2c_client *client, u8 page, unsigned int *fl
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused pmbus_get_flags(struct i2c_client *client, u8 page, unsigned int *flags,
 					  unsigned int *event, bool notify)
 {
 	guard(pmbus_lock)(client);
 
 	return _pmbus_get_flags(client, page, flags, event, notify);
+=======
+static int __maybe_unused pmbus_get_flags(struct pmbus_data *data, u8 page, unsigned int *flags,
+					  unsigned int *event, bool notify)
+{
+	int ret;
+
+	mutex_lock(&data->update_lock);
+	ret = _pmbus_get_flags(data, page, flags, event, notify);
+	mutex_unlock(&data->update_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #if IS_ENABLED(CONFIG_REGULATOR)
@@ -3080,6 +3230,7 @@ static int _pmbus_regulator_on_off(struct regulator_dev *rdev, bool enable)
 {
 	struct device *dev = rdev_get_dev(rdev);
 	struct i2c_client *client = to_i2c_client(dev->parent);
+<<<<<<< HEAD
 	u8 page = rdev_get_id(rdev);
 
 	guard(pmbus_lock)(client);
@@ -3087,6 +3238,19 @@ static int _pmbus_regulator_on_off(struct regulator_dev *rdev, bool enable)
 	return pmbus_update_byte_data(client, page, PMBUS_OPERATION,
 				      PB_OPERATION_CONTROL_ON,
 				      enable ? PB_OPERATION_CONTROL_ON : 0);
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+	u8 page = rdev_get_id(rdev);
+	int ret;
+
+	mutex_lock(&data->update_lock);
+	ret = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
+				     PB_OPERATION_CONTROL_ON,
+				     enable ? PB_OPERATION_CONTROL_ON : 0);
+	mutex_unlock(&data->update_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pmbus_regulator_enable(struct regulator_dev *rdev)
@@ -3103,19 +3267,31 @@ static int pmbus_regulator_get_error_flags(struct regulator_dev *rdev, unsigned 
 {
 	struct device *dev = rdev_get_dev(rdev);
 	struct i2c_client *client = to_i2c_client(dev->parent);
+<<<<<<< HEAD
 	int event;
 
 	return pmbus_get_flags(client, rdev_get_id(rdev), flags, &event, false);
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+	int event;
+
+	return pmbus_get_flags(data, rdev_get_id(rdev), flags, &event, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pmbus_regulator_get_status(struct regulator_dev *rdev)
 {
 	struct device *dev = rdev_get_dev(rdev);
 	struct i2c_client *client = to_i2c_client(dev->parent);
+<<<<<<< HEAD
+=======
+	struct pmbus_data *data = i2c_get_clientdata(client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 page = rdev_get_id(rdev);
 	int status, ret;
 	int event;
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	status = pmbus_get_status(client, page, PMBUS_STATUS_WORD);
@@ -3138,6 +3314,41 @@ static int pmbus_regulator_get_status(struct regulator_dev *rdev)
 		return REGULATOR_STATUS_ERROR;
 
 	return REGULATOR_STATUS_UNDEFINED;
+=======
+	mutex_lock(&data->update_lock);
+	status = pmbus_get_status(client, page, PMBUS_STATUS_WORD);
+	if (status < 0) {
+		ret = status;
+		goto unlock;
+	}
+
+	if (status & PB_STATUS_OFF) {
+		ret = REGULATOR_STATUS_OFF;
+		goto unlock;
+	}
+
+	/* If regulator is ON & reports power good then return ON */
+	if (!(status & PB_STATUS_POWER_GOOD_N)) {
+		ret = REGULATOR_STATUS_ON;
+		goto unlock;
+	}
+
+	ret = _pmbus_get_flags(data, rdev_get_id(rdev), &status, &event, false);
+	if (ret)
+		goto unlock;
+
+	if (status & (REGULATOR_ERROR_UNDER_VOLTAGE | REGULATOR_ERROR_OVER_CURRENT |
+	   REGULATOR_ERROR_REGULATION_OUT | REGULATOR_ERROR_FAIL | REGULATOR_ERROR_OVER_TEMP)) {
+		ret = REGULATOR_STATUS_ERROR;
+		goto unlock;
+	}
+
+	ret = REGULATOR_STATUS_UNDEFINED;
+
+unlock:
+	mutex_unlock(&data->update_lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pmbus_regulator_get_low_margin(struct i2c_client *client, int page)
@@ -3202,6 +3413,7 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
 		.class = PSC_VOLTAGE_OUT,
 		.convert = true,
 	};
+<<<<<<< HEAD
 	int voltage;
 
 	scoped_guard(pmbus_lock, client) {
@@ -3212,6 +3424,21 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
 	}
 
 	return voltage * 1000; /* unit is uV */
+=======
+	int ret;
+
+	mutex_lock(&data->update_lock);
+	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
+	if (s.data < 0) {
+		ret = s.data;
+		goto unlock;
+	}
+
+	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
+unlock:
+	mutex_unlock(&data->update_lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
@@ -3228,6 +3455,7 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
 	};
 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
 	int low, high;
+<<<<<<< HEAD
 
 	*selector = 0;
 
@@ -3240,6 +3468,24 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
 	high = pmbus_regulator_get_high_margin(client, s.page);
 	if (high < 0)
 		return high;
+=======
+	int ret;
+
+	*selector = 0;
+
+	mutex_lock(&data->update_lock);
+	low = pmbus_regulator_get_low_margin(client, s.page);
+	if (low < 0) {
+		ret = low;
+		goto unlock;
+	}
+
+	high = pmbus_regulator_get_high_margin(client, s.page);
+	if (high < 0) {
+		ret = high;
+		goto unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Make sure we are within margins */
 	if (low > val)
@@ -3249,7 +3495,14 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
 
 	val = pmbus_data2reg(data, &s, val);
 
+<<<<<<< HEAD
 	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
+=======
+	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
+unlock:
+	mutex_unlock(&data->update_lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
@@ -3259,6 +3512,10 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
 	struct i2c_client *client = to_i2c_client(dev->parent);
 	struct pmbus_data *data = i2c_get_clientdata(client);
 	int val, low, high;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (data->flags & PMBUS_VOUT_PROTECTED)
 		return 0;
@@ -3271,6 +3528,7 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
@@ -3285,6 +3543,31 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
 		return val * 1000; /* unit is uV */
 
 	return 0;
+=======
+	mutex_lock(&data->update_lock);
+
+	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
+	if (low < 0) {
+		ret = low;
+		goto unlock;
+	}
+
+	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
+	if (high < 0) {
+		ret = high;
+		goto unlock;
+	}
+
+	if (val >= low && val <= high) {
+		ret = val * 1000; /* unit is uV */
+		goto unlock;
+	}
+
+	ret = 0;
+unlock:
+	mutex_unlock(&data->update_lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 const struct regulator_ops pmbus_regulator_ops = {
@@ -3420,16 +3703,26 @@ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
 	struct i2c_client *client = to_i2c_client(data->dev);
 	int i, status, event;
 
+<<<<<<< HEAD
 	guard(pmbus_lock)(client);
 
 	for (i = 0; i < data->info->pages; i++) {
 		_pmbus_get_flags(client, i, &status, &event, true);
+=======
+	mutex_lock(&data->update_lock);
+	for (i = 0; i < data->info->pages; i++) {
+		_pmbus_get_flags(data, i, &status, &event, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (event)
 			pmbus_regulator_notify(data, i, event);
 	}
 
 	pmbus_clear_faults(client);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&data->update_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IRQ_HANDLED;
 }
@@ -3485,6 +3778,7 @@ static struct dentry *pmbus_debugfs_dir;	/* pmbus debugfs directory */
 
 static int pmbus_debugfs_get(void *data, u64 *val)
 {
+<<<<<<< HEAD
 	struct pmbus_debugfs_entry *entry = data;
 	struct i2c_client *client = entry->client;
 	int rc;
@@ -3492,6 +3786,17 @@ static int pmbus_debugfs_get(void *data, u64 *val)
 	guard(pmbus_lock)(client);
 
 	rc = _pmbus_read_byte_data(client, entry->page, entry->reg);
+=======
+	int rc;
+	struct pmbus_debugfs_entry *entry = data;
+	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+
+	rc = mutex_lock_interruptible(&pdata->update_lock);
+	if (rc)
+		return rc;
+	rc = _pmbus_read_byte_data(entry->client, entry->page, entry->reg);
+	mutex_unlock(&pdata->update_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc < 0)
 		return rc;
 
@@ -3504,6 +3809,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops, pmbus_debugfs_get, NULL,
 
 static int pmbus_debugfs_get_status(void *data, u64 *val)
 {
+<<<<<<< HEAD
 	struct pmbus_debugfs_entry *entry = data;
 	struct i2c_client *client = entry->client;
 	struct pmbus_data *pdata = i2c_get_clientdata(client);
@@ -3512,6 +3818,17 @@ static int pmbus_debugfs_get_status(void *data, u64 *val)
 	guard(pmbus_lock)(client);
 
 	rc = pdata->read_status(client, entry->page);
+=======
+	int rc;
+	struct pmbus_debugfs_entry *entry = data;
+	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+
+	rc = mutex_lock_interruptible(&pdata->update_lock);
+	if (rc)
+		return rc;
+	rc = pdata->read_status(entry->client, entry->page);
+	mutex_unlock(&pdata->update_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc < 0)
 		return rc;
 
@@ -3527,6 +3844,7 @@ static ssize_t pmbus_debugfs_block_read(struct file *file, char __user *buf,
 {
 	int rc;
 	struct pmbus_debugfs_entry *entry = file->private_data;
+<<<<<<< HEAD
 	struct i2c_client *client = entry->client;
 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
 
@@ -3535,6 +3853,19 @@ static ssize_t pmbus_debugfs_block_read(struct file *file, char __user *buf,
 		if (rc < 0)
 			return rc;
 	}
+=======
+	struct pmbus_data *pdata = i2c_get_clientdata(entry->client);
+	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
+
+	rc = mutex_lock_interruptible(&pdata->update_lock);
+	if (rc)
+		return rc;
+	rc = pmbus_read_block_data(entry->client, entry->page, entry->reg,
+				   data);
+	mutex_unlock(&pdata->update_lock);
+	if (rc < 0)
+		return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Add newline at the end of a read data */
 	data[rc] = '\n';
@@ -3813,6 +4144,7 @@ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_get_debugfs_dir, "PMBUS");
 
+<<<<<<< HEAD
 void pmbus_lock(struct i2c_client *client)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);
@@ -3821,6 +4153,8 @@ void pmbus_lock(struct i2c_client *client)
 }
 EXPORT_SYMBOL_NS_GPL(pmbus_lock, "PMBUS");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int pmbus_lock_interruptible(struct i2c_client *client)
 {
 	struct pmbus_data *data = i2c_get_clientdata(client);

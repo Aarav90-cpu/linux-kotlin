@@ -234,6 +234,7 @@ static int aca_log_bad_bank(struct ras_core_context *ras_core,
 	    bank_ecc->de_count) {
 		struct ras_bank_ecc  ras_ecc = {0};
 
+<<<<<<< HEAD
 		if (ras_fw_eeprom_supported(ras_core)) {
 			ret = ras_fw_eeprom_update_record(ras_core, &ras_ecc);
 			if (!ret) {
@@ -255,6 +256,18 @@ static int aca_log_bad_bank(struct ras_core_context *ras_core,
 			else
 				ras_umc_log_bad_bank(ras_core, &ras_ecc);
 		}
+=======
+		ras_ecc.nps = ras_core_get_curr_nps_mode(ras_core);
+		ras_ecc.addr = bank_ecc->bank_info.addr;
+		ras_ecc.ipid = bank_ecc->bank_info.ipid;
+		ras_ecc.status = bank_ecc->bank_info.status;
+		ras_ecc.seq_no = bank->seq_no;
+
+		if (ras_core_gpu_in_reset(ras_core))
+			ras_umc_log_bad_bank_pending(ras_core, &ras_ecc);
+		else
+			ras_umc_log_bad_bank(ras_core, &ras_ecc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	aca_report_ecc_info(ras_core,

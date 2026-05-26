@@ -32,7 +32,10 @@ properties:
       - enum:
           - airoha,en7523-scu
           - airoha,en7581-scu
+<<<<<<< HEAD
           - econet,en751221-scu
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     items:
@@ -68,9 +71,13 @@ allOf:
   - if:
       properties:
         compatible:
+<<<<<<< HEAD
           enum:
             - airoha,en7581-scu
             - econet,en751221-scu
+=======
+          const: airoha,en7581-scu
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         reg:
@@ -101,4 +108,7 @@ examples:
               #reset-cells = <1>;
       };
     };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

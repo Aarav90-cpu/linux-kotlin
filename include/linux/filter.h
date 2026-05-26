@@ -21,6 +21,10 @@
 #include <linux/if_vlan.h>
 #include <linux/vmalloc.h>
 #include <linux/sockptr.h>
+<<<<<<< HEAD
+=======
+#include <crypto/sha1.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/u64_stats_sync.h>
 
 #include <net/sch_generic.h>
@@ -1091,6 +1095,7 @@ bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
 	return set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
 }
 
+<<<<<<< HEAD
 enum skb_drop_reason
 sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap);
 
@@ -1110,6 +1115,24 @@ sk_filter_reason(struct sock *sk, struct sk_buff *skb)
 
 struct bpf_prog *__bpf_prog_select_runtime(struct bpf_verifier_env *env, struct bpf_prog *fp,
 					   int *err);
+=======
+int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap,
+		       enum skb_drop_reason *reason);
+
+static inline int sk_filter(struct sock *sk, struct sk_buff *skb)
+{
+	enum skb_drop_reason ignore_reason;
+
+	return sk_filter_trim_cap(sk, skb, 1, &ignore_reason);
+}
+
+static inline int sk_filter_reason(struct sock *sk, struct sk_buff *skb,
+				   enum skb_drop_reason *reason)
+{
+	return sk_filter_trim_cap(sk, skb, 1, reason);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err);
 void bpf_prog_free(struct bpf_prog *fp);
 
@@ -1155,7 +1178,11 @@ u64 __bpf_call_base(u64 r1, u64 r2, u64 r3, u64 r4, u64 r5);
 	((u64 (*)(u64, u64, u64, u64, u64, const struct bpf_insn *)) \
 	 (void *)__bpf_call_base)
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog);
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bpf_jit_compile(struct bpf_prog *prog);
 bool bpf_jit_needs_zext(void);
 bool bpf_jit_inlines_helper_call(s32 imm);
@@ -1186,6 +1213,7 @@ static inline bool bpf_dump_raw_ok(const struct cred *cred)
 
 struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
 				       const struct bpf_insn *patch, u32 len);
+<<<<<<< HEAD
 
 #ifdef CONFIG_BPF_SYSCALL
 struct bpf_prog *bpf_patch_insn_data(struct bpf_verifier_env *env, u32 off,
@@ -1211,6 +1239,8 @@ static inline void bpf_restore_insn_aux_data(struct bpf_verifier_env *env,
 }
 #endif /* CONFIG_BPF_SYSCALL */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt);
 
 static inline bool xdp_return_frame_no_direct(void)
@@ -1337,6 +1367,7 @@ int bpf_jit_get_func_addr(const struct bpf_prog *prog,
 
 const char *bpf_jit_get_prog_name(struct bpf_prog *prog);
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bpf_prog *prog);
 void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
 
@@ -1345,6 +1376,11 @@ static inline bool bpf_prog_need_blind(const struct bpf_prog *prog)
 	return prog->blinding_requested && !prog->blinded;
 }
 
+=======
+struct bpf_prog *bpf_jit_blind_constants(struct bpf_prog *fp);
+void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
 				u32 pass, void *image)
 {
@@ -1483,6 +1519,7 @@ static inline void bpf_prog_kallsyms_del(struct bpf_prog *fp)
 {
 }
 
+<<<<<<< HEAD
 static inline bool bpf_prog_need_blind(const struct bpf_prog *prog)
 {
 	return false;
@@ -1497,6 +1534,8 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bp
 static inline void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other)
 {
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_BPF_JIT */
 
 void bpf_prog_kallsyms_del_all(struct bpf_prog *fp);

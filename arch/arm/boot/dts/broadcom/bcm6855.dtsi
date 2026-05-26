@@ -240,6 +240,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		i2c0: i2c@2100 {
 			compatible = "brcm,brcmper-i2c";
 			reg = <0x2100 0x60>;
@@ -249,6 +250,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		leds: led-controller@3000 {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -287,6 +290,7 @@
 			clock-names = "uartclk", "apb_pclk";
 			status = "disabled";
 		};
+<<<<<<< HEAD
 
 		i2c1: i2c@5a800 {
 			compatible = "brcm,brcmper-i2c";
@@ -296,5 +300,7 @@
 			#size-cells = <0>;
 			status = "disabled";
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

@@ -27,9 +27,12 @@
 static bool
 xt_osf_match_packet(const struct sk_buff *skb, struct xt_action_param *p)
 {
+<<<<<<< HEAD
 	if (p->fragoff)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return nf_osf_match(skb, xt_family(p), xt_hooknum(p), xt_in(p),
 			    xt_out(p), p->matchinfo, xt_net(p), nf_osf_fingers);
 }

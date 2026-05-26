@@ -343,11 +343,19 @@ static int setup_shutdown_watcher(void)
 		return err;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MAGIC_SYSRQ
 	err = register_xenbus_watch(&sysrq_watch);
 	if (err) {
 		pr_err("Failed to set sysrq watcher\n");
+<<<<<<< HEAD
 		goto err_unregister_shutdown;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 #endif
 
@@ -360,11 +368,16 @@ static int setup_shutdown_watcher(void)
 		if (err) {
 			pr_err("%s: Error %d writing %s\n", __func__,
 				err, node);
+<<<<<<< HEAD
 			goto err_remove_features;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 err_remove_features:
 	while (--idx >= 0) {
@@ -380,6 +393,8 @@ err_unregister_shutdown:
 #endif
 	unregister_xenbus_watch(&shutdown_watch);
 	return err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int shutdown_event(struct notifier_block *notifier,

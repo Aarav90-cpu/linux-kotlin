@@ -41,7 +41,11 @@ int io_ftruncate(struct io_kiocb *req, unsigned int issue_flags)
 
 	WARN_ON_ONCE(issue_flags & IO_URING_F_NONBLOCK);
 
+<<<<<<< HEAD
 	ret = do_ftruncate(req->file, ft->len, 0);
+=======
+	ret = do_ftruncate(req->file, ft->len, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	io_req_set_res(req, ret, 0);
 	return IOU_COMPLETE;

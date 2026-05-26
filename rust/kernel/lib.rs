@@ -16,17 +16,58 @@
 // Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
 // the unstable features in use.
 //
+<<<<<<< HEAD
 // Stable since Rust 1.89.0.
 #![feature(generic_arg_infer)]
 //
 // Expected to become stable.
 #![feature(arbitrary_self_types)]
 #![feature(derive_coerce_pointee)]
+=======
+// Stable since Rust 1.79.0.
+#![feature(generic_nonzero)]
+#![feature(inline_const)]
+#![feature(pointer_is_aligned)]
+#![feature(slice_ptr_len)]
+//
+// Stable since Rust 1.80.0.
+#![feature(slice_flatten)]
+//
+// Stable since Rust 1.81.0.
+#![feature(lint_reasons)]
+//
+// Stable since Rust 1.82.0.
+#![feature(raw_ref_op)]
+//
+// Stable since Rust 1.83.0.
+#![feature(const_maybe_uninit_as_mut_ptr)]
+#![feature(const_mut_refs)]
+#![feature(const_option)]
+#![feature(const_ptr_write)]
+#![feature(const_refs_to_cell)]
+//
+// Stable since Rust 1.84.0.
+#![feature(strict_provenance)]
+//
+// Expected to become stable.
+#![feature(arbitrary_self_types)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 //
 // To be determined.
 #![feature(used_with_arg)]
 //
+<<<<<<< HEAD
 // `feature(file_with_nul)` is stable since Rust 1.92.0. Before Rust 1.89.0, it did not exist, so
+=======
+// `feature(derive_coerce_pointee)` is expected to become stable. Before Rust
+// 1.84.0, it did not exist, so enable the predecessor features.
+#![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_pointee))]
+#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized))]
+#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_dyn))]
+#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+//
+// `feature(file_with_nul)` is expected to become stable. Before Rust 1.89.0, it did not exist, so
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // enable it conditionally.
 #![cfg_attr(CONFIG_RUSTC_HAS_FILE_WITH_NUL, feature(file_with_nul))]
 
@@ -49,6 +90,10 @@ pub mod bits;
 #[cfg(CONFIG_BLOCK)]
 pub mod block;
 pub mod bug;
+<<<<<<< HEAD
+=======
+#[doc(hidden)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub mod build_assert;
 pub mod clk;
 #[cfg(CONFIG_CONFIGFS_FS)]
@@ -72,15 +117,21 @@ pub mod faux;
 pub mod firmware;
 pub mod fmt;
 pub mod fs;
+<<<<<<< HEAD
 #[cfg(CONFIG_GPU_BUDDY = "y")]
 pub mod gpu;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #[cfg(CONFIG_I2C = "y")]
 pub mod i2c;
 pub mod id_pool;
 #[doc(hidden)]
 pub mod impl_flags;
 pub mod init;
+<<<<<<< HEAD
 pub mod interop;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub mod io;
 pub mod ioctl;
 pub mod iommu;
@@ -119,8 +170,15 @@ pub mod scatterlist;
 pub mod security;
 pub mod seq_file;
 pub mod sizes;
+<<<<<<< HEAD
 #[cfg(CONFIG_SOC_BUS)]
 pub mod soc;
+=======
+pub mod slice;
+#[cfg(CONFIG_SOC_BUS)]
+pub mod soc;
+mod static_assert;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #[doc(hidden)]
 pub mod std_vendor;
 pub mod str;

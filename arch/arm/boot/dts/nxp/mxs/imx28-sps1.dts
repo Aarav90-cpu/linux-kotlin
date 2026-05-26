@@ -127,7 +127,11 @@
 	flash: flash@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
+<<<<<<< HEAD
 		compatible = "everspin,mr25h256";
+=======
+		compatible = "everspin,mr25h256", "mr25h256";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spi-max-frequency = <40000000>;
 		reg = <0>;
 	};

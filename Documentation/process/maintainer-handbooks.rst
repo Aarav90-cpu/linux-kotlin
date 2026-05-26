@@ -1,5 +1,10 @@
 .. SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
+=======
+.. _maintainer_handbooks_main:
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Subsystem and maintainer tree specific development process notes
 ================================================================
 

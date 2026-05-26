@@ -11,6 +11,10 @@
 #include <linux/platform_device.h>
 #include <linux/property.h>
 
+<<<<<<< HEAD
+=======
+#define DEFAULT_PIN_NUMBER      16
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define INPUT_REG_OFFSET        0x00
 #define OUTPUT_REG_OFFSET       0x02
 #define DIRECTION_REG_OFFSET    0x04
@@ -22,6 +26,10 @@ static int ts4800_gpio_probe(struct platform_device *pdev)
 	struct gpio_generic_chip *chip;
 	void __iomem *base_addr;
 	int retval;
+<<<<<<< HEAD
+=======
+	u32 ngpios;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
 	if (!chip)
@@ -31,6 +39,15 @@ static int ts4800_gpio_probe(struct platform_device *pdev)
 	if (IS_ERR(base_addr))
 		return PTR_ERR(base_addr);
 
+<<<<<<< HEAD
+=======
+	retval = device_property_read_u32(dev, "ngpios", &ngpios);
+	if (retval == -EINVAL)
+		ngpios = DEFAULT_PIN_NUMBER;
+	else if (retval)
+		return retval;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	config = (struct gpio_generic_chip_config) {
 		.dev = dev,
 		.sz = 2,
@@ -44,6 +61,11 @@ static int ts4800_gpio_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, retval,
 				     "failed to initialize the generic GPIO chip\n");
 
+<<<<<<< HEAD
+=======
+	chip->gc.ngpio = ngpios;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return devm_gpiochip_add_data(dev, &chip->gc, NULL);
 }
 

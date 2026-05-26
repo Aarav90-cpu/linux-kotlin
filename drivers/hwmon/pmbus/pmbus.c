@@ -20,6 +20,11 @@ struct pmbus_device_info {
 	u32 flags;
 };
 
+<<<<<<< HEAD
+=======
+static const struct i2c_device_id pmbus_id[];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Find sensor groups and status registers on each page.
  */
@@ -172,7 +177,11 @@ static int pmbus_probe(struct i2c_client *client)
 	if (!info)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	device_info = (struct pmbus_device_info *)i2c_get_match_data(client);
+=======
+	device_info = (struct pmbus_device_info *)i2c_match_id(pmbus_id, client)->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (device_info->flags) {
 		pdata = devm_kzalloc(dev, sizeof(struct pmbus_platform_data),
 				     GFP_KERNEL);

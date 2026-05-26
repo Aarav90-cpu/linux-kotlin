@@ -76,7 +76,11 @@ Each struct __queue has its own locks, already.
 Other items in mlme_priv are protected by mlme_priv.lock, while items in
 xmit_priv are protected by xmit_priv.lock.
 
+<<<<<<< HEAD
 To avoid possible dead lock, any thread trying to modifying mlme_priv
+=======
+To avoid possible dead lock, any thread trying to modifiying mlme_priv
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SHALL not lock up more than one locks at a time!
 
 The only exception is that queue functions which take the __queue.lock
@@ -93,6 +97,7 @@ struct sitesurvey_ctrl {
 };
 
 struct rt_link_detect_t {
+<<<<<<< HEAD
 	u32			num_tx_ok_in_period;
 	u32			num_rx_ok_in_period;
 	u32			num_rx_unicast_ok_in_period;
@@ -107,6 +112,20 @@ struct rt_link_detect_t {
 	bool			higher_busy_tx_traffic;
 	u8			traffic_transition_count;
 	u32			low_power_transition_count;
+=======
+	u32 			NumTxOkInPeriod;
+	u32 			NumRxOkInPeriod;
+	u32 			NumRxUnicastOkInPeriod;
+	bool			bBusyTraffic;
+	bool			bTxBusyTraffic;
+	bool			bRxBusyTraffic;
+	bool			bHigherBusyTraffic; /*  For interrupt migration purpose. */
+	bool			bHigherBusyRxTraffic; /*  We may disable Tx interrupt according as Rx traffic. */
+	bool			bHigherBusyTxTraffic; /*  We may disable Tx interrupt according as Tx traffic. */
+	/* u8 TrafficBusyState; */
+	u8 TrafficTransitionCount;
+	u32 LowPowerTransitionCount;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* used for mlme_priv.roam_flags */
@@ -173,7 +192,11 @@ struct mlme_priv {
 
 	struct ht_priv htpriv;
 
+<<<<<<< HEAD
 	struct rt_link_detect_t	link_detect_info;
+=======
+	struct rt_link_detect_t	LinkDetectInfo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timer_list	dynamic_chk_timer; /* dynamic/periodic check timer */
 
 	u8 acm_mask; /*  for wmm acm mask */
@@ -362,9 +385,15 @@ extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_ne
 
 extern struct wlan_network *_rtw_find_network(struct __queue *scanned_queue, u8 *addr);
 
+<<<<<<< HEAD
 bool rtw_if_up(struct adapter *padapter);
 
 bool rtw_linked_check(struct adapter *padapter);
+=======
+extern signed int rtw_if_up(struct adapter *padapter);
+
+signed int rtw_linked_check(struct adapter *padapter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u8 *rtw_get_capability_from_ie(u8 *ie);
 u8 *rtw_get_beacon_interval_from_ie(u8 *ie);
@@ -379,7 +408,11 @@ void rtw_update_ht_cap(struct adapter *padapter, u8 *pie, uint ie_len, u8 channe
 void rtw_issue_addbareq_cmd(struct adapter *padapter, struct xmit_frame *pxmitframe);
 void rtw_append_exented_cap(struct adapter *padapter, u8 *out_ie, uint *pout_len);
 
+<<<<<<< HEAD
 bool rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork);
+=======
+int rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int is_same_network(struct wlan_bssid_ex *src, struct wlan_bssid_ex *dst, u8 feature);
 
 #define rtw_roam_flags(adapter) ((adapter)->mlmepriv.roam_flags)

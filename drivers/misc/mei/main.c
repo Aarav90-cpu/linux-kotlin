@@ -4,7 +4,10 @@
  * Intel Management Engine Interface (Intel MEI) Linux driver
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/kernel.h>
@@ -14,7 +17,10 @@
 #include <linux/errno.h>
 #include <linux/types.h>
 #include <linux/fcntl.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/poll.h>
 #include <linux/init.h>
 #include <linux/ioctl.h>
@@ -984,11 +990,16 @@ static DEVICE_ATTR_RO(trc);
 static ssize_t fw_status_show(struct device *device,
 		struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct mei_device *mdev = dev_get_drvdata(device);
+=======
+	struct mei_device *dev = dev_get_drvdata(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mei_fw_status fw_status;
 	int err, i;
 	ssize_t cnt = 0;
 
+<<<<<<< HEAD
 	if (mdev->read_fws_need_resume) {
 		err = pm_runtime_resume_and_get(mdev->parent);
 		if (err) {
@@ -1000,6 +1011,11 @@ static ssize_t fw_status_show(struct device *device,
 		err = mei_fw_status(mdev, &fw_status);
 	if (mdev->read_fws_need_resume)
 		pm_runtime_put_autosuspend(mdev->parent);
+=======
+	mutex_lock(&dev->device_lock);
+	err = mei_fw_status(dev, &fw_status);
+	mutex_unlock(&dev->device_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		dev_err(device, "read fw_status error = %d\n", err);
 		return err;

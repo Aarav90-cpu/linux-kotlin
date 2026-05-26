@@ -205,6 +205,7 @@ void enic_get_res_counts(struct enic *enic)
 	enic->cq_count = enic->cq_avail;
 	enic->intr_count = enic->intr_avail;
 
+<<<<<<< HEAD
 	enic->has_admin_channel =
 		vnic_dev_get_res_count(enic->vdev, RES_TYPE_ADMIN_WQ) >= 1 &&
 		vnic_dev_get_res_count(enic->vdev, RES_TYPE_ADMIN_RQ) >= 1 &&
@@ -217,6 +218,12 @@ void enic_get_res_counts(struct enic *enic)
 		enic->wq_avail, enic->rq_avail,
 		enic->cq_avail, enic->intr_avail,
 		enic->has_admin_channel ? "yes" : "no");
+=======
+	dev_info(enic_get_dev(enic),
+		"vNIC resources avail: wq %d rq %d cq %d intr %d\n",
+		enic->wq_avail, enic->rq_avail,
+		enic->cq_avail, enic->intr_avail);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void enic_init_vnic_resources(struct enic *enic)

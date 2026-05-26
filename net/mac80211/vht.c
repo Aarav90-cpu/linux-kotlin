@@ -4,7 +4,11 @@
  *
  * Portions of this file
  * Copyright(c) 2015 - 2016 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018 - 2026 Intel Corporation
+=======
+ * Copyright (C) 2018 - 2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/ieee80211.h>
@@ -115,7 +119,10 @@ void ieee80211_apply_vhtcap_overrides(struct ieee80211_sub_if_data *sdata,
 void
 ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 				    struct ieee80211_supported_band *sband,
+<<<<<<< HEAD
 				    const struct ieee80211_sta_vht_cap *own_vht_cap,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    const struct ieee80211_vht_cap *vht_cap_ie,
 				    const struct ieee80211_vht_cap *vht_cap_ie2,
 				    struct link_sta_info *link_sta)
@@ -123,6 +130,10 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->pub->vht_cap;
 	struct ieee80211_sta_vht_cap own_cap;
 	u32 cap_info, i;
+<<<<<<< HEAD
+=======
+	bool have_80mhz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 mpdu_len;
 
 	memset(vht_cap, 0, sizeof(*vht_cap));
@@ -130,6 +141,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 	if (!link_sta->pub->ht_cap.ht_supported)
 		return;
 
+<<<<<<< HEAD
 	if (!vht_cap_ie || !own_vht_cap->vht_supported)
 		return;
 
@@ -154,6 +166,25 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 			return;
 	}
 
+=======
+	if (!vht_cap_ie || !sband->vht_cap.vht_supported)
+		return;
+
+	/* Allow VHT if at least one channel on the sband supports 80 MHz */
+	have_80mhz = false;
+	for (i = 0; i < sband->n_channels; i++) {
+		if (sband->channels[i].flags & (IEEE80211_CHAN_DISABLED |
+						IEEE80211_CHAN_NO_80MHZ))
+			continue;
+
+		have_80mhz = true;
+		break;
+	}
+
+	if (!have_80mhz)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * A VHT STA must support 40 MHz, but if we verify that here
 	 * then we break a few things - some APs (e.g. Netgear R6300v2
@@ -163,7 +194,11 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 
 	vht_cap->vht_supported = true;
 
+<<<<<<< HEAD
 	own_cap = *own_vht_cap;
+=======
+	own_cap = sband->vht_cap;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If user has specified capability overrides, take care
 	 * of that if the station we're setting up is the AP that
@@ -324,8 +359,12 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 				IEEE80211_STA_RX_BW_160;
 	}
 
+<<<<<<< HEAD
 	if (sdata->vif.type != NL80211_IFTYPE_NAN)
 		link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
+=======
+	link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Work around the Cisco 9115 FW 17.3 bug by taking the min of
@@ -378,10 +417,13 @@ __ieee80211_sta_cap_rx_bw(struct link_sta_info *link_sta,
 		} else {
 			struct ieee80211_bss_conf *link_conf;
 
+<<<<<<< HEAD
 			if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA ||
 					 sdata->vif.type == NL80211_IFTYPE_NAN))
 				return IEEE80211_STA_RX_BW_20;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rcu_read_lock();
 			link_conf = rcu_dereference(sdata->vif.link_conf[link_id]);
 			band = link_conf->chanreq.oper.chan->band;
@@ -527,11 +569,14 @@ _ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta,
 	} else {
 		struct ieee80211_bss_conf *link_conf;
 
+<<<<<<< HEAD
 		/* NAN operates on multiple channels so a chandef must be given */
 		if (WARN_ON_ONCE(sta->sdata->vif.type == NL80211_IFTYPE_NAN ||
 				 sta->sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
 			return IEEE80211_STA_RX_BW_20;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_read_lock();
 		link_conf = rcu_dereference(sta->sdata->vif.link_conf[link_sta->link_id]);
 		if (WARN_ON_ONCE(!link_conf)) {
@@ -740,17 +785,30 @@ void ieee80211_process_mu_groups(struct ieee80211_sub_if_data *sdata,
 	if (!link_conf->mu_mimo_owner)
 		return;
 
+<<<<<<< HEAD
 	if (!memcmp(mgmt->u.action.vht_group_notif.position,
 		    link_conf->mu_group.position, WLAN_USER_POSITION_LEN) &&
 	    !memcmp(mgmt->u.action.vht_group_notif.membership,
+=======
+	if (!memcmp(mgmt->u.action.u.vht_group_notif.position,
+		    link_conf->mu_group.position, WLAN_USER_POSITION_LEN) &&
+	    !memcmp(mgmt->u.action.u.vht_group_notif.membership,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    link_conf->mu_group.membership, WLAN_MEMBERSHIP_LEN))
 		return;
 
 	memcpy(link_conf->mu_group.membership,
+<<<<<<< HEAD
 	       mgmt->u.action.vht_group_notif.membership,
 	       WLAN_MEMBERSHIP_LEN);
 	memcpy(link_conf->mu_group.position,
 	       mgmt->u.action.vht_group_notif.position,
+=======
+	       mgmt->u.action.u.vht_group_notif.membership,
+	       WLAN_MEMBERSHIP_LEN);
+	memcpy(link_conf->mu_group.position,
+	       mgmt->u.action.u.vht_group_notif.position,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       WLAN_USER_POSITION_LEN);
 
 	ieee80211_link_info_change_notify(sdata, link,

@@ -43,7 +43,11 @@ static int sk_diag_put_flags(struct sock *sk, struct sk_buff *skb)
 
 static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
 			struct netlink_diag_req *req,
+<<<<<<< HEAD
 			u32 portid, u32 seq, u32 flags, u64 sk_ino)
+=======
+			u32 portid, u32 seq, u32 flags, int sk_ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct nlmsghdr *nlh;
 	struct netlink_diag_msg *rep;

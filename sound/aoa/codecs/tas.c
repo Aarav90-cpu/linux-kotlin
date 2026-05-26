@@ -872,7 +872,10 @@ static int tas_i2c_probe(struct i2c_client *client)
 	return 0;
  fail:
 	mutex_destroy(&tas->mtx);
+<<<<<<< HEAD
 	of_node_put(tas->codec.node);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(tas);
 	return -EINVAL;
 }

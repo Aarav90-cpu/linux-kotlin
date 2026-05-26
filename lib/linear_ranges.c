@@ -242,6 +242,7 @@ int linear_range_get_selector_high(const struct linear_range *r,
 EXPORT_SYMBOL_GPL(linear_range_get_selector_high);
 
 /**
+<<<<<<< HEAD
  * linear_range_get_selector_high_array - return linear range selector for value
  * @r:		pointer to array of linear ranges where selector is looked from
  * @ranges:	amount of ranges to scan from array
@@ -278,6 +279,8 @@ int linear_range_get_selector_high_array(const struct linear_range *r,
 EXPORT_SYMBOL_GPL(linear_range_get_selector_high_array);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * linear_range_get_selector_within - return linear range selector for value
  * @r:		pointer to linear range where selector is looked from
  * @val:	value for which the selector is searched

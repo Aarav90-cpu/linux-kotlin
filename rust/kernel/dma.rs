@@ -5,6 +5,7 @@
 //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
 
 use crate::{
+<<<<<<< HEAD
     bindings,
     debugfs,
     device::{
@@ -30,6 +31,16 @@ use core::{
     },
     ptr::NonNull, //
 };
+=======
+    bindings, build_assert, device,
+    device::{Bound, Core},
+    error::{to_result, Result},
+    prelude::*,
+    sync::aref::ARef,
+    transmute::{AsBytes, FromBytes},
+};
+use core::ptr::NonNull;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// DMA address type.
 ///
@@ -56,7 +67,11 @@ pub trait Device: AsRef<device::Device<Core>> {
     /// # Safety
     ///
     /// This method must not be called concurrently with any DMA allocation or mapping primitives,
+<<<<<<< HEAD
     /// such as [`Coherent::zeroed`].
+=======
+    /// such as [`CoherentAllocation::alloc_attrs`].
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unsafe fn dma_set_mask(&self, mask: DmaMask) -> Result {
         // SAFETY:
         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
@@ -73,7 +88,11 @@ pub trait Device: AsRef<device::Device<Core>> {
     /// # Safety
     ///
     /// This method must not be called concurrently with any DMA allocation or mapping primitives,
+<<<<<<< HEAD
     /// such as [`Coherent::zeroed`].
+=======
+    /// such as [`CoherentAllocation::alloc_attrs`].
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unsafe fn dma_set_coherent_mask(&self, mask: DmaMask) -> Result {
         // SAFETY:
         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
@@ -92,7 +111,11 @@ pub trait Device: AsRef<device::Device<Core>> {
     /// # Safety
     ///
     /// This method must not be called concurrently with any DMA allocation or mapping primitives,
+<<<<<<< HEAD
     /// such as [`Coherent::zeroed`].
+=======
+    /// such as [`CoherentAllocation::alloc_attrs`].
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unsafe fn dma_set_mask_and_coherent(&self, mask: DmaMask) -> Result {
         // SAFETY:
         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
@@ -111,7 +134,11 @@ pub trait Device: AsRef<device::Device<Core>> {
     /// # Safety
     ///
     /// This method must not be called concurrently with any DMA allocation or mapping primitives,
+<<<<<<< HEAD
     /// such as [`Coherent::zeroed`].
+=======
+    /// such as [`CoherentAllocation::alloc_attrs`].
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unsafe fn dma_set_max_seg_size(&self, size: u32) {
         // SAFETY:
         // - By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
@@ -211,12 +238,21 @@ impl DmaMask {
 ///
 /// ```
 /// # use kernel::device::{Bound, Device};
+<<<<<<< HEAD
 /// use kernel::dma::{attrs::*, Coherent};
 ///
 /// # fn test(dev: &Device<Bound>) -> Result {
 /// let attribs = DMA_ATTR_FORCE_CONTIGUOUS | DMA_ATTR_NO_WARN;
 /// let c: Coherent<[u64]> =
 ///     Coherent::zeroed_slice_with_attrs(dev, 4, GFP_KERNEL, attribs)?;
+=======
+/// use kernel::dma::{attrs::*, CoherentAllocation};
+///
+/// # fn test(dev: &Device<Bound>) -> Result {
+/// let attribs = DMA_ATTR_FORCE_CONTIGUOUS | DMA_ATTR_NO_WARN;
+/// let c: CoherentAllocation<u64> =
+///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, attribs)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// # Ok::<(), Error>(()) }
 /// ```
 #[derive(Clone, Copy, PartialEq)]
@@ -358,6 +394,7 @@ impl From<DataDirection> for bindings::dma_data_direction {
     }
 }
 
+<<<<<<< HEAD
 /// CPU-owned DMA allocation that can be converted into a device-shared [`Coherent`] object.
 ///
 /// Unlike [`Coherent`], a [`CoherentBox`] is guaranteed to be fully owned by the CPU -- its DMA
@@ -564,22 +601,38 @@ impl<T: AsBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> for Coher
     }
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// An abstraction of the `dma_alloc_coherent` API.
 ///
 /// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
 /// large coherent DMA regions.
 ///
+<<<<<<< HEAD
 /// A [`Coherent`] instance contains a pointer to the allocated region (in the
 /// processor's virtual address space) and the device address which can be given to the device
 /// as the DMA address base of the region. The region is released once [`Coherent`]
+=======
+/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
+/// processor's virtual address space) and the device address which can be given to the device
+/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// is dropped.
 ///
 /// # Invariants
 ///
+<<<<<<< HEAD
 /// - For the lifetime of an instance of [`Coherent`], the `cpu_addr` is a valid pointer
 ///   to an allocated region of coherent memory and `dma_handle` is the DMA address base of the
 ///   region.
 /// - The size in bytes of the allocation is equal to size information via pointer.
+=======
+/// - For the lifetime of an instance of [`CoherentAllocation`], the `cpu_addr` is a valid pointer
+///   to an allocated region of coherent memory and `dma_handle` is the DMA address base of the
+///   region.
+/// - The size in bytes of the allocation is equal to `size_of::<T> * count`.
+/// - `size_of::<T> * count` fits into a `usize`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // TODO
 //
 // DMA allocations potentially carry device resources (e.g.IOMMU mappings), hence for soundness
@@ -590,43 +643,188 @@ impl<T: AsBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> for Coher
 // allocation from surviving device unbind; it would require RCU read side critical sections to
 // access the memory, which may require subsequent unnecessary copies.
 //
+<<<<<<< HEAD
 // Hence, find a way to revoke the device resources of a `Coherent`, but not the
 // entire `Coherent` including the allocated memory itself.
 pub struct Coherent<T: KnownSize + ?Sized> {
     dev: ARef<device::Device>,
     dma_handle: DmaAddress,
+=======
+// Hence, find a way to revoke the device resources of a `CoherentAllocation`, but not the
+// entire `CoherentAllocation` including the allocated memory itself.
+pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+    dev: ARef<device::Device>,
+    dma_handle: DmaAddress,
+    count: usize,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     cpu_addr: NonNull<T>,
     dma_attrs: Attrs,
 }
 
+<<<<<<< HEAD
 impl<T: KnownSize + ?Sized> Coherent<T> {
     /// Returns the size in bytes of this allocation.
     #[inline]
     pub fn size(&self) -> usize {
         T::size(self.cpu_addr.as_ptr())
+=======
+impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+    /// Allocates a region of `size_of::<T> * count` of coherent memory.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use kernel::device::{Bound, Device};
+    /// use kernel::dma::{attrs::*, CoherentAllocation};
+    ///
+    /// # fn test(dev: &Device<Bound>) -> Result {
+    /// let c: CoherentAllocation<u64> =
+    ///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, DMA_ATTR_NO_WARN)?;
+    /// # Ok::<(), Error>(()) }
+    /// ```
+    pub fn alloc_attrs(
+        dev: &device::Device<Bound>,
+        count: usize,
+        gfp_flags: kernel::alloc::Flags,
+        dma_attrs: Attrs,
+    ) -> Result<CoherentAllocation<T>> {
+        build_assert!(
+            core::mem::size_of::<T>() > 0,
+            "It doesn't make sense for the allocated type to be a ZST"
+        );
+
+        let size = count
+            .checked_mul(core::mem::size_of::<T>())
+            .ok_or(EOVERFLOW)?;
+        let mut dma_handle = 0;
+        // SAFETY: Device pointer is guaranteed as valid by the type invariant on `Device`.
+        let addr = unsafe {
+            bindings::dma_alloc_attrs(
+                dev.as_raw(),
+                size,
+                &mut dma_handle,
+                gfp_flags.as_raw(),
+                dma_attrs.as_raw(),
+            )
+        };
+        let addr = NonNull::new(addr).ok_or(ENOMEM)?;
+        // INVARIANT:
+        // - We just successfully allocated a coherent region which is accessible for
+        //   `count` elements, hence the cpu address is valid. We also hold a refcounted reference
+        //   to the device.
+        // - The allocated `size` is equal to `size_of::<T> * count`.
+        // - The allocated `size` fits into a `usize`.
+        Ok(Self {
+            dev: dev.into(),
+            dma_handle,
+            count,
+            cpu_addr: addr.cast(),
+            dma_attrs,
+        })
+    }
+
+    /// Performs the same functionality as [`CoherentAllocation::alloc_attrs`], except the
+    /// `dma_attrs` is 0 by default.
+    pub fn alloc_coherent(
+        dev: &device::Device<Bound>,
+        count: usize,
+        gfp_flags: kernel::alloc::Flags,
+    ) -> Result<CoherentAllocation<T>> {
+        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
+    }
+
+    /// Returns the number of elements `T` in this allocation.
+    ///
+    /// Note that this is not the size of the allocation in bytes, which is provided by
+    /// [`Self::size`].
+    pub fn count(&self) -> usize {
+        self.count
+    }
+
+    /// Returns the size in bytes of this allocation.
+    pub fn size(&self) -> usize {
+        // INVARIANT: The type invariant of `Self` guarantees that `size_of::<T> * count` fits into
+        // a `usize`.
+        self.count * core::mem::size_of::<T>()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Returns the raw pointer to the allocated region in the CPU's virtual address space.
     #[inline]
+<<<<<<< HEAD
     pub fn as_ptr(&self) -> *const T {
         self.cpu_addr.as_ptr()
+=======
+    pub fn as_ptr(&self) -> *const [T] {
+        core::ptr::slice_from_raw_parts(self.cpu_addr.as_ptr(), self.count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Returns the raw pointer to the allocated region in the CPU's virtual address space as
     /// a mutable pointer.
     #[inline]
+<<<<<<< HEAD
     pub fn as_mut_ptr(&self) -> *mut T {
+=======
+    pub fn as_mut_ptr(&self) -> *mut [T] {
+        core::ptr::slice_from_raw_parts_mut(self.cpu_addr.as_ptr(), self.count)
+    }
+
+    /// Returns the base address to the allocated region in the CPU's virtual address space.
+    pub fn start_ptr(&self) -> *const T {
+        self.cpu_addr.as_ptr()
+    }
+
+    /// Returns the base address to the allocated region in the CPU's virtual address space as
+    /// a mutable pointer.
+    pub fn start_ptr_mut(&mut self) -> *mut T {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.cpu_addr.as_ptr()
     }
 
     /// Returns a DMA handle which may be given to the device as the DMA address base of
     /// the region.
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pub fn dma_handle(&self) -> DmaAddress {
         self.dma_handle
     }
 
+<<<<<<< HEAD
     /// Returns a reference to the data in the region.
+=======
+    /// Returns a DMA handle starting at `offset` (in units of `T`) which may be given to the
+    /// device as the DMA address base of the region.
+    ///
+    /// Returns `EINVAL` if `offset` is not within the bounds of the allocation.
+    pub fn dma_handle_with_offset(&self, offset: usize) -> Result<DmaAddress> {
+        if offset >= self.count {
+            Err(EINVAL)
+        } else {
+            // INVARIANT: The type invariant of `Self` guarantees that `size_of::<T> * count` fits
+            // into a `usize`, and `offset` is inferior to `count`.
+            Ok(self.dma_handle + (offset * core::mem::size_of::<T>()) as DmaAddress)
+        }
+    }
+
+    /// Common helper to validate a range applied from the allocated region in the CPU's virtual
+    /// address space.
+    fn validate_range(&self, offset: usize, count: usize) -> Result {
+        if offset.checked_add(count).ok_or(EOVERFLOW)? > self.count {
+            return Err(EINVAL);
+        }
+        Ok(())
+    }
+
+    /// Returns the data from the region starting from `offset` as a slice.
+    /// `offset` and `count` are in units of `T`, not the number of bytes.
+    ///
+    /// For ringbuffer type of r/w access or use-cases where the pointer to the live data is needed,
+    /// [`CoherentAllocation::start_ptr`] or [`CoherentAllocation::start_ptr_mut`] could be used
+    /// instead.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///
     /// # Safety
     ///
@@ -634,6 +832,7 @@ impl<T: KnownSize + ?Sized> Coherent<T> {
     ///   slice is live.
     /// * Callers must ensure that this call does not race with a write to the same region while
     ///   the returned slice is live.
+<<<<<<< HEAD
     #[inline]
     pub unsafe fn as_ref(&self) -> &T {
         // SAFETY: per safety requirement.
@@ -641,6 +840,21 @@ impl<T: KnownSize + ?Sized> Coherent<T> {
     }
 
     /// Returns a mutable reference to the data in the region.
+=======
+    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
+        self.validate_range(offset, count)?;
+        // SAFETY:
+        // - The pointer is valid due to type invariant on `CoherentAllocation`,
+        //   we've just checked that the range and index is within bounds. The immutability of the
+        //   data is also guaranteed by the safety requirements of the function.
+        // - `offset + count` can't overflow since it is smaller than `self.count` and we've checked
+        //   that `self.count` won't overflow early in the constructor.
+        Ok(unsafe { core::slice::from_raw_parts(self.start_ptr().add(offset), count) })
+    }
+
+    /// Performs the same functionality as [`CoherentAllocation::as_slice`], except that a mutable
+    /// slice is returned.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///
     /// # Safety
     ///
@@ -648,11 +862,59 @@ impl<T: KnownSize + ?Sized> Coherent<T> {
     ///   slice is live.
     /// * Callers must ensure that this call does not race with a read or write to the same region
     ///   while the returned slice is live.
+<<<<<<< HEAD
     #[expect(clippy::mut_from_ref, reason = "unsafe to use API")]
     #[inline]
     pub unsafe fn as_mut(&self) -> &mut T {
         // SAFETY: per safety requirement.
         unsafe { &mut *self.as_mut_ptr() }
+=======
+    pub unsafe fn as_slice_mut(&mut self, offset: usize, count: usize) -> Result<&mut [T]> {
+        self.validate_range(offset, count)?;
+        // SAFETY:
+        // - The pointer is valid due to type invariant on `CoherentAllocation`,
+        //   we've just checked that the range and index is within bounds. The immutability of the
+        //   data is also guaranteed by the safety requirements of the function.
+        // - `offset + count` can't overflow since it is smaller than `self.count` and we've checked
+        //   that `self.count` won't overflow early in the constructor.
+        Ok(unsafe { core::slice::from_raw_parts_mut(self.start_ptr_mut().add(offset), count) })
+    }
+
+    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
+    /// number of bytes.
+    ///
+    /// # Safety
+    ///
+    /// * Callers must ensure that this call does not race with a read or write to the same region
+    ///   that overlaps with this write.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # fn test(alloc: &mut kernel::dma::CoherentAllocation<u8>) -> Result {
+    /// let somedata: [u8; 4] = [0xf; 4];
+    /// let buf: &[u8] = &somedata;
+    /// // SAFETY: There is no concurrent HW operation on the device and no other R/W access to the
+    /// // region.
+    /// unsafe { alloc.write(buf, 0)?; }
+    /// # Ok::<(), Error>(()) }
+    /// ```
+    pub unsafe fn write(&mut self, src: &[T], offset: usize) -> Result {
+        self.validate_range(offset, src.len())?;
+        // SAFETY:
+        // - The pointer is valid due to type invariant on `CoherentAllocation`
+        //   and we've just checked that the range and index is within bounds.
+        // - `offset + count` can't overflow since it is smaller than `self.count` and we've checked
+        //   that `self.count` won't overflow early in the constructor.
+        unsafe {
+            core::ptr::copy_nonoverlapping(
+                src.as_ptr(),
+                self.start_ptr_mut().add(offset),
+                src.len(),
+            )
+        };
+        Ok(())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Reads the value of `field` and ensures that its type is [`FromBytes`].
@@ -702,6 +964,7 @@ impl<T: KnownSize + ?Sized> Coherent<T> {
     }
 }
 
+<<<<<<< HEAD
 impl<T: AsBytes + FromBytes> Coherent<T> {
     /// Allocates a region of `T` of coherent memory.
     fn alloc_with_attrs(
@@ -967,11 +1230,24 @@ impl<T: KnownSize + ?Sized> Drop for Coherent<T> {
         // SAFETY: Device pointer is guaranteed as valid by the type invariant on `Device`.
         // The cpu address, and the dma handle are valid due to the type invariants on
         // `Coherent`.
+=======
+/// Note that the device configured to do DMA must be halted before this object is dropped.
+impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
+    fn drop(&mut self) {
+        let size = self.count * core::mem::size_of::<T>();
+        // SAFETY: Device pointer is guaranteed as valid by the type invariant on `Device`.
+        // The cpu address, and the dma handle are valid due to the type invariants on
+        // `CoherentAllocation`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         unsafe {
             bindings::dma_free_attrs(
                 self.dev.as_raw(),
                 size,
+<<<<<<< HEAD
                 self.cpu_addr.as_ptr().cast(),
+=======
+                self.start_ptr_mut().cast(),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 self.dma_handle,
                 self.dma_attrs.as_raw(),
             )
@@ -979,6 +1255,7 @@ impl<T: KnownSize + ?Sized> Drop for Coherent<T> {
     }
 }
 
+<<<<<<< HEAD
 // SAFETY: It is safe to send a `Coherent` to another thread if `T`
 // can be sent to another thread.
 unsafe impl<T: KnownSize + Send + ?Sized> Send for Coherent<T> {}
@@ -1132,17 +1409,30 @@ unsafe impl Send for CoherentHandle {}
 // operations on `&CoherentHandle` are reading the DMA handle and size, both of which are
 // plain `Copy` values.
 unsafe impl Sync for CoherentHandle {}
+=======
+// SAFETY: It is safe to send a `CoherentAllocation` to another thread if `T`
+// can be sent to another thread.
+unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Reads a field of an item from an allocated region of structs.
 ///
 /// The syntax is of the form `kernel::dma_read!(dma, proj)` where `dma` is an expression evaluating
+<<<<<<< HEAD
 /// to a [`Coherent`] and `proj` is a [projection specification](kernel::ptr::project!).
+=======
+/// to a [`CoherentAllocation`] and `proj` is a [projection specification](kernel::ptr::project!).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// # Examples
 ///
 /// ```
 /// use kernel::device::Device;
+<<<<<<< HEAD
 /// use kernel::dma::{attrs::*, Coherent};
+=======
+/// use kernel::dma::{attrs::*, CoherentAllocation};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// struct MyStruct { field: u32, }
 ///
@@ -1151,7 +1441,11 @@ unsafe impl Sync for CoherentHandle {}
 /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
 /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
 ///
+<<<<<<< HEAD
 /// # fn test(alloc: &kernel::dma::Coherent<[MyStruct]>) -> Result {
+=======
+/// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Result {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// let whole = kernel::dma_read!(alloc, [2]?);
 /// let field = kernel::dma_read!(alloc, [1]?.field);
 /// # Ok::<(), Error>(()) }
@@ -1161,17 +1455,28 @@ macro_rules! dma_read {
     ($dma:expr, $($proj:tt)*) => {{
         let dma = &$dma;
         let ptr = $crate::ptr::project!(
+<<<<<<< HEAD
             $crate::dma::Coherent::as_ptr(dma), $($proj)*
         );
         // SAFETY: The pointer created by the projection is within the DMA region.
         unsafe { $crate::dma::Coherent::field_read(dma, ptr) }
+=======
+            $crate::dma::CoherentAllocation::as_ptr(dma), $($proj)*
+        );
+        // SAFETY: The pointer created by the projection is within the DMA region.
+        unsafe { $crate::dma::CoherentAllocation::field_read(dma, ptr) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }};
 }
 
 /// Writes to a field of an item from an allocated region of structs.
 ///
 /// The syntax is of the form `kernel::dma_write!(dma, proj, val)` where `dma` is an expression
+<<<<<<< HEAD
 /// evaluating to a [`Coherent`], `proj` is a
+=======
+/// evaluating to a [`CoherentAllocation`], `proj` is a
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// [projection specification](kernel::ptr::project!), and `val` is the value to be written to the
 /// projected location.
 ///
@@ -1179,7 +1484,11 @@ macro_rules! dma_read {
 ///
 /// ```
 /// use kernel::device::Device;
+<<<<<<< HEAD
 /// use kernel::dma::{attrs::*, Coherent};
+=======
+/// use kernel::dma::{attrs::*, CoherentAllocation};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// struct MyStruct { member: u32, }
 ///
@@ -1188,7 +1497,11 @@ macro_rules! dma_read {
 /// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
 /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
 ///
+<<<<<<< HEAD
 /// # fn test(alloc: &kernel::dma::Coherent<[MyStruct]>) -> Result {
+=======
+/// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Result {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// kernel::dma_write!(alloc, [2]?.member, 0xf);
 /// kernel::dma_write!(alloc, [1]?, MyStruct { member: 0xf });
 /// # Ok::<(), Error>(()) }
@@ -1198,11 +1511,19 @@ macro_rules! dma_write {
     (@parse [$dma:expr] [$($proj:tt)*] [, $val:expr]) => {{
         let dma = &$dma;
         let ptr = $crate::ptr::project!(
+<<<<<<< HEAD
             mut $crate::dma::Coherent::as_mut_ptr(dma), $($proj)*
         );
         let val = $val;
         // SAFETY: The pointer created by the projection is within the DMA region.
         unsafe { $crate::dma::Coherent::field_write(dma, ptr, val) }
+=======
+            mut $crate::dma::CoherentAllocation::as_mut_ptr(dma), $($proj)*
+        );
+        let val = $val;
+        // SAFETY: The pointer created by the projection is within the DMA region.
+        unsafe { $crate::dma::CoherentAllocation::field_write(dma, ptr, val) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }};
     (@parse [$dma:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) => {
         $crate::dma_write!(@parse [$dma] [$($proj)* .$field] [$($rest)*])

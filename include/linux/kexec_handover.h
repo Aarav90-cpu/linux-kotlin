@@ -32,9 +32,15 @@ void kho_restore_free(void *mem);
 struct folio *kho_restore_folio(phys_addr_t phys);
 struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
 void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+<<<<<<< HEAD
 int kho_add_subtree(const char *name, void *blob, size_t size);
 void kho_remove_subtree(void *blob);
 int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size);
+=======
+int kho_add_subtree(const char *name, void *fdt);
+void kho_remove_subtree(void *fdt);
+int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void kho_memory_init(void);
 
@@ -97,15 +103,25 @@ static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static inline int kho_add_subtree(const char *name, void *blob, size_t size)
+=======
+static inline int kho_add_subtree(const char *name, void *fdt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
 static inline void kho_remove_subtree(void *blob) { }
 
 static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys,
 				       size_t *size)
+=======
+static inline void kho_remove_subtree(void *fdt) { }
+
+static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -EOPNOTSUPP;
 }

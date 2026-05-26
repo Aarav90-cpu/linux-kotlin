@@ -842,6 +842,7 @@ static unsigned long srcu_torture_completed(void)
 
 static void srcu_torture_deferred_free(struct rcu_torture *rp)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 	bool lockit = jiffies & 0x1;
 
@@ -850,6 +851,9 @@ static void srcu_torture_deferred_free(struct rcu_torture *rp)
 	call_srcu(srcu_ctlp, &rp->rtort_rcu, rcu_torture_cb);
 	if (lockit)
 		raw_spin_unlock_irqrestore(&current->pi_lock, flags);
+=======
+	call_srcu(srcu_ctlp, &rp->rtort_rcu, rcu_torture_cb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void srcu_torture_synchronize(void)
@@ -1068,6 +1072,7 @@ static struct rcu_torture_ops trivial_ops = {
 	.name		= "trivial"
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_TRIVIAL_PREEMPT_RCU
 
 /*
@@ -1123,6 +1128,8 @@ static struct rcu_torture_ops trivial_preempt_ops = {
 
 #endif // #else // #ifdef CONFIG_TRIVIAL_PREEMPT_RCU
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_TASKS_RCU
 
 /*
@@ -4511,7 +4518,11 @@ rcu_torture_init(void)
 	static struct rcu_torture_ops *torture_ops[] = {
 		&rcu_ops, &rcu_busted_ops, &srcu_ops, &srcud_ops, &busted_srcud_ops,
 		TASKS_OPS TASKS_RUDE_OPS TASKS_TRACING_OPS
+<<<<<<< HEAD
 		&trivial_ops, TRIVIAL_PREEMPT_OPS
+=======
+		&trivial_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	if (!torture_init_begin(torture_type, verbose))

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-15 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -54,7 +58,10 @@
 #include "dc_hw_types.h"
 #include "hw_shared.h"
 #include "transform.h"
+<<<<<<< HEAD
 #include "dc_types.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MAX_MPCC 6
 #define MAX_OPP 6
@@ -67,6 +74,10 @@ enum mpc_output_csc_mode {
 	MPC_OUTPUT_CSC_COEF_B
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum mpcc_blend_mode {
 	MPCC_BLEND_MODE_BYPASS,
 	MPCC_BLEND_MODE_TOP_LAYER_PASSTHROUGH,
@@ -102,6 +113,16 @@ enum mpcc_movable_cm_location {
 	MPCC_MOVABLE_CM_LOCATION_AFTER,
 };
 
+<<<<<<< HEAD
+=======
+enum MCM_LUT_XABLE {
+	MCM_LUT_DISABLE,
+	MCM_LUT_DISABLED = MCM_LUT_DISABLE,
+	MCM_LUT_ENABLE,
+	MCM_LUT_ENABLED = MCM_LUT_ENABLE,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum MCM_LUT_ID {
 	MCM_LUT_3DLUT,
 	MCM_LUT_1DLUT,
@@ -110,7 +131,11 @@ enum MCM_LUT_ID {
 
 struct mpc_fl_3dlut_config {
 	bool enabled;
+<<<<<<< HEAD
 	enum dc_cm_lut_size size;
+=======
+	uint16_t width;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool select_lut_bank_a;
 	uint16_t bit_depth;
 	int hubp_index;
@@ -1036,6 +1061,7 @@ struct mpc_funcs {
 	void (*update_3dlut_fast_load_select)(struct mpc *mpc, int mpcc_id, int hubp_idx);
 
 	/**
+<<<<<<< HEAD
 	* @get_3dlut_fast_load_status:
 	*
 	* Get 3D LUT fast load status and reference them with done, soft_underflow and hard_underflow pointers.
@@ -1054,6 +1080,8 @@ struct mpc_funcs {
 	void (*get_3dlut_fast_load_status)(struct mpc *mpc, int mpcc_id, uint32_t *done, uint32_t *soft_underflow, uint32_t *hard_underflow);
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	* @populate_lut:
 	*
 	* Populate LUT with given tetrahedral parameters.
@@ -1069,11 +1097,16 @@ struct mpc_funcs {
 	*
 	* void
 	*/
+<<<<<<< HEAD
 	void (*populate_lut)(struct mpc *mpc,
 			const enum MCM_LUT_ID id,
 			const union mcm_lut_params *params,
 			const bool lut_bank_a,
 			const int mpcc_id);
+=======
+	void (*populate_lut)(struct mpc *mpc, const enum MCM_LUT_ID id, const union mcm_lut_params params,
+			bool lut_bank_a, int mpcc_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	* @program_lut_read_write_control:
@@ -1084,18 +1117,25 @@ struct mpc_funcs {
 	* - [in/out] mpc - MPC context.
 	* - [in] id
 	* - [in] lut_bank_a
+<<<<<<< HEAD
 	* - [in] bit_depth
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	* - [in] mpcc_id
 	*
 	* Return:
 	*
 	* void
 	*/
+<<<<<<< HEAD
 	void (*program_lut_read_write_control)(struct mpc *mpc,
 		const enum MCM_LUT_ID id,
 		const bool lut_bank_a,
 		const unsigned int bit_depth,
 		const int mpcc_id);
+=======
+	void (*program_lut_read_write_control)(struct mpc *mpc, const enum MCM_LUT_ID id, bool lut_bank_a, int mpcc_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	* @program_lut_mode:
@@ -1105,15 +1145,21 @@ struct mpc_funcs {
 	* Parameters:
 	* - [in/out] mpc - MPC context.
 	* - [in] id
+<<<<<<< HEAD
 	* - [in] enable
 	* - [in] lut_bank_a
 	* - [in] size
+=======
+	* - [in] xable
+	* - [in] lut_bank_a
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	* - [in] mpcc_id
 	*
 	* Return:
 	*
 	* void
 	*/
+<<<<<<< HEAD
 	void (*program_lut_mode)(struct mpc *mpc,
 			const enum MCM_LUT_ID id,
 			const bool enable,
@@ -1143,6 +1189,27 @@ struct mpc_funcs {
 			const int mpcc_id,
 			bool *enable,
 			bool *lut_bank_a);
+=======
+	void (*program_lut_mode)(struct mpc *mpc, const enum MCM_LUT_ID id, const enum MCM_LUT_XABLE xable,
+			bool lut_bank_a, int mpcc_id);
+
+	/**
+	 * @mcm:
+	 *
+	 * MPC MCM new HW sequential programming functions
+	 */
+	struct {
+		void (*program_3dlut_size)(struct mpc *mpc, uint32_t width, int mpcc_id);
+		void (*program_bias_scale)(struct mpc *mpc, uint16_t bias, uint16_t scale, int mpcc_id);
+		void (*program_bit_depth)(struct mpc *mpc, uint16_t bit_depth, int mpcc_id);
+		bool (*is_config_supported)(uint32_t width);
+		void (*program_lut_read_write_control)(struct mpc *mpc, const enum MCM_LUT_ID id,
+			bool lut_bank_a, bool enabled, int mpcc_id);
+
+		void (*populate_lut)(struct mpc *mpc, const union mcm_lut_params params,
+			bool lut_bank_a, int mpcc_id);
+	} mcm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * @rmcm:
@@ -1155,11 +1222,17 @@ struct mpc_funcs {
 		void (*update_3dlut_fast_load_select)(struct mpc *mpc, int mpcc_id, int hubp_idx);
 		void (*program_lut_read_write_control)(struct mpc *mpc, const enum MCM_LUT_ID id,
 			bool lut_bank_a, bool enabled, int mpcc_id);
+<<<<<<< HEAD
 		void (*program_lut_mode)(struct mpc *mpc,
 			bool enable,
 			bool lut_bank_a,
 			int mpcc_id);
 		void (*program_3dlut_size)(struct mpc *mpc, const enum dc_cm_lut_size size, int mpcc_id);
+=======
+		void (*program_lut_mode)(struct mpc *mpc, const enum MCM_LUT_XABLE xable,
+			bool lut_bank_a, int mpcc_id);
+		void (*program_3dlut_size)(struct mpc *mpc, uint32_t width, int mpcc_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		void (*program_bias_scale)(struct mpc *mpc, uint16_t bias, uint16_t scale, int mpcc_id);
 		void (*program_bit_depth)(struct mpc *mpc, uint16_t bit_depth, int mpcc_id);
 		bool (*is_config_supported)(uint32_t width);

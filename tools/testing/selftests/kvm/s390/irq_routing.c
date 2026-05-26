@@ -27,7 +27,11 @@ static void test(void)
 	struct kvm_irq_routing *routing;
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	gpa_t mem;
+=======
+	vm_paddr_t mem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	struct kvm_irq_routing_entry ue = {

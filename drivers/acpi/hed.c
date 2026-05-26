@@ -50,6 +50,7 @@ static void acpi_hed_notify(acpi_handle handle, u32 event, void *data)
 
 static int acpi_hed_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
 	int err;
 
@@ -57,6 +58,11 @@ static int acpi_hed_probe(struct platform_device *pdev)
 	if (!device)
 		return -ENODEV;
 
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+	int err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Only one hardware error device */
 	if (hed_handle)
 		return -EINVAL;

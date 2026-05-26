@@ -720,13 +720,19 @@ static int hci_uart_register_dev(struct hci_uart *hu)
 
 	if (hci_register_dev(hdev) < 0) {
 		BT_ERR("Can't register HCI device");
+<<<<<<< HEAD
 		percpu_down_write(&hu->proto_lock);
 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
 		percpu_up_write(&hu->proto_lock);
+<<<<<<< HEAD
 		/* Cancel work after clearing flags */
 		cancel_work_sync(&hu->write_work);
 
 		/* Close protocol before freeing hdev */
+=======
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		hu->proto->close(hu);
 		hu->hdev = NULL;
 		hci_free_dev(hdev);

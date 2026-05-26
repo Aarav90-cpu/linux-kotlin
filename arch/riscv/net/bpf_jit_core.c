@@ -41,22 +41,47 @@ bool bpf_jit_needs_zext(void)
 	return true;
 }
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 	unsigned int prog_size = 0, extable_size = 0;
 	bool extra_pass = false;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+{
+	unsigned int prog_size = 0, extable_size = 0;
+	bool tmp_blinded = false, extra_pass = false;
+	struct bpf_prog *tmp, *orig_prog = prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pass = 0, prev_ninsns = 0, i;
 	struct rv_jit_data *jit_data;
 	struct rv_jit_context *ctx;
 
 	if (!prog->jit_requested)
+<<<<<<< HEAD
 		return prog;
+=======
+		return orig_prog;
+
+	tmp = bpf_jit_blind_constants(prog);
+	if (IS_ERR(tmp))
+		return orig_prog;
+	if (tmp != prog) {
+		tmp_blinded = true;
+		prog = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	jit_data = prog->aux->jit_data;
 	if (!jit_data) {
 		jit_data = kzalloc_obj(*jit_data);
 		if (!jit_data) {
+<<<<<<< HEAD
 			return prog;
+=======
+			prog = orig_prog;
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		prog->aux->jit_data = jit_data;
 	}
@@ -73,11 +98,23 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	ctx->user_vm_start = bpf_arena_get_user_vm_start(prog->aux->arena);
 	ctx->prog = prog;
 	ctx->offset = kzalloc_objs(int, prog->len);
+<<<<<<< HEAD
 	if (!ctx->offset)
 		goto out_offset;
 
 	if (build_body(ctx, extra_pass, NULL))
 		goto out_offset;
+=======
+	if (!ctx->offset) {
+		prog = orig_prog;
+		goto out_offset;
+	}
+
+	if (build_body(ctx, extra_pass, NULL)) {
+		prog = orig_prog;
+		goto out_offset;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < prog->len; i++) {
 		prev_ninsns += 32;
@@ -91,8 +128,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 		bpf_jit_build_prologue(ctx, bpf_is_subprog(prog));
 		ctx->prologue_len = ctx->ninsns;
 
+<<<<<<< HEAD
 		if (build_body(ctx, extra_pass, ctx->offset))
 			goto out_offset;
+=======
+		if (build_body(ctx, extra_pass, ctx->offset)) {
+			prog = orig_prog;
+			goto out_offset;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ctx->epilogue_offset = ctx->ninsns;
 		bpf_jit_build_epilogue(ctx);
@@ -110,8 +154,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 							  &jit_data->ro_image, sizeof(u32),
 							  &jit_data->header, &jit_data->image,
 							  bpf_fill_ill_insns);
+<<<<<<< HEAD
 			if (!jit_data->ro_header)
 				goto out_offset;
+=======
+			if (!jit_data->ro_header) {
+				prog = orig_prog;
+				goto out_offset;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/*
 			 * Use the image(RW) for writing the JITed instructions. But also save
@@ -132,6 +183,10 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 
 	if (i == NR_JIT_ITERATIONS) {
 		pr_err("bpf-jit: image did not converge in <%d passes!\n", i);
+<<<<<<< HEAD
+=======
+		prog = orig_prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_free_hdr;
 	}
 
@@ -144,13 +199,21 @@ skip_init_ctx:
 	ctx->nexentries = 0;
 
 	bpf_jit_build_prologue(ctx, bpf_is_subprog(prog));
+<<<<<<< HEAD
 	if (build_body(ctx, extra_pass, NULL))
 		goto out_free_hdr;
+=======
+	if (build_body(ctx, extra_pass, NULL)) {
+		prog = orig_prog;
+		goto out_free_hdr;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_jit_build_epilogue(ctx);
 
 	if (bpf_jit_enable > 1)
 		bpf_jit_dump(prog->len, prog_size, pass, ctx->insns);
 
+<<<<<<< HEAD
 	if (!prog->is_func || extra_pass) {
 		if (WARN_ON(bpf_jit_binary_pack_finalize(jit_data->ro_header, jit_data->header))) {
 			/* ro_header has been freed */
@@ -160,11 +223,29 @@ skip_init_ctx:
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	prog->bpf_func = (void *)ctx->ro_insns + cfi_get_offset();
 	prog->jited = 1;
 	prog->jited_len = prog_size - cfi_get_offset();
 
 	if (!prog->is_func || extra_pass) {
+<<<<<<< HEAD
+=======
+		if (WARN_ON(bpf_jit_binary_pack_finalize(jit_data->ro_header, jit_data->header))) {
+			/* ro_header has been freed */
+			jit_data->ro_header = NULL;
+			prog = orig_prog;
+			goto out_offset;
+		}
+		/*
+		 * The instructions have now been copied to the ROX region from
+		 * where they will execute.
+		 * Write any modified data cache blocks out to memory and
+		 * invalidate the corresponding blocks in the instruction cache.
+		 */
+		bpf_flush_icache(jit_data->ro_header, ctx->ro_insns + ctx->ninsns);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < prog->len; i++)
 			ctx->offset[i] = ninsns_rvoff(ctx->offset[i]);
 		bpf_prog_fill_jited_linfo(prog, ctx->offset);
@@ -173,6 +254,7 @@ out_offset:
 		kfree(jit_data);
 		prog->aux->jit_data = NULL;
 	}
+<<<<<<< HEAD
 
 	return prog;
 
@@ -182,6 +264,16 @@ out_free_hdr:
 		prog->jited = 0;
 		prog->jited_len = 0;
 	}
+=======
+out:
+
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(prog, prog == orig_prog ?
+					   tmp : orig_prog);
+	return prog;
+
+out_free_hdr:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (jit_data->header) {
 		bpf_arch_text_copy(&jit_data->ro_header->size, &jit_data->header->size,
 				   sizeof(jit_data->header->size));

@@ -157,6 +157,7 @@
 #define CQHCI_VENDOR_CFG1	0xA00
 #define CQHCI_VENDOR_DIS_RST_ON_CQ_EN	(0x3 << 13)
 
+<<<<<<< HEAD
 /* non command queue crypto enable register*/
 #define NONCQ_CRYPTO_PARM		0x70
 #define NONCQ_CRYPTO_DUN		0x74
@@ -168,6 +169,8 @@
 #define ICE_HCI_PARAM_CCI	GENMASK(7, 0)
 #define ICE_HCI_PARAM_CE	GENMASK(8, 8)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sdhci_msm_offset {
 	u32 core_hc_mode;
 	u32 core_mci_data_cnt;
@@ -311,7 +314,10 @@ struct sdhci_msm_host {
 	u32 dll_config;
 	u32 ddr_config;
 	bool vqmmc_enabled;
+<<<<<<< HEAD
 	bool non_cqe_ice_init_done;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct sdhci_msm_offset *sdhci_priv_msm_offset(struct sdhci_host *host)
@@ -1926,6 +1932,14 @@ static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
 	if (IS_ERR_OR_NULL(ice))
 		return PTR_ERR_OR_ZERO(ice);
 
+<<<<<<< HEAD
+=======
+	if (qcom_ice_get_supported_key_type(ice) != BLK_CRYPTO_KEY_TYPE_RAW) {
+		dev_warn(dev, "Wrapped keys not supported. Disabling inline encryption support.\n");
+		return 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msm_host->ice = ice;
 
 	/* Initialize the blk_crypto_profile */
@@ -1939,7 +1953,11 @@ static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
 
 	profile->ll_ops = sdhci_msm_crypto_ops;
 	profile->max_dun_bytes_supported = 4;
+<<<<<<< HEAD
 	profile->key_types_supported = qcom_ice_get_supported_key_type(ice);
+=======
+	profile->key_types_supported = BLK_CRYPTO_KEY_TYPE_RAW;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	profile->dev = dev;
 
 	/*
@@ -2019,6 +2037,7 @@ static int sdhci_msm_ice_keyslot_evict(struct blk_crypto_profile *profile,
 	return qcom_ice_evict_key(msm_host->ice, slot);
 }
 
+<<<<<<< HEAD
 static int sdhci_msm_ice_derive_sw_secret(struct blk_crypto_profile *profile,
 					  const u8 *eph_key, size_t eph_key_size,
 					  u8 sw_secret[BLK_CRYPTO_SW_SECRET_SIZE])
@@ -2124,6 +2143,11 @@ static const struct blk_crypto_ll_ops sdhci_msm_crypto_ops = {
 	.import_key		= sdhci_msm_ice_import_key,
 	.generate_key		= sdhci_msm_ice_generate_key,
 	.prepare_key		= sdhci_msm_ice_prepare_key,
+=======
+static const struct blk_crypto_ll_ops sdhci_msm_crypto_ops = {
+	.keyslot_program	= sdhci_msm_ice_keyslot_program,
+	.keyslot_evict		= sdhci_msm_ice_keyslot_evict,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #else /* CONFIG_MMC_CRYPTO */
@@ -2871,9 +2895,12 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 
 	msm_host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY | MMC_CAP_NEED_RSP_BUSY;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_CRYPTO
 	host->mmc_host_ops.request = sdhci_msm_request;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the timeout value to max possible */
 	host->max_timeout_count = 0xF;
 

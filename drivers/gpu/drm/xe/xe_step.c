@@ -109,6 +109,7 @@ static const int pvc_basedie_subids[] = {
 __diag_pop();
 
 /**
+<<<<<<< HEAD
  * xe_step_platform_get - Determine platform-level stepping from PCI revid
  * @xe: Xe device
  *
@@ -131,23 +132,35 @@ void xe_step_platform_get(struct xe_device *xe)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_step_pre_gmdid_get - Determine IP steppings from PCI revid
  * @xe: Xe device
  *
  * Convert the PCI revid into proper IP steppings.  This should only be
  * used on platforms that do not have GMD_ID support.
  */
+<<<<<<< HEAD
 void xe_step_pre_gmdid_get(struct xe_device *xe)
 {
 	const struct xe_step_info *revids = NULL;
+=======
+struct xe_step_info xe_step_pre_gmdid_get(struct xe_device *xe)
+{
+	const struct xe_step_info *revids = NULL;
+	struct xe_step_info step = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 revid = xe->info.revid;
 	int size = 0;
 	const int *basedie_info = NULL;
 	int basedie_size = 0;
 	int baseid = 0;
+<<<<<<< HEAD
 	u8 graphics = STEP_NONE;
 	u8 media = STEP_NONE;
 	u8 basedie = STEP_NONE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xe->info.platform == XE_PVC) {
 		baseid = FIELD_GET(GENMASK(5, 3), xe->info.revid);
@@ -190,12 +203,19 @@ void xe_step_pre_gmdid_get(struct xe_device *xe)
 
 	/* Not using the stepping scheme for the platform yet. */
 	if (!revids)
+<<<<<<< HEAD
 		goto done;
 
 	if (revid < size && revids[revid].graphics != STEP_NONE) {
 		graphics = revids[revid].graphics;
 		media = revids[revid].media;
 		basedie = revids[revid].basedie;
+=======
+		return step;
+
+	if (revid < size && revids[revid].graphics != STEP_NONE) {
+		step = revids[revid];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		drm_warn(&xe->drm, "Unknown revid 0x%02x\n", revid);
 
@@ -213,6 +233,7 @@ void xe_step_pre_gmdid_get(struct xe_device *xe)
 		if (revid < size) {
 			drm_dbg(&xe->drm, "Using steppings for revid 0x%02x\n",
 				revid);
+<<<<<<< HEAD
 			graphics = revids[revid].graphics;
 			media = revids[revid].media;
 			basedie = revids[revid].basedie;
@@ -237,6 +258,27 @@ done:
 	xe->info.step.graphics = graphics;
 	xe->info.step.media = media;
 	xe->info.step.basedie = basedie;
+=======
+			step = revids[revid];
+		} else {
+			drm_dbg(&xe->drm, "Using future steppings\n");
+			step.graphics = STEP_FUTURE;
+		}
+	}
+
+	drm_WARN_ON(&xe->drm, step.graphics == STEP_NONE);
+
+	if (basedie_info && basedie_size) {
+		if (baseid < basedie_size && basedie_info[baseid] != STEP_NONE) {
+			step.basedie = basedie_info[baseid];
+		} else {
+			drm_warn(&xe->drm, "Unknown baseid 0x%02x\n", baseid);
+			step.basedie = STEP_FUTURE;
+		}
+	}
+
+	return step;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -251,6 +293,7 @@ done:
  * all platforms:  major steppings (A0, B0, etc.) are 4 apart, with minor
  * steppings (A1, A2, etc.) taking the values in between.
  */
+<<<<<<< HEAD
 void xe_step_gmdid_get(struct xe_device *xe,
 		       u32 graphics_gmdid_revid,
 		       u32 media_gmdid_revid)
@@ -260,18 +303,40 @@ void xe_step_gmdid_get(struct xe_device *xe,
 
 	if (graphics >= STEP_FUTURE) {
 		graphics = STEP_FUTURE;
+=======
+struct xe_step_info xe_step_gmdid_get(struct xe_device *xe,
+				      u32 graphics_gmdid_revid,
+				      u32 media_gmdid_revid)
+{
+	struct xe_step_info step = {
+		.graphics = STEP_A0 + graphics_gmdid_revid,
+		.media = STEP_A0 + media_gmdid_revid,
+	};
+
+	if (step.graphics >= STEP_FUTURE) {
+		step.graphics = STEP_FUTURE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg(&xe->drm, "Graphics GMD_ID revid value %d treated as future stepping\n",
 			graphics_gmdid_revid);
 	}
 
+<<<<<<< HEAD
 	if (media >= STEP_FUTURE) {
 		media = STEP_FUTURE;
+=======
+	if (step.media >= STEP_FUTURE) {
+		step.media = STEP_FUTURE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg(&xe->drm, "Media GMD_ID revid value %d treated as future stepping\n",
 			media_gmdid_revid);
 	}
 
+<<<<<<< HEAD
 	xe->info.step.graphics = graphics;
 	xe->info.step.media = media;
+=======
+	return step;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define STEP_NAME_CASE(name)	\

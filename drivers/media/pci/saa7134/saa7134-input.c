@@ -834,7 +834,10 @@ void saa7134_input_fini(struct saa7134_dev *dev)
 		return;
 
 	rc_unregister_device(dev->remote->dev);
+<<<<<<< HEAD
 	rc_free_device(dev->remote->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev->remote);
 	dev->remote = NULL;
 }

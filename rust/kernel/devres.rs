@@ -23,6 +23,7 @@ use crate::{
         rcu,
         Arc, //
     },
+<<<<<<< HEAD
     types::{
         ForeignOwnable,
         Opaque, //
@@ -39,6 +40,11 @@ struct Inner<T> {
     data: Revocable<T>,
 }
 
+=======
+    types::ForeignOwnable,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
 /// manage their lifetime.
 ///
@@ -124,6 +130,7 @@ struct Inner<T> {
 /// ```
 pub struct Devres<T: Send> {
     dev: ARef<Device>,
+<<<<<<< HEAD
     inner: Arc<Inner<T>>,
 }
 
@@ -182,6 +189,14 @@ mod base {
         // SAFETY: Safety requirements are the same as `bindings::devres_node_remove`.
         unsafe { bindings::devres_node_remove(dev, node) }
     }
+=======
+    /// Pointer to [`Self::devres_callback`].
+    ///
+    /// Has to be stored, since Rust does not guarantee to always return the same address for a
+    /// function. However, the C API uses the address as a key.
+    callback: unsafe extern "C" fn(*mut c_void),
+    data: Arc<Revocable<T>>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl<T: Send> Devres<T> {
@@ -193,6 +208,7 @@ impl<T: Send> Devres<T> {
     where
         Error: From<E>,
     {
+<<<<<<< HEAD
         let inner = Arc::pin_init::<Error>(
             try_pin_init!(Inner {
                 node <- Opaque::ffi_init(|node: *mut bindings::devres_node| {
@@ -234,10 +250,37 @@ impl<T: Send> Devres<T> {
         Ok(Self {
             dev: dev.into(),
             inner,
+=======
+        let callback = Self::devres_callback;
+        let data = Arc::pin_init(Revocable::new(data), GFP_KERNEL)?;
+        let devres_data = data.clone();
+
+        // SAFETY:
+        // - `dev.as_raw()` is a pointer to a valid bound device.
+        // - `data` is guaranteed to be a valid for the duration of the lifetime of `Self`.
+        // - `devm_add_action()` is guaranteed not to call `callback` for the entire lifetime of
+        //   `dev`.
+        to_result(unsafe {
+            bindings::devm_add_action(
+                dev.as_raw(),
+                Some(callback),
+                Arc::as_ptr(&data).cast_mut().cast(),
+            )
+        })?;
+
+        // `devm_add_action()` was successful and has consumed the reference count.
+        core::mem::forget(devres_data);
+
+        Ok(Self {
+            dev: dev.into(),
+            callback,
+            data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         })
     }
 
     fn data(&self) -> &Revocable<T> {
+<<<<<<< HEAD
         &self.inner.data
     }
 
@@ -273,6 +316,32 @@ impl<T: Send> Devres<T> {
         // - `self.device().as_raw()` is a valid pointer to a bound `struct device`.
         // - `self.inner.node.get()` is a valid pointer to a `struct devres_node`.
         unsafe { base::devres_node_remove(self.device().as_raw(), self.inner.node.get()) }
+=======
+        &self.data
+    }
+
+    #[allow(clippy::missing_safety_doc)]
+    unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
+        // SAFETY: In `Self::new` we've passed a valid pointer of `Revocable<T>` to
+        // `devm_add_action()`, hence `ptr` must be a valid pointer to `Revocable<T>`.
+        let data = unsafe { Arc::from_raw(ptr.cast::<Revocable<T>>()) };
+
+        data.revoke();
+    }
+
+    fn remove_action(&self) -> bool {
+        // SAFETY:
+        // - `self.dev` is a valid `Device`,
+        // - the `action` and `data` pointers are the exact same ones as given to
+        //   `devm_add_action()` previously,
+        (unsafe {
+            bindings::devm_remove_action_nowarn(
+                self.dev.as_raw(),
+                Some(self.callback),
+                core::ptr::from_ref(self.data()).cast_mut().cast(),
+            )
+        } == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Return a reference of the [`Device`] this [`Devres`] instance has been created with.
@@ -354,12 +423,21 @@ impl<T: Send> Drop for Devres<T> {
         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
         // anymore, hence it is safe not to wait for the grace period to finish.
         if unsafe { self.data().revoke_nosync() } {
+<<<<<<< HEAD
             // We revoked `self.data` before devres did, hence try to remove it.
             if self.remove_node() {
                 // SAFETY: In `Self::new` we have taken an additional reference count of `self.data`
                 // for `devres_node_add()`. Since `remove_node()` was successful, we have to drop
                 // this additional reference count.
                 drop(unsafe { Arc::from_raw(Arc::as_ptr(&self.inner)) });
+=======
+            // We revoked `self.data` before the devres action did, hence try to remove it.
+            if self.remove_action() {
+                // SAFETY: In `Self::new` we have taken an additional reference count of `self.data`
+                // for `devm_add_action()`. Since `remove_action()` was successful, we have to drop
+                // this additional reference count.
+                drop(unsafe { Arc::from_raw(Arc::as_ptr(&self.data)) });
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             }
         }
     }

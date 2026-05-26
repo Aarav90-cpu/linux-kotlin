@@ -754,11 +754,14 @@ properties:
           - const: khadas,edge2
           - const: rockchip,rk3588s
 
+<<<<<<< HEAD
       - description: Khadas Edge-2L series boards
         items:
           - const: khadas,edge-2l
           - const: rockchip,rk3576
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Kobol Helios64
         items:
           - const: kobol,helios64
@@ -813,22 +816,28 @@ properties:
           - const: netxeon,r89
           - const: rockchip,rk3288
 
+<<<<<<< HEAD
       - description: Onion Omega4 Evaluation board
         items:
           - const: onion,omega4-evb
           - const: onion,omega4
           - const: rockchip,rv1103b
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: OPEN AI LAB EAIDK-610
         items:
           - const: openailab,eaidk-610
           - const: rockchip,rk3399
 
+<<<<<<< HEAD
       - description: OneThing Edge Cube series
         items:
           - const: onething,edge-cube
           - const: rockchip,rk3566
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Xunlong Orange Pi RK3399 board
         items:
           - const: xunlong,rk3399-orangepi
@@ -1203,9 +1212,13 @@ properties:
 
       - description: Rockchip RK3576 Evaluation board
         items:
+<<<<<<< HEAD
           - enum:
               - rockchip,rk3576-evb1-v10
               - rockchip,rk3576-evb2-v10
+=======
+          - const: rockchip,rk3576-evb1-v10
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: rockchip,rk3576
 
       - description: Rockchip RK3588 Evaluation board

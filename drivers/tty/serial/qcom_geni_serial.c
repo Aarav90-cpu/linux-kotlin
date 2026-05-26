@@ -146,7 +146,10 @@ struct qcom_geni_serial_port {
 	int wakeup_irq;
 	bool rx_tx_swap;
 	bool cts_rts_swap;
+<<<<<<< HEAD
 	bool manual_flow;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct qcom_geni_private_data private_data;
 	const struct qcom_geni_device_data *dev_data;
@@ -251,7 +254,11 @@ static void qcom_geni_serial_set_mctrl(struct uart_port *uport,
 	if (mctrl & TIOCM_LOOP)
 		port->loopback = RX_TX_CTS_RTS_SORTED;
 
+<<<<<<< HEAD
 	if (port->manual_flow && !(mctrl & TIOCM_RTS) && !uport->suspended)
+=======
+	if (!(mctrl & TIOCM_RTS) && !uport->suspended)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		uart_manual_rfr = UART_MANUAL_RFR_EN | UART_RFR_NOT_READY;
 	writel(uart_manual_rfr, uport->membase + SE_UART_MANUAL_RFR);
 }
@@ -1282,7 +1289,11 @@ static int geni_serial_set_rate(struct uart_port *uport, unsigned int baud)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u, clk_idx = %u\n",
+=======
+	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n, clk_idx = %u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		baud * sampling_rate, clk_rate, clk_div, clk_idx);
 
 	uport->uartclk = clk_rate;
@@ -1402,6 +1413,7 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 	else
 		stop_bit_len = TX_STOP_BIT_LEN_1;
 
+<<<<<<< HEAD
 	/* Configure flow control based on CRTSCTS flag.
 	 * When CRTSCTS is set, use HW/auto flow control mode, where HW
 	 * controls the RTS/CTS pin based FIFO state.
@@ -1417,6 +1429,13 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
 		tx_trans_cfg |= UART_CTS_MASK;
 		port->manual_flow = true;
 	}
+=======
+	/* flow control, clear the CTS_MASK bit if using flow control. */
+	if (termios->c_cflag & CRTSCTS)
+		tx_trans_cfg &= ~UART_CTS_MASK;
+	else
+		tx_trans_cfg |= UART_CTS_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (baud) {
 		uart_update_timeout(uport, termios->c_cflag, baud);

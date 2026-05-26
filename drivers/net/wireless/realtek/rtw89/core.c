@@ -463,7 +463,11 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
 	chan = rtw89_mgnt_chan_get(rtwdev, 0);
 	__rtw89_core_set_chip_txpwr(rtwdev, chan, RTW89_PHY_0);
 
+<<<<<<< HEAD
 	if (rtwdev->chip->chip_gen == RTW89_CHIP_AX)
+=======
+	if (!rtwdev->support_mlo)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	chan = rtw89_mgnt_chan_get(rtwdev, 1);
@@ -558,7 +562,11 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
 	chan = rtw89_mgnt_chan_get(rtwdev, 0);
 	__rtw89_set_channel(rtwdev, chan, RTW89_MAC_0, RTW89_PHY_0);
 
+<<<<<<< HEAD
 	if (rtwdev->chip->chip_gen == RTW89_CHIP_AX)
+=======
+	if (!rtwdev->support_mlo)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	chan = rtw89_mgnt_chan_get(rtwdev, 1);
@@ -3203,7 +3211,11 @@ static void rtw89_core_update_rx_freq_from_ie(struct rtw89_dev *rtwdev,
 	u8 *variable;
 	int chan;
 
+<<<<<<< HEAD
 	if (!rtwdev->chip->rx_freq_from_ie)
+=======
+	if (!rtwdev->chip->rx_freq_frome_ie)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (!rtwdev->scanning)
@@ -3272,6 +3284,7 @@ out:
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 static void __rtw89_core_tid_rx_stats_reset(struct rtw89_tid_stats *tid_stats)
 {
 	tid_stats->last_pn = -1LL;
@@ -3380,6 +3393,8 @@ static bool rtw89_core_skb_pn_valid(struct rtw89_dev *rtwdev,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rtw89_core_rx_to_mac80211(struct rtw89_dev *rtwdev,
 				      struct rtw89_rx_phy_ppdu *phy_ppdu,
 				      struct rtw89_rx_desc_info *desc_info,
@@ -3529,7 +3544,10 @@ void rtw89_core_query_rxdesc(struct rtw89_dev *rtwdev,
 	desc_info->sec_cam_id = le32_get_bits(rxd_l->dword5, AX_RXD_SEC_CAM_IDX_MASK);
 	desc_info->mac_id = le32_get_bits(rxd_l->dword5, AX_RXD_MAC_ID_MASK);
 	desc_info->rx_pl_id = le32_get_bits(rxd_l->dword5, AX_RXD_RX_PL_ID_MASK);
+<<<<<<< HEAD
 	desc_info->sec_type = le32_get_bits(rxd_l->dword7, AX_RXD_SEC_TYPE_MASK);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(rtw89_core_query_rxdesc);
 
@@ -3559,7 +3577,10 @@ void rtw89_core_query_rxdesc_v2(struct rtw89_dev *rtwdev,
 	desc_info->mac_id = le32_get_bits(rxd_s->dword2, BE_RXD_MAC_ID_MASK);
 	desc_info->addr_cam_valid = le32_get_bits(rxd_s->dword2, BE_RXD_ADDR_CAM_VLD);
 
+<<<<<<< HEAD
 	desc_info->sec_type = le32_get_bits(rxd_s->dword3, BE_RXD_SEC_TYPE_MASK);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc_info->icv_err = le32_get_bits(rxd_s->dword3, BE_RXD_ICV_ERR);
 	desc_info->crc32_err = le32_get_bits(rxd_s->dword3, BE_RXD_CRC32_ERR);
 	desc_info->hw_dec = le32_get_bits(rxd_s->dword3, BE_RXD_HW_DEC);
@@ -3633,7 +3654,10 @@ void rtw89_core_query_rxdesc_v3(struct rtw89_dev *rtwdev,
 	desc_info->mac_id = le32_get_bits(rxd_s->dword2, BE_RXD_MAC_ID_V1);
 	desc_info->addr_cam_valid = le32_get_bits(rxd_s->dword2, BE_RXD_ADDR_CAM_VLD);
 
+<<<<<<< HEAD
 	desc_info->sec_type = le32_get_bits(rxd_s->dword3, BE_RXD_SEC_TYPE_MASK);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc_info->icv_err = le32_get_bits(rxd_s->dword3, BE_RXD_ICV_ERR);
 	desc_info->crc32_err = le32_get_bits(rxd_s->dword3, BE_RXD_CRC32_ERR);
 	desc_info->hw_dec = le32_get_bits(rxd_s->dword3, BE_RXD_HW_DEC);
@@ -3913,10 +3937,13 @@ void rtw89_core_rx(struct rtw89_dev *rtwdev,
 	memset(rx_status, 0, sizeof(*rx_status));
 	rtw89_core_update_rx_status(rtwdev, skb, desc_info, rx_status);
 	rtw89_core_rx_pkt_hdl(rtwdev, skb, desc_info);
+<<<<<<< HEAD
 
 	if (!rtw89_core_skb_pn_valid(rtwdev, desc_info, skb))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (desc_info->long_rxdesc &&
 	    BIT(desc_info->frame_type) & PPDU_FILTER_BITMAP)
 		skb_queue_tail(&ppdu_sts->rx_queue[band], skb);
@@ -4828,6 +4855,7 @@ static void rtw89_track_work(struct wiphy *wiphy, struct wiphy_work *work)
 		rtw89_enter_lps_track(rtwdev);
 }
 
+<<<<<<< HEAD
 void rtw89_core_dm_disable_cfg(struct rtw89_dev *rtwdev, u32 new)
 {
 	struct rtw89_hal *hal = &rtwdev->hal;
@@ -4857,6 +4885,8 @@ void rtw89_core_dm_disable_clr(struct rtw89_dev *rtwdev, enum rtw89_dm_type type
 	rtw89_core_dm_disable_cfg(rtwdev, cur & ~BIT(type));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u8 rtw89_core_acquire_bit_map(unsigned long *addr, unsigned long size)
 {
 	unsigned long bit;
@@ -6262,6 +6292,10 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
 		return -ENOMEM;
 	spin_lock_init(&rtwdev->ba_lock);
 	spin_lock_init(&rtwdev->rpwm_lock);
+<<<<<<< HEAD
+=======
+	mutex_init(&rtwdev->rf_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rtwdev->total_sta_assoc = 0;
 
 	rtw89_init_wait(&rtwdev->mcc.wait);
@@ -6320,6 +6354,10 @@ void rtw89_core_deinit(struct rtw89_dev *rtwdev)
 	__rtw89_fw_free_all_early_h2c(rtwdev);
 
 	destroy_workqueue(rtwdev->txq_wq);
+<<<<<<< HEAD
+=======
+	mutex_destroy(&rtwdev->rf_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(rtw89_core_deinit);
 
@@ -6895,8 +6933,12 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
 	bool support_mlo;
 	bool no_chanctx;
 
+<<<<<<< HEAD
 	firmware = rtw89_early_fw_feature_recognize(device, chip, variant,
 						    &early_fw, &fw_format);
+=======
+	firmware = rtw89_early_fw_feature_recognize(device, chip, &early_fw, &fw_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ops = kmemdup(&rtw89_ops, sizeof(rtw89_ops), GFP_KERNEL);
 	if (!ops)

@@ -64,6 +64,16 @@ static bool rodata_is_rw __ro_after_init = true;
  */
 long __section(".mmuoff.data.write") __early_cpu_boot_status;
 
+<<<<<<< HEAD
+=======
+/*
+ * Empty_zero_page is a special page that is used for zero-initialized data
+ * and COW.
+ */
+unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
+EXPORT_SYMBOL(empty_zero_page);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEFINE_SPINLOCK(swapper_pgdir_lock);
 static DEFINE_MUTEX(fixmap_lock);
 
@@ -105,7 +115,11 @@ pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
 }
 EXPORT_SYMBOL(phys_mem_access_prot);
 
+<<<<<<< HEAD
 static phys_addr_t __init early_pgtable_alloc(enum pgtable_level pgtable_level)
+=======
+static phys_addr_t __init early_pgtable_alloc(enum pgtable_type pgtable_type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	phys_addr_t phys;
 
@@ -190,14 +204,22 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
 static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
 			       unsigned long end, phys_addr_t phys,
 			       pgprot_t prot,
+<<<<<<< HEAD
 			       phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       int flags)
 {
 	unsigned long next;
 	pmd_t pmd = READ_ONCE(*pmdp);
 	pte_t *ptep;
 
+<<<<<<< HEAD
 	BUG_ON(pmd_leaf(pmd));
+=======
+	BUG_ON(pmd_sect(pmd));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pmd_none(pmd)) {
 		pmdval_t pmdval = PMD_TYPE_TABLE | PMD_TABLE_UXN | PMD_TABLE_AF;
 		phys_addr_t pte_phys;
@@ -205,7 +227,11 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
 		if (flags & NO_EXEC_MAPPINGS)
 			pmdval |= PMD_TABLE_PXN;
 		BUG_ON(!pgtable_alloc);
+<<<<<<< HEAD
 		pte_phys = pgtable_alloc(PGTABLE_LEVEL_PTE);
+=======
+		pte_phys = pgtable_alloc(TABLE_PTE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pte_phys == INVALID_PHYS_ADDR)
 			return -ENOMEM;
 		ptep = pte_set_fixmap(pte_phys);
@@ -245,7 +271,11 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
 
 static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
 		    phys_addr_t phys, pgprot_t prot,
+<<<<<<< HEAD
 		    phys_addr_t (*pgtable_alloc)(enum pgtable_level), int flags)
+=======
+		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long next;
 
@@ -285,7 +315,11 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
 static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
 			       unsigned long end, phys_addr_t phys,
 			       pgprot_t prot,
+<<<<<<< HEAD
 			       phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       int flags)
 {
 	int ret;
@@ -296,7 +330,11 @@ static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
 	/*
 	 * Check for initial section mappings in the pgd/pud.
 	 */
+<<<<<<< HEAD
 	BUG_ON(pud_leaf(pud));
+=======
+	BUG_ON(pud_sect(pud));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pud_none(pud)) {
 		pudval_t pudval = PUD_TYPE_TABLE | PUD_TABLE_UXN | PUD_TABLE_AF;
 		phys_addr_t pmd_phys;
@@ -304,7 +342,11 @@ static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
 		if (flags & NO_EXEC_MAPPINGS)
 			pudval |= PUD_TABLE_PXN;
 		BUG_ON(!pgtable_alloc);
+<<<<<<< HEAD
 		pmd_phys = pgtable_alloc(PGTABLE_LEVEL_PMD);
+=======
+		pmd_phys = pgtable_alloc(TABLE_PMD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pmd_phys == INVALID_PHYS_ADDR)
 			return -ENOMEM;
 		pmdp = pmd_set_fixmap(pmd_phys);
@@ -342,7 +384,11 @@ out:
 
 static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
 			  phys_addr_t phys, pgprot_t prot,
+<<<<<<< HEAD
 			  phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  int flags)
 {
 	int ret = 0;
@@ -357,7 +403,11 @@ static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
 		if (flags & NO_EXEC_MAPPINGS)
 			p4dval |= P4D_TABLE_PXN;
 		BUG_ON(!pgtable_alloc);
+<<<<<<< HEAD
 		pud_phys = pgtable_alloc(PGTABLE_LEVEL_PUD);
+=======
+		pud_phys = pgtable_alloc(TABLE_PUD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pud_phys == INVALID_PHYS_ADDR)
 			return -ENOMEM;
 		pudp = pud_set_fixmap(pud_phys);
@@ -408,7 +458,11 @@ out:
 
 static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
 			  phys_addr_t phys, pgprot_t prot,
+<<<<<<< HEAD
 			  phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  int flags)
 {
 	int ret;
@@ -423,7 +477,11 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
 		if (flags & NO_EXEC_MAPPINGS)
 			pgdval |= PGD_TABLE_PXN;
 		BUG_ON(!pgtable_alloc);
+<<<<<<< HEAD
 		p4d_phys = pgtable_alloc(PGTABLE_LEVEL_P4D);
+=======
+		p4d_phys = pgtable_alloc(TABLE_P4D);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (p4d_phys == INVALID_PHYS_ADDR)
 			return -ENOMEM;
 		p4dp = p4d_set_fixmap(p4d_phys);
@@ -460,7 +518,11 @@ out:
 static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
 				       unsigned long virt, phys_addr_t size,
 				       pgprot_t prot,
+<<<<<<< HEAD
 				       phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       int flags)
 {
 	int ret;
@@ -493,7 +555,11 @@ static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
 static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 				unsigned long virt, phys_addr_t size,
 				pgprot_t prot,
+<<<<<<< HEAD
 				phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				int flags)
 {
 	int ret;
@@ -509,7 +575,11 @@ static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 				     unsigned long virt, phys_addr_t size,
 				     pgprot_t prot,
+<<<<<<< HEAD
 				     phys_addr_t (*pgtable_alloc)(enum pgtable_level),
+=======
+				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     int flags)
 {
 	int ret;
@@ -521,7 +591,11 @@ static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 }
 
 static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
+<<<<<<< HEAD
 				       enum pgtable_level pgtable_level)
+=======
+				       enum pgtable_type pgtable_type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
 	struct ptdesc *ptdesc = pagetable_alloc(gfp & ~__GFP_ZERO, 0);
@@ -532,6 +606,7 @@ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
 
 	pa = page_to_phys(ptdesc_page(ptdesc));
 
+<<<<<<< HEAD
 	switch (pgtable_level) {
 	case PGTABLE_LEVEL_PTE:
 		BUG_ON(!pagetable_pte_ctor(mm, ptdesc));
@@ -548,12 +623,28 @@ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
 	case PGTABLE_LEVEL_PGD:
 		VM_WARN_ON(1);
 		break;
+=======
+	switch (pgtable_type) {
+	case TABLE_PTE:
+		BUG_ON(!pagetable_pte_ctor(mm, ptdesc));
+		break;
+	case TABLE_PMD:
+		BUG_ON(!pagetable_pmd_ctor(mm, ptdesc));
+		break;
+	case TABLE_PUD:
+		pagetable_pud_ctor(ptdesc);
+		break;
+	case TABLE_P4D:
+		pagetable_p4d_ctor(ptdesc);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return pa;
 }
 
 static phys_addr_t
+<<<<<<< HEAD
 pgd_pgtable_alloc_init_mm_gfp(enum pgtable_level pgtable_level, gfp_t gfp)
 {
 	return __pgd_pgtable_alloc(&init_mm, gfp, pgtable_level);
@@ -569,6 +660,23 @@ static phys_addr_t
 pgd_pgtable_alloc_special_mm(enum pgtable_level pgtable_level)
 {
 	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_level);
+=======
+pgd_pgtable_alloc_init_mm_gfp(enum pgtable_type pgtable_type, gfp_t gfp)
+{
+	return __pgd_pgtable_alloc(&init_mm, gfp, pgtable_type);
+}
+
+static phys_addr_t __maybe_unused
+pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
+{
+	return pgd_pgtable_alloc_init_mm_gfp(pgtable_type, GFP_PGTABLE_KERNEL);
+}
+
+static phys_addr_t
+pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
+{
+	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void split_contpte(pte_t *ptep)
@@ -589,7 +697,11 @@ static int split_pmd(pmd_t *pmdp, pmd_t pmd, gfp_t gfp, bool to_cont)
 	pte_t *ptep;
 	int i;
 
+<<<<<<< HEAD
 	pte_phys = pgd_pgtable_alloc_init_mm_gfp(PGTABLE_LEVEL_PTE, gfp);
+=======
+	pte_phys = pgd_pgtable_alloc_init_mm_gfp(TABLE_PTE, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pte_phys == INVALID_PHYS_ADDR)
 		return -ENOMEM;
 	ptep = (pte_t *)phys_to_virt(pte_phys);
@@ -636,7 +748,11 @@ static int split_pud(pud_t *pudp, pud_t pud, gfp_t gfp, bool to_cont)
 	pmd_t *pmdp;
 	int i;
 
+<<<<<<< HEAD
 	pmd_phys = pgd_pgtable_alloc_init_mm_gfp(PGTABLE_LEVEL_PMD, gfp);
+=======
+	pmd_phys = pgd_pgtable_alloc_init_mm_gfp(TABLE_PMD, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pmd_phys == INVALID_PHYS_ADDR)
 		return -ENOMEM;
 	pmdp = (pmd_t *)phys_to_virt(pmd_phys);
@@ -1245,7 +1361,11 @@ static void __init declare_vma(struct vm_struct *vma,
 
 static phys_addr_t kpti_ng_temp_alloc __initdata;
 
+<<<<<<< HEAD
 static phys_addr_t __init kpti_ng_pgd_alloc(enum pgtable_level pgtable_level)
+=======
+static phys_addr_t __init kpti_ng_pgd_alloc(enum pgtable_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	kpti_ng_temp_alloc -= PAGE_SIZE;
 	return kpti_ng_temp_alloc;
@@ -1503,7 +1623,11 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
 			continue;
 
 		WARN_ON(!pmd_present(pmd));
+<<<<<<< HEAD
 		if (pmd_leaf(pmd)) {
+=======
+		if (pmd_sect(pmd)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pmd_clear(pmdp);
 			if (free_mapped) {
 				/* CONT blocks are not supported in the vmemmap */
@@ -1535,7 +1659,11 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
 			continue;
 
 		WARN_ON(!pud_present(pud));
+<<<<<<< HEAD
 		if (pud_leaf(pud)) {
+=======
+		if (pud_sect(pud)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pud_clear(pudp);
 			if (free_mapped) {
 				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
@@ -1650,7 +1778,11 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
 		if (pmd_none(pmd))
 			continue;
 
+<<<<<<< HEAD
 		WARN_ON(!pmd_present(pmd) || !pmd_table(pmd));
+=======
+		WARN_ON(!pmd_present(pmd) || !pmd_table(pmd) || pmd_sect(pmd));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		free_empty_pte_table(pmdp, addr, next, floor, ceiling);
 	} while (addr = next, addr < end);
 
@@ -1690,7 +1822,11 @@ static void free_empty_pud_table(p4d_t *p4dp, unsigned long addr,
 		if (pud_none(pud))
 			continue;
 
+<<<<<<< HEAD
 		WARN_ON(!pud_present(pud) || !pud_table(pud));
+=======
+		WARN_ON(!pud_present(pud) || !pud_table(pud) || pud_sect(pud));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		free_empty_pmd_table(pudp, addr, next, floor, ceiling);
 	} while (addr = next, addr < end);
 
@@ -1786,7 +1922,11 @@ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
 {
 	vmemmap_verify((pte_t *)pmdp, node, addr, next);
 
+<<<<<<< HEAD
 	return pmd_leaf(READ_ONCE(*pmdp));
+=======
+	return pmd_sect(READ_ONCE(*pmdp));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
@@ -1850,7 +1990,11 @@ void p4d_clear_huge(p4d_t *p4dp)
 
 int pud_clear_huge(pud_t *pudp)
 {
+<<<<<<< HEAD
 	if (!pud_leaf(READ_ONCE(*pudp)))
+=======
+	if (!pud_sect(READ_ONCE(*pudp)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	pud_clear(pudp);
 	return 1;
@@ -1858,7 +2002,11 @@ int pud_clear_huge(pud_t *pudp)
 
 int pmd_clear_huge(pmd_t *pmdp)
 {
+<<<<<<< HEAD
 	if (!pmd_leaf(READ_ONCE(*pmdp)))
+=======
+	if (!pmd_sect(READ_ONCE(*pmdp)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	pmd_clear(pmdp);
 	return 1;
@@ -2033,6 +2181,7 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
 	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
 }
 
+<<<<<<< HEAD
 
 static bool addr_splits_kernel_leaf(unsigned long addr)
 {
@@ -2134,6 +2283,8 @@ static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * This memory hotplug notifier helps prevent boot memory from being
  * inadvertently removed as it blocks pfn range offlining process in
@@ -2142,11 +2293,16 @@ static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
  * In future if and when boot memory could be removed, this notifier
  * should be dropped and free_hotplug_page_range() should handle any
  * reserved pages allocated during boot.
+<<<<<<< HEAD
  *
  * This also blocks any memory remove that would have caused a split
  * in leaf entry in kernel linear or vmemmap mapping.
  */
 static int prevent_memory_remove_notifier(struct notifier_block *nb,
+=======
+ */
+static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   unsigned long action, void *data)
 {
 	struct mem_section *ms;
@@ -2192,6 +2348,7 @@ static int prevent_memory_remove_notifier(struct notifier_block *nb,
 			return NOTIFY_DONE;
 		}
 	}
+<<<<<<< HEAD
 
 	if (!can_unmap_without_split(pfn, arg->nr_pages))
 		return NOTIFY_BAD;
@@ -2201,6 +2358,13 @@ static int prevent_memory_remove_notifier(struct notifier_block *nb,
 
 static struct notifier_block prevent_memory_remove_nb = {
 	.notifier_call = prevent_memory_remove_notifier,
+=======
+	return NOTIFY_OK;
+}
+
+static struct notifier_block prevent_bootmem_remove_nb = {
+	.notifier_call = prevent_bootmem_remove_notifier,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -2250,7 +2414,11 @@ static void validate_bootmem_online(void)
 	}
 }
 
+<<<<<<< HEAD
 static int __init prevent_memory_remove_init(void)
+=======
+static int __init prevent_bootmem_remove_init(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 
@@ -2258,13 +2426,21 @@ static int __init prevent_memory_remove_init(void)
 		return ret;
 
 	validate_bootmem_online();
+<<<<<<< HEAD
 	ret = register_memory_notifier(&prevent_memory_remove_nb);
+=======
+	ret = register_memory_notifier(&prevent_bootmem_remove_nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		pr_err("%s: Notifier registration failed %d\n", __func__, ret);
 
 	return ret;
 }
+<<<<<<< HEAD
 early_initcall(prevent_memory_remove_init);
+=======
+early_initcall(prevent_bootmem_remove_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
@@ -2280,7 +2456,11 @@ pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
 		 */
 		if (pte_accessible(vma->vm_mm, pte) && pte_user_exec(pte))
 			__flush_tlb_range(vma, addr, nr * PAGE_SIZE,
+<<<<<<< HEAD
 					  PAGE_SIZE, 3, TLBF_NOWALKCACHE);
+=======
+					  PAGE_SIZE, true, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return pte;
@@ -2319,7 +2499,11 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
 	phys_addr_t ttbr1 = phys_to_ttbr(virt_to_phys(pgdp));
 
 	if (cnp)
+<<<<<<< HEAD
 		ttbr1 |= TTBRx_EL1_CnP;
+=======
+		ttbr1 |= TTBR_CNP_BIT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	replace_phys = (void *)__pa_symbol(idmap_cpu_replace_ttbr1);
 
@@ -2337,7 +2521,11 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
 }
 
 #ifdef CONFIG_ARCH_HAS_PKEYS
+<<<<<<< HEAD
 int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+=======
+int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 new_por;
 	u64 old_por;

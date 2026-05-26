@@ -50,6 +50,7 @@
 
 #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 
+<<<<<<< HEAD
 /*
  * Divide positive or negative dividend by positive or negative divisor
  * and round to closest integer. Result is undefined for negative
@@ -68,4 +69,6 @@
 		(((__x) - ((__d) / 2)) / (__d));	\
 })
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _UAPI_LINUX_CONST_H */

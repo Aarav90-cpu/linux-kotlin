@@ -40,6 +40,19 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
 	return good_frame;
 }
 
+<<<<<<< HEAD
+=======
+static int dwxgmac2_get_tx_len(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des2) & XGMAC_TDES2_B1L);
+}
+
+static int dwxgmac2_get_tx_owner(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des3) & XGMAC_TDES3_OWN) > 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dwxgmac2_set_tx_owner(struct dma_desc *p)
 {
 	p->des3 |= cpu_to_le32(XGMAC_TDES3_OWN);
@@ -55,6 +68,14 @@ static void dwxgmac2_set_rx_owner(struct dma_desc *p, int disable_rx_ic)
 	p->des3 |= cpu_to_le32(flags);
 }
 
+<<<<<<< HEAD
+=======
+static int dwxgmac2_get_tx_ls(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des3) & XGMAC_RDES3_LD) > 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u16 dwxgmac2_wrback_get_rx_vlan_tci(struct dma_desc *p)
 {
 	return le32_to_cpu(p->des0) & XGMAC_RDES0_VLAN_TAG_MASK;
@@ -130,13 +151,21 @@ static int dwxgmac2_get_rx_timestamp_status(void *desc, void *next_desc,
 }
 
 static void dwxgmac2_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
+<<<<<<< HEAD
 				  u8 descriptor_mode, int end, int bfsize)
+=======
+				  int mode, int end, int bfsize)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	dwxgmac2_set_rx_owner(p, disable_rx_ic);
 }
 
+<<<<<<< HEAD
 static void dwxgmac2_init_tx_desc(struct dma_desc *p, u8 descriptor_mode,
 				  int end)
+=======
+static void dwxgmac2_init_tx_desc(struct dma_desc *p, int mode, int end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	p->des0 = 0;
 	p->des1 = 0;
@@ -145,9 +174,14 @@ static void dwxgmac2_init_tx_desc(struct dma_desc *p, u8 descriptor_mode,
 }
 
 static void dwxgmac2_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
+<<<<<<< HEAD
 				     bool csum_flag, u8 descriptor_mode,
 				     bool tx_own, bool ls,
 				     unsigned int tot_pkt_len)
+=======
+				     bool csum_flag, int mode, bool tx_own,
+				     bool ls, unsigned int tot_pkt_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 tdes3 = le32_to_cpu(p->des3);
 
@@ -221,7 +255,11 @@ static void dwxgmac2_prepare_tso_tx_desc(struct dma_desc *p, int is_fs,
 	p->des3 = cpu_to_le32(tdes3);
 }
 
+<<<<<<< HEAD
 static void dwxgmac2_release_tx_desc(struct dma_desc *p, u8 descriptor_mode)
+=======
+static void dwxgmac2_release_tx_desc(struct dma_desc *p, int mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	p->des0 = 0;
 	p->des1 = 0;
@@ -342,8 +380,16 @@ static void dwxgmac2_set_tbs(struct dma_edesc *p, u32 sec, u32 nsec)
 const struct stmmac_desc_ops dwxgmac210_desc_ops = {
 	.tx_status = dwxgmac2_get_tx_status,
 	.rx_status = dwxgmac2_get_rx_status,
+<<<<<<< HEAD
 	.set_tx_owner = dwxgmac2_set_tx_owner,
 	.set_rx_owner = dwxgmac2_set_rx_owner,
+=======
+	.get_tx_len = dwxgmac2_get_tx_len,
+	.get_tx_owner = dwxgmac2_get_tx_owner,
+	.set_tx_owner = dwxgmac2_set_tx_owner,
+	.set_rx_owner = dwxgmac2_set_rx_owner,
+	.get_tx_ls = dwxgmac2_get_tx_ls,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_rx_vlan_tci = dwxgmac2_wrback_get_rx_vlan_tci,
 	.get_rx_vlan_valid = dwxgmac2_wrback_get_rx_vlan_valid,
 	.get_rx_frame_len = dwxgmac2_get_rx_frame_len,

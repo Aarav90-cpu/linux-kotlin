@@ -397,7 +397,11 @@ static int dsp_buffer_free(struct cx25821_audio_dev *chip)
 {
 	struct cx25821_riscmem *risc = &chip->buf->risc;
 
+<<<<<<< HEAD
 	WARN_ON(!chip->dma_size);
+=======
+	BUG_ON(!chip->dma_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dprintk(2, "Freeing buffer\n");
 	cx25821_alsa_dma_unmap(chip);
@@ -509,8 +513,13 @@ static int snd_cx25821_hw_params(struct snd_pcm_substream *substream,
 	chip->num_periods = params_periods(hw_params);
 	chip->dma_size = chip->period_size * params_periods(hw_params);
 
+<<<<<<< HEAD
 	WARN_ON(!chip->dma_size);
 	WARN_ON(chip->num_periods & (chip->num_periods - 1));
+=======
+	BUG_ON(!chip->dma_size);
+	BUG_ON(chip->num_periods & (chip->num_periods - 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf = kzalloc_obj(*buf);
 	if (NULL == buf)

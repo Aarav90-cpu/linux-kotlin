@@ -14,7 +14,10 @@ TEST_FILES := \
 TEST_GEN_FILES := \
 	$(patsubst %.c,%.o,$(wildcard *.bpf.c)) \
 	csum \
+<<<<<<< HEAD
 	gro \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xdp_helper \
 # end of TEST_GEN_FILES
 

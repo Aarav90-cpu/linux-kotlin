@@ -56,6 +56,10 @@ pub(crate) struct Allocation {
     pub(crate) process: Arc<Process>,
     allocation_info: Option<AllocationInfo>,
     free_on_drop: bool,
+<<<<<<< HEAD
+=======
+    pub(crate) oneway_spam_detected: bool,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #[allow(dead_code)]
     pub(crate) debug_id: usize,
 }
@@ -67,6 +71,10 @@ impl Allocation {
         offset: usize,
         size: usize,
         ptr: usize,
+<<<<<<< HEAD
+=======
+        oneway_spam_detected: bool,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ) -> Self {
         Self {
             process,
@@ -74,6 +82,10 @@ impl Allocation {
             size,
             ptr,
             debug_id,
+<<<<<<< HEAD
+=======
+            oneway_spam_detected,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             allocation_info: None,
             free_on_drop: true,
         }
@@ -205,7 +217,10 @@ impl Allocation {
             let res = FileDescriptorReservation::get_unused_fd_flags(bindings::O_CLOEXEC)?;
             let fd = res.reserved_fd();
             self.write::<u32>(file_info.buffer_offset, &fd)?;
+<<<<<<< HEAD
             crate::trace::trace_transaction_fd_recv(self.debug_id, fd, file_info.buffer_offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             reservations.push(
                 Reservation {
@@ -258,6 +273,7 @@ impl Drop for Allocation {
                 }
             }
 
+<<<<<<< HEAD
             if self.process.task == kernel::current!().group_leader() {
                 for &fd in &info.file_list.close_on_free {
                     let closer = match DeferredFdCloser::new(GFP_KERNEL) {
@@ -274,6 +290,21 @@ impl Drop for Allocation {
                     // case.
                     let _ = closer.close_fd(fd);
                 }
+=======
+            for &fd in &info.file_list.close_on_free {
+                let closer = match DeferredFdCloser::new(GFP_KERNEL) {
+                    Ok(closer) => closer,
+                    Err(kernel::alloc::AllocError) => {
+                        // Ignore allocation failures.
+                        break;
+                    }
+                };
+
+                // Here, we ignore errors. The operation can fail if the fd is not valid, or if the
+                // method is called from a kthread. However, this is always called from a syscall,
+                // so the latter case cannot happen, and we don't care about the first case.
+                let _ = closer.close_fd(fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             }
 
             if info.clear_on_free {

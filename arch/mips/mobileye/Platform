@@ -10,7 +10,10 @@
 
 load-$(CONFIG_MACH_EYEQ5)	= 0xa800000808000000
 load-$(CONFIG_MACH_EYEQ6H)	= 0xa800000100800000
+<<<<<<< HEAD
 load-$(CONFIG_MACH_EYEQ6LPLUS)	= 0xa800000108800000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 all-$(CONFIG_MACH_EYEQ5)	+= vmlinux.gz.itb
 
 its-y					:= vmlinux.its.S

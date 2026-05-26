@@ -560,7 +560,11 @@ static void vhost_net_busy_poll(struct vhost_net *net,
 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
 				     tvq->busyloop_timeout;
 
+<<<<<<< HEAD
 	migrate_disable();
+=======
+	preempt_disable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	endtime = busy_clock() + busyloop_timeout;
 
 	while (vhost_can_busy_poll(endtime)) {
@@ -577,7 +581,11 @@ static void vhost_net_busy_poll(struct vhost_net *net,
 		cpu_relax();
 	}
 
+<<<<<<< HEAD
 	migrate_enable();
+=======
+	preempt_enable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (poll_rx || sock_has_rx_data(sock))
 		vhost_net_busy_poll_try_queue(net, vq);

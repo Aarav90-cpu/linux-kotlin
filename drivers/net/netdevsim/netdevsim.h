@@ -18,7 +18,10 @@
 #include <linux/ethtool.h>
 #include <linux/ethtool_netlink.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/if_vlan.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/list.h>
 #include <linux/netdevice.h>
 #include <linux/ptp_mock.h>
@@ -76,11 +79,14 @@ struct nsim_macsec {
 	u8 nsim_secy_count;
 };
 
+<<<<<<< HEAD
 struct nsim_vlan {
 	DECLARE_BITMAP(ctag, VLAN_N_VID);
 	DECLARE_BITMAP(stag, VLAN_N_VID);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nsim_ethtool_pauseparam {
 	bool rx;
 	bool tx;
@@ -120,9 +126,13 @@ struct netdevsim {
 		u64_stats_t tx_packets;
 		u64_stats_t tx_bytes;
 		struct u64_stats_sync syncp;
+<<<<<<< HEAD
 		struct psp_dev __rcu *dev;
 		struct dentry *rereg;
 		struct mutex rereg_lock;
+=======
+		struct psp_dev *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u32 spi;
 		u32 assoc_cnt;
 	} psp;
@@ -143,7 +153,10 @@ struct netdevsim {
 	bool bpf_map_accept;
 	struct nsim_ipsec ipsec;
 	struct nsim_macsec macsec;
+<<<<<<< HEAD
 	struct nsim_vlan vlan;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		u32 inject_error;
 		u32 __ports[2][NSIM_UDP_TUNNEL_N_PORTS];
@@ -155,7 +168,10 @@ struct netdevsim {
 	struct page *page;
 	struct dentry *pp_dfs;
 	struct dentry *qr_dfs;
+<<<<<<< HEAD
 	struct dentry *vlan_dfs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct nsim_ethtool ethtool;
 	struct netdevsim __rcu *peer;
@@ -234,10 +250,13 @@ enum nsim_resource_id {
 	NSIM_RESOURCE_NEXTHOPS,
 };
 
+<<<<<<< HEAD
 enum nsim_port_resource_id {
 	NSIM_PORT_RESOURCE_TEST = 1,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nsim_dev_health {
 	struct devlink_health_reporter *empty_reporter;
 	struct devlink_health_reporter *dummy_reporter;
@@ -469,9 +488,12 @@ static inline void
 nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext) {}
 #endif
 
+<<<<<<< HEAD
 int nsim_setup_tc(struct net_device *dev, enum tc_setup_type type,
 		  void *type_data);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nsim_bus_dev {
 	struct device dev;
 	struct list_head list;

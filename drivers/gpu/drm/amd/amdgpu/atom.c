@@ -1462,6 +1462,11 @@ static void atom_get_vbios_pn(struct atom_context *ctx)
 
 		ctx->vbios_pn[count] = 0;
 	}
+<<<<<<< HEAD
+=======
+
+	drm_info(ctx->card->dev, "ATOM BIOS: %s\n", ctx->vbios_pn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void atom_get_vbios_version(struct atom_context *ctx)
@@ -1518,6 +1523,7 @@ static void atom_get_vbios_build(struct atom_context *ctx)
 		strscpy(ctx->build_num, str, len);
 }
 
+<<<<<<< HEAD
 static inline void atom_print_vbios_info(struct atom_context *ctx)
 {
 	char vbios_info[256];
@@ -1542,6 +1548,8 @@ static inline void atom_print_vbios_info(struct atom_context *ctx)
 		drm_info(ctx->card->dev, "ATOM BIOS: %s\n", vbios_info);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct atom_context *amdgpu_atom_parse(struct card_info *card, void *bios)
 {
 	int base;
@@ -1604,8 +1612,11 @@ struct atom_context *amdgpu_atom_parse(struct card_info *card, void *bios)
 	atom_get_vbios_version(ctx);
 	atom_get_vbios_build(ctx);
 
+<<<<<<< HEAD
 	atom_print_vbios_info(ctx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ctx;
 }
 

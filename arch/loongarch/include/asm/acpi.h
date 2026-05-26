@@ -40,6 +40,14 @@ extern struct acpi_madt_core_pic acpi_core_pic[MAX_CORE_PIC];
 
 extern int __init parse_acpi_topology(void);
 
+<<<<<<< HEAD
+=======
+static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+{
+	return acpi_core_pic[cpu_logical_map(cpu)].processor_id;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_ACPI */
 
 #define ACPI_TABLE_UPGRADE_MAX_PHYS ARCH_LOW_ADDRESS_LIMIT

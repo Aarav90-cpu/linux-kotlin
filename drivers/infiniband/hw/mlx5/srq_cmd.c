@@ -683,6 +683,7 @@ int mlx5_cmd_destroy_srq(struct mlx5_ib_dev *dev, struct mlx5_core_srq *srq)
 		xa_cmpxchg_irq(&table->array, srq->srqn, XA_ZERO_ENTRY, srq, 0);
 		return err;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * A race can occur where a concurrent create gets the same srqn
@@ -691,6 +692,9 @@ int mlx5_cmd_destroy_srq(struct mlx5_ib_dev *dev, struct mlx5_core_srq *srq)
 	 * the entry as it now belongs to the new SRQ.
 	 */
 	xa_cmpxchg_irq(&table->array, srq->srqn, XA_ZERO_ENTRY, NULL, 0);
+=======
+	xa_erase_irq(&table->array, srq->srqn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mlx5_core_res_put(&srq->common);
 	wait_for_completion(&srq->common.free);

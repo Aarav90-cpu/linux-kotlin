@@ -25,7 +25,11 @@ targets := vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinux.bin.lzma \
 # avoid errors with '-march=i386', and future flags may depend on the target to
 # be valid.
 KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
+<<<<<<< HEAD
 KBUILD_CFLAGS += $(CC_FLAGS_DIALECT)
+=======
+KBUILD_CFLAGS += -std=gnu11 -fms-extensions
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
 KBUILD_CFLAGS += -Wundef
 KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
@@ -36,6 +40,13 @@ KBUILD_CFLAGS += -mno-mmx -mno-sse
 KBUILD_CFLAGS += -ffreestanding -fshort-wchar
 KBUILD_CFLAGS += -fno-stack-protector
 KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
+<<<<<<< HEAD
+=======
+ifdef CONFIG_CC_IS_CLANG
+KBUILD_CFLAGS += -Wno-gnu
+KBUILD_CFLAGS += -Wno-microsoft-anon-tag
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 KBUILD_CFLAGS += -Wno-pointer-sign
 KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
 KBUILD_CFLAGS += -D__DISABLE_EXPORTS

@@ -63,6 +63,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	hdmi-bridge {
 		compatible = "parade,ps185hdm";
 
@@ -102,6 +103,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	leds {
 		compatible = "gpio-leds";
 
@@ -1034,6 +1037,7 @@
 	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
 };
 
+<<<<<<< HEAD
 &mdss_dp2 {
 	status = "okay";
 };
@@ -1042,6 +1046,8 @@
 	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mdss_dp3 {
 	/delete-property/ #sound-dai-cells;
 
@@ -1304,12 +1310,15 @@
 		bias-disable;
 	};
 
+<<<<<<< HEAD
 	hdmi_hpd_default: hdmi-hpd-default-state {
 		pins = "gpio126";
 		function = "usb2_dp";
 		bias-disable;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hdtl_default: hdtl-default-state {
 		pins = "gpio95";
 		function = "gpio";
@@ -1461,11 +1470,21 @@
 };
 
 &usb_1_ss0 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss0_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss0_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss0_hs_in>;
 };
@@ -1491,11 +1510,21 @@
 };
 
 &usb_1_ss1 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss1_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss1_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss1_hs_in>;
 };
@@ -1504,6 +1533,7 @@
 	remote-endpoint = <&retimer_ss1_ss_in>;
 };
 
+<<<<<<< HEAD
 &usb_1_ss2_qmpphy {
 	vdda-phy-supply = <&vreg_l2j_1p2>;
 	vdda-pll-supply = <&vreg_l2d_0p9>;
@@ -1530,6 +1560,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_mp {
 	status = "okay";
 };

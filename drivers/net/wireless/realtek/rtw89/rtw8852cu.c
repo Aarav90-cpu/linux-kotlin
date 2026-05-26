@@ -15,7 +15,10 @@ static const struct rtw89_usb_info rtw8852c_usb_info = {
 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0_V1,
 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0_V1,
 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2_V1,
+<<<<<<< HEAD
 	.rx_agg_alignment		= 8,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.bulkout_id = {
 		[RTW89_DMA_ACH0] = 3,
 		[RTW89_DMA_ACH2] = 5,
@@ -39,10 +42,13 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
 };
 
 static const struct usb_device_id rtw_8852cu_id_table[] = {
+<<<<<<< HEAD
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x056e, 0x4024, 0xff, 0xff, 0xff),
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85a, 0xff, 0xff, 0xff),
@@ -59,8 +65,11 @@ static const struct usb_device_id rtw_8852cu_id_table[] = {
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0102, 0xff, 0xff, 0xff),
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+<<<<<<< HEAD
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x37ad, 0x0103, 0xff, 0xff, 0xff),
 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 MODULE_DEVICE_TABLE(usb, rtw_8852cu_id_table);

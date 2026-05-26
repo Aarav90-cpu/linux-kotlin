@@ -11,13 +11,17 @@
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
 #include <linux/device/faux.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/random.h>
 #include <linux/regmap.h>
 #include <linux/seq_buf.h>
 #include <sound/cs35l56.h>
 
+<<<<<<< HEAD
 struct cs35l56_shared_test_mock_gpio {
 	unsigned int pin_state;
 	struct gpio_chip chip;
@@ -28,6 +32,11 @@ struct cs35l56_shared_test_priv {
 	struct faux_device *amp_dev;
 	struct faux_device *gpio_dev;
 	struct cs35l56_shared_test_mock_gpio *gpio_priv;
+=======
+struct cs35l56_shared_test_priv {
+	struct kunit *test;
+	struct faux_device *amp_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct regmap *registers;
 	struct cs35l56_base *cs35l56_base;
 	u8 applied_pad_pull_state[CS35L56_MAX_GPIO];
@@ -45,6 +54,7 @@ KUNIT_DEFINE_ACTION_WRAPPER(faux_device_destroy_wrapper, faux_device_destroy,
 
 KUNIT_DEFINE_ACTION_WRAPPER(regmap_exit_wrapper, regmap_exit, struct regmap *)
 
+<<<<<<< HEAD
 KUNIT_DEFINE_ACTION_WRAPPER(device_remove_software_node_wrapper,
 			    device_remove_software_node,
 			    struct device *)
@@ -133,6 +143,8 @@ static void _cs35l56_shared_test_create_dummy_gpio(struct kunit *test)
 	KUNIT_ASSERT_NOT_NULL(test, priv->gpio_priv);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct regmap_config cs35l56_shared_test_mock_registers_regmap = {
 	.reg_bits = 32,
 	.val_bits = 32,
@@ -506,6 +518,7 @@ static void cs35l56_shared_test_onchip_speaker_id_not_defined(struct kunit *test
 	KUNIT_EXPECT_EQ(test, cs35l56_read_onchip_spkid(cs35l56_base), -ENOENT);
 }
 
+<<<<<<< HEAD
 /* simulate cs_amp_get_vendor_spkid() reading a vendor-specific ID of 1 */
 static int cs35l56_shared_test_get_vendor_spkid_1(struct device *dev)
 {
@@ -609,6 +622,8 @@ static void cs35l56_shared_test_get_speaker_id_from_host_gpio(struct kunit *test
 	KUNIT_EXPECT_EQ(test, cs35l56_get_speaker_id(priv->cs35l56_base), param->spkid);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cs35l56_shared_test_case_regmap_init(struct kunit *test,
 						const struct regmap_config *regmap_config)
 {
@@ -801,6 +816,7 @@ KUNIT_ARRAY_PARAM(cs35l56_shared_test_onchip_spkid_pull,
 		  cs35l56_shared_test_onchip_spkid_pull_cases,
 		  cs35l56_shared_test_gpio_param_desc);
 
+<<<<<<< HEAD
 /* Note: spk-id-gpios property bit order is LSbit...MSbit */
 static const struct cs35l56_shared_test_param cs35l56_shared_test_host_gpio_spkid_cases[] = {
 	{ .spkid_gpios = { 0, -1 },	  .gpio_status = 0,			.spkid = 0 },
@@ -835,6 +851,8 @@ static const struct cs35l56_shared_test_param cs35l56_shared_test_host_gpio_spki
 KUNIT_ARRAY_PARAM(cs35l56_shared_test_host_gpio_spkid, cs35l56_shared_test_host_gpio_spkid_cases,
 		  cs35l56_shared_test_gpio_param_desc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case cs35l56_shared_test_cases[] = {
 	/* Tests for speaker id */
 	KUNIT_CASE_PARAM(cs35l56_shared_test_mock_gpio_status_selftest,
@@ -849,6 +867,7 @@ static struct kunit_case cs35l56_shared_test_cases[] = {
 			 cs35l56_shared_test_onchip_spkid_pull_gen_params),
 	KUNIT_CASE(cs35l56_shared_test_stash_onchip_spkid_pins_reject_invalid),
 	KUNIT_CASE(cs35l56_shared_test_onchip_speaker_id_not_defined),
+<<<<<<< HEAD
 
 	KUNIT_CASE(cs35l56_shared_test_get_speaker_id_vendor),
 	KUNIT_CASE(cs35l56_shared_test_get_speaker_id_property),
@@ -856,6 +875,8 @@ static struct kunit_case cs35l56_shared_test_cases[] = {
 			      cs35l56_shared_test_host_gpio_spkid_gen_params,
 			      { KUNIT_SPEED_SLOW }),
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 

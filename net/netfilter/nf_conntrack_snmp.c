@@ -25,14 +25,25 @@ static unsigned int timeout __read_mostly = 30;
 module_param(timeout, uint, 0400);
 MODULE_PARM_DESC(timeout, "timeout for master connection/replies in seconds");
 
+<<<<<<< HEAD
 nf_nat_snmp_hook_fn __rcu *nf_nat_snmp_hook;
+=======
+int (__rcu *nf_nat_snmp_hook)(struct sk_buff *skb,
+			      unsigned int protoff,
+			      struct nf_conn *ct,
+			      enum ip_conntrack_info ctinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(nf_nat_snmp_hook);
 
 static int snmp_conntrack_help(struct sk_buff *skb, unsigned int protoff,
 			       struct nf_conn *ct,
 			       enum ip_conntrack_info ctinfo)
 {
+<<<<<<< HEAD
 	nf_nat_snmp_hook_fn *nf_nat_snmp;
+=======
+	typeof(nf_nat_snmp_hook) nf_nat_snmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nf_conntrack_broadcast_help(skb, ct, ctinfo, timeout);
 

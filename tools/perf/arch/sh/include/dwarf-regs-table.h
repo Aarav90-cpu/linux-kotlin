@@ -2,7 +2,11 @@
 #ifdef DEFINE_DWARF_REGSTR_TABLE
 /* This is included in perf/util/dwarf-regs.c */
 
+<<<<<<< HEAD
 static const char * const sh_regstr_tbl[] = {
+=======
+const char * const sh_regstr_tbl[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	"r0",
 	"r1",
 	"r2",

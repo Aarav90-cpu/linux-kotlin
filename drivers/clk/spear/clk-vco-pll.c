@@ -343,15 +343,22 @@ struct clk *clk_register_vco_pll(const char *vco_name, const char *pll_name,
 
 	tpll_clk = clk_register(NULL, &pll->hw);
 	if (IS_ERR_OR_NULL(tpll_clk))
+<<<<<<< HEAD
 		goto unregister_clk;
+=======
+		goto free_pll;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pll_clk)
 		*pll_clk = tpll_clk;
 
 	return vco_clk;
 
+<<<<<<< HEAD
 unregister_clk:
 	clk_unregister(vco_clk);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 free_pll:
 	kfree(pll);
 free_vco:

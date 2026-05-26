@@ -515,8 +515,11 @@ if [ -n "${MOUNTED_XFS}" ]; then
     rm -f ${XFS_IMG}
 fi
 
+<<<<<<< HEAD
 CATEGORY="thp" run_test ./folio_split_race_test
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CATEGORY="migration" run_test ./migration
 
 CATEGORY="mkdirty" run_test ./mkdirty

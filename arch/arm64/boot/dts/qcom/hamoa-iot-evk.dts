@@ -616,6 +616,7 @@
 				sound-dai = <&q6apm>;
 			};
 		};
+<<<<<<< HEAD
 
 		dp0-dai-link {
 			link-name = "DP0 Playback";
@@ -648,6 +649,8 @@
 				sound-dai = <&q6apm>;
 			};
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	usb-1-ss0-sbu-mux {
@@ -1134,7 +1137,13 @@
 		pins = "gpio10";
 		function = "normal";
 	};
+<<<<<<< HEAD
 
+=======
+};
+
+&pmc8380_3_gpios {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_sde7_aux_3p3_en: pcie-aux-3p3-default-state {
 		pins = "gpio8";
 		function = "normal";
@@ -1174,6 +1183,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sdhc_2 {
 	cd-gpios = <&tlmm 71 GPIO_ACTIVE_LOW>;
 
@@ -1190,6 +1200,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &smb2360_0 {
 	status = "okay";
 };
@@ -1372,6 +1384,7 @@
 		bias-disable;
 	};
 
+<<<<<<< HEAD
 	sdc2_card_det_n: sd-card-det-n-state {
 		pins = "gpio71";
 		function = "gpio";
@@ -1379,6 +1392,8 @@
 		bias-pull-up;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb1_pwr_1p15_reg_en: usb1-pwr-1p15-reg-en-state {
 		pins = "gpio188";
 		function = "gpio";
@@ -1514,6 +1529,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &ufs_mem_phy {
 	vdda-phy-supply = <&vreg_l3i_0p8>;
 	vdda-pll-supply = <&vreg_l3e_1p2>;
@@ -1532,6 +1548,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss0_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss0_hs_in>;
 };
@@ -1582,6 +1600,7 @@
 &usb_mp_hsphy1 {
 	phys = <&eusb6_repeater>;
 };
+<<<<<<< HEAD
 
 &thermal_zones {
 	gpuss-0-thermal {
@@ -1648,3 +1667,5 @@
 		};
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

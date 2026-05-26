@@ -9,7 +9,11 @@
 #ifndef __SCX_ENUMS_H
 #define __SCX_ENUMS_H
 
+<<<<<<< HEAD
 static inline void __ENUM_set(u64 *val, const char *type, const char *name)
+=======
+static inline void __ENUM_set(u64 *val, char *type, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool res;
 

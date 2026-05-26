@@ -262,6 +262,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	vreg_pcie0_1p05: regulator-pcie0-1p05v {
 		compatible = "regulator-fixed";
 		regulator-name = "PCIE0_1.05V";
@@ -284,6 +285,8 @@
 		pinctrl-names = "default";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vdd_ntn_0p9: regulator-vdd-ntn-0p9 {
 		compatible = "regulator-fixed";
 		regulator-name = "VDD_NTN_0P9";
@@ -874,7 +877,11 @@
 		pinctrl-0 = <&tc9563_resx_n>;
 		pinctrl-names = "default";
 
+<<<<<<< HEAD
 		pcie1_switch0_dsp1: pcie@1,0 {
+=======
+		pcie@1,0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			reg = <0x20800 0x0 0x0 0x0 0x0>;
 			#address-cells = <3>;
 			#size-cells = <2>;
@@ -892,6 +899,7 @@
 			device_type = "pci";
 			ranges;
 			bus-range = <0x4 0xff>;
+<<<<<<< HEAD
 
 			/* Renesas μPD720201 PCIe USB3.0 Host Controller */
 			usb-controller@0,0 {
@@ -927,6 +935,8 @@
 					peer-hub = <&gl3590_2_0>;
 				};
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		pcie@3,0 {
@@ -1255,6 +1265,7 @@
 		power-source = <0>;
 	};
 
+<<<<<<< HEAD
 	upd_hub_rst_state: upd-hub-rst-state {
 		pins = "gpio4";
 		function = "normal";
@@ -1266,6 +1277,8 @@
 		power-source = <0>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tc9563_resx_n: tc9563-resx-state {
 		pins = "gpio1";
 		function = "normal";
@@ -1446,6 +1459,7 @@
 };
 
 &pm7250b_gpios {
+<<<<<<< HEAD
 	upd_pwr_en1_state: upd-pwr-en1-state {
 		pins = "gpio1";
 		function = "normal";
@@ -1455,6 +1469,8 @@
 		power-source = <0>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lt9611_rst_pin: lt9611-rst-state {
 		pins = "gpio2";
 		function = "normal";
@@ -1463,6 +1479,7 @@
 		input-disable;
 		power-source = <0>;
 	};
+<<<<<<< HEAD
 
 	upd_pwr_en2_state: upd-pwr-en2-state {
 		pins = "gpio4";
@@ -1472,6 +1489,8 @@
 		input-disable;
 		power-source = <0>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &sdc2_clk {
@@ -1517,6 +1536,7 @@
 		function = "gpio";
 		bias-pull-up;
 	};
+<<<<<<< HEAD
 
 	usb_hub_reset_state: usb-hub-reset-state {
 		pins = "gpio162";
@@ -1524,6 +1544,8 @@
 		drive-strength = <2>;
 		bias-disable;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &lpass_audiocc {

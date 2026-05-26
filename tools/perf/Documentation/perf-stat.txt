@@ -578,10 +578,13 @@ $ perf config stat.no-csv-summary=true
 Only enable events on applying cpu with this type for hybrid platform
 (e.g. core or atom)"
 
+<<<<<<< HEAD
 --pmu-filter::
 Only enable events on applying pmu with specified for multiple
 pmus with same type (e.g. hisi_sicl2_cpa0 or hisi_sicl0_cpa0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXAMPLES
 --------
 

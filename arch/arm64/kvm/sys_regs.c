@@ -681,6 +681,7 @@ static bool access_gic_dir(struct kvm_vcpu *vcpu,
 	return true;
 }
 
+<<<<<<< HEAD
 static bool access_gicv5_idr0(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
 			      const struct sys_reg_desc *r)
 {
@@ -766,6 +767,8 @@ static bool access_gicv5_ppi_enabler(struct kvm_vcpu *vcpu,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool trap_raz_wi(struct kvm_vcpu *vcpu,
 			struct sys_reg_params *p,
 			const struct sys_reg_desc *r)
@@ -1843,7 +1846,10 @@ static u8 pmuver_to_perfmon(u8 pmuver)
 
 static u64 sanitise_id_aa64pfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
 static u64 sanitise_id_aa64pfr1_el1(const struct kvm_vcpu *vcpu, u64 val);
+<<<<<<< HEAD
 static u64 sanitise_id_aa64pfr2_el1(const struct kvm_vcpu *vcpu, u64 val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u64 sanitise_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
 
 /* Read a sanitised cpufeature ID register by sys_reg_desc */
@@ -1869,7 +1875,14 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
 		val = sanitise_id_aa64pfr1_el1(vcpu, val);
 		break;
 	case SYS_ID_AA64PFR2_EL1:
+<<<<<<< HEAD
 		val = sanitise_id_aa64pfr2_el1(vcpu, val);
+=======
+		val &= ID_AA64PFR2_EL1_FPMR |
+			(kvm_has_mte(vcpu->kvm) ?
+			 ID_AA64PFR2_EL1_MTEFAR | ID_AA64PFR2_EL1_MTESTOREONLY :
+			 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SYS_ID_AA64ISAR1_EL1:
 		if (!vcpu_has_ptrauth(vcpu))
@@ -1888,7 +1901,11 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
 		break;
 	case SYS_ID_AA64ISAR3_EL1:
 		val &= ID_AA64ISAR3_EL1_FPRCVT | ID_AA64ISAR3_EL1_LSFE |
+<<<<<<< HEAD
 			ID_AA64ISAR3_EL1_FAMINMAX | ID_AA64ISAR3_EL1_LSUI;
+=======
+			ID_AA64ISAR3_EL1_FAMINMAX;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SYS_ID_AA64MMFR2_EL1:
 		val &= ~ID_AA64MMFR2_EL1_CCIDX_MASK;
@@ -2068,7 +2085,11 @@ static u64 sanitise_id_aa64pfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
 		val |= SYS_FIELD_PREP_ENUM(ID_AA64PFR0_EL1, CSV3, IMP);
 	}
 
+<<<<<<< HEAD
 	if (vgic_host_has_gicv3()) {
+=======
+	if (vgic_is_v3(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		val &= ~ID_AA64PFR0_EL1_GIC_MASK;
 		val |= SYS_FIELD_PREP_ENUM(ID_AA64PFR0_EL1, GIC, IMP);
 	}
@@ -2110,6 +2131,7 @@ static u64 sanitise_id_aa64pfr1_el1(const struct kvm_vcpu *vcpu, u64 val)
 	return val;
 }
 
+<<<<<<< HEAD
 static u64 sanitise_id_aa64pfr2_el1(const struct kvm_vcpu *vcpu, u64 val)
 {
 	val &= ID_AA64PFR2_EL1_FPMR |
@@ -2127,6 +2149,8 @@ static u64 sanitise_id_aa64pfr2_el1(const struct kvm_vcpu *vcpu, u64 val)
 	return val;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u64 sanitise_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
 {
 	val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64DFR0_EL1, DebugVer, V8P8);
@@ -2277,6 +2301,17 @@ static int set_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
 	    (vcpu_has_nv(vcpu) && !FIELD_GET(ID_AA64PFR0_EL1_EL2, user_val)))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * If we are running on a GICv5 host and support FEAT_GCIE_LEGACY, then
+	 * we support GICv3. Fail attempts to do anything but set that to IMP.
+	 */
+	if (vgic_is_v3_compat(vcpu->kvm) &&
+	    FIELD_GET(ID_AA64PFR0_EL1_GIC_MASK, user_val) != ID_AA64PFR0_EL1_GIC_IMP)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return set_id_reg(vcpu, rd, user_val);
 }
 
@@ -2316,12 +2351,15 @@ static int set_id_aa64pfr1_el1(struct kvm_vcpu *vcpu,
 	return set_id_reg(vcpu, rd, user_val);
 }
 
+<<<<<<< HEAD
 static int set_id_aa64pfr2_el1(struct kvm_vcpu *vcpu,
 			       const struct sys_reg_desc *rd, u64 user_val)
 {
 	return set_id_reg(vcpu, rd, user_val);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Allow userspace to de-feature a stage-2 translation granule but prevent it
  * from claiming the impossible.
@@ -3303,11 +3341,18 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 				       ID_AA64PFR1_EL1_RES0 |
 				       ID_AA64PFR1_EL1_MPAM_frac |
 				       ID_AA64PFR1_EL1_MTE)),
+<<<<<<< HEAD
 	ID_FILTERED(ID_AA64PFR2_EL1, id_aa64pfr2_el1,
 		    (ID_AA64PFR2_EL1_FPMR		|
 		     ID_AA64PFR2_EL1_MTEFAR		|
 		     ID_AA64PFR2_EL1_MTESTOREONLY	|
 		     ID_AA64PFR2_EL1_GCIE)),
+=======
+	ID_WRITABLE(ID_AA64PFR2_EL1,
+		    ID_AA64PFR2_EL1_FPMR |
+		    ID_AA64PFR2_EL1_MTEFAR |
+		    ID_AA64PFR2_EL1_MTESTOREONLY),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ID_UNALLOCATED(4,3),
 	ID_WRITABLE(ID_AA64ZFR0_EL1, ~ID_AA64ZFR0_EL1_RES0),
 	ID_HIDDEN(ID_AA64SMFR0_EL1),
@@ -3351,7 +3396,10 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 					ID_AA64ISAR2_EL1_GPA3)),
 	ID_WRITABLE(ID_AA64ISAR3_EL1, (ID_AA64ISAR3_EL1_FPRCVT |
 				       ID_AA64ISAR3_EL1_LSFE |
+<<<<<<< HEAD
 				       ID_AA64ISAR3_EL1_LSUI |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       ID_AA64ISAR3_EL1_FAMINMAX)),
 	ID_UNALLOCATED(6,4),
 	ID_UNALLOCATED(6,5),
@@ -3476,8 +3524,11 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 
 	{ SYS_DESC(SYS_MPAM1_EL1), undef_access },
 	{ SYS_DESC(SYS_MPAM0_EL1), undef_access },
+<<<<<<< HEAD
 	{ SYS_DESC(SYS_MPAMSM_EL1), undef_access },
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ SYS_DESC(SYS_VBAR_EL1), access_rw, reset_val, VBAR_EL1, 0 },
 	{ SYS_DESC(SYS_DISR_EL1), NULL, reset_val, DISR_EL1, 0 },
 
@@ -3493,10 +3544,13 @@ static const struct sys_reg_desc sys_reg_descs[] = {
 	{ SYS_DESC(SYS_ICC_AP1R1_EL1), undef_access },
 	{ SYS_DESC(SYS_ICC_AP1R2_EL1), undef_access },
 	{ SYS_DESC(SYS_ICC_AP1R3_EL1), undef_access },
+<<<<<<< HEAD
 	{ SYS_DESC(SYS_ICC_IDR0_EL1), access_gicv5_idr0 },
 	{ SYS_DESC(SYS_ICC_IAFFIDR_EL1), access_gicv5_iaffid },
 	{ SYS_DESC(SYS_ICC_PPI_ENABLER0_EL1), access_gicv5_ppi_enabler },
 	{ SYS_DESC(SYS_ICC_PPI_ENABLER1_EL1), access_gicv5_ppi_enabler },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ SYS_DESC(SYS_ICC_DIR_EL1), access_gic_dir },
 	{ SYS_DESC(SYS_ICC_RPR_EL1), undef_access },
 	{ SYS_DESC(SYS_ICC_SGI1R_EL1), access_gic_sgi },
@@ -5753,8 +5807,11 @@ void kvm_calculate_traps(struct kvm_vcpu *vcpu)
 	compute_fgu(kvm, HFGRTR2_GROUP);
 	compute_fgu(kvm, HFGITR2_GROUP);
 	compute_fgu(kvm, HDFGRTR2_GROUP);
+<<<<<<< HEAD
 	compute_fgu(kvm, ICH_HFGRTR_GROUP);
 	compute_fgu(kvm, ICH_HFGITR_GROUP);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
 out:
@@ -5775,6 +5832,7 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu)
 
 	guard(mutex)(&kvm->arch.config_lock);
 
+<<<<<<< HEAD
 	if (vcpu_has_nv(vcpu)) {
 		int ret = kvm_init_nv_sysregs(vcpu);
 		if (ret)
@@ -5784,15 +5842,22 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu)
 	if (kvm_vm_has_ran_once(kvm))
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * This hacks into the ID registers, so only perform it when the
 	 * first vcpu runs, or the kvm_set_vm_id_reg() helper will scream.
 	 */
+<<<<<<< HEAD
 	if (!irqchip_in_kernel(kvm)) {
+=======
+	if (!irqchip_in_kernel(kvm) && !kvm_vm_has_ran_once(kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u64 val;
 
 		val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1) & ~ID_AA64PFR0_EL1_GIC;
 		kvm_set_vm_id_reg(kvm, SYS_ID_AA64PFR0_EL1, val);
+<<<<<<< HEAD
 		val = kvm_read_vm_id_reg(kvm, SYS_ID_AA64PFR2_EL1) & ~ID_AA64PFR2_EL1_GCIE;
 		kvm_set_vm_id_reg(kvm, SYS_ID_AA64PFR2_EL1, val);
 		val = kvm_read_vm_id_reg(kvm, SYS_ID_PFR1_EL1) & ~ID_PFR1_EL1_GIC;
@@ -5827,6 +5892,16 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu)
 		 * problem for GICv5-based guests in the future.
 		 */
 		kvm_vgic_finalize_idregs(kvm);
+=======
+		val = kvm_read_vm_id_reg(kvm, SYS_ID_PFR1_EL1) & ~ID_PFR1_EL1_GIC;
+		kvm_set_vm_id_reg(kvm, SYS_ID_PFR1_EL1, val);
+	}
+
+	if (vcpu_has_nv(vcpu)) {
+		int ret = kvm_init_nv_sysregs(vcpu);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

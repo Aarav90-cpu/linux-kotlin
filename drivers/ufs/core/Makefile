@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
 
 obj-$(CONFIG_SCSI_UFSHCD)		+= ufshcd-core.o
+<<<<<<< HEAD
 ufshcd-core-y				+= ufshcd.o ufs-sysfs.o ufs-mcq.o ufs-txeq.o
+=======
+ufshcd-core-y				+= ufshcd.o ufs-sysfs.o ufs-mcq.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ufshcd-core-$(CONFIG_RPMB)		+= ufs-rpmb.o
 ufshcd-core-$(CONFIG_DEBUG_FS)		+= ufs-debugfs.o
 ufshcd-core-$(CONFIG_SCSI_UFS_BSG)	+= ufs_bsg.o

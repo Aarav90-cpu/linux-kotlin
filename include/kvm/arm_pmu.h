@@ -12,9 +12,12 @@
 
 #define KVM_ARMV8_PMU_MAX_COUNTERS	32
 
+<<<<<<< HEAD
 /* PPI #23 - architecturally specified for GICv5 */
 #define KVM_ARMV8_PMU_GICV5_IRQ		0x20000017
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_HW_PERF_EVENTS) && IS_ENABLED(CONFIG_KVM)
 struct kvm_pmc {
 	u8 idx;	/* index into the pmu->pmc array */
@@ -41,7 +44,11 @@ struct arm_pmu_entry {
 };
 
 bool kvm_supports_guest_pmuv3(void);
+<<<<<<< HEAD
 #define kvm_arm_pmu_irq_initialized(v)	((v)->arch.pmu.irq_num != 0)
+=======
+#define kvm_arm_pmu_irq_initialized(v)	((v)->arch.pmu.irq_num >= VGIC_NR_SGIS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu, u64 select_idx);
 void kvm_pmu_set_counter_value(struct kvm_vcpu *vcpu, u64 select_idx, u64 val);
 void kvm_pmu_set_counter_value_user(struct kvm_vcpu *vcpu, u64 select_idx, u64 val);

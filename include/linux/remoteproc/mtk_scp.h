@@ -58,7 +58,11 @@ int scp_ipi_register(struct mtk_scp *scp, u32 id, scp_ipi_handler_t handler,
 		     void *priv);
 void scp_ipi_unregister(struct mtk_scp *scp, u32 id);
 
+<<<<<<< HEAD
 int scp_ipi_send(struct mtk_scp *scp, u32 id, const void *buf, unsigned int len,
+=======
+int scp_ipi_send(struct mtk_scp *scp, u32 id, void *buf, unsigned int len,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 unsigned int wait);
 
 unsigned int scp_get_vdec_hw_capa(struct mtk_scp *scp);

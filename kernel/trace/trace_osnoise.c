@@ -58,7 +58,10 @@ enum osnoise_options_index {
 	OSN_PANIC_ON_STOP,
 	OSN_PREEMPT_DISABLE,
 	OSN_IRQ_DISABLE,
+<<<<<<< HEAD
 	OSN_TIMERLAT_ALIGN,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OSN_MAX
 };
 
@@ -67,8 +70,12 @@ static const char * const osnoise_options_str[OSN_MAX] = {
 							"OSNOISE_WORKLOAD",
 							"PANIC_ON_STOP",
 							"OSNOISE_PREEMPT_DISABLE",
+<<<<<<< HEAD
 							"OSNOISE_IRQ_DISABLE",
 							"TIMERLAT_ALIGN" };
+=======
+							"OSNOISE_IRQ_DISABLE" };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define OSN_DEFAULT_OPTIONS		0x2
 static unsigned long osnoise_options	= OSN_DEFAULT_OPTIONS;
@@ -253,11 +260,14 @@ struct timerlat_variables {
 static DEFINE_PER_CPU(struct timerlat_variables, per_cpu_timerlat_var);
 
 /*
+<<<<<<< HEAD
  * timerlat wake-up offset for next thread with TIMERLAT_ALIGN set.
  */
 static atomic64_t align_next;
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * this_cpu_tmr_var - Return the per-cpu timerlat_variables on its relative CPU
  */
 static inline struct timerlat_variables *this_cpu_tmr_var(void)
@@ -275,7 +285,10 @@ static inline void tlat_var_reset(void)
 
 	/* Synchronize with the timerlat interfaces */
 	mutex_lock(&interface_lock);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * So far, all the values are initialized as 0, so
 	 * zeroing the structure is perfect.
@@ -286,12 +299,15 @@ static inline void tlat_var_reset(void)
 			hrtimer_cancel(&tlat_var->timer);
 		memset(tlat_var, 0, sizeof(*tlat_var));
 	}
+<<<<<<< HEAD
 	/*
 	 * Reset also align_next, to be filled by a new offset by the first timerlat
 	 * thread that wakes up, if TIMERLAT_ALIGN is set.
 	 */
 	atomic64_set(&align_next, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&interface_lock);
 }
 #else /* CONFIG_TIMERLAT_TRACER */
@@ -340,7 +356,10 @@ static struct osnoise_data {
 	u64	stop_tracing_total;	/* stop trace in the final operation (report/thread) */
 #ifdef CONFIG_TIMERLAT_TRACER
 	u64	timerlat_period;	/* timerlat period */
+<<<<<<< HEAD
 	u64	timerlat_align_us;	/* timerlat alignment */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64	print_stack;		/* print IRQ stack if total > */
 	int	timerlat_tracer;	/* timerlat tracer */
 #endif
@@ -353,7 +372,10 @@ static struct osnoise_data {
 #ifdef CONFIG_TIMERLAT_TRACER
 	.print_stack			= 0,
 	.timerlat_period		= DEFAULT_TIMERLAT_PERIOD,
+<<<<<<< HEAD
 	.timerlat_align_us		= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.timerlat_tracer		= 0,
 #endif
 };
@@ -1662,6 +1684,12 @@ static void osnoise_sleep(bool skip_period)
  */
 static inline int osnoise_migration_pending(void)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+	return 0;
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!current->migration_pending)
 		return 0;
 
@@ -1683,6 +1711,10 @@ static inline int osnoise_migration_pending(void)
 	mutex_unlock(&interface_lock);
 
 	return 1;
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1846,6 +1878,7 @@ static int wait_next_period(struct timerlat_variables *tlat)
 	tlat->abs_period = (u64) ktime_to_ns(next_abs_period);
 
 	/*
+<<<<<<< HEAD
 	 * Align thread in the first cycle on each CPU to the set alignment
 	 * if TIMERLAT_ALIGN is set.
 	 *
@@ -1866,6 +1899,8 @@ static int wait_next_period(struct timerlat_variables *tlat)
 	}
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * If the new abs_period is in the past, skip the activation.
 	 */
 	while (ktime_compare(now, next_abs_period) > 0) {
@@ -2686,6 +2721,7 @@ static struct trace_min_max_param timerlat_period = {
 	.min	= &timerlat_min_period,
 };
 
+<<<<<<< HEAD
 /*
  * osnoise/timerlat_align_us: align the first wakeup of all timerlat
  * threads to a common boundary (in us). 0 means disabled.
@@ -2697,6 +2733,8 @@ static struct trace_min_max_param timerlat_align_us = {
 	.min	= NULL,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct file_operations timerlat_fd_fops = {
 	.open		= timerlat_fd_open,
 	.read		= timerlat_fd_read,
@@ -2793,11 +2831,14 @@ static int init_timerlat_tracefs(struct dentry *top_dir)
 	if (!tmp)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	tmp = tracefs_create_file("timerlat_align_us", TRACE_MODE_WRITE, top_dir,
 				  &timerlat_align_us, &trace_min_max_fops);
 	if (!tmp)
 		return -ENOMEM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	retval = osnoise_create_cpu_timerlat_fd(top_dir);
 	if (retval)
 		return retval;

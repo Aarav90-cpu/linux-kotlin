@@ -368,7 +368,11 @@ int delete_module(const char *name, int flags)
 	return syscall(__NR_delete_module, name, flags);
 }
 
+<<<<<<< HEAD
 int try_unload_module(const char *name, int retries, bool verbose)
+=======
+int unload_module(const char *name, bool verbose)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret, cnt = 0;
 
@@ -379,7 +383,11 @@ int try_unload_module(const char *name, int retries, bool verbose)
 		ret = delete_module(name, 0);
 		if (!ret || errno != EAGAIN)
 			break;
+<<<<<<< HEAD
 		if (++cnt > retries) {
+=======
+		if (++cnt > 10000) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			fprintf(stdout, "Unload of %s timed out\n", name);
 			break;
 		}
@@ -400,11 +408,14 @@ int try_unload_module(const char *name, int retries, bool verbose)
 	return 0;
 }
 
+<<<<<<< HEAD
 int unload_module(const char *name, bool verbose)
 {
 	return try_unload_module(name, 10000, verbose);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __load_module(const char *path, const char *param_values, bool verbose)
 {
 	int fd;

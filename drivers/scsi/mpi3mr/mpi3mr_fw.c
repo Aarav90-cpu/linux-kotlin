@@ -996,7 +996,10 @@ static const struct {
 	{ MPI3MR_RESET_FROM_FIRMWARE, "firmware asynchronous reset" },
 	{ MPI3MR_RESET_FROM_CFG_REQ_TIMEOUT, "configuration request timeout"},
 	{ MPI3MR_RESET_FROM_SAS_TRANSPORT_TIMEOUT, "timeout of a SAS transport layer request" },
+<<<<<<< HEAD
 	{ MPI3MR_RESET_FROM_INVALID_COMPLETION, "invalid cmd completion" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -2372,9 +2375,12 @@ static int mpi3mr_create_op_req_q(struct mpi3mr_ioc *mrioc, u16 idx,
 	op_req_q->ci = 0;
 	op_req_q->pi = 0;
 	op_req_q->reply_qid = reply_qid;
+<<<<<<< HEAD
 	op_req_q->last_full_host_tag =  MPI3MR_HOSTTAG_INVALID;
 	op_req_q->qfull_io_count =  0;
 	op_req_q->qfull_instances =  0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&op_req_q->q_lock);
 
 	if (!op_req_q->q_segments) {
@@ -2561,8 +2567,11 @@ int mpi3mr_op_request_post(struct mpi3mr_ioc *mrioc,
 	u16 req_sz = mrioc->facts.op_req_sz;
 	struct segments *segments = op_req_q->q_segments;
 	struct op_reply_qinfo *op_reply_q = NULL;
+<<<<<<< HEAD
 	struct mpi3_scsi_io_request *scsiio_req =
 		(struct mpi3_scsi_io_request *)req;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reply_qidx = op_req_q->reply_qid - 1;
 	op_reply_q = mrioc->op_reply_qinfo + reply_qidx;
@@ -2580,6 +2589,7 @@ int mpi3mr_op_request_post(struct mpi3mr_ioc *mrioc,
 		mpi3mr_process_op_reply_q(mrioc, mrioc->intr_info[midx].op_reply_q);
 
 		if (mpi3mr_check_req_qfull(op_req_q)) {
+<<<<<<< HEAD
 
 			if (op_req_q->last_full_host_tag ==
 			    MPI3MR_HOSTTAG_INVALID)
@@ -2587,14 +2597,19 @@ int mpi3mr_op_request_post(struct mpi3mr_ioc *mrioc,
 
 			op_req_q->last_full_host_tag = scsiio_req->host_tag;
 			op_req_q->qfull_io_count++;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			retval = -EAGAIN;
 			goto out;
 		}
 	}
 
+<<<<<<< HEAD
 	if (op_req_q->last_full_host_tag != MPI3MR_HOSTTAG_INVALID)
 		op_req_q->last_full_host_tag = MPI3MR_HOSTTAG_INVALID;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mrioc->reset_in_progress) {
 		ioc_err(mrioc, "OpReqQ submit reset in progress\n");
 		retval = -EAGAIN;
@@ -2715,7 +2730,11 @@ void mpi3mr_check_rh_fault_ioc(struct mpi3mr_ioc *mrioc, u32 reason_code)
  * mpi3mr_sync_timestamp - Issue time stamp sync request
  * @mrioc: Adapter reference
  *
+<<<<<<< HEAD
  * Issue IO unit control MPI request to synchronize firmware
+=======
+ * Issue IO unit control MPI request to synchornize firmware
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * timestamp with host time.
  *
  * Return: 0 on success, non-zero on failure.
@@ -2905,11 +2924,14 @@ static void mpi3mr_watchdog_work(struct work_struct *work)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (mrioc->invalid_io_comp) {
 		mpi3mr_soft_reset_handler(mrioc, MPI3MR_RESET_FROM_INVALID_COMPLETION, 1);
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (atomic_read(&mrioc->admin_pend_isr)) {
 		ioc_err(mrioc, "Unprocessed admin ISR instance found\n"
 				"flush admin replies\n");
@@ -4855,7 +4877,10 @@ void mpi3mr_memset_buffers(struct mpi3mr_ioc *mrioc)
 			mrioc->req_qinfo[i].qid = 0;
 			mrioc->req_qinfo[i].reply_qid = 0;
 			spin_lock_init(&mrioc->req_qinfo[i].q_lock);
+<<<<<<< HEAD
 			mrioc->req_qinfo[i].last_full_host_tag = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mpi3mr_memset_op_req_q_buffers(mrioc, i);
 		}
 	}
@@ -5072,9 +5097,15 @@ void mpi3mr_free_mem(struct mpi3mr_ioc *mrioc)
  */
 static void mpi3mr_issue_ioc_shutdown(struct mpi3mr_ioc *mrioc)
 {
+<<<<<<< HEAD
 	u32 ioc_config, ioc_status, shutdown_action;
 	u8 retval = 1, retry = 0;
 	u32 timeout = MPI3MR_DEFAULT_SHUTDOWN_TIME * 10, timeout_remaining = 0;
+=======
+	u32 ioc_config, ioc_status;
+	u8 retval = 1;
+	u32 timeout = MPI3MR_DEFAULT_SHUTDOWN_TIME * 10;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ioc_info(mrioc, "Issuing shutdown Notification\n");
 	if (mrioc->unrecoverable) {
@@ -5089,16 +5120,25 @@ static void mpi3mr_issue_ioc_shutdown(struct mpi3mr_ioc *mrioc)
 		return;
 	}
 
+<<<<<<< HEAD
 	shutdown_action = MPI3_SYSIF_IOC_CONFIG_SHUTDOWN_NORMAL |
 	    MPI3_SYSIF_IOC_CONFIG_DEVICE_SHUTDOWN_SEND_REQ;
 	ioc_config = readl(&mrioc->sysif_regs->ioc_configuration);
 	ioc_config |= shutdown_action;
+=======
+	ioc_config = readl(&mrioc->sysif_regs->ioc_configuration);
+	ioc_config |= MPI3_SYSIF_IOC_CONFIG_SHUTDOWN_NORMAL;
+	ioc_config |= MPI3_SYSIF_IOC_CONFIG_DEVICE_SHUTDOWN_SEND_REQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	writel(ioc_config, &mrioc->sysif_regs->ioc_configuration);
 
 	if (mrioc->facts.shutdown_timeout)
 		timeout = mrioc->facts.shutdown_timeout * 10;
+<<<<<<< HEAD
 	timeout_remaining = timeout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		ioc_status = readl(&mrioc->sysif_regs->ioc_status);
@@ -5107,6 +5147,7 @@ static void mpi3mr_issue_ioc_shutdown(struct mpi3mr_ioc *mrioc)
 			retval = 0;
 			break;
 		}
+<<<<<<< HEAD
 		if (mrioc->unrecoverable)
 			break;
 		if (ioc_status & MPI3_SYSIF_IOC_STATUS_FAULT) {
@@ -5127,6 +5168,10 @@ static void mpi3mr_issue_ioc_shutdown(struct mpi3mr_ioc *mrioc)
 		}
 		msleep(100);
 	} while (--timeout_remaining);
+=======
+		msleep(100);
+	} while (--timeout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
 	ioc_config = readl(&mrioc->sysif_regs->ioc_configuration);
@@ -5700,7 +5745,10 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
 	ssleep(MPI3MR_RESET_TOPOLOGY_SETTLE_TIME);
 
 out:
+<<<<<<< HEAD
 	mrioc->invalid_io_comp = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!retval) {
 		mrioc->diagsave_timeout = 0;
 		mrioc->reset_in_progress = 0;

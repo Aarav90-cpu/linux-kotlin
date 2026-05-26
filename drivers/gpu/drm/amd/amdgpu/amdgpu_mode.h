@@ -44,7 +44,10 @@
 #include <drm/display/drm_dp_mst_helper.h>
 #include "modules/inc/mod_freesync.h"
 #include "amdgpu_dm_irq_params.h"
+<<<<<<< HEAD
 #include "amdgpu_dm_ism.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct amdgpu_bo;
 struct amdgpu_device;
@@ -487,10 +490,13 @@ struct amdgpu_crtc {
 	int deferred_flip_completion;
 	/* parameters access from DM IRQ handler */
 	struct dm_irq_params dm_irq_params;
+<<<<<<< HEAD
 
 	/* DM idle state manager */
 	struct amdgpu_dm_ism ism;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* pll sharing */
 	struct amdgpu_atom_ss ss;
 	bool ss_enabled;
@@ -629,7 +635,11 @@ struct amdgpu_connector {
 	bool use_digital;
 	/* we need to mind the EDID between detect
 	   and get modes due to analog/digital/tvencoder */
+<<<<<<< HEAD
 	const struct drm_edid *edid;
+=======
+	struct edid *edid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *con_priv;
 	bool dac_load_detect;
 	bool detected_by_load; /* if the connection status was determined by load */

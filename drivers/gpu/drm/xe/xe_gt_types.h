@@ -35,7 +35,11 @@ enum xe_gt_eu_type {
 	XE_GT_EU_TYPE_SIMD16,
 };
 
+<<<<<<< HEAD
 #define XE_MAX_DSS_FUSE_REGS		4
+=======
+#define XE_MAX_DSS_FUSE_REGS		3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XE_MAX_DSS_FUSE_BITS		(32 * XE_MAX_DSS_FUSE_REGS)
 #define XE_MAX_EU_FUSE_REGS		1
 #define XE_MAX_EU_FUSE_BITS		(32 * XE_MAX_EU_FUSE_REGS)
@@ -45,6 +49,14 @@ typedef unsigned long xe_dss_mask_t[BITS_TO_LONGS(XE_MAX_DSS_FUSE_BITS)];
 typedef unsigned long xe_eu_mask_t[BITS_TO_LONGS(XE_MAX_EU_FUSE_BITS)];
 typedef unsigned long xe_l3_bank_mask_t[BITS_TO_LONGS(XE_MAX_L3_BANK_MASK_BITS)];
 
+<<<<<<< HEAD
+=======
+struct xe_mmio_range {
+	u32 start;
+	u32 end;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The hardware has multiple kinds of multicast register ranges that need
  * special register steering (and future platforms are expected to add
@@ -144,6 +156,7 @@ struct xe_gt {
 		u8 id;
 		/** @info.has_indirect_ring_state: GT has indirect ring state support */
 		u8 has_indirect_ring_state:1;
+<<<<<<< HEAD
 		/**
 		 * @info.has_xe2_blt_instructions: GT supports Xe2-style MEM_SET
 		 * and MEM_COPY blitter functionality.  Note that despite the
@@ -161,11 +174,20 @@ struct xe_gt {
 		 * registers the compute XeCore mask spans.
 		 */
 		u8 num_compute_xecore_fuse_regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} info;
 
 #if IS_ENABLED(CONFIG_DEBUG_FS)
 	/** @stats: GT stats */
+<<<<<<< HEAD
 	struct xe_gt_stats __percpu *stats;
+=======
+	struct {
+		/** @stats.counters: counters for various GT stats */
+		atomic64_t counters[__XE_GT_STATS_NUM_IDS];
+	} stats;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	/**

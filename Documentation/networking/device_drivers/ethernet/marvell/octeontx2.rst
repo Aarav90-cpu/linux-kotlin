@@ -323,7 +323,11 @@ Setup HTB offload
 
         # ethtool -K <interface> hw-tc-offload on
 
+<<<<<<< HEAD
 2. Create htb root::
+=======
+2. Crate htb root::
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         # tc qdisc add dev <interface> clsact
         # tc qdisc replace dev <interface> root handle 1: htb offload

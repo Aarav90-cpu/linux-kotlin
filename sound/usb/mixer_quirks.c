@@ -4479,9 +4479,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
 	case USB_ID(0x194f, 0x010d): /* Presonus Studio 1824c */
 		err = snd_sc1810_init_mixer(mixer);
 		break;
+<<<<<<< HEAD
 	case USB_ID(0x194f, 0x0107): /* Presonus Studio 1824 */
 		err = snd_sc1810_init_mixer(mixer);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case USB_ID(0x2a39, 0x3fb0): /* RME Babyface Pro FS */
 		err = snd_bbfpro_controls_create(mixer);
 		break;
@@ -4593,6 +4596,7 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
 	}
 }
 
+<<<<<<< HEAD
 static void snd_usb_mv_silicon_quirks(struct usb_mixer_interface *mixer,
 				      struct usb_mixer_elem_info *cval,
 				      struct snd_kcontrol *kctl)
@@ -4611,6 +4615,8 @@ static void snd_usb_mv_silicon_quirks(struct usb_mixer_interface *mixer,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Some Plantronics headsets have control names that don't meet ALSA naming
  * standards. This function fixes nonstandard source names. By the time
@@ -4657,6 +4663,7 @@ triggered:
 	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
 }
 
+<<<<<<< HEAD
 static void snd_usb_mixer_fu_quirk_linear_scale(struct usb_mixer_interface *mixer,
 						struct usb_mixer_elem_info *cval,
 						struct snd_kcontrol *kctl)
@@ -4676,6 +4683,8 @@ static void snd_usb_mixer_fu_quirk_linear_scale(struct usb_mixer_interface *mixe
 	kctl->vd[0].access &= ~SNDRV_CTL_ELEM_ACCESS_TLV_CALLBACK;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
 				  struct usb_mixer_elem_info *cval, int unitid,
 				  struct snd_kcontrol *kctl)
@@ -4687,10 +4696,13 @@ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
 		break;
 	}
 
+<<<<<<< HEAD
 	if (cval->control == UAC_FU_VOLUME &&
 	    !strncmp(mixer->chip->card->longname, "MV-SILICON", 10))
 		snd_usb_mv_silicon_quirks(mixer, cval, kctl);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* lowest playback value is muted on some devices */
 	if (mixer->chip->quirk_flags & QUIRK_FLAG_MIXER_PLAYBACK_MIN_MUTE)
 		if (strstr(kctl->id.name, "Playback")) {
@@ -4706,6 +4718,7 @@ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
 				       "applying capture min mute quirk\n");
 			cval->min_mute = 1;
 		}
+<<<<<<< HEAD
 
 	if (mixer->chip->quirk_flags & QUIRK_FLAG_MIXER_PLAYBACK_LINEAR_VOL)
 		if (cval->control == UAC_FU_VOLUME && strstr(kctl->id.name, "Playback")) {
@@ -4721,6 +4734,8 @@ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
 			snd_usb_mixer_fu_quirk_linear_scale(mixer, cval, kctl);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ALSA-ify some Plantronics headset control names */
 	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
 	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))

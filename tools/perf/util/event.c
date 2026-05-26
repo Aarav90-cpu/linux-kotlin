@@ -12,6 +12,10 @@
 #include <unistd.h>
 #include <uapi/linux/mman.h> /* To get things like MAP_HUGETLB even on older libc headers */
 #include <linux/perf_event.h>
+<<<<<<< HEAD
+=======
+#include <linux/zalloc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "cpumap.h"
 #include "dso.h"
 #include "event.h"

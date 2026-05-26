@@ -46,6 +46,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
  * Return: true if the inbox1 lock should be used, false otherwise
  */
 bool should_use_dmub_inbox1_lock(const struct dc *dc, const struct dc_link *link);
+<<<<<<< HEAD
 
 /**
  * dmub_hw_lock_mgr_does_link_require_lock() - Returns true if the link has a feature that needs the HW lock.
@@ -80,4 +81,9 @@ bool dmub_hw_lock_mgr_does_context_require_lock(const struct dc *dc, const struc
  */
 bool should_use_dmub_inbox0_lock_for_link(const struct dc *dc, const struct dc_link *link);
 
+=======
+bool dmub_hw_lock_mgr_does_link_require_lock(const struct dc *dc, const struct dc_link *link);
+bool dmub_hw_lock_mgr_does_context_require_lock(const struct dc *dc, const struct dc_state *context);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /*_DMUB_HW_LOCK_MGR_H_ */

@@ -758,6 +758,7 @@ static int gpr32_set_common_user(struct task_struct *target,
 	const void *kbuf = NULL;
 	compat_ulong_t reg;
 
+<<<<<<< HEAD
 	scoped_user_read_access_size(ubuf, count, efault) {
 		u = ubuf;
 		pos /= sizeof(reg);
@@ -790,6 +791,41 @@ static int gpr32_set_common_user(struct task_struct *target,
 		}
 	}
 
+=======
+	if (!user_read_access_begin(u, count))
+		return -EFAULT;
+
+	pos /= sizeof(reg);
+	count /= sizeof(reg);
+
+	for (; count > 0 && pos < PT_MSR; --count) {
+		unsafe_get_user(reg, u++, Efault);
+		regs[pos++] = reg;
+	}
+
+	if (count > 0 && pos == PT_MSR) {
+		unsafe_get_user(reg, u++, Efault);
+		set_user_msr(target, reg);
+		++pos;
+		--count;
+	}
+
+	for (; count > 0 && pos <= PT_MAX_PUT_REG; --count) {
+		unsafe_get_user(reg, u++, Efault);
+		regs[pos++] = reg;
+	}
+	for (; count > 0 && pos < PT_TRAP; --count, ++pos)
+		unsafe_get_user(reg, u++, Efault);
+
+	if (count > 0 && pos == PT_TRAP) {
+		unsafe_get_user(reg, u++, Efault);
+		set_user_trap(target, reg);
+		++pos;
+		--count;
+	}
+	user_read_access_end();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ubuf = u;
 	pos *= sizeof(reg);
 	count *= sizeof(reg);
@@ -797,7 +833,12 @@ static int gpr32_set_common_user(struct task_struct *target,
 				  (PT_TRAP + 1) * sizeof(reg), -1);
 	return 0;
 
+<<<<<<< HEAD
 efault:
+=======
+Efault:
+	user_read_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EFAULT;
 }
 

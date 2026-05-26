@@ -4,6 +4,10 @@
 #
 config PSERIES_CPUIDLE
 	bool "Cpuidle driver for pSeries platforms"
+<<<<<<< HEAD
+=======
+	depends on CPU_IDLE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on PPC_PSERIES
 	default y
 	help
@@ -12,6 +16,10 @@ config PSERIES_CPUIDLE
 
 config POWERNV_CPUIDLE
 	bool "Cpuidle driver for powernv platforms"
+<<<<<<< HEAD
+=======
+	depends on CPU_IDLE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on PPC_POWERNV
 	default y
 	help

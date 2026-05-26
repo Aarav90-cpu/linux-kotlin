@@ -326,7 +326,21 @@ static void output_headers(struct perf_session *session, struct convert_json *c)
 	output_json_format(out, false, 2, "]");
 }
 
+<<<<<<< HEAD
 int bt_convert__perf2json(const char *_input_name, const char *output_name,
+=======
+static int process_feature_event(const struct perf_tool *tool __maybe_unused,
+				 struct perf_session *session,
+				 union perf_event *event)
+{
+	if (event->feat.feat_id < HEADER_LAST_FEATURE)
+		return perf_event__process_feature(session, event);
+
+	return 0;
+}
+
+int bt_convert__perf2json(const char *input_name, const char *output_name,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct perf_data_convert_opts *opts __maybe_unused)
 {
 	struct perf_session *session;
@@ -342,7 +356,11 @@ int bt_convert__perf2json(const char *_input_name, const char *output_name,
 	};
 	struct perf_data data = {
 		.mode = PERF_DATA_MODE_READ,
+<<<<<<< HEAD
 		.path = _input_name,
+=======
+		.path = input_name,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.force = opts->force,
 	};
 
@@ -365,7 +383,11 @@ int bt_convert__perf2json(const char *_input_name, const char *output_name,
 	c.tool.auxtrace       = perf_event__process_auxtrace;
 	c.tool.event_update   = perf_event__process_event_update;
 	c.tool.attr           = perf_event__process_attr;
+<<<<<<< HEAD
 	c.tool.feature        = perf_event__process_feature;
+=======
+	c.tool.feature        = process_feature_event;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	c.tool.ordering_requires_timestamps = true;
 
 	if (opts->all) {

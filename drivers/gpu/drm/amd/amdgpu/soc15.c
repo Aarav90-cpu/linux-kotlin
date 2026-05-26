@@ -245,10 +245,17 @@ static u32 soc15_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
 	address = SOC15_REG_OFFSET(UVD, 0, mmUVD_CTX_INDEX);
 	data = SOC15_REG_OFFSET(UVD, 0, mmUVD_CTX_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(address, ((reg) & 0x1ff));
 	r = RREG32(data);
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(address, ((reg) & 0x1ff));
+	r = RREG32(data);
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -259,10 +266,17 @@ static void soc15_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	address = SOC15_REG_OFFSET(UVD, 0, mmUVD_CTX_INDEX);
 	data = SOC15_REG_OFFSET(UVD, 0, mmUVD_CTX_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(address, ((reg) & 0x1ff));
 	WREG32(data, (v));
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(address, ((reg) & 0x1ff));
+	WREG32(data, (v));
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 soc15_didt_rreg(struct amdgpu_device *adev, u32 reg)
@@ -273,10 +287,17 @@ static u32 soc15_didt_rreg(struct amdgpu_device *adev, u32 reg)
 	address = SOC15_REG_OFFSET(GC, 0, mmDIDT_IND_INDEX);
 	data = SOC15_REG_OFFSET(GC, 0, mmDIDT_IND_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(address, (reg));
 	r = RREG32(data);
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(address, (reg));
+	r = RREG32(data);
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -287,10 +308,17 @@ static void soc15_didt_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	address = SOC15_REG_OFFSET(GC, 0, mmDIDT_IND_INDEX);
 	data = SOC15_REG_OFFSET(GC, 0, mmDIDT_IND_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(address, (reg));
 	WREG32(data, (v));
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(address, (reg));
+	WREG32(data, (v));
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 soc15_gc_cac_rreg(struct amdgpu_device *adev, u32 reg)
@@ -298,10 +326,17 @@ static u32 soc15_gc_cac_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.gc_cac.lock, flags);
 	WREG32_SOC15(GC, 0, mmGC_CAC_IND_INDEX, (reg));
 	r = RREG32_SOC15(GC, 0, mmGC_CAC_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.gc_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->gc_cac_idx_lock, flags);
+	WREG32_SOC15(GC, 0, mmGC_CAC_IND_INDEX, (reg));
+	r = RREG32_SOC15(GC, 0, mmGC_CAC_IND_DATA);
+	spin_unlock_irqrestore(&adev->gc_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -309,10 +344,17 @@ static void soc15_gc_cac_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.gc_cac.lock, flags);
 	WREG32_SOC15(GC, 0, mmGC_CAC_IND_INDEX, (reg));
 	WREG32_SOC15(GC, 0, mmGC_CAC_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.gc_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->gc_cac_idx_lock, flags);
+	WREG32_SOC15(GC, 0, mmGC_CAC_IND_INDEX, (reg));
+	WREG32_SOC15(GC, 0, mmGC_CAC_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->gc_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 soc15_se_cac_rreg(struct amdgpu_device *adev, u32 reg)
@@ -320,10 +362,17 @@ static u32 soc15_se_cac_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.se_cac.lock, flags);
 	WREG32_SOC15(GC, 0, mmSE_CAC_IND_INDEX, (reg));
 	r = RREG32_SOC15(GC, 0, mmSE_CAC_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.se_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->se_cac_idx_lock, flags);
+	WREG32_SOC15(GC, 0, mmSE_CAC_IND_INDEX, (reg));
+	r = RREG32_SOC15(GC, 0, mmSE_CAC_IND_DATA);
+	spin_unlock_irqrestore(&adev->se_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -331,10 +380,17 @@ static void soc15_se_cac_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.se_cac.lock, flags);
 	WREG32_SOC15(GC, 0, mmSE_CAC_IND_INDEX, (reg));
 	WREG32_SOC15(GC, 0, mmSE_CAC_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.se_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->se_cac_idx_lock, flags);
+	WREG32_SOC15(GC, 0, mmSE_CAC_IND_INDEX, (reg));
+	WREG32_SOC15(GC, 0, mmSE_CAC_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->se_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 soc15_get_config_memsize(struct amdgpu_device *adev)
@@ -952,6 +1008,10 @@ static const struct amdgpu_asic_funcs aqua_vanjaram_asic_funcs =
 	.get_pcie_replay_count = &amdgpu_nbio_get_pcie_replay_count,
 	.supports_baco = &soc15_supports_baco,
 	.query_video_codecs = &soc15_query_video_codecs,
+<<<<<<< HEAD
+=======
+	.encode_ext_smn_addressing = &aqua_vanjaram_encode_ext_smn_addressing,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_reg_state = &aqua_vanjaram_get_reg_state,
 };
 
@@ -960,6 +1020,7 @@ static int soc15_common_early_init(struct amdgpu_ip_block *ip_block)
 	struct amdgpu_device *adev = ip_block->adev;
 
 	adev->nbio.funcs->set_reg_remap(adev);
+<<<<<<< HEAD
 	adev->reg.pcie.rreg = &amdgpu_device_indirect_rreg;
 	adev->reg.pcie.wreg = &amdgpu_device_indirect_wreg;
 	adev->reg.pcie.rreg_ext = &amdgpu_device_indirect_rreg_ext;
@@ -976,6 +1037,26 @@ static int soc15_common_early_init(struct amdgpu_ip_block *ip_block)
 	adev->reg.gc_cac.wreg = &soc15_gc_cac_wreg;
 	adev->reg.se_cac.rreg = &soc15_se_cac_rreg;
 	adev->reg.se_cac.wreg = &soc15_se_cac_wreg;
+=======
+	adev->smc_rreg = NULL;
+	adev->smc_wreg = NULL;
+	adev->pcie_rreg = &amdgpu_device_indirect_rreg;
+	adev->pcie_wreg = &amdgpu_device_indirect_wreg;
+	adev->pcie_rreg_ext = &amdgpu_device_indirect_rreg_ext;
+	adev->pcie_wreg_ext = &amdgpu_device_indirect_wreg_ext;
+	adev->pcie_rreg64 = &amdgpu_device_indirect_rreg64;
+	adev->pcie_wreg64 = &amdgpu_device_indirect_wreg64;
+	adev->pcie_rreg64_ext = &amdgpu_device_indirect_rreg64_ext;
+	adev->pcie_wreg64_ext = &amdgpu_device_indirect_wreg64_ext;
+	adev->uvd_ctx_rreg = &soc15_uvd_ctx_rreg;
+	adev->uvd_ctx_wreg = &soc15_uvd_ctx_wreg;
+	adev->didt_rreg = &soc15_didt_rreg;
+	adev->didt_wreg = &soc15_didt_wreg;
+	adev->gc_cac_rreg = &soc15_gc_cac_rreg;
+	adev->gc_cac_wreg = &soc15_gc_cac_wreg;
+	adev->se_cac_rreg = &soc15_se_cac_rreg;
+	adev->se_cac_wreg = &soc15_se_cac_wreg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adev->rev_id = amdgpu_device_get_rev_id(adev);
 	adev->external_rev_id = 0xFF;
@@ -1197,7 +1278,10 @@ static int soc15_common_early_init(struct amdgpu_ip_block *ip_block)
 	case IP_VERSION(9, 4, 4):
 	case IP_VERSION(9, 5, 0):
 		adev->asic_funcs = &aqua_vanjaram_asic_funcs;
+<<<<<<< HEAD
 		adev->reg.smn.get_smn_base = &amdgpu_reg_smn_v1_0_get_base;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		adev->cg_flags =
 			AMD_CG_SUPPORT_GFX_MGCG | AMD_CG_SUPPORT_GFX_CGCG |
 			AMD_CG_SUPPORT_GFX_CGLS | AMD_CG_SUPPORT_SDMA_MGCG |

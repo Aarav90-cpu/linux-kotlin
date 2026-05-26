@@ -25,9 +25,12 @@
 
 #include "mt7530.h"
 
+<<<<<<< HEAD
 #define MT7530_STATS_POLL_INTERVAL	(1 * HZ)
 #define MT7530_STATS_RATE_LIMIT		(HZ / 10)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct mt753x_pcs *pcs_to_mt753x_pcs(struct phylink_pcs *pcs)
 {
 	return container_of(pcs, struct mt753x_pcs, pcs);
@@ -909,9 +912,16 @@ static void mt7530_get_rmon_stats(struct dsa_switch *ds, int port,
 	*ranges = mt7530_rmon_ranges;
 }
 
+<<<<<<< HEAD
 static void mt7530_read_port_stats64(struct mt7530_priv *priv, int port,
 				     struct rtnl_link_stats64 *storage)
 {
+=======
+static void mt7530_get_stats64(struct dsa_switch *ds, int port,
+			       struct rtnl_link_stats64 *storage)
+{
+	struct mt7530_priv *priv = ds->priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint64_t data;
 
 	/* MIB counter doesn't provide a FramesTransmittedOK but instead
@@ -953,6 +963,7 @@ static void mt7530_read_port_stats64(struct mt7530_priv *priv, int port,
 			       &storage->rx_crc_errors);
 }
 
+<<<<<<< HEAD
 static void mt7530_stats_refresh(struct mt7530_priv *priv)
 {
 	struct rtnl_link_stats64 stats = {};
@@ -1001,6 +1012,8 @@ static void mt7530_get_stats64(struct dsa_switch *ds, int port,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mt7530_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
 				      struct ethtool_eth_ctrl_stats *ctrl_stats)
 {
@@ -3213,6 +3226,7 @@ mt753x_setup(struct dsa_switch *ds)
 	if (ret && priv->irq_domain)
 		mt7530_free_mdio_irq(priv);
 
+<<<<<<< HEAD
 	if (!ret && priv->bus) {
 		mt7530_stats_refresh(priv);
 		schedule_delayed_work(&priv->stats_work,
@@ -3231,6 +3245,11 @@ mt753x_teardown(struct dsa_switch *ds)
 		cancel_delayed_work_sync(&priv->stats_work);
 }
 
+=======
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
 			      struct ethtool_keee *e)
 {
@@ -3348,7 +3367,10 @@ static int mt7988_setup(struct dsa_switch *ds)
 static const struct dsa_switch_ops mt7530_switch_ops = {
 	.get_tag_protocol	= mtk_get_tag_protocol,
 	.setup			= mt753x_setup,
+<<<<<<< HEAD
 	.teardown		= mt753x_teardown,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.preferred_default_local_cpu_port = mt753x_preferred_default_local_cpu_port,
 	.get_strings		= mt7530_get_strings,
 	.get_ethtool_stats	= mt7530_get_ethtool_stats,
@@ -3487,9 +3509,12 @@ mt7530_probe_common(struct mt7530_priv *priv)
 	priv->ds->ops = &mt7530_switch_ops;
 	priv->ds->phylink_mac_ops = &mt753x_phylink_mac_ops;
 	mutex_init(&priv->reg_mutex);
+<<<<<<< HEAD
 	spin_lock_init(&priv->stats_lock);
 	INIT_DELAYED_WORK(&priv->stats_work, mt7530_stats_poll);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_set_drvdata(dev, priv);
 
 	return 0;

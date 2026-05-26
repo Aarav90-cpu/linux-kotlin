@@ -195,6 +195,11 @@ static int do_one_cpu(unsigned int cpu, struct cpufreq_policy *new_pol,
 
 int cmd_freq_set(int argc, char **argv)
 {
+<<<<<<< HEAD
+=======
+	extern char *optarg;
+	extern int optind, opterr, optopt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0, cont = 1;
 	int double_parm = 0, related = 0, policychange = 0;
 	unsigned long freq = 0;

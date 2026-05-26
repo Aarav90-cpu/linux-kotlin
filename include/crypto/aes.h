@@ -167,6 +167,7 @@ int aes_expandkey(struct crypto_aes_ctx *ctx, const u8 *in_key,
 #ifdef CONFIG_ARM64
 int ce_aes_expandkey(struct crypto_aes_ctx *ctx, const u8 *in_key,
 		     unsigned int key_len);
+<<<<<<< HEAD
 asmlinkage void neon_aes_ecb_encrypt(u8 out[], u8 const in[], u32 const rk[],
 				     int rounds, int blocks);
 asmlinkage void neon_aes_ecb_decrypt(u8 out[], u8 const in[], u32 const rk[],
@@ -233,6 +234,8 @@ asmlinkage void ce_aes_essiv_cbc_decrypt(u8 out[], u8 const in[],
 asmlinkage void ce_aes_mac_update(u8 const in[], u32 const rk[], int rounds,
 				  size_t blocks, u8 dg[], int enc_before,
 				  int enc_after);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined(CONFIG_PPC)
 void ppc_expand_key_128(u32 *key_enc, const u8 *key);
 void ppc_expand_key_192(u32 *key_enc, const u8 *key);

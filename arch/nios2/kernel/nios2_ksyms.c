@@ -20,6 +20,10 @@ EXPORT_SYMBOL(memmove);
 
 /* memory management */
 
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(empty_zero_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL(flush_icache_range);
 
 /*

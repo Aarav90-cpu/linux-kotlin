@@ -14,6 +14,7 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/cleanup.h>
 #include <linux/clk.h>
 #include <linux/dmaengine.h>
@@ -34,6 +35,17 @@
 #include <linux/iio/iio.h>
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/triggered_buffer.h>
+=======
+#include <linux/clk.h>
+#include <linux/iio/iio.h>
+#include <linux/iio/trigger_consumer.h>
+#include <linux/iio/triggered_buffer.h>
+#include <linux/regmap.h>
+#include <linux/regulator/consumer.h>
+#include <linux/spi/spi.h>
+#include <linux/unaligned.h>
+#include <linux/units.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define AD4030_REG_INTERFACE_CONFIG_A			0x00
 #define     AD4030_REG_INTERFACE_CONFIG_A_SW_RESET	(BIT(0) | BIT(7))
@@ -48,8 +60,11 @@
 #define     AD4030_REG_CHIP_GRADE_AD4630_24_GRADE	0x00
 #define     AD4030_REG_CHIP_GRADE_AD4632_16_GRADE	0x05
 #define     AD4030_REG_CHIP_GRADE_AD4632_24_GRADE	0x02
+<<<<<<< HEAD
 #define     AD4030_REG_CHIP_GRADE_ADAQ4216_GRADE	0x1E
 #define     AD4030_REG_CHIP_GRADE_ADAQ4224_GRADE	0x1C
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
 #define AD4030_REG_SCRATCH_PAD			0x0A
 #define AD4030_REG_SPI_REVISION			0x0B
@@ -124,12 +139,15 @@
 #define AD4632_TCYC_NS			2000
 #define AD4632_TCYC_ADJUSTED_NS		(AD4632_TCYC_NS - AD4030_TCNVL_NS)
 #define AD4030_TRESET_COM_DELAY_MS	750
+<<<<<<< HEAD
 /* Datasheet says 9.8ns, so use the closest integer value */
 #define AD4030_TQUIET_CNV_DELAY_NS	10
 
 /* HARDWARE_GAIN */
 #define ADAQ4616_PGA_PINS		2
 #define ADAQ4616_PGA_GAIN_MAX_NANO	(NANO * 2 / 3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum ad4030_out_mode {
 	AD4030_OUT_DATA_MD_DIFF,
@@ -151,6 +169,7 @@ enum {
 	AD4030_SCAN_TYPE_AVG,
 };
 
+<<<<<<< HEAD
 /*
  * Gains computed as fractions of 1000 so they can be expressed by integers.
  */
@@ -168,10 +187,13 @@ static const int adaq4216_hw_gains_frac[][2] = {
 	{ 20, 3 }, /* 20/3 V/V gain */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ad4030_chip_info {
 	const char *name;
 	const unsigned long *available_masks;
 	const struct iio_chan_spec channels[AD4030_MAX_IIO_CHANNEL_NB];
+<<<<<<< HEAD
 	const struct iio_chan_spec offload_channels[AD4030_MAX_IIO_CHANNEL_NB];
 	u8 grade;
 	u8 precision_bits;
@@ -180,6 +202,13 @@ struct ad4030_chip_info {
 	int num_voltage_inputs;
 	unsigned int tcyc_ns;
 	unsigned int max_sample_rate_hz;
+=======
+	u8 grade;
+	u8 precision_bits;
+	/* Number of hardware channels */
+	int num_voltage_inputs;
+	unsigned int tcyc_ns;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ad4030_state {
@@ -192,6 +221,7 @@ struct ad4030_state {
 	int offset_avail[3];
 	unsigned int avg_log2;
 	enum ad4030_out_mode mode;
+<<<<<<< HEAD
 	/* Offload sampling */
 	struct spi_transfer offload_xfer;
 	struct spi_message offload_msg;
@@ -204,6 +234,8 @@ struct ad4030_state {
 	unsigned int scale_avail[ARRAY_SIZE(adaq4216_hw_gains_vpv)][2];
 	struct gpio_descs *pga_gpios;
 	unsigned int pga_index;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * DMA (thus cache coherency maintenance) requires the transfer buffers
@@ -260,9 +292,14 @@ struct ad4030_state {
  * - voltage0-voltage1
  * - voltage2-voltage3
  */
+<<<<<<< HEAD
 #define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload, _pga) {		\
 	.info_mask_shared_by_all =					\
 		(_offload ? BIT(IIO_CHAN_INFO_SAMP_FREQ) : 0) |		\
+=======
+#define AD4030_CHAN_DIFF(_idx, _scan_type) {				\
+	.info_mask_shared_by_all =					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
 	.info_mask_shared_by_all_available =				\
 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
@@ -271,7 +308,10 @@ struct ad4030_state {
 		BIT(IIO_CHAN_INFO_CALIBBIAS) |				\
 		BIT(IIO_CHAN_INFO_RAW),					\
 	.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
+<<<<<<< HEAD
 		(_pga ? BIT(IIO_CHAN_INFO_SCALE) : 0) |			\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
 	.type = IIO_VOLTAGE,						\
 	.indexed = 1,							\
@@ -285,6 +325,7 @@ struct ad4030_state {
 	.num_ext_scan_type = ARRAY_SIZE(_scan_type),			\
 }
 
+<<<<<<< HEAD
 #define AD4030_CHAN_DIFF(_idx, _scan_type)				\
 	__AD4030_CHAN_DIFF(_idx, _scan_type, 0, 0)
 
@@ -312,6 +353,12 @@ static const int ad4030_average_modes[] = {
 static const struct spi_offload_config ad4030_offload_config = {
 	.capability_flags = SPI_OFFLOAD_CAP_TRIGGER |
 			    SPI_OFFLOAD_CAP_RX_STREAM_DMA,
+=======
+static const int ad4030_average_modes[] = {
+	1, 2, 4, 8, 16, 32, 64, 128,
+	256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
+	65536,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int ad4030_enter_config_mode(struct ad4030_state *st)
@@ -453,6 +500,7 @@ static const struct regmap_config ad4030_regmap_config = {
 	.max_register = AD4030_REG_DIG_ERR,
 };
 
+<<<<<<< HEAD
 static void ad4030_fill_scale_avail(struct ad4030_state *st)
 {
 	unsigned int mag_bits, int_part, fract_part;
@@ -512,6 +560,8 @@ static int ad4030_set_pga(struct iio_dev *indio_dev, int gain_int, int gain_frac
 	return ad4030_set_pga_gain(st);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
 				 struct iio_chan_spec const *chan,
 				 int *val,
@@ -524,6 +574,7 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
 	if (IS_ERR(scan_type))
 		return PTR_ERR(scan_type);
 
+<<<<<<< HEAD
 	/* The LSB of the 8-bit common-mode data is always vref/256. */
 	if (st->chip->has_pga && scan_type->realbits != 8) {
 		*val = st->scale_avail[st->pga_index][0];
@@ -531,6 +582,8 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
 		return IIO_VAL_INT_PLUS_NANO;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (chan->differential)
 		*val = (st->vref_uv * 2) / MILLI;
 	else
@@ -593,6 +646,7 @@ static int ad4030_get_chan_calibbias(struct iio_dev *indio_dev,
 	}
 }
 
+<<<<<<< HEAD
 static void ad4030_get_sampling_freq(struct ad4030_state *st, int *freq)
 {
 	struct spi_offload_trigger_config *config = &st->offload_trigger_config;
@@ -689,6 +743,8 @@ static int ad4030_set_sampling_freq(struct iio_dev *indio_dev, int freq_hz)
 	return ad4030_update_conversion_rate(st, freq_hz, st->avg_log2);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_set_chan_calibscale(struct iio_dev *indio_dev,
 				      struct iio_chan_spec const *chan,
 				      int gain_int,
@@ -748,12 +804,16 @@ static int ad4030_set_avg_frame_len(struct iio_dev *dev, int avg_val)
 	struct ad4030_state *st = iio_priv(dev);
 	unsigned int avg_log2 = ilog2(avg_val);
 	unsigned int last_avg_idx = ARRAY_SIZE(ad4030_average_modes) - 1;
+<<<<<<< HEAD
 	int freq_hz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (avg_val < 0 || avg_val > ad4030_average_modes[last_avg_idx])
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (st->offload_trigger) {
 		/*
 		 * The sample averaging and sampling frequency configurations
@@ -772,6 +832,8 @@ static int ad4030_set_avg_frame_len(struct iio_dev *dev, int avg_val)
 			return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_write(st->regmap, AD4030_REG_AVG,
 			   AD4030_REG_AVG_MASK_AVG_SYNC |
 			   FIELD_PREP(AD4030_REG_AVG_MASK_AVG_VAL, avg_log2));
@@ -880,7 +942,11 @@ static int ad4030_conversion(struct iio_dev *indio_dev)
 	/* Add one byte if we are using a differential + common byte mode */
 	bytes_to_read += (st->mode == AD4030_OUT_DATA_MD_24_DIFF_8_COM ||
 			st->mode == AD4030_OUT_DATA_MD_16_DIFF_8_COM) ? 1 : 0;
+<<<<<<< HEAD
 	/* Multiply by the number of hardware channels */
+=======
+	/* Mulitiply by the number of hardware channels */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bytes_to_read *= st->chip->num_voltage_inputs;
 
 	for (i = 0; i < cnv_nb; i++) {
@@ -999,6 +1065,7 @@ static int ad4030_read_avail(struct iio_dev *indio_dev,
 		*length = ARRAY_SIZE(ad4030_average_modes);
 		return IIO_AVAIL_LIST;
 
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_SCALE:
 		if (st->scale_avail_size == 1)
 			*vals = (int *)st->scale_avail[st->pga_index];
@@ -1008,6 +1075,8 @@ static int ad4030_read_avail(struct iio_dev *indio_dev,
 		*type = IIO_VAL_INT_PLUS_NANO;
 		return IIO_AVAIL_LIST;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -1033,10 +1102,13 @@ static int ad4030_read_raw_dispatch(struct iio_dev *indio_dev,
 		*val = BIT(st->avg_log2);
 		return IIO_VAL_INT;
 
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_SAMP_FREQ:
 		ad4030_get_sampling_freq(st, val);
 		return IIO_VAL_INT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -1077,12 +1149,15 @@ static int ad4030_write_raw_dispatch(struct iio_dev *indio_dev,
 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 		return ad4030_set_avg_frame_len(indio_dev, val);
 
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_SAMP_FREQ:
 		return ad4030_set_sampling_freq(indio_dev, val);
 
 	case IIO_CHAN_INFO_SCALE:
 		return ad4030_set_pga(indio_dev, val, val2);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -1104,6 +1179,7 @@ static int ad4030_write_raw(struct iio_dev *indio_dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int ad4030_write_raw_get_fmt(struct iio_dev *indio_dev,
 				    struct iio_chan_spec const *chan, long mask)
 {
@@ -1115,6 +1191,8 @@ static int ad4030_write_raw_get_fmt(struct iio_dev *indio_dev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_reg_access(struct iio_dev *indio_dev, unsigned int reg,
 			     unsigned int writeval, unsigned int *readval)
 {
@@ -1161,7 +1239,10 @@ static const struct iio_info ad4030_iio_info = {
 	.read_avail = ad4030_read_avail,
 	.read_raw = ad4030_read_raw,
 	.write_raw = ad4030_write_raw,
+<<<<<<< HEAD
 	.write_raw_get_fmt = &ad4030_write_raw_get_fmt,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.debugfs_reg_access = ad4030_reg_access,
 	.read_label = ad4030_read_label,
 	.get_current_scan_type = ad4030_get_current_scan_type,
@@ -1184,6 +1265,7 @@ static const struct iio_buffer_setup_ops ad4030_buffer_setup_ops = {
 	.validate_scan_mask = ad4030_validate_scan_mask,
 };
 
+<<<<<<< HEAD
 static void ad4030_prepare_offload_msg(struct iio_dev *indio_dev)
 {
 	struct ad4030_state *st = iio_priv(indio_dev);
@@ -1264,6 +1346,8 @@ static const struct iio_buffer_setup_ops ad4030_offload_buffer_setup_ops = {
 	.predisable = &ad4030_offload_buffer_predisable,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_regulators_get(struct ad4030_state *st)
 {
 	struct device *dev = &st->spi->dev;
@@ -1333,6 +1417,7 @@ static int ad4030_detect_chip_info(const struct ad4030_state *st)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ad4030_pwm_get(struct ad4030_state *st)
 {
 	struct device *dev = &st->spi->dev;
@@ -1351,6 +1436,8 @@ static int ad4030_pwm_get(struct ad4030_state *st)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_config(struct ad4030_state *st)
 {
 	int ret;
@@ -1378,6 +1465,7 @@ static int ad4030_config(struct ad4030_state *st)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ad4030_spi_offload_setup(struct iio_dev *indio_dev,
 				    struct ad4030_state *st)
 {
@@ -1423,6 +1511,8 @@ static int ad4030_setup_pga(struct device *dev, struct iio_dev *indio_dev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad4030_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
@@ -1465,6 +1555,7 @@ static int ad4030_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (st->chip->has_pga) {
 		ret = ad4030_setup_pga(dev, indio_dev, st);
 		if (ret)
@@ -1473,6 +1564,8 @@ static int ad4030_probe(struct spi_device *spi)
 		ad4030_fill_scale_avail(st);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ad4030_config(st);
 	if (ret)
 		return ret;
@@ -1482,6 +1575,7 @@ static int ad4030_probe(struct spi_device *spi)
 		return dev_err_probe(dev, PTR_ERR(st->cnv_gpio),
 				     "Failed to get cnv gpio\n");
 
+<<<<<<< HEAD
 	indio_dev->name = st->chip->name;
 	indio_dev->modes = INDIO_DIRECT_MODE;
 	indio_dev->info = &ad4030_iio_info;
@@ -1534,6 +1628,26 @@ static int ad4030_probe(struct spi_device *spi)
 			return dev_err_probe(dev, ret,
 					     "Failed to set offload samp freq\n");
 	}
+=======
+	/*
+	 * One hardware channel is split in two software channels when using
+	 * common byte mode. Add one more channel for the timestamp.
+	 */
+	indio_dev->num_channels = 2 * st->chip->num_voltage_inputs + 1;
+	indio_dev->name = st->chip->name;
+	indio_dev->modes = INDIO_DIRECT_MODE;
+	indio_dev->info = &ad4030_iio_info;
+	indio_dev->channels = st->chip->channels;
+	indio_dev->available_scan_masks = st->chip->available_masks;
+
+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+					      iio_pollfunc_store_time,
+					      ad4030_trigger_handler,
+					      &ad4030_buffer_setup_ops);
+	if (ret)
+		return dev_err_probe(dev, ret,
+				     "Failed to setup triggered buffer\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return devm_iio_device_register(dev, indio_dev);
 }
@@ -1571,6 +1685,7 @@ static const struct iio_scan_type ad4030_24_scan_types[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct iio_scan_type ad4030_24_offload_scan_types[] = {
 	[AD4030_SCAN_TYPE_NORMAL] = {
 		.sign = 's',
@@ -1593,6 +1708,13 @@ static const struct iio_scan_type ad4030_16_scan_types[] = {
 		.sign = 's',
 		.realbits = 16,
 		.storagebits = 32,
+=======
+static const struct iio_scan_type ad4030_16_scan_types[] = {
+	[AD4030_SCAN_TYPE_NORMAL] = {
+		.sign = 's',
+		.storagebits = 32,
+		.realbits = 16,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.shift = 16,
 		.endianness = IIO_BE,
 	},
@@ -1605,6 +1727,7 @@ static const struct iio_scan_type ad4030_16_scan_types[] = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct iio_scan_type ad4030_16_offload_scan_types[] = {
 	[AD4030_SCAN_TYPE_NORMAL] = {
 		.sign = 's',
@@ -1622,6 +1745,8 @@ static const struct iio_scan_type ad4030_16_offload_scan_types[] = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ad4030_chip_info ad4030_24_chip_info = {
 	.name = "ad4030-24",
 	.available_masks = ad4030_channel_masks,
@@ -1630,14 +1755,20 @@ static const struct ad4030_chip_info ad4030_24_chip_info = {
 		AD4030_CHAN_CMO(1, 0),
 		IIO_CHAN_SOFT_TIMESTAMP(2),
 	},
+<<<<<<< HEAD
 	.offload_channels = {
 		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.grade = AD4030_REG_CHIP_GRADE_AD4030_24_GRADE,
 	.precision_bits = 24,
 	.num_voltage_inputs = 1,
 	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
+<<<<<<< HEAD
 	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ad4030_chip_info ad4630_16_chip_info = {
@@ -1650,15 +1781,21 @@ static const struct ad4030_chip_info ad4630_16_chip_info = {
 		AD4030_CHAN_CMO(3, 1),
 		IIO_CHAN_SOFT_TIMESTAMP(4),
 	},
+<<<<<<< HEAD
 	.offload_channels = {
 		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_16_offload_scan_types),
 		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_16_offload_scan_types),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.grade = AD4030_REG_CHIP_GRADE_AD4630_16_GRADE,
 	.precision_bits = 16,
 	.num_voltage_inputs = 2,
 	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
+<<<<<<< HEAD
 	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ad4030_chip_info ad4630_24_chip_info = {
@@ -1671,15 +1808,21 @@ static const struct ad4030_chip_info ad4630_24_chip_info = {
 		AD4030_CHAN_CMO(3, 1),
 		IIO_CHAN_SOFT_TIMESTAMP(4),
 	},
+<<<<<<< HEAD
 	.offload_channels = {
 		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
 		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_24_offload_scan_types),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.grade = AD4030_REG_CHIP_GRADE_AD4630_24_GRADE,
 	.precision_bits = 24,
 	.num_voltage_inputs = 2,
 	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
+<<<<<<< HEAD
 	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ad4030_chip_info ad4632_16_chip_info = {
@@ -1692,15 +1835,21 @@ static const struct ad4030_chip_info ad4632_16_chip_info = {
 		AD4030_CHAN_CMO(3, 1),
 		IIO_CHAN_SOFT_TIMESTAMP(4),
 	},
+<<<<<<< HEAD
 	.offload_channels = {
 		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_16_offload_scan_types),
 		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_16_offload_scan_types),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.grade = AD4030_REG_CHIP_GRADE_AD4632_16_GRADE,
 	.precision_bits = 16,
 	.num_voltage_inputs = 2,
 	.tcyc_ns = AD4632_TCYC_ADJUSTED_NS,
+<<<<<<< HEAD
 	.max_sample_rate_hz = 500 * HZ_PER_KHZ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ad4030_chip_info ad4632_24_chip_info = {
@@ -1713,14 +1862,18 @@ static const struct ad4030_chip_info ad4632_24_chip_info = {
 		AD4030_CHAN_CMO(3, 1),
 		IIO_CHAN_SOFT_TIMESTAMP(4),
 	},
+<<<<<<< HEAD
 	.offload_channels = {
 		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
 		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_24_offload_scan_types),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.grade = AD4030_REG_CHIP_GRADE_AD4632_24_GRADE,
 	.precision_bits = 24,
 	.num_voltage_inputs = 2,
 	.tcyc_ns = AD4632_TCYC_ADJUSTED_NS,
+<<<<<<< HEAD
 	.max_sample_rate_hz = 500 * HZ_PER_KHZ,
 };
 
@@ -1760,6 +1913,8 @@ static const struct ad4030_chip_info adaq4224_chip_info = {
 	.num_voltage_inputs = 1,
 	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
 	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct spi_device_id ad4030_id_table[] = {
@@ -1768,8 +1923,11 @@ static const struct spi_device_id ad4030_id_table[] = {
 	{ "ad4630-24", (kernel_ulong_t)&ad4630_24_chip_info },
 	{ "ad4632-16", (kernel_ulong_t)&ad4632_16_chip_info },
 	{ "ad4632-24", (kernel_ulong_t)&ad4632_24_chip_info },
+<<<<<<< HEAD
 	{ "adaq4216", (kernel_ulong_t)&adaq4216_chip_info },
 	{ "adaq4224", (kernel_ulong_t)&adaq4224_chip_info },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, ad4030_id_table);
@@ -1780,8 +1938,11 @@ static const struct of_device_id ad4030_of_match[] = {
 	{ .compatible = "adi,ad4630-24", .data = &ad4630_24_chip_info },
 	{ .compatible = "adi,ad4632-16", .data = &ad4632_16_chip_info },
 	{ .compatible = "adi,ad4632-24", .data = &ad4632_24_chip_info },
+<<<<<<< HEAD
 	{ .compatible = "adi,adaq4216", .data = &adaq4216_chip_info },
 	{ .compatible = "adi,adaq4224", .data = &adaq4224_chip_info },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, ad4030_of_match);
@@ -1799,4 +1960,7 @@ module_spi_driver(ad4030_driver);
 MODULE_AUTHOR("Esteban Blanc <eblanc@baylibre.com>");
 MODULE_DESCRIPTION("Analog Devices AD4630 ADC family driver");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("IIO_DMAENGINE_BUFFER");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

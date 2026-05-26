@@ -2063,6 +2063,7 @@ static const struct nla_policy inet_af_policy[IFLA_INET_MAX+1] = {
 	[IFLA_INET_CONF]	= { .type = NLA_NESTED },
 };
 
+<<<<<<< HEAD
 static const struct nla_policy inet_devconf_policy[IPV4_DEVCONF_MAX + 1] = {
 	[IPV4_DEVCONF_FORWARDING]	= NLA_POLICY_RANGE(NLA_U32, 0, 1),
 	[IPV4_DEVCONF_MC_FORWARDING]	= { .type = NLA_REJECT },
@@ -2101,12 +2102,19 @@ static const struct nla_policy inet_devconf_policy[IPV4_DEVCONF_MAX + 1] = {
 	[IPV4_DEVCONF_ARP_EVICT_NOCARRIER] = NLA_POLICY_RANGE(NLA_U32, 0, 1),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int inet_validate_link_af(const struct net_device *dev,
 				 const struct nlattr *nla,
 				 struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
 	struct nlattr *tb[IFLA_INET_MAX + 1], *nested_tb[IPV4_DEVCONF_MAX + 1];
 	int err;
+=======
+	struct nlattr *a, *tb[IFLA_INET_MAX+1];
+	int err, rem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dev && !__in_dev_get_rtnl(dev))
 		return -EAFNOSUPPORT;
@@ -2117,12 +2125,24 @@ static int inet_validate_link_af(const struct net_device *dev,
 		return err;
 
 	if (tb[IFLA_INET_CONF]) {
+<<<<<<< HEAD
 		err = nla_parse_nested(nested_tb, IPV4_DEVCONF_MAX,
 				       tb[IFLA_INET_CONF], inet_devconf_policy,
 				       extack);
 
 		if (err < 0)
 			return err;
+=======
+		nla_for_each_nested(a, tb[IFLA_INET_CONF], rem) {
+			int cfgid = nla_type(a);
+
+			if (nla_len(a) < 4)
+				return -EINVAL;
+
+			if (cfgid <= 0 || cfgid > IPV4_DEVCONF_MAX)
+				return -EINVAL;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

@@ -6,7 +6,10 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/reset/nvidia,tegra114-car.h>
 #include <dt-bindings/soc/tegra-pmc.h>
+<<<<<<< HEAD
 #include <dt-bindings/thermal/tegra114-soctherm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	compatible = "nvidia,tegra114";
@@ -259,8 +262,11 @@
 		reg = <0x60006000 0x1000>;
 		#clock-cells = <1>;
 		#reset-cells = <1>;
+<<<<<<< HEAD
 
 		nvidia,external-memory-controller = <&emc>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	flow-controller@60007000 {
@@ -314,6 +320,7 @@
 		reg = <0x6000c000 0x150>;
 	};
 
+<<<<<<< HEAD
 	actmon: actmon@6000c800 {
 		compatible = "nvidia,tegra114-actmon";
 		reg = <0x6000c800 0x400>;
@@ -326,6 +333,8 @@
 		#cooling-cells = <2>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio: gpio@6000d000 {
 		compatible = "nvidia,tegra114-gpio", "nvidia,tegra30-gpio";
 		reg = <0x6000d000 0x1000>;
@@ -657,6 +666,7 @@
 		#iommu-cells = <1>;
 	};
 
+<<<<<<< HEAD
 	emc: external-memory-controller@7001b000 {
 		compatible = "nvidia,tegra114-emc";
 		reg = <0x7001b000 0x800>;
@@ -667,6 +677,8 @@
 		nvidia,memory-controller = <&mc>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hda@70030000 {
 		compatible = "nvidia,tegra114-hda", "nvidia,tegra30-hda";
 		reg = <0x70030000 0x10000>;
@@ -776,6 +788,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	soctherm: thermal-sensor@700e2000 {
 		compatible = "nvidia,tegra114-soctherm";
 		reg = <0x700e2000 0x600>, /* SOC_THERM reg_base */
@@ -816,6 +829,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mipi: mipi@700e3000 {
 		compatible = "nvidia,tegra114-mipi";
 		reg = <0x700e3000 0x100>;
@@ -986,28 +1001,40 @@
 			clock-names = "cpu_g", "cpu_lp", "pll_x", "pll_p", "dfll";
 			/* FIXME: what's the actual transition time? */
 			clock-latency = <300000>;
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu1: cpu@1 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a15";
 			reg = <1>;
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu2: cpu@2 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a15";
 			reg = <2>;
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu3: cpu@3 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a15";
 			reg = <3>;
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 
@@ -1020,6 +1047,7 @@
 		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>;
 	};
 
+<<<<<<< HEAD
 	thermal-zones {
 		cpu-thermal {
 			polling-delay-passive = <1000>;
@@ -1172,6 +1200,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timer {
 		compatible = "arm,armv7-timer";
 		interrupts =

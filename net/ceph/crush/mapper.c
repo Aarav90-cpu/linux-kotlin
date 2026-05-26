@@ -911,7 +911,11 @@ int crush_do_rule(const struct crush_map *map,
 	int osize;
 	const struct crush_rule *rule;
 	__u32 step;
+<<<<<<< HEAD
 	int i;
+=======
+	int i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int numrep;
 	int out_size;
 	/*
@@ -1012,6 +1016,10 @@ int crush_do_rule(const struct crush_map *map,
 					if (numrep <= 0)
 						continue;
 				}
+<<<<<<< HEAD
+=======
+				j = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/* make sure bucket id is valid */
 				bno = -1 - w[i];
 				if (bno < 0 || bno >= map->max_buckets) {
@@ -1035,7 +1043,11 @@ int crush_do_rule(const struct crush_map *map,
 						weight, weight_max,
 						x, numrep,
 						curstep->arg2,
+<<<<<<< HEAD
 						o+osize, 0,
+=======
+						o+osize, j,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						result_max-osize,
 						choose_tries,
 						recurse_tries,
@@ -1057,7 +1069,11 @@ int crush_do_rule(const struct crush_map *map,
 						weight, weight_max,
 						x, out_size, numrep,
 						curstep->arg2,
+<<<<<<< HEAD
 						o+osize, 0,
+=======
+						o+osize, j,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						choose_tries,
 						choose_leaf_tries ?
 						   choose_leaf_tries : 1,

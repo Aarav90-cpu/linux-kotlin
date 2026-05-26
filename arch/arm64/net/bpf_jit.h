@@ -187,9 +187,13 @@
 /* Rn - imm12; set condition flags */
 #define A64_CMP_I(sf, Rn, imm12) A64_SUBS_I(sf, A64_ZR, Rn, imm12)
 /* Rd = Rn */
+<<<<<<< HEAD
 #define A64_MOV(sf, Rd, Rn) \
 	(((Rd) == A64_SP || (Rn) == A64_SP) ? A64_ADD_I(sf, Rd, Rn, 0) : \
 	 aarch64_insn_gen_move_reg(Rd, Rn, A64_VARIANT(sf)))
+=======
+#define A64_MOV(sf, Rd, Rn) A64_ADD_I(sf, Rd, Rn, 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Bitfield move */
 #define A64_BITFIELD(sf, Rd, Rn, immr, imms, type) \

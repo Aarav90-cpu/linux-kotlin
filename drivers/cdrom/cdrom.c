@@ -631,6 +631,7 @@ int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi)
 
 	WARN_ON(!cdo->generic_packet);
 
+<<<<<<< HEAD
 	/*
 	 * Propagate the drive's write support to the block layer so BLKROGET
 	 * reflects actual write capability. Drivers that use GET CONFIGURATION
@@ -641,6 +642,8 @@ int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi)
 	set_disk_ro(disk, !CDROM_CAN(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM |
 				     CDC_CD_RW));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cd_dbg(CD_REG_UNREG, "drive \"/dev/%s\" registered\n", cdi->name);
 	mutex_lock(&cdrom_mutex);
 	list_add(&cdi->list, &cdrom_list);
@@ -752,6 +755,7 @@ static int cdrom_is_random_writable(struct cdrom_device_info *cdi, int *write)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Probe write-related MMC features via GET CONFIGURATION and update
  * cdi->mask accordingly. Drivers that populate cdi->mask from the MODE SENSE
@@ -790,6 +794,8 @@ void cdrom_probe_write_features(struct cdrom_device_info *cdi)
 }
 EXPORT_SYMBOL(cdrom_probe_write_features);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cdrom_media_erasable(struct cdrom_device_info *cdi)
 {
 	disc_information di;
@@ -942,8 +948,38 @@ static int cdrom_is_dvd_rw(struct cdrom_device_info *cdi)
  */
 static int cdrom_open_write(struct cdrom_device_info *cdi)
 {
+<<<<<<< HEAD
 	int ret = 1;
 
+=======
+	int mrw, mrw_write, ram_write;
+	int ret = 1;
+
+	mrw = 0;
+	if (!cdrom_is_mrw(cdi, &mrw_write))
+		mrw = 1;
+
+	if (CDROM_CAN(CDC_MO_DRIVE))
+		ram_write = 1;
+	else
+		(void) cdrom_is_random_writable(cdi, &ram_write);
+	
+	if (mrw)
+		cdi->mask &= ~CDC_MRW;
+	else
+		cdi->mask |= CDC_MRW;
+
+	if (mrw_write)
+		cdi->mask &= ~CDC_MRW_W;
+	else
+		cdi->mask |= CDC_MRW_W;
+
+	if (ram_write)
+		cdi->mask &= ~CDC_RAM;
+	else
+		cdi->mask |= CDC_RAM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (CDROM_CAN(CDC_MRW_W))
 		ret = cdrom_mrw_open_write(cdi);
 	else if (CDROM_CAN(CDC_DVD_RAM))

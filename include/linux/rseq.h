@@ -9,11 +9,14 @@
 
 void __rseq_handle_slowpath(struct pt_regs *regs);
 
+<<<<<<< HEAD
 static __always_inline bool rseq_v2(struct task_struct *t)
 {
 	return IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY) && likely(t->rseq.event.has_rseq > 1);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Invoked from resume_user_mode_work() */
 static inline void rseq_handle_slowpath(struct pt_regs *regs)
 {
@@ -21,7 +24,12 @@ static inline void rseq_handle_slowpath(struct pt_regs *regs)
 		if (current->rseq.event.slowpath)
 			__rseq_handle_slowpath(regs);
 	} else {
+<<<<<<< HEAD
 		if (current->rseq.event.sched_switch && current->rseq.event.has_rseq)
+=======
+		/* '&' is intentional to spare one conditional branch */
+		if (current->rseq.event.sched_switch & current->rseq.event.has_rseq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__rseq_handle_slowpath(regs);
 	}
 }
@@ -34,9 +42,15 @@ void __rseq_signal_deliver(int sig, struct pt_regs *regs);
  */
 static inline void rseq_signal_deliver(struct ksignal *ksig, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	if (rseq_v2(current)) {
 		/* has_rseq is implied in rseq_v2() */
 		if (current->rseq.event.user_irq)
+=======
+	if (IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY)) {
+		/* '&' is intentional to spare one conditional branch */
+		if (current->rseq.event.has_rseq & current->rseq.event.user_irq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__rseq_signal_deliver(ksig->sig, regs);
 	} else {
 		if (current->rseq.event.has_rseq)
@@ -54,6 +68,7 @@ static __always_inline void rseq_sched_switch_event(struct task_struct *t)
 {
 	struct rseq_event *ev = &t->rseq.event;
 
+<<<<<<< HEAD
 	/*
 	 * Only apply the user_irq optimization for RSEQ ABI V2 registrations.
 	 * Legacy users like TCMalloc rely on the original ABI V1 behaviour
@@ -70,6 +85,17 @@ static __always_inline void rseq_sched_switch_event(struct task_struct *t)
 		 * to be evaluated here because rseq_v2() implies has_rseq.
 		 */
 		bool raise = ev->user_irq | ev->ids_changed;
+=======
+	if (IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY)) {
+		/*
+		 * Avoid a boat load of conditionals by using simple logic
+		 * to determine whether NOTIFY_RESUME needs to be raised.
+		 *
+		 * It's required when the CPU or MM CID has changed or
+		 * the entry was from user space.
+		 */
+		bool raise = (ev->user_irq | ev->ids_changed) & ev->has_rseq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (raise) {
 			ev->sched_switch = true;
@@ -77,7 +103,10 @@ static __always_inline void rseq_sched_switch_event(struct task_struct *t)
 		}
 	} else {
 		if (ev->has_rseq) {
+<<<<<<< HEAD
 			t->rseq.event.ids_changed = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			t->rseq.event.sched_switch = true;
 			rseq_raise_notify_resume(t);
 		}
@@ -173,7 +202,10 @@ static inline unsigned int rseq_alloc_align(void)
 }
 
 #else /* CONFIG_RSEQ */
+<<<<<<< HEAD
 static inline bool rseq_v2(struct task_struct *t) { return false; }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void rseq_handle_slowpath(struct pt_regs *regs) { }
 static inline void rseq_signal_deliver(struct ksignal *ksig, struct pt_regs *regs) { }
 static inline void rseq_sched_switch_event(struct task_struct *t) { }

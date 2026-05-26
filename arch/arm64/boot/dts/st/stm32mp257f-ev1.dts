@@ -261,9 +261,12 @@
 	i2c-scl-falling-time-ns = <13>;
 	clock-frequency = <400000>;
 	status = "okay";
+<<<<<<< HEAD
 	/* spare dmas for other usage */
 	/delete-property/dmas;
 	/delete-property/dma-names;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	imx335: camera@1a {
 		compatible = "sony,imx335";
@@ -302,9 +305,12 @@
 	i2c-scl-falling-time-ns = <7>;
 	clock-frequency = <400000>;
 	status = "disabled";
+<<<<<<< HEAD
 	/* spare dmas for other usage */
 	/delete-property/dmas;
 	/delete-property/dma-names;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &ommanager {

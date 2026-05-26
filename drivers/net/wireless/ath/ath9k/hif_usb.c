@@ -1382,6 +1382,11 @@ static int ath9k_hif_usb_probe(struct usb_interface *interface,
 		goto err_alloc;
 	}
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hif_dev->udev = udev;
 	hif_dev->interface = interface;
 	hif_dev->usb_device_id = id;
@@ -1401,6 +1406,10 @@ static int ath9k_hif_usb_probe(struct usb_interface *interface,
 err_fw_req:
 	usb_set_intfdata(interface, NULL);
 	kfree(hif_dev);
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_alloc:
 	return ret;
 }
@@ -1448,6 +1457,10 @@ static void ath9k_hif_usb_disconnect(struct usb_interface *interface)
 
 	kfree(hif_dev);
 	dev_info(&udev->dev, "ath9k_htc: USB layer deinitialized\n");
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PM

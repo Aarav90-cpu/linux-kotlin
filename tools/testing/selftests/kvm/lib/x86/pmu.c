@@ -11,7 +11,11 @@
 #include "processor.h"
 #include "pmu.h"
 
+<<<<<<< HEAD
 const u64 intel_pmu_arch_events[] = {
+=======
+const uint64_t intel_pmu_arch_events[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INTEL_ARCH_CPU_CYCLES,
 	INTEL_ARCH_INSTRUCTIONS_RETIRED,
 	INTEL_ARCH_REFERENCE_CYCLES,
@@ -28,7 +32,11 @@ const u64 intel_pmu_arch_events[] = {
 };
 kvm_static_assert(ARRAY_SIZE(intel_pmu_arch_events) == NR_INTEL_ARCH_EVENTS);
 
+<<<<<<< HEAD
 const u64 amd_pmu_zen_events[] = {
+=======
+const uint64_t amd_pmu_zen_events[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	AMD_ZEN_CORE_CYCLES,
 	AMD_ZEN_INSTRUCTIONS_RETIRED,
 	AMD_ZEN_BRANCHES_RETIRED,
@@ -50,7 +58,11 @@ kvm_static_assert(ARRAY_SIZE(amd_pmu_zen_events) == NR_AMD_ZEN_EVENTS);
  * be overcounted on these certain instructions, but for Clearwater Forest
  * only "Instruction Retired" event is overcounted on these instructions.
  */
+<<<<<<< HEAD
 static u64 get_pmu_errata(void)
+=======
+static uint64_t get_pmu_errata(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!this_cpu_is_intel())
 		return 0;
@@ -72,7 +84,11 @@ static u64 get_pmu_errata(void)
 	}
 }
 
+<<<<<<< HEAD
 u64 pmu_errata_mask;
+=======
+uint64_t pmu_errata_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void kvm_init_pmu_errata(void)
 {

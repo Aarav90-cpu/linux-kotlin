@@ -11,6 +11,7 @@
 	compatible = "google,dojo-sku7", "google,dojo-sku5",
 		     "google,dojo-sku3", "google,dojo-sku1",
 		     "google,dojo", "mediatek,mt8195";
+<<<<<<< HEAD
 
 	nvme-connector {
 		compatible = "pcie-m2-m-connector";
@@ -33,6 +34,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &audio_codec {
@@ -94,6 +97,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie0_pins_default>;
 	status = "okay";
+<<<<<<< HEAD
 
 	pcie@0 {
 		compatible = "pciclass,0604";
@@ -110,6 +114,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pciephy {

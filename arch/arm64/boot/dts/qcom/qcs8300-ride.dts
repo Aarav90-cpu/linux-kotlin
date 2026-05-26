@@ -18,13 +18,17 @@
 	aliases {
 		serial0 = &uart7;
 		mmc0 = &sdhc_1;
+<<<<<<< HEAD
 		serial1 = &uart2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	vreg_1p0: regulator-vreg-1p0 {
 		compatible = "regulator-fixed";
 		regulator-name = "VREG_1P0";
@@ -88,6 +92,8 @@
 		regulator-boot-on;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dp0-connector {
 		compatible = "dp-connector";
 		label = "DP0";
@@ -100,6 +106,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	dp-dsi0-connector {
 		compatible = "dp-connector";
 		label = "DSI0";
@@ -156,6 +163,8 @@
 		gpio = <&pmm8650au_1_gpios 6 GPIO_ACTIVE_HIGH>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	regulator-usb2-vbus {
 		compatible = "regulator-fixed";
 		regulator-name = "USB2_VBUS";
@@ -165,6 +174,7 @@
 		enable-active-high;
 		regulator-always-on;
 	};
+<<<<<<< HEAD
 
 	wcn6855-pmu {
 		compatible = "qcom,wcn6855-pmu";
@@ -229,6 +239,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &apps_rsc {
@@ -500,6 +512,7 @@
 	firmware-name = "qcom/qcs8300/a623_zap.mbn";
 };
 
+<<<<<<< HEAD
 &i2c8 {
 	clock-frequency = <400000>;
 
@@ -569,6 +582,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pmm8650au_1_gpios {
 	usb2_en: usb2-en-state {
 		pins = "gpio7";
@@ -616,6 +631,7 @@
 &pcieport0 {
 	reset-gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
 	wake-gpios = <&tlmm 0 GPIO_ACTIVE_HIGH>;
+<<<<<<< HEAD
 
 	wifi@0 {
 		compatible = "pci17cb,1103";
@@ -633,6 +649,8 @@
 
 		qcom,calibration-variant = "QC_QCS8300_Ride";
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pcie0_phy {
@@ -661,6 +679,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &mdss_dsi0 {
 	vdda-supply = <&vreg_l5a>;
 
@@ -678,14 +697,19 @@
 	remote-endpoint = <&dsi2dp_bridge_in>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &qupv3_id_0 {
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &qupv3_id_1 {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &remoteproc_adsp {
 	firmware-name = "qcom/qcs8300/adsp.mbn";
 	status = "okay";
@@ -727,12 +751,15 @@
 };
 
 &tlmm {
+<<<<<<< HEAD
 	bt_en_state: bt-en-state {
 		pins = "gpio55";
 		function = "gpio";
 		bias-pull-down;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie0_default_state: pcie0-default-state {
 		wake-pins {
 			pins = "gpio0";
@@ -795,6 +822,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	io_expander_reset_active: io-expander-reset-active-state {
 		pins = "gpio66";
 		function = "gpio";
@@ -809,11 +837,14 @@
 		bias-disable;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dp_hot_plug_det: dp-hot-plug-det-state {
 		pins = "gpio94";
 		function = "edp0_hot";
 		bias-disable;
 	};
+<<<<<<< HEAD
 
 	wlan_en_state: wlan-en-state {
 		pins = "gpio54";
@@ -839,6 +870,8 @@
 		vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p7>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart7 {

@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * MEN 16z188 Analog to Digital Converter
+=======
+ * MEN 16z188 Analog to Digial Converter
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Copyright (C) 2014 MEN Mikroelektronik GmbH (www.men.de)
  * Author: Johannes Thumshirn <johannes.thumshirn@men.de>

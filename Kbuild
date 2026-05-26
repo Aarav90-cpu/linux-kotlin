@@ -47,6 +47,7 @@ $(rq-offsets-file): kernel/sched/rq-offsets.s FORCE
 
 # Check for missing system calls
 
+<<<<<<< HEAD
 missing-syscalls-file := .tmp_missing-syscalls$(missing_syscalls_instance)
 
 targets += $(missing-syscalls-file)
@@ -59,6 +60,14 @@ $(missing-syscalls-file): scripts/checksyscalls.sh $(rq-offsets-file) FORCE
 
 PHONY += missing-syscalls
 missing-syscalls: $(missing-syscalls-file)
+=======
+quiet_cmd_syscalls = CALL    $<
+      cmd_syscalls = $(CONFIG_SHELL) $< $(CC) $(c_flags) $(missing_syscalls_flags)
+
+PHONY += missing-syscalls
+missing-syscalls: scripts/checksyscalls.sh $(rq-offsets-file)
+	$(call cmd,syscalls)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Check the manual modification of atomic headers
 
@@ -107,6 +116,10 @@ obj-y			+= crypto/
 obj-$(CONFIG_BLOCK)	+= block/
 obj-$(CONFIG_IO_URING)	+= io_uring/
 obj-$(CONFIG_RUST)	+= rust/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_KOTLIN)	+= kotlin/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-y			+= $(ARCH_LIB)
 obj-y			+= drivers/
 obj-y			+= sound/

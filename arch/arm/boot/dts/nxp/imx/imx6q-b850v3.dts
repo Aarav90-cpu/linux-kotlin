@@ -53,6 +53,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &gpio4 {
 	gpio-line-names =
 		"", "", "", "",
@@ -67,6 +68,25 @@
 
 &hdmi {
 	ddc-i2c-bus = <&mux2_i2c1>;
+=======
+&ldb {
+	fsl,dual-channel;
+	status = "okay";
+
+	lvds0: lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+
+		port@4 {
+			reg = <4>;
+
+			lvds0_out: endpoint {
+				remote-endpoint = <&stdp4028_in>;
+			};
+		};
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &i2c2 {
@@ -126,6 +146,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &ldb {
 	fsl,dual-channel;
 	status = "okay";
@@ -143,6 +164,10 @@
 			};
 		};
 	};
+=======
+&hdmi {
+	ddc-i2c-bus = <&mux2_i2c1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &mux1_i2c1 {
@@ -298,12 +323,18 @@
 	port@4 {
 		reg = <4>;
 		label = "cpu";
+<<<<<<< HEAD
 		phy-mode = "gmii";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ethernet = <&switch_nic>;
 		phy-handle = <&switchphy4>;
 	};
 };
+<<<<<<< HEAD
 
 &usdhc4 {
 	status = "disabled";
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

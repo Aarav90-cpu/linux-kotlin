@@ -221,7 +221,10 @@ static int boe_th101mb31ig002_prepare(struct drm_panel *panel)
 						      struct boe_th101mb31ig002,
 						      panel);
 	struct device *dev = &ctx->dsi->dev;
+<<<<<<< HEAD
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = regulator_enable(ctx->power);
@@ -234,9 +237,15 @@ static int boe_th101mb31ig002_prepare(struct drm_panel *panel)
 		msleep(ctx->desc->vcioo_to_lp11_delay_ms);
 
 	if (ctx->desc->lp11_before_reset) {
+<<<<<<< HEAD
 		mipi_dsi_dcs_nop_multi(&dsi_ctx);
 		if (dsi_ctx.accum_err)
 			return dsi_ctx.accum_err;
+=======
+		ret = mipi_dsi_dcs_nop(ctx->dsi);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ctx->desc->lp11_to_reset_delay_ms)

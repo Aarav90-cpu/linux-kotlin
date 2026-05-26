@@ -6,7 +6,10 @@
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/cix,sky1.h>
+<<<<<<< HEAD
 #include "sky1-power.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	interrupt-parent = <&gic>;
@@ -169,6 +172,7 @@
 				#clock-cells = <1>;
 			};
 		};
+<<<<<<< HEAD
 
 		ap_to_tfa_scmi: scmi-1 {
 			compatible = "arm,scmi-smc";
@@ -182,6 +186,8 @@
 				#power-domain-cells = <1>;
 			};
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pmu-a520 {
@@ -199,6 +205,7 @@
 		method = "smc";
 	};
 
+<<<<<<< HEAD
 	s5_gpio_apb_clk: clock-100000000 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -206,6 +213,8 @@
 		clock-output-names = "s5_gpio_apb_clk";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	soc@0 {
 		compatible = "simple-bus";
 		ranges = <0 0 0 0 0x20 0>;
@@ -369,6 +378,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		fch_gpio0: gpio-controller@4120000 {
 			compatible = "cdns,gpio-r1p02";
 			reg = <0x0 0x4120000 0x0 0x1000>;
@@ -439,6 +449,8 @@
 			#reset-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		iomuxc: pinctrl@4170000 {
 			compatible = "cix,sky1-pinctrl";
 			reg = <0x0 0x04170000 0x0 0x1000>;
@@ -519,7 +531,10 @@
 			#size-cells = <2>;
 			bus-range = <0xc0 0xff>;
 			device_type = "pci";
+<<<<<<< HEAD
 			power-domains = <&smc_devpd SKY1_PD_PCIE_CTRL0>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 0x7>;
 			interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 407 IRQ_TYPE_LEVEL_HIGH 0>,
@@ -660,6 +675,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		s5_syscon: syscon@16000000 {
 			compatible = "cix,sky1-s5-system-control", "syscon";
 			reg = <0x0 0x16000000 0x0 0x1000>;
@@ -714,16 +730,21 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		iomuxc_s5: pinctrl@16007000 {
 			compatible = "cix,sky1-pinctrl-s5";
 			reg = <0x0 0x16007000 0x0 0x1000>;
 		};
+<<<<<<< HEAD
 
 		ap_tfa_scmi_mem: shmem@84380000 {
 			compatible = "arm,scmi-shmem";
 			reg = <0x0 0x84380000 0x0 0x80>;
 			reg-io-width = <4>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	timer {

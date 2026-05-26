@@ -422,7 +422,11 @@ static int iommu_load_old_irte(struct intel_iommu *iommu)
 	u64 irta;
 
 	/* Check whether the old ir-table has the same size as ours */
+<<<<<<< HEAD
 	irta = readq(iommu->reg + DMAR_IRTA_REG);
+=======
+	irta = dmar_readq(iommu->reg + DMAR_IRTA_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((irta & INTR_REMAP_TABLE_REG_SIZE_MASK)
 	     != INTR_REMAP_TABLE_REG_SIZE)
 		return -EINVAL;
@@ -465,8 +469,13 @@ static void iommu_set_irq_remapping(struct intel_iommu *iommu, int mode)
 
 	raw_spin_lock_irqsave(&iommu->register_lock, flags);
 
+<<<<<<< HEAD
 	writeq((addr) | IR_X2APIC_MODE(mode) | INTR_REMAP_TABLE_REG_SIZE,
 	       iommu->reg + DMAR_IRTA_REG);
+=======
+	dmar_writeq(iommu->reg + DMAR_IRTA_REG,
+		    (addr) | IR_X2APIC_MODE(mode) | INTR_REMAP_TABLE_REG_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Set interrupt-remapping table pointer */
 	writel(iommu->gcmd | DMA_GCMD_SIRTP, iommu->reg + DMAR_GCMD_REG);

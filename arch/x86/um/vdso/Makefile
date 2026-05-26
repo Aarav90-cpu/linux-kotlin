@@ -3,6 +3,11 @@
 # Building vDSO images for x86.
 #
 
+<<<<<<< HEAD
+=======
+vdso-install-y += vdso.so
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # files to link into the vdso
 vobjs-y := vdso-note.o um_vdso.o
 

@@ -470,7 +470,10 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 	struct inode *inode;
 	struct fuse_inode *fi;
 	struct fuse_conn *fc = get_fuse_conn_super(sb);
+<<<<<<< HEAD
 	bool is_new_inode = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Auto mount points get their node id from the submount root, which is
@@ -506,13 +509,21 @@ retry:
 	if (!inode)
 		return NULL;
 
+<<<<<<< HEAD
 	is_new_inode = inode_state_read_once(inode) & I_NEW;
 	if (is_new_inode) {
+=======
+	if ((inode_state_read_once(inode) & I_NEW)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_flags |= S_NOATIME;
 		if (!fc->writeback_cache || !S_ISREG(attr->mode))
 			inode->i_flags |= S_NOCMTIME;
 		inode->i_generation = generation;
 		fuse_init_inode(inode, attr, fc);
+<<<<<<< HEAD
+=======
+		unlock_new_inode(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (fuse_stale_inode(inode, generation, attr)) {
 		/* nodeid was reused, any I/O on the old inode should fail */
 		fuse_make_bad(inode);
@@ -529,8 +540,11 @@ retry:
 done:
 	fuse_change_attributes_i(inode, attr, NULL, attr_valid, attr_version,
 				 evict_ctr);
+<<<<<<< HEAD
 	if (is_new_inode)
 		unlock_new_inode(inode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return inode;
 }
 
@@ -791,7 +805,11 @@ enum {
 
 static const struct fs_parameter_spec fuse_fs_parameters[] = {
 	fsparam_string	("source",		OPT_SOURCE),
+<<<<<<< HEAD
 	fsparam_fd	("fd",			OPT_FD),
+=======
+	fsparam_u32	("fd",			OPT_FD),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fsparam_u32oct	("rootmode",		OPT_ROOTMODE),
 	fsparam_uid	("user_id",		OPT_USER_ID),
 	fsparam_gid	("group_id",		OPT_GROUP_ID),
@@ -803,6 +821,7 @@ static const struct fs_parameter_spec fuse_fs_parameters[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static int fuse_opt_fd(struct fs_context *fsc, struct file *file)
 {
 	struct fuse_fs_context *ctx = fsc->fs_private;
@@ -822,6 +841,8 @@ static int fuse_opt_fd(struct fs_context *fsc, struct file *file)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
 {
 	struct fs_parse_result result;
@@ -861,6 +882,7 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
 		return 0;
 
 	case OPT_FD:
+<<<<<<< HEAD
 		if (param->type == fs_value_is_file) {
 			return fuse_opt_fd(fsc, param->file);
 		} else {
@@ -870,6 +892,11 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
 
 			return fuse_opt_fd(fsc, file);
 		}
+=======
+		ctx->fd = result.uint_32;
+		ctx->fd_present = true;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	case OPT_ROOTMODE:
 		if (!fuse_valid_type(result.uint_32))
@@ -932,8 +959,11 @@ static void fuse_free_fsc(struct fs_context *fsc)
 	struct fuse_fs_context *ctx = fsc->fs_private;
 
 	if (ctx) {
+<<<<<<< HEAD
 		if (ctx->fud)
 			fuse_dev_put(ctx->fud);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(ctx->subtype);
 		kfree(ctx);
 	}
@@ -1005,6 +1035,10 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
 	spin_lock_init(&fc->bg_lock);
 	init_rwsem(&fc->killsb);
 	refcount_set(&fc->count, 1);
+<<<<<<< HEAD
+=======
+	atomic_set(&fc->dev_count, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_set(&fc->epoch, 1);
 	INIT_WORK(&fc->epoch_work, fuse_epoch_work);
 	init_waitqueue_head(&fc->blocked_waitq);
@@ -1652,7 +1686,10 @@ struct fuse_dev *fuse_dev_alloc(void)
 	if (!fud)
 		return NULL;
 
+<<<<<<< HEAD
 	refcount_set(&fud->ref, 1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pq = kzalloc_objs(struct list_head, FUSE_PQ_HASH_SIZE);
 	if (!pq) {
 		kfree(fud);
@@ -1668,6 +1705,7 @@ EXPORT_SYMBOL_GPL(fuse_dev_alloc);
 
 void fuse_dev_install(struct fuse_dev *fud, struct fuse_conn *fc)
 {
+<<<<<<< HEAD
 	struct fuse_conn *old_fc;
 
 	spin_lock(&fc->lock);
@@ -1688,6 +1726,11 @@ void fuse_dev_install(struct fuse_dev *fud, struct fuse_conn *fc)
 		list_add_tail(&fud->entry, &fc->devices);
 		fuse_conn_get(fc);
 	}
+=======
+	fud->fc = fuse_conn_get(fc);
+	spin_lock(&fc->lock);
+	list_add_tail(&fud->entry, &fc->devices);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock(&fc->lock);
 }
 EXPORT_SYMBOL_GPL(fuse_dev_install);
@@ -1705,6 +1748,7 @@ struct fuse_dev *fuse_dev_alloc_install(struct fuse_conn *fc)
 }
 EXPORT_SYMBOL_GPL(fuse_dev_alloc_install);
 
+<<<<<<< HEAD
 void fuse_dev_put(struct fuse_dev *fud)
 {
 	struct fuse_conn *fc;
@@ -1715,6 +1759,13 @@ void fuse_dev_put(struct fuse_dev *fud)
 	fc = fuse_dev_fc_get(fud);
 	if (fc && fc != FUSE_DEV_FC_DISCONNECTED) {
 		/* This is the virtiofs case (fuse_dev_release() not called) */
+=======
+void fuse_dev_free(struct fuse_dev *fud)
+{
+	struct fuse_conn *fc = fud->fc;
+
+	if (fc) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&fc->lock);
 		list_del(&fud->entry);
 		spin_unlock(&fc->lock);
@@ -1724,7 +1775,11 @@ void fuse_dev_put(struct fuse_dev *fud)
 	kfree(fud->pq.processing);
 	kfree(fud);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(fuse_dev_put);
+=======
+EXPORT_SYMBOL_GPL(fuse_dev_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void fuse_fill_attr_from_inode(struct fuse_attr *attr,
 				      const struct fuse_inode *fi)
@@ -1876,7 +1931,11 @@ EXPORT_SYMBOL_GPL(fuse_init_fs_context_submount);
 
 int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 {
+<<<<<<< HEAD
 	struct fuse_dev *fud = ctx->fud;
+=======
+	struct fuse_dev *fud = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fuse_mount *fm = get_fuse_mount_super(sb);
 	struct fuse_conn *fc = fm->fc;
 	struct inode *root;
@@ -1910,11 +1969,25 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 			goto err;
 	}
 
+<<<<<<< HEAD
+=======
+	if (ctx->fudptr) {
+		err = -ENOMEM;
+		fud = fuse_dev_alloc_install(fc);
+		if (!fud)
+			goto err_free_dax;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fc->dev = sb->s_dev;
 	fm->sb = sb;
 	err = fuse_bdi_init(fc, sb);
 	if (err)
+<<<<<<< HEAD
 		goto err_free_dax;
+=======
+		goto err_dev_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Handle umasking inside the fuse code */
 	if (sb->s_flags & SB_POSIXACL)
@@ -1936,6 +2009,7 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 	set_default_d_op(sb, &fuse_dentry_operations);
 	root_dentry = d_make_root(root);
 	if (!root_dentry)
+<<<<<<< HEAD
 		goto err_free_dax;
 
 	mutex_lock(&fuse_mutex);
@@ -1945,6 +2019,17 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 			goto err_unlock;
 		if (fud->sync_init)
 			fc->sync_init = 1;
+=======
+		goto err_dev_free;
+
+	mutex_lock(&fuse_mutex);
+	err = -EINVAL;
+	if (ctx->fudptr && *ctx->fudptr) {
+		if (*ctx->fudptr == FUSE_DEV_SYNC_INIT)
+			fc->sync_init = 1;
+		else
+			goto err_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = fuse_ctl_add_conn(fc);
@@ -1953,8 +2038,13 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
 
 	list_add_tail(&fc->entry, &fuse_conn_list);
 	sb->s_root = root_dentry;
+<<<<<<< HEAD
 	if (fud) {
 		fuse_dev_install(fud, fc);
+=======
+	if (ctx->fudptr) {
+		*ctx->fudptr = fud;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wake_up_all(&fuse_dev_waitq);
 	}
 	mutex_unlock(&fuse_mutex);
@@ -1963,6 +2053,12 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
  err_unlock:
 	mutex_unlock(&fuse_mutex);
 	dput(root_dentry);
+<<<<<<< HEAD
+=======
+ err_dev_free:
+	if (fud)
+		fuse_dev_free(fud);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  err_free_dax:
 	if (IS_ENABLED(CONFIG_FUSE_DAX))
 		fuse_dax_conn_free(fc);
@@ -1977,6 +2073,7 @@ static int fuse_fill_super(struct super_block *sb, struct fs_context *fsc)
 	struct fuse_mount *fm;
 	int err;
 
+<<<<<<< HEAD
 	if (!ctx->fud || !ctx->rootmode_present ||
 	    !ctx->user_id_present || !ctx->group_id_present)
 		return -EINVAL;
@@ -1984,6 +2081,26 @@ static int fuse_fill_super(struct super_block *sb, struct fs_context *fsc)
 	err = fuse_fill_super_common(sb, ctx);
 	if (err)
 		return err;
+=======
+	if (!ctx->file || !ctx->rootmode_present ||
+	    !ctx->user_id_present || !ctx->group_id_present)
+		return -EINVAL;
+
+	/*
+	 * Require mount to happen from the same user namespace which
+	 * opened /dev/fuse to prevent potential attacks.
+	 */
+	if ((ctx->file->f_op != &fuse_dev_operations) ||
+	    (ctx->file->f_cred->user_ns != sb->s_user_ns))
+		return -EINVAL;
+	ctx->fudptr = &ctx->file->private_data;
+
+	err = fuse_fill_super_common(sb, ctx);
+	if (err)
+		return err;
+	/* file->private_data shall be visible on all CPUs after this */
+	smp_mb();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fm = get_fuse_mount_super(sb);
 
@@ -2001,14 +2118,23 @@ static int fuse_set_no_super(struct super_block *sb, struct fs_context *fsc)
 
 static int fuse_test_super(struct super_block *sb, struct fs_context *fsc)
 {
+<<<<<<< HEAD
 	struct fuse_dev *fud = fsc->sget_key;
 
 	return fuse_dev_fc_get(fud) == get_fuse_conn_super(sb);
+=======
+
+	return fsc->sget_key == get_fuse_conn_super(sb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int fuse_get_tree(struct fs_context *fsc)
 {
 	struct fuse_fs_context *ctx = fsc->fs_private;
+<<<<<<< HEAD
+=======
+	struct fuse_dev *fud;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fuse_conn *fc;
 	struct fuse_mount *fm;
 	struct super_block *sb;
@@ -2029,6 +2155,12 @@ static int fuse_get_tree(struct fs_context *fsc)
 
 	fsc->s_fs_info = fm;
 
+<<<<<<< HEAD
+=======
+	if (ctx->fd_present)
+		ctx->file = fget(ctx->fd);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ENABLED(CONFIG_BLOCK) && ctx->is_bdev) {
 		err = get_tree_bdev(fsc, fuse_fill_super);
 		goto out;
@@ -2038,15 +2170,25 @@ static int fuse_get_tree(struct fs_context *fsc)
 	 * (found by device name), normal fuse mounts can't
 	 */
 	err = -EINVAL;
+<<<<<<< HEAD
 	if (!ctx->fud)
+=======
+	if (!ctx->file)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 
 	/*
 	 * Allow creating a fuse mount with an already initialized fuse
 	 * connection
 	 */
+<<<<<<< HEAD
 	if (fuse_dev_fc_get(ctx->fud)) {
 		fsc->sget_key = ctx->fud;
+=======
+	fud = __fuse_get_dev(ctx->file);
+	if (ctx->file->f_op == &fuse_dev_operations && fud) {
+		fsc->sget_key = fud->fc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sb = sget_fc(fsc, fuse_test_super, fuse_set_no_super);
 		err = PTR_ERR_OR_ZERO(sb);
 		if (!IS_ERR(sb))
@@ -2057,6 +2199,11 @@ static int fuse_get_tree(struct fs_context *fsc)
 out:
 	if (fsc->s_fs_info)
 		fuse_mount_destroy(fm);
+<<<<<<< HEAD
+=======
+	if (ctx->file)
+		fput(ctx->file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 

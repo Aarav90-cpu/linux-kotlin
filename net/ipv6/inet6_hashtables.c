@@ -23,6 +23,7 @@
 #include <net/sock_reuseport.h>
 #include <net/tcp.h>
 
+<<<<<<< HEAD
 void inet6_init_ehash_secret(void)
 {
 	net_get_random_sleepable_once(&inet6_ehash_secret,
@@ -31,10 +32,13 @@ void inet6_init_ehash_secret(void)
 				      sizeof(tcp_ipv6_hash_secret));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u32 inet6_ehashfn(const struct net *net,
 		  const struct in6_addr *laddr, const u16 lport,
 		  const struct in6_addr *faddr, const __be16 fport)
 {
+<<<<<<< HEAD
 	u32 a, b, c;
 
 	/*
@@ -72,6 +76,18 @@ u32 inet6_ehashfn(const struct net *net,
 	 * for references.
 	 */
 	return lport + c;
+=======
+	u32 lhash, fhash;
+
+	net_get_random_once(&inet6_ehash_secret, sizeof(inet6_ehash_secret));
+	net_get_random_once(&tcp_ipv6_hash_secret, sizeof(tcp_ipv6_hash_secret));
+
+	lhash = (__force u32)laddr->s6_addr32[3];
+	fhash = __ipv6_addr_jhash(faddr, tcp_ipv6_hash_secret);
+
+	return lport + __inet6_ehashfn(lhash, 0, fhash, fport,
+				       inet6_ehash_secret + net_hash_mix(net));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(inet6_ehashfn);
 
@@ -398,8 +414,11 @@ int inet6_hash_connect(struct inet_timewait_death_row *death_row,
 	if (!inet_sk(sk)->inet_num)
 		port_offset = inet6_sk_port_offset(sk);
 
+<<<<<<< HEAD
 	inet6_init_ehash_secret();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hash_port0 = inet6_ehashfn(net, daddr, 0, saddr, inet->inet_dport);
 
 	return __inet_hash_connect(death_row, sk, port_offset, hash_port0,

@@ -218,7 +218,11 @@ bool rproc_u64_fit_in_size_t(u64 val)
 	if (sizeof(size_t) == sizeof(u64))
 		return true;
 
+<<<<<<< HEAD
 	return val <= SIZE_MAX;
+=======
+	return (val <= (size_t) -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* REMOTEPROC_INTERNAL_H */

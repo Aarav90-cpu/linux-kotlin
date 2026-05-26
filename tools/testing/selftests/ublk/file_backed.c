@@ -27,6 +27,7 @@ static int loop_queue_flush_io(struct ublk_thread *t, struct ublk_queue *q,
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * Shared memory zero-copy I/O: when UBLK_IO_F_SHMEM_ZC is set, the
  * request's data lives in a registered shared memory buffer. Decode
@@ -61,6 +62,8 @@ static int loop_queue_shmem_zc_io(struct ublk_thread *t, struct ublk_queue *q,
 	return 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int loop_queue_tgt_rw_io(struct ublk_thread *t, struct ublk_queue *q,
 				const struct ublksrv_io_desc *iod, int tag)
 {
@@ -75,10 +78,13 @@ static int loop_queue_tgt_rw_io(struct ublk_thread *t, struct ublk_queue *q,
 	void *addr = io->buf_addr;
 	unsigned short buf_index = ublk_io_buf_idx(t, q, tag);
 
+<<<<<<< HEAD
 	/* shared memory zero-copy path */
 	if (iod->op_flags & UBLK_IO_F_SHMEM_ZC)
 		return loop_queue_shmem_zc_io(t, q, iod, tag);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (iod->op_flags & UBLK_IO_F_INTEGRITY) {
 		ublk_io_alloc_sqes(t, sqe, 1);
 		/* Use second backing file for integrity data */

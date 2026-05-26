@@ -311,6 +311,7 @@ config MARVELL_PEM_PMU
 	  Enable support for PCIe Interface performance monitoring
 	  on Marvell platform.
 
+<<<<<<< HEAD
 config NVIDIA_TEGRA410_CMEM_LATENCY_PMU
 	tristate "NVIDIA Tegra410 CPU Memory Latency PMU"
 	depends on ARM64 && ACPI
@@ -325,4 +326,6 @@ config NVIDIA_TEGRA410_C2C_PMU
 	  Enable perf support for counters in NVIDIA C2C interface of NVIDIA
 	  Tegra410 SoC.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endmenu

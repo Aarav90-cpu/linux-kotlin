@@ -126,16 +126,23 @@ patternProperties:
             reg:
               contains:
                 # MI2S DAI ID range PRIMARY_MI2S_RX - QUATERNARY_MI2S_TX and
+<<<<<<< HEAD
                 # QUINARY_MI2S_RX - QUINARY_MI2S_TX and
                 # LPI_MI2S_RX_0 - SENARY_MI2S_TX
+=======
+                # QUINARY_MI2S_RX - QUINARY_MI2S_TX
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 items:
                   oneOf:
                     - minimum: 16
                       maximum: 23
                     - minimum: 127
                       maximum: 128
+<<<<<<< HEAD
                     - minimum: 137
                       maximum: 148
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         then:
           required:
             - qcom,sd-lines

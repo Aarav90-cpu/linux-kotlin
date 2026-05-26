@@ -18,6 +18,15 @@
 
 #ifndef NT_ARM_GCS
 #define NT_ARM_GCS 0x410
+<<<<<<< HEAD
+=======
+
+struct user_gcs {
+	__u64 features_enabled;
+	__u64 features_locked;
+	__u64 gcspr_el0;
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /* Shadow Stack/Guarded Control Stack interface */

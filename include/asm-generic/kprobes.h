@@ -14,7 +14,11 @@ static unsigned long __used					\
 	_kbl_addr_##fname = (unsigned long)fname;
 # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
 /* Use this to forbid a kprobes attach on very low level functions */
+<<<<<<< HEAD
 # define __kprobes	notrace __section(".kprobes.text")
+=======
+# define __kprobes	__section(".kprobes.text")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # define nokprobe_inline	__always_inline
 #else
 # define NOKPROBE_SYMBOL(fname)

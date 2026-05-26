@@ -49,6 +49,10 @@
 #define VFIO_MAGIC 0x5646494f /* "VFIO" */
 
 static struct vfio {
+<<<<<<< HEAD
+=======
+	struct class			*device_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ida			device_ida;
 	struct vfsmount			*vfs_mount;
 	int				fs_count;
@@ -63,6 +67,7 @@ MODULE_PARM_DESC(enable_unsafe_noiommu_mode, "Enable UNSAFE, no-IOMMU mode.  Thi
 
 static DEFINE_XARRAY(vfio_device_set_xa);
 
+<<<<<<< HEAD
 static char *vfio_device_devnode(const struct device *dev, umode_t *mode)
 {
 	return kasprintf(GFP_KERNEL, "vfio/devices/%s", dev_name(dev));
@@ -73,6 +78,8 @@ static const struct class vfio_device_class = {
 	.devnode	= vfio_device_devnode
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int vfio_assign_device_set(struct vfio_device *device, void *set_id)
 {
 	unsigned long idx = (unsigned long)set_id;
@@ -308,7 +315,11 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
 
 	device_initialize(&device->device);
 	device->device.release = vfio_device_release;
+<<<<<<< HEAD
 	device->device.class = &vfio_device_class;
+=======
+	device->device.class = vfio.device_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device->device.parent = device->dev;
 	return 0;
 
@@ -562,7 +573,10 @@ static void vfio_df_device_last_close(struct vfio_device_file *df)
 		vfio_df_iommufd_unbind(df);
 	else
 		vfio_device_group_unuse_iommu(device);
+<<<<<<< HEAD
 	device->precopy_info_v2 = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	module_put(device->dev->driver->owner);
 }
 
@@ -974,6 +988,7 @@ vfio_ioctl_device_feature_migration_data_size(struct vfio_device *device,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 vfio_ioctl_device_feature_migration_precopy_info_v2(struct vfio_device *device,
 						    u32 flags, size_t argsz)
@@ -991,6 +1006,8 @@ vfio_ioctl_device_feature_migration_precopy_info_v2(struct vfio_device *device,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int vfio_ioctl_device_feature_migration(struct vfio_device *device,
 					       u32 flags, void __user *arg,
 					       size_t argsz)
@@ -1278,9 +1295,12 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
 		return vfio_ioctl_device_feature_migration_data_size(
 			device, feature.flags, arg->data,
 			feature.argsz - minsz);
+<<<<<<< HEAD
 	case VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2:
 		return vfio_ioctl_device_feature_migration_precopy_info_v2(
 			device, feature.flags, feature.argsz - minsz);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		if (unlikely(!device->ops->device_feature))
 			return -ENOTTY;
@@ -1813,11 +1833,21 @@ static int __init vfio_init(void)
 		goto err_virqfd;
 
 	/* /sys/class/vfio-dev/vfioX */
+<<<<<<< HEAD
 	ret = class_register(&vfio_device_class);
 	if (ret)
 		goto err_dev_class;
 
 	ret = vfio_cdev_init();
+=======
+	vfio.device_class = class_create("vfio-dev");
+	if (IS_ERR(vfio.device_class)) {
+		ret = PTR_ERR(vfio.device_class);
+		goto err_dev_class;
+	}
+
+	ret = vfio_cdev_init(vfio.device_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_alloc_dev_chrdev;
 
@@ -1826,7 +1856,12 @@ static int __init vfio_init(void)
 	return 0;
 
 err_alloc_dev_chrdev:
+<<<<<<< HEAD
 	class_unregister(&vfio_device_class);
+=======
+	class_destroy(vfio.device_class);
+	vfio.device_class = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_dev_class:
 	vfio_virqfd_exit();
 err_virqfd:
@@ -1839,7 +1874,12 @@ static void __exit vfio_cleanup(void)
 	vfio_debugfs_remove_root();
 	ida_destroy(&vfio.device_ida);
 	vfio_cdev_cleanup();
+<<<<<<< HEAD
 	class_unregister(&vfio_device_class);
+=======
+	class_destroy(vfio.device_class);
+	vfio.device_class = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vfio_virqfd_exit();
 	vfio_group_cleanup();
 	xa_destroy(&vfio_device_set_xa);

@@ -79,13 +79,26 @@ EXPORT_SYMBOL_GPL(usb_of_has_combined_node);
 static bool usb_of_has_devices_or_graph(const struct usb_device *hub)
 {
 	const struct device_node *np = hub->dev.of_node;
+<<<<<<< HEAD
+=======
+	struct device_node *child;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (of_graph_is_present(np))
 		return true;
 
+<<<<<<< HEAD
 	for_each_child_of_node_scoped(np, child)
 		if (of_property_present(child, "reg"))
 			return true;
+=======
+	for_each_child_of_node(np, child) {
+		if (of_property_present(child, "reg")) {
+			of_node_put(child);
+			return true;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }

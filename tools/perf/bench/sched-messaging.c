@@ -301,7 +301,11 @@ int bench_sched_messaging(int argc, const char **argv)
 	argc = parse_options(argc, argv, options,
 			     bench_sched_message_usage, 0);
 
+<<<<<<< HEAD
 	worker_tab = calloc(num_fds * 2 * num_groups, sizeof(union messaging_worker));
+=======
+	worker_tab = malloc(num_fds * 2 * num_groups * sizeof(union messaging_worker));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!worker_tab)
 		err(EXIT_FAILURE, "main:malloc()");
 

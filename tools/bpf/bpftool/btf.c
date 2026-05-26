@@ -28,7 +28,10 @@
 #define FASTCALL_DECL_TAG	"bpf_fastcall"
 
 #define MAX_ROOT_IDS		16
+<<<<<<< HEAD
 #define MAX_BTF_FILES		64
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * const btf_kind_str[NR_BTF_KINDS] = {
 	[BTF_KIND_UNKN]		= "UNKNOWN",
@@ -879,6 +882,7 @@ static bool btf_is_kernel_module(__u32 btf_id)
 	return btf_info.kernel_btf && strncmp(btf_name, "vmlinux", sizeof(btf_name)) != 0;
 }
 
+<<<<<<< HEAD
 static struct btf *merge_btf_files(const char **files, int nr_files,
 				   struct btf *vmlinux_base)
 {
@@ -918,6 +922,8 @@ static struct btf *merge_btf_files(const char **files, int nr_files,
 	return combined;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int do_dump(int argc, char **argv)
 {
 	bool dump_c = false, sort_dump_c = true;
@@ -998,6 +1004,7 @@ static int do_dump(int argc, char **argv)
 		NEXT_ARG();
 	} else if (is_prefix(src, "file")) {
 		const char sysfs_prefix[] = "/sys/kernel/btf/";
+<<<<<<< HEAD
 		struct btf *vmlinux_base = base_btf;
 		const char *files[MAX_BTF_FILES];
 		int nr_files = 0;
@@ -1068,6 +1075,22 @@ static int do_dump(int argc, char **argv)
 				goto done;
 			}
 		}
+=======
+
+		if (!base_btf &&
+		    strncmp(*argv, sysfs_prefix, sizeof(sysfs_prefix) - 1) == 0 &&
+		    strcmp(*argv, sysfs_vmlinux) != 0)
+			base = get_vmlinux_btf_from_sysfs();
+
+		btf = btf__parse_split(*argv, base ?: base_btf);
+		if (!btf) {
+			err = -errno;
+			p_err("failed to load BTF from %s: %s",
+			      *argv, strerror(errno));
+			goto done;
+		}
+		NEXT_ARG();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		err = -1;
 		p_err("unrecognized BTF source specifier: '%s'", src);
@@ -1541,8 +1564,12 @@ static int do_help(int argc, char **argv)
 		"       %1$s %2$s dump BTF_SRC [format FORMAT] [root_id ROOT_ID]\n"
 		"       %1$s %2$s help\n"
 		"\n"
+<<<<<<< HEAD
 		"       BTF_SRC := { id BTF_ID | prog PROG | map MAP [{key | value | kv | all}] |\n"
 		"                    file FILE [file FILE]... }\n"
+=======
+		"       BTF_SRC := { id BTF_ID | prog PROG | map MAP [{key | value | kv | all}] | file FILE }\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"       FORMAT  := { raw | c [unsorted] }\n"
 		"       " HELP_SPEC_MAP "\n"
 		"       " HELP_SPEC_PROGRAM "\n"

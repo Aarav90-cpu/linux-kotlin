@@ -269,7 +269,11 @@ unsigned int do_csum(const unsigned char *buff, int len)
 	 * on machines with fast misaligned accesses.
 	 *
 	 * There is some duplicate code between the "with_alignment" and
+<<<<<<< HEAD
 	 * "no_alignment" implementations, but the overlap is too awkward to be
+=======
+	 * "no_alignment" implmentations, but the overlap is too awkward to be
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * able to fit in one function without introducing multiple static
 	 * branches. The largest chunk of overlap was delegated into the
 	 * do_csum_common function.

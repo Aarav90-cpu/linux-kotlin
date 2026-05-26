@@ -12,8 +12,11 @@
 #include "xe_pat.h"
 #include "xe_pt.h"
 #include "xe_svm.h"
+<<<<<<< HEAD
 #include "xe_tlb_inval.h"
 #include "xe_vm.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct xe_vmas_in_madvise_range {
 	u64 addr;
@@ -27,8 +30,11 @@ struct xe_vmas_in_madvise_range {
 /**
  * struct xe_madvise_details - Argument to madvise_funcs
  * @dpagemap: Reference-counted pointer to a struct drm_pagemap.
+<<<<<<< HEAD
  * @has_purged_bo: Track if any BO was purged (for purgeable state)
  * @retained_ptr: User pointer for retained value (for purgeable state)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The madvise IOCTL handler may, in addition to the user-space
  * args, have additional info to pass into the madvise_func that
@@ -37,8 +43,11 @@ struct xe_vmas_in_madvise_range {
  */
 struct xe_madvise_details {
 	struct drm_pagemap *dpagemap;
+<<<<<<< HEAD
 	bool has_purged_bo;
 	u64 retained_ptr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int get_vmas(struct xe_vm *vm, struct xe_vmas_in_madvise_range *madvise_range)
@@ -185,6 +194,7 @@ static void madvise_pat_index(struct xe_device *xe, struct xe_vm *vm,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * madvise_purgeable - Handle purgeable buffer object advice
  * @xe: XE device
@@ -259,6 +269,8 @@ static void madvise_purgeable(struct xe_device *xe, struct xe_vm *vm,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef void (*madvise_func)(struct xe_device *xe, struct xe_vm *vm,
 			     struct xe_vma **vmas, int num_vmas,
 			     struct drm_xe_madvise *op,
@@ -268,7 +280,10 @@ static const madvise_func madvise_funcs[] = {
 	[DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC] = madvise_preferred_mem_loc,
 	[DRM_XE_MEM_RANGE_ATTR_ATOMIC] = madvise_atomic,
 	[DRM_XE_MEM_RANGE_ATTR_PAT] = madvise_pat_index,
+<<<<<<< HEAD
 	[DRM_XE_VMA_ATTR_PURGEABLE_STATE] = madvise_purgeable,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static u8 xe_zap_ptes_in_madvise_range(struct xe_vm *vm, u64 start, u64 end)
@@ -316,20 +331,27 @@ static u8 xe_zap_ptes_in_madvise_range(struct xe_vm *vm, u64 start, u64 end)
 static int xe_vm_invalidate_madvise_range(struct xe_vm *vm, u64 start, u64 end)
 {
 	u8 tile_mask = xe_zap_ptes_in_madvise_range(vm, start, end);
+<<<<<<< HEAD
 	struct xe_tlb_inval_batch batch;
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!tile_mask)
 		return 0;
 
 	xe_device_wmb(vm->xe);
 
+<<<<<<< HEAD
 	err = xe_tlb_inval_range_tilemask_submit(vm->xe, vm->usm.asid, start, end,
 						 tile_mask, &batch);
 	if (!err)
 		xe_tlb_inval_batch_wait(&batch);
 
 	return err;
+=======
+	return xe_vm_range_tilemask_tlb_inval(vm, start, end, tile_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madvise *args)
@@ -389,7 +411,11 @@ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madv
 		if (XE_IOCTL_DBG(xe, !coh_mode))
 			return false;
 
+<<<<<<< HEAD
 		if (XE_WARN_ON(coh_mode > XE_COH_2WAY))
+=======
+		if (XE_WARN_ON(coh_mode > XE_COH_AT_LEAST_1WAY))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 
 		if (XE_IOCTL_DBG(xe, args->pat_index.pad))
@@ -399,6 +425,7 @@ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madv
 			return false;
 		break;
 	}
+<<<<<<< HEAD
 	case DRM_XE_VMA_ATTR_PURGEABLE_STATE:
 	{
 		u32 val = args->purge_state_val.val;
@@ -412,6 +439,8 @@ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madv
 
 		break;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		if (XE_IOCTL_DBG(xe, 1))
 			return false;
@@ -430,12 +459,15 @@ static int xe_madvise_details_init(struct xe_vm *vm, const struct drm_xe_madvise
 
 	memset(details, 0, sizeof(*details));
 
+<<<<<<< HEAD
 	/* Store retained pointer for purgeable state */
 	if (args->type == DRM_XE_VMA_ATTR_PURGEABLE_STATE) {
 		details->retained_ptr = args->purge_state_val.retained_ptr;
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (args->type == DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC) {
 		int fd = args->preferred_mem_loc.devmem_fd;
 		struct drm_pagemap *dpagemap;
@@ -464,6 +496,7 @@ static void xe_madvise_details_fini(struct xe_madvise_details *details)
 	drm_pagemap_put(details->dpagemap);
 }
 
+<<<<<<< HEAD
 static int xe_madvise_purgeable_retained_to_user(const struct xe_madvise_details *details)
 {
 	u32 retained;
@@ -479,6 +512,8 @@ static int xe_madvise_purgeable_retained_to_user(const struct xe_madvise_details
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool check_pat_args_are_sane(struct xe_device *xe,
 				    struct xe_vmas_in_madvise_range *madvise_range,
 				    u16 pat_index)
@@ -579,11 +614,17 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 		.range = args->range,
 	};
 	struct xe_madvise_details details;
+<<<<<<< HEAD
 	u16 pat_index, coh_mode;
 	struct xe_vm *vm;
 	struct drm_exec exec;
 	int err, attr_type;
 	bool do_retained;
+=======
+	struct xe_vm *vm;
+	struct drm_exec exec;
+	int err, attr_type;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = xe_vm_lookup(xef, args->vm_id);
 	if (XE_IOCTL_DBG(xe, !vm))
@@ -594,6 +635,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 		goto put_vm;
 	}
 
+<<<<<<< HEAD
 	/* Cache whether we need to write retained, and validate it's initialized to 0 */
 	do_retained = args->type == DRM_XE_VMA_ATTR_PURGEABLE_STATE &&
 		      args->purge_state_val.retained_ptr;
@@ -613,6 +655,8 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_svm_flush(vm);
 
 	err = down_write_killable(&vm->lock);
@@ -637,6 +681,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 		goto madv_fini;
 
 	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
+<<<<<<< HEAD
 		pat_index = array_index_nospec(args->pat_index.val, xe->pat.n_entries);
 		coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
 		if (XE_IOCTL_DBG(xe, madvise_range.has_svm_userptr_vmas &&
@@ -648,6 +693,8 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 	}
 
 	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!check_pat_args_are_sane(xe, &madvise_range,
 					     args->pat_index.val)) {
 			err = -EINVAL;
@@ -672,6 +719,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 
 				if (!bo)
 					continue;
+<<<<<<< HEAD
 
 				if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
 					if (XE_IOCTL_DBG(xe, bo->ttm.base.import_attach &&
@@ -683,6 +731,8 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 					}
 				}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				err = drm_exec_lock_obj(&exec, &bo->ttm.base);
 				drm_exec_retry_on_contention(&exec);
 				if (err)
@@ -698,6 +748,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 	}
 
 	attr_type = array_index_nospec(args->type, ARRAY_SIZE(madvise_funcs));
+<<<<<<< HEAD
 
 	/* Ensure the madvise function exists for this type */
 	if (!madvise_funcs[attr_type]) {
@@ -705,6 +756,8 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
 		goto err_fini;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	madvise_funcs[attr_type](xe, vm, madvise_range.vmas, madvise_range.num_vmas, args,
 				 &details);
 
@@ -724,10 +777,13 @@ madv_fini:
 	xe_madvise_details_fini(&details);
 unlock_vm:
 	up_write(&vm->lock);
+<<<<<<< HEAD
 
 	/* Write retained value to user after releasing all locks */
 	if (!err && do_retained)
 		err = xe_madvise_purgeable_retained_to_user(&details);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 put_vm:
 	xe_vm_put(vm);
 	return err;

@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2020 Facebook
+<<<<<<< HEAD
 #include "vmlinux.h"
+=======
+#include <linux/bpf.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/unistd.h>
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
 #include "bpf_misc.h"
+<<<<<<< HEAD
 #include "bpf/usdt.bpf.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 char _license[] SEC("license") = "GPL";
 
@@ -181,6 +188,7 @@ int bench_trigger_rawtp(void *ctx)
 	handle(ctx);
 	return 0;
 }
+<<<<<<< HEAD
 
 SEC("?usdt")
 int bench_trigger_usdt(void *ctx)
@@ -188,3 +196,5 @@ int bench_trigger_usdt(void *ctx)
 	inc_counter();
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

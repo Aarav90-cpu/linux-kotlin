@@ -295,6 +295,11 @@ static int mpr_touchkey_probe(struct i2c_client *client)
 		return error;
 
 	i2c_set_clientdata(client, mpr121);
+<<<<<<< HEAD
+=======
+	device_init_wakeup(dev,
+			device_property_read_bool(dev, "wakeup-source"));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -303,6 +308,12 @@ static int mpr_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 
+<<<<<<< HEAD
+=======
+	if (device_may_wakeup(&client->dev))
+		enable_irq_wake(client->irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_smbus_write_byte_data(client, ELECTRODE_CONF_ADDR, 0x00);
 
 	return 0;
@@ -313,6 +324,12 @@ static int mpr_resume(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mpr121_touchkey *mpr121 = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
+=======
+	if (device_may_wakeup(&client->dev))
+		disable_irq_wake(client->irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_smbus_write_byte_data(client, ELECTRODE_CONF_ADDR,
 				  mpr121->keycount);
 

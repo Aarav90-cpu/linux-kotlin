@@ -141,7 +141,11 @@ static int osif_probe(struct usb_interface *interface,
 	if (!priv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	priv->usb_dev = interface_to_usbdev(interface);
+=======
+	priv->usb_dev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	priv->interface = interface;
 
 	usb_set_intfdata(interface, priv);
@@ -163,6 +167,10 @@ static int osif_probe(struct usb_interface *interface,
 			    NULL, 0);
 	if (ret) {
 		dev_err(&interface->dev, "failure sending bit rate");
+<<<<<<< HEAD
+=======
+		usb_put_dev(priv->usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -183,6 +191,10 @@ static void osif_disconnect(struct usb_interface *interface)
 
 	i2c_del_adapter(&(priv->adapter));
 	usb_set_intfdata(interface, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(priv->usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct usb_driver osif_driver = {

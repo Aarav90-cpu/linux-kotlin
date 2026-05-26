@@ -41,7 +41,12 @@ static unsigned int abm_feature_support(struct abm *abm, unsigned int panel_inst
 {
 	struct dc_context *dc = abm->ctx;
 	struct dc_link *edp_links[MAX_NUM_EDP];
+<<<<<<< HEAD
 	unsigned int i, edp_num;
+=======
+	int i;
+	int edp_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int ret = ABM_FEATURE_NO_SUPPORT;
 
 	dc_get_edp_links(dc->dc, edp_links, &edp_num);
@@ -173,7 +178,10 @@ static bool dmub_abm_set_backlight_level_pwm_ex(struct abm *abm,
 		unsigned int controller_id,
 		unsigned int panel_inst)
 {
+<<<<<<< HEAD
 	(void)controller_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool ret = false;
 	unsigned int feature_support;
 

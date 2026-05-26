@@ -54,6 +54,10 @@ int sysv68_partition(struct parsed_partitions *state)
 	unsigned char *data;
 	struct dkblk0 *b;
 	struct slice *slice;
+<<<<<<< HEAD
+=======
+	char tmp[64];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = read_part_sector(state, 0, &sect);
 	if (!data)
@@ -73,7 +77,12 @@ int sysv68_partition(struct parsed_partitions *state)
 		return -1;
 
 	slices -= 1; /* last slice is the whole disk */
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, "sysV68: %s(s%u)", state->name, slices);
+=======
+	snprintf(tmp, sizeof(tmp), "sysV68: %s(s%u)", state->name, slices);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	slice = (struct slice *)data;
 	for (i = 0; i < slices; i++, slice++) {
 		if (slot == state->limit)
@@ -82,11 +91,20 @@ int sysv68_partition(struct parsed_partitions *state)
 			put_partition(state, slot,
 				be32_to_cpu(slice->blkoff),
 				be32_to_cpu(slice->nblocks));
+<<<<<<< HEAD
 			seq_buf_printf(&state->pp_buf, "(s%u)", i);
 		}
 		slot++;
 	}
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+			snprintf(tmp, sizeof(tmp), "(s%u)", i);
+			strlcat(state->pp_buf, tmp, PAGE_SIZE);
+		}
+		slot++;
+	}
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_dev_sector(sect);
 	return 1;
 }

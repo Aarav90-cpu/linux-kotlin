@@ -60,6 +60,7 @@ static inline void dma_direct_sync_single_for_device(struct device *dev,
 
 	swiotlb_sync_single_for_device(dev, paddr, size, dir);
 
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev)) {
 		arch_sync_dma_for_device(paddr, size, dir);
 		arch_sync_dma_flush();
@@ -69,13 +70,24 @@ static inline void dma_direct_sync_single_for_device(struct device *dev,
 static inline void dma_direct_sync_single_for_cpu(struct device *dev,
 		dma_addr_t addr, size_t size, enum dma_data_direction dir,
 		bool flush)
+=======
+	if (!dev_is_dma_coherent(dev))
+		arch_sync_dma_for_device(paddr, size, dir);
+}
+
+static inline void dma_direct_sync_single_for_cpu(struct device *dev,
+		dma_addr_t addr, size_t size, enum dma_data_direction dir)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	phys_addr_t paddr = dma_to_phys(dev, addr);
 
 	if (!dev_is_dma_coherent(dev)) {
 		arch_sync_dma_for_cpu(paddr, size, dir);
+<<<<<<< HEAD
 		if (flush)
 			arch_sync_dma_flush();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		arch_sync_dma_for_cpu_all();
 	}
 
@@ -84,11 +96,16 @@ static inline void dma_direct_sync_single_for_cpu(struct device *dev,
 
 static inline dma_addr_t dma_direct_map_phys(struct device *dev,
 		phys_addr_t phys, size_t size, enum dma_data_direction dir,
+<<<<<<< HEAD
 		unsigned long attrs, bool flush)
+=======
+		unsigned long attrs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	dma_addr_t dma_addr;
 
 	if (is_swiotlb_force_bounce(dev)) {
+<<<<<<< HEAD
 		if (!(attrs & DMA_ATTR_CC_SHARED)) {
 			if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
 				return DMA_MAPPING_ERROR;
@@ -97,16 +114,25 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
 		}
 	} else if (attrs & DMA_ATTR_CC_SHARED) {
 		return DMA_MAPPING_ERROR;
+=======
+		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
+			return DMA_MAPPING_ERROR;
+
+		return swiotlb_map(dev, phys, size, dir, attrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (attrs & DMA_ATTR_MMIO) {
 		dma_addr = phys;
 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
 			goto err_overflow;
+<<<<<<< HEAD
 	} else if (attrs & DMA_ATTR_CC_SHARED) {
 		dma_addr = phys_to_dma_unencrypted(dev, phys);
 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
 			goto err_overflow;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		dma_addr = phys_to_dma(dev, phys);
 		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
@@ -120,11 +146,16 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
 	}
 
 	if (!dev_is_dma_coherent(dev) &&
+<<<<<<< HEAD
 	    !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO))) {
 		arch_sync_dma_for_device(phys, size, dir);
 		if (flush)
 			arch_sync_dma_flush();
 	}
+=======
+	    !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
+		arch_sync_dma_for_device(phys, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return dma_addr;
 
 err_overflow:
@@ -136,8 +167,12 @@ err_overflow:
 }
 
 static inline void dma_direct_unmap_phys(struct device *dev, dma_addr_t addr,
+<<<<<<< HEAD
 		size_t size, enum dma_data_direction dir, unsigned long attrs,
 		bool flush)
+=======
+		size_t size, enum dma_data_direction dir, unsigned long attrs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	phys_addr_t phys;
 
@@ -147,7 +182,11 @@ static inline void dma_direct_unmap_phys(struct device *dev, dma_addr_t addr,
 
 	phys = dma_to_phys(dev, addr);
 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+<<<<<<< HEAD
 		dma_direct_sync_single_for_cpu(dev, addr, size, dir, flush);
+=======
+		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	swiotlb_tbl_unmap_single(dev, phys, size, dir,
 					 attrs | DMA_ATTR_SKIP_CPU_SYNC);

@@ -12,7 +12,12 @@
 
 #define arch_max_pkey() 8
 
+<<<<<<< HEAD
 int arch_set_user_pkey_access(int pkey, unsigned long init_val);
+=======
+int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+		unsigned long init_val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool arch_pkeys_enabled(void)
 {

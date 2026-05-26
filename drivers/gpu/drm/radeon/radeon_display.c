@@ -686,8 +686,12 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
 	if (radeon_crtc == NULL)
 		return;
 
+<<<<<<< HEAD
 	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc",
 						  WQ_HIGHPRI | WQ_PERCPU, 0);
+=======
+	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!radeon_crtc->flip_queue) {
 		kfree(radeon_crtc);
 		return;

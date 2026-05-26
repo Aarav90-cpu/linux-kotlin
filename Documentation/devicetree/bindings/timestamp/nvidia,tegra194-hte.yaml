@@ -25,8 +25,11 @@ properties:
       - nvidia,tegra194-gte-lic
       - nvidia,tegra234-gte-aon
       - nvidia,tegra234-gte-lic
+<<<<<<< HEAD
       - nvidia,tegra264-gte-aon
       - nvidia,tegra264-gte-lic
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -114,11 +117,15 @@ allOf:
           contains:
             enum:
               - nvidia,tegra234-gte-aon
+<<<<<<< HEAD
               - nvidia,tegra264-gte-aon
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       required:
         - nvidia,gpio-controller
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -130,6 +137,8 @@ allOf:
       properties:
         nvidia,slices: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

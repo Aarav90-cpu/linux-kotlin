@@ -502,6 +502,19 @@ static const struct of_device_id ti_cpufreq_of_match[]  __maybe_unused = {
 	{},
 };
 
+<<<<<<< HEAD
+=======
+static const struct of_device_id *ti_cpufreq_match_node(void)
+{
+	struct device_node *np __free(device_node) = of_find_node_by_path("/");
+	const struct of_device_id *match;
+
+	match = of_match_node(ti_cpufreq_of_match, np);
+
+	return match;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ti_cpufreq_probe(struct platform_device *pdev)
 {
 	u32 version[VERSION_COUNT];
@@ -586,7 +599,11 @@ static int __init ti_cpufreq_init(void)
 	const struct of_device_id *match;
 
 	/* Check to ensure we are on a compatible platform */
+<<<<<<< HEAD
 	match = of_machine_get_match(ti_cpufreq_of_match);
+=======
+	match = ti_cpufreq_match_node();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (match)
 		platform_device_register_data(NULL, "ti-cpufreq", -1, match,
 					      sizeof(*match));

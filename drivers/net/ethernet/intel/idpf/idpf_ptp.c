@@ -952,8 +952,11 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
 		goto free_ptp;
 	}
 
+<<<<<<< HEAD
 	spin_lock_init(&adapter->ptp->read_dev_clk_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = idpf_ptp_create_clock(adapter);
 	if (err)
 		goto free_ptp;
@@ -979,6 +982,11 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
 			goto remove_clock;
 	}
 
+<<<<<<< HEAD
+=======
+	spin_lock_init(&adapter->ptp->read_dev_clk_lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pci_dbg(adapter->pdev, "PTP init successful\n");
 
 	return 0;

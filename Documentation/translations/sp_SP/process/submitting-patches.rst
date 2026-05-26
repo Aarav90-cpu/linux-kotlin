@@ -30,7 +30,11 @@ más sencilla.
 
 Algunos subsistemas y árboles de mantenimiento cuentan con información
 adicional sobre su flujo de trabajo y expectativas, consulte
+<<<<<<< HEAD
 Documentation/process/maintainer-handbooks.rst.
+=======
+:ref:`Documentation/process/maintainer-handbooks.rst <maintainer_handbooks_main>`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Obtenga el código fuente actual
 --------------------------------

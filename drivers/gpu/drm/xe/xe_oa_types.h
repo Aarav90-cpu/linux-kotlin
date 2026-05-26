@@ -239,6 +239,12 @@ struct xe_oa_stream {
 	/** @poll_period_ns: hrtimer period for checking OA buffer for available data */
 	u64 poll_period_ns;
 
+<<<<<<< HEAD
+=======
+	/** @override_gucrc: GuC RC has been overridden for the OA stream */
+	bool override_gucrc;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @oa_status: temporary storage for oa_status register value */
 	u32 oa_status;
 

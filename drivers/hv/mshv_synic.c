@@ -12,6 +12,10 @@
 #include <linux/mm.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
+<<<<<<< HEAD
+=======
+#include <linux/random.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/cpuhotplug.h>
 #include <linux/reboot.h>
 #include <asm/mshyperv.h>
@@ -444,6 +448,11 @@ void mshv_isr(void)
 		mb();
 		if (msg->header.message_flags.msg_pending)
 			hv_set_non_nested_msr(HV_MSR_EOM, 0);
+<<<<<<< HEAD
+=======
+
+		add_interrupt_randomness(mshv_sint_vector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		pr_warn_once("%s: unknown message type 0x%x\n", __func__,
 			     msg->header.message_type);

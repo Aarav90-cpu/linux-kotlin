@@ -504,6 +504,7 @@ static int adf_gen4_build_comp_block(void *ctx, enum adf_dc_algo algo)
 	switch (algo) {
 	case QAT_DEFLATE:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_DYNAMIC;
+<<<<<<< HEAD
 		hw_comp_lower_csr.algo = ICP_QAT_HW_COMP_20_HW_COMP_FORMAT_ILZ77;
 		hw_comp_lower_csr.lllbd = ICP_QAT_HW_COMP_20_LLLBD_CTRL_LLLBD_ENABLED;
 		hw_comp_lower_csr.skip_ctrl = ICP_QAT_HW_COMP_20_BYTE_SKIP_3BYTE_LITERAL;
@@ -513,11 +514,19 @@ static int adf_gen4_build_comp_block(void *ctx, enum adf_dc_algo algo)
 		hw_comp_lower_csr.algo = ICP_QAT_HW_COMP_20_HW_COMP_FORMAT_LZ4S;
 		hw_comp_lower_csr.lllbd = ICP_QAT_HW_COMP_20_LLLBD_CTRL_LLLBD_DISABLED;
 		hw_comp_lower_csr.abd = ICP_QAT_HW_COMP_20_ABD_ABD_DISABLED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	hw_comp_lower_csr.skip_ctrl = ICP_QAT_HW_COMP_20_BYTE_SKIP_3BYTE_LITERAL;
+	hw_comp_lower_csr.algo = ICP_QAT_HW_COMP_20_HW_COMP_FORMAT_ILZ77;
+	hw_comp_lower_csr.lllbd = ICP_QAT_HW_COMP_20_LLLBD_CTRL_LLLBD_ENABLED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hw_comp_lower_csr.sd = ICP_QAT_HW_COMP_20_SEARCH_DEPTH_LEVEL_1;
 	hw_comp_lower_csr.hash_update = ICP_QAT_HW_COMP_20_SKIP_HASH_UPDATE_DONT_ALLOW;
 	hw_comp_lower_csr.edmm = ICP_QAT_HW_COMP_20_EXTENDED_DELAY_MATCH_MODE_EDMM_ENABLED;
@@ -544,16 +553,23 @@ static int adf_gen4_build_decomp_block(void *ctx, enum adf_dc_algo algo)
 	switch (algo) {
 	case QAT_DEFLATE:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_DECOMPRESS;
+<<<<<<< HEAD
 		hw_decomp_lower_csr.algo = ICP_QAT_HW_DECOMP_20_HW_DECOMP_FORMAT_DEFLATE;
 		break;
 	case QAT_LZ4S:
 		header->service_cmd_id = ICP_QAT_FW_COMP_20_CMD_LZ4S_DECOMPRESS;
 		hw_decomp_lower_csr.algo = ICP_QAT_HW_DECOMP_20_HW_DECOMP_FORMAT_LZ4S;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	hw_decomp_lower_csr.algo = ICP_QAT_HW_DECOMP_20_HW_DECOMP_FORMAT_DEFLATE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lower_val = ICP_QAT_FW_DECOMP_20_BUILD_CONFIG_LOWER(hw_decomp_lower_csr);
 
 	cd_pars->u.sl.comp_slice_cfg_word[0] = lower_val;

@@ -225,9 +225,20 @@ static const struct mmc_fixup __maybe_unused sdio_card_init_methods[] = {
 static inline bool mmc_fixup_of_compatible_match(struct mmc_card *card,
 						 const char *compatible)
 {
+<<<<<<< HEAD
 	for_each_child_of_node_scoped(mmc_dev(card->host)->of_node, np)
 		if (of_device_is_compatible(np, compatible))
 			return true;
+=======
+	struct device_node *np;
+
+	for_each_child_of_node(mmc_dev(card->host)->of_node, np) {
+		if (of_device_is_compatible(np, compatible)) {
+			of_node_put(np);
+			return true;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }

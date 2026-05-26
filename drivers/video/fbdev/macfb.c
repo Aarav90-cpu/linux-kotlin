@@ -668,6 +668,7 @@ static int __init macfb_init(void)
 
 		switch(ndev->dr_hw) {
 		case NUBUS_DRHW_APPLE_MDC:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Mac Disp. Card");
 			macfb_setpalette = mdc_setpalette;
 			break;
@@ -681,6 +682,21 @@ static int __init macfb_init(void)
 			break;
 		default:
 			strscpy(macfb_fix.id, "Generic NuBus");
+=======
+			strcpy(macfb_fix.id, "Mac Disp. Card");
+			macfb_setpalette = mdc_setpalette;
+			break;
+		case NUBUS_DRHW_APPLE_TFB:
+			strcpy(macfb_fix.id, "Toby");
+			macfb_setpalette = toby_setpalette;
+			break;
+		case NUBUS_DRHW_APPLE_JET:
+			strcpy(macfb_fix.id, "Jet");
+			macfb_setpalette = jet_setpalette;
+			break;
+		default:
+			strcpy(macfb_fix.id, "Generic NuBus");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
@@ -707,7 +723,11 @@ static int __init macfb_init(void)
 		case MAC_MODEL_Q700:
 		case MAC_MODEL_Q900:
 		case MAC_MODEL_Q950:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "DAFB");
+=======
+			strcpy(macfb_fix.id, "DAFB");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = dafb_setpalette;
 			dafb_cmap_regs = ioremap(DAFB_BASE, 0x1000);
 			break;
@@ -716,7 +736,11 @@ static int __init macfb_init(void)
 		 * LC II uses the V8 framebuffer
 		 */
 		case MAC_MODEL_LCII:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "V8");
+=======
+			strcpy(macfb_fix.id, "V8");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = v8_brazil_setpalette;
 			v8_brazil_cmap_regs = ioremap(DAC_BASE, 0x1000);
 			break;
@@ -729,7 +753,11 @@ static int __init macfb_init(void)
 		case MAC_MODEL_IIVI:
 		case MAC_MODEL_IIVX:
 		case MAC_MODEL_P600:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Brazil");
+=======
+			strcpy(macfb_fix.id, "Brazil");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = v8_brazil_setpalette;
 			v8_brazil_cmap_regs = ioremap(DAC_BASE, 0x1000);
 			break;
@@ -745,7 +773,11 @@ static int __init macfb_init(void)
 		case MAC_MODEL_P520:
 		case MAC_MODEL_P550:
 		case MAC_MODEL_P460:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Sonora");
+=======
+			strcpy(macfb_fix.id, "Sonora");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = v8_brazil_setpalette;
 			v8_brazil_cmap_regs = ioremap(DAC_BASE, 0x1000);
 			break;
@@ -757,7 +789,11 @@ static int __init macfb_init(void)
 		 */
 		case MAC_MODEL_IICI:
 		case MAC_MODEL_IISI:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "RBV");
+=======
+			strcpy(macfb_fix.id, "RBV");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = rbv_setpalette;
 			rbv_cmap_regs = ioremap(DAC_BASE, 0x1000);
 			break;
@@ -767,7 +803,11 @@ static int __init macfb_init(void)
 		 */
 		case MAC_MODEL_Q840:
 		case MAC_MODEL_C660:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Civic");
+=======
+			strcpy(macfb_fix.id, "Civic");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = civic_setpalette;
 			civic_cmap_regs = ioremap(CIVIC_BASE, 0x1000);
 			break;
@@ -778,7 +818,11 @@ static int __init macfb_init(void)
 		 * We think this may be like the LC II
 		 */
 		case MAC_MODEL_LC:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "LC");
+=======
+			strcpy(macfb_fix.id, "LC");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (vidtest) {
 				macfb_setpalette = v8_brazil_setpalette;
 				v8_brazil_cmap_regs =
@@ -790,7 +834,11 @@ static int __init macfb_init(void)
 		 * We think this may be like the LC II
 		 */
 		case MAC_MODEL_CCL:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Color Classic");
+=======
+			strcpy(macfb_fix.id, "Color Classic");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (vidtest) {
 				macfb_setpalette = v8_brazil_setpalette;
 				v8_brazil_cmap_regs =
@@ -802,7 +850,11 @@ static int __init macfb_init(void)
 		 * And we *do* mean "weirdos"
 		 */
 		case MAC_MODEL_TV:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Mac TV");
+=======
+			strcpy(macfb_fix.id, "Mac TV");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -810,7 +862,11 @@ static int __init macfb_init(void)
 		 */
 		case MAC_MODEL_SE30:
 		case MAC_MODEL_CLII:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Monochrome");
+=======
+			strcpy(macfb_fix.id, "Monochrome");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -828,7 +884,11 @@ static int __init macfb_init(void)
 		case MAC_MODEL_PB140:
 		case MAC_MODEL_PB145:
 		case MAC_MODEL_PB170:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "DDC");
+=======
+			strcpy(macfb_fix.id, "DDC");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -840,7 +900,11 @@ static int __init macfb_init(void)
 		case MAC_MODEL_PB180:
 		case MAC_MODEL_PB210:
 		case MAC_MODEL_PB230:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "GSC");
+=======
+			strcpy(macfb_fix.id, "GSC");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -848,7 +912,11 @@ static int __init macfb_init(void)
 		 */
 		case MAC_MODEL_PB165C:
 		case MAC_MODEL_PB180C:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "TIM");
+=======
+			strcpy(macfb_fix.id, "TIM");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -860,13 +928,21 @@ static int __init macfb_init(void)
 		case MAC_MODEL_PB270C:
 		case MAC_MODEL_PB280:
 		case MAC_MODEL_PB280C:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "CSC");
+=======
+			strcpy(macfb_fix.id, "CSC");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			macfb_setpalette = csc_setpalette;
 			csc_cmap_regs = ioremap(CSC_BASE, 0x1000);
 			break;
 
 		default:
+<<<<<<< HEAD
 			strscpy(macfb_fix.id, "Unknown");
+=======
+			strcpy(macfb_fix.id, "Unknown");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 

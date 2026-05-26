@@ -498,7 +498,10 @@ static void ser_reset_trx_st_hdl(struct rtw89_ser *ser, u8 evt)
 	switch (evt) {
 	case SER_EV_STATE_IN:
 		wiphy_lock(wiphy);
+<<<<<<< HEAD
 		ser->sw_cnt.l1++;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wiphy_delayed_work_cancel(wiphy, &rtwdev->track_work);
 		wiphy_delayed_work_cancel(wiphy, &rtwdev->track_ps_work);
 		wiphy_unlock(wiphy);
@@ -589,7 +592,11 @@ static void ser_mac_mem_dump(struct rtw89_dev *rtwdev, u8 *buf,
 
 	start_page = start_addr / mem_page_size;
 	residue = start_addr % mem_page_size;
+<<<<<<< HEAD
 	base_addr = rtw89_mac_mem_base_addrs(rtwdev, sel);
+=======
+	base_addr = mac->mem_base_addrs[sel];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	base_addr += start_page * mem_page_size;
 
 	while (cnt < len) {
@@ -731,7 +738,10 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
 	switch (evt) {
 	case SER_EV_STATE_IN:
 		wiphy_lock(rtwdev->hw->wiphy);
+<<<<<<< HEAD
 		ser->sw_cnt.l2++;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ser_l2_reset_st_pre_hdl(ser);
 		wiphy_unlock(rtwdev->hw->wiphy);
 

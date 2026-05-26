@@ -376,7 +376,11 @@ static int write_vmem(struct fbtft_par *par, size_t offset, size_t len)
 
 			/* write bitmap */
 			gpiod_set_value(par->RS, 1); /* RS->1 (data mode) */
+<<<<<<< HEAD
 			ret = par->fbtftops.write(par, buf, len);
+=======
+			par->fbtftops.write(par, buf, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret < 0)
 				dev_err(par->info->device,
 					"write failed and returned: %d\n",

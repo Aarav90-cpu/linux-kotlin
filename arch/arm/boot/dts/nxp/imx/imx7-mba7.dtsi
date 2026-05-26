@@ -287,6 +287,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &gpio4 {
 	/* Deassert BOOT_EN after boot to separate BOOT_CFG circuits from LCD signals */
 	boot-en-hog {
@@ -296,6 +297,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c1 {
 	lm75: temperature-sensor@49 {
 		compatible = "national,lm75a";
@@ -486,7 +489,10 @@
 	};
 
 	pinctrl_uart6: uart6grp {
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fsl,pins =
 			<MX7D_PAD_EPDC_DATA08__UART6_DCE_RX	0x7d>,
 			<MX7D_PAD_EPDC_DATA09__UART6_DCE_TX	0x75>,
@@ -521,7 +527,10 @@
 			<MX7D_PAD_SD1_DATA1__SD1_DATA1		0x5e>,
 			<MX7D_PAD_SD1_DATA2__SD1_DATA2		0x5e>,
 			<MX7D_PAD_SD1_DATA3__SD1_DATA3		0x5e>;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pinctrl_usdhc1_100mhz: usdhc1_100mhzgrp {
@@ -613,7 +622,10 @@
 	pinctrl-0 = <&pinctrl_uart6>;
 	assigned-clocks = <&clks IMX7D_UART6_ROOT_SRC>;
 	assigned-clock-parents = <&clks IMX7D_OSC_24M_CLK>;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -658,7 +670,10 @@
 	no-1-8-v;
 	no-sdio;
 	no-mmc;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 

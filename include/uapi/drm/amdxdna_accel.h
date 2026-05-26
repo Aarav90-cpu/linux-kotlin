@@ -156,11 +156,18 @@ struct amdxdna_drm_config_hwctx {
 
 enum amdxdna_bo_type {
 	AMDXDNA_BO_INVALID = 0,
+<<<<<<< HEAD
 	AMDXDNA_BO_SHMEM = 1, /* Be compatible with legacy application code. */
 	AMDXDNA_BO_SHARE = 1,
 	AMDXDNA_BO_DEV_HEAP = 2,
 	AMDXDNA_BO_DEV = 3,
 	AMDXDNA_BO_CMD = 4,
+=======
+	AMDXDNA_BO_SHMEM,
+	AMDXDNA_BO_DEV_HEAP,
+	AMDXDNA_BO_DEV,
+	AMDXDNA_BO_CMD,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -354,8 +361,12 @@ struct amdxdna_drm_query_clock_metadata {
 };
 
 enum amdxdna_sensor_type {
+<<<<<<< HEAD
 	AMDXDNA_SENSOR_TYPE_POWER,
 	AMDXDNA_SENSOR_TYPE_COLUMN_UTILIZATION
+=======
+	AMDXDNA_SENSOR_TYPE_POWER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -591,6 +602,7 @@ struct amdxdna_async_error {
 	__u64 ex_err_code;
 };
 
+<<<<<<< HEAD
 /**
  * struct amdxdna_drm_bo_usage - all types of BO usage
  * BOs managed by XRT/SHIM/driver is counted as internal.
@@ -622,6 +634,10 @@ struct amdxdna_drm_bo_usage {
 #define DRM_AMDXDNA_HW_CONTEXT_ALL	0
 #define DRM_AMDXDNA_HW_LAST_ASYNC_ERR	2
 #define DRM_AMDXDNA_BO_USAGE		6
+=======
+#define DRM_AMDXDNA_HW_CONTEXT_ALL	0
+#define DRM_AMDXDNA_HW_LAST_ASYNC_ERR	2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct amdxdna_drm_get_array - Get information array.
@@ -634,12 +650,15 @@ struct amdxdna_drm_get_array {
 	 *
 	 * %DRM_AMDXDNA_HW_CONTEXT_ALL:
 	 * Returns all created hardware contexts.
+<<<<<<< HEAD
 	 *
 	 * %DRM_AMDXDNA_HW_LAST_ASYNC_ERR:
 	 * Returns last async error.
 	 *
 	 * %DRM_AMDXDNA_BO_USAGE:
 	 * Returns usage of heap/internal/external BOs.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	__u32 param;
 	/**

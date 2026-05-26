@@ -375,11 +375,19 @@ static void xhci_hub_descriptor(struct usb_hcd *hcd, struct xhci_hcd *xhci,
 
 }
 
+<<<<<<< HEAD
 static unsigned int xhci_port_speed(int portsc)
 {
 	if (DEV_LOWSPEED(portsc))
 		return USB_PORT_STAT_LOW_SPEED;
 	if (DEV_HIGHSPEED(portsc))
+=======
+static unsigned int xhci_port_speed(unsigned int port_status)
+{
+	if (DEV_LOWSPEED(port_status))
+		return USB_PORT_STAT_LOW_SPEED;
+	if (DEV_HIGHSPEED(port_status))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return USB_PORT_STAT_HIGH_SPEED;
 	/*
 	 * FIXME: Yes, we should check for full speed, but the core uses that as
@@ -429,9 +437,15 @@ static unsigned int xhci_port_speed(int portsc)
 
 /**
  * xhci_port_state_to_neutral() - Clean up read portsc value back into writeable
+<<<<<<< HEAD
  * @portsc: u32 port value read from portsc register to be cleanup up
  *
  * Given a portsc, this function returns a value that would result in the
+=======
+ * @state: u32 port value read from portsc register to be cleanup up
+ *
+ * Given a port state, this function returns a value that would result in the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * port being in the same state, if the value was written to the port status
  * control register.
  * Save Read Only (RO) bits and save read/write bits where
@@ -442,10 +456,17 @@ static unsigned int xhci_port_speed(int portsc)
  * changing port state.
  */
 
+<<<<<<< HEAD
 u32 xhci_port_state_to_neutral(u32 portsc)
 {
 	/* Save read-only status and port state */
 	return (portsc & XHCI_PORT_RO) | (portsc & XHCI_PORT_RWS);
+=======
+u32 xhci_port_state_to_neutral(u32 state)
+{
+	/* Save read-only status and port state */
+	return (state & XHCI_PORT_RO) | (state & XHCI_PORT_RWS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(xhci_port_state_to_neutral);
 
@@ -577,8 +598,13 @@ static void xhci_disable_port(struct xhci_hcd *xhci, struct xhci_port *port)
 		 hcd->self.busnum, port->hcd_portnum + 1, portsc);
 }
 
+<<<<<<< HEAD
 static void xhci_clear_port_change_bit(struct xhci_hcd *xhci, u16 wValue, struct xhci_port *port,
 				       u32 portsc)
+=======
+static void xhci_clear_port_change_bit(struct xhci_hcd *xhci, u16 wValue,
+		u16 wIndex, struct xhci_port *port, u32 port_status)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	char *port_change_bit;
 	u32 status;
@@ -621,11 +647,19 @@ static void xhci_clear_port_change_bit(struct xhci_hcd *xhci, u16 wValue, struct
 		return;
 	}
 	/* Change bits are all write 1 to clear */
+<<<<<<< HEAD
 	xhci_portsc_writel(port, portsc | status);
 	portsc = xhci_portsc_readl(port);
 
 	xhci_dbg(xhci, "clear port%d %s change, portsc: 0x%x\n",
 		 port->hcd_portnum + 1, port_change_bit, portsc);
+=======
+	xhci_portsc_writel(port, port_status | status);
+	port_status = xhci_portsc_readl(port);
+
+	xhci_dbg(xhci, "clear port%d %s change, portsc: 0x%x\n",
+		 wIndex + 1, port_change_bit, port_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct xhci_hub *xhci_get_rhub(struct usb_hcd *hcd)
@@ -675,13 +709,22 @@ static void xhci_set_port_power(struct xhci_hcd *xhci, struct xhci_port *port,
 	spin_lock_irqsave(&xhci->lock, *flags);
 }
 
+<<<<<<< HEAD
 static void xhci_port_set_test_mode(struct xhci_hcd *xhci, u16 test_mode, int portnum)
+=======
+static void xhci_port_set_test_mode(struct xhci_hcd *xhci,
+	u16 test_mode, u16 wIndex)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 temp;
 	struct xhci_port *port;
 
 	/* xhci only supports test mode for usb2 ports */
+<<<<<<< HEAD
 	port = xhci->usb2_rhub.ports[portnum];
+=======
+	port = xhci->usb2_rhub.ports[wIndex];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	temp = readl(&port->port_reg->portpmsc);
 	temp |= test_mode << PORT_TEST_MODE_SHIFT;
 	writel(temp, &port->port_reg->portpmsc);
@@ -690,8 +733,13 @@ static void xhci_port_set_test_mode(struct xhci_hcd *xhci, u16 test_mode, int po
 		xhci_start(xhci);
 }
 
+<<<<<<< HEAD
 static int xhci_enter_test_mode(struct xhci_hcd *xhci, u16 test_mode, int portnum,
 				unsigned long *flags)
+=======
+static int xhci_enter_test_mode(struct xhci_hcd *xhci,
+				u16 test_mode, u16 wIndex, unsigned long *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__must_hold(&xhci->lock)
 {
 	int i, retval;
@@ -725,8 +773,15 @@ static int xhci_enter_test_mode(struct xhci_hcd *xhci, u16 test_mode, int portnu
 	/* Disable runtime PM for test mode */
 	pm_runtime_forbid(xhci_to_hcd(xhci)->self.controller);
 	/* Set PORTPMSC.PTC field to enter selected test mode */
+<<<<<<< HEAD
 	xhci_dbg(xhci, "Enter Test Mode: %u, Port_id=%d\n", test_mode, portnum + 1);
 	xhci_port_set_test_mode(xhci, test_mode, portnum);
+=======
+	/* Port is selected by wIndex. port_id = wIndex + 1 */
+	xhci_dbg(xhci, "Enter Test Mode: %d, Port_id=%d\n",
+					test_mode, wIndex + 1);
+	xhci_port_set_test_mode(xhci, test_mode, wIndex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 }
 
@@ -850,6 +905,7 @@ void xhci_test_and_clear_bit(struct xhci_hcd *xhci, struct xhci_port *port,
 }
 
 /* Updates Link Status for super Speed port */
+<<<<<<< HEAD
 static void xhci_hub_report_usb3_link_state(struct xhci_hcd *xhci, u32 *status, u32 portsc)
 {
 	u32 pls = portsc & PORT_PLS_MASK;
@@ -881,6 +937,55 @@ static void xhci_hub_report_usb3_link_state(struct xhci_hcd *xhci, u32 *status, 
 		 */
 		if (xhci->quirks & XHCI_COMP_MODE_QUIRK)
 			*status |= USB_PORT_STAT_CONNECTION;
+=======
+static void xhci_hub_report_usb3_link_state(struct xhci_hcd *xhci,
+		u32 *status, u32 status_reg)
+{
+	u32 pls = status_reg & PORT_PLS_MASK;
+
+	/* When the CAS bit is set then warm reset
+	 * should be performed on port
+	 */
+	if (status_reg & PORT_CAS) {
+		/* The CAS bit can be set while the port is
+		 * in any link state.
+		 * Only roothubs have CAS bit, so we
+		 * pretend to be in compliance mode
+		 * unless we're already in compliance
+		 * or the inactive state.
+		 */
+		if (pls != USB_SS_PORT_LS_COMP_MOD &&
+		    pls != USB_SS_PORT_LS_SS_INACTIVE) {
+			pls = USB_SS_PORT_LS_COMP_MOD;
+		}
+		/* Return also connection bit -
+		 * hub state machine resets port
+		 * when this bit is set.
+		 */
+		pls |= USB_PORT_STAT_CONNECTION;
+	} else {
+		/*
+		 * Resume state is an xHCI internal state.  Do not report it to
+		 * usb core, instead, pretend to be U3, thus usb core knows
+		 * it's not ready for transfer.
+		 */
+		if (pls == XDEV_RESUME) {
+			*status |= USB_SS_PORT_LS_U3;
+			return;
+		}
+
+		/*
+		 * If CAS bit isn't set but the Port is already at
+		 * Compliance Mode, fake a connection so the USB core
+		 * notices the Compliance state and resets the port.
+		 * This resolves an issue generated by the SN65LVPE502CP
+		 * in which sometimes the port enters compliance mode
+		 * caused by a delay on the host-device negotiation.
+		 */
+		if ((xhci->quirks & XHCI_COMP_MODE_QUIRK) &&
+				(pls == USB_SS_PORT_LS_COMP_MOD))
+			pls |= USB_PORT_STAT_CONNECTION;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* update status field */
@@ -894,16 +999,28 @@ static void xhci_hub_report_usb3_link_state(struct xhci_hcd *xhci, u32 *status, 
  * the compliance mode timer is deleted. A port won't enter
  * compliance mode if it has previously entered U0.
  */
+<<<<<<< HEAD
 static void xhci_del_comp_mod_timer(struct xhci_hcd *xhci, u32 portsc, int portnum)
 {
 	u32 all_ports_seen_u0 = ((1 << xhci->usb3_rhub.num_ports) - 1);
 	bool port_in_u0 = ((portsc & PORT_PLS_MASK) == XDEV_U0);
+=======
+static void xhci_del_comp_mod_timer(struct xhci_hcd *xhci, u32 status,
+				    u16 wIndex)
+{
+	u32 all_ports_seen_u0 = ((1 << xhci->usb3_rhub.num_ports) - 1);
+	bool port_in_u0 = ((status & PORT_PLS_MASK) == XDEV_U0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(xhci->quirks & XHCI_COMP_MODE_QUIRK))
 		return;
 
 	if ((xhci->port_status_u0 != all_ports_seen_u0) && port_in_u0) {
+<<<<<<< HEAD
 		xhci->port_status_u0 |= 1 << portnum;
+=======
+		xhci->port_status_u0 |= 1 << wIndex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (xhci->port_status_u0 == all_ports_seen_u0) {
 			timer_delete_sync(&xhci->comp_mode_recovery_timer);
 			xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
@@ -921,12 +1038,20 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
 	struct xhci_bus_state *bus_state;
 	struct xhci_hcd	*xhci;
 	struct usb_hcd *hcd;
+<<<<<<< HEAD
 	int portnum;
+=======
+	u32 wIndex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hcd = port->rhub->hcd;
 	bus_state = &port->rhub->bus_state;
 	xhci = hcd_to_xhci(hcd);
+<<<<<<< HEAD
 	portnum = port->hcd_portnum;
+=======
+	wIndex = port->hcd_portnum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((portsc & PORT_RESET) || !(portsc & PORT_PE)) {
 		return -EINVAL;
@@ -934,7 +1059,11 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
 	/* did port event handler already start resume timing? */
 	if (!port->resume_timestamp) {
 		/* If not, maybe we are in a host initiated resume? */
+<<<<<<< HEAD
 		if (test_bit(portnum, &bus_state->resuming_ports)) {
+=======
+		if (test_bit(wIndex, &bus_state->resuming_ports)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Host initiated resume doesn't time the resume
 			 * signalling using resume_done[].
 			 * It manually sets RESUME state, sleeps 20ms
@@ -948,20 +1077,34 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
 			unsigned long timeout = jiffies +
 				msecs_to_jiffies(USB_RESUME_TIMEOUT);
 
+<<<<<<< HEAD
 			set_bit(portnum, &bus_state->resuming_ports);
 			port->resume_timestamp = timeout;
 			mod_timer(&hcd->rh_timer, timeout);
 			usb_hcd_start_port_resume(&hcd->self, portnum);
+=======
+			set_bit(wIndex, &bus_state->resuming_ports);
+			port->resume_timestamp = timeout;
+			mod_timer(&hcd->rh_timer, timeout);
+			usb_hcd_start_port_resume(&hcd->self, wIndex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	/* Has resume been signalled for USB_RESUME_TIME yet? */
 	} else if (time_after_eq(jiffies, port->resume_timestamp)) {
 		int time_left;
 
 		xhci_dbg(xhci, "resume USB2 port %d-%d\n",
+<<<<<<< HEAD
 			 hcd->self.busnum, portnum + 1);
 
 		port->resume_timestamp = 0;
 		clear_bit(portnum, &bus_state->resuming_ports);
+=======
+			 hcd->self.busnum, wIndex + 1);
+
+		port->resume_timestamp = 0;
+		clear_bit(wIndex, &bus_state->resuming_ports);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		reinit_completion(&port->rexit_done);
 		port->rexit_active = true;
@@ -985,7 +1128,11 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
 			int port_status = xhci_portsc_readl(port);
 
 			xhci_warn(xhci, "Port resume timed out, port %d-%d: 0x%x\n",
+<<<<<<< HEAD
 				  hcd->self.busnum, portnum + 1, port_status);
+=======
+				  hcd->self.busnum, wIndex + 1, port_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * keep rexit_active set if U0 transition failed so we
 			 * know to report PORT_STAT_SUSPEND status back to
@@ -994,21 +1141,35 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
 			 */
 		}
 
+<<<<<<< HEAD
 		usb_hcd_end_port_resume(&hcd->self, portnum);
 		bus_state->port_c_suspend |= 1 << portnum;
 		bus_state->suspended_ports &= ~(1 << portnum);
+=======
+		usb_hcd_end_port_resume(&hcd->self, wIndex);
+		bus_state->port_c_suspend |= 1 << wIndex;
+		bus_state->suspended_ports &= ~(1 << wIndex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static u32 xhci_get_ext_port_status(u32 portsc, u32 port_li)
+=======
+static u32 xhci_get_ext_port_status(u32 raw_port_status, u32 port_li)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 ext_stat = 0;
 	int speed_id;
 
 	/* only support rx and tx lane counts of 1 in usb3.1 spec */
+<<<<<<< HEAD
 	speed_id = DEV_PORT_SPEED(portsc);
+=======
+	speed_id = DEV_PORT_SPEED(raw_port_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ext_stat |= speed_id;		/* bits 3:0, RX speed id */
 	ext_stat |= speed_id << 4;	/* bits 7:4, TX speed id */
 
@@ -1133,8 +1294,15 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
  *  - Stop the Synopsys redriver Compliance Mode polling.
  *  - Drop and reacquire the xHCI lock, in order to wait for port resume.
  */
+<<<<<<< HEAD
 static u32 xhci_get_port_status(struct usb_hcd *hcd, struct xhci_bus_state *bus_state,
 				int portnum, u32 portsc, unsigned long *flags)
+=======
+static u32 xhci_get_port_status(struct usb_hcd *hcd,
+		struct xhci_bus_state *bus_state,
+	u16 wIndex, u32 raw_port_status,
+		unsigned long *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(&xhci->lock)
 	__acquires(&xhci->lock)
 {
@@ -1143,6 +1311,7 @@ static u32 xhci_get_port_status(struct usb_hcd *hcd, struct xhci_bus_state *bus_
 	struct xhci_port *port;
 
 	rhub = xhci_get_rhub(hcd);
+<<<<<<< HEAD
 	port = rhub->ports[portnum];
 
 	/* common wPortChange bits */
@@ -1165,15 +1334,48 @@ static u32 xhci_get_port_status(struct usb_hcd *hcd, struct xhci_bus_state *bus_
 	if (portsc & PORT_OC)
 		status |= USB_PORT_STAT_OVERCURRENT;
 	if (portsc & PORT_RESET)
+=======
+	port = rhub->ports[wIndex];
+
+	/* common wPortChange bits */
+	if (raw_port_status & PORT_CSC)
+		status |= USB_PORT_STAT_C_CONNECTION << 16;
+	if (raw_port_status & PORT_PEC)
+		status |= USB_PORT_STAT_C_ENABLE << 16;
+	if ((raw_port_status & PORT_OCC))
+		status |= USB_PORT_STAT_C_OVERCURRENT << 16;
+	if ((raw_port_status & PORT_RC))
+		status |= USB_PORT_STAT_C_RESET << 16;
+
+	/* common wPortStatus bits */
+	if (raw_port_status & PORT_CONNECT) {
+		status |= USB_PORT_STAT_CONNECTION;
+		status |= xhci_port_speed(raw_port_status);
+	}
+	if (raw_port_status & PORT_PE)
+		status |= USB_PORT_STAT_ENABLE;
+	if (raw_port_status & PORT_OC)
+		status |= USB_PORT_STAT_OVERCURRENT;
+	if (raw_port_status & PORT_RESET)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		status |= USB_PORT_STAT_RESET;
 
 	/* USB2 and USB3 specific bits, including Port Link State */
 	if (hcd->speed >= HCD_USB3)
+<<<<<<< HEAD
 		xhci_get_usb3_port_status(port, &status, portsc);
 	else
 		xhci_get_usb2_port_status(port, &status, portsc, flags);
 
 	if (bus_state->port_c_suspend & (1 << portnum))
+=======
+		xhci_get_usb3_port_status(port, &status, raw_port_status);
+	else
+		xhci_get_usb2_port_status(port, &status, raw_port_status,
+					  flags);
+
+	if (bus_state->port_c_suspend & (1 << wIndex))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		status |= USB_PORT_STAT_C_SUSPEND << 16;
 
 	return status;
@@ -1185,6 +1387,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
 	int max_ports;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 portsc, portpmsc, status;
 	int retval = 0;
 	struct xhci_bus_state *bus_state;
@@ -1197,11 +1400,28 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 	struct xhci_port **ports;
 	struct xhci_port *port;
 	int portnum;
+=======
+	u32 temp, status;
+	int retval = 0;
+	struct xhci_bus_state *bus_state;
+	u16 link_state = 0;
+	u16 wake_mask = 0;
+	u16 timeout = 0;
+	u16 test_mode = 0;
+	struct xhci_hub *rhub;
+	struct xhci_port **ports;
+	struct xhci_port *port;
+	int portnum1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rhub = xhci_get_rhub(hcd);
 	ports = rhub->ports;
 	max_ports = rhub->num_ports;
 	bus_state = &rhub->bus_state;
+<<<<<<< HEAD
+=======
+	portnum1 = wIndex & 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_irqsave(&xhci->lock, flags);
 	switch (typeReq) {
@@ -1210,13 +1430,21 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		memset(buf, 0, 4);
 		break;
 	case GetHubDescriptor:
+<<<<<<< HEAD
 		desc_type = (wValue & 0xff00) >> 8;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Check to make sure userspace is asking for the USB 3.0 hub
 		 * descriptor for the USB 3.0 roothub.  If not, we stall the
 		 * endpoint, like external hubs do.
 		 */
 		if (hcd->speed >= HCD_USB3 &&
+<<<<<<< HEAD
 		    (wLength < USB_DT_SS_HUB_SIZE || desc_type != USB_DT_SS_HUB)) {
+=======
+				(wLength < USB_DT_SS_HUB_SIZE ||
+				 wValue != (USB_DT_SS_HUB << 8))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xhci_dbg(xhci, "Wrong hub descriptor type for "
 					"USB 3.0 roothub.\n");
 			goto error;
@@ -1225,8 +1453,12 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				(struct usb_hub_descriptor *) buf);
 		break;
 	case DeviceRequest | USB_REQ_GET_DESCRIPTOR:
+<<<<<<< HEAD
 		desc_type = (wValue & 0xff00) >> 8;
 		if (desc_type != USB_DT_BOS)
+=======
+		if ((wValue & 0xff00) != (USB_DT_BOS << 8))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto error;
 
 		if (hcd->speed < HCD_USB3)
@@ -1236,6 +1468,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		spin_unlock_irqrestore(&xhci->lock, flags);
 		return retval;
 	case GetPortStatus:
+<<<<<<< HEAD
 		portnum = (wIndex & 0xff) - 1;
 		if (!in_range(portnum, 0, max_ports))
 			goto error;
@@ -1243,21 +1476,44 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		port = ports[portnum];
 		portsc = xhci_portsc_readl(port);
 		if (portsc == ~(u32)0) {
+=======
+		if (!portnum1 || portnum1 > max_ports)
+			goto error;
+
+		wIndex--;
+		port = ports[portnum1 - 1];
+		temp = xhci_portsc_readl(port);
+		if (temp == ~(u32)0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xhci_hc_died(xhci);
 			retval = -ENODEV;
 			break;
 		}
+<<<<<<< HEAD
 		trace_xhci_get_port_status(port, portsc);
 		status = xhci_get_port_status(hcd, bus_state, portnum, portsc, &flags);
+=======
+		trace_xhci_get_port_status(port, temp);
+		status = xhci_get_port_status(hcd, bus_state, wIndex, temp,
+					      &flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (status == 0xffffffff)
 			goto error;
 
 		xhci_dbg(xhci, "Get port status %d-%d read: 0x%x, return 0x%x",
+<<<<<<< HEAD
 			 hcd->self.busnum, portnum + 1, portsc, status);
 
 		put_unaligned(cpu_to_le32(status), (__le32 *) buf);
 		/* if USB 3.1 extended port status return additional 4 bytes */
 		if (wValue == HUB_EXT_PORT_STATUS) {
+=======
+			 hcd->self.busnum, portnum1, temp, status);
+
+		put_unaligned(cpu_to_le32(status), (__le32 *) buf);
+		/* if USB 3.1 extended port status return additional 4 bytes */
+		if (wValue == 0x02) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			u32 port_li;
 
 			if (hcd->speed < HCD_USB31 || wLength != 8) {
@@ -1266,11 +1522,16 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				break;
 			}
 			port_li = readl(&port->port_reg->portli);
+<<<<<<< HEAD
 			status = xhci_get_ext_port_status(portsc, port_li);
+=======
+			status = xhci_get_ext_port_status(temp, port_li);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			put_unaligned_le32(status, &buf[4]);
 		}
 		break;
 	case SetPortFeature:
+<<<<<<< HEAD
 		portnum = (wIndex & 0xff) - 1;
 		if (!in_range(portnum, 0, max_ports))
 			goto error;
@@ -1278,16 +1539,44 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		port = ports[portnum];
 		portsc = xhci_portsc_readl(port);
 		if (portsc == ~(u32)0) {
+=======
+		if (wValue == USB_PORT_FEAT_LINK_STATE)
+			link_state = (wIndex & 0xff00) >> 3;
+		if (wValue == USB_PORT_FEAT_REMOTE_WAKE_MASK)
+			wake_mask = wIndex & 0xff00;
+		if (wValue == USB_PORT_FEAT_TEST)
+			test_mode = (wIndex & 0xff00) >> 8;
+		/* The MSB of wIndex is the U1/U2 timeout */
+		timeout = (wIndex & 0xff00) >> 8;
+
+		wIndex &= 0xff;
+		if (!portnum1 || portnum1 > max_ports)
+			goto error;
+
+		port = ports[portnum1 - 1];
+		wIndex--;
+		temp = xhci_portsc_readl(port);
+		if (temp == ~(u32)0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xhci_hc_died(xhci);
 			retval = -ENODEV;
 			break;
 		}
+<<<<<<< HEAD
 		portsc = xhci_port_state_to_neutral(portsc);
 		/* FIXME: What new port features do we need to support? */
 		switch (wValue) {
 		case USB_PORT_FEAT_SUSPEND:
 			portsc = xhci_portsc_readl(port);
 			if ((portsc & PORT_PLS_MASK) != XDEV_U0) {
+=======
+		temp = xhci_port_state_to_neutral(temp);
+		/* FIXME: What new port features do we need to support? */
+		switch (wValue) {
+		case USB_PORT_FEAT_SUSPEND:
+			temp = xhci_portsc_readl(port);
+			if ((temp & PORT_PLS_MASK) != XDEV_U0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/* Resume the port to U0 first */
 				xhci_set_link_state(xhci, port, XDEV_U0);
 				spin_unlock_irqrestore(&xhci->lock, flags);
@@ -1298,11 +1587,19 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			 * a port unless the port reports that it is in the
 			 * enabled (PED = ‘1’,PLS < ‘3’) state.
 			 */
+<<<<<<< HEAD
 			portsc = xhci_portsc_readl(port);
 			if ((portsc & PORT_PE) == 0 || (portsc & PORT_RESET) ||
 			    (portsc & PORT_PLS_MASK) >= XDEV_U3) {
 				xhci_warn(xhci, "USB core suspending port %d-%d not in U0/U1/U2\n",
 					  hcd->self.busnum, portnum + 1);
+=======
+			temp = xhci_portsc_readl(port);
+			if ((temp & PORT_PE) == 0 || (temp & PORT_RESET)
+				|| (temp & PORT_PLS_MASK) >= XDEV_U3) {
+				xhci_warn(xhci, "USB core suspending port %d-%d not in U0/U1/U2\n",
+					  hcd->self.busnum, portnum1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto error;
 			}
 
@@ -1321,6 +1618,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			msleep(10); /* wait device to enter */
 			spin_lock_irqsave(&xhci->lock, flags);
 
+<<<<<<< HEAD
 			portsc = xhci_portsc_readl(port);
 			bus_state->suspended_ports |= 1 << portnum;
 			break;
@@ -1332,24 +1630,50 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				xhci_dbg(xhci, "Disable port %d-%d\n",
 					 hcd->self.busnum, portnum + 1);
 				portsc = xhci_port_state_to_neutral(portsc);
+=======
+			temp = xhci_portsc_readl(port);
+			bus_state->suspended_ports |= 1 << wIndex;
+			break;
+		case USB_PORT_FEAT_LINK_STATE:
+			temp = xhci_portsc_readl(port);
+			/* Disable port */
+			if (link_state == USB_SS_PORT_LS_SS_DISABLED) {
+				xhci_dbg(xhci, "Disable port %d-%d\n",
+					 hcd->self.busnum, portnum1);
+				temp = xhci_port_state_to_neutral(temp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * Clear all change bits, so that we get a new
 				 * connection event.
 				 */
+<<<<<<< HEAD
 				portsc |= PORT_CSC | PORT_PEC | PORT_WRC |
 					  PORT_OCC | PORT_RC | PORT_PLC |
 					  PORT_CEC;
 				xhci_portsc_writel(port, portsc | PORT_PE);
 				portsc = xhci_portsc_readl(port);
+=======
+				temp |= PORT_CSC | PORT_PEC | PORT_WRC |
+					PORT_OCC | PORT_RC | PORT_PLC |
+					PORT_CEC;
+				xhci_portsc_writel(port, temp | PORT_PE);
+				temp = xhci_portsc_readl(port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 			}
 
 			/* Put link in RxDetect (enable port) */
 			if (link_state == USB_SS_PORT_LS_RX_DETECT) {
 				xhci_dbg(xhci, "Enable port %d-%d\n",
+<<<<<<< HEAD
 					 hcd->self.busnum, portnum + 1);
 				xhci_set_link_state(xhci, port,	XDEV_RXDETECT);
 				portsc = xhci_portsc_readl(port);
+=======
+					 hcd->self.busnum, portnum1);
+				xhci_set_link_state(xhci, port,	link_state);
+				temp = xhci_portsc_readl(port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 			}
 
@@ -1373,12 +1697,17 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 					break;
 				}
 
+<<<<<<< HEAD
 				if ((portsc & PORT_CONNECT)) {
+=======
+				if ((temp & PORT_CONNECT)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					xhci_warn(xhci, "Can't set compliance mode when port is connected\n");
 					goto error;
 				}
 
 				xhci_dbg(xhci, "Enable compliance mode transition for port %d-%d\n",
+<<<<<<< HEAD
 					 hcd->self.busnum, portnum + 1);
 				xhci_set_link_state(xhci, port, XDEV_COMP_MODE);
 
@@ -1387,13 +1716,27 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			}
 			/* Port must be enabled */
 			if (!(portsc & PORT_PE)) {
+=======
+					 hcd->self.busnum, portnum1);
+				xhci_set_link_state(xhci, port, link_state);
+
+				temp = xhci_portsc_readl(port);
+				break;
+			}
+			/* Port must be enabled */
+			if (!(temp & PORT_PE)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				retval = -ENODEV;
 				break;
 			}
 			/* Can't set port link state above '3' (U3) */
 			if (link_state > USB_SS_PORT_LS_U3) {
 				xhci_warn(xhci, "Cannot set port %d-%d link state %d\n",
+<<<<<<< HEAD
 					  hcd->self.busnum, portnum + 1, link_state);
+=======
+					  hcd->self.busnum, portnum1, link_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto error;
 			}
 
@@ -1405,7 +1748,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			 * completion
 			 */
 			if (link_state == USB_SS_PORT_LS_U0) {
+<<<<<<< HEAD
 				u32 pls = portsc & PORT_PLS_MASK;
+=======
+				u32 pls = temp & PORT_PLS_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				bool wait_u0 = false;
 
 				/* already in U0 */
@@ -1418,7 +1765,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 					reinit_completion(&port->u3exit_done);
 				}
 				if (pls <= XDEV_U3) /* U1, U2, U3 */
+<<<<<<< HEAD
 					xhci_set_link_state(xhci, port, XDEV_U0);
+=======
+					xhci_set_link_state(xhci, port, USB_SS_PORT_LS_U0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (!wait_u0) {
 					if (pls > XDEV_U3)
 						goto error;
@@ -1428,9 +1779,15 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				if (!wait_for_completion_timeout(&port->u3exit_done,
 								 msecs_to_jiffies(500)))
 					xhci_dbg(xhci, "missing U0 port change event for port %d-%d\n",
+<<<<<<< HEAD
 						 hcd->self.busnum, portnum + 1);
 				spin_lock_irqsave(&xhci->lock, flags);
 				portsc = xhci_portsc_readl(port);
+=======
+						 hcd->self.busnum, portnum1);
+				spin_lock_irqsave(&xhci->lock, flags);
+				temp = xhci_portsc_readl(port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 			}
 
@@ -1444,6 +1801,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 					xhci_stop_device(xhci, port->slot_id, 1);
 					spin_lock_irqsave(&xhci->lock, flags);
 				}
+<<<<<<< HEAD
 				xhci_set_link_state(xhci, port, XDEV_U3);
 				spin_unlock_irqrestore(&xhci->lock, flags);
 				while (retries--) {
@@ -1455,6 +1813,19 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				spin_lock_irqsave(&xhci->lock, flags);
 				portsc = xhci_portsc_readl(port);
 				bus_state->suspended_ports |= 1 << portnum;
+=======
+				xhci_set_link_state(xhci, port, USB_SS_PORT_LS_U3);
+				spin_unlock_irqrestore(&xhci->lock, flags);
+				while (retries--) {
+					usleep_range(4000, 8000);
+					temp = xhci_portsc_readl(port);
+					if ((temp & PORT_PLS_MASK) == XDEV_U3)
+						break;
+				}
+				spin_lock_irqsave(&xhci->lock, flags);
+				temp = xhci_portsc_readl(port);
+				bus_state->suspended_ports |= 1 << wIndex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			break;
 		case USB_PORT_FEAT_POWER:
@@ -1467,6 +1838,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			xhci_set_port_power(xhci, port, true, &flags);
 			break;
 		case USB_PORT_FEAT_RESET:
+<<<<<<< HEAD
 			portsc |= PORT_RESET;
 			xhci_portsc_writel(port, portsc);
 
@@ -1485,42 +1857,84 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			portsc |= PORT_WR;
 			xhci_portsc_writel(port, portsc);
 			portsc = xhci_portsc_readl(port);
+=======
+			temp = (temp | PORT_RESET);
+			xhci_portsc_writel(port, temp);
+
+			temp = xhci_portsc_readl(port);
+			xhci_dbg(xhci, "set port reset, actual port %d-%d status  = 0x%x\n",
+				 hcd->self.busnum, portnum1, temp);
+			break;
+		case USB_PORT_FEAT_REMOTE_WAKE_MASK:
+			xhci_set_remote_wake_mask(xhci, port, wake_mask);
+			temp = xhci_portsc_readl(port);
+			xhci_dbg(xhci, "set port remote wake mask, actual port %d-%d status  = 0x%x\n",
+				 hcd->self.busnum, portnum1, temp);
+			break;
+		case USB_PORT_FEAT_BH_PORT_RESET:
+			temp |= PORT_WR;
+			xhci_portsc_writel(port, temp);
+			temp = xhci_portsc_readl(port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case USB_PORT_FEAT_U1_TIMEOUT:
 			if (hcd->speed < HCD_USB3)
 				goto error;
+<<<<<<< HEAD
 
 			timeout = (wIndex & 0xff00) >> 8;
 			portpmsc = readl(&port->port_reg->portpmsc);
 			portpmsc &= ~PORT_U1_TIMEOUT_MASK;
 			portpmsc |= PORT_U1_TIMEOUT(timeout);
 			writel(portpmsc, &port->port_reg->portpmsc);
+=======
+			temp = readl(&port->port_reg->portpmsc);
+			temp &= ~PORT_U1_TIMEOUT_MASK;
+			temp |= PORT_U1_TIMEOUT(timeout);
+			writel(temp, &port->port_reg->portpmsc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case USB_PORT_FEAT_U2_TIMEOUT:
 			if (hcd->speed < HCD_USB3)
 				goto error;
+<<<<<<< HEAD
 
 			timeout = (wIndex & 0xff00) >> 8;
 			portpmsc = readl(&port->port_reg->portpmsc);
 			portpmsc &= ~PORT_U2_TIMEOUT_MASK;
 			portpmsc |= PORT_U2_TIMEOUT(timeout);
 			writel(portpmsc, &port->port_reg->portpmsc);
+=======
+			temp = readl(&port->port_reg->portpmsc);
+			temp &= ~PORT_U2_TIMEOUT_MASK;
+			temp |= PORT_U2_TIMEOUT(timeout);
+			writel(temp, &port->port_reg->portpmsc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case USB_PORT_FEAT_TEST:
 			/* 4.19.6 Port Test Modes (USB2 Test Mode) */
 			if (hcd->speed != HCD_USB2)
 				goto error;
+<<<<<<< HEAD
 
 			test_mode = (wIndex & 0xff00) >> 8;
 			if (test_mode > USB_TEST_FORCE_ENABLE ||
 			    test_mode < USB_TEST_J)
 				goto error;
 			retval = xhci_enter_test_mode(xhci, test_mode, portnum, &flags);
+=======
+			if (test_mode > USB_TEST_FORCE_ENABLE ||
+			    test_mode < USB_TEST_J)
+				goto error;
+			retval = xhci_enter_test_mode(xhci, test_mode, wIndex,
+						      &flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			goto error;
 		}
 		/* unblock any posted writes */
+<<<<<<< HEAD
 		portsc = xhci_portsc_readl(port);
 		break;
 	case ClearPortFeature:
@@ -1531,11 +1945,25 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		port = ports[portnum];
 		portsc = xhci_portsc_readl(port);
 		if (portsc == ~(u32)0) {
+=======
+		temp = xhci_portsc_readl(port);
+		break;
+	case ClearPortFeature:
+		if (!portnum1 || portnum1 > max_ports)
+			goto error;
+
+		port = ports[portnum1 - 1];
+
+		wIndex--;
+		temp = xhci_portsc_readl(port);
+		if (temp == ~(u32)0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xhci_hc_died(xhci);
 			retval = -ENODEV;
 			break;
 		}
 		/* FIXME: What new port features do we need to support? */
+<<<<<<< HEAD
 		portsc = xhci_port_state_to_neutral(portsc);
 		switch (wValue) {
 		case USB_PORT_FEAT_SUSPEND:
@@ -1550,15 +1978,38 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 
 				set_bit(portnum, &bus_state->resuming_ports);
 				usb_hcd_start_port_resume(&hcd->self, portnum);
+=======
+		temp = xhci_port_state_to_neutral(temp);
+		switch (wValue) {
+		case USB_PORT_FEAT_SUSPEND:
+			temp = xhci_portsc_readl(port);
+			xhci_dbg(xhci, "clear USB_PORT_FEAT_SUSPEND\n");
+			xhci_dbg(xhci, "PORTSC %04x\n", temp);
+			if (temp & PORT_RESET)
+				goto error;
+			if ((temp & PORT_PLS_MASK) == XDEV_U3) {
+				if ((temp & PORT_PE) == 0)
+					goto error;
+
+				set_bit(wIndex, &bus_state->resuming_ports);
+				usb_hcd_start_port_resume(&hcd->self, wIndex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				xhci_set_link_state(xhci, port, XDEV_RESUME);
 				spin_unlock_irqrestore(&xhci->lock, flags);
 				msleep(USB_RESUME_TIMEOUT);
 				spin_lock_irqsave(&xhci->lock, flags);
 				xhci_set_link_state(xhci, port, XDEV_U0);
+<<<<<<< HEAD
 				clear_bit(portnum, &bus_state->resuming_ports);
 				usb_hcd_end_port_resume(&hcd->self, portnum);
 			}
 			bus_state->port_c_suspend |= 1 << portnum;
+=======
+				clear_bit(wIndex, &bus_state->resuming_ports);
+				usb_hcd_end_port_resume(&hcd->self, wIndex);
+			}
+			bus_state->port_c_suspend |= 1 << wIndex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (!port->slot_id) {
 				xhci_dbg(xhci, "slot_id is zero\n");
@@ -1567,7 +2018,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			xhci_ring_device(xhci, port->slot_id);
 			break;
 		case USB_PORT_FEAT_C_SUSPEND:
+<<<<<<< HEAD
 			bus_state->port_c_suspend &= ~(1 << portnum);
+=======
+			bus_state->port_c_suspend &= ~(1 << wIndex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			fallthrough;
 		case USB_PORT_FEAT_C_RESET:
 		case USB_PORT_FEAT_C_BH_PORT_RESET:
@@ -1576,7 +2031,11 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		case USB_PORT_FEAT_C_ENABLE:
 		case USB_PORT_FEAT_C_PORT_LINK_STATE:
 		case USB_PORT_FEAT_C_PORT_CONFIG_ERROR:
+<<<<<<< HEAD
 			xhci_clear_port_change_bit(xhci, wValue, port, portsc);
+=======
+			xhci_clear_port_change_bit(xhci, wValue, wIndex, port, temp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case USB_PORT_FEAT_ENABLE:
 			xhci_disable_port(xhci, port);

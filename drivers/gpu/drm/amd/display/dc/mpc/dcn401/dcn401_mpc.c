@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2023-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2023 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47,6 +51,7 @@ void mpc401_update_3dlut_fast_load_select(struct mpc *mpc, int mpcc_id, int hubp
 	REG_SET(MPCC_MCM_3DLUT_FAST_LOAD_SELECT[mpcc_id], 0, MPCC_MCM_3DLUT_FL_SEL, hubp_idx);
 }
 
+<<<<<<< HEAD
 void mpc401_get_3dlut_fast_load_status(struct mpc *mpc, int mpcc_id, uint32_t *done, uint32_t *soft_underflow, uint32_t *hard_underflow)
 {
 	struct dcn401_mpc *mpc401 = TO_DCN401_MPC(mpc);
@@ -57,6 +62,8 @@ void mpc401_get_3dlut_fast_load_status(struct mpc *mpc, int mpcc_id, uint32_t *d
 			MPCC_MCM_3DLUT_FL_HARD_UNDERFLOW, hard_underflow);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mpc401_set_movable_cm_location(struct mpc *mpc, enum mpcc_movable_cm_location location, int mpcc_id)
 {
 	struct dcn401_mpc *mpc401 = TO_DCN401_MPC(mpc);
@@ -73,6 +80,7 @@ void mpc401_set_movable_cm_location(struct mpc *mpc, enum mpcc_movable_cm_locati
 	}
 }
 
+<<<<<<< HEAD
 void mpc401_populate_lut(struct mpc *mpc,
 		const enum MCM_LUT_ID id,
 		const union mcm_lut_params *params,
@@ -82,6 +90,58 @@ void mpc401_populate_lut(struct mpc *mpc,
 	const enum dc_lut_mode next_mode = lut_bank_a ? LUT_RAM_A : LUT_RAM_B;
 	const struct pwl_params *lut1d = params->pwl;
 	const struct pwl_params *lut_shaper = params->pwl;
+=======
+static enum dc_lut_mode get3dlut_config(
+			struct mpc *mpc,
+			bool *is_17x17x17,
+			bool *is_12bits_color_channel,
+			int mpcc_id)
+{
+	uint32_t i_mode, i_enable_10bits, lut_size;
+	enum dc_lut_mode mode;
+	struct dcn401_mpc *mpc401 = TO_DCN401_MPC(mpc);
+
+	REG_GET(MPCC_MCM_3DLUT_MODE[mpcc_id],
+			MPCC_MCM_3DLUT_MODE_CURRENT,  &i_mode);
+
+	REG_GET(MPCC_MCM_3DLUT_READ_WRITE_CONTROL[mpcc_id],
+			MPCC_MCM_3DLUT_30BIT_EN, &i_enable_10bits);
+
+	switch (i_mode) {
+	case 0:
+		mode = LUT_BYPASS;
+		break;
+	case 1:
+		mode = LUT_RAM_A;
+		break;
+	case 2:
+		mode = LUT_RAM_B;
+		break;
+	default:
+		mode = LUT_BYPASS;
+		break;
+	}
+	if (i_enable_10bits > 0)
+		*is_12bits_color_channel = false;
+	else
+		*is_12bits_color_channel = true;
+
+	REG_GET(MPCC_MCM_3DLUT_MODE[mpcc_id], MPCC_MCM_3DLUT_SIZE, &lut_size);
+
+	if (lut_size == 0)
+		*is_17x17x17 = true;
+	else
+		*is_17x17x17 = false;
+
+	return mode;
+}
+
+void mpc401_populate_lut(struct mpc *mpc, const enum MCM_LUT_ID id, const union mcm_lut_params params, bool lut_bank_a, int mpcc_id)
+{
+	const enum dc_lut_mode next_mode = lut_bank_a ? LUT_RAM_A : LUT_RAM_B;
+	const struct pwl_params *lut1d = params.pwl;
+	const struct pwl_params *lut_shaper = params.pwl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool is_17x17x17;
 	bool is_12bits_color_channel;
 	const struct dc_rgb *lut0;
@@ -90,7 +150,11 @@ void mpc401_populate_lut(struct mpc *mpc,
 	const struct dc_rgb *lut3;
 	int lut_size0;
 	int lut_size;
+<<<<<<< HEAD
 	const struct tetrahedral_params *lut3d = params->lut3d;
+=======
+	const struct tetrahedral_params *lut3d = params.lut3d;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (id) {
 	case MCM_LUT_1DLUT:
@@ -133,6 +197,11 @@ void mpc401_populate_lut(struct mpc *mpc,
 
 		mpc32_power_on_shaper_3dlut(mpc, mpcc_id, true);
 
+<<<<<<< HEAD
+=======
+		get3dlut_config(mpc, &is_17x17x17, &is_12bits_color_channel, mpcc_id);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		is_17x17x17 = !lut3d->use_tetrahedral_9;
 		is_12bits_color_channel = lut3d->use_12bits;
 		if (is_17x17x17) {
@@ -155,6 +224,11 @@ void mpc401_populate_lut(struct mpc *mpc,
 					sizeof(lut3d->tetrahedral_9.lut1[0]);
 			}
 
+<<<<<<< HEAD
+=======
+		mpc32_select_3dlut_ram(mpc, next_mode,
+					is_12bits_color_channel, mpcc_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mpc32_select_3dlut_ram_mask(mpc, 0x1, mpcc_id);
 		if (is_12bits_color_channel)
 			mpc32_set3dlut_ram12(mpc, lut0, lut_size0, mpcc_id);
@@ -187,6 +261,7 @@ void mpc401_populate_lut(struct mpc *mpc,
 
 }
 
+<<<<<<< HEAD
 static uint32_t mpc401_cm_lut_size_to_3dlut_size(const enum dc_cm_lut_size cm_size)
 {
 	uint32_t size = 0;
@@ -217,10 +292,20 @@ void mpc401_program_lut_mode(
 		const int mpcc_id)
 {
 	uint32_t lut_size;
+=======
+void mpc401_program_lut_mode(
+		struct mpc *mpc,
+		const enum MCM_LUT_ID id,
+		const enum MCM_LUT_XABLE xable,
+		bool lut_bank_a,
+		int mpcc_id)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn401_mpc *mpc401 = TO_DCN401_MPC(mpc);
 
 	switch (id) {
 	case MCM_LUT_3DLUT:
+<<<<<<< HEAD
 		if (enable) {
 			lut_size = mpc401_cm_lut_size_to_3dlut_size(size);
 			REG_UPDATE_2(MPCC_MCM_3DLUT_MODE[mpcc_id],
@@ -250,6 +335,37 @@ void mpc401_program_lut_mode(
 				mpc32_power_on_blnd_lut(mpc, mpcc_id, false);
 			REG_UPDATE(MPCC_MCM_1DLUT_CONTROL[mpcc_id],
 					MPCC_MCM_1DLUT_MODE, 0);
+=======
+		switch (xable) {
+		case MCM_LUT_DISABLE:
+			REG_UPDATE(MPCC_MCM_3DLUT_MODE[mpcc_id], MPCC_MCM_3DLUT_MODE, 0);
+			break;
+		case MCM_LUT_ENABLE:
+			REG_UPDATE(MPCC_MCM_3DLUT_MODE[mpcc_id], MPCC_MCM_3DLUT_MODE, lut_bank_a ? 1 : 2);
+			break;
+		}
+		break;
+	case MCM_LUT_SHAPER:
+		switch (xable) {
+		case MCM_LUT_DISABLE:
+			REG_UPDATE(MPCC_MCM_SHAPER_CONTROL[mpcc_id], MPCC_MCM_SHAPER_LUT_MODE, 0);
+			break;
+		case MCM_LUT_ENABLE:
+			REG_UPDATE(MPCC_MCM_SHAPER_CONTROL[mpcc_id], MPCC_MCM_SHAPER_LUT_MODE, lut_bank_a ? 1 : 2);
+			break;
+		}
+		break;
+	case MCM_LUT_1DLUT:
+		switch (xable) {
+		case MCM_LUT_DISABLE:
+			REG_UPDATE(MPCC_MCM_1DLUT_CONTROL[mpcc_id],
+					MPCC_MCM_1DLUT_MODE, 0);
+			break;
+		case MCM_LUT_ENABLE:
+			REG_UPDATE(MPCC_MCM_1DLUT_CONTROL[mpcc_id],
+					MPCC_MCM_1DLUT_MODE, 2);
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		REG_UPDATE(MPCC_MCM_1DLUT_CONTROL[mpcc_id],
 				MPCC_MCM_1DLUT_SELECT, lut_bank_a ? 0 : 1);
@@ -257,20 +373,28 @@ void mpc401_program_lut_mode(
 	}
 }
 
+<<<<<<< HEAD
 void mpc401_program_lut_read_write_control(struct mpc *mpc,
 		const enum MCM_LUT_ID id,
 		const bool lut_bank_a,
 		const unsigned int bit_depth,
 		const int mpcc_id)
+=======
+void mpc401_program_lut_read_write_control(struct mpc *mpc, const enum MCM_LUT_ID id, bool lut_bank_a, int mpcc_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dcn401_mpc *mpc401 = TO_DCN401_MPC(mpc);
 
 	switch (id) {
 	case MCM_LUT_3DLUT:
 		mpc32_select_3dlut_ram_mask(mpc, 0xf, mpcc_id);
+<<<<<<< HEAD
 		REG_UPDATE_2(MPCC_MCM_3DLUT_READ_WRITE_CONTROL[mpcc_id],
 				MPCC_MCM_3DLUT_30BIT_EN, (bit_depth == 10) ? 1 : 0,
 				MPCC_MCM_3DLUT_RAM_SEL, lut_bank_a ? 0 : 1);
+=======
+		REG_UPDATE(MPCC_MCM_3DLUT_READ_WRITE_CONTROL[mpcc_id], MPCC_MCM_3DLUT_RAM_SEL, lut_bank_a ? 0 : 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MCM_LUT_SHAPER:
 		mpc32_configure_shaper_lut(mpc, lut_bank_a, mpcc_id);
@@ -562,6 +686,7 @@ void mpc401_get_gamut_remap(struct mpc *mpc,
 		arr_reg_val, ARRAY_SIZE(arr_reg_val));
 }
 
+<<<<<<< HEAD
 void mpc401_get_lut_mode(struct mpc *mpc,
 		const enum MCM_LUT_ID id,
 		const int mpcc_id,
@@ -600,6 +725,8 @@ void mpc401_get_lut_mode(struct mpc *mpc,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct mpc_funcs dcn401_mpc_funcs = {
 	.read_mpcc_state = mpc1_read_mpcc_state,
 	.insert_plane = mpc1_insert_plane,
@@ -634,11 +761,17 @@ static const struct mpc_funcs dcn401_mpc_funcs = {
 	.set_bg_color = mpc1_set_bg_color,
 	.set_movable_cm_location = mpc401_set_movable_cm_location,
 	.update_3dlut_fast_load_select = mpc401_update_3dlut_fast_load_select,
+<<<<<<< HEAD
 	.get_3dlut_fast_load_status = mpc401_get_3dlut_fast_load_status,
 	.populate_lut = mpc401_populate_lut,
 	.program_lut_read_write_control = mpc401_program_lut_read_write_control,
 	.program_lut_mode = mpc401_program_lut_mode,
 	.get_lut_mode = mpc401_get_lut_mode,
+=======
+	.populate_lut = mpc401_populate_lut,
+	.program_lut_read_write_control = mpc401_program_lut_read_write_control,
+	.program_lut_mode = mpc401_program_lut_mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 

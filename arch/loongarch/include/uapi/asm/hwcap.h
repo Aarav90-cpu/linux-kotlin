@@ -19,6 +19,9 @@
 #define HWCAP_LOONGARCH_PTW		(1 << 13)
 #define HWCAP_LOONGARCH_LSPW		(1 << 14)
 #define HWCAP_LOONGARCH_SCQ		(1 << 15)
+<<<<<<< HEAD
 #define HWCAP_LOONGARCH_LAM_BH		(1 << 16)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _UAPI_ASM_HWCAP_H */

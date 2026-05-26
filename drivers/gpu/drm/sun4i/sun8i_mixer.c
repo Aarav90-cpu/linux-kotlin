@@ -321,7 +321,11 @@ static struct drm_plane **sun8i_layers_init(struct drm_device *drm,
 	unsigned int phy_index;
 	int i;
 
+<<<<<<< HEAD
 	planes = devm_kcalloc(drm->dev, plane_cnt + 1, sizeof(*planes), GFP_KERNEL);
+=======
+	planes = devm_kcalloc(drm->dev, plane_cnt, sizeof(*planes), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!planes)
 		return ERR_PTR(-ENOMEM);
 
@@ -536,6 +540,7 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	mixer->engine.ops = &sun8i_engine_ops;
 	mixer->engine.node = dev->of_node;
 
+<<<<<<< HEAD
 	/*
 	 * This assume we have the same DMA constraints for all our the
 	 * devices in our pipeline (all the backends, but also the
@@ -551,6 +556,20 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	 */
 	if (drm_dev_dma_dev(drm) == drm->dev)
 		drm_dev_set_dma_dev(drm, dev);
+=======
+	if (of_property_present(dev->of_node, "iommus")) {
+		/*
+		 * This assume we have the same DMA constraints for
+		 * all our the mixers in our pipeline. This sounds
+		 * bad, but it has always been the case for us, and
+		 * DRM doesn't do per-device allocation either, so we
+		 * would need to fix DRM first...
+		 */
+		ret = of_dma_configure(drm->dev, dev->of_node, true);
+		if (ret)
+			return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * While this function can fail, we shouldn't do anything

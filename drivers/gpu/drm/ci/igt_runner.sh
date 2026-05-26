@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
 
 . "${SCRIPTS_DIR}/setup-test-env.sh"
 
+=======
+#!/bin/sh
+# SPDX-License-Identifier: MIT
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 set -ex
 
 export IGT_FORCE_DRIVER=${DRIVER_NAME}
@@ -23,7 +29,11 @@ set -e
 
 mkdir -p /lib/modules
 case "$DRIVER_NAME" in
+<<<<<<< HEAD
     amdgpu|vkms|panthor)
+=======
+    amdgpu|vkms)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         # Cannot use HWCI_KERNEL_MODULES as at that point we don't have the module in /lib
         mv /install/modules/lib/modules/* /lib/modules/. || true
         modprobe --first-time $DRIVER_NAME

@@ -11,7 +11,10 @@
 #include <linux/irqchip.h>
 #include <linux/kernel_stat.h>
 #include <linux/proc_fs.h>
+<<<<<<< HEAD
 #include <linux/minmax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mm.h>
 #include <linux/sched.h>
 #include <linux/seq_file.h>
@@ -100,11 +103,14 @@ int __init arch_probe_nr_irqs(void)
 	return NR_IRQS_LEGACY;
 }
 
+<<<<<<< HEAD
 unsigned int arch_dynirq_lower_bound(unsigned int from)
 {
 	return MAX(from, NR_IRQS_LEGACY);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __init init_IRQ(void)
 {
 	int i;

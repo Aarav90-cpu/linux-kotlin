@@ -1839,7 +1839,11 @@ void blk_throtl_exit(struct gendisk *disk)
 
 static int __init throtl_init(void)
 {
+<<<<<<< HEAD
 	kthrotld_workqueue = alloc_workqueue("kthrotld", WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+=======
+	kthrotld_workqueue = alloc_workqueue("kthrotld", WQ_MEM_RECLAIM, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kthrotld_workqueue)
 		panic("Failed to create kthrotld\n");
 

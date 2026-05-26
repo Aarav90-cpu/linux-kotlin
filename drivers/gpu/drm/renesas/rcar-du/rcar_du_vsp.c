@@ -20,7 +20,10 @@
 #include <drm/drm_vblank.h>
 
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/dma-mapping.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
@@ -459,9 +462,12 @@ static void rcar_du_vsp_cleanup(struct drm_device *dev, void *res)
 
 	kfree(vsp->planes);
 
+<<<<<<< HEAD
 	if (vsp->link)
 		device_link_del(vsp->link);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_device(vsp->vsp);
 }
 
@@ -486,6 +492,7 @@ int rcar_du_vsp_init(struct rcar_du_vsp *vsp, struct device_node *np,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	/*
 	 * Enforce suspend/resume ordering between the DU (consumer) and the
 	 * VSP (supplier). The DU will be suspended before and resume after the
@@ -498,6 +505,8 @@ int rcar_du_vsp_init(struct rcar_du_vsp *vsp, struct device_node *np,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = vsp1_du_init(vsp->vsp);
 	if (ret < 0)
 		return ret;

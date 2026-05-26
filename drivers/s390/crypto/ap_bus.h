@@ -166,6 +166,10 @@ void ap_driver_unregister(struct ap_driver *);
 struct ap_device {
 	struct device device;
 	int device_type;		/* AP device type. */
+<<<<<<< HEAD
+=======
+	const char *driver_override;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define to_ap_dev(x) container_of((x), struct ap_device, device)

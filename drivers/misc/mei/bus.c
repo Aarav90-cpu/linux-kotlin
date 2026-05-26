@@ -602,6 +602,7 @@ void mei_cldev_set_drvdata(struct mei_cl_device *cldev, void *data)
 EXPORT_SYMBOL_GPL(mei_cldev_set_drvdata);
 
 /**
+<<<<<<< HEAD
  * mei_cldev_uuid - return uuid of the underlying me client
  *
  * @cldev: mei client device
@@ -615,6 +616,8 @@ const uuid_le *mei_cldev_uuid(const struct mei_cl_device *cldev)
 EXPORT_SYMBOL_GPL(mei_cldev_uuid);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * mei_cldev_ver - return protocol version of the underlying me client
  *
  * @cldev: mei client device

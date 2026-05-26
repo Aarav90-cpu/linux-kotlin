@@ -41,7 +41,10 @@
 #define KT_SLOCK	12
 #define KT_DEAD2	13
 #define KT_BRL		14
+<<<<<<< HEAD
 #define KT_CSI		15	/* CSI sequences with modifier support */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define K(t,v)		(((t)<<8)|(v))
 #define KTYP(x)		((x) >> 8)
@@ -462,6 +465,7 @@
 
 #define NR_BRL		11
 
+<<<<<<< HEAD
 /* KT_CSI keys: value is the CSI parameter number for ESC [ <value> ~ */
 #define K_CSI_HOME	K(KT_CSI, 1)	/* ESC [ 1 ~ */
 #define K_CSI_INSERT	K(KT_CSI, 2)	/* ESC [ 2 ~ */
@@ -490,5 +494,7 @@
 #define K_CSI_F19	K(KT_CSI, 33)	/* ESC [ 33 ~ */
 #define K_CSI_F20	K(KT_CSI, 34)	/* ESC [ 34 ~ */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_DIACR	256
 #endif /* _UAPI__LINUX_KEYBOARD_H */

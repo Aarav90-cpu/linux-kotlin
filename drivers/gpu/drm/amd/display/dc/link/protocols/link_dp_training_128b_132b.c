@@ -158,7 +158,10 @@ static enum link_training_result dp_perform_128b_132b_cds_done_sequence(
 		const struct link_resource *link_res,
 		struct link_training_settings *lt_settings)
 {
+<<<<<<< HEAD
 	(void)link_res;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Assumption: assume hardware has transmitted eq pattern */
 	enum dc_status status = DC_OK;
 	enum link_training_result result = LINK_TRAINING_SUCCESS;

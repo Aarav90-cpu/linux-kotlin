@@ -11,7 +11,13 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+#include <linux/param.h>
+#include <linux/delay.h>
+#include <linux/workqueue.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/power_supply.h>
 #include <linux/slab.h>

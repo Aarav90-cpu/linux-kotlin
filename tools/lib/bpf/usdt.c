@@ -262,7 +262,10 @@ struct usdt_manager {
 	bool has_bpf_cookie;
 	bool has_sema_refcnt;
 	bool has_uprobe_multi;
+<<<<<<< HEAD
 	bool has_uprobe_syscall;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct usdt_manager *usdt_manager_new(struct bpf_object *obj)
@@ -302,6 +305,7 @@ struct usdt_manager *usdt_manager_new(struct bpf_object *obj)
 	 * usdt probes.
 	 */
 	man->has_uprobe_multi = kernel_supports(obj, FEAT_UPROBE_MULTI_LINK);
+<<<<<<< HEAD
 
 	/*
 	 * Detect kernel support for uprobe() syscall, it's presence means we can
@@ -309,6 +313,8 @@ struct usdt_manager *usdt_manager_new(struct bpf_object *obj)
 	 * Added in: 56101b69c919 ("uprobes/x86: Add uprobe syscall to speed up uprobe")
 	 */
 	man->has_uprobe_syscall = kernel_supports(obj, FEAT_UPROBE_SYSCALL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return man;
 }
 
@@ -593,6 +599,7 @@ static int parse_usdt_note(GElf_Nhdr *nhdr, const char *data, size_t name_off,
 
 static int parse_usdt_spec(struct usdt_spec *spec, const struct usdt_note *note, __u64 usdt_cookie);
 
+<<<<<<< HEAD
 #if defined(__x86_64__)
 static bool has_nop_combo(int fd, long off)
 {
@@ -616,11 +623,19 @@ static int collect_usdt_targets(struct usdt_manager *man, struct elf_fd *elf_fd,
 				pid_t pid, const char *usdt_provider, const char *usdt_name,
 				__u64 usdt_cookie, struct usdt_target **out_targets,
 				size_t *out_target_cnt)
+=======
+static int collect_usdt_targets(struct usdt_manager *man, Elf *elf, const char *path, pid_t pid,
+				const char *usdt_provider, const char *usdt_name, __u64 usdt_cookie,
+				struct usdt_target **out_targets, size_t *out_target_cnt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t off, name_off, desc_off, seg_cnt = 0, vma_seg_cnt = 0, target_cnt = 0;
 	struct elf_seg *segs = NULL, *vma_segs = NULL;
 	struct usdt_target *targets = NULL, *target;
+<<<<<<< HEAD
 	Elf *elf = elf_fd->elf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long base_addr = 0;
 	Elf_Scn *notes_scn, *base_scn;
 	GElf_Shdr base_shdr, notes_shdr;
@@ -813,6 +828,7 @@ static int collect_usdt_targets(struct usdt_manager *man, struct elf_fd *elf_fd,
 		target = &targets[target_cnt];
 		memset(target, 0, sizeof(*target));
 
+<<<<<<< HEAD
 		/*
 		 * We have uprobe syscall and usdt with nop,nop5 instructions combo,
 		 * so we can place the uprobe directly on nop5 (+1) and get this probe
@@ -823,6 +839,8 @@ static int collect_usdt_targets(struct usdt_manager *man, struct elf_fd *elf_fd,
 			usdt_rel_ip++;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		target->abs_ip = usdt_abs_ip;
 		target->rel_ip = usdt_rel_ip;
 		target->sema_off = usdt_sema_off;
@@ -1037,7 +1055,11 @@ struct bpf_link *usdt_manager_attach_usdt(struct usdt_manager *man, const struct
 	/* discover USDT in given binary, optionally limiting
 	 * activations to a given PID, if pid > 0
 	 */
+<<<<<<< HEAD
 	err = collect_usdt_targets(man, &elf_fd, path, pid, usdt_provider, usdt_name,
+=======
+	err = collect_usdt_targets(man, elf_fd.elf, path, pid, usdt_provider, usdt_name,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   usdt_cookie, &targets, &target_cnt);
 	if (err <= 0) {
 		err = (err == 0) ? -ENOENT : err;

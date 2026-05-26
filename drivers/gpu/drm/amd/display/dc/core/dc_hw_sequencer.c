@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2015-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2015 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,6 +44,10 @@
 #include "dcn10/dcn10_hubbub.h"
 #include "dce/dmub_hw_lock_mgr.h"
 
+<<<<<<< HEAD
+=======
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_NUM_MCACHE 8
 
 /* used as index in array of black_color_format */
@@ -229,7 +237,11 @@ const uint16_t *find_color_matrix(enum dc_color_space color_space,
 	int i;
 	enum dc_color_space_type type;
 	const uint16_t *val = NULL;
+<<<<<<< HEAD
 	int arr_size = ARRAY_SIZE(output_csc_matrix);
+=======
+	int arr_size = NUM_ELEMENTS(output_csc_matrix);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	type = get_color_space_type(color_space);
 	for (i = 0; i < arr_size; i++)
@@ -248,7 +260,10 @@ void color_space_to_black_color(
 	enum dc_color_space colorspace,
 	struct tg_color *black_color)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (colorspace) {
 	case COLOR_SPACE_YCBCR601:
 	case COLOR_SPACE_YCBCR709:
@@ -846,6 +861,7 @@ void hwss_build_fast_sequence(struct dc *dc,
 					block_sequence[*num_steps].func = DPP_PROGRAM_BIAS_AND_SCALE;
 					(*num_steps)++;
 				}
+<<<<<<< HEAD
 				if (current_mpc_pipe->plane_state->update_flags.bits.cm_hist_change) {
 					block_sequence[*num_steps].params.control_cm_hist_params.dpp
 						= current_mpc_pipe->plane_res.dpp;
@@ -856,6 +872,8 @@ void hwss_build_fast_sequence(struct dc *dc,
 					block_sequence[*num_steps].func = DPP_PROGRAM_CM_HIST;
 					(*num_steps)++;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			if (hws->funcs.set_output_transfer_func && current_mpc_pipe->stream->update_flags.bits.out_tf) {
 				block_sequence[*num_steps].params.set_output_transfer_func_params.dc = dc;
@@ -1039,9 +1057,12 @@ void hwss_execute_sequence(struct dc *dc,
 		case HUBP_PROGRAM_MCACHE_ID:
 			hwss_program_mcache_id_and_split_coordinate(params);
 			break;
+<<<<<<< HEAD
 		case DPP_PROGRAM_CM_HIST:
 			hwss_program_cm_hist(params);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case PROGRAM_CURSOR_UPDATE_NOW:
 			dc->hwss.program_cursor_offload_now(
 				params->program_cursor_update_now_params.dc,
@@ -2067,6 +2088,7 @@ void hwss_program_mcache_id_and_split_coordinate(union block_sequence_params *pa
 
 }
 
+<<<<<<< HEAD
 void hwss_program_cm_hist(union block_sequence_params *params)
 {
 	struct dpp *dpp = params->control_cm_hist_params.dpp;
@@ -2077,6 +2099,8 @@ void hwss_program_cm_hist(union block_sequence_params *params)
 			params->control_cm_hist_params.color_space);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void get_surface_tile_visual_confirm_color(
 		struct pipe_ctx *pipe_ctx,
 		struct tg_color *color)
@@ -3393,6 +3417,7 @@ void hwss_add_opp_program_bit_depth_reduction(struct block_sequence_state *seq_s
 	}
 }
 
+<<<<<<< HEAD
 void hwss_add_dpp_program_cm_hist(struct block_sequence_state *seq_state,
 		struct dpp *dpp,
 		struct cm_hist_control cm_hist_control,
@@ -3407,6 +3432,8 @@ void hwss_add_dpp_program_cm_hist(struct block_sequence_state *seq_state,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void hwss_add_dc_ip_request_cntl(struct block_sequence_state *seq_state,
 		struct dc *dc,
 		bool enable)
@@ -4108,6 +4135,7 @@ void hwss_add_tg_get_frame_count(struct block_sequence_state *seq_state,
 		(*seq_state->num_steps)++;
 	}
 }
+<<<<<<< HEAD
 
 
 void get_refresh_rate_confirm_color(struct pipe_ctx *pipe_ctx, struct tg_color *color)
@@ -4129,3 +4157,5 @@ void get_refresh_rate_confirm_color(struct pipe_ctx *pipe_ctx, struct tg_color *
 		pipe_ctx->visual_confirm_color.color_b_cb = color_value;
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

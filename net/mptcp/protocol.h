@@ -263,12 +263,17 @@ struct mptcp_data_frag {
 	u64 data_seq;
 	u16 data_len;
 	u16 offset;
+<<<<<<< HEAD
 	u8 overhead;
 	u8 eor;			/* currently using 1 bit */
+=======
+	u16 overhead;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 already_sent;
 	struct page *page;
 };
 
+<<<<<<< HEAD
 /* Arbitrary compromise between as low as possible to react timely to subflow
  * close event and as big as possible to avoid being fouled by biased large
  * samples due to peer sending data on a different subflow WRT to the incoming
@@ -276,6 +281,8 @@ struct mptcp_data_frag {
  */
 #define MPTCP_RTT_SAMPLES	5
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* MPTCP connection sock */
 struct mptcp_sock {
 	/* inet_connection_sock must be the first member */
@@ -348,6 +355,7 @@ struct mptcp_sock {
 				 */
 	struct mptcp_pm_data	pm;
 	struct mptcp_sched_ops	*sched;
+<<<<<<< HEAD
 
 	/* Most recent rtt_us observed by in use incoming subflows. */
 	struct {
@@ -355,10 +363,16 @@ struct mptcp_sock {
 		u32	next_sample;
 	} rcv_rtt_est;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		int	space;	/* bytes copied in last measurement window */
 		int	copied; /* bytes copied in this measurement window */
 		u64	time;	/* start time of measurement window */
+<<<<<<< HEAD
+=======
+		u64	rtt_us; /* last maximum rtt of subflows */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} rcvq_space;
 	u8		scaling_ratio;
 	bool		allow_subflows;
@@ -436,6 +450,7 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
 	return msk->first_pending;
 }
 
+<<<<<<< HEAD
 static inline void mptcp_init_rtt_est(struct mptcp_sock *msk)
 {
 	int i;
@@ -457,6 +472,8 @@ static inline u32 mptcp_rtt_us_est(const struct mptcp_sock *msk)
 	return rtt_us;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
 {
 	struct mptcp_sock *msk = mptcp_sk(sk);
@@ -558,7 +575,10 @@ struct mptcp_subflow_context {
 	u32	map_data_len;
 	__wsum	map_data_csum;
 	u32	map_csum_len;
+<<<<<<< HEAD
 	u32	prev_rtt_seq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32	request_mptcp : 1,  /* send MP_CAPABLE */
 		request_join : 1,   /* send MP_JOIN */
 		request_bkup : 1,

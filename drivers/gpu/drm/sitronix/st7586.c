@@ -13,7 +13,10 @@
 #include <video/mipi_display.h>
 
 #include <drm/clients/drm_client_setup.h>
+<<<<<<< HEAD
 #include <drm/drm_atomic.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_damage_helper.h>
 #include <drm/drm_drv.h>
@@ -49,6 +52,7 @@
 #define ST7586_DISP_CTRL_MX	BIT(6)
 #define ST7586_DISP_CTRL_MY	BIT(7)
 
+<<<<<<< HEAD
 struct st7586_device {
 	struct mipi_dbi_dev dbidev;
 
@@ -63,6 +67,8 @@ static struct st7586_device *to_st7586_device(struct drm_device *dev)
 	return container_of(drm_to_mipi_dbi_dev(dev), struct st7586_device, dbidev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The ST7586 controller has an unusual pixel format where 2bpp grayscale is
  * packed 3 pixels per byte with the first two pixels using 3 bits and the 3rd
@@ -162,6 +168,7 @@ err_msg:
 		dev_err_once(fb->dev->dev, "Failed to update display %d\n", ret);
 }
 
+<<<<<<< HEAD
 static const u32 st7586_plane_formats[] = {
 	DRM_FORMAT_XRGB8888,
 };
@@ -187,12 +194,31 @@ static void st7586_plane_helper_atomic_update(struct drm_plane *plane,
 		return;
 
 	if (drm_atomic_helper_damage_merged(old_plane_state, plane_state, &rect))
+=======
+static void st7586_pipe_update(struct drm_simple_display_pipe *pipe,
+			       struct drm_plane_state *old_state)
+{
+	struct drm_plane_state *state = pipe->plane.state;
+	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(state);
+	struct drm_framebuffer *fb = state->fb;
+	struct drm_rect rect;
+	int idx;
+
+	if (!pipe->crtc.state->active)
+		return;
+
+	if (!drm_dev_enter(fb->dev, &idx))
+		return;
+
+	if (drm_atomic_helper_damage_merged(old_state, state, &rect))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		st7586_fb_dirty(&shadow_plane_state->data[0], fb, &rect,
 				&shadow_plane_state->fmtcnv_state);
 
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_plane_helper_funcs st7586_plane_helper_funcs = {
 	DRM_GEM_SHADOW_PLANE_HELPER_FUNCS,
 	.atomic_check = drm_mipi_dbi_plane_helper_atomic_check,
@@ -215,6 +241,26 @@ static void st7586_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	u8 addr_mode;
 
 	if (!drm_dev_enter(drm, &idx))
+=======
+static void st7586_pipe_enable(struct drm_simple_display_pipe *pipe,
+			       struct drm_crtc_state *crtc_state,
+			       struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(plane_state);
+	struct drm_framebuffer *fb = plane_state->fb;
+	struct mipi_dbi *dbi = &dbidev->dbi;
+	struct drm_rect rect = {
+		.x1 = 0,
+		.x2 = fb->width,
+		.y1 = 0,
+		.y2 = fb->height,
+	};
+	int idx, ret;
+	u8 addr_mode;
+
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	DRM_DEBUG_KMS("\n");
@@ -270,17 +316,29 @@ static void st7586_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 
 	msleep(100);
 
+<<<<<<< HEAD
+=======
+	st7586_fb_dirty(&shadow_plane_state->data[0], fb, &rect,
+			&shadow_plane_state->fmtcnv_state);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mipi_dbi_command(dbi, MIPI_DCS_SET_DISPLAY_ON);
 out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static void st7586_crtc_helper_atomic_disable(struct drm_crtc *crtc,
 					      struct drm_atomic_state *state)
 {
 	struct drm_device *drm = crtc->dev;
 	struct st7586_device *st7586 = to_st7586_device(drm);
 	struct mipi_dbi_dev *dbidev = &st7586->dbidev;
+=======
+static void st7586_pipe_disable(struct drm_simple_display_pipe *pipe)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * This callback is not protected by drm_dev_enter/exit since we want to
@@ -294,6 +352,7 @@ static void st7586_crtc_helper_atomic_disable(struct drm_crtc *crtc,
 	mipi_dbi_command(&dbidev->dbi, MIPI_DCS_SET_DISPLAY_OFF);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs st7586_crtc_helper_funcs = {
 	.mode_valid = drm_mipi_dbi_crtc_helper_mode_valid,
 	.atomic_check = drm_mipi_dbi_crtc_helper_atomic_check,
@@ -325,6 +384,22 @@ static const struct drm_mode_config_helper_funcs st7586_mode_config_helper_funcs
 
 static const struct drm_mode_config_funcs st7586_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
+=======
+static const u32 st7586_formats[] = {
+	DRM_FORMAT_XRGB8888,
+};
+
+static const struct drm_simple_display_pipe_funcs st7586_pipe_funcs = {
+	.mode_valid	= mipi_dbi_pipe_mode_valid,
+	.enable		= st7586_pipe_enable,
+	.disable	= st7586_pipe_disable,
+	.update		= st7586_pipe_update,
+	.begin_fb_access = mipi_dbi_pipe_begin_fb_access,
+	.end_fb_access	= mipi_dbi_pipe_end_fb_access,
+	.reset_plane	= mipi_dbi_pipe_reset_plane,
+	.duplicate_plane_state = mipi_dbi_pipe_duplicate_plane_state,
+	.destroy_plane_state = mipi_dbi_pipe_destroy_plane_state,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct drm_display_mode st7586_mode = {
@@ -360,23 +435,37 @@ MODULE_DEVICE_TABLE(spi, st7586_id);
 static int st7586_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
+<<<<<<< HEAD
 	struct st7586_device *st7586;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi_dev *dbidev;
 	struct drm_device *drm;
 	struct mipi_dbi *dbi;
 	struct gpio_desc *a0;
+<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
 	struct drm_connector *connector;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 rotation = 0;
 	size_t bufsize;
 	int ret;
 
+<<<<<<< HEAD
 	st7586 = devm_drm_dev_alloc(dev, &st7586_driver, struct st7586_device, dbidev.drm);
 	if (IS_ERR(st7586))
 		return PTR_ERR(st7586);
 	dbidev = &st7586->dbidev;
+=======
+	dbidev = devm_drm_dev_alloc(dev, &st7586_driver,
+				    struct mipi_dbi_dev, drm);
+	if (IS_ERR(dbidev))
+		return PTR_ERR(dbidev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
 
@@ -405,6 +494,7 @@ static int st7586_probe(struct spi_device *spi)
 	/* Cannot read from this controller via SPI */
 	dbi->read_commands = NULL;
 
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &st7586_mode, st7586_plane_formats[0],
 				    rotation, bufsize);
 	if (ret)
@@ -452,6 +542,11 @@ static int st7586_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &st7586_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init_with_formats(dbidev, &st7586_pipe_funcs,
+					     st7586_formats, ARRAY_SIZE(st7586_formats),
+					     &st7586_mode, rotation, bufsize);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

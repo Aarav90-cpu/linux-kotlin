@@ -69,9 +69,15 @@ struct mmc_queue_req {
 	enum mmc_drv_op		drv_op;
 	int			drv_op_result;
 	void			*drv_op_data;
+<<<<<<< HEAD
 	u8			ioc_count;
 	u8			retries;
 	u8			flags;
+=======
+	unsigned int		ioc_count;
+	int			retries;
+	u32			flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mmc_queue {

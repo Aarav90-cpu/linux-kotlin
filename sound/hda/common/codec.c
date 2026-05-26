@@ -606,8 +606,14 @@ void snd_hda_shutup_pins(struct hda_codec *codec)
 	if (codec->bus->shutdown)
 		return;
 	snd_array_for_each(&codec->init_pins, i, pin) {
+<<<<<<< HEAD
 		snd_hda_codec_write_sync(codec, pin->nid, 0,
 					 AC_VERB_SET_PIN_WIDGET_CONTROL, 0);
+=======
+		/* use read here for syncing after issuing each verb */
+		snd_hda_codec_read(codec, pin->nid, 0,
+				   AC_VERB_SET_PIN_WIDGET_CONTROL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	codec->pins_shutup = 1;
 }
@@ -2531,10 +2537,14 @@ EXPORT_SYMBOL_GPL(snd_hda_spdif_ctls_assign);
 static int spdif_share_sw_get(struct snd_kcontrol *kcontrol,
 			      struct snd_ctl_elem_value *ucontrol)
 {
+<<<<<<< HEAD
 	struct hda_codec *codec = snd_kcontrol_chip(kcontrol);
 	struct hda_multi_out *mout = (void *)kcontrol->private_value;
 
 	guard(mutex)(&codec->spdif_mutex);
+=======
+	struct hda_multi_out *mout = snd_kcontrol_chip(kcontrol);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ucontrol->value.integer.value[0] = mout->share_spdif;
 	return 0;
 }
@@ -2542,6 +2552,7 @@ static int spdif_share_sw_get(struct snd_kcontrol *kcontrol,
 static int spdif_share_sw_put(struct snd_kcontrol *kcontrol,
 			      struct snd_ctl_elem_value *ucontrol)
 {
+<<<<<<< HEAD
 	struct hda_codec *codec = snd_kcontrol_chip(kcontrol);
 	struct hda_multi_out *mout = (void *)kcontrol->private_value;
 	bool val = !!ucontrol->value.integer.value[0];
@@ -2551,6 +2562,11 @@ static int spdif_share_sw_put(struct snd_kcontrol *kcontrol,
 	change = mout->share_spdif != val;
 	mout->share_spdif = val;
 	return change;
+=======
+	struct hda_multi_out *mout = snd_kcontrol_chip(kcontrol);
+	mout->share_spdif = !!ucontrol->value.integer.value[0];
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct snd_kcontrol_new spdif_share_sw = {
@@ -2561,6 +2577,7 @@ static const struct snd_kcontrol_new spdif_share_sw = {
 	.put = spdif_share_sw_put,
 };
 
+<<<<<<< HEAD
 static void notify_spdif_share_sw(struct hda_codec *codec,
 				  struct hda_multi_out *mout)
 {
@@ -2569,6 +2586,8 @@ static void notify_spdif_share_sw(struct hda_codec *codec,
 				   mout->share_spdif_kctl, 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * snd_hda_create_spdif_share_sw - create Default PCM switch
  * @codec: the HDA codec
@@ -2578,11 +2597,15 @@ int snd_hda_create_spdif_share_sw(struct hda_codec *codec,
 				  struct hda_multi_out *mout)
 {
 	struct snd_kcontrol *kctl;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!mout->dig_out_nid)
 		return 0;
 
+<<<<<<< HEAD
 	kctl = snd_ctl_new1(&spdif_share_sw, codec);
 	if (!kctl)
 		return -ENOMEM;
@@ -2596,6 +2619,13 @@ int snd_hda_create_spdif_share_sw(struct hda_codec *codec,
 		return err;
 	mout->share_spdif_kctl = kctl;
 	return 0;
+=======
+	kctl = snd_ctl_new1(&spdif_share_sw, mout);
+	if (!kctl)
+		return -ENOMEM;
+	/* ATTENTION: here mout is passed as private_data, instead of codec */
+	return snd_hda_ctl_add(codec, mout->dig_out_nid, kctl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(snd_hda_create_spdif_share_sw);
 
@@ -2796,9 +2826,15 @@ static unsigned int hda_set_power_state(struct hda_codec *codec,
 			if (codec->power_filter)
 				state = codec->power_filter(codec, fg, state);
 			if (state == power_state || power_state != AC_PWRST_D3)
+<<<<<<< HEAD
 				snd_hda_codec_write_sync(codec, fg, flags,
 							 AC_VERB_SET_POWER_STATE,
 							 state);
+=======
+				snd_hda_codec_read(codec, fg, flags,
+						   AC_VERB_SET_POWER_STATE,
+						   state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			snd_hda_codec_set_power_to_all(codec, fg, power_state);
 		}
 		state = snd_hda_sync_power_state(codec, fg, power_state);
@@ -3729,8 +3765,11 @@ int snd_hda_multi_out_analog_open(struct hda_codec *codec,
 				  struct hda_pcm_stream *hinfo)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
+<<<<<<< HEAD
 	bool notify_share_sw = false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	runtime->hw.channels_max = mout->max_channels;
 	if (mout->dig_out_nid) {
 		if (!mout->analog_rates) {
@@ -3759,12 +3798,19 @@ int snd_hda_multi_out_analog_open(struct hda_codec *codec,
 					hinfo->maxbps = mout->spdif_maxbps;
 			} else {
 				mout->share_spdif = 0;
+<<<<<<< HEAD
 				notify_share_sw = true;
 			}
 		}
 	}
 	if (notify_share_sw)
 		notify_spdif_share_sw(codec, mout);
+=======
+				/* FIXME: need notify? */
+			}
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return snd_pcm_hw_constraint_step(substream->runtime, 0,
 					  SNDRV_PCM_HW_PARAM_CHANNELS, 2);
 }
@@ -4056,6 +4102,7 @@ void snd_hda_bus_reset_codecs(struct hda_bus *bus)
 }
 
 /**
+<<<<<<< HEAD
  * snd_hda_codec_set_gpio - Set up GPIO bits for AFG
  * @codec: the HDA codec
  * @mask: GPIO bitmask
@@ -4085,6 +4132,8 @@ void snd_hda_codec_set_gpio(struct hda_codec *codec, unsigned int mask,
 EXPORT_SYMBOL_GPL(snd_hda_codec_set_gpio);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * snd_print_pcm_bits - Print the supported PCM fmt bits to the string buffer
  * @pcm: PCM caps bits
  * @buf: the string buffer to write

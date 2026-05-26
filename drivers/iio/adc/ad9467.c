@@ -176,6 +176,10 @@ struct ad9467_state {
 	struct clk *clk;
 	/* used for debugfs */
 	struct ad9467_chan_test_mode *chan_test;
+<<<<<<< HEAD
+=======
+	unsigned int output_mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int (*scales)[2];
 	/*
 	 * Times 2 because we may also invert the signal polarity and run the
@@ -924,11 +928,15 @@ static int __ad9467_update_clock(struct ad9467_state *st, long r_clk)
 		return ret;
 
 	guard(mutex)(&st->lock);
+<<<<<<< HEAD
 
 	if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_CALIBRATION))
 		return ad9467_calibrate(st);
 
 	return 0;
+=======
+	return ad9467_calibrate(st);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ad9467_write_raw(struct iio_dev *indio_dev,
@@ -1134,6 +1142,7 @@ static ssize_t ad9467_chan_test_mode_read(struct file *file,
 		len = scnprintf(buf, sizeof(buf), "Running \"%s\" Test:\n\t",
 				ad9467_test_modes[chan->mode]);
 
+<<<<<<< HEAD
 		if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_CALIBRATION)) {
 			ret = iio_backend_debugfs_print_chan_status(st->back,
 								    chan->idx,
@@ -1143,6 +1152,14 @@ static ssize_t ad9467_chan_test_mode_read(struct file *file,
 				return ret;
 			len += ret;
 		}
+=======
+		ret = iio_backend_debugfs_print_chan_status(st->back, chan->idx,
+							    buf + len,
+							    sizeof(buf) - len);
+		if (ret < 0)
+			return ret;
+		len += ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (chan->mode == AN877_ADC_TESTMODE_OFF) {
 		len = scnprintf(buf, sizeof(buf), "No test Running...\n");
 	} else {
@@ -1181,6 +1198,7 @@ static ssize_t ad9467_chan_test_mode_write(struct file *file,
 	if (mode == AN877_ADC_TESTMODE_OFF) {
 		unsigned int out_mode;
 
+<<<<<<< HEAD
 		if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_CALIBRATION)) {
 			if (chan->mode == AN877_ADC_TESTMODE_PN9_SEQ ||
 			    chan->mode == AN877_ADC_TESTMODE_PN23_SEQ) {
@@ -1188,6 +1206,13 @@ static ssize_t ad9467_chan_test_mode_write(struct file *file,
 				if (ret)
 					return ret;
 			}
+=======
+		if (chan->mode == AN877_ADC_TESTMODE_PN9_SEQ ||
+		    chan->mode == AN877_ADC_TESTMODE_PN23_SEQ) {
+			ret = ad9467_backend_testmode_off(st, chan->idx);
+			if (ret)
+				return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		ret = ad9467_testmode_set(st, chan->idx, mode);
@@ -1213,6 +1238,7 @@ static ssize_t ad9467_chan_test_mode_write(struct file *file,
 			return ret;
 
 		/*  some patterns have a backend matching monitoring block */
+<<<<<<< HEAD
 		if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_CALIBRATION)) {
 			if (mode == AN877_ADC_TESTMODE_PN9_SEQ) {
 				ret = ad9467_backend_testmode_on(st, chan->idx,
@@ -1225,6 +1251,18 @@ static ssize_t ad9467_chan_test_mode_write(struct file *file,
 				if (ret)
 					return ret;
 			}
+=======
+		if (mode == AN877_ADC_TESTMODE_PN9_SEQ) {
+			ret = ad9467_backend_testmode_on(st, chan->idx,
+							 IIO_BACKEND_ADI_PRBS_9A);
+			if (ret)
+				return ret;
+		} else if (mode == AN877_ADC_TESTMODE_PN23_SEQ) {
+			ret = ad9467_backend_testmode_on(st, chan->idx,
+							 IIO_BACKEND_ADI_PRBS_23A);
+			if (ret)
+				return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1290,9 +1328,14 @@ static void ad9467_debugfs_init(struct iio_dev *indio_dev)
 	if (!st->chan_test)
 		return;
 
+<<<<<<< HEAD
 	if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_CALIBRATION))
 		debugfs_create_file("calibration_table_dump", 0400, d, st,
 				    &ad9467_calib_table_fops);
+=======
+	debugfs_create_file("calibration_table_dump", 0400, d, st,
+			    &ad9467_calib_table_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (chan = 0; chan < st->info->num_channels; chan++) {
 		snprintf(attr_name, sizeof(attr_name), "in_voltage%u_test_mode",
@@ -1311,13 +1354,20 @@ static void ad9467_debugfs_init(struct iio_dev *indio_dev)
 
 static int ad9467_probe(struct spi_device *spi)
 {
+<<<<<<< HEAD
 	struct device *dev = &spi->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_dev *indio_dev;
 	struct ad9467_state *st;
 	unsigned int id;
 	int ret;
 
+<<<<<<< HEAD
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+=======
+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!indio_dev)
 		return -ENOMEM;
 
@@ -1332,6 +1382,7 @@ static int ad9467_probe(struct spi_device *spi)
 	if (AD9467_CAN_INVERT(st))
 		st->calib_map_size *= 2;
 
+<<<<<<< HEAD
 	st->clk = devm_clk_get_enabled(dev, "adc-clk");
 	if (IS_ERR(st->clk))
 		return PTR_ERR(st->clk);
@@ -1341,6 +1392,18 @@ static int ad9467_probe(struct spi_device *spi)
 		return PTR_ERR(st->pwrdown_gpio);
 
 	ret = ad9467_reset(dev);
+=======
+	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
+	if (IS_ERR(st->clk))
+		return PTR_ERR(st->clk);
+
+	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
+						   GPIOD_OUT_LOW);
+	if (IS_ERR(st->pwrdown_gpio))
+		return PTR_ERR(st->pwrdown_gpio);
+
+	ret = ad9467_reset(&spi->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1350,7 +1413,11 @@ static int ad9467_probe(struct spi_device *spi)
 
 	id = ad9467_spi_read(st, AN877_ADC_REG_CHIP_ID);
 	if (id != st->info->id) {
+<<<<<<< HEAD
 		dev_err(dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+=======
+		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			id, st->info->id);
 		return -ENODEV;
 	}
@@ -1367,6 +1434,7 @@ static int ad9467_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (iio_backend_has_caps(st->back, IIO_BACKEND_CAP_BUFFER)) {
 		ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
 		if (ret)
@@ -1386,6 +1454,21 @@ static int ad9467_probe(struct spi_device *spi)
 	}
 
 	ret = devm_iio_device_register(dev, indio_dev);
+=======
+	ret = devm_iio_backend_request_buffer(&spi->dev, st->back, indio_dev);
+	if (ret)
+		return ret;
+
+	ret = devm_iio_backend_enable(&spi->dev, st->back);
+	if (ret)
+		return ret;
+
+	ret = ad9467_calibrate(st);
+	if (ret)
+		return ret;
+
+	ret = devm_iio_device_register(&spi->dev, indio_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

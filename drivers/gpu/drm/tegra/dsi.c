@@ -14,7 +14,10 @@
 #include <linux/pm_runtime.h>
 #include <linux/regulator/consumer.h>
 #include <linux/reset.h>
+<<<<<<< HEAD
 #include <linux/tegra-mipi-cal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <video/mipi_display.h>
 

@@ -45,11 +45,14 @@ You can enable DAMON_STAT by setting the value of this parameter as ``Y``.
 Setting it as ``N`` disables DAMON_STAT.  The default value is set by
 ``CONFIG_DAMON_STAT_ENABLED_DEFAULT`` build config option.
 
+<<<<<<< HEAD
 Note that this module (damon_stat) cannot run simultaneously with other
 DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
 purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
 for more details.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _damon_stat_aggr_interval_us:
 
 aggr_interval_us

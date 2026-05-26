@@ -75,8 +75,13 @@ struct dwapb_port_property {
 };
 
 struct dwapb_platform_data {
+<<<<<<< HEAD
 	unsigned int nports;
 	struct dwapb_port_property properties[] __counted_by(nports);
+=======
+	struct dwapb_port_property *properties;
+	unsigned int nports;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Store GPIO context across system-wide suspend/resume transitions */
@@ -114,11 +119,18 @@ static inline struct dwapb_gpio *to_dwapb_gpio(struct gpio_chip *gc)
 struct dwapb_gpio {
 	struct	device		*dev;
 	void __iomem		*regs;
+<<<<<<< HEAD
+=======
+	struct dwapb_gpio_port	*ports;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		nr_ports;
 	unsigned int		flags;
 	struct reset_control	*rst;
 	struct clk_bulk_data	clks[DWAPB_NR_CLOCKS];
+<<<<<<< HEAD
 	struct dwapb_gpio_port	ports[] __counted_by(nr_ports);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline u32 gpio_reg_v2_convert(unsigned int offset)
@@ -585,10 +597,21 @@ static struct dwapb_platform_data *dwapb_gpio_get_pdata(struct device *dev)
 	if (nports == 0)
 		return ERR_PTR(-ENODEV);
 
+<<<<<<< HEAD
 	pdata = devm_kzalloc(dev, struct_size(pdata, properties, nports), GFP_KERNEL);
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
 
+=======
+	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+	if (!pdata)
+		return ERR_PTR(-ENOMEM);
+
+	pdata->properties = devm_kcalloc(dev, nports, sizeof(*pp), GFP_KERNEL);
+	if (!pdata->properties)
+		return ERR_PTR(-ENOMEM);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdata->nports = nports;
 
 	i = 0;
@@ -710,17 +733,34 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
 	if (IS_ERR(pdata))
 		return PTR_ERR(pdata);
 
+<<<<<<< HEAD
 	gpio = devm_kzalloc(&pdev->dev, struct_size(gpio, ports, pdata->nports), GFP_KERNEL);
 	if (!gpio)
 		return -ENOMEM;
 
 	gpio->nr_ports = pdata->nports;
 	gpio->dev = &pdev->dev;
+=======
+	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+	if (!gpio)
+		return -ENOMEM;
+
+	gpio->dev = &pdev->dev;
+	gpio->nr_ports = pdata->nports;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = dwapb_get_reset(gpio);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	gpio->ports = devm_kcalloc(&pdev->dev, gpio->nr_ports,
+				   sizeof(*gpio->ports), GFP_KERNEL);
+	if (!gpio->ports)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio->regs = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(gpio->regs))
 		return PTR_ERR(gpio->regs);

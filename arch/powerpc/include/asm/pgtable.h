@@ -63,6 +63,7 @@ static inline pgprot_t pte_pgprot(pte_t pte)
 	return __pgprot(pte_flags);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC64
 #define pmd_pgprot pmd_pgprot
 static inline pgprot_t pmd_pgprot(pmd_t pmd)
@@ -77,6 +78,8 @@ static inline pgprot_t pud_pgprot(pud_t pud)
 }
 #endif /* CONFIG_PPC64 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline pgprot_t pgprot_nx(pgprot_t prot)
 {
 	return pte_pgprot(pte_exprotect(__pte(pgprot_val(prot))));
@@ -90,6 +93,15 @@ static inline const void *pmd_page_vaddr(pmd_t pmd)
 }
 #define pmd_page_vaddr pmd_page_vaddr
 #endif
+<<<<<<< HEAD
+=======
+/*
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+extern unsigned long empty_zero_page[];
+#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern pgd_t swapper_pg_dir[];
 
@@ -213,11 +225,19 @@ static inline bool arch_supports_memmap_on_memory(unsigned long vmemmap_size)
 #endif /* CONFIG_PPC64 */
 
 #ifndef pmd_user_accessible_page
+<<<<<<< HEAD
 #define pmd_user_accessible_page(mm, addr, pmd)	false
 #endif
 
 #ifndef pud_user_accessible_page
 #define pud_user_accessible_page(mm, addr, pud)	false
+=======
+#define pmd_user_accessible_page(pmd, addr)	false
+#endif
+
+#ifndef pud_user_accessible_page
+#define pud_user_accessible_page(pud, addr)	false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif /* __ASSEMBLER__ */

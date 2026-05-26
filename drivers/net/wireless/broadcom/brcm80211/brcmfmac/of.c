@@ -128,9 +128,13 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
 	if (err)
 		brcmf_err("failed to get OF country code map (err=%d)\n", err);
 
+<<<<<<< HEAD
 	err = of_get_mac_address(np, settings->mac);
 	if (err == -EPROBE_DEFER)
 		return err;
+=======
+	of_get_mac_address(np, settings->mac);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (bus_type != BRCMF_BUSTYPE_SDIO)
 		return 0;

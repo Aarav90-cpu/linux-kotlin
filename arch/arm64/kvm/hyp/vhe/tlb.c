@@ -104,6 +104,10 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
 	 * Instead, we invalidate Stage-2 for this IPA, and the
 	 * whole of Stage-1. Weep...
 	 */
+<<<<<<< HEAD
+=======
+	ipa >>= 12;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__tlbi_level(ipas2e1is, ipa, level);
 
 	/*
@@ -135,6 +139,10 @@ void __kvm_tlb_flush_vmid_ipa_nsh(struct kvm_s2_mmu *mmu,
 	 * Instead, we invalidate Stage-2 for this IPA, and the
 	 * whole of Stage-1. Weep...
 	 */
+<<<<<<< HEAD
+=======
+	ipa >>= 12;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__tlbi_level(ipas2e1, ipa, level);
 
 	/*

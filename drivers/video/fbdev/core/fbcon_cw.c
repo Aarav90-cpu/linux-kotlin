@@ -12,7 +12,10 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/fb.h>
+<<<<<<< HEAD
 #include <linux/font.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/vt_kern.h>
 #include <linux/console.h>
 #include <asm/types.h>
@@ -27,7 +30,11 @@ static void cw_update_attr(u8 *dst, u8 *src, int attribute,
 				  struct vc_data *vc)
 {
 	int i, j, offset = (vc->vc_font.height < 10) ? 1 : 2;
+<<<<<<< HEAD
 	int width = font_glyph_pitch(vc->vc_font.height);
+=======
+	int width = (vc->vc_font.height + 7) >> 3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 c, msk = ~(0xff >> offset);
 
 	for (i = 0; i < vc->vc_font.width; i++) {
@@ -87,11 +94,19 @@ static inline void cw_putcs_aligned(struct vc_data *vc, struct fb_info *info,
 {
 	struct fbcon_par *par = info->fbcon_par;
 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
+<<<<<<< HEAD
 	u32 idx = font_glyph_pitch(vc->vc_font.height);
 	u8 *src;
 
 	while (cnt--) {
 		src = par->rotated.buf + (scr_readw(s++) & charmask) * cellsize;
+=======
+	u32 idx = (vc->vc_font.height + 7) >> 3;
+	u8 *src;
+
+	while (cnt--) {
+		src = par->fontbuffer + (scr_readw(s++) & charmask) * cellsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (attr) {
 			cw_update_attr(buf, src, attr, vc);
@@ -117,7 +132,11 @@ static void cw_putcs(struct vc_data *vc, struct fb_info *info,
 {
 	struct fb_image image;
 	struct fbcon_par *par = info->fbcon_par;
+<<<<<<< HEAD
 	u32 width = font_glyph_pitch(vc->vc_font.height);
+=======
+	u32 width = (vc->vc_font.height + 7)/8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 cellsize = width * vc->vc_font.width;
 	u32 maxcnt = info->pixmap.size/cellsize;
 	u32 scan_align = info->pixmap.scan_align - 1;
@@ -127,7 +146,11 @@ static void cw_putcs(struct vc_data *vc, struct fb_info *info,
 	u8 *dst, *buf = NULL;
 	u32 vxres = GETVXRES(par->p, info);
 
+<<<<<<< HEAD
 	if (!par->rotated.buf)
+=======
+	if (!par->fontbuffer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	image.fg_color = fg;
@@ -207,22 +230,34 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
 	struct fb_cursor cursor;
 	struct fbcon_par *par = info->fbcon_par;
 	unsigned short charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
+<<<<<<< HEAD
 	int w = font_glyph_pitch(vc->vc_font.height);
 	int c;
+=======
+	int w = (vc->vc_font.height + 7) >> 3, c;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int y = real_y(par->p, vc->state.y);
 	int attribute, use_sw = vc->vc_cursor_type & CUR_SW;
 	int err = 1, dx, dy;
 	char *src;
 	u32 vxres = GETVXRES(par->p, info);
 
+<<<<<<< HEAD
 	if (!par->rotated.buf)
+=======
+	if (!par->fontbuffer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	cursor.set = 0;
 
  	c = scr_readw((u16 *) vc->vc_pos);
 	attribute = get_attribute(info, c);
+<<<<<<< HEAD
 	src = par->rotated.buf + ((c & charmask) * (w * vc->vc_font.width));
+=======
+	src = par->fontbuffer + ((c & charmask) * (w * vc->vc_font.width));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (par->cursor_state.image.data != src ||
 	    par->cursor_reset) {
@@ -279,6 +314,7 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
 	    vc->vc_cursor_type != par->p->cursor_shape ||
 	    par->cursor_state.mask == NULL ||
 	    par->cursor_reset) {
+<<<<<<< HEAD
 		unsigned char *tmp, *mask;
 
 		tmp = kmalloc_array(vc->vc_font.height, vc_font_pitch(&vc->vc_font), GFP_ATOMIC);
@@ -299,6 +335,60 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
 
 		par->p->cursor_shape = vc->vc_cursor_type;
 		cursor.set |= FB_CUR_SETSHAPE;
+=======
+		char *tmp, *mask = kmalloc_array(w, vc->vc_font.width,
+						 GFP_ATOMIC);
+		int cur_height, size, i = 0;
+		int width = (vc->vc_font.width + 7)/8;
+
+		if (!mask)
+			return;
+
+		tmp = kmalloc_array(width, vc->vc_font.height, GFP_ATOMIC);
+
+		if (!tmp) {
+			kfree(mask);
+			return;
+		}
+
+		kfree(par->cursor_state.mask);
+		par->cursor_state.mask = mask;
+
+		par->p->cursor_shape = vc->vc_cursor_type;
+		cursor.set |= FB_CUR_SETSHAPE;
+
+		switch (CUR_SIZE(par->p->cursor_shape)) {
+		case CUR_NONE:
+			cur_height = 0;
+			break;
+		case CUR_UNDERLINE:
+			cur_height = (vc->vc_font.height < 10) ? 1 : 2;
+			break;
+		case CUR_LOWER_THIRD:
+			cur_height = vc->vc_font.height/3;
+			break;
+		case CUR_LOWER_HALF:
+			cur_height = vc->vc_font.height >> 1;
+			break;
+		case CUR_TWO_THIRDS:
+			cur_height = (vc->vc_font.height << 1)/3;
+			break;
+		case CUR_BLOCK:
+		default:
+			cur_height = vc->vc_font.height;
+			break;
+		}
+
+		size = (vc->vc_font.height - cur_height) * width;
+		while (size--)
+			tmp[i++] = 0;
+		size = cur_height * width;
+		while (size--)
+			tmp[i++] = 0xff;
+		memset(mask, 0, w * vc->vc_font.width);
+		rotate_cw(tmp, mask, vc->vc_font.width, vc->vc_font.height);
+		kfree(tmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	par->cursor_state.enable = enable && !use_sw;

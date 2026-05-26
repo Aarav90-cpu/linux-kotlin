@@ -35,6 +35,7 @@
 #define RB_CLEAR_NODE(node)  \
 	((node)->__rb_parent_color = (unsigned long)(node))
 
+<<<<<<< HEAD
 #define RB_EMPTY_LINKED_NODE(lnode)  RB_EMPTY_NODE(&(lnode)->node)
 #define RB_CLEAR_LINKED_NODE(lnode)  ({					\
 	RB_CLEAR_NODE(&(lnode)->node);					\
@@ -44,6 +45,12 @@
 extern void rb_insert_color(struct rb_node *, struct rb_root *);
 extern void rb_erase(struct rb_node *, struct rb_root *);
 extern bool rb_erase_linked(struct rb_node_linked *, struct rb_root_linked *);
+=======
+
+extern void rb_insert_color(struct rb_node *, struct rb_root *);
+extern void rb_erase(struct rb_node *, struct rb_root *);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Find logical next and previous nodes in a tree */
 extern struct rb_node *rb_next(const struct rb_node *);
@@ -218,10 +225,22 @@ rb_add_cached(struct rb_node *node, struct rb_root_cached *tree,
 	return leftmost ? node : NULL;
 }
 
+<<<<<<< HEAD
 static __always_inline void
 __rb_add(struct rb_node *node, struct rb_root *tree,
 	 bool (*less)(struct rb_node *, const struct rb_node *),
 	 void (*linkop)(struct rb_node *, struct rb_node *, struct rb_node **))
+=======
+/**
+ * rb_add() - insert @node into @tree
+ * @node: node to insert
+ * @tree: tree to insert @node into
+ * @less: operator defining the (partial) node order
+ */
+static __always_inline void
+rb_add(struct rb_node *node, struct rb_root *tree,
+       bool (*less)(struct rb_node *, const struct rb_node *))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node **link = &tree->rb_node;
 	struct rb_node *parent = NULL;
@@ -234,11 +253,15 @@ __rb_add(struct rb_node *node, struct rb_root *tree,
 			link = &parent->rb_right;
 	}
 
+<<<<<<< HEAD
 	linkop(node, parent, link);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rb_link_node(node, parent, link);
 	rb_insert_color(node, tree);
 }
 
+<<<<<<< HEAD
 #define __node_2_linked_node(_n) \
 	rb_entry((_n), struct rb_node_linked, node)
 
@@ -301,6 +324,8 @@ rb_add(struct rb_node *node, struct rb_root *tree,
 	__rb_add(node, tree, less, rb_link_noop);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * rb_find_add_cached() - find equivalent @node in @tree, or add @node
  * @node: node to look-for / insert

@@ -793,6 +793,11 @@ static int max77620_regulator_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, pmic);
 	pmic->dev = dev;
 	pmic->rmap = max77620_chip->rmap;
+<<<<<<< HEAD
+=======
+	if (!dev->of_node)
+		dev->of_node = pdev->dev.parent->of_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (max77620_chip->chip_id) {
 	case MAX77620:

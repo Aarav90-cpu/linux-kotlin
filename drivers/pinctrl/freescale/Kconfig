@@ -9,7 +9,11 @@ config PINCTRL_IMX
 
 config PINCTRL_IMX_SCMI
 	tristate "i.MX95 pinctrl driver using SCMI protocol interface"
+<<<<<<< HEAD
 	depends on (ARM_SCMI_PROTOCOL && OF && ARCH_MXC) || COMPILE_TEST
+=======
+	depends on ARM_SCMI_PROTOCOL && OF
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select PINMUX
 	select GENERIC_PINCONF
 	select GENERIC_PINCTRL_GROUPS

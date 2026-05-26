@@ -61,7 +61,10 @@
 #include "intel_uncore.h"
 
 struct drm_i915_clock_gating_funcs;
+<<<<<<< HEAD
 struct i915_overlay;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_display;
 struct intel_pxp;
 struct vlv_s0ix_state;
@@ -249,7 +252,11 @@ struct drm_i915_private {
 	 *
 	 * This workqueue should be used for all unordered work
 	 * scheduling within i915, which used to be scheduled on the
+<<<<<<< HEAD
 	 * system_percpu_wq before moving to a driver instance due
+=======
+	 * system_wq before moving to a driver instance due
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * deprecation of flush_scheduled_work().
 	 */
 	struct workqueue_struct *unordered_wq;
@@ -308,8 +315,11 @@ struct drm_i915_private {
 
 	struct intel_pxp *pxp;
 
+<<<<<<< HEAD
 	struct i915_overlay *overlay;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct i915_pmu pmu;
 
 	/* The TTM device structure. */

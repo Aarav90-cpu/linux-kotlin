@@ -73,8 +73,11 @@ int save_trace_to_file(struct tracefs_instance *inst, const char *filename)
 	char buffer[4096];
 	int out_fd, in_fd;
 	int retval = -1;
+<<<<<<< HEAD
 	ssize_t n_read;
 	ssize_t n_written;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!inst || !filename)
 		return 0;
@@ -92,6 +95,7 @@ int save_trace_to_file(struct tracefs_instance *inst, const char *filename)
 		goto out_close_in;
 	}
 
+<<<<<<< HEAD
 	for (;;) {
 		n_read = read(in_fd, buffer, sizeof(buffer));
 		if (n_read < 0) {
@@ -116,6 +120,17 @@ int save_trace_to_file(struct tracefs_instance *inst, const char *filename)
 			n_written += w;
 		}
 	}
+=======
+	do {
+		retval = read(in_fd, buffer, sizeof(buffer));
+		if (retval <= 0)
+			goto out_close;
+
+		retval = write(out_fd, buffer, retval);
+		if (retval < 0)
+			goto out_close;
+	} while (retval > 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	retval = 0;
 out_close:
@@ -208,7 +223,13 @@ void trace_instance_destroy(struct trace_instance *trace)
  */
 int trace_instance_init(struct trace_instance *trace, char *tool_name)
 {
+<<<<<<< HEAD
 	trace->seq = calloc_fatal(1, sizeof(*trace->seq));
+=======
+	trace->seq = calloc(1, sizeof(*trace->seq));
+	if (!trace->seq)
+		goto out_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_seq_init(trace->seq);
 
@@ -289,9 +310,21 @@ struct trace_events *trace_event_alloc(const char *event_string)
 {
 	struct trace_events *tevent;
 
+<<<<<<< HEAD
 	tevent = calloc_fatal(1, sizeof(*tevent));
 
 	tevent->system = strdup_fatal(event_string);
+=======
+	tevent = calloc(1, sizeof(*tevent));
+	if (!tevent)
+		return NULL;
+
+	tevent->system = strdup(event_string);
+	if (!tevent->system) {
+		free(tevent);
+		return NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tevent->event = strstr(tevent->system, ":");
 	if (tevent->event) {
@@ -305,23 +338,47 @@ struct trace_events *trace_event_alloc(const char *event_string)
 /*
  * trace_event_add_filter - record an event filter
  */
+<<<<<<< HEAD
 void trace_event_add_filter(struct trace_events *event, char *filter)
+=======
+int trace_event_add_filter(struct trace_events *event, char *filter)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (event->filter)
 		free(event->filter);
 
+<<<<<<< HEAD
 	event->filter = strdup_fatal(filter);
+=======
+	event->filter = strdup(filter);
+	if (!event->filter)
+		return 1;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * trace_event_add_trigger - record an event trigger action
  */
+<<<<<<< HEAD
 void trace_event_add_trigger(struct trace_events *event, char *trigger)
+=======
+int trace_event_add_trigger(struct trace_events *event, char *trigger)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (event->trigger)
 		free(event->trigger);
 
+<<<<<<< HEAD
 	event->trigger = strdup_fatal(trigger);
+=======
+	event->trigger = strdup(trigger);
+	if (!event->trigger)
+		return 1;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -330,7 +387,11 @@ void trace_event_add_trigger(struct trace_events *event, char *trigger)
 static void trace_event_disable_filter(struct trace_instance *instance,
 				       struct trace_events *tevent)
 {
+<<<<<<< HEAD
 	char filter[MAX_PATH];
+=======
+	char filter[1024];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int retval;
 
 	if (!tevent->filter)
@@ -342,7 +403,11 @@ static void trace_event_disable_filter(struct trace_instance *instance,
 	debug_msg("Disabling %s:%s filter %s\n", tevent->system,
 		  tevent->event ? : "*", tevent->filter);
 
+<<<<<<< HEAD
 	snprintf(filter, ARRAY_SIZE(filter), "!%s\n", tevent->filter);
+=======
+	snprintf(filter, 1024, "!%s\n", tevent->filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	retval = tracefs_event_file_write(instance->inst, tevent->system,
 					  tevent->event, "filter", filter);
@@ -359,11 +424,18 @@ static void trace_event_disable_filter(struct trace_instance *instance,
 static void trace_event_save_hist(struct trace_instance *instance,
 				  struct trace_events *tevent)
 {
+<<<<<<< HEAD
 	size_t index, hist_len;
 	mode_t mode = 0644;
 	char path[MAX_PATH];
 	char *hist;
 	int out_fd;
+=======
+	int retval, index, out_fd;
+	mode_t mode = 0644;
+	char path[1024];
+	char *hist;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!tevent)
 		return;
@@ -373,10 +445,18 @@ static void trace_event_save_hist(struct trace_instance *instance,
 		return;
 
 	/* is this a hist: trigger? */
+<<<<<<< HEAD
 	if (!str_has_prefix(tevent->trigger, "hist:"))
 		return;
 
 	snprintf(path, ARRAY_SIZE(path), "%s_%s_hist.txt", tevent->system, tevent->event);
+=======
+	retval = strncmp(tevent->trigger, "hist:", strlen("hist:"));
+	if (retval)
+		return;
+
+	snprintf(path, 1024, "%s_%s_hist.txt", tevent->system, tevent->event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	printf("  Saving event %s:%s hist to %s\n", tevent->system, tevent->event, path);
 
@@ -393,6 +473,7 @@ static void trace_event_save_hist(struct trace_instance *instance,
 	}
 
 	index = 0;
+<<<<<<< HEAD
 	hist_len = strlen(hist);
 	do {
 		const ssize_t written = write(out_fd, &hist[index], hist_len - index);
@@ -405,6 +486,11 @@ static void trace_event_save_hist(struct trace_instance *instance,
 		}
 		index += written;
 	} while (index < hist_len);
+=======
+	do {
+		index += write(out_fd, &hist[index], strlen(hist) - index);
+	} while (index < strlen(hist));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	free(hist);
 out_close:
@@ -417,7 +503,11 @@ out_close:
 static void trace_event_disable_trigger(struct trace_instance *instance,
 					struct trace_events *tevent)
 {
+<<<<<<< HEAD
 	char trigger[MAX_PATH];
+=======
+	char trigger[1024];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int retval;
 
 	if (!tevent->trigger)
@@ -431,7 +521,11 @@ static void trace_event_disable_trigger(struct trace_instance *instance,
 
 	trace_event_save_hist(instance, tevent);
 
+<<<<<<< HEAD
 	snprintf(trigger, ARRAY_SIZE(trigger), "!%s\n", tevent->trigger);
+=======
+	snprintf(trigger, 1024, "!%s\n", tevent->trigger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	retval = tracefs_event_file_write(instance->inst, tevent->system,
 					  tevent->event, "trigger", trigger);
@@ -470,7 +564,11 @@ void trace_events_disable(struct trace_instance *instance,
 static int trace_event_enable_filter(struct trace_instance *instance,
 				     struct trace_events *tevent)
 {
+<<<<<<< HEAD
 	char filter[MAX_PATH];
+=======
+	char filter[1024];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int retval;
 
 	if (!tevent->filter)
@@ -482,7 +580,11 @@ static int trace_event_enable_filter(struct trace_instance *instance,
 		return 1;
 	}
 
+<<<<<<< HEAD
 	snprintf(filter, ARRAY_SIZE(filter), "%s\n", tevent->filter);
+=======
+	snprintf(filter, 1024, "%s\n", tevent->filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	debug_msg("Enabling %s:%s filter %s\n", tevent->system,
 		  tevent->event ? : "*", tevent->filter);
@@ -505,7 +607,11 @@ static int trace_event_enable_filter(struct trace_instance *instance,
 static int trace_event_enable_trigger(struct trace_instance *instance,
 				      struct trace_events *tevent)
 {
+<<<<<<< HEAD
 	char trigger[MAX_PATH];
+=======
+	char trigger[1024];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int retval;
 
 	if (!tevent->trigger)
@@ -517,7 +623,11 @@ static int trace_event_enable_trigger(struct trace_instance *instance,
 		return 1;
 	}
 
+<<<<<<< HEAD
 	snprintf(trigger, ARRAY_SIZE(trigger), "%s\n", tevent->trigger);
+=======
+	snprintf(trigger, 1024, "%s\n", tevent->trigger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	debug_msg("Enabling %s:%s trigger %s\n", tevent->system,
 		  tevent->event ? : "*", tevent->trigger);

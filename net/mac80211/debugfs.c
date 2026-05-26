@@ -486,7 +486,10 @@ static const char *hw_flag_names[] = {
 	FLAG(DISALLOW_PUNCTURING),
 	FLAG(HANDLES_QUIET_CSA),
 	FLAG(STRICT),
+<<<<<<< HEAD
 	FLAG(SUPPORTS_NDP_BLOCKACK),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #undef FLAG
 };
 

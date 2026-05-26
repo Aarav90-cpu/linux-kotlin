@@ -206,7 +206,11 @@ static int gb_sdio_request_handler(struct gb_operation *op)
 	struct gb_message *request;
 	struct gb_sdio_event_request *payload;
 	u8 type = op->type;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret =  0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 event;
 
 	if (type != GB_SDIO_TYPE_EVENT) {
@@ -372,7 +376,11 @@ static int gb_sdio_transfer(struct gb_sdio_host *host, struct mmc_data *data)
 	left = data->blksz * data->blocks;
 
 	while (left) {
+<<<<<<< HEAD
 		/* check if a stop transmission is pending */
+=======
+		/* check is a stop transmission is pending */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&host->xfer);
 		if (host->xfer_stop) {
 			host->xfer_stop = false;

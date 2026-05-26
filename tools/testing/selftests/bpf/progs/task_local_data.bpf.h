@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause) */
+=======
+/* SPDX-License-Identifier: GPL-2.0 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __TASK_LOCAL_DATA_BPF_H
 #define __TASK_LOCAL_DATA_BPF_H
 
@@ -86,14 +90,22 @@ struct tld_meta_u {
 };
 
 struct tld_data_u {
+<<<<<<< HEAD
 	__u64 unused;
 	char data[__PAGE_SIZE - sizeof(__u64)] __attribute__((aligned(8)));
+=======
+	__u64 start; /* offset of tld_data_u->data in a page */
+	char data[__PAGE_SIZE - sizeof(__u64)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tld_map_value {
 	struct tld_data_u __uptr *data;
 	struct tld_meta_u __uptr *meta;
+<<<<<<< HEAD
 	__u16 start; /* offset of tld_data_u->data in a page */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 typedef struct tld_uptr_dummy {
@@ -177,7 +189,11 @@ static int __tld_fetch_key(struct tld_object *tld_obj, const char *name, int i_s
 	if (!tld_obj->data_map || !tld_obj->data_map->data || !tld_obj->data_map->meta)
 		return 0;
 
+<<<<<<< HEAD
 	start = tld_obj->data_map->start;
+=======
+	start = tld_obj->data_map->data->start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cnt = tld_obj->data_map->meta->cnt;
 	metadata = tld_obj->data_map->meta->metadata;
 

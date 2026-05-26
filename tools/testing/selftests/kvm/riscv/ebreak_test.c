@@ -8,10 +8,17 @@
 #include "kvm_util.h"
 #include "ucall_common.h"
 
+<<<<<<< HEAD
 #define LABEL_ADDRESS(v) ((u64)&(v))
 
 extern unsigned char sw_bp_1, sw_bp_2;
 static u64 sw_bp_addr;
+=======
+#define LABEL_ADDRESS(v) ((uint64_t)&(v))
+
+extern unsigned char sw_bp_1, sw_bp_2;
+static uint64_t sw_bp_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void guest_code(void)
 {
@@ -37,7 +44,11 @@ int main(void)
 {
 	struct kvm_vm *vm;
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	u64 pc;
+=======
+	uint64_t pc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_guest_debug debug = {
 		.control = KVM_GUESTDBG_ENABLE,
 	};

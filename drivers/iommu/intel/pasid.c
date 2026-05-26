@@ -282,7 +282,11 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
 	pasid_cache_invalidation_with_pasid(iommu, did, pasid);
 
 	if (pgtt == PASID_ENTRY_PGTT_PT || pgtt == PASID_ENTRY_PGTT_FL_ONLY)
+<<<<<<< HEAD
 		qi_flush_piotlb_all(iommu, did, pasid);
+=======
+		qi_flush_piotlb(iommu, did, pasid, 0, -1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		iommu->flush.flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
 
@@ -308,7 +312,11 @@ static void pasid_flush_caches(struct intel_iommu *iommu,
 
 	if (cap_caching_mode(iommu->cap)) {
 		pasid_cache_invalidation_with_pasid(iommu, did, pasid);
+<<<<<<< HEAD
 		qi_flush_piotlb_all(iommu, did, pasid);
+=======
+		qi_flush_piotlb(iommu, did, pasid, 0, -1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		iommu_flush_write_buffer(iommu);
 	}
@@ -342,7 +350,11 @@ static void intel_pasid_flush_present(struct intel_iommu *iommu,
 	 *      Addr[63:12]=0x7FFFFFFF_FFFFF) to affected functions
 	 */
 	pasid_cache_invalidation_with_pasid(iommu, did, pasid);
+<<<<<<< HEAD
 	qi_flush_piotlb_all(iommu, did, pasid);
+=======
+	qi_flush_piotlb(iommu, did, pasid, 0, -1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	devtlb_invalidation_with_pasid(iommu, dev, pasid);
 }

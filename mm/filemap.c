@@ -31,7 +31,11 @@
 #include <linux/hash.h>
 #include <linux/writeback.h>
 #include <linux/backing-dev.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/security.h>
 #include <linux/cpuset.h>
 #include <linux/hugetlb.h>

@@ -297,6 +297,7 @@ config DEBUG_KMEMLEAK_AUTO_SCAN
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config DEBUG_KMEMLEAK_VERBOSE
 	bool "Default kmemleak to verbose mode"
 	depends on DEBUG_KMEMLEAK_AUTO_SCAN
@@ -308,6 +309,8 @@ config DEBUG_KMEMLEAK_VERBOSE
 
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PER_VMA_LOCK_STATS
 	bool "Statistics for per-vma locks"
 	depends on PER_VMA_LOCK

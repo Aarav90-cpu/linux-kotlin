@@ -50,8 +50,12 @@ static u32 tcp_clamp_rto_to_user_timeout(const struct sock *sk)
 u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
 {
 	const struct inet_connection_sock *icsk = inet_csk(sk);
+<<<<<<< HEAD
 	u32 user_timeout;
 	s32 remaining;
+=======
+	u32 remaining, user_timeout;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s32 elapsed;
 
 	user_timeout = READ_ONCE(icsk->icsk_user_timeout);
@@ -62,7 +66,11 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
 	if (unlikely(elapsed < 0))
 		elapsed = 0;
 	remaining = msecs_to_jiffies(user_timeout) - elapsed;
+<<<<<<< HEAD
 	remaining = max_t(int, remaining, TCP_TIMEOUT_MIN);
+=======
+	remaining = max_t(u32, remaining, TCP_TIMEOUT_MIN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return min_t(u32, remaining, when);
 }
@@ -298,7 +306,11 @@ static int tcp_write_timeout(struct sock *sk)
 	}
 
 	if (sk_rethink_txhash(sk)) {
+<<<<<<< HEAD
 		WRITE_ONCE(tp->timeout_rehash, tp->timeout_rehash + 1);
+=======
+		tp->timeout_rehash++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPTIMEOUTREHASH);
 	}
 
@@ -706,6 +718,10 @@ void tcp_write_timer_handler(struct sock *sk)
 			       tcp_timeout_expires(sk));
 		return;
 	}
+<<<<<<< HEAD
+=======
+	tcp_rate_check_app_limited(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcp_mstamp_refresh(tcp_sk(sk));
 	event = icsk->icsk_pending;
 
@@ -775,6 +791,10 @@ void tcp_set_keepalive(struct sock *sk, int val)
 	else if (!val)
 		tcp_delete_keepalive_timer(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_set_keepalive);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tcp_keepalive_timer(struct timer_list *t)
 {

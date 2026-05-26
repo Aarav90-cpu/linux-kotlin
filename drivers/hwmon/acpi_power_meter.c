@@ -18,7 +18,10 @@
 #include <linux/time.h>
 #include <linux/err.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ACPI_POWER_METER_NAME		"power_meter"
 #define ACPI_POWER_METER_DEVICE_NAME	"Power Meter"
@@ -815,12 +818,25 @@ end:
 }
 
 /* Handle ACPI event notifications */
+<<<<<<< HEAD
 static void acpi_power_meter_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct device *dev = data;
 	struct acpi_power_meter_resource *resource = dev_get_drvdata(dev);
 	int res;
 
+=======
+static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
+{
+	struct acpi_power_meter_resource *resource;
+	int res;
+
+	if (!device || !acpi_driver_data(device))
+		return;
+
+	resource = acpi_driver_data(device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(mutex)(&acpi_notify_lock);
 
 	switch (event) {
@@ -834,43 +850,76 @@ static void acpi_power_meter_notify(acpi_handle handle, u32 event, void *data)
 		remove_domain_devices(resource);
 		res = read_capabilities(resource);
 		if (res)
+<<<<<<< HEAD
 			dev_err_once(dev, "read capabilities failed.\n");
 		res = read_domain_devices(resource);
 		if (res && res != -ENODEV)
 			dev_err_once(dev, "read domain devices failed.\n");
+=======
+			dev_err_once(&device->dev, "read capabilities failed.\n");
+		res = read_domain_devices(resource);
+		if (res && res != -ENODEV)
+			dev_err_once(&device->dev, "read domain devices failed.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		mutex_unlock(&resource->lock);
 
 		resource->hwmon_dev =
+<<<<<<< HEAD
 			hwmon_device_register_with_info(dev,
+=======
+			hwmon_device_register_with_info(&device->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							ACPI_POWER_METER_NAME,
 							resource,
 							&power_meter_chip_info,
 							power_extra_groups);
 		if (IS_ERR(resource->hwmon_dev))
+<<<<<<< HEAD
 			dev_err_once(dev, "register hwmon device failed.\n");
 
 		break;
 	case METER_NOTIFY_TRIP:
 		sysfs_notify(&dev->kobj, NULL, POWER_AVERAGE_NAME);
+=======
+			dev_err_once(&device->dev, "register hwmon device failed.\n");
+
+		break;
+	case METER_NOTIFY_TRIP:
+		sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case METER_NOTIFY_CAP:
 		mutex_lock(&resource->lock);
 		res = update_cap(resource);
 		if (res)
+<<<<<<< HEAD
 			dev_err_once(dev, "update cap failed when capping value is changed.\n");
 		mutex_unlock(&resource->lock);
 		sysfs_notify(&dev->kobj, NULL, POWER_CAP_NAME);
 		break;
 	case METER_NOTIFY_INTERVAL:
 		sysfs_notify(&dev->kobj, NULL, POWER_AVG_INTERVAL_NAME);
+=======
+			dev_err_once(&device->dev, "update cap failed when capping value is changed.\n");
+		mutex_unlock(&resource->lock);
+		sysfs_notify(&device->dev.kobj, NULL, POWER_CAP_NAME);
+		break;
+	case METER_NOTIFY_INTERVAL:
+		sysfs_notify(&device->dev.kobj, NULL, POWER_AVG_INTERVAL_NAME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case METER_NOTIFY_CAPPING:
 		mutex_lock(&resource->lock);
 		resource->power_alarm = true;
 		mutex_unlock(&resource->lock);
+<<<<<<< HEAD
 		sysfs_notify(&dev->kobj, NULL, POWER_ALARM_NAME);
 		dev_info(dev, "Capping in progress.\n");
+=======
+		sysfs_notify(&device->dev.kobj, NULL, POWER_ALARM_NAME);
+		dev_info(&device->dev, "Capping in progress.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		WARN(1, "Unexpected event %d\n", event);
@@ -878,6 +927,7 @@ static void acpi_power_meter_notify(acpi_handle handle, u32 event, void *data)
 	}
 
 	acpi_bus_generate_netlink_event(ACPI_POWER_METER_CLASS,
+<<<<<<< HEAD
 					dev_name(&resource->acpi_dev->dev),
 					event, 0);
 }
@@ -887,6 +937,18 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 	struct acpi_power_meter_resource *resource;
 	struct acpi_device *device;
 	int res;
+=======
+					dev_name(&device->dev), event, 0);
+}
+
+static int acpi_power_meter_add(struct acpi_device *device)
+{
+	int res;
+	struct acpi_power_meter_resource *resource;
+
+	if (!device)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	device = ACPI_COMPANION(&pdev->dev);
 	if (!device)
@@ -901,8 +963,12 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 	mutex_init(&resource->lock);
 	strscpy(acpi_device_name(device), ACPI_POWER_METER_DEVICE_NAME);
 	strscpy(acpi_device_class(device), ACPI_POWER_METER_CLASS);
+<<<<<<< HEAD
 
 	platform_set_drvdata(pdev, resource);
+=======
+	device->driver_data = resource;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if IS_REACHABLE(CONFIG_ACPI_IPMI)
 	/*
@@ -915,7 +981,11 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 		struct acpi_device *ipi_device = acpi_dev_get_first_match_dev("IPI0001", NULL, -1);
 
 		if (ipi_device && acpi_wait_for_acpi_ipmi())
+<<<<<<< HEAD
 			dev_warn(&pdev->dev, "Waiting for ACPI IPMI timeout");
+=======
+			dev_warn(&device->dev, "Waiting for ACPI IPMI timeout");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		acpi_dev_put(ipi_device);
 	}
 #endif
@@ -933,7 +1003,11 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 		goto exit_free_capability;
 
 	resource->hwmon_dev =
+<<<<<<< HEAD
 		hwmon_device_register_with_info(&pdev->dev,
+=======
+		hwmon_device_register_with_info(&device->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						ACPI_POWER_METER_NAME, resource,
 						&power_meter_chip_info,
 						power_extra_groups);
@@ -942,6 +1016,7 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 		goto exit_remove;
 	}
 
+<<<<<<< HEAD
 	res = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
 					      acpi_power_meter_notify, &pdev->dev);
 	if (res)
@@ -952,6 +1027,11 @@ static int acpi_power_meter_probe(struct platform_device *pdev)
 
 exit_hwmon:
 	hwmon_device_unregister(resource->hwmon_dev);
+=======
+	res = 0;
+	goto exit;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit_remove:
 	remove_domain_devices(resource);
 exit_free_capability:
@@ -962,6 +1042,7 @@ exit:
 	return res;
 }
 
+<<<<<<< HEAD
 static void acpi_power_meter_remove(struct platform_device *pdev)
 {
 	struct acpi_power_meter_resource *resource = platform_get_drvdata(pdev);
@@ -969,6 +1050,16 @@ static void acpi_power_meter_remove(struct platform_device *pdev)
 	acpi_dev_remove_notify_handler(resource->acpi_dev, ACPI_DEVICE_NOTIFY,
 				       acpi_power_meter_notify);
 
+=======
+static void acpi_power_meter_remove(struct acpi_device *device)
+{
+	struct acpi_power_meter_resource *resource;
+
+	if (!device || !acpi_driver_data(device))
+		return;
+
+	resource = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_ERR(resource->hwmon_dev))
 		hwmon_device_unregister(resource->hwmon_dev);
 
@@ -980,7 +1071,18 @@ static void acpi_power_meter_remove(struct platform_device *pdev)
 
 static int acpi_power_meter_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct acpi_power_meter_resource *resource = dev_get_drvdata(dev);
+=======
+	struct acpi_power_meter_resource *resource;
+
+	if (!dev)
+		return -EINVAL;
+
+	resource = acpi_driver_data(to_acpi_device(dev));
+	if (!resource)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	free_capabilities(resource);
 	read_capabilities(resource);
@@ -991,6 +1093,7 @@ static int acpi_power_meter_resume(struct device *dev)
 static DEFINE_SIMPLE_DEV_PM_OPS(acpi_power_meter_pm, NULL,
 				acpi_power_meter_resume);
 
+<<<<<<< HEAD
 static struct platform_driver acpi_power_meter_driver = {
 	.probe = acpi_power_meter_probe,
 	.remove = acpi_power_meter_remove,
@@ -999,6 +1102,18 @@ static struct platform_driver acpi_power_meter_driver = {
 		.acpi_match_table = power_meter_ids,
 		.pm = &acpi_power_meter_pm,
 	},
+=======
+static struct acpi_driver acpi_power_meter_driver = {
+	.name = "power_meter",
+	.class = ACPI_POWER_METER_CLASS,
+	.ids = power_meter_ids,
+	.ops = {
+		.add = acpi_power_meter_add,
+		.remove = acpi_power_meter_remove,
+		.notify = acpi_power_meter_notify,
+		},
+	.drv.pm = pm_sleep_ptr(&acpi_power_meter_pm),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Module init/exit routines */
@@ -1027,7 +1142,11 @@ static int __init acpi_power_meter_init(void)
 
 	dmi_check_system(pm_dmi_table);
 
+<<<<<<< HEAD
 	result = platform_driver_register(&acpi_power_meter_driver);
+=======
+	result = acpi_bus_register_driver(&acpi_power_meter_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result < 0)
 		return result;
 
@@ -1036,7 +1155,11 @@ static int __init acpi_power_meter_init(void)
 
 static void __exit acpi_power_meter_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&acpi_power_meter_driver);
+=======
+	acpi_bus_unregister_driver(&acpi_power_meter_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 MODULE_AUTHOR("Darrick J. Wong <darrick.wong@oracle.com>");

@@ -4,7 +4,10 @@
  *
  * Copyright (C) 2008 Steven Rostedt <srostedt@redhat.com>
  */
+<<<<<<< HEAD
 #include <linux/ring_buffer_types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched/isolation.h>
 #include <linux/trace_recursion.h>
 #include <linux/panic_notifier.h>
@@ -160,6 +163,26 @@ int ring_buffer_print_entry_header(struct trace_seq *s)
 /* Used for individual buffers (after the counter) */
 #define RB_BUFFER_OFF		(1 << 20)
 
+<<<<<<< HEAD
+=======
+#define BUF_PAGE_HDR_SIZE offsetof(struct buffer_data_page, data)
+
+#define RB_EVNT_HDR_SIZE (offsetof(struct ring_buffer_event, array))
+#define RB_ALIGNMENT		4U
+#define RB_MAX_SMALL_DATA	(RB_ALIGNMENT * RINGBUF_TYPE_DATA_TYPE_LEN_MAX)
+#define RB_EVNT_MIN_SIZE	8U	/* two 32bit words */
+
+#ifndef CONFIG_HAVE_64BIT_ALIGNED_ACCESS
+# define RB_FORCE_8BYTE_ALIGNMENT	0
+# define RB_ARCH_ALIGNMENT		RB_ALIGNMENT
+#else
+# define RB_FORCE_8BYTE_ALIGNMENT	1
+# define RB_ARCH_ALIGNMENT		8U
+#endif
+
+#define RB_ALIGN_DATA		__aligned(RB_ARCH_ALIGNMENT)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* define RINGBUF_TYPE_DATA for 'case RINGBUF_TYPE_DATA:' */
 #define RINGBUF_TYPE_DATA 0 ... RINGBUF_TYPE_DATA_TYPE_LEN_MAX
 
@@ -302,6 +325,13 @@ EXPORT_SYMBOL_GPL(ring_buffer_event_data);
 #define for_each_online_buffer_cpu(buffer, cpu)		\
 	for_each_cpu_and(cpu, buffer->cpumask, cpu_online_mask)
 
+<<<<<<< HEAD
+=======
+#define TS_SHIFT	27
+#define TS_MASK		((1ULL << TS_SHIFT) - 1)
+#define TS_DELTA_TEST	(~TS_MASK)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u64 rb_event_time_stamp(struct ring_buffer_event *event)
 {
 	u64 ts;
@@ -320,6 +350,15 @@ static u64 rb_event_time_stamp(struct ring_buffer_event *event)
 
 #define RB_MISSED_MASK		(3 << 30)
 
+<<<<<<< HEAD
+=======
+struct buffer_data_page {
+	u64		 time_stamp;	/* page time stamp */
+	local_t		 commit;	/* write committed index */
+	unsigned char	 data[] RB_ALIGN_DATA;	/* data of buffer page */
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct buffer_data_read_page {
 	unsigned		order;	/* order of the page */
 	struct buffer_data_page	*data;	/* actual data, stored in this page */
@@ -413,6 +452,17 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
 	return dpage;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * We need to fit the time_stamp delta into 27 bits.
+ */
+static inline bool test_time_stamp(u64 delta)
+{
+	return !!(delta & TS_DELTA_TEST);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rb_irq_work {
 	struct irq_work			work;
 	wait_queue_head_t		waiters;
@@ -523,12 +573,19 @@ struct ring_buffer_per_cpu {
 	unsigned int			mapped;
 	unsigned int			user_mapped;	/* user space mapping */
 	struct mutex			mapping_lock;
+<<<<<<< HEAD
 	struct buffer_page		**subbuf_ids;	/* ID to subbuf VA */
 	struct trace_buffer_meta	*meta_page;
 	struct ring_buffer_cpu_meta	*ring_meta;
 
 	struct ring_buffer_remote	*remote;
 
+=======
+	unsigned long			*subbuf_ids;	/* ID to subbuf VA */
+	struct trace_buffer_meta	*meta_page;
+	struct ring_buffer_cpu_meta	*ring_meta;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
 	long				nr_pages_to_update;
 	struct list_head		new_pages; /* new pages to add */
@@ -551,8 +608,11 @@ struct trace_buffer {
 
 	struct ring_buffer_per_cpu	**buffers;
 
+<<<<<<< HEAD
 	struct ring_buffer_remote	*remote;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hlist_node		node;
 	u64				(*clock)(void);
 
@@ -600,17 +660,29 @@ int ring_buffer_print_page_header(struct trace_buffer *buffer, struct trace_seq 
 			 (unsigned int)sizeof(field.commit),
 			 (unsigned int)is_signed_type(long));
 
+<<<<<<< HEAD
 	trace_seq_printf(s, "\tfield: char overwrite;\t"
 			 "offset:%u;\tsize:%u;\tsigned:%u;\n",
 			 (unsigned int)offsetof(typeof(field), commit),
 			 1,
 			 (unsigned int)is_signed_type(char));
+=======
+	trace_seq_printf(s, "\tfield: int overwrite;\t"
+			 "offset:%u;\tsize:%u;\tsigned:%u;\n",
+			 (unsigned int)offsetof(typeof(field), commit),
+			 1,
+			 (unsigned int)is_signed_type(long));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_seq_printf(s, "\tfield: char data;\t"
 			 "offset:%u;\tsize:%u;\tsigned:%u;\n",
 			 (unsigned int)offsetof(typeof(field), data),
+<<<<<<< HEAD
 			 (unsigned int)(buffer ? buffer->subbuf_size :
 						 PAGE_SIZE - BUF_PAGE_HDR_SIZE),
+=======
+			 (unsigned int)buffer->subbuf_size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 (unsigned int)is_signed_type(char));
 
 	return !trace_seq_has_overflowed(s);
@@ -2213,6 +2285,7 @@ static void rb_meta_buffer_update(struct ring_buffer_per_cpu *cpu_buffer,
 	}
 }
 
+<<<<<<< HEAD
 static struct ring_buffer_desc *ring_buffer_desc(struct trace_buffer_desc *trace_desc, int cpu)
 {
 	struct ring_buffer_desc *desc, *end;
@@ -2247,6 +2320,8 @@ static void *ring_buffer_desc_page(struct ring_buffer_desc *desc, unsigned int p
 	return page_id >= desc->nr_page_va ? NULL : (void *)desc->page_va[page_id];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
 		long nr_pages, struct list_head *pages)
 {
@@ -2254,7 +2329,10 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
 	struct ring_buffer_cpu_meta *meta = NULL;
 	struct buffer_page *bpage, *tmp;
 	bool user_thread = current->mm != NULL;
+<<<<<<< HEAD
 	struct ring_buffer_desc *desc = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long i;
 
 	/*
@@ -2283,12 +2361,15 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
 	if (buffer->range_addr_start)
 		meta = rb_range_meta(buffer, nr_pages, cpu_buffer->cpu);
 
+<<<<<<< HEAD
 	if (buffer->remote) {
 		desc = ring_buffer_desc(buffer->remote->desc, cpu_buffer->cpu);
 		if (!desc || WARN_ON(desc->nr_page_va != (nr_pages + 1)))
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < nr_pages; i++) {
 
 		bpage = alloc_cpu_page(cpu_buffer->cpu);
@@ -2313,6 +2394,7 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
 				rb_meta_buffer_update(cpu_buffer, bpage);
 			bpage->range = 1;
 			bpage->id = i + 1;
+<<<<<<< HEAD
 		} else if (desc) {
 			void *p = ring_buffer_desc_page(desc, i + 1);
 
@@ -2323,6 +2405,8 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
 			bpage->range = 1; /* bpage->page can't be freed */
 			bpage->id = i + 1;
 			cpu_buffer->subbuf_ids[i + 1] = bpage;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			int order = cpu_buffer->buffer->subbuf_order;
 			bpage->page = alloc_cpu_data(cpu_buffer->cpu, order);
@@ -2420,6 +2504,7 @@ rb_allocate_cpu_buffer(struct trace_buffer *buffer, long nr_pages, int cpu)
 		if (cpu_buffer->ring_meta->head_buffer)
 			rb_meta_buffer_update(cpu_buffer, bpage);
 		bpage->range = 1;
+<<<<<<< HEAD
 	} else if (buffer->remote) {
 		struct ring_buffer_desc *desc = ring_buffer_desc(buffer->remote->desc, cpu);
 
@@ -2444,6 +2529,8 @@ rb_allocate_cpu_buffer(struct trace_buffer *buffer, long nr_pages, int cpu)
 
 		bpage->range = 1;
 		cpu_buffer->subbuf_ids[0] = bpage;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		int order = cpu_buffer->buffer->subbuf_order;
 		bpage->page = alloc_cpu_data(cpu, order);
@@ -2503,9 +2590,12 @@ static void rb_free_cpu_buffer(struct ring_buffer_per_cpu *cpu_buffer)
 
 	irq_work_sync(&cpu_buffer->irq_work.work);
 
+<<<<<<< HEAD
 	if (cpu_buffer->remote)
 		kfree(cpu_buffer->subbuf_ids);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_buffer_page(cpu_buffer->reader_page);
 
 	if (head) {
@@ -2538,8 +2628,12 @@ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
 					 int order, unsigned long start,
 					 unsigned long end,
 					 unsigned long scratch_size,
+<<<<<<< HEAD
 					 struct lock_class_key *key,
 					 struct ring_buffer_remote *remote)
+=======
+					 struct lock_class_key *key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct trace_buffer *buffer __free(kfree) = NULL;
 	long nr_pages;
@@ -2579,8 +2673,11 @@ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
 	if (!buffer->buffers)
 		goto fail_free_cpumask;
 
+<<<<<<< HEAD
 	cpu = raw_smp_processor_id();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If start/end are specified, then that overrides size */
 	if (start && end) {
 		unsigned long buffers_start;
@@ -2636,6 +2733,7 @@ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
 		buffer->range_addr_end = end;
 
 		rb_range_meta_init(buffer, nr_pages, scratch_size);
+<<<<<<< HEAD
 	} else if (remote) {
 		struct ring_buffer_desc *desc = ring_buffer_desc(remote->desc, cpu);
 
@@ -2645,6 +2743,8 @@ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
 		nr_pages = desc->nr_page_va - 1;
 		if (nr_pages < 2)
 			goto fail_free_buffers;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 
 		/* need at least two pages */
@@ -2653,6 +2753,10 @@ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
 			nr_pages = 2;
 	}
 
+<<<<<<< HEAD
+=======
+	cpu = raw_smp_processor_id();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpumask_set_cpu(cpu, buffer->cpumask);
 	buffer->buffers[cpu] = rb_allocate_cpu_buffer(buffer, nr_pages, cpu);
 	if (!buffer->buffers[cpu])
@@ -2700,7 +2804,11 @@ struct trace_buffer *__ring_buffer_alloc(unsigned long size, unsigned flags,
 					struct lock_class_key *key)
 {
 	/* Default buffer page size - one system page */
+<<<<<<< HEAD
 	return alloc_buffer(size, flags, 0, 0, 0, 0, key, NULL);
+=======
+	return alloc_buffer(size, flags, 0, 0, 0, 0, key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 }
 EXPORT_SYMBOL_GPL(__ring_buffer_alloc);
@@ -2727,6 +2835,7 @@ struct trace_buffer *__ring_buffer_alloc_range(unsigned long size, unsigned flag
 					       struct lock_class_key *key)
 {
 	return alloc_buffer(size, flags, order, start, start + range_size,
+<<<<<<< HEAD
 			    scratch_size, key, NULL);
 }
 
@@ -2739,6 +2848,9 @@ struct trace_buffer *__ring_buffer_alloc_remote(struct ring_buffer_remote *remot
 						struct lock_class_key *key)
 {
 	return alloc_buffer(0, 0, 0, 0, 0, 0, key, remote);
+=======
+			    scratch_size, key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void *ring_buffer_meta_scratch(struct trace_buffer *buffer, unsigned int *size)
@@ -4529,20 +4641,33 @@ static void check_buffer(struct ring_buffer_per_cpu *cpu_buffer,
 	ret = rb_read_data_buffer(bpage, tail, cpu_buffer->cpu, &ts, &delta);
 	if (ret < 0) {
 		if (delta < ts) {
+<<<<<<< HEAD
 			buffer_warn_return("[CPU: %d]ABSOLUTE TIME WENT BACKWARDS: last ts: %lld absolute ts: %lld clock:%pS\n",
 					   cpu_buffer->cpu, ts, delta,
 					   cpu_buffer->buffer->clock);
+=======
+			buffer_warn_return("[CPU: %d]ABSOLUTE TIME WENT BACKWARDS: last ts: %lld absolute ts: %lld\n",
+					   cpu_buffer->cpu, ts, delta);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 	}
 	if ((full && ts > info->ts) ||
 	    (!full && ts + info->delta != info->ts)) {
+<<<<<<< HEAD
 		buffer_warn_return("[CPU: %d]TIME DOES NOT MATCH expected:%lld actual:%lld delta:%lld before:%lld after:%lld%s context:%s\ntrace clock:%pS",
 				   cpu_buffer->cpu,
 				   ts + info->delta, info->ts, info->delta,
 				   info->before, info->after,
 				   full ? " (full)" : "", show_interrupt_level(),
 				   cpu_buffer->buffer->clock);
+=======
+		buffer_warn_return("[CPU: %d]TIME DOES NOT MATCH expected:%lld actual:%lld delta:%lld before:%lld after:%lld%s context:%s\n",
+				   cpu_buffer->cpu,
+				   ts + info->delta, info->ts, info->delta,
+				   info->before, info->after,
+				   full ? " (full)" : "", show_interrupt_level());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 out:
 	atomic_dec(this_cpu_ptr(&checking));
@@ -5370,6 +5495,7 @@ unsigned long ring_buffer_overruns(struct trace_buffer *buffer)
 }
 EXPORT_SYMBOL_GPL(ring_buffer_overruns);
 
+<<<<<<< HEAD
 static bool rb_read_remote_meta_page(struct ring_buffer_per_cpu *cpu_buffer)
 {
 	local_set(&cpu_buffer->entries, READ_ONCE(cpu_buffer->meta_page->entries));
@@ -5416,15 +5542,20 @@ static void rb_update_remote_head(struct ring_buffer_per_cpu *cpu_buffer)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rb_iter_reset(struct ring_buffer_iter *iter)
 {
 	struct ring_buffer_per_cpu *cpu_buffer = iter->cpu_buffer;
 
+<<<<<<< HEAD
 	if (cpu_buffer->remote) {
 		rb_read_remote_meta_page(cpu_buffer);
 		rb_update_remote_head(cpu_buffer);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Iterator usage is expected to have record disabled */
 	iter->head_page = cpu_buffer->reader_page;
 	iter->head = cpu_buffer->reader_page->read;
@@ -5576,6 +5707,7 @@ rb_update_iter_read_stamp(struct ring_buffer_iter *iter,
 }
 
 static struct buffer_page *
+<<<<<<< HEAD
 __rb_get_reader_page_from_remote(struct ring_buffer_per_cpu *cpu_buffer)
 {
 	struct buffer_page *new_reader, *prev_reader, *prev_head, *new_head, *last;
@@ -5635,6 +5767,9 @@ __rb_get_reader_page_from_remote(struct ring_buffer_per_cpu *cpu_buffer)
 
 static struct buffer_page *
 __rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
+=======
+rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct buffer_page *reader = NULL;
 	unsigned long bsize = READ_ONCE(cpu_buffer->buffer->subbuf_size);
@@ -5804,6 +5939,7 @@ __rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 	return reader;
 }
 
+<<<<<<< HEAD
 static struct buffer_page *
 rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 {
@@ -5811,6 +5947,8 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 				    __rb_get_reader_page(cpu_buffer);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rb_advance_reader(struct ring_buffer_per_cpu *cpu_buffer)
 {
 	struct ring_buffer_event *event;
@@ -6364,8 +6502,11 @@ static void rb_update_meta_page(struct ring_buffer_per_cpu *cpu_buffer)
 	meta->entries = local_read(&cpu_buffer->entries);
 	meta->overrun = local_read(&cpu_buffer->overrun);
 	meta->read = cpu_buffer->read;
+<<<<<<< HEAD
 	meta->pages_lost = local_read(&cpu_buffer->pages_lost);
 	meta->pages_touched = local_read(&cpu_buffer->pages_touched);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Some archs do not have data cache coherency between kernel and user-space */
 	flush_kernel_vmap_range(cpu_buffer->meta_page, PAGE_SIZE);
@@ -6376,6 +6517,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
 {
 	struct buffer_page *page;
 
+<<<<<<< HEAD
 	if (cpu_buffer->remote) {
 		if (!cpu_buffer->remote->reset)
 			return;
@@ -6393,6 +6535,8 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rb_head_page_deactivate(cpu_buffer);
 
 	cpu_buffer->head_page
@@ -6623,6 +6767,7 @@ bool ring_buffer_empty_cpu(struct trace_buffer *buffer, int cpu)
 }
 EXPORT_SYMBOL_GPL(ring_buffer_empty_cpu);
 
+<<<<<<< HEAD
 int ring_buffer_poll_remote(struct trace_buffer *buffer, int cpu)
 {
 	struct ring_buffer_per_cpu *cpu_buffer;
@@ -6663,6 +6808,8 @@ int ring_buffer_poll_remote(struct trace_buffer *buffer, int cpu)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_RING_BUFFER_ALLOW_SWAP
 /**
  * ring_buffer_swap_cpu - swap a CPU buffer between two ring buffers
@@ -6901,7 +7048,10 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
 	unsigned int commit;
 	unsigned int read;
 	u64 save_timestamp;
+<<<<<<< HEAD
 	bool force_memcpy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!cpumask_test_cpu(cpu, buffer->cpumask))
 		return -1;
@@ -6939,8 +7089,11 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
 	/* Check if any events were dropped */
 	missed_events = cpu_buffer->lost_events;
 
+<<<<<<< HEAD
 	force_memcpy = cpu_buffer->mapped || cpu_buffer->remote;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If this page has been partially read or
 	 * if len is not big enough to read the rest of the page or
@@ -6950,7 +7103,11 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
 	 */
 	if (read || (len < (commit - read)) ||
 	    cpu_buffer->reader_page == cpu_buffer->commit_page ||
+<<<<<<< HEAD
 	    force_memcpy) {
+=======
+	    cpu_buffer->mapped) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct buffer_data_page *rpage = cpu_buffer->reader_page->page;
 		unsigned int rpos = read;
 		unsigned int pos = 0;
@@ -7306,7 +7463,11 @@ static void rb_free_meta_page(struct ring_buffer_per_cpu *cpu_buffer)
 }
 
 static void rb_setup_ids_meta_page(struct ring_buffer_per_cpu *cpu_buffer,
+<<<<<<< HEAD
 				   struct buffer_page **subbuf_ids)
+=======
+				   unsigned long *subbuf_ids)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct trace_buffer_meta *meta = cpu_buffer->meta_page;
 	unsigned int nr_subbufs = cpu_buffer->nr_pages + 1;
@@ -7315,7 +7476,11 @@ static void rb_setup_ids_meta_page(struct ring_buffer_per_cpu *cpu_buffer,
 	int id = 0;
 
 	id = rb_page_id(cpu_buffer, cpu_buffer->reader_page, id);
+<<<<<<< HEAD
 	subbuf_ids[id++] = cpu_buffer->reader_page;
+=======
+	subbuf_ids[id++] = (unsigned long)cpu_buffer->reader_page->page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cnt++;
 
 	first_subbuf = subbuf = rb_set_head_page(cpu_buffer);
@@ -7325,7 +7490,11 @@ static void rb_setup_ids_meta_page(struct ring_buffer_per_cpu *cpu_buffer,
 		if (WARN_ON(id >= nr_subbufs))
 			break;
 
+<<<<<<< HEAD
 		subbuf_ids[id] = subbuf;
+=======
+		subbuf_ids[id] = (unsigned long)subbuf->page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rb_inc_page(&subbuf);
 		id++;
@@ -7334,7 +7503,11 @@ static void rb_setup_ids_meta_page(struct ring_buffer_per_cpu *cpu_buffer,
 
 	WARN_ON(cnt != nr_subbufs);
 
+<<<<<<< HEAD
 	/* install subbuf ID to bpage translation */
+=======
+	/* install subbuf ID to kern VA translation */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpu_buffer->subbuf_ids = subbuf_ids;
 
 	meta->meta_struct_len = sizeof(*meta);
@@ -7490,15 +7663,22 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
 	}
 
 	while (p < nr_pages) {
+<<<<<<< HEAD
 		struct buffer_page *subbuf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct page *page;
 		int off = 0;
 
 		if (WARN_ON_ONCE(s >= nr_subbufs))
 			return -EINVAL;
 
+<<<<<<< HEAD
 		subbuf = cpu_buffer->subbuf_ids[s];
 		page = virt_to_page((void *)subbuf->page);
+=======
+		page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (; off < (1 << (subbuf_order)); off++, page++) {
 			if (p >= nr_pages)
@@ -7525,11 +7705,18 @@ int ring_buffer_map(struct trace_buffer *buffer, int cpu,
 		    struct vm_area_struct *vma)
 {
 	struct ring_buffer_per_cpu *cpu_buffer;
+<<<<<<< HEAD
 	struct buffer_page **subbuf_ids;
 	unsigned long flags;
 	int err;
 
 	if (!cpumask_test_cpu(cpu, buffer->cpumask) || buffer->remote)
+=======
+	unsigned long flags, *subbuf_ids;
+	int err;
+
+	if (!cpumask_test_cpu(cpu, buffer->cpumask))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	cpu_buffer = buffer->buffers[cpu];
@@ -7550,7 +7737,11 @@ int ring_buffer_map(struct trace_buffer *buffer, int cpu,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	/* subbuf_ids includes the reader while nr_pages does not */
+=======
+	/* subbuf_ids include the reader while nr_pages does not */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	subbuf_ids = kcalloc(cpu_buffer->nr_pages + 1, sizeof(*subbuf_ids), GFP_KERNEL);
 	if (!subbuf_ids) {
 		rb_free_meta_page(cpu_buffer);
@@ -7743,12 +7934,15 @@ out:
 	return 0;
 }
 
+<<<<<<< HEAD
 static void rb_cpu_sync(void *data)
 {
 	/* Not really needed, but documents what is happening */
 	smp_rmb();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We only allocate new buffers, never free them if the CPU goes down.
  * If we were to free the buffer, then the user would lose any trace that was in
@@ -7787,6 +7981,7 @@ int trace_rb_cpu_prepare(unsigned int cpu, struct hlist_node *node)
 		     cpu);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Ensure trace_buffer readers observe the newly allocated
@@ -7799,6 +7994,9 @@ int trace_rb_cpu_prepare(unsigned int cpu, struct hlist_node *node)
 		smp_wmb();
 	}
 
+=======
+	smp_wmb();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpumask_set_cpu(cpu, buffer->cpumask);
 	return 0;
 }

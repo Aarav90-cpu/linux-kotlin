@@ -13,7 +13,11 @@
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u64 diag318_info = 0x12345678;
+=======
+	uint64_t diag318_info = 0x12345678;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile ("diag %0,0,0x318\n" : : "d" (diag318_info));
 }
@@ -23,13 +27,22 @@ static void guest_code(void)
  * we create an ad-hoc VM here to handle the instruction then extract the
  * necessary data. It is up to the caller to decide what to do with that data.
  */
+<<<<<<< HEAD
 static u64 diag318_handler(void)
+=======
+static uint64_t diag318_handler(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	struct kvm_run *run;
+<<<<<<< HEAD
 	u64 reg;
 	u64 diag318_info;
+=======
+	uint64_t reg;
+	uint64_t diag318_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
 	vcpu_run(vcpu);
@@ -51,9 +64,15 @@ static u64 diag318_handler(void)
 	return diag318_info;
 }
 
+<<<<<<< HEAD
 u64 get_diag318_info(void)
 {
 	static u64 diag318_info;
+=======
+uint64_t get_diag318_info(void)
+{
+	static uint64_t diag318_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static bool printed_skip;
 
 	/*

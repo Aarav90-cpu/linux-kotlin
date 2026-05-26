@@ -51,8 +51,11 @@ enum samsung_pll_type {
 	pll_4311,
 	pll_1017x,
 	pll_1031x,
+<<<<<<< HEAD
 	pll_a9fracm,
 	pll_a9fraco,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define PLL_RATE(_fin, _m, _p, _s, _k, _ks) \
@@ -60,11 +63,14 @@ enum samsung_pll_type {
 #define PLL_VALID_RATE(_fin, _fout, _m, _p, _s, _k, _ks) ((_fout) + \
 	BUILD_BUG_ON_ZERO(PLL_RATE(_fin, _m, _p, _s, _k, _ks) != (_fout)))
 
+<<<<<<< HEAD
 #define PLL_FRACO_RATE(_fin, _m, _p, _s, _k, _ks) \
 	((u64)(_fin) * (BIT(_ks) * (_m) + (_k)) / BIT(_ks) / ((_p) * ((_s) + 1)))
 #define PLL_FRACO_VALID_RATE(_fin, _fout, _m, _p, _s, _k, _ks) ((_fout) + \
 	BUILD_BUG_ON_ZERO(PLL_FRACO_RATE(_fin, _m, _p, _s, _k, _ks) != (_fout)))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PLL_35XX_RATE(_fin, _rate, _m, _p, _s)			\
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
@@ -118,6 +124,7 @@ enum samsung_pll_type {
 		.vsel	=	(_vsel),			\
 	}
 
+<<<<<<< HEAD
 #define PLL_A9FRACO_RATE(_fin, _rate, _m, _p, _s, _k)		\
 	{							\
 		.rate	=	PLL_FRACO_VALID_RATE(_fin, _rate, \
@@ -128,6 +135,8 @@ enum samsung_pll_type {
 		.kdiv	=	(_k),				\
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* NOTE: Rate table should be kept sorted in descending order. */
 
 struct samsung_pll_rate_table {

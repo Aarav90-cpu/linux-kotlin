@@ -246,7 +246,11 @@ void rdma_user_mmap_entry_remove(struct rdma_user_mmap_entry *entry)
 		dma_resv_lock(uverbs_dmabuf->dmabuf->resv, NULL);
 		list_del(&uverbs_dmabuf->dmabufs_elm);
 		uverbs_dmabuf->revoked = true;
+<<<<<<< HEAD
 		dma_buf_invalidate_mappings(uverbs_dmabuf->dmabuf);
+=======
+		dma_buf_move_notify(uverbs_dmabuf->dmabuf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dma_resv_wait_timeout(uverbs_dmabuf->dmabuf->resv,
 				      DMA_RESV_USAGE_BOOKKEEP, false,
 				      MAX_SCHEDULE_TIMEOUT);
@@ -389,6 +393,7 @@ int rdma_user_mmap_entry_insert(struct ib_ucontext *ucontext,
 						 U32_MAX);
 }
 EXPORT_SYMBOL(rdma_user_mmap_entry_insert);
+<<<<<<< HEAD
 
 /**
  * rdma_udata_to_dev - Get a ib_device from a udata
@@ -416,3 +421,5 @@ struct ib_device *rdma_udata_to_dev(struct ib_udata *udata)
 }
 EXPORT_SYMBOL(rdma_udata_to_dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

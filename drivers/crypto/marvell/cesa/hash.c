@@ -847,7 +847,12 @@ static int mv_cesa_ahash_export(struct ahash_request *req, void *hash,
 
 	*len = creq->len;
 	memcpy(hash, creq->state, digsize);
+<<<<<<< HEAD
 	memcpy_and_pad(cache, blocksize, creq->cache, creq->cache_ptr, 0);
+=======
+	memset(cache, 0, blocksize);
+	memcpy(cache, creq->cache, creq->cache_ptr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

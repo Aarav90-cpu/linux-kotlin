@@ -373,12 +373,15 @@ msm_gem_vma_new(struct drm_gpuvm *gpuvm, struct drm_gem_object *obj,
 	struct msm_gem_vma *vma;
 	int ret;
 
+<<<<<<< HEAD
 	/* _NO_SHARE objs cannot be mapped outside of their "host" vm: */
 	if (obj && (to_msm_bo(obj)->flags & MSM_BO_NO_SHARE) &&
 	    GEM_WARN_ON(obj->resv != drm_gpuvm_resv(gpuvm))) {
 		return ERR_PTR(-EINVAL);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_gpuvm_resv_assert_held(&vm->base);
 
 	vma = kzalloc_obj(*vma);
@@ -702,7 +705,14 @@ static struct dma_fence *
 msm_vma_job_run(struct drm_sched_job *_job)
 {
 	struct msm_vm_bind_job *job = to_msm_vm_bind_job(_job);
+<<<<<<< HEAD
 	struct drm_device *dev = job->vm->drm;
+=======
+<<<<<<< HEAD
+	struct msm_drm_private *priv = job->vm->drm->dev_private;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct msm_gem_vm *vm = to_msm_vm(job->vm);
 	struct drm_gem_object *obj;
 	int ret = vm->unusable ? -EINVAL : 0;
@@ -745,7 +755,12 @@ msm_vma_job_run(struct drm_sched_job *_job)
 	if (ret)
 		msm_gem_vm_unusable(job->vm);
 
+<<<<<<< HEAD
 	mutex_lock(&dev->gem_lru_mutex);
+=======
+<<<<<<< HEAD
+	mutex_lock(&priv->lru.lock);
+>>>>>>> 7fb39c93c52e (Sync)
 
 	job_foreach_bo (obj, job) {
 		msm_gem_unpin_active(obj);
@@ -753,6 +768,14 @@ msm_vma_job_run(struct drm_sched_job *_job)
 
 	mutex_unlock(&dev->gem_lru_mutex);
 
+=======
+	job_foreach_bo (obj, job) {
+		msm_gem_lock(obj);
+		msm_gem_unpin_locked(obj);
+		msm_gem_unlock(obj);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* VM_BIND ops are synchronous, so no fence to wait on: */
 	return NULL;
 }
@@ -1251,7 +1274,11 @@ vm_bind_job_lock_objects(struct msm_vm_bind_job *job, struct drm_exec *exec)
 			case MSM_VM_BIND_OP_UNMAP:
 				ret = drm_gpuvm_sm_unmap_exec_lock(job->vm, exec,
 							      op->iova,
+<<<<<<< HEAD
 							      op->range);
+=======
+							      op->obj_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 			case MSM_VM_BIND_OP_MAP:
 			case MSM_VM_BIND_OP_MAP_NULL: {

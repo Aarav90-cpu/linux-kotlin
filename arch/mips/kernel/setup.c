@@ -31,7 +31,10 @@
 #include <linux/of_fdt.h>
 #include <linux/dmi.h>
 #include <linux/crash_dump.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm/addrspace.h>
 #include <asm/bootinfo.h>
@@ -542,9 +545,12 @@ static int __init bootcmdline_scan_chosen(unsigned long node, const char *uname,
 
 	p = of_get_flat_dt_prop(node, "bootargs", &l);
 	if (p != NULL && l > 0) {
+<<<<<<< HEAD
 		if (strnlen(p, l) >= l)
 			return 1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bootcmdline_append(p, min(l, COMMAND_LINE_SIZE));
 		*dt_bootargs = true;
 	}

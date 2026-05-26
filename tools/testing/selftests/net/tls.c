@@ -946,6 +946,7 @@ TEST_F(tls, peek_and_splice)
 	EXPECT_EQ(memcmp(mem_send, mem_recv, send_len), 0);
 }
 
+<<<<<<< HEAD
 TEST_F(tls, splice_to_pipe_small)
 {
 	int send_len = TLS_PAYLOAD_MAX_LEN;
@@ -989,6 +990,8 @@ TEST_F(tls, splice_to_pipe_small)
 	close(p[1]);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_FRAGS 48
 TEST_F(tls, splice_short)
 {

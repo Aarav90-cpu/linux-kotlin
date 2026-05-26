@@ -324,7 +324,11 @@ static void imx_keypad_config(struct imx_keypad *keypad)
 	reg_val |= (keypad->cols_en_mask & 0xff) << 8;	/* cols */
 	writew(reg_val, keypad->mmio_base + KPCR);
 
+<<<<<<< HEAD
 	/* Write 0's to KPDR[15:8] (Columns) */
+=======
+	/* Write 0's to KPDR[15:8] (Colums) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_val = readw(keypad->mmio_base + KPDR);
 	reg_val &= 0x00ff;
 	writew(reg_val, keypad->mmio_base + KPDR);
@@ -357,7 +361,11 @@ static void imx_keypad_inhibit(struct imx_keypad *keypad)
 	reg_val |= KBD_STAT_KPKR | KBD_STAT_KPKD;
 	writew(reg_val, keypad->mmio_base + KPSR);
 
+<<<<<<< HEAD
 	/* Columns as open drain and disable all rows */
+=======
+	/* Colums as open drain and disable all rows */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_val = (keypad->cols_en_mask & 0xff) << 8;
 	writew(reg_val, keypad->mmio_base + KPCR);
 }

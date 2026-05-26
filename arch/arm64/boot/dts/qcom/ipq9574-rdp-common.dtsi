@@ -22,6 +22,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	regulator_fixed_1p8: s1800 {
 		compatible = "regulator-fixed";
 		regulator-min-microvolt = <1800000>;
@@ -31,6 +32,8 @@
 		regulator-name = "fixed_1p8";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	regulator_fixed_3p3: s3300 {
 		compatible = "regulator-fixed";
 		regulator-min-microvolt = <3300000>;
@@ -97,6 +100,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &cpu0 {
 	cpu-supply = <&mp5496_s1>;
 };
@@ -113,11 +117,17 @@
 	cpu-supply = <&mp5496_s1>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &rpm_requests {
 	regulators {
 		compatible = "qcom,rpm-mp5496-regulators";
 
+<<<<<<< HEAD
 		mp5496_s1: s1 {
+=======
+		ipq9574_s1: s1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * During kernel bootup, the SoC runs at 800MHz with 875mV set by the bootloaders.
 		 * During regulator registration, kernel not knowing the initial voltage,
@@ -146,11 +156,14 @@
 	};
 };
 
+<<<<<<< HEAD
 &sdhc_1 {
 	vmmc-supply = <&regulator_fixed_3p3>;
 	vqmmc-supply = <&regulator_fixed_1p8>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &sleep_clk {
 	clock-frequency = <32000>;
 };
@@ -199,6 +212,7 @@
 			bias-disable;
 		};
 	};
+<<<<<<< HEAD
 
 	sdc_default_state: sdc-default-state {
 		clk-pins {
@@ -231,6 +245,8 @@
 			bias-pull-down;
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &qpic_bam {
@@ -241,6 +257,11 @@
 	pinctrl-0 = <&qpic_snand_default_state>;
 	pinctrl-names = "default";
 
+<<<<<<< HEAD
+=======
+	status = "okay";
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	flash@0 {
 		compatible = "spi-nand";
 		reg = <0>;

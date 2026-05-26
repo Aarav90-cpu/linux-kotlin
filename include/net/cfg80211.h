@@ -190,8 +190,11 @@ enum ieee80211_channel_flags {
  *	on this channel.
  * @dfs_state_entered: timestamp (jiffies) when the dfs state was entered.
  * @dfs_cac_ms: DFS CAC time in milliseconds, this is valid for DFS channels.
+<<<<<<< HEAD
  * @cac_start_time: timestamp (CLOCK_BOOTTIME, nanoseconds) when CAC was
  *	started on this channel. Zero when CAC is not in progress.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @psd: power spectral density (in dBm)
  */
 struct ieee80211_channel {
@@ -209,7 +212,10 @@ struct ieee80211_channel {
 	enum nl80211_dfs_state dfs_state;
 	unsigned long dfs_state_entered;
 	unsigned int dfs_cac_ms;
+<<<<<<< HEAD
 	u64 cac_start_time;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s8 psd;
 };
 
@@ -1831,7 +1837,10 @@ struct cfg80211_ttlm_params {
  * @eml_cap: EML capabilities of this station
  * @link_sta_params: link related params.
  * @epp_peer: EPP peer indication
+<<<<<<< HEAD
  * @nmi_mac: MAC address of the NMI station of the NAN peer
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct station_parameters {
 	struct net_device *vlan;
@@ -1859,7 +1868,10 @@ struct station_parameters {
 	u16 eml_cap;
 	struct link_station_parameters link_sta_params;
 	bool epp_peer;
+<<<<<<< HEAD
 	const u8 *nmi_mac;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -1899,8 +1911,11 @@ struct station_del_parameters {
  *	entry that is operating, has been marked authorized by userspace)
  * @CFG80211_STA_MESH_PEER_KERNEL: peer on mesh interface (kernel managed)
  * @CFG80211_STA_MESH_PEER_USER: peer on mesh interface (user managed)
+<<<<<<< HEAD
  * @CFG80211_STA_NAN_MGMT: NAN management interface station
  * @CFG80211_STA_NAN_DATA: NAN data path station
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum cfg80211_station_type {
 	CFG80211_STA_AP_CLIENT,
@@ -1912,8 +1927,11 @@ enum cfg80211_station_type {
 	CFG80211_STA_TDLS_PEER_ACTIVE,
 	CFG80211_STA_MESH_PEER_KERNEL,
 	CFG80211_STA_MESH_PEER_USER,
+<<<<<<< HEAD
 	CFG80211_STA_NAN_MGMT,
 	CFG80211_STA_NAN_DATA,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -3987,6 +4005,7 @@ struct cfg80211_qos_map {
 };
 
 /**
+<<<<<<< HEAD
  * DOC: Neighbor Awareness Networking (NAN)
  *
  * NAN uses two interface types:
@@ -4058,6 +4077,8 @@ struct cfg80211_qos_map {
  */
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct cfg80211_nan_band_config - NAN band specific configuration
  *
  * @chan: Pointer to the IEEE 802.11 channel structure. The channel to be used
@@ -4100,6 +4121,10 @@ struct cfg80211_nan_band_config {
  *	(i.e. BIT(NL80211_BAND_2GHZ)).
  * @cluster_id: cluster ID used for NAN synchronization. This is a MAC address
  *	that can take a value from 50-6F-9A-01-00-00 to 50-6F-9A-01-FF-FF.
+<<<<<<< HEAD
+=======
+ *	If NULL, the device will pick a random Cluster ID.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @scan_period: period (in seconds) between NAN scans.
  * @scan_dwell_time: dwell time (in milliseconds) for NAN scans.
  * @discovery_beacon_interval: interval (in TUs) for discovery beacons.
@@ -4115,7 +4140,11 @@ struct cfg80211_nan_band_config {
 struct cfg80211_nan_conf {
 	u8 master_pref;
 	u8 bands;
+<<<<<<< HEAD
 	u8 cluster_id[ETH_ALEN] __aligned(2);
+=======
+	const u8 *cluster_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 scan_period;
 	u16 scan_dwell_time;
 	u8 discovery_beacon_interval;
@@ -4127,6 +4156,7 @@ struct cfg80211_nan_conf {
 	u16 vendor_elems_len;
 };
 
+<<<<<<< HEAD
 #define CFG80211_NAN_SCHED_NUM_TIME_SLOTS 32
 
 /**
@@ -4223,6 +4253,8 @@ struct cfg80211_nan_peer_sched {
 	struct cfg80211_nan_peer_map maps[CFG80211_NAN_MAX_PEER_MAPS];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * enum cfg80211_nan_conf_changes - indicates changed fields in NAN
  * configuration
@@ -5003,6 +5035,7 @@ struct mgmt_frame_regs {
  * @nan_change_conf: changes NAN configuration. The changed parameters must
  *	be specified in @changes (using &enum cfg80211_nan_conf_changes);
  *	All other parameters must be ignored.
+<<<<<<< HEAD
  * @nan_set_local_sched: configure the local schedule for NAN. The schedule
  *	consists of an array of %cfg80211_nan_channel and the schedule itself,
  *	in which each entry maps each time slot to the channel on which the
@@ -5016,6 +5049,8 @@ struct mgmt_frame_regs {
  *	information such as committed DW, etc. When updating an existing peer
  *	schedule, the full new schedule is provided - partial updates are not
  *	supported, and the new schedule completely replaces the previous one.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @set_multicast_to_unicast: configure multicast to unicast conversion for BSS
  *
@@ -5110,6 +5145,7 @@ struct cfg80211_ops {
 				 struct wireless_dev *wdev,
 				 unsigned int link_id);
 
+<<<<<<< HEAD
 	int	(*add_key)(struct wiphy *wiphy, struct wireless_dev *wdev,
 			   int link_id, u8 key_index, bool pairwise,
 			   const u8 *mac_addr, struct key_params *params);
@@ -5118,16 +5154,33 @@ struct cfg80211_ops {
 			   const u8 *mac_addr, void *cookie,
 			   void (*callback)(void *cookie, struct key_params*));
 	int	(*del_key)(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+	int	(*add_key)(struct wiphy *wiphy, struct net_device *netdev,
+			   int link_id, u8 key_index, bool pairwise,
+			   const u8 *mac_addr, struct key_params *params);
+	int	(*get_key)(struct wiphy *wiphy, struct net_device *netdev,
+			   int link_id, u8 key_index, bool pairwise,
+			   const u8 *mac_addr, void *cookie,
+			   void (*callback)(void *cookie, struct key_params*));
+	int	(*del_key)(struct wiphy *wiphy, struct net_device *netdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   int link_id, u8 key_index, bool pairwise,
 			   const u8 *mac_addr);
 	int	(*set_default_key)(struct wiphy *wiphy,
 				   struct net_device *netdev, int link_id,
 				   u8 key_index, bool unicast, bool multicast);
 	int	(*set_default_mgmt_key)(struct wiphy *wiphy,
+<<<<<<< HEAD
 					struct wireless_dev *wdev, int link_id,
 					u8 key_index);
 	int	(*set_default_beacon_key)(struct wiphy *wiphy,
 					  struct wireless_dev *wdev,
+=======
+					struct net_device *netdev, int link_id,
+					u8 key_index);
+	int	(*set_default_beacon_key)(struct wiphy *wiphy,
+					  struct net_device *netdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  int link_id,
 					  u8 key_index);
 
@@ -5139,6 +5192,7 @@ struct cfg80211_ops {
 			   unsigned int link_id);
 
 
+<<<<<<< HEAD
 	int	(*add_station)(struct wiphy *wiphy, struct wireless_dev *wdev,
 			       const u8 *mac,
 			       struct station_parameters *params);
@@ -5150,6 +5204,19 @@ struct cfg80211_ops {
 	int	(*get_station)(struct wiphy *wiphy, struct wireless_dev *wdev,
 			       const u8 *mac, struct station_info *sinfo);
 	int	(*dump_station)(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+	int	(*add_station)(struct wiphy *wiphy, struct net_device *dev,
+			       const u8 *mac,
+			       struct station_parameters *params);
+	int	(*del_station)(struct wiphy *wiphy, struct net_device *dev,
+			       struct station_del_parameters *params);
+	int	(*change_station)(struct wiphy *wiphy, struct net_device *dev,
+				  const u8 *mac,
+				  struct station_parameters *params);
+	int	(*get_station)(struct wiphy *wiphy, struct net_device *dev,
+			       const u8 *mac, struct station_info *sinfo);
+	int	(*dump_station)(struct wiphy *wiphy, struct net_device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				int idx, u8 *mac, struct station_info *sinfo);
 
 	int	(*add_mpath)(struct wiphy *wiphy, struct net_device *dev,
@@ -5393,12 +5460,16 @@ struct cfg80211_ops {
 				   struct wireless_dev *wdev,
 				   struct cfg80211_nan_conf *conf,
 				   u32 changes);
+<<<<<<< HEAD
 	int	(*nan_set_local_sched)(struct wiphy *wiphy,
 				       struct wireless_dev *wdev,
 				       struct cfg80211_nan_local_sched *sched);
 	int	(*nan_set_peer_sched)(struct wiphy *wiphy,
 				      struct wireless_dev *wdev,
 				      struct cfg80211_nan_peer_sched *sched);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int	(*set_multicast_to_unicast)(struct wiphy *wiphy,
 					    struct net_device *dev,
 					    const bool enabled);
@@ -6027,12 +6098,15 @@ enum wiphy_nan_flags {
  * @max_channel_switch_time: maximum channel switch time in milliseconds.
  * @dev_capabilities: NAN device capabilities as defined in Wi-Fi Aware (TM)
  *     specification Table 79 (Capabilities field).
+<<<<<<< HEAD
  * @phy: Band-agnostic capabilities for NAN data interfaces. Since NAN
  *     operates on multiple channels simultaneously, these capabilities apply
  *     across all bands. Valid only if NL80211_IFTYPE_NAN_DATA is supported.
  * @phy.ht: HT capabilities (mandatory for NAN data)
  * @phy.vht: VHT capabilities (optional)
  * @phy.he: HE capabilities (optional)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct wiphy_nan_capa {
 	u32 flags;
@@ -6040,11 +6114,14 @@ struct wiphy_nan_capa {
 	u8 n_antennas;
 	u16 max_channel_switch_time;
 	u8 dev_capabilities;
+<<<<<<< HEAD
 	struct {
 		struct ieee80211_sta_ht_cap ht;
 		struct ieee80211_sta_vht_cap vht;
 		struct ieee80211_sta_he_cap he;
 	} phy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
@@ -6938,8 +7015,13 @@ enum ieee80211_ap_reg_power {
  *	the P2P Device.
  * @ps: powersave mode is enabled
  * @ps_timeout: dynamic powersave timeout
+<<<<<<< HEAD
  * @unexpected_nlportid: (private) netlink port ID of application
  *	registered for unexpected frames (AP mode or NAN_DATA mode)
+=======
+ * @ap_unexpected_nlportid: (private) netlink port ID of application
+ *	registered for unexpected class 3 frames (AP mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @conn: (private) cfg80211 software SME connection state machine data
  * @connect_keys: (private) keys to set after connection is established
  * @conn_bss_type: connecting/connected BSS type
@@ -7001,7 +7083,11 @@ struct wireless_dev {
 	bool ps;
 	int ps_timeout;
 
+<<<<<<< HEAD
 	u32 unexpected_nlportid;
+=======
+	u32 ap_unexpected_nlportid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u32 owner_nlportid;
 	bool nl_owner_dead;
@@ -7061,9 +7147,12 @@ struct wireless_dev {
 		} ocb;
 		struct {
 			u8 cluster_id[ETH_ALEN] __aligned(2);
+<<<<<<< HEAD
 			u8 n_channels;
 			struct cfg80211_chan_def *chandefs;
 			bool sched_update_pending;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} nan;
 	} u;
 
@@ -9169,27 +9258,44 @@ static inline void cfg80211_sinfo_release_content(struct station_info *sinfo)
 /**
  * cfg80211_new_sta - notify userspace about station
  *
+<<<<<<< HEAD
  * @wdev: the wireless device
+=======
+ * @dev: the netdev
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @mac_addr: the station's address
  * @sinfo: the station information
  * @gfp: allocation flags
  */
+<<<<<<< HEAD
 void cfg80211_new_sta(struct wireless_dev *wdev, const u8 *mac_addr,
+=======
+void cfg80211_new_sta(struct net_device *dev, const u8 *mac_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      struct station_info *sinfo, gfp_t gfp);
 
 /**
  * cfg80211_del_sta_sinfo - notify userspace about deletion of a station
+<<<<<<< HEAD
  * @wdev: the wireless device
+=======
+ * @dev: the netdev
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @mac_addr: the station's address. For MLD station, MLD address is used.
  * @sinfo: the station information/statistics
  * @gfp: allocation flags
  */
+<<<<<<< HEAD
 void cfg80211_del_sta_sinfo(struct wireless_dev *wdev, const u8 *mac_addr,
+=======
+void cfg80211_del_sta_sinfo(struct net_device *dev, const u8 *mac_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    struct station_info *sinfo, gfp_t gfp);
 
 /**
  * cfg80211_del_sta - notify userspace about deletion of a station
  *
+<<<<<<< HEAD
  * @wdev: the wireless device
  * @mac_addr: the station's address. For MLD station, MLD address is used.
  * @gfp: allocation flags
@@ -9198,6 +9304,16 @@ static inline void cfg80211_del_sta(struct wireless_dev *wdev,
 				    const u8 *mac_addr, gfp_t gfp)
 {
 	cfg80211_del_sta_sinfo(wdev, mac_addr, NULL, gfp);
+=======
+ * @dev: the netdev
+ * @mac_addr: the station's address. For MLD station, MLD address is used.
+ * @gfp: allocation flags
+ */
+static inline void cfg80211_del_sta(struct net_device *dev,
+				    const u8 *mac_addr, gfp_t gfp)
+{
+	cfg80211_del_sta_sinfo(dev, mac_addr, NULL, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -9572,10 +9688,16 @@ void cfg80211_pmksa_candidate_notify(struct net_device *dev, int index,
  * @addr: the transmitter address
  * @gfp: context flags
  *
+<<<<<<< HEAD
  * This function is used in AP mode to inform userspace that a spurious
  * class 3 frame was received, to be able to deauth the sender.
  * It is also used in NAN_DATA mode to report frames from unknown peers
  * (A2 not assigned to any active NDP), per Wi-Fi Aware (TM) 4.0 specification 6.2.5.
+=======
+ * This function is used in AP mode (only!) to inform userspace that
+ * a spurious class 3 frame was received, to be able to deauth the
+ * sender.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return: %true if the frame was passed to userspace (or this failed
  * for a reason other than not having a subscription.)
  */
@@ -10222,6 +10344,7 @@ void cfg80211_nan_func_terminated(struct wireless_dev *wdev,
 				  enum nl80211_nan_func_term_reason reason,
 				  u64 cookie, gfp_t gfp);
 
+<<<<<<< HEAD
 /**
  * cfg80211_nan_sched_update_done - notify deferred schedule update completion
  * @wdev: the wireless device reporting the event
@@ -10234,6 +10357,8 @@ void cfg80211_nan_func_terminated(struct wireless_dev *wdev,
 void cfg80211_nan_sched_update_done(struct wireless_dev *wdev, bool success,
 				    gfp_t gfp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* ethtool helper */
 void cfg80211_get_drvinfo(struct net_device *dev, struct ethtool_drvinfo *info);
 
@@ -10574,6 +10699,7 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
 				 const u8 *cluster_id, bool new_cluster,
 				 gfp_t gfp);
 
+<<<<<<< HEAD
 /**
  * cfg80211_nan_ulw_update - Notify user space about ULW update
  * @wdev: Pointer to the wireless device structure
@@ -10607,6 +10733,8 @@ void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
 			       const struct cfg80211_chan_def *chandef,
 			       gfp_t gfp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CFG80211_DEBUGFS
 /**
  * wiphy_locked_debugfs_read - do a locked read in debugfs
@@ -10725,6 +10853,7 @@ cfg80211_s1g_get_primary_sibling(struct wiphy *wiphy,
 	return ieee80211_get_channel_khz(wiphy, sibling_1mhz_khz);
 }
 
+<<<<<<< HEAD
 
 /**
  * cfg80211_incumbent_signal_notify - Notify userspace of incumbent signal detection
@@ -10748,4 +10877,6 @@ void cfg80211_incumbent_signal_notify(struct wiphy *wiphy,
 				      u32 signal_interference_bitmap,
 				      gfp_t gfp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __NET_CFG80211_H */

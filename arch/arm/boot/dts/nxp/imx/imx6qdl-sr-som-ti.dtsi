@@ -41,12 +41,15 @@
 #include <dt-bindings/gpio/gpio.h>
 
 / {
+<<<<<<< HEAD
 	clk32k: clock-32k {
 		compatible = "fixed-clock";
 		clock-frequency = <32768>;
 		#clock-cells = <0>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nvcc_sd1: regulator-nvcc-sd1 {
 		compatible = "regulator-fixed";
 		regulator-always-on;
@@ -64,7 +67,11 @@
 		 */
 		compatible = "gpio-gate-clock";
 		#clock-cells = <0>;
+<<<<<<< HEAD
 		clocks = <&clk32k>;
+=======
+		clock-frequency = <32768>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_microsom_ti_clk>;
 		enable-gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;

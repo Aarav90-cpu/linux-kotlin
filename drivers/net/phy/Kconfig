@@ -3,6 +3,14 @@
 # PHY Layer Configuration
 #
 
+<<<<<<< HEAD
+=======
+config MDIO_BUS
+	tristate "MDIO bus consumer layer"
+	help
+	  MDIO bus consumer layer
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PHYLINK
 	tristate
 	select PHYLIB
@@ -14,6 +22,10 @@ config PHYLINK
 
 menuconfig PHYLIB
 	tristate "PHY Device support and infrastructure"
+<<<<<<< HEAD
+=======
+	select MDIO_BUS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Ethernet controllers are usually attached to PHY
 	  devices.  This option provides infrastructure for

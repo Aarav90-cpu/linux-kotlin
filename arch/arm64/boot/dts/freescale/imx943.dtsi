@@ -145,6 +145,7 @@
 			cache-unified;
 		};
 	};
+<<<<<<< HEAD
 
 	thermal_zones: thermal-zones {
 		a55-thermal {
@@ -209,4 +210,6 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

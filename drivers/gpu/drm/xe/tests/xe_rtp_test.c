@@ -322,8 +322,12 @@ static void xe_rtp_process_to_sr_tests(struct kunit *test)
 		count_rtp_entries++;
 
 	xe_rtp_process_ctx_enable_active_tracking(&ctx, &active, count_rtp_entries);
+<<<<<<< HEAD
 	xe_rtp_process_to_sr(&ctx, param->entries, count_rtp_entries,
 			     reg_sr, false);
+=======
+	xe_rtp_process_to_sr(&ctx, param->entries, count_rtp_entries, reg_sr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xa_for_each(&reg_sr->xa, idx, sre) {
 		if (idx == param->expected_reg.addr)

@@ -172,8 +172,11 @@ patternProperties:
     description: ARM Ltd.
   "^armadeus,.*":
     description: ARMadeus Systems SARL
+<<<<<<< HEAD
   "^armchina,.*":
     description: Arm Technology (China) Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^armsom,.*":
     description: ArmSoM Technology Co., Ltd.
   "^arrow,.*":
@@ -223,8 +226,11 @@ patternProperties:
     description: Axiado Corporation
   "^axis,.*":
     description: Axis Communications AB
+<<<<<<< HEAD
   "^ayaneo,.*":
     description: Anyun Intelligent Technology (Hong Kong) Co., Ltd
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^azoteq,.*":
     description: Azoteq (Pty) Ltd
   "^azw,.*":
@@ -365,8 +371,11 @@ patternProperties:
     description: CORERIVER Semiconductor Co.,Ltd.
   "^corpro,.*":
     description: Chengdu Corpro Technology Co., Ltd.
+<<<<<<< HEAD
   "^corechips,.*":
     description: Shenzhen Corechips Microelectronics Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^cortina,.*":
     description: Cortina Systems, Inc.
   "^cosmic,.*":
@@ -447,8 +456,11 @@ patternProperties:
     description: D-Link Corporation
   "^dmo,.*":
     description: Data Modul AG
+<<<<<<< HEAD
   "^doestek,.*":
     description: Doestek Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^domintech,.*":
     description: Domintech Co., Ltd.
   "^dongwoon,.*":
@@ -549,8 +561,11 @@ patternProperties:
     description: ESTeem Wireless Modems
   "^eswin,.*":
     description: Beijing ESWIN Technology Group Co. Ltd.
+<<<<<<< HEAD
   "^etekmicro,.*":
     description: Wuxi ETEK Micro-Electronics Co.,Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^ettus,.*":
     description: NI Ettus Research
   "^eukrea,.*":
@@ -719,8 +734,11 @@ patternProperties:
     description: Hitex Development Tools
   "^hitron,.*":
     description: HiTRON Electronics Corporation
+<<<<<<< HEAD
   "^holitech,.*":
     description: Jiangxi Holitech Technology Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^holt,.*":
     description: Holt Integrated Circuits, Inc.
   "^holtek,.*":
@@ -755,8 +773,11 @@ patternProperties:
     description: Hycon Technology Corp.
   "^hydis,.*":
     description: Hydis Technologies
+<<<<<<< HEAD
   "^hynetek,.*":
     description: Hynetek Semiconductor Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^hynitron,.*":
     description: Shanghai Hynitron Microelectronics Co. Ltd.
   "^hynix,.*":
@@ -987,8 +1008,11 @@ patternProperties:
     description: Liebherr-Werk Nenzing GmbH
   "^lxa,.*":
     description: Linux Automation GmbH
+<<<<<<< HEAD
   "^lxd,.*":
     description: LXD Research & Display, LLC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^m5stack,.*":
     description: M5Stack
   "^macnica,.*":
@@ -1215,8 +1239,11 @@ patternProperties:
     description: One Laptop Per Child
   "^oneplus,.*":
     description: OnePlus Technology (Shenzhen) Co., Ltd.
+<<<<<<< HEAD
   "^onething,.*":
     description: Shenzhen OneThing Technologies Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^onie,.*":
     description: Open Network Install Environment group
   "^onion,.*":
@@ -1628,8 +1655,11 @@ patternProperties:
   "^synopsys,.*":
     description: Synopsys, Inc. (deprecated, use snps)
     deprecated: true
+<<<<<<< HEAD
   "^taiguanck,.*":
     description: Shenzhen Top Group Technology Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^taos,.*":
     description: Texas Advanced Optoelectronic Solutions Inc.
   "^tbs,.*":
@@ -1751,8 +1781,11 @@ patternProperties:
     description: Ufi Space Co., Ltd.
   "^ugoos,.*":
     description: Ugoos Industrial Co., Ltd.
+<<<<<<< HEAD
   "^ultrapower,.*":
     description: Beijing Ultrapower Software Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^uni-t,.*":
     description: Uni-Trend Technology (China) Co., Ltd.
   "^uniwest,.*":
@@ -1783,8 +1816,11 @@ patternProperties:
     description: Variscite Ltd.
   "^vdl,.*":
     description: Van der Laan b.v.
+<<<<<<< HEAD
   "^verisilicon,.*":
     description: VeriSilicon Microelectronics (Shanghai) Co., Ltd.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^vertexcom,.*":
     description: Vertexcom Technologies, Inc.
   "^via,.*":
@@ -1845,8 +1881,11 @@ patternProperties:
     description: Wi2Wi, Inc.
   "^widora,.*":
     description: Beijing Widora Technology Co., Ltd.
+<<<<<<< HEAD
   "^wiko,.*":
     description: Wiko SAS
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "^wiligear,.*":
     description: Wiligear, Ltd.
   "^willsemi,.*":

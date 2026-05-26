@@ -729,7 +729,15 @@ void elv_update_nr_hw_queues(struct request_queue *q,
 void elevator_set_default(struct request_queue *q)
 {
 	struct elv_change_ctx ctx = {
+<<<<<<< HEAD
 		.name = "mq-deadline",
+=======
+#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_IOSCHED_BFQ)
+		.name = "bfq",
+#else
+		.name = "mq-deadline",
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.no_uevent = true,
 	};
 	int err;
@@ -745,10 +753,21 @@ void elevator_set_default(struct request_queue *q)
 	 * have multiple queues or mq-deadline is not available, default
 	 * to "none".
 	 */
+<<<<<<< HEAD
+=======
+	if (q->nr_hw_queues != 1 && !blk_mq_is_shared_tags(q->tag_set->flags))
+#if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_MQ_IOSCHED_KYBER)
+		ctx.name = "kyber";
+#else
+		return;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx.type = elevator_find_get(ctx.name);
 	if (!ctx.type)
 		return;
 
+<<<<<<< HEAD
 	if ((q->nr_hw_queues == 1 ||
 			blk_mq_is_shared_tags(q->tag_set->flags))) {
 		err = elevator_change(q, &ctx);
@@ -756,6 +775,13 @@ void elevator_set_default(struct request_queue *q)
 			pr_warn("\"%s\" elevator initialization, failed %d, falling back to \"none\"\n",
 					ctx.name, err);
 	}
+=======
+	err = elevator_change(q, &ctx);
+	if (err < 0)
+		pr_warn("\"%s\" elevator initialization, failed %d, falling back to \"none\"\n",
+				ctx.name, err);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	elevator_put(ctx.type);
 }
 

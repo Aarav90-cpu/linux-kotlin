@@ -1,3 +1,6 @@
+<<<<<<< HEAD
 core_setmaster@master-drop-set-user,Fail
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 panfrost/panfrost_prime@gem-prime-import,Fail
 panfrost/panfrost_submit@pan-submit-error-bad-requirements,Fail

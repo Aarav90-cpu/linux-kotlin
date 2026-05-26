@@ -6,7 +6,11 @@
 #include <linux/module.h>
 #include <linux/tsm-mr.h>
 #include <linux/miscdevice.h>
+<<<<<<< HEAD
 #include <crypto/sha2.h>
+=======
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct {
 	u8 static_mr[SHA384_DIGEST_SIZE];
@@ -23,16 +27,37 @@ static struct {
 
 static int sample_report_refresh(const struct tsm_measurements *tm)
 {
+<<<<<<< HEAD
 	sha512((const u8 *)&sample_report,
 	       offsetof(typeof(sample_report), report_digest),
 	       sample_report.report_digest);
 	return 0;
+=======
+	struct crypto_shash *tfm;
+	int rc;
+
+	tfm = crypto_alloc_shash(hash_algo_name[HASH_ALGO_SHA512], 0, 0);
+	if (IS_ERR(tfm)) {
+		pr_err("crypto_alloc_shash failed: %ld\n", PTR_ERR(tfm));
+		return PTR_ERR(tfm);
+	}
+
+	rc = crypto_shash_tfm_digest(tfm, (u8 *)&sample_report,
+				     offsetof(typeof(sample_report),
+					      report_digest),
+				     sample_report.report_digest);
+	crypto_free_shash(tfm);
+	if (rc)
+		pr_err("crypto_shash_tfm_digest failed: %d\n", rc);
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int sample_report_extend_mr(const struct tsm_measurements *tm,
 				   const struct tsm_measurement_register *mr,
 				   const u8 *data)
 {
+<<<<<<< HEAD
 	union {
 		struct sha256_ctx sha256;
 		struct sha384_ctx sha384;
@@ -62,6 +87,26 @@ static int sample_report_extend_mr(const struct tsm_measurements *tm,
 		pr_err("Unsupported hash algorithm: %d\n", mr->mr_hash);
 		return -EOPNOTSUPP;
 	}
+=======
+	SHASH_DESC_ON_STACK(desc, 0);
+	int rc;
+
+	desc->tfm = crypto_alloc_shash(hash_algo_name[mr->mr_hash], 0, 0);
+	if (IS_ERR(desc->tfm)) {
+		pr_err("crypto_alloc_shash failed: %ld\n", PTR_ERR(desc->tfm));
+		return PTR_ERR(desc->tfm);
+	}
+
+	rc = crypto_shash_init(desc);
+	if (!rc)
+		rc = crypto_shash_update(desc, mr->mr_value, mr->mr_size);
+	if (!rc)
+		rc = crypto_shash_finup(desc, data, mr->mr_size, mr->mr_value);
+	crypto_free_shash(desc->tfm);
+	if (rc)
+		pr_err("SHA calculation failed: %d\n", rc);
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define MR_(mr, hash) .mr_value = &sample_report.mr, TSM_MR_(mr, hash)

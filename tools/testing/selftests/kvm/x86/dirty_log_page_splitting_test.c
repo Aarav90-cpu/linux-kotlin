@@ -23,7 +23,11 @@
 #define SLOTS		2
 #define ITERATIONS	2
 
+<<<<<<< HEAD
 static u64 guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
+=======
+static uint64_t guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static enum vm_mem_backing_src_type backing_src = VM_MEM_SRC_ANONYMOUS_HUGETLB;
 
@@ -33,10 +37,17 @@ static int iteration;
 static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
 
 struct kvm_page_stats {
+<<<<<<< HEAD
 	u64 pages_4k;
 	u64 pages_2m;
 	u64 pages_1g;
 	u64 hugepages;
+=======
+	uint64_t pages_4k;
+	uint64_t pages_2m;
+	uint64_t pages_1g;
+	uint64_t hugepages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void get_page_stats(struct kvm_vm *vm, struct kvm_page_stats *stats, const char *stage)
@@ -89,9 +100,15 @@ static void run_test(enum vm_guest_mode mode, void *unused)
 {
 	struct kvm_vm *vm;
 	unsigned long **bitmaps;
+<<<<<<< HEAD
 	u64 guest_num_pages;
 	u64 host_num_pages;
 	u64 pages_per_slot;
+=======
+	uint64_t guest_num_pages;
+	uint64_t host_num_pages;
+	uint64_t pages_per_slot;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	struct kvm_page_stats stats_populated;
 	struct kvm_page_stats stats_dirty_logging_enabled;

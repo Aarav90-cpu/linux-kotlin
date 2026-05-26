@@ -1880,9 +1880,14 @@ static size_t vfio_pci_cap_remaining_dword(struct vfio_pci_core_device *vdev,
 	return i;
 }
 
+<<<<<<< HEAD
 ssize_t vfio_pci_config_rw_single(struct vfio_pci_core_device *vdev,
 				  char __user *buf, size_t count, loff_t *ppos,
 				  bool iswrite)
+=======
+static ssize_t vfio_config_do_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+				 size_t count, loff_t *ppos, bool iswrite)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pci_dev *pdev = vdev->pdev;
 	struct perm_bits *perm;
@@ -1971,7 +1976,10 @@ ssize_t vfio_pci_config_rw_single(struct vfio_pci_core_device *vdev,
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(vfio_pci_config_rw_single);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ssize_t vfio_pci_config_rw(struct vfio_pci_core_device *vdev, char __user *buf,
 			   size_t count, loff_t *ppos, bool iswrite)
@@ -1983,7 +1991,11 @@ ssize_t vfio_pci_config_rw(struct vfio_pci_core_device *vdev, char __user *buf,
 	pos &= VFIO_PCI_OFFSET_MASK;
 
 	while (count) {
+<<<<<<< HEAD
 		ret = vfio_pci_config_rw_single(vdev, buf, count, &pos, iswrite);
+=======
+		ret = vfio_config_do_rw(vdev, buf, count, &pos, iswrite);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 

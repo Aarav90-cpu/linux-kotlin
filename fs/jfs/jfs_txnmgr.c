@@ -275,7 +275,10 @@ int txInit(void)
 	for (k = 0; k < nTxBlock; k++) {
 		init_waitqueue_head(&TxBlock[k].gcwait);
 		init_waitqueue_head(&TxBlock[k].waitor);
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&TxBlock[k].synclist);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (k = 1; k < nTxBlock - 1; k++) {
@@ -975,7 +978,11 @@ static void txUnlock(struct tblock * tblk)
 	if (tblk->lsn) {
 		LOGSYNC_LOCK(log, flags);
 		log->count--;
+<<<<<<< HEAD
 		list_del_init(&tblk->synclist);
+=======
+		list_del(&tblk->synclist);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		LOGSYNC_UNLOCK(log, flags);
 	}
 }

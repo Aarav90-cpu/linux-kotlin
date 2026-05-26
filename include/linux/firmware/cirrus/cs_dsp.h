@@ -179,7 +179,10 @@ struct cs_dsp {
 
 	bool booted;
 	bool running;
+<<<<<<< HEAD
 	bool hibernating;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct list_head ctl_list;
 
@@ -355,6 +358,9 @@ int cs_dsp_chunk_write(struct cs_dsp_chunk *ch, int nbits, u32 val);
 int cs_dsp_chunk_flush(struct cs_dsp_chunk *ch);
 int cs_dsp_chunk_read(struct cs_dsp_chunk *ch, int nbits);
 
+<<<<<<< HEAD
 void cs_dsp_hibernate(struct cs_dsp *dsp, bool hibernating);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

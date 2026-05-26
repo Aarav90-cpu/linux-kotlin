@@ -42,9 +42,12 @@
 #include <unistd.h>
 #include <limits.h>
 #include <ctype.h>
+<<<<<<< HEAD
 #include <stdbool.h>
 #include <byteswap.h>
 #include <endian.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
 
@@ -69,8 +72,11 @@ static const char *argv0;
 /* will be used by constructor tests */
 static int constructor_test_value;
 
+<<<<<<< HEAD
 static const int is_le = __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const int is_nolibc =
 #ifdef NOLIBC
 	1
@@ -79,6 +85,7 @@ static const int is_nolibc =
 #endif
 ;
 
+<<<<<<< HEAD
 static const int is_glibc =
 #ifdef __GLIBC__
 	1
@@ -103,6 +110,8 @@ static const int is_glibc =
 #define _syscall(...) 0
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* definition of a series of tests */
 struct test {
 	const char *name;              /* test name */
@@ -171,6 +180,24 @@ static const char *errorname(int err)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void align_result(size_t llen)
+{
+	const size_t align = 64;
+	char buf[align];
+	size_t n;
+
+	if (llen >= align)
+		return;
+
+	n = align - llen;
+	memset(buf, ' ', n);
+	buf[n] = '\0';
+	fputs(buf, stdout);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum RESULT {
 	OK,
 	FAIL,
@@ -188,10 +215,15 @@ static void result(int llen, enum RESULT r)
 	else
 		msg = " [FAIL]";
 
+<<<<<<< HEAD
 	llen = 64 - llen;
 	if (llen < 0)
 		llen = 0;
 	printf("%*s%s\n", llen, "", msg);
+=======
+	align_result(llen);
+	puts(msg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* The tests below are intended to be used by the macroes, which evaluate
@@ -320,7 +352,14 @@ int expect_syszr(int expr, int llen)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (expr) {
+=======
+	if (errno == ENOSYS) {
+		llen += printf(" = ENOSYS");
+		result(llen, SKIPPED);
+	} else if (expr) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = 1;
 		llen += printf(" = %d %s ", expr, errorname(errno));
 		result(llen, FAIL);
@@ -360,7 +399,14 @@ int expect_sysne(int expr, int llen, int val)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (expr == val) {
+=======
+	if (errno == ENOSYS) {
+		llen += printf(" = ENOSYS");
+		result(llen, SKIPPED);
+	} else if (expr == val) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = 1;
 		llen += printf(" = %d %s ", expr, errorname(errno));
 		result(llen, FAIL);
@@ -385,7 +431,13 @@ int expect_syserr2(int expr, int expret, int experr1, int experr2, int llen)
 	int _errno = errno;
 
 	llen += printf(" = %d %s ", expr, errorname(_errno));
+<<<<<<< HEAD
 	if (expr != expret || (_errno != experr1 && _errno != experr2)) {
+=======
+	if (errno == ENOSYS) {
+		result(llen, SKIPPED);
+	} else if (expr != expret || (_errno != experr1 && _errno != experr2)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = 1;
 		if (experr2 == 0)
 			llen += printf(" != (%d %s) ", expret, errorname(experr1));
@@ -709,6 +761,7 @@ static void constructor2(int argc, char **argv, char **envp)
 		constructor_test_value |= 1 << 1;
 }
 
+<<<<<<< HEAD
 int test_program_invocation_name(void)
 {
 	char buf[100];
@@ -740,6 +793,8 @@ int test_program_invocation_name(void)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int run_startup(int min, int max)
 {
 	int test;
@@ -754,7 +809,10 @@ int run_startup(int min, int max)
 #ifdef NOLIBC
 	test_auxv = _auxv;
 #endif
+<<<<<<< HEAD
 	bool proc = access("/proc", R_OK) == 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (test = min; test >= 0 && test <= max; test++) {
 		int llen = 0; /* line length */
@@ -780,7 +838,10 @@ int run_startup(int min, int max)
 		CASE_TEST(constructor);      EXPECT_EQ(is_nolibc, constructor_test_value, 0x3); break;
 		CASE_TEST(linkage_errno);    EXPECT_PTREQ(1, linkage_test_errno_addr(), &errno); break;
 		CASE_TEST(linkage_constr);   EXPECT_EQ(1, linkage_test_constructor_test_value, 0x3); break;
+<<<<<<< HEAD
 		CASE_TEST(prog_name);        EXPECT_ZR(proc, test_program_invocation_name()); break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case __LINE__:
 			return ret; /* must be last */
 		/* note: do not set any defaults so as to permit holes above */
@@ -907,7 +968,11 @@ int test_file_stream(void)
 
 	errno = 0;
 	r = fwrite("foo", 1, 3, f);
+<<<<<<< HEAD
 	if (r != 0 || ((is_nolibc || is_glibc) && errno != EBADF)) {
+=======
+	if (r != 0 || errno != EBADF) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fclose(f);
 		return -1;
 	}
@@ -1449,7 +1514,11 @@ int run_syscall(int min, int max)
 		CASE_TEST(fork);              EXPECT_SYSZR(1, test_fork(FORK_STANDARD)); break;
 		CASE_TEST(getdents64_root);   EXPECT_SYSNE(1, test_getdents64("/"), -1); break;
 		CASE_TEST(getdents64_null);   EXPECT_SYSER(1, test_getdents64("/dev/null"), -1, ENOTDIR); break;
+<<<<<<< HEAD
 		CASE_TEST(directories);       EXPECT_SYSZR(is_nolibc && proc, test_dirent()); break;
+=======
+		CASE_TEST(directories);       EXPECT_SYSZR(proc, test_dirent()); break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CASE_TEST(getrandom);         EXPECT_SYSZR(1, test_getrandom()); break;
 		CASE_TEST(gettimeofday_tv);   EXPECT_SYSZR(1, gettimeofday(&tv, NULL)); break;
 		CASE_TEST(gettimeofday_tv_tz);EXPECT_SYSZR(1, gettimeofday(&tv, &tz)); break;
@@ -1483,7 +1552,10 @@ int run_syscall(int min, int max)
 		CASE_TEST(select_fault);      EXPECT_SYSER(1, select(1, (void *)1, NULL, NULL, 0), -1, EFAULT); break;
 		CASE_TEST(stat_blah);         EXPECT_SYSER(1, stat("/proc/self/blah", &stat_buf), -1, ENOENT); break;
 		CASE_TEST(stat_fault);        EXPECT_SYSER(1, stat(NULL, &stat_buf), -1, EFAULT); break;
+<<<<<<< HEAD
 		CASE_TEST(stat_rdev);         EXPECT_SYSZR(1, ({ int ret = stat("/dev/null", &stat_buf); ret ?: stat_buf.st_rdev != makedev(1, 3); })); break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CASE_TEST(stat_timestamps);   EXPECT_SYSZR(1, test_stat_timestamps()); break;
 		CASE_TEST(symlink_root);      EXPECT_SYSER(1, symlink("/", "/"), -1, EEXIST); break;
 		CASE_TEST(timer);             EXPECT_SYSZR(1, test_timer()); break;
@@ -1502,11 +1574,17 @@ int run_syscall(int min, int max)
 		CASE_TEST(readv_zero);        EXPECT_SYSZR(1, readv(0, NULL, 0)); break;
 		CASE_TEST(writev_badf);       EXPECT_SYSER(1, writev(-1, &iov_one, 1), -1, EBADF); break;
 		CASE_TEST(writev_zero);       EXPECT_SYSZR(1, writev(1, NULL, 0)); break;
+<<<<<<< HEAD
 		CASE_TEST(ptrace);            tmp = ptrace(PTRACE_CONT, getpid(), NULL, NULL); EXPECT_SYSER(tmp != -1 && errno != ENOSYS, tmp, -1, EFAULT); break;
 		CASE_TEST(syscall_noargs);    EXPECT_SYSEQ(1, syscall(__NR_getpid), getpid()); break;
 		CASE_TEST(syscall_args);      EXPECT_SYSER(1, syscall(__NR_statx, 0, NULL, 0, 0, NULL), -1, EFAULT); break;
 		CASE_TEST(_syscall_noargs);   EXPECT_SYSEQ(is_nolibc, _syscall(__NR_getpid), getpid()); break;
 		CASE_TEST(_syscall_args);     EXPECT_SYSEQ(is_nolibc, _syscall(__NR_statx, 0, NULL, 0, 0, NULL), -EFAULT); break;
+=======
+		CASE_TEST(ptrace);            EXPECT_SYSER(1, ptrace(PTRACE_CONT, getpid(), NULL, NULL), -1, ESRCH); break;
+		CASE_TEST(syscall_noargs);    EXPECT_SYSEQ(1, syscall(__NR_getpid), getpid()); break;
+		CASE_TEST(syscall_args);      EXPECT_SYSER(1, syscall(__NR_statx, 0, NULL, 0, 0, NULL), -1, EFAULT); break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CASE_TEST(namespace);         EXPECT_SYSZR(euid0 && proc, test_namespace()); break;
 		case __LINE__:
 			return ret; /* must be last */
@@ -1555,6 +1633,7 @@ int test_time_types(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 int test_malloc(void)
 {
 	size_t sz_array1, sz_array2, sz_array3;
@@ -1609,6 +1688,8 @@ int test_malloc(void)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int run_stdlib(int min, int max)
 {
 	int test;
@@ -1735,6 +1816,7 @@ int run_stdlib(int min, int max)
 		CASE_TEST(memchr_foobar6_o);        EXPECT_STREQ(1, memchr("foobar", 'o', 6), "oobar"); break;
 		CASE_TEST(memchr_foobar3_b);        EXPECT_STRZR(1, memchr("foobar", 'b', 3)); break;
 		CASE_TEST(time_types);              EXPECT_ZR(is_nolibc, test_time_types()); break;
+<<<<<<< HEAD
 		CASE_TEST(makedev);                 EXPECT_EQ(1, makedev(0x12, 0x34), 0x1234); break;
 		CASE_TEST(major);                   EXPECT_EQ(1, major(0x1234), 0x12); break;
 		CASE_TEST(minor);                   EXPECT_EQ(1, minor(0x1234), 0x34); break;
@@ -1751,6 +1833,8 @@ int run_stdlib(int min, int max)
 		CASE_TEST(htole32);                 EXPECT_EQ(1, htole32(is_le ? 0x01234567 : 0x67452301), 0x01234567); break;
 		CASE_TEST(htobe64);                 EXPECT_EQ(1, htobe64(is_le ? 0x0123456789000000 : 0x8967452301), 0x8967452301); break;
 		CASE_TEST(htole64);                 EXPECT_EQ(1, htole64(is_le ? 0x0123456789 : 0x8967452301000000), 0x0123456789); break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		case __LINE__:
 			return ret; /* must be last */
@@ -1760,6 +1844,7 @@ int run_stdlib(int min, int max)
 	return ret;
 }
 
+<<<<<<< HEAD
 #define EXPECT_VFPRINTF(cond, expected, fmt, ...)				\
 	do { if (!(cond)) result(llen, SKIPPED); else ret += expect_vfprintf(llen, expected, fmt, ##__VA_ARGS__); } while (0)
 
@@ -1793,10 +1878,31 @@ static int expect_vfprintf(int llen, const char *expected, const char *fmt, ...)
 
 	if (memcmp(expected, buf, cmp_len) || buf[cmp_len]) {
 		llen += printf(" should be \"%.*s\"", VFPRINTF_LEN, expected);
+=======
+#define EXPECT_VFPRINTF(c, expected, fmt, ...)				\
+	ret += expect_vfprintf(llen, c, expected, fmt, ##__VA_ARGS__)
+
+static int expect_vfprintf(int llen, int c, const char *expected, const char *fmt, ...)
+{
+	char buf[100];
+	va_list args;
+	ssize_t w;
+	int ret;
+
+
+	va_start(args, fmt);
+	/* Only allow writing 21 bytes, to test truncation */
+	w = vsnprintf(buf, 21, fmt, args);
+	va_end(args);
+
+	if (w != c) {
+		llen += printf(" written(%d) != %d", (int)w, c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		result(llen, FAIL);
 		return 1;
 	}
 
+<<<<<<< HEAD
 	if (written != expected_len) {
 		llen += printf(" written(%d) != %d", (int)written, (int)expected_len);
 		result(llen, FAIL);
@@ -1814,6 +1920,13 @@ static int expect_vfprintf(int llen, const char *expected, const char *fmt, ...)
 
 	result(llen, OK);
 	return 0;
+=======
+	llen += printf(" \"%s\" = \"%s\"", expected, buf);
+	ret = strncmp(expected, buf, c);
+
+	result(llen, ret ? FAIL : OK);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int test_scanf(void)
@@ -1883,6 +1996,26 @@ static int test_scanf(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int test_strerror(void)
+{
+	char buf[100];
+	ssize_t ret;
+
+	memset(buf, 'A', sizeof(buf));
+
+	errno = EINVAL;
+	ret = snprintf(buf, sizeof(buf), "%m");
+	if (is_nolibc) {
+		if (ret < 6 || memcmp(buf, "errno=", 6))
+			return 1;
+	}
+
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int test_printf_error(void)
 {
 	int fd, ret, saved_errno;
@@ -1905,6 +2038,7 @@ static int test_printf_error(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 int test_asprintf(void)
 {
 	char *str;
@@ -1928,6 +2062,8 @@ int test_asprintf(void)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int run_printf(int min, int max)
 {
 	int test;
@@ -1940,6 +2076,7 @@ static int run_printf(int min, int max)
 		 * test numbers.
 		 */
 		switch (test + __LINE__ + 1) {
+<<<<<<< HEAD
 		CASE_TEST(empty);        EXPECT_VFPRINTF(1, "", ""); break;
 		CASE_TEST(simple);       EXPECT_VFPRINTF(1, "foo", "foo"); break;
 		CASE_TEST(string);       EXPECT_VFPRINTF(1, "foo", "%s", "foo"); break;
@@ -1992,6 +2129,26 @@ static int run_printf(int min, int max)
 		CASE_TEST(scanf);        EXPECT_ZR(1, test_scanf()); break;
 		CASE_TEST(printf_error); EXPECT_ZR(1, test_printf_error()); break;
 		CASE_TEST(asprintf);     EXPECT_ZR(1, test_asprintf()); break;
+=======
+		CASE_TEST(empty);        EXPECT_VFPRINTF(0, "", ""); break;
+		CASE_TEST(simple);       EXPECT_VFPRINTF(3, "foo", "foo"); break;
+		CASE_TEST(string);       EXPECT_VFPRINTF(3, "foo", "%s", "foo"); break;
+		CASE_TEST(number);       EXPECT_VFPRINTF(4, "1234", "%d", 1234); break;
+		CASE_TEST(negnumber);    EXPECT_VFPRINTF(5, "-1234", "%d", -1234); break;
+		CASE_TEST(unsigned);     EXPECT_VFPRINTF(5, "12345", "%u", 12345); break;
+		CASE_TEST(char);         EXPECT_VFPRINTF(1, "c", "%c", 'c'); break;
+		CASE_TEST(hex);          EXPECT_VFPRINTF(1, "f", "%x", 0xf); break;
+		CASE_TEST(pointer);      EXPECT_VFPRINTF(3, "0x1", "%p", (void *) 0x1); break;
+		CASE_TEST(uintmax_t);    EXPECT_VFPRINTF(20, "18446744073709551615", "%ju", 0xffffffffffffffffULL); break;
+		CASE_TEST(intmax_t);     EXPECT_VFPRINTF(20, "-9223372036854775807", "%jd", 0x8000000000000001LL); break;
+		CASE_TEST(truncation);   EXPECT_VFPRINTF(25, "01234567890123456789", "%s", "0123456789012345678901234"); break;
+		CASE_TEST(string_width); EXPECT_VFPRINTF(10, "         1", "%10s", "1"); break;
+		CASE_TEST(number_width); EXPECT_VFPRINTF(10, "         1", "%10d", 1); break;
+		CASE_TEST(width_trunc);  EXPECT_VFPRINTF(25, "                    ", "%25d", 1); break;
+		CASE_TEST(scanf);        EXPECT_ZR(1, test_scanf()); break;
+		CASE_TEST(strerror);     EXPECT_ZR(1, test_strerror()); break;
+		CASE_TEST(printf_error); EXPECT_ZR(1, test_printf_error()); break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case __LINE__:
 			return ret; /* must be last */
 		/* note: do not set any defaults so as to permit holes above */

@@ -327,21 +327,36 @@ void xe_hw_engine_enable_ring(struct xe_hw_engine *hwe)
 {
 	u32 ccs_mask =
 		xe_hw_engine_mask_per_class(hwe->gt, XE_ENGINE_CLASS_COMPUTE);
+<<<<<<< HEAD
 	u32 ring_mode = REG_MASKED_FIELD_ENABLE(GFX_DISABLE_LEGACY_MODE);
 
 	if (hwe->class == XE_ENGINE_CLASS_COMPUTE && ccs_mask)
 		xe_mmio_write32(&hwe->gt->mmio, RCU_MODE,
 				REG_MASKED_FIELD_ENABLE(RCU_MODE_CCS_ENABLE));
+=======
+	u32 ring_mode = _MASKED_BIT_ENABLE(GFX_DISABLE_LEGACY_MODE);
+
+	if (hwe->class == XE_ENGINE_CLASS_COMPUTE && ccs_mask)
+		xe_mmio_write32(&hwe->gt->mmio, RCU_MODE,
+				_MASKED_BIT_ENABLE(RCU_MODE_CCS_ENABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_hw_engine_mmio_write32(hwe, RING_HWSTAM(0), ~0x0);
 	xe_hw_engine_mmio_write32(hwe, RING_HWS_PGA(0),
 				  xe_bo_ggtt_addr(hwe->hwsp));
 
 	if (xe_device_has_msix(gt_to_xe(hwe->gt)))
+<<<<<<< HEAD
 		ring_mode |= REG_MASKED_FIELD_ENABLE(GFX_MSIX_INTERRUPT_ENABLE);
 	xe_hw_engine_mmio_write32(hwe, RING_MODE(0), ring_mode);
 	xe_hw_engine_mmio_write32(hwe, RING_MI_MODE(0),
 				  REG_MASKED_FIELD_DISABLE(STOP_RING));
+=======
+		ring_mode |= _MASKED_BIT_ENABLE(GFX_MSIX_INTERRUPT_ENABLE);
+	xe_hw_engine_mmio_write32(hwe, RING_MODE(0), ring_mode);
+	xe_hw_engine_mmio_write32(hwe, RING_MI_MODE(0),
+				  _MASKED_BIT_DISABLE(STOP_RING));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_hw_engine_mmio_read32(hwe, RING_MI_MODE(0));
 }
 
@@ -408,8 +423,12 @@ xe_hw_engine_setup_default_lrc_state(struct xe_hw_engine *hwe)
 		},
 	};
 
+<<<<<<< HEAD
 	xe_rtp_process_to_sr(&ctx, lrc_setup, ARRAY_SIZE(lrc_setup),
 			     &hwe->reg_lrc, true);
+=======
+	xe_rtp_process_to_sr(&ctx, lrc_setup, ARRAY_SIZE(lrc_setup), &hwe->reg_lrc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -473,8 +492,12 @@ hw_engine_setup_default_state(struct xe_hw_engine *hwe)
 		},
 	};
 
+<<<<<<< HEAD
 	xe_rtp_process_to_sr(&ctx, engine_entries, ARRAY_SIZE(engine_entries),
 			     &hwe->reg_sr, false);
+=======
+	xe_rtp_process_to_sr(&ctx, engine_entries, ARRAY_SIZE(engine_entries), &hwe->reg_sr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct engine_info *find_engine_info(enum xe_engine_class class, int instance)

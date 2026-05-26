@@ -845,8 +845,14 @@ void dma_buf_put(struct dma_buf *dmabuf)
 	if (WARN_ON(!dmabuf || !dmabuf->file))
 		return;
 
+<<<<<<< HEAD
 	DMA_BUF_TRACE(trace_dma_buf_put, dmabuf);
 	fput(dmabuf->file);
+=======
+	fput(dmabuf->file);
+
+	DMA_BUF_TRACE(trace_dma_buf_put, dmabuf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_NS_GPL(dma_buf_put, "DMA_BUF");
 
@@ -915,7 +921,12 @@ static bool
 dma_buf_pin_on_map(struct dma_buf_attachment *attach)
 {
 	return attach->dmabuf->ops->pin &&
+<<<<<<< HEAD
 	       !dma_buf_attachment_is_dynamic(attach);
+=======
+		(!dma_buf_attachment_is_dynamic(attach) ||
+		 !IS_ENABLED(CONFIG_DMABUF_MOVE_NOTIFY));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -979,7 +990,11 @@ dma_buf_pin_on_map(struct dma_buf_attachment *attach)
  * 3. Exporters must hold the dma-buf reservation lock when calling these
  *    functions:
  *
+<<<<<<< HEAD
  *     - dma_buf_invalidate_mappings()
+=======
+ *     - dma_buf_move_notify()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 /**
@@ -1015,6 +1030,12 @@ dma_buf_dynamic_attach(struct dma_buf *dmabuf, struct device *dev,
 	if (WARN_ON(!dmabuf || !dev))
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON(importer_ops && !importer_ops->move_notify))
+		return ERR_PTR(-EINVAL);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	attach = kzalloc_obj(*attach);
 	if (!attach)
 		return ERR_PTR(-ENOMEM);
@@ -1125,7 +1146,11 @@ EXPORT_SYMBOL_NS_GPL(dma_buf_pin, "DMA_BUF");
  *
  * This unpins a buffer pinned by dma_buf_pin() and allows the exporter to move
  * any mapping of @attach again and inform the importer through
+<<<<<<< HEAD
  * &dma_buf_attach_ops.invalidate_mappings.
+=======
+ * &dma_buf_attach_ops.move_notify.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void dma_buf_unpin(struct dma_buf_attachment *attach)
 {
@@ -1318,6 +1343,7 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
 EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, "DMA_BUF");
 
 /**
+<<<<<<< HEAD
  * dma_buf_attach_revocable - check if a DMA-buf importer implements
  * revoke semantics.
  * @attach: the DMA-buf attachment to check
@@ -1336,10 +1362,14 @@ EXPORT_SYMBOL_NS_GPL(dma_buf_attach_revocable, "DMA_BUF");
 
 /**
  * dma_buf_invalidate_mappings - notify attachments that DMA-buf is moving
+=======
+ * dma_buf_move_notify - notify attachments that DMA-buf is moving
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @dmabuf:	[in]	buffer which is moving
  *
  * Informs all attachments that they need to destroy and recreate all their
+<<<<<<< HEAD
  * mappings. If the attachment is dynamic then the dynamic importer is expected
  * to invalidate any caches it has of the mapping result and perform a new
  * mapping request before allowing HW to do any further DMA.
@@ -1373,17 +1403,29 @@ EXPORT_SYMBOL_NS_GPL(dma_buf_attach_revocable, "DMA_BUF");
  * returns.
  */
 void dma_buf_invalidate_mappings(struct dma_buf *dmabuf)
+=======
+ * mappings.
+ */
+void dma_buf_move_notify(struct dma_buf *dmabuf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dma_buf_attachment *attach;
 
 	dma_resv_assert_held(dmabuf->resv);
 
 	list_for_each_entry(attach, &dmabuf->attachments, node)
+<<<<<<< HEAD
 		if (attach->importer_ops &&
 		    attach->importer_ops->invalidate_mappings)
 			attach->importer_ops->invalidate_mappings(attach);
 }
 EXPORT_SYMBOL_NS_GPL(dma_buf_invalidate_mappings, "DMA_BUF");
+=======
+		if (attach->importer_ops)
+			attach->importer_ops->move_notify(attach);
+}
+EXPORT_SYMBOL_NS_GPL(dma_buf_move_notify, "DMA_BUF");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: cpu access
@@ -1751,7 +1793,11 @@ static int dma_buf_debug_show(struct seq_file *s, void *unused)
 
 
 		spin_lock(&buf_obj->name_lock);
+<<<<<<< HEAD
 		seq_printf(s, "%08zu\t%08x\t%08x\t%08ld\t%s\t%08llu\t%s\n",
+=======
+		seq_printf(s, "%08zu\t%08x\t%08x\t%08ld\t%s\t%08lu\t%s\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				buf_obj->size,
 				buf_obj->file->f_flags, buf_obj->file->f_mode,
 				file_count(buf_obj->file),

@@ -6,8 +6,13 @@
 #define PMT_TELEM_TELEMETRY	0
 #define PMT_TELEM_CRASHLOG	1
 
+<<<<<<< HEAD
 struct device;
 struct telem_endpoint;
+=======
+struct telem_endpoint;
+struct pci_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct telem_header {
 	u8	access_type;
@@ -17,7 +22,11 @@ struct telem_header {
 };
 
 struct telem_endpoint_info {
+<<<<<<< HEAD
 	struct device		*dev;
+=======
+	struct pci_dev		*pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct telem_header	header;
 };
 
@@ -71,8 +80,13 @@ int pmt_telem_get_endpoint_info(int devid, struct telem_endpoint_info *info);
 
 /**
  * pmt_telem_find_and_register_endpoint() - Get a telemetry endpoint from
+<<<<<<< HEAD
  * device, guid and pos
  * @dev:    device inside the Intel vsec
+=======
+ * pci_dev device, guid and pos
+ * @pdev:   PCI device inside the Intel vsec
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @guid:   GUID of the telemetry space
  * @pos:    Instance of the guid
  *
@@ -80,8 +94,13 @@ int pmt_telem_get_endpoint_info(int devid, struct telem_endpoint_info *info);
  * * endpoint    - On success returns pointer to the telemetry endpoint
  * * -ENXIO      - telemetry endpoint not found
  */
+<<<<<<< HEAD
 struct telem_endpoint *
 pmt_telem_find_and_register_endpoint(struct device *dev, u32 guid, u16 pos);
+=======
+struct telem_endpoint *pmt_telem_find_and_register_endpoint(struct pci_dev *pcidev,
+				u32 guid, u16 pos);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * pmt_telem_read() - Read qwords from counter sram using sample id

@@ -2262,7 +2262,11 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
 
 	/* End of list */
+<<<<<<< HEAD
 	{ 0, NULL, NULL },
+=======
+	{ 0, NULL },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* get the starting port index number for a given port type/direction */

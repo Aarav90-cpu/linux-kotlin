@@ -30,7 +30,11 @@
 #define AD7923_PM_MODE_AS	(1)		/* auto shutdown */
 #define AD7923_PM_MODE_FS	(2)		/* full shutdown */
 #define AD7923_PM_MODE_OPS	(3)		/* normal operation */
+<<<<<<< HEAD
 #define AD7923_SEQUENCE_OFF	(0)		/* no sequence function */
+=======
+#define AD7923_SEQUENCE_OFF	(0)		/* no sequence fonction */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AD7923_SEQUENCE_PROTECT	(2)		/* no interrupt write cycle */
 #define AD7923_SEQUENCE_ON	(3)		/* continuous sequence */
 
@@ -39,7 +43,11 @@
 #define AD7923_CHANNEL_WRITE(channel)	((channel) << 6) /* write channel */
 #define AD7923_SEQUENCE_WRITE(sequence)	((((sequence) & 1) << 3) \
 					+ (((sequence) & 2) << 9))
+<<<<<<< HEAD
 						/* write sequence function */
+=======
+						/* write sequence fonction */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* left shift for CR : bit 11 transmit in first */
 #define AD7923_SHIFT_REGISTER	4
 

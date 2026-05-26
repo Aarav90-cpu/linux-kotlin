@@ -31,7 +31,10 @@
 #define DP83869_RGMIICTL	0x0032
 #define DP83869_STRAP_STS1	0x006e
 #define DP83869_RGMIIDCTL	0x0086
+<<<<<<< HEAD
 #define DP83869_ANA_PLL_PROG_PI	0x00c6
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DP83869_RXFCFG		0x0134
 #define DP83869_RXFPMD1		0x0136
 #define DP83869_RXFPMD2		0x0137
@@ -827,6 +830,7 @@ static int dp83869_config_init(struct phy_device *phydev)
 		dp83869_config_port_mirroring(phydev);
 
 	/* Clock output selection if muxing property is set */
+<<<<<<< HEAD
 	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK) {
 		/*
 		 * Table 7-121 in datasheet says we have to set register 0xc6
@@ -837,12 +841,18 @@ static int dp83869_config_init(struct phy_device *phydev)
 		if (ret)
 			return ret;
 
+=======
+	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = phy_modify_mmd(phydev,
 				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
 				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
 				     dp83869->clk_output_sel <<
 				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
+<<<<<<< HEAD
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (phy_interface_is_rgmii(phydev)) {
 		ret = phy_write_mmd(phydev, DP83869_DEVADDR, DP83869_RGMIIDCTL,

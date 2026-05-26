@@ -7,7 +7,10 @@
 #include <linux/dma-mapping.h>
 #include <linux/io.h>
 #include <linux/iommu.h>
+<<<<<<< HEAD
 #include <linux/of_address.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/types.h>
 
@@ -618,9 +621,13 @@ static void ipa_smem_exit(struct ipa *ipa)
 int ipa_mem_init(struct ipa *ipa, struct platform_device *pdev,
 		 const struct ipa_mem_data *mem_data)
 {
+<<<<<<< HEAD
 	struct device_node *ipa_slice_np;
 	struct device *dev = &pdev->dev;
 	u32 imem_base, imem_size;
+=======
+	struct device *dev = &pdev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct resource *res;
 	int ret;
 
@@ -659,6 +666,7 @@ int ipa_mem_init(struct ipa *ipa, struct platform_device *pdev,
 	ipa->mem_addr = res->start;
 	ipa->mem_size = resource_size(res);
 
+<<<<<<< HEAD
 	ipa_slice_np = of_parse_phandle(dev->of_node, "sram", 0);
 	if (ipa_slice_np) {
 		struct resource sram_res;
@@ -679,6 +687,9 @@ int ipa_mem_init(struct ipa *ipa, struct platform_device *pdev,
 	}
 
 	ret = ipa_imem_init(ipa, imem_base, imem_size);
+=======
+	ret = ipa_imem_init(ipa, mem_data->imem_addr, mem_data->imem_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_unmap;
 

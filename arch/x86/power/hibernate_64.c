@@ -14,6 +14,11 @@
 #include <linux/kdebug.h>
 #include <linux/pgtable.h>
 
+<<<<<<< HEAD
+=======
+#include <crypto/hash.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/e820/api.h>
 #include <asm/init.h>
 #include <asm/proto.h>

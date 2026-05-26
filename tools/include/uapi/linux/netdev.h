@@ -160,7 +160,10 @@ enum {
 	NETDEV_A_QUEUE_DMABUF,
 	NETDEV_A_QUEUE_IO_URING,
 	NETDEV_A_QUEUE_XSK,
+<<<<<<< HEAD
 	NETDEV_A_QUEUE_LEASE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__NETDEV_A_QUEUE_MAX,
 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
@@ -204,6 +207,7 @@ enum {
 };
 
 enum {
+<<<<<<< HEAD
 	NETDEV_A_LEASE_IFINDEX = 1,
 	NETDEV_A_LEASE_QUEUE,
 	NETDEV_A_LEASE_NETNS_ID,
@@ -213,6 +217,8 @@ enum {
 };
 
 enum {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NETDEV_A_DMABUF_IFINDEX = 1,
 	NETDEV_A_DMABUF_QUEUES,
 	NETDEV_A_DMABUF_FD,
@@ -238,7 +244,10 @@ enum {
 	NETDEV_CMD_BIND_RX,
 	NETDEV_CMD_NAPI_SET,
 	NETDEV_CMD_BIND_TX,
+<<<<<<< HEAD
 	NETDEV_CMD_QUEUE_CREATE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__NETDEV_CMD_MAX,
 	NETDEV_CMD_MAX = (__NETDEV_CMD_MAX - 1)

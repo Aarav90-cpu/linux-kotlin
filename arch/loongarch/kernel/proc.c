@@ -64,8 +64,11 @@ static int show_cpuinfo(struct seq_file *m, void *v)
 		seq_puts(m, " cpucfg");
 	if (cpu_has_lam)
 		seq_puts(m, " lam");
+<<<<<<< HEAD
 	if (cpu_has_lam_bh)
 		seq_puts(m, " lam_bh");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cpu_has_scq)
 		seq_puts(m, " scq");
 	if (cpu_has_ual)

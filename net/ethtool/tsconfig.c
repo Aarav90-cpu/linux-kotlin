@@ -3,11 +3,19 @@
 #include <linux/net_tstamp.h>
 #include <linux/ptp_clock_kernel.h>
 
+<<<<<<< HEAD
 #include "bitset.h"
 #include "common.h"
 #include "netlink.h"
 #include "ts.h"
 #include "../core/dev.h"
+=======
+#include "netlink.h"
+#include "common.h"
+#include "bitset.h"
+#include "../core/dev.h"
+#include "ts.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct tsconfig_req_info {
 	struct ethnl_req_info base;

@@ -11,7 +11,11 @@
 		cpu-thermal {
 			polling-delay-passive = <250>;
 			polling-delay = <2000>;
+<<<<<<< HEAD
 			thermal-sensors = <&tmu>;
+=======
+			thermal-sensors = <&tmu 0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			trips {
 				cpu_alert: cpu-alert {

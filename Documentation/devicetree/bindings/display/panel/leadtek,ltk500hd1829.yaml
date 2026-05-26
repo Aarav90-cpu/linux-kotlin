@@ -24,7 +24,10 @@ properties:
   backlight: true
   port: true
   reset-gpios: true
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   iovcc-supply:
     description: regulator that supplies the iovcc voltage
   vcc-supply:

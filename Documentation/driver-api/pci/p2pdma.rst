@@ -38,7 +38,11 @@ for all usage refcounts to reach zero.
 At the lowest level the P2P subsystem offers a naked struct p2p_provider that
 delegates lifecycle management to the providing driver. It is expected that
 drivers using this option will wrap their MMIO memory in DMABUF and use DMABUF
+<<<<<<< HEAD
 to provide an invalidation shutdown. These MMIO addresses have no struct page, and
+=======
+to provide an invalidation shutdown. These MMIO addresess have no struct page, and
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 if used with mmap() must create special PTEs. As such there are very few
 kernel uAPIs that can accept pointers to them; in particular they cannot be used
 with read()/write(), including O_DIRECT.

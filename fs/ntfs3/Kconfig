@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0-only
 config NTFS3_FS
 	tristate "NTFS Read-Write file system support"
+<<<<<<< HEAD
 	depends on !NTFS_FS || m
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select BUFFER_HEAD
 	select NLS
 	select LEGACY_DIRECT_IO
@@ -47,3 +50,15 @@ config NTFS3_FS_POSIX_ACL
 	  NOTE: this is linux only feature. Windows will ignore these ACLs.
 
 	  If you don't know what Access Control Lists are, say N.
+<<<<<<< HEAD
+=======
+
+config NTFS_FS
+	tristate "NTFS file system support"
+	select NTFS3_FS
+	select BUFFER_HEAD
+	select NLS
+	help
+	  This config option is here only for backward compatibility. NTFS
+	  filesystem is now handled by the NTFS3 driver.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

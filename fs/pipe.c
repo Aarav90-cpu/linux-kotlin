@@ -873,7 +873,11 @@ static struct vfsmount *pipe_mnt __ro_after_init;
  */
 static char *pipefs_dname(struct dentry *dentry, char *buffer, int buflen)
 {
+<<<<<<< HEAD
 	return dynamic_dname(buffer, buflen, "pipe:[%llu]",
+=======
+	return dynamic_dname(buffer, buflen, "pipe:[%lu]",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				d_inode(dentry)->i_ino);
 }
 

@@ -173,6 +173,7 @@ static void dpu_hw_intf_setup_timing_engine(struct dpu_hw_intf *intf,
 	data_width = p->width;
 
 	/*
+<<<<<<< HEAD
 	 * If widebus is disabled:
 	 * For uncompressed stream, the data is valid for the entire active
 	 * window period.
@@ -196,6 +197,15 @@ static void dpu_hw_intf_setup_timing_engine(struct dpu_hw_intf *intf,
 	} else if (p->wide_bus_en && !dp_intf) {
 		data_width = p->width >> 1;
 	}
+=======
+	 * If widebus is enabled, data is valid for only half the active window
+	 * since the data rate is doubled in this mode. But for the compression
+	 * mode in DP case, the p->width is already adjusted in
+	 * drm_mode_to_intf_timing_params()
+	 */
+	if (p->wide_bus_en && !dp_intf)
+		data_width = p->width >> 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* TODO: handle DSC+DP case, we only handle DSC+DSI case so far */
 	if (p->compression_en && !dp_intf &&

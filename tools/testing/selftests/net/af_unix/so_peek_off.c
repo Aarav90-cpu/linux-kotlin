@@ -76,6 +76,7 @@ FIXTURE_TEARDOWN(so_peek_off)
 		ASSERT_STREQ(str, buf);				\
 	} while (0)
 
+<<<<<<< HEAD
 #define peekoffeq(fd, expected)					\
 	do {							\
 		socklen_t optlen = sizeof(int);			\
@@ -89,6 +90,8 @@ FIXTURE_TEARDOWN(so_peek_off)
 		ASSERT_EQ(expected, off);			\
 	} while (0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define async							\
 	for (pid_t pid = (pid = fork(),				\
 			  pid < 0 ?				\
@@ -104,12 +107,16 @@ TEST_F(so_peek_off, single_chunk)
 	sendeq(self->fd[0], "aaaabbbb", 0);
 
 	recveq(self->fd[1], "aaaa", 4, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 4);
 	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
 	peekoffeq(self->fd[1], 8);
 
 	recveq(self->fd[1], "aaaabbbb", 8, 0);
 	peekoffeq(self->fd[1], 0);
+=======
+	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 TEST_F(so_peek_off, two_chunks)
@@ -118,6 +125,7 @@ TEST_F(so_peek_off, two_chunks)
 	sendeq(self->fd[0], "bbbb", 0);
 
 	recveq(self->fd[1], "aaaa", 4, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 4);
 	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
 	peekoffeq(self->fd[1], 8);
@@ -125,6 +133,9 @@ TEST_F(so_peek_off, two_chunks)
 	recveq(self->fd[1], "aaaa", 4, 0);
 	recveq(self->fd[1], "bbbb", 4, 0);
 	peekoffeq(self->fd[1], 0);
+=======
+	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 TEST_F(so_peek_off, two_chunks_blocking)
@@ -135,7 +146,10 @@ TEST_F(so_peek_off, two_chunks_blocking)
 	}
 
 	recveq(self->fd[1], "aaaa", 4, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 4);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	async {
 		usleep(1000);
@@ -144,24 +158,31 @@ TEST_F(so_peek_off, two_chunks_blocking)
 
 	/* goto again; -> goto redo; in unix_stream_read_generic(). */
 	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 8);
 
 	recveq(self->fd[1], "aaaa", 4, 0);
 	recveq(self->fd[1], "bbbb", 4, 0);
 	peekoffeq(self->fd[1], 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 TEST_F(so_peek_off, two_chunks_overlap)
 {
 	sendeq(self->fd[0], "aaaa", 0);
 	recveq(self->fd[1], "aa", 2, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sendeq(self->fd[0], "bbbb", 0);
 
 	if (variant->type == SOCK_STREAM) {
 		/* SOCK_STREAM tries to fill the buffer. */
 		recveq(self->fd[1], "aabb", 4, MSG_PEEK);
+<<<<<<< HEAD
 		peekoffeq(self->fd[1], 6);
 		recveq(self->fd[1], "bb", 100, MSG_PEEK);
 		peekoffeq(self->fd[1], 8);
@@ -176,6 +197,14 @@ TEST_F(so_peek_off, two_chunks_overlap)
 	recveq(self->fd[1], "aaaa", 4, 0);
 	recveq(self->fd[1], "bbbb", 4, 0);
 	peekoffeq(self->fd[1], 0);
+=======
+		recveq(self->fd[1], "bb", 100, MSG_PEEK);
+	} else {
+		/* SOCK_DGRAM and SOCK_SEQPACKET returns at the skb boundary. */
+		recveq(self->fd[1], "aa", 100, MSG_PEEK);
+		recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 TEST_F(so_peek_off, two_chunks_overlap_blocking)
@@ -186,7 +215,10 @@ TEST_F(so_peek_off, two_chunks_overlap_blocking)
 	}
 
 	recveq(self->fd[1], "aa", 2, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	async {
 		usleep(1000);
@@ -195,6 +227,7 @@ TEST_F(so_peek_off, two_chunks_overlap_blocking)
 
 	/* Even SOCK_STREAM does not wait if at least one byte is read. */
 	recveq(self->fd[1], "aa", 100, MSG_PEEK);
+<<<<<<< HEAD
 	peekoffeq(self->fd[1], 4);
 
 	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
@@ -203,6 +236,10 @@ TEST_F(so_peek_off, two_chunks_overlap_blocking)
 	recveq(self->fd[1], "aaaa", 4, 0);
 	recveq(self->fd[1], "bbbb", 4, 0);
 	peekoffeq(self->fd[1], 0);
+=======
+
+	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 TEST_HARNESS_MAIN

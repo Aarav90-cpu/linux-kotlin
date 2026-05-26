@@ -59,7 +59,11 @@ static struct inode *afs_iget_pseudo_dir(struct super_block *sb, ino_t ino)
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
 	_debug("GOT INODE %p { ino=%llu, vl=%llx, vn=%llx, u=%x }",
+=======
+	_debug("GOT INODE %p { ino=%lu, vl=%llx, vn=%llx, u=%x }",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       inode, inode->i_ino, fid.vid, fid.vnode, fid.unique);
 
 	vnode = AFS_FS_I(inode);

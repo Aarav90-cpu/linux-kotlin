@@ -369,8 +369,12 @@ static inline int rawv6_rcv_skb(struct sock *sk, struct sk_buff *skb)
 
 	/* Charge it to the socket. */
 	skb_dst_drop(skb);
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(sk, skb);
 	if (reason) {
+=======
+	if (sock_queue_rcv_skb_reason(sk, skb, &reason) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sk_skb_reason_drop(sk, skb, reason);
 		return NET_RX_DROP;
 	}
@@ -433,7 +437,11 @@ int rawv6_rcv(struct sock *sk, struct sk_buff *skb)
  */
 
 static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 			 int flags)
+=======
+			 int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ipv6_pinfo *np = inet6_sk(sk);
 	DECLARE_SOCKADDR(struct sockaddr_in6 *, sin6, msg->msg_name);
@@ -445,10 +453,17 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 		return -EOPNOTSUPP;
 
 	if (flags & MSG_ERRQUEUE)
+<<<<<<< HEAD
 		return ipv6_recv_error(sk, msg, len);
 
 	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
 		return ipv6_recv_rxpmtu(sk, msg, len);
+=======
+		return ipv6_recv_error(sk, msg, len, addr_len);
+
+	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = skb_recv_datagram(sk, flags, &err);
 	if (!skb)
@@ -482,7 +497,11 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 		sin6->sin6_flowinfo = 0;
 		sin6->sin6_scope_id = ipv6_iface_scope_id(&sin6->sin6_addr,
 							  inet6_iif(skb));
+<<<<<<< HEAD
 		msg->msg_namelen = sizeof(*sin6);
+=======
+		*addr_len = sizeof(*sin6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	sock_recv_cmsgs(msg, sk, skb);

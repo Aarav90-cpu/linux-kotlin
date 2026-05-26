@@ -20,6 +20,7 @@
 #include <asm/trapnr.h>
 #include <asm/vmxfeatures.h>
 
+<<<<<<< HEAD
 struct vmcs_hdr {
 	u32 revision_id:31;
 	u32 shadow_vmcs:1;
@@ -31,6 +32,8 @@ struct vmcs {
 	char data[];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VMCS_CONTROL_BIT(x)	BIT(VMX_FEATURE_##x & 0x1f)
 
 /*

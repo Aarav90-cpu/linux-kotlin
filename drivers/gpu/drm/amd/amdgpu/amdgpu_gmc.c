@@ -34,7 +34,10 @@
 #include "amdgpu_ras.h"
 #include "amdgpu_reset.h"
 #include "amdgpu_xgmi.h"
+<<<<<<< HEAD
 #include "amdgpu_atomfirmware.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <drm/drm_drv.h>
 #include <drm/ttm/ttm_tt.h>
@@ -314,10 +317,14 @@ void amdgpu_gmc_gart_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,
 		mc->gart_start = max_mc_address - mc->gart_size + 1;
 		break;
 	case AMDGPU_GART_PLACEMENT_LOW:
+<<<<<<< HEAD
 		if (size_bf >= mc->gart_size)
 			mc->gart_start = 0;
 		else
 			mc->gart_start = ALIGN(mc->fb_end, four_gb);
+=======
+		mc->gart_start = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case AMDGPU_GART_PLACEMENT_BEST_FIT:
 	default:
@@ -746,7 +753,11 @@ void amdgpu_gmc_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
 	 * translation. Avoid this by doing the invalidation from the SDMA
 	 * itself at least for GART.
 	 */
+<<<<<<< HEAD
 	mutex_lock(&adev->mman.default_entity.lock);
+=======
+	mutex_lock(&adev->mman.gtt_window_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	r = amdgpu_job_alloc_with_ib(ring->adev, &adev->mman.default_entity.base,
 				     AMDGPU_FENCE_OWNER_UNDEFINED,
 				     16 * 4, AMDGPU_IB_POOL_IMMEDIATE,
@@ -759,7 +770,11 @@ void amdgpu_gmc_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
 	job->ibs->ptr[job->ibs->length_dw++] = ring->funcs->nop;
 	amdgpu_ring_pad_ib(ring, &job->ibs[0]);
 	fence = amdgpu_job_submit(job);
+<<<<<<< HEAD
 	mutex_unlock(&adev->mman.default_entity.lock);
+=======
+	mutex_unlock(&adev->mman.gtt_window_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dma_fence_wait(fence, false);
 	dma_fence_put(fence);
@@ -767,7 +782,11 @@ void amdgpu_gmc_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
 	return;
 
 error_alloc:
+<<<<<<< HEAD
 	mutex_unlock(&adev->mman.default_entity.lock);
+=======
+	mutex_unlock(&adev->mman.gtt_window_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_err(adev->dev, "Error flushing GPU TLB using the SDMA (%d)!\n", r);
 }
 
@@ -1036,6 +1055,7 @@ void amdgpu_gmc_set_vm_fault_masks(struct amdgpu_device *adev, int hub_type,
 	}
 }
 
+<<<<<<< HEAD
 void amdgpu_gmc_init_vga_resv_regions(struct amdgpu_device *adev)
 {
 	unsigned size;
@@ -1043,10 +1063,22 @@ void amdgpu_gmc_init_vga_resv_regions(struct amdgpu_device *adev)
 	if (adev->gmc.is_app_apu)
 		return;
 
+=======
+void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev)
+{
+	unsigned size;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Some ASICs need to reserve a region of video memory to avoid access
 	 * from driver
 	 */
+<<<<<<< HEAD
+=======
+	adev->mman.stolen_reserved_offset = 0;
+	adev->mman.stolen_reserved_size = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * TODO:
 	 * Currently there is a bug where some memory client outside
@@ -1063,8 +1095,13 @@ void amdgpu_gmc_init_vga_resv_regions(struct amdgpu_device *adev)
 		 */
 #ifdef CONFIG_X86
 		if (amdgpu_sriov_vf(adev) && hypervisor_is_type(X86_HYPER_MS_HYPERV)) {
+<<<<<<< HEAD
 			amdgpu_ttm_init_vram_resv(adev, AMDGPU_RESV_STOLEN_RESERVED,
 						  0x500000, 0x200000, false);
+=======
+			adev->mman.stolen_reserved_offset = 0x500000;
+			adev->mman.stolen_reserved_size = 0x200000;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 #endif
 		break;
@@ -1102,6 +1139,7 @@ void amdgpu_gmc_init_vga_resv_regions(struct amdgpu_device *adev)
 		size = 0;
 
 	if (size > AMDGPU_VBIOS_VGA_ALLOCATION) {
+<<<<<<< HEAD
 		amdgpu_ttm_init_vram_resv(adev, AMDGPU_RESV_STOLEN_VGA,
 					  0, AMDGPU_VBIOS_VGA_ALLOCATION, false);
 		amdgpu_ttm_init_vram_resv(adev, AMDGPU_RESV_STOLEN_EXTENDED,
@@ -1110,6 +1148,13 @@ void amdgpu_gmc_init_vga_resv_regions(struct amdgpu_device *adev)
 	} else {
 		amdgpu_ttm_init_vram_resv(adev, AMDGPU_RESV_STOLEN_VGA,
 					  0, size, false);
+=======
+		adev->mman.stolen_vga_size = AMDGPU_VBIOS_VGA_ALLOCATION;
+		adev->mman.stolen_extended_size = size - adev->mman.stolen_vga_size;
+	} else {
+		adev->mman.stolen_vga_size = size;
+		adev->mman.stolen_extended_size = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1381,18 +1426,30 @@ int amdgpu_gmc_get_nps_memranges(struct amdgpu_device *adev,
 				 struct amdgpu_mem_partition_info *mem_ranges,
 				 uint8_t *exp_ranges)
 {
+<<<<<<< HEAD
 	struct amdgpu_gmc_memrange ranges[AMDGPU_MAX_MEM_RANGES];
+=======
+	struct amdgpu_gmc_memrange *ranges;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int range_cnt, ret, i, j;
 	uint32_t nps_type;
 	bool refresh;
 
 	if (!mem_ranges || !exp_ranges)
 		return -EINVAL;
+<<<<<<< HEAD
 	range_cnt = AMDGPU_MAX_MEM_RANGES;
 	refresh = (adev->init_lvl->level != AMDGPU_INIT_LEVEL_MINIMAL_XGMI) &&
 		  (adev->gmc.reset_flags & AMDGPU_GMC_INIT_RESET_NPS);
 	ret = amdgpu_discovery_get_nps_info(adev, &nps_type, ranges, &range_cnt,
 					    refresh);
+=======
+
+	refresh = (adev->init_lvl->level != AMDGPU_INIT_LEVEL_MINIMAL_XGMI) &&
+		  (adev->gmc.reset_flags & AMDGPU_GMC_INIT_RESET_NPS);
+	ret = amdgpu_discovery_get_nps_info(adev, &nps_type, &ranges,
+					    &range_cnt, refresh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		return ret;
@@ -1453,6 +1510,11 @@ int amdgpu_gmc_get_nps_memranges(struct amdgpu_device *adev,
 	if (!*exp_ranges)
 		*exp_ranges = range_cnt;
 err:
+<<<<<<< HEAD
+=======
+	kvfree(ranges);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1754,6 +1816,7 @@ int amdgpu_gmc_init_mem_ranges(struct amdgpu_device *adev)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 int amdgpu_gmc_get_vram_info(struct amdgpu_device *adev,
 		int *vram_width, int *vram_type, int *vram_vendor)
@@ -1782,3 +1845,5 @@ int amdgpu_gmc_get_vram_info(struct amdgpu_device *adev,
 	}
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

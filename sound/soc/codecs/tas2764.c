@@ -44,11 +44,14 @@ struct tas2764_priv {
 
 	bool dac_powered;
 	bool unmuted;
+<<<<<<< HEAD
 
 	struct {
 		int tx_mode;
 		unsigned int tx_mask;
 	} idle_slot_config;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #include "tas2764-quirks.h"
@@ -514,6 +517,7 @@ static int tas2764_set_dai_tdm_slot(struct snd_soc_dai *dai,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tas2764_write_sdout_idle_mask(struct tas2764_priv *tas2764, u32 mask)
 {
 	struct snd_soc_component *component = tas2764->component;
@@ -602,13 +606,19 @@ static int tas2764_set_bclk_ratio(struct snd_soc_dai *dai, unsigned int ratio)
 	return tas2764_write_sdout_idle_mask(tas2764, tas2764->idle_slot_config.tx_mask);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct snd_soc_dai_ops tas2764_dai_ops = {
 	.mute_stream = tas2764_mute,
 	.hw_params  = tas2764_hw_params,
 	.set_fmt    = tas2764_set_fmt,
+<<<<<<< HEAD
 	.set_bclk_ratio = tas2764_set_bclk_ratio,
 	.set_tdm_slot = tas2764_set_dai_tdm_slot,
 	.set_tdm_idle = tas2764_set_dai_tdm_idle,
+=======
+	.set_tdm_slot = tas2764_set_dai_tdm_slot,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.no_capture_mute = 1,
 };
 
@@ -684,6 +694,7 @@ static int tas2764_read_die_temp(struct tas2764_priv *tas2764, long *result)
 	 * As per datasheet, subtract 93 from raw value to get degrees
 	 * Celsius. hwmon wants millidegrees.
 	 *
+<<<<<<< HEAD
 	 * NOTE: The TAS2764 datasheet mentions initialising TAS2764_TEMP
 	 * such that the temperature is 2.6 *C, however the register
 	 * is actually initialised to 0. The ADC is also powered down during
@@ -693,10 +704,21 @@ static int tas2764_read_die_temp(struct tas2764_priv *tas2764, long *result)
 	if (reg == 0)
 		return -ENODATA;
 
+=======
+	 * NOTE: The chip will initialise the TAS2764_TEMP register to
+	 * 2.6 *C to avoid triggering temperature protection. Since the
+	 * ADC is powered down during software shutdown, this value will
+	 * persist until the chip is fully powered up (e.g. the PCM it's
+	 * attached to is opened). The ADC will power down again when
+	 * the chip is put back into software shutdown, with the last
+	 * value sampled persisting in the ADC's register.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*result = (reg - 93) * 1000;
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tas2764_hwmon_is_fault(struct tas2764_priv *tas2764, long *result)
 {
 	int ret;
@@ -711,6 +733,8 @@ static int tas2764_hwmon_is_fault(struct tas2764_priv *tas2764, long *result)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static umode_t tas2764_hwmon_is_visible(const void *data,
 					enum hwmon_sensor_types type, u32 attr,
 					int channel)
@@ -720,7 +744,10 @@ static umode_t tas2764_hwmon_is_visible(const void *data,
 
 	switch (attr) {
 	case hwmon_temp_input:
+<<<<<<< HEAD
 	case hwmon_temp_fault:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0444;
 	default:
 		break;
@@ -740,9 +767,12 @@ static int tas2764_hwmon_read(struct device *dev,
 	case hwmon_temp_input:
 		ret = tas2764_read_die_temp(tas2764, val);
 		break;
+<<<<<<< HEAD
 	case hwmon_temp_fault:
 		ret = tas2764_hwmon_is_fault(tas2764, val);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ret = -EOPNOTSUPP;
 		break;
@@ -752,7 +782,11 @@ static int tas2764_hwmon_read(struct device *dev,
 }
 
 static const struct hwmon_channel_info *const tas2764_hwmon_info[] = {
+<<<<<<< HEAD
 	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_FAULT),
+=======
+	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -923,7 +957,10 @@ static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
 	case TAS2764_SW_RST:
+<<<<<<< HEAD
 	case TAS2764_TEMP:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
 	case TAS2764_INT_CLK_CFG:
 		return true;

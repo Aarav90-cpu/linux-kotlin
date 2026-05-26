@@ -199,6 +199,11 @@
 		port {
 			ov2680_to_mipi: endpoint {
 				remote-endpoint = <&mipi_from_sensor>;
+<<<<<<< HEAD
+=======
+				clock-lanes = <0>;
+				data-lanes = <1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				link-frequencies = /bits/ 64 <330000000>;
 			};
 		};

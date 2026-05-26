@@ -35,6 +35,7 @@ int tc_redirect_egress(struct __sk_buff *skb)
 	ret = bpf_clone_redirect(skb, ifindex, 0);
 	return 0;
 }
+<<<<<<< HEAD
 
 SEC("tc")
 int tc_adjust_room(struct __sk_buff *skb)
@@ -42,3 +43,5 @@ int tc_adjust_room(struct __sk_buff *skb)
 	ret = bpf_skb_adjust_room(skb, 4, BPF_ADJ_ROOM_NET, 0);
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

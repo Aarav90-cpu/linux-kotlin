@@ -958,10 +958,14 @@ void dc_dmub_srv_log_diagnostic_data(struct dc_dmub_srv *dc_dmub_srv)
 {
 	uint32_t i;
 
+<<<<<<< HEAD
 	if (!dc_dmub_srv)
 		return;
 
 	if (!dc_dmub_srv->dmub) {
+=======
+	if (!dc_dmub_srv || !dc_dmub_srv->dmub) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		DC_LOG_ERROR("%s: invalid parameters.", __func__);
 		return;
 	}
@@ -1085,7 +1089,10 @@ static void dc_build_cursor_attribute_update_payload1(
 		struct dmub_cursor_attributes_cfg *pl_A, const uint8_t p_idx,
 		const struct hubp *hubp, const struct dpp *dpp)
 {
+<<<<<<< HEAD
 	(void)p_idx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Hubp */
 	pl_A->aHubp.SURFACE_ADDR_HIGH = hubp->att.SURFACE_ADDR_HIGH;
 	pl_A->aHubp.SURFACE_ADDR = hubp->att.SURFACE_ADDR;
@@ -1167,10 +1174,14 @@ void dc_dmub_srv_enable_dpia_trace(const struct dc *dc)
 {
 	struct dc_dmub_srv *dc_dmub_srv = dc->ctx->dmub_srv;
 
+<<<<<<< HEAD
 	if (!dc_dmub_srv)
 		return;
 
 	if (!dc_dmub_srv->dmub) {
+=======
+	if (!dc_dmub_srv || !dc_dmub_srv->dmub) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		DC_LOG_ERROR("%s: invalid parameters.", __func__);
 		return;
 	}
@@ -2356,6 +2367,7 @@ bool dc_dmub_srv_is_cursor_offload_enabled(const struct dc *dc)
 	return dc->ctx->dmub_srv && dc->ctx->dmub_srv->cursor_offload_enabled;
 }
 
+<<<<<<< HEAD
 void dc_dmub_srv_boot_time_crc_init(const struct dc *dc, uint64_t gpu_addr, uint32_t size)
 {
 	struct dc_dmub_srv *dc_dmub_srv;
@@ -2383,6 +2395,8 @@ void dc_dmub_srv_boot_time_crc_init(const struct dc *dc, uint64_t gpu_addr, uint
 		DC_ERROR("Boot time crc init failed in DMUB");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dc_dmub_srv_release_hw(const struct dc *dc)
 {
 	struct dc_dmub_srv *dc_dmub_srv = dc->ctx->dmub_srv;

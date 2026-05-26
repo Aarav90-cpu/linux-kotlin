@@ -10,7 +10,10 @@
 
 struct device_node;
 struct fwnode_handle;
+<<<<<<< HEAD
 struct fwnode_reference_args;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct gpio_chip;
 struct gpio_desc;
@@ -25,9 +28,12 @@ int of_gpiochip_add(struct gpio_chip *gc);
 void of_gpiochip_remove(struct gpio_chip *gc);
 bool of_gpiochip_instance_match(struct gpio_chip *gc, unsigned int index);
 int of_gpio_count(const struct fwnode_handle *fwnode, const char *con_id);
+<<<<<<< HEAD
 int of_gpiochip_get_lflags(struct gpio_chip *chip,
 			   struct fwnode_reference_args *gpiospec,
 			   unsigned long *lflags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline struct gpio_desc *of_find_gpio(struct device_node *np,
 					     const char *con_id,
@@ -48,12 +54,15 @@ static inline int of_gpio_count(const struct fwnode_handle *fwnode,
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline int of_gpiochip_get_lflags(struct gpio_chip *chip,
 					 struct fwnode_reference_args *gpiospec,
 					 unsigned long *lflags)
 {
 	return -ENOENT;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_OF_GPIO */
 
 extern struct notifier_block gpio_of_notifier;

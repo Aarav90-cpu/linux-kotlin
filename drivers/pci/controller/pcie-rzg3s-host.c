@@ -111,6 +111,7 @@
 #define RZG3S_PCI_PERM_CFG_HWINIT_EN		BIT(2)
 #define RZG3S_PCI_PERM_PIPE_PHY_REG_EN		BIT(1)
 
+<<<<<<< HEAD
 #define RZG3S_PCI_RESET				0x310
 #define RZG3S_PCI_RESET_RST_OUT_B		BIT(6)
 #define RZG3S_PCI_RESET_RST_PS_B		BIT(5)
@@ -120,6 +121,8 @@
 #define RZG3S_PCI_RESET_RST_GP_B		BIT(1)
 #define RZG3S_PCI_RESET_RST_B			BIT(0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RZG3S_PCI_MSIRE(id)			(0x600 + (id) * 0x10)
 #define RZG3S_PCI_MSIRE_ENA			BIT(0)
 
@@ -168,6 +171,13 @@
 
 #define RZG3S_PCI_CFG_PCIEC			0x60
 
+<<<<<<< HEAD
+=======
+/* System controller registers */
+#define RZG3S_SYS_PCIE_RST_RSM_B		0xd74
+#define RZG3S_SYS_PCIE_RST_RSM_B_MASK		BIT(0)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Maximum number of windows */
 #define RZG3S_MAX_WINDOWS			8
 
@@ -180,6 +190,7 @@
 #define RZG3S_REQ_ISSUE_TIMEOUT_US		2500
 
 /**
+<<<<<<< HEAD
  * struct rzg3s_sysc_function - System Controller function descriptor
  * @offset: Register offset from the System Controller base address
  * @mask: Bit mask for the function within the register
@@ -222,6 +233,8 @@ struct rzg3s_sysc {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct rzg3s_pcie_msi - RZ/G3S PCIe MSI data structure
  * @domain: IRQ domain
  * @map: bitmap with the allocated MSIs
@@ -246,25 +259,36 @@ struct rzg3s_pcie_host;
 /**
  * struct rzg3s_pcie_soc_data - SoC specific data
  * @init_phy: PHY initialization function
+<<<<<<< HEAD
  * @config_pre_init: Optional callback for SoC-specific pre-configuration
  * @config_post_init: Callback for SoC-specific post-configuration
  * @config_deinit: Callback for SoC-specific de-initialization
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @power_resets: array with the resets that need to be de-asserted after
  *                power-on
  * @cfg_resets: array with the resets that need to be de-asserted after
  *              configuration
+<<<<<<< HEAD
  * @sysc_info: SYSC info
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @num_power_resets: number of power resets
  * @num_cfg_resets: number of configuration resets
  */
 struct rzg3s_pcie_soc_data {
 	int (*init_phy)(struct rzg3s_pcie_host *host);
+<<<<<<< HEAD
 	void (*config_pre_init)(struct rzg3s_pcie_host *host);
 	int (*config_post_init)(struct rzg3s_pcie_host *host);
 	int (*config_deinit)(struct rzg3s_pcie_host *host);
 	const char * const *power_resets;
 	const char * const *cfg_resets;
 	struct rzg3s_sysc_info sysc_info;
+=======
+	const char * const *power_resets;
+	const char * const *cfg_resets;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 num_power_resets;
 	u8 num_cfg_resets;
 };
@@ -288,7 +312,11 @@ struct rzg3s_pcie_port {
  * @dev: struct device
  * @power_resets: reset control signals that should be set after power up
  * @cfg_resets: reset control signals that should be set after configuration
+<<<<<<< HEAD
  * @sysc: SYSC descriptor
+=======
+ * @sysc: SYSC regmap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @intx_domain: INTx IRQ domain
  * @data: SoC specific data
  * @msi: MSI data structure
@@ -303,7 +331,11 @@ struct rzg3s_pcie_host {
 	struct device *dev;
 	struct reset_control_bulk_data *power_resets;
 	struct reset_control_bulk_data *cfg_resets;
+<<<<<<< HEAD
 	struct rzg3s_sysc *sysc;
+=======
+	struct regmap *sysc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct irq_domain *intx_domain;
 	const struct rzg3s_pcie_soc_data *data;
 	struct rzg3s_pcie_msi msi;
@@ -315,6 +347,7 @@ struct rzg3s_pcie_host {
 
 #define rzg3s_msi_to_host(_msi)	container_of(_msi, struct rzg3s_pcie_host, msi)
 
+<<<<<<< HEAD
 static int rzg3s_sysc_config_func(struct rzg3s_sysc *sysc,
 				  enum rzg3s_sysc_func_id fid, u32 val)
 {
@@ -332,6 +365,8 @@ static int rzg3s_sysc_config_func(struct rzg3s_sysc *sysc,
 				  field_prep(functions[fid].mask, val));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rzg3s_pcie_update_bits(void __iomem *base, u32 offset, u32 mask,
 				   u32 val)
 {
@@ -1017,9 +1052,14 @@ static int rzg3s_pcie_set_max_link_speed(struct rzg3s_pcie_host *host)
 {
 	u32 remote_supported_link_speeds, max_supported_link_speeds;
 	u32 cs2, tmp, pcie_cap = RZG3S_PCI_CFG_PCIEC;
+<<<<<<< HEAD
 	u32 cur_link_speed, link_speed, hw_max_speed;
 	u8 ltssm_state_l0 = 0xc;
 	u32 lnkcap;
+=======
+	u32 cur_link_speed, link_speed;
+	u8 ltssm_state_l0 = 0xc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	u16 ls;
 
@@ -1039,6 +1079,7 @@ static int rzg3s_pcie_set_max_link_speed(struct rzg3s_pcie_host *host)
 	ls = readw_relaxed(host->pcie + pcie_cap + PCI_EXP_LNKSTA);
 	cs2 = readl_relaxed(host->axi + RZG3S_PCI_PCSTAT2);
 
+<<<<<<< HEAD
 	/* Read hardware supported link speed from Link Capabilities Register */
 	lnkcap = readl_relaxed(host->pcie + pcie_cap + PCI_EXP_LNKCAP);
 	hw_max_speed = FIELD_GET(PCI_EXP_LNKCAP_SLS, lnkcap);
@@ -1055,6 +1096,9 @@ static int rzg3s_pcie_set_max_link_speed(struct rzg3s_pcie_host *host)
 		max_supported_link_speeds = GENMASK(PCI_EXP_LNKSTA_CLS_8_0GB - 1, 0);
 		link_speed = PCI_EXP_LNKCTL2_TLS_8_0GT;
 		break;
+=======
+	switch (pcie_link_speed[host->max_link_speed]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case PCIE_SPEED_5_0GT:
 		max_supported_link_speeds = GENMASK(PCI_EXP_LNKSTA_CLS_5_0GB - 1, 0);
 		link_speed = PCI_EXP_LNKCTL2_TLS_5_0GT;
@@ -1070,10 +1114,17 @@ static int rzg3s_pcie_set_max_link_speed(struct rzg3s_pcie_host *host)
 	remote_supported_link_speeds &= max_supported_link_speeds;
 
 	/*
+<<<<<<< HEAD
 	 * Return if target link speed is already set or the connected device
 	 * doesn't support it.
 	 */
 	if (cur_link_speed == hw_max_speed ||
+=======
+	 * Return if max link speed is already set or the connected device
+	 * doesn't support it.
+	 */
+	if (cur_link_speed == host->max_link_speed ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    remote_supported_link_speeds != max_supported_link_speeds)
 		return 0;
 
@@ -1110,7 +1161,10 @@ static int rzg3s_pcie_set_max_link_speed(struct rzg3s_pcie_host *host)
 static int rzg3s_pcie_config_init(struct rzg3s_pcie_host *host)
 {
 	struct pci_host_bridge *bridge = pci_host_bridge_from_priv(host);
+<<<<<<< HEAD
 	u32 mask = GENMASK(31, 8);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct resource_entry *ft;
 	struct resource *bus;
 	u8 subordinate_bus;
@@ -1134,6 +1188,7 @@ static int rzg3s_pcie_config_init(struct rzg3s_pcie_host *host)
 	writel_relaxed(0xffffffff, host->pcie + RZG3S_PCI_CFG_BARMSK00L);
 	writel_relaxed(0xffffffff, host->pcie + RZG3S_PCI_CFG_BARMSK00U);
 
+<<<<<<< HEAD
 	/*
 	 * Explicitly program class code. RZ/G3E requires this configuration.
 	 * Harmless for RZ/G3S where this matches the hardware default.
@@ -1141,6 +1196,8 @@ static int rzg3s_pcie_config_init(struct rzg3s_pcie_host *host)
 	rzg3s_pcie_update_bits(host->pcie, PCI_CLASS_REVISION, mask,
 			       field_prep(mask, PCI_CLASS_BRIDGE_PCI_NORMAL));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Disable access control to the CFGU */
 	writel_relaxed(0, host->axi + RZG3S_PCI_PERM);
 
@@ -1152,6 +1209,7 @@ static int rzg3s_pcie_config_init(struct rzg3s_pcie_host *host)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rzg3s_pcie_config_post_init(struct rzg3s_pcie_host *host)
 {
 	return reset_control_bulk_deassert(host->data->num_cfg_resets,
@@ -1203,6 +1261,8 @@ static int rzg3e_pcie_config_post_init(struct rzg3s_pcie_host *host)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rzg3s_pcie_irq_init(struct rzg3s_pcie_host *host)
 {
 	/*
@@ -1282,9 +1342,15 @@ static int rzg3s_pcie_resets_prepare_and_get(struct rzg3s_pcie_host *host)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	return devm_reset_control_bulk_get_optional_exclusive(host->dev,
 							      data->num_cfg_resets,
 							      host->cfg_resets);
+=======
+	return devm_reset_control_bulk_get_exclusive(host->dev,
+						     data->num_cfg_resets,
+						     host->cfg_resets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int rzg3s_pcie_host_parse_port(struct rzg3s_pcie_host *host)
@@ -1351,6 +1417,7 @@ static int rzg3s_pcie_host_init(struct rzg3s_pcie_host *host)
 	u32 val;
 	int ret;
 
+<<<<<<< HEAD
 	/* SoC-specific pre-configuration */
 	if (host->data->config_pre_init)
 		host->data->config_pre_init(host);
@@ -1369,14 +1436,31 @@ static int rzg3s_pcie_host_init(struct rzg3s_pcie_host *host)
 				     RZG3S_SYSC_FUNC_ID_L1_ALLOW, 1);
 	if (ret)
 		goto config_deinit_and_refclk;
+=======
+	/* Initialize the PCIe related registers */
+	ret = rzg3s_pcie_config_init(host);
+	if (ret)
+		return ret;
+
+	ret = rzg3s_pcie_host_init_port(host);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialize the interrupts */
 	rzg3s_pcie_irq_init(host);
 
+<<<<<<< HEAD
 	/* SoC-specific post-configuration */
 	ret = host->data->config_post_init(host);
 	if (ret)
 		goto config_deinit_and_refclk;
+=======
+	ret = reset_control_bulk_deassert(host->data->num_cfg_resets,
+					  host->cfg_resets);
+	if (ret)
+		goto disable_port_refclk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Wait for link up */
 	ret = readl_poll_timeout(host->axi + RZG3S_PCI_PCSTAT1, val,
@@ -1385,13 +1469,18 @@ static int rzg3s_pcie_host_init(struct rzg3s_pcie_host *host)
 				 PCIE_LINK_WAIT_SLEEP_MS * MILLI *
 				 PCIE_LINK_WAIT_MAX_RETRIES);
 	if (ret)
+<<<<<<< HEAD
 		goto config_deinit_post;
+=======
+		goto cfg_resets_deassert;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = readl_relaxed(host->axi + RZG3S_PCI_PCSTAT2);
 	dev_info(host->dev, "PCIe link status [0x%x]\n", val);
 
 	return 0;
 
+<<<<<<< HEAD
 config_deinit_post:
 	host->data->config_deinit(host);
 config_deinit_and_refclk:
@@ -1399,6 +1488,13 @@ config_deinit_and_refclk:
 config_deinit:
 	if (host->data->config_pre_init)
 		host->data->config_deinit(host);
+=======
+cfg_resets_deassert:
+	reset_control_bulk_assert(host->data->num_cfg_resets,
+				  host->cfg_resets);
+disable_port_refclk:
+	clk_disable_unprepare(host->port.refclk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1430,6 +1526,7 @@ static int rzg3s_pcie_set_inbound_windows(struct rzg3s_pcie_host *host,
 	u64 pci_addr = entry->res->start - entry->offset;
 	u64 cpu_addr = entry->res->start;
 	u64 cpu_end = entry->res->end;
+<<<<<<< HEAD
 	int id = *index;
 	u64 size;
 
@@ -1448,11 +1545,19 @@ static int rzg3s_pcie_set_inbound_windows(struct rzg3s_pcie_host *host,
 		u64 remaining_size = cpu_end - cpu_addr + 1;
 		u64 align_limit;
 
+=======
+	u64 size_id = 0;
+	int id = *index;
+	u64 size;
+
+	while (cpu_addr < cpu_end) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (id >= RZG3S_MAX_WINDOWS)
 			return dev_err_probe(host->dev, -ENOSPC,
 					     "Failed to map inbound window for resource (%s)\n",
 					     entry->res->name);
 
+<<<<<<< HEAD
 		/* Start with largest power-of-two that fits in remaining size */
 		size = 1ULL << __fls(remaining_size);
 
@@ -1474,11 +1579,45 @@ static int rzg3s_pcie_set_inbound_windows(struct rzg3s_pcie_host *host,
 		 */
 		size = max(size, SZ_4K);
 
+=======
+		size = resource_size(entry->res) - size_id;
+
+		/*
+		 * According to the RZ/G3S HW manual (Rev.1.10,
+		 * section 34.3.1.71 AXI Window Mask (Lower) Registers) the min
+		 * size is 4K.
+		 */
+		size = max(size, SZ_4K);
+
+		/*
+		 * According the RZ/G3S HW manual (Rev.1.10, sections:
+		 * - 34.3.1.69 AXI Window Base (Lower) Registers
+		 * - 34.3.1.71 AXI Window Mask (Lower) Registers
+		 * - 34.3.1.73 AXI Destination (Lower) Registers)
+		 * the CPU addr, PCIe addr, size should be 4K aligned and be a
+		 * power of 2.
+		 */
+		size = ALIGN(size, SZ_4K);
+		size = roundup_pow_of_two(size);
+
+		cpu_addr = ALIGN(cpu_addr, SZ_4K);
+		pci_addr = ALIGN(pci_addr, SZ_4K);
+
+		/*
+		 * According to the RZ/G3S HW manual (Rev.1.10, section
+		 * 34.3.1.71 AXI Window Mask (Lower) Registers) HW expects first
+		 * 12 LSB bits to be 0xfff. Subtract 1 from size for this.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rzg3s_pcie_set_inbound_window(host, cpu_addr, pci_addr,
 					      size - 1, id);
 
 		pci_addr += size;
 		cpu_addr += size;
+<<<<<<< HEAD
+=======
+		size_id = size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		id++;
 	}
 	*index = id;
@@ -1681,7 +1820,10 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
 	struct device_node *sysc_np __free(device_node) =
 		of_parse_phandle(np, "renesas,sysc", 0);
 	struct rzg3s_pcie_host *host;
+<<<<<<< HEAD
 	struct rzg3s_sysc *sysc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	bridge = devm_pci_alloc_host_bridge(dev, sizeof(*host));
@@ -1693,6 +1835,7 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
 	host->data = device_get_match_data(dev);
 	platform_set_drvdata(pdev, host);
 
+<<<<<<< HEAD
 	host->sysc = devm_kzalloc(dev, sizeof(*host->sysc), GFP_KERNEL);
 	if (!host->sysc)
 		return -ENOMEM;
@@ -1700,17 +1843,25 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
 	sysc = host->sysc;
 	sysc->info = &host->data->sysc_info;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	host->axi = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(host->axi))
 		return PTR_ERR(host->axi);
 	host->pcie = host->axi + RZG3S_PCI_CFG_BASE;
 
 	host->max_link_speed = of_pci_get_max_link_speed(np);
+<<<<<<< HEAD
+=======
+	if (host->max_link_speed < 0)
+		host->max_link_speed = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = rzg3s_pcie_host_parse_port(host);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	sysc->regmap = syscon_node_to_regmap(sysc_np);
 	if (IS_ERR(sysc->regmap)) {
 		ret = PTR_ERR(sysc->regmap);
@@ -1723,6 +1874,17 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
 		goto port_refclk_put;
 
 	ret = rzg3s_sysc_config_func(sysc, RZG3S_SYSC_FUNC_ID_RST_RSM_B, 1);
+=======
+	host->sysc = syscon_node_to_regmap(sysc_np);
+	if (IS_ERR(host->sysc)) {
+		ret = PTR_ERR(host->sysc);
+		goto port_refclk_put;
+	}
+
+	ret = regmap_update_bits(host->sysc, RZG3S_SYS_PCIE_RST_RSM_B,
+				 RZG3S_SYS_PCIE_RST_RSM_B_MASK,
+				 FIELD_PREP(RZG3S_SYS_PCIE_RST_RSM_B_MASK, 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto port_refclk_put;
 
@@ -1762,7 +1924,12 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
 
 host_probe_teardown:
 	rzg3s_pcie_teardown_irqdomain(host);
+<<<<<<< HEAD
 	host->data->config_deinit(host);
+=======
+	reset_control_bulk_deassert(host->data->num_cfg_resets,
+				    host->cfg_resets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 rpm_put:
 	pm_runtime_put_sync(dev);
 rpm_disable:
@@ -1774,7 +1941,13 @@ sysc_signal_restore:
 	 * SYSC RST_RSM_B signal need to be asserted before turning off the
 	 * power to the PHY.
 	 */
+<<<<<<< HEAD
 	rzg3s_sysc_config_func(sysc, RZG3S_SYSC_FUNC_ID_RST_RSM_B, 0);
+=======
+	regmap_update_bits(host->sysc, RZG3S_SYS_PCIE_RST_RSM_B,
+			   RZG3S_SYS_PCIE_RST_RSM_B_MASK,
+			   FIELD_PREP(RZG3S_SYS_PCIE_RST_RSM_B_MASK, 0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 port_refclk_put:
 	clk_put(host->port.refclk);
 
@@ -1786,7 +1959,11 @@ static int rzg3s_pcie_suspend_noirq(struct device *dev)
 	struct rzg3s_pcie_host *host = dev_get_drvdata(dev);
 	const struct rzg3s_pcie_soc_data *data = host->data;
 	struct rzg3s_pcie_port *port = &host->port;
+<<<<<<< HEAD
 	struct rzg3s_sysc *sysc = host->sysc;
+=======
+	struct regmap *sysc = host->sysc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = pm_runtime_put_sync(dev);
@@ -1795,6 +1972,7 @@ static int rzg3s_pcie_suspend_noirq(struct device *dev)
 
 	clk_disable_unprepare(port->refclk);
 
+<<<<<<< HEAD
 	/* SoC-specific de-initialization */
 	ret = data->config_deinit(host);
 	if (ret)
@@ -1819,6 +1997,33 @@ config_reinit:
 	if (data->config_pre_init)
 		data->config_pre_init(host);
 	data->config_post_init(host);
+=======
+	ret = reset_control_bulk_assert(data->num_power_resets,
+					host->power_resets);
+	if (ret)
+		goto refclk_restore;
+
+	ret = reset_control_bulk_assert(data->num_cfg_resets,
+					host->cfg_resets);
+	if (ret)
+		goto power_resets_restore;
+
+	ret = regmap_update_bits(sysc, RZG3S_SYS_PCIE_RST_RSM_B,
+				 RZG3S_SYS_PCIE_RST_RSM_B_MASK,
+				 FIELD_PREP(RZG3S_SYS_PCIE_RST_RSM_B_MASK, 0));
+	if (ret)
+		goto cfg_resets_restore;
+
+	return 0;
+
+	/* Restore the previous state if any error happens */
+cfg_resets_restore:
+	reset_control_bulk_deassert(data->num_cfg_resets,
+				    host->cfg_resets);
+power_resets_restore:
+	reset_control_bulk_deassert(data->num_power_resets,
+				    host->power_resets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 refclk_restore:
 	clk_prepare_enable(port->refclk);
 	pm_runtime_resume_and_get(dev);
@@ -1829,6 +2034,7 @@ static int rzg3s_pcie_resume_noirq(struct device *dev)
 {
 	struct rzg3s_pcie_host *host = dev_get_drvdata(dev);
 	const struct rzg3s_pcie_soc_data *data = host->data;
+<<<<<<< HEAD
 	struct rzg3s_sysc *sysc = host->sysc;
 	int ret;
 
@@ -1837,6 +2043,14 @@ static int rzg3s_pcie_resume_noirq(struct device *dev)
 		return ret;
 
 	ret = rzg3s_sysc_config_func(sysc, RZG3S_SYSC_FUNC_ID_RST_RSM_B, 1);
+=======
+	struct regmap *sysc = host->sysc;
+	int ret;
+
+	ret = regmap_update_bits(sysc, RZG3S_SYS_PCIE_RST_RSM_B,
+				 RZG3S_SYS_PCIE_RST_RSM_B_MASK,
+				 FIELD_PREP(RZG3S_SYS_PCIE_RST_RSM_B_MASK, 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1865,7 +2079,13 @@ assert_power_resets:
 	reset_control_bulk_assert(data->num_power_resets,
 				  host->power_resets);
 assert_rst_rsm_b:
+<<<<<<< HEAD
 	rzg3s_sysc_config_func(sysc, RZG3S_SYSC_FUNC_ID_RST_RSM_B, 0);
+=======
+	regmap_update_bits(sysc, RZG3S_SYS_PCIE_RST_RSM_B,
+			   RZG3S_SYS_PCIE_RST_RSM_B_MASK,
+			   FIELD_PREP(RZG3S_SYS_PCIE_RST_RSM_B_MASK, 0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1887,6 +2107,7 @@ static const struct rzg3s_pcie_soc_data rzg3s_soc_data = {
 	.num_power_resets = ARRAY_SIZE(rzg3s_soc_power_resets),
 	.cfg_resets = rzg3s_soc_cfg_resets,
 	.num_cfg_resets = ARRAY_SIZE(rzg3s_soc_cfg_resets),
+<<<<<<< HEAD
 	.config_post_init = rzg3s_pcie_config_post_init,
 	.config_deinit = rzg3s_pcie_config_deinit,
 	.init_phy = rzg3s_soc_pcie_init_phy,
@@ -1920,6 +2141,9 @@ static const struct rzg3s_pcie_soc_data rzg3e_soc_data = {
 			},
 		},
 	},
+=======
+	.init_phy = rzg3s_soc_pcie_init_phy,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct of_device_id rzg3s_pcie_of_match[] = {
@@ -1927,10 +2151,13 @@ static const struct of_device_id rzg3s_pcie_of_match[] = {
 		.compatible = "renesas,r9a08g045-pcie",
 		.data = &rzg3s_soc_data,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "renesas,r9a09g047-pcie",
 		.data = &rzg3e_soc_data,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

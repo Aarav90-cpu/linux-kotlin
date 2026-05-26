@@ -391,6 +391,7 @@ out_rele:
 	return error;
 }
 
+<<<<<<< HEAD
 /*
  * Fill out the default quota limits for an ID that has no dquot on disk.
  * Returns 0 if default limits are configured
@@ -423,6 +424,8 @@ xfs_qm_scall_getquota_fill_defaults(
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Fill out the quota context. */
 static void
 xfs_qm_scall_getquota_fill_qc(
@@ -483,6 +486,7 @@ xfs_qm_scall_getquota(
 	 * set doalloc. If it doesn't exist, we'll get ENOENT back.
 	 */
 	error = xfs_qm_dqget(mp, id, type, false, &dqp);
+<<<<<<< HEAD
 	if (error) {
 		/*
 		 * If there is no dquot on disk and default limits are
@@ -494,6 +498,10 @@ xfs_qm_scall_getquota(
 			return 0;
 		return error;
 	}
+=======
+	if (error)
+		return error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If everything's NULL, this dquot doesn't quite exist as far as

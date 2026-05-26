@@ -57,8 +57,11 @@ static void enc401_dp_set_odm_combine(
 	struct stream_encoder *enc,
 	bool odm_combine)
 {
+<<<<<<< HEAD
 	(void)enc;
 	(void)odm_combine;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* setup stream encoder in dvi mode */
@@ -712,7 +715,10 @@ void enc401_stream_encoder_map_to_link(
 		uint32_t stream_enc_inst,
 		uint32_t link_enc_inst)
 {
+<<<<<<< HEAD
 	(void)stream_enc_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
 
 	REG_UPDATE(STREAM_MAPPER_CONTROL,

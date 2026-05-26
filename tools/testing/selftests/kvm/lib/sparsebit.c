@@ -76,11 +76,19 @@
  * the use of a binary-search tree, where each node contains at least
  * the following members:
  *
+<<<<<<< HEAD
  *   typedef u64 sparsebit_idx_t;
  *   typedef u64 sparsebit_num_t;
  *
  *   sparsebit_idx_t idx;
  *   u32 mask;
+=======
+ *   typedef uint64_t sparsebit_idx_t;
+ *   typedef uint64_t sparsebit_num_t;
+ *
+ *   sparsebit_idx_t idx;
+ *   uint32_t mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   sparsebit_num_t num_after;
  *
  * The idx member contains the bit index of the first bit described by this
@@ -162,7 +170,11 @@
 
 #define DUMP_LINE_MAX 100 /* Does not include indent amount */
 
+<<<<<<< HEAD
 typedef u32 mask_t;
+=======
+typedef uint32_t mask_t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MASK_BITS (sizeof(mask_t) * CHAR_BIT)
 
 struct node {
@@ -2056,9 +2068,15 @@ unsigned char get8(void)
 	return ch;
 }
 
+<<<<<<< HEAD
 u64 get64(void)
 {
 	u64 x;
+=======
+uint64_t get64(void)
+{
+	uint64_t x;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	x = get8();
 	x = (x << 8) | get8();
@@ -2074,9 +2092,15 @@ int main(void)
 {
 	s = sparsebit_alloc();
 	for (;;) {
+<<<<<<< HEAD
 		u8 op = get8() & 0xf;
 		u64 first = get64();
 		u64 last = get64();
+=======
+		uint8_t op = get8() & 0xf;
+		uint64_t first = get64();
+		uint64_t last = get64();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		operate(op, first, last);
 	}

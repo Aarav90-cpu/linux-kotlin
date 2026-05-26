@@ -781,7 +781,11 @@ static int gbaudio_init_jack(struct gbaudio_module_info *module,
 		ret = snd_jack_set_key(module->button.jack.jack, SND_JACK_BTN_3,
 				       KEY_VOLUMEDOWN);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(module->dev, "Failed to set BTN_3\n");
+=======
+			dev_err(module->dev, "Failed to set BTN_0\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto free_jacks;
 		}
 	}

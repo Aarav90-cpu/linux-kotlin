@@ -239,6 +239,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		i2c0: i2c@2100 {
 			compatible = "brcm,brcmper-i2c";
 			reg = <0x2100 0x60>;
@@ -248,12 +249,18 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pl081_dma: dma-controller@11000 {
 			compatible = "arm,pl081", "arm,primecell";
 			// The magic B105F00D info is missing
 			arm,primecell-periphid = <0x00041081>;
 			reg = <0x11000 0x1000>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			memcpy-burst-size = <256>;
 			memcpy-bus-width = <32>;
 			clocks = <&periph_clk>;

@@ -10,7 +10,10 @@
 #include <linux/clk-provider.h>
 #include <linux/clk.h>
 #include <linux/crc32.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/dma-mapping.h>
 #include <linux/etherdevice.h>
 #include <linux/firmware/xlnx-zynqmp.h>
@@ -50,7 +53,10 @@ struct sifive_fu540_macb_mgmt {
 
 #define MACB_RX_BUFFER_SIZE	128
 #define RX_BUFFER_MULTIPLE	64  /* bytes */
+<<<<<<< HEAD
 #define RX_BUFFER_MAX		(0xFF * RX_BUFFER_MULTIPLE) /* 16320 bytes */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DEFAULT_RX_RING_SIZE	512 /* must be power of 2 */
 #define MIN_RX_RING_SIZE	64
@@ -70,10 +76,13 @@ struct sifive_fu540_macb_mgmt {
 #define MACB_TX_INT_FLAGS	(MACB_TX_ERR_FLAGS | MACB_BIT(TCOMP)	\
 					| MACB_BIT(TXUBR))
 
+<<<<<<< HEAD
 #define MACB_INT_MISC_FLAGS	(MACB_TX_ERR_FLAGS | MACB_BIT(RXUBR) | \
 				 MACB_BIT(ISR_ROVR) | MACB_BIT(HRESP) | \
 				 GEM_BIT(WOL) | MACB_BIT(WOL))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Max length of transmit frame must be a multiple of 8 bytes */
 #define MACB_TX_LEN_ALIGN	8
 #define MACB_MAX_TX_LEN		((unsigned int)((1 << MACB_TX_FRMLEN_SIZE) - 1) & ~((unsigned int)(MACB_TX_LEN_ALIGN - 1)))
@@ -564,6 +573,7 @@ static int macb_usx_pcs_config(struct phylink_pcs *pcs,
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned int macb_pcs_inband_caps(struct phylink_pcs *pcs,
 					 phy_interface_t interface)
 {
@@ -579,6 +589,12 @@ static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
 	bmsr = gem_readl(bp, PCSSTS);
 	lpa = gem_readl(bp, PCSANLPBASE);
 	phylink_mii_c22_pcs_decode_state(state, neg_mode, bmsr, lpa);
+=======
+static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+			       struct phylink_link_state *state)
+{
+	state->link = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void macb_pcs_an_restart(struct phylink_pcs *pcs)
@@ -592,6 +608,7 @@ static int macb_pcs_config(struct phylink_pcs *pcs,
 			   const unsigned long *advertising,
 			   bool permit_pause_to_mac)
 {
+<<<<<<< HEAD
 	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
 	u32 old, new;
 
@@ -612,6 +629,8 @@ static int macb_pcs_config(struct phylink_pcs *pcs,
 	if (old != new)
 		gem_writel(bp, PCSCNTRL, new);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -622,12 +641,16 @@ static const struct phylink_pcs_ops macb_phylink_usx_pcs_ops = {
 };
 
 static const struct phylink_pcs_ops macb_phylink_pcs_ops = {
+<<<<<<< HEAD
 	.pcs_inband_caps = macb_pcs_inband_caps,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pcs_get_state = macb_pcs_get_state,
 	.pcs_an_restart = macb_pcs_an_restart,
 	.pcs_config = macb_pcs_config,
 };
 
+<<<<<<< HEAD
 static bool macb_tx_lpi_set(struct macb *bp, bool enable)
 {
 	u32 old, ncr;
@@ -729,6 +752,8 @@ static int macb_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void macb_mac_config(struct phylink_config *config, unsigned int mode,
 			    const struct phylink_link_state *state)
 {
@@ -768,6 +793,25 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
 	if (old_ncr ^ ncr)
 		macb_or_gem_writel(bp, NCR, ncr);
 
+<<<<<<< HEAD
+=======
+	/* Disable AN for SGMII fixed link configuration, enable otherwise.
+	 * Must be written after PCSSEL is set in NCFGR,
+	 * otherwise writes will not take effect.
+	 */
+	if (macb_is_gem(bp) && state->interface == PHY_INTERFACE_MODE_SGMII) {
+		u32 pcsctrl, old_pcsctrl;
+
+		old_pcsctrl = gem_readl(bp, PCSCNTRL);
+		if (mode == MLO_AN_FIXED)
+			pcsctrl = old_pcsctrl & ~GEM_BIT(PCSAUTONEG);
+		else
+			pcsctrl = old_pcsctrl | GEM_BIT(PCSAUTONEG);
+		if (old_pcsctrl != pcsctrl)
+			gem_writel(bp, PCSCNTRL, pcsctrl);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irqrestore(&bp->lock, flags);
 }
 
@@ -968,8 +1012,11 @@ static const struct phylink_mac_ops macb_phylink_ops = {
 	.mac_config = macb_mac_config,
 	.mac_link_down = macb_mac_link_down,
 	.mac_link_up = macb_mac_link_up,
+<<<<<<< HEAD
 	.mac_disable_tx_lpi = macb_mac_disable_tx_lpi,
 	.mac_enable_tx_lpi = macb_mac_enable_tx_lpi,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static bool macb_phy_handle_exists(struct device_node *dn)
@@ -1034,12 +1081,15 @@ static int macb_mii_probe(struct net_device *dev)
 	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
 		bp->phylink_config.poll_fixed_state = true;
 		bp->phylink_config.get_fixed_state = macb_get_pcs_fixed_state;
+<<<<<<< HEAD
 		/* The PCSAUTONEG bit in PCSCNTRL is on out of reset. Setting
 		 * default_an_inband to true tells phylink to turn it off only
 		 * if necessary (e.g. a fixed link or a PHY that doesn't support
 		 * inband).
 		 */
 		bp->phylink_config.default_an_inband = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	bp->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
@@ -1071,6 +1121,7 @@ static int macb_mii_probe(struct net_device *dev)
 		}
 	}
 
+<<<<<<< HEAD
 	/* Configure EEE LPI if supported */
 	if (bp->caps & MACB_CAPS_EEE) {
 		__set_bit(PHY_INTERFACE_MODE_MII,
@@ -1083,6 +1134,8 @@ static int macb_mii_probe(struct net_device *dev)
 		bp->phylink_config.eee_enabled_default = true;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bp->phylink = phylink_create(&bp->phylink_config, bp->pdev->dev.fwnode,
 				     bp->phy_interface, &macb_phylink_ops);
 	if (IS_ERR(bp->phylink)) {
@@ -1479,9 +1532,12 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
 		netif_wake_subqueue(bp->dev, queue_index);
 	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
 
+<<<<<<< HEAD
 	if (packets)
 		macb_tx_lpi_schedule(bp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return packets;
 }
 
@@ -1891,7 +1947,12 @@ static int macb_rx_poll(struct napi_struct *napi, int budget)
 		 */
 		if (macb_rx_pending(queue)) {
 			queue_writel(queue, IDR, bp->rx_intr_mask);
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, MACB_BIT(RCOMP));
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(RCOMP));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			netdev_vdbg(bp->dev, "poll: packets pending, reschedule\n");
 			napi_schedule(napi);
 		}
@@ -1978,7 +2039,12 @@ static int macb_tx_poll(struct napi_struct *napi, int budget)
 		 */
 		if (macb_tx_complete_pending(queue)) {
 			queue_writel(queue, IDR, MACB_BIT(TCOMP));
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, MACB_BIT(TCOMP));
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(TCOMP));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			netdev_vdbg(bp->dev, "TX poll: packets pending, reschedule\n");
 			napi_schedule(napi);
 		}
@@ -2026,6 +2092,7 @@ static void macb_hresp_error_task(struct work_struct *work)
 	netif_tx_start_all_queues(dev);
 }
 
+<<<<<<< HEAD
 static void macb_wol_interrupt(struct macb_queue *queue, u32 status)
 {
 	struct macb *bp = queue->bp;
@@ -2112,6 +2179,64 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
 	}
 
 	return 0;
+=======
+static irqreturn_t macb_wol_interrupt(int irq, void *dev_id)
+{
+	struct macb_queue *queue = dev_id;
+	struct macb *bp = queue->bp;
+	u32 status;
+
+	status = queue_readl(queue, ISR);
+
+	if (unlikely(!status))
+		return IRQ_NONE;
+
+	spin_lock(&bp->lock);
+
+	if (status & MACB_BIT(WOL)) {
+		queue_writel(queue, IDR, MACB_BIT(WOL));
+		macb_writel(bp, WOL, 0);
+		netdev_vdbg(bp->dev, "MACB WoL: queue = %u, isr = 0x%08lx\n",
+			    (unsigned int)(queue - bp->queues),
+			    (unsigned long)status);
+		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+			queue_writel(queue, ISR, MACB_BIT(WOL));
+		pm_wakeup_event(&bp->pdev->dev, 0);
+	}
+
+	spin_unlock(&bp->lock);
+
+	return IRQ_HANDLED;
+}
+
+static irqreturn_t gem_wol_interrupt(int irq, void *dev_id)
+{
+	struct macb_queue *queue = dev_id;
+	struct macb *bp = queue->bp;
+	u32 status;
+
+	status = queue_readl(queue, ISR);
+
+	if (unlikely(!status))
+		return IRQ_NONE;
+
+	spin_lock(&bp->lock);
+
+	if (status & GEM_BIT(WOL)) {
+		queue_writel(queue, IDR, GEM_BIT(WOL));
+		gem_writel(bp, WOL, 0);
+		netdev_vdbg(bp->dev, "GEM WoL: queue = %u, isr = 0x%08lx\n",
+			    (unsigned int)(queue - bp->queues),
+			    (unsigned long)status);
+		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+			queue_writel(queue, ISR, GEM_BIT(WOL));
+		pm_wakeup_event(&bp->pdev->dev, 0);
+	}
+
+	spin_unlock(&bp->lock);
+
+	return IRQ_HANDLED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static irqreturn_t macb_interrupt(int irq, void *dev_id)
@@ -2119,7 +2244,11 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 	struct macb_queue *queue = dev_id;
 	struct macb *bp = queue->bp;
 	struct net_device *dev = bp->dev;
+<<<<<<< HEAD
 	u32 status;
+=======
+	u32 status, ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	status = queue_readl(queue, ISR);
 
@@ -2132,7 +2261,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 		/* close possible race with dev_close */
 		if (unlikely(!netif_running(dev))) {
 			queue_writel(queue, IDR, -1);
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, -1);
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 
@@ -2148,20 +2282,38 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 			 * now.
 			 */
 			queue_writel(queue, IDR, bp->rx_intr_mask);
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, MACB_BIT(RCOMP));
 			napi_schedule_irqoff(&queue->napi_rx);
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(RCOMP));
+
+			if (napi_schedule_prep(&queue->napi_rx)) {
+				netdev_vdbg(bp->dev, "scheduling RX softirq\n");
+				__napi_schedule(&queue->napi_rx);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (status & (MACB_BIT(TCOMP) |
 			      MACB_BIT(TXUBR))) {
 			queue_writel(queue, IDR, MACB_BIT(TCOMP));
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, MACB_BIT(TCOMP) |
 							MACB_BIT(TXUBR));
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(TCOMP) |
+							 MACB_BIT(TXUBR));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (status & MACB_BIT(TXUBR)) {
 				queue->txubr_pending = true;
 				wmb(); // ensure softirq can see update
 			}
 
+<<<<<<< HEAD
 			napi_schedule_irqoff(&queue->napi_tx);
 		}
 
@@ -2169,6 +2321,65 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 			if (macb_interrupt_misc(queue, status))
 				break;
 
+=======
+			if (napi_schedule_prep(&queue->napi_tx)) {
+				netdev_vdbg(bp->dev, "scheduling TX softirq\n");
+				__napi_schedule(&queue->napi_tx);
+			}
+		}
+
+		if (unlikely(status & (MACB_TX_ERR_FLAGS))) {
+			queue_writel(queue, IDR, MACB_TX_INT_FLAGS);
+			schedule_work(&queue->tx_error_task);
+
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_TX_ERR_FLAGS);
+
+			break;
+		}
+
+		/* Link change detection isn't possible with RMII, so we'll
+		 * add that if/when we get our hands on a full-blown MII PHY.
+		 */
+
+		/* There is a hardware issue under heavy load where DMA can
+		 * stop, this causes endless "used buffer descriptor read"
+		 * interrupts but it can be cleared by re-enabling RX. See
+		 * the at91rm9200 manual, section 41.3.1 or the Zynq manual
+		 * section 16.7.4 for details. RXUBR is only enabled for
+		 * these two versions.
+		 */
+		if (status & MACB_BIT(RXUBR)) {
+			ctrl = macb_readl(bp, NCR);
+			macb_writel(bp, NCR, ctrl & ~MACB_BIT(RE));
+			wmb();
+			macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
+
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(RXUBR));
+		}
+
+		if (status & MACB_BIT(ISR_ROVR)) {
+			/* We missed at least one packet */
+			spin_lock(&bp->stats_lock);
+			if (macb_is_gem(bp))
+				bp->hw_stats.gem.rx_overruns++;
+			else
+				bp->hw_stats.macb.rx_overruns++;
+			spin_unlock(&bp->stats_lock);
+
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
+		}
+
+		if (status & MACB_BIT(HRESP)) {
+			queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+			netdev_err(dev, "DMA bus error: HRESP not OK\n");
+
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(HRESP));
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		status = queue_readl(queue, ISR);
 	}
 
@@ -2558,7 +2769,10 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
 			     skb->len);
 
 	spin_lock(&bp->lock);
+<<<<<<< HEAD
 	macb_tx_lpi_wake(bp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
 	spin_unlock(&bp->lock);
 
@@ -2576,7 +2790,11 @@ static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
 	if (!macb_is_gem(bp)) {
 		bp->rx_buffer_size = MACB_RX_BUFFER_SIZE;
 	} else {
+<<<<<<< HEAD
 		bp->rx_buffer_size = MIN(size, RX_BUFFER_MAX);
+=======
+		bp->rx_buffer_size = size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (bp->rx_buffer_size % RX_BUFFER_MULTIPLE) {
 			netdev_dbg(bp->dev,
@@ -2863,7 +3081,12 @@ static void macb_reset_hw(struct macb *bp)
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
 		queue_writel(queue, IDR, -1);
 		queue_readl(queue, ISR);
+<<<<<<< HEAD
 		macb_queue_isr_clear(bp, queue, -1);
+=======
+		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+			queue_writel(queue, ISR, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -3223,8 +3446,11 @@ static int macb_close(struct net_device *dev)
 		netdev_tx_reset_queue(netdev_get_tx_queue(dev, q));
 	}
 
+<<<<<<< HEAD
 	cancel_delayed_work_sync(&bp->tx_lpi_work);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phylink_stop(bp->phylink);
 	phylink_disconnect_phy(bp->phylink);
 
@@ -3360,6 +3586,10 @@ static int gem_get_sset_count(struct net_device *dev, int sset)
 
 static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
 {
+<<<<<<< HEAD
+=======
+	char stat_string[ETH_GSTRING_LEN];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct macb *bp = netdev_priv(dev);
 	struct macb_queue *queue;
 	unsigned int i;
@@ -3372,8 +3602,16 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
 			       ETH_GSTRING_LEN);
 
 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+<<<<<<< HEAD
 			for (i = 0; i < QUEUE_STATS_LEN; i++)
 				ethtool_sprintf(&p, "q%u_%s", q, queue_statistics[i].stat_string);
+=======
+			for (i = 0; i < QUEUE_STATS_LEN; i++, p += ETH_GSTRING_LEN) {
+				snprintf(stat_string, ETH_GSTRING_LEN, "q%d_%s",
+						q, queue_statistics[i].stat_string);
+				memcpy(p, stat_string, ETH_GSTRING_LEN);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	}
@@ -3738,6 +3976,7 @@ static unsigned int gem_get_tsu_rate(struct macb *bp)
 	struct clk *tsu_clk;
 	unsigned int tsu_rate;
 
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(bp->tsu_clk)) {
 		tsu_rate = clk_get_rate(bp->tsu_clk);
 	} else {
@@ -3746,6 +3985,17 @@ static unsigned int gem_get_tsu_rate(struct macb *bp)
 		dev_warn(&bp->pdev->dev, "devicetree missing tsu_clk, using pclk as fallback\n");
 	}
 
+=======
+	tsu_clk = devm_clk_get(&bp->pdev->dev, "tsu_clk");
+	if (!IS_ERR(tsu_clk))
+		tsu_rate = clk_get_rate(tsu_clk);
+	/* try pclk instead */
+	else if (!IS_ERR(bp->pclk)) {
+		tsu_clk = bp->pclk;
+		tsu_rate = clk_get_rate(tsu_clk);
+	} else
+		return -ENOTSUPP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return tsu_rate;
 }
 
@@ -4137,6 +4387,7 @@ static const struct ethtool_ops macb_ethtool_ops = {
 	.set_ringparam		= macb_set_ringparam,
 };
 
+<<<<<<< HEAD
 static int macb_get_eee(struct net_device *dev, struct ethtool_keee *eee)
 {
 	struct macb *bp = netdev_priv(dev);
@@ -4151,6 +4402,8 @@ static int macb_set_eee(struct net_device *dev, struct ethtool_keee *eee)
 	return phylink_ethtool_set_eee(bp->phylink, eee);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ethtool_ops gem_ethtool_ops = {
 	.get_regs_len		= macb_get_regs_len,
 	.get_regs		= macb_get_regs,
@@ -4172,9 +4425,12 @@ static const struct ethtool_ops gem_ethtool_ops = {
 	.get_rxnfc			= gem_get_rxnfc,
 	.set_rxnfc			= gem_set_rxnfc,
 	.get_rx_ring_count		= gem_get_rx_ring_count,
+<<<<<<< HEAD
 	.nway_reset			= phy_ethtool_nway_reset,
 	.get_eee		= macb_get_eee,
 	.set_eee		= macb_set_eee,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int macb_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
@@ -4548,12 +4804,23 @@ static const struct net_device_ops macb_netdev_ops = {
 static void macb_configure_caps(struct macb *bp,
 				const struct macb_config *dt_conf)
 {
+<<<<<<< HEAD
 	u32 dcfg;
 
 	bp->caps = dt_conf->caps;
 
 	if (!dt_conf->usrio)
 		bp->caps |= MACB_CAPS_USRIO_DISABLED;
+=======
+	struct device_node *np = bp->pdev->dev.of_node;
+	bool refclk_ext;
+	u32 dcfg;
+
+	refclk_ext = of_property_read_bool(np, "cdns,refclk-ext");
+
+	if (dt_conf)
+		bp->caps = dt_conf->caps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (hw_is_gem(bp->regs, bp->native_io)) {
 		bp->caps |= MACB_CAPS_MACB_IS_GEM;
@@ -4563,8 +4830,11 @@ static void macb_configure_caps(struct macb *bp,
 			bp->caps |= MACB_CAPS_ISR_CLEAR_ON_WRITE;
 		if (GEM_BFEXT(NO_PCS, dcfg) == 0)
 			bp->caps |= MACB_CAPS_PCS;
+<<<<<<< HEAD
 		if (!(dcfg & GEM_BIT(USERIO)))
 			bp->caps |= MACB_CAPS_USRIO_DISABLED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dcfg = gem_readl(bp, DCFG12);
 		if (GEM_BFEXT(HIGH_SPEED, dcfg) == 1)
 			bp->caps |= MACB_CAPS_HIGH_SPEED;
@@ -4586,6 +4856,12 @@ static void macb_configure_caps(struct macb *bp,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (refclk_ext)
+		bp->caps |= MACB_CAPS_USRIO_HAS_CLKEN;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(&bp->pdev->dev, "Cadence caps 0x%08x\n", bp->caps);
 }
 
@@ -4624,9 +4900,15 @@ static void macb_clks_disable(struct clk *pclk, struct clk *hclk, struct clk *tx
 	clk_bulk_disable_unprepare(ARRAY_SIZE(clks), clks);
 }
 
+<<<<<<< HEAD
 static int macb_clk_init_dflt(struct platform_device *pdev, struct clk **pclk,
 			      struct clk **hclk, struct clk **tx_clk,
 			      struct clk **rx_clk, struct clk **tsu_clk)
+=======
+static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
+			 struct clk **hclk, struct clk **tx_clk,
+			 struct clk **rx_clk, struct clk **tsu_clk)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct macb_platform_data *pdata;
 	int err;
@@ -4709,6 +4991,7 @@ err_disable_pclk:
 	return err;
 }
 
+<<<<<<< HEAD
 static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 			 struct clk **hclk, struct clk **tx_clk,
 			 struct clk **rx_clk, struct clk **tsu_clk,
@@ -4723,6 +5006,9 @@ static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 }
 
 static int macb_init_dflt(struct platform_device *pdev)
+=======
+static int macb_init(struct platform_device *pdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct net_device *dev = platform_get_drvdata(pdev);
 	unsigned int hw_q, q;
@@ -4743,7 +5029,11 @@ static int macb_init_dflt(struct platform_device *pdev)
 		queue->bp = bp;
 		spin_lock_init(&queue->tx_ptr_lock);
 		netif_napi_add(dev, &queue->napi_rx, macb_rx_poll);
+<<<<<<< HEAD
 		netif_napi_add_tx(dev, &queue->napi_tx, macb_tx_poll);
+=======
+		netif_napi_add(dev, &queue->napi_tx, macb_tx_poll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (hw_q) {
 			queue->ISR  = GEM_ISR(hw_q - 1);
 			queue->IER  = GEM_IER(hw_q - 1);
@@ -4853,6 +5143,7 @@ static int macb_init_dflt(struct platform_device *pdev)
 
 	if (!(bp->caps & MACB_CAPS_USRIO_DISABLED)) {
 		val = 0;
+<<<<<<< HEAD
 		if (bp->caps & MACB_CAPS_USRIO_HAS_MII) {
 			if (phy_interface_mode_is_rgmii(bp->phy_interface))
 				val = bp->usrio->rgmii;
@@ -4899,6 +5190,18 @@ static int macb_init_dflt(struct platform_device *pdev)
 
 		if (bp->caps & MACB_CAPS_USRIO_HAS_TSUCLK_SOURCE)
 			val |= bp->usrio->tsu_source;
+=======
+		if (phy_interface_mode_is_rgmii(bp->phy_interface))
+			val = bp->usrio->rgmii;
+		else if (bp->phy_interface == PHY_INTERFACE_MODE_RMII &&
+			 (bp->caps & MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII))
+			val = bp->usrio->rmii;
+		else if (!(bp->caps & MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII))
+			val = bp->usrio->mii;
+
+		if (bp->caps & MACB_CAPS_USRIO_HAS_CLKEN)
+			val |= bp->usrio->refclk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		macb_or_gem_writel(bp, USRIO, val);
 	}
@@ -4913,6 +5216,7 @@ static int macb_init_dflt(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int macb_init(struct platform_device *pdev,
 		     const struct macb_config *config)
 {
@@ -4927,6 +5231,13 @@ static const struct macb_usrio_config at91_default_usrio = {
 	.rmii = MACB_BIT(RMII),
 	.rgmii = GEM_BIT(RGMII),
 	.clken = MACB_BIT(CLKEN),
+=======
+static const struct macb_usrio_config macb_default_usrio = {
+	.mii = MACB_BIT(MII),
+	.rmii = MACB_BIT(RMII),
+	.rgmii = GEM_BIT(RGMII),
+	.refclk = MACB_BIT(CLKEN),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if defined(CONFIG_OF)
@@ -5375,7 +5686,11 @@ static int fu540_c000_clk_init(struct platform_device *pdev, struct clk **pclk,
 	struct clk_init_data init;
 	int err = 0;
 
+<<<<<<< HEAD
 	err = macb_clk_init_dflt(pdev, pclk, hclk, tx_clk, rx_clk, tsu_clk);
+=======
+	err = macb_clk_init(pdev, pclk, hclk, tx_clk, rx_clk, tsu_clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -5422,7 +5737,11 @@ static int fu540_c000_init(struct platform_device *pdev)
 	if (IS_ERR(mgmt->reg))
 		return PTR_ERR(mgmt->reg);
 
+<<<<<<< HEAD
 	return macb_init_dflt(pdev);
+=======
+	return macb_init(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int init_reset_optional(struct platform_device *pdev)
@@ -5472,7 +5791,11 @@ static int init_reset_optional(struct platform_device *pdev)
 		return dev_err_probe(&pdev->dev, ret, "failed to reset controller");
 	}
 
+<<<<<<< HEAD
 	ret = macb_init_dflt(pdev);
+=======
+	ret = macb_init(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 err_out_phy_exit:
 	if (ret)
@@ -5497,21 +5820,30 @@ static int eyeq5_init(struct platform_device *pdev)
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to init PHY\n");
 
+<<<<<<< HEAD
 	ret = macb_init_dflt(pdev);
+=======
+	ret = macb_init(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		phy_exit(bp->phy);
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct macb_usrio_config mpfs_usrio = {
 	.tsu_source = 0,
 };
 
 static const struct macb_usrio_config sama7g5_gem_usrio = {
+=======
+static const struct macb_usrio_config sama7g5_usrio = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.mii = 0,
 	.rmii = 1,
 	.rgmii = 2,
 	.refclk = BIT(2),
+<<<<<<< HEAD
 	.refclk_default_external = false,
 	.hdfctlen = BIT(6),
 };
@@ -5522,16 +5854,23 @@ static const struct macb_usrio_config sama7g5_emac_usrio = {
 	.rgmii = 2,
 	.refclk = BIT(2),
 	.refclk_default_external = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.hdfctlen = BIT(6),
 };
 
 static const struct macb_config fu540_c000_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_JUMBO |
+<<<<<<< HEAD
 		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_USRIO_HAS_MII,
+=======
+		MACB_CAPS_GEM_HAS_PTP,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dma_burst_length = 16,
 	.clk_init = fu540_c000_clk_init,
 	.init = fu540_c000_init,
 	.jumbo_max_len = 10240,
+<<<<<<< HEAD
 	.usrio = &at91_default_usrio,
 };
 
@@ -5539,10 +5878,21 @@ static const struct macb_config at91sam9260_config = {
 	.caps = MACB_CAPS_USRIO_HAS_CLKEN | MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII |
 		MACB_CAPS_USRIO_HAS_MII,
 	.usrio = &at91_default_usrio,
+=======
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config at91sam9260_config = {
+	.caps = MACB_CAPS_USRIO_HAS_CLKEN | MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config sama5d3macb_config = {
 	.caps = MACB_CAPS_SG_DISABLED |
+<<<<<<< HEAD
 		MACB_CAPS_USRIO_HAS_CLKEN | MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII |
 		MACB_CAPS_USRIO_HAS_MII,
 	.usrio = &at91_default_usrio,
@@ -5568,10 +5918,42 @@ static const struct macb_config sama5d29_config = {
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.usrio = &at91_default_usrio,
+=======
+		MACB_CAPS_USRIO_HAS_CLKEN | MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config pc302gem_config = {
+	.caps = MACB_CAPS_SG_DISABLED | MACB_CAPS_GIGABIT_MODE_AVAILABLE,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config sama5d2_config = {
+	.caps = MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII | MACB_CAPS_JUMBO,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.jumbo_max_len = 10240,
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config sama5d29_config = {
+	.caps = MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII | MACB_CAPS_GEM_HAS_PTP,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config sama5d3_config = {
 	.caps = MACB_CAPS_SG_DISABLED | MACB_CAPS_GIGABIT_MODE_AVAILABLE |
+<<<<<<< HEAD
 		MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII | MACB_CAPS_JUMBO |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
@@ -5592,39 +5974,93 @@ static const struct macb_config emac_config = {
 	.clk_init = at91ether_clk_init,
 	.init = at91ether_init,
 	.usrio = &at91_default_usrio,
+=======
+		MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII | MACB_CAPS_JUMBO,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.jumbo_max_len = 10240,
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config sama5d4_config = {
+	.caps = MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII,
+	.dma_burst_length = 4,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+};
+
+static const struct macb_config emac_config = {
+	.caps = MACB_CAPS_NEEDS_RSTONUBR | MACB_CAPS_MACB_IS_EMAC,
+	.clk_init = at91ether_clk_init,
+	.init = at91ether_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config np4_config = {
 	.caps = MACB_CAPS_USRIO_DISABLED,
+<<<<<<< HEAD
+=======
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config zynqmp_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
 		MACB_CAPS_JUMBO |
+<<<<<<< HEAD
 		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.init = init_reset_optional,
 	.jumbo_max_len = 10240,
 	.usrio = &at91_default_usrio,
+=======
+		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = init_reset_optional,
+	.jumbo_max_len = 10240,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config zynq_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_NO_GIGABIT_HALF |
+<<<<<<< HEAD
 		MACB_CAPS_NEEDS_RSTONUBR |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.usrio = &at91_default_usrio,
+=======
+		MACB_CAPS_NEEDS_RSTONUBR,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config mpfs_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
 		MACB_CAPS_JUMBO |
+<<<<<<< HEAD
 		MACB_CAPS_GEM_HAS_PTP |
 		MACB_CAPS_USRIO_HAS_TSUCLK_SOURCE,
 	.dma_burst_length = 16,
 	.init = init_reset_optional,
 	.usrio = &mpfs_usrio,
+=======
+		MACB_CAPS_GEM_HAS_PTP,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = init_reset_optional,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.max_tx_length = 4040, /* Cadence Erratum 1686 */
 	.jumbo_max_len = 4040,
 };
@@ -5632,47 +6068,83 @@ static const struct macb_config mpfs_config = {
 static const struct macb_config sama7g5_gem_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_CLK_HW_CHG |
 		MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII |
+<<<<<<< HEAD
 		MACB_CAPS_USRIO_HAS_REFCLK_SOURCE |
 		MACB_CAPS_MIIONRGMII | MACB_CAPS_GEM_HAS_PTP |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.usrio = &sama7g5_gem_usrio,
+=======
+		MACB_CAPS_MIIONRGMII | MACB_CAPS_GEM_HAS_PTP,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &sama7g5_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config sama7g5_emac_config = {
 	.caps = MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII |
+<<<<<<< HEAD
 		MACB_CAPS_MIIONRGMII |
 		MACB_CAPS_USRIO_HAS_REFCLK_SOURCE |
 		MACB_CAPS_GEM_HAS_PTP |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.usrio = &sama7g5_emac_usrio,
+=======
+		MACB_CAPS_USRIO_HAS_CLKEN | MACB_CAPS_MIIONRGMII |
+		MACB_CAPS_GEM_HAS_PTP,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &sama7g5_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config versal_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_JUMBO |
 		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH |
 		MACB_CAPS_NEED_TSUCLK | MACB_CAPS_QUEUE_DISABLE |
+<<<<<<< HEAD
 		MACB_CAPS_QBV |
 		MACB_CAPS_USRIO_HAS_MII,
 	.dma_burst_length = 16,
 	.init = init_reset_optional,
 	.jumbo_max_len = 10240,
 	.usrio = &at91_default_usrio,
+=======
+		MACB_CAPS_QBV,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = init_reset_optional,
+	.jumbo_max_len = 10240,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config eyeq5_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_JUMBO |
 		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_QUEUE_DISABLE |
+<<<<<<< HEAD
 		MACB_CAPS_NO_LSO | MACB_CAPS_EEE,
 	.dma_burst_length = 16,
 	.init = eyeq5_init,
 	.jumbo_max_len = 10240,
+=======
+		MACB_CAPS_NO_LSO,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = eyeq5_init,
+	.jumbo_max_len = 10240,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct macb_config raspberrypi_rp1_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_CLK_HW_CHG |
 		MACB_CAPS_JUMBO |
+<<<<<<< HEAD
 		MACB_CAPS_GEM_HAS_PTP |
 		MACB_CAPS_EEE |
 		MACB_CAPS_USRIO_HAS_MII,
@@ -5689,6 +6161,16 @@ static const struct macb_config pic64hpsc_config = {
 	.jumbo_max_len = 16383,
 };
 
+=======
+		MACB_CAPS_GEM_HAS_PTP,
+	.dma_burst_length = 16,
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+	.jumbo_max_len = 10240,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id macb_dt_ids[] = {
 	{ .compatible = "cdns,at91sam9260-macb", .data = &at91sam9260_config },
 	{ .compatible = "cdns,macb" },
@@ -5707,7 +6189,10 @@ static const struct of_device_id macb_dt_ids[] = {
 	{ .compatible = "cdns,zynq-gem", .data = &zynq_config }, /* deprecated */
 	{ .compatible = "sifive,fu540-c000-gem", .data = &fu540_c000_config },
 	{ .compatible = "microchip,mpfs-macb", .data = &mpfs_config },
+<<<<<<< HEAD
 	{ .compatible = "microchip,pic64hpsc-gem", .data = &pic64hpsc_config},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "microchip,sama7g5-gem", .data = &sama7g5_gem_config },
 	{ .compatible = "microchip,sama7g5-emac", .data = &sama7g5_emac_config },
 	{ .compatible = "mobileye,eyeq5-gem", .data = &eyeq5_config },
@@ -5725,7 +6210,13 @@ static const struct macb_config default_gem_config = {
 		MACB_CAPS_JUMBO |
 		MACB_CAPS_GEM_HAS_PTP,
 	.dma_burst_length = 16,
+<<<<<<< HEAD
 	.usrio = &at91_default_usrio,
+=======
+	.clk_init = macb_clk_init,
+	.init = macb_init,
+	.usrio = &macb_default_usrio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.jumbo_max_len = 10240,
 };
 
@@ -5753,8 +6244,12 @@ static int macb_probe(struct platform_device *pdev)
 	if (!macb_config)
 		macb_config = &default_gem_config;
 
+<<<<<<< HEAD
 	err = macb_clk_init(pdev, &pclk, &hclk, &tx_clk, &rx_clk, &tsu_clk,
 			    macb_config);
+=======
+	err = macb_config->clk_init(pdev, &pclk, &hclk, &tx_clk, &rx_clk, &tsu_clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -5814,6 +6309,7 @@ static int macb_probe(struct platform_device *pdev)
 
 	bp->usrio = macb_config->usrio;
 
+<<<<<<< HEAD
 	if (of_property_read_bool(bp->pdev->dev.of_node, "cdns,timer-adjust") &&
 			IS_ENABLED(CONFIG_MACB_USE_HWSTAMP)) {
 		dev_err(&pdev->dev, "Timer adjust mode is not supported\n");
@@ -5821,6 +6317,8 @@ static int macb_probe(struct platform_device *pdev)
 		goto err_out_free_netdev;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* By default we set to partial store and forward mode for zynqmp.
 	 * Disable if not set in devicetree.
 	 */
@@ -5867,8 +6365,12 @@ static int macb_probe(struct platform_device *pdev)
 	/* MTU range: 68 - 1518 or 10240 */
 	dev->min_mtu = GEM_MTU_MIN_SIZE;
 	if ((bp->caps & MACB_CAPS_JUMBO) && bp->jumbo_max_len)
+<<<<<<< HEAD
 		dev->max_mtu = MIN(bp->jumbo_max_len, RX_BUFFER_MAX) -
 				ETH_HLEN - ETH_FCS_LEN;
+=======
+		dev->max_mtu = bp->jumbo_max_len - ETH_HLEN - ETH_FCS_LEN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		dev->max_mtu = 1536 - ETH_HLEN - ETH_FCS_LEN;
 
@@ -5902,7 +6404,11 @@ static int macb_probe(struct platform_device *pdev)
 		bp->phy_interface = interface;
 
 	/* IP specific init */
+<<<<<<< HEAD
 	err = macb_init(pdev, macb_config);
+=======
+	err = macb_config->init(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_out_free_netdev;
 
@@ -5919,7 +6425,10 @@ static int macb_probe(struct platform_device *pdev)
 	}
 
 	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
+<<<<<<< HEAD
 	INIT_DELAYED_WORK(&bp->tx_lpi_work, macb_tx_lpi_work_fn);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netdev_info(dev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
 		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
@@ -5963,7 +6472,10 @@ static void macb_remove(struct platform_device *pdev)
 		mdiobus_free(bp->mii_bus);
 
 		device_set_wakeup_enable(&bp->pdev->dev, 0);
+<<<<<<< HEAD
 		cancel_delayed_work_sync(&bp->tx_lpi_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cancel_work_sync(&bp->hresp_err_bh_work);
 		pm_runtime_disable(&pdev->dev);
 		pm_runtime_dont_use_autosuspend(&pdev->dev);
@@ -5983,6 +6495,10 @@ static int __maybe_unused macb_suspend(struct device *dev)
 	unsigned long flags;
 	u32 tmp, ifa_local;
 	unsigned int q;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!device_may_wakeup(&bp->dev->dev))
 		phy_exit(bp->phy);
@@ -6031,7 +6547,12 @@ static int __maybe_unused macb_suspend(struct device *dev)
 			/* Disable all interrupts */
 			queue_writel(queue, IDR, -1);
 			queue_readl(queue, ISR);
+<<<<<<< HEAD
 			macb_queue_isr_clear(bp, queue, -1);
+=======
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* Enable Receive engine */
 		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
@@ -6045,6 +6566,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
 			/* write IP address into register */
 			tmp |= MACB_BFEXT(IP, ifa_local);
 		}
+<<<<<<< HEAD
 
 		if (macb_is_gem(bp)) {
 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
@@ -6054,6 +6576,41 @@ static int __maybe_unused macb_suspend(struct device *dev)
 			macb_writel(bp, WOL, tmp);
 		}
 		spin_unlock_irqrestore(&bp->lock, flags);
+=======
+		spin_unlock_irqrestore(&bp->lock, flags);
+
+		/* Change interrupt handler and
+		 * Enable WoL IRQ on queue 0
+		 */
+		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+		if (macb_is_gem(bp)) {
+			err = devm_request_irq(dev, bp->queues[0].irq, gem_wol_interrupt,
+					       IRQF_SHARED, netdev->name, bp->queues);
+			if (err) {
+				dev_err(dev,
+					"Unable to request IRQ %d (error %d)\n",
+					bp->queues[0].irq, err);
+				return err;
+			}
+			spin_lock_irqsave(&bp->lock, flags);
+			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+			gem_writel(bp, WOL, tmp);
+			spin_unlock_irqrestore(&bp->lock, flags);
+		} else {
+			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+					       IRQF_SHARED, netdev->name, bp->queues);
+			if (err) {
+				dev_err(dev,
+					"Unable to request IRQ %d (error %d)\n",
+					bp->queues[0].irq, err);
+				return err;
+			}
+			spin_lock_irqsave(&bp->lock, flags);
+			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+			macb_writel(bp, WOL, tmp);
+			spin_unlock_irqrestore(&bp->lock, flags);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		enable_irq_wake(bp->queues[0].irq);
 	}
@@ -6095,6 +6652,10 @@ static int __maybe_unused macb_resume(struct device *dev)
 	struct macb_queue *queue;
 	unsigned long flags;
 	unsigned int q;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!device_may_wakeup(&bp->dev->dev))
 		phy_init(bp->phy);
@@ -6117,9 +6678,27 @@ static int __maybe_unused macb_resume(struct device *dev)
 		}
 		/* Clear ISR on queue 0 */
 		queue_readl(bp->queues, ISR);
+<<<<<<< HEAD
 		macb_queue_isr_clear(bp, bp->queues, -1);
 		spin_unlock_irqrestore(&bp->lock, flags);
 
+=======
+		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+			queue_writel(bp->queues, ISR, -1);
+		spin_unlock_irqrestore(&bp->lock, flags);
+
+		/* Replace interrupt handler on queue 0 */
+		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+				       IRQF_SHARED, netdev->name, bp->queues);
+		if (err) {
+			dev_err(dev,
+				"Unable to request IRQ %d (error %d)\n",
+				bp->queues[0].irq, err);
+			return err;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		disable_irq_wake(bp->queues[0].irq);
 
 		/* Now make sure we disable phy before moving

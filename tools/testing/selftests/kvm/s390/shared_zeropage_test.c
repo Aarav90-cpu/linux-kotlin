@@ -13,7 +13,11 @@
 #include "kselftest.h"
 #include "ucall_common.h"
 
+<<<<<<< HEAD
 static void set_storage_key(void *addr, u8 skey)
+=======
+static void set_storage_key(void *addr, uint8_t skey)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	asm volatile("sske %0,%1" : : "d" (skey), "a" (addr));
 }

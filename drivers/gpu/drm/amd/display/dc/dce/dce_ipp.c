@@ -43,7 +43,10 @@ static void dce_ipp_cursor_set_position(
 	const struct dc_cursor_position *position,
 	const struct dc_cursor_mi_param *param)
 {
+<<<<<<< HEAD
 	(void)param;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_ipp *ipp_dce = TO_DCE_IPP(ipp);
 
 	/* lock cursor registers */

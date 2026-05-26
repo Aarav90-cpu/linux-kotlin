@@ -226,8 +226,11 @@ void rtw89_leave_lps(struct rtw89_dev *rtwdev)
 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
 		rtw89_vif_for_each_link(rtwvif, rtwvif_link, link_id)
 			rtw89_leave_lps_vif(rtwdev, rtwvif_link);
+<<<<<<< HEAD
 
 	rtw89_fw_h2c_init_trx_protect(rtwdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rtw89_enter_ips(struct rtw89_dev *rtwdev)

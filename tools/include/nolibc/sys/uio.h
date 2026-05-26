@@ -19,30 +19,50 @@
  * ssize_t readv(int fd, const struct iovec *iovec, int count);
  */
 static __attribute__((unused))
+<<<<<<< HEAD
 ssize_t _sys_readv(int fd, const struct iovec *iovec, int count)
 {
 	return __nolibc_syscall3(__NR_readv, fd, iovec, count);
+=======
+ssize_t sys_readv(int fd, const struct iovec *iovec, int count)
+{
+	return my_syscall3(__NR_readv, fd, iovec, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 ssize_t readv(int fd, const struct iovec *iovec, int count)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_readv(fd, iovec, count));
+=======
+	return __sysret(sys_readv(fd, iovec, count));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * ssize_t writev(int fd, const struct iovec *iovec, int count);
  */
 static __attribute__((unused))
+<<<<<<< HEAD
 ssize_t _sys_writev(int fd, const struct iovec *iovec, int count)
 {
 	return __nolibc_syscall3(__NR_writev, fd, iovec, count);
+=======
+ssize_t sys_writev(int fd, const struct iovec *iovec, int count)
+{
+	return my_syscall3(__NR_writev, fd, iovec, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 ssize_t writev(int fd, const struct iovec *iovec, int count)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_writev(fd, iovec, count));
+=======
+	return __sysret(sys_writev(fd, iovec, count));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 

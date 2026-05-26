@@ -16,8 +16,11 @@
 
 #include "../slab.h" /* for struct kmem_cache */
 
+<<<<<<< HEAD
 extern bool kfence_enabled;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Get the canary byte pattern for @addr. Use a pattern that varies based on the
  * lower 3 bits of the address, to detect memory corruptions with higher
@@ -142,6 +145,7 @@ enum kfence_error_type {
 	KFENCE_ERROR_INVALID_FREE,	/* Invalid free. */
 };
 
+<<<<<<< HEAD
 enum kfence_fault {
 	KFENCE_FAULT_NONE,
 	KFENCE_FAULT_REPORT,
@@ -154,6 +158,10 @@ kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
 		    const struct kfence_metadata *meta, enum kfence_error_type type);
 
 void kfence_handle_fault(enum kfence_fault fault);
+=======
+void kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
+			 const struct kfence_metadata *meta, enum kfence_error_type type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void kfence_print_object(struct seq_file *seq, const struct kfence_metadata *meta) __must_hold(&meta->lock);
 

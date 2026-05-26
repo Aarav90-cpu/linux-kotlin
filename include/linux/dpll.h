@@ -52,12 +52,15 @@ struct dpll_device_ops {
 	int (*phase_offset_avg_factor_get)(const struct dpll_device *dpll,
 					   void *dpll_priv, u32 *factor,
 					   struct netlink_ext_ack *extack);
+<<<<<<< HEAD
 	int (*freq_monitor_set)(const struct dpll_device *dpll, void *dpll_priv,
 				enum dpll_feature_state state,
 				struct netlink_ext_ack *extack);
 	int (*freq_monitor_get)(const struct dpll_device *dpll, void *dpll_priv,
 				enum dpll_feature_state *state,
 				struct netlink_ext_ack *extack);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dpll_pin_ops {
@@ -116,10 +119,13 @@ struct dpll_pin_ops {
 	int (*ffo_get)(const struct dpll_pin *pin, void *pin_priv,
 		       const struct dpll_device *dpll, void *dpll_priv,
 		       s64 *ffo, struct netlink_ext_ack *extack);
+<<<<<<< HEAD
 	int (*measured_freq_get)(const struct dpll_pin *pin, void *pin_priv,
 				 const struct dpll_device *dpll,
 				 void *dpll_priv, u64 *measured_freq,
 				 struct netlink_ext_ack *extack);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*esync_set)(const struct dpll_pin *pin, void *pin_priv,
 			 const struct dpll_device *dpll, void *dpll_priv,
 			 u64 freq, struct netlink_ext_ack *extack);
@@ -286,7 +292,10 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
 
 int dpll_device_change_ntf(struct dpll_device *dpll);
 
+<<<<<<< HEAD
 int __dpll_pin_change_ntf(struct dpll_pin *pin);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int dpll_pin_change_ntf(struct dpll_pin *pin);
 
 int register_dpll_notifier(struct notifier_block *nb);

@@ -22,12 +22,15 @@ memblock preservation ABI
 .. kernel-doc:: include/linux/kho/abi/memblock.h
    :doc: memblock kexec handover ABI
 
+<<<<<<< HEAD
 KHO persistent memory tracker ABI
 =================================
 
 .. kernel-doc:: include/linux/kho/abi/kexec_handover.h
   :doc: KHO persistent memory tracker
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 See Also
 ========
 

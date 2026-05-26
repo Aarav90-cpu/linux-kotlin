@@ -443,10 +443,17 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
 }
 #endif
 
+<<<<<<< HEAD
 bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep)
 {
 	bool ret = false;
+=======
+int ptep_test_and_clear_young(struct vm_area_struct *vma,
+			      unsigned long addr, pte_t *ptep)
+{
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pte_young(*ptep))
 		ret = test_and_clear_bit(_PAGE_BIT_ACCESSED,
@@ -456,10 +463,17 @@ bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 }
 
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
+<<<<<<< HEAD
 bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pmd_t *pmdp)
 {
 	bool ret = false;
+=======
+int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+			      unsigned long addr, pmd_t *pmdp)
+{
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pmd_young(*pmdp))
 		ret = test_and_clear_bit(_PAGE_BIT_ACCESSED,
@@ -470,10 +484,17 @@ bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 #endif
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+<<<<<<< HEAD
 bool pudp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pud_t *pudp)
 {
 	bool ret = false;
+=======
+int pudp_test_and_clear_young(struct vm_area_struct *vma,
+			      unsigned long addr, pud_t *pudp)
+{
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pud_young(*pudp))
 		ret = test_and_clear_bit(_PAGE_BIT_ACCESSED,
@@ -483,8 +504,13 @@ bool pudp_test_and_clear_young(struct vm_area_struct *vma,
 }
 #endif
 
+<<<<<<< HEAD
 bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
+=======
+int ptep_clear_flush_young(struct vm_area_struct *vma,
+			   unsigned long address, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * On x86 CPUs, clearing the accessed bit without a TLB flush
@@ -503,10 +529,17 @@ bool ptep_clear_flush_young(struct vm_area_struct *vma,
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+<<<<<<< HEAD
 bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
 {
 	bool young;
+=======
+int pmdp_clear_flush_young(struct vm_area_struct *vma,
+			   unsigned long address, pmd_t *pmdp)
+{
+	int young;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
 

@@ -86,7 +86,11 @@ struct pt_regs;
  *    preempt_v. All preempt_v context should be dropped in such case because
  *    V-regs are caller-saved. Only sstatus.VS=ON is persisted across a
  *    schedule() call.
+<<<<<<< HEAD
  *  - bit 30: The in-kernel preempt_v context is saved, and is required to be
+=======
+ *  - bit 30: The in-kernel preempt_v context is saved, and requries to be
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *    restored when returning to the context that owns the preempt_v.
  *  - bit 31: The in-kernel preempt_v context is dirty, as signaled by the
  *    trap entry code. Any context switches out-of current task need to save

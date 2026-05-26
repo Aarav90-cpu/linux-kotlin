@@ -120,7 +120,12 @@ static int __must_check make_bin(struct packer *packer)
 	struct packer_bin *bin;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(VDO_MAX_COMPRESSION_SLOTS, incoming, __func__, &bin);
+=======
+	result = vdo_allocate_extended(struct packer_bin, VDO_MAX_COMPRESSION_SLOTS,
+				       struct vio *, __func__, &bin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -145,7 +150,11 @@ int vdo_make_packer(struct vdo *vdo, block_count_t bin_count, struct packer **pa
 	block_count_t i;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, __func__, &packer);
+=======
+	result = vdo_allocate(1, struct packer, __func__, &packer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -167,8 +176,13 @@ int vdo_make_packer(struct vdo *vdo, block_count_t bin_count, struct packer **pa
 	 * bin must have a canceler for which it is waiting, and any canceler will only have
 	 * canceled one lock holder at a time.
 	 */
+<<<<<<< HEAD
 	result = vdo_allocate_extended(MAXIMUM_VDO_USER_VIOS / 2, incoming, __func__,
 				       &packer->canceled_bin);
+=======
+	result = vdo_allocate_extended(struct packer_bin, MAXIMUM_VDO_USER_VIOS / 2,
+				       struct vio *, __func__, &packer->canceled_bin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		vdo_free_packer(packer);
 		return result;

@@ -21,6 +21,12 @@
 
 #ifndef __ASSEMBLER__
 
+<<<<<<< HEAD
+=======
+extern char empty_zero_page[PAGE_SIZE];
+#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern pgd_t swapper_pg_dir[] __aligned(PAGE_SIZE);
 
 /* to cope with aliasing VIPT cache */

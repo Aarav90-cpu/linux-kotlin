@@ -6778,6 +6778,34 @@ static int ath12k_pull_peer_assoc_conf_ev(struct ath12k_base *ab, struct sk_buff
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int
+ath12k_pull_pdev_temp_ev(struct ath12k_base *ab, struct sk_buff *skb,
+			 const struct wmi_pdev_temperature_event *ev)
+{
+	const void **tb;
+	int ret;
+
+	tb = ath12k_wmi_tlv_parse_alloc(ab, skb, GFP_ATOMIC);
+	if (IS_ERR(tb)) {
+		ret = PTR_ERR(tb);
+		ath12k_warn(ab, "failed to parse tlv: %d\n", ret);
+		return ret;
+	}
+
+	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
+	if (!ev) {
+		ath12k_warn(ab, "failed to fetch pdev temp ev");
+		kfree(tb);
+		return -EPROTO;
+	}
+
+	kfree(tb);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ath12k_wmi_op_ep_tx_credits(struct ath12k_base *ab)
 {
 	/* try to send pending beacons first. they take priority */
@@ -8776,6 +8804,7 @@ static void
 ath12k_wmi_pdev_temperature_event(struct ath12k_base *ab,
 				  struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	const struct wmi_pdev_temperature_event *ev;
 	struct ath12k *ar;
 	const void **tb;
@@ -8815,6 +8844,27 @@ ath12k_wmi_pdev_temperature_event(struct ath12k_base *ab,
 
 	ath12k_thermal_event_temperature(ar, temp);
 
+=======
+	struct ath12k *ar;
+	struct wmi_pdev_temperature_event ev = {};
+
+	if (ath12k_pull_pdev_temp_ev(ab, skb, &ev) != 0) {
+		ath12k_warn(ab, "failed to extract pdev temperature event");
+		return;
+	}
+
+	ath12k_dbg(ab, ATH12K_DBG_WMI,
+		   "pdev temperature ev temp %d pdev_id %d\n", ev.temp, ev.pdev_id);
+
+	rcu_read_lock();
+
+	ar = ath12k_mac_get_ar_by_pdev_id(ab, le32_to_cpu(ev.pdev_id));
+	if (!ar) {
+		ath12k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev.pdev_id);
+		goto exit;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit:
 	rcu_read_unlock();
 }
@@ -9778,7 +9828,11 @@ static void
 ath12k_wmi_rssi_dbm_conversion_params_info_event(struct ath12k_base *ab,
 						 struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct ath12k_wmi_rssi_dbm_conv_info_arg rssi_info = {};
+=======
+	struct ath12k_wmi_rssi_dbm_conv_info_arg rssi_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath12k *ar;
 	s32 noise_floor;
 	u32 pdev_id;
@@ -10017,6 +10071,7 @@ static int ath12k_connect_pdev_htc_service(struct ath12k_base *ab,
 
 static int
 ath12k_wmi_send_unit_test_cmd(struct ath12k *ar,
+<<<<<<< HEAD
 			      const struct wmi_unit_test_arg *ut)
 {
 	struct ath12k_wmi_pdev *wmi = ar->wmi;
@@ -10031,11 +10086,29 @@ ath12k_wmi_send_unit_test_cmd(struct ath12k *ar,
 
 	arg_len = sizeof(*ut_cmd_args) * ut->num_args;
 	buf_len = sizeof(*cmd) + arg_len + TLV_HDR_SIZE;
+=======
+			      struct wmi_unit_test_cmd ut_cmd,
+			      u32 *test_args)
+{
+	struct ath12k_wmi_pdev *wmi = ar->wmi;
+	struct wmi_unit_test_cmd *cmd;
+	struct sk_buff *skb;
+	struct wmi_tlv *tlv;
+	void *ptr;
+	u32 *ut_cmd_args;
+	int buf_len, arg_len;
+	int ret;
+	int i;
+
+	arg_len = sizeof(u32) * le32_to_cpu(ut_cmd.num_args);
+	buf_len = sizeof(ut_cmd) + arg_len + TLV_HDR_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, buf_len);
 	if (!skb)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ptr = skb->data;
 	cmd = ptr;
 	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_UNIT_TEST_CMD,
@@ -10046,10 +10119,24 @@ ath12k_wmi_send_unit_test_cmd(struct ath12k *ar,
 	cmd->diag_token = cpu_to_le32(ut->diag_token);
 
 	ptr += sizeof(*cmd);
+=======
+	cmd = (struct wmi_unit_test_cmd *)skb->data;
+	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_UNIT_TEST_CMD,
+						 sizeof(ut_cmd));
+
+	cmd->vdev_id = ut_cmd.vdev_id;
+	cmd->module_id = ut_cmd.module_id;
+	cmd->num_args = ut_cmd.num_args;
+	cmd->diag_token = ut_cmd.diag_token;
+
+	ptr = skb->data + sizeof(ut_cmd);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tlv = ptr;
 	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, arg_len);
 
 	ptr += TLV_HDR_SIZE;
+<<<<<<< HEAD
 	ut_cmd_args = ptr;
 	for (i = 0; i < ut->num_args; i++)
 		ut_cmd_args[i] = cpu_to_le32(ut->args[i]);
@@ -10057,6 +10144,17 @@ ath12k_wmi_send_unit_test_cmd(struct ath12k *ar,
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
 		   "WMI unit test : module %d vdev %d n_args %d token %d\n",
 		   ut->module_id, ut->vdev_id, ut->num_args, ut->diag_token);
+=======
+
+	ut_cmd_args = ptr;
+	for (i = 0; i < le32_to_cpu(ut_cmd.num_args); i++)
+		ut_cmd_args[i] = test_args[i];
+
+	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
+		   "WMI unit test : module %d vdev %d n_args %d token %d\n",
+		   cmd->module_id, cmd->vdev_id, cmd->num_args,
+		   cmd->diag_token);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_UNIT_TEST_CMDID);
 
@@ -10072,7 +10170,12 @@ ath12k_wmi_send_unit_test_cmd(struct ath12k *ar,
 int ath12k_wmi_simulate_radar(struct ath12k *ar)
 {
 	struct ath12k_link_vif *arvif;
+<<<<<<< HEAD
 	struct wmi_unit_test_arg wmi_ut = {};
+=======
+	u32 dfs_args[DFS_MAX_TEST_ARGS];
+	struct wmi_unit_test_cmd wmi_ut;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool arvif_found = false;
 
 	list_for_each_entry(arvif, &ar->arvifs, list) {
@@ -10085,6 +10188,7 @@ int ath12k_wmi_simulate_radar(struct ath12k *ar)
 	if (!arvif_found)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	wmi_ut.args[DFS_TEST_CMDID] = 0;
 	wmi_ut.args[DFS_TEST_PDEV_ID] = ar->pdev->pdev_id;
 	/*
@@ -10102,6 +10206,24 @@ int ath12k_wmi_simulate_radar(struct ath12k *ar)
 	ath12k_dbg(ar->ab, ATH12K_DBG_REG, "Triggering Radar Simulation\n");
 
 	return ath12k_wmi_send_unit_test_cmd(ar, &wmi_ut);
+=======
+	dfs_args[DFS_TEST_CMDID] = 0;
+	dfs_args[DFS_TEST_PDEV_ID] = ar->pdev->pdev_id;
+	/* Currently we could pass segment_id(b0 - b1), chirp(b2)
+	 * freq offset (b3 - b10) to unit test. For simulation
+	 * purpose this can be set to 0 which is valid.
+	 */
+	dfs_args[DFS_TEST_RADAR_PARAM] = 0;
+
+	wmi_ut.vdev_id = cpu_to_le32(arvif->vdev_id);
+	wmi_ut.module_id = cpu_to_le32(DFS_UNIT_TEST_MODULE);
+	wmi_ut.num_args = cpu_to_le32(DFS_MAX_TEST_ARGS);
+	wmi_ut.diag_token = cpu_to_le32(DFS_UNIT_TEST_TOKEN);
+
+	ath12k_dbg(ar->ab, ATH12K_DBG_REG, "Triggering Radar Simulation\n");
+
+	return ath12k_wmi_send_unit_test_cmd(ar, wmi_ut, dfs_args);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_send_tpc_stats_request(struct ath12k *ar,
@@ -10251,7 +10373,11 @@ int ath12k_wmi_hw_data_filter_cmd(struct ath12k *ar, struct wmi_hw_data_filter_a
 {
 	struct wmi_hw_data_filter_cmd *cmd;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int ret, len;
+=======
+	int len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10275,6 +10401,7 @@ int ath12k_wmi_hw_data_filter_cmd(struct ath12k *ar, struct wmi_hw_data_filter_a
 		   "wmi hw data filter enable %d filter_bitmap 0x%x\n",
 		   arg->enable, arg->hw_filter_bitmap);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_HW_DATA_FILTER_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_HW_DATA_FILTER_CMDID\n");
@@ -10282,6 +10409,9 @@ int ath12k_wmi_hw_data_filter_cmd(struct ath12k *ar, struct wmi_hw_data_filter_a
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_HW_DATA_FILTER_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar)
@@ -10289,7 +10419,10 @@ int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar)
 	struct wmi_wow_host_wakeup_cmd *cmd;
 	struct sk_buff *skb;
 	size_t len;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10302,6 +10435,7 @@ int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar)
 
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow host wakeup ind\n");
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
@@ -10309,13 +10443,20 @@ int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar)
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_wow_enable(struct ath12k *ar)
 {
 	struct wmi_wow_enable_cmd *cmd;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int ret, len;
+=======
+	int len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10330,6 +10471,7 @@ int ath12k_wmi_wow_enable(struct ath12k *ar)
 	cmd->pause_iface_config = cpu_to_le32(WOW_IFACE_PAUSE_ENABLED);
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow enable\n");
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
@@ -10337,6 +10479,9 @@ int ath12k_wmi_wow_enable(struct ath12k *ar)
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
@@ -10346,7 +10491,10 @@ int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
 	struct wmi_wow_add_del_event_cmd *cmd;
 	struct sk_buff *skb;
 	size_t len;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10363,6 +10511,7 @@ int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow add wakeup event %s enable %d vdev_id %d\n",
 		   wow_wakeup_event(event), enable, vdev_id);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_DISABLE_WAKE_EVENT_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_DISABLE_WAKE_EVENT_CMDID\n");
@@ -10370,6 +10519,9 @@ int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_DISABLE_WAKE_EVENT_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
@@ -10382,7 +10534,10 @@ int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
 	struct sk_buff *skb;
 	void *ptr;
 	size_t len;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd) +
 	      sizeof(*tlv) +			/* array struct */
@@ -10462,6 +10617,7 @@ int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
 	ath12k_dbg_dump(ar->ab, ATH12K_DBG_WMI, NULL, "wow bitmask: ",
 			bitmap->bitmaskbuf, pattern_len);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ADD_WAKE_PATTERN_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_WOW_ADD_WAKE_PATTERN_CMDID\n");
@@ -10469,6 +10625,9 @@ int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ADD_WAKE_PATTERN_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id)
@@ -10476,7 +10635,10 @@ int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id)
 	struct wmi_wow_del_pattern_cmd *cmd;
 	struct sk_buff *skb;
 	size_t len;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10493,6 +10655,7 @@ int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id)
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow del pattern vdev_id %d pattern_id %d\n",
 		   vdev_id, pattern_id);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_DEL_WAKE_PATTERN_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_WOW_DEL_WAKE_PATTERN_CMDID\n");
@@ -10500,6 +10663,9 @@ int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id)
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_DEL_WAKE_PATTERN_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct sk_buff *
@@ -10635,7 +10801,10 @@ int ath12k_wmi_wow_config_pno(struct ath12k *ar, u32 vdev_id,
 			      struct wmi_pno_scan_req_arg  *pno_scan)
 {
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pno_scan->enable)
 		skb = ath12k_wmi_op_gen_config_pno_start(ar, vdev_id, pno_scan);
@@ -10645,6 +10814,7 @@ int ath12k_wmi_wow_config_pno(struct ath12k *ar, u32 vdev_id,
 	if (IS_ERR_OR_NULL(skb))
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_NETWORK_LIST_OFFLOAD_CONFIG_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_NETWORK_LIST_OFFLOAD_CONFIG_CMDID\n");
@@ -10652,6 +10822,9 @@ int ath12k_wmi_wow_config_pno(struct ath12k *ar, u32 vdev_id,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_NETWORK_LIST_OFFLOAD_CONFIG_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ath12k_wmi_fill_ns_offload(struct ath12k *ar,
@@ -10764,7 +10937,10 @@ int ath12k_wmi_arp_ns_offload(struct ath12k *ar,
 	void *buf_ptr;
 	size_t len;
 	u8 ns_cnt, ns_ext_tuples = 0;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ns_cnt = offload->ipv6_count;
 
@@ -10800,6 +10976,7 @@ int ath12k_wmi_arp_ns_offload(struct ath12k *ar,
 	if (ns_ext_tuples)
 		ath12k_wmi_fill_ns_offload(ar, offload, &buf_ptr, enable, 1);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_SET_ARP_NS_OFFLOAD_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_SET_ARP_NS_OFFLOAD_CMDID\n");
@@ -10807,6 +10984,9 @@ int ath12k_wmi_arp_ns_offload(struct ath12k *ar,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_SET_ARP_NS_OFFLOAD_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_gtk_rekey_offload(struct ath12k *ar,
@@ -10816,7 +10996,11 @@ int ath12k_wmi_gtk_rekey_offload(struct ath12k *ar,
 	struct wmi_gtk_rekey_offload_cmd *cmd;
 	struct sk_buff *skb;
 	__le64 replay_ctr;
+<<<<<<< HEAD
 	int ret, len;
+=======
+	int len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb =  ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10843,6 +11027,7 @@ int ath12k_wmi_gtk_rekey_offload(struct ath12k *ar,
 
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "offload gtk rekey vdev: %d %d\n",
 		   arvif->vdev_id, enable);
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_GTK_OFFLOAD_CMDID offload\n");
@@ -10850,6 +11035,9 @@ int ath12k_wmi_gtk_rekey_offload(struct ath12k *ar,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
@@ -10857,7 +11045,11 @@ int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
 {
 	struct wmi_gtk_rekey_offload_cmd *cmd;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int ret, len;
+=======
+	int len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd);
 	skb =  ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
@@ -10871,6 +11063,7 @@ int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
 
 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "get gtk rekey vdev_id: %d\n",
 		   arvif->vdev_id);
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_GTK_OFFLOAD_CMDID getinfo\n");
@@ -10878,6 +11071,9 @@ int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_sta_keepalive(struct ath12k *ar,
@@ -10888,7 +11084,10 @@ int ath12k_wmi_sta_keepalive(struct ath12k *ar,
 	struct wmi_sta_keepalive_cmd *cmd;
 	struct sk_buff *skb;
 	size_t len;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = sizeof(*cmd) + sizeof(*arp);
 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
@@ -10916,6 +11115,7 @@ int ath12k_wmi_sta_keepalive(struct ath12k *ar,
 		   "wmi sta keepalive vdev %d enabled %d method %d interval %d\n",
 		   arg->vdev_id, arg->enabled, arg->method, arg->interval);
 
+<<<<<<< HEAD
 	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_STA_KEEPALIVE_CMDID);
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to send WMI_STA_KEEPALIVE_CMDID\n");
@@ -10923,6 +11123,9 @@ int ath12k_wmi_sta_keepalive(struct ath12k *ar,
 	}
 
 	return ret;
+=======
+	return ath12k_wmi_cmd_send(wmi, skb, WMI_STA_KEEPALIVE_CMDID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ath12k_wmi_mlo_setup(struct ath12k *ar, struct wmi_mlo_setup_arg *mlo_params)

@@ -75,12 +75,15 @@
 		enable-gpios = <&gpio6 7 GPIO_ACTIVE_HIGH>;
 	};
 
+<<<<<<< HEAD
 	pcie_usb_refclk: clk-x7 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <25000000>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cvbs-in {
 		compatible = "composite-video-connector";
 		label = "CVBS IN";
@@ -529,6 +532,7 @@
 		#gpio-cells = <2>;
 	};
 
+<<<<<<< HEAD
 	pcie_usb_clk: clk@68 {
 		compatible = "renesas,9fgv0841";
 		reg = <0x68>;
@@ -536,6 +540,8 @@
 		#clock-cells = <1>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	video-receiver@70 {
 		compatible = "adi,adv7482";
 		reg = <0x70 0x71 0x72 0x73 0x74 0x75
@@ -653,6 +659,7 @@
 };
 
 &pcie_bus_clk {
+<<<<<<< HEAD
 	status = "disabled";
 };
 
@@ -674,6 +681,19 @@
 	clocks = <&pcie_usb_clk 4>;
 };
 
+=======
+	clock-frequency = <100000000>;
+};
+
+&pciec0 {
+	status = "okay";
+};
+
+&pciec1 {
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pfc {
 	pinctrl-0 = <&scif_clk_pins>;
 	pinctrl-names = "default";
@@ -1061,12 +1081,19 @@
 };
 
 &usb3_phy0 {
+<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 328>, <&pcie_usb_clk 6>, <&usb_extal_clk>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
 &usb3s0_clk {
+<<<<<<< HEAD
 	status = "disabled";
+=======
+	clock-frequency = <100000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &vin0 {

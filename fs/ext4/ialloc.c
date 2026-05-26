@@ -253,13 +253,21 @@ void ext4_free_inode(handle_t *handle, struct inode *inode)
 		return;
 	}
 	if (icount_read(inode) > 1) {
+<<<<<<< HEAD
 		ext4_msg(sb, KERN_ERR, "%s:%d: inode #%llu: count=%d",
+=======
+		ext4_msg(sb, KERN_ERR, "%s:%d: inode #%lu: count=%d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 __func__, __LINE__, inode->i_ino,
 			 icount_read(inode));
 		return;
 	}
 	if (inode->i_nlink) {
+<<<<<<< HEAD
 		ext4_msg(sb, KERN_ERR, "%s:%d: inode #%llu: nlink=%d\n",
+=======
+		ext4_msg(sb, KERN_ERR, "%s:%d: inode #%lu: nlink=%d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 __func__, __LINE__, inode->i_ino, inode->i_nlink);
 		return;
 	}
@@ -631,7 +639,11 @@ static int find_group_other(struct super_block *sb, struct inode *parent,
 	 *
 	 * So add our directory's i_ino into the starting point for the hash.
 	 */
+<<<<<<< HEAD
 	*group = (*group + (unsigned int)parent->i_ino) % ngroups;
+=======
+	*group = (*group + parent->i_ino) % ngroups;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Use a quadratic hash to find a group with a free inode and some free
@@ -1281,7 +1293,11 @@ got:
 		 * twice.
 		 */
 		err = -EIO;
+<<<<<<< HEAD
 		ext4_error(sb, "failed to insert inode %llu: doubly allocated?",
+=======
+		ext4_error(sb, "failed to insert inode %lu: doubly allocated?",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   inode->i_ino);
 		ext4_mark_group_bitmap_corrupted(sb, group,
 					EXT4_GROUP_INFO_IBITMAP_CORRUPT);
@@ -1350,7 +1366,11 @@ got:
 		goto fail_free_drop;
 	}
 
+<<<<<<< HEAD
 	ext4_debug("allocating inode %llu\n", inode->i_ino);
+=======
+	ext4_debug("allocating inode %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_ext4_allocate_inode(inode, dir, mode);
 	brelse(inode_bitmap_bh);
 	return ret;

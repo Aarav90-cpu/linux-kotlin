@@ -29,7 +29,10 @@ algorithms work.
    fiemap
    files
    locks
+<<<<<<< HEAD
    mmap_prepare
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    multigrain-ts
    mount_api
    quota
@@ -99,7 +102,10 @@ Documentation for filesystem implementations.
    isofs
    nilfs2
    nfs/index
+<<<<<<< HEAD
    ntfs
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    ntfs3
    ocfs2
    ocfs2-online-filecheck

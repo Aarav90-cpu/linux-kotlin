@@ -9,7 +9,10 @@
 #include <linux/types.h>
 
 struct xe_step_info {
+<<<<<<< HEAD
 	u8 platform;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 graphics;
 	u8 media;
 	u8 basedie;

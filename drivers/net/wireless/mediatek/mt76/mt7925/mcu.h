@@ -693,6 +693,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
 			    struct ieee80211_bss_conf *link_conf,
 			    struct ieee80211_link_sta *link_sta,
 			    int enable);
+<<<<<<< HEAD
 int mt7925_mcu_add_bss_info_sta(struct mt792x_phy *phy,
 				struct ieee80211_chanctx_conf *ctx,
 				struct ieee80211_bss_conf *link_conf,
@@ -700,6 +701,8 @@ int mt7925_mcu_add_bss_info_sta(struct mt792x_phy *phy,
 				u16 bmc_tx_wlan_idx,
 				u16 sta_wlan_idx,
 				int enable);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mt7925_mcu_set_timing(struct mt792x_phy *phy,
 			  struct ieee80211_bss_conf *link_conf);
 int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable);

@@ -109,7 +109,11 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
 		scoped_guard(read_lock, &kvm->mmu_lock) {
 			if (!mmu_invalidate_retry_gfn(kvm, inv_seq, f->gfn)) {
 				f->valid = true;
+<<<<<<< HEAD
 				rc = gmap_link(mc, kvm->arch.gmap, f, slot);
+=======
+				rc = gmap_link(mc, kvm->arch.gmap, f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
 				f->page = NULL;
 			}

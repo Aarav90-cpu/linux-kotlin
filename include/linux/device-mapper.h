@@ -755,6 +755,7 @@ static inline unsigned long to_bytes(sector_t n)
 	return (n << SECTOR_SHIFT);
 }
 
+<<<<<<< HEAD
 static inline void dm_stack_bs_limits(struct queue_limits *limits, unsigned int bs)
 {
 	limits->logical_block_size = max(limits->logical_block_size, bs);
@@ -762,4 +763,6 @@ static inline void dm_stack_bs_limits(struct queue_limits *limits, unsigned int 
 	limits->io_min = max(limits->io_min, bs);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _LINUX_DEVICE_MAPPER_H */

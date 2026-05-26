@@ -1332,7 +1332,11 @@ static void chtls_cleanup_rbuf(struct sock *sk, int copied)
 }
 
 static int chtls_pt_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 			    int flags)
+=======
+			    int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct chtls_sock *csk = rcu_dereference_sk_user_data(sk);
 	struct chtls_hws *hws = &csk->tlshws;
@@ -1656,7 +1660,11 @@ found_ok_skb:
 }
 
 int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 		  int flags)
+=======
+		  int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct chtls_sock *csk;
@@ -1670,7 +1678,11 @@ int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 	buffers_freed = 0;
 
 	if (unlikely(flags & MSG_OOB))
+<<<<<<< HEAD
 		return tcp_prot.recvmsg(sk, msg, len, flags);
+=======
+		return tcp_prot.recvmsg(sk, msg, len, flags, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(flags & MSG_PEEK))
 		return peekmsg(sk, msg, len, flags);
@@ -1684,7 +1696,11 @@ int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 	csk = rcu_dereference_sk_user_data(sk);
 
 	if (is_tls_rx(csk))
+<<<<<<< HEAD
 		return chtls_pt_recvmsg(sk, msg, len, flags);
+=======
+		return chtls_pt_recvmsg(sk, msg, len, flags, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);

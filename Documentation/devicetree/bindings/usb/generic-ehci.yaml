@@ -9,6 +9,22 @@ title: USB EHCI Controller
 maintainers:
   - Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
+<<<<<<< HEAD
+=======
+allOf:
+  - $ref: usb-hcd.yaml
+  - if:
+      properties:
+        compatible:
+          not:
+            contains:
+              const: ibm,usb-ehci-440epx
+    then:
+      properties:
+        reg:
+          maxItems: 1
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 properties:
   compatible:
     oneOf:
@@ -154,6 +170,7 @@ required:
   - reg
   - interrupts
 
+<<<<<<< HEAD
 allOf:
   - $ref: usb-hcd.yaml
   - if:
@@ -187,6 +204,8 @@ allOf:
         - clocks
         - clock-names
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

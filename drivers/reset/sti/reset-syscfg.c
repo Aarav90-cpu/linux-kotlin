@@ -41,7 +41,11 @@ struct syscfg_reset_channel {
 struct syscfg_reset_controller {
 	struct reset_controller_dev rst;
 	bool active_low;
+<<<<<<< HEAD
 	struct syscfg_reset_channel channels[];
+=======
+	struct syscfg_reset_channel *channels;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define to_syscfg_reset_controller(_rst) \
@@ -135,10 +139,22 @@ static int syscfg_reset_controller_register(struct device *dev,
 	struct syscfg_reset_controller *rc;
 	int i, err;
 
+<<<<<<< HEAD
 	rc = devm_kzalloc(dev, struct_size(rc, channels, data->nr_channels), GFP_KERNEL);
 	if (!rc)
 		return -ENOMEM;
 
+=======
+	rc = devm_kzalloc(dev, sizeof(*rc), GFP_KERNEL);
+	if (!rc)
+		return -ENOMEM;
+
+	rc->channels = devm_kcalloc(dev, data->nr_channels,
+				    sizeof(*rc->channels), GFP_KERNEL);
+	if (!rc->channels)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc->rst.ops = &syscfg_reset_ops;
 	rc->rst.of_node = dev->of_node;
 	rc->rst.nr_resets = data->nr_channels;

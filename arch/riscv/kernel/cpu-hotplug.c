@@ -43,6 +43,10 @@ int __cpu_disable(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HOTPLUG_CPU
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Called on the thread which is asking for a CPU to be shutdown, if the
  * CPU reported dead to the hotplug core.
@@ -74,3 +78,7 @@ void __noreturn arch_cpu_idle_dead(void)
 	/* It should never reach here */
 	BUG();
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

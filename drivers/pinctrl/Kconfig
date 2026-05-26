@@ -77,6 +77,10 @@ config PINCTRL_APPLE_GPIO
 	select GPIOLIB_IRQCHIP
 	select GENERIC_PINCTRL_GROUPS
 	select GENERIC_PINMUX_FUNCTIONS
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This is the driver for the GPIO controller found on Apple ARM SoCs,
 	  including M1.
@@ -125,6 +129,10 @@ config PINCTRL_AT91PIO4
 	select GENERIC_PINCONF
 	select GPIOLIB
 	select GPIOLIB_IRQCHIP
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say Y here to enable the at91 pinctrl/gpio driver for Atmel PIO4
 	  controller available on sama5d2 SoC.
@@ -252,11 +260,19 @@ config PINCTRL_EQUILIBRIUM
 config PINCTRL_EYEQ5
 	bool "Mobileye EyeQ5 pinctrl driver"
 	depends on OF
+<<<<<<< HEAD
 	depends on MACH_EYEQ5 || MACH_EYEQ6LPLUS || COMPILE_TEST
 	select PINMUX
 	select GENERIC_PINCONF
 	select AUXILIARY_BUS
 	default MACH_EYEQ5 || MACH_EYEQ6LPLUS
+=======
+	depends on MACH_EYEQ5 || COMPILE_TEST
+	select PINMUX
+	select GENERIC_PINCONF
+	select AUXILIARY_BUS
+	default MACH_EYEQ5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Pin controller driver for the Mobileye EyeQ5 platform. It does both
 	  pin config & pin muxing. It does not handle GPIO.
@@ -291,6 +307,10 @@ config PINCTRL_K210
 	select GENERIC_PINMUX_FUNCTIONS
 	select GENERIC_PINCONF
 	select GPIOLIB
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select REGMAP_MMIO
 	default SOC_CANAAN_K210
 	help
@@ -416,6 +436,10 @@ config PINCTRL_MICROCHIP_SGPIO
 	select GENERIC_PINCONF
 	select GENERIC_PINCTRL_GROUPS
 	select GENERIC_PINMUX_FUNCTIONS
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for the serial GPIO interface used on Microsemi and
 	  Microchip SoCs. By using a serial interface, the SIO
@@ -437,6 +461,10 @@ config PINCTRL_OCELOT
 	select GENERIC_PINCONF
 	select GENERIC_PINCTRL_GROUPS
 	select GENERIC_PINMUX_FUNCTIONS
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select REGMAP_MMIO
 	help
 	  Support for the internal GPIO interfaces on Microsemi Ocelot and
@@ -473,10 +501,18 @@ config PINCTRL_PEF2256
 config PINCTRL_PIC32
 	bool "Microchip PIC32 pin controller driver"
 	depends on OF
+<<<<<<< HEAD
 	depends on MACH_PIC32 || COMPILE_TEST
 	select PINMUX
 	select GENERIC_PINCONF
 	select GPIOLIB_IRQCHIP
+=======
+	depends on MACH_PIC32
+	select PINMUX
+	select GENERIC_PINCONF
+	select GPIOLIB_IRQCHIP
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This is the pin controller and gpio driver for Microchip PIC32
 	  microcontrollers. This option is selected automatically when specific
@@ -493,6 +529,10 @@ config PINCTRL_PISTACHIO
 	select PINMUX
 	select GENERIC_PINCONF
 	select GPIOLIB_IRQCHIP
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This support pinctrl and GPIO driver for IMG Pistachio SoC.
 
@@ -514,6 +554,10 @@ config PINCTRL_ROCKCHIP
 	select GENERIC_PINCONF
 	select GENERIC_IRQ_CHIP
 	select MFD_SYSCON
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default ARCH_ROCKCHIP
 	help
           This support pinctrl and GPIO driver for Rockchip SoCs.
@@ -549,6 +593,10 @@ config PINCTRL_ST
 config PINCTRL_STMFX
 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
 	depends on I2C
+<<<<<<< HEAD
+=======
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on HAS_IOMEM
 	select GENERIC_PINCONF
 	select GPIOLIB_IRQCHIP

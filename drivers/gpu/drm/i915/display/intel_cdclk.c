@@ -27,9 +27,15 @@
 
 #include <drm/drm_fixed.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
 #include "hsw_ips.h"
+=======
+
+#include "hsw_ips.h"
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_atomic.h"
 #include "intel_audio.h"
 #include "intel_cdclk.h"
@@ -42,8 +48,13 @@
 #include "intel_display_wa.h"
 #include "intel_dram.h"
 #include "intel_mchbar_regs.h"
+<<<<<<< HEAD
 #include "intel_parent.h"
 #include "intel_pci_config.h"
+=======
+#include "intel_pci_config.h"
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_plane.h"
 #include "intel_psr.h"
 #include "intel_step.h"
@@ -888,7 +899,11 @@ static void bdw_set_cdclk(struct intel_display *display,
 		     "trying to change cdclk frequency with cdclk not enabled\n"))
 		return;
 
+<<<<<<< HEAD
 	ret = intel_parent_pcode_write(display, BDW_PCODE_DISPLAY_FREQ_CHANGE_REQ, 0x0);
+=======
+	ret = intel_pcode_write(display->drm, BDW_PCODE_DISPLAY_FREQ_CHANGE_REQ, 0x0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_err(display->drm,
 			"failed to inform pcode about cdclk change\n");
@@ -918,8 +933,13 @@ static void bdw_set_cdclk(struct intel_display *display,
 	if (ret)
 		drm_err(display->drm, "Switching back to LCPLL failed\n");
 
+<<<<<<< HEAD
 	intel_parent_pcode_write(display, HSW_PCODE_DE_WRITE_FREQ_REQ,
 				 cdclk_config->voltage_level);
+=======
+	intel_pcode_write(display->drm, HSW_PCODE_DE_WRITE_FREQ_REQ,
+			  cdclk_config->voltage_level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_de_write(display, CDCLK_FREQ,
 		       DIV_ROUND_CLOSEST(cdclk, 1000) - 1);
@@ -1175,10 +1195,17 @@ static void skl_set_cdclk(struct intel_display *display,
 	drm_WARN_ON_ONCE(display->drm,
 			 display->platform.skylake && vco == 8640000);
 
+<<<<<<< HEAD
 	ret = intel_parent_pcode_request(display, SKL_PCODE_CDCLK_CONTROL,
 					 SKL_CDCLK_PREPARE_FOR_CHANGE,
 					 SKL_CDCLK_READY_FOR_CHANGE,
 					 SKL_CDCLK_READY_FOR_CHANGE, 3);
+=======
+	ret = intel_pcode_request(display->drm, SKL_PCODE_CDCLK_CONTROL,
+				  SKL_CDCLK_PREPARE_FOR_CHANGE,
+				  SKL_CDCLK_READY_FOR_CHANGE,
+				  SKL_CDCLK_READY_FOR_CHANGE, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_err(display->drm,
 			"Failed to inform PCU about cdclk change (%d)\n", ret);
@@ -1221,8 +1248,13 @@ static void skl_set_cdclk(struct intel_display *display,
 	intel_de_posting_read(display, CDCLK_CTL);
 
 	/* inform PCU of the change */
+<<<<<<< HEAD
 	intel_parent_pcode_write(display, SKL_PCODE_CDCLK_CONTROL,
 				 cdclk_config->voltage_level);
+=======
+	intel_pcode_write(display->drm, SKL_PCODE_CDCLK_CONTROL,
+			  cdclk_config->voltage_level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_update_cdclk(display);
 }
@@ -1870,7 +1902,11 @@ static void icl_cdclk_pll_disable(struct intel_display *display)
 	 *      after the PLL is enabled (which is already done as part of the
 	 *      normal flow of _bxt_set_cdclk()).
 	 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_13012396614))
+=======
+	if (intel_display_wa(display, 13012396614))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, CDCLK_CTL, MDCLK_SOURCE_SEL_MASK, MDCLK_SOURCE_SEL_CD2XCLK);
 
 	intel_de_rmw(display, BXT_DE_PLL_ENABLE,
@@ -2186,8 +2222,12 @@ static u32 bxt_cdclk_ctl(struct intel_display *display,
 		 * icl_cdclk_pll_disable().  Here we are just making sure
 		 * we keep the expected value.
 		 */
+<<<<<<< HEAD
 		if (intel_display_wa(display, INTEL_DISPLAY_WA_13012396614) &&
 		    vco == 0)
+=======
+		if (intel_display_wa(display, 13012396614) && vco == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			val |= MDCLK_SOURCE_SEL_CD2XCLK;
 		else
 			val |= xe2lpd_mdclk_source_sel(display);
@@ -2248,18 +2288,31 @@ static void bxt_set_cdclk(struct intel_display *display,
 	if (DISPLAY_VER(display) >= 14 || display->platform.dg2)
 		; /* NOOP */
 	else if (DISPLAY_VER(display) >= 11)
+<<<<<<< HEAD
 		ret = intel_parent_pcode_request(display, SKL_PCODE_CDCLK_CONTROL,
 						 SKL_CDCLK_PREPARE_FOR_CHANGE,
 						 SKL_CDCLK_READY_FOR_CHANGE,
 						 SKL_CDCLK_READY_FOR_CHANGE, 3);
+=======
+		ret = intel_pcode_request(display->drm, SKL_PCODE_CDCLK_CONTROL,
+					  SKL_CDCLK_PREPARE_FOR_CHANGE,
+					  SKL_CDCLK_READY_FOR_CHANGE,
+					  SKL_CDCLK_READY_FOR_CHANGE, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		/*
 		 * BSpec requires us to wait up to 150usec, but that leads to
 		 * timeouts; the 2ms used here is based on experiment.
 		 */
+<<<<<<< HEAD
 		ret = intel_parent_pcode_write_timeout(display,
 						       HSW_PCODE_DE_WRITE_FREQ_REQ,
 						       0x80000000, 2);
+=======
+		ret = intel_pcode_write_timeout(display->drm,
+						HSW_PCODE_DE_WRITE_FREQ_REQ,
+						0x80000000, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret) {
 		drm_err(display->drm,
@@ -2288,8 +2341,13 @@ static void bxt_set_cdclk(struct intel_display *display,
 		 * Display versions 14 and beyond
 		 */;
 	else if (DISPLAY_VER(display) >= 11 && !display->platform.dg2)
+<<<<<<< HEAD
 		ret = intel_parent_pcode_write(display, SKL_PCODE_CDCLK_CONTROL,
 					       cdclk_config->voltage_level);
+=======
+		ret = intel_pcode_write(display->drm, SKL_PCODE_CDCLK_CONTROL,
+					cdclk_config->voltage_level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (DISPLAY_VER(display) < 11) {
 		/*
 		 * The timeout isn't specified, the 2ms used here is based on
@@ -2297,9 +2355,15 @@ static void bxt_set_cdclk(struct intel_display *display,
 		 * FIXME: Waiting for the request completion could be delayed
 		 * until the next PCODE request based on BSpec.
 		 */
+<<<<<<< HEAD
 		ret = intel_parent_pcode_write_timeout(display,
 						       HSW_PCODE_DE_WRITE_FREQ_REQ,
 						       cdclk_config->voltage_level, 2);
+=======
+		ret = intel_pcode_write_timeout(display->drm,
+						HSW_PCODE_DE_WRITE_FREQ_REQ,
+						cdclk_config->voltage_level, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (ret) {
 		drm_err(display->drm,
@@ -2599,11 +2663,19 @@ static void intel_pcode_notify(struct intel_display *display,
 	if (pipe_count_update_valid)
 		update_mask |= DISPLAY_TO_PCODE_PIPE_COUNT_VALID;
 
+<<<<<<< HEAD
 	ret = intel_parent_pcode_request(display, SKL_PCODE_CDCLK_CONTROL,
 					 SKL_CDCLK_PREPARE_FOR_CHANGE |
 					 update_mask,
 					 SKL_CDCLK_READY_FOR_CHANGE,
 					 SKL_CDCLK_READY_FOR_CHANGE, 3);
+=======
+	ret = intel_pcode_request(display->drm, SKL_PCODE_CDCLK_CONTROL,
+				  SKL_CDCLK_PREPARE_FOR_CHANGE |
+				  update_mask,
+				  SKL_CDCLK_READY_FOR_CHANGE,
+				  SKL_CDCLK_READY_FOR_CHANGE, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		drm_err(display->drm,
 			"Failed to inform PCU about display config (err %d)\n",
@@ -4061,7 +4133,11 @@ void intel_init_cdclk_hooks(struct intel_display *display)
 		display->cdclk.table = dg2_cdclk_table;
 	} else if (display->platform.alderlake_p) {
 		/* Wa_22011320316:adl-p[a0] */
+<<<<<<< HEAD
 		if (intel_display_wa(display, INTEL_DISPLAY_WA_22011320316)) {
+=======
+		if (display->platform.alderlake_p && IS_DISPLAY_STEP(display, STEP_A0, STEP_B0)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			display->cdclk.table = adlp_a_step_cdclk_table;
 			display->funcs.cdclk = &tgl_cdclk_funcs;
 		} else if (display->platform.alderlake_p_raptorlake_u) {

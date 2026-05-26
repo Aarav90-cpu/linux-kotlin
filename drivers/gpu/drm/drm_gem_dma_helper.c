@@ -146,13 +146,21 @@ struct drm_gem_dma_object *drm_gem_dma_create(struct drm_device *drm,
 		return dma_obj;
 
 	if (dma_obj->map_noncoherent) {
+<<<<<<< HEAD
 		dma_obj->vaddr = dma_alloc_noncoherent(drm_dev_dma_dev(drm),
 						       size,
+=======
+		dma_obj->vaddr = dma_alloc_noncoherent(drm->dev, size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						       &dma_obj->dma_addr,
 						       DMA_TO_DEVICE,
 						       GFP_KERNEL | __GFP_NOWARN);
 	} else {
+<<<<<<< HEAD
 		dma_obj->vaddr = dma_alloc_wc(drm_dev_dma_dev(drm), size,
+=======
+		dma_obj->vaddr = dma_alloc_wc(drm->dev, size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      &dma_obj->dma_addr,
 					      GFP_KERNEL | __GFP_NOWARN);
 	}
@@ -237,6 +245,7 @@ void drm_gem_dma_free(struct drm_gem_dma_object *dma_obj)
 		drm_prime_gem_destroy(gem_obj, dma_obj->sgt);
 	} else if (dma_obj->vaddr) {
 		if (dma_obj->map_noncoherent)
+<<<<<<< HEAD
 			dma_free_noncoherent(drm_dev_dma_dev(gem_obj->dev),
 					     dma_obj->base.size,
 					     dma_obj->vaddr, dma_obj->dma_addr,
@@ -245,6 +254,14 @@ void drm_gem_dma_free(struct drm_gem_dma_object *dma_obj)
 			dma_free_wc(drm_dev_dma_dev(gem_obj->dev),
 				    dma_obj->base.size, dma_obj->vaddr,
 				    dma_obj->dma_addr);
+=======
+			dma_free_noncoherent(gem_obj->dev->dev, dma_obj->base.size,
+					     dma_obj->vaddr, dma_obj->dma_addr,
+					     DMA_TO_DEVICE);
+		else
+			dma_free_wc(gem_obj->dev->dev, dma_obj->base.size,
+				    dma_obj->vaddr, dma_obj->dma_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	drm_gem_object_release(gem_obj);
@@ -435,7 +452,11 @@ struct sg_table *drm_gem_dma_get_sg_table(struct drm_gem_dma_object *dma_obj)
 	if (!sgt)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	ret = dma_get_sgtable(drm_dev_dma_dev(obj->dev), sgt, dma_obj->vaddr,
+=======
+	ret = dma_get_sgtable(obj->dev->dev, sgt, dma_obj->vaddr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      dma_obj->dma_addr, obj->size);
 	if (ret < 0)
 		goto out;
@@ -537,17 +558,30 @@ int drm_gem_dma_mmap(struct drm_gem_dma_object *dma_obj, struct vm_area_struct *
 	 * the whole buffer.
 	 */
 	vma->vm_pgoff -= drm_vma_node_start(&obj->vma_node);
+<<<<<<< HEAD
 	vm_flags_mod(vma, VM_DONTDUMP | VM_DONTEXPAND, VM_PFNMAP);
+=======
+	vm_flags_mod(vma, VM_DONTEXPAND, VM_PFNMAP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dma_obj->map_noncoherent) {
 		vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
 
+<<<<<<< HEAD
 		ret = dma_mmap_pages(drm_dev_dma_dev(dma_obj->base.dev),
 				     vma, vma->vm_end - vma->vm_start,
 				     virt_to_page(dma_obj->vaddr));
 	} else {
 		ret = dma_mmap_wc(drm_dev_dma_dev(dma_obj->base.dev), vma,
 				  dma_obj->vaddr, dma_obj->dma_addr,
+=======
+		ret = dma_mmap_pages(dma_obj->base.dev->dev,
+				     vma, vma->vm_end - vma->vm_start,
+				     virt_to_page(dma_obj->vaddr));
+	} else {
+		ret = dma_mmap_wc(dma_obj->base.dev->dev, vma, dma_obj->vaddr,
+				  dma_obj->dma_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  vma->vm_end - vma->vm_start);
 	}
 	if (ret)

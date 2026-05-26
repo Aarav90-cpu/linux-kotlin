@@ -69,7 +69,10 @@ obj-$(CONFIG_TRACING) += trace_seq.o
 obj-$(CONFIG_TRACING) += trace_stat.o
 obj-$(CONFIG_TRACING) += trace_printk.o
 obj-$(CONFIG_TRACING) += trace_pid.o
+<<<<<<< HEAD
 obj-$(CONFIG_TRACER_SNAPSHOT) += trace_snapshot.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_TRACING) += 	pid_list.o
 obj-$(CONFIG_TRACING_MAP) += tracing_map.o
 obj-$(CONFIG_PREEMPTIRQ_DELAY_TEST) += preemptirq_delay_test.o
@@ -129,6 +132,7 @@ obj-$(CONFIG_FPROBE_EVENTS) += trace_fprobe.o
 obj-$(CONFIG_TRACEPOINT_BENCHMARK) += trace_benchmark.o
 obj-$(CONFIG_RV) += rv/
 
+<<<<<<< HEAD
 obj-$(CONFIG_TRACE_REMOTE) += trace_remote.o
 obj-$(CONFIG_SIMPLE_RING_BUFFER) += simple_ring_buffer.o
 obj-$(CONFIG_TRACE_REMOTE_TEST) += remote_test.o
@@ -162,4 +166,6 @@ $(obj)/%.o.checked: $(obj)/%.o $(obj)/undefsyms_base.o FORCE
 
 always-$(CONFIG_SIMPLE_RING_BUFFER) += simple_ring_buffer.o.checked
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 libftrace-y := ftrace.o

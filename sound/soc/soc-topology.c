@@ -224,11 +224,16 @@ static inline void soc_control_err(struct soc_tplg *tplg,
 	struct snd_soc_tplg_ctl_hdr *hdr, const char *name)
 {
 	dev_err(tplg->dev,
+<<<<<<< HEAD
 		"ASoC: no complete control IO handler for %s type (g,p,i) %u:%u:%u at 0x%lx\n",
 		name,
 		le32_to_cpu(hdr->ops.get),
 		le32_to_cpu(hdr->ops.put),
 		le32_to_cpu(hdr->ops.info),
+=======
+		"ASoC: no complete control IO handler for %s type (g,p,i) %d:%d:%d at 0x%lx\n",
+		name, hdr->ops.get, hdr->ops.put, hdr->ops.info,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		soc_tplg_get_offset(tplg));
 }
 
@@ -241,18 +246,30 @@ static int soc_tplg_vendor_load(struct soc_tplg *tplg,
 	if (tplg->ops && tplg->ops->vendor_load)
 		ret = tplg->ops->vendor_load(tplg->comp, tplg->index, hdr);
 	else {
+<<<<<<< HEAD
 		dev_err(tplg->dev, "ASoC: no vendor load callback for ID %u\n",
 			le32_to_cpu(hdr->vendor_type));
+=======
+		dev_err(tplg->dev, "ASoC: no vendor load callback for ID %d\n",
+			hdr->vendor_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
 	if (ret < 0)
 		dev_err(tplg->dev,
+<<<<<<< HEAD
 			"ASoC: vendor load failed at hdr offset %ld/0x%lx for type %u:%u\n",
 			soc_tplg_get_hdr_offset(tplg),
 			soc_tplg_get_hdr_offset(tplg),
 			le32_to_cpu(hdr->type),
 			le32_to_cpu(hdr->vendor_type));
+=======
+			"ASoC: vendor load failed at hdr offset %ld/0x%lx for type %d:%d\n",
+			soc_tplg_get_hdr_offset(tplg),
+			soc_tplg_get_hdr_offset(tplg),
+			hdr->type, hdr->vendor_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -629,8 +646,13 @@ static int soc_tplg_create_tlv(struct soc_tplg *tplg,
 
 		/* TODO: add support for other TLV types */
 		default:
+<<<<<<< HEAD
 			dev_dbg(tplg->dev, "Unsupported TLV type %u\n",
 				le32_to_cpu(tplg_tlv->type));
+=======
+			dev_dbg(tplg->dev, "Unsupported TLV type %d\n",
+					tplg_tlv->type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 	}
@@ -657,7 +679,11 @@ static int soc_tplg_control_dmixer_create(struct soc_tplg *tplg, struct snd_kcon
 	tplg->pos += sizeof(struct snd_soc_tplg_mixer_control) + le32_to_cpu(mc->priv.size);
 
 	dev_dbg(tplg->dev, "ASoC: adding mixer kcontrol %s with access 0x%x\n",
+<<<<<<< HEAD
 		mc->hdr.name, le32_to_cpu(mc->hdr.access));
+=======
+		mc->hdr.name, mc->hdr.access);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kc->name = devm_kstrdup(tplg->dev, mc->hdr.name, GFP_KERNEL);
 	if (!kc->name)
@@ -780,7 +806,11 @@ static int soc_tplg_control_denum_create(struct soc_tplg *tplg, struct snd_kcont
 
 	tplg->pos += (sizeof(struct snd_soc_tplg_enum_control) + le32_to_cpu(ec->priv.size));
 
+<<<<<<< HEAD
 	dev_dbg(tplg->dev, "ASoC: adding enum kcontrol %s size %u\n", ec->hdr.name, le32_to_cpu(ec->items));
+=======
+	dev_dbg(tplg->dev, "ASoC: adding enum kcontrol %s size %d\n", ec->hdr.name, ec->items);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kc->name = devm_kstrdup(tplg->dev, ec->hdr.name, GFP_KERNEL);
 	if (!kc->name)
@@ -815,8 +845,13 @@ static int soc_tplg_control_denum_create(struct soc_tplg *tplg, struct snd_kcont
 		}
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(tplg->dev, "ASoC: invalid enum control type %u for %s\n",
 			le32_to_cpu(ec->hdr.ops.info), ec->hdr.name);
+=======
+		dev_err(tplg->dev, "ASoC: invalid enum control type %d for %s\n",
+			ec->hdr.ops.info, ec->hdr.name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -850,7 +885,11 @@ static int soc_tplg_control_dbytes_create(struct soc_tplg *tplg, struct snd_kcon
 	tplg->pos += (sizeof(struct snd_soc_tplg_bytes_control) + le32_to_cpu(be->priv.size));
 
 	dev_dbg(tplg->dev, "ASoC: adding bytes kcontrol %s with access 0x%x\n",
+<<<<<<< HEAD
 		be->hdr.name, le32_to_cpu(be->hdr.access));
+=======
+		be->hdr.name, be->hdr.access);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kc->name = devm_kstrdup(tplg->dev, be->hdr.name, GFP_KERNEL);
 	if (!kc->name)
@@ -980,7 +1019,11 @@ static int soc_tplg_kcontrol_elems_load(struct soc_tplg *tplg,
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	dev_dbg(tplg->dev, "ASoC: adding %u kcontrols at 0x%lx\n", le32_to_cpu(hdr->count),
+=======
+	dev_dbg(tplg->dev, "ASoC: adding %d kcontrols at 0x%lx\n", hdr->count,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		soc_tplg_get_offset(tplg));
 
 	for (i = 0; i < le32_to_cpu(hdr->count); i++) {
@@ -1007,8 +1050,13 @@ static int soc_tplg_kcontrol_elems_load(struct soc_tplg *tplg,
 		}
 
 		if (ret < 0) {
+<<<<<<< HEAD
 			dev_err(tplg->dev, "ASoC: invalid control type: %u, index: %d at 0x%lx\n",
 				le32_to_cpu(control_hdr->type), i, soc_tplg_get_offset(tplg));
+=======
+			dev_err(tplg->dev, "ASoC: invalid control type: %d, index: %d at 0x%lx\n",
+				control_hdr->type, i, soc_tplg_get_offset(tplg));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 		}
 	}
@@ -1044,8 +1092,13 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
 				      count, le32_to_cpu(hdr->payload_size), "graph"))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev_dbg(tplg->dev, "ASoC: adding %d DAPM routes for index %u\n", count,
 		le32_to_cpu(hdr->index));
+=======
+	dev_dbg(tplg->dev, "ASoC: adding %d DAPM routes for index %d\n", count,
+		hdr->index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < count; i++) {
 		route = devm_kzalloc(tplg->dev, sizeof(*route), GFP_KERNEL);
@@ -1120,8 +1173,13 @@ static int soc_tplg_dapm_widget_create(struct soc_tplg *tplg,
 		SNDRV_CTL_ELEM_ID_NAME_MAXLEN)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev_dbg(tplg->dev, "ASoC: creating DAPM widget %s id %u\n",
 		w->name, le32_to_cpu(w->id));
+=======
+	dev_dbg(tplg->dev, "ASoC: creating DAPM widget %s id %d\n",
+		w->name, w->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(&template, 0, sizeof(template));
 
@@ -1204,9 +1262,14 @@ static int soc_tplg_dapm_widget_create(struct soc_tplg *tplg,
 				goto hdr_err;
 			break;
 		default:
+<<<<<<< HEAD
 			dev_err(tplg->dev, "ASoC: invalid widget control type %u:%u:%u\n",
 				le32_to_cpu(control_hdr->ops.get),
 				le32_to_cpu(control_hdr->ops.put),
+=======
+			dev_err(tplg->dev, "ASoC: invalid widget control type %d:%d:%d\n",
+				control_hdr->ops.get, control_hdr->ops.put,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				le32_to_cpu(control_hdr->ops.info));
 			ret = -EINVAL;
 			goto hdr_err;
@@ -1750,8 +1813,13 @@ static int soc_tplg_link_config(struct soc_tplg *tplg,
 	link = snd_soc_find_dai_link(tplg->comp->card, le32_to_cpu(cfg->id),
 				     name, stream_name);
 	if (!link) {
+<<<<<<< HEAD
 		dev_err(tplg->dev, "ASoC: physical link %s (id %u) not exist\n",
 			name, le32_to_cpu(cfg->id));
+=======
+		dev_err(tplg->dev, "ASoC: physical link %s (id %d) not exist\n",
+			name, cfg->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -1954,7 +2022,11 @@ static int soc_tplg_valid_header(struct soc_tplg *tplg,
 {
 	if (le32_to_cpu(hdr->size) != sizeof(*hdr)) {
 		dev_err(tplg->dev,
+<<<<<<< HEAD
 			"ASoC: invalid header size for type %u at offset 0x%lx size 0x%zx.\n",
+=======
+			"ASoC: invalid header size for type %d at offset 0x%lx size 0x%zx.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			le32_to_cpu(hdr->type), soc_tplg_get_hdr_offset(tplg),
 			tplg->fw->size);
 		return -EINVAL;
@@ -1962,9 +2034,15 @@ static int soc_tplg_valid_header(struct soc_tplg *tplg,
 
 	if (soc_tplg_get_hdr_offset(tplg) + le32_to_cpu(hdr->payload_size) >= tplg->fw->size) {
 		dev_err(tplg->dev,
+<<<<<<< HEAD
 			"ASoC: invalid header of type %u at offset %ld payload_size %u\n",
 			le32_to_cpu(hdr->type), soc_tplg_get_hdr_offset(tplg),
 			le32_to_cpu(hdr->payload_size));
+=======
+			"ASoC: invalid header of type %d at offset %ld payload_size %d\n",
+			le32_to_cpu(hdr->type), soc_tplg_get_hdr_offset(tplg),
+			hdr->payload_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -1972,7 +2050,11 @@ static int soc_tplg_valid_header(struct soc_tplg *tplg,
 	if (le32_to_cpu(hdr->magic) == SOC_TPLG_MAGIC_BIG_ENDIAN) {
 		dev_err(tplg->dev,
 			"ASoC: pass %d big endian not supported header got %x at offset 0x%lx size 0x%zx.\n",
+<<<<<<< HEAD
 			tplg->pass, le32_to_cpu(hdr->magic),
+=======
+			tplg->pass, hdr->magic,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			soc_tplg_get_hdr_offset(tplg), tplg->fw->size);
 		return -EINVAL;
 	}
@@ -1980,7 +2062,11 @@ static int soc_tplg_valid_header(struct soc_tplg *tplg,
 	if (le32_to_cpu(hdr->magic) != SND_SOC_TPLG_MAGIC) {
 		dev_err(tplg->dev,
 			"ASoC: pass %d does not have a valid header got %x at offset 0x%lx size 0x%zx.\n",
+<<<<<<< HEAD
 			tplg->pass, le32_to_cpu(hdr->magic),
+=======
+			tplg->pass, hdr->magic,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			soc_tplg_get_hdr_offset(tplg), tplg->fw->size);
 		return -EINVAL;
 	}
@@ -1990,7 +2076,11 @@ static int soc_tplg_valid_header(struct soc_tplg *tplg,
 	    le32_to_cpu(hdr->abi) < SND_SOC_TPLG_ABI_VERSION_MIN) {
 		dev_err(tplg->dev,
 			"ASoC: pass %d invalid ABI version got 0x%x need 0x%x at offset 0x%lx size 0x%zx.\n",
+<<<<<<< HEAD
 			tplg->pass, le32_to_cpu(hdr->abi),
+=======
+			tplg->pass, hdr->abi,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			SND_SOC_TPLG_ABI_VERSION, soc_tplg_get_hdr_offset(tplg),
 			tplg->fw->size);
 		return -EINVAL;
@@ -2059,11 +2149,17 @@ static int soc_tplg_load_header(struct soc_tplg *tplg,
 
 	if (tplg->pass == hdr_pass) {
 		dev_dbg(tplg->dev,
+<<<<<<< HEAD
 			"ASoC: Got 0x%x bytes of type %u version %u vendor %u at pass %d\n",
 			le32_to_cpu(hdr->payload_size),
 			le32_to_cpu(hdr->type),
 			le32_to_cpu(hdr->version),
 			le32_to_cpu(hdr->vendor_type), tplg->pass);
+=======
+			"ASoC: Got 0x%x bytes of type %d version %d vendor %d at pass %d\n",
+			hdr->payload_size, hdr->type, hdr->version,
+			hdr->vendor_type, tplg->pass);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return elem_load(tplg, hdr);
 	}
 

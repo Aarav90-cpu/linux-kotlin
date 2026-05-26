@@ -464,7 +464,10 @@ SPI
 
 WATCHDOG
   devm_watchdog_register_device()
+<<<<<<< HEAD
 
 WORKQUEUE
   devm_alloc_workqueue()
   devm_alloc_ordered_workqueue()
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

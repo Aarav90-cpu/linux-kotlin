@@ -150,6 +150,7 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	src_node = kstrdup("", GFP_KERNEL);
 	dst_node = kstrdup("", GFP_KERNEL);
 	if (!src_node || !dst_node) {
@@ -157,6 +158,12 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
 		kfree(src_node);
 		return -ENOMEM;
 	}
+=======
+	src_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
+	dst_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
+	if (!src_node || !dst_node)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	client_dir = debugfs_create_dir("test_client", icc_dir);
 

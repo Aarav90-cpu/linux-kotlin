@@ -24,7 +24,10 @@
 #define BD7182x_MASK_CONF_PON			BIT(0)
 #define BD71815_MASK_CONF_XSTB			BIT(1)
 #define BD7182x_MASK_BAT_STAT			0x3f
+<<<<<<< HEAD
 #define BD7182x_MASK_ILIM			0x3f
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BD7182x_MASK_DCIN_STAT			0x07
 
 #define BD7182x_MASK_WDT_AUTO			0x40
@@ -49,11 +52,17 @@ struct pwr_regs {
 	unsigned int vbat_avg;
 	unsigned int ibat;
 	unsigned int ibat_avg;
+<<<<<<< HEAD
 	unsigned int ilim_stat;
 	unsigned int btemp_vth;
 	unsigned int chg_state;
 	unsigned int bat_temp;
 	unsigned int dcin_set;
+=======
+	unsigned int btemp_vth;
+	unsigned int chg_state;
+	unsigned int bat_temp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int dcin_stat;
 	unsigned int dcin_online_mask;
 	unsigned int dcin_collapse_limit;
@@ -69,11 +78,17 @@ static const struct pwr_regs pwr_regs_bd71828 = {
 	.vbat_avg = BD71828_REG_VBAT_U,
 	.ibat = BD71828_REG_IBAT_U,
 	.ibat_avg = BD71828_REG_IBAT_AVG_U,
+<<<<<<< HEAD
 	.ilim_stat = BD71828_REG_ILIM_STAT,
 	.btemp_vth = BD71828_REG_VM_BTMP_U,
 	.chg_state = BD71828_REG_CHG_STATE,
 	.bat_temp = BD71828_REG_BAT_TEMP,
 	.dcin_set = BD71828_REG_DCIN_SET,
+=======
+	.btemp_vth = BD71828_REG_VM_BTMP_U,
+	.chg_state = BD71828_REG_CHG_STATE,
+	.bat_temp = BD71828_REG_BAT_TEMP,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dcin_stat = BD71828_REG_DCIN_STAT,
 	.dcin_online_mask = BD7182x_MASK_DCIN_DET,
 	.dcin_collapse_limit = BD71828_REG_DCIN_CLPS,
@@ -446,7 +461,10 @@ static int bd71828_charger_get_property(struct power_supply *psy,
 	struct bd71828_power *pwr = dev_get_drvdata(psy->dev.parent);
 	u32 vot;
 	u16 tmp;
+<<<<<<< HEAD
 	int t;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int online;
 	int ret;
 
@@ -466,6 +484,7 @@ static int bd71828_charger_get_property(struct power_supply *psy,
 		/* 5 milli volt steps */
 		val->intval = 5000 * vot;
 		break;
+<<<<<<< HEAD
 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		if (!pwr->regs->ilim_stat)
 			return -ENODATA;
@@ -480,6 +499,8 @@ static int bd71828_charger_get_property(struct power_supply *psy,
 			val->intval = 2000000;
 
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -487,6 +508,7 @@ static int bd71828_charger_get_property(struct power_supply *psy,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bd71828_charger_set_property(struct power_supply *psy,
 					enum power_supply_property psp,
 					const union power_supply_propval *val)
@@ -526,6 +548,8 @@ static int bd71828_charger_property_is_writeable(struct power_supply *psy,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bd71828_battery_get_property(struct power_supply *psy,
 					enum power_supply_property psp,
 					union power_supply_propval *val)
@@ -630,7 +654,10 @@ static int bd71828_battery_property_is_writeable(struct power_supply *psy,
 
 /** @brief ac properties */
 static const enum power_supply_property bd71828_charger_props[] = {
+<<<<<<< HEAD
 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	POWER_SUPPLY_PROP_ONLINE,
 	POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
@@ -660,8 +687,11 @@ static const struct power_supply_desc bd71828_ac_desc = {
 	.properties	= bd71828_charger_props,
 	.num_properties	= ARRAY_SIZE(bd71828_charger_props),
 	.get_property	= bd71828_charger_get_property,
+<<<<<<< HEAD
 	.set_property	= bd71828_charger_set_property,
 	.property_is_writeable   = bd71828_charger_property_is_writeable,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct power_supply_desc bd71828_bat_desc = {

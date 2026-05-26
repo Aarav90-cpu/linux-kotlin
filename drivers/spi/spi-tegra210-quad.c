@@ -1000,7 +1000,11 @@ static int tegra_qspi_setup(struct spi_device *spi)
 
 	spin_unlock_irqrestore(&tqspi->lock, flags);
 
+<<<<<<< HEAD
 	pm_runtime_put_autosuspend(tqspi->dev);
+=======
+	pm_runtime_put(tqspi->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1223,7 +1227,11 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
 					(&tqspi->xfer_completion,
 					QSPI_DMA_TIMEOUT);
 
+<<<<<<< HEAD
 			if (ret == 0) {
+=======
+			if (WARN_ON_ONCE(ret == 0)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * Check if hardware completed the transfer
 				 * even though interrupt was lost or delayed.
@@ -1232,7 +1240,10 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
 				ret = tegra_qspi_handle_timeout(tqspi);
 				if (ret < 0) {
 					/* Real timeout - clean up and fail */
+<<<<<<< HEAD
 					WARN_ON_ONCE(1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					dev_err(tqspi->dev, "transfer timeout\n");
 
 					/* Abort transfer by resetting pio/dma bit */
@@ -1341,7 +1352,11 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
 
 		ret = wait_for_completion_timeout(&tqspi->xfer_completion,
 						  QSPI_DMA_TIMEOUT);
+<<<<<<< HEAD
 		if (ret == 0) {
+=======
+		if (WARN_ON(ret == 0)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Check if hardware completed the transfer even though
 			 * interrupt was lost or delayed. If so, process the
@@ -1350,7 +1365,10 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
 			ret = tegra_qspi_handle_timeout(tqspi);
 			if (ret < 0) {
 				/* Real timeout - clean up and fail */
+<<<<<<< HEAD
 				WARN_ON(1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dev_err(tqspi->dev, "transfer timeout\n");
 
 				if (tqspi->is_curr_dma_xfer)
@@ -1767,6 +1785,7 @@ static int tegra_qspi_probe(struct platform_device *pdev)
 	init_completion(&tqspi->rx_dma_complete);
 	init_completion(&tqspi->xfer_completion);
 
+<<<<<<< HEAD
 	/*
 	 * Set autosuspend delay to 500ms. Testing shows this value eliminates
 	 * suspend/resume overhead during burst operations while allowing quick
@@ -1775,6 +1794,8 @@ static int tegra_qspi_probe(struct platform_device *pdev)
 	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
 	pm_runtime_use_autosuspend(&pdev->dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_enable(&pdev->dev);
 	ret = pm_runtime_resume_and_get(&pdev->dev);
 	if (ret < 0) {
@@ -1791,7 +1812,11 @@ static int tegra_qspi_probe(struct platform_device *pdev)
 	tqspi->spi_cs_timing2 = tegra_qspi_readl(tqspi, QSPI_CS_TIMING2);
 	tqspi->def_command2_reg = tegra_qspi_readl(tqspi, QSPI_COMMAND2);
 
+<<<<<<< HEAD
 	pm_runtime_put_autosuspend(&pdev->dev);
+=======
+	pm_runtime_put(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = request_threaded_irq(tqspi->irq, NULL,
 				   tegra_qspi_isr_thread, IRQF_ONESHOT,
@@ -1812,7 +1837,10 @@ static int tegra_qspi_probe(struct platform_device *pdev)
 exit_free_irq:
 	free_irq(qspi_irq, tqspi);
 exit_pm_disable:
+<<<<<<< HEAD
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_force_suspend(&pdev->dev);
 	tegra_qspi_deinit_dma(tqspi);
 	return ret;
@@ -1825,7 +1853,10 @@ static void tegra_qspi_remove(struct platform_device *pdev)
 
 	spi_unregister_controller(host);
 	free_irq(tqspi->irq, tqspi);
+<<<<<<< HEAD
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_force_suspend(&pdev->dev);
 	tegra_qspi_deinit_dma(tqspi);
 }
@@ -1851,7 +1882,11 @@ static int __maybe_unused tegra_qspi_resume(struct device *dev)
 
 	tegra_qspi_writel(tqspi, tqspi->command1_reg, QSPI_COMMAND1);
 	tegra_qspi_writel(tqspi, tqspi->def_command2_reg, QSPI_COMMAND2);
+<<<<<<< HEAD
 	pm_runtime_put_autosuspend(dev);
+=======
+	pm_runtime_put(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return spi_controller_resume(host);
 }

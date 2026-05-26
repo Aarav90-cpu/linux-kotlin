@@ -271,8 +271,11 @@ struct auxiliary_device *__devm_auxiliary_device_create(struct device *dev,
 	__devm_auxiliary_device_create(dev, KBUILD_MODNAME, devname,  \
 				       platform_data, 0)
 
+<<<<<<< HEAD
 bool dev_is_auxiliary(struct device *dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * module_auxiliary_driver() - Helper macro for registering an auxiliary driver
  * @__auxiliary_driver: auxiliary driver struct

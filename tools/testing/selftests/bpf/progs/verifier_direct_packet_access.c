@@ -412,7 +412,11 @@ l0_%=:	r0 = 0;						\
 
 SEC("tc")
 __description("direct packet access: test17 (pruning, alignment)")
+<<<<<<< HEAD
 __failure __msg("misaligned packet access off 2+15+-4 size 4")
+=======
+__failure __msg("misaligned packet access off 2+0+15+-4 size 4")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __flag(BPF_F_STRICT_ALIGNMENT)
 __naked void packet_access_test17_pruning_alignment(void)
 {
@@ -569,7 +573,11 @@ l0_%=:	r0 = 0;						\
 
 SEC("tc")
 __description("direct packet access: test23 (x += pkt_ptr, 4)")
+<<<<<<< HEAD
 __failure __msg("invalid access to packet, off=31 size=8, R5(id=3,off=31,r=0)")
+=======
+__failure __msg("invalid access to packet, off=0 size=8, R5(id=3,off=0,r=0)")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __flag(BPF_F_ANY_ALIGNMENT)
 __naked void test23_x_pkt_ptr_4(void)
 {
@@ -859,6 +867,7 @@ l0_%=:	r0 = 1;					\
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 SEC("tc")
 __description("direct packet access: pkt_range cleared after sub with known scalar")
 __failure __msg("invalid access to packet")
@@ -920,4 +929,6 @@ l1_%=:	r0 = *(u8*)(r9 + 0);				\
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

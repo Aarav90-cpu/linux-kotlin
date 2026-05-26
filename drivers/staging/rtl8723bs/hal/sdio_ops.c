@@ -13,8 +13,17 @@
 /*  */
 /*  Creadted by Roger, 2011.01.31. */
 /*  */
+<<<<<<< HEAD
 static void hal_sdio_get_cmd_addr_8723b(struct adapter *adapter, u8 device_id,
 					u32 addr, u32 *cmdaddr)
+=======
+static void hal_sdio_get_cmd_addr_8723b(
+	struct adapter *adapter,
+	u8 device_id,
+	u32 addr,
+	u32 *cmdaddr
+)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (device_id) {
 	case SDIO_LOCAL_DEVICE_ID:
@@ -579,10 +588,19 @@ s32 sdio_local_write(
 	)
 		return sd_cmd52_write(intfhdl, addr, cnt, buf);
 
+<<<<<<< HEAD
 	tmpbuf = kmemdup(buf, cnt, GFP_ATOMIC);
 	if (!tmpbuf)
 		return -ENOMEM;
 
+=======
+	tmpbuf = kmalloc(cnt, GFP_ATOMIC);
+	if (!tmpbuf)
+		return -ENOMEM;
+
+	memcpy(tmpbuf, buf, cnt);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = sd_write(intfhdl, addr, cnt, tmpbuf);
 
 	kfree(tmpbuf);

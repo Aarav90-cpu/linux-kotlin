@@ -58,7 +58,11 @@ static void test_aux(const char *main_prog_name,
 	 * this particular combination can be enabled.
 	 */
 	if (!strcmp("might_sleep", replacement) && err) {
+<<<<<<< HEAD
 		ASSERT_HAS_SUBSTR(log, "sleepable helper bpf_copy_from_user#", "error log");
+=======
+		ASSERT_HAS_SUBSTR(log, "helper call might sleep in a non-sleepable prog", "error log");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ASSERT_EQ(err, -EINVAL, "err");
 		test__skip();
 		goto out;

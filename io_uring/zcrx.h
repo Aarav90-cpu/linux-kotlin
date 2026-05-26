@@ -8,9 +8,12 @@
 #include <net/page_pool/types.h>
 #include <net/net_trackers.h>
 
+<<<<<<< HEAD
 #define ZCRX_SUPPORTED_REG_FLAGS	(ZCRX_REG_IMPORT | ZCRX_REG_NODEV)
 #define ZCRX_FEATURES			(ZCRX_FEATURE_RX_PAGE_SIZE)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct io_zcrx_mem {
 	unsigned long			size;
 	bool				is_dmabuf;
@@ -41,6 +44,7 @@ struct io_zcrx_area {
 	struct io_zcrx_mem	mem;
 };
 
+<<<<<<< HEAD
 struct zcrx_rq {
 	spinlock_t			lock;
 	struct io_uring			*ring;
@@ -49,14 +53,25 @@ struct zcrx_rq {
 	u32				nr_entries;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct io_zcrx_ifq {
 	struct io_zcrx_area		*area;
 	unsigned			niov_shift;
 	struct user_struct		*user;
 	struct mm_struct		*mm_account;
+<<<<<<< HEAD
 	bool				kern_readable;
 
 	struct zcrx_rq			rq ____cacheline_aligned_in_smp;
+=======
+
+	spinlock_t			rq_lock ____cacheline_aligned_in_smp;
+	struct io_uring			*rq_ring;
+	struct io_uring_zcrx_rqe	*rqes;
+	u32				cached_rq_head;
+	u32				rq_entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u32				if_rxq;
 	struct device			*dev;
@@ -71,14 +86,24 @@ struct io_zcrx_ifq {
 	 * net stack.
 	 */
 	struct mutex			pp_lock;
+<<<<<<< HEAD
 	struct io_mapped_region		rq_region;
+=======
+	struct io_mapped_region		region;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if defined(CONFIG_IO_URING_ZCRX)
 int io_zcrx_ctrl(struct io_ring_ctx *ctx, void __user *arg, unsigned nr_arg);
+<<<<<<< HEAD
 int io_register_zcrx(struct io_ring_ctx *ctx,
 			 struct io_uring_zcrx_ifq_reg __user *arg);
 void io_unregister_zcrx(struct io_ring_ctx *ctx);
+=======
+int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+			 struct io_uring_zcrx_ifq_reg __user *arg);
+void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void io_terminate_zcrx(struct io_ring_ctx *ctx);
 int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
 		 struct socket *sock, unsigned int flags,
@@ -86,12 +111,21 @@ int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
 struct io_mapped_region *io_zcrx_get_region(struct io_ring_ctx *ctx,
 					    unsigned int id);
 #else
+<<<<<<< HEAD
 static inline int io_register_zcrx(struct io_ring_ctx *ctx,
 				   struct io_uring_zcrx_ifq_reg __user *arg)
 {
 	return -EOPNOTSUPP;
 }
 static inline void io_unregister_zcrx(struct io_ring_ctx *ctx)
+=======
+static inline int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+					struct io_uring_zcrx_ifq_reg __user *arg)
+{
+	return -EOPNOTSUPP;
+}
+static inline void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 }
 static inline void io_terminate_zcrx(struct io_ring_ctx *ctx)

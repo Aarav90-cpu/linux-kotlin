@@ -7,7 +7,10 @@
  * Based on drivers/gpu/drm/panel/panel-himax-hx8394.c
  */
 
+<<<<<<< HEAD
 #include <linux/backlight.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
 #include <linux/module.h>
@@ -77,8 +80,11 @@ struct hx83102_panel_desc {
 		unsigned int height_mm;
 	} size;
 
+<<<<<<< HEAD
 	bool has_backlight;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*init)(struct hx83102 *ctx);
 };
 
@@ -704,6 +710,7 @@ static int starry_2082109qfh040022_50e_init(struct hx83102 *ctx)
 	return dsi_ctx.accum_err;
 }
 
+<<<<<<< HEAD
 static int holitech_htf065h045_init(struct hx83102 *ctx)
 {
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
@@ -765,6 +772,8 @@ static int holitech_htf065h045_init(struct hx83102 *ctx)
 	return dsi_ctx.accum_err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode starry_mode = {
 	.clock = 162680,
 	.hdisplay = 1200,
@@ -897,6 +906,7 @@ static const struct hx83102_panel_desc starry_2082109qfh040022_50e_desc = {
 	.init = starry_2082109qfh040022_50e_init,
 };
 
+<<<<<<< HEAD
 static const struct drm_display_mode holitech_htf065h045_default_mode = {
 	.clock = 90720,
 	.hdisplay = 720,
@@ -920,6 +930,8 @@ static const struct hx83102_panel_desc holitech_htf065h045_desc = {
 	.init = holitech_htf065h045_init,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hx83102_enable(struct drm_panel *panel)
 {
 	msleep(130);
@@ -1055,6 +1067,7 @@ static const struct drm_panel_funcs hx83102_drm_funcs = {
 	.get_orientation = hx83102_get_orientation,
 };
 
+<<<<<<< HEAD
 static int hx83102_bl_update_status(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
@@ -1108,6 +1121,8 @@ hx83102_create_dcs_backlight(struct mipi_dsi_device *dsi)
 					      &hx83102_bl_ops, &props);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hx83102_panel_add(struct hx83102 *ctx)
 {
 	struct device *dev = &ctx->dsi->dev;
@@ -1139,6 +1154,7 @@ static int hx83102_panel_add(struct hx83102 *ctx)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	/* Use DSI-based backlight as fallback if available */
 	if (ctx->desc->has_backlight && !ctx->base.backlight) {
 		ctx->base.backlight = hx83102_create_dcs_backlight(ctx->dsi);
@@ -1147,6 +1163,8 @@ static int hx83102_panel_add(struct hx83102 *ctx)
 					     "Failed to create backlight\n");
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx->base.funcs = &hx83102_drm_funcs;
 	ctx->base.dev = &ctx->dsi->dev;
 
@@ -1219,9 +1237,12 @@ static const struct of_device_id hx83102_of_match[] = {
 	{ .compatible = "starry,himax83102-j02",
 	  .data = &starry_desc
 	},
+<<<<<<< HEAD
 	{ .compatible = "holitech,htf065h045",
 	  .data = &holitech_htf065h045_desc
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, hx83102_of_match);

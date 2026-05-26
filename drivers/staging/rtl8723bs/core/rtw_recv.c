@@ -322,7 +322,11 @@ static void rtw_handle_tkip_mic_err(struct adapter *padapter, u8 bgroup)
 	} else {
 		cur_time = jiffies;
 
+<<<<<<< HEAD
 		if (cur_time - psecuritypriv->last_mic_err_time < 60 * HZ) {
+=======
+		if (cur_time - psecuritypriv->last_mic_err_time < 60*HZ) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			psecuritypriv->btkip_countermeasure = true;
 			psecuritypriv->last_mic_err_time = 0;
 			psecuritypriv->btkip_countermeasure_time = cur_time;
@@ -390,6 +394,7 @@ static signed int recvframe_chkmic(struct adapter *adapter,  union recv_frame *p
 				mickey = &stainfo->dot11tkiprxmickey.skey[0];
 			}
 
+<<<<<<< HEAD
 			datalen = precvframe->u.hdr.len - prxattrib->hdrlen - prxattrib->iv_len - prxattrib->icv_len - 8;/* icv_len included the mic code */
 			pframe = precvframe->u.hdr.rx_data;
 			payload = pframe + prxattrib->hdrlen + prxattrib->iv_len;
@@ -397,6 +402,15 @@ static signed int recvframe_chkmic(struct adapter *adapter,  union recv_frame *p
 			rtw_seccalctkipmic(mickey, pframe, payload, datalen, &miccode[0], (unsigned char)prxattrib->priority); /* care the length of the data */
 
 			pframemic = payload + datalen;
+=======
+			datalen = precvframe->u.hdr.len-prxattrib->hdrlen-prxattrib->iv_len-prxattrib->icv_len-8;/* icv_len included the mic code */
+			pframe = precvframe->u.hdr.rx_data;
+			payload = pframe+prxattrib->hdrlen+prxattrib->iv_len;
+
+			rtw_seccalctkipmic(mickey, pframe, payload, datalen, &miccode[0], (unsigned char)prxattrib->priority); /* care the length of the data */
+
+			pframemic = payload+datalen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			bmic_err = false;
 
@@ -444,9 +458,15 @@ static union recv_frame *decryptor(struct adapter *padapter, union recv_frame *p
 	u32  res = _SUCCESS;
 
 	if (prxattrib->encrypt > 0) {
+<<<<<<< HEAD
 		u8 *iv = precv_frame->u.hdr.rx_data + prxattrib->hdrlen;
 
 		prxattrib->key_index = (((iv[3]) >> 6) & 0x3);
+=======
+		u8 *iv = precv_frame->u.hdr.rx_data+prxattrib->hdrlen;
+
+		prxattrib->key_index = (((iv[3])>>6)&0x3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (prxattrib->key_index > WEP_KEYS) {
 			switch (prxattrib->encrypt) {
@@ -568,7 +588,11 @@ static signed int recv_decache(union recv_frame *precv_frame, u8 bretry, struct 
 {
 	signed int tid = precv_frame->u.hdr.attrib.priority;
 
+<<<<<<< HEAD
 	u16 seq_ctrl = ((precv_frame->u.hdr.attrib.seq_num & 0xffff) << 4) |
+=======
+	u16 seq_ctrl = ((precv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		(precv_frame->u.hdr.attrib.frag_num & 0xf);
 
 	if (tid > 15)
@@ -632,15 +656,23 @@ static void process_wmmps_data(struct adapter *padapter, union recv_frame *precv
 	if (!psta->qos_option)
 		return;
 
+<<<<<<< HEAD
 	if (!(psta->qos_info & 0xf))
 		return;
 
 	if (psta->state & WIFI_SLEEP_STATE) {
+=======
+	if (!(psta->qos_info&0xf))
+		return;
+
+	if (psta->state&WIFI_SLEEP_STATE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 wmmps_ac = 0;
 
 		switch (pattrib->priority) {
 		case 1:
 		case 2:
+<<<<<<< HEAD
 			wmmps_ac = psta->uapsd_bk & BIT(1);
 			break;
 		case 4:
@@ -650,11 +682,26 @@ static void process_wmmps_data(struct adapter *padapter, union recv_frame *precv
 		case 6:
 		case 7:
 			wmmps_ac = psta->uapsd_vo & BIT(1);
+=======
+			wmmps_ac = psta->uapsd_bk&BIT(1);
+			break;
+		case 4:
+		case 5:
+			wmmps_ac = psta->uapsd_vi&BIT(1);
+			break;
+		case 6:
+		case 7:
+			wmmps_ac = psta->uapsd_vo&BIT(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case 0:
 		case 3:
 		default:
+<<<<<<< HEAD
 			wmmps_ac = psta->uapsd_be & BIT(1);
+=======
+			wmmps_ac = psta->uapsd_be&BIT(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 
@@ -680,10 +727,17 @@ static void count_rx_stats(struct adapter *padapter, union recv_frame *prframe, 
 	sz = get_recvframe_len(prframe);
 	precvpriv->rx_bytes += sz;
 
+<<<<<<< HEAD
 	padapter->mlmepriv.link_detect_info.num_rx_ok_in_period++;
 
 	if ((!is_broadcast_ether_addr(pattrib->dst)) && (!is_multicast_ether_addr(pattrib->dst)))
 		padapter->mlmepriv.link_detect_info.num_rx_unicast_ok_in_period++;
+=======
+	padapter->mlmepriv.LinkDetectInfo.NumRxOkInPeriod++;
+
+	if ((!is_broadcast_ether_addr(pattrib->dst)) && (!is_multicast_ether_addr(pattrib->dst)))
+		padapter->mlmepriv.LinkDetectInfo.NumRxUnicastOkInPeriod++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sta)
 		psta = sta;
@@ -979,6 +1033,7 @@ static signed int validate_recv_ctrl_frame(struct adapter *padapter, union recv_
 		switch (pattrib->priority) {
 		case 1:
 		case 2:
+<<<<<<< HEAD
 			wmmps_ac = psta->uapsd_bk & BIT(0);
 			break;
 		case 4:
@@ -988,11 +1043,26 @@ static signed int validate_recv_ctrl_frame(struct adapter *padapter, union recv_
 		case 6:
 		case 7:
 			wmmps_ac = psta->uapsd_vo & BIT(0);
+=======
+			wmmps_ac = psta->uapsd_bk&BIT(0);
+			break;
+		case 4:
+		case 5:
+			wmmps_ac = psta->uapsd_vi&BIT(0);
+			break;
+		case 6:
+		case 7:
+			wmmps_ac = psta->uapsd_vo&BIT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case 0:
 		case 3:
 		default:
+<<<<<<< HEAD
 			wmmps_ac = psta->uapsd_be & BIT(0);
+=======
+			wmmps_ac = psta->uapsd_be&BIT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 
@@ -1004,7 +1074,11 @@ static signed int validate_recv_ctrl_frame(struct adapter *padapter, union recv_
 			psta->state ^= WIFI_STA_ALIVE_CHK_STATE;
 		}
 
+<<<<<<< HEAD
 		if ((psta->state & WIFI_SLEEP_STATE) && (pstapriv->sta_dz_bitmap & BIT(psta->aid))) {
+=======
+		if ((psta->state&WIFI_SLEEP_STATE) && (pstapriv->sta_dz_bitmap&BIT(psta->aid))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct list_head	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe = NULL;
 			struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -1048,7 +1122,11 @@ static signed int validate_recv_ctrl_frame(struct adapter *padapter, union recv_
 				/* spin_unlock_bh(&psta->sleep_q.lock); */
 				spin_unlock_bh(&pxmitpriv->lock);
 
+<<<<<<< HEAD
 				if (pstapriv->tim_bitmap & BIT(psta->aid)) {
+=======
+				if (pstapriv->tim_bitmap&BIT(psta->aid)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					if (psta->sleepq_len == 0) {
 						/* issue nulldata with More data bit = 0 to indicate we have no buffered packets */
 						issue_nulldata_in_interrupt(padapter, psta->hwaddr);
@@ -1249,12 +1327,17 @@ static union recv_frame *recvframe_chk_defrag(struct adapter *padapter, union re
 
 static signed int validate_recv_mgnt_frame(struct adapter *padapter, union recv_frame *precv_frame)
 {
+<<<<<<< HEAD
 	struct sta_info *psta;
+=======
+	/* struct mlme_priv *pmlmepriv = &adapter->mlmepriv; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	precv_frame = recvframe_chk_defrag(padapter, precv_frame);
 	if (!precv_frame)
 		return _SUCCESS;
 
+<<<<<<< HEAD
 	/* for rx pkt statistics */
 	psta = rtw_get_stainfo(&padapter->stapriv, GetAddr2Ptr(precv_frame->u.hdr.rx_data));
 	if (!psta)
@@ -1284,6 +1367,30 @@ static signed int validate_recv_mgnt_frame(struct adapter *padapter, union recv_
 	}
 
 exit:
+=======
+	{
+		/* for rx pkt statistics */
+		struct sta_info *psta = rtw_get_stainfo(&padapter->stapriv, GetAddr2Ptr(precv_frame->u.hdr.rx_data));
+
+		if (psta) {
+			psta->sta_stats.rx_mgnt_pkts++;
+			if (GetFrameSubType(precv_frame->u.hdr.rx_data) == WIFI_BEACON)
+				psta->sta_stats.rx_beacon_pkts++;
+			else if (GetFrameSubType(precv_frame->u.hdr.rx_data) == WIFI_PROBEREQ)
+				psta->sta_stats.rx_probereq_pkts++;
+			else if (GetFrameSubType(precv_frame->u.hdr.rx_data) == WIFI_PROBERSP) {
+				if (!memcmp(padapter->eeprompriv.mac_addr, GetAddr1Ptr(precv_frame->u.hdr.rx_data), ETH_ALEN))
+					psta->sta_stats.rx_probersp_pkts++;
+				else if (is_broadcast_mac_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data)) ||
+					 is_multicast_mac_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data)))
+					psta->sta_stats.rx_probersp_bm_pkts++;
+				else
+					psta->sta_stats.rx_probersp_uo_pkts++;
+			}
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mgt_dispatcher(padapter, precv_frame);
 
 	return _SUCCESS;
@@ -1346,8 +1453,16 @@ static signed int validate_recv_data_frame(struct adapter *adapter, union recv_f
 
 	}
 
+<<<<<<< HEAD
 	if (ret == _FAIL || ret == RTW_RX_HANDLED)
 		goto exit;
+=======
+	if (ret == _FAIL) {
+		goto exit;
+	} else if (ret == RTW_RX_HANDLED) {
+		goto exit;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 	if (!psta) {
@@ -1434,9 +1549,15 @@ static signed int validate_80211w_mgmt(struct adapter *adapter, union recv_frame
 				goto validate_80211w_fail;
 			precv_frame = decryptor(adapter, precv_frame);
 			/* save actual management data frame body */
+<<<<<<< HEAD
 			memcpy(mgmt_DATA, ptr + pattrib->hdrlen + pattrib->iv_len, data_len);
 			/* overwrite the iv field */
 			memcpy(ptr + pattrib->hdrlen, mgmt_DATA, data_len);
+=======
+			memcpy(mgmt_DATA, ptr+pattrib->hdrlen+pattrib->iv_len, data_len);
+			/* overwrite the iv field */
+			memcpy(ptr+pattrib->hdrlen, mgmt_DATA, data_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* remove the iv and icv length */
 			pattrib->pkt_len = pattrib->pkt_len - pattrib->iv_len - pattrib->icv_len;
 			kfree(mgmt_DATA);
@@ -1492,7 +1613,11 @@ static signed int validate_recv_frame(struct adapter *adapter, union recv_frame 
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 
 	u8 *ptr = precv_frame->u.hdr.rx_data;
+<<<<<<< HEAD
 	u8  ver = (unsigned char) (*ptr) & 0x3;
+=======
+	u8  ver = (unsigned char) (*ptr)&0x3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* add version chk */
 	if (ver != 0) {
@@ -1530,7 +1655,11 @@ static signed int validate_recv_frame(struct adapter *adapter, union recv_frame 
 		retval = _FAIL; /*  only data frame return _SUCCESS */
 		break;
 	case WIFI_DATA_TYPE: /* data */
+<<<<<<< HEAD
 		pattrib->qos = (subtype & BIT(7)) ? 1 : 0;
+=======
+		pattrib->qos = (subtype & BIT(7)) ? 1:0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		retval = validate_recv_data_frame(adapter, precv_frame);
 		if (retval == _FAIL) {
 			struct recv_priv *precvpriv = &adapter->recvpriv;
@@ -1575,8 +1704,13 @@ static signed int wlanhdr_to_ethhdr(union recv_frame *precvframe)
 	if (pattrib->encrypt)
 		recvframe_pull_tail(precvframe, pattrib->icv_len);
 
+<<<<<<< HEAD
 	psnap = (struct ieee80211_snap_hdr	*)(ptr + pattrib->hdrlen + pattrib->iv_len);
 	psnap_type = ptr + pattrib->hdrlen + pattrib->iv_len + SNAP_SIZE;
+=======
+	psnap = (struct ieee80211_snap_hdr	*)(ptr+pattrib->hdrlen + pattrib->iv_len);
+	psnap_type = ptr+pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* convert hdr + possible LLC headers into Ethernet header */
 	/* eth_type = (psnap_type[0] << 8) | psnap_type[1]; */
 	if ((!memcmp(psnap, rfc1042_header, SNAP_SIZE) &&
@@ -1590,37 +1724,64 @@ static signed int wlanhdr_to_ethhdr(union recv_frame *precvframe)
 		/* Leave Ethernet header part of hdr and full payload */
 		bsnaphdr = false;
 
+<<<<<<< HEAD
 	rmv_len = pattrib->hdrlen + pattrib->iv_len + (bsnaphdr ? SNAP_SIZE : 0);
 	len = precvframe->u.hdr.len - rmv_len;
 
 	memcpy(&be_tmp, ptr + rmv_len, 2);
+=======
+	rmv_len = pattrib->hdrlen + pattrib->iv_len + (bsnaphdr?SNAP_SIZE:0);
+	len = precvframe->u.hdr.len - rmv_len;
+
+	memcpy(&be_tmp, ptr+rmv_len, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth_type = ntohs(be_tmp); /* pattrib->ether_type */
 	pattrib->eth_type = eth_type;
 
 	if ((check_fwstate(pmlmepriv, WIFI_MP_STATE) == true)) {
 		ptr += rmv_len;
 		*ptr = 0x87;
+<<<<<<< HEAD
 		*(ptr + 1) = 0x12;
 
 		eth_type = 0x8712;
 		/*  append rx status for mp test packets */
 		ptr = recvframe_pull(precvframe, (rmv_len - sizeof(struct ethhdr) + 2) - 24);
+=======
+		*(ptr+1) = 0x12;
+
+		eth_type = 0x8712;
+		/*  append rx status for mp test packets */
+		ptr = recvframe_pull(precvframe, (rmv_len-sizeof(struct ethhdr)+2)-24);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ptr)
 			return _FAIL;
 		memcpy(ptr, get_rxmem(precvframe), 24);
 		ptr += 24;
 	} else {
+<<<<<<< HEAD
 		ptr = recvframe_pull(precvframe, (rmv_len - sizeof(struct ethhdr) + (bsnaphdr ? 2 : 0)));
+=======
+		ptr = recvframe_pull(precvframe, (rmv_len-sizeof(struct ethhdr) + (bsnaphdr?2:0)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ptr)
 			return _FAIL;
 	}
 
 	memcpy(ptr, pattrib->dst, ETH_ALEN);
+<<<<<<< HEAD
 	memcpy(ptr + ETH_ALEN, pattrib->src, ETH_ALEN);
 
 	if (!bsnaphdr) {
 		be_tmp = htons(len);
 		memcpy(ptr + 12, &be_tmp, 2);
+=======
+	memcpy(ptr+ETH_ALEN, pattrib->src, ETH_ALEN);
+
+	if (!bsnaphdr) {
+		be_tmp = htons(len);
+		memcpy(ptr+12, &be_tmp, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return _SUCCESS;
@@ -1758,7 +1919,11 @@ static int amsdu_to_msdu(struct adapter *padapter, union recv_frame *prframe)
 		pdata += nSubframe_Length;
 		a_len -= nSubframe_Length;
 		if (a_len != 0) {
+<<<<<<< HEAD
 			padding_len = 4 - ((nSubframe_Length + ETH_HLEN) & (4 - 1));
+=======
+			padding_len = 4 - ((nSubframe_Length + ETH_HLEN) & (4-1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (padding_len == 4)
 				padding_len = 0;
 
@@ -2008,7 +2173,11 @@ static int recv_indicatepkt_reorder(struct adapter *padapter, union recv_frame *
 
 			rtw_recv_indicatepkt(padapter, prframe);
 
+<<<<<<< HEAD
 			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1) % 4096;
+=======
+			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1)%4096;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			return _SUCCESS;
 		}
@@ -2018,7 +2187,11 @@ static int recv_indicatepkt_reorder(struct adapter *padapter, union recv_frame *
 
 			retval = amsdu_to_msdu(padapter, prframe);
 
+<<<<<<< HEAD
 			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1) % 4096;
+=======
+			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1)%4096;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			return retval;
 		}
@@ -2204,7 +2377,11 @@ static int recv_func(struct adapter *padapter, union recv_frame *rframe)
 			!psecuritypriv->busetkipkey) {
 			rtw_enqueue_recvframe(rframe, &padapter->recvpriv.uc_swdec_pending_queue);
 
+<<<<<<< HEAD
 			if (recvpriv->free_recvframe_cnt < NR_RECVFRAME / 4) {
+=======
+			if (recvpriv->free_recvframe_cnt < NR_RECVFRAME/4) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/* to prevent from recvframe starvation, get recvframe from uc_swdec_pending_queue to free_recvframe_cnt  */
 				rframe = rtw_alloc_recvframe(&padapter->recvpriv.uc_swdec_pending_queue);
 				if (rframe)
@@ -2293,6 +2470,7 @@ static void rtw_signal_stat_timer_hdl(struct timer_list *t)
 		}
 
 		/* update value of signal_strength, rssi, signal_qual */
+<<<<<<< HEAD
 		tmp_s = (avg_signal_strength + (_alpha - 1) * recvpriv->signal_strength);
 		if (tmp_s % _alpha)
 			tmp_s = tmp_s / _alpha + 1;
@@ -2306,6 +2484,21 @@ static void rtw_signal_stat_timer_hdl(struct timer_list *t)
 			tmp_q = tmp_q / _alpha + 1;
 		else
 			tmp_q = tmp_q / _alpha;
+=======
+		tmp_s = (avg_signal_strength+(_alpha-1)*recvpriv->signal_strength);
+		if (tmp_s % _alpha)
+			tmp_s = tmp_s/_alpha + 1;
+		else
+			tmp_s = tmp_s/_alpha;
+		if (tmp_s > 100)
+			tmp_s = 100;
+
+		tmp_q = (avg_signal_qual+(_alpha-1)*recvpriv->signal_qual);
+		if (tmp_q % _alpha)
+			tmp_q = tmp_q/_alpha + 1;
+		else
+			tmp_q = tmp_q/_alpha;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (tmp_q > 100)
 			tmp_q = 100;
 

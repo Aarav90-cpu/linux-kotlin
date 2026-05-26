@@ -282,7 +282,10 @@ static void calculate_inits(
 	const struct scaler_data *data,
 	struct scl_ratios_inits *inits)
 {
+<<<<<<< HEAD
 	(void)xfm_dce;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fixed31_32 h_init;
 	struct fixed31_32 v_init;
 
@@ -1241,7 +1244,10 @@ static void program_color_matrix(
 	const struct out_csc_color_matrix *tbl_entry,
 	enum grph_color_adjust_option options)
 {
+<<<<<<< HEAD
 	(void)options;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		REG_SET_2(OUTPUT_CSC_C11_C12, 0,
 			OUTPUT_CSC_C11, tbl_entry->regval[0],

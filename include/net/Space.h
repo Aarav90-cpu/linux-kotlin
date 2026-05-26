@@ -3,5 +3,15 @@
  * ethernet adaptor have the name "eth[0123...]".
  */
 
+<<<<<<< HEAD
 struct net_device *ne_probe(int unit);
 struct net_device *cs89x0_probe(int unit);
+=======
+struct net_device *ultra_probe(int unit);
+struct net_device *wd_probe(int unit);
+struct net_device *ne_probe(int unit);
+struct net_device *smc_init(int unit);
+struct net_device *cs89x0_probe(int unit);
+struct net_device *tc515_probe(int unit);
+struct net_device *lance_probe(int unit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

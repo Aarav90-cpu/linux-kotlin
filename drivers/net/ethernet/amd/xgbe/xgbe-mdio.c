@@ -1047,14 +1047,18 @@ static void xgbe_phy_adjust_link(struct xgbe_prv_data *pdata)
 		if (pdata->phy_link != pdata->phy.link) {
 			new_state = 1;
 			pdata->phy_link = pdata->phy.link;
+<<<<<<< HEAD
 
 			/* Link is coming up - wake TX queues */
 			netif_tx_wake_all_queues(pdata->netdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else if (pdata->phy_link) {
 		new_state = 1;
 		pdata->phy_link = 0;
 		pdata->phy_speed = SPEED_UNKNOWN;
+<<<<<<< HEAD
 
 		/* Proactive TX queue management on link-down.
 		 *
@@ -1070,6 +1074,8 @@ static void xgbe_phy_adjust_link(struct xgbe_prv_data *pdata)
 		 * descriptor reclamation.
 		 */
 		netif_tx_stop_all_queues(pdata->netdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (new_state && netif_msg_link(pdata))

@@ -104,6 +104,21 @@ VBLANK Helper Reference
 .. kernel-doc:: drivers/gpu/drm/drm_vblank_helper.c
    :export:
 
+<<<<<<< HEAD
+=======
+Simple KMS Helper Reference
+===========================
+
+.. kernel-doc:: drivers/gpu/drm/drm_simple_kms_helper.c
+   :doc: overview
+
+.. kernel-doc:: include/drm/drm_simple_kms_helper.h
+   :internal:
+
+.. kernel-doc:: drivers/gpu/drm/drm_simple_kms_helper.c
+   :export:
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fbdev Helper Functions Reference
 ================================
 

@@ -657,7 +657,11 @@ struct pmcraid_hostrcb {
  */
 struct pmcraid_instance {
 	/* Array of allowed-to-be-exposed resources, initialized from
+<<<<<<< HEAD
 	 * Configuration Table, later updated with CCNs
+=======
+	 * Configutation Table, later updated with CCNs
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	struct pmcraid_resource_entry *res_entries;
 

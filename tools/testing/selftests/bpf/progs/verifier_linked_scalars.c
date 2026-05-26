@@ -535,6 +535,7 @@ int spurious_precision_marks(void *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Test that r += r (self-add, src_reg == dst_reg) clears the scalar ID
  * so that sync_linked_regs() does not propagate an incorrect delta.
@@ -710,4 +711,6 @@ l_exit_%=:							\
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

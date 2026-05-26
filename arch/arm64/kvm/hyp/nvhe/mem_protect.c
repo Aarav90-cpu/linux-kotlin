@@ -5,7 +5,10 @@
  */
 
 #include <linux/kvm_host.h>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_emulate.h>
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_mmu.h>
@@ -15,12 +18,18 @@
 
 #include <hyp/fault.h>
 
+<<<<<<< HEAD
 #include <nvhe/arm-smccc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <nvhe/gfp.h>
 #include <nvhe/memory.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
+<<<<<<< HEAD
 #include <nvhe/trap_handler.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define KVM_HOST_S2_FLAGS (KVM_PGTABLE_S2_AS_S1 | KVM_PGTABLE_S2_IDMAP)
 
@@ -31,6 +40,7 @@ static struct hyp_pool host_s2_pool;
 static DEFINE_PER_CPU(struct pkvm_hyp_vm *, __current_vm);
 #define current_vm (*this_cpu_ptr(&__current_vm))
 
+<<<<<<< HEAD
 static void pkvm_sme_dvmsync_fw_call(void)
 {
 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714)) {
@@ -44,6 +54,8 @@ static void pkvm_sme_dvmsync_fw_call(void)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void guest_lock_component(struct pkvm_hyp_vm *vm)
 {
 	hyp_spin_lock(&vm->lock);
@@ -477,6 +489,7 @@ static bool range_is_memory(u64 start, u64 end)
 static inline int __host_stage2_idmap(u64 start, u64 end,
 				      enum kvm_pgtable_prot prot)
 {
+<<<<<<< HEAD
 	/*
 	 * We don't make permission changes to the host idmap after
 	 * initialisation, so we can squash -EAGAIN to save callers
@@ -486,6 +499,10 @@ static inline int __host_stage2_idmap(u64 start, u64 end,
 	return kvm_pgtable_stage2_map(&host_mmu.pgt, start, end - start, start,
 				      prot, &host_s2_pool,
 				      KVM_PGTABLE_WALK_IGNORE_EAGAIN);
+=======
+	return kvm_pgtable_stage2_map(&host_mmu.pgt, start, end - start, start,
+				      prot, &host_s2_pool, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -527,7 +544,11 @@ static int host_stage2_adjust_range(u64 addr, struct kvm_mem_range *range)
 		return ret;
 
 	if (kvm_pte_valid(pte))
+<<<<<<< HEAD
 		return -EEXIST;
+=======
+		return -EAGAIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pte) {
 		WARN_ON(addr_is_memory(addr) &&
@@ -564,6 +585,7 @@ static void __host_update_page_state(phys_addr_t addr, u64 size, enum pkvm_page_
 		set_host_state(page, state);
 }
 
+<<<<<<< HEAD
 #define KVM_HOST_DONATION_PTE_OWNER_MASK	GENMASK(3, 1)
 #define KVM_HOST_DONATION_PTE_EXTRA_MASK	GENMASK(59, 4)
 static int host_stage2_set_owner_metadata_locked(phys_addr_t addr, u64 size,
@@ -663,6 +685,26 @@ static int host_stage2_decode_gfn_meta(kvm_pte_t pte, struct pkvm_hyp_vm **vm,
 	}
 
 	*gfn = FIELD_GET(KVM_HOST_PTE_OWNER_GUEST_GFN_MASK, meta);
+=======
+int host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_id)
+{
+	int ret;
+
+	if (!range_is_memory(addr, addr + size))
+		return -EPERM;
+
+	ret = host_stage2_try(kvm_pgtable_stage2_set_owner, &host_mmu.pgt,
+			      addr, size, &host_s2_pool, owner_id);
+	if (ret)
+		return ret;
+
+	/* Don't forget to update the vmemmap tracking for the host */
+	if (owner_id == PKVM_ID_HOST)
+		__host_update_page_state(addr, size, PKVM_PAGE_OWNED);
+	else
+		__host_update_page_state(addr, size, PKVM_NOPAGE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -709,6 +751,7 @@ unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void host_inject_mem_abort(struct kvm_cpu_context *host_ctxt)
 {
 	u64 ec, esr, spsr;
@@ -742,10 +785,16 @@ static void host_inject_mem_abort(struct kvm_cpu_context *host_ctxt)
 	inject_host_exception(esr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 {
 	struct kvm_vcpu_fault_info fault;
 	u64 esr, addr;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	esr = read_sysreg_el2(SYS_ESR);
 	if (!__get_fault_info(esr, &fault)) {
@@ -764,6 +813,7 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	BUG_ON(!(fault.hpfar_el2 & HPFAR_EL2_NS));
 	addr = FIELD_GET(HPFAR_EL2_FIPA, fault.hpfar_el2) << 12;
 
+<<<<<<< HEAD
 	switch (host_stage2_idmap(addr)) {
 	case -EPERM:
 		host_inject_mem_abort(host_ctxt);
@@ -774,6 +824,10 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	default:
 		BUG();
 	}
+=======
+	ret = host_stage2_idmap(addr);
+	BUG_ON(ret && ret != -EAGAIN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct check_walk_data {
@@ -851,6 +905,7 @@ static int __hyp_check_page_state_range(phys_addr_t phys, u64 size, enum pkvm_pa
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool guest_pte_is_poisoned(kvm_pte_t pte)
 {
 	if (kvm_pte_valid(pte))
@@ -865,6 +920,10 @@ static enum pkvm_page_state guest_get_page_state(kvm_pte_t pte, u64 addr)
 	if (guest_pte_is_poisoned(pte))
 		return PKVM_POISON;
 
+=======
+static enum pkvm_page_state guest_get_page_state(kvm_pte_t pte, u64 addr)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kvm_pte_valid(pte))
 		return PKVM_NOPAGE;
 
@@ -883,6 +942,7 @@ static int __guest_check_page_state_range(struct pkvm_hyp_vm *vm, u64 addr,
 	return check_page_state_range(&vm->pgt, addr, size, &d);
 }
 
+<<<<<<< HEAD
 static int get_valid_guest_pte(struct pkvm_hyp_vm *vm, u64 ipa, kvm_pte_t *ptep, u64 *physp)
 {
 	kvm_pte_t pte;
@@ -954,6 +1014,8 @@ unlock:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __pkvm_host_share_hyp(u64 pfn)
 {
 	u64 phys = hyp_pfn_to_phys(pfn);
@@ -980,6 +1042,7 @@ unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 int __pkvm_guest_share_host(struct pkvm_hyp_vcpu *vcpu, u64 gfn)
 {
 	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
@@ -1046,6 +1109,8 @@ unlock:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __pkvm_host_unshare_hyp(u64 pfn)
 {
 	u64 phys = hyp_pfn_to_phys(pfn);
@@ -1253,6 +1318,7 @@ static int __guest_check_transition_size(u64 phys, u64 ipa, u64 nr_pages, u64 *s
 	return 0;
 }
 
+<<<<<<< HEAD
 static void hyp_poison_page(phys_addr_t phys)
 {
 	void *addr = hyp_fixmap_map(phys);
@@ -1443,6 +1509,8 @@ unlock:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __pkvm_host_share_guest(u64 pfn, u64 gfn, u64 nr_pages, struct pkvm_hyp_vcpu *vcpu,
 			    enum kvm_pgtable_prot prot)
 {
@@ -1494,10 +1562,13 @@ int __pkvm_host_share_guest(u64 pfn, u64 gfn, u64 nr_pages, struct pkvm_hyp_vcpu
 		}
 	}
 
+<<<<<<< HEAD
 	ret = __guest_check_pgtable_memcache(vcpu);
 	if (ret)
 		goto unlock;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_hyp_page(page, phys, size) {
 		set_host_state(page, PKVM_PAGE_SHARED_OWNED);
 		page->host_share_guest_count++;
@@ -1693,18 +1764,65 @@ struct pkvm_expected_state {
 
 static struct pkvm_expected_state selftest_state;
 static struct hyp_page *selftest_page;
+<<<<<<< HEAD
 static struct pkvm_hyp_vcpu *selftest_vcpu;
 
 static u64 selftest_ipa(void)
 {
 	return BIT(selftest_vcpu->vcpu.arch.hw_mmu->pgt->ia_bits - 1);
+=======
+
+static struct pkvm_hyp_vm selftest_vm = {
+	.kvm = {
+		.arch = {
+			.mmu = {
+				.arch = &selftest_vm.kvm.arch,
+				.pgt = &selftest_vm.pgt,
+			},
+		},
+	},
+};
+
+static struct pkvm_hyp_vcpu selftest_vcpu = {
+	.vcpu = {
+		.arch = {
+			.hw_mmu = &selftest_vm.kvm.arch.mmu,
+		},
+		.kvm = &selftest_vm.kvm,
+	},
+};
+
+static void init_selftest_vm(void *virt)
+{
+	struct hyp_page *p = hyp_virt_to_page(virt);
+	int i;
+
+	selftest_vm.kvm.arch.mmu.vtcr = host_mmu.arch.mmu.vtcr;
+	WARN_ON(kvm_guest_prepare_stage2(&selftest_vm, virt));
+
+	for (i = 0; i < pkvm_selftest_pages(); i++) {
+		if (p[i].refcount)
+			continue;
+		p[i].refcount = 1;
+		hyp_put_page(&selftest_vm.pool, hyp_page_to_virt(&p[i]));
+	}
+}
+
+static u64 selftest_ipa(void)
+{
+	return BIT(selftest_vm.pgt.ia_bits - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void assert_page_state(void)
 {
 	void *virt = hyp_page_to_virt(selftest_page);
 	u64 size = PAGE_SIZE << selftest_page->order;
+<<<<<<< HEAD
 	struct pkvm_hyp_vcpu *vcpu = selftest_vcpu;
+=======
+	struct pkvm_hyp_vcpu *vcpu = &selftest_vcpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 phys = hyp_virt_to_phys(virt);
 	u64 ipa[2] = { selftest_ipa(), selftest_ipa() + PAGE_SIZE };
 	struct pkvm_hyp_vm *vm;
@@ -1719,10 +1837,17 @@ static void assert_page_state(void)
 	WARN_ON(__hyp_check_page_state_range(phys, size, selftest_state.hyp));
 	hyp_unlock_component();
 
+<<<<<<< HEAD
 	guest_lock_component(vm);
 	WARN_ON(__guest_check_page_state_range(vm, ipa[0], size, selftest_state.guest[0]));
 	WARN_ON(__guest_check_page_state_range(vm, ipa[1], size, selftest_state.guest[1]));
 	guest_unlock_component(vm);
+=======
+	guest_lock_component(&selftest_vm);
+	WARN_ON(__guest_check_page_state_range(vm, ipa[0], size, selftest_state.guest[0]));
+	WARN_ON(__guest_check_page_state_range(vm, ipa[1], size, selftest_state.guest[1]));
+	guest_unlock_component(&selftest_vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define assert_transition_res(res, fn, ...)		\
@@ -1735,15 +1860,25 @@ void pkvm_ownership_selftest(void *base)
 {
 	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_RWX;
 	void *virt = hyp_alloc_pages(&host_s2_pool, 0);
+<<<<<<< HEAD
 	struct pkvm_hyp_vcpu *vcpu;
 	u64 phys, size, pfn, gfn;
 	struct pkvm_hyp_vm *vm;
+=======
+	struct pkvm_hyp_vcpu *vcpu = &selftest_vcpu;
+	struct pkvm_hyp_vm *vm = &selftest_vm;
+	u64 phys, size, pfn, gfn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WARN_ON(!virt);
 	selftest_page = hyp_virt_to_page(virt);
 	selftest_page->refcount = 0;
+<<<<<<< HEAD
 	selftest_vcpu = vcpu = init_selftest_vm(base);
 	vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+=======
+	init_selftest_vm(base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	size = PAGE_SIZE << selftest_page->order;
 	phys = hyp_virt_to_phys(virt);
@@ -1762,7 +1897,10 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(-EPERM,	hyp_pin_shared_mem, virt, virt + size);
 	assert_transition_res(-EPERM,	__pkvm_host_share_guest, pfn, gfn, 1, vcpu, prot);
 	assert_transition_res(-ENOENT,	__pkvm_host_unshare_guest, gfn, 1, vm);
+<<<<<<< HEAD
 	assert_transition_res(-EPERM,   __pkvm_host_donate_guest, pfn, gfn, vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	selftest_state.host = PKVM_PAGE_OWNED;
 	selftest_state.hyp = PKVM_NOPAGE;
@@ -1782,7 +1920,10 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(-EPERM,	__pkvm_hyp_donate_host, pfn, 1);
 	assert_transition_res(-EPERM,	__pkvm_host_share_guest, pfn, gfn, 1, vcpu, prot);
 	assert_transition_res(-ENOENT,	__pkvm_host_unshare_guest, gfn, 1, vm);
+<<<<<<< HEAD
 	assert_transition_res(-EPERM,   __pkvm_host_donate_guest, pfn, gfn, vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	assert_transition_res(0,	hyp_pin_shared_mem, virt, virt + size);
 	assert_transition_res(0,	hyp_pin_shared_mem, virt, virt + size);
@@ -1795,7 +1936,10 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(-EPERM,	__pkvm_hyp_donate_host, pfn, 1);
 	assert_transition_res(-EPERM,	__pkvm_host_share_guest, pfn, gfn, 1, vcpu, prot);
 	assert_transition_res(-ENOENT,	__pkvm_host_unshare_guest, gfn, 1, vm);
+<<<<<<< HEAD
 	assert_transition_res(-EPERM,   __pkvm_host_donate_guest, pfn, gfn, vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hyp_unpin_shared_mem(virt, virt + size);
 	assert_page_state();
@@ -1815,7 +1959,10 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(-EPERM,	__pkvm_hyp_donate_host, pfn, 1);
 	assert_transition_res(-EPERM,	__pkvm_host_share_guest, pfn, gfn, 1, vcpu, prot);
 	assert_transition_res(-ENOENT,	__pkvm_host_unshare_guest, gfn, 1, vm);
+<<<<<<< HEAD
 	assert_transition_res(-EPERM,   __pkvm_host_donate_guest, pfn, gfn, vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	assert_transition_res(-EPERM,	hyp_pin_shared_mem, virt, virt + size);
 
 	selftest_state.host = PKVM_PAGE_OWNED;
@@ -1832,7 +1979,10 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(-EPERM,	__pkvm_host_share_hyp, pfn);
 	assert_transition_res(-EPERM,	__pkvm_host_unshare_hyp, pfn);
 	assert_transition_res(-EPERM,	__pkvm_hyp_donate_host, pfn, 1);
+<<<<<<< HEAD
 	assert_transition_res(-EPERM,   __pkvm_host_donate_guest, pfn, gfn, vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	assert_transition_res(-EPERM,	hyp_pin_shared_mem, virt, virt + size);
 
 	selftest_state.guest[1] = PKVM_PAGE_SHARED_BORROWED;
@@ -1847,6 +1997,7 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(0,	__pkvm_host_unshare_guest, gfn + 1, 1, vm);
 
 	selftest_state.host = PKVM_NOPAGE;
+<<<<<<< HEAD
 	selftest_state.guest[0] = PKVM_PAGE_OWNED;
 	assert_transition_res(0,	__pkvm_host_donate_guest, pfn, gfn, vcpu);
 	assert_transition_res(-EPERM,	__pkvm_host_donate_guest, pfn, gfn, vcpu);
@@ -1910,6 +2061,11 @@ void pkvm_ownership_selftest(void *base)
 	assert_transition_res(0,	__pkvm_host_donate_hyp, pfn, 1);
 
 	teardown_selftest_vm();
+=======
+	selftest_state.hyp = PKVM_PAGE_OWNED;
+	assert_transition_res(0,	__pkvm_host_donate_hyp, pfn, 1);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	selftest_page->refcount = 1;
 	hyp_put_page(&host_s2_pool, virt);
 }

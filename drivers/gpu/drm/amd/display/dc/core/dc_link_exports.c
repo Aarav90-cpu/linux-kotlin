@@ -46,7 +46,11 @@ struct dc_link *dc_get_link_at_index(struct dc *dc, uint32_t link_index)
 
 void dc_get_edp_links(const struct dc *dc,
 		struct dc_link **edp_links,
+<<<<<<< HEAD
 		unsigned int *edp_num)
+=======
+		int *edp_num)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -68,7 +72,11 @@ bool dc_get_edp_link_panel_inst(const struct dc *dc,
 		unsigned int *inst_out)
 {
 	struct dc_link *edp_links[MAX_NUM_EDP];
+<<<<<<< HEAD
 	unsigned int edp_num, i;
+=======
+	int edp_num, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*inst_out = 0;
 	if (link->connector_signal != SIGNAL_TYPE_EDP)

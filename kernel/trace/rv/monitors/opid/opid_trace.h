@@ -12,8 +12,11 @@ DEFINE_EVENT(event_da_monitor, event_opid,
 DEFINE_EVENT(error_da_monitor, error_opid,
 	     TP_PROTO(char *state, char *event),
 	     TP_ARGS(state, event));
+<<<<<<< HEAD
 
 DEFINE_EVENT(error_env_da_monitor, error_env_opid,
 	     TP_PROTO(char *state, char *event, char *env),
 	     TP_ARGS(state, event, env));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_RV_MON_OPID */

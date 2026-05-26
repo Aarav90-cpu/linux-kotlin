@@ -3,9 +3,14 @@
 #include <linux/phy.h>
 #include <linux/ethtool_netlink.h>
 #include <net/netdev_lock.h>
+<<<<<<< HEAD
 
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* 802.3 standard allows 100 meters for BaseT cables. However longer
  * cables might work, depending on the quality of the cables and the

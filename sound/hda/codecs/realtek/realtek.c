@@ -99,6 +99,18 @@ void alc_setup_gpio(struct hda_codec *codec, unsigned int mask)
 }
 EXPORT_SYMBOL_NS_GPL(alc_setup_gpio, "SND_HDA_CODEC_REALTEK");
 
+<<<<<<< HEAD
+=======
+void alc_write_gpio_data(struct hda_codec *codec)
+{
+	struct alc_spec *spec = codec->spec;
+
+	snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA,
+			    spec->gpio_data);
+}
+EXPORT_SYMBOL_NS_GPL(alc_write_gpio_data, "SND_HDA_CODEC_REALTEK");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void alc_update_gpio_data(struct hda_codec *codec, unsigned int mask,
 			  bool on)
 {
@@ -110,22 +122,42 @@ void alc_update_gpio_data(struct hda_codec *codec, unsigned int mask,
 	else
 		spec->gpio_data &= ~mask;
 	if (oldval != spec->gpio_data)
+<<<<<<< HEAD
 		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA,
 				    spec->gpio_data);
 }
 EXPORT_SYMBOL_NS_GPL(alc_update_gpio_data, "SND_HDA_CODEC_REALTEK");
 
 static void alc_write_gpio(struct hda_codec *codec)
+=======
+		alc_write_gpio_data(codec);
+}
+EXPORT_SYMBOL_NS_GPL(alc_update_gpio_data, "SND_HDA_CODEC_REALTEK");
+
+void alc_write_gpio(struct hda_codec *codec)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct alc_spec *spec = codec->spec;
 
 	if (!spec->gpio_mask)
 		return;
 
+<<<<<<< HEAD
 	snd_hda_codec_set_gpio(codec, spec->gpio_mask, spec->gpio_dir,
 			       spec->gpio_data,
 			       spec->gpio_write_delay ? 1 : 0);
 }
+=======
+	snd_hda_codec_write(codec, codec->core.afg, 0,
+			    AC_VERB_SET_GPIO_MASK, spec->gpio_mask);
+	snd_hda_codec_write(codec, codec->core.afg, 0,
+			    AC_VERB_SET_GPIO_DIRECTION, spec->gpio_dir);
+	if (spec->gpio_write_delay)
+		msleep(1);
+	alc_write_gpio_data(codec);
+}
+EXPORT_SYMBOL_NS_GPL(alc_write_gpio, "SND_HDA_CODEC_REALTEK");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void alc_fixup_gpio(struct hda_codec *codec, int action, unsigned int mask)
 {
@@ -398,8 +430,14 @@ void alc_headset_mic_no_shutup(struct hda_codec *codec)
 		return;
 
 	snd_array_for_each(&codec->init_pins, i, pin) {
+<<<<<<< HEAD
 		if (pin->nid != mic_pin)
 			snd_hda_codec_write_sync(codec, pin->nid, 0,
+=======
+		/* use read here for syncing after issuing each verb */
+		if (pin->nid != mic_pin)
+			snd_hda_codec_read(codec, pin->nid, 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					AC_VERB_SET_PIN_WIDGET_CONTROL, 0);
 	}
 
@@ -2150,7 +2188,12 @@ void alc_fixup_headset_mode_no_hp_mic(struct hda_codec *codec,
 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
 		struct alc_spec *spec = codec->spec;
 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
+<<<<<<< HEAD
 	} else
+=======
+	}
+	else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		alc_fixup_headset_mode(codec, fix, action);
 }
 EXPORT_SYMBOL_NS_GPL(alc_fixup_headset_mode_no_hp_mic, "SND_HDA_CODEC_REALTEK");

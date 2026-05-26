@@ -429,6 +429,7 @@ mshv_vp_dispatch(struct mshv_vp *vp, u32 flags,
 	status = hv_do_hypercall(HVCALL_DISPATCH_VP, input, output);
 	vp->run.flags.root_sched_dispatched = 0;
 
+<<<<<<< HEAD
 	trace_mshv_hvcall_dispatch_vp(vp->vp_partition->pt_id,
 				      vp->vp_index, flags,
 				      output->dispatch_state,
@@ -440,6 +441,8 @@ mshv_vp_dispatch(struct mshv_vp *vp, u32 flags,
 #endif
 				      status);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*res = *output;
 	preempt_enable();
 
@@ -462,9 +465,12 @@ mshv_vp_clear_explicit_suspend(struct mshv_vp *vp)
 	ret = mshv_set_vp_registers(vp->vp_index, vp->vp_partition->pt_id,
 				    1, &explicit_suspend);
 
+<<<<<<< HEAD
 	trace_mshv_vp_clear_explicit_suspend(vp->vp_partition->pt_id,
 					     vp->vp_index, ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		vp_err(vp, "Failed to unsuspend\n");
 
@@ -507,12 +513,15 @@ mshv_vp_wait_for_hv_kick(struct mshv_vp *vp)
 	if (ret)
 		return -EINTR;
 
+<<<<<<< HEAD
 	trace_mshv_vp_wait_for_hv_kick(vp->vp_partition->pt_id,
 				       vp->vp_index,
 				       vp->run.kicked_by_hv,
 				       mshv_vp_dispatch_thread_blocked(vp),
 				       mshv_vp_interrupt_pending(vp));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vp->run.flags.root_sched_blocked = 0;
 	vp->run.kicked_by_hv = 0;
 
@@ -541,12 +550,15 @@ static long mshv_run_vp_with_root_scheduler(struct mshv_vp *vp)
 
 		if (__xfer_to_guest_mode_work_pending()) {
 			ret = xfer_to_guest_mode_handle_work();
+<<<<<<< HEAD
 
 			trace_mshv_xfer_to_guest_mode_work(vp->vp_partition->pt_id,
 							   vp->vp_index,
 							   read_thread_flags(),
 							   ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				break;
 		}
@@ -674,7 +686,11 @@ static bool mshv_handle_gpa_intercept(struct mshv_vp *vp)
 
 	region = mshv_partition_region_by_gfn_get(p, gfn);
 	if (!region)
+<<<<<<< HEAD
 		goto out;
+=======
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (access_type == HV_INTERCEPT_ACCESS_WRITE &&
 	    !(region->hv_map_flags & HV_MAP_GPA_WRITABLE))
@@ -690,9 +706,13 @@ static bool mshv_handle_gpa_intercept(struct mshv_vp *vp)
 
 put_region:
 	mshv_region_put(region);
+<<<<<<< HEAD
 out:
 	trace_mshv_handle_gpa_intercept(p->pt_id, vp->vp_index, gfn,
 					access_type, ret);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -709,8 +729,11 @@ static long mshv_vp_ioctl_run_vp(struct mshv_vp *vp, void __user *ret_msg)
 {
 	long rc;
 
+<<<<<<< HEAD
 	trace_mshv_run_vp_entry(vp->vp_partition->pt_id, vp->vp_index);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		if (hv_scheduler_type == HV_SCHEDULER_TYPE_ROOT)
 			rc = mshv_run_vp_with_root_scheduler(vp);
@@ -718,10 +741,13 @@ static long mshv_vp_ioctl_run_vp(struct mshv_vp *vp, void __user *ret_msg)
 			rc = mshv_run_vp_with_hyp_scheduler(vp);
 	} while (rc == 0 && mshv_vp_handle_intercept(vp));
 
+<<<<<<< HEAD
 	trace_mshv_run_vp_exit(vp->vp_partition->pt_id, vp->vp_index,
 			       vp->vp_intercept_msg_page->header.message_type,
 			       rc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		return rc;
 
@@ -983,8 +1009,11 @@ mshv_vp_release(struct inode *inode, struct file *filp)
 {
 	struct mshv_vp *vp = filp->private_data;
 
+<<<<<<< HEAD
 	trace_mshv_vp_release(vp->vp_partition->pt_id, vp->vp_index);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Rest of VP cleanup happens in destroy_partition() */
 	mshv_partition_put(vp->vp_partition);
 	return 0;
@@ -1157,7 +1186,11 @@ mshv_partition_ioctl_create_vp(struct mshv_partition *partition,
 	partition->pt_vp_count++;
 	partition->pt_vp_array[args.vp_index] = vp;
 
+<<<<<<< HEAD
 	goto out;
+=======
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 remove_debugfs_vp:
 	mshv_debugfs_vp_remove(vp);
@@ -1183,8 +1216,11 @@ unmap_intercept_message_page:
 			       intercept_msg_page, input_vtl_zero);
 destroy_vp:
 	hv_call_delete_vp(partition->pt_id, args.vp_index);
+<<<<<<< HEAD
 out:
 	trace_mshv_create_vp(partition->pt_id, args.vp_index, ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1384,10 +1420,13 @@ mshv_map_user_memory(struct mshv_partition *partition,
 		break;
 	}
 
+<<<<<<< HEAD
 	trace_mshv_map_user_memory(partition->pt_id, region->start_uaddr,
 				   region->start_gfn, region->nr_pages,
 				   region->hv_map_flags, ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto errout;
 
@@ -1683,9 +1722,12 @@ disable_vp_dispatch(struct mshv_vp *vp)
 	if (ret)
 		vp_err(vp, "failed to suspend\n");
 
+<<<<<<< HEAD
 	trace_mshv_disable_vp_dispatch(vp->vp_partition->pt_id,
 				       vp->vp_index, ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1734,8 +1776,11 @@ drain_vp_signals(struct mshv_vp *vp)
 		vp->run.kicked_by_hv = 0;
 		vp_signal_count = atomic64_read(&vp->run.vp_signaled_count);
 	}
+<<<<<<< HEAD
 
 	trace_mshv_drain_vp_signals(vp->vp_partition->pt_id, vp->vp_index);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void drain_all_vps(const struct mshv_partition *partition)
@@ -1789,8 +1834,11 @@ static void destroy_partition(struct mshv_partition *partition)
 		return;
 	}
 
+<<<<<<< HEAD
 	trace_mshv_destroy_partition(partition->pt_id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (partition->pt_initialized) {
 		/*
 		 * We only need to drain signals for root scheduler. This should be
@@ -1897,8 +1945,11 @@ mshv_partition_release(struct inode *inode, struct file *filp)
 {
 	struct mshv_partition *partition = filp->private_data;
 
+<<<<<<< HEAD
 	trace_mshv_partition_release(partition->pt_id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mshv_eventfd_release(partition);
 
 	cleanup_srcu_struct(&partition->pt_irq_srcu);
@@ -2028,7 +2079,10 @@ mshv_ioctl_create_partition(void __user *user_arg, struct device *module_dev)
 	struct hv_partition_creation_properties creation_properties;
 	union hv_partition_isolation_properties isolation_properties;
 	struct mshv_partition *partition;
+<<<<<<< HEAD
 	u64 pt_id = -1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long ret;
 
 	ret = mshv_ioctl_process_pt_flags(user_arg, &creation_flags,
@@ -2068,17 +2122,25 @@ mshv_ioctl_create_partition(void __user *user_arg, struct device *module_dev)
 	ret = hv_call_create_partition(creation_flags,
 				       creation_properties,
 				       isolation_properties,
+<<<<<<< HEAD
 				       &pt_id);
 	if (ret)
 		goto cleanup_irq_srcu;
 
 	partition->pt_id = pt_id;
 
+=======
+				       &partition->pt_id);
+	if (ret)
+		goto cleanup_irq_srcu;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = add_partition(partition);
 	if (ret)
 		goto delete_partition;
 
 	ret = mshv_init_async_handler(partition);
+<<<<<<< HEAD
 	if (ret)
 		goto remove_partition;
 
@@ -2091,6 +2153,15 @@ mshv_ioctl_create_partition(void __user *user_arg, struct device *module_dev)
 	goto out;
 
 remove_partition:
+=======
+	if (!ret) {
+		ret = FD_ADD(O_CLOEXEC, anon_inode_getfile("mshv_partition",
+							   &mshv_partition_fops,
+							   partition, O_RDWR));
+		if (ret >= 0)
+			return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	remove_partition(partition);
 delete_partition:
 	hv_call_delete_partition(partition->pt_id);
@@ -2098,8 +2169,12 @@ cleanup_irq_srcu:
 	cleanup_srcu_struct(&partition->pt_irq_srcu);
 free_partition:
 	kfree(partition);
+<<<<<<< HEAD
 out:
 	trace_mshv_create_partition(pt_id, ret);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

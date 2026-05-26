@@ -120,6 +120,7 @@ static int tps68470_gpio_input(struct gpio_chip *gc, unsigned int offset)
 				   TPS68470_GPIO_MODE_MASK, 0x00);
 }
 
+<<<<<<< HEAD
 static int tps68470_enable_i2c_daisy_chain(struct gpio_chip *gc)
 {
 	int ret;
@@ -131,6 +132,8 @@ static int tps68470_enable_i2c_daisy_chain(struct gpio_chip *gc)
 	return tps68470_gpio_input(gc, 2);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *tps68470_names[TPS68470_N_GPIO] = {
 	"gpio.0", "gpio.1", "gpio.2", "gpio.3",
 	"gpio.4", "gpio.5", "gpio.6",
@@ -140,7 +143,10 @@ static const char *tps68470_names[TPS68470_N_GPIO] = {
 static int tps68470_gpio_probe(struct platform_device *pdev)
 {
 	struct tps68470_gpio_data *tps68470_gpio;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tps68470_gpio = devm_kzalloc(&pdev->dev, sizeof(*tps68470_gpio),
 				     GFP_KERNEL);
@@ -161,6 +167,7 @@ static int tps68470_gpio_probe(struct platform_device *pdev)
 	tps68470_gpio->gc.base = -1;
 	tps68470_gpio->gc.parent = &pdev->dev;
 
+<<<<<<< HEAD
 	ret = devm_gpiochip_add_data(&pdev->dev, &tps68470_gpio->gc, tps68470_gpio);
 	if (ret)
 		return ret;
@@ -169,6 +176,9 @@ static int tps68470_gpio_probe(struct platform_device *pdev)
 		ret = tps68470_enable_i2c_daisy_chain(&tps68470_gpio->gc);
 
 	return ret;
+=======
+	return devm_gpiochip_add_data(&pdev->dev, &tps68470_gpio->gc, tps68470_gpio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct platform_driver tps68470_gpio_driver = {

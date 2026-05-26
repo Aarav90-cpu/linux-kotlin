@@ -472,6 +472,7 @@ static struct sock *sco_get_sock_listen(bdaddr_t *src)
 			sk1 = sk;
 	}
 
+<<<<<<< HEAD
 	sk = sk ? sk : sk1;
 	if (sk)
 		sock_hold(sk);
@@ -479,6 +480,11 @@ static struct sock *sco_get_sock_listen(bdaddr_t *src)
 	read_unlock(&sco_sk_list.lock);
 
 	return sk;
+=======
+	read_unlock(&sco_sk_list.lock);
+
+	return sk ? sk : sk1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sco_sock_destruct(struct sock *sk)
@@ -521,13 +527,19 @@ static void sco_sock_kill(struct sock *sk)
 	BT_DBG("sk %p state %d", sk, sk->sk_state);
 
 	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
+<<<<<<< HEAD
 	lock_sock(sk);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sco_pi(sk)->conn) {
 		sco_conn_lock(sco_pi(sk)->conn);
 		sco_pi(sk)->conn->sk = NULL;
 		sco_conn_unlock(sco_pi(sk)->conn);
 	}
+<<<<<<< HEAD
 	release_sock(sk);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Kill poor orphan */
 	bt_sock_unlink(&sco_sk_list, sk);
@@ -1058,8 +1070,12 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
 
 		codecs = (void *)buffer;
 
+<<<<<<< HEAD
 		if (codecs->num_codecs != 1 ||
 		    optlen < struct_size(codecs, codecs, codecs->num_codecs)) {
+=======
+		if (codecs->num_codecs > 1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hci_dev_put(hdev);
 			err = -EINVAL;
 			break;
@@ -1378,16 +1394,22 @@ static int sco_sock_release(struct socket *sock)
 
 static void sco_conn_ready(struct sco_conn *conn)
 {
+<<<<<<< HEAD
 	struct sock *parent, *sk;
 
 	sco_conn_lock(conn);
 	sk = sco_sock_hold(conn);
 	sco_conn_unlock(conn);
+=======
+	struct sock *parent;
+	struct sock *sk = conn->sk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BT_DBG("conn %p", conn);
 
 	if (sk) {
 		lock_sock(sk);
+<<<<<<< HEAD
 
 		/* conn->sk may have become NULL if racing with sk close, but
 		 * due to held hdev->lock, it can't become different sk.
@@ -1423,6 +1445,35 @@ static void sco_conn_ready(struct sco_conn *conn)
 				    BTPROTO_SCO, GFP_ATOMIC, 0);
 		if (!sk)
 			goto release;
+=======
+		sco_sock_clear_timer(sk);
+		sk->sk_state = BT_CONNECTED;
+		sk->sk_state_change(sk);
+		release_sock(sk);
+	} else {
+		sco_conn_lock(conn);
+
+		if (!conn->hcon) {
+			sco_conn_unlock(conn);
+			return;
+		}
+
+		parent = sco_get_sock_listen(&conn->hcon->src);
+		if (!parent) {
+			sco_conn_unlock(conn);
+			return;
+		}
+
+		lock_sock(parent);
+
+		sk = sco_sock_alloc(sock_net(parent), NULL,
+				    BTPROTO_SCO, GFP_ATOMIC, 0);
+		if (!sk) {
+			release_sock(parent);
+			sco_conn_unlock(conn);
+			return;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		sco_sock_init(sk, parent);
 
@@ -1441,10 +1492,16 @@ static void sco_conn_ready(struct sco_conn *conn)
 		/* Wake up parent */
 		parent->sk_data_ready(parent);
 
+<<<<<<< HEAD
 release:
 		sco_conn_unlock(conn);
 		release_sock(parent);
 		sock_put(parent);
+=======
+		release_sock(parent);
+
+		sco_conn_unlock(conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

@@ -18,7 +18,11 @@
 #include <linux/hugetlb.h>
 #include <linux/migrate.h>
 #include <linux/mm_inline.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched/mm.h>
 #include <linux/shmem_fs.h>
 

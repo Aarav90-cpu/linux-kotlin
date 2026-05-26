@@ -752,7 +752,10 @@ struct nfsd4_copy {
 
 	struct nfsd_file        *nf_src;
 	struct nfsd_file        *nf_dst;
+<<<<<<< HEAD
 	bool			attr_update;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	copy_stateid_t		cp_stateid;
 

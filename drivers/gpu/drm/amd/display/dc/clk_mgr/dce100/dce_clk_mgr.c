@@ -62,6 +62,7 @@ static const struct clk_mgr_mask disp_clk_mask = {
 		CLK_COMMON_MASK_SH_LIST_DCE_COMMON_BASE(_MASK)
 };
 
+<<<<<<< HEAD
 /* Max clock values for each state indexed by "enum clocks_state": */
 static const struct state_dependent_clocks dce60_max_clks_by_state[] = {
 /* ClocksStateInvalid - should not be used */
@@ -74,6 +75,8 @@ static const struct state_dependent_clocks dce60_max_clks_by_state[] = {
 { .display_clk_khz = 600000, .pixel_clk_khz = 400000 },
 /* ClocksStatePerformance */
 { .display_clk_khz = 600000, .pixel_clk_khz = 400000 } };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Max clock values for each state indexed by "enum clocks_state": */
 static const struct state_dependent_clocks dce80_max_clks_by_state[] = {
@@ -138,6 +141,7 @@ int dce_adjust_dp_ref_freq_for_ss(struct clk_mgr_internal *clk_mgr_dce, int dp_r
 	return dp_ref_clk_khz;
 }
 
+<<<<<<< HEAD
 static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
 {
 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
@@ -152,6 +156,8 @@ static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int dce_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
 {
 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
@@ -160,9 +166,12 @@ int dce_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
 	int dp_ref_clk_khz;
 	int target_div;
 
+<<<<<<< HEAD
 	if (clk_mgr_base->ctx->dce_version <= DCE_VERSION_6_4)
 		return dce60_get_dp_ref_freq_khz(clk_mgr_base);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ASSERT DP Reference Clock source is from DFS*/
 	REG_GET(DPREFCLK_CNTL, DPREFCLK_SRC_SEL, &dprefclk_src_sel);
 	ASSERT(dprefclk_src_sel == 0);
@@ -470,6 +479,7 @@ void dce_clk_mgr_construct(
 	struct clk_mgr *base = &clk_mgr->base;
 	struct dm_pp_static_clock_info static_clk_info = {0};
 
+<<<<<<< HEAD
 	if (ctx->dce_version <= DCE_VERSION_6_4)
 		memcpy(clk_mgr->max_clks_by_state,
 			dce60_max_clks_by_state,
@@ -479,10 +489,16 @@ void dce_clk_mgr_construct(
 			dce80_max_clks_by_state,
 			sizeof(dce80_max_clks_by_state));
 
+=======
+	memcpy(clk_mgr->max_clks_by_state,
+		dce80_max_clks_by_state,
+		sizeof(dce80_max_clks_by_state));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	base->ctx = ctx;
 	base->funcs = &dce_funcs;
 
+<<<<<<< HEAD
 	if (ctx->dce_version >= DCE_VERSION_8_0) {
 		clk_mgr->regs = &disp_clk_regs;
 		clk_mgr->clk_mgr_shift = &disp_clk_shift;
@@ -490,10 +506,18 @@ void dce_clk_mgr_construct(
 	}
 
 	clk_mgr->dfs_bypass_disp_clk = 0;
+=======
+	clk_mgr->regs = &disp_clk_regs;
+	clk_mgr->clk_mgr_shift = &disp_clk_shift;
+	clk_mgr->clk_mgr_mask = &disp_clk_mask;
+	clk_mgr->dfs_bypass_disp_clk = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clk_mgr->dprefclk_ss_percentage = 0;
 	clk_mgr->dprefclk_ss_divider = 1000;
 	clk_mgr->ss_on_dprefclk = false;
 
+<<<<<<< HEAD
 	if (ctx->dce_version >= DCE_VERSION_8_0) {
 		if (dm_pp_get_static_clocks(ctx, &static_clk_info))
 			clk_mgr->max_clks_state = static_clk_info.max_clocks_state;
@@ -501,6 +525,13 @@ void dce_clk_mgr_construct(
 			clk_mgr->max_clks_state = DM_PP_CLOCKS_STATE_NOMINAL;
 		clk_mgr->cur_min_clks_state = DM_PP_CLOCKS_STATE_INVALID;
 	}
+=======
+	if (dm_pp_get_static_clocks(ctx, &static_clk_info))
+		clk_mgr->max_clks_state = static_clk_info.max_clocks_state;
+	else
+		clk_mgr->max_clks_state = DM_PP_CLOCKS_STATE_NOMINAL;
+	clk_mgr->cur_min_clks_state = DM_PP_CLOCKS_STATE_INVALID;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	base->clks.max_supported_dispclk_khz =
 		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
@@ -508,3 +539,7 @@ void dce_clk_mgr_construct(
 	dce_clock_read_integrated_info(clk_mgr);
 	dce_clock_read_ss_info(clk_mgr);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

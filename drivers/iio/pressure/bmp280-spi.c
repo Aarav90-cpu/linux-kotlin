@@ -47,7 +47,11 @@ static int bmp380_regmap_spi_read(void *context, const void *reg,
 		return -EINVAL;
 
 	/*
+<<<<<<< HEAD
 	 * According to the BMP3xx datasheets, for a basic SPI read operation,
+=======
+	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * the first byte needs to be dropped and the rest are the requested
 	 * data.
 	 */

@@ -6,7 +6,11 @@
 #include "bpf_misc.h"
 #include "../../../include/linux/filter.h"
 
+<<<<<<< HEAD
 #if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) || defined(__TARGET_ARCH_powerpc)
+=======
+#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DEFINE_SIMPLE_JUMP_TABLE_PROG(NAME, SRC_REG, OFF, IMM, OUTCOME)	\
 									\
@@ -131,7 +135,11 @@ DEFINE_INVALID_SIZE_PROG(u16, __failure __msg("Invalid read of 2 bytes from insn
 DEFINE_INVALID_SIZE_PROG(u8,  __failure __msg("Invalid read of 1 bytes from insn_array"))
 
 SEC("socket")
+<<<<<<< HEAD
 __failure __msg("misaligned value access off 1+0 size 8")
+=======
+__failure __msg("misaligned value access off 0+1+0 size 8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jump_table_misaligned_access(void)
 {
 	asm volatile ("						\
@@ -187,7 +195,11 @@ jt0_%=:								\
 }
 
 SEC("socket")
+<<<<<<< HEAD
 __failure __msg("R0 min value is negative")
+=======
+__failure __msg("invalid access to map value, value_size=16 off=-24 size=8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jump_table_invalid_mem_acceess_neg(void)
 {
 	asm volatile ("						\
@@ -384,6 +396,10 @@ jt0_%=:								\
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 #endif /* __TARGET_ARCH_x86 || __TARGET_ARCH_arm64 || __TARGET_ARCH_powerpc*/
+=======
+#endif /* __TARGET_ARCH_x86 || __TARGET_ARCH_arm64 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 char _license[] SEC("license") = "GPL";

@@ -22,7 +22,10 @@ struct tegra186_emc {
 	struct tegra_bpmp *bpmp;
 	struct device *dev;
 	struct clk *clk;
+<<<<<<< HEAD
 	struct clk *clk_dbb;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct tegra186_emc_dvfs *dvfs;
 	unsigned int num_dvfs;
@@ -329,6 +332,7 @@ static int tegra186_emc_probe(struct platform_device *pdev)
 		goto put_bpmp;
 	}
 
+<<<<<<< HEAD
 	emc->clk_dbb = devm_clk_get_optional_enabled(&pdev->dev, "dbb");
 	if (IS_ERR(emc->clk_dbb)) {
 		err = dev_err_probe(&pdev->dev, PTR_ERR(emc->clk_dbb),
@@ -336,6 +340,8 @@ static int tegra186_emc_probe(struct platform_device *pdev)
 		goto put_bpmp;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_set_drvdata(pdev, emc);
 	emc->dev = &pdev->dev;
 

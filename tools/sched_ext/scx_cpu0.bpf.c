@@ -66,7 +66,11 @@ void BPF_STRUCT_OPS(cpu0_enqueue, struct task_struct *p, u64 enq_flags)
 void BPF_STRUCT_OPS(cpu0_dispatch, s32 cpu, struct task_struct *prev)
 {
 	if (cpu == 0)
+<<<<<<< HEAD
 		scx_bpf_dsq_move_to_local(DSQ_CPU0, 0);
+=======
+		scx_bpf_dsq_move_to_local(DSQ_CPU0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 s32 BPF_STRUCT_OPS_SLEEPABLE(cpu0_init)

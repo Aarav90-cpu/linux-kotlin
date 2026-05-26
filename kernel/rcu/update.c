@@ -538,6 +538,7 @@ long torture_sched_setaffinity(pid_t pid, const struct cpumask *in_mask, bool do
 EXPORT_SYMBOL_GPL(torture_sched_setaffinity);
 #endif
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
 // Trivial and stupid grace-period wait.  Defined here so that lockdep
 // kernels can find tasklist_lock.
@@ -560,6 +561,8 @@ void synchronize_rcu_trivial_preempt(void)
 EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
 #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rcu_cpu_stall_notifiers __read_mostly; // !0 = provide stall notifiers (rarely useful)
 EXPORT_SYMBOL_GPL(rcu_cpu_stall_notifiers);
 

@@ -368,6 +368,7 @@ static int test_percpu_basic(const char *root)
 
 	for (i = 0; i < 1000; i++) {
 		child = cg_name_indexed(parent, "child", i);
+<<<<<<< HEAD
 		if (!child) {
 			ret = -1;
 			goto cleanup_children;
@@ -377,6 +378,13 @@ static int test_percpu_basic(const char *root)
 			free(child);
 			goto cleanup_children;
 		}
+=======
+		if (!child)
+			return -1;
+
+		if (cg_create(child))
+			goto cleanup_children;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		free(child);
 	}

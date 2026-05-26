@@ -432,8 +432,11 @@
 };
 
 &i2c5 {
+<<<<<<< HEAD
 	clock-frequency = <400000>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	touchscreen@38 {
@@ -459,6 +462,7 @@
 	/* SMB1355@0x0C */
 };
 
+<<<<<<< HEAD
 &i2c11 {
 	clock-frequency = <400000>;
 
@@ -472,6 +476,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &ipa {
 	qcom,gsi-loader = "self";
 	memory-region = <&ipa_fw_mem>;
@@ -498,8 +504,13 @@
 		reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
 
 		pinctrl-names = "default", "sleep";
+<<<<<<< HEAD
 		pinctrl-0 = <&sde_dsi_active &sde_te>;
 		pinctrl-1 = <&sde_dsi_suspend &sde_te>;
+=======
+		pinctrl-0 = <&sde_dsi_active &sde_te_active>;
+		pinctrl-1 = <&sde_dsi_suspend &sde_te_suspend>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		port {
 			panel_in_0: endpoint {
@@ -615,6 +626,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sdhc_2 {
 	pinctrl-0 = <&sdc2_default_state &sdc2_card_det_n>;
 	pinctrl-names = "default";
@@ -633,6 +645,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &slpi_pas {
 	firmware-name = "qcom/sdm845/SHIFT/axolotl/slpi.mbn";
 
@@ -642,6 +656,7 @@
 &tlmm {
 	gpio-reserved-ranges = <0 4>, <81 4>;
 
+<<<<<<< HEAD
 	sdc2_default_state: sdc2-default-state {
 		clk-pins {
 			pins = "sdc2_clk";
@@ -668,6 +683,8 @@
 		bias-disable;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sde_dsi_active: sde-dsi-active-state {
 		pins = "gpio6", "gpio11";
 		function = "gpio";
@@ -682,7 +699,18 @@
 		bias-pull-down;
 	};
 
+<<<<<<< HEAD
 	sde_te: sde-te-state {
+=======
+	sde_te_active: sde-te-active-state {
+		pins = "gpio10";
+		function = "mdp_vsync";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	sde_te_suspend: sde-te-suspend-state {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pins = "gpio10";
 		function = "mdp_vsync";
 		drive-strength = <2>;

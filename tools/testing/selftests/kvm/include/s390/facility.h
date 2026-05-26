@@ -16,7 +16,11 @@
 /* alt_stfle_fac_list[16] + stfle_fac_list[16] */
 #define NB_STFL_DOUBLEWORDS 32
 
+<<<<<<< HEAD
 extern u64 stfl_doublewords[NB_STFL_DOUBLEWORDS];
+=======
+extern uint64_t stfl_doublewords[NB_STFL_DOUBLEWORDS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern bool stfle_flag;
 
 static inline bool test_bit_inv(unsigned long nr, const unsigned long *ptr)
@@ -24,7 +28,11 @@ static inline bool test_bit_inv(unsigned long nr, const unsigned long *ptr)
 	return test_bit(nr ^ (BITS_PER_LONG - 1), ptr);
 }
 
+<<<<<<< HEAD
 static inline void stfle(u64 *fac, unsigned int nb_doublewords)
+=======
+static inline void stfle(uint64_t *fac, unsigned int nb_doublewords)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	register unsigned long r0 asm("0") = nb_doublewords - 1;
 

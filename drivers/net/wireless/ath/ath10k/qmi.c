@@ -808,7 +808,10 @@ out:
 static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
 {
 	struct ath10k *ar = qmi->ar;
+<<<<<<< HEAD
 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = ath10k_qmi_ind_register_send_sync_msg(qmi);
@@ -820,6 +823,7 @@ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
 		return;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Skip the host capability request for the firmware versions which
 	 * do not support this feature.
@@ -829,6 +833,11 @@ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
 		if (ret)
 			return;
 	}
+=======
+	ret = ath10k_qmi_host_cap_send_sync(qmi);
+	if (ret)
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
 	if (ret)

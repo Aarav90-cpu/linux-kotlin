@@ -115,10 +115,20 @@ unsigned int irq_calc_affinity_vectors(unsigned int minvec, unsigned int maxvec,
 	if (resv > minvec)
 		return 0;
 
+<<<<<<< HEAD
 	if (affd->calc_sets)
 		set_vecs = maxvec - resv;
 	else
 		set_vecs = cpumask_weight(cpu_possible_mask);
+=======
+	if (affd->calc_sets) {
+		set_vecs = maxvec - resv;
+	} else {
+		cpus_read_lock();
+		set_vecs = cpumask_weight(cpu_possible_mask);
+		cpus_read_unlock();
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return resv + min(set_vecs, maxvec - resv);
 }

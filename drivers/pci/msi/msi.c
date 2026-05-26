@@ -77,6 +77,7 @@ static void pcim_msi_release(void *pcidev)
 /*
  * Needs to be separate from pcim_release to prevent an ordering problem
  * vs. msi_device_data_release() in the MSI core code.
+<<<<<<< HEAD
  *
  * TODO: Remove the legacy side-effect of pcim_enable_device() that
  * activates automatic IRQ vector management. This design is dangerous
@@ -87,6 +88,8 @@ static void pcim_msi_release(void *pcidev)
  * The current implementation uses both pdev->is_managed and
  * pdev->is_msi_managed flags, which adds unnecessary complexity.
  * This should be simplified in a future kernel version.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int pcim_setup_msi_release(struct pci_dev *dev)
 {

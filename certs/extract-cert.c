@@ -33,6 +33,11 @@
 #endif
 #include "ssl-common.h"
 
+<<<<<<< HEAD
+=======
+#define PKEY_ID_PKCS7 2
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __attribute__((noreturn))
 void format(void)
 {

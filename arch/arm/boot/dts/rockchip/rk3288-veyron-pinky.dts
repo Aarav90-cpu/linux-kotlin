@@ -47,7 +47,10 @@
 
 	key-power {
 		gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+<<<<<<< HEAD
 		linux,code = <KEY_POWER>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

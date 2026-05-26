@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 #include <ctype.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <errno.h>
 #include <inttypes.h>
 #include <regex.h>
@@ -31,7 +34,10 @@
 #include "time-utils.h"
 #include "cgroup.h"
 #include "machine.h"
+<<<<<<< HEAD
 #include "session.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "trace-event.h"
 #include <linux/kernel.h>
 #include <linux/string.h>
@@ -44,11 +50,19 @@ regex_t		parent_regex;
 const char	default_parent_pattern[] = "^sys_|^do_page_fault";
 const char	*parent_pattern = default_parent_pattern;
 const char	*default_sort_order = "comm,dso,symbol";
+<<<<<<< HEAD
 static const char	default_branch_sort_order[] = "comm,dso_from,symbol_from,symbol_to,cycles";
 const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,local_p_stage_cyc";
 static const char	default_top_sort_order[] = "dso,symbol";
 static const char	default_diff_sort_order[] = "dso,symbol";
 static const char	default_tracepoint_sort_order[] = "trace";
+=======
+const char	default_branch_sort_order[] = "comm,dso_from,symbol_from,symbol_to,cycles";
+const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,local_p_stage_cyc";
+const char	default_top_sort_order[] = "dso,symbol";
+const char	default_diff_sort_order[] = "dso,symbol";
+const char	default_tracepoint_sort_order[] = "trace";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const char	*sort_order;
 const char	*field_order;
 regex_t		ignore_callees_regex;
@@ -173,7 +187,11 @@ static int hist_entry__tgid_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%7d:%-*.*s", tgid, width, width, comm ?: "");
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_tgid = {
+=======
+struct sort_entry sort_tgid = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "   Tgid:Command",
 	.se_cmp		= sort__tgid_cmp,
 	.se_snprintf	= hist_entry__tgid_snprintf,
@@ -195,12 +213,17 @@ static const char *hist_entry__get_simd_name(struct simd_flags *simd_flags)
 {
 	u64 arch = simd_flags->arch;
 
+<<<<<<< HEAD
 	if (arch == SIMD_OP_FLAGS_ARCH_SVE)
 		return "SVE";
 	else if (arch == SIMD_OP_FLAGS_ARCH_SME)
 		return "SME";
 	else if (arch == SIMD_OP_FLAGS_ARCH_ASE)
 		return "ASE";
+=======
+	if (arch & SIMD_OP_FLAGS_ARCH_SVE)
+		return "SVE";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		return "n/a";
 }
@@ -209,13 +232,17 @@ static int hist_entry__simd_snprintf(struct hist_entry *he, char *bf,
 				     size_t size, unsigned int width __maybe_unused)
 {
 	const char *name;
+<<<<<<< HEAD
 	const char *pred_str = ".";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!he->simd_flags.arch)
 		return repsep_snprintf(bf, size, "");
 
 	name = hist_entry__get_simd_name(&he->simd_flags);
 
+<<<<<<< HEAD
 	if (he->simd_flags.pred == SIMD_OP_FLAGS_PRED_EMPTY)
 		pred_str = "e";
 	else if (he->simd_flags.pred == SIMD_OP_FLAGS_PRED_PARTIAL)
@@ -229,6 +256,17 @@ static int hist_entry__simd_snprintf(struct hist_entry *he, char *bf,
 }
 
 static struct sort_entry sort_simd = {
+=======
+	if (he->simd_flags.pred & SIMD_OP_FLAGS_PRED_EMPTY)
+		return repsep_snprintf(bf, size, "[e] %s", name);
+	else if (he->simd_flags.pred & SIMD_OP_FLAGS_PRED_PARTIAL)
+		return repsep_snprintf(bf, size, "[p] %s", name);
+
+	return repsep_snprintf(bf, size, "[.] %s", name);
+}
+
+struct sort_entry sort_simd = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Simd   ",
 	.se_cmp		= sort__simd_cmp,
 	.se_snprintf	= hist_entry__simd_snprintf,
@@ -276,6 +314,7 @@ struct sort_entry sort_comm = {
 	.se_width_idx	= HISTC_COMM,
 };
 
+<<<<<<< HEAD
 /* --sort comm_nodigit */
 
 size_t sort__comm_nodigit_len(struct hist_entry *entry)
@@ -385,6 +424,8 @@ struct sort_entry sort_comm_nodigit = {
 	.se_width_idx	= HISTC_COMM_NODIGIT,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* --sort dso */
 
 static int64_t _sort__dso_cmp(struct map *map_l, struct map *map_r)
@@ -614,7 +655,11 @@ hist_entry__symoff_snprintf(struct hist_entry *he, char *bf, size_t size, unsign
 	return repsep_snprintf(bf, size, "[%c] %s+0x%llx", he->level, sym->name, he->ip - sym->start);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_sym_offset = {
+=======
+struct sort_entry sort_sym_offset = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Symbol Offset",
 	.se_cmp		= sort__symoff_cmp,
 	.se_sort	= sort__symoff_sort,
@@ -725,7 +770,11 @@ static int hist_entry__srcline_from_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*.*s", width, width, he->branch_info->srcline_from);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_srcline_from = {
+=======
+struct sort_entry sort_srcline_from = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "From Source:Line",
 	.se_cmp		= sort__srcline_from_cmp,
 	.se_collapse	= sort__srcline_from_collapse,
@@ -773,7 +822,11 @@ static int hist_entry__srcline_to_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*.*s", width, width, he->branch_info->srcline_to);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_srcline_to = {
+=======
+struct sort_entry sort_srcline_to = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "To Source:Line",
 	.se_cmp		= sort__srcline_to_cmp,
 	.se_collapse	= sort__srcline_to_collapse,
@@ -809,7 +862,11 @@ static int hist_entry__sym_ipc_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*s", width, tmp);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_sym_ipc = {
+=======
+struct sort_entry sort_sym_ipc = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "IPC   [IPC Coverage]",
 	.se_cmp		= sort__sym_cmp,
 	.se_snprintf	= hist_entry__sym_ipc_snprintf,
@@ -827,7 +884,11 @@ static int hist_entry__sym_ipc_null_snprintf(struct hist_entry *he
 	return repsep_snprintf(bf, size, "%-*s", width, tmp);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_sym_ipc_null = {
+=======
+struct sort_entry sort_sym_ipc_null = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "IPC   [IPC Coverage]",
 	.se_cmp		= sort__sym_cmp,
 	.se_snprintf	= hist_entry__sym_ipc_null_snprintf,
@@ -860,7 +921,11 @@ static int hist_entry__callchain_branch_predicted_snprintf(
 	return repsep_snprintf(bf, size, "%-*.*s", width, width, str);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_callchain_branch_predicted = {
+=======
+struct sort_entry sort_callchain_branch_predicted = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Predicted",
 	.se_cmp		= sort__callchain_branch_predicted_cmp,
 	.se_snprintf	= hist_entry__callchain_branch_predicted_snprintf,
@@ -890,7 +955,11 @@ static int hist_entry__callchain_branch_abort_snprintf(struct hist_entry *he,
 	return repsep_snprintf(bf, size, "%-*.*s", width, width, str);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_callchain_branch_abort = {
+=======
+struct sort_entry sort_callchain_branch_abort = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Abort",
 	.se_cmp		= sort__callchain_branch_abort_cmp,
 	.se_snprintf	= hist_entry__callchain_branch_abort_snprintf,
@@ -923,7 +992,11 @@ static int hist_entry__callchain_branch_cycles_snprintf(struct hist_entry *he,
 	return repsep_snprintf(bf, size, "%-*.*s", width, width, str);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_callchain_branch_cycles = {
+=======
+struct sort_entry sort_callchain_branch_cycles = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Cycles",
 	.se_cmp		= sort__callchain_branch_cycles_cmp,
 	.se_snprintf	= hist_entry__callchain_branch_cycles_snprintf,
@@ -990,7 +1063,11 @@ static int hist_entry__srcfile_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-.*s", width, he->srcfile);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_srcfile = {
+=======
+struct sort_entry sort_srcfile = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Source File",
 	.se_cmp		= sort__srcfile_cmp,
 	.se_collapse	= sort__srcfile_collapse,
@@ -1042,7 +1119,11 @@ static int hist_entry__cpu_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%*.*d", width, width, he->cpu);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_cpu = {
+=======
+struct sort_entry sort_cpu = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "CPU",
 	.se_cmp	        = sort__cpu_cmp,
 	.se_snprintf    = hist_entry__cpu_snprintf,
@@ -1073,7 +1154,11 @@ static int hist_entry__parallelism_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%*d", width, he->parallelism);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_parallelism = {
+=======
+struct sort_entry sort_parallelism = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Parallelism",
 	.se_cmp	        = sort__parallelism_cmp,
 	.se_filter	= hist_entry__parallelism_filter,
@@ -1114,7 +1199,11 @@ static int hist_entry__cgroup_id_snprintf(struct hist_entry *he,
 			       he->cgroup_id.ino);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_cgroup_id = {
+=======
+struct sort_entry sort_cgroup_id = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "cgroup id (dev/inode)",
 	.se_cmp	        = sort__cgroup_id_cmp,
 	.se_snprintf    = hist_entry__cgroup_id_snprintf,
@@ -1147,7 +1236,11 @@ static int hist_entry__cgroup_snprintf(struct hist_entry *he,
 	return repsep_snprintf(bf, size, "%s", cgrp_name);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_cgroup = {
+=======
+struct sort_entry sort_cgroup = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Cgroup",
 	.se_cmp	        = sort__cgroup_cmp,
 	.se_snprintf    = hist_entry__cgroup_snprintf,
@@ -1178,7 +1271,11 @@ static int hist_entry__socket_filter(struct hist_entry *he, int type, const void
 	return sk >= 0 && he->socket != sk;
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_socket = {
+=======
+struct sort_entry sort_socket = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Socket",
 	.se_cmp	        = sort__socket_cmp,
 	.se_snprintf    = hist_entry__socket_snprintf,
@@ -1209,7 +1306,11 @@ static int hist_entry__time_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-.*s", width, he_time);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_time = {
+=======
+struct sort_entry sort_time = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Time",
 	.se_cmp	        = sort__time_cmp,
 	.se_snprintf    = hist_entry__time_snprintf,
@@ -1278,7 +1379,11 @@ static int hist_entry__trace_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-.*s", width, he->trace_output);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_trace = {
+=======
+struct sort_entry sort_trace = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Trace output",
 	.se_cmp	        = sort__trace_cmp,
 	.se_snprintf    = hist_entry__trace_snprintf,
@@ -1573,7 +1678,11 @@ sort__addr_to_cmp(struct hist_entry *left, struct hist_entry *right)
 	return _sort__addr_cmp(to_l->addr, to_r->addr);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_addr_from = {
+=======
+struct sort_entry sort_addr_from = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Source Address",
 	.se_cmp		= sort__addr_from_cmp,
 	.se_snprintf	= hist_entry__addr_from_snprintf,
@@ -1581,7 +1690,11 @@ static struct sort_entry sort_addr_from = {
 	.se_width_idx	= HISTC_ADDR_FROM,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_addr_to = {
+=======
+struct sort_entry sort_addr_to = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Target Address",
 	.se_cmp		= sort__addr_to_cmp,
 	.se_snprintf	= hist_entry__addr_to_snprintf,
@@ -1638,7 +1751,11 @@ static int hist_entry__cycles_snprintf(struct hist_entry *he, char *bf,
 			       he->branch_info->flags.cycles);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_cycles = {
+=======
+struct sort_entry sort_cycles = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Basic Block Cycles",
 	.se_cmp		= sort__cycles_cmp,
 	.se_snprintf	= hist_entry__cycles_snprintf,
@@ -1928,7 +2045,11 @@ static int hist_entry__dcacheline_snprintf(struct hist_entry *he, char *bf,
 	return _hist_entry__sym_snprintf(ms, addr, level, bf, size, width);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_mispredict = {
+=======
+struct sort_entry sort_mispredict = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Branch Mispredicted",
 	.se_cmp		= sort__mispredict_cmp,
 	.se_snprintf	= hist_entry__mispredict_snprintf,
@@ -1947,7 +2068,11 @@ static int hist_entry__local_weight_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*llu", width, he->weight);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_local_weight = {
+=======
+struct sort_entry sort_local_weight = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Local Weight",
 	.se_cmp		= sort__weight_cmp,
 	.se_snprintf	= hist_entry__local_weight_snprintf,
@@ -1961,7 +2086,11 @@ static int hist_entry__global_weight_snprintf(struct hist_entry *he, char *bf,
 			       he->weight * he->stat.nr_events);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_global_weight = {
+=======
+struct sort_entry sort_global_weight = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Weight",
 	.se_cmp		= sort__weight_cmp,
 	.se_snprintf	= hist_entry__global_weight_snprintf,
@@ -1980,7 +2109,11 @@ static int hist_entry__local_ins_lat_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*u", width, he->ins_lat);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_local_ins_lat = {
+=======
+struct sort_entry sort_local_ins_lat = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Local INSTR Latency",
 	.se_cmp		= sort__ins_lat_cmp,
 	.se_snprintf	= hist_entry__local_ins_lat_snprintf,
@@ -1994,7 +2127,11 @@ static int hist_entry__global_ins_lat_snprintf(struct hist_entry *he, char *bf,
 			       he->ins_lat * he->stat.nr_events);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_global_ins_lat = {
+=======
+struct sort_entry sort_global_ins_lat = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "INSTR Latency",
 	.se_cmp		= sort__ins_lat_cmp,
 	.se_snprintf	= hist_entry__global_ins_lat_snprintf,
@@ -2020,70 +2157,110 @@ static int hist_entry__p_stage_cyc_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*u", width, he->weight3);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_local_p_stage_cyc = {
+=======
+struct sort_entry sort_local_p_stage_cyc = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Local Pipeline Stage Cycle",
 	.se_cmp         = sort__p_stage_cyc_cmp,
 	.se_snprintf	= hist_entry__p_stage_cyc_snprintf,
 	.se_width_idx	= HISTC_LOCAL_P_STAGE_CYC,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_global_p_stage_cyc = {
+=======
+struct sort_entry sort_global_p_stage_cyc = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header      = "Pipeline Stage Cycle",
 	.se_cmp         = sort__p_stage_cyc_cmp,
 	.se_snprintf    = hist_entry__global_p_stage_cyc_snprintf,
 	.se_width_idx   = HISTC_GLOBAL_P_STAGE_CYC,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_daddr_sym = {
+=======
+struct sort_entry sort_mem_daddr_sym = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Symbol",
 	.se_cmp		= sort__daddr_cmp,
 	.se_snprintf	= hist_entry__daddr_snprintf,
 	.se_width_idx	= HISTC_MEM_DADDR_SYMBOL,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_iaddr_sym = {
+=======
+struct sort_entry sort_mem_iaddr_sym = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Code Symbol",
 	.se_cmp		= sort__iaddr_cmp,
 	.se_snprintf	= hist_entry__iaddr_snprintf,
 	.se_width_idx	= HISTC_MEM_IADDR_SYMBOL,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_daddr_dso = {
+=======
+struct sort_entry sort_mem_daddr_dso = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Object",
 	.se_cmp		= sort__dso_daddr_cmp,
 	.se_snprintf	= hist_entry__dso_daddr_snprintf,
 	.se_width_idx	= HISTC_MEM_DADDR_DSO,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_locked = {
+=======
+struct sort_entry sort_mem_locked = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Locked",
 	.se_cmp		= sort__locked_cmp,
 	.se_snprintf	= hist_entry__locked_snprintf,
 	.se_width_idx	= HISTC_MEM_LOCKED,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_tlb = {
+=======
+struct sort_entry sort_mem_tlb = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "TLB access",
 	.se_cmp		= sort__tlb_cmp,
 	.se_snprintf	= hist_entry__tlb_snprintf,
 	.se_width_idx	= HISTC_MEM_TLB,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_lvl = {
+=======
+struct sort_entry sort_mem_lvl = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Memory access",
 	.se_cmp		= sort__lvl_cmp,
 	.se_snprintf	= hist_entry__lvl_snprintf,
 	.se_width_idx	= HISTC_MEM_LVL,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_snoop = {
+=======
+struct sort_entry sort_mem_snoop = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Snoop",
 	.se_cmp		= sort__snoop_cmp,
 	.se_snprintf	= hist_entry__snoop_snprintf,
 	.se_width_idx	= HISTC_MEM_SNOOP,
 };
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_dcacheline = {
+=======
+struct sort_entry sort_mem_dcacheline = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Cacheline",
 	.se_cmp		= sort__dcacheline_cmp,
 	.se_snprintf	= hist_entry__dcacheline_snprintf,
@@ -2118,7 +2295,11 @@ static int hist_entry__blocked_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%.*s", width, out);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_blocked = {
+=======
+struct sort_entry sort_mem_blocked = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Blocked",
 	.se_cmp		= sort__blocked_cmp,
 	.se_snprintf	= hist_entry__blocked_snprintf,
@@ -2159,7 +2340,11 @@ static int hist_entry__phys_daddr_snprintf(struct hist_entry *he, char *bf,
 	return width;
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_phys_daddr = {
+=======
+struct sort_entry sort_mem_phys_daddr = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Physical Address",
 	.se_cmp		= sort__phys_daddr_cmp,
 	.se_snprintf	= hist_entry__phys_daddr_snprintf,
@@ -2188,7 +2373,11 @@ static int hist_entry__data_page_size_snprintf(struct hist_entry *he, char *bf,
 			get_page_size_name(mem_info__daddr(he->mem_info)->data_page_size, str));
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_mem_data_page_size = {
+=======
+struct sort_entry sort_mem_data_page_size = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Page Size",
 	.se_cmp		= sort__data_page_size_cmp,
 	.se_snprintf	= hist_entry__data_page_size_snprintf,
@@ -2213,7 +2402,11 @@ static int hist_entry__code_page_size_snprintf(struct hist_entry *he, char *bf,
 			       get_page_size_name(he->code_page_size, str));
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_code_page_size = {
+=======
+struct sort_entry sort_code_page_size = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Code Page Size",
 	.se_cmp		= sort__code_page_size_cmp,
 	.se_snprintf	= hist_entry__code_page_size_snprintf,
@@ -2245,7 +2438,11 @@ static int hist_entry__abort_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*s", width, out);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_abort = {
+=======
+struct sort_entry sort_abort = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Transaction abort",
 	.se_cmp		= sort__abort_cmp,
 	.se_snprintf	= hist_entry__abort_snprintf,
@@ -2277,7 +2474,11 @@ static int hist_entry__in_tx_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*s", width, out);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_in_tx = {
+=======
+struct sort_entry sort_in_tx = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Branch in transaction",
 	.se_cmp		= sort__in_tx_cmp,
 	.se_snprintf	= hist_entry__in_tx_snprintf,
@@ -2349,7 +2550,11 @@ static int hist_entry__transaction_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-*s", width, buf);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_transaction = {
+=======
+struct sort_entry sort_transaction = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Transaction                ",
 	.se_cmp		= sort__transaction_cmp,
 	.se_snprintf	= hist_entry__transaction_snprintf,
@@ -2388,7 +2593,11 @@ static int hist_entry__sym_size_snprintf(struct hist_entry *he, char *bf,
 	return _hist_entry__sym_size_snprintf(he->ms.sym, bf, size, width);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_sym_size = {
+=======
+struct sort_entry sort_sym_size = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Symbol size",
 	.se_cmp		= sort__sym_size_cmp,
 	.se_snprintf	= hist_entry__sym_size_snprintf,
@@ -2427,7 +2636,11 @@ static int hist_entry__dso_size_snprintf(struct hist_entry *he, char *bf,
 	return _hist_entry__dso_size_snprintf(he->ms.map, bf, size, width);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_dso_size = {
+=======
+struct sort_entry sort_dso_size = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "DSO size",
 	.se_cmp		= sort__dso_size_cmp,
 	.se_snprintf	= hist_entry__dso_size_snprintf,
@@ -2464,7 +2677,11 @@ static int hist_entry__addr_snprintf(struct hist_entry *he, char *bf,
 	return repsep_snprintf(bf, size, "%-#*llx", width, ip);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_addr = {
+=======
+struct sort_entry sort_addr = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Address",
 	.se_cmp		= sort__addr_cmp,
 	.se_snprintf	= hist_entry__addr_snprintf,
@@ -2582,7 +2799,11 @@ static int hist_entry__typeoff_snprintf(struct hist_entry *he, char *bf,
 			       he->mem_type_off, buf);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_type_offset = {
+=======
+struct sort_entry sort_type_offset = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Type Offset",
 	.se_cmp		= sort__type_cmp,
 	.se_collapse	= sort__typeoff_sort,
@@ -2594,6 +2815,7 @@ static struct sort_entry sort_type_offset = {
 
 /* --sort typecln */
 
+<<<<<<< HEAD
 static int
 hist_entry__cln_size(struct hist_entry *he)
 {
@@ -2614,6 +2836,9 @@ hist_entry__cln_size(struct hist_entry *he)
 
 	return ret;
 }
+=======
+#define DEFAULT_CACHELINE_SIZE 64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int64_t
 sort__typecln_sort(struct hist_entry *left, struct hist_entry *right)
@@ -2621,9 +2846,17 @@ sort__typecln_sort(struct hist_entry *left, struct hist_entry *right)
 	struct annotated_data_type *left_type = left->mem_type;
 	struct annotated_data_type *right_type = right->mem_type;
 	int64_t left_cln, right_cln;
+<<<<<<< HEAD
 	int64_t cln_size_left = hist_entry__cln_size(left);
 	int64_t cln_size_right = hist_entry__cln_size(right);
 	int64_t ret;
+=======
+	int64_t ret;
+	int cln_size = cacheline_size();
+
+	if (cln_size == 0)
+		cln_size = DEFAULT_CACHELINE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!left_type) {
 		sort__type_init(left);
@@ -2639,8 +2872,13 @@ sort__typecln_sort(struct hist_entry *left, struct hist_entry *right)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	left_cln = left->mem_type_off / cln_size_left;
 	right_cln = right->mem_type_off / cln_size_right;
+=======
+	left_cln = left->mem_type_off / cln_size;
+	right_cln = right->mem_type_off / cln_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return left_cln - right_cln;
 }
 
@@ -2648,13 +2886,24 @@ static int hist_entry__typecln_snprintf(struct hist_entry *he, char *bf,
 				     size_t size, unsigned int width __maybe_unused)
 {
 	struct annotated_data_type *he_type = he->mem_type;
+<<<<<<< HEAD
 	int cln_size = hist_entry__cln_size(he);
+=======
+	int cln_size = cacheline_size();
+
+	if (cln_size == 0)
+		cln_size = DEFAULT_CACHELINE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return repsep_snprintf(bf, size, "%s: cache-line %d", he_type->self.type_name,
 			       he->mem_type_off / cln_size);
 }
 
+<<<<<<< HEAD
 static struct sort_entry sort_type_cacheline = {
+=======
+struct sort_entry sort_type_cacheline = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.se_header	= "Data Type Cacheline",
 	.se_cmp		= sort__type_cmp,
 	.se_collapse	= sort__typecln_sort,
@@ -2717,7 +2966,10 @@ static struct sort_dimension common_sort_dimensions[] = {
 	DIM(SORT_PID, "pid", sort_thread),
 	DIM(SORT_TGID, "tgid", sort_tgid),
 	DIM(SORT_COMM, "comm", sort_comm),
+<<<<<<< HEAD
 	DIM(SORT_COMM_NODIGIT, "comm_nodigit", sort_comm_nodigit),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DIM(SORT_DSO, "dso", sort_dso),
 	DIM(SORT_SYM, "symbol", sort_sym),
 	DIM(SORT_PARENT, "parent", sort_parent),
@@ -3714,8 +3966,11 @@ static int __sort_dimension__update(struct sort_dimension *sd,
 		list->thread = 1;
 	} else if (sd->entry == &sort_comm) {
 		list->comm = 1;
+<<<<<<< HEAD
 	} else if (sd->entry == &sort_comm_nodigit) {
 		list->comm_nodigit = list->comm = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (sd->entry == &sort_type_offset) {
 		symbol_conf.annotate_data_member = true;
 	} else if (sd->entry == &sort_sym_from || sd->entry == &sort_sym_to) {
@@ -4177,7 +4432,10 @@ static bool get_elide(int idx, FILE *output)
 	case HISTC_DSO:
 		return __get_elide(symbol_conf.dso_list, "dso", output);
 	case HISTC_COMM:
+<<<<<<< HEAD
 	case HISTC_COMM_NODIGIT:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return __get_elide(symbol_conf.comm_list, "comm", output);
 	default:
 		break;

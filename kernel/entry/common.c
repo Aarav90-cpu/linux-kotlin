@@ -47,10 +47,17 @@ static __always_inline unsigned long __exit_to_user_mode_loop(struct pt_regs *re
 	 */
 	while (ti_work & EXIT_TO_USER_MODE_WORK_LOOP) {
 
+<<<<<<< HEAD
 		local_irq_enable();
 
 		if (ti_work & (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)) {
 			if (!rseq_grant_slice_extension(ti_work, TIF_SLICE_EXT_DENY))
+=======
+		local_irq_enable_exit_to_user(ti_work);
+
+		if (ti_work & (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)) {
+			if (!rseq_grant_slice_extension(ti_work & TIF_SLICE_EXT_DENY))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				schedule();
 		}
 
@@ -74,7 +81,11 @@ static __always_inline unsigned long __exit_to_user_mode_loop(struct pt_regs *re
 		 * might have changed while interrupts and preemption was
 		 * enabled above.
 		 */
+<<<<<<< HEAD
 		local_irq_disable();
+=======
+		local_irq_disable_exit_to_user();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Check if any of the above work has queued a deferred wakeup */
 		tick_nohz_user_enter_prepare();
@@ -105,16 +116,82 @@ __always_inline unsigned long exit_to_user_mode_loop(struct pt_regs *regs,
 
 noinstr irqentry_state_t irqentry_enter(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	if (user_mode(regs)) {
 		irqentry_state_t ret = {
 			.exit_rcu = false,
 		};
 
+=======
+	irqentry_state_t ret = {
+		.exit_rcu = false,
+	};
+
+	if (user_mode(regs)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		irqentry_enter_from_user_mode(regs);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return irqentry_enter_from_kernel_mode(regs);
+=======
+	/*
+	 * If this entry hit the idle task invoke ct_irq_enter() whether
+	 * RCU is watching or not.
+	 *
+	 * Interrupts can nest when the first interrupt invokes softirq
+	 * processing on return which enables interrupts.
+	 *
+	 * Scheduler ticks in the idle task can mark quiescent state and
+	 * terminate a grace period, if and only if the timer interrupt is
+	 * not nested into another interrupt.
+	 *
+	 * Checking for rcu_is_watching() here would prevent the nesting
+	 * interrupt to invoke ct_irq_enter(). If that nested interrupt is
+	 * the tick then rcu_flavor_sched_clock_irq() would wrongfully
+	 * assume that it is the first interrupt and eventually claim
+	 * quiescent state and end grace periods prematurely.
+	 *
+	 * Unconditionally invoke ct_irq_enter() so RCU state stays
+	 * consistent.
+	 *
+	 * TINY_RCU does not support EQS, so let the compiler eliminate
+	 * this part when enabled.
+	 */
+	if (!IS_ENABLED(CONFIG_TINY_RCU) &&
+	    (is_idle_task(current) || arch_in_rcu_eqs())) {
+		/*
+		 * If RCU is not watching then the same careful
+		 * sequence vs. lockdep and tracing is required
+		 * as in irqentry_enter_from_user_mode().
+		 */
+		lockdep_hardirqs_off(CALLER_ADDR0);
+		ct_irq_enter();
+		instrumentation_begin();
+		kmsan_unpoison_entry_regs(regs);
+		trace_hardirqs_off_finish();
+		instrumentation_end();
+
+		ret.exit_rcu = true;
+		return ret;
+	}
+
+	/*
+	 * If RCU is watching then RCU only wants to check whether it needs
+	 * to restart the tick in NOHZ mode. rcu_irq_enter_check_tick()
+	 * already contains a warning when RCU is not watching, so no point
+	 * in having another one here.
+	 */
+	lockdep_hardirqs_off(CALLER_ADDR0);
+	instrumentation_begin();
+	kmsan_unpoison_entry_regs(regs);
+	rcu_irq_enter_check_tick();
+	trace_hardirqs_off_finish();
+	instrumentation_end();
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -158,10 +235,50 @@ void dynamic_irqentry_exit_cond_resched(void)
 
 noinstr void irqentry_exit(struct pt_regs *regs, irqentry_state_t state)
 {
+<<<<<<< HEAD
 	if (user_mode(regs))
 		irqentry_exit_to_user_mode(regs);
 	else
 		irqentry_exit_to_kernel_mode(regs, state);
+=======
+	lockdep_assert_irqs_disabled();
+
+	/* Check whether this returns to user mode */
+	if (user_mode(regs)) {
+		irqentry_exit_to_user_mode(regs);
+	} else if (!regs_irqs_disabled(regs)) {
+		/*
+		 * If RCU was not watching on entry this needs to be done
+		 * carefully and needs the same ordering of lockdep/tracing
+		 * and RCU as the return to user mode path.
+		 */
+		if (state.exit_rcu) {
+			instrumentation_begin();
+			/* Tell the tracer that IRET will enable interrupts */
+			trace_hardirqs_on_prepare();
+			lockdep_hardirqs_on_prepare();
+			instrumentation_end();
+			ct_irq_exit();
+			lockdep_hardirqs_on(CALLER_ADDR0);
+			return;
+		}
+
+		instrumentation_begin();
+		if (IS_ENABLED(CONFIG_PREEMPTION))
+			irqentry_exit_cond_resched();
+
+		/* Covers both tracing and lockdep */
+		trace_hardirqs_on();
+		instrumentation_end();
+	} else {
+		/*
+		 * IRQ flags state is correct already. Just tell RCU if it
+		 * was not watching on entry.
+		 */
+		if (state.exit_rcu)
+			ct_irq_exit();
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 irqentry_state_t noinstr irqentry_nmi_enter(struct pt_regs *regs)

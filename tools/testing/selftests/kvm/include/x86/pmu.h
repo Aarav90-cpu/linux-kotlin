@@ -6,8 +6,13 @@
 #define SELFTEST_KVM_PMU_H
 
 #include <stdbool.h>
+<<<<<<< HEAD
 
 #include <linux/types.h>
+=======
+#include <stdint.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bits.h>
 
 #define KVM_PMU_EVENT_FILTER_MAX_EVENTS			300
@@ -104,15 +109,24 @@ enum amd_pmu_zen_events {
 	NR_AMD_ZEN_EVENTS,
 };
 
+<<<<<<< HEAD
 extern const u64 intel_pmu_arch_events[];
 extern const u64 amd_pmu_zen_events[];
+=======
+extern const uint64_t intel_pmu_arch_events[];
+extern const uint64_t amd_pmu_zen_events[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum pmu_errata {
 	INSTRUCTIONS_RETIRED_OVERCOUNT,
 	BRANCHES_RETIRED_OVERCOUNT,
 };
+<<<<<<< HEAD
 
 extern u64 pmu_errata_mask;
+=======
+extern uint64_t pmu_errata_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void kvm_init_pmu_errata(void);
 

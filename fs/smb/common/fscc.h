@@ -12,6 +12,7 @@
 #ifndef _COMMON_SMB_FSCC_H
 #define _COMMON_SMB_FSCC_H
 
+<<<<<<< HEAD
 /* Reparse structures - see MS-FSCC 2.1.2 */
 
 /* struct fsctl_reparse_info_req is empty, only response structs (see below) */
@@ -226,6 +227,8 @@ typedef struct file_basic_info { /* data block encoding of response to level 18 
 	__u32  Pad;
 } __packed FILE_BASIC_INFO;	/* size info, level 0x101 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* See MS-FSCC 2.4.8 */
 typedef struct {
 	__le32 NextEntryOffset;
@@ -261,11 +264,14 @@ typedef struct {
 } __packed FILE_DIRECTORY_INFO;   /* level 0x101 FF resp data */
 
 /* See MS-FSCC 2.4.14 */
+<<<<<<< HEAD
 struct smb2_file_eof_info { /* encoding of request for level 10 */
 	__le64 EndOfFile; /* new end of file value */
 } __packed; /* level 20 Set */
 
 /* See MS-FSCC 2.4.15 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef struct {
 	__le32 NextEntryOffset;
 	__u32 FileIndex;
@@ -299,6 +305,7 @@ typedef struct {
 	char FileName[];
 } __packed FILE_ID_FULL_DIR_INFO; /* level 0x105 FF rsp data */
 
+<<<<<<< HEAD
 /* See MS-FSCC 2.4.27 */
 struct smb2_file_internal_info {
 	__le64 IndexNumber;
@@ -319,6 +326,8 @@ struct smb2_file_link_info { /* encoding of request for level 11 */
 static_assert(offsetof(struct smb2_file_link_info, FileName) == sizeof(struct smb2_file_link_info_hdr),
 	      "struct member likely outside of __struct_group()");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* See MS-FSCC 2.4.34 */
 struct smb2_file_network_open_info {
 	struct_group_attr(network_open_info, __packed,
@@ -333,6 +342,7 @@ struct smb2_file_network_open_info {
 	__le32 Reserved;
 } __packed; /* level 34 Query also similar returned in close rsp and open rsp */
 
+<<<<<<< HEAD
 /* See MS-FSCC 2.4.42.2 */
 struct smb2_file_rename_info { /* encoding of request for level 10 */
 	/* New members MUST be added within the struct_group() macro below. */
@@ -364,6 +374,8 @@ static_assert(offsetof(struct smb2_file_rename_info, FileName) == sizeof(struct 
 /* See POSIX Extensions to MS-FSCC 2.3.1.1 */
 #define FS_POSIX_INFORMATION		100 /* SMB3.1.1 POSIX. Query */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* See MS-FSCC 2.5.1 */
 #define MAX_FS_NAME_LEN		52
 typedef struct {
@@ -400,6 +412,7 @@ typedef struct {
 #define FILE_CASE_PRESERVED_NAMES	0x00000002
 #define FILE_CASE_SENSITIVE_SEARCH	0x00000001
 
+<<<<<<< HEAD
 /*
  * File System Control Information
  * See MS-FSCC 2.5.2
@@ -439,6 +452,8 @@ struct smb3_fs_ss_info {
 	__le32 ByteOffsetForPartitionAlignment;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* See MS-FSCC 2.5.8 */
 typedef struct {
 	__le64 TotalAllocationUnits;
@@ -447,6 +462,7 @@ typedef struct {
 	__le32 BytesPerSector;
 } __packed FILE_SYSTEM_SIZE_INFO;	/* size info, level 0x103 */
 
+<<<<<<< HEAD
 /* volume info struct - see MS-FSCC 2.5.9 */
 #define MAX_VOL_LABEL_LEN	32
 struct filesystem_vol_info {
@@ -458,6 +474,8 @@ struct filesystem_vol_info {
 	__u8	VolumeLabel[]; /* variable len */
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* See MS-FSCC 2.5.10 */
 typedef struct {
 	__le32 DeviceType;
@@ -510,6 +528,7 @@ typedef struct {
 #define FILE_ATTRIBUTE_MASK_LE			cpu_to_le32(FILE_ATTRIBUTE_MASK)
 
 /*
+<<<<<<< HEAD
  * SMB2 Notify Action Flags
  * See MS-FSCC 2.7.1
  */
@@ -526,6 +545,8 @@ typedef struct {
 #define FILE_ACTION_TUNNELLED_ID_COLLISION      0x0000000B
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Response contains array of the following structures
  * See MS-FSCC 2.7.1
  */

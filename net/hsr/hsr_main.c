@@ -89,7 +89,11 @@ static int hsr_netdev_notify(struct notifier_block *nb, unsigned long event,
 			}
 		}
 
+<<<<<<< HEAD
 		/* Make sure we recognize frames from ourselves in hsr_handle_frame() */
+=======
+		/* Make sure we recognize frames from ourselves in hsr_rcv() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		port = hsr_port_get_hsr(hsr, HSR_PT_SLAVE_B);
 		res = hsr_create_self_node(hsr,
 					   master->dev->dev_addr,

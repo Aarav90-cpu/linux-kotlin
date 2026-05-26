@@ -33,6 +33,11 @@ properties:
   iovcc-supply:
     description: Regulator for 1.8V IO power supply.
 
+<<<<<<< HEAD
+=======
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   renesas,gamma:
     $ref: /schemas/types.yaml#/definitions/uint32
     description:
@@ -49,7 +54,10 @@ properties:
     type: boolean
     description: digital contrast adjustment
 
+<<<<<<< HEAD
   backlight: true
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reset-gpios: true
   port: true
 

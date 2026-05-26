@@ -134,6 +134,7 @@ static const s8 budtab[256] = {
 };
 
 /*
+<<<<<<< HEAD
  * check_dmapctl - Validate integrity of a dmapctl structure
  * @dcp: Pointer to the dmapctl structure to check
  *
@@ -221,6 +222,8 @@ static bool check_dmapctl(struct dmapctl *dcp)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * NAME:	dbMount()
  *
  * FUNCTION:	initializate the block allocation map.
@@ -1459,7 +1462,11 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
 	dcp = (struct dmapctl *) mp->data;
 	budmin = dcp->budmin;
 
+<<<<<<< HEAD
 	if (unlikely(!check_dmapctl(dcp))) {
+=======
+	if (dcp->leafidx != cpu_to_le32(CTLLEAFIND)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
 		release_metapage(mp);
 		return -EIO;
@@ -1789,7 +1796,11 @@ static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno)
 		dcp = (struct dmapctl *) mp->data;
 		budmin = dcp->budmin;
 
+<<<<<<< HEAD
 		if (unlikely(!check_dmapctl(dcp))) {
+=======
+		if (dcp->leafidx != cpu_to_le32(CTLLEAFIND)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			jfs_error(bmp->db_ipbmap->i_sb,
 				  "Corrupt dmapctl page\n");
 			release_metapage(mp);
@@ -2572,7 +2583,11 @@ dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc, int level)
 		return -EIO;
 	dcp = (struct dmapctl *) mp->data;
 
+<<<<<<< HEAD
 	if (unlikely(!check_dmapctl(dcp))) {
+=======
+	if (dcp->leafidx != cpu_to_le32(CTLLEAFIND)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
 		release_metapage(mp);
 		return -EIO;
@@ -3541,11 +3556,14 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
 		return -EIO;
 	}
 	l2dcp = (struct dmapctl *) l2mp->data;
+<<<<<<< HEAD
 	if (unlikely(!check_dmapctl(l2dcp))) {
 		jfs_error(ipbmap->i_sb, "Corrupt dmapctl page\n");
 		release_metapage(l2mp);
 		return -EIO;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* compute start L1 */
 	k = blkno >> L2MAXL1SIZE;
@@ -3563,10 +3581,13 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
 			if (l1mp == NULL)
 				goto errout;
 			l1dcp = (struct dmapctl *) l1mp->data;
+<<<<<<< HEAD
 			if (unlikely(!check_dmapctl(l1dcp))) {
 				jfs_error(ipbmap->i_sb, "Corrupt dmapctl page\n");
 				goto errout;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* compute start L0 */
 			j = (blkno & (MAXL1SIZE - 1)) >> L2MAXL0SIZE;
@@ -3580,10 +3601,13 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
 				goto errout;
 
 			l1dcp = (struct dmapctl *) l1mp->data;
+<<<<<<< HEAD
 			if (unlikely(!check_dmapctl(l1dcp))) {
 				jfs_error(ipbmap->i_sb, "Corrupt dmapctl page\n");
 				goto errout;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* compute start L0 */
 			j = 0;
@@ -3603,10 +3627,13 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
 				if (l0mp == NULL)
 					goto errout;
 				l0dcp = (struct dmapctl *) l0mp->data;
+<<<<<<< HEAD
 				if (unlikely(!check_dmapctl(l0dcp))) {
 					jfs_error(ipbmap->i_sb, "Corrupt dmapctl page\n");
 					goto errout;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				/* compute start dmap */
 				i = (blkno & (MAXL0SIZE - 1)) >>
@@ -3622,10 +3649,13 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
 					goto errout;
 
 				l0dcp = (struct dmapctl *) l0mp->data;
+<<<<<<< HEAD
 				if (unlikely(!check_dmapctl(l0dcp))) {
 					jfs_error(ipbmap->i_sb, "Corrupt dmapctl page\n");
 					goto errout;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				/* compute start dmap */
 				i = 0;

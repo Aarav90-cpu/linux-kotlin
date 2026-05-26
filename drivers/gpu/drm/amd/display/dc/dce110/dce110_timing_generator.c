@@ -66,7 +66,10 @@ static void dce110_timing_generator_apply_front_porch_workaround(
 	struct timing_generator *tg,
 	struct dc_crtc_timing *timing)
 {
+<<<<<<< HEAD
 	(void)tg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (timing->flags.INTERLACE == 1) {
 		if (timing->v_front_porch < 2)
 			timing->v_front_porch = 2;
@@ -1116,7 +1119,10 @@ bool dce110_timing_generator_validate_timing(
 	const struct dc_crtc_timing *timing,
 	enum signal_type signal)
 {
+<<<<<<< HEAD
 	(void)signal;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t h_blank;
 	uint32_t h_back_porch, hsync_offset, h_sync_start;
 
@@ -1492,7 +1498,10 @@ void dce110_timing_generator_enable_reset_trigger(
 	struct timing_generator *tg,
 	int source_tg_inst)
 {
+<<<<<<< HEAD
 	(void)source_tg_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t value;
 	uint32_t rising_edge = 0;
 	uint32_t falling_edge = 0;
@@ -1962,12 +1971,15 @@ void dce110_tg_program_timing(struct timing_generator *tg,
 	const enum signal_type signal,
 	bool use_vbios)
 {
+<<<<<<< HEAD
 	(void)vready_offset;
 	(void)vstartup_start;
 	(void)vupdate_offset;
 	(void)vupdate_width;
 	(void)pstate_keepout;
 	(void)signal;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (use_vbios)
 		dce110_timing_generator_program_timing_generator(tg, timing);
 	else

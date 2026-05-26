@@ -11,6 +11,10 @@
 #include <drm/drm_print.h>
 #include <drm/drm_vblank.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_wm.h"
 #include "intel_atomic.h"
 #include "intel_bw.h"
@@ -25,7 +29,10 @@
 #include "intel_display_power.h"
 #include "intel_display_regs.h"
 #include "intel_display_types.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_dmc.h"
 #include "intel_fifo_underrun.h"
 #include "intel_modeset_setup.h"
@@ -914,7 +921,11 @@ static void intel_early_display_was(struct intel_display *display)
 	 * Display WA #1185 WaDisableDARBFClkGating:glk,icl,ehl,tgl
 	 * Also known as Wa_14010480278.
 	 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14010480278))
+=======
+	if (IS_DISPLAY_VER(display, 10, 12))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, GEN9_CLKGATE_DIS_0, 0, DARBF_GATING_DIS);
 
 	/*

@@ -551,6 +551,10 @@ static struct i2c_driver dw9768_i2c_driver = {
 };
 module_i2c_driver(dw9768_i2c_driver);
 
+<<<<<<< HEAD
 MODULE_AUTHOR("Dongchun Zhu");
+=======
+MODULE_AUTHOR("Dongchun Zhu <dongchun.zhu@mediatek.com>");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("DW9768 VCM driver");
 MODULE_LICENSE("GPL v2");

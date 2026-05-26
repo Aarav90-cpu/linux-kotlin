@@ -1488,6 +1488,7 @@ static struct o2hb_region *to_o2hb_region(struct config_item *item)
 	return item ? container_of(item, struct o2hb_region, hr_item) : NULL;
 }
 
+<<<<<<< HEAD
 static void o2hb_unmap_slot_data(struct o2hb_region *reg)
 {
 	int i;
@@ -1518,15 +1519,42 @@ static void o2hb_unmap_slot_data(struct o2hb_region *reg)
  */
 static void o2hb_region_release(struct config_item *item)
 {
+=======
+/* drop_item only drops its ref after killing the thread, nothing should
+ * be using the region anymore.  this has to clean up any state that
+ * attributes might have built up. */
+static void o2hb_region_release(struct config_item *item)
+{
+	int i;
+	struct page *page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct o2hb_region *reg = to_o2hb_region(item);
 
 	mlog(ML_HEARTBEAT, "hb region release (%pg)\n", reg_bdev(reg));
 
+<<<<<<< HEAD
 	o2hb_unmap_slot_data(reg);
+=======
+	kfree(reg->hr_tmp_block);
+
+	if (reg->hr_slot_data) {
+		for (i = 0; i < reg->hr_num_pages; i++) {
+			page = reg->hr_slot_data[i];
+			if (page)
+				__free_page(page);
+		}
+		kfree(reg->hr_slot_data);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (reg->hr_bdev_file)
 		fput(reg->hr_bdev_file);
 
+<<<<<<< HEAD
+=======
+	kfree(reg->hr_slots);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove_recursive(reg->hr_debug_dir);
 	kfree(reg->hr_db_livenodes);
 	kfree(reg->hr_db_regnum);
@@ -1679,7 +1707,10 @@ static void o2hb_init_region_params(struct o2hb_region *reg)
 static int o2hb_map_slot_data(struct o2hb_region *reg)
 {
 	int i, j;
+<<<<<<< HEAD
 	int ret = -ENOMEM;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int last_slot;
 	unsigned int spp = reg->hr_slots_per_page;
 	struct page *page;
@@ -1687,6 +1718,7 @@ static int o2hb_map_slot_data(struct o2hb_region *reg)
 	struct o2hb_disk_slot *slot;
 
 	reg->hr_tmp_block = kmalloc(reg->hr_block_bytes, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!reg->hr_tmp_block)
 		goto out;
 
@@ -1695,6 +1727,16 @@ static int o2hb_map_slot_data(struct o2hb_region *reg)
 		goto out;
 
 	for (i = 0; i < reg->hr_blocks; i++) {
+=======
+	if (reg->hr_tmp_block == NULL)
+		return -ENOMEM;
+
+	reg->hr_slots = kzalloc_objs(struct o2hb_disk_slot, reg->hr_blocks);
+	if (reg->hr_slots == NULL)
+		return -ENOMEM;
+
+	for(i = 0; i < reg->hr_blocks; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		slot = &reg->hr_slots[i];
 		slot->ds_node_num = i;
 		INIT_LIST_HEAD(&slot->ds_live_item);
@@ -1708,12 +1750,21 @@ static int o2hb_map_slot_data(struct o2hb_region *reg)
 
 	reg->hr_slot_data = kzalloc_objs(struct page *, reg->hr_num_pages);
 	if (!reg->hr_slot_data)
+<<<<<<< HEAD
 		goto out;
 
 	for (i = 0; i < reg->hr_num_pages; i++) {
 		page = alloc_page(GFP_KERNEL);
 		if (!page)
 			goto out;
+=======
+		return -ENOMEM;
+
+	for(i = 0; i < reg->hr_num_pages; i++) {
+		page = alloc_page(GFP_KERNEL);
+		if (!page)
+			return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		reg->hr_slot_data[i] = page;
 
@@ -1733,10 +1784,13 @@ static int o2hb_map_slot_data(struct o2hb_region *reg)
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 out:
 	o2hb_unmap_slot_data(reg);
 	return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Read in all the slots available and populate the tracking
@@ -1826,11 +1880,17 @@ static ssize_t o2hb_region_dev_store(struct config_item *item,
 		     "blocksize %u incorrect for device, expected %d",
 		     reg->hr_block_bytes, sectsize);
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto out;
 	}
 
 	reg->hr_aborted_start = 0;
 	reg->hr_node_deleted = 0;
+=======
+		goto out3;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	o2hb_init_region_params(reg);
 
 	/* Generation of zero is invalid */
@@ -1842,13 +1902,21 @@ static ssize_t o2hb_region_dev_store(struct config_item *item,
 	ret = o2hb_map_slot_data(reg);
 	if (ret) {
 		mlog_errno(ret);
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = o2hb_populate_slot_data(reg);
 	if (ret) {
 		mlog_errno(ret);
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	INIT_DELAYED_WORK(&reg->hr_write_timeout_work, o2hb_write_timeout);
@@ -1879,7 +1947,11 @@ static ssize_t o2hb_region_dev_store(struct config_item *item,
 	if (IS_ERR(hb_task)) {
 		ret = PTR_ERR(hb_task);
 		mlog_errno(ret);
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock(&o2hb_live_lock);
@@ -1896,12 +1968,20 @@ static ssize_t o2hb_region_dev_store(struct config_item *item,
 
 	if (reg->hr_aborted_start) {
 		ret = -EIO;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (reg->hr_node_deleted) {
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Ok, we were woken.  Make sure it wasn't by drop_item() */
@@ -1920,6 +2000,7 @@ static ssize_t o2hb_region_dev_store(struct config_item *item,
 		printk(KERN_NOTICE "o2hb: Heartbeat started on region %s (%pg)\n",
 		       config_item_name(&reg->hr_item), reg_bdev(reg));
 
+<<<<<<< HEAD
 out:
 	if (ret < 0) {
 		spin_lock(&o2hb_live_lock);
@@ -1932,6 +2013,10 @@ out:
 
 		o2hb_unmap_slot_data(reg);
 
+=======
+out3:
+	if (ret < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fput(reg->hr_bdev_file);
 		reg->hr_bdev_file = NULL;
 	}

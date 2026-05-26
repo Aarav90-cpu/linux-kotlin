@@ -246,11 +246,17 @@ void evlist__reset_prev_raw_counts(struct evlist *evlist)
 
 static void evsel__copy_prev_raw_counts(struct evsel *evsel)
 {
+<<<<<<< HEAD
 	int nthreads = perf_thread_map__nr(evsel->core.threads);
 
 	for (int thread = 0; thread < nthreads; thread++) {
 		unsigned int idx;
 
+=======
+	int idx, nthreads = perf_thread_map__nr(evsel->core.threads);
+
+	for (int thread = 0; thread < nthreads; thread++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		perf_cpu_map__for_each_idx(idx, evsel__cpus(evsel)) {
 			*perf_counts(evsel->counts, idx, thread) =
 				*perf_counts(evsel->prev_raw_counts, idx, thread);
@@ -582,7 +588,11 @@ static void evsel__update_percore_stats(struct evsel *evsel, struct aggr_cpu_id 
 	struct perf_counts_values counts = { 0, };
 	struct aggr_cpu_id id;
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* collect per-core counts */
 	perf_cpu_map__for_each_cpu(cpu, idx, evsel->core.cpus) {
@@ -619,7 +629,11 @@ static void evsel__process_percore(struct evsel *evsel)
 	struct perf_stat_evsel *ps = evsel->stats;
 	struct aggr_cpu_id core_id;
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!evsel->percore)
 		return;

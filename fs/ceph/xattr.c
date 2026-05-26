@@ -1254,6 +1254,7 @@ retry:
 	      ceph_vinop(inode), name, ceph_cap_string(issued));
 	__build_xattrs(inode);
 
+<<<<<<< HEAD
 	/*
 	 * __build_xattrs() may have released and reacquired i_ceph_lock,
 	 * during which handle_cap_grant() could have replaced i_xattrs.blob
@@ -1270,6 +1271,8 @@ retry:
 		goto do_sync;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ci->i_xattrs.prealloc_blob ||
 	    required_blob_size > ci->i_xattrs.prealloc_blob->alloc_len) {
 		struct ceph_buffer *blob;
@@ -1310,7 +1313,10 @@ retry:
 
 do_sync:
 	spin_unlock(&ci->i_ceph_lock);
+<<<<<<< HEAD
 	ceph_buffer_put(old_blob);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 do_sync_unlocked:
 	if (lock_snap_rwsem)
 		up_read(&mdsc->snap_rwsem);

@@ -1927,7 +1927,11 @@ static int atmel_startup(struct uart_port *port)
 		atmel_uart_writel(port, ATMEL_US_FMR, fmr);
 	}
 
+<<<<<<< HEAD
 	/* Save current CSR for comparison in atmel_handle_status() */
+=======
+	/* Save current CSR for comparison in atmel_tasklet_func() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atmel_port->irq_status_prev = atmel_uart_readl(port, ATMEL_US_CSR);
 
 	/*

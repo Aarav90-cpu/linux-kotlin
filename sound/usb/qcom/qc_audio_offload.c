@@ -963,7 +963,11 @@ static int enable_audio_stream(struct snd_usb_substream *subs,
 	_snd_pcm_hw_params_any(&params);
 
 	m = hw_param_mask(&params, SNDRV_PCM_HW_PARAM_FORMAT);
+<<<<<<< HEAD
 	snd_mask_leave(m, (__force unsigned int)pcm_format);
+=======
+	snd_mask_leave(m, pcm_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	i = hw_param_interval(&params, SNDRV_PCM_HW_PARAM_CHANNELS);
 	snd_interval_setinteger(i);

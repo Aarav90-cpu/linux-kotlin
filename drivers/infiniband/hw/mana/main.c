@@ -87,9 +87,24 @@ int mana_ib_alloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
 		flags |= GDMA_PD_FLAG_ALLOW_GPA_MR;
 
 	req.flags = flags;
+<<<<<<< HEAD
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
 	if (err)
 		return err;
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req,
+				   sizeof(resp), &resp);
+
+	if (err || resp.hdr.status) {
+		ibdev_dbg(&dev->ib_dev,
+			  "Failed to get pd_id err %d status %u\n", err,
+			  resp.hdr.status);
+		if (!err)
+			err = -EPROTO;
+
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pd->pd_handle = resp.pd_handle;
 	pd->pdn = resp.pd_id;
@@ -109,6 +124,10 @@ int mana_ib_dealloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
 	struct gdma_destroy_pd_req req = {};
 	struct mana_ib_dev *dev;
 	struct gdma_context *gc;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev = container_of(ibdev, struct mana_ib_dev, ib_dev);
 	gc = mdev_to_gc(dev);
@@ -117,8 +136,23 @@ int mana_ib_dealloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
 			     sizeof(resp));
 
 	req.pd_handle = pd->pd_handle;
+<<<<<<< HEAD
 
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req,
+				   sizeof(resp), &resp);
+
+	if (err || resp.hdr.status) {
+		ibdev_dbg(&dev->ib_dev,
+			  "Failed to destroy pd_handle 0x%llx err %d status %u",
+			  pd->pd_handle, err, resp.hdr.status);
+		if (!err)
+			err = -EPROTO;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mana_gd_destroy_doorbell_page(struct gdma_context *gc,
@@ -126,6 +160,10 @@ static int mana_gd_destroy_doorbell_page(struct gdma_context *gc,
 {
 	struct gdma_destroy_resource_range_req req = {};
 	struct gdma_resp_hdr resp = {};
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, GDMA_DESTROY_RESOURCE_RANGE,
 			     sizeof(req), sizeof(resp));
@@ -134,7 +172,19 @@ static int mana_gd_destroy_doorbell_page(struct gdma_context *gc,
 	req.num_resources = 1;
 	req.allocated_resources = doorbell_page;
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err || resp.status) {
+		dev_err(gc->dev,
+			"Failed to destroy doorbell page: ret %d, 0x%x\n",
+			err, resp.status);
+		return err ?: -EPROTO;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mana_gd_allocate_doorbell_page(struct gdma_context *gc,
@@ -155,8 +205,17 @@ static int mana_gd_allocate_doorbell_page(struct gdma_context *gc,
 	req.allocated_resources = 0;
 
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+	if (err || resp.hdr.status) {
+		dev_err(gc->dev,
+			"Failed to allocate doorbell page: ret %d, 0x%x\n",
+			err, resp.hdr.status);
+		return err ?: -EPROTO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*doorbell_page = resp.allocated_resources;
 
@@ -649,10 +708,21 @@ int mana_ib_gd_query_adapter_caps(struct mana_ib_dev *dev)
 	req.hdr.resp.msg_version = GDMA_MESSAGE_V4;
 	req.hdr.dev_id = dev->gdma_dev->dev_id;
 
+<<<<<<< HEAD
 	err = mana_gd_send_request(mdev_to_gc(dev), sizeof(req), &req,
 				   sizeof(resp), &resp);
 	if (err)
 		return err;
+=======
+	err = mana_gd_send_request(mdev_to_gc(dev), sizeof(req),
+				   &req, sizeof(resp), &resp);
+
+	if (err) {
+		ibdev_err(&dev->ib_dev,
+			  "Failed to query adapter caps err %d", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	caps->max_sq_id = resp.max_sq_id;
 	caps->max_rq_id = resp.max_rq_id;
@@ -690,10 +760,19 @@ int mana_eth_query_adapter_caps(struct mana_ib_dev *dev)
 	mana_gd_init_req_hdr(&req.hdr, GDMA_QUERY_MAX_RESOURCES,
 			     sizeof(req), sizeof(resp));
 
+<<<<<<< HEAD
 	err = mana_gd_send_request(mdev_to_gc(dev), sizeof(req), &req,
 				   sizeof(resp), &resp);
 	if (err)
 		return err;
+=======
+	err = mana_gd_send_request(mdev_to_gc(dev), sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&dev->ib_dev,
+			  "Failed to query adapter caps err %d", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	caps->max_qp_count = min_t(u32, resp.max_sq, resp.max_rq);
 	caps->max_cq_count = resp.max_cq;
@@ -808,8 +887,15 @@ int mana_ib_gd_create_rnic_adapter(struct mana_ib_dev *mdev)
 		req.feature_flags |= MANA_IB_FEATURE_CLIENT_ERROR_CQE_REQUEST;
 
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to create RNIC adapter err %d", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mdev->adapter_handle = resp.adapter;
 
 	return 0;
@@ -820,13 +906,27 @@ int mana_ib_gd_destroy_rnic_adapter(struct mana_ib_dev *mdev)
 	struct mana_rnic_destroy_adapter_resp resp = {};
 	struct mana_rnic_destroy_adapter_req req = {};
 	struct gdma_context *gc;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gc = mdev_to_gc(mdev);
 	mana_gd_init_req_hdr(&req.hdr, MANA_IB_DESTROY_ADAPTER, sizeof(req), sizeof(resp));
 	req.hdr.dev_id = mdev->gdma_dev->dev_id;
 	req.adapter = mdev->adapter_handle;
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to destroy RNIC adapter err %d", err);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_add_gid(const struct ib_gid_attr *attr, void **context)
@@ -836,6 +936,10 @@ int mana_ib_gd_add_gid(const struct ib_gid_attr *attr, void **context)
 	struct mana_rnic_config_addr_resp resp = {};
 	struct gdma_context *gc = mdev_to_gc(mdev);
 	struct mana_rnic_config_addr_req req = {};
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ntype != RDMA_NETWORK_IPV4 && ntype != RDMA_NETWORK_IPV6) {
 		ibdev_dbg(&mdev->ib_dev, "Unsupported rdma network type %d", ntype);
@@ -849,7 +953,17 @@ int mana_ib_gd_add_gid(const struct ib_gid_attr *attr, void **context)
 	req.sgid_type = (ntype == RDMA_NETWORK_IPV6) ? SGID_TYPE_IPV6 : SGID_TYPE_IPV4;
 	copy_in_reverse(req.ip_addr, attr->gid.raw, sizeof(union ib_gid));
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to config IP addr err %d\n", err);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_del_gid(const struct ib_gid_attr *attr, void **context)
@@ -859,6 +973,10 @@ int mana_ib_gd_del_gid(const struct ib_gid_attr *attr, void **context)
 	struct mana_rnic_config_addr_resp resp = {};
 	struct gdma_context *gc = mdev_to_gc(mdev);
 	struct mana_rnic_config_addr_req req = {};
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ntype != RDMA_NETWORK_IPV4 && ntype != RDMA_NETWORK_IPV6) {
 		ibdev_dbg(&mdev->ib_dev, "Unsupported rdma network type %d", ntype);
@@ -872,7 +990,17 @@ int mana_ib_gd_del_gid(const struct ib_gid_attr *attr, void **context)
 	req.sgid_type = (ntype == RDMA_NETWORK_IPV6) ? SGID_TYPE_IPV6 : SGID_TYPE_IPV4;
 	copy_in_reverse(req.ip_addr, attr->gid.raw, sizeof(union ib_gid));
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to config IP addr err %d\n", err);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_config_mac(struct mana_ib_dev *mdev, enum mana_ib_addr_op op, u8 *mac)
@@ -880,6 +1008,10 @@ int mana_ib_gd_config_mac(struct mana_ib_dev *mdev, enum mana_ib_addr_op op, u8 
 	struct mana_rnic_config_mac_addr_resp resp = {};
 	struct mana_rnic_config_mac_addr_req req = {};
 	struct gdma_context *gc = mdev_to_gc(mdev);
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, MANA_IB_CONFIG_MAC_ADDR, sizeof(req), sizeof(resp));
 	req.hdr.dev_id = mdev->gdma_dev->dev_id;
@@ -887,7 +1019,17 @@ int mana_ib_gd_config_mac(struct mana_ib_dev *mdev, enum mana_ib_addr_op op, u8 
 	req.op = op;
 	copy_in_reverse(req.mac_addr, mac, ETH_ALEN);
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to config Mac addr err %d", err);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_create_cq(struct mana_ib_dev *mdev, struct mana_ib_cq *cq, u32 doorbell)
@@ -927,6 +1069,10 @@ int mana_ib_gd_destroy_cq(struct mana_ib_dev *mdev, struct mana_ib_cq *cq)
 	struct gdma_context *gc = mdev_to_gc(mdev);
 	struct mana_rnic_destroy_cq_resp resp = {};
 	struct mana_rnic_destroy_cq_req req = {};
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cq->cq_handle == INVALID_MANA_HANDLE)
 		return 0;
@@ -936,7 +1082,18 @@ int mana_ib_gd_destroy_cq(struct mana_ib_dev *mdev, struct mana_ib_cq *cq)
 	req.adapter = mdev->adapter_handle;
 	req.cq_handle = cq->cq_handle;
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to destroy cq err %d", err);
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_create_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
@@ -966,9 +1123,16 @@ int mana_ib_gd_create_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
 	req.flags = flags;
 
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
 
+=======
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to create rc qp err %d", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qp->qp_handle = resp.rc_qp_handle;
 	for (i = 0; i < MANA_RC_QUEUE_TYPE_MAX; i++) {
 		qp->rc_qp.queues[i].id = resp.queue_ids[i];
@@ -983,13 +1147,26 @@ int mana_ib_gd_destroy_rc_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp)
 	struct mana_rnic_destroy_rc_qp_resp resp = {0};
 	struct mana_rnic_destroy_rc_qp_req req = {0};
 	struct gdma_context *gc = mdev_to_gc(mdev);
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, MANA_IB_DESTROY_RC_QP, sizeof(req), sizeof(resp));
 	req.hdr.dev_id = mdev->gdma_dev->dev_id;
 	req.adapter = mdev->adapter_handle;
 	req.rc_qp_handle = qp->qp_handle;
+<<<<<<< HEAD
 
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to destroy rc qp err %d", err);
+		return err;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_gd_create_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
@@ -1018,9 +1195,16 @@ int mana_ib_gd_create_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp,
 	req.max_recv_sge = attr->cap.max_recv_sge;
 	req.qp_type = type;
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
 
+=======
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to create ud qp err %d", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qp->qp_handle = resp.qp_handle;
 	for (i = 0; i < MANA_UD_QUEUE_TYPE_MAX; i++) {
 		qp->ud_qp.queues[i].id = resp.queue_ids[i];
@@ -1035,11 +1219,24 @@ int mana_ib_gd_destroy_ud_qp(struct mana_ib_dev *mdev, struct mana_ib_qp *qp)
 	struct mana_rnic_destroy_udqp_resp resp = {0};
 	struct mana_rnic_destroy_udqp_req req = {0};
 	struct gdma_context *gc = mdev_to_gc(mdev);
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, MANA_IB_DESTROY_UD_QP, sizeof(req), sizeof(resp));
 	req.hdr.dev_id = mdev->gdma_dev->dev_id;
 	req.adapter = mdev->adapter_handle;
 	req.qp_handle = qp->qp_handle;
+<<<<<<< HEAD
 
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err) {
+		ibdev_err(&mdev->ib_dev, "Failed to destroy ud qp err %d", err);
+		return err;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

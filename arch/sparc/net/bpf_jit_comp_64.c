@@ -1477,24 +1477,56 @@ struct sparc64_jit_data {
 	struct jit_ctx ctx;
 };
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 	struct sparc64_jit_data *jit_data;
 	struct bpf_binary_header *header;
 	u32 prev_image_size, image_size;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+{
+	struct bpf_prog *tmp, *orig_prog = prog;
+	struct sparc64_jit_data *jit_data;
+	struct bpf_binary_header *header;
+	u32 prev_image_size, image_size;
+	bool tmp_blinded = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool extra_pass = false;
 	struct jit_ctx ctx;
 	u8 *image_ptr;
 	int pass, i;
 
 	if (!prog->jit_requested)
+<<<<<<< HEAD
 		return prog;
+=======
+		return orig_prog;
+
+	tmp = bpf_jit_blind_constants(prog);
+	/* If blinding was requested and we failed during blinding,
+	 * we must fall back to the interpreter.
+	 */
+	if (IS_ERR(tmp))
+		return orig_prog;
+	if (tmp != prog) {
+		tmp_blinded = true;
+		prog = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	jit_data = prog->aux->jit_data;
 	if (!jit_data) {
 		jit_data = kzalloc_obj(*jit_data);
+<<<<<<< HEAD
 		if (!jit_data)
 			return prog;
+=======
+		if (!jit_data) {
+			prog = orig_prog;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prog->aux->jit_data = jit_data;
 	}
 	if (jit_data->ctx.offset) {
@@ -1512,8 +1544,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	ctx.prog = prog;
 
 	ctx.offset = kmalloc_array(prog->len, sizeof(unsigned int), GFP_KERNEL);
+<<<<<<< HEAD
 	if (ctx.offset == NULL)
 		goto out_err;
+=======
+	if (ctx.offset == NULL) {
+		prog = orig_prog;
+		goto out_off;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Longest sequence emitted is for bswap32, 12 instructions.  Pre-cook
 	 * the offset array so that we converge faster.
@@ -1526,8 +1565,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 		ctx.idx = 0;
 
 		build_prologue(&ctx);
+<<<<<<< HEAD
 		if (build_body(&ctx))
 			goto out_err;
+=======
+		if (build_body(&ctx)) {
+			prog = orig_prog;
+			goto out_off;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		build_epilogue(&ctx);
 
 		if (bpf_jit_enable > 1)
@@ -1550,8 +1596,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	image_size = sizeof(u32) * ctx.idx;
 	header = bpf_jit_binary_alloc(image_size, &image_ptr,
 				      sizeof(u32), jit_fill_hole);
+<<<<<<< HEAD
 	if (header == NULL)
 		goto out_err;
+=======
+	if (header == NULL) {
+		prog = orig_prog;
+		goto out_off;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ctx.image = (u32 *)image_ptr;
 skip_init_ctx:
@@ -1561,7 +1614,12 @@ skip_init_ctx:
 
 	if (build_body(&ctx)) {
 		bpf_jit_binary_free(header);
+<<<<<<< HEAD
 		goto out_err;
+=======
+		prog = orig_prog;
+		goto out_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	build_epilogue(&ctx);
@@ -1570,7 +1628,12 @@ skip_init_ctx:
 		pr_err("bpf_jit: Failed to converge, prev_size=%u size=%d\n",
 		       prev_image_size, ctx.idx * 4);
 		bpf_jit_binary_free(header);
+<<<<<<< HEAD
 		goto out_err;
+=======
+		prog = orig_prog;
+		goto out_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (bpf_jit_enable > 1)
@@ -1581,7 +1644,12 @@ skip_init_ctx:
 	if (!prog->is_func || extra_pass) {
 		if (bpf_jit_binary_lock_ro(header)) {
 			bpf_jit_binary_free(header);
+<<<<<<< HEAD
 			goto out_err;
+=======
+			prog = orig_prog;
+			goto out_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		jit_data->ctx = ctx;
@@ -1600,6 +1668,7 @@ out_off:
 		kfree(jit_data);
 		prog->aux->jit_data = NULL;
 	}
+<<<<<<< HEAD
 
 	return prog;
 
@@ -1610,4 +1679,11 @@ out_err:
 		prog->jited_len = 0;
 	}
 	goto out_off;
+=======
+out:
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(prog, prog == orig_prog ?
+					   tmp : orig_prog);
+	return prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

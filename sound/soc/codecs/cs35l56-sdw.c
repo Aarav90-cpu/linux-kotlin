@@ -14,7 +14,10 @@
 #include <linux/soundwire/sdw.h>
 #include <linux/soundwire/sdw_registers.h>
 #include <linux/soundwire/sdw_type.h>
+<<<<<<< HEAD
 #include <linux/string_choices.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/swab.h>
 #include <linux/types.h>
 #include <linux/workqueue.h>
@@ -341,6 +344,7 @@ static int cs35l56_sdw_read_prop(struct sdw_slave *peripheral)
 	struct cs35l56_private *cs35l56 = dev_get_drvdata(&peripheral->dev);
 	struct sdw_slave_prop *prop = &peripheral->prop;
 	struct sdw_dpn_prop *ports;
+<<<<<<< HEAD
 	u8 clock_stop_1 = false;
 	int ret;
 
@@ -349,6 +353,8 @@ static int cs35l56_sdw_read_prop(struct sdw_slave *peripheral)
 				      &clock_stop_1);
 	if (ret == 0)
 		prop->clk_stop_mode1 = !!clock_stop_1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ports = devm_kcalloc(cs35l56->base.dev, 2, sizeof(*ports), GFP_KERNEL);
 	if (!ports)
@@ -372,9 +378,12 @@ static int cs35l56_sdw_read_prop(struct sdw_slave *peripheral)
 	ports[1].ch_prep_timeout = 10;
 	prop->src_dpn_prop = &ports[1];
 
+<<<<<<< HEAD
 	dev_dbg(&peripheral->dev, "clock stop mode 1 supported: %s\n",
 		str_yes_no(prop->clk_stop_mode1));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -385,7 +394,14 @@ static int cs35l56_sdw_update_status(struct sdw_slave *peripheral,
 
 	switch (status) {
 	case SDW_SLAVE_ATTACHED:
+<<<<<<< HEAD
+=======
+		dev_dbg(cs35l56->base.dev, "%s: ATTACHED\n", __func__);
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 		cs35l56->sdw_in_clock_stop_1 = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cs35l56->sdw_attached)
 			break;
 
@@ -413,6 +429,7 @@ static int __maybe_unused cs35l56_sdw_clk_stop(struct sdw_slave *peripheral,
 {
 	struct cs35l56_private *cs35l56 = dev_get_drvdata(&peripheral->dev);
 
+<<<<<<< HEAD
 	dev_dbg(cs35l56->base.dev, "%s: clock_stop_mode%d stage:%d\n", __func__, mode, type);
 
 	switch (type) {
@@ -425,23 +442,38 @@ static int __maybe_unused cs35l56_sdw_clk_stop(struct sdw_slave *peripheral,
 	default:
 		return 0;
 	}
+=======
+	dev_dbg(cs35l56->base.dev, "%s: mode:%d type:%d\n", __func__, mode, type);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct sdw_slave_ops cs35l56_sdw_ops = {
 	.read_prop = cs35l56_sdw_read_prop,
 	.interrupt_callback = cs35l56_sdw_interrupt,
 	.update_status = cs35l56_sdw_update_status,
+<<<<<<< HEAD
 	.clk_stop = cs35l56_sdw_clk_stop,
+=======
+#ifdef DEBUG
+	.clk_stop = cs35l56_sdw_clk_stop,
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __maybe_unused cs35l56_sdw_handle_unattach(struct cs35l56_private *cs35l56)
 {
 	struct sdw_slave *peripheral = cs35l56->sdw_peripheral;
 
+<<<<<<< HEAD
 	dev_dbg(cs35l56->base.dev, "attached:%u unattach_request:%u in_clock_stop_1:%u\n",
 		cs35l56->sdw_attached, peripheral->unattach_request, cs35l56->sdw_in_clock_stop_1);
 
 	if (cs35l56->sdw_in_clock_stop_1 || peripheral->unattach_request) {
+=======
+	if (peripheral->unattach_request) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Cannot access registers until bus is re-initialized. */
 		dev_dbg(cs35l56->base.dev, "Wait for initialization_complete\n");
 		if (!wait_for_completion_timeout(&peripheral->initialization_complete,
@@ -451,7 +483,10 @@ static int __maybe_unused cs35l56_sdw_handle_unattach(struct cs35l56_private *cs
 		}
 
 		peripheral->unattach_request = 0;
+<<<<<<< HEAD
 		cs35l56->sdw_in_clock_stop_1 = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Don't call regcache_mark_dirty(), we can't be sure that the

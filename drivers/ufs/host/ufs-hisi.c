@@ -298,6 +298,7 @@ static void ufs_hisi_set_dev_cap(struct ufs_host_params *host_params)
 	ufshcd_init_host_params(host_params);
 }
 
+<<<<<<< HEAD
 static int ufs_hisi_negotiate_pwr_mode(struct ufs_hba *hba,
 				       const struct ufs_pa_layer_attr *dev_max_params,
 				       struct ufs_pa_layer_attr *dev_req_params)
@@ -309,6 +310,8 @@ static int ufs_hisi_negotiate_pwr_mode(struct ufs_hba *hba,
 	return ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ufs_hisi_pwr_change_pre_change(struct ufs_hba *hba)
 {
 	struct ufs_hisi_host *host = ufshcd_get_variant(hba);
@@ -373,8 +376,15 @@ static void ufs_hisi_pwr_change_pre_change(struct ufs_hba *hba)
 
 static int ufs_hisi_pwr_change_notify(struct ufs_hba *hba,
 				enum ufs_notify_change_status status,
+<<<<<<< HEAD
 				struct ufs_pa_layer_attr *dev_req_params)
 {
+=======
+				const struct ufs_pa_layer_attr *dev_max_params,
+				struct ufs_pa_layer_attr *dev_req_params)
+{
+	struct ufs_host_params host_params;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (!dev_req_params) {
@@ -386,6 +396,17 @@ static int ufs_hisi_pwr_change_notify(struct ufs_hba *hba,
 
 	switch (status) {
 	case PRE_CHANGE:
+<<<<<<< HEAD
+=======
+		ufs_hisi_set_dev_cap(&host_params);
+		ret = ufshcd_negotiate_pwr_params(&host_params, dev_max_params, dev_req_params);
+		if (ret) {
+			dev_err(hba->dev,
+			    "%s: failed to determine capabilities\n", __func__);
+			goto out;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ufs_hisi_pwr_change_pre_change(hba);
 		break;
 	case POST_CHANGE:
@@ -544,7 +565,10 @@ static const struct ufs_hba_variant_ops ufs_hba_hi3660_vops = {
 	.name = "hi3660",
 	.init = ufs_hi3660_init,
 	.link_startup_notify = ufs_hisi_link_startup_notify,
+<<<<<<< HEAD
 	.negotiate_pwr_mode = ufs_hisi_negotiate_pwr_mode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pwr_change_notify = ufs_hisi_pwr_change_notify,
 	.suspend = ufs_hisi_suspend,
 	.resume = ufs_hisi_resume,
@@ -554,7 +578,10 @@ static const struct ufs_hba_variant_ops ufs_hba_hi3670_vops = {
 	.name = "hi3670",
 	.init = ufs_hi3670_init,
 	.link_startup_notify = ufs_hisi_link_startup_notify,
+<<<<<<< HEAD
 	.negotiate_pwr_mode = ufs_hisi_negotiate_pwr_mode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pwr_change_notify = ufs_hisi_pwr_change_notify,
 	.suspend = ufs_hisi_suspend,
 	.resume = ufs_hisi_resume,

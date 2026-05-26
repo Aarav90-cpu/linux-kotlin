@@ -1,6 +1,10 @@
 ARCH ?= $(shell uname -m)
 
+<<<<<<< HEAD
 ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
+=======
+ifeq (,$(filter $(ARCH),arm64 x86_64))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # Do nothing on unsupported architectures
 include ../lib.mk
 else

@@ -2526,6 +2526,7 @@ static void shadow_walk_next(struct kvm_shadow_walk_iterator *iterator)
 	__shadow_walk_next(iterator, *iterator->sptep);
 }
 
+<<<<<<< HEAD
 /*
  * Note: while normally KVM uses a "bool flush" return value to let
  * the caller batch flushes, __link_shadow_page() flushes immediately
@@ -2543,6 +2544,8 @@ static void shadow_walk_next(struct kvm_shadow_walk_iterator *iterator)
  * batched.  Doing so would require adding an invalid_list argument
  * all the way down to __walk_slot_rmaps().
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __link_shadow_page(struct kvm *kvm,
 			       struct kvm_mmu_memory_cache *cache, u64 *sptep,
 			       struct kvm_mmu_page *sp, bool flush)
@@ -2558,10 +2561,15 @@ static void __link_shadow_page(struct kvm *kvm,
 		parent_sp = sptep_to_sp(sptep);
 		WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
 
+<<<<<<< HEAD
 		if (mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list))
 			kvm_mmu_commit_zap_page(kvm, &invalid_list);
 		else if (flush)
 			kvm_flush_remote_tlbs_sptep(kvm, sptep);
+=======
+		mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
+		kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
@@ -2953,6 +2961,7 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
 		return -EPERM;
 
 	/*
+<<<<<<< HEAD
 	 * Only 4KiB mappings can become unsync, and KVM disallows hugepages
 	 * when accounting 4KiB shadow pages.  Upper-level gPTEs are always
 	 * write-protected (see above), thus if the gfn can be mapped with a
@@ -2962,6 +2971,8 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
 		return 0;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * The page is not write-tracked, mark existing shadow pages unsync
 	 * unless KVM is synchronizing an unsync SP.  In that case, KVM must
 	 * complete emulation of the guest TLB flush before allowing shadow
@@ -7511,6 +7522,7 @@ static void kvm_wake_nx_recovery_thread(struct kvm *kvm)
 
 static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
 {
+<<<<<<< HEAD
 	int val = *(int *)kp->arg;
 
 	if (nx_hugepage_mitigation_hard_disabled)
@@ -7519,6 +7531,11 @@ static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
 	if (val == -1)
 		return sysfs_emit(buffer, "auto\n");
 
+=======
+	if (nx_hugepage_mitigation_hard_disabled)
+		return sysfs_emit(buffer, "never\n");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return param_get_bool(buffer, kp);
 }
 

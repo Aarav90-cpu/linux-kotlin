@@ -690,9 +690,15 @@ xfs_extent_busy_ag_cmp(
 		container_of(l2, struct xfs_extent_busy, list);
 	s32 diff;
 
+<<<<<<< HEAD
 	diff = cmp_int(b1->group->xg_gno, b2->group->xg_gno);
 	if (!diff)
 		diff = cmp_int(b1->bno, b2->bno);
+=======
+	diff = b1->group->xg_gno - b2->group->xg_gno;
+	if (!diff)
+		diff = b1->bno - b2->bno;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return diff;
 }
 

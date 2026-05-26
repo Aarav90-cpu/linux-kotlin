@@ -31,15 +31,22 @@ enum icp_qat_fw_init_admin_cmd_id {
 	ICP_QAT_FW_RL_REMOVE = 136,
 	ICP_QAT_FW_TL_START = 137,
 	ICP_QAT_FW_TL_STOP = 138,
+<<<<<<< HEAD
 	ICP_QAT_FW_SVN_READ = 146,
 	ICP_QAT_FW_SVN_COMMIT = 147,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum icp_qat_fw_init_admin_resp_status {
 	ICP_QAT_FW_INIT_RESP_STATUS_SUCCESS = 0,
+<<<<<<< HEAD
 	ICP_QAT_FW_INIT_RESP_STATUS_FAIL = 1,
 	ICP_QAT_FW_INIT_RESP_STATUS_RETRY = 2,
 	ICP_QAT_FW_INIT_RESP_STATUS_UNSUPPORTED = 4,
+=======
+	ICP_QAT_FW_INIT_RESP_STATUS_FAIL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct icp_qat_fw_init_admin_tl_rp_indexes {
@@ -163,6 +170,7 @@ struct icp_qat_fw_init_admin_resp {
 		};
 		struct icp_qat_fw_init_admin_slice_cnt slices;
 		__u16 fw_capabilities;
+<<<<<<< HEAD
 		struct {
 			__u8 enforced_min_svn;
 			__u8 permanent_min_svn;
@@ -172,6 +180,8 @@ struct icp_qat_fw_init_admin_resp {
 			__u16 resrvd10;
 			__u64 resrvd11;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 } __packed;
 

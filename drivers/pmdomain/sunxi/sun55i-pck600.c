@@ -52,7 +52,10 @@ struct sunxi_pck600_desc {
 	u32 logic_power_switch0_delay;
 	u32 logic_power_switch1_delay;
 	u32 off2on_delay;
+<<<<<<< HEAD
 	bool has_rst_clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct sunxi_pck600_pd {
@@ -152,11 +155,17 @@ static int sunxi_pck600_probe(struct platform_device *pdev)
 	if (IS_ERR(base))
 		return PTR_ERR(base);
 
+<<<<<<< HEAD
 	if (desc->has_rst_clk) {
 		rst = devm_reset_control_get_exclusive_released(dev, NULL);
 		if (IS_ERR(rst))
 			return dev_err_probe(dev, PTR_ERR(rst), "failed to get reset control\n");
 	}
+=======
+	rst = devm_reset_control_get_exclusive_released(dev, NULL);
+	if (IS_ERR(rst))
+		return dev_err_probe(dev, PTR_ERR(rst), "failed to get reset control\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	clk = devm_clk_get_enabled(dev, NULL);
 	if (IS_ERR(clk))
@@ -209,6 +218,7 @@ static const struct sunxi_pck600_desc sun55i_a523_pck600_desc = {
 	.device_ctrl1_delay = 0xffff,
 	.logic_power_switch0_delay = 0x8080808,
 	.logic_power_switch1_delay = 0x808,
+<<<<<<< HEAD
 	.off2on_delay = 0x8,
 	.has_rst_clk = true,
 };
@@ -230,6 +240,9 @@ static const struct sunxi_pck600_desc sun60i_a733_pck600_desc = {
 	.logic_power_switch1_delay = 0x808,
 	.off2on_delay = 0x8,
 	.has_rst_clk = false,
+=======
+	.off2on_delay = 0x8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct of_device_id sunxi_pck600_of_match[] = {
@@ -237,10 +250,13 @@ static const struct of_device_id sunxi_pck600_of_match[] = {
 		.compatible	= "allwinner,sun55i-a523-pck-600",
 		.data		= &sun55i_a523_pck600_desc,
 	},
+<<<<<<< HEAD
 	{
 		.compatible	= "allwinner,sun60i-a733-pck-600",
 		.data		= &sun60i_a733_pck600_desc,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(of, sunxi_pck600_of_match);

@@ -31,6 +31,11 @@ properties:
       configuration.
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  reset-gpios: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   vci-supply:
     description: regulator that supplies the VCI analog voltage
       usually around 3.0 V
@@ -39,6 +44,11 @@ properties:
     description: regulator that supplies the VCCIO voltage usually
       around 1.8 V
 
+<<<<<<< HEAD
+=======
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   spi-cpha: true
 
   spi-cpol: true
@@ -46,6 +56,11 @@ properties:
   spi-max-frequency:
     maximum: 1200000
 
+<<<<<<< HEAD
+=======
+  port: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

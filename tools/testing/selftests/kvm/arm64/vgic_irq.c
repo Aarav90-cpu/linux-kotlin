@@ -24,12 +24,20 @@
  * function.
  */
 struct test_args {
+<<<<<<< HEAD
 	u32 nr_irqs; /* number of KVM supported IRQs. */
+=======
+	uint32_t nr_irqs; /* number of KVM supported IRQs. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool eoi_split; /* 1 is eoir+dir, 0 is eoir only */
 	bool level_sensitive; /* 1 is level, 0 is edge */
 	int kvm_max_routes; /* output of KVM_CAP_IRQ_ROUTING */
 	bool kvm_supports_irqfd; /* output of KVM_CAP_IRQFD */
+<<<<<<< HEAD
 	u32 shared_data;
+=======
+	uint32_t shared_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -64,15 +72,25 @@ typedef enum {
 
 struct kvm_inject_args {
 	kvm_inject_cmd cmd;
+<<<<<<< HEAD
 	u32 first_intid;
 	u32 num;
+=======
+	uint32_t first_intid;
+	uint32_t num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int level;
 	bool expect_failure;
 };
 
 /* Used on the guest side to perform the hypercall. */
+<<<<<<< HEAD
 static void kvm_inject_call(kvm_inject_cmd cmd, u32 first_intid,
 			    u32 num, int level, bool expect_failure);
+=======
+static void kvm_inject_call(kvm_inject_cmd cmd, uint32_t first_intid,
+		uint32_t num, int level, bool expect_failure);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Used on the host side to get the hypercall info. */
 static void kvm_inject_get_call(struct kvm_vm *vm, struct ucall *uc,
@@ -133,8 +151,13 @@ static struct kvm_inject_desc set_active_fns[] = {
 	for_each_supported_inject_fn((args), (t), (f))
 
 /* Shared between the guest main thread and the IRQ handlers. */
+<<<<<<< HEAD
 volatile u64 irq_handled;
 volatile u32 irqnr_received[MAX_SPI + 1];
+=======
+volatile uint64_t irq_handled;
+volatile uint32_t irqnr_received[MAX_SPI + 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void reset_stats(void)
 {
@@ -145,25 +168,43 @@ static void reset_stats(void)
 		irqnr_received[i] = 0;
 }
 
+<<<<<<< HEAD
 static u64 gic_read_ap1r0(void)
 {
 	u64 reg = read_sysreg_s(SYS_ICC_AP1R0_EL1);
+=======
+static uint64_t gic_read_ap1r0(void)
+{
+	uint64_t reg = read_sysreg_s(SYS_ICC_AP1R0_EL1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsb(sy);
 	return reg;
 }
 
+<<<<<<< HEAD
 static void gic_write_ap1r0(u64 val)
+=======
+static void gic_write_ap1r0(uint64_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	write_sysreg_s(val, SYS_ICC_AP1R0_EL1);
 	isb();
 }
 
+<<<<<<< HEAD
 static void guest_set_irq_line(u32 intid, u32 level);
 
 static void guest_irq_generic_handler(bool eoi_split, bool level_sensitive)
 {
 	u32 intid = gic_get_and_ack_irq();
+=======
+static void guest_set_irq_line(uint32_t intid, uint32_t level);
+
+static void guest_irq_generic_handler(bool eoi_split, bool level_sensitive)
+{
+	uint32_t intid = gic_get_and_ack_irq();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (intid == IAR_SPURIOUS)
 		return;
@@ -189,8 +230,13 @@ static void guest_irq_generic_handler(bool eoi_split, bool level_sensitive)
 	GUEST_ASSERT(!gic_irq_get_pending(intid));
 }
 
+<<<<<<< HEAD
 static void kvm_inject_call(kvm_inject_cmd cmd, u32 first_intid,
 			    u32 num, int level, bool expect_failure)
+=======
+static void kvm_inject_call(kvm_inject_cmd cmd, uint32_t first_intid,
+		uint32_t num, int level, bool expect_failure)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_inject_args args = {
 		.cmd = cmd,
@@ -204,7 +250,11 @@ static void kvm_inject_call(kvm_inject_cmd cmd, u32 first_intid,
 
 #define GUEST_ASSERT_IAR_EMPTY()						\
 do { 										\
+<<<<<<< HEAD
 	u32 _intid;							\
+=======
+	uint32_t _intid;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	_intid = gic_get_and_ack_irq();						\
 	GUEST_ASSERT(_intid == IAR_SPURIOUS);					\
 } while (0)
@@ -237,13 +287,21 @@ static void reset_priorities(struct test_args *args)
 		gic_set_priority(i, IRQ_DEFAULT_PRIO_REG);
 }
 
+<<<<<<< HEAD
 static void guest_set_irq_line(u32 intid, u32 level)
+=======
+static void guest_set_irq_line(uint32_t intid, uint32_t level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	kvm_inject_call(KVM_SET_IRQ_LINE, intid, 1, level, false);
 }
 
 static void test_inject_fail(struct test_args *args,
+<<<<<<< HEAD
 			     u32 intid, kvm_inject_cmd cmd)
+=======
+		uint32_t intid, kvm_inject_cmd cmd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	reset_stats();
 
@@ -255,10 +313,17 @@ static void test_inject_fail(struct test_args *args,
 }
 
 static void guest_inject(struct test_args *args,
+<<<<<<< HEAD
 			 u32 first_intid, u32 num,
 			 kvm_inject_cmd cmd)
 {
 	u32 i;
+=======
+		uint32_t first_intid, uint32_t num,
+		kvm_inject_cmd cmd)
+{
+	uint32_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reset_stats();
 
@@ -292,10 +357,17 @@ static void guest_inject(struct test_args *args,
  * deactivated yet.
  */
 static void guest_restore_active(struct test_args *args,
+<<<<<<< HEAD
 				 u32 first_intid, u32 num,
 				 kvm_inject_cmd cmd)
 {
 	u32 prio, intid, ap1r;
+=======
+		uint32_t first_intid, uint32_t num,
+		kvm_inject_cmd cmd)
+{
+	uint32_t prio, intid, ap1r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	/*
@@ -342,9 +414,15 @@ static void guest_restore_active(struct test_args *args,
  * This function should only be used in test_inject_preemption (with IRQs
  * masked).
  */
+<<<<<<< HEAD
 static u32 wait_for_and_activate_irq(void)
 {
 	u32 intid;
+=======
+static uint32_t wait_for_and_activate_irq(void)
+{
+	uint32_t intid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		asm volatile("wfi" : : : "memory");
@@ -360,11 +438,19 @@ static u32 wait_for_and_activate_irq(void)
  * interrupts for the whole test.
  */
 static void test_inject_preemption(struct test_args *args,
+<<<<<<< HEAD
 				   u32 first_intid, int num,
 				   const unsigned long *exclude,
 				   kvm_inject_cmd cmd)
 {
 	u32 intid, prio, step = KVM_PRIO_STEPS;
+=======
+				   uint32_t first_intid, int num,
+				   const unsigned long *exclude,
+				   kvm_inject_cmd cmd)
+{
+	uint32_t intid, prio, step = KVM_PRIO_STEPS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	/* Set the priorities of the first (KVM_NUM_PRIOS - 1) IRQs
@@ -379,7 +465,11 @@ static void test_inject_preemption(struct test_args *args,
 	local_irq_disable();
 
 	for (i = 0; i < num; i++) {
+<<<<<<< HEAD
 		u32 tmp;
+=======
+		uint32_t tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intid = i + first_intid;
 
 		if (exclude && test_bit(i, exclude))
@@ -431,7 +521,11 @@ static void test_inject_preemption(struct test_args *args,
 
 static void test_injection(struct test_args *args, struct kvm_inject_desc *f)
 {
+<<<<<<< HEAD
 	u32 nr_irqs = args->nr_irqs;
+=======
+	uint32_t nr_irqs = args->nr_irqs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (f->sgi) {
 		guest_inject(args, MIN_SGI, 1, f->cmd);
@@ -451,7 +545,11 @@ static void test_injection(struct test_args *args, struct kvm_inject_desc *f)
 static void test_injection_failure(struct test_args *args,
 		struct kvm_inject_desc *f)
 {
+<<<<<<< HEAD
 	u32 bad_intid[] = { args->nr_irqs, 1020, 1024, 1120, 5120, ~0U, };
+=======
+	uint32_t bad_intid[] = { args->nr_irqs, 1020, 1024, 1120, 5120, ~0U, };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(bad_intid); i++)
@@ -490,7 +588,11 @@ static void test_restore_active(struct test_args *args, struct kvm_inject_desc *
 
 static void guest_code(struct test_args *args)
 {
+<<<<<<< HEAD
 	u32 i, nr_irqs = args->nr_irqs;
+=======
+	uint32_t i, nr_irqs = args->nr_irqs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool level_sensitive = args->level_sensitive;
 	struct kvm_inject_desc *f, *inject_fns;
 
@@ -529,8 +631,13 @@ static void guest_code(struct test_args *args)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static void kvm_irq_line_check(struct kvm_vm *vm, u32 intid, int level,
 			       struct test_args *test_args, bool expect_failure)
+=======
+static void kvm_irq_line_check(struct kvm_vm *vm, uint32_t intid, int level,
+			struct test_args *test_args, bool expect_failure)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
@@ -548,8 +655,13 @@ static void kvm_irq_line_check(struct kvm_vm *vm, u32 intid, int level,
 	}
 }
 
+<<<<<<< HEAD
 void kvm_irq_set_level_info_check(int gic_fd, u32 intid, int level,
 				  bool expect_failure)
+=======
+void kvm_irq_set_level_info_check(int gic_fd, uint32_t intid, int level,
+			bool expect_failure)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!expect_failure) {
 		kvm_irq_set_level_info(gic_fd, intid, level);
@@ -573,6 +685,7 @@ void kvm_irq_set_level_info_check(int gic_fd, u32 intid, int level,
 }
 
 static void kvm_set_gsi_routing_irqchip_check(struct kvm_vm *vm,
+<<<<<<< HEAD
 					      u32 intid, u32 num,
 					      u32 kvm_max_routes,
 					      bool expect_failure)
@@ -580,11 +693,23 @@ static void kvm_set_gsi_routing_irqchip_check(struct kvm_vm *vm,
 	struct kvm_irq_routing *routing;
 	int ret;
 	u64 i;
+=======
+		uint32_t intid, uint32_t num, uint32_t kvm_max_routes,
+		bool expect_failure)
+{
+	struct kvm_irq_routing *routing;
+	int ret;
+	uint64_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	assert(num <= kvm_max_routes && kvm_max_routes <= KVM_MAX_IRQ_ROUTES);
 
 	routing = kvm_gsi_routing_create();
+<<<<<<< HEAD
 	for (i = intid; i < (u64)intid + num; i++)
+=======
+	for (i = intid; i < (uint64_t)intid + num; i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvm_gsi_routing_irqchip_add(routing, i - MIN_SPI, i - MIN_SPI);
 
 	if (!expect_failure) {
@@ -592,7 +717,11 @@ static void kvm_set_gsi_routing_irqchip_check(struct kvm_vm *vm,
 	} else {
 		ret = _kvm_gsi_routing_write(vm, routing);
 		/* The kernel only checks e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS */
+<<<<<<< HEAD
 		if (((u64)intid + num - 1 - MIN_SPI) >= KVM_IRQCHIP_NUM_PINS)
+=======
+		if (((uint64_t)intid + num - 1 - MIN_SPI) >= KVM_IRQCHIP_NUM_PINS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			TEST_ASSERT(ret != 0 && errno == EINVAL,
 				"Bad intid %u did not cause KVM_SET_GSI_ROUTING "
 				"error: rc: %i errno: %i", intid, ret, errno);
@@ -603,7 +732,11 @@ static void kvm_set_gsi_routing_irqchip_check(struct kvm_vm *vm,
 	}
 }
 
+<<<<<<< HEAD
 static void kvm_irq_write_ispendr_check(int gic_fd, u32 intid,
+=======
+static void kvm_irq_write_ispendr_check(int gic_fd, uint32_t intid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					struct kvm_vcpu *vcpu,
 					bool expect_failure)
 {
@@ -619,6 +752,7 @@ static void kvm_irq_write_ispendr_check(int gic_fd, u32 intid,
 }
 
 static void kvm_routing_and_irqfd_check(struct kvm_vm *vm,
+<<<<<<< HEAD
 					u32 intid, u32 num, u32 kvm_max_routes,
 					bool expect_failure)
 {
@@ -626,6 +760,15 @@ static void kvm_routing_and_irqfd_check(struct kvm_vm *vm,
 	u64 val;
 	int ret, f;
 	u64 i;
+=======
+		uint32_t intid, uint32_t num, uint32_t kvm_max_routes,
+		bool expect_failure)
+{
+	int fd[MAX_SPI];
+	uint64_t val;
+	int ret, f;
+	uint64_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * There is no way to try injecting an SGI or PPI as the interface
@@ -644,6 +787,7 @@ static void kvm_routing_and_irqfd_check(struct kvm_vm *vm,
 	 * that no actual interrupt was injected for those cases.
 	 */
 
+<<<<<<< HEAD
 	for (f = 0, i = intid; i < (u64)intid + num; i++, f++)
 		fd[f] = kvm_new_eventfd();
 
@@ -660,13 +804,35 @@ static void kvm_routing_and_irqfd_check(struct kvm_vm *vm,
 	}
 
 	for (f = 0, i = intid; i < (u64)intid + num; i++, f++)
+=======
+	for (f = 0, i = intid; i < (uint64_t)intid + num; i++, f++)
+		fd[f] = kvm_new_eventfd();
+
+	for (f = 0, i = intid; i < (uint64_t)intid + num; i++, f++) {
+		assert(i <= (uint64_t)UINT_MAX);
+		kvm_assign_irqfd(vm, i - MIN_SPI, fd[f]);
+	}
+
+	for (f = 0, i = intid; i < (uint64_t)intid + num; i++, f++) {
+		val = 1;
+		ret = write(fd[f], &val, sizeof(uint64_t));
+		TEST_ASSERT(ret == sizeof(uint64_t),
+			    __KVM_SYSCALL_ERROR("write()", ret));
+	}
+
+	for (f = 0, i = intid; i < (uint64_t)intid + num; i++, f++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvm_close(fd[f]);
 }
 
 /* handles the valid case: intid=0xffffffff num=1 */
 #define for_each_intid(first, num, tmp, i)					\
 	for ((tmp) = (i) = (first);						\
+<<<<<<< HEAD
 		(tmp) < (u64)(first) + (u64)(num);			\
+=======
+		(tmp) < (uint64_t)(first) + (uint64_t)(num);			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		(tmp)++, (i)++)
 
 static void run_guest_cmd(struct kvm_vcpu *vcpu, int gic_fd,
@@ -674,6 +840,7 @@ static void run_guest_cmd(struct kvm_vcpu *vcpu, int gic_fd,
 			  struct test_args *test_args)
 {
 	kvm_inject_cmd cmd = inject_args->cmd;
+<<<<<<< HEAD
 	u32 intid = inject_args->first_intid;
 	u32 num = inject_args->num;
 	int level = inject_args->level;
@@ -681,6 +848,15 @@ static void run_guest_cmd(struct kvm_vcpu *vcpu, int gic_fd,
 	struct kvm_vm *vm = vcpu->vm;
 	u64 tmp;
 	u32 i;
+=======
+	uint32_t intid = inject_args->first_intid;
+	uint32_t num = inject_args->num;
+	int level = inject_args->level;
+	bool expect_failure = inject_args->expect_failure;
+	struct kvm_vm *vm = vcpu->vm;
+	uint64_t tmp;
+	uint32_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* handles the valid case: intid=0xffffffff num=1 */
 	assert(intid < UINT_MAX - num || num == 1);
@@ -732,7 +908,11 @@ static void kvm_inject_get_call(struct kvm_vm *vm, struct ucall *uc,
 		struct kvm_inject_args *args)
 {
 	struct kvm_inject_args *kvm_args_hva;
+<<<<<<< HEAD
 	gva_t kvm_args_gva;
+=======
+	vm_vaddr_t kvm_args_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_args_gva = uc->args[1];
 	kvm_args_hva = (struct kvm_inject_args *)addr_gva2hva(vm, kvm_args_gva);
@@ -746,14 +926,22 @@ static void print_args(struct test_args *args)
 			args->eoi_split);
 }
 
+<<<<<<< HEAD
 static void test_vgic(u32 nr_irqs, bool level_sensitive, bool eoi_split)
+=======
+static void test_vgic(uint32_t nr_irqs, bool level_sensitive, bool eoi_split)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ucall uc;
 	int gic_fd;
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	struct kvm_inject_args inject_args;
+<<<<<<< HEAD
 	gva_t args_gva;
+=======
+	vm_vaddr_t args_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct test_args args = {
 		.nr_irqs = nr_irqs,
@@ -771,7 +959,11 @@ static void test_vgic(u32 nr_irqs, bool level_sensitive, bool eoi_split)
 	vcpu_init_descriptor_tables(vcpu);
 
 	/* Setup the guest args page (so it gets the args). */
+<<<<<<< HEAD
 	args_gva = vm_alloc_page(vm);
+=======
+	args_gva = vm_vaddr_alloc_page(vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(addr_gva2hva(vm, args_gva), &args, sizeof(args));
 	vcpu_args_set(vcpu, 1, args_gva);
 
@@ -811,7 +1003,11 @@ static void guest_code_asym_dir(struct test_args *args, int cpuid)
 	gic_set_priority_mask(CPU_PRIO_MASK);
 
 	if (cpuid == 0) {
+<<<<<<< HEAD
 		u32 intid;
+=======
+		uint32_t intid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		local_irq_disable();
 
@@ -849,7 +1045,11 @@ static void guest_code_asym_dir(struct test_args *args, int cpuid)
 
 static void guest_code_group_en(struct test_args *args, int cpuid)
 {
+<<<<<<< HEAD
 	u32 intid;
+=======
+	uint32_t intid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gic_init(GIC_V3, 2);
 
@@ -897,7 +1097,11 @@ static void guest_code_group_en(struct test_args *args, int cpuid)
 
 static void guest_code_timer_spi(struct test_args *args, int cpuid)
 {
+<<<<<<< HEAD
 	u32 intid;
+=======
+	uint32_t intid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 val;
 
 	gic_init(GIC_V3, 2);
@@ -987,7 +1191,11 @@ static void test_vgic_two_cpus(void *gcode)
 	struct kvm_vcpu *vcpus[2];
 	struct test_args args = {};
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	gva_t args_gva;
+=======
+	vm_vaddr_t args_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int gic_fd, ret;
 
 	vm = vm_create_with_vcpus(2, gcode, vcpus);
@@ -997,7 +1205,11 @@ static void test_vgic_two_cpus(void *gcode)
 	vcpu_init_descriptor_tables(vcpus[1]);
 
 	/* Setup the guest args page (so it gets the args). */
+<<<<<<< HEAD
 	args_gva = vm_alloc_page(vm);
+=======
+	args_gva = vm_vaddr_alloc_page(vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(addr_gva2hva(vm, args_gva), &args, sizeof(args));
 	vcpu_args_set(vcpus[0], 2, args_gva, 0);
 	vcpu_args_set(vcpus[1], 2, args_gva, 1);
@@ -1034,7 +1246,11 @@ static void help(const char *name)
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 	u32 nr_irqs = 64;
+=======
+	uint32_t nr_irqs = 64;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool default_args = true;
 	bool level_sensitive = false;
 	int opt;

@@ -27,11 +27,25 @@ static void poly1305_blocks(struct poly1305_block_state *state, const u8 *src,
 			    unsigned int len, u32 padbit)
 {
 	if (static_branch_likely(&have_neon) && likely(may_use_simd())) {
+<<<<<<< HEAD
 		scoped_ksimd()
 			poly1305_blocks_neon(state, src, len, padbit);
 	} else {
 		poly1305_blocks_arm64(state, src, len, padbit);
 	}
+=======
+		do {
+			unsigned int todo = min_t(unsigned int, len, SZ_4K);
+
+			scoped_ksimd()
+				poly1305_blocks_neon(state, src, todo, padbit);
+
+			len -= todo;
+			src += todo;
+		} while (len);
+	} else
+		poly1305_blocks_arm64(state, src, len, padbit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define poly1305_mod_init_arch poly1305_mod_init_arch

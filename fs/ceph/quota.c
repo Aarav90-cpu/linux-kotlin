@@ -228,6 +228,7 @@ static int get_quota_realm(struct ceph_mds_client *mdsc, struct inode *inode,
 
 restart:
 	realm = ceph_inode(inode)->i_snap_realm;
+<<<<<<< HEAD
 	if (realm) {
 		ceph_get_snap_realm(mdsc, realm);
 	} else {
@@ -241,6 +242,14 @@ restart:
 		      inode, ceph_vinop(inode));
 	}
 
+=======
+	if (realm)
+		ceph_get_snap_realm(mdsc, realm);
+	else
+		pr_err_ratelimited_client(cl,
+				"%p %llx.%llx null i_snap_realm\n",
+				inode, ceph_vinop(inode));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (realm) {
 		bool has_inode;
 
@@ -347,6 +356,7 @@ static bool check_quota_exceeded(struct inode *inode, enum quota_check_op op,
 	down_read(&mdsc->snap_rwsem);
 restart:
 	realm = ceph_inode(inode)->i_snap_realm;
+<<<<<<< HEAD
 	if (realm) {
 		ceph_get_snap_realm(mdsc, realm);
 	} else {
@@ -360,6 +370,14 @@ restart:
 		      inode, ceph_vinop(inode));
 	}
 
+=======
+	if (realm)
+		ceph_get_snap_realm(mdsc, realm);
+	else
+		pr_err_ratelimited_client(cl,
+				"%p %llx.%llx null i_snap_realm\n",
+				inode, ceph_vinop(inode));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (realm) {
 		bool has_inode;
 
@@ -510,9 +528,12 @@ bool ceph_quota_update_statfs(struct ceph_fs_client *fsc, struct kstatfs *buf)
 	u64 total = 0, used, free;
 	bool is_updated = false;
 
+<<<<<<< HEAD
 	if (!ceph_has_realms_with_quotas(d_inode(fsc->sb->s_root)))
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_read(&mdsc->snap_rwsem);
 	get_quota_realm(mdsc, d_inode(fsc->sb->s_root), QUOTA_GET_MAX_BYTES,
 			&realm, true);

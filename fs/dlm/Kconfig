@@ -2,7 +2,11 @@
 menuconfig DLM
 	tristate "Distributed Lock Manager (DLM)"
 	depends on INET
+<<<<<<< HEAD
 	depends on SYSFS && CONFIGFS_FS
+=======
+	depends on SYSFS && CONFIGFS_FS && (IPV6 || IPV6=n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	A general purpose distributed lock manager for kernel or userspace
 	applications.

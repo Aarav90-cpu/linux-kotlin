@@ -33,6 +33,10 @@ menuconfig BT
 	     HCI Device drivers (Interface to the hardware)
 	     RFCOMM Module (RFCOMM Protocol)  
 	     BNEP Module (Bluetooth Network Encapsulation Protocol)
+<<<<<<< HEAD
+=======
+	     CMTP Module (CAPI Message Transport Protocol)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     HIDP Module (Human Interface Device Protocol)
 
 	  Say Y here to compile Bluetooth support into the kernel or say M to
@@ -57,6 +61,11 @@ source "net/bluetooth/rfcomm/Kconfig"
 
 source "net/bluetooth/bnep/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "net/bluetooth/cmtp/Kconfig"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "net/bluetooth/hidp/Kconfig"
 
 config BT_LE

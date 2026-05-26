@@ -21,6 +21,11 @@
 			height = <3120>;
 			stride = <(1440 * 4)>;
 			format = "a8r8g8b8";
+<<<<<<< HEAD
+=======
+			lab-supply = <&lab>;
+			ibb-supply = <&ibb>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 
@@ -35,6 +40,7 @@
 			interrupts = <89 IRQ_TYPE_LEVEL_LOW>;
 		};
 	};
+<<<<<<< HEAD
 
 	battery: battery {
 		compatible = "simple-battery";
@@ -139,6 +145,24 @@
 	monitored-battery = <&battery>;
 
 	status = "okay";
+=======
+};
+
+&adsp_pas {
+	firmware-name = "qcom/sdm845/judyln/adsp.mbn";
+};
+
+&cdsp_pas {
+	firmware-name = "qcom/sdm845/judyln/cdsp.mbn";
+};
+
+&gpu_zap_shader {
+	firmware-name = "qcom/sdm845/judyln/a630_zap.mbn";
+};
+
+&mss_pil {
+	firmware-name = "qcom/sdm845/judyln/mba.mbn", "qcom/sdm845/judyln/modem.mbn";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &tlmm {
@@ -149,6 +173,7 @@
 		drive-strength = <2>;
 		bias-pull-up;
 	};
+<<<<<<< HEAD
 
 	sde_dsi_active: sde-dsi-active-state {
 		pins = "gpio6";
@@ -178,4 +203,6 @@
 
 &wifi {
 	qcom,calibration-variant = "lg_judyln";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

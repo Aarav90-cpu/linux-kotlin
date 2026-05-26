@@ -61,7 +61,11 @@ static struct vfsmount *shm_mnt __ro_after_init;
 #include <linux/slab.h>
 #include <linux/backing-dev.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/percpu_counter.h>
 #include <linux/falloc.h>
 #include <linux/splice.h>
@@ -1113,7 +1117,11 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
 	pgoff_t start = (lstart + PAGE_SIZE - 1) >> PAGE_SHIFT;
 	pgoff_t end = (lend + 1) >> PAGE_SHIFT;
 	struct folio_batch fbatch;
+<<<<<<< HEAD
 	pgoff_t indices[FOLIO_BATCH_SIZE];
+=======
+	pgoff_t indices[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio *folio;
 	bool same_folio;
 	long nr_swaps_freed = 0;
@@ -1425,10 +1433,14 @@ static void shmem_evict_inode(struct inode *inode)
 		}
 	}
 
+<<<<<<< HEAD
 	if (info->xattrs) {
 		simple_xattrs_free(info->xattrs, sbinfo->max_inodes ? &freed : NULL);
 		kfree(info->xattrs);
 	}
+=======
+	simple_xattrs_free(&info->xattrs, sbinfo->max_inodes ? &freed : NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	shmem_free_inode(inode->i_sb, freed);
 	WARN_ON(inode->i_blocks);
 	clear_inode(inode);
@@ -1513,7 +1525,11 @@ static int shmem_unuse_inode(struct inode *inode, unsigned int type)
 	struct address_space *mapping = inode->i_mapping;
 	pgoff_t start = 0;
 	struct folio_batch fbatch;
+<<<<<<< HEAD
 	pgoff_t indices[FOLIO_BATCH_SIZE];
+=======
+	pgoff_t indices[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	do {
@@ -2047,8 +2063,19 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
 	struct shmem_inode_info *info = SHMEM_I(inode);
 	struct folio *new, *swapcache;
 	int nr_pages = 1 << order;
+<<<<<<< HEAD
 	gfp_t alloc_gfp = gfp;
 
+=======
+	gfp_t alloc_gfp;
+
+	/*
+	 * We have arrived here because our zones are constrained, so don't
+	 * limit chance of success with further cpuset and node constraints.
+	 */
+	gfp &= ~GFP_CONSTRAINT_MASK;
+	alloc_gfp = gfp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
 		if (WARN_ON_ONCE(order))
 			return ERR_PTR(-EINVAL);
@@ -3098,6 +3125,10 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
 		shmem_set_inode_flags(inode, info->fsflags, NULL);
 	INIT_LIST_HEAD(&info->shrinklist);
 	INIT_LIST_HEAD(&info->swaplist);
+<<<<<<< HEAD
+=======
+	simple_xattrs_init(&info->xattrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cache_no_acl(inode);
 	if (sbinfo->noswap)
 		mapping_set_unevictable(inode->i_mapping);
@@ -3177,6 +3208,7 @@ static struct inode *shmem_get_inode(struct mnt_idmap *idmap,
 #endif /* CONFIG_TMPFS_QUOTA */
 
 #ifdef CONFIG_USERFAULTFD
+<<<<<<< HEAD
 static struct folio *shmem_mfill_folio_alloc(struct vm_area_struct *vma,
 					     unsigned long addr)
 {
@@ -3270,6 +3302,121 @@ static const struct vm_uffd_ops shmem_uffd_ops = {
 	.filemap_add		= shmem_mfill_filemap_add,
 	.filemap_remove		= shmem_mfill_filemap_remove,
 };
+=======
+int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
+			   struct vm_area_struct *dst_vma,
+			   unsigned long dst_addr,
+			   unsigned long src_addr,
+			   uffd_flags_t flags,
+			   struct folio **foliop)
+{
+	struct inode *inode = file_inode(dst_vma->vm_file);
+	struct shmem_inode_info *info = SHMEM_I(inode);
+	struct address_space *mapping = inode->i_mapping;
+	gfp_t gfp = mapping_gfp_mask(mapping);
+	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
+	void *page_kaddr;
+	struct folio *folio;
+	int ret;
+	pgoff_t max_off;
+
+	if (shmem_inode_acct_blocks(inode, 1)) {
+		/*
+		 * We may have got a page, returned -ENOENT triggering a retry,
+		 * and now we find ourselves with -ENOMEM. Release the page, to
+		 * avoid a BUG_ON in our caller.
+		 */
+		if (unlikely(*foliop)) {
+			folio_put(*foliop);
+			*foliop = NULL;
+		}
+		return -ENOMEM;
+	}
+
+	if (!*foliop) {
+		ret = -ENOMEM;
+		folio = shmem_alloc_folio(gfp, 0, info, pgoff);
+		if (!folio)
+			goto out_unacct_blocks;
+
+		if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY)) {
+			page_kaddr = kmap_local_folio(folio, 0);
+			/*
+			 * The read mmap_lock is held here.  Despite the
+			 * mmap_lock being read recursive a deadlock is still
+			 * possible if a writer has taken a lock.  For example:
+			 *
+			 * process A thread 1 takes read lock on own mmap_lock
+			 * process A thread 2 calls mmap, blocks taking write lock
+			 * process B thread 1 takes page fault, read lock on own mmap lock
+			 * process B thread 2 calls mmap, blocks taking write lock
+			 * process A thread 1 blocks taking read lock on process B
+			 * process B thread 1 blocks taking read lock on process A
+			 *
+			 * Disable page faults to prevent potential deadlock
+			 * and retry the copy outside the mmap_lock.
+			 */
+			pagefault_disable();
+			ret = copy_from_user(page_kaddr,
+					     (const void __user *)src_addr,
+					     PAGE_SIZE);
+			pagefault_enable();
+			kunmap_local(page_kaddr);
+
+			/* fallback to copy_from_user outside mmap_lock */
+			if (unlikely(ret)) {
+				*foliop = folio;
+				ret = -ENOENT;
+				/* don't free the page */
+				goto out_unacct_blocks;
+			}
+
+			flush_dcache_folio(folio);
+		} else {		/* ZEROPAGE */
+			clear_user_highpage(&folio->page, dst_addr);
+		}
+	} else {
+		folio = *foliop;
+		VM_BUG_ON_FOLIO(folio_test_large(folio), folio);
+		*foliop = NULL;
+	}
+
+	VM_BUG_ON(folio_test_locked(folio));
+	VM_BUG_ON(folio_test_swapbacked(folio));
+	__folio_set_locked(folio);
+	__folio_set_swapbacked(folio);
+	__folio_mark_uptodate(folio);
+
+	ret = -EFAULT;
+	max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+	if (unlikely(pgoff >= max_off))
+		goto out_release;
+
+	ret = mem_cgroup_charge(folio, dst_vma->vm_mm, gfp);
+	if (ret)
+		goto out_release;
+	ret = shmem_add_to_page_cache(folio, mapping, pgoff, NULL, gfp);
+	if (ret)
+		goto out_release;
+
+	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+				       &folio->page, true, flags);
+	if (ret)
+		goto out_delete_from_cache;
+
+	shmem_recalc_inode(inode, 1, 0);
+	folio_unlock(folio);
+	return 0;
+out_delete_from_cache:
+	filemap_remove_folio(folio);
+out_release:
+	folio_unlock(folio);
+	folio_put(folio);
+out_unacct_blocks:
+	shmem_inode_unacct_blocks(inode, 1);
+	return ret;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_USERFAULTFD */
 
 #ifdef CONFIG_TMPFS
@@ -4231,6 +4378,7 @@ static int shmem_initxattrs(struct inode *inode,
 	struct shmem_inode_info *info = SHMEM_I(inode);
 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
 	const struct xattr *xattr;
+<<<<<<< HEAD
 	size_t ispace = 0;
 	size_t len;
 
@@ -4238,6 +4386,12 @@ static int shmem_initxattrs(struct inode *inode,
 	if (IS_ERR(xattrs))
 		return PTR_ERR(xattrs);
 
+=======
+	struct simple_xattr *new_xattr;
+	size_t ispace = 0;
+	size_t len;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sbinfo->max_inodes) {
 		for (xattr = xattr_array; xattr->name != NULL; xattr++) {
 			ispace += simple_xattr_space(xattr->name,
@@ -4256,24 +4410,40 @@ static int shmem_initxattrs(struct inode *inode,
 	}
 
 	for (xattr = xattr_array; xattr->name != NULL; xattr++) {
+<<<<<<< HEAD
 		CLASS(simple_xattr, new_xattr)(xattr->value, xattr->value_len);
 		if (IS_ERR(new_xattr))
+=======
+		new_xattr = simple_xattr_alloc(xattr->value, xattr->value_len);
+		if (!new_xattr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		len = strlen(xattr->name) + 1;
 		new_xattr->name = kmalloc(XATTR_SECURITY_PREFIX_LEN + len,
 					  GFP_KERNEL_ACCOUNT);
+<<<<<<< HEAD
 		if (!new_xattr->name)
 			break;
+=======
+		if (!new_xattr->name) {
+			kvfree(new_xattr);
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		memcpy(new_xattr->name, XATTR_SECURITY_PREFIX,
 		       XATTR_SECURITY_PREFIX_LEN);
 		memcpy(new_xattr->name + XATTR_SECURITY_PREFIX_LEN,
 		       xattr->name, len);
 
+<<<<<<< HEAD
 		if (simple_xattr_add(xattrs, new_xattr))
 			break;
 		retain_and_null_ptr(new_xattr);
+=======
+		simple_xattr_add(&info->xattrs, new_xattr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (xattr->name != NULL) {
@@ -4282,10 +4452,17 @@ static int shmem_initxattrs(struct inode *inode,
 			sbinfo->free_ispace += ispace;
 			raw_spin_unlock(&sbinfo->stat_lock);
 		}
+<<<<<<< HEAD
 		return -ENOMEM;
 	}
 
 	smp_store_release(&info->xattrs, no_free_ptr(xattrs));
+=======
+		simple_xattrs_free(&info->xattrs, NULL);
+		return -ENOMEM;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4294,6 +4471,7 @@ static int shmem_xattr_handler_get(const struct xattr_handler *handler,
 				   const char *name, void *buffer, size_t size)
 {
 	struct shmem_inode_info *info = SHMEM_I(inode);
+<<<<<<< HEAD
 	struct simple_xattrs *xattrs;
 
 	xattrs = READ_ONCE(info->xattrs);
@@ -4302,6 +4480,11 @@ static int shmem_xattr_handler_get(const struct xattr_handler *handler,
 
 	name = xattr_full_name(handler, name);
 	return simple_xattr_get(xattrs, name, buffer, size);
+=======
+
+	name = xattr_full_name(handler, name);
+	return simple_xattr_get(&info->xattrs, name, buffer, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int shmem_xattr_handler_set(const struct xattr_handler *handler,
@@ -4312,16 +4495,22 @@ static int shmem_xattr_handler_set(const struct xattr_handler *handler,
 {
 	struct shmem_inode_info *info = SHMEM_I(inode);
 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+<<<<<<< HEAD
 	struct simple_xattrs *xattrs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct simple_xattr *old_xattr;
 	size_t ispace = 0;
 
 	name = xattr_full_name(handler, name);
+<<<<<<< HEAD
 
 	xattrs = simple_xattrs_lazy_alloc(&info->xattrs, value, flags);
 	if (IS_ERR_OR_NULL(xattrs))
 		return PTR_ERR(xattrs);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (value && sbinfo->max_inodes) {
 		ispace = simple_xattr_space(name, size);
 		raw_spin_lock(&sbinfo->stat_lock);
@@ -4334,13 +4523,21 @@ static int shmem_xattr_handler_set(const struct xattr_handler *handler,
 			return -ENOSPC;
 	}
 
+<<<<<<< HEAD
 	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
+=======
+	old_xattr = simple_xattr_set(&info->xattrs, name, value, size, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_ERR(old_xattr)) {
 		ispace = 0;
 		if (old_xattr && sbinfo->max_inodes)
 			ispace = simple_xattr_space(old_xattr->name,
 						    old_xattr->size);
+<<<<<<< HEAD
 		simple_xattr_free_rcu(old_xattr);
+=======
+		simple_xattr_free(old_xattr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		old_xattr = NULL;
 		inode_set_ctime_current(inode);
 		inode_inc_iversion(inode);
@@ -4381,9 +4578,13 @@ static const struct xattr_handler * const shmem_xattr_handlers[] = {
 static ssize_t shmem_listxattr(struct dentry *dentry, char *buffer, size_t size)
 {
 	struct shmem_inode_info *info = SHMEM_I(d_inode(dentry));
+<<<<<<< HEAD
 
 	return simple_xattr_list(d_inode(dentry), READ_ONCE(info->xattrs),
 				 buffer, size);
+=======
+	return simple_xattr_list(d_inode(dentry), &info->xattrs, buffer, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif /* CONFIG_TMPFS_XATTR */
 
@@ -5305,9 +5506,12 @@ static const struct vm_operations_struct shmem_vm_ops = {
 	.set_policy     = shmem_set_policy,
 	.get_policy     = shmem_get_policy,
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_USERFAULTFD
 	.uffd_ops	= &shmem_uffd_ops,
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct vm_operations_struct shmem_anon_vm_ops = {
@@ -5317,9 +5521,12 @@ static const struct vm_operations_struct shmem_anon_vm_ops = {
 	.set_policy     = shmem_set_policy,
 	.get_policy     = shmem_get_policy,
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_USERFAULTFD
 	.uffd_ops	= &shmem_uffd_ops,
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int shmem_init_fs_context(struct fs_context *fc)
@@ -5562,7 +5769,12 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
 		spin_unlock(&huge_shmem_orders_lock);
 	} else if (sysfs_streq(buf, "inherit")) {
 		/* Do not override huge allocation policy with non-PMD sized mTHP */
+<<<<<<< HEAD
 		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+=======
+		if (shmem_huge == SHMEM_HUGE_FORCE &&
+		    order != HPAGE_PMD_ORDER)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 
 		spin_lock(&huge_shmem_orders_lock);

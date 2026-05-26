@@ -166,5 +166,8 @@ int unpoison_memory(unsigned long pfn);
 
 #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
 #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
+<<<<<<< HEAD
 
 void write_file(const char *path, const char *buf, size_t buflen);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

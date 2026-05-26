@@ -19,7 +19,12 @@
 #include <stdint.h>
 #include <string.h>
 #include <limits.h>
+<<<<<<< HEAD
 #include <elf.h>
+=======
+#include <linux/auxvec.h>
+#include <linux/elf.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "parse_vdso.h"
 

@@ -112,7 +112,11 @@ static void efx_tc_counter_work(struct work_struct *work)
 					 encap->neigh->egdev);
 		else
 #if IS_ENABLED(CONFIG_IPV6)
+<<<<<<< HEAD
 			n = neigh_lookup(&nd_tbl,
+=======
+			n = neigh_lookup(ipv6_stub->nd_tbl,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 &encap->neigh->dst_ip6,
 					 encap->neigh->egdev);
 #else

@@ -453,13 +453,21 @@ static unsigned long elf_load(struct file *filep, unsigned long addr,
 		zero_end = ELF_PAGEALIGN(zero_end);
 
 		error = vm_brk_flags(zero_start, zero_end - zero_start,
+<<<<<<< HEAD
 				     prot & PROT_EXEC);
+=======
+				     prot & PROT_EXEC ? VM_EXEC : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (error)
 			map_addr = error;
 	}
 	return map_addr;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned long total_mapping_size(const struct elf_phdr *phdr, int nr)
 {
 	elf_addr_t min_addr = -1;

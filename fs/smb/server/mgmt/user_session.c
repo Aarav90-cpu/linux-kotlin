@@ -391,7 +391,10 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
 	free_channel_list(sess);
 	kfree(sess->Preauth_HashValue);
 	ksmbd_release_id(&session_ida, sess->id);
+<<<<<<< HEAD
 	ida_destroy(&sess->tree_conn_ida);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sess);
 }
 
@@ -548,6 +551,7 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
 	struct ksmbd_session *sess;
 
 	sess = ksmbd_session_lookup(conn, id);
+<<<<<<< HEAD
 	if (!sess && conn->binding) {
 		sess = ksmbd_session_lookup_slowpath(id);
 		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
@@ -555,6 +559,10 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
 			sess = NULL;
 		}
 	}
+=======
+	if (!sess && conn->binding)
+		sess = ksmbd_session_lookup_slowpath(id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sess && sess->state != SMB2_SESSION_VALID) {
 		ksmbd_user_session_put(sess);
 		sess = NULL;
@@ -671,8 +679,11 @@ static struct ksmbd_session *__session_create(int protocol)
 	if (!sess)
 		return NULL;
 
+<<<<<<< HEAD
 	ida_init(&sess->tree_conn_ida);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ksmbd_init_file_table(&sess->file_table))
 		goto error;
 
@@ -692,6 +703,11 @@ static struct ksmbd_session *__session_create(int protocol)
 	if (ret)
 		goto error;
 
+<<<<<<< HEAD
+=======
+	ida_init(&sess->tree_conn_ida);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&sessions_table_lock);
 	hash_add(sessions_table, &sess->hlist, sess->id);
 	up_write(&sessions_table_lock);

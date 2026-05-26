@@ -272,6 +272,7 @@ static int p50_gpio_get(struct gpio_chip *gc, unsigned int offset)
 	struct p50_gpio *p50 = gpiochip_get_data(gc);
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&p50->lock);
 
 	ret = p50_send_mbox_cmd(p50, P50_MBOX_CMD_READ_GPIO, gpio_params[offset], 0);
@@ -283,16 +284,40 @@ static int p50_gpio_get(struct gpio_chip *gc, unsigned int offset)
 		return ret;
 
 	return !!ret;
+=======
+	mutex_lock(&p50->lock);
+
+	ret = p50_send_mbox_cmd(p50, P50_MBOX_CMD_READ_GPIO, gpio_params[offset], 0);
+	if (ret == 0)
+		ret = p50_read_mbox_reg(p50, P50_MBOX_REG_DATA);
+
+	mutex_unlock(&p50->lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int p50_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
 {
 	struct p50_gpio *p50 = gpiochip_get_data(gc);
+<<<<<<< HEAD
 
 	guard(mutex)(&p50->lock);
 
 	return p50_send_mbox_cmd(p50, P50_MBOX_CMD_WRITE_GPIO,
 				 gpio_params[offset], value);
+=======
+	int ret;
+
+	mutex_lock(&p50->lock);
+
+	ret = p50_send_mbox_cmd(p50, P50_MBOX_CMD_WRITE_GPIO,
+				gpio_params[offset], value);
+
+	mutex_unlock(&p50->lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int p50_gpio_probe(struct platform_device *pdev)

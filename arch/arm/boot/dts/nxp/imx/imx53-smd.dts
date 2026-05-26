@@ -31,6 +31,7 @@
 			linux,code = <KEY_VOLUMEDOWN>;
 		};
 	};
+<<<<<<< HEAD
 
 	reg_1v8: regulator-1v8 {
 		compatible = "regulator-fixed";
@@ -45,6 +46,8 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &esdhc1 {
@@ -267,10 +270,13 @@
 	codec: sgtl5000@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
+<<<<<<< HEAD
 		#sound-dai-cells = <0>;
 		clocks = <&clks IMX5_CLK_DUMMY>;
 		VDDA-supply = <&reg_1v8>;
 		VDDIO-supply = <&reg_3v3>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	magnetometer: mag3110@e {

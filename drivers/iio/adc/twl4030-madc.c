@@ -252,7 +252,11 @@ static const struct s16_fract twl4030_divider_ratios[16] = {
 	{5, 11},	/* CHANNEL 15 */
 };
 
+<<<<<<< HEAD
 /* Conversion table from -3 to 55 degrees Celsius */
+=======
+/* Conversion table from -3 to 55 degrees Celcius */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int twl4030_therm_tbl[] = {
 	30800,	29500,	28300,	27100,
 	26000,	24900,	23900,	22900,	22000,	21100,	20300,	19400,	18700,

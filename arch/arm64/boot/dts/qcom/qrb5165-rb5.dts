@@ -38,6 +38,17 @@
 		clock-frequency = <40000000>;
 	};
 
+<<<<<<< HEAD
+=======
+	dc12v: dc12v-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "DC12V";
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+		regulator-always-on;
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hdmi-out {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -84,7 +95,11 @@
 		compatible = "regulator-fixed";
 		regulator-name = "LT9611_1V2";
 
+<<<<<<< HEAD
 		vin-supply = <&vreg_l11c_3p3>;
+=======
+		vin-supply = <&vdc_3v3>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regulator-min-microvolt = <1200000>;
 		regulator-max-microvolt = <1200000>;
 	};
@@ -93,7 +108,11 @@
 		compatible = "regulator-fixed";
 		regulator-name = "LT9611_3V3";
 
+<<<<<<< HEAD
 		vin-supply = <&vreg_l11c_3p3>;
+=======
+		vin-supply = <&vdc_3v3>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-boot-on;
@@ -223,6 +242,36 @@
 		};
 	};
 
+<<<<<<< HEAD
+=======
+	vbat: vbat-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "VBAT";
+		vin-supply = <&vreg_l11c_3p3>;
+		regulator-min-microvolt = <4200000>;
+		regulator-max-microvolt = <4200000>;
+		regulator-always-on;
+	};
+
+	vbat_som: vbat-som-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "VBAT_SOM";
+		vin-supply = <&dc12v>;
+		regulator-min-microvolt = <4200000>;
+		regulator-max-microvolt = <4200000>;
+		regulator-always-on;
+	};
+
+	vdc_3v3: vdc-3v3-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "VDC_3V3";
+		vin-supply = <&vreg_l11c_3p3>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vdc_5v: vdc-5v-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "VDC_5V";

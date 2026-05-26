@@ -4,7 +4,10 @@ ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"CRYPTO_QAT"'
 intel_qat-y := adf_accel_engine.o \
 	adf_admin.o \
 	adf_aer.o \
+<<<<<<< HEAD
 	adf_anti_rb.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adf_bank_state.o \
 	adf_cfg.o \
 	adf_cfg_services.o \
@@ -30,7 +33,10 @@ intel_qat-y := adf_accel_engine.o \
 	adf_rl_admin.o \
 	adf_rl.o \
 	adf_sysfs.o \
+<<<<<<< HEAD
 	adf_sysfs_anti_rb.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adf_sysfs_ras_counters.o \
 	adf_sysfs_rl.o \
 	adf_timer.o \
@@ -41,7 +47,10 @@ intel_qat-y := adf_accel_engine.o \
 	qat_bl.o \
 	qat_comp_algs.o \
 	qat_compression.o \
+<<<<<<< HEAD
 	qat_comp_zstd_utils.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qat_crypto.o \
 	qat_hal.o \
 	qat_mig_dev.o \

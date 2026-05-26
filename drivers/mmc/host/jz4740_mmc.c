@@ -1052,7 +1052,11 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
 	host = mmc_priv(mmc);
 
 	/* Default if no match is JZ4740 */
+<<<<<<< HEAD
 	host->version = (unsigned long)device_get_match_data(&pdev->dev);
+=======
+	host->version = (enum jz4740_mmc_version)device_get_match_data(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = mmc_of_parse(mmc);
 	if (ret)

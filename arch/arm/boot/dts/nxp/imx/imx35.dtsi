@@ -79,7 +79,11 @@
 				compatible = "fsl,imx35-i2c", "fsl,imx1-i2c";
 				reg = <0x43f80000 0x4000>;
 				clocks = <&clks 51>;
+<<<<<<< HEAD
 				clock-names = "ipg";
+=======
+				clock-names = "ipg_per";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				interrupts = <10>;
 				status = "disabled";
 			};
@@ -90,7 +94,11 @@
 				compatible = "fsl,imx35-i2c", "fsl,imx1-i2c";
 				reg = <0x43f84000 0x4000>;
 				clocks = <&clks 53>;
+<<<<<<< HEAD
 				clock-names = "ipg";
+=======
+				clock-names = "ipg_per";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				interrupts = <3>;
 				status = "disabled";
 			};
@@ -119,7 +127,11 @@
 				compatible = "fsl,imx35-i2c", "fsl,imx1-i2c";
 				reg = <0x43f98000 0x4000>;
 				clocks = <&clks 52>;
+<<<<<<< HEAD
 				clock-names = "ipg";
+=======
+				clock-names = "ipg_per";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				interrupts = <4>;
 				status = "disabled";
 			};
@@ -356,7 +368,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		emi-bus@80000000 { /* External Memory Interface */
+=======
+		emi@80000000 { /* External Memory Interface */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "fsl,emi", "simple-bus";
 			#address-cells = <1>;
 			#size-cells = <1>;
@@ -393,6 +409,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	usbphy0: usb-phy0 {
 		compatible = "usb-nop-xceiv";
 		#phy-cells = <0>;
@@ -401,5 +418,23 @@
 	usbphy1: usb-phy1 {
 		compatible = "usb-nop-xceiv";
 		#phy-cells = <0>;
+=======
+	usbphy {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		usbphy0: usb-phy@0 {
+			reg = <0>;
+			compatible = "usb-nop-xceiv";
+			#phy-cells = <0>;
+		};
+
+		usbphy1: usb-phy@1 {
+			reg = <1>;
+			compatible = "usb-nop-xceiv";
+			#phy-cells = <0>;
+		};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

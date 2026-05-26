@@ -11,6 +11,10 @@
 
 #ifndef CONFIG_SMP
 #define cpu_physical_id(cpu)			boot_cpu_physical_apicid
+<<<<<<< HEAD
+=======
+#define cpu_acpi_id(cpu)			0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_SMP */
 
 #ifdef CONFIG_HOTPLUG_CPU

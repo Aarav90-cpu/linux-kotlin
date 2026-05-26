@@ -170,8 +170,11 @@ int fbnic_mac_request_irq(struct fbnic_dev *fbd)
 	fbnic_wr32(fbd, FBNIC_INTR_MSIX_CTRL(FBNIC_INTR_MSIX_CTRL_PCS_IDX),
 		   FBNIC_PCS_MSIX_ENTRY | FBNIC_INTR_MSIX_CTRL_ENABLE);
 
+<<<<<<< HEAD
 	fbnic_wr32(fbd, FBNIC_INTR_MSIX_CTRL(FBNIC_INTR_MSIX_CTRL_RXB_IDX), 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fbd->mac_msix_vector = vector;
 
 	return 0;
@@ -240,6 +243,7 @@ void fbnic_free_irq(struct fbnic_dev *fbd, int nr, void *data)
 	free_irq(irq, data);
 }
 
+<<<<<<< HEAD
 struct fbnic_msix_test_data {
 	struct fbnic_dev *fbd;
 	unsigned long test_msix_status[BITS_TO_LONGS(FBNIC_MAX_MSIX_VECS)];
@@ -394,6 +398,8 @@ enum fbnic_msix_self_test_codes fbnic_msix_test(struct fbnic_dev *fbd)
 	return result;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void fbnic_napi_name_irqs(struct fbnic_dev *fbd)
 {
 	unsigned int i;

@@ -158,7 +158,10 @@ config EXTCON_PTN5150
 	tristate "NXP PTN5150 CC LOGIC USB EXTCON support"
 	depends on I2C && (GPIOLIB || COMPILE_TEST)
 	depends on USB_ROLE_SWITCH || !USB_ROLE_SWITCH
+<<<<<<< HEAD
 	depends on TYPEC || !TYPEC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select REGMAP_I2C
 	help
 	  Say Y here to enable support for USB peripheral and USB host

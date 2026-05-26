@@ -705,9 +705,16 @@ static int rockchip_pd_power_on(struct generic_pm_domain *domain)
 	int ret;
 
 	ret = rockchip_pd_regulator_enable(pd);
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(pd->pmu->dev, ret,
 				     "Failed to enable supply: %d\n", ret);
+=======
+	if (ret) {
+		dev_err(pd->pmu->dev, "Failed to enable supply: %d\n", ret);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = rockchip_pd_power(pd, true);
 	if (ret)

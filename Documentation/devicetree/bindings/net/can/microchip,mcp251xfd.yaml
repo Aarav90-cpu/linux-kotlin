@@ -44,6 +44,7 @@ properties:
       signals a pending RX interrupt.
     maxItems: 1
 
+<<<<<<< HEAD
   microchip,xstbyen:
     type: boolean
     description:
@@ -52,6 +53,8 @@ properties:
       when it enters Sleep mode, allowing automatic standby control of an
       external CAN transceiver connected to this pin.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   spi-max-frequency:
     description:
       Must be half or less of "clocks" frequency.

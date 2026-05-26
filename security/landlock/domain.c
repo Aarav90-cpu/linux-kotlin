@@ -34,7 +34,11 @@
  * @exe_size: Returned size of @exe_str (including the trailing null
  *            character), if any.
  *
+<<<<<<< HEAD
  * Return: A pointer to an allocated buffer where @exe_str point to, %NULL if
+=======
+ * Returns: A pointer to an allocated buffer where @exe_str point to, %NULL if
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * there is no executable path, or an error otherwise.
  */
 static const void *get_current_exe(const char **const exe_str,
@@ -73,7 +77,11 @@ static const void *get_current_exe(const char **const exe_str,
 }
 
 /*
+<<<<<<< HEAD
  * Return: A newly allocated object describing a domain, or an error
+=======
+ * Returns: A newly allocated object describing a domain, or an error
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * otherwise.
  */
 static struct landlock_details *get_current_details(void)
@@ -114,8 +122,11 @@ static struct landlock_details *get_current_details(void)
  * restriction.  The subjective credentials must not be in an overridden state.
  *
  * @hierarchy->parent and @hierarchy->usage should already be set.
+<<<<<<< HEAD
  *
  * Return: 0 on success, -errno on failure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int landlock_init_hierarchy_log(struct landlock_hierarchy *const hierarchy)
 {

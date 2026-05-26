@@ -306,22 +306,34 @@ static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
 	if (ret) {
 		dbg_hid("__hidpp_send_report returned err: %d\n", ret);
 		memset(response, 0, sizeof(struct hidpp_report));
+<<<<<<< HEAD
 		goto out;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
 				5*HZ)) {
 		dbg_hid("%s:timeout waiting for response\n", __func__);
 		memset(response, 0, sizeof(struct hidpp_report));
+<<<<<<< HEAD
 		ret = -ETIMEDOUT;
 		goto out;
+=======
+		return -ETIMEDOUT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (response->report_id == REPORT_ID_HIDPP_SHORT &&
 	    response->rap.sub_id == HIDPP_ERROR) {
 		ret = response->rap.params[1];
 		dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
+<<<<<<< HEAD
 		goto out;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if ((response->report_id == REPORT_ID_HIDPP_LONG ||
@@ -329,6 +341,7 @@ static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
 	    response->fap.feature_index == HIDPP20_ERROR) {
 		ret = response->fap.params[1];
 		dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
+<<<<<<< HEAD
 		goto out;
 	}
 
@@ -337,6 +350,12 @@ static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
 out:
 	hidpp->send_receive_buf = NULL;
 	return ret;
+=======
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2507,6 +2526,7 @@ static void hidpp_ff_work_handler(struct work_struct *w)
 		}
 		break;
 	case HIDPP_FF_DESTROY_EFFECT:
+<<<<<<< HEAD
 		slot = wd->params[0];
 		if (slot > 0 && slot <= data->num_effects) {
 			if (wd->effect_id >= 0)
@@ -2516,6 +2536,14 @@ static void hidpp_ff_work_handler(struct work_struct *w)
 				/* autocenter spring destroyed */
 				data->slot_autocenter = 0;
 		}
+=======
+		if (wd->effect_id >= 0)
+			/* regular effect destroyed */
+			data->effect_ids[wd->params[0]-1] = -1;
+		else if (wd->effect_id >= HIDPP_FF_EFFECTID_AUTOCENTER)
+			/* autocenter spring destroyed */
+			data->slot_autocenter = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case HIDPP_FF_SET_GLOBAL_GAINS:
 		data->gain = (wd->params[0] << 8) + wd->params[1];
@@ -3848,7 +3876,12 @@ static int hidpp_input_configured(struct hid_device *hdev,
 static int hidpp_raw_hidpp_event(struct hidpp_device *hidpp, u8 *data,
 		int size)
 {
+<<<<<<< HEAD
 	struct hidpp_report *question, *answer;
+=======
+	struct hidpp_report *question = hidpp->send_receive_buf;
+	struct hidpp_report *answer = hidpp->send_receive_buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hidpp_report *report = (struct hidpp_report *)data;
 	int ret;
 	int last_online;
@@ -3858,12 +3891,15 @@ static int hidpp_raw_hidpp_event(struct hidpp_device *hidpp, u8 *data,
 	 * previously sent command.
 	 */
 	if (unlikely(mutex_is_locked(&hidpp->send_mutex))) {
+<<<<<<< HEAD
 		question = hidpp->send_receive_buf;
 		answer = hidpp->send_receive_buf;
 
 		if (!question)
 			return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Check for a correct hidpp20 answer or the corresponding
 		 * error
@@ -4685,6 +4721,7 @@ static const struct hid_device_id hidpp_devices[] = {
 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb391) },
 	{ /* MX Master 4 mouse over Bluetooth */
 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb042) },
+<<<<<<< HEAD
 	{ /* Logitech Signature K650 over Bluetooth */
 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb36f) },
 	{ /* Logitech Signature K650 B2B over Bluetooth */
@@ -4723,6 +4760,8 @@ static const struct hid_device_id hidpp_devices[] = {
 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb39c) },
 	{ /* Logitech Signature Comfort K880 B2B over Bluetooth */
 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb39d) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

@@ -108,6 +108,7 @@ static int atmel_hlcdc_probe(struct platform_device *pdev)
 		return PTR_ERR(hlcdc->periph_clk);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Retrieve one of the primary clocks required for LCD operation:
 	 * prefer sys_clk (for RGB/MIPI), and fall back to lvds_pll_clk
@@ -121,6 +122,12 @@ static int atmel_hlcdc_probe(struct platform_device *pdev)
 			dev_err(dev, "Failed to obtain both the LCDC (generic) and LVDS PLL clocks\n");
 			return PTR_ERR(hlcdc->lvds_pll_clk);
 		}
+=======
+	hlcdc->sys_clk = devm_clk_get(dev, "sys_clk");
+	if (IS_ERR(hlcdc->sys_clk)) {
+		dev_err(dev, "failed to get system clock\n");
+		return PTR_ERR(hlcdc->sys_clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	hlcdc->slow_clk = devm_clk_get(dev, "slow_clk");

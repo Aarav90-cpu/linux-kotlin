@@ -1297,6 +1297,7 @@ static int read_emulated(struct x86_emulate_ctxt *ctxt,
 	int rc;
 	struct read_cache *mc = &ctxt->mem_read;
 
+<<<<<<< HEAD
 	/*
 	 * If the read gets a cache hit, simply copy the value from the cache.
 	 * A "hit" here means that there is unused data in the cache, i.e. when
@@ -1304,18 +1305,23 @@ static int read_emulated(struct x86_emulate_ctxt *ctxt,
 	 * on "no decode" to ensure the instruction is re-emulated in the same
 	 * sequence, so that multiple reads are fulfilled in the correct order.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mc->pos < mc->end)
 		goto read_cached;
 
 	if (KVM_EMULATOR_BUG_ON((mc->end + size) >= sizeof(mc->data), ctxt))
 		return X86EMUL_UNHANDLEABLE;
 
+<<<<<<< HEAD
 	/*
 	 * Route all reads to the cache.  This allows @dest to be an on-stack
 	 * variable without triggering use-after-free if KVM needs to exit to
 	 * userspace to handle an MMIO read (the MMIO fragment will point at
 	 * the current location in the cache).
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = ctxt->ops->read_emulated(ctxt, addr, mc->data + mc->end, size,
 				      &ctxt->exception);
 	if (rc != X86EMUL_CONTINUE)
@@ -3596,10 +3602,17 @@ static int em_cpuid(struct x86_emulate_ctxt *ctxt)
 	u64 msr = 0;
 
 	ctxt->ops->get_msr(ctxt, MSR_MISC_FEATURES_ENABLES, &msr);
+<<<<<<< HEAD
 	if (!ctxt->ops->is_smm(ctxt) &&
 	    (msr & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) &&
 	    ctxt->ops->cpl(ctxt))
 		return emulate_gp(ctxt, 0);
+=======
+	if (msr & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT &&
+	    ctxt->ops->cpl(ctxt)) {
+		return emulate_gp(ctxt, 0);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	eax = reg_read(ctxt, VCPU_REGS_RAX);
 	ecx = reg_read(ctxt, VCPU_REGS_RCX);
@@ -3721,7 +3734,11 @@ static inline size_t fxstate_size(struct x86_emulate_ctxt *ctxt)
  */
 static int em_fxsave(struct x86_emulate_ctxt *ctxt)
 {
+<<<<<<< HEAD
 	struct fxregs_state fx_state = {};
+=======
+	struct fxregs_state fx_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	rc = check_fxsr(ctxt);
@@ -3751,7 +3768,11 @@ static int em_fxsave(struct x86_emulate_ctxt *ctxt)
 static noinline int fxregs_fixup(struct fxregs_state *fx_state,
 				 const size_t used_size)
 {
+<<<<<<< HEAD
 	struct fxregs_state fx_tmp = {};
+=======
+	struct fxregs_state fx_tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	rc = asm_safe("fxsave %[fx]", , [fx] "+m"(fx_tmp));
@@ -3887,7 +3908,12 @@ static int check_svme_pa(struct x86_emulate_ctxt *ctxt)
 {
 	u64 rax = reg_read(ctxt, VCPU_REGS_RAX);
 
+<<<<<<< HEAD
 	if (!ctxt->ops->page_address_valid(ctxt, rax))
+=======
+	/* Valid physical address? */
+	if (rax & 0xffff000000000000ULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return emulate_gp(ctxt, 0);
 
 	return check_svme(ctxt);
@@ -4481,7 +4507,11 @@ static const struct opcode opcode_map_0f_38[256] = {
 	X16(N), X16(N),
 	/* 0x20 - 0x2f */
 	X8(N),
+<<<<<<< HEAD
 	X2(N), GP(SrcMem | DstReg | ModRM | Mov | Aligned, &pfx_0f_e7_0f_38_2a), N, N, N, N, N,
+=======
+	X2(N), GP(SrcReg | DstMem | ModRM | Mov | Aligned, &pfx_0f_e7_0f_38_2a), N, N, N, N, N,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* 0x30 - 0x7f */
 	X16(N), X16(N), X16(N), X16(N), X16(N),
 	/* 0x80 - 0xef */

@@ -209,6 +209,7 @@ struct da7219_aad_priv {
 void da7219_aad_jack_det(struct snd_soc_component *component, struct snd_soc_jack *jack);
 
 /* Suspend/Resume */
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 void da7219_aad_suspend(struct snd_soc_component *component);
 void da7219_aad_resume(struct snd_soc_component *component);
@@ -216,6 +217,10 @@ void da7219_aad_resume(struct snd_soc_component *component);
 static inline void da7219_aad_suspend(struct snd_soc_component *component) { }
 static inline void da7219_aad_resume(struct snd_soc_component *component) { }
 #endif
+=======
+void da7219_aad_suspend(struct snd_soc_component *component);
+void da7219_aad_resume(struct snd_soc_component *component);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Init/Exit */
 int da7219_aad_init(struct snd_soc_component *component);

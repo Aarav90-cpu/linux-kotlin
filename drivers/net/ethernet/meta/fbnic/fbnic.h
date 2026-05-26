@@ -57,7 +57,10 @@ struct fbnic_dev {
 	u64 dsn;
 	u32 mps;
 	u32 readrq;
+<<<<<<< HEAD
 	u8 relaxed_ord;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Local copy of the devices TCAM */
 	struct fbnic_act_tcam act_tcam[FBNIC_RPC_TCAM_ACT_NUM_ENTRIES];
@@ -99,9 +102,12 @@ struct fbnic_dev {
 
 	/* MDIO bus for PHYs */
 	struct mii_bus *mdio_bus;
+<<<<<<< HEAD
 
 	/* In units of ms since API supports values in ms */
 	u16 ps_timeout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Reserve entry 0 in the MSI-X "others" array until we have filled all
@@ -198,6 +204,7 @@ void fbnic_synchronize_irq(struct fbnic_dev *fbd, int nr);
 int fbnic_request_irq(struct fbnic_dev *dev, int nr, irq_handler_t handler,
 		      unsigned long flags, const char *name, void *data);
 void fbnic_free_irq(struct fbnic_dev *dev, int nr, void *data);
+<<<<<<< HEAD
 
 /**
  * enum fbnic_msix_self_test_codes - return codes from self test routines
@@ -230,6 +237,8 @@ enum fbnic_msix_self_test_codes {
 
 enum fbnic_msix_self_test_codes fbnic_msix_test(struct fbnic_dev *fbd);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void fbnic_free_irqs(struct fbnic_dev *fbd);
 int fbnic_alloc_irqs(struct fbnic_dev *fbd);
 

@@ -857,8 +857,12 @@ def parse_run_tests(kernel_output: Iterable[str], printer: Printer) -> Test:
 	test = Test()
 	if not lines:
 		test.name = '<missing>'
+<<<<<<< HEAD
 		test.add_error(printer, 'Could not find any KTAP output. Did any KUnit tests run?\n' +
 			'Try running with the --raw_output=all option to see any log messages.')
+=======
+		test.add_error(printer, 'Could not find any KTAP output. Did any KUnit tests run?')
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		test.status = TestStatus.FAILURE_TO_PARSE_TESTS
 	else:
 		test = parse_test(lines, 0, [], False, printer)

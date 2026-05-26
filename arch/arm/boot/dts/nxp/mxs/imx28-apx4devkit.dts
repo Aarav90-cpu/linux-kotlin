@@ -31,7 +31,11 @@
 	leds {
 		compatible = "gpio-leds";
 
+<<<<<<< HEAD
 		led-user {
+=======
+		user {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "Heartbeat";
 			gpios = <&gpio3 28 0>;
 			linux,default-trigger = "heartbeat";

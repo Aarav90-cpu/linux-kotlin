@@ -12,7 +12,10 @@
 #include <linux/bitfield.h>
 #include <linux/cleanup.h>
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/interrupt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/io.h>
 #include <linux/irqchip.h>
 #include <linux/irqchip/irq-renesas-rzv2h.h>
@@ -26,6 +29,7 @@
 /* DT "interrupts" indexes */
 #define ICU_IRQ_START				1
 #define ICU_IRQ_COUNT				16
+<<<<<<< HEAD
 #define ICU_IRQ_LAST				(ICU_IRQ_START + ICU_IRQ_COUNT - 1)
 #define ICU_TINT_START				(ICU_IRQ_LAST + 1)
 #define ICU_TINT_COUNT				32
@@ -37,6 +41,11 @@
 #define ICU_ERR_INT_COUNT			1
 #define ICU_ERR_INT_LAST			(ICU_ERR_INT_START + ICU_ERR_INT_COUNT - 1)
 #define ICU_NUM_IRQ				(ICU_ERR_INT_LAST + 1)
+=======
+#define ICU_TINT_START				(ICU_IRQ_START + ICU_IRQ_COUNT)
+#define ICU_TINT_COUNT				32
+#define ICU_NUM_IRQ				(ICU_TINT_START + ICU_TINT_COUNT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Registers */
 #define ICU_NSCNT				0x00
@@ -49,6 +58,7 @@
 #define ICU_TSCLR				0x24
 #define ICU_TITSR(k)				(0x28 + (k) * 4)
 #define ICU_TSSR(k)				(0x30 + (k) * 4)
+<<<<<<< HEAD
 #define ICU_BEISR(k)				(0x70 + (k) * 4)
 #define ICU_BECLR(k)				(0x80 + (k) * 4)
 #define ICU_EREISR(k)				(0x90 + (k) * 4)
@@ -58,6 +68,8 @@
 #define ICU_ERINTA55CRL(k)			(0x348 + (k) * 4)
 #define ICU_ERINTA55MSK(k)			(0x358 + (k) * 4)
 #define ICU_SWPE				0x370
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ICU_DMkSELy(k, y)			(0x420 + (k) * 0x20 + (y) * 4)
 #define ICU_DMACKSELk(k)			(0x500 + (k) * 4)
 
@@ -108,10 +120,13 @@
 #define ICU_RZG3E_TSSEL_MAX_VAL			0x8c
 #define ICU_RZV2H_TSSEL_MAX_VAL			0x55
 
+<<<<<<< HEAD
 #define ICU_SWPE_NUM				16
 #define ICU_NUM_BE				4
 #define ICU_NUM_A55ERR				4
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct rzv2h_irqc_reg_cache - registers cache (necessary for suspend/resume)
  * @nitsr: ICU_NITSR register
@@ -130,16 +145,22 @@ struct rzv2h_irqc_reg_cache {
  * @t_offs:		TINT offset
  * @max_tssel:		TSSEL max value
  * @field_width:	TSSR field width
+<<<<<<< HEAD
  * @ecc_start:		Start index of ECC RAM interrupts
  * @ecc_end:		End index of ECC RAM interrupts
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct rzv2h_hw_info {
 	const u8	*tssel_lut;
 	u16		t_offs;
 	u8		max_tssel;
 	u8		field_width;
+<<<<<<< HEAD
 	u8		ecc_start;
 	u8		ecc_end;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* DMAC */
@@ -193,22 +214,44 @@ static inline struct rzv2h_icu_priv *irq_data_to_priv(struct irq_data *data)
 	return data->domain->host_data;
 }
 
+<<<<<<< HEAD
 static void rzv2h_icu_tint_eoi(struct irq_data *d)
+=======
+static void rzv2h_icu_eoi(struct irq_data *d)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rzv2h_icu_priv *priv = irq_data_to_priv(d);
 	unsigned int hw_irq = irqd_to_hwirq(d);
 	unsigned int tintirq_nr;
 	u32 bit;
 
+<<<<<<< HEAD
 	if (!irqd_is_level_type(d)) {
 		tintirq_nr = hw_irq - ICU_TINT_START;
 		bit = BIT(tintirq_nr);
 		writel_relaxed(bit, priv->base + priv->info->t_offs + ICU_TSCLR);
+=======
+	scoped_guard(raw_spinlock, &priv->lock) {
+		if (hw_irq >= ICU_TINT_START) {
+			tintirq_nr = hw_irq - ICU_TINT_START;
+			bit = BIT(tintirq_nr);
+			if (!irqd_is_level_type(d))
+				writel_relaxed(bit, priv->base + priv->info->t_offs + ICU_TSCLR);
+		} else if (hw_irq >= ICU_IRQ_START) {
+			tintirq_nr = hw_irq - ICU_IRQ_START;
+			bit = BIT(tintirq_nr);
+			if (!irqd_is_level_type(d))
+				writel_relaxed(bit, priv->base + ICU_ISCLR);
+		} else {
+			writel_relaxed(ICU_NSCLR_NCLR, priv->base + ICU_NSCLR);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	irq_chip_eoi_parent(d);
 }
 
+<<<<<<< HEAD
 static void rzv2h_icu_irq_eoi(struct irq_data *d)
 {
 	struct rzv2h_icu_priv *priv = irq_data_to_priv(d);
@@ -234,6 +277,8 @@ static void rzv2h_icu_nmi_eoi(struct irq_data *d)
 	irq_chip_eoi_parent(d);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rzv2h_tint_irq_endisable(struct irq_data *d, bool enable)
 {
 	struct rzv2h_icu_priv *priv = irq_data_to_priv(d);
@@ -241,6 +286,12 @@ static void rzv2h_tint_irq_endisable(struct irq_data *d, bool enable)
 	u32 tint_nr, tssel_n, k, tssr;
 	u8 nr_tint;
 
+<<<<<<< HEAD
+=======
+	if (hw_irq < ICU_TINT_START)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tint_nr = hw_irq - ICU_TINT_START;
 	nr_tint = 32 / priv->info->field_width;
 	k = tint_nr / nr_tint;
@@ -263,13 +314,21 @@ static void rzv2h_tint_irq_endisable(struct irq_data *d, bool enable)
 	writel_relaxed(BIT(tint_nr), priv->base + priv->info->t_offs + ICU_TSCLR);
 }
 
+<<<<<<< HEAD
 static void rzv2h_icu_tint_disable(struct irq_data *d)
+=======
+static void rzv2h_icu_irq_disable(struct irq_data *d)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	irq_chip_disable_parent(d);
 	rzv2h_tint_irq_endisable(d, false);
 }
 
+<<<<<<< HEAD
 static void rzv2h_icu_tint_enable(struct irq_data *d)
+=======
+static void rzv2h_icu_irq_enable(struct irq_data *d)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	rzv2h_tint_irq_endisable(d, true);
 	irq_chip_enable_parent(d);
@@ -295,7 +354,11 @@ static int rzv2h_nmi_set_type(struct irq_data *d, unsigned int type)
 
 	writel_relaxed(sense, priv->base + ICU_NITSR);
 
+<<<<<<< HEAD
 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rzv2h_clear_irq_int(struct rzv2h_icu_priv *priv, unsigned int hwirq)
@@ -345,6 +408,7 @@ static int rzv2h_irq_set_type(struct irq_data *d, unsigned int type)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	scoped_guard(raw_spinlock, &priv->lock) {
 		iitsr = readl_relaxed(priv->base + ICU_IITSR);
 		iitsr &= ~ICU_IITSR_IITSEL_MASK(irq_nr);
@@ -354,6 +418,16 @@ static int rzv2h_irq_set_type(struct irq_data *d, unsigned int type)
 	}
 
 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
+=======
+	guard(raw_spinlock)(&priv->lock);
+	iitsr = readl_relaxed(priv->base + ICU_IITSR);
+	iitsr &= ~ICU_IITSR_IITSEL_MASK(irq_nr);
+	iitsr |= ICU_IITSR_IITSEL_PREP(sense, irq_nr);
+	rzv2h_clear_irq_int(priv, hwirq);
+	writel_relaxed(iitsr, priv->base + ICU_IITSR);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rzv2h_clear_tint_int(struct rzv2h_icu_priv *priv, unsigned int hwirq)
@@ -428,6 +502,7 @@ static int rzv2h_tint_set_type(struct irq_data *d, unsigned int type)
 	titsr_k = ICU_TITSR_K(tint_nr);
 	titsel_n = ICU_TITSR_TITSEL_N(tint_nr);
 
+<<<<<<< HEAD
 	scoped_guard(raw_spinlock, &priv->lock) {
 		tssr = readl_relaxed(priv->base + priv->info->t_offs + ICU_TSSR(tssr_k));
 		titsr = readl_relaxed(priv->base + priv->info->t_offs + ICU_TITSR(titsr_k));
@@ -506,6 +581,53 @@ static int rzv2h_icu_swpe_set_irqchip_state(struct irq_data *d, enum irqchip_irq
 	return 0;
 }
 
+=======
+	guard(raw_spinlock)(&priv->lock);
+
+	tssr = readl_relaxed(priv->base + priv->info->t_offs + ICU_TSSR(tssr_k));
+	titsr = readl_relaxed(priv->base + priv->info->t_offs + ICU_TITSR(titsr_k));
+
+	tssr_cur = field_get(ICU_TSSR_TSSEL_MASK(tssel_n, priv->info->field_width), tssr);
+	titsr_cur = field_get(ICU_TITSR_TITSEL_MASK(titsel_n), titsr);
+	if (tssr_cur == tint && titsr_cur == sense)
+		return 0;
+
+	tssr &= ~(ICU_TSSR_TSSEL_MASK(tssel_n, priv->info->field_width) | tien);
+	tssr |= ICU_TSSR_TSSEL_PREP(tint, tssel_n, priv->info->field_width);
+
+	writel_relaxed(tssr, priv->base + priv->info->t_offs + ICU_TSSR(tssr_k));
+
+	titsr &= ~ICU_TITSR_TITSEL_MASK(titsel_n);
+	titsr |= ICU_TITSR_TITSEL_PREP(sense, titsel_n);
+
+	writel_relaxed(titsr, priv->base + priv->info->t_offs + ICU_TITSR(titsr_k));
+
+	rzv2h_clear_tint_int(priv, hwirq);
+
+	writel_relaxed(tssr | tien, priv->base + priv->info->t_offs + ICU_TSSR(tssr_k));
+
+	return 0;
+}
+
+static int rzv2h_icu_set_type(struct irq_data *d, unsigned int type)
+{
+	unsigned int hw_irq = irqd_to_hwirq(d);
+	int ret;
+
+	if (hw_irq >= ICU_TINT_START)
+		ret = rzv2h_tint_set_type(d, type);
+	else if (hw_irq >= ICU_IRQ_START)
+		ret = rzv2h_irq_set_type(d, type);
+	else
+		ret = rzv2h_nmi_set_type(d, type);
+
+	if (ret)
+		return ret;
+
+	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzv2h_irqc_irq_suspend(void *data)
 {
 	struct rzv2h_irqc_reg_cache *cache = &rzv2h_icu_data->cache;
@@ -544,6 +666,7 @@ static struct syscore rzv2h_irqc_syscore = {
 	.ops = &rzv2h_irqc_syscore_ops,
 };
 
+<<<<<<< HEAD
 static const struct irq_chip rzv2h_icu_tint_chip = {
 	.name			= "rzv2h-icu",
 	.irq_eoi		= rzv2h_icu_tint_eoi,
@@ -555,12 +678,26 @@ static const struct irq_chip rzv2h_icu_tint_chip = {
 	.irq_set_irqchip_state	= irq_chip_set_parent_state,
 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
 	.irq_set_type		= rzv2h_tint_set_type,
+=======
+static const struct irq_chip rzv2h_icu_chip = {
+	.name			= "rzv2h-icu",
+	.irq_eoi		= rzv2h_icu_eoi,
+	.irq_mask		= irq_chip_mask_parent,
+	.irq_unmask		= irq_chip_unmask_parent,
+	.irq_disable		= rzv2h_icu_irq_disable,
+	.irq_enable		= rzv2h_icu_irq_enable,
+	.irq_get_irqchip_state	= irq_chip_get_parent_state,
+	.irq_set_irqchip_state	= irq_chip_set_parent_state,
+	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+	.irq_set_type		= rzv2h_icu_set_type,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.irq_set_affinity	= irq_chip_set_affinity_parent,
 	.flags			= IRQCHIP_MASK_ON_SUSPEND |
 				  IRQCHIP_SET_TYPE_MASKED |
 				  IRQCHIP_SKIP_SET_WAKE,
 };
 
+<<<<<<< HEAD
 static const struct irq_chip rzv2h_icu_irq_chip = {
 	.name			= "rzv2h-icu",
 	.irq_eoi		= rzv2h_icu_irq_eoi,
@@ -631,11 +768,16 @@ static const struct irq_chip rzv2h_icu_swpe_err_chip = {
 
 #define hwirq_within(hwirq, which)	((hwirq) >= which##_START && (hwirq) <= which##_LAST)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzv2h_icu_alloc(struct irq_domain *domain, unsigned int virq, unsigned int nr_irqs,
 			   void *arg)
 {
 	struct rzv2h_icu_priv *priv = domain->host_data;
+<<<<<<< HEAD
 	const struct irq_chip *chip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long tint = 0;
 	irq_hw_number_t hwirq;
 	unsigned int type;
@@ -651,6 +793,7 @@ static int rzv2h_icu_alloc(struct irq_domain *domain, unsigned int virq, unsigne
 	 * hwirq is embedded in bits 0-15.
 	 * TINT is embedded in bits 16-31.
 	 */
+<<<<<<< HEAD
 	tint = ICU_TINT_EXTRACT_GPIOINT(hwirq);
 	if (tint || hwirq_within(hwirq, ICU_TINT)) {
 		hwirq = ICU_TINT_EXTRACT_HWIRQ(hwirq);
@@ -666,12 +809,25 @@ static int rzv2h_icu_alloc(struct irq_domain *domain, unsigned int virq, unsigne
 		chip = &rzv2h_icu_swpe_err_chip;
 	} else {
 		chip = &rzv2h_icu_nmi_chip;
+=======
+	if (hwirq >= ICU_TINT_START) {
+		tint = ICU_TINT_EXTRACT_GPIOINT(hwirq);
+		hwirq = ICU_TINT_EXTRACT_HWIRQ(hwirq);
+
+		if (hwirq < ICU_TINT_START)
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (hwirq > (ICU_NUM_IRQ - 1))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = irq_domain_set_hwirq_and_chip(domain, virq, hwirq, chip, (void *)(uintptr_t)tint);
+=======
+	ret = irq_domain_set_hwirq_and_chip(domain, virq, hwirq, &rzv2h_icu_chip,
+					    (void *)(uintptr_t)tint);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -701,6 +857,7 @@ static int rzv2h_icu_parse_interrupts(struct rzv2h_icu_priv *priv, struct device
 	return 0;
 }
 
+<<<<<<< HEAD
 static irqreturn_t rzv2h_icu_error_irq(int irq, void *data)
 {
 	struct rzv2h_icu_priv *priv = data;
@@ -809,30 +966,49 @@ static int rzv2h_icu_setup_irqs(struct platform_device *pdev, struct irq_domain 
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzv2h_icu_probe_common(struct platform_device *pdev, struct device_node *parent,
 				  const struct rzv2h_hw_info *hw_info)
 {
 	struct irq_domain *irq_domain, *parent_domain;
 	struct device_node *node = pdev->dev.of_node;
+<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct reset_control *resetn;
 	int ret;
 
 	parent_domain = irq_find_host(parent);
+<<<<<<< HEAD
 	if (!parent_domain)
 		return dev_err_probe(dev, -ENODEV, "cannot find parent domain\n");
 
 	rzv2h_icu_data = devm_kzalloc(dev, sizeof(*rzv2h_icu_data), GFP_KERNEL);
+=======
+	if (!parent_domain) {
+		dev_err(&pdev->dev, "cannot find parent domain\n");
+		return -ENODEV;
+	}
+
+	rzv2h_icu_data = devm_kzalloc(&pdev->dev, sizeof(*rzv2h_icu_data), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rzv2h_icu_data)
 		return -ENOMEM;
 
 	platform_set_drvdata(pdev, rzv2h_icu_data);
 
+<<<<<<< HEAD
 	rzv2h_icu_data->base = devm_of_iomap(dev, node, 0, NULL);
+=======
+	rzv2h_icu_data->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(rzv2h_icu_data->base))
 		return PTR_ERR(rzv2h_icu_data->base);
 
 	ret = rzv2h_icu_parse_interrupts(rzv2h_icu_data, node);
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(dev, ret, "cannot parse interrupts\n");
 
@@ -847,14 +1023,46 @@ static int rzv2h_icu_probe_common(struct platform_device *pdev, struct device_no
 	ret = pm_runtime_resume_and_get(dev);
 	if (ret < 0)
 		return dev_err_probe(dev, ret, "pm_runtime_resume_and_get failed\n");
+=======
+	if (ret) {
+		dev_err(&pdev->dev, "cannot parse interrupts: %d\n", ret);
+		return ret;
+	}
+
+	resetn = devm_reset_control_get_exclusive_deasserted(&pdev->dev, NULL);
+	if (IS_ERR(resetn)) {
+		ret = PTR_ERR(resetn);
+		dev_err(&pdev->dev, "failed to acquire deasserted reset: %d\n", ret);
+		return ret;
+	}
+
+	ret = devm_pm_runtime_enable(&pdev->dev);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "devm_pm_runtime_enable failed, %d\n", ret);
+		return ret;
+	}
+
+	ret = pm_runtime_resume_and_get(&pdev->dev);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "pm_runtime_resume_and_get failed: %d\n", ret);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	raw_spin_lock_init(&rzv2h_icu_data->lock);
 
 	irq_domain = irq_domain_create_hierarchy(parent_domain, 0, ICU_NUM_IRQ,
+<<<<<<< HEAD
 						 dev_fwnode(dev), &rzv2h_icu_domain_ops,
 						 rzv2h_icu_data);
 	if (!irq_domain) {
 		dev_err(dev, "failed to add irq domain\n");
+=======
+						 dev_fwnode(&pdev->dev), &rzv2h_icu_domain_ops,
+						 rzv2h_icu_data);
+	if (!irq_domain) {
+		dev_err(&pdev->dev, "failed to add irq domain\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -ENOMEM;
 		goto pm_put;
 	}
@@ -863,6 +1071,7 @@ static int rzv2h_icu_probe_common(struct platform_device *pdev, struct device_no
 
 	register_syscore(&rzv2h_irqc_syscore);
 
+<<<<<<< HEAD
 	ret = rzv2h_icu_setup_irqs(pdev, irq_domain);
 	if (ret)
 		goto pm_put;
@@ -870,11 +1079,21 @@ static int rzv2h_icu_probe_common(struct platform_device *pdev, struct device_no
 	/*
 	 * coccicheck complains about a missing put_device call before returning, but it's a false
 	 * positive. We still need dev after successfully returning from this function.
+=======
+	/*
+	 * coccicheck complains about a missing put_device call before returning, but it's a false
+	 * positive. We still need &pdev->dev after successfully returning from this function.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	return 0;
 
 pm_put:
+<<<<<<< HEAD
 	pm_runtime_put_sync(dev);
+=======
+	pm_runtime_put_sync(&pdev->dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -909,6 +1128,7 @@ static const struct rzv2h_hw_info rzg3e_hw_params = {
 	.t_offs		= ICU_RZG3E_TINT_OFFSET,
 	.max_tssel	= ICU_RZG3E_TSSEL_MAX_VAL,
 	.field_width	= 16,
+<<<<<<< HEAD
 	.ecc_start	= 1,
 	.ecc_end	= 4,
 };
@@ -919,14 +1139,19 @@ static const struct rzv2h_hw_info rzv2n_hw_params = {
 	.field_width	= 8,
 	.ecc_start	= 0,
 	.ecc_end	= 2,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct rzv2h_hw_info rzv2h_hw_params = {
 	.t_offs		= 0,
 	.max_tssel	= ICU_RZV2H_TSSEL_MAX_VAL,
 	.field_width	= 8,
+<<<<<<< HEAD
 	.ecc_start	= 0,
 	.ecc_end	= 11,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int rzg3e_icu_probe(struct platform_device *pdev, struct device_node *parent)
@@ -934,11 +1159,14 @@ static int rzg3e_icu_probe(struct platform_device *pdev, struct device_node *par
 	return rzv2h_icu_probe_common(pdev, parent, &rzg3e_hw_params);
 }
 
+<<<<<<< HEAD
 static int rzv2n_icu_probe(struct platform_device *pdev, struct device_node *parent)
 {
 	return rzv2h_icu_probe_common(pdev, parent, &rzv2n_hw_params);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzv2h_icu_probe(struct platform_device *pdev, struct device_node *parent)
 {
 	return rzv2h_icu_probe_common(pdev, parent, &rzv2h_hw_params);
@@ -946,7 +1174,11 @@ static int rzv2h_icu_probe(struct platform_device *pdev, struct device_node *par
 
 IRQCHIP_PLATFORM_DRIVER_BEGIN(rzv2h_icu)
 IRQCHIP_MATCH("renesas,r9a09g047-icu", rzg3e_icu_probe)
+<<<<<<< HEAD
 IRQCHIP_MATCH("renesas,r9a09g056-icu", rzv2n_icu_probe)
+=======
+IRQCHIP_MATCH("renesas,r9a09g056-icu", rzv2h_icu_probe)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 IRQCHIP_MATCH("renesas,r9a09g057-icu", rzv2h_icu_probe)
 IRQCHIP_PLATFORM_DRIVER_END(rzv2h_icu)
 MODULE_AUTHOR("Fabrizio Castro <fabrizio.castro.jz@renesas.com>");

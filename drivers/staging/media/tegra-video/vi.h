@@ -94,6 +94,10 @@ struct tegra_vi_soc {
  * @client: host1x_client struct
  * @iomem: register base
  * @clk: main clock for VI block
+<<<<<<< HEAD
+=======
+ * @vdd: vdd regulator for VI hardware, normally it is avdd_dsi_csi
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @soc: pointer to SoC data structure
  * @ops: vi operations
  * @vi_chans: list head for VI channels
@@ -103,6 +107,10 @@ struct tegra_vi {
 	struct host1x_client client;
 	void __iomem *iomem;
 	struct clk *clk;
+<<<<<<< HEAD
+=======
+	struct regulator *vdd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct tegra_vi_soc *soc;
 	const struct tegra_vi_ops *ops;
 	struct list_head vi_chans;
@@ -125,6 +133,10 @@ struct tegra_vi {
  *		frame through host1x syncpoint counters (On Tegra20 used for the
  *              OUT_1 syncpt)
  * @sp_incr_lock: protects cpu syncpoint increment.
+<<<<<<< HEAD
+=======
+ * @next_out_sp_idx: next expected value for mw_ack_sp[0], i.e. OUT_1 (Tegra20)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @kthread_start_capture: kthread to start capture of single frame when
  *		vb buffer is available. This thread programs VI CSI hardware
@@ -187,6 +199,10 @@ struct tegra_vi_channel {
 	struct host1x_syncpt *mw_ack_sp[GANG_PORTS_MAX];
 	/* protects the cpu syncpoint increment */
 	spinlock_t sp_incr_lock[GANG_PORTS_MAX];
+<<<<<<< HEAD
+=======
+	u32 next_out_sp_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct task_struct *kthread_start_capture;
 	wait_queue_head_t start_wait;
@@ -292,7 +308,11 @@ struct tegra_video_format {
 	u32 fourcc;
 };
 
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC) || defined(CONFIG_ARCH_TEGRA_3x_SOC)
+=======
+#if defined(CONFIG_ARCH_TEGRA_2x_SOC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct tegra_vi_soc tegra20_vi_soc;
 #endif
 #if defined(CONFIG_ARCH_TEGRA_210_SOC)

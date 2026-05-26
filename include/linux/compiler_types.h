@@ -432,11 +432,25 @@ struct ftrace_likely_data {
 #define at_least
 #endif
 
+<<<<<<< HEAD
+=======
+/* Do not trap wrapping arithmetic within an annotated function. */
+#ifdef CONFIG_UBSAN_INTEGER_WRAP
+# define __signed_wrap __attribute__((no_sanitize("signed-integer-overflow")))
+#else
+# define __signed_wrap
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Section for code which can't be instrumented at all */
 #define __noinstr_section(section)					\
 	noinline notrace __attribute((__section__(section)))		\
 	__no_kcsan __no_sanitize_address __no_profile __no_sanitize_coverage \
+<<<<<<< HEAD
 	__no_sanitize_memory
+=======
+	__no_sanitize_memory __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define noinstr __noinstr_section(".noinstr.text")
 

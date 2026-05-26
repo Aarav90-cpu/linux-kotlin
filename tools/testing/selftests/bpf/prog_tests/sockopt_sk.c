@@ -190,7 +190,11 @@ static int getsetsockopt(void)
 	fd = socket(AF_NETLINK, SOCK_RAW, 0);
 	if (fd < 0) {
 		log_err("Failed to create AF_NETLINK socket");
+<<<<<<< HEAD
 		goto err;
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	buf.u32 = 1;
@@ -211,6 +215,7 @@ static int getsetsockopt(void)
 	}
 	ASSERT_EQ(optlen, 8, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
 
+<<<<<<< HEAD
 	/* Trick bpf_tcp_sock() with IPPROTO_TCP */
 	close(fd);
 	fd = socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
@@ -226,6 +231,8 @@ static int getsetsockopt(void)
 	if (!ASSERT_ERR(err, "setsockopt(TCP_SAVED_SYN)"))
 		goto err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free(big_buf);
 	close(fd);
 	return 0;

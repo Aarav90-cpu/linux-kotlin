@@ -666,7 +666,11 @@ it6263_bridge_mode_valid(struct drm_bridge *bridge,
 {
 	unsigned long long rate;
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 8, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 8, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rate == 0)
 		return MODE_NOCLOCK;
 

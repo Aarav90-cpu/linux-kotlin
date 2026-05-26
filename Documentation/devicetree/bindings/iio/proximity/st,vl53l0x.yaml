@@ -4,6 +4,7 @@
 $id: http://devicetree.org/schemas/iio/proximity/st,vl53l0x.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
+<<<<<<< HEAD
 title: ST VL53L0X/VL53L1X ToF ranging sensor
 
 maintainers:
@@ -15,6 +16,16 @@ properties:
     enum:
       - st,vl53l0x
       - st,vl53l1x
+=======
+title: ST VL53L0X ToF ranging sensor
+
+maintainers:
+  - Song Qiang <songqiang1304521@gmail.com>
+
+properties:
+  compatible:
+    const: st,vl53l0x
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -24,8 +35,11 @@ properties:
 
   reset-gpios:
     maxItems: 1
+<<<<<<< HEAD
     description:
       Phandle to the XSHUT GPIO. Used for hardware reset.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   vdd-supply: true
 
@@ -33,6 +47,7 @@ required:
   - compatible
   - reg
 
+<<<<<<< HEAD
 allOf:
   - if:
       properties:
@@ -43,6 +58,8 @@ allOf:
       required:
         - vdd-supply
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:
@@ -53,9 +70,14 @@ examples:
         #size-cells = <0>;
 
         proximity@29 {
+<<<<<<< HEAD
             compatible = "st,vl53l1x";
             reg = <0x29>;
             vdd-supply = <&reg_3v3>;
+=======
+            compatible = "st,vl53l0x";
+            reg = <0x29>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             interrupt-parent = <&gpio>;
             interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
         };

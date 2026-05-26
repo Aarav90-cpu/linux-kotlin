@@ -402,7 +402,10 @@ void cx23885_input_fini(struct cx23885_dev *dev)
 	if (dev->kernel_ir == NULL)
 		return;
 	rc_unregister_device(dev->kernel_ir->rc);
+<<<<<<< HEAD
 	rc_free_device(dev->kernel_ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev->kernel_ir->phys);
 	kfree(dev->kernel_ir->name);
 	kfree(dev->kernel_ir);

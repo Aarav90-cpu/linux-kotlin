@@ -9,11 +9,19 @@
 / {
 	model = "Variscite VAR-SOM-MX8MM module";
 
+<<<<<<< HEAD
+=======
+	chosen {
+		stdout-path = &uart4;
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memory@40000000 {
 		device_type = "memory";
 		reg = <0x0 0x40000000 0 0x80000000>;
 	};
 
+<<<<<<< HEAD
 	clk40m: oscillator {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -29,6 +37,8 @@
 		regulator-always-on;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_eth_phy: regulator-eth-phy {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
@@ -39,6 +49,7 @@
 		gpio = <&gpio2 9 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
+<<<<<<< HEAD
 
 	reg_phy_vddio: regulator-phy-vddio {
 		compatible = "regulator-fixed";
@@ -74,6 +85,8 @@
 			sound-dai = <&sai5>;
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &A53_0 {
@@ -146,6 +159,7 @@
 		ti,keep-vref-on;
 		wakeup-source;
 	};
+<<<<<<< HEAD
 
 	/* CAN controller */
 	can0: can@1 {
@@ -173,6 +187,17 @@
 	phy-mode = "rgmii";
 	phy-handle = <&ethphy>;
 	phy-supply = <&reg_eth_phy>;
+=======
+};
+
+&fec1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_fec1>;
+	phy-mode = "rgmii";
+	phy-handle = <&ethphy>;
+	phy-supply = <&reg_eth_phy>;
+	fsl,magic-packet;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	mdio {
@@ -184,8 +209,12 @@
 			reg = <4>;
 			reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
+<<<<<<< HEAD
 			reset-deassert-us = <100000>;
 			vddio-supply = <&reg_phy_vddio>;
+=======
+			reset-deassert-us = <10000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };
@@ -313,6 +342,7 @@
 
 &i2c3 {
 	clock-frequency = <400000>;
+<<<<<<< HEAD
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
@@ -364,6 +394,20 @@
 	status = "okay";
 };
 
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c3>;
+	status = "okay";
+
+	/* TODO: configure audio, as of now just put a placeholder */
+	wm8904: codec@1a {
+		compatible = "wlf,wm8904";
+		reg = <0x1a>;
+		status = "disabled";
+	};
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &snvs_pwrkey {
 	status = "okay";
 };
@@ -378,6 +422,29 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+/* Console */
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	status = "okay";
+};
+
+&usbotg1 {
+	dr_mode = "otg";
+	usb-role-switch;
+	status = "okay";
+};
+
+&usbotg2 {
+	dr_mode = "otg";
+	usb-role-switch;
+	status = "okay";
+};
+
+/* WIFI */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usdhc1 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -389,6 +456,14 @@
 	non-removable;
 	keep-power-in-suspend;
 	status = "okay";
+<<<<<<< HEAD
+=======
+
+	brcmf: wifi@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* SD */
@@ -426,6 +501,7 @@
 };
 
 &iomuxc {
+<<<<<<< HEAD
 	pinctrl_can: cangrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x16
@@ -433,6 +509,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_ecspi1: ecspi1grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x13
@@ -463,6 +541,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_fec1_sleep: fec1sleepgrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_ENET_MDC_GPIO1_IO16		0x120
@@ -487,11 +566,18 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL			0x400001c3
 			MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA			0x400001c3
+=======
+	pinctrl_i2c1: i2c1grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL		0x400001c3
+			MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA		0x400001c3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_i2c3: i2c3grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL			0x400001c3
 			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA			0x400001c3
 		>;
@@ -501,23 +587,36 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_I2C3_SCL_GPIO5_IO18		0x1c3
 			MX8MM_IOMUXC_I2C3_SDA_GPIO5_IO19		0x1c3
+=======
+			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL		0x400001c3
+			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA		0x400001c3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_pmic: pmicirqgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8		0x141
+=======
+			MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8	0x141
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_reg_eth_phy: regethphygrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9		0x41
+=======
+			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9	0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_restouch: restouchgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x1c0
 		>;
 	};
@@ -531,59 +630,108 @@
 			MX8MM_IOMUXC_SAI5_RXC_SAI5_RX_BCLK		0xd6
 			MX8MM_IOMUXC_SAI5_RXD2_SAI5_TX_BCLK		0xd6
 			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK		0xd6
+=======
+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3	0x1c0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SAI3_TXFS_UART2_DCE_RX		0x140
 			MX8MM_IOMUXC_SAI3_TXC_UART2_DCE_TX		0x140
 			MX8MM_IOMUXC_SAI3_RXC_UART2_DCE_CTS_B		0x140
 			MX8MM_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B		0x140
+=======
+			MX8MM_IOMUXC_SAI3_TXFS_UART2_DCE_RX	0x140
+			MX8MM_IOMUXC_SAI3_TXC_UART2_DCE_TX	0x140
+			MX8MM_IOMUXC_SAI3_RXC_UART2_DCE_CTS_B	0x140
+			MX8MM_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B	0x140
+		>;
+	};
+
+	pinctrl_uart4: uart4grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX	0x140
+			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK			0x190
 			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD			0x1d0
 			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0		0x1d0
 			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1		0x1d0
 			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2		0x1d0
 			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3		0x1d0
+=======
+			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
+			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d0
+			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d0
+			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d0
+			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d0
+			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK			0x194
 			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD			0x1d4
 			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0		0x1d4
 			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1		0x1d4
 			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2		0x1d4
 			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3		0x1d4
+=======
+			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x194
+			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d4
+			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d4
+			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d4
+			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d4
+			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK			0x196
 			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD			0x1d6
 			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0		0x1d6
 			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1		0x1d6
 			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2		0x1d6
 			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3		0x1d6
+=======
+			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x196
+			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD		0x1d6
+			MX8MM_IOMUXC_SD1_DATA0_USDHC1_DATA0	0x1d6
+			MX8MM_IOMUXC_SD1_DATA1_USDHC1_DATA1	0x1d6
+			MX8MM_IOMUXC_SD1_DATA2_USDHC1_DATA2	0x1d6
+			MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3	0x1d6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10		0xc1
+=======
+			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0xc1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc2: usdhc2grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x190
 			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d0
 			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
@@ -591,11 +739,21 @@
 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
 			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x1d0
+=======
+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d0
+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d0
+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d0
+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d0
+			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x194
 			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d4
 			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4
@@ -603,11 +761,21 @@
 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
 			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x1d0
+=======
+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d4
+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d4
+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d4
+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d4
+			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK			0x196
 			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD			0x1d6
 			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d6
@@ -615,11 +783,21 @@
 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
 			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x1d0
+=======
+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d6
+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d6
+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d6
+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d6
+			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc3: usdhc3grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x190
 			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d0
 			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d0
@@ -631,11 +809,25 @@
 			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d0
 			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d0
 			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x190
+=======
+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK	0x190
+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD	0x1d0
+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0	0x1d0
+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1	0x1d0
+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2	0x1d0
+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3	0x1d0
+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4	0x1d0
+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5	0x1d0
+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6	0x1d0
+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7	0x1d0
+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE	0x190
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x194
 			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d4
 			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d4
@@ -647,11 +839,25 @@
 			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d4
 			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d4
 			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x194
+=======
+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK	0x194
+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD	0x1d4
+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0	0x1d4
+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1	0x1d4
+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2	0x1d4
+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3	0x1d4
+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4	0x1d4
+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5	0x1d4
+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6	0x1d4
+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7	0x1d4
+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE	0x194
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x196
 			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d6
 			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d6
@@ -663,12 +869,29 @@
 			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d6
 			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d6
 			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x196
+=======
+			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK	0x196
+			MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD	0x1d6
+			MX8MM_IOMUXC_NAND_DATA04_USDHC3_DATA0	0x1d6
+			MX8MM_IOMUXC_NAND_DATA05_USDHC3_DATA1	0x1d6
+			MX8MM_IOMUXC_NAND_DATA06_USDHC3_DATA2	0x1d6
+			MX8MM_IOMUXC_NAND_DATA07_USDHC3_DATA3	0x1d6
+			MX8MM_IOMUXC_NAND_RE_B_USDHC3_DATA4	0x1d6
+			MX8MM_IOMUXC_NAND_CE2_B_USDHC3_DATA5	0x1d6
+			MX8MM_IOMUXC_NAND_CE3_B_USDHC3_DATA6	0x1d6
+			MX8MM_IOMUXC_NAND_CLE_USDHC3_DATA7	0x1d6
+			MX8MM_IOMUXC_NAND_CE1_B_USDHC3_STROBE	0x196
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_wdog: wdoggrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0x166
+=======
+			MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B	0x166
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 };

@@ -28,7 +28,10 @@ struct timerlat_params {
 	int			deepest_idle_state;
 	enum timerlat_tracing_mode mode;
 	const char		*bpf_action_program;
+<<<<<<< HEAD
 	enum stack_format	stack_format;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define to_timerlat_params(ptr) container_of(ptr, struct timerlat_params, common)

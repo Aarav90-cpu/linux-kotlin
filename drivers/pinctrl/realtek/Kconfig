@@ -22,6 +22,7 @@ config PINCTRL_RTD1315E
 	tristate "Realtek DHC 1315E pin controller driver"
 	depends on PINCTRL_RTD
 	default y
+<<<<<<< HEAD
 
 config PINCTRL_RTD1625
 	tristate "Realtek DHC 1625 pin controller driver"
@@ -36,3 +37,5 @@ config PINCTRL_RTD1625
 	  electrical properties for both individual pins and pin groups.
 
 	  Say Y here to enable the pinctrl driver for RTD1625 SoCs
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

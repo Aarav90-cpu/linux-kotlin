@@ -66,6 +66,7 @@ definitions:
     name: bitwise-ops
     type: enum
     entries:
+<<<<<<< HEAD
       -
         name: mask-xor  # aka bool (old name)
         doc: >-
@@ -81,6 +82,11 @@ definitions:
         name: or
       -
         name: xor
+=======
+      - bool
+      - lshift
+      - rshift
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: cmp-ops
     type: enum
@@ -145,12 +151,15 @@ definitions:
       - concat
       - expr
   -
+<<<<<<< HEAD
     name: set-elem-flags
     type: flags
     entries:
       - interval-end
       - catchall
   -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: lookup-flags
     type: flags
     entries:
@@ -243,6 +252,7 @@ definitions:
       - icmp-unreach
       - tcp-rst
       - icmpx-unreach
+<<<<<<< HEAD
   -
     name: reject-inet-code
     doc: These codes are mapped to real ICMP and ICMPv6 codes.
@@ -475,12 +485,25 @@ attribute-sets:
         doc: data range to
         type: nest
         nested-attributes: data-attrs
+=======
+
+attribute-sets:
+  -
+    name: empty-attrs
+    attributes:
+      -
+        name: name
+        type: string
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: batch-attrs
     attributes:
       -
         name: genid
+<<<<<<< HEAD
         doc: generation ID for this changeset
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
   -
@@ -508,6 +531,7 @@ attribute-sets:
         byte-order: big-endian
         doc: numeric handle of the table
       -
+<<<<<<< HEAD
         name: pad
         type: pad
       -
@@ -519,6 +543,11 @@ attribute-sets:
         type: u32
         byte-order: big-endian
         doc: owner of this table through netlink portID
+=======
+        name: userdata
+        type: binary
+        doc: user data
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: chain-attrs
     attributes:
@@ -622,11 +651,17 @@ attribute-sets:
       -
         name: bytes
         type: u64
+<<<<<<< HEAD
         byte-order: big-endian
       -
         name: packets
         type: u64
         byte-order: big-endian
+=======
+      -
+        name: packets
+        type: u64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: rule-attrs
     attributes:
@@ -696,11 +731,15 @@ attribute-sets:
         selector: name
         doc: type specific data
   -
+<<<<<<< HEAD
     # Mentioned in nft_parse_compat() in net/netfilter/nft_compat.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: rule-compat-attrs
     attributes:
       -
         name: proto
+<<<<<<< HEAD
         type: u32
         byte-order: big-endian
         doc: numeric value of the handled protocol
@@ -708,6 +747,13 @@ attribute-sets:
         name: flags
         type: u32
         byte-order: big-endian
+=======
+        type: binary
+        doc: numeric value of the handled protocol
+      -
+        name: flags
+        type: binary
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         doc: bitmask of flags
   -
     name: set-attrs
@@ -796,6 +842,7 @@ attribute-sets:
         type: nest
         nested-attributes: set-list-attrs
         doc: list of expressions
+<<<<<<< HEAD
       -
         name: type
         type: string
@@ -805,6 +852,8 @@ attribute-sets:
         type: u32
         byte-order: big-endian
         doc: number of set elements
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: set-desc-attrs
     attributes:
@@ -1032,6 +1081,7 @@ attribute-sets:
         nested-attributes: hook-dev-attrs
   -
     name: expr-bitwise-attrs
+<<<<<<< HEAD
     doc: |
       The bitwise expression supports boolean and shift operations. It
       implements the boolean operations by performing the following
@@ -1048,6 +1098,8 @@ attribute-sets:
           XOR:     1       x
           AND:     x       0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     attributes:
       -
         name: sreg
@@ -1074,8 +1126,11 @@ attribute-sets:
         type: u32
         byte-order: big-endian
         enum: bitwise-ops
+<<<<<<< HEAD
         checks:
           max: 255
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       -
         name: data
         type: nest
@@ -1112,12 +1167,16 @@ attribute-sets:
     attributes:
       -
         name: code
+<<<<<<< HEAD
         doc: nf_tables verdict
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
         enum: verdict-code
       -
         name: chain
+<<<<<<< HEAD
         doc: jump target chain name
         type: string
       -
@@ -1125,18 +1184,30 @@ attribute-sets:
         doc: jump target chain ID
         type: u32
         byte-order: big-endian
+=======
+        type: string
+      -
+        name: chain-id
+        type: u32
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: expr-counter-attrs
     attributes:
       -
         name: bytes
         type: u64
+<<<<<<< HEAD
         byte-order: big-endian
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         doc: Number of bytes
       -
         name: packets
         type: u64
+<<<<<<< HEAD
         byte-order: big-endian
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         doc: Number of packets
       -
         name: pad
@@ -1222,6 +1293,7 @@ attribute-sets:
         byte-order: big-endian
         enum: lookup-flags
   -
+<<<<<<< HEAD
     name: expr-masq-attrs
     attributes:
       -
@@ -1241,6 +1313,8 @@ attribute-sets:
         byte-order: big-endian
         enum: registers
   -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: expr-meta-attrs
     attributes:
       -
@@ -1291,6 +1365,7 @@ attribute-sets:
         enum-as-flags: true
   -
     name: expr-payload-attrs
+<<<<<<< HEAD
     doc: nf_tables payload expression netlink attributes
     attributes:
       -
@@ -1308,15 +1383,32 @@ attribute-sets:
       -
         name: offset
         doc: payload offset relative to base
+=======
+    attributes:
+      -
+        name: dreg
+        type: u32
+        byte-order: big-endian
+      -
+        name: base
+        type: u32
+        byte-order: big-endian
+      -
+        name: offset
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
       -
         name: len
+<<<<<<< HEAD
         doc: payload length
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
       -
         name: sreg
+<<<<<<< HEAD
         doc: source register to load data from
         type: u32
         byte-order: big-endian
@@ -1324,16 +1416,28 @@ attribute-sets:
       -
         name: csum-type
         doc: checksum type
+=======
+        type: u32
+        byte-order: big-endian
+      -
+        name: csum-type
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
       -
         name: csum-offset
+<<<<<<< HEAD
         doc: checksum offset relative to base
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
       -
         name: csum-flags
+<<<<<<< HEAD
         doc: checksum flags
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         type: u32
         byte-order: big-endian
   -
@@ -1399,6 +1503,7 @@ attribute-sets:
         type: u32
         byte-order: big-endian
         doc: id of object map
+<<<<<<< HEAD
   -
     name: compat-target-attrs
     header: linux/netfilter/nf_tables_compat.h
@@ -1454,6 +1559,8 @@ attribute-sets:
         name: type
         type: u32
         byte-order: big-endian
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 sub-messages:
   -
@@ -1481,6 +1588,7 @@ sub-messages:
         value: immediate
         attribute-set: expr-immediate-attrs
       -
+<<<<<<< HEAD
         value: log
         attribute-set: log-attrs
       -
@@ -1490,15 +1598,23 @@ sub-messages:
         value: match
         attribute-set: compat-match-attrs
       -
+=======
+        value: lookup
+        attribute-set: expr-lookup-attrs
+      -
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         value: meta
         attribute-set: expr-meta-attrs
       -
         value: nat
         attribute-set: expr-nat-attrs
       -
+<<<<<<< HEAD
         value: numgen
         attribute-set: numgen-attrs
       -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         value: objref
         attribute-set: expr-objref-attrs
       -
@@ -1508,9 +1624,12 @@ sub-messages:
         value: quota
         attribute-set: quota-attrs
       -
+<<<<<<< HEAD
         value: range
         attribute-set: range-attrs
       -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         value: reject
         attribute-set: expr-reject-attrs
       -
@@ -1519,9 +1638,12 @@ sub-messages:
       -
         value: tproxy
         attribute-set: expr-tproxy-attrs
+<<<<<<< HEAD
         # There're more sub-messages to go:
         #   grep -A10 nft_expr_type
         # and look for .name\s*=\s*"..."
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: obj-data
     formats:
@@ -1568,10 +1690,14 @@ operations:
         request:
           value: 0xa00
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newtable()
             - name
             - flags
             - userdata
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: gettable
       doc: Get / dump tables.
@@ -1581,6 +1707,7 @@ operations:
         request:
           value: 0xa01
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_gettable()
             - name
         reply:
@@ -1596,6 +1723,13 @@ operations:
       dump:
         reply:
           attributes: *get-table
+=======
+            - name
+        reply:
+          value: 0xa00
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: deltable
       doc: Delete an existing table.
@@ -1604,10 +1738,15 @@ operations:
       do:
         request:
           value: 0xa02
+<<<<<<< HEAD
           attributes: &del-table
             # Mentioned in nf_tables_deltable()
             - name
             - handle
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroytable
       doc: |
@@ -1618,7 +1757,12 @@ operations:
       do:
         request:
           value: 0xa1a
+<<<<<<< HEAD
           attributes: *del-table
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newchain
       doc: Create a new chain.
@@ -1628,6 +1772,7 @@ operations:
         request:
           value: 0xa03
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newchain()
             - table
             - handle
@@ -1641,6 +1786,9 @@ operations:
             - userdata
             # Mentioned in nft_chain_parse_hook()
             - type
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getchain
       doc: Get / dump chains.
@@ -1650,6 +1798,7 @@ operations:
         request:
           value: 0xa04
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getchain()
             - table
             - name
@@ -1671,6 +1820,13 @@ operations:
       dump:
         reply:
           attributes: *get-chain
+=======
+            - name
+        reply:
+          value: 0xa03
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delchain
       doc: Delete an existing chain.
@@ -1679,12 +1835,17 @@ operations:
       do:
         request:
           value: 0xa05
+<<<<<<< HEAD
           attributes: &del-chain
             # Mentioned in nf_tables_delchain()
             - table
             - handle
             - name
             - hook
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroychain
       doc: |
@@ -1695,7 +1856,12 @@ operations:
       do:
         request:
           value: 0xa1b
+<<<<<<< HEAD
           attributes: *del-chain
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newrule
       doc: Create a new rule.
@@ -1705,6 +1871,7 @@ operations:
         request:
           value: 0xa06
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newrule()
             - table
             - chain
@@ -1715,6 +1882,9 @@ operations:
             - expressions
             - userdata
             - compat
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getrule
       doc: Get / dump rules.
@@ -1723,6 +1893,7 @@ operations:
       do:
         request:
           value: 0xa07
+<<<<<<< HEAD
           attributes: &get-rule-request
             # Mentioned in nf_tables_getrule_single()
             - table
@@ -1747,6 +1918,14 @@ operations:
         reply:
           attributes: *get-rule
 
+=======
+          attributes:
+            - name
+        reply:
+          value: 0xa06
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getrule-reset
       doc: Get / dump rules and reset stateful expressions.
@@ -1755,6 +1934,7 @@ operations:
       do:
         request:
           value: 0xa19
+<<<<<<< HEAD
           attributes: *get-rule-request
         reply:
           value: 0xa06
@@ -1764,6 +1944,14 @@ operations:
           attributes: *get-rule-request
         reply:
           attributes: *get-rule
+=======
+          attributes:
+            - name
+        reply:
+          value: 0xa06
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delrule
       doc: Delete an existing rule.
@@ -1772,11 +1960,16 @@ operations:
       do:
         request:
           value: 0xa08
+<<<<<<< HEAD
           attributes: &del-rule
             - table
             - chain
             - handle
             - id
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroyrule
       doc: |
@@ -1786,7 +1979,12 @@ operations:
       do:
         request:
           value: 0xa1c
+<<<<<<< HEAD
           attributes: *del-rule
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newset
       doc: Create a new set.
@@ -1796,6 +1994,7 @@ operations:
         request:
           value: 0xa09
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newset()
             - table
             - name
@@ -1811,6 +2010,9 @@ operations:
             - policy
             - desc
             - userdata
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getset
       doc: Get / dump sets.
@@ -1820,6 +2022,7 @@ operations:
         request:
           value: 0xa0a
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getset()
             - table
             - name
@@ -1849,6 +2052,13 @@ operations:
             - table
         reply:
           attributes: *get-set
+=======
+            - name
+        reply:
+          value: 0xa09
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delset
       doc: Delete an existing set.
@@ -1857,10 +2067,14 @@ operations:
       do:
         request:
           value: 0xa0b
+<<<<<<< HEAD
           attributes: &del-set
             # Mentioned in nf_tables_delset()
             - table
             - handle
+=======
+          attributes:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - name
     -
       name: destroyset
@@ -1871,7 +2085,12 @@ operations:
       do:
         request:
           value: 0xa1d
+<<<<<<< HEAD
           attributes: *del-set
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newsetelem
       doc: Create a new set element.
@@ -1881,11 +2100,15 @@ operations:
         request:
           value: 0xa0c
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newsetelem()
             - table
             - set
             - set-id
             - elements
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getsetelem
       doc: Get / dump set elements.
@@ -1895,6 +2118,7 @@ operations:
         request:
           value: 0xa0d
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getsetelem()
             - table
             - set
@@ -1916,6 +2140,13 @@ operations:
             - table
             - set
             - elements
+=======
+            - name
+        reply:
+          value: 0xa0c
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getsetelem-reset
       doc: Get / dump set elements and reset stateful expressions.
@@ -1925,6 +2156,7 @@ operations:
         request:
           value: 0xa21
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getsetelem_reset()
             - elements
         reply:
@@ -1939,6 +2171,13 @@ operations:
           attributes: *dump-set-request
         reply:
           attributes: *dump-set
+=======
+            - name
+        reply:
+          value: 0xa0c
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delsetelem
       doc: Delete an existing set element.
@@ -1947,11 +2186,16 @@ operations:
       do:
         request:
           value: 0xa0e
+<<<<<<< HEAD
           attributes: &del-setelem
             # Mentioned in nf_tables_delsetelem()
             - table
             - set
             - elements
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroysetelem
       doc: Delete an existing set element with destroy semantics.
@@ -1960,7 +2204,12 @@ operations:
       do:
         request:
           value: 0xa1e
+<<<<<<< HEAD
           attributes: *del-setelem
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getgen
       doc: Get / dump rule-set generation.
@@ -1969,6 +2218,7 @@ operations:
       do:
         request:
           value: 0xa10
+<<<<<<< HEAD
         reply:
           value: 0xa0f
           attributes: &get-gen
@@ -1979,6 +2229,14 @@ operations:
       dump:
         reply:
           attributes: *get-gen
+=======
+          attributes:
+            - name
+        reply:
+          value: 0xa0f
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newobj
       doc: Create a new stateful object.
@@ -1988,12 +2246,16 @@ operations:
         request:
           value: 0xa12
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newobj()
             - type
             - name
             - data
             - table
             - userdata
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getobj
       doc: Get / dump stateful objects.
@@ -2003,6 +2265,7 @@ operations:
         request:
           value: 0xa13
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getobj_single()
             - name
             - type
@@ -2026,6 +2289,13 @@ operations:
             - type
         reply:
           attributes: *obj-info
+=======
+            - name
+        reply:
+          value: 0xa12
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delobj
       doc: Delete an existing stateful object.
@@ -2035,11 +2305,15 @@ operations:
         request:
           value: 0xa14
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_delobj()
             - table
             - name
             - type
             - handle
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroyobj
       doc: Delete an existing stateful object with destroy semantics.
@@ -2049,11 +2323,15 @@ operations:
         request:
           value: 0xa1f
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_delobj()
             - table
             - name
             - type
             - handle
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: newflowtable
       doc: Create a new flow table.
@@ -2063,11 +2341,15 @@ operations:
         request:
           value: 0xa16
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_newflowtable()
             - table
             - name
             - hook
             - flags
+=======
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: getflowtable
       doc: Get / dump flow tables.
@@ -2077,6 +2359,7 @@ operations:
         request:
           value: 0xa17
           attributes:
+<<<<<<< HEAD
             # Mentioned in nf_tables_getflowtable()
             - name
             - table
@@ -2093,6 +2376,13 @@ operations:
       dump:
         reply:
           attributes: *flowtable-info
+=======
+            - name
+        reply:
+          value: 0xa16
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: delflowtable
       doc: Delete an existing flow table.
@@ -2101,12 +2391,17 @@ operations:
       do:
         request:
           value: 0xa18
+<<<<<<< HEAD
           attributes: &del-flowtable
             # Mentioned in nf_tables_delflowtable()
             - table
             - name
             - handle
             - hook
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: destroyflowtable
       doc: Delete an existing flow table with destroy semantics.
@@ -2115,7 +2410,12 @@ operations:
       do:
         request:
           value: 0xa20
+<<<<<<< HEAD
           attributes: *del-flowtable
+=======
+          attributes:
+            - name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 mcast-groups:
   list:

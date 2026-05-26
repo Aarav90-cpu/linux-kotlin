@@ -16,7 +16,10 @@
 #include <linux/irqreturn.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/minmax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
@@ -155,7 +158,11 @@ static int brcmstb_get_temp(struct thermal_zone_device *tz, int *temp)
 {
 	struct brcmstb_thermal_priv *priv = thermal_zone_device_priv(tz);
 	u32 val;
+<<<<<<< HEAD
 	int t;
+=======
+	long t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = __raw_readl(priv->tmon_base + AVS_TMON_STATUS);
 
@@ -165,7 +172,14 @@ static int brcmstb_get_temp(struct thermal_zone_device *tz, int *temp)
 	val = (val & AVS_TMON_STATUS_data_msk) >> AVS_TMON_STATUS_data_shift;
 
 	t = avs_tmon_code_to_temp(priv, val);
+<<<<<<< HEAD
 	*temp = max(0, t);
+=======
+	if (t < 0)
+		*temp = 0;
+	else
+		*temp = t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -472,8 +472,11 @@ static struct qm_typical_qos_table shaper_cbs_s[] = {
 
 static void qm_irqs_unregister(struct hisi_qm *qm);
 static int qm_reset_device(struct hisi_qm *qm);
+<<<<<<< HEAD
 static void hisi_qm_stop_qp(struct hisi_qp *qp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hisi_qm_q_num_set(const char *val, const struct kernel_param *kp,
 		      unsigned int device)
 {
@@ -2264,7 +2267,11 @@ static int qm_start_qp_nolock(struct hisi_qp *qp, unsigned long arg)
  * After this function, qp can receive request from user. Return 0 if
  * successful, negative error code if failed.
  */
+<<<<<<< HEAD
 static int hisi_qm_start_qp(struct hisi_qp *qp, unsigned long arg)
+=======
+int hisi_qm_start_qp(struct hisi_qp *qp, unsigned long arg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hisi_qm *qm = qp->qm;
 	int ret;
@@ -2275,6 +2282,10 @@ static int hisi_qm_start_qp(struct hisi_qp *qp, unsigned long arg)
 
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(hisi_qm_start_qp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * qp_stop_fail_cb() - call request cb.
@@ -2419,12 +2430,20 @@ static void qm_stop_qp_nolock(struct hisi_qp *qp)
  *
  * This function is reverse of hisi_qm_start_qp.
  */
+<<<<<<< HEAD
 static void hisi_qm_stop_qp(struct hisi_qp *qp)
+=======
+void hisi_qm_stop_qp(struct hisi_qp *qp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	down_write(&qp->qm->qps_lock);
 	qm_stop_qp_nolock(qp);
 	up_write(&qp->qm->qps_lock);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(hisi_qm_stop_qp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * hisi_qp_send() - Queue up a task in the hardware queue.
@@ -3381,7 +3400,11 @@ static int __hisi_qm_start(struct hisi_qm *qm)
 int hisi_qm_start(struct hisi_qm *qm)
 {
 	struct device *dev = &qm->pdev->dev;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	down_write(&qm->qps_lock);
 
@@ -3917,8 +3940,13 @@ back_func_qos:
 
 static u32 qm_get_shaper_vft_qos(struct hisi_qm *qm, u32 fun_index)
 {
+<<<<<<< HEAD
 	u64 shaper_vft, ir_calc, ir;
 	u64 cir_u, cir_b, cir_s;
+=======
+	u64 cir_u = 0, cir_b = 0, cir_s = 0;
+	u64 shaper_vft, ir_calc, ir;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int val;
 	u32 error_rate;
 	int ret;
@@ -4278,8 +4306,13 @@ int hisi_qm_sriov_configure(struct pci_dev *pdev, int num_vfs)
 {
 	if (num_vfs == 0)
 		return hisi_qm_sriov_disable(pdev, false);
+<<<<<<< HEAD
 
 	return hisi_qm_sriov_enable(pdev, num_vfs);
+=======
+	else
+		return hisi_qm_sriov_enable(pdev, num_vfs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(hisi_qm_sriov_configure);
 

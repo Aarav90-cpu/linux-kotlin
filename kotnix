@@ -1,0 +1,90 @@
+#!/bin/bash
+set -e
+
+# kotnix - The Linux-Kotlin Build System Wrapper
+KERNEL_SRC="$(pwd)"
+KOTLINC="$KERNEL_SRC/.kotlin-native/bin/kotlinc-native"
+
+usage() {
+    echo "Usage: ./kotnix [command] [args...]"
+    echo ""
+    echo "Commands:"
+    echo "  all          - Build Kotlin userspace and Kernel, then run in QEMU"
+    echo "  build        - Build Kotlin userspace and Kernel"
+    echo "  run          - Launch linux-kotlin in QEMU"
+    echo "  clean        - Clean both kernel and Kotlin builds"
+    echo "  defconfig    - Generate default kernel config"
+    echo "  menuconfig   - Interactive kernel config (makeconfig)"
+    echo "  allyesconfig - Enable all kernel features"
+    echo "  <make args>  - Passed through to kernel make"
+}
+
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+
+COMMAND="$1"
+shift
+
+build_kotlin() {
+    echo "🔨 Building linux-kotlin userspace init..."
+    $KOTLINC -opt -target linux_x64 "$KERNEL_SRC/samples/kotlin/userspace_init/init.kt" -o "$KERNEL_SRC/samples/kotlin/userspace_init/init"
+}
+
+run_qemu() {
+    echo "🚀 Launching linux-kotlin in QEMU..."
+    qemu-system-x86_64 -m 2G -smp 2 \
+        -kernel arch/x86/boot/bzImage \
+        -append "root=host rootfstype=9p rootflags=trans=virtio,version=9p2000.L,msize=512000 rw init=$KERNEL_SRC/samples/kotlin/userspace_init/init.kexe KERNEL_SRC=$KERNEL_SRC console=ttyS0" \
+        -fsdev local,security_model=none,id=fsdev-root,path=/ \
+        -device virtio-9p-pci,fsdev=fsdev-root,mount_tag=host \
+        -netdev user,id=net0 \
+        -device e1000,netdev=net0 \
+        -nographic \
+        -enable-kvm
+}
+
+case "$COMMAND" in
+    clean|mrproper|distclean)
+        echo "🧹 Cleaning kernel and kotlin userspace ($COMMAND)..."
+        make "$COMMAND" "$@"
+        rm -f "$KERNEL_SRC/samples/kotlin/userspace_init/init.kexe"
+        rm -f "$KERNEL_SRC/samples/kotlin/userspace_init/init"
+        ;;
+    build)
+        build_kotlin
+        echo "🔨 Building kernel..."
+        make -j$(nproc) bzImage "$@"
+        ;;
+    run)
+        run_qemu
+        ;;
+    all)
+        build_kotlin
+        echo "🔨 Building kernel..."
+        make -j$(nproc) bzImage "$@"
+        run_qemu
+        ;;
+    makeconfig|menuconfig)
+        echo "⚙️  Running make menuconfig..."
+        make menuconfig "$@"
+        ;;
+    defconfig|allyesconfig|oldconfig|nconfig)
+        echo "⚙️  Running make $COMMAND..."
+        make "$COMMAND" "$@"
+        ;;
+    help|--help|-h)
+        usage
+        echo ""
+        echo "======================================================="
+        echo "           FORWARDING TO LINUX KERNEL MAKE HELP        "
+        echo "======================================================="
+        make help
+        ;;
+    *)
+        # Passthrough
+        echo "⚙️  Running make $COMMAND $@"
+        make "$COMMAND" "$@"
+        ;;
+esac

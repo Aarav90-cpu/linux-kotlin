@@ -787,7 +787,11 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
 		hwmgr->dyn_state.vddc_dependency_on_mclk;
 	struct phm_cac_leakage_table *std_voltage_table =
 		hwmgr->dyn_state.cac_leakage_table;
+<<<<<<< HEAD
 	uint32_t i, clk;
+=======
+	uint32_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
@@ -804,12 +808,19 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
 	data->dpm_table.sclk_table.count = 0;
 
 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
+<<<<<<< HEAD
 		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
 
 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
 				clk) {
 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
 				clk;
+=======
+		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
+				allowed_vdd_sclk_table->entries[i].clk) {
+			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
+				allowed_vdd_sclk_table->entries[i].clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
 			data->dpm_table.sclk_table.count++;
 		}
@@ -2796,11 +2807,19 @@ static int smu7_patch_dependency_tables_with_leakage(struct pp_hwmgr *hwmgr)
 	if (tmp)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	tmp = smu7_patch_vddci(hwmgr, hwmgr->dyn_state.vddci_dependency_on_mclk);
 	if (tmp)
 		return -EINVAL;
 
 	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dependency_on_display_clock);
+=======
+	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+	if (tmp)
+		return -EINVAL;
+
+	tmp = smu7_patch_vddci(hwmgr, hwmgr->dyn_state.vddci_dependency_on_mclk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tmp)
 		return -EINVAL;
 
@@ -2885,8 +2904,13 @@ static int smu7_set_private_data_based_on_pptable_v0(struct pp_hwmgr *hwmgr)
 
 static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	kfree(hwmgr->dyn_state.vddc_dependency_on_display_clock);
 	hwmgr->dyn_state.vddc_dependency_on_display_clock = NULL;
+=======
+	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(hwmgr->backend);
 	hwmgr->backend = NULL;
 
@@ -2957,6 +2981,7 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *hwmgr)
 {
 	struct phm_clock_voltage_dependency_table *table;
@@ -3021,6 +3046,8 @@ static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
 		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 {
 	struct amdgpu_device *adev = hwmgr->adev;
@@ -3032,7 +3059,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		return -ENOMEM;
 
 	hwmgr->backend = data;
+<<<<<<< HEAD
 	smu7_set_sclk_cap(hwmgr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu7_patch_voltage_workaround(hwmgr);
 	smu7_init_dpm_defaults(hwmgr);
 
@@ -3050,10 +3080,13 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		smu7_get_elb_voltages(hwmgr);
 	}
 
+<<<<<<< HEAD
 	result = smu7_init_voltage_dependency_on_display_clock_table(hwmgr);
 	if (result)
 		goto fail;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
 		smu7_complete_dependency_tables(hwmgr);
 		smu7_set_private_data_based_on_pptable_v1(hwmgr);
@@ -3062,6 +3095,15 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		smu7_set_private_data_based_on_pptable_v0(hwmgr);
 	}
 
+<<<<<<< HEAD
+=======
+	/* Initalize Dynamic State Adjustment Rule Settings */
+	result = phm_initializa_dynamic_state_adjustment_rule_settings(hwmgr);
+
+	if (result)
+		goto fail;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data->is_tlu_enabled = false;
 
 	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
@@ -3144,6 +3186,7 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static uint32_t smu7_lookup_vddc_from_dispclk(struct pp_hwmgr *hwmgr)
 {
 	const struct amd_pp_display_configuration *cfg = hwmgr->display_config;
@@ -3173,11 +3216,19 @@ static void smu7_apply_minimum_dce_voltage_request(struct pp_hwmgr *hwmgr)
 			NULL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
+<<<<<<< HEAD
 	smu7_apply_minimum_dce_voltage_request(hwmgr);
+=======
+	if (hwmgr->pp_table_version == PP_TABLE_V1)
+		phm_apply_dal_min_voltage_request(hwmgr);
+/* TO DO  for v0 iceland and Ci*/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!data->sclk_dpm_key_disabled) {
 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
@@ -3913,7 +3964,11 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
 
 	/* Performance levels are arranged from low to high. */
 	performance_level->memory_clock = memory_clock;
+<<<<<<< HEAD
 	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
+=======
+	performance_level->engine_clock = engine_clock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
 

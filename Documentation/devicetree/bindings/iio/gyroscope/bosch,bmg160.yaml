@@ -11,6 +11,7 @@ maintainers:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - bosch,bmg160
@@ -19,6 +20,12 @@ properties:
       - items:
           - const: bosch,bmx055-gyro
           - const: bosch,bmg160
+=======
+    enum:
+      - bosch,bmg160
+      - bosch,bmi055_gyro
+      - bosch,bmi088_gyro
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

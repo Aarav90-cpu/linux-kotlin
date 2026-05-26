@@ -6,13 +6,20 @@
  *	DECstation/DECsystem 5000/20, /25, /33 (KN02-CA), 5000/50
  *	(KN04-CA) systems.
  *
+<<<<<<< HEAD
  *	Copyright (c) 2005, 2026  Maciej W. Rozycki
+=======
+ *	Copyright (c) 2005  Maciej W. Rozycki
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #include <asm/addrspace.h>
@@ -51,10 +58,13 @@ static int dec_kn02xa_be_backend(struct pt_regs *regs, int is_fixup,
 	static const char paritystr[] = "parity error";
 	static const char lanestat[][4] = { " OK", "BAD" };
 
+<<<<<<< HEAD
 	static DEFINE_RATELIMIT_STATE(rs,
 				      DEFAULT_RATELIMIT_INTERVAL,
 				      DEFAULT_RATELIMIT_BURST);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *kind, *agent, *cycle, *event;
 	unsigned long address;
 
@@ -84,6 +94,7 @@ static int dec_kn02xa_be_backend(struct pt_regs *regs, int is_fixup,
 	if (is_fixup)
 		action = MIPS_BE_FIXUP;
 
+<<<<<<< HEAD
 	if (action != MIPS_BE_FIXUP && __ratelimit(&rs)) {
 		printk(KERN_ALERT "Bus error %s: %s %s %s at %#010lx\n",
 			kind, agent, cycle, event, address);
@@ -97,6 +108,20 @@ static int dec_kn02xa_be_backend(struct pt_regs *regs, int is_fixup,
 			       lanestat[(mer & KN02XA_MER_BYTERR_1) != 0],
 			       lanestat[(mer & KN02XA_MER_BYTERR_0) != 0]);
 	}
+=======
+	if (action != MIPS_BE_FIXUP)
+		printk(KERN_ALERT "Bus error %s: %s %s %s at %#010lx\n",
+			kind, agent, cycle, event, address);
+
+	if (action != MIPS_BE_FIXUP && address < 0x10000000)
+		printk(KERN_ALERT "  Byte lane status %#3x -- "
+		       "#3: %s, #2: %s, #1: %s, #0: %s\n",
+		       (mer & KN02XA_MER_BYTERR) >> 8,
+		       lanestat[(mer & KN02XA_MER_BYTERR_3) != 0],
+		       lanestat[(mer & KN02XA_MER_BYTERR_2) != 0],
+		       lanestat[(mer & KN02XA_MER_BYTERR_1) != 0],
+		       lanestat[(mer & KN02XA_MER_BYTERR_0) != 0]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return action;
 }

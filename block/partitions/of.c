@@ -36,6 +36,10 @@ static void add_of_partition(struct parsed_partitions *state, int slot,
 			     struct device_node *np)
 {
 	struct partition_meta_info *info;
+<<<<<<< HEAD
+=======
+	char tmp[sizeof(info->volname) + 4];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *partname;
 	int len;
 
@@ -62,7 +66,12 @@ static void add_of_partition(struct parsed_partitions *state, int slot,
 		partname = of_get_property(np, "name", &len);
 	strscpy(info->volname, partname, sizeof(info->volname));
 
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, "(%s)", info->volname);
+=======
+	snprintf(tmp, sizeof(tmp), "(%s)", info->volname);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int of_partition(struct parsed_partitions *state)
@@ -102,7 +111,11 @@ int of_partition(struct parsed_partitions *state)
 		slot++;
 	}
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 1;
 }

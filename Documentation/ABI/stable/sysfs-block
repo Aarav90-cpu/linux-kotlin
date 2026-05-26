@@ -886,6 +886,7 @@ Description:
 		zone commands, they will be treated as regular block devices and
 		zoned will report "none".
 
+<<<<<<< HEAD
 What:		/sys/block/<disk>/queue/zoned_qd1_writes
 Date:		January 2026
 Contact:	Damien Le Moal <dlemoal@kernel.org>
@@ -901,6 +902,8 @@ Description:
 		remotely connected devices over high latency networks, the user
 		can disable this feature by setting this attribute to 0.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 What:		/sys/block/<disk>/hidden
 Date:		March 2023

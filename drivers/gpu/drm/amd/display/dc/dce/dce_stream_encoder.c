@@ -271,8 +271,11 @@ static void dce110_stream_encoder_dp_set_stream_attribute(
 	bool use_vsc_sdp_for_colorimetry,
 	uint32_t enable_sdp_splitting)
 {
+<<<<<<< HEAD
 	(void)use_vsc_sdp_for_colorimetry;
 	(void)enable_sdp_splitting;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t h_active_start;
 	uint32_t v_active_start;
 	uint32_t misc0 = 0;
@@ -903,7 +906,10 @@ static void dce110_stream_encoder_dp_blank(
 	struct dc_link *link,
 	struct stream_encoder *enc)
 {
+<<<<<<< HEAD
 	(void)link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_stream_encoder *enc110 = DCE110STRENC_FROM_STRENC(enc);
 	uint32_t  reg1 = 0;
 	uint32_t max_retries = DP_BLANK_MAX_RETRY * 10;
@@ -954,7 +960,10 @@ static void dce110_stream_encoder_dp_unblank(
 	struct stream_encoder *enc,
 	const struct encoder_unblank_param *param)
 {
+<<<<<<< HEAD
 	(void)link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_stream_encoder *enc110 = DCE110STRENC_FROM_STRENC(enc);
 
 	if (param->link_settings.link_rate != LINK_RATE_UNKNOWN) {

@@ -354,9 +354,12 @@ bool fixup_umip_exception(struct pt_regs *regs)
 	void __user *uaddr;
 	struct insn insn;
 
+<<<<<<< HEAD
 	if (!cpu_feature_enabled(X86_FEATURE_UMIP))
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!regs)
 		return false;
 

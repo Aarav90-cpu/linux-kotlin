@@ -18,8 +18,11 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
  */
 int memfd_check_seals_mmap(struct file *file, vm_flags_t *vm_flags_ptr);
 struct file *memfd_alloc_file(const char *name, unsigned int flags);
+<<<<<<< HEAD
 int memfd_get_seals(struct file *file);
 int memfd_add_seals(struct file *file, unsigned int seals);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
 {
@@ -39,6 +42,7 @@ static inline struct file *memfd_alloc_file(const char *name, unsigned int flags
 {
 	return ERR_PTR(-EINVAL);
 }
+<<<<<<< HEAD
 
 static inline int memfd_get_seals(struct file *file)
 {
@@ -49,6 +53,8 @@ static inline int memfd_add_seals(struct file *file, unsigned int seals)
 {
 	return -EINVAL;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif /* __LINUX_MEMFD_H */

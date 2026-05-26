@@ -1016,7 +1016,11 @@ static int setup_config_changes(struct daemon *daemon)
 {
 	char *basen = strdup(daemon->config_real);
 	char *dirn  = strdup(daemon->config_real);
+<<<<<<< HEAD
 	const char *base, *dir;
+=======
+	char *base, *dir;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int fd, wd = -1;
 
 	if (!dirn || !basen)
@@ -1029,7 +1033,11 @@ static int setup_config_changes(struct daemon *daemon)
 	}
 
 	dir = dirname(dirn);
+<<<<<<< HEAD
 	base = perf_basename(basen);
+=======
+	base = basename(basen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("config file: %s, dir: %s\n", base, dir);
 
 	wd = inotify_add_watch(fd, dir, IN_CLOSE_WRITE);

@@ -16,7 +16,10 @@
 
 #include "bpf_tracing_net.h"
 #include <bpf/bpf_tracing.h>
+<<<<<<< HEAD
 #include <errno.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 char _license[] SEC("license") = "GPL";
 
@@ -171,18 +174,24 @@ static void bictcp_hystart_reset(struct sock *sk)
 	ca->sample_cnt = 0;
 }
 
+<<<<<<< HEAD
 bool nodelay_init_reject = false;
 bool nodelay_cwnd_event_tx_start_reject = false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SEC("struct_ops")
 void BPF_PROG(bpf_cubic_init, struct sock *sk)
 {
 	struct bpf_bictcp *ca = inet_csk_ca(sk);
+<<<<<<< HEAD
 	int true_val = 1, ret;
 
 	ret = bpf_setsockopt(sk, SOL_TCP, TCP_NODELAY, &true_val, sizeof(true_val));
 	if (ret == -EOPNOTSUPP)
 		nodelay_init_reject = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bictcp_reset(ca);
 
@@ -194,6 +203,7 @@ void BPF_PROG(bpf_cubic_init, struct sock *sk)
 }
 
 SEC("struct_ops")
+<<<<<<< HEAD
 void BPF_PROG(bpf_cubic_cwnd_event_tx_start, struct sock *sk)
 {
 	struct bpf_bictcp *ca = inet_csk_ca(sk);
@@ -214,6 +224,26 @@ void BPF_PROG(bpf_cubic_cwnd_event_tx_start, struct sock *sk)
 		ca->epoch_start += delta;
 		if (after(ca->epoch_start, now))
 			ca->epoch_start = now;
+=======
+void BPF_PROG(bpf_cubic_cwnd_event, struct sock *sk, enum tcp_ca_event event)
+{
+	if (event == CA_EVENT_TX_START) {
+		struct bpf_bictcp *ca = inet_csk_ca(sk);
+		__u32 now = tcp_jiffies32;
+		__s32 delta;
+
+		delta = now - tcp_sk(sk)->lsndtime;
+
+		/* We were application limited (idle) for a while.
+		 * Shift epoch_start to keep cwnd growth to cubic curve.
+		 */
+		if (ca->epoch_start && delta > 0) {
+			ca->epoch_start += delta;
+			if (after(ca->epoch_start, now))
+				ca->epoch_start = now;
+		}
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -548,7 +578,11 @@ struct tcp_congestion_ops cubic = {
 	.cong_avoid	= (void *)bpf_cubic_cong_avoid,
 	.set_state	= (void *)bpf_cubic_state,
 	.undo_cwnd	= (void *)bpf_cubic_undo_cwnd,
+<<<<<<< HEAD
 	.cwnd_event_tx_start	= (void *)bpf_cubic_cwnd_event_tx_start,
+=======
+	.cwnd_event	= (void *)bpf_cubic_cwnd_event,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pkts_acked     = (void *)bpf_cubic_acked,
 	.name		= "bpf_cubic",
 };

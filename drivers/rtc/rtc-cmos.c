@@ -27,7 +27,10 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -216,11 +219,14 @@ static inline void cmos_write_bank2(unsigned char val, unsigned char addr)
 
 /*----------------------------------------------------------------*/
 
+<<<<<<< HEAD
 static bool cmos_no_alarm(struct cmos_rtc *cmos)
 {
 	return !is_valid_irq(cmos->irq) && !cmos_use_acpi_alarm();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cmos_read_time(struct device *dev, struct rtc_time *t)
 {
 	int ret;
@@ -292,7 +298,11 @@ static int cmos_read_alarm(struct device *dev, struct rtc_wkalrm *t)
 	};
 
 	/* This not only a rtc_op, but also called directly */
+<<<<<<< HEAD
 	if (cmos_no_alarm(cmos))
+=======
+	if (!is_valid_irq(cmos->irq))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ETIMEDOUT;
 
 	/* Basic alarms only support hour, minute, and seconds fields.
@@ -525,7 +535,11 @@ static int cmos_set_alarm(struct device *dev, struct rtc_wkalrm *t)
 	int ret;
 
 	/* This not only a rtc_op, but also called directly */
+<<<<<<< HEAD
 	if (cmos_no_alarm(cmos))
+=======
+	if (!is_valid_irq(cmos->irq))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 
 	ret = cmos_validate_alarm(dev, t);
@@ -822,9 +836,12 @@ static void rtc_wake_off(struct device *dev)
 #ifdef CONFIG_X86
 static void use_acpi_alarm_quirks(void)
 {
+<<<<<<< HEAD
 	if (acpi_gbl_FADT.flags & ACPI_FADT_FIXED_RTC)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (boot_cpu_data.x86_vendor) {
 	case X86_VENDOR_INTEL:
 		if (dmi_get_bios_year() < 2015)
@@ -838,6 +855,11 @@ static void use_acpi_alarm_quirks(void)
 	default:
 		return;
 	}
+<<<<<<< HEAD
+=======
+	if (!is_hpet_enabled())
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	use_acpi_alarm = true;
 }
@@ -1101,7 +1123,11 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
 			dev_dbg(dev, "IRQ %d is already in use\n", rtc_irq);
 			goto cleanup1;
 		}
+<<<<<<< HEAD
 	} else if (!cmos_use_acpi_alarm()) {
+=======
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clear_bit(RTC_FEATURE_ALARM, cmos_rtc.rtc->features);
 	}
 
@@ -1126,7 +1152,11 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
 		acpi_rtc_event_setup(dev);
 
 	dev_info(dev, "%s%s, %d bytes nvram%s\n",
+<<<<<<< HEAD
 		 cmos_no_alarm(&cmos_rtc) ? "no alarms" :
+=======
+		 !is_valid_irq(rtc_irq) ? "no alarms" :
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 cmos_rtc.mon_alrm ? "alarms up to one year" :
 		 cmos_rtc.day_alrm ? "alarms up to one month" :
 		 "alarms up to one day",
@@ -1152,7 +1182,11 @@ cleanup0:
 static void cmos_do_shutdown(int rtc_irq)
 {
 	spin_lock_irq(&rtc_lock);
+<<<<<<< HEAD
 	if (!cmos_no_alarm(&cmos_rtc))
+=======
+	if (is_valid_irq(rtc_irq))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cmos_irq_disable(&cmos_rtc, RTC_IRQMASK);
 	spin_unlock_irq(&rtc_lock);
 }
@@ -1376,6 +1410,88 @@ static int __maybe_unused cmos_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(cmos_pm_ops, cmos_suspend, cmos_resume);
 
+<<<<<<< HEAD
+=======
+/*----------------------------------------------------------------*/
+
+/* On non-x86 systems, a "CMOS" RTC lives most naturally on platform_bus.
+ * ACPI systems always list these as PNPACPI devices, and pre-ACPI PCs
+ * probably list them in similar PNPBIOS tables; so PNP is more common.
+ *
+ * We don't use legacy "poke at the hardware" probing.  Ancient PCs that
+ * predate even PNPBIOS should set up platform_bus devices.
+ */
+
+#ifdef	CONFIG_PNP
+
+#include <linux/pnp.h>
+
+static int cmos_pnp_probe(struct pnp_dev *pnp, const struct pnp_device_id *id)
+{
+	int irq;
+
+	if (pnp_port_start(pnp, 0) == 0x70 && !pnp_irq_valid(pnp, 0)) {
+		irq = 0;
+#ifdef CONFIG_X86
+		/* Some machines contain a PNP entry for the RTC, but
+		 * don't define the IRQ. It should always be safe to
+		 * hardcode it on systems with a legacy PIC.
+		 */
+		if (nr_legacy_irqs())
+			irq = RTC_IRQ;
+#endif
+	} else {
+		irq = pnp_irq(pnp, 0);
+	}
+
+	return cmos_do_probe(&pnp->dev, pnp_get_resource(pnp, IORESOURCE_IO, 0), irq);
+}
+
+static void cmos_pnp_remove(struct pnp_dev *pnp)
+{
+	cmos_do_remove(&pnp->dev);
+}
+
+static void cmos_pnp_shutdown(struct pnp_dev *pnp)
+{
+	struct device *dev = &pnp->dev;
+	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
+
+	if (system_state == SYSTEM_POWER_OFF) {
+		int retval = cmos_poweroff(dev);
+
+		if (cmos_aie_poweroff(dev) < 0 && !retval)
+			return;
+	}
+
+	cmos_do_shutdown(cmos->irq);
+}
+
+static const struct pnp_device_id rtc_ids[] = {
+	{ .id = "PNP0b00", },
+	{ .id = "PNP0b01", },
+	{ .id = "PNP0b02", },
+	{ },
+};
+MODULE_DEVICE_TABLE(pnp, rtc_ids);
+
+static struct pnp_driver cmos_pnp_driver = {
+	.name		= driver_name,
+	.id_table	= rtc_ids,
+	.probe		= cmos_pnp_probe,
+	.remove		= cmos_pnp_remove,
+	.shutdown	= cmos_pnp_shutdown,
+
+	/* flag ensures resume() gets called, and stops syslog spam */
+	.flags		= PNP_DRIVER_RES_DO_NOT_CHANGE,
+	.driver		= {
+			.pm = &cmos_pm_ops,
+	},
+};
+
+#endif	/* CONFIG_PNP */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_OF
 static const struct of_device_id of_cmos_match[] = {
 	{
@@ -1404,6 +1520,7 @@ static __init void cmos_of_init(struct platform_device *pdev)
 #else
 static inline void cmos_of_init(struct platform_device *pdev) {}
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
@@ -1412,6 +1529,8 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
 MODULE_DEVICE_TABLE(acpi, acpi_cmos_rtc_ids);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*----------------------------------------------------------------*/
 
 /* Platform setup should have set up an RTC device, when PNP is
@@ -1429,6 +1548,7 @@ static int __init cmos_platform_probe(struct platform_device *pdev)
 		resource = platform_get_resource(pdev, IORESOURCE_IO, 0);
 	else
 		resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
 	irq = platform_get_irq_optional(pdev, 0);
 	if (irq < 0) {
 		irq = -1;
@@ -1441,6 +1561,11 @@ static int __init cmos_platform_probe(struct platform_device *pdev)
 			irq = RTC_IRQ;
 #endif
 	}
+=======
+	irq = platform_get_irq(pdev, 0);
+	if (irq < 0)
+		irq = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return cmos_do_probe(&pdev->dev, resource, irq);
 }
@@ -1475,14 +1600,24 @@ static struct platform_driver cmos_platform_driver = {
 		.name		= driver_name,
 		.pm		= &cmos_pm_ops,
 		.of_match_table = of_match_ptr(of_cmos_match),
+<<<<<<< HEAD
 		.acpi_match_table = ACPI_PTR(acpi_cmos_rtc_ids),
 	}
 };
 
+=======
+	}
+};
+
+#ifdef CONFIG_PNP
+static bool pnp_driver_registered;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool platform_driver_registered;
 
 static int __init cmos_init(void)
 {
+<<<<<<< HEAD
 	int retval;
 
 	if (cmos_rtc.dev)
@@ -1495,11 +1630,43 @@ static int __init cmos_init(void)
 	platform_driver_registered = true;
 
 	return 0;
+=======
+	int retval = 0;
+
+#ifdef	CONFIG_PNP
+	retval = pnp_register_driver(&cmos_pnp_driver);
+	if (retval == 0)
+		pnp_driver_registered = true;
+#endif
+
+	if (!cmos_rtc.dev) {
+		retval = platform_driver_probe(&cmos_platform_driver,
+					       cmos_platform_probe);
+		if (retval == 0)
+			platform_driver_registered = true;
+	}
+
+	if (retval == 0)
+		return 0;
+
+#ifdef	CONFIG_PNP
+	if (pnp_driver_registered)
+		pnp_unregister_driver(&cmos_pnp_driver);
+#endif
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 module_init(cmos_init);
 
 static void __exit cmos_exit(void)
 {
+<<<<<<< HEAD
+=======
+#ifdef	CONFIG_PNP
+	if (pnp_driver_registered)
+		pnp_unregister_driver(&cmos_pnp_driver);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (platform_driver_registered)
 		platform_driver_unregister(&cmos_platform_driver);
 }

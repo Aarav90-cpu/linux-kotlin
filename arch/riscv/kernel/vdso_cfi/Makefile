@@ -23,6 +23,9 @@ $(vdso_c_objects): $(obj)/%.c: $(src)/%.c
 # Include the main VDSO Makefile which contains all the build rules and sources
 # The VDSO_CFI_BUILD variable will be passed to it to enable CFI compilation
 include $(src)/Makefile
+<<<<<<< HEAD
 
 # Clean rules - remove the copied source files
 clean-files += $(notdir $(vdso_c_sources)) $(notdir $(vdso_S_sources))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -50,7 +50,10 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
 struct seg6_lwt {
 	struct dst_cache cache_input;
 	struct dst_cache cache_output;
+<<<<<<< HEAD
 	struct in6_addr tunsrc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct seg6_iptunnel_encap tuninfo[];
 };
 
@@ -67,7 +70,10 @@ seg6_encap_lwtunnel(struct lwtunnel_state *lwt)
 
 static const struct nla_policy seg6_iptunnel_policy[SEG6_IPTUNNEL_MAX + 1] = {
 	[SEG6_IPTUNNEL_SRH]	= { .type = NLA_BINARY },
+<<<<<<< HEAD
 	[SEG6_IPTUNNEL_SRC]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int nla_put_srh(struct sk_buff *skb, int attrtype,
@@ -90,12 +96,17 @@ static int nla_put_srh(struct sk_buff *skb, int attrtype,
 }
 
 static void set_tun_src(struct net *net, struct net_device *dev,
+<<<<<<< HEAD
 			struct in6_addr *daddr, struct in6_addr *saddr,
 			struct in6_addr *route_tunsrc)
+=======
+			struct in6_addr *daddr, struct in6_addr *saddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct seg6_pernet_data *sdata = seg6_pernet(net);
 	struct in6_addr *tun_src;
 
+<<<<<<< HEAD
 	/* Priority order to select tunnel source address:
 	 *  1. per route source address (if configured)
 	 *  2. per network namespace source address (if configured)
@@ -116,6 +127,20 @@ static void set_tun_src(struct net *net, struct net_device *dev,
 
 		rcu_read_unlock();
 	}
+=======
+	rcu_read_lock();
+
+	tun_src = rcu_dereference(sdata->tun_src);
+
+	if (!ipv6_addr_any(tun_src)) {
+		memcpy(saddr, tun_src, sizeof(struct in6_addr));
+	} else {
+		ipv6_dev_get_saddr(net, dev, daddr, IPV6_PREFER_SRC_PUBLIC,
+				   saddr);
+	}
+
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Compute flowlabel for outer IPv6 header */
@@ -137,8 +162,12 @@ static __be32 seg6_make_flowlabel(struct net *net, struct sk_buff *skb,
 }
 
 static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+<<<<<<< HEAD
 			       int proto, struct dst_entry *cache_dst,
 			       struct in6_addr *route_tunsrc)
+=======
+			       int proto, struct dst_entry *cache_dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dst_entry *dst = skb_dst(skb);
 	struct net_device *dev = dst_dev(dst);
@@ -195,7 +224,11 @@ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
 	isrh->nexthdr = proto;
 
 	hdr->daddr = isrh->segments[isrh->first_segment];
+<<<<<<< HEAD
 	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+=======
+	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_IPV6_SEG6_HMAC
 	if (sr_has_hmac(isrh)) {
@@ -215,15 +248,23 @@ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
 /* encapsulate an IPv6 packet within an outer IPv6 header with a given SRH */
 int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
 {
+<<<<<<< HEAD
 	return __seg6_do_srh_encap(skb, osrh, proto, NULL, NULL);
+=======
+	return __seg6_do_srh_encap(skb, osrh, proto, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(seg6_do_srh_encap);
 
 /* encapsulate an IPv6 packet within an outer IPv6 header with reduced SRH */
 static int seg6_do_srh_encap_red(struct sk_buff *skb,
 				 struct ipv6_sr_hdr *osrh, int proto,
+<<<<<<< HEAD
 				 struct dst_entry *cache_dst,
 				 struct in6_addr *route_tunsrc)
+=======
+				 struct dst_entry *cache_dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__u8 first_seg = osrh->first_segment;
 	struct dst_entry *dst = skb_dst(skb);
@@ -286,7 +327,11 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
 	if (skip_srh) {
 		hdr->nexthdr = proto;
 
+<<<<<<< HEAD
 		set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+=======
+		set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
@@ -322,7 +367,11 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
 
 srcaddr:
 	isrh->nexthdr = proto;
+<<<<<<< HEAD
 	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr, route_tunsrc);
+=======
+	set_tun_src(net, dev, &hdr->daddr, &hdr->saddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_IPV6_SEG6_HMAC
 	if (unlikely(!skip_srh && sr_has_hmac(isrh))) {
@@ -397,11 +446,17 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
 {
 	struct dst_entry *dst = skb_dst(skb);
 	struct seg6_iptunnel_encap *tinfo;
+<<<<<<< HEAD
 	struct seg6_lwt *slwt;
 	int proto, err = 0;
 
 	slwt = seg6_lwt_lwtunnel(dst->lwtstate);
 	tinfo = slwt->tuninfo;
+=======
+	int proto, err = 0;
+
+	tinfo = seg6_encap_lwtunnel(dst->lwtstate);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (tinfo->mode) {
 	case SEG6_IPTUN_MODE_INLINE:
@@ -426,11 +481,19 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
 			return -EINVAL;
 
 		if (tinfo->mode == SEG6_IPTUN_MODE_ENCAP)
+<<<<<<< HEAD
 			err = __seg6_do_srh_encap(skb, tinfo->srh, proto,
 						  cache_dst, &slwt->tunsrc);
 		else
 			err = seg6_do_srh_encap_red(skb, tinfo->srh, proto,
 						    cache_dst, &slwt->tunsrc);
+=======
+			err = __seg6_do_srh_encap(skb, tinfo->srh,
+						  proto, cache_dst);
+		else
+			err = seg6_do_srh_encap_red(skb, tinfo->srh,
+						    proto, cache_dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (err)
 			return err;
@@ -452,12 +515,21 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
 
 		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
 			err = __seg6_do_srh_encap(skb, tinfo->srh,
+<<<<<<< HEAD
 						  IPPROTO_ETHERNET, cache_dst,
 						  &slwt->tunsrc);
 		else
 			err = seg6_do_srh_encap_red(skb, tinfo->srh,
 						    IPPROTO_ETHERNET, cache_dst,
 						    &slwt->tunsrc);
+=======
+						  IPPROTO_ETHERNET,
+						  cache_dst);
+		else
+			err = seg6_do_srh_encap_red(skb, tinfo->srh,
+						    IPPROTO_ETHERNET,
+						    cache_dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (err)
 			return err;
@@ -703,10 +775,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
 		if (family != AF_INET6)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		if (tb[SEG6_IPTUNNEL_SRC]) {
 			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
 			return -EINVAL;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SEG6_IPTUN_MODE_ENCAP:
 		break;
@@ -740,6 +815,7 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
 
 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
 
+<<<<<<< HEAD
 	if (tb[SEG6_IPTUNNEL_SRC]) {
 		slwt->tunsrc = nla_get_in6_addr(tb[SEG6_IPTUNNEL_SRC]);
 
@@ -752,6 +828,8 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	newts->type = LWTUNNEL_ENCAP_SEG6;
 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
 
@@ -765,8 +843,11 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
 
 	return 0;
 
+<<<<<<< HEAD
 err_destroy_output:
 	dst_cache_destroy(&slwt->cache_output);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_destroy_input:
 	dst_cache_destroy(&slwt->cache_input);
 err_free_newts:
@@ -786,21 +867,28 @@ static int seg6_fill_encap_info(struct sk_buff *skb,
 				struct lwtunnel_state *lwtstate)
 {
 	struct seg6_iptunnel_encap *tuninfo = seg6_encap_lwtunnel(lwtstate);
+<<<<<<< HEAD
 	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwtstate);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nla_put_srh(skb, SEG6_IPTUNNEL_SRH, tuninfo))
 		return -EMSGSIZE;
 
+<<<<<<< HEAD
 	if (!ipv6_addr_any(&slwt->tunsrc) &&
 	    nla_put_in6_addr(skb, SEG6_IPTUNNEL_SRC, &slwt->tunsrc))
 		return -EMSGSIZE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int seg6_encap_nlsize(struct lwtunnel_state *lwtstate)
 {
 	struct seg6_iptunnel_encap *tuninfo = seg6_encap_lwtunnel(lwtstate);
+<<<<<<< HEAD
 	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwtstate);
 	int nlsize;
 
@@ -810,22 +898,32 @@ static int seg6_encap_nlsize(struct lwtunnel_state *lwtstate)
 		nlsize += nla_total_size(sizeof(slwt->tunsrc));
 
 	return nlsize;
+=======
+
+	return nla_total_size(SEG6_IPTUN_ENCAP_SIZE(tuninfo));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int seg6_encap_cmp(struct lwtunnel_state *a, struct lwtunnel_state *b)
 {
 	struct seg6_iptunnel_encap *a_hdr = seg6_encap_lwtunnel(a);
 	struct seg6_iptunnel_encap *b_hdr = seg6_encap_lwtunnel(b);
+<<<<<<< HEAD
 	struct seg6_lwt *a_slwt = seg6_lwt_lwtunnel(a);
 	struct seg6_lwt *b_slwt = seg6_lwt_lwtunnel(b);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int len = SEG6_IPTUN_ENCAP_SIZE(a_hdr);
 
 	if (len != SEG6_IPTUN_ENCAP_SIZE(b_hdr))
 		return 1;
 
+<<<<<<< HEAD
 	if (!ipv6_addr_equal(&a_slwt->tunsrc, &b_slwt->tunsrc))
 		return 1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return memcmp(a_hdr, b_hdr, len);
 }
 

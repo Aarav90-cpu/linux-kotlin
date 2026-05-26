@@ -854,12 +854,22 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 			      struct ica_xcRB *xcrb)
 {
 	bool userspace = xflags & ZCRYPT_XFLAG_USERSPACE;
+<<<<<<< HEAD
 	unsigned int card, domain, func_code = 0;
 	unsigned int wgt = 0, pref_wgt = 0;
 	struct zcrypt_queue *zq, *pref_zq;
 	struct zcrypt_card *zc, *pref_zc;
 	int cpen, qpen, qid = 0, rc;
 	struct ap_message ap_msg;
+=======
+	struct zcrypt_card *zc, *pref_zc;
+	struct zcrypt_queue *zq, *pref_zq;
+	struct ap_message ap_msg;
+	unsigned int wgt = 0, pref_wgt = 0;
+	unsigned int func_code = 0;
+	unsigned short *domain, tdom;
+	int cpen, qpen, qid = 0, rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct module *mod;
 
 	trace_s390_zcrypt_req(xcrb, TB_ZSECSENDCPRB);
@@ -877,9 +887,16 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 	print_hex_dump_debug("ccareq: ", DUMP_PREFIX_ADDRESS, 16, 1,
 			     ap_msg.msg, ap_msg.len, false);
 
+<<<<<<< HEAD
 	if (perms != &ap_perms && domain < AP_DOMAINS) {
 		if (ap_msg.flags & AP_MSG_FLAG_ADMIN) {
 			if (!test_bit_inv(domain, perms->adm)) {
+=======
+	tdom = *domain;
+	if (perms != &ap_perms && tdom < AP_DOMAINS) {
+		if (ap_msg.flags & AP_MSG_FLAG_ADMIN) {
+			if (!test_bit_inv(tdom, perms->adm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rc = -ENODEV;
 				goto out;
 			}
@@ -892,6 +909,7 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 	 * If a valid target domain is set and this domain is NOT a usage
 	 * domain but a control only domain, autoselect target domain.
 	 */
+<<<<<<< HEAD
 	if (domain < AP_DOMAINS &&
 	    !ap_test_config_usage_domain(domain) &&
 	    ap_test_config_ctrl_domain(domain))
@@ -900,6 +918,15 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 	pref_zc = NULL;
 	pref_zq = NULL;
 	card = xcrb->user_defined;
+=======
+	if (tdom < AP_DOMAINS &&
+	    !ap_test_config_usage_domain(tdom) &&
+	    ap_test_config_ctrl_domain(tdom))
+		tdom = AUTOSEL_DOM;
+
+	pref_zc = NULL;
+	pref_zq = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&zcrypt_list_lock);
 	for_each_zcrypt_card(zc) {
 		/* Check for usable CCA card */
@@ -907,7 +934,12 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 		    !zc->card->hwinfo.cca)
 			continue;
 		/* Check for user selected CCA card */
+<<<<<<< HEAD
 		if (card != AUTOSELECT && card != zc->card->id)
+=======
+		if (xcrb->user_defined != AUTOSELECT &&
+		    xcrb->user_defined != zc->card->id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		/* check if request size exceeds card max msg size */
 		if (ap_msg.len > zc->card->maxmsgsize)
@@ -927,8 +959,13 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 			/* check for device usable and eligible */
 			if (!zq->online || !zq->ops->send_cprb ||
 			    !ap_queue_usable(zq->queue) ||
+<<<<<<< HEAD
 			    (domain != AUTOSEL_DOM &&
 			     domain != AP_QID_QUEUE(zq->queue->qid)))
+=======
+			    (tdom != AUTOSEL_DOM &&
+			     tdom != AP_QID_QUEUE(zq->queue->qid)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 			/* check if device node has admission for this queue */
 			if (!zcrypt_check_queue(perms,
@@ -951,11 +988,23 @@ static long _zcrypt_send_cprb(u32 xflags, struct ap_perms *perms,
 
 	if (!pref_zq) {
 		pr_debug("no match for address %02x.%04x => ENODEV\n",
+<<<<<<< HEAD
 			 card, domain);
+=======
+			 xcrb->user_defined, *domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = -ENODEV;
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	/* in case of auto select, provide the correct domain */
+	qid = pref_zq->queue->qid;
+	if (*domain == AUTOSEL_DOM)
+		*domain = AP_QID_QUEUE(qid);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = pref_zq->ops->send_cprb(userspace, pref_zq, xcrb, &ap_msg);
 	if (!rc) {
 		print_hex_dump_debug("ccarpl: ", DUMP_PREFIX_ADDRESS, 16, 1,
@@ -1213,6 +1262,10 @@ static long zcrypt_rng(char *buffer)
 	unsigned int wgt = 0, pref_wgt = 0;
 	unsigned int func_code = 0;
 	struct ap_message ap_msg;
+<<<<<<< HEAD
+=======
+	unsigned int domain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int qid = 0, rc = -ENODEV;
 	struct module *mod;
 
@@ -1221,7 +1274,11 @@ static long zcrypt_rng(char *buffer)
 	rc = ap_init_apmsg(&ap_msg, 0);
 	if (rc)
 		goto out;
+<<<<<<< HEAD
 	rc = prep_rng_ap_msg(&ap_msg, &func_code, NULL);
+=======
+	rc = prep_rng_ap_msg(&ap_msg, &func_code, &domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		goto out;
 

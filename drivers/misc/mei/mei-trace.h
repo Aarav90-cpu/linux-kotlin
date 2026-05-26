@@ -55,24 +55,38 @@ TRACE_EVENT(mei_reg_write,
 );
 
 TRACE_EVENT(mei_pci_cfg_read,
+<<<<<<< HEAD
 	TP_PROTO(const struct device *dev, const char *reg, u32 offs, u32 val, int ret),
 	TP_ARGS(dev, reg, offs, val, ret),
+=======
+	TP_PROTO(const struct device *dev, const char *reg, u32 offs, u32 val),
+	TP_ARGS(dev, reg, offs, val),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TP_STRUCT__entry(
 		__string(dev, dev_name(dev))
 		__string(reg, reg)
 		__field(u32, offs)
 		__field(u32, val)
+<<<<<<< HEAD
 		__field(int, ret)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 	TP_fast_assign(
 		__assign_str(dev);
 		__assign_str(reg);
 		__entry->offs = offs;
 		__entry->val = val;
+<<<<<<< HEAD
 		__entry->ret = ret;
 	),
 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x, ret = %d",
 		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val, __entry->ret)
+=======
+	),
+	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 #endif /* _MEI_TRACE_H_ */

@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-2.0
+
+menuconfig SAMPLES_ANDROID
+	bool "Android app samples"
+	depends on ANDROID_SDK
+	help
+	  You can build sample Android Apps using Gradle here.
+
+	  These samples demonstrate how to use Gradle and the Android SDK
+	  from within the Linux kernel build system to build Android Apps natively.
+
+	  If unsure, say N.
+
+if SAMPLES_ANDROID
+
+config SAMPLE_ANDROID_MINIMAL
+	tristate "Minimal Android App"
+	help
+	  This option builds a minimal Android App using Gradle.
+
+	  The build system will invoke Gradle to compile the app and
+	  produce an APK file.
+
+	  If unsure, say N.
+
+endif # SAMPLES_ANDROID

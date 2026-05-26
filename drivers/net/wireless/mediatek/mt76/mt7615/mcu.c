@@ -2564,6 +2564,7 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
 	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_ROC),
 				 &req, sizeof(req), false);
 }
+<<<<<<< HEAD
 
 int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
 			      u8 ht_mode, bool use_cts_prot)
@@ -2611,3 +2612,5 @@ int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(PROTECT_CTRL), &req,
 				 sizeof(req), true);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

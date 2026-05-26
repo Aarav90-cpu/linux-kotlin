@@ -151,9 +151,12 @@ void uapi_compute_bundle_size(struct uverbs_api_ioctl_method *method_elm,
 			      unsigned int num_attrs);
 void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile);
 
+<<<<<<< HEAD
 typedef int (*uverbs_api_ioctl_handler_fn)(struct uverbs_attr_bundle *attrs);
 uverbs_api_ioctl_handler_fn uverbs_get_handler_fn(struct ib_udata *udata);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct uapi_definition uverbs_def_obj_async_fd[];
 extern const struct uapi_definition uverbs_def_obj_counters[];
 extern const struct uapi_definition uverbs_def_obj_cq[];

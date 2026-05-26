@@ -5,6 +5,7 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/linux-event-codes.h>
 #include <dt-bindings/leds/common.h>
@@ -20,6 +21,11 @@
 #include "pmk8850.dtsi"              /* SPMI0: SID-0       */
 #include "pmr735d-kaanapali.dtsi"    /* SPMI1: SID-10      */
 
+=======
+#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+#include "kaanapali.dtsi"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 / {
 	model = "Qualcomm Technologies, Inc. Kaanapali QRD";
 	compatible = "qcom,kaanapali-qrd", "qcom,kaanapali";
@@ -64,6 +70,7 @@
 			clock-div = <2>;
 		};
 	};
+<<<<<<< HEAD
 
 	gpio-keys {
 		compatible = "gpio-keys";
@@ -80,6 +87,8 @@
 			wakeup-source;
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &apps_rsc {
@@ -693,6 +702,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &pmh0101_flash {
 	status = "okay";
 
@@ -750,6 +760,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &sdhc_2 {
 	cd-gpios = <&tlmm 55 GPIO_ACTIVE_LOW>;
 
@@ -767,6 +779,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &remoteproc_adsp {
 	firmware-name = "qcom/kaanapali/adsp.mbn",
 			"qcom/kaanapali/adsp_dtb.mbn";
@@ -781,11 +794,14 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &tlmm {
 	gpio-reserved-ranges = <36 4>, /* NFC eSE SPI */
 			       <74 1>, /* eSE */
 			       <119 2>, /* SoCCP */
 			       <144 4>; /* CXM UART */
+<<<<<<< HEAD
 
 	key_vol_up_default: key-vol-up-default-state {
 		pins = "gpio101";
@@ -793,6 +809,8 @@
 		output-disable;
 		bias-pull-up;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart7 {

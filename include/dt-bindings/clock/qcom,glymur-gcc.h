@@ -574,6 +574,9 @@
 #define GCC_VIDEO_AXI0_CLK_ARES					89
 #define GCC_VIDEO_AXI1_CLK_ARES					90
 #define GCC_VIDEO_BCR						91
+<<<<<<< HEAD
 #define GCC_VIDEO_AXI0C_CLK_ARES				92
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

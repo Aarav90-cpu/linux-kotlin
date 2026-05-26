@@ -370,6 +370,7 @@ int nvmet_enable_port(struct nvmet_port *port)
 					       NVMET_MIN_QUEUE_SIZE,
 					       NVMET_MAX_QUEUE_SIZE);
 
+<<<<<<< HEAD
 	/*
 	 * If the transport didn't set the mdts properly, then clamp it to the
 	 * target limits. Also set default values in case the transport didn't
@@ -378,6 +379,8 @@ int nvmet_enable_port(struct nvmet_port *port)
 	if (port->mdts < 0 || port->mdts > NVMET_MAX_MDTS)
 		port->mdts = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	port->enabled = true;
 	port->tr_ops = ops;
 	return 0;
@@ -1696,7 +1699,11 @@ struct nvmet_ctrl *nvmet_alloc_ctrl(struct nvmet_alloc_ctrl_args *args)
 	if (args->hostid)
 		uuid_copy(&ctrl->hostid, args->hostid);
 
+<<<<<<< HEAD
 	dhchap_status = nvmet_setup_auth(ctrl, args->sq, false);
+=======
+	dhchap_status = nvmet_setup_auth(ctrl, args->sq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dhchap_status) {
 		pr_err("Failed to setup authentication, dhchap status %u\n",
 		       dhchap_status);
@@ -1952,13 +1959,21 @@ static int __init nvmet_init(void)
 	if (!nvmet_bvec_cache)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	zbd_wq = alloc_workqueue("nvmet-zbd-wq", WQ_MEM_RECLAIM | WQ_PERCPU,
 				 0);
+=======
+	zbd_wq = alloc_workqueue("nvmet-zbd-wq", WQ_MEM_RECLAIM, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!zbd_wq)
 		goto out_destroy_bvec_cache;
 
 	buffered_io_wq = alloc_workqueue("nvmet-buffered-io-wq",
+<<<<<<< HEAD
 			WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+=======
+			WQ_MEM_RECLAIM, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!buffered_io_wq)
 		goto out_free_zbd_work_queue;
 

@@ -53,7 +53,11 @@ struct npc_mcam_kex_hash {
 } __packed;
 
 void npc_update_field_hash(struct rvu *rvu, u8 intf,
+<<<<<<< HEAD
 			   struct mcam_entry_mdata *mdata,
+=======
+			   struct mcam_entry *entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   int blkaddr,
 			   u64 features,
 			   struct flow_msg *pkt,

@@ -14,7 +14,10 @@
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
+<<<<<<< HEAD
 #include <drm/drm_probe_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define R61307_MACP		0xb0 /* Manufacturer CMD Protect */
 #define   R61307_MACP_ON	0x03
@@ -35,6 +38,11 @@ struct renesas_r61307 {
 
 	struct gpio_desc *reset_gpio;
 
+<<<<<<< HEAD
+=======
+	bool prepared;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool dig_cont_adj;
 	bool inversion;
 	u32 gamma;
@@ -90,6 +98,12 @@ static int renesas_r61307_prepare(struct drm_panel *panel)
 	struct device *dev = &priv->dsi->dev;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (priv->prepared)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regulator_enable(priv->vcc_supply);
 	if (ret) {
 		dev_err(dev, "failed to enable vcc power supply\n");
@@ -108,6 +122,10 @@ static int renesas_r61307_prepare(struct drm_panel *panel)
 
 	renesas_r61307_reset(priv);
 
+<<<<<<< HEAD
+=======
+	priv->prepared = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -150,7 +168,11 @@ static int renesas_r61307_enable(struct drm_panel *panel)
 	mipi_dsi_dcs_set_display_on_multi(&ctx);
 	mipi_dsi_msleep(&ctx, 50);
 
+<<<<<<< HEAD
 	return ctx.accum_err;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int renesas_r61307_disable(struct drm_panel *panel)
@@ -162,13 +184,23 @@ static int renesas_r61307_disable(struct drm_panel *panel)
 	mipi_dsi_msleep(&ctx, 100);
 	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
 
+<<<<<<< HEAD
 	return ctx.accum_err;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int renesas_r61307_unprepare(struct drm_panel *panel)
 {
 	struct renesas_r61307 *priv = to_renesas_r61307(panel);
 
+<<<<<<< HEAD
+=======
+	if (!priv->prepared)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usleep_range(10000, 11000);
 
 	gpiod_set_value_cansleep(priv->reset_gpio, 1);
@@ -178,6 +210,10 @@ static int renesas_r61307_unprepare(struct drm_panel *panel)
 	usleep_range(2000, 3000);
 	regulator_disable(priv->vcc_supply);
 
+<<<<<<< HEAD
+=======
+	priv->prepared = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -193,13 +229,33 @@ static const struct drm_display_mode renesas_r61307_mode = {
 	.vtotal = 1024 + 24 + 8 + 2,
 	.width_mm = 76,
 	.height_mm = 101,
+<<<<<<< HEAD
 	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int renesas_r61307_get_modes(struct drm_panel *panel,
 				    struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	return drm_connector_helper_get_modes_fixed(connector, &renesas_r61307_mode);
+=======
+	struct drm_display_mode *mode;
+
+	mode = drm_mode_duplicate(connector->dev, &renesas_r61307_mode);
+	if (!mode)
+		return -ENOMEM;
+
+	drm_mode_set_name(mode);
+
+	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+	connector->display_info.width_mm = mode->width_mm;
+	connector->display_info.height_mm = mode->height_mm;
+	drm_mode_probed_add(connector, mode);
+
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct drm_panel_funcs renesas_r61307_panel_funcs = {
@@ -238,7 +294,11 @@ static int renesas_r61307_probe(struct mipi_dsi_device *dsi)
 		return dev_err_probe(dev, PTR_ERR(priv->reset_gpio),
 				     "Failed to get reset gpios\n");
 
+<<<<<<< HEAD
 	if (device_property_read_bool(dev, "renesas,column-inversion"))
+=======
+	if (device_property_read_bool(dev, "renesas,inversion"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		priv->inversion = true;
 
 	if (device_property_read_bool(dev, "renesas,contrast"))
@@ -261,7 +321,11 @@ static int renesas_r61307_probe(struct mipi_dsi_device *dsi)
 
 	drm_panel_add(&priv->panel);
 
+<<<<<<< HEAD
 	ret = devm_mipi_dsi_attach(dev, dsi);
+=======
+	ret = mipi_dsi_attach(dsi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_panel_remove(&priv->panel);
 		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
@@ -273,6 +337,14 @@ static int renesas_r61307_probe(struct mipi_dsi_device *dsi)
 static void renesas_r61307_remove(struct mipi_dsi_device *dsi)
 {
 	struct renesas_r61307 *priv = mipi_dsi_get_drvdata(dsi);
+<<<<<<< HEAD
+=======
+	int ret;
+
+	ret = mipi_dsi_detach(dsi);
+	if (ret)
+		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_panel_remove(&priv->panel);
 }

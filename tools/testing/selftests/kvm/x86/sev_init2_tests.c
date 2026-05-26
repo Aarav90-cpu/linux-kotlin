@@ -34,7 +34,11 @@ static int __sev_ioctl(int vm_fd, int cmd_id, void *data)
 {
 	struct kvm_sev_cmd cmd = {
 		.id = cmd_id,
+<<<<<<< HEAD
 		.data = (u64)data,
+=======
+		.data = (uint64_t)data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.sev_fd = open_sev_dev_path_or_exit(),
 	};
 	int ret;
@@ -94,7 +98,11 @@ void test_vm_types(void)
 				   "VM type is KVM_X86_SW_PROTECTED_VM");
 }
 
+<<<<<<< HEAD
 void test_flags(u32 vm_type)
+=======
+void test_flags(uint32_t vm_type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -104,7 +112,11 @@ void test_flags(u32 vm_type)
 			"invalid flag");
 }
 
+<<<<<<< HEAD
 void test_features(u32 vm_type, u64 supported_features)
+=======
+void test_features(uint32_t vm_type, uint64_t supported_features)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 

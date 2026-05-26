@@ -151,9 +151,16 @@ int ivpu_jsm_get_heartbeat(struct ivpu_device *vdev, u32 engine, u64 *heartbeat)
 	return ret;
 }
 
+<<<<<<< HEAD
 int ivpu_jsm_reset_engine(struct ivpu_device *vdev, u32 engine, struct vpu_jsm_msg *resp)
 {
 	struct vpu_jsm_msg req = { .type = VPU_JSM_MSG_ENGINE_RESET };
+=======
+int ivpu_jsm_reset_engine(struct ivpu_device *vdev, u32 engine)
+{
+	struct vpu_jsm_msg req = { .type = VPU_JSM_MSG_ENGINE_RESET };
+	struct vpu_jsm_msg resp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (engine != VPU_ENGINE_COMPUTE)
@@ -161,17 +168,27 @@ int ivpu_jsm_reset_engine(struct ivpu_device *vdev, u32 engine, struct vpu_jsm_m
 
 	req.payload.engine_reset.engine_idx = engine;
 
+<<<<<<< HEAD
 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_ENGINE_RESET_DONE, resp,
+=======
+	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_ENGINE_RESET_DONE, &resp,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
 	if (ret) {
 		ivpu_err_ratelimited(vdev, "Failed to reset engine %d: %d\n", engine, ret);
 		ivpu_pm_trigger_recovery(vdev, "Engine reset failed");
+<<<<<<< HEAD
 		return ret;
 	}
 
 	atomic_inc(&vdev->pm->engine_reset_counter);
 
 	return 0;
+=======
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ivpu_jsm_preempt_engine(struct ivpu_device *vdev, u32 engine, u32 preempt_id)
@@ -558,6 +575,7 @@ int ivpu_jsm_dct_disable(struct ivpu_device *vdev)
 int ivpu_jsm_state_dump(struct ivpu_device *vdev)
 {
 	struct vpu_jsm_msg req = { .type = VPU_JSM_MSG_STATE_DUMP };
+<<<<<<< HEAD
 	struct vpu_jsm_msg resp;
 
 	return ivpu_ipc_send_receive_internal(vdev, &req, VPU_JSM_MSG_STATE_DUMP_RSP, &resp,
@@ -567,6 +585,8 @@ int ivpu_jsm_state_dump(struct ivpu_device *vdev)
 int ivpu_jsm_state_dump_no_reply(struct ivpu_device *vdev)
 {
 	struct vpu_jsm_msg req = { .type = VPU_JSM_MSG_STATE_DUMP };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ivpu_ipc_send_and_wait(vdev, &req, VPU_IPC_CHAN_ASYNC_CMD,
 				      vdev->timeout.state_dump_msg);

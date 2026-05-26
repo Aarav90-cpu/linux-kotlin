@@ -277,10 +277,15 @@ static int io_poll_check_events(struct io_kiocb *req, io_tw_token_t tw)
 
 		/* the mask was stashed in __io_poll_execute */
 		if (!req->cqe.res) {
+<<<<<<< HEAD
 			__poll_t events = req->apoll_events;
 			struct poll_table_struct pt = { ._key = events };
 
 			req->cqe.res = vfs_poll(req->file, &pt) & events;
+=======
+			struct poll_table_struct pt = { ._key = req->apoll_events };
+			req->cqe.res = vfs_poll(req->file, &pt) & req->apoll_events;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * We got woken with a mask, but someone else got to
 			 * it first. The above vfs_poll() doesn't add us back
@@ -289,7 +294,11 @@ static int io_poll_check_events(struct io_kiocb *req, io_tw_token_t tw)
 			 */
 			if (unlikely(!req->cqe.res)) {
 				/* Multishot armed need not reissue */
+<<<<<<< HEAD
 				if (!(events & EPOLLONESHOT))
+=======
+				if (!(req->apoll_events & EPOLLONESHOT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					continue;
 				return IOU_POLL_REISSUE;
 			}

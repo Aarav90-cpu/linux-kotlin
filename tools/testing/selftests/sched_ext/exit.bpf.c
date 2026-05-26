@@ -41,7 +41,11 @@ void BPF_STRUCT_OPS(exit_dispatch, s32 cpu, struct task_struct *p)
 	if (exit_point == EXIT_DISPATCH)
 		EXIT_CLEANLY();
 
+<<<<<<< HEAD
 	scx_bpf_dsq_move_to_local(DSQ_ID, 0);
+=======
+	scx_bpf_dsq_move_to_local(DSQ_ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void BPF_STRUCT_OPS(exit_enable, struct task_struct *p)

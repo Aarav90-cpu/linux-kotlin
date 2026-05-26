@@ -961,7 +961,11 @@ static int atusb_probe(struct usb_interface *interface,
 
 	atusb = hw->priv;
 	atusb->hw = hw;
+<<<<<<< HEAD
 	atusb->usb_dev = usb_dev;
+=======
+	atusb->usb_dev = usb_get_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(interface, atusb);
 
 	atusb->shutdown = 0;
@@ -1055,6 +1059,10 @@ fail:
 	atusb_free_urbs(atusb);
 	usb_kill_urb(atusb->tx_urb);
 	usb_free_urb(atusb->tx_urb);
+<<<<<<< HEAD
+=======
+	usb_put_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee802154_free_hw(hw);
 	return ret;
 }
@@ -1075,6 +1083,11 @@ static void atusb_disconnect(struct usb_interface *interface)
 
 	ieee802154_unregister_hw(atusb->hw);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(atusb->usb_dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee802154_free_hw(atusb->hw);
 
 	usb_set_intfdata(interface, NULL);

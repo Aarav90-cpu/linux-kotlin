@@ -207,6 +207,14 @@ static int auxiliary_uevent(const struct device *dev, struct kobj_uevent_env *en
 			      (int)(p - name), name);
 }
 
+<<<<<<< HEAD
+=======
+static const struct dev_pm_ops auxiliary_dev_pm_ops = {
+	SET_RUNTIME_PM_OPS(pm_generic_runtime_suspend, pm_generic_runtime_resume, NULL)
+	SET_SYSTEM_SLEEP_PM_OPS(pm_generic_suspend, pm_generic_resume)
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int auxiliary_bus_probe(struct device *dev)
 {
 	const struct auxiliary_driver *auxdrv = to_auxiliary_drv(dev->driver);
@@ -253,6 +261,10 @@ static const struct bus_type auxiliary_bus_type = {
 	.shutdown = auxiliary_bus_shutdown,
 	.match = auxiliary_match,
 	.uevent = auxiliary_uevent,
+<<<<<<< HEAD
+=======
+	.pm = &auxiliary_dev_pm_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -496,6 +508,7 @@ struct auxiliary_device *__devm_auxiliary_device_create(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(__devm_auxiliary_device_create);
 
+<<<<<<< HEAD
 /**
  * dev_is_auxiliary - check if the device is an auxiliary one
  * @dev: device to check
@@ -506,6 +519,8 @@ bool dev_is_auxiliary(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(dev_is_auxiliary);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __init auxiliary_bus_init(void)
 {
 	WARN_ON(bus_register(&auxiliary_bus_type));

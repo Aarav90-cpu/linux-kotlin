@@ -9,9 +9,17 @@
  */
 
 #include <kunit/test.h>
+<<<<<<< HEAD
 #include "cifsglob.h"
 #include "smb2glob.h"
 #include "smb2proto.h"
+=======
+#include "smb2glob.h"
+
+const struct status_to_posix_error *smb2_get_err_map_test(__u32 smb2_status);
+extern const struct status_to_posix_error *smb2_error_map_table_test;
+extern unsigned int smb2_error_map_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void
 test_cmp_map(struct kunit *test, const struct status_to_posix_error *expect)
@@ -19,7 +27,11 @@ test_cmp_map(struct kunit *test, const struct status_to_posix_error *expect)
 	const struct status_to_posix_error *result;
 
 	result = smb2_get_err_map_test(expect->smb2_status);
+<<<<<<< HEAD
 	KUNIT_ASSERT_NOT_NULL(test, result);
+=======
+	KUNIT_EXPECT_PTR_NE(test, NULL, result);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_EXPECT_EQ(test, expect->smb2_status, result->smb2_status);
 	KUNIT_EXPECT_EQ(test, expect->posix_error, result->posix_error);
 	KUNIT_EXPECT_STREQ(test, expect->status_string, result->status_string);

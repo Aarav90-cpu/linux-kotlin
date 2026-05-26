@@ -90,6 +90,17 @@ struct smb_negotiate_rsp {
 	__le16 ByteCount;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct filesystem_vol_info {
+	__le64 VolumeCreationTime;
+	__le32 SerialNumber;
+	__le32 VolumeLabelSize;
+	__le16 Reserved;
+	__le16 VolumeLabel[];
+} __packed;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define EXTENDED_INFO_MAGIC 0x43667364	/* Cfsd */
 #define STRING_LENGTH 28
 

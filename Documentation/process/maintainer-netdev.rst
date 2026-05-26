@@ -479,6 +479,7 @@ netdevsim
 
 ``netdevsim`` is a test driver which can be used to exercise driver
 configuration APIs without requiring capable hardware.
+<<<<<<< HEAD
 Mock-ups and tests based on ``netdevsim`` are encouraged when
 adding new APIs with complex logic in the stack. The tests should
 be written so that they can run both against ``netdevsim`` and a real
@@ -487,6 +488,10 @@ device (see ``tools/testing/selftests/drivers/net/README.rst``).
 and failure paths in the core which are hard to exercise with a real driver.
 
 ``netdevsim`` in itself is **not** considered
+=======
+Mock-ups and tests based on ``netdevsim`` are strongly encouraged when
+adding new APIs, but ``netdevsim`` in itself is **not** considered
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 a use case/user. You must also implement the new APIs in a real driver.
 
 We give no guarantees that ``netdevsim`` won't change in the future
@@ -528,7 +533,11 @@ The exact rules a driver must follow to acquire the ``Supported`` status:
    status will be withdrawn.
 
 5. Test failures due to bugs either in the driver or the test itself,
+<<<<<<< HEAD
    or lack of support for the feature the test is targeting are
+=======
+   or lack of support for the feature the test is targgeting are
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    *not* a basis for losing the ``Supported`` status.
 
 netdev CI will maintain an official page of supported devices, listing their
@@ -551,12 +560,19 @@ helpful tips please see :ref:`development_advancedtopics_reviews`.
 
 It's safe to assume that netdev maintainers know the community and the level
 of expertise of the reviewers. The reviewers should not be concerned about
+<<<<<<< HEAD
 their comments impeding or derailing the patch flow. A Reviewed-by tag
 is understood to mean "I have reviewed this code to the best of my ability"
 rather than "I can attest this code is correct".
 
 Reviewers are highly encouraged to do more in-depth review of submissions
 and not focus exclusively on process issues, trivial or subjective
+=======
+their comments impeding or derailing the patch flow.
+
+Less experienced reviewers are highly encouraged to do more in-depth
+review of submissions and not focus exclusively on trivial or subjective
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 matters like code formatting, tags etc.
 
 Testimonials / feedback

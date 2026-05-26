@@ -98,11 +98,15 @@ struct vma_merge_struct {
 	unsigned long end;
 	pgoff_t pgoff;
 
+<<<<<<< HEAD
 	union {
 		/* Temporary while VMA flags are being converted. */
 		vm_flags_t vm_flags;
 		vma_flags_t vma_flags;
 	};
+=======
+	vm_flags_t vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct file *file;
 	struct anon_vma *anon_vma;
 	struct mempolicy *policy;
@@ -237,13 +241,21 @@ static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
 	return vma->vm_pgoff + PHYS_PFN(addr - vma->vm_start);
 }
 
+<<<<<<< HEAD
 #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
+=======
+#define VMG_STATE(name, mm_, vmi_, start_, end_, vm_flags_, pgoff_)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vma_merge_struct name = {				\
 		.mm = mm_,						\
 		.vmi = vmi_,						\
 		.start = start_,					\
 		.end = end_,						\
+<<<<<<< HEAD
 		.vma_flags = vma_flags_,				\
+=======
+		.vm_flags = vm_flags_,					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.pgoff = pgoff_,					\
 		.state = VMA_MERGE_START,				\
 	}
@@ -300,7 +312,11 @@ static inline int vma_iter_store_gfp(struct vma_iterator *vmi,
  * f_op->mmap() but which might have an underlying file system which implements
  * f_op->mmap_prepare().
  */
+<<<<<<< HEAD
 static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
+=======
+static inline void set_vma_from_desc(struct vm_area_struct *vma,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct vm_area_desc *desc)
 {
 	/*
@@ -342,23 +358,40 @@ void unmap_region(struct unmap_desc *unmap);
  * @vma: The VMA containing the range @start to @end to be updated.
  * @start: The start of the range to update. May be offset within @vma.
  * @end: The exclusive end of the range to update, may be offset within @vma.
+<<<<<<< HEAD
  * @vma_flags_ptr: A pointer to the VMA flags that the @start to @end range is
+=======
+ * @vm_flags_ptr: A pointer to the VMA flags that the @start to @end range is
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * about to be set to. On merge, this will be updated to include sticky flags.
  *
  * IMPORTANT: The actual modification being requested here is NOT applied,
  * rather the VMA is perhaps split, perhaps merged to accommodate the change,
  * and the caller is expected to perform the actual modification.
  *
+<<<<<<< HEAD
  * In order to account for sticky VMA flags, the @vma_flags_ptr parameter points
+=======
+ * In order to account for sticky VMA flags, the @vm_flags_ptr parameter points
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * to the requested flags which are then updated so the caller, should they
  * overwrite any existing flags, correctly retains these.
  *
  * Returns: A VMA which contains the range @start to @end ready to have its
+<<<<<<< HEAD
  * flags altered to *@vma_flags.
  */
 __must_check struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
 		struct vm_area_struct *prev, struct vm_area_struct *vma,
 		unsigned long start, unsigned long end, vma_flags_t *vma_flags_ptr);
+=======
+ * flags altered to *@vm_flags.
+ */
+__must_check struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
+		struct vm_area_struct *prev, struct vm_area_struct *vma,
+		unsigned long start, unsigned long end,
+		vm_flags_t *vm_flags_ptr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * vma_modify_name() - Perform any necessary split/merge in preparation for
@@ -417,7 +450,11 @@ __must_check struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
  * @vma: The VMA containing the range @start to @end to be updated.
  * @start: The start of the range to update. May be offset within @vma.
  * @end: The exclusive end of the range to update, may be offset within @vma.
+<<<<<<< HEAD
  * @vma_flags: The VMA flags that the @start to @end range is about to be set to.
+=======
+ * @vm_flags: The VMA flags that the @start to @end range is about to be set to.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @new_ctx: The userfaultfd context that the @start to @end range is about to
  * be set to.
  * @give_up_on_oom: If an out of memory condition occurs on merge, simply give
@@ -428,11 +465,19 @@ __must_check struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
  * and the caller is expected to perform the actual modification.
  *
  * Returns: A VMA which contains the range @start to @end ready to have its VMA
+<<<<<<< HEAD
  * flags changed to @vma_flags and its userfaultfd context changed to @new_ctx.
  */
 __must_check struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
 		struct vm_area_struct *prev, struct vm_area_struct *vma,
 		unsigned long start, unsigned long end, const vma_flags_t *vma_flags,
+=======
+ * flags changed to @vm_flags and its userfaultfd context changed to @new_ctx.
+ */
+__must_check struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
+		struct vm_area_struct *prev, struct vm_area_struct *vma,
+		unsigned long start, unsigned long end, vm_flags_t vm_flags,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom);
 
 __must_check struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
@@ -464,8 +509,12 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 		struct list_head *uf);
 
 int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *brkvma,
+<<<<<<< HEAD
 		 unsigned long addr, unsigned long request,
 		 vma_flags_t vma_flags);
+=======
+		 unsigned long addr, unsigned long request, unsigned long flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unsigned long unmapped_area(struct vm_unmapped_area_info *info);
 unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info);
@@ -527,11 +576,14 @@ static inline bool is_data_mapping(vm_flags_t flags)
 	return (flags & (VM_WRITE | VM_SHARED | VM_STACK)) == VM_WRITE;
 }
 
+<<<<<<< HEAD
 static inline bool is_data_mapping_vma_flags(const vma_flags_t *vma_flags)
 {
 	return vma_flags_test(vma_flags, VMA_WRITE_BIT) &&
 		!vma_flags_test_any(vma_flags, VMA_SHARED_BIT, VMA_STACK_BIT);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void vma_iter_config(struct vma_iterator *vmi,
 		unsigned long index, unsigned long last)
@@ -702,6 +754,7 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
 int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMU
 /*
  * Denies creating a writable executable mapping or gaining executable permissions.
@@ -753,4 +806,6 @@ static inline bool map_deny_write_exec(const vma_flags_t *old,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* __MM_VMA_H */

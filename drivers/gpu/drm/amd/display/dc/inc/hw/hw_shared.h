@@ -152,6 +152,7 @@ struct dc_rgb {
 	uint32_t blue;
 };
 
+<<<<<<< HEAD
 struct tetrahedral_33x33x33 {
 	struct dc_rgb lut0[8985];
 	struct dc_rgb lut1[8984];
@@ -159,6 +160,8 @@ struct tetrahedral_33x33x33 {
 	struct dc_rgb lut3[8984];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tetrahedral_17x17x17 {
 	struct dc_rgb lut0[1229];
 	struct dc_rgb lut1[1228];
@@ -172,6 +175,7 @@ struct tetrahedral_9x9x9 {
 	struct dc_rgb lut3[182];
 };
 
+<<<<<<< HEAD
 enum lut_dimension {
 	LUT_DIM_INVALID = 0,
 	LUT_DIM_9 = 9,
@@ -183,12 +187,20 @@ struct tetrahedral_params {
 	union {
 //TODO: Uncomment when in use.
 //		struct tetrahedral_33x33x33 tetrahedral_33;
+=======
+struct tetrahedral_params {
+	union {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct tetrahedral_17x17x17 tetrahedral_17;
 		struct tetrahedral_9x9x9 tetrahedral_9;
 	};
 	bool use_tetrahedral_9;
 	bool use_12bits;
+<<<<<<< HEAD
 	enum lut_dimension lut_dim;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* arr_curve_points - regamma regions/segments specification
@@ -256,7 +268,11 @@ struct default_adjustment {
 	enum dc_color_space out_color_space;
 	enum dc_color_space in_color_space;
 	enum dc_color_depth color_depth;
+<<<<<<< HEAD
 	enum dc_pixel_format surface_pixel_format;
+=======
+	enum pixel_format surface_pixel_format;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum graphics_csc_adjust_type csc_adjust_type;
 	bool force_hw_default;
 };

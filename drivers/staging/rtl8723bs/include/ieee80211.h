@@ -11,6 +11,10 @@
 
 #define MGMT_QUEUE_NUM 5
 
+<<<<<<< HEAD
+=======
+#define ETH_ALEN	6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ETH_TYPE_LEN		2
 #define PAYLOAD_TYPE_LEN	1
 
@@ -507,6 +511,26 @@ join_res:
 #define DEFAULT_FTS 2346
 #define IP_ARG(x) (x)
 
+<<<<<<< HEAD
+=======
+static inline int is_multicast_mac_addr(const u8 *addr)
+{
+	return ((addr[0] != 0xff) && (0x01 & addr[0]));
+}
+
+static inline int is_broadcast_mac_addr(const u8 *addr)
+{
+	return ((addr[0] == 0xff) && (addr[1] == 0xff) && (addr[2] == 0xff) &&   \
+		(addr[3] == 0xff) && (addr[4] == 0xff) && (addr[5] == 0xff));
+}
+
+static inline int is_zero_mac_addr(const u8 *addr)
+{
+	return ((addr[0] == 0x00) && (addr[1] == 0x00) && (addr[2] == 0x00) &&   \
+		(addr[3] == 0x00) && (addr[4] == 0x00) && (addr[5] == 0x00));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CFG_IEEE80211_RESERVE_FCS (1<<0)
 #define CFG_IEEE80211_COMPUTE_FCS (1<<1)
 
@@ -705,6 +729,7 @@ struct rtw_ieee802_11_elems {
 	u8 vht_op_mode_notify_len;
 };
 
+<<<<<<< HEAD
 enum parse_result {
 	PARSE_OK = 0,
 	PARSE_UNKNOWN = 1,
@@ -714,6 +739,13 @@ enum parse_result {
 enum parse_result rtw_ieee802_11_parse_elems(u8 *start, uint len,
 					     struct rtw_ieee802_11_elems *elems,
 					     int show_errors);
+=======
+enum ParseRes { ParseOK = 0, ParseUnknown = 1, ParseFailed = -1 };
+
+enum ParseRes rtw_ieee802_11_parse_elems(u8 *start, uint len,
+				struct rtw_ieee802_11_elems *elems,
+				int show_errors);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u8 *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *source, unsigned int *frlen);
 u8 *rtw_set_ie(u8 *pbuf, signed int index, uint len, u8 *source, uint *frlen);
@@ -760,7 +792,11 @@ bool rtw_is_cckrates_included(u8 *rate);
 
 bool rtw_is_cckratesonly_included(u8 *rate);
 
+<<<<<<< HEAD
 int rtw_check_network_type(unsigned char *rate, int channel);
+=======
+int rtw_check_network_type(unsigned char *rate, int ratelen, int channel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void rtw_get_bcn_info(struct wlan_network *pnetwork);
 

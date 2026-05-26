@@ -127,7 +127,11 @@ struct repair_completion {
 	 * The page completions used for playing the journal into the block map, and, during
 	 * read-only rebuild, for rebuilding the reference counts from the block map.
 	 */
+<<<<<<< HEAD
 	struct vdo_page_completion page_completions[] __counted_by(page_count);
+=======
+	struct vdo_page_completion page_completions[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -1417,7 +1421,12 @@ static int parse_journal_for_rebuild(struct repair_completion *repair)
 	 * packed_recovery_journal_entry from every valid journal block.
 	 */
 	count = ((repair->highest_tail - repair->block_map_head + 1) * entries_per_block);
+<<<<<<< HEAD
 	result = vdo_allocate(count, __func__, &repair->entries);
+=======
+	result = vdo_allocate(count, struct numbered_block_mapping, __func__,
+			      &repair->entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1463,7 +1472,12 @@ static int extract_new_mappings(struct repair_completion *repair)
 	 * Allocate an array of numbered_block_mapping structs just large enough to transcribe
 	 * every packed_recovery_journal_entry from every valid journal block.
 	 */
+<<<<<<< HEAD
 	result = vdo_allocate(repair->entry_count, __func__, &repair->entries);
+=======
+	result = vdo_allocate(repair->entry_count, struct numbered_block_mapping,
+			      __func__, &repair->entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1713,7 +1727,13 @@ void vdo_repair(struct vdo_completion *parent)
 		vdo_log_warning("Device was dirty, rebuilding reference counts");
 	}
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(page_count, page_completions, __func__, &repair);
+=======
+	result = vdo_allocate_extended(struct repair_completion, page_count,
+				       struct vdo_page_completion, __func__,
+				       &repair);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		vdo_fail_completion(parent, result);
 		return;
@@ -1725,11 +1745,20 @@ void vdo_repair(struct vdo_completion *parent)
 	prepare_repair_completion(repair, finish_repair, VDO_ZONE_TYPE_ADMIN);
 	repair->page_count = page_count;
 
+<<<<<<< HEAD
 	result = vdo_allocate(remaining * VDO_BLOCK_SIZE, __func__, &repair->journal_data);
 	if (abort_on_error(result, repair))
 		return;
 
 	result = vdo_allocate(vio_count, __func__, &repair->vios);
+=======
+	result = vdo_allocate(remaining * VDO_BLOCK_SIZE, char, __func__,
+			      &repair->journal_data);
+	if (abort_on_error(result, repair))
+		return;
+
+	result = vdo_allocate(vio_count, struct vio, __func__, &repair->vios);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (abort_on_error(result, repair))
 		return;
 

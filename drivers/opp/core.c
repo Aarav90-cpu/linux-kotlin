@@ -2742,8 +2742,13 @@ struct dev_pm_opp *dev_pm_opp_xlate_required_opp(struct opp_table *src_table,
 					break;
 				}
 			}
+<<<<<<< HEAD
 		}
 		break;
+=======
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (IS_ERR(dest_opp)) {

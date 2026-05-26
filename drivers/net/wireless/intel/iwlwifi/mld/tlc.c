@@ -9,7 +9,10 @@
 #include "hcmd.h"
 #include "sta.h"
 #include "phy.h"
+<<<<<<< HEAD
 #include "iface.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "fw/api/rs.h"
 #include "fw/api/context.h"
@@ -37,8 +40,12 @@ iwl_mld_get_tlc_cmd_flags(struct iwl_mld *mld,
 			  struct ieee80211_vif *vif,
 			  struct ieee80211_link_sta *link_sta,
 			  const struct ieee80211_sta_he_cap *own_he_cap,
+<<<<<<< HEAD
 			  const struct ieee80211_sta_eht_cap *own_eht_cap,
 			  const struct ieee80211_sta_uhr_cap *own_uhr_cap)
+=======
+			  const struct ieee80211_sta_eht_cap *own_eht_cap)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
 	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
@@ -92,12 +99,15 @@ iwl_mld_get_tlc_cmd_flags(struct iwl_mld *mld,
 		flags |= IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK;
 	}
 
+<<<<<<< HEAD
 	if (link_sta->uhr_cap.has_uhr && own_uhr_cap &&
 	    link_sta->uhr_cap.phy.cap & IEEE80211_UHR_PHY_CAP_ELR_RX &&
 	    own_uhr_cap->phy.cap & IEEE80211_UHR_PHY_CAP_ELR_TX)
 		flags |= IWL_TLC_MNG_CFG_FLAGS_UHR_ELR_1_5_MBPS_MSK |
 			 IWL_TLC_MNG_CFG_FLAGS_UHR_ELR_3_MBPS_MSK;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return cpu_to_le16(flags);
 }
 
@@ -414,7 +424,10 @@ iwl_mld_fill_supp_rates(struct iwl_mld *mld, struct ieee80211_vif *vif,
 			struct ieee80211_supported_band *sband,
 			const struct ieee80211_sta_he_cap *own_he_cap,
 			const struct ieee80211_sta_eht_cap *own_eht_cap,
+<<<<<<< HEAD
 			const struct ieee80211_sta_uhr_cap *own_uhr_cap,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct iwl_tlc_config_cmd *cmd)
 {
 	int i;
@@ -432,6 +445,7 @@ iwl_mld_fill_supp_rates(struct iwl_mld *mld, struct ieee80211_vif *vif,
 	cmd->non_ht_rates = cpu_to_le16(non_ht_rates);
 	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
 
+<<<<<<< HEAD
 	if (link_sta->uhr_cap.has_uhr && own_uhr_cap) {
 		cmd->mode = IWL_TLC_MNG_MODE_UHR;
 		/*
@@ -442,6 +456,9 @@ iwl_mld_fill_supp_rates(struct iwl_mld *mld, struct ieee80211_vif *vif,
 		iwl_mld_fill_eht_rates(vif, link_sta, own_he_cap,
 				       own_eht_cap, cmd);
 	} else if (link_sta->eht_cap.has_eht && own_he_cap && own_eht_cap) {
+=======
+	if (link_sta->eht_cap.has_eht && own_he_cap && own_eht_cap) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cmd->mode = IWL_TLC_MNG_MODE_EHT;
 		iwl_mld_fill_eht_rates(vif, link_sta, own_he_cap,
 				       own_eht_cap, cmd);
@@ -531,23 +548,33 @@ static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
 				 struct ieee80211_bss_conf *link)
 {
 	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
+<<<<<<< HEAD
 	struct iwl_mld_link *mld_link = iwl_mld_link_from_mac80211(link);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum nl80211_band band = link->chanreq.oper.chan->band;
 	struct ieee80211_supported_band *sband = mld->hw->wiphy->bands[band];
 	const struct ieee80211_sta_he_cap *own_he_cap =
 		ieee80211_get_he_iftype_cap_vif(sband, vif);
 	const struct ieee80211_sta_eht_cap *own_eht_cap =
 		ieee80211_get_eht_iftype_cap_vif(sband, vif);
+<<<<<<< HEAD
 	const struct ieee80211_sta_uhr_cap *own_uhr_cap =
 		ieee80211_get_uhr_iftype_cap_vif(sband, vif);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iwl_tlc_config_cmd cmd = {
 		/* For AP mode, use 20 MHz until the STA is authorized */
 		.max_ch_width = mld_sta->sta_state > IEEE80211_STA_ASSOC ?
 			iwl_mld_fw_bw_from_sta_bw(link_sta) :
 			IWL_TLC_MNG_CH_WIDTH_20MHZ,
 		.flags = iwl_mld_get_tlc_cmd_flags(mld, vif, link_sta,
+<<<<<<< HEAD
 						   own_he_cap, own_eht_cap,
 						   own_uhr_cap),
+=======
+						   own_he_cap, own_eht_cap),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.chains = iwl_mld_get_fw_chains(mld),
 		.sgi_ch_width_supp = iwl_mld_get_fw_sgi(link_sta),
 		.max_mpdu_len = cpu_to_le16(link_sta->agg.max_amsdu_len),
@@ -568,10 +595,14 @@ static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
 
 	cmd.sta_mask = cpu_to_le32(BIT(fw_sta_id));
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(!mld_link))
 		return;
 
 	chan_ctx = rcu_dereference_wiphy(mld->wiphy, mld_link->chan_ctx);
+=======
+	chan_ctx = rcu_dereference_wiphy(mld->wiphy, link->chanctx_conf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (WARN_ON(!chan_ctx))
 		return;
 
@@ -580,7 +611,11 @@ static void iwl_mld_send_tlc_cmd(struct iwl_mld *mld,
 
 	iwl_mld_fill_supp_rates(mld, vif, link_sta, sband,
 				own_he_cap, own_eht_cap,
+<<<<<<< HEAD
 				own_uhr_cap, &cmd);
+=======
+				&cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cmd_ver == 6) {
 		cmd_ptr = &cmd;
@@ -663,6 +698,7 @@ void iwl_mld_config_tlc_link(struct iwl_mld *mld,
 	iwl_mld_send_tlc_cmd(mld, vif, link_sta, link_conf);
 }
 
+<<<<<<< HEAD
 void iwl_mld_tlc_update_phy(struct iwl_mld *mld, struct ieee80211_vif *vif,
 			    struct ieee80211_bss_conf *link_conf)
 {
@@ -706,6 +742,8 @@ void iwl_mld_tlc_update_phy(struct iwl_mld *mld, struct ieee80211_vif *vif,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void iwl_mld_config_tlc(struct iwl_mld *mld, struct ieee80211_vif *vif,
 			struct ieee80211_sta *sta)
 {

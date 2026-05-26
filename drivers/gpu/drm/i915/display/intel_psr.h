@@ -85,6 +85,9 @@ bool intel_psr_needs_alpm_aux_less(struct intel_dp *intel_dp,
 void intel_psr_compute_config_late(struct intel_dp *intel_dp,
 				   struct intel_crtc_state *crtc_state);
 int intel_psr_min_guardband(struct intel_crtc_state *crtc_state);
+<<<<<<< HEAD
 bool intel_psr_use_trans_push(const struct intel_crtc_state *crtc_state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __INTEL_PSR_H__ */

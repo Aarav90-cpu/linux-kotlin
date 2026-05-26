@@ -144,7 +144,10 @@ enum mipi_dsi_pixel_format {
 	MIPI_DSI_FMT_RGB666,
 	MIPI_DSI_FMT_RGB666_PACKED,
 	MIPI_DSI_FMT_RGB565,
+<<<<<<< HEAD
 	MIPI_DSI_FMT_RGB101010,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DSI_DEV_NAME_SIZE		20
@@ -236,9 +239,12 @@ extern const struct bus_type mipi_dsi_bus_type;
 static inline int mipi_dsi_pixel_format_to_bpp(enum mipi_dsi_pixel_format fmt)
 {
 	switch (fmt) {
+<<<<<<< HEAD
 	case MIPI_DSI_FMT_RGB101010:
 		return 30;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case MIPI_DSI_FMT_RGB888:
 	case MIPI_DSI_FMT_RGB666:
 		return 24;

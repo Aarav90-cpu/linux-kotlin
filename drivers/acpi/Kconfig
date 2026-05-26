@@ -96,7 +96,11 @@ config ACPI_SPCR_TABLE
 
 config ACPI_FPDT
 	bool "ACPI Firmware Performance Data Table (FPDT) support"
+<<<<<<< HEAD
 	depends on X86_64 || ARM64 || LOONGARCH
+=======
+	depends on X86_64 || ARM64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Enable support for the Firmware Performance Data Table (FPDT).
 	  This table provides information on the timing of the system

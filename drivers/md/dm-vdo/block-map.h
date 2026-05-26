@@ -276,7 +276,11 @@ struct block_map {
 	block_count_t next_entry_count;
 
 	zone_count_t zone_count;
+<<<<<<< HEAD
 	struct block_map_zone zones[] __counted_by(zone_count);
+=======
+	struct block_map_zone zones[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

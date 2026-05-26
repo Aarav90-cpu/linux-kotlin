@@ -628,6 +628,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Cycles where a code fetch is stalled due to L1 instruction cache In use-full",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0x83",
@@ -646,6 +647,8 @@
         "Unit": "cpu_core"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles Decode Stream Buffer (DSB) is delivering any Uop",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "CounterMask": "1",

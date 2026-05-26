@@ -63,6 +63,10 @@ struct thp_settings {
 };
 
 int read_file(const char *path, char *buf, size_t buflen);
+<<<<<<< HEAD
+=======
+int write_file(const char *path, const char *buf, size_t buflen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned long read_num(const char *path);
 void write_num(const char *path, unsigned long num);
 

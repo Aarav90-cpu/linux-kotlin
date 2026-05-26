@@ -12,9 +12,12 @@
 
 struct sched_ext_ops;
 
+<<<<<<< HEAD
 extern struct btf_id_set8 scx_kfunc_ids_idle;
 extern struct btf_id_set8 scx_kfunc_ids_select_cpu;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void scx_idle_update_selcpu_topology(struct sched_ext_ops *ops);
 void scx_idle_init_masks(void);
 

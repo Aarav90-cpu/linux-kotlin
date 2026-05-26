@@ -78,6 +78,10 @@ static int hfi1_netdev_allocate_ctxt(struct hfi1_devdata *dd,
 	uctxt->fast_handler = handle_receive_interrupt_napi_fp;
 	uctxt->slow_handler = handle_receive_interrupt_napi_sp;
 	hfi1_set_seq_cnt(uctxt, 1);
+<<<<<<< HEAD
+=======
+	uctxt->is_vnic = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hfi1_stats.sps_ctxts++;
 
@@ -426,7 +430,11 @@ void hfi1_netdev_disable_queues(struct hfi1_devdata *dd)
 
 /**
  * hfi1_netdev_add_data - Registers data with unique identifier
+<<<<<<< HEAD
  * to be requested later this is needed for IPoIB VLANs
+=======
+ * to be requested later this is needed for VNIC and IPoIB VLANs
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * implementations.
  * This call is protected by mutex idr_lock.
  *

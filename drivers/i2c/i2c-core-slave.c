@@ -89,7 +89,11 @@ int i2c_slave_event(struct i2c_client *client,
 	int ret = client->slave_cb(client, event, val);
 
 	if (trace_i2c_slave_enabled())
+<<<<<<< HEAD
 		trace_call__i2c_slave(client, event, val, ret);
+=======
+		trace_i2c_slave(client, event, val, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

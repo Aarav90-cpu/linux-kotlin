@@ -551,6 +551,7 @@ int fbnic_tlv_parser_error(void *opaque, struct fbnic_tlv_msg **results)
 	return -EBADMSG;
 }
 
+<<<<<<< HEAD
 #define FBNIC_TLV_TEST_STRING_LEN	32
 
 struct fbnic_tlv_test {
@@ -717,6 +718,8 @@ free_message:
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src)
 {
 	u8 *mac_addr;
@@ -724,6 +727,7 @@ void fbnic_tlv_attr_addr_copy(u8 *dest, struct fbnic_tlv_msg *src)
 	mac_addr = fbnic_tlv_attr_get_value_ptr(src);
 	memcpy(dest, mac_addr, ETH_ALEN);
 }
+<<<<<<< HEAD
 
 /**
  * fbnic_tlv_parser_test_attr - Function loading test attributes into structure
@@ -834,3 +838,5 @@ int fbnic_tlv_parser_test(void *opaque, struct fbnic_tlv_msg **results)
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

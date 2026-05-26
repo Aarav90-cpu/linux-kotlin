@@ -651,5 +651,9 @@ static struct platform_driver sg2042_pinctrl_driver = {
 };
 module_platform_driver(sg2042_pinctrl_driver);
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("Pinctrl driver for the SG2042 series SoC");
+=======
+MODULE_DESCRIPTION("Pinctrl driver for the SG2002 series SoC");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

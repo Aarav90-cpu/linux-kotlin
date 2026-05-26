@@ -328,6 +328,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
 	int err = -ENOMEM;
 
 	mutex_lock(&zones_mutex);
+<<<<<<< HEAD
 	rcu_read_lock();
 	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
@@ -335,6 +336,11 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
 		goto out_unlock;
 	}
 	rcu_read_unlock();
+=======
+	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ct_ft = kzalloc_obj(*ct_ft);
 	if (!ct_ft)

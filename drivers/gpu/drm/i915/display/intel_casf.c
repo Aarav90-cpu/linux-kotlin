@@ -3,6 +3,10 @@
 
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_casf.h"
 #include "intel_casf_regs.h"
 #include "intel_de.h"
@@ -115,12 +119,15 @@ int intel_casf_compute_config(struct intel_crtc_state *crtc_state)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/* CASF with joiner not supported in hardware */
 	if (crtc_state->joiner_pipes) {
 		drm_dbg_kms(display->drm, "CASF not supported with joiner\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	crtc_state->hw.casf_params.casf_enable = true;
 
 	/*

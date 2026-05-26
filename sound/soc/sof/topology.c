@@ -775,8 +775,13 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
 						       array);
 			break;
 		default:
+<<<<<<< HEAD
 			dev_err(scomp->dev, "error: unknown token type %u\n",
 				le32_to_cpu(array->type));
+=======
+			dev_err(scomp->dev, "error: unknown token type %d\n",
+				array->type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 
@@ -880,7 +885,11 @@ skip:
 			       ARRAY_SIZE(led_tokens), mc->priv.array,
 			       le32_to_cpu(mc->priv.size));
 	if (ret != 0) {
+<<<<<<< HEAD
 		dev_err(scomp->dev, "error: parse led tokens failed %u\n",
+=======
+		dev_err(scomp->dev, "error: parse led tokens failed %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			le32_to_cpu(mc->priv.size));
 		goto err;
 	}
@@ -970,8 +979,13 @@ static int sof_control_load(struct snd_soc_component *scomp, int index,
 	struct snd_sof_control *scontrol;
 	int ret;
 
+<<<<<<< HEAD
 	dev_dbg(scomp->dev, "tplg: load control type %u name : %s\n",
 		le32_to_cpu(hdr->type), hdr->name);
+=======
+	dev_dbg(scomp->dev, "tplg: load control type %d name : %s\n",
+		hdr->type, hdr->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scontrol = kzalloc_obj(*scontrol);
 	if (!scontrol)
@@ -1015,10 +1029,15 @@ static int sof_control_load(struct snd_soc_component *scomp, int index,
 	case SND_SOC_TPLG_DAPM_CTL_ENUM_VALUE:
 	case SND_SOC_TPLG_DAPM_CTL_PIN:
 	default:
+<<<<<<< HEAD
 		dev_warn(scomp->dev, "control type not supported %u:%u:%u\n",
 			 le32_to_cpu(hdr->ops.get),
 			 le32_to_cpu(hdr->ops.put),
 			 le32_to_cpu(hdr->ops.info));
+=======
+		dev_warn(scomp->dev, "control type not supported %d:%d:%d\n",
+			 hdr->ops.get, hdr->ops.put, hdr->ops.info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(scontrol->name);
 		kfree(scontrol);
 		return 0;
@@ -1525,8 +1544,13 @@ static int sof_widget_ready(struct snd_soc_component *scomp, int index,
 		break;
 	case snd_soc_dapm_pga:
 		if (!le32_to_cpu(tw->num_kcontrols)) {
+<<<<<<< HEAD
 			dev_err(scomp->dev, "invalid kcontrol count %u for volume\n",
 				le32_to_cpu(tw->num_kcontrols));
+=======
+			dev_err(scomp->dev, "invalid kcontrol count %d for volume\n",
+				tw->num_kcontrols);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -EINVAL;
 			break;
 		}
@@ -1774,7 +1798,11 @@ static int sof_dai_load(struct snd_soc_component *scomp, int index,
 			       ARRAY_SIZE(stream_tokens), private->array,
 			       le32_to_cpu(private->size));
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(scomp->dev, "error: parse stream tokens failed %u\n",
+=======
+		dev_err(scomp->dev, "error: parse stream tokens failed %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			le32_to_cpu(private->size));
 		return ret;
 	}
@@ -1908,12 +1936,26 @@ static int sof_link_load(struct snd_soc_component *scomp, int index, struct snd_
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	slink = kzalloc_flex(*slink, hw_configs, le32_to_cpu(cfg->num_hw_configs));
+=======
+	slink = kzalloc_obj(*slink);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!slink)
 		return -ENOMEM;
 
 	slink->num_hw_configs = le32_to_cpu(cfg->num_hw_configs);
+<<<<<<< HEAD
 	memcpy(slink->hw_configs, cfg->hw_config, le32_to_cpu(cfg->num_hw_configs) * sizeof(*slink->hw_configs));
+=======
+	slink->hw_configs = kmemdup_array(cfg->hw_config,
+					  slink->num_hw_configs, sizeof(*slink->hw_configs),
+					  GFP_KERNEL);
+	if (!slink->hw_configs) {
+		kfree(slink);
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	slink->default_hw_cfg_id = le32_to_cpu(cfg->default_hw_config_id);
 	slink->link = link;
@@ -1926,6 +1968,10 @@ static int sof_link_load(struct snd_soc_component *scomp, int index, struct snd_
 			       private->array, le32_to_cpu(private->size));
 	if (ret < 0) {
 		dev_err(scomp->dev, "Failed tp parse common DAI link tokens\n");
+<<<<<<< HEAD
+=======
+		kfree(slink->hw_configs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(slink);
 		return ret;
 	}
@@ -1996,6 +2042,10 @@ static int sof_link_load(struct snd_soc_component *scomp, int index, struct snd_
 	/* allocate memory for tuples array */
 	slink->tuples = kzalloc_objs(*slink->tuples, num_tuples);
 	if (!slink->tuples) {
+<<<<<<< HEAD
+=======
+		kfree(slink->hw_configs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(slink);
 		return -ENOMEM;
 	}
@@ -2053,6 +2103,10 @@ out:
 
 err:
 	kfree(slink->tuples);
+<<<<<<< HEAD
+=======
+	kfree(slink->hw_configs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(slink);
 
 	return ret;
@@ -2069,6 +2123,10 @@ static int sof_link_unload(struct snd_soc_component *scomp, struct snd_soc_dobj 
 
 	kfree(slink->tuples);
 	list_del(&slink->list);
+<<<<<<< HEAD
+=======
+	kfree(slink->hw_configs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(slink);
 	dobj->private = NULL;
 

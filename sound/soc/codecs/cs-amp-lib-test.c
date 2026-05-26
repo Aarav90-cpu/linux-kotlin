@@ -17,6 +17,10 @@
 #include <linux/module.h>
 #include <linux/overflow.h>
 #include <linux/pci_ids.h>
+<<<<<<< HEAD
+=======
+#include <linux/platform_device.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/random.h>
 #include <sound/cs-amp-lib.h>
 

@@ -157,7 +157,11 @@
 
 &pmi8950_wled {
 	qcom,current-limit-microamp = <20000>;
+<<<<<<< HEAD
 	qcom,num-strings = <3>;
+=======
+	qcom,num-strings = <2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	status = "okay";
 };

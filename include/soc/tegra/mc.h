@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
+<<<<<<< HEAD
  * Copyright (C) 2014-2026 NVIDIA Corporation
+=======
+ * Copyright (C) 2014 NVIDIA Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #ifndef __SOC_TEGRA_MC_H__
@@ -10,11 +14,18 @@
 #include <linux/debugfs.h>
 #include <linux/err.h>
 #include <linux/interconnect-provider.h>
+<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/reset-controller.h>
 #include <linux/tegra-icc.h>
 #include <linux/types.h>
+=======
+#include <linux/irq.h>
+#include <linux/reset-controller.h>
+#include <linux/types.h>
+#include <linux/tegra-icc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct clk;
 struct device;
@@ -165,6 +176,7 @@ struct tegra_mc_ops {
 	int (*probe)(struct tegra_mc *mc);
 	void (*remove)(struct tegra_mc *mc);
 	int (*resume)(struct tegra_mc *mc);
+<<<<<<< HEAD
 	int (*probe_device)(struct tegra_mc *mc, struct device *dev);
 };
 
@@ -190,6 +202,12 @@ struct tegra_mc_intmask {
 	u32 mask;
 };
 
+=======
+	irqreturn_t (*handle_irq)(int irq, void *data);
+	int (*probe_device)(struct tegra_mc *mc, struct device *dev);
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tegra_mc_soc {
 	const struct tegra_mc_client *clients;
 	unsigned int num_clients;
@@ -207,6 +225,10 @@ struct tegra_mc_soc {
 
 	const struct tegra_smmu_soc *smmu;
 
+<<<<<<< HEAD
+=======
+	u32 intmask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 ch_intmask;
 	u32 global_intstatus_channel_shift;
 	bool has_addr_hi_reg;
@@ -217,6 +239,7 @@ struct tegra_mc_soc {
 
 	const struct tegra_mc_icc_ops *icc_ops;
 	const struct tegra_mc_ops *ops;
+<<<<<<< HEAD
 	const struct tegra_mc_regs *regs;
 
 	const irq_handler_t *handle_irq;
@@ -225,6 +248,8 @@ struct tegra_mc_soc {
 	unsigned int mc_err_status_type_mask;
 	const struct tegra_mc_intmask *intmasks;
 	unsigned int num_intmasks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tegra_mc {
@@ -235,6 +260,10 @@ struct tegra_mc {
 	void __iomem *bcast_ch_regs;
 	void __iomem **ch_regs;
 	struct clk *clk;
+<<<<<<< HEAD
+=======
+	int irq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	const struct tegra_mc_soc *soc;
 	unsigned long tick;
@@ -284,6 +313,9 @@ tegra_mc_get_carveout_info(struct tegra_mc *mc, unsigned int id,
 }
 #endif
 
+<<<<<<< HEAD
 extern const struct tegra_mc_regs tegra20_mc_regs;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __SOC_TEGRA_MC_H__ */

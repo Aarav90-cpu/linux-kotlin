@@ -5,15 +5,20 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/phy/phy-imx8-pcie.h>
 #include "imx8mm-var-som.dtsi"
 #include "imx8mm-var-som-wifi-bt-iw61x.dtsi"
+=======
+#include "imx8mm-var-som.dtsi"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	model = "Variscite VAR-SOM-MX8MM Symphony evaluation board";
 	compatible = "variscite,var-som-mx8mm-symphony", "variscite,var-som-mx8mm", "fsl,imx8mm";
 
+<<<<<<< HEAD
 	chosen {
 		stdout-path = &uart4;
 	};
@@ -24,6 +29,8 @@
 		clock-frequency = <100000000>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
@@ -31,8 +38,12 @@
 		regulator-name = "VSD_3V3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
+<<<<<<< HEAD
 		gpio = <&gpio4 22 GPIO_ACTIVE_HIGH>;
 		off-on-delay-us = <20000>;
+=======
+		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enable-active-high;
 	};
 
@@ -40,7 +51,10 @@
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_reg_usb_otg2_vbus>;
+<<<<<<< HEAD
 		pinctrl-1 = <&pinctrl_reg_usb_otg2_vbus_sleep>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regulator-name = "usb_otg2_vbus";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
@@ -82,6 +96,7 @@
 };
 
 &ethphy {
+<<<<<<< HEAD
 	leds {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -100,6 +115,9 @@
 			linux,default-trigger = "netdev";
 		};
 	};
+=======
+	reset-gpios = <&pca9534 5 GPIO_ACTIVE_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &i2c2 {
@@ -142,24 +160,32 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/* USB Type-C Controller */
 	ptn5150: typec@3d {
+=======
+	extcon_usbotg1: typec@3d {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "nxp,ptn5150";
 		reg = <0x3d>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ptn5150>;
+<<<<<<< HEAD
 
 		port {
 			typec1_dr_sw: endpoint {
 				remote-endpoint = <&usb1_drd_sw>;
 			};
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
 &i2c3 {
+<<<<<<< HEAD
 	pca6408: gpio@21 {
 		compatible = "nxp,pcal6408";
 		reg = <0x21>;
@@ -174,6 +200,8 @@
 		reset-gpios = <&pca6408 4 GPIO_ACTIVE_LOW>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Capacitive touch controller */
 	ft5x06_ts: touchscreen@38 {
 		compatible = "edt,edt-ft5406";
@@ -195,6 +223,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &i2c4 {
 	clock-frequency = <100000>;
 	pinctrl-names = "default", "gpio";
@@ -228,6 +257,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Header */
 &uart1 {
 	pinctrl-names = "default";
@@ -242,6 +273,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 /* Console */
 &uart4 {
 	pinctrl-names = "default";
@@ -264,11 +296,17 @@
 			remote-endpoint = <&typec1_dr_sw>;
 		};
 	};
+=======
+&usbotg1 {
+	disable-over-current;
+	extcon = <&extcon_usbotg1>, <&extcon_usbotg1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &usbotg2 {
 	dr_mode = "host";
 	vbus-supply = <&reg_usb_otg2_vbus>;
+<<<<<<< HEAD
 	samsung,picophy-pre-emp-curr-control = <3>;
 	samsung,picophy-dc-vol-level-adjust = <7>;
 	disable-over-current;
@@ -285,6 +323,22 @@
 	vmmc-supply = <&reg_usdhc2_vmmc>;
 	bus-width = <4>;
 	status = "okay";
+=======
+	srp-disable;
+	hnp-disable;
+	adp-disable;
+	disable-over-current;
+	/delete-property/ usb-role-switch;
+	/*
+	 * FIXME: having USB2 enabled hangs the boot just after:
+	 * [    1.943365] ci_hdrc ci_hdrc.1: EHCI Host Controller
+	 * [    1.948287] ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+	 * [    1.971006] ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+	 * [    1.977203] hub 1-0:1.0: USB hub found
+	 * [    1.980987] hub 1-0:1.0: 1 port detected
+	 */
+	status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pinctrl_fec1 {
@@ -321,6 +375,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c4: i2c4grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL		0x400001c3
@@ -335,6 +390,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_pca9534: pca9534grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7	0x16
@@ -353,6 +410,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_reg_usb_otg2_vbus_sleep: regusbotg2vbus-sleepgrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI3_TXD_GPIO5_IO1		0x120
@@ -362,6 +420,11 @@
 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22	0x41
+=======
+	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
@@ -378,6 +441,7 @@
 			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
 		>;
 	};
+<<<<<<< HEAD
 
 	pinctrl_uart4: uart4grp {
 		fsl,pins = <
@@ -427,4 +491,6 @@
 			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0xc1
 		>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

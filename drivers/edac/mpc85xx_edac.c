@@ -399,7 +399,11 @@ static ssize_t mpc85xx_l2_inject_ctrl_store(struct edac_device_ctl_info
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct edac_dev_sysfs_attribute mpc85xx_l2_sysfs_attributes[] = {
+=======
+static struct edac_dev_sysfs_attribute mpc85xx_l2_sysfs_attributes[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 	 .attr = {
 		  .name = "inject_data_hi",

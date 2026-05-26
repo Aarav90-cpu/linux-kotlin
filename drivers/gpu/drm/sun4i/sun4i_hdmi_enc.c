@@ -661,7 +661,11 @@ static int sun4i_hdmi_bind(struct device *dev, struct device *master,
 				       &sun4i_hdmi_hdmi_connector_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       hdmi->ddc_i2c,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	if (ret) {
 		dev_err(dev,

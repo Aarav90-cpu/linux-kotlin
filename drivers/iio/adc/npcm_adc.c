@@ -38,7 +38,11 @@ struct npcm_adc {
 	 * read access from userspace. Reading a raw value requires a sequence
 	 * of register writes, then a wait for a event and finally a register
 	 * read, during which userspace could issue another read request.
+<<<<<<< HEAD
 	 * This lock protects a read access from occurring before another one
+=======
+	 * This lock protects a read access from ocurring before another one
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * has finished.
 	 */
 	struct mutex lock;

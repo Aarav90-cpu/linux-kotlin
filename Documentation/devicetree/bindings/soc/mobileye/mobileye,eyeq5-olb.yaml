@@ -51,9 +51,12 @@ properties:
   clock-names:
     const: ref
 
+<<<<<<< HEAD
   '#phy-cells':
     const: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 patternProperties:
   '-pins?$':
     type: object
@@ -313,7 +316,11 @@ allOf:
       properties:
         '#reset-cells': false
 
+<<<<<<< HEAD
     # Only EyeQ5 has pinctrl and PHY in OLB.
+=======
+    # Only EyeQ5 has pinctrl in OLB.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - if:
       not:
         properties:
@@ -323,8 +330,11 @@ allOf:
     then:
       patternProperties:
         '-pins?$': false
+<<<<<<< HEAD
       properties:
         '#phy-cells': false
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |

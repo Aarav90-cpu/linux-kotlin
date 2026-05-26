@@ -34,7 +34,11 @@ int BPF_PROG(hid_fix_rdesc, struct hid_bpf_ctx *hctx)
 	if (data[3] != 0x06)
 		return 0;
 
+<<<<<<< HEAD
 	for (size_t idx = 0; idx < ARRAY_SIZE(offsets); idx++) {
+=======
+	for (int idx = 0; idx < ARRAY_SIZE(offsets); idx++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 offset = offsets[idx];
 
 		/* if Input (Cnst,Var,Abs) , make it Input (Data,Var,Abs) */

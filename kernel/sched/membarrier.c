@@ -199,6 +199,7 @@ static void ipi_rseq(void *info)
 	 * is negligible.
 	 */
 	smp_mb();
+<<<<<<< HEAD
 	/*
 	 * Legacy mode requires that IDs are written and the critical section is
 	 * evaluated. V2 optimized mode handles the critical section and IDs are
@@ -209,6 +210,9 @@ static void ipi_rseq(void *info)
 		rseq_sched_switch_event(current);
 	else
 		rseq_force_update();
+=======
+	rseq_sched_switch_event(current);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ipi_sync_rq_state(void *info)

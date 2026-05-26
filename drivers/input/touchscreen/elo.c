@@ -219,17 +219,26 @@ static irqreturn_t elo_interrupt(struct serio *serio,
 
 static int elo_command_10(struct elo *elo, unsigned char *packet)
 {
+<<<<<<< HEAD
 	int error;
 	int i;
 	unsigned char csum = 0xaa + ELO10_LEAD_BYTE;
 
 	guard(mutex)(&elo->cmd_mutex);
+=======
+	int rc = -1;
+	int i;
+	unsigned char csum = 0xaa + ELO10_LEAD_BYTE;
+
+	mutex_lock(&elo->cmd_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scoped_guard(serio_pause_rx, elo->serio) {
 		elo->expected_packet = toupper(packet[0]);
 		init_completion(&elo->cmd_done);
 	}
 
+<<<<<<< HEAD
 	error = serio_write(elo->serio, ELO10_LEAD_BYTE);
 	if (error)
 		return error;
@@ -253,6 +262,31 @@ static int elo_command_10(struct elo *elo, unsigned char *packet)
 	/* We are back in reporting mode, the command was ACKed */
 	memcpy(packet, elo->response, ELO10_PACKET_LEN);
 	return 0;
+=======
+	if (serio_write(elo->serio, ELO10_LEAD_BYTE))
+		goto out;
+
+	for (i = 0; i < ELO10_PACKET_LEN; i++) {
+		csum += packet[i];
+		if (serio_write(elo->serio, packet[i]))
+			goto out;
+	}
+
+	if (serio_write(elo->serio, csum))
+		goto out;
+
+	wait_for_completion_timeout(&elo->cmd_done, HZ);
+
+	if (elo->expected_packet == ELO10_TOUCH_PACKET) {
+		/* We are back in reporting mode, the command was ACKed */
+		memcpy(packet, elo->response, ELO10_PACKET_LEN);
+		rc = 0;
+	}
+
+ out:
+	mutex_unlock(&elo->cmd_mutex);
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int elo_setup_10(struct elo *elo)

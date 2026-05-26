@@ -123,9 +123,16 @@ static void do_withdraw(struct gfs2_sbd *sdp)
 		return;
 	}
 	clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+<<<<<<< HEAD
 	gfs2_ail_drain(sdp); /* frees all transactions */
 	up_write(&sdp->sd_log_flush_lock);
 
+=======
+	up_write(&sdp->sd_log_flush_lock);
+
+	gfs2_ail_drain(sdp); /* frees all transactions */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wake_up(&sdp->sd_logd_waitq);
 	wake_up(&sdp->sd_quota_wait);
 

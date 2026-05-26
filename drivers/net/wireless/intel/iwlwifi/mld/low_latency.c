@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 /*
+<<<<<<< HEAD
  * Copyright (C) 2024-2026 Intel Corporation
+=======
+ * Copyright (C) 2024-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include "mld.h"
 #include "iface.h"
@@ -77,12 +81,18 @@ static void iwl_mld_low_latency_iter(void *_data, u8 *mac,
 	bool prev = mld_vif->low_latency_causes & LOW_LATENCY_TRAFFIC;
 	bool low_latency;
 
+<<<<<<< HEAD
 	if (!iwl_mld_vif_fw_id_valid(mld_vif))
 		return;
 
 	BUILD_BUG_ON(ARRAY_SIZE(mld->fw_id_to_vif) !=
 		     ARRAY_SIZE(mld->low_latency.result));
 
+=======
+	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld->low_latency.result)))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	low_latency = mld->low_latency.result[mld_vif->fw_id];
 
 	if (prev != low_latency)
@@ -275,10 +285,15 @@ void iwl_mld_low_latency_update_counters(struct iwl_mld *mld,
 	if (WARN_ON_ONCE(!mld->low_latency.pkts_counters))
 		return;
 
+<<<<<<< HEAD
 	if (!iwl_mld_vif_fw_id_valid(mld_vif))
 		return;
 
 	if (WARN_ON_ONCE(queue >= mld->trans->info.num_rxqs))
+=======
+	if (WARN_ON_ONCE(fw_id >= ARRAY_SIZE(counters->vo_vi) ||
+			 queue >= mld->trans->info.num_rxqs))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (mld->low_latency.stopped)

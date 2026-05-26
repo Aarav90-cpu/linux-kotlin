@@ -532,7 +532,11 @@ struct sdw_slave_intr_status {
 };
 
 /**
+<<<<<<< HEAD
  * enum sdw_reg_bank - SoundWire register banks
+=======
+ * sdw_reg_bank - SoundWire register banks
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @SDW_BANK0: Soundwire register bank 0
  * @SDW_BANK1: Soundwire register bank 1
  */
@@ -751,7 +755,11 @@ struct sdw_port_params {
  * struct sdw_transport_params: Data Port Transport Parameters
  *
  * @blk_grp_ctrl_valid: Port implements block group control
+<<<<<<< HEAD
  * @port_num: Port number
+=======
+ * @num: Port number
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @blk_grp_ctrl: Block group control value
  * @sample_interval: Sample interval
  * @offset1: Blockoffset of the payload data
@@ -782,7 +790,11 @@ struct sdw_transport_params {
 /**
  * struct sdw_enable_ch: Enable/disable Data Port channel
  *
+<<<<<<< HEAD
  * @port_num: Port number
+=======
+ * @num: Port number
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ch_mask: Active channel mask
  * @enable: Enable (true) /disable (false) channel
  */
@@ -885,7 +897,11 @@ void sdw_bus_master_delete(struct sdw_bus *bus);
 void sdw_show_ping_status(struct sdw_bus *bus, bool sync_delay);
 
 /**
+<<<<<<< HEAD
  * struct sdw_port_config: Master or Slave Port configuration
+=======
+ * sdw_port_config: Master or Slave Port configuration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @num: Port number
  * @ch_mask: channels mask for port
@@ -896,7 +912,11 @@ struct sdw_port_config {
 };
 
 /**
+<<<<<<< HEAD
  * struct sdw_stream_config: Master or Slave stream configuration
+=======
+ * sdw_stream_config: Master or Slave stream configuration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @frame_rate: Audio frame rate of the stream, in Hz
  * @ch_count: Channel count of the stream
@@ -913,7 +933,11 @@ struct sdw_stream_config {
 };
 
 /**
+<<<<<<< HEAD
  * enum sdw_stream_state: Stream states
+=======
+ * sdw_stream_state: Stream states
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @SDW_STREAM_ALLOCATED: New stream allocated.
  * @SDW_STREAM_CONFIGURED: Stream configured
@@ -934,7 +958,11 @@ enum sdw_stream_state {
 };
 
 /**
+<<<<<<< HEAD
  * struct sdw_stream_params: Stream parameters
+=======
+ * sdw_stream_params: Stream parameters
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @rate: Sampling frequency, in Hz
  * @ch_count: Number of channels
@@ -947,7 +975,11 @@ struct sdw_stream_params {
 };
 
 /**
+<<<<<<< HEAD
  * struct sdw_stream_runtime: Runtime stream parameters
+=======
+ * sdw_stream_runtime: Runtime stream parameters
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @name: SoundWire stream name
  * @params: Stream parameters
@@ -983,7 +1015,11 @@ struct sdw_stream_runtime {
  * @defer_msg: Defer message
  * @params: Current bus parameters
  * @stream_refcount: number of streams currently using this bus
+<<<<<<< HEAD
  * @bpt_stream_refcount: number of BTP streams currently using this bus (should
+=======
+ * @btp_stream_refcount: number of BTP streams currently using this bus (should
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * be zero or one, multiple streams per link is not supported).
  * @bpt_stream: pointer stored to handle BTP streams.
  * @ops: Master callback ops

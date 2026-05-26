@@ -848,6 +848,12 @@ int wcd_clsh_ctrl_set_state(struct wcd_clsh_ctrl *ctrl,
 {
 	struct snd_soc_component *comp = ctrl->comp;
 
+<<<<<<< HEAD
+=======
+	if (nstate == ctrl->state)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!wcd_clsh_is_state_valid(nstate)) {
 		dev_err(comp->dev, "Class-H not a valid new state:\n");
 		return -EINVAL;

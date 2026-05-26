@@ -74,7 +74,10 @@
 #include "mlx5_irq.h"
 #include "hwmon.h"
 #include "lag/lag.h"
+<<<<<<< HEAD
 #include "sh_devlink.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Eli Cohen <eli@mellanox.com>");
 MODULE_DESCRIPTION("Mellanox 5th generation network adapters (ConnectX series) core driver");
@@ -111,9 +114,80 @@ static struct mlx5_profile profile[] = {
 
 	},
 	[2] = {
+<<<<<<< HEAD
 		.mask		= MLX5_PROF_MASK_QP_SIZE,
 		.log_max_qp	= LOG_MAX_SUPPORTED_QPS,
 		.num_cmd_caches = MLX5_NUM_COMMAND_CACHES,
+=======
+		.mask		= MLX5_PROF_MASK_QP_SIZE |
+				  MLX5_PROF_MASK_MR_CACHE,
+		.log_max_qp	= LOG_MAX_SUPPORTED_QPS,
+		.num_cmd_caches = MLX5_NUM_COMMAND_CACHES,
+		.mr_cache[0]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[1]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[2]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[3]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[4]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[5]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[6]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[7]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[8]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[9]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[10]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[11]	= {
+			.size	= 500,
+			.limit	= 250
+		},
+		.mr_cache[12]	= {
+			.size	= 64,
+			.limit	= 32
+		},
+		.mr_cache[13]	= {
+			.size	= 32,
+			.limit	= 16
+		},
+		.mr_cache[14]	= {
+			.size	= 16,
+			.limit	= 8
+		},
+		.mr_cache[15]	= {
+			.size	= 8,
+			.limit	= 4
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[3] = {
 		.mask		= MLX5_PROF_MASK_QP_SIZE,
@@ -886,7 +960,12 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct pci_dev *pdev,
 	    pci_enable_atomic_ops_to_root(pdev, PCI_EXP_DEVCAP2_ATOMIC_COMP128))
 		mlx5_core_dbg(dev, "Enabling pci atomics failed\n");
 
+<<<<<<< HEAD
 	dev->iseg = ioremap(dev->bar_addr, sizeof(*dev->iseg));
+=======
+	dev->iseg_base = dev->bar_addr;
+	dev->iseg = ioremap(dev->iseg_base, sizeof(*dev->iseg));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dev->iseg) {
 		err = -ENOMEM;
 		mlx5_core_err(dev, "Failed mapping initialization segment, aborting\n");
@@ -895,7 +974,11 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct pci_dev *pdev,
 
 	mlx5_pci_vsc_init(dev);
 
+<<<<<<< HEAD
 	pci_enable_ptm(pdev);
+=======
+	pci_enable_ptm(pdev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -1455,16 +1538,22 @@ int mlx5_init_one(struct mlx5_core_dev *dev)
 	int err;
 
 	devl_lock(devlink);
+<<<<<<< HEAD
 	if (dev->shd) {
 		err = devl_nested_devlink_set(dev->shd, devlink);
 		if (err)
 			goto unlock;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	devl_register(devlink);
 	err = mlx5_init_one_devl_locked(dev);
 	if (err)
 		devl_unregister(devlink);
+<<<<<<< HEAD
 unlock:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	devl_unlock(devlink);
 	return err;
 }
@@ -1713,7 +1802,10 @@ static const int types[] = {
 	MLX5_CAP_CRYPTO,
 	MLX5_CAP_SHAMPO,
 	MLX5_CAP_ADV_RDMA,
+<<<<<<< HEAD
 	MLX5_CAP_TLP_EMULATION,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void mlx5_hca_caps_free(struct mlx5_core_dev *dev)
@@ -1849,7 +1941,11 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
 
 	err = mlx5_notifiers_init(dev);
 	if (err)
+<<<<<<< HEAD
 		goto err_notifiers_init;
+=======
+		goto err_hca_caps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* The conjunction of sw_vhca_id with sw_owner_id will be a global
 	 * unique id per function which uses mlx5_core.
@@ -1865,8 +1961,11 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
 
 	return 0;
 
+<<<<<<< HEAD
 err_notifiers_init:
 	mlx5_hca_caps_free(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_hca_caps:
 	mlx5_adev_cleanup(dev);
 err_adev_init:
@@ -1949,6 +2048,7 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
 		goto pci_init_err;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_shd_init(dev);
 	if (err) {
 		mlx5_core_err(dev, "mlx5_shd_init failed with error code %d\n",
@@ -1956,6 +2056,8 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
 		goto shd_init_err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = mlx5_init_one(dev);
 	if (err) {
 		mlx5_core_err(dev, "mlx5_init_one failed with error code %d\n",
@@ -1969,8 +2071,11 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
 	return 0;
 
 err_init_one:
+<<<<<<< HEAD
 	mlx5_shd_uninit(dev);
 shd_init_err:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_pci_close(dev);
 pci_init_err:
 	mlx5_mdev_uninit(dev);
@@ -1992,7 +2097,10 @@ static void remove_one(struct pci_dev *pdev)
 	mlx5_drain_health_wq(dev);
 	mlx5_sriov_disable(pdev, false);
 	mlx5_uninit_one(dev);
+<<<<<<< HEAD
 	mlx5_shd_uninit(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_pci_close(dev);
 	mlx5_mdev_uninit(dev);
 	mlx5_adev_idx_free(dev->priv.adev_idx);

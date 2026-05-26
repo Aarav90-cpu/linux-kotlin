@@ -12,7 +12,10 @@ struct net;
 struct netlink_ext_ack;
 struct netdev_queue_config;
 struct cpumask;
+<<<<<<< HEAD
 struct pp_memory_provider_params;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Random bits of netdevice that don't need to be exposed */
 #define FLOW_LIMIT_HISTORY	(1 << 7)  /* must be ^2 and !overflow buckets */
@@ -31,6 +34,7 @@ struct napi_struct *
 netdev_napi_by_id_lock(struct net *net, unsigned int napi_id);
 struct net_device *dev_get_by_napi_id(unsigned int napi_id);
 
+<<<<<<< HEAD
 struct net_device *netdev_put_lock(struct net_device *dev, struct net *net,
 				   netdevice_tracker *tracker);
 
@@ -40,6 +44,9 @@ __netdev_put_lock(struct net_device *dev, struct net *net)
 	return netdev_put_lock(dev, net, NULL);
 }
 
+=======
+struct net_device *__netdev_put_lock(struct net_device *dev, struct net *net);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct net_device *
 netdev_xa_find_lock(struct net *net, struct net_device *dev,
 		    unsigned long *index);
@@ -78,7 +85,10 @@ void linkwatch_run_queue(void);
 void dev_addr_flush(struct net_device *dev);
 int dev_addr_init(struct net_device *dev);
 void dev_addr_check(struct net_device *dev);
+<<<<<<< HEAD
 void __hw_addr_flush(struct netdev_hw_addr_list *list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if IS_ENABLED(CONFIG_NET_SHAPER)
 void net_shaper_flush_netdev(struct net_device *dev);
@@ -106,6 +116,7 @@ int netdev_queue_config_validate(struct net_device *dev, int rxq_idx,
 				 struct netdev_queue_config *qcfg,
 				 struct netlink_ext_ack *extack);
 
+<<<<<<< HEAD
 bool netif_rxq_has_mp(struct net_device *dev, unsigned int rxq_idx);
 bool netif_rxq_is_leased(struct net_device *dev, unsigned int rxq_idx);
 bool netif_is_queue_leasee(const struct net_device *dev);
@@ -116,6 +127,8 @@ void __netif_mp_uninstall_rxq(struct netdev_rx_queue *rxq,
 void netif_rxq_cleanup_unlease(struct netdev_rx_queue *phys_rxq,
 			       struct netdev_rx_queue *virt_rxq);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* netdev management, shared between various uAPI entry points */
 struct netdev_name_node {
 	struct hlist_node hlist;
@@ -165,9 +178,12 @@ int netif_change_carrier(struct net_device *dev, bool new_carrier);
 int dev_change_carrier(struct net_device *dev, bool new_carrier);
 
 void __dev_set_rx_mode(struct net_device *dev);
+<<<<<<< HEAD
 int __dev_set_promiscuity(struct net_device *dev, int inc, bool notify);
 bool netif_rx_mode_clean(struct net_device *dev);
 void netif_rx_mode_sync(struct net_device *dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __dev_notify_flags(struct net_device *dev, unsigned int old_flags,
 			unsigned int gchanges, u32 portid,

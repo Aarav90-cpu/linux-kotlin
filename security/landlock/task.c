@@ -37,9 +37,12 @@
  *
  * Checks if the @parent domain is less or equal to (i.e. an ancestor, which
  * means a subset of) the @child domain.
+<<<<<<< HEAD
  *
  * Return: True if @parent is an ancestor of or equal to @child, false
  * otherwise.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static bool domain_scope_le(const struct landlock_ruleset *const parent,
 			    const struct landlock_ruleset *const child)
@@ -82,7 +85,12 @@ static int domain_ptrace(const struct landlock_ruleset *const parent,
  * If the current task has Landlock rules, then the child must have at least
  * the same rules.  Else denied.
  *
+<<<<<<< HEAD
  * Return: 0 if permission is granted, -errno if denied.
+=======
+ * Determines whether a process may access another, returning 0 if permission
+ * granted, -errno if denied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int hook_ptrace_access_check(struct task_struct *const child,
 				    const unsigned int mode)
@@ -131,7 +139,12 @@ static int hook_ptrace_access_check(struct task_struct *const child,
  * If the parent has Landlock rules, then the current task must have the same
  * or more rules.  Else denied.
  *
+<<<<<<< HEAD
  * Return: 0 if permission is granted, -errno if denied.
+=======
+ * Determines whether the nominated task is permitted to trace the current
+ * process, returning 0 if permission is granted, -errno if denied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int hook_ptrace_traceme(struct task_struct *const parent)
 {
@@ -174,8 +187,13 @@ static int hook_ptrace_traceme(struct task_struct *const parent)
  * @server: IPC receiver domain.
  * @scope: The scope restriction criteria.
  *
+<<<<<<< HEAD
  * Return: True if @server is in a different domain from @client and @client
  * is scoped to access @server (i.e. access should be denied), false otherwise.
+=======
+ * Returns: True if @server is in a different domain from @client, and @client
+ * is scoped to access @server (i.e. access should be denied).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static bool domain_is_scoped(const struct landlock_ruleset *const client,
 			     const struct landlock_ruleset *const server,
@@ -191,6 +209,7 @@ static bool domain_is_scoped(const struct landlock_ruleset *const client,
 	client_layer = client->num_layers - 1;
 	client_walker = client->hierarchy;
 	/*
+<<<<<<< HEAD
 	 * client_layer must be able to represent all numbers from
 	 * LANDLOCK_MAX_NUM_LAYERS - 1 to -1 for the loop below to terminate.
 	 * (It must be large enough, and it must be signed.)
@@ -198,6 +217,12 @@ static bool domain_is_scoped(const struct landlock_ruleset *const client,
 	BUILD_BUG_ON(!is_signed_type(typeof(client_layer)));
 	BUILD_BUG_ON(LANDLOCK_MAX_NUM_LAYERS - 1 >
 		     type_max(typeof(client_layer)));
+=======
+	 * client_layer must be a signed integer with greater capacity
+	 * than client->num_layers to ensure the following loop stops.
+	 */
+	BUILD_BUG_ON(sizeof(client_layer) > sizeof(client->num_layers));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	server_layer = server ? (server->num_layers - 1) : -1;
 	server_walker = server ? server->hierarchy : NULL;

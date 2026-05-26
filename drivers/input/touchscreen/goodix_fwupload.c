@@ -188,13 +188,20 @@ static int goodix_start_firmware(struct i2c_client *client)
 
 static int goodix_firmware_upload(struct goodix_ts_data *ts)
 {
+<<<<<<< HEAD
+=======
+	const struct firmware *fw;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char fw_name[64];
 	const u8 *data;
 	int error;
 
 	snprintf(fw_name, sizeof(fw_name), "goodix/%s", ts->firmware_name);
 
+<<<<<<< HEAD
 	const struct firmware *fw __free(firmware) = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = request_firmware(&fw, fw_name, &ts->client->dev);
 	if (error) {
 		dev_err(&ts->client->dev, "Firmware request error %d\n", error);
@@ -203,6 +210,7 @@ static int goodix_firmware_upload(struct goodix_ts_data *ts)
 
 	error = goodix_firmware_verify(&ts->client->dev, fw);
 	if (error)
+<<<<<<< HEAD
 		return error;
 
 	error = goodix_reset_no_int_sync(ts);
@@ -212,41 +220,73 @@ static int goodix_firmware_upload(struct goodix_ts_data *ts)
 	error = goodix_enter_upload_mode(ts->client);
 	if (error)
 		return error;
+=======
+		goto release;
+
+	error = goodix_reset_no_int_sync(ts);
+	if (error)
+		goto release;
+
+	error = goodix_enter_upload_mode(ts->client);
+	if (error)
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Select SRAM bank 0 and upload section 1 & 2 */
 	error = goodix_i2c_write_u8(ts->client,
 				    GOODIX_REG_MISCTL_SRAM_BANK, 0x00);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = fw->data + GOODIX_FW_HEADER_LENGTH;
 	error = goodix_i2c_write(ts->client, GOODIX_FW_UPLOAD_ADDRESS,
 				 data, 2 * GOODIX_FW_SECTION_LENGTH);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Select SRAM bank 1 and upload section 3 & 4 */
 	error = goodix_i2c_write_u8(ts->client,
 				    GOODIX_REG_MISCTL_SRAM_BANK, 0x01);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data += 2 * GOODIX_FW_SECTION_LENGTH;
 	error = goodix_i2c_write(ts->client, GOODIX_FW_UPLOAD_ADDRESS,
 				 data, 2 * GOODIX_FW_SECTION_LENGTH);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Select SRAM bank 2 and upload the DSP firmware */
 	error = goodix_i2c_write_u8(ts->client,
 				    GOODIX_REG_MISCTL_SRAM_BANK, 0x02);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data += 2 * GOODIX_FW_SECTION_LENGTH;
 	error = goodix_i2c_write(ts->client, GOODIX_FW_UPLOAD_ADDRESS,
 				 data, GOODIX_FW_DSP_LENGTH);
 	if (error)
+<<<<<<< HEAD
 		return error;
 
 	error = goodix_start_firmware(ts->client);
@@ -258,6 +298,18 @@ static int goodix_firmware_upload(struct goodix_ts_data *ts)
 		return error;
 
 	return 0;
+=======
+		goto release;
+
+	error = goodix_start_firmware(ts->client);
+	if (error)
+		goto release;
+
+	error = goodix_int_sync(ts);
+release:
+	release_firmware(fw);
+	return error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int goodix_prepare_bak_ref(struct goodix_ts_data *ts)

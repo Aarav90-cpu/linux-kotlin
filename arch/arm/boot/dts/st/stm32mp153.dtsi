@@ -30,6 +30,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &cs_funnel {
 	in-ports {
 		port@2 {
@@ -98,6 +99,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &etzpc {
 	m_can1: can@4400e000 {
 		compatible = "bosch,m_can";

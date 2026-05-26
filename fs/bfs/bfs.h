@@ -35,7 +35,10 @@ struct bfs_inode_info {
 	unsigned long i_dsk_ino; /* inode number from the disk, can be 0 */
 	unsigned long i_sblock;
 	unsigned long i_eblock;
+<<<<<<< HEAD
 	struct mapping_metadata_bhs i_metadata_bhs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct inode vfs_inode;
 };
 

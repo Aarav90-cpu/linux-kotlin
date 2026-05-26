@@ -15,7 +15,10 @@
 #include <linux/mm.h>
 #include <linux/dma-mapping.h>
 #include <linux/scatterlist.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/highmem.h>
 #include <linux/crypto.h>
 #include <linux/hw_random.h>
@@ -2257,7 +2260,12 @@ static int hifn_alg_alloc(struct hifn_device *dev, const struct hifn_alg_templat
 	alg->alg.init = hifn_init_tfm;
 
 	err = -EINVAL;
+<<<<<<< HEAD
 	if (strscpy(alg->alg.base.cra_name, t->name) < 0)
+=======
+	if (snprintf(alg->alg.base.cra_name, CRYPTO_MAX_ALG_NAME,
+		     "%s", t->name) >= CRYPTO_MAX_ALG_NAME)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_free_alg;
 	if (snprintf(alg->alg.base.cra_driver_name, CRYPTO_MAX_ALG_NAME,
 		     "%s-%s", t->drv_name, dev->name) >= CRYPTO_MAX_ALG_NAME)
@@ -2367,7 +2375,11 @@ static int hifn_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	INIT_LIST_HEAD(&dev->alg_list);
 
+<<<<<<< HEAD
 	strscpy(dev->name, name);
+=======
+	snprintf(dev->name, sizeof(dev->name), "%s", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&dev->lock);
 
 	for (i = 0; i < 3; ++i) {

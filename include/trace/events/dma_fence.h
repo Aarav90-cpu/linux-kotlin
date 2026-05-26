@@ -9,12 +9,44 @@
 
 struct dma_fence;
 
+<<<<<<< HEAD
+=======
+DECLARE_EVENT_CLASS(dma_fence,
+
+	TP_PROTO(struct dma_fence *fence),
+
+	TP_ARGS(fence),
+
+	TP_STRUCT__entry(
+		__string(driver, dma_fence_driver_name(fence))
+		__string(timeline, dma_fence_timeline_name(fence))
+		__field(unsigned int, context)
+		__field(unsigned int, seqno)
+	),
+
+	TP_fast_assign(
+		__assign_str(driver);
+		__assign_str(timeline);
+		__entry->context = fence->context;
+		__entry->seqno = fence->seqno;
+	),
+
+	TP_printk("driver=%s timeline=%s context=%u seqno=%u",
+		  __get_str(driver), __get_str(timeline), __entry->context,
+		  __entry->seqno)
+);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Safe only for call sites which are guaranteed to not race with fence
  * signaling,holding the fence->lock and having checked for not signaled, or the
  * signaling path itself.
  */
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(dma_fence,
+=======
+DECLARE_EVENT_CLASS(dma_fence_unsignaled,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_PROTO(struct dma_fence *fence),
 
@@ -39,14 +71,22 @@ DECLARE_EVENT_CLASS(dma_fence,
 		  __entry->seqno)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dma_fence, dma_fence_emit,
+=======
+DEFINE_EVENT(dma_fence_unsignaled, dma_fence_emit,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_PROTO(struct dma_fence *fence),
 
 	TP_ARGS(fence)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dma_fence, dma_fence_init,
+=======
+DEFINE_EVENT(dma_fence_unsignaled, dma_fence_init,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_PROTO(struct dma_fence *fence),
 
@@ -60,14 +100,22 @@ DEFINE_EVENT(dma_fence, dma_fence_destroy,
 	TP_ARGS(fence)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dma_fence, dma_fence_enable_signal,
+=======
+DEFINE_EVENT(dma_fence_unsignaled, dma_fence_enable_signal,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_PROTO(struct dma_fence *fence),
 
 	TP_ARGS(fence)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dma_fence, dma_fence_signaled,
+=======
+DEFINE_EVENT(dma_fence_unsignaled, dma_fence_signaled,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_PROTO(struct dma_fence *fence),
 

@@ -27,7 +27,11 @@ pub enum IrqReturn {
 }
 
 /// Callbacks for an IRQ handler.
+<<<<<<< HEAD
 pub trait Handler: Sync + 'static {
+=======
+pub trait Handler: Sync {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// The hard IRQ handler.
     ///
     /// This is executed in interrupt context, hence all corresponding
@@ -45,7 +49,11 @@ impl<T: ?Sized + Handler + Send> Handler for Arc<T> {
     }
 }
 
+<<<<<<< HEAD
 impl<T: ?Sized + Handler, A: Allocator + 'static> Handler for Box<T, A> {
+=======
+impl<T: ?Sized + Handler, A: Allocator> Handler for Box<T, A> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn handle(&self, device: &Device<Bound>) -> IrqReturn {
         T::handle(self, device)
     }
@@ -181,7 +189,11 @@ impl<'a> IrqRequest<'a> {
 ///
 /// * We own an irq handler whose cookie is a pointer to `Self`.
 #[pin_data]
+<<<<<<< HEAD
 pub struct Registration<T: Handler> {
+=======
+pub struct Registration<T: Handler + 'static> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #[pin]
     inner: Devres<RegistrationInner>,
 
@@ -194,7 +206,11 @@ pub struct Registration<T: Handler> {
     _pin: PhantomPinned,
 }
 
+<<<<<<< HEAD
 impl<T: Handler> Registration<T> {
+=======
+impl<T: Handler + 'static> Registration<T> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// Registers the IRQ handler with the system for the given IRQ number.
     pub fn new<'a>(
         request: IrqRequest<'a>,
@@ -260,7 +276,14 @@ impl<T: Handler> Registration<T> {
 /// # Safety
 ///
 /// This function should be only used as the callback in `request_irq`.
+<<<<<<< HEAD
 unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut c_void) -> c_uint {
+=======
+unsafe extern "C" fn handle_irq_callback<T: Handler + 'static>(
+    _irq: i32,
+    ptr: *mut c_void,
+) -> c_uint {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registration::new`
     let registration = unsafe { &*(ptr as *const Registration<T>) };
     // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq
@@ -284,7 +307,11 @@ pub enum ThreadedIrqReturn {
 }
 
 /// Callbacks for a threaded IRQ handler.
+<<<<<<< HEAD
 pub trait ThreadedHandler: Sync + 'static {
+=======
+pub trait ThreadedHandler: Sync {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// The hard IRQ handler.
     ///
     /// This is executed in interrupt context, hence all corresponding
@@ -315,7 +342,11 @@ impl<T: ?Sized + ThreadedHandler + Send> ThreadedHandler for Arc<T> {
     }
 }
 
+<<<<<<< HEAD
 impl<T: ?Sized + ThreadedHandler, A: Allocator + 'static> ThreadedHandler for Box<T, A> {
+=======
+impl<T: ?Sized + ThreadedHandler, A: Allocator> ThreadedHandler for Box<T, A> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn handle(&self, device: &Device<Bound>) -> ThreadedIrqReturn {
         T::handle(self, device)
     }
@@ -398,7 +429,11 @@ impl<T: ?Sized + ThreadedHandler, A: Allocator + 'static> ThreadedHandler for Bo
 ///
 /// * We own an irq handler whose cookie is a pointer to `Self`.
 #[pin_data]
+<<<<<<< HEAD
 pub struct ThreadedRegistration<T: ThreadedHandler> {
+=======
+pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #[pin]
     inner: Devres<RegistrationInner>,
 
@@ -411,7 +446,11 @@ pub struct ThreadedRegistration<T: ThreadedHandler> {
     _pin: PhantomPinned,
 }
 
+<<<<<<< HEAD
 impl<T: ThreadedHandler> ThreadedRegistration<T> {
+=======
+impl<T: ThreadedHandler + 'static> ThreadedRegistration<T> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// Registers the IRQ handler with the system for the given IRQ number.
     pub fn new<'a>(
         request: IrqRequest<'a>,
@@ -478,7 +517,11 @@ impl<T: ThreadedHandler> ThreadedRegistration<T> {
 /// # Safety
 ///
 /// This function should be only used as the callback in `request_threaded_irq`.
+<<<<<<< HEAD
 unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
+=======
+unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler + 'static>(
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     _irq: i32,
     ptr: *mut c_void,
 ) -> c_uint {
@@ -494,7 +537,14 @@ unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
 /// # Safety
 ///
 /// This function should be only used as the callback in `request_threaded_irq`.
+<<<<<<< HEAD
 unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, ptr: *mut c_void) -> c_uint {
+=======
+unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler + 'static>(
+    _irq: i32,
+    ptr: *mut c_void,
+) -> c_uint {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     // SAFETY: `ptr` is a pointer to `ThreadedRegistration<T>` set in `ThreadedRegistration::new`
     let registration = unsafe { &*(ptr as *const ThreadedRegistration<T>) };
     // SAFETY: The irq callback is removed before the device is unbound, so the fact that the irq

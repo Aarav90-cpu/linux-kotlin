@@ -30,17 +30,29 @@ struct blk_ia_range_sysfs_entry {
 	ssize_t (*show)(struct blk_independent_access_range *iar, char *buf);
 };
 
+<<<<<<< HEAD
 static const struct blk_ia_range_sysfs_entry blk_ia_range_sector_entry = {
+=======
+static struct blk_ia_range_sysfs_entry blk_ia_range_sector_entry = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr = { .name = "sector", .mode = 0444 },
 	.show = blk_ia_range_sector_show,
 };
 
+<<<<<<< HEAD
 static const struct blk_ia_range_sysfs_entry blk_ia_range_nr_sectors_entry = {
+=======
+static struct blk_ia_range_sysfs_entry blk_ia_range_nr_sectors_entry = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr = { .name = "nr_sectors", .mode = 0444 },
 	.show = blk_ia_range_nr_sectors_show,
 };
 
+<<<<<<< HEAD
 static const struct attribute *const blk_ia_range_attrs[] = {
+=======
+static struct attribute *blk_ia_range_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&blk_ia_range_sector_entry.attr,
 	&blk_ia_range_nr_sectors_entry.attr,
 	NULL,

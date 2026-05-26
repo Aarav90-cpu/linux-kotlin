@@ -14,6 +14,7 @@ extern int kernel_asize;
 extern int kernel_fsize;
 extern int kernel_entry;
 
+<<<<<<< HEAD
 /**
  * efi_relocate_kernel() - copy memory area
  * @image_addr:		pointer to address of memory area to copy
@@ -94,6 +95,8 @@ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
 	return status;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efi_status_t handle_kernel_image(unsigned long *image_addr,
 				 unsigned long *image_size,
 				 unsigned long *reserve_addr,

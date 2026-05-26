@@ -1295,7 +1295,11 @@ static const struct panel_desc auo_g190ean01 = {
 		.height = 301,
 	},
 	.delay = {
+<<<<<<< HEAD
 		.prepare = 30,
+=======
+		.prepare = 50,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.enable = 200,
 		.disable = 110,
 		.unprepare = 1000,
@@ -2096,6 +2100,7 @@ static const struct panel_desc edt_et057090dhu = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
+<<<<<<< HEAD
 static const struct display_timing edt_et057023udba_timing = {
 	.pixelclock = { 23200000, 24190000, 39640000 },
 	.hactive = { 640, 640, 640 },
@@ -2125,6 +2130,8 @@ static const struct panel_desc edt_et057023udba = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode edt_etm0700g0dh6_mode = {
 	.clock = 33260,
 	.hdisplay = 800,
@@ -2388,6 +2395,31 @@ static const struct panel_desc frida_frd350h54004 = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
+<<<<<<< HEAD
+=======
+static const struct drm_display_mode friendlyarm_hd702e_mode = {
+	.clock		= 67185,
+	.hdisplay	= 800,
+	.hsync_start	= 800 + 20,
+	.hsync_end	= 800 + 20 + 24,
+	.htotal		= 800 + 20 + 24 + 20,
+	.vdisplay	= 1280,
+	.vsync_start	= 1280 + 4,
+	.vsync_end	= 1280 + 4 + 8,
+	.vtotal		= 1280 + 4 + 8 + 4,
+	.flags		= DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+};
+
+static const struct panel_desc friendlyarm_hd702e = {
+	.modes = &friendlyarm_hd702e_mode,
+	.num_modes = 1,
+	.size = {
+		.width	= 94,
+		.height	= 151,
+	},
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode giantplus_gpg482739qs5_mode = {
 	.clock = 9000,
 	.hdisplay = 480,
@@ -2947,6 +2979,7 @@ static const struct panel_desc innolux_zj070na_01p = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct display_timing jutouch_jt070tm041_timing = {
 	.pixelclock = { 40800000, 51200000, 67200000 },
 	.hactive = { 1024, 1024, 1024 },
@@ -2976,6 +3009,8 @@ static const struct panel_desc jutouch_jt070tm041 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct display_timing jutouch_jt101tm023_timing = {
 	.pixelclock = { 66300000, 72400000, 78900000 },
 	.hactive = { 1280, 1280, 1280 },
@@ -4104,6 +4139,7 @@ static const struct panel_desc powertip_ph800480t013_idf02  = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
+<<<<<<< HEAD
 static const struct drm_display_mode powertip_ph800480t032_zhc19_mode = {
 	.clock = 27200,
 	.hdisplay = 800,
@@ -4131,6 +4167,8 @@ static const struct panel_desc powertip_ph800480t032_zhc19 = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode primeview_pm070wl4_mode = {
 	.clock = 32000,
 	.hdisplay = 800,
@@ -5061,6 +5099,7 @@ static const struct panel_desc vl050_8048nt_c01 = {
 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
 };
 
+<<<<<<< HEAD
 static const struct drm_display_mode waveshare_133inch_mode = {
 	.clock = 148500,
 	.hdisplay = 1920,
@@ -5088,6 +5127,8 @@ static const struct panel_desc waveshare_133inch = {
 		     DRM_BUS_FLAG_SYNC_SAMPLE_POSEDGE,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_display_mode winstar_wf35ltiacd_mode = {
 	.clock = 6410,
 	.hdisplay = 320,
@@ -5338,9 +5379,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "edt,etm0430g0dh6",
 		.data = &edt_etm0430g0dh6,
 	}, {
+<<<<<<< HEAD
 		.compatible = "edt,et057023udba",
 		.data = &edt_et057023udba,
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "edt,et057090dhu",
 		.data = &edt_et057090dhu,
 	}, {
@@ -5380,6 +5424,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "frida,frd350h54004",
 		.data = &frida_frd350h54004,
 	}, {
+<<<<<<< HEAD
+=======
+		.compatible = "friendlyarm,hd702e",
+		.data = &friendlyarm_hd702e,
+	}, {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "giantplus,gpg482739qs5",
 		.data = &giantplus_gpg482739qs5
 	}, {
@@ -5443,9 +5493,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "innolux,zj070na-01p",
 		.data = &innolux_zj070na_01p,
 	}, {
+<<<<<<< HEAD
 		.compatible = "jutouch,jt070tm041",
 		.data = &jutouch_jt070tm041,
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "jutouch,jt101tm023",
 		.data = &jutouch_jt101tm023,
 	}, {
@@ -5575,9 +5628,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "powertip,ph800480t013-idf02",
 		.data = &powertip_ph800480t013_idf02,
 	}, {
+<<<<<<< HEAD
 		.compatible = "powertip,ph800480t032-zhc19",
 		.data = &powertip_ph800480t032_zhc19,
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "primeview,pm070wl4",
 		.data = &primeview_pm070wl4,
 	}, {
@@ -5641,9 +5697,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "tianma,p0700wxf1mbaa",
 		.data = &tianma_p0700wxf1mbaa,
 	}, {
+<<<<<<< HEAD
 		.compatible = "tianma,tm050rdh03",
 		.data = &ontat_kd50g21_40nt_a1,
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "tianma,tm070jdhg30",
 		.data = &tianma_tm070jdhg30,
 	}, {
@@ -5698,9 +5757,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "vxt,vl050-8048nt-c01",
 		.data = &vl050_8048nt_c01,
 	}, {
+<<<<<<< HEAD
 		.compatible = "waveshare,13.3inch-panel",
 		.data = &waveshare_133inch,
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "winstar,wf35ltiacd",
 		.data = &winstar_wf35ltiacd,
 	}, {

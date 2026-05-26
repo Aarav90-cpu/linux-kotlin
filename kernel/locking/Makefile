@@ -3,11 +3,14 @@
 # and is generally not a function of system call inputs.
 KCOV_INSTRUMENT		:= n
 
+<<<<<<< HEAD
 CONTEXT_ANALYSIS_mutex.o := y
 CONTEXT_ANALYSIS_rtmutex_api.o := y
 CONTEXT_ANALYSIS_ww_rt_mutex.o := y
 CONTEXT_ANALYSIS_rwsem.o := y
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-y += mutex.o semaphore.o rwsem.o percpu-rwsem.o
 
 # Avoid recursion lockdep -> sanitizer -> ... -> lockdep & improve performance.

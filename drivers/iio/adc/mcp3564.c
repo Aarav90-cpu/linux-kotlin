@@ -349,7 +349,11 @@ struct mcp3564_chip_info {
  * struct mcp3564_state - working data for a ADC device
  * @chip_info:		chip specific data
  * @spi:		SPI device structure
+<<<<<<< HEAD
  * @vref_mv:		voltage reference value in millivolts
+=======
+ * @vref_mv:		voltage reference value in miliVolts
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @lock:		synchronize access to driver's state members
  * @dev_addr:		hardware device address
  * @oversampling:	the index inside oversampling list of the ADC

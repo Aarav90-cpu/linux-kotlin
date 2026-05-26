@@ -58,7 +58,11 @@ enum {
 	CFFPS_DEBUGFS_NUM_ENTRIES
 };
 
+<<<<<<< HEAD
 enum versions { cffps_unknown, cffps1, cffps2 };
+=======
+enum versions { cffps1, cffps2, cffps_unknown };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct ibm_cffps {
 	enum versions version;
@@ -482,9 +486,25 @@ MODULE_DEVICE_TABLE(i2c, ibm_cffps_id);
 static int ibm_cffps_probe(struct i2c_client *client)
 {
 	int i, rc;
+<<<<<<< HEAD
 	enum versions vs = (uintptr_t)i2c_get_match_data(client);
 	struct dentry *debugfs;
 	struct ibm_cffps *psu;
+=======
+	enum versions vs = cffps_unknown;
+	struct dentry *debugfs;
+	struct ibm_cffps *psu;
+	const void *md = of_device_get_match_data(&client->dev);
+	const struct i2c_device_id *id;
+
+	if (md) {
+		vs = (uintptr_t)md;
+	} else {
+		id = i2c_match_id(ibm_cffps_id, client);
+		if (id)
+			vs = (enum versions)id->driver_data;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vs == cffps_unknown) {
 		u16 ccin_revision = 0;
@@ -524,7 +544,11 @@ static int ibm_cffps_probe(struct i2c_client *client)
 		}
 
 		/* Set the client name to include the version number. */
+<<<<<<< HEAD
 		snprintf(client->name, I2C_NAME_SIZE, "cffps%d", vs);
+=======
+		snprintf(client->name, I2C_NAME_SIZE, "cffps%d", vs + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	client->dev.platform_data = &ibm_cffps_pdata;

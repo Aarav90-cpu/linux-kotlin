@@ -201,7 +201,11 @@ static void ax_spi_fill_tx_fifo(struct ax_spi *xspi)
 		 * then spi control did't work thoroughly, add one byte delay
 		 */
 		if (ax_spi_read(xspi, AX_SPI_IVR) & AX_SPI_IVR_TFOV)
+<<<<<<< HEAD
 			udelay(10);
+=======
+			usleep_range(10, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (xspi->tx_buf)
 			ax_spi_write_b(xspi, AX_SPI_TXFIFO, *xspi->tx_buf++);
 		else
@@ -751,9 +755,15 @@ static const struct spi_controller_mem_ops ax_spi_mem_ops = {
  */
 static int ax_spi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct spi_controller *ctlr;
 	struct ax_spi *xspi;
 	int ret, irq;
+=======
+	int ret = 0, irq;
+	struct spi_controller *ctlr;
+	struct ax_spi *xspi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 num_cs;
 
 	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*xspi));
@@ -785,7 +795,11 @@ static int ax_spi_probe(struct platform_device *pdev)
 	ret = clk_prepare_enable(xspi->ref_clk);
 	if (ret) {
 		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+<<<<<<< HEAD
 		goto err_disable_apb;
+=======
+		goto clk_dis_apb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	pm_runtime_use_autosuspend(&pdev->dev);
@@ -815,7 +829,11 @@ static int ax_spi_probe(struct platform_device *pdev)
 	irq = platform_get_irq(pdev, 0);
 	if (irq <= 0) {
 		ret = -ENXIO;
+<<<<<<< HEAD
 		goto err_disable_rpm;
+=======
+		goto clk_dis_all;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = devm_request_irq(&pdev->dev, irq, ax_spi_irq,
@@ -823,7 +841,11 @@ static int ax_spi_probe(struct platform_device *pdev)
 	if (ret != 0) {
 		ret = -ENXIO;
 		dev_err(&pdev->dev, "request_irq failed\n");
+<<<<<<< HEAD
 		goto err_disable_rpm;
+=======
+		goto clk_dis_all;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ctlr->use_gpio_descriptors = true;
@@ -842,11 +864,18 @@ static int ax_spi_probe(struct platform_device *pdev)
 
 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
 
+<<<<<<< HEAD
+=======
+	pm_runtime_mark_last_busy(&pdev->dev);
+	pm_runtime_put_autosuspend(&pdev->dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctlr->mem_ops = &ax_spi_mem_ops;
 
 	ret = spi_register_controller(ctlr);
 	if (ret) {
 		dev_err(&pdev->dev, "spi_register_controller failed\n");
+<<<<<<< HEAD
 		goto err_disable_rpm;
 	}
 
@@ -862,6 +891,18 @@ err_disable_rpm:
 
 	clk_disable_unprepare(xspi->ref_clk);
 err_disable_apb:
+=======
+		goto clk_dis_all;
+	}
+
+	return ret;
+
+clk_dis_all:
+	pm_runtime_set_suspended(&pdev->dev);
+	pm_runtime_disable(&pdev->dev);
+	clk_disable_unprepare(xspi->ref_clk);
+clk_dis_apb:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clk_disable_unprepare(xspi->pclk);
 
 	return ret;
@@ -880,6 +921,7 @@ static void ax_spi_remove(struct platform_device *pdev)
 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
 	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
 
+<<<<<<< HEAD
 	pm_runtime_get_sync(&pdev->dev);
 
 	spi_unregister_controller(ctlr);
@@ -888,6 +930,12 @@ static void ax_spi_remove(struct platform_device *pdev)
 	pm_runtime_put_noidle(&pdev->dev);
 	pm_runtime_set_suspended(&pdev->dev);
 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+=======
+	spi_unregister_controller(ctlr);
+
+	pm_runtime_set_suspended(&pdev->dev);
+	pm_runtime_disable(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	clk_disable_unprepare(xspi->ref_clk);
 	clk_disable_unprepare(xspi->pclk);

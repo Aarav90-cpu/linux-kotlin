@@ -7,7 +7,10 @@
 
 /* This value should always be a power of 2, see page_reporting_cycle() */
 #define PAGE_REPORTING_CAPACITY		32
+<<<<<<< HEAD
 #define PAGE_REPORTING_ORDER_UNSPECIFIED	-1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct page_reporting_dev_info {
 	/* function that alters pages to make them "reported" */

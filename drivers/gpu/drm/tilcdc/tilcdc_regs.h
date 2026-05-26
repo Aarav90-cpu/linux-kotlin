@@ -113,13 +113,21 @@
 
 static inline void tilcdc_write(struct drm_device *dev, u32 reg, u32 data)
 {
+<<<<<<< HEAD
 	struct tilcdc_drm_private *priv = ddev_to_tilcdc_priv(dev);
+=======
+	struct tilcdc_drm_private *priv = dev->dev_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iowrite32(data, priv->mmio + reg);
 }
 
 static inline void tilcdc_write64(struct drm_device *dev, u32 reg, u64 data)
 {
+<<<<<<< HEAD
 	struct tilcdc_drm_private *priv = ddev_to_tilcdc_priv(dev);
+=======
+	struct tilcdc_drm_private *priv = dev->dev_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	volatile void __iomem *addr = priv->mmio + reg;
 
 #if defined(iowrite64) && !defined(iowrite64_is_nonatomic)
@@ -133,7 +141,11 @@ static inline void tilcdc_write64(struct drm_device *dev, u32 reg, u64 data)
 
 static inline u32 tilcdc_read(struct drm_device *dev, u32 reg)
 {
+<<<<<<< HEAD
 	struct tilcdc_drm_private *priv = ddev_to_tilcdc_priv(dev);
+=======
+	struct tilcdc_drm_private *priv = dev->dev_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ioread32(priv->mmio + reg);
 }
 
@@ -156,7 +168,11 @@ static inline void tilcdc_clear(struct drm_device *dev, u32 reg, u32 mask)
 /* the register to read/clear irqstatus differs between v1 and v2 of the IP */
 static inline u32 tilcdc_irqstatus_reg(struct drm_device *dev)
 {
+<<<<<<< HEAD
 	struct tilcdc_drm_private *priv = ddev_to_tilcdc_priv(dev);
+=======
+	struct tilcdc_drm_private *priv = dev->dev_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return (priv->rev == 2) ? LCDC_MASKED_STAT_REG : LCDC_STAT_REG;
 }
 

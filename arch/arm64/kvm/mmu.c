@@ -340,9 +340,12 @@ static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 
 void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
 			    u64 size, bool may_block)
 {
+<<<<<<< HEAD
 	if (kvm_vm_is_protected(kvm_s2_mmu_to_kvm(mmu)))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__unmap_stage2_range(mmu, start, size, may_block);
 }
 
@@ -881,6 +884,12 @@ static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
 	u64 mmfr0, mmfr1;
 	u32 phys_shift;
 
+<<<<<<< HEAD
+=======
+	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
 	if (is_protected_kvm_enabled()) {
 		phys_shift = kvm_ipa_limit;
@@ -1013,7 +1022,10 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
 
 out_destroy_pgtable:
 	kvm_stage2_destroy(pgt);
+<<<<<<< HEAD
 	mmu->pgt = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_free_pgtable:
 	kfree(pgt);
 	return err;
@@ -1401,10 +1413,17 @@ static bool fault_supports_stage2_huge_mapping(struct kvm_memory_slot *memslot,
  */
 static long
 transparent_hugepage_adjust(struct kvm *kvm, struct kvm_memory_slot *memslot,
+<<<<<<< HEAD
 			    unsigned long hva, kvm_pfn_t *pfnp, gfn_t *gfnp)
 {
 	kvm_pfn_t pfn = *pfnp;
 	gfn_t gfn = *gfnp;
+=======
+			    unsigned long hva, kvm_pfn_t *pfnp,
+			    phys_addr_t *ipap)
+{
+	kvm_pfn_t pfn = *pfnp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Make sure the adjustment is done only for THP pages. Also make
@@ -1420,8 +1439,12 @@ transparent_hugepage_adjust(struct kvm *kvm, struct kvm_memory_slot *memslot,
 		if (sz < PMD_SIZE)
 			return PAGE_SIZE;
 
+<<<<<<< HEAD
 		gfn &= ~(PTRS_PER_PMD - 1);
 		*gfnp = gfn;
+=======
+		*ipap &= PMD_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pfn &= ~(PTRS_PER_PMD - 1);
 		*pfnp = pfn;
 
@@ -1514,6 +1537,7 @@ static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
 	}
 }
 
+<<<<<<< HEAD
 static void *get_mmu_memcache(struct kvm_vcpu *vcpu)
 {
 	if (!is_protected_kvm_enabled())
@@ -1530,6 +1554,27 @@ static int topup_mmu_memcache(struct kvm_vcpu *vcpu, void *memcache)
 		return kvm_mmu_topup_memory_cache(memcache, min_pages);
 
 	return topup_hyp_memcache(memcache, min_pages);
+=======
+static int prepare_mmu_memcache(struct kvm_vcpu *vcpu, bool topup_memcache,
+				void **memcache)
+{
+	int min_pages;
+
+	if (!is_protected_kvm_enabled())
+		*memcache = &vcpu->arch.mmu_page_cache;
+	else
+		*memcache = &vcpu->arch.pkvm_memcache;
+
+	if (!topup_memcache)
+		return 0;
+
+	min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
+
+	if (!is_protected_kvm_enabled())
+		return kvm_mmu_topup_memory_cache(*memcache, min_pages);
+
+	return topup_hyp_memcache(*memcache, min_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1542,6 +1587,7 @@ static int topup_mmu_memcache(struct kvm_vcpu *vcpu, void *memcache)
  * TLB invalidation from the guest and used to limit the invalidation scope if a
  * TTL hint or a range isn't provided.
  */
+<<<<<<< HEAD
 static enum kvm_pgtable_prot adjust_nested_fault_perms(struct kvm_s2_trans *nested,
 						       enum kvm_pgtable_prot prot)
 {
@@ -1584,10 +1630,46 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
 	struct page *page;
 	struct kvm *kvm = s2fd->vcpu->kvm;
 	void *memcache = NULL;
+=======
+static void adjust_nested_fault_perms(struct kvm_s2_trans *nested,
+				      enum kvm_pgtable_prot *prot,
+				      bool *writable)
+{
+	*writable &= kvm_s2_trans_writable(nested);
+	if (!kvm_s2_trans_readable(nested))
+		*prot &= ~KVM_PGTABLE_PROT_R;
+
+	*prot |= kvm_encode_nested_level(nested);
+}
+
+static void adjust_nested_exec_perms(struct kvm *kvm,
+				     struct kvm_s2_trans *nested,
+				     enum kvm_pgtable_prot *prot)
+{
+	if (!kvm_s2_trans_exec_el0(kvm, nested))
+		*prot &= ~KVM_PGTABLE_PROT_UX;
+	if (!kvm_s2_trans_exec_el1(kvm, nested))
+		*prot &= ~KVM_PGTABLE_PROT_PX;
+}
+
+static int gmem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+		      struct kvm_s2_trans *nested,
+		      struct kvm_memory_slot *memslot, bool is_perm)
+{
+	bool write_fault, exec_fault, writable;
+	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
+	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
+	unsigned long mmu_seq;
+	struct page *page;
+	struct kvm *kvm = vcpu->kvm;
+	void *memcache;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvm_pfn_t pfn;
 	gfn_t gfn;
 	int ret;
 
+<<<<<<< HEAD
 	if (!perm_fault) {
 		memcache = get_mmu_memcache(s2fd->vcpu);
 		ret = topup_mmu_memcache(s2fd->vcpu, memcache);
@@ -1602,6 +1684,19 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
 
 	write_fault = kvm_is_write_fault(s2fd->vcpu);
 	exec_fault = kvm_vcpu_trap_is_exec_fault(s2fd->vcpu);
+=======
+	ret = prepare_mmu_memcache(vcpu, true, &memcache);
+	if (ret)
+		return ret;
+
+	if (nested)
+		gfn = kvm_s2_trans_output(nested) >> PAGE_SHIFT;
+	else
+		gfn = fault_ipa >> PAGE_SHIFT;
+
+	write_fault = kvm_is_write_fault(vcpu);
+	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_WARN_ON_ONCE(write_fault && exec_fault);
 
@@ -1609,24 +1704,45 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
 	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
 	smp_rmb();
 
+<<<<<<< HEAD
 	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
 	if (ret) {
 		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
+=======
+	ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &pfn, &page, NULL);
+	if (ret) {
+		kvm_prepare_memory_fault_exit(vcpu, fault_ipa, PAGE_SIZE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      write_fault, exec_fault, false);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!(s2fd->memslot->flags & KVM_MEM_READONLY))
 		prot |= KVM_PGTABLE_PROT_W;
 
 	if (s2fd->nested)
 		prot = adjust_nested_fault_perms(s2fd->nested, prot);
+=======
+	writable = !(memslot->flags & KVM_MEM_READONLY);
+
+	if (nested)
+		adjust_nested_fault_perms(nested, &prot, &writable);
+
+	if (writable)
+		prot |= KVM_PGTABLE_PROT_W;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (exec_fault || cpus_have_final_cap(ARM64_HAS_CACHE_DIC))
 		prot |= KVM_PGTABLE_PROT_X;
 
+<<<<<<< HEAD
 	if (s2fd->nested)
 		prot = adjust_nested_exec_perms(kvm, s2fd->nested, prot);
+=======
+	if (nested)
+		adjust_nested_exec_perms(kvm, nested, &prot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_fault_lock(kvm);
 	if (mmu_invalidate_retry(kvm, mmu_seq)) {
@@ -1634,6 +1750,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	if (perm_fault) {
 		/*
 		 * Drop the SW bits in favour of those stored in the
@@ -1654,10 +1771,23 @@ out_unlock:
 
 	if ((prot & KVM_PGTABLE_PROT_W) && !ret)
 		mark_page_dirty_in_slot(kvm, s2fd->memslot, gfn);
+=======
+	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_ipa, PAGE_SIZE,
+						 __pfn_to_phys(pfn), prot,
+						 memcache, flags);
+
+out_unlock:
+	kvm_release_faultin_page(kvm, page, !!ret, writable);
+	kvm_fault_unlock(kvm);
+
+	if (writable && !ret)
+		mark_page_dirty_in_slot(kvm, memslot, gfn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret != -EAGAIN ? ret : 0;
 }
 
+<<<<<<< HEAD
 struct kvm_s2_fault_vma_info {
 	unsigned long	mmu_seq;
 	long		vma_pagesize;
@@ -1755,11 +1885,77 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
 		s2vi->max_map_size = PUD_SIZE;
 		vma_shift = get_vma_page_shift(vma, s2fd->hva);
 	}
+=======
+static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+			  struct kvm_s2_trans *nested,
+			  struct kvm_memory_slot *memslot, unsigned long hva,
+			  bool fault_is_perm)
+{
+	int ret = 0;
+	bool topup_memcache;
+	bool write_fault, writable;
+	bool exec_fault, mte_allowed, is_vma_cacheable;
+	bool s2_force_noncacheable = false, vfio_allow_any_uc = false;
+	unsigned long mmu_seq;
+	phys_addr_t ipa = fault_ipa;
+	struct kvm *kvm = vcpu->kvm;
+	struct vm_area_struct *vma;
+	short vma_shift;
+	void *memcache;
+	gfn_t gfn;
+	kvm_pfn_t pfn;
+	bool logging_active = memslot_is_logging(memslot);
+	bool force_pte = logging_active;
+	long vma_pagesize, fault_granule;
+	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+	struct kvm_pgtable *pgt;
+	struct page *page;
+	vm_flags_t vm_flags;
+	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
+
+	if (fault_is_perm)
+		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
+	write_fault = kvm_is_write_fault(vcpu);
+	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
+	VM_WARN_ON_ONCE(write_fault && exec_fault);
+
+	/*
+	 * Permission faults just need to update the existing leaf entry,
+	 * and so normally don't require allocations from the memcache. The
+	 * only exception to this is when dirty logging is enabled at runtime
+	 * and a write fault needs to collapse a block entry into a table.
+	 */
+	topup_memcache = !fault_is_perm || (logging_active && write_fault);
+	ret = prepare_mmu_memcache(vcpu, topup_memcache, &memcache);
+	if (ret)
+		return ret;
+
+	/*
+	 * Let's check if we will get back a huge page backed by hugetlbfs, or
+	 * get block mapping for device MMIO region.
+	 */
+	mmap_read_lock(current->mm);
+	vma = vma_lookup(current->mm, hva);
+	if (unlikely(!vma)) {
+		kvm_err("Failed to find VMA for hva 0x%lx\n", hva);
+		mmap_read_unlock(current->mm);
+		return -EFAULT;
+	}
+
+	if (force_pte)
+		vma_shift = PAGE_SHIFT;
+	else
+		vma_shift = get_vma_page_shift(vma, hva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (vma_shift) {
 #ifndef __PAGETABLE_PMD_FOLDED
 	case PUD_SHIFT:
+<<<<<<< HEAD
 		if (fault_supports_stage2_huge_mapping(s2fd->memslot, s2fd->hva, PUD_SIZE))
+=======
+		if (fault_supports_stage2_huge_mapping(memslot, hva, PUD_SIZE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		fallthrough;
 #endif
@@ -1767,12 +1963,20 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
 		vma_shift = PMD_SHIFT;
 		fallthrough;
 	case PMD_SHIFT:
+<<<<<<< HEAD
 		if (fault_supports_stage2_huge_mapping(s2fd->memslot, s2fd->hva, PMD_SIZE))
+=======
+		if (fault_supports_stage2_huge_mapping(memslot, hva, PMD_SIZE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		fallthrough;
 	case CONT_PTE_SHIFT:
 		vma_shift = PAGE_SHIFT;
+<<<<<<< HEAD
 		s2vi->max_map_size = PAGE_SIZE;
+=======
+		force_pte = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fallthrough;
 	case PAGE_SHIFT:
 		break;
@@ -1780,17 +1984,32 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
 		WARN_ONCE(1, "Unknown vma_shift %d", vma_shift);
 	}
 
+<<<<<<< HEAD
 	if (s2fd->nested) {
 		unsigned long max_map_size;
 
 		max_map_size = min(s2vi->max_map_size, PUD_SIZE);
+=======
+	vma_pagesize = 1UL << vma_shift;
+
+	if (nested) {
+		unsigned long max_map_size;
+
+		max_map_size = force_pte ? PAGE_SIZE : PUD_SIZE;
+
+		ipa = kvm_s2_trans_output(nested);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * If we're about to create a shadow stage 2 entry, then we
 		 * can only create a block mapping if the guest stage 2 page
 		 * table uses at least as big a mapping.
 		 */
+<<<<<<< HEAD
 		max_map_size = min(kvm_s2_trans_size(s2fd->nested), max_map_size);
+=======
+		max_map_size = min(kvm_s2_trans_size(nested), max_map_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Be careful that if the mapping size falls between
@@ -1801,6 +2020,7 @@ static short kvm_s2_resolve_vma_size(const struct kvm_s2_fault_desc *s2fd,
 		else if (max_map_size >= PAGE_SIZE && max_map_size < PMD_SIZE)
 			max_map_size = PAGE_SIZE;
 
+<<<<<<< HEAD
 		s2vi->max_map_size = max_map_size;
 		vma_shift = min_t(short, vma_shift, __ffs(max_map_size));
 	}
@@ -1829,11 +2049,19 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
 
 	s2vi->vma_pagesize = BIT(kvm_s2_resolve_vma_size(s2fd, s2vi, vma));
 
+=======
+		force_pte = (max_map_size == PAGE_SIZE);
+		vma_pagesize = min_t(long, vma_pagesize, max_map_size);
+		vma_shift = __ffs(vma_pagesize);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Both the canonical IPA and fault IPA must be aligned to the
 	 * mapping size to ensure we find the right PFN and lay down the
 	 * mapping in the right place.
 	 */
+<<<<<<< HEAD
 	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
 
 	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
@@ -1841,6 +2069,22 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
 	s2vi->vm_flags = vma->vm_flags;
 
 	s2vi->is_vma_cacheable = kvm_vma_is_cacheable(vma);
+=======
+	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
+	ipa = ALIGN_DOWN(ipa, vma_pagesize);
+
+	gfn = ipa >> PAGE_SHIFT;
+	mte_allowed = kvm_vma_mte_allowed(vma);
+
+	vfio_allow_any_uc = vma->vm_flags & VM_ALLOW_ANY_UNCACHED;
+
+	vm_flags = vma->vm_flags;
+
+	is_vma_cacheable = kvm_vma_is_cacheable(vma);
+
+	/* Don't use the VMA after the unlock -- it may have vanished */
+	vma = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Read mmu_invalidate_seq so that KVM can detect if the results of
@@ -1850,6 +2094,7 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
 	 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
 	 * with the smp_wmb() in kvm_mmu_invalidate_end().
 	 */
+<<<<<<< HEAD
 	s2vi->mmu_seq = kvm->mmu_invalidate_seq;
 	mmap_read_unlock(current->mm);
 
@@ -1887,13 +2132,31 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
 		}
 		return -EFAULT;
 	}
+=======
+	mmu_seq = kvm->mmu_invalidate_seq;
+	mmap_read_unlock(current->mm);
+
+	pfn = __kvm_faultin_pfn(memslot, gfn, write_fault ? FOLL_WRITE : 0,
+				&writable, &page);
+	if (pfn == KVM_PFN_ERR_HWPOISON) {
+		kvm_send_hwpoison_signal(hva, vma_shift);
+		return 0;
+	}
+	if (is_error_noslot_pfn(pfn))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Check if this is non-struct page memory PFN, and cannot support
 	 * CMOs. It could potentially be unsafe to access as cacheable.
 	 */
+<<<<<<< HEAD
 	if (s2vi->vm_flags & (VM_PFNMAP | VM_MIXEDMAP) && !pfn_is_map_memory(s2vi->pfn)) {
 		if (s2vi->is_vma_cacheable) {
+=======
+	if (vm_flags & (VM_PFNMAP | VM_MIXEDMAP) && !pfn_is_map_memory(pfn)) {
+		if (is_vma_cacheable) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Whilst the VMA owner expects cacheable mapping to this
 			 * PFN, hardware also has to support the FWB and CACHE DIC
@@ -1906,10 +2169,15 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
 			 * S2FWB and CACHE DIC are mandatory to avoid the need for
 			 * cache maintenance.
 			 */
+<<<<<<< HEAD
 			if (!kvm_supports_cacheable_pfnmap()) {
 				kvm_release_faultin_page(s2fd->vcpu->kvm, s2vi->page, true, false);
 				return -EFAULT;
 			}
+=======
+			if (!kvm_supports_cacheable_pfnmap())
+				ret = -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			/*
 			 * If the page was identified as device early by looking at
@@ -1921,6 +2189,7 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
 			 * In both cases, we don't let transparent_hugepage_adjust()
 			 * change things at the last minute.
 			 */
+<<<<<<< HEAD
 			s2vi->map_non_cacheable = true;
 		}
 
@@ -1938,6 +2207,23 @@ static int kvm_s2_fault_compute_prot(const struct kvm_s2_fault_desc *s2fd,
 
 	if (kvm_vcpu_trap_is_exec_fault(s2fd->vcpu) && s2vi->map_non_cacheable)
 		return -ENOEXEC;
+=======
+			s2_force_noncacheable = true;
+		}
+	} else if (logging_active && !write_fault) {
+		/*
+		 * Only actually map the page as writable if this was a write
+		 * fault.
+		 */
+		writable = false;
+	}
+
+	if (exec_fault && s2_force_noncacheable)
+		ret = -ENOEXEC;
+
+	if (ret)
+		goto out_put_page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Guest performs atomic/exclusive operations on memory with unsupported
@@ -1945,6 +2231,7 @@ static int kvm_s2_fault_compute_prot(const struct kvm_s2_fault_desc *s2fd,
 	 * and trigger the exception here. Since the memslot is valid, inject
 	 * the fault back to the guest.
 	 */
+<<<<<<< HEAD
 	if (esr_fsc_is_excl_atomic_fault(kvm_vcpu_get_esr(s2fd->vcpu))) {
 		kvm_inject_dabt_excl_atomic(s2fd->vcpu, kvm_vcpu_get_hfar(s2fd->vcpu));
 		return 1;
@@ -2007,11 +2294,29 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
 	mapping_size = s2vi->vma_pagesize;
 	pfn = s2vi->pfn;
 	gfn = s2vi->gfn;
+=======
+	if (esr_fsc_is_excl_atomic_fault(kvm_vcpu_get_esr(vcpu))) {
+		kvm_inject_dabt_excl_atomic(vcpu, kvm_vcpu_get_hfar(vcpu));
+		ret = 1;
+		goto out_put_page;
+	}
+
+	if (nested)
+		adjust_nested_fault_perms(nested, &prot, &writable);
+
+	kvm_fault_lock(kvm);
+	pgt = vcpu->arch.hw_mmu->pgt;
+	if (mmu_invalidate_retry(kvm, mmu_seq)) {
+		ret = -EAGAIN;
+		goto out_unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If we are not forced to use page mapping, check if we are
 	 * backed by a THP and thus use block mapping if possible.
 	 */
+<<<<<<< HEAD
 	if (mapping_size == PAGE_SIZE &&
 	    !(s2vi->max_map_size == PAGE_SIZE || s2vi->map_non_cacheable)) {
 		if (perm_fault_granule > PAGE_SIZE) {
@@ -2036,11 +2341,62 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
 	 * kvm_pgtable_stage2_map() should be called to change block size.
 	 */
 	if (mapping_size == perm_fault_granule) {
+=======
+	if (vma_pagesize == PAGE_SIZE && !(force_pte || s2_force_noncacheable)) {
+		if (fault_is_perm && fault_granule > PAGE_SIZE)
+			vma_pagesize = fault_granule;
+		else
+			vma_pagesize = transparent_hugepage_adjust(kvm, memslot,
+								   hva, &pfn,
+								   &fault_ipa);
+
+		if (vma_pagesize < 0) {
+			ret = vma_pagesize;
+			goto out_unlock;
+		}
+	}
+
+	if (!fault_is_perm && !s2_force_noncacheable && kvm_has_mte(kvm)) {
+		/* Check the VMM hasn't introduced a new disallowed VMA */
+		if (mte_allowed) {
+			sanitise_mte_tags(kvm, pfn, vma_pagesize);
+		} else {
+			ret = -EFAULT;
+			goto out_unlock;
+		}
+	}
+
+	if (writable)
+		prot |= KVM_PGTABLE_PROT_W;
+
+	if (exec_fault)
+		prot |= KVM_PGTABLE_PROT_X;
+
+	if (s2_force_noncacheable) {
+		if (vfio_allow_any_uc)
+			prot |= KVM_PGTABLE_PROT_NORMAL_NC;
+		else
+			prot |= KVM_PGTABLE_PROT_DEVICE;
+	} else if (cpus_have_final_cap(ARM64_HAS_CACHE_DIC)) {
+		prot |= KVM_PGTABLE_PROT_X;
+	}
+
+	if (nested)
+		adjust_nested_exec_perms(kvm, nested, &prot);
+
+	/*
+	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+	 * permissions only if vma_pagesize equals fault_granule. Otherwise,
+	 * kvm_pgtable_stage2_map() should be called to change block size.
+	 */
+	if (fault_is_perm && vma_pagesize == fault_granule) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Drop the SW bits in favour of those stored in the
 		 * PTE, which will be preserved.
 		 */
 		prot &= ~KVM_NV_GUEST_MAP_SZ;
+<<<<<<< HEAD
 		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, gfn_to_gpa(gfn),
 								 prot, flags);
 	} else {
@@ -2106,6 +2462,28 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
 	}
 
 	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache);
+=======
+		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, fault_ipa, prot, flags);
+	} else {
+		ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_ipa, vma_pagesize,
+					     __pfn_to_phys(pfn), prot,
+					     memcache, flags);
+	}
+
+out_unlock:
+	kvm_release_faultin_page(kvm, page, !!ret, writable);
+	kvm_fault_unlock(kvm);
+
+	/* Mark the page dirty only if the fault is handled successfully */
+	if (writable && !ret)
+		mark_page_dirty_in_slot(kvm, memslot, gfn);
+
+	return ret != -EAGAIN ? ret : 0;
+
+out_put_page:
+	kvm_release_page_unused(page);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Resolve the access fault by making the page young again. */
@@ -2368,6 +2746,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	const struct kvm_s2_fault_desc s2fd = {
 		.vcpu		= vcpu,
 		.fault_ipa	= fault_ipa,
@@ -2389,6 +2768,17 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
 			ret = user_mem_abort(&s2fd);
 	}
 
+=======
+	VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
+			!write_fault && !kvm_vcpu_trap_is_exec_fault(vcpu));
+
+	if (kvm_slot_has_gmem(memslot))
+		ret = gmem_abort(vcpu, fault_ipa, nested, memslot,
+				 esr_fsc_is_permission_fault(esr));
+	else
+		ret = user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
+				     esr_fsc_is_permission_fault(esr));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret == 0)
 		ret = 1;
 out:
@@ -2401,7 +2791,11 @@ out_unlock:
 
 bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 {
+<<<<<<< HEAD
 	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+=======
+	if (!kvm->arch.mmu.pgt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	__unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
@@ -2416,7 +2810,11 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 {
 	u64 size = (range->end - range->start) << PAGE_SHIFT;
 
+<<<<<<< HEAD
 	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+=======
+	if (!kvm->arch.mmu.pgt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
@@ -2432,7 +2830,11 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
 {
 	u64 size = (range->end - range->start) << PAGE_SHIFT;
 
+<<<<<<< HEAD
 	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+=======
+	if (!kvm->arch.mmu.pgt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
@@ -2589,6 +2991,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 	hva_t hva, reg_end;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (kvm_vm_is_protected(kvm)) {
 		/* Cannot modify memslots once a pVM has run. */
 		if (pkvm_hyp_vm_is_created(kvm) &&
@@ -2602,6 +3005,8 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
 			change != KVM_MR_FLAGS_ONLY)
 		return 0;

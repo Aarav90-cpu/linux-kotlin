@@ -435,6 +435,7 @@ bool of_machine_compatible_match(const char *const *compats)
 EXPORT_SYMBOL(of_machine_compatible_match);
 
 /**
+<<<<<<< HEAD
  * of_machine_read_compatible - Get the compatible string of this machine
  * @compatible: address at which the address of the compatible string will be
  *              stored
@@ -469,6 +470,15 @@ EXPORT_SYMBOL_GPL(of_machine_read_model);
  * Returns matched entry or NULL
  */
 const struct of_device_id *of_machine_get_match(const struct of_device_id *matches)
+=======
+ * of_machine_device_match - Test root of device tree against a of_device_id array
+ * @matches:	NULL terminated array of of_device_id match structures to search in
+ *
+ * Returns true if the root node has any of the given compatible values in its
+ * compatible property.
+ */
+bool of_machine_device_match(const struct of_device_id *matches)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device_node *root;
 	const struct of_device_id *match = NULL;
@@ -479,9 +489,15 @@ const struct of_device_id *of_machine_get_match(const struct of_device_id *match
 		of_node_put(root);
 	}
 
+<<<<<<< HEAD
 	return match;
 }
 EXPORT_SYMBOL(of_machine_get_match);
+=======
+	return match != NULL;
+}
+EXPORT_SYMBOL(of_machine_device_match);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * of_machine_get_match_data - Tell if root of device tree has a matching of_match structure
@@ -492,8 +508,20 @@ EXPORT_SYMBOL(of_machine_get_match);
 const void *of_machine_get_match_data(const struct of_device_id *matches)
 {
 	const struct of_device_id *match;
+<<<<<<< HEAD
 
 	match = of_machine_get_match(matches);
+=======
+	struct device_node *root;
+
+	root = of_find_node_by_path("/");
+	if (!root)
+		return NULL;
+
+	match = of_match_node(matches, root);
+	of_node_put(root);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!match)
 		return NULL;
 

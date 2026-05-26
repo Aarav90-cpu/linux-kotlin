@@ -7,6 +7,7 @@
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
 #include <linux/device.h>
 #include <linux/gfp.h>
@@ -15,6 +16,13 @@
 #include <media/media-entity.h>
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-event.h>
+=======
+#include <linux/device.h>
+#include <linux/gfp.h>
+
+#include <media/media-entity.h>
+#include <media/v4l2-ctrls.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <media/v4l2-subdev.h>
 
 #include "vsp1.h"
@@ -184,6 +192,11 @@ int vsp1_subdev_get_pad_format(struct v4l2_subdev *subdev,
  * @subdev: V4L2 subdevice
  * @sd_state: V4L2 subdev state
  * @code: Media bus code enumeration
+<<<<<<< HEAD
+=======
+ * @codes: Array of supported media bus codes
+ * @ncodes: Number of supported media bus codes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * This function implements the subdev enum_mbus_code pad operation for entities
  * that do not support format conversion. It enumerates the given supported
@@ -192,15 +205,27 @@ int vsp1_subdev_get_pad_format(struct v4l2_subdev *subdev,
  */
 int vsp1_subdev_enum_mbus_code(struct v4l2_subdev *subdev,
 			       struct v4l2_subdev_state *sd_state,
+<<<<<<< HEAD
 			       struct v4l2_subdev_mbus_code_enum *code)
+=======
+			       struct v4l2_subdev_mbus_code_enum *code,
+			       const unsigned int *codes, unsigned int ncodes)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 
 	if (code->pad == 0) {
+<<<<<<< HEAD
 		if (code->index >= entity->num_codes)
 			return -EINVAL;
 
 		code->code = entity->codes[code->index];
+=======
+		if (code->index >= ncodes)
+			return -EINVAL;
+
+		code->code = codes[code->index];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		struct v4l2_subdev_state *state;
 		struct v4l2_mbus_framefmt *format;
@@ -230,6 +255,13 @@ int vsp1_subdev_enum_mbus_code(struct v4l2_subdev *subdev,
  * @subdev: V4L2 subdevice
  * @sd_state: V4L2 subdev state
  * @fse: Frame size enumeration
+<<<<<<< HEAD
+=======
+ * @min_width: Minimum image width
+ * @min_height: Minimum image height
+ * @max_width: Maximum image width
+ * @max_height: Maximum image height
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * This function implements the subdev enum_frame_size pad operation for
  * entities that do not support scaling or cropping. It reports the given
@@ -238,6 +270,7 @@ int vsp1_subdev_enum_mbus_code(struct v4l2_subdev *subdev,
  */
 int vsp1_subdev_enum_frame_size(struct v4l2_subdev *subdev,
 				struct v4l2_subdev_state *sd_state,
+<<<<<<< HEAD
 				struct v4l2_subdev_frame_size_enum *fse)
 {
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
@@ -279,13 +312,53 @@ int vsp1_subdev_enum_frame_size(struct v4l2_subdev *subdev,
 		if (fse->code != format->code)
 			return -EINVAL;
 
+=======
+				struct v4l2_subdev_frame_size_enum *fse,
+				unsigned int min_width, unsigned int min_height,
+				unsigned int max_width, unsigned int max_height)
+{
+	struct vsp1_entity *entity = to_vsp1_entity(subdev);
+	struct v4l2_subdev_state *state;
+	struct v4l2_mbus_framefmt *format;
+	int ret = 0;
+
+	state = vsp1_entity_get_state(entity, sd_state, fse->which);
+	if (!state)
+		return -EINVAL;
+
+	format = v4l2_subdev_state_get_format(state, fse->pad);
+
+	mutex_lock(&entity->lock);
+
+	if (fse->index || fse->code != format->code) {
+		ret = -EINVAL;
+		goto done;
+	}
+
+	if (fse->pad == 0) {
+		fse->min_width = min_width;
+		fse->max_width = max_width;
+		fse->min_height = min_height;
+		fse->max_height = max_height;
+	} else {
+		/*
+		 * The size on the source pad are fixed and always identical to
+		 * the size on the sink pad.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fse->min_width = format->width;
 		fse->max_width = format->width;
 		fse->min_height = format->height;
 		fse->max_height = format->height;
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+done:
+	mutex_unlock(&entity->lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -293,6 +366,7 @@ int vsp1_subdev_enum_frame_size(struct v4l2_subdev *subdev,
  * @subdev: V4L2 subdevice
  * @sd_state: V4L2 subdev state
  * @fmt: V4L2 subdev format
+<<<<<<< HEAD
  *
  * This function implements the subdev set_fmt pad operation for entities that
  * do not support scaling or cropping. It defaults to the first supported media
@@ -302,6 +376,27 @@ int vsp1_subdev_enum_frame_size(struct v4l2_subdev *subdev,
 int vsp1_subdev_set_pad_format(struct v4l2_subdev *subdev,
 			       struct v4l2_subdev_state *sd_state,
 			       struct v4l2_subdev_format *fmt)
+=======
+ * @codes: Array of supported media bus codes
+ * @ncodes: Number of supported media bus codes
+ * @min_width: Minimum image width
+ * @min_height: Minimum image height
+ * @max_width: Maximum image width
+ * @max_height: Maximum image height
+ *
+ * This function implements the subdev set_fmt pad operation for entities that
+ * do not support scaling or cropping. It defaults to the first supplied media
+ * bus code if the requested code isn't supported, clamps the size to the
+ * supplied minimum and maximum, and propagates the sink pad format to the
+ * source pad.
+ */
+int vsp1_subdev_set_pad_format(struct v4l2_subdev *subdev,
+			       struct v4l2_subdev_state *sd_state,
+			       struct v4l2_subdev_format *fmt,
+			       const unsigned int *codes, unsigned int ncodes,
+			       unsigned int min_width, unsigned int min_height,
+			       unsigned int max_width, unsigned int max_height)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 	struct v4l2_subdev_state *state;
@@ -330,6 +425,7 @@ int vsp1_subdev_set_pad_format(struct v4l2_subdev *subdev,
 	 * Default to the first media bus code if the requested format is not
 	 * supported.
 	 */
+<<<<<<< HEAD
 	for (i = 0; i < entity->num_codes; ++i) {
 		if (fmt->format.code == entity->codes[i])
 			break;
@@ -341,6 +437,18 @@ int vsp1_subdev_set_pad_format(struct v4l2_subdev *subdev,
 				entity->min_width, entity->max_width);
 	format->height = clamp_t(unsigned int, fmt->format.height,
 				 entity->min_height, entity->max_height);
+=======
+	for (i = 0; i < ncodes; ++i) {
+		if (fmt->format.code == codes[i])
+			break;
+	}
+
+	format->code = i < ncodes ? codes[i] : codes[0];
+	format->width = clamp_t(unsigned int, fmt->format.width,
+				min_width, max_width);
+	format->height = clamp_t(unsigned int, fmt->format.height,
+				 min_height, max_height);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	format->field = V4L2_FIELD_NONE;
 
 	format->colorspace = fmt->format.colorspace;
@@ -380,7 +488,11 @@ static int vsp1_entity_init_state(struct v4l2_subdev *subdev,
 	unsigned int pad;
 
 	/* Initialize all pad formats with default values. */
+<<<<<<< HEAD
 	for (pad = 0; pad < subdev->entity.num_pads; ++pad) {
+=======
+	for (pad = 0; pad < subdev->entity.num_pads - 1; ++pad) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct v4l2_subdev_format format = {
 			.pad = pad,
 			.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
@@ -397,11 +509,14 @@ static const struct v4l2_subdev_internal_ops vsp1_entity_internal_ops = {
 	.init_state = vsp1_entity_init_state,
 };
 
+<<<<<<< HEAD
 const struct v4l2_subdev_core_ops vsp1_entity_core_ops = {
 	.subscribe_event = v4l2_ctrl_subdev_subscribe_event,
 	.unsubscribe_event = v4l2_event_subdev_unsubscribe,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* -----------------------------------------------------------------------------
  * Media Operations
  */
@@ -645,9 +760,12 @@ int vsp1_entity_init(struct vsp1_device *vsp1, struct vsp1_entity *entity,
 	subdev->entity.ops = &vsp1->media_ops;
 	subdev->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 
+<<<<<<< HEAD
 	if (ops->core == &vsp1_entity_core_ops)
 		subdev->flags |= V4L2_SUBDEV_FL_HAS_EVENTS;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snprintf(subdev->name, sizeof(subdev->name), "%s %s",
 		 dev_name(vsp1->dev), name);
 

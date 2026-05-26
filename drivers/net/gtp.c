@@ -374,7 +374,11 @@ static struct rt6_info *ip6_route_output_gtp(struct net *net,
 	fl6->saddr		= *saddr;
 	fl6->flowi6_proto	= sk->sk_protocol;
 
+<<<<<<< HEAD
 	dst = ip6_dst_lookup_flow(net, sk, fl6, NULL);
+=======
+	dst = ipv6_stub->ipv6_dst_lookup_flow(net, sk, fl6, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(dst))
 		return ERR_PTR(-ENETUNREACH);
 

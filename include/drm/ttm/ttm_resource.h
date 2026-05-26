@@ -448,8 +448,11 @@ void ttm_resource_add_bulk_move(struct ttm_resource *res,
 				struct ttm_buffer_object *bo);
 void ttm_resource_del_bulk_move(struct ttm_resource *res,
 				struct ttm_buffer_object *bo);
+<<<<<<< HEAD
 void ttm_resource_del_bulk_move_unevictable(struct ttm_resource *res,
 					    struct ttm_buffer_object *bo);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ttm_resource_move_to_lru_tail(struct ttm_resource *res);
 
 void ttm_resource_init(struct ttm_buffer_object *bo,
@@ -458,10 +461,21 @@ void ttm_resource_init(struct ttm_buffer_object *bo,
 void ttm_resource_fini(struct ttm_resource_manager *man,
 		       struct ttm_resource *res);
 
+<<<<<<< HEAD
 int ttm_resource_alloc(struct ttm_buffer_object *bo,
 		       const struct ttm_place *place,
 		       struct ttm_resource **res,
 		       struct dmem_cgroup_pool_state **ret_limit_pool);
+=======
+int ttm_resource_try_charge(struct ttm_buffer_object *bo,
+			    const struct ttm_place *place,
+			    struct dmem_cgroup_pool_state **ret_pool,
+			    struct dmem_cgroup_pool_state **ret_limit_pool);
+int ttm_resource_alloc(struct ttm_buffer_object *bo,
+		       const struct ttm_place *place,
+		       struct ttm_resource **res,
+		       struct dmem_cgroup_pool_state *charge_pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ttm_resource_free(struct ttm_buffer_object *bo, struct ttm_resource **res);
 bool ttm_resource_intersects(struct ttm_device *bdev,
 			     struct ttm_resource *res,

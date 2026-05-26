@@ -1088,7 +1088,10 @@ static int hx9023s_probe(struct i2c_client *client)
 	struct device *dev = &client->dev;
 	struct iio_dev *indio_dev;
 	struct hx9023s_data *data;
+<<<<<<< HEAD
 	const char *fw_name;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
@@ -1126,9 +1129,13 @@ static int hx9023s_probe(struct i2c_client *client)
 	if (ret)
 		return dev_err_probe(dev, ret, "channel config failed\n");
 
+<<<<<<< HEAD
 	fw_name = "hx9023s.bin";
 	device_property_read_string(dev, "firmware-name", &fw_name);
 	ret = request_firmware_nowait(THIS_MODULE, true, fw_name, dev,
+=======
+	ret = request_firmware_nowait(THIS_MODULE, true, "hx9023s.bin", dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      GFP_KERNEL, data, hx9023s_cfg_update);
 	if (ret)
 		return dev_err_probe(dev, ret, "reg config failed\n");

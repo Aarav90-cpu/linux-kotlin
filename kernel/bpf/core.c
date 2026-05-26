@@ -18,6 +18,10 @@
  */
 
 #include <uapi/linux/btf.h>
+<<<<<<< HEAD
+=======
+#include <crypto/sha1.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/filter.h>
 #include <linux/skbuff.h>
 #include <linux/vmalloc.h>
@@ -1486,6 +1490,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other)
 	 * know whether fp here is the clone or the original.
 	 */
 	fp->aux->prog = fp;
+<<<<<<< HEAD
 	if (fp->aux->offload)
 		fp->aux->offload->prog = fp;
 	bpf_prog_clone_free(fp_other);
@@ -1496,6 +1501,29 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other)
  * bpf_prog_need_blind() returns true.
  */
 struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bpf_prog *prog)
+=======
+	bpf_prog_clone_free(fp_other);
+}
+
+static void adjust_insn_arrays(struct bpf_prog *prog, u32 off, u32 len)
+{
+#ifdef CONFIG_BPF_SYSCALL
+	struct bpf_map *map;
+	int i;
+
+	if (len <= 1)
+		return;
+
+	for (i = 0; i < prog->aux->used_map_cnt; i++) {
+		map = prog->aux->used_maps[i];
+		if (map->map_type == BPF_MAP_TYPE_INSN_ARRAY)
+			bpf_insn_array_adjust(map, off, len);
+	}
+#endif
+}
+
+struct bpf_prog *bpf_jit_blind_constants(struct bpf_prog *prog)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_insn insn_buff[16], aux[2];
 	struct bpf_prog *clone, *tmp;
@@ -1503,17 +1531,25 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bp
 	struct bpf_insn *insn;
 	int i, rewritten;
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(env && env->prog != prog))
 		return ERR_PTR(-EINVAL);
+=======
+	if (!prog->blinding_requested || prog->blinded)
+		return prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	clone = bpf_prog_clone_create(prog, GFP_USER);
 	if (!clone)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	/* make sure bpf_patch_insn_data() patches the correct prog */
 	if (env)
 		env->prog = clone;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	insn_cnt = clone->len;
 	insn = clone->insnsi;
 
@@ -1541,6 +1577,7 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bp
 		if (!rewritten)
 			continue;
 
+<<<<<<< HEAD
 		if (env)
 			tmp = bpf_patch_insn_data(env, i, insn_buff, rewritten);
 		else
@@ -1550,19 +1587,32 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bp
 			if (env)
 				/* restore the original prog */
 				env->prog = prog;
+=======
+		tmp = bpf_patch_insn_single(clone, i, insn_buff, rewritten);
+		if (IS_ERR(tmp)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Patching may have repointed aux->prog during
 			 * realloc from the original one, so we need to
 			 * fix it up here on error.
 			 */
 			bpf_jit_prog_release_other(prog, clone);
+<<<<<<< HEAD
 			return IS_ERR(tmp) ? tmp : ERR_PTR(-ENOMEM);
+=======
+			return tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		clone = tmp;
 		insn_delta = rewritten - 1;
 
+<<<<<<< HEAD
 		if (env)
 			env->prog = clone;
+=======
+		/* Instructions arrays must be updated using absolute xlated offsets */
+		adjust_insn_arrays(clone, prog->aux->subprog_start + i, rewritten);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Walk new program and skip insns we just inserted. */
 		insn = clone->insnsi + i + insn_delta;
@@ -1573,6 +1623,7 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_verifier_env *env, struct bp
 	clone->blinded = 1;
 	return clone;
 }
+<<<<<<< HEAD
 
 bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, const struct bpf_prog *prog,
 				 int insn_idx)
@@ -1582,6 +1633,8 @@ bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, const struc
 	insn_idx += prog->aux->subprog_start;
 	return env->insn_aux_data[insn_idx].indirect_target;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_BPF_JIT */
 
 /* Base function for offset calculation. Needs to go into .text section,
@@ -2095,12 +2148,20 @@ select_insn:
 		if (unlikely(tail_call_cnt >= MAX_TAIL_CALL_CNT))
 			goto out;
 
+<<<<<<< HEAD
+=======
+		tail_call_cnt++;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prog = READ_ONCE(array->ptrs[index]);
 		if (!prog)
 			goto out;
 
+<<<<<<< HEAD
 		tail_call_cnt++;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* ARG1 at this point is guaranteed to point to CTX from
 		 * the verifier side due to the fact that the tail call is
 		 * handled like a helper, that is, bpf_tail_call_proto,
@@ -2540,6 +2601,7 @@ static bool bpf_prog_select_interpreter(struct bpf_prog *fp)
 	return select_interpreter;
 }
 
+<<<<<<< HEAD
 static struct bpf_prog *bpf_prog_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 #ifdef CONFIG_BPF_JIT
@@ -2589,6 +2651,20 @@ out_restore:
 
 struct bpf_prog *__bpf_prog_select_runtime(struct bpf_verifier_env *env, struct bpf_prog *fp,
 					   int *err)
+=======
+/**
+ *	bpf_prog_select_runtime - select exec runtime for BPF program
+ *	@fp: bpf_prog populated with BPF program
+ *	@err: pointer to error variable
+ *
+ * Try to JIT eBPF program, if JIT is not available, use interpreter.
+ * The BPF program will be executed via bpf_prog_run() function.
+ *
+ * Return: the &fp argument along with &err set to 0 for success or
+ * a negative errno code on failure
+ */
+struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* In case of BPF to BPF calls, verifier did all the prep
 	 * work with regards to JITing, etc.
@@ -2616,7 +2692,11 @@ struct bpf_prog *__bpf_prog_select_runtime(struct bpf_verifier_env *env, struct 
 		if (*err)
 			return fp;
 
+<<<<<<< HEAD
 		fp = bpf_prog_jit_compile(env, fp);
+=======
+		fp = bpf_int_jit_compile(fp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bpf_prog_jit_attempt_done(fp);
 		if (!fp->jited && jit_needed) {
 			*err = -ENOTSUPP;
@@ -2642,6 +2722,7 @@ finalize:
 
 	return fp;
 }
+<<<<<<< HEAD
 
 /**
  *	bpf_prog_select_runtime - select exec runtime for BPF program
@@ -2658,6 +2739,8 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
 {
 	return __bpf_prog_select_runtime(NULL, fp, err);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(bpf_prog_select_runtime);
 
 static unsigned int __bpf_prog_ret1(const void *ctx,
@@ -2674,10 +2757,15 @@ static struct bpf_prog_dummy {
 	},
 };
 
+<<<<<<< HEAD
 struct bpf_prog_array bpf_empty_prog_array = {
 	.items = {
 		{ .prog = NULL },
 	},
+=======
+struct bpf_empty_prog_array bpf_empty_prog_array = {
+	.null_prog = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL(bpf_empty_prog_array);
 
@@ -2688,14 +2776,22 @@ struct bpf_prog_array *bpf_prog_array_alloc(u32 prog_cnt, gfp_t flags)
 	if (prog_cnt)
 		p = kzalloc_flex(*p, items, prog_cnt + 1, flags);
 	else
+<<<<<<< HEAD
 		p = &bpf_empty_prog_array;
+=======
+		p = &bpf_empty_prog_array.hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return p;
 }
 
 void bpf_prog_array_free(struct bpf_prog_array *progs)
 {
+<<<<<<< HEAD
 	if (!progs || progs == &bpf_empty_prog_array)
+=======
+	if (!progs || progs == &bpf_empty_prog_array.hdr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	kfree_rcu(progs, rcu);
 }
@@ -2704,17 +2800,32 @@ static void __bpf_prog_array_free_sleepable_cb(struct rcu_head *rcu)
 {
 	struct bpf_prog_array *progs;
 
+<<<<<<< HEAD
 	/*
 	 * RCU Tasks Trace grace period implies RCU grace period, there is no
 	 * need to call kfree_rcu(), just call kfree() directly.
 	 */
 	progs = container_of(rcu, struct bpf_prog_array, rcu);
 	kfree(progs);
+=======
+	/* If RCU Tasks Trace grace period implies RCU grace period, there is
+	 * no need to call kfree_rcu(), just call kfree() directly.
+	 */
+	progs = container_of(rcu, struct bpf_prog_array, rcu);
+	if (rcu_trace_implies_rcu_gp())
+		kfree(progs);
+	else
+		kfree_rcu(progs, rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void bpf_prog_array_free_sleepable(struct bpf_prog_array *progs)
 {
+<<<<<<< HEAD
 	if (!progs || progs == &bpf_empty_prog_array)
+=======
+	if (!progs || progs == &bpf_empty_prog_array.hdr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	call_rcu_tasks_trace(&progs->rcu, __bpf_prog_array_free_sleepable_cb);
 }
@@ -3145,7 +3256,11 @@ const struct bpf_func_proto bpf_tail_call_proto = {
  * It is encouraged to implement bpf_int_jit_compile() instead, so that
  * eBPF and implicitly also cBPF can get JITed!
  */
+<<<<<<< HEAD
 struct bpf_prog * __weak bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
+=======
+struct bpf_prog * __weak bpf_int_jit_compile(struct bpf_prog *prog)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return prog;
 }
@@ -3375,6 +3490,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(xdp_bulk_tx);
 
 #ifdef CONFIG_BPF_SYSCALL
 
+<<<<<<< HEAD
 void bpf_get_linfo_file_line(struct btf *btf, const struct bpf_line_info *linfo,
 			     const char **filep, const char **linep, int *nump)
 {
@@ -3432,6 +3548,8 @@ const struct bpf_line_info *bpf_find_linfo(const struct bpf_prog *prog, u32 insn
 	return &linfo[l];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int bpf_prog_get_file_line(struct bpf_prog *prog, unsigned long ip, const char **filep,
 			   const char **linep, int *nump)
 {
@@ -3466,7 +3584,18 @@ int bpf_prog_get_file_line(struct bpf_prog *prog, unsigned long ip, const char *
 	if (idx == -1)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	bpf_get_linfo_file_line(btf, &linfo[idx], filep, linep, nump);
+=======
+	/* Get base component of the file path. */
+	*filep = btf_name_by_offset(btf, linfo[idx].file_name_off);
+	*filep = kbasename(*filep);
+	/* Obtain the source line, and strip whitespace in prefix. */
+	*linep = btf_name_by_offset(btf, linfo[idx].line_off);
+	while (isspace(**linep))
+		*linep += 1;
+	*nump = BPF_LINE_INFO_LINE_NUM(linfo[idx].line_col);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

@@ -1037,11 +1037,15 @@ static int imx412_power_on(struct device *dev)
 		goto error_reset;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Certain Arducam IMX577 module variants require a longer reset settle
 	 * time. Increasing the delay from 1ms to 10ms ensures reliable startup.
 	 */
 	usleep_range(10000, 12000);
+=======
+	usleep_range(1000, 1200);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 

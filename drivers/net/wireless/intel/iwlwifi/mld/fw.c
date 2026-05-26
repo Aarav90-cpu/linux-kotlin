@@ -513,7 +513,11 @@ static int iwl_mld_config_fw(struct iwl_mld *mld)
 		return ret;
 
 	iwl_mld_init_tas(mld);
+<<<<<<< HEAD
 	iwl_mld_init_ap_type_tables(mld);
+=======
+	iwl_mld_init_uats(mld);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

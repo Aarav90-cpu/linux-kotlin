@@ -8,8 +8,11 @@ enum icp_qat_fw_comp_cmd_id {
 	ICP_QAT_FW_COMP_CMD_STATIC = 0,
 	ICP_QAT_FW_COMP_CMD_DYNAMIC = 1,
 	ICP_QAT_FW_COMP_CMD_DECOMPRESS = 2,
+<<<<<<< HEAD
 	ICP_QAT_FW_COMP_CMD_ZSTD_COMPRESS = 10,
 	ICP_QAT_FW_COMP_CMD_ZSTD_DECOMPRESS = 11,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ICP_QAT_FW_COMP_CMD_DELIMITER
 };
 

@@ -17,7 +17,10 @@
 #include <linux/io.h>
 #include <linux/random.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SOC_BUS
 #include <linux/sys_soc.h>
@@ -251,7 +254,11 @@ static void __init omap3_cpuinfo(void)
 		cpu_name = "OMAP3503";
 	}
 
+<<<<<<< HEAD
 	strscpy(soc_name, cpu_name);
+=======
+	scnprintf(soc_name, sizeof(soc_name), "%s", cpu_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Print verbose information */
 	n += scnprintf(buf, sizeof(buf) - n, "%s %s (", soc_name, soc_rev);

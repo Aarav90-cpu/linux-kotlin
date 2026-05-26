@@ -118,8 +118,12 @@ struct netns_ipv6 {
 	struct seg6_pernet_data *seg6_data;
 	struct fib_notifier_ops	*notifier_ops;
 	struct fib_notifier_ops	*ip6mr_notifier_ops;
+<<<<<<< HEAD
 	atomic_t		ipmr_seq;
 	int			flowlabel_count;
+=======
+	unsigned int ipmr_seq; /* protected by rtnl_mutex */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		struct hlist_head head;
 		spinlock_t	lock;

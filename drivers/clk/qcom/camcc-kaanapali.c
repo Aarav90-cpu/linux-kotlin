@@ -6,7 +6,13 @@
 #include <linux/clk-provider.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+#include <linux/of.h>
+#include <linux/platform_device.h>
+#include <linux/pm_runtime.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regmap.h>
 
 #include <dt-bindings/clock/qcom,kaanapali-camcc.h>
@@ -2600,7 +2606,11 @@ static struct clk_alpha_pll *cam_cc_kaanapali_plls[] = {
 	&cam_cc_pll7,
 };
 
+<<<<<<< HEAD
 static const u32 cam_cc_kaanapali_critical_cbcrs[] = {
+=======
+static u32 cam_cc_kaanapali_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x21398, /* CAM_CC_DRV_AHB_CLK */
 	0x21390, /* CAM_CC_DRV_XO_CLK */
 	0x21364, /* CAM_CC_GDSC_CLK */
@@ -2615,7 +2625,11 @@ static const struct regmap_config cam_cc_kaanapali_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data cam_cc_kaanapali_driver_data = {
+=======
+static struct qcom_cc_driver_data cam_cc_kaanapali_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = cam_cc_kaanapali_plls,
 	.num_alpha_plls = ARRAY_SIZE(cam_cc_kaanapali_plls),
 	.clk_cbcrs = cam_cc_kaanapali_critical_cbcrs,

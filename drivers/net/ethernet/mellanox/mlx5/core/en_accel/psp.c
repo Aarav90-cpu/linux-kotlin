@@ -1070,6 +1070,7 @@ static struct psp_dev_ops mlx5_psp_ops = {
 
 void mlx5e_psp_unregister(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct mlx5e_psp *psp = priv->psp;
 
 	if (!psp || !psp->psp)
@@ -1077,17 +1078,27 @@ void mlx5e_psp_unregister(struct mlx5e_priv *priv)
 
 	psp_dev_unregister(psp->psp);
 	psp->psp = NULL;
+=======
+	if (!priv->psp || !priv->psp->psp)
+		return;
+
+	psp_dev_unregister(priv->psp->psp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void mlx5e_psp_register(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct mlx5e_psp *psp = priv->psp;
 	struct psp_dev *psd;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* FW Caps missing */
 	if (!priv->psp)
 		return;
 
+<<<<<<< HEAD
 	psp->caps.assoc_drv_spc = sizeof(u32);
 	psp->caps.versions = 1 << PSP_VERSION_HDR0_AES_GCM_128;
 	if (MLX5_CAP_PSP(priv->mdev, psp_crypto_esp_aes_gcm_256_encrypt) &&
@@ -1101,6 +1112,19 @@ void mlx5e_psp_register(struct mlx5e_priv *priv)
 		return;
 	}
 	psp->psp = psd;
+=======
+	priv->psp->caps.assoc_drv_spc = sizeof(u32);
+	priv->psp->caps.versions = 1 << PSP_VERSION_HDR0_AES_GCM_128;
+	if (MLX5_CAP_PSP(priv->mdev, psp_crypto_esp_aes_gcm_256_encrypt) &&
+	    MLX5_CAP_PSP(priv->mdev, psp_crypto_esp_aes_gcm_256_decrypt))
+		priv->psp->caps.versions |= 1 << PSP_VERSION_HDR0_AES_GCM_256;
+
+	priv->psp->psp = psp_dev_create(priv->netdev, &mlx5_psp_ops,
+					&priv->psp->caps, NULL);
+	if (IS_ERR(priv->psp->psp))
+		mlx5_core_err(priv->mdev, "PSP failed to register due to %pe\n",
+			      priv->psp->psp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mlx5e_psp_init(struct mlx5e_priv *priv)
@@ -1139,6 +1163,7 @@ int mlx5e_psp_init(struct mlx5e_priv *priv)
 	if (!psp)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	fs = mlx5e_accel_psp_fs_init(priv);
 	if (IS_ERR(fs)) {
 		err = PTR_ERR(fs);
@@ -1151,6 +1176,24 @@ int mlx5e_psp_init(struct mlx5e_priv *priv)
 
 	mlx5_core_dbg(priv->mdev, "PSP attached to netdevice\n");
 	return 0;
+=======
+	priv->psp = psp;
+	fs = mlx5e_accel_psp_fs_init(priv);
+	if (IS_ERR(fs)) {
+		err = PTR_ERR(fs);
+		goto out_err;
+	}
+
+	psp->fs = fs;
+
+	mlx5_core_dbg(priv->mdev, "PSP attached to netdevice\n");
+	return 0;
+
+out_err:
+	priv->psp = NULL;
+	kfree(psp);
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void mlx5e_psp_cleanup(struct mlx5e_priv *priv)

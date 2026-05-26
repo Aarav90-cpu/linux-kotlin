@@ -11,7 +11,10 @@ amdxdna-y := \
 	aie2_solver.o \
 	amdxdna_ctx.o \
 	amdxdna_gem.o \
+<<<<<<< HEAD
 	amdxdna_iommu.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdxdna_mailbox.o \
 	amdxdna_mailbox_helper.o \
 	amdxdna_pci_drv.o \

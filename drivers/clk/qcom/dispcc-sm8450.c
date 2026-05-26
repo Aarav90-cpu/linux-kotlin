@@ -409,7 +409,11 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
 		.parent_data = disp_cc_parent_data_1,
 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
 		.flags = CLK_SET_RATE_PARENT,
+<<<<<<< HEAD
 		.ops = &clk_rcg2_ops,
+=======
+		.ops = &clk_dp_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

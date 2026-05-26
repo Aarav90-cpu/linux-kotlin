@@ -755,7 +755,11 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
 	}
 
 	if ((ep->ep_state & SET_DEQ_PENDING)) {
+<<<<<<< HEAD
 		xhci_warn(xhci, "Set TR Deq already pending, don't submit for %pad\n",
+=======
+		xhci_warn(xhci, "Set TR Deq already pending, don't submit for 0x%pad\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  &addr);
 		return -EBUSY;
 	}
@@ -763,7 +767,11 @@ static int xhci_move_dequeue_past_td(struct xhci_hcd *xhci,
 	/* This function gets called from contexts where it cannot sleep */
 	cmd = xhci_alloc_command(xhci, false, GFP_ATOMIC);
 	if (!cmd) {
+<<<<<<< HEAD
 		xhci_warn(xhci, "Can't alloc Set TR Deq cmd %pad\n", &addr);
+=======
+		xhci_warn(xhci, "Can't alloc Set TR Deq cmd 0x%pad\n", &addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 	}
 
@@ -3208,9 +3216,16 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
 	/*
 	 * Clear the op reg interrupt status first,
 	 * so we can receive interrupts from other MSI-X interrupters.
+<<<<<<< HEAD
 	 * USBSTS bits are write 1 to clear.
 	 */
 	writel(STS_EINT, &xhci->op_regs->status);
+=======
+	 * Write 1 to clear the interrupt status.
+	 */
+	status |= STS_EINT;
+	writel(status, &xhci->op_regs->status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* This is the handler of the primary interrupter */
 	xhci_handle_events(xhci, xhci->interrupters[0], false);

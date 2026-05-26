@@ -1268,7 +1268,11 @@ static const struct snd_soc_component_driver lpass_component_driver = {
 	.trigger	= lpass_platform_pcmops_trigger,
 	.pointer	= lpass_platform_pcmops_pointer,
 	.mmap		= lpass_platform_pcmops_mmap,
+<<<<<<< HEAD
 	.pcm_new	= lpass_platform_pcm_new,
+=======
+	.pcm_construct	= lpass_platform_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.suspend		= lpass_platform_pcmops_suspend,
 	.resume			= lpass_platform_pcmops_resume,
 	.copy		= lpass_platform_copy,

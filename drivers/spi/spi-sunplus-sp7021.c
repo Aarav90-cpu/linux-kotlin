@@ -389,6 +389,14 @@ static int sp7021_spi_target_transfer_one(struct spi_controller *ctlr, struct sp
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void sp7021_spi_disable_unprepare(void *data)
+{
+	clk_disable_unprepare(data);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sp7021_spi_reset_control_assert(void *data)
 {
 	reset_control_assert(data);
@@ -455,7 +463,11 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
 	if (pspim->s_irq < 0)
 		return pspim->s_irq;
 
+<<<<<<< HEAD
 	pspim->spi_clk = devm_clk_get_enabled(dev, NULL);
+=======
+	pspim->spi_clk = devm_clk_get(dev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(pspim->spi_clk))
 		return dev_err_probe(dev, PTR_ERR(pspim->spi_clk), "clk get fail\n");
 
@@ -463,6 +475,17 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
 	if (IS_ERR(pspim->rstc))
 		return dev_err_probe(dev, PTR_ERR(pspim->rstc), "rst get fail\n");
 
+<<<<<<< HEAD
+=======
+	ret = clk_prepare_enable(pspim->spi_clk);
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to enable clk\n");
+
+	ret = devm_add_action_or_reset(dev, sp7021_spi_disable_unprepare, pspim->spi_clk);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = reset_control_deassert(pspim->rstc);
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to deassert reset\n");

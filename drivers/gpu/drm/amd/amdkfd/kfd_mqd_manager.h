@@ -102,8 +102,12 @@ struct mqd_manager {
 				  u32 *ctl_stack_used_size,
 				  u32 *save_area_used_size);
 
+<<<<<<< HEAD
 	int	(*get_checkpoint_info)(struct mqd_manager *mm, void *mqd,
 				       uint32_t *ctl_stack_size);
+=======
+	void	(*get_checkpoint_info)(struct mqd_manager *mm, void *mqd, uint32_t *ctl_stack_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void	(*checkpoint_mqd)(struct mqd_manager *mm,
 				  void *mqd,

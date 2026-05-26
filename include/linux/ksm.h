@@ -17,8 +17,13 @@
 #ifdef CONFIG_KSM
 int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
 		unsigned long end, int advice, vm_flags_t *vm_flags);
+<<<<<<< HEAD
 vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
 			  vma_flags_t vma_flags);
+=======
+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+			 vm_flags_t vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ksm_enable_merge_any(struct mm_struct *mm);
 int ksm_disable_merge_any(struct mm_struct *mm);
 int ksm_disable(struct mm_struct *mm);
@@ -103,10 +108,17 @@ bool ksm_process_mergeable(struct mm_struct *mm);
 
 #else  /* !CONFIG_KSM */
 
+<<<<<<< HEAD
 static inline vma_flags_t ksm_vma_flags(struct mm_struct *mm,
 		const struct file *file, vma_flags_t vma_flags)
 {
 	return vma_flags;
+=======
+static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
+		const struct file *file, vm_flags_t vm_flags)
+{
+	return vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int ksm_disable(struct mm_struct *mm)

@@ -73,19 +73,26 @@ int devlink_nl_notify_filter_set_doit(struct sk_buff *skb,
 		flt->dev_name = pos;
 	}
 
+<<<<<<< HEAD
 	if (attrs[DEVLINK_ATTR_INDEX]) {
 		flt->devlink_index = nla_get_uint(attrs[DEVLINK_ATTR_INDEX]);
 		flt->devlink_index_valid = true;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (attrs[DEVLINK_ATTR_PORT_INDEX]) {
 		flt->port_index = nla_get_u32(attrs[DEVLINK_ATTR_PORT_INDEX]);
 		flt->port_index_valid = true;
 	}
 
 	/* Don't attach empty filter. */
+<<<<<<< HEAD
 	if (!flt->bus_name && !flt->dev_name &&
 	    !flt->devlink_index_valid && !flt->port_index_valid) {
+=======
+	if (!flt->bus_name && !flt->dev_name && !flt->port_index_valid) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(flt);
 		flt = NULL;
 	}
@@ -106,9 +113,12 @@ int devlink_nl_notify_filter_set_doit(struct sk_buff *skb,
 static bool devlink_obj_desc_match(const struct devlink_obj_desc *desc,
 				   const struct devlink_obj_desc *flt)
 {
+<<<<<<< HEAD
 	if (desc->devlink_index_valid && flt->devlink_index_valid &&
 	    desc->devlink_index != flt->devlink_index)
 		return false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (desc->bus_name && flt->bus_name &&
 	    strcmp(desc->bus_name, flt->bus_name))
 		return false;
@@ -195,6 +205,7 @@ devlink_get_from_attrs_lock(struct net *net, struct nlattr **attrs,
 	char *busname;
 	char *devname;
 
+<<<<<<< HEAD
 	if (attrs[DEVLINK_ATTR_INDEX]) {
 		if (attrs[DEVLINK_ATTR_BUS_NAME] ||
 		    attrs[DEVLINK_ATTR_DEV_NAME])
@@ -206,12 +217,15 @@ devlink_get_from_attrs_lock(struct net *net, struct nlattr **attrs,
 		goto found;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!attrs[DEVLINK_ATTR_BUS_NAME] || !attrs[DEVLINK_ATTR_DEV_NAME])
 		return ERR_PTR(-EINVAL);
 
 	busname = nla_data(attrs[DEVLINK_ATTR_BUS_NAME]);
 	devname = nla_data(attrs[DEVLINK_ATTR_DEV_NAME]);
 
+<<<<<<< HEAD
 	if (!strcmp(busname, DEVLINK_INDEX_BUS_NAME)) {
 		if (kstrtoul(devname, 10, &index))
 			return ERR_PTR(-ENODEV);
@@ -225,10 +239,21 @@ devlink_get_from_attrs_lock(struct net *net, struct nlattr **attrs,
 		if (strcmp(devlink_bus_name(devlink), busname) == 0 &&
 		    strcmp(devlink_dev_name(devlink), devname) == 0)
 			goto found;
+=======
+	devlinks_xa_for_each_registered_get(net, index, devlink) {
+		if (strcmp(devlink->dev->bus->name, busname) == 0 &&
+		    strcmp(dev_name(devlink->dev), devname) == 0) {
+			devl_dev_lock(devlink, dev_lock);
+			if (devl_is_registered(devlink))
+				return devlink;
+			devl_dev_unlock(devlink, dev_lock);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		devlink_put(devlink);
 	}
 
 	return ERR_PTR(-ENODEV);
+<<<<<<< HEAD
 
 found:
 	devl_dev_lock(devlink, dev_lock);
@@ -237,6 +262,8 @@ found:
 	devl_dev_unlock(devlink, dev_lock);
 	devlink_put(devlink);
 	return ERR_PTR(-ENODEV);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __devlink_nl_pre_doit(struct sk_buff *skb, struct genl_info *info,
@@ -370,8 +397,11 @@ static int devlink_nl_inst_iter_dumpit(struct sk_buff *msg,
 
 		/* restart sub-object walk for the next instance */
 		state->idx = 0;
+<<<<<<< HEAD
 		state->port_ctx.index = 0;
 		state->port_ctx.index_valid = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (err != -EMSGSIZE)
@@ -387,8 +417,12 @@ int devlink_nl_dumpit(struct sk_buff *msg, struct netlink_callback *cb,
 	int flags = NLM_F_MULTI;
 
 	if (attrs &&
+<<<<<<< HEAD
 	    (attrs[DEVLINK_ATTR_BUS_NAME] || attrs[DEVLINK_ATTR_DEV_NAME] ||
 	     attrs[DEVLINK_ATTR_INDEX]))
+=======
+	    (attrs[DEVLINK_ATTR_BUS_NAME] || attrs[DEVLINK_ATTR_DEV_NAME]))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return devlink_nl_inst_single_dumpit(msg, cb, flags, dump_one,
 						     attrs);
 	else

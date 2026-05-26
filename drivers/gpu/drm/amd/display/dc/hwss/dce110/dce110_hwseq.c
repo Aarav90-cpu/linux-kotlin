@@ -86,9 +86,15 @@
 	hws->ctx
 
 #define DC_LOGGER \
+<<<<<<< HEAD
 	dc_ctx->logger
 #define DC_LOGGER_INIT(ctx) \
 	struct dc_context *dc_ctx = ctx
+=======
+	ctx->logger
+#define DC_LOGGER_INIT() \
+	struct dc_context *ctx = dc->ctx
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define REG(reg)\
 	hws->regs->reg
@@ -201,8 +207,11 @@ static void enable_display_pipe_clock_gating(
 	struct dc_context *ctx,
 	bool clock_gating)
 {
+<<<<<<< HEAD
 	(void)ctx;
 	(void)clock_gating;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*TODO*/
 }
 
@@ -286,7 +295,10 @@ static bool
 dce110_set_input_transfer_func(struct dc *dc, struct pipe_ctx *pipe_ctx,
 			       const struct dc_plane_state *plane_state)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct input_pixel_processor *ipp = pipe_ctx->plane_res.ipp;
 	const struct dc_transfer_func *tf = NULL;
 	struct ipp_prescale_params prescale_params = { 0 };
@@ -491,6 +503,7 @@ dce110_translate_regamma_to_hw_format(const struct dc_transfer_func *output_tf,
 		seg_distr[8] = 4;
 		seg_distr[9] = 4;
 		seg_distr[10] = 0;
+<<<<<<< HEAD
 		seg_distr[11] = (uint32_t)-1;
 		seg_distr[12] = (uint32_t)-1;
 		seg_distr[13] = (uint32_t)-1;
@@ -500,6 +513,17 @@ dce110_translate_regamma_to_hw_format(const struct dc_transfer_func *output_tf,
 
 	for (k = 0; k < 16; k++) {
 		if (seg_distr[k] != (uint32_t)-1)
+=======
+		seg_distr[11] = -1;
+		seg_distr[12] = -1;
+		seg_distr[13] = -1;
+		seg_distr[14] = -1;
+		seg_distr[15] = -1;
+	}
+
+	for (k = 0; k < 16; k++) {
+		if (seg_distr[k] != -1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hw_points += (1 << seg_distr[k]);
 	}
 
@@ -610,7 +634,10 @@ static bool
 dce110_set_output_transfer_func(struct dc *dc, struct pipe_ctx *pipe_ctx,
 				const struct dc_stream_state *stream)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct transform *xfm = pipe_ctx->plane_res.xfm;
 
 	xfm->funcs->opp_power_on_regamma_lut(xfm, true);
@@ -664,6 +691,7 @@ void dce110_update_info_frame(struct pipe_ctx *pipe_ctx)
 	}
 }
 
+<<<<<<< HEAD
 static void
 dce110_external_encoder_control(enum bp_external_encoder_control_action action,
 				struct dc_link *link,
@@ -718,6 +746,8 @@ dce110_dac_load_detect(struct dc_link *link)
 	return bp_result == BP_RESULT_OK;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dce110_enable_stream(struct pipe_ctx *pipe_ctx)
 {
 	enum dc_lane_count lane_count =
@@ -748,8 +778,11 @@ void dce110_enable_stream(struct pipe_ctx *pipe_ctx)
 
 	tg->funcs->set_early_control(tg, early_control);
 
+<<<<<<< HEAD
 	if (link->ext_enc_id.id)
 		dce110_external_encoder_control(EXTERNAL_ENCODER_CONTROL_ENABLE, link, timing);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static enum bp_result link_transmitter_control(
@@ -771,14 +804,21 @@ void dce110_edp_wait_for_hpd_ready(
 		struct dc_link *link,
 		bool power_up)
 {
+<<<<<<< HEAD
+=======
+	struct dc_context *ctx = link->ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct graphics_object_id connector = link->link_enc->connector;
 	bool edp_hpd_high = false;
 	uint32_t time_elapsed = 0;
 	uint32_t timeout = power_up ?
 		PANEL_POWER_UP_TIMEOUT : PANEL_POWER_DOWN_TIMEOUT;
 
+<<<<<<< HEAD
 	DC_LOGGER_INIT(link->ctx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dal_graphics_object_id_get_connector_id(connector)
 			!= CONNECTOR_ID_EDP) {
 		BREAK_TO_DEBUGGER();
@@ -830,7 +870,10 @@ void dce110_edp_power_control(
 	enum bp_result bp_result;
 	uint8_t pwrseq_instance;
 
+<<<<<<< HEAD
 	DC_LOGGER_INIT(ctx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dal_graphics_object_id_get_connector_id(link->link_enc->connector)
 			!= CONNECTOR_ID_EDP) {
@@ -999,8 +1042,11 @@ void dce110_edp_backlight_control(
 	unsigned int pre_T11_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_PRE_T11_DELAY : 0);
 	unsigned int post_T7_delay = (link->dpcd_sink_ext_caps.bits.oled ? OLED_POST_T7_DELAY : 0);
 
+<<<<<<< HEAD
 	DC_LOGGER_INIT(ctx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dal_graphics_object_id_get_connector_id(link->link_enc->connector)
 		!= CONNECTOR_ID_EDP) {
 		BREAK_TO_DEBUGGER();
@@ -1247,9 +1293,12 @@ void dce110_disable_stream(struct pipe_ctx *pipe_ctx)
 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
 					       link_enc->transmitter - TRANSMITTER_UNIPHY_A);
 	}
+<<<<<<< HEAD
 
 	if (link->ext_enc_id.id)
 		dce110_external_encoder_control(EXTERNAL_ENCODER_CONTROL_DISABLE, link, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void dce110_unblank_stream(struct pipe_ctx *pipe_ctx,
@@ -1572,7 +1621,10 @@ static enum dc_status dce110_enable_stream_timing(
 		struct dc_state *context,
 		struct dc *dc)
 {
+<<<<<<< HEAD
 	(void)context;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_stream_state *stream = pipe_ctx->stream;
 	struct pipe_ctx *pipe_ctx_old = &dc->current_state->res_ctx.
 			pipe_ctx[pipe_ctx->pipe_idx];
@@ -1602,7 +1654,11 @@ static enum dc_status dce110_enable_stream_timing(
 			return DC_ERROR_UNEXPECTED;
 		}
 
+<<<<<<< HEAD
 		if (dc_is_tmds_signal(stream->signal)) {
+=======
+		if (dc_is_hdmi_tmds_signal(stream->signal)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			stream->link->phy_state.symclk_ref_cnts.otg = 1;
 			if (stream->link->phy_state.symclk_state == SYMCLK_OFF_TX_OFF)
 				stream->link->phy_state.symclk_state = SYMCLK_ON_TX_OFF;
@@ -1953,6 +2009,7 @@ static void clean_up_dsc_blocks(struct dc *dc)
 	}
 }
 
+<<<<<<< HEAD
 static void dc_hwss_enable_otg_pwa(
 		struct dc *dc,
 		struct pipe_ctx *pipe_ctx)
@@ -1982,6 +2039,8 @@ static void dc_hwss_enable_otg_pwa(
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * When ASIC goes from VBIOS/VGA mode to driver/accelerated mode we need:
  *  1. Power down all DC HW blocks
@@ -1999,7 +2058,11 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
 	struct pipe_ctx *pipe_ctx = NULL;
 	struct dce_hwseq *hws = dc->hwseq;
 	int edp_with_sink_num;
+<<<<<<< HEAD
 	unsigned int edp_num;
+=======
+	int edp_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int edp_stream_num;
 	int i;
 	bool can_apply_edp_fast_boot = false;
@@ -2007,7 +2070,12 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
 	bool keep_edp_vdd_on = false;
 	bool should_clean_dsc_block = true;
 	struct dc_bios *dcb = dc->ctx->dc_bios;
+<<<<<<< HEAD
 	DC_LOGGER_INIT(dc->ctx);
+=======
+	DC_LOGGER_INIT();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	get_edp_links_with_sink(dc, edp_links_with_sink, &edp_with_sink_num);
 	dc_get_edp_links(dc, edp_links, &edp_num);
@@ -2058,7 +2126,10 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
 						// If VBios supports it, we check it from reigster or other flags.
 						pipe_ctx->stream_res.pix_clk_params.dio_se_pix_per_cycle = 1;
 					}
+<<<<<<< HEAD
 					dc_hwss_enable_otg_pwa(dc, pipe_ctx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				}
 				break;
 			}
@@ -2431,7 +2502,11 @@ static void dce110_reset_hw_ctx_wrap(
 				BREAK_TO_DEBUGGER();
 			}
 			pipe_ctx_old->stream_res.tg->funcs->disable_crtc(pipe_ctx_old->stream_res.tg);
+<<<<<<< HEAD
 			if (dc_is_tmds_signal(pipe_ctx_old->stream->signal))
+=======
+			if (dc_is_hdmi_tmds_signal(pipe_ctx_old->stream->signal))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pipe_ctx_old->stream->link->phy_state.symclk_ref_cnts.otg = 0;
 			pipe_ctx_old->plane_res.mi->funcs->free_mem_input(
 					pipe_ctx_old->plane_res.mi, dc->current_state->stream_count);
@@ -2628,6 +2703,7 @@ enum dc_status dce110_apply_ctx_to_hw(
 #endif
 	}
 
+<<<<<<< HEAD
 
 	if (dc->debug.enable_otg_frame_sync_pwa && context->stream_count == 1) {
 		/* only enable this on one OTG*/
@@ -2640,6 +2716,8 @@ enum dc_status dce110_apply_ctx_to_hw(
 			}
 		}
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dc->fbc_compressor)
 		enable_fbc(dc, dc->current_state);
 
@@ -2741,7 +2819,10 @@ static void program_gamut_remap(struct pipe_ctx *pipe_ctx)
 static void update_plane_addr(const struct dc *dc,
 		struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_plane_state *plane_state = pipe_ctx->plane_state;
 
 	if (plane_state == NULL)
@@ -2787,6 +2868,10 @@ static bool wait_for_reset_trigger_to_occur(
 	struct dc_context *dc_ctx,
 	struct timing_generator *tg)
 {
+<<<<<<< HEAD
+=======
+	struct dc_context *ctx = dc_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool rc = false;
 
 	/* To avoid endless loop we wait at most
@@ -2828,11 +2913,18 @@ static void dce110_enable_timing_synchronization(
 		int group_size,
 		struct pipe_ctx *grouped_pipes[])
 {
+<<<<<<< HEAD
 	(void)state;
 	(void)group_index;
 	struct dcp_gsl_params gsl_params = { 0 };
 	int i;
 	DC_LOGGER_INIT(dc->ctx);
+=======
+	struct dc_context *dc_ctx = dc->ctx;
+	struct dcp_gsl_params gsl_params = { 0 };
+	int i;
+	DC_LOGGER_INIT();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	DC_SYNC_INFO("GSL: Setting-up...\n");
 
@@ -2875,9 +2967,16 @@ static void dce110_enable_per_frame_crtc_position_reset(
 		int group_size,
 		struct pipe_ctx *grouped_pipes[])
 {
+<<<<<<< HEAD
 	struct dcp_gsl_params gsl_params = { 0 };
 	int i;
 	DC_LOGGER_INIT(dc->ctx);
+=======
+	struct dc_context *dc_ctx = dc->ctx;
+	struct dcp_gsl_params gsl_params = { 0 };
+	int i;
+	DC_LOGGER_INIT();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gsl_params.gsl_group = 0;
 	gsl_params.gsl_master = 0;
@@ -2905,8 +3004,11 @@ static void dce110_enable_per_frame_crtc_position_reset(
 
 static void dce110_init_pipes(struct dc *dc, struct dc_state *context)
 {
+<<<<<<< HEAD
 	(void)context;
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// Do nothing
 }
 
@@ -3172,13 +3274,19 @@ static void dce110_post_unlock_program_front_end(
 		struct dc *dc,
 		struct dc_state *context)
 {
+<<<<<<< HEAD
 	(void)dc;
 	(void)context;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void dce110_power_down_fe(struct dc *dc, struct dc_state *state, struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)state;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_hwseq *hws = dc->hwseq;
 	int fe_idx = pipe_ctx->plane_res.mi ?
 		pipe_ctx->plane_res.mi->inst : pipe_ctx->pipe_idx;
@@ -3199,9 +3307,12 @@ static void dce110_wait_for_mpcc_disconnect(
 		struct resource_pool *res_pool,
 		struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)dc;
 	(void)res_pool;
 	(void)pipe_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* do nothing*/
 }
 
@@ -3211,10 +3322,13 @@ static void program_output_csc(struct dc *dc,
 		uint16_t *matrix,
 		int opp_id)
 {
+<<<<<<< HEAD
 	(void)dc;
 	(void)colorspace;
 	(void)matrix;
 	(void)opp_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	struct out_csc_color_matrix tbl_entry;
 
@@ -3359,7 +3473,10 @@ void dce110_enable_lvds_link_output(struct dc_link *link,
 		enum clock_source_id clock_source,
 		uint32_t pixel_clock)
 {
+<<<<<<< HEAD
 	(void)link_res;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	link->link_enc->funcs->enable_lvds_output(
 			link->link_enc,
 			clock_source,
@@ -3374,7 +3491,10 @@ void dce110_enable_tmds_link_output(struct dc_link *link,
 		enum dc_color_depth color_depth,
 		uint32_t pixel_clock)
 {
+<<<<<<< HEAD
 	(void)link_res;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	link->link_enc->funcs->enable_tmds_output(
 			link->link_enc,
 			clock_source,
@@ -3440,11 +3560,14 @@ void dce110_enable_dp_link_output(
 		}
 	}
 
+<<<<<<< HEAD
 	if (link->ext_enc_id.id) {
 		dce110_external_encoder_control(EXTERNAL_ENCODER_CONTROL_INIT, link, NULL);
 		dce110_external_encoder_control(EXTERNAL_ENCODER_CONTROL_SETUP, link, NULL);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dc->link_srv->dp_get_encoding_format(link_settings) == DP_8b_10b_ENCODING) {
 		if (dc->clk_mgr->funcs->notify_link_rate_change)
 			dc->clk_mgr->funcs->notify_link_rate_change(dc->clk_mgr, link);
@@ -3537,8 +3660,11 @@ static const struct hw_sequencer_funcs dce110_funcs = {
 	.enable_dp_link_output = dce110_enable_dp_link_output,
 	.enable_analog_link_output = dce110_enable_analog_link_output,
 	.disable_link_output = dce110_disable_link_output,
+<<<<<<< HEAD
 	.dac_load_detect = dce110_dac_load_detect,
 	.prepare_ddc = dce110_prepare_ddc,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct hwseq_private_funcs dce110_private_funcs = {

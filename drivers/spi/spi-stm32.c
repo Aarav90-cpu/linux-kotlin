@@ -1659,7 +1659,11 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
 			ret = stm32_spi_prepare_rx_dma_mdma_chaining(spi, xfer, &rx_dma_conf,
 								     &rx_dma_desc, &rx_mdma_desc);
 			if (ret) { /* RX DMA MDMA chaining not possible, fallback to DMA only */
+<<<<<<< HEAD
 				rx_dma_conf.peripheral_config = NULL;
+=======
+				rx_dma_conf.peripheral_config = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rx_dma_desc = NULL;
 			}
 		}
@@ -2360,6 +2364,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
 	int ret;
 
 	cfg = of_device_get_match_data(&pdev->dev);
+<<<<<<< HEAD
 	if (!cfg)
 		return dev_err_probe(&pdev->dev, -ENODEV,
 				     "Failed to get match data for platform\n");
@@ -2367,13 +2372,32 @@ static int stm32_spi_probe(struct platform_device *pdev)
 	device_mode = of_property_read_bool(np, "spi-slave");
 	if (!cfg->has_device_mode && device_mode)
 		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not supported\n");
+=======
+	if (!cfg) {
+		dev_err(&pdev->dev, "Failed to get match data for platform\n");
+		return -ENODEV;
+	}
+
+	device_mode = of_property_read_bool(np, "spi-slave");
+	if (!cfg->has_device_mode && device_mode) {
+		dev_err(&pdev->dev, "spi-slave not supported\n");
+		return -EPERM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (device_mode)
 		ctrl = devm_spi_alloc_target(&pdev->dev, sizeof(struct stm32_spi));
 	else
 		ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(struct stm32_spi));
+<<<<<<< HEAD
 	if (!ctrl)
 		return dev_err_probe(&pdev->dev, -ENOMEM, "spi controller allocation failed\n");
+=======
+	if (!ctrl) {
+		dev_err(&pdev->dev, "spi controller allocation failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_set_drvdata(pdev, ctrl);
 
 	spi = spi_controller_get_devdata(ctrl);
@@ -2404,6 +2428,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
 	if (IS_ERR(spi->clk))
 		return dev_err_probe(&pdev->dev, PTR_ERR(spi->clk), "clk enabled failed\n");
@@ -2416,6 +2441,34 @@ static int stm32_spi_probe(struct platform_device *pdev)
 	if (rst) {
 		if (IS_ERR(rst))
 			return dev_err_probe(&pdev->dev, PTR_ERR(rst), "failed to get reset\n");
+=======
+	spi->clk = devm_clk_get(&pdev->dev, NULL);
+	if (IS_ERR(spi->clk)) {
+		ret = PTR_ERR(spi->clk);
+		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
+		return ret;
+	}
+
+	ret = clk_prepare_enable(spi->clk);
+	if (ret) {
+		dev_err(&pdev->dev, "clk enable failed: %d\n", ret);
+		return ret;
+	}
+	spi->clk_rate = clk_get_rate(spi->clk);
+	if (!spi->clk_rate) {
+		dev_err(&pdev->dev, "clk rate = 0\n");
+		ret = -EINVAL;
+		goto err_clk_disable;
+	}
+
+	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+	if (rst) {
+		if (IS_ERR(rst)) {
+			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
+					    "failed to get reset\n");
+			goto err_clk_disable;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		reset_control_assert(rst);
 		udelay(2);
@@ -2442,8 +2495,16 @@ static int stm32_spi_probe(struct platform_device *pdev)
 	dev_dbg(spi->dev, "one message max size %d\n", spi->t_size_max);
 
 	ret = spi->cfg->config(spi);
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(&pdev->dev, ret, "controller configuration failed: %d\n", ret);
+=======
+	if (ret) {
+		dev_err(&pdev->dev, "controller configuration failed: %d\n",
+			ret);
+		goto err_clk_disable;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ctrl->auto_runtime_pm = true;
 	ctrl->bus_num = pdev->id;
@@ -2468,7 +2529,12 @@ static int stm32_spi_probe(struct platform_device *pdev)
 			dev_info(&pdev->dev, "tx dma disabled\n");
 			spi->dma_tx = NULL;
 		} else {
+<<<<<<< HEAD
 			return dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
+=======
+			dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
+			goto err_clk_disable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		ctrl->dma_tx = spi->dma_tx;
@@ -2482,7 +2548,11 @@ static int stm32_spi_probe(struct platform_device *pdev)
 			spi->dma_rx = NULL;
 		} else {
 			dev_err_probe(&pdev->dev, ret, "failed to request rx dma channel\n");
+<<<<<<< HEAD
 			goto err_dma_tx_release;
+=======
+			goto err_dma_release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		ctrl->dma_rx = spi->dma_rx;
@@ -2551,11 +2621,21 @@ err_pool_free:
 	if (spi->sram_pool)
 		gen_pool_free(spi->sram_pool, (unsigned long)spi->sram_rx_buf,
 			      spi->sram_rx_buf_size);
+<<<<<<< HEAD
 	if (spi->dma_rx)
 		dma_release_channel(spi->dma_rx);
 err_dma_tx_release:
 	if (spi->dma_tx)
 		dma_release_channel(spi->dma_tx);
+=======
+err_dma_release:
+	if (spi->dma_tx)
+		dma_release_channel(spi->dma_tx);
+	if (spi->dma_rx)
+		dma_release_channel(spi->dma_rx);
+err_clk_disable:
+	clk_disable_unprepare(spi->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -2585,6 +2665,12 @@ static void stm32_spi_remove(struct platform_device *pdev)
 		gen_pool_free(spi->sram_pool, (unsigned long)spi->sram_rx_buf,
 			      spi->sram_rx_buf_size);
 
+<<<<<<< HEAD
+=======
+	clk_disable_unprepare(spi->clk);
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_pm_select_sleep_state(&pdev->dev);
 }
 

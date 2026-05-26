@@ -58,6 +58,7 @@ dtb-$(CONFIG_SOC_IMX53) += \
 	imx53-voipac-bsb.dtb
 imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
 imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
+<<<<<<< HEAD
 
 imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
 	imx6q-dhcom-pdk2.dtb \
@@ -83,6 +84,8 @@ imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh-dtbs := \
 	imx6q-dhcom-pdk2.dtb \
 	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-alti6p.dtb \
 	imx6dl-apf6dev.dtb \
@@ -204,6 +207,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-cubox-i-som-v15.dtb \
 	imx6q-dfi-fs700-m60.dtb \
 	imx6q-dhcom-pdk2.dtb \
+<<<<<<< HEAD
 	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtb \
 	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo \
 	imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtb \
@@ -216,6 +220,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtbo \
 	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtb \
 	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	imx6q-display5-tianma-tm070-1280x768.dtb \
 	imx6q-dmo-edmqmx6.dtb \
 	imx6q-dms-ba16.dtb \

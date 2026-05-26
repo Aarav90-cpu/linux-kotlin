@@ -126,6 +126,7 @@ static const struct fbnic_stat fbnic_gstrings_xdp_stats[] = {
 #define FBNIC_STATS_LEN \
 	(FBNIC_HW_STATS_LEN + FBNIC_XDP_STATS_LEN * FBNIC_MAX_XDPQS)
 
+<<<<<<< HEAD
 enum fbnic_self_test_results {
 	TEST_REG = 0,
 	TEST_MSIX,
@@ -140,6 +141,8 @@ static const char fbnic_gstrings_self_test[][ETH_GSTRING_LEN] = {
 
 #define FBNIC_TEST_LEN ARRAY_SIZE(fbnic_gstrings_self_test)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 fbnic_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *drvinfo)
 {
@@ -489,10 +492,13 @@ static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
 		for (i = 0; i < FBNIC_MAX_XDPQS; i++)
 			fbnic_get_xdp_queue_strings(&data, i);
 		break;
+<<<<<<< HEAD
 	case ETH_SS_TEST:
 		memcpy(data, fbnic_gstrings_self_test,
 		       sizeof(fbnic_gstrings_self_test));
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -584,8 +590,11 @@ static int fbnic_get_sset_count(struct net_device *dev, int sset)
 	switch (sset) {
 	case ETH_SS_STATS:
 		return FBNIC_STATS_LEN;
+<<<<<<< HEAD
 	case ETH_SS_TEST:
 		return FBNIC_TEST_LEN;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -1498,6 +1507,7 @@ fbnic_remove_rxfh_context(struct net_device *netdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int fbnic_ethtool_regs_test(struct net_device *netdev, u64 *data)
 {
 	struct fbnic_net *fbn = netdev_priv(netdev);
@@ -1570,6 +1580,8 @@ static void fbnic_self_test(struct net_device *netdev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void fbnic_get_channels(struct net_device *netdev,
 			       struct ethtool_channels *ch)
 {
@@ -1733,6 +1745,7 @@ static void fbnic_get_ts_stats(struct net_device *netdev,
 	}
 }
 
+<<<<<<< HEAD
 static int fbnic_get_tunable(struct net_device *netdev,
 			     const struct ethtool_tunable *tun,
 			     void *data)
@@ -1774,6 +1787,8 @@ static int fbnic_set_tunable(struct net_device *netdev,
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 fbnic_get_module_eeprom_by_page(struct net_device *netdev,
 				const struct ethtool_module_eeprom *page_data,
@@ -1846,7 +1861,10 @@ fbnic_get_pause_stats(struct net_device *netdev,
 	struct fbnic_net *fbn = netdev_priv(netdev);
 	struct fbnic_mac_stats *mac_stats;
 	struct fbnic_dev *fbd = fbn->fbd;
+<<<<<<< HEAD
 	u64 tx_ps_events;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mac_stats = &fbd->hw_stats.mac;
 
@@ -1854,8 +1872,11 @@ fbnic_get_pause_stats(struct net_device *netdev,
 
 	pause_stats->tx_pause_frames = mac_stats->pause.tx_pause_frames.value;
 	pause_stats->rx_pause_frames = mac_stats->pause.rx_pause_frames.value;
+<<<<<<< HEAD
 	tx_ps_events = mac_stats->pause.tx_pause_storm_events.value;
 	pause_stats->tx_pause_storm_events = tx_ps_events;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -2032,7 +2053,10 @@ static const struct ethtool_ops fbnic_ethtool_ops = {
 	.get_pause_stats		= fbnic_get_pause_stats,
 	.get_pauseparam			= fbnic_phylink_get_pauseparam,
 	.set_pauseparam			= fbnic_phylink_set_pauseparam,
+<<<<<<< HEAD
 	.self_test			= fbnic_self_test,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_strings			= fbnic_get_strings,
 	.get_ethtool_stats		= fbnic_get_ethtool_stats,
 	.get_sset_count			= fbnic_get_sset_count,
@@ -2052,8 +2076,11 @@ static const struct ethtool_ops fbnic_ethtool_ops = {
 	.set_channels			= fbnic_set_channels,
 	.get_ts_info			= fbnic_get_ts_info,
 	.get_ts_stats			= fbnic_get_ts_stats,
+<<<<<<< HEAD
 	.get_tunable			= fbnic_get_tunable,
 	.set_tunable			= fbnic_set_tunable,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_link_ksettings		= fbnic_phylink_ethtool_ksettings_get,
 	.get_fec_stats			= fbnic_get_fec_stats,
 	.get_fecparam			= fbnic_phylink_get_fecparam,

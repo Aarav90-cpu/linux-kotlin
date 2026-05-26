@@ -215,6 +215,7 @@ static void pnv_php_reverse_nodes(struct device_node *parent)
 static int pnv_php_populate_changeset(struct of_changeset *ocs,
 				      struct device_node *dn)
 {
+<<<<<<< HEAD
 	int ret;
 
 	for_each_child_of_node_scoped(dn, child) {
@@ -228,6 +229,26 @@ static int pnv_php_populate_changeset(struct of_changeset *ocs,
 	}
 
 	return 0;
+=======
+	struct device_node *child;
+	int ret = 0;
+
+	for_each_child_of_node(dn, child) {
+		ret = of_changeset_attach_node(ocs, child);
+		if (ret) {
+			of_node_put(child);
+			break;
+		}
+
+		ret = pnv_php_populate_changeset(ocs, child);
+		if (ret) {
+			of_node_put(child);
+			break;
+		}
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void *pnv_php_add_one_pdn(struct device_node *dn, void *data)

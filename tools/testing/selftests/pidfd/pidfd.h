@@ -156,10 +156,13 @@
 #define PIDFD_INFO_COREDUMP_SIGNAL	(1UL << 6)
 #endif
 
+<<<<<<< HEAD
 #ifndef PIDFD_INFO_COREDUMP_CODE
 #define PIDFD_INFO_COREDUMP_CODE	(1UL << 7)
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef PIDFD_COREDUMPED
 #define PIDFD_COREDUMPED	(1U << 0) /* Did crash and... */
 #endif
@@ -198,7 +201,10 @@ struct pidfd_info {
 	struct {
 		__u32 coredump_mask;
 		__u32 coredump_signal;
+<<<<<<< HEAD
 		__u32 coredump_code;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	__u64 supported_mask;
 };

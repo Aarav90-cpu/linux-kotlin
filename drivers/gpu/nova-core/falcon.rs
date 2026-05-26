@@ -2,6 +2,7 @@
 
 //! Falcon microprocessor base support
 
+<<<<<<< HEAD
 use hal::FalconHal;
 
 use kernel::{
@@ -30,20 +31,51 @@ use kernel::{
 
 use crate::{
     bounded_enum,
+=======
+use core::ops::Deref;
+
+use hal::FalconHal;
+
+use kernel::{
+    device,
+    dma::{
+        DmaAddress,
+        DmaMask, //
+    },
+    io::poll::read_poll_timeout,
+    prelude::*,
+    sync::aref::ARef,
+    time::{
+        Delta, //
+    },
+};
+
+use crate::{
+    dma::DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     driver::Bar0,
     falcon::hal::LoadMethod,
     gpu::Chipset,
     num::{
+<<<<<<< HEAD
         self,
         FromSafeCast, //
     },
     regs,
+=======
+        FromSafeCast,
+        IntoSafeCast, //
+    },
+    regs,
+    regs::macros::RegisterBase, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 pub(crate) mod gsp;
 mod hal;
 pub(crate) mod sec2;
 
+<<<<<<< HEAD
 /// Alignment (in bytes) of falcon memory blocks.
 pub(crate) const MEM_BLOCK_ALIGNMENT: usize = 256;
 
@@ -127,11 +159,214 @@ bounded_enum! {
         Falcon = 0,
         /// RISC-V core is active.
         Riscv = 1,
+=======
+// TODO[FPRI]: Replace with `ToPrimitive`.
+macro_rules! impl_from_enum_to_u8 {
+    ($enum_type:ty) => {
+        impl From<$enum_type> for u8 {
+            fn from(value: $enum_type) -> Self {
+                value as u8
+            }
+        }
+    };
+}
+
+/// Revision number of a falcon core, used in the [`crate::regs::NV_PFALCON_FALCON_HWCFG1`]
+/// register.
+#[repr(u8)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub(crate) enum FalconCoreRev {
+    #[default]
+    Rev1 = 1,
+    Rev2 = 2,
+    Rev3 = 3,
+    Rev4 = 4,
+    Rev5 = 5,
+    Rev6 = 6,
+    Rev7 = 7,
+}
+impl_from_enum_to_u8!(FalconCoreRev);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for FalconCoreRev {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        use FalconCoreRev::*;
+
+        let rev = match value {
+            1 => Rev1,
+            2 => Rev2,
+            3 => Rev3,
+            4 => Rev4,
+            5 => Rev5,
+            6 => Rev6,
+            7 => Rev7,
+            _ => return Err(EINVAL),
+        };
+
+        Ok(rev)
+    }
+}
+
+/// Revision subversion number of a falcon core, used in the
+/// [`crate::regs::NV_PFALCON_FALCON_HWCFG1`] register.
+#[repr(u8)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub(crate) enum FalconCoreRevSubversion {
+    #[default]
+    Subversion0 = 0,
+    Subversion1 = 1,
+    Subversion2 = 2,
+    Subversion3 = 3,
+}
+impl_from_enum_to_u8!(FalconCoreRevSubversion);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for FalconCoreRevSubversion {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        use FalconCoreRevSubversion::*;
+
+        let sub_version = match value & 0b11 {
+            0 => Subversion0,
+            1 => Subversion1,
+            2 => Subversion2,
+            3 => Subversion3,
+            _ => return Err(EINVAL),
+        };
+
+        Ok(sub_version)
+    }
+}
+
+/// Security model of a falcon core, used in the [`crate::regs::NV_PFALCON_FALCON_HWCFG1`]
+/// register.
+#[repr(u8)]
+#[derive(Debug, Default, Copy, Clone)]
+/// Security mode of the Falcon microprocessor.
+///
+/// See `falcon.rst` for more details.
+pub(crate) enum FalconSecurityModel {
+    /// Non-Secure: runs unsigned code without privileges.
+    #[default]
+    None = 0,
+    /// Light-Secured (LS): Runs signed code with some privileges.
+    /// Entry into this mode is only possible from 'Heavy-secure' mode, which verifies the code's
+    /// signature.
+    ///
+    /// Also known as Low-Secure, Privilege Level 2 or PL2.
+    Light = 2,
+    /// Heavy-Secured (HS): Runs signed code with full privileges.
+    /// The code's signature is verified by the Falcon Boot ROM (BROM).
+    ///
+    /// Also known as High-Secure, Privilege Level 3 or PL3.
+    Heavy = 3,
+}
+impl_from_enum_to_u8!(FalconSecurityModel);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for FalconSecurityModel {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        use FalconSecurityModel::*;
+
+        let sec_model = match value {
+            0 => None,
+            2 => Light,
+            3 => Heavy,
+            _ => return Err(EINVAL),
+        };
+
+        Ok(sec_model)
+    }
+}
+
+/// Signing algorithm for a given firmware, used in the [`crate::regs::NV_PFALCON2_FALCON_MOD_SEL`]
+/// register. It is passed to the Falcon Boot ROM (BROM) as a parameter.
+#[repr(u8)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
+pub(crate) enum FalconModSelAlgo {
+    /// AES.
+    #[expect(dead_code)]
+    Aes = 0,
+    /// RSA3K.
+    #[default]
+    Rsa3k = 1,
+}
+impl_from_enum_to_u8!(FalconModSelAlgo);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for FalconModSelAlgo {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        match value {
+            1 => Ok(FalconModSelAlgo::Rsa3k),
+            _ => Err(EINVAL),
+        }
+    }
+}
+
+/// Valid values for the `size` field of the [`crate::regs::NV_PFALCON_FALCON_DMATRFCMD`] register.
+#[repr(u8)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
+pub(crate) enum DmaTrfCmdSize {
+    /// 256 bytes transfer.
+    #[default]
+    Size256B = 0x6,
+}
+impl_from_enum_to_u8!(DmaTrfCmdSize);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for DmaTrfCmdSize {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        match value {
+            0x6 => Ok(Self::Size256B),
+            _ => Err(EINVAL),
+        }
+    }
+}
+
+/// Currently active core on a dual falcon/riscv (Peregrine) controller.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub(crate) enum PeregrineCoreSelect {
+    /// Falcon core is active.
+    #[default]
+    Falcon = 0,
+    /// RISC-V core is active.
+    Riscv = 1,
+}
+
+impl From<bool> for PeregrineCoreSelect {
+    fn from(value: bool) -> Self {
+        match value {
+            false => PeregrineCoreSelect::Falcon,
+            true => PeregrineCoreSelect::Riscv,
+        }
+    }
+}
+
+impl From<PeregrineCoreSelect> for bool {
+    fn from(value: PeregrineCoreSelect) -> Self {
+        match value {
+            PeregrineCoreSelect::Falcon => false,
+            PeregrineCoreSelect::Riscv => true,
+        }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
 /// Different types of memory present in a falcon core.
+<<<<<<< HEAD
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+=======
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub(crate) enum FalconMem {
     /// Secure Instruction Memory.
     ImemSecure,
@@ -142,6 +377,7 @@ pub(crate) enum FalconMem {
     Dmem,
 }
 
+<<<<<<< HEAD
 bounded_enum! {
     /// Defines the Framebuffer Interface (FBIF) aperture type.
     /// This determines the memory type for external memory access during a DMA transfer, which is
@@ -165,6 +401,66 @@ bounded_enum! {
         Virtual = 0,
         /// Physical memory addresses.
         Physical = 1,
+=======
+/// Defines the Framebuffer Interface (FBIF) aperture type.
+/// This determines the memory type for external memory access during a DMA transfer, which is
+/// performed by the Falcon's Framebuffer DMA (FBDMA) engine. See falcon.rst for more details.
+#[derive(Debug, Clone, Default)]
+pub(crate) enum FalconFbifTarget {
+    /// VRAM.
+    #[default]
+    /// Local Framebuffer (GPU's VRAM memory).
+    LocalFb = 0,
+    /// Coherent system memory (System DRAM).
+    CoherentSysmem = 1,
+    /// Non-coherent system memory (System DRAM).
+    NoncoherentSysmem = 2,
+}
+impl_from_enum_to_u8!(FalconFbifTarget);
+
+// TODO[FPRI]: replace with `FromPrimitive`.
+impl TryFrom<u8> for FalconFbifTarget {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self> {
+        let res = match value {
+            0 => Self::LocalFb,
+            1 => Self::CoherentSysmem,
+            2 => Self::NoncoherentSysmem,
+            _ => return Err(EINVAL),
+        };
+
+        Ok(res)
+    }
+}
+
+/// Type of memory addresses to use.
+#[derive(Debug, Clone, Default)]
+pub(crate) enum FalconFbifMemType {
+    /// Virtual memory addresses.
+    #[default]
+    Virtual = 0,
+    /// Physical memory addresses.
+    Physical = 1,
+}
+
+/// Conversion from a single-bit register field.
+impl From<bool> for FalconFbifMemType {
+    fn from(value: bool) -> Self {
+        match value {
+            false => Self::Virtual,
+            true => Self::Physical,
+        }
+    }
+}
+
+impl From<FalconFbifMemType> for bool {
+    fn from(value: FalconFbifMemType) -> Self {
+        match value {
+            FalconFbifMemType::Virtual => false,
+            FalconFbifMemType::Physical => true,
+        }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
@@ -176,6 +472,7 @@ pub(crate) struct PFalcon2Base(());
 
 /// Trait defining the parameters of a given Falcon engine.
 ///
+<<<<<<< HEAD
 /// Each engine provides one base for `PFALCON` and `PFALCON2` registers.
 pub(crate) trait FalconEngine:
     Send + Sync + RegisterBase<PFalconBase> + RegisterBase<PFalcon2Base> + Sized
@@ -186,6 +483,20 @@ pub(crate) trait FalconEngine:
 /// using DMA.
 #[derive(Debug, Clone)]
 pub(crate) struct FalconDmaLoadTarget {
+=======
+/// Each engine provides one base for `PFALCON` and `PFALCON2` registers. The `ID` constant is used
+/// to identify a given Falcon instance with register I/O methods.
+pub(crate) trait FalconEngine:
+    Send + Sync + RegisterBase<PFalconBase> + RegisterBase<PFalcon2Base> + Sized
+{
+    /// Singleton of the engine, used to identify it with register I/O methods.
+    const ID: Self;
+}
+
+/// Represents a portion of the firmware to be loaded into a particular memory (e.g. IMEM or DMEM).
+#[derive(Debug, Clone)]
+pub(crate) struct FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// Offset from the start of the source object to copy from.
     pub(crate) src_start: u32,
     /// Offset from the start of the destination memory to copy into.
@@ -205,6 +516,7 @@ pub(crate) struct FalconBromParams {
     pub(crate) ucode_id: u8,
 }
 
+<<<<<<< HEAD
 /// Trait implemented by falcon firmwares that can be loaded using DMA.
 pub(crate) trait FalconDmaLoadable {
     /// Returns the firmware data as a slice of bytes.
@@ -348,6 +660,19 @@ where
 pub(crate) trait FalconFirmware {
     /// Engine on which this firmware is to be loaded.
     type Target: FalconEngine;
+=======
+/// Trait for providing load parameters of falcon firmwares.
+pub(crate) trait FalconLoadParams {
+    /// Returns the load parameters for Secure `IMEM`.
+    fn imem_sec_load_params(&self) -> FalconLoadTarget;
+
+    /// Returns the load parameters for Non-Secure `IMEM`,
+    /// used only on Turing and GA100.
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
+
+    /// Returns the load parameters for `DMEM`.
+    fn dmem_load_params(&self) -> FalconLoadTarget;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     /// Returns the parameters to write into the BROM registers.
     fn brom_params(&self) -> FalconBromParams;
@@ -356,6 +681,18 @@ pub(crate) trait FalconFirmware {
     fn boot_addr(&self) -> u32;
 }
 
+<<<<<<< HEAD
+=======
+/// Trait for a falcon firmware.
+///
+/// A falcon firmware can be loaded on a given engine, and is presented in the form of a DMA
+/// object.
+pub(crate) trait FalconFirmware: FalconLoadParams + Deref<Target = DmaObject> {
+    /// Engine on which this firmware is to be loaded.
+    type Target: FalconEngine;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Contains the base parameters common to all Falcon instances.
 pub(crate) struct Falcon<E: FalconEngine> {
     hal: KBox<dyn FalconHal<E>>,
@@ -373,6 +710,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
 
     /// Resets DMA-related registers.
     pub(crate) fn dma_reset(&self, bar: &Bar0) {
+<<<<<<< HEAD
         bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
             v.with_allow_phys_no_ctx(true)
         });
@@ -381,6 +719,10 @@ impl<E: FalconEngine + 'static> Falcon<E> {
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_DMACTL::zeroed(),
         );
+=======
+        regs::NV_PFALCON_FBIF_CTL::update(bar, &E::ID, |v| v.set_allow_phys_no_ctx(true));
+        regs::NV_PFALCON_FALCON_DMACTL::default().write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Reset the controller, select the falcon core, and wait for memory scrubbing to complete.
@@ -389,6 +731,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
         self.hal.select_core(self, bar)?;
         self.hal.reset_wait_mem_scrubbing(bar)?;
 
+<<<<<<< HEAD
         bar.write(
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_RM::from(bar.read(regs::NV_PMC_BOOT_0).into_raw()),
@@ -494,6 +837,11 @@ impl<E: FalconEngine + 'static> Falcon<E> {
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_BOOTVEC::zeroed().with_value(fw.boot_addr()),
         );
+=======
+        regs::NV_PFALCON_FALCON_RM::default()
+            .set_value(regs::NV_PMC_BOOT_0::read(bar).into())
+            .write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         Ok(())
     }
@@ -502,6 +850,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
     /// `target_mem`.
     ///
     /// `sec` is set if the loaded firmware is expected to run in secure mode.
+<<<<<<< HEAD
     fn dma_wr(
         &self,
         bar: &Bar0,
@@ -510,6 +859,16 @@ impl<E: FalconEngine + 'static> Falcon<E> {
         load_offsets: FalconDmaLoadTarget,
     ) -> Result {
         const DMA_LEN: u32 = num::usize_into_u32::<{ MEM_BLOCK_ALIGNMENT }>();
+=======
+    fn dma_wr<F: FalconFirmware<Target = E>>(
+        &self,
+        bar: &Bar0,
+        fw: &F,
+        target_mem: FalconMem,
+        load_offsets: FalconLoadTarget,
+    ) -> Result {
+        const DMA_LEN: u32 = 256;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // For IMEM, we want to use the start offset as a virtual address tag for each page, since
         // code addresses in the firmware (and the boot vector) are virtual.
@@ -517,11 +876,19 @@ impl<E: FalconEngine + 'static> Falcon<E> {
         // For DMEM we can fold the start offset into the DMA handle.
         let (src_start, dma_start) = match target_mem {
             FalconMem::ImemSecure | FalconMem::ImemNonSecure => {
+<<<<<<< HEAD
                 (load_offsets.src_start, dma_obj.dma_handle())
             }
             FalconMem::Dmem => (
                 0,
                 dma_obj.dma_handle() + DmaAddress::from(load_offsets.src_start),
+=======
+                (load_offsets.src_start, fw.dma_handle())
+            }
+            FalconMem::Dmem => (
+                0,
+                fw.dma_handle_with_offset(load_offsets.src_start.into_safe_cast())?,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             ),
         };
         if dma_start % DmaAddress::from(DMA_LEN) > 0 {
@@ -553,7 +920,11 @@ impl<E: FalconEngine + 'static> Falcon<E> {
                 dev_err!(self.dev, "DMA transfer length overflow\n");
                 return Err(EOVERFLOW);
             }
+<<<<<<< HEAD
             Some(upper_bound) if usize::from_safe_cast(upper_bound) > dma_obj.size() => {
+=======
+            Some(upper_bound) if usize::from_safe_cast(upper_bound) > fw.size() => {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 dev_err!(self.dev, "DMA transfer goes beyond range of DMA object\n");
                 return Err(EINVAL);
             }
@@ -562,6 +933,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
 
         // Set up the base source DMA address.
 
+<<<<<<< HEAD
         bar.write(
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_DMATRFBASE::zeroed().with_base(
@@ -577,10 +949,26 @@ impl<E: FalconEngine + 'static> Falcon<E> {
 
         let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::zeroed()
             .with_size(DmaTrfCmdSize::Size256B)
+=======
+        regs::NV_PFALCON_FALCON_DMATRFBASE::default()
+            // CAST: `as u32` is used on purpose since we do want to strip the upper bits, which
+            // will be written to `NV_PFALCON_FALCON_DMATRFBASE1`.
+            .set_base((dma_start >> 8) as u32)
+            .write(bar, &E::ID);
+        regs::NV_PFALCON_FALCON_DMATRFBASE1::default()
+            // CAST: `as u16` is used on purpose since the remaining bits are guaranteed to fit
+            // within a `u16`.
+            .set_base((dma_start >> 40) as u16)
+            .write(bar, &E::ID);
+
+        let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+            .set_size(DmaTrfCmdSize::Size256B)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             .with_falcon_mem(target_mem);
 
         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
             // Perform a transfer of size `DMA_LEN`.
+<<<<<<< HEAD
             bar.write(
                 WithBase::of::<E>(),
                 regs::NV_PFALCON_FALCON_DMATRFMOFFS::zeroed()
@@ -592,12 +980,25 @@ impl<E: FalconEngine + 'static> Falcon<E> {
             );
 
             bar.write(WithBase::of::<E>(), cmd);
+=======
+            regs::NV_PFALCON_FALCON_DMATRFMOFFS::default()
+                .set_offs(load_offsets.dst_start + pos)
+                .write(bar, &E::ID);
+            regs::NV_PFALCON_FALCON_DMATRFFBOFFS::default()
+                .set_offs(src_start + pos)
+                .write(bar, &E::ID);
+            cmd.write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             // Wait for the transfer to complete.
             // TIMEOUT: arbitrarily large value, no DMA transfer to the falcon's small memories
             // should ever take that long.
             read_poll_timeout(
+<<<<<<< HEAD
                 || Ok(bar.read(regs::NV_PFALCON_FALCON_DMATRFCMD::of::<E>())),
+=======
+                || Ok(regs::NV_PFALCON_FALCON_DMATRFCMD::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 |r| r.idle(),
                 Delta::ZERO,
                 Delta::from_secs(2),
@@ -608,6 +1009,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
     }
 
     /// Perform a DMA load into `IMEM` and `DMEM` of `fw`, and prepare the falcon to run it.
+<<<<<<< HEAD
     fn dma_load<F: FalconFirmware<Target = E> + FalconDmaLoadable>(
         &self,
         dev: &Device<device::Bound>,
@@ -646,14 +1048,38 @@ impl<E: FalconEngine + 'static> Falcon<E> {
             fw.imem_sec_load_params(),
         )?;
         self.dma_wr(bar, &dma_obj, FalconMem::Dmem, fw.dmem_load_params())?;
+=======
+    fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result {
+        // The Non-Secure section only exists on firmware used by Turing and GA100, and
+        // those platforms do not use DMA.
+        if fw.imem_ns_load_params().is_some() {
+            debug_assert!(false);
+            return Err(EINVAL);
+        }
+
+        self.dma_reset(bar);
+        regs::NV_PFALCON_FBIF_TRANSCFG::update(bar, &E::ID, 0, |v| {
+            v.set_target(FalconFbifTarget::CoherentSysmem)
+                .set_mem_type(FalconFbifMemType::Physical)
+        });
+
+        self.dma_wr(bar, fw, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
+        self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params())?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.hal.program_brom(self, bar, &fw.brom_params())?;
 
         // Set `BootVec` to start of non-secure code.
+<<<<<<< HEAD
         bar.write(
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_BOOTVEC::zeroed().with_value(fw.boot_addr()),
         );
+=======
+        regs::NV_PFALCON_FALCON_BOOTVEC::default()
+            .set_value(fw.boot_addr())
+            .write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         Ok(())
     }
@@ -662,7 +1088,11 @@ impl<E: FalconEngine + 'static> Falcon<E> {
     pub(crate) fn wait_till_halted(&self, bar: &Bar0) -> Result<()> {
         // TIMEOUT: arbitrarily large value, firmwares should complete in less than 2 seconds.
         read_poll_timeout(
+<<<<<<< HEAD
             || Ok(bar.read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())),
+=======
+            || Ok(regs::NV_PFALCON_FALCON_CPUCTL::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             |r| r.halted(),
             Delta::ZERO,
             Delta::from_secs(2),
@@ -673,6 +1103,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
 
     /// Start the falcon CPU.
     pub(crate) fn start(&self, bar: &Bar0) -> Result<()> {
+<<<<<<< HEAD
         match bar
             .read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())
             .alias_en()
@@ -685,6 +1116,15 @@ impl<E: FalconEngine + 'static> Falcon<E> {
                 WithBase::of::<E>(),
                 regs::NV_PFALCON_FALCON_CPUCTL::zeroed().with_startcpu(true),
             ),
+=======
+        match regs::NV_PFALCON_FALCON_CPUCTL::read(bar, &E::ID).alias_en() {
+            true => regs::NV_PFALCON_FALCON_CPUCTL_ALIAS::default()
+                .set_startcpu(true)
+                .write(bar, &E::ID),
+            false => regs::NV_PFALCON_FALCON_CPUCTL::default()
+                .set_startcpu(true)
+                .write(bar, &E::ID),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
 
         Ok(())
@@ -693,6 +1133,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
     /// Writes values to the mailbox registers if provided.
     pub(crate) fn write_mailboxes(&self, bar: &Bar0, mbox0: Option<u32>, mbox1: Option<u32>) {
         if let Some(mbox0) = mbox0 {
+<<<<<<< HEAD
             bar.write(
                 WithBase::of::<E>(),
                 regs::NV_PFALCON_FALCON_MAILBOX0::zeroed().with_value(mbox0),
@@ -704,19 +1145,38 @@ impl<E: FalconEngine + 'static> Falcon<E> {
                 WithBase::of::<E>(),
                 regs::NV_PFALCON_FALCON_MAILBOX1::zeroed().with_value(mbox1),
             );
+=======
+            regs::NV_PFALCON_FALCON_MAILBOX0::default()
+                .set_value(mbox0)
+                .write(bar, &E::ID);
+        }
+
+        if let Some(mbox1) = mbox1 {
+            regs::NV_PFALCON_FALCON_MAILBOX1::default()
+                .set_value(mbox1)
+                .write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
     }
 
     /// Reads the value from `mbox0` register.
     pub(crate) fn read_mailbox0(&self, bar: &Bar0) -> u32 {
+<<<<<<< HEAD
         bar.read(regs::NV_PFALCON_FALCON_MAILBOX0::of::<E>())
             .value()
+=======
+        regs::NV_PFALCON_FALCON_MAILBOX0::read(bar, &E::ID).value()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Reads the value from `mbox1` register.
     pub(crate) fn read_mailbox1(&self, bar: &Bar0) -> u32 {
+<<<<<<< HEAD
         bar.read(regs::NV_PFALCON_FALCON_MAILBOX1::of::<E>())
             .value()
+=======
+        regs::NV_PFALCON_FALCON_MAILBOX1::read(bar, &E::ID).value()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Reads values from both mailbox registers.
@@ -765,6 +1225,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
         self.hal.is_riscv_active(bar)
     }
 
+<<<<<<< HEAD
     /// Load a firmware image into Falcon memory, using the preferred method for the current
     /// chipset.
     pub(crate) fn load<F: FalconFirmware<Target = E> + FalconDmaLoadable>(
@@ -776,14 +1237,27 @@ impl<E: FalconEngine + 'static> Falcon<E> {
         match self.hal.load_method() {
             LoadMethod::Dma => self.dma_load(dev, bar, fw),
             LoadMethod::Pio => self.pio_load(bar, &fw.try_as_pio_loadable()?),
+=======
+    // Load a firmware image into Falcon memory
+    pub(crate) fn load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result {
+        match self.hal.load_method() {
+            LoadMethod::Dma => self.dma_load(bar, fw),
+            LoadMethod::Pio => Err(ENOTSUPP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
     }
 
     /// Write the application version to the OS register.
     pub(crate) fn write_os_version(&self, bar: &Bar0, app_version: u32) {
+<<<<<<< HEAD
         bar.write(
             WithBase::of::<E>(),
             regs::NV_PFALCON_FALCON_OS::zeroed().with_value(app_version),
         );
+=======
+        regs::NV_PFALCON_FALCON_OS::default()
+            .set_value(app_version)
+            .write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }

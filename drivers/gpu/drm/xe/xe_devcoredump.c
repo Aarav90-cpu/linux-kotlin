@@ -356,7 +356,11 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
 
 	xe_engine_snapshot_capture_for_queue(q);
 
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &ss->work);
+=======
+	queue_work(system_unbound_wq, &ss->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dma_fence_end_signalling(cookie);
 }

@@ -183,7 +183,11 @@ void nft_payload_eval(const struct nft_expr *expr,
 		offset = skb_mac_header(skb) - skb->data;
 		break;
 	case NFT_PAYLOAD_NETWORK_HEADER:
+<<<<<<< HEAD
 		offset = skb_network_offset(skb) + pkt->nhoff;
+=======
+		offset = skb_network_offset(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NFT_PAYLOAD_TRANSPORT_HEADER:
 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO) || pkt->fragoff)
@@ -209,14 +213,23 @@ err:
 }
 
 static const struct nla_policy nft_payload_policy[NFTA_PAYLOAD_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_PAYLOAD_SREG]		= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
 	[NFTA_PAYLOAD_DREG]		= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
+=======
+	[NFTA_PAYLOAD_SREG]		= { .type = NLA_U32 },
+	[NFTA_PAYLOAD_DREG]		= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_PAYLOAD_BASE]		= { .type = NLA_U32 },
 	[NFTA_PAYLOAD_OFFSET]		= { .type = NLA_BE32 },
 	[NFTA_PAYLOAD_LEN]		= NLA_POLICY_MAX(NLA_BE32, 255),
 	[NFTA_PAYLOAD_CSUM_TYPE]	= { .type = NLA_U32 },
 	[NFTA_PAYLOAD_CSUM_OFFSET]	= NLA_POLICY_MAX(NLA_BE32, 255),
+<<<<<<< HEAD
 	[NFTA_PAYLOAD_CSUM_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NFT_PAYLOAD_L4CSUM_PSEUDOHDR),
+=======
+	[NFTA_PAYLOAD_CSUM_FLAGS]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int nft_payload_init(const struct nft_ctx *ctx,
@@ -250,6 +263,34 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_payload_reduce(struct nft_regs_track *track,
+			       const struct nft_expr *expr)
+{
+	const struct nft_payload *priv = nft_expr_priv(expr);
+	const struct nft_payload *payload;
+
+	if (!nft_reg_track_cmp(track, expr, priv->dreg)) {
+		nft_reg_track_update(track, expr, priv->dreg, priv->len);
+		return false;
+	}
+
+	payload = nft_expr_priv(track->regs[priv->dreg].selector);
+	if (priv->base != payload->base ||
+	    priv->offset != payload->offset ||
+	    priv->len != payload->len) {
+		nft_reg_track_update(track, expr, priv->dreg, priv->len);
+		return false;
+	}
+
+	if (!track->regs[priv->dreg].bitwise)
+		return true;
+
+	return nft_expr_reduce_bitwise(track, expr);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool nft_payload_offload_mask(struct nft_offload_reg *reg,
 				     u32 priv_len, u32 field_len)
 {
@@ -553,6 +594,10 @@ static const struct nft_expr_ops nft_payload_ops = {
 	.eval		= nft_payload_eval,
 	.init		= nft_payload_init,
 	.dump		= nft_payload_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_payload_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.offload	= nft_payload_offload,
 };
 
@@ -562,6 +607,10 @@ const struct nft_expr_ops nft_payload_fast_ops = {
 	.eval		= nft_payload_eval,
 	.init		= nft_payload_init,
 	.dump		= nft_payload_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_payload_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.offload	= nft_payload_offload,
 };
 
@@ -985,12 +1034,38 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_payload_set_reduce(struct nft_regs_track *track,
+				   const struct nft_expr *expr)
+{
+	int i;
+
+	for (i = 0; i < NFT_REG32_NUM; i++) {
+		if (!track->regs[i].selector)
+			continue;
+
+		if (track->regs[i].selector->ops != &nft_payload_ops &&
+		    track->regs[i].selector->ops != &nft_payload_fast_ops)
+			continue;
+
+		__nft_reg_track_cancel(track, i);
+	}
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct nft_expr_ops nft_payload_set_ops = {
 	.type		= &nft_payload_type,
 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_payload_set)),
 	.eval		= nft_payload_set_eval,
 	.init		= nft_payload_set_init,
 	.dump		= nft_payload_set_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_payload_set_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops *

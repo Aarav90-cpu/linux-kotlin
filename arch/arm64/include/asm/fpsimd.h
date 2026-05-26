@@ -428,6 +428,7 @@ static inline size_t sme_state_size(struct task_struct const *task)
 	return __sme_state_size(task_get_sme_vl(task));
 }
 
+<<<<<<< HEAD
 void sme_enable_dvmsync(void);
 void sme_set_active(void);
 void sme_clear_active(void);
@@ -446,6 +447,8 @@ static inline void sme_exit_to_user_mode(void)
 		sme_set_active();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 
 static inline void sme_user_disable(void) { BUILD_BUG(); }
@@ -474,9 +477,12 @@ static inline size_t sme_state_size(struct task_struct const *task)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void sme_enter_from_user_mode(void) { }
 static inline void sme_exit_to_user_mode(void) { }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* ! CONFIG_ARM64_SME */
 
 /* For use by EFI runtime services calls only */

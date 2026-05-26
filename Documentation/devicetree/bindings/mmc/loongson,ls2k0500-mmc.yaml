@@ -22,7 +22,10 @@ allOf:
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - loongson,ls2k0300-mmc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - loongson,ls2k0500-mmc
       - loongson,ls2k1000-mmc
       - loongson,ls2k2000-mmc

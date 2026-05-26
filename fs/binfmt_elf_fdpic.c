@@ -917,7 +917,11 @@ static int elf_fdpic_map_file(struct elf_fdpic_params *params,
 	return 0;
 
 dynamic_error:
+<<<<<<< HEAD
 	printk("ELF FDPIC %s with invalid DYNAMIC section (inode=%llu)\n",
+=======
+	printk("ELF FDPIC %s with invalid DYNAMIC section (inode=%lu)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       what, file_inode(file)->i_ino);
 	return -ELIBBAD;
 }

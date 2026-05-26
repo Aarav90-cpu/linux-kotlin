@@ -228,11 +228,21 @@ struct tcp_sock {
 	u32	sacked_out;	/* SACK'd packets			*/
 	u16	tcp_header_len;	/* Bytes of tcp header to send		*/
 	u8	scaling_ratio;	/* see tcp_win_from_space() */
+<<<<<<< HEAD
 	u8	repair      : 1,
 		tcp_usec_ts : 1, /* TSval values in usec */
 		is_sack_reneg:1,    /* in recovery from loss with SACK reneg? */
 		is_cwnd_limited:1,/* forward progress limited by snd_cwnd? */
 		recvmsg_inq : 1;/* Indicate # of bytes in queue upon recvmsg */
+=======
+	u8	chrono_type : 2,	/* current chronograph type */
+		repair      : 1,
+		tcp_usec_ts : 1, /* TSval values in usec */
+		is_sack_reneg:1,    /* in recovery from loss with SACK reneg? */
+		is_cwnd_limited:1,/* forward progress limited by snd_cwnd? */
+		recvmsg_inq : 1,/* Indicate # of bytes in queue upon recvmsg */
+		fast_ack_mode:1;/* ack ASAP if >1 rcv_mss received? */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__cacheline_group_end(tcp_sock_read_txrx);
 
 	/* RX read-mostly hotpath cache lines */
@@ -263,7 +273,10 @@ struct tcp_sock {
 				 * total number of data bytes sent.
 				 */
 	u32	snd_sml;	/* Last byte of the most recently transmitted small packet */
+<<<<<<< HEAD
 	u8	chrono_type;	/* current chronograph type */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32	chrono_start;	/* Start time in jiffies of a TCP chrono */
 	u32	chrono_stat[3];	/* Time in jiffies for chrono_stat stats */
 	u32	write_seq;	/* Tail(+1) of data held in tcp send buffer */
@@ -289,7 +302,12 @@ struct tcp_sock {
  *	0x5?10 << 16 + snd_wnd in net byte order
  */
 	u8	nonagle     : 4,/* Disable Nagle algorithm?             */
+<<<<<<< HEAD
 		rate_app_limited:1;  /* rate_{delivered,interval_us} limited? */
+=======
+		rate_app_limited:1,  /* rate_{delivered,interval_us} limited? */
+		tlp_orig_data_app_limited:1; /* app-limited before TLP rtx? */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8	received_ce_pending:4, /* Not yet transmit cnt of received_ce */
 		accecn_opt_sent_w_dsack:1,/* Sent ACCECN opt in previous ACK w/ D-SACK */
 		unused2:3;
@@ -316,9 +334,12 @@ struct tcp_sock {
 					*/
 	u32	app_limited;	/* limited until "delivered" reaches this val */
 	u32	rcv_wnd;	/* Current receiver window		*/
+<<<<<<< HEAD
 	u32	rcv_mwnd_seq;	/* Maximum window sequence number (RFC 7323,
 				 * section 2.4, receiver requirements)
 				 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32	rcv_tstamp;	/* timestamp of last received ACK (for keepalives) */
 /*
  *      Options received (usually on last packet, some only on SYN packets).
@@ -551,6 +572,7 @@ enum tsq_flags {
 	TCPF_ACK_DEFERRED		= BIT(TCP_ACK_DEFERRED),
 };
 
+<<<<<<< HEAD
 /* Flags of interest for tcp_release_cb() */
 #define TCP_DEFERRED_ALL (TCPF_TSQ_DEFERRED |		\
 			  TCPF_WRITE_TIMER_DEFERRED |	\
@@ -558,6 +580,8 @@ enum tsq_flags {
 			  TCPF_MTU_REDUCED_DEFERRED |	\
 			  TCPF_ACK_DEFERRED)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define tcp_sk(ptr) container_of_const(ptr, struct tcp_sock, inet_conn.icsk_inet.sk)
 
 /* Variant of tcp_sk() upgrading a const sock to a read/write tcp socket.

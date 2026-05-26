@@ -64,7 +64,11 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
 	struct buffer_head *bh;
 	const unsigned long b_state = (1UL << BH_Dirty)|(1UL << BH_Pinned)|(1UL << BH_Lock);
 
+<<<<<<< HEAD
 	spin_lock(&sdp->sd_log_lock);
+=======
+	gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&sdp->sd_ail_lock);
 	list_for_each_entry_safe_reverse(bd, tmp, head, bd_ail_gl_list) {
 		if (nr_revokes == 0)
@@ -80,7 +84,11 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
 	}
 	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
 	spin_unlock(&sdp->sd_ail_lock);
+<<<<<<< HEAD
 	spin_unlock(&sdp->sd_log_lock);
+=======
+	gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 
@@ -109,10 +117,17 @@ static int gfs2_ail_empty_gl(struct gfs2_glock *gl)
 		 * If none of these conditions are true, our revokes are all
 		 * flushed and we can return.
 		 */
+<<<<<<< HEAD
 		spin_lock(&sdp->sd_log_lock);
 		have_revokes = !list_empty(&sdp->sd_log_revokes);
 		log_in_flight = atomic_read(&sdp->sd_log_in_flight);
 		spin_unlock(&sdp->sd_log_lock);
+=======
+		gfs2_log_lock(sdp);
+		have_revokes = !list_empty(&sdp->sd_log_revokes);
+		log_in_flight = atomic_read(&sdp->sd_log_in_flight);
+		gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (have_revokes)
 			goto flush;
 		if (log_in_flight)
@@ -457,11 +472,14 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
 	ip->i_depth = (u8)depth;
 	ip->i_entries = be32_to_cpu(str->di_entries);
 
+<<<<<<< HEAD
 	if (!S_ISDIR(inode->i_mode) && (ip->i_diskflags & GFS2_DIF_EXHASH)) {
 		gfs2_consist_inode(ip);
 		return -EIO;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
 		gfs2_consist_inode(ip);
 		return -EIO;

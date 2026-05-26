@@ -2,7 +2,10 @@
 #include <test_progs.h>
 #include "get_func_ip_test.skel.h"
 #include "get_func_ip_uprobe_test.skel.h"
+<<<<<<< HEAD
 #include "get_func_ip_fsession_test.skel.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static noinline void uprobe_trigger(void)
 {
@@ -47,6 +50,11 @@ static void test_function_entry(void)
 	ASSERT_EQ(skel->bss->test5_result, 1, "test5_result");
 	ASSERT_EQ(skel->bss->test7_result, 1, "test7_result");
 	ASSERT_EQ(skel->bss->test8_result, 1, "test8_result");
+<<<<<<< HEAD
+=======
+	ASSERT_EQ(skel->bss->test9_entry_result, 1, "test9_entry_result");
+	ASSERT_EQ(skel->bss->test9_exit_result, 1, "test9_exit_result");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 cleanup:
 	get_func_ip_test__destroy(skel);
@@ -138,6 +146,7 @@ void test_get_func_ip_test(void)
 	test_function_entry();
 	test_function_body();
 }
+<<<<<<< HEAD
 
 void test_get_func_ip_fsession_test(void)
 {
@@ -163,3 +172,5 @@ void test_get_func_ip_fsession_test(void)
 cleanup:
 	get_func_ip_fsession_test__destroy(skel);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

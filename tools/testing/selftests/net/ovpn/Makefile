@@ -2,14 +2,18 @@
 # Copyright (C) 2020-2025 OpenVPN, Inc.
 #
 CFLAGS = -pedantic -Wextra -Wall -Wl,--no-as-needed -g -O0 -ggdb $(KHDR_INCLUDES)
+<<<<<<< HEAD
 CFLAGS += $(shell pkg-config --cflags mbedcrypto-3 mbedtls-3 2>/dev/null)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 VAR_CFLAGS = $(shell pkg-config --cflags libnl-3.0 libnl-genl-3.0 2>/dev/null)
 ifeq ($(VAR_CFLAGS),)
 VAR_CFLAGS = -I/usr/include/libnl3
 endif
 CFLAGS += $(VAR_CFLAGS)
 
+<<<<<<< HEAD
 MTLS_LDLIBS= $(shell pkg-config --libs mbedcrypto-3 mbedtls-3 2>/dev/null)
 ifeq ($(MTLS_LDLIBS),)
 MTLS_LDLIBS = -lmbedtls -lmbedcrypto
@@ -31,6 +35,18 @@ TEST_FILES = \
 	udp_peers.txt \
 	../../../../net/ynl/pyynl/cli.py \
 # end of TEST_FILES
+=======
+
+LDLIBS = -lmbedtls -lmbedcrypto
+VAR_LDLIBS = $(shell pkg-config --libs libnl-3.0 libnl-genl-3.0 2>/dev/null)
+ifeq ($(VAR_LDLIBS),)
+VAR_LDLIBS = -lnl-genl-3 -lnl-3
+endif
+LDLIBS += $(VAR_LDLIBS)
+
+
+TEST_FILES = common.sh
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TEST_PROGS := \
 	test-chachapoly.sh \
@@ -38,10 +54,13 @@ TEST_PROGS := \
 	test-close-socket.sh \
 	test-float.sh \
 	test-large-mtu.sh \
+<<<<<<< HEAD
 	test-mark.sh \
 	test-symmetric-id-float.sh \
 	test-symmetric-id-tcp.sh \
 	test-symmetric-id.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	test-tcp.sh \
 	test.sh \
 # end of TEST_PROGS

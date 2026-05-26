@@ -29,6 +29,7 @@ backup_only - BOOLEAN
 	If set, disable the director function while the server is
 	in backup mode to avoid packet loops for DR/TUN methods.
 
+<<<<<<< HEAD
 conn_lfactor - INTEGER
 	Possible values: -8 (larger table) .. 8 (smaller table)
 
@@ -56,6 +57,8 @@ conn_lfactor - INTEGER
 	-4: grow if load goes above 6% (buckets = nodes * 16)
 	2: grow if load goes above 400% (buckets = nodes / 4)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 conn_reuse_mode - INTEGER
 	1 - default
 
@@ -246,6 +249,7 @@ secure_tcp - INTEGER
 	The value definition is the same as that of drop_entry and
 	drop_packet.
 
+<<<<<<< HEAD
 svc_lfactor - INTEGER
 	Possible values: -8 (larger table) .. 8 (smaller table)
 
@@ -256,6 +260,8 @@ svc_lfactor - INTEGER
 	will grow and shrink in the range of 2^4 - 2^20.
 	See conn_lfactor for explanation.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sync_threshold - vector of 2 INTEGERs: sync_threshold, sync_period
 	default 3 50
 

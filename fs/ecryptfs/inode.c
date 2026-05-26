@@ -677,6 +677,7 @@ static const char *ecryptfs_get_link(struct dentry *dentry,
 	return buf;
 }
 
+<<<<<<< HEAD
 static void ecryptfs_iattr_to_lower(struct iattr *lower_ia,
 		const struct iattr *ia)
 {
@@ -691,6 +692,8 @@ static void ecryptfs_iattr_to_lower(struct iattr *lower_ia,
 		lower_ia->ia_valid &= ~ATTR_MODE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * upper_size_to_lower_size
  * @crypt_stat: Crypt_stat associated with file
@@ -721,6 +724,7 @@ upper_size_to_lower_size(struct ecryptfs_crypt_stat *crypt_stat,
 }
 
 /**
+<<<<<<< HEAD
  * __ecryptfs_truncate
  * @dentry: The ecryptfs layer dentry
  * @ia: Address of the ecryptfs inode's attributes
@@ -735,11 +739,33 @@ upper_size_to_lower_size(struct ecryptfs_crypt_stat *crypt_stat,
 static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
 {
 	struct dentry *lower_dentry = ecryptfs_dentry_to_lower(dentry);
+=======
+ * truncate_upper
+ * @dentry: The ecryptfs layer dentry
+ * @ia: Address of the ecryptfs inode's attributes
+ * @lower_ia: Address of the lower inode's attributes
+ *
+ * Function to handle truncations modifying the size of the file. Note
+ * that the file sizes are interpolated. When expanding, we are simply
+ * writing strings of 0's out. When truncating, we truncate the upper
+ * inode and update the lower_ia according to the page index
+ * interpolations. If ATTR_SIZE is set in lower_ia->ia_valid upon return,
+ * the caller must use lower_ia in a call to notify_change() to perform
+ * the truncation of the lower inode.
+ *
+ * Returns zero on success; non-zero otherwise
+ */
+static int truncate_upper(struct dentry *dentry, struct iattr *ia,
+			  struct iattr *lower_ia)
+{
+	int rc = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct inode *inode = d_inode(dentry);
 	struct ecryptfs_crypt_stat *crypt_stat;
 	loff_t i_size = i_size_read(inode);
 	loff_t lower_size_before_truncate;
 	loff_t lower_size_after_truncate;
+<<<<<<< HEAD
 	struct iattr lower_ia;
 	size_t num_zeros;
 	int rc;
@@ -755,12 +781,102 @@ static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
 	lower_size_after_truncate =
 		upper_size_to_lower_size(crypt_stat, ia->ia_size);
 	if (lower_size_after_truncate > lower_size_before_truncate) {
+=======
+
+	if (unlikely((ia->ia_size == i_size))) {
+		lower_ia->ia_valid &= ~ATTR_SIZE;
+		return 0;
+	}
+	rc = ecryptfs_get_lower_file(dentry, inode);
+	if (rc)
+		return rc;
+	crypt_stat = &ecryptfs_inode_to_private(d_inode(dentry))->crypt_stat;
+	/* Switch on growing or shrinking file */
+	if (ia->ia_size > i_size) {
+		char zero[] = { 0x00 };
+
+		lower_ia->ia_valid &= ~ATTR_SIZE;
+		/* Write a single 0 at the last position of the file;
+		 * this triggers code that will fill in 0's throughout
+		 * the intermediate portion of the previous end of the
+		 * file and the new and of the file */
+		rc = ecryptfs_write(inode, zero,
+				    (ia->ia_size - 1), 1);
+	} else { /* ia->ia_size < i_size_read(inode) */
+		/* We're chopping off all the pages down to the page
+		 * in which ia->ia_size is located. Fill in the end of
+		 * that page from (ia->ia_size & ~PAGE_MASK) to
+		 * PAGE_SIZE with zeros. */
+		size_t num_zeros = (PAGE_SIZE
+				    - (ia->ia_size & ~PAGE_MASK));
+
+		if (!(crypt_stat->flags & ECRYPTFS_ENCRYPTED)) {
+			truncate_setsize(inode, ia->ia_size);
+			lower_ia->ia_size = ia->ia_size;
+			lower_ia->ia_valid |= ATTR_SIZE;
+			goto out;
+		}
+		if (num_zeros) {
+			char *zeros_virt;
+
+			zeros_virt = kzalloc(num_zeros, GFP_KERNEL);
+			if (!zeros_virt) {
+				rc = -ENOMEM;
+				goto out;
+			}
+			rc = ecryptfs_write(inode, zeros_virt,
+					    ia->ia_size, num_zeros);
+			kfree(zeros_virt);
+			if (rc) {
+				printk(KERN_ERR "Error attempting to zero out "
+				       "the remainder of the end page on "
+				       "reducing truncate; rc = [%d]\n", rc);
+				goto out;
+			}
+		}
+		truncate_setsize(inode, ia->ia_size);
+		rc = ecryptfs_write_inode_size_to_metadata(inode);
+		if (rc) {
+			printk(KERN_ERR	"Problem with "
+			       "ecryptfs_write_inode_size_to_metadata; "
+			       "rc = [%d]\n", rc);
+			goto out;
+		}
+		/* We are reducing the size of the ecryptfs file, and need to
+		 * know if we need to reduce the size of the lower file. */
+		lower_size_before_truncate =
+		    upper_size_to_lower_size(crypt_stat, i_size);
+		lower_size_after_truncate =
+		    upper_size_to_lower_size(crypt_stat, ia->ia_size);
+		if (lower_size_after_truncate < lower_size_before_truncate) {
+			lower_ia->ia_size = lower_size_after_truncate;
+			lower_ia->ia_valid |= ATTR_SIZE;
+		} else
+			lower_ia->ia_valid &= ~ATTR_SIZE;
+	}
+out:
+	ecryptfs_put_lower_file(inode);
+	return rc;
+}
+
+static int ecryptfs_inode_newsize_ok(struct inode *inode, loff_t offset)
+{
+	struct ecryptfs_crypt_stat *crypt_stat;
+	loff_t lower_oldsize, lower_newsize;
+
+	crypt_stat = &ecryptfs_inode_to_private(inode)->crypt_stat;
+	lower_oldsize = upper_size_to_lower_size(crypt_stat,
+						 i_size_read(inode));
+	lower_newsize = upper_size_to_lower_size(crypt_stat, offset);
+	if (lower_newsize > lower_oldsize) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * The eCryptfs inode and the new *lower* size are mixed here
 		 * because we may not have the lower i_mutex held and/or it may
 		 * not be appropriate to call inode_newsize_ok() with inodes
 		 * from other filesystems.
 		 */
+<<<<<<< HEAD
 		rc = inode_newsize_ok(inode, lower_size_after_truncate);
 		if (rc)
 			return rc;
@@ -828,6 +944,12 @@ set_size:
 out:
 	ecryptfs_put_lower_file(inode);
 	return rc;
+=======
+		return inode_newsize_ok(inode, lower_newsize);
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -842,12 +964,33 @@ out:
  */
 int ecryptfs_truncate(struct dentry *dentry, loff_t new_length)
 {
+<<<<<<< HEAD
 	const struct iattr ia = {
 		.ia_valid	= ATTR_SIZE,
 		.ia_size	= new_length,
 	};
 
 	return __ecryptfs_truncate(dentry, &ia);
+=======
+	struct iattr ia = { .ia_valid = ATTR_SIZE, .ia_size = new_length };
+	struct iattr lower_ia = { .ia_valid = 0 };
+	int rc;
+
+	rc = ecryptfs_inode_newsize_ok(d_inode(dentry), new_length);
+	if (rc)
+		return rc;
+
+	rc = truncate_upper(dentry, &ia, &lower_ia);
+	if (!rc && lower_ia.ia_valid & ATTR_SIZE) {
+		struct dentry *lower_dentry = ecryptfs_dentry_to_lower(dentry);
+
+		inode_lock(d_inode(lower_dentry));
+		rc = notify_change(&nop_mnt_idmap, lower_dentry,
+				   &lower_ia, NULL);
+		inode_unlock(d_inode(lower_dentry));
+	}
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -874,15 +1017,25 @@ ecryptfs_permission(struct mnt_idmap *idmap, struct inode *inode,
 static int ecryptfs_setattr(struct mnt_idmap *idmap,
 			    struct dentry *dentry, struct iattr *ia)
 {
+<<<<<<< HEAD
 	struct inode *inode = d_inode(dentry);
 	struct dentry *lower_dentry = ecryptfs_dentry_to_lower(dentry);
 	struct inode *lower_inode = ecryptfs_inode_to_lower(inode);
 	struct ecryptfs_crypt_stat *crypt_stat;
 	int rc;
+=======
+	int rc = 0;
+	struct dentry *lower_dentry;
+	struct iattr lower_ia;
+	struct inode *inode;
+	struct inode *lower_inode;
+	struct ecryptfs_crypt_stat *crypt_stat;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypt_stat = &ecryptfs_inode_to_private(d_inode(dentry))->crypt_stat;
 	if (!(crypt_stat->flags & ECRYPTFS_STRUCT_INITIALIZED))
 		ecryptfs_init_crypt_stat(crypt_stat);
+<<<<<<< HEAD
 
 	mutex_lock(&crypt_stat->cs_mutex);
 	if (d_is_dir(dentry))
@@ -890,6 +1043,17 @@ static int ecryptfs_setattr(struct mnt_idmap *idmap,
 	else if (d_is_reg(dentry) &&
 		 (!(crypt_stat->flags & ECRYPTFS_POLICY_APPLIED) ||
 		  !(crypt_stat->flags & ECRYPTFS_KEY_VALID))) {
+=======
+	inode = d_inode(dentry);
+	lower_inode = ecryptfs_inode_to_lower(inode);
+	lower_dentry = ecryptfs_dentry_to_lower(dentry);
+	mutex_lock(&crypt_stat->cs_mutex);
+	if (d_is_dir(dentry))
+		crypt_stat->flags &= ~(ECRYPTFS_ENCRYPTED);
+	else if (d_is_reg(dentry)
+		 && (!(crypt_stat->flags & ECRYPTFS_POLICY_APPLIED)
+		     || !(crypt_stat->flags & ECRYPTFS_KEY_VALID))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct ecryptfs_mount_crypt_stat *mount_crypt_stat;
 
 		mount_crypt_stat = &ecryptfs_superblock_to_private(
@@ -902,8 +1066,13 @@ static int ecryptfs_setattr(struct mnt_idmap *idmap,
 		rc = ecryptfs_read_metadata(dentry);
 		ecryptfs_put_lower_file(inode);
 		if (rc) {
+<<<<<<< HEAD
 			if (!(mount_crypt_stat->flags &
 			      ECRYPTFS_PLAINTEXT_PASSTHROUGH_ENABLED)) {
+=======
+			if (!(mount_crypt_stat->flags
+			      & ECRYPTFS_PLAINTEXT_PASSTHROUGH_ENABLED)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rc = -EIO;
 				printk(KERN_WARNING "Either the lower file "
 				       "is not in a valid eCryptfs format, "
@@ -923,6 +1092,7 @@ static int ecryptfs_setattr(struct mnt_idmap *idmap,
 	rc = setattr_prepare(&nop_mnt_idmap, dentry, ia);
 	if (rc)
 		goto out;
+<<<<<<< HEAD
 
 	if (ia->ia_valid & ATTR_SIZE) {
 		rc = __ecryptfs_truncate(dentry, ia);
@@ -936,6 +1106,33 @@ static int ecryptfs_setattr(struct mnt_idmap *idmap,
 				NULL);
 		inode_unlock(d_inode(lower_dentry));
 	}
+=======
+	if (ia->ia_valid & ATTR_SIZE) {
+		rc = ecryptfs_inode_newsize_ok(inode, ia->ia_size);
+		if (rc)
+			goto out;
+	}
+
+	memcpy(&lower_ia, ia, sizeof(lower_ia));
+	if (ia->ia_valid & ATTR_FILE)
+		lower_ia.ia_file = ecryptfs_file_to_lower(ia->ia_file);
+	if (ia->ia_valid & ATTR_SIZE) {
+		rc = truncate_upper(dentry, ia, &lower_ia);
+		if (rc < 0)
+			goto out;
+	}
+
+	/*
+	 * mode change is for clearing setuid/setgid bits. Allow lower fs
+	 * to interpret this in its own way.
+	 */
+	if (lower_ia.ia_valid & (ATTR_KILL_SUID | ATTR_KILL_SGID))
+		lower_ia.ia_valid &= ~ATTR_MODE;
+
+	inode_lock(d_inode(lower_dentry));
+	rc = notify_change(&nop_mnt_idmap, lower_dentry, &lower_ia, NULL);
+	inode_unlock(d_inode(lower_dentry));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	fsstack_copy_attr_all(inode, lower_inode);
 	return rc;

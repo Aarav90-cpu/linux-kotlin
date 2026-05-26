@@ -34,12 +34,20 @@ static ssize_t io_query_zcrx(union io_query_data *data)
 {
 	struct io_uring_query_zcrx *e = &data->zcrx;
 
+<<<<<<< HEAD
 	e->register_flags = ZCRX_SUPPORTED_REG_FLAGS;
+=======
+	e->register_flags = ZCRX_REG_IMPORT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	e->area_flags = IORING_ZCRX_AREA_DMABUF;
 	e->nr_ctrl_opcodes = __ZCRX_CTRL_LAST;
 	e->rq_hdr_size = sizeof(struct io_uring);
 	e->rq_hdr_alignment = L1_CACHE_BYTES;
+<<<<<<< HEAD
 	e->features = ZCRX_FEATURES;
+=======
+	e->features = ZCRX_FEATURE_RX_PAGE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	e->__resv2 = 0;
 	return sizeof(*e);
 }

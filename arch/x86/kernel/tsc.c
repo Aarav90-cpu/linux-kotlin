@@ -322,6 +322,7 @@ int __init notsc_setup(char *str)
 	return 1;
 }
 #endif
+<<<<<<< HEAD
 __setup("notsc", notsc_setup);
 
 enum {
@@ -332,6 +333,14 @@ enum {
 
 static int no_sched_irq_time;
 static int tsc_watchdog;
+=======
+
+__setup("notsc", notsc_setup);
+
+static int no_sched_irq_time;
+static int no_tsc_watchdog;
+static int tsc_as_watchdog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int __init tsc_setup(char *str)
 {
@@ -341,6 +350,7 @@ static int __init tsc_setup(char *str)
 		no_sched_irq_time = 1;
 	if (!strcmp(str, "unstable"))
 		mark_tsc_unstable("boot parameter");
+<<<<<<< HEAD
 	if (!strcmp(str, "nowatchdog"))
 		tsc_watchdog = TSC_WATCHDOG_OFF;
 	if (!strcmp(str, "recalibrate"))
@@ -349,6 +359,27 @@ static int __init tsc_setup(char *str)
 		tsc_watchdog = TSC_WATCHDOG_ON;
 	return 1;
 }
+=======
+	if (!strcmp(str, "nowatchdog")) {
+		no_tsc_watchdog = 1;
+		if (tsc_as_watchdog)
+			pr_alert("%s: Overriding earlier tsc=watchdog with tsc=nowatchdog\n",
+				 __func__);
+		tsc_as_watchdog = 0;
+	}
+	if (!strcmp(str, "recalibrate"))
+		tsc_force_recalibrate = 1;
+	if (!strcmp(str, "watchdog")) {
+		if (no_tsc_watchdog)
+			pr_alert("%s: tsc=watchdog overridden by earlier tsc=nowatchdog\n",
+				 __func__);
+		else
+			tsc_as_watchdog = 1;
+	}
+	return 1;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __setup("tsc=", tsc_setup);
 
 #define MAX_RETRIES		5
@@ -1168,6 +1199,10 @@ static int tsc_cs_enable(struct clocksource *cs)
 static struct clocksource clocksource_tsc_early = {
 	.name			= "tsc-early",
 	.rating			= 299,
+<<<<<<< HEAD
+=======
+	.uncertainty_margin	= 32 * NSEC_PER_MSEC,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.read			= read_tsc,
 	.mask			= CLOCKSOURCE_MASK(64),
 	.flags			= CLOCK_SOURCE_IS_CONTINUOUS |
@@ -1192,9 +1227,15 @@ static struct clocksource clocksource_tsc = {
 	.read			= read_tsc,
 	.mask			= CLOCKSOURCE_MASK(64),
 	.flags			= CLOCK_SOURCE_IS_CONTINUOUS |
+<<<<<<< HEAD
 				  CLOCK_SOURCE_CAN_INLINE_READ |
 				  CLOCK_SOURCE_MUST_VERIFY |
 				  CLOCK_SOURCE_HAS_COUPLED_CLOCK_EVENT,
+=======
+				  CLOCK_SOURCE_VALID_FOR_HRES |
+				  CLOCK_SOURCE_MUST_VERIFY |
+				  CLOCK_SOURCE_VERIFY_PERCPU,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.id			= CSID_X86_TSC,
 	.vdso_clock_mode	= VDSO_CLOCKMODE_TSC,
 	.enable			= tsc_cs_enable,
@@ -1222,12 +1263,24 @@ EXPORT_SYMBOL_GPL(mark_tsc_unstable);
 
 static void __init tsc_disable_clocksource_watchdog(void)
 {
+<<<<<<< HEAD
 	if (tsc_watchdog == TSC_WATCHDOG_ON)
 		return;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clocksource_tsc_early.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
 	clocksource_tsc.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
 }
 
+<<<<<<< HEAD
+=======
+bool tsc_clocksource_watchdog_disabled(void)
+{
+	return !(clocksource_tsc.flags & CLOCK_SOURCE_MUST_VERIFY) &&
+	       tsc_as_watchdog && !no_tsc_watchdog;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __init check_system_tsc_reliable(void)
 {
 #if defined(CONFIG_MGEODEGX1) || defined(CONFIG_MGEODE_LX) || defined(CONFIG_X86_GENERIC)
@@ -1382,8 +1435,11 @@ restart:
 		(unsigned long)tsc_khz / 1000,
 		(unsigned long)tsc_khz % 1000);
 
+<<<<<<< HEAD
 	clocksource_tsc.flags |= CLOCK_SOURCE_CALIBRATED;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Inform the TSC deadline clockevent devices about the recalibration */
 	lapic_update_tsc_freq();
 
@@ -1399,6 +1455,7 @@ out:
 		have_art = true;
 		clocksource_tsc.base = &art_base_clk;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Transfer the valid for high resolution flag if it was set on the
@@ -1408,6 +1465,8 @@ out:
 	if (clocksource_tsc_early.flags & CLOCK_SOURCE_VALID_FOR_HRES)
 		clocksource_tsc.flags |= CLOCK_SOURCE_VALID_FOR_HRES;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clocksource_register_khz(&clocksource_tsc, tsc_khz);
 unreg:
 	clocksource_unregister(&clocksource_tsc_early);
@@ -1459,10 +1518,19 @@ static bool __init determine_cpu_tsc_frequencies(bool early)
 
 	if (early) {
 		cpu_khz = x86_platform.calibrate_cpu();
+<<<<<<< HEAD
 		if (tsc_early_khz)
 			tsc_khz = tsc_early_khz;
 		else
 			tsc_khz = x86_platform.calibrate_tsc();
+=======
+		if (tsc_early_khz) {
+			tsc_khz = tsc_early_khz;
+		} else {
+			tsc_khz = x86_platform.calibrate_tsc();
+			clocksource_tsc.freq_khz = tsc_khz;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/* We should not be here with non-native cpu calibration */
 		WARN_ON(x86_platform.calibrate_cpu != native_calibrate_cpu);
@@ -1566,7 +1634,11 @@ void __init tsc_init(void)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (tsc_clocksource_reliable || tsc_watchdog == TSC_WATCHDOG_OFF)
+=======
+	if (tsc_clocksource_reliable || no_tsc_watchdog)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tsc_disable_clocksource_watchdog();
 
 	clocksource_register_khz(&clocksource_tsc_early, tsc_khz);

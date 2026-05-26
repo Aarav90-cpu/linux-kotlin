@@ -146,6 +146,7 @@ static int ras_cmd_clear_bad_page_info(struct ras_core_context *ras_core,
 	if (cmd->input_size != sizeof(struct ras_cmd_dev_handle))
 		return RAS_CMD__ERROR_INVALID_INPUT_SIZE;
 
+<<<<<<< HEAD
 	if (ras_fw_eeprom_supported(ras_core)) {
 		if (ras_fw_eeprom_reset_table(ras_core))
 			return RAS_CMD__ERROR_GENERIC;
@@ -153,6 +154,10 @@ static int ras_cmd_clear_bad_page_info(struct ras_core_context *ras_core,
 		if (ras_eeprom_reset_table(ras_core))
 			return RAS_CMD__ERROR_GENERIC;
 	}
+=======
+	if (ras_eeprom_reset_table(ras_core))
+		return RAS_CMD__ERROR_GENERIC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ras_umc_clean_badpage_data(ras_core))
 		return RAS_CMD__ERROR_GENERIC;

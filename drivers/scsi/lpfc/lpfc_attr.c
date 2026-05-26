@@ -1,8 +1,13 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+ * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.  *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
  * www.broadcom.com                                                *
@@ -4415,7 +4420,11 @@ static DEVICE_ATTR_RO(lpfc_static_vport);
 /*
 # lpfc_link_speed: Link speed selection for initializing the Fibre Channel
 # connection.
+<<<<<<< HEAD
 # Value range is [0,128]. Default value is 0.
+=======
+# Value range is [0,16]. Default value is 0.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 */
 /**
  * lpfc_link_speed_store - Set the adapters link speed
@@ -4468,6 +4477,7 @@ lpfc_link_speed_store(struct device *dev, struct device_attribute *attr,
 		"3055 lpfc_link_speed changed from %d to %d %s\n",
 		phba->cfg_link_speed, val, nolip ? "(nolip)" : "(lip)");
 
+<<<<<<< HEAD
 	if ((val == LPFC_USER_LINK_SPEED_1G && !(phba->lmt & LMT_1Gb)) ||
 	    (val == LPFC_USER_LINK_SPEED_2G && !(phba->lmt & LMT_2Gb)) ||
 	    (val == LPFC_USER_LINK_SPEED_4G && !(phba->lmt & LMT_4Gb)) ||
@@ -4477,6 +4487,16 @@ lpfc_link_speed_store(struct device *dev, struct device_attribute *attr,
 	    (val == LPFC_USER_LINK_SPEED_32G && !(phba->lmt & LMT_32Gb)) ||
 	    (val == LPFC_USER_LINK_SPEED_64G && !(phba->lmt & LMT_64Gb)) ||
 	    (val == LPFC_USER_LINK_SPEED_128G && !(phba->lmt & LMT_128Gb))) {
+=======
+	if (((val == LPFC_USER_LINK_SPEED_1G) && !(phba->lmt & LMT_1Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_2G) && !(phba->lmt & LMT_2Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_4G) && !(phba->lmt & LMT_4Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_8G) && !(phba->lmt & LMT_8Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_10G) && !(phba->lmt & LMT_10Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_16G) && !(phba->lmt & LMT_16Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_32G) && !(phba->lmt & LMT_32Gb)) ||
+	    ((val == LPFC_USER_LINK_SPEED_64G) && !(phba->lmt & LMT_64Gb))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpfc_printf_log(phba, KERN_ERR, LOG_INIT,
 				"2879 lpfc_link_speed attribute cannot be set "
 				"to %d. Speed is not supported by this port.\n",
@@ -4501,7 +4521,10 @@ lpfc_link_speed_store(struct device *dev, struct device_attribute *attr,
 	case LPFC_USER_LINK_SPEED_16G:
 	case LPFC_USER_LINK_SPEED_32G:
 	case LPFC_USER_LINK_SPEED_64G:
+<<<<<<< HEAD
 	case LPFC_USER_LINK_SPEED_128G:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prev_val = phba->cfg_link_speed;
 		phba->cfg_link_speed = val;
 		if (nolip)
@@ -4566,7 +4589,10 @@ lpfc_link_speed_init(struct lpfc_hba *phba, int val)
 	case LPFC_USER_LINK_SPEED_16G:
 	case LPFC_USER_LINK_SPEED_32G:
 	case LPFC_USER_LINK_SPEED_64G:
+<<<<<<< HEAD
 	case LPFC_USER_LINK_SPEED_128G:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		phba->cfg_link_speed = val;
 		return 0;
 	default:
@@ -7470,6 +7496,11 @@ lpfc_get_cfgparam(struct lpfc_hba *phba)
 
 	phba->cfg_auto_imax = (phba->cfg_fcp_imax) ? 0 : 1;
 
+<<<<<<< HEAD
+=======
+	phba->cfg_enable_pbde = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* A value of 0 means use the number of CPUs found in the system */
 	if (phba->cfg_hdw_queue == 0)
 		phba->cfg_hdw_queue = phba->sli4_hba.num_present_cpu;

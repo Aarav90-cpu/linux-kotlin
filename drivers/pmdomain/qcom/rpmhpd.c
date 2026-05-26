@@ -102,21 +102,27 @@ static struct rpmhpd cx_ao_w_mx_parent = {
 	.res_name = "cx.lvl",
 };
 
+<<<<<<< HEAD
 static struct rpmhpd dcx = {
 	.pd = { .name = "dcx", },
 	.res_name = "dcx.lvl",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct rpmhpd ebi = {
 	.pd = { .name = "ebi", },
 	.res_name = "ebi.lvl",
 };
 
+<<<<<<< HEAD
 static struct rpmhpd gbx = {
 	.pd = { .name = "gbx", },
 	.res_name = "gbx.lvl",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct rpmhpd gfx = {
 	.pd = { .name = "gfx", },
 	.res_name = "gfx.lvl",
@@ -227,6 +233,7 @@ static struct rpmhpd gmxc = {
 	.res_name = "gmxc.lvl",
 };
 
+<<<<<<< HEAD
 /* Eliza RPMH powerdomains */
 static struct rpmhpd *eliza_rpmhpds[] = {
 	[RPMHPD_CX] = &cx,
@@ -246,6 +253,8 @@ static const struct rpmhpd_desc eliza_desc = {
 	.num_pds = ARRAY_SIZE(eliza_rpmhpds),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Milos RPMH powerdomains */
 static struct rpmhpd *milos_rpmhpds[] = {
 	[RPMHPD_CX] = &cx,
@@ -651,6 +660,7 @@ static const struct rpmhpd_desc kaanapali_desc = {
 	.num_pds = ARRAY_SIZE(kaanapali_rpmhpds),
 };
 
+<<<<<<< HEAD
 /* Hawi RPMH powerdomains */
 static struct rpmhpd *hawi_rpmhpds[] = {
 	[RPMHPD_CX] = &cx,
@@ -678,6 +688,8 @@ static const struct rpmhpd_desc hawi_desc = {
 	.num_pds = ARRAY_SIZE(hawi_rpmhpds),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* QDU1000/QRU1000 RPMH powerdomains */
 static struct rpmhpd *qdu1000_rpmhpds[] = {
 	[QDU1000_CX] = &cx,
@@ -851,9 +863,13 @@ static const struct rpmhpd_desc qcs615_desc = {
 };
 
 static const struct of_device_id rpmhpd_match_table[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,eliza-rpmhpd", .data = &eliza_desc },
 	{ .compatible = "qcom,glymur-rpmhpd", .data = &glymur_desc },
 	{ .compatible = "qcom,hawi-rpmhpd", .data = &hawi_desc },
+=======
+	{ .compatible = "qcom,glymur-rpmhpd", .data = &glymur_desc },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,kaanapali-rpmhpd", .data = &kaanapali_desc },
 	{ .compatible = "qcom,milos-rpmhpd", .data = &milos_desc },
 	{ .compatible = "qcom,qcs615-rpmhpd", .data = &qcs615_desc },

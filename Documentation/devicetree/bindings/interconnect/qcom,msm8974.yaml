@@ -26,17 +26,32 @@ properties:
       - qcom,msm8974-pnoc
       - qcom,msm8974-snoc
 
+<<<<<<< HEAD
   clock-names:
     items:
       - const: bus
+=======
+  '#interconnect-cells':
+    const: 1
+
+  clock-names:
+    items:
+      - const: bus
+      - const: bus_a
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   clocks:
     items:
       - description: Bus Clock
+<<<<<<< HEAD
+=======
+      - description: Bus A Clock
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible
   - reg
+<<<<<<< HEAD
 
 unevaluatedProperties: false
 
@@ -54,6 +69,13 @@ allOf:
       properties:
         clocks: false
         clock-names: false
+=======
+  - '#interconnect-cells'
+  - clock-names
+  - clocks
+
+additionalProperties: false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |
@@ -63,4 +85,10 @@ examples:
         reg = <0xfc380000 0x6a000>;
         compatible = "qcom,msm8974-bimc";
         #interconnect-cells = <1>;
+<<<<<<< HEAD
+=======
+        clock-names = "bus", "bus_a";
+        clocks = <&rpmcc RPM_SMD_BIMC_CLK>,
+                 <&rpmcc RPM_SMD_BIMC_A_CLK>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

@@ -18,6 +18,7 @@ description: |
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - qcom,kaanapali-fastrpc
@@ -26,6 +27,11 @@ properties:
           - enum:
               - qcom,glymur-fastrpc
           - const: qcom,kaanapali-fastrpc
+=======
+    enum:
+      - qcom,kaanapali-fastrpc
+      - qcom,fastrpc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   label:
     enum:

@@ -66,6 +66,7 @@ struct clk;
 #define PX30_PMU_CLKGATE_CON(x)		((x) * 0x4 + 0x80)
 #define PX30_PMU_MODE			0x0020
 
+<<<<<<< HEAD
 #define RV1103B_TOPCRU_BASE		0x60000
 #define RV1103B_PERICRU_BASE		0x0
 #define RV1103B_VICRU_BASE		0x30000
@@ -115,6 +116,8 @@ struct clk;
 #define RV1103B_SUBDDRSOFTRST_CON(x)	((x) * 0x4 + 0xa00 + RV1103B_SUBDDRCRU_BASE)
 #define RV1103B_SUBDDRMODE_CON		(0x280 + RV1103B_SUBDDRCRU_BASE)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RV1108_PLL_CON(x)		((x) * 0x4)
 #define RV1108_CLKSEL_CON(x)		((x) * 0x4 + 0x60)
 #define RV1108_CLKGATE_CON(x)		((x) * 0x4 + 0x120)

@@ -206,6 +206,7 @@ config MTD_PARTITIONED_MASTER
 	  the parent of the partition device be the master device, rather than
 	  what lies behind the master.
 
+<<<<<<< HEAD
 config MTD_VIRT_CONCAT
 	bool "Virtual concatenated MTD devices"
 	depends on MTD_PARTITIONED_MASTER
@@ -215,6 +216,8 @@ config MTD_VIRT_CONCAT
 	  entity. This allows for the creation of partitions larger than
 	  the individual physical chips, extending across chip boundaries.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/mtd/chips/Kconfig"
 
 source "drivers/mtd/maps/Kconfig"

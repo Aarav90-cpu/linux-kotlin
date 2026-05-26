@@ -100,7 +100,11 @@
 	tx_delay = <0x0>;
 	rx_delay = <0x0>;
 
+<<<<<<< HEAD
 	mdio {
+=======
+	mdio0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "snps,dwmac-mdio";
 		#address-cells = <1>;
 		#size-cells = <0>;

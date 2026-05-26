@@ -6,10 +6,14 @@
 #ifndef _AMDXDNA_PCI_DRV_H_
 #define _AMDXDNA_PCI_DRV_H_
 
+<<<<<<< HEAD
 #include <drm/amdxdna_accel.h>
 #include <drm/drm_print.h>
 #include <linux/iommu.h>
 #include <linux/iova.h>
+=======
+#include <drm/drm_print.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/workqueue.h>
 #include <linux/xarray.h>
 
@@ -104,10 +108,13 @@ struct amdxdna_dev {
 	struct amdxdna_fw_ver		fw_ver;
 	struct rw_semaphore		notifier_lock; /* for mmu notifier*/
 	struct workqueue_struct		*notifier_wq;
+<<<<<<< HEAD
 
 	struct iommu_group		*group;
 	struct iommu_domain		*domain;
 	struct iova_domain		iovad;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -138,10 +145,13 @@ struct amdxdna_client {
 	struct iommu_sva		*sva;
 	int				pasid;
 	struct mm_struct		*mm;
+<<<<<<< HEAD
 
 	size_t				heap_usage;
 	size_t				total_bo_usage;
 	size_t				total_int_bo_usage;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define amdxdna_for_each_hwctx(client, hwctx_id, entry)		\
@@ -156,6 +166,7 @@ extern const struct amdxdna_dev_info dev_npu6_info;
 int amdxdna_sysfs_init(struct amdxdna_dev *xdna);
 void amdxdna_sysfs_fini(struct amdxdna_dev *xdna);
 
+<<<<<<< HEAD
 int amdxdna_iommu_init(struct amdxdna_dev *xdna);
 void amdxdna_iommu_fini(struct amdxdna_dev *xdna);
 int amdxdna_iommu_map_bo(struct amdxdna_dev *xdna, struct amdxdna_gem_obj *abo);
@@ -173,4 +184,6 @@ static inline bool amdxdna_pasid_on(struct amdxdna_client *client)
 {
 	return client->pasid != IOMMU_PASID_INVALID;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _AMDXDNA_PCI_DRV_H_ */

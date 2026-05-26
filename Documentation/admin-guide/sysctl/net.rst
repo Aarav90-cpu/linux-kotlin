@@ -602,6 +602,7 @@ it does not modify the current namespace or any existing children.
 
 A namespace with ``ns_mode`` set to ``local`` cannot change
 ``child_ns_mode`` to ``global`` (returns ``-EPERM``).
+<<<<<<< HEAD
 
 g2h_fallback
 ------------
@@ -630,3 +631,5 @@ Values:
 	- 0 - Connections to CIDs <= 2 or with VMADDR_FLAG_TO_HOST use G2H;
 	  all others use H2G (or fail with ENODEV if H2G is not loaded).
 	- 1 - Connections to CIDs not owned by H2G fall back to G2H. (default)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

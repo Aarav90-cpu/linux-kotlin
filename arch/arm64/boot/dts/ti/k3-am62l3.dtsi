@@ -39,8 +39,11 @@
 			d-cache-line-size = <64>;
 			d-cache-sets = <128>;
 			next-level-cache = <&l2_0>;
+<<<<<<< HEAD
 			operating-points-v2 = <&a53_opp_table>;
 			clocks = <&scmi_clk 356>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu1: cpu@1 {
@@ -55,8 +58,11 @@
 			d-cache-line-size = <64>;
 			d-cache-sets = <128>;
 			next-level-cache = <&l2_0>;
+<<<<<<< HEAD
 			operating-points-v2 = <&a53_opp_table>;
 			clocks = <&scmi_clk 357>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 
@@ -68,6 +74,7 @@
 		cache-line-size = <64>;
 		cache-sets = <256>;
 	};
+<<<<<<< HEAD
 
 	a53_opp_table: opp-table {
 		compatible = "operating-points-v2-ti-cpu";
@@ -111,4 +118,6 @@
 			opp-suspend;
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

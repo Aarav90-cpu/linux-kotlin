@@ -3,7 +3,11 @@
  * Copyright © 2014-2016 Intel Corporation
  */
 
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/shmem_fs.h>
 #include <linux/swap.h>
 #include <linux/uio.h>

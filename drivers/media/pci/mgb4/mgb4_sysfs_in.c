@@ -128,6 +128,7 @@ static ssize_t color_mapping_show(struct device *dev,
 	u32 config = mgb4_read_reg(&vindev->mgbdev->video,
 	  vindev->config->regs.config);
 
+<<<<<<< HEAD
 	switch ((config >> 7) & 3) {
 	case 0: /* SPWG/VESA */
 		return sprintf(buf, "1\n");
@@ -138,6 +139,9 @@ static ssize_t color_mapping_show(struct device *dev,
 	default:
 		return -EIO;
 	}
+=======
+	return sprintf(buf, "%s\n", config & (1U << 8) ? "0" : "1");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -160,20 +164,31 @@ static ssize_t color_mapping_store(struct device *dev,
 
 	switch (val) {
 	case 0: /* OLDI/JEIDA */
+<<<<<<< HEAD
 		fpga_data = 2;
+=======
+		fpga_data = (1U << 8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case 1: /* SPWG/VESA */
 		fpga_data = 0;
 		break;
+<<<<<<< HEAD
 	case 2: /* ZDML */
 		fpga_data = 1;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
 
 	mgb4_mask_reg(&vindev->mgbdev->video, vindev->config->regs.config,
+<<<<<<< HEAD
 		      3U << 7, fpga_data << 7);
+=======
+		      1U << 8, fpga_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return count;
 }

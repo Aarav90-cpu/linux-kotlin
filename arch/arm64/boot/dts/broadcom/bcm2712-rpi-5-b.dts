@@ -68,6 +68,7 @@
 		function = "vbus1";
 		groups = "vbus1";
 	};
+<<<<<<< HEAD
 
 	rp1_i2c4_default_state: rp1-i2c4-default-state {
 		function = "i2c4";
@@ -92,6 +93,8 @@
 &rp1_i2c6 {
 	pinctrl-0 = <&rp1_i2c6_default_state>;
 	pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &rp1_usb0 {

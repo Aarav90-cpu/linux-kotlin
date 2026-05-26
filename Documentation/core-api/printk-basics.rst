@@ -103,6 +103,7 @@ For debugging purposes there are also two conditionally-compiled macros:
 pr_debug() and pr_devel(), which are compiled-out unless ``DEBUG`` (or
 also ``CONFIG_DYNAMIC_DEBUG`` in the case of pr_debug()) is defined.
 
+<<<<<<< HEAD
 Avoiding lockups from excessive printk() use
 ============================================
 
@@ -139,6 +140,8 @@ If more permanent output is needed in a hot path, trace events can be used.
 See ``Documentation/trace/events.rst`` and
 ``samples/trace_events/trace-events-sample.[ch]``.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Function reference
 ==================

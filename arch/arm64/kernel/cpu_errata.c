@@ -11,7 +11,10 @@
 #include <asm/cpu.h>
 #include <asm/cputype.h>
 #include <asm/cpufeature.h>
+<<<<<<< HEAD
 #include <asm/fpsimd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_asm.h>
 #include <asm/smp_plat.h>
 
@@ -576,6 +579,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
 };
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_4193714
 static bool has_sme_dvmsync_erratum(const struct arm64_cpu_capabilities *entry,
 				    int scope)
@@ -593,6 +597,8 @@ static void cpu_enable_sme_dvmsync(const struct arm64_cpu_capabilities *__unused
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
 static const struct midr_range erratum_ac03_cpu_38_list[] = {
 	MIDR_ALL_VERSIONS(MIDR_AMPERE1),
@@ -919,6 +925,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.matches = need_arm_si_l1_workaround_4311569,
 	},
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_4193714
 	{
 		.desc = "C1-Pro SME DVMSync early acknowledgement",
@@ -931,6 +938,8 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		MIDR_FIXED(MIDR_CPU_VAR_REV(1, 2), BIT(0)),
 	},
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
 	{
 		.desc = "ARM errata 2966298, 3117295",

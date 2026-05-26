@@ -49,7 +49,10 @@
 #include <rdma/ib_addr.h>
 #include <rdma/ib_smi.h>
 #include <rdma/ib_user_verbs.h>
+<<<<<<< HEAD
 #include <rdma/uverbs_ioctl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "pvrdma.h"
 
@@ -142,9 +145,16 @@ int pvrdma_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *init_attr,
 	dev_dbg(&dev->pdev->dev,
 		"create shared receive queue from user space\n");
 
+<<<<<<< HEAD
 	ret = ib_copy_validate_udata_in(udata, ucmd, reserved);
 	if (ret)
 		goto err_srq;
+=======
+	if (ib_copy_from_udata(&ucmd, udata, sizeof(ucmd))) {
+		ret = -EFAULT;
+		goto err_srq;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	srq->umem = ib_umem_get(ibsrq->device, ucmd.buf_addr, ucmd.buf_size, 0);
 	if (IS_ERR(srq->umem)) {

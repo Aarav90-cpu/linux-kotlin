@@ -56,7 +56,10 @@ struct iio_backend {
 	void *priv;
 	const char *name;
 	unsigned int cached_reg_addr;
+<<<<<<< HEAD
 	u32 caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * This index is relative to the frontend. Meaning that for
 	 * frontends with multiple backends, this will be the index of this
@@ -775,6 +778,7 @@ int iio_backend_extend_chan_spec(struct iio_backend *back,
 }
 EXPORT_SYMBOL_NS_GPL(iio_backend_extend_chan_spec, "IIO_BACKEND");
 
+<<<<<<< HEAD
 /**
  * iio_backend_has_caps - Check if backend has specific capabilities
  * @back: Backend device
@@ -789,6 +793,8 @@ bool iio_backend_has_caps(struct iio_backend *back, u32 caps)
 }
 EXPORT_SYMBOL_NS_GPL(iio_backend_has_caps, "IIO_BACKEND");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void iio_backend_release(void *arg)
 {
 	struct iio_backend *back = arg;
@@ -967,6 +973,10 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_data_transfer_addr, "IIO_BACKEND");
 static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, const char *name,
 							 struct fwnode_handle *fwnode)
 {
+<<<<<<< HEAD
+=======
+	struct fwnode_handle *fwnode_back;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_backend *back;
 	unsigned int index;
 	int ret;
@@ -981,8 +991,12 @@ static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, con
 		index = 0;
 	}
 
+<<<<<<< HEAD
 	struct fwnode_handle *fwnode_back __free(fwnode_handle) =
 		fwnode_find_reference(fwnode, "io-backends", index);
+=======
+	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(fwnode_back))
 		return dev_err_cast_probe(dev, fwnode_back,
 					  "Cannot get Firmware reference\n");
@@ -992,6 +1006,10 @@ static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, con
 		if (!device_match_fwnode(back->dev, fwnode_back))
 			continue;
 
+<<<<<<< HEAD
+=======
+		fwnode_handle_put(fwnode_back);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = __devm_iio_backend_get(dev, back);
 		if (ret)
 			return ERR_PTR(ret);
@@ -1002,6 +1020,10 @@ static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, con
 		return back;
 	}
 
+<<<<<<< HEAD
+=======
+	fwnode_handle_put(fwnode_back);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(-EPROBE_DEFER);
 }
 
@@ -1127,7 +1149,10 @@ int devm_iio_backend_register(struct device *dev,
 
 	back->ops = info->ops;
 	back->name = info->name;
+<<<<<<< HEAD
 	back->caps = info->caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	back->owner = dev->driver->owner;
 	back->dev = dev;
 	back->priv = priv;

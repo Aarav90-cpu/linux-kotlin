@@ -2012,6 +2012,7 @@ static const struct usb_device_id cdc_devs[] = {
 		.driver_info = (unsigned long)&apple_private_interface_info,
 	},
 
+<<<<<<< HEAD
 	/* Mac */
 	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1905, 0),
 		.driver_info = (unsigned long)&apple_private_interface_info,
@@ -2020,6 +2021,8 @@ static const struct usb_device_id cdc_devs[] = {
 		.driver_info = (unsigned long)&apple_private_interface_info,
 	},
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ericsson MBM devices like F5521gw */
 	{ .match_flags = USB_DEVICE_ID_MATCH_INT_INFO
 		| USB_DEVICE_ID_MATCH_VENDOR,

@@ -74,6 +74,7 @@ TC_INDIRECT_SCOPE int fw_classify(struct sk_buff *skb,
 			}
 		}
 	} else {
+<<<<<<< HEAD
 		struct Qdisc *q;
 
 		/* Old method: classify the packet using its skb mark. */
@@ -81,6 +82,11 @@ TC_INDIRECT_SCOPE int fw_classify(struct sk_buff *skb,
 			return -1;
 
 		q = tcf_block_q(tp->chain->block);
+=======
+		struct Qdisc *q = tcf_block_q(tp->chain->block);
+
+		/* Old method: classify the packet using its skb mark. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (id && (TC_H_MAJ(id) == 0 ||
 			   !(TC_H_MAJ(id ^ q->handle)))) {
 			res->classid = id;

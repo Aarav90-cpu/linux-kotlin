@@ -482,11 +482,15 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 	struct ahci_host_priv *hpriv;
 	u32 mask_port_map = 0;
 	u32 max_port;
+<<<<<<< HEAD
 	int nports;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!devres_open_group(dev, NULL, GFP_KERNEL))
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	/* find maximum port id for allocating structures */
 	max_port = ahci_platform_find_max_port_id(dev);
 	/*
@@ -499,12 +503,18 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 	 */
 	nports = min(AHCI_MAX_PORTS, max_port + 1);
 	hpriv = devres_alloc(ahci_platform_put_resources, struct_size(hpriv, phys, nports),
+=======
+	hpriv = devres_alloc(ahci_platform_put_resources, sizeof(*hpriv),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     GFP_KERNEL);
 	if (!hpriv)
 		goto err_out;
 
+<<<<<<< HEAD
 	hpriv->nports = nports;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	devres_add(dev, hpriv);
 
 	/*
@@ -587,6 +597,26 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 		goto err_out;
 	}
 
+<<<<<<< HEAD
+=======
+	/* find maximum port id for allocating structures */
+	max_port = ahci_platform_find_max_port_id(dev);
+	/*
+	 * Set nports according to maximum port id. Clamp at
+	 * AHCI_MAX_PORTS, warning message for invalid port id
+	 * is generated later.
+	 * When DT has no sub-nodes max_port is 0, nports is 1,
+	 * in order to be able to use the
+	 * ahci_platform_[en|dis]able_[phys|regulators] functions.
+	 */
+	hpriv->nports = min(AHCI_MAX_PORTS, max_port + 1);
+
+	hpriv->phys = devm_kcalloc(dev, hpriv->nports, sizeof(*hpriv->phys), GFP_KERNEL);
+	if (!hpriv->phys) {
+		rc = -ENOMEM;
+		goto err_out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We cannot use devm_ here, since ahci_platform_put_resources() uses
 	 * target_pwrs after devm_ have freed memory

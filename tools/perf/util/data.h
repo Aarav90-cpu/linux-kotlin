@@ -17,6 +17,7 @@ enum perf_dir_version {
 	PERF_DIR_VERSION	= 1,
 };
 
+<<<<<<< HEAD
 /**
  * struct perf_data_file: A wrapper around a file used for perf.data reading or writing. Generally
  * part of struct perf_data.
@@ -67,10 +68,35 @@ struct perf_data {
 		/** @files: perf data files for the directory. */
 		struct perf_data_file	*files;
 		/** @nr: Number of perf data files for the directory. */
+=======
+struct perf_data_file {
+	char		*path;
+	union {
+		int	 fd;
+		FILE	*fptr;
+	};
+	unsigned long	 size;
+};
+
+struct perf_data {
+	const char		*path;
+	struct perf_data_file	 file;
+	bool			 is_pipe;
+	bool			 is_dir;
+	bool			 force;
+	bool			 use_stdio;
+	bool			 in_place_update;
+	enum perf_data_mode	 mode;
+
+	struct {
+		u64			 version;
+		struct perf_data_file	*files;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int			 nr;
 	} dir;
 };
 
+<<<<<<< HEAD
 static inline int perf_data_file__fd(struct perf_data_file *file)
 {
 	return file->use_stdio ? fileno(file->fptr) : file->fd;
@@ -81,6 +107,8 @@ ssize_t perf_data_file__write(struct perf_data_file *file,
 off_t perf_data_file__seek(struct perf_data_file *file, off_t offset, int whence);
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool perf_data__is_read(struct perf_data *data)
 {
 	return data->mode == PERF_DATA_MODE_READ;
@@ -108,7 +136,14 @@ static inline bool perf_data__is_single_file(struct perf_data *data)
 
 static inline int perf_data__fd(struct perf_data *data)
 {
+<<<<<<< HEAD
 	return perf_data_file__fd(&data->file);
+=======
+	if (data->use_stdio)
+		return fileno(data->file.fptr);
+
+	return data->file.fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int perf_data__open(struct perf_data *data);
@@ -116,7 +151,12 @@ void perf_data__close(struct perf_data *data);
 ssize_t perf_data__read(struct perf_data *data, void *buf, size_t size);
 ssize_t perf_data__write(struct perf_data *data,
 			 void *buf, size_t size);
+<<<<<<< HEAD
 off_t perf_data__seek(struct perf_data *data, off_t offset, int whence);
+=======
+ssize_t perf_data_file__write(struct perf_data_file *file,
+			      void *buf, size_t size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * If at_exit is set, only rename current perf.data to
  * perf.data.<postfix>, continue write on original data.
@@ -133,10 +173,17 @@ int perf_data__open_dir(struct perf_data *data);
 void perf_data__close_dir(struct perf_data *data);
 unsigned long perf_data__size(struct perf_data *data);
 int perf_data__make_kcore_dir(struct perf_data *data, char *buf, size_t buf_sz);
+<<<<<<< HEAD
 char *perf_data__kallsyms_name(struct perf_data *data);
 char *perf_data__guest_kallsyms_name(struct perf_data *data, pid_t machine_pid);
 
 bool has_kcore_dir(const char *path);
 bool is_perf_data(const char *path);
 
+=======
+bool has_kcore_dir(const char *path);
+char *perf_data__kallsyms_name(struct perf_data *data);
+char *perf_data__guest_kallsyms_name(struct perf_data *data, pid_t machine_pid);
+bool is_perf_data(const char *path);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __PERF_DATA_H */

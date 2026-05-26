@@ -30,6 +30,7 @@ do {								\
 
 #ifdef CONFIG_DEBUG_SPINLOCK
  extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
+<<<<<<< HEAD
  extern int do_raw_read_trylock(rwlock_t *lock) __cond_acquires_shared(true, lock);
  extern void do_raw_read_unlock(rwlock_t *lock) __releases_shared(lock);
  extern void do_raw_write_lock(rwlock_t *lock) __acquires(lock);
@@ -51,6 +52,19 @@ static inline int do_raw_write_trylock(rwlock_t *rwlock)
 {
 	return arch_write_trylock(&(rwlock)->raw_lock);
 }
+=======
+ extern int do_raw_read_trylock(rwlock_t *lock);
+ extern void do_raw_read_unlock(rwlock_t *lock) __releases_shared(lock);
+ extern void do_raw_write_lock(rwlock_t *lock) __acquires(lock);
+ extern int do_raw_write_trylock(rwlock_t *lock);
+ extern void do_raw_write_unlock(rwlock_t *lock) __releases(lock);
+#else
+# define do_raw_read_lock(rwlock)	do {__acquire_shared(lock); arch_read_lock(&(rwlock)->raw_lock); } while (0)
+# define do_raw_read_trylock(rwlock)	arch_read_trylock(&(rwlock)->raw_lock)
+# define do_raw_read_unlock(rwlock)	do {arch_read_unlock(&(rwlock)->raw_lock); __release_shared(lock); } while (0)
+# define do_raw_write_lock(rwlock)	do {__acquire(lock); arch_write_lock(&(rwlock)->raw_lock); } while (0)
+# define do_raw_write_trylock(rwlock)	arch_write_trylock(&(rwlock)->raw_lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # define do_raw_write_unlock(rwlock)	do {arch_write_unlock(&(rwlock)->raw_lock); __release(lock); } while (0)
 #endif
 

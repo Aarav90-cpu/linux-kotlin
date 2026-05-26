@@ -20,7 +20,10 @@
  */
 u64 id_aa64pfr0_el1_sys_val;
 u64 id_aa64pfr1_el1_sys_val;
+<<<<<<< HEAD
 u64 id_aa64pfr2_el1_sys_val;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u64 id_aa64isar0_el1_sys_val;
 u64 id_aa64isar1_el1_sys_val;
 u64 id_aa64isar2_el1_sys_val;
@@ -109,11 +112,14 @@ static const struct pvm_ftr_bits pvmid_aa64pfr1[] = {
 	FEAT_END
 };
 
+<<<<<<< HEAD
 static const struct pvm_ftr_bits pvmid_aa64pfr2[] = {
 	MAX_FEAT(ID_AA64PFR2_EL1, GCIE, NI),
 	FEAT_END
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct pvm_ftr_bits pvmid_aa64mmfr0[] = {
 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, PARANGE, 40),
 	MAX_FEAT_ENUM(ID_AA64MMFR0_EL1, ASIDBITS, 16),
@@ -227,8 +233,11 @@ static u64 pvm_calc_id_reg(const struct kvm_vcpu *vcpu, u32 id)
 		return get_restricted_features(vcpu, id_aa64pfr0_el1_sys_val, pvmid_aa64pfr0);
 	case SYS_ID_AA64PFR1_EL1:
 		return get_restricted_features(vcpu, id_aa64pfr1_el1_sys_val, pvmid_aa64pfr1);
+<<<<<<< HEAD
 	case SYS_ID_AA64PFR2_EL1:
 		return get_restricted_features(vcpu, id_aa64pfr2_el1_sys_val, pvmid_aa64pfr2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SYS_ID_AA64ISAR0_EL1:
 		return id_aa64isar0_el1_sys_val;
 	case SYS_ID_AA64ISAR1_EL1:
@@ -400,6 +409,7 @@ static const struct sys_reg_desc pvm_sys_reg_descs[] = {
 	/* Cache maintenance by set/way operations are restricted. */
 
 	/* Debug and Trace Registers are restricted. */
+<<<<<<< HEAD
 	RAZ_WI(SYS_DBGBVRn_EL1(0)),
 	RAZ_WI(SYS_DBGBCRn_EL1(0)),
 	RAZ_WI(SYS_DBGWVRn_EL1(0)),
@@ -408,6 +418,8 @@ static const struct sys_reg_desc pvm_sys_reg_descs[] = {
 	RAZ_WI(SYS_OSLAR_EL1),
 	RAZ_WI(SYS_OSLSR_EL1),
 	RAZ_WI(SYS_OSDLR_EL1),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Group 1 ID registers */
 	HOST_HANDLED(SYS_REVIDR_EL1),
@@ -447,7 +459,11 @@ static const struct sys_reg_desc pvm_sys_reg_descs[] = {
 	/* CRm=4 */
 	AARCH64(SYS_ID_AA64PFR0_EL1),
 	AARCH64(SYS_ID_AA64PFR1_EL1),
+<<<<<<< HEAD
 	AARCH64(SYS_ID_AA64PFR2_EL1),
+=======
+	ID_UNALLOCATED(4,2),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ID_UNALLOCATED(4,3),
 	AARCH64(SYS_ID_AA64ZFR0_EL1),
 	ID_UNALLOCATED(4,5),

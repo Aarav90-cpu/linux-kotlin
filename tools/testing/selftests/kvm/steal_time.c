@@ -25,7 +25,11 @@
 #define ST_GPA_BASE		(1 << 30)
 
 static void *st_gva[NR_VCPUS];
+<<<<<<< HEAD
 static u64 guest_stolen_time[NR_VCPUS];
+=======
+static uint64_t guest_stolen_time[NR_VCPUS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if defined(__x86_64__)
 
@@ -42,9 +46,15 @@ static void check_status(struct kvm_steal_time *st)
 static void guest_code(int cpu)
 {
 	struct kvm_steal_time *st = st_gva[cpu];
+<<<<<<< HEAD
 	u32 version;
 
 	GUEST_ASSERT_EQ(rdmsr(MSR_KVM_STEAL_TIME), ((u64)st_gva[cpu] | KVM_MSR_ENABLED));
+=======
+	uint32_t version;
+
+	GUEST_ASSERT_EQ(rdmsr(MSR_KVM_STEAL_TIME), ((uint64_t)st_gva[cpu] | KVM_MSR_ENABLED));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(st, 0, sizeof(*st));
 	GUEST_SYNC(0);
@@ -67,16 +77,34 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 	return kvm_cpu_has(X86_FEATURE_KVM_STEAL_TIME);
 }
 
+<<<<<<< HEAD
 static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
 {
+=======
+static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+{
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ST_GPA_BASE is identity mapped */
 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
 	sync_global_to_guest(vcpu->vm, st_gva[i]);
 
+<<<<<<< HEAD
 	vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME, (ulong)st_gva[i] | KVM_MSR_ENABLED);
 }
 
 static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+=======
+	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
+			    (ulong)st_gva[i] | KVM_STEAL_RESERVED_MASK);
+	TEST_ASSERT(ret == 0, "Bad GPA didn't fail");
+
+	vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME, (ulong)st_gva[i] | KVM_MSR_ENABLED);
+}
+
+static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_steal_time *st = addr_gva2hva(vm, (ulong)st_gva[vcpu_idx]);
 
@@ -93,6 +121,7 @@ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
 			st->pad[8], st->pad[9], st->pad[10]);
 }
 
+<<<<<<< HEAD
 static void check_steal_time_uapi(void)
 {
 	struct kvm_vm *vm;
@@ -108,6 +137,8 @@ static void check_steal_time_uapi(void)
 	kvm_vm_free(vm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined(__aarch64__)
 
 /* PV_TIME_ST must have 64-byte alignment */
@@ -118,12 +149,21 @@ static void check_steal_time_uapi(void)
 #define PV_TIME_ST		0xc5000021
 
 struct st_time {
+<<<<<<< HEAD
 	u32 rev;
 	u32 attr;
 	u64 st_time;
 };
 
 static s64 smccc(u32 func, u64 arg)
+=======
+	uint32_t rev;
+	uint32_t attr;
+	uint64_t st_time;
+};
+
+static int64_t smccc(uint32_t func, uint64_t arg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct arm_smccc_res res;
 
@@ -140,7 +180,11 @@ static void check_status(struct st_time *st)
 static void guest_code(int cpu)
 {
 	struct st_time *st;
+<<<<<<< HEAD
 	s64 status;
+=======
+	int64_t status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	status = smccc(SMCCC_ARCH_FEATURES, PV_TIME_FEATURES);
 	GUEST_ASSERT_EQ(status, 0);
@@ -175,26 +219,57 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 	return !__vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
 }
 
+<<<<<<< HEAD
 static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
 {
 	struct kvm_vm *vm = vcpu->vm;
 	u64 st_ipa;
+=======
+static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+{
+	struct kvm_vm *vm = vcpu->vm;
+	uint64_t st_ipa;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct kvm_device_attr dev = {
 		.group = KVM_ARM_VCPU_PVTIME_CTRL,
 		.attr = KVM_ARM_VCPU_PVTIME_IPA,
+<<<<<<< HEAD
 		.addr = (u64)&st_ipa,
 	};
 
+=======
+		.addr = (uint64_t)&st_ipa,
+	};
+
+	vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ST_GPA_BASE is identity mapped */
 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
 	sync_global_to_guest(vm, st_gva[i]);
 
+<<<<<<< HEAD
 	st_ipa = (ulong)st_gva[i];
 	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
 }
 
 static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+=======
+	st_ipa = (ulong)st_gva[i] | 1;
+	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+	TEST_ASSERT(ret == -1 && errno == EINVAL, "Bad IPA didn't report EINVAL");
+
+	st_ipa = (ulong)st_gva[i];
+	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+
+	ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+	TEST_ASSERT(ret == -1 && errno == EEXIST, "Set IPA twice without EEXIST");
+}
+
+static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct st_time *st = addr_gva2hva(vm, (ulong)st_gva[vcpu_idx]);
 
@@ -204,6 +279,7 @@ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
 	ksft_print_msg("    st_time: %ld\n", st->st_time);
 }
 
+<<<<<<< HEAD
 static void check_steal_time_uapi(void)
 {
 	struct kvm_vm *vm;
@@ -236,11 +312,14 @@ static void check_steal_time_uapi(void)
 	kvm_vm_free(vm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined(__riscv)
 
 /* SBI STA shmem must have 64-byte alignment */
 #define STEAL_TIME_SIZE		((sizeof(struct sta_struct) + 63) & ~63)
 
+<<<<<<< HEAD
 static gpa_t st_gpa[NR_VCPUS];
 
 struct sta_struct {
@@ -252,6 +331,19 @@ struct sta_struct {
 } __packed;
 
 static void sta_set_shmem(gpa_t gpa, unsigned long flags)
+=======
+static vm_paddr_t st_gpa[NR_VCPUS];
+
+struct sta_struct {
+	uint32_t sequence;
+	uint32_t flags;
+	uint64_t steal;
+	uint8_t preempted;
+	uint8_t pad[47];
+} __packed;
+
+static void sta_set_shmem(vm_paddr_t gpa, unsigned long flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long lo = (unsigned long)gpa;
 #if __riscv_xlen == 32
@@ -274,7 +366,11 @@ static void check_status(struct sta_struct *st)
 static void guest_code(int cpu)
 {
 	struct sta_struct *st = st_gva[cpu];
+<<<<<<< HEAD
 	u32 sequence;
+=======
+	uint32_t sequence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long out_val = 0;
 	bool probe;
 
@@ -299,7 +395,11 @@ static void guest_code(int cpu)
 
 static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 id = RISCV_SBI_EXT_REG(KVM_RISCV_SBI_EXT_STA);
+=======
+	uint64_t id = RISCV_SBI_EXT_REG(KVM_RISCV_SBI_EXT_STA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long enabled = vcpu_get_reg(vcpu, id);
 
 	TEST_ASSERT(enabled == 0 || enabled == 1, "Expected boolean result");
@@ -307,16 +407,28 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 	return enabled;
 }
 
+<<<<<<< HEAD
 static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
 {
 	/* ST_GPA_BASE is identity mapped */
 	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
 	st_gpa[i] = addr_gva2gpa(vcpu->vm, (gva_t)st_gva[i]);
+=======
+static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+{
+	/* ST_GPA_BASE is identity mapped */
+	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+	st_gpa[i] = addr_gva2gpa(vcpu->vm, (vm_vaddr_t)st_gva[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sync_global_to_guest(vcpu->vm, st_gva[i]);
 	sync_global_to_guest(vcpu->vm, st_gpa[i]);
 }
 
+<<<<<<< HEAD
 static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+=======
+static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sta_struct *st = addr_gva2hva(vm, (ulong)st_gva[vcpu_idx]);
 	int i;
@@ -332,6 +444,7 @@ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
 	pr_info("\n");
 }
 
+<<<<<<< HEAD
 static void check_steal_time_uapi(void)
 {
 	struct kvm_vm *vm;
@@ -367,6 +480,8 @@ static void check_steal_time_uapi(void)
 	kvm_vm_free(vm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined(__loongarch__)
 
 /* steal_time must have 64-byte alignment */
@@ -390,7 +505,11 @@ static void check_status(struct kvm_steal_time *st)
 
 static void guest_code(int cpu)
 {
+<<<<<<< HEAD
 	u32 version;
+=======
+	uint32_t version;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_steal_time *st = st_gva[cpu];
 
 	memset(st, 0, sizeof(*st));
@@ -412,11 +531,19 @@ static void guest_code(int cpu)
 static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 {
 	int err;
+<<<<<<< HEAD
 	u64 val;
 	struct kvm_device_attr attr = {
 		.group = KVM_LOONGARCH_VCPU_CPUCFG,
 		.attr = CPUCFG_KVM_FEATURE,
 		.addr = (u64)&val,
+=======
+	uint64_t val;
+	struct kvm_device_attr attr = {
+		.group = KVM_LOONGARCH_VCPU_CPUCFG,
+		.attr = CPUCFG_KVM_FEATURE,
+		.addr = (uint64_t)&val,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	err = __vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &attr);
@@ -430,15 +557,26 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
 	return val & BIT(KVM_FEATURE_STEAL_TIME);
 }
 
+<<<<<<< HEAD
 static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
 {
 	int err;
 	u64 st_gpa;
+=======
+static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
+{
+	int err;
+	uint64_t st_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm = vcpu->vm;
 	struct kvm_device_attr attr = {
 		.group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
 		.attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
+<<<<<<< HEAD
 		.addr = (u64)&st_gpa,
+=======
+		.addr = (uint64_t)&st_gpa,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	/* ST_GPA_BASE is identity mapped */
@@ -453,7 +591,11 @@ static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
 	TEST_ASSERT(err == 0, "Fail to set PV stealtime GPA");
 }
 
+<<<<<<< HEAD
 static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+=======
+static void steal_time_dump(struct kvm_vm *vm, uint32_t vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_steal_time *st = addr_gva2hva(vm, (ulong)st_gva[vcpu_idx]);
 
@@ -463,11 +605,14 @@ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
 	ksft_print_msg("    version:   %d\n", st->version);
 	ksft_print_msg("    preempted: %d\n", st->preempted);
 }
+<<<<<<< HEAD
 
 static void check_steal_time_uapi(void)
 {
 
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static void *do_steal_time(void *arg)
@@ -536,8 +681,11 @@ int main(int ac, char **av)
 	TEST_REQUIRE(is_steal_time_supported(vcpus[0]));
 	ksft_set_plan(NR_VCPUS);
 
+<<<<<<< HEAD
 	check_steal_time_uapi();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Run test on each VCPU */
 	for (i = 0; i < NR_VCPUS; ++i) {
 		steal_time_init(vcpus[i], i);

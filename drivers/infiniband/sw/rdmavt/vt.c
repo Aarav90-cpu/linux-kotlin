@@ -244,10 +244,13 @@ static int rvt_query_gid(struct ib_device *ibdev, u32 port_num,
  */
 static int rvt_alloc_ucontext(struct ib_ucontext *uctx, struct ib_udata *udata)
 {
+<<<<<<< HEAD
 	struct rvt_dev_info *rdi = ib_to_rvt(uctx->device);
 
 	if (rdi->driver_f.alloc_ucontext)
 		return rdi->driver_f.alloc_ucontext(uctx, udata);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -257,10 +260,13 @@ static int rvt_alloc_ucontext(struct ib_ucontext *uctx, struct ib_udata *udata)
  */
 static void rvt_dealloc_ucontext(struct ib_ucontext *context)
 {
+<<<<<<< HEAD
 	struct rvt_dev_info *rdi = ib_to_rvt(context->device);
 
 	if (rdi->driver_f.dealloc_ucontext)
 		rdi->driver_f.dealloc_ucontext(context);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return;
 }
 
@@ -375,7 +381,11 @@ static const struct ib_device_ops rvt_dev_ops = {
 	.query_srq = rvt_query_srq,
 	.reg_user_mr = rvt_reg_user_mr,
 	.req_notify_cq = rvt_req_notify_cq,
+<<<<<<< HEAD
 	.resize_user_cq = rvt_resize_cq,
+=======
+	.resize_cq = rvt_resize_cq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_RDMA_OBJ_SIZE(ib_ah, rvt_ah, ibah),
 	INIT_RDMA_OBJ_SIZE(ib_cq, rvt_cq, ibcq),

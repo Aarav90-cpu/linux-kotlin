@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <linux/bsg.h>
+<<<<<<< HEAD
 #include <linux/io_uring/cmd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <scsi/scsi.h>
 #include <scsi/scsi_ioctl.h>
 #include <scsi/scsi_cmnd.h>
@@ -10,6 +13,7 @@
 
 #define uptr64(val) ((void __user *)(uintptr_t)(val))
 
+<<<<<<< HEAD
 /*
  * Per-command BSG SCSI PDU stored in io_uring_cmd.pdu[32].
  * Holds temporary state between submission, completion and task_work.
@@ -182,6 +186,8 @@ out_free_req:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int scsi_bsg_sg_io_fn(struct request_queue *q, struct sg_io_v4 *hdr,
 		bool open_for_write, unsigned int timeout)
 {
@@ -272,6 +278,10 @@ out_put_request:
 struct bsg_device *scsi_bsg_register_queue(struct scsi_device *sdev)
 {
 	return bsg_register_queue(sdev->request_queue, &sdev->sdev_gendev,
+<<<<<<< HEAD
 			dev_name(&sdev->sdev_gendev), scsi_bsg_sg_io_fn,
 			scsi_bsg_uring_cmd);
+=======
+			dev_name(&sdev->sdev_gendev), scsi_bsg_sg_io_fn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

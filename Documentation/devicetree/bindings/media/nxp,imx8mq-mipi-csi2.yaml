@@ -20,7 +20,10 @@ properties:
       - enum:
           - fsl,imx8mq-mipi-csi2
           - fsl,imx8qxp-mipi-csi2
+<<<<<<< HEAD
           - fsl,imx8ulp-mipi-csi2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - items:
           - const: fsl,imx8qm-mipi-csi2
           - const: fsl,imx8qxp-mipi-csi2
@@ -40,16 +43,22 @@ properties:
                      clock that the RX DPHY receives.
       - description: ui is the pixel clock (phy_ref up to 333Mhz).
                      See the reference manual for details.
+<<<<<<< HEAD
       - description: pclk is clock for csr APB interface.
     minItems: 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   clock-names:
     items:
       - const: core
       - const: esc
       - const: ui
+<<<<<<< HEAD
       - const: pclk
     minItems: 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   power-domains:
     maxItems: 1
@@ -135,6 +144,7 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - fsl,imx8mq-mipi-csi2
     then:
       properties:
@@ -183,6 +193,24 @@ allOf:
         clock-names:
           minItems: 4
 
+=======
+              - fsl,imx8qxp-mipi-csi2
+    then:
+      properties:
+        reg:
+          minItems: 2
+        resets:
+          maxItems: 1
+    else:
+      properties:
+        reg:
+          maxItems: 1
+        resets:
+          minItems: 3
+      required:
+        - fsl,mipi-phy-gpr
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

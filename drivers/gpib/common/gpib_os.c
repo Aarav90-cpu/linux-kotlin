@@ -2219,6 +2219,7 @@ void init_gpib_status_queue(struct gpib_status_queue *device)
 	device->dropped_byte = 0;
 }
 
+<<<<<<< HEAD
 static const struct class gpib_class = {
 	.name	= "gpib_common",
 };
@@ -2226,6 +2227,12 @@ static const struct class gpib_class = {
 static int __init gpib_common_init_module(void)
 {
 	int err;
+=======
+static struct class *gpib_class;
+
+static int __init gpib_common_init_module(void)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	pr_info("GPIB core driver\n");
@@ -2234,6 +2241,7 @@ static int __init gpib_common_init_module(void)
 		pr_err("gpib: can't get major %d\n", GPIB_CODE);
 		return -EIO;
 	}
+<<<<<<< HEAD
 	err = class_register(&gpib_class);
 	if (err) {
 		pr_err("gpib: failed to create gpib class\n");
@@ -2242,6 +2250,16 @@ static int __init gpib_common_init_module(void)
 	}
 	for (i = 0; i < GPIB_MAX_NUM_BOARDS; ++i)
 		board_array[i].gpib_dev = device_create(&gpib_class, NULL,
+=======
+	gpib_class = class_create("gpib_common");
+	if (IS_ERR(gpib_class)) {
+		pr_err("gpib: failed to create gpib class\n");
+		unregister_chrdev(GPIB_CODE, "gpib");
+		return PTR_ERR(gpib_class);
+	}
+	for (i = 0; i < GPIB_MAX_NUM_BOARDS; ++i)
+		board_array[i].gpib_dev = device_create(gpib_class, NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							MKDEV(GPIB_CODE, i), NULL, "gpib%i", i);
 
 	return 0;
@@ -2252,9 +2270,15 @@ static void __exit gpib_common_exit_module(void)
 	int i;
 
 	for (i = 0; i < GPIB_MAX_NUM_BOARDS; ++i)
+<<<<<<< HEAD
 		device_destroy(&gpib_class, MKDEV(GPIB_CODE, i));
 
 	class_unregister(&gpib_class);
+=======
+		device_destroy(gpib_class, MKDEV(GPIB_CODE, i));
+
+	class_destroy(gpib_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unregister_chrdev(GPIB_CODE, "gpib");
 }
 

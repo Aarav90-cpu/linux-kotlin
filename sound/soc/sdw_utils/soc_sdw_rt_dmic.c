@@ -9,20 +9,30 @@
 
 #include <linux/device.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
 #include <linux/soundwire/sdw.h>
 #include <linux/soundwire/sdw_type.h>
 #include <sound/soc.h>
 #include <sound/soc-acpi.h>
 #include <sound/soc_sdw_utils.h>
 #include <sound/sdca_function.h>
+=======
+#include <sound/soc.h>
+#include <sound/soc-acpi.h>
+#include <sound/soc_sdw_utils.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int asoc_sdw_rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai)
 {
 	struct snd_soc_card *card = rtd->card;
 	struct snd_soc_component *component;
+<<<<<<< HEAD
 	struct sdw_slave *sdw_peripheral = NULL;
 	char *mic_name;
 	int rt1320_dmic_num = 0, part_id, i;
+=======
+	char *mic_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	component = dai->component;
 
@@ -37,6 +47,7 @@ int asoc_sdw_rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_da
 	if (!mic_name)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/*
 	 * If there is any rt1320/rt1321 DMIC belonging to this card, try to count the `cfg-mics`
 	 * to be used in card->components.
@@ -75,6 +86,11 @@ int asoc_sdw_rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_da
 						  mic_name);
 	}
 
+=======
+	card->components = devm_kasprintf(card->dev, GFP_KERNEL,
+					  "%s mic:%s", card->components,
+					  mic_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!card->components)
 		return -ENOMEM;
 

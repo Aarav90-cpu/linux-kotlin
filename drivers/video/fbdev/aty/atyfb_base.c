@@ -2324,6 +2324,11 @@ static void aty_calc_mem_refresh(struct atyfb_par *par, int xclk)
  * Initialisation
  */
 
+<<<<<<< HEAD
+=======
+static struct fb_info *fb_list = NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(__i386__) && defined(CONFIG_FB_ATY_GENERIC_LCD)
 static int atyfb_get_timings_from_lcd(struct atyfb_par *par,
 				      struct fb_var_screeninfo *var)
@@ -2756,6 +2761,11 @@ static int aty_init(struct fb_info *info)
 #endif
 	}
 
+<<<<<<< HEAD
+=======
+	fb_list = info;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PRINTKI("fb%d: %s frame buffer device on %s\n",
 		info->node, info->fix.id, par->bus_type == ISA ? "ISA" : "PCI");
 	return 0;

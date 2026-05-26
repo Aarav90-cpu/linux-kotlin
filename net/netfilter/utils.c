@@ -163,6 +163,10 @@ EXPORT_SYMBOL_GPL(nf_checksum_partial);
 int nf_route(struct net *net, struct dst_entry **dst, struct flowi *fl,
 	     bool strict, unsigned short family)
 {
+<<<<<<< HEAD
+=======
+	const struct nf_ipv6_ops *v6ops __maybe_unused;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	switch (family) {

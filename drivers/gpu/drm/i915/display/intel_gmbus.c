@@ -35,6 +35,10 @@
 #include <drm/drm_print.h>
 #include <drm/display/drm_hdcp_helper.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_de.h"
 #include "intel_display_regs.h"
 #include "intel_display_types.h"
@@ -250,7 +254,11 @@ static u32 get_reserved(struct intel_gmbus *bus)
 	preserve_bits |= GPIO_DATA_PULLUP_DISABLE | GPIO_CLOCK_PULLUP_DISABLE;
 
 	/* Wa_16025573575: the masks bits need to be preserved through out */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_16025573575))
+=======
+	if (intel_display_wa(display, 16025573575))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		preserve_bits |= GPIO_CLOCK_DIR_MASK | GPIO_CLOCK_VAL_MASK |
 				 GPIO_DATA_DIR_MASK | GPIO_DATA_VAL_MASK;
 
@@ -342,7 +350,11 @@ intel_gpio_pre_xfer(struct i2c_adapter *adapter)
 	if (display->platform.pineview)
 		pnv_gmbus_clock_gating(display, false);
 
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_16025573575))
+=======
+	if (intel_display_wa(display, 16025573575))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ptl_handle_mask_bits(bus, true);
 
 	set_data(bus, 1);
@@ -363,7 +375,11 @@ intel_gpio_post_xfer(struct i2c_adapter *adapter)
 	if (display->platform.pineview)
 		pnv_gmbus_clock_gating(display, true);
 
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_16025573575))
+=======
+	if (intel_display_wa(display, 16025573575))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ptl_handle_mask_bits(bus, false);
 }
 
@@ -694,7 +710,11 @@ retry:
 			goto clear_err;
 	}
 
+<<<<<<< HEAD
 	/* Generate a STOP condition on the bus. Note that gmbus can't generate
+=======
+	/* Generate a STOP condition on the bus. Note that gmbus can't generata
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * a STOP on the very first cycle. To simplify the code we
 	 * unconditionally generate the STOP condition with an additional gmbus
 	 * cycle. */

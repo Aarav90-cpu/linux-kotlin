@@ -9,7 +9,10 @@ enum adf_fw_objs {
 	ADF_FW_DC_OBJ,
 	ADF_FW_ADMIN_OBJ,
 	ADF_FW_CY_OBJ,
+<<<<<<< HEAD
 	ADF_FW_WCY_OBJ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct adf_fw_config {

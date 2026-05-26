@@ -176,8 +176,13 @@ static void __init media5200_init_irq(void)
 
 	of_node_put(fpga_np);
 
+<<<<<<< HEAD
 	irq_set_chained_handler_and_data(cascade_virq, media5200_irq_cascade,
 					 &media5200_irq);
+=======
+	irq_set_handler_data(cascade_virq, &media5200_irq);
+	irq_set_chained_handler(cascade_virq, media5200_irq_cascade);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return;
 

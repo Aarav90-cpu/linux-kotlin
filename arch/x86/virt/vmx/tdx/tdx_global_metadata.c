@@ -7,6 +7,7 @@
  * Include this file to other C file instead.
  */
 
+<<<<<<< HEAD
 static __init int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
 {
 	int ret = 0;
@@ -23,6 +24,9 @@ static __init int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_
 }
 
 static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
+=======
+static int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	u64 val;
@@ -33,7 +37,11 @@ static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinf
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+=======
+static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	u64 val;
@@ -52,7 +60,11 @@ static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
+=======
+static int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	u64 val;
@@ -67,7 +79,11 @@ static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
+=======
+static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	u64 val;
@@ -100,6 +116,7 @@ static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
 {
 	int ret = 0;
@@ -111,6 +128,12 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
 		sysinfo->version.minor_version,
 		sysinfo->version.update_version);
 
+=======
+static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+{
+	int ret = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ret ?: get_tdx_sys_info_features(&sysinfo->features);
 	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);

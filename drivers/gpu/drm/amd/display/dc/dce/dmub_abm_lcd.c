@@ -188,7 +188,10 @@ void dmub_abm_init_config(struct abm *abm,
 
 bool dmub_abm_set_pause(struct abm *abm, bool pause, unsigned int panel_inst, unsigned int stream_inst)
 {
+<<<<<<< HEAD
 	(void)stream_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union dmub_rb_cmd cmd;
 	struct dc_context *dc = abm->ctx;
 	uint8_t panel_mask = 0x01 << panel_inst;

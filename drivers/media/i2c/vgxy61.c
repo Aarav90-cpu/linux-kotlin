@@ -1802,9 +1802,12 @@ static int vgxy61_probe(struct i2c_client *client)
 
 	sensor->reset_gpio = devm_gpiod_get_optional(dev, "reset",
 						     GPIOD_OUT_HIGH);
+<<<<<<< HEAD
 	if (IS_ERR(sensor->reset_gpio))
 		return dev_err_probe(dev, PTR_ERR(sensor->reset_gpio),
 				     "failed to get reset gpio\n");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vgxy61_get_regulators(sensor);
 	if (ret) {

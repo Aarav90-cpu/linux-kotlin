@@ -242,10 +242,17 @@ void dma_fence_chain_init(struct dma_fence_chain *chain,
 			  struct dma_fence *fence,
 			  uint64_t seqno)
 {
+<<<<<<< HEAD
 	static struct lock_class_key dma_fence_chain_lock_key;
 	struct dma_fence_chain *prev_chain = to_dma_fence_chain(prev);
 	uint64_t context;
 
+=======
+	struct dma_fence_chain *prev_chain = to_dma_fence_chain(prev);
+	uint64_t context;
+
+	spin_lock_init(&chain->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_assign_pointer(chain->prev, prev);
 	chain->fence = fence;
 	chain->prev_seqno = 0;
@@ -261,6 +268,7 @@ void dma_fence_chain_init(struct dma_fence_chain *chain,
 			seqno = max(prev->seqno, seqno);
 	}
 
+<<<<<<< HEAD
 	dma_fence_init64(&chain->base, &dma_fence_chain_ops, NULL,
 			 context, seqno);
 
@@ -277,6 +285,12 @@ void dma_fence_chain_init(struct dma_fence_chain *chain,
 	lockdep_set_class(&chain->base.inline_lock, &dma_fence_chain_lock_key);
 
 	/*
+=======
+	dma_fence_init64(&chain->base, &dma_fence_chain_ops, &chain->lock,
+			 context, seqno);
+
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Chaining dma_fence_chain container together is only allowed through
 	 * the prev fence and not through the contained fence.
 	 *

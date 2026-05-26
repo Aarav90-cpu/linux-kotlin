@@ -54,7 +54,10 @@ struct dax_device *alloc_dax(void *private, const struct dax_operations *ops);
 void *dax_holder(struct dax_device *dax_dev);
 void put_dax(struct dax_device *dax_dev);
 void kill_dax(struct dax_device *dax_dev);
+<<<<<<< HEAD
 struct dax_device *dax_dev_get(dev_t devt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dax_write_cache(struct dax_device *dax_dev, bool wc);
 bool dax_write_cache_enabled(struct dax_device *dax_dev);
 bool dax_synchronous(struct dax_device *dax_dev);
@@ -70,7 +73,11 @@ static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
 					    const struct inode *inode,
 					    struct dax_device *dax_dev)
 {
+<<<<<<< HEAD
 	if (!vma_desc_test(desc, VMA_SYNC_BIT))
+=======
+	if (!vma_desc_test_flags(desc, VMA_SYNC_BIT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	if (!IS_DAX(inode))
 		return false;
@@ -116,7 +123,11 @@ static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
 					    const struct inode *inode,
 					    struct dax_device *dax_dev)
 {
+<<<<<<< HEAD
 	return !vma_desc_test(desc, VMA_SYNC_BIT);
+=======
+	return !vma_desc_test_flags(desc, VMA_SYNC_BIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 static inline size_t dax_recovery_write(struct dax_device *dax_dev,
 		pgoff_t pgoff, void *addr, size_t bytes, struct iov_iter *i)
@@ -131,6 +142,10 @@ int dax_add_host(struct dax_device *dax_dev, struct gendisk *disk);
 void dax_remove_host(struct gendisk *disk);
 struct dax_device *fs_dax_get_by_bdev(struct block_device *bdev, u64 *start_off,
 		void *holder, const struct dax_holder_operations *ops);
+<<<<<<< HEAD
+=======
+void fs_put_dax(struct dax_device *dax_dev, void *holder);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline int dax_add_host(struct dax_device *dax_dev, struct gendisk *disk)
 {
@@ -145,6 +160,7 @@ static inline struct dax_device *fs_dax_get_by_bdev(struct block_device *bdev,
 {
 	return NULL;
 }
+<<<<<<< HEAD
 #endif /* CONFIG_BLOCK && CONFIG_FS_DAX */
 
 #if IS_ENABLED(CONFIG_FS_DAX)
@@ -154,6 +170,16 @@ int fs_dax_get(struct dax_device *dax_dev, void *holder,
 int dax_writeback_mapping_range(struct address_space *mapping,
 		struct dax_device *dax_dev, struct writeback_control *wbc);
 int dax_folio_reset_order(struct folio *folio);
+=======
+static inline void fs_put_dax(struct dax_device *dax_dev, void *holder)
+{
+}
+#endif /* CONFIG_BLOCK && CONFIG_FS_DAX */
+
+#if IS_ENABLED(CONFIG_FS_DAX)
+int dax_writeback_mapping_range(struct address_space *mapping,
+		struct dax_device *dax_dev, struct writeback_control *wbc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct page *dax_layout_busy_page(struct address_space *mapping);
 struct page *dax_layout_busy_page_range(struct address_space *mapping, loff_t start, loff_t end);
@@ -164,6 +190,7 @@ dax_entry_t dax_lock_mapping_entry(struct address_space *mapping,
 void dax_unlock_mapping_entry(struct address_space *mapping,
 		unsigned long index, dax_entry_t cookie);
 #else
+<<<<<<< HEAD
 static inline void fs_put_dax(struct dax_device *dax_dev, void *holder)
 {
 }
@@ -173,6 +200,8 @@ static inline int fs_dax_get(struct dax_device *dax_dev, void *holder,
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct page *dax_layout_busy_page(struct address_space *mapping)
 {
 	return NULL;
@@ -252,7 +281,10 @@ static inline void dax_break_layout_final(struct inode *inode)
 
 bool dax_alive(struct dax_device *dax_dev);
 void *dax_get_private(struct dax_device *dax_dev);
+<<<<<<< HEAD
 int dax_set_ops(struct dax_device *dax_dev, const struct dax_operations *ops);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 long dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff, long nr_pages,
 		enum dax_access_mode mode, void **kaddr, unsigned long *pfn);
 size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,

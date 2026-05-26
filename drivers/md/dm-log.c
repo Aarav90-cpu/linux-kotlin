@@ -373,7 +373,11 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
 
 	struct log_c *lc;
 	uint32_t region_size;
+<<<<<<< HEAD
 	sector_t region_count;
+=======
+	unsigned int region_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t bitset_size, buf_size;
 	int r;
 	char dummy;
@@ -401,10 +405,13 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
 	}
 
 	region_count = dm_sector_div_up(ti->len, region_size);
+<<<<<<< HEAD
 	if (region_count > UINT_MAX) {
 		DMWARN("region count exceeds limit of %u", UINT_MAX);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lc = kmalloc_obj(*lc);
 	if (!lc) {

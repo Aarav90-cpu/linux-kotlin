@@ -13,7 +13,11 @@ static volatile bool sys64, undef;
 
 #define __check_sr_read(r)					\
 	({							\
+<<<<<<< HEAD
 		u64 val;					\
+=======
+		uint64_t val;					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 								\
 		sys64 = false;					\
 		undef = false;					\
@@ -101,7 +105,11 @@ int main(int argc, char *argv[])
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 mmfr2;
+=======
+	uint64_t mmfr2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	test_disable_default_vgic();
 

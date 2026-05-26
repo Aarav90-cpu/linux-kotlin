@@ -295,6 +295,7 @@ void rtw_rx_query_rx_desc(struct rtw_dev *rtwdev, void *rx_desc8,
 
 	pkt_stat->tsf_low = le32_get_bits(rx_desc->w5, RTW_RX_DESC_W5_TSFL);
 
+<<<<<<< HEAD
 	if (unlikely(pkt_stat->rate >= DESC_RATE_MAX)) {
 		rtw_dbg(rtwdev, RTW_DBG_UNEXP,
 			"unexpected RX rate=0x%x\n", pkt_stat->rate);
@@ -303,6 +304,8 @@ void rtw_rx_query_rx_desc(struct rtw_dev *rtwdev, void *rx_desc8,
 		pkt_stat->bw = RTW_CHANNEL_WIDTH_20;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* drv_info_sz is in unit of 8-bytes */
 	pkt_stat->drv_info_sz *= 8;
 

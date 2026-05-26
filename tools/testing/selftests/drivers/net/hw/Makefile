@@ -26,6 +26,7 @@ TEST_PROGS = \
 	ethtool_extended_state.sh \
 	ethtool_mm.sh \
 	ethtool_rmon.sh \
+<<<<<<< HEAD
 	ethtool_std_stats.sh \
 	gro_hw.py \
 	hw_stats_l3.sh \
@@ -38,6 +39,14 @@ TEST_PROGS = \
 	nk_netns.py \
 	nk_qlease.py \
 	ntuple.py \
+=======
+	hw_stats_l3.sh \
+	hw_stats_l3_gre.sh \
+	iou-zcrx.py \
+	irq.py \
+	loopback.sh \
+	nic_timestamp.py \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pp_alloc_fail.py \
 	rss_api.py \
 	rss_ctx.py \
@@ -46,8 +55,11 @@ TEST_PROGS = \
 	rss_input_xfrm.py \
 	toeplitz.py \
 	tso.py \
+<<<<<<< HEAD
 	uso.py \
 	xdp_metadata.py \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xsk_reconfig.py \
 	#
 

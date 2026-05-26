@@ -485,6 +485,7 @@ Limitations
   in case that too many ublk devices are handled by this single io_ring_ctx
   and each one has very large queue depth
 
+<<<<<<< HEAD
 Shared Memory Zero Copy (UBLK_F_SHMEM_ZC)
 ------------------------------------------
 
@@ -604,6 +605,8 @@ Control Commands
   buffer index. Unpins pages and removes PFN entries from the lookup
   tree.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 References
 ==========
 

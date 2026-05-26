@@ -3,20 +3,29 @@
  * Copyright (c) 2018 Mellanox Technologies. All rights reserved.
  */
 
+<<<<<<< HEAD
 #include <linux/mlx5/lag.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mlx5/vport.h>
 #include "ib_rep.h"
 #include "srq.h"
 
 static int
 mlx5_ib_set_vport_rep(struct mlx5_core_dev *dev,
+<<<<<<< HEAD
 		      struct mlx5_core_dev *rep_dev,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      struct mlx5_eswitch_rep *rep,
 		      int vport_index)
 {
 	struct mlx5_ib_dev *ibdev;
 	struct net_device *ndev;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ibdev = mlx5_eswitch_uplink_get_proto_dev(dev->priv.eswitch, REP_IB);
 	if (!ibdev)
@@ -26,6 +35,7 @@ mlx5_ib_set_vport_rep(struct mlx5_core_dev *dev,
 	rep->rep_data[REP_IB].priv = ibdev;
 	ndev = mlx5_ib_get_rep_netdev(rep->esw, rep->vport);
 
+<<<<<<< HEAD
 	ret = ib_device_set_netdev(&ibdev->ib_dev, ndev, vport_index + 1);
 	if (ret)
 		return ret;
@@ -37,6 +47,9 @@ mlx5_ib_set_vport_rep(struct mlx5_core_dev *dev,
 		return 0;
 
 	return mlx5_lag_demux_rule_add(rep_dev, rep->vport, vport_index);
+=======
+	return ib_device_set_netdev(&ibdev->ib_dev, ndev, vport_index + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mlx5_ib_register_peer_vport_reps(struct mlx5_core_dev *mdev);
@@ -143,12 +156,20 @@ mlx5_ib_vport_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
 
 				if (mlx5_lag_is_master(peer_dev))
 					lag_master = peer_dev;
+<<<<<<< HEAD
 				else if (!mlx5_lag_is_mpesw(peer_dev))
 				/* Only 1 ib port is the representor for all uplinks */
 					peer_n_ports--;
 
 				if (mlx5_lag_get_dev_seq(peer_dev) <
 				    mlx5_lag_get_dev_seq(dev))
+=======
+				else if (!mlx5_lag_is_mpesw(dev))
+				/* Only 1 ib port is the representor for all uplinks */
+					peer_n_ports--;
+
+				if (mlx5_get_dev_index(peer_dev) < mlx5_get_dev_index(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					vport_index += peer_n_ports;
 			}
 		}
@@ -157,7 +178,11 @@ mlx5_ib_vport_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
 	if (rep->vport == MLX5_VPORT_UPLINK && !new_uplink)
 		profile = &raw_eth_profile;
 	else
+<<<<<<< HEAD
 		return mlx5_ib_set_vport_rep(lag_master, dev, rep, vport_index);
+=======
+		return mlx5_ib_set_vport_rep(lag_master, rep, vport_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mlx5_lag_is_shared_fdb(dev)) {
 		ret = mlx5_ib_take_transport(lag_master);
@@ -245,8 +270,11 @@ mlx5_ib_vport_rep_unload(struct mlx5_eswitch_rep *rep)
 		vport_index = i;
 	}
 
+<<<<<<< HEAD
 	mlx5_lag_demux_rule_del(mdev, vport_index);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	port = &dev->port[vport_index];
 
 	ib_device_set_netdev(&dev->ib_dev, NULL, vport_index + 1);

@@ -77,6 +77,7 @@ static int ads7871_read_reg8(struct spi_device *spi, int reg)
 static int ads7871_read_reg16(struct spi_device *spi, int reg)
 {
 	int ret;
+<<<<<<< HEAD
 
 	reg = reg | INST_READ_BM | INST_16BIT_BM;
 	ret = spi_w8r16(spi, reg);
@@ -84,6 +85,11 @@ static int ads7871_read_reg16(struct spi_device *spi, int reg)
 		return ret;
 
 	return le16_to_cpu((__force __le16)ret);
+=======
+	reg = reg | INST_READ_BM | INST_16BIT_BM;
+	ret = spi_w8r16(spi, reg);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ads7871_write_reg8(struct spi_device *spi, int reg, u8 val)
@@ -108,6 +114,7 @@ static ssize_t voltage_show(struct device *dev, struct device_attribute *da,
 	 */
 	/*MUX_M3_BM forces single ended*/
 	/*This is also where the gain of the PGA would be set*/
+<<<<<<< HEAD
 	ret = ads7871_write_reg8(spi, REG_GAIN_MUX,
 				 (MUX_CNV_BM | MUX_M3_BM | channel));
 	if (ret < 0)
@@ -116,6 +123,12 @@ static ssize_t voltage_show(struct device *dev, struct device_attribute *da,
 	ret = ads7871_read_reg8(spi, REG_GAIN_MUX);
 	if (ret < 0)
 		return ret;
+=======
+	ads7871_write_reg8(spi, REG_GAIN_MUX,
+		(MUX_CNV_BM | MUX_M3_BM | channel));
+
+	ret = ads7871_read_reg8(spi, REG_GAIN_MUX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mux_cnv = ((ret & MUX_CNV_BM) >> MUX_CNV_BV);
 	/*
 	 * on 400MHz arm9 platform the conversion
@@ -124,14 +137,18 @@ static ssize_t voltage_show(struct device *dev, struct device_attribute *da,
 	while ((i < 2) && mux_cnv) {
 		i++;
 		ret = ads7871_read_reg8(spi, REG_GAIN_MUX);
+<<<<<<< HEAD
 		if (ret < 0)
 			return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mux_cnv = ((ret & MUX_CNV_BM) >> MUX_CNV_BV);
 		msleep_interruptible(1);
 	}
 
 	if (mux_cnv == 0) {
 		val = ads7871_read_reg16(spi, REG_LS_BYTE);
+<<<<<<< HEAD
 		if (val < 0)
 			return val;
 		/*result in volts*10000 = (val/8192)*2.5*10000*/
@@ -140,6 +157,14 @@ static ssize_t voltage_show(struct device *dev, struct device_attribute *da,
 	}
 
 	return -ETIMEDOUT;
+=======
+		/*result in volts*10000 = (val/8192)*2.5*10000*/
+		val = ((val >> 2) * 25000) / 8192;
+		return sprintf(buf, "%d\n", val);
+	} else {
+		return -1;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static SENSOR_DEVICE_ATTR_RO(in0_input, voltage, 0);

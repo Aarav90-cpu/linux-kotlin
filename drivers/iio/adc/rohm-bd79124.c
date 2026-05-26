@@ -75,7 +75,11 @@
 
 /*
  * The high limit, low limit and last measurement result are each stored in
+<<<<<<< HEAD
  * 2 consecutive registers. 4 bits are in the high bits of the first register
+=======
+ * 2 consequtive registers. 4 bits are in the high bits of the first register
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * and 8 bits in the next register.
  *
  * These macros return the address of the first reg for the given channel.
@@ -962,7 +966,11 @@ static int bd79124_hw_init(struct bd79124_data *data)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* Enable writing the measured values to the registers */
+=======
+	/* Enable writing the measured values to the regsters */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_set_bits(data->map, BD79124_REG_GEN_CFG,
 			      BD79124_MSK_STATS_EN);
 	if (ret)

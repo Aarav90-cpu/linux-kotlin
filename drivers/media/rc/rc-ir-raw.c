@@ -648,6 +648,12 @@ int ir_raw_event_register(struct rc_dev *dev)
 
 void ir_raw_event_free(struct rc_dev *dev)
 {
+<<<<<<< HEAD
+=======
+	if (!dev)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev->raw);
 	dev->raw = NULL;
 }
@@ -671,6 +677,11 @@ void ir_raw_event_unregister(struct rc_dev *dev)
 
 	lirc_bpf_free(dev);
 
+<<<<<<< HEAD
+=======
+	ir_raw_event_free(dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * A user can be calling bpf(BPF_PROG_{QUERY|ATTACH|DETACH}), so
 	 * ensure that the raw member is null on unlock; this is how

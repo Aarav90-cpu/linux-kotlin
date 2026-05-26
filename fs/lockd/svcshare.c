@@ -14,9 +14,14 @@
 
 #include <linux/sunrpc/clnt.h>
 #include <linux/sunrpc/svc.h>
+<<<<<<< HEAD
 
 #include "lockd.h"
 #include "share.h"
+=======
+#include <linux/lockd/lockd.h>
+#include <linux/lockd/share.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int
 nlm_cmp_owner(struct nlm_share *share, struct xdr_netobj *oh)
@@ -25,6 +30,7 @@ nlm_cmp_owner(struct nlm_share *share, struct xdr_netobj *oh)
 	    && !memcmp(share->s_owner.data, oh->data, oh->len);
 }
 
+<<<<<<< HEAD
 /**
  * nlmsvc_share_file - create a share
  * @host: Network client peer
@@ -40,6 +46,14 @@ nlmsvc_share_file(struct nlm_host *host, struct nlm_file *file,
 		  struct xdr_netobj *oh, u32 access, u32 mode)
 {
 	struct nlm_share	*share;
+=======
+__be32
+nlmsvc_share_file(struct nlm_host *host, struct nlm_file *file,
+			struct nlm_args *argp)
+{
+	struct nlm_share	*share;
+	struct xdr_netobj	*oh = &argp->lock.oh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8			*ohdata;
 
 	if (nlmsvc_file_cannot_lock(file))
@@ -48,11 +62,21 @@ nlmsvc_share_file(struct nlm_host *host, struct nlm_file *file,
 	for (share = file->f_shares; share; share = share->s_next) {
 		if (share->s_host == host && nlm_cmp_owner(share, oh))
 			goto update;
+<<<<<<< HEAD
 		if ((access & share->s_mode) || (mode & share->s_access))
 			return nlm_lck_denied;
 	}
 
 	share = kmalloc(sizeof(*share) + oh->len, GFP_KERNEL);
+=======
+		if ((argp->fsm_access & share->s_mode)
+		 || (argp->fsm_mode   & share->s_access ))
+			return nlm_lck_denied;
+	}
+
+	share = kmalloc(sizeof(*share) + oh->len,
+						GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (share == NULL)
 		return nlm_lck_denied_nolocks;
 
@@ -68,6 +92,7 @@ nlmsvc_share_file(struct nlm_host *host, struct nlm_file *file,
 	file->f_shares      = share;
 
 update:
+<<<<<<< HEAD
 	share->s_access = access;
 	share->s_mode = mode;
 	return nlm_granted;
@@ -86,6 +111,22 @@ nlmsvc_unshare_file(struct nlm_host *host, struct nlm_file *file,
 		    struct xdr_netobj *oh)
 {
 	struct nlm_share	*share, **shpp;
+=======
+	share->s_access = argp->fsm_access;
+	share->s_mode   = argp->fsm_mode;
+	return nlm_granted;
+}
+
+/*
+ * Delete a share.
+ */
+__be32
+nlmsvc_unshare_file(struct nlm_host *host, struct nlm_file *file,
+			struct nlm_args *argp)
+{
+	struct nlm_share	*share, **shpp;
+	struct xdr_netobj	*oh = &argp->lock.oh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nlmsvc_file_cannot_lock(file))
 		return nlm_lck_denied_nolocks;

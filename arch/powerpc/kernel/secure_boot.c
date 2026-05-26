@@ -5,7 +5,10 @@
  */
 #include <linux/types.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/secure_boot.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/string_choices.h>
 #include <asm/secure_boot.h>
 
@@ -45,11 +48,14 @@ out:
 	return enabled;
 }
 
+<<<<<<< HEAD
 bool arch_get_secureboot(void)
 {
 	return is_ppc_secureboot_enabled();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool is_ppc_trustedboot_enabled(void)
 {
 	struct device_node *node;

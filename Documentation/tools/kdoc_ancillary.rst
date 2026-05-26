@@ -21,6 +21,7 @@ Regular expression class handler
    :undoc-members:
 
 
+<<<<<<< HEAD
 C tokenizer
 ===========
 
@@ -30,6 +31,8 @@ C tokenizer
    :undoc-members:
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Chinese, Japanese and Korean variable fonts handler
 ===================================================
 
@@ -53,6 +56,7 @@ Python version ancillary methods
    :members:
    :show-inheritance:
    :undoc-members:
+<<<<<<< HEAD
 
 Write output on YAML file
 =========================
@@ -61,3 +65,5 @@ Write output on YAML file
    :members:
    :show-inheritance:
    :undoc-members:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

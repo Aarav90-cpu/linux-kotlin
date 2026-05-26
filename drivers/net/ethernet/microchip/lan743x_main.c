@@ -28,6 +28,7 @@
 
 #define RFE_RD_FIFO_TH_3_DWORDS	0x3
 
+<<<<<<< HEAD
 static bool pci11x1x_is_a0(struct lan743x_adapter *adapter)
 {
 	u32 dev_rev = adapter->csr.id_rev & ID_REV_CHIP_REV_MASK_;
@@ -37,6 +38,11 @@ static bool pci11x1x_is_a0(struct lan743x_adapter *adapter)
 static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
 {
 	u32 fpga_rev;
+=======
+static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
+{
+	u32 chip_rev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 cfg_load;
 	u32 hw_cfg;
 	u32 strap;
@@ -53,19 +59,32 @@ static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
 	cfg_load = lan743x_csr_read(adapter, ETH_SYS_CONFIG_LOAD_STARTED_REG);
 	lan743x_hs_syslock_release(adapter);
 	hw_cfg = lan743x_csr_read(adapter, HW_CFG);
+<<<<<<< HEAD
 	strap = lan743x_csr_read(adapter, STRAP_READ);
 	if ((pci11x1x_is_a0(adapter) &&
 	     (cfg_load & GEN_SYS_LOAD_STARTED_REG_ETH_ ||
 	      hw_cfg & HW_CFG_RST_PROTECT_)) ||
 	    (strap & STRAP_READ_USE_SGMII_EN_)) {
+=======
+
+	if (cfg_load & GEN_SYS_LOAD_STARTED_REG_ETH_ ||
+	    hw_cfg & HW_CFG_RST_PROTECT_) {
+		strap = lan743x_csr_read(adapter, STRAP_READ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (strap & STRAP_READ_SGMII_EN_)
 			adapter->is_sgmii_en = true;
 		else
 			adapter->is_sgmii_en = false;
 	} else {
+<<<<<<< HEAD
 		fpga_rev = lan743x_csr_read(adapter, FPGA_REV);
 		if (fpga_rev) {
 			if (fpga_rev & FPGA_SGMII_OP)
+=======
+		chip_rev = lan743x_csr_read(adapter, FPGA_REV);
+		if (chip_rev) {
+			if (chip_rev & FPGA_SGMII_OP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				adapter->is_sgmii_en = true;
 			else
 				adapter->is_sgmii_en = false;

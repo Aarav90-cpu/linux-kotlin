@@ -4,8 +4,11 @@
  */
 
 #include <drm/drm_cache.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_interrupt_regs.h>
 #include <drm/intel/intel_gmd_misc_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "gem/i915_gem_internal.h"
 
@@ -128,7 +131,12 @@ static void flush_cs_tlb(struct intel_engine_cs *engine)
 			 engine->name);
 
 	ENGINE_WRITE_FW(engine, RING_INSTPM,
+<<<<<<< HEAD
 			REG_MASKED_FIELD_ENABLE(INSTPM_TLB_INVALIDATE | INSTPM_SYNC_FLUSH));
+=======
+			_MASKED_BIT_ENABLE(INSTPM_TLB_INVALIDATE |
+					   INSTPM_SYNC_FLUSH));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (__intel_wait_for_register_fw(engine->uncore,
 					 RING_INSTPM(engine->mmio_base),
 					 INSTPM_SYNC_FLUSH, 0,
@@ -171,7 +179,11 @@ static void set_pp_dir(struct intel_engine_cs *engine)
 	if (GRAPHICS_VER(engine->i915) >= 7) {
 		ENGINE_WRITE_FW(engine,
 				RING_MODE_GEN7,
+<<<<<<< HEAD
 				REG_MASKED_FIELD_ENABLE(GFX_PPGTT_ENABLE));
+=======
+				_MASKED_BIT_ENABLE(GFX_PPGTT_ENABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -275,7 +287,11 @@ static int xcs_resume(struct intel_engine_cs *engine)
 
 	if (GRAPHICS_VER(engine->i915) > 2) {
 		ENGINE_WRITE_FW(engine,
+<<<<<<< HEAD
 				RING_MI_MODE, REG_MASKED_FIELD_DISABLE(STOP_RING));
+=======
+				RING_MI_MODE, _MASKED_BIT_DISABLE(STOP_RING));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ENGINE_POSTING_READ(engine, RING_MI_MODE);
 	}
 
@@ -718,7 +734,11 @@ static int load_pd_dir(struct i915_request *rq,
 
 	*cs++ = MI_LOAD_REGISTER_IMM(1);
 	*cs++ = i915_mmio_reg_offset(RING_INSTPM(engine->mmio_base));
+<<<<<<< HEAD
 	*cs++ = REG_MASKED_FIELD_ENABLE(INSTPM_TLB_INVALIDATE);
+=======
+	*cs++ = _MASKED_BIT_ENABLE(INSTPM_TLB_INVALIDATE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_ring_advance(rq, cs);
 
@@ -767,7 +787,12 @@ static int mi_set_context(struct i915_request *rq,
 
 				*cs++ = i915_mmio_reg_offset(
 					   RING_PSMI_CTL(signaller->mmio_base));
+<<<<<<< HEAD
 				*cs++ = REG_MASKED_FIELD_ENABLE(GEN6_PSMI_SLEEP_MSG_DISABLE);
+=======
+				*cs++ = _MASKED_BIT_ENABLE(
+						GEN6_PSMI_SLEEP_MSG_DISABLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	} else if (GRAPHICS_VER(i915) == 5) {
@@ -820,7 +845,12 @@ static int mi_set_context(struct i915_request *rq,
 
 				last_reg = RING_PSMI_CTL(signaller->mmio_base);
 				*cs++ = i915_mmio_reg_offset(last_reg);
+<<<<<<< HEAD
 				*cs++ = REG_MASKED_FIELD_DISABLE(GEN6_PSMI_SLEEP_MSG_DISABLE);
+=======
+				*cs++ = _MASKED_BIT_DISABLE(
+						GEN6_PSMI_SLEEP_MSG_DISABLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			/* Insert a delay before the next switch! */
@@ -1052,7 +1082,11 @@ static void gen6_bsd_submit_request(struct i915_request *request)
 	 * will then assume that it is busy and bring it out of rc6.
 	 */
 	intel_uncore_write_fw(uncore, RING_PSMI_CTL(GEN6_BSD_RING_BASE),
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_ENABLE(GEN6_PSMI_SLEEP_MSG_DISABLE));
+=======
+			      _MASKED_BIT_ENABLE(GEN6_PSMI_SLEEP_MSG_DISABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Clear the context id. Here be magic! */
 	intel_uncore_write64_fw(uncore, GEN6_BSD_RNCID, 0x0);
@@ -1073,7 +1107,11 @@ static void gen6_bsd_submit_request(struct i915_request *request)
 	 * and so let it sleep to conserve power when idle.
 	 */
 	intel_uncore_write_fw(uncore, RING_PSMI_CTL(GEN6_BSD_RING_BASE),
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_DISABLE(GEN6_PSMI_SLEEP_MSG_DISABLE));
+=======
+			      _MASKED_BIT_DISABLE(GEN6_PSMI_SLEEP_MSG_DISABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_uncore_forcewake_put(uncore, FORCEWAKE_ALL);
 }

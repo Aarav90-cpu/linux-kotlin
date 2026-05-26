@@ -93,6 +93,7 @@ scheduler has been loaded):
     # cat /sys/kernel/sched_ext/enable_seq
     1
 
+<<<<<<< HEAD
 Each running scheduler also exposes a per-scheduler ``events`` file under
 ``/sys/kernel/sched_ext/<scheduler-name>/events`` that tracks diagnostic
 counters. Each counter occupies one ``name value`` line:
@@ -142,6 +143,8 @@ The counters are described in ``kernel/sched/ext_internal.h``; briefly:
 * ``SCX_EV_SUB_BYPASS_DISPATCH``: tasks dispatched from sub-scheduler bypass
   DSQs (only relevant with ``CONFIG_EXT_SUB_SCHED``).
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ``tools/sched_ext/scx_show_state.py`` is a drgn script which shows more
 detailed information:
 
@@ -277,6 +280,7 @@ The following briefly shows how a waking task is scheduled and executed.
    scheduler can wake up any cpu using the ``scx_bpf_kick_cpu()`` helper,
    using ``ops.select_cpu()`` judiciously can be simpler and more efficient.
 
+<<<<<<< HEAD
    Note that the scheduler core will ignore an invalid CPU selection, for
    example, if it's outside the allowed cpumask of the task.
 
@@ -294,6 +298,18 @@ The following briefly shows how a waking task is scheduled and executed.
    invoked. This is discouraged, as it can introduce racy behavior or
    inconsistent state.
 
+=======
+   A task can be immediately inserted into a DSQ from ``ops.select_cpu()``
+   by calling ``scx_bpf_dsq_insert()``. If the task is inserted into
+   ``SCX_DSQ_LOCAL`` from ``ops.select_cpu()``, it will be inserted into the
+   local DSQ of whichever CPU is returned from ``ops.select_cpu()``.
+   Additionally, inserting directly from ``ops.select_cpu()`` will cause the
+   ``ops.enqueue()`` callback to be skipped.
+
+   Note that the scheduler core will ignore an invalid CPU selection, for
+   example, if it's outside the allowed cpumask of the task.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 2. Once the target CPU is selected, ``ops.enqueue()`` is invoked (unless the
    task was inserted directly from ``ops.select_cpu()``). ``ops.enqueue()``
    can make one of the following decisions:
@@ -307,6 +323,7 @@ The following briefly shows how a waking task is scheduled and executed.
 
    * Queue the task on the BPF side.
 
+<<<<<<< HEAD
    **Task State Tracking and ops.dequeue() Semantics**
 
    A task is in the "BPF scheduler's custody" when the BPF scheduler is
@@ -362,6 +379,8 @@ The following briefly shows how a waking task is scheduled and executed.
    ``ops.dequeue()``, since the task is no longer managed by the BPF
    scheduler.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 3. When a CPU is ready to schedule, it first looks at its local DSQ. If
    empty, it then looks at the global DSQ. If there still isn't a task to
    run, ``ops.dispatch()`` is invoked which can use the following two
@@ -375,9 +394,15 @@ The following briefly shows how a waking task is scheduled and executed.
      rather than performing them immediately. There can be up to
      ``ops.dispatch_max_batch`` pending tasks.
 
+<<<<<<< HEAD
    * ``scx_bpf_dsq_move_to_local()`` moves a task from the specified non-local
      DSQ to the dispatching DSQ. This function cannot be called with any BPF
      locks held. ``scx_bpf_dsq_move_to_local()`` flushes the pending insertions
+=======
+   * ``scx_bpf_move_to_local()`` moves a task from the specified non-local
+     DSQ to the dispatching DSQ. This function cannot be called with any BPF
+     locks held. ``scx_bpf_move_to_local()`` flushes the pending insertions
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
      tasks before trying to move from the specified DSQ.
 
 4. After ``ops.dispatch()`` returns, if there are tasks in the local DSQ,
@@ -408,8 +433,13 @@ for more information.
 Task Lifecycle
 --------------
 
+<<<<<<< HEAD
 The following pseudo-code presents a rough overview of the entire lifecycle
 of a task managed by a sched_ext scheduler:
+=======
+The following pseudo-code summarizes the entire lifecycle of a task managed
+by a sched_ext scheduler:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .. code-block:: c
 
@@ -422,6 +452,7 @@ of a task managed by a sched_ext scheduler:
 
         ops.runnable();         /* Task becomes ready to run */
 
+<<<<<<< HEAD
         while (task_is_runnable(task)) {
             if (task is not in a DSQ || task->scx.slice == 0) {
                 ops.enqueue();  /* Task can be added to a DSQ */
@@ -450,6 +481,23 @@ of a task managed by a sched_ext scheduler:
 
                 if (task->scx.slice == 0)
                     ops.dispatch(); /* task->scx.slice can be refilled */
+=======
+        while (task is runnable) {
+            if (task is not in a DSQ && task->scx.slice == 0) {
+                ops.enqueue();  /* Task can be added to a DSQ */
+
+                /* Any usable CPU becomes available */
+
+                ops.dispatch(); /* Task is moved to a local DSQ */
+            }
+            ops.running();      /* Task starts running on its assigned CPU */
+
+            while task_is_runnable(p) {
+                while (task->scx.slice > 0 && task_is_runnable(p))
+                    ops.tick();     /* Called every 1/HZ seconds */
+
+                ops.dispatch();     /* task->scx.slice can be refilled */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             }
 
             ops.stopping();     /* Task stops running (time slice expires or wait) */
@@ -461,6 +509,7 @@ of a task managed by a sched_ext scheduler:
     ops.disable();              /* Disable BPF scheduling for the task */
     ops.exit_task();            /* Task is destroyed */
 
+<<<<<<< HEAD
 Note that the above pseudo-code does not cover all possible state transitions
 and edge cases, to name a few examples:
 
@@ -485,6 +534,8 @@ and edge cases, to name a few examples:
 See the "Scheduling Cycle" section for a more detailed description of how
 a freshly woken up task gets on a CPU.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Where to Look
 =============
 
@@ -527,6 +578,7 @@ Where to Look
     scheduling. Tasks with CPU affinity are direct-dispatched in FIFO order;
     all others are scheduled in user space by a simple vruntime scheduler.
 
+<<<<<<< HEAD
 Module Parameters
 =================
 
@@ -546,6 +598,8 @@ and written at runtime (mode 0600) via
     across CPUs. Set to 0 to disable load balancing during bypass mode. Valid
     range is 0 to 10 s.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ABI Instability
 ===============
 

@@ -203,6 +203,18 @@ static inline void bvec_iter_advance_single(const struct bio_vec *bv,
 		((bvl = mp_bvec_iter_bvec((bio_vec), (iter))), 1);	\
 	     bvec_iter_advance_single((bio_vec), &(iter), (bvl).bv_len))
 
+<<<<<<< HEAD
+=======
+/* for iterating one bio from start to end */
+#define BVEC_ITER_ALL_INIT (struct bvec_iter)				\
+{									\
+	.bi_sector	= 0,						\
+	.bi_size	= UINT_MAX,					\
+	.bi_idx		= 0,						\
+	.bi_bvec_done	= 0,						\
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct bio_vec *bvec_init_iter_all(struct bvec_iter_all *iter_all)
 {
 	iter_all->done = 0;

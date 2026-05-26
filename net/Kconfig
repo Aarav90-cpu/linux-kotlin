@@ -414,6 +414,10 @@ endmenu # Network testing
 
 endmenu # Networking options
 
+<<<<<<< HEAD
+=======
+source "net/ax25/Kconfig"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "net/can/Kconfig"
 source "net/bluetooth/Kconfig"
 source "net/rxrpc/Kconfig"
@@ -438,6 +442,10 @@ endif # WIRELESS
 
 source "net/rfkill/Kconfig"
 source "net/9p/Kconfig"
+<<<<<<< HEAD
+=======
+source "net/caif/Kconfig"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "net/ceph/Kconfig"
 source "net/nfc/Kconfig"
 source "net/psample/Kconfig"

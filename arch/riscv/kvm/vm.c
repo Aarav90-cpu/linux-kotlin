@@ -199,10 +199,14 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		r = KVM_USER_MEM_SLOTS;
 		break;
 	case KVM_CAP_VM_GPA_BITS:
+<<<<<<< HEAD
 		if (!kvm)
 			r = kvm_riscv_gstage_gpa_bits(kvm_riscv_gstage_max_pgd_levels);
 		else
 			r = kvm_riscv_gstage_gpa_bits(kvm->arch.pgd_levels);
+=======
+		r = kvm_riscv_gstage_gpa_bits;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		r = 0;
@@ -214,6 +218,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 
 int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
 {
+<<<<<<< HEAD
 	if (cap->flags)
 		return -EINVAL;
 
@@ -260,6 +265,14 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
 
 		return r;
 	}
+=======
+	switch (cap->cap) {
+	case KVM_CAP_RISCV_MP_STATE_RESET:
+		if (cap->flags)
+			return -EINVAL;
+		kvm->arch.mp_state_reset = true;
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}

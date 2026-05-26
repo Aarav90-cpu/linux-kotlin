@@ -26,7 +26,10 @@
 #include "xe_bo.h"
 #include "xe_bo_evict.h"
 #include "xe_debugfs.h"
+<<<<<<< HEAD
 #include "xe_defaults.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_devcoredump.h"
 #include "xe_device_sysfs.h"
 #include "xe_dma_buf.h"
@@ -211,8 +214,11 @@ static const struct drm_ioctl_desc xe_ioctls[] = {
 			  DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(XE_EXEC_QUEUE_SET_PROPERTY, xe_exec_queue_set_property_ioctl,
 			  DRM_RENDER_ALLOW),
+<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(XE_VM_GET_PROPERTY, xe_vm_get_property_ioctl,
 			  DRM_RENDER_ALLOW),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static long xe_drm_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
@@ -390,6 +396,12 @@ bool xe_is_xe_file(const struct file *file)
 }
 
 static struct drm_driver driver = {
+<<<<<<< HEAD
+=======
+	/* Don't use MTRRs here; the Xserver or userspace app should
+	 * deal with them for Intel hardware.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver_features =
 	    DRIVER_GEM |
 	    DRIVER_RENDER | DRIVER_SYNCOBJ |
@@ -455,16 +467,28 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 			      xe->drm.anon_inode->i_mapping,
 			      xe->drm.vma_offset_manager, 0);
 	if (WARN_ON(err))
+<<<<<<< HEAD
 		return ERR_PTR(err);
+=======
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_bo_dev_init(&xe->bo_device);
 	err = drmm_add_action_or_reset(&xe->drm, xe_device_destroy, NULL);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
 
 	err = xe_shrinker_create(xe);
 	if (err)
 		return ERR_PTR(err);
+=======
+		goto err;
+
+	err = xe_shrinker_create(xe);
+	if (err)
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe->info.devid = pdev->device;
 	xe->info.revid = pdev->revision;
@@ -474,7 +498,11 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 
 	err = xe_irq_init(xe);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
+=======
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_validation_device_init(&xe->val);
 
@@ -484,7 +512,11 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 
 	err = xe_pagemap_shrinker_create(xe);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
+=======
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xa_init_flags(&xe->usm.asid_to_vm, XA_FLAGS_ALLOC);
 
@@ -503,13 +535,22 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 
 	err = xe_bo_pinned_init(xe);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
+=======
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq",
 						       WQ_MEM_RECLAIM);
 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
+<<<<<<< HEAD
 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", WQ_PERCPU, 0);
 	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", WQ_PERCPU, 0);
+=======
+	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
+	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!xe->ordered_wq || !xe->unordered_wq ||
 	    !xe->preempt_fence_wq || !xe->destroy_wq) {
 		/*
@@ -517,14 +558,28 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 		 * drmm_add_action_or_reset register above
 		 */
 		drm_err(&xe->drm, "Failed to allocate xe workqueues\n");
+<<<<<<< HEAD
 		return ERR_PTR(-ENOMEM);
+=======
+		err = -ENOMEM;
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = drmm_mutex_init(&xe->drm, &xe->pmt.lock);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
 
 	return xe;
+=======
+		goto err;
+
+	return xe;
+
+err:
+	return ERR_PTR(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 ALLOW_ERROR_INJECTION(xe_device_create, ERRNO); /* See xe_pci_probe() */
 
@@ -739,7 +794,11 @@ int xe_device_probe_early(struct xe_device *xe)
 	assert_lmem_ready(xe);
 
 	xe->wedged.mode = xe_device_validate_wedged_mode(xe, xe_modparam.wedged_mode) ?
+<<<<<<< HEAD
 			  XE_DEFAULT_WEDGED_MODE : xe_modparam.wedged_mode;
+=======
+			  XE_WEDGED_MODE_DEFAULT : xe_modparam.wedged_mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_dbg(&xe->drm, "wedged_mode: setting mode (%u) %s\n",
 		xe->wedged.mode, xe_wedged_mode_to_string(xe->wedged.mode));
 
@@ -1085,7 +1144,14 @@ static void tdf_request_sync(struct xe_device *xe)
 	struct xe_gt *gt;
 	u8 id;
 
+<<<<<<< HEAD
 	for_each_gt_with_type(gt, xe, id, BIT(XE_GT_TYPE_MAIN)) {
+=======
+	for_each_gt(gt, xe, id) {
+		if (xe_gt_is_media_type(gt))
+			continue;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CLASS(xe_force_wake, fw_ref)(gt_to_fw(gt), XE_FW_GT);
 		if (!fw_ref.domains)
 			return;
@@ -1105,6 +1171,7 @@ static void tdf_request_sync(struct xe_device *xe)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * xe_device_is_l2_flush_optimized - if L2 flush is optimized by HW
  * @xe: The device to check.
@@ -1128,6 +1195,8 @@ bool xe_device_is_l2_flush_optimized(struct xe_device *xe)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_device_l2_flush(struct xe_device *xe)
 {
 	struct xe_gt *gt;
@@ -1174,6 +1243,7 @@ void xe_device_td_flush(struct xe_device *xe)
 {
 	struct xe_gt *root_gt;
 
+<<<<<<< HEAD
 	/*
 	 * From Xe3p onward the HW takes care of flush of TD entries also along
 	 * with flushing XA entries, which will be at the usual sync points,
@@ -1182,6 +1252,8 @@ void xe_device_td_flush(struct xe_device *xe)
 	if (GRAPHICS_VER(xe) >= 35)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_DGFX(xe) || GRAPHICS_VER(xe) < 20)
 		return;
 
@@ -1334,8 +1406,12 @@ void xe_device_declare_wedged(struct xe_device *xe)
 		xe_pm_runtime_get_noresume(xe);
 		drm_err(&xe->drm,
 			"CRITICAL: Xe has declared device %s as wedged.\n"
+<<<<<<< HEAD
 			"IOCTLs and executions are blocked.\n"
 			"For recovery procedure, refer to https://docs.kernel.org/gpu/drm-uapi.html#device-wedging\n"
+=======
+			"IOCTLs and executions are blocked. Only a rebind may clear the failure\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"Please file a _new_ bug report at https://gitlab.freedesktop.org/drm/xe/kernel/issues/new\n",
 			dev_name(xe->drm.dev));
 	}
@@ -1344,6 +1420,7 @@ void xe_device_declare_wedged(struct xe_device *xe)
 		xe_gt_declare_wedged(gt);
 
 	if (xe_device_wedged(xe)) {
+<<<<<<< HEAD
 		/*
 		 * XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET is intended for debugging
 		 * hangs, so wedge the device with 'none' recovery method and have
@@ -1353,6 +1430,10 @@ void xe_device_declare_wedged(struct xe_device *xe)
 			xe_device_set_wedged_method(xe, DRM_WEDGE_RECOVERY_NONE);
 		/* If no wedge recovery method is set, use default */
 		else if (!xe->wedged.method)
+=======
+		/* If no wedge recovery method is set, use default */
+		if (!xe->wedged.method)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xe_device_set_wedged_method(xe, DRM_WEDGE_RECOVERY_REBIND |
 						    DRM_WEDGE_RECOVERY_BUS_RESET);
 
@@ -1405,6 +1486,7 @@ const char *xe_wedged_mode_to_string(enum xe_wedged_mode mode)
 		return "<invalid>";
 	}
 }
+<<<<<<< HEAD
 
 /**
  * xe_device_asid_to_vm() - Find VM from ASID
@@ -1430,3 +1512,5 @@ struct xe_vm *xe_device_asid_to_vm(struct xe_device *xe, u32 asid)
 
 	return vm;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -47,8 +47,13 @@ static int cgbc_gpio_get(struct gpio_chip *chip, unsigned int offset)
 
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 
 	return !!(val & BIT(offset));
+=======
+	else
+		return (int)(val & (u8)BIT(offset));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __cgbc_gpio_set(struct gpio_chip *chip, unsigned int offset,

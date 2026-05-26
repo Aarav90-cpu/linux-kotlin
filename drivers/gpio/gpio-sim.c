@@ -36,9 +36,16 @@
 #include <linux/sysfs.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #define GPIO_SIM_NGPIO_MAX	1024
 #define GPIO_SIM_PROP_MAX	5 /* Max 4 properties + sentinel. */
 #define GPIO_SIM_HOG_PROP_MAX	5
+=======
+#include "dev-sync-probe.h"
+
+#define GPIO_SIM_NGPIO_MAX	1024
+#define GPIO_SIM_PROP_MAX	5 /* Max 4 properties + sentinel. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GPIO_SIM_NUM_ATTRS	3 /* value, pull and sentinel */
 
 static DEFINE_IDA(gpio_sim_ida);
@@ -544,7 +551,11 @@ static struct platform_driver gpio_sim_driver = {
 };
 
 struct gpio_sim_device {
+<<<<<<< HEAD
 	struct platform_device *pdev;
+=======
+	struct dev_sync_probe_data probe_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct config_group group;
 
 	int id;
@@ -560,6 +571,11 @@ struct gpio_sim_device {
 	 */
 	struct mutex lock;
 
+<<<<<<< HEAD
+=======
+	struct gpiod_hog *hogs;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head bank_list;
 };
 
@@ -652,7 +668,10 @@ struct gpio_sim_hog {
 
 	char *name;
 	int dir;
+<<<<<<< HEAD
 	bool active_low;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct gpio_sim_hog *to_gpio_sim_hog(struct config_item *item)
@@ -671,7 +690,11 @@ static bool gpio_sim_device_is_live(struct gpio_sim_device *dev)
 {
 	lockdep_assert_held(&dev->lock);
 
+<<<<<<< HEAD
 	return !!dev->pdev;
+=======
+	return !!dev->probe_data.pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static char *gpio_sim_strdup_trimmed(const char *str, size_t count)
@@ -693,7 +716,11 @@ static ssize_t gpio_sim_device_config_dev_name_show(struct config_item *item,
 
 	guard(mutex)(&dev->lock);
 
+<<<<<<< HEAD
 	pdev = dev->pdev;
+=======
+	pdev = dev->probe_data.pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pdev)
 		return sprintf(page, "%s\n", dev_name(&pdev->dev));
 
@@ -772,6 +799,105 @@ static void gpio_sim_set_reserved_ranges(struct gpio_sim_bank *bank,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void gpio_sim_remove_hogs(struct gpio_sim_device *dev)
+{
+	struct gpiod_hog *hog;
+
+	if (!dev->hogs)
+		return;
+
+	gpiod_remove_hogs(dev->hogs);
+
+	for (hog = dev->hogs; hog->chip_label; hog++) {
+		kfree(hog->chip_label);
+		kfree(hog->line_name);
+	}
+
+	kfree(dev->hogs);
+	dev->hogs = NULL;
+}
+
+static int gpio_sim_add_hogs(struct gpio_sim_device *dev)
+{
+	unsigned int num_hogs = 0, idx = 0;
+	struct gpio_sim_bank *bank;
+	struct gpio_sim_line *line;
+	struct gpiod_hog *hog;
+
+	list_for_each_entry(bank, &dev->bank_list, siblings) {
+		list_for_each_entry(line, &bank->line_list, siblings) {
+			if (line->offset >= bank->num_lines)
+				continue;
+
+			if (line->hog)
+				num_hogs++;
+		}
+	}
+
+	if (!num_hogs)
+		return 0;
+
+	/* Allocate one more for the sentinel. */
+	dev->hogs = kzalloc_objs(*dev->hogs, num_hogs + 1);
+	if (!dev->hogs)
+		return -ENOMEM;
+
+	list_for_each_entry(bank, &dev->bank_list, siblings) {
+		list_for_each_entry(line, &bank->line_list, siblings) {
+			if (line->offset >= bank->num_lines)
+				continue;
+
+			if (!line->hog)
+				continue;
+
+			hog = &dev->hogs[idx++];
+
+			/*
+			 * We need to make this string manually because at this
+			 * point the device doesn't exist yet and so dev_name()
+			 * is not available.
+			 */
+			if (gpio_sim_bank_has_label(bank))
+				hog->chip_label = kstrdup(bank->label,
+							  GFP_KERNEL);
+			else
+				hog->chip_label = kasprintf(GFP_KERNEL,
+							"gpio-sim.%u:%pfwP",
+							dev->id,
+							bank->swnode);
+			if (!hog->chip_label) {
+				gpio_sim_remove_hogs(dev);
+				return -ENOMEM;
+			}
+
+			/*
+			 * We need to duplicate this because the hog config
+			 * item can be removed at any time (and we can't block
+			 * it) and gpiolib doesn't make a deep copy of the hog
+			 * data.
+			 */
+			if (line->hog->name) {
+				hog->line_name = kstrdup(line->hog->name,
+							 GFP_KERNEL);
+				if (!hog->line_name) {
+					gpio_sim_remove_hogs(dev);
+					return -ENOMEM;
+				}
+			}
+
+			hog->chip_hwnum = line->offset;
+			hog->dflags = line->hog->dir;
+		}
+	}
+
+	gpiod_add_hogs(dev->hogs);
+
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct fwnode_handle *
 gpio_sim_make_bank_swnode(struct gpio_sim_bank *bank,
 			  struct fwnode_handle *parent)
@@ -819,6 +945,7 @@ gpio_sim_make_bank_swnode(struct gpio_sim_bank *bank,
 	return fwnode_create_software_node(properties, parent);
 }
 
+<<<<<<< HEAD
 static int gpio_sim_bank_add_hogs(struct gpio_sim_bank *bank)
 {
 	struct property_entry properties[GPIO_SIM_HOG_PROP_MAX];
@@ -868,12 +995,18 @@ static int gpio_sim_bank_add_hogs(struct gpio_sim_bank *bank)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void gpio_sim_remove_swnode_recursive(struct fwnode_handle *swnode)
 {
 	struct fwnode_handle *child;
 
 	fwnode_for_each_child_node(swnode, child)
+<<<<<<< HEAD
 		gpio_sim_remove_swnode_recursive(child);
+=======
+		fwnode_remove_software_node(child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fwnode_remove_software_node(swnode);
 }
@@ -898,7 +1031,10 @@ static bool gpio_sim_bank_labels_non_unique(struct gpio_sim_device *dev)
 static int gpio_sim_device_activate(struct gpio_sim_device *dev)
 {
 	struct platform_device_info pdevinfo;
+<<<<<<< HEAD
 	struct platform_device *pdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fwnode_handle *swnode;
 	struct gpio_sim_bank *bank;
 	int ret = 0;
@@ -926,18 +1062,31 @@ static int gpio_sim_device_activate(struct gpio_sim_device *dev)
 		bank->swnode = gpio_sim_make_bank_swnode(bank, swnode);
 		if (IS_ERR(bank->swnode)) {
 			ret = PTR_ERR(bank->swnode);
+<<<<<<< HEAD
 			goto err_remove_swnode;
 		}
 
 		ret = gpio_sim_bank_add_hogs(bank);
 		if (ret)
 			goto err_remove_swnode;
+=======
+			gpio_sim_remove_swnode_recursive(swnode);
+			return ret;
+		}
+	}
+
+	ret = gpio_sim_add_hogs(dev);
+	if (ret) {
+		gpio_sim_remove_swnode_recursive(swnode);
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	pdevinfo.name = "gpio-sim";
 	pdevinfo.fwnode = swnode;
 	pdevinfo.id = dev->id;
 
+<<<<<<< HEAD
 	pdev = platform_device_register_full(&pdevinfo);
 	if (IS_ERR(pdev)) {
 		ret = PTR_ERR(pdev);
@@ -962,6 +1111,16 @@ err_remove_swnode:
 	gpio_sim_remove_swnode_recursive(swnode);
 
 	return ret;
+=======
+	ret = dev_sync_probe_register(&dev->probe_data, &pdevinfo);
+	if (ret) {
+		gpio_sim_remove_hogs(dev);
+		gpio_sim_remove_swnode_recursive(swnode);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gpio_sim_device_deactivate(struct gpio_sim_device *dev)
@@ -970,9 +1129,15 @@ static void gpio_sim_device_deactivate(struct gpio_sim_device *dev)
 
 	lockdep_assert_held(&dev->lock);
 
+<<<<<<< HEAD
 	swnode = dev_fwnode(&dev->pdev->dev);
 	platform_device_unregister(dev->pdev);
 	dev->pdev = NULL;
+=======
+	swnode = dev_fwnode(&dev->probe_data.pdev->dev);
+	dev_sync_probe_unregister(&dev->probe_data);
+	gpio_sim_remove_hogs(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio_sim_remove_swnode_recursive(swnode);
 }
 
@@ -1074,7 +1239,11 @@ static ssize_t gpio_sim_bank_config_chip_name_show(struct config_item *item,
 	guard(mutex)(&dev->lock);
 
 	if (gpio_sim_device_is_live(dev))
+<<<<<<< HEAD
 		return device_for_each_child(&dev->pdev->dev, &ctx,
+=======
+		return device_for_each_child(&dev->probe_data.pdev->dev, &ctx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					     gpio_sim_emit_chip_name);
 
 	return sprintf(page, "none\n");
@@ -1330,6 +1499,7 @@ gpio_sim_hog_config_direction_store(struct config_item *item,
 
 CONFIGFS_ATTR(gpio_sim_hog_config_, direction);
 
+<<<<<<< HEAD
 static ssize_t gpio_sim_hog_config_active_low_show(struct config_item *item,
 						   char *page)
 {
@@ -1370,6 +1540,11 @@ static struct configfs_attribute *gpio_sim_hog_config_attrs[] = {
 	&gpio_sim_hog_config_attr_name,
 	&gpio_sim_hog_config_attr_direction,
 	&gpio_sim_hog_config_attr_active_low,
+=======
+static struct configfs_attribute *gpio_sim_hog_config_attrs[] = {
+	&gpio_sim_hog_config_attr_name,
+	&gpio_sim_hog_config_attr_direction,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -1585,6 +1760,11 @@ gpio_sim_config_make_device_group(struct config_group *group, const char *name)
 	mutex_init(&dev->lock);
 	INIT_LIST_HEAD(&dev->bank_list);
 
+<<<<<<< HEAD
+=======
+	dev_sync_probe_init(&dev->probe_data);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return &no_free_ptr(dev)->group;
 }
 

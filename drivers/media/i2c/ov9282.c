@@ -12,16 +12,22 @@
 #include <linux/math.h>
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 
 #include <media/v4l2-cci.h>
+=======
+#include <linux/regulator/consumer.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-event.h>
 #include <media/v4l2-fwnode.h>
 #include <media/v4l2-subdev.h>
 
 /* Streaming Mode */
+<<<<<<< HEAD
 #define OV9282_REG_MODE_SELECT	CCI_REG8(0x0100)
 #define OV9282_MODE_STANDBY	0x00
 #define OV9282_MODE_STREAMING	0x01
@@ -46,6 +52,32 @@
 #define OV9282_OUTPUT_ENABLE4_D9	BIT(0)
 
 #define OV9282_REG_OUTPUT_ENABLE5	CCI_REG8(0x3005)
+=======
+#define OV9282_REG_MODE_SELECT	0x0100
+#define OV9282_MODE_STANDBY	0x00
+#define OV9282_MODE_STREAMING	0x01
+
+#define OV9282_REG_PLL_CTRL_0D	0x030d
+#define OV9282_PLL_CTRL_0D_RAW8		0x60
+#define OV9282_PLL_CTRL_0D_RAW10	0x50
+
+#define OV9282_REG_TIMING_HTS	0x380c
+#define OV9282_TIMING_HTS_MAX	0x7fff
+
+/* Lines per frame */
+#define OV9282_REG_LPFR		0x380e
+
+/* Chip ID */
+#define OV9282_REG_ID		0x300a
+#define OV9282_ID		0x9281
+
+/* Output enable registers */
+#define OV9282_REG_OUTPUT_ENABLE4	0x3004
+#define OV9282_OUTPUT_ENABLE4_GPIO2	BIT(1)
+#define OV9282_OUTPUT_ENABLE4_D9	BIT(0)
+
+#define OV9282_REG_OUTPUT_ENABLE5	0x3005
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_OUTPUT_ENABLE5_D8	BIT(7)
 #define OV9282_OUTPUT_ENABLE5_D7	BIT(6)
 #define OV9282_OUTPUT_ENABLE5_D6	BIT(5)
@@ -55,7 +87,11 @@
 #define OV9282_OUTPUT_ENABLE5_D2	BIT(1)
 #define OV9282_OUTPUT_ENABLE5_D1	BIT(0)
 
+<<<<<<< HEAD
 #define OV9282_REG_OUTPUT_ENABLE6	CCI_REG8(0x3006)
+=======
+#define OV9282_REG_OUTPUT_ENABLE6	0x3006
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_OUTPUT_ENABLE6_D0	BIT(7)
 #define OV9282_OUTPUT_ENABLE6_PCLK	BIT(6)
 #define OV9282_OUTPUT_ENABLE6_HREF	BIT(5)
@@ -64,14 +100,22 @@
 #define OV9282_OUTPUT_ENABLE6_VSYNC	BIT(1)
 
 /* Exposure control */
+<<<<<<< HEAD
 #define OV9282_REG_EXPOSURE	CCI_REG24(0x3500)
+=======
+#define OV9282_REG_EXPOSURE	0x3500
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_EXPOSURE_MIN	1
 #define OV9282_EXPOSURE_OFFSET	25
 #define OV9282_EXPOSURE_STEP	1
 #define OV9282_EXPOSURE_DEFAULT	0x0282
 
 /* AEC/AGC manual */
+<<<<<<< HEAD
 #define OV9282_REG_AEC_MANUAL		CCI_REG8(0x3503)
+=======
+#define OV9282_REG_AEC_MANUAL		0x3503
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_DIGFRAC_GAIN_DELAY	BIT(6)
 #define OV9282_GAIN_CHANGE_DELAY	BIT(5)
 #define OV9282_GAIN_DELAY		BIT(4)
@@ -80,13 +124,18 @@
 #define OV9282_AEC_MANUAL_DEFAULT	0x00
 
 /* Analog gain control */
+<<<<<<< HEAD
 #define OV9282_REG_AGAIN	CCI_REG8(0x3509)
+=======
+#define OV9282_REG_AGAIN	0x3509
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_AGAIN_MIN	0x10
 #define OV9282_AGAIN_MAX	0xff
 #define OV9282_AGAIN_STEP	1
 #define OV9282_AGAIN_DEFAULT	0x10
 
 /* Group hold register */
+<<<<<<< HEAD
 #define OV9282_REG_HOLD		CCI_REG8(0x3308)
 
 #define OV9282_REG_ANA_CORE_2	CCI_REG8(0x3662)
@@ -102,6 +151,23 @@
 
 /* Flash/Strobe control registers */
 #define OV9282_REG_STROBE_FRAME_SPAN		CCI_REG32(0x3925)
+=======
+#define OV9282_REG_HOLD		0x3308
+
+#define OV9282_REG_ANA_CORE_2	0x3662
+#define OV9282_ANA_CORE2_RAW8	0x07
+#define OV9282_ANA_CORE2_RAW10	0x05
+
+#define OV9282_REG_TIMING_FORMAT_1	0x3820
+#define OV9282_REG_TIMING_FORMAT_2	0x3821
+#define OV9282_FLIP_BIT			BIT(2)
+
+#define OV9282_REG_MIPI_CTRL00	0x4800
+#define OV9282_GATED_CLOCK	BIT(5)
+
+/* Flash/Strobe control registers */
+#define OV9282_REG_STROBE_FRAME_SPAN		0x3925
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OV9282_STROBE_FRAME_SPAN_DEFAULT	0x0000001a
 
 /* Input clock rate */
@@ -142,13 +208,30 @@ static const char * const ov9282_supply_names[] = {
 #define OV9282_NUM_SUPPLIES ARRAY_SIZE(ov9282_supply_names)
 
 /**
+<<<<<<< HEAD
+=======
+ * struct ov9282_reg - ov9282 sensor register
+ * @address: Register address
+ * @val: Register value
+ */
+struct ov9282_reg {
+	u16 address;
+	u8 val;
+};
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct ov9282_reg_list - ov9282 sensor register list
  * @num_of_regs: Number of registers in the list
  * @regs: Pointer to register list
  */
 struct ov9282_reg_list {
 	u32 num_of_regs;
+<<<<<<< HEAD
 	const struct cci_reg_sequence *regs;
+=======
+	const struct ov9282_reg *regs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -180,7 +263,10 @@ struct ov9282_mode {
  * struct ov9282 - ov9282 sensor device structure
  * @dev: Pointer to generic device
  * @sd: V4L2 sub-device
+<<<<<<< HEAD
  * @regmap: Regmap for sensor register access
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @pad: Media pad. Only one pad supported
  * @reset_gpio: Sensor reset gpio
  * @inclk: Sensor input clock
@@ -202,7 +288,10 @@ struct ov9282_mode {
 struct ov9282 {
 	struct device *dev;
 	struct v4l2_subdev sd;
+<<<<<<< HEAD
 	struct regmap *regmap;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct media_pad pad;
 	struct gpio_desc *reset_gpio;
 	struct clk *inclk;
@@ -221,6 +310,10 @@ struct ov9282 {
 	bool noncontinuous_clock;
 	const struct ov9282_mode *cur_mode;
 	u32 code;
+<<<<<<< HEAD
+=======
+	struct mutex mutex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const s64 link_freq[] = {
@@ -234,6 +327,7 @@ static const s64 link_freq[] = {
  * register arrays as some settings are written as part of ov9282_power_on,
  * and the reset will clear them.
  */
+<<<<<<< HEAD
 static const struct cci_reg_sequence common_regs[] = {
 	{CCI_REG8(0x0302), 0x32},
 	{CCI_REG8(0x030e), 0x02},
@@ -296,6 +390,75 @@ static const struct cci_reg_sequence common_regs[] = {
 	{CCI_REG8(0x0101), 0x01},
 	{CCI_REG8(0x1000), 0x03},
 	{CCI_REG8(0x5a08), 0x84},
+=======
+static const struct ov9282_reg common_regs[] = {
+	{0x0302, 0x32},
+	{0x030e, 0x02},
+	{0x3001, 0x00},
+	{OV9282_REG_OUTPUT_ENABLE4, 0x00},
+	{OV9282_REG_OUTPUT_ENABLE5, 0x00},
+	{OV9282_REG_OUTPUT_ENABLE6, OV9282_OUTPUT_ENABLE6_ILPWM},
+	{0x3011, 0x0a},
+	{0x3013, 0x18},
+	{0x301c, 0xf0},
+	{0x3022, 0x01},
+	{0x3030, 0x10},
+	{0x3039, 0x32},
+	{0x303a, 0x00},
+	{OV9282_REG_AEC_MANUAL, OV9282_GAIN_PREC16_EN},
+	{0x3505, 0x8c},
+	{0x3507, 0x03},
+	{0x3508, 0x00},
+	{0x3610, 0x80},
+	{0x3611, 0xa0},
+	{0x3620, 0x6e},
+	{0x3632, 0x56},
+	{0x3633, 0x78},
+	{0x3666, 0x00},
+	{0x366f, 0x5a},
+	{0x3680, 0x84},
+	{0x3712, 0x80},
+	{0x372d, 0x22},
+	{0x3731, 0x80},
+	{0x3732, 0x30},
+	{0x377d, 0x22},
+	{0x3788, 0x02},
+	{0x3789, 0xa4},
+	{0x378a, 0x00},
+	{0x378b, 0x4a},
+	{0x3799, 0x20},
+	{0x3881, 0x42},
+	{0x38a8, 0x02},
+	{0x38a9, 0x80},
+	{0x38b1, 0x00},
+	{0x38c4, 0x00},
+	{0x38c5, 0xc0},
+	{0x38c6, 0x04},
+	{0x38c7, 0x80},
+	{0x3920, 0xff},
+	{0x4010, 0x40},
+	{0x4043, 0x40},
+	{0x4307, 0x30},
+	{0x4317, 0x00},
+	{0x4501, 0x00},
+	{0x450a, 0x08},
+	{0x4601, 0x04},
+	{0x470f, 0x00},
+	{0x4f07, 0x00},
+	{0x5000, 0x9f},
+	{0x5001, 0x00},
+	{0x5e00, 0x00},
+	{0x5d00, 0x07},
+	{0x5d01, 0x00},
+	{0x0101, 0x01},
+	{0x1000, 0x03},
+	{0x5a08, 0x84},
+};
+
+static struct ov9282_reg_list common_regs_list = {
+	.num_of_regs = ARRAY_SIZE(common_regs),
+	.regs = common_regs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define MODE_1280_800		0
@@ -305,6 +468,7 @@ static const struct cci_reg_sequence common_regs[] = {
 #define DEFAULT_MODE		MODE_1280_720
 
 /* Sensor mode registers */
+<<<<<<< HEAD
 static const struct cci_reg_sequence mode_1280x800_regs[] = {
 	{CCI_REG8(0x3778), 0x00},
 	{CCI_REG8(0x3800), 0x00},
@@ -395,6 +559,98 @@ static const struct cci_reg_sequence mode_640x400_regs[] = {
 	{CCI_REG8(0x400d), 0x03},
 	{CCI_REG8(0x4507), 0x03},
 	{CCI_REG8(0x4509), 0x80},
+=======
+static const struct ov9282_reg mode_1280x800_regs[] = {
+	{0x3778, 0x00},
+	{0x3800, 0x00},
+	{0x3801, 0x00},
+	{0x3802, 0x00},
+	{0x3803, 0x00},
+	{0x3804, 0x05},
+	{0x3805, 0x0f},
+	{0x3806, 0x03},
+	{0x3807, 0x2f},
+	{0x3808, 0x05},
+	{0x3809, 0x00},
+	{0x380a, 0x03},
+	{0x380b, 0x20},
+	{0x3810, 0x00},
+	{0x3811, 0x08},
+	{0x3812, 0x00},
+	{0x3813, 0x08},
+	{0x3814, 0x11},
+	{0x3815, 0x11},
+	{OV9282_REG_TIMING_FORMAT_1, 0x40},
+	{OV9282_REG_TIMING_FORMAT_2, 0x00},
+	{0x4003, 0x40},
+	{0x4008, 0x04},
+	{0x4009, 0x0b},
+	{0x400c, 0x00},
+	{0x400d, 0x07},
+	{0x4507, 0x00},
+	{0x4509, 0x00},
+};
+
+static const struct ov9282_reg mode_1280x720_regs[] = {
+	{0x3778, 0x00},
+	{0x3800, 0x00},
+	{0x3801, 0x00},
+	{0x3802, 0x00},
+	{0x3803, 0x00},
+	{0x3804, 0x05},
+	{0x3805, 0x0f},
+	{0x3806, 0x02},
+	{0x3807, 0xdf},
+	{0x3808, 0x05},
+	{0x3809, 0x00},
+	{0x380a, 0x02},
+	{0x380b, 0xd0},
+	{0x3810, 0x00},
+	{0x3811, 0x08},
+	{0x3812, 0x00},
+	{0x3813, 0x08},
+	{0x3814, 0x11},
+	{0x3815, 0x11},
+	{OV9282_REG_TIMING_FORMAT_1, 0x3c},
+	{OV9282_REG_TIMING_FORMAT_2, 0x84},
+	{0x4003, 0x40},
+	{0x4008, 0x02},
+	{0x4009, 0x05},
+	{0x400c, 0x00},
+	{0x400d, 0x03},
+	{0x4507, 0x00},
+	{0x4509, 0x80},
+};
+
+static const struct ov9282_reg mode_640x400_regs[] = {
+	{0x3778, 0x10},
+	{0x3800, 0x00},
+	{0x3801, 0x00},
+	{0x3802, 0x00},
+	{0x3803, 0x00},
+	{0x3804, 0x05},
+	{0x3805, 0x0f},
+	{0x3806, 0x03},
+	{0x3807, 0x2f},
+	{0x3808, 0x02},
+	{0x3809, 0x80},
+	{0x380a, 0x01},
+	{0x380b, 0x90},
+	{0x3810, 0x00},
+	{0x3811, 0x04},
+	{0x3812, 0x00},
+	{0x3813, 0x04},
+	{0x3814, 0x31},
+	{0x3815, 0x22},
+	{OV9282_REG_TIMING_FORMAT_1, 0x60},
+	{OV9282_REG_TIMING_FORMAT_2, 0x01},
+	{0x4008, 0x02},
+	{0x4009, 0x05},
+	{0x400c, 0x00},
+	{0x400d, 0x03},
+	{0x4507, 0x03},
+	{0x4509, 0x80},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Supported sensor mode configurations */
@@ -474,6 +730,100 @@ static inline struct ov9282 *to_ov9282(struct v4l2_subdev *subdev)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * ov9282_read_reg() - Read registers.
+ * @ov9282: pointer to ov9282 device
+ * @reg: register address
+ * @len: length of bytes to read. Max supported bytes is 4
+ * @val: pointer to register value to be filled.
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_read_reg(struct ov9282 *ov9282, u16 reg, u32 len, u32 *val)
+{
+	struct i2c_client *client = v4l2_get_subdevdata(&ov9282->sd);
+	struct i2c_msg msgs[2] = {0};
+	u8 addr_buf[2] = {0};
+	u8 data_buf[4] = {0};
+	int ret;
+
+	if (WARN_ON(len > 4))
+		return -EINVAL;
+
+	put_unaligned_be16(reg, addr_buf);
+
+	/* Write register address */
+	msgs[0].addr = client->addr;
+	msgs[0].flags = 0;
+	msgs[0].len = ARRAY_SIZE(addr_buf);
+	msgs[0].buf = addr_buf;
+
+	/* Read data from register */
+	msgs[1].addr = client->addr;
+	msgs[1].flags = I2C_M_RD;
+	msgs[1].len = len;
+	msgs[1].buf = &data_buf[4 - len];
+
+	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
+	if (ret != ARRAY_SIZE(msgs))
+		return -EIO;
+
+	*val = get_unaligned_be32(data_buf);
+
+	return 0;
+}
+
+/**
+ * ov9282_write_reg() - Write register
+ * @ov9282: pointer to ov9282 device
+ * @reg: register address
+ * @len: length of bytes. Max supported bytes is 4
+ * @val: register value
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_write_reg(struct ov9282 *ov9282, u16 reg, u32 len, u32 val)
+{
+	struct i2c_client *client = v4l2_get_subdevdata(&ov9282->sd);
+	u8 buf[6] = {0};
+
+	if (WARN_ON(len > 4))
+		return -EINVAL;
+
+	put_unaligned_be16(reg, buf);
+	put_unaligned_be32(val << (8 * (4 - len)), buf + 2);
+	if (i2c_master_send(client, buf, len + 2) != len + 2)
+		return -EIO;
+
+	return 0;
+}
+
+/**
+ * ov9282_write_regs() - Write a list of registers
+ * @ov9282: pointer to ov9282 device
+ * @regs: list of registers to be written
+ * @len: length of registers array
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_write_regs(struct ov9282 *ov9282,
+			     const struct ov9282_reg *regs, u32 len)
+{
+	unsigned int i;
+	int ret;
+
+	for (i = 0; i < len; i++) {
+		ret = ov9282_write_reg(ov9282, regs[i].address, 1, regs[i].val);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ov9282_update_controls() - Update control ranges based on streaming mode
  * @ov9282: pointer to ov9282 device
  * @mode: pointer to ov9282_mode sensor mode
@@ -530,12 +880,18 @@ static u32 ov9282_exposure_to_us(struct ov9282 *ov9282, u32 exposure)
  */
 static int ov9282_update_exp_gain(struct ov9282 *ov9282, u32 exposure, u32 gain)
 {
+<<<<<<< HEAD
 	u32 exposure_us = ov9282_exposure_to_us(ov9282, exposure);
 	int ret, ret_hold;
+=======
+	int ret;
+	u32 exposure_us = ov9282_exposure_to_us(ov9282, exposure);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(ov9282->dev, "Set exp %u (~%u us), analog gain %u",
 		exposure, exposure_us, gain);
 
+<<<<<<< HEAD
 	ret = cci_write(ov9282->regmap, OV9282_REG_HOLD, 0x01, NULL);
 	if (ret)
 		return ret;
@@ -545,6 +901,17 @@ static int ov9282_update_exp_gain(struct ov9282 *ov9282, u32 exposure, u32 gain)
 		goto error_release_group_hold;
 
 	ret = cci_write(ov9282->regmap, OV9282_REG_AGAIN, gain, NULL);
+=======
+	ret = ov9282_write_reg(ov9282, OV9282_REG_HOLD, 1, 1);
+	if (ret)
+		return ret;
+
+	ret = ov9282_write_reg(ov9282, OV9282_REG_EXPOSURE, 3, exposure << 4);
+	if (ret)
+		goto error_release_group_hold;
+
+	ret = ov9282_write_reg(ov9282, OV9282_REG_AGAIN, 1, gain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto error_release_group_hold;
 
@@ -553,9 +920,66 @@ static int ov9282_update_exp_gain(struct ov9282 *ov9282, u32 exposure, u32 gain)
 				       OV9282_STROBE_FRAME_SPAN_DEFAULT);
 
 error_release_group_hold:
+<<<<<<< HEAD
 	ret_hold = cci_write(ov9282->regmap, OV9282_REG_HOLD, 0, NULL);
 
 	return ret ? ret : ret_hold;
+=======
+	ov9282_write_reg(ov9282, OV9282_REG_HOLD, 1, 0);
+
+	return ret;
+}
+
+static int ov9282_set_ctrl_hflip(struct ov9282 *ov9282, int value)
+{
+	u32 current_val;
+	int ret = ov9282_read_reg(ov9282, OV9282_REG_TIMING_FORMAT_2, 1,
+				  &current_val);
+	if (ret)
+		return ret;
+
+	if (value)
+		current_val |= OV9282_FLIP_BIT;
+	else
+		current_val &= ~OV9282_FLIP_BIT;
+
+	return ov9282_write_reg(ov9282, OV9282_REG_TIMING_FORMAT_2, 1,
+				current_val);
+}
+
+static int ov9282_set_ctrl_vflip(struct ov9282 *ov9282, int value)
+{
+	u32 current_val;
+	int ret = ov9282_read_reg(ov9282, OV9282_REG_TIMING_FORMAT_1, 1,
+				  &current_val);
+	if (ret)
+		return ret;
+
+	if (value)
+		current_val |= OV9282_FLIP_BIT;
+	else
+		current_val &= ~OV9282_FLIP_BIT;
+
+	return ov9282_write_reg(ov9282, OV9282_REG_TIMING_FORMAT_1, 1,
+				current_val);
+}
+
+static int ov9282_set_ctrl_flash_strobe_oe(struct ov9282 *ov9282, bool enable)
+{
+	u32 current_val;
+	int ret;
+
+	ret = ov9282_read_reg(ov9282, OV9282_REG_OUTPUT_ENABLE6, 1, &current_val);
+	if (ret)
+		return ret;
+
+	if (enable)
+		current_val |= OV9282_OUTPUT_ENABLE6_STROBE;
+	else
+		current_val &= ~OV9282_OUTPUT_ENABLE6_STROBE;
+
+	return ov9282_write_reg(ov9282, OV9282_REG_OUTPUT_ENABLE6, 1, current_val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 ov9282_us_to_flash_duration(struct ov9282 *ov9282, u32 value)
@@ -586,6 +1010,33 @@ static u32 ov9282_flash_duration_to_us(struct ov9282 *ov9282, u32 value)
 	return DIV_ROUND_UP(value * frame_width, OV9282_STROBE_SPAN_FACTOR);
 }
 
+<<<<<<< HEAD
+=======
+static int ov9282_set_ctrl_flash_duration(struct ov9282 *ov9282, u32 value)
+{
+	u32 val = ov9282_us_to_flash_duration(ov9282, value);
+	int ret;
+
+	ret = ov9282_write_reg(ov9282, OV9282_REG_STROBE_FRAME_SPAN, 1,
+			       (val >> 24) & 0xff);
+	if (ret)
+		return ret;
+
+	ret = ov9282_write_reg(ov9282, OV9282_REG_STROBE_FRAME_SPAN + 1, 1,
+			       (val >> 16) & 0xff);
+	if (ret)
+		return ret;
+
+	ret = ov9282_write_reg(ov9282, OV9282_REG_STROBE_FRAME_SPAN + 2, 1,
+			       (val >> 8) & 0xff);
+	if (ret)
+		return ret;
+
+	return ov9282_write_reg(ov9282, OV9282_REG_STROBE_FRAME_SPAN + 3, 1,
+				val & 0xff);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ov9282_set_ctrl() - Set subdevice control
  * @ctrl: pointer to v4l2_ctrl structure
@@ -640,6 +1091,7 @@ static int ov9282_set_ctrl(struct v4l2_ctrl *ctrl)
 		break;
 	case V4L2_CID_VBLANK:
 		lpfr = ov9282->vblank + ov9282->cur_mode->height;
+<<<<<<< HEAD
 		ret = cci_write(ov9282->regmap, OV9282_REG_LPFR, lpfr, NULL);
 		break;
 	case V4L2_CID_HFLIP:
@@ -661,6 +1113,25 @@ static int ov9282_set_ctrl(struct v4l2_ctrl *ctrl)
 		break;
 	case V4L2_CID_FLASH_DURATION:
 		ret = cci_write(ov9282->regmap, OV9282_REG_STROBE_FRAME_SPAN, ctrl->val, NULL);
+=======
+		ret = ov9282_write_reg(ov9282, OV9282_REG_LPFR, 2, lpfr);
+		break;
+	case V4L2_CID_HFLIP:
+		ret = ov9282_set_ctrl_hflip(ov9282, ctrl->val);
+		break;
+	case V4L2_CID_VFLIP:
+		ret = ov9282_set_ctrl_vflip(ov9282, ctrl->val);
+		break;
+	case V4L2_CID_HBLANK:
+		ret = ov9282_write_reg(ov9282, OV9282_REG_TIMING_HTS, 2,
+				       (ctrl->val + ov9282->cur_mode->width) >> 1);
+		break;
+	case V4L2_CID_FLASH_STROBE_OE:
+		ret = ov9282_set_ctrl_flash_strobe_oe(ov9282, ctrl->val);
+		break;
+	case V4L2_CID_FLASH_DURATION:
+		ret = ov9282_set_ctrl_flash_duration(ov9282, ctrl->val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_err(ov9282->dev, "Invalid control %d", ctrl->id);
@@ -794,6 +1265,11 @@ static int ov9282_get_pad_format(struct v4l2_subdev *sd,
 {
 	struct ov9282 *ov9282 = to_ov9282(sd);
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ov9282->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY) {
 		struct v4l2_mbus_framefmt *framefmt;
 
@@ -804,6 +1280,11 @@ static int ov9282_get_pad_format(struct v4l2_subdev *sd,
 				       fmt);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ov9282->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -824,6 +1305,11 @@ static int ov9282_set_pad_format(struct v4l2_subdev *sd,
 	u32 code;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ov9282->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mode = v4l2_find_nearest_size(supported_modes,
 				      ARRAY_SIZE(supported_modes),
 				      width, height,
@@ -849,6 +1335,11 @@ static int ov9282_set_pad_format(struct v4l2_subdev *sd,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ov9282->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -895,8 +1386,15 @@ static int ov9282_get_selection(struct v4l2_subdev *sd,
 	case V4L2_SEL_TGT_CROP: {
 		struct ov9282 *ov9282 = to_ov9282(sd);
 
+<<<<<<< HEAD
 		sel->r = *__ov9282_get_pad_crop(ov9282, sd_state, sel->pad,
 						sel->which);
+=======
+		mutex_lock(&ov9282->mutex);
+		sel->r = *__ov9282_get_pad_crop(ov9282, sd_state, sel->pad,
+						sel->which);
+		mutex_unlock(&ov9282->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return 0;
 	}
@@ -922,11 +1420,23 @@ static int ov9282_get_selection(struct v4l2_subdev *sd,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int ov9282_enable_streams(struct v4l2_subdev *sd,
 				 struct v4l2_subdev_state *state, u32 pad,
 				 u64 streams_mask)
 {
 	const struct cci_reg_sequence bitdepth_regs[2][2] = {
+=======
+/**
+ * ov9282_start_streaming() - Start sensor stream
+ * @ov9282: pointer to ov9282 device
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_start_streaming(struct ov9282 *ov9282)
+{
+	const struct ov9282_reg bitdepth_regs[2][2] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{
 			{OV9282_REG_PLL_CTRL_0D, OV9282_PLL_CTRL_0D_RAW10},
 			{OV9282_REG_ANA_CORE_2, OV9282_ANA_CORE2_RAW10},
@@ -935,11 +1445,15 @@ static int ov9282_enable_streams(struct v4l2_subdev *sd,
 			{OV9282_REG_ANA_CORE_2, OV9282_ANA_CORE2_RAW8},
 		}
 	};
+<<<<<<< HEAD
 	struct ov9282 *ov9282 = to_ov9282(sd);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct ov9282_reg_list *reg_list;
 	int bitdepth_index;
 	int ret;
 
+<<<<<<< HEAD
 	ret = pm_runtime_resume_and_get(ov9282->dev);
 	if (ret)
 		return ret;
@@ -958,21 +1472,44 @@ static int ov9282_enable_streams(struct v4l2_subdev *sd,
 	if (ret) {
 		dev_err(ov9282->dev, "fail to write bitdepth regs");
 		goto err_pm_put;
+=======
+	/* Write common registers */
+	ret = ov9282_write_regs(ov9282, common_regs_list.regs,
+				common_regs_list.num_of_regs);
+	if (ret) {
+		dev_err(ov9282->dev, "fail to write common registers");
+		return ret;
+	}
+
+	bitdepth_index = ov9282->code == MEDIA_BUS_FMT_Y10_1X10 ? 0 : 1;
+	ret = ov9282_write_regs(ov9282, bitdepth_regs[bitdepth_index], 2);
+	if (ret) {
+		dev_err(ov9282->dev, "fail to write bitdepth regs");
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Write sensor mode registers */
 	reg_list = &ov9282->cur_mode->reg_list;
+<<<<<<< HEAD
 	ret = cci_multi_reg_write(ov9282->regmap, reg_list->regs,
 				  reg_list->num_of_regs, NULL);
 	if (ret) {
 		dev_err(ov9282->dev, "fail to write initial registers");
 		goto err_pm_put;
+=======
+	ret = ov9282_write_regs(ov9282, reg_list->regs, reg_list->num_of_regs);
+	if (ret) {
+		dev_err(ov9282->dev, "fail to write initial registers");
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Setup handler will write actual exposure and gain */
 	ret =  __v4l2_ctrl_handler_setup(ov9282->sd.ctrl_handler);
 	if (ret) {
 		dev_err(ov9282->dev, "fail to setup handler");
+<<<<<<< HEAD
 		goto err_pm_put;
 	}
 
@@ -995,14 +1532,76 @@ err_pm_put:
 static int ov9282_disable_streams(struct v4l2_subdev *sd,
 				  struct v4l2_subdev_state *state, u32 pad,
 				  u64 streams_mask)
+=======
+		return ret;
+	}
+
+	/* Start streaming */
+	ret = ov9282_write_reg(ov9282, OV9282_REG_MODE_SELECT,
+			       1, OV9282_MODE_STREAMING);
+	if (ret) {
+		dev_err(ov9282->dev, "fail to start streaming");
+		return ret;
+	}
+
+	return 0;
+}
+
+/**
+ * ov9282_stop_streaming() - Stop sensor stream
+ * @ov9282: pointer to ov9282 device
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_stop_streaming(struct ov9282 *ov9282)
+{
+	return ov9282_write_reg(ov9282, OV9282_REG_MODE_SELECT,
+				1, OV9282_MODE_STANDBY);
+}
+
+/**
+ * ov9282_set_stream() - Enable sensor streaming
+ * @sd: pointer to ov9282 subdevice
+ * @enable: set to enable sensor streaming
+ *
+ * Return: 0 if successful, error code otherwise.
+ */
+static int ov9282_set_stream(struct v4l2_subdev *sd, int enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ov9282 *ov9282 = to_ov9282(sd);
 	int ret;
 
+<<<<<<< HEAD
 	ret = cci_write(ov9282->regmap, OV9282_REG_MODE_SELECT,
 			OV9282_MODE_STANDBY, NULL);
 
 	pm_runtime_put(ov9282->dev);
+=======
+	mutex_lock(&ov9282->mutex);
+
+	if (enable) {
+		ret = pm_runtime_resume_and_get(ov9282->dev);
+		if (ret)
+			goto error_unlock;
+
+		ret = ov9282_start_streaming(ov9282);
+		if (ret)
+			goto error_power_off;
+	} else {
+		ov9282_stop_streaming(ov9282);
+		pm_runtime_put(ov9282->dev);
+	}
+
+	mutex_unlock(&ov9282->mutex);
+
+	return 0;
+
+error_power_off:
+	pm_runtime_put(ov9282->dev);
+error_unlock:
+	mutex_unlock(&ov9282->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1016,14 +1615,24 @@ static int ov9282_disable_streams(struct v4l2_subdev *sd,
 static int ov9282_detect(struct ov9282 *ov9282)
 {
 	int ret;
+<<<<<<< HEAD
 	u64 val;
 
 	ret = cci_read(ov9282->regmap, OV9282_REG_ID, &val, NULL);
+=======
+	u32 val;
+
+	ret = ov9282_read_reg(ov9282, OV9282_REG_ID, 2, &val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
 	if (val != OV9282_ID) {
+<<<<<<< HEAD
 		dev_err(ov9282->dev, "chip id mismatch: %x!=%llx",
+=======
+		dev_err(ov9282->dev, "chip id mismatch: %x!=%x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			OV9282_ID, val);
 		return -ENXIO;
 	}
@@ -1134,7 +1743,11 @@ static const struct v4l2_subdev_core_ops ov9282_core_ops = {
 };
 
 static const struct v4l2_subdev_video_ops ov9282_video_ops = {
+<<<<<<< HEAD
 	.s_stream = v4l2_subdev_s_stream_helper,
+=======
+	.s_stream = ov9282_set_stream,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct v4l2_subdev_pad_ops ov9282_pad_ops = {
@@ -1143,8 +1756,11 @@ static const struct v4l2_subdev_pad_ops ov9282_pad_ops = {
 	.get_fmt = ov9282_get_pad_format,
 	.set_fmt = ov9282_set_pad_format,
 	.get_selection = ov9282_get_selection,
+<<<<<<< HEAD
 	.enable_streams = ov9282_enable_streams,
 	.disable_streams = ov9282_disable_streams,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct v4l2_subdev_ops ov9282_subdev_ops = {
@@ -1187,8 +1803,14 @@ static int ov9282_power_on(struct device *dev)
 
 	usleep_range(400, 600);
 
+<<<<<<< HEAD
 	ret = cci_write(ov9282->regmap, OV9282_REG_MIPI_CTRL00,
 			ov9282->noncontinuous_clock ? OV9282_GATED_CLOCK : 0, NULL);
+=======
+	ret = ov9282_write_reg(ov9282, OV9282_REG_MIPI_CTRL00, 1,
+			       ov9282->noncontinuous_clock ?
+					OV9282_GATED_CLOCK : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		dev_err(ov9282->dev, "fail to write MIPI_CTRL00");
 		goto error_clk;
@@ -1246,6 +1868,12 @@ static int ov9282_init_controls(struct ov9282 *ov9282)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	/* Serialize controls with sensor device */
+	ctrl_hdlr->lock = &ov9282->mutex;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Initialize exposure and gain */
 	lpfr = mode->vblank + mode->height;
 	ov9282->exp_ctrl = v4l2_ctrl_new_std(ctrl_hdlr,
@@ -1362,6 +1990,7 @@ static int ov9282_probe(struct i2c_client *client)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ov9282->regmap = devm_cci_regmap_init_i2c(client, 16);
 	if (IS_ERR(ov9282->regmap))
 		return dev_err_probe(ov9282->dev, PTR_ERR(ov9282->regmap),
@@ -1371,6 +2000,15 @@ static int ov9282_probe(struct i2c_client *client)
 	if (ret)
 		return dev_err_probe(ov9282->dev, ret,
 				     "failed to power-on the sensor");
+=======
+	mutex_init(&ov9282->mutex);
+
+	ret = ov9282_power_on(ov9282->dev);
+	if (ret) {
+		dev_err(ov9282->dev, "failed to power-on the sensor");
+		goto error_mutex_destroy;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Check module identity */
 	ret = ov9282_detect(ov9282);
@@ -1403,34 +2041,52 @@ static int ov9282_probe(struct i2c_client *client)
 		goto error_handler_free;
 	}
 
+<<<<<<< HEAD
 	ov9282->sd.state_lock = ov9282->ctrl_handler.lock;
 	ret = v4l2_subdev_init_finalize(&ov9282->sd);
 	if (ret < 0) {
 		dev_err_probe(ov9282->dev, ret, "failed to init subdev\n");
+=======
+	ret = v4l2_async_register_subdev_sensor(&ov9282->sd);
+	if (ret < 0) {
+		dev_err(ov9282->dev,
+			"failed to register async subdev: %d", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto error_media_entity;
 	}
 
 	pm_runtime_set_active(ov9282->dev);
 	pm_runtime_enable(ov9282->dev);
+<<<<<<< HEAD
 
 	ret = v4l2_async_register_subdev_sensor(&ov9282->sd);
 	if (ret < 0)
 		goto v4l2_subdev_cleanup;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_idle(ov9282->dev);
 
 	return 0;
 
+<<<<<<< HEAD
 v4l2_subdev_cleanup:
 	v4l2_subdev_cleanup(&ov9282->sd);
 	pm_runtime_disable(ov9282->dev);
 	pm_runtime_set_suspended(ov9282->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 error_media_entity:
 	media_entity_cleanup(&ov9282->sd.entity);
 error_handler_free:
 	v4l2_ctrl_handler_free(ov9282->sd.ctrl_handler);
 error_power_off:
 	ov9282_power_off(ov9282->dev);
+<<<<<<< HEAD
+=======
+error_mutex_destroy:
+	mutex_destroy(&ov9282->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1444,9 +2100,15 @@ error_power_off:
 static void ov9282_remove(struct i2c_client *client)
 {
 	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	v4l2_async_unregister_subdev(sd);
 	v4l2_subdev_cleanup(sd);
+=======
+	struct ov9282 *ov9282 = to_ov9282(sd);
+
+	v4l2_async_unregister_subdev(sd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	media_entity_cleanup(&sd->entity);
 	v4l2_ctrl_handler_free(sd->ctrl_handler);
 
@@ -1454,6 +2116,11 @@ static void ov9282_remove(struct i2c_client *client)
 	if (!pm_runtime_status_suspended(&client->dev))
 		ov9282_power_off(&client->dev);
 	pm_runtime_set_suspended(&client->dev);
+<<<<<<< HEAD
+=======
+
+	mutex_destroy(&ov9282->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct dev_pm_ops ov9282_pm_ops = {

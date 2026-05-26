@@ -19,7 +19,10 @@
 #include <linux/mempool.h>
 #include <linux/highmem.h>
 #include <crypto/aead.h>
+<<<<<<< HEAD
 #include <crypto/aes-cbc-macs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/sha2.h>
 #include <crypto/utils.h>
 #include "cifsglob.h"
@@ -29,6 +32,17 @@
 #include "../common/smb2status.h"
 #include "smb2glob.h"
 
+<<<<<<< HEAD
+=======
+int
+smb3_crypto_shash_allocate(struct TCP_Server_Info *server)
+{
+	struct cifs_secmech *p = &server->secmech;
+
+	return cifs_alloc_hash("cmac(aes)", &p->aes_cmac);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static
 int smb3_get_sign_key(__u64 ses_id, struct TCP_Server_Info *server, u8 *key)
 {
@@ -206,7 +220,12 @@ smb2_find_smb_tcon(struct TCP_Server_Info *server, __u64 ses_id, __u32  tid)
 }
 
 static int
+<<<<<<< HEAD
 smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
+=======
+smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
+		    bool allocate_crypto)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc;
 	unsigned char smb2_signature[SMB2_HMACSHA256_SIZE];
@@ -252,14 +271,23 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	return rc;
 }
 
+<<<<<<< HEAD
 static void generate_key(struct cifs_ses *ses, struct kvec label,
 			 struct kvec context, __u8 *key, unsigned int key_size,
 			 unsigned int full_key_size)
+=======
+static int generate_key(struct cifs_ses *ses, struct kvec label,
+			struct kvec context, __u8 *key, unsigned int key_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned char zero = 0x0;
 	__u8 i[4] = {0, 0, 0, 1};
 	__u8 L128[4] = {0, 0, 0, 128};
 	__u8 L256[4] = {0, 0, 1, 0};
+<<<<<<< HEAD
+=======
+	int rc = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned char prfhash[SMB2_HMACSHA256_SIZE];
 	struct TCP_Server_Info *server = ses->server;
 	struct hmac_sha256_ctx hmac_ctx;
@@ -267,8 +295,19 @@ static void generate_key(struct cifs_ses *ses, struct kvec label,
 	memset(prfhash, 0x0, SMB2_HMACSHA256_SIZE);
 	memset(key, 0x0, key_size);
 
+<<<<<<< HEAD
 	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
 				     full_key_size);
+=======
+	rc = smb3_crypto_shash_allocate(server);
+	if (rc) {
+		cifs_server_dbg(VFS, "%s: crypto alloc failed\n", __func__);
+		return rc;
+	}
+
+	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
+				     SMB2_NTLMV2_SESSKEY_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hmac_sha256_update(&hmac_ctx, i, 4);
 	hmac_sha256_update(&hmac_ctx, label.iov_base, label.iov_len);
 	hmac_sha256_update(&hmac_ctx, &zero, 1);
@@ -283,6 +322,10 @@ static void generate_key(struct cifs_ses *ses, struct kvec label,
 	hmac_sha256_final(&hmac_ctx, prfhash);
 
 	memcpy(key, prfhash, key_size);
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct derivation {
@@ -301,7 +344,11 @@ generate_smb3signingkey(struct cifs_ses *ses,
 			struct TCP_Server_Info *server,
 			const struct derivation_triplet *ptriplet)
 {
+<<<<<<< HEAD
 	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+=======
+	int rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool is_binding = false;
 	int chan_index = 0;
 
@@ -332,6 +379,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
 	 */
 
 	if (is_binding) {
+<<<<<<< HEAD
 		generate_key(ses, ptriplet->signing.label,
 			     ptriplet->signing.context,
 			     ses->chans[chan_index].signkey, SMB3_SIGN_KEY_SIZE,
@@ -352,6 +400,21 @@ generate_smb3signingkey(struct cifs_ses *ses,
 		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
 		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
 			full_key_size = ses->auth_key.len;
+=======
+		rc = generate_key(ses, ptriplet->signing.label,
+				  ptriplet->signing.context,
+				  ses->chans[chan_index].signkey,
+				  SMB3_SIGN_KEY_SIZE);
+		if (rc)
+			return rc;
+	} else {
+		rc = generate_key(ses, ptriplet->signing.label,
+				  ptriplet->signing.context,
+				  ses->smb3signingkey,
+				  SMB3_SIGN_KEY_SIZE);
+		if (rc)
+			return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* safe to access primary channel, since it will never go away */
 		spin_lock(&ses->chan_lock);
@@ -359,6 +422,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
 		       SMB3_SIGN_KEY_SIZE);
 		spin_unlock(&ses->chan_lock);
 
+<<<<<<< HEAD
 		generate_key(ses, ptriplet->encryption.label,
 			     ptriplet->encryption.context,
 			     ses->smb3encryptionkey, SMB3_ENC_DEC_KEY_SIZE,
@@ -368,6 +432,20 @@ generate_smb3signingkey(struct cifs_ses *ses,
 			     ptriplet->decryption.context,
 			     ses->smb3decryptionkey, SMB3_ENC_DEC_KEY_SIZE,
 			     full_key_size);
+=======
+		rc = generate_key(ses, ptriplet->encryption.label,
+				  ptriplet->encryption.context,
+				  ses->smb3encryptionkey,
+				  SMB3_ENC_DEC_KEY_SIZE);
+		if (rc)
+			return rc;
+		rc = generate_key(ses, ptriplet->decryption.label,
+				  ptriplet->decryption.context,
+				  ses->smb3decryptionkey,
+				  SMB3_ENC_DEC_KEY_SIZE);
+		if (rc)
+			return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
@@ -380,7 +458,11 @@ generate_smb3signingkey(struct cifs_ses *ses,
 			&ses->Suid);
 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
 	cifs_dbg(VFS, "Session Key   %*ph\n",
+<<<<<<< HEAD
 		 (int)ses->auth_key.len, ses->auth_key.response);
+=======
+		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cifs_dbg(VFS, "Signing Key   %*ph\n",
 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
@@ -396,7 +478,11 @@ generate_smb3signingkey(struct cifs_ses *ses,
 				SMB3_GCM128_CRYPTKEY_SIZE, ses->smb3decryptionkey);
 	}
 #endif
+<<<<<<< HEAD
 	return 0;
+=======
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int
@@ -458,19 +544,32 @@ generate_smb311signingkey(struct cifs_ses *ses,
 }
 
 static int
+<<<<<<< HEAD
 smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
+=======
+smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
+		    bool allocate_crypto)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc;
 	unsigned char smb3_signature[SMB2_CMACAES_SIZE];
 	struct kvec *iov = rqst->rq_iov;
 	struct smb2_hdr *shdr = (struct smb2_hdr *)iov[0].iov_base;
+<<<<<<< HEAD
 	struct aes_cmac_key cmac_key;
 	struct aes_cmac_ctx cmac_ctx;
+=======
+	struct shash_desc *shash = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct smb_rqst drqst;
 	u8 key[SMB3_SIGN_KEY_SIZE];
 
 	if (server->vals->protocol_id <= SMB21_PROT_ID)
+<<<<<<< HEAD
 		return smb2_calc_signature(rqst, server);
+=======
+		return smb2_calc_signature(rqst, server, allocate_crypto);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = smb3_get_sign_key(le64_to_cpu(shdr->SessionId), server, key);
 	if (unlikely(rc)) {
@@ -478,6 +577,7 @@ smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	memset(smb3_signature, 0x0, SMB2_CMACAES_SIZE);
 	memset(shdr->Signature, 0x0, SMB2_SIGNATURE_SIZE);
 
@@ -488,6 +588,35 @@ smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	}
 
 	aes_cmac_init(&cmac_ctx, &cmac_key);
+=======
+	if (allocate_crypto) {
+		rc = cifs_alloc_hash("cmac(aes)", &shash);
+		if (rc)
+			return rc;
+	} else {
+		shash = server->secmech.aes_cmac;
+	}
+
+	memset(smb3_signature, 0x0, SMB2_CMACAES_SIZE);
+	memset(shdr->Signature, 0x0, SMB2_SIGNATURE_SIZE);
+
+	rc = crypto_shash_setkey(shash->tfm, key, SMB2_CMACAES_SIZE);
+	if (rc) {
+		cifs_server_dbg(VFS, "%s: Could not set key for cmac aes\n", __func__);
+		goto out;
+	}
+
+	/*
+	 * we already allocate aes_cmac when we init smb3 signing key,
+	 * so unlike smb2 case we do not have to check here if secmech are
+	 * initialized
+	 */
+	rc = crypto_shash_init(shash);
+	if (rc) {
+		cifs_server_dbg(VFS, "%s: Could not init cmac aes\n", __func__);
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * For SMB2+, __cifs_calc_signature() expects to sign only the actual
@@ -498,16 +627,36 @@ smb3_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 	 */
 	drqst = *rqst;
 	if (drqst.rq_nvec >= 2 && iov[0].iov_len == 4) {
+<<<<<<< HEAD
 		aes_cmac_update(&cmac_ctx, iov[0].iov_base, iov[0].iov_len);
+=======
+		rc = crypto_shash_update(shash, iov[0].iov_base,
+					 iov[0].iov_len);
+		if (rc) {
+			cifs_server_dbg(VFS, "%s: Could not update with payload\n",
+				 __func__);
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drqst.rq_iov++;
 		drqst.rq_nvec--;
 	}
 
 	rc = __cifs_calc_signature(
 		&drqst, server, smb3_signature,
+<<<<<<< HEAD
 		&(struct cifs_calc_sig_ctx){ .cmac = &cmac_ctx });
 	if (!rc)
 		memcpy(shdr->Signature, smb3_signature, SMB2_SIGNATURE_SIZE);
+=======
+		&(struct cifs_calc_sig_ctx){ .shash = shash });
+	if (!rc)
+		memcpy(shdr->Signature, smb3_signature, SMB2_SIGNATURE_SIZE);
+
+out:
+	if (allocate_crypto)
+		cifs_free_hash(&shash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 
@@ -541,7 +690,11 @@ smb2_sign_rqst(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	return smb3_calc_signature(rqst, server);
+=======
+	return smb3_calc_signature(rqst, server, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int
@@ -577,7 +730,11 @@ smb2_verify_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 
 	memset(shdr->Signature, 0, SMB2_SIGNATURE_SIZE);
 
+<<<<<<< HEAD
 	rc = smb3_calc_signature(rqst, server);
+=======
+	rc = smb3_calc_signature(rqst, server, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rc)
 		return rc;

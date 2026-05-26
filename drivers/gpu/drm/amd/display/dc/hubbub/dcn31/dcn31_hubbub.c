@@ -943,7 +943,10 @@ static void hubbub31_get_dchub_ref_freq(struct hubbub *hubbub,
 		unsigned int dccg_ref_freq_inKhz,
 		unsigned int *dchub_ref_freq_inKhz)
 {
+<<<<<<< HEAD
 	(void)dccg_ref_freq_inKhz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 	uint32_t ref_div = 0;
 	uint32_t ref_en = 0;

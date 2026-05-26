@@ -2,6 +2,7 @@
 #ifndef _ASM_LOONGARCH_QSPINLOCK_H
 #define _ASM_LOONGARCH_QSPINLOCK_H
 
+<<<<<<< HEAD
 #include <asm/kvm_para.h>
 #include <linux/jump_label.h>
 
@@ -9,6 +10,13 @@
 DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
 DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
 DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
+=======
+#include <linux/jump_label.h>
+
+#ifdef CONFIG_PARAVIRT
+
+DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define virt_spin_lock virt_spin_lock
 
@@ -36,6 +44,7 @@ __retry:
 	return true;
 }
 
+<<<<<<< HEAD
 /*
  * Macro is better than inline function here
  * With macro, parameter cpu is parsed only when it is used.
@@ -55,6 +64,11 @@ __retry:
 	}									\
 	__val;									\
 })
+=======
+#define vcpu_is_preempted vcpu_is_preempted
+
+bool vcpu_is_preempted(int cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* CONFIG_PARAVIRT */
 

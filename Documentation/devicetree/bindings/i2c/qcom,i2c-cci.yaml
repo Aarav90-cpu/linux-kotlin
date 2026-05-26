@@ -27,7 +27,10 @@ properties:
       - items:
           - enum:
               - qcom,kaanapali-cci
+<<<<<<< HEAD
               - qcom,milos-cci
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,qcm2290-cci
               - qcom,qcs8300-cci
               - qcom,sa8775p-cci
@@ -35,7 +38,10 @@ properties:
               - qcom,sc8280xp-cci
               - qcom,sdm670-cci
               - qcom,sdm845-cci
+<<<<<<< HEAD
               - qcom,sm6150-cci
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm6350-cci
               - qcom,sm8250-cci
               - qcom,sm8450-cci
@@ -253,7 +259,10 @@ allOf:
           contains:
             enum:
               - qcom,sa8775p-cci
+<<<<<<< HEAD
               - qcom,sm6150-cci
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8550-cci
               - qcom,sm8650-cci
               - qcom,x1e80100-cci
@@ -268,6 +277,7 @@ allOf:
             - const: cpas_ahb
             - const: cci
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -285,6 +295,8 @@ allOf:
             - const: cpas_ahb
             - const: cci
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

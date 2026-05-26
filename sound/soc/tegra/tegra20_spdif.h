@@ -171,7 +171,11 @@
 
 /*
  * RX channel block data receive status:
+<<<<<<< HEAD
  * 0=entire block not received yet.
+=======
+ * 0=entire block not recieved yet.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * 1=received entire block of channel status,
  */
 #define TEGRA20_SPDIF_STATUS_IS_C				(1 << 21)

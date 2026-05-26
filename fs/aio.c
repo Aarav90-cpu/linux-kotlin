@@ -218,6 +218,7 @@ struct aio_kiocb {
 	struct eventfd_ctx	*ki_eventfd;
 };
 
+<<<<<<< HEAD
 struct aio_inode_info {
 	struct inode vfs_inode;
 	spinlock_t migrate_lock;
@@ -229,6 +230,8 @@ static inline struct aio_inode_info *AIO_I(struct inode *inode)
 	return container_of(inode, struct aio_inode_info, vfs_inode);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*------ sysctl variables----*/
 static DEFINE_SPINLOCK(aio_nr_lock);
 static unsigned long aio_nr;		/* current system wide number of aio requests */
@@ -262,7 +265,10 @@ static void __init aio_sysctl_init(void)
 
 static struct kmem_cache	*kiocb_cachep;
 static struct kmem_cache	*kioctx_cachep;
+<<<<<<< HEAD
 static struct kmem_cache	*aio_inode_cachep;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct vfsmount *aio_mnt;
 
@@ -273,12 +279,19 @@ static struct file *aio_private_file(struct kioctx *ctx, loff_t nr_pages)
 {
 	struct file *file;
 	struct inode *inode = alloc_anon_inode(aio_mnt->mnt_sb);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(inode))
 		return ERR_CAST(inode);
 
 	inode->i_mapping->a_ops = &aio_ctx_aops;
+<<<<<<< HEAD
 	AIO_I(inode)->ctx = ctx;
+=======
+	inode->i_mapping->i_private_data = ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	inode->i_size = PAGE_SIZE * nr_pages;
 
 	file = alloc_file_pseudo(inode, aio_mnt, "[aio]",
@@ -288,6 +301,7 @@ static struct file *aio_private_file(struct kioctx *ctx, loff_t nr_pages)
 	return file;
 }
 
+<<<<<<< HEAD
 static struct inode *aio_alloc_inode(struct super_block *sb)
 {
 	struct aio_inode_info *ai;
@@ -331,6 +345,16 @@ static void init_once(void *obj)
 	spin_lock_init(&ai->migrate_lock);
 }
 
+=======
+static int aio_init_fs_context(struct fs_context *fc)
+{
+	if (!init_pseudo(fc, AIO_RING_MAGIC))
+		return -ENOMEM;
+	fc->s_iflags |= SB_I_NOEXEC;
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* aio_setup
  *	Creates the slab caches used by the aio routines, panic on
  *	failure as this is done early during the boot sequence.
@@ -342,11 +366,14 @@ static int __init aio_setup(void)
 		.init_fs_context = aio_init_fs_context,
 		.kill_sb	= kill_anon_super,
 	};
+<<<<<<< HEAD
 
 	aio_inode_cachep = kmem_cache_create("aio_inode_cache",
 				sizeof(struct aio_inode_info), 0,
 				(SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|SLAB_ACCOUNT),
 				init_once);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	aio_mnt = kern_mount(&aio_fs);
 	if (IS_ERR(aio_mnt))
 		panic("Failed to create aio fs mount.");
@@ -361,6 +388,7 @@ __initcall(aio_setup);
 static void put_aio_ring_file(struct kioctx *ctx)
 {
 	struct file *aio_ring_file = ctx->aio_ring_file;
+<<<<<<< HEAD
 
 	if (aio_ring_file) {
 		struct inode *inode = file_inode(aio_ring_file);
@@ -372,6 +400,19 @@ static void put_aio_ring_file(struct kioctx *ctx)
 		AIO_I(inode)->ctx = NULL;
 		ctx->aio_ring_file = NULL;
 		spin_unlock(&AIO_I(inode)->migrate_lock);
+=======
+	struct address_space *i_mapping;
+
+	if (aio_ring_file) {
+		truncate_setsize(file_inode(aio_ring_file), 0);
+
+		/* Prevent further access to the kioctx from migratepages */
+		i_mapping = aio_ring_file->f_mapping;
+		spin_lock(&i_mapping->i_private_lock);
+		i_mapping->i_private_data = NULL;
+		ctx->aio_ring_file = NULL;
+		spin_unlock(&i_mapping->i_private_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		fput(aio_ring_file);
 	}
@@ -422,8 +463,12 @@ static int aio_ring_mremap(struct vm_area_struct *vma)
 
 		ctx = rcu_dereference(table->table[i]);
 		if (ctx && ctx->aio_ring_file == file) {
+<<<<<<< HEAD
 			if (!atomic_read(&ctx->dead) &&
 			    (ctx->mmap_size == (vma->vm_end - vma->vm_start))) {
+=======
+			if (!atomic_read(&ctx->dead)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ctx->user_id = ctx->mmap_base = vma->vm_start;
 				res = 0;
 			}
@@ -448,7 +493,11 @@ static const struct vm_operations_struct aio_ring_vm_ops = {
 
 static int aio_ring_mmap_prepare(struct vm_area_desc *desc)
 {
+<<<<<<< HEAD
 	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTCOPY_BIT);
+=======
+	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc->vm_ops = &aio_ring_vm_ops;
 	return 0;
 }
@@ -462,14 +511,23 @@ static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
 			struct folio *src, enum migrate_mode mode)
 {
 	struct kioctx *ctx;
+<<<<<<< HEAD
 	struct aio_inode_info *ai = AIO_I(mapping->host);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	pgoff_t idx;
 	int rc = 0;
 
+<<<<<<< HEAD
 	/* ai->migrate_lock here protects against the kioctx teardown.  */
 	spin_lock(&ai->migrate_lock);
 	ctx = ai->ctx;
+=======
+	/* mapping->i_private_lock here protects against the kioctx teardown.  */
+	spin_lock(&mapping->i_private_lock);
+	ctx = mapping->i_private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ctx) {
 		rc = -EINVAL;
 		goto out;
@@ -522,7 +580,11 @@ static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
 out_unlock:
 	mutex_unlock(&ctx->ring_lock);
 out:
+<<<<<<< HEAD
 	spin_unlock(&ai->migrate_lock);
+=======
+	spin_unlock(&mapping->i_private_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 #else

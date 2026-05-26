@@ -2373,8 +2373,12 @@ static int dvb_register(struct cx23885_tsport *port)
 			port->i2c_client_tuner = client_tuner;
 
 			/* we only attach tuner for analog on the 888 version */
+<<<<<<< HEAD
 			if (dev->board == CX23885_BOARD_HAUPPAUGE_QUADHD_DVB &&
 			    !dev->disable_analog) {
+=======
+			if (dev->board == CX23885_BOARD_HAUPPAUGE_QUADHD_DVB) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pr_info("%s(): QUADHD_DVB analog setup\n",
 					__func__);
 				dev->ts1.analog_fe.tuner_priv = client_tuner;
@@ -2467,8 +2471,12 @@ static int dvb_register(struct cx23885_tsport *port)
 			port->i2c_client_tuner = client_tuner;
 
 			/* we only attach tuner for analog on the 888 version */
+<<<<<<< HEAD
 			if (dev->board == CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC &&
 			    !dev->disable_analog) {
+=======
+			if (dev->board == CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pr_info("%s(): QUADHD_ATSC analog setup\n",
 					__func__);
 				dev->ts1.analog_fe.tuner_priv = client_tuner;

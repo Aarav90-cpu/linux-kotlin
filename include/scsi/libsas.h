@@ -62,6 +62,13 @@ enum discover_event {
 
 /* ---------- Expander Devices ---------- */
 
+<<<<<<< HEAD
+=======
+#define to_dom_device(_obj) container_of(_obj, struct domain_device, dev_obj)
+#define to_dev_attr(_attr)  container_of(_attr, struct domain_dev_attribute,\
+					 attr)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum routing_attribute {
 	DIRECT_ROUTING,
 	SUBTRACTIVE_ROUTING,

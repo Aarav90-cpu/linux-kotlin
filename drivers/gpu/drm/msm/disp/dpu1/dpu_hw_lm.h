@@ -41,7 +41,11 @@ struct dpu_hw_lm_ops {
 	 * for the specified stage
 	 */
 	void (*setup_blend_config)(struct dpu_hw_mixer *ctx, uint32_t stage,
+<<<<<<< HEAD
 		u16 fg_alpha, u16 bg_alpha, uint32_t blend_op);
+=======
+		uint32_t fg_alpha, uint32_t bg_alpha, uint32_t blend_op);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * @setup_alpha_out: Alpha color component selection from either fg or bg

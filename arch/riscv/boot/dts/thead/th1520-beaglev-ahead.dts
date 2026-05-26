@@ -75,6 +75,7 @@
 			label = "led5";
 		};
 	};
+<<<<<<< HEAD
 
 	hdmi-connector {
 		compatible = "hdmi-connector";
@@ -86,6 +87,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &osc {
@@ -247,6 +250,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &dpu {
 	status = "okay";
 };
@@ -261,6 +265,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins>;

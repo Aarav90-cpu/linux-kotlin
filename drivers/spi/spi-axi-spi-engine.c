@@ -953,7 +953,11 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
 		struct spi_transfer *xfer;
 
 		list_for_each_entry(xfer, &msg->transfers, transfer_list)
+<<<<<<< HEAD
 			trace_call__spi_transfer_start(msg, xfer);
+=======
+			trace_spi_transfer_start(msg, xfer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock_irqsave(&spi_engine->lock, flags);
@@ -987,7 +991,11 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
 		struct spi_transfer *xfer;
 
 		list_for_each_entry(xfer, &msg->transfers, transfer_list)
+<<<<<<< HEAD
 			trace_call__spi_transfer_stop(msg, xfer);
+=======
+			trace_spi_transfer_stop(msg, xfer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:

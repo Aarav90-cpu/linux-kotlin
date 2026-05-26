@@ -18,9 +18,12 @@
 		case MT7992_VAR_TYPE_23:			\
 			_fw = MT7992_##name##_23;		\
 			break;					\
+<<<<<<< HEAD
 		case MT7992_VAR_TYPE_24:			\
 			_fw = MT7992_##name##_24;		\
 			break;					\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:					\
 			_fw = MT7992_##name;			\
 		}						\
@@ -128,6 +131,7 @@ mt7996_mcu_set_sta_he_mcs(struct ieee80211_link_sta *link_sta,
 			  struct mt7996_vif_link *link,
 			  __le16 *he_mcs, u16 mcs_map)
 {
+<<<<<<< HEAD
 	struct mt76_phy *mphy = mt76_vif_link_phy(&link->mt76);
 	int nss, max_nss = link_sta->rx_nss > 3 ? 4 : link_sta->rx_nss;
 	enum nl80211_band band;
@@ -138,6 +142,11 @@ mt7996_mcu_set_sta_he_mcs(struct ieee80211_link_sta *link_sta,
 
 	band = mphy->chandef.chan->band;
 	mask = link->bitrate_mask.control[band].he_mcs;
+=======
+	int nss, max_nss = link_sta->rx_nss > 3 ? 4 : link_sta->rx_nss;
+	enum nl80211_band band = link->phy->mt76->chandef.chan->band;
+	const u16 *mask = link->bitrate_mask.control[band].he_mcs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (nss = 0; nss < max_nss; nss++) {
 		int mcs;
@@ -219,7 +228,10 @@ static int
 mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
 			  struct sk_buff *skb, int seq)
 {
+<<<<<<< HEAD
 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mt7996_mcu_rxd *rxd;
 	struct mt7996_mcu_uni_event *event;
 	int mcu_cmd = FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
@@ -228,6 +240,7 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
 	if (!skb) {
 		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
 			cmd, seq);
+<<<<<<< HEAD
 
 		if (!test_and_set_bit(MT76_MCU_RESET, &dev->mphy.state)) {
 			dev->recovery.restart = true;
@@ -236,6 +249,8 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
 			wake_up(&dev->reset_wait);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ETIMEDOUT;
 	}
 
@@ -252,7 +267,11 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
 		event = (struct mt7996_mcu_uni_event *)skb->data;
 		ret = le32_to_cpu(event->status);
 		/* skip invalid event */
+<<<<<<< HEAD
 		if (mcu_cmd != le16_to_cpu(event->cid))
+=======
+		if (mcu_cmd != event->cid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -EAGAIN;
 	} else {
 		skb_pull(skb, sizeof(struct mt7996_mcu_rxd));
@@ -278,8 +297,12 @@ mt7996_mcu_set_timeout(struct mt76_dev *mdev, int cmd)
 		mdev->mcu.timeout = 2 * HZ;
 		return;
 	case MCU_UNI_CMD_EFUSE_CTRL:
+<<<<<<< HEAD
 	case MCU_UNI_CMD_EXT_EEPROM_CTRL:
 		mdev->mcu.timeout = 30 * HZ;
+=======
+		mdev->mcu.timeout = 20 * HZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	default:
 		break;
@@ -333,12 +356,22 @@ mt7996_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
 		uni_txd->pkt_type = MCU_PKT_ID;
 		uni_txd->seq = seq;
 
+<<<<<<< HEAD
 		uni_txd->option = MCU_CMD_UNI;
 		if (!(cmd & __MCU_CMD_FIELD_QUERY))
 			uni_txd->option |= MCU_CMD_SET;
 
 		if (wait_seq)
 			uni_txd->option |= MCU_CMD_ACK;
+=======
+		if (cmd & __MCU_CMD_FIELD_QUERY)
+			uni_txd->option = MCU_CMD_UNI_QUERY_ACK;
+		else
+			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
+
+		if (mcu_cmd == MCU_UNI_CMD_SDO)
+			uni_txd->option &= ~MCU_CMD_ACK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if ((cmd & __MCU_CMD_FIELD_WA) && (cmd & __MCU_CMD_FIELD_WM))
 			uni_txd->s2d_index = MCU_S2D_H2CN;
@@ -409,6 +442,7 @@ int mt7996_mcu_wa_cmd(struct mt7996_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
 				 sizeof(req), false);
 }
 
+<<<<<<< HEAD
 struct mt7996_mcu_countdown_data {
 	struct mt76_phy *mphy;
 	u8 omac_idx;
@@ -520,6 +554,15 @@ mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
 		data += le16_to_cpu(tlv->len);
 		tlv = (struct tlv *)data;
 	}
+=======
+static void
+mt7996_mcu_csa_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+{
+	if (!vif->bss_conf.csa_active || vif->type == NL80211_IFTYPE_STATION)
+		return;
+
+	ieee80211_csa_finish(vif, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -539,6 +582,7 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
 		break;
 	case MT_RDD_IDX_BACKGROUND:
 		if (!dev->rdd2_phy)
+<<<<<<< HEAD
 			goto err;
 		mphy = dev->rdd2_phy->mt76;
 		break;
@@ -565,6 +609,26 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
 
 err:
 	dev_err(dev->mt76.dev, "Invalid RDD idx %d\n", r->rdd_idx);
+=======
+			return;
+		mphy = dev->rdd2_phy->mt76;
+		break;
+	default:
+		dev_err(dev->mt76.dev, "Unknown RDD idx %d\n", r->rdd_idx);
+		return;
+	}
+
+	if (!mphy)
+		return;
+
+	if (r->rdd_idx == MT_RDD_IDX_BACKGROUND)
+		cfg80211_background_radar_event(mphy->hw->wiphy,
+						&dev->rdd2_chandef,
+						GFP_ATOMIC);
+	else
+		ieee80211_radar_detected(mphy->hw, NULL);
+	dev->hw_pattern++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -607,6 +671,60 @@ out:
 	wiphy_info(mt76_hw(dev)->wiphy, "%s: %.*s", type, len, data);
 }
 
+<<<<<<< HEAD
+=======
+static void
+mt7996_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+{
+	if (!vif->bss_conf.color_change_active || vif->type == NL80211_IFTYPE_STATION)
+		return;
+
+	ieee80211_color_change_finish(vif, 0);
+}
+
+static void
+mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
+{
+#define UNI_EVENT_IE_COUNTDOWN_CSA 0
+#define UNI_EVENT_IE_COUNTDOWN_BCC 1
+	struct header {
+		u8 band;
+		u8 rsv[3];
+	};
+	struct mt76_phy *mphy = &dev->mt76.phy;
+	struct mt7996_mcu_rxd *rxd = (struct mt7996_mcu_rxd *)skb->data;
+	const char *data = (char *)&rxd[1], *tail;
+	struct header *hdr = (struct header *)data;
+	struct tlv *tlv = (struct tlv *)(data + 4);
+
+	if (hdr->band >= ARRAY_SIZE(dev->mt76.phys))
+		return;
+
+	if (hdr->band && dev->mt76.phys[hdr->band])
+		mphy = dev->mt76.phys[hdr->band];
+
+	tail = skb->data + skb->len;
+	data += sizeof(struct header);
+	while (data + sizeof(struct tlv) < tail && le16_to_cpu(tlv->len)) {
+		switch (le16_to_cpu(tlv->tag)) {
+		case UNI_EVENT_IE_COUNTDOWN_CSA:
+			ieee80211_iterate_active_interfaces_atomic(mphy->hw,
+					IEEE80211_IFACE_ITER_RESUME_ALL,
+					mt7996_mcu_csa_finish, mphy->hw);
+			break;
+		case UNI_EVENT_IE_COUNTDOWN_BCC:
+			ieee80211_iterate_active_interfaces_atomic(mphy->hw,
+					IEEE80211_IFACE_ITER_RESUME_ALL,
+					mt7996_mcu_cca_finish, mphy->hw);
+			break;
+		}
+
+		data += le16_to_cpu(tlv->len);
+		tlv = (struct tlv *)data;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 mt7996_mcu_update_tx_gi(struct rate_info *rate, struct all_sta_trx_rate *mcu_rate)
 {
@@ -1250,6 +1368,7 @@ out:
 				     MCU_WMWA_UNI_CMD(BSS_INFO_UPDATE), true);
 }
 
+<<<<<<< HEAD
 int mt7996_mcu_update_bss_rfch(struct mt7996_phy *phy, struct mt7996_vif_link *link)
 {
 	struct mt7996_dev *dev = phy->dev;
@@ -1367,6 +1486,8 @@ int mt7996_mcu_set_emlsr_mode(struct mt7996_dev *dev,
 				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mt7996_mcu_set_timing(struct mt7996_phy *phy, struct ieee80211_vif *vif,
 			  struct ieee80211_bss_conf *link_conf)
 {
@@ -1976,8 +2097,14 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 #define EBF_MODE	BIT(0)
 #define IBF_MODE	BIT(1)
 #define BF_MAT_ORDER	4
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_vif_link_phy(link);
 	struct ieee80211_vif *vif = link_conf->vif;
+=======
+	struct ieee80211_vif *vif = link_conf->vif;
+	struct mt7996_phy *phy = link->phy;
+	int tx_ant = hweight16(phy->mt76->chainmask) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sta_rec_bf *bf;
 	struct tlv *tlv;
 	static const u8 matrix[BF_MAT_ORDER][BF_MAT_ORDER] = {
@@ -1986,12 +2113,17 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 		{2, 4, 4, 0},	/* 3x1, 3x2, 3x3, 3x4 */
 		{3, 5, 6, 0}	/* 4x1, 4x2, 4x3, 4x4 */
 	};
+<<<<<<< HEAD
 	int tx_ant;
 	bool ebf;
 
 	if (!phy)
 		return;
 
+=======
+	bool ebf;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(link_sta->ht_cap.ht_supported || link_sta->he_cap.has_he))
 		return;
 
@@ -2007,6 +2139,7 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 	 * ht: iBF only, since mac80211 lacks of eBF support
 	 */
 	if (link_sta->eht_cap.has_eht)
+<<<<<<< HEAD
 		mt7996_mcu_sta_bfer_eht(link_sta, vif, phy, bf, ebf);
 	else if (link_sta->he_cap.has_he)
 		mt7996_mcu_sta_bfer_he(link_sta, vif, phy, bf, ebf);
@@ -2014,11 +2147,23 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 		mt7996_mcu_sta_bfer_vht(link_sta, phy, bf, ebf);
 	else if (link_sta->ht_cap.ht_supported)
 		mt7996_mcu_sta_bfer_ht(link_sta, phy, bf, ebf);
+=======
+		mt7996_mcu_sta_bfer_eht(link_sta, vif, link->phy, bf, ebf);
+	else if (link_sta->he_cap.has_he)
+		mt7996_mcu_sta_bfer_he(link_sta, vif, link->phy, bf, ebf);
+	else if (link_sta->vht_cap.vht_supported)
+		mt7996_mcu_sta_bfer_vht(link_sta, link->phy, bf, ebf);
+	else if (link_sta->ht_cap.ht_supported)
+		mt7996_mcu_sta_bfer_ht(link_sta, link->phy, bf, ebf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		return;
 
 	bf->bf_cap = ebf ? EBF_MODE : (dev->ibf ? IBF_MODE : 0);
+<<<<<<< HEAD
 	tx_ant = hweight16(phy->mt76->chainmask) - 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_mt7992(&dev->mt76) && tx_ant == 4)
 		bf->bf_cap |= IBF_MODE;
 
@@ -2050,6 +2195,7 @@ mt7996_mcu_sta_bfee_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 			struct ieee80211_link_sta *link_sta,
 			struct mt7996_vif_link *link)
 {
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_vif_link_phy(link);
 	struct sta_rec_bfee *bfee;
 	struct tlv *tlv;
@@ -2058,6 +2204,13 @@ mt7996_mcu_sta_bfee_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 
 	if (!phy)
 		return;
+=======
+	struct mt7996_phy *phy = link->phy;
+	int tx_ant = hweight8(phy->mt76->antenna_mask) - 1;
+	struct sta_rec_bfee *bfee;
+	struct tlv *tlv;
+	u8 nrow = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(link_sta->vht_cap.vht_supported || link_sta->he_cap.has_he))
 		return;
@@ -2081,7 +2234,10 @@ mt7996_mcu_sta_bfee_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 	}
 
 	/* reply with identity matrix to avoid 2x2 BF negative gain */
+<<<<<<< HEAD
 	tx_ant = hweight8(phy->mt76->antenna_mask) - 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bfee->fb_identity_matrix = (nrow == 1 && tx_ant == 2);
 }
 
@@ -2265,7 +2421,10 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev, struct mt7996_sta *msta,
 	struct ieee80211_sta *sta;
 	int ret, nrates = 0, idx;
 	enum nl80211_band band;
+<<<<<<< HEAD
 	struct mt76_phy *mphy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool has_he;
 
 #define __sta_phy_bitrate_mask_check(_mcs, _gi, _ht, _he)			\
@@ -2299,11 +2458,15 @@ mt7996_mcu_add_rate_ctrl_fixed(struct mt7996_dev *dev, struct mt7996_sta *msta,
 	if (!link_sta)
 		goto error_unlock;
 
+<<<<<<< HEAD
 	mphy = mt76_vif_link_phy(&link->mt76);
 	if (!mphy)
 		goto error_unlock;
 
 	band = mphy->chandef.chan->band;
+=======
+	band = link->phy->mt76->chandef.chan->band;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	has_he = link_sta->he_cap.has_he;
 	mask = link->bitrate_mask;
 	idx = msta_link->wcid.idx;
@@ -2383,6 +2546,7 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
 			     struct mt7996_vif_link *link)
 {
 #define INIT_RCPI 180
+<<<<<<< HEAD
 	struct mt76_phy *mphy = mt76_vif_link_phy(&link->mt76);
 	struct cfg80211_bitrate_mask *mask = &link->bitrate_mask;
 	u32 cap = link_sta->sta->wme ? STA_CAP_WMM : 0;
@@ -2394,14 +2558,27 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
 
 	if (!mphy)
 		return;
+=======
+	struct mt76_phy *mphy = link->phy->mt76;
+	struct cfg80211_chan_def *chandef = &mphy->chandef;
+	struct cfg80211_bitrate_mask *mask = &link->bitrate_mask;
+	u32 cap = link_sta->sta->wme ? STA_CAP_WMM : 0;
+	enum nl80211_band band = chandef->chan->band;
+	struct sta_rec_ra_uni *ra;
+	struct tlv *tlv;
+	u32 supp_rate = link_sta->supp_rates[band];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_RA, sizeof(*ra));
 	ra = (struct sta_rec_ra_uni *)tlv;
 
+<<<<<<< HEAD
 	chandef = &mphy->chandef;
 	band = chandef->chan->band;
 	supp_rate = link_sta->supp_rates[band];
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ra->valid = true;
 	ra->auto_rate = true;
 	ra->phy_mode = mt76_connac_get_phy_mode(mphy, vif, band, link_sta);
@@ -2583,6 +2760,7 @@ mt7996_mcu_add_group(struct mt7996_dev *dev, struct mt7996_vif_link *link,
 				 sizeof(req), true);
 }
 
+<<<<<<< HEAD
 int mt7996_mcu_mld_reconf_stop_link(struct mt7996_dev *dev,
 				    struct ieee80211_vif *vif,
 				    u16 removed_links)
@@ -2649,6 +2827,8 @@ int mt7996_mcu_mld_link_oper(struct mt7996_dev *dev,
 				     MCU_WMWA_UNI_CMD(BSS_INFO_UPDATE), true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
 			     struct ieee80211_vif *vif,
@@ -2812,6 +2992,7 @@ int mt7996_mcu_teardown_mld_sta(struct mt7996_dev *dev,
 				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
 }
 
+<<<<<<< HEAD
 void mt7996_mcu_update_sta_rec_bw(void *data, struct ieee80211_sta *sta)
 {
 	struct mt7996_vif_link *link = (struct mt7996_vif_link *)data;
@@ -2859,6 +3040,8 @@ void mt7996_mcu_update_sta_rec_bw(void *data, struct ieee80211_sta *sta)
 			      MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 mt7996_mcu_sta_key_tlv(struct mt76_dev *dev, struct mt76_wcid *wcid,
 		       struct sk_buff *skb,
@@ -3006,6 +3189,7 @@ mt7996_mcu_beacon_cntdwn(struct sk_buff *rskb, struct sk_buff *skb,
 
 	info = (struct bss_bcn_cntdwn_tlv *)tlv;
 	info->cnt = skb->data[offs->cntdwn_counter_offs[0]];
+<<<<<<< HEAD
 
 	/* abort the CCA countdown when starting CSA countdown */
 	if (csa) {
@@ -3016,6 +3200,8 @@ mt7996_mcu_beacon_cntdwn(struct sk_buff *rskb, struct sk_buff *skb,
 		cca_info = (struct bss_bcn_cntdwn_tlv *)tlv;
 		cca_info->cca.abort = true;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -3108,7 +3294,10 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 {
 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
 	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
+<<<<<<< HEAD
 	struct mt76_phy *mphy = link ? mt76_vif_link_phy(&link->mt76) : NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mt76_vif_link *mlink = link ? &link->mt76 : NULL;
 	struct ieee80211_mutable_offsets offs;
 	struct ieee80211_tx_info *info;
@@ -3123,7 +3312,11 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	if (!mlink)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (mphy && mphy->offchannel)
+=======
+	if (link->phy && link->phy->mt76->offchannel)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enabled = false;
 
 	rskb = __mt7996_mcu_alloc_bss_req(&dev->mt76, mlink,
@@ -3174,9 +3367,15 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
 {
 #define OFFLOAD_TX_MODE_SU	BIT(0)
 #define OFFLOAD_TX_MODE_MU	BIT(1)
+<<<<<<< HEAD
 	struct mt76_phy *mphy = mt76_vif_link_phy(&link->mt76);
 	struct ieee80211_vif *vif = link_conf->vif;
 	struct ieee80211_hw *hw = mt76_hw(dev);
+=======
+	struct ieee80211_vif *vif = link_conf->vif;
+	struct ieee80211_hw *hw = mt76_hw(dev);
+	struct mt7996_phy *phy = link->phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mt76_wcid *wcid = &dev->mt76.global_wcid;
 	struct bss_inband_discovery_tlv *discov;
 	struct ieee80211_tx_info *info;
@@ -3187,10 +3386,17 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
 	u8 *buf, interval;
 	int len;
 
+<<<<<<< HEAD
 	if (!mphy)
 		return -EINVAL;
 
 	chandef = &mphy->chandef;
+=======
+	if (!phy)
+		return -EINVAL;
+
+	chandef = &phy->mt76->chandef;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	band = chandef->chan->band;
 
 	if (link_conf->nontransmitted)
@@ -3204,6 +3410,7 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
 	if (changed & BSS_CHANGED_FILS_DISCOVERY &&
 	    link_conf->fils_discovery.max_interval) {
 		interval = link_conf->fils_discovery.max_interval;
+<<<<<<< HEAD
 		skb = ieee80211_get_fils_discovery_tmpl(hw, vif,
 							link_conf->link_id);
 	} else if (changed & BSS_CHANGED_UNSOL_BCAST_PROBE_RESP &&
@@ -3211,6 +3418,13 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
 		interval = link_conf->unsol_bcast_probe_resp_interval;
 		skb = ieee80211_get_unsol_bcast_probe_resp_tmpl(hw, vif,
 								link_conf->link_id);
+=======
+		skb = ieee80211_get_fils_discovery_tmpl(hw, vif);
+	} else if (changed & BSS_CHANGED_UNSOL_BCAST_PROBE_RESP &&
+		   link_conf->unsol_bcast_probe_resp_interval) {
+		interval = link_conf->unsol_bcast_probe_resp_interval;
+		skb = ieee80211_get_unsol_bcast_probe_resp_tmpl(hw, vif);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!skb) {
@@ -3228,7 +3442,11 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
 	info = IEEE80211_SKB_CB(skb);
 	info->control.vif = vif;
 	info->band = band;
+<<<<<<< HEAD
 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, mphy->band_idx);
+=======
+	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->mt76->band_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = ALIGN(sizeof(*discov) + MT_TXD_SIZE + skb->len, 4);
 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_OFFLOAD, len);
@@ -4083,7 +4301,12 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
 
 	if (phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
 		req.switch_reason = CH_SWITCH_NORMAL;
+<<<<<<< HEAD
 	else if (phy->mt76->offchannel || !phy->mt76->chanctx)
+=======
+	else if (phy->mt76->offchannel ||
+		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
 					  NL80211_IFTYPE_AP))
@@ -4104,6 +4327,7 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
 				 &req, sizeof(req), true);
 }
 
+<<<<<<< HEAD
 static int
 mt7996_mcu_get_cal_free_data(struct mt7996_dev *dev)
 {
@@ -4251,17 +4475,25 @@ mt7996_mcu_get_cal_free_data(struct mt7996_dev *dev)
 }
 
 int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
+=======
+static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #define MAX_PAGE_IDX_MASK	GENMASK(7, 5)
 #define PAGE_IDX_MASK		GENMASK(4, 2)
 #define PER_PAGE_SIZE		0x400
+<<<<<<< HEAD
 	struct mt7996_mcu_eeprom_update req = {
+=======
+	struct mt7996_mcu_eeprom req = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
 		.buffer_mode = EE_MODE_BUFFER
 	};
 	u16 eeprom_size = MT7996_EEPROM_SIZE;
 	u8 total = DIV_ROUND_UP(eeprom_size, PER_PAGE_SIZE);
 	u8 *eep = (u8 *)dev->mt76.eeprom.data;
+<<<<<<< HEAD
 	int ret, eep_len, i;
 
 	ret = mt7996_mcu_get_cal_free_data(dev);
@@ -4271,6 +4503,13 @@ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
 	for (i = 0; i < total; i++, eep += eep_len) {
 		struct sk_buff *skb;
 		int msg_len;
+=======
+	int eep_len, i;
+
+	for (i = 0; i < total; i++, eep += eep_len) {
+		struct sk_buff *skb;
+		int ret, msg_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (i == total - 1 && !!(eeprom_size % PER_PAGE_SIZE))
 			eep_len = eeprom_size % PER_PAGE_SIZE;
@@ -4299,6 +4538,7 @@ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len,
 			  enum mt7996_eeprom_mode mode)
 {
@@ -4359,6 +4599,61 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_l
 			ret = -EINVAL;
 			break;
 		}
+=======
+int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
+{
+	struct mt7996_mcu_eeprom req = {
+		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
+		.len = cpu_to_le16(sizeof(req) - 4),
+		.buffer_mode = EE_MODE_EFUSE,
+		.format = EE_FORMAT_WHOLE
+	};
+
+	if (dev->flash_mode)
+		return mt7996_mcu_set_eeprom_flash(dev);
+
+	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(EFUSE_CTRL),
+				 &req, sizeof(req), true);
+}
+
+int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len)
+{
+	struct {
+		u8 _rsv[4];
+
+		__le16 tag;
+		__le16 len;
+		__le32 addr;
+		__le32 valid;
+		u8 data[16];
+	} __packed req = {
+		.tag = cpu_to_le16(UNI_EFUSE_ACCESS),
+		.len = cpu_to_le16(sizeof(req) - 4),
+		.addr = cpu_to_le32(round_down(offset,
+				    MT7996_EEPROM_BLOCK_SIZE)),
+	};
+	struct sk_buff *skb;
+	bool valid;
+	int ret;
+
+	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
+					MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
+					&req, sizeof(req), true, &skb);
+	if (ret)
+		return ret;
+
+	valid = le32_to_cpu(*(__le32 *)(skb->data + 16));
+	if (valid) {
+		u32 addr = le32_to_cpu(*(__le32 *)(skb->data + 12));
+
+		if (!buf)
+			buf = (u8 *)dev->mt76.eeprom.data + addr;
+		if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
+			buf_len = MT7996_EEPROM_BLOCK_SIZE;
+
+		skb_pull(skb, 48);
+		memcpy(buf, skb->data, buf_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		ret = -EINVAL;
 	}
@@ -4368,7 +4663,11 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_l
 	return ret;
 }
 
+<<<<<<< HEAD
 int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num)
+=======
+int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct {
 		u8 _rsv[4];
@@ -4400,6 +4699,10 @@ int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num)
 
 int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap)
 {
+<<<<<<< HEAD
+=======
+#define NIC_CAP	3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define UNI_EVENT_CHIP_CONFIG_EFUSE_VERSION	0x21
 	struct {
 		u8 _rsv[4];
@@ -4407,7 +4710,11 @@ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap)
 		__le16 tag;
 		__le16 len;
 	} __packed req = {
+<<<<<<< HEAD
 		.tag = cpu_to_le16(UNI_CHIP_CONFIG_NIC_CAPA),
+=======
+		.tag = cpu_to_le16(NIC_CAP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.len = cpu_to_le16(sizeof(req) - 4),
 	};
 	struct sk_buff *skb;
@@ -5055,6 +5362,7 @@ int mt7996_mcu_set_radio_en(struct mt7996_phy *phy, bool enable)
 				 &req, sizeof(req), true);
 }
 
+<<<<<<< HEAD
 int mt7996_mcu_rdd_resume_tx(struct mt7996_phy *phy)
 {
 	struct {
@@ -5084,6 +5392,8 @@ int mt7996_mcu_rdd_resume_tx(struct mt7996_phy *phy)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mt7996_mcu_rdd_cmd(struct mt7996_dev *dev, int cmd, u8 rdd_idx, u8 val)
 {
 	struct {
@@ -5414,6 +5724,7 @@ int mt7996_mcu_cp_support(struct mt7996_dev *dev, u8 mode)
 	return mt76_mcu_send_msg(&dev->mt76, MCU_WA_EXT_CMD(CP_SUPPORT),
 				 &cp_mode, sizeof(cp_mode), true);
 }
+<<<<<<< HEAD
 
 int mt7996_mcu_set_dup_wtbl(struct mt7996_dev *dev)
 {
@@ -5436,3 +5747,5 @@ int mt7996_mcu_set_dup_wtbl(struct mt7996_dev *dev)
 	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(CHIP_CONFIG), &req,
 				 sizeof(req), true);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

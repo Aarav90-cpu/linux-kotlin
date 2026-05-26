@@ -71,6 +71,10 @@ static bool need_special_buffer(struct btrfs_fs_info *fs_info)
 
 struct list_head *zlib_alloc_workspace(struct btrfs_fs_info *fs_info, unsigned int level)
 {
+<<<<<<< HEAD
+=======
+	const u32 blocksize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct workspace *workspace;
 	int workspacesize;
 
@@ -90,8 +94,13 @@ struct list_head *zlib_alloc_workspace(struct btrfs_fs_info *fs_info, unsigned i
 		workspace->buf_size = ZLIB_DFLTCC_BUF_SIZE;
 	}
 	if (!workspace->buf) {
+<<<<<<< HEAD
 		workspace->buf = kmalloc(fs_info->sectorsize, GFP_KERNEL);
 		workspace->buf_size = fs_info->sectorsize;
+=======
+		workspace->buf = kmalloc(blocksize, GFP_KERNEL);
+		workspace->buf_size = blocksize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (!workspace->strm.workspace || !workspace->buf)
 		goto fail;
@@ -156,8 +165,15 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 	const u32 min_folio_size = btrfs_min_folio_size(fs_info);
 	int ret;
 	char *data_in = NULL;
+<<<<<<< HEAD
 	struct folio *in_folio = NULL;
 	struct folio *out_folio = NULL;
+=======
+	char *cfolio_out;
+	struct folio *in_folio = NULL;
+	struct folio *out_folio = NULL;
+	const u32 blocksize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const u64 orig_end = start + len;
 
 	ret = zlib_deflateInit(&workspace->strm, workspace->level);
@@ -172,15 +188,27 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 	workspace->strm.total_in = 0;
 	workspace->strm.total_out = 0;
 
+<<<<<<< HEAD
 	out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+	out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (out_folio == NULL) {
 		ret = -ENOMEM;
 		goto out;
 	}
+<<<<<<< HEAD
 
 	workspace->strm.next_in = workspace->buf;
 	workspace->strm.avail_in = 0;
 	workspace->strm.next_out = folio_address(out_folio);
+=======
+	cfolio_out = folio_address(out_folio);
+
+	workspace->strm.next_in = workspace->buf;
+	workspace->strm.avail_in = 0;
+	workspace->strm.next_out = cfolio_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	workspace->strm.avail_out = min_folio_size;
 
 	while (workspace->strm.total_in < len) {
@@ -238,7 +266,11 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 		}
 
 		/* We're making it bigger, give up. */
+<<<<<<< HEAD
 		if (workspace->strm.total_in > fs_info->sectorsize * 2 &&
+=======
+		if (workspace->strm.total_in > blocksize * 2 &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    workspace->strm.total_in < workspace->strm.total_out) {
 			ret = -E2BIG;
 			goto out;
@@ -254,13 +286,23 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 				goto out;
 			}
 
+<<<<<<< HEAD
 			out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+			out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (out_folio == NULL) {
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			workspace->strm.avail_out = min_folio_size;
 			workspace->strm.next_out = folio_address(out_folio);
+=======
+			cfolio_out = folio_address(out_folio);
+			workspace->strm.avail_out = min_folio_size;
+			workspace->strm.next_out = cfolio_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* We're all done. */
 		if (workspace->strm.total_in >= len)
@@ -291,13 +333,23 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 				goto out;
 			}
 			/* Get another folio for the stream end. */
+<<<<<<< HEAD
 			out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+			out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (out_folio == NULL) {
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			workspace->strm.avail_out = min_folio_size;
 			workspace->strm.next_out = folio_address(out_folio);
+=======
+			cfolio_out = folio_address(out_folio);
+			workspace->strm.avail_out = min_folio_size;
+			workspace->strm.next_out = cfolio_out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	/* Queue the remaining part of the folio. */
@@ -345,7 +397,11 @@ int zlib_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 	int wbits = MAX_WBITS;
 	char *data_in;
 	size_t total_out = 0;
+<<<<<<< HEAD
 	const size_t srclen = bio_get_size(&cb->bbio.bio);
+=======
+	size_t srclen = cb->compressed_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long buf_start;
 
 	bio_first_folio(&fi, &cb->bbio.bio, 0);

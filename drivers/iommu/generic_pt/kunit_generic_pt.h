@@ -312,6 +312,7 @@ static void test_best_pgsize(struct kunit *test)
 	}
 }
 
+<<<<<<< HEAD
 static void test_pgsz_count(struct kunit *test)
 {
 	KUNIT_EXPECT_EQ(test,
@@ -323,6 +324,8 @@ static void test_pgsz_count(struct kunit *test)
 			(SZ_2M - SZ_4K) / SZ_4K);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Check that pt_install_table() and pt_table_pa() match
  */
@@ -781,7 +784,10 @@ static struct kunit_case generic_pt_test_cases[] = {
 	KUNIT_CASE_FMT(test_init),
 	KUNIT_CASE_FMT(test_bitops),
 	KUNIT_CASE_FMT(test_best_pgsize),
+<<<<<<< HEAD
 	KUNIT_CASE_FMT(test_pgsz_count),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE_FMT(test_table_ptr),
 	KUNIT_CASE_FMT(test_max_va),
 	KUNIT_CASE_FMT(test_table_radix),

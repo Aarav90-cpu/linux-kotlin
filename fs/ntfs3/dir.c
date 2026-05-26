@@ -676,4 +676,17 @@ const struct file_operations ntfs_dir_operations = {
 #endif
 	.setlease	= generic_setlease,
 };
+<<<<<<< HEAD
+=======
+
+#if IS_ENABLED(CONFIG_NTFS_FS)
+const struct file_operations ntfs_legacy_dir_operations = {
+	.llseek		= generic_file_llseek,
+	.read		= generic_read_dir,
+	.iterate_shared	= ntfs_readdir,
+	.open		= ntfs_file_open,
+	.setlease	= generic_setlease,
+};
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // clang-format on

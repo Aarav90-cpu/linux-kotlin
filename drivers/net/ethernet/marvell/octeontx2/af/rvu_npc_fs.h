@@ -15,6 +15,7 @@
 #define NPC_LDATA_EN	BIT_ULL(7)
 
 void npc_update_entry(struct rvu *rvu, enum key_fields type,
+<<<<<<< HEAD
 		      struct mcam_entry_mdata *mdata, u64 val_lo,
 		      u64 val_hi, u64 mask_lo, u64 mask_hi, u8 intf);
 
@@ -30,4 +31,9 @@ npc_populate_mcam_mdata(struct rvu *rvu,
 			struct cn20k_mcam_entry *cn20k_entry,
 			struct mcam_entry *entry);
 
+=======
+		      struct mcam_entry *entry, u64 val_lo,
+		      u64 val_hi, u64 mask_lo, u64 mask_hi, u8 intf);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* RVU_NPC_FS_H */

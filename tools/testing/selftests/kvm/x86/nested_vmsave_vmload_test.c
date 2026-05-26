@@ -79,8 +79,13 @@ static void l1_guest_code(struct svm_test_data *svm)
 	svm->vmcb->control.intercept |= (BIT_ULL(INTERCEPT_VMSAVE) |
 					 BIT_ULL(INTERCEPT_VMLOAD));
 
+<<<<<<< HEAD
 	 /* ..SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE cleared.. */
 	svm->vmcb->control.misc_ctl2 &= ~SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+=======
+	 /* ..VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK cleared.. */
+	svm->vmcb->control.virt_ext &= ~VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm->vmcb->save.rip = (u64)l2_guest_code_vmsave;
 	run_guest(svm->vmcb, svm->vmcb_gpa);
@@ -90,8 +95,13 @@ static void l1_guest_code(struct svm_test_data *svm)
 	run_guest(svm->vmcb, svm->vmcb_gpa);
 	GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, SVM_EXIT_VMLOAD);
 
+<<<<<<< HEAD
 	/* ..and SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE set */
 	svm->vmcb->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+=======
+	/* ..and VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK set */
+	svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm->vmcb->save.rip = (u64)l2_guest_code_vmsave;
 	run_guest(svm->vmcb, svm->vmcb_gpa);
@@ -106,20 +116,36 @@ static void l1_guest_code(struct svm_test_data *svm)
 					  BIT_ULL(INTERCEPT_VMLOAD));
 
 	/*
+<<<<<<< HEAD
 	 * Without SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE, the GPA will be
 	 * interpreted as an L1 GPA, so VMCB0 should be used.
 	 */
 	svm->vmcb->save.rip = (u64)l2_guest_code_vmcb0;
 	svm->vmcb->control.misc_ctl2 &= ~SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+=======
+	 * Without VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK, the GPA will be
+	 * interpreted as an L1 GPA, so VMCB0 should be used.
+	 */
+	svm->vmcb->save.rip = (u64)l2_guest_code_vmcb0;
+	svm->vmcb->control.virt_ext &= ~VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	run_guest(svm->vmcb, svm->vmcb_gpa);
 	GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, SVM_EXIT_VMMCALL);
 
 	/*
+<<<<<<< HEAD
 	 * With SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE, the GPA will be interpeted as
 	 * an L2 GPA, and translated through the NPT to VMCB1.
 	 */
 	svm->vmcb->save.rip = (u64)l2_guest_code_vmcb1;
 	svm->vmcb->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+=======
+	 * With VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK, the GPA will be interpeted as
+	 * an L2 GPA, and translated through the NPT to VMCB1.
+	 */
+	svm->vmcb->save.rip = (u64)l2_guest_code_vmcb1;
+	svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	run_guest(svm->vmcb, svm->vmcb_gpa);
 	GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, SVM_EXIT_VMMCALL);
 
@@ -128,7 +154,11 @@ static void l1_guest_code(struct svm_test_data *svm)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t nested_gva = 0;
+=======
+	vm_vaddr_t nested_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vmcb *test_vmcb[2];
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;

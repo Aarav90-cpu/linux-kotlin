@@ -1018,7 +1018,10 @@ static int das16_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	const struct das16_board *board = dev->board_ptr;
 	struct das16_private_struct *devpriv;
 	struct comedi_subdevice *s;
+<<<<<<< HEAD
 	unsigned int iobase = it->options[0];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int osc_base;
 	unsigned int status;
 	int ret;
@@ -1038,6 +1041,7 @@ static int das16_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	devpriv->dev = dev;
 
 	if (board->size < 0x400) {
+<<<<<<< HEAD
 		unsigned int size = board->size;
 
 		if (size > 0x10 && (iobase & 0x10) != 0) {
@@ -1057,6 +1061,13 @@ static int das16_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	} else {
 		ret = comedi_check_request_region(dev, iobase, 0x10,
 						  0, 0x3ff, 16);
+=======
+		ret = comedi_request_region(dev, it->options[0], board->size);
+		if (ret)
+			return ret;
+	} else {
+		ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 		/* Request an additional region for the 8255 */
@@ -1161,6 +1172,7 @@ static int das16_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	/* 8255 Digital I/O subdevice */
 	if (board->has_8255) {
 		s = &dev->subdevices[4];
+<<<<<<< HEAD
 		if (board->i8255_offset == 0x10 && (dev->iobase & 0x10) != 0) {
 			dev_info(dev->class_dev,
 				 "Disabling 8255 subdevice on unsupported base address\n");
@@ -1170,6 +1182,11 @@ static int das16_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 			if (ret)
 				return ret;
 		}
+=======
+		ret = subdev_8255_io_init(dev, s, board->i8255_offset);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	das16_reset(dev);

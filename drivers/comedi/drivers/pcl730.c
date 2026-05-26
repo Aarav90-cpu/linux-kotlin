@@ -101,9 +101,13 @@
 
 struct pcl730_board {
 	const char *name;
+<<<<<<< HEAD
 	unsigned short io_range;
 	unsigned short min_io_start;
 	unsigned short align_io_start;
+=======
+	unsigned int io_range;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned is_pcl725:1;
 	unsigned is_acl7225b:1;
 	unsigned is_ir104:1;
@@ -119,8 +123,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	{
 		.name		= "pcl730",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x04,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_ttl_io	= 1,
 		.n_subdevs	= 4,
 		.n_iso_out_chan	= 16,
@@ -129,8 +136,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "iso730",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x04,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_subdevs	= 4,
 		.n_iso_out_chan	= 16,
 		.n_iso_in_chan	= 16,
@@ -138,8 +148,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "acl7130",
 		.io_range	= 0x08,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
 		.align_io_start	= 0x08,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_ttl_io	= 1,
 		.n_subdevs	= 4,
 		.n_iso_out_chan	= 16,
@@ -148,8 +161,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "pcm3730",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x04,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_ttl_io	= 1,
 		.n_subdevs	= 4,
 		.n_iso_out_chan	= 8,
@@ -158,8 +174,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "pcl725",
 		.io_range	= 0x02,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
 		.align_io_start	= 0x02,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_pcl725	= 1,
 		.n_subdevs	= 2,
 		.n_iso_out_chan	= 8,
@@ -167,8 +186,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "p8r8dio",
 		.io_range	= 0x02,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x10,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_pcl725	= 1,
 		.has_readback	= 1,
 		.n_subdevs	= 2,
@@ -177,8 +199,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "acl7225b",
 		.io_range	= 0x08,		/* only 4 are used */
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
 		.align_io_start	= 0x08,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_acl7225b	= 1,
 		.has_readback	= 1,
 		.n_subdevs	= 2,
@@ -187,8 +212,11 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "p16r16dio",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x08,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_acl7225b	= 1,
 		.has_readback	= 1,
 		.n_subdevs	= 2,
@@ -197,22 +225,31 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "pcl733",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x04,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_subdevs	= 1,
 		.n_iso_in_chan	= 32,
 	}, {
 		.name		= "pcl734",
 		.io_range	= 0x04,
+<<<<<<< HEAD
 		.min_io_start	= 0,
 		.align_io_start	= 0x04,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_subdevs	= 1,
 		.n_iso_out_chan	= 32,
 	}, {
 		.name		= "opmm-1616-xt",
 		.io_range	= 0x10,
+<<<<<<< HEAD
 		.min_io_start	= 0x100,
 		.align_io_start	= 0x10,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_acl7225b	= 1,
 		.has_readback	= 1,
 		.n_subdevs	= 2,
@@ -221,15 +258,21 @@ static const struct pcl730_board pcl730_boards[] = {
 	}, {
 		.name		= "pearl-mm-p",
 		.io_range	= 0x02,
+<<<<<<< HEAD
 		.min_io_start	= 0x240,
 		.align_io_start	= 0x40,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_subdevs	= 1,
 		.n_iso_out_chan	= 16,
 	}, {
 		.name		= "ir104-pbf",
 		.io_range	= 0x08,
+<<<<<<< HEAD
 		.min_io_start	= 0x240,
 		.align_io_start	= 0x20,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_ir104	= 1,
 		.has_readback	= 1,
 		.n_iso_out_chan	= 20,
@@ -294,6 +337,7 @@ static int pcl730_attach(struct comedi_device *dev,
 {
 	const struct pcl730_board *board = dev->board_ptr;
 	struct comedi_subdevice *s;
+<<<<<<< HEAD
 	unsigned int iobase = it->options[0];
 	int subdev;
 	int ret;
@@ -315,6 +359,12 @@ static int pcl730_attach(struct comedi_device *dev,
 	ret = comedi_check_request_region(dev, iobase, board->io_range,
 					  board->min_io_start, 0x3ff,
 					  board->align_io_start);
+=======
+	int subdev;
+	int ret;
+
+	ret = comedi_request_region(dev, it->options[0], board->io_range);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

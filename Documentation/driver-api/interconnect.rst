@@ -84,17 +84,21 @@ be registered with the interconnect provider core.
 
 .. kernel-doc:: include/linux/interconnect-provider.h
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/interconnect/core.c
    :functions: icc_provider_init icc_provider_register icc_provider_deregister
                icc_node_create icc_node_create_dyn icc_node_destroy
                icc_node_add icc_node_del icc_nodes_remove icc_node_set_name
                icc_link_create icc_link_nodes
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Interconnect consumers
 ----------------------
 
 Interconnect consumers are the clients which use the interconnect APIs to
 get paths between endpoints and set their bandwidth/latency/QoS requirements
+<<<<<<< HEAD
 for these interconnect paths.
 
 .. kernel-doc:: drivers/interconnect/core.c
@@ -103,6 +107,10 @@ for these interconnect paths.
                icc_get_name
 
 .. kernel-doc:: drivers/interconnect/bulk.c
+=======
+for these interconnect paths.  These interfaces are not currently
+documented.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Interconnect debugfs interfaces
 -------------------------------

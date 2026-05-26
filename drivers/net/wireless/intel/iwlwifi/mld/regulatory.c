@@ -64,7 +64,10 @@ void iwl_mld_get_bios_tables(struct iwl_mld *mld)
 	}
 
 	iwl_uefi_get_uats_table(mld->trans, &mld->fwrt);
+<<<<<<< HEAD
 	iwl_uefi_get_uneb_table(mld->trans, &mld->fwrt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iwl_bios_get_phy_filters(&mld->fwrt);
 }
@@ -73,6 +76,7 @@ static int iwl_mld_geo_sar_init(struct iwl_mld *mld)
 {
 	u32 cmd_id = WIDE_ID(PHY_OPS_GROUP, PER_CHAIN_LIMIT_OFFSET_CMD);
 	/* Only set to South Korea if the table revision is 1 */
+<<<<<<< HEAD
 	u8 sk = mld->fwrt.geo_rev == 1 ? 1 : 0;
 	union iwl_geo_tx_power_profiles_cmd cmd = {
 		.v5.ops = cpu_to_le32(IWL_PER_CHAIN_OFFSET_SET_TABLES),
@@ -103,6 +107,18 @@ static int iwl_mld_geo_sar_init(struct iwl_mld *mld)
 		     offsetof(typeof(cmd), v5.table));
 	ret = iwl_sar_geo_fill_table(&mld->fwrt, &cmd.v6.table[0][0],
 				     n_subbands, BIOS_GEO_MAX_PROFILE_NUM);
+=======
+	__le32 sk = cpu_to_le32(mld->fwrt.geo_rev == 1 ? 1 : 0);
+	union iwl_geo_tx_power_profiles_cmd cmd = {
+		.v5.ops = cpu_to_le32(IWL_PER_CHAIN_OFFSET_SET_TABLES),
+		.v5.table_revision = sk,
+	};
+	int ret;
+
+	ret = iwl_sar_geo_fill_table(&mld->fwrt, &cmd.v5.table[0][0],
+				     ARRAY_SIZE(cmd.v5.table[0]),
+				     BIOS_GEO_MAX_PROFILE_NUM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* It is a valid scenario to not support SAR, or miss wgds table,
 	 * but in that case there is no need to send the command.
@@ -110,11 +126,16 @@ static int iwl_mld_geo_sar_init(struct iwl_mld *mld)
 	if (ret)
 		return 0;
 
+<<<<<<< HEAD
 	return iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, cmd_size);
+=======
+	return iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, sizeof(cmd.v5));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int iwl_mld_config_sar_profile(struct iwl_mld *mld, int prof_a, int prof_b)
 {
+<<<<<<< HEAD
 	struct iwl_dev_tx_power_cmd cmd = {
 		.common.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_CHAINS),
 	};
@@ -146,12 +167,29 @@ int iwl_mld_config_sar_profile(struct iwl_mld *mld, int prof_a, int prof_b)
 		     offsetof(typeof(cmd), v10.per_chain));
 	ret = iwl_sar_fill_profile(&mld->fwrt, &cmd.v11.per_chain[0][0][0],
 				   IWL_NUM_CHAIN_TABLES, num_subbands,
+=======
+	u32 cmd_id = REDUCE_TX_POWER_CMD;
+	struct iwl_dev_tx_power_cmd cmd = {
+		.common.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_CHAINS),
+		.v10.flags = cpu_to_le32(mld->fwrt.reduced_power_flags),
+	};
+	int ret;
+
+	/* TODO: CDB - support IWL_NUM_CHAIN_TABLES_V2 */
+	ret = iwl_sar_fill_profile(&mld->fwrt, &cmd.v10.per_chain[0][0][0],
+				   IWL_NUM_CHAIN_TABLES, IWL_NUM_SUB_BANDS_V2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   prof_a, prof_b);
 	/* return on error or if the profile is disabled (positive number) */
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	return iwl_mld_send_cmd_pdu(mld, REDUCE_TX_POWER_CMD, &cmd, cmd_size);
+=======
+	return iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd,
+				    sizeof(cmd.common) + sizeof(cmd.v10));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int iwl_mld_init_sar(struct iwl_mld *mld)
@@ -206,6 +244,7 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
 {
 	struct iwl_fw_runtime *fwrt = &mld->fwrt;
 	union iwl_ppag_table_cmd cmd = {
+<<<<<<< HEAD
 		/* v7 and v8 have the same layout for the ppag_config_info */
 		.v8.ppag_config_info.hdr.table_source = fwrt->ppag_bios_source,
 		.v8.ppag_config_info.hdr.table_revision = fwrt->ppag_bios_rev,
@@ -229,10 +268,19 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
 	BUILD_BUG_ON(ARRAY_SIZE(cmd.v8.gain[0]) >
 		     ARRAY_SIZE(fwrt->ppag_chains[0].subbands));
 
+=======
+		.v7.ppag_config_info.hdr.table_source = fwrt->ppag_bios_source,
+		.v7.ppag_config_info.hdr.table_revision = fwrt->ppag_bios_rev,
+		.v7.ppag_config_info.value = cpu_to_le32(fwrt->ppag_flags),
+	};
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	IWL_DEBUG_RADIO(fwrt,
 			"PPAG MODE bits going to be sent: %d\n",
 			fwrt->ppag_flags);
 
+<<<<<<< HEAD
 	/* Since ver 7 will be deprecated at some point, don't bother making
 	 * this code generic for both ver 7 and ver 8: duplicate the code.
 	 */
@@ -286,6 +334,22 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
 
 	IWL_DEBUG_RADIO(mld, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
 	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, cmd_len);
+=======
+	for (int chain = 0; chain < IWL_NUM_CHAIN_LIMITS; chain++) {
+		for (int subband = 0; subband < IWL_NUM_SUB_BANDS_V2; subband++) {
+			cmd.v7.gain[chain][subband] =
+				fwrt->ppag_chains[chain].subbands[subband];
+			IWL_DEBUG_RADIO(fwrt,
+					"PPAG table: chain[%d] band[%d]: gain = %d\n",
+					chain, subband, cmd.v7.gain[chain][subband]);
+		}
+	}
+
+	IWL_DEBUG_RADIO(mld, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
+	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP,
+						PER_PLATFORM_ANT_GAIN_CMD),
+				   &cmd, sizeof(cmd.v7));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		IWL_ERR(mld, "failed to send PER_PLATFORM_ANT_GAIN_CMD (%d)\n",
 			ret);
@@ -449,12 +513,17 @@ void iwl_mld_configure_lari(struct iwl_mld *mld)
 				ret);
 }
 
+<<<<<<< HEAD
 void iwl_mld_init_ap_type_tables(struct iwl_mld *mld)
+=======
+void iwl_mld_init_uats(struct iwl_mld *mld)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct iwl_host_cmd cmd = {
 		.id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
 			      MCC_ALLOWED_AP_TYPE_CMD),
+<<<<<<< HEAD
 		.data[0] = &mld->fwrt.ap_type_cmd,
 		.len[0] =  sizeof(mld->fwrt.ap_type_cmd),
 		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
@@ -485,6 +554,17 @@ void iwl_mld_init_ap_type_tables(struct iwl_mld *mld)
 		ret = iwl_mld_send_cmd(mld, &cmd);
 	}
 
+=======
+		.data[0] = &mld->fwrt.uats_table,
+		.len[0] =  sizeof(mld->fwrt.uats_table),
+		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
+	};
+
+	if (!mld->fwrt.uats_valid)
+		return;
+
+	ret = iwl_mld_send_cmd(mld, &cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		IWL_ERR(mld, "failed to send MCC_ALLOWED_AP_TYPE_CMD (%d)\n",
 			ret);

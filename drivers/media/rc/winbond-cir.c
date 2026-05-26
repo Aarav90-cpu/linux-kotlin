@@ -1132,6 +1132,10 @@ exit_release_wbase:
 	release_region(data->wbase, WAKEUP_IOMEM_LEN);
 exit_unregister_device:
 	rc_unregister_device(data->dev);
+<<<<<<< HEAD
+=======
+	data->dev = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit_free_rc:
 	rc_free_device(data->dev);
 exit_unregister_led:
@@ -1162,7 +1166,10 @@ wbcir_remove(struct pnp_dev *device)
 	wbcir_set_bits(data->wbase + WBCIR_REG_WCEIR_EV_EN, 0x00, 0x07);
 
 	rc_unregister_device(data->dev);
+<<<<<<< HEAD
 	rc_free_device(data->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	led_classdev_unregister(&data->led);
 

@@ -49,7 +49,11 @@ LIBPERF_API void perf_cpu_map__put(struct perf_cpu_map *map);
  * perf_cpu_map__cpu - get the CPU value at the given index. Returns -1 if index
  *                     is invalid.
  */
+<<<<<<< HEAD
 LIBPERF_API struct perf_cpu perf_cpu_map__cpu(const struct perf_cpu_map *cpus, unsigned int idx);
+=======
+LIBPERF_API struct perf_cpu perf_cpu_map__cpu(const struct perf_cpu_map *cpus, int idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * perf_cpu_map__nr - for an empty map returns 1, as perf_cpu_map__cpu returns a
  *                    cpu of -1 for an invalid index, this makes an empty map
@@ -57,7 +61,11 @@ LIBPERF_API struct perf_cpu perf_cpu_map__cpu(const struct perf_cpu_map *cpus, u
  *                    the result is the number CPUs in the map plus one if the
  *                    "any CPU"/dummy value is present.
  */
+<<<<<<< HEAD
 LIBPERF_API unsigned int perf_cpu_map__nr(const struct perf_cpu_map *cpus);
+=======
+LIBPERF_API int perf_cpu_map__nr(const struct perf_cpu_map *cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * perf_cpu_map__has_any_cpu_or_is_empty - is map either empty or has the "any CPU"/dummy value.
  */

@@ -66,9 +66,20 @@ struct intel_frontbuffer {
 void intel_frontbuffer_flip(struct intel_display *display,
 			    unsigned frontbuffer_bits);
 
+<<<<<<< HEAD
 void __intel_frontbuffer_invalidate(struct intel_frontbuffer *front,
 				    enum fb_op_origin origin,
 				    unsigned int frontbuffer_bits);
+=======
+void intel_frontbuffer_put(struct intel_frontbuffer *front);
+
+struct intel_frontbuffer *
+intel_frontbuffer_get(struct drm_gem_object *obj);
+
+void __intel_fb_invalidate(struct intel_frontbuffer *front,
+			   enum fb_op_origin origin,
+			   unsigned int frontbuffer_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * intel_frontbuffer_invalidate - invalidate frontbuffer object
@@ -93,6 +104,7 @@ static inline bool intel_frontbuffer_invalidate(struct intel_frontbuffer *front,
 	if (!frontbuffer_bits)
 		return false;
 
+<<<<<<< HEAD
 	__intel_frontbuffer_invalidate(front, origin, frontbuffer_bits);
 	return true;
 }
@@ -100,6 +112,15 @@ static inline bool intel_frontbuffer_invalidate(struct intel_frontbuffer *front,
 void __intel_frontbuffer_flush(struct intel_frontbuffer *front,
 			       enum fb_op_origin origin,
 			       unsigned int frontbuffer_bits);
+=======
+	__intel_fb_invalidate(front, origin, frontbuffer_bits);
+	return true;
+}
+
+void __intel_fb_flush(struct intel_frontbuffer *front,
+		      enum fb_op_origin origin,
+		      unsigned int frontbuffer_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * intel_frontbuffer_flush - flush frontbuffer object
@@ -121,7 +142,11 @@ static inline void intel_frontbuffer_flush(struct intel_frontbuffer *front,
 	if (!frontbuffer_bits)
 		return;
 
+<<<<<<< HEAD
 	__intel_frontbuffer_flush(front, origin, frontbuffer_bits);
+=======
+	__intel_fb_flush(front, origin, frontbuffer_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void intel_frontbuffer_queue_flush(struct intel_frontbuffer *front);

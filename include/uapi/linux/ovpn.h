@@ -55,7 +55,10 @@ enum {
 	OVPN_A_PEER_LINK_TX_BYTES,
 	OVPN_A_PEER_LINK_RX_PACKETS,
 	OVPN_A_PEER_LINK_TX_PACKETS,
+<<<<<<< HEAD
 	OVPN_A_PEER_TX_ID,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__OVPN_A_PEER_MAX,
 	OVPN_A_PEER_MAX = (__OVPN_A_PEER_MAX - 1)
@@ -101,7 +104,10 @@ enum {
 	OVPN_CMD_KEY_SWAP,
 	OVPN_CMD_KEY_SWAP_NTF,
 	OVPN_CMD_KEY_DEL,
+<<<<<<< HEAD
 	OVPN_CMD_PEER_FLOAT_NTF,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__OVPN_CMD_MAX,
 	OVPN_CMD_MAX = (__OVPN_CMD_MAX - 1)

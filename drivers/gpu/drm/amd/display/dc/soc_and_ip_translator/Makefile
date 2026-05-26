@@ -8,6 +8,7 @@ soc_and_ip_translator_ccflags := $(CC_FLAGS_FPU)
 soc_and_ip_translator_rcflags := $(CC_FLAGS_NO_FPU)
 
 CFLAGS_$(AMDDALPATH)/dc/soc_and_ip_translator/dcn401/dcn401_soc_and_ip_translator.o := $(soc_and_ip_translator_ccflags)
+<<<<<<< HEAD
 CFLAGS_$(AMDDALPATH)/dc/soc_and_ip_translator/dcn42/dcn42_soc_and_ip_translator.o := $(soc_and_ip_translator_ccflags)
 
 CFLAGS_REMOVE_$(AMDDALPATH)/dc/soc_and_ip_translator/dcn401/dcn401_soc_and_ip_translator.o := $(soc_and_ip_translator_rcflags)
@@ -16,6 +17,13 @@ CFLAGS_REMOVE_$(AMDDALPATH)/dc/soc_and_ip_translator/dcn42/dcn42_soc_and_ip_tran
 soc_and_ip_translator := soc_and_ip_translator.o
 soc_and_ip_translator += dcn401/dcn401_soc_and_ip_translator.o
 soc_and_ip_translator += dcn42/dcn42_soc_and_ip_translator.o
+=======
+
+CFLAGS_REMOVE_$(AMDDALPATH)/dc/soc_and_ip_translator/dcn401/dcn401_soc_and_ip_translator.o := $(soc_and_ip_translator_rcflags)
+
+soc_and_ip_translator := soc_and_ip_translator.o
+soc_and_ip_translator += dcn401/dcn401_soc_and_ip_translator.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AMD_DAL_soc_and_ip_translator := $(addprefix $(AMDDALPATH)/dc/soc_and_ip_translator/, $(soc_and_ip_translator))
 

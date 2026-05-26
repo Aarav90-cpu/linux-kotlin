@@ -30,12 +30,18 @@
 #define DISCOVERY_TMR_OFFSET    (64 << 10)
 
 struct ip_discovery_top;
+<<<<<<< HEAD
 struct drm_printer;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct amdgpu_discovery_info {
 	struct debugfs_blob_wrapper debugfs_blob;
 	struct ip_discovery_top *ip_top;
+<<<<<<< HEAD
 	uint64_t offset;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t size;
 	uint8_t *bin;
 	bool reserve_tmr;
@@ -46,9 +52,15 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev);
 
 int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
 				  uint32_t *nps_type,
+<<<<<<< HEAD
 				  struct amdgpu_gmc_memrange *ranges,
 				  int *range_cnt, bool refresh);
 
 void amdgpu_discovery_dump(struct amdgpu_device *adev, struct drm_printer *p);
 
+=======
+				  struct amdgpu_gmc_memrange **ranges,
+				  int *range_cnt, bool refresh);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __AMDGPU_DISCOVERY__ */

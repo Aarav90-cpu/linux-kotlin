@@ -634,7 +634,11 @@ static const struct snd_soc_component_driver acp63_sdw_component = {
 	.hw_params	= acp63_sdw_dma_hw_params,
 	.trigger	= acp63_sdw_dma_trigger,
 	.pointer	= acp63_sdw_dma_pointer,
+<<<<<<< HEAD
 	.pcm_new	= acp63_sdw_dma_new,
+=======
+	.pcm_construct	= acp63_sdw_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.use_dai_pcm_id = true,
 
 };

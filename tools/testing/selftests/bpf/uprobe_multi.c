@@ -100,9 +100,12 @@ int __attribute__((weak)) trigger_uprobe(bool build_id_resident)
 	int page_sz = sysconf(_SC_PAGESIZE);
 	void *addr;
 
+<<<<<<< HEAD
 	unsigned char vec[1];
 	int poll = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* page-align build ID start */
 	addr = (void *)((uintptr_t)&build_id_start & ~(page_sz - 1));
 
@@ -111,6 +114,7 @@ int __attribute__((weak)) trigger_uprobe(bool build_id_resident)
 	 * do MADV_POPULATE_READ, and then MADV_PAGEOUT, if necessary
 	 */
 	madvise(addr, page_sz, MADV_POPULATE_READ);
+<<<<<<< HEAD
 	if (!build_id_resident) {
 		do {
 			madvise(addr, page_sz, MADV_PAGEOUT);
@@ -124,6 +128,11 @@ int __attribute__((weak)) trigger_uprobe(bool build_id_resident)
 			usleep(100);
 		} while (poll < 500);
 	}
+=======
+	if (!build_id_resident)
+		madvise(addr, page_sz, MADV_PAGEOUT);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(void)uprobe();
 
 	return 0;

@@ -2268,7 +2268,11 @@ static void ext4_mb_use_best_found(struct ext4_allocation_context *ac,
 	folio_get(ac->ac_buddy_folio);
 	/* store last allocated for subsequent stream allocation */
 	if (ac->ac_flags & EXT4_MB_STREAM_ALLOC) {
+<<<<<<< HEAD
 		int hash = (unsigned int)ac->ac_inode->i_ino % sbi->s_mb_nr_global_goals;
+=======
+		int hash = ac->ac_inode->i_ino % sbi->s_mb_nr_global_goals;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		WRITE_ONCE(sbi->s_mb_last_groups[hash], ac->ac_f_ex.fe_group);
 	}
@@ -2876,7 +2880,11 @@ ext4_group_t ext4_mb_prefetch(struct super_block *sb, ext4_group_t group,
 		    EXT4_MB_GRP_NEED_INIT(grp) &&
 		    ext4_free_group_clusters(sb, gdp) > 0 ) {
 			bh = ext4_read_block_bitmap_nowait(sb, group, true);
+<<<<<<< HEAD
 			if (!IS_ERR_OR_NULL(bh)) {
+=======
+			if (bh && !IS_ERR(bh)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (!buffer_uptodate(bh) && cnt)
 					(*cnt)++;
 				brelse(bh);
@@ -3038,7 +3046,11 @@ ext4_mb_regular_allocator(struct ext4_allocation_context *ac)
 
 	/* if stream allocation is enabled, use global goal */
 	if (ac->ac_flags & EXT4_MB_STREAM_ALLOC) {
+<<<<<<< HEAD
 		int hash = (unsigned int)ac->ac_inode->i_ino % sbi->s_mb_nr_global_goals;
+=======
+		int hash = ac->ac_inode->i_ino % sbi->s_mb_nr_global_goals;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ac->ac_g_ex.fe_group = READ_ONCE(sbi->s_mb_last_groups[hash]);
 		ac->ac_g_ex.fe_start = -1;
@@ -3840,7 +3852,11 @@ int ext4_mb_init(struct super_block *sb)
 		spin_lock_init(&lg->lg_prealloc_lock);
 	}
 
+<<<<<<< HEAD
 	if (!bdev_rot(sb->s_bdev))
+=======
+	if (bdev_nonrot(sb->s_bdev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sbi->s_mb_max_linear_groups = 0;
 	else
 		sbi->s_mb_max_linear_groups = MB_DEFAULT_LINEAR_LIMIT;
@@ -4561,6 +4577,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
 		(req <= (size) || max <= (chunk_size))
 
 	/* first, try to predict filesize */
+<<<<<<< HEAD
 	start_off = 0;
 	if (size <= SZ_1M) {
 		/*
@@ -4571,6 +4588,24 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
 			size = SZ_16K;
 		else
 			size = roundup_pow_of_two(size);
+=======
+	/* XXX: should this table be tunable? */
+	start_off = 0;
+	if (size <= 16 * 1024) {
+		size = 16 * 1024;
+	} else if (size <= 32 * 1024) {
+		size = 32 * 1024;
+	} else if (size <= 64 * 1024) {
+		size = 64 * 1024;
+	} else if (size <= 128 * 1024) {
+		size = 128 * 1024;
+	} else if (size <= 256 * 1024) {
+		size = 256 * 1024;
+	} else if (size <= 512 * 1024) {
+		size = 512 * 1024;
+	} else if (size <= 1024 * 1024) {
+		size = 1024 * 1024;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (NRL_CHECK_SIZE(size, 4 * 1024 * 1024, max, 2 * 1024)) {
 		start_off = ((loff_t)ac->ac_o_ex.fe_logical >>
 						(21 - bsbits)) << 21;
@@ -5622,7 +5657,11 @@ void ext4_discard_preallocations(struct inode *inode)
 	if (EXT4_SB(sb)->s_mount_state & EXT4_FC_REPLAY)
 		return;
 
+<<<<<<< HEAD
 	mb_debug(sb, "discard preallocation for inode %llu\n",
+=======
+	mb_debug(sb, "discard preallocation for inode %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 inode->i_ino);
 	trace_ext4_discard_preallocations(inode,
 			atomic_read(&ei->i_prealloc_active));

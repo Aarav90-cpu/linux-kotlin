@@ -406,8 +406,11 @@ void dma_direct_sync_sg_for_device(struct device *dev,
 			arch_sync_dma_for_device(paddr, sg->length,
 					dir);
 	}
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev))
 		arch_sync_dma_flush();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
@@ -429,10 +432,15 @@ void dma_direct_sync_sg_for_cpu(struct device *dev,
 		swiotlb_sync_single_for_cpu(dev, paddr, sg->length, dir);
 	}
 
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev)) {
 		arch_sync_dma_flush();
 		arch_sync_dma_for_cpu_all();
 	}
+=======
+	if (!dev_is_dma_coherent(dev))
+		arch_sync_dma_for_cpu_all();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -444,6 +452,7 @@ void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sgl,
 {
 	struct scatterlist *sg;
 	int i;
+<<<<<<< HEAD
 	bool need_sync = false;
 
 	for_each_sg(sgl,  sg, nents, i) {
@@ -457,6 +466,16 @@ void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sgl,
 	}
 	if (need_sync && !dev_is_dma_coherent(dev))
 		arch_sync_dma_flush();
+=======
+
+	for_each_sg(sgl,  sg, nents, i) {
+		if (sg_dma_is_bus_address(sg))
+			sg_dma_unmark_bus_address(sg);
+		else
+			dma_direct_unmap_phys(dev, sg->dma_address,
+					      sg_dma_len(sg), dir, attrs);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
@@ -466,7 +485,10 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
 	struct pci_p2pdma_map_state p2pdma_state = {};
 	struct scatterlist *sg;
 	int i, ret;
+<<<<<<< HEAD
 	bool need_sync = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_sg(sgl, sg, nents, i) {
 		switch (pci_p2pdma_state(&p2pdma_state, dev, sg_page(sg))) {
@@ -478,9 +500,14 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
 			 */
 			break;
 		case PCI_P2PDMA_MAP_NONE:
+<<<<<<< HEAD
 			need_sync = true;
 			sg->dma_address = dma_direct_map_phys(dev, sg_phys(sg),
 					sg->length, dir, attrs, false);
+=======
+			sg->dma_address = dma_direct_map_phys(dev, sg_phys(sg),
+					sg->length, dir, attrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (sg->dma_address == DMA_MAPPING_ERROR) {
 				ret = -EIO;
 				goto out_unmap;
@@ -499,8 +526,11 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
 		sg_dma_len(sg) = sg->length;
 	}
 
+<<<<<<< HEAD
 	if (need_sync && !dev_is_dma_coherent(dev))
 		arch_sync_dma_flush();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return nents;
 
 out_unmap:

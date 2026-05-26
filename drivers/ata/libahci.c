@@ -34,7 +34,11 @@
 #include "libata.h"
 
 static int ahci_skip_host_reset;
+<<<<<<< HEAD
 int ahci_ignore_sss;
+=======
+int ahci_ignore_sss = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(ahci_ignore_sss);
 
 module_param_named(skip_host_reset, ahci_skip_host_reset, int, 0444);

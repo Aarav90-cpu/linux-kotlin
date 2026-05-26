@@ -292,16 +292,29 @@ static void pnv_ioda_reserve_m64_pe(struct pci_bus *bus,
 
 static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
 {
+<<<<<<< HEAD
 	unsigned long *pe_alloc __free(bitmap) = NULL;
 	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
 	struct pnv_ioda_pe *master_pe, *pe;
 	unsigned int i;
+=======
+	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+	struct pnv_ioda_pe *master_pe, *pe;
+	unsigned long size, *pe_alloc;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Root bus shouldn't use M64 */
 	if (pci_is_root_bus(bus))
 		return NULL;
 
+<<<<<<< HEAD
 	pe_alloc = bitmap_zalloc(phb->ioda.total_pe_num, GFP_KERNEL);
+=======
+	/* Allocate bitmap */
+	size = ALIGN(phb->ioda.total_pe_num / 8, sizeof(unsigned long));
+	pe_alloc = kzalloc(size, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pe_alloc) {
 		pr_warn("%s: Out of memory !\n",
 			__func__);
@@ -312,6 +325,7 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
 	pnv_ioda_reserve_m64_pe(bus, pe_alloc, all);
 
 	/*
+<<<<<<< HEAD
 	 * Figure out the master PE and put all slave PEs to master
 	 * PE's list to form compound PE.
 	 *
@@ -321,6 +335,25 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
 	 */
 	master_pe = NULL;
 	for_each_set_bit(i, pe_alloc, phb->ioda.total_pe_num) {
+=======
+	 * the current bus might not own M64 window and that's all
+	 * contributed by its child buses. For the case, we needn't
+	 * pick M64 dependent PE#.
+	 */
+	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
+		kfree(pe_alloc);
+		return NULL;
+	}
+
+	/*
+	 * Figure out the master PE and put all slave PEs to master
+	 * PE's list to form compound PE.
+	 */
+	master_pe = NULL;
+	i = -1;
+	while ((i = find_next_bit(pe_alloc, phb->ioda.total_pe_num, i + 1)) <
+		phb->ioda.total_pe_num) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pe = &phb->ioda.pe_array[i];
 
 		phb->ioda.m64_segmap[pe->pe_number] = pe->pe_number;
@@ -335,6 +368,10 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	kfree(pe_alloc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return master_pe;
 }
 

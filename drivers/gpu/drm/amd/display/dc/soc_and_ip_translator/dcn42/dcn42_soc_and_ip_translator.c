@@ -3,7 +3,11 @@
 // Copyright 2025 Advanced Micro Devices, Inc.
 
 #include "dcn42_soc_and_ip_translator.h"
+<<<<<<< HEAD
 #include "../dcn401/dcn401_soc_and_ip_translator.h"
+=======
+#include "soc_and_ip_translator/dcn401/dcn401_soc_and_ip_translator.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bounding_boxes/dcn42_soc_bb.h"
 
 /* soc_and_ip_translator component used to get up-to-date values for bounding box.
@@ -11,6 +15,7 @@
  * This component provides an interface to get DCN-specific bounding box values.
  */
 
+<<<<<<< HEAD
 static void get_default_soc_bb(struct dml2_soc_bb *soc_bb, const struct dc *dc)
 {
 	{
@@ -182,13 +187,19 @@ void dcn42_get_soc_bb(struct dml2_soc_bb *soc_bb, const struct dc *dc, const str
 	apply_soc_bb_updates(soc_bb, dc, config);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dcn42_get_ip_caps(struct dml2_ip_capabilities *ip_caps)
 {
 	*ip_caps = dml2_dcn42_max_ip_caps;
 }
 
 static struct soc_and_ip_translator_funcs dcn42_translator_funcs = {
+<<<<<<< HEAD
 	.get_soc_bb = dcn42_get_soc_bb,
+=======
+	.get_soc_bb = dcn401_get_soc_bb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_ip_caps = dcn42_get_ip_caps,
 };
 
@@ -196,4 +207,7 @@ void dcn42_construct_soc_and_ip_translator(struct soc_and_ip_translator *soc_and
 {
 	soc_and_ip_translator->translator_funcs = &dcn42_translator_funcs;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

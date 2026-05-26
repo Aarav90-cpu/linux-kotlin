@@ -113,7 +113,10 @@ static int scmi_pm_domain_probe(struct scmi_device *sdev)
 		goto err_rm_genpds;
 
 	dev_set_drvdata(dev, scmi_pd_data);
+<<<<<<< HEAD
 	dev_info(dev, "Initialized %d power domains", num_domains);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 err_rm_genpds:

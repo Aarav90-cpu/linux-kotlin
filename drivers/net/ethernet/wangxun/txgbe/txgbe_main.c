@@ -130,7 +130,10 @@ static void txgbe_service_task(struct work_struct *work)
 
 	txgbe_module_detection_subtask(wx);
 	txgbe_link_config_subtask(wx);
+<<<<<<< HEAD
 	wx_update_stats(wx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wx_service_event_complete(wx);
 }
@@ -599,16 +602,31 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
 
 static void txgbe_reinit_locked(struct wx *wx)
 {
+<<<<<<< HEAD
 	netif_trans_update(wx->netdev);
 
 	mutex_lock(&wx->reset_lock);
 	set_bit(WX_STATE_RESETTING, wx->state);
+=======
+	int err = 0;
+
+	netif_trans_update(wx->netdev);
+
+	err = wx_set_state_reset(wx);
+	if (err) {
+		wx_err(wx, "wait device reset timeout\n");
+		return;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	txgbe_down(wx);
 	txgbe_up(wx);
 
 	clear_bit(WX_STATE_RESETTING, wx->state);
+<<<<<<< HEAD
 	mutex_unlock(&wx->reset_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void txgbe_do_reset(struct net_device *netdev)
@@ -948,13 +966,21 @@ static void txgbe_remove(struct pci_dev *pdev)
 	struct txgbe *txgbe = wx->priv;
 	struct net_device *netdev;
 
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&wx->service_task);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev = wx->netdev;
 	wx_disable_sriov(wx);
 	unregister_netdev(netdev);
 
+<<<<<<< HEAD
 	timer_shutdown_sync(&wx->service_timer);
 	cancel_work_sync(&wx->service_task);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	txgbe_remove_phy(txgbe);
 	wx_free_isb_resources(wx);
 

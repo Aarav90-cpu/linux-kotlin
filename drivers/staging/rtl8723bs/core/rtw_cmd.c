@@ -8,7 +8,10 @@
 #include <hal_btcoex.h>
 #include <linux/jiffies.h>
 #include <linux/align.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct _cmd_callback rtw_cmd_callback[] = {
 	{GEN_CMD_CODE(_Read_MACREG), NULL}, /*0*/
@@ -215,7 +218,11 @@ void _rtw_free_evt_priv(struct	evt_priv *pevtpriv)
 {
 	_cancel_workitem_sync(&pevtpriv->c2h_wk);
 	while (pevtpriv->c2h_wk_alive)
+<<<<<<< HEAD
 		fsleep(10 * USEC_PER_MSEC);
+=======
+		msleep(10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
 		void *c2h = rtw_cbuf_pop(pevtpriv->c2h_queue);
@@ -1126,6 +1133,7 @@ static void collect_traffic_statistics(struct adapter *padapter)
 	pdvobjpriv->traffic_stat.cur_rx_tp = (u32)(pdvobjpriv->traffic_stat.cur_rx_bytes * 8 / 2 / 1024 / 1024);
 }
 
+<<<<<<< HEAD
 bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 {
 	bool should_enter_ps = false;
@@ -1138,6 +1146,16 @@ bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 	bool higher_busy_traffic = false;
 	bool higher_busy_rx_traffic = false;
 	bool higher_busy_tx_traffic = false;
+=======
+u8 traffic_status_watchdog(struct adapter *padapter, u8 from_timer)
+{
+	u8 bEnterPS = false;
+	u16 BusyThresholdHigh = 25;
+	u16 BusyThresholdLow = 10;
+	u16 BusyThreshold = BusyThresholdHigh;
+	u8 bBusyTraffic = false, bTxBusyTraffic = false, bRxBusyTraffic = false;
+	u8 bHigherBusyTraffic = false, bHigherBusyRxTraffic = false, bHigherBusyTxTraffic = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
 	collect_traffic_statistics(padapter);
@@ -1147,6 +1165,7 @@ bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 	/*  */
 	if ((check_fwstate(pmlmepriv, _FW_LINKED))
 		/*&& !MgntInitAdapterInProgress(pMgntInfo)*/) {
+<<<<<<< HEAD
 		/*  if we raise busy_traffic in last watchdog, using lower threshold. */
 		if (pmlmepriv->link_detect_info.busy_traffic)
 			busy_threshold = busy_threshold_low;
@@ -1201,6 +1220,59 @@ bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 
 		/*  LeisurePS only work in infra mode. */
 		if (should_enter_ps) {
+=======
+		/*  if we raise bBusyTraffic in last watchdog, using lower threshold. */
+		if (pmlmepriv->LinkDetectInfo.bBusyTraffic)
+			BusyThreshold = BusyThresholdLow;
+
+		if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > BusyThreshold ||
+		    pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > BusyThreshold) {
+			bBusyTraffic = true;
+
+			if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > pmlmepriv->LinkDetectInfo.NumTxOkInPeriod)
+				bRxBusyTraffic = true;
+			else
+				bTxBusyTraffic = true;
+		}
+
+		/*  Higher Tx/Rx data. */
+		if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > 4000 ||
+		    pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > 4000) {
+			bHigherBusyTraffic = true;
+
+			if (pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > pmlmepriv->LinkDetectInfo.NumTxOkInPeriod)
+				bHigherBusyRxTraffic = true;
+			else
+				bHigherBusyTxTraffic = true;
+		}
+
+		/*  check traffic for  powersaving. */
+		if (((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8) ||
+		    (pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod > 2)) {
+			bEnterPS = false;
+
+			if (bBusyTraffic) {
+				if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount <= 4)
+					pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 4;
+
+				pmlmepriv->LinkDetectInfo.TrafficTransitionCount++;
+
+				if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount > 30/*TrafficTransitionLevel*/)
+					pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 30;
+			}
+		} else {
+			if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount >= 2)
+				pmlmepriv->LinkDetectInfo.TrafficTransitionCount -= 2;
+			else
+				pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
+
+			if (pmlmepriv->LinkDetectInfo.TrafficTransitionCount == 0)
+				bEnterPS = true;
+		}
+
+		/*  LeisurePS only work in infra mode. */
+		if (bEnterPS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!from_timer)
 				LPS_Enter(padapter, "TRAFFIC_IDLE");
 		} else {
@@ -1220,6 +1292,7 @@ bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 			LPS_Leave(padapter, "NON_LINKED");
 	}
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.num_rx_ok_in_period = 0;
 	pmlmepriv->link_detect_info.num_tx_ok_in_period = 0;
 	pmlmepriv->link_detect_info.num_rx_unicast_ok_in_period = 0;
@@ -1231,6 +1304,19 @@ bool traffic_status_watchdog(struct adapter *padapter, bool from_timer)
 	pmlmepriv->link_detect_info.higher_busy_tx_traffic = higher_busy_tx_traffic;
 
 	return should_enter_ps;
+=======
+	pmlmepriv->LinkDetectInfo.NumRxOkInPeriod = 0;
+	pmlmepriv->LinkDetectInfo.NumTxOkInPeriod = 0;
+	pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod = 0;
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = bBusyTraffic;
+	pmlmepriv->LinkDetectInfo.bTxBusyTraffic = bTxBusyTraffic;
+	pmlmepriv->LinkDetectInfo.bRxBusyTraffic = bRxBusyTraffic;
+	pmlmepriv->LinkDetectInfo.bHigherBusyTraffic = bHigherBusyTraffic;
+	pmlmepriv->LinkDetectInfo.bHigherBusyRxTraffic = bHigherBusyRxTraffic;
+	pmlmepriv->LinkDetectInfo.bHigherBusyTxTraffic = bHigherBusyTxTraffic;
+
+	return bEnterPS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void dynamic_chk_wk_hdl(struct adapter *padapter)
@@ -1247,7 +1333,11 @@ static void dynamic_chk_wk_hdl(struct adapter *padapter)
 	/* if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING|_FW_UNDER_SURVEY) ==false) */
 	{
 		linked_status_chk(padapter);
+<<<<<<< HEAD
 		traffic_status_watchdog(padapter, false);
+=======
+		traffic_status_watchdog(padapter, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	rtw_hal_dm_watchdog(padapter);
 
@@ -1503,7 +1593,11 @@ static void rtw_chk_hi_queue_hdl(struct adapter *padapter)
 	rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);
 
 	while (!empty && jiffies_to_msecs(jiffies - start) < g_wait_hiq_empty) {
+<<<<<<< HEAD
 		fsleep(100 * USEC_PER_MSEC);
+=======
+		msleep(100);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rtw_hal_get_hwreg(padapter, HW_VAR_CHK_HI_QUEUE_EMPTY, &empty);
 	}
 
@@ -1769,8 +1863,12 @@ u8 rtw_drvextra_cmd_hdl(struct adapter *padapter, unsigned char *pbuf)
 		rtw_free_assoc_resources(padapter, 1);
 		break;
 	case C2H_WK_CID:
+<<<<<<< HEAD
 		rtw_hal_set_hwreg_with_buf(padapter, HW_VAR_C2H_HANDLE,
 					   pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
+=======
+		rtw_hal_set_hwreg_with_buf(padapter, HW_VAR_C2H_HANDLE, pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DM_RA_MSK_WK_CID:
 		rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);

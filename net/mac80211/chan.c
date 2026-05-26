@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * mac80211 - channel management
+<<<<<<< HEAD
  * Copyright 2020-2026 Intel Corporation
+=======
+ * Copyright 2020 - 2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/nl80211.h>
@@ -16,8 +20,11 @@ struct ieee80211_chanctx_user_iter {
 	struct ieee80211_chan_req *chanreq;
 	struct ieee80211_sub_if_data *sdata;
 	struct ieee80211_link_data *link;
+<<<<<<< HEAD
 	struct ieee80211_nan_channel *nan_channel;
 	int nan_channel_next_idx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum nl80211_iftype iftype;
 	bool reserved, radar_required, done;
 	enum {
@@ -33,6 +40,7 @@ enum ieee80211_chanctx_iter_type {
 	CHANCTX_ITER_ASSIGNED,
 };
 
+<<<<<<< HEAD
 static bool
 ieee80211_chanctx_user_iter_next_nan_channel(struct ieee80211_chanctx *ctx,
 					     struct ieee80211_chanctx_user_iter *iter)
@@ -65,6 +73,22 @@ ieee80211_chanctx_user_iter_next_link(struct ieee80211_chanctx *ctx,
 				      struct ieee80211_chanctx_user_iter *iter,
 				      enum ieee80211_chanctx_iter_type type)
 {
+=======
+static void ieee80211_chanctx_user_iter_next(struct ieee80211_local *local,
+					     struct ieee80211_chanctx *ctx,
+					     struct ieee80211_chanctx_user_iter *iter,
+					     enum ieee80211_chanctx_iter_type type,
+					     bool start)
+{
+	lockdep_assert_wiphy(local->hw.wiphy);
+
+	if (start) {
+		memset(iter, 0, sizeof(*iter));
+		goto next_interface;
+	}
+
+next_link:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (int link_id = iter->link ? iter->link->link_id : 0;
 	     link_id < ARRAY_SIZE(iter->sdata->link);
 	     link_id++) {
@@ -84,7 +108,11 @@ ieee80211_chanctx_user_iter_next_link(struct ieee80211_chanctx *ctx,
 				iter->reserved = false;
 				iter->radar_required = link->radar_required;
 				iter->chanreq = &link->conf->chanreq;
+<<<<<<< HEAD
 				return true;
+=======
+				return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			fallthrough;
 		case CHANCTX_ITER_POS_RESERVED:
@@ -97,7 +125,11 @@ ieee80211_chanctx_user_iter_next_link(struct ieee80211_chanctx *ctx,
 					link->reserved_radar_required;
 
 				iter->chanreq = &link->reserved;
+<<<<<<< HEAD
 				return true;
+=======
+				return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			fallthrough;
 		case CHANCTX_ITER_POS_DONE:
@@ -105,6 +137,7 @@ ieee80211_chanctx_user_iter_next_link(struct ieee80211_chanctx *ctx,
 			continue;
 		}
 	}
+<<<<<<< HEAD
 	return false;
 }
 
@@ -132,6 +165,8 @@ next_user:
 
 	if (found)
 		return;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 next_interface:
 	/* next (or first) interface */
@@ -144,6 +179,7 @@ next_interface:
 		if (iter->sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
 			continue;
 
+<<<<<<< HEAD
 		/* NAN channels don't reserve channel context */
 		if (iter->sdata->vif.type == NL80211_IFTYPE_NAN &&
 		    type == CHANCTX_ITER_RESERVED)
@@ -156,6 +192,12 @@ next_interface:
 		iter->per_link = CHANCTX_ITER_POS_ASSIGNED;
 		iter->nan_channel_next_idx = 0;
 		goto next_user;
+=======
+		iter->link = NULL;
+		iter->per_link = CHANCTX_ITER_POS_ASSIGNED;
+		iter->iftype = iter->sdata->vif.type;
+		goto next_link;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	iter->done = true;
@@ -188,8 +230,13 @@ next_interface:
 					      CHANCTX_ITER_ALL,		\
 					      false))
 
+<<<<<<< HEAD
 int ieee80211_chanctx_num_assigned(struct ieee80211_local *local,
 				   struct ieee80211_chanctx *ctx)
+=======
+static int ieee80211_chanctx_num_assigned(struct ieee80211_local *local,
+					  struct ieee80211_chanctx *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ieee80211_chanctx_user_iter iter;
 	int num = 0;
@@ -221,6 +268,7 @@ int ieee80211_chanctx_refcount(struct ieee80211_local *local,
 	for_each_chanctx_user_all(local, ctx, &iter)
 		num++;
 
+<<<<<<< HEAD
 	/*
 	 * This ctx is in the process of getting used,
 	 * take it into consideration
@@ -228,6 +276,8 @@ int ieee80211_chanctx_refcount(struct ieee80211_local *local,
 	if (ctx->will_be_used)
 		num++;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return num;
 }
 
@@ -301,6 +351,7 @@ ieee80211_chanreq_compatible(const struct ieee80211_chan_req *a,
 	return tmp;
 }
 
+<<<<<<< HEAD
 /*
  * When checking for compatible, check against all the links using
  * the chanctx (except the one passed that might be changing) to
@@ -340,6 +391,26 @@ ieee80211_chanctx_compatible(struct ieee80211_local *local,
 			     struct ieee80211_chan_req *tmp)
 {
 	return _ieee80211_chanctx_compatible(local, NULL, ctx, req, tmp);
+=======
+static const struct ieee80211_chan_req *
+ieee80211_chanctx_compatible(struct ieee80211_chanctx *ctx,
+			     const struct ieee80211_chan_req *req,
+			     struct ieee80211_chan_req *tmp)
+{
+	const struct ieee80211_chan_req *ret;
+	struct ieee80211_chan_req tmp2;
+
+	*tmp = (struct ieee80211_chan_req){
+		.oper = ctx->conf.def,
+		.ap = ctx->conf.ap,
+	};
+
+	ret = ieee80211_chanreq_compatible(tmp, req, &tmp2);
+	if (!ret)
+		return NULL;
+	*tmp = *ret;
+	return tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct ieee80211_chan_req *
@@ -376,7 +447,11 @@ ieee80211_chanctx_non_reserved_chandef(struct ieee80211_local *local,
 	lockdep_assert_wiphy(local->hw.wiphy);
 
 	for_each_chanctx_user_assigned(local, ctx, &iter) {
+<<<<<<< HEAD
 		if (iter.link && iter.link->reserved_chanctx)
+=======
+		if (iter.link->reserved_chanctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		comp_def = ieee80211_chanreq_compatible(iter.chanreq,
@@ -510,6 +585,7 @@ ieee80211_get_max_required_bw(struct ieee80211_link_data *link)
 }
 
 static enum nl80211_chan_width
+<<<<<<< HEAD
 ieee80211_get_width_of_link(struct ieee80211_link_data *link)
 {
 	struct ieee80211_local *local = link->sdata->local;
@@ -572,19 +648,28 @@ ieee80211_get_width_of_chanctx_user(struct ieee80211_chanctx_user_iter *iter)
 }
 
 static enum nl80211_chan_width
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
 				      struct ieee80211_chanctx *ctx,
 				      struct ieee80211_link_data *rsvd_for,
 				      bool check_reserved)
 {
+<<<<<<< HEAD
 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
 	struct ieee80211_chanctx_user_iter iter;
 	struct ieee80211_sub_if_data *sdata;
 	enum nl80211_chan_width width;
+=======
+	struct ieee80211_sub_if_data *sdata;
+	struct ieee80211_link_data *link;
+	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(check_reserved && rsvd_for))
 		return ctx->conf.def.width;
 
+<<<<<<< HEAD
 	/* When this is true we only care about the reserving links */
 	if (check_reserved) {
 		for_each_chanctx_user_reserved(local, ctx, &iter) {
@@ -609,6 +694,63 @@ ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
 	max_bw = max(max_bw, width);
 
 check_monitor:
+=======
+	for_each_sdata_link(local, link) {
+		enum nl80211_chan_width width = NL80211_CHAN_WIDTH_20_NOHT;
+
+		if (check_reserved) {
+			if (link->reserved_chanctx != ctx)
+				continue;
+		} else if (link != rsvd_for &&
+			   rcu_access_pointer(link->conf->chanctx_conf) != &ctx->conf)
+			continue;
+
+		switch (link->sdata->vif.type) {
+		case NL80211_IFTYPE_STATION:
+			if (!link->sdata->vif.cfg.assoc) {
+				/*
+				 * The AP's sta->bandwidth may not yet be set
+				 * at this point (pre-association), so simply
+				 * take the width from the chandef. We cannot
+				 * have TDLS peers yet (only after association).
+				 */
+				width = link->conf->chanreq.oper.width;
+				break;
+			}
+			/*
+			 * otherwise just use min_def like in AP, depending on what
+			 * we currently think the AP STA (and possibly TDLS peers)
+			 * require(s)
+			 */
+			fallthrough;
+		case NL80211_IFTYPE_AP:
+		case NL80211_IFTYPE_AP_VLAN:
+			width = ieee80211_get_max_required_bw(link);
+			break;
+		case NL80211_IFTYPE_P2P_DEVICE:
+		case NL80211_IFTYPE_NAN:
+			continue;
+		case NL80211_IFTYPE_MONITOR:
+			WARN_ON_ONCE(!ieee80211_hw_check(&local->hw,
+							 NO_VIRTUAL_MONITOR));
+			fallthrough;
+		case NL80211_IFTYPE_ADHOC:
+		case NL80211_IFTYPE_MESH_POINT:
+		case NL80211_IFTYPE_OCB:
+			width = link->conf->chanreq.oper.width;
+			break;
+		case NL80211_IFTYPE_WDS:
+		case NL80211_IFTYPE_UNSPECIFIED:
+		case NUM_NL80211_IFTYPES:
+		case NL80211_IFTYPE_P2P_CLIENT:
+		case NL80211_IFTYPE_P2P_GO:
+			WARN_ON_ONCE(1);
+		}
+
+		max_bw = max(max_bw, width);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* use the configured bandwidth in case of monitor interface */
 	sdata = wiphy_dereference(local->hw.wiphy, local->monitor_sdata);
 	if (sdata &&
@@ -846,9 +988,16 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
 	_ieee80211_change_chanctx(local, ctx, old_ctx, chanreq, NULL);
 }
 
+<<<<<<< HEAD
 /* Note: if successful, the returned chanctx will_be_used flag is set */
 static struct ieee80211_chanctx *
 ieee80211_find_chanctx(struct ieee80211_local *local,
+=======
+/* Note: if successful, the returned chanctx is reserved for the link */
+static struct ieee80211_chanctx *
+ieee80211_find_chanctx(struct ieee80211_local *local,
+		       struct ieee80211_link_data *link,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       const struct ieee80211_chan_req *chanreq,
 		       enum ieee80211_chanctx_mode mode)
 {
@@ -860,6 +1009,12 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
 	if (mode == IEEE80211_CHANCTX_EXCLUSIVE)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON(link->reserved_chanctx))
+		return NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(ctx, &local->chanctx_list, list) {
 		const struct ieee80211_chan_req *compat;
 
@@ -869,8 +1024,12 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
 		if (ctx->mode == IEEE80211_CHANCTX_EXCLUSIVE)
 			continue;
 
+<<<<<<< HEAD
 		compat = ieee80211_chanctx_compatible(local, ctx, chanreq,
 						      &tmp);
+=======
+		compat = ieee80211_chanctx_compatible(ctx, chanreq, &tmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!compat)
 			continue;
 
@@ -880,12 +1039,20 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
 			continue;
 
 		/*
+<<<<<<< HEAD
 		 * Mark the chanctx as will be used, as the driver might change
+=======
+		 * Reserve the chanctx temporarily, as the driver might change
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * active links during callbacks we make into it below and/or
 		 * later during assignment, which could (otherwise) cause the
 		 * context to actually be removed.
 		 */
+<<<<<<< HEAD
 		ctx->will_be_used = true;
+=======
+		link->reserved_chanctx = ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ieee80211_change_chanctx(local, ctx, ctx, compat);
 
@@ -1010,10 +1177,14 @@ ieee80211_new_chanctx(struct ieee80211_local *local,
 		kfree(ctx);
 		return ERR_PTR(err);
 	}
+<<<<<<< HEAD
 	/*
 	 * We ignored a driver error, see _ieee80211_set_active_links and/or
 	 * ieee80211_nan_set_local_sched
 	 */
+=======
+	/* We ignored a driver error, see _ieee80211_set_active_links */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON_ONCE(err && !local->in_reconfig);
 
 	list_add_rcu(&ctx->list, &local->chanctx_list);
@@ -1034,9 +1205,15 @@ static void ieee80211_del_chanctx(struct ieee80211_local *local,
 	ieee80211_remove_wbrf(local, &ctx->conf.def);
 }
 
+<<<<<<< HEAD
 void ieee80211_free_chanctx(struct ieee80211_local *local,
 			    struct ieee80211_chanctx *ctx,
 			    bool skip_idle_recalc)
+=======
+static void ieee80211_free_chanctx(struct ieee80211_local *local,
+				   struct ieee80211_chanctx *ctx,
+				   bool skip_idle_recalc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lockdep_assert_wiphy(local->hw.wiphy);
 
@@ -1231,7 +1408,10 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
 		case NL80211_IFTYPE_ADHOC:
 		case NL80211_IFTYPE_MESH_POINT:
 		case NL80211_IFTYPE_OCB:
+<<<<<<< HEAD
 		case NL80211_IFTYPE_NAN:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			continue;
@@ -1242,6 +1422,7 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (iter.nan_channel) {
 			rx_chains_dynamic = rx_chains_static =
 				iter.nan_channel->needed_rx_chains;
@@ -1251,6 +1432,8 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
 		if (!iter.link)
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		switch (iter.link->smps_mode) {
 		default:
 			WARN_ONCE(1, "Invalid SMPS mode %d\n",
@@ -1321,10 +1504,13 @@ __ieee80211_link_copy_chanctx_to_vlans(struct ieee80211_link_data *link,
 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
 		struct ieee80211_bss_conf *vlan_conf;
 
+<<<<<<< HEAD
 		if (vlan->vif.valid_links &&
 		    !(vlan->vif.valid_links & BIT(link_id)))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vlan_conf = wiphy_dereference(local->hw.wiphy,
 					      vlan->vif.link_conf[link_id]);
 		if (WARN_ON(!vlan_conf))
@@ -1545,7 +1731,10 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
 	case NL80211_IFTYPE_P2P_GO:
 	case NL80211_IFTYPE_P2P_DEVICE:
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NUM_NL80211_IFTYPES:
 		WARN_ON(1);
 		break;
@@ -1568,10 +1757,13 @@ ieee80211_link_update_chanreq(struct ieee80211_link_data *link,
 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
 		struct ieee80211_bss_conf *vlan_conf;
 
+<<<<<<< HEAD
 		if (vlan->vif.valid_links &&
 		    !(vlan->vif.valid_links & BIT(link_id)))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vlan_conf = wiphy_dereference(sdata->local->hw.wiphy,
 					      vlan->vif.link_conf[link_id]);
 		if (WARN_ON(!vlan_conf))
@@ -1867,7 +2059,11 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
 
 		for_each_chanctx_user_assigned(local, ctx->replace_ctx, &iter) {
 			n_assigned++;
+<<<<<<< HEAD
 			if (iter.link && iter.link->reserved_chanctx) {
+=======
+			if (iter.link->reserved_chanctx) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				n_reserved++;
 				if (iter.link->reserved_ready)
 					n_ready++;
@@ -2123,6 +2319,7 @@ void __ieee80211_link_release_channel(struct ieee80211_link_data *link,
 		ieee80211_vif_use_reserved_switch(local);
 }
 
+<<<<<<< HEAD
 struct ieee80211_chanctx *
 ieee80211_find_or_create_chanctx(struct ieee80211_sub_if_data *sdata,
 				 const struct ieee80211_chan_req *chanreq,
@@ -2153,6 +2350,8 @@ ieee80211_find_or_create_chanctx(struct ieee80211_sub_if_data *sdata,
 				     assign_on_failure, radio_idx);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
 				const struct ieee80211_chan_req *chanreq,
 				enum ieee80211_chanctx_mode mode,
@@ -2162,7 +2361,12 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_chanctx *ctx;
 	u8 radar_detect_width = 0;
+<<<<<<< HEAD
 	bool reused_ctx = false;
+=======
+	bool reserved = false;
+	int radio_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	lockdep_assert_wiphy(local->hw.wiphy);
@@ -2190,8 +2394,22 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
 	if (!local->in_reconfig)
 		__ieee80211_link_release_channel(link, false);
 
+<<<<<<< HEAD
 	ctx = ieee80211_find_or_create_chanctx(sdata, chanreq, mode,
 					       assign_on_failure, &reused_ctx);
+=======
+	ctx = ieee80211_find_chanctx(local, link, chanreq, mode);
+	/* Note: context is now reserved */
+	if (ctx)
+		reserved = true;
+	else if (!ieee80211_find_available_radio(local, chanreq,
+						 sdata->wdev.radio_mask,
+						 &radio_idx))
+		ctx = ERR_PTR(-EBUSY);
+	else
+		ctx = ieee80211_new_chanctx(local, chanreq, mode,
+					    assign_on_failure, radio_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(ctx)) {
 		ret = PTR_ERR(ctx);
 		goto out;
@@ -2201,6 +2419,7 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
 
 	ret = ieee80211_assign_link_chanctx(link, ctx, assign_on_failure);
 
+<<<<<<< HEAD
 	/*
 	 * In case an existing channel context is being used, we marked it as
 	 * will_be_used, now that it is assigned - clear this indication
@@ -2208,6 +2427,12 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
 	if (reused_ctx) {
 		WARN_ON(!ctx->will_be_used);
 		ctx->will_be_used = false;
+=======
+	if (reserved) {
+		/* remove reservation */
+		WARN_ON(link->reserved_chanctx != ctx);
+		link->reserved_chanctx = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ret) {
@@ -2287,6 +2512,43 @@ int ieee80211_link_use_reserved_context(struct ieee80211_link_data *link)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * This is similar to ieee80211_chanctx_compatible(), but rechecks
+ * against all the links actually using it (except the one that's
+ * passed, since that one is changing).
+ * This is done in order to allow changes to the AP's bandwidth for
+ * wider bandwidth OFDMA purposes, which wouldn't be treated as
+ * compatible by ieee80211_chanctx_recheck() but is OK if the link
+ * requesting the update is the only one using it.
+ */
+static const struct ieee80211_chan_req *
+ieee80211_chanctx_recheck(struct ieee80211_local *local,
+			  struct ieee80211_link_data *skip_link,
+			  struct ieee80211_chanctx *ctx,
+			  const struct ieee80211_chan_req *req,
+			  struct ieee80211_chan_req *tmp)
+{
+	const struct ieee80211_chan_req *ret = req;
+	struct ieee80211_chanctx_user_iter iter;
+
+	lockdep_assert_wiphy(local->hw.wiphy);
+
+	for_each_chanctx_user_all(local, ctx, &iter) {
+		if (iter.link == skip_link)
+			continue;
+
+		ret = ieee80211_chanreq_compatible(ret, iter.chanreq, tmp);
+		if (!ret)
+			return NULL;
+	}
+
+	*tmp = *ret;
+	return tmp;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ieee80211_link_change_chanreq(struct ieee80211_link_data *link,
 				  const struct ieee80211_chan_req *chanreq,
 				  u64 *changed)
@@ -2323,7 +2585,11 @@ int ieee80211_link_change_chanreq(struct ieee80211_link_data *link,
 
 	ctx = container_of(conf, struct ieee80211_chanctx, conf);
 
+<<<<<<< HEAD
 	compat = _ieee80211_chanctx_compatible(local, link, ctx, chanreq, &tmp);
+=======
+	compat = ieee80211_chanctx_recheck(local, link, ctx, chanreq, &tmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!compat)
 		return -EINVAL;
 

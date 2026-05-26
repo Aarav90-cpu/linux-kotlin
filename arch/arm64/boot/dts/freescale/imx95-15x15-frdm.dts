@@ -243,12 +243,15 @@
 		};
 	};
 
+<<<<<<< HEAD
 	sound-mqs {
 		compatible = "audio-graph-card2";
 		links = <&sai1_port1>;
 		label = "mqs-audio";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usdhc3_pwrseq: usdhc3-pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
@@ -479,6 +482,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &mqs1 {
 	clocks = <&scmi_clk IMX95_CLK_SAI1>;
 	clock-names = "mclk";
@@ -494,6 +498,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &netc_blk_ctrl {
 	status = "okay";
 };
@@ -555,6 +561,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sai1 {
 	clocks = <&scmi_clk IMX95_CLK_BUSAON>, <&dummy>,
 		 <&scmi_clk IMX95_CLK_SAI1>, <&dummy>,
@@ -600,6 +607,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &scmi_iomuxc {
 	pinctrl_emdio: emdiogrp {
 		fsl,pins = <
@@ -684,6 +693,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_mqs1: mqs1grp {
 		fsl,pins = <
 			IMX95_PAD_SAI1_TXFS__AONMIX_TOP_MQS1_LEFT		0x31e
@@ -691,6 +701,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_pcal6524: pcal6524grp {
 		fsl,pins = <
 			IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14			0x31e

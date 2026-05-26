@@ -31,7 +31,11 @@ static int ttm_mock_manager_alloc(struct ttm_resource_manager *man,
 {
 	struct ttm_mock_manager *manager = to_mock_mgr(man);
 	struct ttm_mock_resource *mock_res;
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &manager->mm;
+=======
+	struct drm_buddy *mm = &manager->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 lpfn, fpfn, alloc_size;
 	int err;
 
@@ -47,6 +51,7 @@ static int ttm_mock_manager_alloc(struct ttm_resource_manager *man,
 	INIT_LIST_HEAD(&mock_res->blocks);
 
 	if (place->flags & TTM_PL_FLAG_TOPDOWN)
+<<<<<<< HEAD
 		mock_res->flags |= GPU_BUDDY_TOPDOWN_ALLOCATION;
 
 	if (place->flags & TTM_PL_FLAG_CONTIGUOUS)
@@ -55,6 +60,16 @@ static int ttm_mock_manager_alloc(struct ttm_resource_manager *man,
 	alloc_size = (uint64_t)mock_res->base.size;
 	mutex_lock(&manager->lock);
 	err = gpu_buddy_alloc_blocks(mm, fpfn, lpfn, alloc_size,
+=======
+		mock_res->flags |= DRM_BUDDY_TOPDOWN_ALLOCATION;
+
+	if (place->flags & TTM_PL_FLAG_CONTIGUOUS)
+		mock_res->flags |= DRM_BUDDY_CONTIGUOUS_ALLOCATION;
+
+	alloc_size = (uint64_t)mock_res->base.size;
+	mutex_lock(&manager->lock);
+	err = drm_buddy_alloc_blocks(mm, fpfn, lpfn, alloc_size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     manager->default_page_size,
 				     &mock_res->blocks,
 				     mock_res->flags);
@@ -67,7 +82,11 @@ static int ttm_mock_manager_alloc(struct ttm_resource_manager *man,
 	return 0;
 
 error_free_blocks:
+<<<<<<< HEAD
 	gpu_buddy_free_list(mm, &mock_res->blocks, 0);
+=======
+	drm_buddy_free_list(mm, &mock_res->blocks, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ttm_resource_fini(man, &mock_res->base);
 	mutex_unlock(&manager->lock);
 
@@ -79,10 +98,17 @@ static void ttm_mock_manager_free(struct ttm_resource_manager *man,
 {
 	struct ttm_mock_manager *manager = to_mock_mgr(man);
 	struct ttm_mock_resource *mock_res = to_mock_mgr_resource(res);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &manager->mm;
 
 	mutex_lock(&manager->lock);
 	gpu_buddy_free_list(mm, &mock_res->blocks, 0);
+=======
+	struct drm_buddy *mm = &manager->mm;
+
+	mutex_lock(&manager->lock);
+	drm_buddy_free_list(mm, &mock_res->blocks, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&manager->lock);
 
 	ttm_resource_fini(man, res);
@@ -106,7 +132,11 @@ int ttm_mock_manager_init(struct ttm_device *bdev, u32 mem_type, u32 size)
 
 	mutex_init(&manager->lock);
 
+<<<<<<< HEAD
 	err = gpu_buddy_init(&manager->mm, size, PAGE_SIZE);
+=======
+	err = drm_buddy_init(&manager->mm, size, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (err) {
 		kfree(manager);
@@ -142,7 +172,11 @@ void ttm_mock_manager_fini(struct ttm_device *bdev, u32 mem_type)
 	ttm_resource_manager_set_used(man, false);
 
 	mutex_lock(&mock_man->lock);
+<<<<<<< HEAD
 	gpu_buddy_fini(&mock_man->mm);
+=======
+	drm_buddy_fini(&mock_man->mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&mock_man->lock);
 
 	ttm_set_driver_manager(bdev, mem_type, NULL);

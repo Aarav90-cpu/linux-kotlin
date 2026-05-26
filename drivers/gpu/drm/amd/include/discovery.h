@@ -64,6 +64,7 @@ typedef struct binary_header
 	table_info table_list[TOTAL_TABLES];
 } binary_header;
 
+<<<<<<< HEAD
 typedef struct binary_header_v2
 {
 	/* psp structure should go at the top of this structure */
@@ -77,6 +78,8 @@ typedef struct binary_header_v2
 	table_info table_list[] __counted_by(num_tables);
 } binary_header_v2;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef struct die_info
 {
 	uint16_t die_id;

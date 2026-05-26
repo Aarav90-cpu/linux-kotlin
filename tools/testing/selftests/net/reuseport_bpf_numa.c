@@ -230,6 +230,7 @@ static void test(int *rcv_fd, int len, int family, int proto)
 		close(rcv_fd[node]);
 }
 
+<<<<<<< HEAD
 static void setup_netns(void)
 {
 	if (unshare(CLONE_NEWNET))
@@ -238,12 +239,17 @@ static void setup_netns(void)
 		error(1, 0, "failed to bring up lo interface in netns");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int main(void)
 {
 	int *rcv_fd, nodes;
 
+<<<<<<< HEAD
 	setup_netns();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (numa_available() < 0)
 		ksft_exit_skip("no numa api support\n");
 

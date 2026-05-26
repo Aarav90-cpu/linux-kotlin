@@ -159,7 +159,10 @@ extern atomic64_t event_counter;
 /* Controller Reset related definitions */
 #define MPI3MR_HOSTDIAG_UNLOCK_RETRY_COUNT	5
 #define MPI3MR_MAX_RESET_RETRY_COUNT		3
+<<<<<<< HEAD
 #define MPI3MR_MAX_SHUTDOWN_RETRY_COUNT		2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* ResponseCode definitions */
 #define MPI3MR_RI_MASK_RESPCODE		(0x000000FF)
@@ -324,7 +327,10 @@ enum mpi3mr_reset_reason {
 	MPI3MR_RESET_FROM_CFG_REQ_TIMEOUT = 29,
 	MPI3MR_RESET_FROM_SAS_TRANSPORT_TIMEOUT = 30,
 	MPI3MR_RESET_FROM_TRIGGER = 31,
+<<<<<<< HEAD
 	MPI3MR_RESET_FROM_INVALID_COMPLETION = 32,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define MPI3MR_RESET_REASON_OSTYPE_LINUX	1
@@ -430,6 +436,7 @@ struct segments {
  * @q_segments: Segment descriptor pointer
  * @q_segment_list: Segment list base virtual address
  * @q_segment_list_dma: Segment list base DMA address
+<<<<<<< HEAD
  * @last_full_host_tag: Hosttag of last IO returned to SML
  *			due to queue full
  * @qfull_io_count: Number of IOs returned back to SML
@@ -438,6 +445,8 @@ struct segments {
  *			starts with queue full detection and ends
  *			with queue full breaks.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct op_req_qinfo {
 	u16 ci;
@@ -451,10 +460,13 @@ struct op_req_qinfo {
 	struct segments *q_segments;
 	void *q_segment_list;
 	dma_addr_t q_segment_list_dma;
+<<<<<<< HEAD
 	u16 last_full_host_tag;
 	u64 qfull_io_count;
 	u32 qfull_instances;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -1197,7 +1209,10 @@ struct scmd_priv {
  * @num_tb_segs: Number of Segments in Trace buffer
  * @trace_buf_pool: DMA pool for Segmented trace buffer segments
  * @trace_buf: Trace buffer segments memory descriptor
+<<<<<<< HEAD
  * @invalid_io_comp: Invalid IO completion
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct mpi3mr_ioc {
 	struct list_head list;
@@ -1409,7 +1424,10 @@ struct mpi3mr_ioc {
 	u32 num_tb_segs;
 	struct dma_pool *trace_buf_pool;
 	struct segments *trace_buf;
+<<<<<<< HEAD
 	u8 invalid_io_comp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 };
 

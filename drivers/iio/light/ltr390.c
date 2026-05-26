@@ -101,7 +101,11 @@ enum ltr390_meas_rate {
 struct ltr390_data {
 	struct regmap *regmap;
 	struct i2c_client *client;
+<<<<<<< HEAD
 	/* Protects device from simultaneous reads */
+=======
+	/* Protects device from simulataneous reads */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex lock;
 	enum ltr390_mode mode;
 	int gain;

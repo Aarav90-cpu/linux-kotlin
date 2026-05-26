@@ -526,14 +526,22 @@ static int dwc3_qcom_find_num_ports(struct platform_device *pdev)
 	int irq;
 
 	irq = platform_get_irq_byname_optional(pdev, "dp_hs_phy_1");
+<<<<<<< HEAD
 	if (irq < 0)
+=======
+	if (irq <= 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 
 	for (port_num = 2; port_num <= DWC3_QCOM_MAX_PORTS; port_num++) {
 		sprintf(irq_name, "dp_hs_phy_%d", port_num);
 
 		irq = platform_get_irq_byname_optional(pdev, irq_name);
+<<<<<<< HEAD
 		if (irq < 0)
+=======
+		if (irq <= 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return port_num - 1;
 	}
 

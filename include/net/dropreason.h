@@ -23,12 +23,15 @@ enum skb_drop_reason_subsys {
 	 */
 	SKB_DROP_REASON_SUBSYS_OPENVSWITCH,
 
+<<<<<<< HEAD
 	/**
 	 * @SKB_DROP_REASON_SUBSYS_QDISC: TC qdisc drop reasons,
 	 * see include/net/dropreason-qdisc.h
 	 */
 	SKB_DROP_REASON_SUBSYS_QDISC,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @SKB_DROP_REASON_SUBSYS_NUM: number of subsystems defined */
 	SKB_DROP_REASON_SUBSYS_NUM
 };

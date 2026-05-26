@@ -424,7 +424,10 @@ enum snd_soc_dapm_type {
 	snd_soc_dapm_input = 0,		/* input pin */
 	snd_soc_dapm_output,		/* output pin */
 	snd_soc_dapm_mux,		/* selects 1 analog signal from many inputs */
+<<<<<<< HEAD
 	snd_soc_dapm_mux_named_ctl,	/* mux with named controls */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snd_soc_dapm_demux,		/* connects the input to one of multiple outputs */
 	snd_soc_dapm_mixer,		/* mixes several analog signals together */
 	snd_soc_dapm_mixer_named_ctl,	/* mixer with named controls */

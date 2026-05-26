@@ -13,4 +13,8 @@ config TSM_REPORTS
 config TSM_MEASUREMENTS
 	select TSM_GUEST
 	select CRYPTO_HASH_INFO
+<<<<<<< HEAD
+=======
+	select CRYPTO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool

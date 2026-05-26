@@ -17,7 +17,11 @@
 
 #define HYP_MEMBLOCK_REGIONS 128
 
+<<<<<<< HEAD
 int pkvm_init_host_vm(struct kvm *kvm, unsigned long type);
+=======
+int pkvm_init_host_vm(struct kvm *kvm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int pkvm_create_hyp_vm(struct kvm *kvm);
 bool pkvm_hyp_vm_is_created(struct kvm *kvm);
 void pkvm_destroy_hyp_vm(struct kvm *kvm);
@@ -40,6 +44,11 @@ static inline bool kvm_pkvm_ext_allowed(struct kvm *kvm, long ext)
 	case KVM_CAP_MAX_VCPU_ID:
 	case KVM_CAP_MSI_DEVID:
 	case KVM_CAP_ARM_VM_IPA_SIZE:
+<<<<<<< HEAD
+=======
+	case KVM_CAP_ARM_PMU_V3:
+	case KVM_CAP_ARM_SVE:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case KVM_CAP_ARM_PTRAUTH_ADDRESS:
 	case KVM_CAP_ARM_PTRAUTH_GENERIC:
 		return true;

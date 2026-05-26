@@ -3,7 +3,10 @@
 #include <linux/memregion.h>
 #include <linux/module.h>
 #include <linux/dax.h>
+<<<<<<< HEAD
 #include "../../cxl/cxl.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "../bus.h"
 
 static bool region_idle;
@@ -59,6 +62,7 @@ static void release_hmem(void *pdev)
 	platform_device_unregister(pdev);
 }
 
+<<<<<<< HEAD
 static struct workqueue_struct *dax_hmem_wq;
 
 void dax_hmem_flush_work(void)
@@ -69,12 +73,26 @@ EXPORT_SYMBOL_FOR_MODULES(dax_hmem_flush_work, "dax_cxl");
 
 static int __hmem_register_device(struct device *host, int target_nid,
 				  const struct resource *res)
+=======
+static int hmem_register_device(struct device *host, int target_nid,
+				const struct resource *res)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct platform_device *pdev;
 	struct memregion_info info;
 	long id;
 	int rc;
 
+<<<<<<< HEAD
+=======
+	if (IS_ENABLED(CONFIG_CXL_REGION) &&
+	    region_intersects(res->start, resource_size(res), IORESOURCE_MEM,
+			      IORES_DESC_CXL) != REGION_DISJOINT) {
+		dev_dbg(host, "deferring range to CXL: %pr\n", res);
+		return 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = region_intersects_soft_reserve(res->start, resource_size(res));
 	if (rc != REGION_INTERSECTS)
 		return 0;
@@ -96,7 +114,10 @@ static int __hmem_register_device(struct device *host, int target_nid,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	pdev->dev.parent = host;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdev->dev.numa_node = numa_map_to_online_node(target_nid);
 	info = (struct memregion_info) {
 		.target_node = target_nid,
@@ -126,6 +147,7 @@ out_put:
 	return rc;
 }
 
+<<<<<<< HEAD
 static int hmem_register_cxl_device(struct device *host, int target_nid,
 				    const struct resource *res)
 {
@@ -194,6 +216,10 @@ static int dax_hmem_platform_probe(struct platform_device *pdev)
 	if (work_pending(&hpdev->work))
 		return -EBUSY;
 
+=======
+static int dax_hmem_platform_probe(struct platform_device *pdev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return walk_hmem_resources(&pdev->dev, hmem_register_device);
 }
 
@@ -208,6 +234,7 @@ static __init int dax_hmem_init(void)
 {
 	int rc;
 
+<<<<<<< HEAD
 	/*
 	 * Ensure that cxl_acpi and cxl_pci have a chance to kick off
 	 * CXL topology discovery at least once before scanning the
@@ -236,6 +263,15 @@ err_driver:
 	platform_driver_unregister(&dax_hmem_platform_driver);
 err_platform_driver:
 	destroy_workqueue(dax_hmem_wq);
+=======
+	rc = platform_driver_register(&dax_hmem_platform_driver);
+	if (rc)
+		return rc;
+
+	rc = platform_driver_register(&dax_hmem_driver);
+	if (rc)
+		platform_driver_unregister(&dax_hmem_platform_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return rc;
 }
@@ -244,12 +280,25 @@ static __exit void dax_hmem_exit(void)
 {
 	platform_driver_unregister(&dax_hmem_driver);
 	platform_driver_unregister(&dax_hmem_platform_driver);
+<<<<<<< HEAD
 	destroy_workqueue(dax_hmem_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(dax_hmem_init);
 module_exit(dax_hmem_exit);
 
+<<<<<<< HEAD
+=======
+/* Allow for CXL to define its own dax regions */
+#if IS_ENABLED(CONFIG_CXL_REGION)
+#if IS_MODULE(CONFIG_CXL_ACPI)
+MODULE_SOFTDEP("pre: cxl_acpi");
+#endif
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_ALIAS("platform:hmem*");
 MODULE_ALIAS("platform:hmem_platform*");
 MODULE_DESCRIPTION("HMEM DAX: direct access to 'specific purpose' memory");

@@ -26,9 +26,13 @@ properties:
   compatible:
     items:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-pdc
           - qcom,glymur-pdc
           - qcom,hawi-pdc
+=======
+          - qcom,glymur-pdc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,kaanapali-pdc
           - qcom,milos-pdc
           - qcom,qcs615-pdc

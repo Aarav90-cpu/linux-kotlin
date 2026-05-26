@@ -185,7 +185,10 @@ void io_req_track_inflight(struct io_kiocb *req);
 struct file *io_file_get_normal(struct io_kiocb *req, int fd);
 struct file *io_file_get_fixed(struct io_kiocb *req, int fd,
 			       unsigned issue_flags);
+<<<<<<< HEAD
 struct file *io_uring_ctx_get_file(unsigned int fd, bool registered);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void io_req_task_queue(struct io_kiocb *req);
 void io_req_task_complete(struct io_tw_req tw_req, io_tw_token_t tw);
@@ -224,7 +227,11 @@ static inline void io_lockdep_assert_cq_locked(struct io_ring_ctx *ctx)
 
 	if (ctx->flags & IORING_SETUP_IOPOLL) {
 		lockdep_assert_held(&ctx->uring_lock);
+<<<<<<< HEAD
 	} else if (!(ctx->int_flags & IO_RING_F_TASK_COMPLETE)) {
+=======
+	} else if (!ctx->task_complete) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lockdep_assert_held(&ctx->completion_lock);
 	} else if (ctx->submitter_task) {
 		/*
@@ -241,7 +248,11 @@ static inline void io_lockdep_assert_cq_locked(struct io_ring_ctx *ctx)
 
 static inline bool io_is_compat(struct io_ring_ctx *ctx)
 {
+<<<<<<< HEAD
 	return IS_ENABLED(CONFIG_COMPAT) && unlikely(ctx->int_flags & IO_RING_F_COMPAT);
+=======
+	return IS_ENABLED(CONFIG_COMPAT) && unlikely(ctx->compat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void io_submit_flush_completions(struct io_ring_ctx *ctx)
@@ -495,12 +506,19 @@ static inline void io_req_complete_defer(struct io_kiocb *req)
 	wq_list_add_tail(&req->comp_list, &state->compl_reqs);
 }
 
+<<<<<<< HEAD
 #define SHOULD_FLUSH_MASK	(IO_RING_F_OFF_TIMEOUT_USED | \
 				 IO_RING_F_HAS_EVFD | IO_RING_F_POLL_ACTIVATED)
 
 static inline void io_commit_cqring_flush(struct io_ring_ctx *ctx)
 {
 	if (unlikely(data_race(ctx->int_flags) & SHOULD_FLUSH_MASK))
+=======
+static inline void io_commit_cqring_flush(struct io_ring_ctx *ctx)
+{
+	if (unlikely(ctx->off_timeout_used ||
+		     ctx->has_evfd || ctx->poll_activated))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__io_commit_cqring_flush(ctx);
 }
 

@@ -234,6 +234,7 @@ int cifs_verify_signature(struct smb_rqst *rqst,
  * smb1maperror.c
  */
 int map_smb_to_linux_error(char *buf, bool logErr);
+<<<<<<< HEAD
 int smb1_init_maperror(void);
 int map_and_check_smb_error(struct TCP_Server_Info *server,
 			    struct mid_q_entry *mid, bool logErr);
@@ -251,6 +252,10 @@ extern unsigned int mapping_table_ERRSRV_num;
 const struct smb_to_posix_error *
 search_mapping_table_ERRSRV_test(__u16 smb_err);
 #endif
+=======
+int map_and_check_smb_error(struct TCP_Server_Info *server,
+			    struct mid_q_entry *mid, bool logErr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * smb1misc.c

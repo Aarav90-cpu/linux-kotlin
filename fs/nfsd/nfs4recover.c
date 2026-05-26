@@ -352,14 +352,25 @@ purge_old(struct dentry *parent, char *cname, struct nfsd_net *nn)
 	if (nfs4_has_reclaimed_state(name, nn))
 		goto out_free;
 
+<<<<<<< HEAD
 	child = start_removing_noperm(parent, &QSTR(cname));
+=======
+	inode_lock_nested(d_inode(parent), I_MUTEX_PARENT);
+	child = lookup_one(&nop_mnt_idmap, &QSTR(cname), parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_ERR(child)) {
 		status = vfs_rmdir(&nop_mnt_idmap, d_inode(parent), child, NULL);
 		if (status)
 			printk("failed to remove client recovery directory %pd\n",
 			       child);
+<<<<<<< HEAD
 	}
 	end_removing(child);
+=======
+		dput(child);
+	}
+	inode_unlock(d_inode(parent));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out_free:
 	kfree(name.data);

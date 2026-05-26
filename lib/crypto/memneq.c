@@ -59,7 +59,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+<<<<<<< HEAD
 #include <crypto/utils.h>
+=======
+#include <crypto/algapi.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/export.h>
 #include <linux/module.h>
 #include <linux/unaligned.h>
@@ -159,7 +163,11 @@ static inline unsigned long __crypto_memneq_16(const void *a, const void *b)
 /* Compare two areas of memory without leaking timing information,
  * and with special optimizations for common sizes.  Users should
  * not call this function directly, but should instead use
+<<<<<<< HEAD
  * crypto_memneq defined in crypto/utils.h.
+=======
+ * crypto_memneq defined in crypto/algapi.h.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 noinline unsigned long __crypto_memneq(const void *a, const void *b,
 				       size_t size)

@@ -160,8 +160,13 @@ static void tegra_channel_buffer_queue(struct vb2_buffer *vb)
 	wake_up_interruptible(&chan->start_wait);
 }
 
+<<<<<<< HEAD
 static struct v4l2_subdev *
 tegra_channel_get_remote_bridge_subdev(struct tegra_vi_channel *chan)
+=======
+struct v4l2_subdev *
+tegra_channel_get_remote_csi_subdev(struct tegra_vi_channel *chan)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct media_pad *pad;
 
@@ -182,7 +187,11 @@ tegra_channel_get_remote_source_subdev(struct tegra_vi_channel *chan)
 	struct v4l2_subdev *subdev;
 	struct media_entity *entity;
 
+<<<<<<< HEAD
 	subdev = tegra_channel_get_remote_bridge_subdev(chan);
+=======
+	subdev = tegra_channel_get_remote_csi_subdev(chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!subdev)
 		return NULL;
 
@@ -204,7 +213,11 @@ static int tegra_channel_enable_stream(struct tegra_vi_channel *chan)
 	struct v4l2_subdev *subdev;
 	int ret;
 
+<<<<<<< HEAD
 	subdev = tegra_channel_get_remote_bridge_subdev(chan);
+=======
+	subdev = tegra_channel_get_remote_csi_subdev(chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = v4l2_subdev_call(subdev, video, s_stream, true);
 	if (ret < 0 && ret != -ENOIOCTLCMD)
 		return ret;
@@ -217,7 +230,11 @@ static int tegra_channel_disable_stream(struct tegra_vi_channel *chan)
 	struct v4l2_subdev *subdev;
 	int ret;
 
+<<<<<<< HEAD
 	subdev = tegra_channel_get_remote_bridge_subdev(chan);
+=======
+	subdev = tegra_channel_get_remote_csi_subdev(chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = v4l2_subdev_call(subdev, video, s_stream, false);
 	if (ret < 0 && ret != -ENOIOCTLCMD)
 		return ret;
@@ -476,11 +493,25 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
 	fse.code = fmtinfo->code;
 	ret = v4l2_subdev_call(subdev, pad, enum_frame_size, sd_state, &fse);
 	if (ret) {
+<<<<<<< HEAD
 		if (!v4l2_subdev_has_op(subdev, pad, get_selection) ||
 		    v4l2_subdev_call(subdev, pad, get_selection, NULL, &sdsel)) {
 			try_crop->width = 0;
 			try_crop->height = 0;
 		} else {
+=======
+		if (!v4l2_subdev_has_op(subdev, pad, get_selection)) {
+			try_crop->width = 0;
+			try_crop->height = 0;
+		} else {
+			ret = v4l2_subdev_call(subdev, pad, get_selection,
+					       NULL, &sdsel);
+			if (ret) {
+				ret = -EINVAL;
+				goto out_free;
+			}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			try_crop->width = sdsel.r.width;
 			try_crop->height = sdsel.r.height;
 		}
@@ -962,7 +993,10 @@ static int tegra_channel_setup_ctrl_handler(struct tegra_vi_channel *chan)
 	}
 #else
 	struct v4l2_subdev *subdev;
+<<<<<<< HEAD
 	struct v4l2_ctrl *hflip, *vflip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* custom control */
 	v4l2_ctrl_new_custom(&chan->ctrl_handler, &syncpt_timeout_ctrl, NULL);
@@ -988,6 +1022,7 @@ static int tegra_channel_setup_ctrl_handler(struct tegra_vi_channel *chan)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	hflip = v4l2_ctrl_find(subdev->ctrl_handler, V4L2_CID_HFLIP);
 	if (chan->vi->soc->has_h_v_flip && !hflip)
 		v4l2_ctrl_new_std(&chan->ctrl_handler, &vi_ctrl_ops, V4L2_CID_HFLIP, 0, 1, 1, 0);
@@ -995,6 +1030,13 @@ static int tegra_channel_setup_ctrl_handler(struct tegra_vi_channel *chan)
 	vflip = v4l2_ctrl_find(subdev->ctrl_handler, V4L2_CID_VFLIP);
 	if (chan->vi->soc->has_h_v_flip && !vflip)
 		v4l2_ctrl_new_std(&chan->ctrl_handler, &vi_ctrl_ops, V4L2_CID_VFLIP, 0, 1, 1, 0);
+=======
+	if (chan->vi->soc->has_h_v_flip) {
+		v4l2_ctrl_new_std(&chan->ctrl_handler, &vi_ctrl_ops, V4L2_CID_HFLIP, 0, 1, 1, 0);
+		v4l2_ctrl_new_std(&chan->ctrl_handler, &vi_ctrl_ops, V4L2_CID_VFLIP, 0, 1, 1, 0);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	/* setup the controls */
@@ -1418,19 +1460,43 @@ static int __maybe_unused vi_runtime_resume(struct device *dev)
 	struct tegra_vi *vi = dev_get_drvdata(dev);
 	int ret;
 
+<<<<<<< HEAD
 	ret = clk_set_rate(vi->clk, vi->soc->vi_max_clk_hz);
 	if (ret) {
 		dev_err(dev, "failed to set vi clock rate: %d\n", ret);
 		return ret;
+=======
+	ret = regulator_enable(vi->vdd);
+	if (ret) {
+		dev_err(dev, "failed to enable VDD supply: %d\n", ret);
+		return ret;
+	}
+
+	ret = clk_set_rate(vi->clk, vi->soc->vi_max_clk_hz);
+	if (ret) {
+		dev_err(dev, "failed to set vi clock rate: %d\n", ret);
+		goto disable_vdd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = clk_prepare_enable(vi->clk);
 	if (ret) {
 		dev_err(dev, "failed to enable vi clock: %d\n", ret);
+<<<<<<< HEAD
 		return ret;
 	}
 
 	return 0;
+=======
+		goto disable_vdd;
+	}
+
+	return 0;
+
+disable_vdd:
+	regulator_disable(vi->vdd);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __maybe_unused vi_runtime_suspend(struct device *dev)
@@ -1439,6 +1505,11 @@ static int __maybe_unused vi_runtime_suspend(struct device *dev)
 
 	clk_disable_unprepare(vi->clk);
 
+<<<<<<< HEAD
+=======
+	regulator_disable(vi->vdd);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1619,11 +1690,19 @@ static int tegra_vi_graph_notify_complete(struct v4l2_async_notifier *notifier)
 		goto unregister_video;
 	}
 
+<<<<<<< HEAD
 	subdev = tegra_channel_get_remote_bridge_subdev(chan);
 	if (!subdev) {
 		ret = -ENODEV;
 		dev_err(vi->dev,
 			"failed to get remote bridge subdev: %d\n", ret);
+=======
+	subdev = tegra_channel_get_remote_csi_subdev(chan);
+	if (!subdev) {
+		ret = -ENODEV;
+		dev_err(vi->dev,
+			"failed to get remote csi subdev: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unregister_video;
 	}
 
@@ -1883,6 +1962,16 @@ static int tegra_vi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	vi->vdd = devm_regulator_get(&pdev->dev, "avdd-dsi-csi");
+	if (IS_ERR(vi->vdd)) {
+		ret = PTR_ERR(vi->vdd);
+		dev_err(&pdev->dev, "failed to get VDD supply: %d\n", ret);
+		return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pdev->dev.pm_domain) {
 		ret = -ENOENT;
 		dev_warn(&pdev->dev, "PM domain is not attached: %d\n", ret);
@@ -1937,7 +2026,11 @@ static void tegra_vi_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id tegra_vi_of_id_table[] = {
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC) || defined(CONFIG_ARCH_TEGRA_3x_SOC)
+=======
+#if defined(CONFIG_ARCH_TEGRA_2x_SOC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "nvidia,tegra20-vi",  .data = &tegra20_vi_soc },
 #endif
 #if defined(CONFIG_ARCH_TEGRA_210_SOC)

@@ -106,6 +106,16 @@ static int init_display(struct fbtft_par *par)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void set_addr_win(struct fbtft_par *par, int xs, int ys, int xe, int ye)
+{
+	write_reg(par, MIPI_DCS_SET_COLUMN_ADDRESS, 0x00, xs, 0x00, xe);
+	write_reg(par, MIPI_DCS_SET_PAGE_ADDRESS, 0x00, ys, 0x00, ye);
+	write_reg(par, MIPI_DCS_WRITE_MEMORY_START);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int set_var(struct fbtft_par *par)
 {
 	/* MADCTL - Memory data access control */
@@ -200,6 +210,10 @@ static struct fbtft_display display = {
 	.gamma = DEFAULT_GAMMA,
 	.fbtftops = {
 		.init_display = init_display,
+<<<<<<< HEAD
+=======
+		.set_addr_win = set_addr_win,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.set_var = set_var,
 		.set_gamma = set_gamma,
 	},

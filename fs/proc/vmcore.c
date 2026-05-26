@@ -525,7 +525,11 @@ static int remap_oldmem_pfn_checked(struct vm_area_struct *vma,
 {
 	unsigned long map_size;
 	unsigned long pos_start, pos_end, pos;
+<<<<<<< HEAD
 	unsigned long zeropage_pfn = zero_pfn(0);
+=======
+	unsigned long zeropage_pfn = my_zero_pfn(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t len = 0;
 
 	pos_start = pfn;

@@ -7,7 +7,11 @@ Landlock LSM: kernel documentation
 ==================================
 
 :Author: Mickaël Salaün
+<<<<<<< HEAD
 :Date: March 2026
+=======
+:Date: September 2025
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Landlock's goal is to create scoped access-control (i.e. sandboxing).  To
 harden a whole system, this feature should be available to any process,
@@ -89,6 +93,7 @@ this is required to keep access controls consistent over the whole system, and
 this avoids unattended bypasses through file descriptor passing (i.e. confused
 deputy attack).
 
+<<<<<<< HEAD
 .. _scoped-flags-interaction:
 
 Interaction between scoped flags and other access rights
@@ -129,6 +134,8 @@ The reasoning is:
   restrictions, because access within the same scope is already
   allowed based on ``LANDLOCK_ACCESS_FS_RESOLVE_UNIX``.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Tests
 =====
 

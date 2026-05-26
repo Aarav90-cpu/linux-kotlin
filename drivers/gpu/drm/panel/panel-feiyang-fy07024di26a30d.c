@@ -98,7 +98,13 @@ static int feiyang_enable(struct drm_panel *panel)
 	/* T12 (video & logic signal rise + backlight rise) T12 >= 200ms */
 	msleep(200);
 
+<<<<<<< HEAD
 	return mipi_dsi_dcs_set_display_on(ctx->dsi);
+=======
+	mipi_dsi_dcs_set_display_on(ctx->dsi);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int feiyang_disable(struct drm_panel *panel)

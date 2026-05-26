@@ -73,6 +73,10 @@
 #include <net/seg6.h>
 #include <net/seg6_local.h>
 #include <net/lwtunnel.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/bpf_sk_storage.h>
 #include <net/transp_v6.h>
 #include <linux/btf_ids.h>
@@ -121,11 +125,16 @@ EXPORT_SYMBOL_GPL(copy_bpf_fprog_from_user);
  *	@sk: sock associated with &sk_buff
  *	@skb: buffer to filter
  *	@cap: limit on how short the eBPF program may trim the packet
+<<<<<<< HEAD
+=======
+ *	@reason: record drop reason on errors (negative return value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Run the eBPF program and then cut skb->data to correct size returned by
  * the program. If pkt_len is 0 we toss packet. If skb->len is smaller
  * than pkt_len we keep whole skb->data. This is the socket level
  * wrapper to bpf_prog_run. It returns 0 if the packet should
+<<<<<<< HEAD
  * be accepted or a drop_reason if the packet should be tossed.
  *
  */
@@ -135,6 +144,16 @@ sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap)
 	enum skb_drop_reason drop_reason;
 	struct sk_filter *filter;
 	int err;
+=======
+ * be accepted or -EPERM if the packet should be tossed.
+ *
+ */
+int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb,
+		       unsigned int cap, enum skb_drop_reason *reason)
+{
+	int err;
+	struct sk_filter *filter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If the skb was allocated from pfmemalloc reserves, only
@@ -143,6 +162,7 @@ sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap)
 	 */
 	if (skb_pfmemalloc(skb) && !sock_flag(sk, SOCK_MEMALLOC)) {
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
+<<<<<<< HEAD
 		return SKB_DROP_REASON_PFMEMALLOC;
 	}
 	err = BPF_CGROUP_RUN_PROG_INET_INGRESS(sk, skb);
@@ -154,6 +174,23 @@ sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap)
 		return SKB_DROP_REASON_SECURITY_HOOK;
 
 	drop_reason = 0;
+=======
+		*reason = SKB_DROP_REASON_PFMEMALLOC;
+		return -ENOMEM;
+	}
+	err = BPF_CGROUP_RUN_PROG_INET_INGRESS(sk, skb);
+	if (err) {
+		*reason = SKB_DROP_REASON_SOCKET_FILTER;
+		return err;
+	}
+
+	err = security_sock_rcv_skb(sk, skb);
+	if (err) {
+		*reason = SKB_DROP_REASON_SECURITY_HOOK;
+		return err;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	filter = rcu_dereference(sk->sk_filter);
 	if (filter) {
@@ -165,11 +202,19 @@ sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap)
 		skb->sk = save_sk;
 		err = pkt_len ? pskb_trim(skb, max(cap, pkt_len)) : -EPERM;
 		if (err)
+<<<<<<< HEAD
 			drop_reason = SKB_DROP_REASON_SOCKET_FILTER;
 	}
 	rcu_read_unlock();
 
 	return drop_reason;
+=======
+			*reason = SKB_DROP_REASON_SOCKET_FILTER;
+	}
+	rcu_read_unlock();
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(sk_filter_trim_cap);
 
@@ -503,7 +548,11 @@ static bool convert_bpf_ld_abs(struct sock_filter *fp, struct bpf_insn **insnp)
 	    ((unaligned_ok && offset >= 0) ||
 	     (!unaligned_ok && offset >= 0 &&
 	      offset + ip_align >= 0 &&
+<<<<<<< HEAD
 	      (offset + ip_align) % size == 0))) {
+=======
+	      offset + ip_align % size == 0))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool ldx_off_ok = offset <= S16_MAX;
 
 		*insn++ = BPF_MOV64_REG(BPF_REG_TMP, BPF_REG_H);
@@ -1654,6 +1703,7 @@ err_prog_put:
 	return err;
 }
 
+<<<<<<< HEAD
 static void sk_reuseport_prog_free_rcu(struct rcu_head *rcu)
 {
 	struct bpf_prog_aux *aux = container_of(rcu, struct bpf_prog_aux, rcu);
@@ -1663,15 +1713,24 @@ static void sk_reuseport_prog_free_rcu(struct rcu_head *rcu)
 	bpf_prog_free(prog);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void sk_reuseport_prog_free(struct bpf_prog *prog)
 {
 	if (!prog)
 		return;
 
+<<<<<<< HEAD
 	if (bpf_prog_was_classic(prog))
 		call_rcu(&prog->aux->rcu, sk_reuseport_prog_free_rcu);
 	else
 		bpf_prog_put(prog);
+=======
+	if (prog->type == BPF_PROG_TYPE_SK_REUSEPORT)
+		bpf_prog_put(prog);
+	else
+		bpf_prog_destroy(prog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int __bpf_try_make_writable(struct sk_buff *skb,
@@ -2283,7 +2342,11 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
 			.saddr	      = ip6h->saddr,
 		};
 
+<<<<<<< HEAD
 		dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
+=======
+		dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &fl6, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(dst))
 			goto out_drop;
 
@@ -3261,6 +3324,16 @@ static const struct bpf_func_proto bpf_skb_vlan_pop_proto = {
 	.arg1_type      = ARG_PTR_TO_CTX,
 };
 
+<<<<<<< HEAD
+=======
+static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
+{
+	skb->protocol = htons(proto);
+	if (skb_valid_dst(skb))
+		skb_dst_drop(skb);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
 {
 	/* Caller already did skb_cow() with meta_len+len as headroom,
@@ -3359,7 +3432,11 @@ static int bpf_skb_proto_4_to_6(struct sk_buff *skb)
 		shinfo->gso_type |=  SKB_GSO_DODGY;
 	}
 
+<<<<<<< HEAD
 	skb->protocol = htons(ETH_P_IPV6);
+=======
+	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_clear_hash(skb);
 
 	return 0;
@@ -3390,7 +3467,11 @@ static int bpf_skb_proto_6_to_4(struct sk_buff *skb)
 		shinfo->gso_type |=  SKB_GSO_DODGY;
 	}
 
+<<<<<<< HEAD
 	skb->protocol = htons(ETH_P_IP);
+=======
+	bpf_skb_change_protocol(skb, ETH_P_IP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_clear_hash(skb);
 
 	return 0;
@@ -3438,6 +3519,7 @@ BPF_CALL_3(bpf_skb_change_proto, struct sk_buff *, skb, __be16, proto,
 	 */
 	ret = bpf_skb_proto_xlat(skb, proto);
 	bpf_compute_data_pointers(skb);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -3445,6 +3527,9 @@ BPF_CALL_3(bpf_skb_change_proto, struct sk_buff *, skb, __be16, proto,
 		skb_dst_drop(skb);
 
 	return 0;
+=======
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct bpf_func_proto bpf_skb_change_proto_proto = {
@@ -3586,6 +3671,7 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
 		}
 
 		/* Match skb->protocol to new outer l3 protocol */
+<<<<<<< HEAD
 		if (flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
 			skb->protocol = htons(ETH_P_IPV6);
 		else if (flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
@@ -3593,6 +3679,14 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
 
 		if (skb_valid_dst(skb))
 			skb_dst_drop(skb);
+=======
+		if (skb->protocol == htons(ETH_P_IP) &&
+		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+		else if (skb->protocol == htons(ETH_P_IPV6) &&
+			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+			bpf_skb_change_protocol(skb, ETH_P_IP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (skb_is_gso(skb)) {
@@ -3620,7 +3714,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
 static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
 			      u64 flags)
 {
+<<<<<<< HEAD
 	bool decap = flags & BPF_F_ADJ_ROOM_DECAP_L3_MASK;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (unlikely(flags & ~(BPF_F_ADJ_ROOM_FIXED_GSO |
@@ -3643,6 +3740,7 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
 	if (unlikely(ret < 0))
 		return ret;
 
+<<<<<<< HEAD
 	if (decap) {
 		/* Match skb->protocol to new outer l3 protocol */
 		if (flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
@@ -3653,6 +3751,15 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
 		if (skb_valid_dst(skb))
 			skb_dst_drop(skb);
 	}
+=======
+	/* Match skb->protocol to new outer l3 protocol */
+	if (skb->protocol == htons(ETH_P_IP) &&
+	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
+		bpf_skb_change_protocol(skb, ETH_P_IPV6);
+	else if (skb->protocol == htons(ETH_P_IPV6) &&
+		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+		bpf_skb_change_protocol(skb, ETH_P_IP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (skb_is_gso(skb)) {
 		struct skb_shared_info *shinfo = skb_shinfo(skb);
@@ -4403,8 +4510,11 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
 	struct net_device *master, *slave;
 
 	master = netdev_master_upper_dev_get_rcu(xdp->rxq->dev);
+<<<<<<< HEAD
 	if (unlikely(!(master->flags & IFF_UP)))
 		return XDP_ABORTED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	slave = master->netdev_ops->ndo_xdp_get_xmit_slave(master, xdp);
 	if (slave && slave != xdp->rxq->dev) {
 		/* The target device is different from the receiving device, so
@@ -5405,7 +5515,11 @@ static int bpf_sol_tcp_setsockopt(struct sock *sk, int optname,
 		if (val <= 0)
 			return -EINVAL;
 		tp->snd_cwnd_clamp = val;
+<<<<<<< HEAD
 		WRITE_ONCE(tp->snd_ssthresh, val);
+=======
+		tp->snd_ssthresh = val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case TCP_BPF_DELACK_MAX:
 		timeout = usecs_to_jiffies(val);
@@ -5490,7 +5604,11 @@ static int sol_tcp_sockopt(struct sock *sk, int optname,
 			   char *optval, int *optlen,
 			   bool getopt)
 {
+<<<<<<< HEAD
 	if (!sk_is_tcp(sk))
+=======
+	if (sk->sk_protocol != IPPROTO_TCP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	switch (optname) {
@@ -5587,12 +5705,21 @@ static int sol_ipv6_sockopt(struct sock *sk, int optname,
 	}
 
 	if (getopt)
+<<<<<<< HEAD
 		return do_ipv6_getsockopt(sk, SOL_IPV6, optname,
 					  KERNEL_SOCKPTR(optval),
 					  KERNEL_SOCKPTR(optlen));
 
 	return do_ipv6_setsockopt(sk, SOL_IPV6, optname,
 				  KERNEL_SOCKPTR(optval), *optlen);
+=======
+		return ipv6_bpf_stub->ipv6_getsockopt(sk, SOL_IPV6, optname,
+						      KERNEL_SOCKPTR(optval),
+						      KERNEL_SOCKPTR(optlen));
+
+	return ipv6_bpf_stub->ipv6_setsockopt(sk, SOL_IPV6, optname,
+					      KERNEL_SOCKPTR(optval), *optlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __bpf_setsockopt(struct sock *sk, int level, int optname,
@@ -5697,6 +5824,7 @@ const struct bpf_func_proto bpf_sk_getsockopt_proto = {
 	.arg5_type	= ARG_CONST_SIZE,
 };
 
+<<<<<<< HEAD
 BPF_CALL_5(bpf_sk_setsockopt_nodelay, struct sock *, sk, int, level,
 	   int, optname, char *, optval, int, optlen)
 {
@@ -5721,6 +5849,8 @@ const struct bpf_func_proto bpf_sk_setsockopt_nodelay_proto = {
 	.arg5_type	= ARG_CONST_SIZE,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BPF_CALL_5(bpf_unlocked_sk_setsockopt, struct sock *, sk, int, level,
 	   int, optname, char *, optval, int, optlen)
 {
@@ -5866,12 +5996,15 @@ BPF_CALL_5(bpf_sock_ops_setsockopt, struct bpf_sock_ops_kern *, bpf_sock,
 	if (!is_locked_tcp_sock_ops(bpf_sock))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	/* TCP_NODELAY triggers tcp_push_pending_frames() and re-enters these callbacks. */
 	if ((bpf_sock->op == BPF_SOCK_OPS_HDR_OPT_LEN_CB ||
 	     bpf_sock->op == BPF_SOCK_OPS_WRITE_HDR_OPT_CB) &&
 	    level == SOL_TCP && optname == TCP_NODELAY)
 		return -EOPNOTSUPP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return _bpf_setsockopt(bpf_sock->sk, level, optname, optval, optlen);
 }
 
@@ -6021,6 +6154,12 @@ static const struct bpf_func_proto bpf_sock_ops_cb_flags_set_proto = {
 	.arg2_type	= ARG_ANYTHING,
 };
 
+<<<<<<< HEAD
+=======
+const struct ipv6_bpf_stub *ipv6_bpf_stub __read_mostly;
+EXPORT_SYMBOL_GPL(ipv6_bpf_stub);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BPF_CALL_3(bpf_bind, struct bpf_sock_addr_kern *, ctx, struct sockaddr *, addr,
 	   int, addr_len)
 {
@@ -6044,9 +6183,17 @@ BPF_CALL_3(bpf_bind, struct bpf_sock_addr_kern *, ctx, struct sockaddr *, addr,
 			return err;
 		if (((struct sockaddr_in6 *)addr)->sin6_port == htons(0))
 			flags |= BIND_FORCE_ADDRESS_NO_PORT;
+<<<<<<< HEAD
 
 		return __inet6_bind(sk, (struct sockaddr_unsized *)addr,
 				    addr_len, flags);
+=======
+		/* ipv6_bpf_stub cannot be NULL, since it's called from
+		 * bpf_cgroup_inet6_connect hook and ipv6 is already loaded
+		 */
+		return ipv6_bpf_stub->inet6_bind(sk, (struct sockaddr_unsized *)addr,
+						 addr_len, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_IPV6 */
 	}
 #endif /* CONFIG_INET */
@@ -6134,9 +6281,15 @@ static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params, u32 mtu)
 static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 			       u32 flags, bool check_mtu)
 {
+<<<<<<< HEAD
 	struct neighbour *neigh = NULL;
 	struct fib_nh_common *nhc;
 	struct in_device *in_dev;
+=======
+	struct fib_nh_common *nhc;
+	struct in_device *in_dev;
+	struct neighbour *neigh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct net_device *dev;
 	struct fib_result res;
 	struct flowi4 fl4;
@@ -6256,8 +6409,13 @@ static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 	if (likely(nhc->nhc_gw_family != AF_INET6))
 		neigh = __ipv4_neigh_lookup_noref(dev,
 						  (__force u32)params->ipv4_dst);
+<<<<<<< HEAD
 	else if (IS_ENABLED(CONFIG_IPV6))
 		neigh = __ipv6_neigh_lookup_noref(dev, params->ipv6_dst);
+=======
+	else
+		neigh = __ipv6_neigh_lookup_noref_stub(dev, params->ipv6_dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
 		return BPF_FIB_LKUP_RET_NO_NEIGH;
@@ -6325,11 +6483,20 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 			params->tbid = 0;
 		}
 
+<<<<<<< HEAD
 		tb = fib6_get_table(net, tbid);
 		if (unlikely(!tb))
 			return BPF_FIB_LKUP_RET_NOT_FWDED;
 
 		err = fib6_table_lookup(net, tb, oif, &fl6, &res, strict);
+=======
+		tb = ipv6_stub->fib6_get_table(net, tbid);
+		if (unlikely(!tb))
+			return BPF_FIB_LKUP_RET_NOT_FWDED;
+
+		err = ipv6_stub->fib6_table_lookup(net, tb, oif, &fl6, &res,
+						   strict);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		if (flags & BPF_FIB_LOOKUP_MARK)
 			fl6.flowi6_mark = params->mark;
@@ -6339,7 +6506,11 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 		fl6.flowi6_tun_key.tun_id = 0;
 		fl6.flowi6_uid = sock_net_uid(net, NULL);
 
+<<<<<<< HEAD
 		err = fib6_lookup(net, oif, &fl6, &res, strict);
+=======
+		err = ipv6_stub->fib6_lookup(net, oif, &fl6, &res, strict);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (unlikely(err || IS_ERR_OR_NULL(res.f6i) ||
@@ -6360,11 +6531,19 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 		return BPF_FIB_LKUP_RET_NOT_FWDED;
 	}
 
+<<<<<<< HEAD
 	fib6_select_path(net, &res, &fl6, fl6.flowi6_oif,
 			 fl6.flowi6_oif != 0, NULL, strict);
 
 	if (check_mtu) {
 		mtu = ip6_mtu_from_fib6(&res, dst, src);
+=======
+	ipv6_stub->fib6_select_path(net, &res, &fl6, fl6.flowi6_oif,
+				    fl6.flowi6_oif != 0, NULL, strict);
+
+	if (check_mtu) {
+		mtu = ipv6_stub->ip6_mtu_from_fib6(&res, dst, src);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (params->tot_len > mtu) {
 			params->mtu_result = mtu; /* union with tot_len */
 			return BPF_FIB_LKUP_RET_FRAG_NEEDED;
@@ -6385,7 +6564,13 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 		if (res.f6i->fib6_prefsrc.plen) {
 			*src = res.f6i->fib6_prefsrc.addr;
 		} else {
+<<<<<<< HEAD
 			err = ipv6_dev_get_saddr(net, dev, &fl6.daddr, 0, src);
+=======
+			err = ipv6_bpf_stub->ipv6_dev_get_saddr(net, dev,
+								&fl6.daddr, 0,
+								src);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (err)
 				return BPF_FIB_LKUP_RET_NO_SRC_ADDR;
 		}
@@ -6397,7 +6582,11 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
 	/* xdp and cls_bpf programs are run in RCU-bh so rcu_read_lock_bh is
 	 * not needed here.
 	 */
+<<<<<<< HEAD
 	neigh = __ipv6_neigh_lookup_noref(dev, dst);
+=======
+	neigh = __ipv6_neigh_lookup_noref_stub(dev, dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
 		return BPF_FIB_LKUP_RET_NO_NEIGH;
 	memcpy(params->dmac, neigh->ha, ETH_ALEN);
@@ -6482,8 +6671,11 @@ BPF_CALL_4(bpf_skb_fib_lookup, struct sk_buff *, skb,
 		 * against MTU of FIB lookup resulting net_device
 		 */
 		dev = dev_get_by_index_rcu(net, params->ifindex);
+<<<<<<< HEAD
 		if (unlikely(!dev))
 			return -ENODEV;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!is_skb_forwardable(dev, skb))
 			rc = BPF_FIB_LKUP_RET_FRAG_NEEDED;
 
@@ -6923,7 +7115,11 @@ static struct sock *sk_lookup(struct net *net, struct bpf_sock_tuple *tuple,
 		else
 			sk = __udp4_lib_lookup(net, src4, tuple->ipv4.sport,
 					       dst4, tuple->ipv4.dport,
+<<<<<<< HEAD
 					       dif, sdif, NULL);
+=======
+					       dif, sdif, net->ipv4.udp_table, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IPV6)
 	} else {
 		struct in6_addr *src6 = (struct in6_addr *)&tuple->ipv6.saddr;
@@ -6934,10 +7130,19 @@ static struct sock *sk_lookup(struct net *net, struct bpf_sock_tuple *tuple,
 					    src6, tuple->ipv6.sport,
 					    dst6, ntohs(tuple->ipv6.dport),
 					    dif, sdif, &refcounted);
+<<<<<<< HEAD
 		else if (likely(ipv6_mod_enabled()))
 			sk = __udp6_lib_lookup(net, src6, tuple->ipv6.sport,
 					       dst6, tuple->ipv6.dport,
 					       dif, sdif, NULL);
+=======
+		else if (likely(ipv6_bpf_stub))
+			sk = ipv6_bpf_stub->udp6_lib_lookup(net,
+							    src6, tuple->ipv6.sport,
+							    dst6, tuple->ipv6.dport,
+							    dif, sdif,
+							    net->ipv4.udp_table, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	}
 
@@ -7484,7 +7689,11 @@ u32 bpf_tcp_sock_convert_ctx_access(enum bpf_access_type type,
 
 BPF_CALL_1(bpf_tcp_sock, struct sock *, sk)
 {
+<<<<<<< HEAD
 	if (sk_fullsock(sk) && sk_is_tcp(sk))
+=======
+	if (sk_fullsock(sk) && sk->sk_protocol == IPPROTO_TCP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (unsigned long)sk;
 
 	return (unsigned long)NULL;
@@ -7623,7 +7832,11 @@ BPF_CALL_5(bpf_tcp_check_syncookie, struct sock *, sk, void *, iph, u32, iph_len
 		ret = __cookie_v4_check((struct iphdr *)iph, th);
 		break;
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 6:
 		if (unlikely(iph_len < sizeof(struct ipv6hdr)))
 			return -EINVAL;
@@ -7693,7 +7906,11 @@ BPF_CALL_5(bpf_tcp_gen_syncookie, struct sock *, sk, void *, iph, u32, iph_len,
 		mss = tcp_v4_get_syncookie(sk, iph, th, &cookie);
 		break;
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 6:
 		if (unlikely(iph_len < sizeof(struct ipv6hdr)))
 			return -EINVAL;
@@ -8059,7 +8276,11 @@ static const struct bpf_func_proto bpf_tcp_raw_gen_syncookie_ipv4_proto = {
 BPF_CALL_3(bpf_tcp_raw_gen_syncookie_ipv6, struct ipv6hdr *, iph,
 	   struct tcphdr *, th, u32, th_len)
 {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const u16 mss_clamp = IPV6_MIN_MTU - sizeof(struct tcphdr) -
 		sizeof(struct ipv6hdr);
 	u32 cookie;
@@ -8111,7 +8332,11 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv4_proto = {
 BPF_CALL_2(bpf_tcp_raw_check_syncookie_ipv6, struct ipv6hdr *, iph,
 	   struct tcphdr *, th)
 {
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (__cookie_v6_check(iph, th) > 0)
 		return 0;
 
@@ -10613,11 +10838,18 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
 				      si->dst_reg, si->dst_reg,		      \
 				      offsetof(OBJ, OBJ_FIELD));	      \
 		if (si->dst_reg == si->src_reg)	{			      \
+<<<<<<< HEAD
 			*insn++ = BPF_JMP_A(2);				      \
 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
 				      offsetof(struct bpf_sock_ops_kern,      \
 				      temp));				      \
 			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+=======
+			*insn++ = BPF_JMP_A(1);				      \
+			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+				      offsetof(struct bpf_sock_ops_kern,      \
+				      temp));				      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}							      \
 	} while (0)
 
@@ -10651,11 +10883,18 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
 				      si->dst_reg, si->src_reg,		      \
 				      offsetof(struct bpf_sock_ops_kern, sk));\
 		if (si->dst_reg == si->src_reg)	{			      \
+<<<<<<< HEAD
 			*insn++ = BPF_JMP_A(2);				      \
 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
 				      offsetof(struct bpf_sock_ops_kern,      \
 				      temp));				      \
 			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+=======
+			*insn++ = BPF_JMP_A(1);				      \
+			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+				      offsetof(struct bpf_sock_ops_kern,      \
+				      temp));				      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}							      \
 	} while (0)
 
@@ -11956,7 +12195,11 @@ BPF_CALL_1(bpf_skc_to_tcp6_sock, struct sock *, sk)
 	 */
 	BTF_TYPE_EMIT(struct tcp6_sock);
 	if (sk && sk_fullsock(sk) && sk->sk_protocol == IPPROTO_TCP &&
+<<<<<<< HEAD
 	    sk->sk_type == SOCK_STREAM && sk->sk_family == AF_INET6)
+=======
+	    sk->sk_family == AF_INET6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (unsigned long)sk;
 
 	return (unsigned long)NULL;
@@ -11972,7 +12215,11 @@ const struct bpf_func_proto bpf_skc_to_tcp6_sock_proto = {
 
 BPF_CALL_1(bpf_skc_to_tcp_sock, struct sock *, sk)
 {
+<<<<<<< HEAD
 	if (sk && sk_fullsock(sk) && sk_is_tcp(sk))
+=======
+	if (sk && sk_fullsock(sk) && sk->sk_protocol == IPPROTO_TCP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (unsigned long)sk;
 
 	return (unsigned long)NULL;
@@ -11999,7 +12246,11 @@ BPF_CALL_1(bpf_skc_to_tcp_timewait_sock, struct sock *, sk)
 		return (unsigned long)sk;
 #endif
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sk && sk->sk_prot == &tcpv6_prot && sk->sk_state == TCP_TIME_WAIT)
 		return (unsigned long)sk;
 #endif
@@ -12022,7 +12273,11 @@ BPF_CALL_1(bpf_skc_to_tcp_request_sock, struct sock *, sk)
 		return (unsigned long)sk;
 #endif
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sk && sk->sk_prot == &tcpv6_prot && sk->sk_state == TCP_NEW_SYN_RECV)
 		return (unsigned long)sk;
 #endif
@@ -12285,7 +12540,11 @@ __bpf_kfunc int bpf_sk_assign_tcp_reqsk(struct __sk_buff *s, struct sock *sk,
 		ops = &tcp_request_sock_ops;
 		min_mss = 536;
 		break;
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case htons(ETH_P_IPV6):
 		ops = &tcp6_request_sock_ops;
 		min_mss = IPV6_MIN_MTU - 60;

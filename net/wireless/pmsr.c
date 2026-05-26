@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
+<<<<<<< HEAD
  * Copyright (C) 2018 - 2021, 2023 - 2026 Intel Corporation
+=======
+ * Copyright (C) 2018 - 2021, 2023 - 2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <net/cfg80211.h>
 #include "core.h"
@@ -88,7 +92,11 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
 	out->ftm.ftms_per_burst = 0;
 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
 		out->ftm.ftms_per_burst =
+<<<<<<< HEAD
 			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST]);
+=======
+			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (capa->ftm.max_ftms_per_burst &&
 	    (out->ftm.ftms_per_burst > capa->ftm.max_ftms_per_burst ||
@@ -237,8 +245,12 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 				    &out->chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &out->chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 

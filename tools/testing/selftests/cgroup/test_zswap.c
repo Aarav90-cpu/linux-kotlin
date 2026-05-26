@@ -5,8 +5,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
+<<<<<<< HEAD
 #include <errno.h>
 #include <fcntl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sys/sysinfo.h>
 #include <string.h>
 #include <sys/wait.h>
@@ -576,6 +579,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 struct incomp_child_args {
 	size_t size;
 	int pipefd[2];
@@ -709,6 +713,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define T(x) { x, #x }
 struct zswap_test {
 	int (*fn)(const char *root);
@@ -721,7 +727,10 @@ struct zswap_test {
 	T(test_zswap_writeback_disabled),
 	T(test_no_kmem_bypass),
 	T(test_no_invasive_cgroup_shrink),
+<<<<<<< HEAD
 	T(test_zswap_incompressible),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #undef T
 

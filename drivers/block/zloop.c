@@ -17,7 +17,10 @@
 #include <linux/mutex.h>
 #include <linux/parser.h>
 #include <linux/seq_file.h>
+<<<<<<< HEAD
 #include <linux/xattr.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Options for adding (and removing) a device.
@@ -35,8 +38,11 @@ enum {
 	ZLOOP_OPT_BUFFERED_IO		= (1 << 8),
 	ZLOOP_OPT_ZONE_APPEND		= (1 << 9),
 	ZLOOP_OPT_ORDERED_ZONE_APPEND	= (1 << 10),
+<<<<<<< HEAD
 	ZLOOP_OPT_DISCARD_WRITE_CACHE	= (1 << 11),
 	ZLOOP_OPT_MAX_OPEN_ZONES	= (1 << 12),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const match_table_t zloop_opt_tokens = {
@@ -51,8 +57,11 @@ static const match_table_t zloop_opt_tokens = {
 	{ ZLOOP_OPT_BUFFERED_IO,	"buffered_io"		},
 	{ ZLOOP_OPT_ZONE_APPEND,	"zone_append=%u"	},
 	{ ZLOOP_OPT_ORDERED_ZONE_APPEND, "ordered_zone_append"	},
+<<<<<<< HEAD
 	{ ZLOOP_OPT_DISCARD_WRITE_CACHE, "discard_write_cache" },
 	{ ZLOOP_OPT_MAX_OPEN_ZONES,	"max_open_zones=%u"	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ ZLOOP_OPT_ERR,		NULL			}
 };
 
@@ -61,7 +70,10 @@ static const match_table_t zloop_opt_tokens = {
 #define ZLOOP_DEF_ZONE_SIZE		((256ULL * SZ_1M) >> SECTOR_SHIFT)
 #define ZLOOP_DEF_NR_ZONES		64
 #define ZLOOP_DEF_NR_CONV_ZONES		8
+<<<<<<< HEAD
 #define ZLOOP_DEF_MAX_OPEN_ZONES	0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ZLOOP_DEF_BASE_DIR		"/var/local/zloop"
 #define ZLOOP_DEF_NR_QUEUES		1
 #define ZLOOP_DEF_QUEUE_DEPTH		128
@@ -79,14 +91,20 @@ struct zloop_options {
 	sector_t		zone_size;
 	sector_t		zone_capacity;
 	unsigned int		nr_conv_zones;
+<<<<<<< HEAD
 	unsigned int		max_open_zones;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char			*base_dir;
 	unsigned int		nr_queues;
 	unsigned int		queue_depth;
 	bool			buffered_io;
 	bool			zone_append;
 	bool			ordered_zone_append;
+<<<<<<< HEAD
 	bool			discard_write_cache;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -103,12 +121,16 @@ enum zloop_zone_flags {
 	ZLOOP_ZONE_SEQ_ERROR,
 };
 
+<<<<<<< HEAD
 /*
  * Zone descriptor.
  * Locking order: z.lock -> z.wp_lock -> zlo.open_zones_lock
  */
 struct zloop_zone {
 	struct list_head	open_zone_entry;
+=======
+struct zloop_zone {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct file		*file;
 
 	unsigned long		flags;
@@ -132,7 +154,10 @@ struct zloop_device {
 	bool			buffered_io;
 	bool			zone_append;
 	bool			ordered_zone_append;
+<<<<<<< HEAD
 	bool			discard_write_cache;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	const char		*base_dir;
 	struct file		*data_dir;
@@ -142,6 +167,7 @@ struct zloop_device {
 	sector_t		zone_capacity;
 	unsigned int		nr_zones;
 	unsigned int		nr_conv_zones;
+<<<<<<< HEAD
 	unsigned int		max_open_zones;
 	unsigned int		block_size;
 
@@ -149,6 +175,10 @@ struct zloop_device {
 	struct list_head	open_zones_lru_list;
 	unsigned int		nr_open_zones;
 
+=======
+	unsigned int		block_size;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct zloop_zone	zones[] __counted_by(nr_zones);
 };
 
@@ -172,6 +202,7 @@ static unsigned int rq_zone_no(struct request *rq)
 	return blk_rq_pos(rq) >> zlo->zone_shift;
 }
 
+<<<<<<< HEAD
 /*
  * Open an already open zone. This is mostly a no-op, except for the imp open ->
  * exp open condition change that may happen. We also move a zone at the tail of
@@ -306,11 +337,17 @@ static void zloop_mark_empty(struct zloop_device *zlo, struct zloop_zone *zone)
 	zone->wp = zone->start;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int zloop_update_seq_zone(struct zloop_device *zlo, unsigned int zone_no)
 {
 	struct zloop_zone *zone = &zlo->zones[zone_no];
 	struct kstat stat;
 	sector_t file_sectors;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	lockdep_assert_held(&zone->lock);
@@ -330,6 +367,7 @@ static int zloop_update_seq_zone(struct zloop_device *zlo, unsigned int zone_no)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!IS_ALIGNED(stat.size, zlo->block_size)) {
 		pr_err("Zone %u file size (%llu) not aligned to block size %u\n",
 		       zone_no, stat.size, zlo->block_size);
@@ -348,6 +386,26 @@ static int zloop_update_seq_zone(struct zloop_device *zlo, unsigned int zone_no)
 		zone->wp = zone->start + file_sectors;
 	}
 	spin_unlock(&zone->wp_lock);
+=======
+	if (file_sectors & ((zlo->block_size >> SECTOR_SHIFT) - 1)) {
+		pr_err("Zone %u file size not aligned to block size %u\n",
+		       zone_no, zlo->block_size);
+		return -EINVAL;
+	}
+
+	spin_lock_irqsave(&zone->wp_lock, flags);
+	if (!file_sectors) {
+		zone->cond = BLK_ZONE_COND_EMPTY;
+		zone->wp = zone->start;
+	} else if (file_sectors == zlo->zone_capacity) {
+		zone->cond = BLK_ZONE_COND_FULL;
+		zone->wp = ULLONG_MAX;
+	} else {
+		zone->cond = BLK_ZONE_COND_CLOSED;
+		zone->wp = zone->start + file_sectors;
+	}
+	spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -368,8 +426,24 @@ static int zloop_open_zone(struct zloop_device *zlo, unsigned int zone_no)
 			goto unlock;
 	}
 
+<<<<<<< HEAD
 	if (!zloop_do_open_zone(zlo, zone, true))
 		ret = -EIO;
+=======
+	switch (zone->cond) {
+	case BLK_ZONE_COND_EXP_OPEN:
+		break;
+	case BLK_ZONE_COND_EMPTY:
+	case BLK_ZONE_COND_CLOSED:
+	case BLK_ZONE_COND_IMP_OPEN:
+		zone->cond = BLK_ZONE_COND_EXP_OPEN;
+		break;
+	case BLK_ZONE_COND_FULL:
+	default:
+		ret = -EIO;
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	mutex_unlock(&zone->lock);
@@ -380,6 +454,10 @@ unlock:
 static int zloop_close_zone(struct zloop_device *zlo, unsigned int zone_no)
 {
 	struct zloop_zone *zone = &zlo->zones[zone_no];
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (test_bit(ZLOOP_ZONE_CONV, &zone->flags))
@@ -398,13 +476,21 @@ static int zloop_close_zone(struct zloop_device *zlo, unsigned int zone_no)
 		break;
 	case BLK_ZONE_COND_IMP_OPEN:
 	case BLK_ZONE_COND_EXP_OPEN:
+<<<<<<< HEAD
 		spin_lock(&zone->wp_lock);
 		zloop_lru_remove_open_zone(zlo, zone);
+=======
+		spin_lock_irqsave(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (zone->wp == zone->start)
 			zone->cond = BLK_ZONE_COND_EMPTY;
 		else
 			zone->cond = BLK_ZONE_COND_CLOSED;
+<<<<<<< HEAD
 		spin_unlock(&zone->wp_lock);
+=======
+		spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case BLK_ZONE_COND_EMPTY:
 	case BLK_ZONE_COND_FULL:
@@ -422,6 +508,10 @@ unlock:
 static int zloop_reset_zone(struct zloop_device *zlo, unsigned int zone_no)
 {
 	struct zloop_zone *zone = &zlo->zones[zone_no];
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (test_bit(ZLOOP_ZONE_CONV, &zone->flags))
@@ -439,10 +529,18 @@ static int zloop_reset_zone(struct zloop_device *zlo, unsigned int zone_no)
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	spin_lock(&zone->wp_lock);
 	zloop_mark_empty(zlo, zone);
 	clear_bit(ZLOOP_ZONE_SEQ_ERROR, &zone->flags);
 	spin_unlock(&zone->wp_lock);
+=======
+	spin_lock_irqsave(&zone->wp_lock, flags);
+	zone->cond = BLK_ZONE_COND_EMPTY;
+	zone->wp = zone->start;
+	clear_bit(ZLOOP_ZONE_SEQ_ERROR, &zone->flags);
+	spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	mutex_unlock(&zone->lock);
@@ -467,6 +565,10 @@ static int zloop_reset_all_zones(struct zloop_device *zlo)
 static int zloop_finish_zone(struct zloop_device *zlo, unsigned int zone_no)
 {
 	struct zloop_zone *zone = &zlo->zones[zone_no];
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (test_bit(ZLOOP_ZONE_CONV, &zone->flags))
@@ -484,10 +586,18 @@ static int zloop_finish_zone(struct zloop_device *zlo, unsigned int zone_no)
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	spin_lock(&zone->wp_lock);
 	zloop_mark_full(zlo, zone);
 	clear_bit(ZLOOP_ZONE_SEQ_ERROR, &zone->flags);
 	spin_unlock(&zone->wp_lock);
+=======
+	spin_lock_irqsave(&zone->wp_lock, flags);
+	zone->cond = BLK_ZONE_COND_FULL;
+	zone->wp = ULLONG_MAX;
+	clear_bit(ZLOOP_ZONE_SEQ_ERROR, &zone->flags);
+	spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
  unlock:
 	mutex_unlock(&zone->lock);
@@ -515,6 +625,7 @@ static void zloop_rw_complete(struct kiocb *iocb, long ret)
 	zloop_put_cmd(cmd);
 }
 
+<<<<<<< HEAD
 static int zloop_do_rw(struct zloop_cmd *cmd)
 {
 	struct request *rq = blk_mq_rq_from_pdu(cmd);
@@ -531,6 +642,127 @@ static int zloop_do_rw(struct zloop_cmd *cmd)
 		cmd->bvec = kmalloc_objs(*cmd->bvec, nr_bvec, GFP_NOIO);
 		if (!cmd->bvec)
 			return -EIO;
+=======
+static void zloop_rw(struct zloop_cmd *cmd)
+{
+	struct request *rq = blk_mq_rq_from_pdu(cmd);
+	struct zloop_device *zlo = rq->q->queuedata;
+	unsigned int zone_no = rq_zone_no(rq);
+	sector_t sector = blk_rq_pos(rq);
+	sector_t nr_sectors = blk_rq_sectors(rq);
+	bool is_append = req_op(rq) == REQ_OP_ZONE_APPEND;
+	bool is_write = req_op(rq) == REQ_OP_WRITE || is_append;
+	int rw = is_write ? ITER_SOURCE : ITER_DEST;
+	struct req_iterator rq_iter;
+	struct zloop_zone *zone;
+	struct iov_iter iter;
+	struct bio_vec tmp;
+	unsigned long flags;
+	sector_t zone_end;
+	unsigned int nr_bvec;
+	int ret;
+
+	atomic_set(&cmd->ref, 2);
+	cmd->sector = sector;
+	cmd->nr_sectors = nr_sectors;
+	cmd->ret = 0;
+
+	if (WARN_ON_ONCE(is_append && !zlo->zone_append)) {
+		ret = -EIO;
+		goto out;
+	}
+
+	/* We should never get an I/O beyond the device capacity. */
+	if (WARN_ON_ONCE(zone_no >= zlo->nr_zones)) {
+		ret = -EIO;
+		goto out;
+	}
+	zone = &zlo->zones[zone_no];
+	zone_end = zone->start + zlo->zone_capacity;
+
+	/*
+	 * The block layer should never send requests that are not fully
+	 * contained within the zone.
+	 */
+	if (WARN_ON_ONCE(sector + nr_sectors > zone->start + zlo->zone_size)) {
+		ret = -EIO;
+		goto out;
+	}
+
+	if (test_and_clear_bit(ZLOOP_ZONE_SEQ_ERROR, &zone->flags)) {
+		mutex_lock(&zone->lock);
+		ret = zloop_update_seq_zone(zlo, zone_no);
+		mutex_unlock(&zone->lock);
+		if (ret)
+			goto out;
+	}
+
+	if (!test_bit(ZLOOP_ZONE_CONV, &zone->flags) && is_write) {
+		mutex_lock(&zone->lock);
+
+		spin_lock_irqsave(&zone->wp_lock, flags);
+
+		/*
+		 * Zone append operations always go at the current write
+		 * pointer, but regular write operations must already be
+		 * aligned to the write pointer when submitted.
+		 */
+		if (is_append) {
+			/*
+			 * If ordered zone append is in use, we already checked
+			 * and set the target sector in zloop_queue_rq().
+			 */
+			if (!zlo->ordered_zone_append) {
+				if (zone->cond == BLK_ZONE_COND_FULL ||
+				    zone->wp + nr_sectors > zone_end) {
+					spin_unlock_irqrestore(&zone->wp_lock,
+							       flags);
+					ret = -EIO;
+					goto unlock;
+				}
+				sector = zone->wp;
+			}
+			cmd->sector = sector;
+		} else if (sector != zone->wp) {
+			spin_unlock_irqrestore(&zone->wp_lock, flags);
+			pr_err("Zone %u: unaligned write: sect %llu, wp %llu\n",
+			       zone_no, sector, zone->wp);
+			ret = -EIO;
+			goto unlock;
+		}
+
+		/* Implicitly open the target zone. */
+		if (zone->cond == BLK_ZONE_COND_CLOSED ||
+		    zone->cond == BLK_ZONE_COND_EMPTY)
+			zone->cond = BLK_ZONE_COND_IMP_OPEN;
+
+		/*
+		 * Advance the write pointer, unless ordered zone append is in
+		 * use. If the write fails, the write pointer position will be
+		 * corrected when the next I/O starts execution.
+		 */
+		if (!is_append || !zlo->ordered_zone_append) {
+			zone->wp += nr_sectors;
+			if (zone->wp == zone_end) {
+				zone->cond = BLK_ZONE_COND_FULL;
+				zone->wp = ULLONG_MAX;
+			}
+		}
+
+		spin_unlock_irqrestore(&zone->wp_lock, flags);
+	}
+
+	nr_bvec = blk_rq_nr_bvec(rq);
+
+	if (rq->bio != rq->biotail) {
+		struct bio_vec *bvec;
+
+		cmd->bvec = kmalloc_objs(*cmd->bvec, nr_bvec, GFP_NOIO);
+		if (!cmd->bvec) {
+			ret = -EIO;
+			goto unlock;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * The bios of the request may be started from the middle of
@@ -556,7 +788,11 @@ static int zloop_do_rw(struct zloop_cmd *cmd)
 		iter.iov_offset = rq->bio->bi_iter.bi_bvec_done;
 	}
 
+<<<<<<< HEAD
 	cmd->iocb.ki_pos = (cmd->sector - zone->start) << SECTOR_SHIFT;
+=======
+	cmd->iocb.ki_pos = (sector - zone->start) << SECTOR_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd->iocb.ki_filp = zone->file;
 	cmd->iocb.ki_complete = zloop_rw_complete;
 	if (!zlo->buffered_io)
@@ -564,6 +800,7 @@ static int zloop_do_rw(struct zloop_cmd *cmd)
 	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
 
 	if (rw == ITER_SOURCE)
+<<<<<<< HEAD
 		return zone->file->f_op->write_iter(&cmd->iocb, &iter);
 	return zone->file->f_op->read_iter(&cmd->iocb, &iter);
 }
@@ -679,12 +916,21 @@ static void zloop_rw(struct zloop_cmd *cmd)
 	} else {
 		ret = zloop_do_rw(cmd);
 	}
+=======
+		ret = zone->file->f_op->write_iter(&cmd->iocb, &iter);
+	else
+		ret = zone->file->f_op->read_iter(&cmd->iocb, &iter);
+unlock:
+	if (!test_bit(ZLOOP_ZONE_CONV, &zone->flags) && is_write)
+		mutex_unlock(&zone->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	if (ret != -EIOCBQUEUED)
 		zloop_rw_complete(&cmd->iocb, ret);
 	zloop_put_cmd(cmd);
 }
 
+<<<<<<< HEAD
 static inline bool zloop_zone_is_active(struct zloop_zone *zone)
 {
 	switch (zone->cond) {
@@ -720,6 +966,8 @@ static int zloop_record_safe_wps(struct zloop_device *zlo)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Sync the entire FS containing the zone files instead of walking all files.
  */
@@ -728,12 +976,15 @@ static int zloop_flush(struct zloop_device *zlo)
 	struct super_block *sb = file_inode(zlo->data_dir)->i_sb;
 	int ret;
 
+<<<<<<< HEAD
 	if (zlo->discard_write_cache) {
 		ret = zloop_record_safe_wps(zlo);
 		if (ret)
 			return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_read(&sb->s_umount);
 	ret = sync_filesystem(sb);
 	up_read(&sb->s_umount);
@@ -863,21 +1114,40 @@ static bool zloop_set_zone_append_sector(struct request *rq)
 	struct zloop_zone *zone = &zlo->zones[zone_no];
 	sector_t zone_end = zone->start + zlo->zone_capacity;
 	sector_t nr_sectors = blk_rq_sectors(rq);
+<<<<<<< HEAD
 
 	spin_lock(&zone->wp_lock);
 
 	if (zone->cond == BLK_ZONE_COND_FULL ||
 	    zone->wp + nr_sectors > zone_end) {
 		spin_unlock(&zone->wp_lock);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&zone->wp_lock, flags);
+
+	if (zone->cond == BLK_ZONE_COND_FULL ||
+	    zone->wp + nr_sectors > zone_end) {
+		spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	}
 
 	rq->__sector = zone->wp;
 	zone->wp += blk_rq_sectors(rq);
+<<<<<<< HEAD
 	if (zone->wp >= zone_end)
 		zloop_mark_full(zlo, zone);
 
 	spin_unlock(&zone->wp_lock);
+=======
+	if (zone->wp >= zone_end) {
+		zone->cond = BLK_ZONE_COND_FULL;
+		zone->wp = ULLONG_MAX;
+	}
+
+	spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -889,10 +1159,15 @@ static blk_status_t zloop_queue_rq(struct blk_mq_hw_ctx *hctx,
 	struct zloop_cmd *cmd = blk_mq_rq_to_pdu(rq);
 	struct zloop_device *zlo = rq->q->queuedata;
 
+<<<<<<< HEAD
 	if (data_race(READ_ONCE(zlo->state)) == Zlo_deleting) {
 		rq->rq_flags |= RQF_QUIET;
 		return BLK_STS_IOERR;
 	}
+=======
+	if (data_race(READ_ONCE(zlo->state)) == Zlo_deleting)
+		return BLK_STS_IOERR;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If we need to strongly order zone append operations, set the request
@@ -938,6 +1213,10 @@ static int zloop_report_zones(struct gendisk *disk, sector_t sector,
 	struct zloop_device *zlo = disk->private_data;
 	struct blk_zone blkz = {};
 	unsigned int first, i;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	first = disk_zone_no(disk, sector);
@@ -961,9 +1240,15 @@ static int zloop_report_zones(struct gendisk *disk, sector_t sector,
 
 		blkz.start = zone->start;
 		blkz.len = zlo->zone_size;
+<<<<<<< HEAD
 		spin_lock(&zone->wp_lock);
 		blkz.wp = zone->wp;
 		spin_unlock(&zone->wp_lock);
+=======
+		spin_lock_irqsave(&zone->wp_lock, flags);
+		blkz.wp = zone->wp;
+		spin_unlock_irqrestore(&zone->wp_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		blkz.cond = zone->cond;
 		if (test_bit(ZLOOP_ZONE_CONV, &zone->flags)) {
 			blkz.type = BLK_ZONE_TYPE_CONVENTIONAL;
@@ -1071,7 +1356,10 @@ static int zloop_init_zone(struct zloop_device *zlo, struct zloop_options *opts,
 	int ret;
 
 	mutex_init(&zone->lock);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&zone->open_zone_entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&zone->wp_lock);
 	zone->start = (sector_t)zone_no << zlo->zone_shift;
 
@@ -1192,20 +1480,26 @@ static int zloop_ctl_add(struct zloop_options *opts)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (opts->max_open_zones > nr_zones - opts->nr_conv_zones) {
 		pr_err("Invalid maximum number of open zones %u\n",
 		       opts->max_open_zones);
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zlo = kvzalloc_flex(*zlo, zones, nr_zones);
 	if (!zlo) {
 		ret = -ENOMEM;
 		goto out;
 	}
 	WRITE_ONCE(zlo->state, Zlo_creating);
+<<<<<<< HEAD
 	spin_lock_init(&zlo->open_zones_lock);
 	INIT_LIST_HEAD(&zlo->open_zones_lru_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = mutex_lock_killable(&zloop_ctl_mutex);
 	if (ret)
@@ -1233,12 +1527,18 @@ static int zloop_ctl_add(struct zloop_options *opts)
 		zlo->zone_capacity = zlo->zone_size;
 	zlo->nr_zones = nr_zones;
 	zlo->nr_conv_zones = opts->nr_conv_zones;
+<<<<<<< HEAD
 	zlo->max_open_zones = opts->max_open_zones;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zlo->buffered_io = opts->buffered_io;
 	zlo->zone_append = opts->zone_append;
 	if (zlo->zone_append)
 		zlo->ordered_zone_append = opts->ordered_zone_append;
+<<<<<<< HEAD
 	zlo->discard_write_cache = opts->discard_write_cache;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	zlo->workqueue = alloc_workqueue("zloop%d", WQ_UNBOUND | WQ_FREEZABLE,
 				opts->nr_queues * opts->queue_depth, zlo->id);
@@ -1281,7 +1581,10 @@ static int zloop_ctl_add(struct zloop_options *opts)
 	lim.logical_block_size = zlo->block_size;
 	if (zlo->zone_append)
 		lim.max_hw_zone_append_sectors = lim.max_hw_sectors;
+<<<<<<< HEAD
 	lim.max_open_zones = zlo->max_open_zones;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	zlo->tag_set.ops = &zloop_mq_ops;
 	zlo->tag_set.nr_hw_queues = opts->nr_queues;
@@ -1362,6 +1665,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void zloop_forget_cache(struct zloop_device *zlo)
 {
 	unsigned int i;
@@ -1401,6 +1705,8 @@ static void zloop_forget_cache(struct zloop_device *zlo)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int zloop_ctl_remove(struct zloop_options *opts)
 {
 	struct zloop_device *zlo;
@@ -1435,10 +1741,13 @@ static int zloop_ctl_remove(struct zloop_options *opts)
 		return ret;
 
 	del_gendisk(zlo->disk);
+<<<<<<< HEAD
 
 	if (zlo->discard_write_cache)
 		zloop_forget_cache(zlo);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_disk(zlo->disk);
 
 	pr_info("Removed device %d\n", opts->id);
@@ -1461,7 +1770,10 @@ static int zloop_parse_options(struct zloop_options *opts, const char *buf)
 	opts->capacity = ZLOOP_DEF_ZONE_SIZE * ZLOOP_DEF_NR_ZONES;
 	opts->zone_size = ZLOOP_DEF_ZONE_SIZE;
 	opts->nr_conv_zones = ZLOOP_DEF_NR_CONV_ZONES;
+<<<<<<< HEAD
 	opts->max_open_zones = ZLOOP_DEF_MAX_OPEN_ZONES;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	opts->nr_queues = ZLOOP_DEF_NR_QUEUES;
 	opts->queue_depth = ZLOOP_DEF_QUEUE_DEPTH;
 	opts->buffered_io = ZLOOP_DEF_BUFFERED_IO;
@@ -1540,6 +1852,7 @@ static int zloop_parse_options(struct zloop_options *opts, const char *buf)
 			}
 			opts->nr_conv_zones = token;
 			break;
+<<<<<<< HEAD
 		case ZLOOP_OPT_MAX_OPEN_ZONES:
 			if (match_uint(args, &token)) {
 				ret = -EINVAL;
@@ -1547,6 +1860,8 @@ static int zloop_parse_options(struct zloop_options *opts, const char *buf)
 			}
 			opts->max_open_zones = token;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case ZLOOP_OPT_BASE_DIR:
 			p = match_strdup(args);
 			if (!p) {
@@ -1598,9 +1913,12 @@ static int zloop_parse_options(struct zloop_options *opts, const char *buf)
 		case ZLOOP_OPT_ORDERED_ZONE_APPEND:
 			opts->ordered_zone_append = true;
 			break;
+<<<<<<< HEAD
 		case ZLOOP_OPT_DISCARD_WRITE_CACHE:
 			opts->discard_write_cache = true;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case ZLOOP_OPT_ERR:
 		default:
 			pr_warn("unknown parameter or missing value '%s'\n", p);

@@ -4,9 +4,21 @@
  * This script controls its layout.
  */
 
+<<<<<<< HEAD
 #include <vdso/datapage.h>
 #include <vdso/page.h>
 #include <asm/vdso/vsyscall.h>
+=======
+#if defined(BUILD_VDSO64)
+# define SHDR_SIZE 64
+#elif defined(BUILD_VDSO32)
+# define SHDR_SIZE 40
+#else
+# error unknown VDSO target
+#endif
+
+#define NUM_FAKE_SHDRS 7
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 SECTIONS
 {
@@ -17,7 +29,12 @@ SECTIONS
 	 * segment. Page size is 8192 for both 64-bit and 32-bit vdso binaries
 	 */
 
+<<<<<<< HEAD
 	VDSO_VVAR_SYMS
+=======
+	vvar_start = . -8192;
+	vvar_data = vvar_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	. = SIZEOF_HEADERS;
 
@@ -40,8 +57,24 @@ SECTIONS
 		*(.bss*)
 		*(.dynbss*)
 		*(.gnu.linkonce.b.*)
+<<<<<<< HEAD
 	}						:text
 
+=======
+
+		/*
+		 * Ideally this would live in a C file: kept in here for
+		 * compatibility with x86-64.
+		 */
+		VDSO_FAKE_SECTION_TABLE_START = .;
+		. = . + NUM_FAKE_SHDRS * SHDR_SIZE;
+		VDSO_FAKE_SECTION_TABLE_END = .;
+	}						:text
+
+	.fake_shstrtab	: { *(.fake_shstrtab) }		:text
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.note		: { *(.note.*) }		:text	:note
 
 	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr

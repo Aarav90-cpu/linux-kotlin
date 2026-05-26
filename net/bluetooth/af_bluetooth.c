@@ -870,14 +870,22 @@ static int bt_seq_show(struct seq_file *seq, void *v)
 		struct bt_sock *bt = bt_sk(sk);
 
 		seq_printf(seq,
+<<<<<<< HEAD
 			   "%pK %-6d %-6u %-6u %-6u %-6llu %-6llu",
+=======
+			   "%pK %-6d %-6u %-6u %-6u %-6lu %-6lu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   sk,
 			   refcount_read(&sk->sk_refcnt),
 			   sk_rmem_alloc_get(sk),
 			   sk_wmem_alloc_get(sk),
 			   from_kuid(seq_user_ns(seq), sk_uid(sk)),
 			   sock_i_ino(sk),
+<<<<<<< HEAD
 			   bt->parent ? sock_i_ino(bt->parent) : 0ULL);
+=======
+			   bt->parent ? sock_i_ino(bt->parent) : 0LU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (l->custom_seq_show) {
 			seq_putc(seq, ' ');

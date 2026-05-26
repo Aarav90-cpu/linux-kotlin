@@ -9,11 +9,18 @@
 #   Documentation/trace/rv/da_monitor_synthesis.rst
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     from rvgen.dot2k import da2k, ha2k
     from rvgen.generator import Monitor
     from rvgen.container import Container
     from rvgen.ltl2k import ltl2k
     from rvgen.automata import AutomataError
+=======
+    from rvgen.dot2k import dot2k
+    from rvgen.generator import Monitor
+    from rvgen.container import Container
+    from rvgen.ltl2k import ltl2k
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     import argparse
     import sys
 
@@ -29,11 +36,18 @@ if __name__ == '__main__':
     monitor_parser.add_argument('-n', "--model_name", dest="model_name")
     monitor_parser.add_argument("-p", "--parent", dest="parent",
                                 required=False, help="Create a monitor nested to parent")
+<<<<<<< HEAD
     monitor_parser.add_argument('-c', "--class", dest="monitor_class", required=True,
                                 help="Monitor class, either \"da\", \"ha\" or \"ltl\"")
     monitor_parser.add_argument('-s', "--spec", dest="spec", required=True,
                                 help="Monitor specification file")
     monitor_parser.add_argument('-t', "--monitor_type", dest="monitor_type", required=True,
+=======
+    monitor_parser.add_argument('-c', "--class", dest="monitor_class",
+                                help="Monitor class, either \"da\" or \"ltl\"")
+    monitor_parser.add_argument('-s', "--spec", dest="spec", help="Monitor specification file")
+    monitor_parser.add_argument('-t', "--monitor_type", dest="monitor_type",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                 help=f"Available options: {', '.join(Monitor.monitor_types.keys())}")
 
     container_parser = subparsers.add_parser("container")
@@ -43,11 +57,17 @@ if __name__ == '__main__':
 
     try:
         if params.subcmd == "monitor":
+<<<<<<< HEAD
             print(f"Opening and parsing the specification file {params.spec}")
             if params.monitor_class == "da":
                 monitor = da2k(params.spec, params.monitor_type, vars(params))
             elif params.monitor_class == "ha":
                 monitor = ha2k(params.spec, params.monitor_type, vars(params))
+=======
+            print("Opening and parsing the specification file %s" % params.spec)
+            if params.monitor_class == "da":
+                monitor = dot2k(params.spec, params.monitor_type, vars(params))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             elif params.monitor_class == "ltl":
                 monitor = ltl2k(params.spec, params.monitor_type, vars(params))
             else:
@@ -55,6 +75,7 @@ if __name__ == '__main__':
                 sys.exit(1)
         else:
             monitor = Container(vars(params))
+<<<<<<< HEAD
     except AutomataError as e:
         print(f"There was an error processing {params.spec}: {e}", file=sys.stderr)
         sys.exit(1)
@@ -64,6 +85,18 @@ if __name__ == '__main__':
     print("Almost done, checklist")
     if params.subcmd == "monitor":
         print(f"  - Edit the {monitor.name}/{monitor.name}.c to add the instrumentation")
+=======
+    except Exception as e:
+        print('Error: '+ str(e))
+        print("Sorry : :-(")
+        sys.exit(1)
+
+    print("Writing the monitor into the directory %s" % monitor.name)
+    monitor.print_files()
+    print("Almost done, checklist")
+    if params.subcmd == "monitor":
+        print("  - Edit the %s/%s.c to add the instrumentation" % (monitor.name, monitor.name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         print(monitor.fill_tracepoint_tooltip())
     print(monitor.fill_makefile_tooltip())
     print(monitor.fill_kconfig_tooltip())

@@ -50,10 +50,15 @@ Absolute filenames
 ------------------
 
 When the kernel is built out-of-tree, debug information may include
+<<<<<<< HEAD
 absolute filenames for the source files and build directory.  These must
 be overridden by including a ``-fdebug-prefix-map`` option for each in
 the `KCFLAGS`_ and `KAFLAGS`_ variables to cover both ``.c`` and ``.S``
 files.
+=======
+absolute filenames for the source files.  This must be overridden by
+including the ``-fdebug-prefix-map`` option in the `KCFLAGS`_ variable.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Depending on the compiler used, the ``__FILE__`` macro may also expand
 to an absolute filename in an out-of-tree build.  Kbuild automatically
@@ -137,7 +142,10 @@ See ``scripts/setlocalversion`` for details.
 .. _KBUILD_BUILD_TIMESTAMP: kbuild.html#kbuild-build-timestamp
 .. _KBUILD_BUILD_USER and KBUILD_BUILD_HOST: kbuild.html#kbuild-build-user-kbuild-build-host
 .. _KCFLAGS: kbuild.html#kcflags
+<<<<<<< HEAD
 .. _KAFLAGS: kbuild.html#kaflags
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _prefix-map options: https://reproducible-builds.org/docs/build-path/
 .. _Reproducible Builds project: https://reproducible-builds.org/
 .. _SOURCE_DATE_EPOCH: https://reproducible-builds.org/docs/source-date-epoch/

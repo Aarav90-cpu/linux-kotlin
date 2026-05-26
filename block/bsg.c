@@ -12,7 +12,10 @@
 #include <linux/idr.h>
 #include <linux/bsg.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/io_uring/cmd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_ioctl.h>
@@ -29,7 +32,10 @@ struct bsg_device {
 	unsigned int timeout;
 	unsigned int reserved_size;
 	bsg_sg_io_fn *sg_io_fn;
+<<<<<<< HEAD
 	bsg_uring_cmd_fn *uring_cmd_fn;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct bsg_device *to_bsg_device(struct inode *inode)
@@ -160,6 +166,7 @@ static long bsg_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	}
 }
 
+<<<<<<< HEAD
 static int bsg_check_uring_features(unsigned int issue_flags)
 {
 	/* BSG passthrough requires big SQE/CQE support */
@@ -186,12 +193,17 @@ static int bsg_uring_cmd(struct io_uring_cmd *ioucmd, unsigned int issue_flags)
 	return bd->uring_cmd_fn(q, ioucmd, issue_flags, open_for_write);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct file_operations bsg_fops = {
 	.open		=	bsg_open,
 	.release	=	bsg_release,
 	.unlocked_ioctl	=	bsg_ioctl,
 	.compat_ioctl	=	compat_ptr_ioctl,
+<<<<<<< HEAD
 	.uring_cmd	=	bsg_uring_cmd,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.owner		=	THIS_MODULE,
 	.llseek		=	default_llseek,
 };
@@ -216,8 +228,12 @@ void bsg_unregister_queue(struct bsg_device *bd)
 EXPORT_SYMBOL_GPL(bsg_unregister_queue);
 
 struct bsg_device *bsg_register_queue(struct request_queue *q,
+<<<<<<< HEAD
 		struct device *parent, const char *name, bsg_sg_io_fn *sg_io_fn,
 		bsg_uring_cmd_fn *uring_cmd_fn)
+=======
+		struct device *parent, const char *name, bsg_sg_io_fn *sg_io_fn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bsg_device *bd;
 	int ret;
@@ -229,7 +245,10 @@ struct bsg_device *bsg_register_queue(struct request_queue *q,
 	bd->reserved_size = INT_MAX;
 	bd->queue = q;
 	bd->sg_io_fn = sg_io_fn;
+<<<<<<< HEAD
 	bd->uring_cmd_fn = uring_cmd_fn;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ida_alloc_max(&bsg_minor_ida, BSG_MAX_DEVS - 1, GFP_KERNEL);
 	if (ret < 0) {

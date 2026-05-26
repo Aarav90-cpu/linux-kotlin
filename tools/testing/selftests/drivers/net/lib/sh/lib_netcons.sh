@@ -251,7 +251,11 @@ function listen_port_and_save_to() {
 
 	# Just wait for 3 seconds
 	timeout 3 ip netns exec "${NAMESPACE}" \
+<<<<<<< HEAD
 		socat "${SOCAT_MODE}":"${PORT}",fork,shut-none "${OUTPUT}" 2> /dev/null
+=======
+		socat "${SOCAT_MODE}":"${PORT}",fork "${OUTPUT}" 2> /dev/null
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 # Only validate that the message arrived properly
@@ -360,8 +364,13 @@ function check_for_taskset() {
 
 # This is necessary if running multiple tests in a row
 function pkill_socat() {
+<<<<<<< HEAD
 	PROCESS_NAME4="socat UDP-LISTEN:6666,fork,shut-none ${OUTPUT_FILE}"
 	PROCESS_NAME6="socat UDP6-LISTEN:6666,fork,shut-none ${OUTPUT_FILE}"
+=======
+	PROCESS_NAME4="socat UDP-LISTEN:6666,fork ${OUTPUT_FILE}"
+	PROCESS_NAME6="socat UDP6-LISTEN:6666,fork ${OUTPUT_FILE}"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	# socat runs under timeout(1), kill it if it is still alive
 	# do not fail if socat doesn't exist anymore
 	set +e

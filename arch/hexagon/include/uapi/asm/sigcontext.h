@@ -29,6 +29,10 @@
  */
 struct sigcontext {
 	struct user_regs_struct sc_regs;
+<<<<<<< HEAD
 } __attribute__((aligned(8)));
+=======
+} __aligned(8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

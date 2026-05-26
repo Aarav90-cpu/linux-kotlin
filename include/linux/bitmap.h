@@ -46,7 +46,10 @@ struct device;
  *  bitmap_and(dst, src1, src2, nbits)          *dst = *src1 & *src2
  *  bitmap_or(dst, src1, src2, nbits)           *dst = *src1 | *src2
  *  bitmap_weighted_or(dst, src1, src2, nbits)	*dst = *src1 | *src2. Returns Hamming Weight of dst
+<<<<<<< HEAD
  *  bitmap_weighted_xor(dst, src1, src2, nbits)	*dst = *src1 ^ *src2. Returns Hamming Weight of dst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *  bitmap_xor(dst, src1, src2, nbits)          *dst = *src1 ^ *src2
  *  bitmap_andnot(dst, src1, src2, nbits)       *dst = *src1 & ~(*src2)
  *  bitmap_complement(dst, src, nbits)          *dst = ~(*src)
@@ -58,7 +61,10 @@ struct device;
  *  bitmap_weight(src, nbits)                   Hamming Weight: number set bits
  *  bitmap_weight_and(src1, src2, nbits)        Hamming Weight of and'ed bitmap
  *  bitmap_weight_andnot(src1, src2, nbits)     Hamming Weight of andnot'ed bitmap
+<<<<<<< HEAD
  *  bitmap_weight_from(src, start, end)         Hamming Weight starting from @start
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *  bitmap_set(dst, pos, nbits)                 Set specified bit area
  *  bitmap_clear(dst, pos, nbits)               Clear specified bit area
  *  bitmap_find_next_zero_area(buf, len, pos, n, mask)  Find bit free area
@@ -170,8 +176,11 @@ void __bitmap_or(unsigned long *dst, const unsigned long *bitmap1,
 		 const unsigned long *bitmap2, unsigned int nbits);
 unsigned int __bitmap_weighted_or(unsigned long *dst, const unsigned long *bitmap1,
 				  const unsigned long *bitmap2, unsigned int nbits);
+<<<<<<< HEAD
 unsigned int __bitmap_weighted_xor(unsigned long *dst, const unsigned long *bitmap1,
 				  const unsigned long *bitmap2, unsigned int nbits);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __bitmap_xor(unsigned long *dst, const unsigned long *bitmap1,
 		  const unsigned long *bitmap2, unsigned int nbits);
 bool __bitmap_andnot(unsigned long *dst, const unsigned long *bitmap1,
@@ -357,6 +366,7 @@ unsigned int bitmap_weighted_or(unsigned long *dst, const unsigned long *src1,
 }
 
 static __always_inline
+<<<<<<< HEAD
 unsigned int bitmap_weighted_xor(unsigned long *dst, const unsigned long *src1,
 				const unsigned long *src2, unsigned int nbits)
 {
@@ -369,6 +379,8 @@ unsigned int bitmap_weighted_xor(unsigned long *dst, const unsigned long *src1,
 }
 
 static __always_inline
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bitmap_xor(unsigned long *dst, const unsigned long *src1,
 		const unsigned long *src2, unsigned int nbits)
 {
@@ -495,6 +507,7 @@ unsigned long bitmap_weight_andnot(const unsigned long *src1,
 	return __bitmap_weight_andnot(src1, src2, nbits);
 }
 
+<<<<<<< HEAD
 /**
  * bitmap_weight_from - Hamming weight for a memory region
  * @bitmap: The base address
@@ -527,6 +540,8 @@ unsigned long bitmap_weight_from(const unsigned long *bitmap,
 	return w;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline
 void bitmap_set(unsigned long *map, unsigned int start, unsigned int nbits)
 {

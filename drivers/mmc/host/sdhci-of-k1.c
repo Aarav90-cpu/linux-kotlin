@@ -15,7 +15,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+<<<<<<< HEAD
 #include <linux/reset.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 
 #include "sdhci.h"
@@ -224,6 +227,7 @@ static inline int spacemit_sdhci_get_clocks(struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int spacemit_sdhci_get_resets(struct device *dev)
 {
 	struct reset_control *rst;
@@ -239,6 +243,8 @@ static inline int spacemit_sdhci_get_resets(struct device *dev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct sdhci_ops spacemit_sdhci_ops = {
 	.get_max_clock		= spacemit_sdhci_clk_get_max_clock,
 	.reset			= spacemit_sdhci_reset,
@@ -259,6 +265,7 @@ static const struct sdhci_pltfm_data spacemit_sdhci_k1_pdata = {
 		   SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
 };
 
+<<<<<<< HEAD
 static const struct sdhci_pltfm_data spacemit_sdhci_k3_pdata = {
 	.ops = &spacemit_sdhci_ops,
 	.quirks = SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
@@ -273,6 +280,10 @@ static const struct sdhci_pltfm_data spacemit_sdhci_k3_pdata = {
 static const struct of_device_id spacemit_sdhci_of_match[] = {
 	{ .compatible = "spacemit,k1-sdhci", .data = &spacemit_sdhci_k1_pdata },
 	{ .compatible = "spacemit,k3-sdhci", .data = &spacemit_sdhci_k3_pdata },
+=======
+static const struct of_device_id spacemit_sdhci_of_match[] = {
+	{ .compatible = "spacemit,k1-sdhci" },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, spacemit_sdhci_of_match);
@@ -283,6 +294,7 @@ static int spacemit_sdhci_probe(struct platform_device *pdev)
 	struct spacemit_sdhci_host *sdhst;
 	struct sdhci_pltfm_host *pltfm_host;
 	struct sdhci_host *host;
+<<<<<<< HEAD
 	const struct sdhci_pltfm_data *data;
 	struct mmc_host_ops *mops;
 	int ret;
@@ -290,6 +302,12 @@ static int spacemit_sdhci_probe(struct platform_device *pdev)
 	data = of_device_get_match_data(&pdev->dev);
 
 	host = sdhci_pltfm_init(pdev, data, sizeof(*sdhst));
+=======
+	struct mmc_host_ops *mops;
+	int ret;
+
+	host = sdhci_pltfm_init(pdev, &spacemit_sdhci_k1_pdata, sizeof(*sdhst));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(host))
 		return PTR_ERR(host);
 
@@ -315,10 +333,13 @@ static int spacemit_sdhci_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_pltfm;
 
+<<<<<<< HEAD
 	ret = spacemit_sdhci_get_resets(dev);
 	if (ret)
 		goto err_pltfm;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = sdhci_add_host(host);
 	if (ret)
 		goto err_pltfm;

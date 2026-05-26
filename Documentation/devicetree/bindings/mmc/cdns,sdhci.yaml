@@ -134,6 +134,11 @@ allOf:
           items:
             - description: Host controller registers
             - description: Elba byte-lane enable register for writes
+<<<<<<< HEAD
+=======
+      required:
+        - resets
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     else:
       properties:
         reg:

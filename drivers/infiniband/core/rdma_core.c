@@ -590,11 +590,19 @@ static void alloc_commit_idr_uobject(struct ib_uobject *uobj)
 	void *old;
 
 	/*
+<<<<<<< HEAD
 	 * We already allocated this XArray entry with a NULL pointer, so
 	 * this shouldn't fail.
 	 *
 	 * NOTE: Storing the uobj transfers our kref on uobj to the XArray.
 	 * It will be put by remove_handle_idr_uobject()
+=======
+	 * We already allocated this IDR with a NULL object, so
+	 * this shouldn't fail.
+	 *
+	 * NOTE: Storing the uobj transfers our kref on uobj to the XArray.
+	 * It will be put by remove_commit_idr_uobject()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	old = xa_store(&ufile->idr, uobj->id, uobj, GFP_KERNEL);
 	WARN_ON(old != NULL);

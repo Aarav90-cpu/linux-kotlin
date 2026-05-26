@@ -375,7 +375,11 @@ void mt792x_pm_power_save_work(struct work_struct *work)
 	}
 
 	if (!mt792x_mcu_fw_pmctrl(dev)) {
+<<<<<<< HEAD
 		cancel_delayed_work(&mphy->mac_work);
+=======
+		cancel_delayed_work_sync(&mphy->mac_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 out:

@@ -119,7 +119,11 @@ static irqreturn_t rzv2h_ivc_isr(int irq, void *context)
 	 * The second interrupt indicates that the post-frame transfer VBLANK
 	 * has completed, we can now schedule a new frame transfer, if any.
 	 */
+<<<<<<< HEAD
 	rzv2h_ivc_transfer_buffer(ivc);
+=======
+	queue_work(ivc->buffers.async_wq, &ivc->buffers.work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IRQ_HANDLED;
 }

@@ -41,7 +41,10 @@ static struct gpio_keys_button button = {
 	.code = KEY_POWER,
 	.gpio = -1,
 	.type = EV_KEY,
+<<<<<<< HEAD
 	.wakeup = 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct gpio_keys_platform_data bd71828_powerkey_data = {

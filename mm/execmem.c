@@ -203,6 +203,16 @@ static int execmem_cache_add_locked(void *ptr, size_t size, gfp_t gfp_mask)
 	return mas_store_gfp(&mas, (void *)lower, gfp_mask);
 }
 
+<<<<<<< HEAD
+=======
+static int execmem_cache_add(void *ptr, size_t size, gfp_t gfp_mask)
+{
+	guard(mutex)(&execmem_cache.mutex);
+
+	return execmem_cache_add_locked(ptr, size, gfp_mask);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool within_range(struct execmem_range *range, struct ma_state *mas,
 			 size_t size)
 {
@@ -218,16 +228,28 @@ static bool within_range(struct execmem_range *range, struct ma_state *mas,
 	return false;
 }
 
+<<<<<<< HEAD
 static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size)
+=======
+static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct maple_tree *free_areas = &execmem_cache.free_areas;
 	struct maple_tree *busy_areas = &execmem_cache.busy_areas;
 	MA_STATE(mas_free, free_areas, 0, ULONG_MAX);
 	MA_STATE(mas_busy, busy_areas, 0, ULONG_MAX);
+<<<<<<< HEAD
+=======
+	struct mutex *mutex = &execmem_cache.mutex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long addr, last, area_size = 0;
 	void *area, *ptr = NULL;
 	int err;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mas_for_each(&mas_free, area, ULONG_MAX) {
 		area_size = mas_range_len(&mas_free);
 
@@ -236,7 +258,11 @@ static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size
 	}
 
 	if (area_size < size)
+<<<<<<< HEAD
 		return NULL;
+=======
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	addr = mas_free.index;
 	last = mas_free.last;
@@ -245,7 +271,11 @@ static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size
 	mas_set_range(&mas_busy, addr, addr + size - 1);
 	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
 	if (err)
+<<<<<<< HEAD
 		return NULL;
+=======
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
 	if (area_size > size) {
@@ -259,11 +289,16 @@ static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size
 		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
 		if (err) {
 			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
+<<<<<<< HEAD
 			return NULL;
+=======
+			goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	ptr = (void *)addr;
 
+<<<<<<< HEAD
 	return ptr;
 }
 
@@ -278,6 +313,16 @@ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t si
 {
 	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
 	struct mutex *mutex = &execmem_cache.mutex;
+=======
+out_unlock:
+	mutex_unlock(mutex);
+	return ptr;
+}
+
+static int execmem_cache_populate(struct execmem_range *range, size_t size)
+{
+	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vm_struct *vm;
 	size_t alloc_size;
 	int err = -ENOMEM;
@@ -291,7 +336,11 @@ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t si
 	}
 
 	if (!p)
+<<<<<<< HEAD
 		return NULL;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = find_vm_area(p);
 	if (!vm)
@@ -304,6 +353,7 @@ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t si
 	if (err)
 		goto err_free_mem;
 
+<<<<<<< HEAD
 	/*
 	 * New memory blocks must be allocated and added to the cache
 	 * as an atomic operation, otherwise they may be consumed
@@ -326,17 +376,42 @@ err_reset_direct_map:
 err_free_mem:
 	vfree(p);
 	return NULL;
+=======
+	err = execmem_cache_add(p, alloc_size, GFP_KERNEL);
+	if (err)
+		goto err_reset_direct_map;
+
+	return 0;
+
+err_reset_direct_map:
+	execmem_set_direct_map_valid(vm, true);
+err_free_mem:
+	vfree(p);
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
 {
 	void *p;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	p = __execmem_cache_alloc(range, size);
 	if (p)
 		return p;
 
+<<<<<<< HEAD
 	return execmem_cache_populate_alloc(range, size);
+=======
+	err = execmem_cache_populate(range, size);
+	if (err)
+		return NULL;
+
+	return __execmem_cache_alloc(range, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool is_pending_free(void *ptr)

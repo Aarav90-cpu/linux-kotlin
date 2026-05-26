@@ -192,7 +192,11 @@ struct device_queue_manager_ops {
 
 	int (*reset_queues)(struct device_queue_manager *dqm,
 					uint16_t pasid);
+<<<<<<< HEAD
 	int	(*get_queue_checkpoint_info)(struct device_queue_manager *dqm,
+=======
+	void	(*get_queue_checkpoint_info)(struct device_queue_manager *dqm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  const struct queue *q, u32 *mqd_size,
 				  u32 *ctl_stack_size);
 

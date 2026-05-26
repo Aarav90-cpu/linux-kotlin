@@ -767,7 +767,11 @@ static int gmc_v10_0_sw_init(struct amdgpu_ip_block *ip_block)
 		adev->gmc.vram_type = AMDGPU_VRAM_TYPE_GDDR6;
 		adev->gmc.vram_width = 1 * 128; /* numchan * chansize */
 	} else {
+<<<<<<< HEAD
 		r = amdgpu_gmc_get_vram_info(adev,
+=======
+		r = amdgpu_atomfirmware_get_vram_info(adev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				&vram_width, &vram_type, &vram_vendor);
 		adev->gmc.vram_width = vram_width;
 
@@ -860,6 +864,11 @@ static int gmc_v10_0_sw_init(struct amdgpu_ip_block *ip_block)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
+=======
+	amdgpu_gmc_get_vbios_allocations(adev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Memory manager */
 	r = amdgpu_bo_init(adev);
 	if (r)

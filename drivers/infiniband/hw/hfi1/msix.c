@@ -24,6 +24,10 @@ int msix_initialize(struct hfi1_devdata *dd)
 	 *	one for the general, "slow path" interrupt
 	 *	one per used SDMA engine
 	 *	one per kernel receive context
+<<<<<<< HEAD
+=======
+	 *	one for each VNIC context
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *      ...any new IRQs should be added here.
 	 */
 	total = 1 + dd->num_sdma + dd->n_krcv_queues + dd->num_netdev_contexts;
@@ -126,7 +130,12 @@ static int msix_request_rcd_irq_common(struct hfi1_ctxtdata *rcd,
 				       irq_handler_t thread,
 				       const char *name)
 {
+<<<<<<< HEAD
 	int nr = msix_request_irq(rcd->dd, rcd, handler, thread, IRQ_RCVCTXT,
+=======
+	int nr = msix_request_irq(rcd->dd, rcd, handler, thread,
+				  rcd->is_vnic ? IRQ_NETDEVCTXT : IRQ_RCVCTXT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  name);
 	if (nr < 0)
 		return nr;

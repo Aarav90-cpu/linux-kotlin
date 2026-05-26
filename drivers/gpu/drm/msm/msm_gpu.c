@@ -16,8 +16,14 @@
 #include <linux/string_helpers.h>
 #include <linux/devcoredump.h>
 #include <linux/sched/task.h>
+<<<<<<< HEAD
 #include <linux/sched/mm.h>
+<<<<<<< HEAD
 #include <linux/utsname.h>
+=======
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 /*
  * Power Management:
@@ -469,7 +475,10 @@ static void recover_worker(struct kthread_work *work)
 	struct msm_gem_submit *submit;
 	struct msm_ringbuffer *cur_ring = gpu->funcs->active_ring(gpu);
 	char *comm = NULL, *cmd = NULL;
+<<<<<<< HEAD
 	unsigned int noreclaim_flag;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct task_struct *task;
 	int i;
 
@@ -507,8 +516,11 @@ static void recover_worker(struct kthread_work *work)
 			msm_gem_vm_unusable(submit->vm);
 	}
 
+<<<<<<< HEAD
 	noreclaim_flag = memalloc_noreclaim_save();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	get_comm_cmdline(submit, &comm, &cmd);
 
 	if (comm && cmd) {
@@ -527,8 +539,11 @@ static void recover_worker(struct kthread_work *work)
 	pm_runtime_get_sync(&gpu->pdev->dev);
 	msm_gpu_crashstate_capture(gpu, submit, NULL, comm, cmd);
 
+<<<<<<< HEAD
 	memalloc_noreclaim_restore(noreclaim_flag);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(cmd);
 	kfree(comm);
 
@@ -591,7 +606,10 @@ void msm_gpu_fault_crashstate_capture(struct msm_gpu *gpu, struct msm_gpu_fault_
 	struct msm_gem_submit *submit;
 	struct msm_ringbuffer *cur_ring = gpu->funcs->active_ring(gpu);
 	char *comm = NULL, *cmd = NULL;
+<<<<<<< HEAD
 	unsigned int noreclaim_flag;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&gpu->lock);
 
@@ -599,8 +617,11 @@ void msm_gpu_fault_crashstate_capture(struct msm_gpu *gpu, struct msm_gpu_fault_
 	if (submit && submit->fault_dumped)
 		goto resume_smmu;
 
+<<<<<<< HEAD
 	noreclaim_flag = memalloc_noreclaim_save();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (submit) {
 		get_comm_cmdline(submit, &comm, &cmd);
 
@@ -616,8 +637,11 @@ void msm_gpu_fault_crashstate_capture(struct msm_gpu *gpu, struct msm_gpu_fault_
 	msm_gpu_crashstate_capture(gpu, submit, fault_info, comm, cmd);
 	pm_runtime_put_sync(&gpu->pdev->dev);
 
+<<<<<<< HEAD
 	memalloc_noreclaim_restore(noreclaim_flag);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(cmd);
 	kfree(comm);
 

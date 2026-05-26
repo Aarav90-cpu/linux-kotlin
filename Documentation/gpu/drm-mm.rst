@@ -526,6 +526,7 @@ DRM GPUVM Function References
 DRM Buddy Allocator
 ===================
 
+<<<<<<< HEAD
 Buddy Allocator Function References (GPU buddy)
 -----------------------------------------------
 
@@ -534,6 +535,10 @@ Buddy Allocator Function References (GPU buddy)
 
 DRM Buddy Specific Logging Function References
 ----------------------------------------------
+=======
+DRM Buddy Function References
+-----------------------------
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .. kernel-doc:: drivers/gpu/drm/drm_buddy.c
    :export:

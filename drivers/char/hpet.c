@@ -34,7 +34,10 @@
 #include <linux/io.h>
 #include <linux/acpi.h>
 #include <linux/hpet.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/current.h>
 #include <asm/irq.h>
 #include <asm/div64.h>
@@ -355,9 +358,14 @@ static __init int hpet_mmap_enable(char *str)
 }
 __setup("hpet_mmap=", hpet_mmap_enable);
 
+<<<<<<< HEAD
 static int hpet_mmap_prepare(struct vm_area_desc *desc)
 {
 	struct file *file = desc->file;
+=======
+static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hpet_dev *devp;
 	unsigned long addr;
 
@@ -370,12 +378,20 @@ static int hpet_mmap_prepare(struct vm_area_desc *desc)
 	if (addr & (PAGE_SIZE - 1))
 		return -ENOSYS;
 
+<<<<<<< HEAD
 	desc->page_prot = pgprot_noncached(desc->page_prot);
 	mmap_action_simple_ioremap(desc, addr, PAGE_SIZE);
 	return 0;
 }
 #else
 static int hpet_mmap_prepare(struct vm_area_desc *desc)
+=======
+	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+	return vm_iomap_memory(vma, addr, PAGE_SIZE);
+}
+#else
+static int hpet_mmap(struct file *file, struct vm_area_struct *vma)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -ENOSYS;
 }
@@ -713,7 +729,11 @@ static const struct file_operations hpet_fops = {
 	.open = hpet_open,
 	.release = hpet_release,
 	.fasync = hpet_fasync,
+<<<<<<< HEAD
 	.mmap_prepare = hpet_mmap_prepare,
+=======
+	.mmap = hpet_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int hpet_is_known(struct hpet_data *hdp)
@@ -974,9 +994,14 @@ static acpi_status hpet_resources(struct acpi_resource *res, void *data)
 	return AE_OK;
 }
 
+<<<<<<< HEAD
 static int hpet_acpi_probe(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int hpet_acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status result;
 	struct hpet_data data;
 
@@ -1004,12 +1029,21 @@ static const struct acpi_device_id hpet_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver hpet_acpi_driver = {
 	.probe = hpet_acpi_probe,
 	.driver = {
 		.name = "hpet_acpi",
 		.acpi_match_table = hpet_device_ids,
 	},
+=======
+static struct acpi_driver hpet_acpi_driver = {
+	.name = "hpet",
+	.ids = hpet_device_ids,
+	.ops = {
+		.add = hpet_acpi_add,
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct miscdevice hpet_misc = { HPET_MINOR, "hpet", &hpet_fops };
@@ -1024,7 +1058,11 @@ static int __init hpet_init(void)
 
 	sysctl_header = register_sysctl("dev/hpet", hpet_table);
 
+<<<<<<< HEAD
 	result = platform_driver_register(&hpet_acpi_driver);
+=======
+	result = acpi_bus_register_driver(&hpet_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result < 0) {
 		unregister_sysctl_table(sysctl_header);
 		misc_deregister(&hpet_misc);

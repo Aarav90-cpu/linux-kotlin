@@ -18,7 +18,10 @@ properties:
               - nxp,nq310
               - nxp,pn547
               - nxp,pn553
+<<<<<<< HEAD
               - nxp,pn557
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: nxp,nxp-nci-i2c
 
   enable-gpios:

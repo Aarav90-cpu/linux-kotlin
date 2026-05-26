@@ -256,7 +256,11 @@
 				reg = <0x0c 0x04>;
 				#clock-cells = <0>;
 				lock-offset = <0x20>;
+<<<<<<< HEAD
 				vco-offset = <0x0c>;
+=======
+				vco-offset = <0x0C>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				clocks = <&xtal24mhz>;
 			};
 			oscclk1: clock-controller@10 {

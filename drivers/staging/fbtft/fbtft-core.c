@@ -300,6 +300,15 @@ static void fbtft_mkdirty(struct fb_info *info, int y, int height)
 	struct fbtft_par *par = info->par;
 	struct fb_deferred_io *fbdefio = info->fbdefio;
 
+<<<<<<< HEAD
+=======
+	/* special case, needed ? */
+	if (y == -1) {
+		y = 0;
+		height = info->var.yres;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Mark display lines/area as dirty */
 	spin_lock(&par->dirty_lock);
 	if (y < par->dirty_lines_start)
@@ -407,12 +416,18 @@ static int fbtft_fb_blank(int blank, struct fb_info *info)
 static void fbtft_ops_damage_range(struct fb_info *info, off_t off, size_t len)
 {
 	struct fbtft_par *par = info->par;
+<<<<<<< HEAD
 	u32 start, end;
 
 	start = off / info->fix.line_length;
 	end = (off + len - 1) / info->fix.line_length;
 
 	par->fbtftops.mkdirty(info, start, end - start + 1);
+=======
+
+	/* TODO: only mark changed area update all for now */
+	par->fbtftops.mkdirty(info, -1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void fbtft_ops_damage_area(struct fb_info *info, u32 x, u32 y, u32 width, u32 height)

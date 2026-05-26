@@ -31,6 +31,10 @@ struct osnoise_top_cpu {
 
 struct osnoise_top_data {
 	struct osnoise_top_cpu	*cpu_data;
+<<<<<<< HEAD
+=======
+	int			nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -50,7 +54,11 @@ static void osnoise_free_top_tool(struct osnoise_tool *tool)
 /*
  * osnoise_alloc_histogram - alloc runtime data
  */
+<<<<<<< HEAD
 static struct osnoise_top_data *osnoise_alloc_top(void)
+=======
+static struct osnoise_top_data *osnoise_alloc_top(int nr_cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct osnoise_top_data *data;
 
@@ -58,6 +66,11 @@ static struct osnoise_top_data *osnoise_alloc_top(void)
 	if (!data)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	data->nr_cpus = nr_cpus;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* one set of histograms per CPU */
 	data->cpu_data = calloc(1, sizeof(*data->cpu_data) * nr_cpus);
 	if (!data->cpu_data)
@@ -229,14 +242,27 @@ osnoise_print_stats(struct osnoise_tool *top)
 {
 	struct osnoise_params *params = to_osnoise_params(top->params);
 	struct trace_instance *trace = &top->trace;
+<<<<<<< HEAD
 	int i;
 
+=======
+	static int nr_cpus = -1;
+	int i;
+
+	if (nr_cpus == -1)
+		nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!params->common.quiet)
 		clear_terminal(trace->seq);
 
 	osnoise_top_header(top);
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(i, &params->common) {
+=======
+	for_each_monitored_cpu(i, nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		osnoise_top_print(top, i);
 	}
 
@@ -312,7 +338,13 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
 	int c;
 	char *trace_output = NULL;
 
+<<<<<<< HEAD
 	params = calloc_fatal(1, sizeof(*params));
+=======
+	params = calloc(1, sizeof(*params));
+	if (!params)
+		exit(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	actions_init(&params->common.threshold_actions);
 	actions_init(&params->common.end_actions);
@@ -349,7 +381,12 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
 		if (common_parse_options(argc, argv, &params->common))
 			continue;
 
+<<<<<<< HEAD
 		c = getopt_auto(argc, argv, long_options);
+=======
+		c = getopt_long(argc, argv, "a:hp:qr:s:S:t::T:0:1:2:3:",
+				 long_options, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Detect the end of the options. */
 		if (c == -1)
@@ -400,6 +437,7 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
 			params->threshold = get_llong_from_str(optarg);
 			break;
 		case '0': /* trigger */
+<<<<<<< HEAD
 			if (params->common.events)
 				trace_event_add_trigger(params->common.events, optarg);
 			else
@@ -410,6 +448,24 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
 				trace_event_add_filter(params->common.events, optarg);
 			else
 				fatal("--filter requires a previous -e");
+=======
+			if (params->common.events) {
+				retval = trace_event_add_trigger(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding trigger %s", optarg);
+			} else {
+				fatal("--trigger requires a previous -e");
+			}
+			break;
+		case '1': /* filter */
+			if (params->common.events) {
+				retval = trace_event_add_filter(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding filter %s", optarg);
+			} else {
+				fatal("--filter requires a previous -e");
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case '2':
 			params->common.warmup = get_llong_from_str(optarg);
@@ -479,12 +535,22 @@ out_err:
 struct osnoise_tool *osnoise_init_top(struct common_params *params)
 {
 	struct osnoise_tool *tool;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+
+	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tool = osnoise_init_tool("osnoise_top");
 	if (!tool)
 		return NULL;
 
+<<<<<<< HEAD
 	tool->data = osnoise_alloc_top();
+=======
+	tool->data = osnoise_alloc_top(nr_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!tool->data) {
 		osnoise_destroy_tool(tool);
 		return NULL;

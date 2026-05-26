@@ -522,6 +522,10 @@ static const struct attribute_group rx8025_attr_group = {
 
 static int rx8025_probe(struct i2c_client *client)
 {
+<<<<<<< HEAD
+=======
+	const struct i2c_device_id *id = i2c_match_id(rx8025_id, client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct i2c_adapter *adapter = client->adapter;
 	struct rx8025_data *rx8025;
 	int err = 0;
@@ -539,7 +543,12 @@ static int rx8025_probe(struct i2c_client *client)
 
 	i2c_set_clientdata(client, rx8025);
 
+<<<<<<< HEAD
 	rx8025->model = (uintptr_t)i2c_get_match_data(client);
+=======
+	if (id)
+		rx8025->model = id->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = rx8025_init_client(client);
 	if (err)

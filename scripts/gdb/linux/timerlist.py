@@ -20,7 +20,11 @@ def ktime_get():
     We can't read the hardware timer itself to add any nanoseconds
     that need to be added since we last stored the time in the
     timekeeper. But this is probably good enough for debug purposes."""
+<<<<<<< HEAD
     tk_core = gdb.parse_and_eval("&timekeeper_data[TIMEKEEPER_CORE]")
+=======
+    tk_core = gdb.parse_and_eval("&tk_core")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     return tk_core['timekeeper']['tkr_mono']['base']
 

@@ -346,9 +346,12 @@ typedef struct xfs_mount {
 
 	/* Private data referring to a health monitor object. */
 	struct xfs_healthmon __rcu	*m_healthmon;
+<<<<<<< HEAD
 
 	/* Index of uuid record in the uuid xarray. */
 	unsigned int		m_uuid_table_index;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } xfs_mount_t;
 
 #define M_IGEO(mp)		(&(mp)->m_ino_geo)

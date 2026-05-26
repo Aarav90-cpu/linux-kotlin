@@ -83,6 +83,7 @@ definitions:
       input: true
       input-enable: true
       output-enable: true
+<<<<<<< HEAD
       bias-disable: true
       bias-pull-down: true
       bias-pull-up: true
@@ -100,6 +101,8 @@ definitions:
           - 9000  (High strength)
           - 11800 (Ultra High strength)
         enum: [2500, 5000, 9000, 11800]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     oneOf:
       - required: [pinmux]
       - required: [pins]

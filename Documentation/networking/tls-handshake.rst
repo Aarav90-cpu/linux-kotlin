@@ -7,7 +7,11 @@ In-Kernel TLS Handshake
 Overview
 ========
 
+<<<<<<< HEAD
 Transport Layer Security (TLS) is an Upper Layer Protocol (ULP) that runs
+=======
+Transport Layer Security (TLS) is a Upper Layer Protocol (ULP) that runs
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 over TCP. TLS provides end-to-end data integrity and confidentiality in
 addition to peer authentication.
 

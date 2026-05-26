@@ -16,6 +16,7 @@
 	constant-charge-voltage-max-microvolt = <4350000>;
 };
 
+<<<<<<< HEAD
 &charger {
 	richtek,usb-connector = <&usb_con_sm5502>;
 	status = "okay";
@@ -25,6 +26,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &st_accel {
 	status = "okay";
 };
@@ -32,6 +35,7 @@
 &st_magn {
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &usb {
 	extcon = <&muic_sm5502>, <&muic_sm5502>;
@@ -41,3 +45,5 @@
 &usb_hs_phy {
 	extcon = <&muic_sm5502>;
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

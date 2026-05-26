@@ -114,7 +114,10 @@ enum comm_cmd {
 	COMM_CMD_SET_DMA_ATTR            = 25,
 
 	/* Commands for obtaining information */
+<<<<<<< HEAD
 	COMM_CMD_GET_FW_VERSION          = 60,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	COMM_CMD_SYNC_TIME               = 62,
 	COMM_CMD_SEND_BDF_INFO           = 64,
 };
@@ -276,6 +279,7 @@ struct comm_cmd_bdf_info {
 	u8                   rsvd2[5];
 };
 
+<<<<<<< HEAD
 #define COMM_FW_VERSION_LEN       16
 #define COMM_FW_COMPILE_TIME_LEN  20
 struct comm_cmd_get_fw_version {
@@ -287,6 +291,8 @@ struct comm_cmd_get_fw_version {
 	u8                   time[COMM_FW_COMPILE_TIME_LEN];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Services supported by HW. HW uses these values when delivering events.
  * HW supports multiple services that are not yet supported by driver
  * (e.g. RoCE).

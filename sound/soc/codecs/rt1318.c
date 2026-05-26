@@ -18,6 +18,10 @@
 #include <linux/i2c.h>
 #include <linux/platform_device.h>
 #include <linux/firmware.h>
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sound/core.h>
 #include <sound/pcm.h>
 #include <sound/pcm_params.h>

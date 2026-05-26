@@ -216,7 +216,10 @@ struct bitmap {
 };
 
 static struct workqueue_struct *md_bitmap_wq;
+<<<<<<< HEAD
 static struct attribute_group md_bitmap_internal_group;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
 			   int chunksize, bool init);
@@ -2581,6 +2584,7 @@ static int bitmap_resize(struct mddev *mddev, sector_t blocks, int chunksize)
 	return __bitmap_resize(bitmap, blocks, chunksize, false);
 }
 
+<<<<<<< HEAD
 static bool bitmap_none_enabled(void *data, bool flush)
 {
 	return false;
@@ -2605,6 +2609,8 @@ static int bitmap_none_get_stats(void *data, struct md_bitmap_stats *stats)
 	return -ENOENT;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t
 location_show(struct mddev *mddev, char *page)
 {
@@ -2643,11 +2649,15 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		sysfs_unmerge_group(&mddev->kobj, &md_bitmap_internal_group);
 		md_bitmap_destroy_nosysfs(mddev);
 		mddev->bitmap_id = ID_BITMAP_NONE;
 		if (!mddev_set_bitmap_ops_nosysfs(mddev))
 			goto none_err;
+=======
+		bitmap_destroy(mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mddev->bitmap_info.offset = 0;
 		if (mddev->bitmap_info.file) {
 			struct file *f = mddev->bitmap_info.file;
@@ -2683,6 +2693,7 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
 			}
 
 			mddev->bitmap_info.offset = offset;
+<<<<<<< HEAD
 			md_bitmap_destroy_nosysfs(mddev);
 			mddev->bitmap_id = ID_BITMAP;
 			if (!mddev_set_bitmap_ops_nosysfs(mddev))
@@ -2702,6 +2713,18 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
 					       &md_bitmap_internal_group);
 			if (rv)
 				goto merge_err;
+=======
+			rv = bitmap_create(mddev);
+			if (rv)
+				goto out;
+
+			rv = bitmap_load(mddev);
+			if (rv) {
+				mddev->bitmap_info.offset = 0;
+				bitmap_destroy(mddev);
+				goto out;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	if (!mddev->external) {
@@ -2717,6 +2740,7 @@ out:
 	if (rv)
 		return rv;
 	return len;
+<<<<<<< HEAD
 
 merge_err:
 	mddev->bitmap_info.offset = 0;
@@ -2733,6 +2757,8 @@ bitmap_err:
 none_err:
 	mddev->bitmap_info.offset = 0;
 	goto out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct md_sysfs_entry bitmap_location =
@@ -3009,12 +3035,17 @@ static struct md_sysfs_entry max_backlog_used =
 __ATTR(max_backlog_used, S_IRUGO | S_IWUSR,
        behind_writes_used_show, behind_writes_used_reset);
 
+<<<<<<< HEAD
 static struct attribute *md_bitmap_common_attrs[] = {
 	&bitmap_location.attr,
 	NULL
 };
 
 static struct attribute *md_bitmap_internal_attrs[] = {
+=======
+static struct attribute *md_bitmap_attrs[] = {
+	&bitmap_location.attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&bitmap_space.attr,
 	&bitmap_timeout.attr,
 	&bitmap_backlog.attr,
@@ -3025,6 +3056,7 @@ static struct attribute *md_bitmap_internal_attrs[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static struct attribute_group md_bitmap_common_group = {
 	.name = "bitmap",
 	.attrs = md_bitmap_common_attrs,
@@ -3060,6 +3092,11 @@ static struct bitmap_operations bitmap_none_ops = {
 	.get_stats		= bitmap_none_get_stats,
 
 	.groups			= bitmap_none_groups,
+=======
+static struct attribute_group md_bitmap_group = {
+	.name = "bitmap",
+	.attrs = md_bitmap_attrs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct bitmap_operations bitmap_ops = {
@@ -3103,18 +3140,26 @@ static struct bitmap_operations bitmap_ops = {
 	.set_pages		= bitmap_set_pages,
 	.free			= md_bitmap_free,
 
+<<<<<<< HEAD
 	.groups			= bitmap_groups,
+=======
+	.group			= &md_bitmap_group,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int md_bitmap_init(void)
 {
+<<<<<<< HEAD
 	int err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	md_bitmap_wq = alloc_workqueue("md_bitmap", WQ_MEM_RECLAIM | WQ_UNBOUND,
 				       0);
 	if (!md_bitmap_wq)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = register_md_submodule(&bitmap_none_ops.head);
 	if (err)
 		goto err_wq;
@@ -3130,11 +3175,19 @@ err_none:
 err_wq:
 	destroy_workqueue(md_bitmap_wq);
 	return err;
+=======
+	return register_md_submodule(&bitmap_ops.head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void md_bitmap_exit(void)
 {
+<<<<<<< HEAD
 	unregister_md_submodule(&bitmap_ops.head);
 	unregister_md_submodule(&bitmap_none_ops.head);
 	destroy_workqueue(md_bitmap_wq);
+=======
+	destroy_workqueue(md_bitmap_wq);
+	unregister_md_submodule(&bitmap_ops.head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

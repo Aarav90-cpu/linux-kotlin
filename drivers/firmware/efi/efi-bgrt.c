@@ -29,12 +29,19 @@ void __init efi_bgrt_init(struct acpi_table_header *table)
 	void *image;
 	struct bmp_header bmp_header;
 	struct acpi_table_bgrt *bgrt = &bgrt_tab;
+<<<<<<< HEAD
 	int mem_type;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (acpi_disabled)
 		return;
 
+<<<<<<< HEAD
 	if (!efi_enabled(EFI_MEMMAP) && !efi_enabled(EFI_PARAVIRT))
+=======
+	if (!efi_enabled(EFI_MEMMAP))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (table->length < sizeof(bgrt_tab)) {
@@ -63,9 +70,13 @@ void __init efi_bgrt_init(struct acpi_table_header *table)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	mem_type = efi_mem_type(bgrt->image_address);
 	if (mem_type != EFI_BOOT_SERVICES_DATA &&
 	    mem_type != EFI_ACPI_RECLAIM_MEMORY) {
+=======
+	if (efi_mem_type(bgrt->image_address) != EFI_BOOT_SERVICES_DATA) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_notice("Ignoring BGRT: invalid image address\n");
 		goto out;
 	}

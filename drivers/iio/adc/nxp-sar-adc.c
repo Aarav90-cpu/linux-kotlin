@@ -247,8 +247,12 @@ static inline void nxp_sar_adc_calibration_start(void __iomem *base)
 
 static inline int nxp_sar_adc_calibration_wait(void __iomem *base)
 {
+<<<<<<< HEAD
 	u32 msr;
 	int ret;
+=======
+	u32 msr, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = readl_poll_timeout(NXP_SAR_ADC_MSR(base), msr,
 				 !FIELD_GET(NXP_SAR_ADC_MSR_CALBUSY, msr),

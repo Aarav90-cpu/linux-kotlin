@@ -3,9 +3,15 @@
 #include <linux/phy.h>
 #include <linux/phylib_stubs.h>
 
+<<<<<<< HEAD
 #include "bitset.h"
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+#include "bitset.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct stats_req_info {
 	struct ethnl_req_info		base;
@@ -99,7 +105,10 @@ const struct nla_policy ethnl_stats_get_policy[ETHTOOL_A_STATS_SRC + 1] = {
 };
 
 static int stats_parse_request(struct ethnl_req_info *req_base,
+<<<<<<< HEAD
 			       const struct genl_info *info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       struct nlattr **tb,
 			       struct netlink_ext_ack *extack)
 {

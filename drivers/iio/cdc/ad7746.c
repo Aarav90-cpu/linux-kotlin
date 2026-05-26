@@ -606,7 +606,11 @@ static int ad7746_read_channel(struct iio_dev *indio_dev,
 		return ret;
 
 	/*
+<<<<<<< HEAD
 	 * Offset applied internally because the _offset userspace interface is
+=======
+	 * Offset applied internally becaue the _offset userspace interface is
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * needed for the CAP DACs which apply a controllable offset.
 	 */
 	*val = get_unaligned_be24(data) - 0x800000;

@@ -7,16 +7,23 @@
 
 .lava-test:
   extends:
+<<<<<<< HEAD
     - .build-rules
+=======
+    - .container+build-rules
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     - .allow_failure_lockdep
   timeout: "1h30m"
   rules:
     - !reference [.scheduled_pipeline-rules, rules]
     - !reference [.collabora-farm-rules, rules]
     - when: on_success
+<<<<<<< HEAD
   before_script:
     #  lava-submit.sh is a part of the archive, unlike Mesa CI
     - eval "$S3_JWT_FILE_SCRIPT"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   script:
     # Note: Build dir (and thus install) may be dirty due to GIT_STRATEGY
     - rm -rf install
@@ -35,7 +42,13 @@
   dependencies:
     - testing:arm32
   needs:
+<<<<<<< HEAD
     - debian/arm32_test-gl
+=======
+    - alpine/x86_64_lava_ssh_client
+    - debian/arm32_test-gl
+    - python-artifacts
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     - testing:arm32
     - igt:arm32
 
@@ -49,7 +62,13 @@
   dependencies:
     - testing:arm64
   needs:
+<<<<<<< HEAD
     - debian/arm64_test-gl
+=======
+    - alpine/x86_64_lava_ssh_client
+    - debian/arm64_test-gl
+    - python-artifacts
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     - testing:arm64
     - igt:arm64
 
@@ -63,10 +82,44 @@
   dependencies:
     - testing:x86_64
   needs:
+<<<<<<< HEAD
     - debian/x86_64_test-gl
     - testing:x86_64
     - igt:x86_64
 
+=======
+    - alpine/x86_64_lava_ssh_client
+    - debian/x86_64_test-gl
+    - python-artifacts
+    - testing:x86_64
+    - igt:x86_64
+
+.baremetal-igt-arm64:
+  extends:
+    - .baremetal-test-arm64-gl
+    - .use-debian/baremetal_arm64_test-gl
+    - .allow_failure_lockdep
+  timeout: "1h30m"
+  rules:
+    - !reference [.scheduled_pipeline-rules, rules]
+    - !reference [.google-freedreno-farm-rules, rules]
+    - when: on_success
+  variables:
+    FDO_CI_CONCURRENT: 10
+    HWCI_TEST_SCRIPT: "/install/igt_runner.sh"
+    S3_ARTIFACT_NAME: "arm64/kernel-files"
+    BM_KERNEL: https://${PIPELINE_ARTIFACTS_BASE}/arm64/Image.gz
+    BM_CMDLINE: "ip=dhcp console=ttyMSM0,115200n8 $BM_KERNEL_EXTRA_ARGS root=/dev/nfs rw nfsrootdebug nfsroot=,tcp,nfsvers=4.2 init=/init $BM_KERNELARGS"
+    FARM: google
+  needs:
+    - debian/baremetal_arm64_test-gl
+    - job: testing:arm64
+      artifacts: false
+    - igt:arm64
+  tags:
+    - $RUNNER_TAG
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .software-driver:
   stage: software-driver
   extends:
@@ -82,7 +135,10 @@
     - !reference [default, before_script]
     - rm -rf install
     - tar -xf artifacts/install.tar
+<<<<<<< HEAD
     - mkdir -p /kernel
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   script:
     - ln -sf $CI_PROJECT_DIR/install /install
     - mv install/bzImage /kernel/bzImage
@@ -100,7 +156,10 @@
     DRIVER_NAME: msm
     BOOT_METHOD: depthcharge
     KERNEL_IMAGE_TYPE: ""
+<<<<<<< HEAD
     LAVA_FIRMWARE: qcom-lava
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 msm:sc7180-trogdor-lazor-limozeen:
   extends:
@@ -124,6 +183,7 @@ msm:sc7180-trogdor-kingoftown:
 
 msm:apq8016:
   extends:
+<<<<<<< HEAD
     - .lava-igt:arm64
   stage: msm
   parallel: 3
@@ -155,12 +215,46 @@ msm:apq8096:
     KERNEL_IMAGE_TYPE: ""
     RUNNER_TAG: mesa-ci-x86-64-lava-dragonboard-820c
     LAVA_FIRMWARE: qcom-lava
+=======
+    - .baremetal-igt-arm64
+  stage: msm
+  variables:
+    DEVICE_TYPE: apq8016-sbc-usb-host
+    DRIVER_NAME: msm
+    BM_DTB: https://${PIPELINE_ARTIFACTS_BASE}/arm64/${DEVICE_TYPE}.dtb
+    GPU_VERSION: apq8016
+    # disabling unused clocks congests with the MDSS runtime PM trying to
+    # disable those clocks and causes boot to fail.
+    # Reproducer: DRM_MSM=y, DRM_I2C_ADV7511=m
+    BM_KERNEL_EXTRA_ARGS: clk_ignore_unused
+    RUNNER_TAG: google-freedreno-db410c
+  script:
+    - ./install/bare-metal/fastboot.sh || exit $?
+
+msm:apq8096:
+  extends:
+    - .baremetal-igt-arm64
+  stage: msm
+  variables:
+    DEVICE_TYPE: apq8096-db820c
+    DRIVER_NAME: msm
+    BM_KERNEL_EXTRA_ARGS: maxcpus=2
+    BM_DTB: https://${PIPELINE_ARTIFACTS_BASE}/arm64/${DEVICE_TYPE}.dtb
+    GPU_VERSION: apq8096
+    RUNNER_TAG: google-freedreno-db820c
+  script:
+    - ./install/bare-metal/fastboot.sh || exit $?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 msm:sm8350-hdk:
   extends:
     - .lava-igt:arm64
   stage: msm
+<<<<<<< HEAD
   parallel: 2
+=======
+  parallel: 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   variables:
     BOOT_METHOD: fastboot
     DEVICE_TYPE: sm8350-hdk
@@ -171,14 +265,20 @@ msm:sm8350-hdk:
     KERNEL_IMAGE_NAME: "Image.gz"
     KERNEL_IMAGE_TYPE: ""
     RUNNER_TAG: mesa-ci-x86-64-lava-sm8350-hdk
+<<<<<<< HEAD
     LAVA_FIRMWARE: qcom-lava
     LAVA_FASTBOOT_CMD: "set_active a"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .rockchip-device:
   variables:
     DTB: ${DEVICE_TYPE}
     BOOT_METHOD: depthcharge
+<<<<<<< HEAD
     LAVA_FIRMWARE: arm
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .rockchip-display:
   stage: rockchip
@@ -206,6 +306,7 @@ msm:sm8350-hdk:
     KERNEL_IMAGE_TYPE: ""
     RUNNER_TAG: mesa-ci-x86-64-lava-rk3399-gru-kevin
 
+<<<<<<< HEAD
 .rk3588:
   extends:
     - .lava-igt:arm64
@@ -219,6 +320,8 @@ msm:sm8350-hdk:
     KERNEL_IMAGE_TYPE: "image"
     RUNNER_TAG: mesa-ci-x86-64-lava-rk3588-rock-5b
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 rockchip:rk3288:
   extends:
     - .rk3288
@@ -239,6 +342,7 @@ panfrost:rk3399:
     - .rk3399
     - .panfrost-gpu
 
+<<<<<<< HEAD
 rockchip:rk3588:
   extends:
     - .rk3588
@@ -249,6 +353,8 @@ panthor:rk3588:
     - .rk3588
     - .panthor-gpu
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .i915:
   extends:
     - .lava-igt:x86_64
@@ -258,7 +364,10 @@ panthor:rk3588:
     DTB: ""
     BOOT_METHOD: depthcharge
     KERNEL_IMAGE_TYPE: ""
+<<<<<<< HEAD
     LAVA_FIRMWARE: i915
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 i915:apl:
   extends:
@@ -281,7 +390,11 @@ i915:glk:
 i915:amly:
   extends:
     - .i915
+<<<<<<< HEAD
   parallel: 3
+=======
+  parallel: 2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   variables:
     DEVICE_TYPE: asus-C433TA-AJ0005-rammus
     GPU_VERSION: amly
@@ -308,11 +421,19 @@ i915:whl:
 i915:cml:
   extends:
     - .i915
+<<<<<<< HEAD
   parallel: 5
   variables:
     DEVICE_TYPE: acer-chromebox-cxi4-puff
     GPU_VERSION: cml
     RUNNER_TAG: mesa-ci-x86-64-lava-acer-chromebox-cxi4-puff
+=======
+  parallel: 2
+  variables:
+    DEVICE_TYPE: asus-C436FA-Flip-hatch
+    GPU_VERSION: cml
+    RUNNER_TAG: mesa-ci-x86-64-lava-asus-C436FA-Flip-hatch
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 i915:tgl:
   extends:
@@ -341,7 +462,10 @@ i915:jsl:
     DTB: ""
     BOOT_METHOD: depthcharge
     KERNEL_IMAGE_TYPE: ""
+<<<<<<< HEAD
     LAVA_FIRMWARE: amdgpu-lava
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 amdgpu:stoney:
   extends:
@@ -360,7 +484,10 @@ amdgpu:stoney:
     DTB: ${DEVICE_TYPE}
     BOOT_METHOD: depthcharge
     KERNEL_IMAGE_TYPE: ""
+<<<<<<< HEAD
     LAVA_FIRMWARE: arm
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .mediatek-display:
   stage: mediatek
@@ -377,11 +504,14 @@ amdgpu:stoney:
   variables:
     DRIVER_NAME: panfrost
 
+<<<<<<< HEAD
 .panthor-gpu:
   stage: panthor
   variables:
     DRIVER_NAME: panthor
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .mt8173:
   extends:
     - .mediatek-device

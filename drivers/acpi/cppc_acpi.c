@@ -177,12 +177,19 @@ __ATTR(_name, 0444, show_##_name, NULL)
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, highest_perf);
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_perf);
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_perf);
+<<<<<<< HEAD
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, reference_perf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_nonlinear_perf);
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, guaranteed_perf);
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_freq);
 show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
 
+<<<<<<< HEAD
+=======
+show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
 
 /* Check for valid access_width, otherwise, fallback to using bit_width */
@@ -854,6 +861,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
 	per_cpu(cpu_pcc_subspace_idx, pr->id) = pcc_subspace_id;
 
 	/*
+<<<<<<< HEAD
 	 * In CPPC v1, DESIRED_PERF is mandatory. In CPPC v2, it is optional
 	 * only when AUTO_SEL_ENABLE is supported.
 	 */
@@ -864,6 +872,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
 			"or autonomous selection is disabled\n");
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Initialize the remaining cpc_regs as unsupported.
 	 * Example: In case FW exposes CPPC v2, the below loop will initialize
 	 * LOWEST_FREQ and NOMINAL_FREQ regs as unsupported
@@ -1352,10 +1362,16 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 {
 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
 	struct cpc_register_resource *highest_reg, *lowest_reg,
+<<<<<<< HEAD
 		*lowest_non_linear_reg, *nominal_reg, *reference_reg,
 		*guaranteed_reg, *low_freq_reg = NULL, *nom_freq_reg = NULL;
 	u64 high, low, guaranteed, nom, ref, min_nonlinear,
 	    low_f = 0, nom_f = 0;
+=======
+		*lowest_non_linear_reg, *nominal_reg, *guaranteed_reg,
+		*low_freq_reg = NULL, *nom_freq_reg = NULL;
+	u64 high, low, guaranteed, nom, min_nonlinear, low_f = 0, nom_f = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
 	struct cppc_pcc_data *pcc_ss_data = NULL;
 	int ret = 0, regs_in_pcc = 0;
@@ -1369,7 +1385,10 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 	lowest_reg = &cpc_desc->cpc_regs[LOWEST_PERF];
 	lowest_non_linear_reg = &cpc_desc->cpc_regs[LOW_NON_LINEAR_PERF];
 	nominal_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+<<<<<<< HEAD
 	reference_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	low_freq_reg = &cpc_desc->cpc_regs[LOWEST_FREQ];
 	nom_freq_reg = &cpc_desc->cpc_regs[NOMINAL_FREQ];
 	guaranteed_reg = &cpc_desc->cpc_regs[GUARANTEED_PERF];
@@ -1377,7 +1396,10 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 	/* Are any of the regs PCC ?*/
 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
+<<<<<<< HEAD
 		(CPC_SUPPORTED(reference_reg) && CPC_IN_PCC(reference_reg)) ||
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
 		CPC_IN_PCC(guaranteed_reg)) {
 		if (pcc_ss_id < 0) {
@@ -1394,6 +1416,7 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 		}
 	}
 
+<<<<<<< HEAD
 	ret = cpc_read(cpunum, highest_reg, &high);
 	if (ret)
 		goto out_err;
@@ -1422,10 +1445,22 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 	}
 	perf_caps->reference_perf = ref;
 
+=======
+	cpc_read(cpunum, highest_reg, &high);
+	perf_caps->highest_perf = high;
+
+	cpc_read(cpunum, lowest_reg, &low);
+	perf_caps->lowest_perf = low;
+
+	cpc_read(cpunum, nominal_reg, &nom);
+	perf_caps->nominal_perf = nom;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (guaranteed_reg->type != ACPI_TYPE_BUFFER  ||
 	    IS_NULL_REG(&guaranteed_reg->cpc_entry.reg)) {
 		perf_caps->guaranteed_perf = 0;
 	} else {
+<<<<<<< HEAD
 		ret = cpc_read(cpunum, guaranteed_reg, &guaranteed);
 		if (ret)
 			goto out_err;
@@ -1454,6 +1489,24 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
 		if (ret)
 			goto out_err;
 	}
+=======
+		cpc_read(cpunum, guaranteed_reg, &guaranteed);
+		perf_caps->guaranteed_perf = guaranteed;
+	}
+
+	cpc_read(cpunum, lowest_non_linear_reg, &min_nonlinear);
+	perf_caps->lowest_nonlinear_perf = min_nonlinear;
+
+	if (!high || !low || !nom || !min_nonlinear)
+		ret = -EFAULT;
+
+	/* Read optional lowest and nominal frequencies if present */
+	if (CPC_SUPPORTED(low_freq_reg))
+		cpc_read(cpunum, low_freq_reg, &low_f);
+
+	if (CPC_SUPPORTED(nom_freq_reg))
+		cpc_read(cpunum, nom_freq_reg, &nom_f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	perf_caps->lowest_freq = low_f;
 	perf_caps->nominal_freq = nom_f;
@@ -1475,10 +1528,27 @@ EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
 bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
 {
 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+<<<<<<< HEAD
 
 	return CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
 		CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
 		CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]);
+=======
+	struct cpc_register_resource *ref_perf_reg;
+
+	/*
+	 * If reference perf register is not supported then we should use the
+	 * nominal perf value
+	 */
+	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+	if (!CPC_SUPPORTED(ref_perf_reg))
+		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+
+	return CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+		CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+		CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+		CPC_IN_PCC(ref_perf_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc_cpu);
 
@@ -1515,10 +1585,17 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 {
 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
 	struct cpc_register_resource *delivered_reg, *reference_reg,
+<<<<<<< HEAD
 		*ctr_wrap_reg;
 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
 	struct cppc_pcc_data *pcc_ss_data = NULL;
 	u64 delivered, reference, ctr_wrap_time;
+=======
+		*ref_perf_reg, *ctr_wrap_reg;
+	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+	struct cppc_pcc_data *pcc_ss_data = NULL;
+	u64 delivered, reference, ref_perf, ctr_wrap_time;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0, regs_in_pcc = 0;
 
 	if (!cpc_desc) {
@@ -1528,11 +1605,27 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 
 	delivered_reg = &cpc_desc->cpc_regs[DELIVERED_CTR];
 	reference_reg = &cpc_desc->cpc_regs[REFERENCE_CTR];
+<<<<<<< HEAD
 	ctr_wrap_reg = &cpc_desc->cpc_regs[CTR_WRAP_TIME];
 
 	/* Are any of the regs PCC ?*/
 	if (CPC_IN_PCC(delivered_reg) || CPC_IN_PCC(reference_reg) ||
 		CPC_IN_PCC(ctr_wrap_reg)) {
+=======
+	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+	ctr_wrap_reg = &cpc_desc->cpc_regs[CTR_WRAP_TIME];
+
+	/*
+	 * If reference perf register is not supported then we should
+	 * use the nominal perf value
+	 */
+	if (!CPC_SUPPORTED(ref_perf_reg))
+		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+
+	/* Are any of the regs PCC ?*/
+	if (CPC_IN_PCC(delivered_reg) || CPC_IN_PCC(reference_reg) ||
+		CPC_IN_PCC(ctr_wrap_reg) || CPC_IN_PCC(ref_perf_reg)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pcc_ss_id < 0) {
 			pr_debug("Invalid pcc_ss_id\n");
 			return -ENODEV;
@@ -1547,6 +1640,7 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 		}
 	}
 
+<<<<<<< HEAD
 	ret = cpc_read(cpunum, delivered_reg, &delivered);
 	if (ret)
 		goto out_err;
@@ -1554,6 +1648,11 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 	ret = cpc_read(cpunum, reference_reg, &reference);
 	if (ret)
 		goto out_err;
+=======
+	cpc_read(cpunum, delivered_reg, &delivered);
+	cpc_read(cpunum, reference_reg, &reference);
+	cpc_read(cpunum, ref_perf_reg, &ref_perf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Per spec, if ctr_wrap_time optional register is unsupported, then the
@@ -1561,6 +1660,7 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 	 * platform
 	 */
 	ctr_wrap_time = (u64)(~((u64)0));
+<<<<<<< HEAD
 	if (CPC_SUPPORTED(ctr_wrap_reg)) {
 		ret = cpc_read(cpunum, ctr_wrap_reg, &ctr_wrap_time);
 		if (ret)
@@ -1568,12 +1668,22 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
 	}
 
 	if (!delivered || !reference) {
+=======
+	if (CPC_SUPPORTED(ctr_wrap_reg))
+		cpc_read(cpunum, ctr_wrap_reg, &ctr_wrap_time);
+
+	if (!delivered || !reference ||	!ref_perf) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EFAULT;
 		goto out_err;
 	}
 
 	perf_fb_ctrs->delivered = delivered;
 	perf_fb_ctrs->reference = reference;
+<<<<<<< HEAD
+=======
+	perf_fb_ctrs->reference_perf = ref_perf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	perf_fb_ctrs->wraparound_time = ctr_wrap_time;
 out_err:
 	if (regs_in_pcc)
@@ -1593,8 +1703,11 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
 	struct cpc_register_resource *auto_sel_reg;
 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
 	struct cppc_pcc_data *pcc_ss_data = NULL;
+<<<<<<< HEAD
 	bool autosel_ffh_sysmem;
 	bool epp_ffh_sysmem;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (!cpc_desc) {
@@ -1605,11 +1718,14 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
 	auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
 	epp_set_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
 
+<<<<<<< HEAD
 	epp_ffh_sysmem = CPC_SUPPORTED(epp_set_reg) &&
 		(CPC_IN_FFH(epp_set_reg) || CPC_IN_SYSTEM_MEMORY(epp_set_reg));
 	autosel_ffh_sysmem = CPC_SUPPORTED(auto_sel_reg) &&
 		(CPC_IN_FFH(auto_sel_reg) || CPC_IN_SYSTEM_MEMORY(auto_sel_reg));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (CPC_IN_PCC(epp_set_reg) || CPC_IN_PCC(auto_sel_reg)) {
 		if (pcc_ss_id < 0) {
 			pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
@@ -1635,6 +1751,7 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
 		up_write(&pcc_ss_data->pcc_lock);
 	} else if (osc_cpc_flexible_adr_space_confirmed &&
+<<<<<<< HEAD
 		   (epp_ffh_sysmem || autosel_ffh_sysmem)) {
 		if (autosel_ffh_sysmem) {
 			ret = cpc_write(cpu, auto_sel_reg, enable);
@@ -1651,6 +1768,13 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
 	} else {
 		ret = -ENOTSUPP;
 		pr_debug("_CPC in PCC/FFH/SystemMemory are not supported\n");
+=======
+		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
+		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
+	} else {
+		ret = -ENOTSUPP;
+		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -1789,6 +1913,7 @@ int cppc_set_enable(int cpu, bool enable)
 EXPORT_SYMBOL_GPL(cppc_set_enable);
 
 /**
+<<<<<<< HEAD
  * cppc_get_perf - Get a CPU's performance controls.
  * @cpu: CPU for which to get performance controls.
  * @perf_ctrls: ptr to cppc_perf_ctrls. See cppc_acpi.h
@@ -1884,6 +2009,8 @@ out_err:
 EXPORT_SYMBOL_GPL(cppc_get_perf);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * cppc_set_perf - Set a CPU's performance controls.
  * @cpu: CPU for which to set performance controls.
  * @perf_ctrls: ptr to cppc_perf_ctrls. See cppc_acpi.h
@@ -2016,6 +2143,7 @@ int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
 EXPORT_SYMBOL_GPL(cppc_set_perf);
 
 /**
+<<<<<<< HEAD
  * cppc_get_perf_limited - Get the Performance Limited register value.
  * @cpu: CPU from which to get Performance Limited register.
  * @perf_limited: Pointer to store the Performance Limited value.
@@ -2072,6 +2200,8 @@ int cppc_set_perf_limited(int cpu, u64 bits_to_clear)
 EXPORT_SYMBOL_GPL(cppc_set_perf_limited);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * cppc_get_transition_latency - returns frequency transition latency in ns
  * @cpu_num: CPU number for per_cpu().
  *
@@ -2145,7 +2275,11 @@ static void cppc_find_dmi_mhz(const struct dmi_header *dm, void *private)
 }
 
 /* Look up the max frequency in DMI */
+<<<<<<< HEAD
 u64 cppc_get_dmi_max_khz(void)
+=======
+static u64 cppc_get_dmi_max_khz(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 mhz = 0;
 
@@ -2159,7 +2293,10 @@ u64 cppc_get_dmi_max_khz(void)
 
 	return KHZ_PER_MHZ * mhz;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cppc_get_dmi_max_khz);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * If CPPC lowest_freq and nominal_freq registers are exposed then we can

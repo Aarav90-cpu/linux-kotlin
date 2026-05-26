@@ -37,9 +37,12 @@ properties:
   clocks:
     maxItems: 1
 
+<<<<<<< HEAD
   resets:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   microchip,ext-vbus-drv:
     description:
       Some ULPI USB PHYs do not support an internal VBUS supply and driving

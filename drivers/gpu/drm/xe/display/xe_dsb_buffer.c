@@ -3,12 +3,19 @@
  * Copyright 2023, Intel Corporation.
  */
 
+<<<<<<< HEAD
 #include <drm/intel/display_parent_interface.h>
 
 #include "xe_bo.h"
 #include "xe_device.h"
 #include "xe_device_types.h"
 #include "xe_dsb_buffer.h"
+=======
+#include "intel_dsb_buffer.h"
+#include "xe_bo.h"
+#include "xe_device.h"
+#include "xe_device_types.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct intel_dsb_buffer {
 	u32 *cmd_buf;
@@ -16,29 +23,49 @@ struct intel_dsb_buffer {
 	size_t buf_size;
 };
 
+<<<<<<< HEAD
 static u32 xe_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
+=======
+u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return xe_bo_ggtt_addr(dsb_buf->bo);
 }
 
+<<<<<<< HEAD
 static void xe_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
+=======
+void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	iosys_map_wr(&dsb_buf->bo->vmap, idx * 4, u32, val);
 }
 
+<<<<<<< HEAD
 static u32 xe_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+=======
+u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return iosys_map_rd(&dsb_buf->bo->vmap, idx * 4, u32);
 }
 
+<<<<<<< HEAD
 static void xe_dsb_buffer_fill(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
+=======
+void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
 
 	iosys_map_memset(&dsb_buf->bo->vmap, idx * 4, val, size);
 }
 
+<<<<<<< HEAD
 static struct intel_dsb_buffer *xe_dsb_buffer_create(struct drm_device *drm, size_t size)
+=======
+struct intel_dsb_buffer *intel_dsb_buffer_create(struct drm_device *drm, size_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_device *xe = to_xe_device(drm);
 	struct intel_dsb_buffer *dsb_buf;
@@ -54,9 +81,13 @@ static struct intel_dsb_buffer *xe_dsb_buffer_create(struct drm_device *drm, siz
 					PAGE_ALIGN(size),
 					ttm_bo_type_kernel,
 					XE_BO_FLAG_VRAM_IF_DGFX(xe_device_get_root_tile(xe)) |
+<<<<<<< HEAD
 					XE_BO_FLAG_FORCE_WC |
 					XE_BO_FLAG_GGTT,
 					false);
+=======
+					XE_BO_FLAG_SCANOUT | XE_BO_FLAG_GGTT, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(obj)) {
 		ret = PTR_ERR(obj);
 		goto err_pin_map;
@@ -73,13 +104,21 @@ err_pin_map:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 static void xe_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
+=======
+void intel_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	xe_bo_unpin_map_no_vm(dsb_buf->bo);
 	kfree(dsb_buf);
 }
 
+<<<<<<< HEAD
 static void xe_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
+=======
+void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_device *xe = dsb_buf->bo->tile->xe;
 
@@ -90,6 +129,7 @@ static void xe_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
 	xe_device_wmb(xe);
 	xe_device_l2_flush(xe);
 }
+<<<<<<< HEAD
 
 const struct intel_display_dsb_interface xe_display_dsb_interface = {
 	.ggtt_offset = xe_dsb_buffer_ggtt_offset,
@@ -100,3 +140,5 @@ const struct intel_display_dsb_interface xe_display_dsb_interface = {
 	.cleanup = xe_dsb_buffer_cleanup,
 	.flush_map = xe_dsb_buffer_flush_map,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

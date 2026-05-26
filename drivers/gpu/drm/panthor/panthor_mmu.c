@@ -562,6 +562,7 @@ static u64 pack_region_range(struct panthor_device *ptdev, u64 *region_start, u6
 	return region_width | *region_start;
 }
 
+<<<<<<< HEAD
 static u32 panthor_mmu_as_fault_mask(struct panthor_device *ptdev, u32 as)
 {
 	return BIT(as);
@@ -577,6 +578,11 @@ static int panthor_mmu_as_enable(struct panthor_device *ptdev, u32 as_nr,
 	panthor_mmu_irq_enable_events(&ptdev->mmu->irq,
 				      panthor_mmu_as_fault_mask(ptdev, as_nr));
 
+=======
+static int panthor_mmu_as_enable(struct panthor_device *ptdev, u32 as_nr,
+				 u64 transtab, u64 transcfg, u64 memattr)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_write64(ptdev, AS_TRANSTAB(as_nr), transtab);
 	gpu_write64(ptdev, AS_MEMATTR(as_nr), memattr);
 	gpu_write64(ptdev, AS_TRANSCFG(as_nr), transcfg);
@@ -592,9 +598,12 @@ static int panthor_mmu_as_disable(struct panthor_device *ptdev, u32 as_nr,
 
 	lockdep_assert_held(&ptdev->mmu->as.slots_lock);
 
+<<<<<<< HEAD
 	panthor_mmu_irq_disable_events(&ptdev->mmu->irq,
 				       panthor_mmu_as_fault_mask(ptdev, as_nr));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Flush+invalidate RW caches, invalidate RO ones. */
 	ret = panthor_gpu_flush_caches(ptdev, CACHE_CLEAN | CACHE_INV,
 				       CACHE_CLEAN | CACHE_INV, CACHE_INV);
@@ -627,6 +636,14 @@ static u32 panthor_mmu_fault_mask(struct panthor_device *ptdev, u32 value)
 	return value & GENMASK(15, 0);
 }
 
+<<<<<<< HEAD
+=======
+static u32 panthor_mmu_as_fault_mask(struct panthor_device *ptdev, u32 as)
+{
+	return BIT(as);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * panthor_vm_has_unhandled_faults() - Check if a VM has unhandled faults
  * @vm: VM to check.
@@ -680,7 +697,10 @@ int panthor_vm_active(struct panthor_vm *vm)
 	struct io_pgtable_cfg *cfg = &io_pgtable_ops_to_pgtable(vm->pgtbl_ops)->cfg;
 	int ret = 0, as, cookie;
 	u64 transtab, transcfg;
+<<<<<<< HEAD
 	u32 fault_mask;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!drm_dev_enter(&ptdev->base, &cookie))
 		return -ENODEV;
@@ -754,6 +774,7 @@ out_enable_as:
 	/* If the VM is re-activated, we clear the fault. */
 	vm->unhandled_fault = false;
 
+<<<<<<< HEAD
 	/* Unhandled pagefault on this AS, clear the fault and enable the AS,
 	 * which re-enables interrupts.
 	 */
@@ -761,6 +782,16 @@ out_enable_as:
 	if (ptdev->mmu->as.faulty_mask & fault_mask) {
 		gpu_write(ptdev, MMU_INT_CLEAR, fault_mask);
 		ptdev->mmu->as.faulty_mask &= ~fault_mask;
+=======
+	/* Unhandled pagefault on this AS, clear the fault and re-enable interrupts
+	 * before enabling the AS.
+	 */
+	if (ptdev->mmu->as.faulty_mask & panthor_mmu_as_fault_mask(ptdev, as)) {
+		gpu_write(ptdev, MMU_INT_CLEAR, panthor_mmu_as_fault_mask(ptdev, as));
+		ptdev->mmu->as.faulty_mask &= ~panthor_mmu_as_fault_mask(ptdev, as);
+		ptdev->mmu->irq.mask |= panthor_mmu_as_fault_mask(ptdev, as);
+		gpu_write(ptdev, MMU_INT_MASK, ~ptdev->mmu->as.faulty_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* The VM update is guarded by ::op_lock, which we take at the beginning
@@ -1648,6 +1679,7 @@ static int panthor_vm_lock_region(struct panthor_vm *vm, u64 start, u64 size)
 	    start + size <= vm->locked_region.start + vm->locked_region.size)
 		return 0;
 
+<<<<<<< HEAD
 	/* sm_step_remap() may need a locked region that isn't a strict superset
 	 * of the original one because of having to extend unmap boundaries beyond
 	 * it to deal with partial unmaps of transparent huge pages. What we want
@@ -1667,6 +1699,8 @@ static int panthor_vm_lock_region(struct panthor_vm *vm, u64 start, u64 size)
 		size = end - start;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&ptdev->mmu->as.slots_lock);
 	if (vm->as.id >= 0 && size) {
 		/* Lock the region that needs to be updated */
@@ -1725,6 +1759,10 @@ static void panthor_mmu_irq_handler(struct panthor_device *ptdev, u32 status)
 	while (status) {
 		u32 as = ffs(status | (status >> 16)) - 1;
 		u32 mask = panthor_mmu_as_fault_mask(ptdev, as);
+<<<<<<< HEAD
+=======
+		u32 new_int_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u64 addr;
 		u32 fault_status;
 		u32 exception_type;
@@ -1742,6 +1780,11 @@ static void panthor_mmu_irq_handler(struct panthor_device *ptdev, u32 status)
 		mutex_lock(&ptdev->mmu->as.slots_lock);
 
 		ptdev->mmu->as.faulty_mask |= mask;
+<<<<<<< HEAD
+=======
+		new_int_mask =
+			panthor_mmu_fault_mask(ptdev, ~ptdev->mmu->as.faulty_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* terminal fault, print info about the fault */
 		drm_err(&ptdev->base,
@@ -1765,6 +1808,14 @@ static void panthor_mmu_irq_handler(struct panthor_device *ptdev, u32 status)
 		 */
 		gpu_write(ptdev, MMU_INT_CLEAR, mask);
 
+<<<<<<< HEAD
+=======
+		/* Ignore MMU interrupts on this AS until it's been
+		 * re-enabled.
+		 */
+		ptdev->mmu->irq.mask = new_int_mask;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ptdev->mmu->as.slots[as].vm)
 			ptdev->mmu->as.slots[as].vm->unhandled_fault = true;
 
@@ -1779,6 +1830,10 @@ static void panthor_mmu_irq_handler(struct panthor_device *ptdev, u32 status)
 	if (has_unhandled_faults)
 		panthor_sched_report_mmu_fault(ptdev);
 }
+<<<<<<< HEAD
+=======
+PANTHOR_IRQ_HANDLER(mmu, MMU, panthor_mmu_irq_handler);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * panthor_mmu_suspend() - Suspend the MMU logic
@@ -1823,7 +1878,11 @@ void panthor_mmu_resume(struct panthor_device *ptdev)
 	ptdev->mmu->as.faulty_mask = 0;
 	mutex_unlock(&ptdev->mmu->as.slots_lock);
 
+<<<<<<< HEAD
 	panthor_mmu_irq_resume(&ptdev->mmu->irq);
+=======
+	panthor_mmu_irq_resume(&ptdev->mmu->irq, panthor_mmu_fault_mask(ptdev, ~0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1877,7 +1936,11 @@ void panthor_mmu_post_reset(struct panthor_device *ptdev)
 
 	mutex_unlock(&ptdev->mmu->as.slots_lock);
 
+<<<<<<< HEAD
 	panthor_mmu_irq_resume(&ptdev->mmu->irq);
+=======
+	panthor_mmu_irq_resume(&ptdev->mmu->irq, panthor_mmu_fault_mask(ptdev, ~0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Restart the VM_BIND queues. */
 	mutex_lock(&ptdev->mmu->vm.lock);

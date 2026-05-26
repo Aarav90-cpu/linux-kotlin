@@ -520,6 +520,11 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -664,6 +669,11 @@ static void mwifiex_usb_disconnect(struct usb_interface *intf)
 	mwifiex_dbg(adapter, FATAL,
 		    "%s: removing card\n", __func__);
 	mwifiex_remove_card(adapter);
+<<<<<<< HEAD
+=======
+
+	usb_put_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mwifiex_usb_coredump(struct device *dev)

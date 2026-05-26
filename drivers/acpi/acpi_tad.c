@@ -2,10 +2,19 @@
 /*
  * ACPI Time and Alarm (TAD) Device Driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2018 - 2026 Intel Corporation
  * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
  *
  * This driver is based on ACPI 6.6, Section 9.17.
+=======
+ * Copyright (C) 2018 Intel Corporation
+ * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ *
+ * This driver is based on Section 9.18 of the ACPI 6.2 specification revision.
+ *
+ * It only supports the system wakeup capabilities of the TAD.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Provided are sysfs attributes, available under the TAD platform device,
  * allowing user space to manage the AC and DC wakeup timers of the TAD:
@@ -16,27 +25,40 @@
  *
  * The wakeup events handling and power management of the TAD is expected to
  * be taken care of by the ACPI PM domain attached to its platform device.
+<<<<<<< HEAD
  *
  * If the TAD supports the get/set real time features, as indicated by the
  * capability mask returned by _GCP under the TAD object, additional sysfs
  * attributes are created allowing the real time to be set and read and an RTC
  * class device is registered under the TAD platform device.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/acpi.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/ktime.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/rtc.h>
+=======
+#include <linux/module.h>
+#include <linux/platform_device.h>
+#include <linux/pm_runtime.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/suspend.h>
 
 MODULE_DESCRIPTION("ACPI Time and Alarm (TAD) Device Driver");
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Rafael J. Wysocki");
 
+<<<<<<< HEAD
 /* ACPI TAD capability flags (ACPI 6.6, Section 9.17.2) */
+=======
+/* ACPI TAD capability flags (ACPI 6.2, Section 9.18.2) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACPI_TAD_AC_WAKE	BIT(0)
 #define ACPI_TAD_DC_WAKE	BIT(1)
 #define ACPI_TAD_RT		BIT(2)
@@ -54,10 +76,13 @@ MODULE_AUTHOR("Rafael J. Wysocki");
 /* Special value for disabled timer or expired timer wake policy. */
 #define ACPI_TAD_WAKE_DISABLED	(~(u32)0)
 
+<<<<<<< HEAD
 /* ACPI TAD RTC */
 #define ACPI_TAD_TZ_UNSPEC	2047
 #define ACPI_TAD_TIME_ISDST	3
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct acpi_tad_driver_data {
 	u32 capabilities;
 };
@@ -76,6 +101,7 @@ struct acpi_tad_rt {
 	u8 padding[3]; /* must be 0 */
 } __packed;
 
+<<<<<<< HEAD
 static bool acpi_tad_rt_is_invalid(struct acpi_tad_rt *rt)
 {
 	return rt->year < 1900 || rt->year > 9999 ||
@@ -86,6 +112,8 @@ static bool acpi_tad_rt_is_invalid(struct acpi_tad_rt *rt)
 	    rt->daylight > 3;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int acpi_tad_set_real_time(struct device *dev, struct acpi_tad_rt *rt)
 {
 	acpi_handle handle = ACPI_HANDLE(dev);
@@ -99,12 +127,21 @@ static int acpi_tad_set_real_time(struct device *dev, struct acpi_tad_rt *rt)
 	unsigned long long retval;
 	acpi_status status;
 
+<<<<<<< HEAD
 	if (acpi_tad_rt_is_invalid(rt))
 		return -EINVAL;
 
 	rt->valid = 0;
 	rt->msec = 0;
 	memset(rt->padding, 0, 3);
+=======
+	if (rt->year < 1900 || rt->year > 9999 ||
+	    rt->month < 1 || rt->month > 12 ||
+	    rt->hour > 23 || rt->minute > 59 || rt->second > 59 ||
+	    rt->tz < -1440 || (rt->tz > 1440 && rt->tz != 2047) ||
+	    rt->daylight > 3)
+		return -ERANGE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	args[0].buffer.pointer = (u8 *)rt;
 	args[0].buffer.length = sizeof(*rt);
@@ -152,14 +189,26 @@ out_free:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __acpi_tad_get_real_time(struct device *dev, struct acpi_tad_rt *rt)
 {
 	int ret;
 
+=======
+static int acpi_tad_get_real_time(struct device *dev, struct acpi_tad_rt *rt)
+{
+	int ret;
+
+	PM_RUNTIME_ACQUIRE(dev, pm);
+	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
+		return -ENXIO;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = acpi_tad_evaluate_grt(dev, rt);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (acpi_tad_rt_is_invalid(rt))
 		return -ENODATA;
 
@@ -224,6 +273,11 @@ static int __acpi_tad_wake_read(struct device *dev, char *method, u32 timer_id,
 
 /* sysfs interface */
 
+=======
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static char *acpi_tad_rt_next_field(char *s, int *val)
 {
 	char *p;
@@ -243,56 +297,92 @@ static ssize_t time_store(struct device *dev, struct device_attribute *attr,
 			  const char *buf, size_t count)
 {
 	struct acpi_tad_rt rt;
+<<<<<<< HEAD
 	int val, ret;
 	char *s;
 
 	char *str __free(kfree) = kmemdup_nul(buf, count, GFP_KERNEL);
+=======
+	char *str, *s;
+	int val, ret = -ENODATA;
+
+	str = kmemdup_nul(buf, count, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!str)
 		return -ENOMEM;
 
 	s = acpi_tad_rt_next_field(str, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.year = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.month = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.day = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.hour = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.minute = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.second = val;
 
 	s = acpi_tad_rt_next_field(s, &val);
 	if (!s)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		goto out_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rt.tz = val;
 
 	if (kstrtoint(s, 10, &val))
+<<<<<<< HEAD
 		return -ENODATA;
 
 	rt.daylight = val;
@@ -302,6 +392,21 @@ static ssize_t time_store(struct device *dev, struct device_attribute *attr,
 		return ret;
 
 	return count;
+=======
+		goto out_free;
+
+	rt.daylight = val;
+
+	rt.valid = 0;
+	rt.msec = 0;
+	memset(rt.padding, 0, 3);
+
+	ret = acpi_tad_set_real_time(dev, &rt);
+
+out_free:
+	kfree(str);
+	return ret ? ret : count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t time_show(struct device *dev, struct device_attribute *attr,
@@ -321,14 +426,51 @@ static ssize_t time_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR_RW(time);
 
+<<<<<<< HEAD
 static int acpi_tad_wake_set(struct device *dev, char *method, u32 timer_id,
 			     u32 value)
 {
+=======
+static struct attribute *acpi_tad_time_attrs[] = {
+	&dev_attr_time.attr,
+	NULL,
+};
+static const struct attribute_group acpi_tad_time_attr_group = {
+	.attrs	= acpi_tad_time_attrs,
+};
+
+static int acpi_tad_wake_set(struct device *dev, char *method, u32 timer_id,
+			     u32 value)
+{
+	acpi_handle handle = ACPI_HANDLE(dev);
+	union acpi_object args[] = {
+		{ .type = ACPI_TYPE_INTEGER, },
+		{ .type = ACPI_TYPE_INTEGER, },
+	};
+	struct acpi_object_list arg_list = {
+		.pointer = args,
+		.count = ARRAY_SIZE(args),
+	};
+	unsigned long long retval;
+	acpi_status status;
+
+	args[0].integer.value = timer_id;
+	args[1].integer.value = value;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PM_RUNTIME_ACQUIRE(dev, pm);
 	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	return __acpi_tad_wake_set(dev, method, timer_id, value);
+=======
+	status = acpi_evaluate_integer(handle, method, &arg_list, &retval);
+	if (ACPI_FAILURE(status) || retval)
+		return -EIO;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int acpi_tad_wake_write(struct device *dev, const char *buf, char *method,
@@ -354,16 +496,37 @@ static int acpi_tad_wake_write(struct device *dev, const char *buf, char *method
 static ssize_t acpi_tad_wake_read(struct device *dev, char *buf, char *method,
 				  u32 timer_id, const char *specval)
 {
+<<<<<<< HEAD
 	unsigned long long retval;
 	int ret;
+=======
+	acpi_handle handle = ACPI_HANDLE(dev);
+	union acpi_object args[] = {
+		{ .type = ACPI_TYPE_INTEGER, },
+	};
+	struct acpi_object_list arg_list = {
+		.pointer = args,
+		.count = ARRAY_SIZE(args),
+	};
+	unsigned long long retval;
+	acpi_status status;
+
+	args[0].integer.value = timer_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	PM_RUNTIME_ACQUIRE(dev, pm);
 	if (PM_RUNTIME_ACQUIRE_ERR(&pm))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	ret = __acpi_tad_wake_read(dev, method, timer_id, &retval);
 	if (ret)
 		return ret;
+=======
+	status = acpi_evaluate_integer(handle, method, &arg_list, &retval);
+	if (ACPI_FAILURE(status))
+		return -EIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((u32)retval == ACPI_TAD_WAKE_DISABLED)
 		return sprintf(buf, "%s\n", specval);
@@ -521,6 +684,20 @@ static ssize_t ac_status_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR_RW(ac_status);
 
+<<<<<<< HEAD
+=======
+static struct attribute *acpi_tad_attrs[] = {
+	&dev_attr_caps.attr,
+	&dev_attr_ac_alarm.attr,
+	&dev_attr_ac_policy.attr,
+	&dev_attr_ac_status.attr,
+	NULL,
+};
+static const struct attribute_group acpi_tad_attr_group = {
+	.attrs	= acpi_tad_attrs,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t dc_alarm_store(struct device *dev, struct device_attribute *attr,
 			      const char *buf, size_t count)
 {
@@ -569,6 +746,7 @@ static ssize_t dc_status_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR_RW(dc_status);
 
+<<<<<<< HEAD
 static struct attribute *acpi_tad_attrs[] = {
 	&dev_attr_caps.attr,
 	&dev_attr_ac_alarm.attr,
@@ -785,23 +963,56 @@ static inline void acpi_tad_register_rtc(struct device *dev,
 
 /* Platform driver interface */
 
+=======
+static struct attribute *acpi_tad_dc_attrs[] = {
+	&dev_attr_dc_alarm.attr,
+	&dev_attr_dc_policy.attr,
+	&dev_attr_dc_status.attr,
+	NULL,
+};
+static const struct attribute_group acpi_tad_dc_attr_group = {
+	.attrs	= acpi_tad_dc_attrs,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int acpi_tad_disable_timer(struct device *dev, u32 timer_id)
 {
 	return acpi_tad_wake_set(dev, "_STV", timer_id, ACPI_TAD_WAKE_DISABLED);
 }
 
+<<<<<<< HEAD
 static void acpi_tad_remove(void *data)
 {
 	struct device *dev = data;
+=======
+static void acpi_tad_remove(struct platform_device *pdev)
+{
+	struct device *dev = &pdev->dev;
+	acpi_handle handle = ACPI_HANDLE(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_tad_driver_data *dd = dev_get_drvdata(dev);
 
 	device_init_wakeup(dev, false);
 
+<<<<<<< HEAD
 	scoped_guard(pm_runtime_noresume, dev) {
 		if (dd->capabilities & ACPI_TAD_AC_WAKE) {
 			acpi_tad_disable_timer(dev, ACPI_TAD_AC_TIMER);
 			acpi_tad_clear_status(dev, ACPI_TAD_AC_TIMER);
 		}
+=======
+	if (dd->capabilities & ACPI_TAD_RT)
+		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
+
+	if (dd->capabilities & ACPI_TAD_DC_WAKE)
+		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+
+	sysfs_remove_group(&dev->kobj, &acpi_tad_attr_group);
+
+	scoped_guard(pm_runtime_noresume, dev) {
+		acpi_tad_disable_timer(dev, ACPI_TAD_AC_TIMER);
+		acpi_tad_clear_status(dev, ACPI_TAD_AC_TIMER);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dd->capabilities & ACPI_TAD_DC_WAKE) {
 			acpi_tad_disable_timer(dev, ACPI_TAD_DC_TIMER);
 			acpi_tad_clear_status(dev, ACPI_TAD_DC_TIMER);
@@ -810,21 +1021,38 @@ static void acpi_tad_remove(void *data)
 
 	pm_runtime_suspend(dev);
 	pm_runtime_disable(dev);
+<<<<<<< HEAD
+=======
+	acpi_remove_cmos_rtc_space_handler(handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int acpi_tad_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct acpi_tad_driver_data *dd;
 	acpi_handle handle;
+=======
+	acpi_handle handle = ACPI_HANDLE(dev);
+	struct acpi_tad_driver_data *dd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status status;
 	unsigned long long caps;
 	int ret;
 
+<<<<<<< HEAD
 	handle = ACPI_HANDLE(dev);
 	if (!handle)
 		return -ENODEV;
 
+=======
+	ret = acpi_install_cmos_rtc_space_handler(handle);
+	if (ret < 0) {
+		dev_info(dev, "Unable to install space handler\n");
+		return -ENODEV;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Initialization failure messages are mostly about firmware issues, so
 	 * print them at the "info" level.
@@ -832,11 +1060,23 @@ static int acpi_tad_probe(struct platform_device *pdev)
 	status = acpi_evaluate_integer(handle, "_GCP", NULL, &caps);
 	if (ACPI_FAILURE(status)) {
 		dev_info(dev, "Unable to get capabilities\n");
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		ret = -ENODEV;
+		goto remove_handler;
+	}
+
+	if (!(caps & ACPI_TAD_AC_WAKE)) {
+		dev_info(dev, "Unsupported capabilities\n");
+		ret = -ENODEV;
+		goto remove_handler;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!acpi_has_method(handle, "_PRW")) {
 		dev_info(dev, "Missing _PRW\n");
+<<<<<<< HEAD
 		caps &= ~(ACPI_TAD_AC_WAKE | ACPI_TAD_DC_WAKE);
 	}
 
@@ -846,6 +1086,17 @@ static int acpi_tad_probe(struct platform_device *pdev)
 	dd = devm_kzalloc(dev, sizeof(*dd), GFP_KERNEL);
 	if (!dd)
 		return -ENOMEM;
+=======
+		ret = -ENODEV;
+		goto remove_handler;
+	}
+
+	dd = devm_kzalloc(dev, sizeof(*dd), GFP_KERNEL);
+	if (!dd) {
+		ret = -ENOMEM;
+		goto remove_handler;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dd->capabilities = caps;
 	dev_set_drvdata(dev, dd);
@@ -856,6 +1107,7 @@ static int acpi_tad_probe(struct platform_device *pdev)
 	 * runtime suspend.  Everything else should be taken care of by the ACPI
 	 * PM domain callbacks.
 	 */
+<<<<<<< HEAD
 	if (ACPI_TAD_AC_WAKE) {
 		device_init_wakeup(dev, true);
 		dev_pm_set_driver_flags(dev, DPM_FLAG_SMART_SUSPEND |
@@ -865,11 +1117,20 @@ static int acpi_tad_probe(struct platform_device *pdev)
 	/*
 	 * The platform bus type probe callback tells the ACPI PM domain to
 	 * power up the device, so set the runtime PM status of it to "active".
+=======
+	device_init_wakeup(dev, true);
+	dev_pm_set_driver_flags(dev, DPM_FLAG_SMART_SUSPEND |
+				     DPM_FLAG_MAY_SKIP_RESUME);
+	/*
+	 * The platform bus type layer tells the ACPI PM domain powers up the
+	 * device, so set the runtime PM status of it to "active".
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	pm_runtime_set_active(dev);
 	pm_runtime_enable(dev);
 	pm_runtime_suspend(dev);
 
+<<<<<<< HEAD
 	/*
 	 * acpi_tad_remove() needs to run after unregistering the RTC class
 	 * device to avoid racing with the latter's callbacks.
@@ -882,6 +1143,34 @@ static int acpi_tad_probe(struct platform_device *pdev)
 		acpi_tad_register_rtc(dev, caps);
 
 	return 0;
+=======
+	ret = sysfs_create_group(&dev->kobj, &acpi_tad_attr_group);
+	if (ret)
+		goto fail;
+
+	if (caps & ACPI_TAD_DC_WAKE) {
+		ret = sysfs_create_group(&dev->kobj, &acpi_tad_dc_attr_group);
+		if (ret)
+			goto fail;
+	}
+
+	if (caps & ACPI_TAD_RT) {
+		ret = sysfs_create_group(&dev->kobj, &acpi_tad_time_attr_group);
+		if (ret)
+			goto fail;
+	}
+
+	return 0;
+
+fail:
+	acpi_tad_remove(pdev);
+	/* Don't fallthrough because cmos rtc space handler is removed in acpi_tad_remove() */
+	return ret;
+
+remove_handler:
+	acpi_remove_cmos_rtc_space_handler(handle);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct acpi_device_id acpi_tad_ids[] = {
@@ -893,9 +1182,15 @@ static struct platform_driver acpi_tad_driver = {
 	.driver = {
 		.name = "acpi-tad",
 		.acpi_match_table = acpi_tad_ids,
+<<<<<<< HEAD
 		.dev_groups = acpi_tad_groups,
 	},
 	.probe = acpi_tad_probe,
+=======
+	},
+	.probe = acpi_tad_probe,
+	.remove = acpi_tad_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 MODULE_DEVICE_TABLE(acpi, acpi_tad_ids);
 

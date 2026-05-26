@@ -152,10 +152,15 @@ static void __xe_exec_queue_free(struct xe_exec_queue *q)
 	if (xe_exec_queue_is_multi_queue(q))
 		xe_exec_queue_group_cleanup(q);
 
+<<<<<<< HEAD
 	if (q->vm) {
 		xe_vm_remove_exec_queue(q->vm, q);
 		xe_vm_put(q->vm);
 	}
+=======
+	if (q->vm)
+		xe_vm_put(q->vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (q->xef)
 		xe_file_put(q->xef);
@@ -226,12 +231,18 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
 	q->ring_ops = gt->ring_ops[hwe->class];
 	q->ops = gt->exec_queue_ops;
 	INIT_LIST_HEAD(&q->lr.link);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&q->vm_exec_queue_link);
 	INIT_LIST_HEAD(&q->multi_gt_link);
 	INIT_LIST_HEAD(&q->hw_engine_group_link);
 	INIT_LIST_HEAD(&q->pxp.link);
 	spin_lock_init(&q->multi_queue.lock);
 	spin_lock_init(&q->lrc_lookup_lock);
+=======
+	INIT_LIST_HEAD(&q->multi_gt_link);
+	INIT_LIST_HEAD(&q->hw_engine_group_link);
+	INIT_LIST_HEAD(&q->pxp.link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->multi_queue.priority = XE_MULTI_QUEUE_PRIORITY_NORMAL;
 
 	q->sched_props.timeslice_us = hwe->eclass->sched_props.timeslice_us;
@@ -271,6 +282,7 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
 	return q;
 }
 
+<<<<<<< HEAD
 static void xe_exec_queue_set_lrc(struct xe_exec_queue *q, struct xe_lrc *lrc, u16 idx)
 {
 	xe_assert(gt_to_xe(q->gt), idx < q->width);
@@ -321,6 +333,8 @@ struct xe_lrc *xe_exec_queue_lrc(struct xe_exec_queue *q)
 	return q->lrc[0];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __xe_exec_queue_fini(struct xe_exec_queue *q)
 {
 	int i;
@@ -353,9 +367,12 @@ static int __xe_exec_queue_init(struct xe_exec_queue *q, u32 exec_queue_flags)
 	if (!(exec_queue_flags & EXEC_QUEUE_FLAG_KERNEL))
 		flags |= XE_LRC_CREATE_USER_CTX;
 
+<<<<<<< HEAD
 	if (q->flags & EXEC_QUEUE_FLAG_DISABLE_STATE_CACHE_PERF_FIX)
 		flags |= XE_LRC_DISABLE_STATE_CACHE_PERF_FIX;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = q->ops->init(q);
 	if (err)
 		return err;
@@ -371,6 +388,7 @@ static int __xe_exec_queue_init(struct xe_exec_queue *q, u32 exec_queue_flags)
 	 * from the moment vCPU resumes execution.
 	 */
 	for (i = 0; i < q->width; ++i) {
+<<<<<<< HEAD
 		struct xe_lrc *__lrc = NULL;
 		int marker;
 
@@ -393,6 +411,20 @@ static int __xe_exec_queue_init(struct xe_exec_queue *q, u32 exec_queue_flags)
 			__lrc = lrc;
 
 		} while (marker != xe_vf_migration_fixups_complete_count(q->gt));
+=======
+		struct xe_lrc *lrc;
+
+		xe_gt_sriov_vf_wait_valid_ggtt(q->gt);
+		lrc = xe_lrc_create(q->hwe, q->vm, q->replay_state,
+				    xe_lrc_ring_size(), q->msix_vec, flags);
+		if (IS_ERR(lrc)) {
+			err = PTR_ERR(lrc);
+			goto err_lrc;
+		}
+
+		/* Pairs with READ_ONCE to xe_exec_queue_contexts_hwsp_rebase */
+		WRITE_ONCE(q->lrc[i], lrc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -402,6 +434,7 @@ err_lrc:
 	return err;
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_create() - Create an exec queue
  * @xe: Xe device
@@ -416,6 +449,8 @@ err_lrc:
  *
  * Return: Pointer to the created exec queue on success, ERR_PTR on failure
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_exec_queue *xe_exec_queue_create(struct xe_device *xe, struct xe_vm *vm,
 					   u32 logical_mask, u16 width,
 					   struct xe_hw_engine *hwe, u32 flags,
@@ -459,6 +494,7 @@ err_post_alloc:
 }
 ALLOW_ERROR_INJECTION(xe_exec_queue_create, ERRNO);
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_create_class() - Create an exec queue for a specific engine class
  * @xe: Xe device
@@ -472,6 +508,8 @@ ALLOW_ERROR_INJECTION(xe_exec_queue_create, ERRNO);
  *
  * Return: Pointer to the created exec queue on success, ERR_PTR on failure
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe_gt *gt,
 						 struct xe_vm *vm,
 						 enum xe_engine_class class,
@@ -563,6 +601,7 @@ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
 }
 ALLOW_ERROR_INJECTION(xe_exec_queue_create_bind, ERRNO);
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_destroy() - Destroy an exec queue
  * @ref: Reference count of the exec queue
@@ -571,6 +610,8 @@ ALLOW_ERROR_INJECTION(xe_exec_queue_create_bind, ERRNO);
  * Cleans up all resources associated with the exec queue.
  * This function should not be called directly; use xe_exec_queue_put() instead.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_exec_queue_destroy(struct kref *ref)
 {
 	struct xe_exec_queue *q = container_of(ref, struct xe_exec_queue, refcount);
@@ -603,6 +644,7 @@ void xe_exec_queue_destroy(struct kref *ref)
 	q->ops->destroy(q);
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_fini() - Finalize an exec queue
  * @q: The exec queue
@@ -611,6 +653,8 @@ void xe_exec_queue_destroy(struct kref *ref)
  * and freeing the queue structure. This is called after the queue has been
  * destroyed and all references have been dropped.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_exec_queue_fini(struct xe_exec_queue *q)
 {
 	/*
@@ -625,6 +669,7 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
 	__xe_exec_queue_free(q);
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_assign_name() - Assign a name to an exec queue
  * @q: The exec queue
@@ -633,6 +678,8 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
  * Assigns a human-readable name to the exec queue based on its engine class
  * and instance number (e.g., "rcs0", "vcs1", "bcs2").
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_exec_queue_assign_name(struct xe_exec_queue *q, u32 instance)
 {
 	switch (q->class) {
@@ -659,6 +706,7 @@ void xe_exec_queue_assign_name(struct xe_exec_queue *q, u32 instance)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_lookup() - Look up an exec queue by ID
  * @xef: Xe file private data
@@ -668,6 +716,8 @@ void xe_exec_queue_assign_name(struct xe_exec_queue *q, u32 instance)
  *
  * Return: Pointer to the exec queue if found, NULL otherwise
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_exec_queue *xe_exec_queue_lookup(struct xe_file *xef, u32 id)
 {
 	struct xe_exec_queue *q;
@@ -681,6 +731,7 @@ struct xe_exec_queue *xe_exec_queue_lookup(struct xe_file *xef, u32 id)
 	return q;
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_device_get_max_priority() - Get maximum priority for an exec queues
  * @xe: Xe device
@@ -689,6 +740,8 @@ struct xe_exec_queue *xe_exec_queue_lookup(struct xe_file *xef, u32 id)
  *
  * Return: Maximum priority level (HIGH if CAP_SYS_NICE, NORMAL otherwise)
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum xe_exec_queue_priority
 xe_exec_queue_device_get_max_priority(struct xe_device *xe)
 {
@@ -981,6 +1034,7 @@ static int exec_queue_set_multi_queue_priority(struct xe_device *xe, struct xe_e
 	return q->ops->set_multi_queue_priority(q, value);
 }
 
+<<<<<<< HEAD
 static int exec_queue_set_state_cache_perf_fix(struct xe_device *xe, struct xe_exec_queue *q,
 					       u64 value)
 {
@@ -992,6 +1046,8 @@ static int exec_queue_set_state_cache_perf_fix(struct xe_device *xe, struct xe_e
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef int (*xe_exec_queue_set_property_fn)(struct xe_device *xe,
 					     struct xe_exec_queue *q,
 					     u64 value);
@@ -1004,6 +1060,7 @@ static const xe_exec_queue_set_property_fn exec_queue_set_property_funcs[] = {
 	[DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP] = exec_queue_set_multi_group,
 	[DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY] =
 							exec_queue_set_multi_queue_priority,
+<<<<<<< HEAD
 	[DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX] =
 							exec_queue_set_state_cache_perf_fix,
 };
@@ -1019,6 +1076,10 @@ static const xe_exec_queue_set_property_fn exec_queue_set_property_funcs[] = {
  *
  * Return: 0 on success, negative error code on failure
  */
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_exec_queue_set_property_ioctl(struct drm_device *dev, void *data,
 				     struct drm_file *file)
 {
@@ -1101,8 +1162,12 @@ static int exec_queue_user_ext_set_property(struct xe_device *xe,
 			 ext.property != DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE &&
 			 ext.property != DRM_XE_EXEC_QUEUE_SET_HANG_REPLAY_STATE &&
 			 ext.property != DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP &&
+<<<<<<< HEAD
 			 ext.property != DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY &&
 			 ext.property != DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX))
+=======
+			 ext.property != DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	idx = array_index_nospec(ext.property, ARRAY_SIZE(exec_queue_set_property_funcs));
@@ -1244,6 +1309,7 @@ static bool has_sched_groups(struct xe_gt *gt)
 	return false;
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_create_ioctl() - Create an exec queue via IOCTL
  * @dev: DRM device
@@ -1256,6 +1322,8 @@ static bool has_sched_groups(struct xe_gt *gt)
  *
  * Return: 0 on success with exec_queue_id filled in, negative error code on failure
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 			       struct drm_file *file)
 {
@@ -1352,11 +1420,14 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		if (XE_IOCTL_DBG(xe, !hwe))
 			return -EINVAL;
 
+<<<<<<< HEAD
 		/* multi-lrc is only supported on select engine classes */
 		if (XE_IOCTL_DBG(xe, args->width > 1 &&
 				 !(xe->info.multi_lrc_mask & BIT(hwe->class))))
 			return -EOPNOTSUPP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vm = xe_vm_lookup(xef, args->vm_id);
 		if (XE_IOCTL_DBG(xe, !vm))
 			return -ENOENT;
@@ -1405,26 +1476,40 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		if (q->vm && q->hwe->hw_engine_group) {
 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
 			if (err)
+<<<<<<< HEAD
 				goto kill_exec_queue;
+=======
+				goto put_exec_queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
 	q->xef = xe_file_get(xef);
+<<<<<<< HEAD
 	if (eci[0].engine_class != DRM_XE_ENGINE_CLASS_VM_BIND)
 		xe_vm_add_exec_queue(vm, q);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* user id alloc must always be last in ioctl to prevent UAF */
 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
 	if (err)
+<<<<<<< HEAD
 		goto del_hw_engine_group;
+=======
+		goto kill_exec_queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	args->exec_queue_id = id;
 
 	return 0;
 
+<<<<<<< HEAD
 del_hw_engine_group:
 	if (q->vm && q->hwe && q->hwe->hw_engine_group)
 		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kill_exec_queue:
 	xe_exec_queue_kill(q);
 delete_queue_group:
@@ -1435,6 +1520,7 @@ put_exec_queue:
 	return err;
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_get_property_ioctl() - Get a property from an exec queue
  * @dev: DRM device
@@ -1446,6 +1532,8 @@ put_exec_queue:
  *
  * Return: 0 on success with value filled in, negative error code on failure
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_exec_queue_get_property_ioctl(struct drm_device *dev, void *data,
 				     struct drm_file *file)
 {
@@ -1477,6 +1565,24 @@ int xe_exec_queue_get_property_ioctl(struct drm_device *dev, void *data,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * xe_exec_queue_lrc() - Get the LRC from exec queue.
+ * @q: The exec_queue.
+ *
+ * Retrieves the primary LRC for the exec queue. Note that this function
+ * returns only the first LRC instance, even when multiple parallel LRCs
+ * are configured.
+ *
+ * Return: Pointer to LRC on success, error on failure
+ */
+struct xe_lrc *xe_exec_queue_lrc(struct xe_exec_queue *q)
+{
+	return q->lrc[0];
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_exec_queue_is_lr() - Whether an exec_queue is long-running
  * @q: The exec_queue
  *
@@ -1583,6 +1689,7 @@ void xe_exec_queue_kill(struct xe_exec_queue *q)
 	xe_vm_remove_compute_exec_queue(q->vm, q);
 }
 
+<<<<<<< HEAD
 /**
  * xe_exec_queue_destroy_ioctl() - Destroy an exec queue via IOCTL
  * @dev: DRM device
@@ -1593,6 +1700,8 @@ void xe_exec_queue_kill(struct xe_exec_queue *q)
  *
  * Return: 0 on success, negative error code on failure
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_exec_queue_destroy_ioctl(struct drm_device *dev, void *data,
 				struct drm_file *file)
 {
@@ -1763,7 +1872,11 @@ void xe_exec_queue_tlb_inval_last_fence_put(struct xe_exec_queue *q,
 void xe_exec_queue_tlb_inval_last_fence_put_unlocked(struct xe_exec_queue *q,
 						     unsigned int type)
 {
+<<<<<<< HEAD
 	xe_assert(gt_to_xe(q->gt), type == XE_EXEC_QUEUE_TLB_INVAL_MEDIA_GT ||
+=======
+	xe_assert(q->vm->xe, type == XE_EXEC_QUEUE_TLB_INVAL_MEDIA_GT ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  type == XE_EXEC_QUEUE_TLB_INVAL_PRIMARY_GT);
 
 	dma_fence_put(q->tlb_inval[type].last_fence);
@@ -1845,14 +1958,22 @@ int xe_exec_queue_contexts_hwsp_rebase(struct xe_exec_queue *q, void *scratch)
 	for (i = 0; i < q->width; ++i) {
 		struct xe_lrc *lrc;
 
+<<<<<<< HEAD
 		lrc = xe_exec_queue_get_lrc(q, i);
+=======
+		/* Pairs with WRITE_ONCE in __xe_exec_queue_init  */
+		lrc = READ_ONCE(q->lrc[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!lrc)
 			continue;
 
 		xe_lrc_update_memirq_regs_with_address(lrc, q->hwe, scratch);
 		xe_lrc_update_hwctx_regs_with_address(lrc);
 		err = xe_lrc_setup_wa_bb_with_scratch(lrc, q->hwe, scratch);
+<<<<<<< HEAD
 		xe_lrc_put(lrc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			break;
 	}

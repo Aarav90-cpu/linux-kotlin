@@ -7,7 +7,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/i2c.h>
@@ -43,7 +46,10 @@ struct tcpci {
 
 	struct tcpc_dev tcpc;
 	struct tcpci_data *data;
+<<<<<<< HEAD
 	struct gpio_desc *orientation_gpio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tcpci_chip {
@@ -318,10 +324,13 @@ static int tcpci_set_orientation(struct tcpc_dev *tcpc,
 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
 	unsigned int reg;
 
+<<<<<<< HEAD
 	if (tcpci->orientation_gpio)
 		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
 						orientation != TYPEC_ORIENTATION_NORMAL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (orientation) {
 	case TYPEC_ORIENTATION_NONE:
 		/* We can't put a single output into high impedance */
@@ -909,7 +918,10 @@ EXPORT_SYMBOL_GPL(tcpci_unregister_port);
 static int tcpci_probe(struct i2c_client *client)
 {
 	struct tcpci_chip *chip;
+<<<<<<< HEAD
 	struct gpio_desc *orient_gpio = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 	u16 val = 0;
 
@@ -938,6 +950,7 @@ static int tcpci_probe(struct i2c_client *client)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	if (err == 0) {
 		orient_gpio = devm_gpiod_get_optional(&client->dev, "orientation",
 						      GPIOD_OUT_LOW);
@@ -947,14 +960,19 @@ static int tcpci_probe(struct i2c_client *client)
 		err = !!orient_gpio;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->data.set_orientation = err;
 
 	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
 	if (IS_ERR(chip->tcpci))
 		return PTR_ERR(chip->tcpci);
 
+<<<<<<< HEAD
 	chip->tcpci->orientation_gpio = orient_gpio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
 					_tcpci_irq,
 					IRQF_SHARED | IRQF_ONESHOT,
@@ -1017,7 +1035,11 @@ static int tcpci_resume(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static DEFINE_SIMPLE_DEV_PM_OPS(tcpci_pm_ops, tcpci_suspend, tcpci_resume);
+=======
+DEFINE_SIMPLE_DEV_PM_OPS(tcpci_pm_ops, tcpci_suspend, tcpci_resume);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct i2c_device_id tcpci_id[] = {
 	{ "tcpci" },

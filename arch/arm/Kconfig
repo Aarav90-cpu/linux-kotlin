@@ -42,7 +42,10 @@ config ARM
 	select ARCH_SUPPORTS_CFI
 	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
 	select ARCH_SUPPORTS_PER_VMA_LOCK
+<<<<<<< HEAD
 	select ARCH_SUPPORTS_RT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_USE_BUILTIN_BSWAP
 	select ARCH_USE_CMPXCHG_LOCKREF
 	select ARCH_USE_MEMTEST

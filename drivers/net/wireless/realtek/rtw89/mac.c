@@ -43,7 +43,11 @@ static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
 				u32 val, enum rtw89_mac_mem_sel sel)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+<<<<<<< HEAD
 	u32 addr = rtw89_mac_mem_base_addrs(rtwdev, sel) + offset;
+=======
+	u32 addr = mac->mem_base_addrs[sel] + offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw89_write32(rtwdev, mac->filter_model_addr, addr);
 	rtw89_write32(rtwdev, mac->indir_access_addr, val);
@@ -53,7 +57,11 @@ static u32 rtw89_mac_mem_read(struct rtw89_dev *rtwdev, u32 offset,
 			      enum rtw89_mac_mem_sel sel)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+<<<<<<< HEAD
 	u32 addr = rtw89_mac_mem_base_addrs(rtwdev, sel) + offset;
+=======
+	u32 addr = mac->mem_base_addrs[sel] + offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw89_write32(rtwdev, mac->filter_model_addr, addr);
 	return rtw89_read32(rtwdev, mac->indir_access_addr);
@@ -814,7 +822,10 @@ static bool rtw89_mac_suppress_log(struct rtw89_dev *rtwdev, u32 err)
 u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+<<<<<<< HEAD
 	const struct rtw89_chip_info *chip = rtwdev->chip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 err, err_scnr;
 	int ret;
 
@@ -826,9 +837,13 @@ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
 	}
 
 	err = rtw89_read32(rtwdev, R_AX_HALT_C2H);
+<<<<<<< HEAD
 
 	if (!RTW89_CHK_FW_FEATURE(SER_POST_RECOVER_DMAC, &rtwdev->fw))
 		rtw89_write32(rtwdev, R_AX_HALT_C2H_CTRL, 0);
+=======
+	rtw89_write32(rtwdev, R_AX_HALT_C2H_CTRL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err_scnr = RTW89_ERROR_SCENARIO(err);
 	if (err_scnr == RTW89_WCPU_CPU_EXCEPTION)
@@ -839,11 +854,16 @@ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
 		err = MAC_AX_ERR_RXI300;
 
 	if (rtw89_mac_suppress_log(rtwdev, err))
+<<<<<<< HEAD
 		goto bottom;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw89_fw_st_dbg_dump(rtwdev);
 	mac->dump_err_status(rtwdev, err);
 
+<<<<<<< HEAD
 bottom:
 	if (chip->chip_gen != RTW89_CHIP_AX)
 		rtw89_write32(rtwdev, R_AX_HALT_C2H, 0);
@@ -851,6 +871,8 @@ bottom:
 	if (RTW89_CHK_FW_FEATURE(SER_POST_RECOVER_DMAC, &rtwdev->fw))
 		rtw89_write32(rtwdev, R_AX_HALT_C2H_CTRL, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 EXPORT_SYMBOL(rtw89_mac_get_err_status);
@@ -1739,8 +1761,13 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
 	/* 8852C PCIE SCC */
 	.wde_size19 = {RTW89_WDE_PG_64, 3328, 0,},
 	.wde_size23 = {RTW89_WDE_PG_64, 1022, 2,},
+<<<<<<< HEAD
 	/* 8852B USB2.0/USB3.0 SCC turbo */
 	.wde_size30 = {RTW89_WDE_PG_64, 220, 36,},
+=======
+	/* 8852B USB2.0/USB3.0 SCC */
+	.wde_size25 = {RTW89_WDE_PG_64, 162, 94,},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* 8852C USB2.0 */
 	.wde_size31 = {RTW89_WDE_PG_64, 384, 0,},
 	/* PCIE */
@@ -1764,10 +1791,17 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
 	.ple_size19 = {RTW89_PLE_PG_128, 1904, 16,},
 	.ple_size20_v1 = {RTW89_PLE_PG_128, 2554, 182, 40960,},
 	.ple_size22_v1 = {RTW89_PLE_PG_128, 2736, 0, 40960,},
+<<<<<<< HEAD
 	/* 8851B USB2.0 SCC turbo */
 	.ple_size27 = {RTW89_PLE_PG_128, 1396, 12,},
 	/* 8852B USB3.0 SCC turbo */
 	.ple_size31 = {RTW89_PLE_PG_128, 1392, 16,},
+=======
+	/* 8852B USB2.0 SCC */
+	.ple_size32 = {RTW89_PLE_PG_128, 620, 20,},
+	/* 8852B USB3.0 SCC */
+	.ple_size33 = {RTW89_PLE_PG_128, 632, 8,},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* 8852C USB2.0 */
 	.ple_size34 = {RTW89_PLE_PG_128, 3374, 18,},
 	/* PCIE 64 */
@@ -1790,8 +1824,13 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
 	.wde_qt18 = {3228, 60, 0, 40,},
 	.wde_qt19_v1 = {613, 6, 0, 20,},
 	.wde_qt23 = {958, 48, 0, 16,},
+<<<<<<< HEAD
 	/* 8852B USB2.0/USB3.0 SCC turbo */
 	.wde_qt30 = {210, 2, 0, 8,},
+=======
+	/* 8852B USB2.0/USB3.0 SCC */
+	.wde_qt25 = {152, 2, 0, 8,},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* 8852C USB2.0 */
 	.wde_qt31 = {338, 6, 0, 40,},
 	.ple_qt0 = {320, 320, 32, 16, 13, 13, 292, 292, 64, 18, 1, 4, 0,},
@@ -1809,9 +1848,12 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
 	/* 8852A USB SCC */
 	.ple_qt25 = {1536, 0, 16, 48, 13, 13, 360, 0, 32, 40, 8, 0,},
 	.ple_qt26 = {2654, 0, 1134, 48, 64, 13, 1478, 0, 64, 128, 120, 0,},
+<<<<<<< HEAD
 	/* 8852B USB3.0 SCC turbo */
 	.ple_qt27 = {1040, 0, 16, 48, 13, 13, 178, 0, 32, 14, 8, 0,},
 	.ple_qt28 = {1040, 0, 32, 48, 43, 13, 208, 0, 62, 14, 24, 0,},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* USB 52C USB3.0 */
 	.ple_qt42 = {1068, 0, 16, 48, 4, 13, 178, 0, 16, 1, 8, 16, 0,},
 	.ple_qt42_v2 = {91, 91, 32, 16, 19, 13, 91, 91, 44, 18, 1, 4, 0, 0,},
@@ -1830,9 +1872,19 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
 	/* PCIE 64 */
 	.ple_qt58 = {147, 0, 16, 20, 157, 13, 229, 0, 172, 14, 24, 0,},
 	.ple_qt59 = {147, 0, 32, 20, 1860, 13, 2025, 0, 1879, 14, 24, 0,},
+<<<<<<< HEAD
 	/* 8851B USB2.0 SCC turbo */
 	.ple_qt61 = {858, 0, 16, 48, 4, 13, 370, 0, 32, 14, 8, 0, 0,},
 	.ple_qt62 = {858, 0, 32, 48, 37, 13, 403, 0, 65, 14, 24, 0, 0,},
+=======
+	/* USB2.0 52B SCC */
+	.ple_qt72 = {130, 0, 16, 48, 4, 13, 322, 0, 32, 14, 8, 0, 0,},
+	/* USB2.0 52B 92K */
+	.ple_qt73 = {130, 0, 32, 48, 37, 13, 355, 0, 65, 14, 24, 0, 0,},
+	/* USB3.0 52B 92K */
+	.ple_qt74 = {286, 0, 16, 48, 4, 13, 178, 0, 32, 14, 8, 0, 0,},
+	.ple_qt75 = {286, 0, 32, 48, 37, 13, 211, 0, 65, 14, 24, 0, 0,},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* USB2.0 52C */
 	.ple_qt78 = {1560, 0, 16, 48, 13, 13, 390, 0, 32, 38, 8, 16, 0,},
 	/* USB2.0 52C */
@@ -2013,7 +2065,11 @@ static u32 dle_expected_used_size(struct rtw89_dev *rtwdev,
 {
 	u32 size = rtwdev->chip->fifo_size;
 
+<<<<<<< HEAD
 	if (mode == RTW89_QTA_SCC && rtwdev->hci.type != RTW89_HCI_TYPE_USB)
+=======
+	if (mode == RTW89_QTA_SCC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		size -= rtwdev->chip->dle_scc_rsvd_size;
 
 	return size;
@@ -5421,9 +5477,12 @@ rtw89_mac_c2h_done_ack(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h, u32 le
 			cond = RTW89_SCANOFLD_BE_WAIT_COND_START;
 			h2c_return &= RTW89_C2H_SCAN_DONE_ACK_RETURN;
 			break;
+<<<<<<< HEAD
 		case H2C_FUNC_TRX_PROTECT:
 			cond = RTW89_FW_OFLD_WAIT_COND_TRX_PROTECT;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		data.err = !!h2c_return;
@@ -7183,7 +7242,11 @@ int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int _rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
+=======
+int rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rtw89_mac_h2c_info h2c_info = {};
 	struct rtw89_mac_c2h_info c2h_info = {};
@@ -7206,6 +7269,7 @@ static int _rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
 	return ret;
 }
 
+<<<<<<< HEAD
 int rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
 {
 	int i, ret;
@@ -7219,6 +7283,8 @@ int rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rtw89_wow_config_mac_ax(struct rtw89_dev *rtwdev, bool enable_wow)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
@@ -7332,8 +7398,11 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
 	},
 	.wow_ctrl = {.addr = R_AX_WOW_CTRL, .mask = B_AX_WOW_WOWEN,},
 	.agg_limit = {.addr = R_AX_AMPDU_AGG_LIMIT, .mask = B_AX_AMPDU_MAX_TIME_MASK,},
+<<<<<<< HEAD
 	.ra_agg_limit = {.addr = R_AX_AMPDU_AGG_LIMIT,
 			 .mask = B_AX_RA_TRY_RATE_AGG_LMT_MASK,},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.txcnt_limit = {.addr = R_AX_TXCNT, .mask = B_AX_L_TXCNT_LMT_MASK,},
 
 	.check_mac_en = rtw89_mac_check_mac_en_ax,

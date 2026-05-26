@@ -16,7 +16,10 @@
 
 #include "adf_gen6_shared.h"
 #include "adf_6xxx_hw_data.h"
+<<<<<<< HEAD
 #include "adf_heartbeat.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int bar_map[] = {
 	0,	/* SRAM */
@@ -54,6 +57,7 @@ static void adf_devmgr_remove(void *accel_dev)
 	adf_devmgr_rm_dev(accel_dev, NULL);
 }
 
+<<<<<<< HEAD
 static int adf_gen6_cfg_dev_init(struct adf_accel_dev *accel_dev)
 {
 	const char *config;
@@ -83,6 +87,8 @@ static int adf_gen6_cfg_dev_init(struct adf_accel_dev *accel_dev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
 	struct adf_accel_pci *accel_pci_dev;
@@ -121,6 +127,12 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	pci_read_config_dword(pdev, ADF_GEN6_FUSECTL0_OFFSET, &hw_data->fuses[ADF_FUSECTL0]);
 	pci_read_config_dword(pdev, ADF_GEN6_FUSECTL1_OFFSET, &hw_data->fuses[ADF_FUSECTL1]);
 
+<<<<<<< HEAD
+=======
+	if (!(hw_data->fuses[ADF_FUSECTL1] & ICP_ACCEL_GEN6_MASK_WCP_WAT_SLICE))
+		return dev_err_probe(dev, -EFAULT, "Wireless mode is not supported.\n");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Enable PCI device */
 	ret = pcim_enable_device(pdev);
 	if (ret)

@@ -9,9 +9,14 @@
 #include <linux/device.h>
 #include <linux/errno.h>
 #include <linux/gpio/driver.h>
+<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/mod_devicetable.h>
 #include <linux/of_irq.h>
+=======
+#include <linux/init.h>
+#include <linux/mod_devicetable.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/property.h>
 #include <linux/regmap.h>
@@ -19,7 +24,11 @@
 
 #define MPFS_GPIO_CTRL(i)		(0x4 * (i))
 #define MPFS_MAX_NUM_GPIO		32
+<<<<<<< HEAD
 #define MPFS_GPIO_EN_INT		BIT(3)
+=======
+#define MPFS_GPIO_EN_INT		3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MPFS_GPIO_EN_OUT_BUF		BIT(2)
 #define MPFS_GPIO_EN_IN			BIT(1)
 #define MPFS_GPIO_EN_OUT		BIT(0)
@@ -53,7 +62,10 @@ static const struct regmap_config mpfs_gpio_regmap_config = {
 	.reg_bits = 32,
 	.reg_stride = 4,
 	.val_bits = 32,
+<<<<<<< HEAD
 	.use_raw_spinlock = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int mpfs_gpio_direction_input(struct gpio_chip *gc, unsigned int gpio_index)
@@ -116,6 +128,7 @@ static int mpfs_gpio_set(struct gpio_chip *gc, unsigned int gpio_index, int valu
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mpfs_gpio_irq_set_type(struct irq_data *data, unsigned int type)
 {
 	struct gpio_chip *gc = irq_data_get_irq_chip_data(data);
@@ -208,6 +221,15 @@ static int mpfs_gpio_probe(struct platform_device *pdev)
 	struct clk *clk;
 	void __iomem *base;
 	int ngpios, nirqs, ret;
+=======
+static int mpfs_gpio_probe(struct platform_device *pdev)
+{
+	struct device *dev = &pdev->dev;
+	struct mpfs_gpio_chip *mpfs_gpio;
+	struct clk *clk;
+	void __iomem *base;
+	int ngpios;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mpfs_gpio = devm_kzalloc(dev, sizeof(*mpfs_gpio), GFP_KERNEL);
 	if (!mpfs_gpio)
@@ -244,6 +266,7 @@ static int mpfs_gpio_probe(struct platform_device *pdev)
 	mpfs_gpio->gc.parent = dev;
 	mpfs_gpio->gc.owner = THIS_MODULE;
 
+<<<<<<< HEAD
 	nirqs = of_irq_count(node);
 	if (nirqs > MPFS_MAX_NUM_GPIO)
 		return -ENXIO;
@@ -273,6 +296,8 @@ static int mpfs_gpio_probe(struct platform_device *pdev)
 		girq->default_type = IRQ_TYPE_NONE;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return devm_gpiochip_add_data(dev, &mpfs_gpio->gc, mpfs_gpio);
 }
 

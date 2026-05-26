@@ -1423,6 +1423,7 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
 	DRM_FORMAT_MOD_ARM_CODE(DRM_FORMAT_MOD_ARM_TYPE_MISC, 1ULL)
 
 /*
+<<<<<<< HEAD
  * ARM 64k interleaved modifier
  *
  * This is used by ARM Mali v10+ GPUs. With this modifier, the plane is divided
@@ -1439,6 +1440,8 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
 	DRM_FORMAT_MOD_ARM_CODE(DRM_FORMAT_MOD_ARM_TYPE_MISC, 2ULL)
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Allwinner tiled modifier
  *
  * This tiling mode is implemented by the VPU found on all Allwinner platforms,

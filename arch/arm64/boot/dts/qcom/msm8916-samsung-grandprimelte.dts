@@ -24,15 +24,19 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &charger {
 	richtek,usb-connector = <&usb_con_sm5502>;
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mpss_mem {
 	/* Firmware for grandprimelte needs more space */
 	reg = <0x0 0x86800000 0x0 0x5400000>;
 };
+<<<<<<< HEAD
 
 &muic_sm5502 {
 	status = "okay";
@@ -46,3 +50,5 @@
 &usb_hs_phy {
 	extcon = <&muic_sm5502>;
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

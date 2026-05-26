@@ -46,12 +46,21 @@ static const char * const test_stage_string[] = {
 
 struct test_args {
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 guest_test_virt_mem;
 	u64 host_page_size;
 	u64 host_num_pages;
 	u64 large_page_size;
 	u64 large_num_pages;
 	u64 host_pages_per_lpage;
+=======
+	uint64_t guest_test_virt_mem;
+	uint64_t host_page_size;
+	uint64_t host_num_pages;
+	uint64_t large_page_size;
+	uint64_t large_num_pages;
+	uint64_t host_pages_per_lpage;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum vm_mem_backing_src_type src_type;
 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
 };
@@ -63,7 +72,11 @@ struct test_args {
 static enum test_stage guest_test_stage;
 
 /* Host variables */
+<<<<<<< HEAD
 static u32 nr_vcpus = 1;
+=======
+static uint32_t nr_vcpus = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct test_args test_args;
 static enum test_stage *current_stage;
 static bool host_quit;
@@ -77,19 +90,31 @@ static sem_t test_stage_completed;
  * This will be set to the topmost valid physical address minus
  * the test memory size.
  */
+<<<<<<< HEAD
 static u64 guest_test_phys_mem;
+=======
+static uint64_t guest_test_phys_mem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Guest virtual memory offset of the testing memory slot.
  * Must not conflict with identity mapped test code.
  */
+<<<<<<< HEAD
 static u64 guest_test_virt_mem = DEFAULT_GUEST_TEST_MEM;
+=======
+static uint64_t guest_test_virt_mem = DEFAULT_GUEST_TEST_MEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void guest_code(bool do_write)
 {
 	struct test_args *p = &test_args;
 	enum test_stage *current_stage = &guest_test_stage;
+<<<<<<< HEAD
 	u64 addr;
+=======
+	uint64_t addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, j;
 
 	while (true) {
@@ -113,9 +138,15 @@ static void guest_code(bool do_write)
 		case KVM_CREATE_MAPPINGS:
 			for (i = 0; i < p->large_num_pages; i++) {
 				if (do_write)
+<<<<<<< HEAD
 					*(u64 *)addr = 0x0123456789ABCDEF;
 				else
 					READ_ONCE(*(u64 *)addr);
+=======
+					*(uint64_t *)addr = 0x0123456789ABCDEF;
+				else
+					READ_ONCE(*(uint64_t *)addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				addr += p->large_page_size;
 			}
@@ -131,7 +162,11 @@ static void guest_code(bool do_write)
 		case KVM_UPDATE_MAPPINGS:
 			if (p->src_type == VM_MEM_SRC_ANONYMOUS) {
 				for (i = 0; i < p->host_num_pages; i++) {
+<<<<<<< HEAD
 					*(u64 *)addr = 0x0123456789ABCDEF;
+=======
+					*(uint64_t *)addr = 0x0123456789ABCDEF;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					addr += p->host_page_size;
 				}
 				break;
@@ -142,7 +177,11 @@ static void guest_code(bool do_write)
 				 * Write to the first host page in each large
 				 * page region, and triger break of large pages.
 				 */
+<<<<<<< HEAD
 				*(u64 *)addr = 0x0123456789ABCDEF;
+=======
+				*(uint64_t *)addr = 0x0123456789ABCDEF;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				/*
 				 * Access the middle host pages in each large
@@ -152,7 +191,11 @@ static void guest_code(bool do_write)
 				 */
 				addr += p->large_page_size / 2;
 				for (j = 0; j < p->host_pages_per_lpage / 2; j++) {
+<<<<<<< HEAD
 					READ_ONCE(*(u64 *)addr);
+=======
+					READ_ONCE(*(uint64_t *)addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					addr += p->host_page_size;
 				}
 			}
@@ -167,7 +210,11 @@ static void guest_code(bool do_write)
 		 */
 		case KVM_ADJUST_MAPPINGS:
 			for (i = 0; i < p->host_num_pages; i++) {
+<<<<<<< HEAD
 				READ_ONCE(*(u64 *)addr);
+=======
+				READ_ONCE(*(uint64_t *)addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				addr += p->host_page_size;
 			}
 			break;
@@ -227,8 +274,13 @@ static void *vcpu_worker(void *data)
 }
 
 struct test_params {
+<<<<<<< HEAD
 	u64 phys_offset;
 	u64 test_mem_size;
+=======
+	uint64_t phys_offset;
+	uint64_t test_mem_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum vm_mem_backing_src_type src_type;
 };
 
@@ -237,12 +289,21 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
 	int ret;
 	struct test_params *p = arg;
 	enum vm_mem_backing_src_type src_type = p->src_type;
+<<<<<<< HEAD
 	u64 large_page_size = get_backing_src_pagesz(src_type);
 	u64 guest_page_size = vm_guest_mode_params[mode].page_size;
 	u64 host_page_size = getpagesize();
 	u64 test_mem_size = p->test_mem_size;
 	u64 guest_num_pages;
 	u64 alignment;
+=======
+	uint64_t large_page_size = get_backing_src_pagesz(src_type);
+	uint64_t guest_page_size = vm_guest_mode_params[mode].page_size;
+	uint64_t host_page_size = getpagesize();
+	uint64_t test_mem_size = p->test_mem_size;
+	uint64_t guest_num_pages;
+	uint64_t alignment;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *host_test_mem;
 	struct kvm_vm *vm;
 
@@ -261,6 +322,12 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
 				       guest_page_size;
 	else
 		guest_test_phys_mem = p->phys_offset;
+<<<<<<< HEAD
+=======
+#ifdef __s390x__
+	alignment = max(0x100000UL, alignment);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guest_test_phys_mem = align_down(guest_test_phys_mem, alignment);
 
 	/* Set up the shared data structure test_args */
@@ -281,7 +348,11 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
 	virt_map(vm, guest_test_virt_mem, guest_test_phys_mem, guest_num_pages);
 
 	/* Cache the HVA pointer of the region */
+<<<<<<< HEAD
 	host_test_mem = addr_gpa2hva(vm, (gpa_t)guest_test_phys_mem);
+=======
+	host_test_mem = addr_gpa2hva(vm, (vm_paddr_t)guest_test_phys_mem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Export shared structure test_args to guest */
 	sync_global_to_guest(vm, test_args);
@@ -292,7 +363,11 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
 	ret = sem_init(&test_stage_completed, 0, 0);
 	TEST_ASSERT(ret == 0, "Error in sem_init");
 
+<<<<<<< HEAD
 	current_stage = addr_gva2hva(vm, (gva_t)(&guest_test_stage));
+=======
+	current_stage = addr_gva2hva(vm, (vm_vaddr_t)(&guest_test_stage));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*current_stage = NUM_TEST_STAGES;
 
 	pr_info("Testing guest mode: %s\n", vm_guest_mode_string(mode));
@@ -304,7 +379,11 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
 	pr_info("Guest physical test memory offset: 0x%lx\n",
 		guest_test_phys_mem);
 	pr_info("Host  virtual  test memory offset: 0x%lx\n",
+<<<<<<< HEAD
 		(u64)host_test_mem);
+=======
+		(uint64_t)host_test_mem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_info("Number of testing vCPUs: %d\n", nr_vcpus);
 
 	return vm;

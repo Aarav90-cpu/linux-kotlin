@@ -229,6 +229,10 @@ static int add_part(int slot, struct cmdline_subpart *subpart,
 		struct parsed_partitions *state)
 {
 	struct partition_meta_info *info;
+<<<<<<< HEAD
+=======
+	char tmp[sizeof(info->volname) + 4];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (slot >= state->limit)
 		return 1;
@@ -243,7 +247,12 @@ static int add_part(int slot, struct cmdline_subpart *subpart,
 
 	strscpy(info->volname, subpart->name, sizeof(info->volname));
 
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, "(%s)", info->volname);
+=======
+	snprintf(tmp, sizeof(tmp), "(%s)", info->volname);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	state->parts[slot].has_info = true;
 
@@ -377,7 +386,11 @@ int cmdline_partition(struct parsed_partitions *state)
 	cmdline_parts_set(parts, disk_size, state);
 	cmdline_parts_verifier(1, state);
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 1;
 }

@@ -27,13 +27,22 @@ static int timer_cb(void *map, int *key, struct elem *value)
 	return 0;
 }
 
+<<<<<<< HEAD
 SEC("tp_btf/hrtimer_start")
 int BPF_PROG(tp_hrtimer_start, struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed)
+=======
+SEC("tp_btf/hrtimer_cancel")
+int BPF_PROG(tp_hrtimer_cancel, struct hrtimer *hrtimer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_timer *timer;
 	int key = 0;
 
+<<<<<<< HEAD
 	if (!in_timer_start || !was_armed)
+=======
+	if (!in_timer_start)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	tp_called = 1;
@@ -60,7 +69,11 @@ int start_timer(void *ctx)
 
 	/*
 	 * call hrtimer_start() twice, so that 2nd call does
+<<<<<<< HEAD
 	 * trace_hrtimer_start(was_armed=1) tracepoint.
+=======
+	 * remove_hrtimer() and trace_hrtimer_cancel() tracepoint.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	in_timer_start = 1;
 	bpf_timer_start(timer, 1000000000, 0);

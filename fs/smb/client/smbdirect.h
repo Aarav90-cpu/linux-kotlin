@@ -11,8 +11,17 @@
 #define cifs_rdma_enabled(server)	((server)->rdma)
 
 #include "cifsglob.h"
+<<<<<<< HEAD
 
 #include <linux/smbdirect.h>
+=======
+#include <rdma/ib_verbs.h>
+#include <rdma/rdma_cm.h>
+#include <linux/mempool.h>
+
+#include "../common/smbdirect/smbdirect.h"
+#include "../common/smbdirect/smbdirect_socket.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern int rdma_readwrite_threshold;
 extern int smbd_max_frmr_depth;
@@ -23,8 +32,22 @@ extern int smbd_max_send_size;
 extern int smbd_send_credit_target;
 extern int smbd_receive_credit_max;
 
+<<<<<<< HEAD
 struct smbd_connection {
 	struct smbdirect_socket *socket;
+=======
+/*
+ * The context for the SMBDirect transport
+ * Everything related to the transport is here. It has several logical parts
+ * 1. RDMA related structures
+ * 2. SMBDirect connection parameters
+ * 3. Memory registrations
+ * 4. Receive and reassembly queues for data receive path
+ * 5. mempools for allocating packets
+ */
+struct smbd_connection {
+	struct smbdirect_socket socket;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Create a SMBDirect session */
@@ -47,12 +70,17 @@ int smbd_send(struct TCP_Server_Info *server,
 struct smbdirect_mr_io *smbd_register_mr(
 	struct smbd_connection *info, struct iov_iter *iter,
 	bool writing, bool need_invalidate);
+<<<<<<< HEAD
 void smbd_mr_fill_buffer_descriptor(struct smbdirect_mr_io *mr,
 				    struct smbdirect_buffer_descriptor_v1 *v1);
 void smbd_deregister_mr(struct smbdirect_mr_io *mr);
 
 void smbd_debug_proc_show(struct TCP_Server_Info *server, struct seq_file *m);
 
+=======
+void smbd_deregister_mr(struct smbdirect_mr_io *mr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 #define cifs_rdma_enabled(server)	0
 struct smbd_connection {};

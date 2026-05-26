@@ -3,7 +3,10 @@
  * Copyright (C) 2024 Loongson Technology Corporation Limited
  */
 
+<<<<<<< HEAD
 #include <asm/kvm_dmsintc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_eiointc.h>
 #include <asm/kvm_pch_pic.h>
 #include <asm/kvm_vcpu.h>
@@ -68,6 +71,7 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level)
 }
 
 /* msi irq handler */
+<<<<<<< HEAD
 int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int level)
 {
 	u64 msg_addr = (((u64)e->msi.address_hi) << 32) | e->msi.address_lo;
@@ -81,6 +85,11 @@ int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int
 	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
 
 	return 0;
+=======
+void pch_msi_set_irq(struct kvm *kvm, int irq, int level)
+{
+	eiointc_set_irq(kvm->arch.eiointc, irq, level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int loongarch_pch_pic_read(struct loongarch_pch_pic *s, gpa_t addr, int len, void *val)

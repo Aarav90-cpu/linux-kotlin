@@ -4,7 +4,10 @@
  * Author: Clément Le Goffic <clement.legoffic@foss.st.com> for STMicroelectronics.
  */
 #include <linux/bits.h>
+<<<<<<< HEAD
 #include <linux/bus/stm32_firewall_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/clk.h>
 #include <linux/gpio/driver.h>
 #include <linux/gpio/generic.h>
@@ -47,11 +50,17 @@ struct stm32_hdp {
 	void __iomem *base;
 	struct clk *clk;
 	struct pinctrl_dev *pctl_dev;
+<<<<<<< HEAD
 	struct stm32_firewall *firewall;
 	struct gpio_generic_chip gpio_chip;
 	u32 mux_conf;
 	u32 gposet_conf;
 	int nb_firewall_entries;
+=======
+	struct gpio_generic_chip gpio_chip;
+	u32 mux_conf;
+	u32 gposet_conf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char * const *func_name;
 };
 
@@ -618,6 +627,7 @@ static int stm32_hdp_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	hdp->dev = dev;
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_STM32_FIREWALL)) {
 		err = stm32_firewall_get_grant_all_access(dev, &hdp->firewall,
 							  &hdp->nb_firewall_entries);
@@ -625,6 +635,8 @@ static int stm32_hdp_probe(struct platform_device *pdev)
 			return err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_set_drvdata(pdev, hdp);
 
 	hdp->base = devm_platform_ioremap_resource(pdev, 0);
@@ -680,12 +692,17 @@ static int stm32_hdp_probe(struct platform_device *pdev)
 static void stm32_hdp_remove(struct platform_device *pdev)
 {
 	struct stm32_hdp *hdp = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	int i;
 
 	writel_relaxed(HDP_CTRL_DISABLE, hdp->base + HDP_CTRL);
 
 	for (i = 0; i < hdp->nb_firewall_entries; i++)
 		stm32_firewall_release_access(&hdp->firewall[i]);
+=======
+
+	writel_relaxed(HDP_CTRL_DISABLE, hdp->base + HDP_CTRL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int stm32_hdp_suspend(struct device *dev)

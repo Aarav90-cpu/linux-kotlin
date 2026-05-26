@@ -35,7 +35,11 @@
 #define XE_BO_FLAG_PINNED		BIT(7)
 #define XE_BO_FLAG_NO_RESV_EVICT	BIT(8)
 #define XE_BO_FLAG_DEFER_BACKING	BIT(9)
+<<<<<<< HEAD
 #define XE_BO_FLAG_FORCE_WC		BIT(10)
+=======
+#define XE_BO_FLAG_SCANOUT		BIT(10)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XE_BO_FLAG_FIXED_PLACEMENT	BIT(11)
 #define XE_BO_FLAG_PAGETABLE		BIT(12)
 #define XE_BO_FLAG_NEEDS_CPU_ACCESS	BIT(13)
@@ -87,6 +91,7 @@
 
 #define XE_PCI_BARRIER_MMAP_OFFSET	(0x50 << XE_PTE_SHIFT)
 
+<<<<<<< HEAD
 /**
  * enum xe_madv_purgeable_state - Buffer object purgeable state enumeration
  *
@@ -109,6 +114,8 @@ enum xe_madv_purgeable_state {
 	XE_MADV_PURGEABLE_PURGED,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sg_table;
 
 struct xe_bo *xe_bo_alloc(void);
@@ -237,6 +244,7 @@ static inline bool xe_bo_is_protected(const struct xe_bo *bo)
 	return bo->pxp_key_instance;
 }
 
+<<<<<<< HEAD
 /**
  * xe_bo_is_purged() - Check if buffer object has been purged
  * @bo: The buffer object to check
@@ -357,6 +365,8 @@ static inline void xe_bo_vma_count_dec_locked(struct xe_bo *bo)
 	bo->purgeable.vma_count--;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void xe_bo_unpin_map_no_vm(struct xe_bo *bo)
 {
 	if (likely(bo)) {
@@ -454,8 +464,11 @@ int xe_bo_dumb_create(struct drm_file *file_priv,
 
 bool xe_bo_needs_ccs_pages(struct xe_bo *bo);
 
+<<<<<<< HEAD
 int xe_bo_decompress(struct xe_bo *bo);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline size_t xe_bo_ccs_pages_start(struct xe_bo *bo)
 {
 	return PAGE_ALIGN(xe_bo_size(bo));

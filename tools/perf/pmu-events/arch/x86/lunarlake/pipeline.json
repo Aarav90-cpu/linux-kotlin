@@ -634,7 +634,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.THREAD]",
+=======
+        "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 1",
         "EventName": "CPU_CLK_UNHALTED.CORE",
         "SampleAfterValue": "2000003",
@@ -725,7 +729,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.CORE]",
+=======
+        "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 1",
         "EventName": "CPU_CLK_UNHALTED.THREAD",
         "SampleAfterValue": "2000003",
@@ -1530,9 +1538,14 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "This event is deprecated.",
         "Counter": "0,1,2,3,4,5,6,7",
         "Deprecated": "1",
+=======
+        "BriefDescription": "Counts the number of accesses to KeyLocker cache.",
+        "Counter": "0,1,2,3,4,5,6,7",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xe1",
         "EventName": "MISC_RETIRED2.KEYLOCKER_ACCESS",
         "SampleAfterValue": "1000003",
@@ -1540,9 +1553,14 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "This event is deprecated.",
         "Counter": "0,1,2,3,4,5,6,7",
         "Deprecated": "1",
+=======
+        "BriefDescription": "Counts the number of misses to KeyLocker cache.",
+        "Counter": "0,1,2,3,4,5,6,7",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xe1",
         "EventName": "MISC_RETIRED2.KEYLOCKER_MISS",
         "SampleAfterValue": "1000003",

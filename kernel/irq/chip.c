@@ -14,8 +14,14 @@
 #include <linux/interrupt.h>
 #include <linux/kernel_stat.h>
 #include <linux/irqdomain.h>
+<<<<<<< HEAD
 #include <linux/preempt.h>
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 #include <linux/random.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <trace/events/irq.h>
 
@@ -934,9 +940,16 @@ void handle_percpu_devid_irq(struct irq_desc *desc)
 			    enabled ? " and unmasked" : "", irq, cpu);
 	}
 
+<<<<<<< HEAD
 	if (!in_nmi())
 		add_interrupt_randomness(irq);
+=======
+<<<<<<< HEAD
+	add_interrupt_randomness(irq);
+>>>>>>> 7fb39c93c52e (Sync)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (chip->irq_eoi)
 		chip->irq_eoi(&desc->irq_data);
 }

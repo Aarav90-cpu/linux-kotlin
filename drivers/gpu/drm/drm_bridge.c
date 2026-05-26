@@ -304,9 +304,12 @@ EXPORT_SYMBOL(drm_bridge_get);
  *
  * This function decrements the bridge's reference count and frees the
  * object if the reference count drops to zero.
+<<<<<<< HEAD
  *
  * See also drm_bridge_clear_and_put() if you also need to set the pointer
  * to NULL
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void drm_bridge_put(struct drm_bridge *bridge)
 {
@@ -316,6 +319,7 @@ void drm_bridge_put(struct drm_bridge *bridge)
 EXPORT_SYMBOL(drm_bridge_put);
 
 /**
+<<<<<<< HEAD
  * drm_bridge_clear_and_put - Given a bridge pointer, clear the pointer
  *                            then put the bridge
  * @bridge_pp: pointer to pointer to a struct drm_bridge; ``bridge_pp``
@@ -347,6 +351,8 @@ void drm_bridge_clear_and_put(struct drm_bridge **bridge_pp)
 EXPORT_SYMBOL(drm_bridge_clear_and_put);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * drm_bridge_put_void - wrapper to drm_bridge_put() taking a void pointer
  *
  * @data: pointer to @struct drm_bridge, cast to a void pointer
@@ -421,7 +427,11 @@ void drm_bridge_add(struct drm_bridge *bridge)
 
 	if (bridge->ops & DRM_BRIDGE_OP_HDMI)
 		bridge->ycbcr_420_allowed = !!(bridge->supported_formats &
+<<<<<<< HEAD
 					       BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420));
+=======
+					       BIT(HDMI_COLORSPACE_YUV420));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&bridge_lock);
 	list_add_tail(&bridge->list, &bridge_list);
@@ -494,6 +504,7 @@ drm_bridge_atomic_destroy_priv_state(struct drm_private_obj *obj,
 	bridge->funcs->atomic_destroy_state(bridge, state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 drm_bridge_atomic_create_priv_state(struct drm_private_obj *obj)
 {
@@ -509,6 +520,9 @@ drm_bridge_atomic_create_priv_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs drm_bridge_priv_state_funcs = {
 	.atomic_create_state = drm_bridge_atomic_create_priv_state,
+=======
+static const struct drm_private_state_funcs drm_bridge_priv_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = drm_bridge_atomic_duplicate_priv_state,
 	.atomic_destroy_state = drm_bridge_atomic_destroy_priv_state,
 };
@@ -585,12 +599,35 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
 			goto err_reset_bridge;
 	}
 
+<<<<<<< HEAD
 	if (drm_bridge_is_atomic(bridge))
 		drm_atomic_private_obj_init(bridge->dev, &bridge->base,
 					    &drm_bridge_priv_state_funcs);
 
 	return 0;
 
+=======
+	if (drm_bridge_is_atomic(bridge)) {
+		struct drm_bridge_state *state;
+
+		state = bridge->funcs->atomic_reset(bridge);
+		if (IS_ERR(state)) {
+			ret = PTR_ERR(state);
+			goto err_detach_bridge;
+		}
+
+		drm_atomic_private_obj_init(bridge->dev, &bridge->base,
+					    &state->base,
+					    &drm_bridge_priv_state_funcs);
+	}
+
+	return 0;
+
+err_detach_bridge:
+	if (bridge->funcs->detach)
+		bridge->funcs->detach(bridge);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_reset_bridge:
 	bridge->dev = NULL;
 	bridge->encoder = NULL;

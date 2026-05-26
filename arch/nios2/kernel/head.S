@@ -24,6 +24,19 @@
 #include <asm/asm-macros.h>
 
 /*
+<<<<<<< HEAD
+=======
+ * ZERO_PAGE is a special page that is used for zero-initialized
+ * data and COW.
+ */
+.data
+.global empty_zero_page
+.align 12
+empty_zero_page:
+	.space	PAGE_SIZE
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * This global variable is used as an extension to the nios'
  * STATUS register to emulate a user/supervisor mode.
  */

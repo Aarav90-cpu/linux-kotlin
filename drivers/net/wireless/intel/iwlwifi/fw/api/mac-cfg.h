@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 /*
+<<<<<<< HEAD
  * Copyright (C) 2012-2014, 2018-2019, 2021-2026 Intel Corporation
+=======
+ * Copyright (C) 2012-2014, 2018-2019, 2021-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
  * Copyright (C) 2016-2017 Intel Deutschland GmbH
  */
@@ -26,7 +30,11 @@ enum iwl_mac_conf_subcmd_ids {
 	 */
 	MISSED_VAP_NOTIF = 0xFA,
 	/**
+<<<<<<< HEAD
 	 * @SESSION_PROTECTION_CMD: &struct iwl_session_prot_cmd
+=======
+	 * @SESSION_PROTECTION_CMD: &struct iwl_mvm_session_prot_cmd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	SESSION_PROTECTION_CMD = 0x5,
 	/**
@@ -34,8 +42,12 @@ enum iwl_mac_conf_subcmd_ids {
 	 */
 	CANCEL_CHANNEL_SWITCH_CMD = 0x6,
 	/**
+<<<<<<< HEAD
 	 * @MAC_CONFIG_CMD: &struct iwl_mac_config_cmd_v3 or
 	 *	&struct iwl_mac_config_cmd
+=======
+	 * @MAC_CONFIG_CMD: &struct iwl_mac_config_cmd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	MAC_CONFIG_CMD = 0x8,
 	/**
@@ -43,8 +55,12 @@ enum iwl_mac_conf_subcmd_ids {
 	 */
 	LINK_CONFIG_CMD = 0x9,
 	/**
+<<<<<<< HEAD
 	 * @STA_CONFIG_CMD: &struct iwl_sta_cfg_cmd_v1,
 	 *	&struct iwl_sta_cfg_cmd_v2, or &struct iwl_sta_cfg_cmd
+=======
+	 * @STA_CONFIG_CMD: &struct iwl_sta_cfg_cmd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	STA_CONFIG_CMD = 0xA,
 	/**
@@ -358,7 +374,11 @@ struct iwl_mac_wifi_gen_support {
 } __packed;
 
 /**
+<<<<<<< HEAD
  * struct iwl_mac_config_cmd_v3 - command structure to configure MAC contexts in
+=======
+ * struct iwl_mac_config_cmd - command structure to configure MAC contexts in
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	MLD API for versions 2 and 3
  * ( MAC_CONTEXT_CONFIG_CMD = 0x8 )
  *
@@ -377,7 +397,11 @@ struct iwl_mac_wifi_gen_support {
  * @client: client mac data
  * @p2p_dev: mac data for p2p device
  */
+<<<<<<< HEAD
 struct iwl_mac_config_cmd_v3 {
+=======
+struct iwl_mac_config_cmd {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 id_and_color;
 	__le32 action;
 	/* MAC_CONTEXT_TYPE_API_E */
@@ -395,6 +419,7 @@ struct iwl_mac_config_cmd_v3 {
 		struct iwl_mac_client_data client;
 		struct iwl_mac_p2p_dev_data p2p_dev;
 	};
+<<<<<<< HEAD
 } __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2, _VER_3 */
 
 /**
@@ -451,6 +476,9 @@ struct iwl_mac_config_cmd {
 		struct iwl_mac_nan_data nan;
 	};
 } __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_4 */
+=======
+} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2_VER_3 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * enum iwl_link_ctx_modify_flags - indicate to the fw what fields are being
@@ -709,7 +737,10 @@ struct iwl_link_config_cmd {
  */
 #define IWL_FW_MAX_ACTIVE_LINKS_NUM 2
 #define IWL_FW_MAX_LINK_ID 3
+<<<<<<< HEAD
 #define IWL_FW_MAX_LINKS IWL_FW_MAX_LINK_ID + 1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * enum iwl_fw_sta_type - FW station types
@@ -720,6 +751,7 @@ struct iwl_link_config_cmd {
  * @STATION_TYPE_MCAST: the station used for BCAST / MCAST in GO. Will be
  *	suspended / resumed at the right timing depending on the clients'
  *	power save state and the DTIM timing
+<<<<<<< HEAD
  * @STATION_TYPE_NAN_PEER_NMI: NAN management peer station type. A station
  *	of this type can have any number of links (even none) set in the
  *	link_mask. (Supported since version 3.)
@@ -727,6 +759,8 @@ struct iwl_link_config_cmd {
  *	of this type can have any number of links (even none) set in the
  *	link_mask. (Supported since version 3.)
  * @STATION_TYPE_MAX: maximum number of FW station types
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @STATION_TYPE_AUX: aux sta. In the FW there is no need for a special type
  *	for the aux sta, so this type is only for driver - internal use.
  */
@@ -734,11 +768,16 @@ enum iwl_fw_sta_type {
 	STATION_TYPE_PEER,
 	STATION_TYPE_BCAST_MGMT,
 	STATION_TYPE_MCAST,
+<<<<<<< HEAD
 	STATION_TYPE_NAN_PEER_NMI,
 	STATION_TYPE_NAN_PEER_NDI,
 	STATION_TYPE_MAX,
 	STATION_TYPE_AUX = STATION_TYPE_MAX /* this doesn't exist in FW */
 }; /* STATION_TYPE_E_VER_1, _VER_2 */
+=======
+	STATION_TYPE_AUX,
+}; /* STATION_TYPE_E_VER_1 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct iwl_sta_cfg_cmd_v1 - cmd structure to add a peer sta to the uCode's
@@ -797,7 +836,11 @@ struct iwl_sta_cfg_cmd_v1 {
 } __packed; /* STA_CMD_API_S_VER_1 */
 
 /**
+<<<<<<< HEAD
  * struct iwl_sta_cfg_cmd_v2 - cmd structure to add a peer sta to the uCode's
+=======
+ * struct iwl_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	station table
  * ( STA_CONFIG_CMD = 0xA )
  *
@@ -837,7 +880,11 @@ struct iwl_sta_cfg_cmd_v1 {
  * @mic_compute_pad_delay: MIC compute time padding
  * @reserved: Reserved for alignment
  */
+<<<<<<< HEAD
 struct iwl_sta_cfg_cmd_v2 {
+=======
+struct iwl_sta_cfg_cmd {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 sta_id;
 	__le32 link_id;
 	u8 peer_mld_address[ETH_ALEN];
@@ -868,6 +915,7 @@ struct iwl_sta_cfg_cmd_v2 {
 } __packed; /* STA_CMD_API_S_VER_2 */
 
 /**
+<<<<<<< HEAD
  * struct iwl_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
  *	station table
  * ( STA_CONFIG_CMD = 0xA )
@@ -945,6 +993,8 @@ struct iwl_sta_cfg_cmd {
 } __packed; /* STA_CMD_API_S_VER_3 */
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct iwl_aux_sta_cmd - command for AUX STA configuration
  * ( AUX_STA_CMD = 0xB )
  *

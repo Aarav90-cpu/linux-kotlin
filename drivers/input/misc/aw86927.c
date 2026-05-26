@@ -43,12 +43,15 @@
 #define AW86927_PLAYCFG1_BST_VOUT_VREFSET_MASK	GENMASK(6, 0)
 #define AW86927_PLAYCFG1_BST_8500MV		0x50
 
+<<<<<<< HEAD
 #define AW86938_PLAYCFG1_REG			0x06
 #define AW86938_PLAYCFG1_BST_MODE_MASK		GENMASK(5, 5)
 #define AW86938_PLAYCFG1_BST_MODE_BYPASS	0
 #define AW86938_PLAYCFG1_BST_VOUT_VREFSET_MASK	GENMASK(4, 0)
 #define AW86938_PLAYCFG1_BST_7000MV		0x11
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AW86927_PLAYCFG2_REG			0x07
 
 #define AW86927_PLAYCFG3_REG			0x08
@@ -146,7 +149,10 @@
 #define AW86927_CHIPIDH_REG			0x57
 #define AW86927_CHIPIDL_REG			0x58
 #define AW86927_CHIPID				0x9270
+<<<<<<< HEAD
 #define AW86938_CHIPID				0x9380
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define AW86927_TMCFG_REG			0x5b
 #define AW86927_TMCFG_UNLOCK			0x7d
@@ -180,6 +186,7 @@ enum aw86927_work_mode {
 	AW86927_RAM_MODE,
 };
 
+<<<<<<< HEAD
 enum aw86927_model {
 	AW86927,
 	AW86938,
@@ -187,13 +194,20 @@ enum aw86927_model {
 
 struct aw86927_data {
 	enum aw86927_model model;
+=======
+struct aw86927_data {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct work_struct play_work;
 	struct device *dev;
 	struct input_dev *input_dev;
 	struct i2c_client *client;
 	struct regmap *regmap;
 	struct gpio_desc *reset_gpio;
+<<<<<<< HEAD
 	u16 level;
+=======
+	bool running;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regmap_config aw86927_regmap_config = {
@@ -338,12 +352,20 @@ static int aw86927_haptics_play(struct input_dev *dev, void *data, struct ff_eff
 	if (!level)
 		level = effect->u.rumble.weak_magnitude;
 
+<<<<<<< HEAD
 	/* If level does not change, don't restart playback */
 	if (haptics->level == level)
 		return 0;
 
 	haptics->level = level;
 
+=======
+	/* If already running, don't restart playback */
+	if (haptics->running && level)
+		return 0;
+
+	haptics->running = level;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	schedule_work(&haptics->play_work);
 
 	return 0;
@@ -390,7 +412,12 @@ static int aw86927_play_sine(struct aw86927_data *haptics)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	err = regmap_write(haptics->regmap, AW86927_PLAYCFG2_REG, haptics->level * 0x80 / 0xffff);
+=======
+	/* set gain to value lower than 0x80 to avoid distorted playback */
+	err = regmap_write(haptics->regmap, AW86927_PLAYCFG2_REG, 0x7c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -422,7 +449,11 @@ static void aw86927_haptics_play_work(struct work_struct *work)
 	struct device *dev = &haptics->client->dev;
 	int err;
 
+<<<<<<< HEAD
 	if (haptics->level)
+=======
+	if (haptics->running)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = aw86927_play_sine(haptics);
 	else
 		err = aw86927_stop(haptics);
@@ -578,6 +609,7 @@ static int aw86927_haptic_init(struct aw86927_data *haptics)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	switch (haptics->model) {
 	case AW86927:
 		err = regmap_update_bits(haptics->regmap,
@@ -598,6 +630,15 @@ static int aw86927_haptic_init(struct aw86927_data *haptics)
 			return err;
 		break;
 	}
+=======
+	err = regmap_update_bits(haptics->regmap,
+				 AW86927_PLAYCFG1_REG,
+				 AW86927_PLAYCFG1_BST_VOUT_VREFSET_MASK,
+				 FIELD_PREP(AW86927_PLAYCFG1_BST_VOUT_VREFSET_MASK,
+					    AW86927_PLAYCFG1_BST_8500MV));
+	if (err)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = regmap_update_bits(haptics->regmap,
 				 AW86927_PLAYCFG3_REG,
@@ -625,9 +666,12 @@ static int aw86927_ram_init(struct aw86927_data *haptics)
 				 FIELD_PREP(AW86927_SYSCTRL3_EN_RAMINIT_MASK,
 					    AW86927_SYSCTRL3_EN_RAMINIT_ON));
 
+<<<<<<< HEAD
 	/* AW86938 wants a 1ms delay here */
 	usleep_range(1000, 1500);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set base address for the start of the SRAM waveforms */
 	err = regmap_write(haptics->regmap,
 			   AW86927_BASEADDRH_REG, AW86927_BASEADDRH_VAL);
@@ -746,6 +790,7 @@ static int aw86927_detect(struct aw86927_data *haptics)
 
 	chip_id = be16_to_cpu(read_buf);
 
+<<<<<<< HEAD
 	switch (chip_id) {
 	case AW86927_CHIPID:
 		haptics->model = AW86927;
@@ -754,6 +799,9 @@ static int aw86927_detect(struct aw86927_data *haptics)
 		haptics->model = AW86938;
 		break;
 	default:
+=======
+	if (chip_id != AW86927_CHIPID) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(haptics->dev, "Unexpected CHIPID value 0x%x\n", chip_id);
 		return -ENODEV;
 	}

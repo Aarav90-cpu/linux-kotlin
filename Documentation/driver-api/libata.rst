@@ -286,7 +286,11 @@ and other exceptional conditions. The primary responsibility of an
 implementation is to call :c:func:`ata_std_error_handler`.
 
 :c:func:`ata_std_error_handler` will perform a standard error handling sequence
+<<<<<<< HEAD
 to resurrect failed devices, detach lost devices and add new devices (if any).
+=======
+to resurect failed devices, detach lost devices and add new devices (if any).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 This function will call the various reset operations for a port, as needed.
 These operations are as follows.
 

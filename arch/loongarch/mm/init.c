@@ -36,6 +36,26 @@
 #include <asm/pgalloc.h>
 #include <asm/tlb.h>
 
+<<<<<<< HEAD
+=======
+unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
+EXPORT_SYMBOL(empty_zero_page);
+
+void copy_user_highpage(struct page *to, struct page *from,
+	unsigned long vaddr, struct vm_area_struct *vma)
+{
+	void *vfrom, *vto;
+
+	vfrom = kmap_local_page(from);
+	vto = kmap_local_page(to);
+	copy_page(vto, vfrom);
+	kunmap_local(vfrom);
+	kunmap_local(vto);
+	/* Make sure this page is cleared on other CPU's too before using it */
+	smp_wmb();
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __ref page_is_ram(unsigned long pfn)
 {
 	unsigned long addr = PFN_PHYS(pfn);
@@ -49,9 +69,12 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
 #endif
 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __ref free_initmem(void)
@@ -59,6 +82,7 @@ void __ref free_initmem(void)
 	free_initmem_default(POISON_FREE_INITMEM);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 
 void __init fixrange_init(unsigned long start, unsigned long end, pgd_t *pgd_base)
@@ -103,6 +127,8 @@ void __init fixrange_init(unsigned long start, unsigned long end, pgd_t *pgd_bas
 
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MEMORY_HOTPLUG
 int arch_add_memory(int nid, u64 start, u64 size, struct mhp_params *params)
 {

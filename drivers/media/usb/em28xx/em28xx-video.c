@@ -161,14 +161,19 @@ static int em28xx_vbi_supported(struct em28xx *dev)
 	/* FIXME: check subdevices for VBI support */
 
 	if (dev->chip_id == CHIP_ID_EM2860 ||
+<<<<<<< HEAD
 	    dev->chip_id == CHIP_ID_EM2883 ||
 	    dev->board.decoder == EM28XX_BUILTIN)
+=======
+	    dev->chip_id == CHIP_ID_EM2883)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 
 	/* Version of em28xx that does not support VBI */
 	return 0;
 }
 
+<<<<<<< HEAD
 static int em28xx_analogtv_supported(struct em28xx *dev)
 {
 	switch (dev->model) {
@@ -181,6 +186,8 @@ static int em28xx_analogtv_supported(struct em28xx *dev)
 	};
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * em28xx_wake_i2c()
  * configure i2c attached devices
@@ -357,6 +364,7 @@ static int em28xx_resolution_set(struct em28xx *dev)
 	return em28xx_scaler_set(dev, v4l2->hscale, v4l2->vscale);
 }
 
+<<<<<<< HEAD
 static void em2828X_decoder_set_std(struct em28xx *dev, v4l2_std_id norm)
 {
 	if (norm & V4L2_STD_525_60) {
@@ -460,6 +468,8 @@ static void em2828X_decoder_set_std(struct em28xx *dev, v4l2_std_id norm)
 	em28xx_write_reg(dev, 0x7A3F, 0x00);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Set USB alternate setting for analog video */
 static int em28xx_set_alternate(struct em28xx *dev)
 {
@@ -996,12 +1006,15 @@ static void em28xx_v4l2_media_release(struct em28xx *dev)
 #ifdef CONFIG_MEDIA_CONTROLLER
 	int i;
 
+<<<<<<< HEAD
 	if (dev->board.decoder == EM28XX_BUILTIN) {
 		media_device_unregister_entity(dev->v4l2->decoder);
 		kfree(dev->v4l2->decoder);
 		dev->v4l2->decoder = NULL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < MAX_EM28XX_INPUT; i++) {
 		if (!INPUT(i)->type)
 			return;
@@ -1125,7 +1138,11 @@ static void em28xx_v4l2_create_entities(struct em28xx *dev)
 			ent->function = MEDIA_ENT_F_CONN_SVIDEO;
 			break;
 		default: /* EM28XX_VMUX_TELEVISION or EM28XX_RADIO */
+<<<<<<< HEAD
 			if (dev->tuner_type != TUNER_ABSENT || em28xx_analogtv_supported(dev))
+=======
+			if (dev->tuner_type != TUNER_ABSENT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ent->function = MEDIA_ENT_F_CONN_RF;
 			break;
 		}
@@ -1140,6 +1157,7 @@ static void em28xx_v4l2_create_entities(struct em28xx *dev)
 			dev_err(&dev->intf->dev,
 				"failed to register input entity %d!\n", i);
 	}
+<<<<<<< HEAD
 
 	if (dev->board.decoder == EM28XX_BUILTIN) {
 		v4l2->decoder_pads[EM2828X_PAD_INPUT].flags = MEDIA_PAD_FL_SINK;
@@ -1161,6 +1179,8 @@ static void em28xx_v4l2_create_entities(struct em28xx *dev)
 			dev_err(&dev->intf->dev, "failed to register decoder entity %d!\n", ret);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -1440,6 +1460,7 @@ static void video_mux(struct em28xx *dev, int index)
 				     MSP_OUTPUT(MSP_SC_IN_DSP_SCART1), 0);
 	}
 
+<<<<<<< HEAD
 	if (dev->board.decoder == EM28XX_BUILTIN) {
 		em2828X_decoder_vmux(dev, INPUT(index)->vmux);
 		em2828X_decoder_set_std(dev, dev->v4l2->norm);
@@ -1447,6 +1468,8 @@ static void video_mux(struct em28xx *dev, int index)
 		em28xx_gpio_set(dev, INPUT(dev->ctl_input)->gpio);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dev->board.adecoder != EM28XX_NOADECODER) {
 		v4l2_device_call_all(v4l2_dev, 0, audio, s_routing,
 				     dev->ctl_ainput, dev->ctl_aoutput, 0);
@@ -1736,9 +1759,12 @@ static int vidioc_s_std(struct file *file, void *priv, v4l2_std_id norm)
 	em28xx_resolution_set(dev);
 	v4l2_device_call_all(&v4l2->v4l2_dev, 0, video, s_std, v4l2->norm);
 
+<<<<<<< HEAD
 	if (dev->board.decoder == EM28XX_BUILTIN)
 		em2828X_decoder_set_std(dev, v4l2->norm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1982,11 +2008,14 @@ static int vidioc_g_tuner(struct file *file, void *priv,
 
 	strscpy(t->name, "Tuner", sizeof(t->name));
 
+<<<<<<< HEAD
 	t->type = V4L2_TUNER_ANALOG_TV;
 	t->capability = V4L2_TUNER_CAP_NORM;
 	t->rangehigh = 0xffffffffUL;
 	t->signal = 0xffff;     /* LOCKED */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	v4l2_device_call_all(&dev->v4l2->v4l2_dev, 0, tuner, g_tuner, t);
 	return 0;
 }
@@ -2026,6 +2055,7 @@ static int vidioc_s_frequency(struct file *file, void *priv,
 	if (f->tuner != 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	switch (dev->model) {
 	case EM2828X_BOARD_HAUPPAUGE_935_V2:
 	case EM2828X_BOARD_HAUPPAUGE_955_V2:
@@ -2038,6 +2068,9 @@ static int vidioc_s_frequency(struct file *file, void *priv,
 		break;
 	}
 
+=======
+	v4l2_device_call_all(&v4l2->v4l2_dev, 0, tuner, s_frequency, f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	v4l2_device_call_all(&v4l2->v4l2_dev, 0, tuner, g_frequency, &new_freq);
 	v4l2->frequency = new_freq.frequency;
 
@@ -2147,7 +2180,11 @@ static int vidioc_querycap(struct file *file, void  *priv,
 			    V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_STREAMING;
 	if (dev->int_audio_type != EM28XX_INT_AUDIO_NONE)
 		cap->capabilities |= V4L2_CAP_AUDIO;
+<<<<<<< HEAD
 	if (dev->tuner_type != TUNER_ABSENT || em28xx_analogtv_supported(dev))
+=======
+	if (dev->tuner_type != TUNER_ABSENT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cap->capabilities |= V4L2_CAP_TUNER;
 	if (video_is_registered(&v4l2->vbi_dev))
 		cap->capabilities |= V4L2_CAP_VBI_CAPTURE;
@@ -2724,7 +2761,11 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 	}
 
 	hdl = &v4l2->ctrl_handler;
+<<<<<<< HEAD
 	v4l2_ctrl_handler_init(hdl, 9);
+=======
+	v4l2_ctrl_handler_init(hdl, 8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	v4l2->v4l2_dev.ctrl_handler = hdl;
 
 	if (dev->is_webcam)
@@ -2850,7 +2891,11 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 	}
 
 	/* set default norm */
+<<<<<<< HEAD
 	v4l2->norm = -1;
+=======
+	v4l2->norm = V4L2_STD_PAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	v4l2_device_call_all(&v4l2->v4l2_dev, 0, video, s_std, v4l2->norm);
 	v4l2->interlaced_fieldmode = EM28XX_INTERLACED_DEFAULT;
 
@@ -2930,9 +2975,16 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 				 V4L2_CAP_STREAMING;
 	if (dev->int_audio_type != EM28XX_INT_AUDIO_NONE)
 		v4l2->vdev.device_caps |= V4L2_CAP_AUDIO;
+<<<<<<< HEAD
 	if (dev->tuner_type != TUNER_ABSENT || em28xx_analogtv_supported(dev))
 		v4l2->vdev.device_caps |= V4L2_CAP_TUNER;
 
+=======
+	if (dev->tuner_type != TUNER_ABSENT)
+		v4l2->vdev.device_caps |= V4L2_CAP_TUNER;
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* disable inapplicable ioctls */
 	if (dev->is_webcam) {
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_QUERYSTD);
@@ -2941,7 +2993,11 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 	} else {
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_S_PARM);
 	}
+<<<<<<< HEAD
 	if ((v4l2->vdev.device_caps & V4L2_CAP_TUNER) == 0) {
+=======
+	if (dev->tuner_type == TUNER_ABSENT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_G_TUNER);
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_S_TUNER);
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_G_FREQUENCY);
@@ -2952,9 +3008,12 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_S_AUDIO);
 	}
 
+<<<<<<< HEAD
 	if (dev->chip_id == CHIP_ID_EM2828X || dev->board.decoder == EM28XX_BUILTIN)
 		v4l2_disable_ioctl(&v4l2->vdev, VIDIOC_ENUM_FRAMESIZES);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* register v4l2 video video_device */
 	ret = video_register_device(&v4l2->vdev, VFL_TYPE_VIDEO,
 				    video_nr[dev->devno]);
@@ -2973,12 +3032,20 @@ static int em28xx_v4l2_init(struct em28xx *dev)
 		v4l2->vbi_dev.queue->lock = &v4l2->vb_vbi_queue_lock;
 		v4l2->vbi_dev.device_caps = V4L2_CAP_STREAMING |
 			V4L2_CAP_READWRITE | V4L2_CAP_VBI_CAPTURE;
+<<<<<<< HEAD
 		if ((v4l2->vdev.device_caps & V4L2_CAP_TUNER) == 0)
+=======
+		if (dev->tuner_type != TUNER_ABSENT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			v4l2->vbi_dev.device_caps |= V4L2_CAP_TUNER;
 
 		/* disable inapplicable ioctls */
 		v4l2_disable_ioctl(&v4l2->vbi_dev, VIDIOC_S_PARM);
+<<<<<<< HEAD
 		if ((v4l2->vbi_dev.device_caps & V4L2_CAP_TUNER) == 0) {
+=======
+		if (dev->tuner_type == TUNER_ABSENT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			v4l2_disable_ioctl(&v4l2->vbi_dev, VIDIOC_G_TUNER);
 			v4l2_disable_ioctl(&v4l2->vbi_dev, VIDIOC_S_TUNER);
 			v4l2_disable_ioctl(&v4l2->vbi_dev, VIDIOC_G_FREQUENCY);

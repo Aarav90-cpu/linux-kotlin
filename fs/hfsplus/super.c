@@ -153,6 +153,7 @@ static int hfsplus_system_write_inode(struct inode *inode)
 	}
 	hfsplus_inode_write_fork(inode, fork);
 	if (tree) {
+<<<<<<< HEAD
 		mutex_lock_nested(&tree->tree_lock,
 				  hfsplus_btree_lock_class(tree));
 		int err = hfs_btree_write(tree);
@@ -160,6 +161,12 @@ static int hfsplus_system_write_inode(struct inode *inode)
 
 		if (err) {
 			pr_err("b-tree write err: %d, ino %llu\n",
+=======
+		int err = hfs_btree_write(tree);
+
+		if (err) {
+			pr_err("b-tree write err: %d, ino %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       err, inode->i_ino);
 			return err;
 		}
@@ -172,7 +179,11 @@ static int hfsplus_write_inode(struct inode *inode,
 {
 	int err;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu\n", inode->i_ino);
+=======
+	hfs_dbg("ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = hfsplus_ext_write_extent(inode);
 	if (err)
@@ -187,7 +198,11 @@ static int hfsplus_write_inode(struct inode *inode,
 
 static void hfsplus_evict_inode(struct inode *inode)
 {
+<<<<<<< HEAD
 	hfs_dbg("ino %llu\n", inode->i_ino);
+=======
+	hfs_dbg("ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	truncate_inode_pages_final(&inode->i_data);
 	clear_inode(inode);
 	if (HFSPLUS_IS_RSRC(inode)) {
@@ -427,6 +442,7 @@ void hfsplus_prepare_volume_header_for_commit(struct hfsplus_vh *vhdr)
 	vhdr->attributes |= cpu_to_be32(HFSPLUS_VOL_INCNSTNT);
 }
 
+<<<<<<< HEAD
 static inline int hfsplus_get_hidden_dir_entry(struct super_block *sb,
 					       const struct qstr *str,
 					       hfsplus_cat_entry *entry)
@@ -451,11 +467,17 @@ free_fd:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
 {
 	struct hfsplus_vh *vhdr;
 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
 	hfsplus_cat_entry entry;
+<<<<<<< HEAD
+=======
+	struct hfs_find_data fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct inode *root, *inode;
 	struct qstr str;
 	struct nls_table *nls;
@@ -591,6 +613,7 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
 
 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
 	str.name = HFSP_HIDDENDIR_NAME;
+<<<<<<< HEAD
 	err = hfsplus_get_hidden_dir_entry(sb, &str, &entry);
 	if (err == -ENOENT) {
 		/*
@@ -599,6 +622,18 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
 	} else if (unlikely(err)) {
 		goto out_put_root;
 	} else {
+=======
+	err = hfs_find_init(sbi->cat_tree, &fd);
+	if (err)
+		goto out_put_root;
+	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+	if (unlikely(err < 0)) {
+		hfs_find_exit(&fd);
+		goto out_put_root;
+	}
+	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+		hfs_find_exit(&fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 			err = -EIO;
 			goto out_put_root;
@@ -609,7 +644,12 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
 			goto out_put_root;
 		}
 		sbi->hidden_dir = inode;
+<<<<<<< HEAD
 	}
+=======
+	} else
+		hfs_find_exit(&fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sb_rdonly(sb)) {
 		/*
@@ -650,8 +690,11 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
 			}
 
 			mutex_unlock(&sbi->vh_mutex);
+<<<<<<< HEAD
 			hfsplus_mark_inode_dirty(HFSPLUS_CAT_TREE_I(sb),
 						 HFSPLUS_I_CAT_DIRTY);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hfsplus_mark_inode_dirty(sbi->hidden_dir,
 						 HFSPLUS_I_CAT_DIRTY);
 		}

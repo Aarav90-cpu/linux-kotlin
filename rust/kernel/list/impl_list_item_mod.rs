@@ -29,7 +29,10 @@ pub unsafe trait HasListLinks<const ID: u64 = 0> {
 
 /// Implements the [`HasListLinks`] trait for the given type.
 #[macro_export]
+<<<<<<< HEAD
 #[doc(hidden)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 macro_rules! impl_has_list_links {
     ($(impl$({$($generics:tt)*})?
        HasListLinks$(<$id:tt>)?
@@ -75,7 +78,10 @@ where
 
 /// Implements the [`HasListLinks`] and [`HasSelfPtr`] traits for the given type.
 #[macro_export]
+<<<<<<< HEAD
 #[doc(hidden)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 macro_rules! impl_has_list_links_self_ptr {
     ($(impl$({$($generics:tt)*})?
        HasSelfPtr<$item_type:ty $(, $id:tt)?>
@@ -183,7 +189,10 @@ pub use impl_has_list_links_self_ptr;
 /// }
 /// ```
 #[macro_export]
+<<<<<<< HEAD
 #[doc(hidden)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 macro_rules! impl_list_item {
     (
         $(impl$({$($generics:tt)*})? ListItem<$num:tt> for $self:ty {

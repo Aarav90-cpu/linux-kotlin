@@ -66,6 +66,7 @@
  * give us the correct placement for free.
  */
 
+<<<<<<< HEAD
 #define XE_GGTT_FLAGS_64K	BIT(0)
 #define XE_GGTT_FLAGS_ONLINE	BIT(1)
 
@@ -74,6 +75,14 @@
  *
  * This struct is allocated with xe_ggtt_insert_node(,_transform) or xe_ggtt_insert_bo(,_at).
  * It will be deallocated using xe_ggtt_node_remove().
+=======
+/**
+ * struct xe_ggtt_node - A node in GGTT.
+ *
+ * This struct needs to be initialized (only-once) with xe_ggtt_node_init() before any node
+ * insertion, reservation, or 'ballooning'.
+ * It will, then, be finalized by either xe_ggtt_node_remove() or xe_ggtt_node_deballoon().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct xe_ggtt_node {
 	/** @ggtt: Back pointer to xe_ggtt where this region will be inserted at */
@@ -86,6 +95,7 @@ struct xe_ggtt_node {
 	bool invalidate_on_remove;
 };
 
+<<<<<<< HEAD
 /**
  * struct xe_ggtt_pt_ops - GGTT Page table operations
  * Which can vary from platform to platform.
@@ -143,6 +153,8 @@ struct xe_ggtt {
 	struct workqueue_struct *wq;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u64 xelp_ggtt_pte_flags(struct xe_bo *bo, u16 pat_index)
 {
 	u64 pte = XE_PAGE_PRESENT;
@@ -252,7 +264,11 @@ static void xe_ggtt_set_pte_and_flush(struct xe_ggtt *ggtt, u64 addr, u64 pte)
 static u64 xe_ggtt_get_pte(struct xe_ggtt *ggtt, u64 addr)
 {
 	xe_tile_assert(ggtt->tile, !(addr & XE_PTE_MASK));
+<<<<<<< HEAD
 	xe_tile_assert(ggtt->tile, addr < ggtt->start + ggtt->size);
+=======
+	xe_tile_assert(ggtt->tile, addr < ggtt->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return readq(&ggtt->gsm[addr >> XE_PTE_SHIFT]);
 }
@@ -358,7 +374,11 @@ static void __xe_ggtt_init_early(struct xe_ggtt *ggtt, u64 start, u64 size)
 {
 	ggtt->start = start;
 	ggtt->size = size;
+<<<<<<< HEAD
 	drm_mm_init(&ggtt->mm, 0, size);
+=======
+	drm_mm_init(&ggtt->mm, start, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int xe_ggtt_init_kunit(struct xe_ggtt *ggtt, u32 start, u32 size)
@@ -408,6 +428,7 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
 		ggtt_start = wopcm;
 		ggtt_size = (gsm_size / 8) * (u64)XE_PAGE_SIZE - ggtt_start;
 	} else {
+<<<<<<< HEAD
 		ggtt_start = xe_tile_sriov_vf_ggtt_base(ggtt->tile);
 		ggtt_size = xe_tile_sriov_vf_ggtt(ggtt->tile);
 
@@ -417,6 +438,11 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
 				    ggtt_start, ggtt_start + ggtt_size - 1);
 			return -ERANGE;
 		}
+=======
+		/* GGTT is expected to be 4GiB */
+		ggtt_start = wopcm;
+		ggtt_size = SZ_4G - ggtt_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ggtt->gsm = ggtt->tile->mmio.regs + SZ_8M;
@@ -434,7 +460,11 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
 	else
 		ggtt->pt_ops = &xelp_pt_ops;
 
+<<<<<<< HEAD
 	ggtt->wq = alloc_workqueue("xe-ggtt-wq", WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+=======
+	ggtt->wq = alloc_workqueue("xe-ggtt-wq", WQ_MEM_RECLAIM, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ggtt->wq)
 		return -ENOMEM;
 
@@ -445,7 +475,21 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
 		return err;
 
 	ggtt->flags |= XE_GGTT_FLAGS_ONLINE;
+<<<<<<< HEAD
 	return devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
+=======
+	err = devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
+	if (err)
+		return err;
+
+	if (IS_SRIOV_VF(xe)) {
+		err = xe_tile_sriov_vf_prepare_ggtt(ggtt->tile);
+		if (err)
+			return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 ALLOW_ERROR_INJECTION(xe_ggtt_init_early, ERRNO); /* See xe_pci_probe() */
 
@@ -459,17 +503,24 @@ static void xe_ggtt_initial_clear(struct xe_ggtt *ggtt)
 	/* Display may have allocated inside ggtt, so be careful with clearing here */
 	mutex_lock(&ggtt->lock);
 	drm_mm_for_each_hole(hole, &ggtt->mm, start, end)
+<<<<<<< HEAD
 		xe_ggtt_clear(ggtt, ggtt->start + start, end - start);
+=======
+		xe_ggtt_clear(ggtt, start, end - start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_ggtt_invalidate(ggtt);
 	mutex_unlock(&ggtt->lock);
 }
 
+<<<<<<< HEAD
 static void ggtt_node_fini(struct xe_ggtt_node *node)
 {
 	kfree(node);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ggtt_node_remove(struct xe_ggtt_node *node)
 {
 	struct xe_ggtt *ggtt = node->ggtt;
@@ -478,6 +529,7 @@ static void ggtt_node_remove(struct xe_ggtt_node *node)
 	mutex_lock(&ggtt->lock);
 	bound = ggtt->flags & XE_GGTT_FLAGS_ONLINE;
 	if (bound)
+<<<<<<< HEAD
 		xe_ggtt_clear(ggtt, xe_ggtt_node_addr(node), xe_ggtt_node_size(node));
 	drm_mm_remove_node(&node->base);
 	node->base.size = 0;
@@ -486,6 +538,21 @@ static void ggtt_node_remove(struct xe_ggtt_node *node)
 	mutex_unlock(&ggtt->lock);
 
 	ggtt_node_fini(node);
+=======
+		xe_ggtt_clear(ggtt, node->base.start, node->base.size);
+	drm_mm_remove_node(&node->base);
+	node->base.size = 0;
+	mutex_unlock(&ggtt->lock);
+
+	if (!bound)
+		goto free_node;
+
+	if (node->invalidate_on_remove)
+		xe_ggtt_invalidate(ggtt);
+
+free_node:
+	xe_ggtt_node_fini(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ggtt_node_remove_work_func(struct work_struct *work)
@@ -591,6 +658,7 @@ static void xe_ggtt_invalidate(struct xe_ggtt *ggtt)
 	ggtt_invalidate_gt_tlb(ggtt->tile->media_gt);
 }
 
+<<<<<<< HEAD
 /**
  * xe_ggtt_shift_nodes() - Shift GGTT nodes to adjust for a change in usable address range.
  * @ggtt: the &xe_ggtt struct instance
@@ -616,13 +684,175 @@ void xe_ggtt_shift_nodes(struct xe_ggtt *ggtt, u64 new_start)
 }
 
 static int xe_ggtt_insert_node_locked(struct xe_ggtt_node *node,
+=======
+static void xe_ggtt_dump_node(struct xe_ggtt *ggtt,
+			      const struct drm_mm_node *node, const char *description)
+{
+	char buf[10];
+
+	if (IS_ENABLED(CONFIG_DRM_XE_DEBUG)) {
+		string_get_size(node->size, 1, STRING_UNITS_2, buf, sizeof(buf));
+		xe_tile_dbg(ggtt->tile, "GGTT %#llx-%#llx (%s) %s\n",
+			    node->start, node->start + node->size, buf, description);
+	}
+}
+
+/**
+ * xe_ggtt_node_insert_balloon_locked - prevent allocation of specified GGTT addresses
+ * @node: the &xe_ggtt_node to hold reserved GGTT node
+ * @start: the starting GGTT address of the reserved region
+ * @end: then end GGTT address of the reserved region
+ *
+ * To be used in cases where ggtt->lock is already taken.
+ * Use xe_ggtt_node_remove_balloon_locked() to release a reserved GGTT node.
+ *
+ * Return: 0 on success or a negative error code on failure.
+ */
+int xe_ggtt_node_insert_balloon_locked(struct xe_ggtt_node *node, u64 start, u64 end)
+{
+	struct xe_ggtt *ggtt = node->ggtt;
+	int err;
+
+	xe_tile_assert(ggtt->tile, start < end);
+	xe_tile_assert(ggtt->tile, IS_ALIGNED(start, XE_PAGE_SIZE));
+	xe_tile_assert(ggtt->tile, IS_ALIGNED(end, XE_PAGE_SIZE));
+	xe_tile_assert(ggtt->tile, !drm_mm_node_allocated(&node->base));
+	lockdep_assert_held(&ggtt->lock);
+
+	node->base.color = 0;
+	node->base.start = start;
+	node->base.size = end - start;
+
+	err = drm_mm_reserve_node(&ggtt->mm, &node->base);
+
+	if (xe_tile_WARN(ggtt->tile, err, "Failed to balloon GGTT %#llx-%#llx (%pe)\n",
+			 node->base.start, node->base.start + node->base.size, ERR_PTR(err)))
+		return err;
+
+	xe_ggtt_dump_node(ggtt, &node->base, "balloon");
+	return 0;
+}
+
+/**
+ * xe_ggtt_node_remove_balloon_locked - release a reserved GGTT region
+ * @node: the &xe_ggtt_node with reserved GGTT region
+ *
+ * To be used in cases where ggtt->lock is already taken.
+ * See xe_ggtt_node_insert_balloon_locked() for details.
+ */
+void xe_ggtt_node_remove_balloon_locked(struct xe_ggtt_node *node)
+{
+	if (!xe_ggtt_node_allocated(node))
+		return;
+
+	lockdep_assert_held(&node->ggtt->lock);
+
+	xe_ggtt_dump_node(node->ggtt, &node->base, "remove-balloon");
+
+	drm_mm_remove_node(&node->base);
+}
+
+static void xe_ggtt_assert_fit(struct xe_ggtt *ggtt, u64 start, u64 size)
+{
+	struct xe_tile *tile = ggtt->tile;
+
+	xe_tile_assert(tile, start >= ggtt->start);
+	xe_tile_assert(tile, start + size <= ggtt->start + ggtt->size);
+}
+
+/**
+ * xe_ggtt_shift_nodes_locked - Shift GGTT nodes to adjust for a change in usable address range.
+ * @ggtt: the &xe_ggtt struct instance
+ * @shift: change to the location of area provisioned for current VF
+ *
+ * This function moves all nodes from the GGTT VM, to a temp list. These nodes are expected
+ * to represent allocations in range formerly assigned to current VF, before the range changed.
+ * When the GGTT VM is completely clear of any nodes, they are re-added with shifted offsets.
+ *
+ * The function has no ability of failing - because it shifts existing nodes, without
+ * any additional processing. If the nodes were successfully existing at the old address,
+ * they will do the same at the new one. A fail inside this function would indicate that
+ * the list of nodes was either already damaged, or that the shift brings the address range
+ * outside of valid bounds. Both cases justify an assert rather than error code.
+ */
+void xe_ggtt_shift_nodes_locked(struct xe_ggtt *ggtt, s64 shift)
+{
+	struct xe_tile *tile __maybe_unused = ggtt->tile;
+	struct drm_mm_node *node, *tmpn;
+	LIST_HEAD(temp_list_head);
+
+	lockdep_assert_held(&ggtt->lock);
+
+	if (IS_ENABLED(CONFIG_DRM_XE_DEBUG))
+		drm_mm_for_each_node_safe(node, tmpn, &ggtt->mm)
+			xe_ggtt_assert_fit(ggtt, node->start + shift, node->size);
+
+	drm_mm_for_each_node_safe(node, tmpn, &ggtt->mm) {
+		drm_mm_remove_node(node);
+		list_add(&node->node_list, &temp_list_head);
+	}
+
+	list_for_each_entry_safe(node, tmpn, &temp_list_head, node_list) {
+		list_del(&node->node_list);
+		node->start += shift;
+		drm_mm_reserve_node(&ggtt->mm, node);
+		xe_tile_assert(tile, drm_mm_node_allocated(node));
+	}
+}
+
+static int xe_ggtt_node_insert_locked(struct xe_ggtt_node *node,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      u32 size, u32 align, u32 mm_flags)
 {
 	return drm_mm_insert_node_generic(&node->ggtt->mm, &node->base, size, align, 0,
 					  mm_flags);
 }
 
+<<<<<<< HEAD
 static struct xe_ggtt_node *ggtt_node_init(struct xe_ggtt *ggtt)
+=======
+/**
+ * xe_ggtt_node_insert - Insert a &xe_ggtt_node into the GGTT
+ * @node: the &xe_ggtt_node to be inserted
+ * @size: size of the node
+ * @align: alignment constrain of the node
+ *
+ * It cannot be called without first having called xe_ggtt_init() once.
+ *
+ * Return: 0 on success or a negative error code on failure.
+ */
+int xe_ggtt_node_insert(struct xe_ggtt_node *node, u32 size, u32 align)
+{
+	int ret;
+
+	if (!node || !node->ggtt)
+		return -ENOENT;
+
+	mutex_lock(&node->ggtt->lock);
+	ret = xe_ggtt_node_insert_locked(node, size, align,
+					 DRM_MM_INSERT_HIGH);
+	mutex_unlock(&node->ggtt->lock);
+
+	return ret;
+}
+
+/**
+ * xe_ggtt_node_init - Initialize %xe_ggtt_node struct
+ * @ggtt: the &xe_ggtt where the new node will later be inserted/reserved.
+ *
+ * This function will allocate the struct %xe_ggtt_node and return its pointer.
+ * This struct will then be freed after the node removal upon xe_ggtt_node_remove()
+ * or xe_ggtt_node_remove_balloon_locked().
+ *
+ * Having %xe_ggtt_node struct allocated doesn't mean that the node is already
+ * allocated in GGTT. Only xe_ggtt_node_insert(), allocation through
+ * xe_ggtt_node_insert_transform(), or xe_ggtt_node_insert_balloon_locked() will ensure the node is inserted or reserved
+ * in GGTT.
+ *
+ * Return: A pointer to %xe_ggtt_node struct on success. An ERR_PTR otherwise.
+ **/
+struct xe_ggtt_node *xe_ggtt_node_init(struct xe_ggtt *ggtt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_ggtt_node *node = kzalloc_obj(*node, GFP_NOFS);
 
@@ -636,6 +866,7 @@ static struct xe_ggtt_node *ggtt_node_init(struct xe_ggtt *ggtt)
 }
 
 /**
+<<<<<<< HEAD
  * xe_ggtt_insert_node - Insert a &xe_ggtt_node into the GGTT
  * @ggtt: the &xe_ggtt into which the node should be inserted.
  * @size: size of the node
@@ -661,6 +892,32 @@ struct xe_ggtt_node *xe_ggtt_insert_node(struct xe_ggtt *ggtt, u32 size, u32 ali
 	}
 
 	return node;
+=======
+ * xe_ggtt_node_fini - Forcebly finalize %xe_ggtt_node struct
+ * @node: the &xe_ggtt_node to be freed
+ *
+ * If anything went wrong with either xe_ggtt_node_insert(), xe_ggtt_node_insert_locked(),
+ * or xe_ggtt_node_insert_balloon_locked(); and this @node is not going to be reused, then,
+ * this function needs to be called to free the %xe_ggtt_node struct
+ **/
+void xe_ggtt_node_fini(struct xe_ggtt_node *node)
+{
+	kfree(node);
+}
+
+/**
+ * xe_ggtt_node_allocated - Check if node is allocated in GGTT
+ * @node: the &xe_ggtt_node to be inspected
+ *
+ * Return: True if allocated, False otherwise.
+ */
+bool xe_ggtt_node_allocated(const struct xe_ggtt_node *node)
+{
+	if (!node || !node->ggtt)
+		return false;
+
+	return drm_mm_node_allocated(&node->base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -693,7 +950,11 @@ static void xe_ggtt_map_bo(struct xe_ggtt *ggtt, struct xe_ggtt_node *node,
 	if (XE_WARN_ON(!node))
 		return;
 
+<<<<<<< HEAD
 	start = xe_ggtt_node_addr(node);
+=======
+	start = node->base.start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	end = start + xe_bo_size(bo);
 
 	if (!xe_bo_is_vram(bo) && !xe_bo_is_stolen(bo)) {
@@ -734,7 +995,11 @@ void xe_ggtt_map_bo_unlocked(struct xe_ggtt *ggtt, struct xe_bo *bo)
 }
 
 /**
+<<<<<<< HEAD
  * xe_ggtt_insert_node_transform - Insert a newly allocated &xe_ggtt_node into the GGTT
+=======
+ * xe_ggtt_node_insert_transform - Insert a newly allocated &xe_ggtt_node into the GGTT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ggtt: the &xe_ggtt where the node will inserted/reserved.
  * @bo: The bo to be transformed
  * @pte_flags: The extra GGTT flags to add to mapping.
@@ -748,7 +1013,11 @@ void xe_ggtt_map_bo_unlocked(struct xe_ggtt *ggtt, struct xe_bo *bo)
  *
  * Return: A pointer to %xe_ggtt_node struct on success. An ERR_PTR otherwise.
  */
+<<<<<<< HEAD
 struct xe_ggtt_node *xe_ggtt_insert_node_transform(struct xe_ggtt *ggtt,
+=======
+struct xe_ggtt_node *xe_ggtt_node_insert_transform(struct xe_ggtt *ggtt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						   struct xe_bo *bo, u64 pte_flags,
 						   u64 size, u32 align,
 						   xe_ggtt_transform_cb transform, void *arg)
@@ -756,7 +1025,11 @@ struct xe_ggtt_node *xe_ggtt_insert_node_transform(struct xe_ggtt *ggtt,
 	struct xe_ggtt_node *node;
 	int ret;
 
+<<<<<<< HEAD
 	node = ggtt_node_init(ggtt);
+=======
+	node = xe_ggtt_node_init(ggtt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(node))
 		return ERR_CAST(node);
 
@@ -765,7 +1038,11 @@ struct xe_ggtt_node *xe_ggtt_insert_node_transform(struct xe_ggtt *ggtt,
 		goto err;
 	}
 
+<<<<<<< HEAD
 	ret = xe_ggtt_insert_node_locked(node, size, align, 0);
+=======
+	ret = xe_ggtt_node_insert_locked(node, size, align, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_unlock;
 
@@ -780,7 +1057,11 @@ struct xe_ggtt_node *xe_ggtt_insert_node_transform(struct xe_ggtt *ggtt,
 err_unlock:
 	mutex_unlock(&ggtt->lock);
 err:
+<<<<<<< HEAD
 	ggtt_node_fini(node);
+=======
+	xe_ggtt_node_fini(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 
@@ -806,7 +1087,11 @@ static int __xe_ggtt_insert_bo_at(struct xe_ggtt *ggtt, struct xe_bo *bo,
 
 	xe_pm_runtime_get_noresume(tile_to_xe(ggtt->tile));
 
+<<<<<<< HEAD
 	bo->ggtt_node[tile_id] = ggtt_node_init(ggtt);
+=======
+	bo->ggtt_node[tile_id] = xe_ggtt_node_init(ggtt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(bo->ggtt_node[tile_id])) {
 		err = PTR_ERR(bo->ggtt_node[tile_id]);
 		bo->ggtt_node[tile_id] = NULL;
@@ -814,6 +1099,7 @@ static int __xe_ggtt_insert_bo_at(struct xe_ggtt *ggtt, struct xe_bo *bo,
 	}
 
 	mutex_lock(&ggtt->lock);
+<<<<<<< HEAD
 	/*
 	 * When inheriting the initial framebuffer, the framebuffer is
 	 * physically located at VRAM address 0, and usually at GGTT address 0 too.
@@ -838,6 +1124,12 @@ static int __xe_ggtt_insert_bo_at(struct xe_ggtt *ggtt, struct xe_bo *bo,
 					  xe_bo_size(bo), alignment, 0, start, end, 0);
 	if (err) {
 		ggtt_node_fini(bo->ggtt_node[tile_id]);
+=======
+	err = drm_mm_insert_node_in_range(&ggtt->mm, &bo->ggtt_node[tile_id]->base,
+					  xe_bo_size(bo), alignment, 0, start, end, 0);
+	if (err) {
+		xe_ggtt_node_fini(bo->ggtt_node[tile_id]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bo->ggtt_node[tile_id] = NULL;
 	} else {
 		u16 cache_mode = bo->flags & XE_BO_FLAG_NEEDS_UC ? XE_CACHE_NONE : XE_CACHE_WB;
@@ -945,16 +1237,29 @@ static u64 xe_encode_vfid_pte(u16 vfid)
 	return FIELD_PREP(GGTT_PTE_VFID, vfid) | XE_PAGE_PRESENT;
 }
 
+<<<<<<< HEAD
 static void xe_ggtt_assign_locked(const struct xe_ggtt_node *node, u16 vfid)
 {
 	struct xe_ggtt *ggtt = node->ggtt;
 	u64 start = xe_ggtt_node_addr(node);
 	u64 size = xe_ggtt_node_size(node);
+=======
+static void xe_ggtt_assign_locked(struct xe_ggtt *ggtt, const struct drm_mm_node *node, u16 vfid)
+{
+	u64 start = node->start;
+	u64 size = node->size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 end = start + size - 1;
 	u64 pte = xe_encode_vfid_pte(vfid);
 
 	lockdep_assert_held(&ggtt->lock);
 
+<<<<<<< HEAD
+=======
+	if (!drm_mm_node_allocated(node))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (start < end) {
 		ggtt->pt_ops->ggtt_set_pte(ggtt, start, pte);
 		start += XE_PAGE_SIZE;
@@ -974,8 +1279,14 @@ static void xe_ggtt_assign_locked(const struct xe_ggtt_node *node, u16 vfid)
  */
 void xe_ggtt_assign(const struct xe_ggtt_node *node, u16 vfid)
 {
+<<<<<<< HEAD
 	guard(mutex)(&node->ggtt->lock);
 	xe_ggtt_assign_locked(node, vfid);
+=======
+	mutex_lock(&node->ggtt->lock);
+	xe_ggtt_assign_locked(node->ggtt, &node->base, vfid);
+	mutex_unlock(&node->ggtt->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -997,14 +1308,24 @@ int xe_ggtt_node_save(struct xe_ggtt_node *node, void *dst, size_t size, u16 vfi
 	if (!node)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	ggtt = node->ggtt;
 	guard(mutex)(&ggtt->lock);
+=======
+	guard(mutex)(&node->ggtt->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xe_ggtt_node_pt_size(node) != size)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	start = xe_ggtt_node_addr(node);
 	end = start + xe_ggtt_node_size(node) - 1;
+=======
+	ggtt = node->ggtt;
+	start = node->base.start;
+	end = start + node->base.size - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (start < end) {
 		pte = ggtt->pt_ops->ggtt_get_pte(ggtt, start);
@@ -1037,14 +1358,24 @@ int xe_ggtt_node_load(struct xe_ggtt_node *node, const void *src, size_t size, u
 	if (!node)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	ggtt = node->ggtt;
 	guard(mutex)(&ggtt->lock);
+=======
+	guard(mutex)(&node->ggtt->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xe_ggtt_node_pt_size(node) != size)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	start = xe_ggtt_node_addr(node);
 	end = start + xe_ggtt_node_size(node) - 1;
+=======
+	ggtt = node->ggtt;
+	start = node->base.start;
+	end = start + node->base.size - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (start < end) {
 		vfid_pte = u64_replace_bits(*buf++, vfid, GGTT_PTE_VFID);
@@ -1151,8 +1482,12 @@ u64 xe_ggtt_read_pte(struct xe_ggtt *ggtt, u64 offset)
  */
 u64 xe_ggtt_node_addr(const struct xe_ggtt_node *node)
 {
+<<<<<<< HEAD
 	/* pairs with WRITE_ONCE in xe_ggtt_shift_nodes() */
 	return node->base.start + READ_ONCE(node->ggtt->start);
+=======
+	return node->base.start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

@@ -39,6 +39,12 @@ properties:
             $ref: /schemas/media/video-interfaces.yaml#
             unevaluatedProperties: false
 
+<<<<<<< HEAD
+=======
+            properties:
+              data-lanes: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             required:
               - data-lanes
 

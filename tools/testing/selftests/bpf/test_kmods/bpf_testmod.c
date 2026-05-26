@@ -470,11 +470,14 @@ noinline void bpf_testmod_stacktrace_test_1(void)
 
 int bpf_testmod_fentry_ok;
 
+<<<<<<< HEAD
 noinline int bpf_testmod_trampoline_count_test(void)
 {
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 noinline ssize_t
 bpf_testmod_test_read(struct file *file, struct kobject *kobj,
 		      const struct bin_attribute *bin_attr,
@@ -553,8 +556,11 @@ bpf_testmod_test_read(struct file *file, struct kobject *kobj,
 			21, 22, 23, 24, 25, 26) != 231)
 		goto out;
 
+<<<<<<< HEAD
 	bpf_testmod_trampoline_count_test();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_testmod_stacktrace_test_1();
 
 	bpf_testmod_fentry_ok = 1;
@@ -723,7 +729,10 @@ BTF_ID_FLAGS(func, bpf_iter_testmod_seq_next, KF_ITER_NEXT | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_destroy, KF_ITER_DESTROY)
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_value)
 BTF_ID_FLAGS(func, bpf_kfunc_common_test)
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, bpf_kfunc_call_test_mem_len_pass1)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, bpf_kfunc_dynptr_test)
 BTF_ID_FLAGS(func, bpf_kfunc_nested_acquire_nonzero_offset_test, KF_ACQUIRE)
 BTF_ID_FLAGS(func, bpf_kfunc_nested_acquire_zero_offset_test, KF_ACQUIRE)
@@ -768,6 +777,7 @@ __bpf_kfunc struct sock *bpf_kfunc_call_test3(struct sock *sk)
 
 __bpf_kfunc long noinline bpf_kfunc_call_test4(signed char a, short b, int c, long d)
 {
+<<<<<<< HEAD
 	/*
 	 * Make val as volatile to avoid compiler optimizations.
 	 * Verify that negative signed values remain negative after
@@ -790,11 +800,15 @@ __bpf_kfunc long noinline bpf_kfunc_call_test4(signed char a, short b, int c, lo
 
 	/*
 	 * Provoke the compiler to assume that the caller has sign-extended a,
+=======
+	/* Provoke the compiler to assume that the caller has sign-extended a,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * b and c on platforms where this is required (e.g. s390x).
 	 */
 	return (long)a + (long)b + (long)c + d;
 }
 
+<<<<<<< HEAD
 __bpf_kfunc int bpf_kfunc_call_test5(u8 a, u16 b, u32 c)
 {
 	/*
@@ -825,6 +839,8 @@ __bpf_kfunc int bpf_kfunc_call_test5(u8 a, u16 b, u32 c)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct prog_test_ref_kfunc prog_test_struct = {
 	.a = 42,
 	.b = 108,
@@ -1287,7 +1303,11 @@ BTF_ID_FLAGS(func, bpf_kfunc_call_test1)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test2)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test3)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test4)
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, bpf_kfunc_call_test5)
+=======
+BTF_ID_FLAGS(func, bpf_kfunc_call_test_mem_len_pass1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test_mem_len_fail1)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test_mem_len_fail2)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test_acquire, KF_ACQUIRE | KF_RET_NULL)
@@ -1418,12 +1438,15 @@ static int bpf_testmod_ops__test_refcounted(int dummy,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bpf_testmod_ops__test_refcounted_multi(int dummy, struct task_struct *task__nullable,
 						  struct task_struct *task__ref)
 {
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct task_struct *
 bpf_testmod_ops__test_return_ref_kptr(int dummy, struct task_struct *task__ref,
 				      struct cgroup *cgrp)
@@ -1436,7 +1459,10 @@ static struct bpf_testmod_ops __bpf_testmod_ops = {
 	.test_2 = bpf_testmod_test_2,
 	.test_maybe_null = bpf_testmod_ops__test_maybe_null,
 	.test_refcounted = bpf_testmod_ops__test_refcounted,
+<<<<<<< HEAD
 	.test_refcounted_multi = bpf_testmod_ops__test_refcounted_multi,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.test_return_ref_kptr = bpf_testmod_ops__test_return_ref_kptr,
 };
 
@@ -1909,6 +1935,7 @@ struct bpf_struct_ops testmod_multi_st_ops = {
 
 extern int bpf_fentry_test1(int a);
 
+<<<<<<< HEAD
 BTF_KFUNCS_START(bpf_testmod_trampoline_count_ids)
 BTF_ID_FLAGS(func, bpf_testmod_trampoline_count_test)
 BTF_KFUNCS_END(bpf_testmod_trampoline_count_ids)
@@ -1919,6 +1946,8 @@ btf_kfunc_id_set bpf_testmod_trampoline_count_fmodret_set = {
 	.set = &bpf_testmod_trampoline_count_ids,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bpf_testmod_init(void)
 {
 	const struct btf_id_dtor_kfunc bpf_testmod_dtors[] = {
@@ -1935,7 +1964,10 @@ static int bpf_testmod_init(void)
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &bpf_testmod_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL, &bpf_testmod_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &bpf_testmod_kfunc_set);
+<<<<<<< HEAD
 	ret = ret ?: register_btf_fmodret_id_set(&bpf_testmod_trampoline_count_fmodret_set);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ret ?: register_bpf_struct_ops(&bpf_bpf_testmod_ops, bpf_testmod_ops);
 	ret = ret ?: register_bpf_struct_ops(&bpf_testmod_ops2, bpf_testmod_ops2);
 	ret = ret ?: register_bpf_struct_ops(&bpf_testmod_ops3, bpf_testmod_ops3);

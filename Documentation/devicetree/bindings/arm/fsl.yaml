@@ -996,6 +996,7 @@ properties:
           - const: engicam,icore-mx8mm             # i.MX8MM Engicam i.Core MX8M Mini SoM
           - const: fsl,imx8mm
 
+<<<<<<< HEAD
       - description: Ka-Ro Electronics TX8M-1610 based boards
         items:
           - enum:
@@ -1004,6 +1005,8 @@ properties:
           - const: karo,tx8m-1610
           - const: fsl,imx8mm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Kontron BL i.MX8MM (N801X S) Board
         items:
           - const: kontron,imx8mm-bl
@@ -1049,6 +1052,7 @@ properties:
           - const: phytec,imx8mm-phycore-som        # phyCORE-i.MX8MM SoM
           - const: fsl,imx8mm
 
+<<<<<<< HEAD
       - description: SolidRun i.MX8MM SoM based boards
         items:
           - enum:
@@ -1056,6 +1060,8 @@ properties:
           - const: solidrun,imx8mm-sr-som
           - const: fsl,imx8mm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Variscite VAR-SOM-MX8MM based boards
         items:
           - const: variscite,var-som-mx8mm-symphony
@@ -1084,7 +1090,10 @@ properties:
               - fsl,imx8mn-ddr4-evk       # i.MX8MN DDR4 EVK Board
               - fsl,imx8mn-evk            # i.MX8MN LPDDR4 EVK Board
               - gw,imx8mn-gw7902          # i.MX8MM Gateworks Board
+<<<<<<< HEAD
               - solidrun,solidsense-n8-compact # SolidRun SolidSense N8 Compact
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: fsl,imx8mn
 
       - description: ifm i.MX8MN VHIP4 based boards
@@ -1122,7 +1131,10 @@ properties:
               - beacon,imx8mp-beacon-kit  # i.MX8MP Beacon Development Kit
               - dmo,imx8mp-data-modul-edm-sbc # i.MX8MP eDM SBC
               - emcraft,imx8mp-navqp      # i.MX8MP Emcraft Systems NavQ+ Kit
+<<<<<<< HEAD
               - fsl,imx8mp-ab2            # i.MX8MP Audio Board V2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - fsl,imx8mp-evk            # i.MX8MP EVK Board
               - fsl,imx8mp-evk-revb4      # i.MX8MP EVK Rev B4 Board
               - fsl,imx8mp-frdm           # i.MX8MP Freedom Board
@@ -1242,7 +1254,10 @@ properties:
         items:
           - enum:
               - solidrun,imx8mp-cubox-m             # SolidRun i.MX8MP SoM on CuBox-M
+<<<<<<< HEAD
               - solidrun,imx8mp-hummingboard-iiot   # SolidRun i.MX8MP SoM on HummingBoard IIoT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - solidrun,imx8mp-hummingboard-mate   # SolidRun i.MX8MP SoM on HummingBoard Mate
               - solidrun,imx8mp-hummingboard-pro    # SolidRun i.MX8MP SoM on HummingBoard Pro
               - solidrun,imx8mp-hummingboard-pulse  # SolidRun i.MX8MP SoM on HummingBoard Pulse
@@ -1438,6 +1453,7 @@ properties:
               - const: tq,imx8dxp-tqma8xdps         # TQ-Systems GmbH TQMa8XDPS SOM
               - const: fsl,imx8dxp
 
+<<<<<<< HEAD
       - description:
           TQMa8x is a series of SOM featuring NXP i.MX8 system-on-chip
           variants. It is designed to be clicked on different carrier boards
@@ -1448,6 +1464,8 @@ properties:
           - const: tq,imx8qm-tqma8qm      # TQ-Systems GmbH TQMa8QM SOM
           - const: fsl,imx8qm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: i.MX8ULP based Boards
         items:
           - enum:
@@ -1460,7 +1478,10 @@ properties:
           - enum:
               - fsl,imx91-11x11-evk       # i.MX91 11x11 EVK Board
               - fsl,imx91-11x11-frdm      # FRDM i.MX91 Development Board
+<<<<<<< HEAD
               - fsl,imx91-11x11-frdm-s    # FRDM i.MX91S Development Board
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: fsl,imx91
 
       - description: i.MX93 based Boards
@@ -1470,7 +1491,10 @@ properties:
               - fsl,imx93-11x11-evk       # i.MX93 11x11 EVK Board
               - fsl,imx93-11x11-frdm      # i.MX93 11x11 FRDM Board
               - fsl,imx93-14x14-evk       # i.MX93 14x14 EVK Board
+<<<<<<< HEAD
               - fsl,imx93-wireless-evk    # i.MX93 and IW610G WLCSP (Wi-Fi + BLE + 802.15.4) SiP EVK Board
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: fsl,imx93
 
       - description: i.MX94 based Boards
@@ -1507,6 +1531,7 @@ properties:
           - const: toradex,smarc-imx95     # Toradex SMARC iMX95 Module
           - const: fsl,imx95
 
+<<<<<<< HEAD
       - description: Toradex Boards with Verdin iMX95 Modules
         items:
           - enum:
@@ -1537,6 +1562,8 @@ properties:
           - const: variscite,var-dart-mx95 # Variscite DART-MX95 SOM
           - const: fsl,imx95
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: i.MXRT1050 based Boards
         items:
           - enum:
@@ -1582,14 +1609,20 @@ properties:
           soldered on an adapter board or for the connector variant
           MBa93xxLA mainboard is a single board computer using the solderable
           SOM variant
+<<<<<<< HEAD
           MBa93xxLA-MINI mainboard is a single board computer using the solderable
           SOM variant
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         items:
           - enum:
               - tq,imx93-tqma9352-mba91xxca # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM on MBa91xxCA
               - tq,imx93-tqma9352-mba93xxca # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM on MBa93xxCA
               - tq,imx93-tqma9352-mba93xxla # TQ-Systems GmbH i.MX93 TQMa93xxLA SOM on MBa93xxLA SBC
+<<<<<<< HEAD
               - tq,imx93-tqma9352-mba93xxla-mini # TQ-Systems GmbH i.MX93 TQMa93xxLA SOM on MBa93xxLA-MINI SBC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: tq,imx93-tqma9352        # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM
           - const: fsl,imx93
 
@@ -1608,12 +1641,15 @@ properties:
           - const: phytec,imx93-phycore-som # phyCORE-i.MX93 SoM
           - const: fsl,imx93
 
+<<<<<<< HEAD
       - description: Variscite DART-MX91 based boards
         items:
           - const: variscite,var-dart-mx91-sonata # Variscite DART-MX91 on Sonata Development Board
           - const: variscite,var-dart-mx91 # Variscite DART-MX91 SOM
           - const: fsl,imx91
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Variscite VAR-SOM-MX93 based boards
         items:
           - const: variscite,var-som-mx93-symphony
@@ -1627,6 +1663,7 @@ properties:
           - const: fsl,imx93
 
       - description:
+<<<<<<< HEAD
           TQMa95xxLA is a series of SOM featuring NXP i.MX95 SoC variants,
           designed to be soldered on different carrier boards.
           MBa95xxCA is a carrier reference design / starter kit that allows
@@ -1638,6 +1675,8 @@ properties:
           - const: fsl,imx95
 
       - description:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           TQMa95xxSA is a series of SOM featuring NXP i.MX95 SoC variants.
           It has the SMARC form factor and is designed to be placed on
           different carrier boards. MB-SMARC-2 is a carrier reference design.
@@ -1907,12 +1946,15 @@ properties:
               - fsl,s32v234-evb           # S32V234-EVB2 Customer Evaluation Board
           - const: fsl,s32v234
 
+<<<<<<< HEAD
       - description: S32N79 based Boards
         items:
           - enum:
               - nxp,s32n79-rdb
           - const: nxp,s32n79
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Traverse LS1088A based Boards
         items:
           - enum:

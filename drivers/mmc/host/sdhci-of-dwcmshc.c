@@ -40,10 +40,14 @@
 #define DWCMSHC_AREA1_MASK		GENMASK(11, 0)
 /* Offset inside the  vendor area 1 */
 #define DWCMSHC_HOST_CTRL3		0x8
+<<<<<<< HEAD
 #define DWCMSHC_HOST_CTRL3_CMD_CONFLICT	BIT(0)
 #define DWCMSHC_EMMC_CONTROL		0x2c
 /* HPE GSC SoC MSHCCS register */
 #define HPE_GSC_MSHCCS_SCGSYNCDIS	BIT(18)
+=======
+#define DWCMSHC_EMMC_CONTROL		0x2c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DWCMSHC_CARD_IS_EMMC		BIT(0)
 #define DWCMSHC_ENHANCED_STROBE		BIT(8)
 #define DWCMSHC_EMMC_ATCTRL		0x40
@@ -131,11 +135,17 @@
 #define PHY_CNFG_PHY_PWRGOOD_MASK	BIT_MASK(1) /* bit [1] */
 #define PHY_CNFG_PAD_SP_MASK		GENMASK(19, 16) /* bits [19:16] */
 #define PHY_CNFG_PAD_SP			0x0c /* PMOS TX drive strength */
+<<<<<<< HEAD
 #define PHY_CNFG_PAD_SP_k230		0x09 /* PMOS TX drive strength for k230 */
 #define PHY_CNFG_PAD_SP_SG2042		0x09 /* PMOS TX drive strength for SG2042 */
 #define PHY_CNFG_PAD_SN_MASK		GENMASK(23, 20) /* bits [23:20] */
 #define PHY_CNFG_PAD_SN			0x0c /* NMOS TX drive strength */
 #define PHY_CNFG_PAD_SN_k230		0x08 /* NMOS TX drive strength for k230 */
+=======
+#define PHY_CNFG_PAD_SP_SG2042		0x09 /* PMOS TX drive strength for SG2042 */
+#define PHY_CNFG_PAD_SN_MASK		GENMASK(23, 20) /* bits [23:20] */
+#define PHY_CNFG_PAD_SN			0x0c /* NMOS TX drive strength */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PHY_CNFG_PAD_SN_SG2042		0x08 /* NMOS TX drive strength for SG2042 */
 
 /* PHY command/response pad settings */
@@ -158,12 +168,16 @@
 #define PHY_PAD_RXSEL_3V3		0x2 /* Receiver type select for 3.3V */
 
 #define PHY_PAD_WEAKPULL_MASK		GENMASK(4, 3) /* bits [4:3] */
+<<<<<<< HEAD
 #define PHY_PAD_WEAKPULL_DISABLED	0x0 /* Weak pull up and pull down disabled */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PHY_PAD_WEAKPULL_PULLUP		0x1 /* Weak pull up enabled */
 #define PHY_PAD_WEAKPULL_PULLDOWN	0x2 /* Weak pull down enabled */
 
 #define PHY_PAD_TXSLEW_CTRL_P_MASK	GENMASK(8, 5) /* bits [8:5] */
 #define PHY_PAD_TXSLEW_CTRL_P		0x3 /* Slew control for P-Type pad TX */
+<<<<<<< HEAD
 #define PHY_PAD_TXSLEW_CTRL_P_k230	0x2 /* Slew control for P-Type pad TX for k230 */
 #define PHY_PAD_TXSLEW_CTRL_N_MASK	GENMASK(12, 9) /* bits [12:9] */
 #define PHY_PAD_TXSLEW_CTRL_N		0x3 /* Slew control for N-Type pad TX */
@@ -173,6 +187,11 @@
 /* PHY Common DelayLine config settings */
 #define PHY_COMMDL_CNFG			(DWC_MSHC_PTR_PHY_R + 0x1c)
 #define PHY_COMMDL_CNFG_DLSTEP_SEL	BIT(0) /* DelayLine outputs on PAD enabled */
+=======
+#define PHY_PAD_TXSLEW_CTRL_N_MASK	GENMASK(12, 9) /* bits [12:9] */
+#define PHY_PAD_TXSLEW_CTRL_N		0x3 /* Slew control for N-Type pad TX */
+#define PHY_PAD_TXSLEW_CTRL_N_SG2042	0x2 /* Slew control for N-Type pad TX for SG2042 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* PHY CLK delay line settings */
 #define PHY_SDCLKDL_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x1d)
@@ -186,10 +205,14 @@
 #define PHY_SDCLKDL_DC_HS400		0x18 /* delay code for HS400 mode */
 
 #define PHY_SMPLDL_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x20)
+<<<<<<< HEAD
 #define PHY_SMPLDL_CNFG_EXTDLY_EN	BIT(0)
 #define PHY_SMPLDL_CNFG_BYPASS_EN	BIT(1)
 #define PHY_SMPLDL_CNFG_INPSEL_MASK	GENMASK(3, 2) /* bits [3:2] */
 #define PHY_SMPLDL_CNFG_INPSEL		0x3 /* delay line input source */
+=======
+#define PHY_SMPLDL_CNFG_BYPASS_EN	BIT(1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* PHY drift_cclk_rx delay line configuration setting */
 #define PHY_ATDL_CNFG_R			(DWC_MSHC_PTR_PHY_R + 0x21)
@@ -239,6 +262,7 @@
 					 SDHCI_TRNS_BLK_CNT_EN | \
 					 SDHCI_TRNS_DMA)
 
+<<<<<<< HEAD
 #define to_pltfm_data(priv, name) \
 	container_of((priv)->dwcmshc_pdata, struct name##_pltfm_data, dwcmshc_pdata)
 
@@ -253,6 +277,11 @@
 #define SD1_HOST_REG_VOL_STABLE		BIT(0)
 #define SD1_CARD_WRITE_PROT		BIT(2)
 
+=======
+/* SMC call for BlueField-3 eMMC RST_N */
+#define BLUEFIELD_SMC_SET_EMMC_RST_N	0x82000007
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Eswin specific Registers */
 #define EIC7700_CARD_CLK_STABLE		BIT(28)
 #define EIC7700_INT_BCLK_STABLE		BIT(16)
@@ -278,8 +307,19 @@
 #define PHY_DELAY_CODE_EMMC		0x17
 #define PHY_DELAY_CODE_SD		0x55
 
+<<<<<<< HEAD
 struct rk35xx_priv {
 	struct reset_control *reset;
+=======
+enum dwcmshc_rk_type {
+	DWCMSHC_RK3568,
+	DWCMSHC_RK3588,
+};
+
+struct rk35xx_priv {
+	struct reset_control *reset;
+	enum dwcmshc_rk_type devtype;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 txclk_tapnum;
 };
 
@@ -288,11 +328,14 @@ struct eic7700_priv {
 	unsigned int drive_impedance;
 };
 
+<<<<<<< HEAD
 struct k230_priv  {
 	/* Canaan k230 specific */
 	struct regmap *hi_sys_regmap;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DWCMSHC_MAX_OTHER_CLKS 3
 
 struct dwcmshc_priv {
@@ -303,7 +346,10 @@ struct dwcmshc_priv {
 	int num_other_clks;
 	struct clk_bulk_data other_clks[DWCMSHC_MAX_OTHER_CLKS];
 
+<<<<<<< HEAD
 	const struct dwcmshc_pltfm_data *dwcmshc_pdata;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *priv; /* pointer to SoC private stuff */
 	u16 delay_line;
 	u16 flags;
@@ -316,6 +362,7 @@ struct dwcmshc_pltfm_data {
 	void (*postinit)(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv);
 };
 
+<<<<<<< HEAD
 struct k230_pltfm_data {
 	struct dwcmshc_pltfm_data dwcmshc_pdata;
 	bool is_emmc;
@@ -334,6 +381,8 @@ struct rockchip_pltfm_data {
 	int revision;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dwcmshc_enable_card_clk(struct sdhci_host *host)
 {
 	u16 ctrl;
@@ -753,7 +802,10 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct dwcmshc_priv *dwc_priv = sdhci_pltfm_priv(pltfm_host);
 	struct rk35xx_priv *priv = dwc_priv->priv;
+<<<<<<< HEAD
 	const struct rockchip_pltfm_data *rockchip_pdata = to_pltfm_data(dwc_priv, rockchip);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
 	u32 extra, reg;
 	int err;
@@ -824,7 +876,11 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
 	 * we must set it in higher speed mode.
 	 */
 	extra = DWCMSHC_EMMC_DLL_DLYENA;
+<<<<<<< HEAD
 	if (rockchip_pdata->revision == 0)
+=======
+	if (priv->devtype == DWCMSHC_RK3568)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		extra |= DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
 	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_RXCLK);
 
@@ -850,7 +906,11 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
 	    host->mmc->ios.timing == MMC_TIMING_MMC_HS400)
 		txclk_tapnum = priv->txclk_tapnum;
 
+<<<<<<< HEAD
 	if (rockchip_pdata->revision == 1 && host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
+=======
+	if ((priv->devtype == DWCMSHC_RK3588) && host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		txclk_tapnum = DLL_TXCLK_TAPNUM_90_DEGREES;
 
 		extra = DLL_CMDOUT_SRC_CLK_NEG |
@@ -916,6 +976,14 @@ static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
 	if (!priv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	if (of_device_is_compatible(dev->of_node, "rockchip,rk3588-dwcmshc"))
+		priv->devtype = DWCMSHC_RK3588;
+	else
+		priv->devtype = DWCMSHC_RK3568;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	priv->reset = devm_reset_control_array_get_optional_exclusive(mmc_dev(host->mmc));
 	if (IS_ERR(priv->reset)) {
 		err = PTR_ERR(priv->reset);
@@ -1298,6 +1366,7 @@ static int sg2042_init(struct device *dev, struct sdhci_host *host,
 					     ARRAY_SIZE(clk_ids), clk_ids);
 }
 
+<<<<<<< HEAD
 /*
  * HPE GSC-specific vendor configuration: disable command conflict check
  * and program Auto-Tuning Control register.
@@ -1418,6 +1487,8 @@ static int dwcmshc_hpe_gsc_init(struct device *dev, struct sdhci_host *host,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdhci_eic7700_set_clock(struct sdhci_host *host, unsigned int clock)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -1829,6 +1900,7 @@ static int eic7700_init(struct device *dev, struct sdhci_host *host, struct dwcm
 	return 0;
 }
 
+<<<<<<< HEAD
 static void dwcmshc_k230_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
 {
 	u16 clk;
@@ -2004,6 +2076,8 @@ static int dwcmshc_k230_init(struct device *dev, struct sdhci_host *host,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct sdhci_ops sdhci_dwcmshc_ops = {
 	.set_clock		= sdhci_set_clock,
 	.set_bus_width		= sdhci_set_bus_width,
@@ -2091,6 +2165,7 @@ static const struct sdhci_ops sdhci_dwcmshc_eic7700_ops = {
 	.platform_execute_tuning = sdhci_eic7700_executing_tuning,
 };
 
+<<<<<<< HEAD
 static const struct sdhci_ops sdhci_dwcmshc_k230_ops = {
 	.set_clock = dwcmshc_k230_sdhci_set_clock,
 	.set_bus_width = sdhci_set_bus_width,
@@ -2100,6 +2175,8 @@ static const struct sdhci_ops sdhci_dwcmshc_k230_ops = {
 	.adma_write_desc = dwcmshc_adma_write_desc,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dwcmshc_pltfm_data sdhci_dwcmshc_pdata = {
 	.pdata = {
 		.ops = &sdhci_dwcmshc_ops,
@@ -2128,6 +2205,7 @@ static const struct cqhci_host_ops rk35xx_cqhci_ops = {
 	.set_tran_desc	= dwcmshc_set_tran_desc,
 };
 
+<<<<<<< HEAD
 static const struct rockchip_pltfm_data sdhci_dwcmshc_rk3568_pdata = {
 	.dwcmshc_pdata = {
 		.pdata = {
@@ -2174,6 +2252,32 @@ static const struct rockchip_pltfm_data sdhci_dwcmshc_rk3588_pdata = {
 		.postinit = dwcmshc_rk35xx_postinit,
 	},
 	.revision = 1,
+=======
+static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk35xx_pdata = {
+	.pdata = {
+		.ops = &sdhci_dwcmshc_rk35xx_ops,
+		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
+			  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
+		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+			   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
+	},
+	.cqhci_host_ops = &rk35xx_cqhci_ops,
+	.init = dwcmshc_rk35xx_init,
+	.postinit = dwcmshc_rk35xx_postinit,
+};
+
+static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk3576_pdata = {
+	.pdata = {
+		.ops = &sdhci_dwcmshc_rk35xx_ops,
+		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
+			  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
+		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+			   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
+	},
+	.cqhci_host_ops = &rk35xx_cqhci_ops,
+	.init = dwcmshc_rk35xx_init,
+	.postinit = dwcmshc_rk3576_postinit,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct dwcmshc_pltfm_data sdhci_dwcmshc_th1520_pdata = {
@@ -2213,6 +2317,7 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_eic7700_pdata = {
 	.init = eic7700_init,
 };
 
+<<<<<<< HEAD
 static const struct k230_pltfm_data k230_emmc_data = {
 	.dwcmshc_pdata = {
 		.pdata = {
@@ -2262,6 +2367,8 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_hpe_gsc_pdata = {
 	.init = dwcmshc_hpe_gsc_init,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct cqhci_host_ops dwcmshc_cqhci_ops = {
 	.enable		= dwcmshc_sdhci_cqe_enable,
 	.disable	= sdhci_cqe_disable,
@@ -2335,6 +2442,7 @@ dsbl_cqe_caps:
 
 static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	{
+<<<<<<< HEAD
 		.compatible = "canaan,k230-emmc",
 		.data = &k230_emmc_data.dwcmshc_pdata,
 	},
@@ -2345,6 +2453,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	{
 		.compatible = "rockchip,rk3588-dwcmshc",
 		.data = &sdhci_dwcmshc_rk3588_pdata,
+=======
+		.compatible = "rockchip,rk3588-dwcmshc",
+		.data = &sdhci_dwcmshc_rk35xx_pdata,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.compatible = "rockchip,rk3576-dwcmshc",
@@ -2352,7 +2464,11 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	},
 	{
 		.compatible = "rockchip,rk3568-dwcmshc",
+<<<<<<< HEAD
 		.data = &sdhci_dwcmshc_rk3568_pdata,
+=======
+		.data = &sdhci_dwcmshc_rk35xx_pdata,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.compatible = "snps,dwcmshc-sdhci",
@@ -2378,10 +2494,13 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 		.compatible = "eswin,eic7700-dwcmshc",
 		.data = &sdhci_dwcmshc_eic7700_pdata,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "hpe,gsc-dwcmshc",
 		.data = &sdhci_dwcmshc_hpe_gsc_pdata,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
@@ -2428,7 +2547,10 @@ static int dwcmshc_probe(struct platform_device *pdev)
 
 	pltfm_host = sdhci_priv(host);
 	priv = sdhci_pltfm_priv(pltfm_host);
+<<<<<<< HEAD
 	priv->dwcmshc_pdata = pltfm_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dev->of_node) {
 		pltfm_host->clk = devm_clk_get(dev, "core");

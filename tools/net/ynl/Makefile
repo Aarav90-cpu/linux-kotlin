@@ -14,12 +14,21 @@ includedir ?= $(prefix)/include
 
 SPECDIR=../../../Documentation/netlink/specs
 
+<<<<<<< HEAD
 SUBDIRS = lib generated ynltool tests
 
 all: $(SUBDIRS) libynl.a
 
 tests: | lib generated libynl.a
 ynltool: | lib generated libynl.a
+=======
+SUBDIRS = lib generated samples ynltool tests
+
+all: $(SUBDIRS) libynl.a
+
+ynltool: | lib generated libynl.a
+samples: | lib generated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 libynl.a: | lib generated
 	@echo -e "\tAR $@"
 	@ar rcs $@ lib/ynl.o generated/*-user.o

@@ -209,6 +209,13 @@
 #define pgd_ERROR(e) \
 	printk("%s:%d: bad pgd entry %08lx.\n", __FILE__, __LINE__, pgd_val(e))
 
+<<<<<<< HEAD
+=======
+extern unsigned long empty_zero_page[1024];
+
+#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MMU
 extern pgd_t swapper_pg_dir[PAGE_SIZE/sizeof(pgd_t)];
 extern void paging_init(void);
@@ -304,6 +311,7 @@ set_pmd(pmd_t *pmdp, pmd_t pmdval)
 
 struct vm_area_struct;
 
+<<<<<<< HEAD
 static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep)
 {
@@ -312,6 +320,17 @@ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		return false;
 	update_pte(ptep, pte_mkold(pte));
 	return true;
+=======
+static inline int
+ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned long addr,
+			  pte_t *ptep)
+{
+	pte_t pte = *ptep;
+	if (!pte_young(pte))
+		return 0;
+	update_pte(ptep, pte_mkold(pte));
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline pte_t

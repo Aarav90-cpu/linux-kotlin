@@ -1031,7 +1031,11 @@ void ntfs_get_wsl_perm(struct inode *inode)
 		i_gid_write(inode, (gid_t)le32_to_cpu(value[1]));
 		inode->i_mode = le32_to_cpu(value[2]);
 
+<<<<<<< HEAD
 		if (ntfs_get_ea(inode, "$LXDEV", sizeof("$LXDEV") - 1,
+=======
+		if (ntfs_get_ea(inode, "$LXDEV", sizeof("$$LXDEV") - 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				&value[0], sizeof(value),
 				&sz) == sizeof(value[0])) {
 			inode->i_rdev = le32_to_cpu(value[0]);

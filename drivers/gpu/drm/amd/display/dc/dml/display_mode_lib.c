@@ -162,7 +162,10 @@ void dml_log_pipe_params(
 		display_e2e_pipe_params_st *pipes,
 		int pipe_cnt)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	display_pipe_source_params_st *pipe_src;
 	display_pipe_dest_params_st   *pipe_dest;
 	scaler_ratio_depth_st         *scale_ratio_depth;

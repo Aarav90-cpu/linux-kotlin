@@ -53,10 +53,18 @@ static void dw_mci_starfive_set_sample_phase(struct dw_mci *host, u32 smpl_phase
 	mdelay(1);
 }
 
+<<<<<<< HEAD
 static int dw_mci_starfive_execute_tuning(struct dw_mci *host,
 					     u32 opcode)
 {
 	static const int grade  = MAX_DELAY_CHAIN;
+=======
+static int dw_mci_starfive_execute_tuning(struct dw_mci_slot *slot,
+					     u32 opcode)
+{
+	static const int grade  = MAX_DELAY_CHAIN;
+	struct dw_mci *host = slot->host;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int smpl_phase, smpl_raise = -1, smpl_fall = -1;
 	int ret;
 
@@ -64,7 +72,11 @@ static int dw_mci_starfive_execute_tuning(struct dw_mci *host,
 		dw_mci_starfive_set_sample_phase(host, smpl_phase);
 		mci_writel(host, RINTSTS, ALL_INT_CLR);
 
+<<<<<<< HEAD
 		ret = mmc_send_tuning(host->mmc, opcode, NULL);
+=======
+		ret = mmc_send_tuning(slot->mmc, opcode, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!ret && smpl_raise < 0) {
 			smpl_raise = smpl_phase;

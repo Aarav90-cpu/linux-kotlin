@@ -79,6 +79,26 @@ static bool udp_manip_pkt(struct sk_buff *skb,
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+static bool udplite_manip_pkt(struct sk_buff *skb,
+			      unsigned int iphdroff, unsigned int hdroff,
+			      const struct nf_conntrack_tuple *tuple,
+			      enum nf_nat_manip_type maniptype)
+{
+#ifdef CONFIG_NF_CT_PROTO_UDPLITE
+	struct udphdr *hdr;
+
+	if (skb_ensure_writable(skb, hdroff + sizeof(*hdr)))
+		return false;
+
+	hdr = (struct udphdr *)(skb->data + hdroff);
+	__udp_manip_pkt(skb, iphdroff, hdr, tuple, maniptype, true);
+#endif
+	return true;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool
 sctp_manip_pkt(struct sk_buff *skb,
 	       unsigned int iphdroff, unsigned int hdroff,
@@ -270,6 +290,12 @@ static bool l4proto_manip_pkt(struct sk_buff *skb,
 	case IPPROTO_UDP:
 		return udp_manip_pkt(skb, iphdroff, hdroff,
 				     tuple, maniptype);
+<<<<<<< HEAD
+=======
+	case IPPROTO_UDPLITE:
+		return udplite_manip_pkt(skb, iphdroff, hdroff,
+					 tuple, maniptype);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IPPROTO_SCTP:
 		return sctp_manip_pkt(skb, iphdroff, hdroff,
 				      tuple, maniptype);

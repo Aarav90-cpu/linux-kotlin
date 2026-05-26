@@ -247,7 +247,10 @@ static void igorplugusb_disconnect(struct usb_interface *intf)
 	usb_set_intfdata(intf, NULL);
 	usb_unpoison_urb(ir->urb);
 	usb_free_urb(ir->urb);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ir->buf_in);
 	kfree(ir->request);
 }

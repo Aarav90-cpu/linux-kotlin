@@ -6,7 +6,11 @@
  * RISC-V implements return to user-space through an xRET instruction,
  * which is not core serializing.
  */
+<<<<<<< HEAD
 static inline void sync_core_before_usermode(void)
+=======
+static __always_inline void sync_core_before_usermode(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	asm volatile ("fence.i" ::: "memory");
 }

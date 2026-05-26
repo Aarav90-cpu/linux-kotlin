@@ -84,12 +84,15 @@ properties:
               - altr,socfpga-stratix10-swvp
           - const: altr,socfpga-stratix10
 
+<<<<<<< HEAD
       - description: Stratix 10 SoCDK eMMC variant
         items:
           - const: altr,socfpga-stratix10-socdk-emmc
           - const: altr,socfpga-stratix10-socdk
           - const: altr,socfpga-stratix10
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: AgileX boards
         items:
           - enum:
@@ -111,7 +114,10 @@ properties:
           - enum:
               - intel,socfpga-agilex5-socdk
               - intel,socfpga-agilex5-socdk-013b
+<<<<<<< HEAD
               - intel,socfpga-agilex5-socdk-modular
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - intel,socfpga-agilex5-socdk-nand
           - const: intel,socfpga-agilex5
 

@@ -56,7 +56,11 @@ static bool ksmbd_ipc_validate_version(struct genl_info *m)
 struct ksmbd_ipc_msg {
 	unsigned int		type;
 	unsigned int		sz;
+<<<<<<< HEAD
 	unsigned char		payload[] __counted_by(sz);
+=======
+	unsigned char		payload[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ipc_msg_table_entry {
@@ -243,8 +247,14 @@ static void ipc_update_last_active(void)
 static struct ksmbd_ipc_msg *ipc_msg_alloc(size_t sz)
 {
 	struct ksmbd_ipc_msg *msg;
+<<<<<<< HEAD
 
 	msg = kvzalloc_flex(*msg, payload, sz, KSMBD_DEFAULT_GFP);
+=======
+	size_t msg_sz = sz + sizeof(struct ksmbd_ipc_msg);
+
+	msg = kvzalloc(msg_sz, KSMBD_DEFAULT_GFP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (msg)
 		msg->sz = sz;
 	return msg;

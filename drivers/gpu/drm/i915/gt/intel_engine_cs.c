@@ -1233,7 +1233,11 @@ static int intel_engine_init_tlb_invalidation(struct intel_engine_cs *engine)
 	     engine->class == VIDEO_ENHANCEMENT_CLASS ||
 	     engine->class == COMPUTE_CLASS ||
 	     engine->class == OTHER_CLASS))
+<<<<<<< HEAD
 		engine->tlb_inv.request = REG_MASKED_FIELD_ENABLE(val);
+=======
+		engine->tlb_inv.request = _MASKED_BIT_ENABLE(val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		engine->tlb_inv.request = val;
 
@@ -1628,7 +1632,11 @@ static int __intel_engine_stop_cs(struct intel_engine_cs *engine,
 	const i915_reg_t mode = RING_MI_MODE(engine->mmio_base);
 	int err;
 
+<<<<<<< HEAD
 	intel_uncore_write_fw(uncore, mode, REG_MASKED_FIELD_ENABLE(STOP_RING));
+=======
+	intel_uncore_write_fw(uncore, mode, _MASKED_BIT_ENABLE(STOP_RING));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Wa_22011802037: Prior to doing a reset, ensure CS is
@@ -1636,7 +1644,11 @@ static int __intel_engine_stop_cs(struct intel_engine_cs *engine,
 	 */
 	if (intel_engine_reset_needs_wa_22011802037(engine->gt))
 		intel_uncore_write_fw(uncore, RING_MODE_GEN7(engine->mmio_base),
+<<<<<<< HEAD
 				      REG_MASKED_FIELD_ENABLE(GEN12_GFX_PREFETCH_DISABLE));
+=======
+				      _MASKED_BIT_ENABLE(GEN12_GFX_PREFETCH_DISABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = __intel_wait_for_register_fw(engine->uncore, mode,
 					   MODE_IDLE, MODE_IDLE,
@@ -1692,7 +1704,11 @@ void intel_engine_cancel_stop_cs(struct intel_engine_cs *engine)
 {
 	ENGINE_TRACE(engine, "\n");
 
+<<<<<<< HEAD
 	ENGINE_WRITE_FW(engine, RING_MI_MODE, REG_MASKED_FIELD_DISABLE(STOP_RING));
+=======
+	ENGINE_WRITE_FW(engine, RING_MI_MODE, _MASKED_BIT_DISABLE(STOP_RING));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 __cs_pending_mi_force_wakes(struct intel_engine_cs *engine)
@@ -2552,7 +2568,11 @@ void xehp_enable_ccs_engines(struct intel_engine_cs *engine)
 		return;
 
 	intel_uncore_write(engine->uncore, GEN12_RCU_MODE,
+<<<<<<< HEAD
 			   REG_MASKED_FIELD_ENABLE(GEN12_RCU_MODE_CCS_ENABLE));
+=======
+			   _MASKED_BIT_ENABLE(GEN12_RCU_MODE_CCS_ENABLE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #if IS_ENABLED(CONFIG_DRM_I915_SELFTEST)

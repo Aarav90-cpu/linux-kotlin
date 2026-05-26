@@ -876,10 +876,14 @@ dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
 
 	if (WARN_ON(!ops) ||
 	    WARN_ON(!ops->state_on_dpll_get) ||
+<<<<<<< HEAD
 	    WARN_ON(!ops->direction_get) ||
 	    WARN_ON(ops->measured_freq_get &&
 		    (!dpll_device_ops(dpll)->freq_monitor_get ||
 		     !dpll_device_ops(dpll)->freq_monitor_set)))
+=======
+	    WARN_ON(!ops->direction_get))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	mutex_lock(&dpll_lock);

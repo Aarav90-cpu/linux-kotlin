@@ -293,6 +293,7 @@ struct kernel_config_option {
 int read_kernel_config(const struct kernel_config_option *requested_options,
 		       size_t num_options, char **out_values,
 		       const char *define_prefix);
+<<<<<<< HEAD
 #ifndef BPFTOOL_WITHOUT_CRYPTO
 int bpftool_prog_sign(struct bpf_load_and_run_opts *opts);
 __u32 register_session_key(const char *key_der_path);
@@ -309,4 +310,8 @@ static inline __u32 register_session_key(const char *key_der_path)
 	return -1;
 }
 #endif
+=======
+int bpftool_prog_sign(struct bpf_load_and_run_opts *opts);
+__u32 register_session_key(const char *key_der_path);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

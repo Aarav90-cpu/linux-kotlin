@@ -8,7 +8,10 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/overflow.h>
@@ -357,15 +360,29 @@ static int adxl313_read_axis(struct adxl313_data *data,
 {
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&data->lock);
+=======
+	mutex_lock(&data->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = regmap_bulk_read(data->regmap,
 			       ADXL313_REG_DATA_AXIS(chan->address),
 			       &data->transf_buf, sizeof(data->transf_buf));
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	return le16_to_cpu(data->transf_buf);
+=======
+		goto unlock_ret;
+
+	ret = le16_to_cpu(data->transf_buf);
+
+unlock_ret:
+	mutex_unlock(&data->lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int adxl313_read_freq_avail(struct iio_dev *indio_dev,

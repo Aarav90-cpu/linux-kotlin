@@ -591,6 +591,10 @@ static struct clk_regmap_div mdss_1_disp_cc_mdss_byte0_div_clk_src = {
 			&mdss_1_disp_cc_mdss_byte0_clk_src.clkr.hw,
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
+=======
+		.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ops = &clk_regmap_div_ops,
 	},
 };
@@ -605,6 +609,10 @@ static struct clk_regmap_div mdss_1_disp_cc_mdss_byte1_div_clk_src = {
 			&mdss_1_disp_cc_mdss_byte1_clk_src.clkr.hw,
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
+=======
+		.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ops = &clk_regmap_div_ops,
 	},
 };

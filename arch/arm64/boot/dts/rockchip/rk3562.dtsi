@@ -1093,6 +1093,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		otp: efuse@ff930000 {
 			compatible = "rockchip,rk3562-otp";
 			reg = <0x0 0xff930000 0x0 0x4000>;
@@ -1139,6 +1140,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmac: dma-controller@ff990000 {
 			compatible = "arm,pl330", "arm,primecell";
 			reg = <0x0 0xff990000 0x0 0x4000>;

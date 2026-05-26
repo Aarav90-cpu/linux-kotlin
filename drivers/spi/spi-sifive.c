@@ -312,8 +312,12 @@ static int sifive_spi_probe(struct platform_device *pdev)
 		goto put_host;
 	}
 
+<<<<<<< HEAD
 	/* Spin up the bus clock before hitting registers */
 	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+=======
+	spi->clk = devm_clk_get(&pdev->dev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(spi->clk)) {
 		dev_err(&pdev->dev, "Unable to find bus clock\n");
 		ret = PTR_ERR(spi->clk);
@@ -343,6 +347,16 @@ static int sifive_spi_probe(struct platform_device *pdev)
 		goto put_host;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Spin up the bus clock before hitting registers */
+	ret = clk_prepare_enable(spi->clk);
+	if (ret) {
+		dev_err(&pdev->dev, "Unable to enable bus clock\n");
+		goto put_host;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* probe the number of CS lines */
 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
@@ -351,14 +365,22 @@ static int sifive_spi_probe(struct platform_device *pdev)
 	if (!cs_bits) {
 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto put_host;
+=======
+		goto disable_clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	num_cs = ilog2(cs_bits) + 1;
 	if (num_cs > SIFIVE_SPI_MAX_CS) {
 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto put_host;
+=======
+		goto disable_clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Define our host */
@@ -386,20 +408,36 @@ static int sifive_spi_probe(struct platform_device *pdev)
 			       dev_name(&pdev->dev), spi);
 	if (ret) {
 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+<<<<<<< HEAD
 		goto put_host;
+=======
+		goto disable_clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
 		 irq, host->num_chipselect);
 
+<<<<<<< HEAD
 	ret = spi_register_controller(host);
 	if (ret < 0) {
 		dev_err(&pdev->dev, "spi_register_host failed\n");
 		goto put_host;
+=======
+	ret = devm_spi_register_controller(&pdev->dev, host);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "spi_register_host failed\n");
+		goto disable_clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+disable_clk:
+	clk_disable_unprepare(spi->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 put_host:
 	spi_controller_put(host);
 
@@ -411,6 +449,7 @@ static void sifive_spi_remove(struct platform_device *pdev)
 	struct spi_controller *host = platform_get_drvdata(pdev);
 	struct sifive_spi *spi = spi_controller_get_devdata(host);
 
+<<<<<<< HEAD
 	spi_controller_get(host);
 
 	spi_unregister_controller(host);
@@ -419,6 +458,11 @@ static void sifive_spi_remove(struct platform_device *pdev)
 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
 
 	spi_controller_put(host);
+=======
+	/* Disable all the interrupts just in case */
+	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+	clk_disable_unprepare(spi->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int sifive_spi_suspend(struct device *dev)

@@ -220,7 +220,11 @@ cgroup v2 currently supports the following mount options.
   memory_hugetlb_accounting
         Count HugeTLB memory usage towards the cgroup's overall
         memory usage for the memory controller (for the purpose of
+<<<<<<< HEAD
         statistics reporting and memory protection). This is a new
+=======
+        statistics reporting and memory protetion). This is a new
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         behavior that could regress existing setups, so it must be
         explicitly opted in with this mount option.
 
@@ -1734,11 +1738,14 @@ The following nested keys are defined.
 	  zswpwb
 		Number of pages written from zswap to swap.
 
+<<<<<<< HEAD
 	  zswap_incomp
 		Number of incompressible pages currently stored in zswap
 		without compression. These pages could not be compressed to
 		a size smaller than PAGE_SIZE, so they are stored as-is.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  thp_fault_alloc (npn)
 		Number of transparent hugepages which were allocated to satisfy
 		a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE

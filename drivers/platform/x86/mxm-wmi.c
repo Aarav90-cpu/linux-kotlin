@@ -80,3 +80,18 @@ bool mxm_wmi_supported(void)
 	return guid_valid;
 }
 EXPORT_SYMBOL_GPL(mxm_wmi_supported);
+<<<<<<< HEAD
+=======
+
+static int __init mxm_wmi_init(void)
+{
+	return 0;
+}
+
+static void __exit mxm_wmi_exit(void)
+{
+}
+
+module_init(mxm_wmi_init);
+module_exit(mxm_wmi_exit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

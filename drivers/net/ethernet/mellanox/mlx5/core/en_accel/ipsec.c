@@ -36,6 +36,10 @@
 #include <linux/inetdevice.h>
 #include <linux/netdevice.h>
 #include <net/netevent.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "en.h"
 #include "eswitch.h"

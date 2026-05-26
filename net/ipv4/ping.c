@@ -56,6 +56,10 @@ struct ping_table {
 
 static struct ping_table ping_table;
 struct pingv6_ops pingv6_ops;
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(pingv6_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline u32 ping_hashfn(const struct net *net, u32 num, u32 mask)
 {
@@ -138,6 +142,10 @@ fail:
 	spin_unlock(&ping_table.lock);
 	return -EADDRINUSE;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_get_port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void ping_unhash(struct sock *sk)
 {
@@ -152,6 +160,10 @@ void ping_unhash(struct sock *sk)
 	}
 	spin_unlock(&ping_table.lock);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_unhash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Called under rcu_read_lock() */
 static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
@@ -275,6 +287,10 @@ out_release_group:
 	put_group_info(group_info);
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_init_sock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void ping_close(struct sock *sk, long timeout)
 {
@@ -284,6 +300,10 @@ void ping_close(struct sock *sk, long timeout)
 
 	sk_common_release(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_close);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int ping_pre_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
 			    int addr_len)
@@ -463,6 +483,10 @@ out:
 	pr_debug("ping_v4_bind -> %d\n", err);
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_bind);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Is this a supported type of ICMP message?
@@ -595,6 +619,10 @@ void ping_err(struct sk_buff *skb, int offset, u32 info)
 out:
 	return;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *	Copy and checksum an ICMP Echo packet from user space into a buffer
@@ -624,6 +652,10 @@ int ping_getfrag(void *from, char *to,
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_getfrag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int ping_v4_push_pending_frames(struct sock *sk, struct pingfakehdr *pfh,
 				       struct flowi4 *fl4)
@@ -684,6 +716,10 @@ int ping_common_sendmsg(int family, struct msghdr *msg, size_t len,
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_common_sendmsg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int ping_v4_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 {
@@ -839,7 +875,12 @@ do_confirm:
 	goto out;
 }
 
+<<<<<<< HEAD
 int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
+=======
+int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
+		 int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inet_sock *isk = inet_sk(sk);
 	int family = sk->sk_family;
@@ -854,7 +895,11 @@ int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
 		goto out;
 
 	if (flags & MSG_ERRQUEUE)
+<<<<<<< HEAD
 		return inet_recv_error(sk, msg, len);
+=======
+		return inet_recv_error(sk, msg, len, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb = skb_recv_datagram(sk, flags, &err);
 	if (!skb)
@@ -882,7 +927,11 @@ int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
 			sin->sin_port = 0 /* skb->h.uh->source */;
 			sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 			memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 			msg->msg_namelen = sizeof(*sin);
+=======
+			*addr_len = sizeof(*sin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (inet_cmsg_flags(isk))
@@ -903,7 +952,11 @@ int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
 			sin6->sin6_scope_id =
 				ipv6_iface_scope_id(&sin6->sin6_addr,
 						    inet6_iif(skb));
+<<<<<<< HEAD
 			msg->msg_namelen = sizeof(*sin6);
+=======
+			*addr_len = sizeof(*sin6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (inet6_sk(sk)->rxopt.all)
@@ -927,6 +980,10 @@ out:
 	pr_debug("ping_recvmsg -> %d\n", err);
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_recvmsg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static enum skb_drop_reason __ping_queue_rcv_skb(struct sock *sk,
 						 struct sk_buff *skb)
@@ -935,8 +992,12 @@ static enum skb_drop_reason __ping_queue_rcv_skb(struct sock *sk,
 
 	pr_debug("ping_queue_rcv_skb(sk=%p,sk->num=%d,skb=%p)\n",
 		 inet_sk(sk), inet_sk(sk)->inet_num, skb);
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(sk, skb);
 	if (reason) {
+=======
+	if (sock_queue_rcv_skb_reason(sk, skb, &reason) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sk_skb_reason_drop(sk, skb, reason);
 		pr_debug("ping_queue_rcv_skb -> failed\n");
 		return reason;
@@ -948,6 +1009,10 @@ int ping_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 {
 	return __ping_queue_rcv_skb(sk, skb) ? -1 : 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_queue_rcv_skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 /*
@@ -975,6 +1040,10 @@ enum skb_drop_reason ping_rcv(struct sk_buff *skb)
 	kfree_skb_reason(skb, SKB_DROP_REASON_NO_SOCKET);
 	return SKB_DROP_REASON_NO_SOCKET;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_rcv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct proto ping_prot = {
 	.name =		"PING",
@@ -996,6 +1065,10 @@ struct proto ping_prot = {
 	.put_port =	ping_unhash,
 	.obj_size =	sizeof(struct inet_sock),
 };
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(ping_prot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PROC_FS
 
@@ -1060,6 +1133,10 @@ void *ping_seq_start(struct seq_file *seq, loff_t *pos, sa_family_t family)
 
 	return *pos ? ping_get_idx(seq, *pos-1) : SEQ_START_TOKEN;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_seq_start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void *ping_v4_seq_start(struct seq_file *seq, loff_t *pos)
 {
@@ -1078,12 +1155,20 @@ void *ping_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 	++*pos;
 	return sk;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_seq_next);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void ping_seq_stop(struct seq_file *seq, void *v)
 	__releases(ping_table.lock)
 {
 	spin_unlock(&ping_table.lock);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ping_seq_stop);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void ping_v4_format_sock(struct sock *sp, struct seq_file *f,
 		int bucket)
@@ -1095,7 +1180,11 @@ static void ping_v4_format_sock(struct sock *sp, struct seq_file *f,
 	__u16 srcp = ntohs(inet->inet_sport);
 
 	seq_printf(f, "%5d: %08X:%04X %08X:%04X"
+<<<<<<< HEAD
 		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u",
+=======
+		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bucket, src, srcp, dest, destp, sp->sk_state,
 		sk_wmem_alloc_get(sp),
 		sk_rmem_alloc_get(sp),

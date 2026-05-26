@@ -497,6 +497,7 @@ cleanup:
 	btf__free(btf2);
 }
 
+<<<<<<< HEAD
 static void test_btf_add_btf_split()
 {
 	struct btf *base = NULL, *split1 = NULL, *split2 = NULL;
@@ -606,12 +607,17 @@ cleanup:
 	btf__free(base);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void test_btf_write()
 {
 	if (test__start_subtest("btf_add"))
 		test_btf_add();
 	if (test__start_subtest("btf_add_btf"))
 		test_btf_add_btf();
+<<<<<<< HEAD
 	if (test__start_subtest("btf_add_btf_split"))
 		test_btf_add_btf_split();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

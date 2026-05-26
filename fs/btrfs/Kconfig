@@ -112,6 +112,11 @@ config BTRFS_EXPERIMENTAL
 
 	  - large folio and block size (> page size) support
 
+<<<<<<< HEAD
+=======
+	  - shutdown ioctl and auto-degradation support
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  - asynchronous checksum generation for data writes
 
 	  - remap-tree - logical address remapping tree

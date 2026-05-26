@@ -62,6 +62,7 @@ static ssize_t ad_aggregator_id_show(struct slave *slave, char *buf)
 	const struct aggregator *agg;
 
 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
+<<<<<<< HEAD
 		rcu_read_lock();
 		agg = rcu_dereference(SLAVE_AD_INFO(slave)->port.aggregator);
 		if (agg) {
@@ -71,6 +72,12 @@ static ssize_t ad_aggregator_id_show(struct slave *slave, char *buf)
 			return res;
 		}
 		rcu_read_unlock();
+=======
+		agg = SLAVE_AD_INFO(slave)->port.aggregator;
+		if (agg)
+			return sysfs_emit(buf, "%d\n",
+					  agg->aggregator_identifier);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return sysfs_emit(buf, "N/A\n");
@@ -83,7 +90,11 @@ static ssize_t ad_actor_oper_port_state_show(struct slave *slave, char *buf)
 
 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
 		ad_port = &SLAVE_AD_INFO(slave)->port;
+<<<<<<< HEAD
 		if (rcu_access_pointer(ad_port->aggregator))
+=======
+		if (ad_port->aggregator)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return sysfs_emit(buf, "%u\n",
 				       ad_port->actor_oper_port_state);
 	}
@@ -98,7 +109,11 @@ static ssize_t ad_partner_oper_port_state_show(struct slave *slave, char *buf)
 
 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
 		ad_port = &SLAVE_AD_INFO(slave)->port;
+<<<<<<< HEAD
 		if (rcu_access_pointer(ad_port->aggregator))
+=======
+		if (ad_port->aggregator)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return sysfs_emit(buf, "%u\n",
 				       ad_port->partner_oper.port_state);
 	}

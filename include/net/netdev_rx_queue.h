@@ -8,14 +8,21 @@
 #include <net/xdp.h>
 #include <net/page_pool/types.h>
 #include <net/netdev_queues.h>
+<<<<<<< HEAD
 #include <net/rps-types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* This structure contains an instance of an RX queue. */
 struct netdev_rx_queue {
 	struct xdp_rxq_info		xdp_rxq;
 #ifdef CONFIG_RPS
 	struct rps_map __rcu		*rps_map;
+<<<<<<< HEAD
 	rps_tag_ptr			rps_flow_table;
+=======
+	struct rps_dev_flow_table __rcu	*rps_flow_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	struct kobject			kobj;
 	const struct attribute_group	**groups;
@@ -31,6 +38,7 @@ struct netdev_rx_queue {
 	struct napi_struct		*napi;
 	struct netdev_queue_config	qcfg;
 	struct pp_memory_provider_params mp_params;
+<<<<<<< HEAD
 
 	/* If a queue is leased, then the lease pointer is always
 	 * valid. From the physical device it points to the virtual
@@ -39,6 +47,8 @@ struct netdev_rx_queue {
 	 */
 	struct netdev_rx_queue		*lease;
 	netdevice_tracker		lease_tracker;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } ____cacheline_aligned_in_smp;
 
 /*
@@ -67,6 +77,7 @@ get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
 	return index;
 }
 
+<<<<<<< HEAD
 enum netif_lease_dir {
 	NETIF_VIRT_TO_PHYS,
 	NETIF_PHYS_TO_VIRT,
@@ -82,3 +93,8 @@ void netdev_rx_queue_lease(struct netdev_rx_queue *rxq_dst,
 void netdev_rx_queue_unlease(struct netdev_rx_queue *rxq_dst,
 			     struct netdev_rx_queue *rxq_src);
 #endif /* _LINUX_NETDEV_RX_QUEUE_H */
+=======
+int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq);
+
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

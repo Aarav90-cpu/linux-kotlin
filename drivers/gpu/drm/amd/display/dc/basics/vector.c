@@ -56,7 +56,10 @@ static bool dal_vector_presized_costruct(struct vector *vector,
 					 void *initial_value,
 					 uint32_t struct_size)
 {
+<<<<<<< HEAD
 	(void)ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t i;
 
 	vector->container = NULL;

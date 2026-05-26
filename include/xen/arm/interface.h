@@ -30,7 +30,11 @@
 
 #define __HYPERVISOR_platform_op_raw __HYPERVISOR_platform_op
 
+<<<<<<< HEAD
 #ifndef __ASSEMBLER__
+=======
+#ifndef __ASSEMBLY__
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Explicitly size integers that represent pfns in the interface with
  * Xen so that we can have one ABI that works for 32 and 64 bit guests.
  * Note that this means that the xen_pfn_t type may be capable of

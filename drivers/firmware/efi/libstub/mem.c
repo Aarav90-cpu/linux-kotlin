@@ -124,6 +124,7 @@ void efi_free(unsigned long size, unsigned long addr)
 	nr_pages = round_up(size, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
 	efi_bs_call(free_pages, addr, nr_pages);
 }
+<<<<<<< HEAD
 
 /**
  * efi_low_alloc_above() - allocate pages at or above given address
@@ -206,3 +207,5 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
 
 	return EFI_SUCCESS;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

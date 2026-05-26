@@ -148,7 +148,11 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long ad
 
 /*
  * This is called early on, and isn't wrapped by
+<<<<<<< HEAD
  * ftrace_arch_code_modify_{prepare,post_process}() and therefore doesn't hold
+=======
+ * ftrace_arch_code_modify_{prepare,post_process}() and therefor doesn't hold
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * text_mutex, which triggers a lockdep failure.  SMP isn't running so we could
  * just directly poke the text, but it's simpler to just take the lock
  * ourselves.

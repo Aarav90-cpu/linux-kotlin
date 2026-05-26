@@ -20,14 +20,23 @@ void vnic_cq_free(struct vnic_cq *cq)
 	cq->ctrl = NULL;
 }
 
+<<<<<<< HEAD
 int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
 			    unsigned int index, unsigned int desc_count,
 			    unsigned int desc_size, unsigned int res_type)
+=======
+int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
+	unsigned int desc_count, unsigned int desc_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	cq->index = index;
 	cq->vdev = vdev;
 
+<<<<<<< HEAD
 	cq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+=======
+	cq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_CQ, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cq->ctrl) {
 		vdev_err(vdev, "Failed to hook CQ[%d] resource\n", index);
 		return -EINVAL;
@@ -36,6 +45,7 @@ int vnic_cq_alloc_with_type(struct vnic_dev *vdev, struct vnic_cq *cq,
 	return vnic_dev_alloc_desc_ring(vdev, &cq->ring, desc_count, desc_size);
 }
 
+<<<<<<< HEAD
 int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
 		  unsigned int desc_count, unsigned int desc_size)
 {
@@ -43,6 +53,8 @@ int vnic_cq_alloc(struct vnic_dev *vdev, struct vnic_cq *cq, unsigned int index,
 				       RES_TYPE_CQ);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vnic_cq_init(struct vnic_cq *cq, unsigned int flow_control_enable,
 	unsigned int color_enable, unsigned int cq_head, unsigned int cq_tail,
 	unsigned int cq_tail_color, unsigned int interrupt_enable,

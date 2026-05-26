@@ -1155,7 +1155,10 @@ static const struct target_core_fabric_ops loop_ops = {
 	.tfc_wwn_attrs			= tcm_loop_wwn_attrs,
 	.tfc_tpg_base_attrs		= tcm_loop_tpg_attrs,
 	.tfc_tpg_attrib_attrs		= tcm_loop_tpg_attrib_attrs,
+<<<<<<< HEAD
 	.default_compl_type		= TARGET_QUEUE_COMPL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_submit_type		= TARGET_QUEUE_SUBMIT,
 	.direct_submit_supp		= 0,
 };

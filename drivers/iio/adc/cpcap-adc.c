@@ -934,6 +934,7 @@ static const struct cpcap_adc_ato mapphone_adc = {
 	.atox_ps_factor_out = 0,
 };
 
+<<<<<<< HEAD
 static const struct cpcap_adc_ato mot_adc = {
 	.ato_in = 0x0300,
 	.atox_in = 0,
@@ -945,6 +946,8 @@ static const struct cpcap_adc_ato mot_adc = {
 	.atox_ps_factor_out = 0,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id cpcap_adc_id_table[] = {
 	{
 		.compatible = "motorola,cpcap-adc",
@@ -953,10 +956,13 @@ static const struct of_device_id cpcap_adc_id_table[] = {
 		.compatible = "motorola,mapphone-cpcap-adc",
 		.data = &mapphone_adc,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "motorola,mot-cpcap-adc",
 		.data = &mot_adc,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, cpcap_adc_id_table);

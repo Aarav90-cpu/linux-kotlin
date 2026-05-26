@@ -55,6 +55,11 @@ struct bdi_writeback;
 struct bio;
 struct io_comp_batch;
 struct fiemap_extent_info;
+<<<<<<< HEAD
+=======
+struct hd_geometry;
+struct iovec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct kiocb;
 struct kobject;
 struct pipe_inode_info;
@@ -443,6 +448,7 @@ struct address_space_operations {
 
 extern const struct address_space_operations empty_aops;
 
+<<<<<<< HEAD
 /* Structure for tracking metadata buffer heads associated with the mapping */
 struct mapping_metadata_bhs {
 	struct address_space *mapping;	/* Mapping bhs are associated with */
@@ -450,6 +456,8 @@ struct mapping_metadata_bhs {
 	struct list_head list;	/* The list of bhs (b_assoc_buffers) */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct address_space - Contents of a cacheable, mappable object.
  * @host: Owner, either the inode or the block_device.
@@ -469,6 +477,11 @@ struct mapping_metadata_bhs {
  * @flags: Error bits and flags (AS_*).
  * @wb_err: The most recent error which has occurred.
  * @i_private_lock: For use by the owner of the address_space.
+<<<<<<< HEAD
+=======
+ * @i_private_list: For use by the owner of the address_space.
+ * @i_private_data: For use by the owner of the address_space.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct address_space {
 	struct inode		*host;
@@ -487,7 +500,13 @@ struct address_space {
 	unsigned long		flags;
 	errseq_t		wb_err;
 	spinlock_t		i_private_lock;
+<<<<<<< HEAD
 	struct rw_semaphore	i_mmap_rwsem;
+=======
+	struct list_head	i_private_list;
+	struct rw_semaphore	i_mmap_rwsem;
+	void *			i_private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __attribute__((aligned(sizeof(long)))) __randomize_layout;
 	/*
 	 * On most architectures that alignment is already the case; but
@@ -784,7 +803,11 @@ struct inode {
 #endif
 
 	/* Stat data, not accessed from path walking */
+<<<<<<< HEAD
 	u64			i_ino;
+=======
+	unsigned long		i_ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Filesystems may only read i_nlink directly.  They shall use the
 	 * following functions for modification:
@@ -1918,6 +1941,10 @@ struct dir_context {
  */
 #define COPY_FILE_SPLICE		(1 << 0)
 
+<<<<<<< HEAD
+=======
+struct iov_iter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct io_uring_cmd;
 struct offset_ctx;
 
@@ -2058,9 +2085,12 @@ static inline bool can_mmap_file(struct file *file)
 	return true;
 }
 
+<<<<<<< HEAD
 void compat_set_desc_from_vma(struct vm_area_desc *desc, const struct file *file,
 			      const struct vm_area_struct *vma);
 int __compat_vma_mmap(struct vm_area_desc *desc, struct vm_area_struct *vma);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int compat_vma_mmap(struct file *file, struct vm_area_struct *vma);
 
 static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
@@ -2926,26 +2956,44 @@ static inline bool name_contains_dotdot(const char *name)
 #include <linux/err.h>
 
 /* needed for stackable file system support */
+<<<<<<< HEAD
 loff_t default_llseek(struct file *file, loff_t offset, int whence);
 
 loff_t vfs_llseek(struct file *file, loff_t offset, int whence);
 
 int inode_init_always_gfp(struct super_block *sb, struct inode *inode, gfp_t gfp);
+=======
+extern loff_t default_llseek(struct file *file, loff_t offset, int whence);
+
+extern loff_t vfs_llseek(struct file *file, loff_t offset, int whence);
+
+extern int inode_init_always_gfp(struct super_block *, struct inode *, gfp_t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int inode_init_always(struct super_block *sb, struct inode *inode)
 {
 	return inode_init_always_gfp(sb, inode, GFP_NOFS);
 }
 
+<<<<<<< HEAD
 void inode_init_once(struct inode *inode);
 void address_space_init_once(struct address_space *mapping);
 struct inode *igrab(struct inode *inode);
 ino_t iunique(struct super_block *sb, ino_t max_reserved);
 int inode_needs_sync(struct inode *inode);
 int inode_just_drop(struct inode *inode);
+=======
+extern void inode_init_once(struct inode *);
+extern void address_space_init_once(struct address_space *mapping);
+extern struct inode * igrab(struct inode *);
+extern ino_t iunique(struct super_block *, ino_t);
+extern int inode_needs_sync(struct inode *inode);
+extern int inode_just_drop(struct inode *inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int inode_generic_drop(struct inode *inode)
 {
 	return !inode->i_nlink || inode_unhashed(inode);
 }
+<<<<<<< HEAD
 void d_mark_dontcache(struct inode *inode);
 
 struct inode *ilookup5_nowait(struct super_block *sb, u64 hashval,
@@ -2983,6 +3031,47 @@ void unlock_new_inode(struct inode *inode);
 void discard_new_inode(struct inode *inode);
 unsigned int get_next_ino(void);
 void evict_inodes(struct super_block *sb);
+=======
+extern void d_mark_dontcache(struct inode *inode);
+
+extern struct inode *ilookup5_nowait(struct super_block *sb,
+		unsigned long hashval, int (*test)(struct inode *, void *),
+		void *data, bool *isnew);
+extern struct inode *ilookup5(struct super_block *sb, unsigned long hashval,
+		int (*test)(struct inode *, void *), void *data);
+extern struct inode *ilookup(struct super_block *sb, unsigned long ino);
+
+extern struct inode *inode_insert5(struct inode *inode, unsigned long hashval,
+		int (*test)(struct inode *, void *),
+		int (*set)(struct inode *, void *),
+		void *data);
+struct inode *iget5_locked(struct super_block *, unsigned long,
+			   int (*test)(struct inode *, void *),
+			   int (*set)(struct inode *, void *), void *);
+struct inode *iget5_locked_rcu(struct super_block *, unsigned long,
+			       int (*test)(struct inode *, void *),
+			       int (*set)(struct inode *, void *), void *);
+extern struct inode * iget_locked(struct super_block *, unsigned long);
+extern struct inode *find_inode_nowait(struct super_block *,
+				       unsigned long,
+				       int (*match)(struct inode *,
+						    unsigned long, void *),
+				       void *data);
+extern struct inode *find_inode_rcu(struct super_block *, unsigned long,
+				    int (*)(struct inode *, void *), void *);
+extern struct inode *find_inode_by_ino_rcu(struct super_block *, unsigned long);
+extern int insert_inode_locked4(struct inode *, unsigned long, int (*test)(struct inode *, void *), void *);
+extern int insert_inode_locked(struct inode *);
+#ifdef CONFIG_DEBUG_LOCK_ALLOC
+extern void lockdep_annotate_inode_mutex_key(struct inode *inode);
+#else
+static inline void lockdep_annotate_inode_mutex_key(struct inode *inode) { };
+#endif
+extern void unlock_new_inode(struct inode *);
+extern void discard_new_inode(struct inode *);
+extern unsigned int get_next_ino(void);
+extern void evict_inodes(struct super_block *sb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dump_mapping(const struct address_space *);
 
 /*
@@ -3027,21 +3116,34 @@ int setattr_should_drop_sgid(struct mnt_idmap *idmap,
  */
 #define alloc_inode_sb(_sb, _cache, _gfp) kmem_cache_alloc_lru(_cache, &_sb->s_inode_lru, _gfp)
 
+<<<<<<< HEAD
 void __insert_inode_hash(struct inode *inode, u64 hashval);
+=======
+extern void __insert_inode_hash(struct inode *, unsigned long hashval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void insert_inode_hash(struct inode *inode)
 {
 	__insert_inode_hash(inode, inode->i_ino);
 }
 
+<<<<<<< HEAD
 void __remove_inode_hash(struct inode *inode);
+=======
+extern void __remove_inode_hash(struct inode *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void remove_inode_hash(struct inode *inode)
 {
 	if (!inode_unhashed(inode) && !hlist_fake(&inode->i_hash))
 		__remove_inode_hash(inode);
 }
 
+<<<<<<< HEAD
 void inode_sb_list_add(struct inode *inode);
 void inode_lru_list_add(struct inode *inode);
+=======
+extern void inode_sb_list_add(struct inode *inode);
+extern void inode_lru_list_add(struct inode *inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int generic_file_mmap(struct file *, struct vm_area_struct *);
 int generic_file_mmap_prepare(struct vm_area_desc *desc);
@@ -3307,8 +3409,13 @@ void simple_offset_destroy(struct offset_ctx *octx);
 
 extern const struct file_operations simple_offset_dir_operations;
 
+<<<<<<< HEAD
 extern int simple_fsync_noflush(struct file *, loff_t, loff_t, int);
 extern int simple_fsync(struct file *, loff_t, loff_t, int);
+=======
+extern int __generic_file_fsync(struct file *, loff_t, loff_t, int);
+extern int generic_file_fsync(struct file *, loff_t, loff_t, int);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern int generic_check_addressable(unsigned, u64);
 

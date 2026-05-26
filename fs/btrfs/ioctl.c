@@ -3039,7 +3039,11 @@ static long btrfs_ioctl_scrub(struct file *file, void __user *arg)
 
 	ret = btrfs_scrub_dev(fs_info, sa->devid, sa->start, sa->end,
 			      &sa->progress, sa->flags & BTRFS_SCRUB_READONLY,
+<<<<<<< HEAD
 			      false);
+=======
+			      0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Copy scrub args to user space even if btrfs_scrub_dev() returned an
@@ -3929,7 +3933,11 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
 		ret = btrfs_uuid_tree_add(trans, sa->uuid,
 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
 					  btrfs_root_id(root));
+<<<<<<< HEAD
 		if (unlikely(ret < 0)) {
+=======
+		if (unlikely(ret < 0 && ret != -EEXIST)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_abort_transaction(trans, ret);
 			btrfs_end_transaction(trans);
 			goto out;
@@ -5102,6 +5110,10 @@ static int btrfs_ioctl_subvol_sync(struct btrfs_fs_info *fs_info, void __user *a
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_BTRFS_EXPERIMENTAL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int btrfs_ioctl_shutdown(struct btrfs_fs_info *fs_info, unsigned long arg)
 {
 	int ret = 0;
@@ -5133,12 +5145,19 @@ static int btrfs_ioctl_shutdown(struct btrfs_fs_info *fs_info, unsigned long arg
 	case BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH:
 		btrfs_force_shutdown(fs_info);
 		break;
+<<<<<<< HEAD
 	default:
 		ret = -EINVAL;
 		break;
 	}
 	return ret;
 }
+=======
+	}
+	return ret;
+}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 long btrfs_ioctl(struct file *file, unsigned int
 		cmd, unsigned long arg)
@@ -5295,8 +5314,15 @@ long btrfs_ioctl(struct file *file, unsigned int
 #endif
 	case BTRFS_IOC_SUBVOL_SYNC_WAIT:
 		return btrfs_ioctl_subvol_sync(fs_info, argp);
+<<<<<<< HEAD
 	case BTRFS_IOC_SHUTDOWN:
 		return btrfs_ioctl_shutdown(fs_info, arg);
+=======
+#ifdef CONFIG_BTRFS_EXPERIMENTAL
+	case BTRFS_IOC_SHUTDOWN:
+		return btrfs_ioctl_shutdown(fs_info, arg);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return -ENOTTY;

@@ -39,6 +39,10 @@
 #include "display/i9xx_plane_regs.h"
 #include "display/intel_crt_regs.h"
 #include "display/intel_cursor_regs.h"
+<<<<<<< HEAD
+=======
+#include "display/intel_display.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "display/intel_display_regs.h"
 #include "display/intel_dpio_phy.h"
 #include "display/intel_dpll_mgr.h"

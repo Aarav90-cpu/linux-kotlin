@@ -48,7 +48,10 @@ MODULE_ALIAS("wmi:5FB7F034-2C63-45E9-BE91-3D44E2C707E4");
 
 enum hp_ec_offsets {
 	HP_EC_OFFSET_UNKNOWN				= 0x00,
+<<<<<<< HEAD
 	HP_NO_THERMAL_PROFILE_OFFSET			= 0x01,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HP_VICTUS_S_EC_THERMAL_PROFILE_OFFSET		= 0x59,
 	HP_OMEN_EC_THERMAL_PROFILE_FLAGS_OFFSET		= 0x62,
 	HP_OMEN_EC_THERMAL_PROFILE_TIMER_OFFSET		= 0x63,
@@ -59,6 +62,11 @@ enum hp_ec_offsets {
 #define HP_POWER_LIMIT_DEFAULT	 0x00
 #define HP_POWER_LIMIT_NO_CHANGE 0xFF
 
+<<<<<<< HEAD
+=======
+#define ACPI_AC_CLASS "ac_adapter"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define zero_if_sup(tmp) (zero_insize_support?0:sizeof(tmp)) // use when zero insize is required
 
 enum hp_thermal_profile_omen_v0 {
@@ -126,6 +134,7 @@ static const struct thermal_profile_params omen_v1_legacy_thermal_params = {
 	.ec_tp_offset	= HP_OMEN_EC_THERMAL_PROFILE_OFFSET,
 };
 
+<<<<<<< HEAD
 static const struct thermal_profile_params omen_v1_no_ec_thermal_params = {
 	.performance	= HP_OMEN_V1_THERMAL_PROFILE_PERFORMANCE,
 	.balanced	= HP_OMEN_V1_THERMAL_PROFILE_DEFAULT,
@@ -133,6 +142,8 @@ static const struct thermal_profile_params omen_v1_no_ec_thermal_params = {
 	.ec_tp_offset	= HP_NO_THERMAL_PROFILE_OFFSET,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * A generic pointer for the currently-active board's thermal profile
  * parameters.
@@ -159,7 +170,10 @@ static const char * const omen_thermal_profile_boards[] = {
 	"8900", "8901", "8902", "8912", "8917", "8918", "8949", "894A", "89EB",
 	"8A15", "8A42",
 	"8BAD",
+<<<<<<< HEAD
 	"8C58",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	"8E41",
 };
 
@@ -190,14 +204,20 @@ static const char * const victus_thermal_profile_boards[] = {
 /* DMI Board names of Victus 16-r and Victus 16-s laptops */
 static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst = {
 	{
+<<<<<<< HEAD
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8902") },
 		.driver_data = (void *)&omen_v1_legacy_thermal_params,
 	},
 	{
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8A44") },
 		.driver_data = (void *)&omen_v1_legacy_thermal_params,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8A4D") },
 		.driver_data = (void *)&omen_v1_legacy_thermal_params,
 	},
@@ -210,10 +230,13 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst 
 		.driver_data = (void *)&victus_s_thermal_params,
 	},
 	{
+<<<<<<< HEAD
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BC2") },
 		.driver_data = (void *)&omen_v1_thermal_params,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8BCA") },
 		.driver_data = (void *)&omen_v1_thermal_params,
 	},
@@ -234,10 +257,13 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst 
 		.driver_data = (void *)&omen_v1_thermal_params,
 	},
 	{
+<<<<<<< HEAD
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C77") },
 		.driver_data = (void *)&omen_v1_thermal_params,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8C78") },
 		.driver_data = (void *)&omen_v1_thermal_params,
 	},
@@ -251,11 +277,15 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst 
 	},
 	{
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8D41") },
+<<<<<<< HEAD
 		.driver_data = (void *)&omen_v1_no_ec_thermal_params,
 	},
 	{
 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8D87") },
 		.driver_data = (void *)&omen_v1_no_ec_thermal_params,
+=======
+		.driver_data = (void *)&victus_s_thermal_params,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{},
 };
@@ -485,24 +515,39 @@ enum pwm_modes {
 };
 
 struct hp_wmi_hwmon_priv {
+<<<<<<< HEAD
 	struct mutex lock;	/* protects mode, pwm */
 	u8 min_rpm;
 	u8 max_rpm;
 	int gpu_delta;
+=======
+	u8 min_rpm;
+	u8 max_rpm;
+	u8 gpu_delta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 mode;
 	u8 pwm;
 	struct delayed_work keep_alive_dwork;
 };
 
 struct victus_s_fan_table_header {
+<<<<<<< HEAD
 	u8 num_fans;
 	u8 unknown;
+=======
+	u8 unknown;
+	u8 num_entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct victus_s_fan_table_entry {
 	u8 cpu_rpm;
 	u8 gpu_rpm;
+<<<<<<< HEAD
 	u8 noise_db;
+=======
+	u8 unknown;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct victus_s_fan_table {
@@ -1863,8 +1908,12 @@ static int platform_profile_victus_s_get_ec(enum platform_profile_option *profil
 	const struct thermal_profile_params *params;
 
 	params = active_thermal_profile_params;
+<<<<<<< HEAD
 	if (params->ec_tp_offset == HP_EC_OFFSET_UNKNOWN ||
 	    params->ec_tp_offset == HP_NO_THERMAL_PROFILE_OFFSET) {
+=======
+	if (params->ec_tp_offset == HP_EC_OFFSET_UNKNOWN) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*profile = active_platform_profile;
 		return 0;
 	}
@@ -2219,8 +2268,12 @@ static int thermal_profile_setup(struct platform_device *device)
 		 * behaves like a wrapper around active_platform_profile, to avoid using
 		 * uninitialized data, we default to PLATFORM_PROFILE_BALANCED.
 		 */
+<<<<<<< HEAD
 		if (active_thermal_profile_params->ec_tp_offset == HP_EC_OFFSET_UNKNOWN ||
 		    active_thermal_profile_params->ec_tp_offset == HP_NO_THERMAL_PROFILE_OFFSET) {
+=======
+		if (active_thermal_profile_params->ec_tp_offset == HP_EC_OFFSET_UNKNOWN) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			active_platform_profile = PLATFORM_PROFILE_BALANCED;
 		} else {
 			err = platform_profile_victus_s_get_ec(&active_platform_profile);
@@ -2388,6 +2441,7 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
 
 	switch (priv->mode) {
 	case PWM_MODE_MAX:
+<<<<<<< HEAD
 		if (is_victus_s_thermal_profile()) {
 			ret = hp_wmi_get_fan_count_userdefine_trigger();
 			if (ret < 0)
@@ -2398,6 +2452,15 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
 			return ret;
 		mod_delayed_work(system_wq, &priv->keep_alive_dwork,
 				 secs_to_jiffies(KEEP_ALIVE_DELAY_SECS));
+=======
+		if (is_victus_s_thermal_profile())
+			hp_wmi_get_fan_count_userdefine_trigger();
+		ret = hp_wmi_fan_speed_max_set(1);
+		if (ret < 0)
+			return ret;
+		schedule_delayed_work(&priv->keep_alive_dwork,
+				      secs_to_jiffies(KEEP_ALIVE_DELAY_SECS));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	case PWM_MODE_MANUAL:
 		if (!is_victus_s_thermal_profile())
@@ -2405,6 +2468,7 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
 		ret = hp_wmi_fan_speed_set(priv, pwm_to_rpm(priv->pwm, priv));
 		if (ret < 0)
 			return ret;
+<<<<<<< HEAD
 		mod_delayed_work(system_wq, &priv->keep_alive_dwork,
 				 secs_to_jiffies(KEEP_ALIVE_DELAY_SECS));
 		return 0;
@@ -2413,18 +2477,35 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
 			ret = hp_wmi_get_fan_count_userdefine_trigger();
 			if (ret < 0)
 				return ret;
+=======
+		schedule_delayed_work(&priv->keep_alive_dwork,
+				      secs_to_jiffies(KEEP_ALIVE_DELAY_SECS));
+		return 0;
+	case PWM_MODE_AUTO:
+		if (is_victus_s_thermal_profile()) {
+			hp_wmi_get_fan_count_userdefine_trigger();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = hp_wmi_fan_speed_max_reset(priv);
 		} else {
 			ret = hp_wmi_fan_speed_max_set(0);
 		}
 		if (ret < 0)
 			return ret;
+<<<<<<< HEAD
 		cancel_delayed_work(&priv->keep_alive_dwork);
+=======
+		cancel_delayed_work_sync(&priv->keep_alive_dwork);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	default:
 		/* shouldn't happen */
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static umode_t hp_wmi_hwmon_is_visible(const void *data,
@@ -2457,7 +2538,10 @@ static int hp_wmi_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 {
 	struct hp_wmi_hwmon_priv *priv;
 	int rpm, ret;
+<<<<<<< HEAD
 	u8 mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = dev_get_drvdata(dev);
 	switch (type) {
@@ -2481,6 +2565,7 @@ static int hp_wmi_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 			*val = rpm_to_pwm(rpm / 100, priv);
 			return 0;
 		}
+<<<<<<< HEAD
 		scoped_guard(mutex, &priv->lock)
 			mode = priv->mode;
 		switch (mode) {
@@ -2488,6 +2573,13 @@ static int hp_wmi_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 		case PWM_MODE_MANUAL:
 		case PWM_MODE_AUTO:
 			*val = mode;
+=======
+		switch (priv->mode) {
+		case PWM_MODE_MAX:
+		case PWM_MODE_MANUAL:
+		case PWM_MODE_AUTO:
+			*val = priv->mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		default:
 			/* shouldn't happen */
@@ -2505,7 +2597,10 @@ static int hp_wmi_hwmon_write(struct device *dev, enum hwmon_sensor_types type,
 	int rpm;
 
 	priv = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	guard(mutex)(&priv->lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (type) {
 	case hwmon_pwm:
 		if (attr == hwmon_pwm_input) {
@@ -2570,30 +2665,45 @@ static void hp_wmi_hwmon_keep_alive_handler(struct work_struct *work)
 {
 	struct delayed_work *dwork;
 	struct hp_wmi_hwmon_priv *priv;
+<<<<<<< HEAD
 	int ret;
 
 	dwork = to_delayed_work(work);
 	priv = container_of(dwork, struct hp_wmi_hwmon_priv, keep_alive_dwork);
 
 	guard(mutex)(&priv->lock);
+=======
+
+	dwork = to_delayed_work(work);
+	priv = container_of(dwork, struct hp_wmi_hwmon_priv, keep_alive_dwork);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Re-apply the current hwmon context settings.
 	 * NOTE: hp_wmi_apply_fan_settings will handle the re-scheduling.
 	 */
+<<<<<<< HEAD
 	ret = hp_wmi_apply_fan_settings(priv);
 	if (ret)
 		pr_warn_ratelimited("keep-alive failed to refresh fan settings: %d\n",
 				    ret);
+=======
+	hp_wmi_apply_fan_settings(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
 {
 	u8 fan_data[128] = { 0 };
 	struct victus_s_fan_table *fan_table;
+<<<<<<< HEAD
 	u8 min_rpm, max_rpm;
 	u8 cpu_rpm, gpu_rpm, noise_db;
 	int gpu_delta, i, num_entries, ret;
 	size_t header_size, entry_size;
+=======
+	u8 min_rpm, max_rpm, gpu_delta;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Default behaviour on hwmon init is automatic mode */
 	priv->mode = PWM_MODE_AUTO;
@@ -2608,6 +2718,7 @@ static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
 		return ret;
 
 	fan_table = (struct victus_s_fan_table *)fan_data;
+<<<<<<< HEAD
 	if (fan_table->header.num_fans == 0)
 		return -EINVAL;
 
@@ -2638,6 +2749,15 @@ static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
 	if (min_rpm == U8_MAX || max_rpm == 0)
 		return -EINVAL;
 
+=======
+	if (fan_table->header.num_entries == 0 ||
+	    sizeof(struct victus_s_fan_table_header) +
+	    sizeof(struct victus_s_fan_table_entry) * fan_table->header.num_entries > sizeof(fan_data))
+		return -EINVAL;
+
+	min_rpm = fan_table->entries[0].cpu_rpm;
+	max_rpm = fan_table->entries[fan_table->header.num_entries - 1].cpu_rpm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_delta = fan_table->entries[0].gpu_rpm - fan_table->entries[0].cpu_rpm;
 	priv->min_rpm = min_rpm;
 	priv->max_rpm = max_rpm;
@@ -2657,10 +2777,13 @@ static int hp_wmi_hwmon_init(void)
 	if (!priv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = devm_mutex_init(dev, &priv->lock);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hp_wmi_setup_fan_settings(priv);
 	if (ret)
 		return ret;
@@ -2674,9 +2797,13 @@ static int hp_wmi_hwmon_init(void)
 
 	INIT_DELAYED_WORK(&priv->keep_alive_dwork, hp_wmi_hwmon_keep_alive_handler);
 	platform_set_drvdata(hp_wmi_platform_dev, priv);
+<<<<<<< HEAD
 	ret = hp_wmi_apply_fan_settings(priv);
 	if (ret)
 		dev_warn(dev, "Failed to apply initial fan settings: %d\n", ret);
+=======
+	hp_wmi_apply_fan_settings(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -132,6 +132,11 @@ int smu_v13_0_setup_pptable(struct smu_context *smu);
 
 int smu_v13_0_get_vbios_bootup_values(struct smu_context *smu);
 
+<<<<<<< HEAD
+=======
+int smu_v13_0_check_fw_version(struct smu_context *smu);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smu_v13_0_set_driver_table_location(struct smu_context *smu);
 
 int smu_v13_0_set_tool_table_location(struct smu_context *smu);

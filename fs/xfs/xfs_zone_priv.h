@@ -32,7 +32,15 @@ struct xfs_open_zone {
 	 */
 	enum rw_hint		oz_write_hint;
 
+<<<<<<< HEAD
 	/* Is this open zone used for garbage collection? */
+=======
+	/*
+	 * Is this open zone used for garbage collection?  There can only be a
+	 * single open GC zone, which is pointed to by zi_open_gc_zone in
+	 * struct xfs_zone_info.  Constant over the life time of an open zone.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool			oz_is_gc;
 
 	/*
@@ -64,7 +72,10 @@ struct xfs_zone_info {
 	spinlock_t		zi_open_zones_lock;
 	struct list_head	zi_open_zones;
 	unsigned int		zi_nr_open_zones;
+<<<<<<< HEAD
 	unsigned int		zi_nr_open_gc_zones;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Free zone search cursor and number of free zones:
@@ -78,9 +89,21 @@ struct xfs_zone_info {
 	wait_queue_head_t	zi_zone_wait;
 
 	/*
+<<<<<<< HEAD
 	 * Pointer to the GC thread.
 	 */
 	struct task_struct      *zi_gc_thread;
+=======
+	 * Pointer to the GC thread, and the current open zone used by GC
+	 * (if any).
+	 *
+	 * zi_open_gc_zone is mostly private to the GC thread, but can be read
+	 * for debugging from other threads, in which case zi_open_zones_lock
+	 * must be taken to access it.
+	 */
+	struct task_struct      *zi_gc_thread;
+	struct xfs_open_zone	*zi_open_gc_zone;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * List of zones that need a reset:

@@ -29,6 +29,7 @@
 
 static struct btf_type btf_void;
 
+<<<<<<< HEAD
 /*
  * Describe how kinds are laid out; some have a singular element following the "struct btf_type",
  * some have BTF_INFO_VLEN(t->info) elements.  Specify sizes for both.  Flags are currently unused.
@@ -59,6 +60,8 @@ static struct btf_layout layouts[NR_BTF_KINDS] = {
 [BTF_KIND_ENUM64] =	{	0,				sizeof(struct btf_enum64),	0 },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct btf {
 	/* raw BTF data in native endianness */
 	void *raw_data;
@@ -70,6 +73,7 @@ struct btf {
 
 	/*
 	 * When BTF is loaded from an ELF or raw memory it is stored
+<<<<<<< HEAD
 	 * in a contiguous memory block. The type_data, layout and strs_data
 	 * point inside that memory region to their respective parts of BTF
 	 * representation:
@@ -117,6 +121,44 @@ struct btf {
 	 * raw_data----->+----------+---------+-------------------+-----------+
 	 */
 	struct btf_header hdr;
+=======
+	 * in a contiguous memory block. The hdr, type_data, and, strs_data
+	 * point inside that memory region to their respective parts of BTF
+	 * representation:
+	 *
+	 * +--------------------------------+
+	 * |  Header  |  Types  |  Strings  |
+	 * +--------------------------------+
+	 * ^          ^         ^
+	 * |          |         |
+	 * hdr        |         |
+	 * types_data-+         |
+	 * strs_data------------+
+	 *
+	 * If BTF data is later modified, e.g., due to types added or
+	 * removed, BTF deduplication performed, etc, this contiguous
+	 * representation is broken up into three independently allocated
+	 * memory regions to be able to modify them independently.
+	 * raw_data is nulled out at that point, but can be later allocated
+	 * and cached again if user calls btf__raw_data(), at which point
+	 * raw_data will contain a contiguous copy of header, types, and
+	 * strings:
+	 *
+	 * +----------+  +---------+  +-----------+
+	 * |  Header  |  |  Types  |  |  Strings  |
+	 * +----------+  +---------+  +-----------+
+	 * ^             ^            ^
+	 * |             |            |
+	 * hdr           |            |
+	 * types_data----+            |
+	 * strset__data(strs_set)-----+
+	 *
+	 *               +----------+---------+-----------+
+	 *               |  Header  |  Types  |  Strings  |
+	 * raw_data----->+----------+---------+-----------+
+	 */
+	struct btf_header *hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void *types_data;
 	size_t types_data_cap; /* used size stored in hdr->type_len */
@@ -166,6 +208,7 @@ struct btf {
 	/* whether raw_data is a (read-only) mmap */
 	bool raw_data_is_mmap;
 
+<<<<<<< HEAD
 	/* is BTF modifiable? i.e. is it split into separate sections as described above? */
 	bool modifiable;
 	/* does BTF have header information we do not support?  If so, disallow
@@ -177,6 +220,8 @@ struct btf {
 	 */
 	void *layout;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* BTF object FD, if loaded into kernel */
 	int fd;
 
@@ -268,7 +313,11 @@ static int btf_add_type_idx_entry(struct btf *btf, __u32 type_off)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void btf_bswap_hdr(struct btf_header *h, __u32 hdr_len)
+=======
+static void btf_bswap_hdr(struct btf_header *h)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	h->magic = bswap_16(h->magic);
 	h->hdr_len = bswap_32(h->hdr_len);
@@ -276,23 +325,34 @@ static void btf_bswap_hdr(struct btf_header *h, __u32 hdr_len)
 	h->type_len = bswap_32(h->type_len);
 	h->str_off = bswap_32(h->str_off);
 	h->str_len = bswap_32(h->str_len);
+<<<<<<< HEAD
 	/* May be operating on raw data with hdr_len that does not include below fields */
 	if (hdr_len >= sizeof(struct btf_header)) {
 		h->layout_off = bswap_32(h->layout_off);
 		h->layout_len = bswap_32(h->layout_len);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int btf_parse_hdr(struct btf *btf)
 {
+<<<<<<< HEAD
 	struct btf_header *hdr = btf->raw_data;
 	__u32 hdr_len, meta_left;
 
 	if (btf->raw_size < offsetofend(struct btf_header, str_len)) {
+=======
+	struct btf_header *hdr = btf->hdr;
+	__u32 meta_left;
+
+	if (btf->raw_size < sizeof(struct btf_header)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("BTF header not found\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	hdr_len = hdr->hdr_len;
 
 	if (hdr->magic == bswap_16(BTF_MAGIC)) {
@@ -303,11 +363,22 @@ static int btf_parse_hdr(struct btf *btf)
 				hdr_len);
 			return -ENOTSUP;
 		}
+=======
+	if (hdr->magic == bswap_16(BTF_MAGIC)) {
+		btf->swapped_endian = true;
+		if (bswap_32(hdr->hdr_len) != sizeof(struct btf_header)) {
+			pr_warn("Can't load BTF with non-native endianness due to unsupported header length %u\n",
+				bswap_32(hdr->hdr_len));
+			return -ENOTSUP;
+		}
+		btf_bswap_hdr(hdr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (hdr->magic != BTF_MAGIC) {
 		pr_debug("Invalid BTF magic: %x\n", hdr->magic);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (btf->raw_size < hdr_len) {
 		pr_debug("BTF header len %u larger than data size %u\n",
 			 hdr_len, btf->raw_size);
@@ -338,10 +409,21 @@ static int btf_parse_hdr(struct btf *btf)
 
 	meta_left = btf->raw_size - hdr_len;
 	if (meta_left < (long long)btf->hdr.str_off + btf->hdr.str_len) {
+=======
+	if (btf->raw_size < hdr->hdr_len) {
+		pr_debug("BTF header len %u larger than data size %u\n",
+			 hdr->hdr_len, btf->raw_size);
+		return -EINVAL;
+	}
+
+	meta_left = btf->raw_size - hdr->hdr_len;
+	if (meta_left < (long long)hdr->str_off + hdr->str_len) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("Invalid BTF total size: %u\n", btf->raw_size);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if ((long long)btf->hdr.type_off + btf->hdr.type_len > btf->hdr.str_off) {
 		pr_debug("Invalid BTF data sections layout: type data at %u + %u, strings data at %u + %u\n",
 			 btf->hdr.type_off, btf->hdr.type_len, btf->hdr.str_off,
@@ -350,10 +432,20 @@ static int btf_parse_hdr(struct btf *btf)
 	}
 
 	if (btf->hdr.type_off % 4) {
+=======
+	if ((long long)hdr->type_off + hdr->type_len > hdr->str_off) {
+		pr_debug("Invalid BTF data sections layout: type data at %u + %u, strings data at %u + %u\n",
+			 hdr->type_off, hdr->type_len, hdr->str_off, hdr->str_len);
+		return -EINVAL;
+	}
+
+	if (hdr->type_off % 4) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("BTF type section is not aligned to 4 bytes\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (btf->hdr.layout_len == 0)
 		return 0;
 
@@ -374,17 +466,29 @@ static int btf_parse_hdr(struct btf *btf)
 			 btf->hdr.layout_off, btf->hdr.layout_len, btf->hdr.str_off);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int btf_parse_str_sec(struct btf *btf)
 {
+<<<<<<< HEAD
 	const char *start = btf->strs_data;
 	const char *end = start + btf->hdr.str_len;
 
 	if (btf->base_btf && btf->hdr.str_len == 0)
 		return 0;
 	if (!btf->hdr.str_len || btf->hdr.str_len - 1 > BTF_MAX_STR_OFFSET || end[-1]) {
+=======
+	const struct btf_header *hdr = btf->hdr;
+	const char *start = btf->strs_data;
+	const char *end = start + btf->hdr->str_len;
+
+	if (btf->base_btf && hdr->str_len == 0)
+		return 0;
+	if (!hdr->str_len || hdr->str_len - 1 > BTF_MAX_STR_OFFSET || end[-1]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("Invalid BTF string section\n");
 		return -EINVAL;
 	}
@@ -395,6 +499,7 @@ static int btf_parse_str_sec(struct btf *btf)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int btf_parse_layout_sec(struct btf *btf)
 {
 	if (!btf->hdr.layout_len)
@@ -452,6 +557,9 @@ static int btf_type_size_unknown(const struct btf *btf, const struct btf_type *t
 }
 
 static int btf_type_size(const struct btf *btf, const struct btf_type *t)
+=======
+static int btf_type_size(const struct btf_type *t)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const int base_size = sizeof(struct btf_type);
 	__u16 vlen = btf_vlen(t);
@@ -487,7 +595,12 @@ static int btf_type_size(const struct btf *btf, const struct btf_type *t)
 	case BTF_KIND_DECL_TAG:
 		return base_size + sizeof(struct btf_decl_tag);
 	default:
+<<<<<<< HEAD
 		return btf_type_size_unknown(btf, t);
+=======
+		pr_debug("Unsupported BTF_KIND:%u\n", btf_kind(t));
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -577,15 +690,25 @@ static int btf_bswap_type_rest(struct btf_type *t)
 
 static int btf_parse_type_sec(struct btf *btf)
 {
+<<<<<<< HEAD
 	void *next_type = btf->types_data;
 	void *end_type = next_type + btf->hdr.type_len;
+=======
+	struct btf_header *hdr = btf->hdr;
+	void *next_type = btf->types_data;
+	void *end_type = next_type + hdr->type_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err, type_size;
 
 	while (next_type + sizeof(struct btf_type) <= end_type) {
 		if (btf->swapped_endian)
 			btf_bswap_type_base(next_type);
 
+<<<<<<< HEAD
 		type_size = btf_type_size(btf, next_type);
+=======
+		type_size = btf_type_size(next_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (type_size < 0)
 			return type_size;
 		if (next_type + type_size > end_type) {
@@ -746,12 +869,17 @@ static int btf_validate_type(const struct btf *btf, const struct btf_type *t, __
 		break;
 	}
 	default:
+<<<<<<< HEAD
 		/* Kind may be represented in kind layout information. */
 		if (btf_type_size_unknown(btf, t) < 0) {
 			pr_warn("btf: type [%u]: unrecognized kind %u\n", id, kind);
 			return -EINVAL;
 		}
 		break;
+=======
+		pr_warn("btf: type [%u]: unrecognized kind %u\n", id, kind);
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }
@@ -1171,8 +1299,12 @@ __s32 btf__find_by_name_kind(const struct btf *btf, const char *type_name,
 
 static bool btf_is_modifiable(const struct btf *btf)
 {
+<<<<<<< HEAD
 	/* BTF is modifiable if split into multiple sections */
 	return btf->modifiable;
+=======
+	return (void *)btf->hdr != btf->raw_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void btf_free_raw_data(struct btf *btf)
@@ -1196,14 +1328,24 @@ void btf__free(struct btf *btf)
 
 	if (btf_is_modifiable(btf)) {
 		/* if BTF was modified after loading, it will have a split
+<<<<<<< HEAD
 		 * in-memory representation for types, strings and layout
+=======
+		 * in-memory representation for header, types, and strings
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * sections, so we need to free all of them individually. It
 		 * might still have a cached contiguous raw data present,
 		 * which will be unconditionally freed below.
 		 */
+<<<<<<< HEAD
 		free(btf->types_data);
 		strset__free(btf->strs_set);
 		free(btf->layout);
+=======
+		free(btf->hdr);
+		free(btf->types_data);
+		strset__free(btf->strs_set);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	btf_free_raw_data(btf);
 	free(btf->raw_data_swapped);
@@ -1213,11 +1355,16 @@ void btf__free(struct btf *btf)
 	free(btf);
 }
 
+<<<<<<< HEAD
 static struct btf *btf_new_empty(struct btf_new_opts *opts)
 {
 	bool add_layout = OPTS_GET(opts, add_layout, false);
 	struct btf *base_btf = OPTS_GET(opts, base_btf, NULL);
 	struct btf_header *hdr;
+=======
+static struct btf *btf_new_empty(struct btf *base_btf)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct btf *btf;
 
 	btf = calloc(1, sizeof(*btf));
@@ -1235,20 +1382,28 @@ static struct btf *btf_new_empty(struct btf_new_opts *opts)
 	if (base_btf) {
 		btf->base_btf = base_btf;
 		btf->start_id = btf__type_cnt(base_btf);
+<<<<<<< HEAD
 		btf->start_str_off = base_btf->hdr.str_len + base_btf->start_str_off;
+=======
+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btf->swapped_endian = base_btf->swapped_endian;
 	}
 
 	/* +1 for empty string at offset 0 */
 	btf->raw_size = sizeof(struct btf_header) + (base_btf ? 0 : 1);
+<<<<<<< HEAD
 	if (add_layout)
 		btf->raw_size += sizeof(layouts);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btf->raw_data = calloc(1, btf->raw_size);
 	if (!btf->raw_data) {
 		free(btf);
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
 	hdr = btf->raw_data;
 	hdr->hdr_len = sizeof(struct btf_header);
 	hdr->magic = BTF_MAGIC;
@@ -1271,6 +1426,16 @@ static struct btf *btf_new_empty(struct btf_new_opts *opts)
 	}
 
 	memcpy(&btf->hdr, hdr, sizeof(*hdr));
+=======
+	btf->hdr = btf->raw_data;
+	btf->hdr->hdr_len = sizeof(struct btf_header);
+	btf->hdr->magic = BTF_MAGIC;
+	btf->hdr->version = BTF_VERSION;
+
+	btf->types_data = btf->raw_data + btf->hdr->hdr_len;
+	btf->strs_data = btf->raw_data + btf->hdr->hdr_len;
+	btf->hdr->str_len = base_btf ? 0 : 1; /* empty string at offset 0 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return btf;
 }
@@ -1282,6 +1447,7 @@ struct btf *btf__new_empty(void)
 
 struct btf *btf__new_empty_split(struct btf *base_btf)
 {
+<<<<<<< HEAD
 	LIBBPF_OPTS(btf_new_opts, opts);
 
 	opts.base_btf = base_btf;
@@ -1295,6 +1461,9 @@ struct btf *btf__new_empty_opts(struct btf_new_opts *opts)
 		return libbpf_err_ptr(-EINVAL);
 
 	return libbpf_ptr(btf_new_empty(opts));
+=======
+	return libbpf_ptr(btf_new_empty(base_btf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf, bool is_mmap)
@@ -1315,7 +1484,11 @@ static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf, b
 	if (base_btf) {
 		btf->base_btf = base_btf;
 		btf->start_id = btf__type_cnt(base_btf);
+<<<<<<< HEAD
 		btf->start_str_off = base_btf->hdr.str_len + base_btf->start_str_off;
+=======
+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (is_mmap) {
@@ -1332,15 +1505,26 @@ static struct btf *btf_new(const void *data, __u32 size, struct btf *base_btf, b
 
 	btf->raw_size = size;
 
+<<<<<<< HEAD
+=======
+	btf->hdr = btf->raw_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = btf_parse_hdr(btf);
 	if (err)
 		goto done;
 
+<<<<<<< HEAD
 	btf->strs_data = btf->raw_data + btf->hdr.hdr_len + btf->hdr.str_off;
 	btf->types_data = btf->raw_data + btf->hdr.hdr_len + btf->hdr.type_off;
 
 	err = btf_parse_str_sec(btf);
 	err = err ?: btf_parse_layout_sec(btf);
+=======
+	btf->strs_data = btf->raw_data + btf->hdr->hdr_len + btf->hdr->str_off;
+	btf->types_data = btf->raw_data + btf->hdr->hdr_len + btf->hdr->type_off;
+
+	err = btf_parse_str_sec(btf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = err ?: btf_parse_type_sec(btf);
 	err = err ?: btf_sanity_check(btf);
 	if (err)
@@ -1792,7 +1976,11 @@ static const void *btf_strs_data(const struct btf *btf)
 
 static void *btf_get_raw_data(const struct btf *btf, __u32 *size, bool swap_endian)
 {
+<<<<<<< HEAD
 	const struct btf_header *hdr = &btf->hdr;
+=======
+	struct btf_header *hdr = btf->hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct btf_type *t;
 	void *data, *p;
 	__u32 data_sz;
@@ -1805,17 +1993,26 @@ static void *btf_get_raw_data(const struct btf *btf, __u32 *size, bool swap_endi
 	}
 
 	data_sz = hdr->hdr_len + hdr->type_len + hdr->str_len;
+<<<<<<< HEAD
 	if (btf->layout)
 		data_sz += hdr->layout_len;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data = calloc(1, data_sz);
 	if (!data)
 		return NULL;
 	p = data;
 
+<<<<<<< HEAD
 	memcpy(p, hdr, min((__u32)sizeof(struct btf_header), hdr->hdr_len));
 	if (swap_endian)
 		btf_bswap_hdr(p, hdr->hdr_len);
+=======
+	memcpy(p, hdr, hdr->hdr_len);
+	if (swap_endian)
+		btf_bswap_hdr(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	p += hdr->hdr_len;
 
 	memcpy(p, btf->types_data, hdr->type_len);
@@ -1833,6 +2030,7 @@ static void *btf_get_raw_data(const struct btf *btf, __u32 *size, bool swap_endi
 	}
 	p += hdr->type_len;
 
+<<<<<<< HEAD
 	if (btf->layout) {
 		memcpy(p, btf->layout, hdr->layout_len);
 		if (swap_endian) {
@@ -1845,6 +2043,10 @@ static void *btf_get_raw_data(const struct btf *btf, __u32 *size, bool swap_endi
 	}
 
 	memcpy(p, btf_strs_data(btf), hdr->str_len);
+=======
+	memcpy(p, btf_strs_data(btf), hdr->str_len);
+	p += hdr->str_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*size = data_sz;
 	return data;
@@ -1879,7 +2081,11 @@ const char *btf__str_by_offset(const struct btf *btf, __u32 offset)
 {
 	if (offset < btf->start_str_off)
 		return btf__str_by_offset(btf->base_btf, offset);
+<<<<<<< HEAD
 	else if (offset - btf->start_str_off < btf->hdr.str_len)
+=======
+	else if (offset - btf->start_str_off < btf->hdr->str_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return btf_strs_data(btf) + (offset - btf->start_str_off);
 	else
 		return errno = EINVAL, NULL;
@@ -1987,12 +2193,20 @@ static void btf_invalidate_raw_data(struct btf *btf)
 }
 
 /* Ensure BTF is ready to be modified (by splitting into a three memory
+<<<<<<< HEAD
  * regions for types, strings and layout. Also invalidate cached
+=======
+ * regions for header, types, and strings). Also invalidate cached
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * raw_data, if any.
  */
 static int btf_ensure_modifiable(struct btf *btf)
 {
+<<<<<<< HEAD
 	void *types, *layout = NULL;
+=======
+	void *hdr, *types;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct strset *set = NULL;
 	int err = -ENOMEM;
 
@@ -2002,6 +2216,7 @@ static int btf_ensure_modifiable(struct btf *btf)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (btf->has_hdr_extra) {
 		/* Additional BTF header data was found; not safe to modify. */
 		return -EOPNOTSUPP;
@@ -2023,12 +2238,26 @@ static int btf_ensure_modifiable(struct btf *btf)
 
 	/* build lookup index for all strings */
 	set = strset__new(BTF_MAX_STR_OFFSET, btf->strs_data, btf->hdr.str_len);
+=======
+	/* split raw data into three memory regions */
+	hdr = malloc(btf->hdr->hdr_len);
+	types = malloc(btf->hdr->type_len);
+	if (!hdr || !types)
+		goto err_out;
+
+	memcpy(hdr, btf->hdr, btf->hdr->hdr_len);
+	memcpy(types, btf->types_data, btf->hdr->type_len);
+
+	/* build lookup index for all strings */
+	set = strset__new(BTF_MAX_STR_OFFSET, btf->strs_data, btf->hdr->str_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(set)) {
 		err = PTR_ERR(set);
 		goto err_out;
 	}
 
 	/* only when everything was successful, update internal state */
+<<<<<<< HEAD
 	btf->types_data = types;
 	btf->types_data_cap = btf->hdr.type_len;
 	btf->strs_data = NULL;
@@ -2041,19 +2270,40 @@ static int btf_ensure_modifiable(struct btf *btf)
 	if (btf->hdr.str_len == 0)
 		btf->strs_deduped = true;
 	if (!btf->base_btf && btf->hdr.str_len == 1)
+=======
+	btf->hdr = hdr;
+	btf->types_data = types;
+	btf->types_data_cap = btf->hdr->type_len;
+	btf->strs_data = NULL;
+	btf->strs_set = set;
+	/* if BTF was created from scratch, all strings are guaranteed to be
+	 * unique and deduplicated
+	 */
+	if (btf->hdr->str_len == 0)
+		btf->strs_deduped = true;
+	if (!btf->base_btf && btf->hdr->str_len == 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btf->strs_deduped = true;
 
 	/* invalidate raw_data representation */
 	btf_invalidate_raw_data(btf);
 
+<<<<<<< HEAD
 	btf->modifiable = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_out:
 	strset__free(set);
+<<<<<<< HEAD
 	free(types);
 	free(layout);
+=======
+	free(hdr);
+	free(types);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -2066,7 +2316,10 @@ err_out:
 int btf__find_str(struct btf *btf, const char *s)
 {
 	int off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (btf->base_btf) {
 		off = btf__find_str(btf->base_btf, s);
@@ -2075,9 +2328,14 @@ int btf__find_str(struct btf *btf, const char *s)
 	}
 
 	/* BTF needs to be in a modifiable state to build string lookup index */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	off = strset__find_str(btf->strs_set, s);
 	if (off < 0)
@@ -2094,7 +2352,10 @@ int btf__find_str(struct btf *btf, const char *s)
 int btf__add_str(struct btf *btf, const char *s)
 {
 	int off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (btf->base_btf) {
 		off = btf__find_str(btf->base_btf, s);
@@ -2102,15 +2363,24 @@ int btf__add_str(struct btf *btf, const char *s)
 			return off;
 	}
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	off = strset__add_str(btf->strs_set, s);
 	if (off < 0)
 		return libbpf_err(off);
 
+<<<<<<< HEAD
 	btf->hdr.str_len = strset__data_size(btf->strs_set);
+=======
+	btf->hdr->str_len = strset__data_size(btf->strs_set);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return btf->start_str_off + off;
 }
@@ -2118,7 +2388,11 @@ int btf__add_str(struct btf *btf, const char *s)
 static void *btf_add_type_mem(struct btf *btf, size_t add_sz)
 {
 	return libbpf_add_mem(&btf->types_data, &btf->types_data_cap, 1,
+<<<<<<< HEAD
 			      btf->hdr.type_len, UINT_MAX, add_sz);
+=======
+			      btf->hdr->type_len, UINT_MAX, add_sz);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void btf_type_inc_vlen(struct btf_type *t)
@@ -2126,6 +2400,7 @@ static void btf_type_inc_vlen(struct btf_type *t)
 	t->info = btf_type_info(btf_kind(t), btf_vlen(t) + 1, btf_kflag(t));
 }
 
+<<<<<<< HEAD
 static void btf_hdr_update_type_len(struct btf *btf, int new_len)
 {
 	btf->hdr.type_len = new_len;
@@ -2142,15 +2417,26 @@ static void btf_hdr_update_str_len(struct btf *btf, int new_len)
 	btf->hdr.str_len = new_len;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int btf_commit_type(struct btf *btf, int data_sz)
 {
 	int err;
 
+<<<<<<< HEAD
 	err = btf_add_type_idx_entry(btf, btf->hdr.type_len);
 	if (err)
 		return libbpf_err(err);
 
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + data_sz);
+=======
+	err = btf_add_type_idx_entry(btf, btf->hdr->type_len);
+	if (err)
+		return libbpf_err(err);
+
+	btf->hdr->type_len += data_sz;
+	btf->hdr->str_off += data_sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btf->nr_types++;
 	return btf->start_id + btf->nr_types - 1;
 }
@@ -2199,14 +2485,23 @@ static int btf_add_type(struct btf_pipe *p, const struct btf_type *src_type)
 	__u32 *str_off;
 	int sz, err;
 
+<<<<<<< HEAD
 	sz = btf_type_size(p->src, src_type);
+=======
+	sz = btf_type_size(src_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sz < 0)
 		return libbpf_err(sz);
 
 	/* deconstruct BTF, if necessary, and invalidate raw_data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(p->dst);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(p->dst))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	t = btf_add_type_mem(p->dst, sz);
 	if (!t)
@@ -2241,6 +2536,7 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 {
 	struct btf_pipe p = { .src = src_btf, .dst = btf };
 	int data_sz, sz, cnt, i, err, old_strs_len;
+<<<<<<< HEAD
 	__u32 src_start_id;
 	__u32 *off;
 	void *t;
@@ -2258,14 +2554,33 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	__u32 *off;
+	void *t;
+
+	/* appending split BTF isn't supported yet */
+	if (src_btf->base_btf)
+		return libbpf_err(-ENOTSUP);
+
+	/* deconstruct BTF, if necessary, and invalidate raw_data */
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* remember original strings section size if we have to roll back
 	 * partial strings section changes
 	 */
+<<<<<<< HEAD
 	old_strs_len = btf->hdr.str_len;
 
 	data_sz = src_btf->hdr.type_len;
 	cnt = src_btf->nr_types;
+=======
+	old_strs_len = btf->hdr->str_len;
+
+	data_sz = src_btf->hdr->type_len;
+	cnt = btf__type_cnt(src_btf) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* pre-allocate enough memory for new types */
 	t = btf_add_type_mem(btf, data_sz);
@@ -2289,7 +2604,11 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 		struct btf_field_iter it;
 		__u32 *type_id, *str_off;
 
+<<<<<<< HEAD
 		sz = btf_type_size(src_btf, t);
+=======
+		sz = btf_type_size(t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sz < 0) {
 			/* unlikely, has to be corrupted src_btf */
 			err = sz;
@@ -2304,9 +2623,12 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 		if (err)
 			goto err_out;
 		while ((str_off = btf_field_iter_next(&it))) {
+<<<<<<< HEAD
 			/* don't remap strings from shared base BTF */
 			if (*str_off < src_btf->start_str_off)
 				continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = btf_rewrite_str(&p, str_off);
 			if (err)
 				goto err_out;
@@ -2321,11 +2643,19 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 			if (!*type_id) /* nothing to do for VOID references */
 				continue;
 
+<<<<<<< HEAD
 			/* don't remap types from shared base BTF */
 			if (*type_id < src_start_id)
 				continue;
 
 			*type_id += btf->start_id + btf->nr_types - src_start_id;
+=======
+			/* we haven't updated btf's type count yet, so
+			 * btf->start_id + btf->nr_types - 1 is the type ID offset we should
+			 * add to all newly added BTF types
+			 */
+			*type_id += btf->start_id + btf->nr_types - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* go to next type data and type offset index entry */
@@ -2341,7 +2671,12 @@ int btf__add_btf(struct btf *btf, const struct btf *src_btf)
 	 * update type count and various internal offsets and sizes to
 	 * "commit" the changes and made them visible to the outside world.
 	 */
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + data_sz);
+=======
+	btf->hdr->type_len += data_sz;
+	btf->hdr->str_off += data_sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btf->nr_types += cnt;
 
 	hashmap__free(p.str_off_map);
@@ -2352,14 +2687,23 @@ err_out:
 	/* zero out preallocated memory as if it was just allocated with
 	 * libbpf_add_mem()
 	 */
+<<<<<<< HEAD
 	memset(btf->types_data + btf->hdr.type_len, 0, data_sz);
 	if (btf->strs_data)
 		memset(btf->strs_data + old_strs_len, 0, btf->hdr.str_len - old_strs_len);
+=======
+	memset(btf->types_data + btf->hdr->type_len, 0, data_sz);
+	memset(btf->strs_data + old_strs_len, 0, btf->hdr->str_len - old_strs_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* and now restore original strings section size; types data size
 	 * wasn't modified, so doesn't need restoring, see big comment above
 	 */
+<<<<<<< HEAD
 	btf_hdr_update_str_len(btf, old_strs_len);
+=======
+	btf->hdr->str_len = old_strs_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hashmap__free(p.str_off_map);
 
@@ -2379,7 +2723,10 @@ int btf__add_int(struct btf *btf, const char *name, size_t byte_sz, int encoding
 {
 	struct btf_type *t;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* non-empty name */
 	if (str_is_empty(name))
@@ -2391,9 +2738,14 @@ int btf__add_int(struct btf *btf, const char *name, size_t byte_sz, int encoding
 		return libbpf_err(-EINVAL);
 
 	/* deconstruct BTF, if necessary, and invalidate raw_data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type) + sizeof(int);
 	t = btf_add_type_mem(btf, sz);
@@ -2429,7 +2781,10 @@ int btf__add_float(struct btf *btf, const char *name, size_t byte_sz)
 {
 	struct btf_type *t;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* non-empty name */
 	if (str_is_empty(name))
@@ -2440,9 +2795,14 @@ int btf__add_float(struct btf *btf, const char *name, size_t byte_sz)
 	    byte_sz != 16)
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -2476,14 +2836,22 @@ static int btf_add_ref_kind(struct btf *btf, int kind, const char *name, int ref
 {
 	struct btf_type *t;
 	int sz, name_off = 0;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (validate_type_id(ref_type_id))
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -2528,15 +2896,23 @@ int btf__add_array(struct btf *btf, int index_type_id, int elem_type_id, __u32 n
 {
 	struct btf_type *t;
 	struct btf_array *a;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int sz;
 
 	if (validate_type_id(index_type_id) || validate_type_id(elem_type_id))
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type) + sizeof(struct btf_array);
 	t = btf_add_type_mem(btf, sz);
@@ -2560,11 +2936,17 @@ static int btf_add_composite(struct btf *btf, int kind, const char *name, __u32 
 {
 	struct btf_type *t;
 	int sz, name_off = 0;
+<<<<<<< HEAD
 	int err;
 
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -2644,7 +3026,10 @@ int btf__add_field(struct btf *btf, const char *name, int type_id,
 	struct btf_member *m;
 	bool is_bitfield;
 	int sz, name_off = 0;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* last type should be union/struct */
 	if (btf->nr_types == 0)
@@ -2665,9 +3050,14 @@ int btf__add_field(struct btf *btf, const char *name, int type_id,
 		return libbpf_err(-EINVAL);
 
 	/* decompose and invalidate raw data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_member);
 	m = btf_add_type_mem(btf, sz);
@@ -2689,7 +3079,12 @@ int btf__add_field(struct btf *btf, const char *name, int type_id,
 	/* update parent type's vlen and kflag */
 	t->info = btf_type_info(btf_kind(t), btf_vlen(t) + 1, is_bitfield || btf_kflag(t));
 
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + sz);
+=======
+	btf->hdr->type_len += sz;
+	btf->hdr->str_off += sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2698,15 +3093,23 @@ static int btf_add_enum_common(struct btf *btf, const char *name, __u32 byte_sz,
 {
 	struct btf_type *t;
 	int sz, name_off = 0;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* byte_sz must be power of 2 */
 	if (!byte_sz || (byte_sz & (byte_sz - 1)) || byte_sz > 8)
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -2762,7 +3165,10 @@ int btf__add_enum_value(struct btf *btf, const char *name, __s64 value)
 	struct btf_type *t;
 	struct btf_enum *v;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* last type should be BTF_KIND_ENUM */
 	if (btf->nr_types == 0)
@@ -2778,9 +3184,14 @@ int btf__add_enum_value(struct btf *btf, const char *name, __s64 value)
 		return libbpf_err(-E2BIG);
 
 	/* decompose and invalidate raw data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_enum);
 	v = btf_add_type_mem(btf, sz);
@@ -2802,7 +3213,12 @@ int btf__add_enum_value(struct btf *btf, const char *name, __s64 value)
 	if (value < 0)
 		t->info = btf_type_info(btf_kind(t), btf_vlen(t), true);
 
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + sz);
+=======
+	btf->hdr->type_len += sz;
+	btf->hdr->str_off += sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2840,7 +3256,10 @@ int btf__add_enum64_value(struct btf *btf, const char *name, __u64 value)
 	struct btf_enum64 *v;
 	struct btf_type *t;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* last type should be BTF_KIND_ENUM64 */
 	if (btf->nr_types == 0)
@@ -2854,9 +3273,14 @@ int btf__add_enum64_value(struct btf *btf, const char *name, __u64 value)
 		return libbpf_err(-EINVAL);
 
 	/* decompose and invalidate raw data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_enum64);
 	v = btf_add_type_mem(btf, sz);
@@ -2875,7 +3299,12 @@ int btf__add_enum64_value(struct btf *btf, const char *name, __u64 value)
 	t = btf_last_type(btf);
 	btf_type_inc_vlen(t);
 
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + sz);
+=======
+	btf->hdr->type_len += sz;
+	btf->hdr->str_off += sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3044,15 +3473,23 @@ int btf__add_func(struct btf *btf, const char *name,
 int btf__add_func_proto(struct btf *btf, int ret_type_id)
 {
 	struct btf_type *t;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int sz;
 
 	if (validate_type_id(ret_type_id))
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -3082,7 +3519,10 @@ int btf__add_func_param(struct btf *btf, const char *name, int type_id)
 	struct btf_type *t;
 	struct btf_param *p;
 	int sz, name_off = 0;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (validate_type_id(type_id))
 		return libbpf_err(-EINVAL);
@@ -3095,9 +3535,14 @@ int btf__add_func_param(struct btf *btf, const char *name, int type_id)
 		return libbpf_err(-EINVAL);
 
 	/* decompose and invalidate raw data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_param);
 	p = btf_add_type_mem(btf, sz);
@@ -3117,7 +3562,12 @@ int btf__add_func_param(struct btf *btf, const char *name, int type_id)
 	t = btf_last_type(btf);
 	btf_type_inc_vlen(t);
 
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + sz);
+=======
+	btf->hdr->type_len += sz;
+	btf->hdr->str_off += sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3136,7 +3586,10 @@ int btf__add_var(struct btf *btf, const char *name, int linkage, int type_id)
 	struct btf_type *t;
 	struct btf_var *v;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* non-empty name */
 	if (str_is_empty(name))
@@ -3148,9 +3601,14 @@ int btf__add_var(struct btf *btf, const char *name, int linkage, int type_id)
 		return libbpf_err(-EINVAL);
 
 	/* deconstruct BTF, if necessary, and invalidate raw_data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type) + sizeof(struct btf_var);
 	t = btf_add_type_mem(btf, sz);
@@ -3187,15 +3645,23 @@ int btf__add_datasec(struct btf *btf, const char *name, __u32 byte_sz)
 {
 	struct btf_type *t;
 	int sz, name_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* non-empty name */
 	if (str_is_empty(name))
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type);
 	t = btf_add_type_mem(btf, sz);
@@ -3228,7 +3694,10 @@ int btf__add_datasec_var_info(struct btf *btf, int var_type_id, __u32 offset, __
 {
 	struct btf_type *t;
 	struct btf_var_secinfo *v;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int sz;
 
 	/* last type should be BTF_KIND_DATASEC */
@@ -3242,9 +3711,14 @@ int btf__add_datasec_var_info(struct btf *btf, int var_type_id, __u32 offset, __
 		return libbpf_err(-EINVAL);
 
 	/* decompose and invalidate raw data */
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_var_secinfo);
 	v = btf_add_type_mem(btf, sz);
@@ -3259,7 +3733,12 @@ int btf__add_datasec_var_info(struct btf *btf, int var_type_id, __u32 offset, __
 	t = btf_last_type(btf);
 	btf_type_inc_vlen(t);
 
+<<<<<<< HEAD
 	btf_hdr_update_type_len(btf, btf->hdr.type_len + sz);
+=======
+	btf->hdr->type_len += sz;
+	btf->hdr->str_off += sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3268,7 +3747,10 @@ static int btf_add_decl_tag(struct btf *btf, const char *value, int ref_type_id,
 {
 	struct btf_type *t;
 	int sz, value_off;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (str_is_empty(value) || component_idx < -1)
 		return libbpf_err(-EINVAL);
@@ -3276,9 +3758,14 @@ static int btf_add_decl_tag(struct btf *btf, const char *value, int ref_type_id,
 	if (validate_type_id(ref_type_id))
 		return libbpf_err(-EINVAL);
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		return libbpf_err(err);
+=======
+	if (btf_ensure_modifiable(btf))
+		return libbpf_err(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sz = sizeof(struct btf_type) + sizeof(struct btf_decl_tag);
 	t = btf_add_type_mem(btf, sz);
@@ -3902,9 +4389,16 @@ int btf__dedup(struct btf *btf, const struct btf_dedup_opts *opts)
 		return libbpf_err(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		goto done;
+=======
+	if (btf_ensure_modifiable(btf)) {
+		err = -ENOMEM;
+		goto done;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = btf_dedup_prep(d);
 	if (err) {
@@ -4224,7 +4718,11 @@ static int btf_dedup_strings(struct btf_dedup *d)
 
 	/* replace BTF string data and hash with deduped ones */
 	strset__free(d->btf->strs_set);
+<<<<<<< HEAD
 	btf_hdr_update_str_len(d->btf, strset__data_size(d->strs_set));
+=======
+	d->btf->hdr->str_len = strset__data_size(d->strs_set);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	d->btf->strs_set = d->strs_set;
 	d->strs_set = NULL;
 	d->btf->strs_deduped = true;
@@ -5657,7 +6155,11 @@ static int btf_dedup_compact_types(struct btf_dedup *d)
 			continue;
 
 		t = btf__type_by_id(d->btf, id);
+<<<<<<< HEAD
 		len = btf_type_size(d->btf, t);
+=======
+		len = btf_type_size(t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (len < 0)
 			return len;
 
@@ -5671,17 +6173,26 @@ static int btf_dedup_compact_types(struct btf_dedup *d)
 	/* shrink struct btf's internal types index and update btf_header */
 	d->btf->nr_types = next_type_id - d->btf->start_id;
 	d->btf->type_offs_cap = d->btf->nr_types;
+<<<<<<< HEAD
 	d->btf->hdr.type_len = p - d->btf->types_data;
+=======
+	d->btf->hdr->type_len = p - d->btf->types_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	new_offs = libbpf_reallocarray(d->btf->type_offs, d->btf->type_offs_cap,
 				       sizeof(*new_offs));
 	if (d->btf->type_offs_cap && !new_offs)
 		return -ENOMEM;
 	d->btf->type_offs = new_offs;
+<<<<<<< HEAD
 	if (d->btf->layout)
 		d->btf->hdr.layout_off = d->btf->hdr.type_off + d->btf->hdr.type_len;
 	d->btf->hdr.str_off = d->btf->hdr.type_off + d->btf->hdr.type_len + d->btf->hdr.layout_len;
 	d->btf->raw_size = d->btf->hdr.hdr_len + d->btf->hdr.type_off + d->btf->hdr.type_len +
 			   d->btf->hdr.layout_len + d->btf->hdr.str_len;
+=======
+	d->btf->hdr->str_off = d->btf->hdr->type_len;
+	d->btf->raw_size = d->btf->hdr->hdr_len + d->btf->hdr->type_len + d->btf->hdr->str_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -6139,7 +6650,11 @@ int btf__distill_base(const struct btf *src_btf, struct btf **new_base_btf,
 		goto done;
 	}
 	dist.split_start_id = btf__type_cnt(old_base);
+<<<<<<< HEAD
 	dist.split_start_str = old_base->hdr.str_len;
+=======
+	dist.split_start_str = old_base->hdr->str_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Pass over src split BTF; generate the list of base BTF type ids it
 	 * references; these will constitute our distilled BTF set to be
@@ -6208,14 +6723,22 @@ done:
 
 const struct btf_header *btf_header(const struct btf *btf)
 {
+<<<<<<< HEAD
 	return &btf->hdr;
+=======
+	return btf->hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void btf_set_base_btf(struct btf *btf, const struct btf *base_btf)
 {
 	btf->base_btf = (struct btf *)base_btf;
 	btf->start_id = btf__type_cnt(base_btf);
+<<<<<<< HEAD
 	btf->start_str_off = base_btf->hdr.str_len + base_btf->start_str_off;
+=======
+	btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int btf__relocate(struct btf *btf, const struct btf *base_btf)
@@ -6282,15 +6805,26 @@ int btf__permute(struct btf *btf, __u32 *id_map, __u32 id_map_cnt,
 		goto done;
 	}
 
+<<<<<<< HEAD
 	new_types = calloc(btf->hdr.type_len, 1);
+=======
+	new_types = calloc(btf->hdr->type_len, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!new_types) {
 		err = -ENOMEM;
 		goto done;
 	}
 
+<<<<<<< HEAD
 	err = btf_ensure_modifiable(btf);
 	if (err)
 		goto done;
+=======
+	if (btf_ensure_modifiable(btf)) {
+		err = -ENOMEM;
+		goto done;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = start_offs; i < id_map_cnt; i++) {
 		id = id_map[i];
@@ -6319,7 +6853,11 @@ int btf__permute(struct btf *btf, __u32 *id_map, __u32 id_map_cnt,
 
 		id = order_map[i];
 		t = btf__type_by_id(btf, id);
+<<<<<<< HEAD
 		type_size = btf_type_size(btf, t);
+=======
+		type_size = btf_type_size(t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memcpy(nt, t, type_size);
 
 		/* fix up referenced IDs for BTF */
@@ -6345,7 +6883,11 @@ int btf__permute(struct btf *btf, __u32 *id_map, __u32 id_map_cnt,
 
 	for (nt = new_types, i = 0; i < id_map_cnt - start_offs; i++) {
 		btf->type_offs[i] = nt - new_types;
+<<<<<<< HEAD
 		nt += btf_type_size(btf, nt);
+=======
+		nt += btf_type_size(nt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	free(order_map);

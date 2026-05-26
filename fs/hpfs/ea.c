@@ -245,8 +245,13 @@ void hpfs_set_ea(struct inode *inode, struct fnode *fnode, const char *key,
 		fnode->ea_offs = cpu_to_le16(0xc4);
 	}
 	if (le16_to_cpu(fnode->ea_offs) < 0xc4 || le16_to_cpu(fnode->ea_offs) + le16_to_cpu(fnode->acl_size_s) + le16_to_cpu(fnode->ea_size_s) > 0x200) {
+<<<<<<< HEAD
 		hpfs_error(s, "fnode %08llx: ea_offs == %03x, ea_size_s == %03x",
 			inode->i_ino,
+=======
+		hpfs_error(s, "fnode %08lx: ea_offs == %03x, ea_size_s == %03x",
+			(unsigned long)inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			le16_to_cpu(fnode->ea_offs), le16_to_cpu(fnode->ea_size_s));
 		return;
 	}

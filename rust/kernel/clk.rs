@@ -128,6 +128,7 @@ mod common_clk {
     #[repr(transparent)]
     pub struct Clk(*mut bindings::clk);
 
+<<<<<<< HEAD
     // SAFETY: It is safe to call `clk_put` on another thread than where `clk_get` was called.
     unsafe impl Send for Clk {}
 
@@ -135,6 +136,8 @@ mod common_clk {
     // methods are synchronized internally.
     unsafe impl Sync for Clk {}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     impl Clk {
         /// Gets [`Clk`] corresponding to a [`Device`] and a connection id.
         ///

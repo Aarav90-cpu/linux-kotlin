@@ -3,7 +3,11 @@
  * Copyright (C) 2019 - 2021
  *
  * Richard van Schagen <vschagen@icloud.com>
+<<<<<<< HEAD
  * Christian Marangi <ansuelsmth@gmail.com>
+=======
+ * Christian Marangi <ansuelsmth@gmail.com
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <crypto/aes.h>
@@ -731,7 +735,11 @@ int eip93_hmac_setkey(u32 ctx_flags, const u8 *key, unsigned int keylen,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	ahash_tfm = crypto_alloc_ahash(alg_name, 0, 0);
+=======
+	ahash_tfm = crypto_alloc_ahash(alg_name, 0, CRYPTO_ALG_ASYNC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(ahash_tfm))
 		return PTR_ERR(ahash_tfm);
 

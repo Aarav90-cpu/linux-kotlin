@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct linkinfo_req_info {
 	struct ethnl_req_info		base;

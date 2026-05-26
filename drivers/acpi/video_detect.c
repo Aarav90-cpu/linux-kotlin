@@ -908,6 +908,7 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 	 /* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
 	 .callback = video_detect_force_native,
 	 /* Lenovo Legion S7 15ACH6 */
@@ -917,6 +918,8 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 .callback = video_detect_force_native,
 	 /* HP OMEN Gaming Laptop 16-n0xxx */
 	 .matches = {
@@ -973,6 +976,17 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
 		},
 	},
+<<<<<<< HEAD
+=======
+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
+	{
+	 .callback = video_detect_force_native,
+	 .matches = {
+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
+		},
+	},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ },
 };
 

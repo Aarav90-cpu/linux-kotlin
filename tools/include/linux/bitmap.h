@@ -28,8 +28,11 @@ bool __bitmap_subset(const unsigned long *bitmap1,
 		     const unsigned long *bitmap2, unsigned int nbits);
 bool __bitmap_andnot(unsigned long *dst, const unsigned long *bitmap1,
 		    const unsigned long *bitmap2, unsigned int nbits);
+<<<<<<< HEAD
 void __bitmap_xor(unsigned long *dst, const unsigned long *bitmap1,
 		  const unsigned long *bitmap2, unsigned int nbits);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
 #define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
@@ -55,6 +58,7 @@ static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
 	dst[nlongs - 1] = BITMAP_LAST_WORD_MASK(nbits);
 }
 
+<<<<<<< HEAD
 static __always_inline
 void bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
 {
@@ -66,6 +70,8 @@ void bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbit
 		memcpy(dst, src, len);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool bitmap_empty(const unsigned long *src, unsigned int nbits)
 {
 	if (small_const_nbits(nbits))
@@ -222,6 +228,7 @@ static inline void bitmap_clear(unsigned long *map, unsigned int start,
 	else
 		__bitmap_clear(map, start, nbits);
 }
+<<<<<<< HEAD
 
 static __always_inline
 void bitmap_xor(unsigned long *dst, const unsigned long *src1,
@@ -233,4 +240,6 @@ void bitmap_xor(unsigned long *dst, const unsigned long *src1,
 		__bitmap_xor(dst, src1, src2, nbits);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _TOOLS_LINUX_BITMAP_H */

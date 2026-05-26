@@ -220,9 +220,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_mif CLK_GOUT_MIF_HSI2C_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -425,9 +428,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C0_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -443,9 +449,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C1_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -461,9 +470,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C2_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -479,9 +491,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C3_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -497,9 +512,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C4_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -515,9 +533,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C5_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -533,9 +554,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C6_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -551,9 +575,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C1_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -569,9 +596,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C2_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -587,9 +617,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C3_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -605,9 +638,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C7_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -623,9 +659,12 @@
 			clock-names = "i2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_I2C8_PCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -641,9 +680,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C4_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -659,9 +701,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C5_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -677,9 +722,12 @@
 			clock-names = "hsi2c";
 			clocks = <&cmu_peri CLK_GOUT_PERI_HSI2C6_IPCLK>;
 
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 

@@ -3,8 +3,13 @@
  * Copyright © 2025 Intel Corporation
  */
 
+<<<<<<< HEAD
 #ifndef _XE_TILE_PRINTK_H_
 #define _XE_TILE_PRINTK_H_
+=======
+#ifndef _xe_tile_printk_H_
+#define _xe_tile_printk_H_
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "xe_printk.h"
 

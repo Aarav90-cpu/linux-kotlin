@@ -186,7 +186,11 @@ static void udf_update_alloc_ext_desc(struct inode *inode,
 		len += lenalloc;
 
 	udf_update_tag(epos->bh->b_data, len);
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(epos->bh, &UDF_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(epos->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

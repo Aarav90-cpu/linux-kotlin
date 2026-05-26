@@ -66,6 +66,7 @@
 //!
 //! A `restart` operation on a timer in the **stopped** state is equivalent to a
 //! `start` operation.
+<<<<<<< HEAD
 //!
 //! When a type implements both `HrTimerPointer` and `Clone`, it is possible to
 //! issue the `start` operation while the timer is in the **started** state. In
@@ -402,6 +403,8 @@
 //! ```
 //!
 //! [`Arc`]: kernel::sync::Arc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 use super::{ClockSource, Delta, Instant};
 use crate::{prelude::*, types::Opaque};

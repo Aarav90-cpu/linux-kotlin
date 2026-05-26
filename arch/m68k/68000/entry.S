@@ -18,6 +18,7 @@
 
 .text
 
+<<<<<<< HEAD
 /* get thread_info pointer into a2 */
  .macro getthreadinfo
 	movel	%sp,%d1
@@ -25,6 +26,8 @@
 	movel	%d1,%a2
  .endm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .globl system_call
 .globl resume
 .globl ret_from_exception
@@ -77,8 +80,14 @@ ENTRY(system_call)
 
 	movel	%sp@(PT_OFF_ORIG_D0),%d0
 
+<<<<<<< HEAD
 	/* Doing a trace ? */
 	getthreadinfo
+=======
+	movel	%sp,%d1			/* get thread_info pointer */
+	andl	#-THREAD_SIZE,%d1
+	movel	%d1,%a2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btst	#(TIF_SYSCALL_TRACE%8),%a2@(TINFO_FLAGS+(31-TIF_SYSCALL_TRACE)/8)
 	jne	do_trace
 	cmpl	#NR_syscalls,%d0
@@ -102,15 +111,27 @@ Luser_return:
 	/* heavy interrupt load*/
 	andw	#ALLOWINT,%sr
 
+<<<<<<< HEAD
 	getthreadinfo
 1:
 	/* check if any of the flags are set */
 	moveb	%a2@(TINFO_FLAGS + 3),%d1	/* thread_info->flags (low 8 bits) */
+=======
+	movel	%sp,%d1			/* get thread_info pointer */
+	andl	#-THREAD_SIZE,%d1
+	movel	%d1,%a2
+1:
+	move	%a2@(TINFO_FLAGS),%d1	/* thread_info->flags */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jne	Lwork_to_do
 	RESTORE_ALL
 
 Lwork_to_do:
+<<<<<<< HEAD
 	/* check if reschedule needs to be called */
+=======
+	movel	%a2@(TINFO_FLAGS),%d1	/* thread_info->flags */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btst	#TIF_NEED_RESCHED,%d1
 	jne	reschedule
 

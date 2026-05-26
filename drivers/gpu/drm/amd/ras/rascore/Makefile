@@ -36,8 +36,12 @@ RAS_CORE_FILES = ras_core.o \
 			ras_log_ring.o \
 			ras_cper.o \
 			ras_psp.o \
+<<<<<<< HEAD
 			ras_psp_v13_0.o \
 			ras_eeprom_fw.o
+=======
+			ras_psp_v13_0.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 RAS_CORE = $(addprefix $(AMD_GPU_RAS_PATH)/rascore/,$(RAS_CORE_FILES))

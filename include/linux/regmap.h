@@ -10,6 +10,7 @@
  * Author: Mark Brown <broonie@opensource.wolfsonmicro.com>
  */
 
+<<<<<<< HEAD
 #include <linux/bug.h>
 #include <linux/cleanup.h>
 #include <linux/delay.h>
@@ -20,6 +21,17 @@
 #include <linux/list.h>
 #include <linux/lockdep.h>
 #include <linux/rbtree.h>
+=======
+#include <linux/list.h>
+#include <linux/rbtree.h>
+#include <linux/ktime.h>
+#include <linux/delay.h>
+#include <linux/err.h>
+#include <linux/bug.h>
+#include <linux/lockdep.h>
+#include <linux/iopoll.h>
+#include <linux/fwnode.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct module;
 struct clk;
@@ -693,10 +705,13 @@ struct regmap *__regmap_init_sdw_mbq(struct device *dev, struct sdw_slave *sdw,
 				     const struct regmap_sdw_mbq_cfg *mbq_config,
 				     struct lock_class_key *lock_key,
 				     const char *lock_name);
+<<<<<<< HEAD
 struct regmap *__regmap_init_i3c(struct i3c_device *i3c,
 				 const struct regmap_config *config,
 				 struct lock_class_key *lock_key,
 				 const char *lock_name);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct regmap *__regmap_init_spi_avmm(struct spi_device *spi,
 				      const struct regmap_config *config,
 				      struct lock_class_key *lock_key,
@@ -1004,6 +1019,7 @@ bool regmap_ac97_default_volatile(struct device *dev, unsigned int reg);
 				dev, sdw, config, mbq_config)
 
 /**
+<<<<<<< HEAD
  * regmap_init_i3c() - Initialise register map
  *
  * @i3c: Device that will be interacted with
@@ -1017,6 +1033,8 @@ bool regmap_ac97_default_volatile(struct device *dev, unsigned int reg);
 				i3c, config)
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * regmap_init_spi_avmm() - Initialize register map for Intel SPI Slave
  * to AVMM Bus Bridge
  *
@@ -1478,8 +1496,11 @@ struct regmap_field *regmap_field_alloc(struct regmap *regmap,
 		struct reg_field reg_field);
 void regmap_field_free(struct regmap_field *field);
 
+<<<<<<< HEAD
 DEFINE_FREE(regmap_field, struct regmap_field *, if (_T) regmap_field_free(_T))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct regmap_field *devm_regmap_field_alloc(struct device *dev,
 		struct regmap *regmap, struct reg_field reg_field);
 void devm_regmap_field_free(struct device *dev,	struct regmap_field *field);

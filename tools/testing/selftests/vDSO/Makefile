@@ -19,6 +19,11 @@ endif
 
 include ../lib.mk
 
+<<<<<<< HEAD
+=======
+CFLAGS += $(TOOLS_INCLUDES)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CFLAGS_NOLIBC := -nostdlib -nostdinc -ffreestanding -fno-asynchronous-unwind-tables \
 		 -fno-stack-protector -include $(top_srcdir)/tools/include/nolibc/nolibc.h \
 		 -I$(top_srcdir)/tools/include/nolibc/ $(KHDR_INCLUDES)
@@ -26,11 +31,20 @@ CFLAGS_NOLIBC := -nostdlib -nostdinc -ffreestanding -fno-asynchronous-unwind-tab
 $(OUTPUT)/vdso_test_gettimeofday: parse_vdso.c vdso_test_gettimeofday.c
 $(OUTPUT)/vdso_test_getcpu: parse_vdso.c vdso_test_getcpu.c
 $(OUTPUT)/vdso_test_abi: parse_vdso.c vdso_test_abi.c
+<<<<<<< HEAD
 $(OUTPUT)/vdso_test_correctness: parse_vdso.c vdso_test_correctness.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 $(OUTPUT)/vdso_standalone_test_x86: vdso_standalone_test_x86.c parse_vdso.c | headers
 $(OUTPUT)/vdso_standalone_test_x86: CFLAGS:=$(CFLAGS_NOLIBC) $(CFLAGS)
 
+<<<<<<< HEAD
+=======
+$(OUTPUT)/vdso_test_correctness: vdso_test_correctness.c
+$(OUTPUT)/vdso_test_correctness: LDFLAGS += -ldl
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 $(OUTPUT)/vdso_test_getrandom: parse_vdso.c
 $(OUTPUT)/vdso_test_getrandom: CFLAGS += -isystem $(top_srcdir)/tools/include \
                                          $(KHDR_INCLUDES) \

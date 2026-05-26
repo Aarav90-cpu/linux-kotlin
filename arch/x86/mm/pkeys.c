@@ -42,7 +42,12 @@ int __execute_only_pkey(struct mm_struct *mm)
 	 * Set up PKRU so that it denies access for everything
 	 * other than execution.
 	 */
+<<<<<<< HEAD
 	ret = arch_set_user_pkey_access(execute_only_pkey, PKEY_DISABLE_ACCESS);
+=======
+	ret = arch_set_user_pkey_access(current, execute_only_pkey,
+			PKEY_DISABLE_ACCESS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If the PKRU-set operation failed somehow, just return
 	 * 0 and effectively disable execute-only support.

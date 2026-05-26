@@ -9,7 +9,10 @@
 
 #define MLX5_MAX_UMR_SHIFT 16
 #define MLX5_MAX_UMR_PAGES (1 << MLX5_MAX_UMR_SHIFT)
+<<<<<<< HEAD
 #define MLX5_MAX_UMR_EXTENDED_SHIFT 43
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MLX5_IB_UMR_OCTOWORD	       16
 #define MLX5_IB_UMR_XLT_ALIGNMENT      64

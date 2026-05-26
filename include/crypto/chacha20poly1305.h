@@ -46,4 +46,9 @@ bool chacha20poly1305_decrypt_sg_inplace(struct scatterlist *src, size_t src_len
 					 const u64 nonce,
 					 const u8 key[at_least CHACHA20POLY1305_KEY_SIZE]);
 
+<<<<<<< HEAD
+=======
+bool chacha20poly1305_selftest(void);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __CHACHA20POLY1305_H */

@@ -791,7 +791,14 @@ struct vc4_exec_info {
 struct vc4_file {
 	struct vc4_dev *dev;
 
+<<<<<<< HEAD
 	struct xarray perfmons;
+=======
+	struct {
+		struct idr idr;
+		struct mutex lock;
+	} perfmon;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bool bin_bo_used;
 };

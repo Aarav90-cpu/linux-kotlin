@@ -81,6 +81,7 @@ struct mxc_jpeg_desc {
 	u32 stm_bufsize;
 	u32 imgsize;
 	u32 stm_ctrl;
+<<<<<<< HEAD
 	/* below parameters are valid for v1 */
 	u32 mode;
 	u32 cfg_mode;
@@ -92,6 +93,8 @@ struct mxc_jpeg_desc {
 	u32 nomfrsize_hi;
 	u32 ofbsize_lo;
 	u32 ofbsize_hi;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct mxc_jpeg_q_data {
@@ -116,7 +119,10 @@ struct mxc_jpeg_ctx {
 	unsigned int			source_change;
 	bool				need_initial_source_change_evt;
 	bool				header_parsed;
+<<<<<<< HEAD
 	bool				extseq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct v4l2_ctrl_handler	ctrl_handler;
 	u8				jpeg_quality;
 	struct delayed_work		task_timer;
@@ -137,6 +143,7 @@ struct mxc_jpeg_slot_data {
 	dma_addr_t cfg_dec_daddr;
 };
 
+<<<<<<< HEAD
 struct mxc_jpeg_enc_ops {
 	/* Manual configuration (v0 hardware) - two-phase process */
 	void (*enter_config_mode)(struct mxc_jpeg_ctx *ctx);
@@ -146,6 +153,8 @@ struct mxc_jpeg_enc_ops {
 	void (*setup_desc)(struct mxc_jpeg_ctx *ctx);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mxc_jpeg_dev {
 	spinlock_t			hw_lock; /* hardware access lock */
 	unsigned int			mode;
@@ -163,7 +172,10 @@ struct mxc_jpeg_dev {
 	struct device			**pd_dev;
 	struct device_link		**pd_link;
 	struct gen_pool			*sram_pool;
+<<<<<<< HEAD
 	const struct mxc_jpeg_enc_ops	*enc_cfg_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

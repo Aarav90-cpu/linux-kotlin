@@ -2,10 +2,17 @@
 /*
  * RTC related functions
  */
+<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/platform_device.h>
 #include <linux/mc146818rtc.h>
 #include <linux/export.h>
+=======
+#include <linux/platform_device.h>
+#include <linux/mc146818rtc.h>
+#include <linux/export.h>
+#include <linux/pnp.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm/vsyscall.h>
 #include <asm/x86_init.h>
@@ -133,14 +140,35 @@ static struct platform_device rtc_device = {
 
 static __init int add_rtc_cmos(void)
 {
+<<<<<<< HEAD
 	if (cmos_rtc_platform_device_present)
 		return 0;
 
+=======
+#ifdef CONFIG_PNP
+	static const char * const ids[] __initconst =
+	    { "PNP0b00", "PNP0b01", "PNP0b02", };
+	struct pnp_dev *dev;
+	int i;
+
+	pnp_for_each_dev(dev) {
+		for (i = 0; i < ARRAY_SIZE(ids); i++) {
+			if (compare_pnp_id(dev->id, ids[i]) != 0)
+				return 0;
+		}
+	}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!x86_platform.legacy.rtc)
 		return -ENODEV;
 
 	platform_device_register(&rtc_device);
+<<<<<<< HEAD
 	dev_info(&rtc_device.dev, "registered fallback platform RTC device\n");
+=======
+	dev_info(&rtc_device.dev,
+		 "registered platform RTC device (no PNP device found)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

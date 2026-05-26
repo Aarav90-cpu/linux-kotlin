@@ -983,6 +983,7 @@ static struct cpuidle_state mtl_l_cstates[] __initdata = {
 		.enter = NULL }
 };
 
+<<<<<<< HEAD
 static struct cpuidle_state ptl_cstates[] __initdata = {
 	{
 		.name = "C1",
@@ -1020,6 +1021,8 @@ static struct cpuidle_state ptl_cstates[] __initdata = {
 		.enter = NULL }
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cpuidle_state gmt_cstates[] __initdata = {
 	{
 		.name = "C1",
@@ -1598,10 +1601,13 @@ static const struct idle_cpu idle_cpu_mtl_l __initconst = {
 	.state_table = mtl_l_cstates,
 };
 
+<<<<<<< HEAD
 static const struct idle_cpu idle_cpu_ptl __initconst = {
 	.state_table = ptl_cstates,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct idle_cpu idle_cpu_gmt __initconst = {
 	.state_table = gmt_cstates,
 };
@@ -1710,7 +1716,10 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_ALDERLAKE,		&idle_cpu_adl),
 	X86_MATCH_VFM(INTEL_ALDERLAKE_L,	&idle_cpu_adl_l),
 	X86_MATCH_VFM(INTEL_METEORLAKE_L,	&idle_cpu_mtl_l),
+<<<<<<< HEAD
 	X86_MATCH_VFM(INTEL_PANTHERLAKE_L,	&idle_cpu_ptl),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT,	&idle_cpu_gmt),
 	X86_MATCH_VFM(INTEL_SAPPHIRERAPIDS_X,	&idle_cpu_spr),
 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	&idle_cpu_spr),

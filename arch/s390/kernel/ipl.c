@@ -21,7 +21,10 @@
 #include <linux/crash_dump.h>
 #include <linux/debug_locks.h>
 #include <linux/vmalloc.h>
+<<<<<<< HEAD
 #include <linux/secure_boot.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/asm-extable.h>
 #include <asm/machine.h>
 #include <asm/diag.h>
@@ -2388,11 +2391,14 @@ void __no_stack_protector s390_reset_system(void)
 	diag_amode31_ops.diag308_reset();
 }
 
+<<<<<<< HEAD
 bool arch_get_secureboot(void)
 {
 	return ipl_secure_flag;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_KEXEC_FILE
 
 int ipl_report_add_component(struct ipl_report *report, struct kexec_buf *kbuf,

@@ -38,6 +38,10 @@ obj-y += stm32/
 obj-$(CONFIG_CRYPTO_DEV_TALITOS) += talitos.o
 obj-$(CONFIG_CRYPTO_DEV_TEGRA) += tegra/
 obj-$(CONFIG_CRYPTO_DEV_VIRTIO) += virtio/
+<<<<<<< HEAD
+=======
+#obj-$(CONFIG_CRYPTO_DEV_VMX) += vmx/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_CRYPTO_DEV_BCM_SPU) += bcm/
 obj-y += inside-secure/
 obj-$(CONFIG_CRYPTO_DEV_ARTPEC6) += axis/

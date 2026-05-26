@@ -136,6 +136,7 @@ __bpf_kfunc static void cubictcp_init(struct sock *sk)
 		bictcp_hystart_reset(sk);
 
 	if (!hystart && initial_ssthresh)
+<<<<<<< HEAD
 		WRITE_ONCE(tcp_sk(sk)->snd_ssthresh, initial_ssthresh);
 }
 
@@ -154,6 +155,29 @@ __bpf_kfunc static void cubictcp_cwnd_event_tx_start(struct sock *sk)
 		ca->epoch_start += delta;
 		if (after(ca->epoch_start, now))
 			ca->epoch_start = now;
+=======
+		tcp_sk(sk)->snd_ssthresh = initial_ssthresh;
+}
+
+__bpf_kfunc static void cubictcp_cwnd_event(struct sock *sk, enum tcp_ca_event event)
+{
+	if (event == CA_EVENT_TX_START) {
+		struct bictcp *ca = inet_csk_ca(sk);
+		u32 now = tcp_jiffies32;
+		s32 delta;
+
+		delta = now - tcp_sk(sk)->lsndtime;
+
+		/* We were application limited (idle) for a while.
+		 * Shift epoch_start to keep cwnd growth to cubic curve.
+		 */
+		if (ca->epoch_start && delta > 0) {
+			ca->epoch_start += delta;
+			if (after(ca->epoch_start, now))
+				ca->epoch_start = now;
+		}
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -420,7 +444,11 @@ static void hystart_update(struct sock *sk, u32 delay)
 				NET_ADD_STATS(sock_net(sk),
 					      LINUX_MIB_TCPHYSTARTTRAINCWND,
 					      tcp_snd_cwnd(tp));
+<<<<<<< HEAD
 				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+=======
+				tp->snd_ssthresh = tcp_snd_cwnd(tp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
@@ -440,7 +468,11 @@ static void hystart_update(struct sock *sk, u32 delay)
 				NET_ADD_STATS(sock_net(sk),
 					      LINUX_MIB_TCPHYSTARTDELAYCWND,
 					      tcp_snd_cwnd(tp));
+<<<<<<< HEAD
 				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+=======
+				tp->snd_ssthresh = tcp_snd_cwnd(tp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
@@ -478,7 +510,11 @@ static struct tcp_congestion_ops cubictcp __read_mostly = {
 	.cong_avoid	= cubictcp_cong_avoid,
 	.set_state	= cubictcp_state,
 	.undo_cwnd	= tcp_reno_undo_cwnd,
+<<<<<<< HEAD
 	.cwnd_event_tx_start = cubictcp_cwnd_event_tx_start,
+=======
+	.cwnd_event	= cubictcp_cwnd_event,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pkts_acked     = cubictcp_acked,
 	.owner		= THIS_MODULE,
 	.name		= "cubic",
@@ -489,7 +525,11 @@ BTF_ID_FLAGS(func, cubictcp_init)
 BTF_ID_FLAGS(func, cubictcp_recalc_ssthresh)
 BTF_ID_FLAGS(func, cubictcp_cong_avoid)
 BTF_ID_FLAGS(func, cubictcp_state)
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, cubictcp_cwnd_event_tx_start)
+=======
+BTF_ID_FLAGS(func, cubictcp_cwnd_event)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, cubictcp_acked)
 BTF_KFUNCS_END(tcp_cubic_check_kfunc_ids)
 

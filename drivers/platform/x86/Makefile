@@ -14,7 +14,10 @@ obj-$(CONFIG_NVIDIA_WMI_EC_BACKLIGHT)	+= nvidia-wmi-ec-backlight.o
 obj-$(CONFIG_XIAOMI_WMI)		+= xiaomi-wmi.o
 obj-$(CONFIG_REDMI_WMI)			+= redmi-wmi.o
 obj-$(CONFIG_GIGABYTE_WMI)		+= gigabyte-wmi.o
+<<<<<<< HEAD
 obj-$(CONFIG_BITLAND_MIFS_WMI)		+= bitland-mifs-wmi.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Acer
 obj-$(CONFIG_ACERHDF)		+= acerhdf.o

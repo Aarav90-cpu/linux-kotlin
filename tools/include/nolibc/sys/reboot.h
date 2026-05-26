@@ -20,15 +20,25 @@
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 ssize_t _sys_reboot(int magic1, int magic2, int cmd, void *arg)
 {
 	return __nolibc_syscall4(__NR_reboot, magic1, magic2, cmd, arg);
+=======
+ssize_t sys_reboot(int magic1, int magic2, int cmd, void *arg)
+{
+	return my_syscall4(__NR_reboot, magic1, magic2, cmd, arg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 int reboot(int cmd)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_reboot(LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2, cmd, NULL));
+=======
+	return __sysret(sys_reboot(LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2, cmd, NULL));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_SYS_REBOOT_H */

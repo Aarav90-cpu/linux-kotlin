@@ -25,10 +25,13 @@
 	nvram@1c080000 {
 		compatible = "brcm,nvram";
 		reg = <0x1c080000 0x100000>;
+<<<<<<< HEAD
 
 		et2macaddr: et2macaddr {
 			#nvmem-cell-cells = <1>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	gpio-keys {
@@ -234,9 +237,12 @@
 
 		port@4 {
 			label = "wan";
+<<<<<<< HEAD
 
 			nvmem-cells = <&et2macaddr 1>;
 			nvmem-cell-names = "mac-address";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		port@5 {

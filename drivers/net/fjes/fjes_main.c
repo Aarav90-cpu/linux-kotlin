@@ -111,6 +111,59 @@ fjes_get_acpi_resource(struct acpi_resource *acpi_res, void *data)
 	return AE_OK;
 }
 
+<<<<<<< HEAD
+=======
+static struct resource fjes_resource[] = {
+	DEFINE_RES_MEM(0, 1),
+	DEFINE_RES_IRQ(0)
+};
+
+static int fjes_acpi_add(struct acpi_device *device)
+{
+	struct platform_device *plat_dev;
+	acpi_status status;
+
+	if (!is_extended_socket_device(device))
+		return -ENODEV;
+
+	if (acpi_check_extended_socket_status(device))
+		return -ENODEV;
+
+	status = acpi_walk_resources(device->handle, METHOD_NAME__CRS,
+				     fjes_get_acpi_resource, fjes_resource);
+	if (ACPI_FAILURE(status))
+		return -ENODEV;
+
+	/* create platform_device */
+	plat_dev = platform_device_register_simple(DRV_NAME, 0, fjes_resource,
+						   ARRAY_SIZE(fjes_resource));
+	if (IS_ERR(plat_dev))
+		return PTR_ERR(plat_dev);
+
+	device->driver_data = plat_dev;
+
+	return 0;
+}
+
+static void fjes_acpi_remove(struct acpi_device *device)
+{
+	struct platform_device *plat_dev;
+
+	plat_dev = (struct platform_device *)acpi_driver_data(device);
+	platform_device_unregister(plat_dev);
+}
+
+static struct acpi_driver fjes_acpi_driver = {
+	.name = DRV_NAME,
+	.class = DRV_NAME,
+	.ids = fjes_acpi_ids,
+	.ops = {
+		.add = fjes_acpi_add,
+		.remove = fjes_acpi_remove,
+	},
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fjes_setup_resources(struct fjes_adapter *adapter)
 {
 	struct net_device *netdev = adapter->netdev;
@@ -1420,24 +1473,35 @@ static struct platform_driver fjes_driver = {
 	.remove = fjes_remove,
 };
 
+<<<<<<< HEAD
 struct fjes_acpi_walk_context {
 	struct acpi_device *adev;
 	struct resource resources[2];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static acpi_status
 acpi_find_extended_socket_device(acpi_handle obj_handle, u32 level,
 				 void *context, void **return_value)
 {
+<<<<<<< HEAD
 	struct fjes_acpi_walk_context *fjes_context = context;
 	struct acpi_device *device;
 	acpi_status status;
 
 	device = acpi_get_acpi_dev(obj_handle);
+=======
+	struct acpi_device *device;
+	bool *found = context;
+
+	device = acpi_fetch_acpi_dev(obj_handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!device)
 		return AE_OK;
 
 	if (strcmp(acpi_device_hid(device), ACPI_MOTHERBOARD_RESOURCE_HID))
+<<<<<<< HEAD
 		goto skip;
 
 	if (!is_extended_socket_device(device))
@@ -1495,6 +1559,33 @@ static int __init fjes_init_module(void)
 	if (IS_ERR(fjes_plat_dev))
 		return PTR_ERR(fjes_plat_dev);
 
+=======
+		return AE_OK;
+
+	if (!is_extended_socket_device(device))
+		return AE_OK;
+
+	if (acpi_check_extended_socket_status(device))
+		return AE_OK;
+
+	*found = true;
+	return AE_CTRL_TERMINATE;
+}
+
+/* fjes_init_module - Driver Registration Routine */
+static int __init fjes_init_module(void)
+{
+	bool found = false;
+	int result;
+
+	acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, ACPI_UINT32_MAX,
+			    acpi_find_extended_socket_device, NULL, &found,
+			    NULL);
+
+	if (!found)
+		return -ENODEV;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_info("%s - version %s - %s\n",
 		fjes_driver_string, fjes_driver_version, fjes_copyright);
 
@@ -1503,11 +1594,27 @@ static int __init fjes_init_module(void)
 	result = platform_driver_register(&fjes_driver);
 	if (result < 0) {
 		fjes_dbg_exit();
+<<<<<<< HEAD
 		platform_device_unregister(fjes_plat_dev);
 		return result;
 	}
 
 	return 0;
+=======
+		return result;
+	}
+
+	result = acpi_bus_register_driver(&fjes_acpi_driver);
+	if (result < 0)
+		goto fail_acpi_driver;
+
+	return 0;
+
+fail_acpi_driver:
+	platform_driver_unregister(&fjes_driver);
+	fjes_dbg_exit();
+	return result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(fjes_init_module);
@@ -1515,9 +1622,15 @@ module_init(fjes_init_module);
 /* fjes_exit_module - Driver Exit Cleanup Routine */
 static void __exit fjes_exit_module(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&fjes_driver);
 	fjes_dbg_exit();
 	platform_device_unregister(fjes_plat_dev);
+=======
+	acpi_bus_unregister_driver(&fjes_acpi_driver);
+	platform_driver_unregister(&fjes_driver);
+	fjes_dbg_exit();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_exit(fjes_exit_module);

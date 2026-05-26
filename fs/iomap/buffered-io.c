@@ -601,8 +601,13 @@ void iomap_read_folio(const struct iomap_ops *ops,
 		iter.status = iomap_read_folio_iter(&iter, ctx,
 				&bytes_submitted);
 
+<<<<<<< HEAD
 	if (ctx->read_ctx && ctx->ops->submit_read)
 		ctx->ops->submit_read(&iter, ctx);
+=======
+	if (ctx->ops->submit_read)
+		ctx->ops->submit_read(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctx->cur_folio)
 		iomap_read_end(ctx->cur_folio, bytes_submitted);
@@ -668,8 +673,13 @@ void iomap_readahead(const struct iomap_ops *ops,
 		iter.status = iomap_readahead_iter(&iter, ctx,
 					&cur_bytes_submitted);
 
+<<<<<<< HEAD
 	if (ctx->read_ctx && ctx->ops->submit_read)
 		ctx->ops->submit_read(&iter, ctx);
+=======
+	if (ctx->ops->submit_read)
+		ctx->ops->submit_read(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctx->cur_folio)
 		iomap_read_end(ctx->cur_folio, cur_bytes_submitted);
@@ -1647,12 +1657,23 @@ iomap_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
 	while ((ret = iomap_iter(&iter, ops)) > 0) {
 		const struct iomap *srcmap = iomap_iter_srcmap(&iter);
 
+<<<<<<< HEAD
+=======
+		if (WARN_ON_ONCE((iter.iomap.flags & IOMAP_F_FOLIO_BATCH) &&
+				 srcmap->type != IOMAP_UNWRITTEN))
+			return -EIO;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!(iter.iomap.flags & IOMAP_F_FOLIO_BATCH) &&
 		    (srcmap->type == IOMAP_HOLE ||
 		     srcmap->type == IOMAP_UNWRITTEN)) {
 			s64 status;
 
+<<<<<<< HEAD
 			if (range_dirty && srcmap->type == IOMAP_UNWRITTEN) {
+=======
+			if (range_dirty) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				range_dirty = false;
 				status = iomap_zero_iter_flush_and_stale(&iter);
 			} else {

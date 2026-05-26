@@ -274,3 +274,23 @@ err_radeon_fbdev_destroy_pinned_object:
 	radeon_fbdev_destroy_pinned_object(gobj);
 	return ret;
 }
+<<<<<<< HEAD
+=======
+
+bool radeon_fbdev_robj_is_fb(struct radeon_device *rdev, struct radeon_bo *robj)
+{
+	struct drm_fb_helper *fb_helper = rdev_to_drm(rdev)->fb_helper;
+	struct drm_gem_object *gobj;
+
+	if (!fb_helper)
+		return false;
+
+	gobj = drm_gem_fb_get_obj(fb_helper->fb, 0);
+	if (!gobj)
+		return false;
+	if (gobj != &robj->tbo.base)
+		return false;
+
+	return true;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

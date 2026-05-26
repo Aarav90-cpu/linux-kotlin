@@ -78,6 +78,7 @@ struct dml2_core_ip_params core_dcn4_ip_caps_base = {
 	.subvp_swath_height_margin_lines = 16,
 };
 
+<<<<<<< HEAD
 struct dml2_core_ip_params core_dcn42_ip_caps_base = {
 	.vblank_nom_default_us = 668,
 	.remote_iommu_outstanding_translations = 256,
@@ -158,6 +159,8 @@ struct dml2_core_ip_params core_dcn42_ip_caps_base = {
 	.hostvm_mode = 0,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void patch_ip_caps_with_explicit_ip_params(struct dml2_ip_capabilities *ip_caps, const struct dml2_core_ip_params *ip_params)
 {
 	ip_caps->pipe_count = ip_params->max_num_dpp;
@@ -187,7 +190,10 @@ static void patch_ip_params_with_ip_caps(struct dml2_core_ip_params *ip_params, 
 {
 	ip_params->max_num_dpp = ip_caps->pipe_count;
 	ip_params->max_num_otg = ip_caps->otg_count;
+<<<<<<< HEAD
 	ip_params->max_num_opp = ip_caps->otg_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ip_params->num_dsc = ip_caps->num_dsc;
 	ip_params->max_num_dp2p0_streams = ip_caps->max_num_dp2p0_streams;
 	ip_params->max_num_dp2p0_outputs = ip_caps->max_num_dp2p0_outputs;
@@ -234,6 +240,7 @@ bool core_dcn4_initialize(struct dml2_core_initialize_in_out *in_out)
 	return true;
 }
 
+<<<<<<< HEAD
 bool core_dcn42_initialize(struct dml2_core_initialize_in_out *in_out)
 {
 	struct dml2_core_instance *core = in_out->instance;
@@ -265,6 +272,8 @@ bool core_dcn42_initialize(struct dml2_core_initialize_in_out *in_out)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void create_phantom_stream_from_main_stream(struct dml2_stream_parameters *phantom, const struct dml2_stream_parameters *main,
 	const struct dml2_implicit_svp_meta *meta)
 {
@@ -281,7 +290,10 @@ static void create_phantom_stream_from_main_stream(struct dml2_stream_parameters
 static void create_phantom_plane_from_main_plane(struct dml2_plane_parameters *phantom, const struct dml2_plane_parameters *main,
 	const struct dml2_stream_parameters *phantom_stream, int phantom_stream_index, const struct dml2_stream_parameters *main_stream)
 {
+<<<<<<< HEAD
 	(void)main_stream;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(phantom, main, sizeof(struct dml2_plane_parameters));
 
 	phantom->stream_index = phantom_stream_index;

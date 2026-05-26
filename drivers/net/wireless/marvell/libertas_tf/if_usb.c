@@ -144,12 +144,21 @@ static const struct lbtf_ops if_usb_ops = {
 static int if_usb_probe(struct usb_interface *intf,
 			const struct usb_device_id *id)
 {
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep_in, *ep_out;
 	struct usb_device *udev;
 	struct usb_host_interface *iface_desc;
 	struct lbtf_private *priv;
 	struct if_usb_card *cardp;
 	int ret;
+=======
+	struct usb_device *udev;
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	struct lbtf_private *priv;
+	struct if_usb_card *cardp;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lbtf_deb_enter(LBTF_DEB_USB);
 	udev = interface_to_usbdev(intf);
@@ -171,6 +180,7 @@ static int if_usb_probe(struct usb_interface *intf,
 		     udev->descriptor.bDeviceSubClass,
 		     udev->descriptor.bDeviceProtocol);
 
+<<<<<<< HEAD
 	ret = usb_find_common_endpoints_reverse(iface_desc, &ep_in, &ep_out,
 						NULL, NULL);
 	if (ret) {
@@ -192,6 +202,33 @@ static int if_usb_probe(struct usb_interface *intf,
 
 	if (!cardp->ep_out_size || !cardp->ep_in_size) {
 		lbtf_deb_usbd(&udev->dev, "Endpoints not valid\n");
+=======
+	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+		endpoint = &iface_desc->endpoint[i].desc;
+		if (usb_endpoint_is_bulk_in(endpoint)) {
+			cardp->ep_in_size =
+				le16_to_cpu(endpoint->wMaxPacketSize);
+			cardp->ep_in = usb_endpoint_num(endpoint);
+
+			lbtf_deb_usbd(&udev->dev, "in_endpoint = %d\n",
+				cardp->ep_in);
+			lbtf_deb_usbd(&udev->dev, "Bulk in size is %d\n",
+				cardp->ep_in_size);
+		} else if (usb_endpoint_is_bulk_out(endpoint)) {
+			cardp->ep_out_size =
+				le16_to_cpu(endpoint->wMaxPacketSize);
+			cardp->ep_out = usb_endpoint_num(endpoint);
+
+			lbtf_deb_usbd(&udev->dev, "out_endpoint = %d\n",
+				cardp->ep_out);
+			lbtf_deb_usbd(&udev->dev, "Bulk out size is %d\n",
+				cardp->ep_out_size);
+		}
+	}
+	if (!cardp->ep_out_size || !cardp->ep_in_size) {
+		lbtf_deb_usbd(&udev->dev, "Endpoints not found\n");
+		/* Endpoints not found */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto dealloc;
 	}
 
@@ -219,6 +256,10 @@ static int if_usb_probe(struct usb_interface *intf,
 	if (!priv)
 		goto dealloc;
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(intf, cardp);
 
 	return 0;
@@ -253,6 +294,10 @@ static void if_usb_disconnect(struct usb_interface *intf)
 	kfree(cardp);
 
 	usb_set_intfdata(intf, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lbtf_deb_leave(LBTF_DEB_MAIN);
 }

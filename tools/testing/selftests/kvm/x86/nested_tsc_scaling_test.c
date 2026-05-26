@@ -19,7 +19,11 @@
 /* L2 is scaled up (from L1's perspective) by this factor */
 #define L2_SCALE_FACTOR 4ULL
 
+<<<<<<< HEAD
 #define TSC_OFFSET_L2 ((u64)-33125236320908)
+=======
+#define TSC_OFFSET_L2 ((uint64_t) -33125236320908)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TSC_MULTIPLIER_L2 (L2_SCALE_FACTOR << 48)
 
 #define L2_GUEST_STACK_SIZE 64
@@ -35,9 +39,15 @@ enum { USLEEP, UCHECK_L1, UCHECK_L2 };
  * measurements, a difference of 1% between the actual and the expected value
  * is tolerated.
  */
+<<<<<<< HEAD
 static void compare_tsc_freq(u64 actual, u64 expected)
 {
 	u64 tolerance, thresh_low, thresh_high;
+=======
+static void compare_tsc_freq(uint64_t actual, uint64_t expected)
+{
+	uint64_t tolerance, thresh_low, thresh_high;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tolerance = expected / 100;
 	thresh_low = expected - tolerance;
@@ -55,7 +65,11 @@ static void compare_tsc_freq(u64 actual, u64 expected)
 
 static void check_tsc_freq(int level)
 {
+<<<<<<< HEAD
 	u64 tsc_start, tsc_end, tsc_freq;
+=======
+	uint64_t tsc_start, tsc_end, tsc_freq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Reading the TSC twice with about a second's difference should give
@@ -106,7 +120,11 @@ static void l1_svm_code(struct svm_test_data *svm)
 static void l1_vmx_code(struct vmx_pages *vmx_pages)
 {
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+<<<<<<< HEAD
 	u32 control;
+=======
+	uint32_t control;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* check that L1's frequency looks alright before launching L2 */
 	check_tsc_freq(UCHECK_L1);
@@ -152,6 +170,7 @@ int main(int argc, char *argv[])
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	gva_t guest_gva = 0;
 
 	u64 tsc_start, tsc_end;
@@ -160,6 +179,16 @@ int main(int argc, char *argv[])
 	u64 l0_tsc_freq = 0;
 	u64 l1_tsc_freq = 0;
 	u64 l2_tsc_freq = 0;
+=======
+	vm_vaddr_t guest_gva = 0;
+
+	uint64_t tsc_start, tsc_end;
+	uint64_t tsc_khz;
+	uint64_t l1_scale_factor;
+	uint64_t l0_tsc_freq = 0;
+	uint64_t l1_tsc_freq = 0;
+	uint64_t l2_tsc_freq = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) ||
 		     kvm_cpu_has(X86_FEATURE_SVM));

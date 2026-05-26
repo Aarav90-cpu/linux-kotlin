@@ -7,7 +7,10 @@
  * Copyright (C) 2026 Collabora, Ltd.
  */
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/io.h>
@@ -25,6 +28,18 @@
 #include <media/v4l2-mc.h>
 #include <media/v4l2-subdev.h>
 
+<<<<<<< HEAD
+=======
+#define DW_MIPI_CSI2RX_N_LANES		0x04
+#define DW_MIPI_CSI2RX_RESETN		0x10
+#define DW_MIPI_CSI2RX_PHY_STATE	0x14
+#define DW_MIPI_CSI2RX_ERR1		0x20
+#define DW_MIPI_CSI2RX_ERR2		0x24
+#define DW_MIPI_CSI2RX_MSK1		0x28
+#define DW_MIPI_CSI2RX_MSK2		0x2c
+#define DW_MIPI_CSI2RX_CONTROL		0x40
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SW_CPHY_EN(x)		((x) << 0)
 #define SW_DSI_EN(x)		((x) << 4)
 #define SW_DATATYPE_FS(x)	((x) << 8)
@@ -32,6 +47,7 @@
 #define SW_DATATYPE_LS(x)	((x) << 20)
 #define SW_DATATYPE_LE(x)	((x) << 26)
 
+<<<<<<< HEAD
 #define DW_REG_EXIST		BIT(31)
 #define DW_REG(x)		(DW_REG_EXIST | (x))
 
@@ -73,6 +89,9 @@ enum dw_mipi_csi2rx_regs_index {
 
 	DW_MIPI_CSI2RX_MAX,
 };
+=======
+#define DW_MIPI_CSI2RX_CLKS_MAX	1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum {
 	DW_MIPI_CSI2RX_PAD_SINK,
@@ -80,6 +99,7 @@ enum {
 	DW_MIPI_CSI2RX_PAD_MAX,
 };
 
+<<<<<<< HEAD
 struct dw_mipi_csi2rx_device;
 
 struct dw_mipi_csi2rx_drvdata {
@@ -89,6 +109,8 @@ struct dw_mipi_csi2rx_drvdata {
 	void (*ipi_enable)(struct dw_mipi_csi2rx_device *csi2);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dw_mipi_csi2rx_format {
 	u32 code;
 	u8 depth;
@@ -113,6 +135,7 @@ struct dw_mipi_csi2rx_device {
 
 	enum v4l2_mbus_type bus_type;
 	u32 lanes_num;
+<<<<<<< HEAD
 
 	const struct dw_mipi_csi2rx_drvdata *drvdata;
 };
@@ -145,6 +168,8 @@ static const u32 imx93_regs[DW_MIPI_CSI2RX_MAX] = {
 	[DW_MIPI_CSI2RX_IPI_DATATYPE] = DW_REG(0x88),
 	[DW_MIPI_CSI2RX_IPI_MEM_FLUSH] = DW_REG(0x8c),
 	[DW_MIPI_CSI2RX_IPI_SOFTRSTN] = DW_REG(0xa0),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct v4l2_mbus_framefmt default_format = {
@@ -259,6 +284,7 @@ static inline struct dw_mipi_csi2rx_device *to_csi2(struct v4l2_subdev *sd)
 	return container_of(sd, struct dw_mipi_csi2rx_device, sd);
 }
 
+<<<<<<< HEAD
 static bool dw_mipi_csi2rx_has_reg(struct dw_mipi_csi2rx_device *csi2,
 				   enum dw_mipi_csi2rx_regs_index index)
 {
@@ -303,6 +329,18 @@ static inline u32 dw_mipi_csi2rx_read(struct dw_mipi_csi2rx_device *csi2,
 	}
 
 	return readl(dw_mipi_csi2rx_get_regaddr(csi2, index));
+=======
+static inline void dw_mipi_csi2rx_write(struct dw_mipi_csi2rx_device *csi2,
+					unsigned int addr, u32 val)
+{
+	writel(val, csi2->base_addr + addr);
+}
+
+static inline u32 dw_mipi_csi2rx_read(struct dw_mipi_csi2rx_device *csi2,
+				      unsigned int addr)
+{
+	return readl(csi2->base_addr + addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct dw_mipi_csi2rx_format *
@@ -367,15 +405,19 @@ static int dw_mipi_csi2rx_start(struct dw_mipi_csi2rx_device *csi2)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_RESETN, 0);
 
 	if (csi2->drvdata->dphy_assert_reset)
 		csi2->drvdata->dphy_assert_reset(csi2);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	control |= SW_DATATYPE_FS(0x00) | SW_DATATYPE_FE(0x01) |
 		   SW_DATATYPE_LS(0x02) | SW_DATATYPE_LE(0x03);
 
 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_N_LANES, lanes - 1);
+<<<<<<< HEAD
 
 	if (dw_mipi_csi2rx_has_reg(csi2, DW_MIPI_CSI2RX_CONTROL))
 		dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_CONTROL, control);
@@ -393,6 +435,12 @@ static int dw_mipi_csi2rx_start(struct dw_mipi_csi2rx_device *csi2)
 		csi2->drvdata->ipi_enable(csi2);
 
 	return 0;
+=======
+	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_CONTROL, control);
+	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_RESETN, 1);
+
+	return phy_power_on(csi2->phy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void dw_mipi_csi2rx_stop(struct dw_mipi_csi2rx_device *csi2)
@@ -400,12 +448,17 @@ static void dw_mipi_csi2rx_stop(struct dw_mipi_csi2rx_device *csi2)
 	phy_power_off(csi2->phy);
 
 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_RESETN, 0);
+<<<<<<< HEAD
 
 	if (dw_mipi_csi2rx_has_reg(csi2, DW_MIPI_CSI2RX_MSK1))
 		dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_MSK1, ~0);
 
 	if (dw_mipi_csi2rx_has_reg(csi2, DW_MIPI_CSI2RX_MSK2))
 		dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_MSK2, ~0);
+=======
+	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_MSK1, ~0);
+	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_MSK2, ~0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct media_entity_operations dw_mipi_csi2rx_media_ops = {
@@ -560,6 +613,7 @@ static int dw_mipi_csi2rx_disable_streams(struct v4l2_subdev *sd,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int
 dw_mipi_csi2rx_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
 			      struct v4l2_mbus_frame_desc *fd)
@@ -580,11 +634,16 @@ dw_mipi_csi2rx_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
 				remote_pad->index, fd);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct v4l2_subdev_pad_ops dw_mipi_csi2rx_pad_ops = {
 	.enum_mbus_code = dw_mipi_csi2rx_enum_mbus_code,
 	.get_fmt = v4l2_subdev_get_fmt,
 	.set_fmt = dw_mipi_csi2rx_set_fmt,
+<<<<<<< HEAD
 	.get_frame_desc = dw_mipi_csi2rx_get_frame_desc,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.set_routing = dw_mipi_csi2rx_set_routing,
 	.enable_streams = dw_mipi_csi2rx_enable_streams,
 	.disable_streams = dw_mipi_csi2rx_disable_streams,
@@ -755,6 +814,7 @@ static void dw_mipi_csi2rx_unregister(struct dw_mipi_csi2rx_device *csi2)
 	v4l2_async_nf_cleanup(&csi2->notifier);
 }
 
+<<<<<<< HEAD
 static void imx93_csi2rx_dphy_assert_reset(struct dw_mipi_csi2rx_device *csi2)
 {
 	u32 val;
@@ -842,6 +902,11 @@ static const struct of_device_id dw_mipi_csi2rx_of_match[] = {
 	{
 		.compatible = "rockchip,rk3568-mipi-csi2",
 		.data = &rk3568_drvdata,
+=======
+static const struct of_device_id dw_mipi_csi2rx_of_match[] = {
+	{
+		.compatible = "rockchip,rk3568-mipi-csi2",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{}
 };
@@ -863,6 +928,7 @@ static int dw_mipi_csi2rx_probe(struct platform_device *pdev)
 	if (IS_ERR(csi2->base_addr))
 		return PTR_ERR(csi2->base_addr);
 
+<<<<<<< HEAD
 	csi2->drvdata = device_get_match_data(dev);
 	if (!csi2->drvdata)
 		return dev_err_probe(dev, -EINVAL,
@@ -870,6 +936,10 @@ static int dw_mipi_csi2rx_probe(struct platform_device *pdev)
 
 	ret = devm_clk_bulk_get_all(dev, &csi2->clks);
 	if (ret < 0)
+=======
+	ret = devm_clk_bulk_get_all(dev, &csi2->clks);
+	if (ret != DW_MIPI_CSI2RX_CLKS_MAX)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return dev_err_probe(dev, -ENODEV, "failed to get clocks\n");
 	csi2->clks_num = ret;
 
@@ -878,7 +948,11 @@ static int dw_mipi_csi2rx_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(csi2->phy),
 				     "failed to get MIPI CSI-2 PHY\n");
 
+<<<<<<< HEAD
 	csi2->reset = devm_reset_control_get_optional_exclusive(dev, NULL);
+=======
+	csi2->reset = devm_reset_control_get_exclusive(dev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(csi2->reset))
 		return dev_err_probe(dev, PTR_ERR(csi2->reset),
 				     "failed to get reset\n");

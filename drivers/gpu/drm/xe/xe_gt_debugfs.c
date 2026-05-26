@@ -155,6 +155,7 @@ static int register_save_restore(struct xe_gt *gt, struct drm_printer *p)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Check the registers referenced on a save-restore list and report any
  * save-restore entries that did not get applied.
@@ -179,6 +180,8 @@ static int register_save_restore_check(struct xe_gt *gt, struct drm_printer *p)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rcs_default_lrc(struct xe_gt *gt, struct drm_printer *p)
 {
 	xe_lrc_dump_default(p, gt, XE_ENGINE_CLASS_RENDER);
@@ -233,8 +236,11 @@ static const struct drm_info_list vf_safe_debugfs_list[] = {
 	{ "default_lrc_vecs", .show = xe_gt_debugfs_show_with_rpm, .data = vecs_default_lrc },
 	{ "hwconfig", .show = xe_gt_debugfs_show_with_rpm, .data = hwconfig },
 	{ "pat_sw_config", .show = xe_gt_debugfs_simple_show, .data = xe_pat_dump_sw_config },
+<<<<<<< HEAD
 	{ "register-save-restore-check",
 		.show = xe_gt_debugfs_show_with_rpm, .data = register_save_restore_check },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* everything else should be added here */

@@ -454,12 +454,16 @@ xchk_da_btree_block(
 			}
 		}
 
+<<<<<<< HEAD
 		if (xfs_has_crc(ip->i_mount)) {
 			struct xfs_da3_node_hdr *nodehdr3 = blk->bp->b_addr;
 
 			if (nodehdr3->__pad32)
 				xchk_da_set_preen(ds, level);
 		}
+=======
+		/* XXX: Check hdr3.pad32 once we know how to fix it. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		xchk_da_set_corrupt(ds, level);

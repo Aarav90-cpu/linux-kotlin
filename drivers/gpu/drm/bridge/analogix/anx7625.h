@@ -51,6 +51,7 @@
 #define INTR_RECEIVED_MSG BIT(5)
 
 #define SYSTEM_STSTUS 0x45
+<<<<<<< HEAD
 #define INTERFACE_CHANGE_INT_MASK 0x43
 #define INTERFACE_CHANGE_INT 0x44
 #define VCONN_STATUS	BIT(2)
@@ -69,6 +70,11 @@
 
 #define CMD_SEND_BUF		0xC0
 #define CMD_RECV_BUF		0xE0
+=======
+#define INTERFACE_CHANGE_INT 0x44
+#define HPD_STATUS_CHANGE 0x80
+#define HPD_STATUS 0x80
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /******** END of I2C Address 0x58 ********/
 
@@ -462,6 +468,7 @@ struct anx7625_i2c_client {
 	struct i2c_client *tcpc_client;
 };
 
+<<<<<<< HEAD
 struct typec_port;
 struct usb_role_switch;
 
@@ -479,6 +486,11 @@ struct anx7625_data {
 	struct typec_port *typec_port;
 	struct usb_role_switch *role_sw;
 	int typec_data_role;
+=======
+struct anx7625_data {
+	struct anx7625_platform_data pdata;
+	struct platform_device *audio_pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int hpd_status;
 	int hpd_high_cnt;
 	int dp_en;
@@ -508,7 +520,10 @@ struct anx7625_data {
 	struct drm_connector *connector;
 	struct mipi_dsi_device *dsi;
 	struct drm_dp_aux aux;
+<<<<<<< HEAD
 	struct fw_msg send_msg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif  /* __ANX7625_H__ */

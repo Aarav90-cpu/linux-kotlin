@@ -38,7 +38,11 @@
 
 #endif /* __arch64__ */
 
+<<<<<<< HEAD
 #define __nolibc_syscall0(num)                                                \
+=======
+#define my_syscall0(num)                                                      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0");                                   \
@@ -52,7 +56,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall1(num, arg1)                                          \
+=======
+#define my_syscall1(num, arg1)                                                \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -66,7 +74,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall2(num, arg1, arg2)                                    \
+=======
+#define my_syscall2(num, arg1, arg2)                                          \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -81,7 +93,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall3(num, arg1, arg2, arg3)                              \
+=======
+#define my_syscall3(num, arg1, arg2, arg3)                                    \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -97,7 +113,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall4(num, arg1, arg2, arg3, arg4)                        \
+=======
+#define my_syscall4(num, arg1, arg2, arg3, arg4)                              \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -114,7 +134,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall5(num, arg1, arg2, arg3, arg4, arg5)                  \
+=======
+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)                        \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -132,7 +156,11 @@
 	_arg1;                                                                \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)            \
+=======
+#define my_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)                  \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	register long _num  __asm__ ("g1") = (num);                           \
 	register long _arg1 __asm__ ("o0") = (long)(arg1);                    \
@@ -175,12 +203,20 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 static pid_t getpid(void);
 
 static __attribute__((unused))
+<<<<<<< HEAD
 pid_t _sys_fork(void)
+=======
+pid_t sys_fork(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pid_t parent, ret;
 
 	parent = getpid();
+<<<<<<< HEAD
 	ret = __nolibc_syscall0(__NR_fork);
+=======
+	ret = my_syscall0(__NR_fork);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* The syscall returns the parent pid in the child instead of 0 */
 	if (ret == parent)
@@ -188,15 +224,26 @@ pid_t _sys_fork(void)
 	else
 		return ret;
 }
+<<<<<<< HEAD
 #define _sys_fork _sys_fork
 
 static __attribute__((unused))
 pid_t _sys_vfork(void)
+=======
+#define sys_fork sys_fork
+
+static __attribute__((unused))
+pid_t sys_vfork(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pid_t parent, ret;
 
 	parent = getpid();
+<<<<<<< HEAD
 	ret = __nolibc_syscall0(__NR_vfork);
+=======
+	ret = my_syscall0(__NR_vfork);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* The syscall returns the parent pid in the child instead of 0 */
 	if (ret == parent)
@@ -204,6 +251,10 @@ pid_t _sys_vfork(void)
 	else
 		return ret;
 }
+<<<<<<< HEAD
 #define _sys_vfork _sys_vfork
+=======
+#define sys_vfork sys_vfork
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _NOLIBC_ARCH_SPARC_H */

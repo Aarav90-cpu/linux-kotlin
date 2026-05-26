@@ -254,12 +254,21 @@
  * Issue a Hyper-V hypercall. Returns exception vector raised or 0, 'hv_status'
  * is set to the hypercall status (if no exception occurred).
  */
+<<<<<<< HEAD
 static inline u8 __hyperv_hypercall(u64 control, gva_t input_address,
 				    gva_t output_address,
 				    u64 *hv_status)
 {
 	u64 error_code;
 	u8 vector;
+=======
+static inline uint8_t __hyperv_hypercall(u64 control, vm_vaddr_t input_address,
+					 vm_vaddr_t output_address,
+					 uint64_t *hv_status)
+{
+	uint64_t error_code;
+	uint8_t vector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Note both the hypercall and the "asm safe" clobber r9-r11. */
 	asm volatile("mov %[output_address], %%r8\n\t"
@@ -274,11 +283,19 @@ static inline u8 __hyperv_hypercall(u64 control, gva_t input_address,
 }
 
 /* Issue a Hyper-V hypercall and assert that it succeeded. */
+<<<<<<< HEAD
 static inline void hyperv_hypercall(u64 control, gva_t input_address,
 				    gva_t output_address)
 {
 	u64 hv_status;
 	u8 vector;
+=======
+static inline void hyperv_hypercall(u64 control, vm_vaddr_t input_address,
+				    vm_vaddr_t output_address)
+{
+	uint64_t hv_status;
+	uint8_t vector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vector = __hyperv_hypercall(control, input_address, output_address, &hv_status);
 
@@ -327,27 +344,47 @@ struct hv_vp_assist_page {
 
 extern struct hv_vp_assist_page *current_vp_assist;
 
+<<<<<<< HEAD
 int enable_vp_assist(u64 vp_assist_pa, void *vp_assist);
+=======
+int enable_vp_assist(uint64_t vp_assist_pa, void *vp_assist);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct hyperv_test_pages {
 	/* VP assist page */
 	void *vp_assist_hva;
+<<<<<<< HEAD
 	u64 vp_assist_gpa;
+=======
+	uint64_t vp_assist_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *vp_assist;
 
 	/* Partition assist page */
 	void *partition_assist_hva;
+<<<<<<< HEAD
 	u64 partition_assist_gpa;
+=======
+	uint64_t partition_assist_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *partition_assist;
 
 	/* Enlightened VMCS */
 	void *enlightened_vmcs_hva;
+<<<<<<< HEAD
 	u64 enlightened_vmcs_gpa;
+=======
+	uint64_t enlightened_vmcs_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *enlightened_vmcs;
 };
 
 struct hyperv_test_pages *vcpu_alloc_hyperv_test_pages(struct kvm_vm *vm,
+<<<<<<< HEAD
 						       gva_t *p_hv_pages_gva);
+=======
+						       vm_vaddr_t *p_hv_pages_gva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* HV_X64_MSR_TSC_INVARIANT_CONTROL bits */
 #define HV_INVARIANT_TSC_EXPOSED               BIT_ULL(0)

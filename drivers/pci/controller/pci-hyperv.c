@@ -4172,7 +4172,11 @@ static int __init init_hv_pci_drv(void)
 	if (!hv_is_hyperv_initialized())
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (!hv_vmbus_exists())
+=======
+	if (hv_root_partition() && !hv_nested)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	ret = hv_pci_irqchip_init();

@@ -225,6 +225,7 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
 			mod->arch.init.plt = s;
 		else if (s->sh_type == SHT_SYMTAB)
 			syms = (Elf32_Sym *)s->sh_addr;
+<<<<<<< HEAD
 #if defined(CONFIG_ARM_UNWIND) && !defined(CONFIG_VMSPLIT_3G)
 		else if (s->sh_type == ELF_SECTION_UNWIND ||
 			 (strncmp(".ARM.extab", secstrings + s->sh_name, 10) == 0)) {
@@ -237,6 +238,8 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
 			s->sh_flags |= SHF_EXECINSTR;
 		}
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!mod->arch.core.plt || !mod->arch.init.plt) {

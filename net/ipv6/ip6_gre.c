@@ -593,7 +593,10 @@ static int gre_rcv(struct sk_buff *skb)
 out:
 	icmpv6_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_PORT_UNREACH, 0);
 drop:
+<<<<<<< HEAD
 	dev_core_stats_rx_dropped_inc(skb->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree_skb(skb);
 	return 0;
 }

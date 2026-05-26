@@ -679,16 +679,27 @@ int cpuidle_register_device(struct cpuidle_device *dev)
 	if (!dev)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	guard(mutex)(&cpuidle_lock);
 
 	if (dev->registered)
 		return ret;
+=======
+	mutex_lock(&cpuidle_lock);
+
+	if (dev->registered)
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__cpuidle_device_init(dev);
 
 	ret = __cpuidle_register_device(dev);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = cpuidle_add_sysfs(dev);
 	if (ret)
@@ -700,18 +711,29 @@ int cpuidle_register_device(struct cpuidle_device *dev)
 
 	cpuidle_install_idle_handler();
 
+<<<<<<< HEAD
+=======
+out_unlock:
+	mutex_unlock(&cpuidle_lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 
 out_sysfs:
 	cpuidle_remove_sysfs(dev);
 out_unregister:
 	__cpuidle_unregister_device(dev);
+<<<<<<< HEAD
 
 	return ret;
+=======
+	goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 EXPORT_SYMBOL_GPL(cpuidle_register_device);
 
+<<<<<<< HEAD
 void cpuidle_unregister_device_no_lock(struct cpuidle_device *dev)
 {
 	if (!dev || dev->registered == 0)
@@ -729,6 +751,8 @@ void cpuidle_unregister_device_no_lock(struct cpuidle_device *dev)
 }
 EXPORT_SYMBOL_GPL(cpuidle_unregister_device_no_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * cpuidle_unregister_device - unregisters a CPU's idle PM feature
  * @dev: the cpu
@@ -739,9 +763,24 @@ void cpuidle_unregister_device(struct cpuidle_device *dev)
 		return;
 
 	cpuidle_pause_and_lock();
+<<<<<<< HEAD
 	cpuidle_unregister_device_no_lock(dev);
 	cpuidle_resume_and_unlock();
 }
+=======
+
+	cpuidle_disable_device(dev);
+
+	cpuidle_remove_sysfs(dev);
+
+	__cpuidle_unregister_device(dev);
+
+	cpuidle_coupled_unregister_device(dev);
+
+	cpuidle_resume_and_unlock();
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(cpuidle_unregister_device);
 
 /**

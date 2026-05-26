@@ -853,7 +853,10 @@ static int em28xx_ir_fini(struct em28xx *dev)
 		goto ref_put;
 
 	rc_unregister_device(ir->rc);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(ir->i2c_client);
 

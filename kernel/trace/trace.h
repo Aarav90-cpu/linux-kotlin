@@ -264,7 +264,10 @@ static inline bool still_need_pid_events(int type, struct trace_pid_list *pid_li
 
 typedef bool (*cond_update_fn_t)(struct trace_array *tr, void *cond_data);
 
+<<<<<<< HEAD
 #ifdef CONFIG_TRACER_SNAPSHOT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct cond_snapshot - conditional snapshot data and callback
  *
@@ -307,7 +310,10 @@ struct cond_snapshot {
 	void				*cond_data;
 	cond_update_fn_t		update;
 };
+<<<<<<< HEAD
 #endif /* CONFIG_TRACER_SNAPSHOT */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * struct trace_func_repeats - used to keep track of the consecutive
@@ -407,10 +413,14 @@ struct trace_array {
 	unsigned char		trace_flags_index[TRACE_FLAGS_MAX_SIZE];
 	unsigned int		flags;
 	raw_spinlock_t		start_lock;
+<<<<<<< HEAD
 	union {
 		const char	*system_names;
 		char		*boot_events;
 	};
+=======
+	const char		*system_names;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head	err_log;
 	struct dentry		*dir;
 	struct dentry		*options;
@@ -458,12 +468,15 @@ struct trace_array {
 	 * we do not waste memory on systems that are not using tracing.
 	 */
 	bool ring_buffer_expanded;
+<<<<<<< HEAD
 	/*
 	 * If the ring buffer is a read only backup instance, it will be
 	 * removed after dumping all data via pipe, because no readable data.
 	 */
 	bool free_on_close;
 	struct work_struct	autoremove_work;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum {
@@ -473,7 +486,10 @@ enum {
 	TRACE_ARRAY_FL_MOD_INIT		= BIT(3),
 	TRACE_ARRAY_FL_MEMMAP		= BIT(4),
 	TRACE_ARRAY_FL_VMALLOC		= BIT(5),
+<<<<<<< HEAD
 	TRACE_ARRAY_FL_RDONLY		= BIT(6),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_MODULES
@@ -503,12 +519,15 @@ extern unsigned long trace_adjust_address(struct trace_array *tr, unsigned long 
 
 extern struct trace_array *printk_trace;
 
+<<<<<<< HEAD
 static inline bool trace_array_is_readonly(struct trace_array *tr)
 {
 	/* backup instance is read only. */
 	return tr->flags & TRACE_ARRAY_FL_RDONLY;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The global tracer (top) should be the first trace array added,
  * but we check the flag anyway.
@@ -693,7 +712,10 @@ void tracing_reset_all_online_cpus(void);
 void tracing_reset_all_online_cpus_unlocked(void);
 int tracing_open_generic(struct inode *inode, struct file *filp);
 int tracing_open_generic_tr(struct inode *inode, struct file *filp);
+<<<<<<< HEAD
 int tracing_release(struct inode *inode, struct file *file);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int tracing_release_generic_tr(struct inode *inode, struct file *file);
 int tracing_open_file_tr(struct inode *inode, struct file *filp);
 int tracing_release_file_tr(struct inode *inode, struct file *filp);
@@ -703,12 +725,16 @@ void tracer_tracing_on(struct trace_array *tr);
 void tracer_tracing_off(struct trace_array *tr);
 void tracer_tracing_disable(struct trace_array *tr);
 void tracer_tracing_enable(struct trace_array *tr);
+<<<<<<< HEAD
 int allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dentry *trace_create_file(const char *name,
 				 umode_t mode,
 				 struct dentry *parent,
 				 void *data,
 				 const struct file_operations *fops);
+<<<<<<< HEAD
 struct dentry *trace_create_cpu_file(const char *name,
 				     umode_t mode,
 				     struct dentry *parent,
@@ -751,6 +777,9 @@ struct ftrace_buffer_info {
 	unsigned int		spare_size;
 	unsigned int		read;
 };
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * tracer_tracing_is_on_cpu - show real state of ring buffer enabled on for a cpu
@@ -867,13 +896,20 @@ void update_max_tr_single(struct trace_array *tr,
 #if defined(CONFIG_TRACER_MAX_TRACE) && defined(CONFIG_FSNOTIFY)
 # define LATENCY_FS_NOTIFY
 #endif
+<<<<<<< HEAD
 #endif /* CONFIG_TRACER_SNAPSHOT */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef LATENCY_FS_NOTIFY
 void latency_fsnotify(struct trace_array *tr);
 #else
 static inline void latency_fsnotify(struct trace_array *tr) { }
 #endif
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_TRACER_SNAPSHOT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_STACKTRACE
 void __trace_stack(struct trace_array *tr, unsigned int trace_ctx, int skip);
@@ -889,15 +925,21 @@ static inline bool tracer_uses_snapshot(struct tracer *tracer)
 {
 	return tracer->use_max_tr;
 }
+<<<<<<< HEAD
 void trace_create_maxlat_file(struct trace_array *tr,
 			      struct dentry *d_tracer);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline bool tracer_uses_snapshot(struct tracer *tracer)
 {
 	return false;
 }
+<<<<<<< HEAD
 static inline void trace_create_maxlat_file(struct trace_array *tr,
 					    struct dentry *d_tracer) { }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 void trace_last_func_repeats(struct trace_array *tr,
@@ -927,8 +969,11 @@ extern int DYN_FTRACE_TEST_NAME(void);
 #define DYN_FTRACE_TEST_NAME2 trace_selftest_dynamic_test_func2
 extern int DYN_FTRACE_TEST_NAME2(void);
 
+<<<<<<< HEAD
 void __init trace_append_boot_param(char *buf, const char *str,
 				    char sep, int size);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void trace_set_ring_buffer_expanded(struct trace_array *tr);
 extern bool tracing_selftest_disabled;
 
@@ -1869,6 +1914,14 @@ extern struct trace_event_file *find_event_file(struct trace_array *tr,
 						const char *system,
 						const char *event);
 
+<<<<<<< HEAD
+=======
+static inline void *event_file_data(struct file *filp)
+{
+	return READ_ONCE(file_inode(filp)->i_private);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern struct mutex event_mutex;
 extern struct list_head ftrace_events;
 
@@ -1889,12 +1942,17 @@ static inline struct trace_event_file *event_file_file(struct file *filp)
 	struct trace_event_file *file;
 
 	lockdep_assert_held(&event_mutex);
+<<<<<<< HEAD
 	file = file_inode(filp)->i_private;
+=======
+	file = READ_ONCE(file_inode(filp)->i_private);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!file || file->flags & EVENT_FILE_FL_FREED)
 		return NULL;
 	return file;
 }
 
+<<<<<<< HEAD
 static inline void *event_file_data(struct file *filp)
 {
 	struct trace_event_file *file;
@@ -1905,6 +1963,8 @@ static inline void *event_file_data(struct file *filp)
 	return file;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct file_operations event_trigger_fops;
 extern const struct file_operations event_hist_fops;
 extern const struct file_operations event_hist_debug_fops;
@@ -2207,6 +2267,15 @@ static inline bool event_command_needs_rec(struct event_command *cmd_ops)
 
 extern int trace_event_enable_disable(struct trace_event_file *file,
 				      int enable, int soft_disable);
+<<<<<<< HEAD
+=======
+extern int tracing_alloc_snapshot(void);
+extern void tracing_snapshot_cond(struct trace_array *tr, void *cond_data);
+extern int tracing_snapshot_cond_enable(struct trace_array *tr, void *cond_data, cond_update_fn_t update);
+
+extern int tracing_snapshot_cond_disable(struct trace_array *tr);
+extern void *tracing_cond_snapshot_data(struct trace_array *tr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern const char *__start___trace_bprintk_fmt[];
 extern const char *__stop___trace_bprintk_fmt[];
@@ -2294,6 +2363,7 @@ static inline void trace_event_update_all(struct trace_eval_map **map, int len) 
 #endif
 
 #ifdef CONFIG_TRACER_SNAPSHOT
+<<<<<<< HEAD
 extern const struct file_operations snapshot_fops;
 extern const struct file_operations snapshot_raw_fops;
 
@@ -2324,11 +2394,19 @@ static inline int register_snapshot_cmd(void) { return 0; }
 # endif
 #else /* !CONFIG_TRACER_SNAPSHOT */
 static inline int trace_allocate_snapshot(struct trace_array *tr, int size) { return 0; }
+=======
+void tracing_snapshot_instance(struct trace_array *tr);
+int tracing_alloc_snapshot_instance(struct trace_array *tr);
+int tracing_arm_snapshot(struct trace_array *tr);
+void tracing_disarm_snapshot(struct trace_array *tr);
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void tracing_snapshot_instance(struct trace_array *tr) { }
 static inline int tracing_alloc_snapshot_instance(struct trace_array *tr)
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline int tracing_arm_snapshot_locked(struct trace_array *tr) { return -EBUSY; }
 static inline int tracing_arm_snapshot(struct trace_array *tr) { return 0; }
 static inline void tracing_disarm_snapshot(struct trace_array *tr) { }
@@ -2359,6 +2437,11 @@ static inline void put_snapshot_map(struct trace_array *tr) { }
 static inline void do_allocate_snapshot(const char *name) { }
 static inline int register_snapshot_cmd(void) { return 0; }
 #endif /* CONFIG_TRACER_SNAPSHOT */
+=======
+static inline int tracing_arm_snapshot(struct trace_array *tr) { return 0; }
+static inline void tracing_disarm_snapshot(struct trace_array *tr) { }
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PREEMPT_TRACER
 void tracer_preempt_on(unsigned long a0, unsigned long a1);

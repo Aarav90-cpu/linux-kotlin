@@ -147,6 +147,7 @@ static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
 	cdns_pcie_rp_writeb(pcie, PCI_CLASS_PROG, 0);
 	cdns_pcie_rp_writew(pcie, PCI_CLASS_DEVICE, PCI_CLASS_BRIDGE_PCI);
 
+<<<<<<< HEAD
 	value = cdns_pcie_rp_readl(pcie, CDNS_PCIE_RP_CAP_OFFSET + PCI_EXP_LNKCAP);
 	if (rc->quirk_broken_aspm_l0s)
 		value &= ~PCI_EXP_LNKCAP_ASPM_L0S;
@@ -154,6 +155,8 @@ static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
 		value &= ~PCI_EXP_LNKCAP_ASPM_L1;
 	cdns_pcie_rp_writel(pcie, CDNS_PCIE_RP_CAP_OFFSET + PCI_EXP_LNKCAP, value);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

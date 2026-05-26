@@ -276,14 +276,22 @@ enum mtk_phy_version {
 };
 
 /**
+<<<<<<< HEAD
  * struct mtk_phy_pdata - SoC specific platform data
+=======
+ * mtk_phy_pdata - SoC specific platform data
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @avoid_rx_sen_degradation: Avoid TX Sensitivity level degradation (MT6795/8173 only)
  * @sw_pll_48m_to_26m:        Workaround for V3 IP (MT8195) - switch the 48MHz PLL from
  *                            fractional mode to integer to output 26MHz for U2PHY
  * @sw_efuse_supported:       Switches off eFuse auto-load from PHY and applies values
  *                            read from different nvmem (usually different eFuse array)
  *                            that is pointed at in the device tree node for this PHY
+<<<<<<< HEAD
  * @slew_ref_clock_mhz:         Default reference clock (in MHz) for slew rate calibration
+=======
+ * @slew_ref_clk_mhz:         Default reference clock (in MHz) for slew rate calibration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @slew_rate_coefficient:    Coefficient for slew rate calibration
  * @version:                  PHY IP Version
  */

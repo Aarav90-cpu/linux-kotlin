@@ -40,6 +40,7 @@ komeda_layer_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(st);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_layer_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -58,6 +59,9 @@ komeda_layer_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_layer_obj_funcs = {
 	.atomic_create_state	= komeda_layer_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_layer_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_layer_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_layer_atomic_destroy_state,
 };
@@ -65,7 +69,18 @@ static const struct drm_private_state_funcs komeda_layer_obj_funcs = {
 static int komeda_layer_obj_add(struct komeda_kms_dev *kms,
 				struct komeda_layer *layer)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base, &layer->base.obj,
+=======
+	struct komeda_layer_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &layer->base;
+	drm_atomic_private_obj_init(&kms->base, &layer->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_layer_obj_funcs);
 	return 0;
 }
@@ -92,6 +107,7 @@ komeda_scaler_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_scaler_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_scaler_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -110,6 +126,9 @@ komeda_scaler_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_scaler_obj_funcs = {
 	.atomic_create_state	= komeda_scaler_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_scaler_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_scaler_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_scaler_atomic_destroy_state,
 };
@@ -117,8 +136,20 @@ static const struct drm_private_state_funcs komeda_scaler_obj_funcs = {
 static int komeda_scaler_obj_add(struct komeda_kms_dev *kms,
 				 struct komeda_scaler *scaler)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base,
 				    &scaler->base.obj,
+=======
+	struct komeda_scaler_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &scaler->base;
+	drm_atomic_private_obj_init(&kms->base,
+				    &scaler->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_scaler_obj_funcs);
 	return 0;
 }
@@ -145,6 +176,7 @@ komeda_compiz_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_compiz_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_compiz_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -163,6 +195,9 @@ komeda_compiz_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_compiz_obj_funcs = {
 	.atomic_create_state	= komeda_compiz_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_compiz_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_compiz_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_compiz_atomic_destroy_state,
 };
@@ -170,7 +205,18 @@ static const struct drm_private_state_funcs komeda_compiz_obj_funcs = {
 static int komeda_compiz_obj_add(struct komeda_kms_dev *kms,
 				 struct komeda_compiz *compiz)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base, &compiz->base.obj,
+=======
+	struct komeda_compiz_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &compiz->base;
+	drm_atomic_private_obj_init(&kms->base, &compiz->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_compiz_obj_funcs);
 
 	return 0;
@@ -198,6 +244,7 @@ komeda_splitter_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_splitter_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_splitter_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -216,6 +263,9 @@ komeda_splitter_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_splitter_obj_funcs = {
 	.atomic_create_state	= komeda_splitter_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_splitter_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_splitter_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_splitter_atomic_destroy_state,
 };
@@ -223,8 +273,20 @@ static const struct drm_private_state_funcs komeda_splitter_obj_funcs = {
 static int komeda_splitter_obj_add(struct komeda_kms_dev *kms,
 				   struct komeda_splitter *splitter)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base,
 				    &splitter->base.obj,
+=======
+	struct komeda_splitter_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &splitter->base;
+	drm_atomic_private_obj_init(&kms->base,
+				    &splitter->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_splitter_obj_funcs);
 
 	return 0;
@@ -251,6 +313,7 @@ static void komeda_merger_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_merger_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_merger_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -269,6 +332,9 @@ komeda_merger_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_merger_obj_funcs = {
 	.atomic_create_state	= komeda_merger_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_merger_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_merger_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_merger_atomic_destroy_state,
 };
@@ -276,8 +342,20 @@ static const struct drm_private_state_funcs komeda_merger_obj_funcs = {
 static int komeda_merger_obj_add(struct komeda_kms_dev *kms,
 				 struct komeda_merger *merger)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base,
 				    &merger->base.obj,
+=======
+	struct komeda_merger_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &merger->base;
+	drm_atomic_private_obj_init(&kms->base,
+				    &merger->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_merger_obj_funcs);
 
 	return 0;
@@ -305,6 +383,7 @@ komeda_improc_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_improc_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_improc_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -323,6 +402,9 @@ komeda_improc_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_improc_obj_funcs = {
 	.atomic_create_state	= komeda_improc_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_improc_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_improc_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_improc_atomic_destroy_state,
 };
@@ -330,7 +412,18 @@ static const struct drm_private_state_funcs komeda_improc_obj_funcs = {
 static int komeda_improc_obj_add(struct komeda_kms_dev *kms,
 				 struct komeda_improc *improc)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base, &improc->base.obj,
+=======
+	struct komeda_improc_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &improc->base;
+	drm_atomic_private_obj_init(&kms->base, &improc->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_improc_obj_funcs);
 
 	return 0;
@@ -358,6 +451,7 @@ komeda_timing_ctrlr_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(to_ctrlr_st(priv_to_comp_st(state)));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_timing_ctrlr_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -376,6 +470,9 @@ komeda_timing_ctrlr_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_timing_ctrlr_obj_funcs = {
 	.atomic_create_state	= komeda_timing_ctrlr_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_timing_ctrlr_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_timing_ctrlr_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_timing_ctrlr_atomic_destroy_state,
 };
@@ -383,7 +480,18 @@ static const struct drm_private_state_funcs komeda_timing_ctrlr_obj_funcs = {
 static int komeda_timing_ctrlr_obj_add(struct komeda_kms_dev *kms,
 				       struct komeda_timing_ctrlr *ctrlr)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base, &ctrlr->base.obj,
+=======
+	struct komeda_compiz_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->base.component = &ctrlr->base;
+	drm_atomic_private_obj_init(&kms->base, &ctrlr->base.obj, &st->base.obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_timing_ctrlr_obj_funcs);
 
 	return 0;
@@ -412,6 +520,7 @@ komeda_pipeline_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(priv_to_pipe_st(state));
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 komeda_pipeline_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -430,6 +539,9 @@ komeda_pipeline_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs komeda_pipeline_obj_funcs = {
 	.atomic_create_state	= komeda_pipeline_atomic_create_state,
+=======
+static const struct drm_private_state_funcs komeda_pipeline_obj_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state	= komeda_pipeline_atomic_duplicate_state,
 	.atomic_destroy_state	= komeda_pipeline_atomic_destroy_state,
 };
@@ -437,7 +549,18 @@ static const struct drm_private_state_funcs komeda_pipeline_obj_funcs = {
 static int komeda_pipeline_obj_add(struct komeda_kms_dev *kms,
 				   struct komeda_pipeline *pipe)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&kms->base, &pipe->obj,
+=======
+	struct komeda_pipeline_state *st;
+
+	st = kzalloc_obj(*st);
+	if (!st)
+		return -ENOMEM;
+
+	st->pipe = pipe;
+	drm_atomic_private_obj_init(&kms->base, &pipe->obj, &st->obj,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &komeda_pipeline_obj_funcs);
 
 	return 0;

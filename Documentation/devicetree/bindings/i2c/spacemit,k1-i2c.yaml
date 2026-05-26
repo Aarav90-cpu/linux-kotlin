@@ -14,11 +14,15 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - const: spacemit,k3-i2c
           - const: spacemit,k1-i2c
       - const: spacemit,k1-i2c
+=======
+    const: spacemit,k1-i2c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

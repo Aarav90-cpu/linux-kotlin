@@ -763,7 +763,10 @@ static int dm1105_ir_init(struct dm1105_dev *dm1105)
 static void dm1105_ir_exit(struct dm1105_dev *dm1105)
 {
 	rc_unregister_device(dm1105->ir.dev);
+<<<<<<< HEAD
 	rc_free_device(dm1105->ir.dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int dm1105_hw_init(struct dm1105_dev *dev)

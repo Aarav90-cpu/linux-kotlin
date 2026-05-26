@@ -50,9 +50,12 @@ int pci_epf_alloc_doorbell(struct pci_epf *epf, u16 num_db)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (epf->db_msg)
 		return -EBUSY;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	domain = of_msi_map_get_device_domain(epc->dev.parent, 0,
 					      DOMAIN_BUS_PLATFORM_MSI);
 	if (!domain) {
@@ -82,8 +85,11 @@ int pci_epf_alloc_doorbell(struct pci_epf *epf, u16 num_db)
 	if (ret) {
 		dev_err(dev, "Failed to allocate MSI\n");
 		kfree(msg);
+<<<<<<< HEAD
 		epf->db_msg = NULL;
 		epf->num_db = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 

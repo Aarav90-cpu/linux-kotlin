@@ -403,11 +403,14 @@ static bool expect_iter_me(struct nf_conntrack_expect *exp, void *data)
 
 	this = rcu_dereference_protected(exp->helper,
 					 lockdep_is_held(&nf_conntrack_expect_lock));
+<<<<<<< HEAD
 	if (this == me)
 		return true;
 
 	this = rcu_dereference_protected(exp->assign_helper,
 					 lockdep_is_held(&nf_conntrack_expect_lock));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return this == me;
 }
 

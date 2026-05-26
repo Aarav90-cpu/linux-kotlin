@@ -261,6 +261,7 @@ static const struct regulator_ops cpcap_regulator_ops = {
 };
 
 static const unsigned int unknown_val_tbl[] = { 0, };
+<<<<<<< HEAD
 static const unsigned int sw_mot_val_tbl[] =  { 600000, 612500, 625000,
 						637500, 650000, 662500,
 						675000, 687500, 700000,
@@ -285,6 +286,8 @@ static const unsigned int sw_mot_val_tbl[] =  { 600000, 612500, 625000,
 						1387500, 1400000, 1412500,
 						1425000, 1437500, 1450000,
 						1462500, 1475000, };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const unsigned int sw2_sw4_val_tbl[] = { 612500, 625000, 637500,
 						650000, 662500, 675000,
 						687500, 700000, 712500,
@@ -308,7 +311,10 @@ static const unsigned int sw2_sw4_val_tbl[] = { 612500, 625000, 637500,
 						1362500, 1375000, 1387500,
 						1400000, 1412500, 1425000,
 						1437500, 1450000, 1462500, };
+<<<<<<< HEAD
 static const unsigned int sw3_val_tbl[] = { 1350000, 1800000, 1850000, 1875000, };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const unsigned int sw5_val_tbl[] = { 0, 5050000, };
 static const unsigned int vcam_val_tbl[] = { 2600000, 2700000, 2800000,
 					     2900000, };
@@ -427,6 +433,7 @@ static const struct cpcap_regulator omap4_regulators[] = {
 	{ /* sentinel */ },
 };
 
+<<<<<<< HEAD
 static const struct cpcap_regulator mot_regulators[] = {
 	CPCAP_REG(SW1, CPCAP_REG_S1C1, CPCAP_REG_ASSIGN2,
 		  CPCAP_BIT_SW1_SEL, sw_mot_val_tbl,
@@ -503,6 +510,8 @@ static const struct cpcap_regulator mot_regulators[] = {
 	{ /* sentinel */ }
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct cpcap_regulator xoom_regulators[] = {
 	CPCAP_REG(SW1, CPCAP_REG_S1C1, CPCAP_REG_ASSIGN2,
 		  CPCAP_BIT_SW1_SEL, unknown_val_tbl,
@@ -588,10 +597,13 @@ static const struct of_device_id cpcap_regulator_id_table[] = {
 		.data = omap4_regulators,
 	},
 	{
+<<<<<<< HEAD
 		.compatible = "motorola,mot-cpcap-regulator",
 		.data = mot_regulators,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "motorola,xoom-cpcap-regulator",
 		.data = xoom_regulators,
 	},

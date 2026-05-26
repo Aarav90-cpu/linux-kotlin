@@ -31,6 +31,16 @@
 #define swapper_pg_dir ((pgd_t *) 0)
 
 /*
+<<<<<<< HEAD
+=======
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+extern void *empty_zero_page;
+#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * All 32bit addresses are effectively valid for vmalloc...
  * Sort of meaningless for non-VM targets.
  */

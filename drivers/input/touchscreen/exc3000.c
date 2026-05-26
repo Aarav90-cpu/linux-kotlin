@@ -234,7 +234,11 @@ static int exc3000_vendor_data_request(struct exc3000_data *data, u8 *request,
 	int ret;
 	unsigned long time_left;
 
+<<<<<<< HEAD
 	guard(mutex)(&data->query_lock);
+=======
+	mutex_lock(&data->query_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reinit_completion(&data->wait_event);
 
@@ -243,6 +247,7 @@ static int exc3000_vendor_data_request(struct exc3000_data *data, u8 *request,
 
 	ret = i2c_master_send(data->client, buf, EXC3000_LEN_VENDOR_REQUEST);
 	if (ret < 0)
+<<<<<<< HEAD
 		return ret;
 
 	time_left = wait_for_completion_timeout(&data->wait_event,
@@ -255,6 +260,31 @@ static int exc3000_vendor_data_request(struct exc3000_data *data, u8 *request,
 
 	memcpy(response, &data->buf[4], data->buf[3]);
 	return data->buf[3];
+=======
+		goto out_unlock;
+
+	if (response) {
+		time_left = wait_for_completion_timeout(&data->wait_event,
+							timeout * HZ);
+		if (time_left == 0) {
+			ret = -ETIMEDOUT;
+			goto out_unlock;
+		}
+
+		if (data->buf[3] >= EXC3000_LEN_FRAME) {
+			ret = -ENOSPC;
+			goto out_unlock;
+		}
+
+		memcpy(response, &data->buf[4], data->buf[3]);
+		ret = data->buf[3];
+	}
+
+out_unlock:
+	mutex_unlock(&data->query_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t fw_version_show(struct device *dev,

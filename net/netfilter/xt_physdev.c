@@ -91,6 +91,7 @@ match_outdev:
 	return (!!ret ^ !(info->invert & XT_PHYSDEV_OP_OUT));
 }
 
+<<<<<<< HEAD
 static int physdev_mt_check_hooks(const struct xt_mtchk_param *par)
 {
 	const struct xt_physdev_info *info = par->matchinfo;
@@ -106,6 +107,8 @@ static int physdev_mt_check_hooks(const struct xt_mtchk_param *par)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int physdev_mt_check(const struct xt_mtchk_param *par)
 {
 	const struct xt_physdev_info *info = par->matchinfo;
@@ -114,6 +117,7 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
 	if (!(info->bitmask & XT_PHYSDEV_OP_MASK) ||
 	    info->bitmask & ~XT_PHYSDEV_OP_MASK)
 		return -EINVAL;
+<<<<<<< HEAD
 
 #define X(memb) strnlen(info->memb, sizeof(info->memb)) >= sizeof(info->memb)
 	if (info->bitmask & XT_PHYSDEV_OP_IN) {
@@ -137,6 +141,16 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
 		return -ENAMETOOLONG;
 #undef X
 
+=======
+	if (info->bitmask & (XT_PHYSDEV_OP_OUT | XT_PHYSDEV_OP_ISOUT) &&
+	    (!(info->bitmask & XT_PHYSDEV_OP_BRIDGED) ||
+	     info->invert & XT_PHYSDEV_OP_BRIDGED) &&
+	    par->hook_mask & (1 << NF_INET_LOCAL_OUT)) {
+		pr_info_ratelimited("--physdev-out and --physdev-is-out only supported in the FORWARD and POSTROUTING chains with bridged traffic\n");
+		return -EINVAL;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!brnf_probed) {
 		brnf_probed = true;
 		request_module("br_netfilter");
@@ -145,6 +159,7 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct xt_match physdev_mt_reg[] __read_mostly = {
 	{
 		.name		= "physdev",
@@ -164,16 +179,34 @@ static struct xt_match physdev_mt_reg[] __read_mostly = {
 		.matchsize	= sizeof(struct xt_physdev_info),
 		.me		= THIS_MODULE,
 	},
+=======
+static struct xt_match physdev_mt_reg __read_mostly = {
+	.name       = "physdev",
+	.revision   = 0,
+	.family     = NFPROTO_UNSPEC,
+	.checkentry = physdev_mt_check,
+	.match      = physdev_mt,
+	.matchsize  = sizeof(struct xt_physdev_info),
+	.me         = THIS_MODULE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init physdev_mt_init(void)
 {
+<<<<<<< HEAD
 	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+=======
+	return xt_register_match(&physdev_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit physdev_mt_exit(void)
 {
+<<<<<<< HEAD
 	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+=======
+	xt_unregister_match(&physdev_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(physdev_mt_init);

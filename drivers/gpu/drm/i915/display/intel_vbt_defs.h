@@ -1109,7 +1109,10 @@ struct bdb_edp {
 	u16 edp_dsc_disable;					/* 251+ */
 	u16 t6_delay_support;					/* 260+ */
 	u16 link_idle_time[16];					/* 260+ */
+<<<<<<< HEAD
 	u16 pipe_joiner_enable;					/* 261+ */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 /*

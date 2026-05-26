@@ -42,7 +42,10 @@ static const struct meson_reset_param meson_s4_param = {
 };
 
 static const struct meson_reset_param t7_param = {
+<<<<<<< HEAD
 	.reset_ops	= &meson_reset_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reset_num      = 224,
 	.reset_offset	= 0x0,
 	.level_offset   = 0x40,

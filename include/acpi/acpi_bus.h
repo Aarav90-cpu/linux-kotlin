@@ -17,8 +17,11 @@
 #include <linux/property.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct notifier_block;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct acpi_handle_list {
 	u32 count;
 	acpi_handle *handles;
@@ -615,8 +618,11 @@ struct acpi_bus_event {
 	u32 data;
 };
 
+<<<<<<< HEAD
 #define ACPI_AC_CLASS	"ac_adapter"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern struct kobject *acpi_kobj;
 extern int acpi_bus_generate_netlink_event(const char*, const char*, u8, int);
 void acpi_bus_private_data_handler(acpi_handle, void *);
@@ -629,8 +635,12 @@ int acpi_dev_install_notify_handler(struct acpi_device *adev,
 void acpi_dev_remove_notify_handler(struct acpi_device *adev,
 				    u32 handler_type,
 				    acpi_notify_handler handler);
+<<<<<<< HEAD
 extern int acpi_notifier_call_chain(const char *device_class,
 				    const char *bus_id, u32 type, u32 data);
+=======
+extern int acpi_notifier_call_chain(struct acpi_device *, u32, u32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int register_acpi_notifier(struct notifier_block *);
 extern int unregister_acpi_notifier(struct notifier_block *);
 
@@ -765,6 +775,11 @@ int acpi_disable_wakeup_device_power(struct acpi_device *dev);
 #ifdef CONFIG_X86
 bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *status);
 bool acpi_quirk_skip_acpi_ac_and_battery(void);
+<<<<<<< HEAD
+=======
+int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
+void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip);
 #else
 static inline bool acpi_device_override_status(struct acpi_device *adev,
@@ -776,6 +791,16 @@ static inline bool acpi_quirk_skip_acpi_ac_and_battery(void)
 {
 	return false;
 }
+<<<<<<< HEAD
+=======
+static inline int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+{
+	return 1;
+}
+static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
+{
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int
 acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
 {

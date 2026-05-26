@@ -674,14 +674,22 @@ int usbip_recv_iso(struct usbip_device *ud, struct urb *urb)
 	void *buff;
 	struct usbip_iso_packet_descriptor *iso;
 	int np = urb->number_of_packets;
+<<<<<<< HEAD
 	int size;
 	int i;
 	int ret;
 	u32 total_length = 0;
+=======
+	int size = np * sizeof(*iso);
+	int i;
+	int ret;
+	int total_length = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!usb_pipeisoc(urb->pipe))
 		return 0;
 
+<<<<<<< HEAD
 	if (np <= 0 || np > USBIP_MAX_ISO_PACKETS) {
 		dev_err(&urb->dev->dev,
 			"recv iso: invalid number_of_packets %d\n", np);
@@ -697,6 +705,13 @@ int usbip_recv_iso(struct usbip_device *ud, struct urb *urb)
 	size = np * sizeof(*iso);
 
 	buff = kcalloc(np, sizeof(*iso), GFP_KERNEL);
+=======
+	/* my Bluetooth dongle gets ISO URBs which are np = 0 */
+	if (np == 0)
+		return 0;
+
+	buff = kzalloc(size, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!buff)
 		return -ENOMEM;
 
@@ -718,6 +733,7 @@ int usbip_recv_iso(struct usbip_device *ud, struct urb *urb)
 	for (i = 0; i < np; i++) {
 		usbip_iso_packet_correct_endian(&iso[i], 0);
 		usbip_pack_iso(&iso[i], &urb->iso_frame_desc[i], 0);
+<<<<<<< HEAD
 		if (urb->iso_frame_desc[i].actual_length >
 				(unsigned int)urb->transfer_buffer_length) {
 			dev_err(&urb->dev->dev,
@@ -727,14 +743,22 @@ int usbip_recv_iso(struct usbip_device *ud, struct urb *urb)
 			kfree(buff);
 			return -EPROTO;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		total_length += urb->iso_frame_desc[i].actual_length;
 	}
 
 	kfree(buff);
 
+<<<<<<< HEAD
 	if (total_length != (u32)urb->actual_length) {
 		dev_err(&urb->dev->dev,
 			"total length of iso packets %u not equal to actual length of buffer %d\n",
+=======
+	if (total_length != urb->actual_length) {
+		dev_err(&urb->dev->dev,
+			"total length of iso packets %d not equal to actual length of buffer %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			total_length, urb->actual_length);
 
 		if (ud->side == USBIP_STUB || ud->side == USBIP_VUDC)
@@ -782,6 +806,7 @@ void usbip_pad_iso(struct usbip_device *ud, struct urb *urb)
 	 */
 	for (i = np-1; i > 0; i--) {
 		actualoffset -= urb->iso_frame_desc[i].actual_length;
+<<<<<<< HEAD
 
 		/*
 		 * Validate source range: actualoffset can go negative
@@ -818,6 +843,8 @@ void usbip_pad_iso(struct usbip_device *ud, struct urb *urb)
 			return;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memmove(urb->transfer_buffer + urb->iso_frame_desc[i].offset,
 			urb->transfer_buffer + actualoffset,
 			urb->iso_frame_desc[i].actual_length);

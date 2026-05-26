@@ -126,6 +126,7 @@
 
 #define TAS2764_BOP_CFG0                TAS2764_REG(0X0, 0x1d)
 
+<<<<<<< HEAD
 #define TAS2764_SDOUT_HIZ_1            TAS2764_REG(0x1, 0x3d)
 #define TAS2764_SDOUT_HIZ_2            TAS2764_REG(0x1, 0x3e)
 #define TAS2764_SDOUT_HIZ_3            TAS2764_REG(0x1, 0x3f)
@@ -137,4 +138,6 @@
 #define TAS2764_SDOUT_HIZ_9            TAS2764_REG(0x1, 0x45)
 #define TAS2764_SDOUT_HIZ_9_FORCE_0_EN BIT(7)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __TAS2764__ */

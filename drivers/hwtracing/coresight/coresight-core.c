@@ -53,9 +53,12 @@ struct coresight_node {
 const u32 coresight_barrier_pkt[4] = {0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
 EXPORT_SYMBOL_GPL(coresight_barrier_pkt);
 
+<<<<<<< HEAD
 /* List maintains the device index */
 static LIST_HEAD(coresight_dev_idx_list);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct cti_assoc_op *cti_assoc_ops;
 
 void coresight_set_cti_ops(const struct cti_assoc_op *cti_op)
@@ -1152,6 +1155,10 @@ static int coresight_clear_filter_source(struct device *dev, void *data)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/* coresight_remove_conns - Remove other device's references to this device */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void coresight_remove_conns(struct coresight_device *csdev)
 {
 	int i, j;
@@ -1161,6 +1168,13 @@ static void coresight_remove_conns(struct coresight_device *csdev)
 		bus_for_each_dev(&coresight_bustype, NULL, csdev,
 				 coresight_clear_filter_source);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Remove the input connection references from the destination device
+	 * for each output connection.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < csdev->pdata->nr_outconns; i++) {
 		conn = csdev->pdata->out_conns[i];
 		if (conn->filter_src_fwnode) {
@@ -1171,6 +1185,7 @@ static void coresight_remove_conns(struct coresight_device *csdev)
 		if (!conn->dest_dev)
 			continue;
 
+<<<<<<< HEAD
 		/* Remove sysfs links for the output connection */
 		coresight_remove_links(csdev, conn);
 
@@ -1178,6 +1193,8 @@ static void coresight_remove_conns(struct coresight_device *csdev)
 		 * Remove the input connection references from the destination
 		 * device for each output connection.
 		 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (j = 0; j < conn->dest_dev->pdata->nr_inconns; ++j)
 			if (conn->dest_dev->pdata->in_conns[j] == conn) {
 				conn->dest_dev->pdata->in_conns[j] = NULL;
@@ -1200,8 +1217,11 @@ static void coresight_remove_conns(struct coresight_device *csdev)
 		coresight_remove_links(conn->src_dev, conn);
 		conn->dest_dev = NULL;
 	}
+<<<<<<< HEAD
 
 	coresight_remove_conns_sysfs_group(csdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1302,13 +1322,24 @@ void coresight_write64(struct coresight_device *csdev, u64 val, u32 offset)
  * coresight_release_platform_data: Release references to the devices connected
  * to the output port of this device.
  */
+<<<<<<< HEAD
 void coresight_release_platform_data(struct device *dev,
+=======
+void coresight_release_platform_data(struct coresight_device *csdev,
+				     struct device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     struct coresight_platform_data *pdata)
 {
 	int i;
 	struct coresight_connection **conns = pdata->out_conns;
 
 	for (i = 0; i < pdata->nr_outconns; i++) {
+<<<<<<< HEAD
+=======
+		/* If we have made the links, remove them now */
+		if (csdev && conns[i]->dest_dev)
+			coresight_remove_links(csdev, conns[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Drop the refcount and clear the handle as this device
 		 * is going away
@@ -1320,6 +1351,11 @@ void coresight_release_platform_data(struct device *dev,
 	devm_kfree(dev, pdata->out_conns);
 	devm_kfree(dev, pdata->in_conns);
 	devm_kfree(dev, pdata);
+<<<<<<< HEAD
+=======
+	if (csdev)
+		coresight_remove_conns_sysfs_group(csdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct coresight_device *coresight_register(struct coresight_desc *desc)
@@ -1347,6 +1383,15 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 	csdev->dev.parent = desc->dev;
 	csdev->dev.release = coresight_device_release;
 	csdev->dev.bus = &coresight_bustype;
+<<<<<<< HEAD
+=======
+	/*
+	 * Hold the reference to our parent device. This will be
+	 * dropped only in coresight_device_release().
+	 */
+	csdev->dev.fwnode = fwnode_handle_get(dev_fwnode(desc->dev));
+	dev_set_name(&csdev->dev, "%s", desc->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
 	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
@@ -1358,6 +1403,7 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 			goto err_out;
 		}
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Hold the reference to our parent device. This will be
@@ -1366,6 +1412,8 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 	csdev->dev.fwnode = fwnode_handle_get(dev_fwnode(desc->dev));
 	dev_set_name(&csdev->dev, "%s", desc->name);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Make sure the device registration and the connection fixup
 	 * are synchronised, so that we don't see uninitialised devices
@@ -1383,6 +1431,7 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	/* Device is now registered */
 	registered = true;
 
@@ -1407,6 +1456,39 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 
 out_unlock:
 	mutex_unlock(&coresight_mutex);
+=======
+	if ((csdev->type == CORESIGHT_DEV_TYPE_SINK ||
+	     csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) &&
+	    sink_ops(csdev)->alloc_buffer) {
+		ret = etm_perf_add_symlink_sink(csdev);
+
+		if (ret) {
+			device_unregister(&csdev->dev);
+			/*
+			 * As with the above, all resources are free'd
+			 * explicitly via coresight_device_release() triggered
+			 * from put_device(), which is in turn called from
+			 * function device_unregister().
+			 */
+			goto out_unlock;
+		}
+	}
+	/* Device is now registered */
+	registered = true;
+
+	ret = coresight_create_conns_sysfs_group(csdev);
+	if (!ret)
+		ret = coresight_fixup_orphan_conns(csdev);
+
+out_unlock:
+	mutex_unlock(&coresight_mutex);
+	/* Success */
+	if (!ret) {
+		if (cti_assoc_ops && cti_assoc_ops->add)
+			cti_assoc_ops->add(csdev);
+		return csdev;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Unregister the device if needed */
 	if (registered) {
@@ -1415,13 +1497,19 @@ out_unlock:
 	}
 
 err_out:
+<<<<<<< HEAD
 	coresight_release_platform_data(desc->dev, desc->pdata);
+=======
+	/* Cleanup the connection information */
+	coresight_release_platform_data(NULL, desc->dev, desc->pdata);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 EXPORT_SYMBOL_GPL(coresight_register);
 
 void coresight_unregister(struct coresight_device *csdev)
 {
+<<<<<<< HEAD
 	/* Remove references of that device in the topology */
 	if (cti_assoc_ops && cti_assoc_ops->remove)
 		cti_assoc_ops->remove(csdev);
@@ -1485,6 +1573,35 @@ static int coresight_allocate_device_idx(struct coresight_dev_list *list,
 	list->nr_idx = idx + 1;
 
 	return idx;
+=======
+	etm_perf_del_symlink_sink(csdev);
+	/* Remove references of that device in the topology */
+	if (cti_assoc_ops && cti_assoc_ops->remove)
+		cti_assoc_ops->remove(csdev);
+	coresight_remove_conns(csdev);
+	coresight_clear_default_sink(csdev);
+	coresight_release_platform_data(csdev, csdev->dev.parent, csdev->pdata);
+	device_unregister(&csdev->dev);
+}
+EXPORT_SYMBOL_GPL(coresight_unregister);
+
+
+/*
+ * coresight_search_device_idx - Search the fwnode handle of a device
+ * in the given dev_idx list. Must be called with the coresight_mutex held.
+ *
+ * Returns the index of the entry, when found. Otherwise, -ENOENT.
+ */
+static int coresight_search_device_idx(struct coresight_dev_list *dict,
+				       struct fwnode_handle *fwnode)
+{
+	int i;
+
+	for (i = 0; i < dict->nr_idx; i++)
+		if (dict->fwnode_list[i] == fwnode)
+			return i;
+	return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool coresight_compare_type(enum coresight_dev_type type_a,
@@ -1558,6 +1675,7 @@ bool coresight_loses_context_with_cpu(struct device *dev)
 EXPORT_SYMBOL_GPL(coresight_loses_context_with_cpu);
 
 /*
+<<<<<<< HEAD
  * coresight_alloc_device_name - Get an index for a given device in the list
  * specific to a driver (presented by the prefix string). An index is allocated
  * for a device and is tracked with the fwnode_handle to prevent allocating
@@ -1587,12 +1705,48 @@ char *coresight_alloc_device_name(const char *prefix, struct device *dev)
 		goto done;
 
 	name = devm_kasprintf(dev, GFP_KERNEL, "%s%d", list->pfx, idx);
+=======
+ * coresight_alloc_device_name - Get an index for a given device in the
+ * device index list specific to a driver. An index is allocated for a
+ * device and is tracked with the fwnode_handle to prevent allocating
+ * duplicate indices for the same device (e.g, if we defer probing of
+ * a device due to dependencies), in case the index is requested again.
+ */
+char *coresight_alloc_device_name(struct coresight_dev_list *dict,
+				  struct device *dev)
+{
+	int idx;
+	char *name = NULL;
+	struct fwnode_handle **list;
+
+	mutex_lock(&coresight_mutex);
+
+	idx = coresight_search_device_idx(dict, dev_fwnode(dev));
+	if (idx < 0) {
+		/* Make space for the new entry */
+		idx = dict->nr_idx;
+		list = krealloc_array(dict->fwnode_list,
+				      idx + 1, sizeof(*dict->fwnode_list),
+				      GFP_KERNEL);
+		if (ZERO_OR_NULL_PTR(list)) {
+			idx = -ENOMEM;
+			goto done;
+		}
+
+		list[idx] = dev_fwnode(dev);
+		dict->fwnode_list = list;
+		dict->nr_idx = idx + 1;
+	}
+
+	name = devm_kasprintf(dev, GFP_KERNEL, "%s%d", dict->pfx, idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 done:
 	mutex_unlock(&coresight_mutex);
 	return name;
 }
 EXPORT_SYMBOL_GPL(coresight_alloc_device_name);
 
+<<<<<<< HEAD
 static void coresight_release_device_list(void)
 {
 	struct coresight_dev_list *list, *next;
@@ -1615,6 +1769,8 @@ static void coresight_release_device_list(void)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct bus_type coresight_bustype = {
 	.name	= "coresight",
 };
@@ -1688,7 +1844,10 @@ static void __exit coresight_exit(void)
 					     &coresight_notifier);
 	etm_perf_exit();
 	bus_unregister(&coresight_bustype);
+<<<<<<< HEAD
 	coresight_release_device_list();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(coresight_init);

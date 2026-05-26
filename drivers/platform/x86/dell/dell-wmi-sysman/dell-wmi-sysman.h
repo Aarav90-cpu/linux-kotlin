@@ -189,8 +189,13 @@ void exit_bios_attr_set_interface(void);
 int init_bios_attr_set_interface(void);
 int map_wmi_error(int error_code);
 size_t calculate_string_buffer(const char *str);
+<<<<<<< HEAD
 size_t calculate_security_buffer(const char *authentication);
 void populate_security_buffer(char *buffer, const char *authentication);
+=======
+size_t calculate_security_buffer(char *authentication);
+void populate_security_buffer(char *buffer, char *authentication);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ssize_t populate_string_buffer(char *buffer, size_t buffer_len, const char *str);
 int set_new_password(const char *password_type, const char *new);
 int init_bios_attr_pass_interface(void);

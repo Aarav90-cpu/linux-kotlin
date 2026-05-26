@@ -91,6 +91,17 @@ struct tdmr_info {
  * Do not put any hardware-defined TDX structure representations below
  * this comment!
  */
+<<<<<<< HEAD
+=======
+
+/* Kernel defined TDX module status during module initialization. */
+enum tdx_module_status_t {
+	TDX_MODULE_UNINITIALIZED,
+	TDX_MODULE_INITIALIZED,
+	TDX_MODULE_ERROR
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tdx_memblock {
 	struct list_head list;
 	unsigned long start_pfn;

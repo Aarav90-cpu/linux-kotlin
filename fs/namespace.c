@@ -2646,6 +2646,7 @@ static int attach_recursive_mnt(struct mount *source_mnt,
 
 			if (unlikely(shorter) && child != source_mnt)
 				mp = shorter;
+<<<<<<< HEAD
 			/*
 			 * If @q was locked it was meant to hide
 			 * whatever was under it. Let @child take over
@@ -2659,6 +2660,8 @@ static int attach_recursive_mnt(struct mount *source_mnt,
 				child->mnt.mnt_flags |= MNT_LOCKED;
 				q->mnt.mnt_flags &= ~MNT_LOCKED;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mnt_change_mountpoint(r, mp, q);
 		}
 	}
@@ -2735,7 +2738,11 @@ static inline struct mount *where_to_mount(const struct path *path,
  * In all cases the location must not have been unmounted and the
  * chosen mountpoint must be allowed to be mounted on.  For "beneath"
  * case we also require the location to be at the root of a mount
+<<<<<<< HEAD
  * that has something mounted on top of it (i.e. has an overmount).
+=======
+ * that has a parent (i.e. is not a root of some namespace).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void do_lock_mount(const struct path *path,
 			  struct pinned_mountpoint *res,
@@ -2971,9 +2978,16 @@ static inline bool may_copy_tree(const struct path *path)
 }
 
 static struct mount *__do_loopback(const struct path *old_path,
+<<<<<<< HEAD
 				   bool recurse, unsigned int copy_flags)
 {
 	struct mount *old = real_mount(old_path->mnt);
+=======
+				   unsigned int flags, unsigned int copy_flags)
+{
+	struct mount *old = real_mount(old_path->mnt);
+	bool recurse = flags & AT_RECURSIVE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (IS_MNT_UNBINDABLE(old))
 		return ERR_PTR(-EINVAL);
@@ -2984,6 +2998,21 @@ static struct mount *__do_loopback(const struct path *old_path,
 	if (!recurse && __has_locked_children(old, old_path->dentry))
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * When creating a new mount namespace we don't want to copy over
+	 * mounts of mount namespaces to avoid the risk of cycles and also to
+	 * minimize the default complex interdependencies between mount
+	 * namespaces.
+	 *
+	 * We could ofc just check whether all mount namespace files aren't
+	 * creating cycles but really let's keep this simple.
+	 */
+	if (!(flags & OPEN_TREE_NAMESPACE))
+		copy_flags |= CL_COPY_MNT_NS_FILE;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (recurse)
 		return copy_tree(old, old_path->dentry, copy_flags);
 
@@ -2998,6 +3027,10 @@ static int do_loopback(const struct path *path, const char *old_name,
 {
 	struct path old_path __free(path_put) = {};
 	struct mount *mnt = NULL;
+<<<<<<< HEAD
+=======
+	unsigned int flags = recurse ? AT_RECURSIVE : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	if (!old_name || !*old_name)
@@ -3016,7 +3049,11 @@ static int do_loopback(const struct path *path, const char *old_name,
 	if (!check_mnt(mp.parent))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mnt = __do_loopback(&old_path, recurse, CL_COPY_MNT_NS_FILE);
+=======
+	mnt = __do_loopback(&old_path, flags, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(mnt))
 		return PTR_ERR(mnt);
 
@@ -3054,7 +3091,11 @@ static struct mnt_namespace *get_detached_copy(const struct path *path, unsigned
 			ns->seq_origin = src_mnt_ns->ns.ns_id;
 	}
 
+<<<<<<< HEAD
 	mnt = __do_loopback(path, (flags & AT_RECURSIVE), CL_COPY_MNT_NS_FILE);
+=======
+	mnt = __do_loopback(path, flags, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(mnt)) {
 		emptied_ns = ns;
 		return ERR_CAST(mnt);
@@ -3086,6 +3127,7 @@ static struct file *open_detached_copy(struct path *path, unsigned int flags)
 	return file;
 }
 
+<<<<<<< HEAD
 enum mount_copy_flags_t {
 	MOUNT_COPY_RECURSIVE    = (1 << 0),
 	MOUNT_COPY_NEW		= (1 << 1),
@@ -3093,6 +3135,9 @@ enum mount_copy_flags_t {
 
 static struct mnt_namespace *create_new_namespace(struct path *path,
 						  enum mount_copy_flags_t flags)
+=======
+static struct mnt_namespace *create_new_namespace(struct path *path, unsigned int flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mnt_namespace *ns = current->nsproxy->mnt_ns;
 	struct user_namespace *user_ns = current_user_ns();
@@ -3101,7 +3146,11 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
 	struct path to_path;
 	struct mount *mnt;
 	unsigned int copy_flags = 0;
+<<<<<<< HEAD
 	bool locked = false, recurse = flags & MOUNT_COPY_RECURSIVE;
+=======
+	bool locked = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (user_ns != ns->user_ns)
 		copy_flags |= CL_SLAVE;
@@ -3136,6 +3185,7 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * We don't emulate unshare()ing a mount namespace. We stick to
 	 * the restrictions of creating detached bind-mounts. It has a
 	 * lot saner and simpler semantics.
@@ -3144,6 +3194,13 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
 		mnt = clone_mnt(real_mount(path->mnt), path->dentry, copy_flags);
 	else
 		mnt = __do_loopback(path, recurse, copy_flags);
+=======
+	 * We don't emulate unshare()ing a mount namespace. We stick
+	 * to the restrictions of creating detached bind-mounts. It
+	 * has a lot saner and simpler semantics.
+	 */
+	mnt = __do_loopback(path, flags, copy_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	scoped_guard(mount_writer) {
 		if (IS_ERR(mnt)) {
 			emptied_ns = new_ns;
@@ -3172,8 +3229,12 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
 	return new_ns;
 }
 
+<<<<<<< HEAD
 static struct file *open_new_namespace(struct path *path,
 				       enum mount_copy_flags_t flags)
+=======
+static struct file *open_new_namespace(struct path *path, unsigned int flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mnt_namespace *new_ns;
 
@@ -3226,7 +3287,11 @@ static struct file *vfs_open_tree(int dfd, const char __user *filename, unsigned
 		return ERR_PTR(ret);
 
 	if (flags & OPEN_TREE_NAMESPACE)
+<<<<<<< HEAD
 		return open_new_namespace(&path, (flags & AT_RECURSIVE) ? MOUNT_COPY_RECURSIVE : 0);
+=======
+		return open_new_namespace(&path, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (flags & OPEN_TREE_CLONE)
 		return open_detached_copy(&path, flags);
@@ -3522,6 +3587,11 @@ static bool mount_is_ancestor(const struct mount *p1, const struct mount *p2)
  * @mnt_to:   mount under which to mount
  * @mp:   mountpoint of @mnt_to
  *
+<<<<<<< HEAD
+=======
+ * - Make sure that nothing can be mounted beneath the caller's current
+ *   root or the rootfs of the namespace.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * - Make sure that the caller can unmount the topmost mount ensuring
  *   that the caller could reveal the underlying mountpoint.
  * - Ensure that nothing has been mounted on top of @mnt_from before we
@@ -3535,14 +3605,36 @@ static bool mount_is_ancestor(const struct mount *p1, const struct mount *p2)
  */
 static int can_move_mount_beneath(const struct mount *mnt_from,
 				  const struct mount *mnt_to,
+<<<<<<< HEAD
 				  struct pinned_mountpoint *mp)
 {
 	struct mount *parent_mnt_to = mnt_to->mnt_parent;
 
+=======
+				  const struct mountpoint *mp)
+{
+	struct mount *parent_mnt_to = mnt_to->mnt_parent;
+
+	if (IS_MNT_LOCKED(mnt_to))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Avoid creating shadow mounts during mount propagation. */
 	if (mnt_from->overmount)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Mounting beneath the rootfs only makes sense when the
+	 * semantics of pivot_root(".", ".") are used.
+	 */
+	if (&mnt_to->mnt == current->fs->root.mnt)
+		return -EINVAL;
+	if (parent_mnt_to == current->nsproxy->mnt_ns->root)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mount_is_ancestor(mnt_to, mnt_from))
 		return -EINVAL;
 
@@ -3552,7 +3644,11 @@ static int can_move_mount_beneath(const struct mount *mnt_from,
 	 * propagating a copy @c of @mnt_from on top of @mnt_to. This
 	 * defeats the whole purpose of mounting beneath another mount.
 	 */
+<<<<<<< HEAD
 	if (propagation_would_overmount(parent_mnt_to, mnt_to, mp->mp))
+=======
+	if (propagation_would_overmount(parent_mnt_to, mnt_to, mp))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/*
@@ -3568,7 +3664,11 @@ static int can_move_mount_beneath(const struct mount *mnt_from,
 	 * @mnt_from beneath @mnt_to.
 	 */
 	if (check_mnt(mnt_from) &&
+<<<<<<< HEAD
 	    propagation_would_overmount(parent_mnt_to, mnt_from, mp->mp))
+=======
+	    propagation_would_overmount(parent_mnt_to, mnt_from, mp))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	return 0;
@@ -3677,7 +3777,11 @@ static int do_move_mount(const struct path *old_path,
 
 		if (mp.parent != over->mnt_parent)
 			over = mp.parent->overmount;
+<<<<<<< HEAD
 		err = can_move_mount_beneath(old, over, &mp);
+=======
+		err = can_move_mount_beneath(old, over, mp.mp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}
@@ -4226,8 +4330,13 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
 		struct user_namespace *user_ns, struct fs_struct *new_fs)
 {
 	struct mnt_namespace *new_ns;
+<<<<<<< HEAD
 	struct path old_root __free(path_put) = {};
 	struct path old_pwd __free(path_put) = {};
+=======
+	struct vfsmount *rootmnt __free(mntput) = NULL;
+	struct vfsmount *pwdmnt __free(mntput) = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mount *p, *q;
 	struct mount *old;
 	struct mount *new;
@@ -4247,6 +4356,7 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
 		return new_ns;
 
 	guard(namespace_excl)();
+<<<<<<< HEAD
 
 	if (flags & CLONE_EMPTY_MNTNS)
 		copy_flags = 0;
@@ -4259,6 +4369,13 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
 		new = clone_mnt(old, old->mnt.mnt_root, copy_flags);
 	else
 		new = copy_tree(old, old->mnt.mnt_root, copy_flags);
+=======
+	/* First pass: copy the tree topology */
+	copy_flags = CL_COPY_UNBINDABLE | CL_EXPIRE;
+	if (user_ns != ns->user_ns)
+		copy_flags |= CL_SLAVE;
+	new = copy_tree(old, old->mnt.mnt_root, copy_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(new)) {
 		emptied_ns = new_ns;
 		return ERR_CAST(new);
@@ -4269,6 +4386,7 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
 	}
 	new_ns->root = new;
 
+<<<<<<< HEAD
 	if (flags & CLONE_EMPTY_MNTNS) {
 		/*
 		 * Empty mount namespace: only the root mount exists.
@@ -4316,6 +4434,35 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
 			while (p->mnt.mnt_root != q->mnt.mnt_root)
 				p = next_mnt(skip_mnt_tree(p), old);
 		}
+=======
+	/*
+	 * Second pass: switch the tsk->fs->* elements and mark new vfsmounts
+	 * as belonging to new namespace.  We have already acquired a private
+	 * fs_struct, so tsk->fs->lock is not needed.
+	 */
+	p = old;
+	q = new;
+	while (p) {
+		mnt_add_to_ns(new_ns, q);
+		new_ns->nr_mounts++;
+		if (new_fs) {
+			if (&p->mnt == new_fs->root.mnt) {
+				new_fs->root.mnt = mntget(&q->mnt);
+				rootmnt = &p->mnt;
+			}
+			if (&p->mnt == new_fs->pwd.mnt) {
+				new_fs->pwd.mnt = mntget(&q->mnt);
+				pwdmnt = &p->mnt;
+			}
+		}
+		p = next_mnt(p, old);
+		q = next_mnt(q, new);
+		if (!q)
+			break;
+		// an mntns binding we'd skipped?
+		while (p->mnt.mnt_root != q->mnt.mnt_root)
+			p = next_mnt(skip_mnt_tree(p), old);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	ns_tree_add_raw(new_ns);
 	return new_ns;
@@ -4436,6 +4583,7 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
 	unsigned int mnt_flags = 0;
 	long ret;
 
+<<<<<<< HEAD
 	if ((flags & ~(FSMOUNT_CLOEXEC | FSMOUNT_NAMESPACE)) != 0)
 		return -EINVAL;
 
@@ -4446,6 +4594,14 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
 	if (!(flags & FSMOUNT_NAMESPACE) && !may_mount())
 		return -EPERM;
 
+=======
+	if (!may_mount())
+		return -EPERM;
+
+	if ((flags & ~(FSMOUNT_CLOEXEC)) != 0)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (attr_flags & ~FSMOUNT_VALID_FLAGS)
 		return -EINVAL;
 
@@ -4511,10 +4667,13 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
 	 */
 	vfs_clean_context(fc);
 
+<<<<<<< HEAD
 	if (flags & FSMOUNT_NAMESPACE)
 		return FD_ADD((flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
 			      open_new_namespace(&new_path, MOUNT_COPY_NEW));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ns = alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
 	if (IS_ERR(ns))
 		return PTR_ERR(ns);
@@ -5679,6 +5838,7 @@ static int grab_requested_root(struct mnt_namespace *ns, struct path *root)
 	if (mnt_ns_empty(ns))
 		return -ENOENT;
 
+<<<<<<< HEAD
 	first = ns->root;
 	for (child = node_to_mount(ns->mnt_first_node); child;
 	     child = listmnt_next(child, false)) {
@@ -5687,6 +5847,16 @@ static int grab_requested_root(struct mnt_namespace *ns, struct path *root)
 	}
 	if (!child)
 		return -ENOENT;
+=======
+	first = child = ns->root;
+	for (;;) {
+		child = listmnt_next(child, false);
+		if (!child)
+			return -ENOENT;
+		if (child->mnt_parent == first)
+			break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	root->mnt = mntget(&child->mnt);
 	root->dentry = dget(root->mnt->mnt_root);

@@ -2,9 +2,14 @@
 
 #include <linux/ethtool.h>
 #include <linux/sfp.h>
+<<<<<<< HEAD
 
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct eeprom_req_info {
 	struct ethnl_req_info	base;
@@ -150,17 +155,28 @@ err_free:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int eeprom_parse_request(struct ethnl_req_info *req_info,
 				const struct genl_info *info,
 				struct nlattr **tb,
+=======
+static int eeprom_parse_request(struct ethnl_req_info *req_info, struct nlattr **tb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				struct netlink_ext_ack *extack)
 {
 	struct eeprom_req_info *request = MODULE_EEPROM_REQINFO(req_info);
 
+<<<<<<< HEAD
 	if (GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_MODULE_EEPROM_OFFSET) ||
 	    GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_MODULE_EEPROM_LENGTH) ||
 	    GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_MODULE_EEPROM_PAGE) ||
 	    GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_MODULE_EEPROM_I2C_ADDRESS))
+=======
+	if (!tb[ETHTOOL_A_MODULE_EEPROM_OFFSET] ||
+	    !tb[ETHTOOL_A_MODULE_EEPROM_LENGTH] ||
+	    !tb[ETHTOOL_A_MODULE_EEPROM_PAGE] ||
+	    !tb[ETHTOOL_A_MODULE_EEPROM_I2C_ADDRESS])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	request->i2c_address = nla_get_u8(tb[ETHTOOL_A_MODULE_EEPROM_I2C_ADDRESS]);

@@ -40,6 +40,7 @@
 		sound-name-prefix = "Speaker Amp";
 	};
 
+<<<<<<< HEAD
 	battery: battery {
 		compatible = "simple-battery";
 		charge-full-design-microamp-hours = <4000000>;
@@ -59,6 +60,8 @@
 					<3500000  0>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dmic_codec: dmic-codec {
 		compatible = "dmic-codec";
 		num-channels = <6>;
@@ -234,11 +237,14 @@
 	cpu-supply = <&vdd_cpu>;
 };
 
+<<<<<<< HEAD
 &gpu {
 	mali-supply = <&vdd_gpu_npu>;
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c0 {
 	status = "okay";
 
@@ -284,6 +290,7 @@
 		vcc8-supply = <&vcc_sys>;
 		vcc9-supply = <&dcdc_boost>;
 
+<<<<<<< HEAD
 		charger {
 			monitored-battery = <&battery>;
 			rockchip,resistor-sense-micro-ohms = <10000>;
@@ -291,6 +298,8 @@
 			rockchip,sleep-filter-current-microamp = <100000>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regulators {
 			vdd_logic: DCDC_REG1 {
 				regulator-name = "vdd_logic";

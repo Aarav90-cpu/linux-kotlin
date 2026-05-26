@@ -577,7 +577,11 @@ static int ak8974_measure_channel(struct ak8974 *ak8974, unsigned long address,
 	/*
 	 * This explicit cast to (s16) is necessary as the measurement
 	 * is done in 2's complement with positive and negative values.
+<<<<<<< HEAD
 	 * The following assignment to *val will then convert the signed
+=======
+	 * The follwing assignment to *val will then convert the signed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * s16 value to a signed int value.
 	 */
 	*val = (s16)le16_to_cpu(hw_values[address]);

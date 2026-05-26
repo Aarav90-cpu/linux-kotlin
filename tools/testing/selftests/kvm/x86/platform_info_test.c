@@ -23,8 +23,13 @@
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u64 msr_platform_info;
 	u8 vector;
+=======
+	uint64_t msr_platform_info;
+	uint8_t vector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_SYNC(true);
 	msr_platform_info = rdmsr(MSR_PLATFORM_INFO);
@@ -42,7 +47,11 @@ int main(int argc, char *argv[])
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 msr_platform_info;
+=======
+	uint64_t msr_platform_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ucall uc;
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_MSR_PLATFORM_INFO));

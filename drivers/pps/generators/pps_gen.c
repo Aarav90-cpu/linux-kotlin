@@ -26,10 +26,14 @@
  */
 
 static dev_t pps_gen_devt;
+<<<<<<< HEAD
 static const struct class pps_gen_class = {
 	.name		= "pps-gen",
 	.dev_groups	= pps_gen_groups
 };
+=======
+static struct class *pps_gen_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static DEFINE_IDA(pps_gen_ida);
 
@@ -186,7 +190,11 @@ static int pps_gen_register_cdev(struct pps_gen_device *pps_gen)
 				MAJOR(pps_gen_devt), pps_gen->id);
 		goto free_ida;
 	}
+<<<<<<< HEAD
 	pps_gen->dev = device_create(&pps_gen_class, pps_gen->info->parent, devt,
+=======
+	pps_gen->dev = device_create(pps_gen_class, pps_gen->info->parent, devt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     pps_gen, "pps-gen%d", pps_gen->id);
 	if (IS_ERR(pps_gen->dev)) {
 		err = PTR_ERR(pps_gen->dev);
@@ -210,7 +218,11 @@ free_ida:
 static void pps_gen_unregister_cdev(struct pps_gen_device *pps_gen)
 {
 	pr_debug("unregistering pps-gen%d\n", pps_gen->id);
+<<<<<<< HEAD
 	device_destroy(&pps_gen_class, pps_gen->dev->devt);
+=======
+	device_destroy(pps_gen_class, pps_gen->dev->devt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -310,7 +322,11 @@ EXPORT_SYMBOL(pps_gen_event);
 
 static void __exit pps_gen_exit(void)
 {
+<<<<<<< HEAD
 	class_unregister(&pps_gen_class);
+=======
+	class_destroy(pps_gen_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unregister_chrdev_region(pps_gen_devt, PPS_GEN_MAX_SOURCES);
 }
 
@@ -318,11 +334,20 @@ static int __init pps_gen_init(void)
 {
 	int err;
 
+<<<<<<< HEAD
 	err = class_register(&pps_gen_class);
 	if (err) {
 		pr_err("failed to register class\n");
 		return err;
 	}
+=======
+	pps_gen_class = class_create("pps-gen");
+	if (IS_ERR(pps_gen_class)) {
+		pr_err("failed to allocate class\n");
+		return PTR_ERR(pps_gen_class);
+	}
+	pps_gen_class->dev_groups = pps_gen_groups;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = alloc_chrdev_region(&pps_gen_devt, 0,
 					PPS_GEN_MAX_SOURCES, "pps-gen");
@@ -334,7 +359,11 @@ static int __init pps_gen_init(void)
 	return 0;
 
 remove_class:
+<<<<<<< HEAD
 	class_unregister(&pps_gen_class);
+=======
+	class_destroy(pps_gen_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 

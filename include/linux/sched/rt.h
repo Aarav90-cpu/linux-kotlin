@@ -45,8 +45,15 @@ static inline bool rt_or_dl_task_policy(struct task_struct *tsk)
 
 	if (policy == SCHED_FIFO || policy == SCHED_RR)
 		return true;
+<<<<<<< HEAD
 	if (policy == SCHED_DEADLINE)
 		return true;
+=======
+#ifndef CONFIG_SCHED_ALT
+	if (policy == SCHED_DEADLINE)
+		return true;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 

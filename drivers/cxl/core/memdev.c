@@ -204,9 +204,12 @@ bool cxl_memdev_has_poison_cmd(struct cxl_memdev *cxlmd,
 {
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
 
+<<<<<<< HEAD
 	if (!mds)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return test_bit(cmd, mds->poison.enabled_cmds);
 }
 
@@ -659,6 +662,7 @@ static void detach_memdev(struct work_struct *work)
 
 static struct lock_class_key cxl_memdev_key;
 
+<<<<<<< HEAD
 struct cxl_dev_state *_devm_cxl_dev_state_create(struct device *dev,
 						 enum cxl_devtype type,
 						 u64 serial, u16 dvsec,
@@ -683,6 +687,8 @@ struct cxl_dev_state *_devm_cxl_dev_state_create(struct device *dev,
 }
 EXPORT_SYMBOL_NS_GPL(_devm_cxl_dev_state_create, "CXL");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
 					   const struct file_operations *fops,
 					   const struct cxl_memdev_attach *attach)

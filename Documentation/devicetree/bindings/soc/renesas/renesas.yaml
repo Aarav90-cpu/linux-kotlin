@@ -548,6 +548,7 @@ properties:
           - const: renesas,r9a08g045s33 # PCIe support
           - const: renesas,r9a08g045
 
+<<<<<<< HEAD
       - description: RZ/G3L (R9A08G046)
         items:
           - enum:
@@ -561,6 +562,8 @@ properties:
               - renesas,r9a08g046l48 # Quad Cortex-A55 + Cortex-M33 + GE3D/VCP (17mm LFBGA)
           - const: renesas,r9a08g046
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: RZ/V2M (R9A09G011)
         items:
           - enum:

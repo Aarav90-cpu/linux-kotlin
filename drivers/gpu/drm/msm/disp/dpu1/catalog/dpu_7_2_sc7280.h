@@ -172,6 +172,10 @@ static const struct dpu_wb_cfg sc7280_wb[] = {
 		.num_formats = ARRAY_SIZE(wb2_formats_rgb_yuv),
 		.clk_ctrl = DPU_CLK_CTRL_WB2,
 		.xin_id = 6,
+<<<<<<< HEAD
+=======
+		.vbif_idx = VBIF_RT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.maxlinewidth = 4096,
 		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
 	},
@@ -262,7 +266,12 @@ const struct dpu_mdss_cfg dpu_sc7280_cfg = {
 	.wb = sc7280_wb,
 	.intf_count = ARRAY_SIZE(sc7280_intf),
 	.intf = sc7280_intf,
+<<<<<<< HEAD
 	.vbif = &sdm845_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+	.vbif = sdm845_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &sc7280_perf_data,
 };
 

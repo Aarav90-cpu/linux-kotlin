@@ -54,11 +54,20 @@ config CRYPTO_DEV_VMX_ENCRYPT
 	select CRYPTO_AES
 	select CRYPTO_CBC
 	select CRYPTO_CTR
+<<<<<<< HEAD
+=======
+	select CRYPTO_GHASH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_XTS
 	default m
 	help
 	  Support for VMX cryptographic acceleration instructions on Power8 CPU.
+<<<<<<< HEAD
 	  This module supports acceleration for AES in hardware. If you choose
 	  'M' here, this module will be called vmx-crypto.
+=======
+	  This module supports acceleration for AES and GHASH in hardware. If you
+	  choose 'M' here, this module will be called vmx-crypto.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 endmenu

@@ -184,10 +184,13 @@ static long xsk_map_update_elem(struct bpf_map *map, void *key, void *value,
 	}
 
 	xs = (struct xdp_sock *)sock->sk;
+<<<<<<< HEAD
 	if (!READ_ONCE(xs->rx)) {
 		sockfd_put(sock);
 		return -ENOBUFS;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	map_entry = &m->xsk_map[i];
 	node = xsk_map_node_alloc(m, map_entry);

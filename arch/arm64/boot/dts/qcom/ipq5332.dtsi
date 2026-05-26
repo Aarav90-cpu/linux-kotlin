@@ -423,6 +423,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		qpic_bam: dma-controller@7984000 {
 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
 			reg = <0x07984000 0x1c000>;
@@ -456,6 +457,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		usb: usb@8af8800 {
 			compatible = "qcom,ipq5332-dwc3", "qcom,dwc3";
 			reg = <0x08af8800 0x400>;

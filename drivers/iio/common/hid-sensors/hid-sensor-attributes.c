@@ -346,7 +346,11 @@ int hid_sensor_write_raw_hyst_rel_value(struct hid_sensor_common *st,
 EXPORT_SYMBOL_NS(hid_sensor_write_raw_hyst_rel_value, "IIO_HID");
 
 /*
+<<<<<<< HEAD
  * This function applies the unit exponent to the scale.
+=======
+ * This fuction applies the unit exponent to the scale.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * For example:
  * 9.806650000 ->exp:2-> val0[980]val1[665000000]
  * 9.000806000 ->exp:2-> val0[900]val1[80600000]

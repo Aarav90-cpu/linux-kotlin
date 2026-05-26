@@ -7,10 +7,16 @@ if ! _have_program fio; then
 	exit $UBLK_SKIP_CODE
 fi
 
+<<<<<<< HEAD
 min_fio_version=fio-3.42
 fio_version=$(fio --version)
 if ! sort --version-sort --check=quiet <(printf "%s\n%s\n" "$min_fio_version" "$fio_version"); then
 	echo "Requires fio version with https://github.com/axboe/fio/pull/1992"
+=======
+fio_version=$(fio --version)
+if [[ "$fio_version" =~ fio-[0-9]+\.[0-9]+$ ]]; then
+	echo "Requires development fio version with https://github.com/axboe/fio/pull/1992"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exit $UBLK_SKIP_CODE
 fi
 

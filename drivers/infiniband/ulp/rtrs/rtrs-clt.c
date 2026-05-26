@@ -3219,7 +3219,11 @@ static int __init rtrs_client_init(void)
 		pr_err("Failed to create rtrs-client dev class\n");
 		return ret;
 	}
+<<<<<<< HEAD
 	rtrs_wq = alloc_workqueue("rtrs_client_wq", WQ_PERCPU, 0);
+=======
+	rtrs_wq = alloc_workqueue("rtrs_client_wq", 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rtrs_wq) {
 		class_unregister(&rtrs_clt_dev_class);
 		return -ENOMEM;

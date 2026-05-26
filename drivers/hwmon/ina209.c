@@ -27,6 +27,11 @@
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
 
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/ina2xx.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* register definitions */
 #define INA209_CONFIGURATION		0x00
 #define INA209_STATUS			0x01
@@ -485,6 +490,10 @@ static void ina209_restore_conf(struct i2c_client *client,
 static int ina209_init_client(struct i2c_client *client,
 			      struct ina209_data *data)
 {
+<<<<<<< HEAD
+=======
+	struct ina2xx_platform_data *pdata = dev_get_platdata(&client->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 shunt;
 	int reg;
 
@@ -498,8 +507,17 @@ static int ina209_init_client(struct i2c_client *client,
 		return reg;
 	data->config_orig = reg;
 
+<<<<<<< HEAD
 	if (!of_property_read_u32(client->dev.of_node, "shunt-resistor",
 				  &shunt)) {
+=======
+	if (pdata) {
+		if (pdata->shunt_uohms <= 0)
+			return -EINVAL;
+		shunt = pdata->shunt_uohms;
+	} else if (!of_property_read_u32(client->dev.of_node, "shunt-resistor",
+					 &shunt)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (shunt == 0)
 			return -EINVAL;
 	} else {

@@ -897,7 +897,11 @@ static bool should_skip_zero_counter(struct perf_stat_config *config,
 				     const struct aggr_cpu_id *id)
 {
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Skip unsupported default events when not verbose. (default events
@@ -1125,7 +1129,11 @@ static void print_no_aggr_metric(struct perf_stat_config *config,
 				 struct evlist *evlist,
 				 struct outstate *os)
 {
+<<<<<<< HEAD
 	unsigned int all_idx;
+=======
+	int all_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_cpu cpu;
 
 	perf_cpu_map__for_each_cpu(cpu, all_idx, evlist->core.user_requested_cpus) {

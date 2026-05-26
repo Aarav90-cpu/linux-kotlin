@@ -56,7 +56,11 @@ void crashing_child(void)
 		pthread_create(&thread, NULL, do_nothing, NULL);
 
 	/* crash on purpose */
+<<<<<<< HEAD
 	i = *(volatile int *)NULL;
+=======
+	__builtin_trap();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int create_detached_tmpfs(void)
@@ -148,8 +152,13 @@ bool get_pidfd_info(int fd_peer_pidfd, struct pidfd_info *info)
 		fprintf(stderr, "get_pidfd_info: ioctl(PIDFD_GET_INFO) failed: %m\n");
 		return false;
 	}
+<<<<<<< HEAD
 	fprintf(stderr, "get_pidfd_info: mask=0x%llx, coredump_mask=0x%x, coredump_signal=%d, coredump_code=%d\n",
 		(unsigned long long)info->mask, info->coredump_mask, info->coredump_signal, info->coredump_code);
+=======
+	fprintf(stderr, "get_pidfd_info: mask=0x%llx, coredump_mask=0x%x, coredump_signal=%d\n",
+		(unsigned long long)info->mask, info->coredump_mask, info->coredump_signal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 

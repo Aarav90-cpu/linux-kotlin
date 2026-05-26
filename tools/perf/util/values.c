@@ -13,9 +13,15 @@
 int perf_read_values_init(struct perf_read_values *values)
 {
 	values->threads_max = 16;
+<<<<<<< HEAD
 	values->pid = calloc(values->threads_max, sizeof(*values->pid));
 	values->tid = calloc(values->threads_max, sizeof(*values->tid));
 	values->value = calloc(values->threads_max, sizeof(*values->value));
+=======
+	values->pid = malloc(values->threads_max * sizeof(*values->pid));
+	values->tid = malloc(values->threads_max * sizeof(*values->tid));
+	values->value = zalloc(values->threads_max * sizeof(*values->value));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!values->pid || !values->tid || !values->value) {
 		pr_debug("failed to allocate read_values threads arrays");
 		goto out_free_pid;
@@ -96,7 +102,11 @@ static int perf_read_values__findnew_thread(struct perf_read_values *values,
 
 	i = values->threads;
 
+<<<<<<< HEAD
 	values->value[i] = calloc(values->counters_max, sizeof(**values->value));
+=======
+	values->value[i] = zalloc(values->counters_max * sizeof(**values->value));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!values->value[i]) {
 		pr_debug("failed to allocate read_values counters array");
 		return -ENOMEM;

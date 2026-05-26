@@ -66,4 +66,9 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
 void nft_fib_store_result(void *reg, const struct nft_fib *priv,
 			  const struct net_device *dev);
 
+<<<<<<< HEAD
+=======
+bool nft_fib_reduce(struct nft_regs_track *track,
+		    const struct nft_expr *expr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

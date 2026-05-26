@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2014-2026 NVIDIA CORPORATION.  All rights reserved.
+=======
+ * Copyright (C) 2014 NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/of.h>
@@ -1101,6 +1105,7 @@ static const struct tegra_mc_reset tegra114_mc_resets[] = {
 	TEGRA114_MC_RESET(VI,       0x200, 0x204, 17),
 };
 
+<<<<<<< HEAD
 static const struct tegra_mc_intmask tegra114_mc_intmasks[] = {
 	{
 		.reg = MC_INTMASK,
@@ -1109,6 +1114,8 @@ static const struct tegra_mc_intmask tegra114_mc_intmasks[] = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct tegra_mc_soc tegra114_mc_soc = {
 	.clients = tegra114_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra114_mc_clients),
@@ -1116,14 +1123,22 @@ const struct tegra_mc_soc tegra114_mc_soc = {
 	.atom_size = 32,
 	.client_id_mask = 0x7f,
 	.smmu = &tegra114_smmu_soc,
+<<<<<<< HEAD
 	.intmasks = tegra114_mc_intmasks,
 	.num_intmasks = ARRAY_SIZE(tegra114_mc_intmasks),
+=======
+	.intmask = MC_INT_INVALID_SMMU_PAGE | MC_INT_SECURITY_VIOLATION |
+		   MC_INT_DECERR_EMEM,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reset_ops = &tegra_mc_reset_ops_common,
 	.resets = tegra114_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra114_mc_resets),
 	.ops = &tegra30_mc_ops,
+<<<<<<< HEAD
 	.regs = &tegra20_mc_regs,
 	.handle_irq = tegra30_mc_irq_handlers,
 	.num_interrupts = ARRAY_SIZE(tegra30_mc_irq_handlers),
 	.mc_err_status_type_mask = (0x7 << 28),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

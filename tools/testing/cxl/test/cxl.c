@@ -16,7 +16,10 @@
 
 static int interleave_arithmetic;
 static bool extended_linear_cache;
+<<<<<<< HEAD
 static bool fail_autoassemble;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FAKE_QTG_ID	42
 
@@ -52,6 +55,7 @@ struct platform_device *cxl_mem_single[NR_MEM_SINGLE];
 static struct platform_device *cxl_rch[NR_CXL_RCH];
 static struct platform_device *cxl_rcd[NR_CXL_RCH];
 
+<<<<<<< HEAD
 /*
  * Decoder registry
  *
@@ -77,6 +81,8 @@ static DEFINE_XARRAY(decoder_registry);
  */
 static bool decoder_reset_preserve_registry;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool is_multi_bridge(struct device *dev)
 {
 	int i;
@@ -730,6 +736,7 @@ static int map_targets(struct device *dev, void *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Build a stable registry key from the decoder's upstream port identity
  * and decoder id.
@@ -918,6 +925,8 @@ static void cxld_registry_update(struct cxl_decoder *cxld)
 	__cxld_registry_save(td, cxld);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mock_decoder_commit(struct cxl_decoder *cxld)
 {
 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
@@ -937,6 +946,7 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
 
 	port->commit_end++;
 	cxld->flags |= CXL_DECODER_F_ENABLE;
+<<<<<<< HEAD
 	if (is_endpoint_decoder(&cxld->dev)) {
 		struct cxl_endpoint_decoder *cxled =
 			to_cxl_endpoint_decoder(&cxld->dev);
@@ -944,6 +954,8 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
 		cxled->state = CXL_DECODER_STATE_AUTO;
 	}
 	cxld_registry_update(cxld);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -964,6 +976,7 @@ static void mock_decoder_reset(struct cxl_decoder *cxld)
 			"%s: out of order reset, expected decoder%d.%d\n",
 			dev_name(&cxld->dev), port->id, port->commit_end);
 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
+<<<<<<< HEAD
 
 	if (is_endpoint_decoder(&cxld->dev)) {
 		struct cxl_endpoint_decoder *cxled =
@@ -1023,6 +1036,8 @@ static void init_disabled_mock_decoder(struct cxl_decoder *cxld)
 		cxled->state = CXL_DECODER_STATE_MANUAL;
 		cxled->skip = 0;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void default_mock_decoder(struct cxl_decoder *cxld)
@@ -1037,8 +1052,11 @@ static void default_mock_decoder(struct cxl_decoder *cxld)
 	cxld->target_type = CXL_DECODER_HOSTONLYMEM;
 	cxld->commit = mock_decoder_commit;
 	cxld->reset = mock_decoder_reset;
+<<<<<<< HEAD
 
 	WARN_ON_ONCE(!cxld_registry_new(cxld));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int first_decoder(struct device *dev, const void *data)
@@ -1053,6 +1071,7 @@ static int first_decoder(struct device *dev, const void *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Initialize a decoder during HDM enumeration.
  *
@@ -1069,13 +1088,19 @@ static int first_decoder(struct device *dev, const void *data)
  * has already been applied and the map_targets() is skipped.
  */
 static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
+=======
+static void mock_init_hdm_decoder(struct cxl_decoder *cxld)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct acpi_cedt_cfmws *window = mock_cfmws[0];
 	struct platform_device *pdev = NULL;
 	struct cxl_endpoint_decoder *cxled;
 	struct cxl_switch_decoder *cxlsd;
 	struct cxl_port *port, *iter;
+<<<<<<< HEAD
 	struct cxl_test_decoder *td;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cxl_memdev *cxlmd;
 	struct cxl_dport *dport;
 	struct device *dev;
@@ -1102,6 +1127,7 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 				port = NULL;
 		} while (port);
 		port = cxled_to_port(cxled);
+<<<<<<< HEAD
 	} else {
 		port = to_cxl_port(cxld->dev.parent);
 	}
@@ -1120,6 +1146,8 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 
 		init_disabled_mock_decoder(cxld);
 		return false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1130,6 +1158,7 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 	 *
 	 * See 'cxl list -BMPu -m cxl_mem.0,cxl_mem.4'
 	 */
+<<<<<<< HEAD
 	if (!is_endpoint_decoder(&cxld->dev) || !hb0 || pdev->id % 4 ||
 	    pdev->id > 4 || cxld->id > 0) {
 		default_mock_decoder(cxld);
@@ -1140,6 +1169,11 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 	if (hb0 && pdev->id == 4 && cxld->id == 0 && fail_autoassemble) {
 		default_mock_decoder(cxld);
 		return false;
+=======
+	if (!hb0 || pdev->id % 4 || pdev->id > 4 || cxld->id > 0) {
+		default_mock_decoder(cxld);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	base = window->base_hpa;
@@ -1161,7 +1195,10 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 	cxld->commit = mock_decoder_commit;
 	cxld->reset = mock_decoder_reset;
 
+<<<<<<< HEAD
 	WARN_ON_ONCE(!cxld_registry_new(cxld));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Now that endpoint decoder is set up, walk up the hierarchy
 	 * and setup the switch and root port decoders targeting @cxlmd.
@@ -1183,6 +1220,7 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 			/* put cxl_mem.4 second in the decode order */
 			if (pdev->id == 4) {
 				cxlsd->target[1] = dport;
+<<<<<<< HEAD
 				cxlsd->cxld.target_map[1] = dport->port_id;
 			} else {
 				cxlsd->target[0] = dport;
@@ -1191,6 +1229,16 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 		} else {
 			cxlsd->target[0] = dport;
 			cxlsd->cxld.target_map[0] = dport->port_id;
+=======
+				cxld->target_map[1] = dport->port_id;
+			} else {
+				cxlsd->target[0] = dport;
+				cxld->target_map[0] = dport->port_id;
+			}
+		} else {
+			cxlsd->target[0] = dport;
+			cxld->target_map[0] = dport->port_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		cxld = &cxlsd->cxld;
 		cxld->target_type = CXL_DECODER_HOSTONLYMEM;
@@ -1209,6 +1257,7 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 			.start = base,
 			.end = base + mock_auto_region_size - 1,
 		};
+<<<<<<< HEAD
 		cxld->commit = mock_decoder_commit;
 		cxld->reset = mock_decoder_reset;
 
@@ -1217,6 +1266,10 @@ static bool mock_init_hdm_decoder(struct cxl_decoder *cxld)
 	}
 
 	return false;
+=======
+		put_device(dev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mock_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
@@ -1225,7 +1278,10 @@ static int mock_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
 	struct cxl_port *port = cxlhdm->port;
 	struct cxl_port *parent_port = to_cxl_port(port->dev.parent);
 	int target_count, i;
+<<<<<<< HEAD
 	bool restored;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_cxl_endpoint(port))
 		target_count = 0;
@@ -1265,8 +1321,15 @@ static int mock_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
 		}
 
 		ctx.target_map = cxld->target_map;
+<<<<<<< HEAD
 		restored = mock_init_hdm_decoder(cxld);
 		if (target_count && !restored) {
+=======
+
+		mock_init_hdm_decoder(cxld);
+
+		if (target_count) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rc = device_for_each_child(port->uport_dev, &ctx,
 						   map_targets);
 			if (rc) {
@@ -1443,6 +1506,7 @@ static void mock_cxl_endpoint_parse_cdat(struct cxl_port *port)
 	cxl_endpoint_get_perf_coordinates(port, ep_c);
 }
 
+<<<<<<< HEAD
 /*
  * Simulate that the first half of mock CXL Window 0 is "Soft Reserve" capacity
  */
@@ -1490,6 +1554,8 @@ mock_region_intersects_soft_reserve(resource_size_t start, size_t size)
 	return -1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cxl_mock_ops cxl_mock_ops = {
 	.is_mock_adev = is_mock_adev,
 	.is_mock_bridge = is_mock_bridge,
@@ -1505,9 +1571,12 @@ static struct cxl_mock_ops cxl_mock_ops = {
 	.devm_cxl_add_dport_by_dev = mock_cxl_add_dport_by_dev,
 	.hmat_get_extended_linear_cache_size =
 		mock_hmat_get_extended_linear_cache_size,
+<<<<<<< HEAD
 	.walk_hmem_resources = mock_walk_hmem_resources,
 	.region_intersects = mock_region_intersects,
 	.region_intersects_soft_reserve = mock_region_intersects_soft_reserve,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.list = LIST_HEAD_INIT(cxl_mock_ops.list),
 };
 
@@ -1794,6 +1863,7 @@ err_mem:
 	return rc;
 }
 
+<<<<<<< HEAD
 static ssize_t
 decoder_reset_preserve_registry_show(struct device *dev,
 				     struct device_attribute *attr, char *buf)
@@ -1821,6 +1891,8 @@ static struct attribute *cxl_acpi_attrs[] = {
 };
 ATTRIBUTE_GROUPS(cxl_acpi);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __init int cxl_test_init(void)
 {
 	int rc, i;
@@ -1951,7 +2023,10 @@ static __init int cxl_test_init(void)
 
 	mock_companion(&acpi0017_mock, &cxl_acpi->dev);
 	acpi0017_mock.dev.bus = &platform_bus_type;
+<<<<<<< HEAD
 	cxl_acpi->dev.groups = cxl_acpi_groups;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = platform_device_add(cxl_acpi);
 	if (rc)
@@ -1961,6 +2036,7 @@ static __init int cxl_test_init(void)
 	if (rc)
 		goto err_root;
 
+<<<<<<< HEAD
 	rc = hmem_test_init();
 	if (rc)
 		goto err_mem;
@@ -1969,6 +2045,10 @@ static __init int cxl_test_init(void)
 
 err_mem:
 	cxl_mem_exit();
+=======
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_root:
 	platform_device_put(cxl_acpi);
 err_rch:
@@ -2002,6 +2082,7 @@ err_gen_pool_create:
 	return rc;
 }
 
+<<<<<<< HEAD
 static void free_decoder_registry(void)
 {
 	unsigned long index;
@@ -2013,11 +2094,16 @@ static void free_decoder_registry(void)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __exit void cxl_test_exit(void)
 {
 	int i;
 
+<<<<<<< HEAD
 	hmem_test_exit();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cxl_mem_exit();
 	platform_device_unregister(cxl_acpi);
 	cxl_rch_topo_exit();
@@ -2039,16 +2125,22 @@ static __exit void cxl_test_exit(void)
 	depopulate_all_mock_resources();
 	gen_pool_destroy(cxl_mock_pool);
 	unregister_cxl_mock_ops(&cxl_mock_ops);
+<<<<<<< HEAD
 	free_decoder_registry();
 	xa_destroy(&decoder_registry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_param(interleave_arithmetic, int, 0444);
 MODULE_PARM_DESC(interleave_arithmetic, "Modulo:0, XOR:1");
 module_param(extended_linear_cache, bool, 0444);
 MODULE_PARM_DESC(extended_linear_cache, "Enable extended linear cache support");
+<<<<<<< HEAD
 module_param(fail_autoassemble, bool, 0444);
 MODULE_PARM_DESC(fail_autoassemble, "Simulate missing member of an auto-region");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_init(cxl_test_init);
 module_exit(cxl_test_exit);
 MODULE_LICENSE("GPL v2");

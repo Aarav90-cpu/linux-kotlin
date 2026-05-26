@@ -10,10 +10,13 @@
  * check the time till the closest expected timer event.
  */
 #define RESIDENCY_THRESHOLD_NS	(15 * NSEC_PER_USEC)
+<<<<<<< HEAD
 /*
  * If the closest timer is in this range, the governor idle state selection need
  * not be adjusted after the scheduler tick has been stopped.
  */
 #define SAFE_TIMER_RANGE_NS	(2 * TICK_NSEC)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __CPUIDLE_GOVERNOR_H */

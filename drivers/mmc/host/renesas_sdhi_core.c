@@ -26,7 +26,10 @@
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/slot-gpio.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/mux/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pinctrl/consumer.h>
 #include <linux/pinctrl/pinctrl-state.h>
 #include <linux/platform_data/tmio.h>
@@ -1063,7 +1066,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
 	struct regulator_dev *rdev;
 	struct renesas_sdhi_dma *dma_priv;
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct mux_state *mux_state;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct tmio_mmc_host *host;
 	struct renesas_sdhi *priv;
 	int num_irqs, irq, ret, i;
@@ -1118,10 +1124,13 @@ int renesas_sdhi_probe(struct platform_device *pdev,
 						"state_uhs");
 	}
 
+<<<<<<< HEAD
 	mux_state = devm_mux_state_get_optional_selected(&pdev->dev, NULL);
 	if (IS_ERR(mux_state))
 		return PTR_ERR(mux_state);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	host = tmio_mmc_host_alloc(pdev, mmc_data);
 	if (IS_ERR(host))
 		return PTR_ERR(host);

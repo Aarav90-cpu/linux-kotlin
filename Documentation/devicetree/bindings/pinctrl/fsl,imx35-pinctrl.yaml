@@ -20,7 +20,10 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - fsl,imx25-iomuxc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - fsl,imx35-iomuxc
           - fsl,imx51-iomuxc
           - fsl,imx53-iomuxc

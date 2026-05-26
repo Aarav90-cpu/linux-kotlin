@@ -497,7 +497,11 @@ static void read_dce_straps(
 static struct audio *create_audio(
 		struct dc_context *ctx, unsigned int inst)
 {
+<<<<<<< HEAD
 	return dce_audio_create(ctx, inst,
+=======
+	return dce60_audio_create(ctx, inst,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			&audio_regs[inst], &audio_shift, &audio_mask);
 }
 
@@ -753,8 +757,12 @@ static struct link_encoder *dce60_link_encoder_create(
 				     enc_init_data,
 				     &link_enc_feature,
 				     &link_enc_regs[link_regs_id],
+<<<<<<< HEAD
 				     enc_init_data->channel == CHANNEL_ID_UNKNOWN ?
 				     NULL : &link_enc_aux_regs[enc_init_data->channel - 1],
+=======
+				     &link_enc_aux_regs[enc_init_data->channel - 1],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
 				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
 	return &enc110->base;

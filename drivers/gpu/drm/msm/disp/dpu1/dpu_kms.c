@@ -52,7 +52,11 @@
 #define DPU_DEBUGFS_DIR "msm_dpu"
 #define DPU_DEBUGFS_HWMASKNAME "hw_log_mask"
 
+<<<<<<< HEAD
 bool dpu_use_virtual_planes = true;
+=======
+bool dpu_use_virtual_planes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(dpu_use_virtual_planes, bool, 0);
 
 static int dpu_kms_hw_init(struct msm_kms *kms);
@@ -367,6 +371,7 @@ static void dpu_kms_global_destroy_state(struct drm_private_obj *obj,
 	kfree(dpu_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 dpu_kms_global_create_state(struct drm_private_obj *obj)
 {
@@ -385,6 +390,8 @@ dpu_kms_global_create_state(struct drm_private_obj *obj)
 	return &dpu_state->base;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dpu_kms_global_print_state(struct drm_printer *p,
 				       const struct drm_private_state *state)
 {
@@ -394,12 +401,35 @@ static void dpu_kms_global_print_state(struct drm_printer *p,
 }
 
 static const struct drm_private_state_funcs dpu_kms_global_state_funcs = {
+<<<<<<< HEAD
 	.atomic_create_state = dpu_kms_global_create_state,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = dpu_kms_global_duplicate_state,
 	.atomic_destroy_state = dpu_kms_global_destroy_state,
 	.atomic_print_state = dpu_kms_global_print_state,
 };
 
+<<<<<<< HEAD
+=======
+static int dpu_kms_global_obj_init(struct dpu_kms *dpu_kms)
+{
+	struct dpu_global_state *state;
+
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(dpu_kms->dev, &dpu_kms->global_state,
+				    &state->base,
+				    &dpu_kms_global_state_funcs);
+
+	state->rm = &dpu_kms->rm;
+
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dpu_kms_global_obj_fini(struct dpu_kms *dpu_kms)
 {
 	drm_atomic_private_obj_fini(&dpu_kms->global_state);
@@ -888,12 +918,23 @@ static int _dpu_kms_drm_obj_init(struct dpu_kms *dpu_kms)
 
 static void _dpu_kms_hw_destroy(struct dpu_kms *dpu_kms)
 {
+<<<<<<< HEAD
+=======
+	int i;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dpu_kms->hw_intr = NULL;
 
 	/* safe to call these more than once during shutdown */
 	_dpu_kms_mmu_destroy(dpu_kms);
 
+<<<<<<< HEAD
 	dpu_kms->hw_vbif = NULL;
+=======
+	for (i = 0; i < ARRAY_SIZE(dpu_kms->hw_vbif); i++) {
+		dpu_kms->hw_vbif[i] = NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dpu_kms_global_obj_fini(dpu_kms);
 
@@ -1057,11 +1098,21 @@ static void dpu_kms_mdp_snapshot(struct msm_disp_state *disp_state, struct msm_k
 					    dpu_kms->mmio + cat->cdm->base,
 					    "%s", cat->cdm->name);
 
+<<<<<<< HEAD
 	const struct dpu_vbif_cfg *vbif = dpu_kms->catalog->vbif;
 
 	msm_disp_snapshot_add_block(disp_state, vbif->len,
 				    dpu_kms->vbif,
 				    "vbif");
+=======
+	for (i = 0; i < dpu_kms->catalog->vbif_count; i++) {
+		const struct dpu_vbif_cfg *vbif = &dpu_kms->catalog->vbif[i];
+
+		msm_disp_snapshot_add_block(disp_state, vbif->len,
+					    dpu_kms->vbif[vbif->id] + vbif->base,
+					    "%s", vbif->name);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_put_sync(&dpu_kms->pdev->dev);
 }
@@ -1139,7 +1190,11 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 {
 	struct dpu_kms *dpu_kms;
 	struct drm_device *dev;
+<<<<<<< HEAD
 	int rc = -EINVAL;
+=======
+	int i, rc = -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long max_core_clk_rate;
 	u32 core_rev;
 
@@ -1154,8 +1209,14 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 	dev->mode_config.cursor_width = 512;
 	dev->mode_config.cursor_height = 512;
 
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(dpu_kms->dev, &dpu_kms->global_state,
 				    &dpu_kms_global_state_funcs);
+=======
+	rc = dpu_kms_global_obj_init(dpu_kms);
+	if (rc)
+		return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic_set(&dpu_kms->bandwidth_ref, 0);
 
@@ -1214,6 +1275,7 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 		goto err_pm_put;
 	}
 
+<<<<<<< HEAD
 	struct dpu_hw_vbif *hw;
 	const struct dpu_vbif_cfg *vbif = dpu_kms->catalog->vbif;
 
@@ -1226,6 +1288,22 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 
 	dpu_kms->hw_vbif = hw;
 
+=======
+	for (i = 0; i < dpu_kms->catalog->vbif_count; i++) {
+		struct dpu_hw_vbif *hw;
+		const struct dpu_vbif_cfg *vbif = &dpu_kms->catalog->vbif[i];
+
+		hw = dpu_hw_vbif_init(dev, vbif, dpu_kms->vbif[vbif->id]);
+		if (IS_ERR(hw)) {
+			rc = PTR_ERR(hw);
+			DPU_ERROR("failed to init vbif %d: %d\n", vbif->id, rc);
+			goto err_pm_put;
+		}
+
+		dpu_kms->hw_vbif[vbif->id] = hw;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* TODO: use the same max_freq as in dpu_kms_hw_init */
 	max_core_clk_rate = dpu_kms_get_clk_rate(dpu_kms, "core");
 	if (!max_core_clk_rate) {
@@ -1340,6 +1418,7 @@ static int dpu_kms_mmap_mdp5(struct dpu_kms *dpu_kms)
 	}
 	DRM_DEBUG("mapped dpu address space @%p\n", dpu_kms->mmio);
 
+<<<<<<< HEAD
 	dpu_kms->vbif = msm_ioremap_mdss(mdss_dev, dpu_kms->pdev, "vbif_phys");
 	if (IS_ERR(dpu_kms->vbif)) {
 		ret = PTR_ERR(dpu_kms->vbif);
@@ -1348,6 +1427,26 @@ static int dpu_kms_mmap_mdp5(struct dpu_kms *dpu_kms)
 		return ret;
 	}
 
+=======
+	dpu_kms->vbif[VBIF_RT] = msm_ioremap_mdss(mdss_dev,
+						  dpu_kms->pdev,
+						  "vbif_phys");
+	if (IS_ERR(dpu_kms->vbif[VBIF_RT])) {
+		ret = PTR_ERR(dpu_kms->vbif[VBIF_RT]);
+		DPU_ERROR("vbif register memory map failed: %d\n", ret);
+		dpu_kms->vbif[VBIF_RT] = NULL;
+		return ret;
+	}
+
+	dpu_kms->vbif[VBIF_NRT] = msm_ioremap_mdss(mdss_dev,
+						   dpu_kms->pdev,
+						   "vbif_nrt_phys");
+	if (IS_ERR(dpu_kms->vbif[VBIF_NRT])) {
+		dpu_kms->vbif[VBIF_NRT] = NULL;
+		DPU_DEBUG("VBIF NRT is not defined");
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1365,6 +1464,7 @@ static int dpu_kms_mmap_dpu(struct dpu_kms *dpu_kms)
 	}
 	DRM_DEBUG("mapped dpu address space @%p\n", dpu_kms->mmio);
 
+<<<<<<< HEAD
 	dpu_kms->vbif = msm_ioremap(pdev, "vbif");
 	if (IS_ERR(dpu_kms->vbif)) {
 		ret = PTR_ERR(dpu_kms->vbif);
@@ -1373,6 +1473,22 @@ static int dpu_kms_mmap_dpu(struct dpu_kms *dpu_kms)
 		return ret;
 	}
 
+=======
+	dpu_kms->vbif[VBIF_RT] = msm_ioremap(pdev, "vbif");
+	if (IS_ERR(dpu_kms->vbif[VBIF_RT])) {
+		ret = PTR_ERR(dpu_kms->vbif[VBIF_RT]);
+		DPU_ERROR("vbif register memory map failed: %d\n", ret);
+		dpu_kms->vbif[VBIF_RT] = NULL;
+		return ret;
+	}
+
+	dpu_kms->vbif[VBIF_NRT] = msm_ioremap_quiet(pdev, "vbif_nrt");
+	if (IS_ERR(dpu_kms->vbif[VBIF_NRT])) {
+		dpu_kms->vbif[VBIF_NRT] = NULL;
+		DPU_DEBUG("VBIF NRT is not defined");
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1438,6 +1554,11 @@ static int __maybe_unused dpu_runtime_suspend(struct device *dev)
 	struct msm_drm_private *priv = platform_get_drvdata(pdev);
 	struct dpu_kms *dpu_kms = to_dpu_kms(priv->kms);
 
+<<<<<<< HEAD
+=======
+	/* Drop the performance state vote */
+	dev_pm_opp_set_rate(dev, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clk_bulk_disable_unprepare(dpu_kms->num_clocks, dpu_kms->clocks);
 
 	for (i = 0; i < dpu_kms->num_paths; i++)
@@ -1480,7 +1601,10 @@ static const struct dev_pm_ops dpu_pm_ops = {
 };
 
 static const struct of_device_id dpu_dt_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,eliza-dpu", .data = &dpu_eliza_cfg, },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,glymur-dpu", .data = &dpu_glymur_cfg, },
 	{ .compatible = "qcom,kaanapali-dpu", .data = &dpu_kaanapali_cfg, },
 	{ .compatible = "qcom,msm8917-mdp5", .data = &dpu_msm8917_cfg, },

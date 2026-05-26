@@ -225,6 +225,10 @@ unsigned long sugov_effective_cpu_perf(int cpu, unsigned long actual,
 
 static void sugov_get_util(struct sugov_cpu *sg_cpu, unsigned long boost)
 {
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long min, max, util = scx_cpuperf_target(sg_cpu->cpu);
 
 	if (!scx_switched_all())
@@ -233,6 +237,13 @@ static void sugov_get_util(struct sugov_cpu *sg_cpu, unsigned long boost)
 	util = max(util, boost);
 	sg_cpu->bw_min = min;
 	sg_cpu->util = sugov_effective_cpu_perf(sg_cpu->cpu, util, min, max);
+<<<<<<< HEAD
+=======
+#else /* CONFIG_SCHED_ALT */
+	sg_cpu->bw_min = 0;
+	sg_cpu->util = rq_load_util(cpu_rq(sg_cpu->cpu), arch_scale_cpu_capacity(sg_cpu->cpu));
+#endif /* CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -360,6 +371,10 @@ static bool sugov_hold_freq(struct sugov_cpu *sg_cpu)
 	unsigned long idle_calls;
 	bool ret;
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The heuristics in this function is for the fair class. For SCX, the
 	 * performance target comes directly from the BPF scheduler. Let's just
@@ -367,6 +382,10 @@ static bool sugov_hold_freq(struct sugov_cpu *sg_cpu)
 	 */
 	if (scx_switched_all())
 		return false;
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* if capped by uclamp_max, always update to be in compliance */
 	if (uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)))
@@ -392,8 +411,15 @@ static inline bool sugov_hold_freq(struct sugov_cpu *sg_cpu) { return false; }
  */
 static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
 {
+<<<<<<< HEAD
 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
 		sg_cpu->sg_policy->need_freq_update = true;
+=======
+#ifndef CONFIG_SCHED_ALT
+	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
+		sg_cpu->sg_policy->limits_changed = true;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
@@ -461,7 +487,10 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
 				     unsigned int flags)
 {
 	struct sugov_cpu *sg_cpu = container_of(hook, struct sugov_cpu, update_util);
+<<<<<<< HEAD
 	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long prev_util = sg_cpu->util;
 	unsigned long max_cap;
 
@@ -483,10 +512,17 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
 	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
 		sg_cpu->util = prev_util;
 
+<<<<<<< HEAD
 	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
 				   sg_cpu->util, max_cap);
 
 	sg_policy->last_freq_update_time = time;
+=======
+	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
+				   sg_cpu->util, max_cap);
+
+	sg_cpu->sg_policy->last_freq_update_time = time;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
@@ -688,6 +724,10 @@ static int sugov_kthread_create(struct sugov_policy *sg_policy)
 	}
 
 	ret = sched_setattr_nocheck(thread, &attr);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		kthread_stop(thread);
 		pr_warn("%s: failed to set SCHED_DEADLINE\n", __func__);

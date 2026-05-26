@@ -35,7 +35,10 @@ properties:
       - samsung,exynosautov920-cmu-cpucl0
       - samsung,exynosautov920-cmu-cpucl1
       - samsung,exynosautov920-cmu-cpucl2
+<<<<<<< HEAD
       - samsung,exynosautov920-cmu-g3d
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - samsung,exynosautov920-cmu-hsi0
       - samsung,exynosautov920-cmu-hsi1
       - samsung,exynosautov920-cmu-hsi2
@@ -288,6 +291,7 @@ allOf:
             - const: oscclk
             - const: noc
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -308,6 +312,8 @@ allOf:
             - const: switch
             - const: nocp
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - "#clock-cells"

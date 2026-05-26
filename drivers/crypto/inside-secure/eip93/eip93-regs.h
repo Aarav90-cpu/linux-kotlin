@@ -3,7 +3,11 @@
  * Copyright (C) 2019 - 2021
  *
  * Richard van Schagen <vschagen@icloud.com>
+<<<<<<< HEAD
  * Christian Marangi <ansuelsmth@gmail.com>
+=======
+ * Christian Marangi <ansuelsmth@gmail.com
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #ifndef REG_EIP93_H
 #define REG_EIP93_H
@@ -109,7 +113,11 @@
 #define EIP93_REG_PE_BUF_THRESH			0x10c
 #define   EIP93_PE_OUTBUF_THRESH		GENMASK(23, 16)
 #define   EIP93_PE_INBUF_THRESH			GENMASK(7, 0)
+<<<<<<< HEAD
 #define EIP93_REG_PE_INBUF_COUNT		0x110
+=======
+#define EIP93_REG_PE_INBUF_COUNT		0x100
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define EIP93_REG_PE_OUTBUF_COUNT		0x114
 #define EIP93_REG_PE_BUF_RW_PNTR		0x118 /* BUF_PNTR */
 

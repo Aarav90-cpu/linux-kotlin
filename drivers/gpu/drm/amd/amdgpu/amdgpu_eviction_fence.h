@@ -25,8 +25,11 @@
 #ifndef AMDGPU_EV_FENCE_H_
 #define AMDGPU_EV_FENCE_H_
 
+<<<<<<< HEAD
 #include <linux/dma-fence.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct amdgpu_eviction_fence {
 	struct dma_fence base;
 	spinlock_t	 lock;
@@ -37,6 +40,7 @@ struct amdgpu_eviction_fence {
 struct amdgpu_eviction_fence_mgr {
 	u64			ev_fence_ctx;
 	atomic_t		ev_fence_seq;
+<<<<<<< HEAD
 
 	/*
 	 * Only updated while holding the VM resv lock.
@@ -69,4 +73,37 @@ void amdgpu_evf_mgr_shutdown(struct amdgpu_eviction_fence_mgr *evf_mgr);
 void amdgpu_evf_mgr_flush_suspend(struct amdgpu_eviction_fence_mgr *evf_mgr);
 void amdgpu_evf_mgr_fini(struct amdgpu_eviction_fence_mgr *evf_mgr);
 
+=======
+	spinlock_t		ev_fence_lock;
+	struct amdgpu_eviction_fence *ev_fence;
+	struct delayed_work	suspend_work;
+	uint8_t fd_closing;
+};
+
+/* Eviction fence helper functions */
+struct amdgpu_eviction_fence *
+amdgpu_eviction_fence_create(struct amdgpu_eviction_fence_mgr *evf_mgr);
+
+void
+amdgpu_eviction_fence_destroy(struct amdgpu_eviction_fence_mgr *evf_mgr);
+
+int
+amdgpu_eviction_fence_attach(struct amdgpu_eviction_fence_mgr *evf_mgr,
+			     struct amdgpu_bo *bo);
+
+void
+amdgpu_eviction_fence_detach(struct amdgpu_eviction_fence_mgr *evf_mgr,
+			     struct amdgpu_bo *bo);
+
+int
+amdgpu_eviction_fence_init(struct amdgpu_eviction_fence_mgr *evf_mgr);
+
+void
+amdgpu_eviction_fence_signal(struct amdgpu_eviction_fence_mgr *evf_mgr,
+			     struct amdgpu_eviction_fence *ev_fence);
+
+int
+amdgpu_eviction_fence_replace_fence(struct amdgpu_eviction_fence_mgr *evf_mgr,
+				    struct drm_exec *exec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

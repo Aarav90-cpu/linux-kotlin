@@ -3,7 +3,11 @@
 struct io_timeout_data {
 	struct io_kiocb			*req;
 	struct hrtimer			timer;
+<<<<<<< HEAD
 	ktime_t				time;
+=======
+	struct timespec64		ts;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum hrtimer_mode		mode;
 	u32				flags;
 };

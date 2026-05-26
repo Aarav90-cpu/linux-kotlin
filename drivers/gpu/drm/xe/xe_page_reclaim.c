@@ -11,7 +11,10 @@
 #include "xe_page_reclaim.h"
 
 #include "xe_gt_stats.h"
+<<<<<<< HEAD
 #include "xe_guc_tlb_inval.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_macros.h"
 #include "xe_pat.h"
 #include "xe_sa.h"
@@ -27,18 +30,24 @@
  * flushes.
  * - pat_index is transient display (1)
  *
+<<<<<<< HEAD
  * For cases of NULL VMA, there should be no corresponding PRL entry
  * so skip over.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return: true when page reclamation is unnecessary, false otherwise.
  */
 bool xe_page_reclaim_skip(struct xe_tile *tile, struct xe_vma *vma)
 {
 	u8 l3_policy;
 
+<<<<<<< HEAD
 	if (xe_vma_is_null(vma))
 		return true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	l3_policy = xe_pat_index_get_l3_policy(tile->xe, vma->attr.pat_index);
 
 	/*
@@ -137,6 +146,7 @@ int xe_page_reclaim_list_alloc_entries(struct xe_page_reclaim_list *prl)
 
 	return page ? 0 : -ENOMEM;
 }
+<<<<<<< HEAD
 
 /**
  * xe_guc_page_reclaim_done_handler() - Page reclaim done handler
@@ -156,3 +166,5 @@ int xe_guc_page_reclaim_done_handler(struct xe_guc *guc, u32 *msg, u32 len)
 {
 	return xe_guc_tlb_inval_done_handler(guc, msg, len);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

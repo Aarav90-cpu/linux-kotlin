@@ -231,7 +231,11 @@ int imx_media_probe_complete(struct v4l2_async_notifier *notifier);
 struct imx_media_dev *imx_media_dev_init(struct device *dev,
 					 const struct media_device_ops *ops);
 int imx_media_dev_notifier_register(struct imx_media_dev *imxmd,
+<<<<<<< HEAD
 				    const struct v4l2_async_notifier_operations *ops);
+=======
+			    const struct v4l2_async_notifier_operations *ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* imx-media-fim.c */
 struct imx_media_fim;

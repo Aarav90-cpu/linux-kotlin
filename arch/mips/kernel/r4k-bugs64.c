@@ -91,7 +91,11 @@ void mult_sh_align_mod(long *v1, long *v2, long *w,
 		".set	pop"
 		: "=&r" (lv1), "=r" (lw)
 		: "r" (m1), "r" (m2), "r" (s), "I" (0)
+<<<<<<< HEAD
 		: "hi", "lo");
+=======
+		: "hi", "lo", "$0");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* We have to use single integers for m1 and m2 and a double
 	 * one for p to be sure the mulsidi3 gcc's RTL multiplication
 	 * instruction has the workaround applied.  Older versions of

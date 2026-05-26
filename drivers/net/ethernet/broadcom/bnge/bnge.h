@@ -94,11 +94,14 @@ struct bnge_queue_info {
 	u8      queue_profile;
 };
 
+<<<<<<< HEAD
 #define BNGE_PHY_FLAGS2_SHIFT		8
 #define BNGE_PHY_FL_NO_FCS		PORT_PHY_QCAPS_RESP_FLAGS_NO_FCS
 #define BNGE_PHY_FL_NO_PAUSE		\
 	(PORT_PHY_QCAPS_RESP_FLAGS2_PAUSE_UNSUPPORTED << 8)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bnge_dev {
 	struct device	*dev;
 	struct pci_dev	*pdev;
@@ -212,11 +215,14 @@ struct bnge_dev {
 
 	struct bnge_auxr_priv	*aux_priv;
 	struct bnge_auxr_dev	*auxr_dev;
+<<<<<<< HEAD
 
 	struct bnge_link_info	link_info;
 
 	/* Copied from flags and flags2 in hwrm_port_phy_qcaps_output */
 	u32			phy_flags;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline bool bnge_is_roce_en(struct bnge_dev *bd)

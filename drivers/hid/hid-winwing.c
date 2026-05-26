@@ -12,7 +12,10 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MAX_REPORT 16
 
@@ -36,6 +39,7 @@ static const struct winwing_led_info led_info[3] = {
 
 struct winwing_drv_data {
 	struct hid_device *hdev;
+<<<<<<< HEAD
 	struct mutex lights_lock;
 	__u8 *report_lights;
 	__u8 *report_rumble;
@@ -44,6 +48,12 @@ struct winwing_drv_data {
 	int rumble_left;
 	int rumble_right;
 	int has_grip15;
+=======
+	__u8 *report_buf;
+	struct mutex lock;
+	int map_more_buttons;
+	unsigned int num_leds;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct winwing_led leds[];
 };
 
@@ -52,6 +62,7 @@ static int winwing_led_write(struct led_classdev *cdev,
 {
 	struct winwing_led *led = (struct winwing_led *) cdev;
 	struct winwing_drv_data *data = hid_get_drvdata(led->hdev);
+<<<<<<< HEAD
 	__u8 *buf = data->report_lights;
 	int ret;
 
@@ -61,6 +72,13 @@ static int winwing_led_write(struct led_classdev *cdev,
 	 * Mimicking requests captured by usbmon when LEDs
 	 * are controlled by the vendor's app in a VM.
 	 */
+=======
+	__u8 *buf = data->report_buf;
+	int ret;
+
+	mutex_lock(&data->lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	buf[0] = 0x02;
 	buf[1] = 0x60;
 	buf[2] = 0xbe;
@@ -78,7 +96,11 @@ static int winwing_led_write(struct led_classdev *cdev,
 
 	ret = hid_hw_output_report(led->hdev, buf, 14);
 
+<<<<<<< HEAD
 	mutex_unlock(&data->lights_lock);
+=======
+	mutex_unlock(&data->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -96,9 +118,15 @@ static int winwing_init_led(struct hid_device *hdev,
 	if (!data)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	data->report_lights = devm_kzalloc(&hdev->dev, MAX_REPORT, GFP_KERNEL);
 
 	if (!data->report_lights)
+=======
+	data->report_buf = devm_kmalloc(&hdev->dev, MAX_REPORT, GFP_KERNEL);
+
+	if (!data->report_buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	for (i = 0; i < 3; i += 1) {
@@ -126,7 +154,11 @@ static int winwing_init_led(struct hid_device *hdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int winwing_map_button(int button, int has_grip15)
+=======
+static int winwing_map_button(int button, int map_more_buttons)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (button < 1)
 		return KEY_RESERVED;
@@ -150,7 +182,11 @@ static int winwing_map_button(int button, int has_grip15)
 		return (button - 65) + BTN_TRIGGER_HAPPY17;
 	}
 
+<<<<<<< HEAD
 	if (!has_grip15) {
+=======
+	if (!map_more_buttons) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Not mapping numbers [33 .. 64] which
 		 * are not assigned to any real buttons
@@ -203,13 +239,18 @@ static int winwing_input_mapping(struct hid_device *hdev,
 	/* Button numbers start with 1 */
 	button = usage->hid & HID_USAGE;
 
+<<<<<<< HEAD
 	code = winwing_map_button(button, data->has_grip15);
+=======
+	code = winwing_map_button(button, data->map_more_buttons);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hid_map_usage(hi, usage, bit, max, EV_KEY, code);
 
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * If x ≤ 0, return 0;
  * if x is in [1 .. 65535], return a value in [1 .. 255]
@@ -346,6 +387,8 @@ static int winwing_init_ff(struct hid_device *hdev, struct hid_input *hidinput)
 			winwing_play_effect);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int winwing_probe(struct hid_device *hdev,
 		const struct hid_device_id *id)
 {
@@ -364,11 +407,17 @@ static int winwing_probe(struct hid_device *hdev,
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->hdev = hdev;
 	data->has_grip15 = id->driver_data;
 	hid_set_drvdata(hdev, data);
 
 	INIT_WORK(&data->rumble_work, winwing_haptic_rumble_cb);
+=======
+	data->map_more_buttons = id->driver_data;
+
+	hid_set_drvdata(hdev, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
 	if (ret) {
@@ -379,6 +428,7 @@ static int winwing_probe(struct hid_device *hdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void winwing_remove(struct hid_device *hdev)
 {
 	struct winwing_drv_data *data;
@@ -400,11 +450,19 @@ static int winwing_input_configured(struct hid_device *hdev,
 
 	data = (struct winwing_drv_data *) hid_get_drvdata(hdev);
 
+=======
+static int winwing_input_configured(struct hid_device *hdev,
+		struct hid_input *hidinput)
+{
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = winwing_init_led(hdev, hidinput->input);
 
 	if (ret)
 		hid_err(hdev, "led init failed\n");
 
+<<<<<<< HEAD
 	if (data->has_grip15)
 		winwing_init_ff(hdev, hidinput);
 
@@ -412,6 +470,11 @@ static int winwing_input_configured(struct hid_device *hdev,
 }
 
 /* Set driver_data to 1 for grips with rumble motor and more than 32 buttons */
+=======
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct hid_device_id winwing_devices[] = {
 	{ HID_USB_DEVICE(0x4098, 0xbd65), .driver_data = 1 },  /* TGRIP-15E  */
 	{ HID_USB_DEVICE(0x4098, 0xbd64), .driver_data = 1 },  /* TGRIP-15EX */
@@ -428,7 +491,10 @@ static struct hid_driver winwing_driver = {
 	.input_configured = winwing_input_configured,
 	.input_mapping = winwing_input_mapping,
 	.probe = winwing_probe,
+<<<<<<< HEAD
 	.remove = winwing_remove,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 module_hid_driver(winwing_driver);
 

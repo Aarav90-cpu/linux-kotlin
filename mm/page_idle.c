@@ -74,7 +74,11 @@ static bool page_idle_clear_pte_refs_one(struct folio *folio,
 			pmd_t pmdval = pmdp_get(pvmw.pmd);
 
 			if (likely(pmd_present(pmdval)))
+<<<<<<< HEAD
 				referenced |= pmdp_test_and_clear_young(vma, addr, pvmw.pmd);
+=======
+				referenced |= pmdp_clear_young_notify(vma, addr, pvmw.pmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			referenced |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
 		} else {
 			/* unexpected pmd-mapped page? */

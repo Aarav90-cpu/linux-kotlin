@@ -141,7 +141,11 @@ static struct notifier_block regulator_quirk_nb = {
 static int __init rcar_gen2_regulator_quirk(void)
 {
 	struct regulator_quirk *quirk, *pos, *tmp;
+<<<<<<< HEAD
 	struct of_phandle_args *args;
+=======
+	struct of_phandle_args *argsa, *argsb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct of_device_id *id;
 	struct device_node *np;
 	u32 mon, addr;
@@ -171,14 +175,22 @@ static int __init rcar_gen2_regulator_quirk(void)
 			goto err_mem;
 		}
 
+<<<<<<< HEAD
 		args = &quirk->irq_args;
+=======
+		argsa = &quirk->irq_args;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memcpy(&quirk->i2c_msg, id->data, sizeof(quirk->i2c_msg));
 
 		quirk->id = id;
 		quirk->np = of_node_get(np);
 		quirk->i2c_msg.addr = addr;
 
+<<<<<<< HEAD
 		ret = of_irq_parse_one(np, 0, args);
+=======
+		ret = of_irq_parse_one(np, 0, argsa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {	/* Skip invalid entry and continue */
 			of_node_put(np);
 			kfree(quirk);
@@ -186,7 +198,19 @@ static int __init rcar_gen2_regulator_quirk(void)
 		}
 
 		list_for_each_entry(pos, &quirk_list, list) {
+<<<<<<< HEAD
 			if (of_phandle_args_equal(args, &pos->irq_args)) {
+=======
+			argsb = &pos->irq_args;
+
+			if (argsa->args_count != argsb->args_count)
+				continue;
+
+			ret = memcmp(argsa->args, argsb->args,
+				     argsa->args_count *
+				     sizeof(argsa->args[0]));
+			if (!ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pos->shared = true;
 				quirk->shared = true;
 			}

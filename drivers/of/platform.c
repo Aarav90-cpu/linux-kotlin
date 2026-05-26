@@ -500,7 +500,11 @@ static const struct of_device_id reserved_mem_matches[] = {
 
 static int __init of_platform_default_populate_init(void)
 {
+<<<<<<< HEAD
 	struct device_node *node, *reserved;
+=======
+	struct device_node *node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	device_links_supplier_sync_state_pause();
 
@@ -563,6 +567,7 @@ static int __init of_platform_default_populate_init(void)
 		 * platform_devices for every node in /reserved-memory with a
 		 * "compatible",
 		 */
+<<<<<<< HEAD
 		reserved = of_find_node_by_path("/reserved-memory");
 		if (reserved) {
 			for_each_child_of_node(reserved, node) {
@@ -571,6 +576,10 @@ static int __init of_platform_default_populate_init(void)
 			}
 			of_node_put(reserved);
 		}
+=======
+		for_each_matching_node(node, reserved_mem_matches)
+			of_platform_device_create(node, NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		node = of_find_node_by_path("/firmware");
 		if (node) {

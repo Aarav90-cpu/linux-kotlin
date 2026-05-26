@@ -2319,7 +2319,10 @@ u64 timer_base_try_to_set_idle(unsigned long basej, u64 basem, bool *idle)
  */
 void timer_clear_idle(void)
 {
+<<<<<<< HEAD
 	int this_cpu = smp_processor_id();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We do this unlocked. The worst outcome is a remote pinned timer
 	 * enqueue sending a pointless IPI, but taking the lock would just
@@ -2328,9 +2331,15 @@ void timer_clear_idle(void)
 	 * path. Required for BASE_LOCAL only.
 	 */
 	__this_cpu_write(timer_bases[BASE_LOCAL].is_idle, false);
+<<<<<<< HEAD
 	if (tick_nohz_full_cpu(this_cpu))
 		__this_cpu_write(timer_bases[BASE_GLOBAL].is_idle, false);
 	trace_timer_base_idle(false, this_cpu);
+=======
+	if (tick_nohz_full_cpu(smp_processor_id()))
+		__this_cpu_write(timer_bases[BASE_GLOBAL].is_idle, false);
+	trace_timer_base_idle(false, smp_processor_id());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Activate without holding the timer_base->lock */
 	tmigr_cpu_activate();

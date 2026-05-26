@@ -582,7 +582,11 @@ static bool ldm_create_data_partitions (struct parsed_partitions *pp,
 		return false;
 	}
 
+<<<<<<< HEAD
 	seq_buf_puts(&pp->pp_buf, " [LDM]");
+=======
+	strlcat(pp->pp_buf, " [LDM]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Create the data partitions */
 	list_for_each (item, &ldb->v_part) {
@@ -597,7 +601,11 @@ static bool ldm_create_data_partitions (struct parsed_partitions *pp,
 		part_num++;
 	}
 
+<<<<<<< HEAD
 	seq_buf_puts(&pp->pp_buf, "\n");
+=======
+	strlcat(pp->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 

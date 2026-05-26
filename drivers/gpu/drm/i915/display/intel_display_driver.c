@@ -117,7 +117,10 @@ static void intel_mode_config_init(struct intel_display *display)
 
 	drm_mode_config_init(display->drm);
 	INIT_LIST_HEAD(&display->global.obj_list);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&display->pipe_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mode_config->min_width = 0;
 	mode_config->min_height = 0;
@@ -209,12 +212,23 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
 
 	intel_bios_init(display);
 
+<<<<<<< HEAD
+=======
+	ret = intel_vga_register(display);
+	if (ret)
+		goto cleanup_bios;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_psr_dc5_dc6_wa_init(display);
 
 	/* FIXME: completely on the wrong abstraction layer */
 	ret = intel_power_domains_init(display);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto cleanup_bios;
+=======
+		goto cleanup_vga;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_pmdemand_init_early(display);
 
@@ -226,7 +240,11 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
 	display->hotplug.dp_wq = alloc_ordered_workqueue("intel-dp", 0);
 	if (!display->hotplug.dp_wq) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto cleanup_pw_domain_dmc;
+=======
+		goto cleanup_vga_client_pw_domain_dmc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	display->wq.modeset = alloc_ordered_workqueue("i915_modeset", 0);
@@ -242,13 +260,21 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
 		goto cleanup_wq_modeset;
 	}
 
+<<<<<<< HEAD
 	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI | WQ_PERCPU, 0);
+=======
+	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!display->wq.cleanup) {
 		ret = -ENOMEM;
 		goto cleanup_wq_flip;
 	}
 
+<<<<<<< HEAD
 	display->wq.unordered = alloc_workqueue("display_unordered", WQ_PERCPU, 0);
+=======
+	display->wq.unordered = alloc_workqueue("display_unordered", 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!display->wq.unordered) {
 		ret = -ENOMEM;
 		goto cleanup_wq_cleanup;
@@ -298,9 +324,17 @@ cleanup_wq_modeset:
 	destroy_workqueue(display->wq.modeset);
 cleanup_wq_dp:
 	destroy_workqueue(display->hotplug.dp_wq);
+<<<<<<< HEAD
 cleanup_pw_domain_dmc:
 	intel_dmc_fini(display);
 	intel_power_domains_driver_remove(display);
+=======
+cleanup_vga_client_pw_domain_dmc:
+	intel_dmc_fini(display);
+	intel_power_domains_driver_remove(display);
+cleanup_vga:
+	intel_vga_unregister(display);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 cleanup_bios:
 	intel_bios_driver_remove(display);
 
@@ -549,8 +583,11 @@ void intel_display_driver_register(struct intel_display *display)
 	if (!HAS_DISPLAY(display))
 		return;
 
+<<<<<<< HEAD
 	intel_vga_register(display);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Must be done after probing outputs */
 	intel_opregion_register(display);
 	intel_acpi_video_register(display);
@@ -643,6 +680,11 @@ void intel_display_driver_remove_nogem(struct intel_display *display)
 
 	intel_power_domains_driver_remove(display);
 
+<<<<<<< HEAD
+=======
+	intel_vga_unregister(display);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_bios_driver_remove(display);
 }
 
@@ -670,8 +712,11 @@ void intel_display_driver_unregister(struct intel_display *display)
 
 	acpi_video_unregister();
 	intel_opregion_unregister(display);
+<<<<<<< HEAD
 
 	intel_vga_unregister(display);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

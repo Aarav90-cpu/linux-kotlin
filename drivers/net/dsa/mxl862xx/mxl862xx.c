@@ -7,11 +7,16 @@
  * Copyright (C) 2025 Daniel Golle <daniel@makrotopia.org>
  */
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
 #include <linux/delay.h>
 #include <linux/etherdevice.h>
 #include <linux/if_bridge.h>
 #include <linux/module.h>
+=======
+#include <linux/module.h>
+#include <linux/delay.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/of_device.h>
 #include <linux/of_mdio.h>
 #include <linux/phy.h>
@@ -30,6 +35,7 @@
 #define MXL862XX_API_READ_QUIET(dev, cmd, data) \
 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
 
+<<<<<<< HEAD
 /* Polling interval for RMON counter accumulation. At 2.5 Gbps with
  * minimum-size (64-byte) frames, a 32-bit packet counter wraps in ~880s.
  * 2s gives a comfortable margin.
@@ -68,6 +74,8 @@ static const struct ethtool_rmon_hist_range mxl862xx_rmon_ranges[] = {
 	{}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MXL862XX_SDMA_PCTRLP(p)		(0xbc0 + ((p) * 0x6))
 #define MXL862XX_SDMA_PCTRL_EN		BIT(0)
 
@@ -77,6 +85,7 @@ static const struct ethtool_rmon_hist_range mxl862xx_rmon_ranges[] = {
 #define MXL862XX_READY_TIMEOUT_MS	10000
 #define MXL862XX_READY_POLL_MS		100
 
+<<<<<<< HEAD
 #define MXL862XX_TCM_INST_SEL		0xe00
 #define MXL862XX_TCM_CBS		0xe12
 #define MXL862XX_TCM_EBS		0xe13
@@ -167,6 +176,8 @@ static const struct mxl862xx_evlan_rule_desc vid_accept_egress_unaware[] = {
 	{ FT_NO_FILTER, FT_NO_TAG, TP_NONE, TP_NONE,  false, EVLAN_STRIP_IF_UNTAGGED },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static enum dsa_tag_protocol mxl862xx_get_tag_protocol(struct dsa_switch *ds,
 						       int port,
 						       enum dsa_tag_protocol m)
@@ -175,6 +186,7 @@ static enum dsa_tag_protocol mxl862xx_get_tag_protocol(struct dsa_switch *ds,
 }
 
 /* PHY access via firmware relay */
+<<<<<<< HEAD
 static int mxl862xx_phy_read_mmd(struct mxl862xx_priv *priv, int addr,
 				 int devadd, int regnum)
 {
@@ -182,6 +194,15 @@ static int mxl862xx_phy_read_mmd(struct mxl862xx_priv *priv, int addr,
 		.phy = addr,
 		.mmd = devadd,
 		.reg = cpu_to_le16(regnum),
+=======
+static int mxl862xx_phy_read_mmd(struct mxl862xx_priv *priv, int port,
+				 int devadd, int reg)
+{
+	struct mdio_relay_data param = {
+		.phy = port,
+		.mmd = devadd,
+		.reg = cpu_to_le16(reg),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	int ret;
 
@@ -192,6 +213,7 @@ static int mxl862xx_phy_read_mmd(struct mxl862xx_priv *priv, int addr,
 	return le16_to_cpu(param.data);
 }
 
+<<<<<<< HEAD
 static int mxl862xx_phy_write_mmd(struct mxl862xx_priv *priv, int addr,
 				  int devadd, int regnum, u16 data)
 {
@@ -199,12 +221,22 @@ static int mxl862xx_phy_write_mmd(struct mxl862xx_priv *priv, int addr,
 		.phy = addr,
 		.mmd = devadd,
 		.reg = cpu_to_le16(regnum),
+=======
+static int mxl862xx_phy_write_mmd(struct mxl862xx_priv *priv, int port,
+				  int devadd, int reg, u16 data)
+{
+	struct mdio_relay_data param = {
+		.phy = port,
+		.mmd = devadd,
+		.reg = cpu_to_le16(reg),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.data = cpu_to_le16(data),
 	};
 
 	return MXL862XX_API_WRITE(priv, INT_GPHY_WRITE, param);
 }
 
+<<<<<<< HEAD
 static int mxl862xx_phy_read_mii_bus(struct mii_bus *bus, int addr, int regnum)
 {
 	return mxl862xx_phy_read_mmd(bus->priv, addr, 0, regnum);
@@ -226,6 +258,29 @@ static int mxl862xx_phy_write_c45_mii_bus(struct mii_bus *bus, int addr,
 					  int devadd, int regnum, u16 val)
 {
 	return mxl862xx_phy_write_mmd(bus->priv, addr, devadd, regnum, val);
+=======
+static int mxl862xx_phy_read_mii_bus(struct mii_bus *bus, int port, int regnum)
+{
+	return mxl862xx_phy_read_mmd(bus->priv, port, 0, regnum);
+}
+
+static int mxl862xx_phy_write_mii_bus(struct mii_bus *bus, int port,
+				      int regnum, u16 val)
+{
+	return mxl862xx_phy_write_mmd(bus->priv, port, 0, regnum, val);
+}
+
+static int mxl862xx_phy_read_c45_mii_bus(struct mii_bus *bus, int port,
+					 int devadd, int regnum)
+{
+	return mxl862xx_phy_read_mmd(bus->priv, port, devadd, regnum);
+}
+
+static int mxl862xx_phy_write_c45_mii_bus(struct mii_bus *bus, int port,
+					  int devadd, int regnum, u16 val)
+{
+	return mxl862xx_phy_write_mmd(bus->priv, port, devadd, regnum, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mxl862xx_wait_ready(struct dsa_switch *ds)
@@ -299,6 +354,7 @@ static int mxl862xx_setup_mdio(struct dsa_switch *ds)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mxl862xx_bridge_config_fwd(struct dsa_switch *ds, u16 bridge_id,
 				      bool ucast_flood, bool mcast_flood,
 				      bool bcast_flood)
@@ -625,6 +681,11 @@ static int mxl862xx_setup(struct dsa_switch *ds)
 	int n_user_ports = 0, max_vlans;
 	int ingress_finals, vid_rules;
 	struct dsa_port *dp;
+=======
+static int mxl862xx_setup(struct dsa_switch *ds)
+{
+	struct mxl862xx_priv *priv = ds->priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = mxl862xx_reset(priv);
@@ -635,6 +696,7 @@ static int mxl862xx_setup(struct dsa_switch *ds)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* Calculate Extended VLAN block sizes.
 	 * With VLAN Filter handling VID membership checks:
 	 *   Ingress: only final catchall rules (PVID insertion, 802.1Q
@@ -686,6 +748,8 @@ static int mxl862xx_setup(struct dsa_switch *ds)
 	schedule_delayed_work(&priv->stats_work,
 			      MXL862XX_STATS_POLL_INTERVAL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return mxl862xx_setup_mdio(ds);
 }
 
@@ -763,6 +827,7 @@ static int mxl862xx_configure_sp_tag_proto(struct dsa_switch *ds, int port,
 	return MXL862XX_API_WRITE(ds->priv, MXL862XX_SS_SPTAG_SET, tag);
 }
 
+<<<<<<< HEAD
 static int mxl862xx_evlan_write_rule(struct mxl862xx_priv *priv,
 				     u16 block_id, u16 entry_index,
 				     const struct mxl862xx_evlan_rule_desc *desc,
@@ -1326,21 +1391,89 @@ static void mxl862xx_port_bridge_leave(struct dsa_switch *ds, int port,
 
 	if (!dsa_bridge_ports(ds, bridge.dev))
 		mxl862xx_free_bridge(ds, &bridge);
+=======
+static int mxl862xx_setup_cpu_bridge(struct dsa_switch *ds, int port)
+{
+	struct mxl862xx_bridge_port_config br_port_cfg = {};
+	struct mxl862xx_priv *priv = ds->priv;
+	u16 bridge_port_map = 0;
+	struct dsa_port *dp;
+
+	/* CPU port bridge setup */
+	br_port_cfg.mask = cpu_to_le32(MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_PORT_MAP |
+				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_MC_SRC_MAC_LEARNING |
+				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_VLAN_BASED_MAC_LEARNING);
+
+	br_port_cfg.bridge_port_id = cpu_to_le16(port);
+	br_port_cfg.src_mac_learning_disable = false;
+	br_port_cfg.vlan_src_mac_vid_enable = true;
+	br_port_cfg.vlan_dst_mac_vid_enable = true;
+
+	/* include all assigned user ports in the CPU portmap */
+	dsa_switch_for_each_user_port(dp, ds) {
+		/* it's safe to rely on cpu_dp being valid for user ports */
+		if (dp->cpu_dp->index != port)
+			continue;
+
+		bridge_port_map |= BIT(dp->index);
+	}
+	br_port_cfg.bridge_port_map[0] |= cpu_to_le16(bridge_port_map);
+
+	return MXL862XX_API_WRITE(priv, MXL862XX_BRIDGEPORT_CONFIGSET, br_port_cfg);
+}
+
+static int mxl862xx_add_single_port_bridge(struct dsa_switch *ds, int port)
+{
+	struct mxl862xx_bridge_port_config br_port_cfg = {};
+	struct dsa_port *dp = dsa_to_port(ds, port);
+	struct mxl862xx_bridge_alloc br_alloc = {};
+	int ret;
+
+	ret = MXL862XX_API_READ(ds->priv, MXL862XX_BRIDGE_ALLOC, br_alloc);
+	if (ret) {
+		dev_err(ds->dev, "failed to allocate a bridge for port %d\n", port);
+		return ret;
+	}
+
+	br_port_cfg.bridge_id = br_alloc.bridge_id;
+	br_port_cfg.bridge_port_id = cpu_to_le16(port);
+	br_port_cfg.mask = cpu_to_le32(MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_ID |
+				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_PORT_MAP |
+				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_MC_SRC_MAC_LEARNING |
+				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_VLAN_BASED_MAC_LEARNING);
+	br_port_cfg.src_mac_learning_disable = true;
+	br_port_cfg.vlan_src_mac_vid_enable = false;
+	br_port_cfg.vlan_dst_mac_vid_enable = false;
+	/* As this function is only called for user ports it is safe to rely on
+	 * cpu_dp being valid
+	 */
+	br_port_cfg.bridge_port_map[0] = cpu_to_le16(BIT(dp->cpu_dp->index));
+
+	return MXL862XX_API_WRITE(ds->priv, MXL862XX_BRIDGEPORT_CONFIGSET, br_port_cfg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
 {
+<<<<<<< HEAD
 	struct mxl862xx_priv *priv = ds->priv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dsa_port *dp = dsa_to_port(ds, port);
 	bool is_cpu_port = dsa_port_is_cpu(dp);
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/* disable port and flush MAC entries */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = mxl862xx_port_state(ds, port, false);
 	if (ret)
 		return ret;
 
 	mxl862xx_port_fast_age(ds, port);
 
+<<<<<<< HEAD
 	if (dsa_port_is_unused(dp))
 		return 0;
 
@@ -1349,16 +1482,29 @@ static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
 		return -EOPNOTSUPP;
 	}
 
+=======
+	/* skip setup for unused and DSA ports */
+	if (dsa_port_is_unused(dp) ||
+	    dsa_port_is_dsa(dp))
+		return 0;
+
+	/* configure tag protocol */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = mxl862xx_configure_sp_tag_proto(ds, port, is_cpu_port);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	/* assign CTP port IDs */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = mxl862xx_configure_ctp_port(ds, port, port,
 					  is_cpu_port ? 32 - port : 1);
 	if (ret)
 		return ret;
 
 	if (is_cpu_port)
+<<<<<<< HEAD
 		return mxl862xx_setup_cpu_bridge(ds, port);
 
 	/* setup single-port bridge for user ports.
@@ -1419,6 +1565,13 @@ static void mxl862xx_port_teardown(struct dsa_switch *ds, int port)
 	 * a full reset on the next probe, which reclaims all resources.
 	 */
 	priv->ports[port].setup_done = false;
+=======
+		/* assign user ports to CPU port bridge */
+		return mxl862xx_setup_cpu_bridge(ds, port);
+
+	/* setup single-port bridge for user ports */
+	return mxl862xx_add_single_port_bridge(ds, port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mxl862xx_phylink_get_caps(struct dsa_switch *ds, int port,
@@ -1431,6 +1584,7 @@ static void mxl862xx_phylink_get_caps(struct dsa_switch *ds, int port,
 		  config->supported_interfaces);
 }
 
+<<<<<<< HEAD
 static int mxl862xx_get_fid(struct dsa_switch *ds, struct dsa_db db)
 {
 	struct mxl862xx_priv *priv = ds->priv;
@@ -2062,15 +2216,21 @@ static void mxl862xx_get_stats64(struct dsa_switch *ds, int port,
 		schedule_delayed_work(&priv->stats_work, 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dsa_switch_ops mxl862xx_switch_ops = {
 	.get_tag_protocol = mxl862xx_get_tag_protocol,
 	.setup = mxl862xx_setup,
 	.port_setup = mxl862xx_port_setup,
+<<<<<<< HEAD
 	.port_teardown = mxl862xx_port_teardown,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.phylink_get_caps = mxl862xx_phylink_get_caps,
 	.port_enable = mxl862xx_port_enable,
 	.port_disable = mxl862xx_port_disable,
 	.port_fast_age = mxl862xx_port_fast_age,
+<<<<<<< HEAD
 	.set_ageing_time = mxl862xx_set_ageing_time,
 	.port_bridge_join = mxl862xx_port_bridge_join,
 	.port_bridge_leave = mxl862xx_port_bridge_leave,
@@ -2094,6 +2254,8 @@ static const struct dsa_switch_ops mxl862xx_switch_ops = {
 	.get_pause_stats = mxl862xx_get_pause_stats,
 	.get_rmon_stats = mxl862xx_get_rmon_stats,
 	.get_stats64 = mxl862xx_get_stats64,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void mxl862xx_phylink_mac_config(struct phylink_config *config,
@@ -2128,7 +2290,10 @@ static int mxl862xx_probe(struct mdio_device *mdiodev)
 	struct device *dev = &mdiodev->dev;
 	struct mxl862xx_priv *priv;
 	struct dsa_switch *ds;
+<<<<<<< HEAD
 	int err, i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -2146,6 +2311,7 @@ static int mxl862xx_probe(struct mdio_device *mdiodev)
 	ds->ops = &mxl862xx_switch_ops;
 	ds->phylink_mac_ops = &mxl862xx_phylink_mac_ops;
 	ds->num_ports = MXL862XX_MAX_PORTS;
+<<<<<<< HEAD
 	ds->fdb_isolation = true;
 	ds->max_num_bridges = MXL862XX_MAX_BRIDGES;
 
@@ -2172,17 +2338,27 @@ static int mxl862xx_probe(struct mdio_device *mdiodev)
 	}
 
 	return err;
+=======
+
+	dev_set_drvdata(dev, ds);
+
+	return dsa_register_switch(ds);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mxl862xx_remove(struct mdio_device *mdiodev)
 {
 	struct dsa_switch *ds = dev_get_drvdata(&mdiodev->dev);
+<<<<<<< HEAD
 	struct mxl862xx_priv *priv;
 	int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ds)
 		return;
 
+<<<<<<< HEAD
 	priv = ds->priv;
 
 	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
@@ -2199,17 +2375,24 @@ static void mxl862xx_remove(struct mdio_device *mdiodev)
 	 */
 	for (i = 0; i < MXL862XX_MAX_PORTS; i++)
 		cancel_work_sync(&priv->ports[i].host_flood_work);
+=======
+	dsa_unregister_switch(ds);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mxl862xx_shutdown(struct mdio_device *mdiodev)
 {
 	struct dsa_switch *ds = dev_get_drvdata(&mdiodev->dev);
+<<<<<<< HEAD
 	struct mxl862xx_priv *priv;
 	int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ds)
 		return;
 
+<<<<<<< HEAD
 	priv = ds->priv;
 
 	dsa_switch_shutdown(ds);
@@ -2222,6 +2405,10 @@ static void mxl862xx_shutdown(struct mdio_device *mdiodev)
 	for (i = 0; i < MXL862XX_MAX_PORTS; i++)
 		cancel_work_sync(&priv->ports[i].host_flood_work);
 
+=======
+	dsa_switch_shutdown(ds);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_set_drvdata(&mdiodev->dev, NULL);
 }
 

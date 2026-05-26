@@ -321,7 +321,11 @@ static const struct snd_soc_component_driver acp_pcm_component = {
 	.close			= acp_dma_close,
 	.hw_params		= acp_dma_hw_params,
 	.pointer		= acp_dma_pointer,
+<<<<<<< HEAD
 	.pcm_new		= acp_dma_new,
+=======
+	.pcm_construct		= acp_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.legacy_dai_naming	= 1,
 };
 

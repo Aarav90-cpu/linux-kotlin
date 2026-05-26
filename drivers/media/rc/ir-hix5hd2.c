@@ -331,6 +331,10 @@ static int hix5hd2_ir_probe(struct platform_device *pdev)
 
 regerr:
 	rc_unregister_device(rdev);
+<<<<<<< HEAD
+=======
+	rdev = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 clkerr:
 	clk_disable_unprepare(priv->clock);
 err:
@@ -345,7 +349,10 @@ static void hix5hd2_ir_remove(struct platform_device *pdev)
 
 	clk_disable_unprepare(priv->clock);
 	rc_unregister_device(priv->rdev);
+<<<<<<< HEAD
 	rc_free_device(priv->rdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PM_SLEEP

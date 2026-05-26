@@ -43,8 +43,11 @@
 #include "ptp.h"
 #include "serdes.h"
 #include "smi.h"
+<<<<<<< HEAD
 #include "tcam.h"
 #include "tcflower.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void assert_reg_lock(struct mv88e6xxx_chip *chip)
 {
@@ -3562,11 +3565,14 @@ static int mv88e6xxx_setup_port(struct mv88e6xxx_chip *chip, int port)
 		if (err)
 			return err;
 	}
+<<<<<<< HEAD
 	if (chip->info->ops->port_enable_tcam) {
 		err = chip->info->ops->port_enable_tcam(chip, port);
 		if (err)
 			return err;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (chip->info->ops->port_tag_remap) {
 		err = chip->info->ops->port_tag_remap(chip, port);
@@ -3945,6 +3951,7 @@ static int mv88e6xxx_mdios_register(struct mv88e6xxx_chip *chip)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mv88e6xxx_tcam_setup(struct mv88e6xxx_chip *chip)
 {
 	if (!mv88e6xxx_has_tcam(chip))
@@ -3953,6 +3960,8 @@ static int mv88e6xxx_tcam_setup(struct mv88e6xxx_chip *chip)
 	return chip->info->ops->tcam_ops->flush_tcam(chip);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mv88e6xxx_teardown(struct dsa_switch *ds)
 {
 	struct mv88e6xxx_chip *chip = ds->priv;
@@ -3962,7 +3971,10 @@ static void mv88e6xxx_teardown(struct dsa_switch *ds)
 	mv88e6xxx_teardown_devlink_regions_global(ds);
 	mv88e6xxx_hwtstamp_free(chip);
 	mv88e6xxx_ptp_free(chip);
+<<<<<<< HEAD
 	mv88e6xxx_flower_teardown(chip);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mv88e6xxx_mdios_unregister(chip);
 }
 
@@ -4099,10 +4111,13 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
 	if (err)
 		goto unlock;
 
+<<<<<<< HEAD
 	err = mv88e6xxx_tcam_setup(chip);
 	if (err)
 		goto unlock;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	mv88e6xxx_reg_unlock(chip);
 
@@ -5154,7 +5169,10 @@ static const struct mv88e6xxx_ops mv88e6290_ops = {
 	.ptp_ops = &mv88e6390_ptp_ops,
 	.phylink_get_caps = mv88e6390_phylink_get_caps,
 	.pcs_ops = &mv88e6390_pcs_ops,
+<<<<<<< HEAD
 	.tcam_ops = &mv88e6390_tcam_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mv88e6xxx_ops mv88e6320_ops = {
@@ -5546,7 +5564,10 @@ static const struct mv88e6xxx_ops mv88e6390_ops = {
 	.serdes_get_regs = mv88e6390_serdes_get_regs,
 	.phylink_get_caps = mv88e6390_phylink_get_caps,
 	.pcs_ops = &mv88e6390_pcs_ops,
+<<<<<<< HEAD
 	.tcam_ops = &mv88e6390_tcam_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mv88e6xxx_ops mv88e6390x_ops = {
@@ -5643,7 +5664,10 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
 	.port_set_cmode = mv88e6393x_port_set_cmode,
 	.port_setup_message_port = mv88e6xxx_setup_message_port,
 	.port_set_upstream_port = mv88e6393x_port_set_upstream_port,
+<<<<<<< HEAD
 	.port_enable_tcam = mv88e6xxx_port_enable_tcam,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.stats_snapshot = mv88e6390_g1_stats_snapshot,
 	.stats_set_histogram = mv88e6390_g1_stats_set_histogram,
 	.stats_get_sset_count = mv88e6320_stats_get_sset_count,
@@ -5675,7 +5699,10 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
 	.ptp_ops = &mv88e6352_ptp_ops,
 	.phylink_get_caps = mv88e6393x_phylink_get_caps,
 	.pcs_ops = &mv88e6393x_pcs_ops,
+<<<<<<< HEAD
 	.tcam_ops = &mv88e6393_tcam_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mv88e6xxx_info mv88e6xxx_table[] = {
@@ -6149,7 +6176,10 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.num_databases = 4096,
 		.num_ports = 11,	/* 10 + Z80 */
 		.num_internal_phys = 8,
+<<<<<<< HEAD
 		.num_tcam_entries = 256,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.internal_phys_offset = 1,
 		.max_vid = 8191,
 		.max_sid = 63,
@@ -6157,7 +6187,10 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.phy_base_addr = 0x0,
 		.global1_addr = 0x1b,
 		.global2_addr = 0x1c,
+<<<<<<< HEAD
 		.tcam_addr = 0x1f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.age_time_coeff = 3750,
 		.g1_irqs = 10,
 		.g2_irqs = 14,
@@ -6253,14 +6286,20 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.num_ports = 11,	/* 10 + Z80 */
 		.num_internal_phys = 9,
 		.num_gpio = 16,
+<<<<<<< HEAD
 		.num_tcam_entries = 256,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.max_vid = 8191,
 		.max_sid = 63,
 		.port_base_addr = 0x0,
 		.phy_base_addr = 0x0,
 		.global1_addr = 0x1b,
 		.global2_addr = 0x1c,
+<<<<<<< HEAD
 		.tcam_addr = 0x1f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.age_time_coeff = 3750,
 		.g1_irqs = 9,
 		.g2_irqs = 14,
@@ -6467,14 +6506,20 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.num_ports = 11,	/* 10 + Z80 */
 		.num_internal_phys = 9,
 		.num_gpio = 16,
+<<<<<<< HEAD
 		.num_tcam_entries = 256,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.max_vid = 8191,
 		.max_sid = 63,
 		.port_base_addr = 0x0,
 		.phy_base_addr = 0x0,
 		.global1_addr = 0x1b,
 		.global2_addr = 0x1c,
+<<<<<<< HEAD
 		.tcam_addr = 0x1f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.age_time_coeff = 3750,
 		.g1_irqs = 9,
 		.g2_irqs = 14,
@@ -6520,7 +6565,10 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.num_databases = 4096,
 		.num_ports = 11,	/* 10 + Z80 */
 		.num_internal_phys = 8,
+<<<<<<< HEAD
 		.num_tcam_entries = 256,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.internal_phys_offset = 1,
 		.max_vid = 8191,
 		.max_sid = 63,
@@ -6528,7 +6576,10 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.phy_base_addr = 0x0,
 		.global1_addr = 0x1b,
 		.global2_addr = 0x1c,
+<<<<<<< HEAD
 		.tcam_addr = 0x1f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.age_time_coeff = 3750,
 		.g1_irqs = 10,
 		.g2_irqs = 14,
@@ -6621,7 +6672,10 @@ static struct mv88e6xxx_chip *mv88e6xxx_alloc_chip(struct device *dev)
 	INIT_LIST_HEAD(&chip->mdios);
 	idr_init(&chip->policies);
 	INIT_LIST_HEAD(&chip->msts);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&chip->tcam.entries);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return chip;
 }
@@ -7217,8 +7271,11 @@ static const struct dsa_switch_ops mv88e6xxx_switch_ops = {
 	.port_hwtstamp_get	= mv88e6xxx_port_hwtstamp_get,
 	.port_txtstamp		= mv88e6xxx_port_txtstamp,
 	.port_rxtstamp		= mv88e6xxx_port_rxtstamp,
+<<<<<<< HEAD
 	.cls_flower_add		= mv88e6xxx_cls_flower_add,
 	.cls_flower_del         = mv88e6xxx_cls_flower_del,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_ts_info		= mv88e6xxx_get_ts_info,
 	.devlink_param_get	= mv88e6xxx_devlink_param_get,
 	.devlink_param_set	= mv88e6xxx_devlink_param_set,

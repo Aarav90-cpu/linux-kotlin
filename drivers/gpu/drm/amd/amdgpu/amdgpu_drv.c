@@ -150,6 +150,10 @@ enum AMDGPU_DEBUG_MASK {
 };
 
 unsigned int amdgpu_vram_limit = UINT_MAX;
+<<<<<<< HEAD
+=======
+int amdgpu_ignore_min_pcap = 0; /* do not ignore by default */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_vis_vram_limit;
 int amdgpu_gart_size = -1; /* auto */
 int amdgpu_gtt_size = -1; /* auto */
@@ -223,7 +227,13 @@ uint amdgpu_dc_visual_confirm;
 int amdgpu_async_gfx_ring = 1;
 int amdgpu_mcbp = -1;
 int amdgpu_discovery = -1;
+<<<<<<< HEAD
 int amdgpu_mes_log_enable = 0;
+=======
+int amdgpu_mes;
+int amdgpu_mes_log_enable = 0;
+int amdgpu_mes_kiq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_uni_mes = 1;
 int amdgpu_noretry = -1;
 int amdgpu_force_asic_type = -1;
@@ -271,6 +281,18 @@ struct amdgpu_watchdog_timer amdgpu_watchdog_timer = {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * DOC: ignore_min_pcap (int)
+ * Ignore the minimum power cap.
+ * Useful on graphics cards where the minimum power cap is very high.
+ * The default is 0 (Do not ignore).
+ */
+MODULE_PARM_DESC(ignore_min_pcap, "Ignore the minimum power cap");
+module_param_named(ignore_min_pcap, amdgpu_ignore_min_pcap, int, 0600);
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DOC: vramlimit (int)
  * Restrict the total amount of VRAM in MiB for testing.  The default is 0 (Use full VRAM).
  */
@@ -641,7 +663,13 @@ module_param_named(si_support, amdgpu_si_support, int, 0444);
  * CIK (Sea Islands) are second generation GCN GPUs, supported by both
  * drivers: radeon (old) and amdgpu (new). This parameter controls whether
  * amdgpu should support CIK.
+<<<<<<< HEAD
  * By default, CIK dedicated GPUs and APUs are supported by amdgpu.
+=======
+ * By default:
+ * - CIK dedicated GPUs are supported by amdgpu.
+ * - CIK APUs are supported by radeon (except when radeon is not built).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Only relevant when CONFIG_DRM_AMDGPU_CIK is enabled to build CIK support in amdgpu.
  * See also radeon.cik_support which should be disabled when amdgpu.cik_support is
  * enabled, and vice versa.
@@ -687,6 +715,18 @@ MODULE_PARM_DESC(discovery,
 module_param_named(discovery, amdgpu_discovery, int, 0444);
 
 /**
+<<<<<<< HEAD
+=======
+ * DOC: mes (int)
+ * Enable Micro Engine Scheduler. This is a new hw scheduling engine for gfx, sdma, and compute.
+ * (0 = disabled (default), 1 = enabled)
+ */
+MODULE_PARM_DESC(mes,
+	"Enable Micro Engine Scheduler (0 = disabled (default), 1 = enabled)");
+module_param_named(mes, amdgpu_mes, int, 0444);
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DOC: mes_log_enable (int)
  * Enable Micro Engine Scheduler log. This is used to enable/disable MES internal log.
  * (0 = disabled (default), 1 = enabled)
@@ -696,6 +736,18 @@ MODULE_PARM_DESC(mes_log_enable,
 module_param_named(mes_log_enable, amdgpu_mes_log_enable, int, 0444);
 
 /**
+<<<<<<< HEAD
+=======
+ * DOC: mes_kiq (int)
+ * Enable Micro Engine Scheduler KIQ. This is a new engine pipe for kiq.
+ * (0 = disabled (default), 1 = enabled)
+ */
+MODULE_PARM_DESC(mes_kiq,
+	"Enable Micro Engine Scheduler KIQ (0 = disabled (default), 1 = enabled)");
+module_param_named(mes_kiq, amdgpu_mes_kiq, int, 0444);
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DOC: uni_mes (int)
  * Enable Unified Micro Engine Scheduler. This is a new engine pipe for unified scheduler.
  * (0 = disabled (default), 1 = enabled)
@@ -837,8 +889,13 @@ module_param_named_unsafe(no_queue_eviction_on_vm_fault, amdgpu_no_queue_evictio
 /**
  * DOC: mtype_local (int)
  */
+<<<<<<< HEAD
 int amdgpu_mtype_local = -1;
 MODULE_PARM_DESC(mtype_local, "MTYPE for local memory (default: ASIC dependent, 0 = MTYPE_RW, 1 = MTYPE_NC, 2 = MTYPE_CC)");
+=======
+int amdgpu_mtype_local;
+MODULE_PARM_DESC(mtype_local, "MTYPE for local memory (0 = MTYPE_RW (default), 1 = MTYPE_NC, 2 = MTYPE_CC)");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_named_unsafe(mtype_local, amdgpu_mtype_local, int, 0444);
 
 /**
@@ -2321,6 +2378,11 @@ static bool amdgpu_support_enabled(struct device *dev,
 
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
+<<<<<<< HEAD
+=======
+		support_by_default = true;
+		fallthrough;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
@@ -2328,7 +2390,10 @@ static bool amdgpu_support_enabled(struct device *dev,
 		param = "cik_support";
 		module_param = amdgpu_cik_support;
 		amdgpu_support_built = IS_ENABLED(CONFIG_DRM_AMDGPU_CIK);
+<<<<<<< HEAD
 		support_by_default = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	default:
@@ -2953,11 +3018,17 @@ static int amdgpu_drm_release(struct inode *inode, struct file *filp)
 	int idx;
 
 	if (fpriv && drm_dev_enter(dev, &idx)) {
+<<<<<<< HEAD
 		amdgpu_evf_mgr_shutdown(&fpriv->evf_mgr);
 		amdgpu_userq_mgr_cancel_resume(&fpriv->userq_mgr);
 		amdgpu_evf_mgr_flush_suspend(&fpriv->evf_mgr);
 		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
 		amdgpu_evf_mgr_fini(&fpriv->evf_mgr);
+=======
+		fpriv->evf_mgr.fd_closing = true;
+		amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
+		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dev_exit(idx);
 	}
 
@@ -3149,15 +3220,28 @@ static int __init amdgpu_init(void)
 
 	r = amdgpu_sync_init();
 	if (r)
+<<<<<<< HEAD
 		return r;
+=======
+		goto error_sync;
+
+	r = amdgpu_userq_fence_slab_init();
+	if (r)
+		goto error_fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	amdgpu_register_atpx_handler();
 	amdgpu_acpi_detect();
 
+<<<<<<< HEAD
 	/* Ignore KFD init failures when CONFIG_HSA_AMD is not set. */
 	r = amdgpu_amdkfd_init();
 	if (r && r != -ENOENT)
 		goto error_fini_sync;
+=======
+	/* Ignore KFD init failures. Normal when CONFIG_HSA_AMD is not set. */
+	amdgpu_amdkfd_init();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (amdgpu_pp_feature_mask & PP_OVERDRIVE_MASK) {
 		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
@@ -3168,8 +3252,15 @@ static int __init amdgpu_init(void)
 	/* let modprobe override vga console setting */
 	return pci_register_driver(&amdgpu_kms_pci_driver);
 
+<<<<<<< HEAD
 error_fini_sync:
 	amdgpu_sync_fini();
+=======
+error_fence:
+	amdgpu_sync_fini();
+
+error_sync:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -3180,6 +3271,10 @@ static void __exit amdgpu_exit(void)
 	amdgpu_unregister_atpx_handler();
 	amdgpu_acpi_release();
 	amdgpu_sync_fini();
+<<<<<<< HEAD
+=======
+	amdgpu_userq_fence_slab_fini();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mmu_notifier_synchronize();
 	amdgpu_xcp_drv_release();
 }

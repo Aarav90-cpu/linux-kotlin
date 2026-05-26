@@ -6,7 +6,10 @@
 #ifndef _INTEL_LB_MEI_INTERFACE_H_
 #define _INTEL_LB_MEI_INTERFACE_H_
 
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 struct device;
@@ -22,11 +25,17 @@ struct device;
 /**
  * enum intel_lb_type - enum to determine late binding payload type
  * @INTEL_LB_TYPE_FAN_CONTROL: Fan controller configuration
+<<<<<<< HEAD
  * @INTEL_LB_TYPE_OCODE: Ocode firmware
  */
 enum intel_lb_type {
 	INTEL_LB_TYPE_FAN_CONTROL = 1,
 	INTEL_LB_TYPE_OCODE = 3,
+=======
+ */
+enum intel_lb_type {
+	INTEL_LB_TYPE_FAN_CONTROL = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -39,6 +48,7 @@ enum intel_lb_type {
  * @INTEL_LB_STATUS_INVALID_SIGNATURE: Payload has an invalid or untrusted signature
  * @INTEL_LB_STATUS_INVALID_PAYLOAD: Payload contents are not accepted by firmware
  * @INTEL_LB_STATUS_TIMEOUT: Operation timed out before completion
+<<<<<<< HEAD
  * @INTEL_LB_STATUS_BUFFER_TOO_SMALL: Buffer provided is smaller when expected
  * @INTEL_LB_STATUS_INTERNAL_ERROR: Internal firmware error
  * @INTEL_LB_STATUS_INVALID_FPT_TABLE: Invalid firmware format table
@@ -79,6 +89,18 @@ enum intel_lb_status {
 	INTEL_LB_STATUS_INVALID_COMMAND                      = 20,
 	INTEL_LB_STATUS_INVALID_HECI_HEADER                  = 21,
 	INTEL_LB_STATUS_IP_ERROR_START                       = BIT(31),
+=======
+ */
+enum intel_lb_status {
+	INTEL_LB_STATUS_SUCCESS           = 0,
+	INTEL_LB_STATUS_4ID_MISMATCH      = 1,
+	INTEL_LB_STATUS_ARB_FAILURE       = 2,
+	INTEL_LB_STATUS_GENERAL_ERROR     = 3,
+	INTEL_LB_STATUS_INVALID_PARAMS    = 4,
+	INTEL_LB_STATUS_INVALID_SIGNATURE = 5,
+	INTEL_LB_STATUS_INVALID_PAYLOAD   = 6,
+	INTEL_LB_STATUS_TIMEOUT           = 7,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -95,7 +117,11 @@ struct intel_lb_component_ops {
 	 * @payload_size: Payload buffer size in bytes
 	 *
 	 * Return: 0 success, negative errno value on transport failure,
+<<<<<<< HEAD
 	 *         positive error status returned by firmware
+=======
+	 *         positive status returned by firmware
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	int (*push_payload)(struct device *dev, u32 type, u32 flags,
 			    const void *payload, size_t payload_size);

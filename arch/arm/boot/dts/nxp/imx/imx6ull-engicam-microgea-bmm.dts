@@ -154,7 +154,10 @@
 	pinctrl-0 = <&pinctrl_tsc>;
 	measure-delay-time = <0x9ffff>;
 	pre-charge-time = <0xfff>;
+<<<<<<< HEAD
 	debounce-delay-us = <62>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xnur-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };

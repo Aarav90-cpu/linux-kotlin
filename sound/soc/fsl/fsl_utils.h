@@ -31,6 +31,7 @@ void fsl_asoc_constrain_rates(struct snd_pcm_hw_constraint_list *target_constr,
 			      const struct snd_pcm_hw_constraint_list *original_constr,
 			      struct clk *pll8k_clk, struct clk *pll11k_clk,
 			      struct clk *ext_clk, int *target_rates);
+<<<<<<< HEAD
 
 /* Similar to SOC_SINGLE_XR_SX, but it is for read only registers. */
 #define FSL_ASOC_SINGLE_XR_SX_EXT_RO(xname, xregbase, xregcount, xnbits, \
@@ -79,4 +80,6 @@ int fsl_asoc_get_volsw(struct snd_kcontrol *kcontrol,
 int fsl_asoc_put_volsw(struct snd_kcontrol *kcontrol,
 		       struct snd_ctl_elem_value *ucontrol);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _FSL_UTILS_H */

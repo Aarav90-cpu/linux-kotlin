@@ -3,6 +3,7 @@
 * Simple driver for Texas Instruments LM3642 LED Flash driver chip
 * Copyright (C) 2012 Texas Instruments
 */
+<<<<<<< HEAD
 #include <linux/cleanup.h>
 #include <linux/delay.h>
 #include <linux/fs.h>
@@ -13,6 +14,17 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
+=======
+#include <linux/module.h>
+#include <linux/delay.h>
+#include <linux/i2c.h>
+#include <linux/leds.h>
+#include <linux/slab.h>
+#include <linux/platform_device.h>
+#include <linux/fs.h>
+#include <linux/regmap.h>
+#include <linux/platform_data/leds-lm3642.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define	REG_FILT_TIME			(0x0)
 #define	REG_IVFM_MODE			(0x1)
@@ -203,9 +215,16 @@ static int lm3642_torch_brightness_set(struct led_classdev *cdev,
 	    container_of(cdev, struct lm3642_chip_data, cdev_torch);
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&chip->lock);
 	chip->br_torch = brightness;
 	ret = lm3642_control(chip, chip->br_torch, MODES_TORCH);
+=======
+	mutex_lock(&chip->lock);
+	chip->br_torch = brightness;
+	ret = lm3642_control(chip, chip->br_torch, MODES_TORCH);
+	mutex_unlock(&chip->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -249,9 +268,16 @@ static int lm3642_strobe_brightness_set(struct led_classdev *cdev,
 	    container_of(cdev, struct lm3642_chip_data, cdev_flash);
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&chip->lock);
 	chip->br_flash = brightness;
 	ret = lm3642_control(chip, chip->br_flash, MODES_FLASH);
+=======
+	mutex_lock(&chip->lock);
+	chip->br_flash = brightness;
+	ret = lm3642_control(chip, chip->br_flash, MODES_FLASH);
+	mutex_unlock(&chip->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -263,9 +289,16 @@ static int lm3642_indicator_brightness_set(struct led_classdev *cdev,
 	    container_of(cdev, struct lm3642_chip_data, cdev_indicator);
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&chip->lock);
 	chip->br_indicator = brightness;
 	ret = lm3642_control(chip, chip->br_indicator, MODES_INDIC);
+=======
+	mutex_lock(&chip->lock);
+	chip->br_indicator = brightness;
+	ret = lm3642_control(chip, chip->br_indicator, MODES_INDIC);
+	mutex_unlock(&chip->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

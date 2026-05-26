@@ -58,7 +58,11 @@ COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, path, u32, high, u32, lo
 
 COMPAT_SYSCALL_DEFINE3(ftruncate64, unsigned int, fd, u32, high, u32, low)
 {
+<<<<<<< HEAD
 	return ksys_ftruncate(fd, ((u64)high << 32) | low, FTRUNCATE_LFS);
+=======
+	return ksys_ftruncate(fd, ((u64)high << 32) | low);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int cp_compat_stat64(struct kstat *stat,

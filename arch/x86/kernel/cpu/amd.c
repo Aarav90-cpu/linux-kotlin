@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 #include <linux/export.h>
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/elf.h>
 #include <linux/mm.h>
 #include <linux/kvm_types.h>
@@ -1387,6 +1390,7 @@ static __init int print_s5_reset_status_mmio(void)
 	return 0;
 }
 late_initcall(print_s5_reset_status_mmio);
+<<<<<<< HEAD
 
 static void __init dmi_scan_additional(const struct dmi_header *d, void *p)
 {
@@ -1435,3 +1439,5 @@ static __init int print_dmi_agesa(void)
 	return 0;
 }
 late_initcall(print_dmi_agesa);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

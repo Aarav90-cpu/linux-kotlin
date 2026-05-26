@@ -104,6 +104,7 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
 					 PP_GFXOFF_MASK);
 		hwmgr->pp_table_version = PP_TABLE_V0;
 		hwmgr->od_enabled = false;
+<<<<<<< HEAD
 		switch (hwmgr->chip_id) {
 		case CHIP_BONAIRE:
 			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
@@ -119,6 +120,8 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
 		default:
 			break;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		smu7_init_function_pointers(hwmgr);
 		break;
 	case AMDGPU_FAMILY_CZ:

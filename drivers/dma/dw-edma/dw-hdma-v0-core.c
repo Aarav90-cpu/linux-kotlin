@@ -225,7 +225,11 @@ static void dw_hdma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
 		readl(chunk->ll_region.vaddr.io);
 }
 
+<<<<<<< HEAD
 static void dw_hdma_v0_core_ll_start(struct dw_edma_chunk *chunk, bool first)
+=======
+static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dw_edma_chan *chan = chunk->chan;
 	struct dw_edma *dw = chan->dw;
@@ -263,6 +267,7 @@ static void dw_hdma_v0_core_ll_start(struct dw_edma_chunk *chunk, bool first)
 	SET_CH_32(dw, chan->dir, chan->id, doorbell, HDMA_V0_DOORBELL_START);
 }
 
+<<<<<<< HEAD
 static void dw_hdma_v0_core_non_ll_start(struct dw_edma_chunk *chunk)
 {
 	struct dw_edma_chan *chan = chunk->chan;
@@ -325,6 +330,8 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
 		dw_hdma_v0_core_ll_start(chunk, first);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dw_hdma_v0_core_ch_config(struct dw_edma_chan *chan)
 {
 	struct dw_edma *dw = chan->dw;
@@ -345,12 +352,15 @@ static void dw_hdma_v0_core_debugfs_on(struct dw_edma *dw)
 	dw_hdma_v0_debugfs_on(dw);
 }
 
+<<<<<<< HEAD
 static resource_size_t dw_hdma_v0_core_db_offset(struct dw_edma *dw)
 {
 	/* Implement once the correct offset is known. */
 	return ~0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dw_edma_core_ops dw_hdma_v0_core = {
 	.off = dw_hdma_v0_core_off,
 	.ch_count = dw_hdma_v0_core_ch_count,
@@ -359,7 +369,10 @@ static const struct dw_edma_core_ops dw_hdma_v0_core = {
 	.start = dw_hdma_v0_core_start,
 	.ch_config = dw_hdma_v0_core_ch_config,
 	.debugfs_on = dw_hdma_v0_core_debugfs_on,
+<<<<<<< HEAD
 	.db_offset = dw_hdma_v0_core_db_offset,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void dw_hdma_v0_core_register(struct dw_edma *dw)

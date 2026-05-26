@@ -12,6 +12,10 @@ config LOONGARCH
 	select ARCH_NEEDS_DEFER_KASAN
 	select ARCH_DISABLE_KASAN_INLINE
 	select ARCH_ENABLE_MEMORY_HOTPLUG
+<<<<<<< HEAD
+=======
+	select ARCH_ENABLE_MEMORY_HOTREMOVE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
 	select ARCH_HAS_CPU_FINALIZE_INIT
@@ -20,11 +24,19 @@ config LOONGARCH
 	select ARCH_HAS_FAST_MULTIPLIER
 	select ARCH_HAS_FORTIFY_SOURCE
 	select ARCH_HAS_KCOV
+<<<<<<< HEAD
 	select ARCH_HAS_KERNEL_FPU_SUPPORT if 64BIT && CPU_HAS_FPU
 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
 	select ARCH_HAS_PREEMPT_LAZY
 	select ARCH_HAS_PTE_SPECIAL if 64BIT
+=======
+	select ARCH_HAS_KERNEL_FPU_SUPPORT if CPU_HAS_FPU
+	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+	select ARCH_HAS_PREEMPT_LAZY
+	select ARCH_HAS_PTE_SPECIAL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_HAS_SET_MEMORY
 	select ARCH_HAS_SET_DIRECT_MAP
 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
@@ -59,15 +71,27 @@ config LOONGARCH
 	select ARCH_KEEP_MEMBLOCK
 	select ARCH_MIGHT_HAVE_PC_PARPORT
 	select ARCH_MIGHT_HAVE_PC_SERIO
+<<<<<<< HEAD
 	select ARCH_STACKWALK
 	select ARCH_SUPPORTS_ACPI
 	select ARCH_SUPPORTS_ATOMIC_RMW
 	select ARCH_SUPPORTS_HUGETLBFS if 64BIT
+=======
+	select ARCH_SPARSEMEM_ENABLE
+	select ARCH_STACKWALK
+	select ARCH_SUPPORTS_ACPI
+	select ARCH_SUPPORTS_ATOMIC_RMW
+	select ARCH_SUPPORTS_HUGETLBFS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
 	select ARCH_SUPPORTS_LTO_CLANG
 	select ARCH_SUPPORTS_LTO_CLANG_THIN
 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+<<<<<<< HEAD
 	select ARCH_SUPPORTS_NUMA_BALANCING if NUMA
+=======
+	select ARCH_SUPPORTS_NUMA_BALANCING
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_SUPPORTS_PER_VMA_LOCK
 	select ARCH_SUPPORTS_RT
 	select ARCH_SUPPORTS_SCHED_SMT if SMP
@@ -77,10 +101,17 @@ config LOONGARCH
 	select ARCH_USE_MEMTEST
 	select ARCH_USE_QUEUED_RWLOCKS
 	select ARCH_USE_QUEUED_SPINLOCKS
+<<<<<<< HEAD
 	select ARCH_WANT_DEFAULT_BPF_JIT if HAVE_EBPF_JIT
 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
 	select ARCH_WANT_LD_ORPHAN_WARN
 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP if 64BIT
+=======
+	select ARCH_WANT_DEFAULT_BPF_JIT
+	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+	select ARCH_WANT_LD_ORPHAN_WARN
+	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_WANTS_NO_INSTR
 	select ARCH_WANTS_THP_SWAP if HAVE_ARCH_TRANSPARENT_HUGEPAGE
 	select BUILDTIME_TABLE_SORT
@@ -88,14 +119,21 @@ config LOONGARCH
 	select CPU_PM
 	select EDAC_SUPPORT
 	select EFI
+<<<<<<< HEAD
 	select GENERIC_ATOMIC64 if 32BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select GENERIC_CLOCKEVENTS
 	select GENERIC_CMOS_UPDATE
 	select GENERIC_CPU_AUTOPROBE
 	select GENERIC_CPU_DEVICES
 	select GENERIC_CPU_VULNERABILITIES
 	select GENERIC_ENTRY
+<<<<<<< HEAD
 	select GENERIC_GETTIMEOFDAY if 64BIT
+=======
+	select GENERIC_GETTIMEOFDAY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select GENERIC_IOREMAP if !ARCH_IOREMAP
 	select GENERIC_IRQ_MATRIX_ALLOCATOR
 	select GENERIC_IRQ_MULTI_HANDLER
@@ -110,6 +148,7 @@ config LOONGARCH
 	select GENERIC_PCI_IOMAP
 	select GENERIC_SCHED_CLOCK
 	select GENERIC_SMP_IDLE_THREAD
+<<<<<<< HEAD
 	select GENERIC_TIME_VSYSCALL if GENERIC_GETTIMEOFDAY
 	select GPIOLIB
 	select HAS_IOPORT
@@ -120,6 +159,18 @@ config LOONGARCH
 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
 	select HAVE_ARCH_KASAN if 64BIT
 	select HAVE_ARCH_KFENCE if 64BIT
+=======
+	select GENERIC_TIME_VSYSCALL
+	select GPIOLIB
+	select HAS_IOPORT
+	select HAVE_ALIGNED_STRUCT_PAGE
+	select HAVE_ARCH_AUDITSYSCALL
+	select HAVE_ARCH_BITREVERSE
+	select HAVE_ARCH_JUMP_LABEL
+	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+	select HAVE_ARCH_KASAN
+	select HAVE_ARCH_KFENCE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_ARCH_KGDB if PERF_EVENTS
 	select HAVE_ARCH_KSTACK_ERASE
 	select HAVE_ARCH_MMAP_RND_BITS if MMU
@@ -127,8 +178,13 @@ config LOONGARCH
 	select HAVE_ARCH_SECCOMP
 	select HAVE_ARCH_SECCOMP_FILTER
 	select HAVE_ARCH_TRACEHOOK
+<<<<<<< HEAD
 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT
 	select HAVE_ARCH_USERFAULTFD_MINOR if 64BIT && USERFAULTFD
+=======
+	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+	select HAVE_ARCH_USERFAULTFD_MINOR if USERFAULTFD
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_ASM_MODVERSIONS
 	select HAVE_CMPXCHG_DOUBLE
 	select HAVE_CMPXCHG_LOCAL
@@ -142,7 +198,11 @@ config LOONGARCH
 	select HAVE_FTRACE_REGS_HAVING_PT_REGS
 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
+<<<<<<< HEAD
 	select HAVE_EBPF_JIT if 64BIT
+=======
+	select HAVE_EBPF_JIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_EFFICIENT_UNALIGNED_ACCESS if !ARCH_STRICT_ALIGN
 	select HAVE_EXIT_THREAD
 	select HAVE_GENERIC_TIF_BITS
@@ -165,9 +225,15 @@ config LOONGARCH
 	select HAVE_LIVEPATCH
 	select HAVE_MOD_ARCH_SPECIFIC
 	select HAVE_NMI
+<<<<<<< HEAD
 	select HAVE_OBJTOOL if AS_HAS_EXPLICIT_RELOCS && AS_HAS_THIN_ADD_SUB && 64BIT
 	select HAVE_PCI
 	select HAVE_PERF_EVENTS if 64BIT
+=======
+	select HAVE_OBJTOOL if AS_HAS_EXPLICIT_RELOCS && AS_HAS_THIN_ADD_SUB
+	select HAVE_PCI
+	select HAVE_PERF_EVENTS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PERF_REGS
 	select HAVE_PERF_USER_STACK_DUMP
 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
@@ -209,11 +275,16 @@ config LOONGARCH
 	select SYSCTL_ARCH_UNALIGN_ALLOW
 	select SYSCTL_ARCH_UNALIGN_NO_WARN
 	select SYSCTL_EXCEPTION_TRACE
+<<<<<<< HEAD
 	select SWIOTLB if 64BIT
+=======
+	select SWIOTLB
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select TRACE_IRQFLAGS_SUPPORT
 	select USE_PERCPU_NUMA_NODE_ID
 	select USER_STACKTRACE_SUPPORT
 	select VDSO_GETRANDOM
+<<<<<<< HEAD
 	select ZONE_DMA32 if 64BIT
 
 menu "Kernel type and options"
@@ -254,6 +325,15 @@ config 32BIT_STANDARD
 endchoice
 
 endif
+=======
+	select ZONE_DMA32
+
+config 32BIT
+	bool
+
+config 64BIT
+	def_bool y
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config GENERIC_BUG
 	def_bool y
@@ -346,12 +426,18 @@ config RUSTC_HAS_ANNOTATE_TABLEJUMP
 	depends on RUST
 	def_bool $(rustc-option,-Cllvm-args=--loongarch-annotate-tablejump)
 
+<<<<<<< HEAD
 source "kernel/Kconfig.hz"
 
 config HIGHMEM
 	bool "High Memory Support"
 	depends on 32BIT
 	select KMAP_LOCAL
+=======
+menu "Kernel type and options"
+
+source "kernel/Kconfig.hz"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 choice
 	prompt "Page Table Layout"
@@ -362,6 +448,7 @@ choice
 	  of page size and page table levels. The size of virtual memory
 	  address space are determined by the page table layout.
 
+<<<<<<< HEAD
 config 4KB_2LEVEL
 	bool "4KB with 2 levels"
 	select HAVE_PAGE_SIZE_4KB
@@ -373,6 +460,10 @@ config 4KB_2LEVEL
 config 4KB_3LEVEL
 	bool "4KB with 3 levels"
 	depends on 64BIT
+=======
+config 4KB_3LEVEL
+	bool "4KB with 3 levels"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PAGE_SIZE_4KB
 	select PGTABLE_3LEVEL
 	help
@@ -381,7 +472,10 @@ config 4KB_3LEVEL
 
 config 4KB_4LEVEL
 	bool "4KB with 4 levels"
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PAGE_SIZE_4KB
 	select PGTABLE_4LEVEL
 	help
@@ -398,7 +492,10 @@ config 16KB_2LEVEL
 
 config 16KB_3LEVEL
 	bool "16KB with 3 levels"
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PAGE_SIZE_16KB
 	select PGTABLE_3LEVEL
 	help
@@ -415,7 +512,10 @@ config 64KB_2LEVEL
 
 config 64KB_3LEVEL
 	bool "64KB with 3 levels"
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PAGE_SIZE_64KB
 	select PGTABLE_3LEVEL
 	help
@@ -513,7 +613,10 @@ config EFI_STUB
 
 config SMP
 	bool "Multi-Processing support"
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This enables support for systems with more than one CPU. If you have
 	  a system with only one CPU, say N. If you have a system with more
@@ -552,7 +655,10 @@ config NR_CPUS
 config NUMA
 	bool "NUMA Support"
 	select SMP
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say Y to compile the kernel with NUMA (Non-Uniform Memory Access)
 	  support.  This option improves performance on systems with more
@@ -635,7 +741,11 @@ config CPU_HAS_FPU
 
 config CPU_HAS_LSX
 	bool "Support for the Loongson SIMD Extension"
+<<<<<<< HEAD
 	depends on AS_HAS_LSX_EXTENSION && 64BIT
+=======
+	depends on AS_HAS_LSX_EXTENSION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Loongson SIMD Extension (LSX) introduces 128 bit wide vector registers
 	  and a set of SIMD instructions to operate on them. When this option
@@ -650,7 +760,11 @@ config CPU_HAS_LSX
 config CPU_HAS_LASX
 	bool "Support for the Loongson Advanced SIMD Extension"
 	depends on CPU_HAS_LSX
+<<<<<<< HEAD
 	depends on AS_HAS_LASX_EXTENSION && 64BIT
+=======
+	depends on AS_HAS_LASX_EXTENSION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Loongson Advanced SIMD Extension (LASX) introduces 256 bit wide vector
 	  registers and a set of SIMD instructions to operate on them. When this
@@ -664,7 +778,11 @@ config CPU_HAS_LASX
 
 config CPU_HAS_LBT
 	bool "Support for the Loongson Binary Translation Extension"
+<<<<<<< HEAD
 	depends on AS_HAS_LBT_EXTENSION && 64BIT
+=======
+	depends on AS_HAS_LBT_EXTENSION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Loongson Binary Translation (LBT) introduces 4 scratch registers (SCR0
 	  to SCR3), x86/ARM eflags (eflags) and x87 fpu stack pointer (ftop).
@@ -692,6 +810,7 @@ config ARCH_SELECTS_KEXEC_FILE
 	select HAVE_IMA_KEXEC if IMA
 
 config ARCH_SUPPORTS_CRASH_DUMP
+<<<<<<< HEAD
 	def_bool 64BIT
 
 config ARCH_DEFAULT_CRASH_DUMP
@@ -699,6 +818,15 @@ config ARCH_DEFAULT_CRASH_DUMP
 
 config ARCH_SELECTS_CRASH_DUMP
 	def_bool 64BIT
+=======
+	def_bool y
+
+config ARCH_DEFAULT_CRASH_DUMP
+	def_bool y
+
+config ARCH_SELECTS_CRASH_DUMP
+	def_bool y
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on CRASH_DUMP
 	select RELOCATABLE
 
@@ -707,7 +835,10 @@ config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
 
 config RELOCATABLE
 	bool "Relocatable kernel"
+<<<<<<< HEAD
 	depends on 64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_HAS_RELR
 	help
 	  This builds the kernel as a Position Independent Executable (PIE),
@@ -744,7 +875,11 @@ source "kernel/livepatch/Kconfig"
 
 config PARAVIRT
 	bool "Enable paravirtualization code"
+<<<<<<< HEAD
 	depends on AS_HAS_LVZ_EXTENSION && 64BIT
+=======
+	depends on AS_HAS_LVZ_EXTENSION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_PV_STEAL_CLOCK_GEN
 	help
 	  This changes the kernel so it can modify itself when it is run
@@ -773,7 +908,11 @@ config ARCH_FLATMEM_ENABLE
 	depends on !NUMA
 
 config ARCH_SPARSEMEM_ENABLE
+<<<<<<< HEAD
 	def_bool 64BIT
+=======
+	def_bool y
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select SPARSEMEM_VMEMMAP_ENABLE
 	help
 	  Say Y to support efficient handling of sparse physical memory,
@@ -790,12 +929,19 @@ config MMU
 	default y
 
 config ARCH_MMAP_RND_BITS_MIN
+<<<<<<< HEAD
 	default 10 if 32BIT
 	default 12 if 64BIT
 
 config ARCH_MMAP_RND_BITS_MAX
 	default 15 if 32BIT
 	default 20 if 64BIT
+=======
+	default 12
+
+config ARCH_MMAP_RND_BITS_MAX
+	default 18
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config ARCH_SUPPORTS_UPROBES
 	def_bool y

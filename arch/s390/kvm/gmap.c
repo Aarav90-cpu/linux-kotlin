@@ -618,12 +618,17 @@ int gmap_try_fixup_minor(struct gmap *gmap, struct guest_fault *fault)
 	return rc;
 }
 
+<<<<<<< HEAD
 static inline bool gmap_2g_allowed(struct gmap *gmap, struct guest_fault *f,
 				   struct kvm_memory_slot *slot)
+=======
+static inline bool gmap_2g_allowed(struct gmap *gmap, gfn_t gfn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return false;
 }
 
+<<<<<<< HEAD
 /**
  * gmap_1m_allowed() - Check whether a 1M hugepage is allowed.
  * @gmap: The gmap of the guest.
@@ -645,6 +650,11 @@ static inline bool gmap_1m_allowed(struct gmap *gmap, struct guest_fault *f,
 	       !((f->gfn ^ f->pfn) & ~_SEGMENT_FR_MASK) &&
 	       slot->base_gfn <= ALIGN_DOWN(f->gfn, _PAGES_PER_SEGMENT) &&
 	       slot->base_gfn + slot->npages >= ALIGN(f->gfn + 1, _PAGES_PER_SEGMENT);
+=======
+static inline bool gmap_1m_allowed(struct gmap *gmap, gfn_t gfn)
+{
+	return test_bit(GMAP_FLAG_ALLOW_HPAGE_1M, &gmap->flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int _gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, int level,
@@ -698,8 +708,12 @@ static int _gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, int leve
 	return rc;
 }
 
+<<<<<<< HEAD
 int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fault *f,
 	      struct kvm_memory_slot *slot)
+=======
+int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fault *f)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int order;
 	int level;
@@ -709,9 +723,15 @@ int gmap_link(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, struct guest_fau
 	level = TABLE_TYPE_PAGE_TABLE;
 	if (f->page) {
 		order = folio_order(page_folio(f->page));
+<<<<<<< HEAD
 		if (order >= get_order(_REGION3_SIZE) && gmap_2g_allowed(gmap, f, slot))
 			level = TABLE_TYPE_REGION3;
 		else if (order >= get_order(_SEGMENT_SIZE) && gmap_1m_allowed(gmap, f, slot))
+=======
+		if (order >= get_order(_REGION3_SIZE) && gmap_2g_allowed(gmap, f->gfn))
+			level = TABLE_TYPE_REGION3;
+		else if (order >= get_order(_SEGMENT_SIZE) && gmap_1m_allowed(gmap, f->gfn))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			level = TABLE_TYPE_SEGMENT;
 	}
 	return _gmap_link(mc, gmap, level, f);

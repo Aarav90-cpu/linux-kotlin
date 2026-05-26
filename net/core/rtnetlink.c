@@ -3432,7 +3432,10 @@ errout:
 					     dev->name);
 	}
 
+<<<<<<< HEAD
 	netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev_unlock_ops(dev);
 
 	return err;

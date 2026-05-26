@@ -161,7 +161,11 @@
 &usb3 {
 	status = "okay";
 	phys = <&usb2_utmi_otg_phy>;
+<<<<<<< HEAD
 	phy-names = "usb2-phy";
+=======
+	phy-names = "usb2-utmi-otg-phy";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart0 {

@@ -122,11 +122,14 @@
 #endif
 };
 
+<<<<<<< HEAD
 &pcie {
 	pinctrl-0 = <&pcie_pins>;
 	pinctrl-names = "default";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pinctrl {
 	canfd_pins: canfd {
 		can1_pins: can1 {
@@ -150,6 +153,7 @@
 		input-schmitt-enable;
 	};
 
+<<<<<<< HEAD
 	pcie-clkreq-n-hog {
 		gpio-hog;
 		gpios = <RZG3E_GPIO(4, 5) GPIO_ACTIVE_HIGH>;
@@ -161,6 +165,8 @@
 		pinmux = <RZG3E_PORT_PINMUX(G, 7, 1)>; /* PCIE_RST_OUT# */
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rsci2_pins: rsci2 {
 		pinmux = <RZG3E_PORT_PINMUX(1, 0, 1)>, /* RXD2 */
 			 <RZG3E_PORT_PINMUX(1, 1, 1)>, /* TXD2 */
@@ -183,6 +189,7 @@
 		bias-pull-up;
 	};
 
+<<<<<<< HEAD
 	rspi0_pins: rspi0 {
 		pinmux = <RZG3E_PORT_PINMUX(M, 4, 2)>, /* MISOA */
 			 <RZG3E_PORT_PINMUX(M, 5, 2)>, /* MOSIA */
@@ -190,6 +197,8 @@
 			 <RZG3E_PORT_PINMUX(M, 7, 2)>; /* SSLA0 */
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	scif_pins: scif {
 		pins = "SCIF_TXD", "SCIF_RXD";
 		renesas,output-impedance = <1>;
@@ -257,6 +266,7 @@
 };
 #endif
 
+<<<<<<< HEAD
 &rspi0 {
 	pinctrl-0 = <&rspi0_pins>;
 	pinctrl-names = "default";
@@ -266,6 +276,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &scif0 {
 	pinctrl-0 = <&scif_pins>;
 	pinctrl-names = "default";
@@ -280,6 +292,7 @@
 	vqmmc-supply = <&vqmmc_sd1_pvdd>;
 };
 
+<<<<<<< HEAD
 &usb3_phy {
 	status = "okay";
 };
@@ -289,4 +302,9 @@
 	pinctrl-names = "default";
 
 	status = "okay";
+=======
+&xhci {
+	pinctrl-0 = <&usb3_pins>;
+	pinctrl-names = "default";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

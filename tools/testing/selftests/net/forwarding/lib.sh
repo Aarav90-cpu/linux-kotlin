@@ -1,6 +1,9 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 #shellcheck disable=SC2034 # SC doesn't see our uses of global variables
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ##############################################################################
 # Topology description. p1 looped back to p2, p3 to p4 and so on.
@@ -341,6 +344,7 @@ fi
 ##############################################################################
 # Command line options handling
 
+<<<<<<< HEAD
 check_env() {
 	if [[ ! (( -n "$LOCAL_V4" && -n "$REMOTE_V4") ||
 		 ( -n "$LOCAL_V6" && -n "$REMOTE_V6" )) ]]; then
@@ -480,6 +484,19 @@ else
 		done
 	fi
 fi
+=======
+count=0
+
+while [[ $# -gt 0 ]]; do
+	if [[ "$count" -eq "0" ]]; then
+		unset NETIFS
+		declare -A NETIFS
+	fi
+	count=$((count + 1))
+	NETIFS[p$count]="$1"
+	shift
+done
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ##############################################################################
 # Network interfaces configuration
@@ -547,11 +564,18 @@ mac_addr_prepare()
 		dev=${NETIFS[p$i]}
 		new_addr=$(printf "00:01:02:03:04:%02x" $i)
 
+<<<<<<< HEAD
 		MAC_ADDR_ORIG["$dev"]=$(run_on "$dev" \
 			ip -j link show dev "$dev" | jq -e '.[].address')
 		# Strip quotes
 		MAC_ADDR_ORIG["$dev"]=${MAC_ADDR_ORIG["$dev"]//\"/}
 		run_on "$dev" ip link set dev "$dev" address $new_addr
+=======
+		MAC_ADDR_ORIG["$dev"]=$(ip -j link show dev $dev | jq -e '.[].address')
+		# Strip quotes
+		MAC_ADDR_ORIG["$dev"]=${MAC_ADDR_ORIG["$dev"]//\"/}
+		ip link set dev $dev address $new_addr
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	done
 }
 
@@ -561,8 +585,12 @@ mac_addr_restore()
 
 	for ((i = 1; i <= NUM_NETIFS; ++i)); do
 		dev=${NETIFS[p$i]}
+<<<<<<< HEAD
 		run_on "$dev" \
 			ip link set dev "$dev" address ${MAC_ADDR_ORIG["$dev"]}
+=======
+		ip link set dev $dev address ${MAC_ADDR_ORIG["$dev"]}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	done
 }
 
@@ -575,9 +603,13 @@ if [[ "$STABLE_MAC_ADDRS" = "yes" ]]; then
 fi
 
 for ((i = 1; i <= NUM_NETIFS; ++i)); do
+<<<<<<< HEAD
 	int="${NETIFS[p$i]}"
 
 	run_on "$int" ip link show dev "$int" &> /dev/null
+=======
+	ip link show dev ${NETIFS[p$i]} &> /dev/null
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if [[ $? -ne 0 ]]; then
 		echo "SKIP: could not find all required interfaces"
 		exit $ksft_skip
@@ -660,7 +692,11 @@ setup_wait_dev_with_timeout()
 	local i
 
 	for ((i = 1; i <= $max_iterations; ++i)); do
+<<<<<<< HEAD
 		run_on "$dev" ip link show dev "$dev" up \
+=======
+		ip link show dev $dev up \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			| grep 'state UP' &> /dev/null
 		if [[ $? -ne 0 ]]; then
 			sleep 1
@@ -964,6 +1000,7 @@ ethtool_std_stats_get()
 	local name=$1; shift
 	local src=$1; shift
 
+<<<<<<< HEAD
 	if [[ "$grp" == "pause" ]]; then
 		run_on "$dev" ethtool -I --json -a "$dev" --src "$src" | \
 			jq --arg name "$name" '.[].statistics[$name]'
@@ -973,6 +1010,10 @@ ethtool_std_stats_get()
 	run_on "$dev" \
 		ethtool --json -S "$dev" --groups "$grp" -- --src "$src" | \
 		jq --arg grp "$grp" --arg name "$name" '.[][$grp][$name]'
+=======
+	ethtool --json -S $dev --groups $grp -- --src $src | \
+		jq '.[]."'"$grp"'"."'$name'"'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 qdisc_stats_get()
@@ -1750,17 +1791,24 @@ tcpdump_start()
 	sleep 1
 }
 
+<<<<<<< HEAD
 tcpdump_stop_nosleep()
+=======
+tcpdump_stop()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	local if_name=$1
 	local pid=${cappid[$if_name]}
 
 	$ns_cmd kill "$pid" && wait "$pid"
+<<<<<<< HEAD
 }
 
 tcpdump_stop()
 {
 	tcpdump_stop_nosleep "$1"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sleep 1
 }
 
@@ -1775,7 +1823,11 @@ tcpdump_show()
 {
 	local if_name=$1
 
+<<<<<<< HEAD
 	tcpdump -e -nn -r ${capfile[$if_name]} 2>&1
+=======
+	tcpdump -e -n -r ${capfile[$if_name]} 2>&1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 # return 0 if the packet wasn't seen on host2_if or 1 if it was

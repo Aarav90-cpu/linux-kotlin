@@ -256,7 +256,10 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
 
 	info->dev[0] = dev;
 	info->error_dev_num = 1;
+<<<<<<< HEAD
 	info->ratelimit_print[0] = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 1;
 }
@@ -373,13 +376,19 @@ static irqreturn_t dpc_handler(int irq, void *context)
 		return IRQ_HANDLED;
 	}
 
+<<<<<<< HEAD
 	pci_dev_get(pdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dpc_process_error(pdev);
 
 	/* We configure DPC so it only triggers on ERR_FATAL */
 	pcie_do_recovery(pdev, pci_channel_io_frozen, dpc_reset_link);
 
+<<<<<<< HEAD
 	pci_dev_put(pdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return IRQ_HANDLED;
 }
 

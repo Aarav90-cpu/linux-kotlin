@@ -116,11 +116,15 @@ static int lt9611_mipi_input_digital(struct lt9611 *lt9611,
 		{ 0x830a, 0x00 },
 		{ 0x824f, 0x80 },
 		{ 0x8250, 0x10 },
+<<<<<<< HEAD
 		{ 0x8303, 0x00 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ 0x8302, 0x0a },
 		{ 0x8306, 0x0a },
 	};
 
+<<<<<<< HEAD
 	if (lt9611->dsi1_node) {
 		if (lt9611->dsi0_node) {
 			/* Dual port (Port A + B) */
@@ -135,6 +139,10 @@ static int lt9611_mipi_input_digital(struct lt9611 *lt9611,
 			reg_cfg[4].def = 0x40;
 		}
 	}
+=======
+	if (lt9611->dsi1_node)
+		reg_cfg[1].def = 0x03;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return regmap_multi_reg_write(lt9611->regmap, reg_cfg, ARRAY_SIZE(reg_cfg));
 }
@@ -215,9 +223,13 @@ static void lt9611_pcr_setup(struct lt9611 *lt9611, const struct drm_display_mod
 	regmap_write(lt9611->regmap, 0x831d, pol);
 
 	regmap_multi_reg_write(lt9611->regmap, reg_cfg, ARRAY_SIZE(reg_cfg));
+<<<<<<< HEAD
 
 	/* dual port: configure hact for combining two DSI inputs */
 	if (lt9611->dsi0_node && lt9611->dsi1_node) {
+=======
+	if (lt9611->dsi1_node) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsigned int hact = mode->hdisplay;
 
 		hact >>= 2;
@@ -774,8 +786,12 @@ static enum drm_mode_status lt9611_bridge_mode_valid(struct drm_bridge *bridge,
 	if (mode->hdisplay > 3840)
 		return MODE_BAD_HVALUE;
 
+<<<<<<< HEAD
 	/* high resolution requires dual port (Port A + B) */
 	if (mode->hdisplay > 2000 && !(lt9611->dsi0_node && lt9611->dsi1_node))
+=======
+	if (mode->hdisplay > 2000 && !lt9611->dsi1_node)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return MODE_PANEL;
 
 	return MODE_OK;
@@ -1049,6 +1065,7 @@ static int lt9611_parse_dt(struct device *dev,
 			   struct lt9611 *lt9611)
 {
 	lt9611->dsi0_node = of_graph_get_remote_node(dev->of_node, 0, -1);
+<<<<<<< HEAD
 	lt9611->dsi1_node = of_graph_get_remote_node(dev->of_node, 1, -1);
 
 	if (!lt9611->dsi0_node && !lt9611->dsi1_node) {
@@ -1056,6 +1073,15 @@ static int lt9611_parse_dt(struct device *dev,
 		return -ENODEV;
 	}
 
+=======
+	if (!lt9611->dsi0_node) {
+		dev_err(lt9611->dev, "failed to get remote node for primary dsi\n");
+		return -ENODEV;
+	}
+
+	lt9611->dsi1_node = of_graph_get_remote_node(dev->of_node, 1, -1);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lt9611->ac_mode = of_property_read_bool(dev->of_node, "lt,ac-mode");
 
 	return drm_of_find_panel_or_bridge(dev->of_node, 2, -1, NULL, &lt9611->next_bridge);
@@ -1177,6 +1203,7 @@ static int lt9611_probe(struct i2c_client *client)
 
 	drm_bridge_add(&lt9611->bridge);
 
+<<<<<<< HEAD
 	/* Attach primary DSI (directly drives or Port A in dual-port mode) */
 	if (lt9611->dsi0_node) {
 		lt9611->dsi0 = lt9611_attach_dsi(lt9611, lt9611->dsi0_node);
@@ -1187,6 +1214,16 @@ static int lt9611_probe(struct i2c_client *client)
 	}
 
 	/* Attach secondary DSI (Port B in single or dual-port mode) */
+=======
+	/* Attach primary DSI */
+	lt9611->dsi0 = lt9611_attach_dsi(lt9611, lt9611->dsi0_node);
+	if (IS_ERR(lt9611->dsi0)) {
+		ret = PTR_ERR(lt9611->dsi0);
+		goto err_remove_bridge;
+	}
+
+	/* Attach secondary DSI, if specified */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (lt9611->dsi1_node) {
 		lt9611->dsi1 = lt9611_attach_dsi(lt9611, lt9611->dsi1_node);
 		if (IS_ERR(lt9611->dsi1)) {

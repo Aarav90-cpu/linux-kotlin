@@ -530,7 +530,11 @@ static bool cpu_supports_p2pdma(void)
 
 static const struct pci_p2pdma_whitelist_entry {
 	unsigned short vendor;
+<<<<<<< HEAD
 	int device;
+=======
+	unsigned short device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum {
 		REQ_SAME_HOST_BRIDGE	= 1 << 0,
 	} flags;
@@ -548,8 +552,11 @@ static const struct pci_p2pdma_whitelist_entry {
 	{PCI_VENDOR_ID_INTEL,	0x2033, 0},
 	{PCI_VENDOR_ID_INTEL,	0x2020, 0},
 	{PCI_VENDOR_ID_INTEL,	0x09a2, 0},
+<<<<<<< HEAD
 	/* Google SoCs. */
 	{PCI_VENDOR_ID_GOOGLE,	PCI_ANY_ID, 0},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 
@@ -603,12 +610,17 @@ static bool __host_bridge_whitelist(struct pci_host_bridge *host,
 	device = root->device;
 
 	for (entry = pci_p2pdma_whitelist; entry->vendor; entry++) {
+<<<<<<< HEAD
 		if (vendor != entry->vendor)
 			continue;
 
 		if (entry->device != PCI_ANY_ID && device != entry->device)
 			continue;
 
+=======
+		if (vendor != entry->vendor || device != entry->device)
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (entry->flags & REQ_SAME_HOST_BRIDGE && !same_host_bridge)
 			return false;
 

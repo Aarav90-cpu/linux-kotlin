@@ -78,14 +78,22 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
 		.blktime = 0x666, /* 3.2 */
 		.tx_offset = {
 			.serdes = 0x234c, /* 17.6484848 */
+<<<<<<< HEAD
 			.no_fec = 0x93d9, /* 73 */
+=======
+			.no_fec = 0x8e80, /* 71.25 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.fc = 0xb4a4, /* 90.32 */
 			.sfd = 0x4a4, /* 2.32 */
 			.onestep = 0x4ccd /* 38.4 */
 		},
 		.rx_offset = {
 			.serdes = 0xffffeb27, /* -10.42424 */
+<<<<<<< HEAD
 			.no_fec = 0xffffc7b6, /* -28 */
+=======
+			.no_fec = 0xffffcccd, /* -25.6 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.fc = 0xfffc557b, /* -469.26 */
 			.sfd = 0x4a4, /* 2.32 */
 			.bs_ds = 0x32 /* 0.0969697 */
@@ -118,17 +126,29 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
 		.mktime = 0x147b, /* 10.24, only if RS-FEC enabled */
 		.tx_offset = {
 			.serdes = 0xe1e, /* 7.0593939 */
+<<<<<<< HEAD
 			.no_fec = 0x4266, /* 33 */
 			.fc = 0x48c3, /* 36.38 */
 			.rs = 0x8a00, /* 69 */
+=======
+			.no_fec = 0x3857, /* 28.17 */
+			.fc = 0x48c3, /* 36.38 */
+			.rs = 0x8100, /* 64.5 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.sfd = 0x1dc, /* 0.93 */
 			.onestep = 0x1eb8 /* 15.36 */
 		},
 		.rx_offset = {
 			.serdes = 0xfffff7a9, /* -4.1697 */
+<<<<<<< HEAD
 			.no_fec = 0xffffe700, /* -12 */
 			.fc = 0xfffe894d, /* -187.35 */
 			.rs = 0xfffff8cc, /* -3 */
+=======
+			.no_fec = 0xffffe71a, /* -12.45 */
+			.fc = 0xfffe894d, /* -187.35 */
+			.rs = 0xfffff8cd, /* -3.6 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.sfd = 0x1dc, /* 0.93 */
 			.bs_ds = 0x14 /* 0.0387879, RS-FEC 0 */
 		}

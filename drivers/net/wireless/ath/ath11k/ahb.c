@@ -807,8 +807,15 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
 	}
 
 	prproc = rproc_get_by_phandle(rproc_phandle);
+<<<<<<< HEAD
 	if (!prproc)
 		return dev_err_probe(&ab->pdev->dev, -EPROBE_DEFER, "failed to get rproc\n");
+=======
+	if (!prproc) {
+		ath11k_dbg(ab, ATH11K_DBG_AHB, "failed to get rproc, deferring\n");
+		return -EPROBE_DEFER;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ab_ahb->tgt_rproc = prproc;
 
 	return 0;
@@ -1188,8 +1195,15 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
 	ath11k_ahb_init_qmi_ce_config(ab);
 
 	ret = ath11k_core_get_rproc(ab);
+<<<<<<< HEAD
 	if (ret)
 		goto err_ce_free;
+=======
+	if (ret) {
+		ath11k_err(ab, "failed to get rproc: %d\n", ret);
+		goto err_ce_free;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ath11k_core_init(ab);
 	if (ret) {

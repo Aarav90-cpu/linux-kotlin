@@ -471,6 +471,7 @@ bnxt_xdp_build_skb(struct bnxt *bp, struct sk_buff *skb, u8 num_frags,
 				  xdp_buff_get_skb_flags(xdp));
 	return skb;
 }
+<<<<<<< HEAD
 
 int bnxt_xdp_rx_hash(const struct xdp_md *ctx, u32 *hash,
 		     enum xdp_rss_hash_type *rss_type)
@@ -528,3 +529,5 @@ int bnxt_xdp_rx_hash(const struct xdp_md *ctx, u32 *hash,
 	*rss_type = hash_type;
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

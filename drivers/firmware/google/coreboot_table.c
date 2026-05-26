@@ -14,7 +14,10 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
@@ -22,6 +25,7 @@
 
 #include "coreboot_table.h"
 
+<<<<<<< HEAD
 /* Coreboot table header structure */
 struct coreboot_table_header {
 	char signature[4];
@@ -32,6 +36,8 @@ struct coreboot_table_header {
 	u32 table_entries;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CB_DEV(d) container_of(d, struct coreboot_device, dev)
 #define CB_DRV(d) container_of_const(d, struct coreboot_driver, drv)
 
@@ -262,7 +268,11 @@ static void __exit coreboot_table_driver_exit(void)
 	bus_unregister(&coreboot_bus_type);
 }
 
+<<<<<<< HEAD
 subsys_initcall(coreboot_table_driver_init);
+=======
+module_init(coreboot_table_driver_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_exit(coreboot_table_driver_exit);
 
 MODULE_AUTHOR("Google, Inc.");

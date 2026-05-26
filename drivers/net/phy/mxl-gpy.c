@@ -38,17 +38,23 @@
 #define PHY_CTL1_MDICD		BIT(3)
 #define PHY_CTL1_MDIAB		BIT(2)
 #define PHY_CTL1_AMDIX		BIT(0)
+<<<<<<< HEAD
 #define PHY_ERRCNT		0x15	/* Error counter */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PHY_MIISTAT		0x18	/* MII state */
 #define PHY_IMASK		0x19	/* interrupt mask */
 #define PHY_ISTAT		0x1A	/* interrupt status */
 #define PHY_LED			0x1B	/* LEDs */
 #define PHY_FWV			0x1E	/* firmware version */
 
+<<<<<<< HEAD
 #define PHY_ERRCNT_SEL		GENMASK(11, 8)
 #define PHY_ERRCNT_COUNT	GENMASK(7, 0)
 #define PHY_ERRCNT_SEL_RXERR	0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PHY_MIISTAT_SPD_MASK	GENMASK(2, 0)
 #define PHY_MIISTAT_DPX		BIT(3)
 #define PHY_MIISTAT_LS		BIT(10)
@@ -139,7 +145,10 @@ struct gpy_priv {
 	u8 fw_major;
 	u8 fw_minor;
 	u32 wolopts;
+<<<<<<< HEAD
 	u64 rx_errors;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* It takes 3 seconds to fully switch out of loopback mode before
 	 * it can safely re-enter loopback mode. Record the time when
@@ -337,9 +346,14 @@ out:
 
 static int gpy_config_init(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	/* Count MDI RX errors (SymbolErrorDuringCarrier) */
 	return phy_write(phydev, PHY_ERRCNT,
 			 FIELD_PREP(PHY_ERRCNT_SEL, PHY_ERRCNT_SEL_RXERR));
+=======
+	/* Nothing to configure. Configuration Requirement Placeholder */
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int gpy21x_config_init(struct phy_device *phydev)
@@ -1074,6 +1088,7 @@ static int gpy_config_inband(struct phy_device *phydev, unsigned int modes)
 			      VSPEC1_SGMII_ANEN_ANRS);
 }
 
+<<<<<<< HEAD
 static int gpy_update_stats(struct phy_device *phydev)
 {
 	struct gpy_priv *priv = phydev->priv;
@@ -1099,6 +1114,8 @@ static void gpy_get_phy_stats(struct phy_device *phydev,
 	stats->rx_errors = priv->rx_errors;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct phy_driver gpy_drivers[] = {
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY2xx),
@@ -1123,8 +1140,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.phy_id		= PHY_ID_GPY115B,
@@ -1150,8 +1170,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY115C),
@@ -1176,8 +1199,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.phy_id		= PHY_ID_GPY211B,
@@ -1203,8 +1229,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY211C),
@@ -1229,8 +1258,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.phy_id		= PHY_ID_GPY212B,
@@ -1256,8 +1288,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY212C),
@@ -1282,8 +1317,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.phy_id		= PHY_ID_GPY215B,
@@ -1309,8 +1347,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY215C),
@@ -1335,8 +1376,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY241B),
@@ -1356,8 +1400,11 @@ static struct phy_driver gpy_drivers[] = {
 		.set_wol	= gpy_set_wol,
 		.get_wol	= gpy_get_wol,
 		.set_loopback	= gpy_loopback,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY241BM),
@@ -1377,8 +1424,11 @@ static struct phy_driver gpy_drivers[] = {
 		.set_wol	= gpy_set_wol,
 		.get_wol	= gpy_get_wol,
 		.set_loopback	= gpy_loopback,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_GPY245B),
@@ -1398,8 +1448,11 @@ static struct phy_driver gpy_drivers[] = {
 		.set_wol	= gpy_set_wol,
 		.get_wol	= gpy_get_wol,
 		.set_loopback	= gpy_loopback,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_MXL86211C),
@@ -1424,8 +1477,11 @@ static struct phy_driver gpy_drivers[] = {
 		.led_hw_control_get = gpy_led_hw_control_get,
 		.led_hw_control_set = gpy_led_hw_control_set,
 		.led_polarity_set = gpy_led_polarity_set,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_MXL86252),
@@ -1443,8 +1499,11 @@ static struct phy_driver gpy_drivers[] = {
 		.set_wol	= gpy_set_wol,
 		.get_wol	= gpy_get_wol,
 		.set_loopback	= gpy_loopback,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.led_brightness_set = gpy_led_brightness_set,
 		.led_hw_is_supported = gpy_led_hw_is_supported,
 		.led_hw_control_get = gpy_led_hw_control_get,
@@ -1467,8 +1526,11 @@ static struct phy_driver gpy_drivers[] = {
 		.set_wol	= gpy_set_wol,
 		.get_wol	= gpy_get_wol,
 		.set_loopback	= gpy_loopback,
+<<<<<<< HEAD
 		.update_stats	= gpy_update_stats,
 		.get_phy_stats	= gpy_get_phy_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.led_brightness_set = gpy_led_brightness_set,
 		.led_hw_is_supported = gpy_led_hw_is_supported,
 		.led_hw_control_get = gpy_led_hw_control_get,

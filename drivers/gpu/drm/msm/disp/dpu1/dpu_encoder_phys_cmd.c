@@ -257,12 +257,15 @@ static int dpu_encoder_phys_cmd_control_vblank_irq(
 	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
 		goto end;
 
+<<<<<<< HEAD
 	/* IRQ not yet initialized */
 	if (!phys_enc->irq[INTR_IDX_RDPTR]) {
 		ret = -EINVAL;
 		goto end;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* protect against negative */
 	if (!enable && refcount == 0) {
 		ret = -EINVAL;

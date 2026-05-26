@@ -169,11 +169,16 @@ OPTIONS for 'perf kwork timehist'
 --max-stack::
 	Maximum number of functions to display in backtrace, default 5.
 
+<<<<<<< HEAD
 --symfs=<directory[,layout]>::
         Look for files with symbols relative to this directory. The optional
         layout can be 'hierarchy' (default, matches full path) or 'flat'
         (only matches base name). This is useful when debug files are stored
         in a flat directory structure.
+=======
+--symfs=<directory>::
+    Look for files with symbols relative to this directory.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 --time::
 	Only analyze samples within given time window: <start>,<stop>. Times

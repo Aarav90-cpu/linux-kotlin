@@ -70,7 +70,11 @@
 
 &cp0_eth1 {
 	status = "okay";
+<<<<<<< HEAD
 	phy-handle = <&phy0>;
+=======
+	phy = <&phy0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phy-mode = "rgmii-id";
 };
 

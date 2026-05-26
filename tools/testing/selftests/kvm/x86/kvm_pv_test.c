@@ -13,7 +13,11 @@
 #include "processor.h"
 
 struct msr_data {
+<<<<<<< HEAD
 	u32 idx;
+=======
+	uint32_t idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *name;
 };
 
@@ -40,8 +44,13 @@ static struct msr_data msrs_to_test[] = {
 
 static void test_msr(struct msr_data *msr)
 {
+<<<<<<< HEAD
 	u64 ignored;
 	u8 vector;
+=======
+	uint64_t ignored;
+	uint8_t vector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	PR_MSR(msr);
 
@@ -53,7 +62,11 @@ static void test_msr(struct msr_data *msr)
 }
 
 struct hcall_data {
+<<<<<<< HEAD
 	u64 nr;
+=======
+	uint64_t nr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *name;
 };
 
@@ -73,7 +86,11 @@ static struct hcall_data hcalls_to_test[] = {
 
 static void test_hcall(struct hcall_data *hc)
 {
+<<<<<<< HEAD
 	u64 r;
+=======
+	uint64_t r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	PR_HCALL(hc);
 	r = kvm_hypercall(hc->nr, 0, 0, 0, 0);

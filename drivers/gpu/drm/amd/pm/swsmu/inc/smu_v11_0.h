@@ -25,6 +25,21 @@
 
 #include "amdgpu_smu.h"
 
+<<<<<<< HEAD
+=======
+#define SMU11_DRIVER_IF_VERSION_INV 0xFFFFFFFF
+#define SMU11_DRIVER_IF_VERSION_ARCT 0x17
+#define SMU11_DRIVER_IF_VERSION_NV10 0x37
+#define SMU11_DRIVER_IF_VERSION_NV12 0x38
+#define SMU11_DRIVER_IF_VERSION_NV14 0x38
+#define SMU11_DRIVER_IF_VERSION_Sienna_Cichlid 0x40
+#define SMU11_DRIVER_IF_VERSION_Navy_Flounder 0xE
+#define SMU11_DRIVER_IF_VERSION_VANGOGH 0x03
+#define SMU11_DRIVER_IF_VERSION_Dimgrey_Cavefish 0xF
+#define SMU11_DRIVER_IF_VERSION_Beige_Goby 0xD
+#define SMU11_DRIVER_IF_VERSION_Cyan_Skillfish 0x8
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* MP Apertures */
 #define MP0_Public			0x03800000
 #define MP0_SRAM			0x03900000
@@ -136,6 +151,11 @@ int smu_v11_0_setup_pptable(struct smu_context *smu);
 
 int smu_v11_0_get_vbios_bootup_values(struct smu_context *smu);
 
+<<<<<<< HEAD
+=======
+int smu_v11_0_check_fw_version(struct smu_context *smu);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smu_v11_0_set_driver_table_location(struct smu_context *smu);
 
 int smu_v11_0_set_tool_table_location(struct smu_context *smu);

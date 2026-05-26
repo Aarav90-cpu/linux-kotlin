@@ -53,7 +53,11 @@ static void acpi_processor_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct acpi_device *device = data;
 	struct acpi_processor *pr;
+<<<<<<< HEAD
 	int saved, ev_data = 0;
+=======
+	int saved;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (device->handle != handle)
 		return;
@@ -66,6 +70,7 @@ static void acpi_processor_notify(acpi_handle handle, u32 event, void *data)
 	case ACPI_PROCESSOR_NOTIFY_PERFORMANCE:
 		saved = pr->performance_platform_limit;
 		acpi_processor_ppc_has_changed(pr, 1);
+<<<<<<< HEAD
 		ev_data = pr->performance_platform_limit;
 		if (saved == ev_data)
 			return;
@@ -87,6 +92,35 @@ static void acpi_processor_notify(acpi_handle handle, u32 event, void *data)
 
 	acpi_bus_generate_netlink_event("processor", dev_name(&device->dev),
 					event, ev_data);
+=======
+		if (saved == pr->performance_platform_limit)
+			break;
+		acpi_bus_generate_netlink_event(device->pnp.device_class,
+						  dev_name(&device->dev), event,
+						  pr->performance_platform_limit);
+		break;
+	case ACPI_PROCESSOR_NOTIFY_POWER:
+		acpi_processor_power_state_has_changed(pr);
+		acpi_bus_generate_netlink_event(device->pnp.device_class,
+						  dev_name(&device->dev), event, 0);
+		break;
+	case ACPI_PROCESSOR_NOTIFY_THROTTLING:
+		acpi_processor_tstate_has_changed(pr);
+		acpi_bus_generate_netlink_event(device->pnp.device_class,
+						  dev_name(&device->dev), event, 0);
+		break;
+	case ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED:
+		cpufreq_update_limits(pr->id);
+		acpi_bus_generate_netlink_event(device->pnp.device_class,
+						  dev_name(&device->dev), event, 0);
+		break;
+	default:
+		acpi_handle_debug(handle, "Unsupported event [0x%x]\n", event);
+		break;
+	}
+
+	return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __acpi_processor_start(struct acpi_device *device);

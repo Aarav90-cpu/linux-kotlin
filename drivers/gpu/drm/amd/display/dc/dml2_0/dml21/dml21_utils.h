@@ -9,7 +9,10 @@
 struct dc_state;
 struct dc_plane_state;
 struct pipe_ctx;
+<<<<<<< HEAD
 struct dc_dmub_srv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dml2_context;
 struct dml2_display_rq_regs;

@@ -801,8 +801,11 @@ EXPORT_SYMBOL(panic);
  * Documentation/admin-guide/tainted-kernels.rst, including its
  * small shell script that prints the TAINT_FLAGS_COUNT bits of
  * /proc/sys/kernel/tainted.
+<<<<<<< HEAD
  *
  * Also, update INIT_TAINT_BUF_MAX below.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 const struct taint_flag taint_flags[TAINT_FLAGS_COUNT] = {
 	TAINT_FLAG(PROPRIETARY_MODULE,		'P', 'G'),
@@ -856,6 +859,7 @@ static void print_tainted_seq(struct seq_buf *s, bool verbose)
 	}
 }
 
+<<<<<<< HEAD
 /* The initial buffer can accommodate all taint flags in verbose
  * mode, with some headroom. Once the allocator is available, the
  * exact size is allocated dynamically; the initial buffer remains
@@ -899,11 +903,21 @@ postcore_initcall(alloc_taint_buf);
 
 static const char *_print_tainted(bool verbose)
 {
+=======
+static const char *_print_tainted(bool verbose)
+{
+	/* FIXME: what should the size be? */
+	static char buf[sizeof(taint_flags)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct seq_buf s;
 
 	BUILD_BUG_ON(ARRAY_SIZE(taint_flags) != TAINT_FLAGS_COUNT);
 
+<<<<<<< HEAD
 	seq_buf_init(&s, taint_buf, taint_buf_size);
+=======
+	seq_buf_init(&s, buf, sizeof(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	print_tainted_seq(&s, verbose);
 

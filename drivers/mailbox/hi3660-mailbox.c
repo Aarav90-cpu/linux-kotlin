@@ -15,6 +15,11 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MBOX_CHAN_MAX			32
 
 #define MBOX_RX				0x0

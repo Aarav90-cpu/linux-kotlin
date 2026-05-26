@@ -61,8 +61,12 @@
 /*
  * open_tree() flags.
  */
+<<<<<<< HEAD
 #define OPEN_TREE_CLONE		(1 << 0)	/* Clone the target tree and attach the clone */
 #define OPEN_TREE_NAMESPACE	(1 << 1)	/* Clone the target tree into a new mount namespace */
+=======
+#define OPEN_TREE_CLONE		1		/* Clone the target tree and attach the clone */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OPEN_TREE_CLOEXEC	O_CLOEXEC	/* Close the file on execve() */
 
 /*
@@ -110,7 +114,10 @@ enum fsconfig_command {
  * fsmount() flags.
  */
 #define FSMOUNT_CLOEXEC		0x00000001
+<<<<<<< HEAD
 #define FSMOUNT_NAMESPACE	0x00000002	/* Create the mount in a new mount namespace */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Mount attributes.
@@ -199,10 +206,14 @@ struct statmount {
  */
 struct mnt_id_req {
 	__u32 size;
+<<<<<<< HEAD
 	union {
 		__u32 mnt_ns_fd;
 		__u32 mnt_fd;
 	};
+=======
+	__u32 spare;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__u64 mnt_id;
 	__u64 param;
 	__u64 mnt_ns_id;
@@ -237,9 +248,12 @@ struct mnt_id_req {
 #define LSMT_ROOT		0xffffffffffffffff	/* root mount */
 #define LISTMOUNT_REVERSE	(1 << 0) /* List later mounts first */
 
+<<<<<<< HEAD
 /*
  * @flag bits for statmount(2)
  */
 #define STATMOUNT_BY_FD		0x00000001U	/* want mountinfo for given fd */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _UAPI_LINUX_MOUNT_H */

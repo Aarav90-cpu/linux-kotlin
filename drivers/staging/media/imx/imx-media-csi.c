@@ -744,6 +744,7 @@ static int csi_setup(struct csi_priv *priv,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void csi_set_src(struct csi_priv *priv,
 			struct v4l2_mbus_config *mbus_cfg)
 {
@@ -766,6 +767,8 @@ static void csi_set_src(struct csi_priv *priv,
 	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int csi_start(struct csi_priv *priv)
 {
 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
@@ -782,8 +785,11 @@ static int csi_start(struct csi_priv *priv)
 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
 	output_fi = &priv->frame_interval[priv->active_output_pad];
 
+<<<<<<< HEAD
 	csi_set_src(priv, &mbus_cfg);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* start upstream */
 	ret = v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
 	ret = (ret && ret != -ENOIOCTLCMD) ? ret : 0;
@@ -1154,6 +1160,10 @@ static int csi_link_validate(struct v4l2_subdev *sd,
 {
 	struct csi_priv *priv = v4l2_get_subdevdata(sd);
 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+<<<<<<< HEAD
+=======
+	bool is_csi2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = v4l2_subdev_link_validate_default(sd, link,
@@ -1168,6 +1178,28 @@ static int csi_link_validate(struct v4l2_subdev *sd,
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&priv->lock);
+
+	is_csi2 = !is_parallel_bus(&mbus_cfg);
+	if (is_csi2) {
+		/*
+		 * NOTE! It seems the virtual channels from the mipi csi-2
+		 * receiver are used only for routing by the video mux's,
+		 * or for hard-wired routing to the CSI's. Once the stream
+		 * enters the CSI's however, they are treated internally
+		 * in the IPU as virtual channel 0.
+		 */
+		ipu_csi_set_mipi_datatype(priv->csi, 0,
+					  &priv->format_mbus[CSI_SINK_PAD]);
+	}
+
+	/* select either parallel or MIPI-CSI2 as input to CSI */
+	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
+
+	mutex_unlock(&priv->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1521,7 +1553,11 @@ static void csi_try_fmt(struct csi_priv *priv,
 	}
 
 	imx_media_try_colorimetry(&sdformat->format,
+<<<<<<< HEAD
 				  priv->active_output_pad == CSI_SRC_PAD_DIRECT);
+=======
+			priv->active_output_pad == CSI_SRC_PAD_DIRECT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int csi_set_fmt(struct v4l2_subdev *sd,

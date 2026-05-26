@@ -547,7 +547,11 @@ EXPORT_SYMBOL(__dec_node_page_state);
 #ifdef CONFIG_HAVE_CMPXCHG_LOCAL
 /*
  * If we have cmpxchg_local support then we do not need to incur the overhead
+<<<<<<< HEAD
  * that comes with local_irq_save/restore if we use this_cpu_try_cmpxchg().
+=======
+ * that comes with local_irq_save/restore if we use this_cpu_cmpxchg.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * mod_state() modifies the zone counter state through atomic per cpu
  * operations.
@@ -1255,7 +1259,10 @@ const char * const vmstat_text[] = {
 	[I(NR_KERNEL_MISC_RECLAIMABLE)]		= "nr_kernel_misc_reclaimable",
 	[I(NR_FOLL_PIN_ACQUIRED)]		= "nr_foll_pin_acquired",
 	[I(NR_FOLL_PIN_RELEASED)]		= "nr_foll_pin_released",
+<<<<<<< HEAD
 	[I(NR_VMALLOC)]				= "nr_vmalloc",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[I(NR_KERNEL_STACK_KB)]			= "nr_kernel_stack",
 #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
 	[I(NR_KERNEL_SCS_KB)]			= "nr_shadow_call_stack",
@@ -1277,6 +1284,7 @@ const char * const vmstat_text[] = {
 	[I(PGDEMOTE_DIRECT)]			= "pgdemote_direct",
 	[I(PGDEMOTE_KHUGEPAGED)]		= "pgdemote_khugepaged",
 	[I(PGDEMOTE_PROACTIVE)]			= "pgdemote_proactive",
+<<<<<<< HEAD
 	[I(PGSTEAL_KSWAPD)]			= "pgsteal_kswapd",
 	[I(PGSTEAL_DIRECT)]			= "pgsteal_direct",
 	[I(PGSTEAL_KHUGEPAGED)]			= "pgsteal_khugepaged",
@@ -1290,13 +1298,18 @@ const char * const vmstat_text[] = {
 	[I(PGSCAN_ANON)]			= "pgscan_anon",
 	[I(PGSCAN_FILE)]			= "pgscan_file",
 	[I(PGREFILL)]				= "pgrefill",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_HUGETLB_PAGE
 	[I(NR_HUGETLB)]				= "nr_hugetlb",
 #endif
 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
 	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
+<<<<<<< HEAD
 	[I(NR_GPU_ACTIVE)]			= "nr_gpu_active",
 	[I(NR_GPU_RECLAIM)]			= "nr_gpu_reclaim",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #undef I
 
 	/* system-wide enum vm_stat_item counters */
@@ -1334,8 +1347,26 @@ const char * const vmstat_text[] = {
 	[I(PGMAJFAULT)]				= "pgmajfault",
 	[I(PGLAZYFREED)]			= "pglazyfreed",
 
+<<<<<<< HEAD
 	[I(PGREUSE)]				= "pgreuse",
 	[I(PGSCAN_DIRECT_THROTTLE)]		= "pgscan_direct_throttle",
+=======
+	[I(PGREFILL)]				= "pgrefill",
+	[I(PGREUSE)]				= "pgreuse",
+	[I(PGSTEAL_KSWAPD)]			= "pgsteal_kswapd",
+	[I(PGSTEAL_DIRECT)]			= "pgsteal_direct",
+	[I(PGSTEAL_KHUGEPAGED)]			= "pgsteal_khugepaged",
+	[I(PGSTEAL_PROACTIVE)]			= "pgsteal_proactive",
+	[I(PGSCAN_KSWAPD)]			= "pgscan_kswapd",
+	[I(PGSCAN_DIRECT)]			= "pgscan_direct",
+	[I(PGSCAN_KHUGEPAGED)]			= "pgscan_khugepaged",
+	[I(PGSCAN_PROACTIVE)]			= "pgscan_proactive",
+	[I(PGSCAN_DIRECT_THROTTLE)]		= "pgscan_direct_throttle",
+	[I(PGSCAN_ANON)]			= "pgscan_anon",
+	[I(PGSCAN_FILE)]			= "pgscan_file",
+	[I(PGSTEAL_ANON)]			= "pgsteal_anon",
+	[I(PGSTEAL_FILE)]			= "pgsteal_file",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_NUMA
 	[I(PGSCAN_ZONE_RECLAIM_SUCCESS)]	= "zone_reclaim_success",
@@ -2141,7 +2172,11 @@ static void vmstat_shepherd(struct work_struct *w)
 			if (cpu_is_isolated(cpu))
 				continue;
 
+<<<<<<< HEAD
 			if (!work_busy(&dw->work) && need_update(cpu))
+=======
+			if (!delayed_work_pending(dw) && need_update(cpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
 		}
 

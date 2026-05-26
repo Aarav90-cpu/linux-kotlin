@@ -10,6 +10,7 @@ import os
 import pathlib
 import subprocess
 import sys
+<<<<<<< HEAD
 from typing import Dict, Iterable, List, Literal, Optional, TypedDict
 
 def invoke_rustc(args: List[str]) -> str:
@@ -19,6 +20,10 @@ def invoke_rustc(args: List[str]) -> str:
     ).decode('utf-8').strip()
 
 def args_crates_cfgs(cfgs: List[str]) -> Dict[str, List[str]]:
+=======
+
+def args_crates_cfgs(cfgs):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     crates_cfgs = {}
     for cfg in cfgs:
         crate, vals = cfg.split("=", 1)
@@ -26,6 +31,7 @@ def args_crates_cfgs(cfgs: List[str]) -> Dict[str, List[str]]:
 
     return crates_cfgs
 
+<<<<<<< HEAD
 class Dependency(TypedDict):
     crate: int
     name: str
@@ -65,10 +71,16 @@ def generate_crates(
 ) -> List[Crate]:
     # Generate the configuration list.
     generated_cfg = []
+=======
+def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edition):
+    # Generate the configuration list.
+    cfg = []
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
         for line in fd:
             line = line.replace("--cfg=", "")
             line = line.replace("\n", "")
+<<<<<<< HEAD
             generated_cfg.append(line)
 
     # Now fill the crates list.
@@ -97,12 +109,31 @@ def generate_crates(
             "root_module": str(root_module),
             "is_workspace_member": is_workspace_member,
             "deps": deps,
+=======
+            cfg.append(line)
+
+    # Now fill the crates list -- dependencies need to come first.
+    #
+    # Avoid O(n^2) iterations by keeping a map of indexes.
+    crates = []
+    crates_indexes = {}
+    crates_cfgs = args_crates_cfgs(cfgs)
+
+    def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
+        crate = {
+            "display_name": display_name,
+            "root_module": str(root_module),
+            "is_workspace_member": is_workspace_member,
+            "is_proc_macro": is_proc_macro,
+            "deps": [{"crate": crates_indexes[dep], "name": dep} for dep in deps],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             "cfg": cfg,
             "edition": edition,
             "env": {
                 "RUST_MODFILE": "This is only for rust-analyzer"
             }
         }
+<<<<<<< HEAD
 
     def append_proc_macro_crate(
         display_name: str,
@@ -173,6 +204,27 @@ def generate_crates(
             sysroot_src / display_name / "src" / "lib.rs",
             deps,
             cfg=cfg,
+=======
+        if is_proc_macro:
+            proc_macro_dylib_name = subprocess.check_output(
+                [os.environ["RUSTC"], "--print", "file-names", "--crate-name", display_name, "--crate-type", "proc-macro", "-"],
+                stdin=subprocess.DEVNULL,
+            ).decode('utf-8').strip()
+            crate["proc_macro_dylib_path"] = f"{objtree}/rust/{proc_macro_dylib_name}"
+        crates_indexes[display_name] = len(crates)
+        crates.append(crate)
+
+    def append_sysroot_crate(
+        display_name,
+        deps,
+        cfg=[],
+    ):
+        append_crate(
+            display_name,
+            sysroot_src / display_name / "src" / "lib.rs",
+            deps,
+            cfg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             is_workspace_member=False,
             # Miguel Ojeda writes:
             #
@@ -204,6 +256,7 @@ def generate_crates(
     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
+<<<<<<< HEAD
     core = append_sysroot_crate("core", [])
     alloc = append_sysroot_crate("alloc", [core])
     std = append_sysroot_crate("std", [alloc, core])
@@ -294,6 +347,97 @@ def generate_crates(
     kernel = append_crate_with_generated(
         "kernel", [core, macros, build_error, pin_init, ffi, bindings, uapi]
     )
+=======
+    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
+    append_sysroot_crate("alloc", ["core"])
+    append_sysroot_crate("std", ["alloc", "core"])
+    append_sysroot_crate("proc_macro", ["core", "std"])
+
+    append_crate(
+        "compiler_builtins",
+        srctree / "rust" / "compiler_builtins.rs",
+        ["core"],
+    )
+
+    append_crate(
+        "proc_macro2",
+        srctree / "rust" / "proc-macro2" / "lib.rs",
+        ["core", "alloc", "std", "proc_macro"],
+        cfg=crates_cfgs["proc_macro2"],
+    )
+
+    append_crate(
+        "quote",
+        srctree / "rust" / "quote" / "lib.rs",
+        ["core", "alloc", "std", "proc_macro", "proc_macro2"],
+        cfg=crates_cfgs["quote"],
+        edition="2018",
+    )
+
+    append_crate(
+        "syn",
+        srctree / "rust" / "syn" / "lib.rs",
+        ["std", "proc_macro", "proc_macro2", "quote"],
+        cfg=crates_cfgs["syn"],
+    )
+
+    append_crate(
+        "macros",
+        srctree / "rust" / "macros" / "lib.rs",
+        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
+        is_proc_macro=True,
+    )
+
+    append_crate(
+        "build_error",
+        srctree / "rust" / "build_error.rs",
+        ["core", "compiler_builtins"],
+    )
+
+    append_crate(
+        "pin_init_internal",
+        srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
+        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
+        cfg=["kernel"],
+        is_proc_macro=True,
+    )
+
+    append_crate(
+        "pin_init",
+        srctree / "rust" / "pin-init" / "src" / "lib.rs",
+        ["core", "compiler_builtins", "pin_init_internal", "macros"],
+        cfg=["kernel"],
+    )
+
+    append_crate(
+        "ffi",
+        srctree / "rust" / "ffi.rs",
+        ["core", "compiler_builtins"],
+    )
+
+    def append_crate_with_generated(
+        display_name,
+        deps,
+    ):
+        append_crate(
+            display_name,
+            srctree / "rust"/ display_name / "lib.rs",
+            deps,
+            cfg=cfg,
+        )
+        crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
+        crates[-1]["source"] = {
+            "include_dirs": [
+                str(srctree / "rust" / display_name),
+                str(objtree / "rust")
+            ],
+            "exclude_dirs": [],
+        }
+
+    append_crate_with_generated("bindings", ["core", "ffi", "pin_init"])
+    append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     scripts = srctree / "scripts"
     makefile = (scripts / "Makefile").read_text()
@@ -304,10 +448,17 @@ def generate_crates(
         append_crate(
             name,
             path,
+<<<<<<< HEAD
             [std],
         )
 
     def is_root_crate(build_file: pathlib.Path, target: str) -> bool:
+=======
+            ["std"],
+        )
+
+    def is_root_crate(build_file, target):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         try:
             contents = build_file.read_text()
         except FileNotFoundError:
@@ -317,14 +468,19 @@ def generate_crates(
     # Then, the rest outside of `rust/`.
     #
     # We explicitly mention the top-level folders we want to cover.
+<<<<<<< HEAD
     extra_dirs: Iterable[pathlib.Path] = (
         srctree / dir for dir in ("samples", "drivers")
     )
+=======
+    extra_dirs = map(lambda dir: srctree / dir, ("samples", "drivers"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if external_src is not None:
         extra_dirs = [external_src]
     for folder in extra_dirs:
         for path in folder.rglob("*.rs"):
             logging.info("Checking %s", path)
+<<<<<<< HEAD
             file_name = path.stem
 
             # Skip those that are not crate roots.
@@ -339,11 +495,30 @@ def generate_crates(
                 path,
                 [core, kernel, pin_init],
                 cfg=generated_cfg,
+=======
+            name = path.stem
+
+            # Skip those that are not crate roots.
+            if not is_root_crate(path.parent / "Makefile", name) and \
+               not is_root_crate(path.parent / "Kbuild", name):
+                continue
+
+            logging.info("Adding %s", name)
+            append_crate(
+                name,
+                path,
+                ["core", "kernel", "pin_init"],
+                cfg=cfg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             )
 
     return crates
 
+<<<<<<< HEAD
 def main() -> None:
+=======
+def main():
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     parser = argparse.ArgumentParser()
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--cfgs', action='append', default=[])
@@ -353,6 +528,7 @@ def main() -> None:
     parser.add_argument("sysroot", type=pathlib.Path)
     parser.add_argument("sysroot_src", type=pathlib.Path)
     parser.add_argument("exttree", type=pathlib.Path, nargs="?")
+<<<<<<< HEAD
 
     class Args(argparse.Namespace):
         verbose: bool
@@ -365,6 +541,9 @@ def main() -> None:
         core_edition: str
 
     args = parser.parse_args(namespace=Args())
+=======
+    args = parser.parse_args()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     logging.basicConfig(
         format="[%(asctime)s] [%(levelname)s] %(message)s",

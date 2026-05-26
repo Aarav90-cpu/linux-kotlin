@@ -122,11 +122,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_entry_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_exit_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_set_need_resched_tp);
+<<<<<<< HEAD
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_dl_throttle_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_dl_replenish_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_dl_update_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_dl_server_start_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_dl_server_stop_tp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
@@ -872,6 +875,7 @@ void update_rq_clock(struct rq *rq)
  * Use HR-timers to deliver accurate preemption points.
  */
 
+<<<<<<< HEAD
 enum {
 	HRTICK_SCHED_NONE		= 0,
 	HRTICK_SCHED_DEFER		= BIT(1),
@@ -880,6 +884,9 @@ enum {
 };
 
 static void __used hrtick_clear(struct rq *rq)
+=======
+static void hrtick_clear(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (hrtimer_active(&rq->hrtick_timer))
 		hrtimer_cancel(&rq->hrtick_timer);
@@ -904,6 +911,7 @@ static enum hrtimer_restart hrtick(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
+<<<<<<< HEAD
 static inline bool hrtick_needs_rearm(struct hrtimer *timer, ktime_t expires)
 {
 	/*
@@ -916,12 +924,19 @@ static inline bool hrtick_needs_rearm(struct hrtimer *timer, ktime_t expires)
 }
 
 static void hrtick_cond_restart(struct rq *rq)
+=======
+static void __hrtick_restart(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hrtimer *timer = &rq->hrtick_timer;
 	ktime_t time = rq->hrtick_time;
 
+<<<<<<< HEAD
 	if (hrtick_needs_rearm(timer, time))
 		hrtimer_start(timer, time, HRTIMER_MODE_ABS_PINNED_HARD);
+=======
+	hrtimer_start(timer, time, HRTIMER_MODE_ABS_PINNED_HARD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -933,7 +948,11 @@ static void __hrtick_start(void *arg)
 	struct rq_flags rf;
 
 	rq_lock(rq, &rf);
+<<<<<<< HEAD
 	hrtick_cond_restart(rq);
+=======
+	__hrtick_restart(rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rq_unlock(rq, &rf);
 }
 
@@ -944,6 +963,10 @@ static void __hrtick_start(void *arg)
  */
 void hrtick_start(struct rq *rq, u64 delay)
 {
+<<<<<<< HEAD
+=======
+	struct hrtimer *timer = &rq->hrtick_timer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s64 delta;
 
 	/*
@@ -951,6 +974,7 @@ void hrtick_start(struct rq *rq, u64 delay)
 	 * doesn't make sense and can cause timer DoS.
 	 */
 	delta = max_t(s64, delay, 10000LL);
+<<<<<<< HEAD
 
 	/*
 	 * If this is in the middle of schedule() only note the delay
@@ -968,10 +992,17 @@ void hrtick_start(struct rq *rq, u64 delay)
 
 	if (rq == this_rq())
 		hrtimer_start(&rq->hrtick_timer, rq->hrtick_time, HRTIMER_MODE_ABS_PINNED_HARD);
+=======
+	rq->hrtick_time = ktime_add_ns(hrtimer_cb_get_time(timer), delta);
+
+	if (rq == this_rq())
+		__hrtick_restart(rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		smp_call_function_single_async(cpu_of(rq), &rq->hrtick_csd);
 }
 
+<<<<<<< HEAD
 static inline void hrtick_schedule_enter(struct rq *rq)
 {
 	rq->hrtick_sched = HRTICK_SCHED_DEFER;
@@ -1012,6 +1043,21 @@ static inline void hrtick_clear(struct rq *rq) { }
 static inline void hrtick_rq_init(struct rq *rq) { }
 static inline void hrtick_schedule_enter(struct rq *rq) { }
 static inline void hrtick_schedule_exit(struct rq *rq) { }
+=======
+static void hrtick_rq_init(struct rq *rq)
+{
+	INIT_CSD(&rq->hrtick_csd, __hrtick_start, rq);
+	hrtimer_setup(&rq->hrtick_timer, hrtick, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
+}
+#else /* !CONFIG_SCHED_HRTICK: */
+static inline void hrtick_clear(struct rq *rq)
+{
+}
+
+static inline void hrtick_rq_init(struct rq *rq)
+{
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_SCHED_HRTICK */
 
 /*
@@ -3905,8 +3951,11 @@ bool cpus_share_resources(int this_cpu, int that_cpu)
 
 static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
 {
+<<<<<<< HEAD
 	int this_cpu = smp_processor_id();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* See SCX_OPS_ALLOW_QUEUED_WAKEUP. */
 	if (!scx_allow_ttwu_queue(p))
 		return false;
@@ -3931,10 +3980,17 @@ static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
 	 * If the CPU does not share cache, then queue the task on the
 	 * remote rqs wakelist to avoid accessing remote data.
 	 */
+<<<<<<< HEAD
 	if (!cpus_share_cache(this_cpu, cpu))
 		return true;
 
 	if (cpu == this_cpu)
+=======
+	if (!cpus_share_cache(smp_processor_id(), cpu))
+		return true;
+
+	if (cpu == smp_processor_id())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/*
@@ -4458,7 +4514,10 @@ static void __sched_fork(u64 clone_flags, struct task_struct *p)
 	p->se.nr_migrations		= 0;
 	p->se.vruntime			= 0;
 	p->se.vlag			= 0;
+<<<<<<< HEAD
 	p->se.rel_deadline		= 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&p->se.group_node);
 
 	/* A delayed task cannot be in clone(). */
@@ -4782,7 +4841,11 @@ int sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs)
 		p->sched_class->task_fork(p);
 	raw_spin_unlock_irqrestore(&p->pi_lock, flags);
 
+<<<<<<< HEAD
 	return scx_fork(p, kargs);
+=======
+	return scx_fork(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void sched_cancel_fork(struct task_struct *p)
@@ -4958,7 +5021,11 @@ static inline void prepare_task(struct task_struct *next)
 	WRITE_ONCE(next->on_cpu, 1);
 }
 
+<<<<<<< HEAD
 static inline void finish_task(struct task_struct *prev)
+=======
+static __always_inline void finish_task(struct task_struct *prev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * This must be the very last reference to @prev from this CPU. After
@@ -4974,6 +5041,7 @@ static inline void finish_task(struct task_struct *prev)
 	smp_store_release(&prev->on_cpu, 0);
 }
 
+<<<<<<< HEAD
 /*
  * Only called from __schedule context
  *
@@ -5003,6 +5071,9 @@ static void zap_balance_callbacks(struct rq *rq)
 }
 
 static void do_balance_callbacks(struct rq *rq, struct balance_callback *head)
+=======
+static __always_inline void do_balance_callbacks(struct rq *rq, struct balance_callback *head)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	void (*func)(struct rq *rq);
 	struct balance_callback *next;
@@ -5037,7 +5108,11 @@ struct balance_callback balance_push_callback = {
 	.func = balance_push,
 };
 
+<<<<<<< HEAD
 static inline struct balance_callback *
+=======
+static __always_inline struct balance_callback *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __splice_balance_callbacks(struct rq *rq, bool split)
 {
 	struct balance_callback *head = rq->balance_callback;
@@ -5067,7 +5142,11 @@ struct balance_callback *splice_balance_callbacks(struct rq *rq)
 	return __splice_balance_callbacks(rq, true);
 }
 
+<<<<<<< HEAD
 void __balance_callbacks(struct rq *rq, struct rq_flags *rf)
+=======
+__always_inline void __balance_callbacks(struct rq *rq, struct rq_flags *rf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (rf)
 		rq_unpin_lock(rq, rf);
@@ -5111,7 +5190,11 @@ prepare_lock_switch(struct rq *rq, struct task_struct *next, struct rq_flags *rf
 	__acquire(__rq_lockp(this_rq()));
 }
 
+<<<<<<< HEAD
 static inline void finish_lock_switch(struct rq *rq)
+=======
+static __always_inline void finish_lock_switch(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(__rq_lockp(rq))
 {
 	/*
@@ -5121,7 +5204,10 @@ static inline void finish_lock_switch(struct rq *rq)
 	 */
 	spin_acquire(&__rq_lockp(rq)->dep_map, 0, 0, _THIS_IP_);
 	__balance_callbacks(rq, NULL);
+<<<<<<< HEAD
 	hrtick_schedule_exit(rq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_rq_unlock_irq(rq);
 }
 
@@ -5145,7 +5231,11 @@ static inline void kmap_local_sched_out(void)
 #endif
 }
 
+<<<<<<< HEAD
 static inline void kmap_local_sched_in(void)
+=======
+static __always_inline void kmap_local_sched_in(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #ifdef CONFIG_KMAP_LOCAL
 	if (unlikely(current->kmap_ctrl.idx))
@@ -5199,7 +5289,11 @@ prepare_task_switch(struct rq *rq, struct task_struct *prev,
  * past. 'prev == current' is still correct but we need to recalculate this_rq
  * because prev may have moved to another CPU.
  */
+<<<<<<< HEAD
 static struct rq *finish_task_switch(struct task_struct *prev)
+=======
+static __always_inline struct rq *finish_task_switch(struct task_struct *prev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(__rq_lockp(this_rq()))
 {
 	struct rq *rq = this_rq();
@@ -5771,7 +5865,11 @@ static void sched_tick_remote(struct work_struct *work)
 	os = atomic_fetch_add_unless(&twork->state, -1, TICK_SCHED_REMOTE_RUNNING);
 	WARN_ON_ONCE(os == TICK_SCHED_REMOTE_OFFLINE);
 	if (os == TICK_SCHED_REMOTE_RUNNING)
+<<<<<<< HEAD
 		queue_delayed_work(system_dfl_wq, dwork, HZ);
+=======
+		queue_delayed_work(system_unbound_wq, dwork, HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sched_tick_start(int cpu)
@@ -5790,7 +5888,11 @@ static void sched_tick_start(int cpu)
 	if (os == TICK_SCHED_REMOTE_OFFLINE) {
 		twork->cpu = cpu;
 		INIT_DELAYED_WORK(&twork->work, sched_tick_remote);
+<<<<<<< HEAD
 		queue_delayed_work(system_dfl_wq, &twork->work, HZ);
+=======
+		queue_delayed_work(system_unbound_wq, &twork->work, HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -6588,8 +6690,11 @@ static bool try_to_block_task(struct rq *rq, struct task_struct *p,
 	if (signal_pending_state(task_state, p)) {
 		WRITE_ONCE(p->__state, TASK_RUNNING);
 		*task_state_p = TASK_RUNNING;
+<<<<<<< HEAD
 		set_task_blocked_on_waking(p, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	}
 
@@ -6627,6 +6732,7 @@ static bool try_to_block_task(struct rq *rq, struct task_struct *p,
 }
 
 #ifdef CONFIG_SCHED_PROXY_EXEC
+<<<<<<< HEAD
 static inline void proxy_set_task_cpu(struct task_struct *p, int cpu)
 {
 	unsigned int wake_cpu;
@@ -6642,6 +6748,8 @@ static inline void proxy_set_task_cpu(struct task_struct *p, int cpu)
 	p->wake_cpu = wake_cpu;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct task_struct *proxy_resched_idle(struct rq *rq)
 {
 	put_prev_set_next_task(rq, rq->donor, rq->idle);
@@ -6650,7 +6758,11 @@ static inline struct task_struct *proxy_resched_idle(struct rq *rq)
 	return rq->idle;
 }
 
+<<<<<<< HEAD
 static bool proxy_deactivate(struct rq *rq, struct task_struct *donor)
+=======
+static bool __proxy_deactivate(struct rq *rq, struct task_struct *donor)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long state = READ_ONCE(donor->__state);
 
@@ -6670,6 +6782,7 @@ static bool proxy_deactivate(struct rq *rq, struct task_struct *donor)
 	return try_to_block_task(rq, donor, &state, true);
 }
 
+<<<<<<< HEAD
 static inline void proxy_release_rq_lock(struct rq *rq, struct rq_flags *rf)
 	__releases(__rq_lockp(rq))
 {
@@ -6804,6 +6917,19 @@ static void proxy_force_return(struct rq *rq, struct rq_flags *rf,
 		attach_one_task(target_rq, p);
 
 	proxy_reacquire_rq_lock(rq, rf);
+=======
+static struct task_struct *proxy_deactivate(struct rq *rq, struct task_struct *donor)
+{
+	if (!__proxy_deactivate(rq, donor)) {
+		/*
+		 * XXX: For now, if deactivation failed, set donor
+		 * as unblocked, as we aren't doing proxy-migrations
+		 * yet (more logic will be needed then).
+		 */
+		donor->blocked_on = NULL;
+	}
+	return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -6817,13 +6943,17 @@ static void proxy_force_return(struct rq *rq, struct rq_flags *rf,
  *   p->pi_lock
  *     rq->lock
  *       mutex->wait_lock
+<<<<<<< HEAD
  *         p->blocked_lock
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Returns the task that is going to be used as execution context (the one
  * that is actually going to be run on cpu_of(rq)).
  */
 static struct task_struct *
 find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
+<<<<<<< HEAD
 	__must_hold(__rq_lockp(rq))
 {
 	struct task_struct *owner = NULL;
@@ -6844,14 +6974,33 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 			goto force_return;
 		}
 
+=======
+{
+	struct task_struct *owner = NULL;
+	int this_cpu = cpu_of(rq);
+	struct task_struct *p;
+	struct mutex *mutex;
+
+	/* Follow blocked_on chain. */
+	for (p = donor; task_is_blocked(p); p = owner) {
+		mutex = p->blocked_on;
+		/* Something changed in the chain, so pick again */
+		if (!mutex)
+			return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * By taking mutex->wait_lock we hold off concurrent mutex_unlock()
 		 * and ensure @owner sticks around.
 		 */
 		guard(raw_spinlock)(&mutex->wait_lock);
+<<<<<<< HEAD
 		guard(raw_spinlock)(&p->blocked_lock);
 
 		/* Check again that p is blocked with blocked_lock held */
+=======
+
+		/* Check again that p is blocked with wait_lock held */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (mutex != __get_task_blocked_on(p)) {
 			/*
 			 * Something changed in the blocked_on chain and
@@ -6862,6 +7011,7 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 			return NULL;
 		}
 
+<<<<<<< HEAD
 		if (task_current(rq, p))
 			curr_in_chain = true;
 
@@ -6877,10 +7027,17 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 				return p;
 			}
 			goto force_return;
+=======
+		owner = __mutex_owner(mutex);
+		if (!owner) {
+			__clear_task_blocked_on(p, mutex);
+			return p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (!READ_ONCE(owner->on_rq) || owner->se.sched_delayed) {
 			/* XXX Don't handle blocked owners/delayed dequeue yet */
+<<<<<<< HEAD
 			if (curr_in_chain)
 				return proxy_resched_idle(rq);
 			goto deactivate;
@@ -6895,6 +7052,14 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 			if (curr_in_chain)
 				return proxy_resched_idle(rq);
 			goto migrate_task;
+=======
+			return proxy_deactivate(rq, donor);
+		}
+
+		if (task_cpu(owner) != this_cpu) {
+			/* XXX Don't handle migrations yet */
+			return proxy_deactivate(rq, donor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (task_on_rq_migrating(owner)) {
@@ -6951,6 +7116,7 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 		 * guarantee its existence, as per ttwu_remote().
 		 */
 	}
+<<<<<<< HEAD
 	WARN_ON_ONCE(owner && !owner->on_rq);
 	return owner;
 
@@ -6965,6 +7131,11 @@ force_return:
 migrate_task:
 	proxy_migrate_task(rq, rf, p, owner_cpu);
 	return NULL;
+=======
+
+	WARN_ON_ONCE(owner && !owner->on_rq);
+	return owner;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else /* SCHED_PROXY_EXEC */
 static struct task_struct *
@@ -6975,6 +7146,26 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
 }
 #endif /* SCHED_PROXY_EXEC */
 
+<<<<<<< HEAD
+=======
+static inline void proxy_tag_curr(struct rq *rq, struct task_struct *owner)
+{
+	if (!sched_proxy_exec())
+		return;
+	/*
+	 * pick_next_task() calls set_next_task() on the chosen task
+	 * at some point, which ensures it is not push/pullable.
+	 * However, the chosen/donor task *and* the mutex owner form an
+	 * atomic pair wrt push/pull.
+	 *
+	 * Make sure owner we run is not pushable. Unfortunately we can
+	 * only deal with that by means of a dequeue/enqueue cycle. :-/
+	 */
+	dequeue_task(rq, owner, DEQUEUE_NOCLOCK | DEQUEUE_SAVE);
+	enqueue_task(rq, owner, ENQUEUE_NOCLOCK | ENQUEUE_RESTORE);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * __schedule() is the main scheduler function.
  *
@@ -7038,6 +7229,12 @@ static void __sched notrace __schedule(int sched_mode)
 
 	schedule_debug(prev, preempt);
 
+<<<<<<< HEAD
+=======
+	if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))
+		hrtick_clear(rq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	klp_sched_try_switch(prev);
 
 	local_irq_disable();
@@ -7064,8 +7261,11 @@ static void __sched notrace __schedule(int sched_mode)
 	rq_lock(rq, &rf);
 	smp_mb__after_spinlock();
 
+<<<<<<< HEAD
 	hrtick_schedule_enter(rq);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Promote REQ to ACT */
 	rq->clock_update_flags <<= 1;
 	update_rq_clock(rq);
@@ -7101,6 +7301,7 @@ static void __sched notrace __schedule(int sched_mode)
 	}
 
 pick_again:
+<<<<<<< HEAD
 	assert_balance_callbacks_empty(rq);
 	next = pick_next_task(rq, rq->donor, &rf);
 	rq->next_class = next->sched_class;
@@ -7140,6 +7341,18 @@ pick_again:
 		rq_set_donor(rq, next);
 	}
 
+=======
+	next = pick_next_task(rq, rq->donor, &rf);
+	rq_set_donor(rq, next);
+	rq->next_class = next->sched_class;
+	if (unlikely(task_is_blocked(next))) {
+		next = find_proxy_task(rq, next, &rf);
+		if (!next)
+			goto pick_again;
+		if (next == rq->idle)
+			goto keep_resched;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 picked:
 	clear_tsk_need_resched(prev);
 	clear_preempt_need_resched();
@@ -7155,6 +7368,12 @@ keep_resched:
 		 */
 		RCU_INIT_POINTER(rq->curr, next);
 
+<<<<<<< HEAD
+=======
+		if (!task_current_donor(rq, next))
+			proxy_tag_curr(rq, next);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * The membarrier system call requires each architecture
 		 * to have a full memory barrier after updating
@@ -7188,9 +7407,18 @@ keep_resched:
 		/* Also unlocks the rq: */
 		rq = context_switch(rq, prev, next, &rf);
 	} else {
+<<<<<<< HEAD
 		rq_unpin_lock(rq, &rf);
 		__balance_callbacks(rq, NULL);
 		hrtick_schedule_exit(rq);
+=======
+		/* In case next was already curr but just got blocked_donor */
+		if (!task_current_donor(rq, next))
+			proxy_tag_curr(rq, next);
+
+		rq_unpin_lock(rq, &rf);
+		__balance_callbacks(rq, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raw_spin_rq_unlock_irq(rq);
 	}
 	trace_sched_exit_tp(is_switch);

@@ -63,11 +63,19 @@ struct rpmsg_device_ops {
 struct rpmsg_endpoint_ops {
 	void (*destroy_ept)(struct rpmsg_endpoint *ept);
 
+<<<<<<< HEAD
 	int (*send)(struct rpmsg_endpoint *ept, const void *data, int len);
 	int (*sendto)(struct rpmsg_endpoint *ept, const void *data, int len, u32 dst);
 
 	int (*trysend)(struct rpmsg_endpoint *ept, const void *data, int len);
 	int (*trysendto)(struct rpmsg_endpoint *ept, const void *data, int len, u32 dst);
+=======
+	int (*send)(struct rpmsg_endpoint *ept, void *data, int len);
+	int (*sendto)(struct rpmsg_endpoint *ept, void *data, int len, u32 dst);
+
+	int (*trysend)(struct rpmsg_endpoint *ept, void *data, int len);
+	int (*trysendto)(struct rpmsg_endpoint *ept, void *data, int len, u32 dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__poll_t (*poll)(struct rpmsg_endpoint *ept, struct file *filp,
 			     poll_table *wait);
 	int (*set_flow_control)(struct rpmsg_endpoint *ept, bool pause, u32 dst);

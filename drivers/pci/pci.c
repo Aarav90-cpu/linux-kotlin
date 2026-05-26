@@ -949,7 +949,11 @@ static void __pci_config_acs(struct pci_dev *dev, struct pci_acs *caps,
 
 		ret = pci_dev_str_match(dev, p, &p);
 		if (ret < 0) {
+<<<<<<< HEAD
 			pr_warn_once("PCI: Can't parse ACS command line parameter\n");
+=======
+			pr_info_once("PCI: Can't parse ACS command line parameter\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		} else if (ret == 1) {
 			/* Found a match */
@@ -3674,11 +3678,20 @@ void pci_acs_init(struct pci_dev *dev)
  */
 int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
 {
+<<<<<<< HEAD
 	struct pci_dev *root, *bridge;
 	u32 cap, ctl2;
 
 	/*
 	 * Per PCIe r7.0, sec 7.5.3.16, the AtomicOp Requester Enable bit
+=======
+	struct pci_bus *bus = dev->bus;
+	struct pci_dev *bridge;
+	u32 cap, ctl2;
+
+	/*
+	 * Per PCIe r5.0, sec 9.3.5.10, the AtomicOp Requester Enable bit
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * in Device Control 2 is reserved in VFs and the PF value applies
 	 * to all associated VFs.
 	 */
@@ -3689,20 +3702,31 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
 		return -EINVAL;
 
 	/*
+<<<<<<< HEAD
 	 * Per PCIe r7.0, sec 6.15, endpoints and root ports may be
 	 * AtomicOp requesters.  For now, we only support (legacy) endpoints
 	 * as requesters and root ports as completers.  No endpoints as
+=======
+	 * Per PCIe r4.0, sec 6.15, endpoints and root ports may be
+	 * AtomicOp requesters.  For now, we only support endpoints as
+	 * requesters and root ports as completers.  No endpoints as
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * completers, and no peer-to-peer.
 	 */
 
 	switch (pci_pcie_type(dev)) {
 	case PCI_EXP_TYPE_ENDPOINT:
 	case PCI_EXP_TYPE_LEG_END:
+<<<<<<< HEAD
+=======
+	case PCI_EXP_TYPE_RC_END:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	root = pcie_find_root_port(dev);
 	if (!root)
 		return -EINVAL;
@@ -3732,6 +3756,37 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
 		}
 
 		bridge = pci_upstream_bridge(bridge);
+=======
+	while (bus->parent) {
+		bridge = bus->self;
+
+		pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2, &cap);
+
+		switch (pci_pcie_type(bridge)) {
+		/* Ensure switch ports support AtomicOp routing */
+		case PCI_EXP_TYPE_UPSTREAM:
+		case PCI_EXP_TYPE_DOWNSTREAM:
+			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
+				return -EINVAL;
+			break;
+
+		/* Ensure root port supports all the sizes we care about */
+		case PCI_EXP_TYPE_ROOT_PORT:
+			if ((cap & cap_mask) != cap_mask)
+				return -EINVAL;
+			break;
+		}
+
+		/* Ensure upstream ports don't block AtomicOps on egress */
+		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
+			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
+						   &ctl2);
+			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
+				return -EINVAL;
+		}
+
+		bus = bus->parent;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
@@ -4911,8 +4966,17 @@ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
 	 * If "dev" is below a CXL port that has SBR control masked, SBR
 	 * won't do anything, so return error.
 	 */
+<<<<<<< HEAD
 	if (bridge && pcie_is_cxl(bridge) && cxl_sbr_masked(bridge))
 		return -ENOTTY;
+=======
+	if (bridge && cxl_sbr_masked(bridge)) {
+		if (probe)
+			return 0;
+
+		return -ENOTTY;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = pci_dev_reset_iommu_prepare(dev);
 	if (rc) {
@@ -5285,6 +5349,7 @@ static bool pci_bus_resettable(struct pci_bus *bus)
 	return true;
 }
 
+<<<<<<< HEAD
 static void pci_bus_lock(struct pci_bus *bus);
 static void pci_bus_unlock(struct pci_bus *bus);
 static int pci_bus_trylock(struct pci_bus *bus);
@@ -5300,6 +5365,15 @@ static void __pci_bus_lock(struct pci_bus *bus, struct pci_slot *slot)
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		if (slot && (!dev->slot || dev->slot != slot))
 			continue;
+=======
+/* Lock devices from the top of the tree down */
+static void pci_bus_lock(struct pci_bus *bus)
+{
+	struct pci_dev *dev;
+
+	pci_dev_lock(bus->self);
+	list_for_each_entry(dev, &bus->devices, bus_list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dev->subordinate)
 			pci_bus_lock(dev->subordinate);
 		else
@@ -5308,6 +5382,7 @@ static void __pci_bus_lock(struct pci_bus *bus, struct pci_slot *slot)
 }
 
 /* Unlock devices from the bottom of the tree up */
+<<<<<<< HEAD
 static void __pci_bus_unlock(struct pci_bus *bus, struct pci_slot *slot)
 {
 	struct pci_dev *dev, *bridge = bus->self;
@@ -5315,11 +5390,19 @@ static void __pci_bus_unlock(struct pci_bus *bus, struct pci_slot *slot)
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		if (slot && (!dev->slot || dev->slot != slot))
 			continue;
+=======
+static void pci_bus_unlock(struct pci_bus *bus)
+{
+	struct pci_dev *dev;
+
+	list_for_each_entry(dev, &bus->devices, bus_list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dev->subordinate)
 			pci_bus_unlock(dev->subordinate);
 		else
 			pci_dev_unlock(dev);
 	}
+<<<<<<< HEAD
 
 	if (bridge)
 		pci_dev_unlock(bridge);
@@ -5336,6 +5419,20 @@ static int __pci_bus_trylock(struct pci_bus *bus, struct pci_slot *slot)
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		if (slot && (!dev->slot || dev->slot != slot))
 			continue;
+=======
+	pci_dev_unlock(bus->self);
+}
+
+/* Return 1 on successful lock, 0 on contention */
+static int pci_bus_trylock(struct pci_bus *bus)
+{
+	struct pci_dev *dev;
+
+	if (!pci_dev_trylock(bus->self))
+		return 0;
+
+	list_for_each_entry(dev, &bus->devices, bus_list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dev->subordinate) {
 			if (!pci_bus_trylock(dev->subordinate))
 				goto unlock;
@@ -5346,13 +5443,17 @@ static int __pci_bus_trylock(struct pci_bus *bus, struct pci_slot *slot)
 
 unlock:
 	list_for_each_entry_continue_reverse(dev, &bus->devices, bus_list) {
+<<<<<<< HEAD
 		if (slot && (!dev->slot || dev->slot != slot))
 			continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dev->subordinate)
 			pci_bus_unlock(dev->subordinate);
 		else
 			pci_dev_unlock(dev);
 	}
+<<<<<<< HEAD
 
 	if (bridge)
 		pci_dev_unlock(bridge);
@@ -5377,6 +5478,12 @@ static int pci_bus_trylock(struct pci_bus *bus)
 	return __pci_bus_trylock(bus, NULL);
 }
 
+=======
+	pci_dev_unlock(bus->self);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Do any devices on or below this slot prevent a bus reset? */
 static bool pci_slot_resettable(struct pci_slot *slot)
 {
@@ -5399,19 +5506,84 @@ static bool pci_slot_resettable(struct pci_slot *slot)
 /* Lock devices from the top of the tree down */
 static void pci_slot_lock(struct pci_slot *slot)
 {
+<<<<<<< HEAD
 	__pci_bus_lock(slot->bus, slot);
+=======
+	struct pci_dev *dev, *bridge = slot->bus->self;
+
+	if (bridge)
+		pci_dev_lock(bridge);
+
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot != slot)
+			continue;
+		if (dev->subordinate)
+			pci_bus_lock(dev->subordinate);
+		else
+			pci_dev_lock(dev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Unlock devices from the bottom of the tree up */
 static void pci_slot_unlock(struct pci_slot *slot)
 {
+<<<<<<< HEAD
 	__pci_bus_unlock(slot->bus, slot);
+=======
+	struct pci_dev *dev, *bridge = slot->bus->self;
+
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot != slot)
+			continue;
+		if (dev->subordinate)
+			pci_bus_unlock(dev->subordinate);
+		else
+			pci_dev_unlock(dev);
+	}
+
+	if (bridge)
+		pci_dev_unlock(bridge);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Return 1 on successful lock, 0 on contention */
 static int pci_slot_trylock(struct pci_slot *slot)
 {
+<<<<<<< HEAD
 	return __pci_bus_trylock(slot->bus, slot);
+=======
+	struct pci_dev *dev, *bridge = slot->bus->self;
+
+	if (bridge && !pci_dev_trylock(bridge))
+		return 0;
+
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot != slot)
+			continue;
+		if (dev->subordinate) {
+			if (!pci_bus_trylock(dev->subordinate))
+				goto unlock;
+		} else if (!pci_dev_trylock(dev))
+			goto unlock;
+	}
+	return 1;
+
+unlock:
+	list_for_each_entry_continue_reverse(dev,
+					     &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot != slot)
+			continue;
+		if (dev->subordinate)
+			pci_bus_unlock(dev->subordinate);
+		else
+			pci_dev_unlock(dev);
+	}
+
+	if (bridge)
+		pci_dev_unlock(bridge);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -5517,7 +5689,11 @@ int pci_probe_reset_slot(struct pci_slot *slot)
 EXPORT_SYMBOL_GPL(pci_probe_reset_slot);
 
 /**
+<<<<<<< HEAD
  * pci_try_reset_slot - Try to reset a PCI slot
+=======
+ * __pci_reset_slot - Try to reset a PCI slot
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @slot: PCI slot to reset
  *
  * A PCI bus may host multiple slots, each slot may support a reset mechanism
@@ -5531,7 +5707,11 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_slot);
  *
  * Same as above except return -EAGAIN if the slot cannot be locked
  */
+<<<<<<< HEAD
 static int pci_try_reset_slot(struct pci_slot *slot)
+=======
+static int __pci_reset_slot(struct pci_slot *slot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc;
 
@@ -5573,12 +5753,67 @@ static int pci_bus_reset(struct pci_bus *bus, bool probe)
 }
 
 /**
+<<<<<<< HEAD
  * pci_try_reset_bus - Try to reset a PCI bus
+=======
+ * pci_bus_error_reset - reset the bridge's subordinate bus
+ * @bridge: The parent device that connects to the bus to reset
+ *
+ * This function will first try to reset the slots on this bus if the method is
+ * available. If slot reset fails or is not available, this will fall back to a
+ * secondary bus reset.
+ */
+int pci_bus_error_reset(struct pci_dev *bridge)
+{
+	struct pci_bus *bus = bridge->subordinate;
+	struct pci_slot *slot;
+
+	if (!bus)
+		return -ENOTTY;
+
+	mutex_lock(&pci_slot_mutex);
+	if (list_empty(&bus->slots))
+		goto bus_reset;
+
+	list_for_each_entry(slot, &bus->slots, list)
+		if (pci_probe_reset_slot(slot))
+			goto bus_reset;
+
+	list_for_each_entry(slot, &bus->slots, list)
+		if (pci_slot_reset(slot, PCI_RESET_DO_RESET))
+			goto bus_reset;
+
+	mutex_unlock(&pci_slot_mutex);
+	return 0;
+bus_reset:
+	mutex_unlock(&pci_slot_mutex);
+	return pci_bus_reset(bridge->subordinate, PCI_RESET_DO_RESET);
+}
+
+/**
+ * pci_probe_reset_bus - probe whether a PCI bus can be reset
+ * @bus: PCI bus to probe
+ *
+ * Return 0 if bus can be reset, negative if a bus reset is not supported.
+ */
+int pci_probe_reset_bus(struct pci_bus *bus)
+{
+	return pci_bus_reset(bus, PCI_RESET_PROBE);
+}
+EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
+
+/**
+ * __pci_reset_bus - Try to reset a PCI bus
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @bus: top level PCI bus to reset
  *
  * Same as above except return -EAGAIN if the bus cannot be locked
  */
+<<<<<<< HEAD
 static int pci_try_reset_bus(struct pci_bus *bus)
+=======
+int __pci_reset_bus(struct pci_bus *bus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc;
 
@@ -5598,6 +5833,7 @@ static int pci_try_reset_bus(struct pci_bus *bus)
 	return rc;
 }
 
+<<<<<<< HEAD
 #define PCI_RESET_RESTORE true
 #define PCI_RESET_NO_RESTORE false
 /**
@@ -5673,6 +5909,8 @@ int pci_probe_reset_bus(struct pci_bus *bus)
 }
 EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * pci_reset_bus - Try to reset a PCI bus
  * @pdev: top level PCI device to reset via slot/bus
@@ -5682,7 +5920,11 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
 int pci_reset_bus(struct pci_dev *pdev)
 {
 	return (!pci_probe_reset_slot(pdev->slot)) ?
+<<<<<<< HEAD
 	    pci_try_reset_slot(pdev->slot) : pci_try_reset_bus(pdev->bus);
+=======
+	    __pci_reset_slot(pdev->slot) : __pci_reset_bus(pdev->bus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(pci_reset_bus);
 
@@ -6201,6 +6443,7 @@ int pci_set_vga_state(struct pci_dev *dev, bool decode,
 				cmd &= ~PCI_BRIDGE_CTL_VGA;
 			pci_write_config_word(bridge, PCI_BRIDGE_CONTROL,
 					      cmd);
+<<<<<<< HEAD
 
 
 			/*
@@ -6213,6 +6456,8 @@ int pci_set_vga_state(struct pci_dev *dev, bool decode,
 				if (!(cmd & PCI_BRIDGE_CTL_VGA))
 					return -EIO;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		bus = bus->parent;
 	}

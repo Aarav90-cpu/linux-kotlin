@@ -11,7 +11,10 @@
 #include <linux/khugepaged.h>
 #include <linux/mm.h>
 #include <linux/mm_inline.h>
+<<<<<<< HEAD
 #include <linux/mmu_notifier.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pagemap.h>
 #include <linux/pagewalk.h>
 #include <linux/rmap.h>
@@ -517,6 +520,7 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
 
 void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
 
+<<<<<<< HEAD
 /**
  * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
  * @mm: The mm_struct.
@@ -541,6 +545,16 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
 		struct vm_area_struct *vma, unsigned long addr,
 		unsigned long size, struct zap_details *details);
 int zap_vma_for_reaping(struct vm_area_struct *vma);
+=======
+struct zap_details;
+void unmap_page_range(struct mmu_gather *tlb,
+			     struct vm_area_struct *vma,
+			     unsigned long addr, unsigned long end,
+			     struct zap_details *details);
+void zap_page_range_single_batched(struct mmu_gather *tlb,
+		struct vm_area_struct *vma, unsigned long addr,
+		unsigned long size, struct zap_details *details);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
 			   gfp_t gfp);
 
@@ -640,11 +654,14 @@ int user_proactive_reclaim(char *buf,
 pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address);
 
 /*
+<<<<<<< HEAD
  * in mm/khugepaged.c
  */
 void set_recommended_min_free_kbytes(void);
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * in mm/page_alloc.c
  */
 #define K(x) ((x) << (PAGE_SHIFT-10))
@@ -899,6 +916,7 @@ static inline void prep_compound_head(struct page *page, unsigned int order)
 		INIT_LIST_HEAD(&folio->_deferred_list);
 }
 
+<<<<<<< HEAD
 static inline void prep_compound_tail(struct page *tail,
 		const struct page *head, unsigned int order)
 {
@@ -914,12 +932,25 @@ static inline void init_compound_tail(struct page *tail,
 	set_page_node(tail, zone_to_nid(zone));
 	set_page_zone(tail, zone_idx(zone));
 	prep_compound_tail(tail, head, order);
+=======
+static inline void prep_compound_tail(struct page *head, int tail_idx)
+{
+	struct page *p = head + tail_idx;
+
+	p->mapping = TAIL_MAPPING;
+	set_compound_head(p, head);
+	set_page_private(p, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
 extern bool free_pages_prepare(struct page *page, unsigned int order);
 
 extern int user_min_free_kbytes;
+<<<<<<< HEAD
+=======
+extern atomic_long_t kswapd_waiters;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
 		nodemask_t *);
@@ -958,6 +989,7 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
 		unsigned long, enum meminit_context, struct vmem_altmap *, int,
 		bool);
 
+<<<<<<< HEAD
 /*
  * mm/sparse.c
  */
@@ -995,10 +1027,15 @@ static inline void __section_mark_present(struct mem_section *ms,
 
 	ms->section_mem_map |= SECTION_MARKED_PRESENT;
 }
+=======
+#ifdef CONFIG_SPARSEMEM
+void sparse_init(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline void sparse_init(void) {}
 #endif /* CONFIG_SPARSEMEM */
 
+<<<<<<< HEAD
 /*
  * mm/sparse-vmemmap.c
  */
@@ -1011,6 +1048,8 @@ static inline void sparse_init_subsection_map(unsigned long pfn,
 }
 #endif /* CONFIG_SPARSEMEM_VMEMMAP */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined CONFIG_COMPACTION || defined CONFIG_CMA
 
 /*
@@ -1297,9 +1336,13 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
 
 static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	if (vma_test_any_mask(vma, VMA_SPECIAL_FLAGS))
 		return false;
 	if (vma_test_single_mask(vma, VMA_DROPPABLE))
+=======
+	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
 		return false;
@@ -1321,6 +1364,7 @@ static inline void vunmap_range_noflush(unsigned long start, unsigned long end)
 #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
 DECLARE_STATIC_KEY_TRUE(deferred_pages);
 
+<<<<<<< HEAD
 static inline bool deferred_pages_enabled(void)
 {
 	return static_branch_unlikely(&deferred_pages);
@@ -1332,6 +1376,9 @@ static inline bool deferred_pages_enabled(void)
 {
 	return false;
 }
+=======
+bool __init deferred_grow_zone(struct zone *zone, unsigned int order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
 
 void init_deferred_page(unsigned long pfn, int nid);
@@ -1548,8 +1595,11 @@ int __must_check vmap_pages_range_noflush(unsigned long addr, unsigned long end,
 }
 #endif
 
+<<<<<<< HEAD
 void clear_vm_uninitialized_flag(struct vm_struct *vm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __must_check __vmap_pages_range_noflush(unsigned long addr,
 			       unsigned long end, pgprot_t prot,
 			       struct page **pages, unsigned int page_shift);
@@ -1851,7 +1901,10 @@ int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm);
 int remap_pfn_range_prepare(struct vm_area_desc *desc);
 int remap_pfn_range_complete(struct vm_area_struct *vma,
 			     struct mmap_action *action);
+<<<<<<< HEAD
 int simple_ioremap_prepare(struct vm_area_desc *desc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int io_remap_pfn_range_prepare(struct vm_area_desc *desc)
 {
@@ -1873,6 +1926,7 @@ static inline int io_remap_pfn_range_prepare(struct vm_area_desc *desc)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * When we succeed an mmap action or just before we unmap a VMA on error, we
  * need to ensure any rmap lock held is released. On unmap it's required to
@@ -1952,4 +2006,6 @@ static inline int get_sysctl_max_map_count(void)
 bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
 		   unsigned long npages);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* __MM_INTERNAL_H */

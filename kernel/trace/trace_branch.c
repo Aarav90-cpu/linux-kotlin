@@ -373,10 +373,17 @@ __init static int init_annotated_branch_stats(void)
 	int ret;
 
 	ret = register_stat_tracer(&annotated_branch_stats);
+<<<<<<< HEAD
 	if (ret) {
 		printk(KERN_WARNING "Warning: could not register "
 				    "annotated branches stats\n");
 		return ret;
+=======
+	if (!ret) {
+		printk(KERN_WARNING "Warning: could not register "
+				    "annotated branches stats\n");
+		return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }
@@ -438,10 +445,17 @@ __init static int all_annotated_branch_stats(void)
 	int ret;
 
 	ret = register_stat_tracer(&all_branch_stats);
+<<<<<<< HEAD
 	if (ret) {
 		printk(KERN_WARNING "Warning: could not register "
 				    "all branches stats\n");
 		return ret;
+=======
+	if (!ret) {
+		printk(KERN_WARNING "Warning: could not register "
+				    "all branches stats\n");
+		return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }

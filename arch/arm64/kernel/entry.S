@@ -273,7 +273,11 @@ alternative_if ARM64_HAS_ADDRESS_AUTH
 alternative_else_nop_endif
 1:
 
+<<<<<<< HEAD
 	scs_load_current_base
+=======
+	scs_load_current
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.else
 	add	x21, sp, #PT_REGS_SIZE
 	get_current_task tsk
@@ -378,6 +382,11 @@ alternative_if ARM64_WORKAROUND_845719
 alternative_else_nop_endif
 #endif
 3:
+<<<<<<< HEAD
+=======
+	scs_save tsk
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ignore asynchronous tag check faults in the uaccess routines */
 	ldr	x0, [tsk, THREAD_SCTLR_USER]
 	clear_mte_async_tcf x0
@@ -471,7 +480,11 @@ alternative_else_nop_endif
 	 */
 SYM_CODE_START_LOCAL(__swpan_entry_el1)
 	mrs	x21, ttbr0_el1
+<<<<<<< HEAD
 	tst	x21, #TTBRx_EL1_ASID_MASK	// Check for the reserved ASID
+=======
+	tst	x21, #TTBR_ASID_MASK		// Check for the reserved ASID
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	orr	x23, x23, #PSR_PAN_BIT		// Set the emulated PAN in the saved SPSR
 	b.eq	1f				// TTBR0 access already disabled
 	and	x23, x23, #~PSR_PAN_BIT		// Clear the emulated PAN in the saved SPSR

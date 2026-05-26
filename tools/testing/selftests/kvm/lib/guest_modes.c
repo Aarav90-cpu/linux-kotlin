@@ -20,7 +20,11 @@ void guest_modes_append_default(void)
 #ifdef __aarch64__
 	{
 		unsigned int limit = kvm_check_cap(KVM_CAP_ARM_VM_IPA_SIZE);
+<<<<<<< HEAD
 		u32 ipa4k, ipa16k, ipa64k;
+=======
+		uint32_t ipa4k, ipa16k, ipa64k;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int i;
 
 		aarch64_get_supported_page_sizes(limit, &ipa4k, &ipa16k, &ipa64k);

@@ -351,6 +351,7 @@
 };
 
 &pcie_bus_clk {
+<<<<<<< HEAD
 	status = "disabled";
 };
 
@@ -365,16 +366,29 @@
 
 &pciec1 {
 	clocks = <&cpg CPG_MOD 318>, <&pcie_usb_clk 2>;
+=======
+	clock-frequency = <100000000>;
+};
+
+&pciec0 {
+	status = "okay";
+};
+
+&pciec1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	vpcie1v5-supply = <&pcie_1v5>;
 	vpcie3v3-supply = <&pcie_3v3>;
 };
 
+<<<<<<< HEAD
 &pciec1_rp {
 	clocks = <&pcie_usb_clk 4>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pfc {
 	can0_pins: can0 {
 		groups = "can0_data_a";
@@ -485,6 +499,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb3_phy0 {
 	clocks = <&cpg CPG_MOD 328>, <&pcie_usb_clk 6>, <&usb_extal_clk>;
 	status = "okay";
@@ -494,6 +509,8 @@
 	status = "disabled";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &xhci0 {
 	status = "okay";
 };

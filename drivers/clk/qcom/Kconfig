@@ -19,6 +19,7 @@ menuconfig COMMON_CLK_QCOM
 
 if COMMON_CLK_QCOM
 
+<<<<<<< HEAD
 config CLK_ELIZA_DISPCC
 	tristate "Eliza Display Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -47,15 +48,24 @@ config CLK_ELIZA_TCSRCC
 
 config CLK_GLYMUR_DISPCC
 	tristate "Glymur Display Clock Controller"
+=======
+config CLK_GLYMUR_DISPCC
+	tristate "GLYMUR Display Clock Controller"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on ARM64 || COMPILE_TEST
 	select CLK_GLYMUR_GCC
 	help
 	  Support for the display clock controllers on Qualcomm
+<<<<<<< HEAD
 	  Technologies, Inc. Glymur devices.
+=======
+	  Technologies, Inc. GLYMUR devices.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  Say Y if you want to support display devices and functionality such as
 	  splash screen.
 
 config CLK_GLYMUR_GCC
+<<<<<<< HEAD
 	tristate "Glymur Global Clock Controller"
 	depends on ARM64 || COMPILE_TEST
 	select QCOM_GDSC
@@ -90,6 +100,24 @@ config CLK_GLYMUR_VIDEOCC
 	  Say Y if you want to support video devices and functionality such as
 	  video encode and decode.
 
+=======
+	tristate "GLYMUR Global Clock Controller"
+	depends on ARM64 || COMPILE_TEST
+	select QCOM_GDSC
+	help
+	  Support for the global clock controller on GLYMUR devices.
+	  Say Y if you want to use peripheral devices such as UART, SPI,
+	  I2C, USB, UFS, SDCC, etc.
+
+config CLK_GLYMUR_TCSRCC
+	tristate "GLYMUR TCSR Clock Controller"
+	depends on ARM64 || COMPILE_TEST
+	select QCOM_GDSC
+	help
+	  Support for the TCSR clock controller on GLYMUR devices.
+	  Say Y if you want to use peripheral devices such as USB/PCIe/EDP.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CLK_KAANAPALI_CAMCC
 	tristate "Kaanapali Camera Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -145,6 +173,7 @@ config CLK_KAANAPALI_VIDEOCC
 	  Say Y if you want to support video devices and functionality such as
 	  video encode/decode.
 
+<<<<<<< HEAD
 config CLK_NORD_GCC
 	tristate "Nord Global Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -155,6 +184,8 @@ config CLK_NORD_GCC
 	  SPI, I2C, USB, SD/UFS, PCIe etc. The clock controller is a combination
 	  of GCC, SE_GCC, NE_GCC and NW_GCC.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CLK_X1E80100_CAMCC
 	tristate "X1E80100 Camera Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -368,6 +399,7 @@ config IPQ_GCC_5018
 	  Say Y if you want to use peripheral devices such as UART, SPI,
 	  i2c, USB, SD/eMMC, etc.
 
+<<<<<<< HEAD
 config IPQ_GCC_5210
 	tristate "IPQ5210 Global Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -376,6 +408,8 @@ config IPQ_GCC_5210
 	  Say Y if you want to use peripheral devices such as UART, SPI,
 	  i2c, USB, SD/eMMC, etc.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config IPQ_GCC_5332
 	tristate "IPQ5332 Global Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -454,7 +488,11 @@ config IPQ_NSSCC_9574
 
 config IPQ_NSSCC_QCA8K
 	tristate "QCA8K(QCA8386 or QCA8084) NSS Clock Controller"
+<<<<<<< HEAD
 	depends on PHYLIB
+=======
+	depends on MDIO_BUS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for NSS(Network SubSystem) clock controller on
 	  qca8386/qca8084 chip.
@@ -684,6 +722,7 @@ config QCS_GCC_404
 	  Say Y if you want to use multimedia devices or peripheral
 	  devices such as UART, SPI, I2C, USB, SD/eMMC, PCIe etc.
 
+<<<<<<< HEAD
 config CLK_NORD_TCSRCC
 	tristate "Nord TCSR Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -691,6 +730,8 @@ config CLK_NORD_TCSRCC
 	  Support for the TCSR clock controller on Nord devices.
 	  Say Y if you want to use peripheral devices such as PCIe, USB, UFS etc.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SA_CAMCC_8775P
 	tristate "SA8775P Camera Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -1550,6 +1591,7 @@ config SM_GPUCC_8650
 	  Say Y if you want to support graphics controller devices and
 	  functionality such as 3D graphics.
 
+<<<<<<< HEAD
 config SM_GPUCC_8750
 	tristate "SM8750 Graphics Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -1559,6 +1601,8 @@ config SM_GPUCC_8750
 	  Say Y if you want to support graphics controller devices and
 	  functionality such as 3D graphics.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SM_LPASSCC_6115
 	tristate "SM6115 Low Power Audio Subsystem (LPASS) Clock Controller"
 	depends on ARM64 || COMPILE_TEST
@@ -1657,10 +1701,17 @@ config SM_VIDEOCC_8250
 config SM_VIDEOCC_8350
 	tristate "SM8350 Video Clock Controller"
 	depends on ARM64 || COMPILE_TEST
+<<<<<<< HEAD
 	depends on SM_GCC_8350 || SC_GCC_8280XP
 	select QCOM_GDSC
 	help
 	  Support for the video clock controller on SM8350 or SC8280XP devices.
+=======
+	select SM_GCC_8350
+	select QCOM_GDSC
+	help
+	  Support for the video clock controller on SM8350 devices.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  Say Y if you want to support video devices and functionality such as
 	  video encode and decode.
 

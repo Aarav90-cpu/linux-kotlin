@@ -225,8 +225,12 @@ static inline void sfq_dec(struct sfq_sched_data *q, sfq_index x)
 
 	sfq_unlink(q, x, n, p);
 
+<<<<<<< HEAD
 	d = q->slots[x].qlen;
 	WRITE_ONCE(q->slots[x].qlen, d - 1);
+=======
+	d = q->slots[x].qlen--;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (n == p && q->cur_depth == d)
 		q->cur_depth--;
 	sfq_link(q, x);
@@ -239,8 +243,12 @@ static inline void sfq_inc(struct sfq_sched_data *q, sfq_index x)
 
 	sfq_unlink(q, x, n, p);
 
+<<<<<<< HEAD
 	d = q->slots[x].qlen + 1;
 	WRITE_ONCE(q->slots[x].qlen, d);
+=======
+	d = ++q->slots[x].qlen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (q->cur_depth < d)
 		q->cur_depth = d;
 	sfq_link(q, x);
@@ -300,11 +308,19 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
 drop:
 		skb = q->headdrop ? slot_dequeue_head(slot) : slot_dequeue_tail(slot);
 		len = qdisc_pkt_len(skb);
+<<<<<<< HEAD
 		WRITE_ONCE(slot->backlog, slot->backlog - len);
 		sfq_dec(q, x);
 		sch->q.qlen--;
 		qdisc_qstats_backlog_dec(sch, skb);
 		qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
+=======
+		slot->backlog -= len;
+		sfq_dec(q, x);
+		sch->q.qlen--;
+		qdisc_qstats_backlog_dec(sch, skb);
+		qdisc_drop(skb, sch, to_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return len;
 	}
 
@@ -316,7 +332,11 @@ drop:
 			q->tail = NULL; /* no more active slots */
 		else
 			q->tail->next = slot->next;
+<<<<<<< HEAD
 		WRITE_ONCE(q->ht[slot->hash], SFQ_EMPTY_SLOT);
+=======
+		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto drop;
 	}
 
@@ -365,11 +385,19 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
 	if (x == SFQ_EMPTY_SLOT) {
 		x = q->dep[0].next; /* get a free slot */
 		if (x >= SFQ_MAX_FLOWS)
+<<<<<<< HEAD
 			return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_MAXFLOWS);
 		WRITE_ONCE(q->ht[hash], x);
 		slot = &q->slots[x];
 		slot->hash = hash;
 		WRITE_ONCE(slot->backlog, 0); /* should already be 0 anyway... */
+=======
+			return qdisc_drop(skb, sch, to_free);
+		q->ht[hash] = x;
+		slot = &q->slots[x];
+		slot->hash = hash;
+		slot->backlog = 0; /* should already be 0 anyway... */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		red_set_vars(&slot->vars);
 		goto enqueue;
 	}
@@ -422,14 +450,23 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
 	if (slot->qlen >= q->maxdepth) {
 congestion_drop:
 		if (!sfq_headdrop(q))
+<<<<<<< HEAD
 			return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_FLOW_LIMIT);
+=======
+			return qdisc_drop(skb, sch, to_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* We know we have at least one packet in queue */
 		head = slot_dequeue_head(slot);
 		delta = qdisc_pkt_len(head) - qdisc_pkt_len(skb);
 		sch->qstats.backlog -= delta;
+<<<<<<< HEAD
 		WRITE_ONCE(slot->backlog, slot->backlog - delta);
 		qdisc_drop_reason(head, sch, to_free, QDISC_DROP_FLOW_LIMIT);
+=======
+		slot->backlog -= delta;
+		qdisc_drop(head, sch, to_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		slot_queue_add(slot, skb);
 		qdisc_tree_reduce_backlog(sch, 0, delta);
@@ -438,7 +475,11 @@ congestion_drop:
 
 enqueue:
 	qdisc_qstats_backlog_inc(sch, skb);
+<<<<<<< HEAD
 	WRITE_ONCE(slot->backlog, slot->backlog + qdisc_pkt_len(skb));
+=======
+	slot->backlog += qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	slot_queue_add(slot, skb);
 	sfq_inc(q, x);
 	if (slot->qlen == 1) {		/* The flow is new */
@@ -454,7 +495,11 @@ enqueue:
 		 */
 		q->tail = slot;
 		/* We could use a bigger initial quantum for new flows */
+<<<<<<< HEAD
 		WRITE_ONCE(slot->allot, q->quantum);
+=======
+		slot->allot = q->quantum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (++sch->q.qlen <= q->limit)
 		return NET_XMIT_SUCCESS;
@@ -491,7 +536,11 @@ next_slot:
 	slot = &q->slots[a];
 	if (slot->allot <= 0) {
 		q->tail = slot;
+<<<<<<< HEAD
 		WRITE_ONCE(slot->allot, slot->allot + q->quantum);
+=======
+		slot->allot += q->quantum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto next_slot;
 	}
 	skb = slot_dequeue_head(slot);
@@ -499,10 +548,17 @@ next_slot:
 	qdisc_bstats_update(sch, skb);
 	sch->q.qlen--;
 	qdisc_qstats_backlog_dec(sch, skb);
+<<<<<<< HEAD
 	WRITE_ONCE(slot->backlog, slot->backlog - qdisc_pkt_len(skb));
 	/* Is the slot empty? */
 	if (slot->qlen == 0) {
 		WRITE_ONCE(q->ht[slot->hash], SFQ_EMPTY_SLOT);
+=======
+	slot->backlog -= qdisc_pkt_len(skb);
+	/* Is the slot empty? */
+	if (slot->qlen == 0) {
+		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		next_a = slot->next;
 		if (a == next_a) {
 			q->tail = NULL; /* no more active slots */
@@ -510,7 +566,11 @@ next_slot:
 		}
 		q->tail->next = next_a;
 	} else {
+<<<<<<< HEAD
 		WRITE_ONCE(slot->allot, slot->allot - qdisc_pkt_len(skb));
+=======
+		slot->allot -= qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return skb;
 }
@@ -551,9 +611,15 @@ static void sfq_rehash(struct Qdisc *sch)
 			sfq_dec(q, i);
 			__skb_queue_tail(&list, skb);
 		}
+<<<<<<< HEAD
 		WRITE_ONCE(slot->backlog, 0);
 		red_set_vars(&slot->vars);
 		WRITE_ONCE(q->ht[slot->hash], SFQ_EMPTY_SLOT);
+=======
+		slot->backlog = 0;
+		red_set_vars(&slot->vars);
+		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	q->tail = NULL;
 
@@ -572,7 +638,11 @@ drop:
 				dropped++;
 				continue;
 			}
+<<<<<<< HEAD
 			WRITE_ONCE(q->ht[hash], x);
+=======
+			q->ht[hash] = x;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			slot = &q->slots[x];
 			slot->hash = hash;
 		}
@@ -583,7 +653,11 @@ drop:
 			slot->vars.qavg = red_calc_qavg(q->red_parms,
 							&slot->vars,
 							slot->backlog);
+<<<<<<< HEAD
 		WRITE_ONCE(slot->backlog, slot->backlog + qdisc_pkt_len(skb));
+=======
+		slot->backlog += qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sfq_inc(q, x);
 		if (slot->qlen == 1) {		/* The flow is new */
 			if (q->tail == NULL) {	/* It is the first flow */
@@ -593,7 +667,11 @@ drop:
 				q->tail->next = x;
 			}
 			q->tail = slot;
+<<<<<<< HEAD
 			WRITE_ONCE(slot->allot, q->quantum);
+=======
+			slot->allot = q->quantum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	sch->q.qlen -= dropped;
@@ -907,16 +985,26 @@ static int sfq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
 				struct gnet_dump *d)
 {
 	struct sfq_sched_data *q = qdisc_priv(sch);
+<<<<<<< HEAD
 	sfq_index idx = READ_ONCE(q->ht[cl - 1]);
+=======
+	sfq_index idx = q->ht[cl - 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct gnet_stats_queue qs = { 0 };
 	struct tc_sfq_xstats xstats = { 0 };
 
 	if (idx != SFQ_EMPTY_SLOT) {
 		const struct sfq_slot *slot = &q->slots[idx];
 
+<<<<<<< HEAD
 		xstats.allot = READ_ONCE(slot->allot);
 		qs.qlen = READ_ONCE(slot->qlen);
 		qs.backlog = READ_ONCE(slot->backlog);
+=======
+		xstats.allot = slot->allot;
+		qs.qlen = slot->qlen;
+		qs.backlog = slot->backlog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (gnet_stats_copy_queue(d, NULL, &qs, qs.qlen) < 0)
 		return -1;
@@ -932,7 +1020,11 @@ static void sfq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
 		return;
 
 	for (i = 0; i < q->divisor; i++) {
+<<<<<<< HEAD
 		if (READ_ONCE(q->ht[i]) == SFQ_EMPTY_SLOT) {
+=======
+		if (q->ht[i] == SFQ_EMPTY_SLOT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			arg->count++;
 			continue;
 		}

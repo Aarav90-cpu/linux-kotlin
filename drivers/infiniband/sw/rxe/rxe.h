@@ -121,6 +121,9 @@ void rxe_port_up(struct rxe_dev *rxe);
 void rxe_port_down(struct rxe_dev *rxe);
 void rxe_set_port_state(struct rxe_dev *rxe);
 
+<<<<<<< HEAD
 extern struct workqueue_struct *rxe_wq;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* RXE_H */

@@ -8,7 +8,10 @@
 #include <rtw_wifi_regd.h>
 #include <hal_btcoex.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/minmax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/unaligned.h>
 
 static struct mlme_handler mlme_sta_tbl[] = {
@@ -184,12 +187,21 @@ int rtw_ch_set_search_ch(struct rt_channel_info *ch_set, const u32 ch)
 
 /* Following are the initialization functions for WiFi MLME */
 
+<<<<<<< HEAD
 void init_hw_mlme_ext(struct adapter *padapter)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
 	set_channel_bwmode(padapter, pmlmeext->cur_channel,
 			   pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
+=======
+int init_hw_mlme_ext(struct adapter *padapter)
+{
+	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+
+	set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
+	return _SUCCESS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void init_mlme_default_rate_set(struct adapter *padapter)
@@ -526,7 +538,11 @@ unsigned int OnProbeReq(struct adapter *padapter, union recv_frame *precv_frame)
 		if (is_valid_p2p_probereq)
 			goto _issue_probersp;
 
+<<<<<<< HEAD
 		if ((ielen != 0 && false == !memcmp((p+2), cur->ssid.ssid, cur->ssid.ssid_length))
+=======
+		if ((ielen != 0 && false == !memcmp((void *)(p+2), (void *)cur->ssid.ssid, cur->ssid.ssid_length))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			|| (ielen == 0 && pmlmeinfo->hidden_ssid_mode)
 		)
 			return _SUCCESS;
@@ -792,7 +808,11 @@ unsigned int OnAuth(struct adapter *padapter, union recv_frame *precv_frame)
 	} else { /*  shared system or auto authentication */
 		if (seq == 1) {
 			/* prepare for the challenging txt... */
+<<<<<<< HEAD
 			memset(pstat->chg_txt, 78, 128);
+=======
+			memset((void *)pstat->chg_txt, 78, 128);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			pstat->state &= ~WIFI_FW_AUTH_NULL;
 			pstat->state |= WIFI_FW_AUTH_STATE;
@@ -807,7 +827,11 @@ unsigned int OnAuth(struct adapter *padapter, union recv_frame *precv_frame)
 				goto auth_fail;
 			}
 
+<<<<<<< HEAD
 			if (!memcmp((p + 2), pstat->chg_txt, 128)) {
+=======
+			if (!memcmp((void *)(p + 2), pstat->chg_txt, 128)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pstat->state &= (~WIFI_FW_AUTH_STATE);
 				pstat->state |= WIFI_FW_AUTH_SUCCESS;
 				/*  challenging txt is correct... */
@@ -894,7 +918,11 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
 			if (!p)
 				goto authclnt_fail;
 
+<<<<<<< HEAD
 			memcpy(pmlmeinfo->chg_txt, p + 2, len);
+=======
+			memcpy((void *)(pmlmeinfo->chg_txt), (void *)(p + 2), len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pmlmeinfo->auth_seq = 3;
 			issue_auth(padapter, NULL, 0);
 			set_link_timer(pmlmeext, REAUTH_TO);
@@ -934,10 +962,16 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 	struct sta_info *pstat;
 	unsigned char *p, *pos, *wpa_ie;
 	unsigned char WMM_IE[] = {0x00, 0x50, 0xf2, 0x02, 0x00, 0x01};
+<<<<<<< HEAD
 	int		i, ie_len, left;
 	u8 wpa_ie_len;
 	unsigned char supportRate[16];
 	int					support_rate_num;
+=======
+	int		i, ie_len, wpa_ie_len, left;
+	unsigned char supportRate[16];
+	int					supportRateNum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned short		status = WLAN_STATUS_SUCCESS;
 	unsigned short		frame_type, ie_offset = 0;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -992,7 +1026,11 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 	pstat->capability = capab_info;
 
 	/* now parse all ieee802_11 ie to point to elems */
+<<<<<<< HEAD
 	if (rtw_ieee802_11_parse_elems(pos, left, &elems, 1) == PARSE_FAILED ||
+=======
+	if (rtw_ieee802_11_parse_elems(pos, left, &elems, 1) == ParseFailed ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    !elems.ssid) {
 		status = WLAN_STATUS_CHALLENGE_FAIL;
 		goto OnAssocReqFail;
@@ -1009,7 +1047,11 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 		goto OnAssocReqFail;
 	} else {
 		/*  check if ssid match */
+<<<<<<< HEAD
 		if (memcmp(p+2, cur->ssid.ssid, cur->ssid.ssid_length))
+=======
+		if (memcmp((void *)(p+2), cur->ssid.ssid, cur->ssid.ssid_length))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = WLAN_STATUS_CHALLENGE_FAIL;
 
 		if (ie_len != cur->ssid.ssid_length)
@@ -1024,7 +1066,11 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 	if (!p) {
 		/*  use our own rate set as statoin used */
 		/* memcpy(supportRate, AP_BSSRATE, AP_BSSRATE_LEN); */
+<<<<<<< HEAD
 		/* support_rate_num = AP_BSSRATE_LEN; */
+=======
+		/* supportRateNum = AP_BSSRATE_LEN; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		status = WLAN_STATUS_CHALLENGE_FAIL;
 		goto OnAssocReqFail;
@@ -1033,25 +1079,43 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 			ie_len = sizeof(supportRate);
 
 		memcpy(supportRate, p+2, ie_len);
+<<<<<<< HEAD
 		support_rate_num = ie_len;
+=======
+		supportRateNum = ie_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + ie_offset, WLAN_EID_EXT_SUPP_RATES, &ie_len,
 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
 		if (p) {
 
+<<<<<<< HEAD
 			if (support_rate_num + ie_len <= sizeof(supportRate)) {
 				memcpy(supportRate + support_rate_num, p + 2, ie_len);
 				support_rate_num += ie_len;
+=======
+			if (supportRateNum + ie_len <= sizeof(supportRate)) {
+				memcpy(supportRate+supportRateNum, p+2, ie_len);
+				supportRateNum += ie_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
 
 	/* todo: mask supportRate between AP & STA -> move to update raid */
+<<<<<<< HEAD
 	/* get_matched_rate(pmlmeext, supportRate, &support_rate_num, 0); */
 
 	/* update station supportRate */
 	pstat->bssratelen = support_rate_num;
 	memcpy(pstat->bssrateset, supportRate, support_rate_num);
+=======
+	/* get_matched_rate(pmlmeext, supportRate, &supportRateNum, 0); */
+
+	/* update station supportRate */
+	pstat->bssratelen = supportRateNum;
+	memcpy(pstat->bssrateset, supportRate, supportRateNum);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	update_basic_rate_table_soft_ap(pstat->bssrateset, pstat->bssratelen);
 
 	/* check RSN/WPA/WPS */
@@ -1156,7 +1220,11 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 			pstat->flags |= WLAN_STA_WPS;
 			copy_len = 0;
 		} else {
+<<<<<<< HEAD
 			copy_len = min(sizeof(pstat->wpa_ie), wpa_ie_len + 2u);
+=======
+			copy_len = ((wpa_ie_len+2) > sizeof(pstat->wpa_ie)) ? (sizeof(pstat->wpa_ie)):(wpa_ie_len+2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 
@@ -1339,7 +1407,11 @@ unsigned int OnAssocReq(struct adapter *padapter, union recv_frame *precv_frame)
 
 asoc_class2_error:
 
+<<<<<<< HEAD
 	issue_deauth(padapter, GetAddr2Ptr(pframe), status);
+=======
+	issue_deauth(padapter, (void *)GetAddr2Ptr(pframe), status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return _FAIL;
 
@@ -1513,7 +1585,11 @@ unsigned int OnDeAuth(struct adapter *padapter, union recv_frame *precv_frame)
 	if (ignore_received_deauth == 0)
 		receive_disconnect(padapter, GetAddr3Ptr(pframe), reason);
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.busy_traffic = false;
+=======
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return _SUCCESS;
 }
 
@@ -1565,7 +1641,11 @@ unsigned int OnDisassoc(struct adapter *padapter, union recv_frame *precv_frame)
 
 	receive_disconnect(padapter, GetAddr3Ptr(pframe), reason);
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.busy_traffic = false;
+=======
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return _SUCCESS;
 
 }
@@ -2717,9 +2797,15 @@ void issue_asocrsp(struct adapter *padapter, unsigned short status, struct sta_i
 	fctrl = &(pwlanhdr->frame_control);
 	*(fctrl) = 0;
 
+<<<<<<< HEAD
 	memcpy(GetAddr1Ptr(pwlanhdr), pstat->hwaddr, ETH_ALEN);
 	memcpy(GetAddr2Ptr(pwlanhdr), myid(&(padapter->eeprompriv)), ETH_ALEN);
 	memcpy(GetAddr3Ptr(pwlanhdr), get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+=======
+	memcpy((void *)GetAddr1Ptr(pwlanhdr), pstat->hwaddr, ETH_ALEN);
+	memcpy((void *)GetAddr2Ptr(pwlanhdr), myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy((void *)GetAddr3Ptr(pwlanhdr), get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -4758,8 +4844,14 @@ static void rtw_mlmeext_disconnect(struct adapter *padapter)
 
 	timer_delete_sync(&pmlmeext->link_timer);
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.traffic_transition_count = 0;
 	pmlmepriv->link_detect_info.low_power_transition_count = 0;
+=======
+	/* pmlmepriv->LinkDetectInfo.TrafficBusyState = false; */
+	pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
+	pmlmepriv->LinkDetectInfo.LowPowerTransitionCount = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 }
 
@@ -4886,7 +4978,11 @@ void mlmeext_sta_add_event_callback(struct adapter *padapter, struct sta_info *p
 	rtw_hal_update_sta_rate_mask(padapter, psta);
 
 	/*  ToDo: HT for Ad-hoc */
+<<<<<<< HEAD
 	psta->wireless_mode = rtw_check_network_type(psta->bssrateset, pmlmeext->cur_channel);
+=======
+	psta->wireless_mode = rtw_check_network_type(psta->bssrateset, psta->bssratelen, pmlmeext->cur_channel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	psta->raid = networktype_to_raid_ex(padapter, psta);
 
 	/* rate radaptive */

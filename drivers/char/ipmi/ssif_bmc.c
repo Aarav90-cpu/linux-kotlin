@@ -18,9 +18,12 @@
 #include <linux/timer.h>
 #include <linux/jiffies.h>
 #include <linux/ipmi_ssif_bmc.h>
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SSIF_IPMI_BMC_KUNIT_TEST)
 #include <kunit/test.h>
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DEVICE_NAME                             "ipmi-ssif-host"
 
@@ -166,8 +169,11 @@ static ssize_t ssif_bmc_read(struct file *file, char __user *buf, size_t count, 
 		spin_unlock_irqrestore(&ssif_bmc->lock, flags);
 
 		ret = copy_to_user(buf, &msg, count);
+<<<<<<< HEAD
 		if (ret > 0)
 			ret = -EFAULT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return (ret < 0) ? ret : count;
@@ -461,6 +467,7 @@ static bool supported_write_cmd(u8 cmd)
 	return false;
 }
 
+<<<<<<< HEAD
 static bool supported_write_start_cmd(u8 cmd)
 {
 	if (cmd == SSIF_IPMI_SINGLEPART_WRITE ||
@@ -470,6 +477,8 @@ static bool supported_write_start_cmd(u8 cmd)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Process the IPMI response that will be read by master */
 static void handle_read_processed(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 {
@@ -572,7 +581,11 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
 		len = ssif_bmc->request.len + part->length;
 		/* Do the bound check here, not allow the request len exceed 254 bytes */
 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
+<<<<<<< HEAD
 			dev_dbg(&ssif_bmc->client->dev,
+=======
+			dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 "Warn: Request exceeded 254 bytes, aborting");
 			/* Request too long, aborting */
 			ssif_bmc->aborting =  true;
@@ -618,7 +631,11 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 	    ssif_bmc->state == SSIF_START ||
 	    ssif_bmc->state == SSIF_REQ_RECVING ||
 	    ssif_bmc->state == SSIF_RES_SENDING) {
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev,
+=======
+		dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
 			 __func__, state_to_string(ssif_bmc->state));
 		ssif_bmc->state = SSIF_ABORTING;
@@ -627,7 +644,11 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 
 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
+<<<<<<< HEAD
 			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
+=======
+			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 ssif_bmc->part_buf.smbus_cmd);
 			ssif_bmc->aborting = true;
 		}
@@ -662,7 +683,11 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 	    ssif_bmc->state == SSIF_START ||
 	    ssif_bmc->state == SSIF_REQ_RECVING ||
 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev,
+=======
+		dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
 			 __func__, state_to_string(ssif_bmc->state));
 		ssif_bmc->state = SSIF_ABORTING;
@@ -687,7 +712,11 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 	} else if (ssif_bmc->state == SSIF_START ||
 		   ssif_bmc->state == SSIF_REQ_RECVING ||
 		   ssif_bmc->state == SSIF_RES_SENDING) {
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev,
+=======
+		dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
 			 __func__, state_to_string(ssif_bmc->state));
 		ssif_bmc->state = SSIF_ABORTING;
@@ -702,7 +731,11 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 {
 	if (ssif_bmc->state == SSIF_READY ||
 	    ssif_bmc->state == SSIF_RES_SENDING) {
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev,
+=======
+		dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
 			 __func__, state_to_string(ssif_bmc->state));
 		ssif_bmc->state = SSIF_ABORTING;
@@ -712,7 +745,11 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 
 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
+<<<<<<< HEAD
 			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
+=======
+			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 ssif_bmc->part_buf.smbus_cmd);
 			ssif_bmc->aborting = true;
 		}
@@ -721,11 +758,14 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 			ssif_bmc->state = SSIF_ABORTING;
 		else
 			ssif_bmc->state = SSIF_REQ_RECVING;
+<<<<<<< HEAD
 	} else if (ssif_bmc->state == SSIF_ABORTING) {
 		if (supported_write_start_cmd(*val)) {
 			ssif_bmc->state = SSIF_SMBUS_CMD;
 			ssif_bmc->aborting = false;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* This is response sending state */
@@ -741,7 +781,11 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
 	    ssif_bmc->state == SSIF_START ||
 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
 	    ssif_bmc->state == SSIF_ABORTING) {
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev,
+=======
+		dev_warn(&ssif_bmc->client->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
 			 __func__, state_to_string(ssif_bmc->state));
 		ssif_bmc->state = SSIF_READY;
@@ -808,7 +852,11 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
 		break;
 
 	default:
+<<<<<<< HEAD
 		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
+=======
+		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 
@@ -862,7 +910,10 @@ static void ssif_bmc_remove(struct i2c_client *client)
 {
 	struct ssif_bmc_ctx *ssif_bmc = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	timer_delete_sync(&ssif_bmc->response_timer);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_slave_unregister(client);
 	misc_deregister(&ssif_bmc->miscdev);
 }
@@ -889,6 +940,7 @@ static struct i2c_driver ssif_bmc_driver = {
 	.id_table       = ssif_bmc_id,
 };
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SSIF_IPMI_BMC_KUNIT_TEST)
 struct ssif_bmc_test_ctx {
 	struct ssif_bmc_ctx ssif_bmc;
@@ -1256,6 +1308,8 @@ static struct kunit_suite ssif_bmc_test_suite = {
 kunit_test_suite(ssif_bmc_test_suite);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_i2c_driver(ssif_bmc_driver);
 
 MODULE_AUTHOR("Quan Nguyen <quan@os.amperecomputing.com>");

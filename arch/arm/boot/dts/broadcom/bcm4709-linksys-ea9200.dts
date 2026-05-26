@@ -5,8 +5,11 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
 #include <dt-bindings/leds/common.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bcm4709.dtsi"
 #include "bcm5301x-nand-cs0-bch8.dtsi"
 
@@ -27,10 +30,13 @@
 	nvram@1c080000 {
 		compatible = "brcm,nvram";
 		reg = <0x1c080000 0x180000>;
+<<<<<<< HEAD
 
 		et2macaddr: et2macaddr {
 			#nvmem-cell-cells = <1>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	gpio-keys {
@@ -42,18 +48,22 @@
 			gpios = <&chipcommon 3 GPIO_ACTIVE_LOW>;
 		};
 
+<<<<<<< HEAD
 		button-rfkill {
 			label = "WiFi";
 			linux,code = <KEY_RFKILL>;
 			gpios = <&chipcommon 4 GPIO_ACTIVE_LOW>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		button-restart {
 			label = "Reset";
 			linux,code = <KEY_RESTART>;
 			gpios = <&chipcommon 17 GPIO_ACTIVE_LOW>;
 		};
 	};
+<<<<<<< HEAD
 
 	leds {
 		compatible = "gpio-leds";
@@ -91,12 +101,15 @@
 			linux,default-trigger = "default-on";
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &usb3_phy {
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb2 {
 	vcc-gpios = <&chipcommon 13 GPIO_ACTIVE_HIGH>;
 };
@@ -105,6 +118,8 @@
 	vcc-gpios = <&chipcommon 14 GPIO_ACTIVE_HIGH>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &srab {
 	status = "okay";
 
@@ -127,9 +142,12 @@
 
 		port@4 {
 			label = "wan";
+<<<<<<< HEAD
 
 			nvmem-cells = <&et2macaddr 1>;
 			nvmem-cell-names = "mac-address";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		port@5 {
@@ -145,6 +163,7 @@
 		};
 	};
 };
+<<<<<<< HEAD
 
 &nandcs {
 	partitions {
@@ -185,3 +204,5 @@
 		};
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

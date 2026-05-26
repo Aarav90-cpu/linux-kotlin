@@ -306,7 +306,11 @@ struct cdns_mhdp_sink {
 };
 
 struct cdns_mhdp_display_fmt {
+<<<<<<< HEAD
 	enum drm_output_color_format color_format;
+=======
+	u32 color_format;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 bpc;
 	bool y_only;
 };
@@ -375,7 +379,11 @@ struct cdns_mhdp_device {
 	 */
 	struct mutex link_mutex;
 
+<<<<<<< HEAD
 	struct drm_connector *connector;
+=======
+	struct drm_connector connector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_bridge bridge;
 
 	struct cdns_mhdp_link link;

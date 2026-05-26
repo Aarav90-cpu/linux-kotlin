@@ -12,6 +12,10 @@ faultlinenum=1
 
 cleanup() {
 	rm -f $T $T.s $T.o $T.oo $T.aa $T.dis
+<<<<<<< HEAD
+=======
+	exit 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 die() {
@@ -48,7 +52,11 @@ done
 
 if [ -z "$code" ]; then
 	rm $T
+<<<<<<< HEAD
 	die "Code line not found"
+=======
+	exit
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fi
 
 echo $code

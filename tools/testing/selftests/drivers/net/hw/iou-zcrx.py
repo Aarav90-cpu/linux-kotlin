@@ -2,11 +2,15 @@
 # SPDX-License-Identifier: GPL-2.0
 
 import re
+<<<<<<< HEAD
 import time
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from os import path
 from lib.py import ksft_run, ksft_exit, KsftSkipEx, ksft_variants, KsftNamedVariant
 from lib.py import NetDrvEpEnv
 from lib.py import bkg, cmd, defer, ethtool, rand_port, wait_port_listen
+<<<<<<< HEAD
 from lib.py import EthtoolFamily, NetdevFamily
 
 SKIP_CODE = 42
@@ -23,6 +27,12 @@ def mp_clear_wait(cfg):
     raise TimeoutError("Timed out waiting for memory provider to clear")
 
 
+=======
+from lib.py import EthtoolFamily
+
+SKIP_CODE = 42
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def create_rss_ctx(cfg):
     output = ethtool(f"-X {cfg.ifname} context new start {cfg.target} equal 1").stdout
     values = re.search(r'New RSS context is (\d+)', output).group(1)
@@ -59,7 +69,10 @@ def single(cfg):
                                 'tcp-data-split': 'unknown',
                                 'hds-thresh': hds_thresh,
                                 'rx': rx_rings})
+<<<<<<< HEAD
     defer(mp_clear_wait, cfg)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     cfg.target = channels - 1
     ethtool(f"-X {cfg.ifname} equal {cfg.target}")
@@ -87,7 +100,10 @@ def rss(cfg):
                                 'tcp-data-split': 'unknown',
                                 'hds-thresh': hds_thresh,
                                 'rx': rx_rings})
+<<<<<<< HEAD
     defer(mp_clear_wait, cfg)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     cfg.target = channels - 1
     ethtool(f"-X {cfg.ifname} equal {cfg.target}")
@@ -135,6 +151,7 @@ def test_zcrx_large_chunks(cfg) -> None:
 
     cfg.require_ipver('6')
 
+<<<<<<< HEAD
     hp_file = "/proc/sys/vm/nr_hugepages"
     with open(hp_file, 'r+', encoding='utf-8') as f:
         nr_hugepages = int(f.read().strip())
@@ -154,6 +171,38 @@ def test_zcrx_large_chunks(cfg) -> None:
     mp_clear_wait(cfg)
     with bkg(rx_cmd, exit_wait=True):
         wait_port_listen(cfg.port, proto="tcp")
+=======
+    combined_chans = _get_combined_channels(cfg)
+    if combined_chans < 2:
+        raise KsftSkipEx('at least 2 combined channels required')
+    (rx_ring, hds_thresh) = _get_current_settings(cfg)
+    port = rand_port()
+
+    ethtool(f"-G {cfg.ifname} tcp-data-split on")
+    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto")
+
+    ethtool(f"-G {cfg.ifname} hds-thresh 0")
+    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}")
+
+    ethtool(f"-G {cfg.ifname} rx 64")
+    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}")
+
+    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}")
+    defer(ethtool, f"-X {cfg.ifname} default")
+
+    flow_rule_id = _set_flow_rule(cfg, port, combined_chans - 1)
+    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
+
+    rx_cmd = f"{cfg.bin_local} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1} -x 2"
+    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {port} -l 12840"
+
+    probe = cmd(rx_cmd + " -d", fail=False)
+    if probe.ret == SKIP_CODE:
+        raise KsftSkipEx(probe.stdout)
+
+    with bkg(rx_cmd, exit_wait=True):
+        wait_port_listen(port, proto="tcp")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         cmd(tx_cmd, host=cfg.remote)
 
 
@@ -163,10 +212,15 @@ def main() -> None:
         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
 
         cfg.ethnl = EthtoolFamily()
+<<<<<<< HEAD
         cfg.netnl = NetdevFamily()
         cfg.port = rand_port()
         ksft_run(globs=globals(), cases=[test_zcrx, test_zcrx_oneshot,
                                         test_zcrx_large_chunks], args=(cfg, ))
+=======
+        cfg.port = rand_port()
+        ksft_run(globs=globals(), cases=[test_zcrx, test_zcrx_oneshot], args=(cfg, ))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ksft_exit()
 
 

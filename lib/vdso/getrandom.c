@@ -7,11 +7,16 @@
 #include <linux/minmax.h>
 #include <vdso/datapage.h>
 #include <vdso/getrandom.h>
+<<<<<<< HEAD
 #include <vdso/limits.h>
 #include <vdso/unaligned.h>
 #include <asm/barrier.h>
 #include <asm/vdso/getrandom.h>
 #include <uapi/linux/errno.h>
+=======
+#include <vdso/unaligned.h>
+#include <asm/vdso/getrandom.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/mman.h>
 #include <uapi/linux/random.h>
 

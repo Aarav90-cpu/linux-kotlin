@@ -51,10 +51,13 @@ use ordering::OrderingType;
 #[repr(transparent)]
 pub struct Atomic<T: AtomicType>(AtomicRepr<T::Repr>);
 
+<<<<<<< HEAD
 // SAFETY: `Atomic<T>` is safe to transfer between execution contexts because of the safety
 // requirement of `AtomicType`.
 unsafe impl<T: AtomicType> Send for Atomic<T> {}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // SAFETY: `Atomic<T>` is safe to share among execution contexts because all accesses are atomic.
 unsafe impl<T: AtomicType> Sync for Atomic<T> {}
 
@@ -72,11 +75,14 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
 ///
 /// - [`Self`] must have the same size and alignment as [`Self::Repr`].
 /// - [`Self`] must be [round-trip transmutable] to  [`Self::Repr`].
+<<<<<<< HEAD
 /// - [`Self`] must be safe to transfer between execution contexts, if it's [`Send`], this is
 ///   automatically satisfied. The exception is pointer types that are even though marked as
 ///   `!Send` (e.g. raw pointers and [`NonNull<T>`]) but requiring `unsafe` to do anything
 ///   meaningful on them. This is because transferring pointer values between execution contexts is
 ///   safe as long as the actual `unsafe` dereferencing is justified.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// Note that this is more relaxed than requiring the bi-directional transmutability (i.e.
 /// [`transmute()`] is always sound between `U` and `T`) because of the support for atomic
@@ -117,8 +123,12 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
 /// [`transmute()`]: core::mem::transmute
 /// [round-trip transmutable]: AtomicType#round-trip-transmutability
 /// [Examples]: AtomicType#examples
+<<<<<<< HEAD
 /// [`NonNull<T>`]: core::ptr::NonNull
 pub unsafe trait AtomicType: Sized + Copy {
+=======
+pub unsafe trait AtomicType: Sized + Send + Copy {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// The backing atomic implementation type.
     type Repr: AtomicImpl;
 }
@@ -214,7 +224,14 @@ impl<T: AtomicType> Atomic<T> {
     /// // no data race.
     /// unsafe { Atomic::from_ptr(foo_a_ptr) }.store(2, Release);
     /// ```
+<<<<<<< HEAD
     pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self {
+=======
+    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self
+    where
+        T: Sync,
+    {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // CAST: `T` and `Atomic<T>` have the same size, alignment and bit validity.
         // SAFETY: Per function safety requirement, `ptr` is a valid pointer and the object will
         // live long enough. It's safe to return a `&Atomic<T>` because function safety requirement
@@ -242,6 +259,7 @@ impl<T: AtomicType> Atomic<T> {
     /// Returns a mutable reference to the underlying atomic `T`.
     ///
     /// This is safe because the mutable reference of the atomic `T` guarantees exclusive access.
+<<<<<<< HEAD
     ///
     /// # Examples
     ///
@@ -253,6 +271,8 @@ impl<T: AtomicType> Atomic<T> {
     /// *val_mut = 101;
     /// assert_eq!(101, atomic_val.load(Relaxed));
     /// ```
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pub fn get_mut(&mut self) -> &mut T {
         // CAST: `T` and `T::Repr` has the same size and alignment per the safety requirement of
         // `AtomicType`, and per the type invariants `self.0` is a valid `T`, therefore the casting
@@ -545,6 +565,7 @@ where
     /// use kernel::sync::atomic::{Atomic, Acquire, Full, Relaxed};
     ///
     /// let x = Atomic::new(42);
+<<<<<<< HEAD
     /// assert_eq!(42, x.load(Relaxed));
     /// assert_eq!(42, x.fetch_add(12, Acquire));
     /// assert_eq!(54, x.load(Relaxed));
@@ -553,6 +574,18 @@ where
     /// assert_eq!(42, x.load(Relaxed));
     /// assert_eq!(42, x.fetch_add(12, Full));
     /// assert_eq!(54, x.load(Relaxed));
+=======
+    ///
+    /// assert_eq!(42, x.load(Relaxed));
+    ///
+    /// assert_eq!(54, { x.fetch_add(12, Acquire); x.load(Relaxed) });
+    ///
+    /// let x = Atomic::new(42);
+    ///
+    /// assert_eq!(42, x.load(Relaxed));
+    ///
+    /// assert_eq!(54, { x.fetch_add(12, Full); x.load(Relaxed) } );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// ```
     #[inline(always)]
     pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering) -> T
@@ -575,6 +608,7 @@ where
         // SAFETY: `ret` comes from reading `self.0`, which is a valid `T` per type invariants.
         unsafe { from_repr(ret) }
     }
+<<<<<<< HEAD
 
     /// Atomic fetch and subtract.
     ///
@@ -847,4 +881,6 @@ where
     // `align_of::<T>()`, and all concurrent accesses from kernel are atomic, hence no data race
     // per LKMM.
     unsafe { Atomic::from_ptr(ptr) }.cmpxchg(old, new, o)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

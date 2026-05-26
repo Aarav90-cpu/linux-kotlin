@@ -45,4 +45,9 @@
 #define   ADPA_VSYNC_ACTIVE_HIGH		REG_BIT(4)
 #define   ADPA_HSYNC_ACTIVE_HIGH		REG_BIT(3)
 
+<<<<<<< HEAD
+=======
+#define _VGA_MSR_WRITE _MMIO(0x3c2)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __INTEL_CRT_REGS_H__ */

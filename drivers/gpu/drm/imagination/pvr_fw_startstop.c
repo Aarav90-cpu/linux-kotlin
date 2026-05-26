@@ -209,6 +209,7 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 					 ROGUE_CR_SIDEKICK_IDLE_SOCIF_EN |
 					 ROGUE_CR_SIDEKICK_IDLE_HOSTIF_EN);
 	bool skip_garten_idle = false;
+<<<<<<< HEAD
 	u64 layout_mars_value = 0;
 	bool layout_mars = false;
 	bool meta_fw = pvr_dev->fw_dev.processor_type == PVR_FW_PROCESSOR_TYPE_META;
@@ -235,6 +236,20 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 		if (err)
 			return err;
 	}
+=======
+	u32 reg_value;
+	int err;
+
+	/*
+	 * Wait for Sidekick/Jones to signal IDLE except for the Garten Wrapper.
+	 * For cores with the LAYOUT_MARS feature, SIDEKICK would have been
+	 * powered down by the FW.
+	 */
+	err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_SIDEKICK_IDLE, sidekick_idle_mask,
+				sidekick_idle_mask, POLL_TIMEOUT_USEC);
+	if (err)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Unset MTS DM association with threads. */
 	pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_INTCTX_THREAD0_DM_ASSOC,
@@ -243,6 +258,7 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 	pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_BGCTX_THREAD0_DM_ASSOC,
 		       ROGUE_CR_MTS_BGCTX_THREAD0_DM_ASSOC_MASKFULL &
 		       ROGUE_CR_MTS_BGCTX_THREAD0_DM_ASSOC_DM_ASSOC_CLRMSK);
+<<<<<<< HEAD
 
 	if (meta_fw) {
 		pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_INTCTX_THREAD1_DM_ASSOC,
@@ -252,6 +268,14 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 			       ROGUE_CR_MTS_BGCTX_THREAD1_DM_ASSOC_MASKFULL &
 			       ROGUE_CR_MTS_BGCTX_THREAD1_DM_ASSOC_DM_ASSOC_CLRMSK);
 	}
+=======
+	pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_INTCTX_THREAD1_DM_ASSOC,
+		       ROGUE_CR_MTS_INTCTX_THREAD1_DM_ASSOC_MASKFULL &
+		       ROGUE_CR_MTS_INTCTX_THREAD1_DM_ASSOC_DM_ASSOC_CLRMSK);
+	pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_BGCTX_THREAD1_DM_ASSOC,
+		       ROGUE_CR_MTS_BGCTX_THREAD1_DM_ASSOC_MASKFULL &
+		       ROGUE_CR_MTS_BGCTX_THREAD1_DM_ASSOC_DM_ASSOC_CLRMSK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Extra Idle checks. */
 	err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_BIF_STATUS_MMU, 0,
@@ -287,6 +311,7 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 		return err;
 
 	/*
+<<<<<<< HEAD
 	 * For cores with the LAYOUT_MARS feature, SIDEKICK and SLC would have been
 	 * powered down by the FW.
 	 */
@@ -306,6 +331,29 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 	}
 
 	if (meta_fw) {
+=======
+	 * Wait for SLC to signal IDLE.
+	 * For cores with the LAYOUT_MARS feature, SLC would have been powered
+	 * down by the FW.
+	 */
+	err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_SLC_IDLE,
+				ROGUE_CR_SLC_IDLE_MASKFULL,
+				ROGUE_CR_SLC_IDLE_MASKFULL, POLL_TIMEOUT_USEC);
+	if (err)
+		return err;
+
+	/*
+	 * Wait for Sidekick/Jones to signal IDLE except for the Garten Wrapper.
+	 * For cores with the LAYOUT_MARS feature, SIDEKICK would have been powered
+	 * down by the FW.
+	 */
+	err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_SIDEKICK_IDLE, sidekick_idle_mask,
+				sidekick_idle_mask, POLL_TIMEOUT_USEC);
+	if (err)
+		return err;
+
+	if (pvr_dev->fw_dev.processor_type == PVR_FW_PROCESSOR_TYPE_META) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = pvr_meta_cr_read32(pvr_dev, META_CR_TxVECINT_BHALT, &reg_value);
 		if (err)
 			return err;
@@ -319,6 +367,7 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 			skip_garten_idle = true;
 	}
 
+<<<<<<< HEAD
 	if (meta_fw || !layout_mars) {
 		if (!skip_garten_idle) {
 			err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_SIDEKICK_IDLE,
@@ -341,6 +390,13 @@ pvr_fw_stop(struct pvr_device *pvr_dev)
 					ROGUE_CR_MARS_IDLE_MH_SYSARB0_EN,
 					POLL_TIMEOUT_USEC);
 
+=======
+	if (!skip_garten_idle) {
+		err = pvr_cr_poll_reg32(pvr_dev, ROGUE_CR_SIDEKICK_IDLE,
+					ROGUE_CR_SIDEKICK_IDLE_GARTEN_EN,
+					ROGUE_CR_SIDEKICK_IDLE_GARTEN_EN,
+					POLL_TIMEOUT_USEC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}

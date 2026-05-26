@@ -40,7 +40,11 @@ static ssize_t power_state_show(struct device *dev, struct device_attribute *att
 	retval = regmap_read(data->regmap, 0x03, &val);
 	if (retval < 0)
 		return retval;
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", !!(val & BIT(6)));
+=======
+	return sprintf(buf, "%d\n", !!(val & BIT(6)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t power_state_store(struct device *dev, struct device_attribute *attr,

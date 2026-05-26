@@ -18,6 +18,11 @@
 #include <asm/page.h>
 #include <asm/sections.h>
 
+<<<<<<< HEAD
+=======
+#include <crypto/sha1.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "kallsyms_internal.h"
 #include "kexec_internal.h"
 
@@ -196,7 +201,11 @@ static int __init crash_save_vmcoreinfo_init(void)
 	VMCOREINFO_OFFSET(page, lru);
 	VMCOREINFO_OFFSET(page, _mapcount);
 	VMCOREINFO_OFFSET(page, private);
+<<<<<<< HEAD
 	VMCOREINFO_OFFSET(page, compound_info);
+=======
+	VMCOREINFO_OFFSET(page, compound_head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VMCOREINFO_OFFSET(pglist_data, node_zones);
 	VMCOREINFO_OFFSET(pglist_data, nr_zones);
 #ifdef CONFIG_FLATMEM

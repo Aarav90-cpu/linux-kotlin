@@ -15,7 +15,10 @@
 #include <linux/completion.h>
 #include <linux/delay.h>
 #include <linux/dmaengine.h>
+<<<<<<< HEAD
 #include <linux/genalloc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
@@ -114,9 +117,12 @@ struct dcmi_buf {
 	struct vb2_v4l2_buffer	vb;
 	bool			prepared;
 	struct sg_table		sgt;
+<<<<<<< HEAD
 	struct sg_table		sgt_mdma;
 	struct dma_async_tx_descriptor *dma_desc;
 	struct dma_async_tx_descriptor *mdma_desc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t			size;
 	struct list_head	list;
 };
@@ -162,6 +168,7 @@ struct stm32_dcmi {
 	struct dma_chan			*dma_chan;
 	dma_cookie_t			dma_cookie;
 	u32				dma_max_burst;
+<<<<<<< HEAD
 
 	/* Elements for the MDMA - DMA chaining */
 	struct gen_pool			*sram_pool;
@@ -171,11 +178,19 @@ struct stm32_dcmi {
 	dma_addr_t			sram_dma_buf;
 	dma_cookie_t			mdma_cookie;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32				misr;
 	int				errors_count;
 	int				overrun_count;
 	int				buffers_count;
 
+<<<<<<< HEAD
+=======
+	/* Ensure DMA operations atomicity */
+	struct mutex			dma_lock;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct media_device		mdev;
 	struct media_pad		vid_cap_pad;
 	struct media_pipeline		pipeline;
@@ -239,19 +254,33 @@ static int dcmi_restart_capture(struct stm32_dcmi *dcmi)
 {
 	struct dcmi_buf *buf;
 
+<<<<<<< HEAD
 	/* Nothing to do if we are not running */
 	if (dcmi->state != RUNNING)
 		return 0;
+=======
+	spin_lock_irq(&dcmi->irqlock);
+
+	if (dcmi->state != RUNNING) {
+		spin_unlock_irq(&dcmi->irqlock);
+		return -EINVAL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Restart a new DMA transfer with next buffer */
 	if (list_empty(&dcmi->buffers)) {
 		dev_dbg(dcmi->dev, "Capture restart is deferred to next buffer queueing\n");
 		dcmi->state = WAIT_FOR_BUFFER;
+<<<<<<< HEAD
+=======
+		spin_unlock_irq(&dcmi->irqlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 	buf = list_entry(dcmi->buffers.next, struct dcmi_buf, list);
 	dcmi->active = buf;
 
+<<<<<<< HEAD
 	return dcmi_start_capture(dcmi, buf);
 }
 
@@ -275,6 +304,112 @@ static int dcmi_start_dma(struct stm32_dcmi *dcmi,
 
 	if (dcmi->mdma_chan)
 		dma_async_issue_pending(dcmi->mdma_chan);
+=======
+	spin_unlock_irq(&dcmi->irqlock);
+
+	return dcmi_start_capture(dcmi, buf);
+}
+
+static void dcmi_dma_callback(void *param)
+{
+	struct stm32_dcmi *dcmi = (struct stm32_dcmi *)param;
+	struct dma_tx_state state;
+	enum dma_status status;
+	struct dcmi_buf *buf = dcmi->active;
+
+	spin_lock_irq(&dcmi->irqlock);
+
+	/* Check DMA status */
+	status = dmaengine_tx_status(dcmi->dma_chan, dcmi->dma_cookie, &state);
+
+	switch (status) {
+	case DMA_IN_PROGRESS:
+		dev_dbg(dcmi->dev, "%s: Received DMA_IN_PROGRESS\n", __func__);
+		break;
+	case DMA_PAUSED:
+		dev_err(dcmi->dev, "%s: Received DMA_PAUSED\n", __func__);
+		break;
+	case DMA_ERROR:
+		dev_err(dcmi->dev, "%s: Received DMA_ERROR\n", __func__);
+
+		/* Return buffer to V4L2 in error state */
+		dcmi_buffer_done(dcmi, buf, 0, -EIO);
+		break;
+	case DMA_COMPLETE:
+		dev_dbg(dcmi->dev, "%s: Received DMA_COMPLETE\n", __func__);
+
+		/* Return buffer to V4L2 */
+		dcmi_buffer_done(dcmi, buf, buf->size, 0);
+
+		spin_unlock_irq(&dcmi->irqlock);
+
+		/* Restart capture */
+		if (dcmi_restart_capture(dcmi))
+			dev_err(dcmi->dev, "%s: Cannot restart capture on DMA complete\n",
+				__func__);
+		return;
+	default:
+		dev_err(dcmi->dev, "%s: Received unknown status\n", __func__);
+		break;
+	}
+
+	spin_unlock_irq(&dcmi->irqlock);
+}
+
+static int dcmi_start_dma(struct stm32_dcmi *dcmi,
+			  struct dcmi_buf *buf)
+{
+	struct dma_async_tx_descriptor *desc = NULL;
+	struct dma_slave_config config;
+	int ret;
+
+	memset(&config, 0, sizeof(config));
+
+	config.src_addr = (dma_addr_t)dcmi->res->start + DCMI_DR;
+	config.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+	config.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+	config.dst_maxburst = 4;
+
+	/* Configure DMA channel */
+	ret = dmaengine_slave_config(dcmi->dma_chan, &config);
+	if (ret < 0) {
+		dev_err(dcmi->dev, "%s: DMA channel config failed (%d)\n",
+			__func__, ret);
+		return ret;
+	}
+
+	/*
+	 * Avoid call of dmaengine_terminate_sync() between
+	 * dmaengine_prep_slave_single() and dmaengine_submit()
+	 * by locking the whole DMA submission sequence
+	 */
+	mutex_lock(&dcmi->dma_lock);
+
+	/* Prepare a DMA transaction */
+	desc = dmaengine_prep_slave_sg(dcmi->dma_chan, buf->sgt.sgl, buf->sgt.nents,
+				       DMA_DEV_TO_MEM,
+				       DMA_PREP_INTERRUPT);
+	if (!desc) {
+		dev_err(dcmi->dev, "%s: DMA dmaengine_prep_slave_sg failed\n", __func__);
+		mutex_unlock(&dcmi->dma_lock);
+		return -EINVAL;
+	}
+
+	/* Set completion callback routine for notification */
+	desc->callback = dcmi_dma_callback;
+	desc->callback_param = dcmi;
+
+	/* Push current DMA transaction in the pending queue */
+	dcmi->dma_cookie = dmaengine_submit(desc);
+	if (dma_submit_error(dcmi->dma_cookie)) {
+		dev_err(dcmi->dev, "%s: DMA submission failed\n", __func__);
+		mutex_unlock(&dcmi->dma_lock);
+		return -ENXIO;
+	}
+
+	mutex_unlock(&dcmi->dma_lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_async_issue_pending(dcmi->dma_chan);
 
 	return 0;
@@ -321,11 +456,17 @@ static void dcmi_set_crop(struct stm32_dcmi *dcmi)
 	reg_set(dcmi->regs, DCMI_CR, CR_CROP);
 }
 
+<<<<<<< HEAD
 static void dcmi_process_frame(struct stm32_dcmi *dcmi)
 {
 	struct dma_tx_state state, state_dma;
 	size_t bytes_used;
 
+=======
+static void dcmi_process_jpeg(struct stm32_dcmi *dcmi)
+{
+	struct dma_tx_state state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum dma_status status;
 	struct dcmi_buf *buf = dcmi->active;
 
@@ -333,6 +474,7 @@ static void dcmi_process_frame(struct stm32_dcmi *dcmi)
 		return;
 
 	/*
+<<<<<<< HEAD
 	 * Pause the DMA transfer, leading to trigger of the MDMA channel read while
 	 * keeping a valid residue value on the dma channel
 	 */
@@ -368,13 +510,46 @@ static void dcmi_process_frame(struct stm32_dcmi *dcmi)
 		dev_err(dcmi->dev, "%s: DMA error. status: 0x%x, residue: %d\n",
 			__func__, status, state.residue);
 		/* Return buffer to V4L2 in ERROR state */
+=======
+	 * Because of variable JPEG buffer size sent by sensor,
+	 * DMA transfer never completes due to transfer size never reached.
+	 * In order to ensure that all the JPEG data are transferred
+	 * in active buffer memory, DMA is drained.
+	 * Then DMA tx status gives the amount of data transferred
+	 * to memory, which is then returned to V4L2 through the active
+	 * buffer payload.
+	 */
+
+	/* Drain DMA */
+	dmaengine_synchronize(dcmi->dma_chan);
+
+	/* Get DMA residue to get JPEG size */
+	status = dmaengine_tx_status(dcmi->dma_chan, dcmi->dma_cookie, &state);
+	if (status != DMA_ERROR && state.residue < buf->size) {
+		/* Return JPEG buffer to V4L2 with received JPEG buffer size */
+		dcmi_buffer_done(dcmi, buf, buf->size - state.residue, 0);
+	} else {
+		dcmi->errors_count++;
+		dev_err(dcmi->dev, "%s: Cannot get JPEG size from DMA\n",
+			__func__);
+		/* Return JPEG buffer to V4L2 in ERROR state */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dcmi_buffer_done(dcmi, buf, 0, -EIO);
 	}
 
 	/* Abort DMA operation */
+<<<<<<< HEAD
 	dmaengine_terminate_async(dcmi->dma_chan);
 	if (dcmi->mdma_chan)
 		dmaengine_terminate_async(dcmi->mdma_chan);
+=======
+	dmaengine_terminate_sync(dcmi->dma_chan);
+
+	/* Restart capture */
+	if (dcmi_restart_capture(dcmi))
+		dev_err(dcmi->dev, "%s: Cannot restart capture on JPEG received\n",
+			__func__);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static irqreturn_t dcmi_irq_thread(int irq, void *arg)
@@ -384,6 +559,7 @@ static irqreturn_t dcmi_irq_thread(int irq, void *arg)
 	spin_lock_irq(&dcmi->irqlock);
 
 	if (dcmi->misr & IT_OVR) {
+<<<<<<< HEAD
 		/* Disable capture */
 		reg_clear(dcmi->regs, DCMI_CR, CR_CAPTURE);
 
@@ -409,6 +585,21 @@ static irqreturn_t dcmi_irq_thread(int irq, void *arg)
 		dcmi_process_frame(dcmi);
 		if (dcmi_restart_capture(dcmi))
 			dev_err(dcmi->dev, "%s: Cannot restart capture\n", __func__);
+=======
+		dcmi->overrun_count++;
+		if (dcmi->overrun_count > OVERRUN_ERROR_THRESHOLD)
+			dcmi->errors_count++;
+	}
+	if (dcmi->misr & IT_ERR)
+		dcmi->errors_count++;
+
+	if (dcmi->sd_format->fourcc == V4L2_PIX_FMT_JPEG &&
+	    dcmi->misr & IT_FRAME) {
+		/* JPEG received */
+		spin_unlock_irq(&dcmi->irqlock);
+		dcmi_process_jpeg(dcmi);
+		return IRQ_HANDLED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_unlock_irq(&dcmi->irqlock);
@@ -488,6 +679,7 @@ static int dcmi_buf_prepare(struct vb2_buffer *vb)
 	vb2_set_plane_payload(vb, 0, size);
 
 	if (!buf->prepared) {
+<<<<<<< HEAD
 		u32 max_size = dcmi->dma_max_burst;
 		unsigned int dma_nents;
 
@@ -521,11 +713,25 @@ static int dcmi_buf_prepare(struct vb2_buffer *vb)
 			}
 		}
 
+=======
+		/* Get memory addresses */
+		buf->size = vb2_plane_size(&buf->vb.vb2_buf, 0);
+		if (buf->size > dcmi->dma_max_burst)
+			num_sgs = DIV_ROUND_UP(buf->size, dcmi->dma_max_burst);
+
+		ret = sg_alloc_table(&buf->sgt, num_sgs, GFP_ATOMIC);
+		if (ret) {
+			dev_err(dcmi->dev, "sg table alloc failed\n");
+			return ret;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dma_buf = vb2_dma_contig_plane_dma_addr(&buf->vb.vb2_buf, 0);
 
 		dev_dbg(dcmi->dev, "buffer[%d] phy=%pad size=%zu\n",
 			vb->index, &dma_buf, buf->size);
 
+<<<<<<< HEAD
 		for_each_sg(buf->sgt.sgl, sg, dma_nents, i) {
 			size_t bytes = min_t(size_t, size, max_size);
 
@@ -616,6 +822,17 @@ static int dcmi_buf_prepare(struct vb2_buffer *vb)
 			}
 		}
 
+=======
+		for_each_sg(buf->sgt.sgl, sg, num_sgs, i) {
+			size_t bytes = min_t(size_t, size, dcmi->dma_max_burst);
+
+			sg_dma_address(sg) = dma_buf;
+			sg_dma_len(sg) = bytes;
+			dma_buf += bytes;
+			size -= bytes;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		buf->prepared = true;
 
 		vb2_set_plane_payload(&buf->vb.vb2_buf, 0, buf->size);
@@ -624,6 +841,7 @@ static int dcmi_buf_prepare(struct vb2_buffer *vb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void dcmi_buf_cleanup(struct vb2_buffer *vb)
 {
 	struct stm32_dcmi *dcmi =  vb2_get_drv_priv(vb->vb2_queue);
@@ -649,6 +867,8 @@ static void dcmi_buf_cleanup(struct vb2_buffer *vb)
 	sg_free_table(&buf->sgt);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dcmi_buf_queue(struct vb2_buffer *vb)
 {
 	struct stm32_dcmi *dcmi =  vb2_get_drv_priv(vb->vb2_queue);
@@ -667,9 +887,17 @@ static void dcmi_buf_queue(struct vb2_buffer *vb)
 		dev_dbg(dcmi->dev, "Starting capture on buffer[%d] queued\n",
 			buf->vb.vb2_buf.index);
 
+<<<<<<< HEAD
 		if (dcmi_start_capture(dcmi, buf))
 			dev_err(dcmi->dev, "%s: Cannot restart capture on overflow or error\n",
 				__func__);
+=======
+		spin_unlock_irq(&dcmi->irqlock);
+		if (dcmi_start_capture(dcmi, buf))
+			dev_err(dcmi->dev, "%s: Cannot restart capture on overflow or error\n",
+				__func__);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_unlock_irq(&dcmi->irqlock);
@@ -848,6 +1076,13 @@ static int dcmi_start_streaming(struct vb2_queue *vq, unsigned int count)
 	if (dcmi->do_crop)
 		dcmi_set_crop(dcmi);
 
+<<<<<<< HEAD
+=======
+	/* Enable jpeg capture */
+	if (dcmi->sd_format->fourcc == V4L2_PIX_FMT_JPEG)
+		reg_set(dcmi->regs, DCMI_CR, CR_CM);/* Snapshot mode */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Enable dcmi */
 	reg_set(dcmi->regs, DCMI_CR, CR_ENABLE);
 
@@ -874,18 +1109,32 @@ static int dcmi_start_streaming(struct vb2_queue *vq, unsigned int count)
 
 	dev_dbg(dcmi->dev, "Start streaming, starting capture\n");
 
+<<<<<<< HEAD
+=======
+	spin_unlock_irq(&dcmi->irqlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = dcmi_start_capture(dcmi, buf);
 	if (ret) {
 		dev_err(dcmi->dev, "%s: Start streaming failed, cannot start capture\n",
 			__func__);
+<<<<<<< HEAD
 		spin_unlock_irq(&dcmi->irqlock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_pipeline_stop;
 	}
 
 	/* Enable interruptions */
+<<<<<<< HEAD
 	reg_set(dcmi->regs, DCMI_IER, IT_FRAME | IT_OVR | IT_ERR);
 
 	spin_unlock_irq(&dcmi->irqlock);
+=======
+	if (dcmi->sd_format->fourcc == V4L2_PIX_FMT_JPEG)
+		reg_set(dcmi->regs, DCMI_IER, IT_FRAME | IT_OVR | IT_ERR);
+	else
+		reg_set(dcmi->regs, DCMI_IER, IT_OVR | IT_ERR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -946,9 +1195,15 @@ static void dcmi_stop_streaming(struct vb2_queue *vq)
 	spin_unlock_irq(&dcmi->irqlock);
 
 	/* Stop all pending DMA operations */
+<<<<<<< HEAD
 	dmaengine_terminate_sync(dcmi->dma_chan);
 	if (dcmi->mdma_chan)
 		dmaengine_terminate_sync(dcmi->mdma_chan);
+=======
+	mutex_lock(&dcmi->dma_lock);
+	dmaengine_terminate_sync(dcmi->dma_chan);
+	mutex_unlock(&dcmi->dma_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_put(dcmi->dev);
 
@@ -965,7 +1220,10 @@ static const struct vb2_ops dcmi_video_qops = {
 	.queue_setup		= dcmi_queue_setup,
 	.buf_init		= dcmi_buf_init,
 	.buf_prepare		= dcmi_buf_prepare,
+<<<<<<< HEAD
 	.buf_cleanup		= dcmi_buf_cleanup,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.buf_queue		= dcmi_buf_queue,
 	.start_streaming	= dcmi_start_streaming,
 	.stop_streaming		= dcmi_stop_streaming,
@@ -1957,9 +2215,14 @@ static int dcmi_probe(struct platform_device *pdev)
 	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
 	struct stm32_dcmi *dcmi;
 	struct vb2_queue *q;
+<<<<<<< HEAD
 	struct dma_chan *chan, *mdma_chan;
 	struct dma_slave_caps caps;
 	struct dma_slave_config dma_config, mdma_config;
+=======
+	struct dma_chan *chan;
+	struct dma_slave_caps caps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct clk *mclk;
 	int ret = 0;
 
@@ -2021,6 +2284,7 @@ static int dcmi_probe(struct platform_device *pdev)
 		return dev_err_probe(&pdev->dev, PTR_ERR(chan),
 				     "Failed to request DMA channel\n");
 
+<<<<<<< HEAD
 	mdma_chan = dma_request_chan(&pdev->dev, "mdma_tx");
 	if (IS_ERR(mdma_chan)) {
 		ret = PTR_ERR(mdma_chan);
@@ -2088,6 +2352,16 @@ static int dcmi_probe(struct platform_device *pdev)
 
 	spin_lock_init(&dcmi->irqlock);
 	mutex_init(&dcmi->lock);
+=======
+	dcmi->dma_max_burst = UINT_MAX;
+	ret = dma_get_slave_caps(chan, &caps);
+	if (!ret && caps.max_sg_burst)
+		dcmi->dma_max_burst = caps.max_sg_burst	* DMA_SLAVE_BUSWIDTH_4_BYTES;
+
+	spin_lock_init(&dcmi->irqlock);
+	mutex_init(&dcmi->lock);
+	mutex_init(&dcmi->dma_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_completion(&dcmi->complete);
 	INIT_LIST_HEAD(&dcmi->buffers);
 
@@ -2095,7 +2369,10 @@ static int dcmi_probe(struct platform_device *pdev)
 	dcmi->mclk = mclk;
 	dcmi->state = STOPPED;
 	dcmi->dma_chan = chan;
+<<<<<<< HEAD
 	dcmi->mdma_chan = mdma_chan;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	q = &dcmi->queue;
 
@@ -2204,6 +2481,7 @@ err_device_unregister:
 	v4l2_device_unregister(&dcmi->v4l2_dev);
 err_media_device_cleanup:
 	media_device_cleanup(&dcmi->mdev);
+<<<<<<< HEAD
 err_mdma_slave_config:
 	if (dcmi->mdma_chan)
 		gen_pool_free(dcmi->sram_pool, (unsigned long)dcmi->sram_buf, dcmi->sram_buf_size);
@@ -2211,6 +2489,9 @@ err_dma_slave_config:
 	dma_release_channel(dcmi->dma_chan);
 	if (dcmi->mdma_chan)
 		dma_release_channel(mdma_chan);
+=======
+	dma_release_channel(dcmi->dma_chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -2228,6 +2509,7 @@ static void dcmi_remove(struct platform_device *pdev)
 	media_device_cleanup(&dcmi->mdev);
 
 	dma_release_channel(dcmi->dma_chan);
+<<<<<<< HEAD
 	if (dcmi->mdma_chan) {
 		gen_pool_free(dcmi->sram_pool, (unsigned long)dcmi->sram_buf, dcmi->sram_buf_size);
 		dma_release_channel(dcmi->mdma_chan);
@@ -2235,6 +2517,11 @@ static void dcmi_remove(struct platform_device *pdev)
 }
 
 static int dcmi_runtime_suspend(struct device *dev)
+=======
+}
+
+static __maybe_unused int dcmi_runtime_suspend(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct stm32_dcmi *dcmi = dev_get_drvdata(dev);
 
@@ -2243,7 +2530,11 @@ static int dcmi_runtime_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dcmi_runtime_resume(struct device *dev)
+=======
+static __maybe_unused int dcmi_runtime_resume(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct stm32_dcmi *dcmi = dev_get_drvdata(dev);
 	int ret;
@@ -2255,7 +2546,11 @@ static int dcmi_runtime_resume(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int dcmi_suspend(struct device *dev)
+=======
+static __maybe_unused int dcmi_suspend(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* disable clock */
 	pm_runtime_force_suspend(dev);
@@ -2266,7 +2561,11 @@ static int dcmi_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dcmi_resume(struct device *dev)
+=======
+static __maybe_unused int dcmi_resume(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* restore pinctl default state */
 	pinctrl_pm_select_default_state(dev);
@@ -2278,8 +2577,14 @@ static int dcmi_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops dcmi_pm_ops = {
+<<<<<<< HEAD
 	SYSTEM_SLEEP_PM_OPS(dcmi_suspend, dcmi_resume)
 	RUNTIME_PM_OPS(dcmi_runtime_suspend, dcmi_runtime_resume, NULL)
+=======
+	SET_SYSTEM_SLEEP_PM_OPS(dcmi_suspend, dcmi_resume)
+	SET_RUNTIME_PM_OPS(dcmi_runtime_suspend,
+			   dcmi_runtime_resume, NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct platform_driver stm32_dcmi_driver = {
@@ -2288,7 +2593,11 @@ static struct platform_driver stm32_dcmi_driver = {
 	.driver		= {
 		.name = DRV_NAME,
 		.of_match_table = of_match_ptr(stm32_dcmi_of_match),
+<<<<<<< HEAD
 		.pm = pm_ptr(&dcmi_pm_ops),
+=======
+		.pm = &dcmi_pm_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

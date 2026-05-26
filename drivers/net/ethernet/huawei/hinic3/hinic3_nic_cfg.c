@@ -639,6 +639,7 @@ int hinic3_get_link_status(struct hinic3_hwdev *hwdev, bool *link_status_up)
 	return 0;
 }
 
+<<<<<<< HEAD
 int hinic3_get_port_info(struct hinic3_hwdev *hwdev,
 			 struct hinic3_nic_port_info *port_info)
 {
@@ -672,6 +673,8 @@ int hinic3_get_port_info(struct hinic3_hwdev *hwdev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hinic3_set_vport_enable(struct hinic3_hwdev *hwdev, u16 func_id,
 			    bool enable)
 {
@@ -694,6 +697,7 @@ int hinic3_set_vport_enable(struct hinic3_hwdev *hwdev, u16 func_id,
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int hinic3_cfg_hw_pause(struct hinic3_hwdev *hwdev, u8 opcode,
 			       struct hinic3_nic_pause_config *nic_pause)
@@ -738,3 +742,5 @@ int hinic3_get_pause_info(struct hinic3_nic_dev *nic_dev,
 	return hinic3_cfg_hw_pause(nic_dev->hwdev, MGMT_MSG_CMD_OP_GET,
 				   nic_pause);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

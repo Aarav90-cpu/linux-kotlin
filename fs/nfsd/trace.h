@@ -373,7 +373,10 @@ DEFINE_EVENT_CONDITION(nfsd_fh_err_class, nfsd_##name,	\
 
 DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badexport);
 DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badhandle);
+<<<<<<< HEAD
 DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badmac);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_EVENT(nfsd_exp_find_key,
 	TP_PROTO(const struct svc_expkey *key,
@@ -2241,6 +2244,7 @@ TRACE_EVENT(nfsd_end_grace,
 	)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(nfsd_ctl_fh_key_set,
 	TP_PROTO(
 		const char *key,
@@ -2263,6 +2267,8 @@ TRACE_EVENT(nfsd_ctl_fh_key_set,
 	)
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DECLARE_EVENT_CLASS(nfsd_copy_class,
 	TP_PROTO(
 		const struct nfsd4_copy *copy

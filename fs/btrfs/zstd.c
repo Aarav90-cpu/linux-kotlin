@@ -370,6 +370,10 @@ void zstd_free_workspace(struct list_head *ws)
 
 struct list_head *zstd_alloc_workspace(struct btrfs_fs_info *fs_info, int level)
 {
+<<<<<<< HEAD
+=======
+	const u32 blocksize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct workspace *workspace;
 
 	workspace = kzalloc_obj(*workspace);
@@ -382,7 +386,11 @@ struct list_head *zstd_alloc_workspace(struct btrfs_fs_info *fs_info, int level)
 	workspace->req_level = level;
 	workspace->last_used = jiffies;
 	workspace->mem = kvmalloc(workspace->size, GFP_KERNEL | __GFP_NOWARN);
+<<<<<<< HEAD
 	workspace->buf = kmalloc(fs_info->sectorsize, GFP_KERNEL);
+=======
+	workspace->buf = kmalloc(blocksize, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!workspace->mem || !workspace->buf)
 		goto fail;
 
@@ -413,6 +421,10 @@ int zstd_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 	const u64 start = cb->start;
 	const u32 len = cb->len;
 	const u64 end = start + len;
+<<<<<<< HEAD
+=======
+	const u32 blocksize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const u32 min_folio_size = btrfs_min_folio_size(fs_info);
 
 	workspace->params = zstd_get_btrfs_parameters(workspace->req_level, len);
@@ -437,7 +449,11 @@ int zstd_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 	workspace->in_buf.size = btrfs_calc_input_length(in_folio, end, start);
 
 	/* Allocate and map in the output buffer. */
+<<<<<<< HEAD
 	out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+	out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (out_folio == NULL) {
 		ret = -ENOMEM;
 		goto out;
@@ -461,7 +477,11 @@ int zstd_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 		}
 
 		/* Check to see if we are making it bigger. */
+<<<<<<< HEAD
 		if (tot_in + workspace->in_buf.pos > fs_info->sectorsize * 2 &&
+=======
+		if (tot_in + workspace->in_buf.pos > blocksize * 2 &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    tot_in + workspace->in_buf.pos < tot_out + workspace->out_buf.pos) {
 			ret = -E2BIG;
 			goto out;
@@ -480,7 +500,11 @@ int zstd_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 				goto out;
 			}
 
+<<<<<<< HEAD
 			out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+			out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (out_folio == NULL) {
 				ret = -ENOMEM;
 				goto out;
@@ -553,7 +577,11 @@ int zstd_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 			ret = -E2BIG;
 			goto out;
 		}
+<<<<<<< HEAD
 		out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+		out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (out_folio == NULL) {
 			ret = -ENOMEM;
 			goto out;
@@ -585,9 +613,16 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 	struct btrfs_fs_info *fs_info = cb_to_fs_info(cb);
 	struct workspace *workspace = list_entry(ws, struct workspace, list);
 	struct folio_iter fi;
+<<<<<<< HEAD
 	size_t srclen = bio_get_size(&cb->bbio.bio);
 	zstd_dstream *stream;
 	int ret = 0;
+=======
+	size_t srclen = cb->compressed_len;
+	zstd_dstream *stream;
+	int ret = 0;
+	const u32 blocksize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const unsigned int min_folio_size = btrfs_min_folio_size(fs_info);
 	unsigned long folio_in_index = 0;
 	unsigned long total_folios_in = DIV_ROUND_UP(srclen, min_folio_size);
@@ -617,7 +652,11 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 
 	workspace->out_buf.dst = workspace->buf;
 	workspace->out_buf.pos = 0;
+<<<<<<< HEAD
 	workspace->out_buf.size = fs_info->sectorsize;
+=======
+	workspace->out_buf.size = blocksize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (1) {
 		size_t ret2;
@@ -679,6 +718,10 @@ int zstd_decompress(struct list_head *ws, const u8 *data_in,
 {
 	struct workspace *workspace = list_entry(ws, struct workspace, list);
 	struct btrfs_fs_info *fs_info = btrfs_sb(folio_inode(dest_folio)->i_sb);
+<<<<<<< HEAD
+=======
+	const u32 sectorsize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zstd_dstream *stream;
 	int ret = 0;
 	unsigned long to_copy = 0;
@@ -702,7 +745,11 @@ int zstd_decompress(struct list_head *ws, const u8 *data_in,
 
 	workspace->out_buf.dst = workspace->buf;
 	workspace->out_buf.pos = 0;
+<<<<<<< HEAD
 	workspace->out_buf.size = fs_info->sectorsize;
+=======
+	workspace->out_buf.size = sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Since both input and output buffers should not exceed one sector,

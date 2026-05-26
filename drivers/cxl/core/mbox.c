@@ -893,7 +893,11 @@ out:
 }
 EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, "CXL");
 
+<<<<<<< HEAD
 void cxl_event_trace_record(struct cxl_memdev *cxlmd,
+=======
+void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    enum cxl_event_log_type type,
 			    enum cxl_event_type event_type,
 			    const uuid_t *uuid, union cxl_event *evt)
@@ -920,7 +924,10 @@ void cxl_event_trace_record(struct cxl_memdev *cxlmd,
 		 * translations. Take topology mutation locks and lookup
 		 * { HPA, REGION } from { DPA, MEMDEV } in the event record.
 		 */
+<<<<<<< HEAD
 		guard(device)(&cxlmd->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		guard(rwsem_read)(&cxl_rwsem.region);
 		guard(rwsem_read)(&cxl_rwsem.dpa);
 
@@ -969,7 +976,11 @@ void cxl_event_trace_record(struct cxl_memdev *cxlmd,
 }
 EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, "CXL");
 
+<<<<<<< HEAD
 static void __cxl_event_trace_record(struct cxl_memdev *cxlmd,
+=======
+static void __cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     enum cxl_event_log_type type,
 				     struct cxl_event_record_raw *record)
 {
@@ -1522,21 +1533,37 @@ int cxl_mailbox_init(struct cxl_mailbox *cxl_mbox, struct device *host)
 }
 EXPORT_SYMBOL_NS_GPL(cxl_mailbox_init, "CXL");
 
+<<<<<<< HEAD
 struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev, u64 serial,
 						 u16 dvsec)
+=======
+struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct cxl_memdev_state *mds;
 	int rc;
 
+<<<<<<< HEAD
 	mds = devm_cxl_dev_state_create(dev, CXL_DEVTYPE_CLASSMEM, serial,
 					dvsec, struct cxl_memdev_state, cxlds,
 					true);
+=======
+	mds = devm_kzalloc(dev, sizeof(*mds), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!mds) {
 		dev_err(dev, "No memory available\n");
 		return ERR_PTR(-ENOMEM);
 	}
 
 	mutex_init(&mds->event.log_lock);
+<<<<<<< HEAD
+=======
+	mds->cxlds.dev = dev;
+	mds->cxlds.reg_map.host = dev;
+	mds->cxlds.cxl_mbox.host = dev;
+	mds->cxlds.reg_map.resource = CXL_RESOURCE_NONE;
+	mds->cxlds.type = CXL_DEVTYPE_CLASSMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = devm_cxl_register_mce_notifier(dev, &mds->mce_notifier);
 	if (rc == -EOPNOTSUPP)

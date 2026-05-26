@@ -3533,7 +3533,11 @@ static struct clk_alpha_pll *cam_cc_sm8650_plls[] = {
 	&cam_cc_pll10,
 };
 
+<<<<<<< HEAD
 static const u32 cam_cc_sm8650_critical_cbcrs[] = {
+=======
+static u32 cam_cc_sm8650_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x132ec, /* CAM_CC_GDSC_CLK */
 	0x13308, /* CAM_CC_SLEEP_CLK */
 	0x13314, /* CAM_CC_DRV_XO_CLK */
@@ -3548,7 +3552,11 @@ static const struct regmap_config cam_cc_sm8650_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data cam_cc_sm8650_driver_data = {
+=======
+static struct qcom_cc_driver_data cam_cc_sm8650_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = cam_cc_sm8650_plls,
 	.num_alpha_plls = ARRAY_SIZE(cam_cc_sm8650_plls),
 	.clk_cbcrs = cam_cc_sm8650_critical_cbcrs,

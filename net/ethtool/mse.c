@@ -4,8 +4,13 @@
 #include <linux/phy.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Channels A-D only; WORST and LINK are exclusive alternatives */
 #define PHY_MSE_CHANNEL_COUNT 4

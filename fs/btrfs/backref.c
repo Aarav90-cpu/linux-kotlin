@@ -858,6 +858,14 @@ static int add_missing_keys(struct btrfs_fs_info *fs_info,
 			free_pref(ref);
 			return PTR_ERR(eb);
 		}
+<<<<<<< HEAD
+=======
+		if (unlikely(!extent_buffer_uptodate(eb))) {
+			free_pref(ref);
+			free_extent_buffer(eb);
+			return -EIO;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (lock)
 			btrfs_tree_read_lock(eb);
@@ -1615,6 +1623,14 @@ again:
 					ret = PTR_ERR(eb);
 					goto out;
 				}
+<<<<<<< HEAD
+=======
+				if (unlikely(!extent_buffer_uptodate(eb))) {
+					free_extent_buffer(eb);
+					ret = -EIO;
+					goto out;
+				}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				if (!path->skip_locking)
 					btrfs_tree_read_lock(eb);

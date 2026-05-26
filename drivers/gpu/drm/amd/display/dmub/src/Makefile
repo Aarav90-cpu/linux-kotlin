@@ -1,5 +1,9 @@
 #
+<<<<<<< HEAD
 # Copyright 2019-2026 Advanced Micro Devices, Inc.
+=======
+# Copyright 2019 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -28,7 +32,10 @@ DMUB += dmub_dcn35.o
 DMUB += dmub_dcn351.o
 DMUB += dmub_dcn36.o
 DMUB += dmub_dcn401.o
+<<<<<<< HEAD
 DMUB += dmub_dcn42.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AMD_DAL_DMUB = $(addprefix $(AMDDALPATH)/dmub/src/,$(DMUB))
 

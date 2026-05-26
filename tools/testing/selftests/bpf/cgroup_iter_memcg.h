@@ -9,6 +9,11 @@ struct memcg_query {
 	unsigned long nr_shmem;
 	unsigned long nr_file_pages;
 	unsigned long nr_file_mapped;
+<<<<<<< HEAD
+=======
+	/* some memcg_stat_item */
+	unsigned long memcg_kmem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* some vm_event_item */
 	unsigned long pgfault;
 };

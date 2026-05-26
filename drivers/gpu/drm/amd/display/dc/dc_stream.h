@@ -162,13 +162,21 @@ struct test_pattern {
 #define SUBVP_DRR_MARGIN_US 100 // 100us for DRR margin (SubVP + DRR)
 
 struct dc_stream_debug_options {
+<<<<<<< HEAD
 	uint8_t force_odm_combine_segments;
+=======
+	char force_odm_combine_segments;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * When force_odm_combine_segments is non zero, allow dc to
 	 * temporarily transition to ODM bypass when minimal transition state
 	 * is required to prevent visual glitches showing on the screen
 	 */
+<<<<<<< HEAD
 	uint8_t allow_transition_for_forced_odm;
+=======
+	char allow_transition_for_forced_odm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define LUMINANCE_DATA_TABLE_SIZE 10

@@ -10,7 +10,10 @@
 
 #include <linux/ctype.h>
 #include <linux/firmware.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/string_choices.h>
 #include "otx_cpt_common.h"
 #include "otx_cptpf_ucode.h"
@@ -510,12 +513,22 @@ EXPORT_SYMBOL_GPL(otx_cpt_uc_supports_eng_type);
 static void print_ucode_info(struct otx_cpt_eng_grp_info *eng_grp,
 			     char *buf, int size)
 {
+<<<<<<< HEAD
 	if (eng_grp->mirror.is_ena)
 		scnprintf(buf, size, "%s (shared with engine_group%d)",
 			  eng_grp->g->grp[eng_grp->mirror.idx].ucode[0].ver_str,
 			  eng_grp->mirror.idx);
 	else
 		strscpy(buf, eng_grp->ucode[0].ver_str, size);
+=======
+	if (eng_grp->mirror.is_ena) {
+		scnprintf(buf, size, "%s (shared with engine_group%d)",
+			  eng_grp->g->grp[eng_grp->mirror.idx].ucode[0].ver_str,
+			  eng_grp->mirror.idx);
+	} else {
+		scnprintf(buf, size, "%s", eng_grp->ucode[0].ver_str);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void print_engs_info(struct otx_cpt_eng_grp_info *eng_grp,

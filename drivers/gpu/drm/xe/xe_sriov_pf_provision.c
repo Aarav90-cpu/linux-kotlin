@@ -7,7 +7,10 @@
 #include "xe_device.h"
 #include "xe_gt_sriov_pf_config.h"
 #include "xe_gt_sriov_pf_policy.h"
+<<<<<<< HEAD
 #include "xe_lmtt.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_sriov.h"
 #include "xe_sriov_pf_helpers.h"
 #include "xe_sriov_pf_provision.h"
@@ -33,6 +36,20 @@ static bool pf_auto_provisioning_mode(struct xe_device *xe)
 	return xe->sriov.pf.provision.mode == XE_SRIOV_PROVISIONING_MODE_AUTO;
 }
 
+<<<<<<< HEAD
+=======
+static bool pf_needs_provisioning(struct xe_gt *gt, unsigned int num_vfs)
+{
+	unsigned int n;
+
+	for (n = 1; n <= num_vfs; n++)
+		if (!xe_gt_sriov_pf_config_is_empty(gt, n))
+			return false;
+
+	return true;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int pf_provision_vfs(struct xe_device *xe, unsigned int num_vfs)
 {
 	struct xe_gt *gt;
@@ -41,6 +58,11 @@ static int pf_provision_vfs(struct xe_device *xe, unsigned int num_vfs)
 	int err;
 
 	for_each_gt(gt, xe, id) {
+<<<<<<< HEAD
+=======
+		if (!pf_needs_provisioning(gt, num_vfs))
+			return -EUCLEAN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = xe_gt_sriov_pf_config_set_fair(gt, VFID(1), num_vfs);
 		result = result ?: err;
 	}
@@ -424,6 +446,7 @@ int xe_sriov_pf_provision_query_vf_priority(struct xe_device *xe, unsigned int v
 
 	return !count ? -ENODATA : 0;
 }
+<<<<<<< HEAD
 
 static u64 vram_per_tile(struct xe_tile *tile, u64 total)
 {
@@ -529,3 +552,5 @@ int xe_sriov_pf_provision_query_vf_vram(struct xe_device *xe, unsigned int vfid,
 	*size = total;
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -145,6 +145,11 @@
  * Better audit of register_blkdev.
  */
 
+<<<<<<< HEAD
+=======
+#define REALLY_SLOW_IO
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DEBUGT 2
 
 #define DPRINT(format, args...) \

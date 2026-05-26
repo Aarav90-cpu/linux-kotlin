@@ -117,8 +117,11 @@ static u64 rmp_segment_mask;
 
 static u64 rmp_cfg;
 
+<<<<<<< HEAD
 static void *rmp_bookkeeping __ro_after_init;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Mask to apply to a PFN to get the first PFN of a 2MB page */
 #define PFN_PMD_MASK	GENMASK_ULL(63, PMD_SHIFT - PAGE_SHIFT)
 
@@ -132,6 +135,7 @@ static unsigned long snp_nr_leaked_pages;
 #undef pr_fmt
 #define pr_fmt(fmt)	"SEV-SNP: " fmt
 
+<<<<<<< HEAD
 static void mfd_reconfigure(void *arg)
 {
 	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
@@ -144,11 +148,39 @@ static void mfd_reconfigure(void *arg)
 }
 
 static void snp_enable(void *arg)
+=======
+static int __mfd_enable(unsigned int cpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 val;
 
 	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+<<<<<<< HEAD
 		return;
+=======
+		return 0;
+
+	rdmsrq(MSR_AMD64_SYSCFG, val);
+
+	val |= MSR_AMD64_SYSCFG_MFDM;
+
+	wrmsrq(MSR_AMD64_SYSCFG, val);
+
+	return 0;
+}
+
+static __init void mfd_enable(void *arg)
+{
+	__mfd_enable(smp_processor_id());
+}
+
+static int __snp_enable(unsigned int cpu)
+{
+	u64 val;
+
+	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rdmsrq(MSR_AMD64_SYSCFG, val);
 
@@ -156,6 +188,16 @@ static void snp_enable(void *arg)
 	val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
 
 	wrmsrq(MSR_AMD64_SYSCFG, val);
+<<<<<<< HEAD
+=======
+
+	return 0;
+}
+
+static __init void snp_enable(void *arg)
+{
+	__snp_enable(smp_processor_id());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __init __snp_fixup_e820_tables(u64 pa)
@@ -245,6 +287,7 @@ void __init snp_fixup_e820_tables(void)
 	}
 }
 
+<<<<<<< HEAD
 static void clear_rmp(void)
 {
 	unsigned int i;
@@ -269,6 +312,23 @@ static void clear_rmp(void)
 
 		memset(desc->rmp_entry, 0, desc->size);
 	}
+=======
+static bool __init clear_rmptable_bookkeeping(void)
+{
+	void *bk;
+
+	bk = memremap(probed_rmp_base, RMPTABLE_CPU_BOOKKEEPING_SZ, MEMREMAP_WB);
+	if (!bk) {
+		pr_err("Failed to map RMP bookkeeping area\n");
+		return false;
+	}
+
+	memset(bk, 0, RMPTABLE_CPU_BOOKKEEPING_SZ);
+
+	memunmap(bk);
+
+	return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool __init alloc_rmp_segment_desc(u64 segment_pa, u64 segment_size, u64 pa)
@@ -488,6 +548,7 @@ e_free:
 static bool __init setup_rmptable(void)
 {
 	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+<<<<<<< HEAD
 		if (!setup_segmented_rmptable())
 			return false;
 	} else {
@@ -554,6 +615,14 @@ void snp_shutdown(void)
 }
 EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
 
+=======
+		return setup_segmented_rmptable();
+	} else {
+		return setup_contiguous_rmptable();
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Do the necessary preparations which are verified by the firmware as
  * described in the SNP_INIT_EX firmware command description in the SNP
@@ -561,6 +630,12 @@ EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
  */
 int __init snp_rmptable_init(void)
 {
+<<<<<<< HEAD
+=======
+	unsigned int i;
+	u64 val;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
 		return -ENOSYS;
 
@@ -571,6 +646,45 @@ int __init snp_rmptable_init(void)
 		return -ENOSYS;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Check if SEV-SNP is already enabled, this can happen in case of
+	 * kexec boot.
+	 */
+	rdmsrq(MSR_AMD64_SYSCFG, val);
+	if (val & MSR_AMD64_SYSCFG_SNP_EN)
+		goto skip_enable;
+
+	/* Zero out the RMP bookkeeping area */
+	if (!clear_rmptable_bookkeeping()) {
+		free_rmp_segment_table();
+		return -ENOSYS;
+	}
+
+	/* Zero out the RMP entries */
+	for (i = 0; i < rst_max_index; i++) {
+		struct rmp_segment_desc *desc;
+
+		desc = rmp_segment_table[i];
+		if (!desc)
+			continue;
+
+		memset(desc->rmp_entry, 0, desc->size);
+	}
+
+	/* Flush the caches to ensure that data is written before SNP is enabled. */
+	wbinvd_on_all_cpus();
+
+	/* MtrrFixDramModEn must be enabled on all the CPUs prior to enabling SNP. */
+	on_each_cpu(mfd_enable, NULL, 1);
+
+	on_each_cpu(snp_enable, NULL, 1);
+
+skip_enable:
+	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
+
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Setting crash_kexec_post_notifiers to 'true' to ensure that SNP panic
 	 * notifier is invoked to do SNP IOMMU shutdown before kdump.
 	 */

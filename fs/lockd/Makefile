@@ -9,6 +9,7 @@ obj-$(CONFIG_LOCKD) += lockd.o
 
 lockd-y := clntlock.o clntproc.o clntxdr.o host.o svc.o svclock.o \
 	   svcshare.o svcproc.o svcsubs.o mon.o trace.o xdr.o netlink.o
+<<<<<<< HEAD
 lockd-$(CONFIG_LOCKD_V4) += clnt4xdr.o svc4proc.o nlm4xdr_gen.o
 lockd-$(CONFIG_PROC_FS) += procfs.o
 
@@ -39,3 +40,7 @@ nlm4xdr_gen.h: ../../Documentation/sunrpc/xdr/nlm4.x
 
 nlm4xdr_gen.c: ../../Documentation/sunrpc/xdr/nlm4.x
 	$(XDRGEN) source --peer server $< > $@
+=======
+lockd-$(CONFIG_LOCKD_V4) += clnt4xdr.o xdr4.o svc4proc.o
+lockd-$(CONFIG_PROC_FS) += procfs.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

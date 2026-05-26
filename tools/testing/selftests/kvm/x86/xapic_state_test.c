@@ -23,7 +23,11 @@ static void xapic_guest_code(void)
 	xapic_enable();
 
 	while (1) {
+<<<<<<< HEAD
 		u64 val = (u64)xapic_read_reg(APIC_IRR) |
+=======
+		uint64_t val = (u64)xapic_read_reg(APIC_IRR) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       (u64)xapic_read_reg(APIC_IRR + 0x10) << 32;
 
 		xapic_write_reg(APIC_ICR2, val >> 32);
@@ -43,7 +47,11 @@ static void x2apic_guest_code(void)
 	x2apic_enable();
 
 	do {
+<<<<<<< HEAD
 		u64 val = x2apic_read_reg(APIC_IRR) |
+=======
+		uint64_t val = x2apic_read_reg(APIC_IRR) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       x2apic_read_reg(APIC_IRR + 0x10) << 32;
 
 		if (val & X2APIC_RSVD_BITS_MASK) {
@@ -56,12 +64,20 @@ static void x2apic_guest_code(void)
 	} while (1);
 }
 
+<<<<<<< HEAD
 static void ____test_icr(struct xapic_vcpu *x, u64 val)
+=======
+static void ____test_icr(struct xapic_vcpu *x, uint64_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu = x->vcpu;
 	struct kvm_lapic_state xapic;
 	struct ucall uc;
+<<<<<<< HEAD
 	u64 icr;
+=======
+	uint64_t icr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Tell the guest what ICR value to write.  Use the IRR to pass info,
@@ -93,7 +109,11 @@ static void ____test_icr(struct xapic_vcpu *x, u64 val)
 		TEST_ASSERT_EQ(icr, val & ~APIC_ICR_BUSY);
 }
 
+<<<<<<< HEAD
 static void __test_icr(struct xapic_vcpu *x, u64 val)
+=======
+static void __test_icr(struct xapic_vcpu *x, uint64_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * The BUSY bit is reserved on both AMD and Intel, but only AMD treats
@@ -109,7 +129,11 @@ static void __test_icr(struct xapic_vcpu *x, u64 val)
 static void test_icr(struct xapic_vcpu *x)
 {
 	struct kvm_vcpu *vcpu = x->vcpu;
+<<<<<<< HEAD
 	u64 icr, i, j;
+=======
+	uint64_t icr, i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	icr = APIC_DEST_SELF | APIC_INT_ASSERT | APIC_DM_FIXED;
 	for (i = 0; i <= 0xff; i++)
@@ -142,9 +166,15 @@ static void test_icr(struct xapic_vcpu *x)
 	__test_icr(x, -1ull & ~APIC_DM_FIXED_MASK);
 }
 
+<<<<<<< HEAD
 static void __test_apic_id(struct kvm_vcpu *vcpu, u64 apic_base)
 {
 	u32 apic_id, expected;
+=======
+static void __test_apic_id(struct kvm_vcpu *vcpu, uint64_t apic_base)
+{
+	uint32_t apic_id, expected;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_lapic_state xapic;
 
 	vcpu_set_msr(vcpu, MSR_IA32_APICBASE, apic_base);
@@ -170,9 +200,15 @@ static void __test_apic_id(struct kvm_vcpu *vcpu, u64 apic_base)
  */
 static void test_apic_id(void)
 {
+<<<<<<< HEAD
 	const u32 NR_VCPUS = 3;
 	struct kvm_vcpu *vcpus[NR_VCPUS];
 	u64 apic_base;
+=======
+	const uint32_t NR_VCPUS = 3;
+	struct kvm_vcpu *vcpus[NR_VCPUS];
+	uint64_t apic_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 	int i;
 
@@ -248,7 +284,11 @@ int main(int argc, char *argv[])
 	 * drops writes, AMD does not).  Account for the errata when checking
 	 * that KVM reads back what was written.
 	 */
+<<<<<<< HEAD
 	x.has_xavic_errata = host_cpu_is_amd_compatible &&
+=======
+	x.has_xavic_errata = host_cpu_is_amd &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     get_kvm_amd_param_bool("avic");
 
 	vcpu_clear_cpuid_feature(x.vcpu, X86_FEATURE_X2APIC);

@@ -16,6 +16,7 @@
 #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
 
 #include "exports_core_generated.h"
+<<<<<<< HEAD
 #include "exports_bindings_generated.h"
 #include "exports_kernel_generated.h"
 
@@ -23,6 +24,12 @@
 #include "exports_helpers_generated.h"
 #endif
 
+=======
+#include "exports_helpers_generated.h"
+#include "exports_bindings_generated.h"
+#include "exports_kernel_generated.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // For modules using `rust/build_error.rs`.
 #ifdef CONFIG_RUST_BUILD_ASSERT_ALLOW
 EXPORT_SYMBOL_RUST_GPL(rust_build_error);

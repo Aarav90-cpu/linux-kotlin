@@ -1738,6 +1738,7 @@ static const struct dev_pagemap_ops dmirror_devmem_ops = {
 	.folio_split	= dmirror_devmem_folio_split,
 };
 
+<<<<<<< HEAD
 static void dmirror_device_release(struct device *dev)
 {
 	struct dmirror_device *mdevice = container_of(dev, struct dmirror_device, device);
@@ -1745,6 +1746,8 @@ static void dmirror_device_release(struct device *dev)
 	dmirror_device_remove_chunks(mdevice);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dmirror_device_init(struct dmirror_device *mdevice, int id)
 {
 	dev_t dev;
@@ -1756,8 +1759,11 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
 
 	cdev_init(&mdevice->cdevice, &dmirror_fops);
 	mdevice->cdevice.owner = THIS_MODULE;
+<<<<<<< HEAD
 	mdevice->device.release = dmirror_device_release;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_initialize(&mdevice->device);
 	mdevice->device.devt = dev;
 
@@ -1765,16 +1771,24 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
 	if (ret)
 		goto put_device;
 
+<<<<<<< HEAD
 	/* Build a list of free ZONE_DEVICE struct pages */
 	ret = dmirror_allocate_chunk(mdevice, NULL, false);
 	if (ret)
 		goto put_device;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = cdev_device_add(&mdevice->cdevice, &mdevice->device);
 	if (ret)
 		goto put_device;
 
+<<<<<<< HEAD
 	return 0;
+=======
+	/* Build a list of free ZONE_DEVICE struct pages */
+	return dmirror_allocate_chunk(mdevice, NULL, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 put_device:
 	put_device(&mdevice->device);
@@ -1783,6 +1797,10 @@ put_device:
 
 static void dmirror_device_remove(struct dmirror_device *mdevice)
 {
+<<<<<<< HEAD
+=======
+	dmirror_device_remove_chunks(mdevice);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cdev_device_del(&mdevice->cdevice, &mdevice->device);
 	put_device(&mdevice->device);
 }

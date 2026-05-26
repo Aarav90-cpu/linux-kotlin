@@ -59,7 +59,11 @@ enum psmouse_type {
 	PSMOUSE_TRACKPOINT,
 	PSMOUSE_TOUCHKIT_PS2,
 	PSMOUSE_CORTRON,
+<<<<<<< HEAD
 	PSMOUSE_HGPK,		/* No longer used */
+=======
+	PSMOUSE_HGPK,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PSMOUSE_ELANTECH,
 	PSMOUSE_FSP,
 	PSMOUSE_SYNAPTICS_RELATIVE,
@@ -90,7 +94,11 @@ struct psmouse {
 	void *private;
 	struct input_dev *dev;
 	struct ps2dev ps2dev;
+<<<<<<< HEAD
 	struct work_struct resync_work;
+=======
+	struct delayed_work resync_work;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *vendor;
 	const char *name;
 	const struct psmouse_protocol *protocol;
@@ -132,6 +140,11 @@ struct psmouse {
 
 struct psmouse *psmouse_from_serio(struct serio *serio);
 
+<<<<<<< HEAD
+=======
+void psmouse_queue_work(struct psmouse *psmouse, struct delayed_work *work,
+		unsigned long delay);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int psmouse_reset(struct psmouse *psmouse);
 void psmouse_set_state(struct psmouse *psmouse, enum psmouse_state new_state);
 void psmouse_set_resolution(struct psmouse *psmouse, unsigned int resolution);

@@ -71,6 +71,7 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
  */
 void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
 
+<<<<<<< HEAD
 /**
  * devm_ghes_register_vendor_record_notifier - device-managed vendor
  * record notifier registration.
@@ -82,6 +83,8 @@ void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
 int devm_ghes_register_vendor_record_notifier(struct device *dev,
 					      struct notifier_block *nb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct list_head *ghes_get_devices(void);
 
 void ghes_estatus_pool_region_free(unsigned long addr, u32 size);

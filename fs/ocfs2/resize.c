@@ -508,14 +508,22 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
+=======
+	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
 	if (ret) {
 		mlog_errno(ret);
 		goto out_free_group_bh;
 	}
 
+<<<<<<< HEAD
 	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_ocfs2_group_add((unsigned long long)input->group,
 			       input->chain, input->clusters, input->frees);
 
@@ -523,7 +531,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
 	if (IS_ERR(handle)) {
 		mlog_errno(PTR_ERR(handle));
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto out_remove_cache;
+=======
+		goto out_free_group_bh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
@@ -577,11 +589,17 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
 out_commit:
 	ocfs2_commit_trans(osb, handle);
 
+<<<<<<< HEAD
 out_remove_cache:
 	if (ret < 0)
 		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
 
 out_free_group_bh:
+=======
+out_free_group_bh:
+	if (ret < 0)
+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	brelse(group_bh);
 
 out_unlock:

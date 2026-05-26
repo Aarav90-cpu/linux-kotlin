@@ -6,7 +6,11 @@
  *
  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
  * Copyright 2013-2014  Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright 2018-2026	Intel Corporation
+=======
+ * Copyright 2018-2025	Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/export.h>
@@ -29,11 +33,17 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
 
 	*chandef = (struct cfg80211_chan_def) {
 		.chan = chan,
+<<<<<<< HEAD
 	};
 
 	WARN_ON(chan->band == NL80211_BAND_60GHZ ||
 		chan->band == NL80211_BAND_S1GHZ);
 
+=======
+		.freq1_offset = chan->freq_offset,
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (chan_type) {
 	case NL80211_CHAN_NO_HT:
 		chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
@@ -317,7 +327,11 @@ static bool cfg80211_valid_center_freq(u32 center,
 	int step;
 
 	/* We only do strict verification on 6 GHz */
+<<<<<<< HEAD
 	if (center < 5955 || center > 7215)
+=======
+	if (center < 5955 || center > 7115)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	bw = nl80211_chan_width_to_mhz(width);
@@ -325,7 +339,11 @@ static bool cfg80211_valid_center_freq(u32 center,
 		return false;
 
 	/* Validate that the channels bw is entirely within the 6 GHz band */
+<<<<<<< HEAD
 	if (center - bw / 2 < 5945 || center + bw / 2 > 7225)
+=======
+	if (center - bw / 2 < 5945 || center + bw / 2 > 7125)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/* With 320 MHz the permitted channels overlap */
@@ -341,6 +359,7 @@ static bool cfg80211_valid_center_freq(u32 center,
 	return (center - bw / 2 - 5945) % step == 0;
 }
 
+<<<<<<< HEAD
 static bool
 cfg80211_chandef_valid_control_freq(const struct cfg80211_chan_def *chandef,
 				    u32 control_freq)
@@ -393,6 +412,8 @@ cfg80211_chandef_valid_control_freq(const struct cfg80211_chan_def *chandef,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
 {
 	u32 control_freq, control_freq_khz, start_khz, end_khz;
@@ -405,6 +426,7 @@ bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
 
 	control_freq = chandef->chan->center_freq;
 
+<<<<<<< HEAD
 	if (cfg80211_chandef_is_s1g(chandef) &&
 	    chandef->width != NL80211_CHAN_WIDTH_1 &&
 	    chandef->width != NL80211_CHAN_WIDTH_2 &&
@@ -413,6 +435,8 @@ bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
 	    chandef->width != NL80211_CHAN_WIDTH_16)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (chandef->width) {
 	case NL80211_CHAN_WIDTH_5:
 	case NL80211_CHAN_WIDTH_10:
@@ -455,8 +479,55 @@ bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (!cfg80211_chandef_valid_control_freq(chandef, control_freq))
 		return false;
+=======
+	switch (chandef->width) {
+	case NL80211_CHAN_WIDTH_5:
+	case NL80211_CHAN_WIDTH_10:
+	case NL80211_CHAN_WIDTH_20:
+	case NL80211_CHAN_WIDTH_20_NOHT:
+	case NL80211_CHAN_WIDTH_1:
+	case NL80211_CHAN_WIDTH_2:
+	case NL80211_CHAN_WIDTH_4:
+	case NL80211_CHAN_WIDTH_8:
+	case NL80211_CHAN_WIDTH_16:
+		/* all checked above */
+		break;
+	case NL80211_CHAN_WIDTH_320:
+		if (chandef->center_freq1 == control_freq + 150 ||
+		    chandef->center_freq1 == control_freq + 130 ||
+		    chandef->center_freq1 == control_freq + 110 ||
+		    chandef->center_freq1 == control_freq + 90 ||
+		    chandef->center_freq1 == control_freq - 90 ||
+		    chandef->center_freq1 == control_freq - 110 ||
+		    chandef->center_freq1 == control_freq - 130 ||
+		    chandef->center_freq1 == control_freq - 150)
+			break;
+		fallthrough;
+	case NL80211_CHAN_WIDTH_160:
+		if (chandef->center_freq1 == control_freq + 70 ||
+		    chandef->center_freq1 == control_freq + 50 ||
+		    chandef->center_freq1 == control_freq - 50 ||
+		    chandef->center_freq1 == control_freq - 70)
+			break;
+		fallthrough;
+	case NL80211_CHAN_WIDTH_80P80:
+	case NL80211_CHAN_WIDTH_80:
+		if (chandef->center_freq1 == control_freq + 30 ||
+		    chandef->center_freq1 == control_freq - 30)
+			break;
+		fallthrough;
+	case NL80211_CHAN_WIDTH_40:
+		if (chandef->center_freq1 == control_freq + 10 ||
+		    chandef->center_freq1 == control_freq - 10)
+			break;
+		fallthrough;
+	default:
+		return false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!cfg80211_valid_center_freq(chandef->center_freq1, chandef->width))
 		return false;
@@ -662,6 +733,7 @@ void cfg80211_set_dfs_state(struct wiphy *wiphy,
 	}
 }
 
+<<<<<<< HEAD
 void cfg80211_set_cac_state(struct wiphy *wiphy,
 			    const struct cfg80211_chan_def *chandef,
 			    bool cac_ongoing)
@@ -689,6 +761,8 @@ void cfg80211_set_cac_state(struct wiphy *wiphy,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool
 cfg80211_dfs_permissive_check_wdev(struct cfg80211_registered_device *rdev,
 				   enum nl80211_iftype iftype,
@@ -801,7 +875,10 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
 	case NL80211_IFTYPE_AP:
 	case NL80211_IFTYPE_P2P_GO:
 	case NL80211_IFTYPE_MESH_POINT:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		width = cfg80211_chandef_get_width(chandef);
 		if (width < 0)
 			return -EINVAL;
@@ -816,7 +893,11 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
 	case NL80211_IFTYPE_MONITOR:
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_P2P_DEVICE:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+	case NL80211_IFTYPE_NAN:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NL80211_IFTYPE_WDS:
 	case NL80211_IFTYPE_UNSPECIFIED:
@@ -940,7 +1021,10 @@ bool cfg80211_beaconing_iface_active(struct wireless_dev *wdev)
 	case NL80211_IFTYPE_P2P_DEVICE:
 	/* Can NAN type be considered as beaconing interface? */
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NL80211_IFTYPE_UNSPECIFIED:
 	case NL80211_IFTYPE_WDS:

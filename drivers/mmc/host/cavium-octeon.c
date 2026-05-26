@@ -148,7 +148,11 @@ static void octeon_mmc_dmar_fixup_done(struct cvm_mmc_host *host)
 
 static int octeon_mmc_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct device_node *node = pdev->dev.of_node;
+=======
+	struct device_node *cn, *node = pdev->dev.of_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cvm_mmc_host *host;
 	void __iomem *base;
 	int mmc_irq[9];
@@ -268,7 +272,11 @@ static int octeon_mmc_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, host);
 
 	i = 0;
+<<<<<<< HEAD
 	for_each_child_of_node_scoped(node, cn) {
+=======
+	for_each_child_of_node(node, cn) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		host->slot_pdev[i] =
 			of_platform_device_create(cn, NULL, &pdev->dev);
 		if (!host->slot_pdev[i]) {
@@ -279,6 +287,10 @@ static int octeon_mmc_probe(struct platform_device *pdev)
 		if (ret) {
 			dev_err(&pdev->dev, "Error populating slots\n");
 			octeon_mmc_set_shared_power(host, 0);
+<<<<<<< HEAD
+=======
+			of_node_put(cn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto error;
 		}
 		i++;

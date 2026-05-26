@@ -38,6 +38,10 @@ static const char *ak5558_supply_names[AK5558_NUM_SUPPLIES] = {
 /* AK5558 Codec Private Data */
 struct ak5558_priv {
 	struct regulator_bulk_data supplies[AK5558_NUM_SUPPLIES];
+<<<<<<< HEAD
+=======
+	struct snd_soc_component component;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct regmap *regmap;
 	struct i2c_client *i2c;
 	struct gpio_desc *reset_gpiod; /* Reset & Power down GPIO */

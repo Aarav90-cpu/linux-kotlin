@@ -58,6 +58,27 @@
 		gpios = <&gpio2 RK_PA2 GPIO_ACTIVE_LOW>;
 		linux,rc-map-name = "rc-beelink-gs1";
 	};
+<<<<<<< HEAD
+=======
+
+	spdif_dit: spdif-dit {
+		compatible = "linux,spdif-dit";
+		#sound-dai-cells = <0>;
+	};
+
+	spdif_sound: spdif-sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,name = "SPDIF";
+
+		simple-audio-card,cpu {
+			sound-dai = <&spdif>;
+		};
+
+		simple-audio-card,codec {
+			sound-dai = <&spdif_dit>;
+		};
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &analog_sound {
@@ -325,6 +346,14 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&spdif {
+	pinctrl-0 = <&spdifm0_tx>;
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &tsadc {
 	rockchip,hw-tshut-mode = <0>;
 	rockchip,hw-tshut-polarity = <0>;

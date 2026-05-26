@@ -19,7 +19,10 @@
 #include "xe_pt.h"
 #include "xe_svm.h"
 #include "xe_tile.h"
+<<<<<<< HEAD
 #include "xe_tlb_inval.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_ttm_vram_mgr.h"
 #include "xe_vm.h"
 #include "xe_vm_types.h"
@@ -226,7 +229,10 @@ static void xe_svm_invalidate(struct drm_gpusvm *gpusvm,
 			      const struct mmu_notifier_range *mmu_range)
 {
 	struct xe_vm *vm = gpusvm_to_vm(gpusvm);
+<<<<<<< HEAD
 	struct xe_tlb_inval_batch batch;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_device *xe = vm->xe;
 	struct drm_gpusvm_range *r, *first;
 	struct xe_tile *tile;
@@ -278,10 +284,15 @@ static void xe_svm_invalidate(struct drm_gpusvm *gpusvm,
 
 	xe_device_wmb(xe);
 
+<<<<<<< HEAD
 	err = xe_tlb_inval_range_tilemask_submit(xe, vm->usm.asid, adj_start, adj_end,
 						 tile_mask, &batch);
 	if (!WARN_ON_ONCE(err))
 		xe_tlb_inval_batch_wait(&batch);
+=======
+	err = xe_vm_range_tilemask_tlb_inval(vm, adj_start, adj_end, tile_mask);
+	WARN_ON_ONCE(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 range_notifier_event_end:
 	r = first;
@@ -322,7 +333,10 @@ static void xe_vma_set_default_attributes(struct xe_vma *vma)
 		.preferred_loc.migration_policy = DRM_XE_MIGRATE_ALL_PAGES,
 		.pat_index = vma->attr.default_pat_index,
 		.atomic_access = DRM_XE_ATOMIC_UNDEFINED,
+<<<<<<< HEAD
 		.purgeable_state = XE_MADV_PURGEABLE_WILLNEED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	xe_vma_mem_attr_copy(&vma->attr, &default_attr);
@@ -486,6 +500,7 @@ static void xe_svm_copy_kb_stats_incr(struct xe_gt *gt,
 				      const enum xe_svm_copy_dir dir,
 				      int kb)
 {
+<<<<<<< HEAD
 	if (dir == XE_SVM_COPY_TO_VRAM) {
 		switch (kb) {
 		case 4:
@@ -513,6 +528,12 @@ static void xe_svm_copy_kb_stats_incr(struct xe_gt *gt,
 		}
 		xe_gt_stats_incr(gt, XE_GT_STATS_ID_SVM_CPU_COPY_KB, kb);
 	}
+=======
+	if (dir == XE_SVM_COPY_TO_VRAM)
+		xe_gt_stats_incr(gt, XE_GT_STATS_ID_SVM_DEVICE_COPY_KB, kb);
+	else
+		xe_gt_stats_incr(gt, XE_GT_STATS_ID_SVM_CPU_COPY_KB, kb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
@@ -775,7 +796,11 @@ static u64 block_offset_to_pfn(struct drm_pagemap *dpagemap, u64 offset)
 	return PHYS_PFN(offset + xpagemap->hpa_base);
 }
 
+<<<<<<< HEAD
 static struct gpu_buddy *vram_to_buddy(struct xe_vram_region *vram)
+=======
+static struct drm_buddy *vram_to_buddy(struct xe_vram_region *vram)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return &vram->ttm.mm;
 }
@@ -786,17 +811,30 @@ static int xe_svm_populate_devmem_pfn(struct drm_pagemap_devmem *devmem_allocati
 	struct xe_bo *bo = to_xe_bo(devmem_allocation);
 	struct ttm_resource *res = bo->ttm.resource;
 	struct list_head *blocks = &to_xe_ttm_vram_mgr_resource(res)->blocks;
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int j = 0;
 
 	list_for_each_entry(block, blocks, link) {
 		struct xe_vram_region *vr = block->private;
+<<<<<<< HEAD
 		struct gpu_buddy *buddy = vram_to_buddy(vr);
 		u64 block_pfn = block_offset_to_pfn(devmem_allocation->dpagemap,
 						    gpu_buddy_block_offset(block));
 		int i;
 
 		for (i = 0; i < gpu_buddy_block_size(buddy, block) >> PAGE_SHIFT; ++i)
+=======
+		struct drm_buddy *buddy = vram_to_buddy(vr);
+		u64 block_pfn = block_offset_to_pfn(devmem_allocation->dpagemap,
+						    drm_buddy_block_offset(block));
+		int i;
+
+		for (i = 0; i < drm_buddy_block_size(buddy, block) >> PAGE_SHIFT; ++i)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pfn[j++] = block_pfn + i;
 	}
 
@@ -1061,7 +1099,11 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
 	struct dma_fence *pre_migrate_fence = NULL;
 	struct xe_device *xe = vr->xe;
 	struct device *dev = xe->drm.dev;
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_validation_ctx vctx;
 	struct list_head *blocks;
 	struct drm_exec exec;

@@ -460,7 +460,11 @@ static void gpioirq(struct tasklet_struct *t)
 
 	if (saa7146_wait_for_debi_done(av7110->dev, 0)) {
 		pr_err("%s(): saa7146_wait_for_debi_done timed out\n", __func__);
+<<<<<<< HEAD
 		return;
+=======
+		BUG(); /* maybe we should try resetting the debi? */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock(&av7110->debilock);

@@ -71,10 +71,13 @@ swap_routes:
 	mutex_unlock(&partition->pt_irq_lock);
 
 	synchronize_srcu_expedited(&partition->pt_irq_srcu);
+<<<<<<< HEAD
 
 	trace_mshv_update_routing_table(partition->pt_id,
 					old, new, numents);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	new = old;
 
 out:

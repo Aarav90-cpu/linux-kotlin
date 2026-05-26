@@ -85,11 +85,14 @@ properties:
   aux-bus:
     $ref: /schemas/display/dp-aux-bus.yaml#
 
+<<<<<<< HEAD
   connector:
     type: object
     $ref: /schemas/connector/usb-connector.yaml#
     unevaluatedProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   ports:
     $ref: /schemas/graph.yaml#/properties/ports
 
@@ -122,6 +125,10 @@ properties:
 
     required:
       - port@0
+<<<<<<< HEAD
+=======
+      - port@1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible
@@ -131,6 +138,7 @@ required:
   - vdd33-supply
   - ports
 
+<<<<<<< HEAD
 allOf:
   - if:
       required:
@@ -153,6 +161,8 @@ allOf:
           required:
             - port@1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:
@@ -211,6 +221,7 @@ examples:
             };
         };
     };
+<<<<<<< HEAD
   - |
     #include <dt-bindings/gpio/gpio.h>
 
@@ -281,3 +292,5 @@ examples:
             };
         };
     };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

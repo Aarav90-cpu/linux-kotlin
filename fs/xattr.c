@@ -22,7 +22,10 @@
 #include <linux/audit.h>
 #include <linux/vmalloc.h>
 #include <linux/posix_acl_xattr.h>
+<<<<<<< HEAD
 #include <linux/rhashtable.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/uaccess.h>
 
@@ -106,6 +109,7 @@ int may_write_xattr(struct mnt_idmap *idmap, struct inode *inode)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int xattr_permission_error(int mask)
 {
 	if (mask & MAY_WRITE)
@@ -113,6 +117,8 @@ static inline int xattr_permission_error(int mask)
 	return -ENODATA;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Check permissions for extended attribute access.  This is a bit complicated
  * because different namespaces have very different rules.
@@ -142,7 +148,11 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
 	 */
 	if (!strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN)) {
 		if (!capable(CAP_SYS_ADMIN))
+<<<<<<< HEAD
 			return xattr_permission_error(mask);
+=======
+			return (mask & MAY_WRITE) ? -EPERM : -ENODATA;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -152,6 +162,7 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
 	 * privileged users can write attributes.
 	 */
 	if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN)) {
+<<<<<<< HEAD
 		switch (inode->i_mode & S_IFMT) {
 		case S_IFREG:
 			break;
@@ -168,6 +179,14 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
 		default:
 			return xattr_permission_error(mask);
 		}
+=======
+		if (!S_ISREG(inode->i_mode) && !S_ISDIR(inode->i_mode))
+			return (mask & MAY_WRITE) ? -EPERM : -ENODATA;
+		if (S_ISDIR(inode->i_mode) && (inode->i_mode & S_ISVTX) &&
+		    (mask & MAY_WRITE) &&
+		    !inode_owner_or_capable(idmap, inode))
+			return -EPERM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return inode_permission(idmap, inode, mask);
@@ -1215,6 +1234,7 @@ void simple_xattr_free(struct simple_xattr *xattr)
 	kvfree(xattr);
 }
 
+<<<<<<< HEAD
 static void simple_xattr_rcu_free(struct rcu_head *head)
 {
 	struct simple_xattr *xattr = container_of(head, struct simple_xattr, rcu);
@@ -1236,6 +1256,8 @@ void simple_xattr_free_rcu(struct simple_xattr *xattr)
 		call_rcu(&xattr->rcu, simple_xattr_rcu_free);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * simple_xattr_alloc - allocate new xattr object
  * @value: value of the xattr object
@@ -1244,14 +1266,20 @@ void simple_xattr_free_rcu(struct simple_xattr *xattr)
  * Allocate a new xattr object and initialize respective members. The caller is
  * responsible for handling the name of the xattr.
  *
+<<<<<<< HEAD
  * Return: New xattr object on success, NULL if @value is NULL, ERR_PTR on
  * failure.
+=======
+ * Return: On success a new xattr object is returned. On failure NULL is
+ * returned.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct simple_xattr *simple_xattr_alloc(const void *value, size_t size)
 {
 	struct simple_xattr *new_xattr;
 	size_t len;
 
+<<<<<<< HEAD
 	if (!value)
 		return NULL;
 
@@ -1263,12 +1291,23 @@ struct simple_xattr *simple_xattr_alloc(const void *value, size_t size)
 	new_xattr = kvmalloc(len, GFP_KERNEL_ACCOUNT);
 	if (!new_xattr)
 		return ERR_PTR(-ENOMEM);
+=======
+	/* wrap around? */
+	len = sizeof(*new_xattr) + size;
+	if (len < sizeof(*new_xattr))
+		return NULL;
+
+	new_xattr = kvmalloc(len, GFP_KERNEL_ACCOUNT);
+	if (!new_xattr)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	new_xattr->size = size;
 	memcpy(new_xattr->value, value, size);
 	return new_xattr;
 }
 
+<<<<<<< HEAD
 static u32 simple_xattr_hashfn(const void *data, u32 len, u32 seed)
 {
 	const char *name = data;
@@ -1296,6 +1335,45 @@ static const struct rhashtable_params simple_xattr_params = {
 	.automatic_shrinking = true,
 };
 
+=======
+/**
+ * rbtree_simple_xattr_cmp - compare xattr name with current rbtree xattr entry
+ * @key: xattr name
+ * @node: current node
+ *
+ * Compare the xattr name with the xattr name attached to @node in the rbtree.
+ *
+ * Return: Negative value if continuing left, positive if continuing right, 0
+ * if the xattr attached to @node matches @key.
+ */
+static int rbtree_simple_xattr_cmp(const void *key, const struct rb_node *node)
+{
+	const char *xattr_name = key;
+	const struct simple_xattr *xattr;
+
+	xattr = rb_entry(node, struct simple_xattr, rb_node);
+	return strcmp(xattr->name, xattr_name);
+}
+
+/**
+ * rbtree_simple_xattr_node_cmp - compare two xattr rbtree nodes
+ * @new_node: new node
+ * @node: current node
+ *
+ * Compare the xattr attached to @new_node with the xattr attached to @node.
+ *
+ * Return: Negative value if continuing left, positive if continuing right, 0
+ * if the xattr attached to @new_node matches the xattr attached to @node.
+ */
+static int rbtree_simple_xattr_node_cmp(struct rb_node *new_node,
+					const struct rb_node *node)
+{
+	struct simple_xattr *xattr;
+	xattr = rb_entry(new_node, struct simple_xattr, rb_node);
+	return rbtree_simple_xattr_cmp(xattr->name, node);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * simple_xattr_get - get an xattr object
  * @xattrs: the header of the xattr object
@@ -1314,12 +1392,23 @@ static const struct rhashtable_params simple_xattr_params = {
 int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
 		     void *buffer, size_t size)
 {
+<<<<<<< HEAD
 	struct simple_xattr *xattr;
 	int ret = -ENODATA;
 
 	guard(rcu)();
 	xattr = rhashtable_lookup(&xattrs->ht, name, simple_xattr_params);
 	if (xattr) {
+=======
+	struct simple_xattr *xattr = NULL;
+	struct rb_node *rbp;
+	int ret = -ENODATA;
+
+	read_lock(&xattrs->lock);
+	rbp = rb_find(name, &xattrs->rb_root, rbtree_simple_xattr_cmp);
+	if (rbp) {
+		xattr = rb_entry(rbp, struct simple_xattr, rb_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = xattr->size;
 		if (buffer) {
 			if (size < xattr->size)
@@ -1328,6 +1417,10 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
 				memcpy(buffer, xattr->value, xattr->size);
 		}
 	}
+<<<<<<< HEAD
+=======
+	read_unlock(&xattrs->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1354,11 +1447,14 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
  * nothing if XATTR_CREATE is specified in @flags or @flags is zero. For
  * XATTR_REPLACE we fail as mentioned above.
  *
+<<<<<<< HEAD
  * Note: Callers must externally serialize writes. All current callers hold
  * the inode lock for write operations. The lookup->replace/remove sequence
  * is not atomic with respect to the rhashtable's per-bucket locking, but
  * is safe because writes are serialized by the caller.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return: On success, the removed or replaced xattr is returned, to be freed
  * by the caller; or NULL if none. On failure a negative error code is returned.
  */
@@ -1366,6 +1462,7 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
 				      const char *name, const void *value,
 				      size_t size, int flags)
 {
+<<<<<<< HEAD
 	struct simple_xattr *old_xattr = NULL;
 	int err;
 
@@ -1406,17 +1503,74 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
 		/* Fail if XATTR_REPLACE is requested but no xattr is found. */
 		if (flags & XATTR_REPLACE)
 			return ERR_PTR(-ENODATA);
+=======
+	struct simple_xattr *old_xattr = NULL, *new_xattr = NULL;
+	struct rb_node *parent = NULL, **rbp;
+	int err = 0, ret;
+
+	/* value == NULL means remove */
+	if (value) {
+		new_xattr = simple_xattr_alloc(value, size);
+		if (!new_xattr)
+			return ERR_PTR(-ENOMEM);
+
+		new_xattr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
+		if (!new_xattr->name) {
+			simple_xattr_free(new_xattr);
+			return ERR_PTR(-ENOMEM);
+		}
+	}
+
+	write_lock(&xattrs->lock);
+	rbp = &xattrs->rb_root.rb_node;
+	while (*rbp) {
+		parent = *rbp;
+		ret = rbtree_simple_xattr_cmp(name, *rbp);
+		if (ret < 0)
+			rbp = &(*rbp)->rb_left;
+		else if (ret > 0)
+			rbp = &(*rbp)->rb_right;
+		else
+			old_xattr = rb_entry(*rbp, struct simple_xattr, rb_node);
+		if (old_xattr)
+			break;
+	}
+
+	if (old_xattr) {
+		/* Fail if XATTR_CREATE is requested and the xattr exists. */
+		if (flags & XATTR_CREATE) {
+			err = -EEXIST;
+			goto out_unlock;
+		}
+
+		if (new_xattr)
+			rb_replace_node(&old_xattr->rb_node,
+					&new_xattr->rb_node, &xattrs->rb_root);
+		else
+			rb_erase(&old_xattr->rb_node, &xattrs->rb_root);
+	} else {
+		/* Fail if XATTR_REPLACE is requested but no xattr is found. */
+		if (flags & XATTR_REPLACE) {
+			err = -ENODATA;
+			goto out_unlock;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * If XATTR_CREATE or no flags are specified together with a
 		 * new value simply insert it.
 		 */
 		if (new_xattr) {
+<<<<<<< HEAD
 			err = rhashtable_insert_fast(&xattrs->ht,
 						     &new_xattr->hash_node,
 						     simple_xattr_params);
 			if (err)
 				return ERR_PTR(err);
+=======
+			rb_link_node(&new_xattr->rb_node, parent, rbp);
+			rb_insert_color(&new_xattr->rb_node, &xattrs->rb_root);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/*
@@ -1425,6 +1579,7 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
 		 */
 	}
 
+<<<<<<< HEAD
 	retain_and_null_ptr(new_xattr);
 	return old_xattr;
 }
@@ -1492,6 +1647,14 @@ int simple_xattr_set_limited(struct simple_xattrs *xattrs,
 		simple_xattr_free_rcu(old_xattr);
 	}
 	return 0;
+=======
+out_unlock:
+	write_unlock(&xattrs->lock);
+	if (!err)
+		return old_xattr;
+	simple_xattr_free(new_xattr);
+	return ERR_PTR(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool xattr_is_trusted(const char *name)
@@ -1531,8 +1694,13 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
 			  char *buffer, size_t size)
 {
 	bool trusted = ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN);
+<<<<<<< HEAD
 	struct rhashtable_iter iter;
 	struct simple_xattr *xattr;
+=======
+	struct simple_xattr *xattr;
+	struct rb_node *rbp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ssize_t remaining_size = size;
 	int err = 0;
 
@@ -1552,6 +1720,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
 	remaining_size -= err;
 	err = 0;
 
+<<<<<<< HEAD
 	if (!xattrs)
 		return size - remaining_size;
 
@@ -1565,6 +1734,11 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
 			err = PTR_ERR(xattr);
 			break;
 		}
+=======
+	read_lock(&xattrs->lock);
+	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
+		xattr = rb_entry(rbp, struct simple_xattr, rb_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* skip "trusted." attributes for unprivileged callers */
 		if (!trusted && xattr_is_trusted(xattr->name))
@@ -1578,14 +1752,37 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
 		if (err)
 			break;
 	}
+<<<<<<< HEAD
 
 	rhashtable_walk_stop(&iter);
 	rhashtable_walk_exit(&iter);
+=======
+	read_unlock(&xattrs->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return err ? err : size - remaining_size;
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * rbtree_simple_xattr_less - compare two xattr rbtree nodes
+ * @new_node: new node
+ * @node: current node
+ *
+ * Compare the xattr attached to @new_node with the xattr attached to @node.
+ * Note that this function technically tolerates duplicate entries.
+ *
+ * Return: True if insertion point in the rbtree is found.
+ */
+static bool rbtree_simple_xattr_less(struct rb_node *new_node,
+				     const struct rb_node *node)
+{
+	return rbtree_simple_xattr_node_cmp(new_node, node) < 0;
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * simple_xattr_add - add xattr objects
  * @xattrs: the header of the xattr object
  * @new_xattr: the xattr object to add
@@ -1593,6 +1790,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
  * Add an xattr object to @xattrs. This assumes no replacement or removal
  * of matching xattrs is wanted. Should only be called during inode
  * initialization when a few distinct initial xattrs are supposed to be set.
+<<<<<<< HEAD
  *
  * Return: On success zero is returned. On failure a negative error code is
  * returned.
@@ -1602,12 +1800,22 @@ int simple_xattr_add(struct simple_xattrs *xattrs,
 {
 	return rhashtable_insert_fast(&xattrs->ht, &new_xattr->hash_node,
 				      simple_xattr_params);
+=======
+ */
+void simple_xattr_add(struct simple_xattrs *xattrs,
+		      struct simple_xattr *new_xattr)
+{
+	write_lock(&xattrs->lock);
+	rb_add(&new_xattr->rb_node, &xattrs->rb_root, rbtree_simple_xattr_less);
+	write_unlock(&xattrs->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
  * simple_xattrs_init - initialize new xattr header
  * @xattrs: header to initialize
  *
+<<<<<<< HEAD
  * Initialize the rhashtable used to store xattr objects.
  *
  * Return: On success zero is returned. On failure a negative error code is
@@ -1687,6 +1895,14 @@ static void simple_xattr_ht_free(void *ptr, void *arg)
 	if (freed_space)
 		*freed_space += simple_xattr_space(xattr->name, xattr->size);
 	simple_xattr_free(xattr);
+=======
+ * Initialize relevant fields of a an xattr header.
+ */
+void simple_xattrs_init(struct simple_xattrs *xattrs)
+{
+	xattrs->rb_root = RB_ROOT;
+	rwlock_init(&xattrs->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1699,10 +1915,31 @@ static void simple_xattr_ht_free(void *ptr, void *arg)
  */
 void simple_xattrs_free(struct simple_xattrs *xattrs, size_t *freed_space)
 {
+<<<<<<< HEAD
 	might_sleep();
 
 	if (freed_space)
 		*freed_space = 0;
 	rhashtable_free_and_destroy(&xattrs->ht, simple_xattr_ht_free,
 				    freed_space);
+=======
+	struct rb_node *rbp;
+
+	if (freed_space)
+		*freed_space = 0;
+	rbp = rb_first(&xattrs->rb_root);
+	while (rbp) {
+		struct simple_xattr *xattr;
+		struct rb_node *rbp_next;
+
+		rbp_next = rb_next(rbp);
+		xattr = rb_entry(rbp, struct simple_xattr, rb_node);
+		rb_erase(&xattr->rb_node, &xattrs->rb_root);
+		if (freed_space)
+			*freed_space += simple_xattr_space(xattr->name,
+							   xattr->size);
+		simple_xattr_free(xattr);
+		rbp = rbp_next;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

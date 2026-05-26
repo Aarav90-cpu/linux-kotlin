@@ -824,6 +824,7 @@ static struct ctl_table ipv4_net_table[] = {
 		.proc_handler	= ipv4_local_port_range,
 	},
 	{
+<<<<<<< HEAD
 		.procname	= "ip_local_port_step_width",
 		.maxlen		= sizeof(u32),
 		.data		= &init_net.ipv4.sysctl_ip_local_port_step_width,
@@ -831,6 +832,8 @@ static struct ctl_table ipv4_net_table[] = {
 		.proc_handler	= proc_douintvec,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.procname	= "ip_local_reserved_ports",
 		.data		= &init_net.ipv4.sysctl_local_reserved_ports,
 		.maxlen		= 65536,

@@ -198,6 +198,7 @@ IRQ_DCN401 = irq_service_dcn401.o
 AMD_DAL_IRQ_DCN401= $(addprefix $(AMDDALPATH)/dc/irq/dcn401/,$(IRQ_DCN401))
 
 AMD_DISPLAY_FILES += $(AMD_DAL_IRQ_DCN401)
+<<<<<<< HEAD
 
 ###############################################################################
 # DCN 42
@@ -207,3 +208,5 @@ IRQ_DCN42 = irq_service_dcn42.o
 AMD_DAL_IRQ_DCN42= $(addprefix $(AMDDALPATH)/dc/irq/dcn42/,$(IRQ_DCN42))
 
 AMD_DISPLAY_FILES += $(AMD_DAL_IRQ_DCN42)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -118,6 +118,7 @@ TEST_F(fixture_setup_failure, pass) {
 	TH_LOG("after");
 }
 
+<<<<<<< HEAD
 TEST(exit_pass) {
 	exit(KSFT_PASS);
 }
@@ -158,6 +159,8 @@ TEST(test_result_skip) {
 	ksft_test_result_skip("");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int main(int argc, char **argv)
 {
 	/*

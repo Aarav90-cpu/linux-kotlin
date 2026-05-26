@@ -569,6 +569,7 @@ static inline unsigned int pt_compute_best_pgsize(pt_vaddr_t pgsz_bitmap,
 	return pgsz_lg2;
 }
 
+<<<<<<< HEAD
 /*
  * Return the number of pgsize_lg2 leaf entries that can be mapped for
  * va to oa. This accounts for any requirement to reduce or increase the page
@@ -591,6 +592,8 @@ static inline pt_vaddr_t pt_pgsz_count(pt_vaddr_t pgsz_bitmap, pt_vaddr_t va,
 	return log2_div(len, pgsize_lg2);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define _PT_MAKE_CALL_LEVEL(fn)                                          \
 	static __always_inline int fn(struct pt_range *range, void *arg, \
 				      unsigned int level,                \

@@ -566,6 +566,7 @@ static const struct atmel_hlcdc_dc_desc atmel_xlcdc_dc_sam9x75 = {
 	.ops = &atmel_xlcdc_ops,
 };
 
+<<<<<<< HEAD
 static const struct atmel_hlcdc_layer_desc atmel_xlcdc_sama7d65_layers[] = {
 	{
 		.name = "base",
@@ -643,6 +644,8 @@ static const struct atmel_hlcdc_dc_desc atmel_xlcdc_dc_sama7d65 = {
 	.ops = &atmel_xlcdc_ops,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id atmel_hlcdc_of_match[] = {
 	{
 		.compatible = "atmel,at91sam9n12-hlcdc",
@@ -672,10 +675,13 @@ static const struct of_device_id atmel_hlcdc_of_match[] = {
 		.compatible = "microchip,sam9x75-xlcdc",
 		.data = &atmel_xlcdc_dc_sam9x75,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "microchip,sama7d65-xlcdc",
 		.data = &atmel_xlcdc_dc_sama7d65,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, atmel_hlcdc_of_match);

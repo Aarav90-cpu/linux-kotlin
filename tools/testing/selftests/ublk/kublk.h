@@ -60,7 +60,10 @@ struct stripe_ctx {
 struct fault_inject_ctx {
 	/* fault_inject */
 	unsigned long   delay_us;
+<<<<<<< HEAD
 	bool die_during_fetch;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dev_ctx {
@@ -81,7 +84,10 @@ struct dev_ctx {
 	unsigned int	no_ublk_fixed_fd:1;
 	unsigned int	safe_stop:1;
 	unsigned int	no_auto_part_scan:1;
+<<<<<<< HEAD
 	unsigned int	rdonly_shmem_buf:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__u32 integrity_flags;
 	__u8 metadata_size;
 	__u8 pi_offset;
@@ -97,8 +103,11 @@ struct dev_ctx {
 	/* for 'update_size' command */
 	unsigned long long size;
 
+<<<<<<< HEAD
 	char *htlb_path;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union {
 		struct stripe_ctx 	stripe;
 		struct fault_inject_ctx fault_inject;
@@ -142,8 +151,11 @@ struct ublk_tgt_ops {
 	int (*init_tgt)(const struct dev_ctx *ctx, struct ublk_dev *);
 	void (*deinit_tgt)(struct ublk_dev *);
 
+<<<<<<< HEAD
 	void (*pre_fetch_io)(struct ublk_thread *t, struct ublk_queue *q,
 			     int tag, bool batch);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*queue_io)(struct ublk_thread *, struct ublk_queue *, int tag);
 	void (*tgt_io_done)(struct ublk_thread *, struct ublk_queue *,
 			    const struct io_uring_cqe *);
@@ -605,6 +617,7 @@ static inline void ublk_queued_tgt_io(struct ublk_thread *t, struct ublk_queue *
 	}
 }
 
+<<<<<<< HEAD
 /* shared memory zero-copy support */
 #define UBLK_BUF_MAX		256
 
@@ -617,6 +630,8 @@ struct ublk_shmem_entry {
 extern struct ublk_shmem_entry shmem_table[UBLK_BUF_MAX];
 extern int shmem_count;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct ublk_tgt_ops null_tgt_ops;
 extern const struct ublk_tgt_ops loop_tgt_ops;
 extern const struct ublk_tgt_ops stripe_tgt_ops;

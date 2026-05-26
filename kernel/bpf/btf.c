@@ -270,7 +270,10 @@ struct btf {
 	struct btf_id_dtor_kfunc_tab *dtor_kfunc_tab;
 	struct btf_struct_metas *struct_meta_tab;
 	struct btf_struct_ops_tab *struct_ops_tab;
+<<<<<<< HEAD
 	struct btf_layout *layout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* split BTF support */
 	struct btf *base_btf;
@@ -1708,11 +1711,14 @@ static void btf_verifier_log_hdr(struct btf_verifier_env *env,
 	__btf_verifier_log(log, "type_len: %u\n", hdr->type_len);
 	__btf_verifier_log(log, "str_off: %u\n", hdr->str_off);
 	__btf_verifier_log(log, "str_len: %u\n", hdr->str_len);
+<<<<<<< HEAD
 	if (hdr->hdr_len >= sizeof(struct btf_header) &&
 	    btf_data_size >= hdr->hdr_len) {
 		__btf_verifier_log(log, "layout_off: %u\n", hdr->layout_off);
 		__btf_verifier_log(log, "layout_len: %u\n", hdr->layout_len);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__btf_verifier_log(log, "btf_total_size: %u\n", btf_data_size);
 }
 
@@ -5532,8 +5538,12 @@ static int btf_parse_str_sec(struct btf_verifier_env *env)
 	start = btf->nohdr_data + hdr->str_off;
 	end = start + hdr->str_len;
 
+<<<<<<< HEAD
 	if (hdr->hdr_len < sizeof(struct btf_header) &&
 	    end != btf->data + btf->data_size) {
+=======
+	if (end != btf->data + btf->data_size) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btf_verifier_log(env, "String section is not at the end");
 		return -EINVAL;
 	}
@@ -5554,6 +5564,7 @@ static int btf_parse_str_sec(struct btf_verifier_env *env)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int btf_parse_layout_sec(struct btf_verifier_env *env)
 {
 	const struct btf_header *hdr = &env->btf->hdr;
@@ -5594,6 +5605,11 @@ static const size_t btf_sec_info_offset[] = {
 	offsetof(struct btf_header, type_off),
 	offsetof(struct btf_header, str_off),
 	offsetof(struct btf_header, layout_off)
+=======
+static const size_t btf_sec_info_offset[] = {
+	offsetof(struct btf_header, type_off),
+	offsetof(struct btf_header, str_off),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int btf_sec_info_cmp(const void *a, const void *b)
@@ -5609,13 +5625,17 @@ static int btf_check_sec_info(struct btf_verifier_env *env,
 {
 	struct btf_sec_info secs[ARRAY_SIZE(btf_sec_info_offset)];
 	u32 total, expected_total, i;
+<<<<<<< HEAD
 	u32 nr_secs = ARRAY_SIZE(btf_sec_info_offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct btf_header *hdr;
 	const struct btf *btf;
 
 	btf = env->btf;
 	hdr = &btf->hdr;
 
+<<<<<<< HEAD
 	if (hdr->hdr_len < sizeof(struct btf_header) || hdr->layout_len == 0)
 		nr_secs--;
 
@@ -5625,12 +5645,24 @@ static int btf_check_sec_info(struct btf_verifier_env *env,
 						   btf_sec_info_offset[i]);
 
 	sort(secs, nr_secs,
+=======
+	/* Populate the secs from hdr */
+	for (i = 0; i < ARRAY_SIZE(btf_sec_info_offset); i++)
+		secs[i] = *(struct btf_sec_info *)((void *)hdr +
+						   btf_sec_info_offset[i]);
+
+	sort(secs, ARRAY_SIZE(btf_sec_info_offset),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     sizeof(struct btf_sec_info), btf_sec_info_cmp, NULL);
 
 	/* Check for gaps and overlap among sections */
 	total = 0;
 	expected_total = btf_data_size - hdr->hdr_len;
+<<<<<<< HEAD
 	for (i = 0; i < nr_secs; i++) {
+=======
+	for (i = 0; i < ARRAY_SIZE(btf_sec_info_offset); i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (expected_total < secs[i].off) {
 			btf_verifier_log(env, "Invalid section offset");
 			return -EINVAL;
@@ -5986,10 +6018,13 @@ static struct btf *btf_parse(const union bpf_attr *attr, bpfptr_t uattr, u32 uat
 	if (err)
 		goto errout;
 
+<<<<<<< HEAD
 	err = btf_parse_layout_sec(env);
 	if (err)
 		goto errout;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = btf_parse_type_sec(env);
 	if (err)
 		goto errout;
@@ -6569,6 +6604,16 @@ struct btf *bpf_prog_get_target_btf(const struct bpf_prog *prog)
 		return prog->aux->attach_btf;
 }
 
+<<<<<<< HEAD
+=======
+static bool is_void_or_int_ptr(struct btf *btf, const struct btf_type *t)
+{
+	/* skip modifiers */
+	t = btf_type_skip_modifiers(btf, t->type, NULL);
+	return btf_type_is_void(t) || btf_type_is_int(t);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u32 btf_ctx_arg_idx(struct btf *btf, const struct btf_type *func_proto,
 		    int off)
 {
@@ -6957,6 +7002,7 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * If it's a single or multilevel pointer, except a pointer
 	 * to a structure, it's the same as scalar from the verifier
 	 * safety POV. Multilevel pointers to structures are treated as
@@ -6965,6 +7011,12 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
 	 * walking is allowed.
 	 */
 	if (!btf_type_is_struct_ptr(btf, t))
+=======
+	 * If it's a pointer to void, it's the same as scalar from the verifier
+	 * safety POV. Either way, no futher pointer walking is allowed.
+	 */
+	if (is_void_or_int_ptr(btf, t))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	/* this is a pointer to another type */
@@ -7894,6 +7946,7 @@ int btf_prepare_func_args(struct bpf_verifier_env *env, int subprog)
 			tname, nargs, MAX_BPF_FUNC_REG_ARGS);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	/* check that function is void or returns int, exception cb also requires this */
 	t = btf_type_by_id(btf, t->type);
 	while (btf_type_is_modifier(t))
@@ -7904,6 +7957,17 @@ int btf_prepare_func_args(struct bpf_verifier_env *env, int subprog)
 		bpf_log(log,
 			"Global function %s() return value not void or scalar. "
 			"Only those are supported.\n",
+=======
+	/* check that function returns int, exception cb also requires this */
+	t = btf_type_by_id(btf, t->type);
+	while (btf_type_is_modifier(t))
+		t = btf_type_by_id(btf, t->type);
+	if (!btf_type_is_int(t) && !btf_is_any_enum(t)) {
+		if (!is_global)
+			return -EINVAL;
+		bpf_log(log,
+			"Global function %s() doesn't return scalar. Only those are supported.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tname);
 		return -EINVAL;
 	}
@@ -9069,7 +9133,11 @@ static int btf_check_dtor_kfuncs(struct btf *btf, const struct btf_id_dtor_kfunc
 		if (!t || !btf_type_is_ptr(t))
 			return -EINVAL;
 
+<<<<<<< HEAD
 		if (IS_ENABLED(CONFIG_CFI)) {
+=======
+		if (IS_ENABLED(CONFIG_CFI_CLANG)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Ensure the destructor kfunc type matches btf_dtor_kfunc_t */
 			t = btf_type_by_id(btf, t->type);
 			if (!btf_type_is_void(t))

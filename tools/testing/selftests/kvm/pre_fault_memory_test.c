@@ -17,6 +17,7 @@
 #define TEST_NPAGES		(TEST_SIZE / PAGE_SIZE)
 #define TEST_SLOT		10
 
+<<<<<<< HEAD
 static void guest_code(u64 base_gva)
 {
 	volatile u64 val __used;
@@ -24,6 +25,15 @@ static void guest_code(u64 base_gva)
 
 	for (i = 0; i < TEST_NPAGES; i++) {
 		u64 *src = (u64 *)(base_gva + i * PAGE_SIZE);
+=======
+static void guest_code(uint64_t base_gva)
+{
+	volatile uint64_t val __used;
+	int i;
+
+	for (i = 0; i < TEST_NPAGES; i++) {
+		uint64_t *src = (uint64_t *)(base_gva + i * PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		val = *src;
 	}
@@ -33,8 +43,13 @@ static void guest_code(u64 base_gva)
 
 struct slot_worker_data {
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	gpa_t gpa;
 	u32 flags;
+=======
+	u64 gpa;
+	uint32_t flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool worker_ready;
 	bool prefault_ready;
 	bool recreate_slot;
@@ -161,7 +176,11 @@ static void pre_fault_memory(struct kvm_vcpu *vcpu, u64 base_gpa, u64 offset,
 
 static void __test_pre_fault_memory(unsigned long vm_type, bool private)
 {
+<<<<<<< HEAD
 	gpa_t gpa, gva, alignment, guest_page_size;
+=======
+	uint64_t gpa, gva, alignment, guest_page_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct vm_shape shape = {
 		.mode = VM_MODE_DEFAULT,
 		.type = vm_type,
@@ -175,7 +194,15 @@ static void __test_pre_fault_memory(unsigned long vm_type, bool private)
 
 	alignment = guest_page_size = vm_guest_mode_params[VM_MODE_DEFAULT].page_size;
 	gpa = (vm->max_gfn - TEST_NPAGES) * guest_page_size;
+<<<<<<< HEAD
 	alignment = SZ_2M;
+=======
+#ifdef __s390x__
+	alignment = max(0x100000UL, guest_page_size);
+#else
+	alignment = SZ_2M;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpa = align_down(gpa, alignment);
 	gva = gpa & ((1ULL << (vm->va_bits - 1)) - 1);
 

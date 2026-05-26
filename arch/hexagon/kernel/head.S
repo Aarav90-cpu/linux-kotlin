@@ -216,3 +216,11 @@ __head_s_vaddr_target:
 .p2align PAGE_SHIFT
 ENTRY(external_cmdline_buffer)
         .fill _PAGE_SIZE,1,0
+<<<<<<< HEAD
+=======
+
+.data
+.p2align PAGE_SHIFT
+ENTRY(empty_zero_page)
+        .fill _PAGE_SIZE,1,0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -6,8 +6,11 @@
 
 #include <linux/bitops.h>
 
+<<<<<<< HEAD
 struct fbnic_dev;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CSR_BIT(nr)		(1u << (nr))
 #define CSR_GENMASK(h, l)	GENMASK(h, l)
 
@@ -232,7 +235,10 @@ enum {
 #define FBNIC_INTR_MSIX_CTRL_VECTOR_MASK	CSR_GENMASK(7, 0)
 #define FBNIC_INTR_MSIX_CTRL_ENABLE		CSR_BIT(31)
 enum {
+<<<<<<< HEAD
 	FBNIC_INTR_MSIX_CTRL_RXB_IDX	= 7,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	FBNIC_INTR_MSIX_CTRL_PCS_IDX	= 34,
 };
 
@@ -563,11 +569,14 @@ enum {
 #define FBNIC_RXB_DROP_THLD_CNT			8
 #define FBNIC_RXB_DROP_THLD_ON			CSR_GENMASK(12, 0)
 #define FBNIC_RXB_DROP_THLD_OFF			CSR_GENMASK(25, 13)
+<<<<<<< HEAD
 #define FBNIC_RXB_PAUSE_STORM(n)	(0x08019 + (n)) /* 0x20064 + 4*n */
 #define FBNIC_RXB_PAUSE_STORM_CNT		4
 #define FBNIC_RXB_PAUSE_STORM_FORCE_NORMAL	CSR_BIT(20)
 #define FBNIC_RXB_PAUSE_STORM_THLD_TIME		CSR_GENMASK(19, 0)
 #define FBNIC_RXB_PAUSE_STORM_UNIT_WR	0x0801d		/* 0x20074 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_RXB_ECN_THLD(n)		(0x0801e + (n)) /* 0x20078 + 4*n */
 #define FBNIC_RXB_ECN_THLD_CNT			8
 #define FBNIC_RXB_ECN_THLD_ON			CSR_GENMASK(12, 0)
@@ -604,9 +613,12 @@ enum {
 #define FBNIC_RXB_INTF_CREDIT_MASK2		CSR_GENMASK(11, 8)
 #define FBNIC_RXB_INTF_CREDIT_MASK3		CSR_GENMASK(15, 12)
 
+<<<<<<< HEAD
 #define FBNIC_RXB_ERR_INTR_STS		0x08050		/* 0x20140 */
 #define FBNIC_RXB_ERR_INTR_STS_PS		CSR_GENMASK(15, 12)
 #define FBNIC_RXB_ERR_INTR_MASK		0x08052		/* 0x20148 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_RXB_PAUSE_EVENT_CNT(n)	(0x08053 + (n))	/* 0x2014c + 4*n */
 #define FBNIC_RXB_DROP_FRMS_STS(n)	(0x08057 + (n))	/* 0x2015c + 4*n */
 #define FBNIC_RXB_DROP_BYTES_STS_L(n) \
@@ -629,7 +641,10 @@ enum {
 	FBNIC_RXB_ENQUEUE_INDICES	= 4
 };
 
+<<<<<<< HEAD
 #define FBNIC_RXB_INTR_PS_COUNT(n)	(0x080e9 + (n))	/* 0x203a4 + 4*n */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_RXB_DRBO_FRM_CNT_SRC(n)	(0x080f9 + (n))	/* 0x203e4 + 4*n */
 #define FBNIC_RXB_DRBO_BYTE_CNT_SRC_L(n) \
 					(0x080fd + (n))	/* 0x203f4 + 4*n */
@@ -648,7 +663,10 @@ enum {
 
 #define FBNIC_RXB_PBUF_FIFO_LEVEL(n)	(0x0811d + (n)) /* 0x20474 + 4*n */
 
+<<<<<<< HEAD
 #define FBNIC_RXB_PAUSE_STORM_UNIT_RD	0x08125		/* 0x20494 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_RXB_INTEGRITY_ERR(n)	(0x0812f + (n))	/* 0x204bc + 4*n */
 #define FBNIC_RXB_MAC_ERR(n)		(0x08133 + (n))	/* 0x204cc + 4*n */
 #define FBNIC_RXB_PARSER_ERR(n)		(0x08137 + (n))	/* 0x204dc + 4*n */
@@ -975,6 +993,7 @@ enum {
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH	CSR_BIT(19)
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME		CSR_BIT(18)
+<<<<<<< HEAD
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_RDE_ATTR	CSR_GENMASK(17, 15)
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_RQM_ATTR	CSR_GENMASK(14, 12)
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_TQM_ATTR	CSR_GENMASK(11, 9)
@@ -990,6 +1009,11 @@ enum {
 #define FBNIC_PUL_OB_TLP_HDR_AR_CFG_TDE_ATTR	CSR_GENMASK(17, 15)
 #define FBNIC_PUL_OB_TLP_HDR_AR_CFG_RQM_ATTR	CSR_GENMASK(14, 12)
 #define FBNIC_PUL_OB_TLP_HDR_AR_CFG_TQM_ATTR	CSR_GENMASK(11, 9)
+=======
+#define FBNIC_PUL_OB_TLP_HDR_AR_CFG	0x3103e		/* 0xc40f8 */
+#define FBNIC_PUL_OB_TLP_HDR_AR_CFG_FLUSH	CSR_BIT(19)
+#define FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME		CSR_BIT(18)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_PUL_USER_OB_RD_TLP_CNT_31_0 \
 					0x3106e		/* 0xc41b8 */
 #define FBNIC_PUL_USER_OB_RD_DWORD_CNT_31_0 \
@@ -1235,6 +1259,7 @@ enum{
 	FBNIC_CSR_VERSION_V1_0_ASIC = 1,
 };
 
+<<<<<<< HEAD
 /**
  * enum fbnic_reg_self_test_codes - return codes from self test routines
  *
@@ -1252,4 +1277,6 @@ enum fbnic_reg_self_test_codes {
 
 enum fbnic_reg_self_test_codes fbnic_csr_regs_test(struct fbnic_dev *fbd);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _FBNIC_CSR_H_ */

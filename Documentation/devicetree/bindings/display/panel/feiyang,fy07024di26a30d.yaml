@@ -28,6 +28,10 @@ properties:
 
   port: true
   reset-gpios: true
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   backlight: true
 
 required:

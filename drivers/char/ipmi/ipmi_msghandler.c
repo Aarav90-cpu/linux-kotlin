@@ -987,7 +987,11 @@ static int deliver_response(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
 		mutex_lock(&intf->user_msgs_mutex);
 		list_add_tail(&msg->link, &intf->user_msgs);
 		mutex_unlock(&intf->user_msgs_mutex);
+<<<<<<< HEAD
 		queue_work(system_percpu_wq, &intf->smi_work);
+=======
+		queue_work(system_wq, &intf->smi_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return rv;
@@ -4977,7 +4981,11 @@ void ipmi_smi_msg_received(struct ipmi_smi *intf,
 	if (run_to_completion)
 		smi_work(&intf->smi_work);
 	else
+<<<<<<< HEAD
 		queue_work(system_percpu_wq, &intf->smi_work);
+=======
+		queue_work(system_wq, &intf->smi_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(ipmi_smi_msg_received);
 
@@ -4987,7 +4995,11 @@ void ipmi_smi_watchdog_pretimeout(struct ipmi_smi *intf)
 		return;
 
 	atomic_set(&intf->watchdog_pretimeouts_to_deliver, 1);
+<<<<<<< HEAD
 	queue_work(system_percpu_wq, &intf->smi_work);
+=======
+	queue_work(system_wq, &intf->smi_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(ipmi_smi_watchdog_pretimeout);
 
@@ -5162,7 +5174,11 @@ static bool ipmi_timeout_handler(struct ipmi_smi *intf,
 				       flags);
 	}
 
+<<<<<<< HEAD
 	queue_work(system_percpu_wq, &intf->smi_work);
+=======
+	queue_work(system_wq, &intf->smi_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return need_timer;
 }
@@ -5218,7 +5234,11 @@ static void ipmi_timeout(struct timer_list *unused)
 	if (atomic_read(&stop_operation))
 		return;
 
+<<<<<<< HEAD
 	queue_work(system_percpu_wq, &ipmi_timer_work);
+=======
+	queue_work(system_wq, &ipmi_timer_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void need_waiter(struct ipmi_smi *intf)

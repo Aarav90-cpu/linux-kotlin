@@ -41,10 +41,17 @@ bool kvm_supports_vgic_v3(void)
  * redistributor regions of the guest. Since it depends on the number of
  * vCPUs for the VM, it must be called after all the vCPUs have been created.
  */
+<<<<<<< HEAD
 int __vgic_v3_setup(struct kvm_vm *vm, unsigned int nr_vcpus, u32 nr_irqs)
 {
 	int gic_fd;
 	u64 attr;
+=======
+int __vgic_v3_setup(struct kvm_vm *vm, unsigned int nr_vcpus, uint32_t nr_irqs)
+{
+	int gic_fd;
+	uint64_t attr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int nr_gic_pages;
 
 	/* Distributor setup */
@@ -77,7 +84,11 @@ void __vgic_v3_init(int fd)
 			    KVM_DEV_ARM_VGIC_CTRL_INIT, NULL);
 }
 
+<<<<<<< HEAD
 int vgic_v3_setup(struct kvm_vm *vm, unsigned int nr_vcpus, u32 nr_irqs)
+=======
+int vgic_v3_setup(struct kvm_vm *vm, unsigned int nr_vcpus, uint32_t nr_irqs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int nr_vcpus_created = 0;
 	struct list_head *iter;
@@ -104,11 +115,19 @@ int vgic_v3_setup(struct kvm_vm *vm, unsigned int nr_vcpus, u32 nr_irqs)
 }
 
 /* should only work for level sensitive interrupts */
+<<<<<<< HEAD
 int _kvm_irq_set_level_info(int gic_fd, u32 intid, int level)
 {
 	u64 attr = 32 * (intid / 32);
 	u64 index = intid % 32;
 	u64 val;
+=======
+int _kvm_irq_set_level_info(int gic_fd, uint32_t intid, int level)
+{
+	uint64_t attr = 32 * (intid / 32);
+	uint64_t index = intid % 32;
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = __kvm_device_attr_get(gic_fd, KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO,
@@ -122,16 +141,26 @@ int _kvm_irq_set_level_info(int gic_fd, u32 intid, int level)
 	return ret;
 }
 
+<<<<<<< HEAD
 void kvm_irq_set_level_info(int gic_fd, u32 intid, int level)
+=======
+void kvm_irq_set_level_info(int gic_fd, uint32_t intid, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = _kvm_irq_set_level_info(gic_fd, intid, level);
 
 	TEST_ASSERT(!ret, KVM_IOCTL_ERROR(KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO, ret));
 }
 
+<<<<<<< HEAD
 int _kvm_arm_irq_line(struct kvm_vm *vm, u32 intid, int level)
 {
 	u32 irq = intid & KVM_ARM_IRQ_NUM_MASK;
+=======
+int _kvm_arm_irq_line(struct kvm_vm *vm, uint32_t intid, int level)
+{
+	uint32_t irq = intid & KVM_ARM_IRQ_NUM_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(!INTID_IS_SGI(intid), "KVM_IRQ_LINE's interface itself "
 		"doesn't allow injecting SGIs. There's no mask for it.");
@@ -144,13 +173,18 @@ int _kvm_arm_irq_line(struct kvm_vm *vm, u32 intid, int level)
 	return _kvm_irq_line(vm, irq, level);
 }
 
+<<<<<<< HEAD
 void kvm_arm_irq_line(struct kvm_vm *vm, u32 intid, int level)
+=======
+void kvm_arm_irq_line(struct kvm_vm *vm, uint32_t intid, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = _kvm_arm_irq_line(vm, intid, level);
 
 	TEST_ASSERT(!ret, KVM_IOCTL_ERROR(KVM_IRQ_LINE, ret));
 }
 
+<<<<<<< HEAD
 static void vgic_poke_irq(int gic_fd, u32 intid, struct kvm_vcpu *vcpu,
 			  u64 reg_off)
 {
@@ -161,6 +195,18 @@ static void vgic_poke_irq(int gic_fd, u32 intid, struct kvm_vcpu *vcpu,
 	bool intid_is_private = INTID_IS_SGI(intid) || INTID_IS_PPI(intid);
 
 	u32 group = intid_is_private ? KVM_DEV_ARM_VGIC_GRP_REDIST_REGS
+=======
+static void vgic_poke_irq(int gic_fd, uint32_t intid, struct kvm_vcpu *vcpu,
+			  uint64_t reg_off)
+{
+	uint64_t reg = intid / 32;
+	uint64_t index = intid % 32;
+	uint64_t attr = reg_off + reg * 4;
+	uint64_t val;
+	bool intid_is_private = INTID_IS_SGI(intid) || INTID_IS_PPI(intid);
+
+	uint32_t group = intid_is_private ? KVM_DEV_ARM_VGIC_GRP_REDIST_REGS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  : KVM_DEV_ARM_VGIC_GRP_DIST_REGS;
 
 	if (intid_is_private) {
@@ -183,12 +229,20 @@ static void vgic_poke_irq(int gic_fd, u32 intid, struct kvm_vcpu *vcpu,
 	kvm_device_attr_set(gic_fd, group, attr, &val);
 }
 
+<<<<<<< HEAD
 void kvm_irq_write_ispendr(int gic_fd, u32 intid, struct kvm_vcpu *vcpu)
+=======
+void kvm_irq_write_ispendr(int gic_fd, uint32_t intid, struct kvm_vcpu *vcpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vgic_poke_irq(gic_fd, intid, vcpu, GICD_ISPENDR);
 }
 
+<<<<<<< HEAD
 void kvm_irq_write_isactiver(int gic_fd, u32 intid, struct kvm_vcpu *vcpu)
+=======
+void kvm_irq_write_isactiver(int gic_fd, uint32_t intid, struct kvm_vcpu *vcpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vgic_poke_irq(gic_fd, intid, vcpu, GICD_ISACTIVER);
 }

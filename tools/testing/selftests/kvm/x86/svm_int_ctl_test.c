@@ -82,7 +82,11 @@ static void l1_guest_code(struct svm_test_data *svm)
 int main(int argc, char *argv[])
 {
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	gva_t svm_gva;
+=======
+	vm_vaddr_t svm_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 	struct ucall uc;
 

@@ -667,8 +667,11 @@ rdma_udata_to_uverbs_attr_bundle(struct ib_udata *udata)
 	(udata ? container_of(rdma_udata_to_uverbs_attr_bundle(udata)->context, \
 			      drv_dev_struct, member) : (drv_dev_struct *)NULL)
 
+<<<<<<< HEAD
 struct ib_device *rdma_udata_to_dev(struct ib_udata *udata);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IS_UVERBS_COPY_ERR(_ret)		((_ret) && (_ret) != -ENOENT)
 
 static inline const struct uverbs_attr *uverbs_attr_get(const struct uverbs_attr_bundle *attrs_bundle,
@@ -897,10 +900,13 @@ int _uverbs_get_const_unsigned(u64 *to,
 			       size_t idx, u64 upper_bound, u64 *def_val);
 int uverbs_copy_to_struct_or_zero(const struct uverbs_attr_bundle *bundle,
 				  size_t idx, const void *from, size_t size);
+<<<<<<< HEAD
 
 int _ib_copy_validate_udata_in(struct ib_udata *udata, void *req,
 			       size_t kernel_size, size_t minimum_size);
 int _ib_respond_udata(struct ib_udata *udata, const void *src, size_t len);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline int
 uverbs_get_flags64(u64 *to, const struct uverbs_attr_bundle *attrs_bundle,
@@ -957,6 +963,7 @@ _uverbs_get_const_unsigned(u64 *to,
 {
 	return -EINVAL;
 }
+<<<<<<< HEAD
 
 static inline int _ib_copy_validate_udata_in(struct ib_udata *udata, void *req,
 					     size_t kernel_size,
@@ -970,6 +977,8 @@ static inline int _ib_respond_udata(struct ib_udata *udata, const void *src,
 {
 	return -EINVAL;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #define uverbs_get_const_signed(_to, _attrs_bundle, _idx)                      \
@@ -1035,6 +1044,7 @@ uverbs_get_raw_fd(int *to, const struct uverbs_attr_bundle *attrs_bundle,
 	return uverbs_get_const_signed(to, attrs_bundle, idx);
 }
 
+<<<<<<< HEAD
 /**
  * ib_copy_validate_udata_in - Copy and validate that the request structure is
  *                             compatible with this kernel
@@ -1117,4 +1127,6 @@ static inline int ib_respond_empty_udata(struct ib_udata *udata)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

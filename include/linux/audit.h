@@ -15,6 +15,7 @@
 #include <uapi/linux/audit.h>
 #include <uapi/linux/fanotify.h>
 
+<<<<<<< HEAD
 #define AUDIT_STATUS_ALL (AUDIT_STATUS_ENABLED | \
 			  AUDIT_STATUS_FAILURE | \
 			  AUDIT_STATUS_PID | \
@@ -25,6 +26,9 @@
 			  AUDIT_STATUS_BACKLOG_WAIT_TIME_ACTUAL)
 
 #define AUDIT_INO_UNSET ((u64)-1)
+=======
+#define AUDIT_INO_UNSET ((unsigned long)-1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AUDIT_DEV_UNSET ((dev_t)-1)
 
 struct audit_sig_info {

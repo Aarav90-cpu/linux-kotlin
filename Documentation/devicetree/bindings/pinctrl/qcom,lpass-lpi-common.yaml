@@ -27,6 +27,7 @@ properties:
   gpio-ranges:
     maxItems: 1
 
+<<<<<<< HEAD
   gpio-reserved-ranges:
     minItems: 1
     maxItems: 30
@@ -35,6 +36,8 @@ properties:
       inaccessible from the OS. This property can be used to mark the pins
       which resources should not be accessed by the OS.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - gpio-controller
   - "#gpio-cells"

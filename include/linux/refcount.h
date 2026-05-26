@@ -170,7 +170,11 @@ static inline unsigned int refcount_read(const refcount_t *r)
 	return atomic_read(&r->refs);
 }
 
+<<<<<<< HEAD
 static inline __must_check
+=======
+static inline __must_check __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)
 {
 	int old = refcount_read(r);
@@ -212,7 +216,11 @@ static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
 	return __refcount_add_not_zero(i, r, NULL);
 }
 
+<<<<<<< HEAD
 static inline __must_check
+=======
+static inline __must_check __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool __refcount_add_not_zero_limited_acquire(int i, refcount_t *r, int *oldp,
 					     int limit)
 {
@@ -244,7 +252,11 @@ __refcount_inc_not_zero_limited_acquire(refcount_t *r, int *oldp, int limit)
 	return __refcount_add_not_zero_limited_acquire(1, r, oldp, limit);
 }
 
+<<<<<<< HEAD
 static inline __must_check
+=======
+static inline __must_check __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool __refcount_add_not_zero_acquire(int i, refcount_t *r, int *oldp)
 {
 	return __refcount_add_not_zero_limited_acquire(i, r, oldp, INT_MAX);
@@ -277,7 +289,11 @@ static inline __must_check bool refcount_add_not_zero_acquire(int i, refcount_t 
 	return __refcount_add_not_zero_acquire(i, r, NULL);
 }
 
+<<<<<<< HEAD
 static inline
+=======
+static inline __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __refcount_add(int i, refcount_t *r, int *oldp)
 {
 	int old = atomic_fetch_add_relaxed(i, &r->refs);
@@ -383,7 +399,11 @@ static inline void refcount_inc(refcount_t *r)
 	__refcount_inc(r, NULL);
 }
 
+<<<<<<< HEAD
 static inline __must_check
+=======
+static inline __must_check __signed_wrap
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
 {
 	int old = atomic_fetch_sub_release(i, &r->refs);

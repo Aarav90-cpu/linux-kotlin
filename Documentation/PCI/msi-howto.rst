@@ -113,11 +113,16 @@ vectors, use the following function::
 
   int pci_irq_vector(struct pci_dev *dev, unsigned int nr);
 
+<<<<<<< HEAD
 If the driver enables the device using pcim_enable_device(), the driver
 shouldn't call pci_free_irq_vectors() because pcim_enable_device()
 activates automatic management for IRQ vectors. Otherwise, the driver should
 free any allocated IRQ vectors before removing the device using the following
 function::
+=======
+Any allocated resources should be freed before removing the device using
+the following function::
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   void pci_free_irq_vectors(struct pci_dev *dev);
 

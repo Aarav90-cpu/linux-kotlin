@@ -70,7 +70,11 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE)
 BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
 
 BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
+<<<<<<< HEAD
 		   $(CC_FLAGS_DIALECT) \
+=======
+		   -std=gnu11 -fms-extensions \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -O2 \
 		   -msoft-float -mno-altivec -mno-vsx \
@@ -86,6 +90,10 @@ BOOTARFLAGS	:= -crD
 
 ifdef CONFIG_CC_IS_CLANG
 BOOTCFLAGS += $(CLANG_FLAGS)
+<<<<<<< HEAD
+=======
+BOOTCFLAGS += -Wno-microsoft-anon-tag
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BOOTAFLAGS += $(CLANG_FLAGS)
 endif
 

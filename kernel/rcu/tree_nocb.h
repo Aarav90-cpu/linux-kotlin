@@ -379,6 +379,7 @@ static void rcu_nocb_try_flush_bypass(struct rcu_data *rdp, unsigned long j)
 }
 
 /*
+<<<<<<< HEAD
  * Determine if the bypass queue needs to be flushed based on time and size.
  * For lazy-only bypass queues, use the lazy flush timeout; otherwise flush
  * based on jiffy advancement. The flush_faster controls flush aggressiveness.
@@ -411,6 +412,8 @@ static bool nocb_bypass_needs_flush(struct rcu_data *rdp, long bypass_ncbs,
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * See whether it is appropriate to use the ->nocb_bypass list in order
  * to control contention on ->nocb_lock.  A limited number of direct
  * enqueues are permitted into ->cblist per jiffy.  If ->nocb_bypass
@@ -436,8 +439,12 @@ static bool rcu_nocb_try_bypass(struct rcu_data *rdp, struct rcu_head *rhp,
 	unsigned long cur_gp_seq;
 	unsigned long j = jiffies;
 	long ncbs = rcu_cblist_n_cbs(&rdp->nocb_bypass);
+<<<<<<< HEAD
 	long lazy_len = READ_ONCE(rdp->lazy_len);
 	bool bypass_is_lazy = (ncbs == lazy_len);
+=======
+	bool bypass_is_lazy = (ncbs == READ_ONCE(rdp->lazy_len));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_irqs_disabled();
 
@@ -489,7 +496,14 @@ static bool rcu_nocb_try_bypass(struct rcu_data *rdp, struct rcu_head *rhp,
 
 	// If ->nocb_bypass has been used too long or is too full,
 	// flush ->nocb_bypass to ->cblist.
+<<<<<<< HEAD
 	if (nocb_bypass_needs_flush(rdp, ncbs, lazy_len, j, true)) {
+=======
+	if ((ncbs && !bypass_is_lazy && j != READ_ONCE(rdp->nocb_bypass_first)) ||
+	    (ncbs &&  bypass_is_lazy &&
+	     (time_after(j, READ_ONCE(rdp->nocb_bypass_first) + rcu_get_jiffies_lazy_flush()))) ||
+	    ncbs >= qhimark) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_nocb_lock(rdp);
 		*was_alldone = !rcu_segcblist_pend_cbs(&rdp->cblist);
 
@@ -703,8 +717,20 @@ static void nocb_gp_wait(struct rcu_data *my_rdp)
 		bypass_ncbs = rcu_cblist_n_cbs(&rdp->nocb_bypass);
 		lazy_ncbs = READ_ONCE(rdp->lazy_len);
 
+<<<<<<< HEAD
 		flush_bypass = nocb_bypass_needs_flush(rdp, bypass_ncbs, lazy_ncbs, j, false);
 		if (!flush_bypass && !bypass_ncbs && rcu_segcblist_empty(&rdp->cblist)) {
+=======
+		if (bypass_ncbs && (lazy_ncbs == bypass_ncbs) &&
+		    (time_after(j, READ_ONCE(rdp->nocb_bypass_first) + rcu_get_jiffies_lazy_flush()) ||
+		     bypass_ncbs > 2 * qhimark)) {
+			flush_bypass = true;
+		} else if (bypass_ncbs && (lazy_ncbs != bypass_ncbs) &&
+		    (time_after(j, READ_ONCE(rdp->nocb_bypass_first) + 1) ||
+		     bypass_ncbs > 2 * qhimark)) {
+			flush_bypass = true;
+		} else if (!bypass_ncbs && rcu_segcblist_empty(&rdp->cblist)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rcu_nocb_unlock_irqrestore(rdp, flags);
 			continue; /* No callbacks here, try next. */
 		}
@@ -1104,6 +1130,33 @@ static int rcu_nocb_rdp_deoffload(struct rcu_data *rdp)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int rcu_nocb_cpu_deoffload(int cpu)
+{
+	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
+	int ret = 0;
+
+	cpus_read_lock();
+	mutex_lock(&rcu_state.nocb_mutex);
+	if (rcu_rdp_is_offloaded(rdp)) {
+		if (!cpu_online(cpu)) {
+			ret = rcu_nocb_rdp_deoffload(rdp);
+			if (!ret)
+				cpumask_clear_cpu(cpu, rcu_nocb_mask);
+		} else {
+			pr_info("NOCB: Cannot CB-deoffload online CPU %d\n", rdp->cpu);
+			ret = -EINVAL;
+		}
+	}
+	mutex_unlock(&rcu_state.nocb_mutex);
+	cpus_read_unlock();
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(rcu_nocb_cpu_deoffload);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool rcu_nocb_rdp_offload_wait_cond(struct rcu_data *rdp)
 {
 	unsigned long flags;
@@ -1148,14 +1201,19 @@ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Common helper for CPU offload/deoffload operations. */
 static int rcu_nocb_cpu_toggle_offload(int cpu, bool offload)
+=======
+int rcu_nocb_cpu_offload(int cpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
 	int ret = 0;
 
 	cpus_read_lock();
 	mutex_lock(&rcu_state.nocb_mutex);
+<<<<<<< HEAD
 
 	/* Already in desired state, nothing to do. */
 	if (rcu_rdp_is_offloaded(rdp) == offload)
@@ -1194,6 +1252,23 @@ int rcu_nocb_cpu_offload(int cpu)
 {
 	return rcu_nocb_cpu_toggle_offload(cpu, true /* offload */);
 }
+=======
+	if (!rcu_rdp_is_offloaded(rdp)) {
+		if (!cpu_online(cpu)) {
+			ret = rcu_nocb_rdp_offload(rdp);
+			if (!ret)
+				cpumask_set_cpu(cpu, rcu_nocb_mask);
+		} else {
+			pr_info("NOCB: Cannot CB-offload online CPU %d\n", rdp->cpu);
+			ret = -EINVAL;
+		}
+	}
+	mutex_unlock(&rcu_state.nocb_mutex);
+	cpus_read_unlock();
+
+	return ret;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(rcu_nocb_cpu_offload);
 
 #ifdef CONFIG_RCU_LAZY

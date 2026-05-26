@@ -69,16 +69,25 @@ void vnic_rq_free(struct vnic_rq *rq)
 	rq->ctrl = NULL;
 }
 
+<<<<<<< HEAD
 int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
 			    unsigned int index, unsigned int desc_count,
 			    unsigned int desc_size, unsigned int res_type)
+=======
+int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
+	unsigned int desc_count, unsigned int desc_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 
 	rq->index = index;
 	rq->vdev = vdev;
 
+<<<<<<< HEAD
 	rq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+=======
+	rq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_RQ, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rq->ctrl) {
 		vdev_err(vdev, "Failed to hook RQ[%d] resource\n", index);
 		return -EINVAL;
@@ -99,6 +108,7 @@ int vnic_rq_alloc_with_type(struct vnic_dev *vdev, struct vnic_rq *rq,
 	return 0;
 }
 
+<<<<<<< HEAD
 int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
 		  unsigned int desc_count, unsigned int desc_size)
 {
@@ -106,6 +116,8 @@ int vnic_rq_alloc(struct vnic_dev *vdev, struct vnic_rq *rq, unsigned int index,
 				       RES_TYPE_RQ);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void vnic_rq_init_start(struct vnic_rq *rq, unsigned int cq_index,
 	unsigned int fetch_index, unsigned int posted_index,
 	unsigned int error_interrupt_enable,

@@ -47,7 +47,10 @@
 #include "smu_v14_0_0_ppt.h"
 #include "smu_v14_0_2_ppt.h"
 #include "smu_v15_0_0_ppt.h"
+<<<<<<< HEAD
 #include "smu_v15_0_8_ppt.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "amd_pcie.h"
 
 /*
@@ -629,6 +632,7 @@ int amdgpu_smu_ras_send_msg(struct amdgpu_device *adev, enum smu_message_type ms
 	return ret;
 }
 
+<<<<<<< HEAD
 int amdgpu_smu_ras_feature_is_enabled(struct amdgpu_device *adev,
 						enum smu_feature_mask mask)
 {
@@ -641,6 +645,8 @@ int amdgpu_smu_ras_feature_is_enabled(struct amdgpu_device *adev,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int smu_sys_get_pp_table(void *handle,
 				char **table)
 {
@@ -803,10 +809,13 @@ static int smu_set_funcs(struct amdgpu_device *adev)
 	case IP_VERSION(15, 0, 0):
 		smu_v15_0_0_set_ppt_funcs(smu);
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(15, 0, 8):
 		smu_v15_0_8_set_ppt_funcs(smu);
 		smu->od_enabled = true;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -2970,7 +2979,10 @@ int smu_get_power_limit(void *handle,
 			case IP_VERSION(11, 0, 11):
 			case IP_VERSION(11, 0, 12):
 			case IP_VERSION(11, 0, 13):
+<<<<<<< HEAD
 			case IP_VERSION(15, 0, 8):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ret = smu_get_asic_power_limits(smu,
 								&smu->current_power_limit,
 								NULL, NULL, NULL);
@@ -2987,7 +2999,14 @@ int smu_get_power_limit(void *handle,
 			*limit = smu->max_power_limit;
 			break;
 		case SMU_PPT_LIMIT_MIN:
+<<<<<<< HEAD
 			*limit = smu->min_power_limit;
+=======
+			if (amdgpu_ignore_min_pcap)
+				*limit = 0;
+			else
+				*limit = smu->min_power_limit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			return -EINVAL;
@@ -3008,7 +3027,11 @@ static int smu_set_power_limit(void *handle, uint32_t limit_type, uint32_t limit
 	if (limit_type == SMU_DEFAULT_PPT_LIMIT) {
 		if (!limit)
 			limit = smu->current_power_limit;
+<<<<<<< HEAD
 		if ((limit > smu->max_power_limit) || (limit < smu->min_power_limit)) {
+=======
+		if ((limit > smu->max_power_limit) || (!amdgpu_ignore_min_pcap && (limit < smu->min_power_limit))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev_err(smu->adev->dev,
 				"New power limit (%d) is out of range [%d,%d]\n",
 				limit, smu->min_power_limit, smu->max_power_limit);
@@ -3062,8 +3085,11 @@ static enum smu_clk_type smu_convert_to_smuclk(enum pp_clock_type type)
 		clk_type = SMU_OD_SCLK; break;
 	case OD_MCLK:
 		clk_type = SMU_OD_MCLK; break;
+<<<<<<< HEAD
 	case OD_FCLK:
 		clk_type = SMU_OD_FCLK; break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case OD_VDDC_CURVE:
 		clk_type = SMU_OD_VDDC_CURVE; break;
 	case OD_RANGE:

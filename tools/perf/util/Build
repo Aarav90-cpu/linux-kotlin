@@ -149,6 +149,10 @@ endif
 perf-util-y += cs-etm-base.o
 
 perf-util-y += parse-branch-options.o
+<<<<<<< HEAD
+=======
+perf-util-y += dump-insn.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 perf-util-y += parse-regs-options.o
 perf-util-y += parse-sublevel-options.o
 perf-util-y += term.o
@@ -170,6 +174,10 @@ perf-util-y += mutex.o
 perf-util-y += sharded_mutex.o
 perf-util-y += intel-tpebs.o
 
+<<<<<<< HEAD
+=======
+perf-util-$(CONFIG_LIBBPF) += bpf_map.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 perf-util-$(CONFIG_PERF_BPF_SKEL) += bpf_counter.o
 perf-util-$(CONFIG_PERF_BPF_SKEL) += bpf_counter_cgroup.o
 perf-util-$(CONFIG_PERF_BPF_SKEL) += bpf_ftrace.o

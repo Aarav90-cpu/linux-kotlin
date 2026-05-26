@@ -118,7 +118,13 @@ void mpc1_assert_idle_mpcc(struct mpc *mpc, int id)
 
 struct mpcc *mpc1_get_mpcc(struct mpc *mpc, int mpcc_id)
 {
+<<<<<<< HEAD
 	ASSERT(mpcc_id < TO_DCN10_MPC(mpc)->num_mpcc);
+=======
+	struct dcn10_mpc *mpc10 = TO_DCN10_MPC(mpc);
+
+	ASSERT(mpcc_id < mpc10->num_mpcc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return &(mpc->mpcc_array[mpcc_id]);
 }
 

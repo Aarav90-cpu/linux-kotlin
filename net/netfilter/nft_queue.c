@@ -95,7 +95,11 @@ static int nft_queue_validate(const struct nft_ctx *ctx,
 static const struct nla_policy nft_queue_policy[NFTA_QUEUE_MAX + 1] = {
 	[NFTA_QUEUE_NUM]	= { .type = NLA_U16 },
 	[NFTA_QUEUE_TOTAL]	= { .type = NLA_U16 },
+<<<<<<< HEAD
 	[NFTA_QUEUE_FLAGS]	= NLA_POLICY_MASK(NLA_BE16, NFT_QUEUE_FLAG_MASK),
+=======
+	[NFTA_QUEUE_FLAGS]	= { .type = NLA_U16 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_QUEUE_SREG_QNUM]	= { .type = NLA_U32 },
 };
 
@@ -191,6 +195,10 @@ static const struct nft_expr_ops nft_queue_ops = {
 	.init		= nft_queue_init,
 	.dump		= nft_queue_dump,
 	.validate	= nft_queue_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops nft_queue_sreg_ops = {
@@ -200,6 +208,10 @@ static const struct nft_expr_ops nft_queue_sreg_ops = {
 	.init		= nft_queue_sreg_init,
 	.dump		= nft_queue_sreg_dump,
 	.validate	= nft_queue_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops *

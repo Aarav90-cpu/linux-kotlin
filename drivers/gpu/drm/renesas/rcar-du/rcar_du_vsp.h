@@ -12,7 +12,10 @@
 
 #include <drm/drm_plane.h>
 
+<<<<<<< HEAD
 struct device_link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_framebuffer;
 struct rcar_du_format_info;
 struct rcar_du_vsp;
@@ -27,7 +30,10 @@ struct rcar_du_vsp_plane {
 struct rcar_du_vsp {
 	unsigned int index;
 	struct device *vsp;
+<<<<<<< HEAD
 	struct device_link *link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rcar_du_device *dev;
 	struct rcar_du_vsp_plane *planes;
 	unsigned int num_planes;

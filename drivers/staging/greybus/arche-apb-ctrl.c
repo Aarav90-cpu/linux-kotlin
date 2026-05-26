@@ -300,6 +300,7 @@ static ssize_t state_show(struct device *dev,
 
 	switch (apb->state) {
 	case ARCHE_PLATFORM_STATE_OFF:
+<<<<<<< HEAD
 		return sysfs_emit(buf, "off%s\n",
 				apb->init_disabled ? ",disabled" : "");
 	case ARCHE_PLATFORM_STATE_ACTIVE:
@@ -310,6 +311,18 @@ static ssize_t state_show(struct device *dev,
 		return sysfs_emit(buf, "fw_flashing\n");
 	default:
 		return sysfs_emit(buf, "unknown state\n");
+=======
+		return sprintf(buf, "off%s\n",
+				apb->init_disabled ? ",disabled" : "");
+	case ARCHE_PLATFORM_STATE_ACTIVE:
+		return sprintf(buf, "active\n");
+	case ARCHE_PLATFORM_STATE_STANDBY:
+		return sprintf(buf, "standby\n");
+	case ARCHE_PLATFORM_STATE_FW_FLASHING:
+		return sprintf(buf, "fw_flashing\n");
+	default:
+		return sprintf(buf, "unknown state\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

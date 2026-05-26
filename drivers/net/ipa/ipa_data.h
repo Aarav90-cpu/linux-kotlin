@@ -185,6 +185,7 @@ struct ipa_resource_data {
 struct ipa_mem_data {
 	u32 local_count;
 	const struct ipa_mem *local;
+<<<<<<< HEAD
 
 	/* These values are now passed via DT, but to support
 	 * older systems we must allow this to be specified here.
@@ -192,6 +193,10 @@ struct ipa_mem_data {
 	u32 imem_addr; /* DEPRECATED */
 	u32 imem_size; /* DEPRECATED */
 
+=======
+	u32 imem_addr;
+	u32 imem_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 smem_size;
 };
 
@@ -253,7 +258,10 @@ extern const struct ipa_data ipa_data_v4_7;
 extern const struct ipa_data ipa_data_v4_9;
 extern const struct ipa_data ipa_data_v4_11;
 extern const struct ipa_data ipa_data_v5_0;
+<<<<<<< HEAD
 extern const struct ipa_data ipa_data_v5_2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct ipa_data ipa_data_v5_5;
 
 #endif /* _IPA_DATA_H_ */

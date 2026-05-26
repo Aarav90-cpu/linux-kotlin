@@ -3,7 +3,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/clk.h>
+<<<<<<< HEAD
 #include <linux/firmware/qcom/qcom_scm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/interconnect.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
@@ -92,10 +95,17 @@ bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu)
 }
 
 /* Check to see if the GX rail is still powered */
+<<<<<<< HEAD
 bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
 {
 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
 	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
+=======
+bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu)
+{
+	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 val;
 
 	/* This can be called from gpu state code so make sure GMU is valid */
@@ -118,6 +128,7 @@ bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
 		A6XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_CLK_OFF));
 }
 
+<<<<<<< HEAD
 bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
 {
 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
@@ -152,6 +163,8 @@ bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
 		 A8XX_GMU_PWR_CLK_STATUS_GX_HM_CLK_OFF));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void a6xx_gmu_set_freq(struct msm_gpu *gpu, struct dev_pm_opp *opp,
 		       bool suspended)
 {
@@ -275,7 +288,11 @@ static bool a6xx_gmu_check_idle_level(struct a6xx_gmu *gmu)
 
 	if (val == local) {
 		if (gmu->idle_level != GMU_IDLE_STATE_IFPC ||
+<<<<<<< HEAD
 			!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+=======
+			!a6xx_gmu_gx_is_on(gmu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return true;
 	}
 
@@ -1192,6 +1209,7 @@ static void a6xx_gmu_set_initial_bw(struct msm_gpu *gpu, struct a6xx_gmu *gmu)
 	dev_pm_opp_put(gpu_opp);
 }
 
+<<<<<<< HEAD
 static int a6xx_gmu_secure_init(struct a6xx_gpu *a6xx_gpu)
 {
 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
@@ -1251,6 +1269,8 @@ done:
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
 {
 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
@@ -1279,12 +1299,20 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
 	clk_set_rate(gmu->hub_clk, adreno_is_a740_family(adreno_gpu) ?
 		     200000000 : 150000000);
 	ret = clk_bulk_prepare_enable(gmu->nr_clocks, gmu->clocks);
+<<<<<<< HEAD
 	if (ret)
 		goto rpm_put;
 
 	ret = a6xx_gmu_secure_init(a6xx_gpu);
 	if (ret)
 		goto disable_clk;
+=======
+	if (ret) {
+		pm_runtime_put(gmu->gxpd);
+		pm_runtime_put(gmu->dev);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Read the slice info on A8x GPUs */
 	a8xx_gpu_get_slice_info(gpu);
@@ -1314,11 +1342,19 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
 
 	ret = a6xx_gmu_fw_start(gmu, status);
 	if (ret)
+<<<<<<< HEAD
 		goto disable_irq;
 
 	ret = a6xx_hfi_start(gmu, status);
 	if (ret)
 		goto disable_irq;
+=======
+		goto out;
+
+	ret = a6xx_hfi_start(gmu, status);
+	if (ret)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Turn on the GMU firmware fault interrupt after we know the boot
@@ -1331,6 +1367,7 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
 	/* Set the GPU to the current freq */
 	a6xx_gmu_set_initial_freq(gpu, gmu);
 
+<<<<<<< HEAD
 	return 0;
 
 disable_irq:
@@ -1341,6 +1378,21 @@ disable_clk:
 rpm_put:
 	pm_runtime_put(gmu->gxpd);
 	pm_runtime_put(gmu->dev);
+=======
+	if (refcount_read(&gpu->sysprof_active) > 1) {
+		ret = a6xx_gmu_set_oob(gmu, GMU_OOB_PERFCOUNTER_SET);
+		if (!ret)
+			set_bit(GMU_STATUS_OOB_PERF_SET, &gmu->status);
+	}
+out:
+	/* On failure, shut down the GMU to leave it in a good state */
+	if (ret) {
+		disable_irq(gmu->gmu_irq);
+		a6xx_rpmh_stop(gmu);
+		pm_runtime_put(gmu->gxpd);
+		pm_runtime_put(gmu->dev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

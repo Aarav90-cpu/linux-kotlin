@@ -49,6 +49,15 @@ properties:
       If not set, the controller is in 3-line SPI mode.
       Disallowed for DSI.
 
+<<<<<<< HEAD
+=======
+  port: true
+  reset-gpios: true
+  rotation: true
+
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

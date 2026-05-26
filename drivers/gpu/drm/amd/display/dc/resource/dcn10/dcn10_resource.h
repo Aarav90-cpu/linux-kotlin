@@ -53,7 +53,10 @@ struct stream_encoder *dcn10_find_first_free_match_stream_enc_for_link(
 
 unsigned int dcn10_get_vstartup_for_pipe(struct pipe_ctx *pipe_ctx);
 
+<<<<<<< HEAD
 void dcn10_get_default_tiling_info(struct dc_tiling_info *tiling_info);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __DC_RESOURCE_DCN10_H__ */
 

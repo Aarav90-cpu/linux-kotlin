@@ -40,6 +40,10 @@ struct usbhsg_gpriv {
 	struct usb_gadget	 gadget;
 	struct usbhs_mod	 mod;
 
+<<<<<<< HEAD
+=======
+	struct usbhsg_uep	*uep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			 uep_size;
 
 	struct usb_gadget_driver	*driver;
@@ -52,7 +56,10 @@ struct usbhsg_gpriv {
 #define USBHSG_STATUS_WEDGE		(1 << 2)
 #define USBHSG_STATUS_SELF_POWERED	(1 << 3)
 #define USBHSG_STATUS_SOFT_CONNECT	(1 << 4)
+<<<<<<< HEAD
 	struct usbhsg_uep	uep[] __counted_by(uep_size);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct usbhsg_recip_handle {
@@ -1084,11 +1091,23 @@ int usbhs_mod_gadget_probe(struct usbhs_priv *priv)
 	int i;
 	int ret;
 
+<<<<<<< HEAD
 	gpriv = kzalloc_flex(*gpriv, uep, pipe_size);
 	if (!gpriv)
 		return -ENOMEM;
 
 	gpriv->uep_size	= pipe_size;
+=======
+	gpriv = kzalloc_obj(struct usbhsg_gpriv);
+	if (!gpriv)
+		return -ENOMEM;
+
+	uep = kzalloc_objs(struct usbhsg_uep, pipe_size);
+	if (!uep) {
+		ret = -ENOMEM;
+		goto usbhs_mod_gadget_probe_err_gpriv;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
 	dev_info(dev, "%stransceiver found\n",
@@ -1111,6 +1130,11 @@ int usbhs_mod_gadget_probe(struct usbhs_priv *priv)
 	gpriv->mod.name		= "gadget";
 	gpriv->mod.start	= usbhsg_start;
 	gpriv->mod.stop		= usbhsg_stop;
+<<<<<<< HEAD
+=======
+	gpriv->uep		= uep;
+	gpriv->uep_size		= pipe_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usbhsg_status_init(gpriv);
 
 	/*
@@ -1169,6 +1193,12 @@ int usbhs_mod_gadget_probe(struct usbhs_priv *priv)
 	return 0;
 
 err_add_udc:
+<<<<<<< HEAD
+=======
+	kfree(gpriv->uep);
+
+usbhs_mod_gadget_probe_err_gpriv:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(gpriv);
 
 	return ret;
@@ -1180,5 +1210,9 @@ void usbhs_mod_gadget_remove(struct usbhs_priv *priv)
 
 	usb_del_gadget_udc(&gpriv->gadget);
 
+<<<<<<< HEAD
+=======
+	kfree(gpriv->uep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(gpriv);
 }

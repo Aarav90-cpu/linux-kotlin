@@ -6,7 +6,11 @@
 #include <linux/intel_dg_nvm_aux.h>
 #include <linux/pci.h>
 
+<<<<<<< HEAD
 #include "xe_device.h"
+=======
+#include "xe_device_types.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_mmio.h"
 #include "xe_nvm.h"
 #include "xe_pcode_api.h"
@@ -133,10 +137,19 @@ int xe_nvm_init(struct xe_device *xe)
 	if (WARN_ON(xe->nvm))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	nvm = kzalloc_obj(*nvm);
 	if (!nvm)
 		return -ENOMEM;
 
+=======
+	xe->nvm = kzalloc_obj(*nvm);
+	if (!xe->nvm)
+		return -ENOMEM;
+
+	nvm = xe->nvm;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nvm->writable_override = xe_nvm_writable_override(xe);
 	nvm->non_posted_erase = xe_nvm_non_posted_erase(xe);
 	nvm->bar.parent = &pdev->resource[0];
@@ -163,6 +176,10 @@ int xe_nvm_init(struct xe_device *xe)
 	if (ret) {
 		drm_err(&xe->drm, "xe-nvm aux init failed %d\n", ret);
 		kfree(nvm);
+<<<<<<< HEAD
+=======
+		xe->nvm = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -170,9 +187,15 @@ int xe_nvm_init(struct xe_device *xe)
 	if (ret) {
 		drm_err(&xe->drm, "xe-nvm aux add failed %d\n", ret);
 		auxiliary_device_uninit(aux_dev);
+<<<<<<< HEAD
 		return ret;
 	}
 
 	xe->nvm = nvm;
+=======
+		xe->nvm = NULL;
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return devm_add_action_or_reset(xe->drm.dev, xe_nvm_fini, xe);
 }

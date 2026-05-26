@@ -36,7 +36,10 @@
 #include <rdma/ib_smi.h>
 #include <rdma/ib_user_verbs.h>
 #include <rdma/ib_cache.h>
+<<<<<<< HEAD
 #include <rdma/uverbs_ioctl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "hns_roce_common.h"
 #include "hns_roce_device.h"
 #include "hns_roce_hem.h"
@@ -425,7 +428,11 @@ static int hns_roce_alloc_ucontext(struct ib_ucontext *uctx,
 	struct hns_roce_ucontext *context = to_hr_ucontext(uctx);
 	struct hns_roce_dev *hr_dev = to_hr_dev(uctx->device);
 	struct hns_roce_ib_alloc_ucontext_resp resp = {};
+<<<<<<< HEAD
 	struct hns_roce_ib_alloc_ucontext ucmd;
+=======
+	struct hns_roce_ib_alloc_ucontext ucmd = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = -EAGAIN;
 
 	if (!hr_dev->active)
@@ -434,7 +441,12 @@ static int hns_roce_alloc_ucontext(struct ib_ucontext *uctx,
 	resp.qp_tab_size = hr_dev->caps.num_qps;
 	resp.srq_tab_size = hr_dev->caps.num_srqs;
 
+<<<<<<< HEAD
 	ret = ib_copy_validate_udata_in(udata, ucmd, reserved);
+=======
+	ret = ib_copy_from_udata(&ucmd, udata,
+				 min(udata->inlen, sizeof(ucmd)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto error_out;
 

@@ -77,8 +77,11 @@
 		serial0 = &uart0;
 		serial1 = &uart1;
 		serial2 = &uart2;
+<<<<<<< HEAD
 		ethernet0 = &macb0;
 		ethernet1 = &macb1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	cpu_intc: interrupt-controller {
@@ -233,7 +236,10 @@
 			#clock-cells = <1>;
 			clocks = <&xtal>;
 			clock-names = "ref";
+<<<<<<< HEAD
 			#phy-cells = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		gic: interrupt-controller@140000 {
@@ -308,6 +314,7 @@
 			#interrupt-cells = <2>;
 			resets = <&olb 0 26>;
 		};
+<<<<<<< HEAD
 
 		iocu-bus {
 			compatible = "simple-bus";
@@ -350,6 +357,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

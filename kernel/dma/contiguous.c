@@ -42,6 +42,10 @@
 #include <linux/memblock.h>
 #include <linux/err.h>
 #include <linux/sizes.h>
+<<<<<<< HEAD
+=======
+#include <linux/dma-buf/heaps/cma.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/dma-map-ops.h>
 #include <linux/cma.h>
 #include <linux/nospec.h>
@@ -52,6 +56,7 @@
 #define CMA_SIZE_MBYTES 0
 #endif
 
+<<<<<<< HEAD
 static struct cma *dma_contiguous_areas[MAX_CMA_AREAS];
 static unsigned int dma_contiguous_areas_num;
 
@@ -84,6 +89,9 @@ struct cma *dma_contiguous_get_area_by_idx(unsigned int idx)
 EXPORT_SYMBOL_GPL(dma_contiguous_get_area_by_idx);
 
 static struct cma *dma_contiguous_default_area;
+=======
+struct cma *dma_contiguous_default_area;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Default global CMA area size can be defined in kernel's .config.
@@ -121,6 +129,7 @@ static int __init early_cma(char *p)
 }
 early_param("cma", early_cma);
 
+<<<<<<< HEAD
 struct cma *dev_get_cma_area(struct device *dev)
 {
 	if (dev && dev->cma_area)
@@ -129,6 +138,17 @@ struct cma *dev_get_cma_area(struct device *dev)
 	return dma_contiguous_default_area;
 }
 EXPORT_SYMBOL_GPL(dev_get_cma_area);
+=======
+/*
+ * cma_skip_dt_default_reserved_mem - This is called from the
+ * reserved_mem framework to detect if the default cma region is being
+ * set by the "cma=" kernel parameter.
+ */
+bool __init cma_skip_dt_default_reserved_mem(void)
+{
+	return size_cmdline != -1;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_DMA_NUMA_CMA
 
@@ -293,6 +313,7 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
 		if (ret)
 			return;
 
+<<<<<<< HEAD
 		/*
 		 * We need to insert the new area in our list to avoid
 		 * any inconsistencies between having the default area
@@ -311,6 +332,11 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
 		ret = dma_contiguous_insert_area(dma_contiguous_default_area);
 		if (ret)
 			pr_warn("Couldn't queue default CMA region for heap creation.");
+=======
+		ret = dma_heap_cma_register_heap(dma_contiguous_default_area);
+		if (ret)
+			pr_warn("Couldn't register default CMA heap.");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -514,6 +540,7 @@ static void rmem_cma_device_release(struct reserved_mem *rmem,
 	dev->cma_area = NULL;
 }
 
+<<<<<<< HEAD
 static int __init __rmem_cma_verify_node(unsigned long node)
 {
 	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
@@ -563,26 +590,55 @@ static int __init rmem_cma_setup(unsigned long node, struct reserved_mem *rmem)
 	ret = __rmem_cma_verify_node(node);
 	if (ret)
 		return ret;
+=======
+static const struct reserved_mem_ops rmem_cma_ops = {
+	.device_init	= rmem_cma_device_init,
+	.device_release = rmem_cma_device_release,
+};
+
+static int __init rmem_cma_setup(struct reserved_mem *rmem)
+{
+	unsigned long node = rmem->fdt_node;
+	bool default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
+	struct cma *cma;
+	int err;
+
+	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
+	    of_get_flat_dt_prop(node, "no-map", NULL))
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!IS_ALIGNED(rmem->base | rmem->size, CMA_MIN_ALIGNMENT_BYTES)) {
 		pr_err("Reserved memory: incorrect alignment of CMA region\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	ret = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &cma);
 	if (ret) {
 		pr_err("Reserved memory: unable to setup CMA region\n");
 		return ret;
+=======
+	err = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &cma);
+	if (err) {
+		pr_err("Reserved memory: unable to setup CMA region\n");
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (default_cma)
 		dma_contiguous_default_area = cma;
 
+<<<<<<< HEAD
+=======
+	rmem->ops = &rmem_cma_ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rmem->priv = cma;
 
 	pr_info("Reserved memory: created CMA memory pool at %pa, size %ld MiB\n",
 		&rmem->base, (unsigned long)rmem->size / SZ_1M);
 
+<<<<<<< HEAD
 	ret = dma_contiguous_insert_area(cma);
 	if (ret)
 		pr_warn("Couldn't store CMA reserved area.");
@@ -599,4 +655,13 @@ static const struct reserved_mem_ops rmem_cma_ops = {
 };
 
 RESERVEDMEM_OF_DECLARE(cma, "shared-dma-pool", &rmem_cma_ops);
+=======
+	err = dma_heap_cma_register_heap(cma);
+	if (err)
+		pr_warn("Couldn't register CMA heap.");
+
+	return 0;
+}
+RESERVEDMEM_OF_DECLARE(cma, "shared-dma-pool", rmem_cma_setup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

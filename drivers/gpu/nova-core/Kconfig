@@ -3,8 +3,13 @@ config NOVA_CORE
 	depends on 64BIT
 	depends on PCI
 	depends on RUST
+<<<<<<< HEAD
 	select AUXILIARY_BUS
 	select RUST_FW_LOADER_ABSTRACTIONS
+=======
+	select RUST_FW_LOADER_ABSTRACTIONS
+	select AUXILIARY_BUS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default n
 	help
 	  Choose this if you want to build the Nova Core driver for Nvidia

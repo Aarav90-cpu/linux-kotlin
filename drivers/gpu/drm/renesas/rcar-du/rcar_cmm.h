@@ -10,8 +10,13 @@
 
 #define CM2_LUT_SIZE		256
 
+<<<<<<< HEAD
 struct device;
 struct drm_color_lut;
+=======
+struct drm_color_lut;
+struct platform_device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct rcar_cmm_config - CMM configuration
@@ -26,6 +31,7 @@ struct rcar_cmm_config {
 };
 
 #if IS_ENABLED(CONFIG_DRM_RCAR_CMM)
+<<<<<<< HEAD
 int rcar_cmm_init(struct device *dev);
 
 int rcar_cmm_enable(struct device *dev);
@@ -35,20 +41,43 @@ int rcar_cmm_setup(struct device *dev,
 		   const struct rcar_cmm_config *config);
 #else
 static inline int rcar_cmm_init(struct device *dev)
+=======
+int rcar_cmm_init(struct platform_device *pdev);
+
+int rcar_cmm_enable(struct platform_device *pdev);
+void rcar_cmm_disable(struct platform_device *pdev);
+
+int rcar_cmm_setup(struct platform_device *pdev,
+		   const struct rcar_cmm_config *config);
+#else
+static inline int rcar_cmm_init(struct platform_device *pdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 static inline int rcar_cmm_enable(struct device *dev)
+=======
+static inline int rcar_cmm_enable(struct platform_device *pdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void rcar_cmm_disable(struct device *dev)
 {
 }
 
 static inline int rcar_cmm_setup(struct device *dev,
+=======
+static inline void rcar_cmm_disable(struct platform_device *pdev)
+{
+}
+
+static inline int rcar_cmm_setup(struct platform_device *pdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 const struct rcar_cmm_config *config)
 {
 	return 0;

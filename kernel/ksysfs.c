@@ -8,7 +8,10 @@
 
 #include <asm/byteorder.h>
 #include <linux/kobject.h>
+<<<<<<< HEAD
 #include <linux/ksysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/string.h>
 #include <linux/sysfs.h>
 #include <linux/export.h>
@@ -214,7 +217,11 @@ static const struct attribute_group kernel_attr_group = {
 	.attrs = kernel_attrs,
 };
 
+<<<<<<< HEAD
 void __init ksysfs_init(void)
+=======
+static int __init ksysfs_init(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int error;
 
@@ -235,12 +242,23 @@ void __init ksysfs_init(void)
 			goto group_exit;
 	}
 
+<<<<<<< HEAD
 	return;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 group_exit:
 	sysfs_remove_group(kernel_kobj, &kernel_attr_group);
 kset_exit:
 	kobject_put(kernel_kobj);
 exit:
+<<<<<<< HEAD
 	pr_err("failed to initialize the kernel kobject: %d\n", error);
 }
+=======
+	return error;
+}
+
+core_initcall(ksysfs_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

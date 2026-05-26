@@ -252,12 +252,18 @@ config ORION_IRQCHIP
 	select IRQ_DOMAIN
 
 config PIC32_EVIC
+<<<<<<< HEAD
 	def_bool MACH_PIC32 || COMPILE_TEST
 	select GENERIC_IRQ_CHIP
 	select IRQ_DOMAIN
 	help
 	  Enable support for the interrupt controller on the Microchip PIC32
 	  family of platforms.
+=======
+	bool
+	select GENERIC_IRQ_CHIP
+	select IRQ_DOMAIN
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config JCORE_AIC
 	bool "J-Core integrated AIC" if COMPILE_TEST
@@ -544,11 +550,19 @@ config CSKY_APB_INTC
 
 config IMX_IRQSTEER
 	bool "i.MX IRQSTEER support"
+<<<<<<< HEAD
 	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
 	default y if ARCH_MXC || ARCH_S32
 	select IRQ_DOMAIN
 	help
 	  Support for the i.MX and S32 IRQSTEER interrupt multiplexer/remapper.
+=======
+	depends on ARCH_MXC || COMPILE_TEST
+	default ARCH_MXC
+	select IRQ_DOMAIN
+	help
+	  Support for the i.MX IRQSTEER interrupt multiplexer/remapper.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config IMX_INTMUX
 	bool "i.MX INTMUX support" if COMPILE_TEST
@@ -764,6 +778,10 @@ config LOONGSON_PCH_MSI
 
 config LOONGSON_PCH_LPC
 	bool "Loongson PCH LPC Controller"
+<<<<<<< HEAD
+=======
+	depends on LOONGARCH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on MACH_LOONGSON64 || LOONGARCH
 	default MACH_LOONGSON64
 	select IRQ_DOMAIN_HIERARCHY

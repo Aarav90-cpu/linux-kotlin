@@ -29,6 +29,12 @@
 #define CSW fd_routine[can_use_virtual_dma & 1]
 
 
+<<<<<<< HEAD
+=======
+#define fd_inb(base, reg)		inb_p((base) + (reg))
+#define fd_outb(value, base, reg)	outb_p(value, (base) + (reg))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define fd_request_dma()	CSW._request_dma(FLOPPY_DMA, "floppy")
 #define fd_free_dma()		CSW._free_dma(FLOPPY_DMA)
 #define fd_enable_irq()		enable_irq(FLOPPY_IRQ)
@@ -46,6 +52,7 @@ static char *virtual_dma_addr;
 static int virtual_dma_mode;
 static int doing_pdma;
 
+<<<<<<< HEAD
 static inline u8 fd_inb(u16 base, u16 reg)
 {
 	u8 ret = inb_p(base + reg);
@@ -66,6 +73,8 @@ static inline void fd_outb(u8 value, u16 base, u16 reg)
 	native_io_delay();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static irqreturn_t floppy_hardint(int irq, void *dev_id)
 {
 	unsigned char st;
@@ -96,9 +105,15 @@ static irqreturn_t floppy_hardint(int irq, void *dev_id)
 			if (st != (STATUS_DMA | STATUS_READY))
 				break;
 			if (virtual_dma_mode)
+<<<<<<< HEAD
 				fd_outb(*lptr, virtual_dma_port, FD_DATA);
 			else
 				*lptr = fd_inb(virtual_dma_port, FD_DATA);
+=======
+				outb_p(*lptr, virtual_dma_port + FD_DATA);
+			else
+				*lptr = inb_p(virtual_dma_port + FD_DATA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		virtual_dma_count = lcount;
 		virtual_dma_addr = lptr;

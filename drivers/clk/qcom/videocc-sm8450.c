@@ -413,7 +413,11 @@ static struct clk_alpha_pll *video_cc_sm8450_plls[] = {
 	&video_cc_pll1,
 };
 
+<<<<<<< HEAD
 static const u32 video_cc_sm8450_critical_cbcrs[] = {
+=======
+static u32 video_cc_sm8450_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x80e4, /* VIDEO_CC_AHB_CLK */
 	0x8114, /* VIDEO_CC_XO_CLK */
 	0x8130, /* VIDEO_CC_SLEEP_CLK */
@@ -427,7 +431,11 @@ static const struct regmap_config video_cc_sm8450_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data video_cc_sm8450_driver_data = {
+=======
+static struct qcom_cc_driver_data video_cc_sm8450_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = video_cc_sm8450_plls,
 	.num_alpha_plls = ARRAY_SIZE(video_cc_sm8450_plls),
 	.clk_cbcrs = video_cc_sm8450_critical_cbcrs,

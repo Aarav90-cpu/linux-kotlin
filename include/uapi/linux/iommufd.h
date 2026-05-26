@@ -695,15 +695,21 @@ enum iommu_hw_info_type {
  * @IOMMU_HW_CAP_PCI_PASID_PRIV: Privileged Mode Supported, user ignores it
  *                               when the struct
  *                               iommu_hw_info::out_max_pasid_log2 is zero.
+<<<<<<< HEAD
  * @IOMMU_HW_CAP_PCI_ATS_NOT_SUPPORTED: ATS is not supported or cannot be used
  *                                      on this device (absence implies ATS
  *                                      may be enabled)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum iommufd_hw_capabilities {
 	IOMMU_HW_CAP_DIRTY_TRACKING = 1 << 0,
 	IOMMU_HW_CAP_PCI_PASID_EXEC = 1 << 1,
 	IOMMU_HW_CAP_PCI_PASID_PRIV = 1 << 2,
+<<<<<<< HEAD
 	IOMMU_HW_CAP_PCI_ATS_NOT_SUPPORTED = 1 << 3,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -1056,11 +1062,14 @@ struct iommu_fault_alloc {
 enum iommu_viommu_type {
 	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
 	IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
+<<<<<<< HEAD
 	/*
 	 * TEGRA241_CMDQV requirements (otherwise, VCMDQs will not work)
 	 * - Kernel will allocate a VINTF (HYP_OWN=0) to back this VIOMMU. So,
 	 *   VMM must wire the HYP_OWN bit to 0 in guest VINTF_CONFIG register
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV = 2,
 };
 

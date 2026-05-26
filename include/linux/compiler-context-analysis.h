@@ -320,6 +320,7 @@ static inline void _context_unsafe_alias(void **p) { }
  */
 #define __releases(...)		__releases_ctx_lock(__VA_ARGS__)
 
+<<<<<<< HEAD
 /*
  * Clang's analysis does not care precisely about the value, only that it is
  * either zero or non-zero. So the __cond_acquires() interface might be
@@ -352,6 +353,8 @@ static inline void _context_unsafe_alias(void **p) { }
  */
 #define __cond_releases(ret, x) __releases(x) __cond_acquires_impl_not_##ret(x)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __acquire() - function to acquire context lock exclusively
  * @x: context lock instance pointer

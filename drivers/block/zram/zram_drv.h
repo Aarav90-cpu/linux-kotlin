@@ -125,6 +125,10 @@ struct zram {
 	 */
 	u64 disksize;	/* bytes */
 	const char *comp_algs[ZRAM_MAX_COMPS];
+<<<<<<< HEAD
+=======
+	s8 num_active_comps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * zram is claimed so open request will be failed
 	 */

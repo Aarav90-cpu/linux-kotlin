@@ -205,6 +205,7 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
 	state->power_source = params ? params->power_source : DC_POWER_SOURCE_AC;
 
 #ifdef CONFIG_DRM_AMD_DC_FP
+<<<<<<< HEAD
 	bool status;
 
 	if (dc->debug.using_dml2) {
@@ -213,10 +214,15 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
 		DC_FP_END();
 
 		if (!status) {
+=======
+	if (dc->debug.using_dml2) {
+		if (!dml2_create(dc, &dc->dml2_options, &state->bw_ctx.dml2)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dc_state_release(state);
 			return NULL;
 		}
 
+<<<<<<< HEAD
 		if (dc->caps.dcmode_power_limits_present) {
 			bool status;
 
@@ -232,6 +238,15 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
 
 	}
 #endif // CONFIG_DRM_AMD_DC_FP
+=======
+		if (dc->caps.dcmode_power_limits_present && !dml2_create(dc, &dc->dml2_dc_power_options, &state->bw_ctx.dml2_dc_power_source)) {
+			dc_state_release(state);
+			return NULL;
+		}
+	}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kref_init(&state->refcount);
 
 	return state;
@@ -249,6 +264,7 @@ void dc_state_copy(struct dc_state *dst_state, struct dc_state *src_state)
 
 #ifdef CONFIG_DRM_AMD_DC_FP
 	dst_state->bw_ctx.dml2 = dst_dml2;
+<<<<<<< HEAD
 	if (src_state->bw_ctx.dml2) {
 		DC_FP_START();
 		dml2_copy(dst_state->bw_ctx.dml2, src_state->bw_ctx.dml2);
@@ -263,6 +279,16 @@ void dc_state_copy(struct dc_state *dst_state, struct dc_state *src_state)
 		DC_FP_END();
 	}
 #endif // CONFIG_DRM_AMD_DC_FP
+=======
+	if (src_state->bw_ctx.dml2)
+		dml2_copy(dst_state->bw_ctx.dml2, src_state->bw_ctx.dml2);
+
+	dst_state->bw_ctx.dml2_dc_power_source = dst_dml2_dc_power_source;
+	if (src_state->bw_ctx.dml2_dc_power_source)
+		dml2_copy(dst_state->bw_ctx.dml2_dc_power_source, src_state->bw_ctx.dml2_dc_power_source);
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* context refcount should not be overridden */
 	dst_state->refcount = refcount;
 }
@@ -278,6 +304,7 @@ struct dc_state *dc_state_create_copy(struct dc_state *src_state)
 	dc_state_copy_internal(new_state, src_state);
 
 #ifdef CONFIG_DRM_AMD_DC_FP
+<<<<<<< HEAD
 	bool status;
 
 	new_state->bw_ctx.dml2 = NULL;
@@ -307,6 +334,24 @@ struct dc_state *dc_state_create_copy(struct dc_state *src_state)
 		}
 	}
 #endif // CONFIG_DRM_AMD_DC_FP
+=======
+	new_state->bw_ctx.dml2 = NULL;
+	new_state->bw_ctx.dml2_dc_power_source = NULL;
+
+	if (src_state->bw_ctx.dml2 &&
+			!dml2_create_copy(&new_state->bw_ctx.dml2, src_state->bw_ctx.dml2)) {
+		dc_state_release(new_state);
+		return NULL;
+	}
+
+	if (src_state->bw_ctx.dml2_dc_power_source &&
+			!dml2_create_copy(&new_state->bw_ctx.dml2_dc_power_source, src_state->bw_ctx.dml2_dc_power_source)) {
+		dc_state_release(new_state);
+		return NULL;
+	}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kref_init(&new_state->refcount);
 
 	return new_state;
@@ -384,13 +429,19 @@ static void dc_state_free(struct kref *kref)
 	dc_state_destruct(state);
 
 #ifdef CONFIG_DRM_AMD_DC_FP
+<<<<<<< HEAD
 	DC_FP_START();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml2_destroy(state->bw_ctx.dml2);
 	state->bw_ctx.dml2 = 0;
 
 	dml2_destroy(state->bw_ctx.dml2_dc_power_source);
 	state->bw_ctx.dml2_dc_power_source = 0;
+<<<<<<< HEAD
 	DC_FP_END();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	kvfree(state);
@@ -409,7 +460,10 @@ enum dc_status dc_state_add_stream(
 		struct dc_state *state,
 		struct dc_stream_state *stream)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum dc_status res;
 
 	DC_LOGGER_INIT(dc->ctx->logger);
@@ -785,7 +839,10 @@ struct dc_plane_state *dc_state_create_phantom_plane(const struct dc *dc,
 		struct dc_state *state,
 		struct dc_plane_state *main_plane)
 {
+<<<<<<< HEAD
 	(void)main_plane;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_plane_state *phantom_plane = dc_create_plane_state(dc);
 
 	DC_LOGGER_INIT(dc->ctx->logger);

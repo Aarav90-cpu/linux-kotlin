@@ -77,7 +77,10 @@
 #include <asm/io.h>
 
 #include <video/tdfx.h>
+<<<<<<< HEAD
 #include <video/vga.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DPRINTK(a, b...) pr_debug("fb: %s: " a, __func__ , ## b)
 
@@ -595,7 +598,11 @@ static int tdfxfb_set_par(struct fb_info *info)
 		vt = ve + (info->var.upper_margin << 1) - 1;
 		reg.screensize = info->var.xres | (info->var.yres << 13);
 		reg.vidcfg |= VIDCFG_HALF_MODE;
+<<<<<<< HEAD
 		reg.crt[VGA_CRTC_MAX_SCAN] = 0x80;
+=======
+		reg.crt[0x09] = 0x80;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		vd = info->var.yres - 1;
 		vs  = vd + info->var.lower_margin;
@@ -613,6 +620,7 @@ static int tdfxfb_set_par(struct fb_info *info)
 			 info->var.xres < 480 ? 0x60 :
 			 info->var.xres < 768 ? 0xe0 : 0x20);
 
+<<<<<<< HEAD
 	reg.gra[VGA_GFX_MODE]         = 0x40;
 	reg.gra[VGA_GFX_MISC]         = 0x05;
 	reg.gra[VGA_GFX_COMPARE_MASK] = 0x0f;
@@ -666,6 +674,61 @@ static int tdfxfb_set_par(struct fb_info *info)
 	reg.crt[VGA_CRTC_V_BLANK_END]   = vbe + 1;
 	reg.crt[VGA_CRTC_MODE]          = 0xc3;
 	reg.crt[VGA_CRTC_LINE_COMPARE]  = 0xff;
+=======
+	reg.gra[0x05] = 0x40;
+	reg.gra[0x06] = 0x05;
+	reg.gra[0x07] = 0x0f;
+	reg.gra[0x08] = 0xff;
+
+	reg.att[0x00] = 0x00;
+	reg.att[0x01] = 0x01;
+	reg.att[0x02] = 0x02;
+	reg.att[0x03] = 0x03;
+	reg.att[0x04] = 0x04;
+	reg.att[0x05] = 0x05;
+	reg.att[0x06] = 0x06;
+	reg.att[0x07] = 0x07;
+	reg.att[0x08] = 0x08;
+	reg.att[0x09] = 0x09;
+	reg.att[0x0a] = 0x0a;
+	reg.att[0x0b] = 0x0b;
+	reg.att[0x0c] = 0x0c;
+	reg.att[0x0d] = 0x0d;
+	reg.att[0x0e] = 0x0e;
+	reg.att[0x0f] = 0x0f;
+	reg.att[0x10] = 0x41;
+	reg.att[0x12] = 0x0f;
+
+	reg.seq[0x00] = 0x03;
+	reg.seq[0x01] = 0x01; /* fixme: clkdiv2? */
+	reg.seq[0x02] = 0x0f;
+	reg.seq[0x03] = 0x00;
+	reg.seq[0x04] = 0x0e;
+
+	reg.crt[0x00] = ht - 4;
+	reg.crt[0x01] = hd;
+	reg.crt[0x02] = hbs;
+	reg.crt[0x03] = 0x80 | (hbe & 0x1f);
+	reg.crt[0x04] = hs;
+	reg.crt[0x05] = ((hbe & 0x20) << 2) | (he & 0x1f);
+	reg.crt[0x06] = vt;
+	reg.crt[0x07] = ((vs & 0x200) >> 2) |
+			((vd & 0x200) >> 3) |
+			((vt & 0x200) >> 4) | 0x10 |
+			((vbs & 0x100) >> 5) |
+			((vs & 0x100) >> 6) |
+			((vd & 0x100) >> 7) |
+			((vt & 0x100) >> 8);
+	reg.crt[0x09] |= 0x40 | ((vbs & 0x200) >> 4);
+	reg.crt[0x10] = vs;
+	reg.crt[0x11] = (ve & 0x0f) | 0x20;
+	reg.crt[0x12] = vd;
+	reg.crt[0x13] = wd;
+	reg.crt[0x15] = vbs;
+	reg.crt[0x16] = vbe + 1;
+	reg.crt[0x17] = 0xc3;
+	reg.crt[0x18] = 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Banshee's nonvga stuff */
 	reg.ext[0x00] = (((ht & 0x100) >> 8) |

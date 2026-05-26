@@ -43,6 +43,11 @@
 #define FN(reg_name, field_name) \
 	mpc20->mpc_shift->field_name, mpc20->mpc_mask->field_name
 
+<<<<<<< HEAD
+=======
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mpc2_update_blending(
 	struct mpc *mpc,
 	struct mpcc_blnd_cfg *blnd_cfg,

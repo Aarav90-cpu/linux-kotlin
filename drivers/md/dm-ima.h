@@ -15,6 +15,10 @@
 #define DM_IMA_TARGET_METADATA_BUF_LEN	128
 #define DM_IMA_TARGET_DATA_BUF_LEN	2048
 #define DM_IMA_DEVICE_CAPACITY_BUF_LEN	128
+<<<<<<< HEAD
+=======
+#define DM_IMA_TABLE_HASH_ALG		"sha256"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __dm_ima_stringify(s) #s
 #define __dm_ima_str(s) __dm_ima_stringify(s)

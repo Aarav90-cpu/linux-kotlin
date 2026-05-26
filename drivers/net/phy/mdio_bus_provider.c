@@ -28,6 +28,7 @@
 #include <linux/string.h>
 #include <linux/uaccess.h>
 #include <linux/unistd.h>
+<<<<<<< HEAD
 #include "phylib-internal.h"
 
 /**
@@ -303,6 +304,8 @@ const struct bus_type mdio_bus_type = {
 	.match		= mdio_bus_match,
 	.uevent		= mdio_uevent,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * mdiobus_alloc_size - allocate a mii_bus structure
@@ -715,6 +718,7 @@ void mdiobus_free(struct mii_bus *bus)
 	put_device(&bus->dev);
 }
 EXPORT_SYMBOL(mdiobus_free);
+<<<<<<< HEAD
 
 /**
  * mdio_find_bus - Given the name of a mdiobus, find the mii_bus.
@@ -759,3 +763,5 @@ struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np)
 }
 EXPORT_SYMBOL(of_mdio_find_bus);
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

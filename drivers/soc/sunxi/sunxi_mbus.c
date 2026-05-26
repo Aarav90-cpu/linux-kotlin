@@ -118,7 +118,11 @@ static const char * const sunxi_mbus_platforms[] __initconst = {
 
 static int __init sunxi_mbus_init(void)
 {
+<<<<<<< HEAD
 	if (!of_machine_compatible_match(sunxi_mbus_platforms))
+=======
+	if (!of_device_compatible_match(of_root, sunxi_mbus_platforms))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	bus_register_notifier(&platform_bus_type, &sunxi_mbus_nb);

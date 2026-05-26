@@ -6,9 +6,14 @@
 #include <linux/ethtool_netlink.h>
 #include <linux/phy_link_topology.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 
 #include "module_fw.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "module_fw.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct genl_family ethtool_genl_family;
 
@@ -462,8 +467,12 @@ static int ethnl_default_parse(struct ethnl_req_info *req_info,
 		return ret;
 
 	if (request_ops->parse_request) {
+<<<<<<< HEAD
 		ret = request_ops->parse_request(req_info, info, tb,
 						 info->extack);
+=======
+		ret = request_ops->parse_request(req_info, tb, info->extack);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			goto err_dev;
 	}

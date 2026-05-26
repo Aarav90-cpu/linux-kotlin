@@ -17,7 +17,11 @@
 #ifdef __x86_64__
 
 struct test_case {
+<<<<<<< HEAD
 	u64 tsc_offset;
+=======
+	uint64_t tsc_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct test_case test_cases[] = {
@@ -39,12 +43,20 @@ static void setup_system_counter(struct kvm_vcpu *vcpu, struct test_case *test)
 			     &test->tsc_offset);
 }
 
+<<<<<<< HEAD
 static u64 guest_read_system_counter(struct test_case *test)
+=======
+static uint64_t guest_read_system_counter(struct test_case *test)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rdtsc();
 }
 
+<<<<<<< HEAD
 static u64 host_read_guest_system_counter(struct test_case *test)
+=======
+static uint64_t host_read_guest_system_counter(struct test_case *test)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rdtsc() + test->tsc_offset;
 }
@@ -69,9 +81,15 @@ static void guest_main(void)
 	}
 }
 
+<<<<<<< HEAD
 static void handle_sync(struct ucall *uc, u64 start, u64 end)
 {
 	u64 obs = uc->args[2];
+=======
+static void handle_sync(struct ucall *uc, uint64_t start, uint64_t end)
+{
+	uint64_t obs = uc->args[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(start <= obs && obs <= end,
 		    "unexpected system counter value: %"PRIu64" expected range: [%"PRIu64", %"PRIu64"]",
@@ -88,7 +106,11 @@ static void handle_abort(struct ucall *uc)
 
 static void enter_guest(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 start, end;
+=======
+	uint64_t start, end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ucall uc;
 	int i;
 

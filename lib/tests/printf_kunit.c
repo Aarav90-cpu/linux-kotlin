@@ -17,7 +17,10 @@
 #include <linux/dcache.h>
 #include <linux/socket.h>
 #include <linux/in.h>
+<<<<<<< HEAD
 #include <linux/in6.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/gfp.h>
 #include <linux/mm.h>
@@ -438,6 +441,7 @@ ip4(struct kunit *kunittest)
 static void
 ip6(struct kunit *kunittest)
 {
+<<<<<<< HEAD
 	const struct in6_addr addr = {
 		.s6_addr = { 0x00, 0x01, 0x00, 0x02, 0x00, 0x03, 0x00, 0x04,
 			     0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x00, 0x08 }
@@ -459,6 +463,8 @@ ip6(struct kunit *kunittest)
 	test("1:2:3:4:5:6:7:8", "%pI6c", &addr);
 	test("1:0:3:4:5:6:7:8", "%pI6c", &single_zero);
 	test("[1:2:3:4:5:6:7:8]:12345", "%pISpc", &sa);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void

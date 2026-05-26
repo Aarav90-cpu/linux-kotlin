@@ -517,12 +517,21 @@ enum {
 #define RTAX_FEATURE_TIMESTAMP		(1 << 2) /* unused */
 #define RTAX_FEATURE_ALLFRAG		(1 << 3) /* unused */
 #define RTAX_FEATURE_TCP_USEC_TS	(1 << 4)
+<<<<<<< HEAD
+=======
+#define RTAX_FEATURE_ECN_LOW		(1 << 5)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RTAX_FEATURE_MASK	(RTAX_FEATURE_ECN |		\
 				 RTAX_FEATURE_SACK |		\
 				 RTAX_FEATURE_TIMESTAMP |	\
 				 RTAX_FEATURE_ALLFRAG |		\
+<<<<<<< HEAD
 				 RTAX_FEATURE_TCP_USEC_TS)
+=======
+				 RTAX_FEATURE_TCP_USEC_TS |	\
+				 RTAX_FEATURE_ECN_LOW)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct rta_session {
 	__u8	proto;

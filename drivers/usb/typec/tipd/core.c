@@ -820,10 +820,15 @@ static void cd321x_update_work(struct work_struct *work)
 			desc.identity = &st.partner_identity;
 
 		tps->partner = typec_register_partner(tps->port, &desc);
+<<<<<<< HEAD
 		if (IS_ERR(tps->partner)) {
 			dev_warn(tps->dev, "%s: failed to register partner\n", __func__);
 			return;
 		}
+=======
+		if (IS_ERR(tps->partner))
+			dev_warn(tps->dev, "%s: failed to register partnet\n", __func__);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (desc.identity) {
 			typec_partner_set_identity(tps->partner);

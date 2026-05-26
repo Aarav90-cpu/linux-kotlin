@@ -116,6 +116,10 @@
 
 	reg_m2_pwr: regulator-m2-pwr {
 		compatible = "regulator-fixed";
+<<<<<<< HEAD
+=======
+		regulator-always-on;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regulator-max-microvolt = <3300000>;
 		regulator-min-microvolt = <3300000>;
 		regulator-name = "M.2-power";

@@ -292,7 +292,11 @@ static int nilfs_do_unlink(struct inode *dir, struct dentry *dentry)
 
 	if (!inode->i_nlink) {
 		nilfs_warn(inode->i_sb,
+<<<<<<< HEAD
 			   "deleting nonexistent file (ino=%llu), %d",
+=======
+			   "deleting nonexistent file (ino=%lu), %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   inode->i_ino, inode->i_nlink);
 		set_nlink(inode, 1);
 	}

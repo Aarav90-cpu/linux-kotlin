@@ -79,11 +79,16 @@ void apic_disable(void);
 void xapic_enable(void);
 void x2apic_enable(void);
 
+<<<<<<< HEAD
 static inline u32 get_bsp_flag(void)
+=======
+static inline uint32_t get_bsp_flag(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rdmsr(MSR_IA32_APICBASE) & MSR_IA32_APICBASE_BSP;
 }
 
+<<<<<<< HEAD
 static inline u32 xapic_read_reg(unsigned int reg)
 {
 	return ((volatile u32 *)APIC_DEFAULT_GPA)[reg >> 2];
@@ -95,26 +100,55 @@ static inline void xapic_write_reg(unsigned int reg, u32 val)
 }
 
 static inline u64 x2apic_read_reg(unsigned int reg)
+=======
+static inline uint32_t xapic_read_reg(unsigned int reg)
+{
+	return ((volatile uint32_t *)APIC_DEFAULT_GPA)[reg >> 2];
+}
+
+static inline void xapic_write_reg(unsigned int reg, uint32_t val)
+{
+	((volatile uint32_t *)APIC_DEFAULT_GPA)[reg >> 2] = val;
+}
+
+static inline uint64_t x2apic_read_reg(unsigned int reg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rdmsr(APIC_BASE_MSR + (reg >> 4));
 }
 
+<<<<<<< HEAD
 static inline u8 x2apic_write_reg_safe(unsigned int reg, u64 value)
+=======
+static inline uint8_t x2apic_write_reg_safe(unsigned int reg, uint64_t value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return wrmsr_safe(APIC_BASE_MSR + (reg >> 4), value);
 }
 
+<<<<<<< HEAD
 static inline void x2apic_write_reg(unsigned int reg, u64 value)
 {
 	u8 fault = x2apic_write_reg_safe(reg, value);
+=======
+static inline void x2apic_write_reg(unsigned int reg, uint64_t value)
+{
+	uint8_t fault = x2apic_write_reg_safe(reg, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__GUEST_ASSERT(!fault, "Unexpected fault 0x%x on WRMSR(%x) = %lx\n",
 		       fault, APIC_BASE_MSR + (reg >> 4), value);
 }
 
+<<<<<<< HEAD
 static inline void x2apic_write_reg_fault(unsigned int reg, u64 value)
 {
 	u8 fault = x2apic_write_reg_safe(reg, value);
+=======
+static inline void x2apic_write_reg_fault(unsigned int reg, uint64_t value)
+{
+	uint8_t fault = x2apic_write_reg_safe(reg, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__GUEST_ASSERT(fault == GP_VECTOR,
 		       "Wanted #GP on WRMSR(%x) = %lx, got 0x%x\n",

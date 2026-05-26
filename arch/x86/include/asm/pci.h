@@ -26,6 +26,10 @@ struct pci_sysdata {
 #if IS_ENABLED(CONFIG_VMD)
 	struct pci_dev	*vmd_dev;	/* VMD Device if in Intel VMD domain */
 #endif
+<<<<<<< HEAD
+=======
+	struct pci_dev	*nvme_remap_dev;	/* AHCI Device if NVME remapped bus */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern int pci_routeirq;
@@ -69,6 +73,14 @@ static inline bool is_vmd(struct pci_bus *bus)
 #define is_vmd(bus)		false
 #endif /* CONFIG_VMD */
 
+<<<<<<< HEAD
+=======
+static inline bool is_nvme_remap(struct pci_bus *bus)
+{
+	return to_pci_sysdata(bus)->nvme_remap_dev != NULL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Can be used to override the logic in pci_scan_bus for skipping
    already-configured bus numbers - to be used for buggy BIOSes
    or architectures with incomplete PCI setup by the loader */

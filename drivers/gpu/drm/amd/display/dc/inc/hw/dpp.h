@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-15 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -367,6 +371,7 @@ struct dpp_funcs {
 
 	void (*dpp_force_disable_cursor)(struct dpp *dpp_base);
 
+<<<<<<< HEAD
 	void (*dpp_cm_hist_control)(
 		struct dpp *dpp_base,
 		struct cm_hist_control cm_hist_control,
@@ -375,6 +380,8 @@ struct dpp_funcs {
 	bool (*dpp_cm_hist_read)(
 		struct dpp *dpp_base,
 		struct cm_hist *cm_hist);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 

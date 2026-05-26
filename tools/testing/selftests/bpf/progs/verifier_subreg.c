@@ -823,6 +823,7 @@ __naked void arsh_63_or(void)
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 SEC("socket")
 __success __retval(42)
 __naked void arsh32_imm1_value(void)
@@ -988,4 +989,6 @@ l0_%=:	r0 = r6;					\
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

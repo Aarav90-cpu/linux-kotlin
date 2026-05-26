@@ -132,8 +132,12 @@ void __i915_request_reset(struct i915_request *rq, bool guilty)
 	rcu_read_lock(); /* protect the GEM context */
 	if (guilty) {
 		i915_request_set_error_once(rq, -EIO);
+<<<<<<< HEAD
 		if (!i915_request_signaled(rq))
 			__i915_request_skip(rq);
+=======
+		__i915_request_skip(rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		banned = mark_guilty(rq);
 	} else {
 		i915_request_set_error_once(rq, -EAGAIN);
@@ -587,7 +591,11 @@ static int gen8_engine_reset_prepare(struct intel_engine_cs *engine)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	intel_uncore_write_fw(uncore, reg, REG_MASKED_FIELD_ENABLE(request));
+=======
+	intel_uncore_write_fw(uncore, reg, _MASKED_BIT_ENABLE(request));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = __intel_wait_for_register_fw(uncore, reg, mask, ack,
 					   700, 0, NULL);
 	if (ret)
@@ -603,7 +611,11 @@ static void gen8_engine_reset_cancel(struct intel_engine_cs *engine)
 {
 	intel_uncore_write_fw(engine->uncore,
 			      RING_RESET_CTL(engine->mmio_base),
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_DISABLE(RESET_CTL_REQUEST_RESET));
+=======
+			      _MASKED_BIT_DISABLE(RESET_CTL_REQUEST_RESET));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int gen8_reset_engines(struct intel_gt *gt,

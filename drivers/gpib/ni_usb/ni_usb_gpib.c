@@ -2431,6 +2431,10 @@ static int ni_usb_driver_probe(struct usb_interface *interface,	const struct usb
 	static const int path_length = 1024;
 
 	mutex_lock(&ni_usb_hotplug_lock);
+<<<<<<< HEAD
+=======
+	usb_get_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < MAX_NUM_NI_USB_INTERFACES; i++) {
 		if (!ni_usb_driver_interfaces[i]) {
 			ni_usb_driver_interfaces[i] = interface;
@@ -2439,12 +2443,20 @@ static int ni_usb_driver_probe(struct usb_interface *interface,	const struct usb
 		}
 	}
 	if (i == MAX_NUM_NI_USB_INTERFACES) {
+<<<<<<< HEAD
+=======
+		usb_put_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&ni_usb_hotplug_lock);
 		dev_err(&usb_dev->dev, "ni_usb_driver_interfaces[] full\n");
 		return -1;
 	}
 	path = kmalloc(path_length, GFP_KERNEL);
 	if (!path) {
+<<<<<<< HEAD
+=======
+		usb_put_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&ni_usb_hotplug_lock);
 		return -ENOMEM;
 	}
@@ -2485,6 +2497,10 @@ static void ni_usb_driver_disconnect(struct usb_interface *interface)
 	}
 	if (i == MAX_NUM_NI_USB_INTERFACES)
 		dev_err(&usb_dev->dev, "unable to find interface  bug?\n");
+<<<<<<< HEAD
+=======
+	usb_put_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ni_usb_hotplug_lock);
 }
 

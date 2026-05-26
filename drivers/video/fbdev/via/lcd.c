@@ -954,9 +954,12 @@ bool viafb_lcd_get_mobile_state(bool *mobile)
 	u16 start_pattern;
 
 	biosptr = ioremap(romaddr, 0x10000);
+<<<<<<< HEAD
 	if (!biosptr)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	start_pattern = readw(biosptr);
 
 	/* Compare pattern */

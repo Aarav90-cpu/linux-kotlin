@@ -212,11 +212,15 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
 		*gpio_flags = GPIO_ACTIVE_HIGH;
 		break;
 	case INT3472_GPIO_TYPE_PRIVACY_LED:
+<<<<<<< HEAD
 		*con_id = "privacy";
 		*gpio_flags = GPIO_ACTIVE_HIGH;
 		break;
 	case INT3472_GPIO_TYPE_STROBE:
 		*con_id = "ir_flood";
+=======
+		*con_id = "privacy-led";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*gpio_flags = GPIO_ACTIVE_HIGH;
 		break;
 	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
@@ -256,7 +260,10 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
  *
  * 0x00 Reset
  * 0x01 Power down
+<<<<<<< HEAD
  * 0x02 Strobe
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * 0x0b Power enable
  * 0x0c Clock enable
  * 0x0d Privacy LED
@@ -341,7 +348,10 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
 		break;
 	case INT3472_GPIO_TYPE_CLK_ENABLE:
 	case INT3472_GPIO_TYPE_PRIVACY_LED:
+<<<<<<< HEAD
 	case INT3472_GPIO_TYPE_STROBE:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case INT3472_GPIO_TYPE_POWER_ENABLE:
 	case INT3472_GPIO_TYPE_DOVDD:
 	case INT3472_GPIO_TYPE_HANDSHAKE:
@@ -360,8 +370,12 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
 
 			break;
 		case INT3472_GPIO_TYPE_PRIVACY_LED:
+<<<<<<< HEAD
 		case INT3472_GPIO_TYPE_STROBE:
 			ret = skl_int3472_register_led(int3472, gpio, con_id);
+=======
+			ret = skl_int3472_register_pled(int3472, gpio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				err_msg = "Failed to register LED\n";
 
@@ -436,7 +450,11 @@ void int3472_discrete_cleanup(struct int3472_discrete_device *int3472)
 	gpiod_remove_lookup_table(&int3472->gpios);
 
 	skl_int3472_unregister_clock(int3472);
+<<<<<<< HEAD
 	skl_int3472_unregister_leds(int3472);
+=======
+	skl_int3472_unregister_pled(int3472);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skl_int3472_unregister_regulator(int3472);
 }
 EXPORT_SYMBOL_NS_GPL(int3472_discrete_cleanup, "INTEL_INT3472_DISCRETE");

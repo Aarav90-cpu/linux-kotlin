@@ -187,6 +187,7 @@ static ssize_t index_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(index);
 
+<<<<<<< HEAD
 static ssize_t zpci_uid_slot_show(struct pci_slot *slot, char *buf)
 {
 	struct zpci_dev *zdev = container_of(slot->hotplug, struct zpci_dev,
@@ -198,6 +199,8 @@ static ssize_t zpci_uid_slot_show(struct pci_slot *slot, char *buf)
 static struct pci_slot_attribute zpci_slot_attr_uid =
 	__ATTR(uid, 0444, zpci_uid_slot_show, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static umode_t zpci_index_is_visible(struct kobject *kobj,
 				     struct attribute *attr, int n)
 {
@@ -254,6 +257,7 @@ const struct attribute_group pfip_attr_group = {
 	.attrs = pfip_attrs,
 };
 
+<<<<<<< HEAD
 static struct attribute *zpci_slot_attrs[] = {
 	&zpci_slot_attr_uid.attr,
 	NULL,
@@ -263,6 +267,8 @@ const struct attribute_group zpci_slot_attr_group = {
 	.attrs = zpci_slot_attrs,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *clp_fw_attrs[] = {
 	&uid_checking_attr.attr,
 	NULL,

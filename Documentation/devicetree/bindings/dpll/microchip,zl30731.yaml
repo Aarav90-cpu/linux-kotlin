@@ -52,6 +52,7 @@ examples:
           #address-cells = <1>;
           #size-cells = <0>;
 
+<<<<<<< HEAD
           sync0: pin@0 { /* REF0P - 1 PPS sync source */
             reg = <0>;
             connection-type = "ext";
@@ -65,6 +66,13 @@ examples:
             label = "SMA2";
             supported-frequencies-hz = /bits/ 64 <10000 10000000>;
             ref-sync-sources = <&sync0>;
+=======
+          pin@0 { /* REF0P */
+            reg = <0>;
+            connection-type = "ext";
+            label = "Input 0";
+            supported-frequencies-hz = /bits/ 64 <1 1000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           };
         };
 
@@ -98,6 +106,7 @@ examples:
           #address-cells = <1>;
           #size-cells = <0>;
 
+<<<<<<< HEAD
           sync1: pin@0 { /* REF0P - 1 PPS sync source */
             reg = <0>;
             connection-type = "gnss";
@@ -111,6 +120,13 @@ examples:
             label = "GNSS_10M_IN";
             supported-frequencies-hz = /bits/ 64 <10000000>;
             ref-sync-sources = <&sync1>;
+=======
+          pin@0 { /* REF0P */
+            reg = <0>;
+            connection-type = "ext";
+            label = "Input 0";
+            supported-frequencies-hz = /bits/ 64 <1 1000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           };
         };
 

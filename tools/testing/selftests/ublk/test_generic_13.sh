@@ -15,5 +15,9 @@ if ${UBLK_PROG} features | grep -q unknown; then
         ERR_CODE=255
 fi
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "null"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

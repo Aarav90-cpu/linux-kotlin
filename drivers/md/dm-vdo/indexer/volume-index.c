@@ -1211,12 +1211,21 @@ static int initialize_volume_sub_index(const struct uds_configuration *config,
 				  (zone_count * sizeof(struct volume_sub_index_zone)));
 
 	/* The following arrays are initialized to all zeros. */
+<<<<<<< HEAD
 	result = vdo_allocate(params.list_count, "first chapter to flush",
+=======
+	result = vdo_allocate(params.list_count, u64, "first chapter to flush",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &sub_index->flush_chapters);
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	return vdo_allocate(zone_count, "volume index zones", &sub_index->zones);
+=======
+	return vdo_allocate(zone_count, struct volume_sub_index_zone,
+			    "volume index zones", &sub_index->zones);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int uds_make_volume_index(const struct uds_configuration *config, u64 volume_nonce,
@@ -1227,7 +1236,11 @@ int uds_make_volume_index(const struct uds_configuration *config, u64 volume_non
 	struct volume_index *volume_index;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "volume index", &volume_index);
+=======
+	result = vdo_allocate(1, struct volume_index, "volume index", &volume_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1248,7 +1261,12 @@ int uds_make_volume_index(const struct uds_configuration *config, u64 volume_non
 
 	volume_index->sparse_sample_rate = config->sparse_sample_rate;
 
+<<<<<<< HEAD
 	result = vdo_allocate(config->zone_count, "volume index zones", &volume_index->zones);
+=======
+	result = vdo_allocate(config->zone_count, struct volume_index_zone,
+			      "volume index zones", &volume_index->zones);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		uds_free_volume_index(volume_index);
 		return result;

@@ -17,17 +17,31 @@ endif
 # it defaults to this nolibc directory.
 OUTPUT ?= $(CURDIR)/
 
+<<<<<<< HEAD
 architectures := arm arm64 loongarch m68k mips powerpc riscv s390 sh sparc x86
 arch_files := arch.h $(addsuffix .h, $(addprefix arch-, $(architectures)))
 all_files := \
 		byteswap.h \
+=======
+ifeq ($(V),1)
+Q=
+else
+Q=@
+endif
+
+arch_files := arch.h $(wildcard arch-*.h)
+all_files := \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compiler.h \
 		crt.h \
 		ctype.h \
 		dirent.h \
 		elf.h \
+<<<<<<< HEAD
 		endian.h \
 		err.h \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		errno.h \
 		fcntl.h \
 		getopt.h \
@@ -94,10 +108,18 @@ help:
 
 # installs headers for all archs at once.
 headers:
+<<<<<<< HEAD
+=======
+	$(Q)mkdir -p "$(OUTPUT)sysroot"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	$(Q)mkdir -p "$(OUTPUT)sysroot/include"
 	$(Q)cp --parents $(arch_files) $(all_files) "$(OUTPUT)sysroot/include/"
 
 headers_standalone: headers
+<<<<<<< HEAD
+=======
+	$(Q)$(MAKE) -C $(srctree) headers
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	$(Q)$(MAKE) -C $(srctree) headers_install INSTALL_HDR_PATH=$(OUTPUT)sysroot
 
 CFLAGS_s390 := -m64

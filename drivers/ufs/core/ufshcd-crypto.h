@@ -8,6 +8,10 @@
 
 #include <scsi/scsi_cmnd.h>
 #include <ufs/ufshcd.h>
+<<<<<<< HEAD
+=======
+#include "ufshcd-priv.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <ufs/ufshci.h>
 
 #ifdef CONFIG_SCSI_UFS_CRYPTO

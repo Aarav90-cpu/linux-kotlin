@@ -21,7 +21,10 @@ void lockup_detector_soft_poweroff(void);
 extern int watchdog_user_enabled;
 extern int watchdog_thresh;
 extern unsigned long watchdog_enabled;
+<<<<<<< HEAD
 extern int watchdog_hardlockup_miss_thresh;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern struct cpumask watchdog_cpumask;
 extern unsigned long *watchdog_cpumask_bits;

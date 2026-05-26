@@ -12,7 +12,11 @@
 #include "kvm_util.h"
 #include "processor.h"
 
+<<<<<<< HEAD
 static bool is_kvm_controlled_msr(u32 msr)
+=======
+static bool is_kvm_controlled_msr(uint32_t msr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return msr == MSR_IA32_VMX_CR0_FIXED1 || msr == MSR_IA32_VMX_CR4_FIXED1;
 }
@@ -21,7 +25,11 @@ static bool is_kvm_controlled_msr(u32 msr)
  * For VMX MSRs with a "true" variant, KVM requires userspace to set the "true"
  * MSR, and doesn't allow setting the hidden version.
  */
+<<<<<<< HEAD
 static bool is_hidden_vmx_msr(u32 msr)
+=======
+static bool is_hidden_vmx_msr(uint32_t msr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (msr) {
 	case MSR_IA32_VMX_PINBASED_CTLS:
@@ -34,15 +42,26 @@ static bool is_hidden_vmx_msr(u32 msr)
 	}
 }
 
+<<<<<<< HEAD
 static bool is_quirked_msr(u32 msr)
+=======
+static bool is_quirked_msr(uint32_t msr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return msr != MSR_AMD64_DE_CFG;
 }
 
+<<<<<<< HEAD
 static void test_feature_msr(u32 msr)
 {
 	const u64 supported_mask = kvm_get_feature_msr(msr);
 	u64 reset_value = is_quirked_msr(msr) ? supported_mask : 0;
+=======
+static void test_feature_msr(uint32_t msr)
+{
+	const uint64_t supported_mask = kvm_get_feature_msr(msr);
+	uint64_t reset_value = is_quirked_msr(msr) ? supported_mask : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 

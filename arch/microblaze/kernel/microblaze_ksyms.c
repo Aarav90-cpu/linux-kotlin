@@ -33,6 +33,11 @@ EXPORT_SYMBOL(memcpy);
 EXPORT_SYMBOL(memmove);
 #endif
 
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(empty_zero_page);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL(mbc);
 
 extern void __divsi3(void);

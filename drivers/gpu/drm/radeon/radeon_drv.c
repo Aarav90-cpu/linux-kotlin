@@ -278,13 +278,21 @@ static bool radeon_support_enabled(struct device *dev,
 
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
+<<<<<<< HEAD
+=======
+		support_by_default = false;
+		fallthrough;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
 		gen = "CIK";
 		module_param = radeon_cik_support;
 		amdgpu_support_built &= IS_ENABLED(CONFIG_DRM_AMDGPU_CIK);
+<<<<<<< HEAD
 		support_by_default = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	default:

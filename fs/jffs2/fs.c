@@ -43,7 +43,11 @@ int jffs2_do_setattr (struct inode *inode, struct iattr *iattr)
 	int ret;
 	int alloc_type = ALLOC_NORMAL;
 
+<<<<<<< HEAD
 	jffs2_dbg(1, "%s(): ino #%llu\n", __func__, inode->i_ino);
+=======
+	jffs2_dbg(1, "%s(): ino #%lu\n", __func__, inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Special cases - we don't want more than one data node
 	   for these types on the medium at any time. So setattr
@@ -243,7 +247,11 @@ void jffs2_evict_inode (struct inode *inode)
 	struct jffs2_sb_info *c = JFFS2_SB_INFO(inode->i_sb);
 	struct jffs2_inode_info *f = JFFS2_INODE_INFO(inode);
 
+<<<<<<< HEAD
 	jffs2_dbg(1, "%s(): ino #%llu mode %o\n",
+=======
+	jffs2_dbg(1, "%s(): ino #%lu mode %o\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, inode->i_ino, inode->i_mode);
 	truncate_inode_pages_final(&inode->i_data);
 	clear_inode(inode);
@@ -334,8 +342,13 @@ struct inode *jffs2_iget(struct super_block *sb, unsigned long ino)
 		ret = jffs2_read_dnode(c, f, f->metadata, (char *)&jdev, 0, f->metadata->size);
 		if (ret < 0) {
 			/* Eep */
+<<<<<<< HEAD
 			pr_notice("Read device numbers for inode %llu failed\n",
 				  inode->i_ino);
+=======
+			pr_notice("Read device numbers for inode %lu failed\n",
+				  (unsigned long)inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto error;
 		}
 		if (f->metadata->size == sizeof(jdev.old_id))
@@ -351,8 +364,13 @@ struct inode *jffs2_iget(struct super_block *sb, unsigned long ino)
 		break;
 
 	default:
+<<<<<<< HEAD
 		pr_warn("%s(): Bogus i_mode %o for ino %llu\n",
 			__func__, inode->i_mode, inode->i_ino);
+=======
+		pr_warn("%s(): Bogus i_mode %o for ino %lu\n",
+			__func__, inode->i_mode, (unsigned long)inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_unlock(&f->sem);
@@ -374,12 +392,20 @@ void jffs2_dirty_inode(struct inode *inode, int flags)
 	struct iattr iattr;
 
 	if (!(inode_state_read_once(inode) & I_DIRTY_DATASYNC)) {
+<<<<<<< HEAD
 		jffs2_dbg(2, "%s(): not calling setattr() for ino #%llu\n",
+=======
+		jffs2_dbg(2, "%s(): not calling setattr() for ino #%lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  __func__, inode->i_ino);
 		return;
 	}
 
+<<<<<<< HEAD
 	jffs2_dbg(1, "%s(): calling setattr() for ino #%llu\n",
+=======
+	jffs2_dbg(1, "%s(): calling setattr() for ino #%lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, inode->i_ino);
 
 	iattr.ia_valid = ATTR_MODE|ATTR_UID|ATTR_GID|ATTR_ATIME|ATTR_MTIME|ATTR_CTIME;
@@ -428,7 +454,11 @@ struct inode *jffs2_new_inode (struct inode *dir_i, umode_t mode, struct jffs2_r
 	struct jffs2_inode_info *f;
 	int ret;
 
+<<<<<<< HEAD
 	jffs2_dbg(1, "%s(): dir_i %llu, mode 0x%x\n",
+=======
+	jffs2_dbg(1, "%s(): dir_i %ld, mode 0x%x\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, dir_i->i_ino, mode);
 
 	c = JFFS2_SB_INFO(sb);

@@ -48,7 +48,11 @@ struct aoa_codec {
 	u32 connected;
 
 	/* data the fabric can associate with this structure */
+<<<<<<< HEAD
 	const void *fabric_data;
+=======
+	void *fabric_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* private! */
 	struct list_head list;

@@ -17,6 +17,7 @@
 #include <linux/math64.h>
 
 #define M88DS3103B_FIRMWARE "dvb-demod-m88ds3103b.fw"
+<<<<<<< HEAD
 #define M88DS3103C_FIRMWARE "dvb-demod-m88ds3103c.fw"
 #define M88DS3103_FIRMWARE  "dvb-demod-m88ds3103.fw"
 #define M88RS6000_FIRMWARE  "dvb-demod-m88rs6000.fw"
@@ -24,11 +25,21 @@
 #define M88DS3103_CHIP_ID  0x70
 #define M88RS6000_CHIP_ID  0x74
 #define M88DS3103C_CHIP_ID 0x71
+=======
+#define M88DS3103_FIRMWARE  "dvb-demod-m88ds3103.fw"
+#define M88RS6000_FIRMWARE  "dvb-demod-m88rs6000.fw"
+
+#define M88RS6000_CHIP_ID 0x74
+#define M88DS3103_CHIP_ID 0x70
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define M88DS3103_CHIPTYPE_3103   0
 #define M88DS3103_CHIPTYPE_RS6000 1
 #define M88DS3103_CHIPTYPE_3103B  2
+<<<<<<< HEAD
 #define M88DS3103_CHIPTYPE_3103C  3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct m88ds3103_dev {
 	struct i2c_client *client;
@@ -402,6 +413,7 @@ static const struct m88ds3103_reg_val m88rs6000_dvbs2_init_reg_vals[] = {
 	{0xb8, 0x00},
 	{0x29, 0x01},
 };
+<<<<<<< HEAD
 
 static const struct m88ds3103_reg_val m88ds3103c_dvbs_init_reg_vals[] = {
 	{0x04, 0x10},
@@ -441,4 +453,6 @@ static const struct m88ds3103_reg_val m88ds3103c_dvbs_init_reg_vals[] = {
 	{0xbe, 0xa1}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

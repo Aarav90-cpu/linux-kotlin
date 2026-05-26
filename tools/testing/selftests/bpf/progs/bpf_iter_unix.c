@@ -7,6 +7,7 @@
 
 char _license[] SEC("license") = "GPL";
 
+<<<<<<< HEAD
 SEC(".maps") struct {
 	__uint(type, BPF_MAP_TYPE_SOCKMAP);
 	__uint(max_entries, 1);
@@ -14,6 +15,8 @@ SEC(".maps") struct {
 	__type(value, __u64);
 } sockmap;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static long sock_i_ino(const struct sock *sk)
 {
 	const struct socket *sk_socket = sk->sk_socket;
@@ -83,8 +86,11 @@ int dump_unix(struct bpf_iter__unix *ctx)
 
 	BPF_SEQ_PRINTF(seq, "\n");
 
+<<<<<<< HEAD
 	/* Test for deadlock. */
 	bpf_map_update_elem(&sockmap, &(int){0}, sk, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }

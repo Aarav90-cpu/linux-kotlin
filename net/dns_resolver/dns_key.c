@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: LGPL-2.1-or-later
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Key type used to cache DNS lookups made by the kernel
  *
  * See Documentation/networking/dns_resolver.rst
@@ -8,6 +11,22 @@
  *              Steve French (sfrench@us.ibm.com)
  *              Wang Lei (wang840925@gmail.com)
  *		David Howells (dhowells@redhat.com)
+<<<<<<< HEAD
+=======
+ *
+ *   This library is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License as published
+ *   by the Free Software Foundation; either version 2.1 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
+ *   the GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Lesser General Public License
+ *   along with this library; if not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <linux/module.h>
 #include <linux/moduleparam.h>
@@ -203,7 +222,11 @@ store_result:
 	kdebug("store result");
 	prep->quotalen = result_len;
 
+<<<<<<< HEAD
 	upayload = kmalloc_flex(*upayload, data, result_len + 1);
+=======
+	upayload = kmalloc(sizeof(*upayload) + result_len + 1, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!upayload) {
 		kleave(" = -ENOMEM");
 		return -ENOMEM;

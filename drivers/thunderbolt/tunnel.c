@@ -180,6 +180,7 @@ static struct tb_tunnel *tb_tunnel_alloc(struct tb *tb, size_t npaths,
 {
 	struct tb_tunnel *tunnel;
 
+<<<<<<< HEAD
 	tunnel = kzalloc_flex(*tunnel, paths, npaths);
 	if (!tunnel)
 		return NULL;
@@ -188,6 +189,21 @@ static struct tb_tunnel *tb_tunnel_alloc(struct tb *tb, size_t npaths,
 
 	INIT_LIST_HEAD(&tunnel->list);
 	tunnel->tb = tb;
+=======
+	tunnel = kzalloc_obj(*tunnel);
+	if (!tunnel)
+		return NULL;
+
+	tunnel->paths = kzalloc_objs(tunnel->paths[0], npaths);
+	if (!tunnel->paths) {
+		kfree(tunnel);
+		return NULL;
+	}
+
+	INIT_LIST_HEAD(&tunnel->list);
+	tunnel->tb = tb;
+	tunnel->npaths = npaths;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tunnel->type = type;
 	kref_init(&tunnel->kref);
 
@@ -214,6 +230,10 @@ static void tb_tunnel_destroy(struct kref *kref)
 			tb_path_free(tunnel->paths[i]);
 	}
 
+<<<<<<< HEAD
+=======
+	kfree(tunnel->paths);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(tunnel);
 }
 

@@ -149,7 +149,11 @@ static void __kprobes set_current_kprobe(struct kprobe *p)
 
 /*
  * Interrupts need to be disabled before single-step mode is set, and not
+<<<<<<< HEAD
  * re-enabled until after single-step mode ends.
+=======
+ * reenabled until after single-step mode ends.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Without disabling interrupt on local CPU, there is a chance of
  * interrupt occurrence in the period of exception return and  start of
  * out-of-line single-step, that result in wrongly single stepping

@@ -136,7 +136,12 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
 			if (cache)
 				dst_cache_reset(cache);
 		}
+<<<<<<< HEAD
 		dst = ip6_dst_lookup_flow(sock_net(sock), sock, &fl, NULL);
+=======
+		dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sock), sock, &fl,
+						      NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(dst)) {
 			ret = PTR_ERR(dst);
 			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",

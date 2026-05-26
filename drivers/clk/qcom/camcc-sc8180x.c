@@ -7,6 +7,10 @@
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/pm_runtime.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regmap.h>
 
 #include <dt-bindings/clock/qcom,sc8180x-camcc.h>
@@ -62,7 +66,10 @@ static const struct alpha_pll_config cam_cc_pll0_config = {
 
 static struct clk_alpha_pll cam_cc_pll0 = {
 	.offset = 0x0,
+<<<<<<< HEAD
 	.config = &cam_cc_pll0_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -138,7 +145,10 @@ static const struct alpha_pll_config cam_cc_pll1_config = {
 
 static struct clk_alpha_pll cam_cc_pll1 = {
 	.offset = 0x1000,
+<<<<<<< HEAD
 	.config = &cam_cc_pll1_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -168,7 +178,10 @@ static const struct alpha_pll_config cam_cc_pll2_config = {
 
 static struct clk_alpha_pll cam_cc_pll2 = {
 	.offset = 0x2000,
+<<<<<<< HEAD
 	.config = &cam_cc_pll2_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = regera_vco,
 	.num_vco = ARRAY_SIZE(regera_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_REGERA],
@@ -221,7 +234,10 @@ static const struct alpha_pll_config cam_cc_pll3_config = {
 
 static struct clk_alpha_pll cam_cc_pll3 = {
 	.offset = 0x3000,
+<<<<<<< HEAD
 	.config = &cam_cc_pll3_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -251,7 +267,10 @@ static const struct alpha_pll_config cam_cc_pll4_config = {
 
 static struct clk_alpha_pll cam_cc_pll4 = {
 	.offset = 0x4000,
+<<<<<<< HEAD
 	.config = &cam_cc_pll4_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -281,7 +300,10 @@ static const struct alpha_pll_config cam_cc_pll5_config = {
 
 static struct clk_alpha_pll cam_cc_pll5 = {
 	.offset = 0x4078,
+<<<<<<< HEAD
 	.config = &cam_cc_pll5_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -311,7 +333,10 @@ static const struct alpha_pll_config cam_cc_pll6_config = {
 
 static struct clk_alpha_pll cam_cc_pll6 = {
 	.offset = 0x40f0,
+<<<<<<< HEAD
 	.config = &cam_cc_pll6_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.vco_table = trion_vco,
 	.num_vco = ARRAY_SIZE(trion_vco),
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
@@ -2819,6 +2844,7 @@ static const struct qcom_reset_map cam_cc_sc8180x_resets[] = {
 	[CAM_CC_MCLK7_BCR] = { 0x50e0 },
 };
 
+<<<<<<< HEAD
 static struct clk_alpha_pll *cam_cc_sc8180x_plls[] = {
 	&cam_cc_pll0,
 	&cam_cc_pll1,
@@ -2834,6 +2860,8 @@ static const u32 cam_cc_sc8180x_critical_cbcrs[] = {
 	0xc200, /* CAM_CC_SLEEP_CLK */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct regmap_config cam_cc_sc8180x_regmap_config = {
 	.reg_bits = 32,
 	.reg_stride = 4,
@@ -2842,6 +2870,7 @@ static const struct regmap_config cam_cc_sc8180x_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data cam_cc_sc8180x_driver_data = {
 	.alpha_plls = cam_cc_sc8180x_plls,
 	.num_alpha_plls = ARRAY_SIZE(cam_cc_sc8180x_plls),
@@ -2849,6 +2878,8 @@ static const struct qcom_cc_driver_data cam_cc_sc8180x_driver_data = {
 	.num_clk_cbcrs = ARRAY_SIZE(cam_cc_sc8180x_critical_cbcrs),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct qcom_cc_desc cam_cc_sc8180x_desc = {
 	.config = &cam_cc_sc8180x_regmap_config,
 	.clks = cam_cc_sc8180x_clocks,
@@ -2857,8 +2888,11 @@ static const struct qcom_cc_desc cam_cc_sc8180x_desc = {
 	.num_resets = ARRAY_SIZE(cam_cc_sc8180x_resets),
 	.gdscs = cam_cc_sc8180x_gdscs,
 	.num_gdscs = ARRAY_SIZE(cam_cc_sc8180x_gdscs),
+<<<<<<< HEAD
 	.use_rpm = true,
 	.driver_data = &cam_cc_sc8180x_driver_data,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct of_device_id cam_cc_sc8180x_match_table[] = {
@@ -2869,7 +2903,44 @@ MODULE_DEVICE_TABLE(of, cam_cc_sc8180x_match_table);
 
 static int cam_cc_sc8180x_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	return qcom_cc_probe(pdev, &cam_cc_sc8180x_desc);
+=======
+	struct regmap *regmap;
+	int ret;
+
+	ret = devm_pm_runtime_enable(&pdev->dev);
+	if (ret)
+		return ret;
+
+	ret = pm_runtime_resume_and_get(&pdev->dev);
+	if (ret)
+		return ret;
+
+	regmap = qcom_cc_map(pdev, &cam_cc_sc8180x_desc);
+	if (IS_ERR(regmap)) {
+		pm_runtime_put(&pdev->dev);
+		return PTR_ERR(regmap);
+	}
+
+	clk_trion_pll_configure(&cam_cc_pll0, regmap, &cam_cc_pll0_config);
+	clk_trion_pll_configure(&cam_cc_pll1, regmap, &cam_cc_pll1_config);
+	clk_regera_pll_configure(&cam_cc_pll2, regmap, &cam_cc_pll2_config);
+	clk_trion_pll_configure(&cam_cc_pll3, regmap, &cam_cc_pll3_config);
+	clk_trion_pll_configure(&cam_cc_pll4, regmap, &cam_cc_pll4_config);
+	clk_trion_pll_configure(&cam_cc_pll5, regmap, &cam_cc_pll5_config);
+	clk_trion_pll_configure(&cam_cc_pll6, regmap, &cam_cc_pll6_config);
+
+	/* Keep some clocks always enabled */
+	qcom_branch_set_clk_en(regmap, 0xc1e4); /* CAM_CC_GDSC_CLK */
+	qcom_branch_set_clk_en(regmap, 0xc200); /* CAM_CC_SLEEP_CLK */
+
+	ret = qcom_cc_really_probe(&pdev->dev, &cam_cc_sc8180x_desc, regmap);
+
+	pm_runtime_put(&pdev->dev);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct platform_driver cam_cc_sc8180x_driver = {

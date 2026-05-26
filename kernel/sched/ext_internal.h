@@ -6,7 +6,10 @@
  * Copyright (c) 2025 Tejun Heo <tj@kernel.org>
  */
 #define SCX_OP_IDX(op)		(offsetof(struct sched_ext_ops, op) / sizeof(void (*)(void)))
+<<<<<<< HEAD
 #define SCX_MOFF_IDX(moff)	((moff) / sizeof(void (*)(void)))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum scx_consts {
 	SCX_DSP_DFL_MAX_BATCH		= 32,
@@ -25,16 +28,22 @@ enum scx_consts {
 	 */
 	SCX_TASK_ITER_BATCH		= 32,
 
+<<<<<<< HEAD
 	SCX_BYPASS_HOST_NTH		= 2,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SCX_BYPASS_LB_DFL_INTV_US	= 500 * USEC_PER_MSEC,
 	SCX_BYPASS_LB_DONOR_PCT		= 125,
 	SCX_BYPASS_LB_MIN_DELTA_DIV	= 4,
 	SCX_BYPASS_LB_BATCH		= 256,
+<<<<<<< HEAD
 
 	SCX_REENQ_LOCAL_MAX_REPEAT	= 256,
 
 	SCX_SUB_MAX_DEPTH		= 4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum scx_exit_kind {
@@ -45,7 +54,10 @@ enum scx_exit_kind {
 	SCX_EXIT_UNREG_BPF,	/* BPF-initiated unregistration */
 	SCX_EXIT_UNREG_KERN,	/* kernel-initiated unregistration */
 	SCX_EXIT_SYSRQ,		/* requested by 'S' sysrq */
+<<<<<<< HEAD
 	SCX_EXIT_PARENT,	/* parent exiting */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	SCX_EXIT_ERROR = 1024,	/* runtime error, error msg contains details */
 	SCX_EXIT_ERROR_BPF,	/* ERROR but triggered through scx_bpf_error() */
@@ -70,7 +82,10 @@ enum scx_exit_kind {
 enum scx_exit_code {
 	/* Reasons */
 	SCX_ECODE_RSN_HOTPLUG	= 1LLU << 32,
+<<<<<<< HEAD
 	SCX_ECODE_RSN_CGROUP_OFFLINE = 2LLU << 32,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Actions */
 	SCX_ECODE_ACT_RESTART	= 1LLU << 48,
@@ -184,10 +199,16 @@ enum scx_ops_flags {
 	SCX_OPS_BUILTIN_IDLE_PER_NODE	= 1LLU << 6,
 
 	/*
+<<<<<<< HEAD
 	 * If set, %SCX_ENQ_IMMED is assumed to be set on all local DSQ
 	 * enqueues.
 	 */
 	SCX_OPS_ALWAYS_ENQ_IMMED	= 1LLU << 7,
+=======
+	 * CPU cgroup support flags
+	 */
+	SCX_OPS_HAS_CGROUP_WEIGHT	= 1LLU << 16,	/* DEPRECATED, will be removed on 6.18 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	SCX_OPS_ALL_FLAGS		= SCX_OPS_KEEP_BUILTIN_IDLE |
 					  SCX_OPS_ENQ_LAST |
@@ -196,7 +217,11 @@ enum scx_ops_flags {
 					  SCX_OPS_ALLOW_QUEUED_WAKEUP |
 					  SCX_OPS_SWITCH_PARTIAL |
 					  SCX_OPS_BUILTIN_IDLE_PER_NODE |
+<<<<<<< HEAD
 					  SCX_OPS_ALWAYS_ENQ_IMMED,
+=======
+					  SCX_OPS_HAS_CGROUP_WEIGHT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* high 8 bits are internal, don't include in SCX_OPS_ALL_FLAGS */
 	__SCX_OPS_INTERNAL_MASK		= 0xffLLU << 56,
@@ -223,7 +248,11 @@ struct scx_exit_task_args {
 	bool cancelled;
 };
 
+<<<<<<< HEAD
 /* argument container for ops.cgroup_init() */
+=======
+/* argument container for ops->cgroup_init() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct scx_cgroup_init_args {
 	/* the weight of the cgroup [1..10000] */
 	u32			weight;
@@ -246,12 +275,20 @@ enum scx_cpu_preempt_reason {
 };
 
 /*
+<<<<<<< HEAD
  * Argument container for ops.cpu_acquire(). Currently empty, but may be
+=======
+ * Argument container for ops->cpu_acquire(). Currently empty, but may be
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * expanded in the future.
  */
 struct scx_cpu_acquire_args {};
 
+<<<<<<< HEAD
 /* argument container for ops.cpu_release() */
+=======
+/* argument container for ops->cpu_release() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct scx_cpu_release_args {
 	/* the reason the CPU was preempted */
 	enum scx_cpu_preempt_reason reason;
@@ -260,7 +297,13 @@ struct scx_cpu_release_args {
 	struct task_struct	*task;
 };
 
+<<<<<<< HEAD
 /* informational context provided to dump operations */
+=======
+/*
+ * Informational context provided to dump operations.
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct scx_dump_ctx {
 	enum scx_exit_kind	kind;
 	s64			exit_code;
@@ -269,6 +312,7 @@ struct scx_dump_ctx {
 	u64			at_jiffies;
 };
 
+<<<<<<< HEAD
 /* argument container for ops.sub_attach() */
 struct scx_sub_attach_args {
 	struct sched_ext_ops	*ops;
@@ -281,6 +325,8 @@ struct scx_sub_detach_args {
 	char			*cgroup_path;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct sched_ext_ops - Operation table for BPF scheduler implementation
  *
@@ -741,6 +787,7 @@ struct sched_ext_ops {
 
 #endif	/* CONFIG_EXT_GROUP_SCHED */
 
+<<<<<<< HEAD
 	/**
 	 * @sub_attach: Attach a sub-scheduler
 	 * @args: argument container, see the struct definition
@@ -755,6 +802,8 @@ struct sched_ext_ops {
 	 */
 	void (*sub_detach)(struct scx_sub_detach_args *args);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * All online ops must come before ops.cpu_online().
 	 */
@@ -796,10 +845,13 @@ struct sched_ext_ops {
 	 */
 	void (*exit)(struct scx_exit_info *info);
 
+<<<<<<< HEAD
 	/*
 	 * Data fields must comes after all ops fields.
 	 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @dispatch_max_batch: Max nr of tasks that dispatch() can dispatch
 	 */
@@ -835,12 +887,15 @@ struct sched_ext_ops {
 	u64 hotplug_seq;
 
 	/**
+<<<<<<< HEAD
 	 * @cgroup_id: When >1, attach the scheduler as a sub-scheduler on the
 	 * specified cgroup.
 	 */
 	u64 sub_cgroup_id;
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @name: BPF scheduler's name
 	 *
 	 * Must be a non-zero valid BPF object name including only isalnum(),
@@ -850,7 +905,11 @@ struct sched_ext_ops {
 	char name[SCX_OPS_NAME_LEN];
 
 	/* internal use only, must be NULL */
+<<<<<<< HEAD
 	void __rcu *priv;
+=======
+	void *priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum scx_opi {
@@ -898,6 +957,7 @@ struct scx_event_stats {
 	s64		SCX_EV_ENQ_SKIP_MIGRATION_DISABLED;
 
 	/*
+<<<<<<< HEAD
 	 * The number of times a task, enqueued on a local DSQ with
 	 * SCX_ENQ_IMMED, was re-enqueued because the CPU was not available for
 	 * immediate execution.
@@ -916,6 +976,8 @@ struct scx_event_stats {
 	s64		SCX_EV_REENQ_LOCAL_REPEAT;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Total number of times a task's time slice was refilled with the
 	 * default value (SCX_SLICE_DFL).
 	 */
@@ -935,6 +997,7 @@ struct scx_event_stats {
 	 * The number of times the bypassing mode has been activated.
 	 */
 	s64		SCX_EV_BYPASS_ACTIVATE;
+<<<<<<< HEAD
 
 	/*
 	 * The number of times the scheduler attempted to insert a task that it
@@ -987,12 +1050,18 @@ struct scx_sched_pcpu {
 	struct scx_sched	*sch;
 	u64			flags;	/* protected by rq lock */
 
+=======
+};
+
+struct scx_sched_pcpu {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The event counters are in a per-CPU variable to minimize the
 	 * accounting overhead. A system-wide view on the event counter is
 	 * constructed when requested by scx_bpf_events().
 	 */
 	struct scx_event_stats	event_stats;
+<<<<<<< HEAD
 
 	struct scx_deferred_reenq_local deferred_reenq_local;
 	struct scx_dispatch_q	bypass_dsq;
@@ -1006,6 +1075,8 @@ struct scx_sched_pcpu {
 
 struct scx_sched_pnode {
 	struct scx_dispatch_q	global_dsq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct scx_sched {
@@ -1021,6 +1092,7 @@ struct scx_sched {
 	 * per-node split isn't sufficient, it can be further split.
 	 */
 	struct rhashtable	dsq_hash;
+<<<<<<< HEAD
 	struct scx_sched_pnode	**pnode;
 	struct scx_sched_pcpu __percpu *pcpu;
 
@@ -1037,12 +1109,18 @@ struct scx_sched {
 	u32			dsp_max_batch;
 	s32			level;
 
+=======
+	struct scx_dispatch_q	**global_dsqs;
+	struct scx_sched_pcpu __percpu *pcpu;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Updates to the following warned bitfields can race causing RMW issues
 	 * but it doesn't really matter.
 	 */
 	bool			warned_zero_slice:1;
 	bool			warned_deprecated_rq:1;
+<<<<<<< HEAD
 	bool			warned_unassoc_progs:1;
 
 	struct list_head	all;
@@ -1065,6 +1143,8 @@ struct scx_sched {
 	 * will trigger scx_error().
 	 */
 	unsigned long		watchdog_timeout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic_t		exit_kind;
 	struct scx_exit_info	*exit_info;
@@ -1072,6 +1152,7 @@ struct scx_sched {
 	struct kobject		kobj;
 
 	struct kthread_worker	*helper;
+<<<<<<< HEAD
 	struct irq_work		disable_irq_work;
 	struct kthread_work	disable_work;
 	struct timer_list	bypass_lb_timer;
@@ -1081,6 +1162,11 @@ struct scx_sched {
 
 	/* all ancestors including self */
 	struct scx_sched	*ancestors[];
+=======
+	struct irq_work		error_irq_work;
+	struct kthread_work	disable_work;
+	struct rcu_work		rcu_work;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum scx_wake_flags {
@@ -1107,6 +1193,7 @@ enum scx_enq_flags {
 	SCX_ENQ_PREEMPT		= 1LLU << 32,
 
 	/*
+<<<<<<< HEAD
 	 * Only allowed on local DSQs. Guarantees that the task either gets
 	 * on the CPU immediately and stays on it, or gets reenqueued back
 	 * to the BPF scheduler. It will never linger on a local DSQ or be
@@ -1128,6 +1215,15 @@ enum scx_enq_flags {
 	 * The task being enqueued was previously enqueued on a DSQ, but was
 	 * removed and is being re-enqueued. See SCX_TASK_REENQ_* flags to find
 	 * out why a given task is being reenqueued.
+=======
+	 * The task being enqueued was previously enqueued on the current CPU's
+	 * %SCX_DSQ_LOCAL, but was removed from it in a call to the
+	 * scx_bpf_reenqueue_local() kfunc. If scx_bpf_reenqueue_local() was
+	 * invoked in a ->cpu_release() callback, and the task is again
+	 * dispatched back to %SCX_LOCAL_DSQ by this current ->enqueue(), the
+	 * task will not be scheduled on the CPU until at least the next invocation
+	 * of the ->cpu_acquire() callback.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	SCX_ENQ_REENQ		= 1LLU << 40,
 
@@ -1148,7 +1244,10 @@ enum scx_enq_flags {
 	SCX_ENQ_CLEAR_OPSS	= 1LLU << 56,
 	SCX_ENQ_DSQ_PRIQ	= 1LLU << 57,
 	SCX_ENQ_NESTED		= 1LLU << 58,
+<<<<<<< HEAD
 	SCX_ENQ_GDSQ_FALLBACK	= 1LLU << 59,	/* fell back to global DSQ */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum scx_deq_flags {
@@ -1162,6 +1261,7 @@ enum scx_deq_flags {
 	 * it hasn't been dispatched yet. Dequeue from the BPF side.
 	 */
 	SCX_DEQ_CORE_SCHED_EXEC	= 1LLU << 32,
+<<<<<<< HEAD
 
 	/*
 	 * The task is being dequeued due to a property change (e.g.,
@@ -1184,6 +1284,8 @@ enum scx_reenq_flags {
 	SCX_REENQ_TSR_NOT_FIRST	= 1LLU << 33,
 
 	__SCX_REENQ_TSR_MASK	= 0xfLLU << 32,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum scx_pick_idle_cpu_flags {
@@ -1363,11 +1465,16 @@ enum scx_ops_state {
 #define SCX_OPSS_STATE_MASK	((1LU << SCX_OPSS_QSEQ_SHIFT) - 1)
 #define SCX_OPSS_QSEQ_MASK	(~SCX_OPSS_STATE_MASK)
 
+<<<<<<< HEAD
 extern struct scx_sched __rcu *scx_root;
 DECLARE_PER_CPU(struct rq *, scx_locked_rq_state);
 
 int scx_kfunc_context_filter(const struct bpf_prog *prog, u32 kfunc_id);
 
+=======
+DECLARE_PER_CPU(struct rq *, scx_locked_rq_state);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Return the rq currently locked from an scx callback, or NULL if no rq is
  * locked.
@@ -1377,6 +1484,7 @@ static inline struct rq *scx_locked_rq(void)
 	return __this_cpu_read(scx_locked_rq_state);
 }
 
+<<<<<<< HEAD
 static inline bool scx_bypassing(struct scx_sched *sch, s32 cpu)
 {
 	return unlikely(per_cpu_ptr(sch->pcpu, cpu)->flags &
@@ -1481,3 +1589,14 @@ static struct scx_sched *scx_prog_sched(const struct bpf_prog_aux *aux)
 	return rcu_dereference_all(scx_root);
 }
 #endif	/* CONFIG_EXT_SUB_SCHED */
+=======
+static inline bool scx_kf_allowed_if_unlocked(void)
+{
+	return !current->scx.kf_mask;
+}
+
+static inline bool scx_rq_bypassing(struct rq *rq)
+{
+	return unlikely(rq->scx.flags & SCX_RQ_BYPASSING);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -174,6 +174,7 @@ static int tegra_audio_graph_card_probe(struct snd_soc_card *card)
 {
 	struct simple_util_priv *simple = snd_soc_card_get_drvdata(card);
 	struct tegra_audio_priv *priv = simple_to_tegra_priv(simple);
+<<<<<<< HEAD
 	int ret;
 
 	priv->clk_plla = devm_clk_get(card->dev, "pll_a");
@@ -191,6 +192,22 @@ static int tegra_audio_graph_card_probe(struct snd_soc_card *card)
 		return dev_err_probe(card->dev, ret, "graph_util_card_probe failed\n");
 
 	return ret;
+=======
+
+	priv->clk_plla = devm_clk_get(card->dev, "pll_a");
+	if (IS_ERR(priv->clk_plla)) {
+		dev_err(card->dev, "Can't retrieve clk pll_a\n");
+		return PTR_ERR(priv->clk_plla);
+	}
+
+	priv->clk_plla_out0 = devm_clk_get(card->dev, "plla_out0");
+	if (IS_ERR(priv->clk_plla_out0)) {
+		dev_err(card->dev, "Can't retrieve clk plla_out0\n");
+		return PTR_ERR(priv->clk_plla_out0);
+	}
+
+	return graph_util_card_probe(card);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int tegra_audio_graph_probe(struct platform_device *pdev)

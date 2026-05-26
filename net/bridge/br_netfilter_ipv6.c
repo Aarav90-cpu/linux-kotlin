@@ -30,7 +30,10 @@
 
 #include <net/ip.h>
 #include <net/ipv6.h>
+<<<<<<< HEAD
 #include <net/ip6_route.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/addrconf.h>
 #include <net/route.h>
 #include <net/netfilter/br_netfilter.h>
@@ -96,13 +99,22 @@ br_nf_ipv6_daddr_was_changed(const struct sk_buff *skb,
 
 /* PF_BRIDGE/PRE_ROUTING: Undo the changes made for ip6tables
  * PREROUTING and continue the bridge PRE_ROUTING hook. See comment
+<<<<<<< HEAD
  * for br_nf_pre_routing_finish(), same logic is used here.
+=======
+ * for br_nf_pre_routing_finish(), same logic is used here but
+ * equivalent IPv6 function ip6_route_input() called indirectly.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int br_nf_pre_routing_finish_ipv6(struct net *net, struct sock *sk, struct sk_buff *skb)
 {
 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
 	struct rtable *rt;
 	struct net_device *dev = skb->dev, *br_indev;
+<<<<<<< HEAD
+=======
+	const struct nf_ipv6_ops *v6ops = nf_get_ipv6_ops();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	br_indev = nf_bridge_get_physindev(skb, net);
 	if (!br_indev) {
@@ -119,7 +131,11 @@ static int br_nf_pre_routing_finish_ipv6(struct net *net, struct sock *sk, struc
 	nf_bridge->in_prerouting = 0;
 	if (br_nf_ipv6_daddr_was_changed(skb, nf_bridge)) {
 		skb_dst_drop(skb);
+<<<<<<< HEAD
 		ip6_route_input(skb);
+=======
+		v6ops->route_input(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (skb_dst(skb)->error) {
 			kfree_skb(skb);

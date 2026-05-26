@@ -131,7 +131,11 @@ static inline unsigned long virt_to_pfn(const void *kaddr)
 #define virt_addr_valid(kaddr)  pfn_valid(virt_to_pfn(kaddr))
 
 /* Default Permissions for stack/heaps pages (Non Executable) */
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+=======
+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define WANT_PAGE_VIRTUAL   1
 

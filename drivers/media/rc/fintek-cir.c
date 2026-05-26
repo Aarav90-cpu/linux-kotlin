@@ -568,7 +568,10 @@ static void fintek_remove(struct pnp_dev *pdev)
 	struct fintek_dev *fintek = pnp_get_drvdata(pdev);
 	unsigned long flags;
 
+<<<<<<< HEAD
 	rc_unregister_device(fintek->rdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_irqsave(&fintek->fintek_lock, flags);
 	/* disable CIR */
 	fintek_disable_cir(fintek);
@@ -581,7 +584,11 @@ static void fintek_remove(struct pnp_dev *pdev)
 	free_irq(fintek->cir_irq, fintek);
 	release_region(fintek->cir_addr, fintek->cir_port_len);
 
+<<<<<<< HEAD
 	rc_free_device(fintek->rdev);
+=======
+	rc_unregister_device(fintek->rdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(fintek);
 }

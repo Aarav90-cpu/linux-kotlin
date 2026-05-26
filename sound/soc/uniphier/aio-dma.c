@@ -226,7 +226,11 @@ static const struct snd_soc_component_driver uniphier_soc_platform = {
 	.trigger	= uniphier_aiodma_trigger,
 	.pointer	= uniphier_aiodma_pointer,
 	.mmap		= uniphier_aiodma_mmap,
+<<<<<<< HEAD
 	.pcm_new	= uniphier_aiodma_new,
+=======
+	.pcm_construct	= uniphier_aiodma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.compress_ops	= &uniphier_aio_compress_ops,
 };
 

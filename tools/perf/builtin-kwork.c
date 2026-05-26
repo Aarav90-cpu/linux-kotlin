@@ -985,7 +985,11 @@ static int process_irq_handler_exit_event(const struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct evsel_str_handler irq_tp_handlers[] = {
+=======
+const struct evsel_str_handler irq_tp_handlers[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "irq:irq_handler_entry", process_irq_handler_entry_event, },
 	{ "irq:irq_handler_exit",  process_irq_handler_exit_event,  },
 };
@@ -1080,7 +1084,11 @@ static int process_softirq_exit_event(const struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct evsel_str_handler softirq_tp_handlers[] = {
+=======
+const struct evsel_str_handler softirq_tp_handlers[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "irq:softirq_raise", process_softirq_raise_event, },
 	{ "irq:softirq_entry", process_softirq_entry_event, },
 	{ "irq:softirq_exit",  process_softirq_exit_event,  },
@@ -1211,7 +1219,11 @@ static int process_workqueue_execute_end_event(const struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct evsel_str_handler workqueue_tp_handlers[] = {
+=======
+const struct evsel_str_handler workqueue_tp_handlers[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "workqueue:workqueue_activate_work", process_workqueue_activate_work_event, },
 	{ "workqueue:workqueue_execute_start", process_workqueue_execute_start_event, },
 	{ "workqueue:workqueue_execute_end",   process_workqueue_execute_end_event,   },
@@ -1281,7 +1293,11 @@ static int process_sched_switch_event(const struct perf_tool *tool,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct evsel_str_handler sched_tp_handlers[] = {
+=======
+const struct evsel_str_handler sched_tp_handlers[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "sched:sched_switch",  process_sched_switch_event, },
 };
 
@@ -1561,13 +1577,21 @@ static void print_bad_events(struct perf_kwork *kwork)
 	}
 }
 
+<<<<<<< HEAD
+=======
+const char *graph_load = "||||||||||||||||||||||||||||||||||||||||||||||||";
+const char *graph_idle = "                                                ";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void top_print_per_cpu_load(struct perf_kwork *kwork)
 {
 	int i, load_width;
 	u64 total, load, load_ratio;
 	struct kwork_top_stat *stat = &kwork->top_stat;
+<<<<<<< HEAD
 	const char *graph_load = "||||||||||||||||||||||||||||||||||||||||||||||||";
 	const char *graph_idle = "                                                ";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < MAX_NR_CPUS; i++) {
 		total = stat->cpus_runtime[i].total;
@@ -2208,7 +2232,11 @@ static int perf_kwork__top(struct perf_kwork *kwork)
 	struct __top_cpus_runtime *cpus_runtime;
 	int ret = 0;
 
+<<<<<<< HEAD
 	cpus_runtime = calloc(MAX_NR_CPUS + 1, sizeof(struct __top_cpus_runtime));
+=======
+	cpus_runtime = zalloc(sizeof(struct __top_cpus_runtime) * (MAX_NR_CPUS + 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cpus_runtime)
 		return -1;
 
@@ -2423,8 +2451,13 @@ int cmd_kwork(int argc, const char **argv)
 		    "Display call chains if present"),
 	OPT_UINTEGER(0, "max-stack", &kwork.max_stack,
 		   "Maximum number of functions to display backtrace."),
+<<<<<<< HEAD
 	OPT_CALLBACK(0, "symfs", NULL, "directory[,layout]", SYMFS_HELP,
 		     symbol__config_symfs),
+=======
+	OPT_STRING(0, "symfs", &symbol_conf.symfs, "directory",
+		    "Look for files with symbols relative to this directory"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OPT_STRING(0, "time", &kwork.time_str, "str",
 		   "Time span for analysis (start,stop)"),
 	OPT_STRING('C', "cpu", &kwork.cpu_list, "cpu",

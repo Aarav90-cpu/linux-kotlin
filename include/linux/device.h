@@ -190,6 +190,7 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	struct device_attribute dev_attr_##_name = __ATTR_RW_MODE(_name, 0600)
 
 /**
+<<<<<<< HEAD
  * DEVICE_ATTR_RW_NAMED - Define a read-write device attribute with a sysfs name
  * that differs from the function name.
  * @_name: Attribute function preface
@@ -206,6 +207,8 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	}
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DEVICE_ATTR_RO - Define a readable device attribute.
  * @_name: Attribute name.
  *
@@ -224,6 +227,7 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	struct device_attribute dev_attr_##_name = __ATTR_RO_MODE(_name, 0400)
 
 /**
+<<<<<<< HEAD
  * DEVICE_ATTR_RO_NAMED - Define a read-only device attribute with a sysfs name
  * that differs from the function name.
  * @_name: Attribute function preface
@@ -239,6 +243,8 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	}
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DEVICE_ATTR_WO - Define an admin-only writable device attribute.
  * @_name: Attribute name.
  *
@@ -248,6 +254,7 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	struct device_attribute dev_attr_##_name = __ATTR_WO(_name)
 
 /**
+<<<<<<< HEAD
  * DEVICE_ATTR_WO_NAMED - Define a read-only device attribute with a sysfs name
  * that differs from the function name.
  * @_name: Attribute function preface
@@ -263,6 +270,8 @@ ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
 	}
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * DEVICE_ULONG_ATTR - Define a device attribute backed by an unsigned long.
  * @_name: Attribute name.
  * @_mode: File mode.
@@ -1056,7 +1065,10 @@ static inline void device_unlock(struct device *dev)
 }
 
 DEFINE_GUARD(device, struct device *, device_lock(_T), device_unlock(_T))
+<<<<<<< HEAD
 DEFINE_GUARD_COND(device, _intr, device_lock_interruptible(_T), _RET == 0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void device_lock_assert(struct device *dev)
 {
@@ -1277,9 +1289,15 @@ device_create_with_groups(const struct class *cls, struct device *parent, dev_t 
 void device_destroy(const struct class *cls, dev_t devt);
 
 int __must_check device_add_groups(struct device *dev,
+<<<<<<< HEAD
 				   const struct attribute_group *const *groups);
 void device_remove_groups(struct device *dev,
 			  const struct attribute_group *const *groups);
+=======
+				   const struct attribute_group **groups);
+void device_remove_groups(struct device *dev,
+			  const struct attribute_group **groups);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int __must_check device_add_group(struct device *dev,
 					const struct attribute_group *grp)

@@ -112,22 +112,41 @@ static struct pernet_operations broute_net_ops = {
 
 static int __init ebtable_broute_init(void)
 {
+<<<<<<< HEAD
 	int ret = register_pernet_subsys(&broute_net_ops);
+=======
+	int ret = ebt_register_template(&broute_table, broute_table_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = ebt_register_template(&broute_table, broute_table_init);
 	if (ret)
 		unregister_pernet_subsys(&broute_net_ops);
 
 	return ret;
+=======
+	ret = register_pernet_subsys(&broute_net_ops);
+	if (ret) {
+		ebt_unregister_template(&broute_table);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit ebtable_broute_fini(void)
 {
+<<<<<<< HEAD
 	ebt_unregister_template(&broute_table);
 	unregister_pernet_subsys(&broute_net_ops);
+=======
+	unregister_pernet_subsys(&broute_net_ops);
+	ebt_unregister_template(&broute_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(ebtable_broute_init);

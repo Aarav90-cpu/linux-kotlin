@@ -274,7 +274,11 @@ struct mlx5_eswitch_fdb {
 			struct mlx5_flow_group *send_to_vport_grp;
 			struct mlx5_flow_group *send_to_vport_meta_grp;
 			struct mlx5_flow_group *peer_miss_grp;
+<<<<<<< HEAD
 			struct xarray peer_miss_rules;
+=======
+			struct mlx5_flow_handle **peer_miss_rules[MLX5_MAX_PORTS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct mlx5_flow_group *miss_grp;
 			struct mlx5_flow_handle **send_to_vport_meta_rules;
 			struct mlx5_flow_handle *miss_rule_uni;
@@ -943,12 +947,15 @@ int mlx5_esw_ipsec_vf_packet_offload_supported(struct mlx5_core_dev *dev,
 					       u16 vport_num);
 bool mlx5_esw_host_functions_enabled(const struct mlx5_core_dev *dev);
 void mlx5_eswitch_safe_aux_devs_remove(struct mlx5_core_dev *dev);
+<<<<<<< HEAD
 struct mlx5_flow_group *
 mlx5_esw_lag_demux_fg_create(struct mlx5_eswitch *esw,
 			     struct mlx5_flow_table *ft);
 struct mlx5_flow_handle *
 mlx5_esw_lag_demux_rule_create(struct mlx5_eswitch *esw, u16 vport_num,
 			       struct mlx5_flow_table *lag_ft);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else  /* CONFIG_MLX5_ESWITCH */
 /* eswitch API stubs */
 static inline int  mlx5_eswitch_init(struct mlx5_core_dev *dev) { return 0; }
@@ -1034,12 +1041,15 @@ mlx5_esw_vport_vhca_id(struct mlx5_eswitch *esw, u16 vportn, u16 *vhca_id)
 
 static inline void
 mlx5_eswitch_safe_aux_devs_remove(struct mlx5_core_dev *dev) {}
+<<<<<<< HEAD
 static inline struct mlx5_flow_handle *
 mlx5_esw_lag_demux_rule_create(struct mlx5_eswitch *esw, u16 vport_num,
 			       struct mlx5_flow_table *lag_ft)
 {
 	return ERR_PTR(-EOPNOTSUPP);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* CONFIG_MLX5_ESWITCH */
 

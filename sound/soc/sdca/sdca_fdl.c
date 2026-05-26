@@ -46,6 +46,14 @@ int sdca_reset_function(struct device *dev, struct sdca_function_data *function,
 	if (ret) // Allowed for function reset to not be implemented
 		return 0;
 
+<<<<<<< HEAD
+=======
+	if (!function->reset_max_delay) {
+		dev_err(dev, "No reset delay specified in DisCo\n");
+		return -EINVAL;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Poll up to 16 times but no more than once per ms, these are just
 	 * arbitrarily selected values, so may be fine tuned in future.

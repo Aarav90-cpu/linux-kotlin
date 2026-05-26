@@ -6,12 +6,16 @@
  *  Copyright (c) 2020 Dell Inc.
  */
 
+<<<<<<< HEAD
 #include <linux/bug.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "dell-wmi-sysman.h"
 
 get_instance_id(enumeration);
 
+<<<<<<< HEAD
 static int append_enum_string(char *dest, const char *src)
 {
 	size_t dest_len = strlen(dest);
@@ -32,6 +36,8 @@ static int append_enum_string(char *dest, const char *src)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
 	int instance_id = get_enumeration_instance_id(kobj);
@@ -198,9 +204,15 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
 			return -EINVAL;
 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
 			return -EINVAL;
+<<<<<<< HEAD
 		if (append_enum_string(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
 				       enumeration_obj[next_obj++].string.pointer))
 			return -EINVAL;
+=======
+		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
+			enumeration_obj[next_obj++].string.pointer);
+		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier, ";");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (next_obj >= enum_property_count)
@@ -215,9 +227,15 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
 			return -EINVAL;
 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
 			return -EINVAL;
+<<<<<<< HEAD
 		if (append_enum_string(wmi_priv.enumeration_data[instance_id].possible_values,
 				       enumeration_obj[next_obj++].string.pointer))
 			return -EINVAL;
+=======
+		strcat(wmi_priv.enumeration_data[instance_id].possible_values,
+			enumeration_obj[next_obj++].string.pointer);
+		strcat(wmi_priv.enumeration_data[instance_id].possible_values, ";");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return sysfs_create_group(attr_name_kobj, &enumeration_attr_group);

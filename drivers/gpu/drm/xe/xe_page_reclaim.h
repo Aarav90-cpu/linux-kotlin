@@ -20,7 +20,10 @@ struct xe_tlb_inval;
 struct xe_tlb_inval_fence;
 struct xe_tile;
 struct xe_gt;
+<<<<<<< HEAD
 struct xe_guc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_vma;
 
 struct xe_guc_page_reclaim_entry {
@@ -123,6 +126,9 @@ static inline void xe_page_reclaim_entries_put(struct xe_guc_page_reclaim_entry 
 		put_page(virt_to_page(entries));
 }
 
+<<<<<<< HEAD
 int xe_guc_page_reclaim_done_handler(struct xe_guc *guc, u32 *msg, u32 len);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _XE_PAGE_RECLAIM_H_ */

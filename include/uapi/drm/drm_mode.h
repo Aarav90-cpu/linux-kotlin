@@ -27,9 +27,12 @@
 #ifndef _DRM_MODE_H
 #define _DRM_MODE_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
 #include <linux/const.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "drm.h"
 
 #if defined(__cplusplus)
@@ -169,10 +172,13 @@ extern "C" {
 #define DRM_MODE_LINK_STATUS_GOOD	0
 #define DRM_MODE_LINK_STATUS_BAD	1
 
+<<<<<<< HEAD
 /* Panel type property */
 #define DRM_MODE_PANEL_TYPE_UNKNOWN	0
 #define DRM_MODE_PANEL_TYPE_OLED	1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * DRM_MODE_ROTATE_<degrees>
  *
@@ -1552,6 +1558,7 @@ struct drm_mode_closefb {
 	__u32 pad;
 };
 
+<<<<<<< HEAD
 /*
  * Put 16-bit ARGB values into a standard 64-bit representation that can be
  * used for ioctl parameters, inter-driver communication, etc.
@@ -1629,6 +1636,8 @@ struct drm_mode_closefb {
 #define DRM_ARGB64_GETG_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 16, bpc)
 #define DRM_ARGB64_GETB_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 0, bpc)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(__cplusplus)
 }
 #endif

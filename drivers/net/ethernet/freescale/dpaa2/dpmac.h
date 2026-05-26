@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
 /* Copyright 2013-2016 Freescale Semiconductor Inc.
+<<<<<<< HEAD
  * Copyright 2019, 2024-2026 NXP
+=======
+ * Copyright 2019 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #ifndef __FSL_DPMAC_H
 #define __FSL_DPMAC_H
@@ -170,6 +174,7 @@ int dpmac_set_link_state(struct fsl_mc_io *mc_io,
  *			      pause frames.
  * @DPMAC_CNT_EGR_GOOD_FRAME: counts frames transmitted without error, including
  *			      pause frames.
+<<<<<<< HEAD
  * @DPMAC_CNT_EGR_FRAME_64: counts transmitted 64-bytes frames, good or bad.
  * @DPMAC_CNT_EGR_FRAME_127: counts transmitted 65 to 127-bytes frames, good or
  *			     bad.
@@ -222,6 +227,8 @@ int dpmac_set_link_state(struct fsl_mc_io *mc_io,
  * @DPMAC_CNT_EGR_PFC5: number of PFC frames transmitted for class 5.
  * @DPMAC_CNT_EGR_PFC6: number of PFC frames transmitted for class 6.
  * @DPMAC_CNT_EGR_PFC7: number of PFC frames transmitted for class 7.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum dpmac_counter_id {
 	DPMAC_CNT_ING_FRAME_64,
@@ -251,6 +258,7 @@ enum dpmac_counter_id {
 	DPMAC_CNT_EGR_UCAST_FRAME,
 	DPMAC_CNT_EGR_ERR_FRAME,
 	DPMAC_CNT_ING_GOOD_FRAME,
+<<<<<<< HEAD
 	DPMAC_CNT_EGR_GOOD_FRAME,
 	DPMAC_CNT_EGR_FRAME_64,
 	DPMAC_CNT_EGR_FRAME_127,
@@ -286,6 +294,9 @@ enum dpmac_counter_id {
 	DPMAC_CNT_EGR_PFC5,
 	DPMAC_CNT_EGR_PFC6,
 	DPMAC_CNT_EGR_PFC7,
+=======
+	DPMAC_CNT_EGR_GOOD_FRAME
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int dpmac_get_counter(struct fsl_mc_io *mc_io, u32 cmd_flags, u16 token,
@@ -296,8 +307,11 @@ int dpmac_get_api_version(struct fsl_mc_io *mc_io, u32 cmd_flags,
 
 int dpmac_set_protocol(struct fsl_mc_io *mc_io, u32 cmd_flags, u16 token,
 		       enum dpmac_eth_if protocol);
+<<<<<<< HEAD
 
 int dpmac_get_statistics(struct fsl_mc_io *mc_io, u32 cmd_flags, u16 token,
 			 u64 iova_cnt, u64 iova_values, u32 num_cnt);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __FSL_DPMAC_H */

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 core_setmaster@master-drop-set-user,Fail
 kms_3d,Fail
 kms_cursor_legacy@forked-move,Fail
@@ -6,4 +7,10 @@ kms_force_connector_basic@force-edid,Fail
 kms_hdmi_inject@inject-4k,Fail
 kms_lease@lease-uevent,Fail
 msm/msm_mapping@memptrs,Fail
+=======
+kms_3d,Fail
+kms_force_connector_basic@force-edid,Fail
+kms_hdmi_inject@inject-4k,Fail
+kms_lease@lease-uevent,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 msm/msm_mapping@ring,Fail

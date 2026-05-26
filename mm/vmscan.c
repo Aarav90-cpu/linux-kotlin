@@ -44,7 +44,11 @@
 #include <linux/sysctl.h>
 #include <linux/memory-tiers.h>
 #include <linux/oom.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/prefetch.h>
 #include <linux/printk.h>
 #include <linux/dax.h>
@@ -269,6 +273,28 @@ static int sc_swappiness(struct scan_control *sc, struct mem_cgroup *memcg)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+/* for_each_managed_zone_pgdat - helper macro to iterate over all managed zones in a pgdat up to
+ * and including the specified highidx
+ * @zone: The current zone in the iterator
+ * @pgdat: The pgdat which node_zones are being iterated
+ * @idx: The index variable
+ * @highidx: The index of the highest zone to return
+ *
+ * This macro iterates through all managed zones up to and including the specified highidx.
+ * The zone iterator enters an invalid state after macro call and must be reinitialized
+ * before it can be used again.
+ */
+#define for_each_managed_zone_pgdat(zone, pgdat, idx, highidx)	\
+	for ((idx) = 0, (zone) = (pgdat)->node_zones;		\
+	    (idx) <= (highidx);					\
+	    (idx)++, (zone)++)					\
+		if (!managed_zone(zone))			\
+			continue;				\
+		else
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void set_task_reclaim_state(struct task_struct *task,
 				   struct reclaim_state *rs)
 {
@@ -390,7 +416,12 @@ unsigned long zone_reclaimable_pages(struct zone *zone)
  * @lru: lru to use
  * @zone_idx: zones to consider (use MAX_NR_ZONES - 1 for the whole LRU list)
  */
+<<<<<<< HEAD
 unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone_idx)
+=======
+static unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
+				     int zone_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long size = 0;
 	int zid;
@@ -885,7 +916,11 @@ static enum folio_references folio_check_references(struct folio *folio,
 	if (referenced_ptes == -1)
 		return FOLIOREF_KEEP;
 
+<<<<<<< HEAD
 	if (lru_gen_enabled() && !lru_gen_switching()) {
+=======
+	if (lru_gen_enabled()) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!referenced_ptes)
 			return FOLIOREF_RECLAIM;
 
@@ -943,7 +978,12 @@ static void folio_check_dirty_writeback(struct folio *folio,
 	 * They could be mistakenly treated as file lru. So further anon
 	 * test is needed.
 	 */
+<<<<<<< HEAD
 	if (!folio_is_file_lru(folio) || folio_test_lazyfree(folio)) {
+=======
+	if (!folio_is_file_lru(folio) ||
+	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*dirty = false;
 		*writeback = false;
 		return;
@@ -965,11 +1005,21 @@ static void folio_check_dirty_writeback(struct folio *folio,
 static struct folio *alloc_demote_folio(struct folio *src,
 		unsigned long private)
 {
+<<<<<<< HEAD
 	struct migration_target_control *mtc, target_nid_mtc;
 	struct folio *dst;
 
 	mtc = (struct migration_target_control *)private;
 
+=======
+	struct folio *dst;
+	nodemask_t *allowed_mask;
+	struct migration_target_control *mtc;
+
+	mtc = (struct migration_target_control *)private;
+
+	allowed_mask = mtc->nmask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * make sure we allocate from the target node first also trying to
 	 * demote or reclaim pages from the target node via kswapd if we are
@@ -979,6 +1029,7 @@ static struct folio *alloc_demote_folio(struct folio *src,
 	 * a demotion of cold pages from the target memtier. This can result
 	 * in the kernel placing hot pages in slower(lower) memory tiers.
 	 */
+<<<<<<< HEAD
 	target_nid_mtc = *mtc;
 	target_nid_mtc.nmask = NULL;
 	target_nid_mtc.gfp_mask |= __GFP_THISNODE;
@@ -986,6 +1037,17 @@ static struct folio *alloc_demote_folio(struct folio *src,
 	if (dst)
 		return dst;
 
+=======
+	mtc->nmask = NULL;
+	mtc->gfp_mask |= __GFP_THISNODE;
+	dst = alloc_migration_target(src, (unsigned long)mtc);
+	if (dst)
+		return dst;
+
+	mtc->gfp_mask &= ~__GFP_THISNODE;
+	mtc->nmask = allowed_mask;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return alloc_migration_target(src, (unsigned long)mtc);
 }
 
@@ -1045,7 +1107,11 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
 	/*
 	 * We can "enter_fs" for swap-cache with only __GFP_IO
 	 * providing this isn't SWP_FS_OPS.
+<<<<<<< HEAD
 	 * ->flags can be updated non-atomically,
+=======
+	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * but that will never affect SWP_FS_OPS, so the data_race
 	 * is safe.
 	 */
@@ -1483,7 +1549,11 @@ retry:
 			}
 		}
 
+<<<<<<< HEAD
 		if (folio_test_lazyfree(folio)) {
+=======
+		if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* follow __remove_mapping for reference */
 			if (!folio_ref_freeze(folio, 1))
 				goto keep_locked;
@@ -1811,7 +1881,11 @@ bool folio_isolate_lru(struct folio *folio)
 		folio_get(folio);
 		lruvec = folio_lruvec_lock_irq(folio);
 		lruvec_del_folio(lruvec, folio);
+<<<<<<< HEAD
 		lruvec_unlock_irq(lruvec);
+=======
+		unlock_page_lruvec_irq(lruvec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = true;
 	}
 
@@ -1865,6 +1939,7 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
 /*
  * move_folios_to_lru() moves folios from private @list to appropriate LRU list.
  *
+<<<<<<< HEAD
  * Returns the number of pages moved to the appropriate lruvec.
  *
  * Note: The caller must not hold any lruvec lock.
@@ -1873,12 +1948,21 @@ static unsigned int move_folios_to_lru(struct list_head *list)
 {
 	int nr_pages, nr_moved = 0;
 	struct lruvec *lruvec = NULL;
+=======
+ * Returns the number of pages moved to the given lruvec.
+ */
+static unsigned int move_folios_to_lru(struct lruvec *lruvec,
+		struct list_head *list)
+{
+	int nr_pages, nr_moved = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio_batch free_folios;
 
 	folio_batch_init(&free_folios);
 	while (!list_empty(list)) {
 		struct folio *folio = lru_to_folio(list);
 
+<<<<<<< HEAD
 		lruvec = folio_lruvec_relock_irq(folio, lruvec);
 		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 		list_del(&folio->lru);
@@ -1886,6 +1970,14 @@ static unsigned int move_folios_to_lru(struct list_head *list)
 			lruvec_unlock_irq(lruvec);
 			folio_putback_lru(folio);
 			lruvec = NULL;
+=======
+		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+		list_del(&folio->lru);
+		if (unlikely(!folio_evictable(folio))) {
+			spin_unlock_irq(&lruvec->lru_lock);
+			folio_putback_lru(folio);
+			spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 
@@ -1907,15 +1999,30 @@ static unsigned int move_folios_to_lru(struct list_head *list)
 
 			folio_unqueue_deferred_split(folio);
 			if (folio_batch_add(&free_folios, folio) == 0) {
+<<<<<<< HEAD
 				lruvec_unlock_irq(lruvec);
 				mem_cgroup_uncharge_folios(&free_folios);
 				free_unref_folios(&free_folios);
 				lruvec = NULL;
+=======
+				spin_unlock_irq(&lruvec->lru_lock);
+				mem_cgroup_uncharge_folios(&free_folios);
+				free_unref_folios(&free_folios);
+				spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			continue;
 		}
 
+<<<<<<< HEAD
+=======
+		/*
+		 * All pages were isolated from the same lruvec (and isolation
+		 * inhibits memcg migration).
+		 */
+		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lruvec_add_folio(lruvec, folio);
 		nr_pages = folio_nr_pages(folio);
 		nr_moved += nr_pages;
@@ -1923,12 +2030,20 @@ static unsigned int move_folios_to_lru(struct list_head *list)
 			workingset_age_nonresident(lruvec, nr_pages);
 	}
 
+<<<<<<< HEAD
 	if (lruvec)
 		lruvec_unlock_irq(lruvec);
 
 	if (free_folios.nr) {
 		mem_cgroup_uncharge_folios(&free_folios);
 		free_unref_folios(&free_folios);
+=======
+	if (free_folios.nr) {
+		spin_unlock_irq(&lruvec->lru_lock);
+		mem_cgroup_uncharge_folios(&free_folios);
+		free_unref_folios(&free_folios);
+		spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return nr_moved;
@@ -1958,7 +2073,11 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 	unsigned long nr_taken;
 	struct reclaim_stat stat;
 	bool file = is_file_lru(lru);
+<<<<<<< HEAD
 	enum node_stat_item item;
+=======
+	enum vm_event_item item;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 	bool stalled = false;
 
@@ -1977,17 +2096,30 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 
 	lru_add_drain();
 
+<<<<<<< HEAD
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nr_taken = isolate_lru_folios(nr_to_scan, lruvec, &folio_list,
 				     &nr_scanned, sc, lru);
 
 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, nr_taken);
 	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
+<<<<<<< HEAD
 	mod_lruvec_state(lruvec, item, nr_scanned);
 	mod_lruvec_state(lruvec, PGSCAN_ANON + file, nr_scanned);
 
 	lruvec_unlock_irq(lruvec);
+=======
+	if (!cgroup_reclaim(sc))
+		__count_vm_events(item, nr_scanned);
+	count_memcg_events(lruvec_memcg(lruvec), item, nr_scanned);
+	__count_vm_events(PGSCAN_ANON + file, nr_scanned);
+
+	spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nr_taken == 0)
 		return 0;
@@ -1995,6 +2127,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
 					 lruvec_memcg(lruvec));
 
+<<<<<<< HEAD
 	move_folios_to_lru(&folio_list);
 
 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
@@ -2005,6 +2138,20 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 	mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
 
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+	move_folios_to_lru(lruvec, &folio_list);
+
+	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+					stat.nr_demoted);
+	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
+	if (!cgroup_reclaim(sc))
+		__count_vm_events(item, nr_reclaimed);
+	count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
+	__count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
 					nr_scanned - nr_reclaimed);
 
@@ -2083,16 +2230,28 @@ static void shrink_active_list(unsigned long nr_to_scan,
 
 	lru_add_drain();
 
+<<<<<<< HEAD
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nr_taken = isolate_lru_folios(nr_to_scan, lruvec, &l_hold,
 				     &nr_scanned, sc, lru);
 
 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, nr_taken);
 
+<<<<<<< HEAD
 	mod_lruvec_state(lruvec, PGREFILL, nr_scanned);
 
 	lruvec_unlock_irq(lruvec);
+=======
+	if (!cgroup_reclaim(sc))
+		__count_vm_events(PGREFILL, nr_scanned);
+	count_memcg_events(lruvec_memcg(lruvec), PGREFILL, nr_scanned);
+
+	spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (!list_empty(&l_hold)) {
 		struct folio *folio;
@@ -2141,6 +2300,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
 	/*
 	 * Move folios back to the lru list.
 	 */
+<<<<<<< HEAD
 	nr_activate = move_folios_to_lru(&l_active);
 	nr_deactivate = move_folios_to_lru(&l_inactive);
 
@@ -2149,6 +2309,18 @@ static void shrink_active_list(unsigned long nr_to_scan,
 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
 
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+
+	nr_activate = move_folios_to_lru(lruvec, &l_active);
+	nr_deactivate = move_folios_to_lru(lruvec, &l_inactive);
+
+	__count_vm_events(PGDEACTIVATE, nr_deactivate);
+	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
+
+	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
 	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
 			nr_deactivate, nr_rotated, sc->priority, file);
@@ -2285,7 +2457,11 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
 	unsigned long file;
 	struct lruvec *target_lruvec;
 
+<<<<<<< HEAD
 	if (lru_gen_enabled() && !lru_gen_switching())
+=======
+	if (lru_gen_enabled())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	target_lruvec = mem_cgroup_lruvec(sc->target_mem_cgroup, pgdat);
@@ -2624,7 +2800,10 @@ static bool can_age_anon_pages(struct lruvec *lruvec,
 
 #ifdef CONFIG_LRU_GEN
 
+<<<<<<< HEAD
 DEFINE_STATIC_KEY_FALSE(lru_switch);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_LRU_GEN_ENABLED
 DEFINE_STATIC_KEY_ARRAY_TRUE(lru_gen_caps, NR_LRU_GEN_CAPS);
 #define get_cap(cap)	static_branch_likely(&lru_gen_caps[cap])
@@ -2863,9 +3042,14 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
 		return NULL;
 
 	clear_bit(key, &mm->lru_gen.bitmap);
+<<<<<<< HEAD
 	mmgrab(mm);
 
 	return mm;
+=======
+
+	return mmget_not_zero(mm) ? mm : NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void lru_gen_add_mm(struct mm_struct *mm)
@@ -3065,7 +3249,11 @@ done:
 		reset_bloom_filter(mm_state, walk->seq + 1);
 
 	if (*iter)
+<<<<<<< HEAD
 		mmdrop(*iter);
+=======
+		mmput_async(*iter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*iter = mm;
 
@@ -3420,10 +3608,15 @@ static struct folio *get_pfn_folio(unsigned long pfn, struct mem_cgroup *memcg,
 	if (folio_nid(folio) != pgdat->node_id)
 		return NULL;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	if (folio_memcg(folio) != memcg)
 		folio = NULL;
 	rcu_read_unlock();
+=======
+	if (folio_memcg(folio) != memcg)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return folio;
 }
@@ -3476,7 +3669,10 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
 	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
 	DEFINE_MAX_SEQ(walk->lruvec);
 	int gen = lru_gen_from_seq(max_seq);
+<<<<<<< HEAD
 	unsigned int nr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pmd_t pmdval;
 
 	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
@@ -3495,6 +3691,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
 
 	lazy_mmu_mode_enable();
 restart:
+<<<<<<< HEAD
 	for (i = pte_index(start), addr = start; addr != end; i += nr, addr += nr * PAGE_SIZE) {
 		unsigned long pfn;
 		struct folio *folio;
@@ -3502,6 +3699,13 @@ restart:
 		pte_t ptent = ptep_get(cur_pte);
 
 		nr = 1;
+=======
+	for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
+		unsigned long pfn;
+		struct folio *folio;
+		pte_t ptent = ptep_get(pte + i);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		total++;
 		walk->mm_stats[MM_LEAF_TOTAL]++;
 
@@ -3513,6 +3717,7 @@ restart:
 		if (!folio)
 			continue;
 
+<<<<<<< HEAD
 		if (folio_test_large(folio)) {
 			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
 
@@ -3523,6 +3728,9 @@ restart:
 		}
 
 		if (!test_and_clear_young_ptes_notify(args->vma, addr, cur_pte, nr))
+=======
+		if (!ptep_clear_young_notify(args->vma, addr, pte + i))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (last != folio) {
@@ -3535,8 +3743,13 @@ restart:
 		if (pte_dirty(ptent))
 			dirty = true;
 
+<<<<<<< HEAD
 		young += nr;
 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+=======
+		young++;
+		walk->mm_stats[MM_LEAF_YOUNG]++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	walk_update_folio(walk, last, gen, dirty);
@@ -3613,7 +3826,11 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
 		if (!folio)
 			goto next;
 
+<<<<<<< HEAD
 		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
+=======
+		if (!pmdp_clear_young_notify(vma, addr, pmd + i))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto next;
 
 		if (last != folio) {
@@ -3783,9 +4000,15 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
 		}
 
 		if (walk->batched) {
+<<<<<<< HEAD
 			lruvec_lock_irq(lruvec);
 			reset_batch_size(walk);
 			lruvec_unlock_irq(lruvec);
+=======
+			spin_lock_irq(&lruvec->lru_lock);
+			reset_batch_size(walk);
+			spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		cond_resched();
@@ -3945,7 +4168,11 @@ restart:
 	if (seq < READ_ONCE(lrugen->max_seq))
 		return false;
 
+<<<<<<< HEAD
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
 
@@ -3960,7 +4187,11 @@ restart:
 		if (inc_min_seq(lruvec, type, swappiness))
 			continue;
 
+<<<<<<< HEAD
 		lruvec_unlock_irq(lruvec);
+=======
+		spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cond_resched();
 		goto restart;
 	}
@@ -3995,7 +4226,11 @@ restart:
 	/* make sure preceding modifications appear */
 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
 unlock:
+<<<<<<< HEAD
 	lruvec_unlock_irq(lruvec);
+=======
+	spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return success;
 }
@@ -4180,7 +4415,11 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
  * the PTE table to the Bloom filter. This forms a feedback loop between the
  * eviction and the aging.
  */
+<<<<<<< HEAD
 bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+=======
+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 	bool dirty;
@@ -4193,17 +4432,30 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 	unsigned long addr = pvmw->address;
 	struct vm_area_struct *vma = pvmw->vma;
 	struct folio *folio = pfn_folio(pvmw->pfn);
+<<<<<<< HEAD
 	struct mem_cgroup *memcg;
 	struct pglist_data *pgdat = folio_pgdat(folio);
 	struct lruvec *lruvec;
 	struct lru_gen_mm_state *mm_state;
 	unsigned long max_seq;
 	int gen;
+=======
+	struct mem_cgroup *memcg = folio_memcg(folio);
+	struct pglist_data *pgdat = folio_pgdat(folio);
+	struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+	struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
+	DEFINE_MAX_SEQ(lruvec);
+	int gen = lru_gen_from_seq(max_seq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_held(pvmw->ptl);
 	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
 
+<<<<<<< HEAD
 	if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
+=======
+	if (!ptep_clear_young_notify(vma, addr, pte))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	if (spin_is_contended(pvmw->ptl))
@@ -4233,22 +4485,32 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 		}
 	}
 
+<<<<<<< HEAD
 	memcg = get_mem_cgroup_from_folio(folio);
 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
 	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
 	gen = lru_gen_from_seq(max_seq);
 	mm_state = get_mm_state(lruvec);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lazy_mmu_mode_enable();
 
 	pte -= (addr - start) / PAGE_SIZE;
 
+<<<<<<< HEAD
 	for (i = 0, addr = start; addr != end;
 	     i += nr, pte += nr, addr += nr * PAGE_SIZE) {
 		unsigned long pfn;
 		pte_t ptent = ptep_get(pte);
 
 		nr = 1;
+=======
+	for (i = 0, addr = start; addr != end; i++, addr += PAGE_SIZE) {
+		unsigned long pfn;
+		pte_t ptent = ptep_get(pte + i);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pfn = get_pte_pfn(ptent, vma, addr, pgdat);
 		if (pfn == -1)
 			continue;
@@ -4257,6 +4519,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 		if (!folio)
 			continue;
 
+<<<<<<< HEAD
 		if (folio_test_large(folio)) {
 			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
 
@@ -4265,6 +4528,9 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 		}
 
 		if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
+=======
+		if (!ptep_clear_young_notify(vma, addr, pte + i))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (last != folio) {
@@ -4277,7 +4543,11 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 		if (pte_dirty(ptent))
 			dirty = true;
 
+<<<<<<< HEAD
 		young += nr;
+=======
+		young++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	walk_update_folio(walk, last, gen, dirty);
@@ -4288,8 +4558,11 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
 	if (mm_state && suitable_to_scan(i, young))
 		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
 
+<<<<<<< HEAD
 	mem_cgroup_put(memcg);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -4425,6 +4698,7 @@ void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
 		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
 }
 
+<<<<<<< HEAD
 bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid)
 {
 	struct lruvec *lruvec = get_lruvec(memcg, nid);
@@ -4567,6 +4841,8 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_MEMCG */
 
 /******************************************************************************
@@ -4684,7 +4960,11 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 {
 	int i;
 	int gen;
+<<<<<<< HEAD
 	enum node_stat_item item;
+=======
+	enum vm_event_item item;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int sorted = 0;
 	int scanned = 0;
 	int isolated = 0;
@@ -4692,6 +4972,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
 	int remaining = scan_batch;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+<<<<<<< HEAD
+=======
+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_WARN_ON_ONCE(!list_empty(list));
 
@@ -4742,9 +5026,19 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 	}
 
 	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
+<<<<<<< HEAD
 	mod_lruvec_state(lruvec, item, isolated);
 	mod_lruvec_state(lruvec, PGREFILL, sorted);
 	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
+=======
+	if (!cgroup_reclaim(sc)) {
+		__count_vm_events(item, isolated);
+		__count_vm_events(PGREFILL, sorted);
+	}
+	count_memcg_events(memcg, item, isolated);
+	count_memcg_events(memcg, PGREFILL, sorted);
+	__count_vm_events(PGSCAN_ANON + type, isolated);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
 				scanned, skipped, isolated,
 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
@@ -4760,7 +5054,11 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 static int get_tier_idx(struct lruvec *lruvec, int type)
 {
 	int tier;
+<<<<<<< HEAD
 	struct ctrl_pos sp, pv = {};
+=======
+	struct ctrl_pos sp, pv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * To leave a margin for fluctuations, use a larger gain factor (2:3).
@@ -4779,7 +5077,11 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
 
 static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
 {
+<<<<<<< HEAD
 	struct ctrl_pos sp, pv = {};
+=======
+	struct ctrl_pos sp, pv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (swappiness <= MIN_SWAPPINESS + 1)
 		return LRU_GEN_FILE;
@@ -4829,7 +5131,11 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 	LIST_HEAD(clean);
 	struct folio *folio;
 	struct folio *next;
+<<<<<<< HEAD
 	enum node_stat_item item;
+=======
+	enum vm_event_item item;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct reclaim_stat stat;
 	struct lru_gen_mm_walk *walk;
 	bool skip_retry = false;
@@ -4837,7 +5143,11 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 
+<<<<<<< HEAD
 	lruvec_lock_irq(lruvec);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
 
@@ -4846,7 +5156,11 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
 		scanned = 0;
 
+<<<<<<< HEAD
 	lruvec_unlock_irq(lruvec);
+=======
+	spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (list_empty(&list))
 		return scanned;
@@ -4879,22 +5193,41 @@ retry:
 			set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_active));
 	}
 
+<<<<<<< HEAD
 	move_folios_to_lru(&list);
+=======
+	spin_lock_irq(&lruvec->lru_lock);
+
+	move_folios_to_lru(lruvec, &list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	walk = current->reclaim_state->mm_walk;
 	if (walk && walk->batched) {
 		walk->lruvec = lruvec;
+<<<<<<< HEAD
 		lruvec_lock_irq(lruvec);
 		reset_batch_size(walk);
 		lruvec_unlock_irq(lruvec);
+=======
+		reset_batch_size(walk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
 					stat.nr_demoted);
 
 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
+<<<<<<< HEAD
 	mod_lruvec_state(lruvec, item, reclaimed);
 	mod_lruvec_state(lruvec, PGSTEAL_ANON + type, reclaimed);
+=======
+	if (!cgroup_reclaim(sc))
+		__count_vm_events(item, reclaimed);
+	count_memcg_events(memcg, item, reclaimed);
+	__count_vm_events(PGSTEAL_ANON + type, reclaimed);
+
+	spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_splice_init(&clean, &list);
 
@@ -4971,6 +5304,13 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
 	int i;
 	enum zone_watermarks mark;
 
+<<<<<<< HEAD
+=======
+	/* don't abort memcg reclaim to ensure fairness */
+	if (!root_reclaim(sc))
+		return false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
 		return true;
 
@@ -5024,6 +5364,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 	 * If too many file cache in the coldest generation can't be evicted
 	 * due to being dirty, wake up the flusher.
 	 */
+<<<<<<< HEAD
 	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken) {
 		struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 
@@ -5042,6 +5383,11 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
 	}
 
+=======
+	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken)
+		wakeup_flusher_threads(WB_REASON_VMSCAN);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* whether this lruvec should be rotated */
 	return nr_to_scan < 0;
 }
@@ -5321,8 +5667,11 @@ static void lru_gen_change_state(bool enabled)
 	if (enabled == lru_gen_enabled())
 		goto unlock;
 
+<<<<<<< HEAD
 	static_branch_enable_cpuslocked(&lru_switch);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (enabled)
 		static_branch_enable_cpuslocked(&lru_gen_caps[LRU_GEN_CORE]);
 	else
@@ -5335,7 +5684,11 @@ static void lru_gen_change_state(bool enabled)
 		for_each_node(nid) {
 			struct lruvec *lruvec = get_lruvec(memcg, nid);
 
+<<<<<<< HEAD
 			lruvec_lock_irq(lruvec);
+=======
+			spin_lock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
 			VM_WARN_ON_ONCE(!state_is_valid(lruvec));
@@ -5343,19 +5696,31 @@ static void lru_gen_change_state(bool enabled)
 			lruvec->lrugen.enabled = enabled;
 
 			while (!(enabled ? fill_evictable(lruvec) : drain_evictable(lruvec))) {
+<<<<<<< HEAD
 				lruvec_unlock_irq(lruvec);
 				cond_resched();
 				lruvec_lock_irq(lruvec);
 			}
 
 			lruvec_unlock_irq(lruvec);
+=======
+				spin_unlock_irq(&lruvec->lru_lock);
+				cond_resched();
+				spin_lock_irq(&lruvec->lru_lock);
+			}
+
+			spin_unlock_irq(&lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		cond_resched();
 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
+<<<<<<< HEAD
 
 	static_branch_disable_cpuslocked(&lru_switch);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	mutex_unlock(&state_mutex);
 	put_online_mems();
@@ -5928,12 +6293,18 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 	bool proportional_reclaim;
 	struct blk_plug plug;
 
+<<<<<<< HEAD
 	if ((lru_gen_enabled() || lru_gen_switching()) && !root_reclaim(sc)) {
 		lru_gen_shrink_lruvec(lruvec, sc);
 
 		if (!lru_gen_switching())
 			return;
 
+=======
+	if (lru_gen_enabled() && !root_reclaim(sc)) {
+		lru_gen_shrink_lruvec(lruvec, sc);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	get_scan_count(lruvec, sc, nr);
@@ -6193,6 +6564,7 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
 	struct lruvec *target_lruvec;
 	bool reclaimable = false;
 
+<<<<<<< HEAD
 	if ((lru_gen_enabled() || lru_gen_switching()) && root_reclaim(sc)) {
 		memset(&sc->nr, 0, sizeof(sc->nr));
 		lru_gen_shrink_node(pgdat, sc);
@@ -6200,6 +6572,12 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
 		if (!lru_gen_switching())
 			return;
 
+=======
+	if (lru_gen_enabled() && root_reclaim(sc)) {
+		memset(&sc->nr, 0, sizeof(sc->nr));
+		lru_gen_shrink_node(pgdat, sc);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	target_lruvec = mem_cgroup_lruvec(sc->target_mem_cgroup, pgdat);
@@ -6469,7 +6847,11 @@ static void snapshot_refaults(struct mem_cgroup *target_memcg, pg_data_t *pgdat)
 	struct lruvec *target_lruvec;
 	unsigned long refaults;
 
+<<<<<<< HEAD
 	if (lru_gen_enabled() && !lru_gen_switching())
+=======
+	if (lru_gen_enabled())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	target_lruvec = mem_cgroup_lruvec(target_memcg, pgdat);
@@ -6592,7 +6974,11 @@ retry:
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool allow_direct_reclaim(pg_data_t *pgdat)
+=======
+static bool allow_direct_reclaim(pg_data_t *pgdat, bool using_kswapd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct zone *zone;
 	unsigned long pfmemalloc_reserve = 0;
@@ -6617,6 +7003,13 @@ static bool allow_direct_reclaim(pg_data_t *pgdat)
 
 	wmark_ok = free_pages > pfmemalloc_reserve / 2;
 
+<<<<<<< HEAD
+=======
+	/* The throttled direct reclaimer is now a kswapd waiter */
+	if (unlikely(!using_kswapd && !wmark_ok))
+		atomic_long_inc(&kswapd_waiters);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* kswapd must be awake if processes are being throttled */
 	if (!wmark_ok && waitqueue_active(&pgdat->kswapd_wait)) {
 		if (READ_ONCE(pgdat->kswapd_highest_zoneidx) > ZONE_NORMAL)
@@ -6682,7 +7075,11 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
 
 		/* Throttle based on the first usable node */
 		pgdat = zone->zone_pgdat;
+<<<<<<< HEAD
 		if (allow_direct_reclaim(pgdat))
+=======
+		if (allow_direct_reclaim(pgdat, gfp_mask & __GFP_KSWAPD_RECLAIM))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		break;
 	}
@@ -6704,11 +7101,22 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
 	 */
 	if (!(gfp_mask & __GFP_FS))
 		wait_event_interruptible_timeout(pgdat->pfmemalloc_wait,
+<<<<<<< HEAD
 			allow_direct_reclaim(pgdat), HZ);
 	else
 		/* Throttle until kswapd wakes the process */
 		wait_event_killable(zone->zone_pgdat->pfmemalloc_wait,
 			allow_direct_reclaim(pgdat));
+=======
+			allow_direct_reclaim(pgdat, true), HZ);
+	else
+		/* Throttle until kswapd wakes the process */
+		wait_event_killable(zone->zone_pgdat->pfmemalloc_wait,
+			allow_direct_reclaim(pgdat, true));
+
+	if (unlikely(!(gfp_mask & __GFP_KSWAPD_RECLAIM)))
+		atomic_long_dec(&kswapd_waiters);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (fatal_signal_pending(current))
 		return true;
@@ -6750,11 +7158,19 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 		return 1;
 
 	set_task_reclaim_state(current, &sc.reclaim_state);
+<<<<<<< HEAD
 	trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, 0);
 
 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
 
 	trace_mm_vmscan_direct_reclaim_end(nr_reclaimed, 0);
+=======
+	trace_mm_vmscan_direct_reclaim_begin(order, sc.gfp_mask);
+
+	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
+
+	trace_mm_vmscan_direct_reclaim_end(nr_reclaimed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_task_reclaim_state(current, NULL);
 
 	return nr_reclaimed;
@@ -6783,9 +7199,14 @@ unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
 	sc.gfp_mask = (gfp_mask & GFP_RECLAIM_MASK) |
 			(GFP_HIGHUSER_MOVABLE & ~GFP_RECLAIM_MASK);
 
+<<<<<<< HEAD
 	trace_mm_vmscan_memcg_softlimit_reclaim_begin(sc.gfp_mask,
 						      sc.order,
 						      memcg);
+=======
+	trace_mm_vmscan_memcg_softlimit_reclaim_begin(sc.order,
+						      sc.gfp_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * NOTE: Although we can get the priority field, using it
@@ -6796,7 +7217,11 @@ unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
 	 */
 	shrink_lruvec(lruvec, &sc);
 
+<<<<<<< HEAD
 	trace_mm_vmscan_memcg_softlimit_reclaim_end(sc.nr_reclaimed, memcg);
+=======
+	trace_mm_vmscan_memcg_softlimit_reclaim_end(sc.nr_reclaimed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*nr_scanned = sc.nr_scanned;
 
@@ -6832,13 +7257,21 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
 	struct zonelist *zonelist = node_zonelist(numa_node_id(), sc.gfp_mask);
 
 	set_task_reclaim_state(current, &sc.reclaim_state);
+<<<<<<< HEAD
 	trace_mm_vmscan_memcg_reclaim_begin(sc.gfp_mask, 0, memcg);
+=======
+	trace_mm_vmscan_memcg_reclaim_begin(0, sc.gfp_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	noreclaim_flag = memalloc_noreclaim_save();
 
 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
 
 	memalloc_noreclaim_restore(noreclaim_flag);
+<<<<<<< HEAD
 	trace_mm_vmscan_memcg_reclaim_end(nr_reclaimed, memcg);
+=======
+	trace_mm_vmscan_memcg_reclaim_end(nr_reclaimed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_task_reclaim_state(current, NULL);
 
 	return nr_reclaimed;
@@ -6859,12 +7292,18 @@ static void kswapd_age_node(struct pglist_data *pgdat, struct scan_control *sc)
 	struct mem_cgroup *memcg;
 	struct lruvec *lruvec;
 
+<<<<<<< HEAD
 	if (lru_gen_enabled() || lru_gen_switching()) {
 		lru_gen_age_node(pgdat, sc);
 
 		if (!lru_gen_switching())
 			return;
 
+=======
+	if (lru_gen_enabled()) {
+		lru_gen_age_node(pgdat, sc);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	lruvec = mem_cgroup_lruvec(NULL, pgdat);
@@ -7234,14 +7673,22 @@ restart:
 		 * able to safely make forward progress. Wake them
 		 */
 		if (waitqueue_active(&pgdat->pfmemalloc_wait) &&
+<<<<<<< HEAD
 				allow_direct_reclaim(pgdat))
+=======
+				allow_direct_reclaim(pgdat, true))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			wake_up_all(&pgdat->pfmemalloc_wait);
 
 		/* Check if kswapd should be suspending */
 		__fs_reclaim_release(_THIS_IP_);
 		ret = kthread_freezable_should_stop(&was_frozen);
 		__fs_reclaim_acquire(_THIS_IP_);
+<<<<<<< HEAD
 		if (was_frozen || ret)
+=======
+		if (was_frozen || ret || !atomic_long_read(&kswapd_waiters))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		/*
@@ -7815,7 +8262,11 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
 	delayacct_freepages_end();
 	psi_memstall_leave(&pflags);
 
+<<<<<<< HEAD
 	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed, 0);
+=======
+	trace_mm_vmscan_node_reclaim_end(sc->nr_reclaimed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return sc->nr_reclaimed;
 }
@@ -8037,7 +8488,11 @@ void check_move_unevictable_folios(struct folio_batch *fbatch)
 	if (lruvec) {
 		__count_vm_events(UNEVICTABLE_PGRESCUED, pgrescued);
 		__count_vm_events(UNEVICTABLE_PGSCANNED, pgscanned);
+<<<<<<< HEAD
 		lruvec_unlock_irq(lruvec);
+=======
+		unlock_page_lruvec_irq(lruvec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (pgscanned) {
 		count_vm_events(UNEVICTABLE_PGSCANNED, pgscanned);
 	}

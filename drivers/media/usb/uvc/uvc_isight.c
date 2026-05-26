@@ -41,7 +41,11 @@ static int isight_decode(struct uvc_video_queue *queue, struct uvc_buffer *buf,
 		0xde, 0xad, 0xfa, 0xce
 	};
 
+<<<<<<< HEAD
 	struct uvc_streaming *stream = queue->stream;
+=======
+	struct uvc_streaming *stream = uvc_queue_to_stream(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int maxlen, nbytes;
 	u8 *mem;
 	int is_header = 0;

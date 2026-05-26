@@ -25,7 +25,11 @@
  */
 struct audit_fsnotify_mark {
 	dev_t dev;		/* associated superblock device */
+<<<<<<< HEAD
 	u64 ino;		/* associated inode number */
+=======
+	unsigned long ino;	/* associated inode number */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *path;		/* insertion path */
 	struct fsnotify_mark mark; /* fsnotify mark on the inode */
 	struct audit_krule *rule;
@@ -57,7 +61,11 @@ char *audit_mark_path(struct audit_fsnotify_mark *mark)
 	return mark->path;
 }
 
+<<<<<<< HEAD
 int audit_mark_compare(struct audit_fsnotify_mark *mark, u64 ino, dev_t dev)
+=======
+int audit_mark_compare(struct audit_fsnotify_mark *mark, unsigned long ino, dev_t dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (mark->ino == AUDIT_INO_UNSET)
 		return 0;

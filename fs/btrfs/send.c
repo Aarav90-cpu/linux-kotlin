@@ -7201,7 +7201,11 @@ static int changed_cb(struct btrfs_path *left_path,
 	sctx->right_path = right_path;
 	sctx->cmp_key = key;
 
+<<<<<<< HEAD
 	ret = finish_inode_if_needed(sctx, false);
+=======
+	ret = finish_inode_if_needed(sctx, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -7328,7 +7332,11 @@ static int full_send_tree(struct send_ctx *sctx)
 	}
 
 out_finish:
+<<<<<<< HEAD
 	return finish_inode_if_needed(sctx, true);
+=======
+	return finish_inode_if_needed(sctx, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int replace_node_with_clone(struct btrfs_path *path, int level)
@@ -7879,7 +7887,11 @@ static int send_subvol(struct send_ctx *sctx)
 		ret = btrfs_compare_trees(sctx->send_root, sctx->parent_root, sctx);
 		if (ret < 0)
 			goto out;
+<<<<<<< HEAD
 		ret = finish_inode_if_needed(sctx, true);
+=======
+		ret = finish_inode_if_needed(sctx, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			goto out;
 	} else {

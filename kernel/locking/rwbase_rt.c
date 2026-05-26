@@ -186,7 +186,10 @@ static __always_inline void rwbase_read_unlock(struct rwbase_rt *rwb,
 
 static inline void __rwbase_write_unlock(struct rwbase_rt *rwb, int bias,
 					 unsigned long flags)
+<<<<<<< HEAD
 	__releases(&rwb->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rt_mutex_base *rtm = &rwb->rtmutex;
 

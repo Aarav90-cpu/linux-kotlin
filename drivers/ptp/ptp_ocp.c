@@ -35,7 +35,10 @@
 
 #define PCI_VENDOR_ID_ADVA			0xad5a
 #define PCI_DEVICE_ID_ADVA_TIMECARD		0x0400
+<<<<<<< HEAD
 #define PCI_DEVICE_ID_ADVA_TIMECARD_X1		0x0410
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct class timecard_class = {
 	.name		= "timecard",
@@ -73,6 +76,7 @@ struct ptp_ocp_servo_conf {
 	u32	servo_drift_i;
 };
 
+<<<<<<< HEAD
 /*
  * Combined servo + board-variant parameters for ADVA boards.
  * Embedded in the resource table .extra so a single ptp_ocp_adva_board_init()
@@ -87,6 +91,8 @@ struct ptp_ocp_adva_info {
 	const struct ocp_attr_group	*attr_groups;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OCP_CTRL_ENABLE		BIT(0)
 #define OCP_CTRL_ADJUST_TIME	BIT(1)
 #define OCP_CTRL_ADJUST_OFFSET	BIT(2)
@@ -308,6 +314,7 @@ struct ocp_attr_group {
 	const struct attribute_group *group;
 };
 
+<<<<<<< HEAD
 struct ocp_selector {
 	const char *name;
 	int value;
@@ -322,6 +329,8 @@ struct ocp_sma_op {
 	int (*set_output)(struct ptp_ocp *bp, int sma_nr, u32 val);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OCP_CAP_BASIC	BIT(0)
 #define OCP_CAP_SIGNAL	BIT(1)
 #define OCP_CAP_FREQ	BIT(2)
@@ -449,17 +458,23 @@ static int ptp_ocp_art_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
 
 static int ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
 
+<<<<<<< HEAD
 static const struct ocp_sma_op ocp_adva_sma_op;
 static const struct ocp_sma_op ocp_adva_x1_sma_op;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ocp_attr_group fb_timecard_groups[];
 
 static const struct ocp_attr_group art_timecard_groups[];
 
 static const struct ocp_attr_group adva_timecard_groups[];
 
+<<<<<<< HEAD
 static const struct ocp_attr_group adva_timecard_x1_groups[];
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ptp_ocp_eeprom_map {
 	u16	off;
 	u16	len;
@@ -1054,6 +1069,7 @@ static struct ocp_resource ocp_adva_resource[] = {
 	},
 	{
 		.setup = ptp_ocp_adva_board_init,
+<<<<<<< HEAD
 		.extra = &(struct ptp_ocp_adva_info) {
 			.servo = {
 				.servo_offset_p = 0xc000,
@@ -1273,6 +1289,13 @@ static struct ocp_resource ocp_adva_x1_resource[] = {
 			.signals_nr   = 4,
 			.freq_in_nr   = 4,
 			.attr_groups  = adva_timecard_x1_groups,
+=======
+		.extra = &(struct ptp_ocp_servo_conf) {
+			.servo_offset_p = 0xc000,
+			.servo_offset_i = 0x1000,
+			.servo_drift_p = 0,
+			.servo_drift_i = 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 	},
 	{ }
@@ -1283,7 +1306,10 @@ static const struct pci_device_id ptp_ocp_pcidev_id[] = {
 	{ PCI_DEVICE_DATA(CELESTICA, TIMECARD, &ocp_fb_resource) },
 	{ PCI_DEVICE_DATA(OROLIA, ARTCARD, &ocp_art_resource) },
 	{ PCI_DEVICE_DATA(ADVA, TIMECARD, &ocp_adva_resource) },
+<<<<<<< HEAD
 	{ PCI_DEVICE_DATA(ADVA, TIMECARD_X1, &ocp_adva_x1_resource) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(pci, ptp_ocp_pcidev_id);
@@ -1291,6 +1317,15 @@ MODULE_DEVICE_TABLE(pci, ptp_ocp_pcidev_id);
 static DEFINE_MUTEX(ptp_ocp_lock);
 static DEFINE_IDR(ptp_ocp_idr);
 
+<<<<<<< HEAD
+=======
+struct ocp_selector {
+	const char *name;
+	int value;
+	u64 frequency;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ocp_selector ptp_ocp_clock[] = {
 	{ .name = "NONE",	.value = 0 },
 	{ .name = "TOD",	.value = 1 },
@@ -1380,6 +1415,7 @@ static const struct ocp_selector ptp_ocp_adva_sma_out[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static const struct ocp_selector ptp_ocp_adva_x1_sma_in[] = {
 	{ .name = "PPS1",	.value = 0x0001,      .frequency = 1 },
 	{ .name = "TS1",	.value = 0x0004,      .frequency = 0 },
@@ -1406,6 +1442,14 @@ static const struct ocp_selector ptp_ocp_adva_x1_sma_out[] = {
 	{ .name = "GND",	.value = 0x2000 },
 	{ .name = "VCC",	.value = 0x4000 },
 	{ }
+=======
+struct ocp_sma_op {
+	const struct ocp_selector *tbl[2];
+	void (*init)(struct ptp_ocp *bp);
+	u32 (*get)(struct ptp_ocp *bp, int sma_nr);
+	int (*set_inputs)(struct ptp_ocp *bp, int sma_nr, u32 val);
+	int (*set_output)(struct ptp_ocp *bp, int sma_nr, u32 val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void
@@ -2902,6 +2946,7 @@ static const struct ocp_sma_op ocp_adva_sma_op = {
 	.set_output	= ptp_ocp_sma_adva_set_output,
 };
 
+<<<<<<< HEAD
 static const struct ocp_sma_op ocp_adva_x1_sma_op = {
 	.tbl		= { ptp_ocp_adva_x1_sma_in, ptp_ocp_adva_x1_sma_out },
 	.init		= ptp_ocp_sma_fb_init,
@@ -2910,6 +2955,8 @@ static const struct ocp_sma_op ocp_adva_x1_sma_op = {
 	.set_output	= ptp_ocp_sma_adva_set_output,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 ptp_ocp_set_pins(struct ptp_ocp *bp)
 {
@@ -3158,6 +3205,7 @@ ptp_ocp_art_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
 	return ptp_ocp_init_clock(bp, r->extra);
 }
 
+<<<<<<< HEAD
 /* ADVA board initializer; variant differences come from r->extra. */
 static int
 ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
@@ -3171,6 +3219,20 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
 	bp->sma_op      = info->sma_op;
 	bp->signals_nr  = info->signals_nr;
 	bp->freq_in_nr  = info->freq_in_nr;
+=======
+/* ADVA specific board initializers; last "resource" registered. */
+static int
+ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
+{
+	int err;
+	u32 version;
+
+	bp->flash_start = 0xA00000;
+	bp->eeprom_map = fb_eeprom_map;
+	bp->sma_op = &ocp_adva_sma_op;
+	bp->signals_nr = 2;
+	bp->freq_in_nr = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	version = ioread32(&bp->image->version);
 	/* if lower 16 bits are empty, this is the fw loader. */
@@ -3178,15 +3240,25 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
 		version = version >> 16;
 		bp->fw_loader = true;
 	}
+<<<<<<< HEAD
 	bp->fw_tag     = 3;
 	bp->fw_version = version & 0xffff;
 	bp->fw_cap     = OCP_CAP_BASIC | OCP_CAP_SIGNAL | OCP_CAP_FREQ;
+=======
+	bp->fw_tag = 3;
+	bp->fw_version = version & 0xffff;
+	bp->fw_cap = OCP_CAP_BASIC | OCP_CAP_SIGNAL | OCP_CAP_FREQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ptp_ocp_tod_init(bp);
 	ptp_ocp_nmea_out_init(bp);
 	ptp_ocp_signal_init(bp);
 
+<<<<<<< HEAD
 	err = ptp_ocp_attr_group_add(bp, info->attr_groups);
+=======
+	err = ptp_ocp_attr_group_add(bp, adva_timecard_groups);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -3195,7 +3267,11 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
 		return err;
 	ptp_ocp_sma_init(bp);
 
+<<<<<<< HEAD
 	return ptp_ocp_init_clock(bp, &info->servo);
+=======
+	return ptp_ocp_init_clock(bp, r->extra);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t
@@ -4254,6 +4330,7 @@ static const struct ocp_attr_group adva_timecard_groups[] = {
 	{ },
 };
 
+<<<<<<< HEAD
 static struct attribute *adva_timecard_x1_attrs[] = {
 	&dev_attr_serialnum.attr,
 	&dev_attr_gnss_sync.attr,
@@ -4291,6 +4368,8 @@ static const struct ocp_attr_group adva_timecard_x1_groups[] = {
 	{ },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 gpio_input_map(char *buf, struct ptp_ocp *bp, u16 map[][2], u16 bit,
 	       const char *def)

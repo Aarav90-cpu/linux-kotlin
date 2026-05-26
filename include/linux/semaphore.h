@@ -15,7 +15,11 @@
 struct semaphore {
 	raw_spinlock_t		lock;
 	unsigned int		count;
+<<<<<<< HEAD
 	struct semaphore_waiter *first_waiter;
+=======
+	struct list_head	wait_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
 	unsigned long		last_holder;
@@ -33,7 +37,11 @@ struct semaphore {
 {									\
 	.lock		= __RAW_SPIN_LOCK_UNLOCKED((name).lock),	\
 	.count		= n,						\
+<<<<<<< HEAD
 	.first_waiter	= NULL						\
+=======
+	.wait_list	= LIST_HEAD_INIT((name).wait_list)		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__LAST_HOLDER_SEMAPHORE_INITIALIZER				\
 }
 

@@ -6,15 +6,24 @@
 // Copyright (c) 2022 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
 //
 
+<<<<<<< HEAD
+=======
+#include "common.h"
+#include "linux/pse-pd/pse.h"
+#include "netlink.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/ethtool_netlink.h>
 #include <linux/ethtool.h>
 #include <linux/export.h>
 #include <linux/phy.h>
 
+<<<<<<< HEAD
 #include "common.h"
 #include "linux/pse-pd/pse.h"
 #include "netlink.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pse_req_info {
 	struct ethnl_req_info base;
 };

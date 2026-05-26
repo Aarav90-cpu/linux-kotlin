@@ -6,7 +6,11 @@
 #include <linux/prime_numbers.h>
 #include <linux/sort.h>
 
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
+=======
+#include <drm/drm_buddy.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "../i915_selftest.h"
 
@@ -371,7 +375,11 @@ static int igt_mock_splintered_region(void *arg)
 	struct drm_i915_private *i915 = mem->i915;
 	struct i915_ttm_buddy_resource *res;
 	struct drm_i915_gem_object *obj;
+<<<<<<< HEAD
 	struct gpu_buddy *mm;
+=======
+	struct drm_buddy *mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int expected_order;
 	LIST_HEAD(objects);
 	u64 size;
@@ -447,8 +455,13 @@ static int igt_mock_max_segment(void *arg)
 	struct drm_i915_private *i915 = mem->i915;
 	struct i915_ttm_buddy_resource *res;
 	struct drm_i915_gem_object *obj;
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
 	struct gpu_buddy *mm;
+=======
+	struct drm_buddy_block *block;
+	struct drm_buddy *mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head *blocks;
 	struct scatterlist *sg;
 	I915_RND_STATE(prng);
@@ -487,8 +500,13 @@ static int igt_mock_max_segment(void *arg)
 	mm = res->mm;
 	size = 0;
 	list_for_each_entry(block, blocks, link) {
+<<<<<<< HEAD
 		if (gpu_buddy_block_size(mm, block) > size)
 			size = gpu_buddy_block_size(mm, block);
+=======
+		if (drm_buddy_block_size(mm, block) > size)
+			size = drm_buddy_block_size(mm, block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (size < max_segment) {
 		pr_err("%s: Failed to create a huge contiguous block [> %u], largest block %lld\n",
@@ -527,14 +545,24 @@ static u64 igt_object_mappable_total(struct drm_i915_gem_object *obj)
 	struct intel_memory_region *mr = obj->mm.region;
 	struct i915_ttm_buddy_resource *bman_res =
 		to_ttm_buddy_resource(obj->mm.res);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = bman_res->mm;
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy *mm = bman_res->mm;
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 total;
 
 	total = 0;
 	list_for_each_entry(block, &bman_res->blocks, link) {
+<<<<<<< HEAD
 		u64 start = gpu_buddy_block_offset(block);
 		u64 end = start + gpu_buddy_block_size(mm, block);
+=======
+		u64 start = drm_buddy_block_offset(block);
+		u64 end = start + drm_buddy_block_size(mm, block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (start < resource_size(&mr->io))
 			total += min_t(u64, end, resource_size(&mr->io)) - start;

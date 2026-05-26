@@ -1112,6 +1112,7 @@ static int cs35l56_cal_data_ctl_set(struct snd_kcontrol *kcontrol,
 	return 1;
 }
 
+<<<<<<< HEAD
 static int cs35l56_cal_ambient_ctl_get(struct snd_kcontrol *kcontrol,
 				       struct snd_ctl_elem_value *ucontrol)
 {
@@ -1194,6 +1195,8 @@ static int cs35l56_calibrate_ctl_set(struct snd_kcontrol *kcontrol,
 	return 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct snd_kcontrol_new cs35l56_cal_data_restore_controls[] = {
 	SND_SOC_BYTES_E("CAL_DATA", 0, sizeof(struct cirrus_amp_cal_data) / sizeof(u32),
 			cs35l56_cal_data_ctl_get, cs35l56_cal_data_ctl_set),
@@ -1202,6 +1205,7 @@ static const struct snd_kcontrol_new cs35l56_cal_data_restore_controls[] = {
 			SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE),
 };
 
+<<<<<<< HEAD
 static const struct snd_kcontrol_new cs35l56_cal_perform_controls[] = {
 	SOC_SINGLE_EXT("CAL_AMBIENT", SND_SOC_NOPM, 0, 40, 0,
 		       cs35l56_cal_ambient_ctl_get, cs35l56_cal_ambient_ctl_set),
@@ -1210,6 +1214,8 @@ static const struct snd_kcontrol_new cs35l56_cal_perform_controls[] = {
 				SNDRV_CTL_ELEM_ACCESS_READWRITE | SNDRV_CTL_ELEM_ACCESS_VOLATILE),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 VISIBLE_IF_KUNIT int cs35l56_set_fw_suffix(struct cs35l56_private *cs35l56)
 {
 	unsigned short vendor, device;
@@ -1383,12 +1389,15 @@ static int cs35l56_component_probe(struct snd_soc_component *component)
 						     ARRAY_SIZE(cs35l56_cal_data_restore_controls));
 	}
 
+<<<<<<< HEAD
 	if (!ret && IS_ENABLED(CONFIG_SND_SOC_CS35L56_CAL_PERFORM_CTRL)) {
 		ret = snd_soc_add_component_controls(component,
 						     cs35l56_cal_perform_controls,
 						     ARRAY_SIZE(cs35l56_cal_perform_controls));
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return dev_err_probe(cs35l56->base.dev, ret, "unable to add controls\n");
 
@@ -1768,7 +1777,11 @@ VISIBLE_IF_KUNIT int cs35l56_process_xu_properties(struct cs35l56_private *cs35l
 }
 EXPORT_SYMBOL_IF_KUNIT(cs35l56_process_xu_properties);
 
+<<<<<<< HEAD
 VISIBLE_IF_KUNIT int cs35l56_get_firmware_uid(struct cs35l56_private *cs35l56)
+=======
+static int cs35l56_get_firmware_uid(struct cs35l56_private *cs35l56)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = cs35l56->base.dev;
 	const char *prop;
@@ -1793,7 +1806,10 @@ VISIBLE_IF_KUNIT int cs35l56_get_firmware_uid(struct cs35l56_private *cs35l56)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_IF_KUNIT(cs35l56_get_firmware_uid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Some SoundWire laptops have a spk-id-gpios property but it points to
@@ -1959,9 +1975,15 @@ int cs35l56_common_probe(struct cs35l56_private *cs35l56)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	ret = snd_soc_register_component(cs35l56->base.dev,
 					 &soc_component_dev_cs35l56,
 					 cs35l56_dai, ARRAY_SIZE(cs35l56_dai));
+=======
+	ret = devm_snd_soc_register_component(cs35l56->base.dev,
+					      &soc_component_dev_cs35l56,
+					      cs35l56_dai, ARRAY_SIZE(cs35l56_dai));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0) {
 		dev_err_probe(cs35l56->base.dev, ret, "Register codec failed\n");
 		goto err;
@@ -1973,9 +1995,12 @@ err:
 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
 	regulator_bulk_disable(ARRAY_SIZE(cs35l56->supplies), cs35l56->supplies);
 
+<<<<<<< HEAD
 	if (cs35l56->dsp_wq)
 		destroy_workqueue(cs35l56->dsp_wq);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_NS_GPL(cs35l56_common_probe, "SND_SOC_CS35L56_CORE");
@@ -2063,8 +2088,11 @@ EXPORT_SYMBOL_NS_GPL(cs35l56_init, "SND_SOC_CS35L56_CORE");
 
 void cs35l56_remove(struct cs35l56_private *cs35l56)
 {
+<<<<<<< HEAD
 	snd_soc_unregister_component(cs35l56->base.dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cs35l56->base.init_done = false;
 
 	/*

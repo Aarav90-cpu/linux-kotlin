@@ -1562,12 +1562,20 @@ static void s3c24xx_serial_set_termios(struct uart_port *port,
 		ulcon |= S3C2410_LCON_PNONE;
 	}
 
+<<<<<<< HEAD
+=======
+	uart_port_lock_irqsave(port, &flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(port->dev,
 		"setting ulcon to %08x, brddiv to %d, udivslot %08x\n",
 		ulcon, quot, udivslot);
 
+<<<<<<< HEAD
 	uart_port_lock_irqsave(port, &flags);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wr_regl(port, S3C2410_ULCON, ulcon);
 	wr_regl(port, S3C2410_UBRDIV, quot);
 
@@ -1587,6 +1595,15 @@ static void s3c24xx_serial_set_termios(struct uart_port *port,
 	if (ourport->info->has_divslot)
 		wr_regl(port, S3C2443_DIVSLOT, udivslot);
 
+<<<<<<< HEAD
+=======
+	dev_dbg(port->dev,
+		"uart: ulcon = 0x%08x, ucon = 0x%08x, ufcon = 0x%08x\n",
+		rd_regl(port, S3C2410_ULCON),
+		rd_regl(port, S3C2410_UCON),
+		rd_regl(port, S3C2410_UFCON));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Update the per-port timeout.
 	 */

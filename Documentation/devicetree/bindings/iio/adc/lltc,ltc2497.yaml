@@ -11,12 +11,15 @@ maintainers:
   - Liam Beguin <liambeguin@gmail.com>
 
 description: |
+<<<<<<< HEAD
   LTC2305:
     low noise, low power, 2-channel, 12-bit successive approximation ADC with an
     I2C compatible serial interface.
 
     https://www.analog.com/media/en/technical-documentation/data-sheets/23015fb.pdf
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   LTC2309:
     low noise, low power, 8-channel, 12-bit successive approximation ADC with an
     I2C compatible serial interface.
@@ -34,7 +37,10 @@ description: |
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - lltc,ltc2305
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - lltc,ltc2309
       - lltc,ltc2497
       - lltc,ltc2499

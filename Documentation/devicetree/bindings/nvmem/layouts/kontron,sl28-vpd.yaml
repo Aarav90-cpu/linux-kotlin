@@ -19,7 +19,16 @@ select: false
 
 properties:
   compatible:
+<<<<<<< HEAD
     const: kontron,sl28-vpd
+=======
+    oneOf:
+      - items:
+          - enum:
+              - kontron,sa67-vpd
+          - const: kontron,sl28-vpd
+      - const: kontron,sl28-vpd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   serial-number:
     type: object

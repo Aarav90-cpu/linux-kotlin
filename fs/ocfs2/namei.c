@@ -1683,6 +1683,12 @@ bail:
 	if (rename_lock)
 		ocfs2_rename_unlock(osb);
 
+<<<<<<< HEAD
+=======
+	if (new_inode)
+		sync_mapping_buffers(old_inode->i_mapping);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iput(new_inode);
 
 	ocfs2_free_dir_lookup_result(&target_lookup_res);

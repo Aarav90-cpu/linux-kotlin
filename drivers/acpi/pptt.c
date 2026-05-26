@@ -21,6 +21,28 @@
 #include <linux/cacheinfo.h>
 #include <acpi/processor.h>
 
+<<<<<<< HEAD
+=======
+/*
+ * The acpi_pptt_cache_v1 in actbl2.h, which is imported from acpica,
+ * only contains the cache_id field rather than all the fields of the
+ * Cache Type Structure. Use this alternative structure until it is
+ * resolved in acpica.
+ */
+struct acpi_pptt_cache_v1_full {
+	struct acpi_subtable_header header;
+	u16 reserved;
+	u32 flags;
+	u32 next_level_of_cache;
+	u32 size;
+	u32 number_of_sets;
+	u8 associativity;
+	u8 attributes;
+	u16 line_size;
+	u32 cache_id;
+} __packed;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct acpi_subtable_header *fetch_pptt_subtable(struct acpi_table_header *table_hdr,
 							u32 pptt_ref)
 {
@@ -56,16 +78,26 @@ static struct acpi_pptt_cache *fetch_pptt_cache(struct acpi_table_header *table_
 	return (struct acpi_pptt_cache *)fetch_pptt_subtable(table_hdr, pptt_ref);
 }
 
+<<<<<<< HEAD
 static struct acpi_pptt_cache_v1 *upgrade_pptt_cache(struct acpi_pptt_cache *cache)
 {
 	if (cache->header.length < sizeof(struct acpi_pptt_cache_v1))
+=======
+static struct acpi_pptt_cache_v1_full *upgrade_pptt_cache(struct acpi_pptt_cache *cache)
+{
+	if (cache->header.length < sizeof(struct acpi_pptt_cache_v1_full))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	/* No use for v1 if the only additional field is invalid */
 	if (!(cache->flags & ACPI_PPTT_CACHE_ID_VALID))
 		return NULL;
 
+<<<<<<< HEAD
 	return (struct acpi_pptt_cache_v1 *)cache;
+=======
+	return (struct acpi_pptt_cache_v1_full *)cache;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct acpi_subtable_header *acpi_get_pptt_resource(struct acpi_table_header *table_hdr,
@@ -378,7 +410,11 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
 				    struct acpi_pptt_cache *found_cache,
 				    struct acpi_pptt_processor *cpu_node)
 {
+<<<<<<< HEAD
 	struct acpi_pptt_cache_v1 *found_cache_v1;
+=======
+	struct acpi_pptt_cache_v1_full *found_cache_v1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	this_leaf->fw_token = cpu_node;
 	if (found_cache->flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
@@ -440,14 +476,21 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
 {
 	struct acpi_pptt_cache *found_cache;
 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+<<<<<<< HEAD
 	u32 acpi_cpu_id;
+=======
+	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cacheinfo *this_leaf;
 	unsigned int index = 0;
 	struct acpi_pptt_processor *cpu_node = NULL;
 
+<<<<<<< HEAD
 	if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (index < get_cpu_cacheinfo(cpu)->num_leaves) {
 		this_leaf = this_cpu_ci->info_list + index;
 		found_cache = acpi_find_cache_node(table, acpi_cpu_id,
@@ -530,10 +573,14 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
 				     unsigned int cpu, int level, int flag)
 {
 	struct acpi_pptt_processor *cpu_node;
+<<<<<<< HEAD
 	u32 acpi_cpu_id;
 
 	if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 		return -ENOENT;
+=======
+	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 	if (cpu_node) {
@@ -601,15 +648,21 @@ static int find_acpi_cpu_topology_tag(unsigned int cpu, int level, int flag)
  *
  * Check the node representing a CPU for a given flag.
  *
+<<<<<<< HEAD
  * Return: -ENOENT if can't get CPU's ACPI Processor UID, the PPTT doesn't
  *	   exist, the CPU cannot be found or the table revision isn't new
  *	   enough.
+=======
+ * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be found or
+ *	   the table revision isn't new enough.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	   1, any passed flag set
  *	   0, flag unset
  */
 static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
 {
 	struct acpi_table_header *table;
+<<<<<<< HEAD
 	u32 acpi_cpu_id;
 	struct acpi_pptt_processor *cpu_node = NULL;
 	int ret = -ENOENT;
@@ -617,6 +670,12 @@ static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
 	if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 		return -ENOENT;
 
+=======
+	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+	struct acpi_pptt_processor *cpu_node = NULL;
+	int ret = -ENOENT;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	table = acpi_get_pptt();
 	if (!table)
 		return -ENOENT;
@@ -642,8 +701,12 @@ static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
  * in the PPTT. Errors caused by lack of a PPTT table, or otherwise, return 0
  * indicating we didn't find any cache levels.
  *
+<<<<<<< HEAD
  * Return: -ENOENT if no PPTT table, can't get CPU's ACPI Process UID or no PPTT
  *	   processor struct found.
+=======
+ * Return: -ENOENT if no PPTT table or no PPTT processor struct found.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	   0 on success.
  */
 int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
@@ -663,9 +726,13 @@ int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
 
 	pr_debug("Cache Setup: find cache levels for CPU=%d\n", cpu);
 
+<<<<<<< HEAD
 	if (acpi_get_cpu_uid(cpu, &acpi_cpu_id))
 		return -ENOENT;
 
+=======
+	acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 	if (!cpu_node)
 		return -ENOENT;
@@ -774,9 +841,14 @@ int find_acpi_cpu_topology_package(unsigned int cpu)
  * It may not exist in single CPU systems. In simple multi-CPU systems,
  * it may be equal to the package topology level.
  *
+<<<<<<< HEAD
  * Return: -ENOENT if the PPTT doesn't exist, can't get CPU's ACPI
  * Processor UID, the CPU cannot be found or there is no toplogy level
  * above the CPU.
+=======
+ * Return: -ENOENT if the PPTT doesn't exist, the CPU cannot be found
+ * or there is no toplogy level above the CPU..
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Otherwise returns a value which represents the package for this CPU.
  */
 
@@ -792,9 +864,13 @@ int find_acpi_cpu_topology_cluster(unsigned int cpu)
 	if (!table)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 		return -ENOENT;
 
+=======
+	acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 	if (!cpu_node || !cpu_node->parent)
 		return -ENOENT;
@@ -869,9 +945,13 @@ static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
 	cpumask_clear(cpus);
 
 	for_each_possible_cpu(cpu) {
+<<<<<<< HEAD
 		if (acpi_get_cpu_uid(cpu, &acpi_id) != 0)
 			continue;
 
+=======
+		acpi_id = get_acpi_id_for_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
 
 		while (cpu_node) {
@@ -965,6 +1045,7 @@ int find_acpi_cache_level_from_id(u32 cache_id)
 	for_each_possible_cpu(cpu) {
 		bool empty;
 		int level = 1;
+<<<<<<< HEAD
 		u32 acpi_cpu_id;
 		struct acpi_pptt_cache *cache;
 		struct acpi_pptt_processor *cpu_node;
@@ -972,6 +1053,12 @@ int find_acpi_cache_level_from_id(u32 cache_id)
 		if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 			continue;
 
+=======
+		u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+		struct acpi_pptt_cache *cache;
+		struct acpi_pptt_processor *cpu_node;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 		if (!cpu_node)
 			continue;
@@ -981,7 +1068,11 @@ int find_acpi_cache_level_from_id(u32 cache_id)
 
 			empty = true;
 			for (int i = 0; i < ARRAY_SIZE(cache_type); i++) {
+<<<<<<< HEAD
 				struct acpi_pptt_cache_v1 *cache_v1;
+=======
+				struct acpi_pptt_cache_v1_full *cache_v1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				cache = acpi_find_cache_node(table, acpi_cpu_id, cache_type[i],
 							     level, &cpu_node);
@@ -1032,6 +1123,7 @@ int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 	for_each_possible_cpu(cpu) {
 		bool empty;
 		int level = 1;
+<<<<<<< HEAD
 		u32 acpi_cpu_id;
 		struct acpi_pptt_cache *cache;
 		struct acpi_pptt_processor *cpu_node;
@@ -1039,6 +1131,12 @@ int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 		if (acpi_get_cpu_uid(cpu, &acpi_cpu_id) != 0)
 			continue;
 
+=======
+		u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+		struct acpi_pptt_cache *cache;
+		struct acpi_pptt_processor *cpu_node;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 		if (!cpu_node)
 			continue;
@@ -1048,7 +1146,11 @@ int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 
 			empty = true;
 			for (int i = 0; i < ARRAY_SIZE(cache_type); i++) {
+<<<<<<< HEAD
 				struct acpi_pptt_cache_v1 *cache_v1;
+=======
+				struct acpi_pptt_cache_v1_full *cache_v1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				cache = acpi_find_cache_node(table, acpi_cpu_id, cache_type[i],
 							     level, &cpu_node);

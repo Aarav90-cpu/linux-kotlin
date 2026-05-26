@@ -13,6 +13,7 @@
 	model = "ARM Corstone1000 FPGA MPS3 board";
 	compatible = "arm,corstone1000-mps3";
 
+<<<<<<< HEAD
 	cpus: cpus {
 		#address-cells = <2>;
 		#size-cells = <0>;
@@ -26,6 +27,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smsc: ethernet@4010000 {
 		compatible = "smsc,lan9220", "smsc,lan9115";
 		reg = <0x40100000 0x10000>;

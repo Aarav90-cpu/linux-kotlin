@@ -129,9 +129,12 @@ static LIST_HEAD(snd_timer_list);
 /* list of slave instances */
 static LIST_HEAD(snd_timer_slave_list);
 
+<<<<<<< HEAD
 /* list of open master instances that can accept slave links */
 static LIST_HEAD(snd_timer_master_list);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* lock for slave active lists */
 static DEFINE_SPINLOCK(slave_active_lock);
 
@@ -164,7 +167,10 @@ struct snd_timer_instance *snd_timer_instance_new(const char *owner)
 	}
 	INIT_LIST_HEAD(&timeri->open_list);
 	INIT_LIST_HEAD(&timeri->active_list);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&timeri->master_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&timeri->ack_list);
 	INIT_LIST_HEAD(&timeri->slave_list_head);
 	INIT_LIST_HEAD(&timeri->slave_active_head);
@@ -249,12 +255,15 @@ static int check_matching_master_slave(struct snd_timer_instance *master,
 	return 1;
 }
 
+<<<<<<< HEAD
 static bool snd_timer_has_slave_key(const struct snd_timer_instance *timeri)
 {
 	return !(timeri->flags & SNDRV_TIMER_IFLG_SLAVE) &&
 		timeri->slave_class > SNDRV_TIMER_SCLASS_NONE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * look for a master instance matching with the slave id of the given slave.
  * when found, relink the open_link of the slave.
@@ -263,6 +272,7 @@ static bool snd_timer_has_slave_key(const struct snd_timer_instance *timeri)
  */
 static int snd_timer_check_slave(struct snd_timer_instance *slave)
 {
+<<<<<<< HEAD
 	struct snd_timer_instance *master;
 	int err = 0;
 
@@ -272,6 +282,21 @@ static int snd_timer_check_slave(struct snd_timer_instance *slave)
 			goto out;
 	}
 out:
+=======
+	struct snd_timer *timer;
+	struct snd_timer_instance *master;
+	int err = 0;
+
+	/* FIXME: it's really dumb to look up all entries.. */
+	list_for_each_entry(timer, &snd_timer_list, device_list) {
+		list_for_each_entry(master, &timer->open_list_head, open_list) {
+			err = check_matching_master_slave(master, slave);
+			if (err != 0) /* match found or error */
+				goto out;
+		}
+	}
+ out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err < 0 ? err : 0;
 }
 
@@ -383,8 +408,11 @@ int snd_timer_open(struct snd_timer_instance *timeri,
 	timeri->slave_id = slave_id;
 
 	list_add_tail(&timeri->open_list, &timer->open_list_head);
+<<<<<<< HEAD
 	if (snd_timer_has_slave_key(timeri))
 		list_add_tail(&timeri->master_list, &snd_timer_master_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timer->num_instances++;
 	err = snd_timer_check_master(timeri);
 list_added:
@@ -439,9 +467,12 @@ static void snd_timer_close_locked(struct snd_timer_instance *timeri,
 			num_slaves--;
 	}
 
+<<<<<<< HEAD
 	if (!list_empty(&timeri->master_list))
 		list_del_init(&timeri->master_list);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* force to stop the timer */
 	snd_timer_stop(timeri);
 

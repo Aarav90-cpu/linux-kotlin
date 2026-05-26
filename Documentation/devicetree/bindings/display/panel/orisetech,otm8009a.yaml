@@ -31,12 +31,20 @@ properties:
   reset-gpios:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     dsi {

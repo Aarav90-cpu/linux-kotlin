@@ -26,7 +26,10 @@
 #include <linux/pci.h>
 #include <linux/pci-ats.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/sort.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/string_choices.h>
 #include <kunit/visibility.h>
 #include <uapi/linux/iommufd.h>
@@ -108,7 +111,10 @@ static const char * const event_class_str[] = {
 };
 
 static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master);
+<<<<<<< HEAD
 static bool arm_smmu_ats_supported(struct arm_smmu_master *master);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void parse_driver_options(struct arm_smmu_device *smmu)
 {
@@ -1028,6 +1034,7 @@ static void arm_smmu_page_response(struct device *dev, struct iopf_fault *unused
 	 */
 }
 
+<<<<<<< HEAD
 /* Invalidation array manipulation functions */
 static inline struct arm_smmu_inv *
 arm_smmu_invs_iter_next(struct arm_smmu_invs *invs, size_t next, size_t *idx)
@@ -1290,6 +1297,19 @@ struct arm_smmu_invs *arm_smmu_invs_purge(struct arm_smmu_invs *invs)
 EXPORT_SYMBOL_IF_KUNIT(arm_smmu_invs_purge);
 
 /* Context descriptor manipulation functions */
+=======
+/* Context descriptor manipulation functions */
+void arm_smmu_tlb_inv_asid(struct arm_smmu_device *smmu, u16 asid)
+{
+	struct arm_smmu_cmdq_ent cmd = {
+		.opcode	= smmu->features & ARM_SMMU_FEAT_E2H ?
+			CMDQ_OP_TLBI_EL2_ASID : CMDQ_OP_TLBI_NH_ASID,
+		.tlbi.asid = asid,
+	};
+
+	arm_smmu_cmdq_issue_cmd_with_sync(smmu, &cmd);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Based on the value of ent report which bits of the STE the HW will access. It
@@ -2500,10 +2520,76 @@ static int arm_smmu_atc_inv_master(struct arm_smmu_master *master,
 	return arm_smmu_cmdq_batch_submit(master->smmu, &cmds);
 }
 
+<<<<<<< HEAD
+=======
+int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
+			    unsigned long iova, size_t size)
+{
+	struct arm_smmu_master_domain *master_domain;
+	int i;
+	unsigned long flags;
+	struct arm_smmu_cmdq_ent cmd = {
+		.opcode = CMDQ_OP_ATC_INV,
+	};
+	struct arm_smmu_cmdq_batch cmds;
+
+	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_ATS))
+		return 0;
+
+	/*
+	 * Ensure that we've completed prior invalidation of the main TLBs
+	 * before we read 'nr_ats_masters' in case of a concurrent call to
+	 * arm_smmu_enable_ats():
+	 *
+	 *	// unmap()			// arm_smmu_enable_ats()
+	 *	TLBI+SYNC			atomic_inc(&nr_ats_masters);
+	 *	smp_mb();			[...]
+	 *	atomic_read(&nr_ats_masters);	pci_enable_ats() // writel()
+	 *
+	 * Ensures that we always see the incremented 'nr_ats_masters' count if
+	 * ATS was enabled at the PCI device before completion of the TLBI.
+	 */
+	smp_mb();
+	if (!atomic_read(&smmu_domain->nr_ats_masters))
+		return 0;
+
+	arm_smmu_cmdq_batch_init(smmu_domain->smmu, &cmds, &cmd);
+
+	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
+	list_for_each_entry(master_domain, &smmu_domain->devices,
+			    devices_elm) {
+		struct arm_smmu_master *master = master_domain->master;
+
+		if (!master->ats_enabled)
+			continue;
+
+		if (master_domain->nested_ats_flush) {
+			/*
+			 * If a S2 used as a nesting parent is changed we have
+			 * no option but to completely flush the ATC.
+			 */
+			arm_smmu_atc_inv_to_cmd(IOMMU_NO_PASID, 0, 0, &cmd);
+		} else {
+			arm_smmu_atc_inv_to_cmd(master_domain->ssid, iova, size,
+						&cmd);
+		}
+
+		for (i = 0; i < master->num_streams; i++) {
+			cmd.atc.sid = master->streams[i].id;
+			arm_smmu_cmdq_batch_add(smmu_domain->smmu, &cmds, &cmd);
+		}
+	}
+	spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+
+	return arm_smmu_cmdq_batch_submit(smmu_domain->smmu, &cmds);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* IO_PGTABLE API */
 static void arm_smmu_tlb_inv_context(void *cookie)
 {
 	struct arm_smmu_domain *smmu_domain = cookie;
+<<<<<<< HEAD
 
 	/*
 	 * If the DMA API is running in non-strict mode then another CPU could
@@ -2536,6 +2622,45 @@ static void arm_smmu_cmdq_batch_add_range(struct arm_smmu_device *smmu,
 		return;
 
 	if (smmu->features & ARM_SMMU_FEAT_RANGE_INV) {
+=======
+	struct arm_smmu_device *smmu = smmu_domain->smmu;
+	struct arm_smmu_cmdq_ent cmd;
+
+	/*
+	 * NOTE: when io-pgtable is in non-strict mode, we may get here with
+	 * PTEs previously cleared by unmaps on the current CPU not yet visible
+	 * to the SMMU. We are relying on the dma_wmb() implicit during cmd
+	 * insertion to guarantee those are observed before the TLBI. Do be
+	 * careful, 007.
+	 */
+	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1) {
+		arm_smmu_tlb_inv_asid(smmu, smmu_domain->cd.asid);
+	} else {
+		cmd.opcode	= CMDQ_OP_TLBI_S12_VMALL;
+		cmd.tlbi.vmid	= smmu_domain->s2_cfg.vmid;
+		arm_smmu_cmdq_issue_cmd_with_sync(smmu, &cmd);
+	}
+	arm_smmu_atc_inv_domain(smmu_domain, 0, 0);
+}
+
+static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+				     unsigned long iova, size_t size,
+				     size_t granule,
+				     struct arm_smmu_domain *smmu_domain)
+{
+	struct arm_smmu_device *smmu = smmu_domain->smmu;
+	unsigned long end = iova + size, num_pages = 0, tg = 0;
+	size_t inv_range = granule;
+	struct arm_smmu_cmdq_batch cmds;
+
+	if (!size)
+		return;
+
+	if (smmu->features & ARM_SMMU_FEAT_RANGE_INV) {
+		/* Get the leaf page size */
+		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		num_pages = size >> tg;
 
 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
@@ -2555,6 +2680,11 @@ static void arm_smmu_cmdq_batch_add_range(struct arm_smmu_device *smmu,
 			num_pages++;
 	}
 
+<<<<<<< HEAD
+=======
+	arm_smmu_cmdq_batch_init(smmu, &cmds, cmd);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (iova < end) {
 		if (smmu->features & ARM_SMMU_FEAT_RANGE_INV) {
 			/*
@@ -2582,6 +2712,7 @@ static void arm_smmu_cmdq_batch_add_range(struct arm_smmu_device *smmu,
 		}
 
 		cmd->tlbi.addr = iova;
+<<<<<<< HEAD
 		arm_smmu_cmdq_batch_add(smmu, cmds, cmd);
 		iova += inv_range;
 	}
@@ -2773,6 +2904,64 @@ void arm_smmu_domain_inv_range(struct arm_smmu_domain *smmu_domain,
 	}
 
 	rcu_read_unlock();
+=======
+		arm_smmu_cmdq_batch_add(smmu, &cmds, cmd);
+		iova += inv_range;
+	}
+	arm_smmu_cmdq_batch_submit(smmu, &cmds);
+}
+
+static void arm_smmu_tlb_inv_range_domain(unsigned long iova, size_t size,
+					  size_t granule, bool leaf,
+					  struct arm_smmu_domain *smmu_domain)
+{
+	struct arm_smmu_cmdq_ent cmd = {
+		.tlbi = {
+			.leaf	= leaf,
+		},
+	};
+
+	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S1) {
+		cmd.opcode	= smmu_domain->smmu->features & ARM_SMMU_FEAT_E2H ?
+				  CMDQ_OP_TLBI_EL2_VA : CMDQ_OP_TLBI_NH_VA;
+		cmd.tlbi.asid	= smmu_domain->cd.asid;
+	} else {
+		cmd.opcode	= CMDQ_OP_TLBI_S2_IPA;
+		cmd.tlbi.vmid	= smmu_domain->s2_cfg.vmid;
+	}
+	__arm_smmu_tlb_inv_range(&cmd, iova, size, granule, smmu_domain);
+
+	if (smmu_domain->nest_parent) {
+		/*
+		 * When the S2 domain changes all the nested S1 ASIDs have to be
+		 * flushed too.
+		 */
+		cmd.opcode = CMDQ_OP_TLBI_NH_ALL;
+		arm_smmu_cmdq_issue_cmd_with_sync(smmu_domain->smmu, &cmd);
+	}
+
+	/*
+	 * Unfortunately, this can't be leaf-only since we may have
+	 * zapped an entire table.
+	 */
+	arm_smmu_atc_inv_domain(smmu_domain, iova, size);
+}
+
+void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
+				 size_t granule, bool leaf,
+				 struct arm_smmu_domain *smmu_domain)
+{
+	struct arm_smmu_cmdq_ent cmd = {
+		.opcode	= smmu_domain->smmu->features & ARM_SMMU_FEAT_E2H ?
+			  CMDQ_OP_TLBI_EL2_VA : CMDQ_OP_TLBI_NH_VA,
+		.tlbi = {
+			.asid	= asid,
+			.leaf	= leaf,
+		},
+	};
+
+	__arm_smmu_tlb_inv_range(&cmd, iova, size, granule, smmu_domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void arm_smmu_tlb_inv_page_nosync(struct iommu_iotlb_gather *gather,
@@ -2788,9 +2977,13 @@ static void arm_smmu_tlb_inv_page_nosync(struct iommu_iotlb_gather *gather,
 static void arm_smmu_tlb_inv_walk(unsigned long iova, size_t size,
 				  size_t granule, void *cookie)
 {
+<<<<<<< HEAD
 	struct arm_smmu_domain *smmu_domain = cookie;
 
 	arm_smmu_domain_inv_range(smmu_domain, iova, size, granule, false);
+=======
+	arm_smmu_tlb_inv_range_domain(iova, size, granule, false, cookie);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct iommu_flush_ops arm_smmu_flush_ops = {
@@ -2822,8 +3015,11 @@ static bool arm_smmu_capable(struct device *dev, enum iommu_cap cap)
 		return true;
 	case IOMMU_CAP_DIRTY_TRACKING:
 		return arm_smmu_dbm_capable(master->smmu);
+<<<<<<< HEAD
 	case IOMMU_CAP_PCI_ATS_SUPPORTED:
 		return arm_smmu_ats_supported(master);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return false;
 	}
@@ -2852,12 +3048,16 @@ static bool arm_smmu_enforce_cache_coherency(struct iommu_domain *domain)
 struct arm_smmu_domain *arm_smmu_domain_alloc(void)
 {
 	struct arm_smmu_domain *smmu_domain;
+<<<<<<< HEAD
 	struct arm_smmu_invs *new_invs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	smmu_domain = kzalloc_obj(*smmu_domain);
 	if (!smmu_domain)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	new_invs = arm_smmu_invs_alloc(0);
 	if (!new_invs) {
 		kfree(smmu_domain);
@@ -2867,6 +3067,10 @@ struct arm_smmu_domain *arm_smmu_domain_alloc(void)
 	INIT_LIST_HEAD(&smmu_domain->devices);
 	spin_lock_init(&smmu_domain->devices_lock);
 	rcu_assign_pointer(smmu_domain->invs, new_invs);
+=======
+	INIT_LIST_HEAD(&smmu_domain->devices);
+	spin_lock_init(&smmu_domain->devices_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return smmu_domain;
 }
@@ -2890,7 +3094,11 @@ static void arm_smmu_domain_free_paging(struct iommu_domain *domain)
 			ida_free(&smmu->vmid_map, cfg->vmid);
 	}
 
+<<<<<<< HEAD
 	arm_smmu_domain_free(smmu_domain);
+=======
+	kfree(smmu_domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int arm_smmu_domain_finalise_s1(struct arm_smmu_device *smmu,
@@ -3208,6 +3416,7 @@ static void arm_smmu_disable_iopf(struct arm_smmu_master *master,
 		iopf_queue_remove_device(master->smmu->evtq.iopf, master->dev);
 }
 
+<<<<<<< HEAD
 static struct arm_smmu_inv *
 arm_smmu_master_build_inv(struct arm_smmu_master *master,
 			  enum arm_smmu_inv_type type, u32 id, ioasid_t ssid,
@@ -3323,6 +3532,8 @@ arm_smmu_master_build_invs(struct arm_smmu_master *master, bool ats_enabled,
 	return master->build_invs;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void arm_smmu_remove_master_domain(struct arm_smmu_master *master,
 					  struct iommu_domain *domain,
 					  ioasid_t ssid)
@@ -3353,6 +3564,7 @@ static void arm_smmu_remove_master_domain(struct arm_smmu_master *master,
 }
 
 /*
+<<<<<<< HEAD
  * During attachment, the updates of the two domain->invs arrays are sequenced:
  *  1. new domain updates its invs array, merging master->build_invs
  *  2. new domain starts to include the master during its invalidation
@@ -3482,6 +3694,8 @@ arm_smmu_install_old_domain_invs(struct arm_smmu_attach_state *state)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Start the sequence to attach a domain to a master. The sequence contains three
  * steps:
  *  arm_smmu_attach_prepare()
@@ -3538,16 +3752,23 @@ int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
 				     arm_smmu_ats_supported(master);
 	}
 
+<<<<<<< HEAD
 	ret = arm_smmu_attach_prepare_invs(state, new_domain);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (smmu_domain) {
 		if (new_domain->type == IOMMU_DOMAIN_NESTED) {
 			ret = arm_smmu_attach_prepare_vmaster(
 				state, to_smmu_nested_domain(new_domain));
 			if (ret)
+<<<<<<< HEAD
 				goto err_unprepare_invs;
+=======
+				return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		master_domain = kzalloc_obj(*master_domain);
@@ -3595,8 +3816,11 @@ int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
 			atomic_inc(&smmu_domain->nr_ats_masters);
 		list_add(&master_domain->devices_elm, &smmu_domain->devices);
 		spin_unlock_irqrestore(&smmu_domain->devices_lock, flags);
+<<<<<<< HEAD
 
 		arm_smmu_install_new_domain_invs(state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!state->ats_enabled && master->ats_enabled) {
@@ -3616,8 +3840,11 @@ err_free_master_domain:
 	kfree(master_domain);
 err_free_vmaster:
 	kfree(state->vmaster);
+<<<<<<< HEAD
 err_unprepare_invs:
 	kfree(state->new_domain_invst.new_invs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -3649,7 +3876,10 @@ void arm_smmu_attach_commit(struct arm_smmu_attach_state *state)
 	}
 
 	arm_smmu_remove_master_domain(master, state->old_domain, state->ssid);
+<<<<<<< HEAD
 	arm_smmu_install_old_domain_invs(state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	master->ats_enabled = state->ats_enabled;
 }
 
@@ -3716,9 +3946,12 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev,
 		arm_smmu_install_ste_for_dev(master, &target);
 		arm_smmu_clear_cd(master, IOMMU_NO_PASID);
 		break;
+<<<<<<< HEAD
 	default:
 		WARN_ON(true);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	arm_smmu_attach_commit(&state);
@@ -3832,6 +4065,7 @@ static int arm_smmu_blocking_set_dev_pasid(struct iommu_domain *new_domain,
 {
 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(old_domain);
 	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+<<<<<<< HEAD
 	struct arm_smmu_attach_state state = {
 		.master = master,
 		.old_domain = old_domain,
@@ -3840,11 +4074,18 @@ static int arm_smmu_blocking_set_dev_pasid(struct iommu_domain *new_domain,
 
 	mutex_lock(&arm_smmu_asid_lock);
 	arm_smmu_attach_prepare_invs(&state, NULL);
+=======
+
+	mutex_lock(&arm_smmu_asid_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	arm_smmu_clear_cd(master, pasid);
 	if (master->ats_enabled)
 		arm_smmu_atc_inv_master(master, pasid);
 	arm_smmu_remove_master_domain(master, &smmu_domain->domain, pasid);
+<<<<<<< HEAD
 	arm_smmu_install_old_domain_invs(&state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&arm_smmu_asid_lock);
 
 	/*
@@ -4018,7 +4259,11 @@ arm_smmu_domain_alloc_paging_flags(struct device *dev, u32 flags,
 	return &smmu_domain->domain;
 
 err_free:
+<<<<<<< HEAD
 	arm_smmu_domain_free(smmu_domain);
+=======
+	kfree(smmu_domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 
@@ -4063,9 +4308,15 @@ static void arm_smmu_iotlb_sync(struct iommu_domain *domain,
 	if (!gather->pgsize)
 		return;
 
+<<<<<<< HEAD
 	arm_smmu_domain_inv_range(smmu_domain, gather->start,
 				  gather->end - gather->start + 1,
 				  gather->pgsize, true);
+=======
+	arm_smmu_tlb_inv_range_domain(gather->start,
+				      gather->end - gather->start + 1,
+				      gather->pgsize, true, smmu_domain);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static phys_addr_t
@@ -4110,6 +4361,7 @@ static int arm_smmu_init_sid_strtab(struct arm_smmu_device *smmu, u32 sid)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int arm_smmu_stream_id_cmp(const void *_l, const void *_r)
 {
 	const typeof_member(struct arm_smmu_stream, id) *l = _l;
@@ -4118,20 +4370,26 @@ static int arm_smmu_stream_id_cmp(const void *_l, const void *_r)
 	return cmp_int(*l, *r);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 				  struct arm_smmu_master *master)
 {
 	int i;
 	int ret = 0;
 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+<<<<<<< HEAD
 	bool ats_supported = dev_is_pci(master->dev) &&
 			     pci_ats_supported(to_pci_dev(master->dev));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	master->streams = kzalloc_objs(*master->streams, fwspec->num_ids);
 	if (!master->streams)
 		return -ENOMEM;
 	master->num_streams = fwspec->num_ids;
 
+<<<<<<< HEAD
 	if (!ats_supported) {
 		/* Base case has 1 ASID entry or maximum 2 VMID entries */
 		master->build_invs = arm_smmu_invs_alloc(2);
@@ -4156,11 +4414,20 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 		       sizeof(master->streams[0]), arm_smmu_stream_id_cmp,
 		       NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&smmu->streams_mutex);
 	for (i = 0; i < fwspec->num_ids; i++) {
 		struct arm_smmu_stream *new_stream = &master->streams[i];
 		struct rb_node *existing;
+<<<<<<< HEAD
 		u32 sid = new_stream->id;
+=======
+		u32 sid = fwspec->ids[i];
+
+		new_stream->id = sid;
+		new_stream->master = master;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = arm_smmu_init_sid_strtab(smmu, sid);
 		if (ret)
@@ -4190,7 +4457,10 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 		for (i--; i >= 0; i--)
 			rb_erase(&master->streams[i].node, &smmu->streams);
 		kfree(master->streams);
+<<<<<<< HEAD
 		kfree(master->build_invs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	mutex_unlock(&smmu->streams_mutex);
 
@@ -4212,7 +4482,10 @@ static void arm_smmu_remove_master(struct arm_smmu_master *master)
 	mutex_unlock(&smmu->streams_mutex);
 
 	kfree(master->streams);
+<<<<<<< HEAD
 	kfree(master->build_invs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct iommu_device *arm_smmu_probe_device(struct device *dev)
@@ -4942,8 +5215,11 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 #define IIDR_IMPLEMENTER_ARM		0x43b
 #define IIDR_PRODUCTID_ARM_MMU_600	0x483
 #define IIDR_PRODUCTID_ARM_MMU_700	0x487
+<<<<<<< HEAD
 #define IIDR_PRODUCTID_ARM_MMU_L1	0x48a
 #define IIDR_PRODUCTID_ARM_MMU_S3	0x498
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
 {
@@ -4968,6 +5244,7 @@ static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
 				smmu->features &= ~ARM_SMMU_FEAT_NESTING;
 			break;
 		case IIDR_PRODUCTID_ARM_MMU_700:
+<<<<<<< HEAD
 			/* Many errata... */
 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
 			if (variant < 1 || revision < 1) {
@@ -4981,6 +5258,13 @@ static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
 		case IIDR_PRODUCTID_ARM_MMU_S3:
 			/* Arm errata 3878312/3995052 */
 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
+=======
+			/* Arm erratum 2812531 */
+			smmu->features &= ~ARM_SMMU_FEAT_BTM;
+			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
+			/* Arm errata 2268618, 2812531 */
+			smmu->features &= ~ARM_SMMU_FEAT_NESTING;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 		break;

@@ -126,8 +126,12 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 	show_val_kb(m, "Committed_AS:   ", committed);
 	seq_printf(m, "VmallocTotal:   %8lu kB\n",
 		   (unsigned long)VMALLOC_TOTAL >> 10);
+<<<<<<< HEAD
 	show_val_kb(m, "VmallocUsed:    ",
 		    global_node_page_state(NR_VMALLOC));
+=======
+	show_val_kb(m, "VmallocUsed:    ", vmalloc_nr_pages());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	show_val_kb(m, "VmallocChunk:   ", 0ul);
 	show_val_kb(m, "Percpu:         ", pcpu_nr_pages());
 
@@ -164,12 +168,15 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 	show_val_kb(m, "Balloon:        ",
 		    global_node_page_state(NR_BALLOON_PAGES));
 
+<<<<<<< HEAD
 	show_val_kb(m, "GPUActive:      ",
 		    global_node_page_state(NR_GPU_ACTIVE));
 
 	show_val_kb(m, "GPUReclaim:     ",
 		    global_node_page_state(NR_GPU_RECLAIM));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hugetlb_report_meminfo(m);
 
 	arch_report_meminfo(m);

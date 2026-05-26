@@ -262,6 +262,7 @@ struct drm_private_state;
  */
 struct drm_private_state_funcs {
 	/**
+<<<<<<< HEAD
 	 * @atomic_create_state:
 	 *
 	 * Allocates a pristine, initialized, state for the private
@@ -275,6 +276,8 @@ struct drm_private_state_funcs {
 	struct drm_private_state *(*atomic_create_state)(struct drm_private_obj *obj);
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @atomic_duplicate_state:
 	 *
 	 * Duplicate the current state of the private object and return it. It
@@ -736,9 +739,16 @@ struct drm_connector_state * __must_check
 drm_atomic_get_connector_state(struct drm_atomic_state *state,
 			       struct drm_connector *connector);
 
+<<<<<<< HEAD
 int drm_atomic_private_obj_init(struct drm_device *dev,
 				struct drm_private_obj *obj,
 				const struct drm_private_state_funcs *funcs);
+=======
+void drm_atomic_private_obj_init(struct drm_device *dev,
+				 struct drm_private_obj *obj,
+				 struct drm_private_state *state,
+				 const struct drm_private_state_funcs *funcs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void drm_atomic_private_obj_fini(struct drm_private_obj *obj);
 
 struct drm_private_state * __must_check
@@ -1101,8 +1111,12 @@ void drm_state_dump(struct drm_device *dev, struct drm_printer *p);
 		for_each_if ((__state)->colorops[__i].ptr &&		\
 			     ((colorop) = (__state)->colorops[__i].ptr,	\
 			      (void)(colorop) /* Only to avoid unused-but-set-variable warning */, \
+<<<<<<< HEAD
 			      (new_colorop_state) = (__state)->colorops[__i].new_state,\
 			      (void)(new_colorop_state) /* Only to avoid unused-but-set-variable warning */, 1))
+=======
+			      (new_colorop_state) = (__state)->colorops[__i].new_state, 1))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * for_each_oldnew_plane_in_state - iterate over all planes in an atomic update

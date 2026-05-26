@@ -18,6 +18,14 @@
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 
+<<<<<<< HEAD
+=======
+#define RT1711H_VID		0x29CF
+#define RT1711H_PID		0x1711
+#define RT1711H_DID		0x2171
+#define RT1715_DID		0x2173
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RT1711H_PHYCTRL1	0x80
 #define RT1711H_PHYCTRL2	0x81
 
@@ -50,6 +58,10 @@
 
 struct rt1711h_chip_info {
 	u32 rxdz_sel;
+<<<<<<< HEAD
+=======
+	u16 did;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool enable_pd30_extended_message;
 };
 
@@ -295,6 +307,38 @@ static int rt1711h_sw_reset(struct rt1711h_chip *chip)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int rt1711h_check_revision(struct i2c_client *i2c, struct rt1711h_chip *chip)
+{
+	int ret;
+
+	ret = i2c_smbus_read_word_data(i2c, TCPC_VENDOR_ID);
+	if (ret < 0)
+		return ret;
+	if (ret != RT1711H_VID) {
+		dev_err(&i2c->dev, "vid is not correct, 0x%04x\n", ret);
+		return -ENODEV;
+	}
+	ret = i2c_smbus_read_word_data(i2c, TCPC_PRODUCT_ID);
+	if (ret < 0)
+		return ret;
+	if (ret != RT1711H_PID) {
+		dev_err(&i2c->dev, "pid is not correct, 0x%04x\n", ret);
+		return -ENODEV;
+	}
+	ret = i2c_smbus_read_word_data(i2c, TCPC_BCD_DEV);
+	if (ret < 0)
+		return ret;
+	if (ret != chip->info->did) {
+		dev_err(&i2c->dev, "did is not correct, 0x%04x\n", ret);
+		return -ENODEV;
+	}
+	dev_dbg(&i2c->dev, "did is 0x%04x\n", ret);
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rt1711h_probe(struct i2c_client *client)
 {
 	int ret;
@@ -311,6 +355,15 @@ static int rt1711h_probe(struct i2c_client *client)
 
 	chip->info = i2c_get_match_data(client);
 
+<<<<<<< HEAD
+=======
+	ret = rt1711h_check_revision(client, chip);
+	if (ret < 0) {
+		dev_err(&client->dev, "check vid/pid fail\n");
+		return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->data.regmap = devm_regmap_init_i2c(client,
 						 &rt1711h_regmap_config);
 	if (IS_ERR(chip->data.regmap))
@@ -365,15 +418,26 @@ static void rt1711h_remove(struct i2c_client *client)
 }
 
 static const struct rt1711h_chip_info rt1711h = {
+<<<<<<< HEAD
+=======
+	.did = RT1711H_DID,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct rt1711h_chip_info rt1715 = {
 	.rxdz_sel = RT1711H_BMCIO_RXDZSEL,
+<<<<<<< HEAD
+=======
+	.did = RT1715_DID,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.enable_pd30_extended_message = true,
 };
 
 static const struct i2c_device_id rt1711h_id[] = {
+<<<<<<< HEAD
 	{ "et7304", (kernel_ulong_t)&rt1715 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "rt1711h", (kernel_ulong_t)&rt1711h },
 	{ "rt1715", (kernel_ulong_t)&rt1715 },
 	{}
@@ -381,7 +445,10 @@ static const struct i2c_device_id rt1711h_id[] = {
 MODULE_DEVICE_TABLE(i2c, rt1711h_id);
 
 static const struct of_device_id rt1711h_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "etekmicro,et7304", .data = &rt1715 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "richtek,rt1711h", .data = &rt1711h },
 	{ .compatible = "richtek,rt1715", .data = &rt1715 },
 	{}

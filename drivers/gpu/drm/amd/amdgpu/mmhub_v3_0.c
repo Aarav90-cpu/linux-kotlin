@@ -97,7 +97,11 @@ mmhub_v3_0_print_l2_protection_fault_status(struct amdgpu_device *adev,
 					     uint32_t status)
 {
 	uint32_t cid, rw;
+<<<<<<< HEAD
 	const char *mmhub_cid;
+=======
+	const char *mmhub_cid = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cid = REG_GET_FIELD(status,
 			    MMVM_L2_PROTECTION_FAULT_STATUS, CID);
@@ -107,7 +111,20 @@ mmhub_v3_0_print_l2_protection_fault_status(struct amdgpu_device *adev,
 	dev_err(adev->dev,
 		"MMVM_L2_PROTECTION_FAULT_STATUS:0x%08X\n",
 		status);
+<<<<<<< HEAD
 	mmhub_cid = amdgpu_mmhub_client_name(&adev->mmhub, cid, rw);
+=======
+	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
+	case IP_VERSION(3, 0, 0):
+	case IP_VERSION(3, 0, 1):
+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_0) ?
+			mmhub_client_ids_v3_0_0[cid][rw] : NULL;
+		break;
+	default:
+		mmhub_cid = NULL;
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
 		mmhub_cid ? mmhub_cid : "unknown", cid);
 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
@@ -512,10 +529,13 @@ static void mmhub_v3_0_init(struct amdgpu_device *adev)
 		SOC15_REG_OFFSET(MMHUB, 0, regMMVM_CONTEXTS_DISABLE);
 
 	hub->vmhub_funcs = &mmhub_v3_0_vmhub_funcs;
+<<<<<<< HEAD
 
 	amdgpu_mmhub_init_client_info(&adev->mmhub,
 				     mmhub_client_ids_v3_0_0,
 				     ARRAY_SIZE(mmhub_client_ids_v3_0_0));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u64 mmhub_v3_0_get_fb_location(struct amdgpu_device *adev)

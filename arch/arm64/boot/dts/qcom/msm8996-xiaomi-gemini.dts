@@ -104,7 +104,11 @@
 
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mdss_dsi_default &mdss_te_default>;
+<<<<<<< HEAD
 	pinctrl-1 = <&mdss_dsi_sleep &mdss_te_default>;
+=======
+	pinctrl-1 = <&mdss_dsi_sleep &mdss_te_sleep>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	panel: panel@0 {
 		compatible = "jdi,fhd-r63452";

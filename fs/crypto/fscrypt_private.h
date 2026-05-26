@@ -278,6 +278,12 @@ struct fscrypt_inode_info {
 	 */
 	u8 ci_data_unit_bits;
 
+<<<<<<< HEAD
+=======
+	/* Cached value: log2 of number of data units per FS block */
+	u8 ci_data_units_per_block_bits;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Hashed inode number.  Only set for IV_INO_LBLK_32 */
 	u32 ci_hashed_ino;
 

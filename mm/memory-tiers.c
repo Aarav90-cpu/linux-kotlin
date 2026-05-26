@@ -69,7 +69,11 @@ bool folio_use_access_time(struct folio *folio)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int top_tier_adistance;
 /*
  * node_demotion[] examples:
@@ -129,7 +133,11 @@ static int top_tier_adistance;
  *
  */
 static struct demotion_nodes *node_demotion __read_mostly;
+<<<<<<< HEAD
 #endif /* CONFIG_NUMA_MIGRATION */
+=======
+#endif /* CONFIG_MIGRATION */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static BLOCKING_NOTIFIER_HEAD(mt_adistance_algorithms);
 
@@ -273,7 +281,11 @@ static struct memory_tier *__node_get_memory_tier(int node)
 				     lockdep_is_held(&memory_tier_lock));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool node_is_toptier(int node)
 {
 	bool toptier;
@@ -519,7 +531,11 @@ static void establish_demotion_targets(void)
 
 #else
 static inline void establish_demotion_targets(void) {}
+<<<<<<< HEAD
 #endif /* CONFIG_NUMA_MIGRATION */
+=======
+#endif /* CONFIG_MIGRATION */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void __init_node_memory_type(int node, struct memory_dev_type *memtype)
 {
@@ -911,7 +927,11 @@ static int __init memory_tier_init(void)
 	if (ret)
 		panic("%s() failed to register memory tier subsystem\n", __func__);
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	node_demotion = kzalloc_objs(struct demotion_nodes, nr_node_ids);
 	WARN_ON(!node_demotion);
 #endif
@@ -938,7 +958,11 @@ subsys_initcall(memory_tier_init);
 
 bool numa_demotion_enabled = false;
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SYSFS
 static ssize_t demotion_enabled_show(struct kobject *kobj,
 				     struct kobj_attribute *attr, char *buf)

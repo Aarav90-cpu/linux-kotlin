@@ -29,12 +29,22 @@
 #include <linux/seq_file.h>
 #include <linux/poll.h>
 #include <linux/indirect_call_wrapper.h>
+<<<<<<< HEAD
 #include <linux/math.h>
 
 /**
  *	struct udp_skb_cb  -  UDP private variables
  *
  *	@header:      private variables used by IPv4/IPv6
+=======
+
+/**
+ *	struct udp_skb_cb  -  UDP(-Lite) private variables
+ *
+ *	@header:      private variables used by IPv4/IPv6
+ *	@cscov:       checksum coverage length (UDP-Lite only)
+ *	@partial_cov: if set indicates partial csum coverage
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct udp_skb_cb {
 	union {
@@ -43,6 +53,11 @@ struct udp_skb_cb {
 		struct inet6_skb_parm	h6;
 #endif
 	} header;
+<<<<<<< HEAD
+=======
+	__u16		cscov;
+	__u8		partial_cov;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #define UDP_SKB_CB(__skb)	((struct udp_skb_cb *)((__skb)->cb))
 
@@ -101,7 +116,11 @@ struct udp_table {
 	unsigned int		log;
 };
 extern struct udp_table udp_table;
+<<<<<<< HEAD
 
+=======
+void udp_table_init(struct udp_table *, const char *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct udp_hslot *udp_hashslot(struct udp_table *table,
 					     const struct net *net,
 					     unsigned int num)
@@ -212,11 +231,21 @@ extern int sysctl_udp_wmem_min;
 struct sk_buff;
 
 /*
+<<<<<<< HEAD
  *	Generic checksumming routines for UDP v4 and v6
  */
 static inline __sum16 __udp_lib_checksum_complete(struct sk_buff *skb)
 {
 	return __skb_checksum_complete(skb);
+=======
+ *	Generic checksumming routines for UDP(-Lite) v4 and v6
+ */
+static inline __sum16 __udp_lib_checksum_complete(struct sk_buff *skb)
+{
+	return (UDP_SKB_CB(skb)->cscov == skb->len ?
+		__skb_checksum_complete(skb) :
+		__skb_checksum_complete_head(skb, UDP_SKB_CB(skb)->cscov));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int udp_lib_checksum_complete(struct sk_buff *skb)
@@ -267,6 +296,10 @@ static inline void udp_csum_pull_header(struct sk_buff *skb)
 		skb->csum = csum_partial(skb->data, sizeof(struct udphdr),
 					 skb->csum);
 	skb_pull_rcsum(skb, sizeof(struct udphdr));
+<<<<<<< HEAD
+=======
+	UDP_SKB_CB(skb)->cscov -= sizeof(struct udphdr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 typedef struct sock *(*udp_lookup_t)(const struct sk_buff *skb, __be16 sport,
@@ -275,10 +308,13 @@ typedef struct sock *(*udp_lookup_t)(const struct sk_buff *skb, __be16 sport,
 void udp_v6_early_demux(struct sk_buff *skb);
 INDIRECT_CALLABLE_DECLARE(int udpv6_rcv(struct sk_buff *));
 
+<<<<<<< HEAD
 int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len);
 INDIRECT_CALLABLE_DECLARE(int udpv6_recvmsg(struct sock *sk, struct msghdr *msg,
 					    size_t len, int flags));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 				  netdev_features_t features, bool is_ipv6);
 
@@ -305,7 +341,11 @@ static inline void udp_drops_inc(struct sock *sk)
 	numa_drop_add(&udp_sk(sk)->drop_counters, 1);
 }
 
+<<<<<<< HEAD
 /* hash routines shared between UDPv4/6 */
+=======
+/* hash routines shared between UDPv4/6 and UDP-Litev4/6 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int udp_lib_hash(struct sock *sk)
 {
 	BUG();
@@ -374,7 +414,11 @@ static inline __be16 udp_flow_src_port(struct net *net, struct sk_buff *skb,
 	 */
 	hash ^= hash << 16;
 
+<<<<<<< HEAD
 	return htons(reciprocal_scale(hash, max - min + 1) + min);
+=======
+	return htons((((u64) hash * (max - min)) >> 32) + min);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int udp_rqueue_get(struct sock *sk)
@@ -413,8 +457,11 @@ bool udp_sk_rx_dst_set(struct sock *sk, struct dst_entry *dst);
 int udp_err(struct sk_buff *, u32);
 int udp_abort(struct sock *sk, int err);
 int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len);
+<<<<<<< HEAD
 INDIRECT_CALLABLE_DECLARE(int udp_recvmsg(struct sock *sk, struct msghdr *msg,
 					  size_t len, int flags));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void udp_splice_eof(struct socket *sock);
 int udp_push_pending_frames(struct sock *sk);
 void udp_flush_pending_frames(struct sock *sk);
@@ -422,6 +469,10 @@ int udp_cmsg_send(struct sock *sk, struct msghdr *msg, u16 *gso_size);
 void udp4_hwcsum(struct sk_buff *skb, __be32 src, __be32 dst);
 int udp_rcv(struct sk_buff *skb);
 int udp_ioctl(struct sock *sk, int cmd, int *karg);
+<<<<<<< HEAD
+=======
+int udp_init_sock(struct sock *sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int udp_pre_connect(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len);
 int __udp_disconnect(struct sock *sk, int flags);
 int udp_disconnect(struct sock *sk, int flags);
@@ -437,8 +488,14 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
 struct sock *udp4_lib_lookup(const struct net *net, __be32 saddr, __be16 sport,
 			     __be32 daddr, __be16 dport, int dif);
 struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
+<<<<<<< HEAD
 			       __be16 sport, __be32 daddr, __be16 dport,
 			       int dif, int sdif, struct sk_buff *skb);
+=======
+			       __be16 sport,
+			       __be32 daddr, __be16 dport, int dif, int sdif,
+			       struct udp_table *tbl, struct sk_buff *skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sock *udp4_lib_lookup_skb(const struct sk_buff *skb,
 				 __be16 sport, __be16 dport);
 struct sock *udp6_lib_lookup(const struct net *net,
@@ -448,7 +505,12 @@ struct sock *udp6_lib_lookup(const struct net *net,
 struct sock *__udp6_lib_lookup(const struct net *net,
 			       const struct in6_addr *saddr, __be16 sport,
 			       const struct in6_addr *daddr, __be16 dport,
+<<<<<<< HEAD
 			       int dif, int sdif, struct sk_buff *skb);
+=======
+			       int dif, int sdif, struct udp_table *tbl,
+			       struct sk_buff *skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sock *udp6_lib_lookup_skb(const struct sk_buff *skb,
 				 __be16 sport, __be16 dport);
 int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor);
@@ -520,6 +582,7 @@ static inline int copy_linear_skb(struct sk_buff *skb, int len, int off,
 }
 
 /*
+<<<<<<< HEAD
  *	SNMP statistics for UDP
  */
 #define __UDP_INC_STATS(net, field)				\
@@ -542,6 +605,40 @@ static inline int copy_linear_skb(struct sk_buff *skb, int len, int off,
 	({							\
 		sock_net(sk)->mib.udp_statistics;		\
 	})
+=======
+ * 	SNMP statistics for UDP and UDP-Lite
+ */
+#define UDP_INC_STATS(net, field, is_udplite)		      do { \
+	if (unlikely(is_udplite)) SNMP_INC_STATS((net)->mib.udplite_statistics, field);	\
+	else		SNMP_INC_STATS((net)->mib.udp_statistics, field);  }  while(0)
+#define __UDP_INC_STATS(net, field, is_udplite) 	      do { \
+	if (unlikely(is_udplite)) __SNMP_INC_STATS((net)->mib.udplite_statistics, field);	\
+	else		__SNMP_INC_STATS((net)->mib.udp_statistics, field);    }  while(0)
+
+#define __UDP6_INC_STATS(net, field, is_udplite)	    do { \
+	if (unlikely(is_udplite)) __SNMP_INC_STATS((net)->mib.udplite_stats_in6, field);	\
+	else		__SNMP_INC_STATS((net)->mib.udp_stats_in6, field);  \
+} while(0)
+#define UDP6_INC_STATS(net, field, __lite)		    do { \
+	if (unlikely(__lite)) SNMP_INC_STATS((net)->mib.udplite_stats_in6, field);	\
+	else	    SNMP_INC_STATS((net)->mib.udp_stats_in6, field);      \
+} while(0)
+
+#if IS_ENABLED(CONFIG_IPV6)
+#define __UDPX_MIB(sk, ipv4)						\
+({									\
+	ipv4 ? (IS_UDPLITE(sk) ? sock_net(sk)->mib.udplite_statistics :	\
+				 sock_net(sk)->mib.udp_statistics) :	\
+		(IS_UDPLITE(sk) ? sock_net(sk)->mib.udplite_stats_in6 :	\
+				 sock_net(sk)->mib.udp_stats_in6);	\
+})
+#else
+#define __UDPX_MIB(sk, ipv4)						\
+({									\
+	IS_UDPLITE(sk) ? sock_net(sk)->mib.udplite_statistics :		\
+			 sock_net(sk)->mib.udp_statistics;		\
+})
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #define __UDPX_INC_STATS(sk, field) \
@@ -550,6 +647,10 @@ static inline int copy_linear_skb(struct sk_buff *skb, int len, int off,
 #ifdef CONFIG_PROC_FS
 struct udp_seq_afinfo {
 	sa_family_t			family;
+<<<<<<< HEAD
+=======
+	struct udp_table		*udp_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct udp_iter_state {
@@ -561,6 +662,12 @@ void *udp_seq_start(struct seq_file *seq, loff_t *pos);
 void *udp_seq_next(struct seq_file *seq, void *v, loff_t *pos);
 void udp_seq_stop(struct seq_file *seq, void *v);
 
+<<<<<<< HEAD
+=======
+extern const struct seq_operations udp_seq_ops;
+extern const struct seq_operations udp6_seq_ops;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int udp4_proc_init(void);
 void udp4_proc_exit(void);
 #endif /* CONFIG_PROC_FS */
@@ -631,6 +738,12 @@ drop:
 
 static inline void udp_post_segment_fix_csum(struct sk_buff *skb)
 {
+<<<<<<< HEAD
+=======
+	/* UDP-lite can't land here - no GRO */
+	WARN_ON_ONCE(UDP_SKB_CB(skb)->partial_cov);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* UDP packets generated with UDP_SEGMENT and traversing:
 	 *
 	 * UDP tunnel(xmit) -> veth (segmentation) -> veth (gro) -> UDP tunnel (rx)
@@ -644,6 +757,10 @@ static inline void udp_post_segment_fix_csum(struct sk_buff *skb)
 	 * a valid csum after the segmentation.
 	 * Additionally fixup the UDP CB.
 	 */
+<<<<<<< HEAD
+=======
+	UDP_SKB_CB(skb)->cscov = skb->len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (skb->ip_summed == CHECKSUM_NONE && !skb->csum_valid)
 		skb->csum_valid = 1;
 }

@@ -8,7 +8,11 @@
 #include "amlogic-t7.dtsi"
 
 / {
+<<<<<<< HEAD
 	model = "Khadas VIM4";
+=======
+	model = "Khadas vim4";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
 
 	aliases {
@@ -17,9 +21,13 @@
 
 	memory@0 {
 		device_type = "memory";
+<<<<<<< HEAD
 		reg = <0x0 0x0 0x0 0xE0000000
 			0x1 0x0 0x0 0xE0000000
 			0x2 0x0 0x0 0x40000000>; /* 8 GB */
+=======
+		reg = <0x0 0x0 0x2 0x0>; /* 8 GB */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	reserved-memory {

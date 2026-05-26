@@ -106,7 +106,11 @@ static irqreturn_t int3496_thread_isr(int irq, void *priv)
 	struct int3496_data *data = priv;
 
 	/* Let the pin settle before processing it */
+<<<<<<< HEAD
 	mod_delayed_work(system_percpu_wq, &data->work, DEBOUNCE_TIME);
+=======
+	mod_delayed_work(system_wq, &data->work, DEBOUNCE_TIME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IRQ_HANDLED;
 }
@@ -181,7 +185,11 @@ static int int3496_probe(struct platform_device *pdev)
 	}
 
 	/* process id-pin so that we start with the right status */
+<<<<<<< HEAD
 	queue_delayed_work(system_percpu_wq, &data->work, 0);
+=======
+	queue_delayed_work(system_wq, &data->work, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	flush_delayed_work(&data->work);
 
 	platform_set_drvdata(pdev, data);

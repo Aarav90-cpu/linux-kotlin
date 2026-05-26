@@ -3,6 +3,7 @@
  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  */
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/qcom,dsi-phy-28nm.h>
 #include <dt-bindings/clock/qcom,kaanapali-cambistmclkcc.h>
 #include <dt-bindings/clock/qcom,kaanapali-camcc.h>
@@ -14,6 +15,11 @@
 #include <dt-bindings/clock/qcom,rpmh.h>
 #include <dt-bindings/clock/qcom,sm8750-tcsr.h>
 #include <dt-bindings/dma/qcom-gpi.h>
+=======
+#include <dt-bindings/clock/qcom,kaanapali-gcc.h>
+#include <dt-bindings/clock/qcom,rpmh.h>
+#include <dt-bindings/clock/qcom,sm8750-tcsr.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/firmware/qcom,scm.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interconnect/qcom,icc.h>
@@ -23,9 +29,13 @@
 #include <dt-bindings/phy/phy-qcom-qmp.h>
 #include <dt-bindings/power/qcom-rpmpd.h>
 #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+<<<<<<< HEAD
 #include <dt-bindings/soc/qcom,gpr.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
 #include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+=======
+#include <dt-bindings/soc/qcom,rpmh-rsc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "kaanapali-ipcc.h"
 
@@ -452,6 +462,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	smp2p-adsp {
 		compatible = "qcom,smp2p";
 
@@ -504,6 +515,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	soc: soc@0 {
 		compatible = "simple-bus";
 
@@ -530,6 +543,7 @@
 			#power-domain-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		gpi_dma2: dma-controller@800000 {
 			compatible = "qcom,kaanapali-gpi-dma", "qcom,sm6350-gpi-dma";
 			reg = <0x0 0x00800000 0x0 0x60000>;
@@ -1032,6 +1046,8 @@
 			dma-coherent;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qupv3_1: geniqup@ac0000 {
 			compatible = "qcom,geni-se-qup";
 			reg = <0x0 0x00ac0000 0x0 0x2000>;
@@ -1049,6 +1065,7 @@
 			#size-cells = <2>;
 			ranges;
 
+<<<<<<< HEAD
 			i2c0: i2c@a80000 {
 				compatible = "qcom,geni-i2c";
 				reg = <0x0 0x00a80000 0x0 0x4000>;
@@ -1490,6 +1507,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			uart7: serial@a9c000 {
 				compatible = "qcom,geni-debug-uart";
 				reg = <0x0 0x00a9c000 0x0 0x4000>;
@@ -1564,6 +1583,7 @@
 				 <&rpmhcc RPMH_IPA_CLK>;
 		};
 
+<<<<<<< HEAD
 		cambistmclkcc: clock-controller@1760000 {
 			compatible = "qcom,kaanapali-cambistmclkcc";
 			reg = <0x0 0x01760000 0x0 0x8000>;
@@ -1582,6 +1602,8 @@
 			#reset-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mmss_noc: interconnect@1780000 {
 			compatible = "qcom,kaanapali-mmss-noc";
 			reg = <0x0 0x01780000 0x0 0x5b800>;
@@ -1589,6 +1611,7 @@
 			#interconnect-cells = <2>;
 		};
 
+<<<<<<< HEAD
 		gpi_dma3: dma-controller@1900000 {
 			compatible = "qcom,kaanapali-gpi-dma", "qcom,sm6350-gpi-dma";
 			reg = <0x0 0x01900000 0x0 0x60000>;
@@ -2236,6 +2259,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pcie0: pcie@1c00000 {
 			device_type = "pci";
 			compatible = "qcom,kaanapali-pcie", "qcom,pcie-sm8550";
@@ -2557,6 +2582,7 @@
 			#reset-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		videocc: clock-controller@20f0000 {
 			compatible = "qcom,kaanapali-videocc";
 			reg = <0x0 0x020f0000 0x0 0x10000>;
@@ -2905,6 +2931,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpass_lpiaon_noc: interconnect@7400000 {
 			compatible = "qcom,kaanapali-lpass-lpiaon-noc";
 			reg = <0x0 0x07400000 0x0 0x19080>;
@@ -2919,6 +2947,7 @@
 			#interconnect-cells = <2>;
 		};
 
+<<<<<<< HEAD
 		swr2: soundwire@7630000 {
 			compatible = "qcom,soundwire-v2.2.0", "qcom,soundwire-v2.0.0";
 			reg = <0 0x07630000 0 0x10000>;
@@ -3081,6 +3110,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpass_ag_noc: interconnect@7f40000 {
 			compatible = "qcom,kaanapali-lpass-ag-noc";
 			reg = <0x0 0x07f40000 0x0 0xe080>;
@@ -3138,6 +3169,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		camcc: clock-controller@956d000 {
 			compatible = "qcom,kaanapali-camcc";
 			reg = <0x0 0x0956d000 0x0 0x80000>;
@@ -3422,6 +3454,8 @@
 			#reset-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pdc: interrupt-controller@b220000 {
 			compatible = "qcom,kaanapali-pdc", "qcom,pdc";
 			reg = <0x0 0x0b220000 0x0 0x10000>,
@@ -3456,6 +3490,7 @@
 			interrupt-controller;
 		};
 
+<<<<<<< HEAD
 		tsens0: thermal-sensor@c229000 {
 			compatible = "qcom,kaanapali-tsens", "qcom,tsens-v2";
 			reg = <0x0 0x0c229000 0x0 0x1000>,
@@ -3540,6 +3575,8 @@
 			#thermal-sensor-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		aoss_qmp: power-management@c300000 {
 			compatible = "qcom,kaanapali-aoss-qmp", "qcom,aoss-qmp";
 			reg = <0x0 0x0c300000 0x0 0x400>;
@@ -3554,6 +3591,7 @@
 			#clock-cells = <0>;
 		};
 
+<<<<<<< HEAD
 		arbiter@c400000 {
 			compatible = "qcom,kaanapali-spmi-pmic-arb", "qcom,glymur-spmi-pmic-arb";
 			reg = <0x0 0x0c400000 0x0 0x3000>,
@@ -3601,6 +3639,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tlmm: pinctrl@f100000 {
 			compatible = "qcom,kaanapali-tlmm";
 			reg = <0x0 0x0f100000 0x0 0x300000>;
@@ -3612,6 +3652,7 @@
 			#interrupt-cells = <2>;
 			wakeup-parent = <&pdc>;
 
+<<<<<<< HEAD
 			hub_i2c0_data_clk: hub-i2c0-data-clk-state {
 				/* SDA, SCL */
 				pins = "gpio66", "gpio67";
@@ -4097,6 +4138,8 @@
 				bias-disable;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			qup_uart7_default: qup-uart7-state {
 				 /* TX, RX */
 				 pins = "gpio62", "gpio63";
@@ -4105,6 +4148,7 @@
 				 bias-disable;
 			};
 
+<<<<<<< HEAD
 			qup_uart18_default: qup-uart18-default-state {
 				/* TX, RX */
 				pins = "gpio26", "gpio27";
@@ -4121,6 +4165,8 @@
 				bias-pull-down;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sdc2_default: sdc2-default-state {
 				clk-pins {
 					pins = "sdc2_clk";
@@ -4176,6 +4222,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		stm@10002000 {
 			compatible = "arm,coresight-stm", "arm,primecell";
 			reg = <0x0 0x10002000 0x0 0x1000>,
@@ -5284,6 +5331,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sram@14680000 {
 			compatible = "qcom,kaanapali-imem", "mmio-sram";
 			reg = <0x0 0x14680000 0x0 0x1000>;
@@ -5443,7 +5492,11 @@
 
 			gic_its: msi-controller@17040000 {
 				compatible = "arm,gic-v3-its";
+<<<<<<< HEAD
 				reg = <0x0 0x17040000 0x0 0x40000>;
+=======
+				reg = <0x0 0x17040000 0x0 0x20000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				msi-controller;
 				#msi-cells = <1>;
@@ -5680,6 +5733,7 @@
 			#interconnect-cells = <2>;
 		};
 
+<<<<<<< HEAD
 		remoteproc_cdsp: remoteproc@26300000 {
 			compatible = "qcom,kaanapali-cdsp-pas", "qcom,sm8550-cdsp-pas";
 			reg = <0x0 0x26300000 0x0 0x10000>;
@@ -5839,6 +5893,10 @@
 
 		/* Cluster 0 */
 		pmu@310b3400 {
+=======
+		/* Cluster 0 */
+		pmu@310b3400  {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "qcom,kaanapali-cpu-bwmon", "qcom,sdm845-bwmon";
 			reg = <0x0 0x310b3400 0x0 0x600>;
 
@@ -5899,7 +5957,11 @@
 		};
 
 		/* Cluster 1 */
+<<<<<<< HEAD
 		pmu@310b7400 {
+=======
+		pmu@310b7400  {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "qcom,kaanapali-cpu-bwmon", "qcom,sdm845-bwmon";
 			reg = <0x0 0x310b7400 0x0 0x600>;
 
@@ -5956,6 +6018,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	thermal-zones {
 		cpullc-0-0-thermal {
 			thermal-sensors = <&tsens0 0>;
@@ -6947,6 +7010,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timer {
 		compatible = "arm,armv8-timer";
 
@@ -6955,6 +7020,7 @@
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
 	};
+<<<<<<< HEAD
 
 	tpdm-cdsp-llm {
 		compatible = "qcom,coresight-static-tpdm";
@@ -7007,4 +7073,6 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

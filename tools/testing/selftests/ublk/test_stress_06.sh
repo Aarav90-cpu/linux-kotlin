@@ -34,5 +34,9 @@ ublk_io_and_remove 256M -t loop -q 4 -u --nthreads 8 --per_io_tasks "${UBLK_BACK
 ublk_io_and_remove 256M -t stripe -q 4 -u --nthreads 8 --per_io_tasks "${UBLK_BACKFILES[1]}" "${UBLK_BACKFILES[2]}" &
 wait
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "stress"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

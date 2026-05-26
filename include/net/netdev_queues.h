@@ -150,11 +150,14 @@ enum {
  *			When NIC-wide config is changed the callback will
  *			be invoked for all queues.
  *
+<<<<<<< HEAD
  * @ndo_queue_create:	Create a new RX queue on a virtual device that will
  *			be paired with a physical device's queue via leasing.
  *			Return the new queue id on success, negative error
  *			on failure.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @supported_params:	Bitmask of supported parameters, see QCFG_*.
  *
  * Note that @ndo_queue_mem_alloc and @ndo_queue_mem_free may be called while
@@ -183,8 +186,11 @@ struct netdev_queue_mgmt_ops {
 				     struct netlink_ext_ack *extack);
 	struct device *	(*ndo_queue_get_dma_dev)(struct net_device *dev,
 						 int idx);
+<<<<<<< HEAD
 	int	(*ndo_queue_create)(struct net_device *dev,
 				    struct netlink_ext_ack *extack);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int supported_params;
 };
@@ -192,7 +198,11 @@ struct netdev_queue_mgmt_ops {
 void netdev_queue_config(struct net_device *dev, int rxq,
 			 struct netdev_queue_config *qcfg);
 
+<<<<<<< HEAD
 bool netif_rxq_has_unreadable_mp(struct net_device *dev, unsigned int rxq_idx);
+=======
+bool netif_rxq_has_unreadable_mp(struct net_device *dev, int idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: Lockless queue stopping / waking helpers.
@@ -380,6 +390,7 @@ static inline unsigned int netif_xmit_timeout_ms(struct netdev_queue *txq)
 					 get_desc, start_thrs);		\
 	})
 
+<<<<<<< HEAD
 struct device *netdev_queue_get_dma_dev(struct net_device *dev,
 					unsigned int idx,
 					enum netdev_queue_type type);
@@ -391,3 +402,8 @@ bool netdev_queue_busy(struct net_device *dev, unsigned int idx,
 		       enum netdev_queue_type type,
 		       struct netlink_ext_ack *extack);
 #endif /* _LINUX_NET_QUEUES_H */
+=======
+struct device *netdev_queue_get_dma_dev(struct net_device *dev, int idx);
+
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

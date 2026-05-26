@@ -33,7 +33,10 @@
 
 void dml2_init_ip_params(struct dml2_context *dml2, const struct dc *in_dc, struct ip_params_st *out)
 {
+<<<<<<< HEAD
 	(void)in_dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (dml2->v20.dml_core_ctx.project) {
 	case dml_project_dcn32:
 	case dml_project_dcn321:
@@ -245,7 +248,10 @@ void dml2_init_ip_params(struct dml2_context *dml2, const struct dc *in_dc, stru
 
 void dml2_init_socbb_params(struct dml2_context *dml2, const struct dc *in_dc, struct soc_bounding_box_st *out)
 {
+<<<<<<< HEAD
 	(void)in_dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	out->dprefclk_mhz = dml2->config.bbox_overrides.dprefclk_mhz;
 	out->xtalclk_mhz = dml2->config.bbox_overrides.xtalclk_mhz;
 	out->pcierefclk_mhz = 100;
@@ -330,11 +336,18 @@ void dml2_init_socbb_params(struct dml2_context *dml2, const struct dc *in_dc, s
 void dml2_init_soc_states(struct dml2_context *dml2, const struct dc *in_dc,
 	const struct soc_bounding_box_st *in_bbox, struct soc_states_st *out)
 {
+<<<<<<< HEAD
 	(void)in_dc;
 	struct dml2_policy_build_synthetic_soc_states_scratch *s = &dml2->v20.scratch.create_scratch.build_synthetic_socbb_scratch;
 	struct dml2_policy_build_synthetic_soc_states_params *p = &dml2->v20.scratch.build_synthetic_socbb_params;
 	int dcfclk_stas_mhz[NUM_DCFCLK_STAS] = {0};
 	int dcfclk_stas_mhz_new[NUM_DCFCLK_STAS_NEW] = {0};
+=======
+	struct dml2_policy_build_synthetic_soc_states_scratch *s = &dml2->v20.scratch.create_scratch.build_synthetic_socbb_scratch;
+	struct dml2_policy_build_synthetic_soc_states_params *p = &dml2->v20.scratch.build_synthetic_socbb_params;
+	unsigned int dcfclk_stas_mhz[NUM_DCFCLK_STAS] = {0};
+	unsigned int dcfclk_stas_mhz_new[NUM_DCFCLK_STAS_NEW] = {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int dml_project = dml2->v20.dml_core_ctx.project;
 
 	unsigned int i = 0;
@@ -768,7 +781,11 @@ static void populate_dml_timing_cfg_from_stream_state(struct dml_timing_cfg_st *
 		out->PixelClock[location] *= 2;
 	out->HTotal[location] = in->timing.h_total;
 	out->VTotal[location] = in->timing.v_total;
+<<<<<<< HEAD
 	out->Interlace[location] = (in->timing.flags.INTERLACE != 0);
+=======
+	out->Interlace[location] = in->timing.flags.INTERLACE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hblank_start = in->timing.h_total - in->timing.h_front_porch;
 	out->HBlankEnd[location] = hblank_start
 					- in->timing.h_addressable
@@ -785,7 +802,10 @@ static void populate_dml_timing_cfg_from_stream_state(struct dml_timing_cfg_st *
 static void populate_dml_output_cfg_from_stream_state(struct dml_output_cfg_st *out, unsigned int location,
 				const struct dc_stream_state *in, const struct pipe_ctx *pipe, struct dml2_context *dml2)
 {
+<<<<<<< HEAD
 	(void)pipe;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int output_bpc;
 
 	out->DSCEnable[location] = (enum dml_dsc_enable)in->timing.flags.DSC;
@@ -1137,7 +1157,10 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
 static unsigned int map_stream_to_dml_display_cfg(const struct dml2_context *dml2,
 		const struct dc_stream_state *stream, const struct dml_display_cfg_st *dml_dispcfg)
 {
+<<<<<<< HEAD
 	(void)dml_dispcfg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i = 0;
 	int location = -1;
 
@@ -1178,6 +1201,7 @@ static bool get_plane_id(struct dml2_context *dml2, const struct dc_state *conte
 static unsigned int map_plane_to_dml_display_cfg(const struct dml2_context *dml2, const struct dc_plane_state *plane,
 		const struct dc_state *context, const struct dml_display_cfg_st *dml_dispcfg, unsigned int stream_id, int plane_index)
 {
+<<<<<<< HEAD
 	(void)dml_dispcfg;
 	unsigned int plane_id;
 	unsigned int i = 0;
@@ -1186,6 +1210,15 @@ static unsigned int map_plane_to_dml_display_cfg(const struct dml2_context *dml2
 	if (!get_plane_id(context->bw_ctx.dml2, context, plane, stream_id, plane_index, &plane_id)) {
 		ASSERT(false);
 		return UINT_MAX;
+=======
+	unsigned int plane_id;
+	int i = 0;
+	int location = -1;
+
+	if (!get_plane_id(context->bw_ctx.dml2, context, plane, stream_id, plane_index, &plane_id)) {
+		ASSERT(false);
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (i = 0; i < __DML2_WRAPPER_MAX_STREAMS_PLANES__; i++) {

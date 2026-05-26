@@ -12,6 +12,19 @@ Rust
 
 与内核中的Rust有关的文档。若要开始在内核中使用Rust，请阅读 quick-start.rst 指南。
 
+<<<<<<< HEAD
+=======
+Rust 实验
+---------
+Rust 支持在 v6.1 版本中合并到主线，以帮助确定 Rust 作为一种语言是否适合内核，
+即是否值得进行权衡。
+
+目前，Rust 支持主要面向对 Rust 支持感兴趣的内核开发人员和维护者，
+以便他们可以开始处理抽象和驱动程序，并帮助开发基础设施和工具。
+
+如果您是终端用户，请注意，目前没有适合或旨在生产使用的内置驱动程序或模块，
+并且 Rust 支持仍处于开发/实验阶段，尤其是对于特定内核配置。
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 代码文档
 --------
@@ -40,3 +53,13 @@ Rust
     testing
 
 你还可以在 :doc:`../../../process/kernel-docs` 中找到 Rust 的学习材料。
+<<<<<<< HEAD
+=======
+
+.. only::  subproject and html
+
+   Indices
+   =======
+
+   * :ref:`genindex`
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -74,6 +74,7 @@ static inline bool cxl_pci_flit_256(struct pci_dev *pdev)
 	return lnksta2 & PCI_EXP_LNKSTA2_FLIT;
 }
 
+<<<<<<< HEAD
 /*
  * Assume that the caller has already validated that @pdev has CXL
  * capabilities, any RCiEP with CXL capabilities is treated as a
@@ -85,6 +86,8 @@ static inline bool is_cxl_restricted(struct pci_dev *pdev)
 	return pci_pcie_type(pdev) == PCI_EXP_TYPE_RC_END;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct cxl_dev_state;
 void read_cdat_data(struct cxl_port *port);
 
@@ -112,6 +115,9 @@ static inline void devm_cxl_port_ras_setup(struct cxl_port *port)
 }
 #endif
 
+<<<<<<< HEAD
 int cxl_pci_setup_regs(struct pci_dev *pdev, enum cxl_regloc_type type,
 		       struct cxl_register_map *map);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __CXL_PCI_H__ */

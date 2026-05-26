@@ -556,8 +556,12 @@ static int dt2811_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	if (!devpriv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x8,
 					  0x200, 0x3ff, 8);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

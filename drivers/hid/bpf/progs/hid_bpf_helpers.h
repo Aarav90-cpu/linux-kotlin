@@ -7,6 +7,7 @@
 
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
+<<<<<<< HEAD
 #include <bpf/bpf_endian.h>
 #include <linux/errno.h>
 #include "hid_report_descriptor_helpers.h"
@@ -19,6 +20,9 @@
 #ifndef __maybe_unused
 #define __maybe_unused __attribute__((__unused__))
 #endif
+=======
+#include <linux/errno.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern __u8 *hid_bpf_get_data(struct hid_bpf_ctx *ctx,
 			      unsigned int offset,
@@ -51,6 +55,7 @@ extern int bpf_wq_set_callback(struct bpf_wq *wq,
 #define HID_MAX_DESCRIPTOR_SIZE	4096
 #define HID_IGNORE_EVENT	-1
 
+<<<<<<< HEAD
 /**
  * Use: _cleanup_(somefunction) struct foo *bar;
  */
@@ -131,6 +136,8 @@ struct __useless_struct_to_allow_trailing_semicolon__
 /* Define BPF spinlock guard */
 DEFINE_GUARD(bpf_spin, struct bpf_spin_lock, bpf_spin_lock, bpf_spin_unlock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* extracted from <linux/input.h> */
 #define BUS_ANY			0x00
 #define BUS_PCI			0x01
@@ -274,6 +281,7 @@ DEFINE_GUARD(bpf_spin, struct bpf_spin_lock, bpf_spin_lock, bpf_spin_unlock);
 	_EXPAND(_ARG, __VA_ARGS__) \
 } _device_ids SEC(".hid_bpf_config")
 
+<<<<<<< HEAD
 
 /* Equivalency macros for bpf_htons and friends which are
  * Big Endian only - HID needs little endian so these are the
@@ -504,4 +512,6 @@ static __maybe_unused __u32 extract_bits(__u8 *buffer, const size_t size, struct
 	__hid_bpf_for_each_array((field)->collections, (field)->num_collections, \
 				 HID_MAX_COLLECTIONS, collection_var)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __HID_BPF_HELPERS_H */

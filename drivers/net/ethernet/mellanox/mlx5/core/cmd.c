@@ -196,18 +196,30 @@ static void cmd_ent_put(struct mlx5_cmd_work_ent *ent)
 	unsigned long flags;
 
 	spin_lock_irqsave(&cmd->alloc_lock, flags);
+<<<<<<< HEAD
 	if (!refcount_dec_and_test(&ent->refcnt)) {
 		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
 		return;
 	}
+=======
+	if (!refcount_dec_and_test(&ent->refcnt))
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ent->idx >= 0) {
 		cmd_free_index(cmd, ent->idx);
 		up(ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem);
 	}
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
 
 	cmd_free_ent(ent);
+=======
+
+	cmd_free_ent(ent);
+out:
+	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct mlx5_cmd_layout *get_inst(struct mlx5_cmd *cmd, int idx)

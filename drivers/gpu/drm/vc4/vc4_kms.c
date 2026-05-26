@@ -85,6 +85,7 @@ static void vc4_ctm_destroy_state(struct drm_private_obj *obj,
 	kfree(ctm_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 vc4_ctm_create_state(struct drm_private_obj *obj)
 {
@@ -101,6 +102,9 @@ vc4_ctm_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs vc4_ctm_state_funcs = {
 	.atomic_create_state = vc4_ctm_create_state,
+=======
+static const struct drm_private_state_funcs vc4_ctm_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = vc4_ctm_duplicate_state,
 	.atomic_destroy_state = vc4_ctm_destroy_state,
 };
@@ -114,9 +118,21 @@ static void vc4_ctm_obj_fini(struct drm_device *dev, void *unused)
 
 static int vc4_ctm_obj_init(struct vc4_dev *vc4)
 {
+<<<<<<< HEAD
 	drm_modeset_lock_init(&vc4->ctm_state_lock);
 
 	drm_atomic_private_obj_init(&vc4->base, &vc4->ctm_manager,
+=======
+	struct vc4_ctm_state *ctm_state;
+
+	drm_modeset_lock_init(&vc4->ctm_state_lock);
+
+	ctm_state = kzalloc_obj(*ctm_state);
+	if (!ctm_state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(&vc4->base, &vc4->ctm_manager, &ctm_state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &vc4_ctm_state_funcs);
 
 	return drmm_add_action_or_reset(&vc4->base, vc4_ctm_obj_fini, NULL);
@@ -727,6 +743,7 @@ static void vc4_load_tracker_destroy_state(struct drm_private_obj *obj,
 	kfree(load_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 vc4_load_tracker_create_state(struct drm_private_obj *obj)
 {
@@ -743,6 +760,9 @@ vc4_load_tracker_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs vc4_load_tracker_state_funcs = {
 	.atomic_create_state = vc4_load_tracker_create_state,
+=======
+static const struct drm_private_state_funcs vc4_load_tracker_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = vc4_load_tracker_duplicate_state,
 	.atomic_destroy_state = vc4_load_tracker_destroy_state,
 };
@@ -756,7 +776,18 @@ static void vc4_load_tracker_obj_fini(struct drm_device *dev, void *unused)
 
 static int vc4_load_tracker_obj_init(struct vc4_dev *vc4)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&vc4->base, &vc4->load_tracker,
+=======
+	struct vc4_load_tracker_state *load_state;
+
+	load_state = kzalloc_obj(*load_state);
+	if (!load_state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(&vc4->base, &vc4->load_tracker,
+				    &load_state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &vc4_load_tracker_state_funcs);
 
 	return drmm_add_action_or_reset(&vc4->base, vc4_load_tracker_obj_fini, NULL);
@@ -817,6 +848,7 @@ static void vc4_hvs_channels_print_state(struct drm_printer *p,
 	}
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 vc4_hvs_channels_create_state(struct drm_private_obj *obj)
 {
@@ -833,6 +865,9 @@ vc4_hvs_channels_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs vc4_hvs_state_funcs = {
 	.atomic_create_state = vc4_hvs_channels_create_state,
+=======
+static const struct drm_private_state_funcs vc4_hvs_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = vc4_hvs_channels_duplicate_state,
 	.atomic_destroy_state = vc4_hvs_channels_destroy_state,
 	.atomic_print_state = vc4_hvs_channels_print_state,
@@ -847,7 +882,18 @@ static void vc4_hvs_channels_obj_fini(struct drm_device *dev, void *unused)
 
 static int vc4_hvs_channels_obj_init(struct vc4_dev *vc4)
 {
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(&vc4->base, &vc4->hvs_channels,
+=======
+	struct vc4_hvs_state *state;
+
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(&vc4->base, &vc4->hvs_channels,
+				    &state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &vc4_hvs_state_funcs);
 
 	return drmm_add_action_or_reset(&vc4->base, vc4_hvs_channels_obj_fini, NULL);

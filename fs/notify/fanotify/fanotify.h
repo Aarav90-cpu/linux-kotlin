@@ -2,7 +2,10 @@
 #include <linux/fsnotify_backend.h>
 #include <linux/path.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/exportfs.h>
 #include <linux/hashtable.h>
 
@@ -219,7 +222,11 @@ static inline void fanotify_info_copy_name(struct fanotify_info *info,
 		return;
 
 	info->name_len = name->len;
+<<<<<<< HEAD
 	strscpy(fanotify_info_name(info), name->name, name->len + 1);
+=======
+	strcpy(fanotify_info_name(info), name->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void fanotify_info_copy_name2(struct fanotify_info *info,
@@ -229,7 +236,11 @@ static inline void fanotify_info_copy_name2(struct fanotify_info *info,
 		return;
 
 	info->name2_len = name->len;
+<<<<<<< HEAD
 	strscpy(fanotify_info_name2(info), name->name, name->len + 1);
+=======
+	strcpy(fanotify_info_name2(info), name->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

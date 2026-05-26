@@ -29,22 +29,33 @@ properties:
     const: 1
 
   clocks:
+<<<<<<< HEAD
     minItems: 4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: 32k osc
       - description: 24m osc
       - description: ipp_di0 clock input
       - description: ipp_di1 clock input
+<<<<<<< HEAD
       - description: clock input from enet1 ref pad
 
   clock-names:
     minItems: 4
+=======
+
+  clock-names:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - const: ckil
       - const: osc
       - const: ipp_di0
       - const: ipp_di1
+<<<<<<< HEAD
       - const: enet1_ref_pad
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible

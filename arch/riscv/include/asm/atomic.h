@@ -46,7 +46,11 @@ static __always_inline void arch_atomic64_set(atomic64_t *v, s64 i)
 #endif
 
 /*
+<<<<<<< HEAD
  * First, the atomic ops that have no ordering constraints and therefore don't
+=======
+ * First, the atomic ops that have no ordering constraints and therefor don't
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * have the AQ or RL bits set.  These don't return anything, so there's only
  * one version to worry about.
  */
@@ -81,7 +85,11 @@ ATOMIC_OPS(xor, xor,  i)
 
 /*
  * Atomic ops that have ordered, relaxed, acquire, and release variants.
+<<<<<<< HEAD
  * There's two flavors of these: the arithmetic ops have both fetch and return
+=======
+ * There's two flavors of these: the arithmatic ops have both fetch and return
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * versions, while the logical ops only have fetch versions.
  */
 #define ATOMIC_FETCH_OP(op, asm_op, I, asm_type, c_type, prefix)	\

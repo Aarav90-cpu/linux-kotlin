@@ -56,7 +56,11 @@ ttm_backup_page_ptr_to_handle(const struct page *page)
 void ttm_backup_drop(struct file *backup, pgoff_t handle);
 
 int ttm_backup_copy_page(struct file *backup, struct page *dst,
+<<<<<<< HEAD
 			 pgoff_t handle, bool intr, gfp_t additional_gfp);
+=======
+			 pgoff_t handle, bool intr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 s64
 ttm_backup_backup_page(struct file *backup, struct page *page,

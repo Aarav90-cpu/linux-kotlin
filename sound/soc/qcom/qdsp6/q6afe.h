@@ -2,9 +2,14 @@
 
 #ifndef __Q6AFE_H__
 #define __Q6AFE_H__
+<<<<<<< HEAD
 #include "../common.h"
 
 #define AFE_PORT_MAX		(LPASS_MAX_PORT)
+=======
+
+#define AFE_PORT_MAX		137
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MSM_AFE_PORT_TYPE_RX 0
 #define MSM_AFE_PORT_TYPE_TX 1

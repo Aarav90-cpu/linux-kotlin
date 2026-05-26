@@ -582,7 +582,11 @@ static const struct snd_soc_component_driver xlnx_asoc_component = {
 	.hw_params		= xlnx_formatter_pcm_hw_params,
 	.trigger		= xlnx_formatter_pcm_trigger,
 	.pointer		= xlnx_formatter_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new		= xlnx_formatter_pcm_new,
+=======
+	.pcm_construct		= xlnx_formatter_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int xlnx_formatter_pcm_probe(struct platform_device *pdev)

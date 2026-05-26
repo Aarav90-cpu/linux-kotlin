@@ -2250,7 +2250,11 @@ static int parse_map_entry(const struct option *opt, const char *str,
 static int parse_max_stack(const struct option *opt, const char *str,
 			   int unset __maybe_unused)
 {
+<<<<<<< HEAD
 	int *len = opt->value;
+=======
+	unsigned long *len = (unsigned long *)opt->value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long val;
 	char *endptr;
 

@@ -64,6 +64,7 @@
 #define __get_rel_sockaddr(field)	((struct sockaddr *)__get_rel_dynamic_array(field))
 
 #undef __print_flags
+<<<<<<< HEAD
 #define __print_flags(flag, delim, flag_array...)					\
 	({										\
 		static const struct trace_print_flags __flags[] =			\
@@ -77,11 +78,27 @@
 		static const struct trace_print_flags symbols[] =			\
 			{ symbol_array };						\
 		trace_print_symbols_seq(p, value, symbols, ARRAY_SIZE(symbols));	\
+=======
+#define __print_flags(flag, delim, flag_array...)			\
+	({								\
+		static const struct trace_print_flags __flags[] =	\
+			{ flag_array, { -1, NULL }};			\
+		trace_print_flags_seq(p, delim, flag, __flags);	\
+	})
+
+#undef __print_symbolic
+#define __print_symbolic(value, symbol_array...)			\
+	({								\
+		static const struct trace_print_flags symbols[] =	\
+			{ symbol_array, { -1, NULL }};			\
+		trace_print_symbols_seq(p, value, symbols);		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	})
 
 #undef __print_flags_u64
 #undef __print_symbolic_u64
 #if BITS_PER_LONG == 32
+<<<<<<< HEAD
 #define __print_flags_u64(flag, delim, flag_array...)						\
 	({											\
 		static const struct trace_print_flags_u64 __flags[] =				\
@@ -94,6 +111,20 @@
 		static const struct trace_print_flags_u64 symbols[] =			\
 			{ symbol_array };						\
 		trace_print_symbols_seq_u64(p, value, symbols, ARRAY_SIZE(symbols));	\
+=======
+#define __print_flags_u64(flag, delim, flag_array...)			\
+	({								\
+		static const struct trace_print_flags_u64 __flags[] =	\
+			{ flag_array, { -1, NULL } };			\
+		trace_print_flags_seq_u64(p, delim, flag, __flags);	\
+	})
+
+#define __print_symbolic_u64(value, symbol_array...)			\
+	({								\
+		static const struct trace_print_flags_u64 symbols[] =	\
+			{ symbol_array, { -1, NULL } };			\
+		trace_print_symbols_seq_u64(p, value, symbols);	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	})
 #else
 #define __print_flags_u64(flag, delim, flag_array...)			\
@@ -150,6 +181,7 @@
 
 #undef __get_buf
 #define __get_buf(len)		trace_seq_acquire(p, (len))
+<<<<<<< HEAD
 
 #undef __event_in_hardirq
 #undef __event_in_softirq
@@ -158,3 +190,5 @@
 #define __event_in_hardirq()	(__entry->ent.flags & TRACE_FLAG_HARDIRQ)
 #define __event_in_softirq()	(__entry->ent.flags & TRACE_FLAG_SOFTIRQ)
 #define __event_in_irq()	(__entry->ent.flags & (TRACE_FLAG_HARDIRQ | TRACE_FLAG_SOFTIRQ))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

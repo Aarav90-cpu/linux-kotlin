@@ -22,9 +22,13 @@ properties:
   compatible:
     oneOf:
       - items:
+<<<<<<< HEAD
           - enum:
               - apple,t6020-i2c
               - apple,t8122-i2c
+=======
+          - const: apple,t6020-i2c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: apple,t8103-i2c
       - items:
           - enum:

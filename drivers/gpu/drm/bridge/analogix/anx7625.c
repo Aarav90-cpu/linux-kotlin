@@ -3,7 +3,10 @@
  * Copyright(c) 2020, Analogix Semiconductor. All rights reserved.
  *
  */
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/gcd.h>
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
@@ -16,9 +19,12 @@
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <linux/usb.h>
 #include <linux/usb/pd.h>
 #include <linux/usb/role.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/workqueue.h>
 
 #include <linux/of_graph.h>
@@ -1329,7 +1335,11 @@ static int anx7625_read_hpd_gpio_config_status(struct anx7625_data *ctx)
 static void anx7625_disable_pd_protocol(struct anx7625_data *ctx)
 {
 	struct device *dev = ctx->dev;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Reset main ocm */
 	ret = anx7625_reg_write(ctx, ctx->i2c.rx_p0_client, 0x88, 0x40);
@@ -1343,11 +1353,14 @@ static void anx7625_disable_pd_protocol(struct anx7625_data *ctx)
 		DRM_DEV_DEBUG_DRIVER(dev, "disable PD feature fail.\n");
 	else
 		DRM_DEV_DEBUG_DRIVER(dev, "disable PD feature succeeded.\n");
+<<<<<<< HEAD
 }
 
 static void anx7625_configure_hpd(struct anx7625_data *ctx)
 {
 	int val;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Make sure the HPD GPIO already be configured after OCM release before
@@ -1363,6 +1376,7 @@ static void anx7625_configure_hpd(struct anx7625_data *ctx)
 	anx7625_hpd_timer_config(ctx);
 }
 
+<<<<<<< HEAD
 static bool anx7625_need_pd(struct anx7625_data *ctx)
 {
 	struct fwnode_handle *fwnode;
@@ -1375,6 +1389,8 @@ static bool anx7625_need_pd(struct anx7625_data *ctx)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int anx7625_ocm_loading_check(struct anx7625_data *ctx)
 {
 	int ret;
@@ -1390,9 +1406,13 @@ static int anx7625_ocm_loading_check(struct anx7625_data *ctx)
 	if ((ret & FLASH_LOAD_STA_CHK) != FLASH_LOAD_STA_CHK)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (!anx7625_need_pd(ctx))
 		anx7625_disable_pd_protocol(ctx);
 	anx7625_configure_hpd(ctx);
+=======
+	anx7625_disable_pd_protocol(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	DRM_DEV_DEBUG_DRIVER(dev, "Firmware ver %02x%02x,",
 			     anx7625_reg_read(ctx,
@@ -1495,6 +1515,7 @@ static void anx7625_start_dp_work(struct anx7625_data *ctx)
 	DRM_DEV_DEBUG_DRIVER(dev, "Secure OCM version=%02x\n", ret);
 }
 
+<<<<<<< HEAD
 static u8 anx7625_checksum(u8 *buf, u8 len)
 {
 	u8 ret = 0;
@@ -1650,6 +1671,8 @@ static void anx7625_typec_unregister(struct anx7625_data *ctx)
 	typec_unregister_port(ctx->typec_port);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int anx7625_read_hpd_status_p0(struct anx7625_data *ctx)
 {
 	return anx7625_reg_read(ctx, ctx->i2c.rx_p0_client, SYSTEM_STSTUS);
@@ -1744,7 +1767,11 @@ static void dp_hpd_change_handler(struct anx7625_data *ctx, bool on)
 	}
 }
 
+<<<<<<< HEAD
 static int anx7625_intr_status(struct anx7625_data *ctx)
+=======
+static int anx7625_hpd_change_detect(struct anx7625_data *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int intr_vector, status;
 	struct device *dev = ctx->dev;
@@ -1771,6 +1798,12 @@ static int anx7625_intr_status(struct anx7625_data *ctx)
 		return status;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!(intr_vector & HPD_STATUS_CHANGE))
+		return -ENOENT;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = anx7625_reg_read(ctx, ctx->i2c.rx_p0_client,
 				  SYSTEM_STSTUS);
 	if (status < 0) {
@@ -1779,12 +1812,15 @@ static int anx7625_intr_status(struct anx7625_data *ctx)
 	}
 
 	DRM_DEV_DEBUG_DRIVER(dev, "0x7e:0x45=%x\n", status);
+<<<<<<< HEAD
 
 	anx7625_typec_set_status(ctx, status, intr_vector);
 
 	if (!(intr_vector & HPD_STATUS))
 		return -ENOENT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dp_hpd_change_handler(ctx, status & HPD_STATUS);
 
 	return 0;
@@ -1803,7 +1839,11 @@ static void anx7625_work_func(struct work_struct *work)
 		return;
 	}
 
+<<<<<<< HEAD
 	event = anx7625_intr_status(ctx);
+=======
+	event = anx7625_hpd_change_detect(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&ctx->lock);
 
@@ -2922,15 +2962,20 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 	}
 
 	if (!platform->pdata.low_power_mode) {
+<<<<<<< HEAD
 		if (!anx7625_need_pd(platform))
 			anx7625_disable_pd_protocol(platform);
 
 		anx7625_configure_hpd(platform);
 
+=======
+		anx7625_disable_pd_protocol(platform);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pm_runtime_get_sync(dev);
 		_anx7625_hpd_polling(platform, 5000 * 100);
 	}
 
+<<<<<<< HEAD
 	if (platform->pdata.intp_irq)
 		anx7625_reg_write(platform, platform->i2c.rx_p0_client,
 				  INTERFACE_CHANGE_INT_MASK, 0);
@@ -2940,6 +2985,8 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 	if (ret)
 		goto pm_suspend;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Add work function */
 	if (platform->pdata.intp_irq) {
 		enable_irq(platform->pdata.intp_irq);
@@ -2953,10 +3000,13 @@ static int anx7625_i2c_probe(struct i2c_client *client)
 
 	return 0;
 
+<<<<<<< HEAD
 pm_suspend:
 	if (!platform->pdata.low_power_mode)
 		pm_runtime_put_sync_suspend(&client->dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 free_wq:
 	if (platform->workqueue)
 		destroy_workqueue(platform->workqueue);
@@ -2972,8 +3022,11 @@ static void anx7625_i2c_remove(struct i2c_client *client)
 {
 	struct anx7625_data *platform = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	anx7625_typec_unregister(platform);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_bridge_remove(&platform->bridge);
 
 	if (platform->pdata.intp_irq)

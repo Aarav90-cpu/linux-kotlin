@@ -232,14 +232,32 @@ ifeq ($(origin XARCH),command line)
 CFLAGS_XARCH = $(CFLAGS_$(XARCH))
 endif
 
+<<<<<<< HEAD
 LDLIBS_ppc = $(if $(LLVM),,-lgcc)
 LDLIBS = $(LDLIBS_$(XARCH))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 include Makefile.include
 
 CFLAGS  ?= $(CFLAGS_NOLIBC_TEST) $(CFLAGS_XARCH) $(CFLAGS_EXTRA)
 LDFLAGS :=
 
+<<<<<<< HEAD
+=======
+LIBGCC := -lgcc
+
+ifeq ($(ARCH),x86)
+# Not needed on x86, probably not present for x32
+LIBGCC :=
+endif
+
+ifneq ($(LLVM),)
+# Not needed for clang
+LIBGCC :=
+endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # Modify CFLAGS based on LLVM=
 include $(srctree)/tools/scripts/Makefile.include
 
@@ -293,12 +311,21 @@ sysroot/$(ARCH)/include:
 	$(Q)$(MAKE) -C $(srctree)/tools/include/nolibc ARCH=$(ARCH) OUTPUT=$(CURDIR)/sysroot/ headers_standalone headers_check
 	$(Q)mv sysroot/sysroot sysroot/$(ARCH)
 
+<<<<<<< HEAD
 nolibc-test: $(NOLIBC_TEST_SOURCES) sysroot/$(ARCH)/include
 	$(QUIET_CC)$(CC) $(CFLAGS) $(LDFLAGS) -o $@ \
 	  -nostdlib -nostdinc -static -Isysroot/$(ARCH)/include $(NOLIBC_TEST_SOURCES) $(LDLIBS)
 
 libc-test: $(NOLIBC_TEST_SOURCES)
 	$(QUIET_CC)$(HOSTCC) -o $@ $(NOLIBC_TEST_SOURCES)
+=======
+nolibc-test: nolibc-test.c nolibc-test-linkage.c sysroot/$(ARCH)/include
+	$(QUIET_CC)$(CC) $(CFLAGS) $(LDFLAGS) -o $@ \
+	  -nostdlib -nostdinc -static -Isysroot/$(ARCH)/include nolibc-test.c nolibc-test-linkage.c $(LIBGCC)
+
+libc-test: nolibc-test.c nolibc-test-linkage.c
+	$(QUIET_CC)$(HOSTCC) -o $@ nolibc-test.c nolibc-test-linkage.c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # local libc-test
 run-libc-test: libc-test

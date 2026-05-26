@@ -11,7 +11,10 @@
 #include <linux/errno.h>
 #include <linux/file.h>
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <linux/fwnode.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/idr.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
@@ -103,6 +106,12 @@ static DEFINE_MUTEX(gpio_devices_lock);
 /* Ensures coherence during read-only accesses to the list of GPIO devices. */
 DEFINE_STATIC_SRCU(gpio_devices_srcu);
 
+<<<<<<< HEAD
+=======
+static DEFINE_MUTEX(gpio_machine_hogs_mutex);
+static LIST_HEAD(gpio_machine_hogs);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const char *const gpio_suffixes[] = { "gpios", "gpio", NULL };
 
 static void gpiochip_free_hogs(struct gpio_chip *gc);
@@ -338,6 +347,7 @@ struct gpio_chip *gpio_device_get_chip(struct gpio_device *gdev)
 }
 EXPORT_SYMBOL_GPL(gpio_device_get_chip);
 
+<<<<<<< HEAD
 /**
  * gpiochip_find_base_unlocked() - Find a global GPIO number base
  * @ngpio: Number of consecutive GPIOs to number
@@ -347,6 +357,9 @@ EXPORT_SYMBOL_GPL(gpio_device_get_chip);
  * internals is STRONGLY DISCOURAGED, drivers and consumers should NOT concern
  * themselves with this numberspace.
  */
+=======
+/* dynamic allocation of GPIOs, e.g. on a hotplugged device */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int gpiochip_find_base_unlocked(u16 ngpio)
 {
 	unsigned int base = GPIO_DYNAMIC_BASE;
@@ -887,14 +900,22 @@ static const struct device_type gpio_dev_type = {
 };
 
 #ifdef CONFIG_GPIO_CDEV
+<<<<<<< HEAD
 #define gcdev_register(gc, devt)	gpiolib_cdev_register((gc), (devt))
+=======
+#define gcdev_register(gdev, devt)	gpiolib_cdev_register((gdev), (devt))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define gcdev_unregister(gdev)		gpiolib_cdev_unregister((gdev))
 #else
 /*
  * gpiolib_cdev_register() indirectly calls device_add(), which is still
  * required even when cdev is not selected.
  */
+<<<<<<< HEAD
 #define gcdev_register(gc, devt)	device_add(&(gc)->gpiodev->dev)
+=======
+#define gcdev_register(gdev, devt)	device_add(&(gdev)->dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
 #endif
 
@@ -902,9 +923,14 @@ static const struct device_type gpio_dev_type = {
  * An initial reference count has been held in gpiochip_add_data_with_key().
  * The caller should drop the reference via gpio_device_put() on errors.
  */
+<<<<<<< HEAD
 static int gpiochip_setup_dev(struct gpio_chip *gc)
 {
 	struct gpio_device *gdev = gc->gpiodev;
+=======
+static int gpiochip_setup_dev(struct gpio_device *gdev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
 	int ret;
 
@@ -915,11 +941,19 @@ static int gpiochip_setup_dev(struct gpio_chip *gc)
 	if (fwnode && !fwnode->dev)
 		fwnode_dev_initialized(fwnode, false);
 
+<<<<<<< HEAD
 	ret = gcdev_register(gc, gpio_devt);
 	if (ret)
 		return ret;
 
 	ret = gpiochip_sysfs_register(gc);
+=======
+	ret = gcdev_register(gdev, gpio_devt);
+	if (ret)
+		return ret;
+
+	ret = gpiochip_sysfs_register(gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_remove_device;
 
@@ -933,6 +967,7 @@ err_remove_device:
 	return ret;
 }
 
+<<<<<<< HEAD
 int gpiochip_add_hog(struct gpio_chip *gc, struct fwnode_handle *fwnode)
 {
 	struct fwnode_handle *gc_node = dev_fwnode(&gc->gpiodev->dev);
@@ -1037,18 +1072,52 @@ static int gpiochip_hog_lines(struct gpio_chip *gc)
 	}
 
 	return 0;
+=======
+static void gpiochip_machine_hog(struct gpio_chip *gc, struct gpiod_hog *hog)
+{
+	struct gpio_desc *desc;
+	int rv;
+
+	desc = gpiochip_get_desc(gc, hog->chip_hwnum);
+	if (IS_ERR(desc)) {
+		gpiochip_err(gc, "%s: unable to get GPIO desc: %ld\n",
+			     __func__, PTR_ERR(desc));
+		return;
+	}
+
+	rv = gpiod_hog(desc, hog->line_name, hog->lflags, hog->dflags);
+	if (rv)
+		gpiod_err(desc, "%s: unable to hog GPIO line (%s:%u): %d\n",
+			  __func__, gc->label, hog->chip_hwnum, rv);
+}
+
+static void machine_gpiochip_add(struct gpio_chip *gc)
+{
+	struct gpiod_hog *hog;
+
+	guard(mutex)(&gpio_machine_hogs_mutex);
+
+	list_for_each_entry(hog, &gpio_machine_hogs, list) {
+		if (!strcmp(gc->label, hog->chip_label))
+			gpiochip_machine_hog(gc, hog);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gpiochip_setup_devs(void)
 {
 	struct gpio_device *gdev;
+<<<<<<< HEAD
 	struct gpio_chip *gc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	guard(srcu)(&gpio_devices_srcu);
 
 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
 				 srcu_read_lock_held(&gpio_devices_srcu)) {
+<<<<<<< HEAD
 		guard(srcu)(&gdev->srcu);
 
 		gc = srcu_dereference(gdev->chip, &gdev->srcu);
@@ -1058,6 +1127,9 @@ static void gpiochip_setup_devs(void)
 		}
 
 		ret = gpiochip_setup_dev(gc);
+=======
+		ret = gpiochip_setup_dev(gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			gpio_device_put(gdev);
 			dev_err(&gdev->dev,
@@ -1289,9 +1361,13 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
 
 	acpi_gpiochip_add(gc);
 
+<<<<<<< HEAD
 	ret = gpiochip_hog_lines(gc);
 	if (ret)
 		goto err_remove_of_chip;
+=======
+	machine_gpiochip_add(gc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = gpiochip_irqchip_init_valid_mask(gc);
 	if (ret)
@@ -1318,7 +1394,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
 	 * Otherwise, defer until later.
 	 */
 	if (gpiolib_initialized) {
+<<<<<<< HEAD
 		ret = gpiochip_setup_dev(gc);
+=======
+		ret = gpiochip_setup_dev(gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto err_teardown_shared;
 	}
@@ -1378,7 +1458,11 @@ void gpiochip_remove(struct gpio_chip *gc)
 	struct gpio_device *gdev = gc->gpiodev;
 
 	/* FIXME: should the legacy sysfs handling be moved to gpio_device? */
+<<<<<<< HEAD
 	gpiochip_sysfs_unregister(gc);
+=======
+	gpiochip_sysfs_unregister(gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpiochip_free_hogs(gc);
 	gpiochip_free_remaining_irqs(gc);
 
@@ -1483,6 +1567,7 @@ EXPORT_SYMBOL_GPL(gpio_device_find_by_label);
 
 static int gpio_chip_match_by_fwnode(struct gpio_chip *gc, const void *fwnode)
 {
+<<<<<<< HEAD
 	struct device *dev = &gc->gpiodev->dev;
 	struct fwnode_handle *node = dev_fwnode(dev);
 
@@ -1493,6 +1578,9 @@ static int gpio_chip_match_by_fwnode(struct gpio_chip *gc, const void *fwnode)
 		return 1;
 
 	return node && node->secondary == fwnode;
+=======
+	return device_match_fwnode(&gc->gpiodev->dev, fwnode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -4572,6 +4660,45 @@ void gpiod_remove_lookup_table(struct gpiod_lookup_table *table)
 }
 EXPORT_SYMBOL_GPL(gpiod_remove_lookup_table);
 
+<<<<<<< HEAD
+=======
+/**
+ * gpiod_add_hogs() - register a set of GPIO hogs from machine code
+ * @hogs: table of gpio hog entries with a zeroed sentinel at the end
+ */
+void gpiod_add_hogs(struct gpiod_hog *hogs)
+{
+	struct gpiod_hog *hog;
+
+	guard(mutex)(&gpio_machine_hogs_mutex);
+
+	for (hog = &hogs[0]; hog->chip_label; hog++) {
+		list_add_tail(&hog->list, &gpio_machine_hogs);
+
+		/*
+		 * The chip may have been registered earlier, so check if it
+		 * exists and, if so, try to hog the line now.
+		 */
+		struct gpio_device *gdev __free(gpio_device_put) =
+				gpio_device_find_by_label(hog->chip_label);
+		if (gdev)
+			gpiochip_machine_hog(gpio_device_get_chip(gdev), hog);
+	}
+}
+EXPORT_SYMBOL_GPL(gpiod_add_hogs);
+
+void gpiod_remove_hogs(struct gpiod_hog *hogs)
+{
+	struct gpiod_hog *hog;
+
+	guard(mutex)(&gpio_machine_hogs_mutex);
+
+	for (hog = &hogs[0]; hog->chip_label; hog++)
+		list_del(&hog->list);
+}
+EXPORT_SYMBOL_GPL(gpiod_remove_hogs);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool gpiod_match_lookup_table(struct device *dev,
 				     const struct gpiod_lookup_table *table)
 {
@@ -4624,8 +4751,13 @@ static struct gpio_desc *gpio_desc_table_match(struct device *dev, const char *c
 				return desc;
 			}
 
+<<<<<<< HEAD
 			dev_dbg(dev, "cannot find GPIO line %s, deferring\n",
 				p->key);
+=======
+			dev_warn(dev, "cannot find GPIO line %s, deferring\n",
+				 p->key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ERR_PTR(-EPROBE_DEFER);
 		}
 
@@ -4639,8 +4771,13 @@ static struct gpio_desc *gpio_desc_table_match(struct device *dev, const char *c
 			 * consumer be probed again or let the Deferred
 			 * Probe infrastructure handle the error.
 			 */
+<<<<<<< HEAD
 			dev_dbg(dev, "cannot find GPIO chip %s, deferring\n",
 				p->key);
+=======
+			dev_warn(dev, "cannot find GPIO chip %s, deferring\n",
+				 p->key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ERR_PTR(-EPROBE_DEFER);
 		}
 
@@ -5384,14 +5521,33 @@ core_initcall(gpiolib_dev_init);
 
 #ifdef CONFIG_DEBUG_FS
 
+<<<<<<< HEAD
 static void gpiolib_dbg_show(struct seq_file *s, struct gpio_chip *gc)
+=======
+static void gpiolib_dbg_show(struct seq_file *s, struct gpio_device *gdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool active_low, is_irq, is_out;
 	struct gpio_desc *desc;
 	unsigned int gpio = 0;
+<<<<<<< HEAD
 	unsigned long flags;
 	int value;
 
+=======
+	struct gpio_chip *gc;
+	unsigned long flags;
+	int value;
+
+	guard(srcu)(&gdev->srcu);
+
+	gc = srcu_dereference(gdev->chip, &gdev->srcu);
+	if (!gc) {
+		seq_puts(s, "Underlying GPIO chip is gone\n");
+		return;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_gpio_desc(gc, desc) {
 		guard(srcu)(&desc->gdev->desc_srcu);
 		flags = READ_ONCE(desc->flags);
@@ -5504,7 +5660,11 @@ static int gpiolib_seq_show(struct seq_file *s, void *v)
 	if (gc->dbg_show)
 		gc->dbg_show(s, gc);
 	else
+<<<<<<< HEAD
 		gpiolib_dbg_show(s, gc);
+=======
+		gpiolib_dbg_show(s, gdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -23,7 +23,11 @@ const struct file_operations minix_dir_operations = {
 	.llseek		= generic_file_llseek,
 	.read		= generic_read_dir,
 	.iterate_shared	= minix_readdir,
+<<<<<<< HEAD
 	.fsync		= minix_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

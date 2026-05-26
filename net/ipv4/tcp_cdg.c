@@ -162,7 +162,11 @@ static void tcp_cdg_hystart_update(struct sock *sk)
 				NET_ADD_STATS(sock_net(sk),
 					      LINUX_MIB_TCPHYSTARTTRAINCWND,
 					      tcp_snd_cwnd(tp));
+<<<<<<< HEAD
 				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+=======
+				tp->snd_ssthresh = tcp_snd_cwnd(tp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return;
 			}
 		}
@@ -181,7 +185,11 @@ static void tcp_cdg_hystart_update(struct sock *sk)
 				NET_ADD_STATS(sock_net(sk),
 					      LINUX_MIB_TCPHYSTARTDELAYCWND,
 					      tcp_snd_cwnd(tp));
+<<<<<<< HEAD
 				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+=======
+				tp->snd_ssthresh = tcp_snd_cwnd(tp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}

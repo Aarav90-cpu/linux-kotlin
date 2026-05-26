@@ -20,7 +20,11 @@ const char help_fmt[] =
 "\n"
 "Modified version of scx_simple that demonstrates arena-based data structures.\n"
 "\n"
+<<<<<<< HEAD
 "Usage: %s [-v]\n"
+=======
+"Usage: %s [-f] [-v]\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 "\n"
 "  -v            Print libbpf debug messages\n"
 "  -h            Display this help and exit\n";

@@ -292,6 +292,7 @@ int hinic3_set_cmdq_depth(struct hinic3_hwdev *hwdev, u16 cmdq_depth)
 	return 0;
 }
 
+<<<<<<< HEAD
 #define HINIC3_FLR_TIMEOUT    1000
 
 static enum hinic3_wait_return hinic3_check_flr_finish_handler(void *priv_data)
@@ -318,6 +319,8 @@ static int hinic3_wait_for_flr_finish(struct hinic3_hwdev *hwdev)
 				       HINIC3_FLR_TIMEOUT, 0xa * USEC_PER_MSEC);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HINIC3_WAIT_CMDQ_IDLE_TIMEOUT    5000
 
 static enum hinic3_wait_return check_cmdq_stop_handler(void *priv_data)
@@ -326,10 +329,13 @@ static enum hinic3_wait_return check_cmdq_stop_handler(void *priv_data)
 	enum hinic3_cmdq_type cmdq_type;
 	struct hinic3_cmdqs *cmdqs;
 
+<<<<<<< HEAD
 	/* Stop waiting when card unpresent */
 	if (!hwdev->chip_present_flag)
 		return HINIC3_WAIT_PROCESS_ERR;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmdqs = hwdev->cmdqs;
 	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
 		if (!hinic3_cmdq_idle(&cmdqs->cmdq[cmdq_type]))
@@ -377,9 +383,12 @@ int hinic3_func_rx_tx_flush(struct hinic3_hwdev *hwdev)
 	int ret = 0;
 	int err;
 
+<<<<<<< HEAD
 	if (!hwdev->chip_present_flag)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = wait_cmdq_stop(hwdev);
 	if (err) {
 		dev_warn(hwdev->dev, "CMDQ is still working, CMDQ timeout value is unreasonable\n");
@@ -415,6 +424,7 @@ int hinic3_func_rx_tx_flush(struct hinic3_hwdev *hwdev)
 		ret = err;
 	}
 
+<<<<<<< HEAD
 	if (HINIC3_FUNC_TYPE(hwdev) != HINIC3_FUNC_TYPE_VF) {
 		err = hinic3_wait_for_flr_finish(hwdev);
 		if (err) {
@@ -423,6 +433,8 @@ int hinic3_func_rx_tx_flush(struct hinic3_hwdev *hwdev)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hinic3_toggle_doorbell(hwif, ENABLE_DOORBELL);
 
 	err = hinic3_reinit_cmdq_ctxts(hwdev);
@@ -580,6 +592,7 @@ int hinic3_clean_root_ctxt(struct hinic3_hwdev *hwdev)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 #define HINIC3_FW_VER_TYPE_MPU  1
 
@@ -608,3 +621,5 @@ int hinic3_get_mgmt_version(struct hinic3_hwdev *hwdev, u8 *mgmt_ver,
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

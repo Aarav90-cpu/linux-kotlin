@@ -4834,6 +4834,7 @@ int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
 
 #endif	/* CONFIG_SECURITY_NETWORK */
 
+<<<<<<< HEAD
 #if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
 /**
  * security_unix_find() - Check if a named AF_UNIX socket can connect
@@ -4854,6 +4855,8 @@ EXPORT_SYMBOL(security_unix_find);
 
 #endif	/* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SECURITY_INFINIBAND
 /**
  * security_ib_pkey_access() - Check if access to an IB pkey is allowed

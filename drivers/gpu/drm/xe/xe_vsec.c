@@ -140,10 +140,17 @@ static int xe_guid_decode(u32 guid, int *index, u32 *offset)
 	return 0;
 }
 
+<<<<<<< HEAD
 int xe_pmt_telem_read(struct device *dev, u32 guid, u64 *data, loff_t user_offset,
 		      u32 count)
 {
 	struct xe_device *xe = kdev_to_xe_device(dev);
+=======
+int xe_pmt_telem_read(struct pci_dev *pdev, u32 guid, u64 *data, loff_t user_offset,
+		      u32 count)
+{
+	struct xe_device *xe = pdev_to_xe_device(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void __iomem *telem_addr = xe->mmio.regs + BMG_TELEMETRY_OFFSET;
 	u32 mem_region;
 	u32 offset;
@@ -198,6 +205,10 @@ void xe_vsec_init(struct xe_device *xe)
 {
 	struct intel_vsec_platform_info *info;
 	struct device *dev = xe->drm.dev;
+<<<<<<< HEAD
+=======
+	struct pci_dev *pdev = to_pci_dev(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum xe_vsec platform;
 
 	platform = get_platform_info(xe);
@@ -220,6 +231,10 @@ void xe_vsec_init(struct xe_device *xe)
 	 * Register a VSEC. Cleanup is handled using device managed
 	 * resources.
 	 */
+<<<<<<< HEAD
 	intel_vsec_register(dev, info);
+=======
+	intel_vsec_register(pdev, info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 MODULE_IMPORT_NS("INTEL_VSEC");

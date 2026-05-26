@@ -537,7 +537,11 @@ no_route:
 }
 
 static int l2tp_ip_recvmsg(struct sock *sk, struct msghdr *msg,
+<<<<<<< HEAD
 			   size_t len, int flags)
+=======
+			   size_t len, int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inet_sock *inet = inet_sk(sk);
 	size_t copied = 0;
@@ -570,7 +574,11 @@ static int l2tp_ip_recvmsg(struct sock *sk, struct msghdr *msg,
 		sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 		sin->sin_port = 0;
 		memset(&sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 		msg->msg_namelen = sizeof(*sin);
+=======
+		*addr_len = sizeof(*sin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (inet_cmsg_flags(inet))
 		ip_cmsg_recv(msg, skb);

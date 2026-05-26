@@ -53,14 +53,22 @@
 
 struct socfpga_dwmac;
 struct socfpga_dwmac_ops {
+<<<<<<< HEAD
 	int (*set_phy_mode)(struct socfpga_dwmac *dwmac_priv,
 			    struct device *dev);
+=======
+	int (*set_phy_mode)(struct socfpga_dwmac *dwmac_priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void (*setup_plat_dat)(struct socfpga_dwmac *dwmac_priv);
 };
 
 struct socfpga_dwmac {
 	u32	reg_offset;
 	u32	reg_shift;
+<<<<<<< HEAD
+=======
+	struct	device *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct plat_stmmacenet_data *plat_dat;
 	struct regmap *sys_mgr_base_addr;
 	struct reset_control *stmmac_rst;
@@ -72,6 +80,7 @@ struct socfpga_dwmac {
 	const struct socfpga_dwmac_ops *ops;
 };
 
+<<<<<<< HEAD
 static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
 {
 	return dwmac->plat_dat->phy_interface;
@@ -96,6 +105,20 @@ static void socfpga_dwmac_fix_mac_speed(void *bsp_priv,
 
 	if (sgmii_adapter_base)
 		socfpga_sgmii_config(dwmac, false);
+=======
+static void socfpga_dwmac_fix_mac_speed(void *bsp_priv, int speed,
+					unsigned int mode)
+{
+	struct socfpga_dwmac *dwmac = (struct socfpga_dwmac *)bsp_priv;
+	struct stmmac_priv *priv = netdev_priv(dev_get_drvdata(dwmac->dev));
+	void __iomem *splitter_base = dwmac->splitter_base;
+	void __iomem *sgmii_adapter_base = dwmac->sgmii_adapter_base;
+	u32 val;
+
+	if (sgmii_adapter_base)
+		writew(SGMII_ADAPTER_DISABLE,
+		       sgmii_adapter_base + SGMII_ADAPTER_CTRL_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (splitter_base) {
 		val = readl(splitter_base + EMAC_SPLITTER_CTRL_REG);
@@ -117,9 +140,17 @@ static void socfpga_dwmac_fix_mac_speed(void *bsp_priv,
 		writel(val, splitter_base + EMAC_SPLITTER_CTRL_REG);
 	}
 
+<<<<<<< HEAD
 	if ((phymode == PHY_INTERFACE_MODE_SGMII ||
 	     phymode == PHY_INTERFACE_MODE_1000BASEX) && sgmii_adapter_base)
 		socfpga_sgmii_config(dwmac, true);
+=======
+	if ((priv->plat->phy_interface == PHY_INTERFACE_MODE_SGMII ||
+	     priv->plat->phy_interface == PHY_INTERFACE_MODE_1000BASEX) &&
+	     sgmii_adapter_base)
+		writew(SGMII_ADAPTER_ENABLE,
+		       sgmii_adapter_base + SGMII_ADAPTER_CTRL_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int socfpga_dwmac_parse_data(struct socfpga_dwmac *dwmac, struct device *dev)
@@ -243,6 +274,10 @@ static int socfpga_dwmac_parse_data(struct socfpga_dwmac *dwmac, struct device *
 	dwmac->reg_offset = reg_offset;
 	dwmac->reg_shift = reg_shift;
 	dwmac->sys_mgr_base_addr = sys_mgr_base_addr;
+<<<<<<< HEAD
+=======
+	dwmac->dev = dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	of_node_put(np_sgmii_adapter);
 
 	return 0;
@@ -252,6 +287,21 @@ err_node_put:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
+{
+	return dwmac->plat_dat->phy_interface;
+}
+
+static void socfpga_sgmii_config(struct socfpga_dwmac *dwmac, bool enable)
+{
+	u16 val = enable ? SGMII_ADAPTER_ENABLE : SGMII_ADAPTER_DISABLE;
+
+	writew(val, dwmac->sgmii_adapter_base + SGMII_ADAPTER_CTRL_REG);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int socfpga_set_phy_mode_common(int phymode, u32 *val)
 {
 	switch (phymode) {
@@ -381,17 +431,28 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int socfpga_gen5_set_phy_mode(struct socfpga_dwmac *dwmac,
 				     struct device *dev)
 {
 	struct regmap *sys_mgr_base_addr = dwmac->sys_mgr_base_addr;
 	phy_interface_t phymode = socfpga_get_plat_phymode(dwmac);
+=======
+static int socfpga_gen5_set_phy_mode(struct socfpga_dwmac *dwmac)
+{
+	struct regmap *sys_mgr_base_addr = dwmac->sys_mgr_base_addr;
+	int phymode = socfpga_get_plat_phymode(dwmac);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 reg_offset = dwmac->reg_offset;
 	u32 reg_shift = dwmac->reg_shift;
 	u32 ctrl, val, module;
 
 	if (socfpga_set_phy_mode_common(phymode, &val)) {
+<<<<<<< HEAD
 		dev_err(dev, "bad phy mode %d\n", phymode);
+=======
+		dev_err(dwmac->dev, "bad phy mode %d\n", phymode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -440,11 +501,18 @@ static int socfpga_gen5_set_phy_mode(struct socfpga_dwmac *dwmac,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int socfpga_gen10_set_phy_mode(struct socfpga_dwmac *dwmac,
 				      struct device *dev)
 {
 	struct regmap *sys_mgr_base_addr = dwmac->sys_mgr_base_addr;
 	phy_interface_t phymode = socfpga_get_plat_phymode(dwmac);
+=======
+static int socfpga_gen10_set_phy_mode(struct socfpga_dwmac *dwmac)
+{
+	struct regmap *sys_mgr_base_addr = dwmac->sys_mgr_base_addr;
+	int phymode = socfpga_get_plat_phymode(dwmac);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 reg_offset = dwmac->reg_offset;
 	u32 reg_shift = dwmac->reg_shift;
 	u32 ctrl, val, module;
@@ -553,7 +621,11 @@ static int socfpga_dwmac_init(struct device *dev, void *bsp_priv)
 {
 	struct socfpga_dwmac *dwmac = bsp_priv;
 
+<<<<<<< HEAD
 	return dwmac->ops->set_phy_mode(dwmac, dev);
+=======
+	return dwmac->ops->set_phy_mode(dwmac);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void socfpga_gen5_setup_plat_dat(struct socfpga_dwmac *dwmac)
@@ -563,7 +635,11 @@ static void socfpga_gen5_setup_plat_dat(struct socfpga_dwmac *dwmac)
 	plat_dat->core_type = DWMAC_CORE_GMAC;
 
 	/* Rx watchdog timer in dwmac is buggy in this hw */
+<<<<<<< HEAD
 	plat_dat->riwt_off = true;
+=======
+	plat_dat->riwt_off = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void socfpga_agilex5_setup_plat_dat(struct socfpga_dwmac *dwmac)

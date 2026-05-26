@@ -41,6 +41,10 @@
 #include <net/neighbour.h>
 #include <net/route.h>
 #include <net/netevent.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/ip6_route.h>
 #include <rdma/ib_addr.h>
 #include <rdma/ib_cache.h>
@@ -149,7 +153,11 @@ static int ib_nl_ip_send_msg(struct rdma_dev_addr *dev_addr,
 		attrtype = RDMA_NLA_F_MANDATORY | LS_NLA_TYPE_IPV6;
 	}
 
+<<<<<<< HEAD
 	len = nla_total_size(size);
+=======
+	len = nla_total_size(sizeof(size));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	len += NLMSG_ALIGN(sizeof(*header));
 
 	skb = nlmsg_new(len, GFP_KERNEL);
@@ -413,7 +421,11 @@ static int addr6_resolve(struct sockaddr *src_sock,
 	fl6.saddr = src_in->sin6_addr;
 	fl6.flowi6_oif = addr->bound_dev_if;
 
+<<<<<<< HEAD
 	dst = ip6_dst_lookup_flow(addr->net, NULL, &fl6, NULL);
+=======
+	dst = ipv6_stub->ipv6_dst_lookup_flow(addr->net, NULL, &fl6, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(dst))
 		return PTR_ERR(dst);
 

@@ -168,7 +168,12 @@ void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
 {
 	/* Always terminate destination string */
 
+<<<<<<< HEAD
 	strscpy_pad(dest, source, dest_size);
+=======
+	strncpy(dest, source, dest_size);
+	dest[dest_size - 1] = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif

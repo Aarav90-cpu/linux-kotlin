@@ -85,6 +85,7 @@ static int erofs_init_inode_xattrs(struct inode *inode)
 	}
 	vi->xattr_name_filter = le32_to_cpu(ih->h_name_filter);
 	vi->xattr_shared_count = ih->h_shared_count;
+<<<<<<< HEAD
 	if ((u32)vi->xattr_shared_count * sizeof(__le32) >
 	    vi->xattr_isize - sizeof(struct erofs_xattr_ibody_header)) {
 		erofs_err(sb, "invalid h_shared_count %u @ nid %llu",
@@ -92,6 +93,8 @@ static int erofs_init_inode_xattrs(struct inode *inode)
 		ret = -EFSCORRUPTED;
 		goto out_unlock;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vi->xattr_shared_xattrs = kmalloc_objs(uint, vi->xattr_shared_count);
 	if (!vi->xattr_shared_xattrs) {
 		ret = -ENOMEM;

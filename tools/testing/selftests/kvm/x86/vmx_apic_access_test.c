@@ -38,7 +38,11 @@ static void l1_guest_code(struct vmx_pages *vmx_pages, unsigned long high_gpa)
 {
 #define L2_GUEST_STACK_SIZE 64
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+<<<<<<< HEAD
 	u32 control;
+=======
+	uint32_t control;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
 	GUEST_ASSERT(load_vmcs(vmx_pages));
@@ -72,7 +76,11 @@ static void l1_guest_code(struct vmx_pages *vmx_pages, unsigned long high_gpa)
 int main(int argc, char *argv[])
 {
 	unsigned long apic_access_addr = ~0ul;
+<<<<<<< HEAD
 	gva_t vmx_pages_gva;
+=======
+	vm_vaddr_t vmx_pages_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long high_gpa;
 	struct vmx_pages *vmx;
 	bool done = false;

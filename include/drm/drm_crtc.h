@@ -275,6 +275,7 @@ struct drm_crtc_state {
 	struct drm_property_blob *gamma_lut;
 
 	/**
+<<<<<<< HEAD
 	 * @background_color:
 	 *
 	 * RGB value representing the CRTC's background color.  The background
@@ -287,6 +288,8 @@ struct drm_crtc_state {
 	u64 background_color;
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @target_vblank:
 	 *
 	 * Target vertical blank period when a page flip

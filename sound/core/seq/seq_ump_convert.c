@@ -841,7 +841,11 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
 	unsigned char index = event->data.control.param & 0x7f;
 	unsigned char val = event->data.control.value & 0x7f;
 	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* process special CC's (bank/rpn/nrpn) */
 	switch (index) {
@@ -851,23 +855,36 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
 		cc->cc_rpn_msb = val;
 		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
 			reset_rpn(cc);
+<<<<<<< HEAD
 		break;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case UMP_CC_RPN_LSB:
 		ret = fill_rpn(cc, data, channel, true);
 		cc->rpn_set = 1;
 		cc->cc_rpn_lsb = val;
 		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
 			reset_rpn(cc);
+<<<<<<< HEAD
 		break;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case UMP_CC_NRPN_MSB:
 		ret = fill_rpn(cc, data, channel, true);
 		cc->nrpn_set = 1;
 		cc->cc_nrpn_msb = val;
+<<<<<<< HEAD
 		break;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case UMP_CC_NRPN_LSB:
 		ret = fill_rpn(cc, data, channel, true);
 		cc->nrpn_set = 1;
 		cc->cc_nrpn_lsb = val;
+<<<<<<< HEAD
 		break;
 	case UMP_CC_DATA:
 		cc->cc_data_msb_set = 1;
@@ -899,6 +916,32 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
 	}
 
 	return ret;
+=======
+		return ret;
+	case UMP_CC_DATA:
+		cc->cc_data_msb_set = 1;
+		cc->cc_data_msb = val;
+		return fill_rpn(cc, data, channel, false);
+	case UMP_CC_BANK_SELECT:
+		cc->bank_set = 1;
+		cc->cc_bank_msb = val;
+		return 0; // skip
+	case UMP_CC_BANK_SELECT_LSB:
+		cc->bank_set = 1;
+		cc->cc_bank_lsb = val;
+		return 0; // skip
+	case UMP_CC_DATA_LSB:
+		cc->cc_data_lsb_set = 1;
+		cc->cc_data_lsb = val;
+		return fill_rpn(cc, data, channel, false);
+	}
+
+	data->cc.status = status;
+	data->cc.channel = channel;
+	data->cc.index = index;
+	data->cc.data = upscale_7_to_32bit(event->data.control.value & 0x7f);
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* convert one-parameter control event to MIDI 2.0 UMP */

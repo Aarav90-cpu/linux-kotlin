@@ -121,6 +121,7 @@ struct rt1320_datafixpoint {
 	int invrs;
 };
 
+<<<<<<< HEAD
 typedef struct FwPara_HwSwGain {
 	unsigned int SwAdvGain;
 	unsigned int SwBasGain;
@@ -134,6 +135,8 @@ typedef struct FwPara_HwSwGain {
 	unsigned int reserve5;
 } __attribute__((packed)) FwPara_Get_HwSwGain;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rt1320_paramcmd {
 	unsigned char moudleid;
 	unsigned char commandtype;
@@ -172,7 +175,10 @@ struct rt1320_sdw_priv {
 	bool hw_init;
 	bool first_hw_init;
 	int version_id;
+<<<<<<< HEAD
 	int brown_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int dev_id;
 	bool fu_dapm_mute;
 	bool fu_mixer_mute[4];

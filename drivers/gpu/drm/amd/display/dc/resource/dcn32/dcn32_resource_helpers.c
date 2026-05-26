@@ -41,7 +41,10 @@ uint32_t dcn32_helper_calculate_mall_bytes_for_cursor(
 		struct pipe_ctx *pipe_ctx,
 		bool ignore_cursor_buf)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hubp *hubp = pipe_ctx->plane_res.hubp;
 	uint32_t cursor_size = hubp->curs_attr.pitch * hubp->curs_attr.height;
 	uint32_t cursor_mall_size_bytes = 0;

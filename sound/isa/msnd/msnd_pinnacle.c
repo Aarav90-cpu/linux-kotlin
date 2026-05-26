@@ -513,6 +513,7 @@ static void snd_msnd_mpu401_close(struct snd_mpu401 *mpu)
 	snd_msnd_disable_irq(mpu->private_data);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static u8 snd_msnd_pm_recsrc(struct snd_msnd *chip)
 {
@@ -526,6 +527,8 @@ static u8 snd_msnd_pm_recsrc(struct snd_msnd *chip)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static long mpu_io[SNDRV_CARDS] = SNDRV_DEFAULT_PORT;
 static int mpu_irq[SNDRV_CARDS] = SNDRV_DEFAULT_IRQ;
 
@@ -1014,6 +1017,7 @@ static int snd_msnd_isa_probe(struct device *pdev, unsigned int idx)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_msnd_card_suspend(struct snd_card *card)
 {
@@ -1081,6 +1085,12 @@ static struct isa_driver snd_msnd_driver = {
 	.suspend	= snd_msnd_isa_suspend,
 	.resume		= snd_msnd_isa_resume,
 #endif
+=======
+static struct isa_driver snd_msnd_driver = {
+	.match		= snd_msnd_isa_match,
+	.probe		= snd_msnd_isa_probe,
+	/* FIXME: suspend, resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver		= {
 		.name	= DEV_NAME
 	},
@@ -1187,6 +1197,7 @@ static int snd_msnd_pnp_detect(struct pnp_card_link *pcard,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_msnd_pnp_suspend(struct pnp_card_link *pcard, pm_message_t state)
 {
@@ -1199,6 +1210,8 @@ static int snd_msnd_pnp_resume(struct pnp_card_link *pcard)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int isa_registered;
 static int pnp_registered;
 
@@ -1215,10 +1228,13 @@ static struct pnp_card_driver msnd_pnpc_driver = {
 	.name = "msnd_pinnacle",
 	.id_table = msnd_pnpids,
 	.probe = snd_msnd_pnp_detect,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend = snd_msnd_pnp_suspend,
 	.resume = snd_msnd_pnp_resume,
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #endif /* CONFIG_PNP */
 
@@ -1253,3 +1269,7 @@ static void __exit snd_msnd_exit(void)
 
 module_init(snd_msnd_init);
 module_exit(snd_msnd_exit);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

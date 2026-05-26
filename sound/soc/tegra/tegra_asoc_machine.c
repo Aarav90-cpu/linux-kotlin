@@ -287,6 +287,7 @@ static unsigned int tegra_machine_mclk_rate_6mhz(unsigned int srate)
 	return mclk;
 }
 
+<<<<<<< HEAD
 static unsigned int tegra_machine_mclk_rate_cpcap(unsigned int srate)
 {
 	unsigned int mclk;
@@ -306,6 +307,8 @@ static unsigned int tegra_machine_mclk_rate_cpcap(unsigned int srate)
 	return mclk;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tegra_machine_hw_params(struct snd_pcm_substream *substream,
 				   struct snd_pcm_hw_params *params)
 {
@@ -432,8 +435,12 @@ static int tegra_machine_register_codec(struct device *dev, const char *name)
 
 	pdev = platform_device_register_simple(name, -1, NULL, 0);
 	if (IS_ERR(pdev))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(pdev),
 				     "failed to register codec %s\n", name);
+=======
+		return PTR_ERR(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = devm_add_action_or_reset(dev, tegra_machine_unregister_codec,
 				       pdev);
@@ -469,38 +476,62 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,hp-mute", GPIOD_OUT_HIGH);
 	machine->gpiod_hp_mute = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get hp-mute GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,hp-det", GPIOD_IN);
 	machine->gpiod_hp_det = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get hp-det GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,mic-det", GPIOD_IN);
 	machine->gpiod_mic_det = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get mic-det GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,spkr-en", GPIOD_OUT_LOW);
 	machine->gpiod_spkr_en = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get spkr-en GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,int-mic-en", GPIOD_OUT_LOW);
 	machine->gpiod_int_mic_en = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get int-mic-en GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod = devm_gpiod_get_optional(dev, "nvidia,ext-mic-en", GPIOD_OUT_LOW);
 	machine->gpiod_ext_mic_en = gpiod;
 	if (IS_ERR(gpiod))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(gpiod),
 				     "failed to get ext-mic-en GPIO\n");
+=======
+		return PTR_ERR(gpiod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = snd_soc_of_parse_card_name(card, "nvidia,model");
 	if (err)
@@ -556,6 +587,7 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 		card->driver_name = "tegra";
 
 	machine->clk_pll_a = devm_clk_get(dev, "pll_a");
+<<<<<<< HEAD
 	if (IS_ERR(machine->clk_pll_a))
 		return dev_err_probe(dev, PTR_ERR(machine->clk_pll_a),
 				     "can't retrieve clk pll_a\n");
@@ -569,6 +601,24 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 	if (IS_ERR(machine->clk_cdev1))
 		return dev_err_probe(dev, PTR_ERR(machine->clk_cdev1),
 				     "can't retrieve clk cdev1\n");
+=======
+	if (IS_ERR(machine->clk_pll_a)) {
+		dev_err(dev, "Can't retrieve clk pll_a\n");
+		return PTR_ERR(machine->clk_pll_a);
+	}
+
+	machine->clk_pll_a_out0 = devm_clk_get(dev, "pll_a_out0");
+	if (IS_ERR(machine->clk_pll_a_out0)) {
+		dev_err(dev, "Can't retrieve clk pll_a_out0\n");
+		return PTR_ERR(machine->clk_pll_a_out0);
+	}
+
+	machine->clk_cdev1 = devm_clk_get(dev, "mclk");
+	if (IS_ERR(machine->clk_cdev1)) {
+		dev_err(dev, "Can't retrieve clk cdev1\n");
+		return PTR_ERR(machine->clk_cdev1);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If clock parents are not set in DT, configure here to use clk_out_1
@@ -582,6 +632,7 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 		dev_warn(dev, "Please update DT to use assigned-clock-parents\n");
 
 		clk_extern1 = devm_clk_get(dev, "extern1");
+<<<<<<< HEAD
 		if (IS_ERR(clk_extern1))
 			return dev_err_probe(dev, PTR_ERR(clk_extern1),
 					     "can't retrieve clk extern1\n");
@@ -600,6 +651,30 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 		if (err < 0)
 			return dev_err_probe(dev, err,
 					     "set parent failed for pmc_clk_out_1\n");
+=======
+		if (IS_ERR(clk_extern1)) {
+			dev_err(dev, "Can't retrieve clk extern1\n");
+			return PTR_ERR(clk_extern1);
+		}
+
+		err = clk_set_parent(clk_extern1, machine->clk_pll_a_out0);
+		if (err < 0) {
+			dev_err(dev, "Set parent failed for clk extern1\n");
+			return err;
+		}
+
+		clk_out_1 = devm_clk_get(dev, "pmc_clk_out_1");
+		if (IS_ERR(clk_out_1)) {
+			dev_err(dev, "Can't retrieve pmc_clk_out_1\n");
+			return PTR_ERR(clk_out_1);
+		}
+
+		err = clk_set_parent(clk_out_1, clk_extern1);
+		if (err < 0) {
+			dev_err(dev, "Set parent failed for pmc_clk_out_1\n");
+			return err;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		machine->clk_cdev1 = clk_out_1;
 	}
@@ -610,6 +685,7 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 		 * host controller and the external codec
 		 */
 		err = clk_set_rate(machine->clk_pll_a, 73728000);
+<<<<<<< HEAD
 		if (err)
 			return dev_err_probe(dev, err,
 					     "can't set pll_a rate\n");
@@ -618,6 +694,18 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 		if (err)
 			return dev_err_probe(dev, err,
 					     "can't set pll_a_out0 rate\n");
+=======
+		if (err) {
+			dev_err(dev, "Can't set pll_a rate: %d\n", err);
+			return err;
+		}
+
+		err = clk_set_rate(machine->clk_pll_a_out0, 24576000);
+		if (err) {
+			dev_err(dev, "Can't set pll_a_out0 rate: %d\n", err);
+			return err;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		machine->set_baseclock = 73728000;
 		machine->set_mclk = 24576000;
@@ -629,9 +717,16 @@ int tegra_asoc_machine_probe(struct platform_device *pdev)
 	 * only needed for audio.
 	 */
 	err = clk_prepare_enable(machine->clk_cdev1);
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(dev, err,
 				     "can't enable cdev1\n");
+=======
+	if (err) {
+		dev_err(dev, "Can't enable cdev1: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = devm_snd_soc_register_card(dev, card);
 	if (err)
@@ -1001,6 +1096,7 @@ static const struct tegra_asoc_data tegra_rt5631_data = {
 	.add_hp_jack = true,
 };
 
+<<<<<<< HEAD
 /* CPCAP machine */
 
 SND_SOC_DAILINK_DEFS(cpcap_hifi,
@@ -1033,6 +1129,8 @@ static const struct tegra_asoc_data tegra_cpcap_data = {
 	.add_common_snd_ops = true,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id tegra_machine_of_match[] = {
 	{ .compatible = "nvidia,tegra-audio-trimslice", .data = &tegra_trimslice_data },
 	{ .compatible = "nvidia,tegra-audio-max98090", .data = &tegra_max98090_data },
@@ -1045,7 +1143,10 @@ static const struct of_device_id tegra_machine_of_match[] = {
 	{ .compatible = "nvidia,tegra-audio-rt5640", .data = &tegra_rt5640_data },
 	{ .compatible = "nvidia,tegra-audio-alc5632", .data = &tegra_rt5632_data },
 	{ .compatible = "nvidia,tegra-audio-rt5631", .data = &tegra_rt5631_data },
+<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra-audio-cpcap", .data = &tegra_cpcap_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 MODULE_DEVICE_TABLE(of, tegra_machine_of_match);

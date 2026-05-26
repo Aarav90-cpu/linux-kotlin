@@ -509,9 +509,14 @@ int cx88_ir_fini(struct cx88_core *core)
 	if (!ir)
 		return 0;
 
+<<<<<<< HEAD
 	rc_unregister_device(ir->dev);
 	cx88_ir_stop(core);
 	rc_free_device(ir->dev);
+=======
+	cx88_ir_stop(core);
+	rc_unregister_device(ir->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ir);
 
 	/* done */

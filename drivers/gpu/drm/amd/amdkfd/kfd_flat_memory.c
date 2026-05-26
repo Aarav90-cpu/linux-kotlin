@@ -342,14 +342,28 @@ static void kfd_init_apertures_vi(struct kfd_process_device *pdd, uint8_t id)
 
 static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
 {
+<<<<<<< HEAD
 	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
+=======
+	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
+		pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
+	else
+		pdd->lds_base = MAKE_LDS_APP_BASE_V9();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
 
 	pdd->gpuvm_base = AMDGPU_VA_RESERVED_BOTTOM;
 	pdd->gpuvm_limit =
 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
 
+<<<<<<< HEAD
 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
+=======
+	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
+		pdd->scratch_base = pdd->dev->adev->gmc.private_aperture_start;
+	else
+		pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
 
 	/*
@@ -359,6 +373,7 @@ static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
 	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
 }
 
+<<<<<<< HEAD
 static void kfd_init_apertures_v12(struct kfd_process_device *pdd, uint8_t id)
 {
 	pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
@@ -378,6 +393,8 @@ static void kfd_init_apertures_v12(struct kfd_process_device *pdd, uint8_t id)
 	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kfd_init_apertures(struct kfd_process *process)
 {
 	uint8_t id  = 0;
@@ -425,11 +442,17 @@ int kfd_init_apertures(struct kfd_process *process)
 				kfd_init_apertures_vi(pdd, id);
 				break;
 			default:
+<<<<<<< HEAD
 				if (KFD_GC_VERSION(dev) >= IP_VERSION(12, 1, 0)) {
 					kfd_init_apertures_v12(pdd, id);
 				} else if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1)) {
 					kfd_init_apertures_v9(pdd, id);
 				} else {
+=======
+				if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1))
+					kfd_init_apertures_v9(pdd, id);
+				else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					WARN(1, "Unexpected ASIC family %u",
 					     dev->adev->asic_type);
 					return -EINVAL;

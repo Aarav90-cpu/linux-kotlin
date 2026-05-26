@@ -49,8 +49,11 @@ struct devlink {
 	struct xarray snapshot_ids;
 	struct devlink_dev_stats stats;
 	struct device *dev;
+<<<<<<< HEAD
 	const char *dev_name_index;
 	const struct device_driver *dev_driver;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	possible_net_t _net;
 	/* Serializes access to devlink instance specific objects such as
 	 * port, sb, dpipe, resource, params, region, traps and more.
@@ -68,6 +71,7 @@ struct devlink {
 extern struct xarray devlinks;
 extern struct genl_family devlink_nl_family;
 
+<<<<<<< HEAD
 struct devlink *__devlink_alloc(const struct devlink_ops *ops, size_t priv_size,
 				struct net *net, struct device *dev,
 				const struct device_driver *dev_driver);
@@ -81,6 +85,8 @@ struct devlink *__devlink_alloc(const struct devlink_ops *ops, size_t priv_size,
 				devlink_dev_name(devlink), ##args);	\
 	} while (0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* devlink instances are open to the access from the user space after
  * devlink_register() call. Such logical barrier allows us to have certain
  * expectations related to locking.
@@ -105,7 +111,10 @@ struct devlink *__devlink_alloc(const struct devlink_ops *ops, size_t priv_size,
 	for (index = 0; (devlink = devlinks_xa_find_get(net, &index)); index++)
 
 struct devlink *devlinks_xa_find_get(struct net *net, unsigned long *indexp);
+<<<<<<< HEAD
 struct devlink *devlinks_xa_lookup_get(struct net *net, unsigned long index);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool __devl_is_registered(struct devlink *devlink)
 {
@@ -120,7 +129,11 @@ static inline bool devl_is_registered(struct devlink *devlink)
 
 static inline void devl_dev_lock(struct devlink *devlink, bool dev_lock)
 {
+<<<<<<< HEAD
 	if (dev_lock && devlink->dev)
+=======
+	if (dev_lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		device_lock(devlink->dev);
 	devl_lock(devlink);
 }
@@ -128,7 +141,11 @@ static inline void devl_dev_lock(struct devlink *devlink, bool dev_lock)
 static inline void devl_dev_unlock(struct devlink *devlink, bool dev_lock)
 {
 	devl_unlock(devlink);
+<<<<<<< HEAD
 	if (dev_lock && devlink->dev)
+=======
+	if (dev_lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		device_unlock(devlink->dev);
 }
 
@@ -164,11 +181,14 @@ struct devlink_nl_dump_state {
 		struct {
 			u64 dump_ts;
 		};
+<<<<<<< HEAD
 		/* DEVLINK_CMD_RESOURCE_DUMP */
 		struct {
 			u32 index;
 			bool index_valid;
 		} port_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -195,11 +215,17 @@ devlink_dump_state(struct netlink_callback *cb)
 static inline int
 devlink_nl_put_handle(struct sk_buff *msg, struct devlink *devlink)
 {
+<<<<<<< HEAD
 	if (nla_put_string(msg, DEVLINK_ATTR_BUS_NAME, devlink_bus_name(devlink)))
 		return -EMSGSIZE;
 	if (nla_put_string(msg, DEVLINK_ATTR_DEV_NAME, devlink_dev_name(devlink)))
 		return -EMSGSIZE;
 	if (nla_put_uint(msg, DEVLINK_ATTR_INDEX, devlink->index))
+=======
+	if (nla_put_string(msg, DEVLINK_ATTR_BUS_NAME, devlink->dev->bus->name))
+		return -EMSGSIZE;
+	if (nla_put_string(msg, DEVLINK_ATTR_DEV_NAME, dev_name(devlink->dev)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EMSGSIZE;
 	return 0;
 }
@@ -225,8 +251,11 @@ struct devlink_obj_desc {
 	const char *dev_name;
 	unsigned int port_index;
 	bool port_index_valid;
+<<<<<<< HEAD
 	unsigned int devlink_index;
 	bool devlink_index_valid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long data[];
 };
 
@@ -234,10 +263,15 @@ static inline void devlink_nl_obj_desc_init(struct devlink_obj_desc *desc,
 					    struct devlink *devlink)
 {
 	memset(desc, 0, sizeof(*desc));
+<<<<<<< HEAD
 	desc->bus_name = devlink_bus_name(devlink);
 	desc->dev_name = devlink_dev_name(devlink);
 	desc->devlink_index = devlink->index;
 	desc->devlink_index_valid = true;
+=======
+	desc->bus_name = devlink->dev->bus->name;
+	desc->dev_name = dev_name(devlink->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void devlink_nl_obj_desc_port_set(struct devlink_obj_desc *desc,

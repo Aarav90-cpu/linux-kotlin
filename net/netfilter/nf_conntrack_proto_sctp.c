@@ -466,6 +466,7 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
 			if (!ih)
 				goto out_unlock;
 
+<<<<<<< HEAD
 			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
 			if (old_state == SCTP_CONNTRACK_NONE ||
 			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
@@ -473,6 +474,11 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
 					ct->proto.sctp.init[!dir] = 0;
 				ct->proto.sctp.init[dir] = 1;
 			}
+=======
+			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
+				ct->proto.sctp.init[!dir] = 0;
+			ct->proto.sctp.init[dir] = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
 			ct->proto.sctp.vtag[!dir] = ih->init_tag;

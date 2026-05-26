@@ -18,7 +18,11 @@ char *btrfs_get_subvol_name_from_objectid(struct btrfs_fs_info *fs_info,
 					  u64 subvol_objectid);
 void btrfs_set_free_space_cache_settings(struct btrfs_fs_info *fs_info);
 
+<<<<<<< HEAD
 static inline struct btrfs_fs_info *btrfs_sb(const struct super_block *sb)
+=======
+static inline struct btrfs_fs_info *btrfs_sb(struct super_block *sb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return sb->s_fs_info;
 }

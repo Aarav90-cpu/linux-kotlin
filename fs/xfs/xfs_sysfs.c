@@ -13,7 +13,10 @@
 #include "xfs_log.h"
 #include "xfs_log_priv.h"
 #include "xfs_mount.h"
+<<<<<<< HEAD
 #include "xfs_zone_priv.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xfs_zones.h"
 #include "xfs_zone_alloc.h"
 
@@ -721,6 +724,7 @@ max_open_zones_show(
 XFS_SYSFS_ATTR_RO(max_open_zones);
 
 static ssize_t
+<<<<<<< HEAD
 nr_open_zones_show(
 	struct kobject		*kobj,
 	char			*buf)
@@ -732,6 +736,8 @@ nr_open_zones_show(
 XFS_SYSFS_ATTR_RO(nr_open_zones);
 
 static ssize_t
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 zonegc_low_space_store(
 	struct kobject		*kobj,
 	const char		*buf,
@@ -768,7 +774,10 @@ XFS_SYSFS_ATTR_RW(zonegc_low_space);
 
 static struct attribute *xfs_zoned_attrs[] = {
 	ATTR_LIST(max_open_zones),
+<<<<<<< HEAD
 	ATTR_LIST(nr_open_zones),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ATTR_LIST(zonegc_low_space),
 	NULL,
 };

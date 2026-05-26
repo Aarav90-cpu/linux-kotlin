@@ -29,13 +29,20 @@ of many distributions, e.g. :
  - Ubuntu
  - OpenSUSE
  - Arch Linux
+<<<<<<< HEAD
  - Gentoo
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  - NetBSD
  - FreeBSD
 
 Some distribution packages are obsolete and it is recommended
 to use the latest version released from the Coccinelle homepage at
+<<<<<<< HEAD
 https://coccinelle.gitlabpages.inria.fr/website
+=======
+http://coccinelle.lip6.fr/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Or from Github at:
 
@@ -61,7 +68,11 @@ Supplemental documentation
 
 For supplemental documentation refer to the wiki:
 
+<<<<<<< HEAD
 https://bottest.wiki.kernel.org/coccicheck.html
+=======
+https://bottest.wiki.kernel.org/coccicheck
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 The wiki documentation always refers to the linux-next version of the script.
 

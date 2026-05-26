@@ -74,7 +74,11 @@ static int regmap_sdw_mbq_poll_busy(struct sdw_slave *slave, unsigned int reg,
 
 static int regmap_sdw_mbq_write_impl(struct sdw_slave *slave,
 				     unsigned int reg, unsigned int val,
+<<<<<<< HEAD
 				     int mbq_size)
+=======
+				     int mbq_size, bool deferrable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int shift = mbq_size * BITS_PER_BYTE;
 	int ret;
@@ -88,14 +92,25 @@ static int regmap_sdw_mbq_write_impl(struct sdw_slave *slave,
 			return ret;
 	}
 
+<<<<<<< HEAD
 	return sdw_write_no_pm(slave, reg, val & 0xff);
+=======
+	ret = sdw_write_no_pm(slave, reg, val & 0xff);
+	if (deferrable && ret == -ENODATA)
+		return -EAGAIN;
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int regmap_sdw_mbq_write(void *context, unsigned int reg, unsigned int val)
 {
 	struct regmap_mbq_context *ctx = context;
 	struct sdw_slave *slave = ctx->sdw;
+<<<<<<< HEAD
 	struct device *dev = ctx->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool deferrable = regmap_sdw_mbq_deferrable(ctx, reg);
 	int mbq_size = regmap_sdw_mbq_size(ctx, reg);
 	int ret;
@@ -110,16 +125,25 @@ static int regmap_sdw_mbq_write(void *context, unsigned int reg, unsigned int va
 	 * process a single wait/timeout on function busy and a single retry
 	 * of the transaction.
 	 */
+<<<<<<< HEAD
 	ret = regmap_sdw_mbq_write_impl(slave, reg, val, mbq_size);
 	if (ret == -ENODATA) {
 		if (!deferrable)
 			dev_warn(dev, "Defer on undeferrable control: %x\n", reg);
 
+=======
+	ret = regmap_sdw_mbq_write_impl(slave, reg, val, mbq_size, deferrable);
+	if (ret == -EAGAIN) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = regmap_sdw_mbq_poll_busy(slave, reg, ctx);
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		ret = regmap_sdw_mbq_write_impl(slave, reg, val, mbq_size);
+=======
+		ret = regmap_sdw_mbq_write_impl(slave, reg, val, mbq_size, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -127,14 +151,27 @@ static int regmap_sdw_mbq_write(void *context, unsigned int reg, unsigned int va
 
 static int regmap_sdw_mbq_read_impl(struct sdw_slave *slave,
 				    unsigned int reg, unsigned int *val,
+<<<<<<< HEAD
 				    int mbq_size)
+=======
+				    int mbq_size, bool deferrable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int shift = BITS_PER_BYTE;
 	int read;
 
 	read = sdw_read_no_pm(slave, reg);
+<<<<<<< HEAD
 	if (read < 0)
 		return read;
+=======
+	if (read < 0) {
+		if (deferrable && read == -ENODATA)
+			return -EAGAIN;
+
+		return read;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*val = read;
 
@@ -154,7 +191,10 @@ static int regmap_sdw_mbq_read(void *context, unsigned int reg, unsigned int *va
 {
 	struct regmap_mbq_context *ctx = context;
 	struct sdw_slave *slave = ctx->sdw;
+<<<<<<< HEAD
 	struct device *dev = ctx->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool deferrable = regmap_sdw_mbq_deferrable(ctx, reg);
 	int mbq_size = regmap_sdw_mbq_size(ctx, reg);
 	int ret;
@@ -169,16 +209,25 @@ static int regmap_sdw_mbq_read(void *context, unsigned int reg, unsigned int *va
 	 * process a single wait/timeout on function busy and a single retry
 	 * of the transaction.
 	 */
+<<<<<<< HEAD
 	ret = regmap_sdw_mbq_read_impl(slave, reg, val, mbq_size);
 	if (ret == -ENODATA) {
 		if (!deferrable)
 			dev_warn(dev, "Defer on undeferrable control: %x\n", reg);
 
+=======
+	ret = regmap_sdw_mbq_read_impl(slave, reg, val, mbq_size, deferrable);
+	if (ret == -EAGAIN) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = regmap_sdw_mbq_poll_busy(slave, reg, ctx);
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		ret = regmap_sdw_mbq_read_impl(slave, reg, val, mbq_size);
+=======
+		ret = regmap_sdw_mbq_read_impl(slave, reg, val, mbq_size, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;

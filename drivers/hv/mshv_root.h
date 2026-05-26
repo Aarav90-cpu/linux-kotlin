@@ -17,7 +17,10 @@
 #include <linux/build_bug.h>
 #include <linux/mmu_notifier.h>
 #include <uapi/linux/mshv.h>
+<<<<<<< HEAD
 #include "mshv_trace.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Hypervisor must be between these version numbers (inclusive)

@@ -105,7 +105,11 @@ static void *allocate_flush(gfp_t gfp_mask, void *pool_data)
 	if ((gfp_mask & GFP_NOWAIT) == GFP_NOWAIT) {
 		flush = vdo_allocate_memory_nowait(sizeof(struct vdo_flush), __func__);
 	} else {
+<<<<<<< HEAD
 		int result = vdo_allocate(1, __func__, &flush);
+=======
+		int result = vdo_allocate(1, struct vdo_flush, __func__, &flush);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (result != VDO_SUCCESS)
 			vdo_log_error_strerror(result, "failed to allocate spare flush");
@@ -134,7 +138,11 @@ static void free_flush(void *element, void *pool_data __always_unused)
  */
 int vdo_make_flusher(struct vdo *vdo)
 {
+<<<<<<< HEAD
 	int result = vdo_allocate(1, __func__, &vdo->flusher);
+=======
+	int result = vdo_allocate(1, struct flusher, __func__, &vdo->flusher);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (result != VDO_SUCCESS)
 		return result;

@@ -951,9 +951,13 @@ static int fs_enet_probe(struct platform_device *ofdev)
 	spin_lock_init(&fep->lock);
 	spin_lock_init(&fep->tx_lock);
 
+<<<<<<< HEAD
 	ret = of_get_ethdev_address(ofdev->dev.of_node, ndev);
 	if (ret == -EPROBE_DEFER)
 		goto out_cleanup_data;
+=======
+	of_get_ethdev_address(ofdev->dev.of_node, ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = fep->ops->allocate_bd(ndev);
 	if (ret)

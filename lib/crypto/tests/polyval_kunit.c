@@ -2,7 +2,11 @@
 /*
  * Copyright 2025 Google LLC
  */
+<<<<<<< HEAD
 #include <crypto/gf128hash.h>
+=======
+#include <crypto/polyval.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "polyval-testvecs.h"
 
 /*

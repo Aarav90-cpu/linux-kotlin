@@ -89,7 +89,11 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
 		if (!vma)
 			return;
 		if (!is_vm_hugetlb_page(vma))
+<<<<<<< HEAD
 			zap_vma_range(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+=======
+			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmaddr = vma->vm_end;
 	}
 }

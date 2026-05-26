@@ -110,6 +110,10 @@ examples:
 
                 port@9 {
                     reg = <9>;
+<<<<<<< HEAD
+=======
+                    label = "cpu";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     ethernet = <&gmac0>;
                     phy-mode = "usxgmii";
 

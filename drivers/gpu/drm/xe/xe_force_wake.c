@@ -148,6 +148,15 @@ static int domain_sleep_wait(struct xe_gt *gt,
 	return __domain_wait(gt, domain, false);
 }
 
+<<<<<<< HEAD
+=======
+#define for_each_fw_domain_masked(domain__, mask__, fw__, tmp__) \
+	for (tmp__ = (mask__); tmp__; tmp__ &= ~BIT(ffs(tmp__) - 1)) \
+		for_each_if((domain__ = ((fw__)->domains + \
+					 (ffs(tmp__) - 1))) && \
+					 domain__->reg_ctl.addr)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_force_wake_get() : Increase the domain refcount
  * @fw: struct xe_force_wake
@@ -260,6 +269,7 @@ void xe_force_wake_put(struct xe_force_wake *fw, unsigned int fw_ref)
 	xe_gt_WARN(gt, ack_fail, "Forcewake domain%s %#x failed to acknowledge sleep request\n",
 		   str_plural(hweight_long(ack_fail)), ack_fail);
 }
+<<<<<<< HEAD
 
 const char *xe_force_wake_domain_to_str(enum xe_force_wake_domain_id id)
 {
@@ -300,3 +310,5 @@ const char *xe_force_wake_domain_to_str(enum xe_force_wake_domain_id id)
 		return "Unknown";
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

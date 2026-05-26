@@ -8,7 +8,10 @@
 
 #include <linux/bitops.h>
 #include <linux/in6.h>
+<<<<<<< HEAD
 #include <linux/uaccess.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Computes the checksum of a memory block at src, length len,
  * and adds in "sum" (32-bit), while copying the block to dst.
@@ -22,6 +25,7 @@
 extern __wsum csum_partial_copy_generic(const void *src, void *dst, int len);
 
 #define _HAVE_ARCH_COPY_AND_CSUM_FROM_USER
+<<<<<<< HEAD
 static inline __wsum csum_and_copy_from_user(const void __user *src, void *dst, int len)
 {
 	scoped_user_read_access_size(src, len, efault)
@@ -40,6 +44,13 @@ static inline __wsum csum_and_copy_to_user(const void *src, void __user *dst, in
 efault:
 	return 0;
 }
+=======
+extern __wsum csum_and_copy_from_user(const void __user *src, void *dst,
+				      int len);
+#define HAVE_CSUM_COPY_USER
+extern __wsum csum_and_copy_to_user(const void *src, void __user *dst,
+				    int len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define _HAVE_ARCH_CSUM_AND_COPY
 #define csum_partial_copy_nocheck(src, dst, len)   \

@@ -46,9 +46,14 @@
 static void __mutex_init_generic(struct mutex *lock)
 {
 	atomic_long_set(&lock->owner, 0);
+<<<<<<< HEAD
 	scoped_guard (raw_spinlock_init, &lock->wait_lock) {
 		lock->first_waiter = NULL;
 	}
+=======
+	raw_spin_lock_init(&lock->wait_lock);
+	INIT_LIST_HEAD(&lock->wait_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
 	osq_lock_init(&lock->osq);
 #endif
@@ -151,7 +156,10 @@ EXPORT_SYMBOL(mutex_init_generic);
  * follow with a __mutex_trylock() before failing.
  */
 static __always_inline bool __mutex_trylock_fast(struct mutex *lock)
+<<<<<<< HEAD
 	__cond_acquires(true, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long curr = (unsigned long)current;
 	unsigned long zero = 0UL;
@@ -165,7 +173,10 @@ static __always_inline bool __mutex_trylock_fast(struct mutex *lock)
 }
 
 static __always_inline bool __mutex_unlock_fast(struct mutex *lock)
+<<<<<<< HEAD
 	__cond_releases(true, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long curr = (unsigned long)current;
 
@@ -174,7 +185,11 @@ static __always_inline bool __mutex_unlock_fast(struct mutex *lock)
 
 #else /* !CONFIG_DEBUG_LOCK_ALLOC */
 
+<<<<<<< HEAD
 void mutex_init_lockdep(struct mutex *lock, const char *name, struct lock_class_key *key)
+=======
+void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_key *key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__mutex_init_generic(lock);
 
@@ -184,7 +199,11 @@ void mutex_init_lockdep(struct mutex *lock, const char *name, struct lock_class_
 	debug_check_no_locks_freed((void *)lock, sizeof(*lock));
 	lockdep_init_map_wait(&lock->dep_map, name, key, 0, LD_WAIT_SLEEP);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mutex_init_lockdep);
+=======
+EXPORT_SYMBOL(mutex_init_lockep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_DEBUG_LOCK_ALLOC */
 
 static inline void __mutex_set_flag(struct mutex *lock, unsigned long flag)
@@ -197,6 +216,7 @@ static inline void __mutex_clear_flag(struct mutex *lock, unsigned long flag)
 	atomic_long_andnot(flag, &lock->owner);
 }
 
+<<<<<<< HEAD
 /*
  * Add @waiter to the @lock wait_list and set the FLAG_WAITERS flag if it's
  * the first waiter.
@@ -235,10 +255,32 @@ __mutex_add_waiter(struct mutex *lock, struct mutex_waiter *waiter,
 	INIT_LIST_HEAD(&waiter->list);
 	lock->first_waiter = waiter;
 	__mutex_set_flag(lock, MUTEX_FLAG_WAITERS);
+=======
+static inline bool __mutex_waiter_is_first(struct mutex *lock, struct mutex_waiter *waiter)
+{
+	return list_first_entry(&lock->wait_list, struct mutex_waiter, list) == waiter;
+}
+
+/*
+ * Add @waiter to a given location in the lock wait_list and set the
+ * FLAG_WAITERS flag if it's the first waiter.
+ */
+static void
+__mutex_add_waiter(struct mutex *lock, struct mutex_waiter *waiter,
+		   struct list_head *list)
+{
+	hung_task_set_blocker(lock, BLOCKER_TYPE_MUTEX);
+	debug_mutex_add_waiter(lock, waiter, current);
+
+	list_add_tail(&waiter->list, list);
+	if (__mutex_waiter_is_first(lock, waiter))
+		__mutex_set_flag(lock, MUTEX_FLAG_WAITERS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
 __mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
 {
 	if (list_empty(&waiter->list)) {
@@ -249,6 +291,12 @@ __mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter)
 			lock->first_waiter = list_next_entry(waiter, list);
 		list_del(&waiter->list);
 	}
+=======
+{
+	list_del(&waiter->list);
+	if (likely(list_empty(&lock->wait_list)))
+		__mutex_clear_flag(lock, MUTEX_FLAGS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	debug_mutex_remove_waiter(lock, waiter, current);
 	hung_task_clear_blocker();
@@ -287,8 +335,12 @@ static void __mutex_handoff(struct mutex *lock, struct task_struct *task)
  * We also put the fastpath first in the kernel image, to make sure the
  * branch is predicted by the CPU as default-untaken.
  */
+<<<<<<< HEAD
 static void __sched __mutex_lock_slowpath(struct mutex *lock)
 	__acquires(lock);
+=======
+static void __sched __mutex_lock_slowpath(struct mutex *lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * mutex_lock - acquire the mutex
@@ -369,7 +421,11 @@ bool ww_mutex_spin_on_owner(struct mutex *lock, struct ww_acquire_ctx *ww_ctx,
 	 * Similarly, stop spinning if we are no longer the
 	 * first waiter.
 	 */
+<<<<<<< HEAD
 	if (waiter && data_race(lock->first_waiter != waiter))
+=======
+	if (waiter && !__mutex_waiter_is_first(lock, waiter))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return true;
@@ -554,8 +610,12 @@ mutex_optimistic_spin(struct mutex *lock, struct ww_acquire_ctx *ww_ctx,
 }
 #endif
 
+<<<<<<< HEAD
 static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigned long ip)
 	__releases(lock);
+=======
+static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigned long ip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * mutex_unlock - release the mutex
@@ -595,7 +655,10 @@ EXPORT_SYMBOL(mutex_unlock);
  * of a unlocked mutex is not allowed.
  */
 void __sched ww_mutex_unlock(struct ww_mutex *lock)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__ww_mutex_unlock(lock);
 	mutex_unlock(&lock->base);
@@ -609,7 +672,10 @@ static __always_inline int __sched
 __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclass,
 		    struct lockdep_map *nest_lock, unsigned long ip,
 		    struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	DEFINE_WAKE_Q(wake_q);
 	struct mutex_waiter waiter;
@@ -677,7 +743,11 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 
 	if (!use_ww_ctx) {
 		/* add waiting tasks to the end of the waitqueue (FIFO): */
+<<<<<<< HEAD
 		__mutex_add_waiter(lock, &waiter, NULL);
+=======
+		__mutex_add_waiter(lock, &waiter, &lock->wait_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * Add in stamp order, waking up waiters that must kill
@@ -688,7 +758,10 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 			goto err_early_kill;
 	}
 
+<<<<<<< HEAD
 	raw_spin_lock(&current->blocked_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__set_task_blocked_on(current, lock);
 	set_current_state(state);
 	trace_contention_begin(lock, LCB_F_MUTEX);
@@ -702,9 +775,14 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 		 * the handoff.
 		 */
 		if (__mutex_trylock(lock))
+<<<<<<< HEAD
 			break;
 
 		raw_spin_unlock(&current->blocked_lock);
+=======
+			goto acquired;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Check for signals and kill conditions while holding
 		 * wait_lock. This ensures the lock cancellation is ordered
@@ -725,16 +803,25 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 
 		schedule_preempt_disabled();
 
+<<<<<<< HEAD
 		first = lock->first_waiter == &waiter;
 
 		raw_spin_lock_irqsave(&lock->wait_lock, flags);
 		raw_spin_lock(&current->blocked_lock);
+=======
+		first = __mutex_waiter_is_first(lock, &waiter);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * As we likely have been woken up by task
 		 * that has cleared our blocked_on state, re-set
 		 * it to the lock we are trying to acquire.
 		 */
+<<<<<<< HEAD
 		__set_task_blocked_on(current, lock);
+=======
+		set_task_blocked_on(current, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_current_state(state);
 		/*
 		 * Here we order against unlock; we must either see it change
@@ -745,6 +832,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 			break;
 
 		if (first) {
+<<<<<<< HEAD
 			bool opt_acquired;
 
 			/*
@@ -772,13 +860,39 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 	__clear_task_blocked_on(current, lock);
 	__set_current_state(TASK_RUNNING);
 	raw_spin_unlock(&current->blocked_lock);
+=======
+			trace_contention_begin(lock, LCB_F_MUTEX | LCB_F_SPIN);
+			/*
+			 * mutex_optimistic_spin() can call schedule(), so
+			 * clear blocked on so we don't become unselectable
+			 * to run.
+			 */
+			clear_task_blocked_on(current, lock);
+			if (mutex_optimistic_spin(lock, ww_ctx, &waiter))
+				break;
+			set_task_blocked_on(current, lock);
+			trace_contention_begin(lock, LCB_F_MUTEX);
+		}
+
+		raw_spin_lock_irqsave(&lock->wait_lock, flags);
+	}
+	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+acquired:
+	__clear_task_blocked_on(current, lock);
+	__set_current_state(TASK_RUNNING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ww_ctx) {
 		/*
 		 * Wound-Wait; we stole the lock (!first_waiter), check the
 		 * waiters as anyone might want to wound us.
 		 */
+<<<<<<< HEAD
 		if (!ww_ctx->is_wait_die && lock->first_waiter != &waiter)
+=======
+		if (!ww_ctx->is_wait_die &&
+		    !__mutex_waiter_is_first(lock, &waiter))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
 	}
 
@@ -799,11 +913,19 @@ skip_wait:
 	return 0;
 
 err:
+<<<<<<< HEAD
 	clear_task_blocked_on(current, lock);
 	__set_current_state(TASK_RUNNING);
 	__mutex_remove_waiter(lock, &waiter);
 err_early_kill:
 	WARN_ON(get_task_blocked_on(current));
+=======
+	__clear_task_blocked_on(current, lock);
+	__set_current_state(TASK_RUNNING);
+	__mutex_remove_waiter(lock, &waiter);
+err_early_kill:
+	WARN_ON(__get_task_blocked_on(current));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_contention_end(lock, ret);
 	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
 	debug_mutex_free_waiter(&waiter);
@@ -815,7 +937,10 @@ err_early_kill:
 static int __sched
 __mutex_lock(struct mutex *lock, unsigned int state, unsigned int subclass,
 	     struct lockdep_map *nest_lock, unsigned long ip)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __mutex_lock_common(lock, state, subclass, nest_lock, ip, NULL, false);
 }
@@ -823,7 +948,10 @@ __mutex_lock(struct mutex *lock, unsigned int state, unsigned int subclass,
 static int __sched
 __ww_mutex_lock(struct mutex *lock, unsigned int state, unsigned int subclass,
 		unsigned long ip, struct ww_acquire_ctx *ww_ctx)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __mutex_lock_common(lock, state, subclass, NULL, ip, ww_ctx, true);
 }
@@ -871,7 +999,10 @@ void __sched
 mutex_lock_nested(struct mutex *lock, unsigned int subclass)
 {
 	__mutex_lock(lock, TASK_UNINTERRUPTIBLE, subclass, NULL, _RET_IP_);
+<<<<<<< HEAD
 	__acquire(lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 EXPORT_SYMBOL_GPL(mutex_lock_nested);
@@ -880,7 +1011,10 @@ void __sched
 _mutex_lock_nest_lock(struct mutex *lock, struct lockdep_map *nest)
 {
 	__mutex_lock(lock, TASK_UNINTERRUPTIBLE, 0, nest, _RET_IP_);
+<<<<<<< HEAD
 	__acquire(lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(_mutex_lock_nest_lock);
 
@@ -909,14 +1043,20 @@ mutex_lock_io_nested(struct mutex *lock, unsigned int subclass)
 	token = io_schedule_prepare();
 	__mutex_lock_common(lock, TASK_UNINTERRUPTIBLE,
 			    subclass, NULL, _RET_IP_, NULL, 0);
+<<<<<<< HEAD
 	__acquire(lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	io_schedule_finish(token);
 }
 EXPORT_SYMBOL_GPL(mutex_lock_io_nested);
 
 static inline int
 ww_mutex_deadlock_injection(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__cond_releases(nonzero, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
 	unsigned tmp;
@@ -978,16 +1118,24 @@ EXPORT_SYMBOL_GPL(ww_mutex_lock_interruptible);
  * Release the lock, slowpath:
  */
 static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigned long ip)
+<<<<<<< HEAD
 	__releases(lock)
 {
 	struct task_struct *next = NULL;
 	struct mutex_waiter *waiter;
+=======
+{
+	struct task_struct *next = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DEFINE_WAKE_Q(wake_q);
 	unsigned long owner;
 	unsigned long flags;
 
 	mutex_release(&lock->dep_map, ip);
+<<<<<<< HEAD
 	__release(lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Release the lock before (potentially) taking the spinlock such that
@@ -1014,12 +1162,25 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
 
 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
 	debug_mutex_unlock(lock);
+<<<<<<< HEAD
 	waiter = lock->first_waiter;
 	if (waiter) {
 		next = waiter->task;
 
 		debug_mutex_wake_waiter(lock, waiter);
 		set_task_blocked_on_waking(next, lock);
+=======
+	if (!list_empty(&lock->wait_list)) {
+		/* get the first entry from the wait-list: */
+		struct mutex_waiter *waiter =
+			list_first_entry(&lock->wait_list,
+					 struct mutex_waiter, list);
+
+		next = waiter->task;
+
+		debug_mutex_wake_waiter(lock, waiter);
+		__clear_task_blocked_on(next, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wake_q_add(&wake_q, next);
 	}
 
@@ -1109,29 +1270,43 @@ EXPORT_SYMBOL_GPL(mutex_lock_io);
 
 static noinline void __sched
 __mutex_lock_slowpath(struct mutex *lock)
+<<<<<<< HEAD
 	__acquires(lock)
 {
 	__mutex_lock(lock, TASK_UNINTERRUPTIBLE, 0, NULL, _RET_IP_);
 	__acquire(lock);
+=======
+{
+	__mutex_lock(lock, TASK_UNINTERRUPTIBLE, 0, NULL, _RET_IP_);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static noinline int __sched
 __mutex_lock_killable_slowpath(struct mutex *lock)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __mutex_lock(lock, TASK_KILLABLE, 0, NULL, _RET_IP_);
 }
 
 static noinline int __sched
 __mutex_lock_interruptible_slowpath(struct mutex *lock)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __mutex_lock(lock, TASK_INTERRUPTIBLE, 0, NULL, _RET_IP_);
 }
 
 static noinline int __sched
 __ww_mutex_lock_slowpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __ww_mutex_lock(&lock->base, TASK_UNINTERRUPTIBLE, 0,
 			       _RET_IP_, ctx);
@@ -1140,7 +1315,10 @@ __ww_mutex_lock_slowpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
 static noinline int __sched
 __ww_mutex_lock_interruptible_slowpath(struct ww_mutex *lock,
 					    struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__cond_acquires(0, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __ww_mutex_lock(&lock->base, TASK_INTERRUPTIBLE, 0,
 			       _RET_IP_, ctx);

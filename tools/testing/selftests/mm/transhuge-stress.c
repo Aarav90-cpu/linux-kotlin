@@ -17,7 +17,10 @@
 #include <sys/mman.h>
 #include "vm_util.h"
 #include "kselftest.h"
+<<<<<<< HEAD
 #include "thp_settings.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int backing_fd = -1;
 int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
@@ -38,9 +41,12 @@ int main(int argc, char **argv)
 
 	ksft_print_header();
 
+<<<<<<< HEAD
 	if (!thp_is_enabled())
 		ksft_exit_skip("Transparent Hugepages not available\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ram = sysconf(_SC_PHYS_PAGES);
 	if (ram > SIZE_MAX / psize() / 4)
 		ram = SIZE_MAX / 4;

@@ -32,6 +32,7 @@ kms_flip@plain-flip-ts-check
 # IGT Version: 1.28-ga73311079
 # Linux Version: 6.11.0-rc2
 kms_cursor_crc@cursor-alpha-opaque
+<<<<<<< HEAD
 
 # Board Name: rk3288-veyron-jaq
 # Bug Report: https://lore.kernel.org/dri-devel/acfd5838-d861-4dd9-97c3-99fffc9bfa04@collabora.com/T/#u
@@ -53,3 +54,5 @@ kms_flip@flip-vs-dpms-on-nop-interruptible
 # IGT Version: 2.1-g26ddb59c1
 # Linux Version: 6.16.0-rc2
 kms_flip@plain-flip-fb-recreate
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

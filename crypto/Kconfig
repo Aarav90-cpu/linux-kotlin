@@ -2,6 +2,11 @@
 #
 # Generic algorithms support
 #
+<<<<<<< HEAD
+=======
+config XOR_BLOCKS
+	tristate
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #
 # async_tx api: hardware offloaded memory transfer/transform support
@@ -23,7 +28,11 @@ menu "Crypto core or helper"
 
 config CRYPTO_FIPS
 	bool "FIPS 200 compliance"
+<<<<<<< HEAD
 	depends on CRYPTO_DRBG=y && CRYPTO_SELFTESTS
+=======
+	depends on CRYPTO_DRBG && CRYPTO_SELFTESTS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on (MODULE_SIG || !MODULES)
 	help
 	  This option enables the fips boot option which is
@@ -107,6 +116,13 @@ config CRYPTO_RNG2
 	tristate
 	select CRYPTO_ALGAPI2
 
+<<<<<<< HEAD
+=======
+config CRYPTO_RNG_DEFAULT
+	tristate
+	select CRYPTO_DRBG_MENU
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_AKCIPHER2
 	tristate
 	select CRYPTO_ALGAPI2
@@ -135,6 +151,15 @@ config CRYPTO_ACOMP
 	select CRYPTO_ALGAPI
 	select CRYPTO_ACOMP2
 
+<<<<<<< HEAD
+=======
+config CRYPTO_HKDF
+	tristate
+	select CRYPTO_SHA256 if CRYPTO_SELFTESTS
+	select CRYPTO_SHA512 if CRYPTO_SELFTESTS
+	select CRYPTO_HASH2
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_MANAGER
 	tristate
 	default CRYPTO_ALGAPI if CRYPTO_SELFTESTS
@@ -145,6 +170,7 @@ config CRYPTO_MANAGER
 
 config CRYPTO_MANAGER2
 	def_tristate CRYPTO_MANAGER || (CRYPTO_MANAGER!=n && CRYPTO_ALGAPI=y)
+<<<<<<< HEAD
 	select CRYPTO_ACOMP2 if CRYPTO_SELFTESTS
 	select CRYPTO_AEAD2 if CRYPTO_SELFTESTS
 	select CRYPTO_AKCIPHER2 if CRYPTO_SELFTESTS
@@ -153,12 +179,25 @@ config CRYPTO_MANAGER2
 	select CRYPTO_KPP2 if CRYPTO_SELFTESTS
 	select CRYPTO_RNG2 if CRYPTO_SELFTESTS
 	select CRYPTO_SKCIPHER2 if CRYPTO_SELFTESTS
+=======
+	select CRYPTO_ACOMP2
+	select CRYPTO_AEAD2
+	select CRYPTO_AKCIPHER2
+	select CRYPTO_SIG2
+	select CRYPTO_HASH2
+	select CRYPTO_KPP2
+	select CRYPTO_RNG2
+	select CRYPTO_SKCIPHER2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config CRYPTO_USER
 	tristate "Userspace cryptographic algorithm configuration"
 	depends on NET
 	select CRYPTO_MANAGER
+<<<<<<< HEAD
 	select CRYPTO_RNG
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Userspace configuration for cryptographic instantiations such as
 	  cbc(aes).
@@ -213,7 +252,10 @@ config CRYPTO_PCRYPT
 
 config CRYPTO_CRYPTD
 	tristate "Software async crypto daemon"
+<<<<<<< HEAD
 	select CRYPTO_AEAD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_SKCIPHER
 	select CRYPTO_HASH
 	select CRYPTO_MANAGER
@@ -247,10 +289,14 @@ config CRYPTO_KRB5ENC
 config CRYPTO_BENCHMARK
 	tristate "Crypto benchmarking module"
 	depends on m || EXPERT
+<<<<<<< HEAD
 	select CRYPTO_AEAD
 	select CRYPTO_HASH
 	select CRYPTO_MANAGER
 	select CRYPTO_SKCIPHER
+=======
+	select CRYPTO_MANAGER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Quick & dirty crypto benchmarking module.
 
@@ -260,16 +306,22 @@ config CRYPTO_BENCHMARK
 
 config CRYPTO_SIMD
 	tristate
+<<<<<<< HEAD
 	select CRYPTO_AEAD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_CRYPTD
 
 config CRYPTO_ENGINE
 	tristate
+<<<<<<< HEAD
 	select CRYPTO_AEAD
 	select CRYPTO_AKCIPHER
 	select CRYPTO_HASH
 	select CRYPTO_KPP
 	select CRYPTO_SKCIPHER
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 endmenu
 
@@ -295,6 +347,10 @@ config CRYPTO_DH
 config CRYPTO_DH_RFC7919_GROUPS
 	bool "RFC 7919 FFDHE groups"
 	depends on CRYPTO_DH
+<<<<<<< HEAD
+=======
+	select CRYPTO_RNG_DEFAULT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  FFDHE (Finite-Field-based Diffie-Hellman Ephemeral) groups
 	  defined in RFC7919.
@@ -306,6 +362,10 @@ config CRYPTO_DH_RFC7919_GROUPS
 
 config CRYPTO_ECC
 	tristate
+<<<<<<< HEAD
+=======
+	select CRYPTO_RNG_DEFAULT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config CRYPTO_ECDH
 	tristate "ECDH (Elliptic Curve Diffie-Hellman)"
@@ -358,8 +418,11 @@ config CRYPTO_AES
 	tristate "AES (Advanced Encryption Standard)"
 	select CRYPTO_ALGAPI
 	select CRYPTO_LIB_AES
+<<<<<<< HEAD
 	select CRYPTO_LIB_AES_CBC_MACS if CRYPTO_CMAC || CRYPTO_XCBC || CRYPTO_CCM
 	select CRYPTO_HASH if CRYPTO_CMAC || CRYPTO_XCBC || CRYPTO_CCM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  AES cipher algorithms (Rijndael)(FIPS-197, ISO/IEC 18033-3)
 
@@ -683,7 +746,11 @@ config CRYPTO_ECB
 config CRYPTO_HCTR2
 	tristate "HCTR2"
 	select CRYPTO_XCTR
+<<<<<<< HEAD
 	select CRYPTO_LIB_GF128HASH
+=======
+	select CRYPTO_LIB_POLYVAL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_MANAGER
 	help
 	  HCTR2 length-preserving encryption mode
@@ -791,7 +858,11 @@ config CRYPTO_GCM
 	tristate "GCM (Galois/Counter Mode) and GMAC (GCM MAC)"
 	select CRYPTO_CTR
 	select CRYPTO_AEAD
+<<<<<<< HEAD
 	select CRYPTO_LIB_GF128HASH
+=======
+	select CRYPTO_GHASH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_MANAGER
 	help
 	  GCM (Galois/Counter Mode) authenticated encryption mode and GMAC
@@ -803,6 +874,10 @@ config CRYPTO_GENIV
 	tristate
 	select CRYPTO_AEAD
 	select CRYPTO_MANAGER
+<<<<<<< HEAD
+=======
+	select CRYPTO_RNG_DEFAULT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config CRYPTO_SEQIV
 	tristate "Sequence Number IV Generator"
@@ -884,6 +959,16 @@ config CRYPTO_CMAC
 	  CMAC (Cipher-based Message Authentication Code) authentication
 	  mode (NIST SP800-38B and IETF RFC4493)
 
+<<<<<<< HEAD
+=======
+config CRYPTO_GHASH
+	tristate "GHASH"
+	select CRYPTO_HASH
+	select CRYPTO_LIB_GF128MUL
+	help
+	  GCM GHASH function (NIST SP800-38D)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_HMAC
 	tristate "HMAC (Keyed-Hash MAC)"
 	select CRYPTO_HASH
@@ -907,6 +992,21 @@ config CRYPTO_MD5
 	help
 	  MD5 message digest algorithm (RFC1321), including HMAC support.
 
+<<<<<<< HEAD
+=======
+config CRYPTO_MICHAEL_MIC
+	tristate "Michael MIC"
+	select CRYPTO_HASH
+	help
+	  Michael MIC (Message Integrity Code) (IEEE 802.11i)
+
+	  Defined by the IEEE 802.11i TKIP (Temporal Key Integrity Protocol),
+	  known as WPA (Wif-Fi Protected Access).
+
+	  This algorithm is required for TKIP, but it should not be used for
+	  other purposes because of the weakness of the algorithm.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_RMD160
 	tristate "RIPEMD-160"
 	select CRYPTO_HASH
@@ -958,7 +1058,11 @@ config CRYPTO_SHA3
 	help
 	  SHA-3 secure hash algorithms (FIPS 202, ISO/IEC 10118-3)
 
+<<<<<<< HEAD
 config CRYPTO_SM3
+=======
+config CRYPTO_SM3_GENERIC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tristate "SM3 (ShangMi 3)"
 	select CRYPTO_HASH
 	select CRYPTO_LIB_SM3
@@ -1154,8 +1258,13 @@ endif	# if CRYPTO_DRBG_MENU
 
 config CRYPTO_JITTERENTROPY
 	tristate "CPU Jitter Non-Deterministic RNG (Random Number Generator)"
+<<<<<<< HEAD
 	select CRYPTO_LIB_SHA3
 	select CRYPTO_RNG
+=======
+	select CRYPTO_RNG
+	select CRYPTO_SHA3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  CPU Jitter RNG (Random Number Generator) from the Jitterentropy library
 

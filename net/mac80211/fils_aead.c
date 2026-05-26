@@ -4,11 +4,20 @@
  * Copyright 2016, Qualcomm Atheros, Inc.
  */
 
+<<<<<<< HEAD
 #include <crypto/aes-cbc-macs.h>
+=======
+#include <crypto/aes.h>
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/skcipher.h>
 #include <crypto/utils.h>
 
 #include "ieee80211_i.h"
+<<<<<<< HEAD
+=======
+#include "aes_cmac.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "fils_aead.h"
 
 static void gf_mulx(u8 *pad)
@@ -20,6 +29,7 @@ static void gf_mulx(u8 *pad)
 	put_unaligned_be64((b << 1) ^ ((a >> 63) ? 0x87 : 0), pad + 8);
 }
 
+<<<<<<< HEAD
 static int aes_s2v(const u8 *in_key, size_t key_len,
 		   size_t num_elem, const u8 *addr[], size_t len[], u8 *v)
 {
@@ -35,20 +45,45 @@ static int aes_s2v(const u8 *in_key, size_t key_len,
 
 	/* D = AES-CMAC(K, <zero>) */
 	aes_cmac(&key, tmp, AES_BLOCK_SIZE, d);
+=======
+static int aes_s2v(struct crypto_shash *tfm,
+		   size_t num_elem, const u8 *addr[], size_t len[], u8 *v)
+{
+	u8 d[AES_BLOCK_SIZE], tmp[AES_BLOCK_SIZE] = {};
+	SHASH_DESC_ON_STACK(desc, tfm);
+	size_t i;
+
+	desc->tfm = tfm;
+
+	/* D = AES-CMAC(K, <zero>) */
+	crypto_shash_digest(desc, tmp, AES_BLOCK_SIZE, d);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < num_elem - 1; i++) {
 		/* D = dbl(D) xor AES_CMAC(K, Si) */
 		gf_mulx(d); /* dbl */
+<<<<<<< HEAD
 		aes_cmac(&key, addr[i], len[i], tmp);
 		crypto_xor(d, tmp, AES_BLOCK_SIZE);
 	}
 
 	aes_cmac_init(&ctx, &key);
+=======
+		crypto_shash_digest(desc, addr[i], len[i], tmp);
+		crypto_xor(d, tmp, AES_BLOCK_SIZE);
+	}
+
+	crypto_shash_init(desc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (len[i] >= AES_BLOCK_SIZE) {
 		/* len(Sn) >= 128 */
 		/* T = Sn xorend D */
+<<<<<<< HEAD
 		aes_cmac_update(&ctx, addr[i], len[i] - AES_BLOCK_SIZE);
+=======
+		crypto_shash_update(desc, addr[i], len[i] - AES_BLOCK_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		crypto_xor(d, addr[i] + len[i] - AES_BLOCK_SIZE,
 			   AES_BLOCK_SIZE);
 	} else {
@@ -59,10 +94,15 @@ static int aes_s2v(const u8 *in_key, size_t key_len,
 		d[len[i]] ^= 0x80;
 	}
 	/* V = AES-CMAC(K, T) */
+<<<<<<< HEAD
 	aes_cmac_update(&ctx, d, AES_BLOCK_SIZE);
 	aes_cmac_final(&ctx, v);
 
 	memzero_explicit(&key, sizeof(key));
+=======
+	crypto_shash_finup(desc, d, AES_BLOCK_SIZE, v);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -73,6 +113,10 @@ static int aes_siv_encrypt(const u8 *key, size_t key_len,
 			   size_t len[], u8 *out)
 {
 	u8 v[AES_BLOCK_SIZE];
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct crypto_skcipher *tfm2;
 	struct skcipher_request *req;
 	int res;
@@ -86,7 +130,19 @@ static int aes_siv_encrypt(const u8 *key, size_t key_len,
 	num_elem++;
 
 	/* S2V */
+<<<<<<< HEAD
 	res = aes_s2v(key /* K1 */, key_len, num_elem, addr, len, v);
+=======
+
+	tfm = crypto_alloc_shash("cmac(aes)", 0, 0);
+	if (IS_ERR(tfm))
+		return PTR_ERR(tfm);
+	/* K1 for S2V */
+	res = crypto_shash_setkey(tfm, key, key_len);
+	if (!res)
+		res = aes_s2v(tfm, num_elem, addr, len, v);
+	crypto_free_shash(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (res)
 		return res;
 
@@ -141,6 +197,10 @@ static int aes_siv_decrypt(const u8 *key, size_t key_len,
 			   size_t num_elem, const u8 *addr[], size_t len[],
 			   u8 *out)
 {
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct crypto_skcipher *tfm2;
 	struct skcipher_request *req;
 	struct scatterlist src[1], dst[1];
@@ -192,7 +252,19 @@ static int aes_siv_decrypt(const u8 *key, size_t key_len,
 		return res;
 
 	/* S2V */
+<<<<<<< HEAD
 	res = aes_s2v(key /* K1 */, key_len, num_elem, addr, len, check);
+=======
+
+	tfm = crypto_alloc_shash("cmac(aes)", 0, 0);
+	if (IS_ERR(tfm))
+		return PTR_ERR(tfm);
+	/* K1 for S2V */
+	res = crypto_shash_setkey(tfm, key, key_len);
+	if (!res)
+		res = aes_s2v(tfm, num_elem, addr, len, check);
+	crypto_free_shash(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (res)
 		return res;
 	if (memcmp(check, frame_iv, AES_BLOCK_SIZE) != 0)

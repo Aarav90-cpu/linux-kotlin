@@ -435,6 +435,7 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
 
 	/* Full Island ID and channel bits overlap? */
 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
+<<<<<<< HEAD
 	if (ret) {
 		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
 		return ret;
@@ -446,6 +447,14 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
 			__func__, dest_island, v);
 		return -EINVAL;
 	}
+=======
+	if (ret)
+		return ret;
+
+	/* The current address won't go where expected? */
+	if (dest_island != -1 && dest_island != v)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If dest_island was -1, we don't care where it goes. */
 	return 0;
@@ -498,7 +507,11 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
 			 * the address but we can verify if the existing
 			 * contents will point to a valid island.
 			 */
+<<<<<<< HEAD
 			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+=======
+			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    mode, addr40, isld1, isld0);
 
 		iid_lsb = addr40 ? 34 : 26;
@@ -509,7 +522,11 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
 		return 0;
 	case 1:
 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
+<<<<<<< HEAD
 			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+=======
+			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    mode, addr40, isld1, isld0);
 
 		idx_lsb = addr40 ? 39 : 31;
@@ -535,7 +552,11 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
 			 * be set before hand and with them select an island.
 			 * So we need to confirm that it's at least plausible.
 			 */
+<<<<<<< HEAD
 			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+=======
+			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    mode, addr40, isld1, isld0);
 
 		/* Make sure we compare against isldN values
@@ -556,7 +577,11 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
 			 * iid<1> = addr<30> = channel<0>
 			 * channel<1> = addr<31> = Index
 			 */
+<<<<<<< HEAD
 			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+=======
+			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    mode, addr40, isld1, isld0);
 
 		isld[0] &= ~3;

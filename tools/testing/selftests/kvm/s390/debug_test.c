@@ -17,7 +17,11 @@ asm("int_handler:\n"
     "j .\n");
 
 static struct kvm_vm *test_step_int_1(struct kvm_vcpu **vcpu, void *guest_code,
+<<<<<<< HEAD
 				      size_t new_psw_off, u64 *new_psw)
+=======
+				      size_t new_psw_off, uint64_t *new_psw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_guest_debug debug = {};
 	struct kvm_regs regs;
@@ -27,7 +31,11 @@ static struct kvm_vm *test_step_int_1(struct kvm_vcpu **vcpu, void *guest_code,
 	vm = vm_create_with_one_vcpu(vcpu, guest_code);
 	lowcore = addr_gpa2hva(vm, 0);
 	new_psw[0] = (*vcpu)->run->psw_mask;
+<<<<<<< HEAD
 	new_psw[1] = (u64)int_handler;
+=======
+	new_psw[1] = (uint64_t)int_handler;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(lowcore + new_psw_off, new_psw, 16);
 	vcpu_regs_get(*vcpu, &regs);
 	regs.gprs[2] = -1;
@@ -42,7 +50,11 @@ static struct kvm_vm *test_step_int_1(struct kvm_vcpu **vcpu, void *guest_code,
 static void test_step_int(void *guest_code, size_t new_psw_off)
 {
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	u64 new_psw[2];
+=======
+	uint64_t new_psw[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 
 	vm = test_step_int_1(&vcpu, guest_code, new_psw_off, new_psw);
@@ -79,7 +91,11 @@ static void test_step_pgm_diag(void)
 		.u.pgm.code = PGM_SPECIFICATION,
 	};
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	u64 new_psw[2];
+=======
+	uint64_t new_psw[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 
 	vm = test_step_int_1(&vcpu, test_step_pgm_diag_guest_code,

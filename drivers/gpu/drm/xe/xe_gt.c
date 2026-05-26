@@ -10,7 +10,10 @@
 #include <drm/drm_managed.h>
 #include <uapi/drm/xe_drm.h>
 
+<<<<<<< HEAD
 #include <generated/xe_device_wa_oob.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <generated/xe_wa_oob.h>
 
 #include "instructions/xe_alu_commands.h"
@@ -34,12 +37,18 @@
 #include "xe_gt_printk.h"
 #include "xe_gt_sriov_pf.h"
 #include "xe_gt_sriov_vf.h"
+<<<<<<< HEAD
 #include "xe_gt_stats.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_gt_sysfs.h"
 #include "xe_gt_topology.h"
 #include "xe_guc_exec_queue_types.h"
 #include "xe_guc_pc.h"
+<<<<<<< HEAD
 #include "xe_guc_rc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_guc_submit.h"
 #include "xe_hw_fence.h"
 #include "xe_hw_engine_class_sysfs.h"
@@ -144,14 +153,23 @@ static void xe_gt_disable_host_l2_vram(struct xe_gt *gt)
 static void xe_gt_enable_comp_1wcoh(struct xe_gt *gt)
 {
 	struct xe_device *xe = gt_to_xe(gt);
+<<<<<<< HEAD
+=======
+	unsigned int fw_ref;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 reg;
 
 	if (IS_SRIOV_VF(xe))
 		return;
 
 	if (GRAPHICS_VER(xe) >= 30 && xe->info.has_flat_ccs) {
+<<<<<<< HEAD
 		CLASS(xe_force_wake, fw_ref)(gt_to_fw(gt), XE_FW_GT);
 		if (!fw_ref.domains)
+=======
+		fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+		if (!fw_ref)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 
 		reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
@@ -165,13 +183,22 @@ static void xe_gt_enable_comp_1wcoh(struct xe_gt *gt)
 			reg |= EN_CMP_1WCOH_GW;
 			xe_gt_mcr_multicast_write(gt, XE2_GAMWALK_CTRL_3D, reg);
 		}
+<<<<<<< HEAD
+=======
+
+		xe_force_wake_put(gt_to_fw(gt), fw_ref);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 static void gt_reset_worker(struct work_struct *w);
 
 static int emit_job_sync(struct xe_exec_queue *q, struct xe_bb *bb,
+<<<<<<< HEAD
 			 long timeout_jiffies, bool force_reset)
+=======
+			 long timeout_jiffies)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_sched_job *job;
 	struct dma_fence *fence;
@@ -181,8 +208,11 @@ static int emit_job_sync(struct xe_exec_queue *q, struct xe_bb *bb,
 	if (IS_ERR(job))
 		return PTR_ERR(job);
 
+<<<<<<< HEAD
 	job->ring_ops_force_reset = force_reset;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_sched_job_arm(job);
 	fence = dma_fence_get(&job->drm.s_fence->finished);
 	xe_sched_job_push(job);
@@ -206,7 +236,11 @@ static int emit_nop_job(struct xe_gt *gt, struct xe_exec_queue *q)
 	if (IS_ERR(bb))
 		return PTR_ERR(bb);
 
+<<<<<<< HEAD
 	ret = emit_job_sync(q, bb, HZ, false);
+=======
+	ret = emit_job_sync(q, bb, HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_bb_free(bb, NULL);
 
 	return ret;
@@ -371,8 +405,12 @@ static int emit_wa_job(struct xe_gt *gt, struct xe_exec_queue *q)
 
 	bb->len = cs - bb->cs;
 
+<<<<<<< HEAD
 	/* only VFs need to trigger reset to get a clean NULL context */
 	ret = emit_job_sync(q, bb, HZ, IS_SRIOV_VF(gt_to_xe(gt)));
+=======
+	ret = emit_job_sync(q, bb, HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_bb_free(bb, NULL);
 
@@ -455,6 +493,7 @@ put_exec_queue:
 	return err;
 }
 
+<<<<<<< HEAD
 static void wa_14026539277(struct xe_gt *gt)
 {
 	struct xe_device *xe = gt_to_xe(gt);
@@ -484,6 +523,8 @@ static void wa_14026539277(struct xe_gt *gt)
 	xe_gt_mcr_multicast_write(gt, L2COMPUTESIDECTRL, val);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_gt_init_early(struct xe_gt *gt)
 {
 	int err;
@@ -532,10 +573,13 @@ int xe_gt_init_early(struct xe_gt *gt)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	err = xe_gt_stats_init(gt);
 	if (err)
 		return err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	CLASS(xe_force_wake, fw_ref)(gt_to_fw(gt), XE_FW_GT);
 	if (!fw_ref.domains)
 		return -ETIMEDOUT;
@@ -609,6 +653,7 @@ static int gt_init_with_gt_forcewake(struct xe_gt *gt)
 	 */
 	gt->info.gmdid = xe_mmio_read32(&gt->mmio, GMD_ID);
 
+<<<<<<< HEAD
 	/*
 	 * Wa_14026539277 can't be implemented as a regular GT workaround (i.e.
 	 * as an entry in gt_was[]) for two reasons: it is actually a device
@@ -618,6 +663,8 @@ static int gt_init_with_gt_forcewake(struct xe_gt *gt)
 	 */
 	wa_14026539277(gt);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -939,7 +986,11 @@ static void gt_reset_worker(struct work_struct *w)
 	if (IS_SRIOV_PF(gt_to_xe(gt)))
 		xe_gt_sriov_pf_stop_prepare(gt);
 
+<<<<<<< HEAD
 	xe_guc_rc_disable(&gt->uc.guc);
+=======
+	xe_uc_gucrc_disable(&gt->uc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_uc_stop_prepare(&gt->uc);
 	xe_pagefault_reset(gt_to_xe(gt), gt);
 

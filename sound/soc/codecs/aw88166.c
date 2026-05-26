@@ -1574,22 +1574,35 @@ static int aw88166_dev_init(struct aw88166 *aw88166, struct aw_container *aw_cfg
 static int aw88166_request_firmware_file(struct aw88166 *aw88166)
 {
 	const struct firmware *cont = NULL;
+<<<<<<< HEAD
 	const char *fw_name;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	aw88166->aw_pa->fw_status = AW88166_DEV_FW_FAILED;
 
+<<<<<<< HEAD
 	if (device_property_read_string(aw88166->aw_pa->dev, "firmware-name", &fw_name) < 0)
 		fw_name = AW88166_ACF_FILE;
 
 	ret = request_firmware(&cont, fw_name, aw88166->aw_pa->dev);
 	if (ret) {
 		dev_err(aw88166->aw_pa->dev, "request [%s] failed!\n", fw_name);
+=======
+	ret = request_firmware(&cont, AW88166_ACF_FILE, aw88166->aw_pa->dev);
+	if (ret) {
+		dev_err(aw88166->aw_pa->dev, "request [%s] failed!\n", AW88166_ACF_FILE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
 	dev_dbg(aw88166->aw_pa->dev, "loaded %s - size: %zu\n",
+<<<<<<< HEAD
 			fw_name, cont ? cont->size : 0);
+=======
+			AW88166_ACF_FILE, cont ? cont->size : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	aw88166->aw_cfg = devm_kzalloc(aw88166->aw_pa->dev,
 			struct_size(aw88166->aw_cfg, data, cont->size), GFP_KERNEL);
@@ -1603,7 +1616,11 @@ static int aw88166_request_firmware_file(struct aw88166 *aw88166)
 
 	ret = aw88395_dev_load_acf_check(aw88166->aw_pa, aw88166->aw_cfg);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(aw88166->aw_pa->dev, "load [%s] failed!\n", fw_name);
+=======
+		dev_err(aw88166->aw_pa->dev, "load [%s] failed!\n", AW88166_ACF_FILE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 

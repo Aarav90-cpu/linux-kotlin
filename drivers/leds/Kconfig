@@ -765,6 +765,10 @@ config LEDS_NETXBIG
 	tristate "LED support for Big Network series LEDs"
 	depends on LEDS_CLASS
 	depends on MACH_KIRKWOOD || COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default MACH_KIRKWOOD
 	help
 	  This option enables support for LEDs found on the LaCie 2Big

@@ -73,6 +73,7 @@
 			interrupt-controller;
 			#interrupt-cells = <2>;
 		};
+<<<<<<< HEAD
 
 		pmk8550_pwm: pwm {
 			compatible = "qcom,pmk8550-pwm";
@@ -83,5 +84,7 @@
 
 			status = "disabled";
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

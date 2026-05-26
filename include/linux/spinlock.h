@@ -178,7 +178,11 @@ do {									\
 
 #ifdef CONFIG_DEBUG_SPINLOCK
  extern void do_raw_spin_lock(raw_spinlock_t *lock) __acquires(lock);
+<<<<<<< HEAD
  extern int do_raw_spin_trylock(raw_spinlock_t *lock) __cond_acquires(true, lock);
+=======
+ extern int do_raw_spin_trylock(raw_spinlock_t *lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  extern void do_raw_spin_unlock(raw_spinlock_t *lock) __releases(lock);
 #else
 static inline void do_raw_spin_lock(raw_spinlock_t *lock) __acquires(lock)
@@ -189,7 +193,10 @@ static inline void do_raw_spin_lock(raw_spinlock_t *lock) __acquires(lock)
 }
 
 static inline int do_raw_spin_trylock(raw_spinlock_t *lock)
+<<<<<<< HEAD
 	__cond_acquires(true, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = arch_spin_trylock(&(lock)->raw_lock);
 

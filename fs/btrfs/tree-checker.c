@@ -777,6 +777,7 @@ static int check_block_group_item(struct extent_buffer *leaf,
 			BTRFS_BLOCK_GROUP_METADATA | BTRFS_BLOCK_GROUP_DATA);
 		return -EUCLEAN;
 	}
+<<<<<<< HEAD
 
 	if (unlikely(!btrfs_fs_incompat(fs_info, REMAP_TREE) &&
 		     type == BTRFS_BLOCK_GROUP_METADATA_REMAP)) {
@@ -818,6 +819,8 @@ static int check_block_group_item(struct extent_buffer *leaf,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1040,6 +1043,7 @@ int btrfs_check_chunk_valid(const struct btrfs_fs_info *fs_info,
 		}
 	}
 
+<<<<<<< HEAD
 	if (unlikely((type & BTRFS_BLOCK_GROUP_METADATA_REMAP) &&
 		     !(features & BTRFS_FEATURE_INCOMPAT_REMAP_TREE))) {
 		chunk_err(fs_info, leaf, chunk, logical,
@@ -1054,6 +1058,8 @@ int btrfs_check_chunk_valid(const struct btrfs_fs_info *fs_info,
 		return -EUCLEAN;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!remapped &&
 	    !valid_stripe_count(type & BTRFS_BLOCK_GROUP_PROFILE_MASK,
 				num_stripes, sub_stripes)) {
@@ -1934,6 +1940,7 @@ static int check_raid_stripe_extent(const struct extent_buffer *leaf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int check_remap_key(const struct extent_buffer *leaf,
 			   const struct btrfs_key *key, int slot)
 {
@@ -1999,6 +2006,8 @@ static int check_remap_key(const struct extent_buffer *leaf,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int check_dev_extent_item(const struct extent_buffer *leaf,
 				 const struct btrfs_key *key,
 				 int slot,
@@ -2065,6 +2074,7 @@ static int check_dev_extent_item(const struct extent_buffer *leaf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int check_free_space_info(struct extent_buffer *leaf, struct btrfs_key *key,
 				 int slot)
 {
@@ -2178,6 +2188,8 @@ static int check_free_space_bitmap(struct extent_buffer *leaf,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Common point to switch the item-specific validation.
  */
@@ -2241,6 +2253,7 @@ static enum btrfs_tree_block_status check_leaf_item(struct extent_buffer *leaf,
 	case BTRFS_RAID_STRIPE_KEY:
 		ret = check_raid_stripe_extent(leaf, key, slot);
 		break;
+<<<<<<< HEAD
 	case BTRFS_FREE_SPACE_INFO_KEY:
 		ret = check_free_space_info(leaf, key, slot);
 		break;
@@ -2255,6 +2268,8 @@ static enum btrfs_tree_block_status check_leaf_item(struct extent_buffer *leaf,
 	case BTRFS_REMAP_BACKREF_KEY:
 		ret = check_remap_key(leaf, key, slot);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (unlikely(ret))

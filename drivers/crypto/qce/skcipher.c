@@ -7,7 +7,10 @@
 #include <linux/dma-mapping.h>
 #include <linux/interrupt.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 #include <linux/errno.h>
 #include <crypto/aes.h>
@@ -447,8 +450,14 @@ static int qce_skcipher_register_one(const struct qce_skcipher_def *def,
 
 	alg = &tmpl->alg.skcipher;
 
+<<<<<<< HEAD
 	strscpy(alg->base.cra_name, def->name);
 	strscpy(alg->base.cra_driver_name, def->drv_name);
+=======
+	snprintf(alg->base.cra_name, CRYPTO_MAX_ALG_NAME, "%s", def->name);
+	snprintf(alg->base.cra_driver_name, CRYPTO_MAX_ALG_NAME, "%s",
+		 def->drv_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	alg->base.cra_blocksize		= def->blocksize;
 	alg->chunksize			= def->chunksize;

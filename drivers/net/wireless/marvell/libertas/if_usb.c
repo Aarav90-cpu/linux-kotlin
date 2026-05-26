@@ -114,8 +114,13 @@ static void if_usb_write_bulk_callback(struct urb *urb)
 static void if_usb_free(struct if_usb_card *cardp)
 {
 	/* Unlink tx & rx urb */
+<<<<<<< HEAD
 	usb_kill_anchored_urbs(&cardp->tx_submitted);
 	usb_kill_anchored_urbs(&cardp->rx_submitted);
+=======
+	usb_kill_urb(cardp->tx_urb);
+	usb_kill_urb(cardp->rx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usb_free_urb(cardp->tx_urb);
 	cardp->tx_urb = NULL;
@@ -193,12 +198,22 @@ static void if_usb_reset_olpc_card(struct lbs_private *priv)
 static int if_usb_probe(struct usb_interface *intf,
 			const struct usb_device_id *id)
 {
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep_in, *ep_out;
 	struct usb_device *udev;
 	struct usb_host_interface *iface_desc;
 	struct lbs_private *priv;
 	struct if_usb_card *cardp;
 	int r = -ENOMEM;
+=======
+	struct usb_device *udev;
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	struct lbs_private *priv;
+	struct if_usb_card *cardp;
+	int r = -ENOMEM;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	udev = interface_to_usbdev(intf);
 
@@ -220,6 +235,7 @@ static int if_usb_probe(struct usb_interface *intf,
 		     udev->descriptor.bDeviceSubClass,
 		     udev->descriptor.bDeviceProtocol);
 
+<<<<<<< HEAD
 	init_usb_anchor(&cardp->rx_submitted);
 	init_usb_anchor(&cardp->tx_submitted);
 
@@ -242,6 +258,27 @@ static int if_usb_probe(struct usb_interface *intf,
 
 	if (!cardp->ep_out_size || !cardp->ep_in_size) {
 		lbs_deb_usbd(&udev->dev, "Endpoints not valid\n");
+=======
+	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+		endpoint = &iface_desc->endpoint[i].desc;
+		if (usb_endpoint_is_bulk_in(endpoint)) {
+			cardp->ep_in_size = le16_to_cpu(endpoint->wMaxPacketSize);
+			cardp->ep_in = usb_endpoint_num(endpoint);
+
+			lbs_deb_usbd(&udev->dev, "in_endpoint = %d\n", cardp->ep_in);
+			lbs_deb_usbd(&udev->dev, "Bulk in size is %d\n", cardp->ep_in_size);
+
+		} else if (usb_endpoint_is_bulk_out(endpoint)) {
+			cardp->ep_out_size = le16_to_cpu(endpoint->wMaxPacketSize);
+			cardp->ep_out = usb_endpoint_num(endpoint);
+
+			lbs_deb_usbd(&udev->dev, "out_endpoint = %d\n", cardp->ep_out);
+			lbs_deb_usbd(&udev->dev, "Bulk out size is %d\n", cardp->ep_out_size);
+		}
+	}
+	if (!cardp->ep_out_size || !cardp->ep_in_size) {
+		lbs_deb_usbd(&udev->dev, "Endpoints not found\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto dealloc;
 	}
 	if (!(cardp->rx_urb = usb_alloc_urb(0, GFP_KERNEL))) {
@@ -278,6 +315,10 @@ static int if_usb_probe(struct usb_interface *intf,
 
 	cardp->boot2_version = udev->descriptor.bcdDevice;
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(intf, cardp);
 
 	r = lbs_get_firmware_async(priv, &udev->dev, cardp->model,
@@ -288,6 +329,10 @@ static int if_usb_probe(struct usb_interface *intf,
 	return 0;
 
 err_get_fw:
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lbs_remove_card(priv);
 err_add_card:
 	if_usb_reset_device(cardp);
@@ -310,7 +355,10 @@ static void if_usb_disconnect(struct usb_interface *intf)
 	struct lbs_private *priv = cardp->priv;
 
 	cardp->surprise_removed = 1;
+<<<<<<< HEAD
 	wake_up(&cardp->fw_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv) {
 		lbs_stop_card(priv);
@@ -322,6 +370,10 @@ static void if_usb_disconnect(struct usb_interface *intf)
 	kfree(cardp);
 
 	usb_set_intfdata(intf, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -426,12 +478,16 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload, uint16_t nb
 		goto tx_ret;
 	}
 
+<<<<<<< HEAD
 	/* check if there are pending URBs */
 	if (!usb_anchor_empty(&cardp->tx_submitted)) {
 		lbs_deb_usbd(&cardp->udev->dev, "%s failed: pending URB\n", __func__);
 		ret = -EBUSY;
 		goto tx_ret;
 	}
+=======
+	usb_kill_urb(cardp->tx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usb_fill_bulk_urb(cardp->tx_urb, cardp->udev,
 			  usb_sndbulkpipe(cardp->udev,
@@ -440,10 +496,15 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload, uint16_t nb
 
 	cardp->tx_urb->transfer_flags |= URB_ZERO_PACKET;
 
+<<<<<<< HEAD
 	usb_anchor_urb(cardp->tx_urb, &cardp->tx_submitted);
 	if ((ret = usb_submit_urb(cardp->tx_urb, GFP_ATOMIC))) {
 		lbs_deb_usbd(&cardp->udev->dev, "usb_submit_urb failed: %d\n", ret);
 		usb_unanchor_urb(cardp->tx_urb);
+=======
+	if ((ret = usb_submit_urb(cardp->tx_urb, GFP_ATOMIC))) {
+		lbs_deb_usbd(&cardp->udev->dev, "usb_submit_urb failed: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		lbs_deb_usb2(&cardp->udev->dev, "usb_submit_urb success\n");
 		ret = 0;
@@ -474,10 +535,15 @@ static int __if_usb_submit_rx_urb(struct if_usb_card *cardp,
 			  cardp);
 
 	lbs_deb_usb2(&cardp->udev->dev, "Pointer for rx_urb %p\n", cardp->rx_urb);
+<<<<<<< HEAD
 	usb_anchor_urb(cardp->rx_urb, &cardp->rx_submitted);
 	if ((ret = usb_submit_urb(cardp->rx_urb, GFP_ATOMIC))) {
 		lbs_deb_usbd(&cardp->udev->dev, "Submit Rx URB failed: %d\n", ret);
 		usb_unanchor_urb(cardp->rx_urb);
+=======
+	if ((ret = usb_submit_urb(cardp->rx_urb, GFP_ATOMIC))) {
+		lbs_deb_usbd(&cardp->udev->dev, "Submit Rx URB failed: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree_skb(skb);
 		cardp->rx_skb = NULL;
 		ret = -1;
@@ -634,10 +700,16 @@ static inline void process_cmdrequest(int recvlength, uint8_t *recvbuff,
 	unsigned long flags;
 	u8 i;
 
+<<<<<<< HEAD
 	if (recvlength < MESSAGE_HEADER_LEN ||
 	    recvlength > LBS_CMD_BUFFER_SIZE) {
 		lbs_deb_usbd(&cardp->udev->dev,
 			     "The receive buffer is invalid: %d\n", recvlength);
+=======
+	if (recvlength > LBS_CMD_BUFFER_SIZE) {
+		lbs_deb_usbd(&cardp->udev->dev,
+			     "The receive buffer is too large\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree_skb(skb);
 		return;
 	}
@@ -848,8 +920,13 @@ static void if_usb_prog_firmware(struct lbs_private *priv, int ret,
 	}
 
 	/* Cancel any pending usb business */
+<<<<<<< HEAD
 	usb_kill_anchored_urbs(&cardp->rx_submitted);
 	usb_kill_anchored_urbs(&cardp->tx_submitted);
+=======
+	usb_kill_urb(cardp->rx_urb);
+	usb_kill_urb(cardp->tx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cardp->fwlastblksent = 0;
 	cardp->fwdnldover = 0;
@@ -879,8 +956,13 @@ restart:
 	if (cardp->bootcmdresp == BOOT_CMD_RESP_NOT_SUPPORTED) {
 		/* Return to normal operation */
 		ret = -EOPNOTSUPP;
+<<<<<<< HEAD
 		usb_kill_anchored_urbs(&cardp->rx_submitted);
 		usb_kill_anchored_urbs(&cardp->tx_submitted);
+=======
+		usb_kill_urb(cardp->rx_urb);
+		usb_kill_urb(cardp->tx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (if_usb_submit_rx_urb(cardp) < 0)
 			ret = -EIO;
 		goto done;
@@ -910,7 +992,11 @@ restart:
 	wait_event_interruptible(cardp->fw_wq, cardp->surprise_removed || cardp->fwdnldover);
 
 	timer_delete_sync(&cardp->fw_timeout);
+<<<<<<< HEAD
 	usb_kill_anchored_urbs(&cardp->rx_submitted);
+=======
+	usb_kill_urb(cardp->rx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!cardp->fwdnldover) {
 		pr_info("failed to load fw, resetting device!\n");
@@ -970,8 +1056,13 @@ static int if_usb_suspend(struct usb_interface *intf, pm_message_t message)
 		goto out;
 
 	/* Unlink tx & rx urb */
+<<<<<<< HEAD
 	usb_kill_anchored_urbs(&cardp->tx_submitted);
 	usb_kill_anchored_urbs(&cardp->rx_submitted);
+=======
+	usb_kill_urb(cardp->tx_urb);
+	usb_kill_urb(cardp->rx_urb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
  out:
 	return ret;

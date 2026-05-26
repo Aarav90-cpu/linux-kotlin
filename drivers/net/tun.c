@@ -1031,11 +1031,17 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
 		goto drop;
 	}
 
+<<<<<<< HEAD
 	if (tfile->socket.sk->sk_filter) {
 		drop_reason = sk_filter_reason(tfile->socket.sk, skb);
 		if (drop_reason)
 			goto drop;
 	}
+=======
+	if (tfile->socket.sk->sk_filter &&
+	    sk_filter_reason(tfile->socket.sk, skb, &drop_reason))
+		goto drop;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = run_ebpf_filter(tun, skb, len);
 	if (len == 0) {

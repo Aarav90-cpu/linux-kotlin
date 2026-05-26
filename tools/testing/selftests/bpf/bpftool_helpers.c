@@ -2,18 +2,30 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+<<<<<<< HEAD
 #include <limits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "bpf_util.h"
 #include "bpftool_helpers.h"
 
+<<<<<<< HEAD
 #define BPFTOOL_FULL_CMD_MAX_LEN	(PATH_MAX * 2)
+=======
+#define BPFTOOL_PATH_MAX_LEN		64
+#define BPFTOOL_FULL_CMD_MAX_LEN	512
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define BPFTOOL_DEFAULT_PATH		"tools/sbin/bpftool"
 
 static int detect_bpftool_path(char *buffer, size_t size)
 {
+<<<<<<< HEAD
 	char tmp[PATH_MAX];
+=======
+	char tmp[BPFTOOL_PATH_MAX_LEN];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *env_path;
 
 	/* First, check if BPFTOOL environment variable is set */
@@ -29,7 +41,11 @@ static int detect_bpftool_path(char *buffer, size_t size)
 	/* Check default bpftool location (will work if we are running the
 	 * default flavor of test_progs)
 	 */
+<<<<<<< HEAD
 	snprintf(tmp, sizeof(tmp), "./%s", BPFTOOL_DEFAULT_PATH);
+=======
+	snprintf(tmp, BPFTOOL_PATH_MAX_LEN, "./%s", BPFTOOL_DEFAULT_PATH);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (access(tmp, X_OK) == 0) {
 		strscpy(buffer, tmp, size);
 		return 0;
@@ -38,7 +54,11 @@ static int detect_bpftool_path(char *buffer, size_t size)
 	/* Check alternate bpftool location (will work if we are running a
 	 * specific flavor of test_progs, e.g. cpuv4 or no_alu32)
 	 */
+<<<<<<< HEAD
 	snprintf(tmp, sizeof(tmp), "../%s", BPFTOOL_DEFAULT_PATH);
+=======
+	snprintf(tmp, BPFTOOL_PATH_MAX_LEN, "../%s", BPFTOOL_DEFAULT_PATH);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (access(tmp, X_OK) == 0) {
 		strscpy(buffer, tmp, size);
 		return 0;
@@ -50,7 +70,11 @@ static int detect_bpftool_path(char *buffer, size_t size)
 
 static int run_command(char *args, char *output_buf, size_t output_max_len)
 {
+<<<<<<< HEAD
 	static char bpftool_path[PATH_MAX] = {};
+=======
+	static char bpftool_path[BPFTOOL_PATH_MAX_LEN] = {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool suppress_output = !(output_buf && output_max_len);
 	char command[BPFTOOL_FULL_CMD_MAX_LEN];
 	FILE *f;
@@ -60,7 +84,11 @@ static int run_command(char *args, char *output_buf, size_t output_max_len)
 	if (bpftool_path[0] == 0 && detect_bpftool_path(bpftool_path, sizeof(bpftool_path)))
 		return 1;
 
+<<<<<<< HEAD
 	ret = snprintf(command, sizeof(command), "%s %s%s",
+=======
+	ret = snprintf(command, BPFTOOL_FULL_CMD_MAX_LEN, "%s %s%s",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       bpftool_path, args,
 		       suppress_output ? " > /dev/null 2>&1" : "");
 
@@ -84,3 +112,7 @@ int get_bpftool_command_output(char *args, char *output_buf, size_t output_max_l
 {
 	return run_command(args, output_buf, output_max_len);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

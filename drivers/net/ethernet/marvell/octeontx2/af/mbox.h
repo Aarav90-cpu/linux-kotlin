@@ -53,6 +53,7 @@
 #define MBOX_DIR_VFPF_UP	7  /* VF replies to PF */
 
 enum {
+<<<<<<< HEAD
 	NPC_MCAM_KEY_X1 = 0,
 	NPC_MCAM_KEY_DYN = NPC_MCAM_KEY_X1,
 	NPC_MCAM_KEY_X2,
@@ -61,6 +62,8 @@ enum {
 };
 
 enum {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TYPE_AFVF,
 	TYPE_AFPF,
 };
@@ -283,6 +286,7 @@ M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     
 M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
 				   npc_get_field_status_req,              \
 				   npc_get_field_status_rsp)              \
+<<<<<<< HEAD
 M(NPC_CN20K_MCAM_GET_FREE_COUNT, 0x6015, npc_cn20k_get_fcnt,		\
 				 msg_req, npc_cn20k_get_fcnt_rsp)	\
 M(NPC_CN20K_GET_KEX_CFG, 0x6016, npc_cn20k_get_kex_cfg,			\
@@ -310,6 +314,8 @@ M(NPC_MCAM_GET_DFT_RL_IDXS, 0x601d, npc_get_dft_rl_idxs,	\
 M(NPC_MCAM_GET_NPC_PFL_INFO, 0x601e, npc_get_pfl_info,		\
 					msg_req,		\
 					npc_get_pfl_info_rsp)	\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* NIX mbox IDs (range 0x8000 - 0xFFFF) */				\
 M(NIX_LF_ALLOC,		0x8000, nix_lf_alloc,				\
 				 nix_lf_alloc_req, nix_lf_alloc_rsp)	\
@@ -1562,11 +1568,17 @@ struct npc_mcam_alloc_entry_req {
 #define NPC_MCAM_ANY_PRIO		0
 #define NPC_MCAM_LOWER_PRIO		1
 #define NPC_MCAM_HIGHER_PRIO		2
+<<<<<<< HEAD
 	u8  ref_prio; /* Lower or higher w.r.t ref_entry */
 	u16 ref_entry;
 	u16 count;    /* Number of entries requested */
 	u8 kw_type; /* entry key type, valid for cn20k */
 	u8 virt;    /* Request virtual index */
+=======
+	u8  priority; /* Lower or higher w.r.t ref_entry */
+	u16 ref_entry;
+	u16 count;    /* Number of entries requested */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct npc_mcam_alloc_entry_rsp {
@@ -1585,6 +1597,7 @@ struct npc_mcam_free_entry_req {
 	u8  all;   /* If all entries allocated to this PFVF to be freed */
 };
 
+<<<<<<< HEAD
 struct mcam_entry_mdata {
 	u64 *kw;
 	u64 *kw_mask;
@@ -1602,10 +1615,17 @@ enum npc_kws_in_key_sz {
 struct mcam_entry {
 	u64	kw[NPC_KWS_IN_KEY_SZ_7];
 	u64	kw_mask[NPC_KWS_IN_KEY_SZ_7];
+=======
+struct mcam_entry {
+#define NPC_MAX_KWS_IN_KEY	7 /* Number of keywords in max keywidth */
+	u64	kw[NPC_MAX_KWS_IN_KEY];
+	u64	kw_mask[NPC_MAX_KWS_IN_KEY];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64	action;
 	u64	vtag_action;
 };
 
+<<<<<<< HEAD
 struct cn20k_mcam_entry {
 	u64	kw[NPC_KWS_IN_KEY_SZ_8];
 	u64	kw_mask[NPC_KWS_IN_KEY_SZ_8];
@@ -1626,6 +1646,8 @@ struct npc_cn20k_mcam_write_entry_req {
 	u64 reserved;	 /* reserved for future use */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct npc_mcam_write_entry_req {
 	struct mbox_msghdr hdr;
 	struct mcam_entry entry_data;
@@ -1634,8 +1656,11 @@ struct npc_mcam_write_entry_req {
 	u8  intf;	 /* Rx or Tx interface */
 	u8  enable_entry;/* Enable this MCAM entry ? */
 	u8  set_cntr;    /* Set counter for this entry ? */
+<<<<<<< HEAD
 	u8  hw_prio;	 /* hardware priority, valid for cn20k */
 	u64 reserved;	 /* reserved for future use */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Enable/Disable a given entry */
@@ -1694,12 +1719,17 @@ struct npc_mcam_alloc_and_write_entry_req {
 	struct mbox_msghdr hdr;
 	struct mcam_entry entry_data;
 	u16 ref_entry;
+<<<<<<< HEAD
 	u8  ref_prio;    /* Lower or higher w.r.t ref_entry */
+=======
+	u8  priority;    /* Lower or higher w.r.t ref_entry */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8  intf;	 /* Rx or Tx interface */
 	u8  enable_entry;/* Enable this MCAM entry ? */
 	u8  alloc_cntr;  /* Allocate counter and map ? */
 };
 
+<<<<<<< HEAD
 struct npc_cn20k_mcam_alloc_and_write_entry_req {
 	struct mbox_msghdr hdr;
 	struct cn20k_mcam_entry entry_data;
@@ -1726,6 +1756,8 @@ struct npc_cn20k_mcam_read_base_rule_rsp {
 	struct cn20k_mcam_entry entry;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct npc_mcam_alloc_and_write_entry_rsp {
 	struct mbox_msghdr hdr;
 	u16 entry;
@@ -1751,6 +1783,7 @@ struct npc_get_kex_cfg_rsp {
 	u8 mkex_pfl_name[MKEX_NAME_LEN];
 };
 
+<<<<<<< HEAD
 struct npc_cn20k_get_kex_cfg_rsp {
 	struct mbox_msghdr hdr;
 	u64 rx_keyx_cfg;   /* NPC_AF_INTF(0)_KEX_CFG */
@@ -1764,6 +1797,8 @@ struct npc_cn20k_get_kex_cfg_rsp {
 	u8 mkex_pfl_name[MKEX_NAME_LEN];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ptp_get_cap_rsp {
 	struct mbox_msghdr hdr;
 #define        PTP_CAP_HW_ATOMIC_UPDATE BIT_ULL(0)
@@ -1876,6 +1911,7 @@ struct npc_install_flow_req {
 	u8  vtag1_op;
 	/* old counter value */
 	u16 cntr_val;
+<<<<<<< HEAD
 	u8 hw_prio;
 	u8  req_kw_type; /* Key type to be written */
 	u8 alloc_entry;	/* only for cn20k */
@@ -1886,11 +1922,14 @@ struct npc_install_flow_req {
 #define NPC_MCAM_LEAST_PRIO	NPC_MCAM_ANY_PRIO
 	u16 ref_prio;
 	u16 ref_entry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct npc_install_flow_rsp {
 	struct mbox_msghdr hdr;
 	int counter; /* negative if no counter else counter number */
+<<<<<<< HEAD
 	u16 entry;
 	u8 kw_type;
 };
@@ -1923,6 +1962,8 @@ struct npc_get_pfl_info_rsp {
 	u8 kw_type;
 	u8 rsvd1[3];
 	u32 rsvd2[4];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct npc_delete_flow_req {
@@ -1948,6 +1989,7 @@ struct npc_mcam_read_entry_rsp {
 	struct mcam_entry entry_data;
 	u8 intf;
 	u8 enable;
+<<<<<<< HEAD
 	u8 hw_prio; /* valid for cn20k */
 };
 
@@ -1957,6 +1999,8 @@ struct npc_cn20k_get_fcnt_rsp {
 	int free_x2;
 	int free_x4;
 	int free_subbanks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct npc_mcam_read_base_rule_rsp {

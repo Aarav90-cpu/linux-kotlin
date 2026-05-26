@@ -148,7 +148,11 @@ __dma_fence_signal__notify(struct dma_fence *fence,
 {
 	struct dma_fence_cb *cur, *tmp;
 
+<<<<<<< HEAD
 	dma_fence_assert_held(fence);
+=======
+	lockdep_assert_held(fence->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry_safe(cur, tmp, list, node) {
 		INIT_LIST_HEAD(&cur->node);

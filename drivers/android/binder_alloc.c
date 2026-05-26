@@ -1185,7 +1185,11 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
 	if (vma) {
 		trace_binder_unmap_user_start(alloc, index);
 
+<<<<<<< HEAD
 		zap_vma_range(vma, page_addr, PAGE_SIZE);
+=======
+		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		trace_binder_unmap_user_end(alloc, index);
 	}

@@ -9,6 +9,7 @@ menuconfig FWCTL
 	  fit neatly into an existing subsystem.
 
 if FWCTL
+<<<<<<< HEAD
 config FWCTL_BNXT
 	tristate "bnxt control fwctl driver"
 	depends on BNXT
@@ -20,6 +21,8 @@ config FWCTL_BNXT
 
 	  If you don't know what to do here, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config FWCTL_MLX5
 	tristate "mlx5 ConnectX control fwctl driver"
 	depends on MLX5_CORE

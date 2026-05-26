@@ -99,7 +99,11 @@ static inline void print_stop_info(const char *log_lvl, struct task_struct *task
  * stop_machine: freeze the machine on all CPUs and run this function
  * @fn: the function to run
  * @data: the data ptr to pass to @fn()
+<<<<<<< HEAD
  * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
+=======
+ * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Description: This causes a thread to be scheduled on every CPU, which
  * will run with interrupts disabled.  Each CPU specified by @cpus will
@@ -133,7 +137,11 @@ int stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cpus);
  * stop_machine_cpuslocked: freeze the machine on all CPUs and run this function
  * @fn: the function to run
  * @data: the data ptr to pass to @fn()
+<<<<<<< HEAD
  * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
+=======
+ * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Same as above.  Avoids nested calls to cpus_read_lock().
  *

@@ -524,7 +524,11 @@ int ixgbe_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags)
 
 	ring = adapter->xdp_ring[qid];
 
+<<<<<<< HEAD
 	if (test_bit(__IXGBE_TX_DISABLED, ring->state))
+=======
+	if (test_bit(__IXGBE_TX_DISABLED, &ring->state))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENETDOWN;
 
 	if (!ring->xsk_pool)

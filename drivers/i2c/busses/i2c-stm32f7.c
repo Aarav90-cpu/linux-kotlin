@@ -895,6 +895,11 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 	f7_msg->result = 0;
 	f7_msg->stop = (i2c_dev->msg_id >= i2c_dev->msg_num - 1);
 
+<<<<<<< HEAD
+=======
+	reinit_completion(&i2c_dev->complete);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cr1 = readl_relaxed(base + STM32F7_I2C_CR1);
 	cr2 = readl_relaxed(base + STM32F7_I2C_CR2);
 
@@ -1726,8 +1731,11 @@ static int stm32f7_i2c_xfer_core(struct i2c_adapter *i2c_adap,
 	if (ret)
 		goto pm_free;
 
+<<<<<<< HEAD
 	reinit_completion(&i2c_dev->complete);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32f7_i2c_xfer_msg(i2c_dev, msgs);
 
 	if (!i2c_dev->atomic)
@@ -2253,7 +2261,11 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 	snprintf(adap->name, sizeof(adap->name), "STM32F7 I2C(%pa)",
 		 &res->start);
 	adap->owner = THIS_MODULE;
+<<<<<<< HEAD
 	adap->timeout = 8 * HZ;
+=======
+	adap->timeout = 2 * HZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adap->retries = 3;
 	adap->algo = &stm32f7_i2c_algo;
 	adap->dev.parent = &pdev->dev;

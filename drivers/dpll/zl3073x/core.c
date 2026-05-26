@@ -20,6 +20,7 @@
 #include "dpll.h"
 #include "regs.h"
 
+<<<<<<< HEAD
 #define ZL_CHIP_INFO(_id, _nchannels, _flags)				\
 	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags) }
 
@@ -44,6 +45,81 @@ static const struct zl3073x_chip_info zl3073x_chip_ids[] = {
 	ZL_CHIP_INFO(0x3FC4, 2, ZL3073X_FLAG_DIE_TEMP),
 };
 
+=======
+/* Chip IDs for zl30731 */
+static const u16 zl30731_ids[] = {
+	0x0E93,
+	0x1E93,
+	0x2E93,
+};
+
+const struct zl3073x_chip_info zl30731_chip_info = {
+	.ids = zl30731_ids,
+	.num_ids = ARRAY_SIZE(zl30731_ids),
+	.num_channels = 1,
+};
+EXPORT_SYMBOL_NS_GPL(zl30731_chip_info, "ZL3073X");
+
+/* Chip IDs for zl30732 */
+static const u16 zl30732_ids[] = {
+	0x0E30,
+	0x0E94,
+	0x1E94,
+	0x1F60,
+	0x2E94,
+	0x3FC4,
+};
+
+const struct zl3073x_chip_info zl30732_chip_info = {
+	.ids = zl30732_ids,
+	.num_ids = ARRAY_SIZE(zl30732_ids),
+	.num_channels = 2,
+};
+EXPORT_SYMBOL_NS_GPL(zl30732_chip_info, "ZL3073X");
+
+/* Chip IDs for zl30733 */
+static const u16 zl30733_ids[] = {
+	0x0E95,
+	0x1E95,
+	0x2E95,
+};
+
+const struct zl3073x_chip_info zl30733_chip_info = {
+	.ids = zl30733_ids,
+	.num_ids = ARRAY_SIZE(zl30733_ids),
+	.num_channels = 3,
+};
+EXPORT_SYMBOL_NS_GPL(zl30733_chip_info, "ZL3073X");
+
+/* Chip IDs for zl30734 */
+static const u16 zl30734_ids[] = {
+	0x0E96,
+	0x1E96,
+	0x2E96,
+};
+
+const struct zl3073x_chip_info zl30734_chip_info = {
+	.ids = zl30734_ids,
+	.num_ids = ARRAY_SIZE(zl30734_ids),
+	.num_channels = 4,
+};
+EXPORT_SYMBOL_NS_GPL(zl30734_chip_info, "ZL3073X");
+
+/* Chip IDs for zl30735 */
+static const u16 zl30735_ids[] = {
+	0x0E97,
+	0x1E97,
+	0x2E97,
+};
+
+const struct zl3073x_chip_info zl30735_chip_info = {
+	.ids = zl30735_ids,
+	.num_ids = ARRAY_SIZE(zl30735_ids),
+	.num_channels = 5,
+};
+EXPORT_SYMBOL_NS_GPL(zl30735_chip_info, "ZL3073X");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ZL_RANGE_OFFSET		0x80
 #define ZL_PAGE_SIZE		0x80
 #define ZL_NUM_PAGES		256
@@ -539,6 +615,7 @@ zl3073x_dev_state_fetch(struct zl3073x_dev *zldev)
 		}
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < zldev->info->num_channels; i++) {
 		rc = zl3073x_chan_state_fetch(zldev, i);
 		if (rc) {
@@ -549,16 +626,27 @@ zl3073x_dev_state_fetch(struct zl3073x_dev *zldev)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 
 static void
+<<<<<<< HEAD
 zl3073x_dev_ref_states_update(struct zl3073x_dev *zldev)
+=======
+zl3073x_dev_ref_status_update(struct zl3073x_dev *zldev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i, rc;
 
 	for (i = 0; i < ZL3073X_NUM_REFS; i++) {
+<<<<<<< HEAD
 		rc = zl3073x_ref_state_update(zldev, i);
+=======
+		rc = zl3073x_read_u8(zldev, ZL_REG_REF_MON_STATUS(i),
+				     &zldev->ref[i].mon_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			dev_warn(zldev->dev,
 				 "Failed to get REF%u status: %pe\n", i,
@@ -566,6 +654,7 @@ zl3073x_dev_ref_states_update(struct zl3073x_dev *zldev)
 	}
 }
 
+<<<<<<< HEAD
 static void
 zl3073x_dev_chan_states_update(struct zl3073x_dev *zldev)
 {
@@ -580,6 +669,8 @@ zl3073x_dev_chan_states_update(struct zl3073x_dev *zldev)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * zl3073x_ref_phase_offsets_update - update reference phase offsets
  * @zldev: pointer to zl3073x_dev structure
@@ -632,21 +723,39 @@ int zl3073x_ref_phase_offsets_update(struct zl3073x_dev *zldev, int channel)
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_ref_freq_meas_latch - latch reference frequency measurements
  * @zldev: pointer to zl3073x_dev structure
  * @type: measurement type (ZL_REF_FREQ_MEAS_CTRL_*)
  *
  * The function waits for the previous measurement to finish, selects all
  * references and requests a new measurement of the given type.
+=======
+ * zl3073x_ref_ffo_update - update reference fractional frequency offsets
+ * @zldev: pointer to zl3073x_dev structure
+ *
+ * The function asks device to update fractional frequency offsets latch
+ * registers the latest measured values, reads and stores them into
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 on success, <0 on error
  */
 static int
+<<<<<<< HEAD
 zl3073x_ref_freq_meas_latch(struct zl3073x_dev *zldev, u8 type)
 {
 	int rc;
 
 	/* Wait for previous measurement to finish */
+=======
+zl3073x_ref_ffo_update(struct zl3073x_dev *zldev)
+{
+	int i, rc;
+
+	/* Per datasheet we have to wait for 'ref_freq_meas_ctrl' to be zero
+	 * to ensure that the measured data are coherent.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_REF_FREQ_MEAS_CTRL,
 				  ZL_REF_FREQ_MEAS_CTRL);
 	if (rc)
@@ -662,12 +771,19 @@ zl3073x_ref_freq_meas_latch(struct zl3073x_dev *zldev, u8 type)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	/* Request measurement */
 	rc = zl3073x_write_u8(zldev, ZL_REG_REF_FREQ_MEAS_CTRL, type);
+=======
+	/* Request frequency offset measurement */
+	rc = zl3073x_write_u8(zldev, ZL_REG_REF_FREQ_MEAS_CTRL,
+			      ZL_REF_FREQ_MEAS_CTRL_REF_FREQ_OFF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		return rc;
 
 	/* Wait for finish */
+<<<<<<< HEAD
 	return zl3073x_poll_zero_u8(zldev, ZL_REG_REF_FREQ_MEAS_CTRL,
 				    ZL_REF_FREQ_MEAS_CTRL);
 }
@@ -720,6 +836,10 @@ zl3073x_ref_ffo_update(struct zl3073x_dev *zldev)
 
 	rc = zl3073x_ref_freq_meas_latch(zldev,
 					 ZL_REF_FREQ_MEAS_CTRL_REF_FREQ_OFF);
+=======
+	rc = zl3073x_poll_zero_u8(zldev, ZL_REG_REF_FREQ_MEAS_CTRL,
+				  ZL_REF_FREQ_MEAS_CTRL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		return rc;
 
@@ -750,11 +870,16 @@ zl3073x_dev_periodic_work(struct kthread_work *work)
 	struct zl3073x_dpll *zldpll;
 	int rc;
 
+<<<<<<< HEAD
 	/* Update input references' states */
 	zl3073x_dev_ref_states_update(zldev);
 
 	/* Update DPLL channels' states */
 	zl3073x_dev_chan_states_update(zldev);
+=======
+	/* Update input references status */
+	zl3073x_dev_ref_status_update(zldev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Update DPLL-to-connected-ref phase offsets registers */
 	rc = zl3073x_ref_phase_offsets_update(zldev, -1);
@@ -762,6 +887,7 @@ zl3073x_dev_periodic_work(struct kthread_work *work)
 		dev_warn(zldev->dev, "Failed to update phase offsets: %pe\n",
 			 ERR_PTR(rc));
 
+<<<<<<< HEAD
 	/* Update measured input reference frequencies if any DPLL has
 	 * frequency monitoring enabled.
 	 */
@@ -776,6 +902,8 @@ zl3073x_dev_periodic_work(struct kthread_work *work)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Update references' fractional frequency offsets */
 	rc = zl3073x_ref_ffo_update(zldev);
 	if (rc)
@@ -805,7 +933,12 @@ int zl3073x_dev_phase_avg_factor_set(struct zl3073x_dev *zldev, u8 factor)
 	value = (factor + 1) & 0x0f;
 
 	/* Update phase measurement control register */
+<<<<<<< HEAD
 	FIELD_MODIFY(ZL_DPLL_MEAS_CTRL_AVG_FACTOR, &dpll_meas_ctrl, value);
+=======
+	dpll_meas_ctrl &= ~ZL_DPLL_MEAS_CTRL_AVG_FACTOR;
+	dpll_meas_ctrl |= FIELD_PREP(ZL_DPLL_MEAS_CTRL_AVG_FACTOR, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MEAS_CTRL, dpll_meas_ctrl);
 	if (rc)
 		return rc;
@@ -980,7 +1113,11 @@ static void zl3073x_dev_dpll_fini(void *ptr)
 }
 
 static int
+<<<<<<< HEAD
 zl3073x_devm_dpll_init(struct zl3073x_dev *zldev)
+=======
+zl3073x_devm_dpll_init(struct zl3073x_dev *zldev, u8 num_dplls)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kthread_worker *kworker;
 	struct zl3073x_dpll *zldpll;
@@ -990,7 +1127,11 @@ zl3073x_devm_dpll_init(struct zl3073x_dev *zldev)
 	INIT_LIST_HEAD(&zldev->dplls);
 
 	/* Allocate all DPLLs */
+<<<<<<< HEAD
 	for (i = 0; i < zldev->info->num_channels; i++) {
+=======
+	for (i = 0; i < num_dplls; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		zldpll = zl3073x_dpll_alloc(zldev, i);
 		if (IS_ERR(zldpll)) {
 			dev_err_probe(zldev->dev, PTR_ERR(zldpll),
@@ -1030,12 +1171,21 @@ error:
 /**
  * zl3073x_dev_probe - initialize zl3073x device
  * @zldev: pointer to zl3073x device
+<<<<<<< HEAD
+=======
+ * @chip_info: chip info based on compatible
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Common initialization of zl3073x device structure.
  *
  * Returns: 0 on success, <0 on error
  */
+<<<<<<< HEAD
 int zl3073x_dev_probe(struct zl3073x_dev *zldev)
+=======
+int zl3073x_dev_probe(struct zl3073x_dev *zldev,
+		      const struct zl3073x_chip_info *chip_info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 id, revision, fw_ver;
 	unsigned int i;
@@ -1047,6 +1197,7 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	/* Detect chip variant */
 	for (i = 0; i < ARRAY_SIZE(zl3073x_chip_ids); i++) {
 		if (zl3073x_chip_ids[i].id == id)
@@ -1058,6 +1209,20 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev)
 				     "Unknown chip ID: 0x%04x\n", id);
 
 	zldev->info = &zl3073x_chip_ids[i];
+=======
+	/* Check it matches */
+	for (i = 0; i < chip_info->num_ids; i++) {
+		if (id == chip_info->ids[i])
+			break;
+	}
+
+	if (i == chip_info->num_ids) {
+		return dev_err_probe(zldev->dev, -ENODEV,
+				     "Unknown or non-match chip ID: 0x%0x\n",
+				     id);
+	}
+	zldev->chip_id = id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Read revision, firmware version and custom config version */
 	rc = zl3073x_read_u16(zldev, ZL_REG_REVISION, &revision);
@@ -1096,7 +1261,11 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev)
 				     "Failed to initialize mutex\n");
 
 	/* Register DPLL channels */
+<<<<<<< HEAD
 	rc = zl3073x_devm_dpll_init(zldev);
+=======
+	rc = zl3073x_devm_dpll_init(zldev, chip_info->num_channels);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		return rc;
 

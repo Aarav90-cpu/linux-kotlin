@@ -59,7 +59,11 @@ static struct key *integrity_keyring_from_id(const unsigned int id)
 }
 
 int integrity_digsig_verify(const unsigned int id, const char *sig, int siglen,
+<<<<<<< HEAD
 			    const char *digest, int digestlen, u8 algo)
+=======
+			    const char *digest, int digestlen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct key *keyring;
 
@@ -76,11 +80,17 @@ int integrity_digsig_verify(const unsigned int id, const char *sig, int siglen,
 		return digsig_verify(keyring, sig + 1, siglen - 1, digest,
 				     digestlen);
 	case 2: /* regular file data hash based signature */
+<<<<<<< HEAD
 		return asymmetric_verify(keyring, sig, siglen, digest,
 					    digestlen);
 	case 3: /* struct ima_file_id data based signature */
 		return asymmetric_verify_v3(keyring, sig, siglen, digest,
 					    digestlen, algo);
+=======
+	case 3: /* struct ima_file_id data based signature */
+		return asymmetric_verify(keyring, sig, siglen, digest,
+					 digestlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return -EOPNOTSUPP;

@@ -455,6 +455,16 @@ static const char *match_result_str(enum type_match_result tmr)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static bool is_pointer_type(Dwarf_Die *type_die)
+{
+	int tag = dwarf_tag(type_die);
+
+	return tag == DW_TAG_pointer_type || tag == DW_TAG_array_type;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool is_compound_type(Dwarf_Die *type_die)
 {
 	int tag = dwarf_tag(type_die);
@@ -467,6 +477,7 @@ static bool is_better_type(Dwarf_Die *type_a, Dwarf_Die *type_b)
 {
 	Dwarf_Word size_a, size_b;
 	Dwarf_Die die_a, die_b;
+<<<<<<< HEAD
 	Dwarf_Die ptr_a, ptr_b;
 	Dwarf_Die *ptr_type_a, *ptr_type_b;
 
@@ -478,13 +489,27 @@ static bool is_better_type(Dwarf_Die *type_a, Dwarf_Die *type_b)
 		return ptr_type_b != NULL;
 
 	if (ptr_type_b) {
+=======
+
+	/* pointer type is preferred */
+	if (is_pointer_type(type_a) != is_pointer_type(type_b))
+		return is_pointer_type(type_b);
+
+	if (is_pointer_type(type_b)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * We want to compare the target type, but 'void *' can fail to
 		 * get the target type.
 		 */
+<<<<<<< HEAD
 		if (die_get_real_type(ptr_type_a, &die_a) == NULL)
 			return true;
 		if (die_get_real_type(ptr_type_b, &die_b) == NULL)
+=======
+		if (die_get_real_type(type_a, &die_a) == NULL)
+			return true;
+		if (die_get_real_type(type_b, &die_b) == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 
 		type_a = &die_a;
@@ -537,7 +562,11 @@ static enum type_match_result check_variable(struct data_loc_info *dloc,
 	 * and local variables are accessed directly without a pointer.
 	 */
 	if (needs_pointer) {
+<<<<<<< HEAD
 		if (die_get_pointer_type(type_die, type_die) == NULL ||
+=======
+		if (!is_pointer_type(type_die) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    __die_get_real_type(type_die, type_die) == NULL)
 			return PERF_TMR_NO_POINTER;
 	}
@@ -774,7 +803,16 @@ static void global_var__collect(struct data_loc_info *dloc)
 			if (!dwarf_offdie(dwarf, pos->die_off, &type_die))
 				continue;
 
+<<<<<<< HEAD
 			get_global_var_info(dloc, pos->addr, &var_name, &var_offset);
+=======
+			if (!get_global_var_info(dloc, pos->addr, &var_name,
+						 &var_offset))
+				continue;
+
+			if (var_offset != 0)
+				continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			global_var__add(dloc, pos->addr, var_name, &type_die);
 		}
@@ -809,8 +847,14 @@ bool get_global_var_type(Dwarf_Die *cu_die, struct data_loc_info *dloc,
 	}
 
 	/* Try to get the variable by address first */
+<<<<<<< HEAD
 	if (die_find_variable_by_addr(cu_die, var_addr, &var_die, type_die,
 				      &offset)) {
+=======
+	if (die_find_variable_by_addr(cu_die, var_addr, &var_die, &offset) &&
+	    check_variable(dloc, &var_die, type_die, DWARF_REG_PC, offset,
+			   /*is_fbreg=*/false) == PERF_TMR_OK) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		var_name = dwarf_diename(&var_die);
 		*var_offset = offset;
 		goto ok;
@@ -840,6 +884,7 @@ static bool die_is_same(Dwarf_Die *die_a, Dwarf_Die *die_b)
 	return (die_a->cu == die_b->cu) && (die_a->addr == die_b->addr);
 }
 
+<<<<<<< HEAD
 static void tsr_set_lifetime(struct type_state_reg *tsr,
 			     const struct die_var_type *var)
 {
@@ -852,6 +897,8 @@ static void tsr_set_lifetime(struct type_state_reg *tsr,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * update_var_state - Update type state using given variables
  * @state: type state table
@@ -877,6 +924,7 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
 	}
 
 	for (var = var_types; var != NULL; var = var->next) {
+<<<<<<< HEAD
 		/* Check if addr falls within the variable's valid range */
 		if (var->has_range) {
 			if (addr < var->addr || (var->end && addr >= var->end))
@@ -885,11 +933,16 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
 			if (addr != var->addr)
 				continue;
 		}
+=======
+		if (var->addr != addr)
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Get the type DIE using the offset */
 		if (!dwarf_offdie(dloc->di->dbg, var->die_off, &mem_die))
 			continue;
 
 		if (var->reg == DWARF_REG_FB || var->reg == fbreg || var->reg == state->stack_reg) {
+<<<<<<< HEAD
 			Dwarf_Die ptr_die;
 			Dwarf_Die *ptr_type;
 			int offset = var->offset;
@@ -900,6 +953,14 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
 			/* If the reg location holds the pointer value, dereference the type */
 			if (!var->is_reg_var_addr && ptr_type &&
 			    __die_get_real_type(ptr_type, &mem_die) == NULL)
+=======
+			int offset = var->offset;
+			struct type_state_stack *stack;
+
+			/* If the reg location holds the pointer value, dereference the type */
+			if (!var->is_reg_var_addr && is_pointer_type(&mem_die) &&
+				__die_get_real_type(&mem_die, &mem_die) == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 
 			if (var->reg != DWARF_REG_FB)
@@ -941,7 +1002,10 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
 				reg->type = mem_die;
 				reg->kind = TSR_KIND_POINTER;
 				reg->ok = true;
+<<<<<<< HEAD
 				tsr_set_lifetime(reg, var);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				pr_debug_dtp("var [%"PRIx64"] reg%d addr offset %x",
 					     insn_offset, var->reg, var->offset);
@@ -958,7 +1022,10 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
 			reg->type = mem_die;
 			reg->kind = TSR_KIND_TYPE;
 			reg->ok = true;
+<<<<<<< HEAD
 			tsr_set_lifetime(reg, var);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			pr_debug_dtp("var [%"PRIx64"] reg%d offset %x",
 				     insn_offset, var->reg, var->offset);
@@ -1126,9 +1193,13 @@ again:
 		goto check_non_register;
 
 	if (state->regs[reg].kind == TSR_KIND_TYPE) {
+<<<<<<< HEAD
 		Dwarf_Die ptr_die;
 		Dwarf_Die sized_type;
 		Dwarf_Die *ptr_type;
+=======
+		Dwarf_Die sized_type;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct strbuf sb;
 
 		strbuf_init(&sb, 32);
@@ -1140,8 +1211,12 @@ again:
 		 * Normal registers should hold a pointer (or array) to
 		 * dereference a memory location.
 		 */
+<<<<<<< HEAD
 		ptr_type = die_get_pointer_type(&state->regs[reg].type, &ptr_die);
 		if (!ptr_type) {
+=======
+		if (!is_pointer_type(&state->regs[reg].type)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (dloc->op->offset < 0 && reg != state->stack_reg)
 				goto check_kernel;
 
@@ -1149,7 +1224,11 @@ again:
 		}
 
 		/* Remove the pointer and get the target type */
+<<<<<<< HEAD
 		if (__die_get_real_type(ptr_type, type_die) == NULL)
+=======
+		if (__die_get_real_type(&state->regs[reg].type, type_die) == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return PERF_TMR_NO_POINTER;
 
 		dloc->type_offset = dloc->op->offset + state->regs[reg].offset;
@@ -1249,11 +1328,14 @@ again:
 		return PERF_TMR_BAIL_OUT;
 	}
 
+<<<<<<< HEAD
 	if (state->regs[reg].kind == TSR_KIND_CONST &&
 	    dso__kernel(map__dso(dloc->ms->map))) {
 		if (dloc->op->offset < 0 && reg != state->stack_reg && reg != dloc->fbreg)
 			goto check_kernel;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 check_non_register:
 	if (reg == dloc->fbreg || reg == state->stack_reg) {
 		struct type_state_stack *stack;
@@ -1625,13 +1707,21 @@ retry:
 
 		if (reg == DWARF_REG_PC) {
 			if (!die_find_variable_by_addr(&scopes[i], dloc->var_addr,
+<<<<<<< HEAD
 						       &var_die, &mem_die,
 						       &type_offset))
+=======
+						       &var_die, &type_offset))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 		} else {
 			/* Look up variables/parameters in this scope */
 			if (!die_find_variable_by_reg(&scopes[i], pc, reg,
+<<<<<<< HEAD
 						      &mem_die, &type_offset, is_fbreg, &var_die))
+=======
+						      &type_offset, is_fbreg, &var_die))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 		}
 
@@ -1639,6 +1729,7 @@ retry:
 			     dwarf_diename(&var_die), (long)dwarf_dieoffset(&var_die),
 			     i+1, nr_scopes, (long)dwarf_dieoffset(&scopes[i]));
 
+<<<<<<< HEAD
 		if (reg == DWARF_REG_PC) {
 			pr_debug_dtp("addr=%#"PRIx64" type_offset=%#x\n",
 				     dloc->var_addr, type_offset);
@@ -1655,6 +1746,28 @@ retry:
 			*type_die = mem_die;
 			dloc->type_offset = type_offset;
 			found = true;
+=======
+		/* Found a variable, see if it's correct */
+		result = check_variable(dloc, &var_die, &mem_die, reg, type_offset, is_fbreg);
+		if (result == PERF_TMR_OK) {
+			if (reg == DWARF_REG_PC) {
+				pr_debug_dtp("addr=%#"PRIx64" type_offset=%#x\n",
+					     dloc->var_addr, type_offset);
+			} else if (reg == DWARF_REG_FB || is_fbreg) {
+				pr_debug_dtp("stack_offset=%#x type_offset=%#x\n",
+					     fb_offset, type_offset);
+			} else {
+				pr_debug_dtp("type_offset=%#x\n", type_offset);
+			}
+
+			if (!found || is_better_type(type_die, &mem_die)) {
+				*type_die = mem_die;
+				dloc->type_offset = type_offset;
+				found = true;
+			}
+		} else {
+			pr_debug_dtp("failed: %s\n", match_result_str(result));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		pr_debug_location(&var_die, pc, reg);

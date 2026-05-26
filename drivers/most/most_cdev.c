@@ -19,14 +19,21 @@
 
 #define CHRDEV_REGION_SIZE 50
 
+<<<<<<< HEAD
 static const struct class most_cdev_class = {
 	.name		= "most_cdev"
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cdev_component {
 	dev_t devno;
 	struct ida minor_id;
 	unsigned int major;
+<<<<<<< HEAD
+=======
+	struct class *class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct most_component cc;
 } comp;
 
@@ -94,7 +101,11 @@ static void destroy_cdev(struct comp_channel *c)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	device_destroy(&most_cdev_class, c->devno);
+=======
+	device_destroy(comp.class, c->devno);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cdev_del(&c->cdev);
 	spin_lock_irqsave(&ch_list_lock, flags);
 	list_del(&c->list);
@@ -458,7 +469,11 @@ static int comp_probe(struct most_interface *iface, int channel_id,
 	spin_lock_irqsave(&ch_list_lock, cl_flags);
 	list_add_tail(&c->list, &channel_list);
 	spin_unlock_irqrestore(&ch_list_lock, cl_flags);
+<<<<<<< HEAD
 	c->dev = device_create(&most_cdev_class, NULL, c->devno, NULL, "%s", name);
+=======
+	c->dev = device_create(comp.class, NULL, c->devno, NULL, "%s", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (IS_ERR(c->dev)) {
 		retval = PTR_ERR(c->dev);
@@ -490,14 +505,23 @@ static struct cdev_component comp = {
 	},
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init most_cdev_init(void)
 {
 	int err;
 
+<<<<<<< HEAD
 	err = class_register(&most_cdev_class);
 	if (err)
 		return err;
+=======
+	comp.class = class_create("most_cdev");
+	if (IS_ERR(comp.class))
+		return PTR_ERR(comp.class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ida_init(&comp.minor_id);
 
@@ -519,7 +543,11 @@ free_cdev:
 	unregister_chrdev_region(comp.devno, CHRDEV_REGION_SIZE);
 dest_ida:
 	ida_destroy(&comp.minor_id);
+<<<<<<< HEAD
 	class_unregister(&most_cdev_class);
+=======
+	class_destroy(comp.class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -536,7 +564,11 @@ static void __exit most_cdev_exit(void)
 	}
 	unregister_chrdev_region(comp.devno, CHRDEV_REGION_SIZE);
 	ida_destroy(&comp.minor_id);
+<<<<<<< HEAD
 	class_unregister(&most_cdev_class);
+=======
+	class_destroy(comp.class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(most_cdev_init);

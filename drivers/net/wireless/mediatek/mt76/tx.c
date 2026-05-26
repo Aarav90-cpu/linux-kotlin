@@ -227,9 +227,13 @@ mt76_tx_check_non_aql(struct mt76_dev *dev, struct mt76_wcid *wcid,
 		      struct sk_buff *skb)
 {
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+<<<<<<< HEAD
 	struct ieee80211_sta *sta;
 	int pending;
 	int i;
+=======
+	int pending;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!wcid || info->tx_time_est)
 		return;
@@ -237,6 +241,7 @@ mt76_tx_check_non_aql(struct mt76_dev *dev, struct mt76_wcid *wcid,
 	pending = atomic_dec_return(&wcid->non_aql_packets);
 	if (pending < 0)
 		atomic_cmpxchg(&wcid->non_aql_packets, pending, 0);
+<<<<<<< HEAD
 
 	sta = wcid_to_sta(wcid);
 	if (!sta || pending != MT_MAX_NON_AQL_PKT - 1)
@@ -248,6 +253,8 @@ mt76_tx_check_non_aql(struct mt76_dev *dev, struct mt76_wcid *wcid,
 
 		ieee80211_schedule_txq(dev->hw, sta->txq[i]);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __mt76_tx_complete_skb(struct mt76_dev *dev, u16 wcid_idx, struct sk_buff *skb,
@@ -555,9 +562,12 @@ mt76_txq_schedule_list(struct mt76_phy *phy, enum mt76_txq_id qid)
 		if (!wcid || test_bit(MT_WCID_FLAG_PS, &wcid->flags))
 			continue;
 
+<<<<<<< HEAD
 		if (atomic_read(&wcid->non_aql_packets) >= MT_MAX_NON_AQL_PKT)
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		phy = mt76_dev_phy(dev, wcid->phy_idx);
 		if (test_bit(MT76_RESET, &phy->state) || phy->offchannel)
 			continue;
@@ -632,7 +642,11 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 
 		if ((dev->drv->drv_flags & MT_DRV_HW_MGMT_TXQ) &&
 		    !(info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) &&
+<<<<<<< HEAD
 		    !ieee80211_is_data_present(hdr->frame_control) &&
+=======
+		    !ieee80211_is_data(hdr->frame_control) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (!ieee80211_is_bufferable_mmpdu(skb) ||
 		     ieee80211_is_deauth(hdr->frame_control) ||
 		     head == &wcid->tx_offchannel))
@@ -660,7 +674,11 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 	return ret;
 }
 
+<<<<<<< HEAD
 void mt76_txq_schedule_pending(struct mt76_phy *phy)
+=======
+static void mt76_txq_schedule_pending(struct mt76_phy *phy)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	LIST_HEAD(tx_list);
 	int ret = 0;
@@ -866,6 +884,7 @@ int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi)
 	token = idr_alloc(&dev->token, *ptxwi, dev->token_start,
 			  dev->token_start + dev->token_size,
 			  GFP_ATOMIC);
+<<<<<<< HEAD
 	if (token >= dev->token_start) {
 		dev->token_count++;
 
@@ -875,6 +894,11 @@ int mt76_token_consume(struct mt76_dev *dev, struct mt76_txwi_cache **ptxwi)
 		}
 	}
 
+=======
+	if (token >= dev->token_start)
+		dev->token_count++;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NET_MEDIATEK_SOC_WED
 	if (mtk_wed_device_active(&dev->mmio.wed) &&
 	    token >= dev->mmio.wed.wlan.token_start)
@@ -919,12 +943,15 @@ mt76_token_release(struct mt76_dev *dev, int token, bool *wake)
 	if (txwi) {
 		dev->token_count--;
 
+<<<<<<< HEAD
 		if (txwi->qid == MT_TXQ_PSD) {
 			struct mt76_phy *mphy = mt76_dev_phy(dev, txwi->phy_idx);
 			if (atomic_dec_and_test(&mphy->mgmt_tx_pending))
 				wake_up(&dev->tx_wait);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NET_MEDIATEK_SOC_WED
 		if (mtk_wed_device_active(&dev->mmio.wed) &&
 		    token >= dev->mmio.wed.wlan.token_start &&

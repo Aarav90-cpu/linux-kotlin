@@ -131,10 +131,15 @@ static bool get_smc_nl_family_id(void)
 		goto fail;
 
 	ret = recv(fd, &msg, sizeof(msg), 0);
+<<<<<<< HEAD
 	if (msg.n.nlmsg_type == NLMSG_ERROR)
 		goto fail;
 	if (!ASSERT_FALSE(ret < 0 || !NLMSG_OK(&msg.n, ret),
 			  "nl_family response"))
+=======
+	if (!ASSERT_FALSE(msg.n.nlmsg_type == NLMSG_ERROR || ret < 0 ||
+			  !NLMSG_OK(&msg.n, ret), "nl_family response"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 
 	nl = (struct nlattr *)GENLMSG_DATA(&msg);

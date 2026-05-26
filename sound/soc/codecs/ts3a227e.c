@@ -5,6 +5,10 @@
  * Copyright (C) 2014 Google, Inc.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/i2c.h>
 #include <linux/init.h>
 #include <linux/input.h>

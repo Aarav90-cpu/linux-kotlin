@@ -11,6 +11,7 @@ use crate::{
 
 pub mod mem;
 pub mod poll;
+<<<<<<< HEAD
 pub mod register;
 pub mod resource;
 
@@ -19,6 +20,12 @@ pub use resource::Resource;
 
 use register::LocatedRegister;
 
+=======
+pub mod resource;
+
+pub use resource::Resource;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Physical address type.
 ///
 /// This is a type alias to either `u32` or `u64` depending on the config option
@@ -141,6 +148,180 @@ impl<const SIZE: usize> MmioRaw<SIZE> {
 #[repr(transparent)]
 pub struct Mmio<const SIZE: usize = 0>(MmioRaw<SIZE>);
 
+<<<<<<< HEAD
+=======
+/// Internal helper macros used to invoke C MMIO read functions.
+///
+/// This macro is intended to be used by higher-level MMIO access macros (io_define_read) and
+/// provides a unified expansion for infallible vs. fallible read semantics. It emits a direct call
+/// into the corresponding C helper and performs the required cast to the Rust return type.
+///
+/// # Parameters
+///
+/// * `$c_fn` – The C function performing the MMIO read.
+/// * `$self` – The I/O backend object.
+/// * `$ty` – The type of the value to be read.
+/// * `$addr` – The MMIO address to read.
+///
+/// This macro does not perform any validation; all invariants must be upheld by the higher-level
+/// abstraction invoking it.
+macro_rules! call_mmio_read {
+    (infallible, $c_fn:ident, $self:ident, $type:ty, $addr:expr) => {
+        // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+        unsafe { bindings::$c_fn($addr as *const c_void) as $type }
+    };
+
+    (fallible, $c_fn:ident, $self:ident, $type:ty, $addr:expr) => {{
+        // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+        Ok(unsafe { bindings::$c_fn($addr as *const c_void) as $type })
+    }};
+}
+
+/// Internal helper macros used to invoke C MMIO write functions.
+///
+/// This macro is intended to be used by higher-level MMIO access macros (io_define_write) and
+/// provides a unified expansion for infallible vs. fallible write semantics. It emits a direct call
+/// into the corresponding C helper and performs the required cast to the Rust return type.
+///
+/// # Parameters
+///
+/// * `$c_fn` – The C function performing the MMIO write.
+/// * `$self` – The I/O backend object.
+/// * `$ty` – The type of the written value.
+/// * `$addr` – The MMIO address to write.
+/// * `$value` – The value to write.
+///
+/// This macro does not perform any validation; all invariants must be upheld by the higher-level
+/// abstraction invoking it.
+macro_rules! call_mmio_write {
+    (infallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr, $value:expr) => {
+        // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+        unsafe { bindings::$c_fn($value, $addr as *mut c_void) }
+    };
+
+    (fallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr, $value:expr) => {{
+        // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+        unsafe { bindings::$c_fn($value, $addr as *mut c_void) };
+        Ok(())
+    }};
+}
+
+/// Generates an accessor method for reading from an I/O backend.
+///
+/// This macro reduces boilerplate by automatically generating either compile-time bounds-checked
+/// (infallible) or runtime bounds-checked (fallible) read methods. It abstracts the address
+/// calculation and bounds checking, and delegates the actual I/O read operation to a specified
+/// helper macro, making it generic over different I/O backends.
+///
+/// # Parameters
+///
+/// * `infallible` / `fallible` - Determines the bounds-checking strategy. `infallible` relies on
+///   `IoKnownSize` for compile-time checks and returns the value directly. `fallible` performs
+///   runtime checks against `maxsize()` and returns a `Result<T>`.
+/// * `$(#[$attr:meta])*` - Optional attributes to apply to the generated method (e.g.,
+///   `#[cfg(CONFIG_64BIT)]` or inline directives).
+/// * `$vis:vis` - The visibility of the generated method (e.g., `pub`).
+/// * `$name:ident` / `$try_name:ident` - The name of the generated method (e.g., `read32`,
+///   `try_read8`).
+/// * `$call_macro:ident` - The backend-specific helper macro used to emit the actual I/O call
+///   (e.g., `call_mmio_read`).
+/// * `$c_fn:ident` - The backend-specific C function or identifier to be passed into the
+///   `$call_macro`.
+/// * `$type_name:ty` - The Rust type of the value being read (e.g., `u8`, `u32`).
+#[macro_export]
+macro_rules! io_define_read {
+    (infallible, $(#[$attr:meta])* $vis:vis $name:ident, $call_macro:ident($c_fn:ident) ->
+     $type_name:ty) => {
+        /// Read IO data from a given offset known at compile time.
+        ///
+        /// Bound checks are performed on compile time, hence if the offset is not known at compile
+        /// time, the build will fail.
+        $(#[$attr])*
+        // Always inline to optimize out error path of `io_addr_assert`.
+        #[inline(always)]
+        $vis fn $name(&self, offset: usize) -> $type_name {
+            let addr = self.io_addr_assert::<$type_name>(offset);
+
+            // SAFETY: By the type invariant `addr` is a valid address for IO operations.
+            $call_macro!(infallible, $c_fn, self, $type_name, addr)
+        }
+    };
+
+    (fallible, $(#[$attr:meta])* $vis:vis $try_name:ident, $call_macro:ident($c_fn:ident) ->
+     $type_name:ty) => {
+        /// Read IO data from a given offset.
+        ///
+        /// Bound checks are performed on runtime, it fails if the offset (plus the type size) is
+        /// out of bounds.
+        $(#[$attr])*
+        $vis fn $try_name(&self, offset: usize) -> Result<$type_name> {
+            let addr = self.io_addr::<$type_name>(offset)?;
+
+            // SAFETY: By the type invariant `addr` is a valid address for IO operations.
+            $call_macro!(fallible, $c_fn, self, $type_name, addr)
+        }
+    };
+}
+pub use io_define_read;
+
+/// Generates an accessor method for writing to an I/O backend.
+///
+/// This macro reduces boilerplate by automatically generating either compile-time bounds-checked
+/// (infallible) or runtime bounds-checked (fallible) write methods. It abstracts the address
+/// calculation and bounds checking, and delegates the actual I/O write operation to a specified
+/// helper macro, making it generic over different I/O backends.
+///
+/// # Parameters
+///
+/// * `infallible` / `fallible` - Determines the bounds-checking strategy. `infallible` relies on
+///   `IoKnownSize` for compile-time checks and returns `()`. `fallible` performs runtime checks
+///   against `maxsize()` and returns a `Result`.
+/// * `$(#[$attr:meta])*` - Optional attributes to apply to the generated method (e.g.,
+///   `#[cfg(CONFIG_64BIT)]` or inline directives).
+/// * `$vis:vis` - The visibility of the generated method (e.g., `pub`).
+/// * `$name:ident` / `$try_name:ident` - The name of the generated method (e.g., `write32`,
+///   `try_write8`).
+/// * `$call_macro:ident` - The backend-specific helper macro used to emit the actual I/O call
+///   (e.g., `call_mmio_write`).
+/// * `$c_fn:ident` - The backend-specific C function or identifier to be passed into the
+///   `$call_macro`.
+/// * `$type_name:ty` - The Rust type of the value being written (e.g., `u8`, `u32`). Note the use
+///   of `<-` before the type to denote a write operation.
+#[macro_export]
+macro_rules! io_define_write {
+    (infallible, $(#[$attr:meta])* $vis:vis $name:ident, $call_macro:ident($c_fn:ident) <-
+     $type_name:ty) => {
+        /// Write IO data from a given offset known at compile time.
+        ///
+        /// Bound checks are performed on compile time, hence if the offset is not known at compile
+        /// time, the build will fail.
+        $(#[$attr])*
+        // Always inline to optimize out error path of `io_addr_assert`.
+        #[inline(always)]
+        $vis fn $name(&self, value: $type_name, offset: usize) {
+            let addr = self.io_addr_assert::<$type_name>(offset);
+
+            $call_macro!(infallible, $c_fn, self, $type_name, addr, value);
+        }
+    };
+
+    (fallible, $(#[$attr:meta])* $vis:vis $try_name:ident, $call_macro:ident($c_fn:ident) <-
+     $type_name:ty) => {
+        /// Write IO data from a given offset.
+        ///
+        /// Bound checks are performed on runtime, it fails if the offset (plus the type size) is
+        /// out of bounds.
+        $(#[$attr])*
+        $vis fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+            let addr = self.io_addr::<$type_name>(offset)?;
+
+            $call_macro!(fallible, $c_fn, self, $type_name, addr, value)
+        }
+    };
+}
+pub use io_define_write;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Checks whether an access of type `U` at the given `offset`
 /// is valid within this region.
 #[inline]
@@ -153,14 +334,19 @@ const fn offset_valid<U>(offset: usize, size: usize) -> bool {
     }
 }
 
+<<<<<<< HEAD
 /// Trait indicating that an I/O backend supports operations of a certain type and providing an
 /// implementation for these operations.
+=======
+/// Marker trait indicating that an I/O backend supports operations of a certain type.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// Different I/O backends can implement this trait to expose only the operations they support.
 ///
 /// For example, a PCI configuration space may implement `IoCapable<u8>`, `IoCapable<u16>`,
 /// and `IoCapable<u32>`, but not `IoCapable<u64>`, while an MMIO region on a 64-bit
 /// system might implement all four.
+<<<<<<< HEAD
 pub trait IoCapable<T> {
     /// Performs an I/O read of type `T` at `address` and returns the result.
     ///
@@ -221,6 +407,9 @@ macro_rules! impl_usize_ioloc {
 
 // Provide the ability to read any primitive type from a [`usize`].
 impl_usize_ioloc!(u8, u16, u32, u64);
+=======
+pub trait IoCapable<T> {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Types implementing this trait (e.g. MMIO BARs or PCI config regions)
 /// can perform I/O operations on regions of memory.
@@ -262,141 +451,262 @@ pub trait Io {
 
     /// Fallible 8-bit read with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_read8(&self, offset: usize) -> Result<u8>
     where
         Self: IoCapable<u8>,
     {
         self.try_read(offset)
+=======
+    fn try_read8(&self, _offset: usize) -> Result<u8>
+    where
+        Self: IoCapable<u8>,
+    {
+        build_error!("Backend does not support fallible 8-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 16-bit read with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_read16(&self, offset: usize) -> Result<u16>
     where
         Self: IoCapable<u16>,
     {
         self.try_read(offset)
+=======
+    fn try_read16(&self, _offset: usize) -> Result<u16>
+    where
+        Self: IoCapable<u16>,
+    {
+        build_error!("Backend does not support fallible 16-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 32-bit read with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_read32(&self, offset: usize) -> Result<u32>
     where
         Self: IoCapable<u32>,
     {
         self.try_read(offset)
+=======
+    fn try_read32(&self, _offset: usize) -> Result<u32>
+    where
+        Self: IoCapable<u32>,
+    {
+        build_error!("Backend does not support fallible 32-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 64-bit read with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_read64(&self, offset: usize) -> Result<u64>
     where
         Self: IoCapable<u64>,
     {
         self.try_read(offset)
+=======
+    fn try_read64(&self, _offset: usize) -> Result<u64>
+    where
+        Self: IoCapable<u64>,
+    {
+        build_error!("Backend does not support fallible 64-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 8-bit write with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_write8(&self, value: u8, offset: usize) -> Result
     where
         Self: IoCapable<u8>,
     {
         self.try_write(offset, value)
+=======
+    fn try_write8(&self, _value: u8, _offset: usize) -> Result
+    where
+        Self: IoCapable<u8>,
+    {
+        build_error!("Backend does not support fallible 8-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 16-bit write with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_write16(&self, value: u16, offset: usize) -> Result
     where
         Self: IoCapable<u16>,
     {
         self.try_write(offset, value)
+=======
+    fn try_write16(&self, _value: u16, _offset: usize) -> Result
+    where
+        Self: IoCapable<u16>,
+    {
+        build_error!("Backend does not support fallible 16-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 32-bit write with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_write32(&self, value: u32, offset: usize) -> Result
     where
         Self: IoCapable<u32>,
     {
         self.try_write(offset, value)
+=======
+    fn try_write32(&self, _value: u32, _offset: usize) -> Result
+    where
+        Self: IoCapable<u32>,
+    {
+        build_error!("Backend does not support fallible 32-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Fallible 64-bit write with runtime bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn try_write64(&self, value: u64, offset: usize) -> Result
     where
         Self: IoCapable<u64>,
     {
         self.try_write(offset, value)
+=======
+    fn try_write64(&self, _value: u64, _offset: usize) -> Result
+    where
+        Self: IoCapable<u64>,
+    {
+        build_error!("Backend does not support fallible 64-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 8-bit read with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn read8(&self, offset: usize) -> u8
     where
         Self: IoKnownSize + IoCapable<u8>,
     {
         self.read(offset)
+=======
+    fn read8(&self, _offset: usize) -> u8
+    where
+        Self: IoKnownSize + IoCapable<u8>,
+    {
+        build_error!("Backend does not support infallible 8-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 16-bit read with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn read16(&self, offset: usize) -> u16
     where
         Self: IoKnownSize + IoCapable<u16>,
     {
         self.read(offset)
+=======
+    fn read16(&self, _offset: usize) -> u16
+    where
+        Self: IoKnownSize + IoCapable<u16>,
+    {
+        build_error!("Backend does not support infallible 16-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 32-bit read with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn read32(&self, offset: usize) -> u32
     where
         Self: IoKnownSize + IoCapable<u32>,
     {
         self.read(offset)
+=======
+    fn read32(&self, _offset: usize) -> u32
+    where
+        Self: IoKnownSize + IoCapable<u32>,
+    {
+        build_error!("Backend does not support infallible 32-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 64-bit read with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn read64(&self, offset: usize) -> u64
     where
         Self: IoKnownSize + IoCapable<u64>,
     {
         self.read(offset)
+=======
+    fn read64(&self, _offset: usize) -> u64
+    where
+        Self: IoKnownSize + IoCapable<u64>,
+    {
+        build_error!("Backend does not support infallible 64-bit read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 8-bit write with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn write8(&self, value: u8, offset: usize)
     where
         Self: IoKnownSize + IoCapable<u8>,
     {
         self.write(offset, value)
+=======
+    fn write8(&self, _value: u8, _offset: usize)
+    where
+        Self: IoKnownSize + IoCapable<u8>,
+    {
+        build_error!("Backend does not support infallible 8-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 16-bit write with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn write16(&self, value: u16, offset: usize)
     where
         Self: IoKnownSize + IoCapable<u16>,
     {
         self.write(offset, value)
+=======
+    fn write16(&self, _value: u16, _offset: usize)
+    where
+        Self: IoKnownSize + IoCapable<u16>,
+    {
+        build_error!("Backend does not support infallible 16-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 32-bit write with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn write32(&self, value: u32, offset: usize)
     where
         Self: IoKnownSize + IoCapable<u32>,
     {
         self.write(offset, value)
+=======
+    fn write32(&self, _value: u32, _offset: usize)
+    where
+        Self: IoKnownSize + IoCapable<u32>,
+    {
+        build_error!("Backend does not support infallible 32-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Infallible 64-bit write with compile-time bounds check.
     #[inline(always)]
+<<<<<<< HEAD
     fn write64(&self, value: u64, offset: usize)
     where
         Self: IoKnownSize + IoCapable<u64>,
@@ -701,6 +1011,13 @@ pub trait Io {
 
         // SAFETY: `address` has been validated by `io_addr_assert`.
         unsafe { self.io_write(io_value, address) }
+=======
+    fn write64(&self, _value: u64, _offset: usize)
+    where
+        Self: IoKnownSize + IoCapable<u64>,
+    {
+        build_error!("Backend does not support infallible 64-bit write")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
@@ -726,6 +1043,7 @@ pub trait IoKnownSize: Io {
     }
 }
 
+<<<<<<< HEAD
 /// Implements [`IoCapable`] on `$mmio` for `$ty` using `$read_fn` and `$write_fn`.
 macro_rules! impl_mmio_io_capable {
     ($mmio:ident, $(#[$attr:meta])* $ty:ty, $read_fn:ident, $write_fn:ident) => {
@@ -756,6 +1074,16 @@ impl_mmio_io_capable!(
     readq,
     writeq
 );
+=======
+// MMIO regions support 8, 16, and 32-bit accesses.
+impl<const SIZE: usize> IoCapable<u8> for Mmio<SIZE> {}
+impl<const SIZE: usize> IoCapable<u16> for Mmio<SIZE> {}
+impl<const SIZE: usize> IoCapable<u32> for Mmio<SIZE> {}
+
+// MMIO regions on 64-bit systems also support 64-bit accesses.
+#[cfg(CONFIG_64BIT)]
+impl<const SIZE: usize> IoCapable<u64> for Mmio<SIZE> {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 impl<const SIZE: usize> Io for Mmio<SIZE> {
     /// Returns the base address of this mapping.
@@ -769,6 +1097,49 @@ impl<const SIZE: usize> Io for Mmio<SIZE> {
     fn maxsize(&self) -> usize {
         self.0.maxsize()
     }
+<<<<<<< HEAD
+=======
+
+    io_define_read!(fallible, try_read8, call_mmio_read(readb) -> u8);
+    io_define_read!(fallible, try_read16, call_mmio_read(readw) -> u16);
+    io_define_read!(fallible, try_read32, call_mmio_read(readl) -> u32);
+    io_define_read!(
+        fallible,
+        #[cfg(CONFIG_64BIT)]
+        try_read64,
+        call_mmio_read(readq) -> u64
+    );
+
+    io_define_write!(fallible, try_write8, call_mmio_write(writeb) <- u8);
+    io_define_write!(fallible, try_write16, call_mmio_write(writew) <- u16);
+    io_define_write!(fallible, try_write32, call_mmio_write(writel) <- u32);
+    io_define_write!(
+        fallible,
+        #[cfg(CONFIG_64BIT)]
+        try_write64,
+        call_mmio_write(writeq) <- u64
+    );
+
+    io_define_read!(infallible, read8, call_mmio_read(readb) -> u8);
+    io_define_read!(infallible, read16, call_mmio_read(readw) -> u16);
+    io_define_read!(infallible, read32, call_mmio_read(readl) -> u32);
+    io_define_read!(
+        infallible,
+        #[cfg(CONFIG_64BIT)]
+        read64,
+        call_mmio_read(readq) -> u64
+    );
+
+    io_define_write!(infallible, write8, call_mmio_write(writeb) <- u8);
+    io_define_write!(infallible, write16, call_mmio_write(writew) <- u16);
+    io_define_write!(infallible, write32, call_mmio_write(writel) <- u32);
+    io_define_write!(
+        infallible,
+        #[cfg(CONFIG_64BIT)]
+        write64,
+        call_mmio_write(writeq) <- u64
+    );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {
@@ -786,6 +1157,7 @@ impl<const SIZE: usize> Mmio<SIZE> {
         // SAFETY: `Mmio` is a transparent wrapper around `MmioRaw`.
         unsafe { &*core::ptr::from_ref(raw).cast() }
     }
+<<<<<<< HEAD
 }
 
 /// [`Mmio`] wrapper using relaxed accessors.
@@ -853,3 +1225,46 @@ impl_mmio_io_capable!(
     readq_relaxed,
     writeq_relaxed
 );
+=======
+
+    io_define_read!(infallible, pub read8_relaxed, call_mmio_read(readb_relaxed) -> u8);
+    io_define_read!(infallible, pub read16_relaxed, call_mmio_read(readw_relaxed) -> u16);
+    io_define_read!(infallible, pub read32_relaxed, call_mmio_read(readl_relaxed) -> u32);
+    io_define_read!(
+        infallible,
+        #[cfg(CONFIG_64BIT)]
+        pub read64_relaxed,
+        call_mmio_read(readq_relaxed) -> u64
+    );
+
+    io_define_read!(fallible, pub try_read8_relaxed, call_mmio_read(readb_relaxed) -> u8);
+    io_define_read!(fallible, pub try_read16_relaxed, call_mmio_read(readw_relaxed) -> u16);
+    io_define_read!(fallible, pub try_read32_relaxed, call_mmio_read(readl_relaxed) -> u32);
+    io_define_read!(
+        fallible,
+        #[cfg(CONFIG_64BIT)]
+        pub try_read64_relaxed,
+        call_mmio_read(readq_relaxed) -> u64
+    );
+
+    io_define_write!(infallible, pub write8_relaxed, call_mmio_write(writeb_relaxed) <- u8);
+    io_define_write!(infallible, pub write16_relaxed, call_mmio_write(writew_relaxed) <- u16);
+    io_define_write!(infallible, pub write32_relaxed, call_mmio_write(writel_relaxed) <- u32);
+    io_define_write!(
+        infallible,
+        #[cfg(CONFIG_64BIT)]
+        pub write64_relaxed,
+        call_mmio_write(writeq_relaxed) <- u64
+    );
+
+    io_define_write!(fallible, pub try_write8_relaxed, call_mmio_write(writeb_relaxed) <- u8);
+    io_define_write!(fallible, pub try_write16_relaxed, call_mmio_write(writew_relaxed) <- u16);
+    io_define_write!(fallible, pub try_write32_relaxed, call_mmio_write(writel_relaxed) <- u32);
+    io_define_write!(
+        fallible,
+        #[cfg(CONFIG_64BIT)]
+        pub try_write64_relaxed,
+        call_mmio_write(writeq_relaxed) <- u64
+    );
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

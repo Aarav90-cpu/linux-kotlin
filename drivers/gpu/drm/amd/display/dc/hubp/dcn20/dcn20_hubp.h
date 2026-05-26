@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-17 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -288,22 +292,31 @@
 	type MCACHEID_MALL_PREF_2H_P1;\
 	type HUBP_FGCG_REP_DIS
 
+<<<<<<< HEAD
 #define DCN42_HUBP_REG_FIELD_VARIABLE_LIST(type) \
 	type HUBP_3DLUT_CROSSBAR_SEL_G;\
 	type HUBP_3DLUT_CROSSBAR_SEL_B;\
 	type HUBP_3DLUT_CROSSBAR_SEL_R
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dcn_hubp2_registers {
 	DCN401_HUBP_REG_COMMON_VARIABLE_LIST;
 };
 
 struct dcn_hubp2_shift {
 	DCN401_HUBP_REG_FIELD_VARIABLE_LIST(uint8_t);
+<<<<<<< HEAD
 	DCN42_HUBP_REG_FIELD_VARIABLE_LIST(uint8_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn_hubp2_mask {
 	DCN401_HUBP_REG_FIELD_VARIABLE_LIST(uint32_t);
+<<<<<<< HEAD
 	DCN42_HUBP_REG_FIELD_VARIABLE_LIST(uint32_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn20_hubp {

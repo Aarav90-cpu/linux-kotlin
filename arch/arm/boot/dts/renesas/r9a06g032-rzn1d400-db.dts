@@ -185,6 +185,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &gpioirqmux {
 	interrupt-map = <89 &gic GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>, /* pin 147: phy@4 */
 			<91 &gic GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>; /* pin 149: phy@5 */
@@ -197,6 +198,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c2 {
 	pinctrl-0 = <&pins_i2c2>;
 	pinctrl-names = "default";
@@ -249,13 +252,21 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pins_cpld>;
 
+<<<<<<< HEAD
 	pins_can0: pins-can0 {
+=======
+	pins_can0: pins_can0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinmux = <RZN1_PINMUX(162, RZN1_FUNC_CAN)>,	/* CAN0_TXD */
 			 <RZN1_PINMUX(163, RZN1_FUNC_CAN)>;	/* CAN0_RXD */
 		drive-strength = <6>;
 	};
 
+<<<<<<< HEAD
 	pins_can1: pins-can1 {
+=======
+	pins_can1: pins_can1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinmux = <RZN1_PINMUX(109, RZN1_FUNC_CAN)>,	/* CAN1_TXD */
 			 <RZN1_PINMUX(110, RZN1_FUNC_CAN)>;	/* CAN1_RXD */
 		drive-strength = <6>;
@@ -268,7 +279,11 @@
 			 <RZN1_PINMUX(122, RZN1_FUNC_USB)>;
 	};
 
+<<<<<<< HEAD
 	pins_eth3: pins-eth3 {
+=======
+	pins_eth3: pins_eth3 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinmux = <RZN1_PINMUX(36, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
 			 <RZN1_PINMUX(37, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
 			 <RZN1_PINMUX(38, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
@@ -285,7 +300,11 @@
 		bias-disable;
 	};
 
+<<<<<<< HEAD
 	pins_eth4: pins-eth4 {
+=======
+	pins_eth4: pins_eth4 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinmux = <RZN1_PINMUX(48, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
 			 <RZN1_PINMUX(49, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
 			 <RZN1_PINMUX(50, RZN1_FUNC_CLK_ETH_MII_RGMII_RMII)>,
@@ -302,6 +321,7 @@
 		bias-disable;
 	};
 
+<<<<<<< HEAD
 	pins_gpio2: pins-gpio2 {
 		pinmux = <RZN1_PINMUX(147, RZN1_FUNC_GPIO)>,
 			 <RZN1_PINMUX(149, RZN1_FUNC_GPIO)>;
@@ -310,11 +330,15 @@
 	};
 
 	pins_i2c2: pins-i2c2 {
+=======
+	pins_i2c2: pins_i2c2 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinmux = <RZN1_PINMUX(115, RZN1_FUNC_I2C)>,
 			 <RZN1_PINMUX(116, RZN1_FUNC_I2C)>;
 		drive-strength = <12>;
 	};
 
+<<<<<<< HEAD
 	pins_mdio1: pins-mdio1 {
 		pinmux = <RZN1_PINMUX(152, RZN1_FUNC_MDIO1_SWITCH)>,
 			 <RZN1_PINMUX(153, RZN1_FUNC_MDIO1_SWITCH)>;
@@ -397,6 +421,12 @@
 			};
 		};
 	};
+=======
+	pins_mdio1: pins_mdio1 {
+		pinmux = <RZN1_PINMUX(152, RZN1_FUNC_MDIO1_SWITCH)>,
+			 <RZN1_PINMUX(153, RZN1_FUNC_MDIO1_SWITCH)>;
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &rtc0 {
@@ -420,13 +450,19 @@
 		switch0phy4: ethernet-phy@4 {
 			reg = <4>;
 			micrel,led-mode = <1>;
+<<<<<<< HEAD
 			interrupts-extended = <&gpio2a 25 IRQ_TYPE_LEVEL_LOW>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		switch0phy5: ethernet-phy@5 {
 			reg = <5>;
 			micrel,led-mode = <1>;
+<<<<<<< HEAD
 			interrupts-extended = <&gpio2a 27 IRQ_TYPE_LEVEL_LOW>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };

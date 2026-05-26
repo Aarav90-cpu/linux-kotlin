@@ -16,7 +16,10 @@
 #include <linux/types.h>
 #include <linux/spinlock.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/rhashtable-types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/user_namespace.h>
 #include <uapi/linux/xattr.h>
 
@@ -107,17 +110,27 @@ static inline const char *xattr_prefix(const struct xattr_handler *handler)
 }
 
 struct simple_xattrs {
+<<<<<<< HEAD
 	struct rhashtable ht;
 };
 
 struct simple_xattr {
 	struct rhash_head hash_node;
 	struct rcu_head rcu;
+=======
+	struct rb_root rb_root;
+	rwlock_t lock;
+};
+
+struct simple_xattr {
+	struct rb_node rb_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *name;
 	size_t size;
 	char value[] __counted_by(size);
 };
 
+<<<<<<< HEAD
 #define SIMPLE_XATTR_MAX_NR		128
 #define SIMPLE_XATTR_MAX_SIZE		(128 << 10)
 
@@ -136,16 +149,23 @@ int simple_xattrs_init(struct simple_xattrs *xattrs);
 struct simple_xattrs *simple_xattrs_alloc(void);
 struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
 					       const void *value, int flags);
+=======
+void simple_xattrs_init(struct simple_xattrs *xattrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void simple_xattrs_free(struct simple_xattrs *xattrs, size_t *freed_space);
 size_t simple_xattr_space(const char *name, size_t size);
 struct simple_xattr *simple_xattr_alloc(const void *value, size_t size);
 void simple_xattr_free(struct simple_xattr *xattr);
+<<<<<<< HEAD
 void simple_xattr_free_rcu(struct simple_xattr *xattr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
 		     void *buffer, size_t size);
 struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
 				      const char *name, const void *value,
 				      size_t size, int flags);
+<<<<<<< HEAD
 int simple_xattr_set_limited(struct simple_xattrs *xattrs,
 			     struct simple_xattr_limits *limits,
 			     const char *name, const void *value,
@@ -168,4 +188,12 @@ DEFINE_CLASS(simple_xattrs,
             simple_xattrs_alloc(),
             void)
 
+=======
+ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+			  char *buffer, size_t size);
+void simple_xattr_add(struct simple_xattrs *xattrs,
+		      struct simple_xattr *new_xattr);
+int xattr_list_one(char **buffer, ssize_t *remaining_size, const char *name);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _LINUX_XATTR_H */

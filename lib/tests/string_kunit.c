@@ -6,6 +6,7 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <kunit/test.h>
+<<<<<<< HEAD
 #include <linux/ktime.h>
 #include <linux/math64.h>
 #include <linux/minmax.h>
@@ -18,6 +19,12 @@
 #include <linux/time64.h>
 #include <linux/units.h>
 #include <linux/vmalloc.h>
+=======
+#include <linux/module.h>
+#include <linux/printk.h>
+#include <linux/slab.h>
+#include <linux/string.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define STRCMP_LARGE_BUF_LEN 2048
 #define STRCMP_CHANGE_POINT 1337
@@ -25,12 +32,15 @@
 #define STRCMP_TEST_EXPECT_LOWER(test, fn, ...) KUNIT_EXPECT_LT(test, fn(__VA_ARGS__), 0)
 #define STRCMP_TEST_EXPECT_GREATER(test, fn, ...) KUNIT_EXPECT_GT(test, fn(__VA_ARGS__), 0)
 
+<<<<<<< HEAD
 #define STRING_TEST_MAX_LEN	128
 #define STRING_TEST_MAX_OFFSET	16
 
 #define STRING_BENCH_SEED	888
 #define STRING_BENCH_WORKLOAD	(1 * MEGA)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void string_test_memset16(struct kunit *test)
 {
 	unsigned i, j, k;
@@ -118,6 +128,7 @@ static void string_test_memset64(struct kunit *test)
 	}
 }
 
+<<<<<<< HEAD
 static void string_test_strlen(struct kunit *test)
 {
 	size_t buf_size;
@@ -176,6 +187,8 @@ static void string_test_strnlen(struct kunit *test)
 	vfree(buf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void string_test_strchr(struct kunit *test)
 {
 	const char *test_string = "abcdefghijkl";
@@ -199,6 +212,7 @@ static void string_test_strchr(struct kunit *test)
 	KUNIT_ASSERT_NULL(test, result);
 }
 
+<<<<<<< HEAD
 static void string_test_strrchr(struct kunit *test)
 {
 	size_t buf_size;
@@ -229,6 +243,8 @@ static void string_test_strrchr(struct kunit *test)
 	vfree(buf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void string_test_strnchr(struct kunit *test)
 {
 	const char *test_string = "abcdefghijkl";
@@ -716,6 +732,7 @@ static void string_test_strends(struct kunit *test)
 	KUNIT_EXPECT_TRUE(test, strends("", ""));
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_STRING_KUNIT_BENCH)
 /* Target string lengths for benchmarking */
 static const size_t bench_lens[] = {
@@ -881,15 +898,22 @@ static void string_bench_strrchr(struct kunit *test)
 	STRING_BENCH_BUF(test, buf, len, strrchr, buf, '\0');
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case string_test_cases[] = {
 	KUNIT_CASE(string_test_memset16),
 	KUNIT_CASE(string_test_memset32),
 	KUNIT_CASE(string_test_memset64),
+<<<<<<< HEAD
 	KUNIT_CASE(string_test_strlen),
 	KUNIT_CASE(string_test_strnlen),
 	KUNIT_CASE(string_test_strchr),
 	KUNIT_CASE(string_test_strnchr),
 	KUNIT_CASE(string_test_strrchr),
+=======
+	KUNIT_CASE(string_test_strchr),
+	KUNIT_CASE(string_test_strnchr),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE(string_test_strspn),
 	KUNIT_CASE(string_test_strcmp),
 	KUNIT_CASE(string_test_strcmp_long_strings),
@@ -906,10 +930,13 @@ static struct kunit_case string_test_cases[] = {
 	KUNIT_CASE(string_test_strtomem),
 	KUNIT_CASE(string_test_memtostr),
 	KUNIT_CASE(string_test_strends),
+<<<<<<< HEAD
 	KUNIT_CASE(string_bench_strlen),
 	KUNIT_CASE(string_bench_strnlen),
 	KUNIT_CASE(string_bench_strchr),
 	KUNIT_CASE(string_bench_strrchr),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

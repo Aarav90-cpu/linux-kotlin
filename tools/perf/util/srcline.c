@@ -8,12 +8,18 @@
 #include "symbol.h"
 #include "libdw.h"
 #include "debug.h"
+<<<<<<< HEAD
 #include "util.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <inttypes.h>
 #include <string.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/zalloc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool srcline_full_filename;
 
@@ -75,6 +81,17 @@ int inline_list__append_tail(struct symbol *symbol, char *srcline, struct inline
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/* basename version that takes a const input string */
+static const char *gnu_basename(const char *path)
+{
+	const char *base = strrchr(path, '/');
+
+	return base ? base + 1 : path;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char *srcline_from_fileline(const char *file, unsigned int line)
 {
 	char *srcline;
@@ -83,7 +100,11 @@ char *srcline_from_fileline(const char *file, unsigned int line)
 		return NULL;
 
 	if (!srcline_full_filename)
+<<<<<<< HEAD
 		file = perf_basename(file);
+=======
+		file = gnu_basename(file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (asprintf(&srcline, "%s:%u", file, line) < 0)
 		return NULL;

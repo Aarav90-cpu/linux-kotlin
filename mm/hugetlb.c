@@ -1017,6 +1017,37 @@ static pgoff_t vma_hugecache_offset(struct hstate *h,
 			(vma->vm_pgoff >> huge_page_order(h));
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * vma_kernel_pagesize - Page size granularity for this VMA.
+ * @vma: The user mapping.
+ *
+ * Folios in this VMA will be aligned to, and at least the size of the
+ * number of bytes returned by this function.
+ *
+ * Return: The default size of the folios allocated when backing a VMA.
+ */
+unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+{
+	if (vma->vm_ops && vma->vm_ops->pagesize)
+		return vma->vm_ops->pagesize(vma);
+	return PAGE_SIZE;
+}
+EXPORT_SYMBOL_GPL(vma_kernel_pagesize);
+
+/*
+ * Return the page size being used by the MMU to back a VMA. In the majority
+ * of cases, the page size used by the kernel matches the MMU size. On
+ * architectures where it differs, an architecture-specific 'strong'
+ * version of this symbol is required.
+ */
+__weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+{
+	return vma_kernel_pagesize(vma);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Flags for MAP_PRIVATE reservations.  These are stored in the bottom
  * bits of the reservation map pointer, which are always clear due to
@@ -1129,7 +1160,19 @@ void resv_map_release(struct kref *ref)
 
 static inline struct resv_map *inode_resv_map(struct inode *inode)
 {
+<<<<<<< HEAD
 	return HUGETLBFS_I(inode)->resv_map;
+=======
+	/*
+	 * At inode evict time, i_mapping may not point to the original
+	 * address space within the inode.  This original address space
+	 * contains the pointer to the resv_map.  So, always use the
+	 * address space embedded within the inode.
+	 * The VERY common case is inode->mapping == &inode->i_data but,
+	 * this may not be true for device special inodes.
+	 */
+	return (struct resv_map *)(&inode->i_data)->i_private_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct resv_map *vma_resv_map(struct vm_area_struct *vma)
@@ -1158,7 +1201,11 @@ static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
 static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *map)
 {
 	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
+=======
+	VM_WARN_ON_ONCE(vma_desc_test_flags(desc, VMA_MAYSHARE_BIT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	desc->private_data = map;
 }
@@ -1166,7 +1213,11 @@ static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *ma
 static void set_vma_desc_resv_flags(struct vm_area_desc *desc, unsigned long flags)
 {
 	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
+=======
+	VM_WARN_ON_ONCE(vma_desc_test_flags(desc, VMA_MAYSHARE_BIT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	desc->private_data = (void *)((unsigned long)desc->private_data | flags);
 }
@@ -3132,7 +3183,10 @@ found:
 
 /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
 static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+<<<<<<< HEAD
 					struct hstate *h,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					unsigned long start_page_number,
 					unsigned long end_page_number)
 {
@@ -3141,7 +3195,10 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
 	struct page *page = folio_page(folio, start_page_number);
 	unsigned long head_pfn = folio_pfn(folio);
 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
+<<<<<<< HEAD
 	unsigned int order = huge_page_order(h);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
@@ -3149,7 +3206,11 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
 	 */
 	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
 		__init_single_page(page, pfn, zone, nid);
+<<<<<<< HEAD
 		prep_compound_tail(page, &folio->page, order);
+=======
+		prep_compound_tail((struct page *)folio, pfn - head_pfn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_page_count(page, 0);
 	}
 }
@@ -3169,7 +3230,11 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
 	__folio_set_head(folio);
 	ret = folio_ref_freeze(folio, 1);
 	VM_BUG_ON(!ret);
+<<<<<<< HEAD
 	hugetlb_folio_init_tail_vmemmap(folio, h, 1, nr_pages);
+=======
+	hugetlb_folio_init_tail_vmemmap(folio, 1, nr_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	prep_compound_head(&folio->page, huge_page_order(h));
 }
 
@@ -3226,7 +3291,11 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
 			 * time as this is early in boot and there should
 			 * be no contention.
 			 */
+<<<<<<< HEAD
 			hugetlb_folio_init_tail_vmemmap(folio, h,
+=======
+			hugetlb_folio_init_tail_vmemmap(folio,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					HUGETLB_VMEMMAP_RESERVE_PAGES,
 					pages_per_huge_page(h));
 		}
@@ -4787,6 +4856,7 @@ static vm_fault_t hugetlb_vm_op_fault(struct vm_fault *vmf)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_USERFAULTFD
 static bool hugetlb_can_userfault(struct vm_area_struct *vma,
 				  vm_flags_t vm_flags)
@@ -4799,6 +4869,8 @@ static const struct vm_uffd_ops hugetlb_uffd_ops = {
 };
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * When a new function is introduced to vm_operations_struct and added
  * to hugetlb_vm_ops, please consider adding the function to shm_vm_ops.
@@ -4812,9 +4884,12 @@ const struct vm_operations_struct hugetlb_vm_ops = {
 	.close = hugetlb_vm_op_close,
 	.may_split = hugetlb_vm_op_split,
 	.pagesize = hugetlb_vm_op_pagesize,
+<<<<<<< HEAD
 #ifdef CONFIG_USERFAULTFD
 	.uffd_ops = &hugetlb_uffd_ops,
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static pte_t make_huge_pte(struct vm_area_struct *vma, struct folio *folio,
@@ -6584,7 +6659,11 @@ long hugetlb_reserve_pages(struct inode *inode,
 	 * to reserve the full area even if read-only as mprotect() may be
 	 * called to make the mapping read-write. Assume !desc is a shm mapping
 	 */
+<<<<<<< HEAD
 	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
+=======
+	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * resv_map can not be NULL as hugetlb_reserve_pages is only
 		 * called for inodes for which resv_maps were created (see
@@ -6618,7 +6697,11 @@ long hugetlb_reserve_pages(struct inode *inode,
 	if (err < 0)
 		goto out_err;
 
+<<<<<<< HEAD
 	if (desc && !vma_desc_test(desc, VMA_MAYSHARE_BIT) && h_cg) {
+=======
+	if (desc && !vma_desc_test_flags(desc, VMA_MAYSHARE_BIT) && h_cg) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* For private mappings, the hugetlb_cgroup uncharge info hangs
 		 * of the resv_map.
 		 */
@@ -6655,7 +6738,11 @@ long hugetlb_reserve_pages(struct inode *inode,
 	 * consumed reservations are stored in the map. Hence, nothing
 	 * else has to be done for private mappings here
 	 */
+<<<<<<< HEAD
 	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
+=======
+	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
 
 		if (unlikely(add < 0)) {
@@ -6719,7 +6806,11 @@ out_uncharge_cgroup:
 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
 					    chg * pages_per_huge_page(h), h_cg);
 out_err:
+<<<<<<< HEAD
 	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT))
+=======
+	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Only call region_abort if the region_chg succeeded but the
 		 * region_add failed or didn't run.
 		 */

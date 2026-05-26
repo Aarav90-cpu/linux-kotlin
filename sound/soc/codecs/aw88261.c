@@ -1094,11 +1094,15 @@ static int aw88261_dev_init(struct aw88261 *aw88261, struct aw_container *aw_cfg
 static int aw88261_request_firmware_file(struct aw88261 *aw88261)
 {
 	const struct firmware *cont = NULL;
+<<<<<<< HEAD
 	const char *fw_name;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	aw88261->aw_pa->fw_status = AW88261_DEV_FW_FAILED;
 
+<<<<<<< HEAD
 	ret = device_property_read_string(aw88261->aw_pa->dev, "firmware-name", &fw_name);
 	if (ret)
 		fw_name = AW88261_ACF_FILE;
@@ -1110,6 +1114,15 @@ static int aw88261_request_firmware_file(struct aw88261 *aw88261)
 
 	dev_info(aw88261->aw_pa->dev, "loaded %s - size: %zu\n",
 			fw_name, cont ? cont->size : 0);
+=======
+	ret = request_firmware(&cont, AW88261_ACF_FILE, aw88261->aw_pa->dev);
+	if (ret)
+		return dev_err_probe(aw88261->aw_pa->dev, ret,
+					"load [%s] failed!", AW88261_ACF_FILE);
+
+	dev_info(aw88261->aw_pa->dev, "loaded %s - size: %zu\n",
+			AW88261_ACF_FILE, cont ? cont->size : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	aw88261->aw_cfg = devm_kzalloc(aw88261->aw_pa->dev, cont->size + sizeof(int), GFP_KERNEL);
 	if (!aw88261->aw_cfg) {
@@ -1122,7 +1135,11 @@ static int aw88261_request_firmware_file(struct aw88261 *aw88261)
 
 	ret = aw88395_dev_load_acf_check(aw88261->aw_pa, aw88261->aw_cfg);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(aw88261->aw_pa->dev, "load [%s] failed !", fw_name);
+=======
+		dev_err(aw88261->aw_pa->dev, "load [%s] failed !", AW88261_ACF_FILE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -1242,7 +1259,12 @@ static int aw88261_i2c_probe(struct i2c_client *i2c)
 	struct aw88261 *aw88261;
 	int ret;
 
+<<<<<<< HEAD
 	if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C))
+=======
+	ret = i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C);
+	if (!ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return dev_err_probe(&i2c->dev, -ENXIO, "check_functionality failed");
 
 	aw88261 = devm_kzalloc(&i2c->dev, sizeof(*aw88261), GFP_KERNEL);

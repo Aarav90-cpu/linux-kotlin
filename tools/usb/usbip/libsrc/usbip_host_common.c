@@ -149,9 +149,12 @@ static int refresh_exported_devices(struct usbip_host_driver *hdriver)
 		}
 	}
 
+<<<<<<< HEAD
 	if (hdriver->ndevs == 0)
 		info("Please load appropriate modules or export devices.");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

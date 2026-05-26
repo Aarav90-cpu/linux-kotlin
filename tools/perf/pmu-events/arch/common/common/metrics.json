@@ -46,14 +46,22 @@
     },
     {
         "BriefDescription": "Max front or backend stalls per instruction",
+<<<<<<< HEAD
         "MetricExpr": "(max(stalled\\-cycles\\-frontend, stalled\\-cycles\\-backend) / instructions) if (has_event(stalled\\-cycles\\-frontend) & has_event(stalled\\-cycles\\-backend)) else ((stalled\\-cycles\\-frontend / instructions) if has_event(stalled\\-cycles\\-frontend) else ((stalled\\-cycles\\-backend / instructions) if has_event(stalled\\-cycles\\-backend) else 0))",
+=======
+        "MetricExpr": "max(stalled\\-cycles\\-frontend, stalled\\-cycles\\-backend) / instructions",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "MetricGroup": "Default",
         "MetricName": "stalled_cycles_per_instruction",
         "DefaultShowEvents": "1"
     },
     {
         "BriefDescription": "Frontend stalls per cycle",
+<<<<<<< HEAD
         "MetricExpr": "(stalled\\-cycles\\-frontend / cpu\\-cycles) if has_event(stalled\\-cycles\\-frontend) else 0",
+=======
+        "MetricExpr": "stalled\\-cycles\\-frontend / cpu\\-cycles",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "MetricGroup": "Default",
         "MetricName": "frontend_cycles_idle",
         "MetricThreshold": "frontend_cycles_idle > 0.1",
@@ -61,7 +69,11 @@
     },
     {
         "BriefDescription": "Backend stalls per cycle",
+<<<<<<< HEAD
         "MetricExpr": "(stalled\\-cycles\\-backend / cpu\\-cycles) if has_event(stalled\\-cycles\\-backend) else 0",
+=======
+        "MetricExpr": "stalled\\-cycles\\-backend / cpu\\-cycles",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "MetricGroup": "Default",
         "MetricName": "backend_cycles_idle",
         "MetricThreshold": "backend_cycles_idle > 0.2",

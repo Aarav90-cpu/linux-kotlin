@@ -18,9 +18,13 @@
 #include <dt-bindings/mailbox/qcom-ipcc.h>
 #include <dt-bindings/power/qcom,rpmhpd.h>
 #include <dt-bindings/power/qcom-rpmpd.h>
+<<<<<<< HEAD
 #include <dt-bindings/soc/qcom,gpr.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
 #include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+=======
+#include <dt-bindings/soc/qcom,rpmh-rsc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	interrupt-parent = <&intc>;
@@ -799,6 +803,7 @@
 				 <&sleep_clk>,
 				 <0>, /* pcie_0_pipe_clk */
 				 <0>, /* pcie_1_pipe_clk */
+<<<<<<< HEAD
 				 <&ufs_mem_phy 0>,
 				 <&ufs_mem_phy 1>,
 				 <&ufs_mem_phy 2>,
@@ -806,6 +811,13 @@
 
 			power-domains = <&rpmhpd RPMHPD_CX>;
 
+=======
+				 <0>, /* ufs_phy_rx_symbol_0_clk */
+				 <0>, /* ufs_phy_rx_symbol_1_clk */
+				 <0>, /* ufs_phy_tx_symbol_0_clk */
+				 <0>; /* usb3_phy_wrapper_gcc_usb30_pipe_clk */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#clock-cells = <1>;
 			#reset-cells = <1>;
 			#power-domain-cells = <1>;
@@ -1155,6 +1167,7 @@
 			qcom,bcm-voters = <&apps_bcm_voter>;
 		};
 
+<<<<<<< HEAD
 		ufs_mem_phy: phy@1d80000 {
 			compatible = "qcom,milos-qmp-ufs-phy";
 			reg = <0x0 0x01d80000 0x0 0x2000>;
@@ -1278,6 +1291,8 @@
 			clocks = <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcsr_mutex: hwlock@1f40000 {
 			compatible = "qcom,tcsr-mutex";
 			reg = <0x0 0x01f40000 0x0 0x20000>;
@@ -1341,6 +1356,7 @@
 
 				label = "lpass";
 				qcom,remote-pid = <2>;
+<<<<<<< HEAD
 
 				fastrpc {
 					compatible = "qcom,fastrpc";
@@ -1532,6 +1548,8 @@
 					bias-pull-down;
 					input-enable;
 				};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 		};
 
@@ -1849,6 +1867,7 @@
 			#power-domain-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		cci0: cci@ac15000 {
 			compatible = "qcom,milos-cci", "qcom,msm8996-cci";
 			reg = <0x0 0x0ac15000 0x0 0x1000>;
@@ -1915,6 +1934,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		camcc: clock-controller@adb0000 {
 			compatible = "qcom,milos-camcc";
 			reg = <0x0 0x0adb0000 0x0 0x40000>;
@@ -2051,6 +2072,7 @@
 
 			wakeup-parent = <&pdc>;
 
+<<<<<<< HEAD
 			qup_spi0_data_clk: qup-spi0-data-clk-state {
 				/* MISO, MOSI, CLK */
 				pins = "gpio0", "gpio1", "gpio2";
@@ -2066,6 +2088,8 @@
 				bias-disable;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			qup_i2c1_data_clk: qup-i2c1-data-clk-state {
 				/* SDA, SCL */
 				pins = "gpio4", "gpio5";
@@ -2082,6 +2106,32 @@
 				bias-pull-up = <2200>;
 			};
 
+<<<<<<< HEAD
+=======
+			qup_i2c7_data_clk: qup-i2c7-data-clk-state {
+				/* SDA, SCL */
+				pins = "gpio32", "gpio33";
+				function = "qup1_se0";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+
+			qup_spi0_cs: qup-spi0-cs-state {
+				pins = "gpio3";
+				function = "qup0_se0";
+				drive-strength = <6>;
+				bias-disable;
+			};
+
+			qup_spi0_data_clk: qup-spi0-data-clk-state {
+				/* MISO, MOSI, CLK */
+				pins = "gpio0", "gpio1", "gpio2";
+				function = "qup0_se0";
+				drive-strength = <6>;
+				bias-disable;
+			};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			qup_uart5_default: qup-uart5-default-state {
 				/* TX, RX */
 				pins = "gpio25", "gpio26";
@@ -2090,10 +2140,17 @@
 				bias-disable;
 			};
 
+<<<<<<< HEAD
 			qup_i2c7_data_clk: qup-i2c7-data-clk-state {
 				/* SDA, SCL */
 				pins = "gpio32", "gpio33";
 				function = "qup1_se0";
+=======
+			qup_uart11_default: qup-uart11-default-state {
+				/* TX, RX */
+				pins = "gpio50", "gpio51";
+				function = "qup1_se4";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				drive-strength = <2>;
 				bias-pull-up;
 			};
@@ -2106,6 +2163,7 @@
 				bias-pull-down;
 			};
 
+<<<<<<< HEAD
 			qup_uart11_default: qup-uart11-default-state {
 				/* TX, RX */
 				pins = "gpio50", "gpio51";
@@ -2114,6 +2172,8 @@
 				bias-pull-up;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sdc2_default: sdc2-default-state {
 				clk-pins {
 					pins = "gpio62";
@@ -2159,6 +2219,7 @@
 					bias-pull-up;
 				};
 			};
+<<<<<<< HEAD
 
 			cci0_0_default: cci0-0-default-state {
 				sda-pins {
@@ -2287,6 +2348,8 @@
 					bias-pull-down;
 				};
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		apps_smmu: iommu@15000000 {
@@ -2423,7 +2486,11 @@
 
 			gic_its: msi-controller@17140000 {
 				compatible = "arm,gic-v3-its";
+<<<<<<< HEAD
 				reg = <0x0 0x17140000 0x0 0x40000>;
+=======
+				reg = <0x0 0x17140000 0x0 0x20000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				msi-controller;
 				#msi-cells = <1>;
@@ -2676,6 +2743,7 @@
 
 				label = "cdsp";
 				qcom,remote-pid = <5>;
+<<<<<<< HEAD
 
 				fastrpc {
 					compatible = "qcom,fastrpc";
@@ -2771,6 +2839,8 @@
 						dma-coherent;
 					};
 				};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 		};
 	};

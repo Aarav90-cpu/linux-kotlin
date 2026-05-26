@@ -242,6 +242,7 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
 **********************************/
 static void __zswap_pool_empty(struct percpu_ref *ref);
 
+<<<<<<< HEAD
 static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
 {
 	if (!acomp_ctx)
@@ -270,6 +271,8 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
 	acomp_ctx->buffer = NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct zswap_pool *zswap_pool_create(char *compressor)
 {
 	struct zswap_pool *pool;
@@ -291,14 +294,19 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
 
 	strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
 
+<<<<<<< HEAD
 	/* Many things rely on the zero-initialization. */
 	pool->acomp_ctx = alloc_percpu_gfp(*pool->acomp_ctx,
 					   GFP_KERNEL | __GFP_ZERO);
+=======
+	pool->acomp_ctx = alloc_percpu(*pool->acomp_ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pool->acomp_ctx) {
 		pr_err("percpu alloc failed\n");
 		goto error;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * This is serialized against CPU hotplug operations. Hence, cores
 	 * cannot be offlined until this finishes.
@@ -312,6 +320,15 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
 	 */
 	if (ret)
 		goto cpuhp_add_fail;
+=======
+	for_each_possible_cpu(cpu)
+		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
+
+	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+				       &pool->node);
+	if (ret)
+		goto error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* being the current pool takes 1 ref; this func expects the
 	 * caller to always add the new pool as the current pool
@@ -328,10 +345,13 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
 
 ref_fail:
 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
+<<<<<<< HEAD
 
 cpuhp_add_fail:
 	for_each_possible_cpu(cpu)
 		acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 error:
 	if (pool->acomp_ctx)
 		free_percpu(pool->acomp_ctx);
@@ -362,6 +382,7 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
 
 static void zswap_pool_destroy(struct zswap_pool *pool)
 {
+<<<<<<< HEAD
 	int cpu;
 
 	zswap_pool_debug("destroying", pool);
@@ -371,6 +392,11 @@ static void zswap_pool_destroy(struct zswap_pool *pool)
 	for_each_possible_cpu(cpu)
 		acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
 
+=======
+	zswap_pool_debug("destroying", pool);
+
+	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_percpu(pool->acomp_ctx);
 
 	zs_destroy_pool(pool->zs_pool);
@@ -710,10 +736,15 @@ void zswap_folio_swapin(struct folio *folio)
 	struct lruvec *lruvec;
 
 	if (folio) {
+<<<<<<< HEAD
 		rcu_read_lock();
 		lruvec = folio_lruvec(folio);
 		atomic_long_inc(&lruvec->zswap_lruvec_state.nr_disk_swapins);
 		rcu_read_unlock();
+=======
+		lruvec = folio_lruvec(folio);
+		atomic_long_inc(&lruvec->zswap_lruvec_state.nr_disk_swapins);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -784,6 +815,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
 {
 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+<<<<<<< HEAD
 	int ret = -ENOMEM;
 
 	/*
@@ -819,6 +851,41 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
 		goto fail;
 	}
 
+=======
+	struct crypto_acomp *acomp = NULL;
+	struct acomp_req *req = NULL;
+	u8 *buffer = NULL;
+	int ret;
+
+	buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
+	if (!buffer) {
+		ret = -ENOMEM;
+		goto fail;
+	}
+
+	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+	if (IS_ERR(acomp)) {
+		pr_err("could not alloc crypto acomp %s : %pe\n",
+				pool->tfm_name, acomp);
+		ret = PTR_ERR(acomp);
+		goto fail;
+	}
+
+	req = acomp_request_alloc(acomp);
+	if (!req) {
+		pr_err("could not alloc crypto acomp_request %s\n",
+		       pool->tfm_name);
+		ret = -ENOMEM;
+		goto fail;
+	}
+
+	/*
+	 * Only hold the mutex after completing allocations, otherwise we may
+	 * recurse into zswap through reclaim and attempt to hold the mutex
+	 * again resulting in a deadlock.
+	 */
+	mutex_lock(&acomp_ctx->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	crypto_init_wait(&acomp_ctx->wait);
 
 	/*
@@ -826,6 +893,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
 	 * won't be called, crypto_wait_req() will return without blocking.
 	 */
+<<<<<<< HEAD
 	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
 				   crypto_req_done, &acomp_ctx->wait);
 
@@ -837,6 +905,82 @@ fail:
 	return ret;
 }
 
+=======
+	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+				   crypto_req_done, &acomp_ctx->wait);
+
+	acomp_ctx->buffer = buffer;
+	acomp_ctx->acomp = acomp;
+	acomp_ctx->req = req;
+	mutex_unlock(&acomp_ctx->mutex);
+	return 0;
+
+fail:
+	if (!IS_ERR_OR_NULL(acomp))
+		crypto_free_acomp(acomp);
+	kfree(buffer);
+	return ret;
+}
+
+static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+{
+	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+	struct acomp_req *req;
+	struct crypto_acomp *acomp;
+	u8 *buffer;
+
+	if (IS_ERR_OR_NULL(acomp_ctx))
+		return 0;
+
+	mutex_lock(&acomp_ctx->mutex);
+	req = acomp_ctx->req;
+	acomp = acomp_ctx->acomp;
+	buffer = acomp_ctx->buffer;
+	acomp_ctx->req = NULL;
+	acomp_ctx->acomp = NULL;
+	acomp_ctx->buffer = NULL;
+	mutex_unlock(&acomp_ctx->mutex);
+
+	/*
+	 * Do the actual freeing after releasing the mutex to avoid subtle
+	 * locking dependencies causing deadlocks.
+	 */
+	if (!IS_ERR_OR_NULL(req))
+		acomp_request_free(req);
+	if (!IS_ERR_OR_NULL(acomp))
+		crypto_free_acomp(acomp);
+	kfree(buffer);
+
+	return 0;
+}
+
+static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
+{
+	struct crypto_acomp_ctx *acomp_ctx;
+
+	for (;;) {
+		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+		mutex_lock(&acomp_ctx->mutex);
+		if (likely(acomp_ctx->req))
+			return acomp_ctx;
+		/*
+		 * It is possible that we were migrated to a different CPU after
+		 * getting the per-CPU ctx but before the mutex was acquired. If
+		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
+		 * already freed ctx->req (among other things) and set it to
+		 * NULL. Just try again on the new CPU that we ended up on.
+		 */
+		mutex_unlock(&acomp_ctx->mutex);
+	}
+}
+
+static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
+{
+	mutex_unlock(&acomp_ctx->mutex);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool zswap_compress(struct page *page, struct zswap_entry *entry,
 			   struct zswap_pool *pool)
 {
@@ -849,9 +993,13 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
 	u8 *dst;
 	bool mapped = false;
 
+<<<<<<< HEAD
 	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
 	mutex_lock(&acomp_ctx->mutex);
 
+=======
+	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dst = acomp_ctx->buffer;
 	sg_init_table(&input, 1);
 	sg_set_page(&input, page, PAGE_SIZE, 0);
@@ -882,6 +1030,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
 	 * to the active LRU list in the case.
 	 */
 	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
+<<<<<<< HEAD
 		rcu_read_lock();
 		if (!mem_cgroup_zswap_writeback_enabled(
 					folio_memcg(page_folio(page)))) {
@@ -890,6 +1039,13 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
 			goto unlock;
 		}
 		rcu_read_unlock();
+=======
+		if (!mem_cgroup_zswap_writeback_enabled(
+					folio_memcg(page_folio(page)))) {
+			comp_ret = comp_ret ? comp_ret : -EINVAL;
+			goto unlock;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		comp_ret = 0;
 		dlen = PAGE_SIZE;
 		dst = kmap_local_page(page);
@@ -917,7 +1073,11 @@ unlock:
 	else if (alloc_ret)
 		zswap_reject_alloc_fail++;
 
+<<<<<<< HEAD
 	mutex_unlock(&acomp_ctx->mutex);
+=======
+	acomp_ctx_put_unlock(acomp_ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return comp_ret == 0 && alloc_ret == 0;
 }
 
@@ -929,8 +1089,12 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
 	struct crypto_acomp_ctx *acomp_ctx;
 	int ret = 0, dlen;
 
+<<<<<<< HEAD
 	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
 	mutex_lock(&acomp_ctx->mutex);
+=======
+	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
 
 	/* zswap entries of length PAGE_SIZE are not compressed. */
@@ -955,7 +1119,11 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
 	}
 
 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
+<<<<<<< HEAD
 	mutex_unlock(&acomp_ctx->mutex);
+=======
+	acomp_ctx_put_unlock(acomp_ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ret && dlen == PAGE_SIZE)
 		return true;
@@ -1588,11 +1756,18 @@ int zswap_load(struct folio *folio)
 {
 	swp_entry_t swp = folio->swap;
 	pgoff_t offset = swp_offset(swp);
+<<<<<<< HEAD
+=======
+	bool swapcache = folio_test_swapcache(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xarray *tree = swap_zswap_tree(swp);
 	struct zswap_entry *entry;
 
 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (zswap_never_enabled())
 		return -ENOENT;
@@ -1623,6 +1798,7 @@ int zswap_load(struct folio *folio)
 		count_objcg_events(entry->objcg, ZSWPIN, 1);
 
 	/*
+<<<<<<< HEAD
 	 * We are reading into the swapcache, invalidate zswap entry.
 	 * The swapcache is the authoritative owner of the page and
 	 * its mappings, and the pressure that results from having two
@@ -1632,6 +1808,24 @@ int zswap_load(struct folio *folio)
 	folio_mark_dirty(folio);
 	xa_erase(tree, offset);
 	zswap_entry_free(entry);
+=======
+	 * When reading into the swapcache, invalidate our entry. The
+	 * swapcache can be the authoritative owner of the page and
+	 * its mappings, and the pressure that results from having two
+	 * in-memory copies outweighs any benefits of caching the
+	 * compression work.
+	 *
+	 * (Most swapins go through the swapcache. The notable
+	 * exception is the singleton fault on SWP_SYNCHRONOUS_IO
+	 * files, which reads into a private page and may free it if
+	 * the fault fails. We remain the primary owner of the entry.)
+	 */
+	if (swapcache) {
+		folio_mark_dirty(folio);
+		xa_erase(tree, offset);
+		zswap_entry_free(entry);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	folio_unlock(folio);
 	return 0;
@@ -1775,7 +1969,11 @@ static int zswap_setup(void)
 	ret = cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE,
 				      "mm/zswap_pool:prepare",
 				      zswap_cpu_comp_prepare,
+<<<<<<< HEAD
 				      NULL);
+=======
+				      zswap_cpu_comp_dead);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto hp_fail;
 

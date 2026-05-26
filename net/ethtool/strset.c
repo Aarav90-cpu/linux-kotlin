@@ -2,9 +2,14 @@
 
 #include <linux/ethtool.h>
 #include <linux/phy.h>
+<<<<<<< HEAD
 
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct strset_info {
 	bool per_dev;
@@ -190,7 +195,10 @@ static const struct nla_policy strset_stringsets_policy[] = {
 };
 
 static int strset_parse_request(struct ethnl_req_info *req_base,
+<<<<<<< HEAD
 				const struct genl_info *info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				struct nlattr **tb,
 				struct netlink_ext_ack *extack)
 {
@@ -443,8 +451,12 @@ static int strset_fill_set(struct sk_buff *skb,
 			if (strset_fill_string(skb, set_info, i) < 0)
 				goto nla_put_failure;
 		}
+<<<<<<< HEAD
 		if (nla_nest_end_safe(skb, strings_attr) < 0)
 			goto nla_put_failure;
+=======
+		nla_nest_end(skb, strings_attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	nla_nest_end(skb, stringset_attr);

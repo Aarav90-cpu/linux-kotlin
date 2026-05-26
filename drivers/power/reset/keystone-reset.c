@@ -48,7 +48,12 @@ static inline int rsctrl_enable_rspll_write(void)
 				  RSCTRL_KEY_MASK, RSCTRL_KEY);
 }
 
+<<<<<<< HEAD
 static int rsctrl_restart_handler(struct sys_off_data *data)
+=======
+static int rsctrl_restart_handler(struct notifier_block *this,
+				  unsigned long mode, void *cmd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* enable write access to RSTCTRL */
 	rsctrl_enable_rspll_write();
@@ -60,6 +65,14 @@ static int rsctrl_restart_handler(struct sys_off_data *data)
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
+=======
+static struct notifier_block rsctrl_restart_nb = {
+	.notifier_call = rsctrl_restart_handler,
+	.priority = 128,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id rsctrl_of_match[] = {
 	{.compatible = "ti,keystone-reset", },
 	{},
@@ -134,8 +147,12 @@ static int rsctrl_probe(struct platform_device *pdev)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	ret = devm_register_sys_off_handler(dev, SYS_OFF_MODE_RESTART, 128,
 					    rsctrl_restart_handler, NULL);
+=======
+	ret = register_restart_handler(&rsctrl_restart_nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		dev_err(dev, "cannot register restart handler (err=%d)\n", ret);
 

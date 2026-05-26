@@ -364,9 +364,12 @@
 #define HAL_IPQ5332_CE_WFSS_REG_BASE	0x740000
 #define HAL_IPQ5332_CE_SIZE		0x100000
 
+<<<<<<< HEAD
 #define HAL_IPQ5424_CE_WFSS_REG_BASE	0x200000
 #define HAL_IPQ5424_CE_SIZE		0x100000
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HAL_RX_MAX_BA_WINDOW	256
 
 #define HAL_DEFAULT_BE_BK_VI_REO_TIMEOUT_USEC	(100 * 1000)

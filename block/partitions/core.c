@@ -8,7 +8,10 @@
 #include <linux/major.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/ctype.h>
 #include <linux/vmalloc.h>
 #include <linux/raid/detect.h>
@@ -124,6 +127,7 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
 	state = allocate_partitions(hd);
 	if (!state)
 		return NULL;
+<<<<<<< HEAD
 	state->pp_buf.buffer = (char *)__get_free_page(GFP_KERNEL);
 	if (!state->pp_buf.buffer) {
 		free_partitions(state);
@@ -134,6 +138,18 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
 	state->disk = hd;
 	strscpy(state->name, hd->disk_name);
 	seq_buf_printf(&state->pp_buf, " %s:", state->name);
+=======
+	state->pp_buf = (char *)__get_free_page(GFP_KERNEL);
+	if (!state->pp_buf) {
+		free_partitions(state);
+		return NULL;
+	}
+	state->pp_buf[0] = '\0';
+
+	state->disk = hd;
+	strscpy(state->name, hd->disk_name);
+	snprintf(state->pp_buf, PAGE_SIZE, " %s:", state->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (isdigit(state->name[strlen(state->name)-1]))
 		sprintf(state->name, "p");
 
@@ -152,9 +168,15 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
 
 	}
 	if (res > 0) {
+<<<<<<< HEAD
 		printk(KERN_INFO "%s", seq_buf_str(&state->pp_buf));
 
 		free_page((unsigned long)state->pp_buf.buffer);
+=======
+		printk(KERN_INFO "%s", state->pp_buf);
+
+		free_page((unsigned long)state->pp_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return state;
 	}
 	if (state->access_beyond_eod)
@@ -165,12 +187,21 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
 	if (err)
 		res = err;
 	if (res) {
+<<<<<<< HEAD
 		seq_buf_puts(&state->pp_buf,
 			     " unable to read partition table\n");
 		printk(KERN_INFO "%s", seq_buf_str(&state->pp_buf));
 	}
 
 	free_page((unsigned long)state->pp_buf.buffer);
+=======
+		strlcat(state->pp_buf,
+			" unable to read partition table\n", PAGE_SIZE);
+		printk(KERN_INFO "%s", state->pp_buf);
+	}
+
+	free_page((unsigned long)state->pp_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_partitions(state);
 	return ERR_PTR(res);
 }
@@ -178,31 +209,51 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
 static ssize_t part_partition_show(struct device *dev,
 				   struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", bdev_partno(dev_to_bdev(dev)));
+=======
+	return sprintf(buf, "%d\n", bdev_partno(dev_to_bdev(dev)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t part_start_show(struct device *dev,
 			       struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%llu\n", dev_to_bdev(dev)->bd_start_sect);
+=======
+	return sprintf(buf, "%llu\n", dev_to_bdev(dev)->bd_start_sect);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t part_ro_show(struct device *dev,
 			    struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", bdev_read_only(dev_to_bdev(dev)));
+=======
+	return sprintf(buf, "%d\n", bdev_read_only(dev_to_bdev(dev)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t part_alignment_offset_show(struct device *dev,
 					  struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%u\n", bdev_alignment_offset(dev_to_bdev(dev)));
+=======
+	return sprintf(buf, "%u\n", bdev_alignment_offset(dev_to_bdev(dev)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t part_discard_alignment_show(struct device *dev,
 					   struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%u\n", bdev_discard_alignment(dev_to_bdev(dev)));
+=======
+	return sprintf(buf, "%u\n", bdev_discard_alignment(dev_to_bdev(dev)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR(partition, 0444, part_partition_show, NULL);

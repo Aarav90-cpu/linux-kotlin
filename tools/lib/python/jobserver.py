@@ -8,14 +8,22 @@
 """
 Interacts with the POSIX jobserver during the Kernel build time.
 
+<<<<<<< HEAD
 A "normal" jobserver task, like the one initiated by a make subprocess would do:
+=======
+A "normal" jobserver task, like the one initiated by a make subrocess would do:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     - open read/write file descriptors to communicate with the job server;
     - ask for one slot by calling::
 
         claim = os.read(reader, 1)
 
+<<<<<<< HEAD
     - when the job finishes, call::
+=======
+    - when the job finshes, call::
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         os.write(writer, b"+")  # os.write(writer, claim)
 

@@ -34,8 +34,12 @@ enum pd_ctrl_msg_type {
 	PD_CTRL_FR_SWAP = 19,
 	PD_CTRL_GET_PPS_STATUS = 20,
 	PD_CTRL_GET_COUNTRY_CODES = 21,
+<<<<<<< HEAD
 	PD_CTRL_GET_SINK_CAP_EXT = 22,
 	/* 23 Reserved */
+=======
+	/* 22-23 Reserved */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PD_CTRL_GET_REVISION = 24,
 	/* 25-31 Reserved */
 };
@@ -73,8 +77,12 @@ enum pd_ext_msg_type {
 	PD_EXT_PPS_STATUS = 12,
 	PD_EXT_COUNTRY_INFO = 13,
 	PD_EXT_COUNTRY_CODES = 14,
+<<<<<<< HEAD
 	PD_EXT_SINK_CAP_EXT = 15,
 	/* 16-31 Reserved */
+=======
+	/* 15-31 Reserved */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define PD_REV10	0x0
@@ -207,6 +215,7 @@ struct pd_message {
 	};
 } __packed;
 
+<<<<<<< HEAD
 /*
  * count_chunked_data_objs - Helper to calculate number of Data Objects on a 4
  *   byte boundary.
@@ -273,6 +282,8 @@ struct sink_caps_ext_msg {
 	u8 epr_max_pdp;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* PDO: Power Data Object */
 #define PDO_MAX_OBJECTS		7
 
@@ -397,6 +408,7 @@ enum pd_apdo_type {
 #define PDO_SPR_AVS_APDO_9V_TO_15V_MAX_CURR	GENMASK(19, 10)	/* 10mA unit */
 #define PDO_SPR_AVS_APDO_15V_TO_20V_MAX_CURR	GENMASK(9, 0)	/* 10mA unit */
 
+<<<<<<< HEAD
 /* SPR AVS has two different current ranges 9V - 15V, 15V - 20V */
 #define SPR_AVS_TIER1_MIN_VOLT_MV              9000
 #define SPR_AVS_TIER1_MAX_VOLT_MV              15000
@@ -423,6 +435,8 @@ enum pd_apdo_type {
 	(RDO_OBJ(idx) | (flags) |					\
 	 RDO_SPR_AVS_OUT_VOLT(out_mv) | RDO_SPR_AVS_OP_CURR(op_ma))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline enum pd_pdo_type pdo_type(u32 pdo)
 {
 	return (pdo >> PDO_TYPE_SHIFT) & PDO_TYPE_MASK;
@@ -433,11 +447,14 @@ static inline unsigned int pdo_fixed_voltage(u32 pdo)
 	return ((pdo >> PDO_FIXED_VOLT_SHIFT) & PDO_VOLT_MASK) * 50;
 }
 
+<<<<<<< HEAD
 static inline unsigned int pdo_fixed_current(u32 pdo)
 {
 	return ((pdo >> PDO_FIXED_CURR_SHIFT) & PDO_CURR_MASK) * 10;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int pdo_min_voltage(u32 pdo)
 {
 	return ((pdo >> PDO_VAR_MIN_VOLT_SHIFT) & PDO_VOLT_MASK) * 50;
@@ -681,11 +698,14 @@ static inline unsigned int rdo_max_power(u32 rdo)
 
 #define PD_P_SNK_STDBY_MW	2500	/* 2500 mW */
 
+<<<<<<< HEAD
 #define PD_I_SNK_STBY_MA		500	/* 500 mA */
 
 #define PD_T_AVS_SRC_TRANS_SMALL	50	/* 50 ms */
 #define PD_T_AVS_SRC_TRANS_LARGE	700	/* 700 ms */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_TYPEC)
 
 struct usb_power_delivery;

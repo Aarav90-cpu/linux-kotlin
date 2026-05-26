@@ -3,8 +3,11 @@
 // Copyright (C) 2025 Google LLC.
 
 //! Binder -- the Android IPC mechanism.
+<<<<<<< HEAD
 
 #![crate_name = "rust_binder"]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #![recursion_limit = "256"]
 #![allow(
     clippy::as_underscore,
@@ -118,7 +121,10 @@ impl<'a> BinderReturnWriter<'a> {
     /// Write a return code back to user space.
     /// Should be a `BR_` constant from [`defs`] e.g. [`defs::BR_TRANSACTION_COMPLETE`].
     fn write_code(&mut self, code: u32) -> Result {
+<<<<<<< HEAD
         crate::trace::trace_return(code);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         stats::GLOBAL_STATS.inc_br(code);
         self.thread.process.stats.inc_br(code);
         self.writer.write(&code)
@@ -295,6 +301,11 @@ impl kernel::Module for BinderModule {
         // SAFETY: The module initializer never runs twice, so we only call this once.
         unsafe { crate::context::CONTEXTS.init() };
 
+<<<<<<< HEAD
+=======
+        pr_warn!("Loaded Rust Binder.");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         BINDER_SHRINKER.register(c"android-binder")?;
 
         // SAFETY: The module is being loaded, so we can initialize binderfs.

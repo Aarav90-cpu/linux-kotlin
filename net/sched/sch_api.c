@@ -1120,7 +1120,11 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
 		}
 
 		if (dev->flags & IFF_UP)
+<<<<<<< HEAD
 			dev_deactivate(dev, false);
+=======
+			dev_deactivate(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		qdisc_offload_graft_root(dev, new, old, extack);
 
@@ -2479,8 +2483,12 @@ static struct pernet_operations psched_net_ops = {
 };
 
 #if IS_ENABLED(CONFIG_MITIGATION_RETPOLINE)
+<<<<<<< HEAD
 DEFINE_STATIC_KEY_FALSE(tc_skip_wrapper_act);
 DEFINE_STATIC_KEY_FALSE(tc_skip_wrapper_cls);
+=======
+DEFINE_STATIC_KEY_FALSE(tc_skip_wrapper);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static const struct rtnl_msg_handler psched_rtnl_msg_handlers[] __initconst = {

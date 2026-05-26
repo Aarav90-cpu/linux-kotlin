@@ -70,11 +70,15 @@
 #define HINIC3_PPF_ELECTION_GET(val, member) \
 	FIELD_GET(HINIC3_PPF_ELECTION_##member##_MASK, val)
 
+<<<<<<< HEAD
 #define HINIC3_GET_REG_FLAG(reg)  ((reg) & (~(HINIC3_REGS_FLAG_MASK)))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HINIC3_GET_REG_ADDR(reg)  ((reg) & (HINIC3_REGS_FLAG_MASK))
 
 static void __iomem *hinic3_reg_addr(struct hinic3_hwif *hwif, u32 reg)
 {
+<<<<<<< HEAD
 	void __iomem *addr;
 
 	if (HINIC3_GET_REG_FLAG(reg) == HINIC3_MGMT_REGS_FLAG)
@@ -83,6 +87,9 @@ static void __iomem *hinic3_reg_addr(struct hinic3_hwif *hwif, u32 reg)
 		addr = hwif->cfg_regs_base + HINIC3_GET_REG_ADDR(reg);
 
 	return addr;
+=======
+	return hwif->cfg_regs_base + HINIC3_GET_REG_ADDR(reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 u32 hinic3_hwif_read_reg(struct hinic3_hwif *hwif, u32 reg)
@@ -105,8 +112,11 @@ static enum hinic3_wait_return check_hwif_ready_handler(void *priv_data)
 	u32 attr1;
 
 	attr1 = hinic3_hwif_read_reg(hwdev->hwif, HINIC3_CSR_FUNC_ATTR1_ADDR);
+<<<<<<< HEAD
 	if (attr1 == HINIC3_PCIE_LINK_DOWN)
 		return HINIC3_WAIT_PROCESS_ERR;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return HINIC3_AF1_GET(attr1, MGMT_INIT_STATUS) ?
 	       HINIC3_WAIT_PROCESS_CPL : HINIC3_WAIT_PROCESS_WAITING;
@@ -145,7 +155,10 @@ static void set_hwif_attr(struct hinic3_func_attr *attr, u32 attr0, u32 attr1,
 static int init_hwif_attr(struct hinic3_hwdev *hwdev)
 {
 	u32 attr0, attr1, attr2, attr3, attr6;
+<<<<<<< HEAD
 	struct hinic3_func_attr *attr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hinic3_hwif *hwif;
 
 	hwif = hwdev->hwif;
@@ -169,6 +182,7 @@ static int init_hwif_attr(struct hinic3_hwdev *hwdev)
 	if (attr6 == HINIC3_PCIE_LINK_DOWN)
 		return -EFAULT;
 
+<<<<<<< HEAD
 	attr = &hwif->attr;
 	set_hwif_attr(attr, attr0, attr1, attr2, attr3, attr6);
 
@@ -178,6 +192,9 @@ static int init_hwif_attr(struct hinic3_hwdev *hwdev)
 			attr->func_type);
 		return -EINVAL;
 	}
+=======
+	set_hwif_attr(&hwif->attr, attr0, attr1, attr2, attr3, attr6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hwif->attr.num_ceqs) {
 		dev_err(hwdev->dev, "Ceq num cfg in fw is zero\n");

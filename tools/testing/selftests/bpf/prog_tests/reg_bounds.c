@@ -500,6 +500,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
 		return range_intersection(x_t, x, y_cast);
 
+<<<<<<< HEAD
 	if (y_t == U32 && x_t == U64) {
 		u64 xmin_swap, xmax_swap, xmin_lower32, xmax_lower32;
 
@@ -533,6 +534,8 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* the case when new range knowledge, *y*, is a 32-bit subregister
 	 * range, while previous range knowledge, *x*, is a full register
 	 * 64-bit range, needs special treatment to take into account upper 32
@@ -1250,6 +1253,7 @@ static int parse_range_cmp_log(const char *log_buf, struct case_spec spec,
 			spec.compare_subregs ? "w0" : "r0",
 			spec.compare_subregs ? "w" : "r", specs[i].reg_idx);
 
+<<<<<<< HEAD
 		/*
 		 * In the verifier log look for lines:
 		 *   18: (bf) r0 = r6       ; R0=... R6=...
@@ -1267,6 +1271,9 @@ static int parse_range_cmp_log(const char *log_buf, struct case_spec spec,
 				break;
 			q = s;
 		}
+=======
+		q = strstr(p, buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!q) {
 			*specs[i].state = (struct reg_state){.valid = false};
 			continue;
@@ -2178,8 +2185,11 @@ static struct subtest_case crafted_cases[] = {
 	{U64, S64, {0x7fffffff00000001ULL, 0xffffffff00000000ULL}, {0, 0}},
 	{U64, S64, {0, 0xffffffffULL}, {1, 1}},
 	{U64, S64, {0, 0xffffffffULL}, {0x7fffffff, 0x7fffffff}},
+<<<<<<< HEAD
 	{U64, S32, {0xfffffffe00000001, 0xffffffff00000000}, {S64_MIN, S64_MIN}},
 	{U64, U32, {0xfffffffe00000000, U64_MAX - 1}, {U64_MAX, U64_MAX}},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	{U64, U32, {0, 0x100000000}, {0, 0}},
 	{U64, U32, {0xfffffffe, 0x300000000}, {0x80000000, 0x80000000}},

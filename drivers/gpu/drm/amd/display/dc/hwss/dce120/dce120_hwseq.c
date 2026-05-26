@@ -154,10 +154,13 @@ static bool dce120_enable_display_power_gating(
 	struct dc_bios *dcb,
 	enum pipe_gating_control power_gating)
 {
+<<<<<<< HEAD
 	(void)dc;
 	(void)controller_id;
 	(void)dcb;
 	(void)power_gating;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* disable for bringup */
 #if 0
 	enum bp_result bp_result = BP_RESULT_OK;

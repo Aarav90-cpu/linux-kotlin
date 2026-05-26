@@ -647,13 +647,21 @@ static int aml_spisg_clk_init(struct spisg_device *spisg, void __iomem *base)
 	int ret, i;
 
 	spisg->core = devm_clk_get_enabled(dev, "core");
+<<<<<<< HEAD
 	if (IS_ERR(spisg->core)) {
+=======
+	if (IS_ERR_OR_NULL(spisg->core)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "core clock request failed\n");
 		return PTR_ERR(spisg->core);
 	}
 
 	spisg->pclk = devm_clk_get_enabled(dev, "pclk");
+<<<<<<< HEAD
 	if (IS_ERR(spisg->pclk)) {
+=======
+	if (IS_ERR_OR_NULL(spisg->pclk)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "pclk clock request failed\n");
 		return PTR_ERR(spisg->pclk);
 	}
@@ -703,7 +711,11 @@ static int aml_spisg_clk_init(struct spisg_device *spisg, void __iomem *base)
 	}
 
 	spisg->sclk = devm_clk_hw_get_clk(dev, &div->hw, NULL);
+<<<<<<< HEAD
 	if (IS_ERR(spisg->sclk)) {
+=======
+	if (IS_ERR_OR_NULL(spisg->sclk)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "get clock failed\n");
 		return PTR_ERR(spisg->sclk);
 	}
@@ -794,7 +806,10 @@ static int aml_spisg_probe(struct platform_device *pdev)
 
 	dma_set_max_seg_size(&pdev->dev, SPISG_BLOCK_MAX);
 
+<<<<<<< HEAD
 	init_completion(&spisg->completion);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = devm_request_irq(&pdev->dev, irq, aml_spisg_irq, 0, NULL, spisg);
 	if (ret) {
 		dev_err(&pdev->dev, "irq request failed\n");
@@ -807,6 +822,11 @@ static int aml_spisg_probe(struct platform_device *pdev)
 		goto out_clk;
 	}
 
+<<<<<<< HEAD
+=======
+	init_completion(&spisg->completion);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_put(&spisg->pdev->dev);
 
 	return 0;

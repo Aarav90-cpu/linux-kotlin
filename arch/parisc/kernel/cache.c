@@ -781,18 +781,31 @@ void flush_anon_page(struct vm_area_struct *vma, struct page *page, unsigned lon
 	__flush_cache_page(vma, vmaddr, PFN_PHYS(page_to_pfn(page)));
 }
 
+<<<<<<< HEAD
 bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep)
+=======
+int ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr,
+			   pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pte_t pte = ptep_get(ptep);
 
 	if (!pte_young(pte))
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_pte(ptep, pte_mkold(pte));
 #if CONFIG_FLUSH_PAGE_ACCESSED
 	__flush_cache_page(vma, addr, PFN_PHYS(pte_pfn(pte)));
 #endif
+<<<<<<< HEAD
 	return true;
+=======
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

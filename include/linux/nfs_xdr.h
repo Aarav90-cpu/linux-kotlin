@@ -1611,15 +1611,21 @@ struct nfs42_listxattrsres {
 struct nfs42_removexattrargs {
 	struct nfs4_sequence_args	seq_args;
 	struct nfs_fh			*fh;
+<<<<<<< HEAD
 	const u32			*bitmask;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char			*xattr_name;
 };
 
 struct nfs42_removexattrres {
 	struct nfs4_sequence_res	seq_res;
 	struct nfs4_change_info		cinfo;
+<<<<<<< HEAD
 	struct nfs_fattr		*fattr;
 	const struct nfs_server		*server;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* CONFIG_NFS_V4_2 */

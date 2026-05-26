@@ -149,7 +149,11 @@ static int mtk_afe_component_probe(struct snd_soc_component *component)
 const struct snd_soc_component_driver mtk_afe_pcm_platform = {
 	.name		= AFE_PCM_NAME,
 	.pointer	= mtk_afe_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= mtk_afe_pcm_new,
+=======
+	.pcm_construct	= mtk_afe_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.probe		= mtk_afe_component_probe,
 };
 EXPORT_SYMBOL_GPL(mtk_afe_pcm_platform);

@@ -191,18 +191,27 @@ fail:
 	return -1;
 }
 
+<<<<<<< HEAD
 static void link_cleanup(struct skeletons *skeletons)
 {
+=======
+static void bonding_cleanup(struct skeletons *skeletons)
+{
+	restore_root_netns();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (skeletons->nlinks) {
 		skeletons->nlinks--;
 		bpf_link__destroy(skeletons->links[skeletons->nlinks]);
 	}
+<<<<<<< HEAD
 }
 
 static void bonding_cleanup(struct skeletons *skeletons)
 {
 	restore_root_netns();
 	link_cleanup(skeletons);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT_OK(system("ip link delete bond1"), "delete bond1");
 	ASSERT_OK(system("ip link delete veth1_1"), "delete veth1_1");
 	ASSERT_OK(system("ip link delete veth1_2"), "delete veth1_2");
@@ -498,6 +507,7 @@ out:
 	system("ip link del bond_nest2");
 }
 
+<<<<<<< HEAD
 /*
  * Test that XDP redirect via xdp_master_redirect() does not crash when
  * the bond master device is not up. When bond is in round-robin mode but
@@ -582,6 +592,8 @@ out:
 	SYS_NOFAIL("ip netns del ns_rr_no_up");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_xdp_bonding_features(struct skeletons *skeletons)
 {
 	LIBBPF_OPTS(bpf_xdp_query_opts, query_opts);
@@ -827,9 +839,12 @@ void serial_test_xdp_bonding(void)
 	if (test__start_subtest("xdp_bonding_redirect_multi"))
 		test_xdp_bonding_redirect_multi(&skeletons);
 
+<<<<<<< HEAD
 	if (test__start_subtest("xdp_bonding_redirect_no_up"))
 		test_xdp_bonding_redirect_no_up(&skeletons);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	xdp_dummy__destroy(skeletons.xdp_dummy);
 	xdp_tx__destroy(skeletons.xdp_tx);

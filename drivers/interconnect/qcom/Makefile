@@ -4,7 +4,10 @@ obj-$(CONFIG_INTERCONNECT_QCOM) += interconnect_qcom.o
 
 interconnect_qcom-y			:= icc-common.o
 icc-bcm-voter-objs			:= bcm-voter.o
+<<<<<<< HEAD
 qnoc-eliza-objs				:= eliza.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 qnoc-glymur-objs			:= glymur.o
 qnoc-kaanapali-objs			:= kaanapali.o
 qnoc-milos-objs				:= milos.o
@@ -49,7 +52,10 @@ qnoc-x1e80100-objs			:= x1e80100.o
 icc-smd-rpm-objs			:= smd-rpm.o icc-rpm.o icc-rpm-clocks.o
 
 obj-$(CONFIG_INTERCONNECT_QCOM_BCM_VOTER) += icc-bcm-voter.o
+<<<<<<< HEAD
 obj-$(CONFIG_INTERCONNECT_QCOM_ELIZA) += qnoc-eliza.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_INTERCONNECT_QCOM_GLYMUR) += qnoc-glymur.o
 obj-$(CONFIG_INTERCONNECT_QCOM_KAANAPALI) += qnoc-kaanapali.o
 obj-$(CONFIG_INTERCONNECT_QCOM_MILOS) += qnoc-milos.o

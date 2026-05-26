@@ -417,6 +417,22 @@ int saa7146_unregister_device(struct video_device *vfd, struct saa7146_dev *dev)
 }
 EXPORT_SYMBOL_GPL(saa7146_unregister_device);
 
+<<<<<<< HEAD
+=======
+static int __init saa7146_vv_init_module(void)
+{
+	return 0;
+}
+
+
+static void __exit saa7146_vv_cleanup_module(void)
+{
+}
+
+module_init(saa7146_vv_init_module);
+module_exit(saa7146_vv_cleanup_module);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Michael Hunold <michael@mihu.de>");
 MODULE_DESCRIPTION("video4linux driver for saa7146-based hardware");
 MODULE_LICENSE("GPL");

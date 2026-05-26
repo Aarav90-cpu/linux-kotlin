@@ -36,16 +36,25 @@ struct devlink_resource {
 };
 
 static struct devlink_resource *
+<<<<<<< HEAD
 __devlink_resource_find(struct list_head *resource_list_head,
 			struct devlink_resource *resource,
 			u64 resource_id)
+=======
+devlink_resource_find(struct devlink *devlink,
+		      struct devlink_resource *resource, u64 resource_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct list_head *resource_list;
 
 	if (resource)
 		resource_list = &resource->resource_list;
 	else
+<<<<<<< HEAD
 		resource_list = resource_list_head;
+=======
+		resource_list = &devlink->resource_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry(resource, resource_list, list) {
 		struct devlink_resource *child_resource;
@@ -53,15 +62,21 @@ __devlink_resource_find(struct list_head *resource_list_head,
 		if (resource->id == resource_id)
 			return resource;
 
+<<<<<<< HEAD
 		child_resource = __devlink_resource_find(resource_list_head,
 							 resource,
 							 resource_id);
+=======
+		child_resource = devlink_resource_find(devlink, resource,
+						       resource_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (child_resource)
 			return child_resource;
 	}
 	return NULL;
 }
 
+<<<<<<< HEAD
 static struct devlink_resource *
 devlink_resource_find(struct devlink *devlink,
 		      struct devlink_resource *resource, u64 resource_id)
@@ -70,6 +85,8 @@ devlink_resource_find(struct devlink *devlink,
 				       resource, resource_id);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 devlink_resource_validate_children(struct devlink_resource *resource)
 {
@@ -223,6 +240,7 @@ nla_put_failure:
 	return -EMSGSIZE;
 }
 
+<<<<<<< HEAD
 static int devlink_resource_list_fill(struct sk_buff *skb,
 				      struct devlink *devlink,
 				      struct list_head *resource_list_head,
@@ -255,6 +273,13 @@ static int devlink_resource_fill(struct genl_info *info,
 	struct devlink *devlink = info->user_ptr[0];
 	struct devlink_resource *resource;
 	struct list_head *resource_list;
+=======
+static int devlink_resource_fill(struct genl_info *info,
+				 enum devlink_command cmd, int flags)
+{
+	struct devlink *devlink = info->user_ptr[0];
+	struct devlink_resource *resource;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nlattr *resources_attr;
 	struct sk_buff *skb = NULL;
 	struct nlmsghdr *nlh;
@@ -263,9 +288,13 @@ static int devlink_resource_fill(struct genl_info *info,
 	int i;
 	int err;
 
+<<<<<<< HEAD
 	resource_list = devlink_port ?
 		&devlink_port->resource_list : &devlink->resource_list;
 	resource = list_first_entry(resource_list,
+=======
+	resource = list_first_entry(&devlink->resource_list,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    struct devlink_resource, list);
 start_again:
 	err = devlink_nl_msg_reply_and_new(&skb, info);
@@ -281,9 +310,12 @@ start_again:
 
 	if (devlink_nl_put_handle(skb, devlink))
 		goto nla_put_failure;
+<<<<<<< HEAD
 	if (devlink_port &&
 	    nla_put_u32(skb, DEVLINK_ATTR_PORT_INDEX, devlink_port->index))
 		goto nla_put_failure;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	resources_attr = nla_nest_start_noflag(skb,
 					       DEVLINK_ATTR_RESOURCE_LIST);
@@ -292,7 +324,11 @@ start_again:
 
 	incomplete = false;
 	i = 0;
+<<<<<<< HEAD
 	list_for_each_entry_from(resource, resource_list, list) {
+=======
+	list_for_each_entry_from(resource, &devlink->resource_list, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = devlink_resource_put(devlink, skb, resource);
 		if (err) {
 			if (!i)
@@ -326,6 +362,7 @@ err_resource_put:
 
 int devlink_nl_resource_dump_doit(struct sk_buff *skb, struct genl_info *info)
 {
+<<<<<<< HEAD
 	struct devlink_port *devlink_port = info->user_ptr[1];
 	struct devlink *devlink = info->user_ptr[0];
 	struct list_head *resource_list;
@@ -336,11 +373,17 @@ int devlink_nl_resource_dump_doit(struct sk_buff *skb, struct genl_info *info)
 	resource_list = devlink_port ?
 		&devlink_port->resource_list : &devlink->resource_list;
 	if (list_empty(resource_list))
+=======
+	struct devlink *devlink = info->user_ptr[0];
+
+	if (list_empty(&devlink->resource_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	return devlink_resource_fill(info, DEVLINK_CMD_RESOURCE_DUMP, 0);
 }
 
+<<<<<<< HEAD
 static int
 devlink_resource_dump_fill_one(struct sk_buff *skb, struct devlink *devlink,
 			       struct devlink_port *devlink_port,
@@ -453,6 +496,8 @@ int devlink_nl_resource_dump_dumpit(struct sk_buff *skb,
 	return devlink_nl_dumpit(skb, cb, devlink_nl_resource_dump_one);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int devlink_resources_validate(struct devlink *devlink,
 			       struct devlink_resource *resource,
 			       struct genl_info *info)
@@ -475,12 +520,35 @@ int devlink_resources_validate(struct devlink *devlink,
 	return err;
 }
 
+<<<<<<< HEAD
 static int
 __devl_resource_register(struct devlink *devlink,
 			 struct list_head *resource_list_head,
 			 const char *resource_name, u64 resource_size,
 			 u64 resource_id, u64 parent_resource_id,
 			 const struct devlink_resource_size_params *params)
+=======
+/**
+ * devl_resource_register - devlink resource register
+ *
+ * @devlink: devlink
+ * @resource_name: resource's name
+ * @resource_size: resource's size
+ * @resource_id: resource's id
+ * @parent_resource_id: resource's parent id
+ * @size_params: size parameters
+ *
+ * Generic resources should reuse the same names across drivers.
+ * Please see the generic resources list at:
+ * Documentation/networking/devlink/devlink-resource.rst
+ */
+int devl_resource_register(struct devlink *devlink,
+			   const char *resource_name,
+			   u64 resource_size,
+			   u64 resource_id,
+			   u64 parent_resource_id,
+			   const struct devlink_resource_size_params *size_params)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct devlink_resource *resource;
 	struct list_head *resource_list;
@@ -490,8 +558,12 @@ __devl_resource_register(struct devlink *devlink,
 
 	top_hierarchy = parent_resource_id == DEVLINK_RESOURCE_ID_PARENT_TOP;
 
+<<<<<<< HEAD
 	resource = __devlink_resource_find(resource_list_head, NULL,
 					   resource_id);
+=======
+	resource = devlink_resource_find(devlink, NULL, resource_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (resource)
 		return -EEXIST;
 
@@ -500,6 +572,7 @@ __devl_resource_register(struct devlink *devlink,
 		return -ENOMEM;
 
 	if (top_hierarchy) {
+<<<<<<< HEAD
 		resource_list = resource_list_head;
 	} else {
 		struct devlink_resource *parent_resource;
@@ -507,6 +580,14 @@ __devl_resource_register(struct devlink *devlink,
 		parent_resource = __devlink_resource_find(resource_list_head,
 							  NULL,
 							  parent_resource_id);
+=======
+		resource_list = &devlink->resource_list;
+	} else {
+		struct devlink_resource *parent_resource;
+
+		parent_resource = devlink_resource_find(devlink, NULL,
+							parent_resource_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (parent_resource) {
 			resource_list = &parent_resource->resource_list;
 			resource->parent = parent_resource;
@@ -521,12 +602,18 @@ __devl_resource_register(struct devlink *devlink,
 	resource->size_new = resource_size;
 	resource->id = resource_id;
 	resource->size_valid = true;
+<<<<<<< HEAD
 	memcpy(&resource->size_params, params, sizeof(resource->size_params));
+=======
+	memcpy(&resource->size_params, size_params,
+	       sizeof(resource->size_params));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&resource->resource_list);
 	list_add_tail(&resource->list, resource_list);
 
 	return 0;
 }
+<<<<<<< HEAD
 
 /**
  * devl_resource_register - devlink resource register
@@ -557,11 +644,18 @@ int devl_resource_register(struct devlink *devlink, const char *resource_name,
 EXPORT_SYMBOL_GPL(devl_resource_register);
 
 static void devlink_resource_unregister(struct devlink_resource *resource)
+=======
+EXPORT_SYMBOL_GPL(devl_resource_register);
+
+static void devlink_resource_unregister(struct devlink *devlink,
+					struct devlink_resource *resource)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct devlink_resource *tmp, *child_resource;
 
 	list_for_each_entry_safe(child_resource, tmp, &resource->resource_list,
 				 list) {
+<<<<<<< HEAD
 		devlink_resource_unregister(child_resource);
 		list_del(&child_resource->list);
 		kfree(child_resource);
@@ -579,6 +673,9 @@ __devl_resources_unregister(struct devlink *devlink,
 	list_for_each_entry_safe(child_resource, tmp, resource_list_head,
 				 list) {
 		devlink_resource_unregister(child_resource);
+=======
+		devlink_resource_unregister(devlink, child_resource);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_del(&child_resource->list);
 		kfree(child_resource);
 	}
@@ -591,7 +688,20 @@ __devl_resources_unregister(struct devlink *devlink,
  */
 void devl_resources_unregister(struct devlink *devlink)
 {
+<<<<<<< HEAD
 	__devl_resources_unregister(devlink, &devlink->resource_list);
+=======
+	struct devlink_resource *tmp, *child_resource;
+
+	lockdep_assert_held(&devlink->lock);
+
+	list_for_each_entry_safe(child_resource, tmp, &devlink->resource_list,
+				 list) {
+		devlink_resource_unregister(devlink, child_resource);
+		list_del(&child_resource->list);
+		kfree(child_resource);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(devl_resources_unregister);
 
@@ -683,6 +793,7 @@ void devl_resource_occ_get_unregister(struct devlink *devlink,
 	resource->occ_get_priv = NULL;
 }
 EXPORT_SYMBOL_GPL(devl_resource_occ_get_unregister);
+<<<<<<< HEAD
 
 /**
  * devl_port_resource_register - devlink port resource register
@@ -726,3 +837,5 @@ void devl_port_resources_unregister(struct devlink_port *devlink_port)
 				    &devlink_port->resource_list);
 }
 EXPORT_SYMBOL_GPL(devl_port_resources_unregister);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

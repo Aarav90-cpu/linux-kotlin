@@ -19,9 +19,15 @@
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_openat(int dirfd, const char *path, int flags, mode_t mode)
 {
 	return __nolibc_syscall4(__NR_openat, dirfd, path, flags, mode);
+=======
+int sys_openat(int dirfd, const char *path, int flags, mode_t mode)
+{
+	return my_syscall4(__NR_openat, dirfd, path, flags, mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
@@ -37,7 +43,11 @@ int openat(int dirfd, const char *path, int flags, ...)
 		va_end(args);
 	}
 
+<<<<<<< HEAD
 	return __sysret(_sys_openat(dirfd, path, flags, mode));
+=======
+	return __sysret(sys_openat(dirfd, path, flags, mode));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -45,9 +55,15 @@ int openat(int dirfd, const char *path, int flags, ...)
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_open(const char *path, int flags, mode_t mode)
 {
 	return __nolibc_syscall4(__NR_openat, AT_FDCWD, path, flags, mode);
+=======
+int sys_open(const char *path, int flags, mode_t mode)
+{
+	return my_syscall4(__NR_openat, AT_FDCWD, path, flags, mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
@@ -63,7 +79,11 @@ int open(const char *path, int flags, ...)
 		va_end(args);
 	}
 
+<<<<<<< HEAD
 	return __sysret(_sys_open(path, flags, mode));
+=======
+	return __sysret(sys_open(path, flags, mode));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_FCNTL_H */

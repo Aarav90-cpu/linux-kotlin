@@ -222,6 +222,7 @@ class OutputFormat:
 
         return None
 
+<<<<<<< HEAD
     def output_symbols(self, fname, symbols):
         """
         Handles a set of KdocItem symbols.
@@ -243,6 +244,8 @@ class OutputFormat:
 
         return msg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     # Virtual methods to be overridden by inherited classes
     # At the base class, those do nothing.
     def set_symbols(self, symbols):
@@ -389,7 +392,11 @@ class RestFormat(OutputFormat):
             else:
                 self.data += f'{self.lineprefix}**{section}**\n\n'
 
+<<<<<<< HEAD
             self.print_lineno(args.sections_start_lines.get(section, 0))
+=======
+            self.print_lineno(args.section_start_lines.get(section, 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             self.output_highlight(text)
             self.data += "\n"
         self.data += "\n"
@@ -513,9 +520,13 @@ class RestFormat(OutputFormat):
     def out_var(self, fname, name, args):
         oldprefix = self.lineprefix
         ln = args.declaration_start_line
+<<<<<<< HEAD
         full_proto = args.other_stuff.get("full_proto")
         if not full_proto:
             raise KeyError(f"Can't find full proto for {name} variable")
+=======
+        full_proto = args.other_stuff["full_proto"]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.lineprefix = "  "
 
@@ -603,6 +614,7 @@ class RestFormat(OutputFormat):
 
 
 class ManFormat(OutputFormat):
+<<<<<<< HEAD
     """
     Consts and functions used by man pages output.
 
@@ -632,6 +644,9 @@ class ManFormat(OutputFormat):
     where ``name``` will match the API symbol name, and ``date`` will be
     either the date where the Kernel was compiled or the current date
     """
+=======
+    """Consts and functions used by man pages output."""
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     highlights = (
         (type_constant, r"\1"),
@@ -658,6 +673,7 @@ class ManFormat(OutputFormat):
         "%m %d %Y",
     ]
 
+<<<<<<< HEAD
     def modulename(self, args):
         if self._modulename:
             return self._modulename
@@ -673,6 +689,9 @@ class ManFormat(OutputFormat):
         self.data += f'"{module}" "{self.manual}"\n'
 
     def __init__(self, modulename=None, section="9", manual="Kernel API Manual"):
+=======
+    def __init__(self, modulename):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Creates class variables.
 
@@ -681,11 +700,15 @@ class ManFormat(OutputFormat):
         """
 
         super().__init__()
+<<<<<<< HEAD
 
         self._modulename = modulename
         self.section = section
         self.manual = manual
 
+=======
+        self.modulename = modulename
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.symbols = []
 
         dt = None
@@ -701,7 +724,11 @@ class ManFormat(OutputFormat):
         if not dt:
             dt = datetime.now()
 
+<<<<<<< HEAD
         self.date = dt.strftime("%B %Y")
+=======
+        self.man_date = dt.strftime("%B %Y")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def arg_name(self, args, name):
         """
@@ -716,8 +743,12 @@ class ManFormat(OutputFormat):
         dtype = args.type
 
         if dtype == "doc":
+<<<<<<< HEAD
             return name
 #            return os.path.basename(self.modulename(args))
+=======
+            return self.modulename
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         if dtype in ["function", "typedef"]:
             return name
@@ -767,6 +798,7 @@ class ManFormat(OutputFormat):
 
         return self.data
 
+<<<<<<< HEAD
     def emit_table(self, colspec_row, rows):
 
         if not rows:
@@ -946,6 +978,8 @@ class ManFormat(OutputFormat):
         out += "\n.fi\n"
         return i, out
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def output_highlight(self, block):
         """
         Outputs a C symbol that may require being highlighted with
@@ -957,6 +991,7 @@ class ManFormat(OutputFormat):
         if isinstance(contents, list):
             contents = "\n".join(contents)
 
+<<<<<<< HEAD
         lines = contents.strip("\n").split("\n")
         i = 0
 
@@ -997,6 +1032,17 @@ class ManFormat(OutputFormat):
             i += 1
 
             self.data += line + "\n"
+=======
+        for line in contents.strip("\n").split("\n"):
+            line = KernRe(r"^\s*").sub("", line)
+            if not line:
+                continue
+
+            if line[0] == ".":
+                self.data += "\\&" + line + "\n"
+            else:
+                self.data += line + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def out_doc(self, fname, name, args):
         if not self.check_doc(name, args):
@@ -1004,7 +1050,11 @@ class ManFormat(OutputFormat):
 
         out_name = self.arg_name(args, name)
 
+<<<<<<< HEAD
         self.emit_th(out_name, args)
+=======
+        self.data += f'.TH "{self.modulename}" 9 "{out_name}" "{self.man_date}" "API Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         for section, text in args.sections.items():
             self.data += f'.SH "{section}"' + "\n"
@@ -1014,7 +1064,11 @@ class ManFormat(OutputFormat):
 
         out_name = self.arg_name(args, name)
 
+<<<<<<< HEAD
         self.emit_th(out_name, args)
+=======
+        self.data += f'.TH "{name}" 9 "{out_name}" "{self.man_date}" "Kernel Hacker\'s Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.data += ".SH NAME\n"
         self.data += f"{name} \\- {args['purpose']}\n"
@@ -1060,7 +1114,11 @@ class ManFormat(OutputFormat):
     def out_enum(self, fname, name, args):
         out_name = self.arg_name(args, name)
 
+<<<<<<< HEAD
         self.emit_th(out_name, args)
+=======
+        self.data += f'.TH "{self.modulename}" 9 "{out_name}" "{self.man_date}" "API Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.data += ".SH NAME\n"
         self.data += f"enum {name} \\- {args['purpose']}\n"
@@ -1093,7 +1151,11 @@ class ManFormat(OutputFormat):
         out_name = self.arg_name(args, name)
         full_proto = args.other_stuff["full_proto"]
 
+<<<<<<< HEAD
         self.emit_th(out_name, args)
+=======
+        self.data += f'.TH "{self.modulename}" 9 "{out_name}" "{self.man_date}" "API Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.data += ".SH NAME\n"
         self.data += f"{name} \\- {args['purpose']}\n"
@@ -1110,11 +1172,19 @@ class ManFormat(OutputFormat):
             self.output_highlight(text)
 
     def out_typedef(self, fname, name, args):
+<<<<<<< HEAD
         module = self.modulename(args)
         purpose = args.get('purpose')
         out_name = self.arg_name(args, name)
 
         self.emit_th(out_name, args)
+=======
+        module = self.modulename
+        purpose = args.get('purpose')
+        out_name = self.arg_name(args, name)
+
+        self.data += f'.TH "{module}" 9 "{out_name}" "{self.man_date}" "API Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.data += ".SH NAME\n"
         self.data += f"typedef {name} \\- {purpose}\n"
@@ -1124,12 +1194,20 @@ class ManFormat(OutputFormat):
             self.output_highlight(text)
 
     def out_struct(self, fname, name, args):
+<<<<<<< HEAD
         module = self.modulename(args)
+=======
+        module = self.modulename
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         purpose = args.get('purpose')
         definition = args.get('definition')
         out_name = self.arg_name(args, name)
 
+<<<<<<< HEAD
         self.emit_th(out_name, args)
+=======
+        self.data += f'.TH "{module}" 9 "{out_name}" "{self.man_date}" "API Manual" LINUX' + "\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.data += ".SH NAME\n"
         self.data += f"{args.type} {name} \\- {purpose}\n"

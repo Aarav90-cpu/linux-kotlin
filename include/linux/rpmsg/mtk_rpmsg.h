@@ -25,7 +25,11 @@ struct mtk_rpmsg_info {
 			    ipi_handler_t handler, void *priv);
 	void (*unregister_ipi)(struct platform_device *pdev, u32 id);
 	int (*send_ipi)(struct platform_device *pdev, u32 id,
+<<<<<<< HEAD
 			const void *buf, unsigned int len, unsigned int wait);
+=======
+			void *buf, unsigned int len, unsigned int wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ns_ipi_id;
 };
 

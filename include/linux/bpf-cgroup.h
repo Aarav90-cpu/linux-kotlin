@@ -184,7 +184,11 @@ static inline bool cgroup_bpf_sock_enabled(struct sock *sk,
 	struct bpf_prog_array *array;
 
 	array = rcu_access_pointer(cgrp->bpf.effective[type]);
+<<<<<<< HEAD
 	return array != &bpf_empty_prog_array;
+=======
+	return array != &bpf_empty_prog_array.hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Wrappers for __cgroup_bpf_run_filter_skb() guarded by cgroup_bpf_enabled. */

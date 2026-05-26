@@ -79,6 +79,10 @@ struct arc_jit_data {
  * The JIT pertinent context that is used by different functions.
  *
  * prog:		The current eBPF program being handled.
+<<<<<<< HEAD
+=======
+ * orig_prog:		The original eBPF program before any possible change.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * jit:			The JIT buffer and its length.
  * bpf_header:		The JITed program header. "jit.buf" points inside it.
  * emit:		If set, opcodes are written to memory; else, a dry-run.
@@ -93,10 +97,18 @@ struct arc_jit_data {
  * need_extra_pass:	A forecast if an "extra_pass" will occur.
  * is_extra_pass:	Indicates if the current pass is an extra pass.
  * user_bpf_prog:	True, if VM opcodes come from a real program.
+<<<<<<< HEAD
+=======
+ * blinded:		True if "constant blinding" step returned a new "prog".
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * success:		Indicates if the whole JIT went OK.
  */
 struct jit_context {
 	struct bpf_prog			*prog;
+<<<<<<< HEAD
+=======
+	struct bpf_prog			*orig_prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct jit_buffer		jit;
 	struct bpf_binary_header	*bpf_header;
 	bool				emit;
@@ -111,6 +123,10 @@ struct jit_context {
 	bool				need_extra_pass;
 	bool				is_extra_pass;
 	bool				user_bpf_prog;
+<<<<<<< HEAD
+=======
+	bool				blinded;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool				success;
 };
 
@@ -157,7 +173,17 @@ static int jit_ctx_init(struct jit_context *ctx, struct bpf_prog *prog)
 {
 	memset(ctx, 0, sizeof(*ctx));
 
+<<<<<<< HEAD
 	ctx->prog = prog;
+=======
+	ctx->orig_prog = prog;
+
+	/* If constant blinding was requested but failed, scram. */
+	ctx->prog = bpf_jit_blind_constants(prog);
+	if (IS_ERR(ctx->prog))
+		return PTR_ERR(ctx->prog);
+	ctx->blinded = (ctx->prog != ctx->orig_prog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If the verifier doesn't zero-extend, then we have to do it. */
 	ctx->do_zext = !ctx->prog->aux->verifier_zext;
@@ -204,6 +230,17 @@ static inline void maybe_free(struct jit_context *ctx, void **mem)
  */
 static void jit_ctx_cleanup(struct jit_context *ctx)
 {
+<<<<<<< HEAD
+=======
+	if (ctx->blinded) {
+		/* if all went well, release the orig_prog. */
+		if (ctx->success)
+			bpf_jit_prog_release_other(ctx->prog, ctx->orig_prog);
+		else
+			bpf_jit_prog_release_other(ctx->orig_prog, ctx->prog);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	maybe_free(ctx, (void **)&ctx->bpf2insn);
 	maybe_free(ctx, (void **)&ctx->jit_data);
 
@@ -211,6 +248,7 @@ static void jit_ctx_cleanup(struct jit_context *ctx)
 		ctx->bpf2insn_valid = false;
 
 	/* Freeing "bpf_header" is enough. "jit.buf" is a sub-array of it. */
+<<<<<<< HEAD
 	if (!ctx->success) {
 		if (ctx->bpf_header) {
 			bpf_jit_binary_free(ctx->bpf_header);
@@ -224,6 +262,14 @@ static void jit_ctx_cleanup(struct jit_context *ctx)
 			ctx->prog->jited = 0;
 			ctx->prog->jited_len = 0;
 		}
+=======
+	if (!ctx->success && ctx->bpf_header) {
+		bpf_jit_binary_free(ctx->bpf_header);
+		ctx->bpf_header = NULL;
+		ctx->jit.buf    = NULL;
+		ctx->jit.index  = 0;
+		ctx->jit.len    = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ctx->emit = false;
@@ -1400,7 +1446,11 @@ static struct bpf_prog *do_extra_pass(struct bpf_prog *prog)
  * (re)locations involved that their addresses are not known
  * during the first run.
  */
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vm_dump(prog);
 

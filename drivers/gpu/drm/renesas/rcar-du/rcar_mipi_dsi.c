@@ -84,6 +84,10 @@ struct dsi_setup_info {
 	unsigned long fout;
 	u16 m;
 	u16 n;
+<<<<<<< HEAD
+=======
+	u16 vclk_divider;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct dsi_clk_config *clkset;
 };
 
@@ -334,6 +338,7 @@ rcar_mipi_dsi_post_init_phtw_v4h(struct rcar_mipi_dsi *dsi,
  * Hardware Setup
  */
 
+<<<<<<< HEAD
 static unsigned int rcar_mipi_dsi_vclk_divider(struct rcar_mipi_dsi *dsi,
 					       struct dsi_setup_info *setup_info)
 {
@@ -352,6 +357,12 @@ static void rcar_mipi_dsi_pll_calc(struct rcar_mipi_dsi *dsi,
 				   unsigned long fout_target,
 				   struct dsi_setup_info *setup_info,
 				   u16 vclk_divider)
+=======
+static void rcar_mipi_dsi_pll_calc(struct rcar_mipi_dsi *dsi,
+				   unsigned long fin_rate,
+				   unsigned long fout_target,
+				   struct dsi_setup_info *setup_info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int best_err = -1;
 	const struct rcar_mipi_dsi_device_info *info = dsi->info;
@@ -373,7 +384,11 @@ static void rcar_mipi_dsi_pll_calc(struct rcar_mipi_dsi *dsi,
 			if (fout < info->fout_min || fout > info->fout_max)
 				continue;
 
+<<<<<<< HEAD
 			fout = div64_u64(fout, vclk_divider);
+=======
+			fout = div64_u64(fout, setup_info->vclk_divider);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (fout < setup_info->clkset->min_freq ||
 			    fout > setup_info->clkset->max_freq)
@@ -403,9 +418,13 @@ static void rcar_mipi_dsi_parameters_calc(struct rcar_mipi_dsi *dsi,
 	unsigned long fout_target;
 	unsigned long fin_rate;
 	unsigned int i;
+<<<<<<< HEAD
 	unsigned int div;
 	unsigned int err;
 	u16 vclk_divider;
+=======
+	unsigned int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Calculate Fout = dot clock * ColorDepth / (2 * Lane Count)
@@ -427,6 +446,7 @@ static void rcar_mipi_dsi_parameters_calc(struct rcar_mipi_dsi *dsi,
 
 	fin_rate = clk_get_rate(clk);
 
+<<<<<<< HEAD
 	div = rcar_mipi_dsi_vclk_divider(dsi, setup_info);
 
 	switch (dsi->info->model) {
@@ -441,6 +461,20 @@ static void rcar_mipi_dsi_parameters_calc(struct rcar_mipi_dsi *dsi,
 	}
 
 	rcar_mipi_dsi_pll_calc(dsi, fin_rate, fout_target, setup_info, vclk_divider);
+=======
+	switch (dsi->info->model) {
+	case RCAR_DSI_V3U:
+	default:
+		setup_info->vclk_divider = 1 << ((clk_cfg->vco_cntrl >> 4) & 0x3);
+		break;
+
+	case RCAR_DSI_V4H:
+		setup_info->vclk_divider = 1 << (((clk_cfg->vco_cntrl >> 3) & 0x7) + 1);
+		break;
+	}
+
+	rcar_mipi_dsi_pll_calc(dsi, fin_rate, fout_target, setup_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Find hsfreqrange */
 	setup_info->hsfreq = setup_info->fout * 2;
@@ -456,7 +490,11 @@ static void rcar_mipi_dsi_parameters_calc(struct rcar_mipi_dsi *dsi,
 	dev_dbg(dsi->dev,
 		"Fout = %u * %lu / (%u * %u * %u) = %lu (target %lu Hz, error %d.%02u%%)\n",
 		setup_info->m, fin_rate, dsi->info->n_mul, setup_info->n,
+<<<<<<< HEAD
 		vclk_divider, setup_info->fout, fout_target,
+=======
+		setup_info->vclk_divider, setup_info->fout, fout_target,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err / 100, err % 100);
 
 	dev_dbg(dsi->dev,
@@ -670,11 +708,19 @@ static int rcar_mipi_dsi_startup(struct rcar_mipi_dsi *dsi,
 	switch (dsi->info->model) {
 	case RCAR_DSI_V3U:
 	default:
+<<<<<<< HEAD
 		vclkset |= VCLKSET_DIV_V3U(rcar_mipi_dsi_vclk_divider(dsi, &setup_info));
 		break;
 
 	case RCAR_DSI_V4H:
 		vclkset |= VCLKSET_DIV_V4H(rcar_mipi_dsi_vclk_divider(dsi, &setup_info));
+=======
+		vclkset |= VCLKSET_DIV_V3U(__ffs(setup_info.vclk_divider));
+		break;
+
+	case RCAR_DSI_V4H:
+		vclkset |= VCLKSET_DIV_V4H(__ffs(setup_info.vclk_divider) - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 

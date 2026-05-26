@@ -29,11 +29,20 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
 	return true;
 }
 
+<<<<<<< HEAD
 bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
 {
 	if (!pte_young(ptep_get(ptep)))
 		return false;
+=======
+int ptep_test_and_clear_young(struct vm_area_struct *vma,
+			      unsigned long address,
+			      pte_t *ptep)
+{
+	if (!pte_young(ptep_get(ptep)))
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return test_and_clear_bit(_PAGE_ACCESSED_OFFSET, &pte_val(*ptep));
 }
 EXPORT_SYMBOL_GPL(ptep_test_and_clear_young);

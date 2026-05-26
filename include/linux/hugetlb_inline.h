@@ -13,7 +13,11 @@ static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
 
 static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
 {
+<<<<<<< HEAD
 	return vma_flags_test_any(flags, VMA_HUGETLB_BIT);
+=======
+	return vma_flags_test(flags, VMA_HUGETLB_BIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else

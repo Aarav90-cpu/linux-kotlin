@@ -8,13 +8,24 @@
 
 struct request;
 
+<<<<<<< HEAD
+=======
+/*
+ * Maximum contiguous integrity buffer allocation.
+ */
+#define BLK_INTEGRITY_MAX_SIZE		SZ_2M
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum blk_integrity_flags {
 	BLK_INTEGRITY_NOVERIFY		= 1 << 0,
 	BLK_INTEGRITY_NOGENERATE	= 1 << 1,
 	BLK_INTEGRITY_DEVICE_CAPABLE	= 1 << 2,
 	BLK_INTEGRITY_REF_TAG		= 1 << 3,
 	BLK_INTEGRITY_STACKED		= 1 << 4,
+<<<<<<< HEAD
 	BLK_SPLIT_INTERVAL_CAPABLE	= 1 << 5,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 const char *blk_integrity_profile_name(struct blk_integrity *bi);
@@ -176,6 +187,7 @@ static inline struct bio_vec rq_integrity_vec(struct request *rq)
 }
 #endif /* CONFIG_BLK_DEV_INTEGRITY */
 
+<<<<<<< HEAD
 enum bio_integrity_action {
 	BI_ACT_BUFFER		= (1u << 0),	/* allocate buffer */
 	BI_ACT_CHECK		= (1u << 1),	/* generate / verify PI */
@@ -199,4 +211,6 @@ static inline unsigned int bio_integrity_action(struct bio *bio)
 	return __bio_integrity_action(bio);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _LINUX_BLK_INTEGRITY_H */

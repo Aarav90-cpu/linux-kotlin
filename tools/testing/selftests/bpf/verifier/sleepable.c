@@ -85,7 +85,11 @@
 	.expected_attach_type = BPF_TRACE_RAW_TP,
 	.kfunc = "sched_switch",
 	.result = REJECT,
+<<<<<<< HEAD
 	.errstr = "Only fentry/fexit/fsession/fmod_ret, lsm, iter, uprobe, and struct_ops programs can be sleepable",
+=======
+	.errstr = "Only fentry/fexit/fmod_ret, lsm, iter, uprobe, and struct_ops programs can be sleepable",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = BPF_F_SLEEPABLE,
 	.runs = -1,
 },

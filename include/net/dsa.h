@@ -831,6 +831,7 @@ dsa_tree_offloads_bridge_dev(struct dsa_switch_tree *dst,
 	return false;
 }
 
+<<<<<<< HEAD
 #define dsa_switch_for_each_bridge_member(_dp, _ds, _bdev) \
 	dsa_switch_for_each_user_port(_dp, _ds) \
 		if (dsa_port_offloads_bridge_dev(_dp, _bdev))
@@ -847,6 +848,8 @@ dsa_bridge_ports(struct dsa_switch *ds, const struct net_device *bdev)
 	return mask;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool dsa_port_tree_same(const struct dsa_port *a,
 				      const struct dsa_port *b)
 {

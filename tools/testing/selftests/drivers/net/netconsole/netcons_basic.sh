@@ -58,11 +58,15 @@ do
 		# Send the message
 		echo "${MSG}: ${TARGET}" > /dev/kmsg
 		# Wait until socat saves the file to disk
+<<<<<<< HEAD
 		if ! busywait "${BUSYWAIT_TIMEOUT}" test -s "${OUTPUT_FILE}"
 		then
 			echo "FAIL: Timed out waiting (${BUSYWAIT_TIMEOUT} ms) for netconsole message in ${OUTPUT_FILE}" >&2
 			exit "${ksft_fail}"
 		fi
+=======
+		busywait "${BUSYWAIT_TIMEOUT}" test -s "${OUTPUT_FILE}"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		# Make sure the message was received in the dst part
 		# and exit

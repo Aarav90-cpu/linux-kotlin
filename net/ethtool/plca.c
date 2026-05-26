@@ -3,8 +3,13 @@
 #include <linux/phy.h>
 #include <linux/ethtool_netlink.h>
 
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct plca_req_info {
 	struct ethnl_req_info		base;

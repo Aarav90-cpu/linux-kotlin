@@ -131,11 +131,14 @@ enum card_type {
 struct soundscape {
 	spinlock_t lock;
 	unsigned io_base;
+<<<<<<< HEAD
 	unsigned long wss_base;
 	int irq;
 	int mpu_irq;
 	int dma1;
 	int dma2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ic_type;
 	enum card_type type;
 	struct resource *io_res;
@@ -143,8 +146,11 @@ struct soundscape {
 	struct snd_wss *chip;
 
 	unsigned char midi_vol;
+<<<<<<< HEAD
 	bool joystick;
 	bool midi_enabled;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev;
 };
 
@@ -157,6 +163,7 @@ static inline struct soundscape *get_card_soundscape(struct snd_card *c)
 }
 
 /*
+<<<<<<< HEAD
  * Store the resolved board settings in the per-card state so that
  * the same configuration can be replayed later if necessary.
  */
@@ -172,6 +179,8 @@ static void sscape_store_settings(struct soundscape *sscape, int dev)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Allocates some kernel memory that we can use for DMA.
  * I think this means that the memory has to map to
  * contiguous pages of physical memory.
@@ -285,6 +294,7 @@ static int host_read_ctrl_unsafe(unsigned io_base, unsigned timeout)
 
 /*
  * Write to the SoundScape's host-mode control registers, but
+<<<<<<< HEAD
  * leave any locking issues to the caller. Returns true if
  * the write succeeded.
  */
@@ -296,11 +306,24 @@ static inline bool host_write_unsafe(unsigned int io_base, unsigned char data)
 	}
 
 	return false;
+=======
+ * leave any locking issues to the caller ...
+ */
+static inline int host_write_unsafe(unsigned io_base, unsigned char data)
+{
+	if ((inb(HOST_CTRL_IO(io_base)) & TX_READY) != 0) {
+		outb(data, HOST_DATA_IO(io_base));
+		return 1;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * Write to the SoundScape's host-mode control registers, performing
  * a limited amount of busy-waiting if the register isn't ready.
+<<<<<<< HEAD
  * Also leaves all locking-issues to the caller. Returns true if
  * the write succeeded before timing out.
  */
@@ -310,11 +333,25 @@ static bool host_write_ctrl_unsafe(unsigned int io_base, unsigned char data,
 	bool written;
 
 	while (!(written = host_write_unsafe(io_base, data)) && timeout != 0) {
+=======
+ * Also leaves all locking-issues to the caller ...
+ */
+static int host_write_ctrl_unsafe(unsigned io_base, unsigned char data,
+				  unsigned timeout)
+{
+	int err;
+
+	while (!(err = host_write_unsafe(io_base, data)) && (timeout != 0)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		udelay(100);
 		--timeout;
 	} /* while */
 
+<<<<<<< HEAD
 	return written;
+=======
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 
@@ -585,6 +622,7 @@ static int sscape_upload_microcode(struct snd_card *card, int version)
 }
 
 /*
+<<<<<<< HEAD
  * Restore the SoundScape's MIDI control state after the firmware
  * upload has made the host interface available again.
  */
@@ -609,6 +647,8 @@ static int sscape_restore_midi_state(struct soundscape *sscape)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Mixer control for the SoundScape's MIDI device.
  */
 static int sscape_midi_info(struct snd_kcontrol *ctl,
@@ -709,6 +749,7 @@ static unsigned get_irq_config(int sscape_type, int irq)
 }
 
 /*
+<<<<<<< HEAD
  * Program the SoundScape's board-specific routing and enable the
  * codec path using the resolved IRQ, DMA and joystick settings.
  */
@@ -762,6 +803,8 @@ static int sscape_configure_board(struct soundscape *sscape)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Perform certain arcane port-checks to see whether there
  * is a SoundScape board lurking behind the given ports.
  */
@@ -991,6 +1034,7 @@ _error:
 
 /*
  * Create an ALSA soundcard entry for the SoundScape, using
+<<<<<<< HEAD
  * the resolved port, IRQ and DMA resources.
  */
 static int create_sscape(struct snd_card *card)
@@ -999,25 +1043,54 @@ static int create_sscape(struct snd_card *card)
 	struct resource *io_res;
 	struct resource *wss_res;
 	int err;
+=======
+ * the given list of port, IRQ and DMA resources.
+ */
+static int create_sscape(int dev, struct snd_card *card)
+{
+	struct soundscape *sscape = get_card_soundscape(card);
+	unsigned dma_cfg;
+	unsigned irq_cfg;
+	unsigned mpu_irq_cfg;
+	struct resource *io_res;
+	struct resource *wss_res;
+	int err;
+	int val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *name;
 
 	/*
 	 * Grab IO ports that we will need to probe so that we
 	 * can detect and control this hardware ...
 	 */
+<<<<<<< HEAD
 	io_res = devm_request_region(card->dev, sscape->io_base, 8, "SoundScape");
 	if (!io_res) {
 		dev_err(card->dev,
 			"sscape: can't grab port 0x%x\n", sscape->io_base);
+=======
+	io_res = devm_request_region(card->dev, port[dev], 8, "SoundScape");
+	if (!io_res) {
+		dev_err(card->dev,
+			"sscape: can't grab port 0x%lx\n", port[dev]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 	}
 	wss_res = NULL;
 	if (sscape->type == SSCAPE_VIVO) {
+<<<<<<< HEAD
 		wss_res = devm_request_region(card->dev, sscape->wss_base, 4,
 					      "SoundScape");
 		if (!wss_res) {
 			dev_err(card->dev, "sscape: can't grab port 0x%lx\n",
 				sscape->wss_base);
+=======
+		wss_res = devm_request_region(card->dev, wss_port[dev], 4,
+					      "SoundScape");
+		if (!wss_res) {
+			dev_err(card->dev, "sscape: can't grab port 0x%lx\n",
+				wss_port[dev]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EBUSY;
 		}
 	}
@@ -1025,17 +1098,29 @@ static int create_sscape(struct snd_card *card)
 	/*
 	 * Grab one DMA channel ...
 	 */
+<<<<<<< HEAD
 	err = snd_devm_request_dma(card->dev, sscape->dma1, "SoundScape");
 	if (err < 0) {
 		dev_err(card->dev, "sscape: can't grab DMA %d\n", sscape->dma1);
+=======
+	err = snd_devm_request_dma(card->dev, dma[dev], "SoundScape");
+	if (err < 0) {
+		dev_err(card->dev, "sscape: can't grab DMA %d\n", dma[dev]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 
 	spin_lock_init(&sscape->lock);
 	sscape->io_res = io_res;
 	sscape->wss_res = wss_res;
+<<<<<<< HEAD
 
 	if (!detect_sscape(sscape, sscape->wss_base)) {
+=======
+	sscape->io_base = port[dev];
+
+	if (!detect_sscape(sscape, wss_port[dev])) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(card->dev, "sscape: hardware not detected at 0x%x\n",
 			sscape->io_base);
 		return -ENODEV;
@@ -1060,28 +1145,86 @@ static int create_sscape(struct snd_card *card)
 	}
 
 	dev_info(card->dev, "sscape: %s card detected at 0x%x, using IRQ %d, DMA %d\n",
+<<<<<<< HEAD
 		 name, sscape->io_base, sscape->irq, sscape->dma1);
+=======
+		 name, sscape->io_base, irq[dev], dma[dev]);
+
+	/*
+	 * Check that the user didn't pass us garbage data ...
+	 */
+	irq_cfg = get_irq_config(sscape->type, irq[dev]);
+	if (irq_cfg == INVALID_IRQ) {
+		dev_err(card->dev, "sscape: Invalid IRQ %d\n", irq[dev]);
+		return -ENXIO;
+	}
+
+	mpu_irq_cfg = get_irq_config(sscape->type, mpu_irq[dev]);
+	if (mpu_irq_cfg == INVALID_IRQ) {
+		dev_err(card->dev, "sscape: Invalid IRQ %d\n", mpu_irq[dev]);
+		return -ENXIO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Tell the on-board devices where their resources are (I think -
 	 * I can't be sure without a datasheet ... So many magic values!)
 	 */
+<<<<<<< HEAD
 	err = sscape_configure_board(sscape);
 	if (err < 0) {
 		dev_err(card->dev, "sscape: Invalid IRQ configuration\n");
 		return err;
+=======
+	scoped_guard(spinlock_irqsave, &sscape->lock) {
+
+		sscape_write_unsafe(sscape->io_base, GA_SMCFGA_REG, 0x2e);
+		sscape_write_unsafe(sscape->io_base, GA_SMCFGB_REG, 0x00);
+
+		/*
+		 * Enable and configure the DMA channels ...
+		 */
+		sscape_write_unsafe(sscape->io_base, GA_DMACFG_REG, 0x50);
+		dma_cfg = (sscape->ic_type == IC_OPUS ? 0x40 : 0x70);
+		sscape_write_unsafe(sscape->io_base, GA_DMAA_REG, dma_cfg);
+		sscape_write_unsafe(sscape->io_base, GA_DMAB_REG, 0x20);
+
+		mpu_irq_cfg |= mpu_irq_cfg << 2;
+		val = sscape_read_unsafe(sscape->io_base, GA_HMCTL_REG) & 0xF7;
+		if (joystick[dev])
+			val |= 8;
+		sscape_write_unsafe(sscape->io_base, GA_HMCTL_REG, val | 0x10);
+		sscape_write_unsafe(sscape->io_base, GA_INTCFG_REG, 0xf0 | mpu_irq_cfg);
+		sscape_write_unsafe(sscape->io_base,
+				    GA_CDCFG_REG, 0x09 | DMA_8BIT
+				    | (dma[dev] << 4) | (irq_cfg << 1));
+		/*
+		 * Enable the master IRQ ...
+		 */
+		sscape_write_unsafe(sscape->io_base, GA_INTENA_REG, 0x80);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
 	 * We have now enabled the codec chip, and so we should
 	 * detect the AD1845 device ...
 	 */
+<<<<<<< HEAD
 	err = create_ad1845(card, sscape->wss_base, sscape->irq,
 			    sscape->dma1, sscape->dma2);
 	if (err < 0) {
 		dev_err(card->dev,
 			"sscape: No AD1845 device at 0x%lx, IRQ %d\n",
 			sscape->wss_base, sscape->irq);
+=======
+	err = create_ad1845(card, wss_port[dev], irq[dev],
+			    dma[dev], dma2[dev]);
+	if (err < 0) {
+		dev_err(card->dev,
+			"sscape: No AD1845 device at 0x%lx, IRQ %d\n",
+			wss_port[dev], irq[dev]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 	strscpy(card->driver, "SoundScape");
@@ -1098,6 +1241,7 @@ static int create_sscape(struct snd_card *card)
 			err = sscape_upload_microcode(card, err);
 
 		if (err == 0) {
+<<<<<<< HEAD
 			err = create_mpu401(card, MIDI_DEVNUM, sscape->io_base,
 					    sscape->mpu_irq);
 			if (err < 0) {
@@ -1114,12 +1258,44 @@ static int create_sscape(struct snd_card *card)
 				dev_warn(card->dev,
 					 "sscape: MIDI init incomplete: %d\n",
 					 err);
+=======
+			err = create_mpu401(card, MIDI_DEVNUM, port[dev],
+					    mpu_irq[dev]);
+			if (err < 0) {
+				dev_err(card->dev,
+					"sscape: Failed to create MPU-401 device at 0x%lx\n",
+					port[dev]);
+				return err;
+			}
+
+			/*
+			 * Initialize mixer
+			 */
+			guard(spinlock_irqsave)(&sscape->lock);
+			sscape->midi_vol = 0;
+			host_write_ctrl_unsafe(sscape->io_base,
+						CMD_SET_MIDI_VOL, 100);
+			host_write_ctrl_unsafe(sscape->io_base,
+						sscape->midi_vol, 100);
+			host_write_ctrl_unsafe(sscape->io_base,
+						CMD_XXX_MIDI_VOL, 100);
+			host_write_ctrl_unsafe(sscape->io_base,
+						sscape->midi_vol, 100);
+			host_write_ctrl_unsafe(sscape->io_base,
+						CMD_SET_EXTMIDI, 100);
+			host_write_ctrl_unsafe(sscape->io_base,
+						0, 100);
+			host_write_ctrl_unsafe(sscape->io_base, CMD_ACK, 100);
+
+			set_midi_mode_unsafe(sscape->io_base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 /*
  * Reload the MIDI firmware and restore the saved MIDI state for
@@ -1191,6 +1367,8 @@ static int snd_sscape_resume(struct device *dev, unsigned int n)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int snd_sscape_match(struct device *pdev, unsigned int i)
 {
@@ -1227,9 +1405,14 @@ static int snd_sscape_probe(struct device *pdev, unsigned int dev)
 	sscape->type = SSCAPE;
 
 	dma[dev] &= 0x03;
+<<<<<<< HEAD
 	sscape_store_settings(sscape, dev);
 
 	ret = create_sscape(card);
+=======
+
+	ret = create_sscape(dev, card);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -1247,10 +1430,14 @@ static int snd_sscape_probe(struct device *pdev, unsigned int dev)
 static struct isa_driver snd_sscape_driver = {
 	.match		= snd_sscape_match,
 	.probe		= snd_sscape_probe,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend	= snd_sscape_suspend,
 	.resume		= snd_sscape_resume,
 #endif
+=======
+	/* FIXME: suspend/resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver		= {
 		.name	= DEV_NAME
 	},
@@ -1331,9 +1518,14 @@ static int sscape_pnp_detect(struct pnp_card_link *pcard,
 		wss_port[idx] = pnp_port_start(dev, 1);
 		dma2[idx] = pnp_dma(dev, 1);
 	}
+<<<<<<< HEAD
 	sscape_store_settings(sscape, idx);
 
 	ret = create_sscape(card);
+=======
+
+	ret = create_sscape(idx, card);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -1348,6 +1540,7 @@ static int sscape_pnp_detect(struct pnp_card_link *pcard,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int sscape_pnp_suspend(struct pnp_card_link *pcard, pm_message_t state)
 {
@@ -1360,15 +1553,20 @@ static int sscape_pnp_resume(struct pnp_card_link *pcard)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct pnp_card_driver sscape_pnpc_driver = {
 	.flags = PNP_DRIVER_RES_DO_NOT_CHANGE,
 	.name = "sscape",
 	.id_table = sscape_pnpids,
 	.probe = sscape_pnp_detect,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend = sscape_pnp_suspend,
 	.resume = sscape_pnp_resume,
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* CONFIG_PNP */

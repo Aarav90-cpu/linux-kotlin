@@ -95,10 +95,14 @@
 	axi@18000000 {
 		compatible = "brcm,bus-axi";
 		reg = <0x18000000 0x1000>;
+<<<<<<< HEAD
 		ranges = <0x00000000 0x18000000 0x00100000>,
 			 <0x08000000 0x08000000 0x08000000>,
 			 <0x20000000 0x20000000 0x08000000>,
 			 <0x28000000 0x28000000 0x08000000>;
+=======
+		ranges = <0x00000000 0x18000000 0x00100000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		#address-cells = <1>;
 		#size-cells = <1>;
 
@@ -185,6 +189,7 @@
 		};
 
 		pcie0: pcie@12000 {
+<<<<<<< HEAD
 			compatible = "brcm,iproc-pcie";
 			reg = <0x00012000 0x1000>;
 			ranges = <0x82000000 0 0x08000000  0x08000000  0 0x08000000>;
@@ -254,6 +259,26 @@
 				#size-cells = <2>;
 				ranges;
 			};
+=======
+			reg = <0x00012000 0x1000>;
+
+			#address-cells = <3>;
+			#size-cells = <2>;
+		};
+
+		pcie1: pcie@13000 {
+			reg = <0x00013000 0x1000>;
+
+			#address-cells = <3>;
+			#size-cells = <2>;
+		};
+
+		pcie2: pcie@14000 {
+			reg = <0x00014000 0x1000>;
+
+			#address-cells = <3>;
+			#size-cells = <2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		usb2: usb2@21000 {
@@ -533,7 +558,11 @@
 	};
 
 	nand_controller: nand-controller@18028000 {
+<<<<<<< HEAD
 		compatible = "brcm,nand-iproc", "brcm,brcmnand-v6.1";
+=======
+		compatible = "brcm,nand-iproc", "brcm,brcmnand-v6.1", "brcm,brcmnand";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0x18028000 0x600>, <0x1811a408 0x600>, <0x18028f00 0x20>;
 		reg-names = "nand", "iproc-idm", "iproc-ext";
 		interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;

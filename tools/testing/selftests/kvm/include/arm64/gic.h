@@ -48,8 +48,13 @@ void gic_set_dir(unsigned int intid);
  * split is true, EOI drops the priority and deactivates the interrupt.
  */
 void gic_set_eoi_split(bool split);
+<<<<<<< HEAD
 void gic_set_priority_mask(u64 mask);
 void gic_set_priority(u32 intid, u32 prio);
+=======
+void gic_set_priority_mask(uint64_t mask);
+void gic_set_priority(uint32_t intid, uint32_t prio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void gic_irq_set_active(unsigned int intid);
 void gic_irq_clear_active(unsigned int intid);
 bool gic_irq_get_active(unsigned int intid);
@@ -59,7 +64,12 @@ bool gic_irq_get_pending(unsigned int intid);
 void gic_irq_set_config(unsigned int intid, bool is_edge);
 void gic_irq_set_group(unsigned int intid, bool group);
 
+<<<<<<< HEAD
 void gic_rdist_enable_lpis(gpa_t cfg_table, size_t cfg_table_size,
 			   gpa_t pend_table);
+=======
+void gic_rdist_enable_lpis(vm_paddr_t cfg_table, size_t cfg_table_size,
+			   vm_paddr_t pend_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* SELFTEST_KVM_GIC_H */

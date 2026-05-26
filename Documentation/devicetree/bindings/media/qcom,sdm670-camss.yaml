@@ -124,6 +124,10 @@ properties:
                 maxItems: 4
 
             required:
+<<<<<<< HEAD
+=======
+              - clock-lanes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - data-lanes
 
       port@1:
@@ -146,6 +150,10 @@ properties:
                 maxItems: 4
 
             required:
+<<<<<<< HEAD
+=======
+              - clock-lanes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - data-lanes
 
       port@2:
@@ -168,6 +176,10 @@ properties:
                 maxItems: 4
 
             required:
+<<<<<<< HEAD
+=======
+              - clock-lanes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - data-lanes
 
 required:

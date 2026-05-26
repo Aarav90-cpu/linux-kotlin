@@ -210,9 +210,18 @@ static struct clocksource clocksource_cr16 = {
 	.read			= read_cr16,
 	.mask			= CLOCKSOURCE_MASK(BITS_PER_LONG),
 	.flags			= CLOCK_SOURCE_IS_CONTINUOUS |
+<<<<<<< HEAD
 				  CLOCK_SOURCE_VALID_FOR_HRES,
 };
 
+=======
+					CLOCK_SOURCE_VALID_FOR_HRES |
+					CLOCK_SOURCE_MUST_VERIFY |
+					CLOCK_SOURCE_VERIFY_PERCPU,
+};
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * timer interrupt and sched_clock() initialization
  */

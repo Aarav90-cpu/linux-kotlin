@@ -232,6 +232,7 @@ int snd_gf1_rawmidi_new(struct snd_gus_card *gus, int device)
 	gus->midi_uart = rmidi;
 	return err;
 }
+<<<<<<< HEAD
 
 void snd_gf1_uart_suspend(struct snd_gus_card *gus)
 {
@@ -279,3 +280,5 @@ void snd_gf1_uart_resume(struct snd_gus_card *gus)
 
 	snd_gf1_uart_cmd(gus, uart_cmd);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

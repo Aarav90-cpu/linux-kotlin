@@ -514,7 +514,11 @@ static const struct snd_soc_component_driver msiof_component_driver = {
 	.open		= msiof_open,
 	.close		= msiof_close,
 	.pointer	= msiof_pointer,
+<<<<<<< HEAD
 	.pcm_new	= msiof_new,
+=======
+	.pcm_construct	= msiof_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.trigger	= msiof_trigger,
 	.hw_params	= msiof_hw_params,
 };

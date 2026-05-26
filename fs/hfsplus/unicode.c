@@ -147,6 +147,7 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
 	return NULL;
 }
 
+<<<<<<< HEAD
 /*
  * In HFS+, a filename can contain / because : is the separator.
  * The slash is a valid filename character on macOS.
@@ -185,6 +186,11 @@ static int hfsplus_uni2asc(struct super_block *sb,
 			   const struct hfsplus_unistr *ustr,
 			   int max_len, char *astr, int *len_p,
 			   int name_type)
+=======
+static int hfsplus_uni2asc(struct super_block *sb,
+			   const struct hfsplus_unistr *ustr,
+			   int max_len, char *astr, int *len_p)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const hfsplus_unichr *ip;
 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
@@ -252,8 +258,19 @@ static int hfsplus_uni2asc(struct super_block *sb,
 					hfsplus_compose_table, c1);
 			if (ce1)
 				break;
+<<<<<<< HEAD
 			hfsplus_mac2linux_compatibility_check(c0, &c0,
 							      name_type);
+=======
+			switch (c0) {
+			case 0:
+				c0 = 0x2400;
+				break;
+			case '/':
+				c0 = ':';
+				break;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			res = nls->uni2char(c0, op, len);
 			if (res < 0) {
 				if (res == -ENAMETOOLONG)
@@ -286,8 +303,21 @@ static int hfsplus_uni2asc(struct super_block *sb,
 			}
 		}
 same:
+<<<<<<< HEAD
 		hfsplus_mac2linux_compatibility_check(c0, &cc,
 						      name_type);
+=======
+		switch (c0) {
+		case 0:
+			cc = 0x2400;
+			break;
+		case '/':
+			cc = ':';
+			break;
+		default:
+			cc = c0;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 done:
 		res = nls->uni2char(cc, op, len);
 		if (res < 0) {
@@ -309,10 +339,14 @@ inline int hfsplus_uni2asc_str(struct super_block *sb,
 			       const struct hfsplus_unistr *ustr, char *astr,
 			       int *len_p)
 {
+<<<<<<< HEAD
 	return hfsplus_uni2asc(sb,
 				ustr, HFSPLUS_MAX_STRLEN,
 				astr, len_p,
 				HFS_REGULAR_NAME);
+=======
+	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_IF_KUNIT(hfsplus_uni2asc_str);
 
@@ -321,12 +355,17 @@ inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
 				     char *astr, int *len_p)
 {
 	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
+<<<<<<< HEAD
 				HFSPLUS_ATTR_MAX_STRLEN, astr, len_p,
 				HFS_XATTR_NAME);
+=======
+			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_IF_KUNIT(hfsplus_uni2asc_xattr_str);
 
 /*
+<<<<<<< HEAD
  * In HFS+, a filename can contain / because : is the separator.
  * The slash is a valid filename character on macOS.
  * But on Linux, / is the path separator and
@@ -347,6 +386,19 @@ void hfsplus_linux2mac_compatibility_check(wchar_t *uc, int name_type)
 		break;
 	}
 
+=======
+ * Convert one or more ASCII characters into a single unicode character.
+ * Returns the number of ASCII characters corresponding to the unicode char.
+ */
+static inline int asc2unichar(struct super_block *sb, const char *astr, int len,
+			      wchar_t *uc)
+{
+	int size = HFSPLUS_SB(sb)->nls->char2uni(astr, len, uc);
+	if (size <= 0) {
+		*uc = '?';
+		size = 1;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (*uc) {
 	case 0x2400:
 		*uc = 0;
@@ -355,6 +407,7 @@ void hfsplus_linux2mac_compatibility_check(wchar_t *uc, int name_type)
 		*uc = '/';
 		break;
 	}
+<<<<<<< HEAD
 }
 
 /*
@@ -372,6 +425,8 @@ static inline int asc2unichar(struct super_block *sb, const char *astr, int len,
 	}
 
 	hfsplus_linux2mac_compatibility_check(uc, name_type);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return size;
 }
 
@@ -446,7 +501,11 @@ static u16 *decompose_unichar(wchar_t uc, int *size, u16 *hangul_buffer)
 
 int hfsplus_asc2uni(struct super_block *sb,
 		    struct hfsplus_unistr *ustr, int max_unistr_len,
+<<<<<<< HEAD
 		    const char *astr, int len, int name_type)
+=======
+		    const char *astr, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int size, dsize, decompose;
 	u16 *dstr, outlen = 0;
@@ -455,7 +514,11 @@ int hfsplus_asc2uni(struct super_block *sb,
 
 	decompose = !test_bit(HFSPLUS_SB_NODECOMPOSE, &HFSPLUS_SB(sb)->flags);
 	while (outlen < max_unistr_len && len > 0) {
+<<<<<<< HEAD
 		size = asc2unichar(sb, astr, len, &c, name_type);
+=======
+		size = asc2unichar(sb, astr, len, &c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (decompose)
 			dstr = decompose_unichar(c, &dsize, dhangul);
@@ -503,7 +566,11 @@ int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str)
 	len = str->len;
 	while (len > 0) {
 		int dsize;
+<<<<<<< HEAD
 		size = asc2unichar(sb, astr, len, &c, HFS_REGULAR_NAME);
+=======
+		size = asc2unichar(sb, astr, len, &c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		astr += size;
 		len -= size;
 
@@ -561,8 +628,12 @@ int hfsplus_compare_dentry(const struct dentry *dentry,
 
 	while (len1 > 0 && len2 > 0) {
 		if (!dsize1) {
+<<<<<<< HEAD
 			size = asc2unichar(sb, astr1, len1, &c,
 					   HFS_REGULAR_NAME);
+=======
+			size = asc2unichar(sb, astr1, len1, &c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			astr1 += size;
 			len1 -= size;
 
@@ -577,8 +648,12 @@ int hfsplus_compare_dentry(const struct dentry *dentry,
 		}
 
 		if (!dsize2) {
+<<<<<<< HEAD
 			size = asc2unichar(sb, astr2, len2, &c,
 					   HFS_REGULAR_NAME);
+=======
+			size = asc2unichar(sb, astr2, len2, &c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			astr2 += size;
 			len2 -= size;
 

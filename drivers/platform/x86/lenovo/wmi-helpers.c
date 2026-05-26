@@ -21,15 +21,21 @@
 #include <linux/errno.h>
 #include <linux/export.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/unaligned.h>
 #include <linux/wmi.h>
 
 #include "wmi-helpers.h"
 
+<<<<<<< HEAD
 /* Thermal mode notifier chain. */
 static BLOCKING_NOTIFIER_HEAD(tm_chain_head);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * lwmi_dev_evaluate_int() - Helper function for calling WMI methods that
  * return an integer.
@@ -50,6 +56,10 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
 			  unsigned char *buf, size_t size, u32 *retval)
 {
 	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
+<<<<<<< HEAD
+=======
+	union acpi_object *ret_obj __free(kfree) = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_buffer input = { size, buf };
 	acpi_status status;
 
@@ -58,9 +68,14 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
 	if (ACPI_FAILURE(status))
 		return -EIO;
 
+<<<<<<< HEAD
 	union acpi_object *ret_obj __free(kfree) = output.pointer;
 
 	if (retval) {
+=======
+	if (retval) {
+		ret_obj = output.pointer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ret_obj)
 			return -ENODATA;
 
@@ -88,6 +103,7 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
 };
 EXPORT_SYMBOL_NS_GPL(lwmi_dev_evaluate_int, "LENOVO_WMI_HELPERS");
 
+<<<<<<< HEAD
 /**
  * lwmi_tm_register_notifier() - Add a notifier to the blocking notifier chain
  * @nb: The notifier_block struct to register
@@ -185,6 +201,8 @@ int lwmi_tm_notifier_call(enum thermal_mode *mode)
 }
 EXPORT_SYMBOL_NS_GPL(lwmi_tm_notifier_call, "LENOVO_WMI_HELPERS");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Derek J. Clark <derekjohn.clark@gmail.com>");
 MODULE_DESCRIPTION("Lenovo WMI Helpers Driver");
 MODULE_LICENSE("GPL");

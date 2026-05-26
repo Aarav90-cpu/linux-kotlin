@@ -1112,15 +1112,22 @@ int thc_port_select(struct thc_device *dev, enum thc_port_type port_type)
 EXPORT_SYMBOL_NS_GPL(thc_port_select, "INTEL_THC");
 
 #define THC_SPI_FREQUENCY_7M	7812500
+<<<<<<< HEAD
 #define THC_SPI_FREQUENCY_10M	10416700
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define THC_SPI_FREQUENCY_15M	15625000
 #define THC_SPI_FREQUENCY_17M	17857100
 #define THC_SPI_FREQUENCY_20M	20833000
 #define THC_SPI_FREQUENCY_25M	25000000
 #define THC_SPI_FREQUENCY_31M	31250000
+<<<<<<< HEAD
 #define THC_SPI_FREQUENCY_35M	35714200
 #define THC_SPI_FREQUENCY_41M	41666700
 #define THC_SPI_FREQUENCY_50M	50000000
+=======
+#define THC_SPI_FREQUENCY_41M	41666700
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define THC_SPI_LOW_FREQUENCY	THC_SPI_FREQUENCY_17M
 
@@ -1128,27 +1135,40 @@ static u8 thc_get_spi_freq_div_val(struct thc_device *dev, u32 spi_freq_val)
 {
 	static const int frequency[] = {
 		THC_SPI_FREQUENCY_7M,
+<<<<<<< HEAD
 		THC_SPI_FREQUENCY_10M,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		THC_SPI_FREQUENCY_15M,
 		THC_SPI_FREQUENCY_17M,
 		THC_SPI_FREQUENCY_20M,
 		THC_SPI_FREQUENCY_25M,
 		THC_SPI_FREQUENCY_31M,
+<<<<<<< HEAD
 		THC_SPI_FREQUENCY_35M,
 		THC_SPI_FREQUENCY_41M,
 		THC_SPI_FREQUENCY_50M,
+=======
+		THC_SPI_FREQUENCY_41M,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	static const u8 frequency_div[] = {
 		THC_SPI_FRQ_DIV_2,
 		THC_SPI_FRQ_DIV_1,
+<<<<<<< HEAD
 		THC_SPI_FRQ_DIV_1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		THC_SPI_FRQ_DIV_7,
 		THC_SPI_FRQ_DIV_6,
 		THC_SPI_FRQ_DIV_5,
 		THC_SPI_FRQ_DIV_4,
 		THC_SPI_FRQ_DIV_3,
+<<<<<<< HEAD
 		THC_SPI_FRQ_DIV_3,
 		THC_SPI_FRQ_DIV_2,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	int size = ARRAY_SIZE(frequency);
 	u32 closest_freq;
@@ -1199,6 +1219,7 @@ int thc_spi_read_config(struct thc_device *dev, u32 spi_freq_val,
 	if (spi_freq_val < THC_SPI_LOW_FREQUENCY)
 		is_low_freq = true;
 
+<<<<<<< HEAD
 	/* 10M, 35M and 50M CLK need 1.5, 3.5 and 2.5 half divider */
 	if ((freq_div == THC_SPI_FRQ_DIV_2 && spi_freq_val >=  THC_SPI_FREQUENCY_50M) ||
 		(freq_div == THC_SPI_FRQ_DIV_3 && spi_freq_val <  THC_SPI_FREQUENCY_41M) ||
@@ -1218,6 +1239,8 @@ int thc_spi_read_config(struct thc_device *dev, u32 spi_freq_val,
 				  THC_M_PRT_SPARE_REG_SPI_CLK_INV_ENABLE, 0);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg = FIELD_PREP(THC_M_PRT_SPI_CFG_SPI_TCRF, freq_div) |
 	      FIELD_PREP(THC_M_PRT_SPI_CFG_SPI_TRMODE, io_mode) |
 	      (is_low_freq ? THC_M_PRT_SPI_CFG_SPI_LOW_FREQ_EN : 0) |
@@ -1271,6 +1294,7 @@ int thc_spi_write_config(struct thc_device *dev, u32 spi_freq_val,
 	if (spi_freq_val < THC_SPI_LOW_FREQUENCY)
 		is_low_freq = true;
 
+<<<<<<< HEAD
 	/* 10M, 35M and 50M CLK need 1.5, 3.5 and 2.5 half divider */
 	if ((freq_div == THC_SPI_FRQ_DIV_2 && spi_freq_val >=  THC_SPI_FREQUENCY_50M) ||
 		(freq_div == THC_SPI_FRQ_DIV_3 && spi_freq_val <  THC_SPI_FREQUENCY_41M) ||
@@ -1290,6 +1314,8 @@ int thc_spi_write_config(struct thc_device *dev, u32 spi_freq_val,
 				  THC_M_PRT_SPARE_REG_SPI_CLK_INV_ENABLE, 0);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg = FIELD_PREP(THC_M_PRT_SPI_CFG_SPI_TCWF, freq_div) |
 	      FIELD_PREP(THC_M_PRT_SPI_CFG_SPI_TWMODE, io_mode) |
 	      (is_low_freq ? THC_M_PRT_SPI_CFG_SPI_LOW_FREQ_EN : 0) |

@@ -155,7 +155,11 @@ static void *c2c_he_zalloc(size_t size)
 	if (!c2c_he->nodeset)
 		goto out_free;
 
+<<<<<<< HEAD
 	c2c_he->node_stats = calloc(c2c.nodes_cnt, sizeof(*c2c_he->node_stats));
+=======
+	c2c_he->node_stats = zalloc(c2c.nodes_cnt * sizeof(*c2c_he->node_stats));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!c2c_he->node_stats)
 		goto out_free;
 
@@ -2310,6 +2314,10 @@ static int setup_nodes(struct perf_session *session)
 {
 	struct numa_node *n;
 	unsigned long **nodes;
+<<<<<<< HEAD
+=======
+	int node, idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_cpu cpu;
 	int *cpu2node;
 	struct perf_env *env = perf_session__env(session);
@@ -2324,25 +2332,43 @@ static int setup_nodes(struct perf_session *session)
 	if (!n)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	nodes = calloc(c2c.nodes_cnt, sizeof(unsigned long *));
+=======
+	nodes = zalloc(sizeof(unsigned long *) * c2c.nodes_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nodes)
 		return -ENOMEM;
 
 	c2c.nodes = nodes;
 
+<<<<<<< HEAD
 	cpu2node = calloc(c2c.cpus_cnt, sizeof(int));
 	if (!cpu2node)
 		return -ENOMEM;
 
 	for (int idx = 0; idx < c2c.cpus_cnt; idx++)
+=======
+	cpu2node = zalloc(sizeof(int) * c2c.cpus_cnt);
+	if (!cpu2node)
+		return -ENOMEM;
+
+	for (idx = 0; idx < c2c.cpus_cnt; idx++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu2node[idx] = -1;
 
 	c2c.cpu2node = cpu2node;
 
+<<<<<<< HEAD
 	for (int node = 0; node < c2c.nodes_cnt; node++) {
 		struct perf_cpu_map *map = n[node].map;
 		unsigned long *set;
 		unsigned int idx;
+=======
+	for (node = 0; node < c2c.nodes_cnt; node++) {
+		struct perf_cpu_map *map = n[node].map;
+		unsigned long *set;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		set = bitmap_zalloc(c2c.cpus_cnt);
 		if (!set)
@@ -2892,10 +2918,16 @@ static int ui_quirks(void)
 
 #define CALLCHAIN_DEFAULT_OPT  "graph,0.5,caller,function,percent"
 
+<<<<<<< HEAD
 static const char callchain_help[] =
 	"Display call graph (stack chain/backtrace):\n\n"
 	CALLCHAIN_REPORT_HELP
 	"\n\t\t\t\tDefault: " CALLCHAIN_DEFAULT_OPT;
+=======
+const char callchain_help[] = "Display call graph (stack chain/backtrace):\n\n"
+				CALLCHAIN_REPORT_HELP
+				"\n\t\t\t\tDefault: " CALLCHAIN_DEFAULT_OPT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int
 parse_callchain_opt(const struct option *opt, const char *arg, int unset)

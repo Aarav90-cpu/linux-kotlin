@@ -648,6 +648,7 @@ struct arm_smmu_cmdq_batch {
 	int				num;
 };
 
+<<<<<<< HEAD
 /*
  * The order here also determines the sequence in which commands are sent to the
  * command queue. E.g. TLBI must be done before ATC_INV.
@@ -735,6 +736,8 @@ static inline struct arm_smmu_invs *arm_smmu_invs_alloc(size_t num_invs)
 	return new_invs;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct arm_smmu_evtq {
 	struct arm_smmu_queue		q;
 	struct iopf_queue		*iopf;
@@ -928,6 +931,7 @@ struct arm_smmu_master {
 	struct arm_smmu_device		*smmu;
 	struct device			*dev;
 	struct arm_smmu_stream		*streams;
+<<<<<<< HEAD
 	/*
 	 * Scratch memory for a to_merge or to_unref array to build a per-domain
 	 * invalidation array. It'll be pre-allocated with enough enries for all
@@ -936,6 +940,8 @@ struct arm_smmu_master {
 	 * iommu_group mutex.
 	 */
 	struct arm_smmu_invs		*build_invs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct arm_smmu_vmaster		*vmaster; /* use smmu->streams_mutex */
 	/* Locked by the iommu core using the group mutex */
 	struct arm_smmu_ctx_desc_cfg	cd_table;
@@ -951,7 +957,10 @@ struct arm_smmu_master {
 enum arm_smmu_domain_stage {
 	ARM_SMMU_DOMAIN_S1 = 0,
 	ARM_SMMU_DOMAIN_S2,
+<<<<<<< HEAD
 	ARM_SMMU_DOMAIN_SVA,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct arm_smmu_domain {
@@ -968,8 +977,11 @@ struct arm_smmu_domain {
 
 	struct iommu_domain		domain;
 
+<<<<<<< HEAD
 	struct arm_smmu_invs __rcu	*invs;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* List of struct arm_smmu_master_domain */
 	struct list_head		devices;
 	spinlock_t			devices_lock;
@@ -1022,12 +1034,15 @@ void arm_smmu_make_cdtable_ste(struct arm_smmu_ste *target,
 void arm_smmu_make_sva_cd(struct arm_smmu_cd *target,
 			  struct arm_smmu_master *master, struct mm_struct *mm,
 			  u16 asid);
+<<<<<<< HEAD
 
 struct arm_smmu_invs *arm_smmu_invs_merge(struct arm_smmu_invs *invs,
 					  struct arm_smmu_invs *to_merge);
 void arm_smmu_invs_unref(struct arm_smmu_invs *invs,
 			 struct arm_smmu_invs *to_unref);
 struct arm_smmu_invs *arm_smmu_invs_purge(struct arm_smmu_invs *invs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 struct arm_smmu_master_domain {
@@ -1059,6 +1074,7 @@ extern struct mutex arm_smmu_asid_lock;
 
 struct arm_smmu_domain *arm_smmu_domain_alloc(void);
 
+<<<<<<< HEAD
 static inline void arm_smmu_domain_free(struct arm_smmu_domain *smmu_domain)
 {
 	/* No concurrency with invalidation is possible at this point */
@@ -1066,6 +1082,8 @@ static inline void arm_smmu_domain_free(struct arm_smmu_domain *smmu_domain)
 	kfree(smmu_domain);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void arm_smmu_clear_cd(struct arm_smmu_master *master, ioasid_t ssid);
 struct arm_smmu_cd *arm_smmu_get_cd_ptr(struct arm_smmu_master *master,
 					u32 ssid);
@@ -1080,6 +1098,7 @@ int arm_smmu_set_pasid(struct arm_smmu_master *master,
 		       struct arm_smmu_domain *smmu_domain, ioasid_t pasid,
 		       struct arm_smmu_cd *cd, struct iommu_domain *old);
 
+<<<<<<< HEAD
 void arm_smmu_domain_inv_range(struct arm_smmu_domain *smmu_domain,
 			       unsigned long iova, size_t size,
 			       unsigned int granule, bool leaf);
@@ -1088,6 +1107,14 @@ static inline void arm_smmu_domain_inv(struct arm_smmu_domain *smmu_domain)
 {
 	arm_smmu_domain_inv_range(smmu_domain, 0, 0, 0, false);
 }
+=======
+void arm_smmu_tlb_inv_asid(struct arm_smmu_device *smmu, u16 asid);
+void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
+				 size_t granule, bool leaf,
+				 struct arm_smmu_domain *smmu_domain);
+int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
+			    unsigned long iova, size_t size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
 			      struct arm_smmu_cmdq *cmdq);
@@ -1104,6 +1131,7 @@ static inline bool arm_smmu_master_canwbs(struct arm_smmu_master *master)
 	       IOMMU_FWSPEC_PCI_RC_CANWBS;
 }
 
+<<<<<<< HEAD
 /**
  * struct arm_smmu_inv_state - Per-domain invalidation array state
  * @invs_ptr: points to the domain->invs (unwinding nesting/etc.) or is NULL if
@@ -1119,6 +1147,8 @@ struct arm_smmu_inv_state {
 	struct arm_smmu_invs *new_invs;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct arm_smmu_attach_state {
 	/* Inputs */
 	struct iommu_domain *old_domain;
@@ -1128,8 +1158,11 @@ struct arm_smmu_attach_state {
 	ioasid_t ssid;
 	/* Resulting state */
 	struct arm_smmu_vmaster *vmaster;
+<<<<<<< HEAD
 	struct arm_smmu_inv_state old_domain_invst;
 	struct arm_smmu_inv_state new_domain_invst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool ats_enabled;
 };
 

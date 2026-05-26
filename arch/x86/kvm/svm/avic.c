@@ -19,7 +19,10 @@
 #include <linux/amd-iommu.h>
 #include <linux/kvm_host.h>
 #include <linux/kvm_irqfd.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm/irq_remapping.h>
 #include <asm/msr.h>
@@ -77,6 +80,7 @@ static int avic_param_set(const char *val, const struct kernel_param *kp)
 	return param_set_bint(val, kp);
 }
 
+<<<<<<< HEAD
 static int avic_param_get(char *buffer, const struct kernel_param *kp)
 {
 	int val = *(int *)kp->arg;
@@ -91,19 +95,33 @@ static const struct kernel_param_ops avic_ops = {
 	.flags = KERNEL_PARAM_OPS_FL_NOARG,
 	.set = avic_param_set,
 	.get = avic_param_get,
+=======
+static const struct kernel_param_ops avic_ops = {
+	.flags = KERNEL_PARAM_OPS_FL_NOARG,
+	.set = avic_param_set,
+	.get = param_get_bool,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
  * Enable / disable AVIC.  In "auto" mode (default behavior), AVIC is enabled
  * for Zen4+ CPUs with x2AVIC (and all other criteria for enablement are met).
  */
+<<<<<<< HEAD
 static int __ro_after_init avic = AVIC_AUTO_MODE;
+=======
+static int avic = AVIC_AUTO_MODE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_cb(avic, &avic_ops, &avic, 0444);
 __MODULE_PARM_TYPE(avic, "bool");
 
 module_param(enable_ipiv, bool, 0444);
 
+<<<<<<< HEAD
 static bool __ro_after_init force_avic;
+=======
+static bool force_avic;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_unsafe(force_avic, bool, 0444);
 
 /* Note:
@@ -237,7 +255,11 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
 
+<<<<<<< HEAD
 	if (!is_sev_es_guest(&svm->vcpu))
+=======
+	if (!sev_es_guest(svm->vcpu.kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
 
 	/*

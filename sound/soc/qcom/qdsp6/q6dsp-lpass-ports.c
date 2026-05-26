@@ -96,6 +96,7 @@
 		.id = did,						\
 	}
 
+<<<<<<< HEAD
 #define Q6AFE_MI2S_RX_DAI(pre, did) {				\
 		.playback = {						\
 			.stream_name = pre" MI2S Playback",	\
@@ -132,6 +133,8 @@
 		.id = did,						\
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
 	{
 		.playback = {
@@ -519,6 +522,7 @@ static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
 		},
 		.id = QUINARY_MI2S_TX,
 		.name = "QUIN_MI2S_TX",
+<<<<<<< HEAD
 	}, {
 		.playback = {
 			.stream_name = "Senary MI2S Playback",
@@ -558,6 +562,9 @@ static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
 	Q6AFE_MI2S_TX_DAI("LPI TX2", LPI_MI2S_TX_2),
 	Q6AFE_MI2S_TX_DAI("LPI TX3", LPI_MI2S_TX_3),
 	Q6AFE_MI2S_TX_DAI("LPI TX4", LPI_MI2S_TX_4),
+=======
+	},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	Q6AFE_TDM_PB_DAI("Primary", 0, PRIMARY_TDM_RX_0),
 	Q6AFE_TDM_PB_DAI("Primary", 1, PRIMARY_TDM_RX_1),
 	Q6AFE_TDM_PB_DAI("Primary", 2, PRIMARY_TDM_RX_2),
@@ -708,10 +715,15 @@ struct snd_soc_dai_driver *q6dsp_audio_ports_set_config(struct device *dev,
 		case SLIMBUS_0_RX ... SLIMBUS_6_TX:
 			q6dsp_audio_fe_dais[i].ops = cfg->q6slim_ops;
 			break;
+<<<<<<< HEAD
 		case SENARY_MI2S_RX ... SENARY_MI2S_TX:
 		case QUINARY_MI2S_RX ... QUINARY_MI2S_TX:
 		case PRIMARY_MI2S_RX ... QUATERNARY_MI2S_TX:
 		case LPI_MI2S_RX_0 ... LPI_MI2S_TX_4:
+=======
+		case QUINARY_MI2S_RX ... QUINARY_MI2S_TX:
+		case PRIMARY_MI2S_RX ... QUATERNARY_MI2S_TX:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			q6dsp_audio_fe_dais[i].ops = cfg->q6i2s_ops;
 			break;
 		case PRIMARY_TDM_RX_0 ... QUINARY_TDM_TX_7:

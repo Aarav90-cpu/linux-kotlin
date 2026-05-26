@@ -74,6 +74,7 @@ TRACE_EVENT(qdisc_enqueue,
 		  __entry->ifindex, __entry->handle, __entry->parent, __entry->skbaddr)
 );
 
+<<<<<<< HEAD
 #undef FN
 #undef FNe
 #define FN(reason)	TRACE_DEFINE_ENUM(QDISC_DROP_##reason);
@@ -125,6 +126,8 @@ TRACE_EVENT(qdisc_drop,
 #undef FN
 #undef FNe
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TRACE_EVENT(qdisc_reset,
 
 	TP_PROTO(struct Qdisc *q),

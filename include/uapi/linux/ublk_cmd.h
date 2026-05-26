@@ -58,6 +58,7 @@
 #define UBLK_U_CMD_TRY_STOP_DEV		\
 	_IOWR('u', 0x17, struct ublksrv_ctrl_cmd)
 /*
+<<<<<<< HEAD
  * Register a shared memory buffer for zero-copy I/O.
  * Input:  ctrl_cmd.addr points to struct ublk_shmem_buf_reg (buffer VA + size)
  *         ctrl_cmd.len  = sizeof(struct ublk_shmem_buf_reg)
@@ -97,6 +98,8 @@ struct ublk_shmem_buf_reg {
 /* Pin pages without FOLL_WRITE; usable with write-sealed memfd */
 #define UBLK_SHMEM_BUF_READ_ONLY	(1U << 0)
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * 64bits are enough now, and it should be easy to extend in case of
  * running out of feature flags
  */
@@ -409,6 +412,7 @@ struct ublk_shmem_buf_reg {
 /* Disable automatic partition scanning when device is started */
 #define UBLK_F_NO_AUTO_PART_SCAN (1ULL << 18)
 
+<<<<<<< HEAD
 /*
  * Enable shared memory zero copy. When enabled, the server can register
  * shared memory buffers via UBLK_U_CMD_REG_BUF. If a block request's
@@ -417,6 +421,8 @@ struct ublk_shmem_buf_reg {
  */
 #define UBLK_F_SHMEM_ZC	(1ULL << 19)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* device state */
 #define UBLK_S_DEV_DEAD	0
 #define UBLK_S_DEV_LIVE	1
@@ -516,12 +522,15 @@ struct ublksrv_ctrl_dev_info {
 #define		UBLK_IO_F_NEED_REG_BUF		(1U << 17)
 /* Request has an integrity data buffer */
 #define		UBLK_IO_F_INTEGRITY		(1UL << 18)
+<<<<<<< HEAD
 /*
  * I/O buffer is in a registered shared memory buffer. When set, the addr
  * field in ublksrv_io_desc encodes buffer index and byte offset instead
  * of a userspace virtual address.
  */
 #define		UBLK_IO_F_SHMEM_ZC		(1U << 19)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * io cmd is described by this structure, and stored in share memory, indexed
@@ -796,6 +805,7 @@ struct ublk_params {
 	struct ublk_param_integrity	integrity;
 };
 
+<<<<<<< HEAD
 /*
  * Shared memory zero-copy addr encoding for UBLK_IO_F_SHMEM_ZC.
  *
@@ -823,4 +833,6 @@ static inline __u32 ublk_shmem_zc_offset(__u64 addr)
 	return (__u32)(addr & UBLK_SHMEM_ZC_OFF_MASK);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

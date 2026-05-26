@@ -149,11 +149,18 @@ pf_migration_consume(struct xe_device *xe, unsigned int vfid)
 
 	for_each_gt(gt, xe, gt_id) {
 		data = xe_gt_sriov_pf_migration_save_consume(gt, vfid);
+<<<<<<< HEAD
 		if (!data)
 			continue;
 		if (!IS_ERR(data) || PTR_ERR(data) != -EAGAIN)
 			return data;
 		more_data = true;
+=======
+		if (data && PTR_ERR(data) != EAGAIN)
+			return data;
+		if (PTR_ERR(data) == -EAGAIN)
+			more_data = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!more_data)

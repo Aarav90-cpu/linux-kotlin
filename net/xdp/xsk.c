@@ -23,16 +23,22 @@
 #include <linux/netdevice.h>
 #include <linux/rculist.h>
 #include <linux/vmalloc.h>
+<<<<<<< HEAD
 
 #include <net/netdev_queues.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/xdp_sock_drv.h>
 #include <net/busy_poll.h>
 #include <net/netdev_lock.h>
 #include <net/netdev_rx_queue.h>
 #include <net/xdp.h>
 
+<<<<<<< HEAD
 #include "../core/dev.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xsk_queue.h"
 #include "xdp_umem.h"
 #include "xsk.h"
@@ -119,7 +125,11 @@ struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
 }
 EXPORT_SYMBOL(xsk_get_pool_from_qid);
 
+<<<<<<< HEAD
 static void __xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
+=======
+void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (queue_id < dev->num_rx_queues)
 		dev->_rx[queue_id].pool = NULL;
@@ -127,6 +137,7 @@ static void __xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
 		dev->_tx[queue_id].pool = NULL;
 }
 
+<<<<<<< HEAD
 void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
 {
 	struct netdev_rx_queue *hw_rxq;
@@ -157,6 +168,8 @@ static int __xsk_reg_pool_at_qid(struct net_device *dev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* The buffer pool is stored both in the _rx struct and the _tx struct as we do
  * not know if the device has more tx queues than rx, or the opposite.
  * This might also change during run time.
@@ -164,6 +177,7 @@ static int __xsk_reg_pool_at_qid(struct net_device *dev,
 int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
 			u16 queue_id)
 {
+<<<<<<< HEAD
 	struct netdev_rx_queue *hw_rxq;
 	int ret;
 
@@ -185,6 +199,19 @@ int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
 	netdev_unlock(hw_rxq->dev);
 
 	return ret;
+=======
+	if (queue_id >= max_t(unsigned int,
+			      dev->real_num_rx_queues,
+			      dev->real_num_tx_queues))
+		return -EINVAL;
+
+	if (queue_id < dev->real_num_rx_queues)
+		dev->_rx[queue_id].pool = pool;
+	if (queue_id < dev->real_num_tx_queues)
+		dev->_tx[queue_id].pool = pool;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff_xsk *xskb, u32 len,
@@ -204,6 +231,7 @@ static int __xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff_xsk *xskb, u32 len,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __xsk_rcv_zc_safe(struct xdp_sock *xs, struct xdp_buff_xsk *xskb,
 			      u32 len, u32 flags)
 {
@@ -215,6 +243,8 @@ static void __xsk_rcv_zc_safe(struct xdp_sock *xs, struct xdp_buff_xsk *xskb,
 	xp_release(xskb);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
 {
 	struct xdp_buff_xsk *xskb = container_of(xdp, struct xdp_buff_xsk, xdp);
@@ -240,13 +270,21 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	__xsk_rcv_zc_safe(xs, xskb, len, contd);
+=======
+	__xsk_rcv_zc(xs, xskb, len, contd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xskb_list = &xskb->pool->xskb_list;
 	list_for_each_entry_safe(pos, tmp, xskb_list, list_node) {
 		if (list_is_singular(xskb_list))
 			contd = 0;
 		len = pos->xdp.data_end - pos->xdp.data;
+<<<<<<< HEAD
 		__xsk_rcv_zc_safe(xs, pos, len, contd);
+=======
+		__xsk_rcv_zc(xs, pos, len, contd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_del_init(&pos->list_node);
 	}
 
@@ -353,8 +391,12 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
 		rem -= copied;
 
 		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
+<<<<<<< HEAD
 		__xsk_rcv_zc_safe(xs, xskb, copied - meta_len,
 				  rem ? XDP_PKT_CONTD : 0);
+=======
+		__xsk_rcv_zc(xs, xskb, copied - meta_len, rem ? XDP_PKT_CONTD : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		meta_len = 0;
 	} while (rem);
 
@@ -386,6 +428,7 @@ static bool xsk_is_bound(struct xdp_sock *xs)
 	return false;
 }
 
+<<<<<<< HEAD
 static bool xsk_dev_queue_valid(const struct xdp_sock *xs,
 				const struct xdp_rxq_info *info)
 {
@@ -411,11 +454,18 @@ static bool xsk_dev_queue_valid(const struct xdp_sock *xs,
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
 {
 	if (!xsk_is_bound(xs))
 		return -ENXIO;
+<<<<<<< HEAD
 	if (!xsk_dev_queue_valid(xs, xdp->rxq))
+=======
+
+	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (len > __xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
@@ -646,6 +696,7 @@ static u64 xsk_skb_destructor_get_addr(struct sk_buff *skb)
 	return (u64)((uintptr_t)skb_shinfo(skb)->destructor_arg & ~0x1UL);
 }
 
+<<<<<<< HEAD
 static struct xsk_addrs *__xsk_addrs_alloc(struct sk_buff *skb, u64 addr)
 {
 	struct xsk_addrs *xsk_addr;
@@ -682,6 +733,11 @@ static int xsk_skb_destructor_set_addr(struct sk_buff *skb, u64 addr)
 	if (unlikely(!__xsk_addrs_alloc(skb, addr)))
 		return -ENOMEM;
 	return 0;
+=======
+static void xsk_skb_destructor_set_addr(struct sk_buff *skb, u64 addr)
+{
+	skb_shinfo(skb)->destructor_arg = (void *)((uintptr_t)addr | 0x1UL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xsk_inc_num_desc(struct sk_buff *skb)
@@ -718,7 +774,11 @@ static void xsk_cq_submit_addr_locked(struct xsk_buff_pool *pool,
 	spin_lock_irqsave(&pool->cq_prod_lock, flags);
 	idx = xskq_get_prod(pool->cq);
 
+<<<<<<< HEAD
 	if (unlikely(!xsk_skb_destructor_is_addr(skb))) {
+=======
+	if (unlikely(num_descs > 1)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xsk_addr = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
 
 		for (i = 0; i < num_descs; i++) {
@@ -757,6 +817,7 @@ void xsk_destruct_skb(struct sk_buff *skb)
 	sock_wfree(skb);
 }
 
+<<<<<<< HEAD
 static int xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
 			     u64 addr)
 {
@@ -766,11 +827,20 @@ static int xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
 	if (unlikely(err))
 		return err;
 
+=======
+static void xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
+			      u64 addr)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb->dev = xs->dev;
 	skb->priority = READ_ONCE(xs->sk.sk_priority);
 	skb->mark = READ_ONCE(xs->sk.sk_mark);
 	skb->destructor = xsk_destruct_skb;
+<<<<<<< HEAD
 	return 0;
+=======
+	xsk_skb_destructor_set_addr(skb, addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xsk_consume_skb(struct sk_buff *skb)
@@ -779,7 +849,11 @@ static void xsk_consume_skb(struct sk_buff *skb)
 	u32 num_descs = xsk_get_num_desc(skb);
 	struct xsk_addrs *xsk_addr;
 
+<<<<<<< HEAD
 	if (unlikely(!xsk_skb_destructor_is_addr(skb))) {
+=======
+	if (unlikely(num_descs > 1)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xsk_addr = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
 		kmem_cache_free(xsk_tx_generic_cache, xsk_addr);
 	}
@@ -858,19 +932,43 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
 			return ERR_PTR(err);
 
 		skb_reserve(skb, hr);
+<<<<<<< HEAD
 		if (desc->options & XDP_TX_METADATA) {
 			err = xsk_skb_metadata(skb, buffer, desc, pool, hr);
 			if (unlikely(err)) {
 				kfree_skb(skb);
 				return ERR_PTR(err);
 			}
+=======
+
+		xsk_skb_init_misc(skb, xs, desc->addr);
+		if (desc->options & XDP_TX_METADATA) {
+			err = xsk_skb_metadata(skb, buffer, desc, pool, hr);
+			if (unlikely(err))
+				return ERR_PTR(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		struct xsk_addrs *xsk_addr;
 
+<<<<<<< HEAD
 		xsk_addr = xsk_addrs_alloc(skb);
 		if (!xsk_addr)
 			return ERR_PTR(-ENOMEM);
+=======
+		if (xsk_skb_destructor_is_addr(skb)) {
+			xsk_addr = kmem_cache_zalloc(xsk_tx_generic_cache,
+						     GFP_KERNEL);
+			if (!xsk_addr)
+				return ERR_PTR(-ENOMEM);
+
+			xsk_addr->num_descs = 1;
+			xsk_addr->addrs[0] = xsk_skb_destructor_get_addr(skb);
+			skb_shinfo(skb)->destructor_arg = (void *)xsk_addr;
+		} else {
+			xsk_addr = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* in case of -EOVERFLOW that could happen below,
 		 * xsk_consume_skb() will release this node as whole skb
@@ -886,11 +984,16 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
 	addr = buffer - pool->addrs;
 
 	for (copied = 0, i = skb_shinfo(skb)->nr_frags; copied < len; i++) {
+<<<<<<< HEAD
 		if (unlikely(i >= MAX_SKB_FRAGS)) {
 			if (!xs->skb)
 				kfree_skb(skb);
 			return ERR_PTR(-EOVERFLOW);
 		}
+=======
+		if (unlikely(i >= MAX_SKB_FRAGS))
+			return ERR_PTR(-EOVERFLOW);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		page = pool->umem->pgs[addr >> PAGE_SHIFT];
 		get_page(page);
@@ -947,6 +1050,10 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
 			if (unlikely(err))
 				goto free_err;
 
+<<<<<<< HEAD
+=======
+			xsk_skb_init_misc(skb, xs, desc->addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (desc->options & XDP_TX_METADATA) {
 				err = xsk_skb_metadata(skb, buffer, desc,
 						       xs->pool, hr);
@@ -959,10 +1066,26 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
 			struct page *page;
 			u8 *vaddr;
 
+<<<<<<< HEAD
 			xsk_addr = xsk_addrs_alloc(skb);
 			if (!xsk_addr) {
 				err = -ENOMEM;
 				goto free_err;
+=======
+			if (xsk_skb_destructor_is_addr(skb)) {
+				xsk_addr = kmem_cache_zalloc(xsk_tx_generic_cache,
+							     GFP_KERNEL);
+				if (!xsk_addr) {
+					err = -ENOMEM;
+					goto free_err;
+				}
+
+				xsk_addr->num_descs = 1;
+				xsk_addr->addrs[0] = xsk_skb_destructor_get_addr(skb);
+				skb_shinfo(skb)->destructor_arg = (void *)xsk_addr;
+			} else {
+				xsk_addr = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			if (unlikely(nr_frags == (MAX_SKB_FRAGS - 1) && xp_mb_desc(desc))) {
@@ -987,16 +1110,20 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
 		}
 	}
 
+<<<<<<< HEAD
 	if (!xs->skb) {
 		err = xsk_skb_init_misc(skb, xs, desc->addr);
 		if (unlikely(err))
 			goto free_err;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xsk_inc_num_desc(skb);
 
 	return skb;
 
 free_err:
+<<<<<<< HEAD
 	if (skb && !xs->skb)
 		kfree_skb(skb);
 
@@ -1009,6 +1136,15 @@ free_err:
 			xsk_cq_cancel_locked(xs->pool, 1);
 			xs->tx->invalid_descs++;
 		}
+=======
+	if (skb && !skb_shinfo(skb)->nr_frags)
+		kfree_skb(skb);
+
+	if (err == -EOVERFLOW) {
+		/* Drop the packet */
+		xsk_inc_num_desc(xs->skb);
+		xsk_drop_skb(xs->skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xskq_cons_release(xs->tx);
 	} else {
 		/* Let application retry */

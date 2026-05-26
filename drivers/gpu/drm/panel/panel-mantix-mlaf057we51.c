@@ -168,7 +168,11 @@ static const struct drm_display_mode default_mode_mantix = {
 	.vsync_start = 1440 + 130,
 	.vsync_end   = 1440 + 130 + 8,
 	.vtotal	     = 1440 + 130 + 8 + 106,
+<<<<<<< HEAD
 	.clock	     = 81237,
+=======
+	.clock	     = 85298,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags	     = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
 	.width_mm    = 65,
 	.height_mm   = 130,
@@ -183,7 +187,11 @@ static const struct drm_display_mode default_mode_ys = {
 	.vsync_start = 1440 + 175,
 	.vsync_end   = 1440 + 175 + 8,
 	.vtotal	     = 1440 + 175 + 8 + 50,
+<<<<<<< HEAD
 	.clock	     = 80706,
+=======
+	.clock	     = 85298,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags	     = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
 	.width_mm    = 65,
 	.height_mm   = 130,
@@ -295,10 +303,26 @@ static int mantix_probe(struct mipi_dsi_device *dsi)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void mantix_shutdown(struct mipi_dsi_device *dsi)
+{
+	struct mantix *ctx = mipi_dsi_get_drvdata(dsi);
+
+	drm_panel_unprepare(&ctx->panel);
+	drm_panel_disable(&ctx->panel);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mantix_remove(struct mipi_dsi_device *dsi)
 {
 	struct mantix *ctx = mipi_dsi_get_drvdata(dsi);
 
+<<<<<<< HEAD
+=======
+	mantix_shutdown(dsi);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mipi_dsi_detach(dsi);
 	drm_panel_remove(&ctx->panel);
 }
@@ -313,6 +337,10 @@ MODULE_DEVICE_TABLE(of, mantix_of_match);
 static struct mipi_dsi_driver mantix_driver = {
 	.probe	= mantix_probe,
 	.remove = mantix_remove,
+<<<<<<< HEAD
+=======
+	.shutdown = mantix_shutdown,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = mantix_of_match,

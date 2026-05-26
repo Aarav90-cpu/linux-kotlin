@@ -114,6 +114,7 @@ static void mdp5_global_destroy_state(struct drm_private_obj *obj,
 	kfree(mdp5_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 mdp5_global_create_state(struct drm_private_obj *obj)
 {
@@ -132,6 +133,8 @@ mdp5_global_create_state(struct drm_private_obj *obj)
 	return &mdp5_state->base;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mdp5_global_print_state(struct drm_printer *p,
 				    const struct drm_private_state *state)
 {
@@ -142,12 +145,34 @@ static void mdp5_global_print_state(struct drm_printer *p,
 }
 
 static const struct drm_private_state_funcs mdp5_global_state_funcs = {
+<<<<<<< HEAD
 	.atomic_create_state = mdp5_global_create_state,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = mdp5_global_duplicate_state,
 	.atomic_destroy_state = mdp5_global_destroy_state,
 	.atomic_print_state = mdp5_global_print_state,
 };
 
+<<<<<<< HEAD
+=======
+static int mdp5_global_obj_init(struct mdp5_kms *mdp5_kms)
+{
+	struct mdp5_global_state *state;
+
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	state->mdp5_kms = mdp5_kms;
+
+	drm_atomic_private_obj_init(mdp5_kms->dev, &mdp5_kms->glob_state,
+				    &state->base,
+				    &mdp5_global_state_funcs);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mdp5_enable_commit(struct msm_kms *kms)
 {
 	struct mdp5_kms *mdp5_kms = to_mdp5_kms(to_mdp_kms(kms));
@@ -716,8 +741,14 @@ static int mdp5_init(struct platform_device *pdev, struct drm_device *dev)
 
 	mdp5_kms->dev = dev;
 
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(mdp5_kms->dev, &mdp5_kms->glob_state,
 				    &mdp5_global_state_funcs);
+=======
+	ret = mdp5_global_obj_init(mdp5_kms);
+	if (ret)
+		goto fail;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* we need to set a default rate before enabling.  Set a safe
 	 * rate first, then figure out hw revision, and then set a

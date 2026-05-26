@@ -319,6 +319,7 @@ struct __packed hw_atl_utils_settings {
 	u32 media_detect;
 };
 
+<<<<<<< HEAD
 struct __packed smbus_request {
 	u32 msg_id;
 	u32 device_id;
@@ -326,6 +327,8 @@ struct __packed smbus_request {
 	u32 length;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum macsec_msg_type {
 	macsec_cfg_msg = 0,
 	macsec_add_rx_sc_msg,

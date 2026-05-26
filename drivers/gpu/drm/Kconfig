@@ -55,7 +55,11 @@ config DRM_DRAW
 
 config DRM_PANIC
 	bool "Display a user-friendly message when a kernel panic occurs"
+<<<<<<< HEAD
 	depends on DRM && PRINTK
+=======
+	depends on DRM
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select FONT_SUPPORT
 	select DRM_DRAW
 	help
@@ -130,6 +134,7 @@ config DRM_PANIC_SCREEN_QR_VERSION
 	  Smaller QR code are easier to read, but will contain less debugging
 	  data. Default is 40.
 
+<<<<<<< HEAD
 config DRM_RAS
 	bool "DRM RAS support"
 	depends on DRM
@@ -140,6 +145,8 @@ config DRM_RAS
 	  for error reporting and queries.
 	  If in doubt, say "N".
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DRM_DEBUG_DP_MST_TOPOLOGY_REFS
         bool "Enable refcount backtrace history in the DP MST helpers"
 	depends on STACKTRACE_SUPPORT
@@ -230,7 +237,10 @@ config DRM_GPUSVM
 config DRM_BUDDY
 	tristate
 	depends on DRM
+<<<<<<< HEAD
 	select GPU_BUDDY
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  A page based buddy allocator
 
@@ -268,6 +278,7 @@ config DRM_GEM_SHMEM_HELPER
 	help
 	  Choose this if you need the GEM shmem helper functions
 
+<<<<<<< HEAD
 config RUST_DRM_GEM_SHMEM_HELPER
 	bool
 	depends on DRM && MMU
@@ -275,6 +286,8 @@ config RUST_DRM_GEM_SHMEM_HELPER
 	help
 	  Choose this if you need the GEM shmem helper functions In Rust
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DRM_SUBALLOC_HELPER
 	tristate
 	depends on DRM
@@ -287,6 +300,13 @@ config DRM_SCHED
 config DRM_PANEL_BACKLIGHT_QUIRKS
 	tristate
 
+<<<<<<< HEAD
+=======
+config DRM_LIB_RANDOM
+	bool
+	default n
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DRM_PRIVACY_SCREEN
 	bool
 	default n
@@ -349,7 +369,10 @@ source "drivers/gpu/drm/udl/Kconfig"
 source "drivers/gpu/drm/v3d/Kconfig"
 source "drivers/gpu/drm/vboxvideo/Kconfig"
 source "drivers/gpu/drm/vc4/Kconfig"
+<<<<<<< HEAD
 source "drivers/gpu/drm/verisilicon/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/gpu/drm/vgem/Kconfig"
 source "drivers/gpu/drm/virtio/Kconfig"
 source "drivers/gpu/drm/vkms/Kconfig"

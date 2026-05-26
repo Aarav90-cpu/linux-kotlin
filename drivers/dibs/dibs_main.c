@@ -19,9 +19,13 @@
 MODULE_DESCRIPTION("Direct Internal Buffer Sharing class");
 MODULE_LICENSE("GPL");
 
+<<<<<<< HEAD
 static const struct class dibs_class = {
 	.name		= "dibs",
 };
+=======
+static struct class *dibs_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* use an array rather a list for fast mapping: */
 static struct dibs_client *clients[MAX_DIBS_CLIENTS];
@@ -139,7 +143,11 @@ struct dibs_dev *dibs_dev_alloc(void)
 	if (!dibs)
 		return dibs;
 	dibs->dev.release = dibs_dev_release;
+<<<<<<< HEAD
 	dibs->dev.class = &dibs_class;
+=======
+	dibs->dev.class = dibs_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_initialize(&dibs->dev);
 
 	return dibs;
@@ -255,9 +263,15 @@ static int __init dibs_init(void)
 {
 	int rc;
 
+<<<<<<< HEAD
 	rc = class_register(&dibs_class);
 	if (rc)
 		return rc;
+=======
+	dibs_class = class_create("dibs");
+	if (IS_ERR(dibs_class))
+		return PTR_ERR(dibs_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = dibs_loopback_init();
 	if (rc)
@@ -269,7 +283,11 @@ static int __init dibs_init(void)
 static void __exit dibs_exit(void)
 {
 	dibs_loopback_exit();
+<<<<<<< HEAD
 	class_unregister(&dibs_class);
+=======
+	class_destroy(dibs_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 subsys_initcall(dibs_init);

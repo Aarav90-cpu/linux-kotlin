@@ -520,36 +520,71 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 }
 EXPORT_SYMBOL(__sock_queue_rcv_skb);
 
+<<<<<<< HEAD
 enum skb_drop_reason
 sock_queue_rcv_skb_reason(struct sock *sk, struct sk_buff *skb)
+=======
+int sock_queue_rcv_skb_reason(struct sock *sk, struct sk_buff *skb,
+			      enum skb_drop_reason *reason)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	enum skb_drop_reason drop_reason;
 	int err;
 
+<<<<<<< HEAD
 	drop_reason = sk_filter_reason(sk, skb);
 	if (drop_reason)
 		return drop_reason;
+=======
+	err = sk_filter_reason(sk, skb, &drop_reason);
+	if (err)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = __sock_queue_rcv_skb(sk, skb);
 	switch (err) {
 	case -ENOMEM:
+<<<<<<< HEAD
 		return SKB_DROP_REASON_SOCKET_RCVBUFF;
 	case -ENOBUFS:
 		return SKB_DROP_REASON_PROTO_MEM;
 	}
 	return SKB_NOT_DROPPED_YET;
+=======
+		drop_reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
+		break;
+	case -ENOBUFS:
+		drop_reason = SKB_DROP_REASON_PROTO_MEM;
+		break;
+	default:
+		drop_reason = SKB_NOT_DROPPED_YET;
+		break;
+	}
+out:
+	if (reason)
+		*reason = drop_reason;
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(sock_queue_rcv_skb_reason);
 
 int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
 		     const int nested, unsigned int trim_cap, bool refcounted)
 {
+<<<<<<< HEAD
 	enum skb_drop_reason reason;
 	int rc = NET_RX_SUCCESS;
 	int err;
 
 	reason = sk_filter_trim_cap(sk, skb, trim_cap);
 	if (reason)
+=======
+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
+	int rc = NET_RX_SUCCESS;
+	int err;
+
+	if (sk_filter_trim_cap(sk, skb, trim_cap, &reason))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto discard_and_relse;
 
 	skb->dev = NULL;
@@ -966,8 +1001,11 @@ EXPORT_SYMBOL(sock_set_keepalive);
 
 static void __sock_set_rcvbuf(struct sock *sk, int val)
 {
+<<<<<<< HEAD
 	struct socket *sock = sk->sk_socket;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ensure val * 2 fits into an int, to prevent max_t() from treating it
 	 * as a negative value.
 	 */
@@ -985,6 +1023,7 @@ static void __sock_set_rcvbuf(struct sock *sk, int val)
 	 * we actually used in getsockopt is the most desirable behavior.
 	 */
 	WRITE_ONCE(sk->sk_rcvbuf, max_t(int, val * 2, SOCK_MIN_RCVBUF));
+<<<<<<< HEAD
 
 	if (sock) {
 		const struct proto_ops *ops = READ_ONCE(sock->ops);
@@ -992,6 +1031,8 @@ static void __sock_set_rcvbuf(struct sock *sk, int val)
 		if (ops->set_rcvbuf)
 			ops->set_rcvbuf(sk, sk->sk_rcvbuf);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void sock_set_rcvbuf(struct sock *sk, int val)
@@ -2585,7 +2626,10 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
 
 	sk_set_socket(newsk, NULL);
 	sk_tx_queue_clear(newsk);
+<<<<<<< HEAD
 	sk_rx_queue_clear(newsk);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RCU_INIT_POINTER(newsk->sk_wq, NULL);
 
 	if (newsk->sk_prot->sockets_allocated)
@@ -3178,7 +3222,11 @@ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag)
 }
 EXPORT_SYMBOL(sk_page_frag_refill);
 
+<<<<<<< HEAD
 static void __lock_sock(struct sock *sk)
+=======
+void __lock_sock(struct sock *sk)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(&sk->sk_lock.slock)
 	__acquires(&sk->sk_lock.slock)
 {
@@ -3777,12 +3825,17 @@ void sock_init_data(struct socket *sock, struct sock *sk)
 }
 EXPORT_SYMBOL(sock_init_data);
 
+<<<<<<< HEAD
 void noinline lock_sock_nested(struct sock *sk, int subclass)
+=======
+void lock_sock_nested(struct sock *sk, int subclass)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* The sk_lock has mutex_lock() semantics here. */
 	mutex_acquire(&sk->sk_lock.dep_map, subclass, 0, _RET_IP_);
 
 	might_sleep();
+<<<<<<< HEAD
 #ifdef CONFIG_64BIT
 	if (sizeof(struct slock_owned) == sizeof(long)) {
 		socket_lock_t tmp = {
@@ -3801,6 +3854,10 @@ void noinline lock_sock_nested(struct sock *sk, int subclass)
 #endif
 	spin_lock_bh(&sk->sk_lock.slock);
 	if (unlikely(sock_owned_by_user_nocheck(sk)))
+=======
+	spin_lock_bh(&sk->sk_lock.slock);
+	if (sock_owned_by_user_nocheck(sk))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__lock_sock(sk);
 	sk->sk_lock.owned = 1;
 	spin_unlock_bh(&sk->sk_lock.slock);
@@ -3810,6 +3867,7 @@ EXPORT_SYMBOL(lock_sock_nested);
 void release_sock(struct sock *sk)
 {
 	spin_lock_bh(&sk->sk_lock.slock);
+<<<<<<< HEAD
 
 	if (unlikely(sk->sk_backlog.tail))
 		__release_sock(sk);
@@ -3822,6 +3880,18 @@ void release_sock(struct sock *sk)
 	if (unlikely(waitqueue_active(&sk->sk_lock.wq)))
 		wake_up(&sk->sk_lock.wq);
 
+=======
+	if (sk->sk_backlog.tail)
+		__release_sock(sk);
+
+	if (sk->sk_prot->release_cb)
+		INDIRECT_CALL_INET_1(sk->sk_prot->release_cb,
+				     tcp_release_cb, sk);
+
+	sock_release_ownership(sk);
+	if (waitqueue_active(&sk->sk_lock.wq))
+		wake_up(&sk->sk_lock.wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&sk->sk_lock.slock);
 }
 EXPORT_SYMBOL(release_sock);
@@ -3831,7 +3901,11 @@ bool __lock_sock_fast(struct sock *sk) __acquires(&sk->sk_lock.slock)
 	might_sleep();
 	spin_lock_bh(&sk->sk_lock.slock);
 
+<<<<<<< HEAD
 	if (likely(!sock_owned_by_user_nocheck(sk))) {
+=======
+	if (!sock_owned_by_user_nocheck(sk)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Fast path return with bottom halves disabled and
 		 * sock::sk_lock.slock held.
@@ -3972,8 +4046,18 @@ int sock_common_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
 			int flags)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 
 	return sk->sk_prot->recvmsg(sk, msg, size, flags);
+=======
+	int addr_len = 0;
+	int err;
+
+	err = sk->sk_prot->recvmsg(sk, msg, size, flags, &addr_len);
+	if (err >= 0)
+		msg->msg_namelen = addr_len;
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(sock_common_recvmsg);
 

@@ -277,6 +277,10 @@ struct psp_memory_training_context {
 
 	/*vram offset of the c2p training data*/
 	u64 c2p_train_data_offset;
+<<<<<<< HEAD
+=======
+	struct amdgpu_bo *c2p_bo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	enum psp_memory_training_init_flag init;
 	u32 training_cnt;

@@ -10,7 +10,11 @@
 #endif
 #endif
 
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_DEFAULT_FLAGS32
+=======
+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_DEFAULT_FLAGS32
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if defined(CONFIG_PPC_256K_PAGES) || \
     (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))

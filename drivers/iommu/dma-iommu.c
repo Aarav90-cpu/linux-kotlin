@@ -14,7 +14,10 @@
 #include <linux/device.h>
 #include <linux/dma-direct.h>
 #include <linux/dma-map-ops.h>
+<<<<<<< HEAD
 #include <linux/generic_pt/iommu.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/gfp.h>
 #include <linux/huge_mm.h>
 #include <linux/iommu.h>
@@ -649,6 +652,7 @@ static void iommu_dma_init_options(struct iommu_dma_options *options,
 	}
 }
 
+<<<<<<< HEAD
 static bool iommu_domain_supports_fq(struct device *dev,
 				     struct iommu_domain *domain)
 {
@@ -658,6 +662,8 @@ static bool iommu_domain_supports_fq(struct device *dev,
 	return device_iommu_capable(dev, IOMMU_CAP_DEFERRED_FLUSH);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * iommu_dma_init_domain - Initialise a DMA mapping domain
  * @domain: IOMMU domain previously prepared by iommu_get_dma_cookie()
@@ -716,8 +722,12 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, struct device *dev
 
 	/* If the FQ fails we can simply fall back to strict mode */
 	if (domain->type == IOMMU_DOMAIN_DMA_FQ &&
+<<<<<<< HEAD
 	    (!iommu_domain_supports_fq(dev, domain) ||
 	     iommu_dma_init_fq(domain)))
+=======
+	    (!device_iommu_capable(dev, IOMMU_CAP_DEFERRED_FLUSH) || iommu_dma_init_fq(domain)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		domain->type = IOMMU_DOMAIN_DMA;
 
 	return iova_reserve_iommu_regions(dev, domain);
@@ -1106,10 +1116,15 @@ void iommu_dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle,
 		return;
 
 	phys = iommu_iova_to_phys(iommu_get_dma_domain(dev), dma_handle);
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev)) {
 		arch_sync_dma_for_cpu(phys, size, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (!dev_is_dma_coherent(dev))
+		arch_sync_dma_for_cpu(phys, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	swiotlb_sync_single_for_cpu(dev, phys, size, dir);
 }
@@ -1125,10 +1140,15 @@ void iommu_dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle,
 	phys = iommu_iova_to_phys(iommu_get_dma_domain(dev), dma_handle);
 	swiotlb_sync_single_for_device(dev, phys, size, dir);
 
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev)) {
 		arch_sync_dma_for_device(phys, size, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (!dev_is_dma_coherent(dev))
+		arch_sync_dma_for_device(phys, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void iommu_dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sgl,
@@ -1137,6 +1157,7 @@ void iommu_dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sgl,
 	struct scatterlist *sg;
 	int i;
 
+<<<<<<< HEAD
 	if (sg_dma_is_swiotlb(sgl)) {
 		for_each_sg(sgl, sg, nelems, i)
 			iommu_dma_sync_single_for_cpu(dev, sg_dma_address(sg),
@@ -1146,6 +1167,15 @@ void iommu_dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sgl,
 			arch_sync_dma_for_cpu(sg_phys(sg), sg->length, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (sg_dma_is_swiotlb(sgl))
+		for_each_sg(sgl, sg, nelems, i)
+			iommu_dma_sync_single_for_cpu(dev, sg_dma_address(sg),
+						      sg->length, dir);
+	else if (!dev_is_dma_coherent(dev))
+		for_each_sg(sgl, sg, nelems, i)
+			arch_sync_dma_for_cpu(sg_phys(sg), sg->length, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void iommu_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
@@ -1154,16 +1184,26 @@ void iommu_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
 	struct scatterlist *sg;
 	int i;
 
+<<<<<<< HEAD
 	if (sg_dma_is_swiotlb(sgl)) {
+=======
+	if (sg_dma_is_swiotlb(sgl))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for_each_sg(sgl, sg, nelems, i)
 			iommu_dma_sync_single_for_device(dev,
 							 sg_dma_address(sg),
 							 sg->length, dir);
+<<<<<<< HEAD
 	} else if (!dev_is_dma_coherent(dev)) {
 		for_each_sg(sgl, sg, nelems, i)
 			arch_sync_dma_for_device(sg_phys(sg), sg->length, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	else if (!dev_is_dma_coherent(dev))
+		for_each_sg(sgl, sg, nelems, i)
+			arch_sync_dma_for_device(sg_phys(sg), sg->length, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static phys_addr_t iommu_dma_map_swiotlb(struct device *dev, phys_addr_t phys,
@@ -1238,10 +1278,15 @@ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
 			return DMA_MAPPING_ERROR;
 	}
 
+<<<<<<< HEAD
 	if (!coherent && !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO))) {
 		arch_sync_dma_for_device(phys, size, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (!coherent && !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
+		arch_sync_dma_for_device(phys, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iova = __iommu_dma_map(dev, phys, size, prot, dma_mask);
 	if (iova == DMA_MAPPING_ERROR &&
@@ -1264,10 +1309,15 @@ void iommu_dma_unmap_phys(struct device *dev, dma_addr_t dma_handle,
 	if (WARN_ON(!phys))
 		return;
 
+<<<<<<< HEAD
 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC) && !dev_is_dma_coherent(dev)) {
 		arch_sync_dma_for_cpu(phys, size, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC) && !dev_is_dma_coherent(dev))
+		arch_sync_dma_for_cpu(phys, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__iommu_dma_unmap(dev, dma_handle, size);
 
@@ -2016,8 +2066,11 @@ int dma_iova_sync(struct device *dev, struct dma_iova_state *state,
 	dma_addr_t addr = state->addr + offset;
 	size_t iova_start_pad = iova_offset(iovad, addr);
 
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev))
 		arch_sync_dma_flush();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return iommu_sync_map(domain, addr - iova_start_pad,
 		      iova_align(iovad, size + iova_start_pad));
 }
@@ -2031,8 +2084,11 @@ static void iommu_dma_iova_unlink_range_slow(struct device *dev,
 	struct iommu_dma_cookie *cookie = domain->iova_cookie;
 	struct iova_domain *iovad = &cookie->iovad;
 	size_t iova_start_pad = iova_offset(iovad, addr);
+<<<<<<< HEAD
 	bool need_sync_dma = !dev_is_dma_coherent(dev) &&
 			!(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_addr_t end = addr + size;
 
 	do {
@@ -2056,9 +2112,12 @@ static void iommu_dma_iova_unlink_range_slow(struct device *dev,
 		addr += len;
 		iova_start_pad = 0;
 	} while (addr < end);
+<<<<<<< HEAD
 
 	if (need_sync_dma)
 		arch_sync_dma_flush();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __iommu_dma_iova_unlink(struct device *dev,

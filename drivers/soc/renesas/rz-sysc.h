@@ -46,7 +46,10 @@ struct rz_sysc_init_data {
 };
 
 extern const struct rz_sysc_init_data rzg3e_sys_init_data;
+<<<<<<< HEAD
 extern const struct rz_sysc_init_data rzg3l_sysc_init_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct rz_sysc_init_data rzg3s_sysc_init_data;
 extern const struct rz_sysc_init_data rzv2h_sys_init_data;
 extern const struct rz_sysc_init_data rzv2n_sys_init_data;

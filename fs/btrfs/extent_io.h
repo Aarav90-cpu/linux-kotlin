@@ -99,8 +99,11 @@ struct extent_buffer {
 	spinlock_t refs_lock;
 	refcount_t refs;
 	int read_mirror;
+<<<<<<< HEAD
 	/* Inhibit WB_SYNC_NONE writeback when > 0. */
 	atomic_t writeback_inhibitors;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* >= 0 if eb belongs to a log tree, -1 otherwise */
 	s8 log_index;
 	u8 folio_shift;
@@ -198,6 +201,7 @@ static inline void extent_changeset_init(struct extent_changeset *changeset)
 	ulist_init(&changeset->range_changed);
 }
 
+<<<<<<< HEAD
 /*
  * Sentinel value for range_changed.prealloc indicating that the changeset
  * only tracks bytes_changed and does not record individual ranges. This
@@ -217,6 +221,8 @@ static inline bool extent_changeset_tracks_ranges(const struct extent_changeset 
 	return changeset->range_changed.prealloc != EXTENT_CHANGESET_BYTES_ONLY;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct extent_changeset *extent_changeset_alloc(void)
 {
 	struct extent_changeset *ret;
@@ -231,7 +237,10 @@ static inline struct extent_changeset *extent_changeset_alloc(void)
 
 static inline void extent_changeset_prealloc(struct extent_changeset *changeset, gfp_t gfp_mask)
 {
+<<<<<<< HEAD
 	ASSERT(extent_changeset_tracks_ranges(changeset));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ulist_prealloc(&changeset->range_changed, gfp_mask);
 }
 
@@ -240,8 +249,12 @@ static inline void extent_changeset_release(struct extent_changeset *changeset)
 	if (!changeset)
 		return;
 	changeset->bytes_changed = 0;
+<<<<<<< HEAD
 	if (extent_changeset_tracks_ranges(changeset))
 		ulist_release(&changeset->range_changed);
+=======
+	ulist_release(&changeset->range_changed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void extent_changeset_free(struct extent_changeset *changeset)
@@ -287,8 +300,12 @@ static inline void wait_on_extent_buffer_writeback(struct extent_buffer *eb)
 }
 
 void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
+<<<<<<< HEAD
 				u64 bytenr, u64 owner_root, u64 gen, int level,
 				const struct btrfs_key *first_key);
+=======
+				u64 bytenr, u64 owner_root, u64 gen, int level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void btrfs_readahead_node_child(struct extent_buffer *node, int slot);
 
 /* Note: this can be used in for loops without caching the value in a variable. */
@@ -322,7 +339,11 @@ static inline int __pure num_extent_folios(const struct extent_buffer *eb)
 	return num_extent_pages(eb);
 }
 
+<<<<<<< HEAD
 static inline bool extent_buffer_uptodate(const struct extent_buffer *eb)
+=======
+static inline int extent_buffer_uptodate(const struct extent_buffer *eb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags);
 }
@@ -405,8 +426,11 @@ void btrfs_extent_buffer_leak_debug_check(struct btrfs_fs_info *fs_info);
 #define btrfs_extent_buffer_leak_debug_check(fs_info)	do {} while (0)
 #endif
 
+<<<<<<< HEAD
 void btrfs_inhibit_eb_writeback(struct btrfs_trans_handle *trans,
 			       struct extent_buffer *eb);
 void btrfs_uninhibit_all_eb_writeback(struct btrfs_trans_handle *trans);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

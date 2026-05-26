@@ -619,6 +619,7 @@ static int ci_usb_role_switch_set(struct usb_role_switch *sw,
 	struct ci_hdrc *ci = usb_role_switch_get_drvdata(sw);
 	struct ci_hdrc_cable *cable;
 
+<<<<<<< HEAD
 	cable = &ci->platdata->id_extcon;
 	cable->changed = true;
 	cable->connected = (role == USB_ROLE_HOST);
@@ -626,6 +627,30 @@ static int ci_usb_role_switch_set(struct usb_role_switch *sw,
 	cable = &ci->platdata->vbus_extcon;
 	cable->changed = true;
 	cable->connected = (role == USB_ROLE_DEVICE);
+=======
+	if (role == USB_ROLE_HOST) {
+		cable = &ci->platdata->id_extcon;
+		cable->changed = true;
+		cable->connected = true;
+		cable = &ci->platdata->vbus_extcon;
+		cable->changed = true;
+		cable->connected = false;
+	} else if (role == USB_ROLE_DEVICE) {
+		cable = &ci->platdata->id_extcon;
+		cable->changed = true;
+		cable->connected = false;
+		cable = &ci->platdata->vbus_extcon;
+		cable->changed = true;
+		cable->connected = true;
+	} else {
+		cable = &ci->platdata->id_extcon;
+		cable->changed = true;
+		cable->connected = false;
+		cable = &ci->platdata->vbus_extcon;
+		cable->changed = true;
+		cable->connected = false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ci_irq(ci);
 	return 0;

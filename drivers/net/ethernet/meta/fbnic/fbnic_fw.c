@@ -379,6 +379,7 @@ fbnic_fw_get_cmpl_by_type(struct fbnic_dev *fbd, u32 msg_type)
 }
 
 /**
+<<<<<<< HEAD
  * fbnic_fw_xmit_test_msg - Create and transmit a test message to FW mailbox
  * @fbd: FBNIC device structure
  * @cmpl: fw completion struct
@@ -410,6 +411,8 @@ int fbnic_fw_xmit_test_msg(struct fbnic_dev *fbd,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * fbnic_fw_xmit_simple_msg - Transmit a simple single TLV message w/o data
  * @fbd: FBNIC device structure
  * @msg_type: ENUM value indicating message type to send
@@ -448,7 +451,10 @@ static int fbnic_fw_xmit_simple_msg(struct fbnic_dev *fbd, u32 msg_type)
 
 static int fbnic_mbx_init_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
 {
+<<<<<<< HEAD
 	u8 tlp_attr = fbd->relaxed_ord ? FBNIC_TLP_ATTR_RO : 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fbnic_fw_mbx *mbx = &fbd->mbx[mbx_idx];
 
 	mbx->ready = true;
@@ -457,17 +463,22 @@ static int fbnic_mbx_init_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
 	case FBNIC_IPC_MBX_RX_IDX:
 		/* Enable DMA writes from the device */
 		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
+<<<<<<< HEAD
 		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME |
 		     FIELD_PREP(FBNIC_PUL_OB_TLP_HDR_AW_CFG_RDE_ATTR,
 				tlp_attr) |
 		     FIELD_PREP(FBNIC_PUL_OB_TLP_HDR_AW_CFG_TQM_ATTR,
 				tlp_attr));
+=======
+		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Make sure we have a page for the FW to write to */
 		return fbnic_mbx_alloc_rx_msgs(fbd);
 	case FBNIC_IPC_MBX_TX_IDX:
 		/* Enable DMA reads from the device */
 		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AR_CFG,
+<<<<<<< HEAD
 		     FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME |
 		     FIELD_PREP(FBNIC_PUL_OB_TLP_HDR_AR_CFG_TDE_ATTR,
 				tlp_attr) |
@@ -475,6 +486,9 @@ static int fbnic_mbx_init_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
 				tlp_attr) |
 		     FIELD_PREP(FBNIC_PUL_OB_TLP_HDR_AR_CFG_TQM_ATTR,
 				tlp_attr));
+=======
+		     FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 
@@ -1598,6 +1612,7 @@ free_message:
 	return err;
 }
 
+<<<<<<< HEAD
 static int
 fbnic_fw_parser_test(void *opaque, struct fbnic_tlv_msg **results)
 {
@@ -1621,6 +1636,9 @@ fbnic_fw_parser_test(void *opaque, struct fbnic_tlv_msg **results)
 
 static const struct fbnic_tlv_parser fbnic_fw_tlv_parser[] = {
 	FBNIC_TLV_PARSER(TEST, fbnic_tlv_test_index, fbnic_fw_parser_test),
+=======
+static const struct fbnic_tlv_parser fbnic_fw_tlv_parser[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	FBNIC_TLV_PARSER(FW_CAP_RESP, fbnic_fw_cap_resp_index,
 			 fbnic_fw_parse_cap_resp),
 	FBNIC_TLV_PARSER(OWNERSHIP_RESP, fbnic_ownership_resp_index,
@@ -1851,6 +1869,7 @@ void fbnic_mbx_flush_tx(struct fbnic_dev *fbd)
 	} while (time_is_after_jiffies(timeout));
 }
 
+<<<<<<< HEAD
 /**
  * fbnic_fw_mbx_self_test() - verify firmware interface
  * @fbd: device to test
@@ -1898,6 +1917,8 @@ exit_free:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int fbnic_fw_xmit_rpc_macda_sync(struct fbnic_dev *fbd)
 {
 	struct fbnic_tlv_msg *mac_array;

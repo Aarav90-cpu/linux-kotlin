@@ -360,6 +360,7 @@ static const struct qcom_pdm_domain_data mpss_wlan_pd = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct qcom_pdm_domain_data *glymur_domains[] = {
 	&adsp_audio_pd,
 	&adsp_root_pd,
@@ -368,6 +369,8 @@ static const struct qcom_pdm_domain_data *glymur_domains[] = {
 	NULL,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct qcom_pdm_domain_data *kaanapali_domains[] = {
 	&adsp_audio_pd,
 	&adsp_root_pd,
@@ -409,6 +412,7 @@ static const struct qcom_pdm_domain_data *qcs404_domains[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static const struct qcom_pdm_domain_data *qcs615_domains[] = {
 	&adsp_audio_pd,
 	&adsp_root_pd,
@@ -419,6 +423,8 @@ static const struct qcom_pdm_domain_data *qcs615_domains[] = {
 	NULL,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct qcom_pdm_domain_data *sc7180_domains[] = {
 	&adsp_audio_pd,
 	&adsp_root_pd_pdr,
@@ -578,12 +584,17 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
 	{ .compatible = "qcom,apq8064", .data = NULL, },
 	{ .compatible = "qcom,apq8074", .data = NULL, },
 	{ .compatible = "qcom,apq8084", .data = NULL, },
+<<<<<<< HEAD
 	{ .compatible = "qcom,eliza", .data = sm8550_domains, },
 	{ .compatible = "qcom,apq8096", .data = msm8996_domains, },
 	{ .compatible = "qcom,glymur", .data = glymur_domains, },
 	{ .compatible = "qcom,kaanapali", .data = kaanapali_domains, },
 	{ .compatible = "qcom,mahua", .data = glymur_domains, },
 	{ .compatible = "qcom,milos", .data = sm8550_domains, },
+=======
+	{ .compatible = "qcom,apq8096", .data = msm8996_domains, },
+	{ .compatible = "qcom,kaanapali", .data = kaanapali_domains, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,msm8226", .data = NULL, },
 	{ .compatible = "qcom,msm8909", .data = NULL, },
 	{ .compatible = "qcom,msm8916", .data = NULL, },
@@ -594,7 +605,10 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
 	{ .compatible = "qcom,qcm2290", .data = qcm2290_domains, },
 	{ .compatible = "qcom,qcm6490", .data = sc7280_domains, },
 	{ .compatible = "qcom,qcs404", .data = qcs404_domains, },
+<<<<<<< HEAD
 	{ .compatible = "qcom,qcs615", .data = qcs615_domains, },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,sc7180", .data = sc7180_domains, },
 	{ .compatible = "qcom,sc7280", .data = sc7280_domains, },
 	{ .compatible = "qcom,sc8180x", .data = sc8180x_domains, },
@@ -638,9 +652,21 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
 	const struct qcom_pdm_domain_data * const *domains;
 	const struct of_device_id *match;
 	struct qcom_pdm_data *data;
+<<<<<<< HEAD
 	int ret, i;
 
 	match = of_machine_get_match(qcom_pdm_domains);
+=======
+	struct device_node *root;
+	int ret, i;
+
+	root = of_find_node_by_path("/");
+	if (!root)
+		return ERR_PTR(-ENODEV);
+
+	match = of_match_node(qcom_pdm_domains, root);
+	of_node_put(root);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!match) {
 		pr_notice("PDM: no support for the platform, userspace daemon might be required.\n");
 		return ERR_PTR(-ENODEV);
@@ -673,7 +699,11 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
 			goto err_stop;
 	}
 
+<<<<<<< HEAD
 	ret = qmi_add_server(&data->handle, QMI_SERVICE_ID_SERVREG_LOC,
+=======
+	ret = qmi_add_server(&data->handle, SERVREG_LOCATOR_SERVICE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     SERVREG_QMI_VERSION, SERVREG_QMI_INSTANCE);
 	if (ret) {
 		pr_err("PDM: error adding server %d\n", ret);

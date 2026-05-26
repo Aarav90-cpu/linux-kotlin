@@ -101,15 +101,25 @@ struct test_params {
 	enum vm_mem_backing_src_type backing_src;
 
 	/* The amount of memory to allocate for each vCPU. */
+<<<<<<< HEAD
 	u64 vcpu_memory_bytes;
+=======
+	uint64_t vcpu_memory_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* The number of vCPUs to create in the VM. */
 	int nr_vcpus;
 };
 
+<<<<<<< HEAD
 static u64 pread_u64(int fd, const char *filename, u64 index)
 {
 	u64 value;
+=======
+static uint64_t pread_uint64(int fd, const char *filename, uint64_t index)
+{
+	uint64_t value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	off_t offset = index * sizeof(value);
 
 	TEST_ASSERT(pread(fd, &value, sizeof(value), offset) == sizeof(value),
@@ -123,6 +133,7 @@ static u64 pread_u64(int fd, const char *filename, u64 index)
 #define PAGEMAP_PRESENT (1ULL << 63)
 #define PAGEMAP_PFN_MASK ((1ULL << 55) - 1)
 
+<<<<<<< HEAD
 static u64 lookup_pfn(int pagemap_fd, struct kvm_vm *vm, gva_t gva)
 {
 	u64 hva = (u64)addr_gva2hva(vm, gva);
@@ -130,6 +141,15 @@ static u64 lookup_pfn(int pagemap_fd, struct kvm_vm *vm, gva_t gva)
 	u64 pfn;
 
 	entry = pread_u64(pagemap_fd, "pagemap", hva / getpagesize());
+=======
+static uint64_t lookup_pfn(int pagemap_fd, struct kvm_vm *vm, uint64_t gva)
+{
+	uint64_t hva = (uint64_t) addr_gva2hva(vm, gva);
+	uint64_t entry;
+	uint64_t pfn;
+
+	entry = pread_uint64(pagemap_fd, "pagemap", hva / getpagesize());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(entry & PAGEMAP_PRESENT))
 		return 0;
 
@@ -139,16 +159,28 @@ static u64 lookup_pfn(int pagemap_fd, struct kvm_vm *vm, gva_t gva)
 	return pfn;
 }
 
+<<<<<<< HEAD
 static bool is_page_idle(int page_idle_fd, u64 pfn)
 {
 	u64 bits = pread_u64(page_idle_fd, "page_idle", pfn / 64);
+=======
+static bool is_page_idle(int page_idle_fd, uint64_t pfn)
+{
+	uint64_t bits = pread_uint64(page_idle_fd, "page_idle", pfn / 64);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return !!((bits >> (pfn % 64)) & 1);
 }
 
+<<<<<<< HEAD
 static void mark_page_idle(int page_idle_fd, u64 pfn)
 {
 	u64 bits = 1ULL << (pfn % 64);
+=======
+static void mark_page_idle(int page_idle_fd, uint64_t pfn)
+{
+	uint64_t bits = 1ULL << (pfn % 64);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(pwrite(page_idle_fd, &bits, 8, 8 * (pfn / 64)) == 8,
 		    "Set page_idle bits for PFN 0x%" PRIx64, pfn);
@@ -174,11 +206,19 @@ static void pageidle_mark_vcpu_memory_idle(struct kvm_vm *vm,
 					   struct memstress_vcpu_args *vcpu_args)
 {
 	int vcpu_idx = vcpu_args->vcpu_idx;
+<<<<<<< HEAD
 	gva_t base_gva = vcpu_args->gva;
 	u64 pages = vcpu_args->pages;
 	u64 page;
 	u64 still_idle = 0;
 	u64 no_pfn = 0;
+=======
+	uint64_t base_gva = vcpu_args->gva;
+	uint64_t pages = vcpu_args->pages;
+	uint64_t page;
+	uint64_t still_idle = 0;
+	uint64_t no_pfn = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int page_idle_fd;
 	int pagemap_fd;
 
@@ -193,8 +233,13 @@ static void pageidle_mark_vcpu_memory_idle(struct kvm_vm *vm,
 	TEST_ASSERT(pagemap_fd > 0, "Failed to open pagemap.");
 
 	for (page = 0; page < pages; page++) {
+<<<<<<< HEAD
 		gva_t gva = base_gva + page * memstress_args.guest_page_size;
 		u64 pfn = lookup_pfn(pagemap_fd, vm, gva);
+=======
+		uint64_t gva = base_gva + page * memstress_args.guest_page_size;
+		uint64_t pfn = lookup_pfn(pagemap_fd, vm, gva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!pfn) {
 			no_pfn++;
@@ -297,10 +342,17 @@ static void lru_gen_mark_memory_idle(struct kvm_vm *vm)
 	lru_gen_last_gen = new_gen;
 }
 
+<<<<<<< HEAD
 static void assert_ucall(struct kvm_vcpu *vcpu, u64 expected_ucall)
 {
 	struct ucall uc;
 	u64 actual_ucall = get_ucall(vcpu, &uc);
+=======
+static void assert_ucall(struct kvm_vcpu *vcpu, uint64_t expected_ucall)
+{
+	struct ucall uc;
+	uint64_t actual_ucall = get_ucall(vcpu, &uc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(expected_ucall == actual_ucall,
 		    "Guest exited unexpectedly (expected ucall %" PRIu64
@@ -417,7 +469,11 @@ static void run_test(enum vm_guest_mode mode, void *arg)
 	 */
 	test_pages = params->nr_vcpus * params->vcpu_memory_bytes /
 		      max(memstress_args.guest_page_size,
+<<<<<<< HEAD
 			  (u64)getpagesize());
+=======
+			  (uint64_t)getpagesize());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memstress_start_vcpu_threads(nr_vcpus, vcpu_thread_main);
 

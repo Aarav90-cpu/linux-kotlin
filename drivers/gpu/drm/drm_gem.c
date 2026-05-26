@@ -38,7 +38,11 @@
 #include <linux/mman.h>
 #include <linux/module.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched/mm.h>
 #include <linux/shmem_fs.h>
 #include <linux/slab.h>
@@ -784,7 +788,11 @@ EXPORT_SYMBOL(drm_gem_put_pages);
 static int objects_lookup(struct drm_file *filp, u32 *handle, int count,
 			  struct drm_gem_object **objs)
 {
+<<<<<<< HEAD
 	int i;
+=======
+	int i, ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_gem_object *obj;
 
 	spin_lock(&filp->table_lock);
@@ -792,6 +800,7 @@ static int objects_lookup(struct drm_file *filp, u32 *handle, int count,
 	for (i = 0; i < count; i++) {
 		/* Check if we currently have a reference on the object */
 		obj = idr_find(&filp->object_idr, handle[i]);
+<<<<<<< HEAD
 		if (!obj)
 			goto err;
 
@@ -809,6 +818,18 @@ err:
 		drm_gem_object_put(objs[i]);
 
 	return -ENOENT;
+=======
+		if (!obj) {
+			ret = -ENOENT;
+			break;
+		}
+		drm_gem_object_get(obj);
+		objs[i] = obj;
+	}
+	spin_unlock(&filp->table_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -821,6 +842,7 @@ err:
  * Takes an array of userspace handles and returns a newly allocated array of
  * GEM objects.
  *
+<<<<<<< HEAD
  * After a successful lookup GEM objects need to be released using
  * drm_gem_object_put() and the array returned in @objs_out must be freed using
  * kvfree().
@@ -829,6 +851,15 @@ err:
  *
  * Return:
  * Zero on success or a negative error code.
+=======
+ * For a single handle lookup, use drm_gem_object_lookup().
+ *
+ * Returns:
+ * @objs filled in with GEM object pointers. Returned GEM objects need to be
+ * released with drm_gem_object_put(). -ENOENT is returned on a lookup
+ * failure. 0 is returned on success.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int drm_gem_objects_lookup(struct drm_file *filp, void __user *bo_handles,
 			   int count, struct drm_gem_object ***objs_out)
@@ -837,6 +868,7 @@ int drm_gem_objects_lookup(struct drm_file *filp, void __user *bo_handles,
 	u32 *handles;
 	int ret;
 
+<<<<<<< HEAD
 	*objs_out = NULL;
 
 	if (!count)
@@ -865,6 +897,26 @@ err_free_handles:
 err_free_objs:
 	kvfree(objs);
 	return ret;
+=======
+	if (!count)
+		return 0;
+
+	objs = kvmalloc_objs(struct drm_gem_object *, count,
+			     GFP_KERNEL | __GFP_ZERO);
+	if (!objs)
+		return -ENOMEM;
+
+	*objs_out = objs;
+
+	handles = vmemdup_array_user(bo_handles, count, sizeof(u32));
+	if (IS_ERR(handles))
+		return PTR_ERR(handles);
+
+	ret = objects_lookup(filp, handles, count, objs);
+	kvfree(handles);
+	return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(drm_gem_objects_lookup);
 
@@ -1067,12 +1119,23 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
 
 	spin_unlock(&file_priv->table_lock);
 
+<<<<<<< HEAD
+=======
+	if (ret < 0)
+		goto out_unlock;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (obj->dma_buf) {
 		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
 					       handle);
 		if (ret < 0) {
 			spin_lock(&file_priv->table_lock);
 			idr_remove(&file_priv->object_idr, handle);
+<<<<<<< HEAD
+=======
+			idrobj = idr_replace(&file_priv->object_idr, obj, handle);
+			WARN_ON(idrobj != NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_unlock(&file_priv->table_lock);
 			goto out_unlock;
 		}
@@ -1084,9 +1147,13 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
 
 	spin_lock(&file_priv->table_lock);
 	idr_remove(&file_priv->object_idr, args->handle);
+<<<<<<< HEAD
 	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
 	spin_unlock(&file_priv->table_lock);
 	WARN_ON(idrobj != NULL);
+=======
+	spin_unlock(&file_priv->table_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out_unlock:
 	mutex_unlock(&file_priv->prime.lock);

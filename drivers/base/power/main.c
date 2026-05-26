@@ -33,7 +33,10 @@
 #include <trace/events/power.h>
 #include <linux/cpufreq.h>
 #include <linux/devfreq.h>
+<<<<<<< HEAD
 #include <linux/thermal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/timer.h>
 #include <linux/nmi.h>
 
@@ -1283,8 +1286,11 @@ void dpm_complete(pm_message_t state)
 	list_splice(&list, &dpm_list);
 	mutex_unlock(&dpm_list_mtx);
 
+<<<<<<< HEAD
 	/* Start resuming thermal control */
 	thermal_pm_complete();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Allow device probing and trigger re-probing of deferred devices */
 	device_unblock_probing();
 	trace_suspend_resume(TPS("dpm_complete"), state.event, false);
@@ -2228,8 +2234,11 @@ int dpm_prepare(pm_message_t state)
 	 * instead. The normal behavior will be restored in dpm_complete().
 	 */
 	device_block_probing();
+<<<<<<< HEAD
 	/* Suspend thermal control. */
 	thermal_pm_prepare();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&dpm_list_mtx);
 	while (!list_empty(&dpm_list) && !error) {

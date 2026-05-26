@@ -1,8 +1,13 @@
 #include <dt-bindings/power/raspberrypi-power.h>
 
 / {
+<<<<<<< HEAD
 	firmware {
 		firmware: rpi-firmware {
+=======
+	soc {
+		firmware: firmware {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "raspberrypi,bcm2835-firmware", "simple-mfd";
 			mboxes = <&mailbox>;
 
@@ -10,6 +15,7 @@
 				compatible = "raspberrypi,firmware-clocks";
 				#clock-cells = <1>;
 			};
+<<<<<<< HEAD
 
 			power: power {
 				compatible = "raspberrypi,bcm2835-power";
@@ -20,6 +26,16 @@
 	};
 
 	soc {
+=======
+		};
+
+		power: power {
+			compatible = "raspberrypi,bcm2835-power";
+			firmware = <&firmware>;
+			#power-domain-cells = <1>;
+		};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vchiq: mailbox@7e00b840 {
 			compatible = "brcm,bcm2835-vchiq";
 			reg = <0x7e00b840 0x3c>;

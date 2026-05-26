@@ -19,6 +19,7 @@
 #error Inconsistent word size. Check asm/bitsperlong.h
 #endif
 
+<<<<<<< HEAD
 #if __CHAR_BIT__ * __SIZEOF_LONG__ != __BITS_PER_LONG
 #error Inconsistent word size. Check asm/bitsperlong.h
 #endif
@@ -28,6 +29,8 @@ _Static_assert(sizeof(long) * 8 == __BITS_PER_LONG,
 	       "Inconsistent word size. Check asm/bitsperlong.h");
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef BITS_PER_LONG_LONG
 #define BITS_PER_LONG_LONG 64
 #endif

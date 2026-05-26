@@ -46,7 +46,10 @@
 #include <linux/delay.h>
 #include <linux/prefetch.h>
 #include <linux/if_ether.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/ib_mad.h>
 
 #include "roce_hsi.h"
@@ -56,6 +59,10 @@
 #include "qplib_sp.h"
 #include "qplib_fp.h"
 #include <rdma/ib_addr.h>
+<<<<<<< HEAD
+=======
+#include "bnxt_ulp.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bnxt_re.h"
 #include "ib_verbs.h"
 
@@ -792,6 +799,11 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/* QP */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bnxt_qplib_alloc_init_swq(struct bnxt_qplib_q *que)
 {
 	int indx;
@@ -810,6 +822,7 @@ static int bnxt_qplib_alloc_init_swq(struct bnxt_qplib_q *que)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bnxt_re_setup_qp_swqs(struct bnxt_qplib_qp *qplqp)
 {
 	struct bnxt_qplib_q *sq = &qplqp->sq;
@@ -875,6 +888,11 @@ static void bnxt_qplib_init_psn_ptr(struct bnxt_qplib_qp *qp, int size)
 /* QP */
 int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 {
+=======
+int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+{
+	struct bnxt_qplib_hwq_attr hwq_attr = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
 	struct creq_create_qp1_resp resp = {};
 	struct bnxt_qplib_cmdqmsg msg = {};
@@ -883,6 +901,10 @@ int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	struct cmdq_create_qp1 req = {};
 	struct bnxt_qplib_pbl *pbl;
 	u32 qp_flags = 0;
+<<<<<<< HEAD
+=======
+	u8 pg_sz_lvl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 tbl_indx;
 	int rc;
 
@@ -896,12 +918,35 @@ int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	req.qp_handle = cpu_to_le64(qp->qp_handle);
 
 	/* SQ */
+<<<<<<< HEAD
 	sq->max_sw_wqe = bnxt_qplib_get_depth(sq, qp->wqe_mode, true);
 	req.sq_size = cpu_to_le32(sq->max_sw_wqe);
 	req.sq_pg_size_sq_lvl = sq->hwq.pg_sz_lvl;
 
 	pbl = &sq->hwq.pbl[PBL_LVL_0];
 	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+=======
+	hwq_attr.res = res;
+	hwq_attr.sginfo = &sq->sg_info;
+	hwq_attr.stride = sizeof(struct sq_sge);
+	hwq_attr.depth = bnxt_qplib_get_depth(sq, qp->wqe_mode, false);
+	hwq_attr.type = HWQ_TYPE_QUEUE;
+	rc = bnxt_qplib_alloc_init_hwq(&sq->hwq, &hwq_attr);
+	if (rc)
+		return rc;
+
+	rc = bnxt_qplib_alloc_init_swq(sq);
+	if (rc)
+		goto fail_sq;
+
+	req.sq_size = cpu_to_le32(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+	pbl = &sq->hwq.pbl[PBL_LVL_0];
+	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+	pg_sz_lvl = (bnxt_qplib_base_pg_size(&sq->hwq) <<
+		     CMDQ_CREATE_QP1_SQ_PG_SIZE_SFT);
+	pg_sz_lvl |= (sq->hwq.level & CMDQ_CREATE_QP1_SQ_LVL_MASK);
+	req.sq_pg_size_sq_lvl = pg_sz_lvl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	req.sq_fwo_sq_sge =
 		cpu_to_le16((sq->max_sge & CMDQ_CREATE_QP1_SQ_SGE_MASK) <<
 			     CMDQ_CREATE_QP1_SQ_SGE_SFT);
@@ -910,10 +955,31 @@ int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	/* RQ */
 	if (rq->max_wqe) {
 		rq->dbinfo.flags = 0;
+<<<<<<< HEAD
 		req.rq_size = cpu_to_le32(rq->max_wqe);
 		pbl = &rq->hwq.pbl[PBL_LVL_0];
 		req.rq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
 		req.rq_pg_size_rq_lvl = rq->hwq.pg_sz_lvl;
+=======
+		hwq_attr.res = res;
+		hwq_attr.sginfo = &rq->sg_info;
+		hwq_attr.stride = sizeof(struct sq_sge);
+		hwq_attr.depth = bnxt_qplib_get_depth(rq, qp->wqe_mode, false);
+		hwq_attr.type = HWQ_TYPE_QUEUE;
+		rc = bnxt_qplib_alloc_init_hwq(&rq->hwq, &hwq_attr);
+		if (rc)
+			goto sq_swq;
+		rc = bnxt_qplib_alloc_init_swq(rq);
+		if (rc)
+			goto fail_rq;
+		req.rq_size = cpu_to_le32(rq->max_wqe);
+		pbl = &rq->hwq.pbl[PBL_LVL_0];
+		req.rq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+		pg_sz_lvl = (bnxt_qplib_base_pg_size(&rq->hwq) <<
+			     CMDQ_CREATE_QP1_RQ_PG_SIZE_SFT);
+		pg_sz_lvl |= (rq->hwq.level & CMDQ_CREATE_QP1_RQ_LVL_MASK);
+		req.rq_pg_size_rq_lvl = pg_sz_lvl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req.rq_fwo_rq_sge =
 			cpu_to_le16((rq->max_sge &
 				     CMDQ_CREATE_QP1_RQ_SGE_MASK) <<
@@ -924,7 +990,11 @@ int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	rc = bnxt_qplib_alloc_qp_hdr_buf(res, qp);
 	if (rc) {
 		rc = -ENOMEM;
+<<<<<<< HEAD
 		return rc;
+=======
+		goto rq_rwq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	qp_flags |= CMDQ_CREATE_QP1_QP_FLAGS_RESERVED_LKEY_ENABLE;
 	req.qp_flags = cpu_to_le32(qp_flags);
@@ -937,18 +1007,33 @@ int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 
 	qp->id = le32_to_cpu(resp.xid);
 	qp->cur_qp_state = CMDQ_MODIFY_QP_NEW_STATE_RESET;
+<<<<<<< HEAD
 
 	rc = bnxt_re_setup_qp_swqs(qp);
 	if (rc)
 		goto destroy_qp;
 	bnxt_qp_init_dbinfo(res, qp);
 
+=======
+	qp->cctx = res->cctx;
+	sq->dbinfo.hwq = &sq->hwq;
+	sq->dbinfo.xid = qp->id;
+	sq->dbinfo.db = qp->dpi->dbr;
+	sq->dbinfo.max_slot = bnxt_qplib_set_sq_max_slot(qp->wqe_mode);
+	if (rq->max_wqe) {
+		rq->dbinfo.hwq = &rq->hwq;
+		rq->dbinfo.xid = qp->id;
+		rq->dbinfo.db = qp->dpi->dbr;
+		rq->dbinfo.max_slot = bnxt_qplib_set_rq_max_slot(rq->wqe_size);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tbl_indx = map_qp_id_to_tbl_indx(qp->id, rcfw);
 	rcfw->qp_tbl[tbl_indx].qp_id = qp->id;
 	rcfw->qp_tbl[tbl_indx].qp_handle = (void *)qp;
 
 	return 0;
 
+<<<<<<< HEAD
 destroy_qp:
 	bnxt_qplib_destroy_qp(res, qp);
 fail:
@@ -959,17 +1044,67 @@ fail:
 int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 {
 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
+=======
+fail:
+	bnxt_qplib_free_qp_hdr_buf(res, qp);
+rq_rwq:
+	kfree(rq->swq);
+fail_rq:
+	bnxt_qplib_free_hwq(res, &rq->hwq);
+sq_swq:
+	kfree(sq->swq);
+fail_sq:
+	bnxt_qplib_free_hwq(res, &sq->hwq);
+	return rc;
+}
+
+static void bnxt_qplib_init_psn_ptr(struct bnxt_qplib_qp *qp, int size)
+{
+	struct bnxt_qplib_hwq *hwq;
+	struct bnxt_qplib_q *sq;
+	u64 fpsne, psn_pg;
+	u16 indx_pad = 0;
+
+	sq = &qp->sq;
+	hwq = &sq->hwq;
+	/* First psn entry */
+	fpsne = (u64)bnxt_qplib_get_qe(hwq, hwq->depth, &psn_pg);
+	if (!IS_ALIGNED(fpsne, PAGE_SIZE))
+		indx_pad = (fpsne & ~PAGE_MASK) / size;
+	hwq->pad_pgofft = indx_pad;
+	hwq->pad_pg = (u64 *)psn_pg;
+	hwq->pad_stride = size;
+}
+
+int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+{
+	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
+	struct bnxt_qplib_hwq_attr hwq_attr = {};
+	struct bnxt_qplib_sg_info sginfo = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct creq_create_qp_resp resp = {};
 	struct bnxt_qplib_cmdqmsg msg = {};
 	struct bnxt_qplib_q *sq = &qp->sq;
 	struct bnxt_qplib_q *rq = &qp->rq;
 	struct cmdq_create_qp req = {};
+<<<<<<< HEAD
 	struct bnxt_qplib_pbl *pbl;
 	u32 qp_flags = 0;
 	u32 tbl_indx;
 	u16 nsge;
 	int rc;
 
+=======
+	int rc, req_size, psn_sz = 0;
+	struct bnxt_qplib_hwq *xrrq;
+	struct bnxt_qplib_pbl *pbl;
+	u32 qp_flags = 0;
+	u8 pg_sz_lvl;
+	u32 tbl_indx;
+	u16 nsge;
+
+	qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sq->dbinfo.flags = 0;
 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
 				 CMDQ_BASE_OPCODE_CREATE_QP,
@@ -981,10 +1116,63 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	req.qp_handle = cpu_to_le64(qp->qp_handle);
 
 	/* SQ */
+<<<<<<< HEAD
 	req.sq_size = cpu_to_le32(sq->max_sw_wqe);
 	pbl = &sq->hwq.pbl[PBL_LVL_0];
 	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
 	req.sq_pg_size_sq_lvl = sq->hwq.pg_sz_lvl;
+=======
+	if (qp->type == CMDQ_CREATE_QP_TYPE_RC) {
+		psn_sz = bnxt_qplib_is_chip_gen_p5_p7(res->cctx) ?
+			 sizeof(struct sq_psn_search_ext) :
+			 sizeof(struct sq_psn_search);
+
+		if (qp->is_host_msn_tbl) {
+			psn_sz = sizeof(struct sq_msn_search);
+			qp->msn = 0;
+		}
+	}
+
+	hwq_attr.res = res;
+	hwq_attr.sginfo = &sq->sg_info;
+	hwq_attr.stride = sizeof(struct sq_sge);
+	hwq_attr.depth = bnxt_qplib_get_depth(sq, qp->wqe_mode, true);
+	hwq_attr.aux_stride = psn_sz;
+	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
+				    : 0;
+	/* Update msn tbl size */
+	if (qp->is_host_msn_tbl && psn_sz) {
+		if (qp->wqe_mode == BNXT_QPLIB_WQE_MODE_STATIC)
+			hwq_attr.aux_depth =
+				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+		else
+			hwq_attr.aux_depth =
+				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode)) / 2;
+		qp->msn_tbl_sz = hwq_attr.aux_depth;
+		qp->msn = 0;
+	}
+
+	hwq_attr.type = HWQ_TYPE_QUEUE;
+	rc = bnxt_qplib_alloc_init_hwq(&sq->hwq, &hwq_attr);
+	if (rc)
+		return rc;
+
+	if (!sq->hwq.is_user) {
+		rc = bnxt_qplib_alloc_init_swq(sq);
+		if (rc)
+			goto fail_sq;
+
+		if (psn_sz)
+			bnxt_qplib_init_psn_ptr(qp, psn_sz);
+	}
+	req.sq_size = cpu_to_le32(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+	pbl = &sq->hwq.pbl[PBL_LVL_0];
+	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+	pg_sz_lvl = (bnxt_qplib_base_pg_size(&sq->hwq) <<
+		     CMDQ_CREATE_QP_SQ_PG_SIZE_SFT);
+	pg_sz_lvl |= (sq->hwq.level & CMDQ_CREATE_QP_SQ_LVL_MASK);
+	req.sq_pg_size_sq_lvl = pg_sz_lvl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	req.sq_fwo_sq_sge =
 		cpu_to_le16(((sq->max_sge & CMDQ_CREATE_QP_SQ_SGE_MASK) <<
 			     CMDQ_CREATE_QP_SQ_SGE_SFT) | 0);
@@ -993,10 +1181,36 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	/* RQ */
 	if (!qp->srq) {
 		rq->dbinfo.flags = 0;
+<<<<<<< HEAD
 		req.rq_size = cpu_to_le32(rq->max_wqe);
 		pbl = &rq->hwq.pbl[PBL_LVL_0];
 		req.rq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
 		req.rq_pg_size_rq_lvl = rq->hwq.pg_sz_lvl;
+=======
+		hwq_attr.res = res;
+		hwq_attr.sginfo = &rq->sg_info;
+		hwq_attr.stride = sizeof(struct sq_sge);
+		hwq_attr.depth = bnxt_qplib_get_depth(rq, qp->wqe_mode, false);
+		hwq_attr.aux_stride = 0;
+		hwq_attr.aux_depth = 0;
+		hwq_attr.type = HWQ_TYPE_QUEUE;
+		rc = bnxt_qplib_alloc_init_hwq(&rq->hwq, &hwq_attr);
+		if (rc)
+			goto sq_swq;
+		if (!rq->hwq.is_user) {
+			rc = bnxt_qplib_alloc_init_swq(rq);
+			if (rc)
+				goto fail_rq;
+		}
+
+		req.rq_size = cpu_to_le32(rq->max_wqe);
+		pbl = &rq->hwq.pbl[PBL_LVL_0];
+		req.rq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+		pg_sz_lvl = (bnxt_qplib_base_pg_size(&rq->hwq) <<
+			     CMDQ_CREATE_QP_RQ_PG_SIZE_SFT);
+		pg_sz_lvl |= (rq->hwq.level & CMDQ_CREATE_QP_RQ_LVL_MASK);
+		req.rq_pg_size_rq_lvl = pg_sz_lvl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nsge = (qp->wqe_mode == BNXT_QPLIB_WQE_MODE_STATIC) ?
 			6 : rq->max_sge;
 		req.rq_fwo_rq_sge =
@@ -1022,9 +1236,50 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	req.qp_flags = cpu_to_le32(qp_flags);
 
 	/* ORRQ and IRRQ */
+<<<<<<< HEAD
 	if (qp->psn_sz) {
 		req.orrq_addr = cpu_to_le64(bnxt_qplib_get_base_addr(&qp->orrq));
 		req.irrq_addr = cpu_to_le64(bnxt_qplib_get_base_addr(&qp->irrq));
+=======
+	if (psn_sz) {
+		xrrq = &qp->orrq;
+		xrrq->max_elements =
+			ORD_LIMIT_TO_ORRQ_SLOTS(qp->max_rd_atomic);
+		req_size = xrrq->max_elements *
+			   BNXT_QPLIB_MAX_ORRQE_ENTRY_SIZE + PAGE_SIZE - 1;
+		req_size &= ~(PAGE_SIZE - 1);
+		sginfo.pgsize = req_size;
+		sginfo.pgshft = PAGE_SHIFT;
+
+		hwq_attr.res = res;
+		hwq_attr.sginfo = &sginfo;
+		hwq_attr.depth = xrrq->max_elements;
+		hwq_attr.stride = BNXT_QPLIB_MAX_ORRQE_ENTRY_SIZE;
+		hwq_attr.aux_stride = 0;
+		hwq_attr.aux_depth = 0;
+		hwq_attr.type = HWQ_TYPE_CTX;
+		rc = bnxt_qplib_alloc_init_hwq(xrrq, &hwq_attr);
+		if (rc)
+			goto rq_swq;
+		pbl = &xrrq->pbl[PBL_LVL_0];
+		req.orrq_addr = cpu_to_le64(pbl->pg_map_arr[0]);
+
+		xrrq = &qp->irrq;
+		xrrq->max_elements = IRD_LIMIT_TO_IRRQ_SLOTS(
+						qp->max_dest_rd_atomic);
+		req_size = xrrq->max_elements *
+			   BNXT_QPLIB_MAX_IRRQE_ENTRY_SIZE + PAGE_SIZE - 1;
+		req_size &= ~(PAGE_SIZE - 1);
+		sginfo.pgsize = req_size;
+		hwq_attr.depth =  xrrq->max_elements;
+		hwq_attr.stride = BNXT_QPLIB_MAX_IRRQE_ENTRY_SIZE;
+		rc = bnxt_qplib_alloc_init_hwq(xrrq, &hwq_attr);
+		if (rc)
+			goto fail_orrq;
+
+		pbl = &xrrq->pbl[PBL_LVL_0];
+		req.irrq_addr = cpu_to_le64(pbl->pg_map_arr[0]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	req.pd_id = cpu_to_le32(qp->pd->id);
 
@@ -1032,6 +1287,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 				sizeof(resp), 0);
 	rc = bnxt_qplib_rcfw_send_message(rcfw, &msg);
 	if (rc)
+<<<<<<< HEAD
 		return rc;
 
 	qp->id = le32_to_cpu(resp.xid);
@@ -1045,10 +1301,28 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	if (qp->psn_sz)
 		bnxt_qplib_init_psn_ptr(qp, qp->psn_sz);
 
+=======
+		goto fail;
+
+	qp->id = le32_to_cpu(resp.xid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qp->cur_qp_state = CMDQ_MODIFY_QP_NEW_STATE_RESET;
 	INIT_LIST_HEAD(&qp->sq_flush);
 	INIT_LIST_HEAD(&qp->rq_flush);
 	qp->cctx = res->cctx;
+<<<<<<< HEAD
+=======
+	sq->dbinfo.hwq = &sq->hwq;
+	sq->dbinfo.xid = qp->id;
+	sq->dbinfo.db = qp->dpi->dbr;
+	sq->dbinfo.max_slot = bnxt_qplib_set_sq_max_slot(qp->wqe_mode);
+	if (rq->max_wqe) {
+		rq->dbinfo.hwq = &rq->hwq;
+		rq->dbinfo.xid = qp->id;
+		rq->dbinfo.db = qp->dpi->dbr;
+		rq->dbinfo.max_slot = bnxt_qplib_set_rq_max_slot(rq->wqe_size);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_bh(&rcfw->tbl_lock);
 	tbl_indx = map_qp_id_to_tbl_indx(qp->id, rcfw);
 	rcfw->qp_tbl[tbl_indx].qp_id = qp->id;
@@ -1056,8 +1330,23 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 	spin_unlock_bh(&rcfw->tbl_lock);
 
 	return 0;
+<<<<<<< HEAD
 destroy_qp:
 	bnxt_qplib_destroy_qp(res, qp);
+=======
+fail:
+	bnxt_qplib_free_hwq(res, &qp->irrq);
+fail_orrq:
+	bnxt_qplib_free_hwq(res, &qp->orrq);
+rq_swq:
+	kfree(rq->swq);
+fail_rq:
+	bnxt_qplib_free_hwq(res, &rq->hwq);
+sq_swq:
+	kfree(sq->swq);
+fail_sq:
+	bnxt_qplib_free_hwq(res, &sq->hwq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 

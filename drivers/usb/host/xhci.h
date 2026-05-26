@@ -12,7 +12,10 @@
 #ifndef __LINUX_XHCI_HCD_H
 #define __LINUX_XHCI_HCD_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/usb.h>
 #include <linux/timer.h>
 #include <linux/kernel.h>
@@ -126,17 +129,28 @@ struct xhci_op_regs {
  * PCI config regs).  HC does NOT drive a USB reset on the downstream ports.
  * The xHCI driver must reinitialize the xHC after setting this bit.
  */
+<<<<<<< HEAD
 #define CMD_RESET	BIT(1)
+=======
+#define CMD_RESET	(1 << 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Event Interrupt Enable - a '1' allows interrupts from the host controller */
 #define CMD_EIE		XHCI_CMD_EIE
 /* Host System Error Interrupt Enable - get out-of-band signal for HC errors */
 #define CMD_HSEIE	XHCI_CMD_HSEIE
 /* bits 4:6 are reserved (and should be preserved on writes). */
 /* light reset (port status stays unchanged) - reset completed when this is 0 */
+<<<<<<< HEAD
 #define CMD_LRESET	BIT(7)
 /* host controller save/restore state. */
 #define CMD_CSS		BIT(8)
 #define CMD_CRS		BIT(9)
+=======
+#define CMD_LRESET	(1 << 7)
+/* host controller save/restore state. */
+#define CMD_CSS		(1 << 8)
+#define CMD_CRS		(1 << 9)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Enable Wrap Event - '1' means xHC generates an event when MFINDEX wraps. */
 #define CMD_EWE		XHCI_CMD_EWE
 /* MFINDEX power management - '1' means xHC can stop MFINDEX counter if all root
@@ -144,9 +158,15 @@ struct xhci_op_regs {
  * '0' means the xHC can power it off if all ports are in the disconnect,
  * disabled, or powered-off state.
  */
+<<<<<<< HEAD
 #define CMD_PM_INDEX	BIT(11)
 /* bit 14 Extended TBC Enable, changes Isoc TRB fields to support larger TBC */
 #define CMD_ETE		BIT(14)
+=======
+#define CMD_PM_INDEX	(1 << 11)
+/* bit 14 Extended TBC Enable, changes Isoc TRB fields to support larger TBC */
+#define CMD_ETE		(1 << 14)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 15:31 are reserved (and should be preserved on writes). */
 
 #define XHCI_RESET_LONG_USEC		(10 * 1000 * 1000)
@@ -156,6 +176,7 @@ struct xhci_op_regs {
 /* HC not running - set to 1 when run/stop bit is cleared. */
 #define STS_HALT	XHCI_STS_HALT
 /* serious error, e.g. PCI parity error.  The HC will clear the run/stop bit. */
+<<<<<<< HEAD
 #define STS_FATAL	BIT(2)
 /* event interrupt - clear this prior to clearing any IP flags in IR set*/
 #define STS_EINT	BIT(3)
@@ -172,6 +193,24 @@ struct xhci_op_regs {
 #define STS_CNR		XHCI_STS_CNR
 /* true: internal Host Controller Error - SW needs to reset and reinitialize */
 #define STS_HCE		BIT(12)
+=======
+#define STS_FATAL	(1 << 2)
+/* event interrupt - clear this prior to clearing any IP flags in IR set*/
+#define STS_EINT	(1 << 3)
+/* port change detect */
+#define STS_PORT	(1 << 4)
+/* bits 5:7 reserved and zeroed */
+/* save state status - '1' means xHC is saving state */
+#define STS_SAVE	(1 << 8)
+/* restore state status - '1' means xHC is restoring state */
+#define STS_RESTORE	(1 << 9)
+/* true: save or restore error */
+#define STS_SRE		(1 << 10)
+/* true: Controller Not Ready to accept doorbell or op reg writes after reset */
+#define STS_CNR		XHCI_STS_CNR
+/* true: internal Host Controller Error - SW needs to reset and reinitialize */
+#define STS_HCE		(1 << 12)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 13:31 reserved and should be preserved */
 
 /*
@@ -183,6 +222,7 @@ struct xhci_op_regs {
 /* Most of the device notification types should only be used for debug.
  * SW does need to pay attention to function wake notifications.
  */
+<<<<<<< HEAD
 #define	DEV_NOTE_FWAKE		BIT(1)
 
 /* CRCR - Command Ring Control Register - cmd_ring bitmasks */
@@ -194,6 +234,19 @@ struct xhci_op_regs {
 #define CMD_RING_ABORT		BIT(2)
 /* true: command ring is running */
 #define CMD_RING_RUNNING	BIT(3)
+=======
+#define	DEV_NOTE_FWAKE		(1 << 1)
+
+/* CRCR - Command Ring Control Register - cmd_ring bitmasks */
+/* bit 0 - Cycle bit indicates the ownership of the command ring */
+#define CMD_RING_CYCLE		(1 << 0)
+/* stop ring operation after completion of the currently executing command */
+#define CMD_RING_PAUSE		(1 << 1)
+/* stop ring immediately - abort the currently executing command */
+#define CMD_RING_ABORT		(1 << 2)
+/* true: command ring is running */
+#define CMD_RING_RUNNING	(1 << 3)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 63:6 - Command Ring pointer */
 #define CMD_RING_PTR_MASK	GENMASK_ULL(63, 6)
 
@@ -201,9 +254,15 @@ struct xhci_op_regs {
 /* bits 0:7 - maximum number of device slots enabled (NumSlotsEn) */
 #define MAX_DEVS(p)	((p) & 0xff)
 /* bit 8: U3 Entry Enabled, assert PLC when root port enters U3, xhci 1.1 */
+<<<<<<< HEAD
 #define CONFIG_U3E		BIT(8)
 /* bit 9: Configuration Information Enable, xhci 1.1 */
 #define CONFIG_CIE		BIT(9)
+=======
+#define CONFIG_U3E		(1 << 8)
+/* bit 9: Configuration Information Enable, xhci 1.1 */
+#define CONFIG_CIE		(1 << 9)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 10:31 - reserved and should be preserved */
 
 /* bits 15:0 - HCD page shift bit */
@@ -236,9 +295,15 @@ struct xhci_intr_reg {
 
 /* iman bitmasks */
 /* bit 0 - Interrupt Pending (IP), whether there is an interrupt pending. Write-1-to-clear. */
+<<<<<<< HEAD
 #define	IMAN_IP			BIT(0)
 /* bit 1 - Interrupt Enable (IE), whether the interrupter is capable of generating an interrupt */
 #define	IMAN_IE			BIT(1)
+=======
+#define	IMAN_IP			(1 << 0)
+/* bit 1 - Interrupt Enable (IE), whether the interrupter is capable of generating an interrupt */
+#define	IMAN_IE			(1 << 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* imod bitmasks */
 /*
@@ -268,7 +333,11 @@ struct xhci_intr_reg {
  * bit 3 - Event Handler Busy (EHB), whether the event ring is scheduled to be serviced by
  * a work queue (or delayed service routine)?
  */
+<<<<<<< HEAD
 #define ERST_EHB		BIT(3)
+=======
+#define ERST_EHB		(1 << 3)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 63:4 - Event Ring Dequeue Pointer */
 #define ERST_PTR_MASK		GENMASK_ULL(63, 4)
 
@@ -357,15 +426,26 @@ struct xhci_slot_ctx {
 #define GET_DEV_SPEED(n) (((n) & DEV_SPEED) >> 20)
 /* bit 24 reserved */
 /* Is this LS/FS device connected through a HS hub? - bit 25 */
+<<<<<<< HEAD
 #define DEV_MTT		BIT(25)
 /* Set if the device is a hub - bit 26 */
 #define DEV_HUB		BIT(26)
+=======
+#define DEV_MTT		(0x1 << 25)
+/* Set if the device is a hub - bit 26 */
+#define DEV_HUB		(0x1 << 26)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Index of the last valid endpoint context in this device context - 27:31 */
 #define LAST_CTX_MASK	(0x1f << 27)
 #define LAST_CTX(p)	((p) << 27)
 #define LAST_CTX_TO_EP_NUM(p)	(((p) >> 27) - 1)
+<<<<<<< HEAD
 #define SLOT_FLAG	BIT(0)
 #define EP0_FLAG	BIT(1)
+=======
+#define SLOT_FLAG	(1 << 0)
+#define EP0_FLAG	(1 << 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* dev_info2 bitmasks */
 /* Max Exit Latency (ms) - worst case time to wake up all links in dev path */
@@ -464,7 +544,11 @@ struct xhci_ep_ctx {
 #define EP_MAXPSTREAMS(p)		(((p) << 10) & EP_MAXPSTREAMS_MASK)
 #define CTX_TO_EP_MAXPSTREAMS(p)	(((p) & EP_MAXPSTREAMS_MASK) >> 10)
 /* Endpoint is set up with a Linear Stream Array (vs. Secondary Stream Array) */
+<<<<<<< HEAD
 #define	EP_HAS_LSA		BIT(15)
+=======
+#define	EP_HAS_LSA		(1 << 15)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* hosts with LEC=1 use bits 31:24 as ESIT high bits. */
 #define CTX_TO_MAX_ESIT_PAYLOAD_HI(p)	(((p) >> 24) & 0xff)
 
@@ -499,7 +583,11 @@ struct xhci_ep_ctx {
 #define CTX_TO_MAX_ESIT_PAYLOAD(p)	(((p) >> 16) & 0xffff)
 
 /* deq bitmasks */
+<<<<<<< HEAD
 #define EP_CTX_CYCLE_MASK		BIT(0)
+=======
+#define EP_CTX_CYCLE_MASK		(1 << 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* bits 63:4 - TR Dequeue Pointer */
 #define TR_DEQ_PTR_MASK			GENMASK_ULL(63, 4)
 
@@ -662,6 +750,7 @@ struct xhci_virt_ep {
 	struct xhci_ring		*new_ring;
 	unsigned int			err_count;
 	unsigned int			ep_state;
+<<<<<<< HEAD
 #define SET_DEQ_PENDING		BIT(0)
 #define EP_HALTED		BIT(1)	/* For stall handling */
 #define EP_STOP_CMD_PENDING	BIT(2)	/* For URB cancellation */
@@ -674,6 +763,20 @@ struct xhci_virt_ep {
 #define EP_SOFT_CLEAR_TOGGLE	BIT(7)
 /* usb_hub_clear_tt_buffer is in progress */
 #define EP_CLEARING_TT		BIT(8)
+=======
+#define SET_DEQ_PENDING		(1 << 0)
+#define EP_HALTED		(1 << 1)	/* For stall handling */
+#define EP_STOP_CMD_PENDING	(1 << 2)	/* For URB cancellation */
+/* Transitioning the endpoint to using streams, don't enqueue URBs */
+#define EP_GETTING_STREAMS	(1 << 3)
+#define EP_HAS_STREAMS		(1 << 4)
+/* Transitioning the endpoint to not using streams, don't enqueue URBs */
+#define EP_GETTING_NO_STREAMS	(1 << 5)
+#define EP_HARD_CLEAR_TOGGLE	(1 << 6)
+#define EP_SOFT_CLEAR_TOGGLE	(1 << 7)
+/* usb_hub_clear_tt_buffer is in progress */
+#define EP_CLEARING_TT		(1 << 8)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ----  Related to URB cancellation ---- */
 	struct list_head	cancelled_td_list;
 	struct xhci_hcd		*xhci;
@@ -955,7 +1058,11 @@ struct xhci_link_trb {
 };
 
 /* control bitfields */
+<<<<<<< HEAD
 #define LINK_TOGGLE	BIT(1)
+=======
+#define LINK_TOGGLE	(0x1<<1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Command completion event TRB */
 struct xhci_event_cmd {
@@ -969,6 +1076,7 @@ struct xhci_event_cmd {
 #define COMP_PARAM(p)	((p) & 0xffffff) /* Command Completion Parameter */
 
 /* Address device - disable SetAddress */
+<<<<<<< HEAD
 #define TRB_BSR		BIT(9)
 
 /* Configure Endpoint - Deconfigure */
@@ -976,6 +1084,15 @@ struct xhci_event_cmd {
 
 /* Stop Ring - Transfer State Preserve */
 #define TRB_TSP		BIT(9)
+=======
+#define TRB_BSR		(1<<9)
+
+/* Configure Endpoint - Deconfigure */
+#define TRB_DC		(1<<9)
+
+/* Stop Ring - Transfer State Preserve */
+#define TRB_TSP		(1<<9)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum xhci_ep_reset_type {
 	EP_HARD_RESET,
@@ -1018,13 +1135,21 @@ enum xhci_setup_dev {
 #define SCT_FOR_TRB(p)			(((p) & 0x7) << 1)
 
 /* Link TRB specific fields */
+<<<<<<< HEAD
 #define TRB_TC			BIT(1)
+=======
+#define TRB_TC			(1<<1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Port Status Change Event TRB fields */
 /* Port ID - bits 31:24 */
 #define GET_PORT_ID(p)		(((p) & (0xff << 24)) >> 24)
 
+<<<<<<< HEAD
 #define EVENT_DATA		BIT(2)
+=======
+#define EVENT_DATA		(1 << 2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Normal TRB fields */
 /* transfer_len bitmasks - bits 0:16 */
@@ -1039,11 +1164,16 @@ enum xhci_setup_dev {
 #define GET_INTR_TARGET(p)	(((p) >> 22) & 0x3ff)
 
 /* Cycle bit - indicates TRB ownership by HC or HCD */
+<<<<<<< HEAD
 #define TRB_CYCLE		BIT(0)
+=======
+#define TRB_CYCLE		(1<<0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Force next event data TRB to be evaluated before task switch.
  * Used to pass OS data back after a TD completes.
  */
+<<<<<<< HEAD
 #define TRB_ENT			BIT(1)
 /* Interrupt on short packet */
 #define TRB_ISP			BIT(2)
@@ -1055,20 +1185,44 @@ enum xhci_setup_dev {
 #define TRB_IOC			BIT(5)
 /* The buffer pointer contains immediate data */
 #define TRB_IDT			BIT(6)
+=======
+#define TRB_ENT			(1<<1)
+/* Interrupt on short packet */
+#define TRB_ISP			(1<<2)
+/* Set PCIe no snoop attribute */
+#define TRB_NO_SNOOP		(1<<3)
+/* Chain multiple TRBs into a TD */
+#define TRB_CHAIN		(1<<4)
+/* Interrupt on completion */
+#define TRB_IOC			(1<<5)
+/* The buffer pointer contains immediate data */
+#define TRB_IDT			(1<<6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* TDs smaller than this might use IDT */
 #define TRB_IDT_MAX_SIZE	8
 
 /* Block Event Interrupt */
+<<<<<<< HEAD
 #define	TRB_BEI			BIT(9)
 
 /* Control transfer TRB specific fields */
 #define TRB_DIR_IN		BIT(16)
+=======
+#define	TRB_BEI			(1<<9)
+
+/* Control transfer TRB specific fields */
+#define TRB_DIR_IN		(1<<16)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define	TRB_TX_TYPE(p)		((p) << 16)
 #define	TRB_DATA_OUT		2
 #define	TRB_DATA_IN		3
 
 /* Isochronous TRB specific fields */
+<<<<<<< HEAD
 #define TRB_SIA			BIT(31)
+=======
+#define TRB_SIA			(1<<31)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TRB_FRAME_ID(p)		(((p) & 0x7ff) << 20)
 #define GET_FRAME_ID(p)		(((p) >> 20) & 0x7ff)
 /* Total burst count field, Rsvdz on xhci 1.1 with Extended TBC enabled (ETE) */
@@ -1536,9 +1690,15 @@ struct xhci_hcd {
 	struct xhci_interrupter **interrupters;
 	struct xhci_ring	*cmd_ring;
 	unsigned int            cmd_ring_state;
+<<<<<<< HEAD
 #define CMD_RING_STATE_RUNNING         BIT(0)
 #define CMD_RING_STATE_ABORTED         BIT(1)
 #define CMD_RING_STATE_STOPPED         BIT(2)
+=======
+#define CMD_RING_STATE_RUNNING         (1 << 0)
+#define CMD_RING_STATE_ABORTED         (1 << 1)
+#define CMD_RING_STATE_STOPPED         (1 << 2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head        cmd_list;
 	unsigned int		cmd_ring_reserved_trbs;
 	struct delayed_work	cmd_timer;
@@ -1579,9 +1739,15 @@ struct xhci_hcd {
  *
  * There are no reports of xHCI host controllers that display this issue.
  */
+<<<<<<< HEAD
 #define XHCI_STATE_DYING	BIT(0)
 #define XHCI_STATE_HALTED	BIT(1)
 #define XHCI_STATE_REMOVING	BIT(2)
+=======
+#define XHCI_STATE_DYING	(1 << 0)
+#define XHCI_STATE_HALTED	(1 << 1)
+#define XHCI_STATE_REMOVING	(1 << 2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long long	quirks;
 #define	XHCI_LINK_TRB_QUIRK	BIT_ULL(0)
 #define XHCI_RESET_EP_QUIRK	BIT_ULL(1) /* Deprecated */
@@ -1793,7 +1959,10 @@ void xhci_dbg_trace(struct xhci_hcd *xhci, void (*trace)(struct va_format *),
 void xhci_mem_cleanup(struct xhci_hcd *xhci);
 int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags);
 void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_device *dev, int slot_id);
+<<<<<<< HEAD
 void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id, struct usb_device *udev, gfp_t flags);
 int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *udev);
 void xhci_copy_ep0_dequeue_into_input_ctx(struct xhci_hcd *xhci,
@@ -1805,7 +1974,10 @@ void xhci_update_tt_active_eps(struct xhci_hcd *xhci,
 		struct xhci_virt_device *virt_dev,
 		int old_active_eps);
 void xhci_clear_endpoint_bw_info(struct xhci_bw_info *bw_info);
+<<<<<<< HEAD
 void xhci_rh_bw_cleanup(struct xhci_hcd *xhci);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xhci_update_bw_info(struct xhci_hcd *xhci,
 		struct xhci_container_ctx *in_ctx,
 		struct xhci_input_control_ctx *ctrl_ctx,
@@ -1826,7 +1998,10 @@ void xhci_ring_free(struct xhci_hcd *xhci, struct xhci_ring *ring);
 int xhci_ring_expansion(struct xhci_hcd *xhci, struct xhci_ring *ring,
 		unsigned int num_trbs, gfp_t flags);
 void xhci_initialize_ring_info(struct xhci_ring *ring);
+<<<<<<< HEAD
 void xhci_ring_init(struct xhci_hcd *xhci, struct xhci_ring *ring);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xhci_free_endpoint_ring(struct xhci_hcd *xhci,
 		struct xhci_virt_device *virt_dev,
 		unsigned int ep_index);

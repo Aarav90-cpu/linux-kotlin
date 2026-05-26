@@ -2,6 +2,7 @@
 
 //! Nova Core GPU Driver
 
+<<<<<<< HEAD
 use kernel::{
     debugfs,
     driver::Registration,
@@ -13,6 +14,12 @@ use kernel::{
 #[macro_use]
 mod bitfield;
 
+=======
+#[macro_use]
+mod bitfield;
+
+mod dma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 mod driver;
 mod falcon;
 mod fb;
@@ -20,12 +27,16 @@ mod firmware;
 mod gfw;
 mod gpu;
 mod gsp;
+<<<<<<< HEAD
 #[macro_use]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 mod num;
 mod regs;
 mod sbuffer;
 mod vbios;
 
+<<<<<<< HEAD
 pub(crate) const MODULE_NAME: &core::ffi::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
 
 // TODO: Move this into per-module data once that exists.
@@ -68,6 +79,12 @@ impl InPlaceModule for NovaCoreModule {
 
 module! {
     type: NovaCoreModule,
+=======
+pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
+
+kernel::module_pci_driver! {
+    type: driver::NovaCore,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: "NovaCore",
     authors: ["Danilo Krummrich"],
     description: "Nova Core GPU driver",

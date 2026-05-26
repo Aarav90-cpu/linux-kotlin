@@ -153,10 +153,21 @@ addrtype_mt_v1(const struct sk_buff *skb, struct xt_action_param *par)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int addrtype_mt_check_hooks(const struct xt_mtchk_param *par)
 {
 	struct xt_addrtype_info_v1 *info = par->matchinfo;
 	const char *errmsg;
+=======
+static int addrtype_mt_checkentry_v1(const struct xt_mtchk_param *par)
+{
+	const char *errmsg = "both incoming and outgoing interface limitation cannot be selected";
+	struct xt_addrtype_info_v1 *info = par->matchinfo;
+
+	if (info->flags & XT_ADDRTYPE_LIMIT_IFACE_IN &&
+	    info->flags & XT_ADDRTYPE_LIMIT_IFACE_OUT)
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (par->hook_mask & ((1 << NF_INET_PRE_ROUTING) |
 	    (1 << NF_INET_LOCAL_IN)) &&
@@ -172,6 +183,7 @@ static int addrtype_mt_check_hooks(const struct xt_mtchk_param *par)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	return 0;
 err:
 	pr_info_ratelimited("%s\n", errmsg);
@@ -187,6 +199,8 @@ static int addrtype_mt_checkentry_v1(const struct xt_mtchk_param *par)
 	    info->flags & XT_ADDRTYPE_LIMIT_IFACE_OUT)
 		goto err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
 	if (par->family == NFPROTO_IPV6) {
 		if ((info->source | info->dest) & XT_ADDRTYPE_BLACKHOLE) {
@@ -222,7 +236,10 @@ static struct xt_match addrtype_mt_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV4,
 		.revision	= 1,
 		.match		= addrtype_mt_v1,
+<<<<<<< HEAD
 		.check_hooks	= addrtype_mt_check_hooks,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= addrtype_mt_checkentry_v1,
 		.matchsize	= sizeof(struct xt_addrtype_info_v1),
 		.me		= THIS_MODULE
@@ -233,7 +250,10 @@ static struct xt_match addrtype_mt_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV6,
 		.revision	= 1,
 		.match		= addrtype_mt_v1,
+<<<<<<< HEAD
 		.check_hooks	= addrtype_mt_check_hooks,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= addrtype_mt_checkentry_v1,
 		.matchsize	= sizeof(struct xt_addrtype_info_v1),
 		.me		= THIS_MODULE

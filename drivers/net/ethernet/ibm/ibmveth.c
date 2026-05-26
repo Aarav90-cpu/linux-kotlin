@@ -355,7 +355,11 @@ hcall_failure:
 
 		/*
 		 * If multi rx buffers hcall is no longer supported by FW
+<<<<<<< HEAD
 		 * e.g. in the case of Live Partition Migration
+=======
+		 * e.g. in the case of Live Parttion Migration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		if (batch > 1 && lpar_rc == H_FUNCTION) {
 			/*
@@ -480,7 +484,11 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
 	 */
 	if (!reuse) {
 		/* remove the skb pointer to mark free. actual freeing is done
+<<<<<<< HEAD
 		 * by upper level networking after gro_receive
+=======
+		 * by upper level networking after gro_recieve
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		adapter->rx_buff_pool[pool].skbuff[index] = NULL;
 

@@ -1252,7 +1252,11 @@ static const struct snd_soc_component_driver acp_asoc_platform = {
 	.pointer	= acp_dma_pointer,
 	.delay		= acp_dma_delay,
 	.prepare	= acp_dma_prepare,
+<<<<<<< HEAD
 	.pcm_new	= acp_dma_new,
+=======
+	.pcm_construct	= acp_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int acp_audio_probe(struct platform_device *pdev)

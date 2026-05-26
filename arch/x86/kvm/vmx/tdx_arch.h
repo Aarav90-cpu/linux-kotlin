@@ -75,6 +75,15 @@ struct tdx_cpuid_value {
 	u32 edx;
 } __packed;
 
+<<<<<<< HEAD
+=======
+#define TDX_TD_ATTR_DEBUG		BIT_ULL(0)
+#define TDX_TD_ATTR_SEPT_VE_DISABLE	BIT_ULL(28)
+#define TDX_TD_ATTR_PKS			BIT_ULL(30)
+#define TDX_TD_ATTR_KL			BIT_ULL(31)
+#define TDX_TD_ATTR_PERFMON		BIT_ULL(63)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TDX_EXT_EXIT_QUAL_TYPE_MASK	GENMASK(3, 0)
 #define TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION  6
 /*

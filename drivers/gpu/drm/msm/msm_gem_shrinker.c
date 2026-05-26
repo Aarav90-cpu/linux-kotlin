@@ -26,8 +26,14 @@ static bool can_swap(void)
 
 static bool can_block(struct shrink_control *sc)
 {
+<<<<<<< HEAD
 	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
 	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+=======
+	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+		return false;
+	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned long

@@ -162,7 +162,11 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
 					     dev->name);
 			DEV_STATS_INC(dev, tx_errors);
 		}
+<<<<<<< HEAD
 		kfree_skb_reason(skb, SKB_DROP_REASON_RECURSION_LIMIT);
+=======
+		kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 

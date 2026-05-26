@@ -520,10 +520,15 @@ static int llc_ui_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
 	if (sk->sk_state == TCP_SYN_SENT) {
 		const long timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
 
+<<<<<<< HEAD
 		if (!timeo || !llc_ui_wait_for_conn(sk, timeo)) {
 			rc = -EINPROGRESS;
 			goto out;
 		}
+=======
+		if (!timeo || !llc_ui_wait_for_conn(sk, timeo))
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rc = sock_intr_errno(timeo);
 		if (signal_pending(current))

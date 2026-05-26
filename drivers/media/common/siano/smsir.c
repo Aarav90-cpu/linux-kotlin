@@ -92,7 +92,10 @@ int sms_ir_init(struct smscore_device_t *coredev)
 void sms_ir_exit(struct smscore_device_t *coredev)
 {
 	rc_unregister_device(coredev->ir.dev);
+<<<<<<< HEAD
 	rc_free_device(coredev->ir.dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_debug("\n");
 }

@@ -180,7 +180,10 @@ static void dpcd_reduce_address_range(
 		uint8_t * const reduced_data,
 		const uint32_t reduced_size)
 {
+<<<<<<< HEAD
 	(void)extended_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const uint32_t offset = reduced_address - extended_address;
 
 	/*

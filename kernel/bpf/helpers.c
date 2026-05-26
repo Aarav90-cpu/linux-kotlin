@@ -845,6 +845,7 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
 		data->buf = buffers->buf;
 
 	for (i = 0; i < fmt_size; i++) {
+<<<<<<< HEAD
 		unsigned char c = fmt[i];
 
 		/*
@@ -852,6 +853,9 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
 		 * through unchanged, while still rejecting ASCII control bytes.
 		 */
 		if (isascii(c) && !isprint(c) && !isspace(c)) {
+=======
+		if ((!isprint(fmt[i]) && !isspace(fmt[i])) || !isascii(fmt[i])) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = -EINVAL;
 			goto out;
 		}
@@ -873,6 +877,7 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
 		 * always access fmt[i + 1], in the worst case it will be a 0
 		 */
 		i++;
+<<<<<<< HEAD
 		c = fmt[i];
 		/*
 		 * The format parser below only understands ASCII conversion
@@ -882,6 +887,8 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
 			err = -EINVAL;
 			goto out;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* skip optional "[0 +-][num]" width formatting field */
 		while (fmt[i] == '0' || fmt[i] == '+'  || fmt[i] == '-' ||
@@ -1287,7 +1294,11 @@ static void bpf_async_cb_rcu_tasks_trace_free(struct rcu_head *rcu)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* RCU Tasks Trace grace period implies RCU grace period. */
+=======
+	/* rcu_trace_implies_rcu_gp() is true and will remain so */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_async_cb_rcu_free(rcu);
 }
 
@@ -2317,6 +2328,7 @@ void bpf_rb_root_free(const struct btf_field *field, void *rb_root,
 
 __bpf_kfunc_start_defs();
 
+<<<<<<< HEAD
 /**
  * bpf_obj_new() - allocate an object described by program BTF
  * @local_type_id__k: type ID in program BTF
@@ -2331,6 +2343,11 @@ __bpf_kfunc_start_defs();
  */
 __bpf_kfunc void *bpf_obj_new(u64 local_type_id__k, struct btf_struct_meta *meta)
 {
+=======
+__bpf_kfunc void *bpf_obj_new_impl(u64 local_type_id__k, void *meta__ign)
+{
+	struct btf_struct_meta *meta = meta__ign;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 size = local_type_id__k;
 	void *p;
 
@@ -2339,6 +2356,7 @@ __bpf_kfunc void *bpf_obj_new(u64 local_type_id__k, struct btf_struct_meta *meta
 		return NULL;
 	if (meta)
 		bpf_obj_init(meta->record, p);
+<<<<<<< HEAD
 
 	return p;
 }
@@ -2370,6 +2388,17 @@ __bpf_kfunc void *bpf_percpu_obj_new(u64 local_type_id__k, struct btf_struct_met
 __bpf_kfunc void *bpf_percpu_obj_new_impl(u64 local_type_id__k, void *meta__ign)
 {
 	return bpf_percpu_obj_new(local_type_id__k, meta__ign);
+=======
+	return p;
+}
+
+__bpf_kfunc void *bpf_percpu_obj_new_impl(u64 local_type_id__k, void *meta__ign)
+{
+	u64 size = local_type_id__k;
+
+	/* The verifier has ensured that meta__ign must be NULL */
+	return bpf_mem_alloc(&bpf_global_percpu_ma, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Must be called under migrate_disable(), as required by bpf_mem_free */
@@ -2395,6 +2424,7 @@ void __bpf_obj_drop_impl(void *p, const struct btf_record *rec, bool percpu)
 	bpf_mem_free_rcu(ma, p);
 }
 
+<<<<<<< HEAD
 /**
  * bpf_obj_drop() - drop a previously allocated object
  * @p__alloc: object to free
@@ -2405,11 +2435,17 @@ void __bpf_obj_drop_impl(void *p, const struct btf_record *rec, bool percpu)
  */
 __bpf_kfunc void bpf_obj_drop(void *p__alloc, struct btf_struct_meta *meta)
 {
+=======
+__bpf_kfunc void bpf_obj_drop_impl(void *p__alloc, void *meta__ign)
+{
+	struct btf_struct_meta *meta = meta__ign;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *p = p__alloc;
 
 	__bpf_obj_drop_impl(p, meta ? meta->record : NULL, false);
 }
 
+<<<<<<< HEAD
 __bpf_kfunc void bpf_obj_drop_impl(void *p__alloc, void *meta__ign)
 {
 	return bpf_obj_drop(p__alloc, meta__ign);
@@ -2445,6 +2481,17 @@ __bpf_kfunc void bpf_percpu_obj_drop_impl(void *p__alloc, void *meta__ign)
  */
 __bpf_kfunc void *bpf_refcount_acquire(void *p__refcounted_kptr, struct btf_struct_meta *meta)
 {
+=======
+__bpf_kfunc void bpf_percpu_obj_drop_impl(void *p__alloc, void *meta__ign)
+{
+	/* The verifier has ensured that meta__ign must be NULL */
+	bpf_mem_free_rcu(&bpf_global_percpu_ma, p__alloc);
+}
+
+__bpf_kfunc void *bpf_refcount_acquire_impl(void *p__refcounted_kptr, void *meta__ign)
+{
+	struct btf_struct_meta *meta = meta__ign;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bpf_refcount *ref;
 
 	/* Could just cast directly to refcount_t *, but need some code using
@@ -2460,11 +2507,14 @@ __bpf_kfunc void *bpf_refcount_acquire(void *p__refcounted_kptr, struct btf_stru
 	return (void *)p__refcounted_kptr;
 }
 
+<<<<<<< HEAD
 __bpf_kfunc void *bpf_refcount_acquire_impl(void *p__refcounted_kptr, void *meta__ign)
 {
 	return bpf_refcount_acquire(p__refcounted_kptr, meta__ign);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __bpf_list_add(struct bpf_list_node_kern *node,
 			  struct bpf_list_head *head,
 			  bool tail, struct btf_record *rec, u64 off)
@@ -2492,6 +2542,7 @@ static int __bpf_list_add(struct bpf_list_node_kern *node,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * bpf_list_push_front() - add a node to the front of a BPF linked list
  * @head: list head
@@ -2514,10 +2565,13 @@ __bpf_kfunc int bpf_list_push_front(struct bpf_list_head *head,
 	return __bpf_list_add(n, head, false, meta ? meta->record : NULL, off);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __bpf_kfunc int bpf_list_push_front_impl(struct bpf_list_head *head,
 					 struct bpf_list_node *node,
 					 void *meta__ign, u64 off)
 {
+<<<<<<< HEAD
 	return bpf_list_push_front(head, node, meta__ign, off);
 }
 
@@ -2541,13 +2595,26 @@ __bpf_kfunc int bpf_list_push_back(struct bpf_list_head *head,
 	struct bpf_list_node_kern *n = (void *)node;
 
 	return __bpf_list_add(n, head, true, meta ? meta->record : NULL, off);
+=======
+	struct bpf_list_node_kern *n = (void *)node;
+	struct btf_struct_meta *meta = meta__ign;
+
+	return __bpf_list_add(n, head, false, meta ? meta->record : NULL, off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 __bpf_kfunc int bpf_list_push_back_impl(struct bpf_list_head *head,
 					struct bpf_list_node *node,
 					void *meta__ign, u64 off)
 {
+<<<<<<< HEAD
 	return bpf_list_push_back(head, node, meta__ign, off);
+=======
+	struct bpf_list_node_kern *n = (void *)node;
+	struct btf_struct_meta *meta = meta__ign;
+
+	return __bpf_list_add(n, head, true, meta ? meta->record : NULL, off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct bpf_list_node *__bpf_list_del(struct bpf_list_head *head, bool tail)
@@ -2659,6 +2726,7 @@ static int __bpf_rbtree_add(struct bpf_rb_root *root,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * bpf_rbtree_add() - add a node to a BPF rbtree
  * @root: tree root
@@ -2683,11 +2751,20 @@ __bpf_kfunc int bpf_rbtree_add(struct bpf_rb_root *root,
 	return __bpf_rbtree_add(root, n, (void *)less, meta ? meta->record : NULL, off);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __bpf_kfunc int bpf_rbtree_add_impl(struct bpf_rb_root *root, struct bpf_rb_node *node,
 				    bool (less)(struct bpf_rb_node *a, const struct bpf_rb_node *b),
 				    void *meta__ign, u64 off)
 {
+<<<<<<< HEAD
 	return bpf_rbtree_add(root, node, less, meta__ign, off);
+=======
+	struct btf_struct_meta *meta = meta__ign;
+	struct bpf_rb_node_kern *n = (void *)node;
+
+	return __bpf_rbtree_add(root, n, (void *)less, meta ? meta->record : NULL, off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 __bpf_kfunc struct bpf_rb_node *bpf_rbtree_first(struct bpf_rb_root *root)
@@ -4310,6 +4387,7 @@ static bool bpf_task_work_ctx_tryget(struct bpf_task_work_ctx *ctx)
 	return refcount_inc_not_zero(&ctx->refcnt);
 }
 
+<<<<<<< HEAD
 static void bpf_task_work_destroy(struct irq_work *irq_work)
 {
 	struct bpf_task_work_ctx *ctx = container_of(irq_work, struct bpf_task_work_ctx, irq_work);
@@ -4318,17 +4396,28 @@ static void bpf_task_work_destroy(struct irq_work *irq_work)
 	kfree_rcu(ctx, rcu);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bpf_task_work_ctx_put(struct bpf_task_work_ctx *ctx)
 {
 	if (!refcount_dec_and_test(&ctx->refcnt))
 		return;
 
+<<<<<<< HEAD
 	if (irqs_disabled()) {
 		ctx->irq_work = IRQ_WORK_INIT(bpf_task_work_destroy);
 		irq_work_queue(&ctx->irq_work);
 	} else {
 		bpf_task_work_destroy(&ctx->irq_work);
 	}
+=======
+	bpf_task_work_ctx_reset(ctx);
+
+	/* bpf_mem_free expects migration to be disabled */
+	migrate_disable();
+	bpf_mem_free(&bpf_global_ma, ctx);
+	migrate_enable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void bpf_task_work_cancel(struct bpf_task_work_ctx *ctx)
@@ -4382,7 +4471,11 @@ static void bpf_task_work_irq(struct irq_work *irq_work)
 	enum bpf_task_work_state state;
 	int err;
 
+<<<<<<< HEAD
 	guard(rcu)();
+=======
+	guard(rcu_tasks_trace)();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cmpxchg(&ctx->state, BPF_TW_PENDING, BPF_TW_SCHEDULING) != BPF_TW_PENDING) {
 		bpf_task_work_ctx_put(ctx);
@@ -4404,9 +4497,15 @@ static void bpf_task_work_irq(struct irq_work *irq_work)
 	/*
 	 * It's technically possible for just scheduled task_work callback to
 	 * complete running by now, going SCHEDULING -> RUNNING and then
+<<<<<<< HEAD
 	 * dropping its ctx refcount. Instead of capturing an extra ref just
 	 * to protect below ctx->state access, we rely on rcu_read_lock
 	 * above to prevent kfree_rcu from freeing ctx before we return.
+=======
+	 * dropping its ctx refcount. Instead of capturing extra ref just to
+	 * protected below ctx->state access, we rely on RCU protection to
+	 * perform below SCHEDULING -> SCHEDULED attempt.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	state = cmpxchg(&ctx->state, BPF_TW_SCHEDULING, BPF_TW_SCHEDULED);
 	if (state == BPF_TW_FREED)
@@ -4423,7 +4522,11 @@ static struct bpf_task_work_ctx *bpf_task_work_fetch_ctx(struct bpf_task_work *t
 	if (ctx)
 		return ctx;
 
+<<<<<<< HEAD
 	ctx = bpf_map_kmalloc_nolock(map, sizeof(*ctx), 0, NUMA_NO_NODE);
+=======
+	ctx = bpf_mem_alloc(&bpf_global_ma, sizeof(struct bpf_task_work_ctx));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ctx)
 		return ERR_PTR(-ENOMEM);
 
@@ -4437,7 +4540,11 @@ static struct bpf_task_work_ctx *bpf_task_work_fetch_ctx(struct bpf_task_work *t
 		 * tw->ctx is set by concurrent BPF program, release allocated
 		 * memory and try to reuse already set context.
 		 */
+<<<<<<< HEAD
 		kfree_nolock(ctx);
+=======
+		bpf_mem_free(&bpf_global_ma, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return old_ctx;
 	}
 
@@ -4449,6 +4556,7 @@ static struct bpf_task_work_ctx *bpf_task_work_acquire_ctx(struct bpf_task_work 
 {
 	struct bpf_task_work_ctx *ctx;
 
+<<<<<<< HEAD
 	/*
 	 * Sleepable BPF programs hold rcu_read_lock_trace but not
 	 * regular rcu_read_lock. Since kfree_rcu waits for regular
@@ -4466,6 +4574,15 @@ static struct bpf_task_work_ctx *bpf_task_work_acquire_ctx(struct bpf_task_work 
 		if (!bpf_task_work_ctx_tryget(ctx))
 			return ERR_PTR(-EBUSY);
 	}
+=======
+	ctx = bpf_task_work_fetch_ctx(tw, map);
+	if (IS_ERR(ctx))
+		return ctx;
+
+	/* try to get ref for task_work callback to hold */
+	if (!bpf_task_work_ctx_tryget(ctx))
+		return ERR_PTR(-EBUSY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cmpxchg(&ctx->state, BPF_TW_STANDBY, BPF_TW_PENDING) != BPF_TW_STANDBY) {
 		/* lost acquiring race or map_release_uref() stole it from us, put ref and bail */
@@ -4580,7 +4697,11 @@ static int make_file_dynptr(struct file *file, u32 flags, bool may_sleep,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	state = kmalloc_nolock(sizeof(*state), 0, NUMA_NO_NODE);
+=======
+	state = bpf_mem_alloc(&bpf_global_ma, sizeof(struct bpf_dynptr_file_impl));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!state) {
 		bpf_dynptr_set_null(ptr);
 		return -ENOMEM;
@@ -4612,7 +4733,11 @@ __bpf_kfunc int bpf_dynptr_file_discard(struct bpf_dynptr *dynptr)
 		return 0;
 
 	freader_cleanup(&df->freader);
+<<<<<<< HEAD
 	kfree_nolock(df);
+=======
+	bpf_mem_free(&bpf_global_ma, df);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_dynptr_set_null(ptr);
 	return 0;
 }
@@ -4699,6 +4824,7 @@ BTF_KFUNCS_START(generic_btf_ids)
 #ifdef CONFIG_CRASH_DUMP
 BTF_ID_FLAGS(func, crash_kexec, KF_DESTRUCTIVE)
 #endif
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, bpf_obj_new, KF_ACQUIRE | KF_RET_NULL | KF_IMPLICIT_ARGS)
 BTF_ID_FLAGS(func, bpf_obj_new_impl, KF_ACQUIRE | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_percpu_obj_new, KF_ACQUIRE | KF_RET_NULL | KF_IMPLICIT_ARGS)
@@ -4712,6 +4838,14 @@ BTF_ID_FLAGS(func, bpf_refcount_acquire_impl, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
 BTF_ID_FLAGS(func, bpf_list_push_front, KF_IMPLICIT_ARGS)
 BTF_ID_FLAGS(func, bpf_list_push_front_impl)
 BTF_ID_FLAGS(func, bpf_list_push_back, KF_IMPLICIT_ARGS)
+=======
+BTF_ID_FLAGS(func, bpf_obj_new_impl, KF_ACQUIRE | KF_RET_NULL)
+BTF_ID_FLAGS(func, bpf_percpu_obj_new_impl, KF_ACQUIRE | KF_RET_NULL)
+BTF_ID_FLAGS(func, bpf_obj_drop_impl, KF_RELEASE)
+BTF_ID_FLAGS(func, bpf_percpu_obj_drop_impl, KF_RELEASE)
+BTF_ID_FLAGS(func, bpf_refcount_acquire_impl, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
+BTF_ID_FLAGS(func, bpf_list_push_front_impl)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, bpf_list_push_back_impl)
 BTF_ID_FLAGS(func, bpf_list_pop_front, KF_ACQUIRE | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_list_pop_back, KF_ACQUIRE | KF_RET_NULL)
@@ -4720,7 +4854,10 @@ BTF_ID_FLAGS(func, bpf_list_back, KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_task_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_task_release, KF_RELEASE)
 BTF_ID_FLAGS(func, bpf_rbtree_remove, KF_ACQUIRE | KF_RET_NULL)
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, bpf_rbtree_add, KF_IMPLICIT_ARGS)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, bpf_rbtree_add_impl)
 BTF_ID_FLAGS(func, bpf_rbtree_first, KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_rbtree_root, KF_RET_NULL)
@@ -4749,9 +4886,12 @@ BTF_ID_FLAGS(func, bpf_key_put, KF_RELEASE)
 BTF_ID_FLAGS(func, bpf_verify_pkcs7_signature, KF_SLEEPABLE)
 #endif
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_S390
 BTF_ID_FLAGS(func, bpf_get_lowcore)
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_KFUNCS_END(generic_btf_ids)
 
 static const struct btf_kfunc_id_set generic_kfunc_set = {

@@ -487,7 +487,11 @@ static int tas2552_runtime_suspend(struct device *dev)
 	regcache_cache_only(tas2552->regmap, true);
 	regcache_mark_dirty(tas2552->regmap);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(tas2552->enable_gpio, 0);
+=======
+	gpiod_set_value(tas2552->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -496,7 +500,11 @@ static int tas2552_runtime_resume(struct device *dev)
 {
 	struct tas2552_data *tas2552 = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(tas2552->enable_gpio, 1);
+=======
+	gpiod_set_value(tas2552->enable_gpio, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tas2552_sw_shutdown(tas2552, 0);
 
@@ -583,7 +591,11 @@ static int tas2552_component_probe(struct snd_soc_component *component)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(tas2552->enable_gpio, 1);
+=======
+	gpiod_set_value(tas2552->enable_gpio, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = pm_runtime_resume_and_get(component->dev);
 	if (ret < 0) {
@@ -608,7 +620,11 @@ static int tas2552_component_probe(struct snd_soc_component *component)
 
 probe_fail:
 	pm_runtime_put_noidle(component->dev);
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(tas2552->enable_gpio, 0);
+=======
+	gpiod_set_value(tas2552->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regulator_bulk_disable(ARRAY_SIZE(tas2552->supplies),
 					tas2552->supplies);
@@ -621,7 +637,11 @@ static void tas2552_component_remove(struct snd_soc_component *component)
 
 	pm_runtime_put(component->dev);
 
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(tas2552->enable_gpio, 0);
+=======
+	gpiod_set_value(tas2552->enable_gpio, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_PM

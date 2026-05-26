@@ -4,7 +4,10 @@
 
 #include <linux/dma-direction.h>
 #include <linux/hmm.h>
+<<<<<<< HEAD
 #include <linux/memremap.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #define NR_PAGES(order) (1U << (order))
@@ -368,6 +371,7 @@ void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool is_atomic_or_reclaim
 
 int drm_pagemap_reinit(struct drm_pagemap *dpagemap);
 
+<<<<<<< HEAD
 /**
  * drm_pagemap_page_zone_device_data() - Page to zone_device_data
  * @page: Pointer to the page
@@ -388,6 +392,8 @@ static inline struct drm_pagemap_zdd *drm_pagemap_page_zone_device_data(struct p
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
 
 #endif

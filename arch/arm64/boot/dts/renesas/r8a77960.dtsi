@@ -2619,6 +2619,7 @@
 			iommu-map = <0 &ipmmu_hc 0 1>;
 			iommu-map-mask = <0>;
 			status = "disabled";
+<<<<<<< HEAD
 
 			/* PCIe bridge, Root Port */
 			pciec0_rp: pci@0,0 {
@@ -2629,6 +2630,8 @@
 				device_type = "pci";
 				ranges;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		pciec1: pcie@ee800000 {
@@ -2658,6 +2661,7 @@
 			iommu-map = <0 &ipmmu_hc 1 1>;
 			iommu-map-mask = <0>;
 			status = "disabled";
+<<<<<<< HEAD
 
 			/* PCIe bridge, Root Port */
 			pciec1_rp: pci@0,0 {
@@ -2668,6 +2672,8 @@
 				device_type = "pci";
 				ranges;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		imr-lx4@fe860000 {

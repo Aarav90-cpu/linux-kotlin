@@ -3,6 +3,7 @@
 #include <bpf/btf.h>
 #include <test_progs.h>
 
+<<<<<<< HEAD
 /*
  * Only a page is pinned to kernel, so the maximum amount of dynamic data
  * allowed is page_size - sizeof(struct tld_data_u) - static TLD fields.
@@ -11,6 +12,10 @@
 
 #define TLD_FREE_DATA_ON_THREAD_EXIT
 #define TLD_DYN_DATA_SIZE TLD_DYN_DATA_SIZE_MAX
+=======
+#define TLD_FREE_DATA_ON_THREAD_EXIT
+#define TLD_DYN_DATA_SIZE (getpagesize() - 8)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "task_local_data.h"
 
 struct test_tld_struct {
@@ -30,12 +35,21 @@ TLD_DEFINE_KEY(value0_key, "value0", sizeof(int));
  * sequentially. Users of task local data library should not touch
  * library internal.
  */
+<<<<<<< HEAD
 static void reset_tld(__u16 dyn_data_size)
 {
 	if (tld_meta_p) {
 		/* Remove TLDs created by tld_create_key() */
 		tld_meta_p->cnt = 1;
 		tld_meta_p->size = dyn_data_size + 8;
+=======
+static void reset_tld(void)
+{
+	if (TLD_READ_ONCE(tld_meta_p)) {
+		/* Remove TLDs created by tld_create_key() */
+		tld_meta_p->cnt = 1;
+		tld_meta_p->size = TLD_DYN_DATA_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memset(&tld_meta_p->metadata[1], 0,
 		       (TLD_MAX_DATA_CNT - 1) * sizeof(struct tld_metadata));
 	}
@@ -133,7 +147,11 @@ static void test_task_local_data_basic(void)
 	tld_key_t key;
 	int i, err;
 
+<<<<<<< HEAD
 	reset_tld(TLD_DYN_DATA_SIZE_MAX);
+=======
+	reset_tld();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ASSERT_OK(pthread_mutex_init(&global_mutex, NULL), "pthread_mutex_init");
 
@@ -153,6 +171,7 @@ static void test_task_local_data_basic(void)
 
 	/*
 	 * Shouldn't be able to store data exceed a page. Create a TLD just big
+<<<<<<< HEAD
 	 * enough to exceed a page. Data already contains struct tld_data_u,
 	 * value0 and value1 of int type, and value 2 of struct test_tld_struct.
 	 */
@@ -160,6 +179,13 @@ static void test_task_local_data_basic(void)
 						sizeof(struct tld_data_u) -
 						TLD_ROUND_UP(sizeof(int), 8) * 2 -
 						TLD_ROUND_UP(sizeof(struct test_tld_struct), 8));
+=======
+	 * enough to exceed a page. TLDs already created are int value0, int
+	 * value1, and struct test_tld_struct value2.
+	 */
+	key = tld_create_key("value_not_exist",
+			     TLD_PAGE_SIZE - 2 * sizeof(int) - sizeof(struct test_tld_struct) + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT_EQ(tld_key_err_or_zero(key), -E2BIG, "tld_create_key");
 
 	key = tld_create_key("value2", sizeof(struct test_tld_struct));
@@ -247,7 +273,11 @@ static void test_task_local_data_race(void)
 	tld_keys[0] = value0_key;
 
 	for (j = 0; j < 100; j++) {
+<<<<<<< HEAD
 		reset_tld(TLD_DYN_DATA_SIZE_MAX);
+=======
+		reset_tld();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (i = 0; i < TEST_RACE_THREAD_NUM; i++) {
 			/*
@@ -296,6 +326,7 @@ out:
 	test_task_local_data__destroy(skel);
 }
 
+<<<<<<< HEAD
 static void test_task_local_data_dyn_size(__u16 dyn_data_size)
 {
 	LIBBPF_OPTS(bpf_test_run_opts, opts);
@@ -362,14 +393,19 @@ out:
 	test_task_local_data__destroy(skel);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void test_task_local_data(void)
 {
 	if (test__start_subtest("task_local_data_basic"))
 		test_task_local_data_basic();
 	if (test__start_subtest("task_local_data_race"))
 		test_task_local_data_race();
+<<<<<<< HEAD
 	if (test__start_subtest("task_local_data_dyn_size_small"))
 		test_task_local_data_dyn_size(64);
 	if (test__start_subtest("task_local_data_dyn_size_zero"))
 		test_task_local_data_dyn_size(0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

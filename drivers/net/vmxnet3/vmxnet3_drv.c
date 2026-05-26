@@ -2268,10 +2268,17 @@ vmxnet3_rq_create(struct vmxnet3_rx_queue *rq, struct vmxnet3_adapter *adapter)
 		rq->data_ring.base =
 			dma_alloc_coherent(&adapter->pdev->dev, sz,
 					   &rq->data_ring.basePA,
+<<<<<<< HEAD
 					   GFP_KERNEL | __GFP_NOWARN);
 		if (!rq->data_ring.base) {
 			netdev_err(adapter->netdev,
 				   "failed to allocate %zu bytes, rx data ring will be disabled\n", sz);
+=======
+					   GFP_KERNEL);
+		if (!rq->data_ring.base) {
+			netdev_err(adapter->netdev,
+				   "rx data ring will be disabled\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			adapter->rxdataring_enabled = false;
 		}
 	} else {

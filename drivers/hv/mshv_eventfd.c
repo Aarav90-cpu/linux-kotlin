@@ -733,6 +733,7 @@ static int mshv_assign_ioeventfd(struct mshv_partition *pt,
 	ret = mshv_register_doorbell(pt->pt_id, ioeventfd_mmio_write,
 				     (void *)pt, p->iovntfd_addr,
 				     p->iovntfd_datamatch, doorbell_flags);
+<<<<<<< HEAD
 
 	trace_mshv_assign_ioeventfd(pt->pt_id, p->iovntfd_addr,
 				    p->iovntfd_length,
@@ -741,6 +742,8 @@ static int mshv_assign_ioeventfd(struct mshv_partition *pt,
 				    p->iovntfd_eventfd,
 				    ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto unlock_fail;
 
@@ -788,12 +791,15 @@ static int mshv_deassign_ioeventfd(struct mshv_partition *pt,
 		    p->iovntfd_datamatch != args->datamatch)
 			continue;
 
+<<<<<<< HEAD
 		trace_mshv_deassign_ioeventfd(pt->pt_id, p->iovntfd_addr,
 					      p->iovntfd_length,
 					      p->iovntfd_datamatch,
 					      p->iovntfd_wildcard,
 					      p->iovntfd_eventfd);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hlist_del_rcu(&p->iovntfd_hnode);
 		synchronize_rcu();
 		ioeventfd_release(p, pt->pt_id);

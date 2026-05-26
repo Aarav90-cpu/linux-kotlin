@@ -36,6 +36,11 @@
 #include <linux/string_helpers.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
+=======
+#include "dev-sync-probe.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GPIO_VIRTUSER_NAME_BUF_LEN 32
 
 static DEFINE_IDA(gpio_virtuser_ida);
@@ -976,7 +981,11 @@ static struct platform_driver gpio_virtuser_driver = {
 };
 
 struct gpio_virtuser_device {
+<<<<<<< HEAD
 	struct platform_device *pdev;
+=======
+	struct dev_sync_probe_data probe_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct config_group group;
 
 	int id;
@@ -1000,7 +1009,11 @@ gpio_virtuser_device_is_live(struct gpio_virtuser_device *dev)
 {
 	lockdep_assert_held(&dev->lock);
 
+<<<<<<< HEAD
 	return !!dev->pdev;
+=======
+	return !!dev->probe_data.pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct gpio_virtuser_lookup {
@@ -1340,7 +1353,11 @@ gpio_virtuser_device_config_dev_name_show(struct config_item *item,
 
 	guard(mutex)(&dev->lock);
 
+<<<<<<< HEAD
 	pdev = dev->pdev;
+=======
+	pdev = dev->probe_data.pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pdev)
 		return sprintf(page, "%s\n", dev_name(&pdev->dev));
 
@@ -1448,7 +1465,10 @@ static int
 gpio_virtuser_device_activate(struct gpio_virtuser_device *dev)
 {
 	struct platform_device_info pdevinfo;
+<<<<<<< HEAD
 	struct platform_device *pdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fwnode_handle *swnode;
 	int ret;
 
@@ -1470,6 +1490,7 @@ gpio_virtuser_device_activate(struct gpio_virtuser_device *dev)
 	if (ret)
 		goto err_remove_swnode;
 
+<<<<<<< HEAD
 	pdev = platform_device_register_full(&pdevinfo);
 	if (IS_ERR(pdev)) {
 		ret = PTR_ERR(pdev);
@@ -1490,6 +1511,14 @@ gpio_virtuser_device_activate(struct gpio_virtuser_device *dev)
 
 err_unregister_pdev:
 	platform_device_unregister(pdev);
+=======
+	ret = dev_sync_probe_register(&dev->probe_data, &pdevinfo);
+	if (ret)
+		goto err_remove_lookup_table;
+
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_remove_lookup_table:
 	gpio_virtuser_remove_lookup_table(dev);
 err_remove_swnode:
@@ -1505,9 +1534,14 @@ gpio_virtuser_device_deactivate(struct gpio_virtuser_device *dev)
 
 	lockdep_assert_held(&dev->lock);
 
+<<<<<<< HEAD
 	swnode = dev_fwnode(&dev->pdev->dev);
 	platform_device_unregister(dev->pdev);
 	dev->pdev = NULL;
+=======
+	swnode = dev_fwnode(&dev->probe_data.pdev->dev);
+	dev_sync_probe_unregister(&dev->probe_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio_virtuser_remove_lookup_table(dev);
 	fwnode_remove_software_node(swnode);
 }
@@ -1737,6 +1771,10 @@ gpio_virtuser_config_make_device_group(struct config_group *group,
 				    &gpio_virtuser_device_config_group_type);
 	mutex_init(&dev->lock);
 	INIT_LIST_HEAD(&dev->lookup_list);
+<<<<<<< HEAD
+=======
+	dev_sync_probe_init(&dev->probe_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return &no_free_ptr(dev)->group;
 }

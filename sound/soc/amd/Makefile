@@ -17,4 +17,8 @@ obj-$(CONFIG_SND_SOC_AMD_ACP5x) += vangogh/
 obj-$(CONFIG_SND_SOC_AMD_ACP6x) += yc/
 obj-$(CONFIG_SND_AMD_ACP_CONFIG) += acp/
 obj-$(CONFIG_SND_AMD_ACP_CONFIG) += snd-acp-config.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SND_SOC_AMD_RPL_ACP6x) += rpl/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_SND_SOC_AMD_PS) += ps/

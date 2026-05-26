@@ -245,7 +245,10 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
 {
 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
 	static const u8 ext_capa_sta[] = {
+<<<<<<< HEAD
 		[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
 		[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
 	};
@@ -439,9 +442,12 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
 	if (phy->chip_cap & MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN)
 		vif->driver_flags |= IEEE80211_VIF_SUPPORTS_CQM_RSSI;
 
+<<<<<<< HEAD
 	INIT_WORK(&mvif->csa_work, mt7925_csa_work);
 	timer_setup(&mvif->csa_timer, mt792x_csa_timer, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	mt792x_mutex_release(dev);
 
@@ -461,6 +467,7 @@ void mt7925_roc_abort_sync(struct mt792x_dev *dev)
 {
 	struct mt792x_phy *phy = &dev->phy;
 
+<<<<<<< HEAD
 	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
 		return;
 
@@ -471,6 +478,14 @@ void mt7925_roc_abort_sync(struct mt792x_dev *dev)
 	ieee80211_iterate_interfaces(mt76_hw(dev),
 				     IEEE80211_IFACE_ITER_RESUME_ALL,
 				     mt7925_roc_iter, (void *)phy);
+=======
+	timer_delete_sync(&phy->roc_timer);
+	cancel_work_sync(&phy->roc_work);
+	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+		ieee80211_iterate_interfaces(mt76_hw(dev),
+					     IEEE80211_IFACE_ITER_RESUME_ALL,
+					     mt7925_roc_iter, (void *)phy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
 
@@ -549,7 +564,11 @@ static int mt7925_set_mlo_roc(struct mt792x_phy *phy,
 
 	phy->roc_grant = false;
 
+<<<<<<< HEAD
 	err = mt7925_mcu_set_mlo_roc(phy, mconf, sel_links, 5, ++phy->roc_token_id);
+=======
+	err = mt7925_mcu_set_mlo_roc(mconf, sel_links, 5, ++phy->roc_token_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0) {
 		clear_bit(MT76_STATE_ROC, &phy->mt76->state);
 		goto out;
@@ -594,8 +613,12 @@ static int mt7925_cancel_remain_on_channel(struct ieee80211_hw *hw,
 
 static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 			       struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+<<<<<<< HEAD
 			       struct ieee80211_key_conf *key, int link_id,
 			       struct mt792x_link_sta *mlink)
+=======
+			       struct ieee80211_key_conf *key, int link_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
@@ -604,6 +627,10 @@ static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 	struct ieee80211_bss_conf *link_conf;
 	struct ieee80211_link_sta *link_sta;
 	int idx = key->keyidx, err = 0;
+<<<<<<< HEAD
+=======
+	struct mt792x_link_sta *mlink;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mt792x_bss_conf *mconf;
 	struct mt76_wcid *wcid;
 	u8 *wcid_keyidx;
@@ -611,6 +638,10 @@ static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 	link_conf = mt792x_vif_to_bss_conf(vif, link_id);
 	link_sta = sta ? mt792x_sta_to_link_sta(vif, sta, link_id) : NULL;
 	mconf = mt792x_vif_to_link(mvif, link_id);
+<<<<<<< HEAD
+=======
+	mlink = mt792x_sta_to_link(msta, link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wcid = &mlink->wcid;
 	wcid_keyidx = &wcid->hw_key_idx;
 
@@ -678,7 +709,10 @@ static int mt7925_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
 	struct mt792x_sta *msta = sta ? (struct mt792x_sta *)sta->drv_priv :
 				  &mvif->sta;
+<<<<<<< HEAD
 	struct mt792x_link_sta *mlink;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	/* The hardware does not support per-STA RX GTK, fallback
@@ -700,16 +734,24 @@ static int mt7925_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 		add = key->link_id != -1 ? BIT(key->link_id) : msta->valid_links;
 
 		for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
+<<<<<<< HEAD
 			mlink = mt792x_sta_to_link(msta, link_id);
 			err = mt7925_set_link_key(hw, cmd, vif, sta, key, link_id,
 						  mlink);
+=======
+			err = mt7925_set_link_key(hw, cmd, vif, sta, key, link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (err < 0)
 				break;
 		}
 	} else {
+<<<<<<< HEAD
 		mlink = mt792x_sta_to_link(msta, vif->bss_conf.link_id);
 		err = mt7925_set_link_key(hw, cmd, vif, sta, key,
 					  vif->bss_conf.link_id, mlink);
+=======
+		err = mt7925_set_link_key(hw, cmd, vif, sta, key, vif->bss_conf.link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mt792x_mutex_release(dev);
@@ -854,14 +896,19 @@ mt7925_get_rates_table(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 
 static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 				   struct ieee80211_vif *vif,
+<<<<<<< HEAD
 				   struct ieee80211_link_sta *link_sta,
 				   struct mt792x_link_sta *mlink)
+=======
+				   struct ieee80211_link_sta *link_sta)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
 	struct ieee80211_bss_conf *link_conf;
 	struct mt792x_bss_conf *mconf;
 	u8 link_id = link_sta->link_id;
+<<<<<<< HEAD
 	bool wcid_published = false;
 	struct mt792x_sta *msta;
 	struct mt76_wcid *wcid;
@@ -872,6 +919,15 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 
 	if (WARN_ON_ONCE(!mlink))
 		return -EINVAL;
+=======
+	struct mt792x_link_sta *mlink;
+	struct mt792x_sta *msta;
+	struct mt76_wcid *wcid;
+	int ret, idx;
+
+	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+	mlink = mt792x_sta_to_link(msta, link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1);
 	if (idx < 0)
@@ -890,15 +946,23 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 	wcid = &mlink->wcid;
 	ewma_signal_init(&wcid->rssi);
 	rcu_assign_pointer(dev->mt76.wcid[wcid->idx], wcid);
+<<<<<<< HEAD
 	wcid_published = true;
+=======
+	mt76_wcid_init(wcid, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ewma_avg_signal_init(&mlink->avg_ack_signal);
 	memset(mlink->airtime_ac, 0,
 	       sizeof(msta->deflink.airtime_ac));
 
 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
 	if (ret)
+<<<<<<< HEAD
 		goto out_wcid;
 	pm_woken = true;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt7925_mac_wtbl_update(dev, idx,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
@@ -907,6 +971,7 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 
 	/* should update bss info before STA add */
 	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
+<<<<<<< HEAD
 		struct mt792x_link_sta *mlink_bc;
 
 		mlink_bc = mt792x_sta_to_link(&mvif->sta, mconf->link_id);
@@ -926,10 +991,19 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 			if (ret)
 				goto out_pm;
 		}
+=======
+		if (ieee80211_vif_is_mld(vif))
+			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
+						link_conf, link_sta, link_sta != mlink->pri_link);
+		else
+			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
+						link_conf, link_sta, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ieee80211_vif_is_mld(vif) &&
 	    link_sta == mlink->pri_link) {
+<<<<<<< HEAD
 		ret = mt7925_mcu_sta_update(dev, link_sta, vif,
 					    mlink, true,
 					    MT76_STA_INFO_STATE_NONE);
@@ -969,11 +1043,34 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
 					    MT76_STA_INFO_STATE_NONE);
 		if (ret)
 			goto out_pm;
+=======
+		ret = mt7925_mcu_sta_update(dev, link_sta, vif, true,
+					    MT76_STA_INFO_STATE_NONE);
+		if (ret)
+			return ret;
+	} else if (ieee80211_vif_is_mld(vif) &&
+		   link_sta != mlink->pri_link) {
+		ret = mt7925_mcu_sta_update(dev, mlink->pri_link, vif,
+					    true, MT76_STA_INFO_STATE_ASSOC);
+		if (ret)
+			return ret;
+
+		ret = mt7925_mcu_sta_update(dev, link_sta, vif, true,
+					    MT76_STA_INFO_STATE_ASSOC);
+		if (ret)
+			return ret;
+	} else {
+		ret = mt7925_mcu_sta_update(dev, link_sta, vif, true,
+					    MT76_STA_INFO_STATE_NONE);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
 
 	return 0;
+<<<<<<< HEAD
 
 out_pm:
 	if (pm_woken)
@@ -1026,6 +1123,8 @@ mt7925_mac_sta_unwind_links_host(struct mt792x_dev *dev,
 		if (mlink != &msta->deflink)
 			kfree_rcu(mlink, rcu_head);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -1033,13 +1132,17 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
 			 struct ieee80211_sta *sta, unsigned long new_links)
 {
 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
+<<<<<<< HEAD
 	unsigned long added_links = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int link_id;
 	int err = 0;
 
 	for_each_set_bit(link_id, &new_links, IEEE80211_MLD_MAX_NUM_LINKS) {
 		struct ieee80211_link_sta *link_sta;
 		struct mt792x_link_sta *mlink;
+<<<<<<< HEAD
 		bool is_deflink = false;
 
 		if (msta->deflink_id == IEEE80211_LINK_UNSPECIFIED) {
@@ -1047,17 +1150,31 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
 			is_deflink = true;
 		} else {
 			mlink = kzalloc(sizeof(*mlink), GFP_KERNEL);
+=======
+
+		if (msta->deflink_id == IEEE80211_LINK_UNSPECIFIED) {
+			mlink = &msta->deflink;
+			msta->deflink_id = link_id;
+		} else {
+			mlink = devm_kzalloc(dev->mt76.dev, sizeof(*mlink), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!mlink) {
 				err = -ENOMEM;
 				break;
 			}
 		}
 
+<<<<<<< HEAD
+=======
+		msta->valid_links |= BIT(link_id);
+		rcu_assign_pointer(msta->link[link_id], mlink);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mlink->sta = msta;
 		mlink->pri_link = &sta->deflink;
 		mlink->wcid.def_wcid = &msta->deflink.wcid;
 
 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+<<<<<<< HEAD
 		err = mt7925_mac_link_sta_add(&dev->mt76, vif, link_sta, mlink);
 		if (err) {
 			if (!is_deflink)
@@ -1077,6 +1194,11 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
 	if (err && added_links)
 		mt7925_mac_sta_unwind_links_host(dev, sta, added_links);
 
+=======
+		mt7925_mac_link_sta_add(&dev->mt76, vif, link_sta);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -1098,8 +1220,12 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 
 		err = mt7925_mac_sta_add_links(dev, vif, sta, sta->valid_links);
 	} else {
+<<<<<<< HEAD
 		err = mt7925_mac_link_sta_add(mdev, vif, &sta->deflink,
 					      &msta->deflink);
+=======
+		err = mt7925_mac_link_sta_add(mdev, vif, &sta->deflink);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return err;
@@ -1148,11 +1274,19 @@ static void mt7925_mac_link_sta_assoc(struct mt76_dev *mdev,
 	struct mt792x_link_sta *mlink;
 	struct mt792x_sta *msta;
 
+<<<<<<< HEAD
 	mt792x_mutex_acquire(dev);
 
 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
 	mlink = mt792x_sta_to_link(msta, link_sta->link_id);
 
+=======
+	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+	mlink = mt792x_sta_to_link(msta, link_sta->link_id);
+
+	mt792x_mutex_acquire(dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ieee80211_vif_is_mld(vif)) {
 		link_conf = mt792x_vif_to_bss_conf(vif, msta->deflink_id);
 	} else {
@@ -1173,8 +1307,12 @@ static void mt7925_mac_link_sta_assoc(struct mt76_dev *mdev,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
 	memset(mlink->airtime_ac, 0, sizeof(mlink->airtime_ac));
 
+<<<<<<< HEAD
 	mt7925_mcu_sta_update(dev, link_sta, vif, mlink, true,
 			      MT76_STA_INFO_STATE_ASSOC);
+=======
+	mt7925_mcu_sta_update(dev, link_sta, vif, true, MT76_STA_INFO_STATE_ASSOC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt792x_mutex_release(dev);
 }
@@ -1202,6 +1340,7 @@ EXPORT_SYMBOL_GPL(mt7925_mac_sta_event);
 
 static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
 				       struct ieee80211_vif *vif,
+<<<<<<< HEAD
 				       struct ieee80211_link_sta *link_sta,
 				       struct mt792x_link_sta *mlink)
 {
@@ -1217,6 +1356,25 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
 
 	mt7925_mcu_sta_update(dev, link_sta, vif, mlink, false,
+=======
+				       struct ieee80211_link_sta *link_sta)
+{
+	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+	struct ieee80211_bss_conf *link_conf;
+	u8 link_id = link_sta->link_id;
+	struct mt792x_link_sta *mlink;
+	struct mt792x_sta *msta;
+
+	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+	mlink = mt792x_sta_to_link(msta, link_id);
+
+	mt7925_roc_abort_sync(dev);
+
+	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
+	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+
+	mt7925_mcu_sta_update(dev, link_sta, vif, false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      MT76_STA_INFO_STATE_NONE);
 	mt7925_mac_wtbl_update(dev, mlink->wcid.idx,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
@@ -1240,10 +1398,13 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
 		list_del_init(&mlink->wcid.poll_list);
 	spin_unlock_bh(&mdev->sta_poll_lock);
 
+<<<<<<< HEAD
 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
 	mt76_wcid_cleanup(mdev, wcid);
 	mt76_wcid_mask_clear(mdev->wcid_mask, idx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
 }
 
@@ -1253,6 +1414,10 @@ mt7925_mac_sta_remove_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
 {
 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
 	struct mt76_dev *mdev = &dev->mt76;
+<<<<<<< HEAD
+=======
+	struct mt76_wcid *wcid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int link_id;
 
 	/* clean up bss before starec */
@@ -1291,19 +1456,37 @@ mt7925_mac_sta_remove_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
 		if (!link_sta)
 			continue;
 
+<<<<<<< HEAD
 		mlink = rcu_replace_pointer(msta->link[link_id], NULL,
 					    lockdep_is_held(&mdev->mutex));
 		if (!mlink)
 			continue;
 
+=======
+		mlink = mt792x_sta_to_link(msta, link_id);
+		if (!mlink)
+			continue;
+
+		mt7925_mac_link_sta_remove(&dev->mt76, vif, link_sta);
+
+		wcid = &mlink->wcid;
+		rcu_assign_pointer(msta->link[link_id], NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		msta->valid_links &= ~BIT(link_id);
 		mlink->sta = NULL;
 		mlink->pri_link = NULL;
 
+<<<<<<< HEAD
 		mt7925_mac_link_sta_remove(&dev->mt76, vif, link_sta, mlink);
 
 		if (mlink != &msta->deflink)
 			kfree_rcu(mlink, rcu_head);
+=======
+		if (link_sta != mlink->pri_link) {
+			mt76_wcid_cleanup(mdev, wcid);
+			mt76_wcid_mask_clear(mdev->wcid_mask, wcid->idx);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (msta->deflink_id == link_id)
 			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
@@ -1440,18 +1623,24 @@ void mt7925_mlo_pm_work(struct work_struct *work)
 void mt7925_scan_work(struct work_struct *work)
 {
 	struct mt792x_phy *phy;
+<<<<<<< HEAD
 	struct mt792x_dev *dev;
 	struct mt76_connac_pm *pm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
 						scan_work.work);
 
+<<<<<<< HEAD
 	dev = phy->dev;
 	pm = &dev->pm;
 
 	if (pm->suspended)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (true) {
 		struct sk_buff *skb;
 		struct tlv *tlv;
@@ -1669,10 +1858,15 @@ static void mt7925_sta_set_decap_offload(struct ieee80211_hw *hw,
 	valid = ieee80211_vif_is_mld(vif) ? mvif->valid_links : BIT(0);
 
 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+<<<<<<< HEAD
 		struct mt792x_bss_conf *mconf;
 		struct mt792x_link_sta *mlink;
 
 		mconf = mt792x_vif_to_link(mvif, i);
+=======
+		struct mt792x_link_sta *mlink;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mlink = mt792x_sta_to_link(msta, i);
 
 		if (enabled)
@@ -1683,7 +1877,11 @@ static void mt7925_sta_set_decap_offload(struct ieee80211_hw *hw,
 		if (!mlink->wcid.sta)
 			continue;
 
+<<<<<<< HEAD
 		mt7925_mcu_wtbl_update_hdr_trans(dev, vif, mconf, mlink);
+=======
+		mt7925_mcu_wtbl_update_hdr_trans(dev, vif, sta, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mt792x_mutex_release(dev);
@@ -1843,8 +2041,12 @@ mt7925_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	err = mt7925_mcu_sta_update(dev, NULL, vif,
 				    &mvif->sta.deflink, true,
+=======
+	err = mt7925_mcu_sta_update(dev, NULL, vif, true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    MT76_STA_INFO_STATE_NONE);
 out:
 	mt792x_mutex_release(dev);
@@ -1877,10 +2079,13 @@ static int
 mt7925_add_chanctx(struct ieee80211_hw *hw,
 		   struct ieee80211_chanctx_conf *ctx)
 {
+<<<<<<< HEAD
 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
 
 	dev->new_ctx = ctx;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1888,11 +2093,14 @@ static void
 mt7925_remove_chanctx(struct ieee80211_hw *hw,
 		      struct ieee80211_chanctx_conf *ctx)
 {
+<<<<<<< HEAD
 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
 
 	if (dev->new_ctx == ctx)
 		dev->new_ctx = NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -1987,8 +2195,12 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
 	mt792x_mutex_acquire(dev);
 
 	if (changed & BSS_CHANGED_ASSOC) {
+<<<<<<< HEAD
 		mt7925_mcu_sta_update(dev, NULL, vif,
 				      &mvif->sta.deflink, true,
+=======
+		mt7925_mcu_sta_update(dev, NULL, vif, true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      MT76_STA_INFO_STATE_ASSOC);
 		mt7925_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
 
@@ -2032,8 +2244,15 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
 	struct mt792x_phy *phy = mt792x_hw_phy(hw);
 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
 	struct mt792x_bss_conf *mconf;
+<<<<<<< HEAD
 
 	mconf = mt792x_vif_to_link(mvif, info->link_id);
+=======
+	struct ieee80211_bss_conf *link_conf;
+
+	mconf = mt792x_vif_to_link(mvif, info->link_id);
+	link_conf = mt792x_vif_to_bss_conf(vif, mconf->link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt792x_mutex_acquire(dev);
 
@@ -2075,6 +2294,13 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
 		mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS;
 	}
 
+<<<<<<< HEAD
+=======
+	if (changed & IEEE80211_CHANCTX_CHANGE_PUNCTURING)
+		mt7925_mcu_set_eht_pp(mvif->phy->mt76, &mconf->mt76,
+				      link_conf, NULL);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (changed & BSS_CHANGED_CQM)
 		mt7925_mcu_set_rssimonitor(dev, vif);
 
@@ -2276,11 +2502,14 @@ static void mt7925_unassign_vif_chanctx(struct ieee80211_hw *hw,
 	mctx->bss_conf = NULL;
 	mconf->mt76.ctx = NULL;
 	mutex_unlock(&dev->mt76.mutex);
+<<<<<<< HEAD
 
 	if (link_conf->csa_active) {
 		timer_delete_sync(&mvif->csa_timer);
 		cancel_work_sync(&mvif->csa_work);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
@@ -2295,6 +2524,7 @@ static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
 	wiphy_rfkill_set_hw_state(hw->wiphy, ret == 0);
 }
 
+<<<<<<< HEAD
 static int mt7925_switch_vif_chanctx(struct ieee80211_hw *hw,
 				     struct ieee80211_vif_chanctx_switch *vifs,
 				     int n_vifs,
@@ -2410,6 +2640,8 @@ static void mt7925_channel_switch_rx_beacon(struct ieee80211_hw *hw,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct ieee80211_ops mt7925_ops = {
 	.tx = mt792x_tx,
 	.start = mt7925_start,
@@ -2473,12 +2705,15 @@ const struct ieee80211_ops mt7925_ops = {
 	.change_vif_links = mt7925_change_vif_links,
 	.change_sta_links = mt7925_change_sta_links,
 	.rfkill_poll = mt7925_rfkill_poll,
+<<<<<<< HEAD
 
 	.switch_vif_chanctx = mt7925_switch_vif_chanctx,
 	.pre_channel_switch = mt7925_pre_channel_switch,
 	.channel_switch = mt7925_channel_switch,
 	.abort_channel_switch = mt7925_abort_channel_switch,
 	.channel_switch_rx_beacon = mt7925_channel_switch_rx_beacon,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL_GPL(mt7925_ops);
 

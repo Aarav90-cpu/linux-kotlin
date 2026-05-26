@@ -36,14 +36,24 @@
 #include <net/ip.h>
 #include <net/addrconf.h>
 #include <net/ipv6.h>
+<<<<<<< HEAD
 #include <linux/nfs.h>
 
 #include "lockd.h"
+=======
+#include <linux/lockd/lockd.h>
+#include <linux/nfs.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "netns.h"
 #include "procfs.h"
 #include "netlink.h"
 
 #define NLMDBG_FACILITY		NLMDBG_SVC
+<<<<<<< HEAD
+=======
+#define LOCKD_BUFSIZE		(1024 + NLMSVC_XDRSIZE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct svc_program	nlmsvc_program;
 
@@ -318,7 +328,10 @@ static struct notifier_block lockd_inet6addr_notifier = {
 static int lockd_get(void)
 {
 	struct svc_serv *serv;
+<<<<<<< HEAD
 	unsigned int bufsize;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int error;
 
 	if (nlmsvc_serv) {
@@ -334,6 +347,7 @@ static int lockd_get(void)
 		printk(KERN_WARNING
 			"lockd_up: no pid, %d users??\n", nlmsvc_users);
 
+<<<<<<< HEAD
 #ifdef CONFIG_LOCKD_V4
 	bufsize = 1024 + max3(nlmsvc_version1.vs_xdrsize,
 			      nlmsvc_version3.vs_xdrsize,
@@ -343,6 +357,9 @@ static int lockd_get(void)
 			     nlmsvc_version3.vs_xdrsize);
 #endif
 	serv = svc_create(&nlmsvc_program, bufsize, lockd);
+=======
+	serv = svc_create(&nlmsvc_program, LOCKD_BUFSIZE, lockd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!serv) {
 		printk(KERN_WARNING "lockd_up: create service failed\n");
 		return -ENOMEM;
@@ -648,7 +665,11 @@ module_exit(exit_nlm);
  *  %0: Processing complete; do not send a Reply
  *  %1: Processing complete; send Reply in rqstp->rq_res
  */
+<<<<<<< HEAD
 int nlmsvc_dispatch(struct svc_rqst *rqstp)
+=======
+static int nlmsvc_dispatch(struct svc_rqst *rqstp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct svc_procedure *procp = rqstp->rq_procinfo;
 	__be32 *statp = rqstp->rq_accept_statp;
@@ -679,6 +700,43 @@ out_encode_err:
 /*
  * Define NLM program and procedures
  */
+<<<<<<< HEAD
+=======
+static DEFINE_PER_CPU_ALIGNED(unsigned long, nlmsvc_version1_count[17]);
+static const struct svc_version	nlmsvc_version1 = {
+	.vs_vers	= 1,
+	.vs_nproc	= 17,
+	.vs_proc	= nlmsvc_procedures,
+	.vs_count	= nlmsvc_version1_count,
+	.vs_dispatch	= nlmsvc_dispatch,
+	.vs_xdrsize	= NLMSVC_XDRSIZE,
+};
+
+static DEFINE_PER_CPU_ALIGNED(unsigned long,
+			      nlmsvc_version3_count[ARRAY_SIZE(nlmsvc_procedures)]);
+static const struct svc_version	nlmsvc_version3 = {
+	.vs_vers	= 3,
+	.vs_nproc	= ARRAY_SIZE(nlmsvc_procedures),
+	.vs_proc	= nlmsvc_procedures,
+	.vs_count	= nlmsvc_version3_count,
+	.vs_dispatch	= nlmsvc_dispatch,
+	.vs_xdrsize	= NLMSVC_XDRSIZE,
+};
+
+#ifdef CONFIG_LOCKD_V4
+static DEFINE_PER_CPU_ALIGNED(unsigned long,
+			      nlmsvc_version4_count[ARRAY_SIZE(nlmsvc_procedures4)]);
+static const struct svc_version	nlmsvc_version4 = {
+	.vs_vers	= 4,
+	.vs_nproc	= ARRAY_SIZE(nlmsvc_procedures4),
+	.vs_proc	= nlmsvc_procedures4,
+	.vs_count	= nlmsvc_version4_count,
+	.vs_dispatch	= nlmsvc_dispatch,
+	.vs_xdrsize	= NLMSVC_XDRSIZE,
+};
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct svc_version *nlmsvc_version[] = {
 	[1] = &nlmsvc_version1,
 	[3] = &nlmsvc_version3,

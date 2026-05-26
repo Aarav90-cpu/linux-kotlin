@@ -144,8 +144,13 @@ struct adfs_discmap {
 /* Inode stuff */
 struct inode *adfs_iget(struct super_block *sb, struct object_info *obj);
 int adfs_write_inode(struct inode *inode, struct writeback_control *wbc);
+<<<<<<< HEAD
 int adfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 		struct iattr *attr);
+=======
+int adfs_notify_change(struct mnt_idmap *idmap, struct dentry *dentry,
+		       struct iattr *attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* map.c */
 int adfs_map_lookup(struct super_block *sb, u32 frag_id, unsigned int offset);

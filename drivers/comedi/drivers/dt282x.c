@@ -1064,12 +1064,16 @@ static int dt282x_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	struct comedi_subdevice *s;
 	int ret;
 
+<<<<<<< HEAD
 	/*
 	 * Although it has only 16 bytes (8 16-bit registers), it needs to
 	 * start on a 32-byte boundary in range 0x200 to 0x3E0.
 	 */
 	ret = comedi_check_request_region(dev, it->options[0], 0x10,
 					  0x200, 0x3ff, 32);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

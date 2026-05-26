@@ -41,7 +41,10 @@ Hardware Monitoring Kernel Drivers
    adt7475
    aht10
    amc6821
+<<<<<<< HEAD
    aps-379
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    aquacomputer_d5next
    asb100
    asc7621
@@ -53,6 +56,10 @@ Hardware Monitoring Kernel Drivers
    bcm54140
    bel-pfe
    bpa-rs600
+<<<<<<< HEAD
+=======
+   bt1-pvt
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    cgbc-hwmon
    chipcap2
    coretemp
@@ -111,7 +118,10 @@ Hardware Monitoring Kernel Drivers
    kbatt
    kfan
    lan966x
+<<<<<<< HEAD
    lattepanda-sigma-ec
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    lineage-pem
    lm25066
    lm63
@@ -175,7 +185,10 @@ Hardware Monitoring Kernel Drivers
    mc33xs2410_hwmon
    mc34vr500
    mcp3021
+<<<<<<< HEAD
    mcp9982
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    menf21bmc
    mlxreg-fan
    mp2856
@@ -284,5 +297,8 @@ Hardware Monitoring Kernel Drivers
    xdp710
    xdpe12284
    xdpe152c4
+<<<<<<< HEAD
    yogafan
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    zl6100

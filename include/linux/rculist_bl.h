@@ -8,18 +8,22 @@
 #include <linux/list_bl.h>
 #include <linux/rcupdate.h>
 
+<<<<<<< HEAD
 /* return the first ptr or next element in an RCU protected list */
 #define hlist_bl_first_rcu(head)	\
 	(*((struct hlist_bl_node __rcu **)(&(head)->first)))
 #define hlist_bl_next_rcu(node)	\
 	(*((struct hlist_bl_node __rcu **)(&(node)->next)))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void hlist_bl_set_first_rcu(struct hlist_bl_head *h,
 					struct hlist_bl_node *n)
 {
 	LIST_BL_BUG_ON((unsigned long)n & LIST_BL_LOCKMASK);
 	LIST_BL_BUG_ON(((unsigned long)h->first & LIST_BL_LOCKMASK) !=
 							LIST_BL_LOCKMASK);
+<<<<<<< HEAD
 	rcu_assign_pointer(hlist_bl_first_rcu(h),
 		(struct hlist_bl_node *)((unsigned long)n | LIST_BL_LOCKMASK));
 }
@@ -33,6 +37,17 @@ static inline void hlist_bl_set_first_rcu(struct hlist_bl_head *h,
 					      hlist_bl_is_locked(__head)) & \
 					      ~LIST_BL_LOCKMASK);	\
 })
+=======
+	rcu_assign_pointer(h->first,
+		(struct hlist_bl_node *)((unsigned long)n | LIST_BL_LOCKMASK));
+}
+
+static inline struct hlist_bl_node *hlist_bl_first_rcu(struct hlist_bl_head *h)
+{
+	return (struct hlist_bl_node *)
+		((unsigned long)rcu_dereference_check(h->first, hlist_bl_is_locked(h)) & ~LIST_BL_LOCKMASK);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * hlist_bl_del_rcu - deletes entry from hash list without re-initialization
@@ -83,7 +98,11 @@ static inline void hlist_bl_add_head_rcu(struct hlist_bl_node *n,
 {
 	struct hlist_bl_node *first;
 
+<<<<<<< HEAD
 	/* don't need hlist_bl_first_rcu* because we're under lock */
+=======
+	/* don't need hlist_bl_first_rcu because we're under lock */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	first = hlist_bl_first(h);
 
 	n->next = first;
@@ -103,6 +122,7 @@ static inline void hlist_bl_add_head_rcu(struct hlist_bl_node *n,
  *
  */
 #define hlist_bl_for_each_entry_rcu(tpos, pos, head, member)		\
+<<<<<<< HEAD
 	for (pos = hlist_bl_first_rcu_dereference(head);		\
 		pos &&							\
 		({ tpos = hlist_bl_entry(pos, typeof(*tpos), member); 1; }); \
@@ -128,5 +148,11 @@ static inline void hlist_bl_add_head_rcu(struct hlist_bl_node *n,
 	     pos &&							\
 	     ({ tpos = hlist_bl_entry(pos, typeof(*tpos), member); 1; }); \
 	     pos = rcu_dereference_raw(hlist_bl_next_rcu(pos)))
+=======
+	for (pos = hlist_bl_first_rcu(head);				\
+		pos &&							\
+		({ tpos = hlist_bl_entry(pos, typeof(*tpos), member); 1; }); \
+		pos = rcu_dereference_raw(pos->next))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

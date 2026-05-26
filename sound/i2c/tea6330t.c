@@ -51,7 +51,10 @@ int snd_tea6330t_detect(struct snd_i2c_bus *bus, int equalizer)
 	snd_i2c_unlock(bus);
 	return res;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(snd_tea6330t_detect);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if 0
 static void snd_tea6330t_set(struct tea6330t *tea,
@@ -356,6 +359,7 @@ int snd_tea6330t_update_mixer(struct snd_card *card,
       	snd_i2c_device_free(device);
       	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(snd_tea6330t_update_mixer);
 
 int snd_tea6330t_restore_mixer(struct snd_i2c_bus *bus)
@@ -395,3 +399,8 @@ unlock:
 	return err;
 }
 EXPORT_SYMBOL(snd_tea6330t_restore_mixer);
+=======
+
+EXPORT_SYMBOL(snd_tea6330t_detect);
+EXPORT_SYMBOL(snd_tea6330t_update_mixer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

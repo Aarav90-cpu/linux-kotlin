@@ -52,7 +52,11 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
 struct memory_dev_type *mt_find_alloc_memory_type(int adist,
 						  struct list_head *memory_types);
 void mt_put_memory_types(struct list_head *memory_types);
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int next_demotion_node(int node, const nodemask_t *allowed_mask);
 void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
 bool node_is_toptier(int node);

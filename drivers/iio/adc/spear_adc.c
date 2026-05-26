@@ -82,7 +82,11 @@ struct spear_adc_state {
 	 * of register writes, then a wait for a completion callback,
 	 * and finally a register read, during which userspace could issue
 	 * another read request. This lock protects a read access from
+<<<<<<< HEAD
 	 * occurring before another one has finished.
+=======
+	 * ocurring before another one has finished.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	struct mutex lock;
 	u32 current_clk;

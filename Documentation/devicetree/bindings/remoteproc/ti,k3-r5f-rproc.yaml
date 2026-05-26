@@ -154,6 +154,7 @@ patternProperties:
       memory-region:
         description: |
           phandle to the reserved memory nodes to be associated with the
+<<<<<<< HEAD
           remoteproc device. There should be two reserved memory nodes defined
           for the basic layout or 6 partitions for a detailed layout. The
           reserved memory nodes should be carveout nodes, and should be defined
@@ -192,6 +193,19 @@ patternProperties:
               - const: lpm-metadata
               - const: lpm-context
               - const: dm-firmware
+=======
+          remoteproc device. There should be at least two reserved memory nodes
+          defined. The reserved memory nodes should be carveout nodes, and
+          should be defined with a "no-map" property as per the bindings in
+          Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+        minItems: 2
+        maxItems: 8
+        items:
+          - description: region used for dynamic DMA allocations like vrings and
+                         vring buffers
+          - description: region reserved for firmware image sections
+        additionalItems: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Optional properties:
 # --------------------
@@ -245,6 +259,7 @@ patternProperties:
       - resets
       - firmware-name
 
+<<<<<<< HEAD
     if:
       required:
         - memory-region
@@ -252,6 +267,8 @@ patternProperties:
       required:
         - memory-region-names
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unevaluatedProperties: false
 
 allOf:
@@ -355,7 +372,10 @@ examples:
                         mboxes = <&mailbox0 &mbox_mcu_r5fss0_core0>;
                         memory-region = <&mcu_r5fss0_core0_dma_memory_region>,
                                         <&mcu_r5fss0_core0_memory_region>;
+<<<<<<< HEAD
                         memory-region-names = "dma", "firmware";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                         sram = <&mcu_r5fss0_core0_sram>;
                     };
 

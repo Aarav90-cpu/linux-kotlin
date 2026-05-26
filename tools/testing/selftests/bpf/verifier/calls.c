@@ -220,7 +220,11 @@
 	},
 	.result_unpriv = REJECT,
 	.result = REJECT,
+<<<<<<< HEAD
 	.errstr = "R1 must have zero offset when passed to release func or trusted arg to kfunc",
+=======
+	.errstr = "variable trusted_ptr_ access var_off=(0x0; 0x7) disallowed",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 },
 {
 	"calls: invalid kfunc call: referenced arg needs refcounted PTR_TO_BTF_ID",
@@ -455,7 +459,11 @@
 	BPF_EXIT_INSN(),
 	},
 	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
+<<<<<<< HEAD
 	.errstr = "recursive call",
+=======
+	.errstr = "the call stack of 9 frames is too deep",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.result = REJECT,
 },
 {
@@ -812,7 +820,11 @@
 	BPF_EXIT_INSN(),
 	},
 	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
+<<<<<<< HEAD
 	.errstr = "recursive call",
+=======
+	.errstr = "the call stack of 9 frames is too deep",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.result = REJECT,
 },
 {
@@ -824,7 +836,11 @@
 	BPF_EXIT_INSN(),
 	},
 	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
+<<<<<<< HEAD
 	.errstr = "recursive call",
+=======
+	.errstr = "the call stack of 9 frames is too deep",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.result = REJECT,
 },
 {
@@ -1521,7 +1537,10 @@
 	.errstr = "R0 invalid mem access 'scalar'",
 	.result_unpriv = REJECT,
 	.errstr_unpriv = "invalid read from stack R7 off=-16 size=8",
+<<<<<<< HEAD
 	.flags = F_NEEDS_EFFICIENT_UNALIGNED_ACCESS,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 },
 {
 	"calls: two calls that receive map_value via arg=ptr_stack_of_caller. test1",

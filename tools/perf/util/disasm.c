@@ -13,7 +13,10 @@
 #include <unistd.h>
 
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/zalloc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <subcmd/run-command.h>
 
 #include "annotate.h"
@@ -909,14 +912,21 @@ static void annotation_line__init(struct annotation_line *al,
 	al->offset = args->offset;
 	al->line = strdup(args->line);
 	al->line_nr = args->line_nr;
+<<<<<<< HEAD
 	al->fileloc = args->fileloc ? strdup(args->fileloc) : NULL;
+=======
+	al->fileloc = args->fileloc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	al->data_nr = nr;
 }
 
 static void annotation_line__exit(struct annotation_line *al)
 {
 	zfree_srcline(&al->path);
+<<<<<<< HEAD
 	zfree(&al->fileloc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zfree(&al->line);
 	zfree(&al->cycles);
 	zfree(&al->br_cntr);
@@ -952,7 +962,11 @@ struct disasm_line *disasm_line__new(struct annotate_args *args)
 
 	annotation_line__init(&dl->al, args, nr);
 	if (dl->al.line == NULL)
+<<<<<<< HEAD
 		goto out_free_line;
+=======
+		goto out_delete;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (args->offset != -1) {
 		if (arch__is_powerpc(args->arch)) {
@@ -967,7 +981,12 @@ struct disasm_line *disasm_line__new(struct annotate_args *args)
 	return dl;
 
 out_free_line:
+<<<<<<< HEAD
 	annotation_line__exit(&dl->al);
+=======
+	zfree(&dl->al.line);
+out_delete:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free(dl);
 	return NULL;
 }

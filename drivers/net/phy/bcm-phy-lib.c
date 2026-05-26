@@ -563,6 +563,7 @@ void bcm_phy_get_stats(struct phy_device *phydev, u64 *shadow,
 }
 EXPORT_SYMBOL_GPL(bcm_phy_get_stats);
 
+<<<<<<< HEAD
 void bcm_phy_update_stats_shadow(struct phy_device *phydev, u64 *shadow)
 {
 	unsigned int i;
@@ -572,6 +573,8 @@ void bcm_phy_update_stats_shadow(struct phy_device *phydev, u64 *shadow)
 }
 EXPORT_SYMBOL_GPL(bcm_phy_update_stats_shadow);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bcm_phy_r_rc_cal_reset(struct phy_device *phydev)
 {
 	/* Reset R_CAL/RC_CAL Engine */

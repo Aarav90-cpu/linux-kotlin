@@ -191,6 +191,13 @@
  *		 plane does not expose the "alpha" property, then this is
  *		 assumed to be 1.0
  *
+<<<<<<< HEAD
+=======
+ * Note that all the property extensions described here apply either to the
+ * plane or the CRTC (e.g. for the background color, which currently is not
+ * exposed and assumed to be black).
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * SCALING_FILTER:
  *     Indicates scaling filter to be used for plane scaler
  *
@@ -203,6 +210,7 @@
  *
  * Drivers can set up this property for a plane by calling
  * drm_plane_create_scaling_filter_property
+<<<<<<< HEAD
  *
  * The property extensions described above all apply to the plane.  Drivers
  * may also expose the following crtc property extension:
@@ -222,6 +230,8 @@
  *	background color values are allowed, but since physically transparent
  *	monitors do not (yet) exists, the final alpha value may not reach the
  *	video sink or it may simply ignore it.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 /**
@@ -636,6 +646,7 @@ int drm_plane_create_blend_mode_property(struct drm_plane *plane,
 	return 0;
 }
 EXPORT_SYMBOL(drm_plane_create_blend_mode_property);
+<<<<<<< HEAD
 
 /**
  * drm_crtc_attach_background_color_property - attach background color property
@@ -652,3 +663,5 @@ void drm_crtc_attach_background_color_property(struct drm_crtc *crtc)
 				   DRM_ARGB64_PREP(0xffff, 0, 0, 0));
 }
 EXPORT_SYMBOL(drm_crtc_attach_background_color_property);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

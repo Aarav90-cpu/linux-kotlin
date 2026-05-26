@@ -14,6 +14,11 @@
 
 #include <asm/acpi.h>
 
+<<<<<<< HEAD
+=======
+#define ACPI_PROCESSOR_CLASS		"processor"
+#define ACPI_PROCESSOR_DEVICE_NAME	"Processor"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACPI_PROCESSOR_DEVICE_HID	"ACPI0007"
 #define ACPI_PROCESSOR_CONTAINER_HID	"ACPI0010"
 

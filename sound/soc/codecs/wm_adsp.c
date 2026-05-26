@@ -7,8 +7,11 @@
  * Author: Mark Brown <broonie@opensource.wolfsonmicro.com>
  */
 
+<<<<<<< HEAD
 #include <kunit/static_stub.h>
 #include <kunit/visibility.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/array_size.h>
 #include <linux/cleanup.h>
 #include <linux/ctype.h>
@@ -74,7 +77,11 @@ static const struct cs_dsp_client_ops wm_adsp2_client_ops;
 
 #define WM_ADSP_NUM_FW      13
 
+<<<<<<< HEAD
 static const char * const wm_adsp_fw_text[WM_ADSP_NUM_FW] = {
+=======
+static const char *wm_adsp_fw_text[WM_ADSP_NUM_FW] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[WM_ADSP_FW_MBC_VSS] =  "MBC/VSS",
 	[WM_ADSP_FW_HIFI] =     "MasterHiFi",
 	[WM_ADSP_FW_TX] =       "Tx",
@@ -318,6 +325,7 @@ struct wm_coeff_ctl {
 	struct work_struct work;
 };
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_KUNIT)
 const char *wm_adsp_get_fwf_name_by_index(int index)
 {
@@ -329,6 +337,8 @@ const char *wm_adsp_get_fwf_name_by_index(int index)
 EXPORT_SYMBOL_IF_KUNIT(wm_adsp_get_fwf_name_by_index);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int wm_adsp_fw_get(struct snd_kcontrol *kcontrol,
 		   struct snd_ctl_elem_value *ucontrol)
 {
@@ -717,6 +727,7 @@ int wm_adsp_read_ctl(struct wm_adsp *dsp, const char *name, int type,
 }
 EXPORT_SYMBOL_GPL(wm_adsp_read_ctl);
 
+<<<<<<< HEAD
 VISIBLE_IF_KUNIT void wm_adsp_release_firmware_files(struct wm_adsp_fw_files *fw)
 {
 	KUNIT_STATIC_STUB_REDIRECT(wm_adsp_release_firmware_files, fw);
@@ -741,6 +752,23 @@ EXPORT_SYMBOL_IF_KUNIT(wm_adsp_firmware_request);
 
 static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 					 struct wm_adsp_fw_file *fw,
+=======
+static void wm_adsp_release_firmware_files(struct wm_adsp *dsp,
+					   const struct firmware *wmfw_firmware,
+					   char *wmfw_filename,
+					   const struct firmware *coeff_firmware,
+					   char *coeff_filename)
+{
+	release_firmware(wmfw_firmware);
+	kfree(wmfw_filename);
+
+	release_firmware(coeff_firmware);
+	kfree(coeff_filename);
+}
+
+static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
+					 const struct firmware **firmware, char **filename,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 const char *dir, const char *system_name,
 					 const char *asoc_component_prefix,
 					 const char *filetype)
@@ -748,7 +776,11 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 	struct cs_dsp *cs_dsp = &dsp->cs_dsp;
 	const char *fwf;
 	char *s, c;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dsp->fwf_name)
 		fwf = dsp->fwf_name;
@@ -756,6 +788,7 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 		fwf = dsp->cs_dsp.name;
 
 	if (system_name && asoc_component_prefix)
+<<<<<<< HEAD
 		fw->filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, dsp->part,
 					 fwf, wm_adsp_fw[dsp->fw].file, system_name,
 					 asoc_component_prefix, filetype);
@@ -775,15 +808,42 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 	 * characters except full-stop are replaced with hyphens.
 	 */
 	s = fw->filename + strlen(dir);
+=======
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, dsp->part,
+				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
+				      asoc_component_prefix, filetype);
+	else if (system_name)
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
+				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
+				      filetype);
+	else
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, fwf,
+				      wm_adsp_fw[dsp->fw].file, filetype);
+
+	if (*filename == NULL)
+		return -ENOMEM;
+
+	/*
+	 * Make sure that filename is lower-case and any non alpha-numeric
+	 * characters except full stop and forward slash are replaced with
+	 * hyphens.
+	 */
+	s = *filename;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (*s) {
 		c = *s;
 		if (isalnum(c))
 			*s = tolower(c);
+<<<<<<< HEAD
 		else if (c != '.')
+=======
+		else if ((c != '.') && (c != '/'))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*s = '-';
 		s++;
 	}
 
+<<<<<<< HEAD
 	ret = wm_adsp_firmware_request(&fw->firmware, fw->filename, cs_dsp->dev);
 	if (ret < 0) {
 		adsp_dbg(dsp, "Failed to request '%s': %d\n", fw->filename, ret);
@@ -805,11 +865,35 @@ VISIBLE_IF_KUNIT int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
 	const char *system_name = dsp->system_name;
 	const char *suffix = dsp->component->name_prefix;
 	bool require_bin_suffix = false;
+=======
+	ret = firmware_request_nowarn(firmware, *filename, cs_dsp->dev);
+	if (ret != 0) {
+		adsp_dbg(dsp, "Failed to request '%s'\n", *filename);
+		kfree(*filename);
+		*filename = NULL;
+	} else {
+		adsp_dbg(dsp, "Found '%s'\n", *filename);
+	}
+
+	return ret;
+}
+
+static const char * const cirrus_dir = "cirrus/";
+static int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
+					  const struct firmware **wmfw_firmware,
+					  char **wmfw_filename,
+					  const struct firmware **coeff_firmware,
+					  char **coeff_filename)
+{
+	const char *system_name = dsp->system_name;
+	const char *suffix = dsp->component->name_prefix;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (dsp->fwf_suffix)
 		suffix = dsp->fwf_suffix;
 
+<<<<<<< HEAD
 	if (system_name) {
 		ret = wm_adsp_request_firmware_file(dsp, &fw->wmfw,
 						    cirrus_dir, system_name,
@@ -850,10 +934,54 @@ VISIBLE_IF_KUNIT int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
 		}
 
 		if (fw->wmfw.firmware || (dsp->wmfw_optional && fw->coeff.firmware))
+=======
+	if (system_name && suffix) {
+		if (!wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
+						   cirrus_dir, system_name,
+						   suffix, "wmfw")) {
+			wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+						      cirrus_dir, system_name,
+						      suffix, "bin");
+			return 0;
+		}
+	}
+
+	if (system_name) {
+		if (!wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
+						   cirrus_dir, system_name,
+						   NULL, "wmfw")) {
+			if (suffix)
+				wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+							      cirrus_dir, system_name,
+							      suffix, "bin");
+
+			if (!*coeff_firmware)
+				wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+							      cirrus_dir, system_name,
+							      NULL, "bin");
+			return 0;
+		}
+	}
+
+	/* Check system-specific bin without wmfw before falling back to generic */
+	if (dsp->wmfw_optional && system_name) {
+		if (suffix)
+			wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+						      cirrus_dir, system_name,
+						      suffix, "bin");
+
+		if (!*coeff_firmware)
+			wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+						      cirrus_dir, system_name,
+						      NULL, "bin");
+
+		if (*coeff_firmware)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 	}
 
 	/* Check legacy location */
+<<<<<<< HEAD
 	ret = wm_adsp_request_firmware_file(dsp, &fw->wmfw, "", NULL, NULL, "wmfw");
 	if (ret < 0)
 		goto err;
@@ -863,10 +991,17 @@ VISIBLE_IF_KUNIT int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
 		if (ret < 0)
 			goto err;
 
+=======
+	if (!wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
+					   "", NULL, NULL, "wmfw")) {
+		wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+					      "", NULL, NULL, "bin");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
 	/* Fall back to generic wmfw and optional matching bin */
+<<<<<<< HEAD
 	ret = wm_adsp_request_firmware_file(dsp, &fw->wmfw,
 					    cirrus_dir, NULL, NULL, "wmfw");
 	if (ret < 0)
@@ -878,6 +1013,13 @@ VISIBLE_IF_KUNIT int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
 		if (ret < 0)
 			goto err;
 
+=======
+	ret = wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
+					    cirrus_dir, NULL, NULL, "wmfw");
+	if (!ret || dsp->wmfw_optional) {
+		wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
+					      cirrus_dir, NULL, NULL, "bin");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -886,6 +1028,7 @@ VISIBLE_IF_KUNIT int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
 		 dsp->fwf_name ? dsp->fwf_name : dsp->cs_dsp.name,
 		 wm_adsp_fw[dsp->fw].file, system_name, suffix);
 
+<<<<<<< HEAD
 	ret = -ENOENT;
 err:
 	wm_adsp_release_firmware_files(fw);
@@ -893,6 +1036,10 @@ err:
 	return ret;
 }
 EXPORT_SYMBOL_IF_KUNIT(wm_adsp_request_firmware_files);
+=======
+	return -ENOENT;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int wm_adsp_common_init(struct wm_adsp *dsp)
 {
@@ -923,23 +1070,47 @@ int wm_adsp1_event(struct snd_soc_dapm_widget *w,
 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
 	struct wm_adsp *dsps = snd_soc_component_get_drvdata(component);
 	struct wm_adsp *dsp = &dsps[w->shift];
+<<<<<<< HEAD
 	struct wm_adsp_fw_files fw = { 0 };
 	int ret = 0;
+=======
+	int ret = 0;
+	char *wmfw_filename = NULL;
+	const struct firmware *wmfw_firmware = NULL;
+	char *coeff_filename = NULL;
+	const struct firmware *coeff_firmware = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsp->component = component;
 
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
+<<<<<<< HEAD
 		ret = wm_adsp_request_firmware_files(dsp, &fw);
+=======
+		ret = wm_adsp_request_firmware_files(dsp,
+						     &wmfw_firmware, &wmfw_filename,
+						     &coeff_firmware, &coeff_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			break;
 
 		ret = cs_dsp_adsp1_power_up(&dsp->cs_dsp,
+<<<<<<< HEAD
 					    fw.wmfw.firmware, fw.wmfw.filename,
 					    fw.coeff.firmware, fw.coeff.filename,
 					    wm_adsp_fw_text[dsp->fw]);
 
 		wm_adsp_release_firmware_files(&fw);
+=======
+					    wmfw_firmware, wmfw_filename,
+					    coeff_firmware, coeff_filename,
+					    wm_adsp_fw_text[dsp->fw]);
+
+		wm_adsp_release_firmware_files(dsp,
+					       wmfw_firmware, wmfw_filename,
+					       coeff_firmware, coeff_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SND_SOC_DAPM_PRE_PMD:
 		cs_dsp_adsp1_power_down(&dsp->cs_dsp);
@@ -1015,27 +1186,55 @@ EXPORT_SYMBOL_GPL(wm_adsp2_preloader_put);
 
 int wm_adsp_power_up(struct wm_adsp *dsp, bool load_firmware)
 {
+<<<<<<< HEAD
 	struct wm_adsp_fw_files fw = { 0 };
 	int ret = 0;
 
 	if (load_firmware) {
 		ret = wm_adsp_request_firmware_files(dsp, &fw);
+=======
+	int ret = 0;
+	char *wmfw_filename = NULL;
+	const struct firmware *wmfw_firmware = NULL;
+	char *coeff_filename = NULL;
+	const struct firmware *coeff_firmware = NULL;
+
+	if (load_firmware) {
+		ret = wm_adsp_request_firmware_files(dsp,
+						     &wmfw_firmware, &wmfw_filename,
+						     &coeff_firmware, &coeff_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	if (dsp->bin_mandatory && !fw.coeff.firmware) {
+=======
+	if (dsp->bin_mandatory && !coeff_firmware) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -ENOENT;
 		goto err;
 	}
 
 	ret = cs_dsp_power_up(&dsp->cs_dsp,
+<<<<<<< HEAD
 			      fw.wmfw.firmware, fw.wmfw.filename,
 			      fw.coeff.firmware, fw.coeff.filename,
 			      wm_adsp_fw_text[dsp->fw]);
 
 err:
 	wm_adsp_release_firmware_files(&fw);
+=======
+			      wmfw_firmware, wmfw_filename,
+			      coeff_firmware, coeff_filename,
+			      wm_adsp_fw_text[dsp->fw]);
+
+err:
+	wm_adsp_release_firmware_files(dsp,
+				       wmfw_firmware, wmfw_filename,
+				       coeff_firmware, coeff_filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1122,12 +1321,15 @@ void wm_adsp_stop(struct wm_adsp *dsp)
 }
 EXPORT_SYMBOL_GPL(wm_adsp_stop);
 
+<<<<<<< HEAD
 void wm_adsp_hibernate(struct wm_adsp *dsp, bool hibernate)
 {
 	cs_dsp_hibernate(&dsp->cs_dsp, hibernate);
 }
 EXPORT_SYMBOL_GPL(wm_adsp_hibernate);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int wm_adsp_event(struct snd_soc_dapm_widget *w,
 		  struct snd_kcontrol *kcontrol, int event)
 {

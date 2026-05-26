@@ -7,10 +7,15 @@
 #define _AIE2_PCI_H_
 
 #include <drm/amdxdna_accel.h>
+<<<<<<< HEAD
 #include <linux/limits.h>
 #include <linux/semaphore.h>
 
 #include "aie2_msg_priv.h"
+=======
+#include <linux/semaphore.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "amdxdna_mailbox.h"
 
 #define AIE2_INTERVAL	20000	/* us */
@@ -48,6 +53,7 @@
 	pci_resource_len(NDEV2PDEV(_ndev), (_ndev)->xdna->dev_info->mbox_bar); \
 })
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_AMD_PMF)
 #define AIE2_GET_PMF_NPU_METRICS(metrics) amd_pmf_get_npu_data(metrics)
 #define AIE2_GET_PMF_NPU_DATA(field, val)				\
@@ -75,6 +81,8 @@
 })
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum aie2_smu_reg_idx {
 	SMU_CMD_REG = 0,
 	SMU_ARG_REG,
@@ -262,7 +270,10 @@ enum aie2_fw_feature {
 	AIE2_NPU_COMMAND,
 	AIE2_PREEMPT,
 	AIE2_TEMPORAL_ONLY,
+<<<<<<< HEAD
 	AIE2_APP_HEALTH,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	AIE2_FEATURE_MAX
 };
 
@@ -273,7 +284,10 @@ struct aie2_fw_feature_tbl {
 	u32 min_minor;
 };
 
+<<<<<<< HEAD
 #define AIE2_ALL_FEATURES	GENMASK_ULL(AIE2_FEATURE_MAX - 1, AIE2_NPU_COMMAND)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AIE2_FEATURE_ON(ndev, feature)	test_bit(feature, &(ndev)->feature_mask)
 
 struct amdxdna_dev_priv {
@@ -344,8 +358,11 @@ int aie2_query_aie_version(struct amdxdna_dev_hdl *ndev, struct aie_version *ver
 int aie2_query_aie_metadata(struct amdxdna_dev_hdl *ndev, struct aie_metadata *metadata);
 int aie2_query_firmware_version(struct amdxdna_dev_hdl *ndev,
 				struct amdxdna_fw_ver *fw_ver);
+<<<<<<< HEAD
 int aie2_query_app_health(struct amdxdna_dev_hdl *ndev, u32 context_id,
 			  struct app_health_report *report);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int aie2_create_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwctx);
 int aie2_destroy_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwctx);
 int aie2_map_host_buf(struct amdxdna_dev_hdl *ndev, u32 context_id, u64 addr, u64 size);
@@ -371,8 +388,14 @@ int aie2_config_debug_bo(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *
 			 int (*notify_cb)(void *, void __iomem *, size_t));
 void *aie2_alloc_msg_buffer(struct amdxdna_dev_hdl *ndev, u32 *size,
 			    dma_addr_t *dma_addr);
+<<<<<<< HEAD
 void aie2_free_msg_buffer(struct amdxdna_dev_hdl *ndev, size_t size,
 			  void *cpu_addr, dma_addr_t dma_addr);
+=======
+#define aie2_free_msg_buffer(ndev, size, buff_addr, dma_addr)		\
+	dma_free_noncoherent((ndev)->xdna->ddev.dev, size, buff_addr,	\
+			     dma_addr, DMA_FROM_DEVICE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* aie2_hwctx.c */
 int aie2_hwctx_init(struct amdxdna_hwctx *hwctx);

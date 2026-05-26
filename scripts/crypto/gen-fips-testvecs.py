@@ -3,12 +3,17 @@
 #
 # Script that generates lib/crypto/fips.h
 #
+<<<<<<< HEAD
 # Requires that python-cryptography be installed.
 #
 # Copyright 2025 Google LLC
 
 import cryptography.hazmat.primitives.ciphers
 import cryptography.hazmat.primitives.cmac
+=======
+# Copyright 2025 Google LLC
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 import hashlib
 import hmac
 
@@ -38,9 +43,12 @@ for alg in 'sha1', 'sha256', 'sha512':
 
 print_static_u8_array_definition(f'fips_test_sha3_256_value',
                                  hashlib.sha3_256(fips_test_data).digest())
+<<<<<<< HEAD
 
 aes = cryptography.hazmat.primitives.ciphers.algorithms.AES(fips_test_key)
 aes_cmac = cryptography.hazmat.primitives.cmac.CMAC(aes)
 aes_cmac.update(fips_test_data)
 print_static_u8_array_definition('fips_test_aes_cmac_value',
                                  aes_cmac.finalize())
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

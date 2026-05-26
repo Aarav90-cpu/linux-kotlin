@@ -5,7 +5,10 @@
 #include "struct_ops_private_stack_fail.skel.h"
 #include "struct_ops_private_stack_recur.skel.h"
 
+<<<<<<< HEAD
 #if defined(__x86_64__) || defined(__aarch64__) || defined(__powerpc64__)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_private_stack(void)
 {
 	struct struct_ops_private_stack *skel;
@@ -16,6 +19,14 @@ static void test_private_stack(void)
 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack__open"))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (skel->data->skip) {
+		test__skip();
+		goto cleanup;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = struct_ops_private_stack__load(skel);
 	if (!ASSERT_OK(err, "struct_ops_private_stack__load"))
 		goto cleanup;
@@ -44,9 +55,21 @@ static void test_private_stack_fail(void)
 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack_fail__open"))
 		return;
 
+<<<<<<< HEAD
 	err = struct_ops_private_stack_fail__load(skel);
 	ASSERT_ERR(err, "struct_ops_private_stack_fail__load");
 
+=======
+	if (skel->data->skip) {
+		test__skip();
+		goto cleanup;
+	}
+
+	err = struct_ops_private_stack_fail__load(skel);
+	ASSERT_ERR(err, "struct_ops_private_stack_fail__load");
+
+cleanup:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct_ops_private_stack_fail__destroy(skel);
 }
 
@@ -60,6 +83,14 @@ static void test_private_stack_recur(void)
 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack_recur__open"))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (skel->data->skip) {
+		test__skip();
+		goto cleanup;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = struct_ops_private_stack_recur__load(skel);
 	if (!ASSERT_OK(err, "struct_ops_private_stack_recur__load"))
 		goto cleanup;
@@ -78,7 +109,11 @@ cleanup:
 	struct_ops_private_stack_recur__destroy(skel);
 }
 
+<<<<<<< HEAD
 static void __test_struct_ops_private_stack(void)
+=======
+void test_struct_ops_private_stack(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (test__start_subtest("private_stack"))
 		test_private_stack();
@@ -87,6 +122,7 @@ static void __test_struct_ops_private_stack(void)
 	if (test__start_subtest("private_stack_recur"))
 		test_private_stack_recur();
 }
+<<<<<<< HEAD
 #else
 static void __test_struct_ops_private_stack(void)
 {
@@ -98,3 +134,5 @@ void test_struct_ops_private_stack(void)
 {
 	__test_struct_ops_private_stack();
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

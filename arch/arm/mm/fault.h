@@ -5,9 +5,18 @@
 /*
  * Fault status register encodings.  We steal bit 31 for our own purposes.
  */
+<<<<<<< HEAD
 #define FSR_LNX_PF		BIT(31)
 #define FSR_CM			BIT(13)
 #define FSR_WRITE		BIT(11)
+=======
+#define FSR_LNX_PF		(1 << 31)
+#define FSR_CM			(1 << 13)
+#define FSR_WRITE		(1 << 11)
+#define FSR_FS4			(1 << 10)
+#define FSR_FS3_0		(15)
+#define FSR_FS5_0		(0x3f)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_ARM_LPAE
 #define FSR_FS_AEA		17
@@ -15,12 +24,16 @@
 #define FS_PERM_NOLL		0xC
 #define FS_MMU_NOLL_MASK	0x3C
 
+<<<<<<< HEAD
 #define FSR_FS5_0		GENMASK(5, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int fsr_fs(unsigned int fsr)
 {
 	return fsr & FSR_FS5_0;
 }
+<<<<<<< HEAD
 
 static inline bool is_translation_fault(unsigned int fsr)
 {
@@ -35,6 +48,8 @@ static inline bool is_permission_fault(unsigned int fsr)
 
 	return (fs & FS_MMU_NOLL_MASK) == FS_PERM_NOLL;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 #define FSR_FS_AEA		22
 #define FS_L1_TRANS		0x5
@@ -42,13 +57,17 @@ static inline bool is_permission_fault(unsigned int fsr)
 #define FS_L1_PERM		0xD
 #define FS_L2_PERM		0xF
 
+<<<<<<< HEAD
 #define FSR_FS4			BIT(10)
 #define FSR_FS3_0		GENMASK(3, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int fsr_fs(unsigned int fsr)
 {
 	return (fsr & FSR_FS3_0) | (fsr & FSR_FS4) >> 6;
 }
+<<<<<<< HEAD
 
 static inline bool is_translation_fault(unsigned int fsr)
 {
@@ -63,6 +82,8 @@ static inline bool is_permission_fault(unsigned int fsr)
 
 	return fs == FS_L1_PERM || fs == FS_L2_PERM;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 void do_bad_area(unsigned long addr, unsigned int fsr, struct pt_regs *regs);

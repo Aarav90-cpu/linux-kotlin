@@ -6,7 +6,11 @@
 #ifndef _XE_MMIO_H_
 #define _XE_MMIO_H_
 
+<<<<<<< HEAD
 #include "xe_mmio_types.h"
+=======
+#include "xe_gt_types.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct xe_device;
 struct xe_reg;
@@ -17,7 +21,10 @@ int xe_mmio_probe_tiles(struct xe_device *xe);
 void xe_mmio_init(struct xe_mmio *mmio, struct xe_tile *tile, void __iomem *ptr, u32 size);
 
 u8 xe_mmio_read8(struct xe_mmio *mmio, struct xe_reg reg);
+<<<<<<< HEAD
 void xe_mmio_write8(struct xe_mmio *mmio, struct xe_reg reg, u8 val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u16 xe_mmio_read16(struct xe_mmio *mmio, struct xe_reg reg);
 void xe_mmio_write32(struct xe_mmio *mmio, struct xe_reg reg, u32 val);
 u32 xe_mmio_read32(struct xe_mmio *mmio, struct xe_reg reg);
@@ -38,6 +45,14 @@ static inline u32 xe_mmio_adjusted_addr(const struct xe_mmio *mmio, u32 addr)
 	return addr;
 }
 
+<<<<<<< HEAD
+=======
+static inline struct xe_mmio *xe_root_tile_mmio(struct xe_device *xe)
+{
+	return &xe->tiles[0].mmio;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_PCI_IOV
 void xe_mmio_init_vf_view(struct xe_mmio *mmio, const struct xe_mmio *base, unsigned int vfid);
 #endif

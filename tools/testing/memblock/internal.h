@@ -11,6 +11,7 @@ static int memblock_debug = 1;
 
 #define pr_warn_ratelimited(fmt, ...)    printf(fmt, ##__VA_ARGS__)
 
+<<<<<<< HEAD
 #define K(x) ((x) << (PAGE_SHIFT-10))
 
 bool mirrored_kernelcore = false;
@@ -27,6 +28,11 @@ static inline struct page *virt_to_page(void *virt)
 	BUG();
 	return virt;
 }
+=======
+bool mirrored_kernelcore = false;
+
+struct page {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void memblock_free_pages(unsigned long pfn, unsigned int order)
 {
@@ -36,6 +42,7 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
 {
 }
 
+<<<<<<< HEAD
 unsigned long free_reserved_area(void *start, void *end, int poison, const char *s);
 void free_reserved_page(struct page *page);
 
@@ -66,4 +73,12 @@ static inline void init_deferred_page(unsigned long pfn, int nid)
 
 #define __SetPageReserved(p)	((void)(p))
 
+=======
+static inline unsigned long free_reserved_area(void *start, void *end,
+					       int poison, const char *s)
+{
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

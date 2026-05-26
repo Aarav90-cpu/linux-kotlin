@@ -150,8 +150,11 @@ address on the given address space.  Support of ``address unit`` parameter is
 up to each operations set implementation.  ``paddr`` is the only operations set
 implementation that supports the parameter.
 
+<<<<<<< HEAD
 If the value is smaller than ``PAGE_SIZE``, only a power of two should be used.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _damon_core_logic:
 
 Core Logics
@@ -167,6 +170,7 @@ monitoring attributes, ``sampling interval``, ``aggregation interval``,
 ``update interval``, ``minimum number of regions``, and ``maximum number of
 regions``.
 
+<<<<<<< HEAD
 Note that ``minimum number of regions`` must be 3 or higher. This is because the
 virtual address space monitoring is designed to handle at least three regions to
 accommodate two large unmapped areas commonly found in normal virtual address
@@ -174,6 +178,8 @@ spaces. While this restriction might not be strictly necessary for other
 operation sets like ``paddr``, it is currently enforced across all DAMON
 operations for consistency.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 To know how user-space can set the attributes via :ref:`DAMON sysfs interface
 <sysfs_interface>`, refer to :ref:`monitoring_attrs <sysfs_monitoring_attrs>`
 part of the documentation.
@@ -467,6 +473,7 @@ that supports each action are as below.
  - ``pageout``: Reclaim the region.
    Supported by ``vaddr``, ``fvaddr`` and ``paddr`` operations set.
  - ``hugepage``: Call ``madvise()`` for the region with ``MADV_HUGEPAGE``.
+<<<<<<< HEAD
    Supported by ``vaddr`` and ``fvaddr`` operations set. When
    TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
    fail.
@@ -474,6 +481,11 @@ that supports each action are as below.
    Supported by ``vaddr`` and ``fvaddr`` operations set. When
    TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
    fail.
+=======
+   Supported by ``vaddr`` and ``fvaddr`` operations set.
+ - ``nohugepage``: Call ``madvise()`` for the region with ``MADV_NOHUGEPAGE``.
+   Supported by ``vaddr`` and ``fvaddr`` operations set.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  - ``lru_prio``: Prioritize the region on its LRU lists.
    Supported by ``paddr`` operations set.
  - ``lru_deprio``: Deprioritize the region on its LRU lists.
@@ -577,6 +589,7 @@ aggressiveness (the quota) of the corresponding scheme.  For example, if DAMOS
 is under achieving the goal, DAMOS automatically increases the quota.  If DAMOS
 is over achieving the goal, it decreases the quota.
 
+<<<<<<< HEAD
 There are two such tuning algorithms that users can select as they need.
 
 - ``consist``: A proportional feedback loop based algorithm.  Tries to find an
@@ -589,6 +602,8 @@ There are two such tuning algorithms that users can select as they need.
   a maximum allowed one.  Once the quota is [over]-achieved, this sets the
   quota zero.  Useful for deterministic control required environments.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 The goal can be specified with five parameters, namely ``target_metric``,
 ``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
 mechanism tries to make ``current_value`` of ``target_metric`` be same to
@@ -864,10 +879,13 @@ more detail, please read the usage documents for those
 (:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim` and
 :doc:`/admin-guide/mm/damon/lru_sort`).
 
+<<<<<<< HEAD
 .. _damon_design_special_purpose_modules_exclusivity:
 
 Note that these modules currently run in an exclusive manner.  If one of those
 is already running, others will return ``-EBUSY`` upon start requests.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Sample DAMON Modules
 --------------------

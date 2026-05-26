@@ -96,11 +96,19 @@ static __always_inline void halt(void)
 	native_halt();
 }
 #endif /* __ASSEMBLER__ */
+<<<<<<< HEAD
 #else
 #include <asm/paravirt.h>
 #endif /* CONFIG_PARAVIRT */
 
 #ifndef CONFIG_PARAVIRT_XXL
+=======
+#endif /* CONFIG_PARAVIRT */
+
+#ifdef CONFIG_PARAVIRT_XXL
+#include <asm/paravirt.h>
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __ASSEMBLER__
 #include <linux/types.h>
 

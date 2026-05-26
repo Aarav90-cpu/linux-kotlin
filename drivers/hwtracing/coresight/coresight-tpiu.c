@@ -49,6 +49,11 @@
 #define FFCR_FON_MAN		BIT(6)
 #define FFCR_STOP_FI		BIT(12)
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(tpiu_devs, "tpiu");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * @base:	memory mapped base address for this component.
  * @atclk:	optional clock for the core parts of the TPIU.
@@ -132,7 +137,11 @@ static int __tpiu_probe(struct device *dev, struct resource *res)
 	struct coresight_desc desc = { 0 };
 	int ret;
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("tpiu", dev);
+=======
+	desc.name = coresight_alloc_device_name(&tpiu_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 

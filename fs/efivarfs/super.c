@@ -191,10 +191,20 @@ static const struct dentry_operations efivarfs_d_ops = {
 
 static struct dentry *efivarfs_alloc_dentry(struct dentry *parent, char *name)
 {
+<<<<<<< HEAD
 	struct qstr q = QSTR(name);
 	struct dentry *d;
 	int err;
 
+=======
+	struct dentry *d;
+	struct qstr q;
+	int err;
+
+	q.name = name;
+	q.len = strlen(name);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = efivarfs_d_hash(parent, &q);
 	if (err)
 		return ERR_PTR(err);

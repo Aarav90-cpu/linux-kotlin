@@ -57,8 +57,13 @@ acknowledgement||acknowledgment
 ackowledge||acknowledge
 ackowledged||acknowledged
 acording||according
+<<<<<<< HEAD
 actived||activated
 activete||activate
+=======
+activete||activate
+actived||activated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 actualy||actually
 actvie||active
 acumulating||accumulating
@@ -66,12 +71,19 @@ acumulative||accumulative
 acumulator||accumulator
 acutally||actually
 adapater||adapter
+<<<<<<< HEAD
 adddress||address
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 adderted||asserted
 addional||additional
 additionaly||additionally
 additonal||additional
 addres||address
+<<<<<<< HEAD
+=======
+adddress||address
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 addreses||addresses
 addresss||address
 addrress||address
@@ -95,9 +107,15 @@ alegorical||allegorical
 algined||aligned
 algorith||algorithm
 algorithmical||algorithmically
+<<<<<<< HEAD
 algorithmn||algorithm
 algoritm||algorithm
 algoritms||algorithms
+=======
+algoritm||algorithm
+algoritms||algorithms
+algorithmn||algorithm
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 algorrithm||algorithm
 algorritm||algorithm
 aligment||alignment
@@ -128,12 +146,20 @@ amount of times||number of times
 amout||amount
 amplifer||amplifier
 amplifyer||amplifier
+<<<<<<< HEAD
+=======
+an union||a union
+an user||a user
+an userspace||a userspace
+an one||a one
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 analysator||analyzer
 ang||and
 anniversery||anniversary
 annoucement||announcement
 anomolies||anomalies
 anomoly||anomaly
+<<<<<<< HEAD
 an one||a one
 anonynous||anonymous
 an union||a union
@@ -142,6 +168,12 @@ an userspace||a userspace
 anway||anyway
 apeared||appeared
 aplication||application
+=======
+anonynous||anonymous
+anway||anyway
+aplication||application
+apeared||appeared
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 appearence||appearance
 applicaion||application
 appliction||application
@@ -155,8 +187,13 @@ approriately||appropriately
 apropriate||appropriate
 aquainted||acquainted
 aquired||acquired
+<<<<<<< HEAD
 aquires||acquires
 aquisition||acquisition
+=======
+aquisition||acquisition
+aquires||acquires
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 arbitary||arbitrary
 architechture||architecture
 archtecture||architecture
@@ -189,6 +226,7 @@ assum||assume
 assumtpion||assumption
 asume||assume
 asuming||assuming
+<<<<<<< HEAD
 asychronous||asynchronous
 asycronous||asynchronous
 asymetric||asymmetric
@@ -201,11 +239,26 @@ atempt||attempt
 atleast||at least
 atomatically||automatically
 atomicly||atomically
+=======
+asycronous||asynchronous
+asychronous||asynchronous
+asynchnous||asynchronous
+asynchrnous||asynchronous
+asynchronus||asynchronous
+asynchromous||asynchronous
+asymetric||asymmetric
+asymmeric||asymmetric
+atleast||at least
+atomatically||automatically
+atomicly||atomically
+atempt||attempt
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 atrributes||attributes
 attachement||attachment
 attatch||attach
 attched||attached
 attemp||attempt
+<<<<<<< HEAD
 attemping||attempting
 attemps||attempts
 attepmpt||attempt
@@ -213,6 +266,15 @@ attnetion||attention
 attruibutes||attributes
 authenicated||authenticated
 authentification||authentication
+=======
+attemps||attempts
+attemping||attempting
+attepmpt||attempt
+attnetion||attention
+attruibutes||attributes
+authentification||authentication
+authenicated||authenticated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 automaticaly||automatically
 automaticly||automatically
 automatize||automate
@@ -257,7 +319,10 @@ begining||beginning
 beter||better
 betweeen||between
 bianries||binaries
+<<<<<<< HEAD
 binded||bound
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bitmast||bitmask
 bitwiedh||bitwidth
 boardcast||broadcast
@@ -288,19 +353,32 @@ calucate||calculate
 calulate||calculate
 cancelation||cancellation
 cancle||cancel
+<<<<<<< HEAD
 cannnot||cannot
 cann't||can't
 canot||cannot
 cant'||can't
 cant||can't
+=======
+cant||can't
+cant'||can't
+canot||cannot
+cann't||can't
+cannnot||cannot
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 capabiity||capability
 capabilites||capabilities
 capabilties||capabilities
 capabilty||capability
 capabitilies||capabilities
 capablity||capability
+<<<<<<< HEAD
 capapbilities||capabilities
 capatibilities||capabilities
+=======
+capatibilities||capabilities
+capapbilities||capabilities
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 captuer||capture
 caputure||capture
 carefuly||carefully
@@ -308,9 +386,15 @@ cariage||carriage
 casued||caused
 catagory||category
 cehck||check
+<<<<<<< HEAD
 chache||cache
 challange||challenge
 challanges||challenges
+=======
+challange||challenge
+challanges||challenges
+chache||cache
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 chanell||channel
 changable||changeable
 chanined||chained
@@ -348,7 +432,10 @@ colescing||coalescing
 collapsable||collapsible
 colorfull||colorful
 comand||command
+<<<<<<< HEAD
 comaptible||compatible
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 comit||commit
 commerical||commercial
 comming||coming
@@ -359,6 +446,13 @@ committ||commit
 commmand||command
 commnunication||communication
 commoditiy||commodity
+<<<<<<< HEAD
+=======
+comsume||consume
+comsumer||consumer
+comsuming||consuming
+comaptible||compatible
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 compability||compatibility
 compaibility||compatibility
 comparsion||comparison
@@ -374,25 +468,39 @@ compleatly||completely
 completition||completion
 completly||completely
 complient||compliant
+<<<<<<< HEAD
 compoment||component
 componnents||components
+=======
+componnents||components
+compoment||component
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 comppatible||compatible
 compres||compress
 compresion||compression
 compresser||compressor
 comression||compression
+<<<<<<< HEAD
 comsume||consume
 comsumed||consumed
 comsumer||consumer
 comsuming||consuming
+=======
+comsumed||consumed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 comunicate||communicate
 comunication||communication
 conbination||combination
 concurent||concurrent
 conditionaly||conditionally
 conditon||condition
+<<<<<<< HEAD
 condtional||conditional
 condtion||condition
+=======
+condtion||condition
+condtional||conditional
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 conected||connected
 conector||connector
 configed||configured
@@ -429,6 +537,7 @@ continous||continuous
 continously||continuously
 continueing||continuing
 contiuous||continuous
+<<<<<<< HEAD
 contol||control
 contoller||controller
 contraints||constraints
@@ -436,6 +545,15 @@ controled||controlled
 controler||controller
 controll||control
 contruct||construct
+=======
+contraints||constraints
+contruct||construct
+contol||control
+contoller||controller
+controled||controlled
+controler||controller
+controll||control
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 contruction||construction
 contry||country
 conuntry||country
@@ -466,9 +584,16 @@ debouce||debounce
 decendant||descendant
 decendants||descendants
 decompres||decompress
+<<<<<<< HEAD
 decrese||decrease
 decription||description
 decsribed||described
+=======
+decsribed||described
+decrese||decrease
+decription||description
+detault||default
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dectected||detected
 defailt||default
 deferal||deferral
@@ -482,9 +607,15 @@ defintion||definition
 defintions||definitions
 defualt||default
 defult||default
+<<<<<<< HEAD
 deintialized||deinitialized
 deintialize||deinitialize
 deintializing||deinitializing
+=======
+deintializing||deinitializing
+deintialize||deinitialize
+deintialized||deinitialized
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 deivce||device
 delared||declared
 delare||declare
@@ -494,8 +625,13 @@ delemiter||delimiter
 deley||delay
 delibrately||deliberately
 delievered||delivered
+<<<<<<< HEAD
 demension||dimension
 demodualtor||demodulator
+=======
+demodualtor||demodulator
+demension||dimension
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dependancies||dependencies
 dependancy||dependency
 dependant||dependent
@@ -505,6 +641,7 @@ depreacte||deprecate
 desactivate||deactivate
 desciptor||descriptor
 desciptors||descriptors
+<<<<<<< HEAD
 descripto||descriptor
 descripton||description
 descrition||description
@@ -514,6 +651,17 @@ desctiptor||descriptor
 desination||destination
 desriptor||descriptor
 desriptors||descriptors
+=======
+descritpor||descriptor
+descripto||descriptor
+descripton||description
+descrition||description
+descritptor||descriptor
+desctiptor||descriptor
+desriptor||descriptor
+desriptors||descriptors
+desination||destination
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 destionation||destination
 destoried||destroyed
 destory||destroy
@@ -521,7 +669,10 @@ destoryed||destroyed
 destorys||destroys
 destroied||destroyed
 detabase||database
+<<<<<<< HEAD
 detault||default
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 deteced||detected
 detecion||detection
 detectt||detect
@@ -536,6 +687,7 @@ deveolpment||development
 devided||divided
 deviece||device
 devision||division
+<<<<<<< HEAD
 diabled||disabled
 diable||disable
 dicline||decline
@@ -547,11 +699,24 @@ differenciate||differentiate
 differrence||difference
 diffreential||differential
 diffrent||different
+=======
+diable||disable
+diabled||disabled
+dicline||decline
+dictionnary||dictionary
+didnt||didn't
+diferent||different
+differrence||difference
+diffrent||different
+differenciate||differentiate
+diffreential||differential
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 diffrentiate||differentiate
 difinition||definition
 digial||digital
 dimention||dimension
 dimesions||dimensions
+<<<<<<< HEAD
 diplay||display
 direcly||directly
 directon||direction
@@ -579,11 +744,45 @@ dispalying||displaying
 dispertion||dispersion
 dissable||disable
 dissapeared||disappeared
+=======
+diconnected||disconnected
+disabed||disabled
+disasembler||disassembler
+disble||disable
+disgest||digest
+disired||desired
+dispalying||displaying
+dissable||disable
+dissapeared||disappeared
+diplay||display
+directon||direction
+direcly||directly
+direectly||directly
+diregard||disregard
+disassocation||disassociation
+disassocative||disassociative
+disapear||disappear
+disapeared||disappeared
+disappared||disappeared
+disbale||disable
+disbaled||disabled
+disble||disable
+disbled||disabled
+disconnet||disconnect
+discontinous||discontinuous
+disharge||discharge
+disnabled||disabled
+dispertion||dispersion
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dissapears||disappears
 dissconect||disconnect
 distiction||distinction
 divisable||divisible
 divsiors||divisors
+<<<<<<< HEAD
+=======
+dsiabled||disabled
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 docuentation||documentation
 documantation||documentation
 documentaion||documentation
@@ -598,7 +797,10 @@ downlads||downloads
 droped||dropped
 droput||dropout
 druing||during
+<<<<<<< HEAD
 dsiabled||disabled
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dyanmic||dynamic
 dynmaic||dynamic
 eanable||enable
@@ -622,6 +824,7 @@ enble||enable
 enchanced||enhanced
 encorporating||incorporating
 encrupted||encrypted
+<<<<<<< HEAD
 encryped||encrypted
 encrypiton||encryption
 encryptio||encryption
@@ -636,6 +839,22 @@ enterily||entirely
 entires||entries
 entites||entities
 entrys||entries
+=======
+encrypiton||encryption
+encryped||encrypted
+encryptio||encryption
+endianess||endianness
+enpoint||endpoint
+enhaced||enhanced
+enlightnment||enlightenment
+enqueing||enqueuing
+entires||entries
+entites||entities
+entrys||entries
+enocded||encoded
+enought||enough
+enterily||entirely
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enviroiment||environment
 enviroment||environment
 environement||environment
@@ -654,9 +873,14 @@ evalute||evaluate
 evalutes||evaluates
 evalution||evaluation
 evaulated||evaluated
+<<<<<<< HEAD
 exaclty||exactly
 excceed||exceed
 excecutable||executable
+=======
+excecutable||executable
+excceed||exceed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exceded||exceeded
 exceds||exceeds
 exceeed||exceed
@@ -670,23 +894,40 @@ exeuction||execution
 existance||existence
 existant||existent
 exixt||exist
+<<<<<<< HEAD
 exlcude||exclude
 exlcuding||excluding
 exlcusive||exclusive
 exlicitly||explicitly
 exlusive||exclusive
+=======
+exsits||exists
+exlcude||exclude
+exlcuding||excluding
+exlcusive||exclusive
+exlusive||exclusive
+exlicitly||explicitly
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exmaple||example
 expecially||especially
 experies||expires
 explicite||explicit
+<<<<<<< HEAD
 explicitely||explicitly
 explicity||explicitly
 explictely||explicitly
 explict||explicit
+=======
+explicity||explicitly
+explicitely||explicitly
+explict||explicit
+explictely||explicitly
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 explictly||explicitly
 expresion||expression
 exprienced||experienced
 exprimental||experimental
+<<<<<<< HEAD
 exsits||exists
 exteneded||extended
 extened||extended
@@ -705,6 +946,25 @@ faillure||failure
 failng||failing
 failue||failure
 failuer||failure
+=======
+extened||extended
+exteneded||extended
+extensability||extensibility
+extention||extension
+extenstion||extension
+extracter||extractor
+faied||failed
+faield||failed
+faild||failed
+failded||failed
+failer||failure
+faill||fail
+failied||failed
+faillure||failure
+failue||failure
+failuer||failure
+failng||failing
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 faireness||fairness
 falied||failed
 faliure||failure
@@ -719,15 +979,25 @@ fetcing||fetching
 fileystem||filesystem
 fimrware||firmware
 fimware||firmware
+<<<<<<< HEAD
 finanize||finalize
 findn||find
 finilizes||finalizes
 finsih||finish
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 firmare||firmware
 firmaware||firmware
 firtly||firstly
 firware||firmware
 firwmare||firmware
+<<<<<<< HEAD
+=======
+finanize||finalize
+findn||find
+finilizes||finalizes
+finsih||finish
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fliter||filter
 flusing||flushing
 folloing||following
@@ -744,9 +1014,15 @@ forwared||forwarded
 frambuffer||framebuffer
 framming||framing
 framwork||framework
+<<<<<<< HEAD
 frequancy||frequency
 frequence||frequency
 frequncy||frequency
+=======
+frequence||frequency
+frequncy||frequency
+frequancy||frequency
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 frome||from
 fronend||frontend
 fucntion||function
@@ -768,9 +1044,15 @@ gatable||gateable
 gateing||gating
 gauage||gauge
 gaurenteed||guaranteed
+<<<<<<< HEAD
 genereate||generate
 genereted||generated
 generiously||generously
+=======
+generiously||generously
+genereate||generate
+genereted||generated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 genric||generic
 gerenal||general
 geting||getting
@@ -792,6 +1074,7 @@ hanlde||handle
 hanled||handled
 happend||happened
 hardare||hardware
+<<<<<<< HEAD
 hardward||hardware
 harware||hardware
 havind||having
@@ -803,6 +1086,20 @@ heirarchy||hierarchy
 helpfull||helpful
 heterogenous||heterogeneous
 hexdecimal||hexadecimal
+=======
+harware||hardware
+hardward||hardware
+havind||having
+heigth||height
+heirarchically||hierarchically
+heirarchy||hierarchy
+heirachy||hierarchy
+helpfull||helpful
+hearbeat||heartbeat
+heterogenous||heterogeneous
+hexdecimal||hexadecimal
+hybernate||hibernate
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 hiearchy||hierarchy
 hierachy||hierarchy
 hierarchie||hierarchy
@@ -810,14 +1107,23 @@ homogenous||homogeneous
 horizental||horizontal
 howver||however
 hsould||should
+<<<<<<< HEAD
 hybernate||hibernate
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 hypervior||hypervisor
 hypter||hyper
 idel||idle
 identidier||identifier
 iligal||illegal
+<<<<<<< HEAD
 illgal||illegal
 illigal||illegal
+=======
+illigal||illegal
+illgal||illegal
+iomaped||iomapped
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 imblance||imbalance
 immeadiately||immediately
 immedaite||immediate
@@ -832,14 +1138,22 @@ implemantation||implementation
 implemenation||implementation
 implementaiton||implementation
 implementated||implemented
+<<<<<<< HEAD
 implementd||implemented
 implemention||implementation
+=======
+implemention||implementation
+implementd||implemented
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 implemetation||implementation
 implemntation||implementation
 implentation||implementation
 implmentation||implementation
 implmenting||implementing
+<<<<<<< HEAD
 inavlid||invalid
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 incative||inactive
 incomming||incoming
 incompaitiblity||incompatibility
@@ -871,9 +1185,15 @@ infromation||information
 ingore||ignore
 inheritence||inheritance
 inital||initial
+<<<<<<< HEAD
 initalised||initialized
 initalise||initialize
 initalized||initialized
+=======
+initalized||initialized
+initalised||initialized
+initalise||initialize
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 initalize||initialize
 initation||initiation
 initators||initiators
@@ -881,6 +1201,7 @@ initialiazation||initialization
 initializationg||initialization
 initializiation||initialization
 initializtion||initialization
+<<<<<<< HEAD
 initialzed||initialized
 initialze||initialize
 initialzing||initializing
@@ -888,13 +1209,27 @@ initilization||initialization
 initilized||initialized
 initilize||initialize
 initliaze||initialize
+=======
+initialze||initialize
+initialzed||initialized
+initialzing||initializing
+initilization||initialization
+initilize||initialize
+initliaze||initialize
+initilized||initialized
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 inofficial||unofficial
 inrerface||interface
 insititute||institute
 instace||instance
 instal||install
+<<<<<<< HEAD
 instanciated||instantiated
 instanciate||instantiate
+=======
+instanciate||instantiate
+instanciated||instantiated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 instuments||instruments
 insufficent||insufficient
 intead||instead
@@ -913,16 +1248,26 @@ intergrated||integrated
 intermittant||intermittent
 internel||internal
 interoprability||interoperability
+<<<<<<< HEAD
+=======
+interuupt||interrupt
+interupt||interrupt
+interupts||interrupts
+interurpt||interrupt
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 interrface||interface
 interrrupt||interrupt
 interrup||interrupt
 interrups||interrupts
 interruptted||interrupted
 interupted||interrupted
+<<<<<<< HEAD
 interupt||interrupt
 interupts||interrupts
 interurpt||interrupt
 interuupt||interrupt
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 intiailized||initialized
 intial||initial
 intialisation||initialisation
@@ -936,18 +1281,30 @@ intrerrupt||interrupt
 intrrupt||interrupt
 intterrupt||interrupt
 intuative||intuitive
+<<<<<<< HEAD
 invaid||invalid
 invaild||invalid
 invailid||invalid
 invalde||invalid
 invald||invalid
+=======
+inavlid||invalid
+invaid||invalid
+invaild||invalid
+invailid||invalid
+invald||invalid
+invalde||invalid
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 invalide||invalid
 invalidiate||invalidate
 invalud||invalid
 invididual||individual
 invokation||invocation
 invokations||invocations
+<<<<<<< HEAD
 iomaped||iomapped
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ireelevant||irrelevant
 irrelevent||irrelevant
 isnt||isn't
@@ -993,11 +1350,18 @@ losted||lost
 maangement||management
 machinary||machinery
 maibox||mailbox
+<<<<<<< HEAD
 mailformed||malformed
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 maintainance||maintenance
 maintainence||maintenance
 maintan||maintain
 makeing||making
+<<<<<<< HEAD
+=======
+mailformed||malformed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 malplaced||misplaced
 malplace||misplace
 managable||manageable
@@ -1007,22 +1371,36 @@ mangement||management
 manger||manager
 manoeuvering||maneuvering
 manufaucturing||manufacturing
+<<<<<<< HEAD
 maping||mapping
 mappping||mapping
+=======
+mappping||mapping
+maping||mapping
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 matchs||matches
 mathimatical||mathematical
 mathimatic||mathematic
 mathimatics||mathematics
+<<<<<<< HEAD
 maximium||maximum
 maxium||maximum
 maxmium||maximum
+=======
+maxmium||maximum
+maximium||maximum
+maxium||maximum
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 mechamism||mechanism
 mechanim||mechanism
 meetign||meeting
 memeory||memory
 memmber||member
 memoery||memory
+<<<<<<< HEAD
 memomry||memory
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 memroy||memory
 ment||meant
 mergable||mergeable
@@ -1039,19 +1417,33 @@ migrateable||migratable
 miliseconds||milliseconds
 millenium||millennium
 milliseonds||milliseconds
+<<<<<<< HEAD
 minimam||minimum
 minimim||minimum
 minimun||minimum
 minium||minimum
+=======
+minimim||minimum
+minium||minimum
+minimam||minimum
+minimun||minimum
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 miniumum||minimum
 minumum||minimum
 misalinged||misaligned
 miscelleneous||miscellaneous
 misformed||malformed
+<<<<<<< HEAD
 mising||missing
 mismactch||mismatch
 mispelled||misspelled
 mispelt||misspelt
+=======
+mispelled||misspelled
+mispelt||misspelt
+mising||missing
+mismactch||mismatch
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 missign||missing
 missmanaged||mismanaged
 missmatch||mismatch
@@ -1064,17 +1456,29 @@ modifer||modifier
 modul||module
 modulues||modules
 momery||memory
+<<<<<<< HEAD
+=======
+memomry||memory
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 monitring||monitoring
 monochorome||monochrome
 monochromo||monochrome
 monocrome||monochrome
 mopdule||module
 mroe||more
+<<<<<<< HEAD
 muliple||multiple
 mulitplied||multiplied
 multidimensionnal||multidimensional
 multipe||multiple
 multipler||multiplier
+=======
+mulitplied||multiplied
+muliple||multiple
+multipler||multiplier
+multidimensionnal||multidimensional
+multipe||multiple
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 multple||multiple
 mumber||number
 muticast||multicast
@@ -1096,7 +1500,10 @@ nerver||never
 nescessary||necessary
 nessessary||necessary
 none existent||non-existent
+<<<<<<< HEAD
 notfify||notify
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 noticable||noticeable
 notication||notification
 notications||notifications
@@ -1104,6 +1511,10 @@ notifcations||notifications
 notifed||notified
 notifer||notifier
 notity||notify
+<<<<<<< HEAD
+=======
+notfify||notify
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 nubmer||number
 numebr||number
 numer||number
@@ -1121,10 +1532,17 @@ occurence||occurrence
 occure||occurred
 occuring||occurring
 ocurrence||occurrence
+<<<<<<< HEAD
 offet||offset
 offlaod||offload
 offloded||offloaded
 offser||offset
+=======
+offser||offset
+offet||offset
+offlaod||offload
+offloded||offloaded
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 offseting||offsetting
 oflload||offload
 omited||omitted
@@ -1143,12 +1561,18 @@ optionnal||optional
 optmizations||optimizations
 orientatied||orientated
 orientied||oriented
+<<<<<<< HEAD
 originial||original
 orignal||original
+=======
+orignal||original
+originial||original
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 orphanded||orphaned
 otherise||otherwise
 ouput||output
 oustanding||outstanding
+<<<<<<< HEAD
 oveflow||overflow
 overaall||overall
 overflw||overflow
@@ -1156,12 +1580,26 @@ overhread||overhead
 overide||override
 overlaping||overlapping
 overlfow||overflow
+=======
+overaall||overall
+overhread||overhead
+overlaping||overlapping
+oveflow||overflow
+overflw||overflow
+overlfow||overflow
+overide||override
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 overrided||overridden
 overriden||overridden
 overrrun||overrun
 overun||overrun
+<<<<<<< HEAD
 overwriten||overwritten
 overwritting||overwriting
+=======
+overwritting||overwriting
+overwriten||overwritten
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pacakge||package
 pachage||package
 packacge||package
@@ -1171,11 +1609,19 @@ packtes||packets
 pakage||package
 paket||packet
 pallette||palette
+<<<<<<< HEAD
 palne||plane
 paln||plan
 paramameters||parameters
 paramater||parameter
 paramaters||parameters
+=======
+paln||plan
+palne||plane
+paramameters||parameters
+paramaters||parameters
+paramater||parameter
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 paramenters||parameters
 parametes||parameters
 parametised||parametrised
@@ -1243,6 +1689,11 @@ prefered||preferred
 prefferably||preferably
 prefitler||prefilter
 preform||perform
+<<<<<<< HEAD
+=======
+previleged||privileged
+previlege||privilege
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 premption||preemption
 prepaired||prepared
 prepate||prepare
@@ -1250,8 +1701,11 @@ preperation||preparation
 preprare||prepare
 pressre||pressure
 presuambly||presumably
+<<<<<<< HEAD
 previleged||privileged
 previlege||privilege
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 previosuly||previously
 previsously||previously
 primative||primitive
@@ -1260,6 +1714,7 @@ priorty||priority
 priting||printing
 privilaged||privileged
 privilage||privilege
+<<<<<<< HEAD
 priviledged||privileged
 priviledge||privilege
 priviledges||privileges
@@ -1271,6 +1726,19 @@ proccesors||processors
 procesed||processed
 procesing||processing
 proces||process
+=======
+priviledge||privilege
+priviledged||privileged
+priviledges||privileges
+privleges||privileges
+probaly||probably
+probabalistic||probabilistic
+procceed||proceed
+proccesors||processors
+procesed||processed
+proces||process
+procesing||processing
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 processessing||processing
 processess||processes
 processpr||processor
@@ -1290,7 +1758,10 @@ progresss||progress
 prohibitted||prohibited
 prohibitting||prohibiting
 promiscous||promiscuous
+<<<<<<< HEAD
 promixity||proximity
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 promps||prompts
 pronnounced||pronounced
 prononciation||pronunciation
@@ -1299,14 +1770,23 @@ pronunce||pronounce
 propery||property
 propigate||propagate
 propigation||propagation
+<<<<<<< HEAD
 propogate||propagate
 propogation||propagation
+=======
+propogation||propagation
+propogate||propagate
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 prosess||process
 protable||portable
 protcol||protocol
 protecion||protection
 protedcted||protected
 protocoll||protocol
+<<<<<<< HEAD
+=======
+promixity||proximity
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 psudo||pseudo
 psuedo||pseudo
 psychadelic||psychedelic
@@ -1335,8 +1815,13 @@ recieves||receives
 recieving||receiving
 recogniced||recognised
 recognizeable||recognizable
+<<<<<<< HEAD
 recommanded||recommended
 recompte||recompute
+=======
+recompte||recompute
+recommanded||recommended
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 recyle||recycle
 redect||reject
 redircet||redirect
@@ -1346,8 +1831,13 @@ reename||rename
 refcounf||refcount
 refence||reference
 refered||referred
+<<<<<<< HEAD
 referenace||reference
 referencce||reference
+=======
+referencce||reference
+referenace||reference
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 refererence||reference
 refering||referring
 refernces||references
@@ -1355,8 +1845,13 @@ refernnce||reference
 refrence||reference
 regiser||register
 registed||registered
+<<<<<<< HEAD
 registeration||registration
 registerd||registered
+=======
+registerd||registered
+registeration||registration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 registeresd||registered
 registerred||registered
 registes||registers
@@ -1373,8 +1868,13 @@ reloade||reload
 remoote||remote
 remore||remote
 removeable||removable
+<<<<<<< HEAD
 repectively||respectively
 repective||respective
+=======
+repective||respective
+repectively||respectively
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 replacable||replaceable
 replacments||replacements
 replys||replies
@@ -1391,8 +1891,13 @@ requieres||requires
 requirment||requirement
 requred||required
 requried||required
+<<<<<<< HEAD
 requsted||requested
 requst||request
+=======
+requst||request
+requsted||requested
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 reregisteration||reregistration
 reseting||resetting
 reseved||reserved
@@ -1414,11 +1919,19 @@ retransmited||retransmitted
 retreived||retrieved
 retreive||retrieve
 retreiving||retrieving
+<<<<<<< HEAD
 retrived||retrieved
 retrive||retrieve
 retrun||return
 retuned||returned
 retun||return
+=======
+retrive||retrieve
+retrived||retrieved
+retrun||return
+retun||return
+retuned||returned
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 reudce||reduce
 reuest||request
 reuqest||request
@@ -1466,9 +1979,15 @@ seperate||separate
 seperatly||separately
 seperator||separator
 sepperate||separate
+<<<<<<< HEAD
 seqeuencer||sequencer
 seqeuncer||sequencer
 seqeunce||sequence
+=======
+seqeunce||sequence
+seqeuncer||sequencer
+seqeuencer||sequencer
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sequece||sequence
 sequemce||sequence
 sequencial||sequential
@@ -1507,8 +2026,13 @@ soley||solely
 soluation||solution
 souce||source
 speach||speech
+<<<<<<< HEAD
 specfication||specification
 specfic||specific
+=======
+specfic||specific
+specfication||specification
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 specfield||specified
 speciefied||specified
 specifc||specific
@@ -1517,8 +2041,13 @@ specificatin||specification
 specificaton||specification
 specificed||specified
 specifing||specifying
+<<<<<<< HEAD
 specifiying||specifying
 specifiy||specify
+=======
+specifiy||specify
+specifiying||specifying
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 speficied||specified
 speicify||specify
 speling||spelling
@@ -1545,12 +2074,18 @@ stoppped||stopped
 straming||streaming
 struc||struct
 structres||structures
+<<<<<<< HEAD
 strucuture||structure
 stuct||struct
+=======
+stuct||struct
+strucuture||structure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 stucture||structure
 sturcture||structure
 subdirectoires||subdirectories
 suble||subtle
+<<<<<<< HEAD
 submited||submitted
 submition||submission
 substract||subtract
@@ -1562,6 +2097,19 @@ successed||succeeded
 successfull||successful
 successfuly||successfully
 suceed||succeed
+=======
+substract||subtract
+submited||submitted
+submition||submission
+succeded||succeeded
+suceed||succeed
+succesfuly||successfully
+succesfully||successfully
+succesful||successful
+successed||succeeded
+successfull||successful
+successfuly||successfully
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sucessfully||successfully
 sucessful||successful
 sucess||success
@@ -1570,9 +2118,15 @@ superseeded||superseded
 suplied||supplied
 suported||supported
 suport||support
+<<<<<<< HEAD
 suppored||supported
 supporing||supporting
 supportet||supported
+=======
+supportet||supported
+suppored||supported
+supporing||supporting
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 supportin||supporting
 suppoted||supported
 suppported||supported
@@ -1583,6 +2137,7 @@ surpressed||suppressed
 surpresses||suppresses
 susbsystem||subsystem
 suspeneded||suspended
+<<<<<<< HEAD
 suspicously||suspiciously
 suspsend||suspend
 swaping||swapping
@@ -1597,13 +2152,35 @@ swith||switch
 swtich||switch
 sychronization||synchronization
 sychronously||synchronously
+=======
+suspsend||suspend
+suspicously||suspiciously
+swaping||swapping
+switchs||switches
+swith||switch
+swithable||switchable
+swithc||switch
+swithced||switched
+swithcing||switching
+swithed||switched
+swithing||switching
+swtich||switch
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 syfs||sysfs
 symetric||symmetric
 synax||syntax
 synchonized||synchronized
+<<<<<<< HEAD
 synchronuously||synchronously
 syncronized||synchronized
 syncronize||synchronize
+=======
+sychronization||synchronization
+sychronously||synchronously
+synchronuously||synchronously
+syncronize||synchronize
+syncronized||synchronized
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 syncronizing||synchronizing
 syncronus||synchronous
 syste||system
@@ -1612,17 +2189,27 @@ sythesis||synthesis
 tagert||target
 taht||that
 tained||tainted
+<<<<<<< HEAD
 tansition||transition
 tansmit||transmit
 tarffic||traffic
+=======
+tarffic||traffic
+tansmit||transmit
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 targetted||targeted
 targetting||targeting
 taskelt||tasklet
 teh||the
 temeprature||temperature
 temorary||temporary
+<<<<<<< HEAD
 temperture||temperature
 temproarily||temporarily
+=======
+temproarily||temporarily
+temperture||temperature
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 theads||threads
 therfore||therefore
 thier||their
@@ -1632,6 +2219,7 @@ threshhold||threshold
 thresold||threshold
 throtting||throttling
 throught||through
+<<<<<<< HEAD
 thses||these
 tiggered||triggered
 tiggerring||triggering
@@ -1640,12 +2228,29 @@ timeing||timing
 timming||timing
 timout||timeout
 tipically||typically
+=======
+tansition||transition
+trackling||tracking
+troughput||throughput
+trys||tries
+thses||these
+tiggers||triggers
+tiggered||triggered
+tiggerring||triggering
+tipically||typically
+timeing||timing
+timming||timing
+timout||timeout
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 tmis||this
 tolarance||tolerance
 toogle||toggle
 torerable||tolerable
 torlence||tolerance
+<<<<<<< HEAD
 trackling||tracking
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 traget||target
 traking||tracking
 tramsmitted||transmitted
@@ -1669,6 +2274,7 @@ trasfer||transfer
 trasmission||transmission
 trasmitter||transmitter
 treshold||threshold
+<<<<<<< HEAD
 trigerred||triggered
 trigerring||triggering
 trigged||triggered
@@ -1676,13 +2282,28 @@ triggerd||triggered
 troughput||throughput
 trun||turn
 trys||tries
+=======
+trigged||triggered
+triggerd||triggered
+trigerred||triggered
+trigerring||triggering
+trun||turn
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 tunning||tuning
 ture||true
 tyep||type
 udpate||update
+<<<<<<< HEAD
 uesd||used
 uknown||unknown
 unamed||unnamed
+=======
+updtes||updates
+uesd||used
+unknwon||unknown
+uknown||unknown
+usccess||success
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 uncommited||uncommitted
 uncompatible||incompatible
 uncomressed||uncompressed
@@ -1691,7 +2312,10 @@ undeflow||underflow
 undelying||underlying
 underun||underrun
 unecessary||unnecessary
+<<<<<<< HEAD
 uneeded||unneeded
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unexecpted||unexpected
 unexepected||unexpected
 unexpcted||unexpected
@@ -1700,24 +2324,44 @@ unexpeted||unexpected
 unexpexted||unexpected
 unfortunatelly||unfortunately
 unifiy||unify
+<<<<<<< HEAD
 uninterruptable||uninterruptible
 unintialized||uninitialized
 uniterrupted||uninterrupted
+=======
+uniterrupted||uninterrupted
+uninterruptable||uninterruptible
+unintialized||uninitialized
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unitialized||uninitialized
 unkmown||unknown
 unknonw||unknown
 unknouwn||unknown
 unknow||unknown
+<<<<<<< HEAD
 unknwon||unknown
 unkown||unknown
 unmached||unmatched
+=======
+unkown||unknown
+unamed||unnamed
+uneeded||unneeded
+unneded||unneeded
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unneccecary||unnecessary
 unneccesary||unnecessary
 unneccessary||unnecessary
 unnecesary||unnecessary
+<<<<<<< HEAD
 unneded||unneeded
 unneedingly||unnecessarily
 unnsupported||unsupported
+=======
+unneedingly||unnecessarily
+unnsupported||unsupported
+unuspported||unsupported
+unmached||unmatched
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unprecise||imprecise
 unpriviledged||unprivileged
 unpriviliged||unprivileged
@@ -1725,14 +2369,21 @@ unregester||unregister
 unresgister||unregister
 unrgesiter||unregister
 unsinged||unsigned
+<<<<<<< HEAD
 unsolicitied||unsolicited
 unsolicted||unsolicited
 unstabel||unstable
+=======
+unstabel||unstable
+unsolicted||unsolicited
+unsolicitied||unsolicited
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsuccessfull||unsuccessful
 unsuported||unsupported
 untill||until
 ununsed||unused
 unuseful||useless
+<<<<<<< HEAD
 unuspported||unsupported
 unvalid||invalid
 upate||update
@@ -1740,6 +2391,12 @@ updtes||updates
 upsupported||unsupported
 upto||up to
 usccess||success
+=======
+unvalid||invalid
+upate||update
+upsupported||unsupported
+upto||up to
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 useable||usable
 usefule||useful
 usefull||useful
@@ -1761,6 +2418,7 @@ variantions||variations
 varible||variable
 varient||variant
 vaule||value
+<<<<<<< HEAD
 veify||verify
 verbse||verbose
 verfication||verification
@@ -1769,6 +2427,16 @@ verisons||versions
 verison||version
 veritical||vertical
 versoin||version
+=======
+verbse||verbose
+veify||verify
+verfication||verification
+veriosn||version
+versoin||version
+verisons||versions
+verison||version
+veritical||vertical
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 verson||version
 vicefersa||vice-versa
 virtal||virtual
@@ -1781,13 +2449,20 @@ wakeus||wakeups
 was't||wasn't
 wathdog||watchdog
 wating||waiting
+<<<<<<< HEAD
+=======
+wiat||wait
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 wether||whether
 whataver||whatever
 whcih||which
 whenver||whenever
 wheter||whether
 whe||when
+<<<<<<< HEAD
 wiat||wait
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 wierd||weird
 wihout||without
 wiil||will

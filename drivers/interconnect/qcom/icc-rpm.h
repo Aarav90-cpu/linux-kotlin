@@ -51,7 +51,11 @@ struct rpm_clk_resource {
  * @bus_clk: a pointer to a HLOS-owned bus clock
  * @intf_clks: a clk_bulk_data array of interface clocks
  * @keep_alive: whether to always keep a minimum vote on the bus clocks
+<<<<<<< HEAD
  * @ignore_enxio: whether to ignore ENXIO errors (for MSM8974)
+=======
+ * @is_on: whether the bus is powered on
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct qcom_icc_provider {
 	struct icc_provider provider;
@@ -66,7 +70,11 @@ struct qcom_icc_provider {
 	struct clk *bus_clk;
 	struct clk_bulk_data *intf_clks;
 	bool keep_alive;
+<<<<<<< HEAD
 	bool ignore_enxio;
+=======
+	bool is_on;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -137,8 +145,11 @@ struct qcom_icc_desc {
 	unsigned int qos_offset;
 	u16 ab_coeff;
 	u16 ib_coeff;
+<<<<<<< HEAD
 	int (*get_bw)(struct icc_node *node, u32 *avg, u32 *peak);
 	bool ignore_enxio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Valid for all bus types */
@@ -154,7 +165,10 @@ extern const struct rpm_clk_resource bimc_clk;
 extern const struct rpm_clk_resource bus_0_clk;
 extern const struct rpm_clk_resource bus_1_clk;
 extern const struct rpm_clk_resource bus_2_clk;
+<<<<<<< HEAD
 extern const struct rpm_clk_resource gpu_mem_2_clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct rpm_clk_resource mem_1_clk;
 extern const struct rpm_clk_resource mmaxi_0_clk;
 extern const struct rpm_clk_resource mmaxi_1_clk;

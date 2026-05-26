@@ -2,6 +2,7 @@ core_setmaster@master-drop-set-root,Crash
 core_setmaster@master-drop-set-shared-fd,Crash
 core_setmaster@master-drop-set-user,Crash
 core_setmaster_vs_auth,Crash
+<<<<<<< HEAD
 fbdev@pan,Crash
 kms_cursor_crc@cursor-dpms,Crash
 kms_cursor_crc@cursor-sliding-32x32,Crash
@@ -16,3 +17,10 @@ kms_plane_cursor@viewport,Crash
 kms_prop_blob@invalid-set-prop-any,Crash
 kms_prop_blob@invalid-set-prop,Crash
 kms_properties@get_properties-sanity-non-atomic,Fail
+=======
+dumb_buffer@create-clear,Crash
+fbdev@pan,Crash
+kms_cursor_legacy@basic-flip-before-cursor-legacy,Fail
+kms_prop_blob@invalid-set-prop,Crash
+kms_prop_blob@invalid-set-prop-any,Crash
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

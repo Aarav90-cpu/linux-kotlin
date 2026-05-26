@@ -82,6 +82,7 @@ config RUSTC_LLVM_VERSION
 	int
 	default $(rustc-llvm-version)
 
+<<<<<<< HEAD
 config RUSTC_LLVM_MAJOR_VERSION
 	int
 	default $(shell,expr $(rustc-llvm-version) / 10000)
@@ -97,6 +98,8 @@ config RUSTC_CLANG_LLVM_COMPATIBLE
 	  LTO) require the same LLVM major version to work properly. For best
 	  compatibility it is recommended that the exact same LLVM is used.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config ARCH_HAS_CC_CAN_LINK
 	bool
 
@@ -178,6 +181,15 @@ config LD_CAN_USE_KEEP_IN_OVERLAY
 	# https://github.com/llvm/llvm-project/pull/130661
 	def_bool LD_IS_BFD || LLD_VERSION >= 210000
 
+<<<<<<< HEAD
+=======
+config RUSTC_HAS_SLICE_AS_FLATTENED
+	def_bool RUSTC_VERSION >= 108000
+
+config RUSTC_HAS_COERCE_POINTEE
+	def_bool RUSTC_VERSION >= 108400
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config RUSTC_HAS_SPAN_FILE
 	def_bool RUSTC_VERSION >= 108800
 
@@ -215,6 +227,49 @@ config THREAD_INFO_IN_TASK
 
 menu "General setup"
 
+<<<<<<< HEAD
+=======
+config ZEN_INTERACTIVE
+	bool "Tune kernel for interactivity"
+	default y
+	help
+	  Tunes the kernel for responsiveness at the cost of throughput and power usage.
+
+	  --- Block Layer ----------------------------------------
+
+	    Default scheduler for SQ..: mq-deadline ->   bfq
+	    Default scheduler for MQ..:        none ->   kyber
+
+	  --- Virtual Memory Subsystem ---------------------------
+
+	    Background-reclaim hugepages...:   no   ->   yes
+	    Compact unevictable............:   yes  ->   no
+	    Watermark boost factor.........:   1.5  ->   0
+	    Swap-in readahead..............:   3    ->   0
+
+	  --- EEVDF CPU Scheduler --------------------------------
+
+	    Minimal granularity............:   0.7  ->   0.4  ms
+	    Migration cost.................:   0.5  ->   0.3  ms
+	    Bandwidth slice size...........:   5    ->   3    ms
+	    Task rebalancing threshold.....:  32    ->   8
+
+	  --- PDS/BMQ CPU Scheduler ------------------------------
+
+	    Scheduling timeslice...........:   4    ->   2    ms
+	    Yield type.....................:   1    ->   0
+
+	  --- CPUFreq Settings -----------------------------------
+
+	    Ondemand sampling down factor..:   1    ->   5
+	    Ondemand default up threshold..:  80    ->  55
+	    Ondemand micro up threshold....:  95    ->  60
+
+	  --- Split/Bus lock detection --------------------------
+
+	    Split lock mitigation..........:   1    ->   0
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config BROKEN
 	bool
 	help
@@ -719,6 +774,10 @@ config TASK_IO_ACCOUNTING
 
 config PSI
 	bool "Pressure stall information tracking"
+<<<<<<< HEAD
+=======
+	depends on !SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select KERNFS
 	help
 	  Collect metrics that indicate how overcommitted the CPU, memory,
@@ -942,6 +1001,38 @@ config SCHED_PROXY_EXEC
 	  This option enables proxy execution, a mechanism for mutex-owning
 	  tasks to inherit the scheduling context of higher priority waiters.
 
+<<<<<<< HEAD
+=======
+menuconfig SCHED_ALT
+	bool "Alternative CPU Schedulers"
+	default n
+	help
+	  This feature enables the ProjectC alternative CPU schedulers."
+
+if SCHED_ALT
+
+choice
+	prompt "Alternative CPU schedulers"
+	default SCHED_PDS
+
+config SCHED_BMQ
+	bool "BMQ CPU scheduler"
+	help
+	  The BitMap Queue CPU scheduler for excellent interactivity and
+	  responsiveness on the desktop and solid scalability on normal
+	  hardware and commodity servers.
+
+config SCHED_PDS
+	bool "PDS CPU scheduler"
+	help
+	  The Priority and Deadline based Skip list multiple queue CPU
+	  Scheduler.
+
+endchoice
+
+endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endmenu
 
 #
@@ -969,11 +1060,14 @@ config CC_IMPLICIT_FALLTHROUGH
 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
 
+<<<<<<< HEAD
 config CC_MS_EXTENSIONS
 	string
 	default "-fms-anonymous-structs" if $(cc-option,-fms-anonymous-structs)
 	default "-fms-extensions"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # Currently, disable gcc-10+ array-bounds globally.
 # It's still broken in gcc-13, so no upper bound yet.
 config GCC10_NO_ARRAY_BOUNDS
@@ -1011,7 +1105,12 @@ config NUMA_BALANCING
 	bool "Memory placement aware NUMA scheduler"
 	depends on ARCH_SUPPORTS_NUMA_BALANCING
 	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
+<<<<<<< HEAD
 	depends on SMP && NUMA_MIGRATION && !PREEMPT_RT
+=======
+	depends on SMP && NUMA && MIGRATION && !PREEMPT_RT
+	depends on !SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This option adds support for automatic NUMA aware memory/task placement.
 	  The mechanism is quite primitive and is based on migrating memory when
@@ -1190,10 +1289,13 @@ config EXT_GROUP_SCHED
 
 endif #CGROUP_SCHED
 
+<<<<<<< HEAD
 config EXT_SUB_SCHED
         def_bool y
         depends on SCHED_CLASS_EXT && CGROUPS
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SCHED_MM_CID
 	def_bool y
 	depends on SMP && RSEQ
@@ -1298,7 +1400,11 @@ config CPUSETS
 
 config CPUSETS_V1
 	bool "Legacy cgroup v1 cpusets controller"
+<<<<<<< HEAD
 	depends on CPUSETS
+=======
+	depends on (CPUSETS && !SCHED_ALT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default n
 	help
 	  Legacy cgroup v1 cpusets controller which has been deprecated by
@@ -1404,14 +1510,21 @@ config UTS_NS
 
 config TIME_NS
 	bool "TIME namespace"
+<<<<<<< HEAD
+=======
+	depends on GENERIC_GETTIMEOFDAY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y
 	help
 	  In this namespace boottime and monotonic clocks can be set.
 	  The time will keep going with the same pace.
 
+<<<<<<< HEAD
 config TIME_NS_VDSO
 	def_bool TIME_NS && GENERIC_GETTIMEOFDAY
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config IPC_NS
 	bool "IPC namespace"
 	depends on (SYSVIPC || POSIX_MQUEUE)
@@ -1434,6 +1547,25 @@ config USER_NS
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config USER_NS_UNPRIVILEGED
+	bool "Allow unprivileged users to create namespaces"
+	default y
+	depends on USER_NS
+	help
+	  When disabled, unprivileged users will not be able to create
+	  new namespaces. Allowing users to create their own namespaces
+	  has been part of several recent local privilege escalation
+	  exploits, so if you need user namespaces but are
+	  paranoid^Wsecurity-conscious you want to disable this.
+
+	  This setting can be overridden at runtime via the
+	  kernel.unprivileged_userns_clone sysctl.
+
+	  If unsure, say Y.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PID_NS
 	bool "PID Namespaces"
 	default y
@@ -1468,6 +1600,10 @@ config CHECKPOINT_RESTORE
 
 config SCHED_AUTOGROUP
 	bool "Automatic process group scheduling"
+<<<<<<< HEAD
+=======
+	depends on !SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CGROUPS
 	select CGROUP_SCHED
 	select FAIR_GROUP_SCHED
@@ -1602,6 +1738,15 @@ config CC_OPTIMIZE_FOR_PERFORMANCE
 	  with the "-O2" compiler flag for best performance and most
 	  helpful compile-time warnings.
 
+<<<<<<< HEAD
+=======
+config CC_OPTIMIZE_FOR_PERFORMANCE_O3
+	bool "Optimize more for performance (-O3)"
+	help
+	  Choosing this option will pass "-O3" to your compiler to optimize
+	  the kernel yet more for performance.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CC_OPTIMIZE_FOR_SIZE
 	bool "Optimize for size (-Os)"
 	help
@@ -2198,7 +2343,13 @@ config RUST
 	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
 	depends on !CFI || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI
+<<<<<<< HEAD
 	depends on !KASAN_SW_TAGS
+=======
+	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
+	depends on !KASAN_SW_TAGS
+	depends on !(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >= 108300
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Enables Rust support in the kernel.
 
@@ -2212,6 +2363,39 @@ config RUST
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config KOTLIN
+	bool "Kotlin/Native support"
+	default y
+	help
+	  Enables Kotlin/Native support in the kernel.
+
+	  This allows other Kotlin-related options, like drivers written in Kotlin,
+	  to be selected.
+
+	  If unsure, say N.
+
+config JAVA
+	bool "Java language support"
+	help
+	  Enables Java support in the build system.
+	  This is typically used for compiling userspace utilities.
+
+config GRADLE
+	bool "Gradle build system support"
+	depends on JAVA
+	help
+	  Enables Gradle build system support, allowing Gradle-based
+	  projects to be built during the kernel build process.
+
+config ANDROID_SDK
+	bool "Android SDK support"
+	depends on GRADLE
+	help
+	  Enables building Android Apps as part of the build system.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config RUSTC_VERSION_TEXT
 	string
 	depends on RUST
@@ -2222,7 +2406,16 @@ config RUSTC_VERSION_TEXT
 config BINDGEN_VERSION_TEXT
 	string
 	depends on RUST
+<<<<<<< HEAD
 	default "$(shell,$(BINDGEN) --version 2>/dev/null)"
+=======
+	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
+	# (https://github.com/rust-lang/rust-bindgen/pull/2678) and 0.71.0
+	# (https://github.com/rust-lang/rust-bindgen/pull/3040). It can be removed
+	# when the minimum version is upgraded past the latter (0.69.1 and 0.71.1
+	# both fixed the issue).
+	default "$(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null)"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #
 # Place an empty function call at each tracepoint site. Can be

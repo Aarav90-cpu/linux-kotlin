@@ -259,11 +259,15 @@ int btrfs_convert_free_space_to_bitmaps(struct btrfs_trans_handle *trans,
 				nr++;
 				path->slots[0]--;
 			} else {
+<<<<<<< HEAD
 				btrfs_err(fs_info, "unexpected free space tree key type %u",
 					  found_key.type);
 				ret = -EUCLEAN;
 				btrfs_abort_transaction(trans, ret);
 				goto out;
+=======
+				ASSERT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 
@@ -409,11 +413,15 @@ int btrfs_convert_free_space_to_extents(struct btrfs_trans_handle *trans,
 
 				nr++;
 			} else {
+<<<<<<< HEAD
 				btrfs_err(fs_info, "unexpected free space tree key type %u",
 					  found_key.type);
 				ret = -EUCLEAN;
 				btrfs_abort_transaction(trans, ret);
 				goto out;
+=======
+				ASSERT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 
@@ -1526,11 +1534,15 @@ int btrfs_remove_block_group_free_space(struct btrfs_trans_handle *trans,
 				nr++;
 				path->slots[0]--;
 			} else {
+<<<<<<< HEAD
 				btrfs_err(trans->fs_info, "unexpected free space tree key type %u",
 					  found_key.type);
 				ret = -EUCLEAN;
 				btrfs_abort_transaction(trans, ret);
 				return ret;
+=======
+				ASSERT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 

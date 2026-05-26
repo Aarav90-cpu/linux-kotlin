@@ -70,7 +70,11 @@ static int red_use_nodrop(struct red_sched_data *q)
 static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		       struct sk_buff **to_free)
 {
+<<<<<<< HEAD
 	enum qdisc_drop_reason reason = QDISC_DROP_CONGESTED;
+=======
+	enum skb_drop_reason reason = SKB_DROP_REASON_QDISC_CONGESTED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct red_sched_data *q = qdisc_priv(sch);
 	struct Qdisc *child = q->qdisc;
 	unsigned int len;
@@ -90,20 +94,32 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 	case RED_PROB_MARK:
 		qdisc_qstats_overlimit(sch);
 		if (!red_use_ecn(q)) {
+<<<<<<< HEAD
 			WRITE_ONCE(q->stats.prob_drop,
 				   q->stats.prob_drop + 1);
+=======
+			q->stats.prob_drop++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto congestion_drop;
 		}
 
 		if (INET_ECN_set_ce(skb)) {
+<<<<<<< HEAD
 			WRITE_ONCE(q->stats.prob_mark,
 				   q->stats.prob_mark + 1);
+=======
+			q->stats.prob_mark++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
 			if (!skb)
 				return NET_XMIT_CN | ret;
 		} else if (!red_use_nodrop(q)) {
+<<<<<<< HEAD
 			WRITE_ONCE(q->stats.prob_drop,
 				   q->stats.prob_drop + 1);
+=======
+			q->stats.prob_drop++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto congestion_drop;
 		}
 
@@ -111,23 +127,38 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		break;
 
 	case RED_HARD_MARK:
+<<<<<<< HEAD
 		reason = QDISC_DROP_OVERLIMIT;
 		qdisc_qstats_overlimit(sch);
 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
 			WRITE_ONCE(q->stats.forced_drop,
 				   q->stats.forced_drop + 1);
+=======
+		reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
+		qdisc_qstats_overlimit(sch);
+		if (red_use_harddrop(q) || !red_use_ecn(q)) {
+			q->stats.forced_drop++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto congestion_drop;
 		}
 
 		if (INET_ECN_set_ce(skb)) {
+<<<<<<< HEAD
 			WRITE_ONCE(q->stats.forced_mark,
 				   q->stats.forced_mark + 1);
+=======
+			q->stats.forced_mark++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
 			if (!skb)
 				return NET_XMIT_CN | ret;
 		} else if (!red_use_nodrop(q)) {
+<<<<<<< HEAD
 			WRITE_ONCE(q->stats.forced_drop,
 				   q->stats.forced_drop + 1);
+=======
+			q->stats.forced_drop++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto congestion_drop;
 		}
 
@@ -141,8 +172,12 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		sch->qstats.backlog += len;
 		sch->q.qlen++;
 	} else if (net_xmit_drop_count(ret)) {
+<<<<<<< HEAD
 		WRITE_ONCE(q->stats.pdrop,
 			   q->stats.pdrop + 1);
+=======
+		q->stats.pdrop++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qdisc_qstats_drop(sch);
 	}
 	return ret;
@@ -470,6 +505,7 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
 					      &hw_stats_request);
 	}
+<<<<<<< HEAD
 	st.early = READ_ONCE(q->stats.prob_drop) +
 		   READ_ONCE(q->stats.forced_drop);
 
@@ -477,6 +513,11 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 
 	st.marked = READ_ONCE(q->stats.prob_mark) +
 		    READ_ONCE(q->stats.forced_mark);
+=======
+	st.early = q->stats.prob_drop + q->stats.forced_drop;
+	st.pdrop = q->stats.pdrop;
+	st.marked = q->stats.prob_mark + q->stats.forced_mark;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return gnet_stats_copy_app(d, &st, sizeof(st));
 }

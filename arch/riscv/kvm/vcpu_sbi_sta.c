@@ -181,7 +181,10 @@ static int kvm_sbi_ext_sta_set_reg(struct kvm_vcpu *vcpu, unsigned long reg_num,
 				   unsigned long reg_size, const void *reg_val)
 {
 	unsigned long value;
+<<<<<<< HEAD
 	gpa_t new_shmem = INVALID_GPA;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (reg_size != sizeof(unsigned long))
 		return -EINVAL;
@@ -192,18 +195,30 @@ static int kvm_sbi_ext_sta_set_reg(struct kvm_vcpu *vcpu, unsigned long reg_num,
 		if (IS_ENABLED(CONFIG_32BIT)) {
 			gpa_t hi = upper_32_bits(vcpu->arch.sta.shmem);
 
+<<<<<<< HEAD
 			new_shmem = value;
 			new_shmem |= hi << 32;
 		} else {
 			new_shmem = value;
+=======
+			vcpu->arch.sta.shmem = value;
+			vcpu->arch.sta.shmem |= hi << 32;
+		} else {
+			vcpu->arch.sta.shmem = value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	case KVM_REG_RISCV_SBI_STA_REG(shmem_hi):
 		if (IS_ENABLED(CONFIG_32BIT)) {
 			gpa_t lo = lower_32_bits(vcpu->arch.sta.shmem);
 
+<<<<<<< HEAD
 			new_shmem = ((gpa_t)value << 32);
 			new_shmem |= lo;
+=======
+			vcpu->arch.sta.shmem = ((gpa_t)value << 32);
+			vcpu->arch.sta.shmem |= lo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (value != 0) {
 			return -EINVAL;
 		}
@@ -212,11 +227,14 @@ static int kvm_sbi_ext_sta_set_reg(struct kvm_vcpu *vcpu, unsigned long reg_num,
 		return -ENOENT;
 	}
 
+<<<<<<< HEAD
 	if (new_shmem != INVALID_GPA && !IS_ALIGNED(new_shmem, 64))
 		return -EINVAL;
 
 	vcpu->arch.sta.shmem = new_shmem;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

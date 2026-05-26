@@ -10,6 +10,10 @@
 #include <asm/asm-offsets.h>
 #include <asm/assembler.h>
 #include <asm/csr.h>
+<<<<<<< HEAD
+=======
+#include <asm/xip_fixup.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.text
 	.altmacro
@@ -69,6 +73,10 @@ SYM_TYPED_FUNC_START(__cpu_resume_enter)
 
 	/* Enable MMU */
 	la	a0, swapper_pg_dir
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	call	relocate_enable_mmu
 
 	/* Restore A0 and A1 */

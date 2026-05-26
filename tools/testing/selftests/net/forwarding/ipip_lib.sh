@@ -144,7 +144,11 @@
 
 h1_create()
 {
+<<<<<<< HEAD
 	simple_if_init $h1 192.0.2.1/28
+=======
+	simple_if_init $h1 192.0.2.1/28 2001:db8:1::1/64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ip route add vrf v$h1 192.0.2.16/28 via 192.0.2.2
 }
 

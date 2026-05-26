@@ -30,6 +30,10 @@ amdxdna_gem_heap_alloc(struct amdxdna_gem_obj *abo)
 	struct amdxdna_dev *xdna = client->xdna;
 	struct amdxdna_mem *mem = &abo->mem;
 	struct amdxdna_gem_obj *heap;
+<<<<<<< HEAD
+=======
+	u64 offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 align;
 	int ret;
 
@@ -41,7 +45,11 @@ amdxdna_gem_heap_alloc(struct amdxdna_gem_obj *abo)
 		goto unlock_out;
 	}
 
+<<<<<<< HEAD
 	if (amdxdna_gem_uva(heap) == AMDXDNA_INVALID_ADDR) {
+=======
+	if (heap->mem.userptr == AMDXDNA_INVALID_ADDR) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		XDNA_ERR(xdna, "Invalid dev heap userptr");
 		ret = -EINVAL;
 		goto unlock_out;
@@ -63,7 +71,14 @@ amdxdna_gem_heap_alloc(struct amdxdna_gem_obj *abo)
 		goto unlock_out;
 	}
 
+<<<<<<< HEAD
 	client->heap_usage += mem->size;
+=======
+	mem->dev_addr = abo->mm_node.start;
+	offset = mem->dev_addr - heap->mem.dev_addr;
+	mem->userptr = heap->mem.userptr + offset;
+	mem->kva = heap->mem.kva + offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_gem_object_get(to_gobj(heap));
 
@@ -74,6 +89,7 @@ unlock_out:
 }
 
 static void
+<<<<<<< HEAD
 amdxdna_gem_heap_free(struct amdxdna_gem_obj *abo)
 {
 	struct amdxdna_client *client = abo->client;
@@ -113,12 +129,15 @@ amdxdna_gem_create_obj(struct drm_device *dev, size_t size)
 }
 
 static void
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 amdxdna_gem_destroy_obj(struct amdxdna_gem_obj *abo)
 {
 	mutex_destroy(&abo->lock);
 	kfree(abo);
 }
 
+<<<<<<< HEAD
 /*
  * Obtains a kernel virtual address on the BO (usually of small size).
  * The mapping is established on the first call and stays valid until
@@ -188,6 +207,21 @@ u64 amdxdna_gem_dev_addr(struct amdxdna_gem_obj *abo)
 	if (abo->type == AMDXDNA_BO_DEV)
 		return abo->mm_node.start;
 	return amdxdna_obj_dma_addr(abo);
+=======
+static void
+amdxdna_gem_heap_free(struct amdxdna_gem_obj *abo)
+{
+	struct amdxdna_gem_obj *heap;
+
+	mutex_lock(&abo->client->mm_lock);
+
+	drm_mm_remove_node(&abo->mm_node);
+
+	heap = abo->client->dev_heap;
+	drm_gem_object_put(to_gobj(heap));
+
+	mutex_unlock(&abo->client->mm_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool amdxdna_hmm_invalidate(struct mmu_interval_notifier *mni,
@@ -252,19 +286,29 @@ static void amdxdna_hmm_unregister(struct amdxdna_gem_obj *abo,
 static void amdxdna_umap_release(struct kref *ref)
 {
 	struct amdxdna_umap *mapp = container_of(ref, struct amdxdna_umap, refcnt);
+<<<<<<< HEAD
 	struct amdxdna_gem_obj *abo = mapp->abo;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vm_area_struct *vma = mapp->vma;
 	struct amdxdna_dev *xdna;
 
 	mmu_interval_notifier_remove(&mapp->notifier);
+<<<<<<< HEAD
 	if (is_import_bo(abo) && vma->vm_file && vma->vm_file->f_mapping)
+=======
+	if (is_import_bo(mapp->abo) && vma->vm_file && vma->vm_file->f_mapping)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mapping_clear_unevictable(vma->vm_file->f_mapping);
 
 	xdna = to_xdna_dev(to_gobj(mapp->abo)->dev);
 	down_write(&xdna->notifier_lock);
 	list_del(&mapp->node);
+<<<<<<< HEAD
 	if (list_empty(&abo->mem.umap_list))
 		abo->mem.uva = AMDXDNA_INVALID_ADDR;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	up_write(&xdna->notifier_lock);
 
 	kvfree(mapp->range.hmm_pfns);
@@ -326,13 +370,21 @@ static int amdxdna_hmm_register(struct amdxdna_gem_obj *abo,
 	mapp->abo = abo;
 	kref_init(&mapp->refcnt);
 
+<<<<<<< HEAD
+=======
+	if (abo->mem.userptr == AMDXDNA_INVALID_ADDR)
+		abo->mem.userptr = addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_WORK(&mapp->hmm_unreg_work, amdxdna_hmm_unreg_work);
 	if (is_import_bo(abo) && vma->vm_file && vma->vm_file->f_mapping)
 		mapping_set_unevictable(vma->vm_file->f_mapping);
 
 	down_write(&xdna->notifier_lock);
+<<<<<<< HEAD
 	if (list_empty(&abo->mem.umap_list))
 		abo->mem.uva = addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_add_tail(&mapp->node, &abo->mem.umap_list);
 	up_write(&xdna->notifier_lock);
 
@@ -350,11 +402,18 @@ static void amdxdna_gem_dev_obj_free(struct drm_gem_object *gobj)
 	struct amdxdna_dev *xdna = to_xdna_dev(gobj->dev);
 	struct amdxdna_gem_obj *abo = to_xdna_obj(gobj);
 
+<<<<<<< HEAD
 	XDNA_DBG(xdna, "BO type %d xdna_addr 0x%llx", abo->type, amdxdna_gem_dev_addr(abo));
 	if (abo->pinned)
 		amdxdna_gem_unpin(abo);
 
 	amdxdna_gem_vunmap(abo);
+=======
+	XDNA_DBG(xdna, "BO type %d xdna_addr 0x%llx", abo->type, abo->mem.dev_addr);
+	if (abo->pinned)
+		amdxdna_gem_unpin(abo);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdxdna_gem_heap_free(abo);
 	drm_gem_object_release(gobj);
 	amdxdna_gem_destroy_obj(abo);
@@ -485,6 +544,38 @@ static const struct dma_buf_ops amdxdna_dmabuf_ops = {
 	.vunmap = drm_gem_dmabuf_vunmap,
 };
 
+<<<<<<< HEAD
+=======
+static int amdxdna_gem_obj_vmap(struct amdxdna_gem_obj *abo, void **vaddr)
+{
+	struct iosys_map map = IOSYS_MAP_INIT_VADDR(NULL);
+	int ret;
+
+	if (is_import_bo(abo))
+		ret = dma_buf_vmap_unlocked(abo->dma_buf, &map);
+	else
+		ret = drm_gem_vmap(to_gobj(abo), &map);
+
+	*vaddr = map.vaddr;
+	return ret;
+}
+
+static void amdxdna_gem_obj_vunmap(struct amdxdna_gem_obj *abo)
+{
+	struct iosys_map map;
+
+	if (!abo->mem.kva)
+		return;
+
+	iosys_map_set_vaddr(&map, abo->mem.kva);
+
+	if (is_import_bo(abo))
+		dma_buf_vunmap_unlocked(abo->dma_buf, &map);
+	else
+		drm_gem_vunmap(to_gobj(abo), &map);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct dma_buf *amdxdna_gem_prime_export(struct drm_gem_object *gobj, int flags)
 {
 	struct amdxdna_gem_obj *abo = to_xdna_obj(gobj);
@@ -516,6 +607,7 @@ static void amdxdna_imported_obj_free(struct amdxdna_gem_obj *abo)
 	kfree(abo);
 }
 
+<<<<<<< HEAD
 static inline bool
 amdxdna_gem_skip_bo_usage(struct amdxdna_gem_obj *abo)
 {
@@ -560,11 +652,18 @@ amdxdna_gem_del_bo_usage(struct amdxdna_gem_obj *abo)
 		client->total_int_bo_usage -= abo->mem.size;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void amdxdna_gem_obj_free(struct drm_gem_object *gobj)
 {
 	struct amdxdna_dev *xdna = to_xdna_dev(gobj->dev);
 	struct amdxdna_gem_obj *abo = to_xdna_obj(gobj);
 
+<<<<<<< HEAD
+=======
+	XDNA_DBG(xdna, "BO type %d xdna_addr 0x%llx", abo->type, abo->mem.dev_addr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdxdna_hmm_unregister(abo, NULL);
 	flush_workqueue(xdna->notifier_wq);
 
@@ -574,6 +673,7 @@ static void amdxdna_gem_obj_free(struct drm_gem_object *gobj)
 	if (abo->type == AMDXDNA_BO_DEV_HEAP)
 		drm_mm_takedown(&abo->mm);
 
+<<<<<<< HEAD
 	if (amdxdna_iova_on(xdna))
 		amdxdna_iommu_unmap_bo(xdna, abo);
 
@@ -633,17 +733,34 @@ static int amdxdna_gem_dev_obj_vmap(struct drm_gem_object *obj, struct iosys_map
 		return -ENOMEM;
 	iosys_map_set_vaddr(map, base + offset);
 	return 0;
+=======
+	amdxdna_gem_obj_vunmap(abo);
+	mutex_destroy(&abo->lock);
+
+	if (is_import_bo(abo)) {
+		amdxdna_imported_obj_free(abo);
+		return;
+	}
+
+	drm_gem_shmem_free(&abo->base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct drm_gem_object_funcs amdxdna_gem_dev_obj_funcs = {
 	.free = amdxdna_gem_dev_obj_free,
+<<<<<<< HEAD
 	.vmap = amdxdna_gem_dev_obj_vmap,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct drm_gem_object_funcs amdxdna_gem_shmem_funcs = {
 	.free = amdxdna_gem_obj_free,
+<<<<<<< HEAD
 	.open = amdxdna_gem_obj_open,
 	.close = amdxdna_gem_obj_close,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.print_info = drm_gem_shmem_object_print_info,
 	.pin = drm_gem_shmem_object_pin,
 	.unpin = drm_gem_shmem_object_unpin,
@@ -655,9 +772,36 @@ static const struct drm_gem_object_funcs amdxdna_gem_shmem_funcs = {
 	.export = amdxdna_gem_prime_export,
 };
 
+<<<<<<< HEAD
 /* For drm_driver->gem_create_object callback */
 struct drm_gem_object *
 amdxdna_gem_create_shmem_object_cb(struct drm_device *dev, size_t size)
+=======
+static struct amdxdna_gem_obj *
+amdxdna_gem_create_obj(struct drm_device *dev, size_t size)
+{
+	struct amdxdna_gem_obj *abo;
+
+	abo = kzalloc_obj(*abo);
+	if (!abo)
+		return ERR_PTR(-ENOMEM);
+
+	abo->pinned = false;
+	abo->assigned_hwctx = AMDXDNA_INVALID_CTX_HANDLE;
+	mutex_init(&abo->lock);
+
+	abo->mem.userptr = AMDXDNA_INVALID_ADDR;
+	abo->mem.dev_addr = AMDXDNA_INVALID_ADDR;
+	abo->mem.size = size;
+	INIT_LIST_HEAD(&abo->mem.umap_list);
+
+	return abo;
+}
+
+/* For drm_driver->gem_create_object callback */
+struct drm_gem_object *
+amdxdna_gem_create_object_cb(struct drm_device *dev, size_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct amdxdna_gem_obj *abo;
 
@@ -671,9 +815,14 @@ amdxdna_gem_create_shmem_object_cb(struct drm_device *dev, size_t size)
 }
 
 static struct amdxdna_gem_obj *
+<<<<<<< HEAD
 amdxdna_gem_create_shmem_object(struct drm_device *dev, struct amdxdna_drm_create_bo *args)
 {
 	size_t size = args->size;
+=======
+amdxdna_gem_create_shmem_object(struct drm_device *dev, size_t size)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_gem_shmem_object *shmem = drm_gem_shmem_create(dev, size);
 
 	if (IS_ERR(shmem))
@@ -687,6 +836,10 @@ static struct amdxdna_gem_obj *
 amdxdna_gem_create_ubuf_object(struct drm_device *dev, struct amdxdna_drm_create_bo *args)
 {
 	struct amdxdna_dev *xdna = to_xdna_dev(dev);
+<<<<<<< HEAD
+=======
+	enum amdxdna_ubuf_flag flags = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct amdxdna_drm_va_tbl va_tbl;
 	struct amdxdna_gem_obj *abo;
 	struct drm_gem_object *gobj;
@@ -698,7 +851,14 @@ amdxdna_gem_create_ubuf_object(struct drm_device *dev, struct amdxdna_drm_create
 	}
 
 	if (va_tbl.num_entries) {
+<<<<<<< HEAD
 		dma_buf = amdxdna_get_ubuf(dev, va_tbl.num_entries,
+=======
+		if (args->type == AMDXDNA_BO_CMD)
+			flags |= AMDXDNA_UBUF_FLAG_MAP_DMA;
+
+		dma_buf = amdxdna_get_ubuf(dev, flags, va_tbl.num_entries,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   u64_to_user_ptr(args->vaddr + sizeof(va_tbl)));
 	} else {
 		dma_buf = dma_buf_get(va_tbl.dmabuf_fd);
@@ -721,6 +881,21 @@ amdxdna_gem_create_ubuf_object(struct drm_device *dev, struct amdxdna_drm_create
 	return abo;
 }
 
+<<<<<<< HEAD
+=======
+static struct amdxdna_gem_obj *
+amdxdna_gem_create_object(struct drm_device *dev,
+			  struct amdxdna_drm_create_bo *args)
+{
+	size_t aligned_sz = PAGE_ALIGN(args->size);
+
+	if (args->vaddr)
+		return amdxdna_gem_create_ubuf_object(dev, args);
+
+	return amdxdna_gem_create_shmem_object(dev, aligned_sz);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_gem_object *
 amdxdna_gem_prime_import(struct drm_device *dev, struct dma_buf *dma_buf)
 {
@@ -753,8 +928,11 @@ amdxdna_gem_prime_import(struct drm_device *dev, struct dma_buf *dma_buf)
 	abo = to_xdna_obj(gobj);
 	abo->attach = attach;
 	abo->dma_buf = dma_buf;
+<<<<<<< HEAD
 	abo->type = AMDXDNA_BO_SHARE;
 	gobj->resv = dma_buf->resv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return gobj;
 
@@ -769,6 +947,7 @@ put_buf:
 }
 
 static struct amdxdna_gem_obj *
+<<<<<<< HEAD
 amdxdna_drm_create_share_bo(struct drm_device *dev,
 			    struct amdxdna_drm_create_bo *args, struct drm_file *filp)
 {
@@ -788,27 +967,54 @@ amdxdna_drm_create_share_bo(struct drm_device *dev,
 		abo->type = AMDXDNA_BO_SHARE;
 		abo->internal = args->type == AMDXDNA_BO_CMD;
 	}
+=======
+amdxdna_drm_alloc_shmem(struct drm_device *dev,
+			struct amdxdna_drm_create_bo *args,
+			struct drm_file *filp)
+{
+	struct amdxdna_client *client = filp->driver_priv;
+	struct amdxdna_gem_obj *abo;
+
+	abo = amdxdna_gem_create_object(dev, args);
+	if (IS_ERR(abo))
+		return ERR_CAST(abo);
+
+	abo->client = client;
+	abo->type = AMDXDNA_BO_SHMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return abo;
 }
 
 static struct amdxdna_gem_obj *
+<<<<<<< HEAD
 amdxdna_drm_create_dev_heap_bo(struct drm_device *dev,
 			       struct amdxdna_drm_create_bo *args, struct drm_file *filp)
+=======
+amdxdna_drm_create_dev_heap(struct drm_device *dev,
+			    struct amdxdna_drm_create_bo *args,
+			    struct drm_file *filp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct amdxdna_client *client = filp->driver_priv;
 	struct amdxdna_dev *xdna = to_xdna_dev(dev);
 	struct amdxdna_gem_obj *abo;
 	int ret;
 
+<<<<<<< HEAD
 	WARN_ON(!is_power_of_2(xdna->dev_info->dev_mem_size));
 	XDNA_DBG(xdna, "Requested dev heap size 0x%llx", args->size);
 	if (!args->size || !IS_ALIGNED(args->size, xdna->dev_info->dev_mem_size)) {
 		XDNA_ERR(xdna, "The dev heap size 0x%llx is not multiple of 0x%lx",
+=======
+	if (args->size > xdna->dev_info->dev_mem_size) {
+		XDNA_DBG(xdna, "Invalid dev heap size 0x%llx, limit 0x%lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 args->size, xdna->dev_info->dev_mem_size);
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	/* HEAP BO is a special case of SHARE BO. */
 	abo = amdxdna_drm_create_share_bo(dev, args, filp);
 	if (IS_ERR(abo))
@@ -817,27 +1023,61 @@ amdxdna_drm_create_dev_heap_bo(struct drm_device *dev,
 	/* Set up heap for this client. */
 	mutex_lock(&client->mm_lock);
 
+=======
+	mutex_lock(&client->mm_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (client->dev_heap) {
 		XDNA_DBG(client->xdna, "dev heap is already created");
 		ret = -EBUSY;
 		goto mm_unlock;
 	}
+<<<<<<< HEAD
 	client->dev_heap = abo;
 	drm_gem_object_get(to_gobj(abo));
 
 	drm_mm_init(&abo->mm, xdna->dev_info->dev_mem_base, abo->mem.size);
 
+=======
+
+	abo = amdxdna_gem_create_object(dev, args);
+	if (IS_ERR(abo)) {
+		ret = PTR_ERR(abo);
+		goto mm_unlock;
+	}
+
+	abo->type = AMDXDNA_BO_DEV_HEAP;
+	abo->client = client;
+	abo->mem.dev_addr = client->xdna->dev_info->dev_mem_base;
+	drm_mm_init(&abo->mm, abo->mem.dev_addr, abo->mem.size);
+
+	ret = amdxdna_gem_obj_vmap(abo, &abo->mem.kva);
+	if (ret) {
+		XDNA_ERR(xdna, "Vmap heap bo failed, ret %d", ret);
+		goto release_obj;
+	}
+
+	client->dev_heap = abo;
+	drm_gem_object_get(to_gobj(abo));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&client->mm_lock);
 
 	return abo;
 
+<<<<<<< HEAD
 mm_unlock:
 	mutex_unlock(&client->mm_lock);
 	drm_gem_object_put(to_gobj(abo));
+=======
+release_obj:
+	drm_gem_object_put(to_gobj(abo));
+mm_unlock:
+	mutex_unlock(&client->mm_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 
 struct amdxdna_gem_obj *
+<<<<<<< HEAD
 amdxdna_drm_create_dev_bo(struct drm_device *dev,
 			  struct amdxdna_drm_create_bo *args, struct drm_file *filp)
 {
@@ -864,6 +1104,24 @@ amdxdna_drm_create_dev_bo(struct drm_device *dev,
 	 * DEV BOs cannot be alive when client is gone, it's OK to
 	 * always establish the connection.
 	 */
+=======
+amdxdna_drm_alloc_dev_bo(struct drm_device *dev,
+			 struct amdxdna_drm_create_bo *args,
+			 struct drm_file *filp)
+{
+	struct amdxdna_client *client = filp->driver_priv;
+	struct amdxdna_dev *xdna = to_xdna_dev(dev);
+	size_t aligned_sz = PAGE_ALIGN(args->size);
+	struct amdxdna_gem_obj *abo;
+	int ret;
+
+	abo = amdxdna_gem_create_obj(&xdna->ddev, aligned_sz);
+	if (IS_ERR(abo))
+		return abo;
+
+	to_gobj(abo)->funcs = &amdxdna_gem_dev_obj_funcs;
+	abo->type = AMDXDNA_BO_DEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	abo->client = client;
 
 	ret = amdxdna_gem_heap_alloc(abo);
@@ -872,7 +1130,35 @@ amdxdna_drm_create_dev_bo(struct drm_device *dev,
 		amdxdna_gem_destroy_obj(abo);
 		return ERR_PTR(ret);
 	}
+<<<<<<< HEAD
 	drm_gem_private_object_init(dev, gobj, aligned_sz);
+=======
+
+	drm_gem_private_object_init(&xdna->ddev, to_gobj(abo), aligned_sz);
+
+	return abo;
+}
+
+static struct amdxdna_gem_obj *
+amdxdna_drm_create_cmd_bo(struct drm_device *dev,
+			  struct amdxdna_drm_create_bo *args,
+			  struct drm_file *filp)
+{
+	struct amdxdna_dev *xdna = to_xdna_dev(dev);
+	struct amdxdna_gem_obj *abo;
+
+	if (args->size < sizeof(struct amdxdna_cmd)) {
+		XDNA_DBG(xdna, "Command BO size 0x%llx too small", args->size);
+		return ERR_PTR(-EINVAL);
+	}
+
+	abo = amdxdna_gem_create_object(dev, args);
+	if (IS_ERR(abo))
+		return ERR_CAST(abo);
+
+	abo->type = AMDXDNA_BO_CMD;
+	abo->client = filp->driver_priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return abo;
 }
@@ -890,6 +1176,7 @@ int amdxdna_drm_create_bo_ioctl(struct drm_device *dev, void *data, struct drm_f
 	XDNA_DBG(xdna, "BO arg type %d vaddr 0x%llx size 0x%llx flags 0x%llx",
 		 args->type, args->vaddr, args->size, args->flags);
 	switch (args->type) {
+<<<<<<< HEAD
 	case AMDXDNA_BO_CMD:
 		fallthrough;
 	case AMDXDNA_BO_SHARE:
@@ -900,6 +1187,19 @@ int amdxdna_drm_create_bo_ioctl(struct drm_device *dev, void *data, struct drm_f
 		break;
 	case AMDXDNA_BO_DEV:
 		abo = amdxdna_drm_create_dev_bo(dev, args, filp);
+=======
+	case AMDXDNA_BO_SHMEM:
+		abo = amdxdna_drm_alloc_shmem(dev, args, filp);
+		break;
+	case AMDXDNA_BO_DEV_HEAP:
+		abo = amdxdna_drm_create_dev_heap(dev, args, filp);
+		break;
+	case AMDXDNA_BO_DEV:
+		abo = amdxdna_drm_alloc_dev_bo(dev, args, filp);
+		break;
+	case AMDXDNA_BO_CMD:
+		abo = amdxdna_drm_create_cmd_bo(dev, args, filp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;
@@ -907,7 +1207,11 @@ int amdxdna_drm_create_bo_ioctl(struct drm_device *dev, void *data, struct drm_f
 	if (IS_ERR(abo))
 		return PTR_ERR(abo);
 
+<<<<<<< HEAD
 	/* Ready to publish object to userspace and count for BO usage. */
+=======
+	/* ready to publish object to userspace */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = drm_gem_handle_create(filp, to_gobj(abo), &args->handle);
 	if (ret) {
 		XDNA_ERR(xdna, "Create handle failed");
@@ -915,8 +1219,13 @@ int amdxdna_drm_create_bo_ioctl(struct drm_device *dev, void *data, struct drm_f
 	}
 
 	XDNA_DBG(xdna, "BO hdl %d type %d userptr 0x%llx xdna_addr 0x%llx size 0x%lx",
+<<<<<<< HEAD
 		 args->handle, args->type, amdxdna_gem_uva(abo),
 		 amdxdna_gem_dev_addr(abo), abo->mem.size);
+=======
+		 args->handle, args->type, abo->mem.userptr,
+		 abo->mem.dev_addr, abo->mem.size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 put_obj:
 	/* Dereference object reference. Handle holds it now. */
 	drm_gem_object_put(to_gobj(abo));
@@ -967,19 +1276,53 @@ void amdxdna_gem_unpin(struct amdxdna_gem_obj *abo)
 struct amdxdna_gem_obj *amdxdna_gem_get_obj(struct amdxdna_client *client,
 					    u32 bo_hdl, u8 bo_type)
 {
+<<<<<<< HEAD
 	struct amdxdna_gem_obj *abo;
 	struct drm_gem_object *gobj;
 
 	gobj = drm_gem_object_lookup(client->filp, bo_hdl);
 	if (!gobj) {
 		XDNA_DBG(client->xdna, "Can not find bo %d", bo_hdl);
+=======
+	struct amdxdna_dev *xdna = client->xdna;
+	struct amdxdna_gem_obj *abo;
+	struct drm_gem_object *gobj;
+	int ret;
+
+	gobj = drm_gem_object_lookup(client->filp, bo_hdl);
+	if (!gobj) {
+		XDNA_DBG(xdna, "Can not find bo %d", bo_hdl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	}
 
 	abo = to_xdna_obj(gobj);
+<<<<<<< HEAD
 	if (bo_type == AMDXDNA_BO_INVALID || abo->type == bo_type)
 		return abo;
 
+=======
+	if (bo_type != AMDXDNA_BO_INVALID && abo->type != bo_type)
+		goto put_obj;
+
+	if (bo_type != AMDXDNA_BO_CMD || abo->mem.kva)
+		return abo;
+
+	if (abo->mem.size > SZ_32K) {
+		XDNA_ERR(xdna, "Cmd bo is too big %ld", abo->mem.size);
+		goto put_obj;
+	}
+
+	ret = amdxdna_gem_obj_vmap(abo, &abo->mem.kva);
+	if (ret) {
+		XDNA_ERR(xdna, "Vmap cmd bo failed, ret %d", ret);
+		goto put_obj;
+	}
+
+	return abo;
+
+put_obj:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_gem_object_put(gobj);
 	return NULL;
 }
@@ -1002,8 +1345,13 @@ int amdxdna_drm_get_bo_info_ioctl(struct drm_device *dev, void *data, struct drm
 	}
 
 	abo = to_xdna_obj(gobj);
+<<<<<<< HEAD
 	args->vaddr = amdxdna_gem_uva(abo);
 	args->xdna_addr = amdxdna_gem_dev_addr(abo);
+=======
+	args->vaddr = abo->mem.userptr;
+	args->xdna_addr = abo->mem.dev_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (abo->type != AMDXDNA_BO_DEV)
 		args->map_offset = drm_vma_node_offset_addr(&gobj->vma_node);
@@ -1048,8 +1396,13 @@ int amdxdna_drm_sync_bo_ioctl(struct drm_device *dev,
 
 	if (is_import_bo(abo))
 		drm_clflush_sg(abo->base.sgt);
+<<<<<<< HEAD
 	else if (amdxdna_gem_vmap(abo))
 		drm_clflush_virt_range(amdxdna_gem_vmap(abo) + args->offset, args->size);
+=======
+	else if (abo->mem.kva)
+		drm_clflush_virt_range(abo->mem.kva + args->offset, args->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (abo->base.pages)
 		drm_clflush_pages(abo->base.pages, gobj->size >> PAGE_SHIFT);
 	else
@@ -1067,6 +1420,7 @@ put_obj:
 	drm_gem_object_put(gobj);
 	return ret;
 }
+<<<<<<< HEAD
 
 int amdxdna_drm_get_bo_usage(struct drm_device *dev, struct amdxdna_drm_get_array *args)
 {
@@ -1107,3 +1461,5 @@ int amdxdna_drm_get_bo_usage(struct drm_device *dev, struct amdxdna_drm_get_arra
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

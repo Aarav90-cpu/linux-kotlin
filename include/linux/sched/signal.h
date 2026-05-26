@@ -132,7 +132,10 @@ struct signal_struct {
 	 */
 	unsigned int		is_child_subreaper:1;
 	unsigned int		has_child_subreaper:1;
+<<<<<<< HEAD
 	unsigned int		autoreap:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_POSIX_TIMERS
 
@@ -740,7 +743,11 @@ static inline int thread_group_empty(struct task_struct *p)
 
 extern struct sighand_struct *lock_task_sighand(struct task_struct *task,
 						unsigned long *flags)
+<<<<<<< HEAD
 	__cond_acquires(nonnull, &task->sighand->siglock);
+=======
+	__acquires(&task->sighand->siglock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void unlock_task_sighand(struct task_struct *task,
 						unsigned long *flags)

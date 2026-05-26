@@ -14,12 +14,21 @@
 #define CR0_FETCH_PROTECTION_OVERRIDE	(1UL << (63 - 38))
 #define CR0_STORAGE_PROTECTION_OVERRIDE	(1UL << (63 - 39))
 
+<<<<<<< HEAD
 static __aligned(PAGE_SIZE) u8 pages[2][PAGE_SIZE];
 static u8 *const page_store_prot = pages[0];
 static u8 *const page_fetch_prot = pages[1];
 
 /* Nonzero return value indicates that address not mapped */
 static int set_storage_key(void *addr, u8 key)
+=======
+static __aligned(PAGE_SIZE) uint8_t pages[2][PAGE_SIZE];
+static uint8_t *const page_store_prot = pages[0];
+static uint8_t *const page_fetch_prot = pages[1];
+
+/* Nonzero return value indicates that address not mapped */
+static int set_storage_key(void *addr, uint8_t key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int not_mapped = 0;
 
@@ -44,9 +53,15 @@ enum permission {
 	TRANSL_UNAVAIL = 3,
 };
 
+<<<<<<< HEAD
 static enum permission test_protection(void *addr, u8 key)
 {
 	u64 mask;
+=======
+static enum permission test_protection(void *addr, uint8_t key)
+{
+	uint64_t mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile (
 		       "tprot	%[addr], 0(%[key])\n"
@@ -72,7 +87,11 @@ enum stage {
 struct test {
 	enum stage stage;
 	void *addr;
+<<<<<<< HEAD
 	u8 key;
+=======
+	uint8_t key;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum permission expected;
 } tests[] = {
 	/*
@@ -146,7 +165,11 @@ static enum stage perform_next_stage(int *i, bool mapped_0)
 		/*
 		 * Some fetch protection override tests require that page 0
 		 * be mapped, however, when the hosts tries to map that page via
+<<<<<<< HEAD
 		 * vm_alloc, it may happen that some other page gets mapped
+=======
+		 * vm_vaddr_alloc, it may happen that some other page gets mapped
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * instead.
 		 * In order to skip these tests we detect this inside the guest
 		 */
@@ -207,7 +230,11 @@ int main(int argc, char *argv[])
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	struct kvm_run *run;
+<<<<<<< HEAD
 	gva_t guest_0_page;
+=======
+	vm_vaddr_t guest_0_page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ksft_print_header();
 	ksft_set_plan(STAGE_END);
@@ -216,10 +243,17 @@ int main(int argc, char *argv[])
 	run = vcpu->run;
 
 	HOST_SYNC(vcpu, STAGE_INIT_SIMPLE);
+<<<<<<< HEAD
 	mprotect(addr_gva2hva(vm, (gva_t)pages), PAGE_SIZE * 2, PROT_READ);
 	HOST_SYNC(vcpu, TEST_SIMPLE);
 
 	guest_0_page = vm_alloc(vm, PAGE_SIZE, 0);
+=======
+	mprotect(addr_gva2hva(vm, (vm_vaddr_t)pages), PAGE_SIZE * 2, PROT_READ);
+	HOST_SYNC(vcpu, TEST_SIMPLE);
+
+	guest_0_page = vm_vaddr_alloc(vm, PAGE_SIZE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (guest_0_page != 0) {
 		/* Use NO_TAP so we don't get a PASS print */
 		HOST_SYNC_NO_TAP(vcpu, STAGE_INIT_FETCH_PROT_OVERRIDE);
@@ -229,7 +263,11 @@ int main(int argc, char *argv[])
 		HOST_SYNC(vcpu, STAGE_INIT_FETCH_PROT_OVERRIDE);
 	}
 	if (guest_0_page == 0)
+<<<<<<< HEAD
 		mprotect(addr_gva2hva(vm, (gva_t)0), PAGE_SIZE, PROT_READ);
+=======
+		mprotect(addr_gva2hva(vm, (vm_vaddr_t)0), PAGE_SIZE, PROT_READ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	run->s.regs.crs[0] |= CR0_FETCH_PROTECTION_OVERRIDE;
 	run->kvm_dirty_regs = KVM_SYNC_CRS;
 	HOST_SYNC(vcpu, TEST_FETCH_PROT_OVERRIDE);

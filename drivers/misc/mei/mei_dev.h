@@ -490,8 +490,11 @@ struct mei_dev_timeouts {
  * @timer_work  : MEI timer delayed work (timeouts)
  *
  * @recvd_hw_ready : hw ready message received flag
+<<<<<<< HEAD
  * @pg_blocked  : low power mode is not allowed
  * @read_fws_need_resume: the FW status handler needs HW woken from sleep
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @wait_hw_ready : wait queue for receive HW ready message form FW
  * @wait_pg     : wait queue for receive PG message from FW
@@ -577,9 +580,12 @@ struct mei_device {
 	struct delayed_work timer_work;
 
 	bool recvd_hw_ready;
+<<<<<<< HEAD
 	bool pg_blocked;
 	bool read_fws_need_resume;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * waiting queue for receive message from FW
 	 */

@@ -138,7 +138,10 @@ struct tty_port {
 					   kernel */
 
 void tty_port_init(struct tty_port *port);
+<<<<<<< HEAD
 void tty_port_link_wq(struct tty_port *port, struct workqueue_struct *flip_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void tty_port_link_device(struct tty_port *port, struct tty_driver *driver,
 		unsigned index);
 struct device *tty_port_register_device(struct tty_port *port,
@@ -166,6 +169,7 @@ static inline struct tty_port *tty_port_get(struct tty_port *port)
 	return NULL;
 }
 
+<<<<<<< HEAD
 /*
  * Never overwrite the workqueue set by tty_port_link_wq().
  * No effect when %TTY_DRIVER_NO_WORKQUEUE is set, as driver->flip_wq is
@@ -178,6 +182,8 @@ static inline void tty_port_link_driver_wq(struct tty_port *port,
 		tty_port_link_wq(port, driver->flip_wq);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* If the cts flow control is enabled, return true. */
 static inline bool tty_port_cts_enabled(const struct tty_port *port)
 {

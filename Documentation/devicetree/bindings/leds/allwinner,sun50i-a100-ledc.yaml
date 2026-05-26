@@ -21,7 +21,10 @@ properties:
           - enum:
               - allwinner,sun20i-d1-ledc
               - allwinner,sun50i-r329-ledc
+<<<<<<< HEAD
               - allwinner,sun55i-a523-ledc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: allwinner,sun50i-a100-ledc
 
   reg:

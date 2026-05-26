@@ -150,7 +150,11 @@ static bool afs_dir_check_block(struct afs_vnode *dvnode, size_t progress,
 				union afs_xdr_dir_block *block)
 {
 	if (block->hdr.magic != AFS_DIR_MAGIC) {
+<<<<<<< HEAD
 		pr_warn("%s(%llx): [%zx] bad magic %04x\n",
+=======
+		pr_warn("%s(%lx): [%zx] bad magic %04x\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       __func__, dvnode->netfs.inode.i_ino,
 		       progress, ntohs(block->hdr.magic));
 		trace_afs_dir_check_failed(dvnode, progress);
@@ -216,7 +220,11 @@ static int afs_dir_check(struct afs_vnode *dvnode)
  */
 static int afs_dir_open(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 	_enter("{%llu}", inode->i_ino);
+=======
+	_enter("{%lu}", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BUILD_BUG_ON(sizeof(union afs_xdr_dir_block) != 2048);
 	BUILD_BUG_ON(sizeof(union afs_xdr_dirent) != 32);
@@ -510,7 +518,11 @@ static int afs_dir_iterate(struct inode *dir, struct dir_context *ctx,
 	int retry_limit = 100;
 	int ret;
 
+<<<<<<< HEAD
 	_enter("{%llu},%llx,,", dir->i_ino, ctx->pos);
+=======
+	_enter("{%lu},%llx,,", dir->i_ino, ctx->pos);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		if (--retry_limit < 0) {
@@ -597,7 +609,11 @@ static int afs_do_lookup_one(struct inode *dir, const struct qstr *name,
 	};
 	int ret;
 
+<<<<<<< HEAD
 	_enter("{%llu},{%.*s},", dir->i_ino, name->len, name->name);
+=======
+	_enter("{%lu},{%.*s},", dir->i_ino, name->len, name->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* search the directory */
 	ret = afs_dir_iterate(dir, &cookie.ctx, NULL, _dir_version);
@@ -770,7 +786,11 @@ static struct inode *afs_do_lookup(struct inode *dir, struct dentry *dentry)
 	long ret;
 	int i;
 
+<<<<<<< HEAD
 	_enter("{%llu},%p{%pd},", dir->i_ino, dentry, dentry);
+=======
+	_enter("{%lu},%p{%pd},", dir->i_ino, dentry, dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cookie = kzalloc_obj(struct afs_lookup_cookie);
 	if (!cookie)

@@ -20,7 +20,10 @@
 	scl-gpios = <&gpio5 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	sda-gpios = <&gpio5 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	clock-frequency = <100000>;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	pmic: pmic@8 {
@@ -28,13 +31,21 @@
 		reg = <0x08>;
 	};
 
+<<<<<<< HEAD
 	lm75_48: temperature-sensor@48 {
+=======
+	temperature-sensor@48 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "national,lm75a";
 		reg = <0x48>;
 		vs-supply = <&sw4_reg>;
 	};
 
+<<<<<<< HEAD
 	m24c64_50: eeprom@50 {
+=======
+	eeprom@50 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "st,24c64", "atmel,24c64";
 		reg = <0x50>;
 		pagesize = <32>;

@@ -4,10 +4,17 @@
  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  */
 
+<<<<<<< HEAD
 #include <linux/fips.h>
 #include <linux/ieee80211.h>
 #include <linux/kernel.h>
 #include <linux/skbuff.h>
+=======
+#include <linux/ieee80211.h>
+#include <linux/kernel.h>
+#include <linux/skbuff.h>
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "core.h"
 #include "debug.h"
 #include "hw.h"
@@ -565,9 +572,12 @@ static int ath12k_dp_prepare_reo_update_elem(struct ath12k_dp *dp,
 
 	lockdep_assert_held(&dp->dp_lock);
 
+<<<<<<< HEAD
 	if (!peer->primary_link)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	elem = kzalloc_obj(*elem, GFP_ATOMIC);
 	if (!elem)
 		return -ENOMEM;
@@ -1122,6 +1132,10 @@ static void ath12k_dp_rx_h_undecap_eth(struct ath12k_pdev_dp *dp_pdev,
 }
 
 void ath12k_dp_rx_h_undecap(struct ath12k_pdev_dp *dp_pdev, struct sk_buff *msdu,
+<<<<<<< HEAD
+=======
+			    struct hal_rx_desc *rx_desc,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    enum hal_encrypt_type enctype,
 			    bool decrypted,
 			    struct hal_rx_desc_data *rx_info)
@@ -1340,7 +1354,11 @@ void ath12k_dp_rx_deliver_msdu(struct ath12k_pdev_dp *dp_pdev, struct napi_struc
 	bool is_mcbc = rxcb->is_mcbc;
 	bool is_eapol = rxcb->is_eapol;
 
+<<<<<<< HEAD
 	peer = ath12k_dp_peer_find_by_peerid(dp_pdev, rxcb->peer_id);
+=======
+	peer = ath12k_dp_peer_find_by_peerid(dp_pdev, rx_info->peer_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pubsta = peer ? peer->sta : NULL;
 
@@ -1397,6 +1415,10 @@ void ath12k_dp_rx_deliver_msdu(struct ath12k_pdev_dp *dp_pdev, struct napi_struc
 EXPORT_SYMBOL(ath12k_dp_rx_deliver_msdu);
 
 bool ath12k_dp_rx_check_nwifi_hdr_len_valid(struct ath12k_dp *dp,
+<<<<<<< HEAD
+=======
+					    struct hal_rx_desc *rx_desc,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    struct sk_buff *msdu,
 					    struct hal_rx_desc_data *rx_info)
 {
@@ -1436,27 +1458,45 @@ static void ath12k_dp_rx_frag_timer(struct timer_list *timer)
 int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_id)
 {
 	struct ath12k_base *ab = ar->ab;
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath12k_dp_link_peer *peer;
 	struct ath12k_dp_rx_tid *rx_tid;
 	int i;
 	struct ath12k_dp *dp = ath12k_ab_to_dp(ab);
 
+<<<<<<< HEAD
 	if (fips_enabled) {
 		ath12k_warn(ab, "This driver is disabled due to FIPS\n");
 		return -ENOENT;
 	}
+=======
+	tfm = crypto_alloc_shash("michael_mic", 0, 0);
+	if (IS_ERR(tfm))
+		return PTR_ERR(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_bh(&dp->dp_lock);
 
 	peer = ath12k_dp_link_peer_find_by_vdev_and_addr(dp, vdev_id, peer_mac);
 	if (!peer || !peer->dp_peer) {
 		spin_unlock_bh(&dp->dp_lock);
+<<<<<<< HEAD
+=======
+		crypto_free_shash(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
 		return -ENOENT;
 	}
 
 	if (!peer->primary_link) {
 		spin_unlock_bh(&dp->dp_lock);
+<<<<<<< HEAD
+=======
+		crypto_free_shash(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -1467,12 +1507,61 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
 		skb_queue_head_init(&rx_tid->rx_frags);
 	}
 
+<<<<<<< HEAD
+=======
+	peer->dp_peer->tfm_mmic = tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	peer->dp_peer->dp_setup_done = true;
 	spin_unlock_bh(&dp->dp_lock);
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int ath12k_dp_rx_h_michael_mic(struct crypto_shash *tfm, u8 *key,
+			       struct ieee80211_hdr *hdr, u8 *data,
+			       size_t data_len, u8 *mic)
+{
+	SHASH_DESC_ON_STACK(desc, tfm);
+	u8 mic_hdr[16] = {};
+	u8 tid = 0;
+	int ret;
+
+	if (!tfm)
+		return -EINVAL;
+
+	desc->tfm = tfm;
+
+	ret = crypto_shash_setkey(tfm, key, 8);
+	if (ret)
+		goto out;
+
+	ret = crypto_shash_init(desc);
+	if (ret)
+		goto out;
+
+	/* TKIP MIC header */
+	memcpy(mic_hdr, ieee80211_get_DA(hdr), ETH_ALEN);
+	memcpy(mic_hdr + ETH_ALEN, ieee80211_get_SA(hdr), ETH_ALEN);
+	if (ieee80211_is_data_qos(hdr->frame_control))
+		tid = ieee80211_get_tid(hdr);
+	mic_hdr[12] = tid;
+
+	ret = crypto_shash_update(desc, mic_hdr, 16);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(desc, data, data_len);
+	if (ret)
+		goto out;
+	ret = crypto_shash_final(desc, mic);
+out:
+	shash_desc_zero(desc);
+	return ret;
+}
+EXPORT_SYMBOL(ath12k_dp_rx_h_michael_mic);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ath12k_dp_rx_h_undecap_frag(struct ath12k_pdev_dp *dp_pdev, struct sk_buff *msdu,
 				 enum hal_encrypt_type enctype, u32 flags)
 {

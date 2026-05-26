@@ -287,16 +287,35 @@ static int hisi_pcie_error_handler_probe(struct platform_device *pdev)
 
 	priv->nb.notifier_call = hisi_pcie_notify_error;
 	priv->dev = &pdev->dev;
+<<<<<<< HEAD
 	ret = devm_ghes_register_vendor_record_notifier(&pdev->dev, &priv->nb);
+=======
+	ret = ghes_register_vendor_record_notifier(&priv->nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		dev_err(&pdev->dev,
 			"Failed to register hisi pcie controller error handler with apei\n");
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
+=======
+	platform_set_drvdata(pdev, priv);
+
+	return 0;
+}
+
+static void hisi_pcie_error_handler_remove(struct platform_device *pdev)
+{
+	struct hisi_pcie_error_private *priv = platform_get_drvdata(pdev);
+
+	ghes_unregister_vendor_record_notifier(&priv->nb);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct acpi_device_id hisi_pcie_acpi_match[] = {
 	{ "HISI0361", 0 },
 	{ }
@@ -308,6 +327,10 @@ static struct platform_driver hisi_pcie_error_handler_driver = {
 		.acpi_match_table = hisi_pcie_acpi_match,
 	},
 	.probe		= hisi_pcie_error_handler_probe,
+<<<<<<< HEAD
+=======
+	.remove		= hisi_pcie_error_handler_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 module_platform_driver(hisi_pcie_error_handler_driver);
 

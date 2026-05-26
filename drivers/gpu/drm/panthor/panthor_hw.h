@@ -19,12 +19,15 @@ struct panthor_hw_ops {
 
 	/** @l2_power_on: L2 power on function pointer */
 	int (*l2_power_on)(struct panthor_device *ptdev);
+<<<<<<< HEAD
 
 	/** @power_changed_on: Start listening to power change IRQs */
 	int (*power_changed_on)(struct panthor_device *ptdev);
 
 	/** @power_changed_off: Stop listening to power change IRQs */
 	void (*power_changed_off)(struct panthor_device *ptdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -38,8 +41,11 @@ struct panthor_hw {
 };
 
 int panthor_hw_init(struct panthor_device *ptdev);
+<<<<<<< HEAD
 int panthor_hw_power_status_register(void);
 void panthor_hw_power_status_unregister(void);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int panthor_hw_soft_reset(struct panthor_device *ptdev)
 {

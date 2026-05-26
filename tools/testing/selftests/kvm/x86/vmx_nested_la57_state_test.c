@@ -30,7 +30,11 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
 #define L2_GUEST_STACK_SIZE 64
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
 	u64 guest_cr4;
+<<<<<<< HEAD
 	gpa_t pml5_pa, pml4_pa;
+=======
+	vm_paddr_t pml5_pa, pml4_pa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 *pml5;
 	u64 exit_reason;
 
@@ -73,7 +77,11 @@ void guest_code(struct vmx_pages *vmx_pages)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t vmx_pages_gva = 0;
+=======
+	vm_vaddr_t vmx_pages_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 	struct kvm_vcpu *vcpu;
 	struct kvm_x86_state *state;

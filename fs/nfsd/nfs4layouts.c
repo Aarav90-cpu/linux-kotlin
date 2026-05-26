@@ -27,8 +27,11 @@ static struct kmem_cache *nfs4_layout_stateid_cache;
 static const struct nfsd4_callback_ops nfsd4_cb_layout_ops;
 static const struct lease_manager_operations nfsd4_layouts_lm_ops;
 
+<<<<<<< HEAD
 static void nfsd4_layout_fence_worker(struct work_struct *work);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct nfsd4_layout_ops *nfsd4_layout_ops[LAYOUT_TYPE_MAX] =  {
 #ifdef CONFIG_NFSD_FLEXFILELAYOUT
 	[LAYOUT_FLEX_FILES]	= &ff_layout_ops,
@@ -179,6 +182,7 @@ nfsd4_free_layout_stateid(struct nfs4_stid *stid)
 
 	trace_nfsd_layoutstate_free(&ls->ls_stid.sc_stateid);
 
+<<<<<<< HEAD
 	spin_lock(&ls->ls_lock);
 	if (delayed_work_pending(&ls->ls_fence_work)) {
 		spin_unlock(&ls->ls_lock);
@@ -186,6 +190,8 @@ nfsd4_free_layout_stateid(struct nfs4_stid *stid)
 	} else
 		spin_unlock(&ls->ls_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&clp->cl_lock);
 	list_del_init(&ls->ls_perclnt);
 	spin_unlock(&clp->cl_lock);
@@ -280,10 +286,13 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
 	list_add(&ls->ls_perfile, &fp->fi_lo_states);
 	spin_unlock(&fp->fi_lock);
 
+<<<<<<< HEAD
 	ls->ls_fenced = false;
 	ls->ls_fence_delay = 0;
 	INIT_DELAYED_WORK(&ls->ls_fence_work, nfsd4_layout_fence_worker);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_nfsd_layoutstate_alloc(&ls->ls_stid.sc_stateid);
 	return ls;
 }
@@ -760,9 +769,17 @@ static bool
 nfsd4_layout_lm_break(struct file_lease *fl)
 {
 	/*
+<<<<<<< HEAD
 	 * Enforce break lease timeout to prevent NFSD
 	 * thread from hanging in __break_lease.
 	 */
+=======
+	 * We don't want the locks code to timeout the lease for us;
+	 * we'll remove it ourself if a layout isn't returned
+	 * in time:
+	 */
+	fl->fl_break_time = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nfsd4_recall_file_layout(fl->c.flc_owner);
 	return false;
 }
@@ -793,6 +810,7 @@ nfsd4_layout_lm_open_conflict(struct file *filp, int arg)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void
 nfsd4_layout_fence_worker(struct work_struct *work)
 {
@@ -925,11 +943,16 @@ nfsd4_layout_lm_breaker_timedout(struct file_lease *fl)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct lease_manager_operations nfsd4_layouts_lm_ops = {
 	.lm_break		= nfsd4_layout_lm_break,
 	.lm_change		= nfsd4_layout_lm_change,
 	.lm_open_conflict	= nfsd4_layout_lm_open_conflict,
+<<<<<<< HEAD
 	.lm_breaker_timedout	= nfsd4_layout_lm_breaker_timedout,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int

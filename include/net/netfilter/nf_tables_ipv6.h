@@ -20,23 +20,38 @@ static inline void nft_set_pktinfo_ipv6(struct nft_pktinfo *pkt)
 
 	pkt->flags = NFT_PKTINFO_L4PROTO;
 	pkt->tprot = protohdr;
+<<<<<<< HEAD
 	pkt->ethertype = pkt->skb->protocol;
 	pkt->nhoff = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pkt->thoff = thoff;
 	pkt->fragoff = frag_off;
 }
 
+<<<<<<< HEAD
 static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt, int nhoff)
+=======
+static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #if IS_ENABLED(CONFIG_IPV6)
 	unsigned int flags = IP6_FH_F_AUTH;
 	struct ipv6hdr *ip6h, _ip6h;
+<<<<<<< HEAD
 	unsigned int thoff = nhoff;
+=======
+	unsigned int thoff = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned short frag_off;
 	u32 pkt_len, skb_len;
 	int protohdr;
 
+<<<<<<< HEAD
 	ip6h = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb) + nhoff,
+=======
+	ip6h = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  sizeof(*ip6h), &_ip6h);
 	if (!ip6h)
 		return -1;
@@ -45,7 +60,11 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt, int n
 		return -1;
 
 	pkt_len = ipv6_payload_len(pkt->skb, ip6h);
+<<<<<<< HEAD
 	skb_len = pkt->skb->len - skb_network_offset(pkt->skb) - nhoff;
+=======
+	skb_len = pkt->skb->len - skb_network_offset(pkt->skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pkt_len + sizeof(*ip6h) > skb_len)
 		return -1;
 
@@ -55,8 +74,11 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt, int n
 
 	pkt->flags = NFT_PKTINFO_L4PROTO;
 	pkt->tprot = protohdr;
+<<<<<<< HEAD
 	pkt->ethertype = pkt->skb->protocol;
 	pkt->nhoff = nhoff;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pkt->thoff = thoff;
 	pkt->fragoff = frag_off;
 
@@ -68,7 +90,11 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt, int n
 
 static inline void nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
 {
+<<<<<<< HEAD
 	if (__nft_set_pktinfo_ipv6_validate(pkt, 0) < 0)
+=======
+	if (__nft_set_pktinfo_ipv6_validate(pkt) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nft_set_pktinfo_unspec(pkt);
 }
 
@@ -103,8 +129,11 @@ static inline int nft_set_pktinfo_ipv6_ingress(struct nft_pktinfo *pkt)
 
 	pkt->flags = NFT_PKTINFO_L4PROTO;
 	pkt->tprot = protohdr;
+<<<<<<< HEAD
 	pkt->ethertype = pkt->skb->protocol;
 	pkt->nhoff = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pkt->thoff = thoff;
 	pkt->fragoff = frag_off;
 

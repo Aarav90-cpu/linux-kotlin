@@ -238,10 +238,19 @@ void orangefs_debugfs_init(int debug_mask)
 static void orangefs_kernel_debug_init(void)
 {
 	static char k_buffer[ORANGEFS_MAX_DEBUG_STRING_LEN] = { };
+<<<<<<< HEAD
 	size_t len =
 		strscpy(k_buffer, kernel_debug_string, sizeof(k_buffer) - 1);
 
 	if (len > 0) {
+=======
+	size_t len = strlen(kernel_debug_string);
+
+	gossip_debug(GOSSIP_DEBUGFS_DEBUG, "%s: start\n", __func__);
+
+	if (len + 1 < ORANGEFS_MAX_DEBUG_STRING_LEN) {
+		memcpy(k_buffer, kernel_debug_string, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		k_buffer[len] = '\n';
 		k_buffer[len + 1] = '\0';
 	} else {
@@ -337,10 +346,19 @@ static int help_show(struct seq_file *m, void *v)
 static void orangefs_client_debug_init(void)
 {
 	static char c_buffer[ORANGEFS_MAX_DEBUG_STRING_LEN] = { };
+<<<<<<< HEAD
 	size_t len =
 		strscpy(c_buffer, client_debug_string, sizeof(c_buffer) - 1);
 
 	if (len > 0) {
+=======
+	size_t len = strlen(client_debug_string);
+
+	gossip_debug(GOSSIP_DEBUGFS_DEBUG, "%s: start\n", __func__);
+
+	if (len + 1 < ORANGEFS_MAX_DEBUG_STRING_LEN) {
+		memcpy(c_buffer, client_debug_string, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		c_buffer[len] = '\n';
 		c_buffer[len + 1] = '\0';
 	} else {
@@ -439,7 +457,11 @@ static ssize_t orangefs_debug_write(struct file *file,
 		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
 	}
 
+<<<<<<< HEAD
 	buf = memdup_user_nul(ubuf, count);
+=======
+	buf = memdup_user_nul(ubuf, count - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(buf)) {
 		gossip_debug(GOSSIP_DEBUGFS_DEBUG,
 			     "%s: memdup_user_nul failed!\n",
@@ -448,7 +470,10 @@ static ssize_t orangefs_debug_write(struct file *file,
 		buf = NULL;
 		goto out;
 	}
+<<<<<<< HEAD
 	strim(buf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Map the keyword string from userspace into a valid debug mask.
@@ -870,10 +895,16 @@ out:
  */
 static void debug_string_to_mask(char *debug_string, void *mask, int type)
 {
+<<<<<<< HEAD
 	int i;
 	char *strsep_fodder = kstrdup(debug_string, GFP_KERNEL);
 	char *trimmed;
 	char *token;
+=======
+	char *unchecked_keyword;
+	int i;
+	char *strsep_fodder = kstrdup(debug_string, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *original_pointer;
 	int element_count = 0;
 	struct client_debug_mask *c_mask = NULL;
@@ -891,6 +922,7 @@ static void debug_string_to_mask(char *debug_string, void *mask, int type)
 	}
 
 	original_pointer = strsep_fodder;
+<<<<<<< HEAD
 	while ((token = strsep(&strsep_fodder, ",")) != NULL) {
 		trimmed = strim(token);
 		if (*trimmed) {
@@ -902,6 +934,20 @@ static void debug_string_to_mask(char *debug_string, void *mask, int type)
 
 		}
 	}
+=======
+	while ((unchecked_keyword = strsep(&strsep_fodder, ",")))
+		if (strlen(unchecked_keyword)) {
+			for (i = 0; i < element_count; i++)
+				if (type)
+					do_c_mask(i,
+						  unchecked_keyword,
+						  &c_mask);
+				else
+					do_k_mask(i,
+						  unchecked_keyword,
+						  &k_mask);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(original_pointer);
 }

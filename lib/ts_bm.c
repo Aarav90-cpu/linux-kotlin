@@ -163,6 +163,7 @@ static struct ts_config *bm_init(const void *pattern, unsigned int len,
 	struct ts_config *conf;
 	struct ts_bm *bm;
 	int i;
+<<<<<<< HEAD
 	unsigned int prefix_tbl_len;
 	size_t priv_size;
 
@@ -179,6 +180,10 @@ static struct ts_config *bm_init(const void *pattern, unsigned int len,
 		     check_add_overflow(sizeof(*bm), (size_t)len, &priv_size) ||
 		     check_add_overflow(priv_size, prefix_tbl_len, &priv_size)))
 		return ERR_PTR(-EINVAL);
+=======
+	unsigned int prefix_tbl_len = len * sizeof(unsigned int);
+	size_t priv_size = sizeof(*bm) + len + prefix_tbl_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	conf = alloc_ts_config(priv_size, gfp_mask);
 	if (IS_ERR(conf))

@@ -13783,6 +13783,10 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
 	netdev->neigh_priv_len = sizeof(u32) * 4;
 
 	netdev->priv_flags |= IFF_UNICAST_FLT;
+<<<<<<< HEAD
+=======
+	netdev->priv_flags |= IFF_SUPP_NOFCS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Setup netdev TC information */
 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
 
@@ -16108,11 +16112,17 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	/* Unwind what we've done if something failed in the setup */
 err_vsis:
 	set_bit(__I40E_DOWN, pf->state);
+<<<<<<< HEAD
 	i40e_ptp_stop(pf);
 	i40e_clear_interrupt_scheme(pf);
 	kfree(pf->vsi);
 err_switch_setup:
 	i40e_ptp_free_pins(pf);
+=======
+	i40e_clear_interrupt_scheme(pf);
+	kfree(pf->vsi);
+err_switch_setup:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i40e_reset_interrupt_capability(pf);
 	timer_shutdown_sync(&pf->service_timer);
 err_mac_addr:

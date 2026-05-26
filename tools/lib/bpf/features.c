@@ -568,6 +568,7 @@ static int probe_ldimm64_full_range_off(int token_fd)
 	return 1;
 }
 
+<<<<<<< HEAD
 #ifdef __x86_64__
 
 #ifndef __NR_uprobe
@@ -615,6 +616,8 @@ static int probe_kern_btf_layout(int token_fd)
 						 (char *)layout, token_fd));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef int (*feature_probe_fn)(int /* token_fd */);
 
 static struct kern_feature_cache feature_cache;
@@ -693,12 +696,15 @@ static struct kern_feature_desc {
 	[FEAT_LDIMM64_FULL_RANGE_OFF] = {
 		"full range LDIMM64 support", probe_ldimm64_full_range_off,
 	},
+<<<<<<< HEAD
 	[FEAT_UPROBE_SYSCALL] = {
 		"kernel supports uprobe syscall", probe_uprobe_syscall,
 	},
 	[FEAT_BTF_LAYOUT] = {
 		"kernel supports BTF layout", probe_kern_btf_layout,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 bool feat_supported(struct kern_feature_cache *cache, enum kern_feature_id feat_id)

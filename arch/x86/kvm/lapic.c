@@ -667,14 +667,22 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
 	u32 *__pir = (void *)pir_vals;
 	u32 i, vec;
 	u32 irr_val, prev_irr_val;
+<<<<<<< HEAD
 	int max_new_irr;
+=======
+	int max_updated_irr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pi_harvest_pir(pir, pir_vals)) {
 		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
 		return false;
 	}
 
+<<<<<<< HEAD
 	max_new_irr = -1;
+=======
+	max_updated_irr = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*max_irr = -1;
 
 	for (i = vec = 0; i <= 7; i++, vec += 32) {
@@ -690,25 +698,42 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
 				 !try_cmpxchg(p_irr, &prev_irr_val, irr_val));
 
 			if (prev_irr_val != irr_val)
+<<<<<<< HEAD
 				max_new_irr = __fls(irr_val ^ prev_irr_val) + vec;
+=======
+				max_updated_irr = __fls(irr_val ^ prev_irr_val) + vec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (irr_val)
 			*max_irr = __fls(irr_val) + vec;
 	}
 
+<<<<<<< HEAD
 	return max_new_irr != -1 && max_new_irr == *max_irr;
+=======
+	return ((max_updated_irr != -1) &&
+		(max_updated_irr == *max_irr));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(__kvm_apic_update_irr);
 
 bool kvm_apic_update_irr(struct kvm_vcpu *vcpu, unsigned long *pir, int *max_irr)
 {
 	struct kvm_lapic *apic = vcpu->arch.apic;
+<<<<<<< HEAD
 	bool max_irr_is_from_pir;
 
 	max_irr_is_from_pir = __kvm_apic_update_irr(pir, apic->regs, max_irr);
 	if (unlikely(!apic->apicv_active && max_irr_is_from_pir))
 		apic->irr_pending = true;
 	return max_irr_is_from_pir;
+=======
+	bool irr_updated = __kvm_apic_update_irr(pir, apic->regs, max_irr);
+
+	if (unlikely(!apic->apicv_active && irr_updated))
+		apic->irr_pending = true;
+	return irr_updated;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_update_irr);
 
@@ -842,16 +867,28 @@ static int __pv_send_ipi(unsigned long *ipi_bitmap, struct kvm_apic_map *map,
 {
 	int i, count = 0;
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	size_t map_index;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (min > map->max_apic_id)
 		return 0;
 
+<<<<<<< HEAD
 	for_each_set_bit(i, ipi_bitmap,
 			 min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
 		map_index = array_index_nospec(min + i, map->max_apic_id + 1);
 		if (map->phys_map[map_index]) {
 			vcpu = map->phys_map[map_index]->vcpu;
+=======
+	min = array_index_nospec(min, map->max_apic_id + 1);
+
+	for_each_set_bit(i, ipi_bitmap,
+		min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
+		if (map->phys_map[min + i]) {
+			vcpu = map->phys_map[min + i]->vcpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			count += kvm_apic_set_irq(vcpu, irq, NULL);
 		}
 	}
@@ -2659,9 +2696,12 @@ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
 {
 	struct kvm_lapic *apic = vcpu->arch.apic;
 
+<<<<<<< HEAD
 	if (KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * ICR is a single 64-bit register when x2APIC is enabled, all others
 	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to

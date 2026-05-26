@@ -425,6 +425,7 @@ struct vsp1_rwpf *vsp1_rpf_create(struct vsp1_device *vsp1, unsigned int index)
 	if (rpf == NULL)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	rpf->entity.ops = &rpf_entity_ops;
 	rpf->entity.type = VSP1_ENTITY_RPF;
 	rpf->entity.index = index;
@@ -432,6 +433,14 @@ struct vsp1_rwpf *vsp1_rpf_create(struct vsp1_device *vsp1, unsigned int index)
 	rpf->entity.min_height = RWPF_MIN_HEIGHT;
 	rpf->entity.max_width = RPF_MAX_WIDTH;
 	rpf->entity.max_height = RPF_MAX_HEIGHT;
+=======
+	rpf->max_width = RPF_MAX_WIDTH;
+	rpf->max_height = RPF_MAX_HEIGHT;
+
+	rpf->entity.ops = &rpf_entity_ops;
+	rpf->entity.type = VSP1_ENTITY_RPF;
+	rpf->entity.index = index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sprintf(name, "rpf.%u", index);
 	ret = vsp1_entity_init(vsp1, &rpf->entity, name, 2, &vsp1_rwpf_subdev_ops,

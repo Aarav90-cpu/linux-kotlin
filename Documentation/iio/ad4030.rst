@@ -92,6 +92,7 @@ Interleaved mode
 In this mode, both channels conversion results are bit interleaved one SDO line.
 As such the wiring is the same as `One lane mode`_.
 
+<<<<<<< HEAD
 SPI offload wiring
 ^^^^^^^^^^^^^^^^^^
 
@@ -131,6 +132,8 @@ data during zone 2 data read window.
 
 .. _AD4630-FMC HDL project: https://analogdevicesinc.github.io/hdl/projects/ad4630_fmc/index.html
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SPI Clock mode
 --------------
 

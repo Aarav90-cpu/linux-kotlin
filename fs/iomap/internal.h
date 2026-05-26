@@ -4,6 +4,7 @@
 
 #define IOEND_BATCH_SIZE	4096
 
+<<<<<<< HEAD
 /*
  * Normally we can build bios as big as the data structure supports.
  *
@@ -18,6 +19,8 @@ static inline size_t iomap_max_bio_size(const struct iomap *iomap)
 }
 
 u32 iomap_finish_ioend_buffered_read(struct iomap_ioend *ioend);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u32 iomap_finish_ioend_direct(struct iomap_ioend *ioend);
 
 #ifdef CONFIG_BLOCK

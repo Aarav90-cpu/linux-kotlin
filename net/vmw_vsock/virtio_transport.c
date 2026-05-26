@@ -547,18 +547,24 @@ bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
 static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
 					     u32 remote_cid);
 
+<<<<<<< HEAD
 static bool virtio_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
 {
 	/* The CID could be implemented by the host. Always assume it is. */
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct virtio_transport virtio_transport = {
 	.transport = {
 		.module                   = THIS_MODULE,
 
 		.get_local_cid            = virtio_transport_get_local_cid,
+<<<<<<< HEAD
 		.has_remote_cid           = virtio_transport_has_remote_cid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		.init                     = virtio_transport_do_socket_init,
 		.destruct                 = virtio_transport_destruct,

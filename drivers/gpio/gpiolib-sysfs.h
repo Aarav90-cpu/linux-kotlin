@@ -7,17 +7,30 @@ struct gpio_device;
 
 #ifdef CONFIG_GPIO_SYSFS
 
+<<<<<<< HEAD
 int gpiochip_sysfs_register(struct gpio_chip *gc);
 void gpiochip_sysfs_unregister(struct gpio_chip *gc);
 
 #else
 
 static inline int gpiochip_sysfs_register(struct gpio_chip *gc)
+=======
+int gpiochip_sysfs_register(struct gpio_device *gdev);
+void gpiochip_sysfs_unregister(struct gpio_device *gdev);
+
+#else
+
+static inline int gpiochip_sysfs_register(struct gpio_device *gdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void gpiochip_sysfs_unregister(struct gpio_chip *gc)
+=======
+static inline void gpiochip_sysfs_unregister(struct gpio_device *gdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 }
 

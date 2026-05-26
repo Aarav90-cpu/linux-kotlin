@@ -81,11 +81,14 @@ attribute-sets:
       -
         name: min-threads
         type: u32
+<<<<<<< HEAD
       -
         name: fh-key
         type: binary
         checks:
             exact-len: 16
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: version
     attributes:
@@ -168,7 +171,10 @@ operations:
             - leasetime
             - scope
             - min-threads
+<<<<<<< HEAD
             - fh-key
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: threads-get
       doc: get the maximum number of running threads

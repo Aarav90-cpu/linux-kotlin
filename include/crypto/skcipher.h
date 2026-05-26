@@ -145,7 +145,10 @@ struct skcipher_alg_common SKCIPHER_ALG_COMMON;
  * 	      considerably more efficient if it can operate on multiple chunks
  * 	      in parallel. Should be a multiple of chunksize.
  * @co: see struct skcipher_alg_common
+<<<<<<< HEAD
  * @SKCIPHER_ALG_COMMON: see struct skcipher_alg_common
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * All fields except @ivsize are mandatory and must be filled.
  */

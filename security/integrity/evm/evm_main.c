@@ -72,6 +72,7 @@ static struct xattr_list evm_config_default_xattrnames[] = {
 
 LIST_HEAD(evm_config_xattrnames);
 
+<<<<<<< HEAD
 static char *evm_cmdline __initdata;
 core_param(evm, evm_cmdline, charp, 0);
 
@@ -91,6 +92,19 @@ static void __init evm_set_fixmode(void)
 		pr_err("invalid \"%s\" mode", evm_cmdline);
 	}
 }
+=======
+static int evm_fixmode __ro_after_init;
+static int __init evm_set_fixmode(char *str)
+{
+	if (strncmp(str, "fix", 3) == 0)
+		evm_fixmode = 1;
+	else
+		pr_err("invalid \"%s\" mode", str);
+
+	return 1;
+}
+__setup("evm=", evm_set_fixmode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void __init evm_init_config(void)
 {
@@ -136,6 +150,7 @@ static bool evm_hmac_disabled(void)
 	return true;
 }
 
+<<<<<<< HEAD
 static bool evm_sigv3_required(void)
 {
 	if (evm_initialized & EVM_SIGV3_REQUIRED)
@@ -144,6 +159,8 @@ static bool evm_sigv3_required(void)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int evm_find_protected_xattrs(struct dentry *dentry)
 {
 	struct inode *inode = d_backing_inode(dentry);
@@ -266,12 +283,15 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
 		}
 
 		hdr = (struct signature_v2_hdr *)xattr_data;
+<<<<<<< HEAD
 
 		if (evm_sigv3_required() && hdr->version != 3) {
 			evm_status = INTEGRITY_FAIL;
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		digest.hdr.algo = hdr->hash_algo;
 		rc = evm_calc_hash(dentry, xattr_name, xattr_value,
 				   xattr_value_len, xattr_data->type, &digest,
@@ -280,8 +300,12 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
 			break;
 		rc = integrity_digsig_verify(INTEGRITY_KEYRING_EVM,
 					(const char *)xattr_data, xattr_len,
+<<<<<<< HEAD
 					digest.digest, digest.hdr.length,
 					digest.hdr.algo);
+=======
+					digest.digest, digest.hdr.length);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!rc) {
 			if (xattr_data->type == EVM_XATTR_PORTABLE_DIGSIG) {
 				if (iint)
@@ -811,6 +835,7 @@ bool evm_revalidate_status(const char *xattr_name)
 }
 
 /**
+<<<<<<< HEAD
  * evm_fix_hmac - Calculate the HMAC and add it to security.evm for fix mode
  * @dentry: pointer to the affected dentry which doesn't yet have security.evm
  *          xattr
@@ -839,6 +864,8 @@ int evm_fix_hmac(struct dentry *dentry, const char *xattr_name,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * evm_inode_post_setxattr - update 'security.evm' to reflect the changes
  * @dentry: pointer to the affected dentry
  * @xattr_name: pointer to the affected extended attribute name
@@ -1170,8 +1197,11 @@ static int __init init_evm(void)
 
 	evm_init_config();
 
+<<<<<<< HEAD
 	evm_set_fixmode();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = integrity_init_keyring(INTEGRITY_KEYRING_EVM);
 	if (error)
 		goto error;

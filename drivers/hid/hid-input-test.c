@@ -9,6 +9,7 @@
 
 static void hid_test_input_update_battery_charge_status(struct kunit *test)
 {
+<<<<<<< HEAD
 	struct hid_battery *bat;
 	bool handled;
 
@@ -26,18 +27,41 @@ static void hid_test_input_update_battery_charge_status(struct kunit *test)
 	handled = hidinput_update_battery_charge_status(bat, HID_BAT_CHARGING, 1);
 	KUNIT_EXPECT_TRUE(test, handled);
 	KUNIT_EXPECT_EQ(test, bat->charge_status, POWER_SUPPLY_STATUS_CHARGING);
+=======
+	struct hid_device *dev;
+	bool handled;
+
+	dev = kunit_kzalloc(test, sizeof(*dev), GFP_KERNEL);
+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
+
+	handled = hidinput_update_battery_charge_status(dev, HID_DG_HEIGHT, 0);
+	KUNIT_EXPECT_FALSE(test, handled);
+	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_UNKNOWN);
+
+	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 0);
+	KUNIT_EXPECT_TRUE(test, handled);
+	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_DISCHARGING);
+
+	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 1);
+	KUNIT_EXPECT_TRUE(test, handled);
+	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_CHARGING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hid_test_input_get_battery_property(struct kunit *test)
 {
 	struct power_supply *psy;
+<<<<<<< HEAD
 	struct hid_battery *bat;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hid_device *dev;
 	union power_supply_propval val;
 	int ret;
 
 	dev = kunit_kzalloc(test, sizeof(*dev), GFP_KERNEL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
+<<<<<<< HEAD
 
 	bat = kunit_kzalloc(test, sizeof(*bat), GFP_KERNEL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, bat);
@@ -50,18 +74,38 @@ static void hid_test_input_get_battery_property(struct kunit *test)
 
 	bat->status = HID_BATTERY_UNKNOWN;
 	bat->charge_status = POWER_SUPPLY_STATUS_CHARGING;
+=======
+	dev->battery_avoid_query = true;
+
+	psy = kunit_kzalloc(test, sizeof(*psy), GFP_KERNEL);
+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, psy);
+	psy->drv_data = dev;
+
+	dev->battery_status = HID_BATTERY_UNKNOWN;
+	dev->battery_charge_status = POWER_SUPPLY_STATUS_CHARGING;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hidinput_get_battery_property(psy, POWER_SUPPLY_PROP_STATUS, &val);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_EQ(test, val.intval, POWER_SUPPLY_STATUS_UNKNOWN);
 
+<<<<<<< HEAD
 	bat->status = HID_BATTERY_REPORTED;
 	bat->charge_status = POWER_SUPPLY_STATUS_CHARGING;
+=======
+	dev->battery_status = HID_BATTERY_REPORTED;
+	dev->battery_charge_status = POWER_SUPPLY_STATUS_CHARGING;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hidinput_get_battery_property(psy, POWER_SUPPLY_PROP_STATUS, &val);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_EQ(test, val.intval, POWER_SUPPLY_STATUS_CHARGING);
 
+<<<<<<< HEAD
 	bat->status = HID_BATTERY_REPORTED;
 	bat->charge_status = POWER_SUPPLY_STATUS_DISCHARGING;
+=======
+	dev->battery_status = HID_BATTERY_REPORTED;
+	dev->battery_charge_status = POWER_SUPPLY_STATUS_DISCHARGING;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hidinput_get_battery_property(psy, POWER_SUPPLY_PROP_STATUS, &val);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_EQ(test, val.intval, POWER_SUPPLY_STATUS_DISCHARGING);

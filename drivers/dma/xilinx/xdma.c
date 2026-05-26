@@ -61,8 +61,11 @@ struct xdma_desc_block {
  * @dir: Transferring direction of the channel
  * @cfg: Transferring config of the channel
  * @irq: IRQ assigned to the channel
+<<<<<<< HEAD
  * @last_interrupt: task for comppleting last interrupt
  * @stop_requested: stop request flag
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct xdma_chan {
 	struct virt_dma_chan		vchan;

@@ -24,6 +24,7 @@ Quick access to CPU number, node ID
 Allows to implement per CPU data efficiently. Documentation is in code and
 selftests. :(
 
+<<<<<<< HEAD
 Optimized RSEQ V2
 -----------------
 
@@ -115,6 +116,8 @@ functionality without disturbing each other. The ABI compliant optimized v2
 mode also enables extended RSEQ features like time slice extensions.
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Scheduler time slice extensions
 -------------------------------
 
@@ -128,8 +131,12 @@ The prerequisites for this functionality are:
 
     * Enabled at boot time (default is enabled)
 
+<<<<<<< HEAD
     * A rseq userspace pointer has been registered for the thread in
       optimized V2 mode
+=======
+    * A rseq userspace pointer has been registered for the thread
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 The thread has to enable the functionality via prctl(2)::
 

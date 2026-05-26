@@ -40,6 +40,15 @@ static int asoc_sdw_bridge_cs35l56_asp_init(struct snd_soc_pcm_runtime *rtd)
 	struct snd_soc_dai *codec_dai;
 	struct snd_soc_dai *cpu_dai;
 
+<<<<<<< HEAD
+=======
+	card->components = devm_kasprintf(card->dev, GFP_KERNEL,
+					  "%s spk:cs35l56-bridge",
+					  card->components);
+	if (!card->components)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = snd_soc_dapm_new_controls(dapm, bridge_widgets,
 					ARRAY_SIZE(bridge_widgets));
 	if (ret) {

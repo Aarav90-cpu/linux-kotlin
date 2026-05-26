@@ -500,14 +500,24 @@ static irqreturn_t mxs_lradc_ts_handle_irq(int irq, void *data)
 		LRADC_CTRL1_TOUCH_DETECT_IRQ |
 		LRADC_CTRL1_LRADC_IRQ(TOUCHSCREEN_VCHANNEL1) |
 		LRADC_CTRL1_LRADC_IRQ(TOUCHSCREEN_VCHANNEL2);
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(reg & mxs_lradc_irq_mask(lradc)))
 		return IRQ_NONE;
 
 	if (reg & ts_irq_mask) {
+<<<<<<< HEAD
 		scoped_guard(spinlock_irqsave, &ts->lock) {
 			mxs_lradc_handle_touch(ts);
 		}
+=======
+		spin_lock_irqsave(&ts->lock, flags);
+		mxs_lradc_handle_touch(ts);
+		spin_unlock_irqrestore(&ts->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Make sure we don't clear the next conversion's interrupt. */
 		clr_irq &= ~(LRADC_CTRL1_LRADC_IRQ(TOUCHSCREEN_VCHANNEL1) |
 				LRADC_CTRL1_LRADC_IRQ(TOUCHSCREEN_VCHANNEL2));

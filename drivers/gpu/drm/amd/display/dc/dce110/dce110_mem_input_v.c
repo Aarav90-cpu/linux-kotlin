@@ -40,7 +40,10 @@ static void set_flip_control(
 	struct dce_mem_input *mem_input110,
 	bool immediate)
 {
+<<<<<<< HEAD
 	(void)immediate;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t value = 0;
 
 	value = dm_read_reg(
@@ -166,7 +169,10 @@ static void program_tiling(
 	const struct dc_tiling_info *info,
 	const enum surface_pixel_format pixel_format)
 {
+<<<<<<< HEAD
 	(void)pixel_format;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t value = 0;
 
 	set_reg_field_value(value, info->gfx8.num_banks,
@@ -644,8 +650,11 @@ static void dce_mem_input_v_program_surface_config(
 	struct dc_plane_dcc_param *dcc,
 	bool horizotal_mirror)
 {
+<<<<<<< HEAD
 	(void)dcc;
 	(void)horizotal_mirror;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_mem_input *mem_input110 = TO_DCE_MEM_INPUT(mem_input);
 
 	enable(mem_input110);
@@ -931,7 +940,10 @@ static void dce_mem_input_v_program_display_marks(
 	struct dce_watermarks urgent,
 	uint32_t total_dest_line_time_ns)
 {
+<<<<<<< HEAD
 	(void)stutter_enter;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	program_urgency_watermark_l(
 		mem_input->ctx,
 		urgent,
@@ -975,9 +987,12 @@ static void dce110_allocate_mem_input_v(
 	uint32_t pix_clk_khz,/* for current stream */
 	uint32_t total_stream_num)
 {
+<<<<<<< HEAD
 	(void)h_total;
 	(void)v_total;
 	(void)total_stream_num;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t addr;
 	uint32_t value;
 	uint32_t pix_dur;
@@ -1017,8 +1032,11 @@ static void dce110_free_mem_input_v(
 	struct mem_input *mi,
 	uint32_t total_stream_num)
 {
+<<<<<<< HEAD
 	(void)mi;
 	(void)total_stream_num;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct mem_input_funcs dce110_mem_input_v_funcs = {

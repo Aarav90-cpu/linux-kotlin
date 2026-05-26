@@ -274,6 +274,7 @@ static inline unsigned int mcasp_get_auxclk_fs_ratio(struct davinci_mcasp *mcasp
 	       mcasp->auxclk_fs_ratio_tx : mcasp->auxclk_fs_ratio_rx;
 }
 
+<<<<<<< HEAD
 static inline bool mcasp_is_auxclk_enabled(struct davinci_mcasp *mcasp, int stream)
 {
 	if (mcasp->async_mode && stream == SNDRV_PCM_STREAM_CAPTURE)
@@ -282,6 +283,8 @@ static inline bool mcasp_is_auxclk_enabled(struct davinci_mcasp *mcasp, int stre
 	return mcasp_get_reg(mcasp, DAVINCI_MCASP_AHCLKXCTL_REG) & AHCLKXE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mcasp_start_rx(struct davinci_mcasp *mcasp)
 {
 	if (mcasp->rxnumevt) {	/* enable FIFO */
@@ -1345,6 +1348,7 @@ static int davinci_mcasp_calc_clk_div(struct davinci_mcasp *mcasp,
 	int bclk_div_id, auxclk_div_id;
 	bool auxclk_enabled;
 
+<<<<<<< HEAD
 	auxclk_enabled = mcasp_is_auxclk_enabled(mcasp, stream);
 
 	if (mcasp->async_mode && stream == SNDRV_PCM_STREAM_CAPTURE) {
@@ -1354,10 +1358,23 @@ static int davinci_mcasp_calc_clk_div(struct davinci_mcasp *mcasp,
 		bclk_div_id = MCASP_CLKDIV_BCLK_TXONLY;
 		auxclk_div_id = MCASP_CLKDIV_AUXCLK_TXONLY;
 	} else {
+=======
+	if (mcasp->async_mode && stream == SNDRV_PCM_STREAM_CAPTURE) {
+		auxclk_enabled = mcasp_get_reg(mcasp, DAVINCI_MCASP_AHCLKRCTL_REG) & AHCLKRE;
+		bclk_div_id = MCASP_CLKDIV_BCLK_RXONLY;
+		auxclk_div_id = MCASP_CLKDIV_AUXCLK_RXONLY;
+	} else if (mcasp->async_mode && stream == SNDRV_PCM_STREAM_PLAYBACK) {
+		auxclk_enabled = mcasp_get_reg(mcasp, DAVINCI_MCASP_AHCLKXCTL_REG) & AHCLKXE;
+		bclk_div_id = MCASP_CLKDIV_BCLK_TXONLY;
+		auxclk_div_id = MCASP_CLKDIV_AUXCLK_TXONLY;
+	} else {
+		auxclk_enabled = mcasp_get_reg(mcasp, DAVINCI_MCASP_AHCLKXCTL_REG) & AHCLKXE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bclk_div_id = MCASP_CLKDIV_BCLK;
 		auxclk_div_id = MCASP_CLKDIV_AUXCLK;
 	}
 
+<<<<<<< HEAD
 	if (div > (ACLKXDIV_MASK + 1) && auxclk_enabled) {
 		if (div <= (AHCLKXDIV_MASK + 1)) {
 			/* aux_div absorbs entire division; bclk_div = 1 */
@@ -1381,6 +1398,21 @@ static int davinci_mcasp_calc_clk_div(struct davinci_mcasp *mcasp,
 	} else if (div > (ACLKXDIV_MASK + 1) && set) {
 		dev_warn(mcasp->dev, "Too fast reference clock (%u)\n",
 			 sysclk_freq);
+=======
+	if (div > (ACLKXDIV_MASK + 1)) {
+		if (auxclk_enabled) {
+			aux_div = div / (ACLKXDIV_MASK + 1);
+			if (div % (ACLKXDIV_MASK + 1))
+				aux_div++;
+
+			sysclk_freq /= aux_div;
+			div = sysclk_freq / bclk_freq;
+			rem = sysclk_freq % bclk_freq;
+		} else if (set) {
+			dev_warn(mcasp->dev, "Too fast reference clock (%u)\n",
+				 sysclk_freq);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (rem != 0) {
@@ -2840,8 +2872,11 @@ static int davinci_mcasp_runtime_resume(struct device *dev)
 #endif
 
 static const struct dev_pm_ops davinci_mcasp_pm_ops = {
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SET_RUNTIME_PM_OPS(davinci_mcasp_runtime_suspend,
 			   davinci_mcasp_runtime_resume,
 			   NULL)

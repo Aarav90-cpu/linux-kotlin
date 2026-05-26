@@ -183,7 +183,11 @@ show_canceled_csk(struct device *dev, u32 addr, char *buf)
 
 	bitmap_from_arr32(csk_map, csk32, CSK_BIT_LEN);
 	bitmap_complement(csk_map, csk_map, CSK_BIT_LEN);
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%*pbl\n", CSK_BIT_LEN, csk_map);
+=======
+	return bitmap_print_to_pagebuf(1, buf, csk_map, CSK_BIT_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define DEVICE_ATTR_SEC_CSK_RO(_name)						\

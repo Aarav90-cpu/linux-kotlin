@@ -591,6 +591,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		rspi0: spi@12800000 {
 			compatible = "renesas,r9a09g047-rspi", "renesas,r9a09g057-rspi";
 			reg = <0x0 0x12800000 0x0 0x400>;
@@ -675,6 +676,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rsci0: serial@12800c00 {
 			compatible = "renesas,r9a09g047-rsci";
 			reg = <0 0x12800c00 0 0x400>;
@@ -925,6 +928,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		pcie: pcie@13400000 {
 			compatible = "renesas,r9a09g047-pcie";
 			reg = <0 0x13400000 0 0x10000>;
@@ -994,6 +998,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tsu: thermal@14002000 {
 			compatible = "renesas,r9a09g047-tsu";
 			reg = <0 0x14002000 0 0x1000>;

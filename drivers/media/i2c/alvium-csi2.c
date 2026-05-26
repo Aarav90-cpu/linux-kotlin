@@ -2541,6 +2541,10 @@ module_i2c_driver(alvium_i2c_driver);
 
 MODULE_DESCRIPTION("Allied Vision's Alvium Camera Driver");
 MODULE_AUTHOR("Tommaso Merciai <tomm.merciai@gmail.com>");
+<<<<<<< HEAD
 MODULE_AUTHOR("Martin Hecht <mhecht73@gmail.com>");
+=======
+MODULE_AUTHOR("Martin Hecht <martin.hecht@avnet.eu>");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Avnet Silica Software & Services EMEA");
 MODULE_LICENSE("GPL");

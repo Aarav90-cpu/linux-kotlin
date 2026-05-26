@@ -91,8 +91,19 @@ static inline void set_dma_ops(struct device *dev,
 #endif /* CONFIG_ARCH_HAS_DMA_OPS */
 
 #ifdef CONFIG_DMA_CMA
+<<<<<<< HEAD
 struct cma *dev_get_cma_area(struct device *dev);
 struct cma *dma_contiguous_get_area_by_idx(unsigned int idx);
+=======
+extern struct cma *dma_contiguous_default_area;
+
+static inline struct cma *dev_get_cma_area(struct device *dev)
+{
+	if (dev && dev->cma_area)
+		return dev->cma_area;
+	return dma_contiguous_default_area;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dma_contiguous_reserve(phys_addr_t addr_limit);
 int __init dma_contiguous_reserve_area(phys_addr_t size, phys_addr_t base,
@@ -111,10 +122,13 @@ static inline struct cma *dev_get_cma_area(struct device *dev)
 {
 	return NULL;
 }
+<<<<<<< HEAD
 static inline struct cma *dma_contiguous_get_area_by_idx(unsigned int idx)
 {
 	return NULL;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void dma_contiguous_reserve(phys_addr_t limit)
 {
 }
@@ -145,6 +159,12 @@ static inline void dma_free_contiguous(struct device *dev, struct page *page,
 {
 	__free_pages(page, get_order(size));
 }
+<<<<<<< HEAD
+=======
+static inline void dma_contiguous_early_fixup(phys_addr_t base, unsigned long size)
+{
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_DMA_CMA*/
 
 #ifdef CONFIG_DMA_DECLARE_COHERENT
@@ -356,12 +376,15 @@ static inline void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
 }
 #endif /* ARCH_HAS_SYNC_DMA_FOR_CPU */
 
+<<<<<<< HEAD
 #ifndef CONFIG_ARCH_HAS_BATCHED_DMA_SYNC
 static inline void arch_sync_dma_flush(void)
 {
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL
 void arch_sync_dma_for_cpu_all(void);
 #else

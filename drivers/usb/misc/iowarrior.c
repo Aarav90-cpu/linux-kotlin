@@ -21,7 +21,10 @@
 #include <linux/sched.h>
 #include <linux/mutex.h>
 #include <linux/poll.h>
+<<<<<<< HEAD
 #include <linux/hid.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/usb/iowarrior.h>
 
 #define DRIVER_AUTHOR "Christian Lucht <lucht@codemercs.com>"
@@ -75,6 +78,10 @@ struct iowarrior {
 	struct mutex mutex;			/* locks this structure */
 	struct usb_device *udev;		/* save off the usb device pointer */
 	struct usb_interface *interface;	/* the interface for this device */
+<<<<<<< HEAD
+=======
+	unsigned char minor;			/* the starting minor number for this device */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct usb_endpoint_descriptor *int_out_endpoint;	/* endpoint for reading (needed for IOW56 only) */
 	struct usb_endpoint_descriptor *int_in_endpoint;	/* endpoint for reading */
 	struct urb *int_in_urb;		/* the urb for reading data */
@@ -99,13 +106,21 @@ struct iowarrior {
 /*    globals   */
 /*--------------*/
 
+<<<<<<< HEAD
+=======
+#define USB_REQ_GET_REPORT  0x01
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 //#if 0
 static int usb_get_report(struct usb_device *dev,
 			  struct usb_host_interface *inter, unsigned char type,
 			  unsigned char id, void *buf, int size)
 {
 	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
+<<<<<<< HEAD
 			       HID_REQ_GET_REPORT,
+=======
+			       USB_REQ_GET_REPORT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       USB_DIR_IN | USB_TYPE_CLASS |
 			       USB_RECIP_INTERFACE, (type << 8) + id,
 			       inter->desc.bInterfaceNumber, buf, size,
@@ -113,12 +128,21 @@ static int usb_get_report(struct usb_device *dev,
 }
 //#endif
 
+<<<<<<< HEAD
+=======
+#define USB_REQ_SET_REPORT 0x09
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int usb_set_report(struct usb_interface *intf, unsigned char type,
 			  unsigned char id, void *buf, int size)
 {
 	return usb_control_msg(interface_to_usbdev(intf),
 			       usb_sndctrlpipe(interface_to_usbdev(intf), 0),
+<<<<<<< HEAD
 			       HID_REQ_SET_REPORT,
+=======
+			       USB_REQ_SET_REPORT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       USB_TYPE_CLASS | USB_RECIP_INTERFACE,
 			       (type << 8) + id,
 			       intf->cur_altsetting->desc.bInterfaceNumber, buf,
@@ -231,7 +255,12 @@ static void iowarrior_write_callback(struct urb *urb)
 			"nonzero write bulk status received: %d\n", status);
 	}
 	/* free up our allocated buffer */
+<<<<<<< HEAD
 	kfree(urb->transfer_buffer);
+=======
+	usb_free_coherent(urb->dev, urb->transfer_buffer_length,
+			  urb->transfer_buffer, urb->transfer_dma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* tell a waiting writer the interrupt-out-pipe is available again */
 	atomic_dec(&dev->write_busy);
 	wake_up_interruptible(&dev->write_wait);
@@ -242,6 +271,10 @@ static void iowarrior_write_callback(struct urb *urb)
  */
 static inline void iowarrior_delete(struct iowarrior *dev)
 {
+<<<<<<< HEAD
+=======
+	dev_dbg(&dev->interface->dev, "minor %d\n", dev->minor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev->int_in_buffer);
 	usb_free_urb(dev->int_in_urb);
 	kfree(dev->read_queue);
@@ -292,6 +325,12 @@ static ssize_t iowarrior_read(struct file *file, char __user *buffer,
 		goto exit;
 	}
 
+<<<<<<< HEAD
+=======
+	dev_dbg(&dev->interface->dev, "minor %d, count = %zd\n",
+		dev->minor, count);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* read count must be packet size (+ time stamp) */
 	if ((count != dev->report_size)
 	    && (count != (dev->report_size + 1))) {
@@ -359,21 +398,34 @@ static ssize_t iowarrior_write(struct file *file,
 			       size_t count, loff_t *ppos)
 {
 	struct iowarrior *dev;
+<<<<<<< HEAD
 	int retval;
+=======
+	int retval = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *buf = NULL;	/* for IOW24 and IOW56 we need a buffer */
 	struct urb *int_out_urb = NULL;
 
 	dev = file->private_data;
 
+<<<<<<< HEAD
 	retval = mutex_lock_interruptible(&dev->mutex);
 	if (retval < 0)
 		return -EINTR;
 
+=======
+	mutex_lock(&dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* verify that the device wasn't unplugged */
 	if (!dev->present) {
 		retval = -ENODEV;
 		goto exit;
 	}
+<<<<<<< HEAD
+=======
+	dev_dbg(&dev->interface->dev, "minor %d, count = %zd\n",
+		dev->minor, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* if count is 0 we're already done */
 	if (count == 0) {
 		retval = 0;
@@ -436,7 +488,12 @@ static ssize_t iowarrior_write(struct file *file,
 			retval = -ENOMEM;
 			goto error_no_urb;
 		}
+<<<<<<< HEAD
 		buf = kmalloc(dev->report_size, GFP_KERNEL);
+=======
+		buf = usb_alloc_coherent(dev->udev, dev->report_size,
+					 GFP_KERNEL, &int_out_urb->transfer_dma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!buf) {
 			retval = -ENOMEM;
 			dev_dbg(&dev->interface->dev,
@@ -449,6 +506,10 @@ static ssize_t iowarrior_write(struct file *file,
 				 buf, dev->report_size,
 				 iowarrior_write_callback, dev,
 				 dev->int_out_endpoint->bInterval);
+<<<<<<< HEAD
+=======
+		int_out_urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (copy_from_user(buf, user_buffer, count)) {
 			retval = -EFAULT;
 			goto error;
@@ -474,7 +535,12 @@ static ssize_t iowarrior_write(struct file *file,
 		goto exit;
 	}
 error:
+<<<<<<< HEAD
 	kfree(buf);
+=======
+	usb_free_coherent(dev->udev, dev->report_size, buf,
+			  int_out_urb->transfer_dma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 error_no_buffer:
 	usb_free_urb(int_out_urb);
 error_no_urb:
@@ -513,6 +579,12 @@ static long iowarrior_ioctl(struct file *file, unsigned int cmd,
 		goto error_out;
 	}
 
+<<<<<<< HEAD
+=======
+	dev_dbg(&dev->interface->dev, "minor %d, cmd 0x%.4x, arg %ld\n",
+		dev->minor, cmd, arg);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	retval = 0;
 	switch (cmd) {
 	case IOW_WRITE:
@@ -658,6 +730,11 @@ static int iowarrior_release(struct inode *inode, struct file *file)
 	if (!dev)
 		return -ENODEV;
 
+<<<<<<< HEAD
+=======
+	dev_dbg(&dev->interface->dev, "minor %d\n", dev->minor);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* lock our device */
 	mutex_lock(&dev->mutex);
 
@@ -760,7 +837,10 @@ static int iowarrior_probe(struct usb_interface *interface,
 	struct usb_host_interface *iface_desc;
 	int retval = -ENOMEM;
 	int res;
+<<<<<<< HEAD
 	int minor;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* allocate memory for our device state and initialize it */
 	dev = kzalloc_obj(struct iowarrior);
@@ -876,12 +956,20 @@ static int iowarrior_probe(struct usb_interface *interface,
 		goto error;
 	}
 
+<<<<<<< HEAD
 	minor = interface->minor;
+=======
+	dev->minor = interface->minor;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* let the user know what node this device is now attached to */
 	dev_info(&interface->dev, "IOWarrior product=0x%x, serial=%s interface=%d "
 		 "now attached to iowarrior%d\n", dev->product_id, dev->chip_serial,
+<<<<<<< HEAD
 		 iface_desc->desc.bInterfaceNumber, minor - IOWARRIOR_MINOR_BASE);
+=======
+		 iface_desc->desc.bInterfaceNumber, dev->minor - IOWARRIOR_MINOR_BASE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 
 error:

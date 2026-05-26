@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Copyright 2002-2005, Instant802 Networks, Inc.
  * Copyright 2005-2006, Devicescape Software, Inc.
@@ -7,6 +10,21 @@
  * Copyright 2013-2014  Intel Mobile Communications GmbH
  * Copyright      2017  Intel Deutschland GmbH
  * Copyright (C) 2018 - 2026 Intel Corporation
+<<<<<<< HEAD
+=======
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 
@@ -2348,6 +2366,7 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
 	if (!wdev->netdev || !netif_running(wdev->netdev))
 		return true;
 
+<<<<<<< HEAD
 	/* NAN doesn't have links, handle it separately */
 	if (iftype == NL80211_IFTYPE_NAN) {
 		for (int i = 0; i < wdev->u.nan.n_channels; i++) {
@@ -2360,6 +2379,8 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
 		return true;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (link = 0; link < ARRAY_SIZE(wdev->links); link++) {
 		struct ieee80211_channel *chan;
 
@@ -2409,9 +2430,15 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
 				continue;
 			chandef = wdev->u.ocb.chandef;
 			break;
+<<<<<<< HEAD
 		case NL80211_IFTYPE_NAN_DATA:
 			/* NAN channels are checked in NL80211_IFTYPE_NAN interface */
 			break;
+=======
+		case NL80211_IFTYPE_NAN:
+			/* we have no info, but NAN is also pretty universal */
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			/* others not implemented for now */
 			WARN_ON_ONCE(1);
@@ -2448,6 +2475,7 @@ static void reg_leave_invalid_chans(struct wiphy *wiphy)
 	struct wireless_dev *wdev;
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 
+<<<<<<< HEAD
 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
 		bool valid;
 
@@ -2456,6 +2484,13 @@ static void reg_leave_invalid_chans(struct wiphy *wiphy)
 		if (!valid)
 			cfg80211_leave(rdev, wdev, -1);
 	}
+=======
+	guard(wiphy)(wiphy);
+
+	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list)
+		if (!reg_wdev_chan_valid(wiphy, wdev))
+			cfg80211_leave(rdev, wdev, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void reg_check_chans_work(struct work_struct *work)

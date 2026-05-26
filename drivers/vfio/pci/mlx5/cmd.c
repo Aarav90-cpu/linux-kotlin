@@ -87,7 +87,11 @@ int mlx5vf_cmd_resume_vhca(struct mlx5vf_pci_core_device *mvdev, u16 op_mod)
 
 int mlx5vf_cmd_query_vhca_migration_state(struct mlx5vf_pci_core_device *mvdev,
 					  size_t *state_size, u64 *total_size,
+<<<<<<< HEAD
 					  u8 *mig_state, u8 query_flags)
+=======
+					  u8 query_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 out[MLX5_ST_SZ_DW(query_vhca_migration_state_out)] = {};
 	u32 in[MLX5_ST_SZ_DW(query_vhca_migration_state_in)] = {};
@@ -152,10 +156,13 @@ int mlx5vf_cmd_query_vhca_migration_state(struct mlx5vf_pci_core_device *mvdev,
 			MLX5_GET64(query_vhca_migration_state_out, out,
 				   remaining_total_size) : *state_size;
 
+<<<<<<< HEAD
 	if (mig_state && mvdev->mig_state_cap)
 		*mig_state = MLX5_GET(query_vhca_migration_state_out, out,
 				      migration_state);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -281,9 +288,12 @@ void mlx5vf_cmd_set_migratable(struct mlx5vf_pci_core_device *mvdev,
 	if (MLX5_CAP_GEN_2(mvdev->mdev, migration_in_chunks))
 		mvdev->chunk_mode = 1;
 
+<<<<<<< HEAD
 	if (MLX5_CAP_GEN_2(mvdev->mdev, migration_state))
 		mvdev->mig_state_cap = 1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 end:
 	mlx5_vf_put_core_dev(mvdev->mdev);
 }
@@ -562,7 +572,10 @@ void mlx5vf_put_data_buffer(struct mlx5_vhca_data_buffer *buf)
 {
 	spin_lock_irq(&buf->migf->list_lock);
 	buf->stop_copy_chunk_num = 0;
+<<<<<<< HEAD
 	buf->pre_copy_init_bytes_chunk = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_add_tail(&buf->buf_elm, &buf->migf->avail_list);
 	spin_unlock_irq(&buf->migf->list_lock);
 }
@@ -614,8 +627,11 @@ static void
 mlx5vf_save_callback_complete(struct mlx5_vf_migration_file *migf,
 			      struct mlx5vf_async_data *async_data)
 {
+<<<<<<< HEAD
 	migf->inflight_save = 0;
 	wake_up_interruptible(&migf->poll_wait);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvfree(async_data->out);
 	complete(&migf->save_comp);
 	fput(migf->filp);
@@ -697,8 +713,12 @@ static void mlx5vf_save_callback(int status, struct mlx5_async_work *context)
 				!next_required_umem_size;
 		if (async_data->header_buf) {
 			status = add_buf_header(async_data->header_buf, image_size,
+<<<<<<< HEAD
 						initial_pre_copy ||
 						async_data->buf->pre_copy_init_bytes_chunk);
+=======
+						initial_pre_copy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (status)
 				goto err;
 		}
@@ -717,12 +737,18 @@ static void mlx5vf_save_callback(int status, struct mlx5_async_work *context)
 			}
 		}
 		spin_unlock_irqrestore(&migf->list_lock, flags);
+<<<<<<< HEAD
 		if (initial_pre_copy || async_data->buf->pre_copy_init_bytes_chunk) {
 			migf->pre_copy_initial_bytes += image_size;
 			if (initial_pre_copy)
 				migf->state = MLX5_MIGF_STATE_PRE_COPY;
 			if (async_data->buf->pre_copy_init_bytes_chunk)
 				async_data->buf->pre_copy_init_bytes_chunk = false;
+=======
+		if (initial_pre_copy) {
+			migf->pre_copy_initial_bytes += image_size;
+			migf->state = MLX5_MIGF_STATE_PRE_COPY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (stop_copy_last_chunk)
 			migf->state = MLX5_MIGF_STATE_COMPLETE;
@@ -823,7 +849,10 @@ int mlx5vf_cmd_save_vhca_state(struct mlx5vf_pci_core_device *mvdev,
 
 	async_data->header_buf = header_buf;
 	get_file(migf->filp);
+<<<<<<< HEAD
 	migf->inflight_save = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = mlx5_cmd_exec_cb(&migf->async_ctx, in, sizeof(in),
 			       async_data->out,
 			       out_size, mlx5vf_save_callback,
@@ -834,8 +863,11 @@ int mlx5vf_cmd_save_vhca_state(struct mlx5vf_pci_core_device *mvdev,
 	return 0;
 
 err_exec:
+<<<<<<< HEAD
 	migf->inflight_save = 0;
 	wake_up_interruptible(&migf->poll_wait);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (header_buf)
 		mlx5vf_put_data_buffer(header_buf);
 	fput(migf->filp);

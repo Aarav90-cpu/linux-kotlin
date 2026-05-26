@@ -104,7 +104,11 @@ struct evsel_str_handler {
 };
 
 struct evlist *evlist__new(void);
+<<<<<<< HEAD
 struct evlist *evlist__new_default(const struct target *target, bool sample_callchains);
+=======
+struct evlist *evlist__new_default(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct evlist *evlist__new_dummy(void);
 void evlist__init(struct evlist *evlist, struct perf_cpu_map *cpus,
 		  struct perf_thread_map *threads);

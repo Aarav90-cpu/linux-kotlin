@@ -74,6 +74,7 @@ static inline bool qcom_ubwc_get_ubwc_mode(const struct qcom_ubwc_cfg_data *cfg)
 	return ret;
 }
 
+<<<<<<< HEAD
 /*
  * This is the best guess, based on the MDSS driver, which worked so far.
  */
@@ -99,4 +100,6 @@ static inline u32 qcom_ubwc_swizzle(const struct qcom_ubwc_cfg_data *cfg)
 	return cfg->ubwc_swizzle;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __QCOM_UBWC_H__ */

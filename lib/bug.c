@@ -251,7 +251,11 @@ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned long buga
 	if (file)
 		pr_crit("kernel BUG at %s:%u!\n", file, line);
 	else
+<<<<<<< HEAD
 		pr_crit("kernel BUG at %pB [verbose debug info unavailable]\n",
+=======
+		pr_crit("Kernel BUG at %pB [verbose debug info unavailable]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			(void *)bugaddr);
 
 	return BUG_TRAP_TYPE_BUG;
@@ -260,7 +264,11 @@ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned long buga
 enum bug_trap_type report_bug_entry(struct bug_entry *bug, struct pt_regs *regs)
 {
 	enum bug_trap_type ret;
+<<<<<<< HEAD
 	bool rcu;
+=======
+	bool rcu = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rcu = warn_rcu_enter();
 	ret = __report_bug(bug, bug_addr(bug), regs);
@@ -272,7 +280,11 @@ enum bug_trap_type report_bug_entry(struct bug_entry *bug, struct pt_regs *regs)
 enum bug_trap_type report_bug(unsigned long bugaddr, struct pt_regs *regs)
 {
 	enum bug_trap_type ret;
+<<<<<<< HEAD
 	bool rcu;
+=======
+	bool rcu = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rcu = warn_rcu_enter();
 	ret = __report_bug(NULL, bugaddr, regs);

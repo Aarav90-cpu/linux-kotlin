@@ -1115,17 +1115,26 @@ static int sonypi_disable(void)
 }
 
 #ifdef CONFIG_ACPI
+<<<<<<< HEAD
 static int sonypi_acpi_probe(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
 
+=======
+static int sonypi_acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sonypi_acpi_device = device;
 	strcpy(acpi_device_name(device), "Sony laptop hotkeys");
 	strcpy(acpi_device_class(device), "sony/hotkey");
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sonypi_acpi_remove(struct platform_device *pdev)
+=======
+static void sonypi_acpi_remove(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sonypi_acpi_device = NULL;
 }
@@ -1135,12 +1144,22 @@ static const struct acpi_device_id sonypi_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver sonypi_acpi_driver = {
 	.probe = sonypi_acpi_probe,
 	.remove = sonypi_acpi_remove,
 	.driver = {
 		.name = "sonypi_acpi",
 		.acpi_match_table = sonypi_device_ids,
+=======
+static struct acpi_driver sonypi_acpi_driver = {
+	.name           = "sonypi",
+	.class          = "hkey",
+	.ids            = sonypi_device_ids,
+	.ops            = {
+		           .add = sonypi_acpi_add,
+			   .remove = sonypi_acpi_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 #endif
@@ -1519,8 +1538,13 @@ static int __init sonypi_init(void)
 		goto err_free_device;
 
 #ifdef CONFIG_ACPI
+<<<<<<< HEAD
 	error = platform_driver_register(&sonypi_acpi_driver);
 	acpi_driver_registered = !error;
+=======
+	if (acpi_bus_register_driver(&sonypi_acpi_driver) >= 0)
+		acpi_driver_registered = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	return 0;
@@ -1536,7 +1560,11 @@ static void __exit sonypi_exit(void)
 {
 #ifdef CONFIG_ACPI
 	if (acpi_driver_registered)
+<<<<<<< HEAD
 		platform_driver_unregister(&sonypi_acpi_driver);
+=======
+		acpi_bus_unregister_driver(&sonypi_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	platform_device_unregister(sonypi_platform_device);
 	platform_driver_unregister(&sonypi_driver);

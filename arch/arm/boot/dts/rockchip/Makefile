@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0
 dtb-$(CONFIG_ARCH_ROCKCHIP) += \
+<<<<<<< HEAD
 	rv1103b-omega4-evb.dtb \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rv1108-elgin-r1.dtb \
 	rv1108-evb.dtb \
 	rv1109-relfor-saib.dtb \

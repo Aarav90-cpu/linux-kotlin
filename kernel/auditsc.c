@@ -886,7 +886,11 @@ static int audit_filter_inode_name(struct task_struct *tsk,
 				   struct audit_names *n,
 				   struct audit_context *ctx)
 {
+<<<<<<< HEAD
 	int h = audit_hash_ino(n->ino);
+=======
+	int h = audit_hash_ino((u32)n->ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head *list = &audit_inode_hash[h];
 
 	return __audit_filter_op(tsk, ctx, list, n, ctx->major);
@@ -1534,7 +1538,11 @@ static void audit_log_name(struct audit_context *context, struct audit_names *n,
 		audit_log_format(ab, " name=(null)");
 
 	if (n->ino != AUDIT_INO_UNSET)
+<<<<<<< HEAD
 		audit_log_format(ab, " inode=%llu dev=%02x:%02x mode=%#ho ouid=%u ogid=%u rdev=%02x:%02x",
+=======
+		audit_log_format(ab, " inode=%lu dev=%02x:%02x mode=%#ho ouid=%u ogid=%u rdev=%02x:%02x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 n->ino,
 				 MAJOR(n->dev),
 				 MINOR(n->dev),
@@ -2786,7 +2794,11 @@ void __audit_log_capset(const struct cred *new, const struct cred *old)
 
 	context->capset.pid = task_tgid_nr(current);
 	context->capset.cap.effective   = new->cap_effective;
+<<<<<<< HEAD
 	context->capset.cap.inheritable = new->cap_inheritable;
+=======
+	context->capset.cap.inheritable = new->cap_effective;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	context->capset.cap.permitted   = new->cap_permitted;
 	context->capset.cap.ambient     = new->cap_ambient;
 	context->type = AUDIT_CAPSET;

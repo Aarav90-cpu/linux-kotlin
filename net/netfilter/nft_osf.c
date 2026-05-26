@@ -12,9 +12,15 @@ struct nft_osf {
 };
 
 static const struct nla_policy nft_osf_policy[NFTA_OSF_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_OSF_DREG]		= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
 	[NFTA_OSF_TTL]		= { .type = NLA_U8 },
 	[NFTA_OSF_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NFT_OSF_F_VERSION),
+=======
+	[NFTA_OSF_DREG]		= { .type = NLA_U32 },
+	[NFTA_OSF_TTL]		= { .type = NLA_U8 },
+	[NFTA_OSF_FLAGS]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
@@ -28,12 +34,16 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
 	struct nf_osf_data data;
 	struct tcphdr _tcph;
 
+<<<<<<< HEAD
 	if (nft_pf(pkt) != NFPROTO_IPV4) {
 		regs->verdict.code = NFT_BREAK;
 		return;
 	}
 
 	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff) {
+=======
+	if (pkt->tprot != IPPROTO_TCP) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regs->verdict.code = NFT_BREAK;
 		return;
 	}
@@ -119,6 +129,10 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
 
 	switch (ctx->family) {
 	case NFPROTO_IPV4:
+<<<<<<< HEAD
+=======
+	case NFPROTO_IPV6:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NFPROTO_INET:
 		hooks = (1 << NF_INET_LOCAL_IN) |
 			(1 << NF_INET_PRE_ROUTING) |
@@ -131,6 +145,33 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
 	return nft_chain_validate_hooks(ctx->chain, hooks);
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_osf_reduce(struct nft_regs_track *track,
+			   const struct nft_expr *expr)
+{
+	struct nft_osf *priv = nft_expr_priv(expr);
+	struct nft_osf *osf;
+
+	if (!nft_reg_track_cmp(track, expr, priv->dreg)) {
+		nft_reg_track_update(track, expr, priv->dreg, NFT_OSF_MAXGENRELEN);
+		return false;
+	}
+
+	osf = nft_expr_priv(track->regs[priv->dreg].selector);
+	if (priv->flags != osf->flags ||
+	    priv->ttl != osf->ttl) {
+		nft_reg_track_update(track, expr, priv->dreg, NFT_OSF_MAXGENRELEN);
+		return false;
+	}
+
+	if (!track->regs[priv->dreg].bitwise)
+		return true;
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct nft_expr_type nft_osf_type;
 static const struct nft_expr_ops nft_osf_op = {
 	.eval		= nft_osf_eval,
@@ -139,6 +180,10 @@ static const struct nft_expr_ops nft_osf_op = {
 	.dump		= nft_osf_dump,
 	.type		= &nft_osf_type,
 	.validate	= nft_osf_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_osf_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_osf_type __read_mostly = {

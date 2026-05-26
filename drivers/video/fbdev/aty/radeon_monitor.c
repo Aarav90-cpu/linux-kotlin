@@ -654,7 +654,11 @@ static void radeon_fixup_panel_info(struct radeonfb_info *rinfo)
 {
 #ifdef CONFIG_PPC
 	/*
+<<<<<<< HEAD
 	 * LCD Flat panels should use fixed dividers, we enforce that on
+=======
+	 * LCD Flat panels should use fixed dividers, we enfore that on
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * PPC only for now...
 	 */
 	if (!rinfo->panel_info.use_bios_dividers && rinfo->mon1_type == MT_LCD

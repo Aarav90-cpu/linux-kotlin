@@ -43,7 +43,10 @@
 static void optc31_set_odm_combine(struct timing_generator *optc, int *opp_id, int opp_cnt,
 		int segment_width, int last_segment_width)
 {
+<<<<<<< HEAD
 	(void)last_segment_width;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
 	uint32_t memory_mask = 0;
 	int mem_count_per_opp = (segment_width + 2559) / 2560;
@@ -364,7 +367,11 @@ void optc31_read_reg_state(struct timing_generator *optc, struct dcn_optc_reg_st
 	optc_reg_state->otg_crc3_data_rg = REG_READ(OTG_CRC3_DATA_RG);
 	optc_reg_state->otg_dlpc_control = REG_READ(OTG_DLPC_CONTROL);
 	optc_reg_state->otg_double_buffer_control = REG_READ(OTG_DOUBLE_BUFFER_CONTROL);
+<<<<<<< HEAD
 	optc_reg_state->otg_drr_control2 = REG_READ(OTG_DRR_CONTOL2);
+=======
+	optc_reg_state->otg_drr_control2 = REG_READ(OTG_DRR_CONTROL2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	optc_reg_state->otg_drr_control = REG_READ(OTG_DRR_CONTROL);
 	optc_reg_state->otg_drr_timing_int_status = REG_READ(OTG_DRR_TIMING_INT_STATUS);
 	optc_reg_state->otg_drr_trigger_window = REG_READ(OTG_DRR_TRIGGER_WINDOW);

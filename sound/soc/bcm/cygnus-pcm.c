@@ -713,7 +713,11 @@ static const struct snd_soc_component_driver cygnus_soc_platform = {
 	.prepare	= cygnus_pcm_prepare,
 	.trigger	= cygnus_pcm_trigger,
 	.pointer	= cygnus_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= cygnus_dma_new,
+=======
+	.pcm_construct	= cygnus_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int cygnus_soc_platform_register(struct device *dev,

@@ -367,6 +367,7 @@ static enum transmitter translate_encoder_to_transmitter(
 	}
 }
 
+<<<<<<< HEAD
 static bool encoder_is_external_dp(
 		struct graphics_object_id encoder)
 {
@@ -379,6 +380,8 @@ static bool encoder_is_external_dp(
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void link_destruct(struct dc_link *link)
 {
 	int i;
@@ -526,6 +529,7 @@ static bool construct_phy(struct dc_link *link,
 	 * so that we avoid initializing DDC and HPD, etc.
 	 */
 	bp_funcs->get_src_obj(bios, link->link_id, 0, &link_encoder);
+<<<<<<< HEAD
 
 	if (encoder_is_external_dp(link_encoder)) {
 		/* External DP bridge encoders: find the actual link encoder and use that. */
@@ -533,6 +537,8 @@ static bool construct_phy(struct dc_link *link,
 		bp_funcs->get_src_obj(bios, link->ext_enc_id, 0, &link_encoder);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	transmitter_from_encoder = translate_encoder_to_transmitter(link_encoder);
 	link_analog_engine = find_analog_engine(link, &enc_init_data.analog_encoder);
 
@@ -568,9 +574,13 @@ static bool construct_phy(struct dc_link *link,
 		goto ddc_create_fail;
 	}
 
+<<<<<<< HEAD
 	/* Embedded display connectors such as LVDS may not have DDC. */
 	if (!link->ddc->ddc_pin &&
 	    !dc_is_embedded_signal(link->connector_signal)) {
+=======
+	if (!link->ddc->ddc_pin) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		DC_ERROR("Failed to get I2C info for connector!\n");
 		goto ddc_create_fail;
 	}
@@ -712,6 +722,7 @@ static bool construct_phy(struct dc_link *link,
 		goto create_fail;
 	}
 
+<<<<<<< HEAD
 	/* For external DP bridge encoders:
 	 * Set the connector signal to DisplayPort so that they can work with
 	 * the pre-existing code paths for DP without a lot of code churn.
@@ -719,6 +730,8 @@ static bool construct_phy(struct dc_link *link,
 	if (link->ext_enc_id.id != ENCODER_ID_UNKNOWN)
 		link->connector_signal = SIGNAL_TYPE_DISPLAY_PORT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LINK_INFO("Connector[%d] description: signal: %s\n",
 		  init_params->connector_index,
 		  signal_type_to_string(link->connector_signal));
@@ -763,8 +776,12 @@ static bool construct_phy(struct dc_link *link,
 						      link->device_tag.dev_id))
 			continue;
 		if (link->device_tag.dev_id.device_type == DEVICE_TYPE_CRT &&
+<<<<<<< HEAD
 		    link->connector_signal != SIGNAL_TYPE_RGB &&
 		    link->ext_enc_id.id == ENCODER_ID_UNKNOWN)
+=======
+		    link->connector_signal != SIGNAL_TYPE_RGB)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		if (link->device_tag.dev_id.device_type == DEVICE_TYPE_LCD &&
 		    link->connector_signal == SIGNAL_TYPE_RGB)

@@ -79,7 +79,11 @@ void __weak arch_irq_work_raise(void)
 static __always_inline void irq_work_raise(struct irq_work *work)
 {
 	if (trace_ipi_send_cpu_enabled() && arch_irq_work_has_interrupt())
+<<<<<<< HEAD
 		trace_call__ipi_send_cpu(smp_processor_id(), _RET_IP_, work->func);
+=======
+		trace_ipi_send_cpu(smp_processor_id(), _RET_IP_, work->func);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	arch_irq_work_raise();
 }

@@ -749,10 +749,18 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
 
 	for (p = 0; p < lan966x->num_phys_ports; p++) {
 		port = lan966x->ports[p];
+<<<<<<< HEAD
 		if (!port || !port->dev)
 			continue;
 
 		unregister_netdev(port->dev);
+=======
+		if (!port)
+			continue;
+
+		if (port->dev)
+			unregister_netdev(port->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		lan966x_xdp_port_deinit(port);
 		if (lan966x->fdma && lan966x->fdma_ndev == port->dev)
@@ -872,9 +880,12 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
 	err = register_netdev(dev);
 	if (err) {
 		dev_err(lan966x->dev, "register_netdev failed\n");
+<<<<<<< HEAD
 		phylink_destroy(phylink);
 		port->phylink = NULL;
 		port->dev = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 

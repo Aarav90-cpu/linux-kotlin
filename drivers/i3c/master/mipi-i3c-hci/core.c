@@ -759,7 +759,11 @@ static int i3c_hci_reset_and_init(struct i3c_hci *hci)
 	return 0;
 }
 
+<<<<<<< HEAD
 int i3c_hci_rpm_suspend(struct device *dev)
+=======
+static int i3c_hci_runtime_suspend(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct i3c_hci *hci = dev_get_drvdata(dev);
 	int ret;
@@ -776,9 +780,14 @@ int i3c_hci_rpm_suspend(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i3c_hci_rpm_suspend);
 
 int i3c_hci_rpm_resume(struct device *dev)
+=======
+
+static int i3c_hci_runtime_resume(struct device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct i3c_hci *hci = dev_get_drvdata(dev);
 	int ret;
@@ -801,6 +810,7 @@ int i3c_hci_rpm_resume(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i3c_hci_rpm_resume);
 
 static int i3c_hci_runtime_suspend(struct device *dev)
@@ -822,6 +832,8 @@ static int i3c_hci_runtime_resume(struct device *dev)
 
 	return i3c_hci_rpm_resume(dev);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int i3c_hci_suspend(struct device *dev)
 {
@@ -866,6 +878,11 @@ static int i3c_hci_restore(struct device *dev)
 	return i3c_hci_resume_common(dev, true);
 }
 
+<<<<<<< HEAD
+=======
+#define DEFAULT_AUTOSUSPEND_DELAY_MS 1000
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void i3c_hci_rpm_enable(struct device *dev)
 {
 	struct i3c_hci *hci = dev_get_drvdata(dev);
@@ -1016,9 +1033,12 @@ static int i3c_hci_probe(struct platform_device *pdev)
 	if (hci->quirks & HCI_QUIRK_RPM_ALLOWED)
 		i3c_hci_rpm_enable(&pdev->dev);
 
+<<<<<<< HEAD
 	if (hci->quirks & HCI_QUIRK_RPM_IBI_ALLOWED)
 		hci->master.rpm_ibi_allowed = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return i3c_master_register(&hci->master, &pdev->dev, &i3c_hci_ops, false);
 }
 
@@ -1042,9 +1062,13 @@ static const struct acpi_device_id i3c_hci_acpi_match[] = {
 MODULE_DEVICE_TABLE(acpi, i3c_hci_acpi_match);
 
 static const struct platform_device_id i3c_hci_driver_ids[] = {
+<<<<<<< HEAD
 	{ .name = "intel-lpss-i3c", HCI_QUIRK_RPM_ALLOWED |
 				    HCI_QUIRK_RPM_IBI_ALLOWED |
 				    HCI_QUIRK_RPM_PARENT_MANAGED },
+=======
+	{ .name = "intel-lpss-i3c", HCI_QUIRK_RPM_ALLOWED },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(platform, i3c_hci_driver_ids);

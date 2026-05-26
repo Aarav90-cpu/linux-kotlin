@@ -628,6 +628,7 @@ struct sta_rec_tx_proc {
 	__le32 flag;
 } __packed;
 
+<<<<<<< HEAD
 struct sta_rec_eml_op {
 	__le16 tag;
 	__le16 len;
@@ -635,6 +636,8 @@ struct sta_rec_eml_op {
 	u8 link_ant_num[3];
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* wtbl_rec */
 
 struct wtbl_req_hdr {
@@ -803,7 +806,10 @@ struct wtbl_raw {
 					 sizeof(struct sta_rec_he_6g_capa) + \
 					 sizeof(struct sta_rec_pn_info) + \
 					 sizeof(struct sta_rec_tx_proc) + \
+<<<<<<< HEAD
 					 sizeof(struct sta_rec_eml_op) + \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 sizeof(struct tlv) +		\
 					 MT76_CONNAC_WTBL_UPDATE_MAX_SIZE)
 
@@ -840,7 +846,10 @@ enum {
 	STA_REC_PN_INFO = 0x26,
 	STA_REC_KEY_V3 = 0x27,
 	STA_REC_HDRT = 0x28,
+<<<<<<< HEAD
 	STA_REC_EML_OP = 0x29,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	STA_REC_HDR_TRANS = 0x2B,
 	STA_REC_MAX_NUM
 };
@@ -1317,9 +1326,13 @@ enum {
 	MCU_UNI_CMD_PER_STA_INFO = 0x6d,
 	MCU_UNI_CMD_ALL_STA_INFO = 0x6e,
 	MCU_UNI_CMD_ASSERT_DUMP = 0x6f,
+<<<<<<< HEAD
 	MCU_UNI_CMD_EXT_EEPROM_CTRL = 0x74,
 	MCU_UNI_CMD_RADIO_STATUS = 0x80,
 	MCU_UNI_CMD_MLD = 0x82,
+=======
+	MCU_UNI_CMD_RADIO_STATUS = 0x80,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MCU_UNI_CMD_SDO = 0x88,
 };
 
@@ -1374,7 +1387,10 @@ enum {
 	UNI_BSS_INFO_BASIC = 0,
 	UNI_BSS_INFO_RA = 1,
 	UNI_BSS_INFO_RLM = 2,
+<<<<<<< HEAD
 	UNI_BSS_INFO_PROTECT_INFO = 3,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	UNI_BSS_INFO_BSS_COLOR = 4,
 	UNI_BSS_INFO_HE_BASIC = 5,
 	UNI_BSS_INFO_11V_MBSSID = 6,
@@ -1395,7 +1411,10 @@ enum {
 	UNI_BSS_INFO_MLD = 26,
 	UNI_BSS_INFO_PM_DISABLE = 27,
 	UNI_BSS_INFO_EHT = 30,
+<<<<<<< HEAD
 	UNI_BSS_INFO_MLD_LINK_OP = 36,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum {
@@ -1878,7 +1897,11 @@ mt76_connac_mcu_gen_dl_mode(struct mt76_dev *dev, u8 feature_set, bool is_wa)
 
 	ret |= feature_set & FW_FEATURE_SET_ENCRYPT ?
 	       DL_MODE_ENCRYPT | DL_MODE_RESET_SEC_IV : 0;
+<<<<<<< HEAD
 	if (is_connac2(dev) || is_mt7925(dev))
+=======
+	if (is_mt7921(dev) || is_mt7925(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret |= feature_set & FW_FEATURE_ENCRY_MODE ?
 		       DL_CONFIG_ENCRY_MODE_SEL : 0;
 	ret |= FIELD_PREP(DL_MODE_KEY_IDX,

@@ -349,6 +349,7 @@ again.
 
 .. _submit_improvements_qbtl:
 
+<<<<<<< HEAD
 Did you run into trouble following the step-by-step guide not cleared up by the
 reference section below? Did you spot errors? Or do you have ideas on how to
 improve the guide?
@@ -357,6 +358,14 @@ If any of that applies, please let the developers know by sending a short note
 or a patch to Thorsten Leemhuis <linux@leemhuis.info> while ideally CCing the
 public Linux docs mailing list <linux-doc@vger.kernel.org>. Such feedback is
 vital to improve this text further, which is in everybody's interest, as it will
+=======
+Did you run into trouble following any of the above steps that is not cleared up
+by the reference section below? Or do you have ideas how to improve the text?
+Then please take a moment of your time and let the maintainer of this document
+know by email (Thorsten Leemhuis <linux@leemhuis.info>), ideally while CCing the
+Linux docs mailing list (linux-doc@vger.kernel.org). Such feedback is vital to
+improve this document further, which is in everybody's interest, as it will
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enable more people to master the task described here.
 
 Reference section for the step-by-step guide

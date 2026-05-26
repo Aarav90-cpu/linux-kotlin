@@ -42,7 +42,10 @@ properties:
               - brcm,bcm4356-fmac
               - brcm,bcm4359-fmac
               - brcm,bcm4366-fmac
+<<<<<<< HEAD
               - brcm,bcm43752-fmac
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - cypress,cyw4373-fmac
               - cypress,cyw43012-fmac
               - infineon,cyw43439-fmac

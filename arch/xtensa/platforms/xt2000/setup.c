@@ -50,7 +50,12 @@ static int xt2000_power_off(struct sys_off_data *unused)
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 static int xt2000_restart(struct sys_off_data *unused)
+=======
+static int xt2000_restart(struct notifier_block *this,
+			  unsigned long event, void *ptr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Flush and reset the mmu, simulate a processor reset, and
 	 * jump to the reset vector. */
@@ -59,6 +64,13 @@ static int xt2000_restart(struct sys_off_data *unused)
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
+=======
+static struct notifier_block xt2000_restart_block = {
+	.notifier_call = xt2000_restart,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __init platform_setup(char** cmdline)
 {
 	led_print (0, "LINUX   ");
@@ -135,9 +147,13 @@ static int __init xt2000_setup_devinit(void)
 	platform_device_register(&xt2000_serial8250_device);
 	platform_device_register(&xt2000_sonic_device);
 	mod_timer(&heartbeat_timer, jiffies + HZ / 2);
+<<<<<<< HEAD
 	register_sys_off_handler(SYS_OFF_MODE_RESTART,
 				 SYS_OFF_PRIO_PLATFORM,
 				 xt2000_restart, NULL);
+=======
+	register_restart_handler(&xt2000_restart_block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
 				 SYS_OFF_PRIO_DEFAULT,
 				 xt2000_power_off, NULL);

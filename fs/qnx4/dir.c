@@ -71,7 +71,11 @@ const struct file_operations qnx4_dir_operations =
 	.llseek		= generic_file_llseek,
 	.read		= generic_read_dir,
 	.iterate_shared	= qnx4_readdir,
+<<<<<<< HEAD
 	.fsync		= simple_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.setlease	= generic_setlease,
 };
 

@@ -775,12 +775,32 @@ void __init fadump_update_elfcore_header(char *bufp)
 
 static void *__init fadump_alloc_buffer(unsigned long size)
 {
+<<<<<<< HEAD
 	return  alloc_pages_exact(size, GFP_KERNEL | __GFP_ZERO);
+=======
+	unsigned long count, i;
+	struct page *page;
+	void *vaddr;
+
+	vaddr = alloc_pages_exact(size, GFP_KERNEL | __GFP_ZERO);
+	if (!vaddr)
+		return NULL;
+
+	count = PAGE_ALIGN(size) / PAGE_SIZE;
+	page = virt_to_page(vaddr);
+	for (i = 0; i < count; i++)
+		mark_page_reserved(page + i);
+	return vaddr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void fadump_free_buffer(unsigned long vaddr, unsigned long size)
 {
+<<<<<<< HEAD
 	free_pages_exact((void *)vaddr, size);
+=======
+	free_reserved_area((void *)vaddr, (void *)(vaddr + size), -1, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 s32 __init fadump_setup_cpu_notes_buf(u32 num_cpus)

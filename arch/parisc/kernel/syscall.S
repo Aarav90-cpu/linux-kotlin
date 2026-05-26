@@ -241,7 +241,11 @@ linux_gateway_entry:
 	/* Note!  We cannot use the syscall table that is mapped
 	nearby since the gateway page is mapped execute-only. */
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ldil	L%sys_call_table, %r1
 	or,ev	%r2,%r2,%r2
 	ldil	L%sys_call_table64, %r1
@@ -250,7 +254,11 @@ linux_gateway_entry:
 	ldo	R%sys_call_table64(%r1), %r19
 #else
 	load32	sys_call_table, %r19
+<<<<<<< HEAD
 #endif
+=======
+#endif	
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	comiclr,>>	__NR_Linux_syscalls, %r20, %r0
 	b,n	.Lsyscall_nosys
 	
@@ -374,7 +382,11 @@ tracesys_next:
 	/* Note!  We cannot use the syscall table that is mapped
 	nearby since the gateway page is mapped execute-only. */
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LDREG	TASK_PT_GR30(%r1), %r19		/* get users sp back */
 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
 
@@ -1326,12 +1338,17 @@ ENTRY(lws_table)
 END(lws_table)
 	/* End of lws table */
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, compat)
 #else
 #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
 #endif
 #define __SYSCALL(nr, entry)	ASM_ULONG_INSN entry
+<<<<<<< HEAD
 
 	.align 8
 ENTRY(sys_call_table)
@@ -1339,6 +1356,12 @@ ENTRY(sys_call_table)
 #if defined(CONFIG_COMPAT) || !defined(CONFIG_64BIT)
 #include <asm/syscall_table_32.h>    /* 32-bit syscalls */
 #endif
+=======
+	.align 8
+ENTRY(sys_call_table)
+	.export sys_call_table,data
+#include <asm/syscall_table_32.h>    /* 32-bit syscalls */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 END(sys_call_table)
 
 #ifdef CONFIG_64BIT

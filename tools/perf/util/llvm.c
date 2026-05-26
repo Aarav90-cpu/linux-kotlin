@@ -153,6 +153,7 @@ int symbol__disassemble_llvm(const char *filename, struct symbol *sym,
 					  /*get_op_info=*/NULL, symbol_lookup_callback);
 	} else {
 		char triplet[64];
+<<<<<<< HEAD
 		const char *features = NULL;
 
 		scnprintf(triplet, sizeof(triplet), "%s-linux-gnu",
@@ -164,6 +165,13 @@ int symbol__disassemble_llvm(const char *filename, struct symbol *sym,
 						     /*tag_type=*/0,
 						     /*get_op_info=*/NULL,
 						     symbol_lookup_callback);
+=======
+
+		scnprintf(triplet, sizeof(triplet), "%s-linux-gnu",
+			  args->arch->name);
+		disasm = LLVMCreateDisasm(triplet, &storage, /*tag_type=*/0,
+					  /*get_op_info=*/NULL, symbol_lookup_callback);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (disasm == NULL)

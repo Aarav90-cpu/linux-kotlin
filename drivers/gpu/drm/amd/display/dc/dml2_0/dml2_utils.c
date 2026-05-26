@@ -255,8 +255,12 @@ static void populate_pipe_ctx_dlg_params_from_dml(struct pipe_ctx *pipe_ctx, str
 	pipe_ctx->pipe_dlg_param.vupdate_width = dml_get_vupdate_width(mode_lib, pipe_idx);
 	pipe_ctx->pipe_dlg_param.vready_offset = dml_get_vready_offset(mode_lib, pipe_idx);
 
+<<<<<<< HEAD
 	ASSERT(pipe_ctx->stream_res.tg->inst >= 0 && pipe_ctx->stream_res.tg->inst <= 0xFF);
 	pipe_ctx->pipe_dlg_param.otg_inst = (unsigned char)pipe_ctx->stream_res.tg->inst;
+=======
+	pipe_ctx->pipe_dlg_param.otg_inst = pipe_ctx->stream_res.tg->inst;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pipe_ctx->pipe_dlg_param.hactive = hactive;
 	pipe_ctx->pipe_dlg_param.vactive = vactive;
@@ -465,7 +469,10 @@ void dml2_initialize_det_scratch(struct dml2_context *in_ctx)
 
 static unsigned int find_planes_per_stream_and_stream_count(struct dml2_context *in_ctx, struct dml_display_cfg_st *dml_dispcfg, int *num_of_planes_per_stream)
 {
+<<<<<<< HEAD
 	(void)in_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int plane_index, stream_index = 0, num_of_streams;
 
 	for (plane_index = 0; plane_index < dml_dispcfg->num_surfaces; plane_index++) {

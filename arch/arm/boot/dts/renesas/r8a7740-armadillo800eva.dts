@@ -65,6 +65,7 @@
 		enable-active-high;
 	};
 
+<<<<<<< HEAD
 	vcc_sdhi1: regulator-vcc-sdhi1 {
 		compatible = "regulator-fixed";
 
@@ -76,6 +77,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_5p0v: regulator-5p0v {
 		compatible = "regulator-fixed";
 		regulator-name = "fixed-5.0V";
@@ -239,7 +242,10 @@
 		pinctrl-0 = <&st1232_pins>;
 		pinctrl-names = "default";
 		gpios = <&pfc 166 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 		wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -297,11 +303,14 @@
 		function = "sdhi0";
 	};
 
+<<<<<<< HEAD
 	sdhi1_pins: sd1 {
 		groups = "sdhi1_data4", "sdhi1_ctrl", "sdhi1_cd", "sdhi1_wp";
 		function = "sdhi1";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fsia_pins: sounda {
 		groups = "fsia_sclk_in", "fsia_mclk_out",
 			 "fsia_data_in_1", "fsia_data_out_0";
@@ -319,12 +328,15 @@
 		gpios = <176 0>;
 		output-high;
 	};
+<<<<<<< HEAD
 
 	sdhi1-select-hog {
 		gpio-hog;
 		gpios = <6 0>;
 		input;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &tpu {
@@ -359,6 +371,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sdhi1 {
 	pinctrl-0 = <&sdhi1_pins>;
 	pinctrl-names = "default";
@@ -368,6 +381,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &sh_fsi2 {
 	pinctrl-0 = <&fsia_pins>;
 	pinctrl-names = "default";

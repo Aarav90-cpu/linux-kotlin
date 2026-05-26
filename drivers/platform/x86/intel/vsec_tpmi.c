@@ -46,7 +46,10 @@
  * provided by the Intel VSEC driver.
  */
 
+<<<<<<< HEAD
 #include <linux/align.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/auxiliary_bus.h>
 #include <linux/bitfield.h>
 #include <linux/debugfs.h>
@@ -56,7 +59,10 @@
 #include <linux/io.h>
 #include <linux/iopoll.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pci.h>
 #include <linux/security.h>
 #include <linux/sizes.h>
@@ -189,6 +195,7 @@ struct tpmi_feature_state {
 /* Used during auxbus device creation */
 static DEFINE_IDA(intel_vsec_tpmi_ida);
 
+<<<<<<< HEAD
 static BLOCKING_NOTIFIER_HEAD(tpmi_notify_list);
 
 int tpmi_register_notifier(struct notifier_block *nb)
@@ -203,6 +210,8 @@ int tpmi_unregister_notifier(struct notifier_block *nb)
 }
 EXPORT_SYMBOL_NS_GPL(tpmi_unregister_notifier, "INTEL_TPMI");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct oobmsm_plat_info *tpmi_get_platform_data(struct auxiliary_device *auxdev)
 {
 	struct intel_vsec_device *vsec_dev = auxdev_to_ivdev(auxdev);
@@ -495,9 +504,12 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
 	addr = array[2];
 	value = array[3];
 
+<<<<<<< HEAD
 	if (!IS_ALIGNED(addr, sizeof(u32)))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (punit >= pfs->pfs_header.num_entries) {
 		ret = -EINVAL;
 		goto exit_write;
@@ -549,7 +561,11 @@ static const struct file_operations mem_write_ops = {
 	.release        = single_release,
 };
 
+<<<<<<< HEAD
 #define tpmi_to_dev(info)	((info)->vsec_dev->dev)
+=======
+#define tpmi_to_dev(info)	(&info->vsec_dev->pcidev->dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tpmi_dbgfs_register(struct intel_tpmi_info *tpmi_info)
 {
@@ -661,7 +677,11 @@ static int tpmi_create_device(struct intel_tpmi_info *tpmi_info,
 		tmp->flags = IORESOURCE_MEM;
 	}
 
+<<<<<<< HEAD
 	feature_vsec_dev->dev = vsec_dev->dev;
+=======
+	feature_vsec_dev->pcidev = vsec_dev->pcidev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	feature_vsec_dev->resource = res;
 	feature_vsec_dev->num_resources = pfs->pfs_header.num_entries;
 	feature_vsec_dev->priv_data = &tpmi_info->plat_info;
@@ -674,7 +694,11 @@ static int tpmi_create_device(struct intel_tpmi_info *tpmi_info,
 	 * feature_vsec_dev and res memory are also freed as part of
 	 * device deletion.
 	 */
+<<<<<<< HEAD
 	return intel_vsec_add_aux(&vsec_dev->auxdev.dev,
+=======
+	return intel_vsec_add_aux(vsec_dev->pcidev, &vsec_dev->auxdev.dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  feature_vsec_dev, feature_id_name);
 }
 
@@ -761,7 +785,11 @@ static int tpmi_fetch_pfs_header(struct intel_tpmi_pm_feature *pfs, u64 start, i
 static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
 {
 	struct intel_vsec_device *vsec_dev = auxdev_to_ivdev(auxdev);
+<<<<<<< HEAD
 	struct pci_dev *pci_dev = to_pci_dev(vsec_dev->dev);
+=======
+	struct pci_dev *pci_dev = vsec_dev->pcidev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct intel_tpmi_info *tpmi_info;
 	u64 pfs_start = 0;
 	int ret, i;
@@ -832,6 +860,13 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
 
 	auxiliary_set_drvdata(auxdev, tpmi_info);
 
+<<<<<<< HEAD
+=======
+	ret = tpmi_create_devices(tpmi_info);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Allow debugfs when security policy allows. Everything this debugfs
 	 * interface provides, can also be done via /dev/mem access. If
@@ -841,6 +876,7 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
 	if (!security_locked_down(LOCKDOWN_DEV_MEM) && capable(CAP_SYS_RAWIO))
 		tpmi_dbgfs_register(tpmi_info);
 
+<<<<<<< HEAD
 	ret = tpmi_create_devices(tpmi_info);
 	if (ret) {
 		debugfs_remove_recursive(tpmi_info->dbgfs_dir);
@@ -849,6 +885,8 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
 
 	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_INIT, auxdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -862,8 +900,11 @@ static void tpmi_remove(struct auxiliary_device *auxdev)
 {
 	struct intel_tpmi_info *tpmi_info = auxiliary_get_drvdata(auxdev);
 
+<<<<<<< HEAD
 	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_EXIT, auxdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove_recursive(tpmi_info->dbgfs_dir);
 }
 

@@ -8,6 +8,10 @@
 #ifndef SELFTEST_KVM_DIAG318_TEST_HANDLER
 #define SELFTEST_KVM_DIAG318_TEST_HANDLER
 
+<<<<<<< HEAD
 u64 get_diag318_info(void);
+=======
+uint64_t get_diag318_info(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

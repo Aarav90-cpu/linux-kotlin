@@ -1474,7 +1474,11 @@ unlock:
 }
 
 static int __qcom_glink_send(struct glink_channel *channel,
+<<<<<<< HEAD
 			     const void *data, int len, bool wait)
+=======
+			     void *data, int len, bool wait)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qcom_glink *glink = channel->glink;
 	struct glink_core_rx_intent *intent = NULL;
@@ -1553,31 +1557,47 @@ static int __qcom_glink_send(struct glink_channel *channel,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qcom_glink_send(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int qcom_glink_send(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct glink_channel *channel = to_glink_channel(ept);
 
 	return __qcom_glink_send(channel, data, len, true);
 }
 
+<<<<<<< HEAD
 static int qcom_glink_trysend(struct rpmsg_endpoint *ept, const void *data,
 			      int len)
+=======
+static int qcom_glink_trysend(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct glink_channel *channel = to_glink_channel(ept);
 
 	return __qcom_glink_send(channel, data, len, false);
 }
 
+<<<<<<< HEAD
 static int qcom_glink_sendto(struct rpmsg_endpoint *ept, const void *data,
 			     int len, u32 dst)
+=======
+static int qcom_glink_sendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct glink_channel *channel = to_glink_channel(ept);
 
 	return __qcom_glink_send(channel, data, len, true);
 }
 
+<<<<<<< HEAD
 static int qcom_glink_trysendto(struct rpmsg_endpoint *ept, const void *data,
 				int len, u32 dst)
+=======
+static int qcom_glink_trysendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct glink_channel *channel = to_glink_channel(ept);
 

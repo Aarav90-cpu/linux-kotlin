@@ -93,8 +93,11 @@ enum bp_external_encoder_control_action {
 	EXTERNAL_ENCODER_CONTROL_SETUP = 0xf,
 	EXTERNAL_ENCODER_CONTROL_UNBLANK = 0x10,
 	EXTERNAL_ENCODER_CONTROL_BLANK = 0x11,
+<<<<<<< HEAD
 	EXTERNAL_ENCODER_CONTROL_DAC_LOAD_DETECT = 0x12,
 	EXTERNAL_ENCODER_CONTROL_DDC_SETUP = 0x14,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum bp_pipe_control_action {

@@ -13,9 +13,14 @@ static struct {
 	const char *err_msg;
 } spin_lock_fail_tests[] = {
 	{ "lock_id_kptr_preserve",
+<<<<<<< HEAD
 	  "[0-9]\\+: (bf) r1 = r0                       ; R0=ptr_foo(id=2,ref_obj_id=2)"
 	  " R1=ptr_foo(id=2,ref_obj_id=2) refs=2\n"
 	  "[0-9]\\+: (85) call bpf_this_cpu_ptr#154\n"
+=======
+	  "5: (bf) r1 = r0                       ; R0=ptr_foo(id=2,ref_obj_id=2) "
+	  "R1=ptr_foo(id=2,ref_obj_id=2) refs=2\n6: (85) call bpf_this_cpu_ptr#154\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  "R1 type=ptr_ expected=percpu_ptr_" },
 	{ "lock_id_global_zero",
 	  "; R1=map_value(map=.data.A,ks=4,vs=4)\n2: (85) call bpf_this_cpu_ptr#154\n"

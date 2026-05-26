@@ -180,25 +180,46 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
 	const char *name;
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&eventfs_mutex);
 	ei = dentry->d_fsdata;
 	/* Do not allow changes if the event is about to be removed. */
 	if (ei->is_freed)
 		return -ENODEV;
+=======
+	mutex_lock(&eventfs_mutex);
+	ei = dentry->d_fsdata;
+	if (ei->is_freed) {
+		/* Do not allow changes if the event is about to be removed. */
+		mutex_unlock(&eventfs_mutex);
+		return -ENODEV;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Preallocate the children mode array if necessary */
 	if (!(dentry->d_inode->i_mode & S_IFDIR)) {
 		if (!ei->entry_attrs) {
 			ei->entry_attrs = kzalloc_objs(*ei->entry_attrs,
 						       ei->nr_entries, GFP_NOFS);
+<<<<<<< HEAD
 			if (!ei->entry_attrs)
 				return -ENOMEM;
+=======
+			if (!ei->entry_attrs) {
+				ret = -ENOMEM;
+				goto out;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
 	ret = simple_setattr(idmap, dentry, iattr);
 	if (ret < 0)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If this is a dir, then update the ei cache, only the file
@@ -221,6 +242,11 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+ out:
+	mutex_unlock(&eventfs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -524,24 +550,42 @@ static struct dentry *eventfs_root_lookup(struct inode *dir,
 	struct tracefs_inode *ti;
 	struct eventfs_inode *ei;
 	const char *name = dentry->d_name.name;
+<<<<<<< HEAD
+=======
+	struct dentry *result = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ti = get_tracefs(dir);
 	if (WARN_ON_ONCE(!(ti->flags & TRACEFS_EVENT_INODE)))
 		return ERR_PTR(-EIO);
 
+<<<<<<< HEAD
 	guard(mutex)(&eventfs_mutex);
 
 	ei = ti->private;
 	if (!ei || ei->is_freed)
 		return NULL;
+=======
+	mutex_lock(&eventfs_mutex);
+
+	ei = ti->private;
+	if (!ei || ei->is_freed)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry(ei_child, &ei->children, list) {
 		if (strcmp(ei_child->name, name) != 0)
 			continue;
 		/* A child is freed and removed from the list at the same time */
 		if (WARN_ON_ONCE(ei_child->is_freed))
+<<<<<<< HEAD
 			return NULL;
 		return lookup_dir_entry(dentry, ei, ei_child);
+=======
+			goto out;
+		result = lookup_dir_entry(dentry, ei, ei_child);
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (int i = 0; i < ei->nr_entries; i++) {
@@ -555,12 +599,23 @@ static struct dentry *eventfs_root_lookup(struct inode *dir,
 
 		data = ei->data;
 		if (entry->callback(name, &mode, &data, &fops) <= 0)
+<<<<<<< HEAD
 			return NULL;
 
 		return lookup_file_dentry(dentry, ei, i, mode, data, fops);
 
 	}
 	return NULL;
+=======
+			goto out;
+
+		result = lookup_file_dentry(dentry, ei, i, mode, data, fops);
+		goto out;
+	}
+ out:
+	mutex_unlock(&eventfs_mutex);
+	return result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -576,6 +631,11 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 	struct eventfs_inode *ei;
 	const char *name;
 	umode_t mode;
+<<<<<<< HEAD
+=======
+	int idx;
+	int ret = -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ino;
 	int i, r, c;
 
@@ -588,6 +648,7 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 
 	c = ctx->pos - 2;
 
+<<<<<<< HEAD
 	guard(srcu)(&eventfs_srcu);
 
 	scoped_guard(mutex, &eventfs_mutex) {
@@ -595,11 +656,27 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 		if (!ei || ei->is_freed)
 			return -EINVAL;
 	}
+=======
+	idx = srcu_read_lock(&eventfs_srcu);
+
+	mutex_lock(&eventfs_mutex);
+	ei = READ_ONCE(ti->private);
+	if (ei && ei->is_freed)
+		ei = NULL;
+	mutex_unlock(&eventfs_mutex);
+
+	if (!ei)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Need to create the dentries and inodes to have a consistent
 	 * inode number.
 	 */
+<<<<<<< HEAD
+=======
+	ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Start at 'c' to jump over already read entries */
 	for (i = c; i < ei->nr_entries; i++, ctx->pos++) {
@@ -608,19 +685,34 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 		entry = &ei->entries[i];
 		name = entry->name;
 
+<<<<<<< HEAD
 		/* If ei->is_freed then just bail here, nothing more to do */
 		scoped_guard(mutex, &eventfs_mutex) {
 			if (ei->is_freed)
 				return -EINVAL;
 			r = entry->callback(name, &mode, &cdata, &fops);
 		}
+=======
+		mutex_lock(&eventfs_mutex);
+		/* If ei->is_freed then just bail here, nothing more to do */
+		if (ei->is_freed) {
+			mutex_unlock(&eventfs_mutex);
+			goto out;
+		}
+		r = entry->callback(name, &mode, &cdata, &fops);
+		mutex_unlock(&eventfs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (r <= 0)
 			continue;
 
 		ino = EVENTFS_FILE_INODE_INO;
 
 		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
+<<<<<<< HEAD
 			return -EINVAL;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Subtract the skipped entries above */
@@ -643,6 +735,7 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 
 		ino = eventfs_dir_ino(ei_child);
 
+<<<<<<< HEAD
 		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR)) {
 			/* Incremented ctx->pos without adding something, reset it */
 			ctx->pos--;
@@ -650,6 +743,21 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
 		}
 	}
 	return 1;
+=======
+		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
+			goto out_dec;
+	}
+	ret = 1;
+ out:
+	srcu_read_unlock(&eventfs_srcu, idx);
+
+	return ret;
+
+ out_dec:
+	/* Incremented ctx->pos without adding something, reset it */
+	ctx->pos--;
+	goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -706,10 +814,18 @@ struct eventfs_inode *eventfs_create_dir(const char *name, struct eventfs_inode 
 	INIT_LIST_HEAD(&ei->children);
 	INIT_LIST_HEAD(&ei->list);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &eventfs_mutex) {
 		if (!parent->is_freed)
 			list_add_tail_rcu(&ei->list, &parent->children);
 	}
+=======
+	mutex_lock(&eventfs_mutex);
+	if (!parent->is_freed)
+		list_add_tail(&ei->list, &parent->children);
+	mutex_unlock(&eventfs_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Was the parent freed? */
 	if (list_empty(&ei->list)) {
 		cleanup_ei(ei);
@@ -855,8 +971,14 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
 	if (!ei)
 		return;
 
+<<<<<<< HEAD
 	guard(mutex)(&eventfs_mutex);
 	eventfs_remove_rec(ei, 0);
+=======
+	mutex_lock(&eventfs_mutex);
+	eventfs_remove_rec(ei, 0);
+	mutex_unlock(&eventfs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2019-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2019 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -208,24 +212,34 @@
 	type CRC_CONT_MODE_ENABLE;\
 	type HBLANK_MINIMUM_SYMBOL_WIDTH
 
+<<<<<<< HEAD
 #define DCN4_2_HPO_DP_STREAM_ENC_REG_FIELD_LIST(type) \
 	type DP_STREAM_ENC_APG_CLOCK_EN
 
 #define DCN4_2_HPO_DP_STREAM_ENC_MASK_SH_LIST(mask_sh)\
 	DCN3_1_HPO_DP_STREAM_ENC_MASK_SH_LIST(mask_sh),\
 	SE_SF(DP_STREAM_ENC0_DP_STREAM_ENC_AUDIO_CONTROL, DP_STREAM_ENC_APG_CLOCK_EN, mask_sh)
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dcn31_hpo_dp_stream_encoder_registers {
 	DCN3_1_HPO_DP_STREAM_ENC_REGS;
 };
 
 struct dcn31_hpo_dp_stream_encoder_shift {
 	DCN3_1_HPO_DP_STREAM_ENC_REG_FIELD_LIST(uint8_t);
+<<<<<<< HEAD
 	DCN4_2_HPO_DP_STREAM_ENC_REG_FIELD_LIST(uint8_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn31_hpo_dp_stream_encoder_mask {
 	DCN3_1_HPO_DP_STREAM_ENC_REG_FIELD_LIST(uint32_t);
+<<<<<<< HEAD
 	DCN4_2_HPO_DP_STREAM_ENC_REG_FIELD_LIST(uint32_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn31_hpo_dp_stream_encoder {
@@ -248,4 +262,8 @@ void dcn31_hpo_dp_stream_encoder_construct(
 	const struct dcn31_hpo_dp_stream_encoder_shift *hpo_se_shift,
 	const struct dcn31_hpo_dp_stream_encoder_mask *hpo_se_mask);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif   // __DAL_DCN31_HPO_STREAM_ENCODER_H__

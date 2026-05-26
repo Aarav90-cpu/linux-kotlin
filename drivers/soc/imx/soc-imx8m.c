@@ -226,6 +226,10 @@ static int imx8m_soc_probe(struct platform_device *pdev)
 	const struct imx8_soc_data *data;
 	struct imx8_soc_drvdata *drvdata;
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	const struct of_device_id *id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct soc_device *soc_dev;
 	u32 soc_rev = 0;
 	u64 soc_uid[2] = {0, 0};
@@ -243,11 +247,23 @@ static int imx8m_soc_probe(struct platform_device *pdev)
 
 	soc_dev_attr->family = "Freescale i.MX";
 
+<<<<<<< HEAD
 	ret = soc_attr_read_machine(soc_dev_attr);
 	if (ret)
 		return ret;
 
 	data = device_get_match_data(dev);
+=======
+	ret = of_property_read_string(of_root, "model", &soc_dev_attr->machine);
+	if (ret)
+		return ret;
+
+	id = of_match_node(imx8_soc_match, of_root);
+	if (!id)
+		return -ENODEV;
+
+	data = id->data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data) {
 		soc_dev_attr->soc_id = data->name;
 		ret = imx8m_soc_prepare(pdev, data->ocotp_compatible);
@@ -321,7 +337,11 @@ static int __init imx8_soc_init(void)
 	int ret;
 
 	/* No match means this is non-i.MX8M hardware, do nothing. */
+<<<<<<< HEAD
 	if (!of_machine_device_match(imx8_soc_match))
+=======
+	if (!of_match_node(imx8_soc_match, of_root))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	ret = platform_driver_register(&imx8m_soc_driver);

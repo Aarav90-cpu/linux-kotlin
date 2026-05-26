@@ -6,8 +6,11 @@
 #ifndef _XE_GT_STATS_TYPES_H_
 #define _XE_GT_STATS_TYPES_H_
 
+<<<<<<< HEAD
 #include <linux/types.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum xe_gt_stats_id {
 	XE_GT_STATS_ID_SVM_PAGEFAULT_COUNT,
 	XE_GT_STATS_ID_TLB_INVAL,
@@ -15,7 +18,10 @@ enum xe_gt_stats_id {
 	XE_GT_STATS_ID_SVM_TLB_INVAL_US,
 	XE_GT_STATS_ID_VMA_PAGEFAULT_COUNT,
 	XE_GT_STATS_ID_VMA_PAGEFAULT_KB,
+<<<<<<< HEAD
 	XE_GT_STATS_ID_INVALID_PREFETCH_PAGEFAULT_COUNT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	XE_GT_STATS_ID_SVM_4K_PAGEFAULT_COUNT,
 	XE_GT_STATS_ID_SVM_64K_PAGEFAULT_COUNT,
 	XE_GT_STATS_ID_SVM_2M_PAGEFAULT_COUNT,
@@ -40,6 +46,7 @@ enum xe_gt_stats_id {
 	XE_GT_STATS_ID_SVM_64K_CPU_COPY_US,
 	XE_GT_STATS_ID_SVM_2M_CPU_COPY_US,
 	XE_GT_STATS_ID_SVM_DEVICE_COPY_KB,
+<<<<<<< HEAD
 	XE_GT_STATS_ID_SVM_4K_DEVICE_COPY_KB,
 	XE_GT_STATS_ID_SVM_64K_DEVICE_COPY_KB,
 	XE_GT_STATS_ID_SVM_2M_DEVICE_COPY_KB,
@@ -47,6 +54,9 @@ enum xe_gt_stats_id {
 	XE_GT_STATS_ID_SVM_4K_CPU_COPY_KB,
 	XE_GT_STATS_ID_SVM_64K_CPU_COPY_KB,
 	XE_GT_STATS_ID_SVM_2M_CPU_COPY_KB,
+=======
+	XE_GT_STATS_ID_SVM_CPU_COPY_KB,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	XE_GT_STATS_ID_SVM_4K_GET_PAGES_US,
 	XE_GT_STATS_ID_SVM_64K_GET_PAGES_US,
 	XE_GT_STATS_ID_SVM_2M_GET_PAGES_US,
@@ -67,6 +77,7 @@ enum xe_gt_stats_id {
 	__XE_GT_STATS_NUM_IDS,
 };
 
+<<<<<<< HEAD
 /**
  * struct xe_gt_stats - Per-CPU GT statistics counters
  * @counters: Array of 64-bit counters indexed by &enum xe_gt_stats_id
@@ -84,4 +95,6 @@ struct xe_gt_stats {
 	u64 counters[__XE_GT_STATS_NUM_IDS];
 } ____cacheline_aligned;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

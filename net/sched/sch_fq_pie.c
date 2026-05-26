@@ -130,7 +130,11 @@ static inline void flow_queue_add(struct fq_pie_flow *flow,
 static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 				struct sk_buff **to_free)
 {
+<<<<<<< HEAD
 	enum qdisc_drop_reason reason = QDISC_DROP_OVERLIMIT;
+=======
+	enum skb_drop_reason reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fq_pie_sched_data *q = qdisc_priv(sch);
 	struct fq_pie_flow *sel_flow;
 	int ret;
@@ -162,7 +166,11 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		q->overmemory++;
 	}
 
+<<<<<<< HEAD
 	reason = QDISC_DROP_CONGESTED;
+=======
+	reason = SKB_DROP_REASON_QDISC_CONGESTED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pie_drop_early(sch, &q->p_params, &sel_flow->vars,
 			    sel_flow->backlog, skb->len)) {
@@ -509,6 +517,7 @@ nla_put_failure:
 static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 {
 	struct fq_pie_sched_data *q = qdisc_priv(sch);
+<<<<<<< HEAD
 	struct tc_fq_pie_xstats st = { 0 };
 	struct list_head *pos;
 
@@ -522,6 +531,20 @@ static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 	st.new_flow_count = q->new_flow_count;
 	st.memory_usage   = q->memory_usage;
 
+=======
+	struct tc_fq_pie_xstats st = {
+		.packets_in	= q->stats.packets_in,
+		.overlimit	= q->stats.overlimit,
+		.overmemory	= q->overmemory,
+		.dropped	= q->stats.dropped,
+		.ecn_mark	= q->stats.ecn_mark,
+		.new_flow_count = q->new_flow_count,
+		.memory_usage   = q->memory_usage,
+	};
+	struct list_head *pos;
+
+	sch_tree_lock(sch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each(pos, &q->new_flows)
 		st.new_flows_len++;
 

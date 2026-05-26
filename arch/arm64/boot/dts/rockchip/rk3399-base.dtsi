@@ -2145,6 +2145,11 @@
 		interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH 0>;
 		clocks = <&cru PCLK_EDP>, <&cru PCLK_EDP_CTRL>, <&cru PCLK_VIO_GRF>;
 		clock-names = "dp", "pclk", "grf";
+<<<<<<< HEAD
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&edp_hpd>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		power-domains = <&power RK3399_PD_EDP>;
 		resets = <&cru SRST_P_EDP_CTRL>;
 		reset-names = "dp";
@@ -2382,7 +2387,10 @@
 		};
 
 		edp {
+<<<<<<< HEAD
 			/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			edp_hpd: edp-hpd {
 				rockchip,pins =
 					<4 RK_PC7 2 &pcfg_pull_none>;

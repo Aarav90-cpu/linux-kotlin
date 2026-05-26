@@ -109,6 +109,7 @@ LIBBPF_API struct btf *btf__new_empty(void);
  */
 LIBBPF_API struct btf *btf__new_empty_split(struct btf *base_btf);
 
+<<<<<<< HEAD
 struct btf_new_opts {
 	size_t sz;
 	struct btf *base_btf;	/* optional base BTF */
@@ -129,6 +130,8 @@ struct btf_new_opts {
  */
 LIBBPF_API struct btf *btf__new_empty_opts(struct btf_new_opts *opts);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * @brief **btf__distill_base()** creates new versions of the split BTF
  * *src_btf* and its base BTF. The new base BTF will only contain the types

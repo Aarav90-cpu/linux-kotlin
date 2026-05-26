@@ -13,7 +13,10 @@
 #include <linux/minmax.h>
 #include <linux/timer.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <linux/completion.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/wait.h>
 #include <linux/bio.h>
 #include <linux/gfp.h>
@@ -39,7 +42,10 @@ struct blk_flush_queue;
 struct kiocb;
 struct pr_ops;
 struct rq_qos;
+<<<<<<< HEAD
 struct hd_geometry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct blk_report_zones_args;
 struct blk_queue_stats;
 struct blk_stat_callback;
@@ -202,6 +208,7 @@ struct gendisk {
 	u8 __rcu		*zones_cond;
 	unsigned int		zone_wplugs_hash_bits;
 	atomic_t		nr_zone_wplugs;
+<<<<<<< HEAD
 	spinlock_t		zone_wplugs_hash_lock;
 	struct mempool		*zone_wplugs_pool;
 	struct hlist_head	*zone_wplugs_hash;
@@ -210,6 +217,12 @@ struct gendisk {
 	struct list_head	zone_wplugs_list;
 	struct task_struct	*zone_wplugs_worker;
 	struct completion	zone_wplugs_worker_bio_done;
+=======
+	spinlock_t		zone_wplugs_lock;
+	struct mempool		*zone_wplugs_pool;
+	struct hlist_head	*zone_wplugs_hash;
+	struct workqueue_struct *zone_wplugs_wq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_BLK_DEV_ZONED */
 
 #if IS_ENABLED(CONFIG_CDROM)
@@ -508,7 +521,11 @@ struct request_queue {
 
 	/* hw dispatch queues */
 	unsigned int		nr_hw_queues;
+<<<<<<< HEAD
 	struct blk_mq_hw_ctx * __rcu *queue_hw_ctx __counted_by_ptr(nr_hw_queues);
+=======
+	struct blk_mq_hw_ctx * __rcu *queue_hw_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct percpu_ref	q_usage_counter;
 	struct lock_class_key	io_lock_cls_key;
@@ -674,7 +691,10 @@ enum {
 	QUEUE_FLAG_NO_ELV_SWITCH,	/* can't switch elevator any more */
 	QUEUE_FLAG_QOS_ENABLED,		/* qos is enabled */
 	QUEUE_FLAG_BIO_ISSUE_TIME,	/* record bio->issue_time_ns */
+<<<<<<< HEAD
 	QUEUE_FLAG_ZONED_QD1_WRITES,	/* Limit zoned devices writes to QD=1 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	QUEUE_FLAG_MAX
 };
 
@@ -714,8 +734,11 @@ void blk_queue_flag_clear(unsigned int flag, struct request_queue *q);
 	test_bit(QUEUE_FLAG_DISABLE_WBT_DEF, &(q)->queue_flags)
 #define blk_queue_no_elv_switch(q)	\
 	test_bit(QUEUE_FLAG_NO_ELV_SWITCH, &(q)->queue_flags)
+<<<<<<< HEAD
 #define blk_queue_zoned_qd1_writes(q)	\
 	test_bit(QUEUE_FLAG_ZONED_QD1_WRITES, &(q)->queue_flags)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern void blk_set_pm_only(struct request_queue *q);
 extern void blk_clear_pm_only(struct request_queue *q);
@@ -1476,11 +1499,20 @@ static inline bool bdev_rot(struct block_device *bdev)
 	return blk_queue_rot(bdev_get_queue(bdev));
 }
 
+<<<<<<< HEAD
+=======
+static inline bool bdev_nonrot(struct block_device *bdev)
+{
+	return !bdev_rot(bdev);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool bdev_synchronous(struct block_device *bdev)
 {
 	return bdev->bd_disk->queue->limits.features & BLK_FEAT_SYNCHRONOUS;
 }
 
+<<<<<<< HEAD
 static inline bool bdev_has_integrity_csum(struct block_device *bdev)
 {
 	struct queue_limits *lim = bdev_limits(bdev);
@@ -1493,6 +1525,16 @@ static inline bool bdev_stable_writes(struct block_device *bdev)
 {
 	return bdev_has_integrity_csum(bdev) ||
 		(bdev_limits(bdev)->features & BLK_FEAT_STABLE_WRITES);
+=======
+static inline bool bdev_stable_writes(struct block_device *bdev)
+{
+	struct request_queue *q = bdev_get_queue(bdev);
+
+	if (IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY) &&
+	    q->limits.integrity.csum_type != BLK_INTEGRITY_CSUM_NONE)
+		return true;
+	return q->limits.features & BLK_FEAT_STABLE_WRITES;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool blk_queue_write_cache(struct request_queue *q)
@@ -1885,6 +1927,7 @@ static inline int bio_split_rw_at(struct bio *bio,
 	return bio_split_io_at(bio, lim, segs, max_bytes, lim->dma_alignment);
 }
 
+<<<<<<< HEAD
 /*
  * Maximum contiguous integrity buffer allocation.
  */
@@ -1903,6 +1946,8 @@ static inline unsigned int max_integrity_io_size(struct queue_limits *lim)
 			lim->integrity.interval_exp);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DEFINE_IO_COMP_BATCH(name)	struct io_comp_batch name = { }
 
 #endif /* _LINUX_BLKDEV_H */

@@ -55,7 +55,10 @@ enum {
 	HEADER_PMU_CAPS,
 	HEADER_CPU_DOMAIN_INFO,
 	HEADER_E_MACHINE,
+<<<<<<< HEAD
 	HEADER_CLN_SIZE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HEADER_LAST_FEATURE,
 	HEADER_FEAT_BITS	= 256,
 };
@@ -110,7 +113,10 @@ struct perf_header {
 	u64				data_size;
 	u64				feat_offset;
 	DECLARE_BITMAP(adds_features, HEADER_FEAT_BITS);
+<<<<<<< HEAD
 	int				last_feat;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env 	env;
 };
 
@@ -134,8 +140,11 @@ struct perf_header_feature_ops {
 
 extern const char perf_version_string[];
 
+<<<<<<< HEAD
 const char *header_feat__name(unsigned int id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int perf_session__read_header(struct perf_session *session);
 int perf_session__write_header(struct perf_session *session,
 			       struct evlist *evlist,
@@ -174,8 +183,12 @@ int perf_header__process_sections(struct perf_header *header, int fd,
 
 int perf_header__fprintf_info(struct perf_session *s, FILE *fp, bool full);
 
+<<<<<<< HEAD
 int perf_event__process_feature(const struct perf_tool *tool,
 				struct perf_session *session,
+=======
+int perf_event__process_feature(struct perf_session *session,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				union perf_event *event);
 int perf_event__process_attr(const struct perf_tool *tool, union perf_event *event,
 			     struct evlist **pevlist);
@@ -207,8 +220,11 @@ int write_padded(struct feat_fd *fd, const void *bf,
 
 int build_caches_for_cpu(u32 cpu, struct cpu_cache_level caches[], u32 *cntp);
 
+<<<<<<< HEAD
 #define DEFAULT_CACHELINE_SIZE 64
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * arch specific callback
  */

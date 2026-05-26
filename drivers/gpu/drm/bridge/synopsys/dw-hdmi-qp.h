@@ -198,7 +198,10 @@
 #define PKTSCHED_PRQUEUE2_CONFIG2			0xa94
 #define PKTSCHED_PKT_CONFIG0				0xa98
 #define PKTSCHED_PKT_CONFIG1				0xa9c
+<<<<<<< HEAD
 #define PKTSCHED_VSI_FIELDRATE				BIT(14)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PKTSCHED_DRMI_FIELDRATE				BIT(13)
 #define PKTSCHED_AVI_FIELDRATE				BIT(12)
 #define PKTSCHED_PKT_CONFIG2				0xaa0
@@ -206,9 +209,13 @@
 #define PKTSCHED_PKT_EN					0xaa8
 #define PKTSCHED_DRMI_TX_EN				BIT(17)
 #define PKTSCHED_AUDI_TX_EN				BIT(15)
+<<<<<<< HEAD
 #define PKTSCHED_SPDI_TX_EN				BIT(14)
 #define PKTSCHED_AVI_TX_EN				BIT(13)
 #define PKTSCHED_VSI_TX_EN				BIT(12)
+=======
+#define PKTSCHED_AVI_TX_EN				BIT(13)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PKTSCHED_EMP_CVTEM_TX_EN			BIT(10)
 #define PKTSCHED_AMD_TX_EN				BIT(8)
 #define PKTSCHED_GCP_TX_EN				BIT(3)

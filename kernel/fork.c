@@ -46,7 +46,10 @@
 #include <linux/mm_inline.h>
 #include <linux/memblock.h>
 #include <linux/nsproxy.h>
+<<<<<<< HEAD
 #include <linux/ns/ns_common_types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/capability.h>
 #include <linux/cpu.h>
 #include <linux/cgroup.h>
@@ -126,6 +129,19 @@
 
 #include <kunit/visibility.h>
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USER_NS
+# ifdef CONFIG_USER_NS_UNPRIVILEGED
+static int unprivileged_userns_clone = 1;
+# else
+static int unprivileged_userns_clone = 0;
+# endif
+#else
+#define unprivileged_userns_clone 1
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Minimum number of threads to boot the kernel
  */
@@ -347,7 +363,11 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
 		stack = kasan_reset_tag(vm_area->addr);
 
 		/* Clear stale pointers from reused stack. */
+<<<<<<< HEAD
 		clear_pages(vm_area->addr, vm_area->nr_pages);
+=======
+		memset(stack, 0, THREAD_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		tsk->stack_vm_area = vm_area;
 		tsk->stack = stack;
@@ -1016,6 +1036,7 @@ free_tsk:
 
 __cacheline_aligned_in_smp DEFINE_SPINLOCK(mmlist_lock);
 
+<<<<<<< HEAD
 static unsigned long coredump_filter = MMF_DUMP_FILTER_DEFAULT;
 
 static int __init coredump_filter_setup(char *s)
@@ -1024,6 +1045,15 @@ static int __init coredump_filter_setup(char *s)
 		return 0;
 	coredump_filter <<= MMF_DUMP_FILTER_SHIFT;
 	coredump_filter &= MMF_DUMP_FILTER_MASK;
+=======
+static unsigned long default_dump_filter = MMF_DUMP_FILTER_DEFAULT;
+
+static int __init coredump_filter_setup(char *s)
+{
+	default_dump_filter =
+		(simple_strtoul(s, NULL, 0) << MMF_DUMP_FILTER_SHIFT) &
+		MMF_DUMP_FILTER_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -1109,7 +1139,11 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
 		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
 	} else {
+<<<<<<< HEAD
 		__mm_flags_overwrite_word(mm, coredump_filter);
+=======
+		__mm_flags_overwrite_word(mm, default_dump_filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mm->def_flags = 0;
 	}
 
@@ -1951,11 +1985,17 @@ static void rv_task_fork(struct task_struct *p)
 
 static bool need_futex_hash_allocate_default(u64 clone_flags)
 {
+<<<<<<< HEAD
 	/*
 	 * Allocate a default futex hash for any sibling that will
 	 * share the parent's mm, except vfork.
 	 */
 	return (clone_flags & (CLONE_VM | CLONE_VFORK)) == CLONE_VM;
+=======
+	if ((clone_flags & (CLONE_THREAD | CLONE_VM)) != (CLONE_THREAD | CLONE_VM))
+		return false;
+	return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2033,6 +2073,7 @@ __latent_entropy struct task_struct *copy_process(
 			return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	if (clone_flags & CLONE_AUTOREAP) {
 		if (clone_flags & CLONE_THREAD)
 			return ERR_PTR(-EINVAL);
@@ -2065,6 +2106,10 @@ __latent_entropy struct task_struct *copy_process(
 		 */
 		if (!(clone_flags & CLONE_NNP) &&
 		    !ns_capable(current_user_ns(), CAP_SYS_ADMIN))
+=======
+	if ((clone_flags & CLONE_NEWUSER) && !unprivileged_userns_clone) {
+		if (!capable(CAP_SYS_ADMIN))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ERR_PTR(-EPERM);
 	}
 
@@ -2116,7 +2161,10 @@ __latent_entropy struct task_struct *copy_process(
 	ftrace_graph_init_task(p);
 
 	rt_mutex_init_task(p);
+<<<<<<< HEAD
 	raw_spin_lock_init(&p->blocked_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_irqs_enabled();
 #ifdef CONFIG_PROVE_LOCKING
@@ -2274,6 +2322,10 @@ __latent_entropy struct task_struct *copy_process(
 	if (retval)
 		goto bad_fork_cleanup_io;
 
+<<<<<<< HEAD
+=======
+	random_kstack_task_init(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stackleak_task_init(p);
 
 	if (pid != &init_struct_pid) {
@@ -2291,18 +2343,26 @@ __latent_entropy struct task_struct *copy_process(
 	 * if the fd table isn't shared).
 	 */
 	if (clone_flags & CLONE_PIDFD) {
+<<<<<<< HEAD
 		unsigned flags = PIDFD_STALE;
 
 		if (clone_flags & CLONE_THREAD)
 			flags |= PIDFD_THREAD;
 		if (clone_flags & CLONE_PIDFD_AUTOKILL)
 			flags |= PIDFD_AUTOKILL;
+=======
+		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Note that no task has been attached to @pid yet indicate
 		 * that via CLONE_PIDFD.
 		 */
+<<<<<<< HEAD
 		retval = pidfd_prepare(pid, flags, &pidfile);
+=======
+		retval = pidfd_prepare(pid, flags | PIDFD_STALE, &pidfile);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (retval < 0)
 			goto bad_fork_free_pid;
 		pidfd = retval;
@@ -2382,6 +2442,13 @@ __latent_entropy struct task_struct *copy_process(
 	if (retval)
 		goto bad_fork_cancel_cgroup;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Allocate a default futex hash for the user process once the first
+	 * thread spawns.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (need_futex_hash_allocate_default(clone_flags)) {
 		retval = futex_hash_allocate_default();
 		if (retval)
@@ -2434,11 +2501,15 @@ __latent_entropy struct task_struct *copy_process(
 
 	rseq_fork(p, clone_flags);
 
+<<<<<<< HEAD
 	/*
 	 * If zap_pid_ns_processes() was called after alloc_pid(), the new
 	 * child missed SIGKILL.  If current is not in the same namespace,
 	 * we can't rely on fatal_signal_pending() below.
 	 */
+=======
+	/* Don't start children in a dying pid namespace */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!(ns_of_pid(pid)->pid_allocated & PIDNS_ADDING))) {
 		retval = -ENOMEM;
 		goto bad_fork_core_free;
@@ -2458,9 +2529,12 @@ __latent_entropy struct task_struct *copy_process(
 	 */
 	copy_seccomp(p);
 
+<<<<<<< HEAD
 	if (clone_flags & CLONE_NNP)
 		task_set_no_new_privs(p);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_task_pid_links(p);
 	if (likely(p->pid)) {
 		ptrace_init_task(p, (clone_flags & CLONE_PTRACE) || trace);
@@ -2472,10 +2546,14 @@ __latent_entropy struct task_struct *copy_process(
 			init_task_pid(p, PIDTYPE_SID, task_session(current));
 
 			if (is_child_reaper(pid)) {
+<<<<<<< HEAD
 				struct pid_namespace *ns = ns_of_pid(pid);
 
 				ASSERT_EXCLUSIVE_WRITER(ns->child_reaper);
 				WRITE_ONCE(ns->child_reaper, p);
+=======
+				ns_of_pid(pid)->child_reaper = p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				p->signal->flags |= SIGNAL_UNKILLABLE;
 			}
 			p->signal->shared_pending.signal = delayed.signal;
@@ -2487,8 +2565,11 @@ __latent_entropy struct task_struct *copy_process(
 			 */
 			p->signal->has_child_subreaper = p->real_parent->signal->has_child_subreaper ||
 							 p->real_parent->signal->is_child_subreaper;
+<<<<<<< HEAD
 			if (clone_flags & CLONE_AUTOREAP)
 				p->signal->autoreap = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			list_add_tail(&p->sibling, &p->real_parent->children);
 			list_add_tail_rcu(&p->tasks, &init_task.tasks);
 			attach_pid(p, PIDTYPE_TGID);
@@ -2517,12 +2598,17 @@ __latent_entropy struct task_struct *copy_process(
 		fd_install(pidfd, pidfile);
 
 	proc_fork_connector(p);
+<<<<<<< HEAD
 	/*
 	 * sched_ext needs @p to be associated with its cgroup in its post_fork
 	 * hook. cgroup_post_fork() should come before sched_post_fork().
 	 */
 	cgroup_post_fork(p, args);
 	sched_post_fork(p);
+=======
+	sched_post_fork(p);
+	cgroup_post_fork(p, args);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	perf_event_fork(p);
 
 	trace_task_newtask(p, clone_flags);
@@ -2677,6 +2763,7 @@ pid_t kernel_clone(struct kernel_clone_args *args)
 	pid_t nr;
 
 	/*
+<<<<<<< HEAD
 	 * Creating an empty mount namespace implies creating a new mount
 	 * namespace.  Set this before copy_process() so that the
 	 * CLONE_NEWNS|CLONE_FS mutual exclusion check works correctly.
@@ -2687,6 +2774,8 @@ pid_t kernel_clone(struct kernel_clone_args *args)
 	}
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * For legacy clone() calls, CLONE_PIDFD uses the parent_tid argument
 	 * to return the pidfd. Hence, CLONE_PIDFD and CLONE_PARENT_SETTID are
 	 * mutually exclusive. With clone3() CLONE_PIDFD has grown a separate
@@ -2964,9 +3053,13 @@ static bool clone3_args_valid(struct kernel_clone_args *kargs)
 {
 	/* Verify that no unknown flags are passed along. */
 	if (kargs->flags &
+<<<<<<< HEAD
 	    ~(CLONE_LEGACY_FLAGS | CLONE_CLEAR_SIGHAND |
 	      CLONE_INTO_CGROUP | CLONE_AUTOREAP | CLONE_NNP |
 	      CLONE_PIDFD_AUTOKILL | CLONE_EMPTY_MNTNS))
+=======
+	    ~(CLONE_LEGACY_FLAGS | CLONE_CLEAR_SIGHAND | CLONE_INTO_CGROUP))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/*
@@ -3115,9 +3208,17 @@ void __init proc_caches_init(void)
  */
 static int check_unshare_flags(unsigned long unshare_flags)
 {
+<<<<<<< HEAD
 	if (unshare_flags & ~(CLONE_THREAD|CLONE_FS|CLONE_SIGHAND|
 				CLONE_VM|CLONE_FILES|CLONE_SYSVSEM|
 				CLONE_NS_ALL | UNSHARE_EMPTY_MNTNS))
+=======
+	if (unshare_flags & ~(CLONE_THREAD|CLONE_FS|CLONE_NEWNS|CLONE_SIGHAND|
+				CLONE_VM|CLONE_FILES|CLONE_SYSVSEM|
+				CLONE_NEWUTS|CLONE_NEWIPC|CLONE_NEWNET|
+				CLONE_NEWUSER|CLONE_NEWPID|CLONE_NEWCGROUP|
+				CLONE_NEWTIME))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	/*
 	 * Not implemented, but pretend it works if there is nothing
@@ -3137,6 +3238,13 @@ static int check_unshare_flags(unsigned long unshare_flags)
 		if (!current_is_single_threaded())
 			return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if ((unshare_flags & CLONE_NEWUSER) && !unprivileged_userns_clone) {
+		if (!capable(CAP_SYS_ADMIN))
+			return -EPERM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3216,8 +3324,11 @@ int ksys_unshare(unsigned long unshare_flags)
 	/*
 	 * If unsharing namespace, must also unshare filesystem information.
 	 */
+<<<<<<< HEAD
 	if (unshare_flags & UNSHARE_EMPTY_MNTNS)
 		unshare_flags |= CLONE_NEWNS;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unshare_flags & CLONE_NEWNS)
 		unshare_flags |= CLONE_FS;
 
@@ -3244,10 +3355,18 @@ int ksys_unshare(unsigned long unshare_flags)
 					 new_cred, new_fs);
 	if (err)
 		goto bad_unshare_cleanup_cred;
+<<<<<<< HEAD
 	if (new_cred) {
 		err = set_cred_ucounts(new_cred);
 		if (err)
 			goto bad_unshare_cleanup_nsproxy;
+=======
+
+	if (new_cred) {
+		err = set_cred_ucounts(new_cred);
+		if (err)
+			goto bad_unshare_cleanup_cred;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
@@ -3263,10 +3382,15 @@ int ksys_unshare(unsigned long unshare_flags)
 			shm_init_task(current);
 		}
 
+<<<<<<< HEAD
 		if (new_nsproxy) {
 			switch_task_namespaces(current, new_nsproxy);
 			new_nsproxy = NULL;
 		}
+=======
+		if (new_nsproxy)
+			switch_task_namespaces(current, new_nsproxy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		task_lock(current);
 
@@ -3295,15 +3419,22 @@ int ksys_unshare(unsigned long unshare_flags)
 
 	perf_event_namespaces(current);
 
+<<<<<<< HEAD
 bad_unshare_cleanup_nsproxy:
 	if (new_nsproxy)
 		put_nsproxy(new_nsproxy);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bad_unshare_cleanup_cred:
 	if (new_cred)
 		put_cred(new_cred);
 bad_unshare_cleanup_fd:
 	if (new_fd)
 		put_files_struct(new_fd);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bad_unshare_cleanup_fs:
 	if (new_fs)
 		free_fs_struct(new_fs);
@@ -3372,6 +3503,18 @@ static const struct ctl_table fork_sysctl_table[] = {
 		.mode		= 0644,
 		.proc_handler	= sysctl_max_threads,
 	},
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USER_NS
+	{
+		.procname	= "unprivileged_userns_clone",
+		.data		= &unprivileged_userns_clone,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec,
+	},
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init init_fork_sysctl(void)

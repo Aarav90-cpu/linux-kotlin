@@ -199,18 +199,33 @@ static int qcom_scm_bw_enable(void)
 	if (!__scm->path)
 		return 0;
 
+<<<<<<< HEAD
 	guard(mutex)(&__scm->scm_bw_lock);
 
+=======
+	mutex_lock(&__scm->scm_bw_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!__scm->scm_vote_count) {
 		ret = icc_set_bw(__scm->path, 0, UINT_MAX);
 		if (ret < 0) {
 			dev_err(__scm->dev, "failed to set bandwidth request\n");
+<<<<<<< HEAD
 			return ret;
 		}
 	}
 	__scm->scm_vote_count++;
 
 	return 0;
+=======
+			goto err_bw;
+		}
+	}
+	__scm->scm_vote_count++;
+err_bw:
+	mutex_unlock(&__scm->scm_bw_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void qcom_scm_bw_disable(void)
@@ -922,13 +937,21 @@ struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *c
 		goto free_input_rt;
 	}
 
+<<<<<<< HEAD
 	tbl_ptr = kmemdup(output_rt_tzm, size, GFP_KERNEL);
+=======
+	tbl_ptr = kzalloc(size, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!tbl_ptr) {
 		qcom_tzmem_free(output_rt_tzm);
 		ret = -ENOMEM;
 		goto free_input_rt;
 	}
 
+<<<<<<< HEAD
+=======
+	memcpy(tbl_ptr, output_rt_tzm, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*output_rt_size = size;
 	qcom_tzmem_free(output_rt_tzm);
 
@@ -2288,18 +2311,27 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_send);
  */
 static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
 	{ .compatible = "asus,vivobook-s15" },
+<<<<<<< HEAD
 	{ .compatible = "asus,vivobook-s15-x1p4" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "asus,zenbook-a14-ux3407qa" },
 	{ .compatible = "asus,zenbook-a14-ux3407ra" },
 	{ .compatible = "dell,inspiron-14-plus-7441" },
 	{ .compatible = "dell,latitude-7455" },
 	{ .compatible = "dell,xps13-9345" },
+<<<<<<< HEAD
 	{ .compatible = "ecs,liva-qc710" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "hp,elitebook-ultra-g1q" },
 	{ .compatible = "hp,omnibook-x14" },
 	{ .compatible = "huawei,gaokun3" },
 	{ .compatible = "lenovo,flex-5g" },
+<<<<<<< HEAD
 	{ .compatible = "lenovo,ideacentre-mini-01q8x10" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "lenovo,thinkbook-16" },
 	{ .compatible = "lenovo,thinkpad-t14s" },
 	{ .compatible = "lenovo,thinkpad-x13s", },
@@ -2310,10 +2342,14 @@ static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
 	{ .compatible = "microsoft,denali", },
 	{ .compatible = "microsoft,romulus13", },
 	{ .compatible = "microsoft,romulus15", },
+<<<<<<< HEAD
 	{ .compatible = "qcom,glymur-crd" },
 	{ .compatible = "qcom,hamoa-iot-evk" },
 	{ .compatible = "qcom,mahua-crd" },
 	{ .compatible = "qcom,purwa-iot-evk" },
+=======
+	{ .compatible = "qcom,hamoa-iot-evk" },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,sc8180x-primus" },
 	{ .compatible = "qcom,x1e001de-devkit" },
 	{ .compatible = "qcom,x1e80100-crd" },
@@ -2471,6 +2507,7 @@ int qcom_scm_qtee_callback_response(phys_addr_t buf, size_t buf_size,
 }
 EXPORT_SYMBOL(qcom_scm_qtee_callback_response);
 
+<<<<<<< HEAD
 static void qcom_scm_gunyah_wdt_free(void *data)
 {
 	struct platform_device *gunyah_wdt_dev = data;
@@ -2521,6 +2558,8 @@ static void qcom_scm_gunyah_wdt_init(struct qcom_scm *scm)
 				 gunyah_wdt_dev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void qcom_scm_qtee_free(void *data)
 {
 	struct platform_device *qtee_dev = data;
@@ -2865,9 +2904,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
 	/* Initialize the QTEE object interface. */
 	qcom_scm_qtee_init(scm);
 
+<<<<<<< HEAD
 	/* Initialize the Gunyah watchdog platform device. */
 	qcom_scm_gunyah_wdt_init(scm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

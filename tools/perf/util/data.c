@@ -20,6 +20,7 @@
 #include "rlimit.h"
 #include <internal/lib.h>
 
+<<<<<<< HEAD
 static void perf_data_file__close(struct perf_data_file *file)
 {
 	if (file->use_stdio) {
@@ -39,14 +40,25 @@ static void close_dir(struct perf_data_file *files, int nr)
 	while (--nr >= 0)
 		perf_data_file__close(&files[nr]);
 
+=======
+static void close_dir(struct perf_data_file *files, int nr)
+{
+	while (--nr >= 0) {
+		close(files[nr].fd);
+		zfree(&files[nr].path);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free(files);
 }
 
 void perf_data__close_dir(struct perf_data *data)
 {
 	close_dir(data->dir.files, data->dir.nr);
+<<<<<<< HEAD
 	data->dir.files = NULL;
 	data->dir.nr = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int perf_data__create_dir(struct perf_data *data, int nr)
@@ -58,7 +70,11 @@ int perf_data__create_dir(struct perf_data *data, int nr)
 	if (WARN_ON(!data->is_dir))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	files = calloc(nr, sizeof(*files));
+=======
+	files = zalloc(nr * sizeof(*files));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!files)
 		return -ENOMEM;
 
@@ -147,21 +163,33 @@ int perf_data__open_dir(struct perf_data *data)
 		files = file;
 		file = &files[nr++];
 
+<<<<<<< HEAD
 		*file = (struct perf_data_file){
 			.path = strdup(path),
 			.fd = -1,
 			.size = st.st_size,
 			.use_stdio = false,
 		};
+=======
+		file->path = strdup(path);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!file->path)
 			goto out_err;
 
 		ret = open(file->path, O_RDONLY);
+<<<<<<< HEAD
 		if (ret < 0) {
 			ret = -errno;
 			goto out_err;
 		}
 		file->fd = ret;
+=======
+		if (ret < 0)
+			goto out_err;
+
+		file->fd = ret;
+		file->size = st.st_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	closedir(dir);
@@ -194,7 +222,11 @@ static bool check_pipe(struct perf_data *data)
 	}
 
 	if (is_pipe) {
+<<<<<<< HEAD
 		if (data->file.use_stdio) {
+=======
+		if (data->use_stdio) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			const char *mode;
 
 			mode = perf_data__is_read(data) ? "r" : "w";
@@ -202,7 +234,11 @@ static bool check_pipe(struct perf_data *data)
 
 			if (data->file.fptr == NULL) {
 				data->file.fd = fd;
+<<<<<<< HEAD
 				data->file.use_stdio = false;
+=======
+				data->use_stdio = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 		/*
@@ -364,7 +400,11 @@ int perf_data__open(struct perf_data *data)
 		return 0;
 
 	/* currently it allows stdio for pipe only */
+<<<<<<< HEAD
 	data->file.use_stdio = false;
+=======
+	data->use_stdio = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!data->path)
 		data->path = "perf.data";
@@ -384,6 +424,7 @@ void perf_data__close(struct perf_data *data)
 	if (perf_data__is_dir(data))
 		perf_data__close_dir(data);
 
+<<<<<<< HEAD
 	perf_data_file__close(&data->file);
 }
 
@@ -395,27 +436,48 @@ static ssize_t perf_data_file__read(struct perf_data_file *file, void *buf, size
 		return feof(file->fptr) ? 0 : -1;
 	}
 	return readn(file->fd, buf, size);
+=======
+	zfree(&data->file.path);
+
+	if (data->use_stdio)
+		fclose(data->file.fptr);
+	else
+		close(data->file.fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 ssize_t perf_data__read(struct perf_data *data, void *buf, size_t size)
 {
+<<<<<<< HEAD
 	return perf_data_file__read(&data->file, buf, size);
+=======
+	if (data->use_stdio) {
+		if (fread(buf, size, 1, data->file.fptr) == 1)
+			return size;
+		return feof(data->file.fptr) ? 0 : -1;
+	}
+	return readn(data->file.fd, buf, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 ssize_t perf_data_file__write(struct perf_data_file *file,
 			      void *buf, size_t size)
 {
+<<<<<<< HEAD
 	if (file->use_stdio) {
 		if (fwrite(buf, size, /*nmemb=*/1, file->fptr) == 1)
 			return size;
 		return -1;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return writen(file->fd, buf, size);
 }
 
 ssize_t perf_data__write(struct perf_data *data,
 			 void *buf, size_t size)
 {
+<<<<<<< HEAD
 	return perf_data_file__write(&data->file, buf, size);
 }
 
@@ -433,6 +495,14 @@ off_t perf_data__seek(struct perf_data *data, off_t offset, int whence)
 {
 	/* Note, a pipe fd will fail with -1 with errno of ESPIPE. */
 	return perf_data_file__seek(&data->file, offset, whence);
+=======
+	if (data->use_stdio) {
+		if (fwrite(buf, size, 1, data->file.fptr) == 1)
+			return size;
+		return -1;
+	}
+	return perf_data_file__write(&data->file, buf, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int perf_data__switch(struct perf_data *data,
@@ -456,11 +526,16 @@ int perf_data__switch(struct perf_data *data,
 		pr_warning("Failed to rename %s to %s\n", data->path, *new_filepath);
 
 	if (!at_exit) {
+<<<<<<< HEAD
 		perf_data_file__close(&data->file);
+=======
+		close(data->file.fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = perf_data__open(data);
 		if (ret < 0)
 			goto out;
 
+<<<<<<< HEAD
 		if (perf_data__seek(data, pos, SEEK_SET) == (off_t)-1) {
 			ret = -errno;
 			pr_debug("Failed to seek to %zu: %m", pos);
@@ -468,6 +543,16 @@ int perf_data__switch(struct perf_data *data,
 		}
 	}
 	ret = perf_data__fd(data);
+=======
+		if (lseek(data->file.fd, pos, SEEK_SET) == (off_t)-1) {
+			ret = -errno;
+			pr_debug("Failed to lseek to %zu: %m\n",
+				 pos);
+			goto out;
+		}
+	}
+	ret = data->file.fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return ret;
 }

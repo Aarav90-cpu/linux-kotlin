@@ -27,13 +27,21 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&led_pins_gpio>;
 
+<<<<<<< HEAD
 		led-user1 {
+=======
+		user1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "sd0-led";
 			gpios = <&gpio2 26 0>;
 			linux,default-trigger = "mmc0";
 		};
 
+<<<<<<< HEAD
 		led-user2 {
+=======
+		user2 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "sd1-led";
 			gpios = <&gpio2 24 0>;
 			linux,default-trigger = "mmc2";

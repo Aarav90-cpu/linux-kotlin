@@ -53,12 +53,15 @@
 		power-supply = <&reg_12p0v>;
 	};
 
+<<<<<<< HEAD
 	pcie_usb_refclk: clk-x7 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <25000000>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cvbs-in {
 		compatible = "composite-video-connector";
 		label = "CVBS IN";
@@ -445,6 +448,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	pcie_usb_clk: clk@68 {
 		compatible = "renesas,9fgv0841";
 		reg = <0x68>;
@@ -452,6 +456,8 @@
 		#clock-cells = <1>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	video-receiver@70 {
 		compatible = "adi,adv7482";
 		reg = <0x70>;
@@ -590,6 +596,7 @@
 };
 
 &pcie_bus_clk {
+<<<<<<< HEAD
 	status = "disabled";
 };
 
@@ -614,6 +621,15 @@
 	clocks = <&pcie_usb_clk 3>;
 };
 
+=======
+	clock-frequency = <100000000>;
+};
+
+&pciec0 {
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pfc {
 	avb_pins: avb {
 		groups = "avb_link", "avb_mii";
@@ -901,6 +917,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb3_phy0 {
 	clocks = <&pcie_usb_clk 6>;
 	status = "okay";
@@ -913,6 +930,9 @@
 &usb3_peri0 {
 	phys = <&usb3_phy0>;
 	phy-names = "usb";
+=======
+&usb3_peri0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	companion = <&xhci0>;
 	status = "okay";
 };

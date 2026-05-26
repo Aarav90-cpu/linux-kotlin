@@ -13,6 +13,10 @@
 #include <linux/list.h>
 #include "util/cache.h"
 #include <linux/rbtree.h>
+<<<<<<< HEAD
+=======
+#include <linux/zalloc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "util/symbol.h"
 
 #include "util/debug.h"
@@ -312,6 +316,18 @@ out_put:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int process_feature_event(const struct perf_tool *tool __maybe_unused,
+				 struct perf_session *session,
+				 union perf_event *event)
+{
+	if (event->feat.feat_id < HEADER_LAST_FEATURE)
+		return perf_event__process_feature(session, event);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hist_entry__stdio_annotate(struct hist_entry *he,
 				    struct evsel *evsel,
 				    struct perf_annotate *ann)
@@ -734,7 +750,12 @@ int cmd_annotate(int argc, const char **argv)
 			&annotate.group_set,
 			"Show event group information together"),
 	OPT_STRING('C', "cpu", &annotate.cpu_list, "cpu", "list of cpus to profile"),
+<<<<<<< HEAD
 	OPT_CALLBACK(0, "symfs", NULL, "directory[,layout]", SYMFS_HELP,
+=======
+	OPT_CALLBACK(0, "symfs", NULL, "directory",
+		     "Look for files with symbols relative to this directory",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     symbol__config_symfs),
 	OPT_BOOLEAN(0, "source", &annotate_opts.annotate_src,
 		    "Interleave source code with assembly code (default)"),
@@ -865,7 +886,11 @@ int cmd_annotate(int argc, const char **argv)
 	annotate.tool.id_index	= perf_event__process_id_index;
 	annotate.tool.auxtrace_info	= perf_event__process_auxtrace_info;
 	annotate.tool.auxtrace	= perf_event__process_auxtrace;
+<<<<<<< HEAD
 	annotate.tool.feature	= perf_event__process_feature;
+=======
+	annotate.tool.feature	= process_feature_event;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	annotate.tool.ordering_requires_timestamps = true;
 
 	annotate.session = perf_session__new(&data, &annotate.tool);

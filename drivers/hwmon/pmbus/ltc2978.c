@@ -733,7 +733,11 @@ static int ltc2978_probe(struct i2c_client *client)
 		return chip_id;
 
 	data->id = chip_id;
+<<<<<<< HEAD
 	id = i2c_client_get_device_id(client);
+=======
+	id = i2c_match_id(ltc2978_id, client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data->id != id->driver_data)
 		dev_warn(&client->dev,
 			 "Device mismatch: Configured %s (%d), detected %d\n",

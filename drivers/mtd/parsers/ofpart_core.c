@@ -75,7 +75,11 @@ static int parse_fixed_partitions(struct mtd_info *master,
 			dedicated = false;
 		}
 	} else { /* Partition */
+<<<<<<< HEAD
 		ofpart_node = of_node_get(mtd_node);
+=======
+		ofpart_node = mtd_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
@@ -195,11 +199,18 @@ static int parse_fixed_partitions(struct mtd_info *master,
 ofpart_fail:
 	pr_err("%s: error parsing ofpart partition %pOF (%pOF)\n",
 	       master->name, pp, mtd_node);
+<<<<<<< HEAD
 	of_node_put(pp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = -EINVAL;
 ofpart_none:
 	if (dedicated)
 		of_node_put(ofpart_node);
+<<<<<<< HEAD
+=======
+	of_node_put(pp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(parts);
 	return ret;
 }

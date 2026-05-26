@@ -95,7 +95,10 @@ struct sched_domain {
 	unsigned int newidle_call;
 	unsigned int newidle_success;
 	unsigned int newidle_ratio;
+<<<<<<< HEAD
 	u64 newidle_stamp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 max_newidle_lb_cost;
 	unsigned long last_decay_max_lb_cost;
 
@@ -142,14 +145,25 @@ struct sched_domain {
 
 	unsigned int span_weight;
 	/*
+<<<<<<< HEAD
 	 * See sched_domain_span(), on why flex arrays are broken.
 	 *
 	unsigned long span[];
 	 */
+=======
+	 * Span of all CPUs in this domain.
+	 *
+	 * NOTE: this field is variable length. (Allocated dynamically
+	 * by attaching extra space to the end of the structure,
+	 * depending on how many CPUs the kernel has booted up with)
+	 */
+	unsigned long span[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct cpumask *sched_domain_span(struct sched_domain *sd)
 {
+<<<<<<< HEAD
 	/*
 	 * Turns out that C flexible arrays are fundamentally broken since it
 	 * is allowed for offsetof(*sd, span) < sizeof(*sd), this means that
@@ -166,6 +180,9 @@ static inline struct cpumask *sched_domain_span(struct sched_domain *sd)
 	 */
 	unsigned long *bitmap = (void *)sd + sizeof(*sd);
 	return to_cpumask(bitmap);
+=======
+	return to_cpumask(sd->span);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 extern void partition_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
@@ -184,6 +201,10 @@ typedef int (*sched_domain_flags_f)(void);
 
 struct sd_data {
 	struct sched_domain *__percpu *sd;
+<<<<<<< HEAD
+=======
+	struct sched_domain_shared *__percpu *sds;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sched_group *__percpu *sg;
 	struct sched_group_capacity *__percpu *sgc;
 };
@@ -202,7 +223,12 @@ extern void sched_update_asym_prefer_cpu(int cpu, int old_prio, int new_prio);
 #define SDTL_INIT(maskfn, flagsfn, dname) ((struct sched_domain_topology_level) \
 	    { .mask = maskfn, .sd_flags = flagsfn, .name = #dname })
 
+<<<<<<< HEAD
 #if defined(CONFIG_ENERGY_MODEL) && defined(CONFIG_CPU_FREQ_GOV_SCHEDUTIL)
+=======
+#if defined(CONFIG_ENERGY_MODEL) && defined(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) && \
+	!defined(CONFIG_SCHED_ALT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void rebuild_sched_domains_energy(void);
 #else
 static inline void rebuild_sched_domains_energy(void)

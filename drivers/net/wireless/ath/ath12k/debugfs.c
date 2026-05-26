@@ -1473,16 +1473,22 @@ void ath12k_debugfs_register(struct ath12k *ar)
 {
 	struct ath12k_base *ab = ar->ab;
 	struct ieee80211_hw *hw = ar->ah->hw;
+<<<<<<< HEAD
 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
 	struct dentry *ath12k_fs;
 	char buf[100] = {};
 	char pdev_name[5];
+=======
+	char pdev_name[5];
+	char buf[100] = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scnprintf(pdev_name, sizeof(pdev_name), "%s%d", "mac", ar->pdev_idx);
 
 	ar->debug.debugfs_pdev = debugfs_create_dir(pdev_name, ab->debugfs_soc);
 
 	/* Create a symlink under ieee80211/phy* */
+<<<<<<< HEAD
 	if (ar->radio_idx == 0) {
 		scnprintf(buf, sizeof(buf), "../../ath12k/%pd2",
 			  ar->debug.debugfs_pdev);
@@ -1502,6 +1508,12 @@ void ath12k_debugfs_register(struct ath12k *ar)
 									ath12k_fs,
 									buf);
 	}
+=======
+	scnprintf(buf, sizeof(buf), "../../ath12k/%pd2", ar->debug.debugfs_pdev);
+	ar->debug.debugfs_pdev_symlink = debugfs_create_symlink("ath12k",
+								hw->wiphy->debugfsdir,
+								buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ar->mac.sbands[NL80211_BAND_5GHZ].channels) {
 		debugfs_create_file("dfs_simulate_radar", 0200,
@@ -1530,9 +1542,14 @@ void ath12k_debugfs_unregister(struct ath12k *ar)
 
 	/* Remove symlink under ieee80211/phy* */
 	debugfs_remove(ar->debug.debugfs_pdev_symlink);
+<<<<<<< HEAD
 	debugfs_remove(ar->debug.debugfs_pdev_symlink_default);
 	debugfs_remove_recursive(ar->debug.debugfs_pdev);
 	ar->debug.debugfs_pdev_symlink = NULL;
 	ar->debug.debugfs_pdev_symlink_default = NULL;
+=======
+	debugfs_remove_recursive(ar->debug.debugfs_pdev);
+	ar->debug.debugfs_pdev_symlink = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ar->debug.debugfs_pdev = NULL;
 }

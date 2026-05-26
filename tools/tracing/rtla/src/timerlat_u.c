@@ -16,7 +16,11 @@
 #include <sys/wait.h>
 #include <sys/prctl.h>
 
+<<<<<<< HEAD
 #include "common.h"
+=======
+#include "utils.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "timerlat_u.h"
 
 /*
@@ -32,7 +36,11 @@
 static int timerlat_u_main(int cpu, struct timerlat_u_params *params)
 {
 	struct sched_param sp = { .sched_priority = 95 };
+<<<<<<< HEAD
 	char buffer[MAX_PATH];
+=======
+	char buffer[1024];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int timerlat_fd;
 	cpu_set_t set;
 	int retval;
@@ -83,7 +91,11 @@ static int timerlat_u_main(int cpu, struct timerlat_u_params *params)
 
 	/* add should continue with a signal handler */
 	while (true) {
+<<<<<<< HEAD
 		retval = read(timerlat_fd, buffer, ARRAY_SIZE(buffer));
+=======
+		retval = read(timerlat_fd, buffer, 1024);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (retval < 0)
 			break;
 	}
@@ -99,7 +111,11 @@ static int timerlat_u_main(int cpu, struct timerlat_u_params *params)
  *
  * Return the number of processes that received the kill.
  */
+<<<<<<< HEAD
 static int timerlat_u_send_kill(pid_t *procs)
+=======
+static int timerlat_u_send_kill(pid_t *procs, int nr_cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int killed = 0;
 	int i, retval;
@@ -131,6 +147,10 @@ static int timerlat_u_send_kill(pid_t *procs)
  */
 void *timerlat_u_dispatcher(void *data)
 {
+<<<<<<< HEAD
+=======
+	int nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timerlat_u_params *params = data;
 	char proc_name[128];
 	int procs_count = 0;
@@ -169,7 +189,11 @@ void *timerlat_u_dispatcher(void *data)
 
 		/* parent */
 		if (pid == -1) {
+<<<<<<< HEAD
 			timerlat_u_send_kill(procs);
+=======
+			timerlat_u_send_kill(procs, nr_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			debug_msg("Failed to create child processes");
 			pthread_exit(&retval);
 		}
@@ -196,7 +220,11 @@ void *timerlat_u_dispatcher(void *data)
 		sleep(1);
 	}
 
+<<<<<<< HEAD
 	timerlat_u_send_kill(procs);
+=======
+	timerlat_u_send_kill(procs, nr_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (procs_count) {
 		pid = waitpid(-1, &wstatus, 0);

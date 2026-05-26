@@ -1051,6 +1051,7 @@ sdev_show_wwid(struct device *dev, struct device_attribute *attr,
 }
 static DEVICE_ATTR(wwid, S_IRUGO, sdev_show_wwid, NULL);
 
+<<<<<<< HEAD
 static ssize_t
 sdev_show_serial(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -1066,6 +1067,8 @@ sdev_show_serial(struct device *dev, struct device_attribute *attr, char *buf)
 }
 static DEVICE_ATTR(serial, S_IRUGO, sdev_show_serial, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BLIST_FLAG_NAME(name)					\
 	[const_ilog2((__force __u64)BLIST_##name)] = #name
 static const char *const sdev_bflags_name[] = {
@@ -1310,7 +1313,10 @@ static struct attribute *scsi_sdev_attrs[] = {
 	&dev_attr_device_busy.attr,
 	&dev_attr_vendor.attr,
 	&dev_attr_model.attr,
+<<<<<<< HEAD
 	&dev_attr_serial.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&dev_attr_rev.attr,
 	&dev_attr_rescan.attr,
 	&dev_attr_delete.attr,

@@ -40,6 +40,13 @@
 #define FN(reg_name, field_name) \
 	mpc30->mpc_shift->field_name, mpc30->mpc_mask->field_name
 
+<<<<<<< HEAD
+=======
+
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mpc3_mpc_init(struct mpc *mpc)
 {
 	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
@@ -113,9 +120,12 @@ void mpc3_set_out_rate_control(
 	bool rate_2x_mode,
 	struct mpc_dwb_flow_control *flow_control)
 {
+<<<<<<< HEAD
 	(void)enable;
 	(void)rate_2x_mode;
 	(void)flow_control;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
 
 	/* Always disable mpc out rate and flow control.
@@ -907,7 +917,10 @@ static void mpc3_set_3dlut_mode(
 		bool is_lut_size17x17x17,
 		uint32_t rmu_idx)
 {
+<<<<<<< HEAD
 	(void)is_color_channel_12bits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t lut_mode;
 	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
 
@@ -1428,7 +1441,11 @@ uint32_t mpcc3_acquire_rmu(struct mpc *mpc, int mpcc_id, int rmu_idx)
 	}
 
 	//no vacant RMU units or invalid parameters acquire_post_bldn_3dlut
+<<<<<<< HEAD
 	return (uint32_t)-1;
+=======
+	return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mpcc3_release_rmu(struct mpc *mpc, int mpcc_id)

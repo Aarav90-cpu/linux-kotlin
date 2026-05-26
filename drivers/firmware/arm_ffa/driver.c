@@ -2136,7 +2136,15 @@ static int __init ffa_init(void)
 
 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
 			   virt_to_phys(drv_info->rx_buffer),
+<<<<<<< HEAD
 			   rxtx_bufsz / FFA_PAGE_SIZE);
+=======
+<<<<<<< HEAD
+			   PAGE_ALIGN(rxtx_bufsz) / FFA_PAGE_SIZE);
+=======
+			   rxtx_bufsz / FFA_PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	if (ret) {
 		pr_err("failed to register FFA RxTx buffers\n");
 		goto free_pages;

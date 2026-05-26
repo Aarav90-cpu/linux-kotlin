@@ -819,7 +819,11 @@ retry:
 
 		if (!(pfns[i] & HMM_PFN_VALID)) {
 			state = DRM_GPUSVM_SCAN_UNPOPULATED;
+<<<<<<< HEAD
 			break;
+=======
+			goto err_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		page = hmm_pfn_to_page(pfns[i]);
@@ -856,9 +860,15 @@ retry:
 		i += 1ul << drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
 	}
 
+<<<<<<< HEAD
 	drm_gpusvm_notifier_unlock(range->gpusvm);
 
 err_free:
+=======
+err_free:
+	drm_gpusvm_notifier_unlock(range->gpusvm);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvfree(pfns);
 	return state;
 }
@@ -1488,6 +1498,7 @@ map_pages:
 		order = drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
 		if (is_device_private_page(page) ||
 		    is_device_coherent_page(page)) {
+<<<<<<< HEAD
 			struct drm_pagemap_zdd *__zdd =
 				drm_pagemap_page_zone_device_data(page);
 
@@ -1497,6 +1508,14 @@ map_pages:
 				goto err_unmap;
 			}
 			zdd = __zdd;
+=======
+			if (!ctx->allow_mixed &&
+			    zdd != page->zone_device_data && i > 0) {
+				err = -EOPNOTSUPP;
+				goto err_unmap;
+			}
+			zdd = page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (pagemap != page_pgmap(page)) {
 				if (pagemap) {
 					err = -EOPNOTSUPP;

@@ -1568,11 +1568,21 @@
 };
 
 &usb_1_ss0 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss0_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss0_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss0_hs_in>;
 };
@@ -1598,11 +1608,21 @@
 };
 
 &usb_1_ss1 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss1_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss1_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss1_hs_in>;
 };
@@ -1612,12 +1632,22 @@
 };
 
 &usb_1_ss2 {
+<<<<<<< HEAD
+=======
+	status = "okay";
+};
+
+&usb_1_ss2_dwc3 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dr_mode = "host";
 	maximum-speed = "high-speed";
 	phys = <&usb_1_ss2_hsphy>;
 	phy-names = "usb2-phy";
 
+<<<<<<< HEAD
 	status = "okay";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/delete-property/ port@1;
 };
 
@@ -1657,11 +1687,21 @@
 };
 
 &usb_2 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_2_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_2_hsphy {
 	vdd-supply = <&vreg_l2e_0p8>;
 	vdda12-supply = <&vreg_l3e_1p2>;

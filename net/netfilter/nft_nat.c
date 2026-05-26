@@ -320,6 +320,10 @@ static const struct nft_expr_ops nft_nat_ops = {
 	.destroy        = nft_nat_destroy,
 	.dump           = nft_nat_dump,
 	.validate	= nft_nat_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_nat_type __read_mostly = {
@@ -350,6 +354,10 @@ static const struct nft_expr_ops nft_nat_inet_ops = {
 	.destroy        = nft_nat_destroy,
 	.dump           = nft_nat_dump,
 	.validate	= nft_nat_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_inet_nat_type __read_mostly = {

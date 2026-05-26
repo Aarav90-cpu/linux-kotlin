@@ -92,7 +92,11 @@ static int autofs_show_options(struct seq_file *m, struct dentry *root)
 		seq_puts(m, ",ignore");
 #ifdef CONFIG_CHECKPOINT_RESTORE
 	if (sbi->pipe)
+<<<<<<< HEAD
 		seq_printf(m, ",pipe_ino=%llu", file_inode(sbi->pipe)->i_ino);
+=======
+		seq_printf(m, ",pipe_ino=%ld", file_inode(sbi->pipe)->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		seq_puts(m, ",pipe_ino=-1");
 #endif

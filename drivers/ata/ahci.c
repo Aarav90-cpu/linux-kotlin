@@ -1686,7 +1686,11 @@ static irqreturn_t ahci_thunderx_irq_handler(int irq, void *dev_instance)
 }
 #endif
 
+<<<<<<< HEAD
 static void ahci_remap_check(struct pci_dev *pdev, int bar,
+=======
+static int ahci_remap_check(struct pci_dev *pdev, int bar,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct ahci_host_priv *hpriv)
 {
 	int i;
@@ -1699,7 +1703,11 @@ static void ahci_remap_check(struct pci_dev *pdev, int bar,
 	    pci_resource_len(pdev, bar) < SZ_512K ||
 	    bar != AHCI_PCI_BAR_STANDARD ||
 	    !(readl(hpriv->mmio + AHCI_VSCAP) & 1))
+<<<<<<< HEAD
 		return;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cap = readq(hpriv->mmio + AHCI_REMAP_CAP);
 	for (i = 0; i < AHCI_MAX_REMAP; i++) {
@@ -1714,6 +1722,7 @@ static void ahci_remap_check(struct pci_dev *pdev, int bar,
 	}
 
 	if (!hpriv->remapped_nvme)
+<<<<<<< HEAD
 		return;
 
 	dev_warn(&pdev->dev, "Found %u remapped NVMe devices.\n",
@@ -1726,6 +1735,13 @@ static void ahci_remap_check(struct pci_dev *pdev, int bar,
 	 * share the legacy interrupt across ahci and remapped devices.
 	 */
 	hpriv->flags |= AHCI_HFLAG_NO_MSI;
+=======
+		return 0;
+
+	/* Abort probe, allowing intel-nvme-remap to step in when available */
+	dev_info(&pdev->dev, "Device will be handled by intel-nvme-remap.\n");
+	return -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ahci_get_irq_vector(struct ata_host *host, int port)
@@ -1989,7 +2005,13 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		return -ENOMEM;
 
 	/* detect remapped nvme devices */
+<<<<<<< HEAD
 	ahci_remap_check(pdev, ahci_pci_bar, hpriv);
+=======
+	rc = ahci_remap_check(pdev, ahci_pci_bar, hpriv);
+	if (rc)
+		return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sysfs_add_file_to_group(&pdev->dev.kobj,
 				&dev_attr_remapped_nvme.attr,

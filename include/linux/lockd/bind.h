@@ -10,20 +10,42 @@
 #ifndef LINUX_LOCKD_BIND_H
 #define LINUX_LOCKD_BIND_H
 
+<<<<<<< HEAD
 struct file_lock;
 struct nfs_fh;
 struct svc_rqst;
 struct rpc_task;
 struct rpc_clnt;
 struct super_block;
+=======
+#include <linux/lockd/nlm.h>
+/* need xdr-encoded error codes too, so... */
+#include <linux/lockd/xdr.h>
+#ifdef CONFIG_LOCKD_V4
+#include <linux/lockd/xdr4.h>
+#endif
+
+/* Dummy declarations */
+struct svc_rqst;
+struct rpc_task;
+struct rpc_clnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This is the set of functions for lockd->nfsd communication
  */
 struct nlmsvc_binding {
+<<<<<<< HEAD
 	int		(*fopen)(struct svc_rqst *rqstp, struct nfs_fh *f,
 				 struct file **filp, int flags);
 	void		(*fclose)(struct file *filp);
+=======
+	__be32			(*fopen)(struct svc_rqst *,
+						struct nfs_fh *,
+						struct file **,
+						int mode);
+	void			(*fclose)(struct file *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern const struct nlmsvc_binding *nlmsvc_ops;
@@ -51,7 +73,10 @@ struct nlmclnt_initdata {
 extern struct nlm_host *nlmclnt_init(const struct nlmclnt_initdata *nlm_init);
 extern void	nlmclnt_done(struct nlm_host *host);
 extern struct rpc_clnt *nlmclnt_rpc_clnt(struct nlm_host *host);
+<<<<<<< HEAD
 extern void	nlmclnt_shutdown_rpc_clnt(struct nlm_host *host);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * NLM client operations provide a means to modify RPC processing of NLM
@@ -76,10 +101,13 @@ extern int	nlmclnt_proc(struct nlm_host *host, int cmd, struct file_lock *fl, vo
 extern int	lockd_up(struct net *net, const struct cred *cred);
 extern void	lockd_down(struct net *net);
 
+<<<<<<< HEAD
 /*
  * Cluster failover support
  */
 int nlmsvc_unlock_all_by_sb(struct super_block *sb);
 int nlmsvc_unlock_all_by_ip(struct sockaddr *server_addr);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* LINUX_LOCKD_BIND_H */

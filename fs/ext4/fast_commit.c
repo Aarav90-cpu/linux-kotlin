@@ -13,7 +13,10 @@
 #include "mballoc.h"
 
 #include <linux/lockdep.h>
+<<<<<<< HEAD
 #include <linux/wait_bit.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Ext4 Fast Commits
  * -----------------
@@ -216,6 +219,10 @@ void ext4_fc_init_inode(struct inode *inode)
 	ext4_clear_inode_state(inode, EXT4_STATE_FC_COMMITTING);
 	INIT_LIST_HEAD(&ei->i_fc_list);
 	INIT_LIST_HEAD(&ei->i_fc_dilist);
+<<<<<<< HEAD
+=======
+	init_waitqueue_head(&ei->i_fc_wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool ext4_fc_disabled(struct super_block *sb)
@@ -224,12 +231,15 @@ static bool ext4_fc_disabled(struct super_block *sb)
 		(EXT4_SB(sb)->s_mount_state & EXT4_FC_REPLAY));
 }
 
+<<<<<<< HEAD
 static bool ext4_fc_eligible(struct super_block *sb)
 {
 	return !ext4_fc_disabled(sb) &&
 		!(ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Remove inode from fast commit list. If the inode is being committed
  * we wait until inode commit is done.
@@ -326,7 +336,11 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
 	if (ext4_fc_disabled(sb))
 		return;
 
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(handle))
+=======
+	if (handle && !IS_ERR(handle))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tid = handle->h_transaction->t_tid;
 	else {
 		read_lock(&sbi->s_journal->j_state_lock);
@@ -479,8 +493,18 @@ void ext4_fc_track_unlink(handle_t *handle, struct dentry *dentry)
 {
 	struct inode *inode = d_inode(dentry);
 
+<<<<<<< HEAD
 	if (ext4_fc_eligible(inode->i_sb))
 		__ext4_fc_track_unlink(handle, inode, dentry);
+=======
+	if (ext4_fc_disabled(inode->i_sb))
+		return;
+
+	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+		return;
+
+	__ext4_fc_track_unlink(handle, inode, dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __ext4_fc_track_link(handle_t *handle,
@@ -497,11 +521,25 @@ void __ext4_fc_track_link(handle_t *handle,
 	trace_ext4_fc_track_link(handle, inode, dentry, ret);
 }
 
+<<<<<<< HEAD
 void ext4_fc_track_link(handle_t *handle, struct inode *inode,
 			struct dentry *dentry)
 {
 	if (ext4_fc_eligible(inode->i_sb))
 		__ext4_fc_track_link(handle, inode, dentry);
+=======
+void ext4_fc_track_link(handle_t *handle, struct dentry *dentry)
+{
+	struct inode *inode = d_inode(dentry);
+
+	if (ext4_fc_disabled(inode->i_sb))
+		return;
+
+	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+		return;
+
+	__ext4_fc_track_link(handle, inode, dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __ext4_fc_track_create(handle_t *handle, struct inode *inode,
@@ -522,8 +560,18 @@ void ext4_fc_track_create(handle_t *handle, struct dentry *dentry)
 {
 	struct inode *inode = d_inode(dentry);
 
+<<<<<<< HEAD
 	if (ext4_fc_eligible(inode->i_sb))
 		__ext4_fc_track_create(handle, inode, dentry);
+=======
+	if (ext4_fc_disabled(inode->i_sb))
+		return;
+
+	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+		return;
+
+	__ext4_fc_track_create(handle, inode, dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* __track_fn for inode tracking */
@@ -547,13 +595,23 @@ void ext4_fc_track_inode(handle_t *handle, struct inode *inode)
 	if (S_ISDIR(inode->i_mode))
 		return;
 
+<<<<<<< HEAD
+=======
+	if (ext4_fc_disabled(inode->i_sb))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ext4_should_journal_data(inode)) {
 		ext4_fc_mark_ineligible(inode->i_sb,
 					EXT4_FC_REASON_INODE_JOURNAL_DATA, handle);
 		return;
 	}
 
+<<<<<<< HEAD
 	if (!ext4_fc_eligible(inode->i_sb))
+=======
+	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/*
@@ -603,7 +661,11 @@ static int __track_range(handle_t *handle, struct inode *inode, void *arg,
 		(struct __track_range_args *)arg;
 
 	if (inode->i_ino < EXT4_FIRST_INO(inode->i_sb)) {
+<<<<<<< HEAD
 		ext4_debug("Special inode %llu being modified\n", inode->i_ino);
+=======
+		ext4_debug("Special inode %ld being modified\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ECANCELED;
 	}
 
@@ -631,7 +693,14 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
 	if (S_ISDIR(inode->i_mode))
 		return;
 
+<<<<<<< HEAD
 	if (!ext4_fc_eligible(inode->i_sb))
+=======
+	if (ext4_fc_disabled(inode->i_sb))
+		return;
+
+	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (ext4_has_inline_data(inode)) {
@@ -898,7 +967,11 @@ static int ext4_fc_write_inode_data(struct inode *inode, u32 *crc)
 	spin_unlock(&ei->i_fc_lock);
 
 	cur_lblk_off = old_blk_size;
+<<<<<<< HEAD
 	ext4_debug("will try writing %d to %d for inode %llu\n",
+=======
+	ext4_debug("will try writing %d to %d for inode %ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   cur_lblk_off, new_blk_size, inode->i_ino);
 
 	while (cur_lblk_off <= new_blk_size) {
@@ -1430,6 +1503,10 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
 				struct inode *inode)
 {
 	struct inode *dir = NULL;
+<<<<<<< HEAD
+=======
+	struct dentry *dentry_dir = NULL, *dentry_inode = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct qstr qstr_dname = QSTR_INIT(darg->dname, darg->dname_len);
 	int ret = 0;
 
@@ -1440,7 +1517,25 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = __ext4_link(dir, inode, &qstr_dname, NULL);
+=======
+	dentry_dir = d_obtain_alias(dir);
+	if (IS_ERR(dentry_dir)) {
+		ext4_debug("Failed to obtain dentry");
+		dentry_dir = NULL;
+		goto out;
+	}
+
+	dentry_inode = d_alloc(dentry_dir, &qstr_dname);
+	if (!dentry_inode) {
+		ext4_debug("Inode dentry not created.");
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	ret = __ext4_link(dir, inode, dentry_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * It's possible that link already existed since data blocks
 	 * for the dir in question got persisted before we crashed OR
@@ -1454,8 +1549,21 @@ static int ext4_fc_replay_link_internal(struct super_block *sb,
 
 	ret = 0;
 out:
+<<<<<<< HEAD
 	if (dir)
 		iput(dir);
+=======
+	if (dentry_dir) {
+		d_drop(dentry_dir);
+		dput(dentry_dir);
+	} else if (dir) {
+		iput(dir);
+	}
+	if (dentry_inode) {
+		d_drop(dentry_inode);
+		dput(dentry_inode);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1720,7 +1828,12 @@ int ext4_fc_record_regions(struct super_block *sb, int ino,
 }
 
 /* Replay add range tag */
+<<<<<<< HEAD
 static int ext4_fc_replay_add_range(struct super_block *sb, u8 *val)
+=======
+static int ext4_fc_replay_add_range(struct super_block *sb,
+				    struct ext4_fc_tl_mem *tl, u8 *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ext4_fc_add_range fc_add_ex;
 	struct ext4_extent newex, *ex;
@@ -1755,7 +1868,11 @@ static int ext4_fc_replay_add_range(struct super_block *sb, u8 *val)
 
 	cur = start;
 	remaining = len;
+<<<<<<< HEAD
 	ext4_debug("ADD_RANGE, lblk %d, pblk %lld, len %d, unwritten %d, inode %llu\n",
+=======
+	ext4_debug("ADD_RANGE, lblk %d, pblk %lld, len %d, unwritten %d, inode %ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  start, start_pblk, len, ext4_ext_is_unwritten(ex),
 		  inode->i_ino);
 
@@ -1840,7 +1957,12 @@ out:
 
 /* Replay DEL_RANGE tag */
 static int
+<<<<<<< HEAD
 ext4_fc_replay_del_range(struct super_block *sb, u8 *val)
+=======
+ext4_fc_replay_del_range(struct super_block *sb,
+			 struct ext4_fc_tl_mem *tl, u8 *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *inode;
 	struct ext4_fc_del_range lrange;
@@ -1865,7 +1987,11 @@ ext4_fc_replay_del_range(struct super_block *sb, u8 *val)
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	ext4_debug("DEL_RANGE, inode %llu, lblk %d, len %d\n",
+=======
+	ext4_debug("DEL_RANGE, inode %ld, lblk %d, len %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, le32_to_cpu(lrange.fc_lblk),
 			le32_to_cpu(lrange.fc_len));
 	while (remaining > 0) {
@@ -2210,13 +2336,21 @@ static int ext4_fc_replay(journal_t *journal, struct buffer_head *bh,
 			ret = ext4_fc_replay_unlink(sb, &tl, val);
 			break;
 		case EXT4_FC_TAG_ADD_RANGE:
+<<<<<<< HEAD
 			ret = ext4_fc_replay_add_range(sb, val);
+=======
+			ret = ext4_fc_replay_add_range(sb, &tl, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case EXT4_FC_TAG_CREAT:
 			ret = ext4_fc_replay_create(sb, &tl, val);
 			break;
 		case EXT4_FC_TAG_DEL_RANGE:
+<<<<<<< HEAD
 			ret = ext4_fc_replay_del_range(sb, val);
+=======
+			ret = ext4_fc_replay_del_range(sb, &tl, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case EXT4_FC_TAG_INODE:
 			ret = ext4_fc_replay_inode(sb, &tl, val);

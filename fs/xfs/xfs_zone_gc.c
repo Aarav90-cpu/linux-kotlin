@@ -125,7 +125,10 @@ struct xfs_zone_gc_iter {
  */
 struct xfs_zone_gc_data {
 	struct xfs_mount		*mp;
+<<<<<<< HEAD
 	struct xfs_open_zone		*oz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* bioset used to allocate the gc_bios */
 	struct bio_set			bio_set;
@@ -171,6 +174,7 @@ xfs_zoned_need_gc(
 	s64			available, free, threshold;
 	s32			remainder;
 
+<<<<<<< HEAD
 	/* If we have no reclaimable blocks, running GC is useless. */
 	if (!xfs_zoned_have_reclaimable(mp->m_zone_info))
 		return false;
@@ -182,10 +186,18 @@ xfs_zoned_need_gc(
 	 * number of blocks from all possible open zones.
 	 */
 	available = xfs_estimate_freecounter(mp, XC_FREE_RTAVAILABLE);
+=======
+	if (!xfs_zoned_have_reclaimable(mp->m_zone_info))
+		return false;
+
+	available = xfs_estimate_freecounter(mp, XC_FREE_RTAVAILABLE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (available <
 	    xfs_rtgs_to_rfsbs(mp, mp->m_max_open_zones - XFS_OPEN_GC_ZONES))
 		return true;
 
+<<<<<<< HEAD
 	/*
 	 * For cases where the user wants to be more aggressive with GC,
 	 * the sysfs attribute zonegc_low_space may be set to a non zero value,
@@ -197,11 +209,22 @@ xfs_zoned_need_gc(
 		return false;
 
 	free = xfs_estimate_freecounter(mp, XC_FREE_RTEXTENTS);
+=======
+	free = xfs_estimate_freecounter(mp, XC_FREE_RTEXTENTS);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	threshold = div_s64_rem(free, 100, &remainder);
 	threshold = threshold * mp->m_zonegc_low_space +
 		    remainder * div_s64(mp->m_zonegc_low_space, 100);
 
+<<<<<<< HEAD
 	return available < threshold;
+=======
+	if (available < threshold)
+		return true;
+
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct xfs_zone_gc_data *
@@ -375,7 +398,11 @@ done:
 }
 
 static bool
+<<<<<<< HEAD
 xfs_zone_gc_iter_irec(
+=======
+xfs_zone_gc_iter_next(
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_mount	*mp,
 	struct xfs_zone_gc_iter	*iter,
 	struct xfs_rmap_irec	*chunk_rec,
@@ -384,6 +411,12 @@ xfs_zone_gc_iter_irec(
 	struct xfs_rmap_irec	*irec;
 	int			error;
 
+<<<<<<< HEAD
+=======
+	if (!iter->victim_rtg)
+		return false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 retry:
 	if (iter->rec_idx == iter->rec_count) {
 		error = xfs_zone_gc_query(mp, iter);
@@ -525,11 +558,18 @@ xfs_zone_gc_select_victim(
 	return true;
 }
 
+<<<<<<< HEAD
 static int
 xfs_zone_gc_steal_open_zone(
 	struct xfs_zone_gc_data	*data)
 {
 	struct xfs_zone_info	*zi = data->mp->m_zone_info;
+=======
+static struct xfs_open_zone *
+xfs_zone_gc_steal_open(
+	struct xfs_zone_info	*zi)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_open_zone	*oz, *found = NULL;
 
 	spin_lock(&zi->zi_open_zones_lock);
@@ -537,6 +577,7 @@ xfs_zone_gc_steal_open_zone(
 		if (!found || oz->oz_allocated < found->oz_allocated)
 			found = oz;
 	}
+<<<<<<< HEAD
 	if (!found) {
 		spin_unlock(&zi->zi_open_zones_lock);
 		return -EIO;
@@ -595,6 +636,58 @@ xfs_zone_gc_select_target(
 	list_add_tail(&data->oz->oz_entry, &zi->zi_open_zones);
 	spin_unlock(&zi->zi_open_zones_lock);
 	return true;
+=======
+
+	if (found) {
+		found->oz_is_gc = true;
+		list_del_init(&found->oz_entry);
+		zi->zi_nr_open_zones--;
+	}
+
+	spin_unlock(&zi->zi_open_zones_lock);
+	return found;
+}
+
+static struct xfs_open_zone *
+xfs_zone_gc_select_target(
+	struct xfs_mount	*mp)
+{
+	struct xfs_zone_info	*zi = mp->m_zone_info;
+	struct xfs_open_zone	*oz = zi->zi_open_gc_zone;
+
+	/*
+	 * We need to wait for pending writes to finish.
+	 */
+	if (oz && oz->oz_written < rtg_blocks(oz->oz_rtg))
+		return NULL;
+
+	ASSERT(zi->zi_nr_open_zones <=
+		mp->m_max_open_zones - XFS_OPEN_GC_ZONES);
+	oz = xfs_open_zone(mp, WRITE_LIFE_NOT_SET, true);
+	if (oz)
+		trace_xfs_zone_gc_target_opened(oz->oz_rtg);
+	spin_lock(&zi->zi_open_zones_lock);
+	zi->zi_open_gc_zone = oz;
+	spin_unlock(&zi->zi_open_zones_lock);
+	return oz;
+}
+
+/*
+ * Ensure we have a valid open zone to write the GC data to.
+ *
+ * If the current target zone has space keep writing to it, else first wait for
+ * all pending writes and then pick a new one.
+ */
+static struct xfs_open_zone *
+xfs_zone_gc_ensure_target(
+	struct xfs_mount	*mp)
+{
+	struct xfs_open_zone	*oz = mp->m_zone_info->zi_open_gc_zone;
+
+	if (!oz || oz->oz_allocated == rtg_blocks(oz->oz_rtg))
+		return xfs_zone_gc_select_target(mp);
+	return oz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -609,7 +702,11 @@ xfs_zone_gc_end_io(
 	wake_up_process(data->mp->m_zone_info->zi_gc_thread);
 }
 
+<<<<<<< HEAD
 static bool
+=======
+static struct xfs_open_zone *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 xfs_zone_gc_alloc_blocks(
 	struct xfs_zone_gc_data	*data,
 	xfs_extlen_t		*count_fsb,
@@ -617,7 +714,15 @@ xfs_zone_gc_alloc_blocks(
 	bool			*is_seq)
 {
 	struct xfs_mount	*mp = data->mp;
+<<<<<<< HEAD
 	struct xfs_open_zone	*oz = data->oz;
+=======
+	struct xfs_open_zone	*oz;
+
+	oz = xfs_zone_gc_ensure_target(mp);
+	if (!oz)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*count_fsb = min(*count_fsb, XFS_B_TO_FSB(mp, data->scratch_available));
 
@@ -639,7 +744,11 @@ xfs_zone_gc_alloc_blocks(
 	spin_unlock(&mp->m_sb_lock);
 
 	if (!*count_fsb)
+<<<<<<< HEAD
 		return false;
+=======
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*daddr = xfs_gbno_to_daddr(rtg_group(oz->oz_rtg), 0);
 	*is_seq = bdev_zone_is_seq(mp->m_rtdev_targp->bt_bdev, *daddr);
@@ -647,7 +756,11 @@ xfs_zone_gc_alloc_blocks(
 		*daddr += XFS_FSB_TO_BB(mp, oz->oz_allocated);
 	oz->oz_allocated += *count_fsb;
 	atomic_inc(&oz->oz_ref);
+<<<<<<< HEAD
 	return true;
+=======
+	return oz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -673,6 +786,7 @@ xfs_zone_gc_add_data(
 }
 
 static bool
+<<<<<<< HEAD
 xfs_zone_gc_can_start_chunk(
 	struct xfs_zone_gc_data	*data)
 {
@@ -695,17 +809,24 @@ xfs_zone_gc_can_start_chunk(
 }
 
 static bool
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 xfs_zone_gc_start_chunk(
 	struct xfs_zone_gc_data	*data)
 {
 	struct xfs_zone_gc_iter	*iter = &data->iter;
 	struct xfs_mount	*mp = data->mp;
 	struct block_device	*bdev = mp->m_rtdev_targp->bt_bdev;
+<<<<<<< HEAD
+=======
+	struct xfs_open_zone	*oz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_rmap_irec	irec;
 	struct xfs_gc_bio	*chunk;
 	struct xfs_inode	*ip;
 	struct bio		*bio;
 	xfs_daddr_t		daddr;
+<<<<<<< HEAD
 	bool			is_seq;
 
 	if (!xfs_zone_gc_can_start_chunk(data))
@@ -717,10 +838,24 @@ xfs_zone_gc_start_chunk(
 
 	if (!xfs_zone_gc_alloc_blocks(data, &irec.rm_blockcount, &daddr,
 			&is_seq)) {
+=======
+	unsigned int		len;
+	bool			is_seq;
+
+	if (xfs_is_shutdown(mp))
+		return false;
+
+	if (!xfs_zone_gc_iter_next(mp, iter, &irec, &ip))
+		return false;
+	oz = xfs_zone_gc_alloc_blocks(data, &irec.rm_blockcount, &daddr,
+			&is_seq);
+	if (!oz) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xfs_irele(ip);
 		return false;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Scratch allocation can wrap around to the same buffer again,
 	 * provision an extra bvec for that case.
@@ -731,12 +866,27 @@ xfs_zone_gc_start_chunk(
 	chunk->ip = ip;
 	chunk->offset = XFS_FSB_TO_B(mp, irec.rm_offset);
 	chunk->len = XFS_FSB_TO_B(mp, irec.rm_blockcount);
+=======
+	len = XFS_FSB_TO_B(mp, irec.rm_blockcount);
+	bio = bio_alloc_bioset(bdev,
+			min(howmany(len, XFS_GC_BUF_SIZE) + 1, XFS_GC_NR_BUFS),
+			REQ_OP_READ, GFP_NOFS, &data->bio_set);
+
+	chunk = container_of(bio, struct xfs_gc_bio, bio);
+	chunk->ip = ip;
+	chunk->offset = XFS_FSB_TO_B(mp, irec.rm_offset);
+	chunk->len = len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chunk->old_startblock =
 		xfs_rgbno_to_rtb(iter->victim_rtg, irec.rm_startblock);
 	chunk->new_daddr = daddr;
 	chunk->is_seq = is_seq;
 	chunk->data = data;
+<<<<<<< HEAD
 	chunk->oz = data->oz;
+=======
+	chunk->oz = oz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chunk->victim_rtg = iter->victim_rtg;
 	atomic_inc(&rtg_group(chunk->victim_rtg)->xg_active_ref);
 	atomic_inc(&chunk->victim_rtg->rtg_gccount);
@@ -744,9 +894,14 @@ xfs_zone_gc_start_chunk(
 	bio->bi_iter.bi_sector = xfs_rtb_to_daddr(mp, chunk->old_startblock);
 	bio->bi_end_io = xfs_zone_gc_end_io;
 	xfs_zone_gc_add_data(chunk);
+<<<<<<< HEAD
 	data->scratch_head =
 		(data->scratch_head + chunk->len) % data->scratch_size;
 	data->scratch_available -= chunk->len;
+=======
+	data->scratch_head = (data->scratch_head + len) % data->scratch_size;
+	data->scratch_available -= len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	XFS_STATS_INC(mp, xs_gc_read_calls);
 
@@ -937,10 +1092,16 @@ out:
 
 static void
 xfs_submit_zone_reset_bio(
+<<<<<<< HEAD
 	struct bio		*bio,
 	void			*priv)
 {
 	struct xfs_rtgroup	*rtg = priv;
+=======
+	struct xfs_rtgroup	*rtg,
+	struct bio		*bio)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_mount	*mp = rtg_mount(rtg);
 
 	trace_xfs_zone_reset(rtg);
@@ -972,16 +1133,36 @@ xfs_submit_zone_reset_bio(
 	submit_bio(bio);
 }
 
+<<<<<<< HEAD
+=======
+static void xfs_bio_wait_endio(struct bio *bio)
+{
+	complete(bio->bi_private);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int
 xfs_zone_gc_reset_sync(
 	struct xfs_rtgroup	*rtg)
 {
+<<<<<<< HEAD
+=======
+	DECLARE_COMPLETION_ONSTACK(done);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bio		bio;
 	int			error;
 
 	bio_init(&bio, rtg_mount(rtg)->m_rtdev_targp->bt_bdev, NULL, 0,
 			REQ_OP_ZONE_RESET | REQ_SYNC);
+<<<<<<< HEAD
 	bio_await(&bio, rtg, xfs_submit_zone_reset_bio);
+=======
+	bio.bi_private = &done;
+	bio.bi_end_io = xfs_bio_wait_endio;
+	xfs_submit_zone_reset_bio(rtg, &bio);
+	wait_for_completion_io(&done);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = blk_status_to_errno(bio.bi_status);
 	bio_uninit(&bio);
 	return error;
@@ -1018,10 +1199,44 @@ xfs_zone_gc_reset_zones(
 		chunk->data = data;
 		WRITE_ONCE(chunk->state, XFS_GC_BIO_NEW);
 		list_add_tail(&chunk->entry, &data->resetting);
+<<<<<<< HEAD
 		xfs_submit_zone_reset_bio(bio, rtg);
 	} while (next);
 }
 
+=======
+		xfs_submit_zone_reset_bio(rtg, bio);
+	} while (next);
+}
+
+static bool
+xfs_zone_gc_should_start_new_work(
+	struct xfs_zone_gc_data	*data)
+{
+	struct xfs_open_zone	*oz;
+
+	if (xfs_is_shutdown(data->mp))
+		return false;
+	if (!data->scratch_available)
+		return false;
+
+	oz = xfs_zone_gc_ensure_target(data->mp);
+	if (!oz || oz->oz_allocated == rtg_blocks(oz->oz_rtg))
+		return false;
+
+	if (!data->iter.victim_rtg) {
+		if (kthread_should_stop() || kthread_should_park())
+			return false;
+		if (!xfs_zoned_need_gc(data->mp))
+			return false;
+		if (!xfs_zone_gc_select_victim(data))
+			return false;
+	}
+
+	return true;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Handle the work to read and write data for GC and to reset the zones,
  * including handling all completions.
@@ -1071,10 +1286,20 @@ xfs_zone_gc_handle_work(
 	}
 	blk_finish_plug(&plug);
 
+<<<<<<< HEAD
 	blk_start_plug(&plug);
 	while (xfs_zone_gc_start_chunk(data))
 		;
 	blk_finish_plug(&plug);
+=======
+	if (xfs_zone_gc_should_start_new_work(data)) {
+		set_current_state(TASK_RUNNING);
+		blk_start_plug(&plug);
+		while (xfs_zone_gc_start_chunk(data))
+			;
+		blk_finish_plug(&plug);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1134,8 +1359,11 @@ xfs_zoned_gcd(
 	}
 	xfs_clear_zonegc_running(mp);
 
+<<<<<<< HEAD
 	if (data->oz)
 		xfs_open_zone_put(data->oz);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data->iter.victim_rtg)
 		xfs_rtgroup_rele(data->iter.victim_rtg);
 
@@ -1183,6 +1411,7 @@ xfs_zone_gc_mount(
 {
 	struct xfs_zone_info	*zi = mp->m_zone_info;
 	struct xfs_zone_gc_data	*data;
+<<<<<<< HEAD
 	int			error;
 
 	data = xfs_zone_gc_data_alloc(mp);
@@ -1203,6 +1432,37 @@ xfs_zone_gc_mount(
 			xfs_warn(mp, "unable to steal an open zone for gc");
 			goto out_free_gc_data;
 		}
+=======
+	struct xfs_open_zone	*oz;
+	int			error;
+
+	/*
+	 * If there are no free zones available for GC, pick the open zone with
+	 * the least used space to GC into.  This should only happen after an
+	 * unclean shutdown near ENOSPC while GC was ongoing.
+	 *
+	 * We also need to do this for the first gc zone allocation if we
+	 * unmounted while at the open limit.
+	 */
+	if (!xfs_group_marked(mp, XG_TYPE_RTG, XFS_RTG_FREE) ||
+	    zi->zi_nr_open_zones == mp->m_max_open_zones)
+		oz = xfs_zone_gc_steal_open(zi);
+	else
+		oz = xfs_open_zone(mp, WRITE_LIFE_NOT_SET, true);
+	if (!oz) {
+		xfs_warn(mp, "unable to allocate a zone for gc");
+		error = -EIO;
+		goto out;
+	}
+
+	trace_xfs_zone_gc_target_opened(oz->oz_rtg);
+	zi->zi_open_gc_zone = oz;
+
+	data = xfs_zone_gc_data_alloc(mp);
+	if (!data) {
+		error = -ENOMEM;
+		goto out_put_gc_zone;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	zi->zi_gc_thread = kthread_create(xfs_zoned_gcd, data,
@@ -1210,18 +1470,30 @@ xfs_zone_gc_mount(
 	if (IS_ERR(zi->zi_gc_thread)) {
 		xfs_warn(mp, "unable to create zone gc thread");
 		error = PTR_ERR(zi->zi_gc_thread);
+<<<<<<< HEAD
 		goto out_put_oz;
+=======
+		goto out_free_gc_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* xfs_zone_gc_start will unpark for rw mounts */
 	kthread_park(zi->zi_gc_thread);
 	return 0;
 
+<<<<<<< HEAD
 out_put_oz:
 	if (data->oz)
 		xfs_open_zone_put(data->oz);
 out_free_gc_data:
 	xfs_zone_gc_data_free(data);
+=======
+out_free_gc_data:
+	kfree(data);
+out_put_gc_zone:
+	xfs_open_zone_put(zi->zi_open_gc_zone);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return error;
 }
 
@@ -1232,4 +1504,9 @@ xfs_zone_gc_unmount(
 	struct xfs_zone_info	*zi = mp->m_zone_info;
 
 	kthread_stop(zi->zi_gc_thread);
+<<<<<<< HEAD
+=======
+	if (zi->zi_open_gc_zone)
+		xfs_open_zone_put(zi->zi_open_gc_zone);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

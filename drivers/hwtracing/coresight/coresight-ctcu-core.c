@@ -19,6 +19,11 @@
 #include "coresight-ctcu.h"
 #include "coresight-priv.h"
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(ctcu_devs, "ctcu");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ctcu_writel(drvdata, val, offset)	__raw_writel((val), drvdata->base + offset)
 #define ctcu_readl(drvdata, offset)		__raw_readl(drvdata->base + offset)
 
@@ -185,7 +190,11 @@ static int ctcu_probe(struct platform_device *pdev)
 	void __iomem *base;
 	int i, ret;
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("ctcu", dev);
+=======
+	desc.name = coresight_alloc_device_name(&ctcu_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 
@@ -226,7 +235,10 @@ static int ctcu_probe(struct platform_device *pdev)
 	desc.dev = dev;
 	desc.ops = &ctcu_ops;
 	desc.access = CSDEV_ACCESS_IOMEM(base);
+<<<<<<< HEAD
 	raw_spin_lock_init(&drvdata->spin_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drvdata->csdev = coresight_register(&desc);
 	if (IS_ERR(drvdata->csdev))

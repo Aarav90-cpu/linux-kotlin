@@ -1361,6 +1361,7 @@ static const char *hist_field_name(struct hist_field *field,
 		 field->flags & HIST_FIELD_FL_VAR_REF) {
 		if (field->system) {
 			static char full_name[MAX_FILTER_STR_VAL];
+<<<<<<< HEAD
 			static char *fmt;
 			int len;
 
@@ -1369,8 +1370,23 @@ static const char *hist_field_name(struct hist_field *field,
 			len = snprintf(full_name, sizeof(full_name), fmt,
 				       field->system, field->event_name,
 				       field->name);
+<<<<<<< HEAD
 			if (len < sizeof(full_name))
 				field_name = full_name;
+=======
+			if (len >= sizeof(full_name))
+				return NULL;
+
+=======
+
+			strcat(full_name, field->system);
+			strcat(full_name, ".");
+			strcat(full_name, field->event_name);
+			strcat(full_name, ".");
+			strcat(full_name, field->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+			field_name = full_name;
+>>>>>>> 7fb39c93c52e (Sync)
 		} else
 			field_name = field->name;
 	} else if (field->flags & HIST_FIELD_FL_TIMESTAMP)
@@ -1743,10 +1759,16 @@ static const char *get_hist_field_flags(struct hist_field *hist_field)
 
 static void expr_field_str(struct hist_field *field, char *expr)
 {
+<<<<<<< HEAD
 	if (field->flags & HIST_FIELD_FL_VAR_REF) {
 		if (!field->system)
 			strcat(expr, "$");
 	} else if (field->flags & HIST_FIELD_FL_CONST) {
+=======
+	if (field->flags & HIST_FIELD_FL_VAR_REF)
+		strcat(expr, "$");
+	else if (field->flags & HIST_FIELD_FL_CONST) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		char str[HIST_CONST_DIGITS_MAX];
 
 		snprintf(str, HIST_CONST_DIGITS_MAX, "%llu", field->constant);
@@ -5840,6 +5862,11 @@ static int event_hist_open(struct inode *inode, struct file *file)
 	hist_file->file = file;
 	hist_file->last_act = get_hist_hit_count(event_file);
 
+<<<<<<< HEAD
+=======
+	/* Clear private_data to avoid warning in single_open() */
+	file->private_data = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = single_open(file, hist_show, hist_file);
 	if (ret) {
 		kfree(hist_file);
@@ -6128,6 +6155,11 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	/* Clear private_data to avoid warning in single_open() */
+	file->private_data = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = single_open(file, hist_debug_show, file);
 	if (ret)
 		tracing_release_file_tr(inode, file);
@@ -6158,8 +6190,12 @@ static void hist_field_print(struct seq_file *m, struct hist_field *hist_field)
 	else if (field_name) {
 		if (hist_field->flags & HIST_FIELD_FL_VAR_REF ||
 		    hist_field->flags & HIST_FIELD_FL_ALIAS)
+<<<<<<< HEAD
 			if (!hist_field->system)
 				seq_putc(m, '$');
+=======
+			seq_putc(m, '$');
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_printf(m, "%s", field_name);
 	} else if (hist_field->flags & HIST_FIELD_FL_TIMESTAMP)
 		seq_puts(m, "common_timestamp");

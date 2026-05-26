@@ -6,7 +6,10 @@
 /dts-v1/;
 
 #include <dt-bindings/leds/common.h>
+<<<<<<< HEAD
 #include <dt-bindings/usb/pd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "agatti.dtsi"
 #include "pm4125.dtsi"
 
@@ -110,6 +113,7 @@
 		leds = <&ledr>, <&ledg>, <&ledb>;
 	};
 
+<<<<<<< HEAD
 	vreg_anx_30: regulator-anx-30 {
 		compatible = "regulator-fixed";
 		regulator-name = "anx30";
@@ -119,6 +123,8 @@
 		regulator-boot-on;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* PM4125 charger out, supplied by VBAT */
 	vph_pwr: regulator-vph-pwr {
 		compatible = "regulator-fixed";
@@ -152,6 +158,7 @@
 	clock-frequency = <100000>;
 
 	status = "okay";
+<<<<<<< HEAD
 
 	anx7625: encoder@58 {
 		compatible = "analogix,anx7625";
@@ -232,6 +239,8 @@
 
 &mdss_dsi0_phy {
 	status = "okay";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pm4125_vbus {
@@ -415,13 +424,30 @@
 &spi5 {
 	status = "okay";
 
+<<<<<<< HEAD
 	mcu@0 {
 		compatible = "arduino,unoq-mcu";
 		reg = <0>;
+=======
+	spidev@0 {
+		reg = <0>;
+		compatible = "arduino,unoq-mcu";
+		pinctrl-0 = <&spidev_cs>;
+		pinctrl-names = "default";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
 &tlmm {
+<<<<<<< HEAD
+=======
+	spidev_cs: spidev-cs-state {
+		pins = "gpio17";
+		function = "gpio";
+		drive-strength = <16>;
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jmisc_gpio18: jmisc-gpio18-state {
 		pins = "gpio18";
 		function = "gpio";
@@ -443,6 +469,7 @@
 		output-disable;
 	};
 
+<<<<<<< HEAD
 	anx7625_cable_det_pin: anx7625-cable-det-pins-state {
 		pins = "gpio46";
 		function = "gpio";
@@ -459,6 +486,8 @@
 		bias-pull-up;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	key_volp_n: key-volp-n-state {
 		pins = "gpio96";
 		function = "gpio";
@@ -526,10 +555,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb_dwc3_hs {
 	remote-endpoint = <&anx_hs_in>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_hsphy {
 	vdd-supply = <&pm4125_l12>;
 	vdda-pll-supply = <&pm4125_l13>;
@@ -545,10 +577,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb_qmpphy_out {
 	remote-endpoint = <&anx_ss_in>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &wifi {
 	vdd-0.8-cx-mx-supply = <&pm4125_l7>;
 	vdd-1.8-xo-supply = <&pm4125_l13>;

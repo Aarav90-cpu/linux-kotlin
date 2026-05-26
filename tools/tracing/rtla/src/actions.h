@@ -49,9 +49,16 @@ struct actions {
 
 void actions_init(struct actions *self);
 void actions_destroy(struct actions *self);
+<<<<<<< HEAD
 void actions_add_trace_output(struct actions *self, const char *trace_output);
 void actions_add_signal(struct actions *self, int signal, int pid);
 void actions_add_shell(struct actions *self, const char *command);
 void actions_add_continue(struct actions *self);
+=======
+int actions_add_trace_output(struct actions *self, const char *trace_output);
+int actions_add_signal(struct actions *self, int signal, int pid);
+int actions_add_shell(struct actions *self, const char *command);
+int actions_add_continue(struct actions *self);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int actions_parse(struct actions *self, const char *trigger, const char *tracefn);
 int actions_perform(struct actions *self);

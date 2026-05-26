@@ -462,8 +462,12 @@ int BPF_PROG(k20_fix_events, struct hid_bpf_ctx *hctx)
 			__u32 buttons;
 			__u8 wheel;
 		} __attribute__((packed)) *pad_report;
+<<<<<<< HEAD
 		int i;
 		size_t b;
+=======
+		int i, b;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__u8 modifiers = data[1];
 		__u32 buttons = 0;
 

@@ -20,6 +20,10 @@ EXPORT_SYMBOL(csum_partial);
 EXPORT_SYMBOL(csum_partial_copy_generic);
 EXPORT_SYMBOL(copy_page);
 EXPORT_SYMBOL(__clear_user);
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(empty_zero_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_FLATMEM
 /* need in pfn_valid macro */
 EXPORT_SYMBOL(min_low_pfn);

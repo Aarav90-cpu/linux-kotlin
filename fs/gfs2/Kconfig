@@ -26,7 +26,11 @@ config GFS2_FS
 
 config GFS2_FS_LOCKING_DLM
 	bool "GFS2 DLM locking"
+<<<<<<< HEAD
 	depends on (GFS2_FS!=n) && NET && INET && \
+=======
+	depends on (GFS2_FS!=n) && NET && INET && (IPV6 || IPV6=n) && \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		CONFIGFS_FS && SYSFS && (DLM=y || DLM=GFS2_FS)
 	help
 	  Multiple node locking module for GFS2

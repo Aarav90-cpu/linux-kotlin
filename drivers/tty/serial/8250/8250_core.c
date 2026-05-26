@@ -524,7 +524,11 @@ console_initcall(univ8250_console_init);
 
 struct uart_driver serial8250_reg = {
 	.owner			= THIS_MODULE,
+<<<<<<< HEAD
 	.driver_name		= "serial_8250",
+=======
+	.driver_name		= "serial",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dev_name		= "ttyS",
 	.major			= TTY_MAJOR,
 	.minor			= 64,

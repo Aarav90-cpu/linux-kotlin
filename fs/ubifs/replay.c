@@ -305,6 +305,10 @@ static int replay_entries_cmp(void *priv, const struct list_head *a,
 	struct ubifs_info *c = priv;
 	struct replay_entry *ra, *rb;
 
+<<<<<<< HEAD
+=======
+	cond_resched();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (a == b)
 		return 0;
 

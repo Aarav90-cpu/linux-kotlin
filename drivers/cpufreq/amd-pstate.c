@@ -36,7 +36,10 @@
 #include <linux/io.h>
 #include <linux/delay.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <linux/power_supply.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/static_call.h>
 #include <linux/topology.h>
 
@@ -87,7 +90,18 @@ static struct cpufreq_driver amd_pstate_driver;
 static struct cpufreq_driver amd_pstate_epp_driver;
 static int cppc_state = AMD_PSTATE_UNDEFINED;
 static bool amd_pstate_prefcore = true;
+<<<<<<< HEAD
 static bool dynamic_epp;
+=======
+<<<<<<< HEAD
+#ifdef CONFIG_X86_AMD_PSTATE_DYNAMIC_EPP
+static bool dynamic_epp = CONFIG_X86_AMD_PSTATE_DYNAMIC_EPP;
+#else
+static bool dynamic_epp;
+#endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 static struct quirk_entry *quirks;
 
 /*
@@ -105,7 +119,10 @@ static struct quirk_entry *quirks;
  *	2		balance_performance
  *	3		balance_power
  *	4		power
+<<<<<<< HEAD
  *	5		custom (for raw EPP values)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum energy_perf_value_index {
 	EPP_INDEX_DEFAULT = 0,
@@ -113,7 +130,10 @@ enum energy_perf_value_index {
 	EPP_INDEX_BALANCE_PERFORMANCE,
 	EPP_INDEX_BALANCE_POWERSAVE,
 	EPP_INDEX_POWERSAVE,
+<<<<<<< HEAD
 	EPP_INDEX_CUSTOM,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	EPP_INDEX_MAX,
 };
 
@@ -123,7 +143,10 @@ static const char * const energy_perf_strings[] = {
 	[EPP_INDEX_BALANCE_PERFORMANCE] = "balance_performance",
 	[EPP_INDEX_BALANCE_POWERSAVE] = "balance_power",
 	[EPP_INDEX_POWERSAVE] = "power",
+<<<<<<< HEAD
 	[EPP_INDEX_CUSTOM] = "custom",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 static_assert(ARRAY_SIZE(energy_perf_strings) == EPP_INDEX_MAX);
 
@@ -134,7 +157,11 @@ static unsigned int epp_values[] = {
 	[EPP_INDEX_BALANCE_POWERSAVE] = AMD_CPPC_EPP_BALANCE_POWERSAVE,
 	[EPP_INDEX_POWERSAVE] = AMD_CPPC_EPP_POWERSAVE,
 };
+<<<<<<< HEAD
 static_assert(ARRAY_SIZE(epp_values) == EPP_INDEX_MAX - 1);
+=======
+static_assert(ARRAY_SIZE(epp_values) == EPP_INDEX_MAX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 typedef int (*cppc_mode_transition_fn)(int);
 
@@ -252,7 +279,11 @@ static int msr_update_perf(struct cpufreq_policy *policy, u8 min_perf,
 	if (trace_amd_pstate_epp_perf_enabled()) {
 		union perf_cached perf = READ_ONCE(cpudata->perf);
 
+<<<<<<< HEAD
 		trace_call__amd_pstate_epp_perf(cpudata->cpu,
+=======
+		trace_amd_pstate_epp_perf(cpudata->cpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  perf.highest_perf,
 					  epp,
 					  min_perf,
@@ -266,6 +297,10 @@ static int msr_update_perf(struct cpufreq_policy *policy, u8 min_perf,
 
 	if (fast_switch) {
 		wrmsrq(MSR_AMD_CPPC_REQ, value);
+<<<<<<< HEAD
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		int ret = wrmsrq_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
 
@@ -302,7 +337,11 @@ static int msr_set_epp(struct cpufreq_policy *policy, u8 epp)
 	if (trace_amd_pstate_epp_perf_enabled()) {
 		union perf_cached perf = cpudata->perf;
 
+<<<<<<< HEAD
 		trace_call__amd_pstate_epp_perf(cpudata->cpu, perf.highest_perf,
+=======
+		trace_amd_pstate_epp_perf(cpudata->cpu, perf.highest_perf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  epp,
 					  FIELD_GET(AMD_CPPC_MIN_PERF_MASK,
 						    cpudata->cppc_req_cached),
@@ -334,6 +373,7 @@ static inline int amd_pstate_set_epp(struct cpufreq_policy *policy, u8 epp)
 	return static_call(amd_pstate_set_epp)(policy, epp);
 }
 
+<<<<<<< HEAD
 static int amd_pstate_set_floor_perf(struct cpufreq_policy *policy, u8 perf)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
@@ -403,6 +443,8 @@ static int amd_pstate_init_floor_perf(struct cpufreq_policy *policy)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int shmem_set_epp(struct cpufreq_policy *policy, u8 epp)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
@@ -416,7 +458,11 @@ static int shmem_set_epp(struct cpufreq_policy *policy, u8 epp)
 	if (trace_amd_pstate_epp_perf_enabled()) {
 		union perf_cached perf = cpudata->perf;
 
+<<<<<<< HEAD
 		trace_call__amd_pstate_epp_perf(cpudata->cpu, perf.highest_perf,
+=======
+		trace_amd_pstate_epp_perf(cpudata->cpu, perf.highest_perf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  epp,
 					  FIELD_GET(AMD_CPPC_MIN_PERF_MASK,
 						    cpudata->cppc_req_cached),
@@ -500,7 +546,10 @@ static int msr_init_perf(struct amd_cpudata *cpudata)
 	perf.lowest_perf = FIELD_GET(AMD_CPPC_LOWEST_PERF_MASK, cap1);
 	WRITE_ONCE(cpudata->perf, perf);
 	WRITE_ONCE(cpudata->prefcore_ranking, FIELD_GET(AMD_CPPC_HIGHEST_PERF_MASK, cap1));
+<<<<<<< HEAD
 	WRITE_ONCE(cpudata->floor_perf_cnt, FIELD_GET(AMD_CPPC_FLOOR_PERF_CNT_MASK, cap1));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -581,7 +630,11 @@ static int shmem_update_perf(struct cpufreq_policy *policy, u8 min_perf,
 	if (trace_amd_pstate_epp_perf_enabled()) {
 		union perf_cached perf = READ_ONCE(cpudata->perf);
 
+<<<<<<< HEAD
 		trace_call__amd_pstate_epp_perf(cpudata->cpu,
+=======
+		trace_amd_pstate_epp_perf(cpudata->cpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  perf.highest_perf,
 					  epp,
 					  min_perf,
@@ -639,12 +692,24 @@ static inline bool amd_pstate_sample(struct amd_cpudata *cpudata)
 	return true;
 }
 
+<<<<<<< HEAD
 static void amd_pstate_update(struct cpufreq_policy *policy, u8 min_perf,
 			      u8 des_perf, u8 max_perf, bool fast_switch, int gov_flags)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
 	union perf_cached perf = READ_ONCE(cpudata->perf);
 
+=======
+static void amd_pstate_update(struct amd_cpudata *cpudata, u8 min_perf,
+			      u8 des_perf, u8 max_perf, bool fast_switch, int gov_flags)
+{
+	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpudata->cpu);
+	union perf_cached perf = READ_ONCE(cpudata->perf);
+
+	if (!policy)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* limit the max perf when core performance boost feature is disabled */
 	if (!cpudata->boost_supported)
 		max_perf = min_t(u8, perf.nominal_perf, max_perf);
@@ -659,7 +724,11 @@ static void amd_pstate_update(struct cpufreq_policy *policy, u8 min_perf,
 	}
 
 	if (trace_amd_pstate_perf_enabled() && amd_pstate_sample(cpudata)) {
+<<<<<<< HEAD
 		trace_call__amd_pstate_perf(min_perf, des_perf, max_perf, cpudata->freq,
+=======
+		trace_amd_pstate_perf(min_perf, des_perf, max_perf, cpudata->freq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cpudata->cur.mperf, cpudata->cur.aperf, cpudata->cur.tsc,
 				cpudata->cpu, fast_switch);
 	}
@@ -759,7 +828,11 @@ static int amd_pstate_update_freq(struct cpufreq_policy *policy,
 	if (!fast_switch)
 		cpufreq_freq_transition_begin(policy, &freqs);
 
+<<<<<<< HEAD
 	amd_pstate_update(policy, perf.min_limit_perf, des_perf,
+=======
+	amd_pstate_update(cpudata, perf.min_limit_perf, des_perf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  perf.max_limit_perf, fast_switch,
 			  policy->governor->flags);
 
@@ -784,12 +857,20 @@ static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
 	return policy->cur;
 }
 
+<<<<<<< HEAD
 static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
+=======
+static void amd_pstate_adjust_perf(unsigned int cpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   unsigned long _min_perf,
 				   unsigned long target_perf,
 				   unsigned long capacity)
 {
 	u8 max_perf, min_perf, des_perf, cap_perf;
+<<<<<<< HEAD
+=======
+	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct amd_cpudata *cpudata;
 	union perf_cached perf;
 
@@ -820,13 +901,18 @@ static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
 	if (max_perf < min_perf)
 		max_perf = min_perf;
 
+<<<<<<< HEAD
 	amd_pstate_update(policy, min_perf, des_perf, max_perf, true,
+=======
+	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			policy->governor->flags);
 }
 
 static int amd_pstate_cpu_boost_update(struct cpufreq_policy *policy, bool on)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
+<<<<<<< HEAD
 	u32 nominal_freq;
 	int ret = 0;
 
@@ -837,6 +923,22 @@ static int amd_pstate_cpu_boost_update(struct cpufreq_policy *policy, bool on)
 	else if (policy->cpuinfo.max_freq > nominal_freq)
 		policy->cpuinfo.max_freq = nominal_freq;
 
+=======
+	union perf_cached perf = READ_ONCE(cpudata->perf);
+	u32 nominal_freq, max_freq;
+	int ret = 0;
+
+	nominal_freq = READ_ONCE(cpudata->nominal_freq);
+	max_freq = perf_to_freq(perf, cpudata->nominal_freq, perf.highest_perf);
+
+	if (on)
+		policy->cpuinfo.max_freq = max_freq;
+	else if (policy->cpuinfo.max_freq > nominal_freq)
+		policy->cpuinfo.max_freq = nominal_freq;
+
+	policy->max = policy->cpuinfo.max_freq;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cppc_state == AMD_PSTATE_PASSIVE) {
 		ret = freq_qos_update_request(&cpudata->req[1], policy->cpuinfo.max_freq);
 		if (ret < 0)
@@ -1018,15 +1120,23 @@ static int amd_pstate_init_freq(struct amd_cpudata *cpudata)
 
 	WRITE_ONCE(cpudata->nominal_freq, nominal_freq);
 
+<<<<<<< HEAD
 	/* max_freq is calculated according to (nominal_freq * highest_perf)/nominal_perf */
 	max_freq = perf_to_freq(perf, nominal_freq, perf.highest_perf);
 	WRITE_ONCE(cpudata->max_freq, max_freq);
 
+=======
+	max_freq = perf_to_freq(perf, nominal_freq, perf.highest_perf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lowest_nonlinear_freq = perf_to_freq(perf, nominal_freq, perf.lowest_nonlinear_perf);
 	WRITE_ONCE(cpudata->lowest_nonlinear_freq, lowest_nonlinear_freq);
 
 	/**
 	 * Below values need to be initialized correctly, otherwise driver will fail to load
+<<<<<<< HEAD
+=======
+	 * max_freq is calculated according to (nominal_freq * highest_perf)/nominal_perf
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * lowest_nonlinear_freq is a value between [min_freq, nominal_freq]
 	 * Check _CPC in ACPI table objects if any values are incorrect
 	 */
@@ -1089,9 +1199,16 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
 	policy->cpuinfo.min_freq = policy->min = perf_to_freq(perf,
 							      cpudata->nominal_freq,
 							      perf.lowest_perf);
+<<<<<<< HEAD
 	policy->cpuinfo.max_freq = policy->max = cpudata->max_freq;
 
 	policy->driver_data = cpudata;
+=======
+	policy->cpuinfo.max_freq = policy->max = perf_to_freq(perf,
+							      cpudata->nominal_freq,
+							      perf.highest_perf);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = amd_pstate_cppc_enable(policy);
 	if (ret)
 		goto free_cpudata1;
@@ -1104,12 +1221,15 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
 	if (cpu_feature_enabled(X86_FEATURE_CPPC))
 		policy->fast_switch_possible = true;
 
+<<<<<<< HEAD
 	ret = amd_pstate_init_floor_perf(policy);
 	if (ret) {
 		dev_err(dev, "Failed to initialize Floor Perf (%d)\n", ret);
 		goto free_cpudata1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = freq_qos_add_request(&policy->constraints, &cpudata->req[0],
 				   FREQ_QOS_MIN, FREQ_QOS_MIN_DEFAULT_VALUE);
 	if (ret < 0) {
@@ -1124,6 +1244,10 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
 		goto free_cpudata2;
 	}
 
+<<<<<<< HEAD
+=======
+	policy->driver_data = cpudata;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!current_pstate_driver->adjust_perf)
 		current_pstate_driver->adjust_perf = amd_pstate_adjust_perf;
@@ -1135,7 +1259,10 @@ free_cpudata2:
 free_cpudata1:
 	pr_warn("Failed to initialize CPU %d: %d\n", policy->cpu, ret);
 	kfree(cpudata);
+<<<<<<< HEAD
 	policy->driver_data = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1146,7 +1273,10 @@ static void amd_pstate_cpu_exit(struct cpufreq_policy *policy)
 
 	/* Reset CPPC_REQ MSR to the BIOS value */
 	amd_pstate_update_perf(policy, perf.bios_min_perf, 0U, 0U, 0U, false);
+<<<<<<< HEAD
 	amd_pstate_set_floor_perf(policy, cpudata->bios_floor_perf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	freq_qos_remove_request(&cpudata->req[1]);
 	freq_qos_remove_request(&cpudata->req[0]);
@@ -1154,6 +1284,7 @@ static void amd_pstate_cpu_exit(struct cpufreq_policy *policy)
 	kfree(cpudata);
 }
 
+<<<<<<< HEAD
 static int amd_pstate_get_balanced_epp(struct cpufreq_policy *policy)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
@@ -1317,6 +1448,8 @@ cleanup:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Sysfs attributes */
 
 /*
@@ -1327,9 +1460,20 @@ cleanup:
 static ssize_t show_amd_pstate_max_freq(struct cpufreq_policy *policy,
 					char *buf)
 {
+<<<<<<< HEAD
 	struct amd_cpudata *cpudata = policy->driver_data;
 
 	return sysfs_emit(buf, "%u\n", cpudata->max_freq);
+=======
+	struct amd_cpudata *cpudata;
+	union perf_cached perf;
+
+	cpudata = policy->driver_data;
+	perf = READ_ONCE(cpudata->perf);
+
+	return sysfs_emit(buf, "%u\n",
+			  perf_to_freq(perf, cpudata->nominal_freq, perf.highest_perf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t show_amd_pstate_lowest_nonlinear_freq(struct cpufreq_policy *policy,
@@ -1399,6 +1543,7 @@ static ssize_t show_energy_performance_available_preferences(
 	return offset;
 }
 
+<<<<<<< HEAD
 ssize_t store_energy_performance_preference(struct cpufreq_policy *policy,
 				    const char *buf, size_t count)
 {
@@ -1429,11 +1574,31 @@ ssize_t store_energy_performance_preference(struct cpufreq_policy *policy,
 	}
 
 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE) {
+=======
+static ssize_t store_energy_performance_preference(
+		struct cpufreq_policy *policy, const char *buf, size_t count)
+{
+	struct amd_cpudata *cpudata = policy->driver_data;
+	ssize_t ret;
+	u8 epp;
+
+	ret = sysfs_match_string(energy_perf_strings, buf);
+	if (ret < 0)
+		return -EINVAL;
+
+	if (!ret)
+		epp = cpudata->epp_default;
+	else
+		epp = epp_values[ret];
+
+	if (epp > 0 && policy->policy == CPUFREQ_POLICY_PERFORMANCE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("EPP cannot be set under performance policy\n");
 		return -EBUSY;
 	}
 
 	ret = amd_pstate_set_epp(policy, epp);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -1444,15 +1609,26 @@ ssize_t store_energy_performance_preference(struct cpufreq_policy *policy,
 EXPORT_SYMBOL_GPL(store_energy_performance_preference);
 
 ssize_t show_energy_performance_preference(struct cpufreq_policy *policy, char *buf)
+=======
+
+	return ret ? ret : count;
+}
+
+static ssize_t show_energy_performance_preference(
+				struct cpufreq_policy *policy, char *buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
 	u8 preference, epp;
 
 	epp = FIELD_GET(AMD_CPPC_EPP_PERF_MASK, cpudata->cppc_req_cached);
 
+<<<<<<< HEAD
 	if (cpudata->raw_epp)
 		return sysfs_emit(buf, "%u\n", epp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (epp) {
 	case AMD_CPPC_EPP_PERFORMANCE:
 		preference = EPP_INDEX_PERFORMANCE;
@@ -1472,6 +1648,7 @@ ssize_t show_energy_performance_preference(struct cpufreq_policy *policy, char *
 
 	return sysfs_emit(buf, "%s\n", energy_perf_strings[preference]);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(show_energy_performance_preference);
 
 static ssize_t store_amd_pstate_floor_freq(struct cpufreq_policy *policy,
@@ -1604,6 +1781,8 @@ static struct freq_attr **get_freq_attrs(void)
 
 	return attrs;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void amd_pstate_driver_cleanup(void)
 {
@@ -1611,8 +1790,11 @@ static void amd_pstate_driver_cleanup(void)
 		sched_clear_itmt_support();
 
 	cppc_state = AMD_PSTATE_DISABLE;
+<<<<<<< HEAD
 	kfree(current_pstate_driver->attr);
 	current_pstate_driver->attr = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	current_pstate_driver = NULL;
 }
 
@@ -1637,7 +1819,10 @@ static int amd_pstate_set_driver(int mode_idx)
 
 static int amd_pstate_register_driver(int mode)
 {
+<<<<<<< HEAD
 	struct freq_attr **attr = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = amd_pstate_set_driver(mode);
@@ -1646,6 +1831,7 @@ static int amd_pstate_register_driver(int mode)
 
 	cppc_state = mode;
 
+<<<<<<< HEAD
 	/*
 	 * Note: It is important to compute the attrs _after_
 	 * re-initializing the cppc_state.  Some attributes become
@@ -1662,6 +1848,8 @@ static int amd_pstate_register_driver(int mode)
 
 	current_pstate_driver->attr = attr;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* at least one CPU supports CPB */
 	current_pstate_driver->boost_enabled = cpu_feature_enabled(X86_FEATURE_CPB);
 
@@ -1805,6 +1993,7 @@ static ssize_t prefcore_show(struct device *dev,
 	return sysfs_emit(buf, "%s\n", str_enabled_disabled(amd_pstate_prefcore));
 }
 
+<<<<<<< HEAD
 static ssize_t dynamic_epp_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -1844,11 +2033,46 @@ static ssize_t dynamic_epp_store(struct device *a, struct device_attribute *b,
 static DEVICE_ATTR_RW(status);
 static DEVICE_ATTR_RO(prefcore);
 static DEVICE_ATTR_RW(dynamic_epp);
+=======
+cpufreq_freq_attr_ro(amd_pstate_max_freq);
+cpufreq_freq_attr_ro(amd_pstate_lowest_nonlinear_freq);
+
+cpufreq_freq_attr_ro(amd_pstate_highest_perf);
+cpufreq_freq_attr_ro(amd_pstate_prefcore_ranking);
+cpufreq_freq_attr_ro(amd_pstate_hw_prefcore);
+cpufreq_freq_attr_rw(energy_performance_preference);
+cpufreq_freq_attr_ro(energy_performance_available_preferences);
+static DEVICE_ATTR_RW(status);
+static DEVICE_ATTR_RO(prefcore);
+
+static struct freq_attr *amd_pstate_attr[] = {
+	&amd_pstate_max_freq,
+	&amd_pstate_lowest_nonlinear_freq,
+	&amd_pstate_highest_perf,
+	&amd_pstate_prefcore_ranking,
+	&amd_pstate_hw_prefcore,
+	NULL,
+};
+
+static struct freq_attr *amd_pstate_epp_attr[] = {
+	&amd_pstate_max_freq,
+	&amd_pstate_lowest_nonlinear_freq,
+	&amd_pstate_highest_perf,
+	&amd_pstate_prefcore_ranking,
+	&amd_pstate_hw_prefcore,
+	&energy_performance_preference,
+	&energy_performance_available_preferences,
+	NULL,
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct attribute *pstate_global_attributes[] = {
 	&dev_attr_status.attr,
 	&dev_attr_prefcore.attr,
+<<<<<<< HEAD
 	&dev_attr_dynamic_epp.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -1918,7 +2142,13 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
 	policy->cpuinfo.min_freq = policy->min = perf_to_freq(perf,
 							      cpudata->nominal_freq,
 							      perf.lowest_perf);
+<<<<<<< HEAD
 	policy->cpuinfo.max_freq = policy->max = cpudata->max_freq;
+=======
+	policy->cpuinfo.max_freq = policy->max = perf_to_freq(perf,
+							      cpudata->nominal_freq,
+							      perf.highest_perf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	policy->driver_data = cpudata;
 
 	ret = amd_pstate_cppc_enable(policy);
@@ -1938,6 +2168,7 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
 	if (amd_pstate_acpi_pm_profile_server() ||
 	    amd_pstate_acpi_pm_profile_undefined()) {
 		policy->policy = CPUFREQ_POLICY_PERFORMANCE;
+<<<<<<< HEAD
 		cpudata->epp_default_ac = cpudata->epp_default_dc = amd_pstate_get_epp(cpudata);
 		cpudata->current_profile = PLATFORM_PROFILE_PERFORMANCE;
 	} else {
@@ -1959,6 +2190,17 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
 		dev_err(dev, "Failed to initialize Floor Perf (%d)\n", ret);
 		goto free_cpudata1;
 	}
+=======
+		cpudata->epp_default = amd_pstate_get_epp(cpudata);
+	} else {
+		policy->policy = CPUFREQ_POLICY_POWERSAVE;
+		cpudata->epp_default = AMD_CPPC_EPP_BALANCE_PERFORMANCE;
+	}
+
+	ret = amd_pstate_set_epp(policy, cpudata->epp_default);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	current_pstate_driver->adjust_perf = NULL;
 
@@ -1967,7 +2209,10 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
 free_cpudata1:
 	pr_warn("Failed to initialize CPU %d: %d\n", policy->cpu, ret);
 	kfree(cpudata);
+<<<<<<< HEAD
 	policy->driver_data = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1983,8 +2228,17 @@ static void amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
 
 		/* Reset CPPC_REQ MSR to the BIOS value */
 		amd_pstate_update_perf(policy, perf.bios_min_perf, 0U, 0U, 0U, false);
+<<<<<<< HEAD
 		amd_pstate_set_floor_perf(policy, cpudata->bios_floor_perf);
 
+<<<<<<< HEAD
+=======
+		if (cpudata->dynamic_epp)
+			amd_pstate_clear_dynamic_epp(policy);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		kfree(cpudata);
 		policy->driver_data = NULL;
 	}
@@ -2039,6 +2293,7 @@ static int amd_pstate_epp_set_policy(struct cpufreq_policy *policy)
 
 static int amd_pstate_cpu_online(struct cpufreq_policy *policy)
 {
+<<<<<<< HEAD
 	struct amd_cpudata *cpudata = policy->driver_data;
 	union perf_cached perf = READ_ONCE(cpudata->perf);
 	u8 cached_floor_perf;
@@ -2050,28 +2305,41 @@ static int amd_pstate_cpu_online(struct cpufreq_policy *policy)
 
 	cached_floor_perf = freq_to_perf(perf, cpudata->nominal_freq, cpudata->floor_freq);
 	return amd_pstate_set_floor_perf(policy, cached_floor_perf);
+=======
+	return amd_pstate_cppc_enable(policy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amd_pstate_cpu_offline(struct cpufreq_policy *policy)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
 	union perf_cached perf = READ_ONCE(cpudata->perf);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Reset CPPC_REQ MSR to the BIOS value, this will allow us to retain the BIOS specified
 	 * min_perf value across kexec reboots. If this CPU is just onlined normally after this, the
 	 * limits, epp and desired perf will get reset to the cached values in cpudata struct
 	 */
+<<<<<<< HEAD
 	ret = amd_pstate_update_perf(policy, perf.bios_min_perf,
+=======
+	return amd_pstate_update_perf(policy, perf.bios_min_perf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     FIELD_GET(AMD_CPPC_DES_PERF_MASK, cpudata->cppc_req_cached),
 				     FIELD_GET(AMD_CPPC_MAX_PERF_MASK, cpudata->cppc_req_cached),
 				     FIELD_GET(AMD_CPPC_EPP_PERF_MASK, cpudata->cppc_req_cached),
 				     false);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
 	return amd_pstate_set_floor_perf(policy, cpudata->bios_floor_perf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amd_pstate_suspend(struct cpufreq_policy *policy)
@@ -2093,10 +2361,13 @@ static int amd_pstate_suspend(struct cpufreq_policy *policy)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = amd_pstate_set_floor_perf(policy, cpudata->bios_floor_perf);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* set this flag to avoid setting core offline*/
 	cpudata->suspended = true;
 
@@ -2108,6 +2379,7 @@ static int amd_pstate_resume(struct cpufreq_policy *policy)
 	struct amd_cpudata *cpudata = policy->driver_data;
 	union perf_cached perf = READ_ONCE(cpudata->perf);
 	int cur_perf = freq_to_perf(perf, cpudata->nominal_freq, policy->cur);
+<<<<<<< HEAD
 	u8 cached_floor_perf;
 	int ret;
 
@@ -2119,13 +2391,22 @@ static int amd_pstate_resume(struct cpufreq_policy *policy)
 
 	cached_floor_perf = freq_to_perf(perf, cpudata->nominal_freq, cpudata->floor_freq);
 	return amd_pstate_set_floor_perf(policy, cached_floor_perf);
+=======
+
+	/* Set CPPC_REQ to last sane value until the governor updates it */
+	return amd_pstate_update_perf(policy, perf.min_limit_perf, cur_perf, perf.max_limit_perf,
+				      0U, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amd_pstate_epp_resume(struct cpufreq_policy *policy)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
+<<<<<<< HEAD
 	union perf_cached perf = READ_ONCE(cpudata->perf);
 	u8 cached_floor_perf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cpudata->suspended) {
 		int ret;
@@ -2138,8 +2419,12 @@ static int amd_pstate_epp_resume(struct cpufreq_policy *policy)
 		cpudata->suspended = false;
 	}
 
+<<<<<<< HEAD
 	cached_floor_perf = freq_to_perf(perf, cpudata->nominal_freq, cpudata->floor_freq);
 	return amd_pstate_set_floor_perf(policy, cached_floor_perf);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct cpufreq_driver amd_pstate_driver = {
@@ -2156,6 +2441,10 @@ static struct cpufreq_driver amd_pstate_driver = {
 	.set_boost	= amd_pstate_set_boost,
 	.update_limits	= amd_pstate_update_limits,
 	.name		= "amd-pstate",
+<<<<<<< HEAD
+=======
+	.attr		= amd_pstate_attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct cpufreq_driver amd_pstate_epp_driver = {
@@ -2171,6 +2460,10 @@ static struct cpufreq_driver amd_pstate_epp_driver = {
 	.update_limits	= amd_pstate_update_limits,
 	.set_boost	= amd_pstate_set_boost,
 	.name		= "amd-pstate-epp",
+<<<<<<< HEAD
+=======
+	.attr		= amd_pstate_epp_attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -2316,7 +2609,11 @@ static int __init amd_pstate_init(void)
 	return ret;
 
 global_attr_free:
+<<<<<<< HEAD
 	amd_pstate_unregister_driver(0);
+=======
+	cpufreq_unregister_driver(current_pstate_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 device_initcall(amd_pstate_init);
@@ -2343,6 +2640,7 @@ static int __init amd_prefcore_param(char *str)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __init amd_dynamic_epp_param(char *str)
 {
 	if (!strcmp(str, "disable"))
@@ -2356,6 +2654,10 @@ static int __init amd_dynamic_epp_param(char *str)
 early_param("amd_pstate", amd_pstate_param);
 early_param("amd_prefcore", amd_prefcore_param);
 early_param("amd_dynamic_epp", amd_dynamic_epp_param);
+=======
+early_param("amd_pstate", amd_pstate_param);
+early_param("amd_prefcore", amd_prefcore_param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Huang Rui <ray.huang@amd.com>");
 MODULE_DESCRIPTION("AMD Processor P-state Frequency Driver");

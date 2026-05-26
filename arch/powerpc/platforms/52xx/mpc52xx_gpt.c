@@ -253,7 +253,12 @@ mpc52xx_gpt_irq_setup(struct mpc52xx_gpt_priv *gpt, struct device_node *node)
 		return;
 	}
 
+<<<<<<< HEAD
 	irq_set_chained_handler_and_data(cascade_virq, mpc52xx_gpt_irq_cascade, gpt);
+=======
+	irq_set_handler_data(cascade_virq, gpt);
+	irq_set_chained_handler(cascade_virq, mpc52xx_gpt_irq_cascade);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If the GPT is currently disabled, then change it to be in Input
 	 * Capture mode.  If the mode is non-zero, then the pin could be

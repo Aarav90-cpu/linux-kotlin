@@ -284,7 +284,11 @@ restart:
 		 *
 		 * cp_xmit_rm holds a ref while we're sending this message down
 		 * the connection.  We can use this ref while holding the
+<<<<<<< HEAD
 		 * send_sem.. rds_send_path_reset() is serialized with it.
+=======
+		 * send_sem.. rds_send_reset() is serialized with it.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		if (!rm) {
 			unsigned int len;

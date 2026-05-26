@@ -67,6 +67,7 @@
 #define TAS2770_TDM_CFG_REG3_RXS_SHIFT 0x4
 #define TAS2770_TDM_CFG_REG3_30_MASK  GENMASK(3, 0)
 #define TAS2770_TDM_CFG_REG3_30_SHIFT 0
+<<<<<<< HEAD
     /* TDM Configuration Reg4 */
 #define TAS2770_TDM_CFG_REG4  TAS2770_REG(0X0, 0x0E)
 #define TAS2770_TDM_CFG_REG4_TX_LSB_CFG BIT(7)
@@ -75,6 +76,8 @@
 #define TAS2770_TDM_CFG_REG4_TX_FILL BIT(4)
 #define TAS2770_TDM_CFG_REG4_TX_OFFSET_MASK GENMASK(3, 1)
 #define TAS2770_TDM_CFG_REG4_TX_EDGE_FALLING BIT(0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /* TDM Configuration Reg5 */
 #define TAS2770_TDM_CFG_REG5  TAS2770_REG(0X0, 0x0F)
 #define TAS2770_TDM_CFG_REG5_VSNS_MASK  BIT(6)
@@ -123,9 +126,12 @@
 #define TAS2770_TEMP_LSB  TAS2770_REG(0X0, 0x2A)
     /* Interrupt Configuration */
 #define TAS2770_INT_CFG  TAS2770_REG(0X0, 0x30)
+<<<<<<< HEAD
     /* Data In Pull-Down */
 #define TAS2770_DIN_PD  TAS2770_REG(0X0, 0x31)
 #define TAS2770_DIN_PD_SDOUT BIT(7)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /* Misc IRQ */
 #define TAS2770_MISC_IRQ  TAS2770_REG(0X0, 0x32)
     /* Clock Configuration */
@@ -157,7 +163,10 @@ struct tas2770_priv {
 	int pdm_slot;
 	bool dac_powered;
 	bool unmuted;
+<<<<<<< HEAD
 	int idle_tx_mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* __TAS2770__ */

@@ -12,6 +12,7 @@ config DAMON
 	  See https://www.kernel.org/doc/html/latest/mm/damon/index.html for
 	  more information.
 
+<<<<<<< HEAD
 config DAMON_DEBUG_SANITY
 	bool "Check sanity of DAMON code"
 	depends on DAMON
@@ -23,6 +24,8 @@ config DAMON_DEBUG_SANITY
 
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DAMON_KUNIT_TEST
 	bool "Test for damon" if !KUNIT_ALL_TESTS
 	depends on DAMON && KUNIT=y

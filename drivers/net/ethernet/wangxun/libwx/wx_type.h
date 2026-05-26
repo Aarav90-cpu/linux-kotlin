@@ -79,10 +79,14 @@
 #define WX_RX_LEN_ERROR_FRAMES_L     0x11978
 #define WX_RX_UNDERSIZE_FRAMES_GOOD  0x11938
 #define WX_RX_OVERSIZE_FRAMES_GOOD   0x1193C
+<<<<<<< HEAD
 #define WX_MAC_LXOFFRXC              0x11988
 #define WX_MAC_LXONRXC               0x11E0C
 #define WX_MAC_LXOFFRXC_AML          0x11F80
 #define WX_MAC_LXONRXC_AML           0x11F84
+=======
+#define WX_MAC_LXONOFFRXC            0x11E0C
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*********************** Receive DMA registers **************************/
 #define WX_RDM_VF_RE(_i)             (0x12004 + ((_i) * 4))
@@ -1151,6 +1155,7 @@ enum wx_isb_idx {
 	WX_ISB_MAX
 };
 
+<<<<<<< HEAD
 /* Flow Control Settings */
 enum wx_fc_mode {
 	wx_fc_none = 0,
@@ -1163,6 +1168,11 @@ struct wx_fc_info {
 	u32 high_water; /* Flow Ctrl High-water */
 	u32 low_water; /* Flow Ctrl Low-water */
 	enum wx_fc_mode mode; /* Flow Control Mode */
+=======
+struct wx_fc_info {
+	u32 high_water; /* Flow Ctrl High-water */
+	u32 low_water; /* Flow Ctrl Low-water */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Statistics counters collected by the MAC */
@@ -1179,8 +1189,12 @@ struct wx_hw_stats {
 	u64 mptc;
 	u64 roc;
 	u64 ruc;
+<<<<<<< HEAD
 	u64 lxonrxc;
 	u64 lxoffrxc;
+=======
+	u64 lxonoffrxc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 lxontxc;
 	u64 lxofftxc;
 	u64 o2bgptc;
@@ -1195,12 +1209,15 @@ struct wx_hw_stats {
 	u64 fdirmiss;
 };
 
+<<<<<<< HEAD
 struct wx_last_stats {
 	u32 qmprc[128];
 	u32 lxoffrxc;
 	u32 lxonrxc;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum wx_state {
 	WX_STATE_RESETTING,
 	WX_STATE_SWFW_BUSY,
@@ -1373,8 +1390,11 @@ struct wx {
 	bool default_up;
 
 	struct wx_hw_stats stats;
+<<<<<<< HEAD
 	struct wx_last_stats last_stats;
 	spinlock_t hw_stats_lock; /* spinlock for accessing to hw stats */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 tx_busy;
 	u64 non_eop_descs;
 	u64 restart_queue;
@@ -1421,7 +1441,10 @@ struct wx {
 
 	struct timer_list service_timer;
 	struct work_struct service_task;
+<<<<<<< HEAD
 	struct mutex reset_lock; /* mutex for reset */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define WX_INTR_ALL (~0ULL)
@@ -1484,6 +1507,7 @@ wr32ptp(struct wx *wx, u32 reg, u32 value)
 	return wr32(wx, reg + 0xB500, value);
 }
 
+<<<<<<< HEAD
 static inline u32
 rd32_wrap(struct wx *wx, u32 reg, u32 *last)
 {
@@ -1496,6 +1520,8 @@ rd32_wrap(struct wx *wx, u32 reg, u32 *last)
 	return delta;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* On some domestic CPU platforms, sometimes IO is not synchronized with
  * flushing memory, here use readl() to flush PCI read and write.
  */
@@ -1512,6 +1538,24 @@ static inline struct wx *phylink_to_wx(struct phylink_config *config)
 	return container_of(config, struct wx, phylink_config);
 }
 
+<<<<<<< HEAD
+=======
+static inline int wx_set_state_reset(struct wx *wx)
+{
+	u8 timeout = 50;
+
+	while (test_and_set_bit(WX_STATE_RESETTING, wx->state)) {
+		timeout--;
+		if (!timeout)
+			return -EBUSY;
+
+		usleep_range(1000, 2000);
+	}
+
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int wx_rx_pg_order(struct wx_ring *ring)
 {
 #if (PAGE_SIZE < 8192)

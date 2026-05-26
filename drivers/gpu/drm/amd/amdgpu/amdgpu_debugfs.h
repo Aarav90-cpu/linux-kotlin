@@ -25,7 +25,10 @@
 /*
  * Debugfs
  */
+<<<<<<< HEAD
 struct amdgpu_usermode_queue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int amdgpu_debugfs_regs_init(struct amdgpu_device *adev);
 int amdgpu_debugfs_init(struct amdgpu_device *adev);
@@ -35,7 +38,10 @@ void amdgpu_debugfs_firmware_init(struct amdgpu_device *adev);
 void amdgpu_debugfs_gem_init(struct amdgpu_device *adev);
 void amdgpu_debugfs_mes_event_log_init(struct amdgpu_device *adev);
 void amdgpu_debugfs_vm_init(struct drm_file *file);
+<<<<<<< HEAD
 void amdgpu_debugfs_userq_init(struct drm_file *file,
 			       struct amdgpu_usermode_queue *queue,
 			       int qid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 

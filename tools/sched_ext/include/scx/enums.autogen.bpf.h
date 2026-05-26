@@ -67,12 +67,15 @@ const volatile u64 __SCX_TASK_RESET_RUNNABLE_AT __weak;
 const volatile u64 __SCX_TASK_DEQD_FOR_SLEEP __weak;
 #define SCX_TASK_DEQD_FOR_SLEEP __SCX_TASK_DEQD_FOR_SLEEP
 
+<<<<<<< HEAD
 const volatile u64 __SCX_TASK_SUB_INIT __weak;
 #define SCX_TASK_SUB_INIT __SCX_TASK_SUB_INIT
 
 const volatile u64 __SCX_TASK_IMMED __weak;
 #define SCX_TASK_IMMED __SCX_TASK_IMMED
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const volatile u64 __SCX_TASK_STATE_SHIFT __weak;
 #define SCX_TASK_STATE_SHIFT __SCX_TASK_STATE_SHIFT
 
@@ -121,9 +124,12 @@ const volatile u64 __SCX_ENQ_HEAD __weak;
 const volatile u64 __SCX_ENQ_PREEMPT __weak;
 #define SCX_ENQ_PREEMPT __SCX_ENQ_PREEMPT
 
+<<<<<<< HEAD
 const volatile u64 __SCX_ENQ_IMMED __weak;
 #define SCX_ENQ_IMMED __SCX_ENQ_IMMED
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const volatile u64 __SCX_ENQ_REENQ __weak;
 #define SCX_ENQ_REENQ __SCX_ENQ_REENQ
 
@@ -136,5 +142,8 @@ const volatile u64 __SCX_ENQ_CLEAR_OPSS __weak;
 const volatile u64 __SCX_ENQ_DSQ_PRIQ __weak;
 #define SCX_ENQ_DSQ_PRIQ __SCX_ENQ_DSQ_PRIQ
 
+<<<<<<< HEAD
 const volatile u64 __SCX_DEQ_SCHED_CHANGE __weak;
 #define SCX_DEQ_SCHED_CHANGE __SCX_DEQ_SCHED_CHANGE
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

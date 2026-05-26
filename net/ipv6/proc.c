@@ -39,6 +39,11 @@ static int sockstat6_seq_show(struct seq_file *seq, void *v)
 		       sock_prot_inuse_get(net, &tcpv6_prot));
 	seq_printf(seq, "UDP6: inuse %d\n",
 		       sock_prot_inuse_get(net, &udpv6_prot));
+<<<<<<< HEAD
+=======
+	seq_printf(seq, "UDPLITE6: inuse %d\n",
+			sock_prot_inuse_get(net, &udplitev6_prot));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seq_printf(seq, "RAW6: inuse %d\n",
 		       sock_prot_inuse_get(net, &rawv6_prot));
 	seq_printf(seq, "FRAG6: inuse %u memory %lu\n",
@@ -108,6 +113,20 @@ static const struct snmp_mib snmp6_udp6_list[] = {
 	SNMP_MIB_ITEM("Udp6MemErrors", UDP_MIB_MEMERRORS),
 };
 
+<<<<<<< HEAD
+=======
+static const struct snmp_mib snmp6_udplite6_list[] = {
+	SNMP_MIB_ITEM("UdpLite6InDatagrams", UDP_MIB_INDATAGRAMS),
+	SNMP_MIB_ITEM("UdpLite6NoPorts", UDP_MIB_NOPORTS),
+	SNMP_MIB_ITEM("UdpLite6InErrors", UDP_MIB_INERRORS),
+	SNMP_MIB_ITEM("UdpLite6OutDatagrams", UDP_MIB_OUTDATAGRAMS),
+	SNMP_MIB_ITEM("UdpLite6RcvbufErrors", UDP_MIB_RCVBUFERRORS),
+	SNMP_MIB_ITEM("UdpLite6SndbufErrors", UDP_MIB_SNDBUFERRORS),
+	SNMP_MIB_ITEM("UdpLite6InCsumErrors", UDP_MIB_CSUMERRORS),
+	SNMP_MIB_ITEM("UdpLite6MemErrors", UDP_MIB_MEMERRORS),
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void snmp6_seq_show_icmpv6msg(struct seq_file *seq, atomic_long_t *smib)
 {
 	char name[32];
@@ -215,6 +234,12 @@ static int snmp6_seq_show(struct seq_file *seq, void *v)
 	snmp6_seq_show_item(seq, net->mib.udp_stats_in6,
 			    NULL, snmp6_udp6_list,
 			    ARRAY_SIZE(snmp6_udp6_list));
+<<<<<<< HEAD
+=======
+	snmp6_seq_show_item(seq, net->mib.udplite_stats_in6,
+			    NULL, snmp6_udplite6_list,
+			    ARRAY_SIZE(snmp6_udplite6_list));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

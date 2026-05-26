@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /* Copyright 2013-2016 Freescale Semiconductor Inc.
+<<<<<<< HEAD
  * Copyright 2019, 2024-2026 NXP
+=======
+ * Copyright 2019 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <linux/fsl/mc.h>
 #include "dpmac.h"
@@ -235,6 +239,7 @@ int dpmac_set_protocol(struct fsl_mc_io *mc_io, u32 cmd_flags, u16 token,
 
 	return mc_send_command(mc_io, &cmd);
 }
+<<<<<<< HEAD
 
 /**
  * dpmac_get_statistics() - Get MAC statistics
@@ -264,3 +269,5 @@ int dpmac_get_statistics(struct fsl_mc_io *mc_io, u32 cmd_flags, u16 token,
 
 	return mc_send_command(mc_io, &cmd);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -15,7 +15,10 @@
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/input/mt.h>
+<<<<<<< HEAD
 #include <linux/input/touch-overlay.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/input/touchscreen.h>
 #include <linux/interrupt.h>
 #include <linux/module.h>
@@ -23,14 +26,21 @@
 #include <linux/pm_qos.h>
 #include <linux/slab.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <asm/byteorder.h>
+=======
+#include <linux/input/touch-overlay.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ST1232_TS_NAME	"st1232-ts"
 #define ST1633_TS_NAME	"st1633-ts"
 
+<<<<<<< HEAD
 #define REG_FIRMWARE_VERSION	0x00
 #define REG_FIRMWARE_REVISION_3	0x0C
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define REG_STATUS		0x01	/* Device Status | Error Code */
 
 #define STATUS_NORMAL		0x00
@@ -65,6 +75,7 @@ struct st1232_ts_data {
 	struct list_head touch_overlay_list;
 	int read_buf_len;
 	u8 *read_buf;
+<<<<<<< HEAD
 	u8 fw_version;
 	u32 fw_revision;
 };
@@ -97,6 +108,10 @@ static struct attribute *st1232_attrs[] = {
 };
 ATTRIBUTE_GROUPS(st1232);
 
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int st1232_ts_read_data(struct st1232_ts_data *ts, u8 reg,
 			       unsigned int n)
 {
@@ -144,6 +159,7 @@ static int st1232_ts_wait_ready(struct st1232_ts_data *ts)
 	return -ENXIO;
 }
 
+<<<<<<< HEAD
 static int st1232_ts_read_fw_version(struct st1232_ts_data *ts,
 				     u8 *fw_version, u32 *fw_revision)
 {
@@ -164,6 +180,8 @@ static int st1232_ts_read_fw_version(struct st1232_ts_data *ts,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int st1232_ts_read_resolution(struct st1232_ts_data *ts, u16 *max_x,
 				     u16 *max_y)
 {
@@ -353,6 +371,7 @@ static int st1232_ts_probe(struct i2c_client *client)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	/* Read firmware version from the chip */
 	error = st1232_ts_read_fw_version(ts, &ts->fw_version, &ts->fw_revision);
 	if (error) {
@@ -363,6 +382,8 @@ static int st1232_ts_probe(struct i2c_client *client)
 	dev_dbg(&client->dev, "Detected firmware version %u, rev %08x\n",
 		ts->fw_version, ts->fw_revision);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ts->chip_info->have_z)
 		input_set_abs_params(input_dev, ABS_MT_TOUCH_MAJOR, 0,
 				     ts->chip_info->max_area, 0, 0);
@@ -472,7 +493,10 @@ static struct i2c_driver st1232_ts_driver = {
 	.driver = {
 		.name	= ST1232_TS_NAME,
 		.of_match_table = st1232_ts_dt_ids,
+<<<<<<< HEAD
 		.dev_groups	= st1232_groups,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
 		.pm	= pm_sleep_ptr(&st1232_ts_pm_ops),
 	},

@@ -120,6 +120,10 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_6_0[] = {
 
 static void sdma_v6_0_set_ring_funcs(struct amdgpu_device *adev);
 static void sdma_v6_0_set_buffer_funcs(struct amdgpu_device *adev);
+<<<<<<< HEAD
+=======
+static void sdma_v6_0_set_vm_pte_funcs(struct amdgpu_device *adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdma_v6_0_set_irq_funcs(struct amdgpu_device *adev);
 static int sdma_v6_0_start(struct amdgpu_device *adev);
 
@@ -1279,6 +1283,7 @@ static void sdma_v6_0_get_csa_info(struct amdgpu_device *adev,
 	csa_info->alignment = SDMA6_CSA_ALIGNMENT;
 }
 
+<<<<<<< HEAD
 static const struct amdgpu_vm_pte_funcs sdma_v6_0_vm_pte_funcs = {
 	.copy_pte_num_dw = 7,
 	.copy_pte = sdma_v6_0_vm_copy_pte,
@@ -1286,6 +1291,8 @@ static const struct amdgpu_vm_pte_funcs sdma_v6_0_vm_pte_funcs = {
 	.set_pte_pde = sdma_v6_0_vm_set_pte_pde,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sdma_v6_0_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -1314,7 +1321,11 @@ static int sdma_v6_0_early_init(struct amdgpu_ip_block *ip_block)
 
 	sdma_v6_0_set_ring_funcs(adev);
 	sdma_v6_0_set_buffer_funcs(adev);
+<<<<<<< HEAD
 	amdgpu_sdma_set_vm_pte_scheds(adev, &sdma_v6_0_vm_pte_funcs);
+=======
+	sdma_v6_0_set_vm_pte_funcs(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdma_v6_0_set_irq_funcs(adev);
 	sdma_v6_0_set_mqd_funcs(adev);
 	sdma_v6_0_set_ras_funcs(adev);
@@ -1662,8 +1673,22 @@ static int sdma_v6_0_process_fence_irq(struct amdgpu_device *adev,
 	u32 doorbell_offset = entry->src_data[0];
 
 	if (adev->enable_mes && doorbell_offset) {
+<<<<<<< HEAD
 		doorbell_offset >>= SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
 		amdgpu_userq_process_fence_irq(adev, doorbell_offset);
+=======
+		struct amdgpu_userq_fence_driver *fence_drv = NULL;
+		struct xarray *xa = &adev->userq_xa;
+		unsigned long flags;
+
+		doorbell_offset >>= SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
+
+		xa_lock_irqsave(xa, flags);
+		fence_drv = xa_load(xa, doorbell_offset);
+		if (fence_drv)
+			amdgpu_userq_fence_driver_process(fence_drv);
+		xa_unlock_irqrestore(xa, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -1875,11 +1900,19 @@ static void sdma_v6_0_emit_fill_buffer(struct amdgpu_ib *ib,
 }
 
 static const struct amdgpu_buffer_funcs sdma_v6_0_buffer_funcs = {
+<<<<<<< HEAD
 	.copy_max_bytes = 1 << 30,
 	.copy_num_dw = 7,
 	.emit_copy_buffer = sdma_v6_0_emit_copy_buffer,
 
 	.fill_max_bytes = 1 << 30,
+=======
+	.copy_max_bytes = 0x400000,
+	.copy_num_dw = 7,
+	.emit_copy_buffer = sdma_v6_0_emit_copy_buffer,
+
+	.fill_max_bytes = 0x400000,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.fill_num_dw = 5,
 	.emit_fill_buffer = sdma_v6_0_emit_fill_buffer,
 };
@@ -1890,6 +1923,28 @@ static void sdma_v6_0_set_buffer_funcs(struct amdgpu_device *adev)
 	adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].ring;
 }
 
+<<<<<<< HEAD
+=======
+static const struct amdgpu_vm_pte_funcs sdma_v6_0_vm_pte_funcs = {
+	.copy_pte_num_dw = 7,
+	.copy_pte = sdma_v6_0_vm_copy_pte,
+	.write_pte = sdma_v6_0_vm_write_pte,
+	.set_pte_pde = sdma_v6_0_vm_set_pte_pde,
+};
+
+static void sdma_v6_0_set_vm_pte_funcs(struct amdgpu_device *adev)
+{
+	unsigned i;
+
+	adev->vm_manager.vm_pte_funcs = &sdma_v6_0_vm_pte_funcs;
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		adev->vm_manager.vm_pte_scheds[i] =
+			&adev->sdma.instance[i].ring.sched;
+	}
+	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct amdgpu_ip_block_version sdma_v6_0_ip_block = {
 	.type = AMD_IP_BLOCK_TYPE_SDMA,
 	.major = 6,

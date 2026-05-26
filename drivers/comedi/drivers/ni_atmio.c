@@ -311,8 +311,12 @@ static int ni_atmio_attach(struct comedi_device *dev,
 		comedi_set_hw_dev(dev, &isapnp_dev->dev);
 	}
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, iobase, 0x20,
 					  0x20, 0xffff, 32);
+=======
+	ret = comedi_request_region(dev, iobase, 0x20);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

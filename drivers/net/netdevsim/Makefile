@@ -3,7 +3,11 @@
 obj-$(CONFIG_NETDEVSIM) += netdevsim.o
 
 netdevsim-objs := \
+<<<<<<< HEAD
 	netdev.o dev.o ethtool.o fib.o bus.o health.o hwstats.o udp_tunnels.o tc.o
+=======
+	netdev.o dev.o ethtool.o fib.o bus.o health.o hwstats.o udp_tunnels.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifeq ($(CONFIG_BPF_SYSCALL),y)
 netdevsim-objs += \

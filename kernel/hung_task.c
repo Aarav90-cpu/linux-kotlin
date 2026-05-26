@@ -36,7 +36,11 @@ static int __read_mostly sysctl_hung_task_check_count = PID_MAX_LIMIT;
 /*
  * Total number of tasks detected as hung since boot:
  */
+<<<<<<< HEAD
 static atomic_long_t sysctl_hung_task_detect_count = ATOMIC_LONG_INIT(0);
+=======
+static unsigned long __read_mostly sysctl_hung_task_detect_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Limit number of tasks checked in a batch.
@@ -223,6 +227,7 @@ static inline void debug_show_blocker(struct task_struct *task, unsigned long ti
 }
 #endif
 
+<<<<<<< HEAD
 /**
  * hung_task_info - Print diagnostic details for a hung task
  * @t: Pointer to the detected hung task.
@@ -238,21 +243,51 @@ static void hung_task_info(struct task_struct *t, unsigned long timeout,
 	trace_sched_process_hang(t);
 
 	if (sysctl_hung_task_panic && this_round_count >= sysctl_hung_task_panic) {
+=======
+static void check_hung_task(struct task_struct *t, unsigned long timeout,
+		unsigned long prev_detect_count)
+{
+	unsigned long total_hung_task;
+
+	if (!task_is_hung(t, timeout))
+		return;
+
+	/*
+	 * This counter tracks the total number of tasks detected as hung
+	 * since boot.
+	 */
+	sysctl_hung_task_detect_count++;
+
+	total_hung_task = sysctl_hung_task_detect_count - prev_detect_count;
+	trace_sched_process_hang(t);
+
+	if (sysctl_hung_task_panic && total_hung_task >= sysctl_hung_task_panic) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		console_verbose();
 		hung_task_call_panic = true;
 	}
 
 	/*
+<<<<<<< HEAD
 	 * The given task did not get scheduled for more than
 	 * CONFIG_DEFAULT_HUNG_TASK_TIMEOUT. Therefore, complain
 	 * accordingly
+=======
+	 * Ok, the task did not get scheduled for more than 2 minutes,
+	 * complain:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (sysctl_hung_task_warnings || hung_task_call_panic) {
 		if (sysctl_hung_task_warnings > 0)
 			sysctl_hung_task_warnings--;
+<<<<<<< HEAD
 		pr_err("INFO: task %s:%d blocked%s for more than %ld seconds.\n",
 		       t->comm, t->pid, t->in_iowait ? " in I/O wait" : "",
 		       (jiffies - t->last_switch_time) / HZ);
+=======
+		pr_err("INFO: task %s:%d blocked for more than %ld seconds.\n",
+		       t->comm, t->pid, (jiffies - t->last_switch_time) / HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_err("      %s %s %.*s\n",
 			print_tainted(), init_utsname()->release,
 			(int)strcspn(init_utsname()->version, " "),
@@ -296,14 +331,23 @@ static bool rcu_lock_break(struct task_struct *g, struct task_struct *t)
 
 /*
  * Check whether a TASK_UNINTERRUPTIBLE does not get woken up for
+<<<<<<< HEAD
  * a really long time. If that happens, print out a warning.
+=======
+ * a really long time (120 seconds). If that happens, print out
+ * a warning.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void check_hung_uninterruptible_tasks(unsigned long timeout)
 {
 	int max_count = sysctl_hung_task_check_count;
 	unsigned long last_break = jiffies;
 	struct task_struct *g, *t;
+<<<<<<< HEAD
 	unsigned long this_round_count;
+=======
+	unsigned long prev_detect_count = sysctl_hung_task_detect_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int need_warning = sysctl_hung_task_warnings;
 	unsigned long si_mask = hung_task_si_mask;
 
@@ -314,9 +358,16 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
 	if (test_taint(TAINT_DIE) || did_panic)
 		return;
 
+<<<<<<< HEAD
 	this_round_count = 0;
 	rcu_read_lock();
 	for_each_process_thread(g, t) {
+=======
+
+	rcu_read_lock();
+	for_each_process_thread(g, t) {
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!max_count--)
 			goto unlock;
 		if (time_after(jiffies, last_break + HUNG_TASK_LOCK_BREAK)) {
@@ -325,6 +376,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
 			last_break = jiffies;
 		}
 
+<<<<<<< HEAD
 		if (task_is_hung(t, timeout)) {
 			/*
 			 * Increment the global counter so that userspace could
@@ -336,11 +388,18 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
 			this_round_count++;
 			hung_task_info(t, timeout, this_round_count);
 		}
+=======
+		check_hung_task(t, timeout, prev_detect_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
  unlock:
 	rcu_read_unlock();
 
+<<<<<<< HEAD
 	if (!this_round_count)
+=======
+	if (!(sysctl_hung_task_detect_count - prev_detect_count))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (need_warning || hung_task_call_panic) {
@@ -365,6 +424,7 @@ static long hung_timeout_jiffies(unsigned long last_checked,
 }
 
 #ifdef CONFIG_SYSCTL
+<<<<<<< HEAD
 
 /**
  * proc_dohung_task_detect_count - proc handler for hung_task_detect_count
@@ -405,6 +465,8 @@ static int proc_dohung_task_detect_count(const struct ctl_table *table, int dir,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Process updating of timeout sysctl
  */
@@ -485,9 +547,16 @@ static const struct ctl_table hung_task_sysctls[] = {
 	},
 	{
 		.procname	= "hung_task_detect_count",
+<<<<<<< HEAD
 		.maxlen		= sizeof(unsigned long),
 		.mode		= 0644,
 		.proc_handler	= proc_dohung_task_detect_count,
+=======
+		.data		= &sysctl_hung_task_detect_count,
+		.maxlen		= sizeof(unsigned long),
+		.mode		= 0444,
+		.proc_handler	= proc_doulongvec_minmax,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.procname	= "hung_task_sys_info",

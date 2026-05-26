@@ -41,7 +41,11 @@ void nft_range_eval(const struct nft_expr *expr,
 }
 
 static const struct nla_policy nft_range_policy[NFTA_RANGE_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_RANGE_SREG]		= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
+=======
+	[NFTA_RANGE_SREG]		= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_RANGE_OP]			= NLA_POLICY_MAX(NLA_BE32, 255),
 	[NFTA_RANGE_FROM_DATA]		= { .type = NLA_NESTED },
 	[NFTA_RANGE_TO_DATA]		= { .type = NLA_NESTED },
@@ -138,6 +142,10 @@ static const struct nft_expr_ops nft_range_ops = {
 	.eval		= nft_range_eval,
 	.init		= nft_range_init,
 	.dump		= nft_range_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct nft_expr_type nft_range_type __read_mostly = {

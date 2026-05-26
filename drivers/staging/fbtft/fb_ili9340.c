@@ -78,6 +78,20 @@ static int init_display(struct fbtft_par *par)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void set_addr_win(struct fbtft_par *par, int xs, int ys, int xe, int ye)
+{
+	write_reg(par, MIPI_DCS_SET_COLUMN_ADDRESS,
+		  xs >> 8, xs & 0xFF, xe >> 8, xe & 0xFF);
+
+	write_reg(par, MIPI_DCS_SET_PAGE_ADDRESS,
+		  ys >> 8, ys & 0xFF, ye >> 8, ye & 0xFF);
+
+	write_reg(par, MIPI_DCS_WRITE_MEMORY_START);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ILI9340_MADCTL_MV  0x20
 #define ILI9340_MADCTL_MX  0x40
 #define ILI9340_MADCTL_MY  0x80
@@ -111,6 +125,10 @@ static struct fbtft_display display = {
 	.height = HEIGHT,
 	.fbtftops = {
 		.init_display = init_display,
+<<<<<<< HEAD
+=======
+		.set_addr_win = set_addr_win,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.set_var = set_var,
 	},
 };

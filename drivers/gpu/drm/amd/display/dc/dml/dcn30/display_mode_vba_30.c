@@ -778,8 +778,11 @@ static bool CalculatePrefetchSchedule(
 		double *RequiredPrefetchPixDataBWChroma,
 		bool *NotEnoughTimeForDynamicMetadata)
 {
+<<<<<<< HEAD
 	(void)SwathWidthY;
 	(void)SwathWidthC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vba_vars_st *v = &mode_lib->vba;
 	double DPPCLKDelaySubtotalPlusCNVCFormater = v->DPPCLKDelaySubtotal + v->DPPCLKDelayCNVCFormater;
 	bool MyError = false;
@@ -1235,10 +1238,13 @@ static void CalculateDCCConfiguration(
 		unsigned int *IndependentBlockLuma,
 		unsigned int *IndependentBlockChroma)
 {
+<<<<<<< HEAD
 	(void)SurfaceWidthChroma;
 	(void)SurfaceHeightChroma;
 	(void)BytePerPixelDETY;
 	(void)BytePerPixelDETC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int yuv420 = 0;
 	int horz_div_l = 0;
 	int horz_div_c = 0;
@@ -1601,7 +1607,10 @@ static unsigned int CalculateVMAndRowBytes(
 		unsigned int *DPDE0BytesFrame,
 		unsigned int *MetaPTEBytesFrame)
 {
+<<<<<<< HEAD
 	(void)SourcePixelFormat;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int MPDEBytesFrame = 0;
 	unsigned int DCCMetaSurfaceBytes = 0;
 	unsigned int MacroTileSizeBytes = 0;
@@ -3075,8 +3084,11 @@ double dml30_CalculateWriteBackDISPCLK(
 		unsigned int HTotal,
 		unsigned int WritebackLineBufferSize)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackVRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double DISPCLK_H = 0, DISPCLK_V = 0, DISPCLK_HB = 0;
 
 	DISPCLK_H = PixelClock * dml_ceil(WritebackHTaps / 8.0, 1) / WritebackHRatio;
@@ -3095,8 +3107,11 @@ static double CalculateWriteBackDelay(
 		long         WritebackSourceHeight,
 		unsigned int HTotal)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackHRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double CalculateWriteBackDelay = 0;
 	double Line_length = 0;
 	double Output_lines_last_notclamped = 0;
@@ -3210,8 +3225,11 @@ static void CalculateFlipSchedule(
 		double *final_flip_bw,
 		bool *ImmediateFlipSupportedForPipe)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)HostVMMinPageSize;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double min_row_time = 0.0;
 	unsigned int HostVMDynamicLevelsTrips = 0;
 	double TimeForFetchingMetaPTEImmediateFlip = 0;
@@ -4981,10 +4999,13 @@ static void CalculateWatermarksAndDRAMSpeedChangeSupport(
 		double BytePerPixelDETC[],
 		enum clock_change_support *DRAMClockChangeSupport)
 {
+<<<<<<< HEAD
 	(void)DCFCLK;
 	(void)ReturnBW;
 	(void)DPPCLK;
 	(void)DETBufferSizeC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vba_vars_st *v = &mode_lib->vba;
 	double EffectiveLBLatencyHidingY = 0;
 	double EffectiveLBLatencyHidingC = 0;
@@ -5229,8 +5250,11 @@ static void CalculateUrgentBurstFactor(
 		double *UrgentBurstFactorChroma,
 		bool *NotEnoughUrgentLatencyHiding)
 {
+<<<<<<< HEAD
 	(void)DETBufferSizeInKByte;
 	(void)VRatioC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double LinesInDETLuma = 0;
 	double LinesInDETChroma = 0;
 	unsigned int LinesInCursorBuffer = 0;
@@ -5594,8 +5618,11 @@ static void CalculateVMGroupAndRequestTimes(
 		double TimePerVMRequestVBlank[],
 		double TimePerVMRequestFlip[])
 {
+<<<<<<< HEAD
 	(void)dpte_row_width_luma_ub;
 	(void)dpte_row_width_chroma_ub;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int num_group_per_lower_vm_stage = 0;
 	int num_req_per_lower_vm_stage = 0;
 	unsigned int k;
@@ -5878,7 +5905,10 @@ static void CalculateSwathAndDETConfiguration(
 		bool ViewportSizeSupportPerPlane[],
 		bool *ViewportSizeSupport)
 {
+<<<<<<< HEAD
 	(void)HRatioChroma;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int MaximumSwathHeightY[DC__NUM_DPP__MAX] = { 0 };
 	int MaximumSwathHeightC[DC__NUM_DPP__MAX] = { 0 };
 	int MinimumSwathHeightY = 0;
@@ -6061,7 +6091,10 @@ static void CalculateSwathWidth(
 		unsigned int swath_width_luma_ub[],
 		unsigned int swath_width_chroma_ub[])
 {
+<<<<<<< HEAD
 	(void)BytePerPixY;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int k, j;
 	long surface_width_ub_l;
 	long surface_height_ub_l;

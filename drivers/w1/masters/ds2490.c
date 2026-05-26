@@ -1022,8 +1022,16 @@ static int ds_probe(struct usb_interface *intf,
 	if (!dev)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dev->udev = udev;
 
+=======
+	dev->udev = usb_get_dev(udev);
+	if (!dev->udev) {
+		err = -ENOMEM;
+		goto err_out_free;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(dev->ep, 0, sizeof(dev->ep));
 
 	usb_set_intfdata(intf, dev);
@@ -1082,8 +1090,14 @@ static int ds_probe(struct usb_interface *intf,
 
 err_out_clear:
 	usb_set_intfdata(intf, NULL);
+<<<<<<< HEAD
 	kfree(dev);
 
+=======
+	usb_put_dev(dev->udev);
+err_out_free:
+	kfree(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -1103,6 +1117,10 @@ static void ds_disconnect(struct usb_interface *intf)
 
 	usb_set_intfdata(intf, NULL);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev);
 }
 

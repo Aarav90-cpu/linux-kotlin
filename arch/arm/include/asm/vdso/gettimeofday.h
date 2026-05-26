@@ -11,8 +11,11 @@
 #include <asm/errno.h>
 #include <asm/unistd.h>
 #include <asm/vdso/cp15.h>
+<<<<<<< HEAD
 #include <vdso/clocksource.h>
 #include <vdso/time32.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/time.h>
 
 #define VDSO_HAS_CLOCK_GETRES		1

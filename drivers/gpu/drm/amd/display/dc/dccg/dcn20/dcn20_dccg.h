@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2018-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2018 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -366,6 +370,7 @@
 	type SYMCLK32_LE3_EN;\
 	type DP_DTO_ENABLE[MAX_PIPES];
 
+<<<<<<< HEAD
 #define DCCG42_REG_FIELD_LIST(type) \
 	type OTG0_ADD_PIXEL;\
 	type OTG1_ADD_PIXEL;\
@@ -377,6 +382,8 @@
 	type OTG3_DROP_PIXEL;\
 	type RESYNC_FIFO_LEVEL_ADJUST_EN;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dccg_shift {
 	DCCG_REG_FIELD_LIST(uint8_t)
 	DCCG3_REG_FIELD_LIST(uint8_t)
@@ -385,7 +392,10 @@ struct dccg_shift {
 	DCCG32_REG_FIELD_LIST(uint8_t)
 	DCCG35_REG_FIELD_LIST(uint8_t)
 	DCCG401_REG_FIELD_LIST(uint8_t)
+<<<<<<< HEAD
 	DCCG42_REG_FIELD_LIST(uint8_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dccg_mask {
@@ -396,7 +406,10 @@ struct dccg_mask {
 	DCCG32_REG_FIELD_LIST(uint32_t)
 	DCCG35_REG_FIELD_LIST(uint32_t)
 	DCCG401_REG_FIELD_LIST(uint32_t)
+<<<<<<< HEAD
 	DCCG42_REG_FIELD_LIST(uint32_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DCCG_REG_VARIABLE_LIST \
@@ -510,7 +523,10 @@ struct dccg_mask {
 
 struct dccg_registers {
 	DCCG_REG_VARIABLE_LIST;
+<<<<<<< HEAD
 	uint32_t OTG_ADD_DROP_PIXEL_CNTL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn_dccg {

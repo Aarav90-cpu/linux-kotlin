@@ -325,7 +325,11 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
 
 	plat->core_type = DWMAC_CORE_XGMAC;
 	plat->flags |= STMMAC_FLAG_TSO_EN;
+<<<<<<< HEAD
 	plat->pmt = true;
+=======
+	plat->pmt = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->bsp_priv = mgbe;
 
 	if (!plat->mdio_node)

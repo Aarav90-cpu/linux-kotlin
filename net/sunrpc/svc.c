@@ -638,13 +638,18 @@ svc_init_buffer(struct svc_rqst *rqstp, const struct svc_serv *serv, int node)
 {
 	rqstp->rq_maxpages = svc_serv_maxpages(serv);
 
+<<<<<<< HEAD
 	/* +1 for a NULL sentinel readable by nfsd_splice_actor() */
+=======
+	/* rq_pages' last entry is NULL for historical reasons. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rqstp->rq_pages = kcalloc_node(rqstp->rq_maxpages + 1,
 				       sizeof(struct page *),
 				       GFP_KERNEL, node);
 	if (!rqstp->rq_pages)
 		return false;
 
+<<<<<<< HEAD
 	/* +1 for a NULL sentinel at rq_page_end (see svc_rqst_replace_page) */
 	rqstp->rq_respages = kcalloc_node(rqstp->rq_maxpages + 1,
 					  sizeof(struct page *),
@@ -657,6 +662,8 @@ svc_init_buffer(struct svc_rqst *rqstp, const struct svc_serv *serv, int node)
 
 	rqstp->rq_pages_nfree = rqstp->rq_maxpages;
 	rqstp->rq_next_page = rqstp->rq_respages + rqstp->rq_maxpages;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -668,6 +675,7 @@ svc_release_buffer(struct svc_rqst *rqstp)
 {
 	unsigned long i;
 
+<<<<<<< HEAD
 	if (rqstp->rq_pages) {
 		for (i = 0; i < rqstp->rq_maxpages; i++)
 			if (rqstp->rq_pages[i])
@@ -681,6 +689,12 @@ svc_release_buffer(struct svc_rqst *rqstp)
 				put_page(rqstp->rq_respages[i]);
 		kfree(rqstp->rq_respages);
 	}
+=======
+	for (i = 0; i < rqstp->rq_maxpages; i++)
+		if (rqstp->rq_pages[i])
+			put_page(rqstp->rq_pages[i]);
+	kfree(rqstp->rq_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -955,11 +969,19 @@ svc_set_num_threads(struct svc_serv *serv, unsigned int min_threads,
 EXPORT_SYMBOL_GPL(svc_set_num_threads);
 
 /**
+<<<<<<< HEAD
  * svc_rqst_replace_page - Replace one page in rq_respages[]
  * @rqstp: svc_rqst with pages to replace
  * @page: replacement page
  *
  * When replacing a page in rq_respages, batch the release of the
+=======
+ * svc_rqst_replace_page - Replace one page in rq_pages[]
+ * @rqstp: svc_rqst with pages to replace
+ * @page: replacement page
+ *
+ * When replacing a page in rq_pages, batch the release of the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * replaced pages to avoid hammering the page allocator.
  *
  * Return values:
@@ -968,16 +990,29 @@ EXPORT_SYMBOL_GPL(svc_set_num_threads);
  */
 bool svc_rqst_replace_page(struct svc_rqst *rqstp, struct page *page)
 {
+<<<<<<< HEAD
 	struct page **begin = rqstp->rq_respages;
 	struct page **end = rqstp->rq_page_end;
+=======
+	struct page **begin = rqstp->rq_pages;
+	struct page **end = &rqstp->rq_pages[rqstp->rq_maxpages];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(rqstp->rq_next_page < begin || rqstp->rq_next_page > end)) {
 		trace_svc_replace_page_err(rqstp);
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (*rqstp->rq_next_page)
 		svc_rqst_page_release(rqstp, *rqstp->rq_next_page);
+=======
+	if (*rqstp->rq_next_page) {
+		if (!folio_batch_add(&rqstp->rq_fbatch,
+				page_folio(*rqstp->rq_next_page)))
+			__folio_batch_release(&rqstp->rq_fbatch);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	get_page(page);
 	*(rqstp->rq_next_page++) = page;
@@ -989,6 +1024,7 @@ EXPORT_SYMBOL_GPL(svc_rqst_replace_page);
  * svc_rqst_release_pages - Release Reply buffer pages
  * @rqstp: RPC transaction context
  *
+<<<<<<< HEAD
  * Release response pages in the range [rq_respages, rq_next_page).
  * NULL entries in this range are skipped, allowing transports to
  * transfer pages to a send context before this function runs.
@@ -1007,6 +1043,20 @@ void svc_rqst_release_pages(struct svc_rqst *rqstp)
 	}
 	if (rqstp->rq_fbatch.nr)
 		__folio_batch_release(&rqstp->rq_fbatch);
+=======
+ * Release response pages that might still be in flight after
+ * svc_send, and any spliced filesystem-owned pages.
+ */
+void svc_rqst_release_pages(struct svc_rqst *rqstp)
+{
+	int i, count = rqstp->rq_next_page - rqstp->rq_respages;
+
+	if (count) {
+		release_pages(rqstp->rq_respages, count);
+		for (i = 0; i < count; i++)
+			rqstp->rq_respages[i] = NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

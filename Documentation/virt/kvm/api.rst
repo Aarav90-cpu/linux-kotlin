@@ -907,12 +907,19 @@ The irq_type field has the following values:
 - KVM_ARM_IRQ_TYPE_CPU:
 	       out-of-kernel GIC: irq_id 0 is IRQ, irq_id 1 is FIQ
 - KVM_ARM_IRQ_TYPE_SPI:
+<<<<<<< HEAD
 	       in-kernel GICv2/GICv3: SPI, irq_id between 32 and 1019 (incl.)
                (the vcpu_index field is ignored)
 	       in-kernel GICv5: SPI, irq_id between 0 and 65535 (incl.)
 - KVM_ARM_IRQ_TYPE_PPI:
 	       in-kernel GICv2/GICv3: PPI, irq_id between 16 and 31 (incl.)
 	       in-kernel GICv5: PPI, irq_id between 0 and 127 (incl.)
+=======
+	       in-kernel GIC: SPI, irq_id between 32 and 1019 (incl.)
+               (the vcpu_index field is ignored)
+- KVM_ARM_IRQ_TYPE_PPI:
+	       in-kernel GIC: PPI, irq_id between 16 and 31 (incl.)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 (The irq_id field thus corresponds nicely to the IRQ ID in the ARM GIC specs)
 
@@ -9438,6 +9445,7 @@ KVM exits with the register state of either the L1 or L2 guest
 depending on which executed at the time of an exit. Userspace must
 take care to differentiate between these cases.
 
+<<<<<<< HEAD
 8.47 KVM_CAP_S390_VSIE_ESAMODE
 ------------------------------
 
@@ -9446,6 +9454,8 @@ take care to differentiate between these cases.
 The presence of this capability indicates that the nested KVM guest can
 start in ESA mode.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 9. Known KVM API problems
 =========================
 

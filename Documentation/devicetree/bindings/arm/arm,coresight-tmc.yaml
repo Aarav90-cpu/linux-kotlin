@@ -128,9 +128,12 @@ properties:
       - const: tracedata
       - const: metadata
 
+<<<<<<< HEAD
   access-controllers:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

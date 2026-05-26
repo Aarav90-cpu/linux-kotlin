@@ -353,6 +353,7 @@ static struct simd_flags arm_spe__synth_simd_flags(const struct arm_spe_record *
 
 	if (record->op & ARM_SPE_OP_SVE)
 		simd_flags.arch |= SIMD_OP_FLAGS_ARCH_SVE;
+<<<<<<< HEAD
 	else if (record->op & ARM_SPE_OP_SME)
 		simd_flags.arch |= SIMD_OP_FLAGS_ARCH_SME;
 	else if (record->op & (ARM_SPE_OP_ASE | ARM_SPE_OP_SIMD_FP))
@@ -373,6 +374,14 @@ static struct simd_flags arm_spe__synth_simd_flags(const struct arm_spe_record *
 		else if (record->type & ARM_SPE_SVE_EMPTY_PRED)
 			simd_flags.pred = SIMD_OP_FLAGS_PRED_EMPTY;
 	}
+=======
+
+	if (record->type & ARM_SPE_SVE_PARTIAL_PRED)
+		simd_flags.pred |= SIMD_OP_FLAGS_PRED_PARTIAL;
+
+	if (record->type & ARM_SPE_SVE_EMPTY_PRED)
+		simd_flags.pred |= SIMD_OP_FLAGS_PRED_EMPTY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return simd_flags;
 }

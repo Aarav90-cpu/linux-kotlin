@@ -16,6 +16,11 @@
 #include <drm/drm_mm.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "../lib/drm_random.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	BEST,
 	BOTTOMUP,

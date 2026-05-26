@@ -8,6 +8,13 @@
 //! userspace APIs.
 
 #![no_std]
+<<<<<<< HEAD
+=======
+// See <https://github.com/rust-lang/rust-bindgen/issues/1651>.
+#![cfg_attr(test, allow(deref_nullptr))]
+#![cfg_attr(test, allow(unaligned_references))]
+#![cfg_attr(test, allow(unsafe_op_in_unsafe_fn))]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #![allow(
     clippy::all,
     clippy::cast_lossless,
@@ -24,7 +31,10 @@
     unsafe_op_in_unsafe_fn
 )]
 #![cfg_attr(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES, allow(unnecessary_transmutes))]
+<<<<<<< HEAD
 #![feature(cfi_encoding)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 // Manual definition of blocklisted types.
 type __kernel_size_t = usize;

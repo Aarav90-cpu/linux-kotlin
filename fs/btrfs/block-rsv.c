@@ -541,6 +541,7 @@ try_reserve:
 					   BTRFS_RESERVE_NO_FLUSH);
 	if (!ret)
 		return block_rsv;
+<<<<<<< HEAD
 
 	/*
 	 * If we are being used for updating a log tree, fail immediately, which
@@ -566,6 +567,8 @@ try_reserve:
 	if (btrfs_root_id(root) == BTRFS_TREE_LOG_OBJECTID)
 		return ERR_PTR(ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If we couldn't reserve metadata bytes try and use some from
 	 * the global reserve if its space type is the same as the global

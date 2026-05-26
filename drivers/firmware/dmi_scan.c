@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
+<<<<<<< HEAD
 
 #define pr_fmt(fmt) "DMI: " fmt
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 #include <linux/string.h>
 #include <linux/init.h>
@@ -47,7 +50,11 @@ static struct dmi_memdev_info {
 static int dmi_memdev_nr;
 static int dmi_memdev_populated_nr __initdata;
 
+<<<<<<< HEAD
 const char *dmi_string_nosave(const struct dmi_header *dm, u8 s)
+=======
+static const char * __init dmi_string_nosave(const struct dmi_header *dm, u8 s)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const u8 *bp = ((u8 *) dm) + dm->length;
 	const u8 *nsp;
@@ -66,7 +73,10 @@ const char *dmi_string_nosave(const struct dmi_header *dm, u8 s)
 
 	return dmi_empty_string;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dmi_string_nosave);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * __init dmi_string(const struct dmi_header *dm, u8 s)
 {
@@ -488,14 +498,22 @@ static void __init dmi_memdev_walk(void)
 static void __init dmi_decode(const struct dmi_header *dm, void *dummy)
 {
 	switch (dm->type) {
+<<<<<<< HEAD
 	case DMI_ENTRY_BIOS:
+=======
+	case 0:		/* BIOS Information */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_save_ident(dm, DMI_BIOS_VENDOR, 4);
 		dmi_save_ident(dm, DMI_BIOS_VERSION, 5);
 		dmi_save_ident(dm, DMI_BIOS_DATE, 8);
 		dmi_save_release(dm, DMI_BIOS_RELEASE, 21);
 		dmi_save_release(dm, DMI_EC_FIRMWARE_RELEASE, 23);
 		break;
+<<<<<<< HEAD
 	case DMI_ENTRY_SYSTEM:
+=======
+	case 1:		/* System Information */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_save_ident(dm, DMI_SYS_VENDOR, 4);
 		dmi_save_ident(dm, DMI_PRODUCT_NAME, 5);
 		dmi_save_ident(dm, DMI_PRODUCT_VERSION, 6);
@@ -504,20 +522,29 @@ static void __init dmi_decode(const struct dmi_header *dm, void *dummy)
 		dmi_save_ident(dm, DMI_PRODUCT_SKU, 25);
 		dmi_save_ident(dm, DMI_PRODUCT_FAMILY, 26);
 		break;
+<<<<<<< HEAD
 	case DMI_ENTRY_BASEBOARD:
+=======
+	case 2:		/* Base Board Information */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_save_ident(dm, DMI_BOARD_VENDOR, 4);
 		dmi_save_ident(dm, DMI_BOARD_NAME, 5);
 		dmi_save_ident(dm, DMI_BOARD_VERSION, 6);
 		dmi_save_ident(dm, DMI_BOARD_SERIAL, 7);
 		dmi_save_ident(dm, DMI_BOARD_ASSET_TAG, 8);
 		break;
+<<<<<<< HEAD
 	case DMI_ENTRY_CHASSIS:
+=======
+	case 3:		/* Chassis Information */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_save_ident(dm, DMI_CHASSIS_VENDOR, 4);
 		dmi_save_type(dm, DMI_CHASSIS_TYPE, 5);
 		dmi_save_ident(dm, DMI_CHASSIS_VERSION, 6);
 		dmi_save_ident(dm, DMI_CHASSIS_SERIAL, 7);
 		dmi_save_ident(dm, DMI_CHASSIS_ASSET_TAG, 8);
 		break;
+<<<<<<< HEAD
 	case DMI_ENTRY_SYSTEM_SLOT:
 		dmi_save_system_slot(dm);
 		break;
@@ -531,6 +558,21 @@ static void __init dmi_decode(const struct dmi_header *dm, void *dummy)
 		dmi_save_ipmi_device(dm);
 		break;
 	case DMI_ENTRY_ONBOARD_DEV_EXT:
+=======
+	case 9:		/* System Slots */
+		dmi_save_system_slot(dm);
+		break;
+	case 10:	/* Onboard Devices Information */
+		dmi_save_devices(dm);
+		break;
+	case 11:	/* OEM Strings */
+		dmi_save_oem_strings_devices(dm);
+		break;
+	case 38:	/* IPMI Device Information */
+		dmi_save_ipmi_device(dm);
+		break;
+	case 41:	/* Onboard Devices Extended Information */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_save_extended_devices(dm);
 	}
 }
@@ -638,7 +680,11 @@ static int __init dmi_present(const u8 *buf)
 					dmi_ver >> 16, (dmi_ver >> 8) & 0xFF);
 			}
 			dmi_format_ids(dmi_ids_string, sizeof(dmi_ids_string));
+<<<<<<< HEAD
 			pr_info("%s\n", dmi_ids_string);
+=======
+			pr_info("DMI: %s\n", dmi_ids_string);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		}
 	}
@@ -667,7 +713,11 @@ static int __init dmi_smbios3_present(const u8 *buf)
 				dmi_ver >> 16, (dmi_ver >> 8) & 0xFF,
 				dmi_ver & 0xFF);
 			dmi_format_ids(dmi_ids_string, sizeof(dmi_ids_string));
+<<<<<<< HEAD
 			pr_info("%s\n", dmi_ids_string);
+=======
+			pr_info("DMI: %s\n", dmi_ids_string);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		}
 	}
@@ -762,7 +812,11 @@ static void __init dmi_scan_machine(void)
 		dmi_early_unmap(p, 0x10000);
 	}
  error:
+<<<<<<< HEAD
 	pr_info("not present or invalid.\n");
+=======
+	pr_info("DMI not present or invalid.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __ro_after_init BIN_ATTR_SIMPLE_ADMIN_RO(smbios_entry_point);
@@ -814,7 +868,11 @@ static int __init dmi_init(void)
 	kobject_del(tables_kobj);
 	kobject_put(tables_kobj);
  err:
+<<<<<<< HEAD
 	pr_err("Firmware registration failed.\n");
+=======
+	pr_err("dmi: Firmware registration failed.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -835,7 +893,11 @@ void __init dmi_setup(void)
 		return;
 
 	dmi_memdev_walk();
+<<<<<<< HEAD
 	pr_info("Memory slots populated: %d/%d\n",
+=======
+	pr_info("DMI: Memory slots populated: %d/%d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmi_memdev_populated_nr, dmi_memdev_nr);
 	dump_stack_set_arch_desc("%s", dmi_ids_string);
 }

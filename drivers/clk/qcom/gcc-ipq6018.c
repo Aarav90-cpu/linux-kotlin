@@ -400,7 +400,11 @@ static struct clk_branch gcc_xo_clk_src = {
 				.fw_name = "xo",
 			},
 			.num_parents = 1,
+<<<<<<< HEAD
 			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
+=======
+			.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.ops = &clk_branch2_ops,
 		},
 	},

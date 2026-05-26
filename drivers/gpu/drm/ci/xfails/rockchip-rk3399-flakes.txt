@@ -144,6 +144,7 @@ kms_bw@connected-linear-tiling-1-displays-2160x1440p
 # IGT Version: 1.30-g04bedb923
 # Linux Version: 6.14.0-rc4
 kms_bw@linear-tiling-1-displays-3840x2160p
+<<<<<<< HEAD
 
 # Board Name: rk3399-gru-kevin
 # Bug Report: https://lore.kernel.org/dri-devel/7b6e2e3b-2ea2-4cd7-92a5-68d23a63e426@collabora.com/T/#u
@@ -179,3 +180,5 @@ kms_flip@plain-flip-ts-check-interruptible
 # IGT Version: 2.1-g26ddb59c1
 # Linux Version: 6.16.0-rc2
 kms_bw@linear-tiling-2-displays-3840x2160p
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

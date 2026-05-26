@@ -40,5 +40,9 @@ ublk_io_and_remove 256M -t stripe -q 4 --auto_zc -b "${UBLK_BACKFILES[1]}" "${UB
 ublk_io_and_remove 8G -t null -q 4 -z --auto_zc --auto_zc_fallback -b &
 wait
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "stress"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

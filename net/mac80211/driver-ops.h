@@ -1793,6 +1793,7 @@ static inline int drv_set_eml_op_mode(struct ieee80211_sub_if_data *sdata,
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline int
 drv_nan_peer_sched_changed(struct ieee80211_local *local,
 			   struct ieee80211_sub_if_data *sdata,
@@ -1814,4 +1815,6 @@ drv_nan_peer_sched_changed(struct ieee80211_local *local,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __MAC80211_DRIVER_OPS */

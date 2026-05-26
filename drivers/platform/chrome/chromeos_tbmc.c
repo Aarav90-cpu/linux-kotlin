@@ -16,7 +16,10 @@
 #include <linux/input.h>
 #include <linux/io.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/printk.h>
 
 #define DRV_NAME "chromeos_tbmc"
@@ -41,6 +44,7 @@ static int chromeos_tbmc_query_switch(struct acpi_device *adev,
 
 static __maybe_unused int chromeos_tbmc_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	return chromeos_tbmc_query_switch(ACPI_COMPANION(dev), dev_get_drvdata(dev));
 }
 
@@ -55,6 +59,22 @@ static void chromeos_tbmc_notify(acpi_handle handle, u32 event, void *data)
 		break;
 	default:
 		dev_err(dev, "Unexpected event: 0x%08X\n", event);
+=======
+	struct acpi_device *adev = to_acpi_device(dev);
+
+	return chromeos_tbmc_query_switch(adev, adev->driver_data);
+}
+
+static void chromeos_tbmc_notify(struct acpi_device *adev, u32 event)
+{
+	acpi_pm_wakeup_event(&adev->dev);
+	switch (event) {
+	case 0x80:
+		chromeos_tbmc_query_switch(adev, adev->driver_data);
+		break;
+	default:
+		dev_err(&adev->dev, "Unexpected event: 0x%08X\n", event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -65,11 +85,18 @@ static int chromeos_tbmc_open(struct input_dev *idev)
 	return chromeos_tbmc_query_switch(adev, idev);
 }
 
+<<<<<<< HEAD
 static int chromeos_tbmc_probe(struct platform_device *pdev)
 {
 	struct input_dev *idev;
 	struct device *dev = &pdev->dev;
 	struct acpi_device *adev = ACPI_COMPANION(dev);
+=======
+static int chromeos_tbmc_add(struct acpi_device *adev)
+{
+	struct input_dev *idev;
+	struct device *dev = &adev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	idev = devm_input_allocate_device(dev);
@@ -85,7 +112,11 @@ static int chromeos_tbmc_probe(struct platform_device *pdev)
 	idev->open = chromeos_tbmc_open;
 
 	input_set_drvdata(idev, adev);
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, idev);
+=======
+	adev->driver_data = idev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	input_set_capability(idev, EV_SW, SW_TABLET_MODE);
 	ret = input_register_device(idev);
@@ -94,6 +125,7 @@ static int chromeos_tbmc_probe(struct platform_device *pdev)
 		return ret;
 	}
 	device_init_wakeup(dev, true);
+<<<<<<< HEAD
 
 	ret = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
 					      chromeos_tbmc_notify, dev);
@@ -113,6 +145,11 @@ static void chromeos_tbmc_remove(struct platform_device *pdev)
 	device_init_wakeup(&pdev->dev, false);
 }
 
+=======
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct acpi_device_id chromeos_tbmc_acpi_device_ids[] = {
 	{ ACPI_DRV_NAME, 0 },
 	{ }
@@ -122,6 +159,7 @@ MODULE_DEVICE_TABLE(acpi, chromeos_tbmc_acpi_device_ids);
 static SIMPLE_DEV_PM_OPS(chromeos_tbmc_pm_ops, NULL,
 		chromeos_tbmc_resume);
 
+<<<<<<< HEAD
 static struct platform_driver chromeos_tbmc_driver = {
 	.probe = chromeos_tbmc_probe,
 	.remove = chromeos_tbmc_remove,
@@ -133,6 +171,20 @@ static struct platform_driver chromeos_tbmc_driver = {
 };
 
 module_platform_driver(chromeos_tbmc_driver);
+=======
+static struct acpi_driver chromeos_tbmc_driver = {
+	.name = DRV_NAME,
+	.class = DRV_NAME,
+	.ids = chromeos_tbmc_acpi_device_ids,
+	.ops = {
+		.add = chromeos_tbmc_add,
+		.notify = chromeos_tbmc_notify,
+	},
+	.drv.pm = &chromeos_tbmc_pm_ops,
+};
+
+module_acpi_driver(chromeos_tbmc_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("ChromeOS ACPI tablet switch driver");

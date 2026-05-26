@@ -435,7 +435,10 @@ union hv_vp_assist_msr_contents {	 /* HV_REGISTER_VP_ASSIST_PAGE */
 /* HV_CALL_CODE */
 #define HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE		0x0002
 #define HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST		0x0003
+<<<<<<< HEAD
 #define HVCALL_GET_LOGICAL_PROCESSOR_RUN_TIME		0x0004
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HVCALL_NOTIFY_LONG_SPIN_WAIT			0x0008
 #define HVCALL_SEND_IPI					0x000b
 #define HVCALL_ENABLE_VP_VTL				0x000f

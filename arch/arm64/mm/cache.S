@@ -132,7 +132,21 @@ alternative_else_nop_endif
 	ret
 SYM_FUNC_END(dcache_clean_pou)
 
+<<<<<<< HEAD
 .macro __dcache_inval_poc_nosync
+=======
+/*
+ *	dcache_inval_poc(start, end)
+ *
+ * 	Ensure that any D-cache lines for the interval [start, end)
+ * 	are invalidated. Any partial lines at the ends of the interval are
+ *	also cleaned to PoC to prevent data loss.
+ *
+ *	- start   - kernel start address of region
+ *	- end     - kernel end address of region
+ */
+SYM_FUNC_START(__pi_dcache_inval_poc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dcache_line_size x2, x3
 	sub	x3, x2, #1
 	tst	x1, x3				// end cache line aligned?
@@ -148,6 +162,7 @@ SYM_FUNC_END(dcache_clean_pou)
 3:	add	x0, x0, x2
 	cmp	x0, x1
 	b.lo	2b
+<<<<<<< HEAD
 .endm
 
 /*
@@ -162,12 +177,15 @@ SYM_FUNC_END(dcache_clean_pou)
  */
 SYM_FUNC_START(__pi_dcache_inval_poc)
 	__dcache_inval_poc_nosync
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dsb	sy
 	ret
 SYM_FUNC_END(__pi_dcache_inval_poc)
 SYM_FUNC_ALIAS(dcache_inval_poc, __pi_dcache_inval_poc)
 
 /*
+<<<<<<< HEAD
  *	dcache_inval_poc_nosync(start, end)
  *
  * 	Issue the instructions of D-cache lines for the interval [start, end)
@@ -184,6 +202,8 @@ SYM_FUNC_END(__pi_dcache_inval_poc_nosync)
 SYM_FUNC_ALIAS(dcache_inval_poc_nosync, __pi_dcache_inval_poc_nosync)
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	dcache_clean_poc(start, end)
  *
  * 	Ensure that any D-cache lines for the interval [start, end)
@@ -199,6 +219,7 @@ SYM_FUNC_END(__pi_dcache_clean_poc)
 SYM_FUNC_ALIAS(dcache_clean_poc, __pi_dcache_clean_poc)
 
 /*
+<<<<<<< HEAD
  *	dcache_clean_poc_nosync(start, end)
  *
  * 	Issue the instructions of D-cache lines for the interval [start, end).
@@ -214,6 +235,8 @@ SYM_FUNC_END(__pi_dcache_clean_poc_nosync)
 SYM_FUNC_ALIAS(dcache_clean_poc_nosync, __pi_dcache_clean_poc_nosync)
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	dcache_clean_pop(start, end)
  *
  * 	Ensure that any D-cache lines for the interval [start, end)

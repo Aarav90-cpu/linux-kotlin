@@ -756,7 +756,10 @@ static void ax88772_mac_link_down(struct phylink_config *config,
 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
 
 	asix_write_medium_mode(dev, 0, 0);
+<<<<<<< HEAD
 	usbnet_link_change(dev, false, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ax88772_mac_link_up(struct phylink_config *config,
@@ -787,7 +790,10 @@ static void ax88772_mac_link_up(struct phylink_config *config,
 		m |= AX_MEDIUM_RFC;
 
 	asix_write_medium_mode(dev, m, 0);
+<<<<<<< HEAD
 	usbnet_link_change(dev, true, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct phylink_mac_ops ax88772_phylink_mac_ops = {

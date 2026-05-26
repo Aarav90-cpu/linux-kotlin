@@ -476,9 +476,20 @@ static const struct pn533_phy_ops usb_phy_ops = {
 static int pn533_usb_probe(struct usb_interface *interface,
 			const struct usb_device_id *id)
 {
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep_in, *ep_out;
 	struct pn533 *priv;
 	struct pn533_usb_phy *phy;
+=======
+	struct pn533 *priv;
+	struct pn533_usb_phy *phy;
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	int in_endpoint = 0;
+	int out_endpoint = 0;
+	int rc = -ENOMEM;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 protocols;
 	enum pn533_protocol_type protocol_type = PN533_PROTO_REQ_ACK_RESP;
 	struct pn533_frame_ops *fops = NULL;
@@ -486,7 +497,10 @@ static int pn533_usb_probe(struct usb_interface *interface,
 	int in_buf_len = PN533_EXT_FRAME_HEADER_LEN +
 			 PN533_STD_FRAME_MAX_PAYLOAD_LEN +
 			 PN533_STD_FRAME_TAIL_LEN;
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	phy = devm_kzalloc(&interface->dev, sizeof(*phy), GFP_KERNEL);
 	if (!phy)
@@ -496,6 +510,7 @@ static int pn533_usb_probe(struct usb_interface *interface,
 	if (!in_buf)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	phy->udev = interface_to_usbdev(interface);
 	phy->interface = interface;
 
@@ -504,6 +519,26 @@ static int pn533_usb_probe(struct usb_interface *interface,
 	if (rc) {
 		nfc_err(&interface->dev,
 			"Could not find bulk-in or bulk-out endpoint\n");
+=======
+	phy->udev = usb_get_dev(interface_to_usbdev(interface));
+	phy->interface = interface;
+
+	iface_desc = interface->cur_altsetting;
+	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+		endpoint = &iface_desc->endpoint[i].desc;
+
+		if (!in_endpoint && usb_endpoint_is_bulk_in(endpoint))
+			in_endpoint = endpoint->bEndpointAddress;
+
+		if (!out_endpoint && usb_endpoint_is_bulk_out(endpoint))
+			out_endpoint = endpoint->bEndpointAddress;
+	}
+
+	if (!in_endpoint || !out_endpoint) {
+		nfc_err(&interface->dev,
+			"Could not find bulk-in or bulk-out endpoint\n");
+		rc = -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto error;
 	}
 
@@ -511,6 +546,7 @@ static int pn533_usb_probe(struct usb_interface *interface,
 	phy->out_urb = usb_alloc_urb(0, GFP_KERNEL);
 	phy->ack_urb = usb_alloc_urb(0, GFP_KERNEL);
 
+<<<<<<< HEAD
 	if (!phy->in_urb || !phy->out_urb || !phy->ack_urb) {
 		rc = -ENOMEM;
 		goto error;
@@ -525,6 +561,20 @@ static int pn533_usb_probe(struct usb_interface *interface,
 			  NULL, 0, pn533_out_complete, phy);
 	usb_fill_bulk_urb(phy->ack_urb, phy->udev,
 			  usb_sndbulkpipe(phy->udev, usb_endpoint_num(ep_out)),
+=======
+	if (!phy->in_urb || !phy->out_urb || !phy->ack_urb)
+		goto error;
+
+	usb_fill_bulk_urb(phy->in_urb, phy->udev,
+			  usb_rcvbulkpipe(phy->udev, in_endpoint),
+			  in_buf, in_buf_len, NULL, phy);
+
+	usb_fill_bulk_urb(phy->out_urb, phy->udev,
+			  usb_sndbulkpipe(phy->udev, out_endpoint),
+			  NULL, 0, pn533_out_complete, phy);
+	usb_fill_bulk_urb(phy->ack_urb, phy->udev,
+			  usb_sndbulkpipe(phy->udev, out_endpoint),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  NULL, 0, pn533_ack_complete, phy);
 
 	switch (id->driver_info) {
@@ -588,6 +638,10 @@ error:
 	usb_free_urb(phy->in_urb);
 	usb_free_urb(phy->out_urb);
 	usb_free_urb(phy->ack_urb);
+<<<<<<< HEAD
+=======
+	usb_put_dev(phy->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(in_buf);
 	kfree(phy->ack_buffer);
 
@@ -615,6 +669,10 @@ static void pn533_usb_disconnect(struct usb_interface *interface)
 	usb_free_urb(phy->out_urb);
 	usb_free_urb(phy->ack_urb);
 	kfree(phy->ack_buffer);
+<<<<<<< HEAD
+=======
+	usb_put_dev(phy->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nfc_info(&interface->dev, "NXP PN533 NFC device disconnected\n");
 }

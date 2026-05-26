@@ -750,6 +750,7 @@ static void ingenic_ipu_destroy_state(struct drm_private_obj *obj,
 	kfree(priv_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 ingenic_ipu_create_state(struct drm_private_obj *obj)
 {
@@ -766,6 +767,9 @@ ingenic_ipu_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs ingenic_ipu_private_state_funcs = {
 	.atomic_create_state = ingenic_ipu_create_state,
+=======
+static const struct drm_private_state_funcs ingenic_ipu_private_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = ingenic_ipu_duplicate_state,
 	.atomic_destroy_state = ingenic_ipu_destroy_state,
 };
@@ -808,6 +812,10 @@ static const struct regmap_config ingenic_ipu_regmap_config = {
 static int ingenic_ipu_bind(struct device *dev, struct device *master, void *d)
 {
 	struct platform_device *pdev = to_platform_device(dev);
+<<<<<<< HEAD
+=======
+	struct ingenic_ipu_private_state *private_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct soc_info *soc_info;
 	struct drm_device *drm = d;
 	struct drm_plane *plane;
@@ -901,10 +909,27 @@ static int ingenic_ipu_bind(struct device *dev, struct device *master, void *d)
 		return err;
 	}
 
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(drm, &ipu->private_obj,
 				    &ingenic_ipu_private_state_funcs);
 
 	return 0;
+=======
+	private_state = kzalloc_obj(*private_state);
+	if (!private_state) {
+		err = -ENOMEM;
+		goto err_clk_unprepare;
+	}
+
+	drm_atomic_private_obj_init(drm, &ipu->private_obj, &private_state->base,
+				    &ingenic_ipu_private_state_funcs);
+
+	return 0;
+
+err_clk_unprepare:
+	clk_unprepare(ipu->clk);
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ingenic_ipu_unbind(struct device *dev,

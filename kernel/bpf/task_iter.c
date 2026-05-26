@@ -9,8 +9,11 @@
 #include <linux/bpf_mem_alloc.h>
 #include <linux/btf_ids.h>
 #include <linux/mm_types.h>
+<<<<<<< HEAD
 #include <linux/mmap_lock.h>
 #include <linux/sched/mm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mmap_unlock_work.h"
 
 static const char * const iter_task_type_names[] = {
@@ -796,6 +799,7 @@ const struct bpf_func_proto bpf_find_vma_proto = {
 	.arg5_type	= ARG_ANYTHING,
 };
 
+<<<<<<< HEAD
 static inline void bpf_iter_mmput_async(struct mm_struct *mm)
 {
 #ifdef CONFIG_MMU
@@ -810,6 +814,13 @@ struct bpf_iter_task_vma_kern_data {
 	struct mm_struct *mm;
 	struct vm_area_struct snapshot;
 	u64 next_addr;
+=======
+struct bpf_iter_task_vma_kern_data {
+	struct task_struct *task;
+	struct mm_struct *mm;
+	struct mmap_unlock_irq_work *work;
+	struct vma_iterator vmi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct bpf_iter_task_vma {
@@ -830,11 +841,16 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
 				      struct task_struct *task, u64 addr)
 {
 	struct bpf_iter_task_vma_kern *kit = (void *)it;
+<<<<<<< HEAD
+=======
+	bool irq_work_busy = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	BUILD_BUG_ON(sizeof(struct bpf_iter_task_vma_kern) != sizeof(struct bpf_iter_task_vma));
 	BUILD_BUG_ON(__alignof__(struct bpf_iter_task_vma_kern) != __alignof__(struct bpf_iter_task_vma));
 
+<<<<<<< HEAD
 	if (!IS_ENABLED(CONFIG_PER_VMA_LOCK)) {
 		kit->data = NULL;
 		return -EOPNOTSUPP;
@@ -852,6 +868,8 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
 		return -EBUSY;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* is_iter_reg_valid_uninit guarantees that kit hasn't been initialized
 	 * before, so non-NULL kit->data doesn't point to previously
 	 * bpf_mem_alloc'd bpf_iter_task_vma_kern_data
@@ -861,6 +879,7 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
 		return -ENOMEM;
 
 	kit->data->task = get_task_struct(task);
+<<<<<<< HEAD
 	/*
 	 * Safely read task->mm and acquire an mm reference.
 	 *
@@ -880,23 +899,43 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
 	else
 		kit->data->mm = NULL;
 	spin_unlock(&task->alloc_lock);
+=======
+	kit->data->mm = task->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!kit->data->mm) {
 		err = -ENOENT;
 		goto err_cleanup_iter;
 	}
 
+<<<<<<< HEAD
 	kit->data->snapshot.vm_file = NULL;
 	kit->data->next_addr = addr;
 	return 0;
 
 err_cleanup_iter:
 	put_task_struct(kit->data->task);
+=======
+	/* kit->data->work == NULL is valid after bpf_mmap_unlock_get_irq_work */
+	irq_work_busy = bpf_mmap_unlock_get_irq_work(&kit->data->work);
+	if (irq_work_busy || !mmap_read_trylock(kit->data->mm)) {
+		err = -EBUSY;
+		goto err_cleanup_iter;
+	}
+
+	vma_iter_init(&kit->data->vmi, kit->data->mm, addr);
+	return 0;
+
+err_cleanup_iter:
+	if (kit->data->task)
+		put_task_struct(kit->data->task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_mem_free(&bpf_global_ma, kit->data);
 	/* NULL kit->data signals failed bpf_iter_task_vma initialization */
 	kit->data = NULL;
 	return err;
 }
 
+<<<<<<< HEAD
 /*
  * Find and lock the next VMA at or after data->next_addr.
  *
@@ -986,6 +1025,15 @@ __bpf_kfunc struct vm_area_struct *bpf_iter_task_vma_next(struct bpf_iter_task_v
 	kit->data->next_addr = vma->vm_end;
 	vma_end_read(vma);
 	return snap;
+=======
+__bpf_kfunc struct vm_area_struct *bpf_iter_task_vma_next(struct bpf_iter_task_vma *it)
+{
+	struct bpf_iter_task_vma_kern *kit = (void *)it;
+
+	if (!kit->data) /* bpf_iter_task_vma_new failed */
+		return NULL;
+	return vma_next(&kit->data->vmi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
@@ -993,9 +1041,14 @@ __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
 	struct bpf_iter_task_vma_kern *kit = (void *)it;
 
 	if (kit->data) {
+<<<<<<< HEAD
 		bpf_iter_task_vma_snapshot_reset(&kit->data->snapshot);
 		put_task_struct(kit->data->task);
 		bpf_iter_mmput_async(kit->data->mm);
+=======
+		bpf_mmap_unlock_mm(kit->data->work, kit->data->mm);
+		put_task_struct(kit->data->task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bpf_mem_free(&bpf_global_ma, kit->data);
 	}
 }

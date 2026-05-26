@@ -484,7 +484,10 @@ void dcn31_hubp_pg_control(struct dce_hwseq *hws, unsigned int hubp_inst, bool p
 
 int dcn31_init_sys_ctx(struct dce_hwseq *hws, struct dc *dc, struct dc_phy_addr_space_config *pa_config)
 {
+<<<<<<< HEAD
 	(void)hws;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn_hubbub_phys_addr_config config = {0};
 
 	config.system_aperture.fb_top = pa_config->system_aperture.fb_top;
@@ -512,9 +515,15 @@ static void dcn31_reset_back_end_for_pipe(
 		struct pipe_ctx *pipe_ctx,
 		struct dc_state *context)
 {
+<<<<<<< HEAD
 	(void)context;
 	struct dc_link *link;
 
+=======
+	struct dc_link *link;
+
+	DC_LOGGER_INIT(dc->ctx->logger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pipe_ctx->stream_res.stream_enc == NULL) {
 		pipe_ctx->stream = NULL;
 		return;
@@ -550,7 +559,11 @@ static void dcn31_reset_back_end_for_pipe(
 	 * the case where the same symclk is shared across multiple otg
 	 * instances
 	 */
+<<<<<<< HEAD
 	if (dc_is_tmds_signal(pipe_ctx->stream->signal))
+=======
+	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		link->phy_state.symclk_ref_cnts.otg = 0;
 
 	if (pipe_ctx->top_pipe == NULL) {

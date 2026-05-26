@@ -4,7 +4,10 @@
  * Author: Christoffer Dall <c.dall@virtualopensystems.com>
  */
 
+<<<<<<< HEAD
 #include <linux/arm-smccc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bug.h>
 #include <linux/cpu_pm.h>
 #include <linux/errno.h>
@@ -25,7 +28,10 @@
 
 #define CREATE_TRACE_POINTS
 #include "trace_arm.h"
+<<<<<<< HEAD
 #include "hyp_trace.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/uaccess.h>
 #include <asm/ptrace.h>
@@ -37,7 +43,10 @@
 #include <asm/kvm_arm.h>
 #include <asm/kvm_asm.h>
 #include <asm/kvm_emulate.h>
+<<<<<<< HEAD
 #include <asm/kvm_hyp.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_mmu.h>
 #include <asm/kvm_nested.h>
 #include <asm/kvm_pkvm.h>
@@ -48,9 +57,12 @@
 #include <kvm/arm_hypercalls.h>
 #include <kvm/arm_pmu.h>
 #include <kvm/arm_psci.h>
+<<<<<<< HEAD
 #include <kvm/arm_vgic.h>
 
 #include <linux/irqchip/arm-gic-v5.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "sys_regs.h"
 
@@ -209,9 +221,12 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
 {
 	int ret;
 
+<<<<<<< HEAD
 	if (type & ~KVM_VM_TYPE_ARM_MASK)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&kvm->arch.config_lock);
 
 #ifdef CONFIG_LOCKDEP
@@ -243,12 +258,18 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
 		 * If any failures occur after this is successful, make sure to
 		 * call __pkvm_unreserve_vm to unreserve the VM in hyp.
 		 */
+<<<<<<< HEAD
 		ret = pkvm_init_host_vm(kvm, type);
 		if (ret)
 			goto err_uninit_mmu;
 	} else if (type & KVM_VM_TYPE_ARM_PROTECTED) {
 		ret = -EINVAL;
 		goto err_uninit_mmu;
+=======
+		ret = pkvm_init_host_vm(kvm);
+		if (ret)
+			goto err_free_cpumask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	kvm_vgic_early_init(kvm);
@@ -264,8 +285,11 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
 
 	return 0;
 
+<<<<<<< HEAD
 err_uninit_mmu:
 	kvm_uninit_stage2_mmu(kvm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_cpumask:
 	free_cpumask_var(kvm->arch.supported_cpus);
 err_unshare_kvm:
@@ -315,7 +339,10 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
 	if (is_protected_kvm_enabled())
 		pkvm_destroy_hyp_vm(kvm);
 
+<<<<<<< HEAD
 	kvm_uninit_stage2_mmu(kvm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvm_destroy_mpidr_data(kvm);
 
 	kfree(kvm->arch.sysreg_masks);
@@ -628,9 +655,12 @@ static bool kvm_vcpu_should_clear_twi(struct kvm_vcpu *vcpu)
 	if (unlikely(kvm_wfi_trap_policy != KVM_WFX_NOTRAP_SINGLE_TASK))
 		return kvm_wfi_trap_policy == KVM_WFX_NOTRAP;
 
+<<<<<<< HEAD
 	if (vgic_is_v5(vcpu->kvm))
 		return single_task_running();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return single_task_running() &&
 	       vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3 &&
 	       (atomic_read(&vcpu->arch.vgic_cpu.vgic_v3.its_vpe.vlpi_count) ||
@@ -723,8 +753,11 @@ nommu:
 
 	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
 		vcpu_set_on_unsupported_cpu(vcpu);
+<<<<<<< HEAD
 
 	vcpu->arch.pid = pid_nr(vcpu->pid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
@@ -958,10 +991,13 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	ret = vgic_v5_finalize_ppi_state(kvm);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_protected_kvm_enabled()) {
 		ret = pkvm_create_hyp_vm(kvm);
 		if (ret)
@@ -1467,11 +1503,18 @@ static int vcpu_interrupt_line(struct kvm_vcpu *vcpu, int number, bool level)
 int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
 			  bool line_status)
 {
+<<<<<<< HEAD
 	unsigned int irq_type, vcpu_id, irq_num;
 	struct kvm_vcpu *vcpu = NULL;
 	bool level = irq_level->level;
 	u32 irq = irq_level->irq;
 	unsigned long *mask;
+=======
+	u32 irq = irq_level->irq;
+	unsigned int irq_type, vcpu_id, irq_num;
+	struct kvm_vcpu *vcpu = NULL;
+	bool level = irq_level->level;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	irq_type = (irq >> KVM_ARM_IRQ_TYPE_SHIFT) & KVM_ARM_IRQ_TYPE_MASK;
 	vcpu_id = (irq >> KVM_ARM_IRQ_VCPU_SHIFT) & KVM_ARM_IRQ_VCPU_MASK;
@@ -1501,6 +1544,7 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
 		if (!vcpu)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		if (vgic_is_v5(kvm)) {
 			if (irq_num >= VGIC_V5_NR_PRIVATE_IRQS)
 				return -EINVAL;
@@ -1519,12 +1563,17 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
 			   irq_num >= VGIC_NR_PRIVATE_IRQS) {
 			return -EINVAL;
 		}
+=======
+		if (irq_num < VGIC_NR_SGIS || irq_num >= VGIC_NR_PRIVATE_IRQS)
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return kvm_vgic_inject_irq(kvm, vcpu, irq_num, level, NULL);
 	case KVM_ARM_IRQ_TYPE_SPI:
 		if (!irqchip_in_kernel(kvm))
 			return -ENXIO;
 
+<<<<<<< HEAD
 		if (vgic_is_v5(kvm)) {
 			/* Build a GICv5-style IntID here */
 			irq_num = vgic_v5_make_spi(irq_num);
@@ -1532,6 +1581,10 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
 			if (irq_num < VGIC_NR_PRIVATE_IRQS)
 				return -EINVAL;
 		}
+=======
+		if (irq_num < VGIC_NR_PRIVATE_IRQS)
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return kvm_vgic_inject_irq(kvm, NULL, irq_num, level, NULL);
 	}
@@ -2464,10 +2517,13 @@ static int __init init_subsystems(void)
 
 	kvm_register_perf_callbacks();
 
+<<<<<<< HEAD
 	err = kvm_hyp_trace_init();
 	if (err)
 		kvm_err("Failed to initialize Hyp tracing\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	if (err)
 		hyp_cpu_pm_exit();
@@ -2519,7 +2575,11 @@ static int __init do_pkvm_init(u32 hyp_va_bits)
 	preempt_disable();
 	cpu_hyp_init_context();
 	ret = kvm_call_hyp_nvhe(__pkvm_init, hyp_mem_base, hyp_mem_size,
+<<<<<<< HEAD
 				kern_hyp_va(per_cpu_base),
+=======
+				num_possible_cpus(), kern_hyp_va(per_cpu_base),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				hyp_va_bits);
 	cpu_hyp_init_features();
 
@@ -2561,7 +2621,10 @@ static void kvm_hyp_init_symbols(void)
 {
 	kvm_nvhe_sym(id_aa64pfr0_el1_sys_val) = get_hyp_id_aa64pfr0_el1();
 	kvm_nvhe_sym(id_aa64pfr1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1);
+<<<<<<< HEAD
 	kvm_nvhe_sym(id_aa64pfr2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64PFR2_EL1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvm_nvhe_sym(id_aa64isar0_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR0_EL1);
 	kvm_nvhe_sym(id_aa64isar1_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
 	kvm_nvhe_sym(id_aa64isar2_el1_sys_val) = read_sanitised_ftr_reg(SYS_ID_AA64ISAR2_EL1);
@@ -2584,9 +2647,12 @@ static void kvm_hyp_init_symbols(void)
 	kvm_nvhe_sym(hfgitr2_masks) = hfgitr2_masks;
 	kvm_nvhe_sym(hdfgrtr2_masks)= hdfgrtr2_masks;
 	kvm_nvhe_sym(hdfgwtr2_masks)= hdfgwtr2_masks;
+<<<<<<< HEAD
 	kvm_nvhe_sym(ich_hfgrtr_masks) = ich_hfgrtr_masks;
 	kvm_nvhe_sym(ich_hfgwtr_masks) = ich_hfgwtr_masks;
 	kvm_nvhe_sym(ich_hfgitr_masks) = ich_hfgitr_masks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Flush entire BSS since part of its data containing init symbols is read
@@ -2639,6 +2705,7 @@ static int init_pkvm_host_sve_state(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int pkvm_check_sme_dvmsync_fw_call(void)
 {
 	struct arm_smccc_res res;
@@ -2655,6 +2722,8 @@ static int pkvm_check_sme_dvmsync_fw_call(void)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Finalizes the initialization of hyp mode, once everything else is initialized
  * and the initialziation process cannot fail.
@@ -2748,8 +2817,11 @@ static int __init init_hyp_mode(void)
 		kvm_nvhe_sym(kvm_arm_hyp_percpu_base)[cpu] = (unsigned long)page_addr;
 	}
 
+<<<<<<< HEAD
 	kvm_nvhe_sym(hyp_nr_cpus) = num_possible_cpus();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Map the Hyp-code called directly from the host
 	 */
@@ -2855,10 +2927,13 @@ static int __init init_hyp_mode(void)
 		if (err)
 			goto out_err;
 
+<<<<<<< HEAD
 		err = pkvm_check_sme_dvmsync_fw_call();
 		if (err)
 			goto out_err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = kvm_hyp_init_protection(hyp_va_bits);
 		if (err) {
 			kvm_err("Failed to init hyp memory protection\n");

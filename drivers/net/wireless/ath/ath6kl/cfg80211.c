@@ -1123,13 +1123,22 @@ void ath6kl_cfg80211_ch_switch_notify(struct ath6kl_vif *vif, int freq,
 	wiphy_unlock(vif->ar->wiphy);
 }
 
+<<<<<<< HEAD
 static int ath6kl_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int ath6kl_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   int link_id, u8 key_index, bool pairwise,
 				   const u8 *mac_addr,
 				   struct key_params *params)
 {
+<<<<<<< HEAD
 	struct ath6kl *ar = ath6kl_priv(wdev->netdev);
 	struct ath6kl_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct ath6kl *ar = ath6kl_priv(ndev);
+	struct ath6kl_vif *vif = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath6kl_key *key = NULL;
 	int seq_len;
 	u8 key_usage;
@@ -1248,12 +1257,21 @@ static int ath6kl_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wde
 				     (u8 *) mac_addr, SYNC_BOTH_WMIFLAG);
 }
 
+<<<<<<< HEAD
 static int ath6kl_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 				   int link_id, u8 key_index, bool pairwise,
 				   const u8 *mac_addr)
 {
 	struct ath6kl *ar = ath6kl_priv(wdev->netdev);
 	struct ath6kl_vif *vif = netdev_priv(wdev->netdev);
+=======
+static int ath6kl_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
+				   int link_id, u8 key_index, bool pairwise,
+				   const u8 *mac_addr)
+{
+	struct ath6kl *ar = ath6kl_priv(ndev);
+	struct ath6kl_vif *vif = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ath6kl_dbg(ATH6KL_DBG_WLAN_CFG, "%s: index %d\n", __func__, key_index);
 
@@ -1278,13 +1296,21 @@ static int ath6kl_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wde
 	return ath6kl_wmi_deletekey_cmd(ar->wmi, vif->fw_vif_idx, key_index);
 }
 
+<<<<<<< HEAD
 static int ath6kl_cfg80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int ath6kl_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   int link_id, u8 key_index, bool pairwise,
 				   const u8 *mac_addr, void *cookie,
 				   void (*callback) (void *cookie,
 						     struct key_params *))
 {
+<<<<<<< HEAD
 	struct ath6kl_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct ath6kl_vif *vif = netdev_priv(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath6kl_key *key = NULL;
 	struct key_params params;
 
@@ -1775,10 +1801,16 @@ static bool is_rate_ht40(s32 rate, u8 *mcs, bool *sgi)
 	return false;
 }
 
+<<<<<<< HEAD
 static int ath6kl_get_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 			      const u8 *mac, struct station_info *sinfo)
 {
 	struct net_device *dev = wdev->netdev;
+=======
+static int ath6kl_get_station(struct wiphy *wiphy, struct net_device *dev,
+			      const u8 *mac, struct station_info *sinfo)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath6kl *ar = ath6kl_priv(dev);
 	struct ath6kl_vif *vif = netdev_priv(dev);
 	long left;
@@ -2993,10 +3025,16 @@ static int ath6kl_stop_ap(struct wiphy *wiphy, struct net_device *dev,
 
 static const u8 bcast_addr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
+<<<<<<< HEAD
 static int ath6kl_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 			      struct station_del_parameters *params)
 {
 	struct net_device *dev = wdev->netdev;
+=======
+static int ath6kl_del_station(struct wiphy *wiphy, struct net_device *dev,
+			      struct station_del_parameters *params)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath6kl *ar = ath6kl_priv(dev);
 	struct ath6kl_vif *vif = netdev_priv(dev);
 	const u8 *addr = params->mac ? params->mac : bcast_addr;
@@ -3005,11 +3043,18 @@ static int ath6kl_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 				      addr, WLAN_REASON_PREV_AUTH_NOT_VALID);
 }
 
+<<<<<<< HEAD
 static int ath6kl_change_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 				 const u8 *mac,
 				 struct station_parameters *params)
 {
 	struct net_device *dev = wdev->netdev;
+=======
+static int ath6kl_change_station(struct wiphy *wiphy, struct net_device *dev,
+				 const u8 *mac,
+				 struct station_parameters *params)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath6kl *ar = ath6kl_priv(dev);
 	struct ath6kl_vif *vif = netdev_priv(dev);
 	int err;

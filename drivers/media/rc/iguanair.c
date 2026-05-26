@@ -500,7 +500,10 @@ static void iguanair_disconnect(struct usb_interface *intf)
 	usb_set_intfdata(intf, NULL);
 	usb_kill_urb(ir->urb_in);
 	usb_kill_urb(ir->urb_out);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_free_urb(ir->urb_in);
 	usb_free_urb(ir->urb_out);
 	usb_free_coherent(ir->udev, MAX_IN_PACKET, ir->buf_in, ir->dma_in);

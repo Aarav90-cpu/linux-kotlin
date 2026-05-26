@@ -12,9 +12,12 @@ choice
 
 	config MACH_EYEQ6H
 		bool "Mobileye EyeQ6H SoC"
+<<<<<<< HEAD
 
 	config MACH_EYEQ6LPLUS
 		bool "Mobileye EyeQ6Lplus SoC"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endchoice
 
 config FIT_IMAGE_FDT_EPM5

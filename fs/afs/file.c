@@ -19,7 +19,11 @@
 #include <trace/events/netfs.h>
 #include "internal.h"
 
+<<<<<<< HEAD
 static int afs_file_mmap_prepare(struct vm_area_desc *desc);
+=======
+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
 static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
@@ -28,8 +32,11 @@ static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
 static void afs_vm_open(struct vm_area_struct *area);
 static void afs_vm_close(struct vm_area_struct *area);
 static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff);
+<<<<<<< HEAD
 static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
 		      const struct file *file, void **vm_private_data);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 const struct file_operations afs_file_operations = {
 	.open		= afs_open,
@@ -37,7 +44,11 @@ const struct file_operations afs_file_operations = {
 	.llseek		= generic_file_llseek,
 	.read_iter	= afs_file_read_iter,
 	.write_iter	= netfs_file_write_iter,
+<<<<<<< HEAD
 	.mmap_prepare	= afs_file_mmap_prepare,
+=======
+	.mmap		= afs_file_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.splice_read	= afs_file_splice_read,
 	.splice_write	= iter_file_splice_write,
 	.fsync		= afs_fsync,
@@ -63,7 +74,10 @@ const struct address_space_operations afs_file_aops = {
 };
 
 static const struct vm_operations_struct afs_vm_ops = {
+<<<<<<< HEAD
 	.mapped		= afs_mapped,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open		= afs_vm_open,
 	.close		= afs_vm_close,
 	.fault		= filemap_fault,
@@ -509,6 +523,7 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
 /*
  * Handle setting up a memory mapping on an AFS file.
  */
+<<<<<<< HEAD
 static int afs_file_mmap_prepare(struct vm_area_desc *desc)
 {
 	int ret;
@@ -528,28 +543,55 @@ static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
 
 	afs_add_open_mmap(vnode);
 	return 0;
+=======
+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+	int ret;
+
+	afs_add_open_mmap(vnode);
+
+	ret = generic_file_mmap(file, vma);
+	if (ret == 0)
+		vma->vm_ops = &afs_vm_ops;
+	else
+		afs_drop_open_mmap(vnode);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void afs_vm_open(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	struct file *file = vma->vm_file;
 	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
 
 	afs_add_open_mmap(vnode);
+=======
+	afs_add_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void afs_vm_close(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	struct file *file = vma->vm_file;
 	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
 
 	afs_drop_open_mmap(vnode);
+=======
+	afs_drop_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff)
 {
+<<<<<<< HEAD
 	struct file *file = vmf->vma->vm_file;
 	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+=======
+	struct afs_vnode *vnode = AFS_FS_I(file_inode(vmf->vma->vm_file));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (afs_check_validity(vnode))
 		return filemap_map_pages(vmf, start_pgoff, end_pgoff);

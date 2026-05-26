@@ -562,7 +562,13 @@ static void mtk_mac_config(struct phylink_config *config, unsigned int mode,
 	int val, ge_mode, err = 0;
 	u32 i;
 
+<<<<<<< HEAD
 	if (mac->interface != state->interface) {
+=======
+	/* MT76x8 has no hardware settings between for the MAC */
+	if (!MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628) &&
+	    mac->interface != state->interface) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Setup soc pin functions */
 		switch (state->interface) {
 		case PHY_INTERFACE_MODE_TRGMII:
@@ -954,6 +960,7 @@ static const struct phylink_mac_ops mtk_phylink_ops = {
 	.mac_enable_tx_lpi = mtk_mac_enable_tx_lpi,
 };
 
+<<<<<<< HEAD
 static void rt5350_mac_config(struct phylink_config *config, unsigned int mode,
 				const struct phylink_link_state *state)
 {
@@ -978,6 +985,8 @@ static const struct phylink_mac_ops rt5350_phylink_ops = {
 	.mac_link_up = rt5350_mac_link_up,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mtk_mdio_config(struct mtk_eth *eth)
 {
 	u32 val;
@@ -3588,6 +3597,7 @@ found:
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 static int mtk_max_gmac_mtu(struct mtk_eth *eth)
 {
 	int i, max_mtu = ETH_DATA_LEN;
@@ -3599,12 +3609,18 @@ static int mtk_max_gmac_mtu(struct mtk_eth *eth)
 	return max_mtu;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mtk_open(struct net_device *dev)
 {
 	struct mtk_mac *mac = netdev_priv(dev);
 	struct mtk_eth *eth = mac->hw;
 	struct mtk_mac *target_mac;
+<<<<<<< HEAD
 	int i, err, ppe_num, mtu;
+=======
+	int i, err, ppe_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ppe_num = eth->soc->ppe_num;
 
@@ -3651,10 +3667,13 @@ static int mtk_open(struct net_device *dev)
 			mtk_gdm_config(eth, target_mac->id, gdm_config);
 		}
 
+<<<<<<< HEAD
 		mtu = mtk_max_gmac_mtu(eth);
 		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
 			mtk_ppe_update_mtu(eth->ppe[i], mtu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		napi_enable(&eth->tx_napi);
 		napi_enable(&eth->rx_napi);
 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
@@ -4348,7 +4367,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
 	int length = new_mtu + MTK_RX_ETH_HLEN;
 	struct mtk_mac *mac = netdev_priv(dev);
 	struct mtk_eth *eth = mac->hw;
+<<<<<<< HEAD
 	int max_mtu, i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rcu_access_pointer(eth->prog) &&
 	    length > MTK_PP_MAX_BUF_SIZE) {
@@ -4359,10 +4381,13 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
 	mtk_set_mcr_max_rx(mac, length);
 	WRITE_ONCE(dev->mtu, new_mtu);
 
+<<<<<<< HEAD
 	max_mtu = mtk_max_gmac_mtu(eth);
 	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
 		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4822,7 +4847,10 @@ static const struct net_device_ops mtk_netdev_ops = {
 
 static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
 {
+<<<<<<< HEAD
 	const struct phylink_mac_ops *mac_ops = &mtk_phylink_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const __be32 *_id = of_get_property(np, "reg", NULL);
 	phy_interface_t phy_mode;
 	struct phylink *phylink;
@@ -4957,12 +4985,18 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
 			  mac->phylink_config.supported_interfaces);
 	}
 
+<<<<<<< HEAD
 	if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
 		mac_ops = &rt5350_phylink_ops;
 
 	phylink = phylink_create(&mac->phylink_config,
 				 of_fwnode_handle(mac->of_node),
 				 phy_mode, mac_ops);
+=======
+	phylink = phylink_create(&mac->phylink_config,
+				 of_fwnode_handle(mac->of_node),
+				 phy_mode, &mtk_phylink_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(phylink)) {
 		err = PTR_ERR(phylink);
 		goto free_netdev;

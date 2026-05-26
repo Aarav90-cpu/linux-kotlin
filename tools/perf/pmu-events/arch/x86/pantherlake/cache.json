@@ -150,6 +150,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of L2 cache accesses from front door Demand Code Read requests. Does not include rejects or recycles, per core event.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x24",
@@ -204,6 +205,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of L2 cache accesses from front door requests that resulted in a Hit. Does not include rejects or recycles, per core event.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x24",
@@ -213,6 +216,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of L2 cache accesses from front door Hardware Prefetch requests. Does not include rejects or recycles, per core event.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x24",
@@ -231,6 +235,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Read requests with true-miss in L2 cache [This event is alias to L2_RQSTS.MISS]",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0x24",
@@ -438,6 +444,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of unhalted cycles when the core is stalled due to a demand load miss which hit in the LLC, no snoop was required. LLC provided data.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x34",
@@ -456,6 +463,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of unhalted cycles when the core is stalled due to a demand load miss which missed all the local caches.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x34",
@@ -807,6 +816,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the total number of load ops retired that miss the L3 cache.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xd3",
@@ -817,6 +827,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of load ops retired that miss the L3 cache and hit in DRAM",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xd3",
@@ -847,6 +859,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of load ops retired that hit in the L3 cache in which a snoop was required and no data was forwarded.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xd4",
@@ -867,6 +880,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of load ops retired that hit the L1 data cache.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xd1",
@@ -917,6 +932,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of load ops retired that hit in the L3 cache in which no snoop was required.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xd1",
@@ -937,6 +953,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of cycles that uops are blocked for any of the following reasons:  load buffer, store buffer or RSV full.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x04",
@@ -1020,14 +1038,23 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 1024.",
         "Counter": "0,1,2,3,4,5,6,7",
         "Data_LA": "1",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
+        "Counter": "0,1,2,3,4,5,6,7",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_1024",
         "MSRIndex": "0x3F6",
         "MSRValue": "0x400",
+<<<<<<< HEAD
         "PublicDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 1024. Available PDIST counters: 0,1",
+=======
+        "PublicDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled. Available PDIST counters: 0,1",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "SampleAfterValue": "1000003",
         "UMask": "0x5",
         "Unit": "cpu_atom"
@@ -1035,7 +1062,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_128",
         "MSRIndex": "0x3F6",
@@ -1048,7 +1078,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_16",
         "MSRIndex": "0x3F6",
@@ -1059,14 +1092,23 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 2048.",
         "Counter": "0,1,2,3,4,5,6,7",
         "Data_LA": "1",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
+        "Counter": "0,1,2,3,4,5,6,7",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_2048",
         "MSRIndex": "0x3F6",
         "MSRValue": "0x800",
+<<<<<<< HEAD
         "PublicDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 2048. Available PDIST counters: 0,1",
+=======
+        "PublicDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled. Available PDIST counters: 0,1",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "SampleAfterValue": "1000003",
         "UMask": "0x5",
         "Unit": "cpu_atom"
@@ -1074,7 +1116,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_256",
         "MSRIndex": "0x3F6",
@@ -1087,7 +1132,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_32",
         "MSRIndex": "0x3F6",
@@ -1100,7 +1148,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_4",
         "MSRIndex": "0x3F6",
@@ -1113,7 +1164,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_512",
         "MSRIndex": "0x3F6",
@@ -1126,7 +1180,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_64",
         "MSRIndex": "0x3F6",
@@ -1139,7 +1196,10 @@
     {
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled.",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.LOAD_LATENCY_GT_8",
         "MSRIndex": "0x3F6",
@@ -1222,7 +1282,10 @@
     {
         "BriefDescription": "Counts the number of  stores uops retired same as MEM_UOPS_RETIRED.ALL_STORES",
         "Counter": "0,1,2,3,4,5,6,7",
+<<<<<<< HEAD
         "Data_LA": "1",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0xd0",
         "EventName": "MEM_UOPS_RETIRED.STORE_LATENCY",
         "PublicDescription": "Counts the number of  stores uops retired same as MEM_UOPS_RETIRED.ALL_STORES Available PDIST counters: 0,1",

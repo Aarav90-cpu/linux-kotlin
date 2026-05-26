@@ -114,6 +114,14 @@ static kvm_pte_t kvm_init_valid_leaf_pte(u64 pa, kvm_pte_t attr, s8 level)
 	return pte;
 }
 
+<<<<<<< HEAD
+=======
+static kvm_pte_t kvm_init_invalid_leaf_owner(u8 owner_id)
+{
+	return FIELD_PREP(KVM_INVALID_PTE_OWNER_MASK, owner_id);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int kvm_pgtable_visitor_cb(struct kvm_pgtable_walk_data *data,
 				  const struct kvm_pgtable_visit_ctx *ctx,
 				  enum kvm_pgtable_walk_flags visit)
@@ -485,14 +493,22 @@ static int hyp_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
 
 		kvm_clear_pte(ctx->ptep);
 		dsb(ishst);
+<<<<<<< HEAD
 		__tlbi_level(vae2is, ctx->addr, TLBI_TTL_UNKNOWN);
+=======
+		__tlbi_level(vae2is, __TLBI_VADDR(ctx->addr, 0), TLBI_TTL_UNKNOWN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		if (ctx->end - ctx->addr < granule)
 			return -EINVAL;
 
 		kvm_clear_pte(ctx->ptep);
 		dsb(ishst);
+<<<<<<< HEAD
 		__tlbi_level(vale2is, ctx->addr, ctx->level);
+=======
+		__tlbi_level(vale2is, __TLBI_VADDR(ctx->addr, 0), ctx->level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*unmapped += granule;
 	}
 
@@ -576,7 +592,11 @@ void kvm_pgtable_hyp_destroy(struct kvm_pgtable *pgt)
 struct stage2_map_data {
 	const u64			phys;
 	kvm_pte_t			attr;
+<<<<<<< HEAD
 	kvm_pte_t			pte_annot;
+=======
+	u8				owner_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_pte_t			*anchor;
 	kvm_pte_t			*childp;
@@ -793,11 +813,15 @@ static bool stage2_pte_is_counted(kvm_pte_t pte)
 
 static bool stage2_pte_is_locked(kvm_pte_t pte)
 {
+<<<<<<< HEAD
 	if (kvm_pte_valid(pte))
 		return false;
 
 	return FIELD_GET(KVM_INVALID_PTE_TYPE_MASK, pte) ==
 	       KVM_INVALID_PTE_TYPE_LOCKED;
+=======
+	return !kvm_pte_valid(pte) && (pte & KVM_INVALID_PTE_LOCKED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool stage2_try_set_pte(const struct kvm_pgtable_visit_ctx *ctx, kvm_pte_t new)
@@ -828,7 +852,10 @@ static bool stage2_try_break_pte(const struct kvm_pgtable_visit_ctx *ctx,
 				 struct kvm_s2_mmu *mmu)
 {
 	struct kvm_pgtable_mm_ops *mm_ops = ctx->mm_ops;
+<<<<<<< HEAD
 	kvm_pte_t locked_pte;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (stage2_pte_is_locked(ctx->old)) {
 		/*
@@ -839,9 +866,13 @@ static bool stage2_try_break_pte(const struct kvm_pgtable_visit_ctx *ctx,
 		return false;
 	}
 
+<<<<<<< HEAD
 	locked_pte = FIELD_PREP(KVM_INVALID_PTE_TYPE_MASK,
 				KVM_INVALID_PTE_TYPE_LOCKED);
 	if (!stage2_try_set_pte(ctx, locked_pte))
+=======
+	if (!stage2_try_set_pte(ctx, KVM_INVALID_PTE_LOCKED))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	if (!kvm_pgtable_walk_skip_bbm_tlbi(ctx)) {
@@ -966,7 +997,11 @@ static int stage2_map_walker_try_leaf(const struct kvm_pgtable_visit_ctx *ctx,
 	if (!data->annotation)
 		new = kvm_init_valid_leaf_pte(phys, data->attr, ctx->level);
 	else
+<<<<<<< HEAD
 		new = data->pte_annot;
+=======
+		new = kvm_init_invalid_leaf_owner(data->owner_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Skip updating the PTE if we are trying to recreate the exact
@@ -1120,18 +1155,29 @@ int kvm_pgtable_stage2_map(struct kvm_pgtable *pgt, u64 addr, u64 size,
 	return ret;
 }
 
+<<<<<<< HEAD
 int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
 				void *mc, enum kvm_invalid_pte_type type,
 				kvm_pte_t pte_annot)
+=======
+int kvm_pgtable_stage2_set_owner(struct kvm_pgtable *pgt, u64 addr, u64 size,
+				 void *mc, u8 owner_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct stage2_map_data map_data = {
 		.mmu		= pgt->mmu,
 		.memcache	= mc,
+<<<<<<< HEAD
 		.force_pte	= true,
 		.annotation	= true,
 		.pte_annot	= pte_annot |
 				  FIELD_PREP(KVM_INVALID_PTE_TYPE_MASK, type),
+=======
+		.owner_id	= owner_id,
+		.force_pte	= true,
+		.annotation	= true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	struct kvm_pgtable_walker walker = {
 		.cb		= stage2_map_walker,
@@ -1140,10 +1186,14 @@ int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
 		.arg		= &map_data,
 	};
 
+<<<<<<< HEAD
 	if (pte_annot & ~KVM_INVALID_PTE_ANNOT_MASK)
 		return -EINVAL;
 
 	if (!type || type == KVM_INVALID_PTE_TYPE_LOCKED)
+=======
+	if (owner_id > KVM_MAX_OWNER_ID)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	ret = kvm_pgtable_walk(pgt, addr, size, &walker);

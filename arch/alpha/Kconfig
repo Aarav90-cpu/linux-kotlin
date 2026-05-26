@@ -31,8 +31,11 @@ config ALPHA
 	select GENERIC_SMP_IDLE_THREAD
 	select HAS_IOPORT
 	select HAVE_ARCH_AUDITSYSCALL
+<<<<<<< HEAD
 	select HAVE_ARCH_SECCOMP
 	select HAVE_ARCH_SECCOMP_FILTER
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select HAVE_MOD_ARCH_SPECIFIC
 	select LOCK_MM_AND_FIND_VMA
 	select MODULES_USE_ELF_RELA

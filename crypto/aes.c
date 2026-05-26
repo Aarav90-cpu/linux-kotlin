@@ -5,10 +5,15 @@
  * Copyright 2026 Google LLC
  */
 
+<<<<<<< HEAD
 #include <crypto/aes-cbc-macs.h>
 #include <crypto/aes.h>
 #include <crypto/algapi.h>
 #include <crypto/internal/hash.h>
+=======
+#include <crypto/aes.h>
+#include <crypto/algapi.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 
 static_assert(__alignof__(struct aes_key) <= CRYPTO_MINALIGN);
@@ -35,6 +40,7 @@ static void crypto_aes_decrypt(struct crypto_tfm *tfm, u8 *out, const u8 *in)
 	aes_decrypt(key, out, in);
 }
 
+<<<<<<< HEAD
 static_assert(__alignof__(struct aes_cmac_key) <= CRYPTO_MINALIGN);
 #define AES_CMAC_KEY(tfm) ((struct aes_cmac_key *)crypto_shash_ctx(tfm))
 #define AES_CMAC_CTX(desc) ((struct aes_cmac_ctx *)shash_desc_ctx(desc))
@@ -127,6 +133,8 @@ static int __maybe_unused crypto_aes_cbcmac_digest(struct shash_desc *desc,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct crypto_alg alg = {
 	.cra_name = "aes",
 	.cra_driver_name = "aes-lib",
@@ -142,6 +150,7 @@ static struct crypto_alg alg = {
 			       .cia_decrypt = crypto_aes_decrypt } }
 };
 
+<<<<<<< HEAD
 static struct shash_alg mac_algs[] = {
 #if IS_ENABLED(CONFIG_CRYPTO_CMAC)
 	{
@@ -217,18 +226,27 @@ static int __init crypto_aes_mod_init(void)
 err_unregister_alg:
 	crypto_unregister_alg(&alg);
 	return err;
+=======
+static int __init crypto_aes_mod_init(void)
+{
+	return crypto_register_alg(&alg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 module_init(crypto_aes_mod_init);
 
 static void __exit crypto_aes_mod_exit(void)
 {
+<<<<<<< HEAD
 	if (ARRAY_SIZE(mac_algs) > 0)
 		crypto_unregister_shashes(mac_algs, ARRAY_SIZE(mac_algs));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	crypto_unregister_alg(&alg);
 }
 module_exit(crypto_aes_mod_exit);
 
 MODULE_DESCRIPTION("Crypto API support for AES block cipher");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("CRYPTO_INTERNAL");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS_CRYPTO("aes");
@@ -245,3 +263,8 @@ MODULE_ALIAS_CRYPTO("xcbc-aes-lib");
 MODULE_ALIAS_CRYPTO("cbcmac(aes)");
 MODULE_ALIAS_CRYPTO("cbcmac-aes-lib");
 #endif
+=======
+MODULE_LICENSE("GPL");
+MODULE_ALIAS_CRYPTO("aes");
+MODULE_ALIAS_CRYPTO("aes-lib");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

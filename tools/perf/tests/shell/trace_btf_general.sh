@@ -1,5 +1,9 @@
 #!/bin/bash
+<<<<<<< HEAD
 # perf trace BTF general tests (exclusive)
+=======
+# perf trace BTF general tests
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # SPDX-License-Identifier: GPL-2.0
 
 err=0

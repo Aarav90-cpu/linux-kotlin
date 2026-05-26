@@ -228,6 +228,7 @@ extern bool snd_usb_skip_validation;
  *  Skip the probe-time interface setup (usb_set_interface,
  *  init_pitch, init_sample_rate); redundant with
  *  snd_usb_endpoint_prepare() at stream-open time
+<<<<<<< HEAD
  * QUIRK_FLAG_MIXER_PLAYBACK_LINEAR_VOL
  *  Set linear volume mapping for devices where the playback volume control
  *  value is mapped to voltage (instead of dB) level linearly. In short:
@@ -236,6 +237,8 @@ extern bool snd_usb_skip_validation;
  * QUIRK_FLAG_MIXER_CAPTURE_LINEAR_VOL
  *  Similar to QUIRK_FLAG_MIXER_PLAYBACK_LINEAR_VOL, but for capture streams.
  *  Overrides QUIRK_FLAG_MIXER_CAPTURE_MIN_MUTE
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 enum {
@@ -266,8 +269,11 @@ enum {
 	QUIRK_TYPE_MIXER_PLAYBACK_MIN_MUTE	= 24,
 	QUIRK_TYPE_MIXER_CAPTURE_MIN_MUTE	= 25,
 	QUIRK_TYPE_SKIP_IFACE_SETUP		= 26,
+<<<<<<< HEAD
 	QUIRK_TYPE_MIXER_PLAYBACK_LINEAR_VOL	= 27,
 	QUIRK_TYPE_MIXER_CAPTURE_LINEAR_VOL	= 28,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Please also edit snd_usb_audio_quirk_flag_names */
 };
 
@@ -300,7 +306,10 @@ enum {
 #define QUIRK_FLAG_MIXER_PLAYBACK_MIN_MUTE	QUIRK_FLAG(MIXER_PLAYBACK_MIN_MUTE)
 #define QUIRK_FLAG_MIXER_CAPTURE_MIN_MUTE	QUIRK_FLAG(MIXER_CAPTURE_MIN_MUTE)
 #define QUIRK_FLAG_SKIP_IFACE_SETUP		QUIRK_FLAG(SKIP_IFACE_SETUP)
+<<<<<<< HEAD
 #define QUIRK_FLAG_MIXER_PLAYBACK_LINEAR_VOL	QUIRK_FLAG(MIXER_PLAYBACK_LINEAR_VOL)
 #define QUIRK_FLAG_MIXER_CAPTURE_LINEAR_VOL	QUIRK_FLAG(MIXER_CAPTURE_LINEAR_VOL)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __USBAUDIO_H */

@@ -7,7 +7,10 @@
 #include <linux/kernel.h>
 #include <linux/rcupdate.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/perf_event.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "../mm/slab.h"
 
 static struct kunit_resource resource;
@@ -292,6 +295,7 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
 	kmem_cache_destroy(s);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PERF_EVENTS
 #define NR_ITERATIONS 1000
 #define NR_OBJECTS 1000
@@ -380,6 +384,8 @@ cleanup:
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int test_init(struct kunit *test)
 {
 	slab_errors = 0;
@@ -404,9 +410,12 @@ static struct kunit_case test_cases[] = {
 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
 	KUNIT_CASE(test_leak_destroy),
 	KUNIT_CASE(test_krealloc_redzone_zeroing),
+<<<<<<< HEAD
 #ifdef CONFIG_PERF_EVENTS
 	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

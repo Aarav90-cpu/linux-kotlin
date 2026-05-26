@@ -55,8 +55,13 @@
 #include <rdma/ib_umem.h>
 #include <rdma/ib_addr.h>
 #include <linux/hashtable.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
 
+=======
+
+#include "bnxt_ulp.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "roce_hsi.h"
 #include "qplib_res.h"
 #include "qplib_sp.h"
@@ -1326,7 +1331,10 @@ static const struct ib_device_ops bnxt_re_dev_ops = {
 	.owner = THIS_MODULE,
 	.driver_id = RDMA_DRIVER_BNXT_RE,
 	.uverbs_abi_ver = BNXT_RE_ABI_VERSION,
+<<<<<<< HEAD
 	.uverbs_robust_udata = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.add_gid = bnxt_re_add_gid,
 	.alloc_hw_port_stats = bnxt_re_ib_alloc_hw_port_stats,
@@ -1335,7 +1343,10 @@ static const struct ib_device_ops bnxt_re_dev_ops = {
 	.alloc_ucontext = bnxt_re_alloc_ucontext,
 	.create_ah = bnxt_re_create_ah,
 	.create_cq = bnxt_re_create_cq,
+<<<<<<< HEAD
 	.create_user_cq = bnxt_re_create_user_cq,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.create_qp = bnxt_re_create_qp,
 	.create_srq = bnxt_re_create_srq,
 	.create_user_ah = bnxt_re_create_ah,
@@ -1374,7 +1385,11 @@ static const struct ib_device_ops bnxt_re_dev_ops = {
 	.reg_user_mr = bnxt_re_reg_user_mr,
 	.reg_user_mr_dmabuf = bnxt_re_reg_user_mr_dmabuf,
 	.req_notify_cq = bnxt_re_req_notify_cq,
+<<<<<<< HEAD
 	.resize_user_cq = bnxt_re_resize_cq,
+=======
+	.resize_cq = bnxt_re_resize_cq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.create_flow = bnxt_re_create_flow,
 	.destroy_flow = bnxt_re_destroy_flow,
 	INIT_RDMA_OBJ_SIZE(ib_ah, bnxt_re_ah, ib_ah),

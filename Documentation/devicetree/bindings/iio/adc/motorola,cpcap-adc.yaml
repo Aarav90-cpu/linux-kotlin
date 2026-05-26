@@ -19,7 +19,10 @@ properties:
     enum:
       - motorola,cpcap-adc
       - motorola,mapphone-cpcap-adc
+<<<<<<< HEAD
       - motorola,mot-cpcap-adc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   interrupts:
     maxItems: 1

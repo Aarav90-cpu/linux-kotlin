@@ -650,6 +650,7 @@ static void svc_check_conn_limits(struct svc_serv *serv)
 	}
 }
 
+<<<<<<< HEAD
 static bool svc_fill_pages(struct svc_rqst *rqstp, struct page **pages,
 			   unsigned long npages)
 {
@@ -657,6 +658,16 @@ static bool svc_fill_pages(struct svc_rqst *rqstp, struct page **pages,
 
 	for (filled = 0; filled < npages; filled = ret) {
 		ret = alloc_pages_bulk(GFP_KERNEL, npages, pages);
+=======
+static bool svc_alloc_arg(struct svc_rqst *rqstp)
+{
+	struct xdr_buf *arg = &rqstp->rq_arg;
+	unsigned long pages, filled, ret;
+
+	pages = rqstp->rq_maxpages;
+	for (filled = 0; filled < pages; filled = ret) {
+		ret = alloc_pages_bulk(GFP_KERNEL, pages, rqstp->rq_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret > filled)
 			/* Made progress, don't sleep yet */
 			continue;
@@ -666,6 +677,7 @@ static bool svc_fill_pages(struct svc_rqst *rqstp, struct page **pages,
 			set_current_state(TASK_RUNNING);
 			return false;
 		}
+<<<<<<< HEAD
 		trace_svc_alloc_arg_err(npages, ret);
 		memalloc_retry_wait(GFP_KERNEL);
 	}
@@ -700,6 +712,13 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
 	 * at rq_page_end; NULL prevents releasing a garbage page.
 	 */
 	rqstp->rq_page_end[0] = NULL;
+=======
+		trace_svc_alloc_arg_err(pages, ret);
+		memalloc_retry_wait(GFP_KERNEL);
+	}
+	rqstp->rq_page_end = &rqstp->rq_pages[pages];
+	rqstp->rq_pages[pages] = NULL; /* this might be seen in nfsd_splice_actor() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Make arg->head point to first page and arg->pages point to rest */
 	arg->head[0].iov_base = page_address(rqstp->rq_pages[0]);
@@ -1305,6 +1324,10 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
 	rqstp->rq_addrlen     = dr->addrlen;
 	/* Save off transport header len in case we get deferred again */
 	rqstp->rq_daddr       = dr->daddr;
+<<<<<<< HEAD
+=======
+	rqstp->rq_respages    = rqstp->rq_pages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rqstp->rq_xprt_ctxt   = dr->xprt_ctxt;
 
 	dr->xprt_ctxt = NULL;

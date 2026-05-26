@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2020-2026 Intel Corporation
+=======
+ * Copyright (C) 2020-2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/highmem.h>
@@ -166,7 +170,11 @@ static void ivpu_pm_recovery_work(struct work_struct *work)
 	ivpu_pm_reset_begin(vdev);
 
 	if (!pm_runtime_status_suspended(vdev->drm.dev)) {
+<<<<<<< HEAD
 		ivpu_jsm_state_dump_no_reply(vdev);
+=======
+		ivpu_jsm_state_dump(vdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ivpu_dev_coredump(vdev);
 		ivpu_suspend(vdev);
 	}
@@ -205,20 +213,29 @@ static void ivpu_job_timeout_work(struct work_struct *work)
 
 	if (ivpu_jsm_get_heartbeat(vdev, 0, &heartbeat) || heartbeat <= vdev->fw->last_heartbeat) {
 		ivpu_err(vdev, "Job timeout detected, heartbeat not progressed\n");
+<<<<<<< HEAD
 		goto abort;
+=======
+		goto recovery;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	inference_max_retries = DIV_ROUND_UP(inference_timeout_ms, timeout_ms);
 	if (atomic_fetch_inc(&vdev->job_timeout_counter) >= inference_max_retries) {
 		ivpu_err(vdev, "Job timeout detected, heartbeat limit (%lld) exceeded\n",
 			 inference_max_retries);
+<<<<<<< HEAD
 		goto abort;
+=======
+		goto recovery;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	vdev->fw->last_heartbeat = heartbeat;
 	ivpu_start_job_timeout_detection(vdev);
 	return;
 
+<<<<<<< HEAD
 abort:
 	atomic_set(&vdev->job_timeout_counter, 0);
 
@@ -230,6 +247,11 @@ abort:
 	ivpu_jsm_state_dump(vdev);
 	ivpu_dev_coredump(vdev);
 	queue_work(system_percpu_wq, &vdev->context_abort_work);
+=======
+recovery:
+	atomic_set(&vdev->job_timeout_counter, 0);
+	ivpu_pm_trigger_recovery(vdev, "TDR");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void ivpu_start_job_timeout_detection(struct ivpu_device *vdev)
@@ -412,7 +434,10 @@ void ivpu_pm_init(struct ivpu_device *vdev)
 	init_rwsem(&pm->reset_lock);
 	atomic_set(&pm->reset_pending, 0);
 	atomic_set(&pm->reset_counter, 0);
+<<<<<<< HEAD
 	atomic_set(&pm->engine_reset_counter, 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_WORK(&pm->recovery_work, ivpu_pm_recovery_work);
 	INIT_DELAYED_WORK(&pm->job_timeout_work, ivpu_job_timeout_work);

@@ -13,7 +13,10 @@ for cryptographic use cases, as well as programming examples.
    :caption: Table of contents
    :maxdepth: 2
 
+<<<<<<< HEAD
    libcrypto
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    intro
    api-intro
    architecture
@@ -28,3 +31,7 @@ for cryptographic use cases, as well as programming examples.
    descore-readme
    device_drivers/index
    krb5
+<<<<<<< HEAD
+=======
+   sha3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

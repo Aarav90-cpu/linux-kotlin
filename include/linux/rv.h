@@ -13,7 +13,10 @@
 #define RV_MON_GLOBAL   0
 #define RV_MON_PER_CPU  1
 #define RV_MON_PER_TASK 2
+<<<<<<< HEAD
 #define RV_MON_PER_OBJ  3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_RV
 #include <linux/array_size.h>
@@ -82,6 +85,7 @@ struct ltl_monitor {};
 
 #endif /* CONFIG_RV_LTL_MONITOR */
 
+<<<<<<< HEAD
 #ifdef CONFIG_RV_HA_MONITOR
 /*
  * In the future, hybrid automata may rely on multiple
@@ -119,12 +123,17 @@ struct ha_monitor { };
 
 #endif /* CONFIG_RV_HA_MONITOR */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RV_PER_TASK_MONITOR_INIT	(CONFIG_RV_PER_TASK_MONITORS)
 
 union rv_task_monitor {
 	struct da_monitor	da_mon;
 	struct ltl_monitor	ltl_mon;
+<<<<<<< HEAD
 	struct ha_monitor	ha_mon;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_RV_REACTORS

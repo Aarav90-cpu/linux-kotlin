@@ -49,7 +49,10 @@ void hinic3_sync_time_to_fw(struct hinic3_hwdev *hwdev);
 int hinic3_set_root_ctxt(struct hinic3_hwdev *hwdev, u32 rq_depth, u32 sq_depth,
 			 int rx_buf_sz);
 int hinic3_clean_root_ctxt(struct hinic3_hwdev *hwdev);
+<<<<<<< HEAD
 int hinic3_get_mgmt_version(struct hinic3_hwdev *hwdev, u8 *mgmt_ver,
 			    u8 version_size);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

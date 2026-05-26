@@ -1690,7 +1690,11 @@ struct agg_tx_status {
 	__le16 sequence;
 } __packed;
 
+<<<<<<< HEAD
 struct il4965_tx_resp_hdr {
+=======
+struct il4965_tx_resp {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 frame_count;		/* 1 no aggregation, >1 aggregation */
 	u8 bt_kill_count;	/* # blocked by bluetooth (unused for agg) */
 	u8 failure_rts;		/* # failures due to unsuccessful RTS */
@@ -1707,10 +1711,13 @@ struct il4965_tx_resp_hdr {
 	__le16 reserved;
 	__le32 pa_power1;	/* RF power amplifier measurement (not used) */
 	__le32 pa_power2;
+<<<<<<< HEAD
 } __packed;
 
 struct il4965_tx_resp {
 	struct il4965_tx_resp_hdr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * For non-agg:  frame status TX_STATUS_*
@@ -2668,8 +2675,12 @@ struct il3945_beacon_notif {
 } __packed;
 
 struct il4965_beacon_notif {
+<<<<<<< HEAD
 	struct il4965_tx_resp_hdr beacon_notify_hdr;
 	__le32 beacon_tx_status;
+=======
+	struct il4965_tx_resp beacon_notify_hdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 low_tsf;
 	__le32 high_tsf;
 	__le32 ibss_mgr_status;

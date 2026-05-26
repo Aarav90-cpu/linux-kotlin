@@ -2780,8 +2780,11 @@
 			qcom,smem-state-names = "ipa-clock-enabled-valid",
 						"ipa-clock-enabled";
 
+<<<<<<< HEAD
 			sram = <&ipa_modem_tables>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -2807,6 +2810,7 @@
 			gpio-ranges = <&tlmm 0 0 151>;
 			wakeup-parent = <&pdc_intc>;
 
+<<<<<<< HEAD
 			cam_mclk0_default: cam-mclk0-default-state {
 				pins = "gpio13";
 				function = "cam_mclk";
@@ -2863,6 +2867,8 @@
 				bias-pull-down;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cci0_default: cci0-default-state {
 				/* SDA, SCL */
 				pins = "gpio17", "gpio18";
@@ -5192,10 +5198,13 @@
 
 			ranges = <0 0 0x14680000 0x40000>;
 
+<<<<<<< HEAD
 			ipa_modem_tables: modem-tables@3d000 {
 				reg = <0x3d000 0x2000>;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pil-reloc@3f94c {
 				compatible = "qcom,pil-reloc-info";
 				reg = <0x3f94c 0xc8>;

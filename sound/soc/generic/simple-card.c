@@ -48,8 +48,12 @@ static int simple_parse_platform(struct simple_util_priv *priv,
 
 	/*
 	 * Get node via "sound-dai = <&phandle port>"
+<<<<<<< HEAD
 	 * It will be used as the of_node for component matching during
 	 * snd_soc_add_pcm_runtime().
+=======
+	 * it will be used as xxx_of_node on soc_bind_dai_link()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	ret = of_parse_phandle_with_args(node, DAI, CELL, 0, &args);
 	if (ret)
@@ -69,9 +73,13 @@ static int simple_parse_dai(struct simple_util_priv *priv,
 {
 	struct device *dev = simple_priv_to_dev(priv);
 	struct of_phandle_args args;
+<<<<<<< HEAD
 	struct snd_soc_dai_link_component resolved_dlc = {};
 	struct snd_soc_dai *dai;
 	const char *fallback_dai_name;
+=======
+	struct snd_soc_dai *dai;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (!node)
@@ -79,8 +87,12 @@ static int simple_parse_dai(struct simple_util_priv *priv,
 
 	/*
 	 * Get node via "sound-dai = <&phandle port>"
+<<<<<<< HEAD
 	 * It will be used as the of_node for component matching during
 	 * snd_soc_add_pcm_runtime().
+=======
+	 * it will be used as xxx_of_node on soc_bind_dai_link()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	ret = of_parse_phandle_with_args(node, DAI, CELL, 0, &args);
 	if (ret)
@@ -96,6 +108,7 @@ static int simple_parse_dai(struct simple_util_priv *priv,
 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
 		if (!dlc->dai_args)
 			goto end;
+<<<<<<< HEAD
 	} else {
 		ret = snd_soc_get_dlc(&args, &resolved_dlc);
 		if (ret < 0)
@@ -118,6 +131,36 @@ static int simple_parse_dai(struct simple_util_priv *priv,
 		dlc->dai_args = resolved_dlc.dai_args;
 	}
 
+=======
+
+		goto parse_dai_end;
+	}
+
+	/*
+	 * FIXME
+	 *
+	 * Here, dlc->dai_name is pointer to CPU/Codec DAI name.
+	 * If user unbinded CPU or Codec driver, but not for Sound Card,
+	 * dlc->dai_name is keeping unbinded CPU or Codec
+	 * driver's pointer.
+	 *
+	 * If user re-bind CPU or Codec driver again, ALSA SoC will try
+	 * to rebind Card via snd_soc_try_rebind_card(), but because of
+	 * above reason, it might can't bind Sound Card.
+	 * Because Sound Card is pointing to released dai_name pointer.
+	 *
+	 * To avoid this rebind Card issue,
+	 * 1) It needs to alloc memory to keep dai_name eventhough
+	 *    CPU or Codec driver was unbinded, or
+	 * 2) user need to rebind Sound Card everytime
+	 *    if he unbinded CPU or Codec.
+	 */
+	ret = snd_soc_get_dlc(&args, dlc);
+	if (ret < 0)
+		goto end;
+
+parse_dai_end:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_single_link)
 		*is_single_link = !args.args_count;
 	ret = 0;

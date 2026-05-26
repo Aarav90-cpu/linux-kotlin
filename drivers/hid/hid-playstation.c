@@ -2377,12 +2377,15 @@ static int dualshock4_parse_report(struct ps_device *ps_dev, struct hid_report *
 		struct dualshock4_input_report_usb *usb =
 			(struct dualshock4_input_report_usb *)data;
 
+<<<<<<< HEAD
 		if (usb->num_touch_reports > ARRAY_SIZE(usb->touch_reports)) {
 			hid_err(hdev, "DualShock4 USB input report has invalid num_touch_reports=%d\n",
 				usb->num_touch_reports);
 			return -EINVAL;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ds4_report = &usb->common;
 		num_touch_reports = min_t(u8, usb->num_touch_reports,
 					  ARRAY_SIZE(usb->touch_reports));
@@ -2398,12 +2401,15 @@ static int dualshock4_parse_report(struct ps_device *ps_dev, struct hid_report *
 			return -EILSEQ;
 		}
 
+<<<<<<< HEAD
 		if (bt->num_touch_reports > ARRAY_SIZE(bt->touch_reports)) {
 			hid_err(hdev, "DualShock4 BT input report has invalid num_touch_reports=%d\n",
 				bt->num_touch_reports);
 			return -EINVAL;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ds4_report = &bt->common;
 		num_touch_reports = min_t(u8, bt->num_touch_reports,
 					  ARRAY_SIZE(bt->touch_reports));

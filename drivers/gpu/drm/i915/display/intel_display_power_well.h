@@ -103,6 +103,11 @@ struct i915_power_well_desc {
 	 * the well enabled.
 	 */
 	u16 fixed_enable_delay:1;
+<<<<<<< HEAD
+=======
+	/* The pw is backing the VGA functionality */
+	u16 has_vga:1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 has_fuses:1;
 	/*
 	 * The pw is for an ICL+ TypeC PHY port in

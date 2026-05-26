@@ -132,9 +132,15 @@ static bool ip_vs_sip_ct_match(const struct ip_vs_conn_param *p,
 }
 
 static u32 ip_vs_sip_hashkey_raw(const struct ip_vs_conn_param *p,
+<<<<<<< HEAD
 				 struct ip_vs_rht *t, bool inverse)
 {
 	return jhash(p->pe_data, p->pe_data_len, (u32)t->hash_key.key[0]);
+=======
+				 u32 initval, bool inverse)
+{
+	return jhash(p->pe_data, p->pe_data_len, initval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ip_vs_sip_show_pe_data(const struct ip_vs_conn *cp, char *buf)

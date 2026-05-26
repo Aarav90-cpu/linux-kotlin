@@ -10,6 +10,7 @@
 
 #include <linux/types.h>
 #include <linux/time.h>
+<<<<<<< HEAD
 #include <linux/sunrpc/svc_xprt.h>
 
 #include "lockd.h"
@@ -56,6 +57,41 @@ static inline __be32 cast_status(__be32 status)
 	}
 	return status;
 }
+=======
+#include <linux/lockd/lockd.h>
+#include <linux/lockd/share.h>
+#include <linux/sunrpc/svc_xprt.h>
+
+#define NLMDBG_FACILITY		NLMDBG_CLIENT
+
+#ifdef CONFIG_LOCKD_V4
+static __be32
+cast_to_nlm(__be32 status, u32 vers)
+{
+	/* Note: status is assumed to be in network byte order !!! */
+	if (vers != 4){
+		switch (status) {
+		case nlm_granted:
+		case nlm_lck_denied:
+		case nlm_lck_denied_nolocks:
+		case nlm_lck_blocked:
+		case nlm_lck_denied_grace_period:
+		case nlm_drop_reply:
+			break;
+		case nlm4_deadlock:
+			status = nlm_lck_denied;
+			break;
+		default:
+			status = nlm_lck_denied_nolocks;
+		}
+	}
+
+	return (status);
+}
+#define	cast_status(status) (cast_to_nlm(status, rqstp->rq_vers))
+#else
+#define cast_status(status) (status)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /*
@@ -137,13 +173,21 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now check for conflicting locks */
 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host,
 						   &argp->lock, &resp->lock));
+<<<<<<< HEAD
 	if (resp->status == nlm__int__drop_reply)
+=======
+	if (resp->status == nlm_drop_reply)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = rpc_drop_reply;
 	else
 		dprintk("lockd: TEST          status %d vers %d\n",
@@ -175,14 +219,22 @@ __nlmsvc_proc_lock(struct svc_rqst *rqstp, struct nlm_res *resp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now try to lock the file */
 	resp->status = cast_status(nlmsvc_lock(rqstp, file, host, &argp->lock,
 					       argp->block, &argp->cookie,
 					       argp->reclaim));
+<<<<<<< HEAD
 	if (resp->status == nlm__int__drop_reply)
+=======
+	if (resp->status == nlm_drop_reply)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = rpc_drop_reply;
 	else
 		dprintk("lockd: LOCK         status %d\n", ntohl(resp->status));
@@ -219,8 +271,12 @@ __nlmsvc_proc_cancel(struct svc_rqst *rqstp, struct nlm_res *resp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Try to cancel request. */
 	resp->status = cast_status(nlmsvc_cancel_blocked(net, file, &argp->lock));
@@ -261,8 +317,12 @@ __nlmsvc_proc_unlock(struct svc_rqst *rqstp, struct nlm_res *resp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now try to remove the lock */
 	resp->status = cast_status(nlmsvc_unlock(net, file, &argp->lock));
@@ -419,6 +479,7 @@ nlmsvc_proc_share(struct svc_rqst *rqstp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
 
@@ -426,6 +487,12 @@ nlmsvc_proc_share(struct svc_rqst *rqstp)
 	resp->status = cast_status(nlmsvc_share_file(host, file, &argp->lock.oh,
 						     argp->fsm_access,
 						     argp->fsm_mode));
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+
+	/* Now try to create the share */
+	resp->status = cast_status(nlmsvc_share_file(host, file, argp));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dprintk("lockd: SHARE         status %d\n", ntohl(resp->status));
 	nlmsvc_release_lockowner(&argp->lock);
@@ -457,12 +524,19 @@ nlmsvc_proc_unshare(struct svc_rqst *rqstp)
 
 	/* Obtain client and file */
 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+<<<<<<< HEAD
 		return resp->status == nlm__int__drop_reply ?
 			rpc_drop_reply : rpc_success;
 
 	/* Now try to unshare the file */
 	resp->status = cast_status(nlmsvc_unshare_file(host, file,
 						       &argp->lock.oh));
+=======
+		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+
+	/* Now try to unshare the file */
+	resp->status = cast_status(nlmsvc_unshare_file(host, file, argp));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dprintk("lockd: UNSHARE       status %d\n", ntohl(resp->status));
 	nlmsvc_release_lockowner(&argp->lock);
@@ -558,7 +632,11 @@ struct nlm_void			{ int dummy; };
 #define	No	(1+1024/4)			/* Net Obj */
 #define	Rg	2				/* range - offset + size */
 
+<<<<<<< HEAD
 static const struct svc_procedure nlmsvc_procedures[24] = {
+=======
+const struct svc_procedure nlmsvc_procedures[24] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NLMPROC_NULL] = {
 		.pc_func = nlmsvc_proc_null,
 		.pc_decode = nlmsvc_decode_void,
@@ -800,6 +878,7 @@ static const struct svc_procedure nlmsvc_procedures[24] = {
 		.pc_name = "FREE_ALL",
 	},
 };
+<<<<<<< HEAD
 
 /*
  * Storage requirements for XDR arguments and results
@@ -836,3 +915,5 @@ const struct svc_version nlmsvc_version3 = {
 	.vs_dispatch	= nlmsvc_dispatch,
 	.vs_xdrsize	= sizeof(union nlmsvc_xdrstore),
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

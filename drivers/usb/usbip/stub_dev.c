@@ -267,7 +267,11 @@ static struct stub_device *stub_device_alloc(struct usb_device *udev)
 	if (!sdev)
 		return NULL;
 
+<<<<<<< HEAD
 	sdev->udev = udev;
+=======
+	sdev->udev = usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * devid is defined with devnum when this driver is first allocated.
@@ -409,6 +413,10 @@ call_put_busid_priv:
 	put_busid_priv(busid_priv);
 
 sdev_free:
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stub_device_free(sdev);
 
 	return rc;
@@ -487,6 +495,11 @@ static void stub_disconnect(struct usb_device *udev)
 	/* shutdown the current connection */
 	shutdown_busid(busid_priv);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(sdev->udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* we already have busid_priv, just lock busid_lock */
 	spin_lock(&busid_priv->busid_lock);
 	/* free sdev */

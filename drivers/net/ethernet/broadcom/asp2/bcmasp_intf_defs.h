@@ -246,10 +246,13 @@
 	((((intf)->channel - 6) * 0x14) + 0xa2000)
 #define  RX_SPB_TOP_BLKOUT		0x00
 
+<<<<<<< HEAD
 /*
  * Number of 4 KB pages that make up the contiguous RBUF_4K streaming ring
  * and the page pool used as copy-target SKB data areas.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NUM_4K_BUFFERS			32
 #define RING_BUFFER_SIZE		(PAGE_SIZE * NUM_4K_BUFFERS)
 

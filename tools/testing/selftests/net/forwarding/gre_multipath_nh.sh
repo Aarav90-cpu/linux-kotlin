@@ -80,7 +80,11 @@ h1_destroy()
 {
 	ip route del vrf v$h1 2001:db8:2::/64 via 2001:db8:1::2
 	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
+<<<<<<< HEAD
 	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
+=======
+	simple_if_fini $h1 192.0.2.1/28
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 sw1_create()

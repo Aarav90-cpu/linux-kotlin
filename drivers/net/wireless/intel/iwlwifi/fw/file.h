@@ -103,7 +103,10 @@ enum iwl_ucode_tlv_type {
 	IWL_UCODE_TLV_D3_KEK_KCK_ADDR		= 67,
 	IWL_UCODE_TLV_CURRENT_PC		= 68,
 	IWL_UCODE_TLV_FSEQ_BIN_VERSION		= 72,
+<<<<<<< HEAD
 	IWL_UCODE_TLV_CMD_BIOS_TABLE		= 73,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* contains sub-sections like PNVM file does (did) */
 	IWL_UCODE_TLV_PNVM_DATA			= 74,
@@ -1041,6 +1044,7 @@ struct iwl_fw_cmd_version {
 	u8 notif_ver;
 } __packed;
 
+<<<<<<< HEAD
 /**
  * struct iwl_fw_cmd_bios_table - firmware command BIOS revision entry
  * @cmd: command ID
@@ -1055,6 +1059,8 @@ struct iwl_fw_cmd_bios_table {
 	u8 max_uefi_revision;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct iwl_fw_tcm_error_addr {
 	__le32 addr;
 }; /* FW_TLV_TCM_ERROR_INFO_ADDRS_S */

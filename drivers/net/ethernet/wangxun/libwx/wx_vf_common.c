@@ -48,10 +48,16 @@ void wxvf_remove(struct pci_dev *pdev)
 	struct wx *wx = pci_get_drvdata(pdev);
 	struct net_device *netdev;
 
+<<<<<<< HEAD
 	netdev = wx->netdev;
 	unregister_netdev(netdev);
 	timer_shutdown_sync(&wx->service_timer);
 	cancel_work_sync(&wx->service_task);
+=======
+	cancel_work_sync(&wx->service_task);
+	netdev = wx->netdev;
+	unregister_netdev(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(wx->vfinfo);
 	kfree(wx->rss_key);
 	kfree(wx->mac_table);
@@ -340,16 +346,24 @@ static void wxvf_down(struct wx *wx)
 
 static void wxvf_reinit_locked(struct wx *wx)
 {
+<<<<<<< HEAD
 	mutex_lock(&wx->reset_lock);
 	set_bit(WX_STATE_RESETTING, wx->state);
 
+=======
+	while (test_and_set_bit(WX_STATE_RESETTING, wx->state))
+		usleep_range(1000, 2000);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wxvf_down(wx);
 	wx_free_irq(wx);
 	wx_configure_vf(wx);
 	wx_request_msix_irqs_vf(wx);
 	wxvf_up_complete(wx);
 	clear_bit(WX_STATE_RESETTING, wx->state);
+<<<<<<< HEAD
 	mutex_unlock(&wx->reset_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void wxvf_reset_subtask(struct wx *wx)

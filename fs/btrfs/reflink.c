@@ -322,6 +322,7 @@ copy_to_page:
 
 	ret = copy_inline_to_page(inode, new_key->offset,
 				  inline_data, size, datal, comp_type);
+<<<<<<< HEAD
 
 	/*
 	 * If we copied the inline extent data to a page/folio beyond the i_size
@@ -367,6 +368,8 @@ copy_to_page:
 	if (ret == 0 && new_key->offset + datal > i_size_read(&inode->vfs_inode))
 		i_size_write(&inode->vfs_inode, new_key->offset + datal);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	goto out;
 }
 
@@ -691,7 +694,11 @@ static int btrfs_extent_same_range(struct btrfs_inode *src, u64 loff, u64 len,
 	 */
 	btrfs_lock_extent(&dst->io_tree, dst_loff, end, &cached_state);
 	ret = btrfs_clone(&src->vfs_inode, &dst->vfs_inode, loff, len,
+<<<<<<< HEAD
 			  ALIGN(len, bs), dst_loff, true);
+=======
+			  ALIGN(len, bs), dst_loff, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btrfs_unlock_extent(&dst->io_tree, dst_loff, end, &cached_state);
 
 	btrfs_btree_balance_dirty(fs_info);
@@ -792,7 +799,11 @@ static noinline int btrfs_clone_files(struct file *file, struct file *file_src,
 	 */
 	end = destoff + len - 1;
 	btrfs_lock_extent(&BTRFS_I(inode)->io_tree, destoff, end, &cached_state);
+<<<<<<< HEAD
 	ret = btrfs_clone(src, inode, off, olen, len, destoff, false);
+=======
+	ret = btrfs_clone(src, inode, off, olen, len, destoff, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btrfs_unlock_extent(&BTRFS_I(inode)->io_tree, destoff, end, &cached_state);
 	if (ret < 0)
 		return ret;

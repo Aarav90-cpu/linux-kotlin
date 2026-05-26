@@ -35,10 +35,13 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks:
     minItems: 1
     maxItems: 4
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
 
@@ -58,6 +61,7 @@ allOf:
       required:
         - reg
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -116,6 +120,8 @@ allOf:
       properties:
         clocks: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:
@@ -125,7 +131,10 @@ examples:
         reg = <0x9100000 0xf7080>;
         #interconnect-cells = <2>;
         qcom,bcm-voters = <&apps_bcm_voter>;
+<<<<<<< HEAD
         clocks = <&gcc_ddrss_gpu_axi_clk>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };
 
     clk_virt: interconnect-0 {

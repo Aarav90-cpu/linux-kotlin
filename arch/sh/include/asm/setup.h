@@ -7,8 +7,12 @@
 /*
  * This is set up by the setup-routine at boot-time
  */
+<<<<<<< HEAD
 extern unsigned char boot_params_page[];
 #define PARAM boot_params_page
+=======
+#define PARAM	((unsigned char *)empty_zero_page)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
 #define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))

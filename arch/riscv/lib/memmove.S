@@ -40,8 +40,13 @@ SYM_FUNC_START(__memmove)
 	 *   Both Copy Modes: t1 - Temporary for load-store
 	 *   Both Copy Modes: t2 - Temporary for load-store
 	 *   Both Copy Modes: a5 - dest to src alignment offset
+<<<<<<< HEAD
 	 *   Both Copy Modes: a6 - Shift amount
 	 *   Both Copy Modes: a7 - Inverse Shift amount
+=======
+	 *   Both Copy Modes: a6 - Shift ammount
+	 *   Both Copy Modes: a7 - Inverse Shift ammount
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *   Both Copy Modes: a2 - Alternate breakpoint for unrolled loops
 	 */
 

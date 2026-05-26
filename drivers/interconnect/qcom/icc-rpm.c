@@ -204,7 +204,11 @@ static int qcom_icc_qos_set(struct icc_node *node)
 	}
 }
 
+<<<<<<< HEAD
 static int qcom_icc_rpm_set(struct qcom_icc_node *qn, u64 *bw, bool ignore_enxio)
+=======
+static int qcom_icc_rpm_set(struct qcom_icc_node *qn, u64 *bw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret, rpm_ctx = 0;
 	u64 bw_bps;
@@ -222,9 +226,14 @@ static int qcom_icc_rpm_set(struct qcom_icc_node *qn, u64 *bw, bool ignore_enxio
 						    bw_bps);
 			if (ret) {
 				pr_err("qcom_icc_rpm_smd_send mas %d error %d\n",
+<<<<<<< HEAD
 				       qn->mas_rpm_id, ret);
 				if (ret != -ENXIO || !ignore_enxio)
 					return ret;
+=======
+				qn->mas_rpm_id, ret);
+				return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 
@@ -235,9 +244,14 @@ static int qcom_icc_rpm_set(struct qcom_icc_node *qn, u64 *bw, bool ignore_enxio
 						    bw_bps);
 			if (ret) {
 				pr_err("qcom_icc_rpm_smd_send slv %d error %d\n",
+<<<<<<< HEAD
 				       qn->slv_rpm_id, ret);
 				if (ret != -ENXIO || !ignore_enxio)
 					return ret;
+=======
+				qn->slv_rpm_id, ret);
+				return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
@@ -363,12 +377,20 @@ static int qcom_icc_set(struct icc_node *src, struct icc_node *dst)
 	active_rate = agg_clk_rate[QCOM_SMD_RPM_ACTIVE_STATE];
 	sleep_rate = agg_clk_rate[QCOM_SMD_RPM_SLEEP_STATE];
 
+<<<<<<< HEAD
 	ret = qcom_icc_rpm_set(src_qn, src_qn->sum_avg, qp->ignore_enxio);
+=======
+	ret = qcom_icc_rpm_set(src_qn, src_qn->sum_avg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
 	if (dst_qn) {
+<<<<<<< HEAD
 		ret = qcom_icc_rpm_set(dst_qn, dst_qn->sum_avg, qp->ignore_enxio);
+=======
+		ret = qcom_icc_rpm_set(dst_qn, dst_qn->sum_avg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -511,7 +533,10 @@ int qnoc_probe(struct platform_device *pdev)
 	for (i = 0; i < cd_num; i++)
 		qp->intf_clks[i].id = cds[i];
 
+<<<<<<< HEAD
 	qp->ignore_enxio = desc->ignore_enxio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qp->keep_alive = desc->keep_alive;
 	qp->type = desc->type;
 	qp->qos_offset = desc->qos_offset;
@@ -556,7 +581,10 @@ regmap_done:
 	provider->aggregate = qcom_icc_bw_aggregate;
 	provider->xlate_extended = qcom_icc_xlate_extended;
 	provider->data = data;
+<<<<<<< HEAD
 	provider->get_bw = desc->get_bw;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	icc_provider_init(provider);
 

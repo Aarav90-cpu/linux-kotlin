@@ -206,8 +206,11 @@
 };
 
 &hdmi {
+<<<<<<< HEAD
 	avdd-0v9-supply = <&vcca0v9_s3>;
 	avdd-1v8-supply = <&vcca1v8_s3>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ddc-i2c-bus = <&i2c7>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&hdmi_cec>;

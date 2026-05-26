@@ -479,10 +479,13 @@ static int tegra241_vcmdq_hw_init(struct tegra241_vcmdq *vcmdq)
 	/* Reset VCMDQ */
 	tegra241_vcmdq_hw_deinit(vcmdq);
 
+<<<<<<< HEAD
 	/* vintf->hyp_own is a HW state finalized in tegra241_vintf_hw_init() */
 	if (!vcmdq->vintf->hyp_own)
 		vcmdq->cmdq.supports_cmd = tegra241_guest_vcmdq_supports_cmd;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Configure and enable VCMDQ */
 	writeq_relaxed(vcmdq->cmdq.q.q_base, REG_VCMDQ_PAGE1(vcmdq, BASE));
 
@@ -643,6 +646,12 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
 	q->q_base = q->base_dma & VCMDQ_ADDR;
 	q->q_base |= FIELD_PREP(VCMDQ_LOG2SIZE, q->llq.max_n_shift);
 
+<<<<<<< HEAD
+=======
+	if (!vcmdq->vintf->hyp_own)
+		cmdq->supports_cmd = tegra241_guest_vcmdq_supports_cmd;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return arm_smmu_cmdq_init(smmu, cmdq);
 }
 

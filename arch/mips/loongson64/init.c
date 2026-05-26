@@ -7,7 +7,10 @@
 #include <linux/irqchip.h>
 #include <linux/logic_pio.h>
 #include <linux/memblock.h>
+<<<<<<< HEAD
 #include <linux/minmax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <asm/bootinfo.h>
@@ -228,8 +231,11 @@ void __init arch_init_irq(void)
 	reserve_pio_range();
 	irqchip_init();
 }
+<<<<<<< HEAD
 
 unsigned int arch_dynirq_lower_bound(unsigned int from)
 {
 	return MAX(from, NR_IRQS_LEGACY);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

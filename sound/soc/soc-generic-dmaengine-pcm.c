@@ -332,7 +332,11 @@ static const struct snd_soc_component_driver dmaengine_pcm_component = {
 	.hw_params	= dmaengine_pcm_hw_params,
 	.trigger	= dmaengine_pcm_trigger,
 	.pointer	= dmaengine_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= dmaengine_pcm_new,
+=======
+	.pcm_construct	= dmaengine_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sync_stop	= dmaengine_pcm_sync_stop,
 };
 
@@ -345,7 +349,11 @@ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
 	.trigger	= dmaengine_pcm_trigger,
 	.pointer	= dmaengine_pcm_pointer,
 	.copy		= dmaengine_copy,
+<<<<<<< HEAD
 	.pcm_new	= dmaengine_pcm_new,
+=======
+	.pcm_construct	= dmaengine_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sync_stop	= dmaengine_pcm_sync_stop,
 };
 

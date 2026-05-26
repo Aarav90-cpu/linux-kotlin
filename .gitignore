@@ -188,3 +188,17 @@ sphinx_*/
 
 # bc language scripts (not LLVM bitcode)
 !kernel/time/timeconst.bc
+
+# Kotlin/Android and Gradle caches
+android-sdk/
+.gradle-cache/
+.gradle-tools/
+.kotlin-native/
+.android-home/
+java/
+.gradle/
+build/
+*.jar
+*.jmod
+*.dex
+*.class

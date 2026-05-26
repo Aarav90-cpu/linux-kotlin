@@ -15,7 +15,10 @@ description: |
   domains on SM8450.
 
   See also:
+<<<<<<< HEAD
     include/dt-bindings/clock/qcom,glymur-videocc.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     include/dt-bindings/clock/qcom,kaanapali-videocc.h
     include/dt-bindings/clock/qcom,sm8450-videocc.h
     include/dt-bindings/clock/qcom,sm8650-videocc.h
@@ -24,7 +27,10 @@ description: |
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - qcom,glymur-videocc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - qcom,kaanapali-videocc
       - qcom,sm8450-videocc
       - qcom,sm8475-videocc
@@ -65,7 +71,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,glymur-videocc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,kaanapali-videocc
               - qcom,sm8450-videocc
               - qcom,sm8550-videocc

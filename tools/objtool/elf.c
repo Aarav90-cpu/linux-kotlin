@@ -25,18 +25,24 @@
 #include <objtool/elf.h>
 #include <objtool/warn.h>
 
+<<<<<<< HEAD
 static ssize_t demangled_name_len(const char *name);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline u32 str_hash(const char *str)
 {
 	return jhash(str, strlen(str), 0);
 }
 
+<<<<<<< HEAD
 static inline u32 str_hash_demangled(const char *str)
 {
 	return jhash(str, demangled_name_len(str), 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define __elf_table(name)	(elf->name##_hash)
 #define __elf_bits(name)	(elf->name##_bits)
 
@@ -300,7 +306,11 @@ static struct symbol *find_local_symbol_by_file_and_name(const struct elf *elf,
 {
 	struct symbol *sym;
 
+<<<<<<< HEAD
 	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash_demangled(name)) {
+=======
+	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash(name)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sym->bind == STB_LOCAL && sym->file == file &&
 		    !strcmp(sym->name, name)) {
 			return sym;
@@ -314,7 +324,11 @@ struct symbol *find_global_symbol_by_name(const struct elf *elf, const char *nam
 {
 	struct symbol *sym;
 
+<<<<<<< HEAD
 	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash_demangled(name)) {
+=======
+	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash(name)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!strcmp(sym->name, name) && !is_local_sym(sym))
 			return sym;
 	}
@@ -322,6 +336,7 @@ struct symbol *find_global_symbol_by_name(const struct elf *elf, const char *nam
 	return NULL;
 }
 
+<<<<<<< HEAD
 void iterate_global_symbol_by_demangled_name(const struct elf *elf,
 					     const char *demangled_name,
 					     void (*process)(struct symbol *sym, void *data),
@@ -335,6 +350,8 @@ void iterate_global_symbol_by_demangled_name(const struct elf *elf,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct reloc *find_reloc_by_dest_range(const struct elf *elf, struct section *sec,
 				     unsigned long offset, unsigned int len)
 {
@@ -460,6 +477,7 @@ static int read_sections(struct elf *elf)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Returns desired length of the demangled name.
  * If name doesn't need demangling, return strlen(name).
@@ -507,20 +525,47 @@ static const char *demangle_name(struct symbol *sym)
 {
 	char *str;
 	ssize_t len;
+=======
+static const char *demangle_name(struct symbol *sym)
+{
+	char *str;
+
+	if (!is_local_sym(sym))
+		return sym->name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_func_sym(sym) && !is_object_sym(sym))
 		return sym->name;
 
+<<<<<<< HEAD
 	len = demangled_name_len(sym->name);
 	if (len == strlen(sym->name))
 		return sym->name;
 
 	str = strndup(sym->name, len);
+=======
+	if (!strstarts(sym->name, "__UNIQUE_ID_") && !strchr(sym->name, '.'))
+		return sym->name;
+
+	str = strdup(sym->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!str) {
 		ERROR_GLIBC("strdup");
 		return NULL;
 	}
 
+<<<<<<< HEAD
+=======
+	for (int i = strlen(str) - 1; i >= 0; i--) {
+		char c = str[i];
+
+		if (!isdigit(c) && c != '.') {
+			str[i + 1] = '\0';
+			break;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return str;
 }
 
@@ -556,6 +601,7 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 		entry = &sym->sec->symbol_list;
 	list_add(&sym->list, entry);
 
+<<<<<<< HEAD
 	sym->demangled_name = demangle_name(sym);
 	if (!sym->demangled_name)
 		return -1;
@@ -563,6 +609,11 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 	list_add_tail(&sym->global_list, &elf->symbols);
 	elf_hash_add(symbol, &sym->hash, sym->idx);
 	elf_hash_add(symbol_name, &sym->name_hash, str_hash(sym->demangled_name));
+=======
+	list_add_tail(&sym->global_list, &elf->symbols);
+	elf_hash_add(symbol, &sym->hash, sym->idx);
+	elf_hash_add(symbol_name, &sym->name_hash, str_hash(sym->name));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_func_sym(sym) &&
 	    (strstarts(sym->name, "__pfx_") ||
@@ -586,6 +637,13 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 
 	sym->pfunc = sym->cfunc = sym;
 
+<<<<<<< HEAD
+=======
+	sym->demangled_name = demangle_name(sym);
+	if (!sym->demangled_name)
+		return -1;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -666,7 +724,11 @@ static int read_symbols(struct elf *elf)
 		if (elf_add_symbol(elf, sym))
 			return -1;
 
+<<<<<<< HEAD
 		if (is_file_sym(sym))
+=======
+		if (sym->type == STT_FILE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			file = sym;
 		else if (sym->bind == STB_LOCAL)
 			sym->file = file;
@@ -1371,7 +1433,11 @@ unsigned int elf_add_string(struct elf *elf, struct section *strtab, const char 
 		return -1;
 	}
 
+<<<<<<< HEAD
 	offset = ALIGN(sec_size(strtab), strtab->sh.sh_addralign);
+=======
+	offset = ALIGN(strtab->sh.sh_size, strtab->sh.sh_addralign);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!elf_add_data(elf, strtab, str, strlen(str) + 1))
 		return -1;
@@ -1413,7 +1479,11 @@ void *elf_add_data(struct elf *elf, struct section *sec, const void *data, size_
 	sec->data->d_size = size;
 	sec->data->d_align = sec->sh.sh_addralign;
 
+<<<<<<< HEAD
 	offset = ALIGN(sec_size(sec), sec->sh.sh_addralign);
+=======
+	offset = ALIGN(sec->sh.sh_size, sec->sh.sh_addralign);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sec->sh.sh_size = offset + size;
 
 	mark_sec_changed(elf, sec, true);

@@ -3,21 +3,42 @@
  * Copyright © 2021 Intel Corporation
  */
 
+<<<<<<< HEAD
 #include <drm/intel/display_parent_interface.h>
 
 #include "regs/xe_gtt_defs.h"
 
+=======
+/* for ioread64 */
+#include <linux/io-64-nonatomic-lo-hi.h>
+
+#include <drm/intel/display_parent_interface.h>
+
+#include "regs/xe_gtt_defs.h"
+#include "xe_ggtt.h"
+#include "xe_mmio.h"
+
+#include "i915_vma.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_crtc.h"
 #include "intel_display_regs.h"
 #include "intel_display_types.h"
 #include "intel_fb.h"
 #include "intel_fb_pin.h"
+<<<<<<< HEAD
 #include "intel_fbdev_fb.h"
 #include "xe_bo.h"
 #include "xe_display_vma.h"
 #include "xe_ggtt.h"
 #include "xe_mmio.h"
 #include "xe_vram_types.h"
+=======
+#include "xe_bo.h"
+#include "xe_vram_types.h"
+#include "xe_wa.h"
+
+#include <generated/xe_device_wa_oob.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Early xe has no irq */
 static void xe_initial_plane_vblank_wait(struct drm_crtc *_crtc)
@@ -48,7 +69,11 @@ initial_plane_bo(struct xe_device *xe,
 	if (plane_config->size == 0)
 		return NULL;
 
+<<<<<<< HEAD
 	flags = XE_BO_FLAG_FORCE_WC | XE_BO_FLAG_GGTT;
+=======
+	flags = XE_BO_FLAG_SCANOUT | XE_BO_FLAG_GGTT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	base = round_down(plane_config->base, page_size);
 	if (IS_DGFX(xe)) {
@@ -85,11 +110,25 @@ initial_plane_bo(struct xe_device *xe,
 		phys_base = base;
 		flags |= XE_BO_FLAG_STOLEN;
 
+<<<<<<< HEAD
 		if (IS_ENABLED(CONFIG_FRAMEBUFFER_CONSOLE) &&
 		    !intel_fbdev_fb_prefer_stolen(&xe->drm, plane_config->size)) {
 			drm_info(&xe->drm, "Initial FB size exceeds half of stolen, discarding\n");
 			return NULL;
 		}
+=======
+		if (XE_DEVICE_WA(xe, 22019338487_display))
+			return NULL;
+
+		/*
+		 * If the FB is too big, just don't use it since fbdev is not very
+		 * important and we should probably use that space with FBC or other
+		 * features.
+		 */
+		if (IS_ENABLED(CONFIG_FRAMEBUFFER_CONSOLE) &&
+		    plane_config->size * 2 >> PAGE_SHIFT >= stolen->size)
+			return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	size = round_up(plane_config->base + plane_config->size,
@@ -159,7 +198,11 @@ xe_initial_plane_setup(struct drm_plane_state *_plane_state,
 
 	plane_state->ggtt_vma = vma;
 
+<<<<<<< HEAD
 	plane_state->surf = xe_ggtt_node_addr(plane_state->ggtt_vma->node);
+=======
+	plane_state->surf = i915_ggtt_offset(plane_state->ggtt_vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	plane_config->vma = vma;
 

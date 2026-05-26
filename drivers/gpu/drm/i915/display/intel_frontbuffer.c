@@ -58,13 +58,20 @@
 #include <drm/drm_gem.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "intel_bo.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_display_trace.h"
 #include "intel_display_types.h"
 #include "intel_dp.h"
 #include "intel_drrs.h"
 #include "intel_fbc.h"
 #include "intel_frontbuffer.h"
+<<<<<<< HEAD
 #include "intel_parent.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_psr.h"
 #include "intel_tdf.h"
 
@@ -123,9 +130,15 @@ void intel_frontbuffer_flip(struct intel_display *display,
 	frontbuffer_flush(display, frontbuffer_bits, ORIGIN_FLIP);
 }
 
+<<<<<<< HEAD
 void __intel_frontbuffer_invalidate(struct intel_frontbuffer *front,
 				    enum fb_op_origin origin,
 				    unsigned int frontbuffer_bits)
+=======
+void __intel_fb_invalidate(struct intel_frontbuffer *front,
+			   enum fb_op_origin origin,
+			   unsigned int frontbuffer_bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct intel_display *display = front->display;
 
@@ -143,14 +156,24 @@ void __intel_frontbuffer_invalidate(struct intel_frontbuffer *front,
 	intel_fbc_invalidate(display, frontbuffer_bits, origin);
 }
 
+<<<<<<< HEAD
 void __intel_frontbuffer_flush(struct intel_frontbuffer *front,
 			       enum fb_op_origin origin,
 			       unsigned int frontbuffer_bits)
+=======
+void __intel_fb_flush(struct intel_frontbuffer *front,
+		      enum fb_op_origin origin,
+		      unsigned int frontbuffer_bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct intel_display *display = front->display;
 
 	if (origin == ORIGIN_DIRTYFB)
+<<<<<<< HEAD
 		intel_parent_frontbuffer_flush_for_display(display, front);
+=======
+		intel_bo_frontbuffer_flush_for_display(front);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (origin == ORIGIN_CS) {
 		spin_lock(&display->fb_tracking.lock);
@@ -164,13 +187,25 @@ void __intel_frontbuffer_flush(struct intel_frontbuffer *front,
 		frontbuffer_flush(display, frontbuffer_bits, origin);
 }
 
+<<<<<<< HEAD
+=======
+static void intel_frontbuffer_ref(struct intel_frontbuffer *front)
+{
+	intel_bo_frontbuffer_ref(front);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void intel_frontbuffer_flush_work(struct work_struct *work)
 {
 	struct intel_frontbuffer *front =
 		container_of(work, struct intel_frontbuffer, flush_work);
 
 	intel_frontbuffer_flush(front, ORIGIN_DIRTYFB);
+<<<<<<< HEAD
 	intel_parent_frontbuffer_put(front->display, front);
+=======
+	intel_frontbuffer_put(front);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -185,9 +220,15 @@ void intel_frontbuffer_queue_flush(struct intel_frontbuffer *front)
 	if (!front)
 		return;
 
+<<<<<<< HEAD
 	intel_parent_frontbuffer_ref(front->display, front);
 	if (!schedule_work(&front->flush_work))
 		intel_parent_frontbuffer_put(front->display, front);
+=======
+	intel_frontbuffer_ref(front);
+	if (!schedule_work(&front->flush_work))
+		intel_frontbuffer_put(front);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void intel_frontbuffer_init(struct intel_frontbuffer *front, struct drm_device *drm)
@@ -202,6 +243,19 @@ void intel_frontbuffer_fini(struct intel_frontbuffer *front)
 	drm_WARN_ON(front->display->drm, atomic_read(&front->bits));
 }
 
+<<<<<<< HEAD
+=======
+struct intel_frontbuffer *intel_frontbuffer_get(struct drm_gem_object *obj)
+{
+	return intel_bo_frontbuffer_get(obj);
+}
+
+void intel_frontbuffer_put(struct intel_frontbuffer *front)
+{
+	intel_bo_frontbuffer_put(front);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * intel_frontbuffer_track - update frontbuffer tracking
  * @old: current buffer for the frontbuffer slots

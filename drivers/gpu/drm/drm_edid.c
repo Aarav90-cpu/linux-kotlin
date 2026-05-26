@@ -99,6 +99,7 @@ enum drm_edid_internal_quirk {
 };
 
 #define MICROSOFT_IEEE_OUI	0xca125c
+<<<<<<< HEAD
 #define AMD_IEEE_OUI        0x00001A
 
 #define AMD_VSDB_V3_PAYLOAD_MIN_LEN 15
@@ -122,6 +123,8 @@ struct amd_vsdb_v3_payload {
 	 */
 	u8 extra[AMD_VSDB_V3_PAYLOAD_MAX_LEN - AMD_VSDB_V3_PAYLOAD_MIN_LEN];
 } __packed;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct detailed_mode_closure {
 	struct drm_connector *connector;
@@ -5228,6 +5231,7 @@ static bool cea_db_is_microsoft_vsdb(const struct cea_db *db)
 		cea_db_payload_len(db) == 21;
 }
 
+<<<<<<< HEAD
 static bool cea_db_is_amd_vsdb(const struct cea_db *db)
 {
 	return cea_db_is_vendor(db, AMD_IEEE_OUI) &&
@@ -5235,6 +5239,8 @@ static bool cea_db_is_amd_vsdb(const struct cea_db *db)
 		cea_db_payload_len(db) <= AMD_VSDB_V3_PAYLOAD_MAX_LEN;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool cea_db_is_vcdb(const struct cea_db *db)
 {
 	return cea_db_is_extended_tag(db, CTA_EXT_DB_VIDEO_CAP) &&
@@ -5346,7 +5352,11 @@ static void parse_cta_y420cmdb(struct drm_connector *connector,
 
 out:
 	if (map)
+<<<<<<< HEAD
 		info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+		info->color_formats |= DRM_COLOR_FORMAT_YCBCR420;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*y420cmdb_map = map;
 }
@@ -6122,7 +6132,11 @@ static void parse_cta_y420vdb(struct drm_connector *connector,
 			continue;
 
 		bitmap_set(hdmi->y420_vdb_modes, vic, 1);
+<<<<<<< HEAD
 		info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+		info->color_formats |= DRM_COLOR_FORMAT_YCBCR420;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -6431,6 +6445,7 @@ static void drm_parse_microsoft_vsdb(struct drm_connector *connector,
 		    connector->base.id, connector->name, version, db[5]);
 }
 
+<<<<<<< HEAD
 static void drm_parse_amd_vsdb(struct drm_connector *connector,
 			       const struct cea_db *db)
 {
@@ -6470,6 +6485,8 @@ static void drm_parse_amd_vsdb(struct drm_connector *connector,
 	 */
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void drm_parse_cea_ext(struct drm_connector *connector,
 			      const struct drm_edid *drm_edid)
 {
@@ -6495,11 +6512,19 @@ static void drm_parse_cea_ext(struct drm_connector *connector,
 				    info->cea_rev, edid_ext[1]);
 
 		/* The existence of a CTA extension should imply RGB support */
+<<<<<<< HEAD
 		info->color_formats = BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
 		if (edid_ext[3] & EDID_CEA_YCRCB444)
 			info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444);
 		if (edid_ext[3] & EDID_CEA_YCRCB422)
 			info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+=======
+		info->color_formats = DRM_COLOR_FORMAT_RGB444;
+		if (edid_ext[3] & EDID_CEA_YCRCB444)
+			info->color_formats |= DRM_COLOR_FORMAT_YCBCR444;
+		if (edid_ext[3] & EDID_CEA_YCRCB422)
+			info->color_formats |= DRM_COLOR_FORMAT_YCBCR422;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (edid_ext[3] & EDID_BASIC_AUDIO)
 			info->has_audio = true;
 
@@ -6518,8 +6543,11 @@ static void drm_parse_cea_ext(struct drm_connector *connector,
 			drm_parse_hdmi_forum_scds(connector, data);
 		else if (cea_db_is_microsoft_vsdb(db))
 			drm_parse_microsoft_vsdb(connector, data);
+<<<<<<< HEAD
 		else if (cea_db_is_amd_vsdb(db))
 			drm_parse_amd_vsdb(connector, db);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else if (cea_db_is_y420cmdb(db))
 			parse_cta_y420cmdb(connector, db, &y420cmdb_map);
 		else if (cea_db_is_y420vdb(db))
@@ -6712,7 +6740,10 @@ static void drm_reset_display_info(struct drm_connector *connector)
 	info->quirks = 0;
 
 	info->source_physical_address = CEC_PHYS_ADDR_INVALID;
+<<<<<<< HEAD
 	memset(&info->amd_vsdb, 0, sizeof(info->amd_vsdb));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void update_displayid_info(struct drm_connector *connector,
@@ -6770,7 +6801,11 @@ static void update_display_info(struct drm_connector *connector,
 	if (!drm_edid_is_digital(drm_edid))
 		goto out;
 
+<<<<<<< HEAD
 	info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	info->color_formats |= DRM_COLOR_FORMAT_RGB444;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_parse_cea_ext(connector, drm_edid);
 
 	update_displayid_info(connector, drm_edid);
@@ -6824,9 +6859,15 @@ static void update_display_info(struct drm_connector *connector,
 		    connector->base.id, connector->name, info->bpc);
 
 	if (edid->features & DRM_EDID_FEATURE_RGB_YCRCB444)
+<<<<<<< HEAD
 		info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444);
 	if (edid->features & DRM_EDID_FEATURE_RGB_YCRCB422)
 		info->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+=======
+		info->color_formats |= DRM_COLOR_FORMAT_YCBCR444;
+	if (edid->features & DRM_EDID_FEATURE_RGB_YCRCB422)
+		info->color_formats |= DRM_COLOR_FORMAT_YCBCR422;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_update_mso(connector, drm_edid);
 
@@ -7301,7 +7342,11 @@ static bool is_hdmi2_sink(const struct drm_connector *connector)
 		return true;
 
 	return connector->display_info.hdmi.scdc.supported ||
+<<<<<<< HEAD
 		connector->display_info.color_formats & BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+		connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR420;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u8 drm_mode_hdmi_vic(const struct drm_connector *connector,

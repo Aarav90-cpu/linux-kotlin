@@ -48,11 +48,14 @@ static unsigned int debug;
 module_param(debug, int, 0644);
 MODULE_PARM_DESC(debug, "enable debug messages");
 
+<<<<<<< HEAD
 static unsigned int disable_analog_video[8] = { 0, 0, 0, 0, 0, 0, 0, 0};
 static int disable_analog_argc;
 module_param_array(disable_analog_video, int, &disable_analog_argc, 0644);
 MODULE_PARM_DESC(disable_analog_video, "disable analog video for card type");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned int card[]  = {[0 ... (CX23885_MAXBOARDS - 1)] = UNSET };
 module_param_array(card,  int, NULL, 0444);
 MODULE_PARM_DESC(card, "card type");
@@ -929,6 +932,7 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 			dev->board = CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < disable_analog_argc; i++) {
 		if (disable_analog_video[i] == dev->board) {
 			pr_warn("Disabling analog for board %d\n", dev->board);
@@ -936,6 +940,8 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If the user specific a clk freq override, apply it */
 	if (cx23885_boards[dev->board].clk_freq > 0)
 		dev->clk_freq = cx23885_boards[dev->board].clk_freq;
@@ -1055,8 +1061,12 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 		cx23885_gpio_enable(dev, 0x300, 0);
 	}
 
+<<<<<<< HEAD
 	if (cx23885_boards[dev->board].porta == CX23885_ANALOG_VIDEO &&
 	    !dev->disable_analog) {
+=======
+	if (cx23885_boards[dev->board].porta == CX23885_ANALOG_VIDEO) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cx23885_video_register(dev) < 0) {
 			pr_err("%s() Failed to register analog video adapters on VID_A\n",
 			       __func__);

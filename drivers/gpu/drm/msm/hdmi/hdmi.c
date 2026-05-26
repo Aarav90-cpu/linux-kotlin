@@ -20,7 +20,11 @@
 
 void msm_hdmi_set_mode(struct hdmi *hdmi, bool power_on)
 {
+<<<<<<< HEAD
 	u32 ctrl = 0;
+=======
+	uint32_t ctrl = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	spin_lock_irqsave(&hdmi->reg_lock, flags);
@@ -91,7 +95,11 @@ static int msm_hdmi_get_phy(struct hdmi *hdmi)
 	struct platform_device *phy_pdev;
 	struct device_node *phy_node;
 
+<<<<<<< HEAD
 	phy_node = of_parse_phandle(dev_of_node(&pdev->dev), "phys", 0);
+=======
+	phy_node = of_parse_phandle(pdev->dev.of_node, "phys", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!phy_node) {
 		DRM_DEV_ERROR(&pdev->dev, "cannot find phy device\n");
 		return -ENXIO;
@@ -278,7 +286,11 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 	if (!config)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	hdmi = devm_kzalloc(dev, sizeof(*hdmi), GFP_KERNEL);
+=======
+	hdmi = devm_kzalloc(&pdev->dev, sizeof(*hdmi), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!hdmi)
 		return -ENOMEM;
 
@@ -287,7 +299,11 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 	spin_lock_init(&hdmi->reg_lock);
 	mutex_init(&hdmi->state_mutex);
 
+<<<<<<< HEAD
 	ret = drm_of_find_panel_or_bridge(dev_of_node(dev), 1, 0, NULL, &hdmi->next_bridge);
+=======
+	ret = drm_of_find_panel_or_bridge(pdev->dev.of_node, 1, 0, NULL, &hdmi->next_bridge);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret && ret != -ENODEV)
 		return ret;
 
@@ -304,7 +320,11 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 
 	hdmi->qfprom_mmio = msm_ioremap(pdev, "qfprom_physical");
 	if (IS_ERR(hdmi->qfprom_mmio)) {
+<<<<<<< HEAD
 		DRM_DEV_INFO(dev, "can't find qfprom resource\n");
+=======
+		DRM_DEV_INFO(&pdev->dev, "can't find qfprom resource\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hdmi->qfprom_mmio = NULL;
 	}
 
@@ -312,7 +332,12 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 	if (hdmi->irq < 0)
 		return hdmi->irq;
 
+<<<<<<< HEAD
 	hdmi->pwr_regs = devm_kcalloc(dev, config->pwr_reg_cnt,
+=======
+	hdmi->pwr_regs = devm_kcalloc(&pdev->dev,
+				      config->pwr_reg_cnt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      sizeof(hdmi->pwr_regs[0]),
 				      GFP_KERNEL);
 	if (!hdmi->pwr_regs)
@@ -321,11 +346,20 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 	for (i = 0; i < config->pwr_reg_cnt; i++)
 		hdmi->pwr_regs[i].supply = config->pwr_reg_names[i];
 
+<<<<<<< HEAD
 	ret = devm_regulator_bulk_get(dev, config->pwr_reg_cnt, hdmi->pwr_regs);
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to get pwr regulators\n");
 
 	hdmi->pwr_clks = devm_kcalloc(dev, config->pwr_clk_cnt,
+=======
+	ret = devm_regulator_bulk_get(&pdev->dev, config->pwr_reg_cnt, hdmi->pwr_regs);
+	if (ret)
+		return dev_err_probe(dev, ret, "failed to get pwr regulators\n");
+
+	hdmi->pwr_clks = devm_kcalloc(&pdev->dev,
+				      config->pwr_clk_cnt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      sizeof(hdmi->pwr_clks[0]),
 				      GFP_KERNEL);
 	if (!hdmi->pwr_clks)
@@ -334,16 +368,28 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 	for (i = 0; i < config->pwr_clk_cnt; i++)
 		hdmi->pwr_clks[i].id = config->pwr_clk_names[i];
 
+<<<<<<< HEAD
 	ret = devm_clk_bulk_get(dev, config->pwr_clk_cnt, hdmi->pwr_clks);
 	if (ret)
 		return ret;
 
 	hdmi->extp_clk = devm_clk_get_optional(dev, "extp");
+=======
+	ret = devm_clk_bulk_get(&pdev->dev, config->pwr_clk_cnt, hdmi->pwr_clks);
+	if (ret)
+		return ret;
+
+	hdmi->extp_clk = devm_clk_get_optional(&pdev->dev, "extp");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(hdmi->extp_clk))
 		return dev_err_probe(dev, PTR_ERR(hdmi->extp_clk),
 				     "failed to get extp clock\n");
 
+<<<<<<< HEAD
 	hdmi->hpd_gpiod = devm_gpiod_get_optional(dev, "hpd", GPIOD_IN);
+=======
+	hdmi->hpd_gpiod = devm_gpiod_get_optional(&pdev->dev, "hpd", GPIOD_IN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* This will catch e.g. -EPROBE_DEFER */
 	if (IS_ERR(hdmi->hpd_gpiod))
 		return dev_err_probe(dev, PTR_ERR(hdmi->hpd_gpiod),
@@ -356,16 +402,29 @@ static int msm_hdmi_dev_probe(struct platform_device *pdev)
 		gpiod_set_consumer_name(hdmi->hpd_gpiod, "HDMI_HPD");
 
 	ret = msm_hdmi_get_phy(hdmi);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
 	ret = devm_pm_runtime_enable(dev);
+=======
+	if (ret) {
+		DRM_DEV_ERROR(&pdev->dev, "failed to get phy\n");
+		return ret;
+	}
+
+	ret = devm_pm_runtime_enable(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_put_phy;
 
 	platform_set_drvdata(pdev, hdmi);
 
+<<<<<<< HEAD
 	ret = component_add(dev, &msm_hdmi_ops);
+=======
+	ret = component_add(&pdev->dev, &msm_hdmi_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_put_phy;
 
@@ -425,7 +484,11 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static DEFINE_RUNTIME_DEV_PM_OPS(msm_hdmi_pm_ops, msm_hdmi_runtime_suspend, msm_hdmi_runtime_resume, NULL);
+=======
+DEFINE_RUNTIME_DEV_PM_OPS(msm_hdmi_pm_ops, msm_hdmi_runtime_suspend, msm_hdmi_runtime_resume, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct of_device_id msm_hdmi_dt_match[] = {
 	{ .compatible = "qcom,hdmi-tx-8998", .data = &hdmi_tx_8974_config },
@@ -437,7 +500,10 @@ static const struct of_device_id msm_hdmi_dt_match[] = {
 	{ .compatible = "qcom,hdmi-tx-8660", .data = &hdmi_tx_8960_config },
 	{}
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, msm_hdmi_dt_match);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct platform_driver msm_hdmi_driver = {
 	.probe = msm_hdmi_dev_probe,

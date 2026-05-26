@@ -523,7 +523,11 @@ struct pdr_service *pdr_add_lookup(struct pdr_handle *pdr,
 	if (!pds)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	pds->service = QMI_SERVICE_ID_SERVREG_NOTIF;
+=======
+	pds->service = SERVREG_NOTIFIER_SERVICE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	strscpy(pds->service_name, service_name, sizeof(pds->service_name));
 	strscpy(pds->service_path, service_path, sizeof(pds->service_path));
 	pds->need_locator_lookup = true;
@@ -678,7 +682,11 @@ struct pdr_handle *pdr_handle_alloc(void (*status)(int state,
 	if (ret < 0)
 		goto destroy_indack;
 
+<<<<<<< HEAD
 	ret = qmi_add_lookup(&pdr->locator_hdl, QMI_SERVICE_ID_SERVREG_LOC, 1, 1);
+=======
+	ret = qmi_add_lookup(&pdr->locator_hdl, SERVREG_LOCATOR_SERVICE, 1, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto release_qmi_handle;
 

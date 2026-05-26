@@ -69,6 +69,12 @@
 #define bond_first_slave_rcu(bond) \
 	netdev_lower_get_first_private_rcu(bond->dev)
 
+<<<<<<< HEAD
+=======
+#define bond_is_first_slave(bond, pos) (pos == bond_first_slave(bond))
+#define bond_is_last_slave(bond, pos) (pos == bond_last_slave(bond))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * bond_for_each_slave - iterate over all slaves
  * @bond:	the bond holding this list
@@ -88,22 +94,39 @@
 			    NETIF_F_GSO_ESP)
 
 #ifdef CONFIG_NET_POLL_CONTROLLER
+<<<<<<< HEAD
 DECLARE_STATIC_KEY_FALSE(netpoll_block_tx);
 
 static inline void block_netpoll_tx(void)
 {
 	static_branch_inc(&netpoll_block_tx);
+=======
+extern atomic_t netpoll_block_tx;
+
+static inline void block_netpoll_tx(void)
+{
+	atomic_inc(&netpoll_block_tx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void unblock_netpoll_tx(void)
 {
+<<<<<<< HEAD
 	static_branch_dec(&netpoll_block_tx);
+=======
+	atomic_dec(&netpoll_block_tx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int is_netpoll_tx_blocked(struct net_device *dev)
 {
+<<<<<<< HEAD
 	if (static_branch_unlikely(&netpoll_block_tx))
 		return netpoll_tx_running(dev);
+=======
+	if (unlikely(netpoll_tx_running(dev)))
+		return atomic_read(&netpoll_block_tx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 #else

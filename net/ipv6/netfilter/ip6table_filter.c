@@ -60,7 +60,11 @@ static int __net_init ip6table_filter_net_init(struct net *net)
 
 static void __net_exit ip6table_filter_net_pre_exit(struct net *net)
 {
+<<<<<<< HEAD
 	xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "filter");
+=======
+	ip6t_unregister_table_pre_exit(net, "filter");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __net_exit ip6table_filter_net_exit(struct net *net)
@@ -76,6 +80,7 @@ static struct pernet_operations ip6table_filter_net_ops = {
 
 static int __init ip6table_filter_init(void)
 {
+<<<<<<< HEAD
 	int ret;
 
 	filter_ops = xt_hook_ops_alloc(&packet_filter, ip6t_do_table);
@@ -95,13 +100,39 @@ static int __init ip6table_filter_init(void)
 	return 0;
 err_free:
 	kfree(filter_ops);
+=======
+	int ret = xt_register_template(&packet_filter,
+					ip6table_filter_table_init);
+
+	if (ret < 0)
+		return ret;
+
+	filter_ops = xt_hook_ops_alloc(&packet_filter, ip6t_do_table);
+	if (IS_ERR(filter_ops)) {
+		xt_unregister_template(&packet_filter);
+		return PTR_ERR(filter_ops);
+	}
+
+	ret = register_pernet_subsys(&ip6table_filter_net_ops);
+	if (ret < 0) {
+		xt_unregister_template(&packet_filter);
+		kfree(filter_ops);
+		return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
 static void __exit ip6table_filter_fini(void)
 {
+<<<<<<< HEAD
 	xt_unregister_template(&packet_filter);
 	unregister_pernet_subsys(&ip6table_filter_net_ops);
+=======
+	unregister_pernet_subsys(&ip6table_filter_net_ops);
+	xt_unregister_template(&packet_filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(filter_ops);
 }
 

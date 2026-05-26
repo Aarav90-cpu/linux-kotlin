@@ -44,7 +44,11 @@ enum {
 
 static DEFINE_RAW_SPINLOCK(tty_ldiscs_lock);
 /* Line disc dispatch table */
+<<<<<<< HEAD
 static const struct tty_ldisc_ops *tty_ldiscs[NR_LDISCS];
+=======
+static struct tty_ldisc_ops *tty_ldiscs[NR_LDISCS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * tty_register_ldisc	-	install a line discipline
@@ -55,7 +59,11 @@ static const struct tty_ldisc_ops *tty_ldiscs[NR_LDISCS];
  *
  * Locking: takes %tty_ldiscs_lock to guard against ldisc races
  */
+<<<<<<< HEAD
 int tty_register_ldisc(const struct tty_ldisc_ops *new_ldisc)
+=======
+int tty_register_ldisc(struct tty_ldisc_ops *new_ldisc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long flags;
 
@@ -80,7 +88,11 @@ EXPORT_SYMBOL(tty_register_ldisc);
  * Locking: takes %tty_ldiscs_lock to guard against ldisc races
  */
 
+<<<<<<< HEAD
 void tty_unregister_ldisc(const struct tty_ldisc_ops *ldisc)
+=======
+void tty_unregister_ldisc(struct tty_ldisc_ops *ldisc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long flags;
 
@@ -90,10 +102,17 @@ void tty_unregister_ldisc(const struct tty_ldisc_ops *ldisc)
 }
 EXPORT_SYMBOL(tty_unregister_ldisc);
 
+<<<<<<< HEAD
 static const struct tty_ldisc_ops *get_ldops(int disc)
 {
 	unsigned long flags;
 	const struct tty_ldisc_ops *ldops, *ret;
+=======
+static struct tty_ldisc_ops *get_ldops(int disc)
+{
+	unsigned long flags;
+	struct tty_ldisc_ops *ldops, *ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	raw_spin_lock_irqsave(&tty_ldiscs_lock, flags);
 	ret = ERR_PTR(-EINVAL);
@@ -107,7 +126,11 @@ static const struct tty_ldisc_ops *get_ldops(int disc)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void put_ldops(const struct tty_ldisc_ops *ldops)
+=======
+static void put_ldops(struct tty_ldisc_ops *ldops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long flags;
 
@@ -139,7 +162,11 @@ int tty_ldisc_autoload = IS_BUILTIN(CONFIG_LDISC_AUTOLOAD);
 static struct tty_ldisc *tty_ldisc_get(struct tty_struct *tty, int disc)
 {
 	struct tty_ldisc *ld;
+<<<<<<< HEAD
 	const struct tty_ldisc_ops *ldops;
+=======
+	struct tty_ldisc_ops *ldops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (disc < N_TTY || disc >= NR_LDISCS)
 		return ERR_PTR(-EINVAL);
@@ -202,7 +229,11 @@ static void tty_ldiscs_seq_stop(struct seq_file *m, void *v)
 static int tty_ldiscs_seq_show(struct seq_file *m, void *v)
 {
 	int i = *(loff_t *)v;
+<<<<<<< HEAD
 	const struct tty_ldisc_ops *ldops;
+=======
+	struct tty_ldisc_ops *ldops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ldops = get_ldops(i);
 	if (IS_ERR(ldops))

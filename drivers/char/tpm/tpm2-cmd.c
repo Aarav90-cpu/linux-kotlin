@@ -21,7 +21,11 @@ static bool disable_pcr_integrity;
 module_param(disable_pcr_integrity, bool, 0444);
 MODULE_PARM_DESC(disable_pcr_integrity, "Disable integrity protection of TPM2_PCR_Extend");
 
+<<<<<<< HEAD
 static const struct tpm2_hash tpm2_hash_map[] = {
+=======
+struct tpm2_hash tpm2_hash_map[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
 	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
 	{HASH_ALGO_SHA384, TPM_ALG_SHA384},

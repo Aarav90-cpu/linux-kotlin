@@ -68,7 +68,11 @@ flush_write_domain(struct drm_i915_gem_object *obj, unsigned int flush_domains)
 			i915_vma_flush_writes(vma);
 		spin_unlock(&obj->vma.lock);
 
+<<<<<<< HEAD
 		i915_gem_object_frontbuffer_flush(obj, ORIGIN_CPU);
+=======
+		i915_gem_object_flush_frontbuffer(obj, ORIGIN_CPU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	case I915_GEM_DOMAIN_WC:
@@ -647,7 +651,11 @@ out_unlock:
 	i915_gem_object_unlock(obj);
 
 	if (!err && write_domain)
+<<<<<<< HEAD
 		i915_gem_object_frontbuffer_invalidate(obj, ORIGIN_CPU);
+=======
+		i915_gem_object_invalidate_frontbuffer(obj, ORIGIN_CPU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	i915_gem_object_put(obj);
@@ -759,7 +767,11 @@ int i915_gem_object_prepare_write(struct drm_i915_gem_object *obj,
 	}
 
 out:
+<<<<<<< HEAD
 	i915_gem_object_frontbuffer_invalidate(obj, ORIGIN_CPU);
+=======
+	i915_gem_object_invalidate_frontbuffer(obj, ORIGIN_CPU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	obj->mm.dirty = true;
 	/* return with the pages pinned */
 	return 0;

@@ -251,6 +251,7 @@ int ring_buffer_map(struct trace_buffer *buffer, int cpu,
 void ring_buffer_map_dup(struct trace_buffer *buffer, int cpu);
 int ring_buffer_unmap(struct trace_buffer *buffer, int cpu);
 int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu);
+<<<<<<< HEAD
 
 struct ring_buffer_desc {
 	int		cpu;
@@ -309,4 +310,6 @@ __ring_buffer_alloc_remote(struct ring_buffer_remote *remote,
 	static struct lock_class_key __key;			\
 	__ring_buffer_alloc_remote(remote, &__key);		\
 })
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _LINUX_RING_BUFFER_H */

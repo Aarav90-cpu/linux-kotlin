@@ -1462,6 +1462,7 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
 	struct cache *cache = mg->cache;
 
 	bio_list_init(&bios);
+<<<<<<< HEAD
 	if (mg->cell) {
 		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
 			free_prison_cell(cache, mg->cell);
@@ -1475,6 +1476,13 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
 			mg->overwrite_bio->bi_status = BLK_STS_IOERR;
 		bio_endio(mg->overwrite_bio);
 	}
+=======
+	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
+		free_prison_cell(cache, mg->cell);
+
+	if (!success && mg->overwrite_bio)
+		bio_io_error(mg->overwrite_bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	free_migration(mg);
 	defer_bios(cache, &bios);
@@ -1514,6 +1522,7 @@ static int invalidate_cblock(struct cache *cache, dm_cblock_t cblock)
 	return r;
 }
 
+<<<<<<< HEAD
 static void invalidate_committed(struct work_struct *ws)
 {
 	struct dm_cache_migration *mg = ws_to_mg(ws);
@@ -1532,6 +1541,8 @@ static void invalidate_committed(struct work_struct *ws)
 	dm_submit_bio_remap(bio, NULL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void invalidate_remove(struct work_struct *ws)
 {
 	int r;
@@ -1544,8 +1555,15 @@ static void invalidate_remove(struct work_struct *ws)
 		return;
 	}
 
+<<<<<<< HEAD
 	init_continuation(&mg->k, invalidate_committed);
 	continue_after_commit(&cache->committer, &mg->k);
+=======
+	init_continuation(&mg->k, invalidate_completed);
+	continue_after_commit(&cache->committer, &mg->k);
+	remap_to_origin_clear_discard(cache, mg->overwrite_bio, mg->invalidate_oblock);
+	mg->overwrite_bio = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	schedule_commit(&cache->committer);
 }
 
@@ -1563,6 +1581,7 @@ static int invalidate_lock(struct dm_cache_migration *mg)
 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
 	if (r < 0) {
 		free_prison_cell(cache, prealloc);
+<<<<<<< HEAD
 
 		/* Defer the bio for retrying the cell lock */
 		if (mg->overwrite_bio) {
@@ -1572,6 +1591,8 @@ static int invalidate_lock(struct dm_cache_migration *mg)
 			defer_bio(cache, bio);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		invalidate_complete(mg, false);
 		return r;
 	}
@@ -1734,7 +1755,10 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
 				bio_drop_shared_lock(cache, bio);
 				atomic_inc(&cache->stats.demotion);
 				invalidate_start(cache, cblock, block, bio);
+<<<<<<< HEAD
 				return DM_MAPIO_SUBMITTED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else
 				remap_to_origin_clear_discard(cache, bio, block);
 		} else {
@@ -2501,8 +2525,28 @@ static int cache_create(struct cache_args *ca, struct cache **result)
 		goto bad;
 	}
 
+<<<<<<< HEAD
 	if (passthrough_mode(cache))
 		policy_allow_migrations(cache->policy, false);
+=======
+	if (passthrough_mode(cache)) {
+		bool all_clean;
+
+		r = dm_cache_metadata_all_clean(cache->cmd, &all_clean);
+		if (r) {
+			*error = "dm_cache_metadata_all_clean() failed";
+			goto bad;
+		}
+
+		if (!all_clean) {
+			*error = "Cannot enter passthrough mode unless all blocks are clean";
+			r = -EINVAL;
+			goto bad;
+		}
+
+		policy_allow_migrations(cache->policy, false);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_init(&cache->lock);
 	bio_list_init(&cache->deferred_bios);
@@ -2829,12 +2873,15 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
 	struct cache *cache = context;
 
 	if (dirty) {
+<<<<<<< HEAD
 		if (passthrough_mode(cache)) {
 			DMERR("%s: cannot enter passthrough mode unless all blocks are clean",
 			      cache_device_name(cache));
 			return -EBUSY;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_bit(from_cblock(cblock), cache->dirty_bitset);
 		atomic_inc(&cache->nr_dirty);
 	} else
@@ -2954,9 +3001,12 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
 
 static bool can_resume(struct cache *cache)
 {
+<<<<<<< HEAD
 	bool clean_when_opened;
 	int r;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Disallow retrying the resume operation for devices that failed the
 	 * first resume attempt, as the failure leaves the policy object partially
@@ -2973,6 +3023,7 @@ static bool can_resume(struct cache *cache)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (passthrough_mode(cache)) {
 		r = dm_cache_metadata_clean_when_opened(cache->cmd, &clean_when_opened);
 		if (r) {
@@ -2987,6 +3038,8 @@ static bool can_resume(struct cache *cache)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -3085,7 +3138,11 @@ static int cache_preresume(struct dm_target *ti)
 					   load_filtered_mapping, cache);
 		if (r) {
 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
+<<<<<<< HEAD
 			if (r != -EFBIG && r != -EBUSY)
+=======
+			if (r != -EFBIG)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
 			return r;
 		}
@@ -3552,7 +3609,11 @@ static void cache_io_hints(struct dm_target *ti, struct queue_limits *limits)
 
 static struct target_type cache_target = {
 	.name = "cache",
+<<<<<<< HEAD
 	.version = {2, 4, 0},
+=======
+	.version = {2, 3, 0},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.module = THIS_MODULE,
 	.ctr = cache_ctr,
 	.dtr = cache_dtr,

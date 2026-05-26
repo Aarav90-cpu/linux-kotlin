@@ -29,8 +29,12 @@ struct apm_graph_mgmt_cmd {
 
 static struct q6apm *g_apm;
 
+<<<<<<< HEAD
 int q6apm_send_cmd_sync(struct q6apm *apm, const struct gpr_pkt *pkt,
 			uint32_t rsp_opcode)
+=======
+int q6apm_send_cmd_sync(struct q6apm *apm, struct gpr_pkt *pkt, uint32_t rsp_opcode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gpr_device_t *gdev = apm->gdev;
 
@@ -201,6 +205,7 @@ int q6apm_graph_media_format_shmem(struct q6apm_graph *graph,
 }
 EXPORT_SYMBOL_GPL(q6apm_graph_media_format_shmem);
 
+<<<<<<< HEAD
 int q6apm_map_memory_fixed_region(struct device *dev, unsigned int graph_id, phys_addr_t phys,
 				  size_t sz)
 {
@@ -244,10 +249,18 @@ EXPORT_SYMBOL_GPL(q6apm_map_memory_fixed_region);
 
 int q6apm_alloc_fragments(struct q6apm_graph *graph, unsigned int dir, phys_addr_t phys,
 				size_t period_sz, unsigned int periods)
+=======
+int q6apm_map_memory_regions(struct q6apm_graph *graph, unsigned int dir, phys_addr_t phys,
+			     size_t period_sz, unsigned int periods)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct audioreach_graph_data *data;
 	struct audio_buffer *buf;
 	int cnt;
+<<<<<<< HEAD
+=======
+	int rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
 		data = &graph->rx_data;
@@ -289,6 +302,7 @@ int q6apm_alloc_fragments(struct q6apm_graph *graph, unsigned int dir, phys_addr
 
 	mutex_unlock(&graph->lock);
 
+<<<<<<< HEAD
 	return 0;
 }
 EXPORT_SYMBOL_GPL(q6apm_alloc_fragments);
@@ -324,6 +338,48 @@ int q6apm_free_fragments(struct q6apm_graph *graph, unsigned int dir)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(q6apm_free_fragments);
+=======
+	rc = audioreach_map_memory_regions(graph, dir, period_sz, periods, 1);
+	if (rc < 0) {
+		dev_err(graph->dev, "Memory_map_regions failed\n");
+		audioreach_graph_free_buf(graph);
+	}
+
+	return rc;
+}
+EXPORT_SYMBOL_GPL(q6apm_map_memory_regions);
+
+int q6apm_unmap_memory_regions(struct q6apm_graph *graph, unsigned int dir)
+{
+	struct apm_cmd_shared_mem_unmap_regions *cmd;
+	struct audioreach_graph_data *data;
+	int rc;
+
+	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
+		data = &graph->rx_data;
+	else
+		data = &graph->tx_data;
+
+	if (!data->mem_map_handle)
+		return 0;
+
+	struct gpr_pkt *pkt __free(kfree) =
+		audioreach_alloc_apm_pkt(sizeof(*cmd), APM_CMD_SHARED_MEM_UNMAP_REGIONS,
+					 dir, graph->port->id);
+	if (IS_ERR(pkt))
+		return PTR_ERR(pkt);
+
+	cmd = (void *)pkt + GPR_HDR_SIZE;
+	cmd->mem_map_handle = data->mem_map_handle;
+
+	rc = audioreach_graph_send_cmd_sync(graph, pkt, APM_CMD_SHARED_MEM_UNMAP_REGIONS);
+
+	audioreach_graph_free_buf(graph);
+
+	return rc;
+}
+EXPORT_SYMBOL_GPL(q6apm_unmap_memory_regions);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int q6apm_remove_initial_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples)
 {
@@ -447,11 +503,19 @@ int q6apm_write_async(struct q6apm_graph *graph, uint32_t len, uint32_t msw_ts,
 {
 	struct apm_data_cmd_wr_sh_mem_ep_data_buffer_v2 *write_buffer;
 	struct audio_buffer *ab;
+<<<<<<< HEAD
+=======
+	int iid = q6apm_graph_get_rx_shmem_module_iid(graph);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct gpr_pkt *pkt __free(kfree) = audioreach_alloc_pkt(sizeof(*write_buffer),
 					DATA_CMD_WR_SH_MEM_EP_DATA_BUFFER_V2,
 					graph->rx_data.dsp_buf | (len << APM_WRITE_TOKEN_LEN_SHIFT),
+<<<<<<< HEAD
 					graph->port->id, graph->shm_iid);
+=======
+					graph->port->id, iid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(pkt))
 		return PTR_ERR(pkt);
 
@@ -465,7 +529,11 @@ int q6apm_write_async(struct q6apm_graph *graph, uint32_t len, uint32_t msw_ts,
 	write_buffer->buf_size = len;
 	write_buffer->timestamp_lsw = lsw_ts;
 	write_buffer->timestamp_msw = msw_ts;
+<<<<<<< HEAD
 	write_buffer->mem_map_handle = graph->info->mem_map_handle;
+=======
+	write_buffer->mem_map_handle = graph->rx_data.mem_map_handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	write_buffer->flags = wflags;
 
 	graph->rx_data.dsp_buf++;
@@ -484,10 +552,18 @@ int q6apm_read(struct q6apm_graph *graph)
 	struct data_cmd_rd_sh_mem_ep_data_buffer_v2 *read_buffer;
 	struct audioreach_graph_data *port;
 	struct audio_buffer *ab;
+<<<<<<< HEAD
 
 	struct gpr_pkt *pkt __free(kfree) = audioreach_alloc_pkt(sizeof(*read_buffer),
 					DATA_CMD_RD_SH_MEM_EP_DATA_BUFFER_V2,
 					graph->tx_data.dsp_buf, graph->port->id, graph->shm_iid);
+=======
+	int iid = q6apm_graph_get_tx_shmem_module_iid(graph);
+
+	struct gpr_pkt *pkt __free(kfree) = audioreach_alloc_pkt(sizeof(*read_buffer),
+					DATA_CMD_RD_SH_MEM_EP_DATA_BUFFER_V2,
+					graph->tx_data.dsp_buf, graph->port->id, iid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(pkt))
 		return PTR_ERR(pkt);
 
@@ -499,7 +575,11 @@ int q6apm_read(struct q6apm_graph *graph)
 
 	read_buffer->buf_addr_lsw = lower_32_bits(ab->phys);
 	read_buffer->buf_addr_msw = upper_32_bits(ab->phys);
+<<<<<<< HEAD
 	read_buffer->mem_map_handle = graph->info->mem_map_handle;
+=======
+	read_buffer->mem_map_handle = port->mem_map_handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	read_buffer->buf_size = ab->size;
 
 	port->dsp_buf++;
@@ -530,6 +610,10 @@ static int graph_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 {
 	struct data_cmd_rsp_rd_sh_mem_ep_data_buffer_done_v2 *rd_done;
 	struct data_cmd_rsp_wr_sh_mem_ep_data_buffer_done_v2 *done;
+<<<<<<< HEAD
+=======
+	struct apm_cmd_rsp_shared_mem_map_regions *rsp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct gpr_ibasic_rsp_result_t *result;
 	struct q6apm_graph *graph = priv;
 	const struct gpr_hdr *hdr = &data->hdr;
@@ -565,6 +649,21 @@ static int graph_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 		}
 
 		break;
+<<<<<<< HEAD
+=======
+	case APM_CMD_RSP_SHARED_MEM_MAP_REGIONS:
+		graph->result.opcode = hdr->opcode;
+		graph->result.status = 0;
+		rsp = data->payload;
+
+		if (hdr->token == SNDRV_PCM_STREAM_PLAYBACK)
+			graph->rx_data.mem_map_handle = rsp->mem_map_handle;
+		else
+			graph->tx_data.mem_map_handle = rsp->mem_map_handle;
+
+		wake_up(&graph->cmd_wait);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case DATA_CMD_RSP_RD_SH_MEM_EP_DATA_BUFFER_V2:
 		if (!graph->ar_graph)
 			break;
@@ -594,6 +693,19 @@ static int graph_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 		break;
 	case GPR_BASIC_RSP_RESULT:
 		switch (result->opcode) {
+<<<<<<< HEAD
+=======
+		case APM_CMD_SHARED_MEM_UNMAP_REGIONS:
+			graph->result.opcode = result->opcode;
+			graph->result.status = 0;
+			if (hdr->token == SNDRV_PCM_STREAM_PLAYBACK)
+				graph->rx_data.mem_map_handle = 0;
+			else
+				graph->tx_data.mem_map_handle = 0;
+
+			wake_up(&graph->cmd_wait);
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case APM_CMD_SHARED_MEM_MAP_REGIONS:
 		case DATA_CMD_WR_SH_MEM_EP_MEDIA_FORMAT:
 		case APM_CMD_SET_CFG:
@@ -615,7 +727,11 @@ static int graph_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 }
 
 struct q6apm_graph *q6apm_graph_open(struct device *dev, q6apm_cb cb,
+<<<<<<< HEAD
 				     void *priv, int graph_id, int dir)
+=======
+				     void *priv, int graph_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct q6apm *apm = dev_get_drvdata(dev->parent);
 	struct audioreach_graph *ar_graph;
@@ -642,12 +758,15 @@ struct q6apm_graph *q6apm_graph_open(struct device *dev, q6apm_cb cb,
 	graph->id = ar_graph->id;
 	graph->dev = dev;
 
+<<<<<<< HEAD
 	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
 		graph->shm_iid = q6apm_graph_get_rx_shmem_module_iid(graph);
 	else
 		graph->shm_iid = q6apm_graph_get_tx_shmem_module_iid(graph);
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&graph->lock);
 	init_waitqueue_head(&graph->cmd_wait);
 
@@ -797,9 +916,13 @@ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, ui
 static int apm_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 {
 	gpr_device_t *gdev = priv;
+<<<<<<< HEAD
 	struct audioreach_graph_info *info;
 	struct q6apm *apm = dev_get_drvdata(&gdev->dev);
 	struct apm_cmd_rsp_shared_mem_map_regions *rsp;
+=======
+	struct q6apm *apm = dev_get_drvdata(&gdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev = &gdev->dev;
 	struct gpr_ibasic_rsp_result_t *result;
 	const struct gpr_hdr *hdr = &data->hdr;
@@ -816,7 +939,10 @@ static int apm_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 		break;
 	case GPR_BASIC_RSP_RESULT:
 		switch (result->opcode) {
+<<<<<<< HEAD
 		case APM_CMD_SHARED_MEM_MAP_REGIONS:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case APM_CMD_GRAPH_START:
 		case APM_CMD_GRAPH_OPEN:
 		case APM_CMD_GRAPH_PREPARE:
@@ -831,6 +957,7 @@ static int apm_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 					result->opcode);
 			wake_up(&apm->wait);
 			break;
+<<<<<<< HEAD
 		case APM_CMD_SHARED_MEM_UNMAP_REGIONS:
 			apm->result.opcode = hdr->opcode;
 			apm->result.status = 0;
@@ -845,10 +972,13 @@ static int apm_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 
 			wake_up(&apm->wait);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			break;
 		}
 		break;
+<<<<<<< HEAD
 	case APM_CMD_RSP_SHARED_MEM_MAP_REGIONS:
 		apm->result.opcode = hdr->opcode;
 		apm->result.status = 0;
@@ -863,6 +993,8 @@ static int apm_callback(const struct gpr_resp_pkt *data, void *priv, int op)
 
 		wake_up(&apm->wait);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}

@@ -952,6 +952,12 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
 	struct audioreach_container *cont;
 	struct audioreach_module *mod;
 
+<<<<<<< HEAD
+=======
+	mod = dobj->private;
+	cont = mod->container;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (w->id == snd_soc_dapm_mixer) {
 		/* virtual widget */
 		struct snd_ar_control *scontrol = dobj->private;
@@ -960,11 +966,14 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
 		kfree(scontrol);
 		return 0;
 	}
+<<<<<<< HEAD
 	mod = dobj->private;
 	if (!mod)
 		return 0;
 
 	cont = mod->container;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&apm->lock);
 	idr_remove(&apm->modules_idr, mod->instance_id);

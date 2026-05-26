@@ -251,14 +251,26 @@ asmlinkage __visible void smp_callin(void)
 	set_cpu_online(curr_cpuid, true);
 
 	/*
+<<<<<<< HEAD
 	 * Remote instruction cache and TLB flushes are ignored while the CPU
 	 * is offline, so flush them both right now just in case.
+=======
+	 * Remote cache and TLB flushes are ignored while the CPU is offline,
+	 * so flush them both right now just in case.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	local_flush_icache_all();
 	local_flush_tlb_all();
 #ifndef CONFIG_HOTPLUG_PARALLEL
 	complete(&cpu_running);
 #endif
+<<<<<<< HEAD
+=======
+	/*
+	 * Disable preemption before enabling interrupts, so we don't try to
+	 * schedule a CPU that hasn't actually started yet.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_irq_enable();
 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
 }

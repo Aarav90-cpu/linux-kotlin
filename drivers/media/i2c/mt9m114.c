@@ -368,10 +368,13 @@
  * Data Structures
  */
 
+<<<<<<< HEAD
 struct mt9m114_model_info {
 	bool state_standby_polling;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum mt9m114_format_flag {
 	MT9M114_FMT_FLAG_PARALLEL = BIT(0),
 	MT9M114_FMT_FLAG_CSI2 = BIT(1),
@@ -421,8 +424,11 @@ struct mt9m114 {
 
 		struct v4l2_ctrl *tpg[4];
 	} ifp;
+<<<<<<< HEAD
 
 	const struct mt9m114_model_info *info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* -----------------------------------------------------------------------------
@@ -2290,11 +2296,17 @@ static int mt9m114_power_on(struct mt9m114 *sensor)
 	 * reaches the standby mode (either initiated manually above in
 	 * parallel mode, or automatically after reset in MIPI mode).
 	 */
+<<<<<<< HEAD
 	if (sensor->info->state_standby_polling) {
 		ret = mt9m114_poll_state(sensor, MT9M114_SYS_STATE_STANDBY);
 		if (ret < 0)
 			goto error_clock;
 	}
+=======
+	ret = mt9m114_poll_state(sensor, MT9M114_SYS_STATE_STANDBY);
+	if (ret < 0)
+		goto error_clock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -2540,10 +2552,13 @@ static int mt9m114_probe(struct i2c_client *client)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	sensor->info = device_get_match_data(dev);
 	if (!sensor->info)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Acquire clocks, GPIOs and regulators. */
 	sensor->clk = devm_v4l2_sensor_clk_get(dev, NULL);
 	if (IS_ERR(sensor->clk)) {
@@ -2658,6 +2673,7 @@ static void mt9m114_remove(struct i2c_client *client)
 	pm_runtime_set_suspended(dev);
 }
 
+<<<<<<< HEAD
 static const struct mt9m114_model_info mt9m114_models_default = {
 	.state_standby_polling = true,
 };
@@ -2670,12 +2686,22 @@ static const struct of_device_id mt9m114_of_ids[] = {
 	{ .compatible = "onnn,mt9m114", .data = &mt9m114_models_default },
 	{ .compatible = "aptina,mi1040", .data = &mt9m114_models_aptina },
 	{ /* sentinel */ }
+=======
+static const struct of_device_id mt9m114_of_ids[] = {
+	{ .compatible = "onnn,mt9m114" },
+	{ /* sentinel */ },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 MODULE_DEVICE_TABLE(of, mt9m114_of_ids);
 
 static const struct acpi_device_id mt9m114_acpi_ids[] = {
+<<<<<<< HEAD
 	{ "INT33F0", (kernel_ulong_t)&mt9m114_models_default },
 	{ /* sentinel */ }
+=======
+	{ "INT33F0" },
+	{ /* sentinel */ },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 MODULE_DEVICE_TABLE(acpi, mt9m114_acpi_ids);
 

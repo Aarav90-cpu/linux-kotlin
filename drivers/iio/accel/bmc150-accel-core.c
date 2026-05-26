@@ -851,7 +851,11 @@ static ssize_t bmc150_accel_get_fifo_watermark(struct device *dev,
 	wm = data->watermark;
 	mutex_unlock(&data->mutex);
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", wm);
+=======
+	return sprintf(buf, "%d\n", wm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t bmc150_accel_get_fifo_state(struct device *dev,
@@ -866,7 +870,11 @@ static ssize_t bmc150_accel_get_fifo_state(struct device *dev,
 	state = data->fifo_mode;
 	mutex_unlock(&data->mutex);
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", state);
+=======
+	return sprintf(buf, "%d\n", state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct iio_mount_matrix *

@@ -182,9 +182,12 @@ struct type_state_reg {
 	s32 offset;
 	bool ok;
 	bool caller_saved;
+<<<<<<< HEAD
 	/* DWARF location range tracking for register lifetime */
 	bool lifetime_active;
 	u64 lifetime_end;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 kind;
 	u8 copied_from;
 };

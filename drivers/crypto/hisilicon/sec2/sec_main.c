@@ -133,8 +133,11 @@
 #define SEC_AEAD_BITMAP			(GENMASK_ULL(7, 6) | GENMASK_ULL(18, 17) | \
 					GENMASK_ULL(45, 43))
 
+<<<<<<< HEAD
 #define SEC_MAX_CHANNEL_NUM		1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sec_hw_error {
 	u32 int_msk;
 	const char *msg;
@@ -909,7 +912,11 @@ static int sec_debugfs_atomic64_set(void *data, u64 val)
 }
 
 DEFINE_DEBUGFS_ATTRIBUTE(sec_atomic64_ops, sec_debugfs_atomic64_get,
+<<<<<<< HEAD
 			 sec_debugfs_atomic64_set, "%llu\n");
+=======
+			 sec_debugfs_atomic64_set, "%lld\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int sec_regs_show(struct seq_file *s, void *unused)
 {
@@ -1290,6 +1297,7 @@ static int sec_pre_store_cap_reg(struct hisi_qm *qm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sec_set_channels(struct hisi_qm *qm)
 {
 	struct qm_channel *channel_data = &qm->channel_data;
@@ -1298,6 +1306,8 @@ static void sec_set_channels(struct hisi_qm *qm)
 	channel_data->channel_name[0] = "SEC";
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sec_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 {
 	u64 alg_msk;
@@ -1335,7 +1345,10 @@ static int sec_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	sec_set_channels(qm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Fetch and save the value of capability registers */
 	ret = sec_pre_store_cap_reg(qm);
 	if (ret) {

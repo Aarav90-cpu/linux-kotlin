@@ -17,11 +17,17 @@ description: |
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - qcom,eliza-rpmh-clk
       - qcom,glymur-rpmh-clk
       - qcom,kaanapali-rpmh-clk
       - qcom,milos-rpmh-clk
       - qcom,nord-rpmh-clk
+=======
+      - qcom,glymur-rpmh-clk
+      - qcom,kaanapali-rpmh-clk
+      - qcom,milos-rpmh-clk
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - qcom,qcs615-rpmh-clk
       - qcom,qdu1000-rpmh-clk
       - qcom,sa8775p-rpmh-clk

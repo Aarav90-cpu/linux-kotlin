@@ -287,6 +287,7 @@ struct ufs_pwr_mode_info {
 	struct ufs_pa_layer_attr info;
 };
 
+<<<<<<< HEAD
 #define UFS_MAX_LANES	2
 
 /**
@@ -367,6 +368,8 @@ struct ufshcd_tx_eq_params {
 	bool is_applied;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct ufs_hba_variant_ops - variant specific callbacks
  * @name: variant name
@@ -382,10 +385,18 @@ struct ufshcd_tx_eq_params {
  *                     variant specific Uni-Pro initialization.
  * @link_startup_notify: called before and after Link startup is carried out
  *                       to allow variant specific Uni-Pro initialization.
+<<<<<<< HEAD
  * @negotiate_pwr_mode: called to negotiate power mode.
  * @pwr_change_notify: called before and after a power mode change
  *			is carried out to allow vendor spesific capabilities
  *			to be set.
+=======
+ * @pwr_change_notify: called before and after a power mode change
+ *			is carried out to allow vendor spesific capabilities
+ *			to be set. PRE_CHANGE can modify final_params based
+ *			on desired_pwr_mode, but POST_CHANGE must not alter
+ *			the final_params parameter
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @setup_xfer_req: called before any transfer request is issued
  *                  to set some things
  * @setup_task_mgmt: called before any task management request is issued
@@ -410,11 +421,14 @@ struct ufshcd_tx_eq_params {
  * @config_esi: called to config Event Specific Interrupt
  * @config_scsi_dev: called to configure SCSI device parameters
  * @freq_to_gear_speed: called to map clock frequency to the max supported gear speed
+<<<<<<< HEAD
  * @apply_tx_eqtr_settings: called to apply settings for TX Equalization
  *	Training settings.
  * @get_rx_fom: called to get Figure of Merit (FOM) value.
  * @tx_eqtr_notify: called before and after TX Equalization Training procedure
  *	to allow platform vendor specific configs to take place.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ufs_hba_variant_ops {
 	const char *name;
@@ -431,12 +445,19 @@ struct ufs_hba_variant_ops {
 				     enum ufs_notify_change_status);
 	int	(*link_startup_notify)(struct ufs_hba *,
 				       enum ufs_notify_change_status);
+<<<<<<< HEAD
 	int	(*negotiate_pwr_mode)(struct ufs_hba *hba,
 				      const struct ufs_pa_layer_attr *desired_pwr_mode,
 				      struct ufs_pa_layer_attr *final_params);
 	int	(*pwr_change_notify)(struct ufs_hba *hba,
 				     enum ufs_notify_change_status status,
 				     struct ufs_pa_layer_attr *final_params);
+=======
+	int	(*pwr_change_notify)(struct ufs_hba *,
+			enum ufs_notify_change_status status,
+			const struct ufs_pa_layer_attr *desired_pwr_mode,
+			struct ufs_pa_layer_attr *final_params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void	(*setup_xfer_req)(struct ufs_hba *hba, int tag,
 				  bool is_scsi_cmd);
 	void	(*setup_task_mgmt)(struct ufs_hba *, int, u8);
@@ -466,6 +487,7 @@ struct ufs_hba_variant_ops {
 	int	(*config_esi)(struct ufs_hba *hba);
 	void	(*config_scsi_dev)(struct scsi_device *sdev);
 	u32	(*freq_to_gear_speed)(struct ufs_hba *hba, unsigned long freq);
+<<<<<<< HEAD
 	int	(*get_rx_fom)(struct ufs_hba *hba,
 			      struct ufs_pa_layer_attr *pwr_mode,
 			      struct tx_eqtr_iter *h_iter,
@@ -477,6 +499,8 @@ struct ufs_hba_variant_ops {
 	int	(*tx_eqtr_notify)(struct ufs_hba *hba,
 				  enum ufs_notify_change_status status,
 				  struct ufs_pa_layer_attr *pwr_mode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* clock gating state  */
@@ -625,6 +649,7 @@ enum ufshcd_state {
 	UFSHCD_STATE_ERROR,
 };
 
+<<<<<<< HEAD
 /**
  * enum ufshcd_pmc_policy - Power Mode change policy
  * @UFSHCD_PMC_POLICY_DONT_FORCE: Do not force a Power Mode change.
@@ -636,6 +661,8 @@ enum ufshcd_pmc_policy {
 	UFSHCD_PMC_POLICY_FORCE,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum ufshcd_quirks {
 	/* Interrupt aggregation support is broken */
 	UFSHCD_QUIRK_BROKEN_INTR_AGGR			= 1 << 0,
@@ -798,12 +825,15 @@ enum ufshcd_quirks {
 	 * because it causes link startup to become unreliable.
 	 */
 	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 26,
+<<<<<<< HEAD
 
 	/*
 	 * On some platforms, the VCC regulator has a slow ramp-up time. Add a
 	 * delay after enabling VCC to ensure it's stable.
 	 */
 	UFSHCD_QUIRK_VCC_ON_DELAY			= 1 << 27,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum ufshcd_caps {
@@ -881,6 +911,7 @@ enum ufshcd_caps {
 	 * WriteBooster when scaling the clock down.
 	 */
 	UFSHCD_CAP_WB_WITH_CLK_SCALING			= 1 << 12,
+<<<<<<< HEAD
 
 	/*
 	 * This capability allows the host controller driver to apply TX
@@ -888,6 +919,8 @@ enum ufshcd_caps {
 	 * specific operations and TX Equaliztion Training procedure.
 	 */
 	UFSHCD_CAP_TX_EQUALIZATION			= 1 << 13,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ufs_hba_variant_params {
@@ -1002,6 +1035,10 @@ enum ufshcd_mcq_opr {
  * @saved_uic_err: sticky UIC error mask
  * @ufs_stats: various error counters
  * @force_reset: flag to force eh_work perform a full reset
+<<<<<<< HEAD
+=======
+ * @force_pmc: flag to force a power mode change
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @silence_err_logs: flag to silence error logs
  * @dev_cmd: ufs device management command information
  * @last_dme_cmd_tstamp: time stamp of the last completed DME command
@@ -1063,6 +1100,7 @@ enum ufshcd_mcq_opr {
  * @critical_health_count: count of critical health exceptions
  * @dev_lvl_exception_count: count of device level exceptions since last reset
  * @dev_lvl_exception_id: vendor specific information about the device level exception event.
+<<<<<<< HEAD
  * @dme_qos_notification: Bitfield of pending DME Quality of Service (QoS)
  *	events. Bits[3:1] reflect the corresponding bits of UIC DME Error Code
  *	field within the Host Controller's UECDME register. Bit[0] is a flag
@@ -1078,6 +1116,9 @@ enum ufshcd_mcq_opr {
  * @device_deemphasis_cap: a bitfield to indicate supported DeEmphasis dBs of device's TX lanes,
  *	cache of device M-PHY TX_HS_DeEmphasis_Setting_Capability Attribute (ID 0x12)
  * @tx_eq_params: TX Equalization settings
+=======
+ * @rpmbs: list of OP-TEE RPMB devices (one per RPMB region)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ufs_hba {
 	void __iomem *mmio_base;
@@ -1169,6 +1210,10 @@ struct ufs_hba {
 	u32 saved_uic_err;
 	struct ufs_stats ufs_stats;
 	bool force_reset;
+<<<<<<< HEAD
+=======
+	bool force_pmc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool silence_err_logs;
 
 	/* Device management request data */
@@ -1249,6 +1294,7 @@ struct ufs_hba {
 	int critical_health_count;
 	atomic_t dev_lvl_exception_count;
 	u64 dev_lvl_exception_id;
+<<<<<<< HEAD
 
 	atomic_t dme_qos_notification;
 	struct kernfs_node *dme_qos_sysfs_handle;
@@ -1261,6 +1307,10 @@ struct ufs_hba {
 	u8 device_preshoot_cap;
 	u8 device_deemphasis_cap;
 	struct ufshcd_tx_eq_params tx_eq_params[UFS_HS_GEAR_MAX];
+=======
+	u32 vcc_off_delay_us;
+	struct list_head rpmbs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -1405,6 +1455,7 @@ static inline bool ufshcd_enable_wb_if_scaling_up(struct ufs_hba *hba)
 	return hba->caps & UFSHCD_CAP_WB_WITH_CLK_SCALING;
 }
 
+<<<<<<< HEAD
 static inline bool ufshcd_is_tx_eq_supported(struct ufs_hba *hba)
 {
 	return hba->caps & UFSHCD_CAP_TX_EQUALIZATION &&
@@ -1412,6 +1463,8 @@ static inline bool ufshcd_is_tx_eq_supported(struct ufs_hba *hba)
 	       hba->dev_info.wspecversion >= 0x500;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ufsmcq_writel(hba, val, reg)	\
 	writel((val), (hba)->mcq_base + (reg))
 #define ufsmcq_readl(hba, reg)	\
@@ -1427,6 +1480,7 @@ static inline bool ufshcd_is_tx_eq_supported(struct ufs_hba *hba)
 #define ufshcd_readl(hba, reg)	\
 	readl((hba)->mmio_base + (reg))
 
+<<<<<<< HEAD
 static inline const char *ufs_hs_rate_to_str(enum ufs_hs_gear_rate rate)
 {
 	switch (rate) {
@@ -1439,6 +1493,8 @@ static inline const char *ufs_hs_rate_to_str(enum ufs_hs_gear_rate rate)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ufshcd_rmwl - perform read/modify/write for a controller register
  * @hba: per adapter instance
@@ -1523,6 +1579,7 @@ extern int ufshcd_dme_set_attr(struct ufs_hba *hba, u32 attr_sel,
 			       u8 attr_set, u32 mib_val, u8 peer);
 extern int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
 			       u32 *mib_val, u8 peer);
+<<<<<<< HEAD
 extern int ufshcd_change_power_mode(struct ufs_hba *hba,
 				    struct ufs_pa_layer_attr *pwr_mode,
 				    enum ufshcd_pmc_policy pmc_policy);
@@ -1533,6 +1590,11 @@ extern int ufshcd_uic_change_pwr_mode(struct ufs_hba *hba, u8 mode);
 extern int ufshcd_apply_tx_eq_settings(struct ufs_hba *hba,
 				       struct ufshcd_tx_eq_params *params,
 				       u32 gear);
+=======
+extern int ufshcd_config_pwr_mode(struct ufs_hba *hba,
+			struct ufs_pa_layer_attr *desired_pwr_mode);
+extern int ufshcd_uic_change_pwr_mode(struct ufs_hba *hba, u8 mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* UIC command interfaces for DME primitives */
 #define DME_LOCAL	0

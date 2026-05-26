@@ -35,7 +35,10 @@ struct dpu_hw_intf_timing_params {
 
 	bool wide_bus_en;
 	bool compression_en;
+<<<<<<< HEAD
 	u32 dce_bytes_per_line;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dpu_hw_intf_prog_fetch {

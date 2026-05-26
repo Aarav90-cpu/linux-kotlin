@@ -24,9 +24,13 @@ properties:
     maxItems: 1
 
   compatible:
+<<<<<<< HEAD
     enum:
       - microchip,mpfs-sys-controller
       - microchip,pic64gx-sys-controller
+=======
+    const: microchip,mpfs-sys-controller
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   microchip,bitstream-flash:
     $ref: /schemas/types.yaml#/definitions/phandle

@@ -7,7 +7,10 @@
 #include <linux/kernel.h>
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_interrupt_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "gt/intel_gt_regs.h"
 

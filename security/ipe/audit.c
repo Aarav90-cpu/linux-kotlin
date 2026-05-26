@@ -153,7 +153,11 @@ void ipe_audit_match(const struct ipe_eval_ctx *const ctx,
 		if (inode) {
 			audit_log_format(ab, " dev=");
 			audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 			audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+			audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			audit_log_format(ab, " dev=? ino=?");
 		}

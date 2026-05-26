@@ -195,6 +195,7 @@ static char *tomoyo_print_header(struct tomoyo_request_info *r)
 		if (i & 1) {
 			pos += snprintf(buffer + pos,
 					tomoyo_buffer_len - 1 - pos,
+<<<<<<< HEAD
 					" path%u.parent={ uid=%u gid=%u ino=%llu perm=0%o }",
 					(i >> 1) + 1,
 					from_kuid(&init_user_ns, stat->uid),
@@ -208,6 +209,23 @@ static char *tomoyo_print_header(struct tomoyo_request_info *r)
 				from_kuid(&init_user_ns, stat->uid),
 				from_kgid(&init_user_ns, stat->gid),
 				stat->ino, MAJOR(dev), MINOR(dev),
+=======
+					" path%u.parent={ uid=%u gid=%u ino=%lu perm=0%o }",
+					(i >> 1) + 1,
+					from_kuid(&init_user_ns, stat->uid),
+					from_kgid(&init_user_ns, stat->gid),
+					(unsigned long)stat->ino,
+					stat->mode & S_IALLUGO);
+			continue;
+		}
+		pos += snprintf(buffer + pos, tomoyo_buffer_len - 1 - pos,
+				" path%u={ uid=%u gid=%u ino=%lu major=%u minor=%u perm=0%o type=%s",
+				(i >> 1) + 1,
+				from_kuid(&init_user_ns, stat->uid),
+				from_kgid(&init_user_ns, stat->gid),
+				(unsigned long)stat->ino,
+				MAJOR(dev), MINOR(dev),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				mode & S_IALLUGO, tomoyo_filetype(mode));
 		if (S_ISCHR(mode) || S_ISBLK(mode)) {
 			dev = stat->rdev;

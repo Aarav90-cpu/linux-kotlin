@@ -46,12 +46,18 @@ static int ena_phc_gettimex64(struct ptp_clock_info *clock_info,
 
 	spin_unlock_irqrestore(&phc_info->lock, flags);
 
+<<<<<<< HEAD
 	if (rc)
 		return rc;
 
 	*ts = ns_to_timespec64(timestamp_nsec);
 
 	return 0;
+=======
+	*ts = ns_to_timespec64(timestamp_nsec);
+
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ena_phc_settime64(struct ptp_clock_info *clock_info,

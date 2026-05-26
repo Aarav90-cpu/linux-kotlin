@@ -177,7 +177,11 @@ static void dctcp_react_to_loss(struct sock *sk)
 	struct tcp_sock *tp = tcp_sk(sk);
 
 	ca->loss_cwnd = tcp_snd_cwnd(tp);
+<<<<<<< HEAD
 	WRITE_ONCE(tp->snd_ssthresh, max(tcp_snd_cwnd(tp) >> 1U, 2U));
+=======
+	tp->snd_ssthresh = max(tcp_snd_cwnd(tp) >> 1U, 2U);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 __bpf_kfunc static void dctcp_state(struct sock *sk, u8 new_state)
@@ -203,12 +207,19 @@ __bpf_kfunc static void dctcp_cwnd_event(struct sock *sk, enum tcp_ca_event ev)
 		tcp_plb_update_state_upon_rto(sk, &ca->plb);
 		dctcp_react_to_loss(sk);
 		break;
+<<<<<<< HEAD
+=======
+	case CA_EVENT_TX_START:
+		tcp_plb_check_rehash(sk, &ca->plb); /* Maybe rehash when inflight is 0 */
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		/* Don't care for the rest. */
 		break;
 	}
 }
 
+<<<<<<< HEAD
 __bpf_kfunc static void dctcp_cwnd_event_tx_start(struct sock *sk)
 {
 	struct dctcp *ca = inet_csk_ca(sk);
@@ -216,6 +227,8 @@ __bpf_kfunc static void dctcp_cwnd_event_tx_start(struct sock *sk)
 	tcp_plb_check_rehash(sk, &ca->plb); /* Maybe rehash when inflight is 0 */
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static size_t dctcp_get_info(struct sock *sk, u32 ext, int *attr,
 			     union tcp_cc_info *info)
 {
@@ -256,7 +269,10 @@ static struct tcp_congestion_ops dctcp __read_mostly = {
 	.init		= dctcp_init,
 	.in_ack_event   = dctcp_update_alpha,
 	.cwnd_event	= dctcp_cwnd_event,
+<<<<<<< HEAD
 	.cwnd_event_tx_start = dctcp_cwnd_event_tx_start,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ssthresh	= dctcp_ssthresh,
 	.cong_avoid	= tcp_reno_cong_avoid,
 	.undo_cwnd	= dctcp_cwnd_undo,
@@ -280,7 +296,10 @@ BTF_KFUNCS_START(tcp_dctcp_check_kfunc_ids)
 BTF_ID_FLAGS(func, dctcp_init)
 BTF_ID_FLAGS(func, dctcp_update_alpha)
 BTF_ID_FLAGS(func, dctcp_cwnd_event)
+<<<<<<< HEAD
 BTF_ID_FLAGS(func, dctcp_cwnd_event_tx_start)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BTF_ID_FLAGS(func, dctcp_ssthresh)
 BTF_ID_FLAGS(func, dctcp_cwnd_undo)
 BTF_ID_FLAGS(func, dctcp_state)

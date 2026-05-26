@@ -35,6 +35,7 @@ properties:
       - const: ldb
       - const: lvds
 
+<<<<<<< HEAD
   nxp,enable-termination-resistor:
     type: boolean
     description:
@@ -44,6 +45,8 @@ properties:
       quality and prevent visual artifacts on some boards, but increases
       power consumption.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   ports:
     $ref: /schemas/graph.yaml#/properties/ports
 
@@ -93,6 +96,7 @@ allOf:
       required:
         - reg-names
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -102,6 +106,8 @@ allOf:
       properties:
         nxp,enable-termination-resistor: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

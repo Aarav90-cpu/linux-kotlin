@@ -132,6 +132,7 @@ properties:
           - const: toradex,apalis-tk1
           - const: nvidia,tegra124
       - items:
+<<<<<<< HEAD
           - const: google,nyan-big-rev7
           - const: google,nyan-big-rev6
           - const: google,nyan-big-rev5
@@ -159,6 +160,8 @@ properties:
           - const: google,nyan
           - const: nvidia,tegra124
       - items:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - enum:
               - nvidia,norrin
           - const: nvidia,tegra132
@@ -211,14 +214,24 @@ properties:
           - const: nvidia,tegra124
       - items:
           - enum:
+<<<<<<< HEAD
               - nvidia,p2371-0000
               - nvidia,p2371-2180
               - nvidia,p2571
+=======
+              - nvidia,darcy
+              - nvidia,p2371-0000
+              - nvidia,p2371-2180
+              - nvidia,p2571
+              - nvidia,p2894-0050-a08
+              - nvidia,p3450-0000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: nvidia,tegra210
       - items:
           - const: nvidia,p3541-0000
           - const: nvidia,p3450-0000
           - const: nvidia,tegra210
+<<<<<<< HEAD
       - description: NVIDIA Jetson Nano
         items:
           - const: nvidia,p3450-0000
@@ -240,6 +253,8 @@ properties:
           - const: google,smaug-rev1
           - const: google,smaug
           - const: nvidia,tegra210
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Jetson TX2 Developer Kit
         items:
           - const: nvidia,p2771-0000
@@ -313,10 +328,13 @@ properties:
           - const: nvidia,p3971-0089+p3834-0008
           - const: nvidia,p3834-0008
           - const: nvidia,tegra264
+<<<<<<< HEAD
       - description: Jetson AGX Thor Developer Kit
         items:
           - const: nvidia,p4071-0000+p3834-0008
           - const: nvidia,p3834-0008
           - const: nvidia,tegra264
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 additionalProperties: true

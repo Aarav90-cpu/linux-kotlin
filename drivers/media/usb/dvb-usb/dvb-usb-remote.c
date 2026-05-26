@@ -347,12 +347,19 @@ int dvb_usb_remote_exit(struct dvb_usb_device *d)
 {
 	if (d->state & DVB_USB_STATE_REMOTE) {
 		cancel_delayed_work_sync(&d->rc_query_work);
+<<<<<<< HEAD
 		if (d->props.rc.mode == DVB_RC_LEGACY) {
 			input_unregister_device(d->input_dev);
 		} else {
 			rc_unregister_device(d->rc_dev);
 			rc_free_device(d->rc_dev);
 		}
+=======
+		if (d->props.rc.mode == DVB_RC_LEGACY)
+			input_unregister_device(d->input_dev);
+		else
+			rc_unregister_device(d->rc_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	d->state &= ~DVB_USB_STATE_REMOTE;
 	return 0;

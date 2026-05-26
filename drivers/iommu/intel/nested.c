@@ -148,6 +148,10 @@ static int intel_nested_set_dev_pasid(struct iommu_domain *domain,
 {
 	struct device_domain_info *info = dev_iommu_priv_get(dev);
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+<<<<<<< HEAD
+=======
+	struct iommu_domain *s2_domain = &dmar_domain->s2_domain->domain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct intel_iommu *iommu = info->iommu;
 	struct dev_pasid_info *dev_pasid;
 	int ret;
@@ -155,10 +159,20 @@ static int intel_nested_set_dev_pasid(struct iommu_domain *domain,
 	if (!pasid_supported(iommu) || dev_is_real_dma_subdevice(dev))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (context_copied(iommu, info->bus, info->devfn))
 		return -EBUSY;
 
 	ret = paging_domain_compatible(&dmar_domain->s2_domain->domain, dev);
+=======
+	if (s2_domain->dirty_ops)
+		return -EINVAL;
+
+	if (context_copied(iommu, info->bus, info->devfn))
+		return -EBUSY;
+
+	ret = paging_domain_compatible(s2_domain, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

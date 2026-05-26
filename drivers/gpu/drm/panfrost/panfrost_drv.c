@@ -390,8 +390,11 @@ panfrost_ioctl_wait_bo(struct drm_device *dev, void *data,
 				    true, timeout);
 	if (!ret)
 		ret = timeout ? -ETIMEDOUT : -EBUSY;
+<<<<<<< HEAD
 	else if (ret > 0)
 		ret = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_gem_object_put(gem_obj);
 

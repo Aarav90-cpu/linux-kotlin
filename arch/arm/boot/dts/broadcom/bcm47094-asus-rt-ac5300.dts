@@ -127,9 +127,12 @@
 	ports {
 		port@0 {
 			label = "wan";
+<<<<<<< HEAD
 
 			nvmem-cells = <&et1macaddr 1>;
 			nvmem-cell-names = "mac-address";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		port@1 {

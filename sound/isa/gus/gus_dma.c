@@ -173,6 +173,7 @@ int snd_gf1_dma_done(struct snd_gus_card * gus)
 	return 0;
 }
 
+<<<<<<< HEAD
 void snd_gf1_dma_suspend(struct snd_gus_card *gus)
 {
 	struct snd_gf1_dma_block *block;
@@ -206,6 +207,8 @@ void snd_gf1_dma_suspend(struct snd_gus_card *gus)
 	gus->gf1.dma_flags &= ~SNDRV_GF1_DMA_TRIGGER;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int snd_gf1_dma_transfer_block(struct snd_gus_card * gus,
 			       struct snd_gf1_dma_block * __block,
 			       int atomic,

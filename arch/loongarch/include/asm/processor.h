@@ -80,10 +80,17 @@ BUILD_FPR_ACCESS(32)
 BUILD_FPR_ACCESS(64)
 
 struct loongarch_fpu {
+<<<<<<< HEAD
 	union fpureg	fpr[NUM_FPU_REGS];
 	uint64_t	fcc;	/* 8x8 */
 	uint32_t	fcsr;
 	uint32_t	ftop;
+=======
+	uint64_t	fcc;	/* 8x8 */
+	uint32_t	fcsr;
+	uint32_t	ftop;
+	union fpureg	fpr[NUM_FPU_REGS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct loongarch_lbt {

@@ -787,12 +787,20 @@ static int pppol2tp_connect(struct socket *sock, struct sockaddr_unsized *userva
 		goto out_no_ppp;
 	}
 
+<<<<<<< HEAD
 	/* Reserve enough headroom for the L2TP header with sequence numbers,
 	 * which is the largest possible. This is used by the PPP layer to set
 	 * the net device's hard_header_len at registration, which must be
 	 * sufficient regardless of whether sequence numbers are enabled later.
 	 */
 	po->chan.hdrlen = PPPOL2TP_L2TP_HDR_SIZE_SEQ;
+=======
+	/* The only header we need to worry about is the L2TP
+	 * header. This size is different depending on whether
+	 * sequence numbers are enabled for the data channel.
+	 */
+	po->chan.hdrlen = PPPOL2TP_L2TP_HDR_SIZE_NOSEQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	po->chan.private = sk;
 	po->chan.ops	 = &pppol2tp_chan_ops;
@@ -1177,6 +1185,15 @@ static int pppol2tp_session_setsockopt(struct sock *sk,
 			break;
 		}
 		session->send_seq = !!val;
+<<<<<<< HEAD
+=======
+		{
+			struct pppox_sock *po = pppox_sk(sk);
+
+			po->chan.hdrlen = val ? PPPOL2TP_L2TP_HDR_SIZE_SEQ :
+				PPPOL2TP_L2TP_HDR_SIZE_NOSEQ;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		l2tp_session_set_header_len(session, session->tunnel->version,
 					    session->tunnel->encap);
 		break;

@@ -9,7 +9,10 @@
 #include <asm/esr.h>
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_mmu.h>
+<<<<<<< HEAD
 #include <asm/lsui.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void fail_s1_walk(struct s1_walk_result *wr, u8 fst, bool s1ptw)
 {
@@ -1680,6 +1683,7 @@ int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa, int *level)
 	}
 }
 
+<<<<<<< HEAD
 static int __lsui_swap_desc(u64 __user *ptep, u64 old, u64 new)
 {
 	u64 tmp = old;
@@ -1709,6 +1713,8 @@ static int __lsui_swap_desc(u64 __user *ptep, u64 old, u64 new)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __lse_swap_desc(u64 __user *ptep, u64 old, u64 new)
 {
 	u64 tmp = old;
@@ -1784,9 +1790,13 @@ int __kvm_at_swap_desc(struct kvm *kvm, gpa_t ipa, u64 old, u64 new)
 		return -EPERM;
 
 	ptep = (void __user *)hva + offset;
+<<<<<<< HEAD
 	if (cpus_have_final_cap(ARM64_HAS_LSUI))
 		r = __lsui_swap_desc(ptep, old, new);
 	else if (cpus_have_final_cap(ARM64_HAS_LSE_ATOMICS))
+=======
+	if (cpus_have_final_cap(ARM64_HAS_LSE_ATOMICS))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r = __lse_swap_desc(ptep, old, new);
 	else
 		r = __llsc_swap_desc(ptep, old, new);

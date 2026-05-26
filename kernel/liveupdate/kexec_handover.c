@@ -5,7 +5,10 @@
  * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
  * Copyright (C) 2025 Google LLC, Changyuan Lyu <changyuanl@google.com>
  * Copyright (C) 2025 Pasha Tatashin <pasha.tatashin@soleen.com>
+<<<<<<< HEAD
  * Copyright (C) 2026 Google LLC, Jason Miu <jasonmiu@google.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #define pr_fmt(fmt) "KHO: " fmt
@@ -14,6 +17,7 @@
 #include <linux/cma.h>
 #include <linux/kmemleak.h>
 #include <linux/count_zeros.h>
+<<<<<<< HEAD
 #include <linux/kasan.h>
 #include <linux/kexec.h>
 #include <linux/kexec_handover.h>
@@ -21,6 +25,11 @@
 #include <linux/utsname.h>
 #include <linux/kho/abi/kexec_handover.h>
 #include <linux/kho/abi/kexec_metadata.h>
+=======
+#include <linux/kexec.h>
+#include <linux/kexec_handover.h>
+#include <linux/kho/abi/kexec_handover.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/libfdt.h>
 #include <linux/list.h>
 #include <linux/memblock.h>
@@ -69,16 +78,64 @@ static int __init kho_parse_enable(char *p)
 }
 early_param("kho", kho_parse_enable);
 
+<<<<<<< HEAD
 struct kho_out {
 	void *fdt;
 	struct mutex lock; /* protects KHO FDT */
 
 	struct kho_radix_tree radix_tree;
+=======
+/*
+ * Keep track of memory that is to be preserved across KHO.
+ *
+ * The serializing side uses two levels of xarrays to manage chunks of per-order
+ * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
+ * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
+ * allocations each bitmap will cover 128M of address space. Thus, for 16G of
+ * memory at most 512K of bitmap memory will be needed for order 0.
+ *
+ * This approach is fully incremental, as the serialization progresses folios
+ * can continue be aggregated to the tracker. The final step, immediately prior
+ * to kexec would serialize the xarray information into a linked list for the
+ * successor kernel to parse.
+ */
+
+#define PRESERVE_BITS (PAGE_SIZE * 8)
+
+struct kho_mem_phys_bits {
+	DECLARE_BITMAP(preserve, PRESERVE_BITS);
+};
+
+static_assert(sizeof(struct kho_mem_phys_bits) == PAGE_SIZE);
+
+struct kho_mem_phys {
+	/*
+	 * Points to kho_mem_phys_bits, a sparse bitmap array. Each bit is sized
+	 * to order.
+	 */
+	struct xarray phys_bits;
+};
+
+struct kho_mem_track {
+	/* Points to kho_mem_phys, each order gets its own bitmap tree */
+	struct xarray orders;
+};
+
+struct khoser_mem_chunk;
+
+struct kho_out {
+	void *fdt;
+	bool finalized;
+	struct mutex lock; /* protects KHO FDT finalization */
+
+	struct kho_mem_track track;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kho_debugfs dbg;
 };
 
 static struct kho_out kho_out = {
 	.lock = __MUTEX_INITIALIZER(kho_out.lock),
+<<<<<<< HEAD
 	.radix_tree = {
 		.lock = __MUTEX_INITIALIZER(kho_out.radix_tree.lock),
 	},
@@ -359,18 +416,75 @@ EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
 
 static void __kho_unpreserve(struct kho_radix_tree *tree,
 			     unsigned long pfn, unsigned long end_pfn)
+=======
+	.track = {
+		.orders = XARRAY_INIT(kho_out.track.orders, 0),
+	},
+	.finalized = false,
+};
+
+static void *xa_load_or_alloc(struct xarray *xa, unsigned long index)
+{
+	void *res = xa_load(xa, index);
+
+	if (res)
+		return res;
+
+	void *elm __free(free_page) = (void *)get_zeroed_page(GFP_KERNEL);
+
+	if (!elm)
+		return ERR_PTR(-ENOMEM);
+
+	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), PAGE_SIZE)))
+		return ERR_PTR(-EINVAL);
+
+	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
+	if (xa_is_err(res))
+		return ERR_PTR(xa_err(res));
+	else if (res)
+		return res;
+
+	return no_free_ptr(elm);
+}
+
+static void __kho_unpreserve_order(struct kho_mem_track *track, unsigned long pfn,
+				   unsigned int order)
+{
+	struct kho_mem_phys_bits *bits;
+	struct kho_mem_phys *physxa;
+	const unsigned long pfn_high = pfn >> order;
+
+	physxa = xa_load(&track->orders, order);
+	if (WARN_ON_ONCE(!physxa))
+		return;
+
+	bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+	if (WARN_ON_ONCE(!bits))
+		return;
+
+	clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
+}
+
+static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
+			     unsigned long end_pfn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int order;
 
 	while (pfn < end_pfn) {
 		order = min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
 
+<<<<<<< HEAD
 		kho_radix_del_page(tree, pfn, order);
+=======
+		__kho_unpreserve_order(track, pfn, order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pfn += 1 << order;
 	}
 }
 
+<<<<<<< HEAD
 /* For physically contiguous 0-order pages. */
 static void kho_init_pages(struct page *page, unsigned long nr_pages)
 {
@@ -379,6 +493,54 @@ static void kho_init_pages(struct page *page, unsigned long nr_pages)
 		/* Clear each page's codetag to avoid accounting mismatch. */
 		clear_page_tag_ref(page + i);
 	}
+=======
+static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+				unsigned int order)
+{
+	struct kho_mem_phys_bits *bits;
+	struct kho_mem_phys *physxa, *new_physxa;
+	const unsigned long pfn_high = pfn >> order;
+
+	might_sleep();
+	physxa = xa_load(&track->orders, order);
+	if (!physxa) {
+		int err;
+
+		new_physxa = kzalloc_obj(*physxa);
+		if (!new_physxa)
+			return -ENOMEM;
+
+		xa_init(&new_physxa->phys_bits);
+		physxa = xa_cmpxchg(&track->orders, order, NULL, new_physxa,
+				    GFP_KERNEL);
+
+		err = xa_err(physxa);
+		if (err || physxa) {
+			xa_destroy(&new_physxa->phys_bits);
+			kfree(new_physxa);
+
+			if (err)
+				return err;
+		} else {
+			physxa = new_physxa;
+		}
+	}
+
+	bits = xa_load_or_alloc(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+	if (IS_ERR(bits))
+		return PTR_ERR(bits);
+
+	set_bit(pfn_high % PRESERVE_BITS, bits->preserve);
+
+	return 0;
+}
+
+/* For physically contiguous 0-order pages. */
+static void kho_init_pages(struct page *page, unsigned long nr_pages)
+{
+	for (unsigned long i = 0; i < nr_pages; i++)
+		set_page_count(page + i, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void kho_init_folio(struct page *page, unsigned int order)
@@ -387,8 +549,11 @@ static void kho_init_folio(struct page *page, unsigned int order)
 
 	/* Head page gets refcount of 1. */
 	set_page_count(page, 1);
+<<<<<<< HEAD
 	/* Clear head page's codetag to avoid accounting mismatch. */
 	clear_page_tag_ref(page);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* For higher order folios, tail pages get a page count of zero. */
 	for (unsigned long i = 1; i < nr_pages; i++)
@@ -413,7 +578,11 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
 	 * check also implicitly makes sure phys is order-aligned since for
 	 * non-order-aligned phys addresses, magic will never be set.
 	 */
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC))
+=======
+	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	nr_pages = (1 << info.order);
 
@@ -425,6 +594,17 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
 	else
 		kho_init_pages(page, nr_pages);
 
+<<<<<<< HEAD
+=======
+	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
+	clear_page_tag_ref(page);
+	if (!is_folio) {
+		/* Also do that for the non-compound tail pages */
+		for (unsigned int i = 1; i < nr_pages; i++)
+			clear_page_tag_ref(page + i);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adjust_managed_page_count(page, nr_pages);
 	return page;
 }
@@ -473,6 +653,7 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
 }
 EXPORT_SYMBOL_GPL(kho_restore_pages);
 
+<<<<<<< HEAD
 static int __init kho_preserved_memory_reserve(phys_addr_t phys,
 					       unsigned int order)
 {
@@ -491,6 +672,163 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
 	page->private = info.page_private;
 
 	return 0;
+=======
+/* Serialize and deserialize struct kho_mem_phys across kexec
+ *
+ * Record all the bitmaps in a linked list of pages for the next kernel to
+ * process. Each chunk holds bitmaps of the same order and each block of bitmaps
+ * starts at a given physical address. This allows the bitmaps to be sparse. The
+ * xarray is used to store them in a tree while building up the data structure,
+ * but the KHO successor kernel only needs to process them once in order.
+ *
+ * All of this memory is normal kmalloc() memory and is not marked for
+ * preservation. The successor kernel will remain isolated to the scratch space
+ * until it completes processing this list. Once processed all the memory
+ * storing these ranges will be marked as free.
+ */
+
+struct khoser_mem_bitmap_ptr {
+	phys_addr_t phys_start;
+	DECLARE_KHOSER_PTR(bitmap, struct kho_mem_phys_bits *);
+};
+
+struct khoser_mem_chunk_hdr {
+	DECLARE_KHOSER_PTR(next, struct khoser_mem_chunk *);
+	unsigned int order;
+	unsigned int num_elms;
+};
+
+#define KHOSER_BITMAP_SIZE                                   \
+	((PAGE_SIZE - sizeof(struct khoser_mem_chunk_hdr)) / \
+	 sizeof(struct khoser_mem_bitmap_ptr))
+
+struct khoser_mem_chunk {
+	struct khoser_mem_chunk_hdr hdr;
+	struct khoser_mem_bitmap_ptr bitmaps[KHOSER_BITMAP_SIZE];
+};
+
+static_assert(sizeof(struct khoser_mem_chunk) == PAGE_SIZE);
+
+static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
+					  unsigned long order)
+{
+	struct khoser_mem_chunk *chunk __free(free_page) = NULL;
+
+	chunk = (void *)get_zeroed_page(GFP_KERNEL);
+	if (!chunk)
+		return ERR_PTR(-ENOMEM);
+
+	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE)))
+		return ERR_PTR(-EINVAL);
+
+	chunk->hdr.order = order;
+	if (cur_chunk)
+		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
+	return no_free_ptr(chunk);
+}
+
+static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
+{
+	struct khoser_mem_chunk *chunk = first_chunk;
+
+	while (chunk) {
+		struct khoser_mem_chunk *tmp = chunk;
+
+		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+		free_page((unsigned long)tmp);
+	}
+}
+
+/*
+ *  Update memory map property, if old one is found discard it via
+ *  kho_mem_ser_free().
+ */
+static void kho_update_memory_map(struct khoser_mem_chunk *first_chunk)
+{
+	void *ptr;
+	u64 phys;
+
+	ptr = fdt_getprop_w(kho_out.fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, NULL);
+
+	/* Check and discard previous memory map */
+	phys = get_unaligned((u64 *)ptr);
+	if (phys)
+		kho_mem_ser_free((struct khoser_mem_chunk *)phys_to_virt(phys));
+
+	/* Update with the new value */
+	phys = first_chunk ? (u64)virt_to_phys(first_chunk) : 0;
+	put_unaligned(phys, (u64 *)ptr);
+}
+
+static int kho_mem_serialize(struct kho_out *kho_out)
+{
+	struct khoser_mem_chunk *first_chunk = NULL;
+	struct khoser_mem_chunk *chunk = NULL;
+	struct kho_mem_phys *physxa;
+	unsigned long order;
+	int err = -ENOMEM;
+
+	xa_for_each(&kho_out->track.orders, order, physxa) {
+		struct kho_mem_phys_bits *bits;
+		unsigned long phys;
+
+		chunk = new_chunk(chunk, order);
+		if (IS_ERR(chunk)) {
+			err = PTR_ERR(chunk);
+			goto err_free;
+		}
+
+		if (!first_chunk)
+			first_chunk = chunk;
+
+		xa_for_each(&physxa->phys_bits, phys, bits) {
+			struct khoser_mem_bitmap_ptr *elm;
+
+			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
+				chunk = new_chunk(chunk, order);
+				if (IS_ERR(chunk)) {
+					err = PTR_ERR(chunk);
+					goto err_free;
+				}
+			}
+
+			elm = &chunk->bitmaps[chunk->hdr.num_elms];
+			chunk->hdr.num_elms++;
+			elm->phys_start = (phys * PRESERVE_BITS)
+					  << (order + PAGE_SHIFT);
+			KHOSER_STORE_PTR(elm->bitmap, bits);
+		}
+	}
+
+	kho_update_memory_map(first_chunk);
+
+	return 0;
+
+err_free:
+	kho_mem_ser_free(first_chunk);
+	return err;
+}
+
+static void __init deserialize_bitmap(unsigned int order,
+				      struct khoser_mem_bitmap_ptr *elm)
+{
+	struct kho_mem_phys_bits *bitmap = KHOSER_LOAD_PTR(elm->bitmap);
+	unsigned long bit;
+
+	for_each_set_bit(bit, bitmap->preserve, PRESERVE_BITS) {
+		int sz = 1 << (order + PAGE_SHIFT);
+		phys_addr_t phys =
+			elm->phys_start + (bit << (order + PAGE_SHIFT));
+		struct page *page = phys_to_page(phys);
+		union kho_page_info info;
+
+		memblock_reserve(phys, sz);
+		memblock_reserved_mark_noinit(phys, sz);
+		info.magic = KHO_PAGE_MAGIC;
+		info.order = order;
+		page->private = info.page_private;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Returns physical address of the preserved memory map from FDT */
@@ -501,13 +839,32 @@ static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
 
 	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
 	if (!mem_ptr || len != sizeof(u64)) {
+<<<<<<< HEAD
 		pr_err("failed to get preserved memory map\n");
+=======
+		pr_err("failed to get preserved memory bitmaps\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
 	return get_unaligned((const u64 *)mem_ptr);
 }
 
+<<<<<<< HEAD
+=======
+static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
+{
+	while (chunk) {
+		unsigned int i;
+
+		for (i = 0; i != chunk->hdr.num_elms; i++)
+			deserialize_bitmap(chunk->hdr.order,
+					   &chunk->bitmaps[i]);
+		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * With KHO enabled, memory can become fragmented because KHO regions may
  * be anywhere in physical address space. The scratch regions give us a
@@ -726,6 +1083,7 @@ err_disable_kho:
 }
 
 /**
+<<<<<<< HEAD
  * kho_add_subtree - record the physical address of a sub blob in KHO root tree.
  * @name: name of the sub tree.
  * @blob: the sub tree blob.
@@ -733,6 +1091,14 @@ err_disable_kho:
  *
  * Creates a new child node named @name in KHO root FDT and records
  * the physical address of @blob. The pages of @blob must also be preserved
+=======
+ * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
+ * @name: name of the sub tree.
+ * @fdt: the sub tree blob.
+ *
+ * Creates a new child node named @name in KHO root FDT and records
+ * the physical address of @fdt. The pages of @fdt must also be preserved
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * by KHO for the new kernel to retrieve it after kexec.
  *
  * A debugfs blob entry is also created at
@@ -741,11 +1107,18 @@ err_disable_kho:
  *
  * Return: 0 on success, error code on failure
  */
+<<<<<<< HEAD
 int kho_add_subtree(const char *name, void *blob, size_t size)
 {
 	phys_addr_t phys = virt_to_phys(blob);
 	void *root_fdt = kho_out.fdt;
 	u64 size_u64 = size;
+=======
+int kho_add_subtree(const char *name, void *fdt)
+{
+	phys_addr_t phys = virt_to_phys(fdt);
+	void *root_fdt = kho_out.fdt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = -ENOMEM;
 	int off, fdt_err;
 
@@ -762,11 +1135,16 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
 		goto out_pack;
 	}
 
+<<<<<<< HEAD
 	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
+=======
+	fdt_err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &phys, sizeof(phys));
 	if (fdt_err < 0)
 		goto out_del_node;
 
+<<<<<<< HEAD
 	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
 			      &size_u64, sizeof(size_u64));
 	if (fdt_err < 0)
@@ -774,6 +1152,9 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
 
 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
 					  size, false));
+=======
+	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = 0;
 	goto out_pack;
@@ -787,9 +1168,15 @@ out_pack:
 }
 EXPORT_SYMBOL_GPL(kho_add_subtree);
 
+<<<<<<< HEAD
 void kho_remove_subtree(void *blob)
 {
 	phys_addr_t target_phys = virt_to_phys(blob);
+=======
+void kho_remove_subtree(void *fdt)
+{
+	phys_addr_t target_phys = virt_to_phys(fdt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *root_fdt = kho_out.fdt;
 	int off;
 	int err;
@@ -805,13 +1192,21 @@ void kho_remove_subtree(void *blob)
 		const u64 *val;
 		int len;
 
+<<<<<<< HEAD
 		val = fdt_getprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME, &len);
+=======
+		val = fdt_getprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME, &len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!val || len != sizeof(phys_addr_t))
 			continue;
 
 		if ((phys_addr_t)*val == target_phys) {
 			fdt_del_node(root_fdt, off);
+<<<<<<< HEAD
 			kho_debugfs_blob_remove(&kho_out.dbg, blob);
+=======
+			kho_debugfs_fdt_remove(&kho_out.dbg, fdt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
@@ -831,14 +1226,24 @@ EXPORT_SYMBOL_GPL(kho_remove_subtree);
  */
 int kho_preserve_folio(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
 	const unsigned long pfn = folio_pfn(folio);
 	const unsigned int order = folio_order(folio);
+=======
+	const unsigned long pfn = folio_pfn(folio);
+	const unsigned int order = folio_order(folio);
+	struct kho_mem_track *track = &kho_out.track;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return kho_radix_add_page(tree, pfn, order);
+=======
+	return __kho_preserve_order(track, pfn, order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(kho_preserve_folio);
 
@@ -852,11 +1257,19 @@ EXPORT_SYMBOL_GPL(kho_preserve_folio);
  */
 void kho_unpreserve_folio(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
 	const unsigned long pfn = folio_pfn(folio);
 	const unsigned int order = folio_order(folio);
 
 	kho_radix_del_page(tree, pfn, order);
+=======
+	const unsigned long pfn = folio_pfn(folio);
+	const unsigned int order = folio_order(folio);
+	struct kho_mem_track *track = &kho_out.track;
+
+	__kho_unpreserve_order(track, pfn, order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
 
@@ -872,7 +1285,11 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
  */
 int kho_preserve_pages(struct page *page, unsigned long nr_pages)
 {
+<<<<<<< HEAD
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
+=======
+	struct kho_mem_track *track = &kho_out.track;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const unsigned long start_pfn = page_to_pfn(page);
 	const unsigned long end_pfn = start_pfn + nr_pages;
 	unsigned long pfn = start_pfn;
@@ -885,6 +1302,7 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
 	}
 
 	while (pfn < end_pfn) {
+<<<<<<< HEAD
 		unsigned int order =
 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
 
@@ -897,6 +1315,12 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
 			order--;
 
 		err = kho_radix_add_page(tree, pfn, order);
+=======
+		const unsigned int order =
+			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+
+		err = __kho_preserve_order(track, pfn, order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err) {
 			failed_pfn = pfn;
 			break;
@@ -906,7 +1330,11 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
 	}
 
 	if (err)
+<<<<<<< HEAD
 		__kho_unpreserve(tree, start_pfn, failed_pfn);
+=======
+		__kho_unpreserve(track, start_pfn, failed_pfn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return err;
 }
@@ -924,11 +1352,19 @@ EXPORT_SYMBOL_GPL(kho_preserve_pages);
  */
 void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
 {
+<<<<<<< HEAD
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
 	const unsigned long start_pfn = page_to_pfn(page);
 	const unsigned long end_pfn = start_pfn + nr_pages;
 
 	__kho_unpreserve(tree, start_pfn, end_pfn);
+=======
+	struct kho_mem_track *track = &kho_out.track;
+	const unsigned long start_pfn = page_to_pfn(page);
+	const unsigned long end_pfn = start_pfn + nr_pages;
+
+	__kho_unpreserve(track, start_pfn, end_pfn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
 
@@ -987,6 +1423,7 @@ err_free:
 static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
 					 unsigned short order)
 {
+<<<<<<< HEAD
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
 	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
 
@@ -995,6 +1432,16 @@ static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
 	for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
 		pfn = PHYS_PFN(chunk->phys[i]);
 		__kho_unpreserve(tree, pfn, pfn + (1 << order));
+=======
+	struct kho_mem_track *track = &kho_out.track;
+	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
+
+	__kho_unpreserve(track, pfn, pfn + 1);
+
+	for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
+		pfn = PHYS_PFN(chunk->phys[i]);
+		__kho_unpreserve(track, pfn, pfn + (1 << order));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1101,7 +1548,10 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
 void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
 {
 	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+<<<<<<< HEAD
 	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int align, order, shift, vm_flags;
 	unsigned long total_pages, contig_pages;
 	unsigned long addr, size;
@@ -1153,8 +1603,12 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
 		goto err_free_pages_array;
 
 	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+<<<<<<< HEAD
 				  vm_flags | VM_UNINITIALIZED,
 				  VMALLOC_START, VMALLOC_END,
+=======
+				  vm_flags, VMALLOC_START, VMALLOC_END,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  NUMA_NO_NODE, GFP_KERNEL,
 				  __builtin_return_address(0));
 	if (!area)
@@ -1169,6 +1623,7 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
 	area->nr_pages = total_pages;
 	area->pages = pages;
 
+<<<<<<< HEAD
 	if (vm_flags & VM_ALLOC)
 		kasan_flags |= KASAN_VMALLOC_VM_ALLOC;
 
@@ -1176,6 +1631,8 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
 					    kasan_flags);
 	clear_vm_uninitialized_flag(area);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return area->addr;
 
 err_free_vm_area:
@@ -1272,11 +1729,41 @@ void kho_restore_free(void *mem)
 }
 EXPORT_SYMBOL_GPL(kho_restore_free);
 
+<<<<<<< HEAD
 struct kho_in {
 	phys_addr_t fdt_phys;
 	phys_addr_t scratch_phys;
 	char previous_release[__NEW_UTS_LEN + 1];
 	u32 kexec_count;
+=======
+int kho_finalize(void)
+{
+	int ret;
+
+	if (!kho_enable)
+		return -EOPNOTSUPP;
+
+	guard(mutex)(&kho_out.lock);
+	ret = kho_mem_serialize(&kho_out);
+	if (ret)
+		return ret;
+
+	kho_out.finalized = true;
+
+	return 0;
+}
+
+bool kho_finalized(void)
+{
+	guard(mutex)(&kho_out.lock);
+	return kho_out.finalized;
+}
+
+struct kho_in {
+	phys_addr_t fdt_phys;
+	phys_addr_t scratch_phys;
+	phys_addr_t mem_map_phys;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kho_debugfs dbg;
 };
 
@@ -1309,6 +1796,7 @@ bool is_kho_boot(void)
 EXPORT_SYMBOL_GPL(is_kho_boot);
 
 /**
+<<<<<<< HEAD
  * kho_retrieve_subtree - retrieve a preserved sub blob by its name.
  * @name: the name of the sub blob passed to kho_add_subtree().
  * @phys: if found, the physical address of the sub blob is stored in @phys.
@@ -1320,6 +1808,18 @@ EXPORT_SYMBOL_GPL(is_kho_boot);
  * Return: 0 on success, error code on failure
  */
 int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size)
+=======
+ * kho_retrieve_subtree - retrieve a preserved sub FDT by its name.
+ * @name: the name of the sub FDT passed to kho_add_subtree().
+ * @phys: if found, the physical address of the sub FDT is stored in @phys.
+ *
+ * Retrieve a preserved sub FDT named @name and store its physical
+ * address in @phys.
+ *
+ * Return: 0 on success, error code on failure
+ */
+int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const void *fdt = kho_get_fdt();
 	const u64 *val;
@@ -1335,12 +1835,17 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size)
 	if (offset < 0)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	val = fdt_getprop(fdt, offset, KHO_SUB_TREE_PROP_NAME, &len);
+=======
+	val = fdt_getprop(fdt, offset, KHO_FDT_SUB_TREE_PROP_NAME, &len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!val || len != sizeof(*val))
 		return -EINVAL;
 
 	*phys = (phys_addr_t)*val;
 
+<<<<<<< HEAD
 	val = fdt_getprop(fdt, offset, KHO_SUB_TREE_SIZE_PROP_NAME, &len);
 	if (!val || len != sizeof(*val)) {
 		pr_warn("broken KHO subnode '%s': missing or invalid blob-size property\n",
@@ -1351,10 +1856,13 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size)
 	if (size)
 		*size = (size_t)*val;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
 
+<<<<<<< HEAD
 static int __init kho_mem_retrieve(const void *fdt)
 {
 	struct kho_radix_tree tree;
@@ -1382,12 +1890,19 @@ static __init int kho_out_fdt_setup(void)
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
 	void *root = kho_out.fdt;
 	u64 preserved_mem_tree_pa;
+=======
+static __init int kho_out_fdt_setup(void)
+{
+	void *root = kho_out.fdt;
+	u64 empty_mem_map = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	err = fdt_create(root, PAGE_SIZE);
 	err |= fdt_finish_reservemap(root);
 	err |= fdt_begin_node(root, "");
 	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
+<<<<<<< HEAD
 
 	preserved_mem_tree_pa = virt_to_phys(tree->root);
 
@@ -1395,12 +1910,17 @@ static __init int kho_out_fdt_setup(void)
 			    &preserved_mem_tree_pa,
 			    sizeof(preserved_mem_tree_pa));
 
+=======
+	err |= fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME, &empty_mem_map,
+			    sizeof(empty_mem_map));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err |= fdt_end_node(root);
 	err |= fdt_finish(root);
 
 	return err;
 }
 
+<<<<<<< HEAD
 static void __init kho_in_kexec_metadata(void)
 {
 	struct kho_kexec_metadata *metadata;
@@ -1494,12 +2014,17 @@ static int __init kho_kexec_metadata_init(const void *fdt)
 static __init int kho_init(void)
 {
 	struct kho_radix_tree *tree = &kho_out.radix_tree;
+=======
+static __init int kho_init(void)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const void *fdt = kho_get_fdt();
 	int err = 0;
 
 	if (!kho_enable)
 		return 0;
 
+<<<<<<< HEAD
 	tree->root = kzalloc(PAGE_SIZE, GFP_KERNEL);
 	if (!tree->root) {
 		err = -ENOMEM;
@@ -1510,6 +2035,12 @@ static __init int kho_init(void)
 	if (IS_ERR(kho_out.fdt)) {
 		err = PTR_ERR(kho_out.fdt);
 		goto err_free_kho_radix_tree_root;
+=======
+	kho_out.fdt = kho_alloc_preserve(PAGE_SIZE);
+	if (IS_ERR(kho_out.fdt)) {
+		err = PTR_ERR(kho_out.fdt);
+		goto err_free_scratch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = kho_debugfs_init();
@@ -1524,10 +2055,13 @@ static __init int kho_init(void)
 	if (err)
 		goto err_free_fdt;
 
+<<<<<<< HEAD
 	err = kho_kexec_metadata_init(fdt);
 	if (err)
 		goto err_free_fdt;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fdt) {
 		kho_in_debugfs_init(&kho_in.dbg, fdt);
 		return 0;
@@ -1552,17 +2086,25 @@ static __init int kho_init(void)
 			init_cma_reserved_pageblock(pfn_to_page(pfn));
 	}
 
+<<<<<<< HEAD
 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, "fdt",
 					  kho_out.fdt,
 					  fdt_totalsize(kho_out.fdt), true));
+=======
+	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
+					 kho_out.fdt, true));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
 err_free_fdt:
 	kho_unpreserve_free(kho_out.fdt);
+<<<<<<< HEAD
 err_free_kho_radix_tree_root:
 	kfree(tree->root);
 	tree->root = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_scratch:
 	kho_out.fdt = NULL;
 	for (int i = 0; i < kho_scratch_cnt; i++) {
@@ -1602,12 +2144,19 @@ static void __init kho_release_scratch(void)
 
 void __init kho_memory_init(void)
 {
+<<<<<<< HEAD
 	if (kho_in.scratch_phys) {
 		kho_scratch = phys_to_virt(kho_in.scratch_phys);
 		kho_release_scratch();
 
 		if (kho_mem_retrieve(kho_get_fdt()))
 			kho_in.fdt_phys = 0;
+=======
+	if (kho_in.mem_map_phys) {
+		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+		kho_release_scratch();
+		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		kho_reserve_scratch();
 	}
@@ -1685,6 +2234,10 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
 
 	kho_in.fdt_phys = fdt_phys;
 	kho_in.scratch_phys = scratch_phys;
+<<<<<<< HEAD
+=======
+	kho_in.mem_map_phys = mem_map_phys;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kho_scratch_cnt = scratch_cnt;
 
 	populated = true;
@@ -1707,7 +2260,11 @@ int kho_fill_kimage(struct kimage *image)
 	int err = 0;
 	struct kexec_buf scratch;
 
+<<<<<<< HEAD
 	if (!kho_enable || image->type == KEXEC_TYPE_CRASH)
+=======
+	if (!kho_enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	image->kho.fdt = virt_to_phys(kho_out.fdt);

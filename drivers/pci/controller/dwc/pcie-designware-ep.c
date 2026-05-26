@@ -754,7 +754,11 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
 	val &= ~PCI_MSIX_FLAGS_QSIZE;
 	val |= nr_irqs - 1; /* encoded as N-1 */
+<<<<<<< HEAD
 	dw_pcie_ep_writew_dbi(ep, func_no, reg, val);
+=======
+	dw_pcie_writew_dbi(pci, reg, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
 	val = offset | bir;
@@ -1110,8 +1114,12 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
 {
 	struct dw_pcie_ep *ep = &pci->ep;
 	u8 funcs = ep->epc->max_functions;
+<<<<<<< HEAD
 	u32 func0_lnkcap, lnkcap;
 	u8 func_no, offset;
+=======
+	u8 func_no;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dw_pcie_dbi_ro_wr_en(pci);
 
@@ -1119,6 +1127,7 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
 		dw_pcie_ep_init_rebar_registers(ep, func_no);
 
 	dw_pcie_setup(pci);
+<<<<<<< HEAD
 
 	/*
 	 * PCIe r7.0, section 7.5.3.6 states that for multi-function
@@ -1170,6 +1179,11 @@ static void dw_pcie_ep_disable_bars(struct dw_pcie_ep *ep)
 	}
 }
 
+=======
+	dw_pcie_dbi_ro_wr_dis(pci);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * dw_pcie_ep_init_registers - Initialize DWC EP specific registers
  * @ep: DWC EP device
@@ -1252,8 +1266,11 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
 	if (ep->ops->init)
 		ep->ops->init(ep);
 
+<<<<<<< HEAD
 	dw_pcie_ep_disable_bars(ep);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * PCIe r6.0, section 7.9.15 states that for endpoints that support
 	 * PTM, this capability structure is required in exactly one

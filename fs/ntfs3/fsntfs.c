@@ -1440,8 +1440,13 @@ int ntfs_write_bh(struct ntfs_sb_info *sbi, struct NTFS_RECORD_HEADER *rhdr,
 	u16 fo = le16_to_cpu(rhdr->fix_off);
 	u16 fn = le16_to_cpu(rhdr->fix_num);
 	u32 idx;
+<<<<<<< HEAD
 	__le16 *fixup = NULL;
 	__le16 sample = cpu_to_le16(-1u);
+=======
+	__le16 *fixup;
+	__le16 sample;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((fo & 1) || fo + fn * sizeof(short) > SECTOR_SIZE || !fn-- ||
 	    fn * SECTOR_SIZE > bytes) {

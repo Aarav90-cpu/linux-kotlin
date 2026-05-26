@@ -1118,10 +1118,16 @@ void img_ir_remove_hw(struct img_ir_priv *priv)
 	struct rc_dev *rdev = hw->rdev;
 	if (!rdev)
 		return;
+<<<<<<< HEAD
 	rc_unregister_device(rdev);
 	img_ir_set_decoder(priv, NULL, 0);
 	hw->rdev = NULL;
 	rc_free_device(rdev);
+=======
+	img_ir_set_decoder(priv, NULL, 0);
+	hw->rdev = NULL;
+	rc_unregister_device(rdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_COMMON_CLK
 	if (!IS_ERR(priv->clk))
 		clk_notifier_unregister(priv->clk, &hw->clk_nb);

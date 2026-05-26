@@ -10,7 +10,11 @@
 #include <linux/sched/mm.h>
 #include <linux/mpage.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/blkdev.h>
 #include <linux/bio.h>
 #include <linux/blk-crypto.h>
@@ -387,7 +391,11 @@ static void f2fs_write_end_io(struct bio *bio)
 				folio->index, NODE_TYPE_REGULAR, true);
 			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
 		}
+<<<<<<< HEAD
 		if (f2fs_in_warm_node_list(folio))
+=======
+		if (f2fs_in_warm_node_list(sbi, folio))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			f2fs_del_fsync_node_entry(sbi, folio);
 
 		dec_page_count(sbi, type);
@@ -528,9 +536,13 @@ static void f2fs_set_bio_crypt_ctx(struct bio *bio, const struct inode *inode,
 	 * read/write raw data without encryption.
 	 */
 	if (!fio || !fio->encrypted_page)
+<<<<<<< HEAD
 		fscrypt_set_bio_crypt_ctx(bio, inode,
 				(loff_t)first_idx << inode->i_blkbits,
 				gfp_mask);
+=======
+		fscrypt_set_bio_crypt_ctx(bio, inode, first_idx, gfp_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool f2fs_crypt_mergeable_bio(struct bio *bio, const struct inode *inode,
@@ -544,8 +556,12 @@ static bool f2fs_crypt_mergeable_bio(struct bio *bio, const struct inode *inode,
 	if (fio && fio->encrypted_page)
 		return !bio_has_crypt_ctx(bio);
 
+<<<<<<< HEAD
 	return fscrypt_mergeable_bio(bio, inode,
 			(loff_t)next_idx << inode->i_blkbits);
+=======
+	return fscrypt_mergeable_bio(bio, inode, next_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void f2fs_submit_read_bio(struct f2fs_sb_info *sbi, struct bio *bio,
@@ -2511,8 +2527,11 @@ next_folio:
 	if (!folio)
 		goto out;
 
+<<<<<<< HEAD
 	f2fs_update_read_folio_count(F2FS_I_SB(inode), folio);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folio_in_bio = false;
 	index = folio->index;
 	offset = 0;
@@ -2687,8 +2706,11 @@ static int f2fs_mpage_readpages(struct inode *inode, struct fsverity_info *vi,
 			prefetchw(&folio->flags);
 		}
 
+<<<<<<< HEAD
 		f2fs_update_read_folio_count(F2FS_I_SB(inode), folio);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 		index = folio->index;
 
@@ -2815,6 +2837,10 @@ int f2fs_encrypt_one_page(struct f2fs_io_info *fio)
 	struct inode *inode = fio_inode(fio);
 	struct folio *mfolio;
 	struct page *page;
+<<<<<<< HEAD
+=======
+	gfp_t gfp_flags = GFP_NOFS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!f2fs_encrypted_file(inode))
 		return 0;
@@ -2824,10 +2850,26 @@ int f2fs_encrypt_one_page(struct f2fs_io_info *fio)
 	if (fscrypt_inode_uses_inline_crypto(inode))
 		return 0;
 
+<<<<<<< HEAD
 	fio->encrypted_page = fscrypt_encrypt_pagecache_blocks(page_folio(page),
 					PAGE_SIZE, 0, GFP_NOFS);
 	if (IS_ERR(fio->encrypted_page))
 		return PTR_ERR(fio->encrypted_page);
+=======
+retry_encrypt:
+	fio->encrypted_page = fscrypt_encrypt_pagecache_blocks(page_folio(page),
+					PAGE_SIZE, 0, gfp_flags);
+	if (IS_ERR(fio->encrypted_page)) {
+		/* flush pending IOs and wait for a while in the ENOMEM case */
+		if (PTR_ERR(fio->encrypted_page) == -ENOMEM) {
+			f2fs_flush_merged_writes(fio->sbi);
+			memalloc_retry_wait(GFP_NOFS);
+			gfp_flags |= __GFP_NOFAIL;
+			goto retry_encrypt;
+		}
+		return PTR_ERR(fio->encrypted_page);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mfolio = filemap_lock_folio(META_MAPPING(fio->sbi), fio->old_blkaddr);
 	if (!IS_ERR(mfolio)) {

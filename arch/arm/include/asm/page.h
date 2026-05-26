@@ -184,7 +184,11 @@ extern int pfn_valid(unsigned long);
 
 #include <asm/memory.h>
 
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+=======
+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm-generic/getorder.h>
 #include <asm-generic/memory_model.h>

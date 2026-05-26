@@ -153,10 +153,13 @@ struct embedded_panel_info {
 	uint32_t drr_enabled;
 	uint32_t min_drr_refresh_rate;
 	bool realtek_eDPToLVDS;
+<<<<<<< HEAD
 	uint16_t panel_width_mm;
 	uint16_t panel_height_mm;
 	uint16_t fake_edid_size;
 	const uint8_t *fake_edid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dc_firmware_info {

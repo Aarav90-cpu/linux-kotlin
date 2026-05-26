@@ -167,9 +167,15 @@
 
 /* AD9523_CHANNEL_CLOCK_DIST */
 #define AD9523_CLK_DIST_DIV_PHASE(x)		(((x) & 0x3F) << 18)
+<<<<<<< HEAD
 #define AD9523_CLK_DIST_DIV_PHASE_REV(x)	(((x) >> 18) & 0x3F)
 #define AD9523_CLK_DIST_DIV(x)			((((x) - 1) & 0x3FF) << 8)
 #define AD9523_CLK_DIST_DIV_REV(x)		((((x) >> 8) & 0x3FF) + 1)
+=======
+#define AD9523_CLK_DIST_DIV_PHASE_REV(x)	((ret >> 18) & 0x3F)
+#define AD9523_CLK_DIST_DIV(x)			((((x) - 1) & 0x3FF) << 8)
+#define AD9523_CLK_DIST_DIV_REV(x)		(((ret >> 8) & 0x3FF) + 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AD9523_CLK_DIST_INV_DIV_OUTPUT_EN	(1 << 7)
 #define AD9523_CLK_DIST_IGNORE_SYNC_EN		(1 << 6)
 #define AD9523_CLK_DIST_PWR_DOWN_EN		(1 << 5)
@@ -558,6 +564,7 @@ static ssize_t ad9523_show(struct device *dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static IIO_DEVICE_ATTR(pll1_locked, 0444, ad9523_show, NULL,
 		       AD9523_STAT_PLL1_LD);
 
@@ -587,6 +594,57 @@ static IIO_DEVICE_ATTR(sync_dividers, 0200, NULL, ad9523_store,
 
 static IIO_DEVICE_ATTR(store_eeprom, 0200, NULL, ad9523_store,
 		       AD9523_EEPROM);
+=======
+static IIO_DEVICE_ATTR(pll1_locked, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_PLL1_LD);
+
+static IIO_DEVICE_ATTR(pll2_locked, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_PLL2_LD);
+
+static IIO_DEVICE_ATTR(pll1_reference_clk_a_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_REFA);
+
+static IIO_DEVICE_ATTR(pll1_reference_clk_b_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_REFB);
+
+static IIO_DEVICE_ATTR(pll1_reference_clk_test_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_REF_TEST);
+
+static IIO_DEVICE_ATTR(vcxo_clk_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_VCXO);
+
+static IIO_DEVICE_ATTR(pll2_feedback_clk_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_PLL2_FB_CLK);
+
+static IIO_DEVICE_ATTR(pll2_reference_clk_present, S_IRUGO,
+			ad9523_show,
+			NULL,
+			AD9523_STAT_PLL2_REF_CLK);
+
+static IIO_DEVICE_ATTR(sync_dividers, S_IWUSR,
+			NULL,
+			ad9523_store,
+			AD9523_SYNC);
+
+static IIO_DEVICE_ATTR(store_eeprom, S_IWUSR,
+			NULL,
+			ad9523_store,
+			AD9523_EEPROM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct attribute *ad9523_attributes[] = {
 	&iio_dev_attr_sync_dividers.dev_attr.attr,
@@ -777,7 +835,12 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 		return ret;
 
 	ret = ad9523_write(indio_dev, AD9523_PLL1_CHARGE_PUMP_CTRL,
+<<<<<<< HEAD
 		AD9523_PLL1_CHARGE_PUMP_CURRENT_nA(pdata->pll1_charge_pump_current_nA) |
+=======
+		AD9523_PLL1_CHARGE_PUMP_CURRENT_nA(pdata->
+			pll1_charge_pump_current_nA) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		AD9523_PLL1_CHARGE_PUMP_MODE_NORMAL |
 		AD9523_PLL1_BACKLASH_PW_MIN);
 	if (ret < 0)
@@ -821,7 +884,12 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 	 */
 
 	ret = ad9523_write(indio_dev, AD9523_PLL2_CHARGE_PUMP,
+<<<<<<< HEAD
 		AD9523_PLL2_CHARGE_PUMP_CURRENT_nA(pdata->pll2_charge_pump_current_nA));
+=======
+		AD9523_PLL2_CHARGE_PUMP_CURRENT_nA(pdata->
+			pll2_charge_pump_current_nA));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -948,17 +1016,30 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 
 static int ad9523_probe(struct spi_device *spi)
 {
+<<<<<<< HEAD
 	struct device *dev = &spi->dev;
 	struct ad9523_platform_data *pdata;
+=======
+	struct ad9523_platform_data *pdata = dev_get_platdata(&spi->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_dev *indio_dev;
 	struct ad9523_state *st;
 	int ret;
 
+<<<<<<< HEAD
 	pdata = dev_get_platdata(dev);
 	if (!pdata)
 		return dev_err_probe(dev, -EINVAL, "no platform data?\n");
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+=======
+	if (!pdata) {
+		dev_err(&spi->dev, "no platform data?\n");
+		return -EINVAL;
+	}
+
+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (indio_dev == NULL)
 		return -ENOMEM;
 
@@ -966,16 +1047,28 @@ static int ad9523_probe(struct spi_device *spi)
 
 	mutex_init(&st->lock);
 
+<<<<<<< HEAD
 	ret = devm_regulator_get_enable(dev, "vcc");
 	if (ret)
 		return ret;
 
 	st->pwrdown_gpio = devm_gpiod_get_optional(dev, "powerdown",
+=======
+	ret = devm_regulator_get_enable(&spi->dev, "vcc");
+	if (ret)
+		return ret;
+
+	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		GPIOD_OUT_HIGH);
 	if (IS_ERR(st->pwrdown_gpio))
 		return PTR_ERR(st->pwrdown_gpio);
 
+<<<<<<< HEAD
 	st->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+=======
+	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		GPIOD_OUT_LOW);
 	if (IS_ERR(st->reset_gpio))
 		return PTR_ERR(st->reset_gpio);
@@ -985,7 +1078,11 @@ static int ad9523_probe(struct spi_device *spi)
 		gpiod_direction_output(st->reset_gpio, 1);
 	}
 
+<<<<<<< HEAD
 	st->sync_gpio = devm_gpiod_get_optional(dev, "sync",
+=======
+	st->sync_gpio = devm_gpiod_get_optional(&spi->dev, "sync",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		GPIOD_OUT_HIGH);
 	if (IS_ERR(st->sync_gpio))
 		return PTR_ERR(st->sync_gpio);
@@ -1005,7 +1102,11 @@ static int ad9523_probe(struct spi_device *spi)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	return devm_iio_device_register(dev, indio_dev);
+=======
+	return devm_iio_device_register(&spi->dev, indio_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct spi_device_id ad9523_id[] = {

@@ -703,6 +703,7 @@ static int aq_fw2x_send_macsec_req(struct aq_hw_s *hw,
 	return err;
 }
 
+<<<<<<< HEAD
 static int aq_fw2x_read_module_eeprom(struct aq_hw_s *self, u8 dev_addr,
 				      u8 reg_start_addr, int len, u8 *data)
 {
@@ -782,6 +783,8 @@ static int aq_fw2x_read_module_eeprom(struct aq_hw_s *self, u8 dev_addr,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct aq_fw_ops aq_fw_2x_ops = {
 	.init               = aq_fw2x_init,
 	.deinit             = aq_fw2x_deinit,
@@ -808,5 +811,8 @@ const struct aq_fw_ops aq_fw_2x_ops = {
 	.adjust_ptp         = aq_fw3x_adjust_ptp,
 	.get_link_capabilities = aq_fw2x_get_link_capabilities,
 	.send_macsec_req    = aq_fw2x_send_macsec_req,
+<<<<<<< HEAD
 	.read_module_eeprom = aq_fw2x_read_module_eeprom,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

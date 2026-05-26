@@ -163,7 +163,10 @@ static int snd_acp6x_probe(struct pci_dev *pci,
 	switch (pci->revision) {
 	case 0x60:
 	case 0x6f:
+<<<<<<< HEAD
 	case 0x62: /* RPL */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_dbg(&pci->dev, "acp6x pci device not found\n");
@@ -209,6 +212,7 @@ static int snd_acp6x_probe(struct pci_dev *pci,
 	case ACP_CONFIG_15:
 		dev_info(&pci->dev, "Audio Mode %d\n", val);
 		break;
+<<<<<<< HEAD
 	case ACP_CONFIG_10:
 	case ACP_CONFIG_11:
 	case ACP_CONFIG_12:
@@ -220,6 +224,8 @@ static int snd_acp6x_probe(struct pci_dev *pci,
 			break;
 		}
 		fallthrough;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		adata->res = devm_kzalloc(&pci->dev,
 					  sizeof(struct resource),

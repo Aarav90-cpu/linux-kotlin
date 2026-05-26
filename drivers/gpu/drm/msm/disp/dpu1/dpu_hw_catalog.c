@@ -513,8 +513,15 @@ static const struct dpu_vbif_dynamic_ot_cfg msm8998_ot_rdwr_cfg[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct dpu_vbif_cfg msm8996_vbif = {
 	.len = 0x1040,
+=======
+static const struct dpu_vbif_cfg msm8996_vbif[] = {
+	{
+	.name = "vbif_rt", .id = VBIF_RT,
+	.base = 0, .len = 0x1040,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_ot_rd_limit = 32,
 	.default_ot_wr_limit = 16,
 	.features = BIT(DPU_VBIF_QOS_REMAP) | BIT(DPU_VBIF_QOS_OTLIM),
@@ -536,10 +543,20 @@ static const struct dpu_vbif_cfg msm8996_vbif = {
 		.npriority_lvl = ARRAY_SIZE(msm8998_nrt_pri_lvl),
 		.priority_lvl = msm8998_nrt_pri_lvl,
 		},
+<<<<<<< HEAD
 };
 
 static const struct dpu_vbif_cfg msm8998_vbif = {
 	.len = 0x1040,
+=======
+	},
+};
+
+static const struct dpu_vbif_cfg msm8998_vbif[] = {
+	{
+	.name = "vbif_rt", .id = VBIF_RT,
+	.base = 0, .len = 0x1040,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_ot_rd_limit = 32,
 	.default_ot_wr_limit = 32,
 	.features = BIT(DPU_VBIF_QOS_REMAP) | BIT(DPU_VBIF_QOS_OTLIM),
@@ -563,10 +580,20 @@ static const struct dpu_vbif_cfg msm8998_vbif = {
 		},
 	.memtype_count = 14,
 	.memtype = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+<<<<<<< HEAD
 };
 
 static const struct dpu_vbif_cfg sdm845_vbif = {
 	.len = 0x1040,
+=======
+	},
+};
+
+static const struct dpu_vbif_cfg sdm845_vbif[] = {
+	{
+	.name = "vbif_rt", .id = VBIF_RT,
+	.base = 0, .len = 0x1040,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.features = BIT(DPU_VBIF_QOS_REMAP),
 	.xin_halt_timeout = 0x4000,
 	.qos_rp_remap_size = 0x40,
@@ -580,10 +607,20 @@ static const struct dpu_vbif_cfg sdm845_vbif = {
 		},
 	.memtype_count = 14,
 	.memtype = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+<<<<<<< HEAD
 };
 
 static const struct dpu_vbif_cfg sm8550_vbif = {
 	.len = 0x1040,
+=======
+	},
+};
+
+static const struct dpu_vbif_cfg sm8550_vbif[] = {
+	{
+	.name = "vbif_rt", .id = VBIF_RT,
+	.base = 0, .len = 0x1040,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.features = BIT(DPU_VBIF_QOS_REMAP),
 	.xin_halt_timeout = 0x4000,
 	.qos_rp_remap_size = 0x40,
@@ -597,10 +634,20 @@ static const struct dpu_vbif_cfg sm8550_vbif = {
 		},
 	.memtype_count = 16,
 	.memtype = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+<<<<<<< HEAD
 };
 
 static const struct dpu_vbif_cfg sm8650_vbif = {
 	.len = 0x1074,
+=======
+	},
+};
+
+static const struct dpu_vbif_cfg sm8650_vbif[] = {
+	{
+	.name = "vbif_rt", .id = VBIF_RT,
+	.base = 0, .len = 0x1074,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.features = BIT(DPU_VBIF_QOS_REMAP),
 	.xin_halt_timeout = 0x4000,
 	.qos_rp_remap_size = 0x40,
@@ -614,6 +661,10 @@ static const struct dpu_vbif_cfg sm8650_vbif = {
 		},
 	.memtype_count = 16,
 	.memtype = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+<<<<<<< HEAD
+=======
+	},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*************************************************************
@@ -756,5 +807,8 @@ static const struct dpu_qos_lut_entry sc7180_qos_nrt[] = {
 #include "catalog/dpu_10_0_sm8650.h"
 #include "catalog/dpu_12_0_sm8750.h"
 #include "catalog/dpu_12_2_glymur.h"
+<<<<<<< HEAD
 #include "catalog/dpu_12_4_eliza.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "catalog/dpu_13_0_kaanapali.h"

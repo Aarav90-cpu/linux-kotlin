@@ -507,7 +507,16 @@ impl PciRomHeader {
 
         if data.len() >= 30 {
             // Read size_of_block at offset 0x1A.
+<<<<<<< HEAD
             size_of_block = Some(u32::from_le_bytes([data[26], data[27], data[28], data[29]]));
+=======
+            size_of_block = Some(
+                u32::from(data[29]) << 24
+                    | u32::from(data[28]) << 16
+                    | u32::from(data[27]) << 8
+                    | u32::from(data[26]),
+            );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
 
         // For NBSI images, try to read the nbsiDataOffset at offset 0x16.

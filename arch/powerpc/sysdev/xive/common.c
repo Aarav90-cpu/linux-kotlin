@@ -548,21 +548,56 @@ static void xive_dec_target_count(int cpu)
 static int xive_find_target_in_mask(const struct cpumask *mask,
 				    unsigned int fuzz)
 {
+<<<<<<< HEAD
 	int cpu, first;
 
 	/* Pick up a starting point CPU in the mask based on  fuzz */
 	fuzz %= cpumask_weight(mask);
 	first = cpumask_nth(fuzz, mask);
 	WARN_ON(first >= nr_cpu_ids);
+=======
+	int cpu, first, num, i;
+
+	/* Pick up a starting point CPU in the mask based on  fuzz */
+	num = min_t(int, cpumask_weight(mask), nr_cpu_ids);
+	first = fuzz % num;
+
+	/* Locate it */
+	cpu = cpumask_first(mask);
+	for (i = 0; i < first && cpu < nr_cpu_ids; i++)
+		cpu = cpumask_next(cpu, mask);
+
+	/* Sanity check */
+	if (WARN_ON(cpu >= nr_cpu_ids))
+		cpu = cpumask_first(cpu_online_mask);
+
+	/* Remember first one to handle wrap-around */
+	first = cpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Now go through the entire mask until we find a valid
 	 * target.
 	 */
+<<<<<<< HEAD
 	for_each_cpu_wrap(cpu, mask, first) {
 		if (cpu_online(cpu) && xive_try_pick_target(cpu))
 			return cpu;
 	}
+=======
+	do {
+		/*
+		 * We re-check online as the fallback case passes us
+		 * an untested affinity mask
+		 */
+		if (cpu_online(cpu) && xive_try_pick_target(cpu))
+			return cpu;
+		cpu = cpumask_next(cpu, mask);
+		/* Wrap around */
+		if (cpu >= nr_cpu_ids)
+			cpu = cpumask_first(mask);
+	} while (cpu != first);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -1;
 }

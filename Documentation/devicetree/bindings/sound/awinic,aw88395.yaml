@@ -35,10 +35,13 @@ properties:
 
   dvdd-supply: true
 
+<<<<<<< HEAD
   firmware-name:
     maxItems: 1
     description: Name of the *_acf.bin file used for amplifier initialization
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   awinic,audio-channel:
     description:
       It is used to distinguish multiple PA devices, so that different

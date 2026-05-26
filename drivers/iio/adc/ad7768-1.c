@@ -25,15 +25,21 @@
 #include <linux/regulator/consumer.h>
 #include <linux/regulator/driver.h>
 #include <linux/sysfs.h>
+<<<<<<< HEAD
 #include <linux/spi/offload/consumer.h>
 #include <linux/spi/offload/provider.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/spi/spi.h>
 #include <linux/unaligned.h>
 #include <linux/units.h>
 #include <linux/util_macros.h>
 
 #include <linux/iio/buffer.h>
+<<<<<<< HEAD
 #include <linux/iio/buffer-dmaengine.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 #include <linux/iio/trigger.h>
@@ -164,8 +170,11 @@ enum ad7768_filter_regval {
 enum ad7768_scan_type {
 	AD7768_SCAN_TYPE_NORMAL,
 	AD7768_SCAN_TYPE_HIGH_SPEED,
+<<<<<<< HEAD
 	AD7768_SCAN_TYPE_OFFLOAD_NORMAL,
 	AD7768_SCAN_TYPE_OFFLOAD_HIGH_SPEED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum {
@@ -271,6 +280,7 @@ static const struct iio_scan_type ad7768_scan_type[] = {
 		.storagebits = 16,
 		.endianness = IIO_BE,
 	},
+<<<<<<< HEAD
 	[AD7768_SCAN_TYPE_OFFLOAD_NORMAL] = {
 		.sign = 's',
 		.realbits = 24,
@@ -283,6 +293,8 @@ static const struct iio_scan_type ad7768_scan_type[] = {
 		.storagebits = 32,
 		.endianness = IIO_CPU,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ad7768_chip_info {
@@ -300,8 +312,11 @@ struct ad7768_chip_info {
 
 struct ad7768_state {
 	struct spi_device *spi;
+<<<<<<< HEAD
 	struct spi_offload *offload;
 	struct spi_offload_trigger *offload_trigger;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct regmap *regmap;
 	struct regmap *regmap24;
 	int vref_uv;
@@ -309,6 +324,10 @@ struct ad7768_state {
 	unsigned int vcm_output_sel;
 	struct clk *mclk;
 	unsigned int mclk_freq;
+<<<<<<< HEAD
+=======
+	unsigned int mclk_div;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int oversampling_ratio;
 	enum ad7768_filter_type filter_type;
 	unsigned int samp_freq;
@@ -324,8 +343,11 @@ struct ad7768_state {
 	struct gpio_desc *gpio_reset;
 	const char *labels[AD7768_MAX_CHANNELS];
 	struct gpio_chip gpiochip;
+<<<<<<< HEAD
 	struct spi_transfer offload_xfer;
 	struct spi_message offload_msg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct ad7768_chip_info *chip;
 	bool en_spi_sync;
 	struct mutex pga_lock; /* protect device internal state (PGA) */
@@ -484,11 +506,17 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
 	int readval, ret;
 
 	reinit_completion(&st->completion);
+<<<<<<< HEAD
 	enable_irq(st->spi->irq);
 
 	ret = wait_for_completion_timeout(&st->completion,
 					  msecs_to_jiffies(1000));
 	disable_irq(st->spi->irq);
+=======
+
+	ret = wait_for_completion_timeout(&st->completion,
+					  msecs_to_jiffies(1000));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ret)
 		return -ETIMEDOUT;
 
@@ -1148,10 +1176,13 @@ static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
 {
 	struct ad7768_state *st = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	if (st->offload)
 		return st->oversampling_ratio == 8 ?
 		       AD7768_SCAN_TYPE_OFFLOAD_HIGH_SPEED : AD7768_SCAN_TYPE_OFFLOAD_NORMAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return st->oversampling_ratio == 8 ?
 	       AD7768_SCAN_TYPE_HIGH_SPEED : AD7768_SCAN_TYPE_NORMAL;
 }
@@ -1374,6 +1405,7 @@ static const struct iio_buffer_setup_ops ad7768_buffer_ops = {
 	.predisable = &ad7768_buffer_predisable,
 };
 
+<<<<<<< HEAD
 static int ad7768_offload_buffer_postenable(struct iio_dev *indio_dev)
 {
 	struct ad7768_state *st = iio_priv(indio_dev);
@@ -1462,6 +1494,10 @@ static int ad7768_set_trigger_state(struct iio_trigger *trig, bool enable)
 static const struct iio_trigger_ops ad7768_trigger_ops = {
 	.validate_device = iio_trigger_validate_own_device,
 	.set_trigger_state = ad7768_set_trigger_state,
+=======
+static const struct iio_trigger_ops ad7768_trigger_ops = {
+	.validate_device = iio_trigger_validate_own_device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int ad7768_set_channel_label(struct iio_dev *indio_dev,
@@ -1694,6 +1730,7 @@ static int ad7768_parse_aaf_gain(struct device *dev, struct ad7768_state *st)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool ad7768_offload_trigger_match(struct spi_offload_trigger *trigger,
 					 enum spi_offload_trigger_type type,
 					 u64 *args, u32 nargs)
@@ -1724,6 +1761,8 @@ static const struct spi_offload_trigger_ops ad7768_offload_trigger_ops = {
 	.request = ad7768_offload_trigger_request,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ad7768_chip_info ad7768_chip_info = {
 	.name = "ad7768-1",
 	.channel_spec = ad7768_channels,
@@ -1761,6 +1800,7 @@ static const struct ad7768_chip_info adaq7769_chip_info = {
 	.has_variable_aaf = true,
 };
 
+<<<<<<< HEAD
 static const struct spi_offload_config ad7768_spi_offload_config = {
 	.capability_flags = SPI_OFFLOAD_CAP_TRIGGER | SPI_OFFLOAD_CAP_RX_STREAM_DMA,
 };
@@ -1801,11 +1841,16 @@ static int ad7768_spi_offload_probe(struct iio_dev *indio_dev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ad7768_probe(struct spi_device *spi)
 {
 	struct ad7768_state *st;
 	struct iio_dev *indio_dev;
+<<<<<<< HEAD
 	struct device *dev = &spi->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
@@ -1896,11 +1941,16 @@ static int ad7768_probe(struct spi_device *spi)
 		return ret;
 
 	ret = devm_request_irq(&spi->dev, spi->irq, &ad7768_interrupt,
+<<<<<<< HEAD
 			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD | IRQF_NO_AUTOEN,
+=======
+			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       indio_dev->name, indio_dev);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	st->offload = devm_spi_offload_get(dev, spi, &ad7768_spi_offload_config);
 	ret = PTR_ERR_OR_ZERO(st->offload);
 	if (ret == -ENODEV) {
@@ -1915,6 +1965,11 @@ static int ad7768_probe(struct spi_device *spi)
 		if (ret)
 			return ret;
 	}
+=======
+	ret = ad7768_triggered_buffer_alloc(indio_dev);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return devm_iio_device_register(&spi->dev, indio_dev);
 }
@@ -1950,4 +2005,7 @@ module_spi_driver(ad7768_driver);
 MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
 MODULE_DESCRIPTION("Analog Devices AD7768-1 ADC driver");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("IIO_DMAENGINE_BUFFER");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

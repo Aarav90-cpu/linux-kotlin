@@ -517,10 +517,13 @@ INPUT_GENERATE_ABS_ACCESSORS(res, resolution)
 int input_scancode_to_scalar(const struct input_keymap_entry *ke,
 			     unsigned int *scancode);
 
+<<<<<<< HEAD
 int input_default_setkeycode(struct input_dev *dev,
 			     const struct input_keymap_entry *ke,
 			     unsigned int *old_keycode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int input_get_keycode(struct input_dev *dev, struct input_keymap_entry *ke);
 int input_set_keycode(struct input_dev *dev,
 		      const struct input_keymap_entry *ke);

@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2020-2026 Intel Corporation
+=======
+ * Copyright (C) 2020-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <drm/drm_file.h>
@@ -173,7 +177,11 @@ static struct ivpu_cmdq *ivpu_cmdq_create(struct ivpu_file_priv *file_priv, u8 p
 	ret = xa_alloc_cyclic(&file_priv->cmdq_xa, &cmdq->id, cmdq, file_priv->cmdq_limit,
 			      &file_priv->cmdq_id_next, GFP_KERNEL);
 	if (ret < 0) {
+<<<<<<< HEAD
 		ivpu_dbg(vdev, IOCTL, "Failed to allocate command queue ID: %d\n", ret);
+=======
+		ivpu_err(vdev, "Failed to allocate command queue ID: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_free_cmdq;
 	}
 
@@ -215,6 +223,7 @@ static int ivpu_hws_cmdq_init(struct ivpu_file_priv *file_priv, struct ivpu_cmdq
 
 static int ivpu_register_db(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cmdq)
 {
+<<<<<<< HEAD
 	struct ivpu_user_limits *limits = file_priv->user_limits;
 	struct ivpu_device *vdev = file_priv->vdev;
 	int ret;
@@ -231,6 +240,16 @@ static int ivpu_register_db(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *
 	if (ret < 0) {
 		ivpu_dbg(vdev, IOCTL, "Failed to allocate doorbell ID: %d\n", ret);
 		goto err_dec_db_count;
+=======
+	struct ivpu_device *vdev = file_priv->vdev;
+	int ret;
+
+	ret = xa_alloc_cyclic(&vdev->db_xa, &cmdq->db_id, NULL, vdev->db_limit, &vdev->db_next,
+			      GFP_KERNEL);
+	if (ret < 0) {
+		ivpu_err(vdev, "Failed to allocate doorbell ID: %d\n", ret);
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
@@ -239,6 +258,7 @@ static int ivpu_register_db(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *
 	else
 		ret = ivpu_jsm_register_db(vdev, file_priv->ctx.id, cmdq->db_id,
 					   cmdq->mem->vpu_addr, ivpu_bo_size(cmdq->mem));
+<<<<<<< HEAD
 	if (ret) {
 		xa_erase(&vdev->db_xa, cmdq->db_id);
 		cmdq->db_id = 0;
@@ -251,6 +271,17 @@ static int ivpu_register_db(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *
 
 err_dec_db_count:
 	atomic_dec(&limits->db_count);
+=======
+
+	if (!ret) {
+		ivpu_dbg(vdev, JOB, "DB %d registered to cmdq %d ctx %d priority %d\n",
+			 cmdq->db_id, cmdq->id, file_priv->ctx.id, cmdq->priority);
+	} else {
+		xa_erase(&vdev->db_xa, cmdq->db_id);
+		cmdq->db_id = 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -309,7 +340,10 @@ static int ivpu_cmdq_unregister(struct ivpu_file_priv *file_priv, struct ivpu_cm
 	}
 
 	xa_erase(&file_priv->vdev->db_xa, cmdq->db_id);
+<<<<<<< HEAD
 	atomic_dec(&file_priv->user_limits->db_count);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmdq->db_id = 0;
 
 	return 0;
@@ -325,7 +359,10 @@ static inline u8 ivpu_job_to_jsm_priority(u8 priority)
 
 static void ivpu_cmdq_destroy(struct ivpu_file_priv *file_priv, struct ivpu_cmdq *cmdq)
 {
+<<<<<<< HEAD
 	lockdep_assert_held(&file_priv->lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ivpu_cmdq_unregister(file_priv, cmdq);
 	xa_erase(&file_priv->cmdq_xa, cmdq->id);
 	ivpu_cmdq_free(file_priv, cmdq);
@@ -393,11 +430,16 @@ static void ivpu_cmdq_reset(struct ivpu_file_priv *file_priv)
 	mutex_lock(&file_priv->lock);
 
 	xa_for_each(&file_priv->cmdq_xa, cmdq_id, cmdq) {
+<<<<<<< HEAD
 		if (cmdq->db_id) {
 			xa_erase(&file_priv->vdev->db_xa, cmdq->db_id);
 			atomic_dec(&file_priv->user_limits->db_count);
 			cmdq->db_id = 0;
 		}
+=======
+		xa_erase(&file_priv->vdev->db_xa, cmdq->db_id);
+		cmdq->db_id = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_unlock(&file_priv->lock);
@@ -607,7 +649,10 @@ bool ivpu_job_handle_engine_error(struct ivpu_device *vdev, u32 job_id, u32 job_
 		 * status and ensure both are handled in the same way
 		 */
 		job->file_priv->has_mmu_faults = true;
+<<<<<<< HEAD
 		atomic_set(&vdev->faults_detected, 1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		queue_work(system_percpu_wq, &vdev->context_abort_work);
 		return true;
 	}
@@ -1116,6 +1161,7 @@ void ivpu_job_done_consumer_fini(struct ivpu_device *vdev)
 	ivpu_ipc_consumer_del(vdev, &vdev->job_done_consumer);
 }
 
+<<<<<<< HEAD
 static int reset_engine_and_mark_faulty_contexts(struct ivpu_device *vdev)
 {
 	u32 num_impacted_contexts;
@@ -1161,6 +1207,8 @@ static int reset_engine_and_mark_faulty_contexts(struct ivpu_device *vdev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ivpu_context_abort_work_fn(struct work_struct *work)
 {
 	struct ivpu_device *vdev = container_of(work, struct ivpu_device, context_abort_work);
@@ -1173,7 +1221,11 @@ void ivpu_context_abort_work_fn(struct work_struct *work)
 		return;
 
 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+<<<<<<< HEAD
 		if (reset_engine_and_mark_faulty_contexts(vdev))
+=======
+		if (ivpu_jsm_reset_engine(vdev, 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto runtime_put;
 
 	mutex_lock(&vdev->context_list_lock);

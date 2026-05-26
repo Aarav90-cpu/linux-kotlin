@@ -77,7 +77,10 @@
 #include <linux/mount.h>
 #include <linux/pseudo_fs.h>
 #include <linux/security.h>
+<<<<<<< HEAD
 #include <linux/uio.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/syscalls.h>
 #include <linux/compat.h>
 #include <linux/kmod.h>
@@ -281,6 +284,7 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
 
 	BUG_ON(klen > sizeof(struct sockaddr_storage));
 
+<<<<<<< HEAD
 	scoped_user_rw_access_size(ulen, 4, efault_end) {
 		unsafe_get_user(len, ulen, efault_end);
 
@@ -293,6 +297,25 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
 		if (len >= 0)
 			unsafe_put_user(klen, ulen, efault_end);
 	}
+=======
+	if (can_do_masked_user_access())
+		ulen = masked_user_access_begin(ulen);
+	else if (!user_access_begin(ulen, 4))
+		return -EFAULT;
+
+	unsafe_get_user(len, ulen, efault_end);
+
+	if (len > klen)
+		len = klen;
+	/*
+	 *      "fromlen shall refer to the value before truncation.."
+	 *                      1003.1g
+	 */
+	if (len >= 0)
+		unsafe_put_user(klen, ulen, efault_end);
+
+	user_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (len) {
 		if (len < 0)
@@ -305,11 +328,16 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
 	return 0;
 
 efault_end:
+<<<<<<< HEAD
+=======
+	user_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EFAULT;
 }
 
 static struct kmem_cache *sock_inode_cachep __ro_after_init;
 
+<<<<<<< HEAD
 struct sockfs_inode {
 	struct simple_xattrs *xattrs;
 	struct simple_xattr_limits xattr_limits;
@@ -354,26 +382,63 @@ static void sock_evict_inode(struct inode *inode)
 		kfree(xattrs);
 	}
 	clear_inode(inode);
+=======
+static struct inode *sock_alloc_inode(struct super_block *sb)
+{
+	struct socket_alloc *ei;
+
+	ei = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
+	if (!ei)
+		return NULL;
+	init_waitqueue_head(&ei->socket.wq.wait);
+	ei->socket.wq.fasync_list = NULL;
+	ei->socket.wq.flags = 0;
+
+	ei->socket.state = SS_UNCONNECTED;
+	ei->socket.flags = 0;
+	ei->socket.ops = NULL;
+	ei->socket.sk = NULL;
+	ei->socket.file = NULL;
+
+	return &ei->vfs_inode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sock_free_inode(struct inode *inode)
 {
+<<<<<<< HEAD
 	struct sockfs_inode *si = SOCKFS_I(inode);
 
 	kmem_cache_free(sock_inode_cachep, si);
+=======
+	struct socket_alloc *ei;
+
+	ei = container_of(inode, struct socket_alloc, vfs_inode);
+	kmem_cache_free(sock_inode_cachep, ei);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void init_once(void *foo)
 {
+<<<<<<< HEAD
 	struct sockfs_inode *si = (struct sockfs_inode *)foo;
 
 	inode_init_once(&si->vfs_inode);
+=======
+	struct socket_alloc *ei = (struct socket_alloc *)foo;
+
+	inode_init_once(&ei->vfs_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void init_inodecache(void)
 {
 	sock_inode_cachep = kmem_cache_create("sock_inode_cache",
+<<<<<<< HEAD
 					      sizeof(struct sockfs_inode),
+=======
+					      sizeof(struct socket_alloc),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      0,
 					      (SLAB_HWCACHE_ALIGN |
 					       SLAB_RECLAIM_ACCOUNT |
@@ -385,7 +450,10 @@ static void init_inodecache(void)
 static const struct super_operations sockfs_ops = {
 	.alloc_inode	= sock_alloc_inode,
 	.free_inode	= sock_free_inode,
+<<<<<<< HEAD
 	.evict_inode	= sock_evict_inode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.statfs		= simple_statfs,
 };
 
@@ -394,7 +462,11 @@ static const struct super_operations sockfs_ops = {
  */
 static char *sockfs_dname(struct dentry *dentry, char *buffer, int buflen)
 {
+<<<<<<< HEAD
 	return dynamic_dname(buffer, buflen, "socket:[%llu]",
+=======
+	return dynamic_dname(buffer, buflen, "socket:[%lu]",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				d_inode(dentry)->i_ino);
 }
 
@@ -438,6 +510,7 @@ static const struct xattr_handler sockfs_security_xattr_handler = {
 	.set = sockfs_security_xattr_set,
 };
 
+<<<<<<< HEAD
 static int sockfs_user_xattr_get(const struct xattr_handler *handler,
 				 struct dentry *dentry, struct inode *inode,
 				 const char *suffix, void *value, size_t size)
@@ -480,6 +553,11 @@ static const struct xattr_handler * const sockfs_xattr_handlers[] = {
 	&sockfs_xattr_handler,
 	&sockfs_security_xattr_handler,
 	&sockfs_user_xattr_handler,
+=======
+static const struct xattr_handler * const sockfs_xattr_handlers[] = {
+	&sockfs_xattr_handler,
+	&sockfs_security_xattr_handler,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -632,6 +710,7 @@ EXPORT_SYMBOL(sockfd_lookup);
 static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
 				size_t size)
 {
+<<<<<<< HEAD
 	struct sockfs_inode *si = SOCKFS_I(d_inode(dentry));
 	ssize_t len, used;
 
@@ -652,6 +731,28 @@ static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
 		if (size < len)
 			return -ERANGE;
 		memcpy(buffer, XATTR_NAME_SOCKPROTONAME, len);
+=======
+	ssize_t len;
+	ssize_t used = 0;
+
+	len = security_inode_listsecurity(d_inode(dentry), buffer, size);
+	if (len < 0)
+		return len;
+	used += len;
+	if (buffer) {
+		if (size < used)
+			return -ERANGE;
+		buffer += len;
+	}
+
+	len = (XATTR_NAME_SOCKPROTONAME_LEN + 1);
+	used += len;
+	if (buffer) {
+		if (size < used)
+			return -ERANGE;
+		memcpy(buffer, XATTR_NAME_SOCKPROTONAME, len);
+		buffer += len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return used;
@@ -972,10 +1073,18 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
 {
 	int need_software_tstamp = sock_flag(sk, SOCK_RCVTSTAMP);
 	int new_tstamp = sock_flag(sk, SOCK_TSTAMP_NEW);
+<<<<<<< HEAD
 	struct skb_shared_hwtstamps *shhwtstamps =
 		skb_hwtstamps(skb);
 	struct scm_timestamping_internal tss;
 	int if_index, false_tstamp = 0;
+=======
+	struct scm_timestamping_internal tss;
+	int empty = 1, false_tstamp = 0;
+	struct skb_shared_hwtstamps *shhwtstamps =
+		skb_hwtstamps(skb);
+	int if_index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ktime_t hwtstamp;
 	u32 tsflags;
 
@@ -1020,12 +1129,21 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
 
 	memset(&tss, 0, sizeof(tss));
 	tsflags = READ_ONCE(sk->sk_tsflags);
+<<<<<<< HEAD
 	if (tsflags & SOF_TIMESTAMPING_SOFTWARE &&
 	    (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
 	    skb_is_err_queue(skb) ||
 	    !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER)))
 		tss.ts[0] = skb->tstamp;
 
+=======
+	if ((tsflags & SOF_TIMESTAMPING_SOFTWARE &&
+	     (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
+	      skb_is_err_queue(skb) ||
+	      !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))) &&
+	    ktime_to_timespec64_cond(skb->tstamp, tss.ts + 0))
+		empty = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (shhwtstamps &&
 	    (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE &&
 	     (tsflags & SOF_TIMESTAMPING_RX_HARDWARE ||
@@ -1042,15 +1160,24 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
 			hwtstamp = ptp_convert_timestamp(&hwtstamp,
 							 READ_ONCE(sk->sk_bind_phc));
 
+<<<<<<< HEAD
 		if (hwtstamp) {
 			tss.ts[2] = hwtstamp;
+=======
+		if (ktime_to_timespec64_cond(hwtstamp, tss.ts + 2)) {
+			empty = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if ((tsflags & SOF_TIMESTAMPING_OPT_PKTINFO) &&
 			    !skb_is_err_queue(skb))
 				put_ts_pktinfo(msg, skb, if_index);
 		}
 	}
+<<<<<<< HEAD
 	if (tss.ts[0] | tss.ts[2]) {
+=======
+	if (!empty) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sock_flag(sk, SOCK_TSTAMP_NEW))
 			put_cmsg_scm_timestamping64(msg, &tss);
 		else
@@ -2415,6 +2542,7 @@ SYSCALL_DEFINE5(setsockopt, int, fd, int, level, int, optname,
 INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
 							 int optname));
 
+<<<<<<< HEAD
 /*
  * Initialize a sockopt_t from sockptr optval/optlen, setting up iov_iter
  * for both input and output directions.
@@ -2447,13 +2575,18 @@ static int sockptr_to_sockopt(sockopt_t *opt, sockptr_t optval,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int do_sock_getsockopt(struct socket *sock, bool compat, int level,
 		       int optname, sockptr_t optval, sockptr_t optlen)
 {
 	int max_optlen __maybe_unused = 0;
 	const struct proto_ops *ops;
+<<<<<<< HEAD
 	struct kvec kvec;
 	sockopt_t opt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	err = security_socket_getsockopt(sock, level, optname);
@@ -2466,6 +2599,7 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
 	ops = READ_ONCE(sock->ops);
 	if (level == SOL_SOCKET) {
 		err = sk_getsockopt(sock->sk, level, optname, optval, optlen);
+<<<<<<< HEAD
 	} else if (ops->getsockopt_iter) {
 		err = sockptr_to_sockopt(&opt, optval, optlen, &kvec);
 		if (err)
@@ -2480,14 +2614,22 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
 		if (copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
 			return -EFAULT;
 	} else if (ops->getsockopt) {
+=======
+	} else if (unlikely(!ops->getsockopt)) {
+		err = -EOPNOTSUPP;
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (WARN_ONCE(optval.is_kernel || optlen.is_kernel,
 			      "Invalid argument type"))
 			return -EOPNOTSUPP;
 
 		err = ops->getsockopt(sock, level, optname, optval.user,
 				      optlen.user);
+<<<<<<< HEAD
 	} else {
 		err = -EOPNOTSUPP;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!compat)

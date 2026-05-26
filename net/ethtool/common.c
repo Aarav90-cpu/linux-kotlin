@@ -8,8 +8,13 @@
 #include <linux/phy_link_topology.h>
 #include <net/netdev_queues.h>
 
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "../core/dev.h"
 
 
@@ -1204,6 +1209,7 @@ void ethtool_rxfh_context_lost(struct net_device *dev, u32 context_id)
 }
 EXPORT_SYMBOL(ethtool_rxfh_context_lost);
 
+<<<<<<< HEAD
 bool netif_is_rxfh_configured(const struct net_device *dev)
 {
 	return dev->ethtool->rss_indir_user_size;
@@ -1387,6 +1393,8 @@ void ethtool_rxfh_ctxs_resize(struct net_device *dev, u32 new_indir_size)
 }
 EXPORT_SYMBOL(ethtool_rxfh_ctxs_resize);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum ethtool_link_medium ethtool_str_to_medium(const char *str)
 {
 	int i;

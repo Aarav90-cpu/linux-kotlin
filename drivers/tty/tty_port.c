@@ -100,6 +100,7 @@ void tty_port_init(struct tty_port *port)
 EXPORT_SYMBOL(tty_port_init);
 
 /**
+<<<<<<< HEAD
  * tty_port_link_wq - link tty_port and flip workqueue
  * @port: tty_port of the device
  * @flip_wq: workqueue to queue flip buffer work on
@@ -117,6 +118,8 @@ void tty_port_link_wq(struct tty_port *port, struct workqueue_struct *flip_wq)
 EXPORT_SYMBOL_GPL(tty_port_link_wq);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * tty_port_link_device - link tty and tty_port
  * @port: tty_port of the device
  * @driver: tty_driver for this device
@@ -174,7 +177,10 @@ struct device *tty_port_register_device_attr(struct tty_port *port,
 		const struct attribute_group **attr_grp)
 {
 	tty_port_link_device(port, driver, index);
+<<<<<<< HEAD
 	tty_port_link_driver_wq(port, driver);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return tty_register_device_attr(driver, index, device, drvdata,
 			attr_grp);
 }
@@ -201,7 +207,10 @@ struct device *tty_port_register_device_attr_serdev(struct tty_port *port,
 	struct device *dev;
 
 	tty_port_link_device(port, driver, index);
+<<<<<<< HEAD
 	tty_port_link_driver_wq(port, driver);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev = serdev_tty_port_register(port, host, parent, driver, index);
 	if (PTR_ERR(dev) != -ENODEV) {
@@ -229,7 +238,10 @@ void tty_port_unregister_device(struct tty_port *port,
 {
 	int ret;
 
+<<<<<<< HEAD
 	WRITE_ONCE(port->buf.flip_wq, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = serdev_tty_port_unregister(port);
 	if (ret == 0)
 		return;
@@ -277,7 +289,10 @@ void tty_port_destroy(struct tty_port *port)
 {
 	tty_buffer_cancel_work(port);
 	tty_buffer_free_all(port);
+<<<<<<< HEAD
 	WRITE_ONCE(port->buf.flip_wq, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(tty_port_destroy);
 
@@ -724,7 +739,10 @@ int tty_port_install(struct tty_port *port, struct tty_driver *driver,
 		struct tty_struct *tty)
 {
 	tty->port = port;
+<<<<<<< HEAD
 	tty_port_link_driver_wq(port, driver);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return tty_standard_install(driver, tty);
 }
 EXPORT_SYMBOL_GPL(tty_port_install);

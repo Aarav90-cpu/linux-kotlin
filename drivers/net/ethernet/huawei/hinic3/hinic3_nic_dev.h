@@ -101,7 +101,10 @@ struct hinic3_nic_dev {
 	struct hinic3_hwdev             *hwdev;
 	struct hinic3_nic_io            *nic_io;
 
+<<<<<<< HEAD
 	u32                             msg_enable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16                             max_qps;
 	u16                             rx_buf_len;
 	u32                             lro_replenish_thld;
@@ -149,6 +152,9 @@ void hinic3_qps_irq_uninit(struct net_device *netdev);
 void hinic3_set_rx_mode_work(struct work_struct *work);
 void hinic3_clean_mac_list_filter(struct net_device *netdev);
 
+<<<<<<< HEAD
 void hinic3_set_ethtool_ops(struct net_device *netdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

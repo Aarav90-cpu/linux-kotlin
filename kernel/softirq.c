@@ -663,6 +663,7 @@ void irq_enter_rcu(void)
 {
 	__irq_enter_raw();
 
+<<<<<<< HEAD
 	/*
 	 * If this is a nested interrupt that hits the exit_to_user_mode_loop
 	 * where it has enabled interrupts but before it has hit schedule() we
@@ -670,6 +671,8 @@ void irq_enter_rcu(void)
 	 */
 	hrtimer_rearm_deferred();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tick_nohz_full_cpu(smp_processor_id()) ||
 	    (is_idle_task(current) && (irq_count() == HARDIRQ_OFFSET)))
 		tick_irq_enter();
@@ -726,6 +729,7 @@ static inline void __irq_exit_rcu(void)
 #endif
 	account_hardirq_exit(current);
 	preempt_count_sub(HARDIRQ_OFFSET);
+<<<<<<< HEAD
 	if (!in_interrupt() && local_softirq_pending()) {
 		/*
 		 * If we left hrtimers unarmed, make sure to arm them now,
@@ -734,6 +738,10 @@ static inline void __irq_exit_rcu(void)
 		hrtimer_rearm_deferred();
 		invoke_softirq();
 	}
+=======
+	if (!in_interrupt() && local_softirq_pending())
+		invoke_softirq();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (IS_ENABLED(CONFIG_IRQ_FORCED_THREADING) && force_irqthreads() &&
 	    local_timers_pending_force_th() && !(in_nmi() | in_hardirq()))

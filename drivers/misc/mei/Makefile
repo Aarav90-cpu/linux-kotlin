@@ -21,9 +21,12 @@ mei-me-objs += hw-me.o
 obj-$(CONFIG_INTEL_MEI_GSC) += mei-gsc.o
 mei-gsc-objs := gsc-me.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_INTEL_MEI_CSC) += mei-csc.o
 mei-csc-objs := pci-csc.o
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_INTEL_MEI_TXE) += mei-txe.o
 mei-txe-objs := pci-txe.o
 mei-txe-objs += hw-txe.o

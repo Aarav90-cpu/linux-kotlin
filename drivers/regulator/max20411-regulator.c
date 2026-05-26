@@ -133,7 +133,11 @@ static int max20411_probe(struct i2c_client *client)
 
 	max20411->rdev = devm_regulator_register(max20411->dev, &max20411->desc, &cfg);
 	if (IS_ERR(max20411->rdev))
+<<<<<<< HEAD
 		dev_err(max20411->dev, "Failed to register regulator: %pe\n", max20411->rdev);
+=======
+		dev_err(max20411->dev, "Failed to register regulator\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return PTR_ERR_OR_ZERO(max20411->rdev);
 }

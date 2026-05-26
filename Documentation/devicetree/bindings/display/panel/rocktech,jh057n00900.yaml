@@ -33,6 +33,10 @@ properties:
       # Xingbangda XBD599 5.99" 720x1440 TFT LCD panel
       - xingbangda,xbd599
 
+<<<<<<< HEAD
+=======
+  port: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     maxItems: 1
     description: DSI virtual channel
@@ -43,9 +47,15 @@ properties:
   iovcc-supply:
     description: I/O voltage supply
 
+<<<<<<< HEAD
   backlight: true
   port: true
   reset-gpios: true
+=======
+  reset-gpios: true
+
+  backlight: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   rotation: true
 
 required:

@@ -7,12 +7,18 @@
 
 #include <linux/stdarg.h>
 
+<<<<<<< HEAD
 #include <linux/bug.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/lockdep.h>
 #include <linux/math.h>
 #include <linux/panic.h>
+=======
+#include <linux/kernel.h>
+#include <linux/lockdep.h>
+#include <linux/math.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/printk.h>
 #include <linux/sched/debug.h>
 #include <linux/seq_file.h>
@@ -32,6 +38,7 @@
 #define ARCH_FUNC_PREFIX ""
 #endif
 
+<<<<<<< HEAD
 static enum kfence_fault kfence_fault __ro_after_init = KFENCE_FAULT_REPORT;
 
 static int __init early_kfence_fault(char *arg)
@@ -52,6 +59,8 @@ static int __init early_kfence_fault(char *arg)
 }
 early_param("kfence.fault", early_kfence_fault);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Helper function to either print to a seq_file or to console. */
 __printf(2, 3)
 static void seq_con_printf(struct seq_file *seq, const char *fmt, ...)
@@ -212,9 +221,14 @@ static const char *get_access_type(bool is_write)
 	return str_write_read(is_write);
 }
 
+<<<<<<< HEAD
 enum kfence_fault
 kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
 		    const struct kfence_metadata *meta, enum kfence_error_type type)
+=======
+void kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
+			 const struct kfence_metadata *meta, enum kfence_error_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long stack_entries[KFENCE_STACK_DEPTH] = { 0 };
 	const ptrdiff_t object_index = meta ? meta - kfence_metadata : -1;
@@ -230,7 +244,11 @@ kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
 
 	/* Require non-NULL meta, except if KFENCE_ERROR_INVALID. */
 	if (WARN_ON(type != KFENCE_ERROR_INVALID && !meta))
+<<<<<<< HEAD
 		return KFENCE_FAULT_NONE;
+=======
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Because we may generate reports in printk-unfriendly parts of the
@@ -306,6 +324,7 @@ kfence_report_error(unsigned long address, bool is_write, struct pt_regs *regs,
 
 	/* We encountered a memory safety error, taint the kernel! */
 	add_taint(TAINT_BAD_PAGE, LOCKDEP_STILL_OK);
+<<<<<<< HEAD
 
 	return kfence_fault;
 }
@@ -325,6 +344,8 @@ void kfence_handle_fault(enum kfence_fault fault)
 		panic("kfence.fault=panic set ...\n");
 		break;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PRINTK

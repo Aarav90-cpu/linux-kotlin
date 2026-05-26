@@ -46,6 +46,10 @@ struct evdev_client {
 	struct fasync_struct *fasync;
 	struct evdev *evdev;
 	struct list_head node;
+<<<<<<< HEAD
+=======
+	struct rcu_head rcu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum input_clock_type clk_type;
 	bool revoked;
 	unsigned long *evmasks[EV_CNT];
@@ -368,13 +372,29 @@ static void evdev_attach_client(struct evdev *evdev,
 	spin_unlock(&evdev->client_lock);
 }
 
+<<<<<<< HEAD
+=======
+static void evdev_reclaim_client(struct rcu_head *rp)
+{
+	struct evdev_client *client = container_of(rp, struct evdev_client, rcu);
+	unsigned int i;
+	for (i = 0; i < EV_CNT; ++i)
+		bitmap_free(client->evmasks[i]);
+	kvfree(client);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void evdev_detach_client(struct evdev *evdev,
 				struct evdev_client *client)
 {
 	spin_lock(&evdev->client_lock);
 	list_del_rcu(&client->node);
 	spin_unlock(&evdev->client_lock);
+<<<<<<< HEAD
 	synchronize_rcu();
+=======
+	call_rcu(&client->rcu, evdev_reclaim_client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int evdev_open_device(struct evdev *evdev)
@@ -427,7 +447,10 @@ static int evdev_release(struct inode *inode, struct file *file)
 {
 	struct evdev_client *client = file->private_data;
 	struct evdev *evdev = client->evdev;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&evdev->mutex);
 
@@ -439,11 +462,14 @@ static int evdev_release(struct inode *inode, struct file *file)
 
 	evdev_detach_client(evdev, client);
 
+<<<<<<< HEAD
 	for (i = 0; i < EV_CNT; ++i)
 		bitmap_free(client->evmasks[i]);
 
 	kvfree(client);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	evdev_close_device(evdev);
 
 	return 0;
@@ -486,7 +512,10 @@ static int evdev_open(struct inode *inode, struct file *file)
 
  err_free_client:
 	evdev_detach_client(evdev, client);
+<<<<<<< HEAD
 	kvfree(client);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return error;
 }
 

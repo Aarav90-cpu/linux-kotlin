@@ -13,7 +13,10 @@
 #include <linux/io.h>
 #include <linux/libfdt.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/kho/abi/kexec_handover.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "kexec_handover_internal.h"
 
 static struct dentry *debugfs_root;
@@ -24,9 +27,14 @@ struct fdt_debugfs {
 	struct dentry *file;
 };
 
+<<<<<<< HEAD
 static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
 				  const char *name, const void *blob,
 				  size_t size)
+=======
+static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
+				 const char *name, const void *fdt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct fdt_debugfs *f;
 	struct dentry *file;
@@ -35,8 +43,13 @@ static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
 	if (!f)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	f->wrapper.data = (void *)blob;
 	f->wrapper.size = size;
+=======
+	f->wrapper.data = (void *)fdt;
+	f->wrapper.size = fdt_totalsize(fdt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	file = debugfs_create_blob(name, 0400, dir, &f->wrapper);
 	if (IS_ERR(file)) {
@@ -50,8 +63,13 @@ static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
 	return 0;
 }
 
+<<<<<<< HEAD
 int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
 			 const void *blob, size_t size, bool root)
+=======
+int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
+			const void *fdt, bool root)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dentry *dir;
 
@@ -60,15 +78,26 @@ int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
 	else
 		dir = dbg->sub_fdt_dir;
 
+<<<<<<< HEAD
 	return __kho_debugfs_blob_add(&dbg->fdt_list, dir, name, blob, size);
 }
 
 void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob)
+=======
+	return __kho_debugfs_fdt_add(&dbg->fdt_list, dir, name, fdt);
+}
+
+void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct fdt_debugfs *ff;
 
 	list_for_each_entry(ff, &dbg->fdt_list, list) {
+<<<<<<< HEAD
 		if (ff->wrapper.data == blob) {
+=======
+		if (ff->wrapper.data == fdt) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			debugfs_remove(ff->file);
 			list_del(&ff->list);
 			kfree(ff);
@@ -77,6 +106,27 @@ void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static int kho_out_finalize_get(void *data, u64 *val)
+{
+	*val = kho_finalized();
+
+	return 0;
+}
+
+static int kho_out_finalize_set(void *data, u64 val)
+{
+	if (val)
+		return kho_finalize();
+	else
+		return -EINVAL;
+}
+
+DEFINE_DEBUGFS_ATTRIBUTE(kho_out_finalize_fops, kho_out_finalize_get,
+			 kho_out_finalize_set, "%llu\n");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int scratch_phys_show(struct seq_file *m, void *v)
 {
 	for (int i = 0; i < kho_scratch_cnt; i++)
@@ -114,14 +164,19 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
 		goto err_rmdir;
 	}
 
+<<<<<<< HEAD
 	err = __kho_debugfs_blob_add(&dbg->fdt_list, dir, "fdt", fdt,
 				     fdt_totalsize(fdt));
+=======
+	err = __kho_debugfs_fdt_add(&dbg->fdt_list, dir, "fdt", fdt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_rmdir;
 
 	fdt_for_each_subnode(child, fdt, 0) {
 		int len = 0;
 		const char *name = fdt_get_name(fdt, child, NULL);
+<<<<<<< HEAD
 		const u64 *blob_phys;
 		const u64 *blob_size;
 		void *blob;
@@ -150,6 +205,23 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
 		if (err) {
 			pr_warn("failed to add blob %s to debugfs: %pe\n",
 				name, ERR_PTR(err));
+=======
+		const u64 *fdt_phys;
+
+		fdt_phys = fdt_getprop(fdt, child, "fdt", &len);
+		if (!fdt_phys)
+			continue;
+		if (len != sizeof(*fdt_phys)) {
+			pr_warn("node %s prop fdt has invalid length: %d\n",
+				name, len);
+			continue;
+		}
+		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
+					    phys_to_virt(*fdt_phys));
+		if (err) {
+			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
+				ERR_PTR(err));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 	}
@@ -196,6 +268,14 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
 	if (IS_ERR(f))
 		goto err_rmdir;
 
+<<<<<<< HEAD
+=======
+	f = debugfs_create_file("finalize", 0600, dir, NULL,
+				&kho_out_finalize_fops);
+	if (IS_ERR(f))
+		goto err_rmdir;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbg->dir = dir;
 	dbg->sub_fdt_dir = sub_fdt_dir;
 	return 0;

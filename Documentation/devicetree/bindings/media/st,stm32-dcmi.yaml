@@ -27,14 +27,21 @@ properties:
       - const: mclk
 
   dmas:
+<<<<<<< HEAD
     minItems: 1
     maxItems: 2
+=======
+    maxItems: 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   dma-names:
     items:
       - const: tx
+<<<<<<< HEAD
       - const: mdma_tx
     minItems: 1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   resets:
     maxItems: 1
@@ -43,6 +50,7 @@ properties:
     minItems: 1
     maxItems: 2
 
+<<<<<<< HEAD
   power-domains:
     maxItems: 1
 
@@ -52,6 +60,8 @@ properties:
       phandle to a reserved SRAM region which is used as temporary
       storage memory between DMA and MDMA engines.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   port:
     $ref: /schemas/graph.yaml#/$defs/port-base
     unevaluatedProperties: false

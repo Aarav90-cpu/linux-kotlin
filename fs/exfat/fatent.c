@@ -11,11 +11,19 @@
 #include "exfat_raw.h"
 #include "exfat_fs.h"
 
+<<<<<<< HEAD
 static int exfat_mirror_bh(struct super_block *sb, struct buffer_head *bh)
 {
 	struct buffer_head *c_bh;
 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
 	sector_t sec = bh->b_blocknr;
+=======
+static int exfat_mirror_bh(struct super_block *sb, sector_t sec,
+		struct buffer_head *bh)
+{
+	struct buffer_head *c_bh;
+	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sector_t sec2;
 	int err = 0;
 
@@ -25,13 +33,21 @@ static int exfat_mirror_bh(struct super_block *sb, struct buffer_head *bh)
 		if (!c_bh)
 			return -ENOMEM;
 		memcpy(c_bh->b_data, bh->b_data, sb->s_blocksize);
+<<<<<<< HEAD
 		err = exfat_update_bh(c_bh, sb->s_flags & SB_SYNCHRONOUS);
+=======
+		set_buffer_uptodate(c_bh);
+		mark_buffer_dirty(c_bh);
+		if (sb->s_flags & SB_SYNCHRONOUS)
+			err = sync_dirty_buffer(c_bh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		brelse(c_bh);
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static int exfat_end_bh(struct super_block *sb, struct buffer_head *bh)
 {
 	int err;
@@ -49,6 +65,14 @@ static int __exfat_ent_get(struct super_block *sb, unsigned int loc,
 	unsigned int off;
 	sector_t sec;
 	struct buffer_head *bh = *cache;
+=======
+static int __exfat_ent_get(struct super_block *sb, unsigned int loc,
+		unsigned int *content, struct buffer_head **last)
+{
+	unsigned int off;
+	sector_t sec;
+	struct buffer_head *bh = last ? *last : NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sec = FAT_ENT_OFFSET_SECTOR(sb, loc);
 	off = FAT_ENT_OFFSET_BYTE_IN_SECTOR(sb, loc);
@@ -56,7 +80,12 @@ static int __exfat_ent_get(struct super_block *sb, unsigned int loc,
 	if (!bh || bh->b_blocknr != sec || !buffer_uptodate(bh)) {
 		brelse(bh);
 		bh = sb_bread(sb, sec);
+<<<<<<< HEAD
 		*cache = bh;
+=======
+		if (last)
+			*last = bh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(!bh))
 			return -EIO;
 	}
@@ -67,6 +96,7 @@ static int __exfat_ent_get(struct super_block *sb, unsigned int loc,
 	if (*content > EXFAT_BAD_CLUSTER)
 		*content = EXFAT_EOF_CLUSTER;
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -95,20 +125,49 @@ static int __exfat_ent_set(struct super_block *sb, unsigned int loc,
 	*fat_entry = cpu_to_le32(content);
 	if (!cache)
 		exfat_end_bh(sb, bh);
+=======
+	if (!last)
+		brelse(bh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int exfat_ent_set(struct super_block *sb, unsigned int loc,
 		unsigned int content)
 {
+<<<<<<< HEAD
 	return __exfat_ent_set(sb, loc, content, NULL);
+=======
+	unsigned int off;
+	sector_t sec;
+	__le32 *fat_entry;
+	struct buffer_head *bh;
+
+	sec = FAT_ENT_OFFSET_SECTOR(sb, loc);
+	off = FAT_ENT_OFFSET_BYTE_IN_SECTOR(sb, loc);
+
+	bh = sb_bread(sb, sec);
+	if (!bh)
+		return -EIO;
+
+	fat_entry = (__le32 *)&(bh->b_data[off]);
+	*fat_entry = cpu_to_le32(content);
+	exfat_update_bh(bh, sb->s_flags & SB_SYNCHRONOUS);
+	exfat_mirror_bh(sb, sec, bh);
+	brelse(bh);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * Caller must release the buffer_head if no error return.
  */
 int exfat_ent_get(struct super_block *sb, unsigned int loc,
+<<<<<<< HEAD
 		unsigned int *content, struct buffer_head **cache)
+=======
+		unsigned int *content, struct buffer_head **last)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
 
@@ -119,7 +178,11 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
 		goto err;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(__exfat_ent_get(sb, loc, content, cache))) {
+=======
+	if (unlikely(__exfat_ent_get(sb, loc, content, last))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		exfat_fs_error_ratelimit(sb,
 			"failed to access to FAT (entry 0x%08x)",
 			loc);
@@ -148,6 +211,7 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 err:
 	/* Avoid double release */
@@ -182,11 +246,22 @@ int exfat_blk_readahead(struct super_block *sb, sector_t sec,
 		sb_breadahead(sb, *ra + i);
 	blk_finish_plug(&plug);
 	return 0;
+=======
+err:
+	if (last) {
+		brelse(*last);
+
+		/* Avoid double release */
+		*last = NULL;
+	}
+	return -EIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int exfat_chain_cont_cluster(struct super_block *sb, unsigned int chain,
 		unsigned int len)
 {
+<<<<<<< HEAD
 	struct buffer_head *bh = NULL;
 	sector_t sec, end, ra;
 	blkcnt_t ra_cnt = 0;
@@ -202,15 +277,27 @@ int exfat_chain_cont_cluster(struct super_block *sb, unsigned int chain,
 		exfat_blk_readahead(sb, sec, &ra, &ra_cnt, end);
 
 		if (__exfat_ent_set(sb, chain, chain + 1, &bh))
+=======
+	if (!len)
+		return 0;
+
+	while (len > 1) {
+		if (exfat_ent_set(sb, chain, chain + 1))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EIO;
 		chain++;
 		len--;
 	}
 
+<<<<<<< HEAD
 	if (__exfat_ent_set(sb, chain, EXFAT_EOF_CLUSTER, &bh))
 		return -EIO;
 
 	exfat_end_bh(sb, bh);
+=======
+	if (exfat_ent_set(sb, chain, EXFAT_EOF_CLUSTER))
+		return -EIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

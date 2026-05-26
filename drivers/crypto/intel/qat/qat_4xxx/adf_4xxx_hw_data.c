@@ -100,6 +100,7 @@ static struct adf_hw_device_class adf_4xxx_class = {
 
 static u32 get_ae_mask(struct adf_hw_device_data *self)
 {
+<<<<<<< HEAD
 	unsigned long fuses = self->fuses[ADF_FUSECTL4];
 	u32 mask = ADF_4XXX_ACCELENGINES_MASK;
 
@@ -113,6 +114,11 @@ static u32 get_ae_mask(struct adf_hw_device_data *self)
 		mask &= ~ADF_AE_GROUP_2;
 
 	return mask;
+=======
+	u32 me_disable = self->fuses[ADF_FUSECTL4];
+
+	return ~me_disable & ADF_4XXX_ACCELENGINES_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
@@ -473,7 +479,10 @@ void adf_init_hw_data_4xxx(struct adf_hw_device_data *hw_data, u32 dev_id)
 	hw_data->clock_frequency = ADF_4XXX_AE_FREQ;
 	hw_data->services_supported = adf_gen4_services_supported;
 	hw_data->get_svc_slice_cnt = adf_gen4_get_svc_slice_cnt;
+<<<<<<< HEAD
 	hw_data->accel_capabilities_ext_mask = ADF_ACCEL_CAPABILITIES_EXT_ZSTD_LZ4S;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adf_gen4_set_err_mask(&hw_data->dev_err_mask);
 	adf_gen4_init_hw_csr_ops(&hw_data->csr_ops);

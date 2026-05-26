@@ -18,10 +18,13 @@ int wx_get_link_ksettings(struct net_device *netdev,
 			  struct ethtool_link_ksettings *cmd);
 int wx_set_link_ksettings(struct net_device *netdev,
 			  const struct ethtool_link_ksettings *cmd);
+<<<<<<< HEAD
 void wx_get_wol(struct net_device *netdev,
 		struct ethtool_wolinfo *wol);
 int wx_set_wol(struct net_device *netdev,
 	       struct ethtool_wolinfo *wol);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void wx_get_pauseparam(struct net_device *netdev,
 		       struct ethtool_pauseparam *pause);
 int wx_set_pauseparam(struct net_device *netdev,

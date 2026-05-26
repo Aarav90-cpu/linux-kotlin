@@ -665,11 +665,14 @@
 			opp-hz = /bits/ 64 <2841600000>;
 			opp-peak-kBps = <8368000 51609600>;
 		};
+<<<<<<< HEAD
 
 		cpu7_opp21: opp-3091200000 {
 			opp-hz = /bits/ 64 <3091200000>;
 			opp-peak-kBps = <8368000 51609600>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	firmware {
@@ -4831,8 +4834,13 @@
 				dp_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6290,10 +6298,21 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13
+				(GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14
+				(GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11
+				(GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10
+				(GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	thermal-zones {

@@ -7,6 +7,10 @@
 
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #define UDP_TUNNEL_PARTIAL_FEATURES	NETIF_F_GSO_ENCAP_ALL
@@ -229,7 +233,11 @@ static inline void udp_tunnel_encap_enable(struct sock *sk)
 
 #if IS_ENABLED(CONFIG_IPV6)
 	if (READ_ONCE(sk->sk_family) == PF_INET6)
+<<<<<<< HEAD
 		udpv6_encap_enable();
+=======
+		ipv6_stub->udpv6_encap_enable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	udp_encap_enable();
 }

@@ -42,9 +42,12 @@ struct thread_info {
 	void			*scs_base;
 	void			*scs_sp;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_MPAM
 	u64			mpam_partid_pmg;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32			cpu;
 };
 

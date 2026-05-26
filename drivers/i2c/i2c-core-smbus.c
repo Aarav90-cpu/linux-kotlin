@@ -566,6 +566,7 @@ s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 	if (res)
 		return res;
 
+<<<<<<< HEAD
 	/* Reject invalid caller-supplied block lengths before any
 	 * tracepoint or native smbus_xfer callback runs.
 	 */
@@ -578,6 +579,8 @@ s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 	     data->block[0] > I2C_SMBUS_BLOCK_MAX))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If enabled, the following two tracepoints are conditional on
 	 * read_write and protocol.
 	 */

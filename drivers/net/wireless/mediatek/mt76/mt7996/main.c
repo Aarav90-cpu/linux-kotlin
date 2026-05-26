@@ -56,7 +56,11 @@ static int mt7996_start(struct ieee80211_hw *hw)
 
 	mutex_lock(&dev->mt76.mutex);
 	ret = mt7996_mcu_set_hdr_trans(dev, true);
+<<<<<<< HEAD
 	if (!ret && !is_mt7996(&dev->mt76)) {
+=======
+	if (!ret && is_mt7992(&dev->mt76)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 queue = mt76_connac_lmac_mapping(IEEE80211_AC_VI);
 
 		ret = mt7996_mcu_cp_support(dev, queue);
@@ -79,7 +83,10 @@ static void mt7996_stop_phy(struct mt7996_phy *phy)
 
 	mutex_lock(&dev->mt76.mutex);
 
+<<<<<<< HEAD
 	mt7996_mcu_rdd_resume_tx(phy);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt7996_mcu_set_radio_en(phy, false);
 
 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
@@ -239,6 +246,7 @@ mt7996_set_hw_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 		link_conf = &vif->bss_conf;
 
 	if (cmd == SET_KEY && !sta && !link->mt76.cipher) {
+<<<<<<< HEAD
 		struct mt7996_phy *phy = mt7996_vif_link_phy(link);
 
 		link->mt76.cipher =
@@ -246,6 +254,12 @@ mt7996_set_hw_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 		if (phy)
 			mt7996_mcu_add_bss_info(phy, vif, link_conf,
 						&link->mt76, msta_link, true);
+=======
+		link->mt76.cipher =
+			mt76_connac_mcu_get_cipher(key->cipher);
+		mt7996_mcu_add_bss_info(link->phy, vif, link_conf,
+					&link->mt76, msta_link, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (cmd == SET_KEY)
@@ -304,6 +318,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 		.cmd = SET_KEY,
 		.link_id = link_conf->link_id,
 	};
+<<<<<<< HEAD
 	int mld_idx, idx, ret;
 
 	if ((mvif->mt76.valid_links & BIT(link_conf->link_id)) &&
@@ -314,6 +329,11 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 		return 0;
 	}
 
+=======
+	struct mt76_txq *mtxq;
+	int mld_idx, idx, ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlink->idx = __ffs64(~dev->mt76.vif_mask);
 	if (mlink->idx >= mt7996_max_interface_num(dev))
 		return -ENOSPC;
@@ -327,6 +347,10 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 		return -ENOSPC;
 
 	link->mld_idx = mld_idx;
+<<<<<<< HEAD
+=======
+	link->phy = phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlink->omac_idx = idx;
 	mlink->band_idx = band_idx;
 	mlink->wmm_idx = vif->type == NL80211_IFTYPE_AP ? 0 : 3;
@@ -353,6 +377,14 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 	mt7996_mac_wtbl_update(dev, idx,
 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
 
+<<<<<<< HEAD
+=======
+	if (vif->txq) {
+		mtxq = (struct mt76_txq *)vif->txq->drv_priv;
+		mtxq->wcid = idx;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (vif->type != NL80211_IFTYPE_AP &&
 	    (!mlink->omac_idx || mlink->omac_idx > 3))
 		vif->offload_flags = 0;
@@ -375,6 +407,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 
 	ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
 
+<<<<<<< HEAD
 	if (!mlink->wcid->offchannel) {
 		if (vif->txq &&
 		    mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED) {
@@ -397,10 +430,16 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 			WRITE_ONCE(mlink->beacon_mon_last, jiffies);
 		}
 	}
+=======
+	if (!mlink->wcid->offchannel &&
+	    mvif->mt76.deflink_id == IEEE80211_LINK_UNSPECIFIED)
+		mvif->mt76.deflink_id = link_conf->link_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mt7996_vif_link_destroy(struct mt7996_phy *phy,
 				    struct mt7996_vif_link *link,
 				    struct ieee80211_vif *vif,
@@ -450,6 +489,8 @@ static void mt7996_vif_link_destroy(struct mt7996_phy *phy,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 			    struct ieee80211_bss_conf *link_conf,
 			    struct mt76_vif_link *mlink)
@@ -457,6 +498,7 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 	struct mt7996_vif_link *link = container_of(mlink, struct mt7996_vif_link, mt76);
 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
 	struct mt7996_sta_link *msta_link = &link->msta_link;
+<<<<<<< HEAD
 	unsigned int link_id = msta_link->wcid.link_id;
 	struct mt7996_phy *phy = mphy->priv;
 
@@ -489,11 +531,54 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
 					continue;
 
 				mtxq->wcid = link->msta_link.wcid.idx;
+=======
+	struct mt7996_phy *phy = mphy->priv;
+	struct mt7996_dev *dev = phy->dev;
+	struct mt7996_key_iter_data it = {
+		.cmd = SET_KEY,
+		.link_id = link_conf->link_id,
+	};
+	int idx = msta_link->wcid.idx;
+
+	if (!mlink->wcid->offchannel)
+		ieee80211_iter_keys(mphy->hw, vif, mt7996_key_iter, &it);
+
+	mt7996_mcu_add_sta(dev, link_conf, NULL, link, NULL,
+			   CONN_STATE_DISCONNECT, false);
+	mt7996_mcu_add_bss_info(phy, vif, link_conf, mlink, msta_link, false);
+
+	mt7996_mcu_add_dev_info(phy, vif, link_conf, mlink, false);
+
+	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
+
+	if (!mlink->wcid->offchannel &&
+	    mvif->mt76.deflink_id == link_conf->link_id) {
+		struct ieee80211_bss_conf *iter;
+		unsigned int link_id;
+
+		mvif->mt76.deflink_id = IEEE80211_LINK_UNSPECIFIED;
+		for_each_vif_active_link(vif, iter, link_id) {
+			if (link_id != IEEE80211_LINK_UNSPECIFIED) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				mvif->mt76.deflink_id = link_id;
 				break;
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	dev->mt76.vif_mask &= ~BIT_ULL(mlink->idx);
+	dev->mld_idx_mask &= ~BIT_ULL(link->mld_idx);
+	phy->omac_mask &= ~BIT_ULL(mlink->omac_idx);
+
+	spin_lock_bh(&dev->mt76.sta_poll_lock);
+	if (!list_empty(&msta_link->wcid.poll_list))
+		list_del_init(&msta_link->wcid.poll_list);
+	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+
+	mt76_wcid_cleanup(&dev->mt76, &msta_link->wcid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mt7996_phy_set_rxfilter(struct mt7996_phy *phy)
@@ -539,8 +624,11 @@ static void mt7996_set_monitor(struct mt7996_phy *phy, bool enabled)
 
 	mt76_rmw_field(dev, MT_DMA_DCR0(phy->mt76->band_idx),
 		       MT_DMA_DCR0_RXD_G5_EN, enabled);
+<<<<<<< HEAD
 	mt76_rmw_field(dev, MT_MDP_DCR0,
 		       MT_MDP_DCR0_RX_HDR_TRANS_EN, !enabled);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt7996_phy_set_rxfilter(phy);
 	mt7996_mcu_set_sniffer_mode(phy, enabled);
 }
@@ -599,6 +687,7 @@ static void mt7996_remove_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
 static void mt7996_remove_interface(struct ieee80211_hw *hw,
 				    struct ieee80211_vif *vif)
 {
+<<<<<<< HEAD
 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
 	unsigned long rem_links = mvif->mt76.valid_links;
 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
@@ -622,6 +711,12 @@ static void mt7996_remove_interface(struct ieee80211_hw *hw,
 		mt7996_vif_link_destroy(phy, link, vif, NULL);
 	}
 
+=======
+	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+	struct mt7996_radio_data rdata = {};
+	int i;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee80211_iterate_active_interfaces_mtx(hw, 0, mt7996_remove_iter,
 						&rdata);
 	mt76_vif_cleanup(&dev->mt76, vif);
@@ -899,12 +994,16 @@ mt7996_vif_cfg_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 
 		for_each_vif_active_link(vif, link_conf, link_id) {
 			struct mt7996_vif_link *link;
+<<<<<<< HEAD
 			struct mt7996_phy *phy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			link = mt7996_vif_link(dev, vif, link_id);
 			if (!link)
 				continue;
 
+<<<<<<< HEAD
 			if (vif->type == NL80211_IFTYPE_STATION) {
 				link->mt76.beacon_mon_interval =
 					msecs_to_jiffies(ieee80211_tu_to_usec(
@@ -917,6 +1016,12 @@ mt7996_vif_cfg_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 				continue;
 
 			mt7996_mcu_add_bss_info(phy, vif, link_conf,
+=======
+			if (!link->phy)
+				continue;
+
+			mt7996_mcu_add_bss_info(link->phy, vif, link_conf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						&link->mt76, &link->msta_link,
 						true);
 			mt7996_mcu_add_sta(dev, link_conf, NULL, link, NULL,
@@ -925,6 +1030,7 @@ mt7996_vif_cfg_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		}
 	}
 
+<<<<<<< HEAD
 	if ((changed & BSS_CHANGED_ASSOC) && !vif->cfg.assoc &&
 	    vif->type == NL80211_IFTYPE_STATION) {
 		struct ieee80211_bss_conf *link_conf;
@@ -939,6 +1045,8 @@ mt7996_vif_cfg_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&dev->mt76.mutex);
 }
 
@@ -975,10 +1083,13 @@ mt7996_link_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 				   !!(changed & BSS_CHANGED_BSSID));
 	}
 
+<<<<<<< HEAD
 	if (changed & BSS_CHANGED_HT || changed & BSS_CHANGED_ERP_CTS_PROT)
 		mt7996_mcu_set_protection(phy, link, info->ht_operation_mode,
 					  info->use_cts_prot);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (changed & BSS_CHANGED_ERP_SLOT) {
 		int slottime = info->use_short_slot ? 9 : 20;
 
@@ -1042,6 +1153,7 @@ mt7996_channel_switch_beacon(struct ieee80211_hw *hw,
 			     struct cfg80211_chan_def *chandef)
 {
 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_band_phy(dev, chandef->chan->band);
 	struct ieee80211_bss_conf *link_conf;
 	unsigned int link_id;
@@ -1071,10 +1183,16 @@ mt7996_channel_switch_beacon(struct ieee80211_hw *hw,
 		break;
 	}
 
+=======
+
+	mutex_lock(&dev->mt76.mutex);
+	mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf, vif->bss_conf.enable_beacon);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&dev->mt76.mutex);
 }
 
 static int
+<<<<<<< HEAD
 mt7996_post_channel_switch(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			   struct ieee80211_bss_conf *link_conf)
 {
@@ -1121,6 +1239,8 @@ mt7996_sta_init_txq_wcid(struct ieee80211_sta *sta, int idx)
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 mt7996_mac_sta_init_link(struct mt7996_dev *dev,
 			 struct ieee80211_bss_conf *link_conf,
 			 struct ieee80211_link_sta *link_sta,
@@ -1128,6 +1248,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
 {
 	struct ieee80211_sta *sta = link_sta->sta;
 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_vif_link_phy(link);
 	struct mt7996_sta_link *msta_link;
 	int idx;
@@ -1135,15 +1256,39 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
 	if (!phy)
 		return -EINVAL;
 
+=======
+	struct mt7996_phy *phy = link->phy;
+	struct mt7996_sta_link *msta_link;
+	int idx;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7996_WTBL_STA);
 	if (idx < 0)
 		return -ENOSPC;
 
 	if (msta->deflink_id == IEEE80211_LINK_UNSPECIFIED) {
+<<<<<<< HEAD
 		msta_link = &msta->deflink;
 		msta->deflink_id = link_id;
 		msta->seclink_id = msta->deflink_id;
 		mt7996_sta_init_txq_wcid(sta, idx);
+=======
+		int i;
+
+		msta_link = &msta->deflink;
+		msta->deflink_id = link_id;
+		msta->seclink_id = msta->deflink_id;
+
+		for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
+			struct mt76_txq *mtxq;
+
+			if (!sta->txq[i])
+				continue;
+
+			mtxq = (struct mt76_txq *)sta->txq[i]->drv_priv;
+			mtxq->wcid = idx;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		msta_link = kzalloc_obj(*msta_link);
 		if (!msta_link)
@@ -1179,6 +1324,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 void mt7996_mac_sta_remove_link(struct mt7996_dev *dev,
 				struct ieee80211_sta *sta,
 				unsigned int link_id, bool flush)
@@ -1190,6 +1336,11 @@ void mt7996_mac_sta_remove_link(struct mt7996_dev *dev,
 	if (!msta_link)
 		return;
 
+=======
+void mt7996_mac_sta_deinit_link(struct mt7996_dev *dev,
+				struct mt7996_sta_link *msta_link)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_bh(&dev->mt76.sta_poll_lock);
 	if (!list_empty(&msta_link->wcid.poll_list))
 		list_del_init(&msta_link->wcid.poll_list);
@@ -1198,6 +1349,7 @@ void mt7996_mac_sta_remove_link(struct mt7996_dev *dev,
 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
 
 	mt76_wcid_cleanup(&dev->mt76, &msta_link->wcid);
+<<<<<<< HEAD
 
 	if (msta_link->wcid.link_valid) {
 		struct mt7996_phy *phy;
@@ -1240,10 +1392,14 @@ void mt7996_mac_sta_remove_link(struct mt7996_dev *dev,
 		if (msta_link != &msta->deflink)
 			kfree_rcu(msta_link, rcu_head);
 	}
+=======
+	mt76_wcid_mask_clear(dev->mt76.wcid_mask, msta_link->wcid.idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
 mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+<<<<<<< HEAD
 			    struct ieee80211_sta *sta, unsigned long links,
 			    bool flush)
 {
@@ -1251,6 +1407,46 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 
 	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS)
 		mt7996_mac_sta_remove_link(dev, sta, link_id, flush);
+=======
+			    struct ieee80211_sta *sta, unsigned long links)
+{
+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+	struct mt76_dev *mdev = &dev->mt76;
+	unsigned int link_id;
+
+	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
+		struct mt7996_sta_link *msta_link = NULL;
+		struct mt7996_vif_link *link;
+		struct mt76_phy *mphy;
+
+		msta_link = rcu_replace_pointer(msta->link[link_id], msta_link,
+						lockdep_is_held(&mdev->mutex));
+		if (!msta_link)
+			continue;
+
+		mt7996_mac_wtbl_update(dev, msta_link->wcid.idx,
+				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+
+		mt7996_mac_sta_deinit_link(dev, msta_link);
+		link = mt7996_vif_link(dev, vif, link_id);
+		if (!link)
+			continue;
+
+		mphy = mt76_vif_link_phy(&link->mt76);
+		if (!mphy)
+			continue;
+
+		mphy->num_sta--;
+		if (msta->deflink_id == link_id) {
+			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
+			continue;
+		} else if (msta->seclink_id == link_id) {
+			msta->seclink_id = IEEE80211_LINK_UNSPECIFIED;
+		}
+
+		kfree_rcu(msta_link, rcu_head);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -1264,6 +1460,7 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 	for_each_set_bit(link_id, &new_links, IEEE80211_MLD_MAX_NUM_LINKS) {
 		struct ieee80211_bss_conf *link_conf;
 		struct ieee80211_link_sta *link_sta;
+<<<<<<< HEAD
 		struct mt7996_sta_link *msta_link;
 		struct mt7996_vif_link *link;
 		struct mt76_phy *mphy;
@@ -1273,6 +1470,13 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 			msta_link->wcid.link_valid = true;
 			continue;
 		}
+=======
+		struct mt7996_vif_link *link;
+		struct mt76_phy *mphy;
+
+		if (rcu_access_pointer(msta->link[link_id]))
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		link_conf = link_conf_dereference_protected(vif, link_id);
 		if (!link_conf) {
@@ -1309,7 +1513,11 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 	return 0;
 
 error_unlink:
+<<<<<<< HEAD
 	mt7996_mac_sta_remove_links(dev, vif, sta, new_links, true);
+=======
+	mt7996_mac_sta_remove_links(dev, vif, sta, new_links);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return err;
 }
@@ -1326,7 +1534,11 @@ mt7996_mac_sta_change_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 
 	mutex_lock(&dev->mt76.mutex);
 
+<<<<<<< HEAD
 	mt7996_mac_sta_remove_links(dev, vif, sta, rem, false);
+=======
+	mt7996_mac_sta_remove_links(dev, vif, sta, rem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = mt7996_mac_sta_add_links(dev, vif, sta, add);
 
 	mutex_unlock(&dev->mt76.mutex);
@@ -1435,12 +1647,19 @@ static void
 mt7996_mac_sta_remove(struct mt7996_dev *dev, struct ieee80211_vif *vif,
 		      struct ieee80211_sta *sta)
 {
+<<<<<<< HEAD
 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
 	int i;
 
 	mutex_lock(&dev->mt76.mutex);
 	for (i = 0; i < ARRAY_SIZE(msta->link); i++)
 		mt7996_mac_sta_remove_link(dev, sta, i, true);
+=======
+	unsigned long links = sta->valid_links ? sta->valid_links : BIT(0);
+
+	mutex_lock(&dev->mt76.mutex);
+	mt7996_mac_sta_remove_links(dev, vif, sta, links);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&dev->mt76.mutex);
 }
 
@@ -1692,8 +1911,13 @@ mt7996_get_stats(struct ieee80211_hw *hw,
 
 u64 __mt7996_get_tsf(struct ieee80211_hw *hw, struct mt7996_vif_link *link)
 {
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_vif_link_phy(link);
 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+=======
+	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+	struct mt7996_phy *phy = link->phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union {
 		u64 t64;
 		u32 t32[2];
@@ -1752,7 +1976,11 @@ mt7996_set_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 
 	n = link->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0
 					       : link->mt76.omac_idx;
+<<<<<<< HEAD
 	phy = mt7996_vif_link_phy(link);
+=======
+	phy = link->phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!phy)
 		goto unlock;
 
@@ -1786,7 +2014,11 @@ mt7996_offset_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	if (!link)
 		goto unlock;
 
+<<<<<<< HEAD
 	phy = mt7996_vif_link_phy(link);
+=======
+	phy = link->phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!phy)
 		goto unlock;
 
@@ -1916,6 +2148,7 @@ static void mt7996_link_rate_ctrl_update(void *data,
 					 struct mt7996_sta_link *msta_link)
 {
 	struct mt7996_sta *msta = msta_link->sta;
+<<<<<<< HEAD
 	struct mt7996_phy *phy = mt7996_vif_link_phy(&msta->vif->deflink);
 	struct mt7996_dev *dev;
 	u32 *changed = data;
@@ -1924,6 +2157,11 @@ static void mt7996_link_rate_ctrl_update(void *data,
 		return;
 
 	dev = phy->dev;
+=======
+	struct mt7996_dev *dev = msta->vif->deflink.phy->dev;
+	u32 *changed = data;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_bh(&dev->mt76.sta_poll_lock);
 
 	msta_link->changed |= *changed;
@@ -2412,10 +2650,13 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
 		path->mtk_wdma.wdma_idx = wed->wdma_idx;
 	else
 #endif
+<<<<<<< HEAD
 	if (is_mt7996(&dev->mt76) && mt76_npu_device_active(&dev->mt76) &&
 	    msta_link->wcid.phy_idx == MT_BAND2)
 		path->mtk_wdma.wdma_idx = 1;
 	else
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		path->mtk_wdma.wdma_idx = link->mt76.band_idx;
 	path->mtk_wdma.bss = link->mt76.idx;
 	path->mtk_wdma.queue = 0;
@@ -2487,6 +2728,7 @@ mt7996_reconfig_complete(struct ieee80211_hw *hw,
 					     MT7996_WATCHDOG_TIME);
 }
 
+<<<<<<< HEAD
 static int
 mt7996_set_eml_op_mode(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		       struct ieee80211_sta *sta,
@@ -2502,6 +2744,8 @@ mt7996_set_eml_op_mode(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct ieee80211_ops mt7996_ops = {
 	.add_chanctx = mt76_add_chanctx,
 	.remove_chanctx = mt76_remove_chanctx,
@@ -2533,7 +2777,10 @@ const struct ieee80211_ops mt7996_ops = {
 	.release_buffered_frames = mt76_release_buffered_frames,
 	.get_txpower = mt7996_get_txpower,
 	.channel_switch_beacon = mt7996_channel_switch_beacon,
+<<<<<<< HEAD
 	.post_channel_switch = mt7996_post_channel_switch,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_stats = mt7996_get_stats,
 	.get_et_sset_count = mt7996_get_et_sset_count,
 	.get_et_stats = mt7996_get_et_stats,
@@ -2565,5 +2812,8 @@ const struct ieee80211_ops mt7996_ops = {
 	.change_vif_links = mt7996_change_vif_links,
 	.change_sta_links = mt7996_mac_sta_change_links,
 	.reconfig_complete = mt7996_reconfig_complete,
+<<<<<<< HEAD
 	.set_eml_op_mode = mt7996_set_eml_op_mode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

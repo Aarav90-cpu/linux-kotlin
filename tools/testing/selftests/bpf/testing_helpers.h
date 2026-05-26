@@ -40,7 +40,10 @@ int finit_module(int fd, const char *param_values, int flags);
 int delete_module(const char *name, int flags);
 int load_module(const char *path, bool verbose);
 int load_module_params(const char *path, const char *param_values, bool verbose);
+<<<<<<< HEAD
 int try_unload_module(const char *name, int retries, bool verbose);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int unload_module(const char *name, bool verbose);
 
 static inline __u64 get_time_ns(void)

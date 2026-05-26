@@ -49,6 +49,12 @@
 #define FN(reg_name, field_name) \
 	dpp->tf_shift->field_name, dpp->tf_mask->field_name
 
+<<<<<<< HEAD
+=======
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum dcn401_coef_filter_type_sel {
 	SCL_COEF_LUMA_VERT_FILTER = 0,
 	SCL_COEF_LUMA_HORZ_FILTER = 1,
@@ -129,9 +135,12 @@ void dpp401_set_cursor_position(
 	uint32_t width,
 	uint32_t height)
 {
+<<<<<<< HEAD
 	(void)param;
 	(void)width;
 	(void)height;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
 	uint32_t cur_en = pos->enable ? 1 : 0;
 
@@ -237,8 +246,11 @@ void dpp401_set_cursor_matrix(
 	enum dc_color_space color_space,
 	struct dc_csc_transform cursor_csc_color_matrix)
 {
+<<<<<<< HEAD
 	(void)color_space;
 	(void)cursor_csc_color_matrix;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	//Since we don't have cursor matrix information, force bypass mode by passing in unknown color space
 	dpp401_program_cursor_csc(dpp_base, COLOR_SPACE_UNKNOWN, NULL);
 }

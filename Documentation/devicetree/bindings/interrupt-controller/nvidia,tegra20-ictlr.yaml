@@ -35,12 +35,19 @@ properties:
       - enum:
           - nvidia,tegra20-ictlr
           - nvidia,tegra30-ictlr
+<<<<<<< HEAD
           - nvidia,tegra210-ictlr
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     description: Each entry is a block of 32 interrupts
     minItems: 4
+<<<<<<< HEAD
     maxItems: 6
+=======
+    maxItems: 5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   interrupt-controller: true
 
@@ -65,6 +72,7 @@ allOf:
       properties:
         reg:
           maxItems: 4
+<<<<<<< HEAD
 
   - if:
       properties:
@@ -87,6 +95,12 @@ allOf:
         reg:
           minItems: 6
           maxItems: 6
+=======
+    else:
+      properties:
+        reg:
+          minItems: 5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |

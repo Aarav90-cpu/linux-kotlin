@@ -36,7 +36,10 @@
 
 #define pr_fmt(fmt) "IPv6: " fmt
 
+<<<<<<< HEAD
 #include <crypto/sha1.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/errno.h>
 #include <linux/types.h>
 #include <linux/kernel.h>
@@ -3586,15 +3589,26 @@ static int fixup_permanent_addr(struct net *net,
 		struct fib6_info *f6i, *prev;
 
 		f6i = addrconf_f6i_alloc(net, idev, &ifp->addr, false,
+<<<<<<< HEAD
 					 GFP_KERNEL, NULL);
+=======
+					 GFP_ATOMIC, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(f6i))
 			return PTR_ERR(f6i);
 
 		/* ifp->rt can be accessed outside of rtnl */
+<<<<<<< HEAD
 		spin_lock_bh(&ifp->lock);
 		prev = ifp->rt;
 		ifp->rt = f6i;
 		spin_unlock_bh(&ifp->lock);
+=======
+		spin_lock(&ifp->lock);
+		prev = ifp->rt;
+		ifp->rt = f6i;
+		spin_unlock(&ifp->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		fib6_info_release(prev);
 	}
@@ -3602,7 +3616,11 @@ static int fixup_permanent_addr(struct net *net,
 	if (!(ifp->flags & IFA_F_NOPREFIXROUTE)) {
 		addrconf_prefix_route(&ifp->addr, ifp->prefix_len,
 				      ifp->rt_priority, idev->dev, 0, 0,
+<<<<<<< HEAD
 				      GFP_KERNEL);
+=======
+				      GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ifp->state == INET6_IFADDR_STATE_PREDAD)
@@ -3613,6 +3631,7 @@ static int fixup_permanent_addr(struct net *net,
 
 static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
 {
+<<<<<<< HEAD
 	struct inet6_ifaddr *ifp;
 	LIST_HEAD(tmp_addr_list);
 	struct inet6_dev *idev;
@@ -3620,11 +3639,17 @@ static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
 	/* Mutual exclusion with other if_list_aux users. */
 	ASSERT_RTNL();
 
+=======
+	struct inet6_ifaddr *ifp, *tmp;
+	struct inet6_dev *idev;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	idev = __in6_dev_get(dev);
 	if (!idev)
 		return;
 
 	write_lock_bh(&idev->lock);
+<<<<<<< HEAD
 	list_for_each_entry(ifp, &idev->addr_list, if_list) {
 		if (ifp->flags & IFA_F_PERMANENT)
 			list_add_tail(&ifp->if_list_aux, &tmp_addr_list);
@@ -3637,12 +3662,28 @@ static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
 		list_del(&ifp->if_list_aux);
 
 		if (fixup_permanent_addr(net, idev, ifp) < 0) {
+=======
+
+	list_for_each_entry_safe(ifp, tmp, &idev->addr_list, if_list) {
+		if ((ifp->flags & IFA_F_PERMANENT) &&
+		    fixup_permanent_addr(net, idev, ifp) < 0) {
+			write_unlock_bh(&idev->lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			net_info_ratelimited("%s: Failed to add prefix route for address %pI6c; dropping\n",
 					     idev->dev->name, &ifp->addr);
 			in6_ifa_hold(ifp);
 			ipv6_del_addr(ifp);
+<<<<<<< HEAD
 		}
 	}
+=======
+			write_lock_bh(&idev->lock);
+		}
+	}
+
+	write_unlock_bh(&idev->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int addrconf_notify(struct notifier_block *this, unsigned long event,

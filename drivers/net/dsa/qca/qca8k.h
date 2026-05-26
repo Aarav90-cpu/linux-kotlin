@@ -10,7 +10,11 @@
 
 #include <linux/delay.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/leds.h>
 #include <linux/dsa/tag_qca.h>
 

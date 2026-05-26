@@ -8,6 +8,7 @@
 #define BTF_MAGIC	0xeB9F
 #define BTF_VERSION	1
 
+<<<<<<< HEAD
 /*
  * BTF layout section consists of a struct btf_layout for each known
  * kind at BTF encoding time.
@@ -18,6 +19,8 @@ struct btf_layout {
 	__u16 flags;		/* currently unused */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct btf_header {
 	__u16	magic;
 	__u8	version;
@@ -29,8 +32,11 @@ struct btf_header {
 	__u32	type_len;	/* length of type section	*/
 	__u32	str_off;	/* offset of string section	*/
 	__u32	str_len;	/* length of string section	*/
+<<<<<<< HEAD
 	__u32	layout_off;	/* offset of layout section	*/
 	__u32	layout_len;	/* length of layout section	*/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Max # of type identifier */

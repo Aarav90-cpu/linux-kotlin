@@ -141,7 +141,11 @@ nodemask_t
 The size of a nodemask_t type. Used to compute the number of online
 nodes.
 
+<<<<<<< HEAD
 (page, flags|_refcount|mapping|lru|_mapcount|private|compound_order|compound_info)
+=======
+(page, flags|_refcount|mapping|lru|_mapcount|private|compound_order|compound_head)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ----------------------------------------------------------------------------------
 
 User-space tools compute their values based on the offset of these

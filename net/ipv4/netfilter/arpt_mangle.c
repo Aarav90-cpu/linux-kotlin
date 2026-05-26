@@ -40,10 +40,13 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
 	}
 	arpptr += pln;
 	if (mangle->flags & ARPT_MANGLE_TDEV) {
+<<<<<<< HEAD
 		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
 			     skb->dev->type == ARPHRD_IEEE1394))
 			return NF_DROP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
 		   (arpptr + hln > skb_tail_pointer(skb)))
 			return NF_DROP;
@@ -51,10 +54,13 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
 	}
 	arpptr += hln;
 	if (mangle->flags & ARPT_MANGLE_TIP) {
+<<<<<<< HEAD
 		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
 			     skb->dev->type == ARPHRD_IEEE1394))
 			return NF_DROP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
 		   (arpptr + pln > skb_tail_pointer(skb)))
 			return NF_DROP;

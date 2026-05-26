@@ -1462,7 +1462,11 @@ static int pxa_udc_wakeup(struct usb_gadget *_gadget)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int udc_enable(struct pxa_udc *udc);
+=======
+static void udc_enable(struct pxa_udc *udc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void udc_disable(struct pxa_udc *udc);
 
 /**
@@ -1519,13 +1523,17 @@ static int should_disable_udc(struct pxa_udc *udc)
 static int pxa_udc_pullup(struct usb_gadget *_gadget, int is_active)
 {
 	struct pxa_udc *udc = to_gadget_udc(_gadget);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!udc->gpiod && !udc->udc_command)
 		return -EOPNOTSUPP;
 
 	dplus_pullup(udc, is_active);
 
+<<<<<<< HEAD
 	if (should_enable_udc(udc)) {
 		ret = udc_enable(udc);
 		if (ret) {
@@ -1533,6 +1541,10 @@ static int pxa_udc_pullup(struct usb_gadget *_gadget, int is_active)
 			return ret;
 		}
 	}
+=======
+	if (should_enable_udc(udc))
+		udc_enable(udc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (should_disable_udc(udc))
 		udc_disable(udc);
 	return 0;
@@ -1551,6 +1563,7 @@ static int pxa_udc_pullup(struct usb_gadget *_gadget, int is_active)
 static int pxa_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
 {
 	struct pxa_udc *udc = to_gadget_udc(_gadget);
+<<<<<<< HEAD
 	int ret;
 
 	udc->vbus_sensed = is_active;
@@ -1561,6 +1574,12 @@ static int pxa_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
 			return ret;
 		}
 	}
+=======
+
+	udc->vbus_sensed = is_active;
+	if (should_enable_udc(udc))
+		udc_enable(udc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (should_disable_udc(udc))
 		udc_disable(udc);
 
@@ -1703,6 +1722,7 @@ static void udc_init_data(struct pxa_udc *dev)
  * Enables the udc device : enables clocks, udc interrupts, control endpoint
  * interrupts, sets usb as UDC client and setups endpoints.
  */
+<<<<<<< HEAD
 static int udc_enable(struct pxa_udc *udc)
 {
 	int ret;
@@ -1715,6 +1735,14 @@ static int udc_enable(struct pxa_udc *udc)
 		dev_err(udc->dev, "clk_enable failed: %d\n", ret);
 		return ret;
 	}
+=======
+static void udc_enable(struct pxa_udc *udc)
+{
+	if (udc->enabled)
+		return;
+
+	clk_enable(udc->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	udc_writel(udc, UDCICR0, 0);
 	udc_writel(udc, UDCICR1, 0);
 	udc_clear_mask_UDCCR(udc, UDCCR_UDE);
@@ -1744,8 +1772,11 @@ static int udc_enable(struct pxa_udc *udc)
 	pio_irq_enable(&udc->pxa_ep[0]);
 
 	udc->enabled = 1;
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1781,6 +1812,7 @@ static int pxa27x_udc_start(struct usb_gadget *g,
 		}
 	}
 
+<<<<<<< HEAD
 	if (should_enable_udc(udc)) {
 		retval = udc_enable(udc);
 		if (retval)
@@ -1791,6 +1823,12 @@ static int pxa27x_udc_start(struct usb_gadget *g,
 fail_enable:
 	if (!IS_ERR_OR_NULL(udc->transceiver))
 		otg_set_peripheral(udc->transceiver->otg, NULL);
+=======
+	if (should_enable_udc(udc))
+		udc_enable(udc);
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail:
 	udc->driver = NULL;
 	return retval;
@@ -2456,6 +2494,7 @@ static int pxa_udc_probe(struct platform_device *pdev)
 		goto err_add_gadget;
 
 	pxa_init_debugfs(udc);
+<<<<<<< HEAD
 	if (should_enable_udc(udc)) {
 		retval = udc_enable(udc);
 		if (retval)
@@ -2466,6 +2505,12 @@ static int pxa_udc_probe(struct platform_device *pdev)
 err_enable:
 	usb_del_gadget_udc(&udc->gadget);
 	pxa_cleanup_debugfs(udc);
+=======
+	if (should_enable_udc(udc))
+		udc_enable(udc);
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_add_gadget:
 	if (!IS_ERR_OR_NULL(udc->transceiver))
 		usb_unregister_notifier(udc->transceiver, &pxa27x_udc_phy);
@@ -2541,12 +2586,16 @@ static int pxa_udc_resume(struct platform_device *_dev)
 {
 	struct pxa_udc *udc = platform_get_drvdata(_dev);
 	struct pxa_ep *ep;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ep = &udc->pxa_ep[0];
 	udc_ep_writel(ep, UDCCSR, udc->udccsr0 & (UDCCSR0_FST | UDCCSR0_DME));
 
 	dplus_pullup(udc, udc->pullup_resume);
+<<<<<<< HEAD
 	if (should_enable_udc(udc)) {
 		ret = udc_enable(udc);
 		if (ret) {
@@ -2554,6 +2603,10 @@ static int pxa_udc_resume(struct platform_device *_dev)
 			return ret;
 		}
 	}
+=======
+	if (should_enable_udc(udc))
+		udc_enable(udc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We do not handle OTG yet.
 	 *

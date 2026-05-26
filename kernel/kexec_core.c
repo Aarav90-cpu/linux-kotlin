@@ -47,6 +47,10 @@
 #include <asm/page.h>
 #include <asm/sections.h>
 
+<<<<<<< HEAD
+=======
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "kexec_internal.h"
 
 atomic_t __kexec_lock = ATOMIC_INIT(0);

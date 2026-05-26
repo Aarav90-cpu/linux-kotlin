@@ -754,7 +754,11 @@ static int ltr501_get_gain_index(const struct ltr501_gain *gain, int size,
 		if (val == gain[i].scale && val2 == gain[i].uscale)
 			return i;
 
+<<<<<<< HEAD
 	return -EINVAL;
+=======
+	return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __ltr501_write_raw(struct iio_dev *indio_dev,
@@ -773,7 +777,11 @@ static int __ltr501_write_raw(struct iio_dev *indio_dev,
 						  info->als_gain_tbl_size,
 						  val, val2);
 			if (i < 0)
+<<<<<<< HEAD
 				return i;
+=======
+				return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			data->als_contr &= ~info->als_gain_mask;
 			data->als_contr |= i << info->als_gain_shift;
@@ -785,7 +793,11 @@ static int __ltr501_write_raw(struct iio_dev *indio_dev,
 						  info->ps_gain_tbl_size,
 						  val, val2);
 			if (i < 0)
+<<<<<<< HEAD
 				return i;
+=======
+				return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			data->ps_contr &= ~LTR501_CONTR_PS_GAIN_MASK;
 			data->ps_contr |= i << LTR501_CONTR_PS_GAIN_SHIFT;

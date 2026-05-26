@@ -5,7 +5,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/math64.h>
+<<<<<<< HEAD
 #include <linux/stddef.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #include "regs.h"
@@ -21,6 +24,7 @@ struct zl3073x_dev;
  * @ctrl: synth control
  */
 struct zl3073x_synth {
+<<<<<<< HEAD
 	struct_group(inv, /* Invariants */
 		u32	freq_mult;
 		u16	freq_base;
@@ -28,6 +32,13 @@ struct zl3073x_synth {
 		u16	freq_n;
 		u8	ctrl;
 	);
+=======
+	u32	freq_mult;
+	u16	freq_base;
+	u16	freq_m;
+	u16	freq_n;
+	u8	ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 synth_id);
@@ -35,6 +46,12 @@ int zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 synth_id);
 const struct zl3073x_synth *zl3073x_synth_state_get(struct zl3073x_dev *zldev,
 						    u8 synth_id);
 
+<<<<<<< HEAD
+=======
+int zl3073x_synth_state_set(struct zl3073x_dev *zldev, u8 synth_id,
+			    const struct zl3073x_synth *synth);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * zl3073x_synth_dpll_get - get DPLL ID the synth is driven by
  * @synth: pointer to synth state

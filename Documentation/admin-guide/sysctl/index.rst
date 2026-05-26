@@ -67,8 +67,13 @@ This documentation is about:
 =============== ===============================================================
 abi/		execution domains & personalities
 <$ARCH>		tuning controls for various CPU architecture (e.g. csky, s390)
+<<<<<<< HEAD
 crypto/		cryptographic subsystem
 debug/		debugging features
+=======
+crypto/		<undocumented>
+debug/		<undocumented>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dev/		device specific information (e.g. dev/cdrom/info)
 fs/		specific filesystems
 		filehandle, inode, dentry and quota tuning
@@ -84,7 +89,11 @@ sunrpc/		SUN Remote Procedure Call (NFS)
 user/		Per user namespace limits
 vm/		memory management tuning
 		buffer and cache management
+<<<<<<< HEAD
 xen/		Xen hypervisor controls
+=======
+xen/		<undocumented>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 =============== ===============================================================
 
 These are the subdirs I have on my system or have been discovered by
@@ -96,12 +105,18 @@ it :-)
    :maxdepth: 1
 
    abi
+<<<<<<< HEAD
    crypto
    debug
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    fs
    kernel
    net
    sunrpc
    user
    vm
+<<<<<<< HEAD
    xen
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

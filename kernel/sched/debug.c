@@ -8,9 +8,15 @@
  */
 #include <linux/debugfs.h>
 #include <linux/nmi.h>
+<<<<<<< HEAD
 #include <linux/log2.h>
 #include "sched.h"
 
+=======
+#include "sched.h"
+
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * This allows printing both to /sys/kernel/debug/sched/debug and
  * to the console
@@ -210,6 +216,11 @@ static const struct file_operations sched_scaling_fops = {
 	.release	= single_release,
 };
 
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_PREEMPT_DYNAMIC
 
 static ssize_t sched_dynamic_write(struct file *filp, const char __user *ubuf,
@@ -275,6 +286,10 @@ static const struct file_operations sched_dynamic_fops = {
 
 #endif /* CONFIG_PREEMPT_DYNAMIC */
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __read_mostly bool sched_debug_verbose;
 
 static struct dentry           *sd_dentry;
@@ -510,6 +525,10 @@ static const struct file_operations fair_server_period_fops = {
 	.llseek		= seq_lseek,
 	.release	= single_release,
 };
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SCHED_CLASS_EXT
 static ssize_t
@@ -547,6 +566,10 @@ static const struct file_operations ext_server_period_fops = {
 
 static struct dentry *debugfs_sched;
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void debugfs_fair_server_init(void)
 {
 	struct dentry *d_fair;
@@ -567,6 +590,10 @@ static void debugfs_fair_server_init(void)
 		debugfs_create_file("period", 0644, d_cpu, (void *) cpu, &fair_server_period_fops);
 	}
 }
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SCHED_CLASS_EXT
 static void debugfs_ext_server_init(void)
@@ -597,14 +624,25 @@ static __init int sched_init_debug(void)
 
 	debugfs_sched = debugfs_create_dir("sched", NULL);
 
+<<<<<<< HEAD
 	debugfs_create_file("features", 0644, debugfs_sched, NULL, &sched_feat_fops);
 	debugfs_create_file_unsafe("verbose", 0644, debugfs_sched, &sched_debug_verbose, &sched_verbose_fops);
+=======
+#ifndef CONFIG_SCHED_ALT
+	debugfs_create_file("features", 0644, debugfs_sched, NULL, &sched_feat_fops);
+	debugfs_create_file_unsafe("verbose", 0644, debugfs_sched, &sched_debug_verbose, &sched_verbose_fops);
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_PREEMPT_DYNAMIC
 	debugfs_create_file("preempt", 0644, debugfs_sched, NULL, &sched_dynamic_fops);
 #endif
 
 	debugfs_create_u32("base_slice_ns", 0644, debugfs_sched, &sysctl_sched_base_slice);
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_create_u32("latency_warn_ms", 0644, debugfs_sched, &sysctl_resched_latency_warn_ms);
 	debugfs_create_u32("latency_warn_once", 0644, debugfs_sched, &sysctl_resched_latency_warn_once);
 
@@ -627,16 +665,31 @@ static __init int sched_init_debug(void)
 #endif /* CONFIG_NUMA_BALANCING */
 
 	debugfs_create_file("debug", 0444, debugfs_sched, NULL, &sched_debug_fops);
+<<<<<<< HEAD
 
+=======
+#endif /* !CONFIG_SCHED_ALT */
+
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_fair_server_init();
 #ifdef CONFIG_SCHED_CLASS_EXT
 	debugfs_ext_server_init();
 #endif
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 late_initcall(sched_init_debug);
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static cpumask_var_t		sd_sysctl_cpus;
 
 static int sd_flags_show(struct seq_file *m, void *v)
@@ -902,6 +955,7 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
 
 void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 {
+<<<<<<< HEAD
 	s64 left_vruntime = -1, right_vruntime = -1, left_deadline = -1, spread;
 	s64 zero_vruntime = -1, sum_w_vruntime = -1;
 	u64 avruntime;
@@ -910,6 +964,13 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 	unsigned int sum_shift;
 	unsigned long flags;
 	u64 sum_weight;
+=======
+	s64 left_vruntime = -1, zero_vruntime, right_vruntime = -1, left_deadline = -1, spread;
+	u64 avruntime;
+	struct sched_entity *last, *first, *root;
+	struct rq *rq = cpu_rq(cpu);
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	SEQ_printf(m, "\n");
@@ -930,9 +991,12 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 	if (last)
 		right_vruntime = last->vruntime;
 	zero_vruntime = cfs_rq->zero_vruntime;
+<<<<<<< HEAD
 	sum_w_vruntime = cfs_rq->sum_w_vruntime;
 	sum_weight = cfs_rq->sum_weight;
 	sum_shift = cfs_rq->sum_shift;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	avruntime = avg_vruntime(cfs_rq);
 	raw_spin_rq_unlock_irqrestore(rq, flags);
 
@@ -942,11 +1006,14 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 			SPLIT_NS(left_vruntime));
 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "zero_vruntime",
 			SPLIT_NS(zero_vruntime));
+<<<<<<< HEAD
 	SEQ_printf(m, "  .%-30s: %Ld (%d bits)\n", "sum_w_vruntime",
 		   sum_w_vruntime, ilog2(abs(sum_w_vruntime)));
 	SEQ_printf(m, "  .%-30s: %Lu\n", "sum_weight",
 		   sum_weight);
 	SEQ_printf(m, "  .%-30s: %u\n", "sum_shift", sum_shift);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
 			SPLIT_NS(avruntime));
 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
@@ -1382,6 +1449,14 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
 
 	sched_show_numa(p, m);
 }
+<<<<<<< HEAD
+=======
+#else
+void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+						  struct seq_file *m)
+{ }
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void proc_sched_set_task(struct task_struct *p)
 {

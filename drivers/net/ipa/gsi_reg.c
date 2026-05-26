@@ -110,7 +110,10 @@ static const struct regs *gsi_regs(struct gsi *gsi)
 		return &gsi_regs_v4_11;
 
 	case IPA_VERSION_5_0:
+<<<<<<< HEAD
 	case IPA_VERSION_5_2:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IPA_VERSION_5_5:
 		return &gsi_regs_v5_0;
 

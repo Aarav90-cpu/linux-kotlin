@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2014-2026 NVIDIA CORPORATION.  All rights reserved.
+=======
+ * Copyright (C) 2014-2025 NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/clk.h>
@@ -56,6 +60,7 @@ static const struct of_device_id tegra_mc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, tegra_mc_of_match);
 
+<<<<<<< HEAD
 const struct tegra_mc_regs tegra20_mc_regs = {
 	.cfg_channel_enable = 0xdf8,
 	.err_status = 0x08,
@@ -73,6 +78,8 @@ const struct tegra_mc_regs tegra20_mc_regs = {
 	.err_route_add = 0x9c4,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void tegra_mc_devm_action_put_device(void *data)
 {
 	struct tegra_mc *mc = data;
@@ -398,16 +405,23 @@ unsigned int tegra_mc_get_emem_device_count(struct tegra_mc *mc)
 }
 EXPORT_SYMBOL_GPL(tegra_mc_get_emem_device_count);
 
+<<<<<<< HEAD
 const irq_handler_t tegra30_mc_irq_handlers[] = {
 	tegra30_mc_handle_irq
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(CONFIG_ARCH_TEGRA_3x_SOC) || \
     defined(CONFIG_ARCH_TEGRA_114_SOC) || \
     defined(CONFIG_ARCH_TEGRA_124_SOC) || \
     defined(CONFIG_ARCH_TEGRA_132_SOC) || \
     defined(CONFIG_ARCH_TEGRA_210_SOC)
+<<<<<<< HEAD
 static void tegra_mc_setup_latency_allowance(struct tegra_mc *mc)
+=======
+static int tegra_mc_setup_latency_allowance(struct tegra_mc *mc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long long tick;
 	unsigned int i;
@@ -435,6 +449,11 @@ static void tegra_mc_setup_latency_allowance(struct tegra_mc *mc)
 
 	/* latch new values */
 	mc_writel(mc, MC_TIMING_UPDATE, MC_TIMING_CONTROL);
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int load_one_timing(struct tegra_mc *mc,
@@ -528,24 +547,49 @@ int tegra30_mc_probe(struct tegra_mc *mc)
 	int err;
 
 	mc->clk = devm_clk_get_optional(mc->dev, "mc");
+<<<<<<< HEAD
 	if (IS_ERR(mc->clk))
 		return dev_err_probe(mc->dev, PTR_ERR(mc->clk),
 				     "failed to get MC clock\n");
+=======
+	if (IS_ERR(mc->clk)) {
+		dev_err(mc->dev, "failed to get MC clock: %ld\n", PTR_ERR(mc->clk));
+		return PTR_ERR(mc->clk);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* ensure that debug features are disabled */
 	mc_writel(mc, 0x00000000, MC_TIMING_CONTROL_DBG);
 
+<<<<<<< HEAD
 	tegra_mc_setup_latency_allowance(mc);
 
 	err = tegra_mc_setup_timings(mc);
 	if (err < 0)
 		return dev_err_probe(mc->dev, err, "failed to setup timings\n");
+=======
+	err = tegra_mc_setup_latency_allowance(mc);
+	if (err < 0) {
+		dev_err(mc->dev, "failed to setup latency allowance: %d\n", err);
+		return err;
+	}
+
+	err = tegra_mc_setup_timings(mc);
+	if (err < 0) {
+		dev_err(mc->dev, "failed to setup timings: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
 const struct tegra_mc_ops tegra30_mc_ops = {
 	.probe = tegra30_mc_probe,
+<<<<<<< HEAD
+=======
+	.handle_irq = tegra30_mc_handle_irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #endif
 
@@ -586,9 +630,15 @@ irqreturn_t tegra30_mc_handle_irq(int irq, void *data)
 		}
 
 		/* mask all interrupts to avoid flooding */
+<<<<<<< HEAD
 		status = mc_ch_readl(mc, channel, MC_INTSTATUS) & mc->soc->intmasks[0].mask;
 	} else {
 		status = mc_readl(mc, MC_INTSTATUS) & mc->soc->intmasks[0].mask;
+=======
+		status = mc_ch_readl(mc, channel, MC_INTSTATUS) & mc->soc->intmask;
+	} else {
+		status = mc_readl(mc, MC_INTSTATUS) & mc->soc->intmask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!status)
@@ -611,6 +661,7 @@ irqreturn_t tegra30_mc_handle_irq(int irq, void *data)
 
 		switch (intmask) {
 		case MC_INT_DECERR_VPR:
+<<<<<<< HEAD
 			status_reg = mc->soc->regs->err_vpr_status;
 			addr_reg = mc->soc->regs->err_vpr_add;
 			break;
@@ -642,6 +693,39 @@ irqreturn_t tegra30_mc_handle_irq(int irq, void *data)
 #ifdef CONFIG_PHYS_ADDR_T_64BIT
 			if (mc->soc->has_addr_hi_reg)
 				addr_hi_reg = mc->soc->regs->err_add_hi;
+=======
+			status_reg = MC_ERR_VPR_STATUS;
+			addr_reg = MC_ERR_VPR_ADR;
+			break;
+
+		case MC_INT_SECERR_SEC:
+			status_reg = MC_ERR_SEC_STATUS;
+			addr_reg = MC_ERR_SEC_ADR;
+			break;
+
+		case MC_INT_DECERR_MTS:
+			status_reg = MC_ERR_MTS_STATUS;
+			addr_reg = MC_ERR_MTS_ADR;
+			break;
+
+		case MC_INT_DECERR_GENERALIZED_CARVEOUT:
+			status_reg = MC_ERR_GENERALIZED_CARVEOUT_STATUS;
+			addr_reg = MC_ERR_GENERALIZED_CARVEOUT_ADR;
+			break;
+
+		case MC_INT_DECERR_ROUTE_SANITY:
+			status_reg = MC_ERR_ROUTE_SANITY_STATUS;
+			addr_reg = MC_ERR_ROUTE_SANITY_ADR;
+			break;
+
+		default:
+			status_reg = MC_ERR_STATUS;
+			addr_reg = MC_ERR_ADR;
+
+#ifdef CONFIG_PHYS_ADDR_T_64BIT
+			if (mc->soc->has_addr_hi_reg)
+				addr_hi_reg = MC_ERR_ADR_HI;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 			break;
 		}
@@ -658,12 +742,18 @@ irqreturn_t tegra30_mc_handle_irq(int irq, void *data)
 					addr = mc_ch_readl(mc, channel, addr_hi_reg);
 				else
 					addr = mc_readl(mc, addr_hi_reg);
+<<<<<<< HEAD
 			} else if (mc->soc->mc_addr_hi_mask) {
 				addr = ((value >> MC_ERR_STATUS_ADR_HI_SHIFT) &
 					mc->soc->mc_addr_hi_mask);
 			} else {
 				dev_err_ratelimited(mc->dev, "Unable to determine high address!");
 				return IRQ_NONE;
+=======
+			} else {
+				addr = ((value >> MC_ERR_STATUS_ADR_HI_SHIFT) &
+					MC_ERR_STATUS_ADR_HI_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			addr <<= 32;
 		}
@@ -688,11 +778,19 @@ irqreturn_t tegra30_mc_handle_irq(int irq, void *data)
 			}
 		}
 
+<<<<<<< HEAD
 		type = (value & mc->soc->mc_err_status_type_mask) >>
 		       MC_ERR_STATUS_TYPE_SHIFT;
 		desc = tegra20_mc_error_names[type];
 
 		switch (value & mc->soc->mc_err_status_type_mask) {
+=======
+		type = (value & MC_ERR_STATUS_TYPE_MASK) >>
+		       MC_ERR_STATUS_TYPE_SHIFT;
+		desc = tegra_mc_error_names[type];
+
+		switch (value & MC_ERR_STATUS_TYPE_MASK) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case MC_ERR_STATUS_TYPE_INVALID_SMMU_PAGE:
 			perm[0] = ' ';
 			perm[1] = '[';
@@ -758,10 +856,16 @@ const char *const tegra_mc_status_names[32] = {
 	[16] = "MTS carveout violation",
 	[17] = "Generalized carveout violation",
 	[20] = "Route Sanity error",
+<<<<<<< HEAD
 	[21] = "GIC_MSI error",
 };
 
 const char *const tegra20_mc_error_names[8] = {
+=======
+};
+
+const char *const tegra_mc_error_names[8] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[2] = "EMEM decode error",
 	[3] = "TrustZone violation",
 	[4] = "Carveout violation",
@@ -898,7 +1002,11 @@ static void tegra_mc_num_channel_enabled(struct tegra_mc *mc)
 	unsigned int i;
 	u32 value;
 
+<<<<<<< HEAD
 	value = mc_ch_readl(mc, 0, mc->soc->regs->cfg_channel_enable);
+=======
+	value = mc_ch_readl(mc, 0, MC_EMEM_ADR_CFG_CHANNEL_ENABLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (value <= 0) {
 		mc->num_channels = mc->soc->num_channels;
 		return;
@@ -950,6 +1058,7 @@ static int tegra_mc_probe(struct platform_device *pdev)
 
 	tegra_mc_num_channel_enabled(mc);
 
+<<<<<<< HEAD
 	if (mc->soc->handle_irq) {
 		unsigned int i;
 
@@ -976,6 +1085,27 @@ static int tegra_mc_probe(struct platform_device *pdev)
 					     mc->soc->intmasks[i].reg);
 			else
 				mc_writel(mc, mc->soc->intmasks[i].mask, mc->soc->intmasks[i].reg);
+=======
+	if (mc->soc->ops && mc->soc->ops->handle_irq) {
+		mc->irq = platform_get_irq(pdev, 0);
+		if (mc->irq < 0)
+			return mc->irq;
+
+		WARN(!mc->soc->client_id_mask, "missing client ID mask for this SoC\n");
+
+		if (mc->soc->num_channels)
+			mc_ch_writel(mc, MC_BROADCAST_CHANNEL, mc->soc->intmask,
+				     MC_INTMASK);
+		else
+			mc_writel(mc, mc->soc->intmask, MC_INTMASK);
+
+		err = devm_request_irq(&pdev->dev, mc->irq, mc->soc->ops->handle_irq, 0,
+				       dev_name(&pdev->dev), mc);
+		if (err < 0) {
+			dev_err(&pdev->dev, "failed to request IRQ#%u: %d\n", mc->irq,
+				err);
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -993,7 +1123,12 @@ static int tegra_mc_probe(struct platform_device *pdev)
 	if (IS_ENABLED(CONFIG_TEGRA_IOMMU_SMMU) && mc->soc->smmu) {
 		mc->smmu = tegra_smmu_probe(&pdev->dev, mc->soc->smmu, mc);
 		if (IS_ERR(mc->smmu)) {
+<<<<<<< HEAD
 			dev_err(&pdev->dev, "failed to probe SMMU: %pe\n", mc->smmu);
+=======
+			dev_err(&pdev->dev, "failed to probe SMMU: %ld\n",
+				PTR_ERR(mc->smmu));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mc->smmu = NULL;
 		}
 	}

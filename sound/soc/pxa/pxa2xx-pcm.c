@@ -18,7 +18,11 @@
 #include <sound/dmaengine_pcm.h>
 
 static const struct snd_soc_component_driver pxa2xx_soc_platform = {
+<<<<<<< HEAD
 	.pcm_new	= pxa2xx_soc_pcm_new,
+=======
+	.pcm_construct	= pxa2xx_soc_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open		= pxa2xx_soc_pcm_open,
 	.close		= pxa2xx_soc_pcm_close,
 	.hw_params	= pxa2xx_soc_pcm_hw_params,

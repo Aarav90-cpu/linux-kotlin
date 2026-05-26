@@ -107,11 +107,16 @@ static void sd_config_write_same(struct scsi_disk *sdkp,
 static void  sd_revalidate_disk(struct gendisk *);
 
 static DEFINE_IDA(sd_index_ida);
+<<<<<<< HEAD
 static DEFINE_MUTEX(sd_mutex_lock);
 
 static mempool_t *sd_page_pool;
 static mempool_t *sd_large_page_pool;
 static atomic_t sd_large_page_pool_users = ATOMIC_INIT(0);
+=======
+
+static mempool_t *sd_page_pool;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct lock_class_key sd_bio_compl_lkclass;
 
 static const char *sd_cache_types[] = {
@@ -119,6 +124,7 @@ static const char *sd_cache_types[] = {
 	"write back, no read (daft)"
 };
 
+<<<<<<< HEAD
 static int sd_large_pool_create(void)
 {
 	mutex_lock(&sd_mutex_lock);
@@ -146,6 +152,8 @@ static void sd_large_pool_destroy(void)
 	mutex_unlock(&sd_mutex_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sd_disable_discard(struct scsi_disk *sdkp)
 {
 	sdkp->provisioning_mode = SD_LBP_DISABLE;
@@ -958,6 +966,7 @@ static unsigned char sd_setup_protect_cmnd(struct scsi_cmnd *scmd,
 	return protect;
 }
 
+<<<<<<< HEAD
 static void *sd_set_special_bvec(struct scsi_cmnd *cmd, unsigned int data_len)
 {
 	struct page *page;
@@ -976,6 +985,16 @@ static void *sd_set_special_bvec(struct scsi_cmnd *cmd, unsigned int data_len)
 
 	for (n = 0; n < nr_pages; n++)
 		clear_highpage(page + n);
+=======
+static void *sd_set_special_bvec(struct request *rq, unsigned int data_len)
+{
+	struct page *page;
+
+	page = mempool_alloc(sd_page_pool, GFP_ATOMIC);
+	if (!page)
+		return NULL;
+	clear_highpage(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bvec_set_page(&rq->special_vec, page, data_len, 0);
 	rq->rq_flags |= RQF_SPECIAL_PAYLOAD;
 	return bvec_virt(&rq->special_vec);
@@ -991,7 +1010,11 @@ static blk_status_t sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
 	unsigned int data_len = 24;
 	char *buf;
 
+<<<<<<< HEAD
 	buf = sd_set_special_bvec(cmd, data_len);
+=======
+	buf = sd_set_special_bvec(rq, data_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!buf)
 		return BLK_STS_RESOURCE;
 
@@ -1080,7 +1103,11 @@ static blk_status_t sd_setup_write_same16_cmnd(struct scsi_cmnd *cmd,
 	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
 	u32 data_len = sdp->sector_size;
 
+<<<<<<< HEAD
 	if (!sd_set_special_bvec(cmd, data_len))
+=======
+	if (!sd_set_special_bvec(rq, data_len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return BLK_STS_RESOURCE;
 
 	cmd->cmd_len = 16;
@@ -1107,7 +1134,11 @@ static blk_status_t sd_setup_write_same10_cmnd(struct scsi_cmnd *cmd,
 	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
 	u32 data_len = sdp->sector_size;
 
+<<<<<<< HEAD
 	if (!sd_set_special_bvec(cmd, data_len))
+=======
+	if (!sd_set_special_bvec(rq, data_len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return BLK_STS_RESOURCE;
 
 	cmd->cmd_len = 10;
@@ -1553,6 +1584,7 @@ static blk_status_t sd_init_command(struct scsi_cmnd *cmd)
 static void sd_uninit_command(struct scsi_cmnd *SCpnt)
 {
 	struct request *rq = scsi_cmd_to_rq(SCpnt);
+<<<<<<< HEAD
 	struct scsi_device *sdp = SCpnt->device;
 	unsigned sector_size = sdp->sector_size;
 
@@ -1562,6 +1594,11 @@ static void sd_uninit_command(struct scsi_cmnd *SCpnt)
 		else
 			mempool_free(rq->special_vec.bv_page, sd_page_pool);
 	}
+=======
+
+	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD)
+		mempool_free(rq->special_vec.bv_page, sd_page_pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool sd_need_revalidate(struct gendisk *disk, struct scsi_disk *sdkp)
@@ -2957,7 +2994,14 @@ got_data:
 			  "Sector size 0 reported, assuming 512.\n");
 	}
 
+<<<<<<< HEAD
 	if (blk_validate_block_size(sector_size)) {
+=======
+	if (sector_size != 512 &&
+	    sector_size != 1024 &&
+	    sector_size != 2048 &&
+	    sector_size != 4096) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sd_printk(KERN_NOTICE, sdkp, "Unsupported sector size %d.\n",
 			  sector_size);
 		/*
@@ -4086,12 +4130,15 @@ static int sd_probe(struct scsi_device *sdp)
 	sdkp->max_medium_access_timeouts = SD_MAX_MEDIUM_TIMEOUTS;
 
 	sd_revalidate_disk(gd);
+<<<<<<< HEAD
 	if (sdp->sector_size > PAGE_SIZE) {
 		if (sd_large_pool_create()) {
 			error = -ENOMEM;
 			goto out_free_index;
 		}
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdp->removable) {
 		gd->flags |= GENHD_FL_REMOVABLE;
@@ -4109,8 +4156,11 @@ static int sd_probe(struct scsi_device *sdp)
 	if (error) {
 		device_unregister(&sdkp->disk_dev);
 		put_disk(gd);
+<<<<<<< HEAD
 		if (sdp->sector_size > PAGE_SIZE)
 			sd_large_pool_destroy();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
@@ -4263,9 +4313,12 @@ static void sd_remove(struct scsi_device *sdp)
 		sd_shutdown(sdp);
 
 	put_disk(sdkp->disk);
+<<<<<<< HEAD
 
 	if (sdp->sector_size > PAGE_SIZE)
 		sd_large_pool_destroy();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool sd_do_start_stop(struct scsi_device *sdev, bool runtime)
@@ -4489,8 +4542,11 @@ static void __exit exit_sd(void)
 
 	scsi_unregister_driver(&sd_template);
 	mempool_destroy(sd_page_pool);
+<<<<<<< HEAD
 	if (sd_large_page_pool)
 		mempool_destroy(sd_large_page_pool);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	class_unregister(&sd_disk_class);
 

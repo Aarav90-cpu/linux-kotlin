@@ -796,8 +796,12 @@ r535_gsp_acpi_mux_id(acpi_handle handle, u32 id, MUX_METHOD_DATA_ELEMENT *mode,
 	struct acpi_object_list input = { 1, &mux_arg };
 	acpi_handle iter = NULL, handle_mux = NULL;
 	acpi_status status;
+<<<<<<< HEAD
 	u64 value;
 	int ret;
+=======
+	unsigned long long value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mode->status = 0xffff;
 	part->status = 0xffff;
@@ -807,8 +811,13 @@ r535_gsp_acpi_mux_id(acpi_handle handle, u32 id, MUX_METHOD_DATA_ELEMENT *mode,
 		if (ACPI_FAILURE(status) || !iter)
 			return;
 
+<<<<<<< HEAD
 		ret = acpi_get_local_u64_address(iter, &value);
 		if (ret || value != id)
+=======
+		status = acpi_evaluate_integer(iter, "_ADR", NULL, &value);
+		if (ACPI_FAILURE(status) || value != id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		handle_mux = iter;

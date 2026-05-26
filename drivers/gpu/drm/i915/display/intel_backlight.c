@@ -12,6 +12,10 @@
 #include <drm/drm_file.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_backlight.h"
 #include "intel_backlight_regs.h"
 #include "intel_connector.h"

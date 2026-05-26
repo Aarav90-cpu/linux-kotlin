@@ -170,8 +170,13 @@ static int strncpy_chunk_from_user(unsigned long from, int len, void *arg)
 	char **to_ptr = arg, *to = *to_ptr;
 	int n;
 
+<<<<<<< HEAD
 	n = strnlen((void *) from, len);
 	memcpy_and_pad(to, len, (void *) from, n, 0);
+=======
+	strncpy(to, (void *) from, len);
+	n = strnlen(to, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*to_ptr += n;
 
 	if (n < len)

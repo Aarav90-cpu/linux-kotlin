@@ -290,7 +290,11 @@ static ssize_t name_show(struct device *dev,
 {
 	struct fpga_bridge *bridge = to_fpga_bridge(dev);
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%s\n", bridge->name);
+=======
+	return sprintf(buf, "%s\n", bridge->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t state_show(struct device *dev,

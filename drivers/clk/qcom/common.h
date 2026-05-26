@@ -28,7 +28,11 @@ struct qcom_icc_hws_data {
 struct qcom_cc_driver_data {
 	struct clk_alpha_pll **alpha_plls;
 	size_t num_alpha_plls;
+<<<<<<< HEAD
 	const u32 *clk_cbcrs;
+=======
+	u32 *clk_cbcrs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t num_clk_cbcrs;
 	const struct clk_rcg_dfs_data *dfs_rcgs;
 	size_t num_dfs_rcgs;
@@ -49,7 +53,11 @@ struct qcom_cc_desc {
 	size_t num_icc_hws;
 	unsigned int icc_first_node_id;
 	bool use_rpm;
+<<<<<<< HEAD
 	const struct qcom_cc_driver_data *driver_data;
+=======
+	struct qcom_cc_driver_data *driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

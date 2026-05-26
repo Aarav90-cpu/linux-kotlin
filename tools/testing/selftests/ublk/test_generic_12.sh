@@ -25,7 +25,11 @@ btrace_pid=$!
 sleep 2
 
 if ! kill -0 "$btrace_pid" > /dev/null 2>&1; then
+<<<<<<< HEAD
 	_cleanup_test
+=======
+	_cleanup_test "null"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exit "$UBLK_SKIP_CODE"
 fi
 
@@ -54,5 +58,9 @@ if [[ $NR_THREADS_THAT_HANDLED_IO -ne $NTHREADS ]]; then
         ERR_CODE=255
 fi
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "null"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

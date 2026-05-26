@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 /*
+<<<<<<< HEAD
  * Copyright 2015-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2015 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -91,11 +95,17 @@
 #include <drm/drm_fourcc.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_eld.h>
+<<<<<<< HEAD
 #include <drm/drm_mode.h>
 #include <drm/drm_utils.h>
 #include <drm/drm_vblank.h>
 #include <drm/drm_audio_component.h>
 #include <drm/drm_colorop.h>
+=======
+#include <drm/drm_utils.h>
+#include <drm/drm_vblank.h>
+#include <drm/drm_audio_component.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_gem_atomic_helper.h>
 
 #include <media/cec-notifier.h>
@@ -154,9 +164,12 @@ MODULE_FIRMWARE(FIRMWARE_DCN_36_DMUB);
 #define FIRMWARE_DCN_401_DMUB "amdgpu/dcn_4_0_1_dmcub.bin"
 MODULE_FIRMWARE(FIRMWARE_DCN_401_DMUB);
 
+<<<<<<< HEAD
 #define FIRMWARE_DCN_42_DMUB "amdgpu/dcn_4_2_dmcub.bin"
 MODULE_FIRMWARE(FIRMWARE_DCN_42_DMUB);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * DOC: overview
  *
@@ -573,7 +586,11 @@ static void schedule_dc_vmin_vmax(struct amdgpu_device *adev,
 	offload_work->stream = stream;
 	offload_work->adjust = adjust_copy;
 
+<<<<<<< HEAD
 	queue_work(system_percpu_wq, &offload_work->work);
+=======
+	queue_work(system_wq, &offload_work->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void dm_vupdate_high_irq(void *interrupt_params)
@@ -1373,7 +1390,10 @@ static int dm_dmub_hw_init(struct amdgpu_device *adev)
 	case IP_VERSION(3, 5, 0):
 	case IP_VERSION(3, 5, 1):
 	case IP_VERSION(3, 6, 0):
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hw_params.ips_sequential_ono = adev->external_rev_id > 0x10;
 		hw_params.lower_hbr3_phy_ssc = true;
 		break;
@@ -1821,9 +1841,12 @@ static void *dm_dmub_get_vbios_bounding_box(struct amdgpu_device *adev)
 	case IP_VERSION(4, 0, 1):
 		bb_size = sizeof(struct dml2_soc_bb);
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
 		bb_size = sizeof(struct dml2_soc_bb);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return NULL;
 	}
@@ -1868,9 +1891,12 @@ static enum dmub_ips_disable_type dm_get_default_ips_mode(
 	case IP_VERSION(3, 5, 1):
 		ret =  DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
 		ret =  DMUB_IPS_DISABLE_ALL;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		/* ASICs older than DCN35 do not have IPSs */
 		if (amdgpu_ip_version(adev, DCE_HWIP, 0) < IP_VERSION(3, 5, 0))
@@ -1903,11 +1929,15 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	/* special handling for early revisions of GC 11.5.4 */
 	if (amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(11, 5, 4))
 		init_data.asic_id.chip_family = AMDGPU_FAMILY_GC_11_5_4;
 	else
 		init_data.asic_id.chip_family = adev->family;
+=======
+	init_data.asic_id.chip_family = adev->family;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	init_data.asic_id.pci_revision_id = adev->pdev->revision;
 	init_data.asic_id.hw_internal_rev = adev->external_rev_id;
@@ -2018,6 +2048,7 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 0, 0))
 		init_data.num_virtual_links = 1;
 
+<<<<<<< HEAD
 	/* DCN42 and above dpia switch to unified link training path */
 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(4, 2, 0)) {
 		init_data.flags.consolidated_dpia_dp_lt = true;
@@ -2025,6 +2056,8 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
 		init_data.flags.unify_link_enc_assignment = true;
 		init_data.flags.usb4_bw_alloc_support = true;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	retrieve_dmi_info(&adev->dm);
 	if (adev->dm.edp0_on_dp1_quirk)
 		init_data.flags.support_edp0_on_dp1 = true;
@@ -2260,10 +2293,13 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
 		adev->dm.idle_workqueue = NULL;
 	}
 
+<<<<<<< HEAD
 	/* Disable ISM before dc_destroy() invalidates dm->dc */
 	scoped_guard(mutex, &adev->dm.dc_lock)
 		amdgpu_dm_ism_disable(&adev->dm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_dm_destroy_drm_device(&adev->dm);
 
 #if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
@@ -2299,11 +2335,14 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
 				      &adev->dm.dmub_bo_gpu_addr,
 				      &adev->dm.dmub_bo_cpu_addr);
 
+<<<<<<< HEAD
 	if (adev->dm.boot_time_crc_info.bo_ptr)
 		amdgpu_bo_free_kernel(&adev->dm.boot_time_crc_info.bo_ptr,
 					&adev->dm.boot_time_crc_info.gpu_addr,
 					&adev->dm.boot_time_crc_info.cpu_addr);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (adev->dm.hpd_rx_offload_wq && adev->dm.dc) {
 		for (i = 0; i < adev->dm.dc->caps.max_links; i++) {
 			if (adev->dm.hpd_rx_offload_wq[i].wq) {
@@ -2401,7 +2440,10 @@ static int load_dmcu_fw(struct amdgpu_device *adev)
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
 		case IP_VERSION(4, 0, 1):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		default:
 			break;
@@ -2487,8 +2529,11 @@ static int dm_dmub_sw_init(struct amdgpu_device *adev)
 		DMUB_WINDOW_MEMORY_TYPE_FB,		//DMUB_WINDOW_7_SCRATCH_MEM
 		DMUB_WINDOW_MEMORY_TYPE_FB,		//DMUB_WINDOW_IB_MEM
 		DMUB_WINDOW_MEMORY_TYPE_FB,		//DMUB_WINDOW_SHARED_STATE
+<<<<<<< HEAD
 		DMUB_WINDOW_MEMORY_TYPE_FB,		//DMUB_WINDOW_LSDMA_BUFFER
 		DMUB_WINDOW_MEMORY_TYPE_FB,		//DMUB_WINDOW_CURSOR_OFFLOAD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	int r;
 
@@ -2537,9 +2582,13 @@ static int dm_dmub_sw_init(struct amdgpu_device *adev)
 	case IP_VERSION(4, 0, 1):
 		dmub_asic = DMUB_ASIC_DCN401;
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
 		dmub_asic = DMUB_ASIC_DCN42;
 		break;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		/* ASIC doesn't support DMUB. */
 		return 0;
@@ -2752,6 +2801,7 @@ static int detect_mst_link_for_all_connectors(struct drm_device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void amdgpu_dm_boot_time_crc_init(struct amdgpu_device *adev)
 {
 	struct dm_boot_time_crc_info *bootcrc_info = NULL;
@@ -2800,6 +2850,8 @@ static void amdgpu_dm_boot_time_crc_init(struct amdgpu_device *adev)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dm_late_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -2811,11 +2863,14 @@ static int dm_late_init(struct amdgpu_ip_block *ip_block)
 
 	dmcu = adev->dm.dc->res_pool->dmcu;
 
+<<<<<<< HEAD
 	/* Init the boot time CRC (skip in resume) */
 	if ((adev->in_suspend == 0) &&
 		(amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(3, 6, 0)))
 		amdgpu_dm_boot_time_crc_init(adev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < 16; i++)
 		linear_lut[i] = 0xFFFF * i / 15;
 
@@ -3292,7 +3347,10 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
 
 		mutex_lock(&dm->dc_lock);
 
+<<<<<<< HEAD
 		amdgpu_dm_ism_disable(dm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dc_allow_idle_optimizations(adev->dm.dc, false);
 
 		dm->cached_dc_state = dc_state_create_copy(dm->dc->current_state);
@@ -3326,9 +3384,12 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
 
 	amdgpu_dm_irq_suspend(adev);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &dm->dc_lock)
 		amdgpu_dm_ism_disable(dm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hpd_rx_irq_work_suspend(dm);
 
 	dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D3);
@@ -3619,7 +3680,10 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
 
 		dc_resume(dm->dc);
 
+<<<<<<< HEAD
 		amdgpu_dm_ism_enable(dm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_dm_irq_resume_early(adev);
 
 		for (i = 0; i < dc_state->stream_count; i++) {
@@ -3680,9 +3744,12 @@ static int dm_resume(struct amdgpu_ip_block *ip_block)
 	/* program HPD filter */
 	dc_resume(dm->dc);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &dm->dc_lock)
 		amdgpu_dm_ism_enable(dm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * early enable HPD Rx IRQ, should be done before set mode as short
 	 * pulse interrupts are used for MST
@@ -3842,6 +3909,7 @@ static struct drm_mode_config_helper_funcs amdgpu_dm_mode_config_helperfuncs = {
 	.atomic_commit_setup = amdgpu_dm_atomic_setup_commit,
 };
 
+<<<<<<< HEAD
 #define DDC_MANUFACTURERNAME_SAMSUNG 0x2D4C
 
 static void dm_set_panel_type(struct amdgpu_dm_connector *aconnector)
@@ -3902,6 +3970,8 @@ static void dm_set_panel_type(struct amdgpu_dm_connector *aconnector)
 	drm_dbg_kms(aconnector->base.dev, "Panel type: %d\n", link->panel_type);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
 {
 	const struct drm_panel_backlight_quirk *panel_backlight_quirk;
@@ -4003,7 +4073,11 @@ void amdgpu_dm_update_connector_after_detect(
 
 		if (sink) {
 			if (aconnector->dc_sink) {
+<<<<<<< HEAD
 				amdgpu_dm_update_freesync_caps(connector, NULL, true);
+=======
+				amdgpu_dm_update_freesync_caps(connector, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * retain and release below are used to
 				 * bump up refcount for sink because the link doesn't point
@@ -4015,9 +4089,15 @@ void amdgpu_dm_update_connector_after_detect(
 			aconnector->dc_sink = sink;
 			dc_sink_retain(aconnector->dc_sink);
 			amdgpu_dm_update_freesync_caps(connector,
+<<<<<<< HEAD
 					aconnector->drm_edid, true);
 		} else {
 			amdgpu_dm_update_freesync_caps(connector, NULL, true);
+=======
+					aconnector->drm_edid);
+		} else {
+			amdgpu_dm_update_freesync_caps(connector, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!aconnector->dc_sink) {
 				aconnector->dc_sink = aconnector->dc_em_sink;
 				dc_sink_retain(aconnector->dc_sink);
@@ -4061,7 +4141,11 @@ void amdgpu_dm_update_connector_after_detect(
 		 * If yes, put it here.
 		 */
 		if (aconnector->dc_sink) {
+<<<<<<< HEAD
 			amdgpu_dm_update_freesync_caps(connector, NULL, true);
+=======
+			amdgpu_dm_update_freesync_caps(connector, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dc_sink_release(aconnector->dc_sink);
 		}
 
@@ -4094,6 +4178,7 @@ void amdgpu_dm_update_connector_after_detect(
 					"failed to create aconnector->requested_timing\n");
 		}
 
+<<<<<<< HEAD
 		amdgpu_dm_update_freesync_caps(connector, aconnector->drm_edid, true);
 		update_connector_ext_caps(aconnector);
 		dm_set_panel_type(aconnector);
@@ -4101,6 +4186,14 @@ void amdgpu_dm_update_connector_after_detect(
 		hdmi_cec_unset_edid(aconnector);
 		drm_dp_cec_unset_edid(&aconnector->dm_dp_aux.aux);
 		amdgpu_dm_update_freesync_caps(connector, NULL, true);
+=======
+		amdgpu_dm_update_freesync_caps(connector, aconnector->drm_edid);
+		update_connector_ext_caps(aconnector);
+	} else {
+		hdmi_cec_unset_edid(aconnector);
+		drm_dp_cec_unset_edid(&aconnector->dm_dp_aux.aux);
+		amdgpu_dm_update_freesync_caps(connector, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		aconnector->num_modes = 0;
 		dc_sink_release(aconnector->dc_sink);
 		aconnector->dc_sink = NULL;
@@ -4277,7 +4370,11 @@ static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector)
 			dc_sink_retain(aconnector->hdmi_prev_sink);
 
 		/* Schedule delayed detection. */
+<<<<<<< HEAD
 		if (mod_delayed_work(system_percpu_wq,
+=======
+		if (mod_delayed_work(system_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 &aconnector->hdmi_hpd_debounce_work,
 				 msecs_to_jiffies(aconnector->hdmi_hpd_debounce_delay_ms)))
 			drm_dbg_kms(dev, "HDMI HPD: Re-scheduled debounce work\n");
@@ -4545,6 +4642,108 @@ static int register_hpd_handlers(struct amdgpu_device *adev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_DRM_AMD_DC_SI)
+/* Register IRQ sources and initialize IRQ callbacks */
+static int dce60_register_irq_handlers(struct amdgpu_device *adev)
+{
+	struct dc *dc = adev->dm.dc;
+	struct common_irq_params *c_irq_params;
+	struct dc_interrupt_params int_params = {0};
+	int r;
+	int i;
+	unsigned int client_id = AMDGPU_IRQ_CLIENTID_LEGACY;
+
+	int_params.requested_polarity = INTERRUPT_POLARITY_DEFAULT;
+	int_params.current_polarity = INTERRUPT_POLARITY_DEFAULT;
+
+	/*
+	 * Actions of amdgpu_irq_add_id():
+	 * 1. Register a set() function with base driver.
+	 *    Base driver will call set() function to enable/disable an
+	 *    interrupt in DC hardware.
+	 * 2. Register amdgpu_dm_irq_handler().
+	 *    Base driver will call amdgpu_dm_irq_handler() for ALL interrupts
+	 *    coming from DC hardware.
+	 *    amdgpu_dm_irq_handler() will re-direct the interrupt to DC
+	 *    for acknowledging and handling.
+	 */
+
+	/* Use VBLANK interrupt */
+	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+		r = amdgpu_irq_add_id(adev, client_id, i + 1, &adev->crtc_irq);
+		if (r) {
+			drm_err(adev_to_drm(adev), "Failed to add crtc irq id!\n");
+			return r;
+		}
+
+		int_params.int_context = INTERRUPT_HIGH_IRQ_CONTEXT;
+		int_params.irq_source =
+			dc_interrupt_to_irq_source(dc, i + 1, 0);
+
+		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
+			int_params.irq_source  < DC_IRQ_SOURCE_VBLANK1 ||
+			int_params.irq_source  > DC_IRQ_SOURCE_VBLANK6) {
+			drm_err(adev_to_drm(adev), "Failed to register vblank irq!\n");
+			return -EINVAL;
+		}
+
+		c_irq_params = &adev->dm.vblank_params[int_params.irq_source - DC_IRQ_SOURCE_VBLANK1];
+
+		c_irq_params->adev = adev;
+		c_irq_params->irq_src = int_params.irq_source;
+
+		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
+			dm_crtc_high_irq, c_irq_params))
+			return -ENOMEM;
+	}
+
+	/* Use GRPH_PFLIP interrupt */
+	for (i = VISLANDS30_IV_SRCID_D1_GRPH_PFLIP;
+			i <= VISLANDS30_IV_SRCID_D6_GRPH_PFLIP; i += 2) {
+		r = amdgpu_irq_add_id(adev, client_id, i, &adev->pageflip_irq);
+		if (r) {
+			drm_err(adev_to_drm(adev), "Failed to add page flip irq id!\n");
+			return r;
+		}
+
+		int_params.int_context = INTERRUPT_HIGH_IRQ_CONTEXT;
+		int_params.irq_source =
+			dc_interrupt_to_irq_source(dc, i, 0);
+
+		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
+			int_params.irq_source  < DC_IRQ_SOURCE_PFLIP_FIRST ||
+			int_params.irq_source  > DC_IRQ_SOURCE_PFLIP_LAST) {
+			drm_err(adev_to_drm(adev), "Failed to register pflip irq!\n");
+			return -EINVAL;
+		}
+
+		c_irq_params = &adev->dm.pflip_params[int_params.irq_source - DC_IRQ_SOURCE_PFLIP_FIRST];
+
+		c_irq_params->adev = adev;
+		c_irq_params->irq_src = int_params.irq_source;
+
+		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
+			dm_pflip_high_irq, c_irq_params))
+			return -ENOMEM;
+	}
+
+	/* HPD */
+	r = amdgpu_irq_add_id(adev, client_id,
+			VISLANDS30_IV_SRCID_HOTPLUG_DETECT_A, &adev->hpd_irq);
+	if (r) {
+		drm_err(adev_to_drm(adev), "Failed to add hpd irq id!\n");
+		return r;
+	}
+
+	r = register_hpd_handlers(adev);
+
+	return r;
+}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Register IRQ sources and initialize IRQ callbacks */
 static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 {
@@ -4553,12 +4752,16 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 	struct dc_interrupt_params int_params = {0};
 	int r;
 	int i;
+<<<<<<< HEAD
 	unsigned int src_id;
 	unsigned int client_id = AMDGPU_IRQ_CLIENTID_LEGACY;
 	/* Use different interrupts for VBLANK on DCE 6 vs. newer. */
 	const unsigned int vblank_d1 =
 		adev->dm.dc->ctx->dce_version >= DCE_VERSION_8_0
 		? VISLANDS30_IV_SRCID_D1_VERTICAL_INTERRUPT0 : 1;
+=======
+	unsigned int client_id = AMDGPU_IRQ_CLIENTID_LEGACY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (adev->family >= AMDGPU_FAMILY_AI)
 		client_id = SOC15_IH_CLIENTID_DCE;
@@ -4579,9 +4782,14 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 	 */
 
 	/* Use VBLANK interrupt */
+<<<<<<< HEAD
 	for (i = 0; i < adev->mode_info.num_crtc; i++) {
 		src_id = vblank_d1 + i;
 		r = amdgpu_irq_add_id(adev, client_id, src_id, &adev->crtc_irq);
+=======
+	for (i = VISLANDS30_IV_SRCID_D1_VERTICAL_INTERRUPT0; i <= VISLANDS30_IV_SRCID_D6_VERTICAL_INTERRUPT0; i++) {
+		r = amdgpu_irq_add_id(adev, client_id, i, &adev->crtc_irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (r) {
 			drm_err(adev_to_drm(adev), "Failed to add crtc irq id!\n");
 			return r;
@@ -4589,7 +4797,11 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 
 		int_params.int_context = INTERRUPT_HIGH_IRQ_CONTEXT;
 		int_params.irq_source =
+<<<<<<< HEAD
 			dc_interrupt_to_irq_source(dc, src_id, 0);
+=======
+			dc_interrupt_to_irq_source(dc, i, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
 			int_params.irq_source  < DC_IRQ_SOURCE_VBLANK1 ||
@@ -4608,6 +4820,7 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 			return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (dc_supports_vrr(adev->dm.dc->ctx->dce_version)) {
 		/* Use VUPDATE interrupt */
 		for (i = 0; i < adev->mode_info.num_crtc; i++) {
@@ -4638,6 +4851,35 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
 				dm_vupdate_high_irq, c_irq_params))
 				return -ENOMEM;
 		}
+=======
+	/* Use VUPDATE interrupt */
+	for (i = VISLANDS30_IV_SRCID_D1_V_UPDATE_INT; i <= VISLANDS30_IV_SRCID_D6_V_UPDATE_INT; i += 2) {
+		r = amdgpu_irq_add_id(adev, client_id, i, &adev->vupdate_irq);
+		if (r) {
+			drm_err(adev_to_drm(adev), "Failed to add vupdate irq id!\n");
+			return r;
+		}
+
+		int_params.int_context = INTERRUPT_HIGH_IRQ_CONTEXT;
+		int_params.irq_source =
+			dc_interrupt_to_irq_source(dc, i, 0);
+
+		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
+			int_params.irq_source  < DC_IRQ_SOURCE_VUPDATE1 ||
+			int_params.irq_source  > DC_IRQ_SOURCE_VUPDATE6) {
+			drm_err(adev_to_drm(adev), "Failed to register vupdate irq!\n");
+			return -EINVAL;
+		}
+
+		c_irq_params = &adev->dm.vupdate_params[int_params.irq_source - DC_IRQ_SOURCE_VUPDATE1];
+
+		c_irq_params->adev = adev;
+		c_irq_params->irq_src = int_params.irq_source;
+
+		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
+			dm_vupdate_high_irq, c_irq_params))
+			return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Use GRPH_PFLIP interrupt */
@@ -4979,6 +5221,7 @@ static void dm_atomic_destroy_state(struct drm_private_obj *obj,
 	kfree(dm_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 dm_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -5004,12 +5247,19 @@ dm_atomic_create_state(struct drm_private_obj *obj)
 
 static struct drm_private_state_funcs dm_atomic_state_funcs = {
 	.atomic_create_state = dm_atomic_create_state,
+=======
+static struct drm_private_state_funcs dm_atomic_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = dm_atomic_duplicate_state,
 	.atomic_destroy_state = dm_atomic_destroy_state,
 };
 
 static int amdgpu_dm_mode_config_init(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
+=======
+	struct dm_atomic_state *state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int r;
 
 	adev->mode_info.mode_config_initialized = true;
@@ -5029,6 +5279,7 @@ static int amdgpu_dm_mode_config_init(struct amdgpu_device *adev)
 	/* indicates support for immediate flip */
 	adev_to_drm(adev)->mode_config.async_page_flip = true;
 
+<<<<<<< HEAD
 	drm_atomic_private_obj_init(adev_to_drm(adev),
 				    &adev->dm.atomic_obj,
 				    &dm_atomic_state_funcs);
@@ -5045,6 +5296,44 @@ static int amdgpu_dm_mode_config_init(struct amdgpu_device *adev)
 	r = amdgpu_dm_audio_init(adev);
 	if (r)
 		return r;
+=======
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	state->context = dc_state_create_current_copy(adev->dm.dc);
+	if (!state->context) {
+		kfree(state);
+		return -ENOMEM;
+	}
+
+	drm_atomic_private_obj_init(adev_to_drm(adev),
+				    &adev->dm.atomic_obj,
+				    &state->base,
+				    &dm_atomic_state_funcs);
+
+	r = amdgpu_display_modeset_create_props(adev);
+	if (r) {
+		dc_state_release(state->context);
+		kfree(state);
+		return r;
+	}
+
+#ifdef AMD_PRIVATE_COLOR
+	if (amdgpu_dm_create_color_properties(adev)) {
+		dc_state_release(state->context);
+		kfree(state);
+		return -ENOMEM;
+	}
+#endif
+
+	r = amdgpu_dm_audio_init(adev);
+	if (r) {
+		dc_state_release(state->context);
+		kfree(state);
+		return r;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -5612,7 +5901,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 	case IP_VERSION(3, 5, 1):
 	case IP_VERSION(3, 6, 0):
 	case IP_VERSION(4, 0, 1):
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (register_outbox_irq_handlers(dm->adev)) {
 			drm_err(adev_to_drm(adev), "DM: Failed to initialize IRQ\n");
 			goto fail;
@@ -5637,7 +5929,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
 		case IP_VERSION(4, 0, 1):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			psr_feature_enabled = true;
 			break;
 		default:
@@ -5655,7 +5950,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 		case IP_VERSION(3, 5, 0):
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			replay_feature_enabled = true;
 			break;
 
@@ -5771,6 +6069,14 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 	case CHIP_PITCAIRN:
 	case CHIP_VERDE:
 	case CHIP_OLAND:
+<<<<<<< HEAD
+=======
+		if (dce60_register_irq_handlers(dm->adev)) {
+			drm_err(adev_to_drm(adev), "DM: Failed to initialize IRQ\n");
+			goto fail;
+		}
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
@@ -5816,7 +6122,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
 		case IP_VERSION(4, 0, 1):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (dcn10_register_irq_handlers(dm->adev)) {
 				drm_err(adev_to_drm(adev), "DM: Failed to initialize IRQ\n");
 				goto fail;
@@ -5965,9 +6274,12 @@ static int dm_init_microcode(struct amdgpu_device *adev)
 	case IP_VERSION(4, 0, 1):
 		fw_name_dmub = FIRMWARE_DCN_401_DMUB;
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(4, 2, 0):
 		fw_name_dmub = FIRMWARE_DCN_42_DMUB;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		/* ASIC doesn't support DMUB. */
 		return 0;
@@ -6095,7 +6407,10 @@ static int dm_early_init(struct amdgpu_ip_block *ip_block)
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
 		case IP_VERSION(4, 0, 1):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			adev->mode_info.num_crtc = 4;
 			adev->mode_info.num_hpd = 4;
 			adev->mode_info.num_dig = 4;
@@ -6112,8 +6427,13 @@ static int dm_early_init(struct amdgpu_ip_block *ip_block)
 		adev->mode_info.funcs = &dm_display_funcs;
 
 	/*
+<<<<<<< HEAD
 	 * Note: Do NOT change adev->reg.audio_endpt.rreg and
 	 * adev->reg.audio_endpt.wreg because they are initialised in
+=======
+	 * Note: Do NOT change adev->audio_endpt_rreg and
+	 * adev->audio_endpt_wreg because they are initialised in
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * amdgpu_device_init()
 	 */
 #if defined(CONFIG_DEBUG_KERNEL_DC)
@@ -6796,11 +7116,19 @@ static void fill_stream_properties_from_drm_display_mode(
 			&& aconnector
 			&& aconnector->force_yuv420_output)
 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR420;
+<<<<<<< HEAD
 	else if ((connector->display_info.color_formats & BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422))
 			&& aconnector
 			&& aconnector->force_yuv422_output)
 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
 	else if ((connector->display_info.color_formats & BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444))
+=======
+	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR422)
+			&& aconnector
+			&& aconnector->force_yuv422_output)
+		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR422;
+	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR444)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR444;
 	else
@@ -8654,12 +8982,15 @@ static int to_drm_connector_type(enum signal_type st, uint32_t connector_id)
 		return DRM_MODE_CONNECTOR_VGA;
 	case SIGNAL_TYPE_DISPLAY_PORT:
 	case SIGNAL_TYPE_DISPLAY_PORT_MST:
+<<<<<<< HEAD
 		/* External DP bridges have a different connector type. */
 		if (connector_id == CONNECTOR_ID_VGA)
 			return DRM_MODE_CONNECTOR_VGA;
 		else if (connector_id == CONNECTOR_ID_LVDS)
 			return DRM_MODE_CONNECTOR_LVDS;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return DRM_MODE_CONNECTOR_DisplayPort;
 	case SIGNAL_TYPE_DVI_DUAL_LINK:
 	case SIGNAL_TYPE_DVI_SINGLE_LINK:
@@ -8864,7 +9195,11 @@ static void amdgpu_dm_connector_ddc_get_modes(struct drm_connector *connector,
 		 * drm_edid_connector_add_modes() and need to be
 		 * restored here.
 		 */
+<<<<<<< HEAD
 		amdgpu_dm_update_freesync_caps(connector, drm_edid, false);
+=======
+		amdgpu_dm_update_freesync_caps(connector, drm_edid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		amdgpu_dm_connector->num_modes = 0;
 	}
@@ -9155,8 +9490,11 @@ void amdgpu_dm_connector_init_helper(struct amdgpu_display_manager *dm,
 	if (connector_type == DRM_MODE_CONNECTOR_eDP) {
 		struct drm_privacy_screen *privacy_screen;
 
+<<<<<<< HEAD
 		drm_connector_attach_panel_type_property(&aconnector->base);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		privacy_screen = drm_privacy_screen_get(adev_to_drm(adev)->dev, NULL);
 		if (!IS_ERR(privacy_screen)) {
 			drm_connector_attach_privacy_screen_provider(&aconnector->base,
@@ -9334,7 +9672,12 @@ static int amdgpu_dm_connector_init(struct amdgpu_display_manager *dm,
 	    connector_type == DRM_MODE_CONNECTOR_HDMIB)
 		amdgpu_dm_initialize_hdmi_connector(aconnector);
 
+<<<<<<< HEAD
 	if (dc_is_dp_signal(link->connector_signal))
+=======
+	if (connector_type == DRM_MODE_CONNECTOR_DisplayPort
+		|| connector_type == DRM_MODE_CONNECTOR_eDP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_dm_initialize_dp_connector(dm, aconnector, link->link_index);
 
 out_free:
@@ -9408,6 +9751,7 @@ static void manage_dm_interrupts(struct amdgpu_device *adev,
 	if (acrtc_state) {
 		timing = &acrtc_state->stream->timing;
 
+<<<<<<< HEAD
 		if (amdgpu_ip_version(adev, DCE_HWIP, 0) >=
 		      IP_VERSION(3, 2, 0) &&
 		      !(adev->flags & AMD_IS_APU)) {
@@ -9423,6 +9767,35 @@ static void manage_dm_interrupts(struct amdgpu_device *adev,
 			config.disable_immediate = false;
 		} else if (amdgpu_ip_version(adev, DCE_HWIP, 0) <
 			     IP_VERSION(3, 5, 0)) {
+=======
+		/*
+		 * Depending on when the HW latching event of double-buffered
+		 * registers happen relative to the PSR SDP deadline, and how
+		 * bad the Panel clock has drifted since the last ALPM off
+		 * event, there can be up to 3 frames of delay between sending
+		 * the PSR exit cmd to DMUB fw, and when the panel starts
+		 * displaying live frames.
+		 *
+		 * We can set:
+		 *
+		 * 20/100 * offdelay_ms = 3_frames_ms
+		 * => offdelay_ms = 5 * 3_frames_ms
+		 *
+		 * This ensures that `3_frames_ms` will only be experienced as a
+		 * 20% delay on top how long the display has been static, and
+		 * thus make the delay less perceivable.
+		 */
+		if (acrtc_state->stream->link->psr_settings.psr_version <
+		    DC_PSR_VERSION_UNSUPPORTED) {
+			offdelay = DIV64_U64_ROUND_UP((u64)5 * 3 * 10 *
+						      timing->v_total *
+						      timing->h_total,
+						      timing->pix_clk_100hz);
+			config.offdelay_ms = offdelay ?: 30;
+		} else if (amdgpu_ip_version(adev, DCE_HWIP, 0) <
+			   IP_VERSION(3, 5, 0) ||
+			   !(adev->flags & AMD_IS_APU)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Older HW and DGPU have issues with instant off;
 			 * use a 2 frame offdelay.
@@ -9965,8 +10338,12 @@ static void amdgpu_dm_enable_self_refresh(struct amdgpu_crtc *acrtc_attach,
 		 * a vblank event disable request to enable PSR/RP. PSR SU/RP
 		 * can be enabled immediately once OS demonstrates an
 		 * adequate number of fast atomic commits to notify KMD
+<<<<<<< HEAD
 		 * of update events.
 		 * See `amdgpu_dm_crtc_vblank_control_worker()`.
+=======
+		 * of update events. See `vblank_control_worker()`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		if (!vrr_active &&
 		    acrtc_attach->dm_irq_params.allow_sr_entry &&
@@ -10134,9 +10511,14 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
 			/*
 			 * If the dirty regions changed, PSR-SU need to be disabled temporarily
 			 * and enabled it again after dirty regions are stable to avoid video glitch.
+<<<<<<< HEAD
 			 * PSR-SU will be enabled in
 			 * amdgpu_dm_crtc_vblank_control_worker() if user
 			 * pause the video during the PSR-SU was disabled.
+=======
+			 * PSR-SU will be enabled in vblank_control_worker() if user pause the video
+			 * during the PSR-SU was disabled.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 */
 			if (acrtc_state->stream->link->psr_settings.psr_version >= DC_PSR_VERSION_SU_1 &&
 			    acrtc_attach->dm_irq_params.allow_sr_entry &&
@@ -11220,8 +11602,13 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
 	if (!adev->in_suspend) {
 		/* return the stolen vga memory back to VRAM */
 		if (!adev->mman.keep_stolen_vga_memory)
+<<<<<<< HEAD
 			amdgpu_ttm_unmark_vram_reserved(adev, AMDGPU_RESV_STOLEN_VGA);
 		amdgpu_ttm_unmark_vram_reserved(adev, AMDGPU_RESV_STOLEN_EXTENDED);
+=======
+			amdgpu_bo_free_kernel(&adev->mman.stolen_vga_memory, NULL, NULL);
+		amdgpu_bo_free_kernel(&adev->mman.stolen_extended_memory, NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -12351,6 +12738,7 @@ static int add_affected_mst_dsc_crtcs(struct drm_atomic_state *state, struct drm
  */
 
 /**
+<<<<<<< HEAD
  * dm_plane_color_pipeline_active() - Check if a plane's color pipeline active.
  * @state: DRM atomic state
  * @plane: DRM plane to check
@@ -12383,6 +12771,8 @@ static bool dm_plane_color_pipeline_active(struct drm_atomic_state *state,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * dm_crtc_get_cursor_mode() - Determine the required cursor mode on crtc
  * @adev: amdgpu device
  * @state: DRM atomic state
@@ -12393,8 +12783,13 @@ static bool dm_plane_color_pipeline_active(struct drm_atomic_state *state,
  * the dm_crtc_state.
  *
  * The cursor should be enabled in overlay mode if there exists an underlying
+<<<<<<< HEAD
  * plane - on which the cursor may be blended - that is either YUV formatted,
  * scaled differently from the cursor, or has a color pipeline active.
+=======
+ * plane - on which the cursor may be blended - that is either YUV formatted, or
+ * scaled differently from the cursor.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Since zpos info is required, drm_atomic_normalize_zpos must be called before
  * calling this function.
@@ -12418,11 +12813,18 @@ static int dm_crtc_get_cursor_mode(struct amdgpu_device *adev,
 	int i;
 
 	/* Overlay cursor not supported on HW before DCN
+<<<<<<< HEAD
 	 * DCN401/420 does not have the cursor-on-scaled-plane or cursor-on-yuv-plane restrictions
 	 * as previous DCN generations, so enable native mode on DCN401/420
 	 */
 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1) ||
 	    amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 2, 0)) {
+=======
+	 * DCN401 does not have the cursor-on-scaled-plane or cursor-on-yuv-plane restrictions
+	 * as previous DCN generations, so enable native mode on DCN401
+	 */
+	if (amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*cursor_mode = DM_CURSOR_NATIVE_MODE;
 		return 0;
 	}
@@ -12432,7 +12834,11 @@ static int dm_crtc_get_cursor_mode(struct amdgpu_device *adev,
 
 	/*
 	 * Cursor mode can change if a plane's format changes, scale changes, is
+<<<<<<< HEAD
 	 * enabled/disabled, z-order changes, or color management properties change.
+=======
+	 * enabled/disabled, or z-order changes.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	for_each_oldnew_plane_in_state(state, plane, old_plane_state, plane_state, i) {
 		int new_scale_w, new_scale_h, old_scale_w, old_scale_h;
@@ -12457,12 +12863,15 @@ static int dm_crtc_get_cursor_mode(struct amdgpu_device *adev,
 			consider_mode_change = true;
 			break;
 		}
+<<<<<<< HEAD
 
 		if (dm_plane_color_pipeline_active(state, plane, true) !=
 		    dm_plane_color_pipeline_active(state, plane, false)) {
 			consider_mode_change = true;
 			break;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!consider_mode_change && !crtc_state->zpos_changed)
@@ -12503,12 +12912,15 @@ static int dm_crtc_get_cursor_mode(struct amdgpu_device *adev,
 			return 0;
 		}
 
+<<<<<<< HEAD
 		/* Underlying plane has an active color pipeline - cursor would be transformed */
 		if (dm_plane_color_pipeline_active(state, plane, false)) {
 			*cursor_mode = DM_CURSOR_OVERLAY_MODE;
 			return 0;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dm_get_plane_scale(plane_state,
 				   &underlying_scale_w, &underlying_scale_h);
 		dm_get_plane_scale(cursor_state,
@@ -12859,8 +13271,12 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
 
 		/* Check if rotation or scaling is enabled on DCN401 */
 		if ((drm_plane_mask(crtc->cursor) & new_crtc_state->plane_mask) &&
+<<<<<<< HEAD
 		    (amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 2, 0) ||
 		    amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1))) {
+=======
+		    amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(4, 0, 1)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			new_cursor_state = drm_atomic_get_new_plane_state(state, crtc->cursor);
 
 			is_rotated = new_cursor_state &&
@@ -12888,7 +13304,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
 			goto fail;
 		} else if (required_cursor_mode == DM_CURSOR_OVERLAY_MODE) {
 			drm_dbg_driver(crtc->dev,
+<<<<<<< HEAD
 				       "[CRTC:%d:%s] Cannot enable native cursor due to scaling, YUV, or color pipeline restrictions\n",
+=======
+				       "[CRTC:%d:%s] Cannot enable native cursor due to scaling or YUV restrictions\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       crtc->base.id, crtc->name);
 			ret = -EINVAL;
 			goto fail;
@@ -13153,7 +13573,10 @@ static bool dm_edid_parser_send_cea(struct amdgpu_display_manager *dm,
 		vsdb->amd_vsdb_version = output->amd_vsdb.amd_vsdb_version;
 		vsdb->min_refresh_rate_hz = output->amd_vsdb.min_frame_rate;
 		vsdb->max_refresh_rate_hz = output->amd_vsdb.max_frame_rate;
+<<<<<<< HEAD
 		vsdb->freesync_mccs_vcp_code = output->amd_vsdb.freesync_mccs_vcp_code;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		drm_warn(adev_to_drm(dm->adev), "Unknown EDID CEA parser results\n");
 		return false;
@@ -13188,8 +13611,11 @@ static bool parse_edid_cea_dmcu(struct amdgpu_display_manager *dm,
 				vsdb_info->amd_vsdb_version = version;
 				vsdb_info->min_refresh_rate_hz = min_rate;
 				vsdb_info->max_refresh_rate_hz = max_rate;
+<<<<<<< HEAD
 				/* Not enabled on DMCU*/
 				vsdb_info->freesync_mccs_vcp_code = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return true;
 			}
 			/* not amd vsdb */
@@ -13280,6 +13706,7 @@ static void parse_edid_displayid_vrr(struct drm_connector *connector,
 	}
 }
 
+<<<<<<< HEAD
 static int get_amd_vsdb(struct amdgpu_dm_connector *aconnector,
 			struct amdgpu_hdmi_vsdb_info *vsdb_info)
 {
@@ -13289,6 +13716,58 @@ static int get_amd_vsdb(struct amdgpu_dm_connector *aconnector,
 	vsdb_info->amd_vsdb_version = connector->display_info.amd_vsdb.version;
 
 	return connector->display_info.amd_vsdb.version != 0;
+=======
+static int parse_amd_vsdb(struct amdgpu_dm_connector *aconnector,
+			  const struct edid *edid, struct amdgpu_hdmi_vsdb_info *vsdb_info)
+{
+	u8 *edid_ext = NULL;
+	int i;
+	int j = 0;
+	int total_ext_block_len;
+
+	if (edid == NULL || edid->extensions == 0)
+		return -ENODEV;
+
+	/* Find DisplayID extension */
+	for (i = 0; i < edid->extensions; i++) {
+		edid_ext = (void *)(edid + (i + 1));
+		if (edid_ext[0] == DISPLAYID_EXT)
+			break;
+	}
+
+	total_ext_block_len = EDID_LENGTH * edid->extensions;
+	while (j < total_ext_block_len - sizeof(struct amd_vsdb_block)) {
+		struct amd_vsdb_block *amd_vsdb = (struct amd_vsdb_block *)&edid_ext[j];
+		unsigned int ieeeId = (amd_vsdb->ieee_id[2] << 16) | (amd_vsdb->ieee_id[1] << 8) | (amd_vsdb->ieee_id[0]);
+
+		if (ieeeId == HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_IEEE_REGISTRATION_ID &&
+				amd_vsdb->version == HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_VERSION_3) {
+			u8 panel_type;
+			vsdb_info->replay_mode = (amd_vsdb->feature_caps & AMD_VSDB_VERSION_3_FEATURECAP_REPLAYMODE) ? true : false;
+			vsdb_info->amd_vsdb_version = HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_VERSION_3;
+			drm_dbg_kms(aconnector->base.dev, "Panel supports Replay Mode: %d\n", vsdb_info->replay_mode);
+			panel_type = (amd_vsdb->color_space_eotf_support & AMD_VDSB_VERSION_3_PANEL_TYPE_MASK) >> AMD_VDSB_VERSION_3_PANEL_TYPE_SHIFT;
+			switch (panel_type) {
+			case AMD_VSDB_PANEL_TYPE_OLED:
+				aconnector->dc_link->panel_type = PANEL_TYPE_OLED;
+				break;
+			case AMD_VSDB_PANEL_TYPE_MINILED:
+				aconnector->dc_link->panel_type = PANEL_TYPE_MINILED;
+				break;
+			default:
+				aconnector->dc_link->panel_type = PANEL_TYPE_NONE;
+				break;
+			}
+			drm_dbg_kms(aconnector->base.dev, "Panel type: %d\n",
+				    aconnector->dc_link->panel_type);
+
+			return true;
+		}
+		j++;
+	}
+
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int parse_hdmi_amd_vsdb(struct amdgpu_dm_connector *aconnector,
@@ -13328,10 +13807,13 @@ static int parse_hdmi_amd_vsdb(struct amdgpu_dm_connector *aconnector,
  *
  * @connector: Connector to query.
  * @drm_edid: DRM EDID from monitor
+<<<<<<< HEAD
  * @do_mccs: Controls whether MCCS (Monitor Control Command Set) over
  *	      DDC (Display Data Channel) transactions are performed. When true,
  *	      the driver queries the monitor to get or update additional FreeSync
  *	      capability information. When false, these transactions are skipped.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Amdgpu supports Freesync in DP and HDMI displays, and it is required to keep
  * track of some of the display information in the internal data struct used by
@@ -13339,7 +13821,11 @@ static int parse_hdmi_amd_vsdb(struct amdgpu_dm_connector *aconnector,
  * FreeSync parameters.
  */
 void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+<<<<<<< HEAD
 				    const struct drm_edid *drm_edid, bool do_mccs)
+=======
+				    const struct drm_edid *drm_edid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i = 0;
 	struct amdgpu_dm_connector *amdgpu_dm_connector =
@@ -13395,7 +13881,11 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
 				freesync_capable = true;
 		}
 
+<<<<<<< HEAD
 		get_amd_vsdb(amdgpu_dm_connector, &vsdb_info);
+=======
+		parse_amd_vsdb(amdgpu_dm_connector, edid, &vsdb_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (vsdb_info.replay_mode) {
 			amdgpu_dm_connector->vsdb_info.replay_mode = vsdb_info.replay_mode;
@@ -13405,6 +13895,7 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
 
 	} else if (drm_edid && sink->sink_signal == SIGNAL_TYPE_HDMI_TYPE_A) {
 		i = parse_hdmi_amd_vsdb(amdgpu_dm_connector, edid, &vsdb_info);
+<<<<<<< HEAD
 		if (i >= 0) {
 			amdgpu_dm_connector->vsdb_info = vsdb_info;
 			sink->edid_caps.freesync_vcp_code = vsdb_info.freesync_mccs_vcp_code;
@@ -13418,6 +13909,16 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
 				connector->display_info.monitor_range.min_vfreq = vsdb_info.min_refresh_rate_hz;
 				connector->display_info.monitor_range.max_vfreq = vsdb_info.max_refresh_rate_hz;
 			}
+=======
+		if (i >= 0 && vsdb_info.freesync_supported) {
+			amdgpu_dm_connector->min_vfreq = vsdb_info.min_refresh_rate_hz;
+			amdgpu_dm_connector->max_vfreq = vsdb_info.max_refresh_rate_hz;
+			if (amdgpu_dm_connector->max_vfreq - amdgpu_dm_connector->min_vfreq > 10)
+				freesync_capable = true;
+
+			connector->display_info.monitor_range.min_vfreq = vsdb_info.min_refresh_rate_hz;
+			connector->display_info.monitor_range.max_vfreq = vsdb_info.max_refresh_rate_hz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -13426,6 +13927,7 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
 
 	if (as_type == FREESYNC_TYPE_PCON_IN_WHITELIST) {
 		i = parse_hdmi_amd_vsdb(amdgpu_dm_connector, edid, &vsdb_info);
+<<<<<<< HEAD
 		if (i >= 0) {
 			amdgpu_dm_connector->vsdb_info = vsdb_info;
 			sink->edid_caps.freesync_vcp_code = vsdb_info.freesync_mccs_vcp_code;
@@ -13458,6 +13960,24 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
 	if (do_mccs && sink->mccs_caps.freesync_supported && freesync_capable)
 		dm_helpers_mccs_vcp_set(adev->dm.dc->ctx, amdgpu_dm_connector->dc_link, sink);
 
+=======
+		if (i >= 0 && vsdb_info.freesync_supported && vsdb_info.amd_vsdb_version > 0) {
+
+			amdgpu_dm_connector->pack_sdp_v1_3 = true;
+			amdgpu_dm_connector->as_type = as_type;
+			amdgpu_dm_connector->vsdb_info = vsdb_info;
+
+			amdgpu_dm_connector->min_vfreq = vsdb_info.min_refresh_rate_hz;
+			amdgpu_dm_connector->max_vfreq = vsdb_info.max_refresh_rate_hz;
+			if (amdgpu_dm_connector->max_vfreq - amdgpu_dm_connector->min_vfreq > 10)
+				freesync_capable = true;
+
+			connector->display_info.monitor_range.min_vfreq = vsdb_info.min_refresh_rate_hz;
+			connector->display_info.monitor_range.max_vfreq = vsdb_info.max_refresh_rate_hz;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 update:
 	if (dm_con_state)
 		dm_con_state->freesync_capable = freesync_capable;

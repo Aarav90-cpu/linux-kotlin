@@ -7,7 +7,11 @@ set -e
 
 trap 'echo Aborting...' 'ERR'
 
+<<<<<<< HEAD
 crosstool_version=15.2.0
+=======
+crosstool_version=13.2.0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 hostarch=x86_64
 nproc=$(( $(nproc) + 2))
 cache_dir="${XDG_CACHE_HOME:-"$HOME"/.cache}"

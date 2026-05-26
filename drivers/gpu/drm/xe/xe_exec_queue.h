@@ -160,7 +160,10 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q);
 int xe_exec_queue_contexts_hwsp_rebase(struct xe_exec_queue *q, void *scratch);
 
 struct xe_lrc *xe_exec_queue_lrc(struct xe_exec_queue *q);
+<<<<<<< HEAD
 struct xe_lrc *xe_exec_queue_get_lrc(struct xe_exec_queue *q, u16 idx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * xe_exec_queue_idle_skip_suspend() - Can exec queue skip suspend

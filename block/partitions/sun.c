@@ -121,7 +121,11 @@ int sun_partition(struct parsed_partitions *state)
 		}
 		slot++;
 	}
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_dev_sector(sect);
 	return 1;
 }

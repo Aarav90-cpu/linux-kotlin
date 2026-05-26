@@ -113,6 +113,10 @@ void ig3rdma_init_hw(struct irdma_sc_dev *dev)
 	dev->irq_ops = &ig3rdma_irq_ops;
 	dev->hw_stats_map = ig3rdma_hw_stat_map;
 
+<<<<<<< HEAD
+=======
+	dev->hw_attrs.uk_attrs.hw_rev = IRDMA_GEN_3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->hw_attrs.uk_attrs.max_hw_wq_frags = IG3RDMA_MAX_WQ_FRAGMENT_COUNT;
 	dev->hw_attrs.uk_attrs.max_hw_read_sges = IG3RDMA_MAX_SGE_RD;
 	dev->hw_attrs.uk_attrs.max_hw_sq_chunk = IRDMA_MAX_QUANTA_PER_WR;

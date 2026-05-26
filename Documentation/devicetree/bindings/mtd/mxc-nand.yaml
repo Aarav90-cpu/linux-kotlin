@@ -10,11 +10,16 @@ maintainers:
   - Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
 allOf:
+<<<<<<< HEAD
   - $ref: nand-controller-legacy.yaml
+=======
+  - $ref: nand-controller.yaml
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 properties:
   compatible:
     oneOf:
+<<<<<<< HEAD
       - enum:
           - fsl,imx25-nand
           - fsl,imx27-nand
@@ -24,19 +29,27 @@ properties:
           - enum:
               - fsl,imx35-nand
           - const: fsl,imx25-nand
+=======
+      - const: fsl,imx27-nand
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - items:
           - enum:
               - fsl,imx31-nand
           - const: fsl,imx27-nand
   reg:
+<<<<<<< HEAD
     minItems: 1
     items:
       - description: IP register space
       - description: Nand flash internal buffer space
+=======
+    maxItems: 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks:
     maxItems: 1
 
@@ -47,6 +60,8 @@ properties:
     items:
       - const: rx-tx
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

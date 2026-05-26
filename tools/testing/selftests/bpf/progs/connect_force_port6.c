@@ -13,8 +13,11 @@
 
 char _license[] SEC("license") = "GPL";
 
+<<<<<<< HEAD
 __u16 port = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct svc_addr {
 	__be32 addr[4];
 	__be16 port;
@@ -41,7 +44,11 @@ int connect6(struct bpf_sock_addr *ctx)
 	if (bpf_bind(ctx, (struct sockaddr *)&sa, sizeof(sa)) != 0)
 		return 0;
 
+<<<<<<< HEAD
 	/* Rewire service [fc00::1]:60000 to backend [::1]:port. */
+=======
+	/* Rewire service [fc00::1]:60000 to backend [::1]:60124. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctx->user_port == bpf_htons(60000)) {
 		orig = bpf_sk_storage_get(&service_mapping, ctx->sk, 0,
 					  BPF_SK_STORAGE_GET_F_CREATE);
@@ -58,7 +65,11 @@ int connect6(struct bpf_sock_addr *ctx)
 		ctx->user_ip6[1] = 0;
 		ctx->user_ip6[2] = 0;
 		ctx->user_ip6[3] = bpf_htonl(1);
+<<<<<<< HEAD
 		ctx->user_port = bpf_htons(port);
+=======
+		ctx->user_port = bpf_htons(60124);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 1;
 }
@@ -70,7 +81,11 @@ int getsockname6(struct bpf_sock_addr *ctx)
 		return 1;
 
 	/* Expose local server as [fc00::1]:60000 to client. */
+<<<<<<< HEAD
 	if (ctx->user_port == bpf_htons(port)) {
+=======
+	if (ctx->user_port == bpf_htons(60124)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ctx->user_ip6[0] = bpf_htonl(0xfc000000);
 		ctx->user_ip6[1] = 0;
 		ctx->user_ip6[2] = 0;
@@ -89,7 +104,11 @@ int getpeername6(struct bpf_sock_addr *ctx)
 		return 1;
 
 	/* Expose service [fc00::1]:60000 as peer instead of backend. */
+<<<<<<< HEAD
 	if (ctx->user_port == bpf_htons(port)) {
+=======
+	if (ctx->user_port == bpf_htons(60124)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		orig = bpf_sk_storage_get(&service_mapping, ctx->sk, 0, 0);
 		if (orig) {
 			ctx->user_ip6[0] = orig->addr[0];

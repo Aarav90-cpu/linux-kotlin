@@ -26,6 +26,19 @@ extern void CONCATENATE(GENL_MAGIC_FAMILY, _genl_unregister)(void);
  */
 
 /*
+<<<<<<< HEAD
+=======
+ * @DRBD_GENLA_F_MANDATORY: By default, netlink ignores attributes it does not
+ * know about.  This flag can be set in nlattr->nla_type to indicate that this
+ * attribute must not be ignored.
+ *
+ * We check and remove this flag in drbd_nla_check_mandatory() before
+ * validating the attribute types and lengths via nla_parse_nested().
+ */
+#define DRBD_GENLA_F_MANDATORY (1 << 14)
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Flags specific to drbd and not visible at the netlink layer, used in
  * <struct>_from_attrs and <struct>_to_skb:
  *
@@ -42,6 +55,10 @@ extern void CONCATENATE(GENL_MAGIC_FAMILY, _genl_unregister)(void);
 #define DRBD_F_SENSITIVE (1 << 1)
 #define DRBD_F_INVARIANT (1 << 2)
 
+<<<<<<< HEAD
+=======
+#define __nla_type(x)	((__u16)((x) & NLA_TYPE_MASK & ~DRBD_GENLA_F_MANDATORY))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*									}}}1
  * MAGIC
@@ -147,12 +164,20 @@ enum {								\
 #undef __field
 #define __field(attr_nr, attr_flag, name, nla_type, type,	\
 		__get, __put, __is_signed)			\
+<<<<<<< HEAD
 	T_ ## name = (__u16)(attr_nr),
+=======
+	T_ ## name = (__u16)(attr_nr | ((attr_flag) & DRBD_GENLA_F_MANDATORY)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #undef __array
 #define __array(attr_nr, attr_flag, name, nla_type, type,	\
 		maxlen, __get, __put, __is_signed)		\
+<<<<<<< HEAD
 	T_ ## name = (__u16)(attr_nr),
+=======
+	T_ ## name = (__u16)(attr_nr | ((attr_flag) & DRBD_GENLA_F_MANDATORY)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include GENL_MAGIC_INCLUDE_FILE
 

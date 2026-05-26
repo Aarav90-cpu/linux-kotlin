@@ -16,6 +16,7 @@ description:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - bosch,bma222
@@ -37,6 +38,27 @@ properties:
       - items:
           - const: bosch,bmx055-accel
           - const: bosch,bmc150_accel
+=======
+    enum:
+      # bmc150-accel driver in Linux
+      - bosch,bma222
+      - bosch,bma222e
+      - bosch,bma250e
+      - bosch,bma253
+      - bosch,bma254
+      - bosch,bma255
+      - bosch,bma280
+      - bosch,bmc150_accel
+      - bosch,bmc156_accel
+      - bosch,bmi055_accel
+
+      # bma180 driver in Linux
+      - bosch,bma023
+      - bosch,bma150
+      - bosch,bma180
+      - bosch,bma250
+      - bosch,smb380
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

@@ -75,6 +75,10 @@ struct vdso_sym {
 };
 
 struct vdso_sym required_syms[] = {
+<<<<<<< HEAD
+=======
+	{"VDSO32_NOTE_MASK", true},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{"__kernel_vsyscall", true},
 	{"__kernel_sigreturn", true},
 	{"__kernel_rt_sigreturn", true},

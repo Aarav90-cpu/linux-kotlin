@@ -257,7 +257,11 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto err_free;
 	}
 
+<<<<<<< HEAD
 	err = pci_enable_ptm(pdev);
+=======
+	err = pci_enable_ptm(pdev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
 

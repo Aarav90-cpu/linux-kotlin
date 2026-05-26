@@ -9,6 +9,10 @@ obj-$(CONFIG_SERIO)		+= serio.o
 obj-$(CONFIG_SERIO_I8042)	+= i8042.o
 obj-$(CONFIG_SERIO_PARKBD)	+= parkbd.o
 obj-$(CONFIG_SERIO_SERPORT)	+= serport.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SERIO_CT82C710)	+= ct82c710.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_SERIO_RPCKBD)	+= rpckbd.o
 obj-$(CONFIG_SERIO_SA1111)	+= sa1111ps2.o
 obj-$(CONFIG_SERIO_AMBAKMI)	+= ambakmi.o

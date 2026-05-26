@@ -399,8 +399,13 @@ static const struct snd_soc_component_driver asoc_idma_platform = {
 	.hw_params	= idma_hw_params,
 	.hw_free	= idma_hw_free,
 	.prepare	= idma_prepare,
+<<<<<<< HEAD
 	.pcm_new	= idma_new,
 	.pcm_free	= idma_free,
+=======
+	.pcm_construct	= idma_new,
+	.pcm_destruct	= idma_free,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int asoc_idma_platform_probe(struct platform_device *pdev)

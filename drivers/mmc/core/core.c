@@ -97,8 +97,12 @@ static void mmc_should_fail_request(struct mmc_host *host,
 		return;
 
 	data->error = data_errors[get_random_u32_below(ARRAY_SIZE(data_errors))];
+<<<<<<< HEAD
 	data->bytes_xfered = get_random_u32_below(data->bytes_xfered >> SECTOR_SHIFT)
 						  << SECTOR_SHIFT;
+=======
+	data->bytes_xfered = get_random_u32_below(data->bytes_xfered >> 9) << 9;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else /* CONFIG_FAIL_MMC_REQUEST */

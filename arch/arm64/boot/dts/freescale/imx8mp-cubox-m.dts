@@ -68,7 +68,11 @@
 		regulator-name = "vmmc";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
+<<<<<<< HEAD
 		gpio = <&gpio2 19 GPIO_ACTIVE_LOW>;
+=======
+		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		startup-delay-us = <250>;
 	};
 };

@@ -95,6 +95,16 @@ void sdhci_get_property(struct platform_device *pdev)
 	sdhci_get_compatibility(pdev);
 
 	device_property_read_u32(dev, "clock-frequency", &pltfm_host->clock);
+<<<<<<< HEAD
+=======
+
+	if (device_property_present(dev, "keep-power-in-suspend"))
+		host->mmc->pm_caps |= MMC_PM_KEEP_POWER;
+
+	if (device_property_read_bool(dev, "wakeup-source") ||
+	    device_property_read_bool(dev, "enable-sdio-wakeup")) /* legacy */
+		host->mmc->pm_caps |= MMC_PM_WAKE_SDIO_IRQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(sdhci_get_property);
 
@@ -208,6 +218,22 @@ const struct dev_pm_ops sdhci_pltfm_pmops = {
 };
 EXPORT_SYMBOL_GPL(sdhci_pltfm_pmops);
 
+<<<<<<< HEAD
+=======
+static int __init sdhci_pltfm_drv_init(void)
+{
+	pr_info("sdhci-pltfm: SDHCI platform and OF driver helper\n");
+
+	return 0;
+}
+module_init(sdhci_pltfm_drv_init);
+
+static void __exit sdhci_pltfm_drv_exit(void)
+{
+}
+module_exit(sdhci_pltfm_drv_exit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("SDHCI platform and OF driver helper");
 MODULE_AUTHOR("Intel Corporation");
 MODULE_LICENSE("GPL v2");

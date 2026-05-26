@@ -244,7 +244,11 @@ static int acct_on(const char __user *name)
 	if (!S_ISREG(file_inode(file)->i_mode))
 		return -EACCES;
 
+<<<<<<< HEAD
 	/* Exclude kernel internal filesystems. */
+=======
+	/* Exclude kernel kernel internal filesystems. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT))
 		return -EINVAL;
 

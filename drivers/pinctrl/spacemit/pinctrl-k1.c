@@ -674,7 +674,11 @@ static int spacemit_pinconf_get(struct pinctrl_dev *pctldev,
 			arg = 0;
 		break;
 	default:
+<<<<<<< HEAD
 		return -ENOTSUPP;
+=======
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	*config = pinconf_to_config_packed(param, arg);
@@ -740,7 +744,11 @@ static int spacemit_pinconf_generate_config(struct spacemit_pinctrl *pctrl,
 			}
 			break;
 		default:
+<<<<<<< HEAD
 			return -ENOTSUPP;
+=======
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -814,12 +822,19 @@ static int spacemit_pinconf_set(struct pinctrl_dev *pctldev,
 	struct spacemit_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
 	const struct spacemit_pin *spin = spacemit_get_pin(pctrl, pin);
 	u32 value;
+<<<<<<< HEAD
 	int ret;
 
 	ret = spacemit_pinconf_generate_config(pctrl, spin, pctrl->data->dconf,
 					       configs, num_configs, &value);
 	if (ret)
 		return ret;
+=======
+
+	if (spacemit_pinconf_generate_config(pctrl, spin, pctrl->data->dconf,
+					     configs, num_configs, &value))
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return spacemit_pin_set_config(pctrl, pin, value);
 }
@@ -833,17 +848,27 @@ static int spacemit_pinconf_group_set(struct pinctrl_dev *pctldev,
 	const struct spacemit_pin *spin;
 	const struct group_desc *group;
 	u32 value;
+<<<<<<< HEAD
 	int i, ret;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	group = pinctrl_generic_get_group(pctldev, gsel);
 	if (!group)
 		return -EINVAL;
 
 	spin = spacemit_get_pin(pctrl, group->grp.pins[0]);
+<<<<<<< HEAD
 	ret = spacemit_pinconf_generate_config(pctrl, spin, pctrl->data->dconf,
 					       configs, num_configs, &value);
 	if (ret)
 		return ret;
+=======
+	if (spacemit_pinconf_generate_config(pctrl, spin, pctrl->data->dconf,
+					     configs, num_configs, &value))
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < group->grp.npins; i++)
 		spacemit_pin_set_config(pctrl, group->grp.pins[i], value);

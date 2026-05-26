@@ -20,7 +20,10 @@ properties:
       - allwinner,sun20i-d1-ppu
       - allwinner,sun55i-a523-pck-600
       - allwinner,sun55i-a523-ppu
+<<<<<<< HEAD
       - allwinner,sun60i-a733-pck-600
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -39,6 +42,7 @@ required:
   - compatible
   - reg
   - clocks
+<<<<<<< HEAD
   - '#power-domain-cells'
 
 allOf:
@@ -56,6 +60,11 @@ allOf:
       required:
         - resets
 
+=======
+  - resets
+  - '#power-domain-cells'
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

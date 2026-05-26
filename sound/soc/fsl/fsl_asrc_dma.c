@@ -505,7 +505,11 @@ struct snd_soc_component_driver fsl_asrc_component = {
 	.open		= fsl_asrc_dma_startup,
 	.close		= fsl_asrc_dma_shutdown,
 	.pointer	= fsl_asrc_dma_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= fsl_asrc_dma_pcm_new,
+=======
+	.pcm_construct	= fsl_asrc_dma_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.legacy_dai_naming = 1,
 #ifdef CONFIG_DEBUG_FS
 	.debugfs_prefix	= "asrc",

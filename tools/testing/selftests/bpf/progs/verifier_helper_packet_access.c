@@ -360,7 +360,11 @@ l0_%=:	r0 = 0;						\
 
 SEC("tc")
 __description("helper access to packet: test15, cls helper fail sub")
+<<<<<<< HEAD
 __failure __msg("R1 min value is negative")
+=======
+__failure __msg("invalid access to packet")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void test15_cls_helper_fail_sub(void)
 {
 	asm volatile ("					\

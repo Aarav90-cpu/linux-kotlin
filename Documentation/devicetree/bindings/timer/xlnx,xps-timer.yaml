@@ -7,7 +7,11 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
 title: Xilinx LogiCORE IP AXI Timer
 
 maintainers:
+<<<<<<< HEAD
   - Sean Anderson <sean.anderson@linux.dev>
+=======
+  - Sean Anderson <sean.anderson@seco.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 properties:
   compatible:

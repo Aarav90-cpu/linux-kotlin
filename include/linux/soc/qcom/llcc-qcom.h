@@ -91,12 +91,18 @@
  * struct llcc_slice_desc - Cache slice descriptor
  * @slice_id: llcc slice id
  * @slice_size: Size allocated for the llcc slice
+<<<<<<< HEAD
  * @refcount: Atomic counter to track activate/deactivate calls
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct llcc_slice_desc {
 	u32 slice_id;
 	size_t slice_size;
+<<<<<<< HEAD
 	refcount_t refcount;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -154,10 +160,18 @@ struct llcc_edac_reg_offset {
  * @edac_reg_offset: Offset of the LLCC EDAC registers
  * @lock: mutex associated with each slice
  * @cfg_size: size of the config data table
+<<<<<<< HEAD
  * @num_banks: Number of llcc banks
  * @ecc_irq: interrupt for llcc cache error detection and reporting
  * @ecc_irq_configured: 'True' if firmware has already configured the irq propagation
  * @desc: Array pointer of pre-allocated LLCC slice descriptors
+=======
+ * @max_slices: max slices as read from device tree
+ * @num_banks: Number of llcc banks
+ * @bitmap: Bit map to track the active slice ids
+ * @ecc_irq: interrupt for llcc cache error detection and reporting
+ * @ecc_irq_configured: 'True' if firmware has already configured the irq propagation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @version: Indicates the LLCC version
  */
 struct llcc_drv_data {
@@ -168,11 +182,20 @@ struct llcc_drv_data {
 	const struct llcc_edac_reg_offset *edac_reg_offset;
 	struct mutex lock;
 	u32 cfg_size;
+<<<<<<< HEAD
 	u32 num_banks;
 	int ecc_irq;
 	bool ecc_irq_configured;
 	u32 version;
 	struct llcc_slice_desc *desc;
+=======
+	u32 max_slices;
+	u32 num_banks;
+	unsigned long *bitmap;
+	int ecc_irq;
+	bool ecc_irq_configured;
+	u32 version;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if IS_ENABLED(CONFIG_QCOM_LLCC)

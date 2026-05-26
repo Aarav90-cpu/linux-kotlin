@@ -35,10 +35,13 @@ struct xe_reg_sr;
 	{ .match_type = XE_RTP_MATCH_SUBPLATFORM,				\
 	  .platform = plat__, .subplatform = sub__ }
 
+<<<<<<< HEAD
 #define _XE_RTP_RULE_PLATFORM_STEP(start__, end__)				\
 	{ .match_type = XE_RTP_MATCH_PLATFORM_STEP,				\
 	  .step_start = start__, .step_end = end__ }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define _XE_RTP_RULE_GRAPHICS_STEP(start__, end__)				\
 	{ .match_type = XE_RTP_MATCH_GRAPHICS_STEP,				\
 	  .step_start = start__, .step_end = end__ }
@@ -71,6 +74,7 @@ struct xe_reg_sr;
 	_XE_RTP_RULE_SUBPLATFORM(XE_##plat_, XE_SUBPLATFORM_##plat_##_##sub_)
 
 /**
+<<<<<<< HEAD
  * XE_RTP_RULE_PLATFORM_STEP - Create rule matching platform-level stepping
  * @start_: First stepping matching the rule
  * @end_: First stepping that does not match the rule
@@ -87,6 +91,8 @@ struct xe_reg_sr;
 	_XE_RTP_RULE_PLATFORM_STEP(STEP_##start_, STEP_##end_)
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * XE_RTP_RULE_GRAPHICS_STEP - Create rule matching graphics stepping
  * @start_: First stepping matching the rule
  * @end_: First stepping that does not match the rule
@@ -451,8 +457,12 @@ void xe_rtp_process_ctx_enable_active_tracking(struct xe_rtp_process_ctx *ctx,
 
 void xe_rtp_process_to_sr(struct xe_rtp_process_ctx *ctx,
 			  const struct xe_rtp_entry_sr *entries,
+<<<<<<< HEAD
 			  size_t n_entries, struct xe_reg_sr *sr,
 			  bool process_in_vf);
+=======
+			  size_t n_entries, struct xe_reg_sr *sr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void xe_rtp_process(struct xe_rtp_process_ctx *ctx,
 		    const struct xe_rtp_entry *entries);

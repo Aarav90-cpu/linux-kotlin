@@ -6,7 +6,11 @@ comment "HSI controllers"
 
 config OMAP_SSI
 	tristate "OMAP SSI hardware driver"
+<<<<<<< HEAD
 	depends on HSI && OF && COMMON_CLK
+=======
+	depends on HSI && OF && ARM && COMMON_CLK
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on ARCH_OMAP3 || COMPILE_TEST
 	help
 	  SSI is a legacy version of HSI. It is usually used to connect

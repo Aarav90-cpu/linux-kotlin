@@ -102,7 +102,11 @@ static int dpp1_dscl_get_pixel_depth_val(enum lb_pixel_depth depth)
 	}
 }
 
+<<<<<<< HEAD
 static bool dpp1_dscl_is_video_format(enum dc_pixel_format format)
+=======
+static bool dpp1_dscl_is_video_format(enum pixel_format format)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (format >= PIXEL_FORMAT_VIDEO_BEGIN
 			&& format <= PIXEL_FORMAT_VIDEO_END)
@@ -111,7 +115,11 @@ static bool dpp1_dscl_is_video_format(enum dc_pixel_format format)
 		return false;
 }
 
+<<<<<<< HEAD
 static bool dpp1_dscl_is_420_format(enum dc_pixel_format format)
+=======
+static bool dpp1_dscl_is_420_format(enum pixel_format format)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (format == PIXEL_FORMAT_420BPP8 ||
 			format == PIXEL_FORMAT_420BPP10)

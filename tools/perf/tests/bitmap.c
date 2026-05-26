@@ -16,7 +16,11 @@ static unsigned long *get_bitmap(const char *str, int nbits)
 	bm = bitmap_zalloc(nbits);
 
 	if (map && bm) {
+<<<<<<< HEAD
 		unsigned int i;
+=======
+		int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct perf_cpu cpu;
 
 		perf_cpu_map__for_each_cpu(cpu, i, map)

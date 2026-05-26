@@ -97,8 +97,13 @@ void noinstr __do_syscall(struct pt_regs *regs, int per_trap)
 {
 	unsigned long nr;
 
+<<<<<<< HEAD
 	enter_from_user_mode(regs);
 	add_random_kstack_offset();
+=======
+	add_random_kstack_offset();
+	enter_from_user_mode(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	regs->psw = get_lowcore()->svc_old_psw;
 	regs->int_code = get_lowcore()->svc_int_code;
 	update_timer_sys();

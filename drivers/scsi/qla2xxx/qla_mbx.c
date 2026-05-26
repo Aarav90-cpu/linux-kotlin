@@ -2268,6 +2268,7 @@ qla2x00_get_firmware_state(scsi_qla_host_t *vha, uint16_t *states)
 		mcp->in_mb = MBX_6|MBX_5|MBX_4|MBX_3|MBX_2|MBX_1|MBX_0;
 	else
 		mcp->in_mb = MBX_1|MBX_0;
+<<<<<<< HEAD
 
 	if (IS_QLA27XX(ha) || IS_QLA28XX(ha)) {
 		mcp->mb[12] = 0;
@@ -2275,6 +2276,8 @@ qla2x00_get_firmware_state(scsi_qla_host_t *vha, uint16_t *states)
 		mcp->in_mb |= MBX_12;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mcp->tov = MBX_TOV_SECONDS;
 	mcp->flags = 0;
 	rval = qla2x00_mailbox_command(vha, mcp);
@@ -2287,8 +2290,11 @@ qla2x00_get_firmware_state(scsi_qla_host_t *vha, uint16_t *states)
 		states[3] = mcp->mb[4];
 		states[4] = mcp->mb[5];
 		states[5] = mcp->mb[6];  /* DPORT status */
+<<<<<<< HEAD
 		if (IS_QLA27XX(ha) || IS_QLA28XX(ha))
 			states[11] = mcp->mb[12]; /* MPI state. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (rval != QLA_SUCCESS) {

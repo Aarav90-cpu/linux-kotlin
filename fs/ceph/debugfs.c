@@ -9,13 +9,19 @@
 #include <linux/seq_file.h>
 #include <linux/math64.h>
 #include <linux/ktime.h>
+<<<<<<< HEAD
 #include <linux/atomic.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/ceph/libceph.h>
 #include <linux/ceph/mon_client.h>
 #include <linux/ceph/auth.h>
 #include <linux/ceph/debugfs.h>
+<<<<<<< HEAD
 #include <linux/ceph/decode.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "super.h"
 
@@ -23,6 +29,7 @@
 
 #include "mds_client.h"
 #include "metric.h"
+<<<<<<< HEAD
 #include "subvolume_metrics.h"
 
 /**
@@ -53,6 +60,8 @@ static const struct ceph_session_feature_desc ceph_session_feature_table[] = {
 	{ CEPHFS_FEATURE_MDS_AUTH_CAPS_CHECK, "MDS_AUTH_CAPS_CHECK" },
 	{ CEPHFS_FEATURE_SUBVOLUME_METRICS, "SUBVOLUME_METRICS" },
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int mdsmap_show(struct seq_file *s, void *p)
 {
@@ -392,6 +401,7 @@ static int status_show(struct seq_file *s, void *p)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int subvolume_metrics_show(struct seq_file *s, void *p)
 {
 	struct ceph_fs_client *fsc = s->private;
@@ -445,6 +455,8 @@ static int subvolume_metrics_show(struct seq_file *s, void *p)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEFINE_SHOW_ATTRIBUTE(mdsmap);
 DEFINE_SHOW_ATTRIBUTE(mdsc);
 DEFINE_SHOW_ATTRIBUTE(caps);
@@ -454,6 +466,7 @@ DEFINE_SHOW_ATTRIBUTE(metrics_file);
 DEFINE_SHOW_ATTRIBUTE(metrics_latency);
 DEFINE_SHOW_ATTRIBUTE(metrics_size);
 DEFINE_SHOW_ATTRIBUTE(metrics_caps);
+<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(subvolume_metrics);
 
 static int metric_features_show(struct seq_file *s, void *p)
@@ -520,6 +533,9 @@ static int metric_features_show(struct seq_file *s, void *p)
 }
 
 DEFINE_SHOW_ATTRIBUTE(metric_features);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * debugfs
@@ -554,7 +570,10 @@ void ceph_fs_debugfs_cleanup(struct ceph_fs_client *fsc)
 	debugfs_remove(fsc->debugfs_caps);
 	debugfs_remove(fsc->debugfs_status);
 	debugfs_remove(fsc->debugfs_mdsc);
+<<<<<<< HEAD
 	debugfs_remove(fsc->debugfs_subvolume_metrics);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove_recursive(fsc->debugfs_metrics_dir);
 	doutc(fsc->client, "done\n");
 }
@@ -619,12 +638,15 @@ void ceph_fs_debugfs_init(struct ceph_fs_client *fsc)
 			    &metrics_size_fops);
 	debugfs_create_file("caps", 0400, fsc->debugfs_metrics_dir, fsc,
 			    &metrics_caps_fops);
+<<<<<<< HEAD
 	debugfs_create_file("metric_features", 0400, fsc->debugfs_metrics_dir,
 			    fsc, &metric_features_fops);
 	fsc->debugfs_subvolume_metrics =
 		debugfs_create_file("subvolumes", 0400,
 				    fsc->debugfs_metrics_dir, fsc,
 				    &subvolume_metrics_fops);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	doutc(fsc->client, "done\n");
 }
 

@@ -343,6 +343,10 @@ static const unsigned int sdc2_data_pins[] = { 152 };
 		.io_reg = 0x1004 + 0x10 * id,		\
 		.intr_cfg_reg = 0x1008 + 0x10 * id,	\
 		.intr_status_reg = 0x100c + 0x10 * id,	\
+<<<<<<< HEAD
+=======
+		.intr_target_reg = 0x1008 + 0x10 * id,	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.mux_bit = 2,				\
 		.pull_bit = 0,				\
 		.drv_bit = 6,				\
@@ -369,6 +373,10 @@ static const unsigned int sdc2_data_pins[] = { 152 };
 		.io_reg = 0,                            \
 		.intr_cfg_reg = 0,                      \
 		.intr_status_reg = 0,                   \
+<<<<<<< HEAD
+=======
+		.intr_target_reg = 0,                   \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.mux_bit = -1,                          \
 		.pull_bit = pull,                       \
 		.drv_bit = drv,                         \

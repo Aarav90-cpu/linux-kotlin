@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 use kernel::{
     device,
     pci,
@@ -9,6 +10,11 @@ use kernel::{
         FromBytes, //
     }, //
 };
+=======
+use kernel::prelude::*;
+use kernel::transmute::{AsBytes, FromBytes};
+use kernel::{device, pci};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 use crate::gsp::GSP_PAGE_SIZE;
 
@@ -113,7 +119,10 @@ unsafe impl FromBytes for PackedRegistryTable {}
 
 /// Payload of the `GetGspStaticInfo` command and message.
 #[repr(transparent)]
+<<<<<<< HEAD
 #[derive(Zeroable)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub(crate) struct GspStaticConfigInfo(bindings::GspStaticConfigInfo_t);
 
 impl GspStaticConfigInfo {
@@ -129,3 +138,10 @@ unsafe impl AsBytes for GspStaticConfigInfo {}
 // SAFETY: This struct only contains integer types for which all bit patterns
 // are valid.
 unsafe impl FromBytes for GspStaticConfigInfo {}
+<<<<<<< HEAD
+=======
+
+// SAFETY: This struct only contains integer types and fixed-size arrays for which
+// all bit patterns are valid.
+unsafe impl Zeroable for GspStaticConfigInfo {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

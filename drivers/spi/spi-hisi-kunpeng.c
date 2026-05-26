@@ -196,6 +196,7 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
 	unsigned long limit = loops_per_jiffy << 1;
 
 	do {
+<<<<<<< HEAD
 		unsigned long inner_limit = loops_per_jiffy;
 
 		while (hisi_spi_rx_not_empty(hs) && --inner_limit) {
@@ -212,6 +213,11 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
 
 	if (!limit)
 		dev_warn_ratelimited(hs->dev, "SPI busy timeout\n");
+=======
+		while (hisi_spi_rx_not_empty(hs))
+			readl(hs->regs + HISI_SPI_DOUT);
+	} while (hisi_spi_busy(hs) && limit--);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Disable the controller and all interrupts */

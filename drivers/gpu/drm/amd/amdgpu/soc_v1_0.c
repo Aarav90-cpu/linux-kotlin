@@ -41,6 +41,7 @@
 #define NORMALIZE_XCC_REG_OFFSET(offset) \
 	(offset & 0xFFFF)
 
+<<<<<<< HEAD
 #define MID1_REG_RANGE_0_LOW  0x40000
 #define MID1_REG_RANGE_0_HIGH 0x80000
 #define NORMALIZE_MID_REG_OFFSET(offset) \
@@ -79,6 +80,8 @@ static int soc_v1_0_query_video_codecs(struct amdgpu_device *adev, bool encode,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Initialized doorbells for amdgpu including multimedia
  * KFD can use all the rest in 2M doorbell bar */
 static void soc_v1_0_doorbell_index_init(struct amdgpu_device *adev)
@@ -95,7 +98,11 @@ static void soc_v1_0_doorbell_index_init(struct amdgpu_device *adev)
 	adev->doorbell_index.userqueue_end = AMDGPU_SOC_V1_0_DOORBELL_USERQUEUE_END;
 	adev->doorbell_index.xcc_doorbell_range = AMDGPU_SOC_V1_0_DOORBELL_XCC_RANGE;
 
+<<<<<<< HEAD
 	adev->doorbell_index.sdma_doorbell_range = 14;
+=======
+	adev->doorbell_index.sdma_doorbell_range = 20;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < adev->sdma.num_instances; i++)
 		adev->doorbell_index.sdma_engine[i] =
 			AMDGPU_SOC_V1_0_DOORBELL_sDMA_ENGINE_START +
@@ -252,10 +259,25 @@ static bool soc_v1_0_need_full_reset(struct amdgpu_device *adev)
 
 static bool soc_v1_0_need_reset_on_init(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
+=======
+	u32 sol_reg;
+
+	if (adev->flags & AMD_IS_APU)
+		return false;
+
+	/* Check sOS sign of life register to confirm sys driver and sOS
+	 * are already been loaded.
+	 */
+	sol_reg = RREG32_SOC15(MP0, 0, regMPASP_SMN_C2PMSG_81);
+	if (sol_reg)
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
 
+<<<<<<< HEAD
 static enum amd_reset_method
 soc_v1_0_asic_reset_method(struct amdgpu_device *adev)
 {
@@ -281,6 +303,10 @@ static int soc_v1_0_asic_reset(struct amdgpu_device *adev)
 		return -EOPNOTSUPP;
 	}
 
+=======
+static int soc_v1_0_asic_reset(struct amdgpu_device *adev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -294,14 +320,18 @@ static const struct amdgpu_asic_funcs soc_v1_0_asic_funcs = {
 	.need_reset_on_init = &soc_v1_0_need_reset_on_init,
 	.encode_ext_smn_addressing = &soc_v1_0_encode_ext_smn_addressing,
 	.reset = soc_v1_0_asic_reset,
+<<<<<<< HEAD
 	.reset_method = &soc_v1_0_asic_reset_method,
 	.query_video_codecs = &soc_v1_0_query_video_codecs,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int soc_v1_0_common_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
 
+<<<<<<< HEAD
 	adev->reg.pcie.rreg = &amdgpu_device_indirect_rreg;
 	adev->reg.pcie.wreg = &amdgpu_device_indirect_wreg;
 	adev->reg.pcie.rreg_ext = &amdgpu_device_indirect_rreg_ext;
@@ -312,6 +342,24 @@ static int soc_v1_0_common_early_init(struct amdgpu_ip_block *ip_block)
 	adev->reg.pcie.port_wreg = &amdgpu_device_pcie_port_wreg;
 	adev->reg.pcie.rreg64_ext = &amdgpu_device_indirect_rreg64_ext;
 	adev->reg.pcie.wreg64_ext = &amdgpu_device_indirect_wreg64_ext;
+=======
+	adev->smc_rreg = NULL;
+	adev->smc_wreg = NULL;
+	adev->pcie_rreg = &amdgpu_device_indirect_rreg;
+	adev->pcie_wreg = &amdgpu_device_indirect_wreg;
+	adev->pcie_rreg_ext = &amdgpu_device_indirect_rreg_ext;
+	adev->pcie_wreg_ext = &amdgpu_device_indirect_wreg_ext;
+	adev->pcie_rreg64 = &amdgpu_device_indirect_rreg64;
+	adev->pcie_wreg64 = &amdgpu_device_indirect_wreg64;
+	adev->pciep_rreg = amdgpu_device_pcie_port_rreg;
+	adev->pciep_wreg = amdgpu_device_pcie_port_wreg;
+	adev->pcie_rreg64_ext = &amdgpu_device_indirect_rreg64_ext;
+	adev->pcie_wreg64_ext = &amdgpu_device_indirect_wreg64_ext;
+	adev->uvd_ctx_rreg = NULL;
+	adev->uvd_ctx_wreg = NULL;
+	adev->didt_rreg = NULL;
+	adev->didt_wreg = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adev->asic_funcs = &soc_v1_0_asic_funcs;
 
@@ -320,9 +368,14 @@ static int soc_v1_0_common_early_init(struct amdgpu_ip_block *ip_block)
 
 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
 	case IP_VERSION(12, 1, 0):
+<<<<<<< HEAD
 		adev->cg_flags = AMD_CG_SUPPORT_GFX_CGCG |
 			AMD_CG_SUPPORT_GFX_CGLS;
 		adev->pg_flags = AMD_PG_SUPPORT_VCN_DPG;
+=======
+		adev->cg_flags = 0;
+		adev->pg_flags = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		adev->external_rev_id = adev->rev_id + 0x50;
 		break;
 	default:
@@ -862,7 +915,11 @@ int soc_v1_0_init_soc_config(struct amdgpu_device *adev)
 {
 	int ret, i;
 	int xcc_inst_per_aid = 4;
+<<<<<<< HEAD
 	uint16_t xcc_mask, sdma_mask = 0;
+=======
+	uint16_t xcc_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xcc_mask = adev->gfx.xcc_mask;
 	adev->aid_mask = 0;
@@ -872,12 +929,19 @@ int soc_v1_0_init_soc_config(struct amdgpu_device *adev)
 	}
 
 	adev->sdma.num_inst_per_xcc = 2;
+<<<<<<< HEAD
 	for_each_inst(i, adev->gfx.xcc_mask)
 		sdma_mask |=
 			GENMASK(adev->sdma.num_inst_per_xcc - 1, 0) <<
 			(i * adev->sdma.num_inst_per_xcc);
 	adev->sdma.sdma_mask = sdma_mask;
 	adev->sdma.num_instances = NUM_XCC(adev->sdma.sdma_mask);
+=======
+	adev->sdma.num_instances =
+		NUM_XCC(adev->gfx.xcc_mask) * adev->sdma.num_inst_per_xcc;
+	adev->sdma.sdma_mask =
+		GENMASK(adev->sdma.num_instances - 1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = soc_v1_0_xcp_mgr_init(adev);
 	if (ret)
@@ -909,6 +973,7 @@ uint32_t soc_v1_0_normalize_xcc_reg_offset(uint32_t reg)
 	else
 		return reg;
 }
+<<<<<<< HEAD
 
 bool soc_v1_0_mid1_reg_range(uint32_t reg)
 {
@@ -937,3 +1002,5 @@ uint32_t soc_v1_0_normalize_reg_offset(uint32_t reg)
 	return reg;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

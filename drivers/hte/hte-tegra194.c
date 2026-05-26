@@ -20,11 +20,18 @@
 
 #define HTE_SUSPEND	0
 
+<<<<<<< HEAD
 /* HTE source clock TSC is 1GHz for T264 and 31.25MHz for others */
 #define HTE_TS_CLK_RATE_HZ	31250000ULL
 #define HTE_TS_CLK_RATE_1G	1000000000ULL
 #define HTE_CLK_RATE_NS		32
 #define HTE_CLK_RATE_NS_1G	1
+=======
+/* HTE source clock TSC is 31.25MHz */
+#define HTE_TS_CLK_RATE_HZ	31250000ULL
+#define HTE_CLK_RATE_NS		32
+#define HTE_TS_NS_SHIFT	__builtin_ctz(HTE_CLK_RATE_NS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define NV_AON_SLICE_INVALID	-1
 #define NV_LINES_IN_SLICE	32
@@ -121,8 +128,11 @@ struct tegra_hte_data {
 	u32 slices;
 	u32 map_sz;
 	u32 sec_map_sz;
+<<<<<<< HEAD
 	u64 tsc_clkrate_hz;
 	u32 tsc_clkrate_ns;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct tegra_hte_line_mapped *map;
 	const struct tegra_hte_line_mapped *sec_map;
 };
@@ -320,6 +330,7 @@ static const struct tegra_hte_line_mapped tegra234_aon_gpio_sec_map[] = {
 	[40] = {2, NV_AON_HTE_SLICE2_IRQ_GPIO_23},
 };
 
+<<<<<<< HEAD
 static const struct tegra_hte_line_mapped tegra264_aon_gpio_map[] = {
 	/* gpio, slice, bit_index */
 	/* AA port */
@@ -408,6 +419,8 @@ static const struct tegra_hte_line_mapped tegra264_aon_gpio_sec_map[] = {
 	[39] = {NV_AON_SLICE_INVALID, 0},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct tegra_hte_data t194_aon_hte = {
 	.map_sz = ARRAY_SIZE(tegra194_aon_gpio_map),
 	.map = tegra194_aon_gpio_map,
@@ -415,8 +428,11 @@ static const struct tegra_hte_data t194_aon_hte = {
 	.sec_map = tegra194_aon_gpio_sec_map,
 	.type = HTE_TEGRA_TYPE_GPIO,
 	.slices = 3,
+<<<<<<< HEAD
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_HZ,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct tegra_hte_data t234_aon_hte = {
@@ -426,6 +442,7 @@ static const struct tegra_hte_data t234_aon_hte = {
 	.sec_map = tegra234_aon_gpio_sec_map,
 	.type = HTE_TEGRA_TYPE_GPIO,
 	.slices = 3,
+<<<<<<< HEAD
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_HZ,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS,
 };
@@ -439,6 +456,8 @@ static const struct tegra_hte_data t264_aon_hte = {
 	.slices = 4,
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_1G,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS_1G,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct tegra_hte_data t194_lic_hte = {
@@ -446,8 +465,11 @@ static const struct tegra_hte_data t194_lic_hte = {
 	.map = NULL,
 	.type = HTE_TEGRA_TYPE_LIC,
 	.slices = 11,
+<<<<<<< HEAD
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_HZ,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct tegra_hte_data t234_lic_hte = {
@@ -455,6 +477,7 @@ static const struct tegra_hte_data t234_lic_hte = {
 	.map = NULL,
 	.type = HTE_TEGRA_TYPE_LIC,
 	.slices = 17,
+<<<<<<< HEAD
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_HZ,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS,
 };
@@ -466,6 +489,8 @@ static const struct tegra_hte_data t264_lic_hte = {
 	.slices = 10,
 	.tsc_clkrate_hz = HTE_TS_CLK_RATE_1G,
 	.tsc_clkrate_ns = HTE_CLK_RATE_NS_1G,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline u32 tegra_hte_readl(struct tegra_hte_soc *hte, u32 reg)
@@ -693,12 +718,20 @@ static int tegra_hte_release(struct hte_chip *chip, struct hte_ts_desc *desc,
 static int tegra_hte_clk_src_info(struct hte_chip *chip,
 				  struct hte_clk_info *ci)
 {
+<<<<<<< HEAD
 	struct tegra_hte_soc *hte_dev = chip->data;
+=======
+	(void)chip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ci)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ci->hz = hte_dev->prov_data->tsc_clkrate_hz;
+=======
+	ci->hz = HTE_TS_CLK_RATE_HZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ci->type = CLOCK_MONOTONIC;
 
 	return 0;
@@ -721,10 +754,15 @@ static void tegra_hte_read_fifo(struct tegra_hte_soc *gs)
 {
 	u32 tsh, tsl, src, pv, cv, acv, slice, bit_index, line_id;
 	u64 tsc;
+<<<<<<< HEAD
 	u8 tsc_ns_shift;
 	struct hte_ts_data el;
 
 	tsc_ns_shift = __builtin_ctz(gs->prov_data->tsc_clkrate_ns);
+=======
+	struct hte_ts_data el;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while ((tegra_hte_readl(gs, HTE_TESTATUS) >>
 		HTE_TESTATUS_OCCUPANCY_SHIFT) &
 		HTE_TESTATUS_OCCUPANCY_MASK) {
@@ -742,7 +780,11 @@ static void tegra_hte_read_fifo(struct tegra_hte_soc *gs)
 		while (acv) {
 			bit_index = __builtin_ctz(acv);
 			line_id = bit_index + (slice << 5);
+<<<<<<< HEAD
 			el.tsc = tsc << tsc_ns_shift;
+=======
+			el.tsc = tsc << HTE_TS_NS_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			el.raw_level = tegra_hte_get_level(gs, line_id);
 			hte_push_ts_ns(gs->chip, line_id, &el);
 			acv &= ~BIT(bit_index);
@@ -777,8 +819,11 @@ static const struct of_device_id tegra_hte_of_match[] = {
 	{ .compatible = "nvidia,tegra194-gte-aon", .data = &t194_aon_hte},
 	{ .compatible = "nvidia,tegra234-gte-lic", .data = &t234_lic_hte},
 	{ .compatible = "nvidia,tegra234-gte-aon", .data = &t234_aon_hte},
+<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra264-gte-lic", .data = &t264_lic_hte},
 	{ .compatible = "nvidia,tegra264-gte-aon", .data = &t264_aon_hte},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, tegra_hte_of_match);

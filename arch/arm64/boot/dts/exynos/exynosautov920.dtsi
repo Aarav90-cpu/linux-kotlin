@@ -1473,6 +1473,7 @@
 				      "noc";
 		};
 
+<<<<<<< HEAD
 		cmu_g3d: clock-controller@1a000000 {
 			compatible = "samsung,exynosautov920-cmu-g3d";
 			reg = <0x1a000000 0x8000>;
@@ -1486,6 +1487,8 @@
 				      "nocp";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinctrl_aud: pinctrl@1a460000 {
 			compatible = "samsung,exynosautov920-pinctrl";
 			reg = <0x1a460000 0x10000>;

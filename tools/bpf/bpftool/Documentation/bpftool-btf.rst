@@ -27,7 +27,11 @@ BTF COMMANDS
 | **bpftool** **btf dump** *BTF_SRC* [**format** *FORMAT*] [**root_id** *ROOT_ID*]
 | **bpftool** **btf help**
 |
+<<<<<<< HEAD
 | *BTF_SRC* := { **id** *BTF_ID* | **prog** *PROG* | **map** *MAP* [{**key** | **value** | **kv** | **all**}] | **file** *FILE* [**file** *FILE*]... }
+=======
+| *BTF_SRC* := { **id** *BTF_ID* | **prog** *PROG* | **map** *MAP* [{**key** | **value** | **kv** | **all**}] | **file** *FILE* }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 | *FORMAT* := { **raw** | **c** [**unsorted**] }
 | *MAP* := { **id** *MAP_ID* | **pinned** *FILE* }
 | *PROG* := { **id** *PROG_ID* | **pinned** *FILE* | **tag** *PROG_TAG* | **name** *PROG_NAME* }
@@ -58,12 +62,18 @@ bpftool btf dump *BTF_SRC* [format *FORMAT*] [root_id *ROOT_ID*]
     When **prog** is provided, it's expected that program has associated BTF
     object with BTF types.
 
+<<<<<<< HEAD
     When specifying *FILE*, an ELF file or a raw BTF file (e.g. from
     ``/sys/kernel/btf/``) is expected.  Multiple **file** arguments may be
     given to merge BTF from several kernel modules into a single output.
     When sysfs paths are used, vmlinux BTF is loaded automatically as the
     base; if vmlinux itself appears in the file list it is skipped.
     A base BTF can also be specified explicitly with **-B**.
+=======
+    When specifying *FILE*, an ELF file is expected, containing .BTF section
+    with well-defined BTF binary format data, typically produced by clang or
+    pahole.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     **format** option can be used to override default (raw) output format. Raw
     (**raw**) or C-syntax (**c**) output formats are supported. With C-style

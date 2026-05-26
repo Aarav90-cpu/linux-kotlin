@@ -15,7 +15,10 @@ struct kvm_gstage {
 #define KVM_GSTAGE_FLAGS_LOCAL		BIT(0)
 	unsigned long vmid;
 	pgd_t *pgd;
+<<<<<<< HEAD
 	unsigned long pgd_levels;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct kvm_gstage_mapping {
@@ -30,6 +33,7 @@ struct kvm_gstage_mapping {
 #define kvm_riscv_gstage_index_bits	10
 #endif
 
+<<<<<<< HEAD
 extern unsigned long kvm_riscv_gstage_max_pgd_levels;
 
 #define kvm_riscv_gstage_pgd_xbits	2
@@ -46,6 +50,18 @@ static inline gpa_t kvm_riscv_gstage_gpa_size(unsigned long pgd_levels)
 {
 	return BIT_ULL(kvm_riscv_gstage_gpa_bits(pgd_levels));
 }
+=======
+extern unsigned long kvm_riscv_gstage_mode;
+extern unsigned long kvm_riscv_gstage_pgd_levels;
+
+#define kvm_riscv_gstage_pgd_xbits	2
+#define kvm_riscv_gstage_pgd_size	(1UL << (HGATP_PAGE_SHIFT + kvm_riscv_gstage_pgd_xbits))
+#define kvm_riscv_gstage_gpa_bits	(HGATP_PAGE_SHIFT + \
+					 (kvm_riscv_gstage_pgd_levels * \
+					  kvm_riscv_gstage_index_bits) + \
+					 kvm_riscv_gstage_pgd_xbits)
+#define kvm_riscv_gstage_gpa_size	((gpa_t)(1ULL << kvm_riscv_gstage_gpa_bits))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
 			       pte_t **ptepp, u32 *ptep_level);
@@ -60,10 +76,13 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
 			      bool page_rdonly, bool page_exec,
 			      struct kvm_gstage_mapping *out_map);
 
+<<<<<<< HEAD
 int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
 				struct kvm_mmu_memory_cache *pcache,
 				gpa_t addr, u32 target_level, bool flush);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum kvm_riscv_gstage_op {
 	GSTAGE_OP_NOP = 0,	/* Nothing */
 	GSTAGE_OP_CLEAR,	/* Clear/Unmap */
@@ -80,6 +99,7 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
 
 void kvm_riscv_gstage_mode_detect(void);
 
+<<<<<<< HEAD
 static inline unsigned long kvm_riscv_gstage_mode(unsigned long pgd_levels)
 {
 	switch (pgd_levels) {
@@ -106,4 +126,6 @@ static inline void kvm_riscv_gstage_init(struct kvm_gstage *gstage, struct kvm *
 	gstage->pgd_levels = kvm->arch.pgd_levels;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

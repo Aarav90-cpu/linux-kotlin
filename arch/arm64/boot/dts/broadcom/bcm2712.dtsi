@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: (GPL-2.0 OR MIT)
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+<<<<<<< HEAD
 #include <dt-bindings/soc/bcm2835-pm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	compatible = "brcm,bcm2712";
@@ -509,6 +512,13 @@
 			     <0x18 0x00000000  0x18 0x00000000  0x04 0x00000000>,
 			     <0x1c 0x00000000  0x1c 0x00000000  0x04 0x00000000>;
 
+<<<<<<< HEAD
+=======
+		vc4: gpu {
+			compatible = "brcm,bcm2712-vc6";
+		};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pcie0: pcie@1000100000 {
 			compatible = "brcm,bcm2712-pcie";
 			reg = <0x10 0x00100000 0x00 0x9310>;
@@ -643,6 +653,7 @@
 			msi-ranges = <&gicv2 GIC_SPI 247 IRQ_TYPE_EDGE_RISING 8>;
 			brcm,msi-offset = <8>;
 		};
+<<<<<<< HEAD
 
 		isp: isp@1000880000  {
 		     compatible = "brcm,bcm2712-pispbe", "raspberrypi,pispbe";
@@ -667,6 +678,8 @@
 
 	vc4: gpu {
 		compatible = "brcm,bcm2712-vc6";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	timer {

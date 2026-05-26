@@ -19,6 +19,7 @@
 #include <sound/info.h>
 #include <sound/control.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SND_CTL_DEBUG
 #define CREATE_TRACE_POINTS
 #include "control_trace.h"
@@ -26,6 +27,8 @@
 #define trace_snd_ctl_put(card, kctl, iname, expected, actual)
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // Max allocation size for user controls.
 static int max_user_ctl_alloc_size = 8 * 1024 * 1024;
 module_param_named(max_user_ctl_alloc_size, max_user_ctl_alloc_size, int, 0444);
@@ -1271,6 +1274,7 @@ static int snd_ctl_elem_read_user(struct snd_card *card,
 	return result;
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_SND_CTL_DEBUG)
 
 static const char *const snd_ctl_elem_iface_names[] = {
@@ -1337,6 +1341,8 @@ static inline int snd_ctl_put(struct snd_card *card, struct snd_kcontrol *kctl,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
 			      struct snd_ctl_elem_value *control)
 {
@@ -1373,8 +1379,12 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
 							   false);
 	}
 	if (!result)
+<<<<<<< HEAD
 		result = snd_ctl_put(card, kctl, control, vd->access);
 
+=======
+		result = kctl->put(kctl, control);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result < 0) {
 		up_write(&card->controls_rwsem);
 		return result;

@@ -825,7 +825,10 @@ static struct wmi_driver dell_wmi_driver = {
 		.name = "dell-wmi",
 	},
 	.id_table = dell_wmi_id_table,
+<<<<<<< HEAD
 	.min_event_size = sizeof(u16),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.probe = dell_wmi_probe,
 	.remove = dell_wmi_remove,
 	.notify = dell_wmi_notify,

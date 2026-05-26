@@ -94,7 +94,11 @@ struct slab {
 #define SLAB_MATCH(pg, sl)						\
 	static_assert(offsetof(struct page, pg) == offsetof(struct slab, sl))
 SLAB_MATCH(flags, flags);
+<<<<<<< HEAD
 SLAB_MATCH(compound_info, slab_cache);	/* Ensure bit 0 is clear */
+=======
+SLAB_MATCH(compound_head, slab_cache);	/* Ensure bit 0 is clear */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SLAB_MATCH(_refcount, __page_refcount);
 #ifdef CONFIG_MEMCG
 SLAB_MATCH(memcg_data, obj_exts);
@@ -131,7 +135,15 @@ static_assert(IS_ALIGNED(offsetof(struct slab, freelist), sizeof(struct freelist
  */
 static inline struct slab *page_slab(const struct page *page)
 {
+<<<<<<< HEAD
 	page = compound_head(page);
+=======
+	unsigned long head;
+
+	head = READ_ONCE(page->compound_head);
+	if (head & 1)
+		page = (struct page *)(head - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data_race(page->page_type >> 24) != PGTY_slab)
 		page = NULL;
 
@@ -187,11 +199,14 @@ struct kmem_cache_order_objects {
 	unsigned int x;
 };
 
+<<<<<<< HEAD
 struct kmem_cache_per_node_ptrs {
 	struct node_barn *barn;
 	struct kmem_cache_node *node;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Slab cache management.
  */
@@ -248,7 +263,11 @@ struct kmem_cache {
 	struct kmem_cache_stats __percpu *cpu_stats;
 #endif
 
+<<<<<<< HEAD
 	struct kmem_cache_per_node_ptrs per_node[MAX_NUMNODES];
+=======
+	struct kmem_cache_node *node[MAX_NUMNODES];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

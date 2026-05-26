@@ -41,8 +41,12 @@ static const struct dma_fence_ops nouveau_fence_ops_legacy;
 static inline struct nouveau_fence_chan *
 nouveau_fctx(struct nouveau_fence *fence)
 {
+<<<<<<< HEAD
 	return container_of(fence->base.extern_lock, struct nouveau_fence_chan,
 			    lock);
+=======
+	return container_of(fence->base.lock, struct nouveau_fence_chan, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool

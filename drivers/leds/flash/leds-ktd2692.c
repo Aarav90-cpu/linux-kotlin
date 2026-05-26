@@ -59,7 +59,11 @@ struct ktd2692_led_config_data {
 	enum led_brightness max_brightness;
 };
 
+<<<<<<< HEAD
 static const struct expresswire_timing ktd2692_timing = {
+=======
+const struct expresswire_timing ktd2692_timing = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.poweroff_us = 700,
 	.data_start_us = 10,
 	.end_of_data_low_us = 10,

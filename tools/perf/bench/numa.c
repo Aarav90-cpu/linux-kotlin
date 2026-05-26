@@ -32,6 +32,10 @@
 #include <linux/kernel.h>
 #include <linux/time64.h>
 #include <linux/numa.h>
+<<<<<<< HEAD
+=======
+#include <linux/zalloc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "../util/header.h"
 #include "../util/mutex.h"
@@ -165,7 +169,11 @@ static struct global_info	*g = NULL;
 static int parse_cpus_opt(const struct option *opt, const char *arg, int unset);
 static int parse_nodes_opt(const struct option *opt, const char *arg, int unset);
 
+<<<<<<< HEAD
 static struct params p0;
+=======
+struct params p0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct option options[] = {
 	OPT_INTEGER('p', "nr_proc"	, &p0.nr_proc,		"number of processes"),
@@ -979,8 +987,15 @@ static int count_process_nodes(int process_nr)
 	int nodes;
 	int n, t;
 
+<<<<<<< HEAD
 	node_present = calloc(g->p.nr_nodes, sizeof(char));
 	BUG_ON(!node_present);
+=======
+	node_present = (char *)malloc(g->p.nr_nodes * sizeof(char));
+	BUG_ON(!node_present);
+	for (nodes = 0; nodes < g->p.nr_nodes; nodes++)
+		node_present[nodes] = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (t = 0; t < g->p.nr_threads; t++) {
 		struct thread_data *td;
@@ -1087,8 +1102,15 @@ static void calc_convergence(double runtime_ns_max, double *convergence)
 	if (!g->p.show_convergence && !g->p.measure_convergence)
 		return;
 
+<<<<<<< HEAD
 	nodes = calloc(g->p.nr_nodes, sizeof(int));
 	BUG_ON(!nodes);
+=======
+	nodes = (int *)malloc(g->p.nr_nodes * sizeof(int));
+	BUG_ON(!nodes);
+	for (node = 0; node < g->p.nr_nodes; node++)
+		nodes[node] = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	loops_done_min = -1;
 	loops_done_max = 0;
@@ -1418,7 +1440,11 @@ static void worker_process(int process_nr)
 	bind_to_memnode(td->bind_node);
 	bind_to_cpumask(td->bind_cpumask);
 
+<<<<<<< HEAD
 	pthreads = calloc(g->p.nr_threads, sizeof(pthread_t));
+=======
+	pthreads = zalloc(g->p.nr_threads * sizeof(pthread_t));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	process_data = setup_private_data(g->p.bytes_process);
 
 	if (g->p.show_details >= 3) {
@@ -1624,7 +1650,11 @@ static int __bench_numa(const char *name)
 	if (init())
 		return -1;
 
+<<<<<<< HEAD
 	pids = calloc(g->p.nr_proc, sizeof(*pids));
+=======
+	pids = zalloc(g->p.nr_proc * sizeof(*pids));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pid = -1;
 
 	if (g->p.serialize_startup) {

@@ -394,8 +394,15 @@ static int create_dmic_dailinks(struct snd_soc_card *card,
 static int soc_card_dai_links_create(struct snd_soc_card *card)
 {
 	struct device *dev = card->dev;
+<<<<<<< HEAD
 	int sdw_be_num = 0, dmic_num = 0;
 	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+=======
+	struct snd_soc_acpi_mach *mach = dev_get_platdata(card->dev);
+	int sdw_be_num = 0, dmic_num = 0;
+	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+	struct snd_soc_acpi_mach_params *mach_params = &mach->mach_params;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_soc_aux_dev *soc_aux;
 	struct snd_soc_codec_conf *codec_conf;
 	struct snd_soc_dai_link *dai_links;
@@ -438,7 +445,11 @@ static int soc_card_dai_links_create(struct snd_soc_card *card)
 	sdw_be_num = ret;
 
 	/* enable dmic */
+<<<<<<< HEAD
 	if (soc_sdw_quirk & ASOC_SDW_ACP_DMIC)
+=======
+	if (soc_sdw_quirk & ASOC_SDW_ACP_DMIC || mach_params->dmic_num)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmic_num = 1;
 
 	dev_dbg(dev, "sdw %d, dmic %d", sdw_be_num, dmic_num);
@@ -549,11 +560,19 @@ static int mc_probe(struct platform_device *pdev)
 					  " cfg-amp:%d", amp_num);
 	if (!card->components)
 		return -ENOMEM;
+<<<<<<< HEAD
 	if (soc_sdw_quirk & ASOC_SDW_ACP_DMIC) {
 		card->components = devm_kasprintf(card->dev, GFP_KERNEL,
 						  "%s mic:acp-dmic cfg-mics:%d",
 						  card->components,
 						  1);
+=======
+	if (mach->mach_params.dmic_num) {
+		card->components = devm_kasprintf(card->dev, GFP_KERNEL,
+						  "%s mic:dmic cfg-mics:%d",
+						  card->components,
+						  mach->mach_params.dmic_num);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!card->components)
 			return -ENOMEM;
 	}

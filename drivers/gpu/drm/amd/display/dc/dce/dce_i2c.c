@@ -31,7 +31,10 @@ bool dce_i2c_oem_device_present(
 	size_t slave_address
 )
 {
+<<<<<<< HEAD
 	(void)pool;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc *dc = ddc->ctx->dc;
 	struct dc_bios *dcb = dc->ctx->dc_bios;
 	struct graphics_object_id id = {0};

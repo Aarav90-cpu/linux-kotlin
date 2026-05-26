@@ -11,12 +11,16 @@ maintainers:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - const: awinic,aw86927
       - items:
           - enum:
               - awinic,aw86938
           - const: awinic,aw86927
+=======
+    const: awinic,aw86927
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

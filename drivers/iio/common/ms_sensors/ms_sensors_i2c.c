@@ -96,7 +96,11 @@ EXPORT_SYMBOL_NS(ms_sensors_read_prom_word, "IIO_MEAS_SPEC_SENSORS");
  *
  * Generic ADC conversion & read function for Measurement Specialties
  * devices.
+<<<<<<< HEAD
  * The function will issue conversion command, sleep appropriate delay, and
+=======
+ * The function will issue conversion command, sleep appopriate delay, and
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * issue command to read ADC.
  *
  * Return: 0 on success, negative errno otherwise.

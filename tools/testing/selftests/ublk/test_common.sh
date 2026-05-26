@@ -88,7 +88,10 @@ _remove_tmp_dir() {
 _mkfs_mount_test()
 {
 	local dev=$1
+<<<<<<< HEAD
 	shift
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local err_code=0
 	local mnt_dir;
 
@@ -100,6 +103,7 @@ _mkfs_mount_test()
 	fi
 
 	mount -t ext4 "$dev" "$mnt_dir" > /dev/null 2>&1
+<<<<<<< HEAD
 	if [ $# -gt 0 ]; then
 		cd "$mnt_dir" && "$@"
 		err_code=$?
@@ -111,6 +115,14 @@ _mkfs_mount_test()
 	fi
 	_remove_tmp_dir "$mnt_dir"
 	return $err_code
+=======
+	umount "$dev"
+	err_code=$?
+	_remove_tmp_dir "$mnt_dir"
+	if [ $err_code -ne 0 ]; then
+		return $err_code
+	fi
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 _check_root() {
@@ -138,7 +150,10 @@ _prep_test() {
 	local base_dir=${TMPDIR:-./ublktest-dir}
 	mkdir -p "$base_dir"
 	UBLK_TEST_DIR=$(mktemp -d ${base_dir}/${TID}.XXXXXX)
+<<<<<<< HEAD
 	UBLK_TEST_DIR=$(realpath ${UBLK_TEST_DIR})
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	UBLK_TMP=$(mktemp ${UBLK_TEST_DIR}/ublk_test_XXXXX)
 	[ "$UBLK_TEST_QUIET" -eq 0 ] && echo "ublk $type: $*"
 	echo "ublk selftest: $TID starting at $(date '+%F %T')" | tee /dev/kmsg

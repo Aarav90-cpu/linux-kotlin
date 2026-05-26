@@ -30,7 +30,10 @@
 #include "map.h"
 #include "callchain.h"
 #include "branch.h"
+<<<<<<< HEAD
 #include "record.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "symbol.h"
 #include "thread.h"
 #include "util.h"
@@ -171,7 +174,11 @@ static int get_stack_size(const char *str, unsigned long *_size)
 static int
 __parse_callchain_report_opt(const char *arg, bool allow_record_opt)
 {
+<<<<<<< HEAD
 	char *tok, *arg_copy;
+=======
+	char *tok;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *endptr, *saveptr = NULL;
 	bool minpcnt_set = false;
 	bool record_opt_set = false;
@@ -183,17 +190,25 @@ __parse_callchain_report_opt(const char *arg, bool allow_record_opt)
 	if (!arg)
 		return 0;
 
+<<<<<<< HEAD
 	arg_copy = strdup(arg);
 	if (!arg_copy)
 		return -ENOMEM;
 
 	tok = strtok_r(arg_copy, ",", &saveptr);
 	while (tok) {
+=======
+	while ((tok = strtok_r((char *)arg, ",", &saveptr)) != NULL) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!strncmp(tok, "none", strlen(tok))) {
 			callchain_param.mode = CHAIN_NONE;
 			callchain_param.enabled = false;
 			symbol_conf.use_callchain = false;
+<<<<<<< HEAD
 			goto out;
+=======
+			return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (!parse_callchain_mode(tok) ||
@@ -220,27 +235,43 @@ try_numbers:
 			unsigned long size = 0;
 
 			if (get_stack_size(tok, &size) < 0)
+<<<<<<< HEAD
 				goto err_out;
+=======
+				return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			callchain_param.dump_size = size;
 			try_stack_size = false;
 		} else if (!minpcnt_set) {
 			/* try to get the min percent */
 			callchain_param.min_percent = strtod(tok, &endptr);
 			if (tok == endptr)
+<<<<<<< HEAD
 				goto err_out;
+=======
+				return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			minpcnt_set = true;
 		} else {
 			/* try print limit at last */
 			callchain_param.print_limit = strtoul(tok, &endptr, 0);
 			if (tok == endptr)
+<<<<<<< HEAD
 				goto err_out;
 		}
 next:
 		tok = strtok_r(NULL, ",", &saveptr);
+=======
+				return -1;
+		}
+next:
+		arg = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (callchain_register_param(&callchain_param) < 0) {
 		pr_err("Can't register callchain params\n");
+<<<<<<< HEAD
 		goto err_out;
 	}
 out:
@@ -249,6 +280,11 @@ out:
 err_out:
 	free(arg_copy);
 	return -1;
+=======
+		return -1;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int parse_callchain_report_opt(const char *arg)
@@ -268,12 +304,23 @@ int parse_callchain_record(const char *arg, struct callchain_param *param)
 	int ret = -1;
 
 	/* We need buffer that we know we can write to. */
+<<<<<<< HEAD
 	buf = strdup(arg);
 	if (!buf)
 		return -ENOMEM;
 
 	tok = strtok_r(buf, ",", &saveptr);
 	name = tok ? : buf;
+=======
+	buf = malloc(strlen(arg) + 1);
+	if (!buf)
+		return -ENOMEM;
+
+	strcpy(buf, arg);
+
+	tok = strtok_r((char *)buf, ",", &saveptr);
+	name = tok ? : (char *)buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	do {
 		/* Framepointer style */
@@ -337,6 +384,7 @@ int parse_callchain_record(const char *arg, struct callchain_param *param)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void callchain_debug(const struct callchain_param *callchain)
 {
 	static const char *str[CALLCHAIN_MAX] = { "NONE", "FP", "DWARF", "LBR" };
@@ -375,6 +423,8 @@ int record_opts__parse_callchain(struct record_opts *record,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int perf_callchain_config(const char *var, const char *value)
 {
 	char *endptr;
@@ -1901,19 +1951,29 @@ int sample__merge_deferred_callchain(struct perf_sample *sample_orig,
 	u64 nr_deferred = sample_callchain->callchain->nr;
 	struct ip_callchain *callchain;
 
+<<<<<<< HEAD
 	if (sample_orig->merged_callchain) {
 		/* Already merged. */
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sample_orig->callchain->nr < 2) {
 		sample_orig->deferred_callchain = false;
 		return -EINVAL;
 	}
 
 	callchain = calloc(1 + nr_orig + nr_deferred, sizeof(u64));
+<<<<<<< HEAD
 	if (callchain == NULL)
 		return -ENOMEM;
+=======
+	if (callchain == NULL) {
+		sample_orig->deferred_callchain = false;
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	callchain->nr = nr_orig + nr_deferred;
 	/* copy original including PERF_CONTEXT_USER_DEFERRED (but the cookie) */
@@ -1922,7 +1982,10 @@ int sample__merge_deferred_callchain(struct perf_sample *sample_orig,
 	memcpy(&callchain->ips[nr_orig], sample_callchain->callchain->ips,
 	       nr_deferred * sizeof(u64));
 
+<<<<<<< HEAD
 	sample_orig->merged_callchain = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sample_orig->callchain = callchain;
 	return 0;
 }

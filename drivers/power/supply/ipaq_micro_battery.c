@@ -7,7 +7,10 @@
  * Author : Linus Walleij <linus.walleij@linaro.org>
  */
 
+<<<<<<< HEAD
 #include <linux/devm-helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
@@ -233,6 +236,7 @@ static int micro_batt_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	mb->micro = dev_get_drvdata(pdev->dev.parent);
+<<<<<<< HEAD
 	mb->wq = devm_alloc_workqueue(&pdev->dev, "ipaq-battery-wq",
 				      WQ_MEM_RECLAIM | WQ_PERCPU, 0);
 	if (!mb->wq)
@@ -258,6 +262,51 @@ static int micro_batt_probe(struct platform_device *pdev)
 
 	dev_info(&pdev->dev, "iPAQ micro battery driver\n");
 	return 0;
+=======
+	mb->wq = alloc_workqueue("ipaq-battery-wq",
+				 WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+	if (!mb->wq)
+		return -ENOMEM;
+
+	INIT_DELAYED_WORK(&mb->update, micro_battery_work);
+	platform_set_drvdata(pdev, mb);
+	queue_delayed_work(mb->wq, &mb->update, 1);
+
+	micro_batt_power = power_supply_register(&pdev->dev,
+						 &micro_batt_power_desc, NULL);
+	if (IS_ERR(micro_batt_power)) {
+		ret = PTR_ERR(micro_batt_power);
+		goto batt_err;
+	}
+
+	micro_ac_power = power_supply_register(&pdev->dev,
+					       &micro_ac_power_desc, NULL);
+	if (IS_ERR(micro_ac_power)) {
+		ret = PTR_ERR(micro_ac_power);
+		goto ac_err;
+	}
+
+	dev_info(&pdev->dev, "iPAQ micro battery driver\n");
+	return 0;
+
+ac_err:
+	power_supply_unregister(micro_batt_power);
+batt_err:
+	cancel_delayed_work_sync(&mb->update);
+	destroy_workqueue(mb->wq);
+	return ret;
+}
+
+static void micro_batt_remove(struct platform_device *pdev)
+
+{
+	struct micro_battery *mb = platform_get_drvdata(pdev);
+
+	power_supply_unregister(micro_ac_power);
+	power_supply_unregister(micro_batt_power);
+	cancel_delayed_work_sync(&mb->update);
+	destroy_workqueue(mb->wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __maybe_unused micro_batt_suspend(struct device *dev)
@@ -286,6 +335,10 @@ static struct platform_driver micro_batt_device_driver = {
 		.pm	= &micro_batt_dev_pm_ops,
 	},
 	.probe		= micro_batt_probe,
+<<<<<<< HEAD
+=======
+	.remove		= micro_batt_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 module_platform_driver(micro_batt_device_driver);
 

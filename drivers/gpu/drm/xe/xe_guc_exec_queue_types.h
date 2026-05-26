@@ -3,8 +3,13 @@
  * Copyright © 2022 Intel Corporation
  */
 
+<<<<<<< HEAD
 #ifndef _XE_GUC_EXEC_QUEUE_TYPES_H_
 #define _XE_GUC_EXEC_QUEUE_TYPES_H_
+=======
+#ifndef _XE_GUC_ENGINE_TYPES_H_
+#define _XE_GUC_ENGINE_TYPES_H_
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/spinlock.h>
 #include <linux/workqueue.h>

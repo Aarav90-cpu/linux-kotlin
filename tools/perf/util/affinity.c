@@ -90,7 +90,11 @@ void cpu_map__set_affinity(const struct perf_cpu_map *cpumap)
 	int cpu_set_size = get_cpu_set_size();
 	unsigned long *cpuset = bitmap_zalloc(cpu_set_size * 8);
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!cpuset)
 		return;

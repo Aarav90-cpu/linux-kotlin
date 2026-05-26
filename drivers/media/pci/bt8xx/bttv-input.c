@@ -572,9 +572,14 @@ void bttv_input_fini(struct bttv *btv)
 	if (btv->remote == NULL)
 		return;
 
+<<<<<<< HEAD
 	rc_unregister_device(btv->remote->dev);
 	bttv_ir_stop(btv);
 	rc_free_device(btv->remote->dev);
+=======
+	bttv_ir_stop(btv);
+	rc_unregister_device(btv->remote->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(btv->remote);
 	btv->remote = NULL;
 }

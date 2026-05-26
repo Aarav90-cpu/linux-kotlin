@@ -238,6 +238,7 @@ static inline struct hfsplus_inode_info *HFSPLUS_I(struct inode *inode)
 	return container_of(inode, struct hfsplus_inode_info, vfs_inode);
 }
 
+<<<<<<< HEAD
 #define HFSPLUS_CAT_TREE_I(sb) \
 	HFSPLUS_SB(sb)->cat_tree->inode
 #define HFSPLUS_EXT_TREE_I(sb) \
@@ -245,6 +246,8 @@ static inline struct hfsplus_inode_info *HFSPLUS_I(struct inode *inode)
 #define HFSPLUS_ATTR_TREE_I(sb) \
 	HFSPLUS_SB(sb)->attr_tree->inode
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Mark an inode dirty, and also mark the btree in which the
  * specific type of metadata is stored.
@@ -506,8 +509,12 @@ int hfsplus_uni2asc_xattr_str(struct super_block *sb,
 			      const struct hfsplus_attr_unistr *ustr,
 			      char *astr, int *len_p);
 int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
+<<<<<<< HEAD
 		    int max_unistr_len, const char *astr, int len,
 		    int name_type);
+=======
+		    int max_unistr_len, const char *astr, int len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
 int hfsplus_compare_dentry(const struct dentry *dentry, unsigned int len,
 			   const char *str, const struct qstr *name);
@@ -572,12 +579,16 @@ hfsplus_btree_lock_class(struct hfs_btree *tree)
 static inline
 bool is_bnode_offset_valid(struct hfs_bnode *node, u32 off)
 {
+<<<<<<< HEAD
 	bool is_valid;
 
 	if (!node || !node->tree)
 		return false;
 
 	is_valid = off < node->tree->node_size;
+=======
+	bool is_valid = off < node->tree->node_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_valid) {
 		pr_err("requested invalid offset: "

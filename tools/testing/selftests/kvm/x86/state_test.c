@@ -26,9 +26,13 @@ void svm_l2_guest_code(void)
 	GUEST_SYNC(4);
 	/* Exit to L1 */
 	vmcall();
+<<<<<<< HEAD
 	clgi();
 	GUEST_SYNC(6);
 	stgi();
+=======
+	GUEST_SYNC(6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Done, exit to L1 and never come back.  */
 	vmcall();
 }
@@ -43,8 +47,11 @@ static void svm_l1_guest_code(struct svm_test_data *svm)
 	generic_svm_setup(svm, svm_l2_guest_code,
 			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
 
+<<<<<<< HEAD
 	vmcb->control.int_ctl |= (V_GIF_ENABLE_MASK | V_GIF_MASK);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	GUEST_SYNC(3);
 	run_guest(vmcb, svm->vmcb_gpa);
 	GUEST_ASSERT(vmcb->control.exit_code == SVM_EXIT_VMMCALL);
@@ -144,8 +151,13 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
 	GUEST_SYNC(1);
 
 	if (this_cpu_has(X86_FEATURE_XSAVE)) {
+<<<<<<< HEAD
 		u64 supported_xcr0 = this_cpu_supported_xcr0();
 		u8 buffer[PAGE_SIZE];
+=======
+		uint64_t supported_xcr0 = this_cpu_supported_xcr0();
+		uint8_t buffer[PAGE_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		memset(buffer, 0xcc, sizeof(buffer));
 
@@ -172,8 +184,13 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
 		}
 
 		if (this_cpu_has(X86_FEATURE_MPX)) {
+<<<<<<< HEAD
 			u64 bounds[2] = { 10, 0xffffffffull };
 			u64 output[2] = { };
+=======
+			uint64_t bounds[2] = { 10, 0xffffffffull };
+			uint64_t output[2] = { };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			GUEST_ASSERT(supported_xcr0 & XFEATURE_MASK_BNDREGS);
 			GUEST_ASSERT(supported_xcr0 & XFEATURE_MASK_BNDCSR);
@@ -226,6 +243,7 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 void svm_check_nested_state(int stage, struct kvm_x86_state *state)
 {
 	struct vmcb *vmcb = (struct vmcb *)state->nested.data.svm;
@@ -259,6 +277,12 @@ int main(int argc, char *argv[])
 {
 	u64 *xstate_bv, saved_xstate_bv;
 	gva_t nested_gva = 0;
+=======
+int main(int argc, char *argv[])
+{
+	uint64_t *xstate_bv, saved_xstate_bv;
+	vm_vaddr_t nested_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_cpuid2 empty_cpuid = {};
 	struct kvm_regs regs1, regs2;
 	struct kvm_vcpu *vcpu, *vcpuN;
@@ -311,8 +335,11 @@ int main(int argc, char *argv[])
 
 		kvm_vm_release(vm);
 
+<<<<<<< HEAD
 		check_nested_state(stage, state);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Restore state in a new VM.  */
 		vcpu = vm_recreate_with_one_vcpu(vm);
 		vcpu_load_state(vcpu, state);
@@ -331,7 +358,11 @@ int main(int argc, char *argv[])
 		 * supported features, even if something goes awry in saving
 		 * the original snapshot.
 		 */
+<<<<<<< HEAD
 		xstate_bv = (void *)&((u8 *)state->xsave->region)[512];
+=======
+		xstate_bv = (void *)&((uint8_t *)state->xsave->region)[512];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		saved_xstate_bv = *xstate_bv;
 
 		vcpuN = __vm_vcpu_add(vm, vcpu->id + 1);

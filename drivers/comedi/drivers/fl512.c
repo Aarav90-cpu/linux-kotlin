@@ -98,6 +98,7 @@ static int fl512_ao_insn_write(struct comedi_device *dev,
 static int fl512_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 {
 	struct comedi_subdevice *s;
+<<<<<<< HEAD
 	unsigned int iobase = it->options[0];
 	int ret;
 
@@ -107,6 +108,11 @@ static int fl512_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	 */
 	ret = comedi_check_request_region(dev, iobase, 0x10,
 					  0, UINT_MAX, 16);
+=======
+	int ret;
+
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

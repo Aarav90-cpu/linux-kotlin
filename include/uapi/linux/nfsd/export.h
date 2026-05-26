@@ -34,7 +34,11 @@
 #define NFSEXP_GATHERED_WRITES	0x0020
 #define NFSEXP_NOREADDIRPLUS    0x0040
 #define NFSEXP_SECURITY_LABEL	0x0080
+<<<<<<< HEAD
 #define NFSEXP_SIGN_FH		0x0100
+=======
+/* 0x100 currently unused */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NFSEXP_NOHIDE		0x0200
 #define NFSEXP_NOSUBTREECHECK	0x0400
 #define	NFSEXP_NOAUTHNLM	0x0800		/* Don't authenticate NLM requests - just trust */
@@ -55,7 +59,11 @@
 #define NFSEXP_PNFS		0x20000
 
 /* All flags that we claim to support.  (Note we don't support NOACL.) */
+<<<<<<< HEAD
 #define NFSEXP_ALLFLAGS		0x3FFFF
+=======
+#define NFSEXP_ALLFLAGS		0x3FEFF
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* The flags that may vary depending on security flavor: */
 #define NFSEXP_SECINFO_FLAGS	(NFSEXP_READONLY | NFSEXP_ROOTSQUASH \

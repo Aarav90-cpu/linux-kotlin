@@ -93,9 +93,15 @@ struct mediatek_dwmac_variant {
 	const char * const *clk_list;
 	int num_clks;
 
+<<<<<<< HEAD
 	u32 rx_delay_max;
 	u32 tx_delay_max;
 	u8 dma_bit_mask;
+=======
+	u32 dma_bit_mask;
+	u32 rx_delay_max;
+	u32 tx_delay_max;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* list of clocks required for mac */
@@ -268,9 +274,15 @@ static const struct mediatek_dwmac_variant mt2712_gmac_variant = {
 		.dwmac_set_delay = mt2712_set_delay,
 		.clk_list = mt2712_dwmac_clk_l,
 		.num_clks = ARRAY_SIZE(mt2712_dwmac_clk_l),
+<<<<<<< HEAD
 		.rx_delay_max = 17600,
 		.tx_delay_max = 17600,
 		.dma_bit_mask = 33,
+=======
+		.dma_bit_mask = 33,
+		.rx_delay_max = 17600,
+		.tx_delay_max = 17600,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int mt8195_set_interface(struct mediatek_dwmac_plat_data *plat,
@@ -418,9 +430,15 @@ static const struct mediatek_dwmac_variant mt8195_gmac_variant = {
 	.dwmac_set_delay = mt8195_set_delay,
 	.clk_list = mt8195_dwmac_clk_l,
 	.num_clks = ARRAY_SIZE(mt8195_dwmac_clk_l),
+<<<<<<< HEAD
 	.rx_delay_max = 9280,
 	.tx_delay_max = 9280,
 	.dma_bit_mask = 35,
+=======
+	.dma_bit_mask = 35,
+	.rx_delay_max = 9280,
+	.tx_delay_max = 9280,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int mediatek_dwmac_config_dt(struct mediatek_dwmac_plat_data *plat)
@@ -564,7 +582,11 @@ static int mediatek_dwmac_common_data(struct platform_device *pdev,
 		plat->flags &= ~STMMAC_FLAG_USE_PHY_WOL;
 	else
 		plat->flags |= STMMAC_FLAG_USE_PHY_WOL;
+<<<<<<< HEAD
 	plat->riwt_off = true;
+=======
+	plat->riwt_off = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->maxmtu = ETH_DATA_LEN;
 	plat->host_dma_width = priv_plat->variant->dma_bit_mask;
 	plat->bsp_priv = priv_plat;

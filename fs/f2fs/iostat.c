@@ -34,7 +34,10 @@ int __maybe_unused iostat_info_seq_show(struct seq_file *seq, void *offset)
 {
 	struct super_block *sb = seq->private;
 	struct f2fs_sb_info *sbi = F2FS_SB(sb);
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sbi->iostat_enable)
 		return 0;
@@ -77,12 +80,15 @@ int __maybe_unused iostat_info_seq_show(struct seq_file *seq, void *offset)
 	IOSTAT_INFO_SHOW("fs node", FS_NODE_READ_IO);
 	IOSTAT_INFO_SHOW("fs meta", FS_META_READ_IO);
 
+<<<<<<< HEAD
 	/* print read folio order stats */
 	seq_printf(seq, "%-23s", "fs read folio order:");
 	for (i = 0; i < NR_PAGE_ORDERS; i++)
 		seq_printf(seq, " %llu", sbi->iostat_read_folio_count[i]);
 	seq_putc(seq, '\n');
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* print other IOs */
 	seq_puts(seq, "[OTHER]\n");
 	IOSTAT_INFO_SHOW("fs discard", FS_DISCARD_IO);
@@ -120,7 +126,10 @@ static inline void __record_iostat_latency(struct f2fs_sb_info *sbi)
 static inline void f2fs_record_iostat(struct f2fs_sb_info *sbi)
 {
 	unsigned long long iostat_diff[NR_IO_TYPE];
+<<<<<<< HEAD
 	unsigned long long read_folio_count_diff[NR_PAGE_ORDERS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	unsigned long flags;
 
@@ -141,6 +150,7 @@ static inline void f2fs_record_iostat(struct f2fs_sb_info *sbi)
 				sbi->prev_iostat_bytes[i];
 		sbi->prev_iostat_bytes[i] = sbi->iostat_bytes[i];
 	}
+<<<<<<< HEAD
 
 	for (i = 0; i < NR_PAGE_ORDERS; i++) {
 		read_folio_count_diff[i] = sbi->iostat_read_folio_count[i] -
@@ -150,6 +160,11 @@ static inline void f2fs_record_iostat(struct f2fs_sb_info *sbi)
 	spin_unlock_irqrestore(&sbi->iostat_lock, flags);
 
 	trace_f2fs_iostat(sbi, iostat_diff, read_folio_count_diff);
+=======
+	spin_unlock_irqrestore(&sbi->iostat_lock, flags);
+
+	trace_f2fs_iostat(sbi, iostat_diff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__record_iostat_latency(sbi);
 }
@@ -165,10 +180,13 @@ void f2fs_reset_iostat(struct f2fs_sb_info *sbi)
 		sbi->iostat_bytes[i] = 0;
 		sbi->prev_iostat_bytes[i] = 0;
 	}
+<<<<<<< HEAD
 	for (i = 0; i < NR_PAGE_ORDERS; i++) {
 		sbi->iostat_read_folio_count[i] = 0;
 		sbi->prev_iostat_read_folio_count[i] = 0;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irq(&sbi->iostat_lock);
 
 	spin_lock_irq(&sbi->iostat_lat_lock);
@@ -183,6 +201,7 @@ static inline void __f2fs_update_iostat(struct f2fs_sb_info *sbi,
 	sbi->iostat_count[type]++;
 }
 
+<<<<<<< HEAD
 void f2fs_update_read_folio_count(struct f2fs_sb_info *sbi, struct folio *folio)
 {
 	unsigned int order = folio_order(folio);
@@ -201,6 +220,8 @@ void f2fs_update_read_folio_count(struct f2fs_sb_info *sbi, struct folio *folio)
 	f2fs_record_iostat(sbi);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void f2fs_update_iostat(struct f2fs_sb_info *sbi, struct inode *inode,
 			enum iostat_type type, unsigned long long io_bytes)
 {

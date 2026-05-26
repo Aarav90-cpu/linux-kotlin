@@ -1442,7 +1442,11 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
 	cls = FIELD_GET(PCI_EXP_LNKSTA_CLS, lnksta);
 	nlw = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
 	dev_info(dev, "link up, %s x%u %s\n",
+<<<<<<< HEAD
 		 pci_speed_string(pcie_get_link_speed(cls)), nlw,
+=======
+		 pci_speed_string(pcie_link_speed[cls]), nlw,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 ssc_good ? "(SSC)" : "(!SSC)");
 
 	return 0;
@@ -2072,10 +2076,19 @@ static int brcm_pcie_probe(struct platform_device *pdev)
 		return PTR_ERR(pcie->clk);
 
 	ret = of_pci_get_max_link_speed(np);
+<<<<<<< HEAD
 	if (ret < 0 || ret > 3)
 		pcie->gen = 0;
 	else
 		pcie->gen = ret;
+=======
+<<<<<<< HEAD
+	if (pcie_get_link_speed(ret) == PCI_SPEED_UNKNOWN)
+		pcie->gen = 0;
+=======
+	pcie->gen = (ret < 0) ? 0 : ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 	pcie->ssc = of_property_read_bool(np, "brcm,enable-ssc");
 

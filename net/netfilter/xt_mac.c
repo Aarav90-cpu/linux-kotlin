@@ -29,13 +29,20 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
 
 	if (skb->dev == NULL || skb->dev->type != ARPHRD_ETHER)
 		return false;
+<<<<<<< HEAD
 	if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) < ETH_HLEN)
+=======
+	if (skb_mac_header(skb) < skb->head)
+		return false;
+	if (skb_mac_header(skb) + ETH_HLEN > skb->data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	ret  = ether_addr_equal(eth_hdr(skb)->h_source, info->srcaddr);
 	ret ^= info->invert;
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct xt_match mac_mt_reg[] __read_mostly = {
 	{
 		.name		= "mac",
@@ -57,16 +64,35 @@ static struct xt_match mac_mt_reg[] __read_mostly = {
 				  (1 << NF_INET_FORWARD),
 		.me		= THIS_MODULE,
 	},
+=======
+static struct xt_match mac_mt_reg __read_mostly = {
+	.name      = "mac",
+	.revision  = 0,
+	.family    = NFPROTO_UNSPEC,
+	.match     = mac_mt,
+	.matchsize = sizeof(struct xt_mac_info),
+	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
+	             (1 << NF_INET_FORWARD),
+	.me        = THIS_MODULE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init mac_mt_init(void)
 {
+<<<<<<< HEAD
 	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+=======
+	return xt_register_match(&mac_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit mac_mt_exit(void)
 {
+<<<<<<< HEAD
 	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+=======
+	xt_unregister_match(&mac_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(mac_mt_init);

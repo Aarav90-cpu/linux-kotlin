@@ -33,6 +33,16 @@
 #include <asm/sections.h>
 #include <asm/tlb.h>
 
+<<<<<<< HEAD
+=======
+/*
+ * ZERO_PAGE is a special page that is used for zero-initialized
+ * data and COW.
+ */
+void *empty_zero_page;
+EXPORT_SYMBOL(empty_zero_page);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
 {
 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(memblock_end_of_DRAM());
@@ -64,6 +74,11 @@ void __init paging_init(void)
 	unsigned long end_mem = memory_end & PAGE_MASK;
 
 	high_memory = (void *) end_mem;
+<<<<<<< HEAD
+=======
+
+	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* CONFIG_MMU */

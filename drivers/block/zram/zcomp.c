@@ -84,6 +84,7 @@ static const struct zcomp_ops *lookup_backend_ops(const char *comp)
 	return backends[i];
 }
 
+<<<<<<< HEAD
 const char *zcomp_lookup_backend_name(const char *comp)
 {
 	const struct zcomp_ops *backend = lookup_backend_ops(comp);
@@ -92,6 +93,11 @@ const char *zcomp_lookup_backend_name(const char *comp)
 		return backend->name;
 
 	return NULL;
+=======
+bool zcomp_available_algorithm(const char *comp)
+{
+	return lookup_backend_ops(comp) != NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* show available compressors */

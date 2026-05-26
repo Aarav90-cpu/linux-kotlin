@@ -194,8 +194,12 @@ static int pcm3724_attach(struct comedi_device *dev,
 	if (!priv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x10,
 					  0, 0x3ff, 16);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

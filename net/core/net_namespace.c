@@ -411,7 +411,11 @@ static __net_init int preinit_net(struct net *net, struct user_namespace *user_n
 	ref_tracker_dir_init(&net->refcnt_tracker, 128, "net_refcnt");
 	ref_tracker_dir_init(&net->notrefcnt_tracker, 128, "net_notrefcnt");
 
+<<<<<<< HEAD
 	net->hash_mix = get_random_u32();
+=======
+	get_random_bytes(&net->hash_mix, sizeof(u32));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	net->dev_base_seq = 1;
 	net->user_ns = user_ns;
 

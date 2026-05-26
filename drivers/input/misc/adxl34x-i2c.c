@@ -77,8 +77,16 @@ static const struct adxl34x_bus_ops adxl34x_i2c_bops = {
 static int adxl34x_i2c_probe(struct i2c_client *client)
 {
 	struct adxl34x *ac;
+<<<<<<< HEAD
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA)) {
+=======
+	int error;
+
+	error = i2c_check_functionality(client->adapter,
+			I2C_FUNC_SMBUS_BYTE_DATA);
+	if (!error) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&client->dev, "SMBUS Byte Data not Supported\n");
 		return -EIO;
 	}

@@ -66,7 +66,10 @@ static void dp_retrain_link_dp_test(struct dc_link *link,
 			struct dc_link_settings *link_setting,
 			bool skip_video_pattern)
 {
+<<<<<<< HEAD
 	(void)skip_video_pattern;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pipe_ctx *pipes[MAX_PIPES];
 	struct dc_state *state = link->dc->current_state;
 	struct dc_stream_update stream_update = { 0 };
@@ -484,7 +487,10 @@ static void set_crtc_test_pattern(struct dc_link *link,
 				enum dp_test_pattern test_pattern,
 				enum dp_test_pattern_color_space test_pattern_color_space)
 {
+<<<<<<< HEAD
 	(void)test_pattern_color_space;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum controller_dp_test_pattern controller_test_pattern;
 	enum dc_color_depth color_depth = pipe_ctx->
 		stream->timing.display_color_depth;

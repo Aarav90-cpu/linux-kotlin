@@ -29,6 +29,11 @@
 
 #include "internal.h"
 
+<<<<<<< HEAD
+=======
+#define ACPI_PCI_LINK_CLASS		"pci_irq_routing"
+#define ACPI_PCI_LINK_DEVICE_NAME	"PCI Interrupt Link"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACPI_PCI_LINK_MAX_POSSIBLE	16
 
 static int acpi_pci_link_add(struct acpi_device *device,
@@ -723,6 +728,11 @@ static int acpi_pci_link_add(struct acpi_device *device,
 		return -ENOMEM;
 
 	link->device = device;
+<<<<<<< HEAD
+=======
+	strscpy(acpi_device_name(device), ACPI_PCI_LINK_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_PCI_LINK_CLASS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device->driver_data = link;
 
 	mutex_lock(&acpi_link_lock);

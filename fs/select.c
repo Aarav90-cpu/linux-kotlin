@@ -1015,6 +1015,7 @@ static int do_sys_poll(struct pollfd __user *ufds, unsigned int nfds,
 	fdcount = do_poll(head, &table, end_time);
 	poll_freewait(&table);
 
+<<<<<<< HEAD
 	scoped_user_write_access_size(ufds, nfds * sizeof(*ufds), out_fds) {
 		struct pollfd __user *_ufds = ufds;
 
@@ -1026,6 +1027,19 @@ static int do_sys_poll(struct pollfd __user *ufds, unsigned int nfds,
 				unsafe_put_user(fds->revents, &_ufds->revents, out_fds);
 		}
 	}
+=======
+	if (!user_write_access_begin(ufds, nfds * sizeof(*ufds)))
+		goto out_fds;
+
+	for (walk = head; walk; walk = walk->next) {
+		struct pollfd *fds = walk->entries;
+		unsigned int j;
+
+		for (j = walk->len; j; fds++, ufds++, j--)
+			unsafe_put_user(fds->revents, &ufds->revents, Efault);
+  	}
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = fdcount;
 out_fds:
@@ -1037,6 +1051,14 @@ out_fds:
 	}
 
 	return err;
+<<<<<<< HEAD
+=======
+
+Efault:
+	user_write_access_end();
+	err = -EFAULT;
+	goto out_fds;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static long do_restart_poll(struct restart_block *restart_block)
@@ -1344,6 +1366,7 @@ static inline int get_compat_sigset_argpack(struct compat_sigset_argpack *to,
 					    struct compat_sigset_argpack __user *from)
 {
 	if (from) {
+<<<<<<< HEAD
 		scoped_user_read_access(from, efault) {
 			unsafe_get_user(to->p, &from->p, efault);
 			unsafe_get_user(to->size, &from->size, efault);
@@ -1351,6 +1374,17 @@ static inline int get_compat_sigset_argpack(struct compat_sigset_argpack *to,
 	}
 	return 0;
 efault:
+=======
+		if (!user_read_access_begin(from, sizeof(*from)))
+			return -EFAULT;
+		unsafe_get_user(to->p, &from->p, Efault);
+		unsafe_get_user(to->size, &from->size, Efault);
+		user_read_access_end();
+	}
+	return 0;
+Efault:
+	user_read_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EFAULT;
 }
 

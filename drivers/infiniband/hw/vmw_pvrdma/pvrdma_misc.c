@@ -65,7 +65,12 @@ int pvrdma_page_dir_init(struct pvrdma_dev *dev, struct pvrdma_page_dir *pdir,
 		goto err;
 
 	pdir->ntables = PVRDMA_PAGE_DIR_TABLE(npages - 1) + 1;
+<<<<<<< HEAD
 	pdir->tables = kzalloc_objs(*pdir->tables, pdir->ntables);
+=======
+	pdir->tables = kcalloc(pdir->ntables, sizeof(*pdir->tables),
+			       GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pdir->tables)
 		goto err;
 

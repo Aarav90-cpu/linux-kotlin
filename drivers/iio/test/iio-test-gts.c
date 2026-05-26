@@ -20,7 +20,11 @@
  *
  * If yes, then adding a test is probably a good idea but please stop for a
  * moment and consider the effort of changing all the tests when code gets
+<<<<<<< HEAD
  * refactored. Eventually it needs to be.
+=======
+ * refactored. Eventually it neeeds to be.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #define TEST_TSEL_50		1

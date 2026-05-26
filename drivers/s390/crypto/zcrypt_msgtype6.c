@@ -65,7 +65,11 @@ struct function_and_rules_block {
 static const struct CPRBX static_cprbx = {
 	.cprb_len	=  0x00DC,
 	.cprb_ver_id	=  0x02,
+<<<<<<< HEAD
 	.func_id	= {'T', '2'},
+=======
+	.func_id	= {0x54, 0x32},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int speed_idx_cca(int req_type)
@@ -328,7 +332,11 @@ struct type86_fmt2_msg {
 static int xcrb_msg_to_type6cprb_msgx(bool userspace, struct ap_message *ap_msg,
 				      struct ica_xcRB *xcrb,
 				      unsigned int *fcode,
+<<<<<<< HEAD
 				      unsigned int *domain)
+=======
+				      unsigned short **dom)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	static struct type6_hdr static_type6_hdrX = {
 		.type		=  0x06,
@@ -412,8 +420,12 @@ static int xcrb_msg_to_type6cprb_msgx(bool userspace, struct ap_message *ap_msg,
 	       sizeof(msg->hdr.function_code));
 
 	*fcode = (msg->hdr.function_code[0] << 8) | msg->hdr.function_code[1];
+<<<<<<< HEAD
 	if (domain)
 		*domain = msg->cprbx.domain;
+=======
+	*dom = (unsigned short *)&msg->cprbx.domain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* check subfunction, US and AU need special flag with NQAP */
 	if (memcmp(function_code, "US", 2) == 0 ||
@@ -455,7 +467,12 @@ static int xcrb_msg_to_type6_ep11cprb_msgx(bool userspace, struct ap_message *ap
 		.type		=  0x06,
 		.rqid		= {0x00, 0x01},
 		.function_code	= {0x00, 0x00},
+<<<<<<< HEAD
 		.agent_id	= {'X', 'C'},
+=======
+		.agent_id[0]	=  0x58,	/* {'X'} */
+		.agent_id[1]	=  0x43,	/* {'C'} */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.offset1	=  0x00000058,
 	};
 
@@ -529,8 +546,12 @@ static int xcrb_msg_to_type6_ep11cprb_msgx(bool userspace, struct ap_message *ap
 	else
 		ap_msg->flags |= AP_MSG_FLAG_USAGE;
 
+<<<<<<< HEAD
 	if (domain)
 		*domain = msg->cprbx.target_id;
+=======
+	*domain = msg->cprbx.target_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -752,7 +773,11 @@ static int convert_response_xcrb(bool userspace, struct zcrypt_queue *zq,
 		return convert_error(zq, reply);
 	case TYPE86_RSP_CODE:
 		if (msg->hdr.reply_code) {
+<<<<<<< HEAD
 			xcrb->status = msg->fmt2.apfs;
+=======
+			memcpy(&xcrb->status, msg->fmt2.apfs, sizeof(u32));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return convert_error(zq, reply);
 		}
 		if (msg->cprbx.cprb_ver_id == 0x02)
@@ -1053,7 +1078,11 @@ out:
  */
 int prep_cca_ap_msg(bool userspace, struct ica_xcRB *xcrb,
 		    struct ap_message *ap_msg,
+<<<<<<< HEAD
 		    unsigned int *func_code, unsigned int *domain)
+=======
+		    unsigned int *func_code, unsigned short **dom)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ap_response_type *resp_type = &ap_msg->response;
 
@@ -1061,8 +1090,12 @@ int prep_cca_ap_msg(bool userspace, struct ica_xcRB *xcrb,
 	ap_msg->psmid = (((unsigned long)current->pid) << 32) +
 				atomic_inc_return(&zcrypt_step);
 	resp_type->type = CEXXC_RESPONSE_TYPE_XCRB;
+<<<<<<< HEAD
 	return xcrb_msg_to_type6cprb_msgx(userspace, ap_msg,
 					  xcrb, func_code, domain);
+=======
+	return xcrb_msg_to_type6cprb_msgx(userspace, ap_msg, xcrb, func_code, dom);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1107,9 +1140,12 @@ static long zcrypt_msgtype6_send_cprb(bool userspace, struct zcrypt_queue *zq,
 		msg->hdr.fromcardlen1 -= delta;
 	}
 
+<<<<<<< HEAD
 	/* update domain field within the CPRB struct */
 	msg->cprbx.domain = AP_QID_QUEUE(zq->queue->qid);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_completion(&resp_type->work);
 	rc = ap_queue_message(zq->queue, ap_msg);
 	if (rc)
@@ -1215,7 +1251,12 @@ static long zcrypt_msgtype6_send_ep11_cprb(bool userspace, struct zcrypt_queue *
 			lfmt = 1; /* length format #1 */
 		}
 		payload_hdr = (struct pld_hdr *)((&msg->pld_lenfmt) + lfmt);
+<<<<<<< HEAD
 		payload_hdr->dom_val = AP_QID_QUEUE(zq->queue->qid);
+=======
+		payload_hdr->dom_val = (unsigned int)
+					AP_QID_QUEUE(zq->queue->qid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1251,6 +1292,7 @@ out:
 }
 
 /*
+<<<<<<< HEAD
  * Prepare a type6 CPRB message for random number generation
  *
  * @ap_dev: AP device pointer
@@ -1301,6 +1343,8 @@ static inline void rng_type6cprb_msgx(struct ap_message *ap_msg,
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Prepare a CEXXC get random request ap message.
  * This function assumes that ap_msg has been initialized with
  * ap_init_apmsg() and thus a valid buffer with the size of

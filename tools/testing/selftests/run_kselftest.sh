@@ -4,7 +4,16 @@
 # Run installed kselftest tests.
 #
 
+<<<<<<< HEAD
 BASE_DIR=$(cd "$(dirname "$0")" && pwd -P)
+=======
+# Fallback to readlink if realpath is not available
+if which realpath > /dev/null; then
+        BASE_DIR=$(realpath $(dirname $0))
+else
+        BASE_DIR=$(readlink -f $(dirname $0))
+fi
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 cd $BASE_DIR
 TESTS="$BASE_DIR"/kselftest-list.txt
@@ -16,13 +25,21 @@ else
 fi
 
 . ./kselftest/runner.sh
+<<<<<<< HEAD
+=======
+ROOT=$PWD
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 usage()
 {
 	cat <<EOF
 Usage: $0 [OPTIONS]
   -s | --summary		Print summary with detailed log in output.log (conflict with -p)
+<<<<<<< HEAD
   -p | --per-test-log [DIR]	Print test log in /tmp or DIR with each test name (conflict with -s)
+=======
+  -p | --per-test-log		Print test log in /tmp with each test name (conflict with -s)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -t | --test COLLECTION:TEST	Run TEST from COLLECTION
   -S | --skip COLLECTION:TEST	Skip TEST from COLLECTION
   -c | --collection COLLECTION	Run all tests from COLLECTION
@@ -50,6 +67,7 @@ while true; do
 			shift ;;
 		-p | --per-test-log)
 			per_test_logging=1
+<<<<<<< HEAD
 			if [ -n "$2" ] && [ "${2#-}" = "$2" ]; then
 				per_test_log_dir="$2"
 				if [ -e "$per_test_log_dir" ] && [ ! -d "$per_test_log_dir" ]; then
@@ -77,6 +95,9 @@ while true; do
 			else
 				shift
 			fi ;;
+=======
+			shift ;;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		-t | --test)
 			TESTS="$TESTS $2"
 			shift 2 ;;
@@ -141,6 +162,7 @@ if [ -n "$SKIP" ]; then
 	done
 fi
 
+<<<<<<< HEAD
 curdir=$(pwd)
 total=$(echo "$available" | wc -w)
 collections=$(echo "$available" | cut -d: -f1 | sort | uniq)
@@ -160,4 +182,20 @@ if "$ERROR_ON_FAIL" && [ "$KTAP_CNT_FAIL" -ne 0 ]; then
 	exit "$KSFT_FAIL"
 else
 	exit "$KSFT_PASS"
+=======
+kselftest_failures_file="$(mktemp --tmpdir kselftest-failures-XXXXXX)"
+export kselftest_failures_file
+
+collections=$(echo "$available" | cut -d: -f1 | sort | uniq)
+for collection in $collections ; do
+	[ -w /dev/kmsg ] && echo "kselftest: Running tests in $collection" >> /dev/kmsg
+	tests=$(echo "$available" | grep "^$collection:" | cut -d: -f2)
+	($dryrun cd "$collection" && $dryrun run_many $tests)
+done
+
+failures="$(cat "$kselftest_failures_file")"
+rm "$kselftest_failures_file"
+if "$ERROR_ON_FAIL" && [ "$failures" ]; then
+	exit 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fi

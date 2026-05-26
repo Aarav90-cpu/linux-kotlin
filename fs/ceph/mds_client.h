@@ -18,7 +18,10 @@
 
 #include "mdsmap.h"
 #include "metric.h"
+<<<<<<< HEAD
 #include "subvolume_metrics.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "super.h"
 
 /* The first 8 bits are reserved for old ceph releases */
@@ -37,9 +40,14 @@ enum ceph_feature_type {
 	CEPHFS_FEATURE_NEW_SNAPREALM_INFO,
 	CEPHFS_FEATURE_HAS_OWNER_UIDGID,
 	CEPHFS_FEATURE_MDS_AUTH_CAPS_CHECK,
+<<<<<<< HEAD
 	CEPHFS_FEATURE_SUBVOLUME_METRICS,
 
 	CEPHFS_FEATURE_MAX = CEPHFS_FEATURE_SUBVOLUME_METRICS,
+=======
+
+	CEPHFS_FEATURE_MAX = CEPHFS_FEATURE_MDS_AUTH_CAPS_CHECK,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define CEPHFS_FEATURES_CLIENT_SUPPORTED {	\
@@ -56,7 +64,10 @@ enum ceph_feature_type {
 	CEPHFS_FEATURE_32BITS_RETRY_FWD,	\
 	CEPHFS_FEATURE_HAS_OWNER_UIDGID,	\
 	CEPHFS_FEATURE_MDS_AUTH_CAPS_CHECK,	\
+<<<<<<< HEAD
 	CEPHFS_FEATURE_SUBVOLUME_METRICS,	\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -121,7 +132,10 @@ struct ceph_mds_reply_info_in {
 	u32 fscrypt_file_len;
 	u64 rsnaps;
 	u64 change_attr;
+<<<<<<< HEAD
 	u64 subvolume_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ceph_mds_reply_dir_entry {
@@ -540,6 +554,7 @@ struct ceph_mds_client {
 	struct list_head  dentry_dir_leases; /* lru list */
 
 	struct ceph_client_metric metric;
+<<<<<<< HEAD
 	struct ceph_subvolume_metrics_tracker subvol_metrics;
 
 	/* Subvolume metrics send tracking */
@@ -548,6 +563,8 @@ struct ceph_mds_client {
 	u32			subvol_metrics_last_nr;
 	u64			subvol_metrics_sent;
 	u64			subvol_metrics_nonzero_sends;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spinlock_t		snapid_map_lock;
 	struct rb_root		snapid_map_tree;

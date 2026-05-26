@@ -264,7 +264,11 @@ static void disas_print_addr_reloc(bfd_vma addr, struct disassemble_info *dinfo)
 	 * If the relocation symbol is a section name (for example ".bss")
 	 * then we try to further resolve the name.
 	 */
+<<<<<<< HEAD
 	if (is_sec_sym(reloc->sym)) {
+=======
+	if (reloc->sym->type == STT_SECTION) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		str = offstr(reloc->sym->sec, reloc->sym->offset + offset);
 		DINFO_FPRINTF(dinfo, bfd_vma_fmt, addr, str);
 		free(str);
@@ -580,7 +584,11 @@ static size_t disas_insn_common(struct disas_context *dctx,
 	 */
 	dinfo->buffer = insn->sec->data->d_buf;
 	dinfo->buffer_vma = 0;
+<<<<<<< HEAD
 	dinfo->buffer_length = sec_size(insn->sec);
+=======
+	dinfo->buffer_length = insn->sec->sh.sh_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return disasm(insn->offset, &dctx->info);
 }
@@ -1231,7 +1239,11 @@ void disas_funcs(struct disas_context *dctx)
 
 	for_each_sec(dctx->file->elf, sec) {
 
+<<<<<<< HEAD
 		if (!is_text_sec(sec))
+=======
+		if (!(sec->sh.sh_flags & SHF_EXECINSTR))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		sec_for_each_sym(sec, sym) {

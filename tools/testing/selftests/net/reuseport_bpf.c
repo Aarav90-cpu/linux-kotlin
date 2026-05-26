@@ -23,7 +23,10 @@
 #include <sys/socket.h>
 #include <sys/resource.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include <sched.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "kselftest.h"
 
@@ -456,6 +459,7 @@ static __attribute__((destructor)) void main_dtor(void)
 	setrlimit(RLIMIT_MEMLOCK, &rlim_old);
 }
 
+<<<<<<< HEAD
 static void setup_netns(void)
 {
 	if (unshare(CLONE_NEWNET))
@@ -468,6 +472,10 @@ int main(void)
 {
 	setup_netns();
 
+=======
+int main(void)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fprintf(stderr, "---- IPv4 UDP ----\n");
 	/* NOTE: UDP socket lookups traverse a different code path when there
 	 * are > 10 sockets in a group.  Run the bpf test through both paths.

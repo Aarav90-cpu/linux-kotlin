@@ -18,6 +18,7 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/i2c.h>
@@ -25,6 +26,14 @@
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
 #include <linux/regulator/consumer.h>
+=======
+#include <linux/module.h>
+#include <linux/i2c.h>
+#include <linux/err.h>
+#include <linux/delay.h>
+#include <linux/pm_runtime.h>
+#include <linux/interrupt.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/units.h>
 
 #include <linux/iio/buffer.h>
@@ -186,7 +195,10 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
 #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
 
 enum vcnl4000_device_ids {
+<<<<<<< HEAD
 	CM36672P,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VCNL4000,
 	VCNL4010,
 	VCNL4040,
@@ -237,8 +249,11 @@ struct vcnl4000_chip_spec {
 };
 
 static const struct i2c_device_id vcnl4000_id[] = {
+<<<<<<< HEAD
 	{ "cm36672p", CM36672P },
 	{ "cm36686", VCNL4040 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "vcnl4000", VCNL4000 },
 	{ "vcnl4010", VCNL4010 },
 	{ "vcnl4020", VCNL4010 },
@@ -281,7 +296,11 @@ static int vcnl4000_init(struct vcnl4000_data *data)
 	data->rev = ret & 0xf;
 	data->al_scale = 250000;
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return data->chip_spec->set_power_state(data, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static ssize_t vcnl4000_write_als_enable(struct vcnl4000_data *data, bool en)
@@ -357,19 +376,30 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
 
 static int vcnl4200_init(struct vcnl4000_data *data)
 {
+<<<<<<< HEAD
 	struct i2c_client *client = data->client;
 	struct device *dev = &client->dev;
 	int ret, id;
 	u16 regval;
 
 	ret = i2c_smbus_read_word_data(client, VCNL4200_DEV_ID);
+=======
+	int ret, id;
+	u16 regval;
+
+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
 	id = ret & 0xff;
 
 	if (id != VCNL4200_PROD_ID) {
+<<<<<<< HEAD
 		ret = i2c_smbus_read_word_data(client, VCNL4040_DEV_ID);
+=======
+		ret = i2c_smbus_read_word_data(data->client, VCNL4040_DEV_ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 
@@ -379,7 +409,11 @@ static int vcnl4200_init(struct vcnl4000_data *data)
 			return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(dev, "device id 0x%x", id);
+=======
+	dev_dbg(&data->client->dev, "device id 0x%x", id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->rev = (ret >> 8) & 0xf;
 	data->ps_int = 0;
@@ -403,6 +437,7 @@ static int vcnl4200_init(struct vcnl4000_data *data)
 	}
 	data->al_scale = data->chip_spec->ulux_step;
 	data->ps_scale = 16;
+<<<<<<< HEAD
 
 	ret = devm_mutex_init(dev, &data->vcnl4200_al.lock);
 	if (ret)
@@ -414,21 +449,46 @@ static int vcnl4200_init(struct vcnl4000_data *data)
 
 	/* Use 16 bits proximity sensor readings */
 	ret = i2c_smbus_read_word_data(client, VCNL4200_PS_CONF1);
+=======
+	mutex_init(&data->vcnl4200_al.lock);
+	mutex_init(&data->vcnl4200_ps.lock);
+
+	/* Use 16 bits proximity sensor readings */
+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
 	regval = ret | VCNL4040_PS_CONF2_PS_HD;
+<<<<<<< HEAD
 	ret = i2c_smbus_write_word_data(client, VCNL4200_PS_CONF1, regval);
+=======
+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
+					regval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
 	/* Align proximity sensor sample rate to 16 bits data width */
+<<<<<<< HEAD
 	ret = i2c_smbus_read_word_data(client, VCNL4200_PS_CONF3);
+=======
+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
 	regval = ret | VCNL4040_CONF3_PS_SAMPLE_16BITS;
+<<<<<<< HEAD
 	ret = i2c_smbus_write_word_data(client, VCNL4200_PS_CONF3, regval);
+=======
+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
+					regval);
+	if (ret < 0)
+		return ret;
+
+	ret = data->chip_spec->set_power_state(data, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -1848,6 +1908,7 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct iio_chan_spec cm36672p_channels[] = {
 	{
 		.type = IIO_PROXIMITY,
@@ -1864,6 +1925,8 @@ static const struct iio_chan_spec cm36672p_channels[] = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct iio_info vcnl4000_info = {
 	.read_raw = vcnl4000_read_raw,
 };
@@ -1889,6 +1952,7 @@ static const struct iio_info vcnl4040_info = {
 };
 
 static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+<<<<<<< HEAD
 	[CM36672P] = {
 		.prod = "CM36672P",
 		.init = vcnl4200_init,
@@ -1902,6 +1966,8 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
 		.ps_it_times = &vcnl4040_ps_it_times,
 		.num_ps_it_times = ARRAY_SIZE(vcnl4040_ps_it_times),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[VCNL4000] = {
 		.prod = "VCNL4000",
 		.init = vcnl4000_init,
@@ -1986,13 +2052,20 @@ static int vcnl4010_probe_trigger(struct iio_dev *indio_dev)
 static int vcnl4000_probe(struct i2c_client *client)
 {
 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+<<<<<<< HEAD
 	const char * const regulator_names[] = { "vdd", "vio", "vled" };
 	struct device *dev = &client->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vcnl4000_data *data;
 	struct iio_dev *indio_dev;
 	int ret;
 
+<<<<<<< HEAD
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+=======
+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!indio_dev)
 		return -ENOMEM;
 
@@ -2002,6 +2075,7 @@ static int vcnl4000_probe(struct i2c_client *client)
 	data->id = id->driver_data;
 	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
 
+<<<<<<< HEAD
 	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulator_names),
 					     regulator_names);
 	if (ret)
@@ -2010,11 +2084,15 @@ static int vcnl4000_probe(struct i2c_client *client)
 	ret = devm_mutex_init(dev, &data->vcnl4000_lock);
 	if (ret)
 		return ret;
+=======
+	mutex_init(&data->vcnl4000_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = data->chip_spec->init(data);
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = data->chip_spec->set_power_state(data, true);
 	if (ret)
 		return ret;
@@ -2023,6 +2101,14 @@ static int vcnl4000_probe(struct i2c_client *client)
 		data->chip_spec->prod, data->rev);
 
 	device_property_read_u32(dev, "proximity-near-level", &data->near_level);
+=======
+	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
+		data->chip_spec->prod, data->rev);
+
+	if (device_property_read_u32(&client->dev, "proximity-near-level",
+				     &data->near_level))
+		data->near_level = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	indio_dev->info = data->chip_spec->info;
 	indio_dev->channels = data->chip_spec->channels;
@@ -2032,6 +2118,7 @@ static int vcnl4000_probe(struct i2c_client *client)
 
 	if (data->chip_spec->trig_buffer_func &&
 	    data->chip_spec->buffer_setup_ops) {
+<<<<<<< HEAD
 		ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
 						      data->chip_spec->trig_buffer_func,
 						      data->chip_spec->buffer_setup_ops);
@@ -2042,19 +2129,46 @@ static int vcnl4000_probe(struct i2c_client *client)
 	if (client->irq && data->chip_spec->irq_thread) {
 		ret = devm_request_threaded_irq(dev, client->irq, NULL,
 						data->chip_spec->irq_thread,
+=======
+		ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
+						      NULL,
+						      data->chip_spec->trig_buffer_func,
+						      data->chip_spec->buffer_setup_ops);
+		if (ret < 0) {
+			dev_err(&client->dev,
+				"unable to setup iio triggered buffer\n");
+			return ret;
+		}
+	}
+
+	if (client->irq && data->chip_spec->irq_thread) {
+		ret = devm_request_threaded_irq(&client->dev, client->irq,
+						NULL, data->chip_spec->irq_thread,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						IRQF_TRIGGER_FALLING |
 						IRQF_ONESHOT,
 						"vcnl4000_irq",
 						indio_dev);
+<<<<<<< HEAD
 		if (ret < 0)
 			return ret;
+=======
+		if (ret < 0) {
+			dev_err(&client->dev, "irq request failed\n");
+			return ret;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = vcnl4010_probe_trigger(indio_dev);
 		if (ret < 0)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	ret = pm_runtime_set_active(dev);
+=======
+	ret = pm_runtime_set_active(&client->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto fail_poweroff;
 
@@ -2062,9 +2176,15 @@ static int vcnl4000_probe(struct i2c_client *client)
 	if (ret < 0)
 		goto fail_poweroff;
 
+<<<<<<< HEAD
 	pm_runtime_enable(dev);
 	pm_runtime_set_autosuspend_delay(dev, VCNL4000_SLEEP_DELAY_MS);
 	pm_runtime_use_autosuspend(dev);
+=======
+	pm_runtime_enable(&client->dev);
+	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
+	pm_runtime_use_autosuspend(&client->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 fail_poweroff:
@@ -2074,6 +2194,7 @@ fail_poweroff:
 
 static const struct of_device_id vcnl_4000_of_match[] = {
 	{
+<<<<<<< HEAD
 		.compatible = "capella,cm36672p",
 		.data = (void *)CM36672P,
 	},
@@ -2083,6 +2204,8 @@ static const struct of_device_id vcnl_4000_of_match[] = {
 		.data = (void *)VCNL4040,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "vishay,vcnl4000",
 		.data = (void *)VCNL4000,
 	},

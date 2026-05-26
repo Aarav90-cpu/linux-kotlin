@@ -5,8 +5,13 @@
  * Copyright (C) 2015 Martin Willi
  */
 
+<<<<<<< HEAD
 #include <crypto/chacha.h>
 #include <crypto/utils.h>
+=======
+#include <crypto/algapi.h> // for crypto_xor_cpy
+#include <crypto/chacha.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/export.h>
 #include <linux/kernel.h>
 #include <linux/module.h>

@@ -2636,35 +2636,50 @@ static struct kunit_suite cs_dsp_ctl_rw_test_halo = {
 	.name = "cs_dsp_ctl_rw_wmfwV3_halo",
 	.init = cs_dsp_ctl_rw_test_halo_init,
 	.test_cases = cs_dsp_ctl_rw_test_cases_halo,
+<<<<<<< HEAD
 	.attr.speed = KUNIT_SPEED_SLOW,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct kunit_suite cs_dsp_ctl_rw_test_adsp2_32bit_wmfw1 = {
 	.name = "cs_dsp_ctl_rw_wmfwV1_adsp2_32bit",
 	.init = cs_dsp_ctl_rw_test_adsp2_32bit_wmfw1_init,
 	.test_cases = cs_dsp_ctl_rw_test_cases_adsp,
+<<<<<<< HEAD
 	.attr.speed = KUNIT_SPEED_SLOW,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct kunit_suite cs_dsp_ctl_rw_test_adsp2_32bit_wmfw2 = {
 	.name = "cs_dsp_ctl_rw_wmfwV2_adsp2_32bit",
 	.init = cs_dsp_ctl_rw_test_adsp2_32bit_wmfw2_init,
 	.test_cases = cs_dsp_ctl_rw_test_cases_adsp,
+<<<<<<< HEAD
 	.attr.speed = KUNIT_SPEED_SLOW,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct kunit_suite cs_dsp_ctl_rw_test_adsp2_16bit_wmfw1 = {
 	.name = "cs_dsp_ctl_rw_wmfwV1_adsp2_16bit",
 	.init = cs_dsp_ctl_rw_test_adsp2_16bit_wmfw1_init,
 	.test_cases = cs_dsp_ctl_rw_test_cases_adsp,
+<<<<<<< HEAD
 	.attr.speed = KUNIT_SPEED_SLOW,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct kunit_suite cs_dsp_ctl_rw_test_adsp2_16bit_wmfw2 = {
 	.name = "cs_dsp_ctl_rw_wmfwV2_adsp2_16bit",
 	.init = cs_dsp_ctl_rw_test_adsp2_16bit_wmfw2_init,
 	.test_cases = cs_dsp_ctl_rw_test_cases_adsp,
+<<<<<<< HEAD
 	.attr.speed = KUNIT_SPEED_SLOW,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 kunit_test_suites(&cs_dsp_ctl_rw_test_halo,

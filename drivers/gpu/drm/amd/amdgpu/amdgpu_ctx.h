@@ -44,6 +44,7 @@ struct amdgpu_ctx_entity {
 
 struct amdgpu_ctx {
 	struct kref			refcount;
+<<<<<<< HEAD
 	spinlock_t			ring_lock;
 	unsigned			reset_counter;
 	unsigned			reset_counter_query;
@@ -57,6 +58,22 @@ struct amdgpu_ctx {
 	unsigned long			ras_counter_ue;
 	struct amdgpu_ctx_mgr		*mgr;
 	struct amdgpu_ctx_entity	*entities[AMDGPU_HW_IP_NUM][AMDGPU_MAX_ENTITY_NUM];
+=======
+	struct amdgpu_ctx_mgr		*mgr;
+	unsigned			reset_counter;
+	unsigned			reset_counter_query;
+	uint64_t			generation;
+	spinlock_t			ring_lock;
+	struct amdgpu_ctx_entity	*entities[AMDGPU_HW_IP_NUM][AMDGPU_MAX_ENTITY_NUM];
+	bool				preamble_presented;
+	int32_t				init_priority;
+	int32_t				override_priority;
+	atomic_t			guilty;
+	unsigned long			ras_counter_ce;
+	unsigned long			ras_counter_ue;
+	uint32_t			stable_pstate;
+	struct amdgpu_ctx_mgr		*ctx_mgr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct amdgpu_ctx_mgr {

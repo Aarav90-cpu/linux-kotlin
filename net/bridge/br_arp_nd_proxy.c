@@ -17,6 +17,10 @@
 #include <linux/if_vlan.h>
 #include <linux/inetdevice.h>
 #include <net/addrconf.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ip6_checksum.h>
 #endif
@@ -459,7 +463,11 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
 		return;
 	}
 
+<<<<<<< HEAD
 	n = neigh_lookup(&nd_tbl, &msg->target, vlandev);
+=======
+	n = neigh_lookup(ipv6_stub->nd_tbl, &msg->target, vlandev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (n) {
 		struct net_bridge_fdb_entry *f;
 

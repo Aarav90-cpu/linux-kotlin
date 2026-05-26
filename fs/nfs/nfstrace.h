@@ -1496,7 +1496,11 @@ DECLARE_EVENT_CLASS(nfs_page_class,
 			__field(dev_t, dev)
 			__field(u32, fhandle)
 			__field(u64, fileid)
+<<<<<<< HEAD
 			__field(const struct nfs_page *, req)
+=======
+			__field(const struct nfs_page *__private, req)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__field(loff_t, offset)
 			__field(unsigned int, count)
 			__field(unsigned long, flags)

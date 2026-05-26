@@ -92,7 +92,10 @@ enum {
 /* TPR and CR2 are always written before VMRUN */
 #define VMCB_ALWAYS_DIRTY_MASK	((1U << VMCB_INTR) | (1U << VMCB_CR2))
 
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_AMD_SEV
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct kvm_sev_info {
 	bool active;		/* SEV enabled guest */
 	bool es_active;		/* SEV-ES enabled guest */
@@ -118,7 +121,10 @@ struct kvm_sev_info {
 	cpumask_var_t have_run_cpus; /* CPUs that have done VMRUN for this VM. */
 	bool snp_certs_enabled;	/* SNP certificate-fetching support. */
 };
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct kvm_svm {
 	struct kvm kvm;
@@ -129,9 +135,13 @@ struct kvm_svm {
 	u64 *avic_physical_id_table;
 	struct hlist_node hnode;
 
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_AMD_SEV
 	struct kvm_sev_info sev_info;
 #endif
+=======
+	struct kvm_sev_info sev_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct kvm_vcpu;
@@ -144,6 +154,7 @@ struct kvm_vmcb_info {
 };
 
 struct vmcb_save_area_cached {
+<<<<<<< HEAD
 	struct vmcb_seg es;
 	struct vmcb_seg cs;
 	struct vmcb_seg ss;
@@ -151,12 +162,16 @@ struct vmcb_save_area_cached {
 	struct vmcb_seg gdtr;
 	struct vmcb_seg idtr;
 	u8 cpl;
+=======
+	struct vmcb_seg cs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 efer;
 	u64 cr4;
 	u64 cr3;
 	u64 cr0;
 	u64 dr7;
 	u64 dr6;
+<<<<<<< HEAD
 	u64 rflags;
 	u64 rip;
 	u64 rsp;
@@ -170,6 +185,8 @@ struct vmcb_save_area_cached {
 	u64 br_to;
 	u64 last_excp_from;
 	u64 last_excp_to;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct vmcb_ctrl_area_cached {
@@ -190,13 +207,23 @@ struct vmcb_ctrl_area_cached {
 	u64 exit_info_2;
 	u32 exit_int_info;
 	u32 exit_int_info_err;
+<<<<<<< HEAD
 	u64 misc_ctl;
+=======
+	u64 nested_ctl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 event_inj;
 	u32 event_inj_err;
 	u64 next_rip;
 	u64 nested_cr3;
+<<<<<<< HEAD
 	u64 misc_ctl2;
 	u32 clean;
+=======
+	u64 virt_ext;
+	u32 clean;
+	u64 bus_lock_rip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union {
 #if IS_ENABLED(CONFIG_HYPERV) || IS_ENABLED(CONFIG_KVM_HYPERV)
 		struct hv_vmcb_enlightenments hv_enlightenments;
@@ -211,7 +238,10 @@ struct svm_nested_state {
 	u64 vm_cr_msr;
 	u64 vmcb12_gpa;
 	u64 last_vmcb12_gpa;
+<<<<<<< HEAD
 	u64 last_bus_lock_rip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The MSR permissions map used for vmcb02, which is the merge result
@@ -219,6 +249,13 @@ struct svm_nested_state {
 	 */
 	void *msrpm;
 
+<<<<<<< HEAD
+=======
+	/* A VMRUN has started but has not yet been performed, so
+	 * we cannot inject a nested vmexit yet.  */
+	bool nested_run_pending;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* cache for control fields of the guest */
 	struct vmcb_ctrl_area_cached ctl;
 
@@ -353,7 +390,10 @@ struct vcpu_svm {
 
 	bool guest_state_loaded;
 
+<<<<<<< HEAD
 	bool avic_irq_window;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool x2avic_msrs_intercepted;
 	bool lbr_msrs_intercepted;
 
@@ -378,33 +418,55 @@ struct svm_cpu_data {
 
 DECLARE_PER_CPU(struct svm_cpu_data, svm_data);
 
+<<<<<<< HEAD
+=======
+void recalc_intercepts(struct vcpu_svm *svm);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline struct kvm_svm *to_kvm_svm(struct kvm *kvm)
 {
 	return container_of(kvm, struct kvm_svm, kvm);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_AMD_SEV
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline struct kvm_sev_info *to_kvm_sev_info(struct kvm *kvm)
 {
 	return &to_kvm_svm(kvm)->sev_info;
 }
 
+<<<<<<< HEAD
 static __always_inline bool ____sev_guest(struct kvm *kvm)
 {
 	return to_kvm_sev_info(kvm)->active;
 }
 static __always_inline bool ____sev_es_guest(struct kvm *kvm)
+=======
+#ifdef CONFIG_KVM_AMD_SEV
+static __always_inline bool sev_guest(struct kvm *kvm)
+{
+	return to_kvm_sev_info(kvm)->active;
+}
+static __always_inline bool sev_es_guest(struct kvm *kvm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
 
 	return sev->es_active && !WARN_ON_ONCE(!sev->active);
 }
 
+<<<<<<< HEAD
 static __always_inline bool ____sev_snp_guest(struct kvm *kvm)
+=======
+static __always_inline bool sev_snp_guest(struct kvm *kvm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
 
 	return (sev->vmsa_features & SVM_SEV_FEAT_SNP_ACTIVE) &&
+<<<<<<< HEAD
 	       !WARN_ON_ONCE(!____sev_es_guest(kvm));
 }
 
@@ -435,6 +497,14 @@ static __always_inline bool is_sev_snp_guest(struct kvm_vcpu *vcpu)
 {
 	return false;
 }
+=======
+	       !WARN_ON_ONCE(!sev_es_guest(kvm));
+}
+#else
+#define sev_guest(kvm) false
+#define sev_es_guest(kvm) false
+#define sev_snp_guest(kvm) false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static inline bool ghcb_gpa_is_registered(struct vcpu_svm *svm, u64 val)
@@ -458,9 +528,15 @@ static inline void vmcb_mark_dirty(struct vmcb *vmcb, int bit)
 	vmcb->control.clean &= ~(1 << bit);
 }
 
+<<<<<<< HEAD
 static inline bool vmcb12_is_dirty(struct vmcb_ctrl_area_cached *control, int bit)
 {
 	return !test_bit(bit, (unsigned long *)&control->clean);
+=======
+static inline bool vmcb_is_dirty(struct vmcb *vmcb, int bit)
+{
+        return !test_bit(bit, (unsigned long *)&vmcb->control.clean);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline struct vcpu_svm *to_svm(struct kvm_vcpu *vcpu)
@@ -529,6 +605,7 @@ static inline bool vmcb12_is_intercept(struct vmcb_ctrl_area_cached *control, u3
 	return __vmcb_is_intercept((unsigned long *)&control->intercepts, bit);
 }
 
+<<<<<<< HEAD
 void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm);
 
 static inline void svm_mark_intercepts_dirty(struct vcpu_svm *svm)
@@ -545,6 +622,8 @@ static inline void svm_mark_intercepts_dirty(struct vcpu_svm *svm)
 		nested_vmcb02_recalc_intercepts(svm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void set_exception_intercept(struct vcpu_svm *svm, u32 bit)
 {
 	struct vmcb *vmcb = svm->vmcb01.ptr;
@@ -552,7 +631,11 @@ static inline void set_exception_intercept(struct vcpu_svm *svm, u32 bit)
 	WARN_ON_ONCE(bit >= 32);
 	vmcb_set_intercept(&vmcb->control, INTERCEPT_EXCEPTION_OFFSET + bit);
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void clr_exception_intercept(struct vcpu_svm *svm, u32 bit)
@@ -562,7 +645,11 @@ static inline void clr_exception_intercept(struct vcpu_svm *svm, u32 bit)
 	WARN_ON_ONCE(bit >= 32);
 	vmcb_clr_intercept(&vmcb->control, INTERCEPT_EXCEPTION_OFFSET + bit);
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void svm_set_intercept(struct vcpu_svm *svm, int bit)
@@ -571,7 +658,11 @@ static inline void svm_set_intercept(struct vcpu_svm *svm, int bit)
 
 	vmcb_set_intercept(&vmcb->control, bit);
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void svm_clr_intercept(struct vcpu_svm *svm, int bit)
@@ -580,7 +671,11 @@ static inline void svm_clr_intercept(struct vcpu_svm *svm, int bit)
 
 	vmcb_clr_intercept(&vmcb->control, bit);
 
+<<<<<<< HEAD
 	svm_mark_intercepts_dirty(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool svm_is_intercept(struct vcpu_svm *svm, int bit)
@@ -637,7 +732,11 @@ static inline bool gif_set(struct vcpu_svm *svm)
 
 static inline bool nested_npt_enabled(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	return svm->nested.ctl.misc_ctl & SVM_MISC_ENABLE_NP;
+=======
+	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool nested_vnmi_enabled(struct vcpu_svm *svm)
@@ -843,7 +942,12 @@ static inline bool nested_exit_on_nmi(struct vcpu_svm *svm)
 
 int __init nested_svm_init_msrpm_merge_offsets(void);
 
+<<<<<<< HEAD
 int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb_gpa, bool from_vmrun);
+=======
+int enter_svm_guest_mode(struct kvm_vcpu *vcpu,
+			 u64 vmcb_gpa, struct vmcb *vmcb12, bool from_vmrun);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void svm_leave_nested(struct kvm_vcpu *vcpu);
 void svm_free_nested(struct vcpu_svm *svm);
 int svm_allocate_nested(struct vcpu_svm *svm);
@@ -952,7 +1056,10 @@ static inline struct page *snp_safe_alloc_page(void)
 
 int sev_vcpu_create(struct kvm_vcpu *vcpu);
 void sev_free_vcpu(struct kvm_vcpu *vcpu);
+<<<<<<< HEAD
 void sev_vm_init(struct kvm *kvm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void sev_vm_destroy(struct kvm *kvm);
 void __init sev_set_cpu_caps(void);
 void __init sev_hardware_setup(void);
@@ -979,7 +1086,10 @@ static inline struct page *snp_safe_alloc_page(void)
 
 static inline int sev_vcpu_create(struct kvm_vcpu *vcpu) { return 0; }
 static inline void sev_free_vcpu(struct kvm_vcpu *vcpu) {}
+<<<<<<< HEAD
 static inline void sev_vm_init(struct kvm *kvm) {}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void sev_vm_destroy(struct kvm *kvm) {}
 static inline void __init sev_set_cpu_caps(void) {}
 static inline void __init sev_hardware_setup(void) {}

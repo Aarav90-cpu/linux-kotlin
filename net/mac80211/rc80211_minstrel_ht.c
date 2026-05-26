@@ -1849,7 +1849,24 @@ minstrel_ht_rate_update(void *priv, struct ieee80211_supported_band *sband,
 static void *
 minstrel_ht_alloc_sta(void *priv, struct ieee80211_sta *sta, gfp_t gfp)
 {
+<<<<<<< HEAD
 	return kzalloc_obj(struct minstrel_ht_sta, gfp);
+=======
+	struct ieee80211_supported_band *sband;
+	struct minstrel_ht_sta *mi;
+	struct minstrel_priv *mp = priv;
+	struct ieee80211_hw *hw = mp->hw;
+	int max_rates = 0;
+	int i;
+
+	for (i = 0; i < NUM_NL80211_BANDS; i++) {
+		sband = hw->wiphy->bands[i];
+		if (sband && sband->n_bitrates > max_rates)
+			max_rates = sband->n_bitrates;
+	}
+
+	return kzalloc_obj(*mi, gfp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void

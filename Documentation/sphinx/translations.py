@@ -25,7 +25,10 @@ all_languages = {
     'it_IT': 'Italian',
     'ja_JP': 'Japanese',
     'ko_KR': 'Korean',
+<<<<<<< HEAD
     'pt_BR': 'Portuguese (Brazilian)',
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     'sp_SP': 'Spanish',
 }
 

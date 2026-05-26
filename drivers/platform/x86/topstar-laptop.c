@@ -232,9 +232,15 @@ static int topstar_acpi_fncx_switch(struct acpi_device *device, bool state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void topstar_acpi_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct topstar_laptop *topstar = data;
+=======
+static void topstar_acpi_notify(struct acpi_device *device, u32 event)
+{
+	struct topstar_laptop *topstar = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static bool dup_evnt[2];
 	bool *dup;
 
@@ -285,9 +291,14 @@ static const struct dmi_system_id topstar_dmi_ids[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static int topstar_acpi_probe(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int topstar_acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct topstar_laptop *topstar;
 	int err;
 
@@ -297,10 +308,16 @@ static int topstar_acpi_probe(struct platform_device *pdev)
 	if (!topstar)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, topstar);
 
 	strscpy(acpi_device_name(device), "Topstar TPSACPI");
 	strscpy(acpi_device_class(device), TOPSTAR_LAPTOP_CLASS);
+=======
+	strscpy(acpi_device_name(device), "Topstar TPSACPI");
+	strscpy(acpi_device_class(device), TOPSTAR_LAPTOP_CLASS);
+	device->driver_data = topstar;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	topstar->device = device;
 
 	err = topstar_acpi_init(topstar);
@@ -315,6 +332,7 @@ static int topstar_acpi_probe(struct platform_device *pdev)
 	if (err)
 		goto err_platform_exit;
 
+<<<<<<< HEAD
 	err = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
 					      topstar_acpi_notify, topstar);
 	if (err)
@@ -324,12 +342,21 @@ static int topstar_acpi_probe(struct platform_device *pdev)
 		err = topstar_led_init(topstar);
 		if (err)
 			goto err_notify_handler_exit;
+=======
+	if (led_workaround) {
+		err = topstar_led_init(topstar);
+		if (err)
+			goto err_input_exit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 
+<<<<<<< HEAD
 err_notify_handler_exit:
 	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_input_exit:
 	topstar_input_exit(topstar);
 err_platform_exit:
@@ -341,15 +368,24 @@ err_free:
 	return err;
 }
 
+<<<<<<< HEAD
 static void topstar_acpi_remove(struct platform_device *pdev)
 {
 	struct topstar_laptop *topstar = platform_get_drvdata(pdev);
+=======
+static void topstar_acpi_remove(struct acpi_device *device)
+{
+	struct topstar_laptop *topstar = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (led_workaround)
 		topstar_led_exit(topstar);
 
+<<<<<<< HEAD
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_DEVICE_NOTIFY, topstar_acpi_notify);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	topstar_input_exit(topstar);
 	topstar_platform_exit(topstar);
 	topstar_acpi_exit(topstar);
@@ -364,12 +400,23 @@ static const struct acpi_device_id topstar_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, topstar_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver topstar_acpi_driver = {
 	.probe = topstar_acpi_probe,
 	.remove = topstar_acpi_remove,
 	.driver = {
 		.name = "Topstar laptop ACPI driver",
 		.acpi_match_table = topstar_device_ids,
+=======
+static struct acpi_driver topstar_acpi_driver = {
+	.name = "Topstar laptop ACPI driver",
+	.class = TOPSTAR_LAPTOP_CLASS,
+	.ids = topstar_device_ids,
+	.ops = {
+		.add = topstar_acpi_add,
+		.remove = topstar_acpi_remove,
+		.notify = topstar_acpi_notify,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -381,7 +428,11 @@ static int __init topstar_laptop_init(void)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = platform_driver_register(&topstar_acpi_driver);
+=======
+	ret = acpi_bus_register_driver(&topstar_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto err_driver_unreg;
 
@@ -395,7 +446,11 @@ err_driver_unreg:
 
 static void __exit topstar_laptop_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&topstar_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&topstar_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_driver_unregister(&topstar_platform_driver);
 }
 

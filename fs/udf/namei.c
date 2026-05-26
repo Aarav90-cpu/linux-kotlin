@@ -550,7 +550,11 @@ static int udf_unlink(struct inode *dir, struct dentry *dentry)
 		goto end_unlink;
 
 	if (!inode->i_nlink) {
+<<<<<<< HEAD
 		udf_debug("Deleting nonexistent file (%llu), %u\n",
+=======
+		udf_debug("Deleting nonexistent file (%lu), %u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  inode->i_ino, inode->i_nlink);
 		set_nlink(inode, 1);
 	}
@@ -638,7 +642,11 @@ static int udf_symlink(struct mnt_idmap *idmap, struct inode *dir,
 		memset(epos.bh->b_data, 0x00, bsize);
 		set_buffer_uptodate(epos.bh);
 		unlock_buffer(epos.bh);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(epos.bh, &iinfo->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(epos.bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ea = epos.bh->b_data + udf_ext0_offset(inode);
 	} else
 		ea = iinfo->i_data + iinfo->i_lenEAttr;
@@ -809,7 +817,11 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 					       &diriter);
 		if (retval == -ENOENT) {
 			udf_err(old_inode->i_sb,
+<<<<<<< HEAD
 				"directory (ino %llu) has no '..' entry\n",
+=======
+				"directory (ino %lu) has no '..' entry\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				old_inode->i_ino);
 			retval = -EFSCORRUPTED;
 		}
@@ -821,7 +833,11 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 				old_dir->i_ino) {
 			retval = -EFSCORRUPTED;
 			udf_err(old_inode->i_sb,
+<<<<<<< HEAD
 				"directory (ino %llu) has parent entry pointing to another inode (%llu != %u)\n",
+=======
+				"directory (ino %lu) has parent entry pointing to another inode (%lu != %u)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				old_inode->i_ino, old_dir->i_ino,
 				udf_get_lb_pblock(old_inode->i_sb, &tloc, 0));
 			goto out_oiter;
@@ -869,7 +885,11 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 	retval = udf_fiiter_find_entry(old_dir, &old_dentry->d_name, &oiter);
 	if (retval) {
 		udf_err(old_dir->i_sb,
+<<<<<<< HEAD
 			"failed to find renamed entry again in directory (ino %llu)\n",
+=======
+			"failed to find renamed entry again in directory (ino %lu)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			old_dir->i_ino);
 	} else {
 		udf_fiiter_delete_entry(&oiter);

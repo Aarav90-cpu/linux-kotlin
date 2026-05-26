@@ -80,8 +80,11 @@ int vdo_status_to_errno(int error)
 
 	/* VDO or UDS error */
 	switch (error) {
+<<<<<<< HEAD
 	case VDO_BAD_CONFIGURATION:
 		return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case VDO_NO_SPACE:
 		return -ENOSPC;
 	case VDO_READ_ONLY:

@@ -34,7 +34,11 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
 	struct a6xx_hfi_queue_header *header = queue->header;
 	u32 i, hdr, index = header->read_index;
 
+<<<<<<< HEAD
 	if (header->read_index == READ_ONCE(header->write_index)) {
+=======
+	if (header->read_index == header->write_index) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		header->rx_request = 1;
 		return 0;
 	}
@@ -62,10 +66,14 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
 	if (!gmu->legacy)
 		index = ALIGN(index, 4) % header->size;
 
+<<<<<<< HEAD
 	/* Ensure all memory operations are complete before updating the read index */
 	dma_mb();
 
 	WRITE_ONCE(header->read_index, index);
+=======
+	header->read_index = index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return HFI_HEADER_SIZE(hdr);
 }
 
@@ -77,7 +85,11 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
 
 	spin_lock(&queue->lock);
 
+<<<<<<< HEAD
 	space = CIRC_SPACE(header->write_index, READ_ONCE(header->read_index),
+=======
+	space = CIRC_SPACE(header->write_index, header->read_index,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		header->size);
 	if (space < dwords) {
 		header->dropped++;
@@ -98,10 +110,14 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
 			queue->data[index] = 0xfafafafa;
 	}
 
+<<<<<<< HEAD
 	/* Ensure all memory operations are complete before updating the write index */
 	dma_mb();
 
 	WRITE_ONCE(header->write_index, index);
+=======
+	header->write_index = index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock(&queue->lock);
 
 	gmu_write(gmu, REG_A6XX_GMU_HOST2GMU_INTR_SET, 0x01);
@@ -853,6 +869,10 @@ static int a6xx_hfi_feature_ctrl_msg(struct a6xx_gmu *gmu, u32 feature, u32 enab
 	return a6xx_hfi_send_msg(gmu, HFI_H2F_FEATURE_CTRL, &msg, sizeof(msg), NULL, 0);
 }
 
+<<<<<<< HEAD
+=======
+#define HFI_FEATURE_IFPC 9
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IFPC_LONG_HYST 0x1680
 
 static int a6xx_hfi_enable_ifpc(struct a6xx_gmu *gmu)
@@ -863,6 +883,11 @@ static int a6xx_hfi_enable_ifpc(struct a6xx_gmu *gmu)
 	return a6xx_hfi_feature_ctrl_msg(gmu, HFI_FEATURE_IFPC, 1, IFPC_LONG_HYST);
 }
 
+<<<<<<< HEAD
+=======
+#define HFI_FEATURE_ACD 12
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int a6xx_hfi_enable_acd(struct a6xx_gmu *gmu)
 {
 	struct a6xx_hfi_acd_table *acd_table = &gmu->acd_table;
@@ -1061,8 +1086,13 @@ void a6xx_hfi_init(struct a6xx_gmu *gmu)
 	struct a6xx_gmu_bo *hfi = &gmu->hfi;
 	struct a6xx_hfi_queue_table_header *table = hfi->virt;
 	struct a6xx_hfi_queue_header *headers = hfi->virt + sizeof(*table);
+<<<<<<< HEAD
 	int table_size, idx;
 	u64 offset;
+=======
+	u64 offset;
+	int table_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The table size is the size of the table header plus all of the queue
@@ -1081,6 +1111,7 @@ void a6xx_hfi_init(struct a6xx_gmu *gmu)
 	table->active_queues = ARRAY_SIZE(gmu->queues);
 
 	/* Command queue */
+<<<<<<< HEAD
 	idx = 0;
 	offset = SZ_4K;
 	a6xx_hfi_queue_init(&gmu->queues[idx], &headers[idx], hfi->virt + offset,
@@ -1099,4 +1130,14 @@ void a6xx_hfi_init(struct a6xx_gmu *gmu)
 		hfi->iova + offset, gmu->legacy ? 5 : 2);
 
 	WARN_ON(idx >= HFI_MAX_QUEUES);
+=======
+	offset = SZ_4K;
+	a6xx_hfi_queue_init(&gmu->queues[0], &headers[0], hfi->virt + offset,
+		hfi->iova + offset, 0);
+
+	/* GMU response queue */
+	offset += SZ_4K;
+	a6xx_hfi_queue_init(&gmu->queues[1], &headers[1], hfi->virt + offset,
+		hfi->iova + offset, gmu->legacy ? 4 : 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

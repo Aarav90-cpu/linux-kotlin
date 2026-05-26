@@ -3,9 +3,12 @@
 #ifndef _NET_ETHTOOL_BITSET_H
 #define _NET_ETHTOOL_BITSET_H
 
+<<<<<<< HEAD
 #include <linux/ethtool.h>
 #include <linux/netlink.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ETHNL_MAX_BITSET_SIZE S16_MAX
 
 typedef const char (*const ethnl_string_array_t)[ETH_GSTRING_LEN];

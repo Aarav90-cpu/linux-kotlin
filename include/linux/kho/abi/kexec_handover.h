@@ -10,6 +10,7 @@
 #ifndef _LINUX_KHO_ABI_KEXEC_HANDOVER_H
 #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
 #include <linux/log2.h>
 #include <linux/math.h>
@@ -17,6 +18,10 @@
 
 #include <asm/page.h>
 
+=======
+#include <linux/types.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * DOC: Kexec Handover ABI
  *
@@ -34,6 +39,7 @@
  * compatibility is only guaranteed for kernels supporting the same ABI version.
  *
  * FDT Structure Overview:
+<<<<<<< HEAD
  *   The FDT serves as a central registry for physical addresses of preserved
  *   data structures. The first kernel populates this FDT with references to
  *   memory regions and other metadata that need to persist across the kexec
@@ -42,10 +48,21 @@
  *
  *     / {
  *         compatible = "kho-v3";
+=======
+ *   The FDT serves as a central registry for physical
+ *   addresses of preserved data structures and sub-FDTs. The first kernel
+ *   populates this FDT with references to memory regions and other FDTs that
+ *   need to persist across the kexec transition. The subsequent kernel then
+ *   parses this FDT to locate and restore the preserved data.::
+ *
+ *     / {
+ *         compatible = "kho-v1";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *         preserved-memory-map = <0x...>;
  *
  *         <subnode-name-1> {
+<<<<<<< HEAD
  *             preserved-data = <0x...>;
  *             blob-size = <0x...>;
  *         };
@@ -58,11 +75,26 @@
  *         <subnode-name-N> {
  *             preserved-data = <0x...>;
  *             blob-size = <0x...>;
+=======
+ *             fdt = <0x...>;
+ *         };
+ *
+ *         <subnode-name-2> {
+ *             fdt = <0x...>;
+ *         };
+ *               ... ...
+ *         <subnode-name-N> {
+ *             fdt = <0x...>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *         };
  *     };
  *
  *   Root KHO Node (/):
+<<<<<<< HEAD
  *     - compatible: "kho-v3"
+=======
+ *     - compatible: "kho-v1"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *       Indentifies the overall KHO ABI version.
  *
@@ -77,6 +109,7 @@
  *     is provided by the subsystem that uses KHO for preserving its
  *     data.
  *
+<<<<<<< HEAD
  *     - preserved-data: u64
  *
  *       Physical address pointing to a subnode data blob that is also
@@ -91,15 +124,30 @@
 
 /* The compatible string for the KHO FDT root node. */
 #define KHO_FDT_COMPATIBLE "kho-v3"
+=======
+ *     - fdt: u64
+ *
+ *       Physical address pointing to a subnode FDT blob that is also
+ *       being preserved.
+ */
+
+/* The compatible string for the KHO FDT root node. */
+#define KHO_FDT_COMPATIBLE "kho-v1"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* The FDT property for the preserved memory map. */
 #define KHO_FDT_MEMORY_MAP_PROP_NAME "preserved-memory-map"
 
+<<<<<<< HEAD
 /* The FDT property for preserved data blobs. */
 #define KHO_SUB_TREE_PROP_NAME "preserved-data"
 
 /* The FDT property for the size of preserved data blobs. */
 #define KHO_SUB_TREE_SIZE_PROP_NAME "blob-size"
+=======
+/* The FDT property for sub-FDTs. */
+#define KHO_FDT_SUB_TREE_PROP_NAME "fdt"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: Kexec Handover ABI for vmalloc Preservation
@@ -177,6 +225,7 @@ struct kho_vmalloc {
 	unsigned short order;
 };
 
+<<<<<<< HEAD
 /**
  * DOC: KHO persistent memory tracker
  *
@@ -286,4 +335,6 @@ struct kho_radix_leaf {
 	DECLARE_BITMAP(bitmap, 1 << KHO_BITMAP_SIZE_LOG2);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _LINUX_KHO_ABI_KEXEC_HANDOVER_H */

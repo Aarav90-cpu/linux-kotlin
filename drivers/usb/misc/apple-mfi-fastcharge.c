@@ -210,7 +210,11 @@ static int mfi_fc_probe(struct usb_device *udev)
 		goto err_free_name;
 	}
 
+<<<<<<< HEAD
 	mfi->udev = udev;
+=======
+	mfi->udev = usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_set_drvdata(&udev->dev, mfi);
 
 	return 0;
@@ -231,6 +235,10 @@ static void mfi_fc_disconnect(struct usb_device *udev)
 		power_supply_unregister(mfi->battery);
 	kfree(mfi->battery_desc.name);
 	dev_set_drvdata(&udev->dev, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(mfi->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(mfi);
 }
 

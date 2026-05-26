@@ -510,6 +510,7 @@ xprt_rdma_alloc_slot(struct rpc_xprt *xprt, struct rpc_task *task)
 	return;
 
 out_sleep:
+<<<<<<< HEAD
 	task->tk_status = -EAGAIN;
 	xprt_add_backlog_noncongested(xprt, task);
 	/* A buffer freed between buffer_get and rpc_sleep_on
@@ -525,6 +526,10 @@ out_sleep:
 			rpcrdma_buffer_put(&r_xprt->rx_buf, req);
 		}
 	}
+=======
+	task->tk_status = -ENOMEM;
+	xprt_add_backlog(xprt, task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

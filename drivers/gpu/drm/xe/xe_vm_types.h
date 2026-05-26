@@ -18,13 +18,19 @@
 #include "xe_device_types.h"
 #include "xe_pt_types.h"
 #include "xe_range_fence.h"
+<<<<<<< HEAD
 #include "xe_tlb_inval_types.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_userptr.h"
 
 struct drm_pagemap;
 
 struct xe_bo;
+<<<<<<< HEAD
 struct xe_pagefault;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_svm_range;
 struct xe_sync_entry;
 struct xe_user_fence;
@@ -96,6 +102,7 @@ struct xe_vma_mem_attr {
 	 * same as default_pat_index unless overwritten by madvise.
 	 */
 	u16 pat_index;
+<<<<<<< HEAD
 
 	/**
 	 * @purgeable_state: Purgeable hint for this VMA mapping
@@ -107,6 +114,8 @@ struct xe_vma_mem_attr {
 	 * Protected by BO dma-resv lock. Set via DRM_IOCTL_XE_MADVISE.
 	 */
 	u32 purgeable_state;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct xe_vma {
@@ -188,6 +197,7 @@ struct xe_userptr_vma {
 
 struct xe_device;
 
+<<<<<<< HEAD
 /**
  * struct xe_vm_fault_entry - Elements of vm->faults.list
  * @list: link into @xe_vm.faults.list
@@ -206,6 +216,8 @@ struct xe_vm_fault_entry {
 	u8 fault_level;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_vm {
 	/** @gpuvm: base GPUVM used to track VMAs */
 	struct drm_gpuvm gpuvm;
@@ -263,7 +275,10 @@ struct xe_vm {
 #define XE_VM_FLAG_TILE_ID(flags)	FIELD_GET(GENMASK(7, 6), flags)
 #define XE_VM_FLAG_SET_TILE_ID(tile)	FIELD_PREP(GENMASK(7, 6), (tile)->id)
 #define XE_VM_FLAG_GSC			BIT(8)
+<<<<<<< HEAD
 #define XE_VM_FLAG_NO_VM_OVERCOMMIT     BIT(9)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	/**
@@ -330,6 +345,7 @@ struct xe_vm {
 		struct list_head pm_activate_link;
 	} preempt;
 
+<<<<<<< HEAD
 	/** @exec_queues: Manages list of exec queues attached to this VM, protected by lock. */
 	struct {
 		/**
@@ -346,6 +362,8 @@ struct xe_vm {
 		struct rw_semaphore lock;
 	} exec_queues;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @um: unified memory state */
 	struct {
 		/** @asid: address space ID, unique to each VM */
@@ -363,6 +381,7 @@ struct xe_vm {
 		bool capture_once;
 	} error_capture;
 
+<<<<<<< HEAD
 	/** @faults: List of all faults associated with this VM */
 	struct {
 		/** @faults.lock: lock protecting @faults.list */
@@ -373,6 +392,8 @@ struct xe_vm {
 		unsigned int len;
 	} faults;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @validation: Validation data only valid with the vm resv held.
 	 * Note: This is really task state of the task holding the vm resv,
@@ -417,8 +438,11 @@ struct xe_vma_op_map {
 	bool immediate;
 	/** @read_only: Read only */
 	bool invalidate_on_bind;
+<<<<<<< HEAD
 	/** @request_decompress: schedule decompression for GPU map */
 	bool request_decompress;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @pat_index: The pat index to use for this operation. */
 	u16 pat_index;
 };

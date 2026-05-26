@@ -9,7 +9,11 @@
 #include "hdmi.h"
 
 static void hdmi_phy_8x60_powerup(struct hdmi_phy *phy,
+<<<<<<< HEAD
 				  unsigned long pixclock)
+=======
+		unsigned long int pixclock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* De-serializer delay D/C for non-lbk mode: */
 	hdmi_phy_write(phy, REG_HDMI_8x60_PHY_REG0,

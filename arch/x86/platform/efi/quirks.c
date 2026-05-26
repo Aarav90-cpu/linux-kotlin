@@ -372,7 +372,11 @@ void __init efi_reserve_boot_services(void)
 		 * doesn't make sense as far as the firmware is
 		 * concerned, but it does provide us with a way to tag
 		 * those regions that must not be paired with
+<<<<<<< HEAD
 		 * memblock_phys_free().
+=======
+		 * memblock_free_late().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		md->attribute |= EFI_MEMORY_RUNTIME;
 	}

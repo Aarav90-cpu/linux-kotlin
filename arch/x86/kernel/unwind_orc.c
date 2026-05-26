@@ -546,6 +546,7 @@ bool unwind_next_frame(struct unwind_state *state)
 		indirect = true;
 		break;
 
+<<<<<<< HEAD
 	/*
 	 * Any of the below registers may temporarily hold the stack pointer,
 	 * typically during a DRAP stack realignment sequence or some other
@@ -555,14 +556,25 @@ bool unwind_next_frame(struct unwind_state *state)
 	case ORC_REG_AX:
 		if (!get_reg(state, offsetof(struct pt_regs, ax), &sp)) {
 			orc_warn_current("missing AX value at %pB\n",
+=======
+	case ORC_REG_R10:
+		if (!get_reg(state, offsetof(struct pt_regs, r10), &sp)) {
+			orc_warn_current("missing R10 value at %pB\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 (void *)state->ip);
 			goto err;
 		}
 		break;
 
+<<<<<<< HEAD
 	case ORC_REG_DX:
 		if (!get_reg(state, offsetof(struct pt_regs, dx), &sp)) {
 			orc_warn_current("missing DX value at %pB\n",
+=======
+	case ORC_REG_R13:
+		if (!get_reg(state, offsetof(struct pt_regs, r13), &sp)) {
+			orc_warn_current("missing R13 value at %pB\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 (void *)state->ip);
 			goto err;
 		}
@@ -576,6 +588,7 @@ bool unwind_next_frame(struct unwind_state *state)
 		}
 		break;
 
+<<<<<<< HEAD
 	case ORC_REG_R10:
 		if (!get_reg(state, offsetof(struct pt_regs, r10), &sp)) {
 			orc_warn_current("missing R10 value at %pB\n",
@@ -587,6 +600,11 @@ bool unwind_next_frame(struct unwind_state *state)
 	case ORC_REG_R13:
 		if (!get_reg(state, offsetof(struct pt_regs, r13), &sp)) {
 			orc_warn_current("missing R13 value at %pB\n",
+=======
+	case ORC_REG_DX:
+		if (!get_reg(state, offsetof(struct pt_regs, dx), &sp)) {
+			orc_warn_current("missing DX value at %pB\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 (void *)state->ip);
 			goto err;
 		}

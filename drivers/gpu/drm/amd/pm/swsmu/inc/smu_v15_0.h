@@ -41,10 +41,14 @@
 #define smnMP1_FIRMWARE_FLAGS		0x3010024
 #define smnMP1_PUB_CTRL			0x3010d10
 
+<<<<<<< HEAD
 #define SMU15_DRIVER_IF_VERSION_SMU_V15_0_8 0x007D0000
 
 #define FEATURE_MASK(feature) (1ULL << feature)
 
+=======
+#define MAX_DPM_LEVELS 16
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_PCIE_CONF 3
 
 #define SMU15_TOOL_SIZE			0x19000
@@ -68,6 +72,7 @@ struct smu_15_0_max_sustainable_clocks {
 	uint32_t soc_clock;
 };
 
+<<<<<<< HEAD
 struct smu_15_0_dpm_tables {
 	struct smu_dpm_table        soc_table;
 	struct smu_dpm_table        gfx_table;
@@ -82,14 +87,52 @@ struct smu_15_0_dpm_tables {
 	struct smu_dpm_table        fclk_table;
 	struct smu_pcie_table       pcie_table;
 	struct smu_dpm_table        gl2_table;
+=======
+struct smu_15_0_dpm_clk_level {
+	bool				enabled;
+	uint32_t			value;
+};
+
+struct smu_15_0_dpm_table {
+	uint32_t			min;        /* MHz */
+	uint32_t			max;        /* MHz */
+	uint32_t			count;
+	bool				is_fine_grained;
+	struct smu_15_0_dpm_clk_level	dpm_levels[MAX_DPM_LEVELS];
+};
+
+struct smu_15_0_pcie_table {
+	uint8_t  pcie_gen[MAX_PCIE_CONF];
+	uint8_t  pcie_lane[MAX_PCIE_CONF];
+	uint16_t clk_freq[MAX_PCIE_CONF];
+	uint32_t num_of_link_levels;
+};
+
+struct smu_15_0_dpm_tables {
+	struct smu_15_0_dpm_table        soc_table;
+	struct smu_15_0_dpm_table        gfx_table;
+	struct smu_15_0_dpm_table        uclk_table;
+	struct smu_15_0_dpm_table        eclk_table;
+	struct smu_15_0_dpm_table        vclk_table;
+	struct smu_15_0_dpm_table        dclk_table;
+	struct smu_15_0_dpm_table        dcef_table;
+	struct smu_15_0_dpm_table        pixel_table;
+	struct smu_15_0_dpm_table        display_table;
+	struct smu_15_0_dpm_table        phy_table;
+	struct smu_15_0_dpm_table        fclk_table;
+	struct smu_15_0_pcie_table       pcie_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct smu_15_0_dpm_context {
 	struct smu_15_0_dpm_tables  dpm_tables;
 	uint32_t                    workload_policy_mask;
 	uint32_t                    dcef_min_ds_clk;
+<<<<<<< HEAD
 	uint64_t                    caps;
 	uint32_t		    board_volt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum smu_15_0_power_state {
@@ -104,7 +147,10 @@ struct smu_15_0_power_context {
 	uint32_t	power_source;
 	uint8_t		in_power_limit_boost_mode;
 	enum smu_15_0_power_state power_state;
+<<<<<<< HEAD
 	atomic_t 	throttle_status;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if defined(SWSMU_CODE_LAYER_L2) || defined(SWSMU_CODE_LAYER_L3)
@@ -129,6 +175,11 @@ int smu_v15_0_setup_pptable(struct smu_context *smu);
 
 int smu_v15_0_get_vbios_bootup_values(struct smu_context *smu);
 
+<<<<<<< HEAD
+=======
+int smu_v15_0_check_fw_version(struct smu_context *smu);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smu_v15_0_set_driver_table_location(struct smu_context *smu);
 
 int smu_v15_0_set_tool_table_location(struct smu_context *smu);
@@ -184,7 +235,11 @@ int smu_v15_0_set_power_source(struct smu_context *smu,
 
 int smu_v15_0_set_single_dpm_table(struct smu_context *smu,
 				   enum smu_clk_type clk_type,
+<<<<<<< HEAD
 				   struct smu_dpm_table *single_dpm_table);
+=======
+				   struct smu_15_0_dpm_table *single_dpm_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int smu_v15_0_gfx_ulv_control(struct smu_context *smu,
 			      bool enablement);

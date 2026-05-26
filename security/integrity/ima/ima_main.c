@@ -180,6 +180,7 @@ static void ima_rdwr_violation_check(struct file *file,
 				  "invalid_pcr", "open_writers");
 }
 
+<<<<<<< HEAD
 /*
  * Detect file change based on STATX_CHANGE_COOKIE, when supported, and
  * fallback to detecting file change based on i_version. On filesystems
@@ -203,6 +204,8 @@ static bool ima_detect_file_change(struct ima_iint_cache *iint,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ima_check_last_writer(struct ima_iint_cache *iint,
 				  struct inode *inode, struct file *file)
 {
@@ -214,13 +217,27 @@ static void ima_check_last_writer(struct ima_iint_cache *iint,
 
 	mutex_lock(&iint->mutex);
 	if (atomic_read(&inode->i_writecount) == 1) {
+<<<<<<< HEAD
+=======
+		struct kstat stat;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clear_bit(IMA_EMITTED_OPENWRITERS, &iint->atomic_flags);
 
 		update = test_and_clear_bit(IMA_UPDATE_XATTR,
 					    &iint->atomic_flags);
+<<<<<<< HEAD
 
 		if (iint->flags & IMA_NEW_FILE ||
 		    ima_detect_file_change(iint, inode, file)) {
+=======
+		if ((iint->flags & IMA_NEW_FILE) ||
+		    vfs_getattr_nosec(&file->f_path, &stat,
+				      STATX_CHANGE_COOKIE,
+				      AT_STATX_SYNC_AS_STAT) ||
+		    !(stat.result_mask & STATX_CHANGE_COOKIE) ||
+		    stat.change_cookie != iint->real_inode.version) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			iint->flags &= ~(IMA_DONE_MASK | IMA_NEW_FILE);
 			iint->measured_pcrs = 0;
 			if (update)
@@ -971,7 +988,12 @@ static int ima_load_data(enum kernel_load_data_id id, bool contents)
 
 	switch (id) {
 	case LOADING_KEXEC_IMAGE:
+<<<<<<< HEAD
 		if (IS_ENABLED(CONFIG_KEXEC_SIG) && arch_get_secureboot()) {
+=======
+		if (IS_ENABLED(CONFIG_KEXEC_SIG)
+		    && arch_ima_get_secureboot()) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_err("impossible to appraise a kernel image without a file descriptor; try using kexec_file_load syscall.\n");
 			return -EACCES;
 		}

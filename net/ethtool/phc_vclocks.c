@@ -2,8 +2,13 @@
 /*
  * Copyright 2021 NXP
  */
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct phc_vclocks_req_info {
 	struct ethnl_req_info		base;

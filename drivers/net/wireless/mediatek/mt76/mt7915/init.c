@@ -1294,7 +1294,10 @@ free_phy2:
 
 void mt7915_unregister_device(struct mt7915_dev *dev)
 {
+<<<<<<< HEAD
 	cancel_work_sync(&dev->dump_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt7915_unregister_ext_phy(dev);
 	mt7915_coredump_unregister(dev);
 	mt7915_unregister_thermal(&dev->phy);

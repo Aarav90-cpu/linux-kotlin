@@ -1533,11 +1533,24 @@ int ecc_gen_privkey(unsigned int curve_id, unsigned int ndigits,
 	 * The maximum security strength identified by NIST SP800-57pt1r4 for
 	 * ECC is 256 (N >= 512).
 	 *
+<<<<<<< HEAD
 	 * This condition is met by stdrng because it selects a favored DRBG
 	 * with a security strength of 256.
 	 */
 	/* Step 3: obtain N returned_bits from the DRBG. */
 	err = crypto_stdrng_get_bytes(private_key, nbytes);
+=======
+	 * This condition is met by the default RNG because it selects a favored
+	 * DRBG with a security strength of 256.
+	 */
+	if (crypto_get_default_rng())
+		return -EFAULT;
+
+	/* Step 3: obtain N returned_bits from the DRBG. */
+	err = crypto_rng_get_bytes(crypto_default_rng,
+				   (u8 *)private_key, nbytes);
+	crypto_put_default_rng();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 

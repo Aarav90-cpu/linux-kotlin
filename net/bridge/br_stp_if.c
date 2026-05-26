@@ -149,9 +149,13 @@ static void br_stp_start(struct net_bridge *br)
 {
 	int err = -ENOENT;
 
+<<<<<<< HEAD
 	/* AUTO mode: try bridge-stp helper in init_net only */
 	if (br->stp_mode == BR_STP_MODE_AUTO &&
 	    net_eq(dev_net(br->dev), &init_net))
+=======
+	if (net_eq(dev_net(br->dev), &init_net))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = br_stp_call_user(br, "start");
 
 	if (err && err != -ENOENT)
@@ -164,9 +168,14 @@ static void br_stp_start(struct net_bridge *br)
 	else if (br->bridge_forward_delay > BR_MAX_FORWARD_DELAY)
 		__br_set_forward_delay(br, BR_MAX_FORWARD_DELAY);
 
+<<<<<<< HEAD
 	if (br->stp_mode == BR_STP_MODE_USER || !err) {
 		br->stp_enabled = BR_USER_STP;
 		br->stp_helper_active = !err;
+=======
+	if (!err) {
+		br->stp_enabled = BR_USER_STP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		br_debug(br, "userspace STP started\n");
 	} else {
 		br->stp_enabled = BR_KERNEL_STP;
@@ -183,6 +192,7 @@ static void br_stp_start(struct net_bridge *br)
 
 static void br_stp_stop(struct net_bridge *br)
 {
+<<<<<<< HEAD
 	if (br->stp_enabled == BR_USER_STP) {
 		if (br->stp_helper_active) {
 			int err = br_stp_call_user(br, "stop");
@@ -191,6 +201,14 @@ static void br_stp_stop(struct net_bridge *br)
 				br_err(br, "failed to stop userspace STP (%d)\n", err);
 			br->stp_helper_active = false;
 		}
+=======
+	int err;
+
+	if (br->stp_enabled == BR_USER_STP) {
+		err = br_stp_call_user(br, "stop");
+		if (err)
+			br_err(br, "failed to stop userspace STP (%d)\n", err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* To start timers on any ports left in blocking */
 		spin_lock_bh(&br->lock);

@@ -40,7 +40,11 @@ static int si2168_cmd_execute(struct i2c_client *client, struct si2168_cmd *cmd)
 
 	if (cmd->rlen) {
 		/* wait cmd execution terminate */
+<<<<<<< HEAD
 		#define TIMEOUT 140
+=======
+		#define TIMEOUT 70
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		timeout = jiffies + msecs_to_jiffies(TIMEOUT);
 		while (!time_after(jiffies, timeout)) {
 			ret = i2c_master_recv(client, cmd->args, cmd->rlen);
@@ -54,8 +58,11 @@ static int si2168_cmd_execute(struct i2c_client *client, struct si2168_cmd *cmd)
 			/* firmware ready? */
 			if ((cmd->args[0] >> 7) & 0x01)
 				break;
+<<<<<<< HEAD
 
 			usleep_range(2500, 3500);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		dev_dbg(&client->dev, "cmd execution took %d ms\n",
@@ -574,8 +581,13 @@ static int si2168_sleep(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	/* Firmware B 4.0-11 and later lose warm state during sleep */
 	if (dev->version >= ('B' << 24 | 4 << 16 | 0 << 8 | 11 << 0))
+=======
+	/* Firmware later than B 4.0-11 loses warm state during sleep */
+	if (dev->version > ('B' << 24 | 4 << 16 | 0 << 8 | 11 << 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev->warm = false;
 
 	cmd_init(&cmd, "\x13", 1, 0);

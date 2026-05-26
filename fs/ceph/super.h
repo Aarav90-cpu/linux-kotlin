@@ -179,7 +179,10 @@ struct ceph_fs_client {
 	struct dentry *debugfs_status;
 	struct dentry *debugfs_mds_sessions;
 	struct dentry *debugfs_metrics_dir;
+<<<<<<< HEAD
 	struct dentry *debugfs_subvolume_metrics;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifdef CONFIG_CEPH_FSCACHE
@@ -399,6 +402,7 @@ struct ceph_inode_info {
 	/* quotas */
 	u64 i_max_bytes, i_max_files;
 
+<<<<<<< HEAD
 	/*
 	 * Subvolume ID this inode belongs to. CEPH_SUBVOLUME_ID_NONE (0)
 	 * means unknown/unset, matching the FUSE client convention.
@@ -408,6 +412,8 @@ struct ceph_inode_info {
 #define CEPH_SUBVOLUME_ID_NONE 0
 	u64 i_subvolume_id;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s32 i_dir_pin;
 
 	struct rb_root i_fragtree;
@@ -1079,7 +1085,10 @@ extern struct inode *ceph_get_inode(struct super_block *sb,
 extern struct inode *ceph_get_snapdir(struct inode *parent);
 extern int ceph_fill_file_size(struct inode *inode, int issued,
 			       u32 truncate_seq, u64 truncate_size, u64 size);
+<<<<<<< HEAD
 extern void ceph_inode_set_subvolume(struct inode *inode, u64 subvolume_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void ceph_fill_file_time(struct inode *inode, int issued,
 				u64 time_warp_seq, struct timespec64 *ctime,
 				struct timespec64 *mtime,

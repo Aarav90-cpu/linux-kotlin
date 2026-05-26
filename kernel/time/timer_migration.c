@@ -1860,6 +1860,7 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node,
 		 *   child to the new parents. So tmigr_active_up() activates the
 		 *   new parents while walking up from the old root to the new.
 		 *
+<<<<<<< HEAD
 		 * * It is ensured that @start is active, (or on the way to be activated
 		 *   by another CPU that woke up before the current one) as this setup path
 		 *   is executed in hotplug prepare callback. This is executed by an already
@@ -1891,6 +1892,21 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node,
 			data.childmask = start->groupmask;
 			__walk_groups_from(tmigr_active_up, &data, start, start->parent);
 		}
+=======
+		 * * It is ensured that @start is active, as this setup path is
+		 *   executed in hotplug prepare callback. This is executed by an
+		 *   already connected and !idle CPU. Even if all other CPUs go idle,
+		 *   the CPU executing the setup will be responsible up to current top
+		 *   level group. And the next time it goes inactive, it will release
+		 *   the new childmask and parent to subsequent walkers through this
+		 *   @child. Therefore propagate active state unconditionally.
+		 */
+		state.state = atomic_read(&start->migr_state);
+		WARN_ON_ONCE(!state.active);
+		WARN_ON_ONCE(!start->parent);
+		data.childmask = start->groupmask;
+		__walk_groups_from(tmigr_active_up, &data, start, start->parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Root update */

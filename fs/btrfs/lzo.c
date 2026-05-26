@@ -106,6 +106,25 @@ fail:
 	return ERR_PTR(-ENOMEM);
 }
 
+<<<<<<< HEAD
+=======
+static inline void write_compress_length(char *buf, size_t len)
+{
+	__le32 dlen;
+
+	dlen = cpu_to_le32(len);
+	memcpy(buf, &dlen, LZO_LEN);
+}
+
+static inline size_t read_compress_length(const char *buf)
+{
+	__le32 dlen;
+
+	memcpy(&dlen, buf, LZO_LEN);
+	return le32_to_cpu(dlen);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Write data into @out_folio and queue it into @out_bio.
  *
@@ -202,14 +221,22 @@ static int copy_compressed_data_to_bio(struct btrfs_fs_info *fs_info,
 	ASSERT((old_size >> sectorsize_bits) == (old_size + LZO_LEN - 1) >> sectorsize_bits);
 
 	if (!*out_folio) {
+<<<<<<< HEAD
 		*out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+		*out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!*out_folio)
 			return -ENOMEM;
 	}
 
 	/* Write the segment header first. */
 	kaddr = kmap_local_folio(*out_folio, offset_in_folio(*out_folio, *total_out));
+<<<<<<< HEAD
 	put_unaligned_le32(compressed_size, kaddr);
+=======
+	write_compress_length(kaddr, compressed_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kunmap_local(kaddr);
 	ret = write_and_queue_folio(out_bio, out_folio, total_out, LZO_LEN);
 	if (ret < 0)
@@ -229,7 +256,11 @@ static int copy_compressed_data_to_bio(struct btrfs_fs_info *fs_info,
 			return -E2BIG;
 
 		if (!*out_folio) {
+<<<<<<< HEAD
 			*out_folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+			*out_folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!*out_folio)
 				return -ENOMEM;
 		}
@@ -280,7 +311,11 @@ int lzo_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 	ASSERT(bio->bi_iter.bi_size == 0);
 	ASSERT(len);
 
+<<<<<<< HEAD
 	folio_out = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+	folio_out = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!folio_out)
 		return -ENOMEM;
 
@@ -346,7 +381,11 @@ int lzo_compress_bio(struct list_head *ws, struct compressed_bio *cb)
 
 	/* Store the size of all chunks of compressed data */
 	sizes_ptr = kmap_local_folio(bio_first_folio_all(bio), 0);
+<<<<<<< HEAD
 	put_unaligned_le32(total_out, sizes_ptr);
+=======
+	write_compress_length(sizes_ptr, total_out);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kunmap_local(sizes_ptr);
 out:
 	/*
@@ -415,7 +454,10 @@ int lzo_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 	struct workspace *workspace = list_entry(ws, struct workspace, list);
 	struct btrfs_fs_info *fs_info = cb->bbio.inode->root->fs_info;
 	const u32 sectorsize = fs_info->sectorsize;
+<<<<<<< HEAD
 	const u32 compressed_len = bio_get_size(&cb->bbio.bio);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio_iter fi;
 	char *kaddr;
 	int ret;
@@ -434,7 +476,11 @@ int lzo_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 		return -EINVAL;
 	ASSERT(folio_size(fi.folio) == btrfs_min_folio_size(fs_info));
 	kaddr = kmap_local_folio(fi.folio, 0);
+<<<<<<< HEAD
 	len_in = get_unaligned_le32(kaddr);
+=======
+	len_in = read_compress_length(kaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kunmap_local(kaddr);
 	cur_in += LZO_LEN;
 
@@ -445,14 +491,23 @@ int lzo_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 	 * and all sectors should be used.
 	 * If this happens, it means the compressed extent is corrupted.
 	 */
+<<<<<<< HEAD
 	if (unlikely(len_in > min_t(size_t, BTRFS_MAX_COMPRESSED, compressed_len) ||
 		     round_up(len_in, sectorsize) < compressed_len)) {
+=======
+	if (unlikely(len_in > min_t(size_t, BTRFS_MAX_COMPRESSED, cb->compressed_len) ||
+		     round_up(len_in, sectorsize) < cb->compressed_len)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct btrfs_inode *inode = cb->bbio.inode;
 
 		btrfs_err(fs_info,
 "lzo header invalid, root %llu inode %llu offset %llu lzo len %u compressed len %u",
 			  btrfs_root_id(inode->root), btrfs_ino(inode),
+<<<<<<< HEAD
 			  cb->start, len_in, compressed_len);
+=======
+			  cb->start, len_in, cb->compressed_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EUCLEAN;
 	}
 
@@ -473,7 +528,11 @@ int lzo_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
 		cur_folio = get_current_folio(cb, &fi, &cur_folio_index, cur_in);
 		ASSERT(cur_folio);
 		kaddr = kmap_local_folio(cur_folio, 0);
+<<<<<<< HEAD
 		seg_len = get_unaligned_le32(kaddr + offset_in_folio(cur_folio, cur_in));
+=======
+		seg_len = read_compress_length(kaddr + offset_in_folio(cur_folio, cur_in));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kunmap_local(kaddr);
 		cur_in += LZO_LEN;
 
@@ -544,12 +603,20 @@ int lzo_decompress(struct list_head *ws, const u8 *data_in,
 	if (unlikely(srclen < LZO_LEN || srclen > max_segment_len + LZO_LEN * 2))
 		return -EUCLEAN;
 
+<<<<<<< HEAD
 	in_len = get_unaligned_le32(data_in);
+=======
+	in_len = read_compress_length(data_in);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(in_len != srclen))
 		return -EUCLEAN;
 	data_in += LZO_LEN;
 
+<<<<<<< HEAD
 	in_len = get_unaligned_le32(data_in);
+=======
+	in_len = read_compress_length(data_in);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(in_len != srclen - LZO_LEN * 2))
 		return -EUCLEAN;
 	data_in += LZO_LEN;

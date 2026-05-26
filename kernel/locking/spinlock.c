@@ -64,9 +64,14 @@ EXPORT_PER_CPU_SYMBOL(__mmiowb_state);
  * time (making _this_ CPU preemptible if possible), and we also signal
  * towards that other CPU that it should break the lock ASAP.
  */
+<<<<<<< HEAD
 #define BUILD_LOCK_OPS(op, locktype, lock_ctx_op)			\
 static void __lockfunc __raw_##op##_lock(locktype##_t *lock)		\
 	lock_ctx_op(lock)						\
+=======
+#define BUILD_LOCK_OPS(op, locktype)					\
+static void __lockfunc __raw_##op##_lock(locktype##_t *lock)		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {									\
 	for (;;) {							\
 		preempt_disable();					\
@@ -79,7 +84,10 @@ static void __lockfunc __raw_##op##_lock(locktype##_t *lock)		\
 }									\
 									\
 static unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock) \
+<<<<<<< HEAD
 	lock_ctx_op(lock)						\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {									\
 	unsigned long flags;						\
 									\
@@ -98,13 +106,19 @@ static unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock) \
 }									\
 									\
 static void __lockfunc __raw_##op##_lock_irq(locktype##_t *lock)	\
+<<<<<<< HEAD
 	lock_ctx_op(lock)						\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {									\
 	_raw_##op##_lock_irqsave(lock);					\
 }									\
 									\
 static void __lockfunc __raw_##op##_lock_bh(locktype##_t *lock)		\
+<<<<<<< HEAD
 	lock_ctx_op(lock)						\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {									\
 	unsigned long flags;						\
 									\
@@ -127,11 +141,19 @@ static void __lockfunc __raw_##op##_lock_bh(locktype##_t *lock)		\
  *         __[spin|read|write]_lock_irqsave()
  *         __[spin|read|write]_lock_bh()
  */
+<<<<<<< HEAD
 BUILD_LOCK_OPS(spin, raw_spinlock, __acquires);
 
 #ifndef CONFIG_PREEMPT_RT
 BUILD_LOCK_OPS(read, rwlock, __acquires_shared);
 BUILD_LOCK_OPS(write, rwlock, __acquires);
+=======
+BUILD_LOCK_OPS(spin, raw_spinlock);
+
+#ifndef CONFIG_PREEMPT_RT
+BUILD_LOCK_OPS(read, rwlock);
+BUILD_LOCK_OPS(write, rwlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif

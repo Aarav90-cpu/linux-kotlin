@@ -188,6 +188,7 @@ struct drm_colorop_state {
 };
 
 /**
+<<<<<<< HEAD
  * struct drm_colorop_funcs - driver colorop control functions
  */
 struct drm_colorop_funcs {
@@ -201,6 +202,8 @@ struct drm_colorop_funcs {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct drm_colorop - DRM color operation control structure
  *
  * A colorop represents one color operation. They can be chained via
@@ -375,8 +378,11 @@ struct drm_colorop {
 	 */
 	struct drm_property *next_property;
 
+<<<<<<< HEAD
 	/** @funcs: colorop control functions */
 	const struct drm_colorop_funcs *funcs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define obj_to_colorop(x) container_of(x, struct drm_colorop, base)
@@ -405,6 +411,7 @@ void drm_colorop_pipeline_destroy(struct drm_device *dev);
 void drm_colorop_cleanup(struct drm_colorop *colorop);
 
 int drm_plane_colorop_curve_1d_init(struct drm_device *dev, struct drm_colorop *colorop,
+<<<<<<< HEAD
 				    struct drm_plane *plane, const struct drm_colorop_funcs *funcs,
 				    u64 supported_tfs, uint32_t flags);
 int drm_plane_colorop_curve_1d_lut_init(struct drm_device *dev, struct drm_colorop *colorop,
@@ -421,6 +428,19 @@ int drm_plane_colorop_mult_init(struct drm_device *dev, struct drm_colorop *colo
 				uint32_t flags);
 int drm_plane_colorop_3dlut_init(struct drm_device *dev, struct drm_colorop *colorop,
 				 struct drm_plane *plane, const struct drm_colorop_funcs *funcs,
+=======
+				    struct drm_plane *plane, u64 supported_tfs, uint32_t flags);
+int drm_plane_colorop_curve_1d_lut_init(struct drm_device *dev, struct drm_colorop *colorop,
+					struct drm_plane *plane, uint32_t lut_size,
+					enum drm_colorop_lut1d_interpolation_type interpolation,
+					uint32_t flags);
+int drm_plane_colorop_ctm_3x4_init(struct drm_device *dev, struct drm_colorop *colorop,
+				   struct drm_plane *plane, uint32_t flags);
+int drm_plane_colorop_mult_init(struct drm_device *dev, struct drm_colorop *colorop,
+				struct drm_plane *plane, uint32_t flags);
+int drm_plane_colorop_3dlut_init(struct drm_device *dev, struct drm_colorop *colorop,
+				 struct drm_plane *plane,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 uint32_t lut_size,
 				 enum drm_colorop_lut3d_interpolation_type interpolation,
 				 uint32_t flags);
@@ -440,8 +460,11 @@ void drm_colorop_atomic_destroy_state(struct drm_colorop *colorop,
  */
 void drm_colorop_reset(struct drm_colorop *colorop);
 
+<<<<<<< HEAD
 void drm_colorop_destroy(struct drm_colorop *colorop);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * drm_colorop_index - find the index of a registered colorop
  * @colorop: colorop to find index for

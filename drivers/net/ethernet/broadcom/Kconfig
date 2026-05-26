@@ -96,7 +96,11 @@ config BNX2
 
 config CNIC
 	tristate "QLogic CNIC support"
+<<<<<<< HEAD
 	depends on PCI
+=======
+	depends on PCI && (IPV6 || IPV6=n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select BNX2
 	select UIO
 	help
@@ -272,7 +276,10 @@ config BCMASP
 	depends on OF
 	select PHYLIB
 	select MDIO_BCM_UNIMAC
+<<<<<<< HEAD
 	select PAGE_POOL
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This configuration enables the Broadcom ASP 2.0 Ethernet controller
 	  driver which is present in Broadcom STB SoCs such as 72165.

@@ -345,6 +345,7 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
 	ASSERT_EQ(close(session_fd), 0);
 }
 
+<<<<<<< HEAD
 /*
  * Test Case: Prevent Double Preservation
  *
@@ -386,4 +387,6 @@ TEST_F(liveupdate_device, prevent_double_preservation)
 	ASSERT_EQ(close(session_fd2), 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TEST_HARNESS_MAIN

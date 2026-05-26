@@ -11,6 +11,11 @@
  *
  * - BPF-side queueing using PIDs.
  * - Sleepable per-task storage allocation using ops.prep_enable().
+<<<<<<< HEAD
+=======
+ * - Using ops.cpu_release() to handle a higher priority scheduling class taking
+ *   the CPU away.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * - Core-sched support.
  *
  * This scheduler is primarily for demonstration and testing of sched_ext
@@ -24,11 +29,16 @@
 
 enum consts {
 	ONE_SEC_IN_NS		= 1000000000,
+<<<<<<< HEAD
 	ONE_MSEC_IN_NS		= 1000000,
 	LOWPRI_INTV_NS		= 10 * ONE_MSEC_IN_NS,
 	SHARED_DSQ		= 0,
 	HIGHPRI_DSQ		= 1,
 	LOWPRI_DSQ		= 2,
+=======
+	SHARED_DSQ		= 0,
+	HIGHPRI_DSQ		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HIGHPRI_WEIGHT		= 8668,		/* this is what -20 maps to */
 };
 
@@ -42,18 +52,26 @@ const volatile u32 dsp_batch;
 const volatile bool highpri_boosting;
 const volatile bool print_dsqs_and_events;
 const volatile bool print_msgs;
+<<<<<<< HEAD
 const volatile u64 sub_cgroup_id;
 const volatile s32 disallow_tgid;
 const volatile bool suppress_dump;
 const volatile bool always_enq_immed;
 const volatile u32 immed_stress_nth;
+=======
+const volatile s32 disallow_tgid;
+const volatile bool suppress_dump;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u64 nr_highpri_queued;
 u32 test_error_cnt;
 
+<<<<<<< HEAD
 #define MAX_SUB_SCHEDS		8
 u64 sub_sched_cgroup_ids[MAX_SUB_SCHEDS];
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 UEI_DEFINE(uei);
 
 struct qmap {
@@ -134,7 +152,11 @@ struct {
 } cpu_ctx_stor SEC(".maps");
 
 /* Statistics */
+<<<<<<< HEAD
 u64 nr_enqueued, nr_dispatched, nr_reenqueued, nr_reenqueued_cpu0, nr_dequeued, nr_ddsp_from_enq;
+=======
+u64 nr_enqueued, nr_dispatched, nr_reenqueued, nr_dequeued, nr_ddsp_from_enq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u64 nr_core_sched_execed;
 u64 nr_expedited_local, nr_expedited_remote, nr_expedited_lost, nr_expedited_from_timer;
 u32 cpuperf_min, cpuperf_avg, cpuperf_max;
@@ -144,10 +166,15 @@ static s32 pick_direct_dispatch_cpu(struct task_struct *p, s32 prev_cpu)
 {
 	s32 cpu;
 
+<<<<<<< HEAD
 	if (!always_enq_immed && p->nr_cpus_allowed == 1)
 		return prev_cpu;
 
 	if (scx_bpf_test_and_clear_cpu_idle(prev_cpu))
+=======
+	if (p->nr_cpus_allowed == 1 ||
+	    scx_bpf_test_and_clear_cpu_idle(prev_cpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return prev_cpu;
 
 	cpu = scx_bpf_pick_idle_cpu(p->cpus_ptr, 0);
@@ -159,7 +186,17 @@ static s32 pick_direct_dispatch_cpu(struct task_struct *p, s32 prev_cpu)
 
 static struct task_ctx *lookup_task_ctx(struct task_struct *p)
 {
+<<<<<<< HEAD
 	return bpf_task_storage_get(&task_ctx_stor, p, 0, 0);
+=======
+	struct task_ctx *tctx;
+
+	if (!(tctx = bpf_task_storage_get(&task_ctx_stor, p, 0, 0))) {
+		scx_bpf_error("task_ctx lookup failed");
+		return NULL;
+	}
+	return tctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 s32 BPF_STRUCT_OPS(qmap_select_cpu, struct task_struct *p,
@@ -169,10 +206,14 @@ s32 BPF_STRUCT_OPS(qmap_select_cpu, struct task_struct *p,
 	s32 cpu;
 
 	if (!(tctx = lookup_task_ctx(p)))
+<<<<<<< HEAD
 		return prev_cpu;
 
 	if (p->scx.weight < 2 && !(p->flags & PF_KTHREAD))
 		return prev_cpu;
+=======
+		return -ESRCH;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cpu = pick_direct_dispatch_cpu(p, prev_cpu);
 
@@ -208,11 +249,16 @@ void BPF_STRUCT_OPS(qmap_enqueue, struct task_struct *p, u64 enq_flags)
 	void *ring;
 	s32 cpu;
 
+<<<<<<< HEAD
 	if (enq_flags & SCX_ENQ_REENQ) {
 		__sync_fetch_and_add(&nr_reenqueued, 1);
 		if (scx_bpf_task_cpu(p) == 0)
 			__sync_fetch_and_add(&nr_reenqueued_cpu0, 1);
 	}
+=======
+	if (enq_flags & SCX_ENQ_REENQ)
+		__sync_fetch_and_add(&nr_reenqueued, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (p->flags & PF_KTHREAD) {
 		if (stall_kernel_nth && !(++kernel_cnt % stall_kernel_nth))
@@ -235,6 +281,7 @@ void BPF_STRUCT_OPS(qmap_enqueue, struct task_struct *p, u64 enq_flags)
 	tctx->core_sched_seq = core_sched_tail_seqs[idx]++;
 
 	/*
+<<<<<<< HEAD
 	 * IMMED stress testing: Every immed_stress_nth'th enqueue, dispatch
 	 * directly to prev_cpu's local DSQ even when busy to force dsq->nr > 1
 	 * and exercise the kernel IMMED reenqueue trigger paths.
@@ -251,6 +298,8 @@ void BPF_STRUCT_OPS(qmap_enqueue, struct task_struct *p, u64 enq_flags)
 	}
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * If qmap_select_cpu() is telling us to or this is the last runnable
 	 * task on the CPU, enqueue locally.
 	 */
@@ -260,6 +309,7 @@ void BPF_STRUCT_OPS(qmap_enqueue, struct task_struct *p, u64 enq_flags)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* see lowpri_timerfn() */
 	if (__COMPAT_has_generic_reenq() &&
 	    p->scx.weight < 2 && !(p->flags & PF_KTHREAD) && !(enq_flags & SCX_ENQ_REENQ)) {
@@ -267,6 +317,8 @@ void BPF_STRUCT_OPS(qmap_enqueue, struct task_struct *p, u64 enq_flags)
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* if select_cpu() wasn't called, try direct dispatch */
 	if (!__COMPAT_is_enq_cpu_selected(enq_flags) &&
 	    (cpu = pick_direct_dispatch_cpu(p, scx_bpf_task_cpu(p))) >= 0) {
@@ -407,7 +459,11 @@ void BPF_STRUCT_OPS(qmap_dispatch, s32 cpu, struct task_struct *prev)
 	if (dispatch_highpri(false))
 		return;
 
+<<<<<<< HEAD
 	if (!nr_highpri_queued && scx_bpf_dsq_move_to_local(SHARED_DSQ, 0))
+=======
+	if (!nr_highpri_queued && scx_bpf_dsq_move_to_local(SHARED_DSQ))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (dsp_inf_loop_after && nr_dispatched > dsp_inf_loop_after) {
@@ -465,6 +521,7 @@ void BPF_STRUCT_OPS(qmap_dispatch, s32 cpu, struct task_struct *prev)
 			__sync_fetch_and_add(&nr_dispatched, 1);
 
 			scx_bpf_dsq_insert(p, SHARED_DSQ, slice_ns, 0);
+<<<<<<< HEAD
 
 			/*
 			 * scx_qmap uses a global BPF queue that any CPU's
@@ -505,6 +562,8 @@ void BPF_STRUCT_OPS(qmap_dispatch, s32 cpu, struct task_struct *prev)
 			if (!bpf_cpumask_test_cpu(cpu, p->cpus_ptr))
 				scx_bpf_kick_cpu(scx_bpf_task_cpu(p), 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bpf_task_release(p);
 
 			batch--;
@@ -512,7 +571,11 @@ void BPF_STRUCT_OPS(qmap_dispatch, s32 cpu, struct task_struct *prev)
 			if (!batch || !scx_bpf_dispatch_nr_slots()) {
 				if (dispatch_highpri(false))
 					return;
+<<<<<<< HEAD
 				scx_bpf_dsq_move_to_local(SHARED_DSQ, 0);
+=======
+				scx_bpf_dsq_move_to_local(SHARED_DSQ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return;
 			}
 			if (!cpuc->dsp_cnt)
@@ -522,21 +585,34 @@ void BPF_STRUCT_OPS(qmap_dispatch, s32 cpu, struct task_struct *prev)
 		cpuc->dsp_cnt = 0;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < MAX_SUB_SCHEDS; i++) {
 		if (sub_sched_cgroup_ids[i] &&
 		    scx_bpf_sub_dispatch(sub_sched_cgroup_ids[i]))
 			return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * No other tasks. @prev will keep running. Update its core_sched_seq as
 	 * if the task were enqueued and dispatched immediately.
 	 */
 	if (prev) {
 		tctx = bpf_task_storage_get(&task_ctx_stor, prev, 0, 0);
+<<<<<<< HEAD
 		if (tctx)
 			tctx->core_sched_seq =
 				core_sched_tail_seqs[weight_to_idx(prev->scx.weight)]++;
+=======
+		if (!tctx) {
+			scx_bpf_error("task_ctx lookup failed");
+			return;
+		}
+
+		tctx->core_sched_seq =
+			core_sched_tail_seqs[weight_to_idx(prev->scx.weight)]++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -574,8 +650,15 @@ static s64 task_qdist(struct task_struct *p)
 	s64 qdist;
 
 	tctx = bpf_task_storage_get(&task_ctx_stor, p, 0, 0);
+<<<<<<< HEAD
 	if (!tctx)
 		return 0;
+=======
+	if (!tctx) {
+		scx_bpf_error("task_ctx lookup failed");
+		return 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	qdist = tctx->core_sched_seq - core_sched_head_seqs[idx];
 
@@ -604,11 +687,44 @@ bool BPF_STRUCT_OPS(qmap_core_sched_before,
 	return task_qdist(a) > task_qdist(b);
 }
 
+<<<<<<< HEAD
 /*
  * sched_switch tracepoint and cpu_release handlers are no longer needed.
  * With SCX_OPS_ALWAYS_ENQ_IMMED, wakeup_preempt_scx() reenqueues IMMED
  * tasks when a higher-priority scheduling class takes the CPU.
  */
+=======
+SEC("tp_btf/sched_switch")
+int BPF_PROG(qmap_sched_switch, bool preempt, struct task_struct *prev,
+	     struct task_struct *next, unsigned long prev_state)
+{
+	if (!__COMPAT_scx_bpf_reenqueue_local_from_anywhere())
+		return 0;
+
+	/*
+	 * If @cpu is taken by a higher priority scheduling class, it is no
+	 * longer available for executing sched_ext tasks. As we don't want the
+	 * tasks in @cpu's local dsq to sit there until @cpu becomes available
+	 * again, re-enqueue them into the global dsq. See %SCX_ENQ_REENQ
+	 * handling in qmap_enqueue().
+	 */
+	switch (next->policy) {
+	case 1: /* SCHED_FIFO */
+	case 2: /* SCHED_RR */
+	case 6: /* SCHED_DEADLINE */
+		scx_bpf_reenqueue_local();
+	}
+
+	return 0;
+}
+
+void BPF_STRUCT_OPS(qmap_cpu_release, s32 cpu, struct scx_cpu_release_args *args)
+{
+	/* see qmap_sched_switch() to learn how to do this on newer kernels */
+	if (!__COMPAT_scx_bpf_reenqueue_local_from_anywhere())
+		scx_bpf_reenqueue_local();
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 s32 BPF_STRUCT_OPS(qmap_init_task, struct task_struct *p,
 		   struct scx_init_task_args *args)
@@ -903,6 +1019,7 @@ static int monitor_timerfn(void *map, int *key, struct bpf_timer *timer)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct lowpri_timer {
 	struct bpf_timer timer;
 };
@@ -925,13 +1042,19 @@ static int lowpri_timerfn(void *map, int *key, struct bpf_timer *timer)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 s32 BPF_STRUCT_OPS_SLEEPABLE(qmap_init)
 {
 	u32 key = 0;
 	struct bpf_timer *timer;
 	s32 ret;
 
+<<<<<<< HEAD
 	if (print_msgs && !sub_cgroup_id)
+=======
+	if (print_msgs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		print_cpus();
 
 	ret = scx_bpf_create_dsq(SHARED_DSQ, -1);
@@ -946,6 +1069,7 @@ s32 BPF_STRUCT_OPS_SLEEPABLE(qmap_init)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = scx_bpf_create_dsq(LOWPRI_DSQ, -1);
 	if (ret)
 		return ret;
@@ -972,6 +1096,16 @@ s32 BPF_STRUCT_OPS_SLEEPABLE(qmap_init)
 	}
 
 	return 0;
+=======
+	timer = bpf_map_lookup_elem(&monitor_timer, &key);
+	if (!timer)
+		return -ESRCH;
+
+	bpf_timer_init(timer, &monitor_timer, CLOCK_MONOTONIC);
+	bpf_timer_set_callback(timer, monitor_timerfn);
+
+	return bpf_timer_start(timer, ONE_SEC_IN_NS, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void BPF_STRUCT_OPS(qmap_exit, struct scx_exit_info *ei)
@@ -979,6 +1113,7 @@ void BPF_STRUCT_OPS(qmap_exit, struct scx_exit_info *ei)
 	UEI_RECORD(uei, ei);
 }
 
+<<<<<<< HEAD
 s32 BPF_STRUCT_OPS(qmap_sub_attach, struct scx_sub_attach_args *args)
 {
 	s32 i;
@@ -1009,6 +1144,8 @@ void BPF_STRUCT_OPS(qmap_sub_detach, struct scx_sub_detach_args *args)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SCX_OPS_DEFINE(qmap_ops,
 	       .select_cpu		= (void *)qmap_select_cpu,
 	       .enqueue			= (void *)qmap_enqueue,
@@ -1016,6 +1153,10 @@ SCX_OPS_DEFINE(qmap_ops,
 	       .dispatch		= (void *)qmap_dispatch,
 	       .tick			= (void *)qmap_tick,
 	       .core_sched_before	= (void *)qmap_core_sched_before,
+<<<<<<< HEAD
+=======
+	       .cpu_release		= (void *)qmap_cpu_release,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       .init_task		= (void *)qmap_init_task,
 	       .dump			= (void *)qmap_dump,
 	       .dump_cpu		= (void *)qmap_dump_cpu,
@@ -1023,8 +1164,11 @@ SCX_OPS_DEFINE(qmap_ops,
 	       .cgroup_init		= (void *)qmap_cgroup_init,
 	       .cgroup_set_weight	= (void *)qmap_cgroup_set_weight,
 	       .cgroup_set_bandwidth	= (void *)qmap_cgroup_set_bandwidth,
+<<<<<<< HEAD
 	       .sub_attach		= (void *)qmap_sub_attach,
 	       .sub_detach		= (void *)qmap_sub_detach,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       .cpu_online		= (void *)qmap_cpu_online,
 	       .cpu_offline		= (void *)qmap_cpu_offline,
 	       .init			= (void *)qmap_init,

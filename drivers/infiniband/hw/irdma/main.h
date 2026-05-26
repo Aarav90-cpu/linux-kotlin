@@ -37,8 +37,13 @@
 #include <rdma/rdma_cm.h>
 #include <rdma/iw_cm.h>
 #include <rdma/ib_user_verbs.h>
+<<<<<<< HEAD
 #include <rdma/ib_cache.h>
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+#include <rdma/ib_cache.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/uverbs_ioctl.h>
 #include "osdep.h"
 #include "defs.h"

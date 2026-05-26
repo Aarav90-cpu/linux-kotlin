@@ -72,8 +72,13 @@ struct armada38x_rtc {
 	spinlock_t	    lock;
 	int		    irq;
 	bool		    initialized;
+<<<<<<< HEAD
 	const struct armada38x_rtc_data *data;
 	struct value_to_freq val_to_freq[];
+=======
+	struct value_to_freq *val_to_freq;
+	const struct armada38x_rtc_data *data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define ALARM1	0
@@ -490,13 +495,25 @@ static __init int armada38x_rtc_probe(struct platform_device *pdev)
 {
 	struct armada38x_rtc *rtc;
 
+<<<<<<< HEAD
 	rtc = devm_kzalloc(&pdev->dev, struct_size(rtc, val_to_freq, SAMPLE_NR),
+=======
+	rtc = devm_kzalloc(&pdev->dev, sizeof(struct armada38x_rtc),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    GFP_KERNEL);
 	if (!rtc)
 		return -ENOMEM;
 
 	rtc->data = of_device_get_match_data(&pdev->dev);
 
+<<<<<<< HEAD
+=======
+	rtc->val_to_freq = devm_kcalloc(&pdev->dev, SAMPLE_NR,
+				sizeof(struct value_to_freq), GFP_KERNEL);
+	if (!rtc->val_to_freq)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&rtc->lock);
 
 	rtc->regs = devm_platform_ioremap_resource_byname(pdev, "rtc");

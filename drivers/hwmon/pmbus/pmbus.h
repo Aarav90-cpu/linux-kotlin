@@ -10,7 +10,10 @@
 #define PMBUS_H
 
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regulator/driver.h>
 
 /*
@@ -417,7 +420,11 @@ enum pmbus_sensor_classes {
 #define PMBUS_PAGE_VIRTUAL	BIT(31)	/* Page is virtual */
 
 enum pmbus_data_format { linear = 0, ieee754, direct, vid };
+<<<<<<< HEAD
 enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv, nvidia195mv };
+=======
+enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* PMBus revision identifiers */
 #define PMBUS_REV_10 0x00	/* PMBus revision 1.0 */
@@ -425,10 +432,13 @@ enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv, nvidia195mv };
 #define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */
 #define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */
 
+<<<<<<< HEAD
 /* Operation type flags for pmbus_update_ts */
 #define PMBUS_OP_WRITE		BIT(0)
 #define PMBUS_OP_PAGE_CHANGE	BIT(1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pmbus_driver_info {
 	int pages;		/* Total number of pages */
 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */
@@ -546,8 +556,11 @@ int pmbus_regulator_init_cb(struct regulator_dev *rdev,
 
 void pmbus_clear_cache(struct i2c_client *client);
 void pmbus_set_update(struct i2c_client *client, u8 reg, bool update);
+<<<<<<< HEAD
 void pmbus_wait(struct i2c_client *client);
 void pmbus_update_ts(struct i2c_client *client, int op);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int pmbus_set_page(struct i2c_client *client, int page, int phase);
 int pmbus_read_word_data(struct i2c_client *client, int page, int phase,
 			 u8 reg);
@@ -570,11 +583,15 @@ int pmbus_get_fan_rate_device(struct i2c_client *client, int page, int id,
 int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
 			      enum pmbus_fan_mode mode);
 int pmbus_lock_interruptible(struct i2c_client *client);
+<<<<<<< HEAD
 void pmbus_lock(struct i2c_client *client);
 void pmbus_unlock(struct i2c_client *client);
 
 DEFINE_GUARD(pmbus_lock, struct i2c_client *, pmbus_lock(_T), pmbus_unlock(_T))
 
+=======
+void pmbus_unlock(struct i2c_client *client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int pmbus_update_fan(struct i2c_client *client, int page, int id,
 		     u8 config, u8 mask, u16 command);
 struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client);

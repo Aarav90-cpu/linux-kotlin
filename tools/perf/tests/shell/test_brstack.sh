@@ -38,6 +38,7 @@ is_arm64() {
 	[ "$(uname -m)" = "aarch64" ];
 }
 
+<<<<<<< HEAD
 has_kaslr_bug() {
 	[ "$(uname -m)" != "aarch64" ];
 }
@@ -45,6 +46,11 @@ has_kaslr_bug() {
 check_branches() {
 	if ! tr -s ' ' '\n' < "$TMPDIR/perf.script" | grep -E -m1 -q "$1"; then
 		echo "ERROR: Branches missing $1"
+=======
+check_branches() {
+	if ! tr -s ' ' '\n' < "$TMPDIR/perf.script" | grep -E -m1 -q "$1"; then
+		echo "Branches missing $1"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err=1
 	fi
 }
@@ -52,8 +58,11 @@ check_branches() {
 test_user_branches() {
 	echo "Testing user branch stack sampling"
 
+<<<<<<< HEAD
 	start_err=$err
 	err=0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	perf record -o "$TMPDIR/perf.data" --branch-filter any,save_type,u -- ${TESTPROG} > "$TMPDIR/record.txt" 2>&1
 	perf script -i "$TMPDIR/perf.data" --fields brstacksym > "$TMPDIR/perf.script"
 
@@ -79,6 +88,7 @@ test_user_branches() {
 	perf script -i "$TMPDIR/perf.data" --fields brstack | \
 		tr ' ' '\n' > "$TMPDIR/perf.script"
 
+<<<<<<< HEAD
 	# There should be no kernel addresses in the target with the u option.
 	local regex="0x[89a-f][0-9a-f]{15}"
 	if has_kaslr_bug; then
@@ -90,20 +100,30 @@ test_user_branches() {
 	fi
 	if grep -q -E -m1 "$regex" $TMPDIR/perf.script; then
 		echo "Testing user branch stack sampling [Failed kernel address found in user mode]"
+=======
+	# There should be no kernel addresses with the u option, in either
+	# source or target addresses.
+	if grep -E -m1 "0x[89a-f][0-9a-f]{15}" $TMPDIR/perf.script; then
+		echo "ERROR: Kernel address found in user mode"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err=1
 	fi
 	# some branch types are still not being tested:
 	# IND COND_CALL COND_RET SYSRET SERROR NO_TX
+<<<<<<< HEAD
 	if [ $err -eq 0 ]; then
 		echo "Testing user branch stack sampling [Passed]"
 		err=$start_err
 	else
 		echo "Testing user branch stack sampling [Failed]"
 	fi
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 test_trap_eret_branches() {
 	echo "Testing trap & eret branches"
+<<<<<<< HEAD
 
 	if ! is_arm64; then
 		echo "Testing trap & eret branches [Skipped not arm64]"
@@ -124,10 +144,24 @@ test_trap_eret_branches() {
 		err=$start_err
 	else
 		echo "Testing trap & eret branches [Failed]"
+=======
+	if ! is_arm64; then
+		echo "skip: not arm64"
+	else
+		perf record -o $TMPDIR/perf.data --branch-filter any,save_type,u,k -- \
+			perf test -w traploop 1000
+		perf script -i $TMPDIR/perf.data --fields brstacksym | \
+			tr ' ' '\n' > $TMPDIR/perf.script
+
+		# BRBINF<n>.TYPE == TRAP are mapped to PERF_BR_IRQ by the BRBE driver
+		check_branches "^trap_bench\+[^ ]+/[^ ]/IRQ/"
+		check_branches "^[^ ]+/trap_bench\+[^ ]+/ERET/"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi
 }
 
 test_kernel_branches() {
+<<<<<<< HEAD
 	echo "Testing kernel branch sampling"
 
 	if ! perf record --branch-filter any,k -o- -- true > "$TMPDIR/record.txt" 2>&1; then
@@ -161,6 +195,34 @@ test_kernel_branches() {
 		err=$start_err
 	else
 		echo "Testing kernel branch sampling [Failed]"
+=======
+	echo "Testing that k option only includes kernel source addresses"
+
+	if ! perf record --branch-filter any,k -o- -- true > /dev/null; then
+		echo "skip: not enough privileges"
+	else
+		perf record -o $TMPDIR/perf.data --branch-filter any,k -- \
+			perf bench syscall basic --loop 1000
+		perf script -i $TMPDIR/perf.data --fields brstack | \
+			tr ' ' '\n' > $TMPDIR/perf.script
+
+		# Example of branch entries:
+		#       "0xffffffff93bda241/0xffffffff93bda20f/M/-/-/..."
+		# Source addresses come first and target address can be either
+		# userspace or kernel even with k option, as long as the source
+		# is in kernel.
+
+		#Look for source addresses with top bit set
+		if ! grep -E -m1 "^0x[89a-f][0-9a-f]{15}" $TMPDIR/perf.script; then
+			echo "ERROR: Kernel branches missing"
+			err=1
+		fi
+		# Look for no source addresses without top bit set
+		if grep -E -m1 "^0x[0-7][0-9a-f]{0,15}" $TMPDIR/perf.script; then
+			echo "ERROR: User branches found with kernel filter"
+			err=1
+		fi
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi
 }
 
@@ -171,15 +233,23 @@ test_filter() {
 	test_filter_expect=$2
 
 	echo "Testing branch stack filtering permutation ($test_filter_filter,$test_filter_expect)"
+<<<<<<< HEAD
 	perf record -o "$TMPDIR/perf.data" --branch-filter "$test_filter_filter,save_type,u" -- \
 		${TESTPROG}  > "$TMPDIR/record.txt" 2>&1
+=======
+	perf record -o "$TMPDIR/perf.data" --branch-filter "$test_filter_filter,save_type,u" -- ${TESTPROG}  > "$TMPDIR/record.txt" 2>&1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	perf script -i "$TMPDIR/perf.data" --fields brstack > "$TMPDIR/perf.script"
 
 	# fail if we find any branch type that doesn't match any of the expected ones
 	# also consider UNKNOWN branch types (-)
 	if [ ! -s "$TMPDIR/perf.script" ]
 	then
+<<<<<<< HEAD
 		echo "Testing branch stack filtering [Failed empty script output]"
+=======
+		echo "Empty script output"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err=1
 		return
 	fi
@@ -190,17 +260,25 @@ test_filter() {
 	  > "$TMPDIR/perf.script-filtered" || true
 	if [ -s "$TMPDIR/perf.script-filtered" ]
 	then
+<<<<<<< HEAD
 		echo "Testing branch stack filtering [Failed unexpected branch filter]"
+=======
+		echo "Unexpected branch filter in script output"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cat "$TMPDIR/perf.script"
 		err=1
 		return
 	fi
+<<<<<<< HEAD
 	echo "Testing branch stack filtering [Passed]"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 test_syscall() {
 	echo "Testing syscalls"
 	# skip if perf doesn't have enough privileges
+<<<<<<< HEAD
 	if ! perf record --branch-filter any,k -o- -- true > "$TMPDIR/record.txt" 2>&1; then
 		echo "Testing syscalls [Skipped: not enough privileges]"
 		return
@@ -220,6 +298,18 @@ test_syscall() {
 		err=$start_err
 	else
 		echo "Testing syscalls [Failed]"
+=======
+	if ! perf record --branch-filter any,k -o- -- true > /dev/null; then
+		echo "skip: not enough privileges"
+	else
+		perf record -o $TMPDIR/perf.data --branch-filter \
+			any_call,save_type,u,k -c 10000 -- \
+			perf bench syscall basic --loop 1000
+		perf script -i $TMPDIR/perf.data --fields brstacksym | \
+			tr ' ' '\n' > $TMPDIR/perf.script
+
+		check_branches "getppid[^ ]*/SYSCALL/"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi
 }
 set -e

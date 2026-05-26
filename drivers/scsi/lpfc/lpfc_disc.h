@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2013 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -137,8 +141,12 @@ struct lpfc_nodelist {
 	uint16_t	nlp_maxframe;		/* Max RCV frame size */
 	uint8_t		nlp_class_sup;		/* Supported Classes */
 	uint8_t         nlp_retry;		/* used for ELS retries */
+<<<<<<< HEAD
 	uint8_t         nlp_fcp_info;	        /* class info, bits 0-2 */
 #define NLP_FCP_CLASS_MASK 0x07			/* class info bitmask */
+=======
+	uint8_t         nlp_fcp_info;	        /* class info, bits 0-3 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NLP_FCP_2_DEVICE   0x10			/* FCP-2 device */
 	u8		nlp_nvme_info;	        /* NVME NSLER Support */
 	uint8_t		vmid_support;		/* destination VMID support */

@@ -196,7 +196,11 @@ static u64 read_imc_reg(struct skx_imc *imc, int chan, u32 offset, u8 width)
 	case 8:
 		return I10NM_GET_REG64(imc, chan, offset);
 	default:
+<<<<<<< HEAD
 		i10nm_printk(KERN_ERR, "Invalid read RRL 0x%x width %d\n", offset, width);
+=======
+		i10nm_printk(KERN_ERR, "Invalid readd RRL 0x%x width %d\n", offset, width);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 }
@@ -580,10 +584,13 @@ static bool i10nm_mc_decode_available(struct mce *mce)
 		if (bank < 13 || bank > 20)
 			return false;
 		break;
+<<<<<<< HEAD
 	case GNR:
 		if (bank < 13 || bank > 24)
 			return false;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return false;
 	}
@@ -641,6 +648,7 @@ static bool i10nm_mc_decode(struct decoded_addr *res)
 		res->rank         = GET_BITFIELD(m->misc, 57, 57);
 		res->dimm         = GET_BITFIELD(m->misc, 58, 58);
 		break;
+<<<<<<< HEAD
 	case GNR:
 		res->imc          = m->bank - 13;
 		res->channel      = 0;
@@ -651,6 +659,8 @@ static bool i10nm_mc_decode(struct decoded_addr *res)
 		res->rank         = GET_BITFIELD(m->misc, 55, 56);
 		res->dimm         = GET_BITFIELD(m->misc, 57, 57);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return false;
 	}

@@ -324,7 +324,11 @@ ERROR(node_name_chars, check_node_name_chars, NODECHARS);
 static void check_node_name_chars_strict(struct check *c, struct dt_info *dti,
 					 struct node *node)
 {
+<<<<<<< HEAD
 	size_t n = strspn(node->name, c->data);
+=======
+	int n = strspn(node->name, c->data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (n < node->basenamelen)
 		FAIL(c, dti, node, "Character '%c' not recommended in node name",

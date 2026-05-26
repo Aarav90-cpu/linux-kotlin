@@ -68,16 +68,28 @@ TRACE_EVENT(ipi_raise,
 	TP_ARGS(mask, reason),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__cpumask(target_cpus)
+=======
+		__bitmask(target_cpus, nr_cpumask_bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(const char *, reason)
 	),
 
 	TP_fast_assign(
+<<<<<<< HEAD
 		__assign_cpumask(target_cpus, cpumask_bits(mask));
 		__entry->reason = reason;
 	),
 
 	TP_printk("target_mask=%s (%s)", __get_cpumask(target_cpus), __entry->reason)
+=======
+		__assign_bitmask(target_cpus, cpumask_bits(mask), nr_cpumask_bits);
+		__entry->reason = reason;
+	),
+
+	TP_printk("target_mask=%s (%s)", __get_bitmask(target_cpus), __entry->reason)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DECLARE_EVENT_CLASS(ipi_handler,

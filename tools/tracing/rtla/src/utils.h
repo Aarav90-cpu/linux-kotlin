@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include <stdint.h>
+<<<<<<< HEAD
 #include <string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <time.h>
 #include <sched.h>
 #include <stdbool.h>
@@ -15,6 +18,7 @@
 #define MAX_NICE		20
 #define MIN_NICE		-19
 
+<<<<<<< HEAD
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
 #endif
@@ -37,6 +41,8 @@ static inline bool str_has_prefix(const char *str, const char *prefix)
 	return strncmp(str, prefix, strlen(prefix)) == 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define container_of(ptr, type, member)({			\
 	const typeof(((type *)0)->member) *__mptr = (ptr);	\
 	(type *)((char *)__mptr - offsetof(type, member)) ; })
@@ -85,6 +91,7 @@ struct sched_attr {
 };
 #endif /* SCHED_ATTR_SIZE_VER0 */
 
+<<<<<<< HEAD
 enum stack_format {
 	STACK_FORMAT_TRUNCATE,
 	STACK_FORMAT_SKIP,
@@ -94,14 +101,21 @@ enum stack_format {
 int parse_prio(char *arg, struct sched_attr *sched_param);
 int parse_cpu_set(char *cpu_list, cpu_set_t *set);
 int parse_stack_format(char *arg);
+=======
+int parse_prio(char *arg, struct sched_attr *sched_param);
+int parse_cpu_set(char *cpu_list, cpu_set_t *set);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __set_sched_attr(int pid, struct sched_attr *attr);
 int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr);
 int set_comm_cgroup(const char *comm_prefix, const char *cgroup);
 int set_pid_cgroup(pid_t pid, const char *cgroup);
 int set_cpu_dma_latency(int32_t latency);
+<<<<<<< HEAD
 void *calloc_fatal(size_t n, size_t size);
 void *reallocarray_fatal(void *p, size_t n, size_t size);
 char *strdup_fatal(const char *s);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef HAVE_LIBCPUPOWER_SUPPORT
 int save_cpu_idle_disable_state(unsigned int cpu);
 int restore_cpu_idle_disable_state(unsigned int cpu);

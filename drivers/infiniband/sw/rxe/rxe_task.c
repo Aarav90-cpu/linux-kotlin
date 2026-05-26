@@ -6,7 +6,11 @@
 
 #include "rxe.h"
 
+<<<<<<< HEAD
 struct workqueue_struct *rxe_wq;
+=======
+static struct workqueue_struct *rxe_wq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int rxe_alloc_wq(void)
 {

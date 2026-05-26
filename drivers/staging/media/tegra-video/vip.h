@@ -50,7 +50,11 @@ struct tegra_vip_soc {
 	const struct tegra_vip_ops *ops;
 };
 
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC) || defined(CONFIG_ARCH_TEGRA_3x_SOC)
+=======
+#if defined(CONFIG_ARCH_TEGRA_2x_SOC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct tegra_vip_soc tegra20_vip_soc;
 #endif
 

@@ -68,6 +68,7 @@ static unsigned int mangle_packet(struct sk_buff *skb, unsigned int protoff,
 }
 
 static int sip_sprintf_addr(const struct nf_conn *ct, char *buffer,
+<<<<<<< HEAD
 			    size_t size,
 			    const union nf_inet_addr *addr, bool delim)
 {
@@ -78,10 +79,22 @@ static int sip_sprintf_addr(const struct nf_conn *ct, char *buffer,
 			return scnprintf(buffer, size, "[%pI6c]", &addr->ip6);
 		else
 			return scnprintf(buffer, size, "%pI6c", &addr->ip6);
+=======
+			    const union nf_inet_addr *addr, bool delim)
+{
+	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+		return sprintf(buffer, "%pI4", &addr->ip);
+	else {
+		if (delim)
+			return sprintf(buffer, "[%pI6c]", &addr->ip6);
+		else
+			return sprintf(buffer, "%pI6c", &addr->ip6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 static int sip_sprintf_addr_port(const struct nf_conn *ct, char *buffer,
+<<<<<<< HEAD
 				 size_t size,
 				 const union nf_inet_addr *addr, u16 port)
 {
@@ -89,6 +102,14 @@ static int sip_sprintf_addr_port(const struct nf_conn *ct, char *buffer,
 		return scnprintf(buffer, size, "%pI4:%u", &addr->ip, port);
 	else
 		return scnprintf(buffer, size, "[%pI6c]:%u", &addr->ip6, port);
+=======
+				 const union nf_inet_addr *addr, u16 port)
+{
+	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+		return sprintf(buffer, "%pI4:%u", &addr->ip, port);
+	else
+		return sprintf(buffer, "[%pI6c]:%u", &addr->ip6, port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int map_addr(struct sk_buff *skb, unsigned int protoff,
@@ -121,7 +142,11 @@ static int map_addr(struct sk_buff *skb, unsigned int protoff,
 	if (nf_inet_addr_cmp(&newaddr, addr) && newport == port)
 		return 1;
 
+<<<<<<< HEAD
 	buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer), &newaddr, ntohs(newport));
+=======
+	buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, ntohs(newport));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
 			     matchoff, matchlen, buffer, buflen);
 }
@@ -214,7 +239,11 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
 					       &addr, true) > 0 &&
 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.src.u3) &&
 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.dst.u3)) {
+<<<<<<< HEAD
 			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+=======
+			buflen = sip_sprintf_addr(ct, buffer,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					&ct->tuplehash[!dir].tuple.dst.u3,
 					true);
 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
@@ -231,7 +260,11 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
 					       &addr, false) > 0 &&
 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.dst.u3) &&
 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.src.u3)) {
+<<<<<<< HEAD
 			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+=======
+			buflen = sip_sprintf_addr(ct, buffer,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					&ct->tuplehash[!dir].tuple.src.u3,
 					false);
 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
@@ -246,11 +279,18 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
 		if (ct_sip_parse_numerical_param(ct, *dptr, matchend, *datalen,
 						 "rport=", &poff, &plen,
 						 &n) > 0 &&
+<<<<<<< HEAD
 		    n >= 1024 && n <= 65535 &&
 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
 			buflen = scnprintf(buffer, sizeof(buffer), "%u", ntohs(p));
+=======
+		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
+		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
+			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
+			buflen = sprintf(buffer, "%u", ntohs(p));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
 					   poff, plen, buffer, buflen)) {
 				nf_ct_helper_log(skb, ct, "cannot mangle rport");
@@ -421,8 +461,12 @@ static unsigned int nf_nat_sip_expect(struct sk_buff *skb, unsigned int protoff,
 
 	if (!nf_inet_addr_cmp(&exp->tuple.dst.u3, &exp->saved_addr) ||
 	    exp->tuple.dst.u.udp.port != exp->saved_proto.udp.port) {
+<<<<<<< HEAD
 		buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer),
 					       &newaddr, port);
+=======
+		buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
 				   matchoff, matchlen, buffer, buflen)) {
 			nf_ct_helper_log(skb, ct, "cannot mangle packet");
@@ -442,8 +486,13 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
 {
 	enum ip_conntrack_info ctinfo;
 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
+<<<<<<< HEAD
 	char buffer[sizeof("4294967295")];
 	unsigned int matchoff, matchlen;
+=======
+	unsigned int matchoff, matchlen;
+	char buffer[sizeof("65536")];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int buflen, c_len;
 
 	/* Get actual SDP length */
@@ -458,7 +507,11 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
 			      &matchoff, &matchlen) <= 0)
 		return 0;
 
+<<<<<<< HEAD
 	buflen = scnprintf(buffer, sizeof(buffer), "%u", c_len);
+=======
+	buflen = sprintf(buffer, "%u", c_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
 			     matchoff, matchlen, buffer, buflen);
 }
@@ -495,7 +548,11 @@ static unsigned int nf_nat_sdp_addr(struct sk_buff *skb, unsigned int protoff,
 	char buffer[INET6_ADDRSTRLEN];
 	unsigned int buflen;
 
+<<<<<<< HEAD
 	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+=======
+	buflen = sip_sprintf_addr(ct, buffer, addr, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen,
 			      sdpoff, type, term, buffer, buflen))
 		return 0;
@@ -513,7 +570,11 @@ static unsigned int nf_nat_sdp_port(struct sk_buff *skb, unsigned int protoff,
 	char buffer[sizeof("nnnnn")];
 	unsigned int buflen;
 
+<<<<<<< HEAD
 	buflen = scnprintf(buffer, sizeof(buffer), "%u", port);
+=======
+	buflen = sprintf(buffer, "%u", port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
 			   matchoff, matchlen, buffer, buflen))
 		return 0;
@@ -533,7 +594,11 @@ static unsigned int nf_nat_sdp_session(struct sk_buff *skb, unsigned int protoff
 	unsigned int buflen;
 
 	/* Mangle session description owner and contact addresses */
+<<<<<<< HEAD
 	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+=======
+	buflen = sip_sprintf_addr(ct, buffer, addr, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen, sdpoff,
 			      SDP_HDR_OWNER, SDP_HDR_MEDIA, buffer, buflen))
 		return 0;

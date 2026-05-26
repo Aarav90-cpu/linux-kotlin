@@ -49,7 +49,10 @@
 #include <rdma/ib_addr.h>
 #include <rdma/ib_smi.h>
 #include <rdma/ib_user_verbs.h>
+<<<<<<< HEAD
 #include <rdma/uverbs_ioctl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "pvrdma.h"
 
@@ -253,9 +256,16 @@ int pvrdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *init_attr,
 			dev_dbg(&dev->pdev->dev,
 				"create queuepair from user space\n");
 
+<<<<<<< HEAD
 			ret = ib_copy_validate_udata_in(udata, ucmd, qp_addr);
 			if (ret)
 				goto err_qp;
+=======
+			if (ib_copy_from_udata(&ucmd, udata, sizeof(ucmd))) {
+				ret = -EFAULT;
+				goto err_qp;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* Userspace supports qpn and qp handles? */
 			if (dev->dsr_version >= PVRDMA_QPHANDLE_VERSION &&

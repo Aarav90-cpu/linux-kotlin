@@ -5204,17 +5204,23 @@ MODULE_DEVICE_TABLE(of, rt5677_of_match);
 static const struct acpi_device_id rt5677_acpi_match[] = {
 	{ "10EC5677", RT5677 },
 	{ "RT5677CE", RT5677 },
+<<<<<<< HEAD
 	{ "10EC5677", RT5677 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(acpi, rt5677_acpi_match);
 
+<<<<<<< HEAD
 static const struct i2c_device_id rt5677_i2c_id[] = {
 	{ "rt5677", RT5677 },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, rt5677_i2c_id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rt5677_read_device_properties(struct rt5677_priv *rt5677,
 		struct device *dev)
 {
@@ -5536,6 +5542,7 @@ static int rt5677_init_irq(struct i2c_client *i2c)
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct acpi_gpio_params rt5677_acpi_reset_gpios = {0, 0, true};
 static const struct acpi_gpio_params rt5677_acpi_ldo2_gpios = {1, 0, false};
 
@@ -5547,6 +5554,11 @@ static const struct acpi_gpio_mapping rt5677_acpi_gpios[] = {
 
 static int rt5677_i2c_probe(struct i2c_client *i2c)
 {
+=======
+static int rt5677_i2c_probe(struct i2c_client *i2c)
+{
+	struct device *dev = &i2c->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rt5677_priv *rt5677;
 	int ret;
 	unsigned int val;
@@ -5561,6 +5573,7 @@ static int rt5677_i2c_probe(struct i2c_client *i2c)
 	INIT_DELAYED_WORK(&rt5677->dsp_work, rt5677_dsp_work);
 	i2c_set_clientdata(i2c, rt5677);
 
+<<<<<<< HEAD
 	rt5677->type = (enum rt5677_type)(uintptr_t)i2c_get_match_data(i2c);
 	if (rt5677->type == 0)
 		return -EINVAL;
@@ -5568,6 +5581,12 @@ static int rt5677_i2c_probe(struct i2c_client *i2c)
 	if (devm_acpi_dev_add_driver_gpios(rt5677->dev, rt5677_acpi_gpios))
 		dev_warn(rt5677->dev, "Unable to add GPIO mapping table\n");
 
+=======
+	rt5677->type = (enum rt5677_type)(uintptr_t)device_get_match_data(dev);
+	if (rt5677->type == 0)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rt5677_read_device_properties(rt5677, &i2c->dev);
 
 	/* pow-ldo2 and reset are optional. The codec pins may be statically
@@ -5581,21 +5600,29 @@ static int rt5677_i2c_probe(struct i2c_client *i2c)
 		dev_err(&i2c->dev, "Failed to request POW_LDO2: %d\n", ret);
 		return ret;
 	}
+<<<<<<< HEAD
 
 	rt5677->reset_pin = devm_gpiod_get_optional(&i2c->dev,
 			"realtek,reset", GPIOD_OUT_HIGH);
 
+=======
+	rt5677->reset_pin = devm_gpiod_get_optional(&i2c->dev,
+			"realtek,reset", GPIOD_OUT_LOW);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(rt5677->reset_pin)) {
 		ret = PTR_ERR(rt5677->reset_pin);
 		dev_err(&i2c->dev, "Failed to request RESET: %d\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (rt5677->reset_pin) {
 		msleep(1);
 		gpiod_set_value_cansleep(rt5677->reset_pin, 0);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rt5677->pow_ldo2 || rt5677->reset_pin) {
 		/* Wait a while until I2C bus becomes available. The datasheet
 		 * does not specify the exact we should wait but startup
@@ -5621,6 +5648,7 @@ static int rt5677_i2c_probe(struct i2c_client *i2c)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = regmap_read(rt5677->regmap, RT5677_VENDOR_ID2, &val);
 	if (ret) {
 		dev_err(&i2c->dev,
@@ -5628,6 +5656,9 @@ static int rt5677_i2c_probe(struct i2c_client *i2c)
 		return -ENODEV;
 	}
 
+=======
+	regmap_read(rt5677->regmap, RT5677_VENDOR_ID2, &val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (val != RT5677_DEVICE_ID) {
 		dev_err(&i2c->dev,
 			"Device with ID register %#x is not rt5677\n", val);
@@ -5696,7 +5727,10 @@ static struct i2c_driver rt5677_i2c_driver = {
 		.of_match_table = rt5677_of_match,
 		.acpi_match_table = rt5677_acpi_match,
 	},
+<<<<<<< HEAD
 	.id_table = rt5677_i2c_id,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.probe    = rt5677_i2c_probe,
 	.remove   = rt5677_i2c_remove,
 };

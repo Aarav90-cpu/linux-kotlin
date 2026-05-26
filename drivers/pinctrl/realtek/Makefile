@@ -4,4 +4,7 @@ obj-$(CONFIG_PINCTRL_RTD)		+= pinctrl-rtd.o
 obj-$(CONFIG_PINCTRL_RTD1619B)		+= pinctrl-rtd1619b.o
 obj-$(CONFIG_PINCTRL_RTD1319D)		+= pinctrl-rtd1319d.o
 obj-$(CONFIG_PINCTRL_RTD1315E)		+= pinctrl-rtd1315e.o
+<<<<<<< HEAD
 obj-$(CONFIG_PINCTRL_RTD1625)		+= pinctrl-rtd1625.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

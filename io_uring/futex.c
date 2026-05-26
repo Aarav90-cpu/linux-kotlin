@@ -159,10 +159,15 @@ static void io_futex_wakev_fn(struct wake_q_head *wake_q, struct futex_q *q)
 	struct io_kiocb *req = q->wake_data;
 	struct io_futexv_data *ifd = req->async_data;
 
+<<<<<<< HEAD
 	if (!io_futexv_claim(ifd)) {
 		__futex_wake_mark(q);
 		return;
 	}
+=======
+	if (!io_futexv_claim(ifd))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!__futex_wake_mark(q)))
 		return;
 

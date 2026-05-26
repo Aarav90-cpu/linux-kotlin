@@ -52,6 +52,7 @@ struct st7735r_cfg {
 	unsigned int rgb:1;		/* RGB (vs. BGR) */
 };
 
+<<<<<<< HEAD
 struct st7735r_device {
 	struct mipi_dbi_dev dbidev;	/* Must be first for .release() */
 	const struct st7735r_cfg *cfg;
@@ -90,11 +91,29 @@ static void st7735r_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	struct drm_device *drm = crtc->dev;
 	struct st7735r_device *st7735r = to_st7735r_device(drm);
 	struct mipi_dbi_dev *dbidev = &st7735r->dbidev;
+=======
+struct st7735r_priv {
+	struct mipi_dbi_dev dbidev;	/* Must be first for .release() */
+	const struct st7735r_cfg *cfg;
+};
+
+static void st7735r_pipe_enable(struct drm_simple_display_pipe *pipe,
+				struct drm_crtc_state *crtc_state,
+				struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+	struct st7735r_priv *priv = container_of(dbidev, struct st7735r_priv,
+						 dbidev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi *dbi = &dbidev->dbi;
 	int ret, idx;
 	u8 addr_mode;
 
+<<<<<<< HEAD
 	if (!drm_dev_enter(drm, &idx))
+=======
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	DRM_DEBUG_KMS("\n");
@@ -135,7 +154,11 @@ static void st7735r_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 		break;
 	}
 
+<<<<<<< HEAD
 	if (st7735r->cfg->rgb)
+=======
+	if (priv->cfg->rgb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		addr_mode |= ST7735R_RGB;
 
 	mipi_dbi_command(dbi, MIPI_DCS_SET_ADDRESS_MODE, addr_mode);
@@ -155,11 +178,16 @@ static void st7735r_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 
 	msleep(20);
 
+<<<<<<< HEAD
 	backlight_enable(dbidev->backlight);
+=======
+	mipi_dbi_enable_flush(dbidev, crtc_state, plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs st7735r_crtc_helper_funcs = {
 	DRM_MIPI_DBI_CRTC_HELPER_FUNCS,
 	.atomic_enable = st7735r_crtc_helper_atomic_enable,
@@ -189,6 +217,10 @@ static const struct drm_mode_config_helper_funcs st7735r_mode_config_helper_func
 
 static const struct drm_mode_config_funcs st7735r_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
+=======
+static const struct drm_simple_display_pipe_funcs st7735r_pipe_funcs = {
+	DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS(st7735r_pipe_enable),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct st7735r_cfg jd_t18003_t01_cfg = {
@@ -237,6 +269,7 @@ static int st7735r_probe(struct spi_device *spi)
 	struct device *dev = &spi->dev;
 	const struct st7735r_cfg *cfg;
 	struct mipi_dbi_dev *dbidev;
+<<<<<<< HEAD
 	struct st7735r_device *st7735r;
 	struct drm_device *drm;
 	struct mipi_dbi *dbi;
@@ -245,6 +278,12 @@ static int st7735r_probe(struct spi_device *spi)
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
 	struct drm_connector *connector;
+=======
+	struct st7735r_priv *priv;
+	struct drm_device *drm;
+	struct mipi_dbi *dbi;
+	struct gpio_desc *dc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 rotation = 0;
 	int ret;
 
@@ -252,12 +291,22 @@ static int st7735r_probe(struct spi_device *spi)
 	if (!cfg)
 		cfg = (void *)spi_get_device_id(spi)->driver_data;
 
+<<<<<<< HEAD
 	st7735r = devm_drm_dev_alloc(dev, &st7735r_driver, struct st7735r_device, dbidev.drm);
 	if (IS_ERR(st7735r))
 		return PTR_ERR(st7735r);
 
 	dbidev = &st7735r->dbidev;
 	st7735r->cfg = cfg;
+=======
+	priv = devm_drm_dev_alloc(dev, &st7735r_driver,
+				  struct st7735r_priv, dbidev.drm);
+	if (IS_ERR(priv))
+		return PTR_ERR(priv);
+
+	dbidev = &priv->dbidev;
+	priv->cfg = cfg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
@@ -286,6 +335,7 @@ static int st7735r_probe(struct spi_device *spi)
 	dbidev->left_offset = cfg->left_offset;
 	dbidev->top_offset = cfg->top_offset;
 
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &cfg->mode, st7735r_plane_formats[0], rotation, 0);
 	if (ret)
 		return ret;
@@ -332,6 +382,10 @@ static int st7735r_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &st7735r_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init(dbidev, &st7735r_pipe_funcs, &cfg->mode,
+				rotation);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

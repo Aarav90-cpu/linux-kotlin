@@ -16,7 +16,10 @@
 
 #include <asm/hwcap.h>
 #include <asm/mman.h>
+<<<<<<< HEAD
 #include <asm/ptrace.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/compiler.h>
 

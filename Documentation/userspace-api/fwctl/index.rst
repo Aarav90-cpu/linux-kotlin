@@ -10,6 +10,9 @@ to securely construct and execute RPCs inside device firmware.
    :maxdepth: 1
 
    fwctl
+<<<<<<< HEAD
    bnxt_fwctl
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    fwctl-cxl
    pds_fwctl

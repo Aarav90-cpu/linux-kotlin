@@ -44,7 +44,10 @@ enum hist_column {
 	HISTC_THREAD,
 	HISTC_TGID,
 	HISTC_COMM,
+<<<<<<< HEAD
 	HISTC_COMM_NODIGIT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HISTC_CGROUP_ID,
 	HISTC_CGROUP,
 	HISTC_PARENT,
@@ -523,7 +526,10 @@ struct perf_hpp_list {
 	int socket;
 	int thread;
 	int comm;
+<<<<<<< HEAD
 	int comm_nodigit;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern struct perf_hpp_list perf_hpp_list;

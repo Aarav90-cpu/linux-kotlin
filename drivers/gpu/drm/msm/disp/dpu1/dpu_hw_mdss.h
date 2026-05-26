@@ -284,6 +284,15 @@ enum dpu_wd_timer {
 	WD_TIMER_MAX
 };
 
+<<<<<<< HEAD
+=======
+enum dpu_vbif {
+	VBIF_RT,
+	VBIF_NRT,
+	VBIF_MAX,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * enum dpu_3d_blend_mode
  * Desribes how the 3d data is blended

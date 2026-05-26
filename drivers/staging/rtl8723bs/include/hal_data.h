@@ -385,7 +385,11 @@ struct hal_com_data {
 	struct dm_priv dmpriv;
 	struct dm_odm_t		odmpriv;
 
+<<<<<<< HEAD
 	/*  For bluetooth co-existence */
+=======
+	/*  For bluetooth co-existance */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bt_coexist		bt_coexist;
 
 	/*  Interrupt related register information. */

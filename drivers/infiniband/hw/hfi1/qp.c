@@ -404,6 +404,10 @@ void hfi1_qp_wakeup(struct rvt_qp *qp, u32 flag)
 		hfi1_qp_schedule(qp);
 	}
 	spin_unlock_irqrestore(&qp->s_lock, flags);
+<<<<<<< HEAD
+=======
+	/* Notify hfi1_destroy_qp() if it is waiting. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvt_put_qp(qp);
 }
 

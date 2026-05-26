@@ -45,7 +45,11 @@ static void read_residency_counter(struct xe_device *xe, struct xe_mmio *mmio,
 	u64 residency = 0;
 	int ret;
 
+<<<<<<< HEAD
 	ret = xe_pmt_telem_read(xe->drm.dev,
+=======
+	ret = xe_pmt_telem_read(to_pci_dev(xe->drm.dev),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				xe_mmio_read32(mmio, PUNIT_TELEMETRY_GUID),
 				&residency, offset, sizeof(residency));
 	if (ret != sizeof(residency)) {

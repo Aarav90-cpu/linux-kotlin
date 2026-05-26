@@ -86,9 +86,12 @@ static struct sk_buff *mxl862_tag_rcv(struct sk_buff *skb,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	if (likely(!is_link_local_ether_addr(eth_hdr(skb)->h_dest)))
 		dsa_default_offload_fwd_mark(skb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* remove the MxL862xx special tag between the MAC addresses and the
 	 * current ethertype field.
 	 */

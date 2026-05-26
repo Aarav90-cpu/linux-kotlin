@@ -3,17 +3,25 @@
  * Copyright (c) 2026 SpacemiT (Hangzhou) Technology Co. Ltd
  * Copyright (c) 2026 Guodong Xu <guodong@riscstar.com>
  */
+<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
 
 #include "k3.dtsi"
 #include "k3-pinctrl.dtsi"
+=======
+
+#include "k3.dtsi"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	model = "SpacemiT K3 Pico-ITX";
 	compatible = "spacemit,k3-pico-itx", "spacemit,k3";
 
 	aliases {
+<<<<<<< HEAD
 		ethernet0 = &eth0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		serial0 = &uart0;
 	};
 
@@ -25,6 +33,7 @@
 		device_type = "memory";
 		reg = <0x1 0x00000000 0x4 0x00000000>;
 	};
+<<<<<<< HEAD
 
 	reg_aux_vcc5v: regulator-aux-vcc5v {
 		compatible = "regulator-fixed";
@@ -195,5 +204,10 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_0_cfg>;
+=======
+};
+
+&uart0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };

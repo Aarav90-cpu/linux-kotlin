@@ -36,9 +36,15 @@ bool __init cmdline_has_extra_options(void);
  * The checksum will be used with the BOOTCONFIG_MAGIC and the size for
  * embedding the bootconfig in the initrd image.
  */
+<<<<<<< HEAD
 static inline __init uint32_t xbc_calc_checksum(const void *data, uint32_t size)
 {
 	const unsigned char *p = data;
+=======
+static inline __init uint32_t xbc_calc_checksum(void *data, uint32_t size)
+{
+	unsigned char *p = data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t ret = 0;
 
 	while (size--)
@@ -66,7 +72,11 @@ struct xbc_node {
 
 /* Node tree access raw APIs */
 struct xbc_node * __init xbc_root_node(void);
+<<<<<<< HEAD
 uint16_t __init xbc_node_index(struct xbc_node *node);
+=======
+int __init xbc_node_index(struct xbc_node *node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xbc_node * __init xbc_node_get_parent(struct xbc_node *node);
 struct xbc_node * __init xbc_node_get_child(struct xbc_node *node);
 struct xbc_node * __init xbc_node_get_next(struct xbc_node *node);

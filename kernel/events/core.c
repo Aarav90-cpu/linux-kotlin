@@ -5368,6 +5368,7 @@ static void unaccount_freq_event(void)
 
 
 static struct perf_ctx_data *
+<<<<<<< HEAD
 alloc_perf_ctx_data(struct kmem_cache *ctx_cache, bool global, gfp_t gfp_flags)
 {
 	struct perf_ctx_data *cd;
@@ -5377,6 +5378,17 @@ alloc_perf_ctx_data(struct kmem_cache *ctx_cache, bool global, gfp_t gfp_flags)
 		return NULL;
 
 	cd->data = kmem_cache_zalloc(ctx_cache, gfp_flags);
+=======
+alloc_perf_ctx_data(struct kmem_cache *ctx_cache, bool global)
+{
+	struct perf_ctx_data *cd;
+
+	cd = kzalloc_obj(*cd);
+	if (!cd)
+		return NULL;
+
+	cd->data = kmem_cache_zalloc(ctx_cache, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cd->data) {
 		kfree(cd);
 		return NULL;
@@ -5410,11 +5422,19 @@ static inline void perf_free_ctx_data_rcu(struct perf_ctx_data *cd)
 
 static int
 attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
+<<<<<<< HEAD
 		     bool global, gfp_t gfp_flags)
 {
 	struct perf_ctx_data *cd, *old = NULL;
 
 	cd = alloc_perf_ctx_data(ctx_cache, global, gfp_flags);
+=======
+		     bool global)
+{
+	struct perf_ctx_data *cd, *old = NULL;
+
+	cd = alloc_perf_ctx_data(ctx_cache, global);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cd)
 		return -ENOMEM;
 
@@ -5487,12 +5507,15 @@ again:
 					cd = NULL;
 			}
 			if (!cd) {
+<<<<<<< HEAD
 				/*
 				 * Try to allocate context quickly before
 				 * traversing the whole thread list again.
 				 */
 				if (!attach_task_ctx_data(p, ctx_cache, true, GFP_NOWAIT))
 					continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				get_task_struct(p);
 				goto alloc;
 			}
@@ -5503,7 +5526,11 @@ again:
 
 	return 0;
 alloc:
+<<<<<<< HEAD
 	ret = attach_task_ctx_data(p, ctx_cache, true, GFP_KERNEL);
+=======
+	ret = attach_task_ctx_data(p, ctx_cache, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_task_struct(p);
 	if (ret) {
 		__detach_global_ctx_data();
@@ -5523,7 +5550,11 @@ attach_perf_ctx_data(struct perf_event *event)
 		return -ENOMEM;
 
 	if (task)
+<<<<<<< HEAD
 		return attach_task_ctx_data(task, ctx_cache, false, GFP_KERNEL);
+=======
+		return attach_task_ctx_data(task, ctx_cache, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = attach_global_ctx_data(ctx_cache);
 	if (ret)
@@ -5558,6 +5589,7 @@ static void __detach_global_ctx_data(void)
 	struct task_struct *g, *p;
 	struct perf_ctx_data *cd;
 
+<<<<<<< HEAD
 	scoped_guard (rcu) {
 		for_each_process_thread(g, p) {
 			cd = rcu_dereference(p->perf_ctx_data);
@@ -5567,6 +5599,24 @@ static void __detach_global_ctx_data(void)
 			}
 		}
 	}
+=======
+again:
+	scoped_guard (rcu) {
+		for_each_process_thread(g, p) {
+			cd = rcu_dereference(p->perf_ctx_data);
+			if (!cd || !cd->global)
+				continue;
+			cd->global = 0;
+			get_task_struct(p);
+			goto detach;
+		}
+	}
+	return;
+detach:
+	detach_task_ctx_data(p);
+	put_task_struct(p);
+	goto again;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void detach_global_ctx_data(void)
@@ -7006,7 +7056,10 @@ static void perf_mmap_open(struct vm_area_struct *vma)
 }
 
 static void perf_pmu_output_stop(struct perf_event *event);
+<<<<<<< HEAD
 static void perf_mmap_unaccount(struct vm_area_struct *vma, struct perf_buffer *rb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * A buffer can be mmap()ed multiple times; either directly through the same
@@ -7022,6 +7075,11 @@ static void perf_mmap_close(struct vm_area_struct *vma)
 	mapped_f unmapped = get_mapped(event, event_unmapped);
 	struct perf_buffer *rb = ring_buffer_get(event);
 	struct user_struct *mmap_user = rb->mmap_user;
+<<<<<<< HEAD
+=======
+	int mmap_locked = rb->mmap_locked;
+	unsigned long size = perf_data_size(rb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool detach_rest = false;
 
 	/* FIXIES vs perf_pmu_unregister() */
@@ -7116,7 +7174,15 @@ again:
 	 * Aside from that, this buffer is 'fully' detached and unmapped,
 	 * undo the VM accounting.
 	 */
+<<<<<<< HEAD
 	perf_mmap_unaccount(vma, rb);
+=======
+
+	atomic_long_sub((size >> PAGE_SHIFT) + 1 - mmap_locked,
+			&mmap_user->locked_vm);
+	atomic64_sub(mmap_locked, &vma->vm_mm->pinned_vm);
+	free_uid(mmap_user);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out_put:
 	ring_buffer_put(rb); /* could be last */
@@ -7207,7 +7273,11 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
 #ifdef CONFIG_MMU
 	/* Clear any partial mappings on error. */
 	if (err)
+<<<<<<< HEAD
 		zap_vma_range(vma, vma->vm_start, nr_pages * PAGE_SIZE);
+=======
+		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	return err;
@@ -7256,6 +7326,7 @@ static void perf_mmap_account(struct vm_area_struct *vma, long user_extra, long 
 	atomic64_add(extra, &vma->vm_mm->pinned_vm);
 }
 
+<<<<<<< HEAD
 static void perf_mmap_unaccount(struct vm_area_struct *vma, struct perf_buffer *rb)
 {
 	struct user_struct *user = rb->mmap_user;
@@ -7265,6 +7336,8 @@ static void perf_mmap_unaccount(struct vm_area_struct *vma, struct perf_buffer *
 	atomic64_sub(rb->mmap_locked, &vma->vm_mm->pinned_vm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int perf_mmap_rb(struct vm_area_struct *vma, struct perf_event *event,
 			unsigned long nr_pages)
 {
@@ -7327,6 +7400,11 @@ static int perf_mmap_rb(struct vm_area_struct *vma, struct perf_event *event,
 	if (!rb)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	refcount_set(&rb->mmap_count, 1);
+	rb->mmap_user = get_current_user();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rb->mmap_locked = extra;
 
 	ring_buffer_attach(event, rb);
@@ -7476,6 +7554,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
 			mapped(event, vma->vm_mm);
 
 		/*
+<<<<<<< HEAD
 		 * Try to map it into the page table. On fail undo the above,
 		 * as the callsite expects full cleanup in this case and
 		 * therefore does not invoke vmops::close().
@@ -7524,6 +7603,18 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
 	}
 
 	perf_mmap_close(vma);
+=======
+		 * Try to map it into the page table. On fail, invoke
+		 * perf_mmap_close() to undo the above, as the callsite expects
+		 * full cleanup in this case and therefore does not invoke
+		 * vmops::close().
+		 */
+		ret = map_range(event->rb, vma);
+		if (ret)
+			perf_mmap_close(vma);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -8459,7 +8550,11 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
 	pte_t *ptep, pte;
 
 	pgdp = pgd_offset(mm, addr);
+<<<<<<< HEAD
 	pgd = pgdp_get(pgdp);
+=======
+	pgd = READ_ONCE(*pgdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pgd_none(pgd))
 		return 0;
 
@@ -8467,7 +8562,11 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
 		return pgd_leaf_size(pgd);
 
 	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
+<<<<<<< HEAD
 	p4d = p4dp_get(p4dp);
+=======
+	p4d = READ_ONCE(*p4dp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!p4d_present(p4d))
 		return 0;
 
@@ -8475,7 +8574,11 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
 		return p4d_leaf_size(p4d);
 
 	pudp = pud_offset_lockless(p4dp, p4d, addr);
+<<<<<<< HEAD
 	pud = pudp_get(pudp);
+=======
+	pud = READ_ONCE(*pudp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pud_present(pud))
 		return 0;
 
@@ -9277,7 +9380,11 @@ perf_event_alloc_task_data(struct task_struct *child,
 
 	return;
 attach:
+<<<<<<< HEAD
 	attach_task_ctx_data(child, ctx_cache, true, GFP_KERNEL);
+=======
+	attach_task_ctx_data(child, ctx_cache, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void perf_event_fork(struct task_struct *task)

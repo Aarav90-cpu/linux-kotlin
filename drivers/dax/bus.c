@@ -10,7 +10,10 @@
 #include "dax-private.h"
 #include "bus.h"
 
+<<<<<<< HEAD
 static struct resource dax_regions = DEFINE_RES_MEM_NAMED(0, -1, "DAX Regions");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEFINE_MUTEX(dax_bus_lock);
 
 /*
@@ -40,6 +43,11 @@ static int dax_bus_uevent(const struct device *dev, struct kobj_uevent_env *env)
 	return add_uevent_var(env, "MODALIAS=" DAX_DEVICE_MODALIAS_FMT, 0);
 }
 
+<<<<<<< HEAD
+=======
+#define to_dax_drv(__drv)	container_of_const(__drv, struct dax_device_driver, drv)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct dax_id *__dax_match_id(const struct dax_device_driver *dax_drv,
 		const char *dev_name)
 {
@@ -626,7 +634,10 @@ static void dax_region_unregister(void *region)
 
 	sysfs_remove_groups(&dax_region->dev->kobj,
 			dax_region_attribute_groups);
+<<<<<<< HEAD
 	release_resource(&dax_region->res);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dax_region_put(dax_region);
 }
 
@@ -635,7 +646,10 @@ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
 		unsigned long flags)
 {
 	struct dax_region *dax_region;
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The DAX core assumes that it can store its private data in
@@ -668,6 +682,7 @@ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
 		.flags = IORESOURCE_MEM | flags,
 	};
 
+<<<<<<< HEAD
 	rc = request_resource(&dax_regions, &dax_region->res);
 	if (rc) {
 		dev_dbg(parent, "dax_region resource conflict for %pR\n",
@@ -687,6 +702,16 @@ err_sysfs:
 err_res:
 	dax_region_put(dax_region);
 	return NULL;
+=======
+	if (sysfs_create_groups(&parent->kobj, dax_region_attribute_groups)) {
+		kfree(dax_region);
+		return NULL;
+	}
+
+	if (devm_add_action_or_reset(parent, dax_region_unregister, dax_region))
+		return NULL;
+	return dax_region;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(alloc_dax_region);
 
@@ -1429,6 +1454,7 @@ static const struct device_type dev_dax_type = {
 	.groups = dax_attribute_groups,
 };
 
+<<<<<<< HEAD
 /* see "strong" declaration in tools/testing/nvdimm/dax-dev.c */
 __weak phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
 			      unsigned long size)
@@ -1449,6 +1475,8 @@ __weak phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
 }
 EXPORT_SYMBOL_GPL(dax_pgoff_to_phys);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct dev_dax *__devm_create_dev_dax(struct dev_dax_data *data)
 {
 	struct dax_region *dax_region = data->dax_region;

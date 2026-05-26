@@ -1051,7 +1051,11 @@ exp_rootfh(struct net *net, struct auth_domain *clp, char *name,
 	}
 	inode = d_inode(path.dentry);
 
+<<<<<<< HEAD
 	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%llu)\n",
+=======
+	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%ld)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 name, path.dentry, clp->name,
 		 inode->i_sb->s_id, inode->i_ino);
 	exp = exp_parent(cd, clp, &path);
@@ -1362,6 +1366,7 @@ static struct flags {
 	{ NFSEXP_ASYNC, {"async", "sync"}},
 	{ NFSEXP_GATHERED_WRITES, {"wdelay", "no_wdelay"}},
 	{ NFSEXP_NOREADDIRPLUS, {"nordirplus", ""}},
+<<<<<<< HEAD
 	{ NFSEXP_SECURITY_LABEL, {"security_label", ""}},
 	{ NFSEXP_SIGN_FH, {"sign_fh", ""}},
 	{ NFSEXP_NOHIDE, {"nohide", ""}},
@@ -1370,6 +1375,15 @@ static struct flags {
 	{ NFSEXP_CROSSMOUNT, {"crossmnt", ""}},
 	{ NFSEXP_V4ROOT, {"v4root", ""}},
 	{ NFSEXP_PNFS, {"pnfs", ""}},
+=======
+	{ NFSEXP_NOHIDE, {"nohide", ""}},
+	{ NFSEXP_CROSSMOUNT, {"crossmnt", ""}},
+	{ NFSEXP_NOSUBTREECHECK, {"no_subtree_check", ""}},
+	{ NFSEXP_NOAUTHNLM, {"insecure_locks", ""}},
+	{ NFSEXP_V4ROOT, {"v4root", ""}},
+	{ NFSEXP_PNFS, {"pnfs", ""}},
+	{ NFSEXP_SECURITY_LABEL, {"security_label", ""}},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ 0, {"", ""}}
 };
 

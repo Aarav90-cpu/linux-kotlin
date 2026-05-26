@@ -452,9 +452,24 @@ static int rxe_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
 	int err;
 
 	if (udata) {
+<<<<<<< HEAD
 		err = ib_copy_validate_udata_in(udata, cmd, mmap_info_addr);
 		if (err)
 			goto err_out;
+=======
+		if (udata->inlen < sizeof(cmd)) {
+			err = -EINVAL;
+			rxe_dbg_srq(srq, "malformed udata\n");
+			goto err_out;
+		}
+
+		err = ib_copy_from_udata(&cmd, udata, sizeof(cmd));
+		if (err) {
+			err = -EFAULT;
+			rxe_dbg_srq(srq, "unable to read udata\n");
+			goto err_out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = rxe_srq_chk_attr(rxe, srq, attr, mask);
@@ -1088,8 +1103,16 @@ static int rxe_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 		goto err_out;
 	}
 
+<<<<<<< HEAD
 	if (attr->cqe > rxe->attr.max_cqe)
 		return -EINVAL;
+=======
+	err = rxe_cq_chk_attr(rxe, NULL, attr->cqe, attr->comp_vector);
+	if (err) {
+		rxe_dbg_dev(rxe, "bad init attributes, err = %d\n", err);
+		goto err_out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = rxe_add_to_pool(&rxe->cq_pool, cq);
 	if (err) {
@@ -1115,8 +1138,12 @@ err_out:
 	return err;
 }
 
+<<<<<<< HEAD
 static int rxe_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 			 struct ib_udata *udata)
+=======
+static int rxe_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rxe_cq *cq = to_rcq(ibcq);
 	struct rxe_dev *rxe = to_rdev(ibcq->device);
@@ -1132,9 +1159,17 @@ static int rxe_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 		uresp = udata->outbuf;
 	}
 
+<<<<<<< HEAD
 	if (cqe > rxe->attr.max_cqe ||
 	    cqe < queue_count(cq->queue, QUEUE_TYPE_TO_CLIENT))
 		return -EINVAL;
+=======
+	err = rxe_cq_chk_attr(rxe, cq, cqe, 0);
+	if (err) {
+		rxe_dbg_cq(cq, "bad attr, err = %d\n", err);
+		goto err_out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = rxe_cq_resize_queue(cq, cqe, uresp, udata);
 	if (err) {
@@ -1506,7 +1541,11 @@ static const struct ib_device_ops rxe_dev_ops = {
 	.reg_user_mr = rxe_reg_user_mr,
 	.req_notify_cq = rxe_req_notify_cq,
 	.rereg_user_mr = rxe_rereg_user_mr,
+<<<<<<< HEAD
 	.resize_user_cq = rxe_resize_cq,
+=======
+	.resize_cq = rxe_resize_cq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_RDMA_OBJ_SIZE(ib_ah, rxe_ah, ibah),
 	INIT_RDMA_OBJ_SIZE(ib_cq, rxe_cq, ibcq),

@@ -5,6 +5,13 @@
 
 #ifdef CONFIG_X86_64
 /* X86_64 does not define MODULE_PROC_FAMILY */
+<<<<<<< HEAD
+=======
+#elif defined CONFIG_M486SX
+#define MODULE_PROC_FAMILY "486SX "
+#elif defined CONFIG_M486
+#define MODULE_PROC_FAMILY "486 "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined CONFIG_M586
 #define MODULE_PROC_FAMILY "586 "
 #elif defined CONFIG_M586TSC
@@ -27,6 +34,11 @@
 #define MODULE_PROC_FAMILY "K6 "
 #elif defined CONFIG_MK7
 #define MODULE_PROC_FAMILY "K7 "
+<<<<<<< HEAD
+=======
+#elif defined CONFIG_MELAN
+#define MODULE_PROC_FAMILY "ELAN "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #elif defined CONFIG_MCRUSOE
 #define MODULE_PROC_FAMILY "CRUSOE "
 #elif defined CONFIG_MEFFICEON

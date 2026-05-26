@@ -83,6 +83,7 @@ static int uverbs_response(struct uverbs_attr_bundle *attrs, const void *resp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int uverbs_request(struct uverbs_attr_bundle *attrs, void *req,
 			  size_t req_len)
 {
@@ -93,6 +94,30 @@ static int uverbs_request(struct uverbs_attr_bundle *attrs, void *req,
 	if (ret == -E2BIG)
 		ret = -EOPNOTSUPP;
 	return ret;
+=======
+/*
+ * Copy a request from userspace. If the provided 'req' is larger than the
+ * user buffer then the user buffer is zero extended into the 'req'. If 'req'
+ * is smaller than the user buffer then the uncopied bytes in the user buffer
+ * must be zero.
+ */
+static int uverbs_request(struct uverbs_attr_bundle *attrs, void *req,
+			  size_t req_len)
+{
+	if (copy_from_user(req, attrs->ucore.inbuf,
+			   min(attrs->ucore.inlen, req_len)))
+		return -EFAULT;
+
+	if (attrs->ucore.inlen < req_len) {
+		memset(req + attrs->ucore.inlen, 0,
+		       req_len - attrs->ucore.inlen);
+	} else if (attrs->ucore.inlen > req_len) {
+		if (!ib_is_buffer_cleared(attrs->ucore.inbuf + req_len,
+					  attrs->ucore.inlen - req_len))
+			return -EOPNOTSUPP;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -778,7 +803,10 @@ static int ib_uverbs_rereg_mr(struct uverbs_attr_bundle *attrs)
 	struct ib_pd *orig_pd;
 	struct ib_pd *new_pd;
 	struct ib_mr *new_mr;
+<<<<<<< HEAD
 	u32 lkey, rkey;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = uverbs_request(attrs, &cmd, sizeof(cmd));
 	if (ret)
@@ -847,8 +875,11 @@ static int ib_uverbs_rereg_mr(struct uverbs_attr_bundle *attrs)
 		new_mr->uobject = uobj;
 		atomic_inc(&new_pd->usecnt);
 		new_uobj->object = new_mr;
+<<<<<<< HEAD
 		lkey = new_mr->lkey;
 		rkey = new_mr->rkey;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rdma_restrack_new(&new_mr->res, RDMA_RESTRACK_MR);
 		rdma_restrack_set_name(&new_mr->res, NULL);
@@ -874,6 +905,7 @@ static int ib_uverbs_rereg_mr(struct uverbs_attr_bundle *attrs)
 			mr->iova = cmd.hca_va;
 			mr->length = cmd.length;
 		}
+<<<<<<< HEAD
 		lkey = mr->lkey;
 		rkey = mr->rkey;
 	}
@@ -881,6 +913,13 @@ static int ib_uverbs_rereg_mr(struct uverbs_attr_bundle *attrs)
 	memset(&resp, 0, sizeof(resp));
 	resp.lkey = lkey;
 	resp.rkey = rkey;
+=======
+	}
+
+	memset(&resp, 0, sizeof(resp));
+	resp.lkey      = mr->lkey;
+	resp.rkey      = mr->rkey;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = uverbs_response(attrs, &resp, sizeof(resp));
 
@@ -1025,9 +1064,12 @@ static int create_cq(struct uverbs_attr_bundle *attrs,
 	if (cmd->comp_vector >= attrs->ufile->device->num_comp_vectors)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!cmd->cqe)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	obj = (struct ib_ucq_object *)uobj_alloc(UVERBS_OBJECT_CQ, attrs,
 						 &ib_dev);
 	if (IS_ERR(obj))
@@ -1064,10 +1106,14 @@ static int create_cq(struct uverbs_attr_bundle *attrs,
 	rdma_restrack_new(&cq->res, RDMA_RESTRACK_CQ);
 	rdma_restrack_set_name(&cq->res, NULL);
 
+<<<<<<< HEAD
 	if (ib_dev->ops.create_user_cq)
 		ret = ib_dev->ops.create_user_cq(cq, &attr, attrs);
 	else
 		ret = ib_dev->ops.create_cq(cq, &attr, attrs);
+=======
+	ret = ib_dev->ops.create_cq(cq, &attr, attrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_free;
 	rdma_restrack_add(&cq->res);
@@ -1084,7 +1130,10 @@ static int create_cq(struct uverbs_attr_bundle *attrs,
 	return uverbs_response(attrs, &resp, sizeof(resp));
 
 err_free:
+<<<<<<< HEAD
 	ib_umem_release(cq->umem);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rdma_restrack_put(&cq->res);
 	kfree(cq);
 err_file:
@@ -1143,14 +1192,21 @@ static int ib_uverbs_resize_cq(struct uverbs_attr_bundle *attrs)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!cmd.cqe)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cq = uobj_get_obj_read(cq, UVERBS_OBJECT_CQ, cmd.cq_handle, attrs);
 	if (IS_ERR(cq))
 		return PTR_ERR(cq);
 
+<<<<<<< HEAD
 	ret = cq->device->ops.resize_user_cq(cq, cmd.cqe, &attrs->driver_udata);
+=======
+	ret = cq->device->ops.resize_cq(cq, cmd.cqe, &attrs->driver_udata);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto out;
 
@@ -3809,7 +3865,11 @@ const struct uapi_definition uverbs_def_write_intf[] = {
 				     UAPI_DEF_WRITE_UDATA_IO(
 					     struct ib_uverbs_resize_cq,
 					     struct ib_uverbs_resize_cq_resp),
+<<<<<<< HEAD
 				     UAPI_DEF_METHOD_NEEDS_FN(resize_user_cq)),
+=======
+				     UAPI_DEF_METHOD_NEEDS_FN(resize_cq)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		DECLARE_UVERBS_WRITE_EX(
 			IB_USER_VERBS_EX_CMD_CREATE_CQ,
 			ib_uverbs_ex_create_cq,

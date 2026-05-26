@@ -1234,9 +1234,12 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
 extern void kvfree(const void *addr);
 DEFINE_FREE(kvfree, void *, if (!IS_ERR_OR_NULL(_T)) kvfree(_T))
 
+<<<<<<< HEAD
 extern void kvfree_atomic(const void *addr);
 DEFINE_FREE(kvfree_atomic, void *, if (!IS_ERR_OR_NULL(_T)) kvfree_atomic(_T))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void kvfree_sensitive(const void *addr, size_t len);
 
 unsigned int kmem_cache_size(struct kmem_cache *s);

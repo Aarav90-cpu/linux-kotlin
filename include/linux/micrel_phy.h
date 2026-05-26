@@ -33,7 +33,10 @@
 #define PHY_ID_LAN8804		0x00221670
 #define PHY_ID_LAN8841		0x00221650
 #define PHY_ID_LAN8842		0x002216C0
+<<<<<<< HEAD
 #define PHY_ID_LAN9645X		0x002216D0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define PHY_ID_KSZ886X		0x00221430
 #define PHY_ID_KSZ8863		0x00221435

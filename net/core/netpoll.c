@@ -708,6 +708,7 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Test whether the caller left np->local_ip unset, so that
  * netpoll_setup() should auto-populate it from the egress device.
@@ -725,6 +726,8 @@ static bool netpoll_local_ip_unset(const struct netpoll *np)
 	return !np->local_ip.ip;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int netpoll_setup(struct netpoll *np)
 {
 	struct net *net = current->nsproxy->net_ns;
@@ -769,7 +772,11 @@ int netpoll_setup(struct netpoll *np)
 		rtnl_lock();
 	}
 
+<<<<<<< HEAD
 	if (netpoll_local_ip_unset(np)) {
+=======
+	if (!np->local_ip.ip) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!np->ipv6) {
 			err = netpoll_take_ipv4(np, ndev);
 			if (err)

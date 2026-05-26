@@ -679,7 +679,11 @@
 		};
 
 		/* SD */
+<<<<<<< HEAD
 		dwmmc1: mmc@ff37f000 {
+=======
+		dwmmc1: dwmmc1@ff37f000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "hisilicon,hi3670-dw-mshc",
 				     "hisilicon,hi3660-dw-mshc";
 			reg = <0x0 0xff37f000 0x0 0x1000>;
@@ -698,7 +702,11 @@
 		};
 
 		/* SDIO */
+<<<<<<< HEAD
 		dwmmc2: mmc@fc183000 {
+=======
+		dwmmc2: dwmmc2@fc183000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "hisilicon,hi3670-dw-mshc",
 				     "hisilicon,hi3660-dw-mshc";
 			reg = <0x0 0xfc183000 0x0 0x1000>;

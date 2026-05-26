@@ -80,7 +80,11 @@ sys_rt_sigreturn(struct pt_regs *regs, int in_syscall)
 	sigset_t set;
 	unsigned long usp = (regs->gr[30] & ~(0x01UL));
 	unsigned long sigframe_size = PARISC_RT_SIGFRAME_SIZE;
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct compat_rt_sigframe __user * compat_frame;
 	
 	if (is_compat_task())
@@ -96,7 +100,11 @@ sys_rt_sigreturn(struct pt_regs *regs, int in_syscall)
 
 	regs->orig_r28 = 1; /* no restarts for sigreturn */
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	compat_frame = (struct compat_rt_sigframe __user *)frame;
 	
 	if (is_compat_task()) {
@@ -112,7 +120,11 @@ sys_rt_sigreturn(struct pt_regs *regs, int in_syscall)
 	set_current_blocked(&set);
 
 	/* Good thing we saved the old gr[30], eh? */
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_compat_task()) {
 		DBG(1, "%s: compat_frame->uc.uc_mcontext 0x%p\n",
 				__func__, &compat_frame->uc.uc_mcontext);
@@ -218,6 +230,7 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 	unsigned long haddr, sigframe_size;
 	unsigned long start;
 	int err = 0;
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
 	struct compat_rt_sigframe __user * compat_frame;
 #endif
@@ -225,6 +238,15 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 	usp = (regs->gr[30] & ~(0x01UL));
 	sigframe_size = PARISC_RT_SIGFRAME_SIZE;
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+	struct compat_rt_sigframe __user * compat_frame;
+#endif
+	
+	usp = (regs->gr[30] & ~(0x01UL));
+	sigframe_size = PARISC_RT_SIGFRAME_SIZE;
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_compat_task()) {
 		/* The gcc alloca implementation leaves garbage in the upper 32 bits of sp */
 		usp = (compat_uint_t)usp;
@@ -239,7 +261,11 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 	if (start >= TASK_SIZE_MAX - sigframe_size)
 		return -EFAULT;
 	
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	compat_frame = (struct compat_rt_sigframe __user *)frame;
 	
@@ -349,8 +375,13 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 
 	regs->gr[2]  = rp;			/* userland return pointer */
 	regs->gr[26] = ksig->sig;               /* signal number */
+<<<<<<< HEAD
 
 #ifdef CONFIG_COMPAT
+=======
+	
+#ifdef CONFIG_64BIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_compat_task()) {
 		regs->gr[25] = A(&compat_frame->info); /* siginfo pointer */
 		regs->gr[24] = A(&compat_frame->uc);   /* ucontext pointer */

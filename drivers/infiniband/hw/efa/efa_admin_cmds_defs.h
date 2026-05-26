@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
 /*
+<<<<<<< HEAD
  * Copyright 2018-2026 Amazon.com, Inc. or its affiliates. All rights reserved.
+=======
+ * Copyright 2018-2025 Amazon.com, Inc. or its affiliates. All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #ifndef _EFA_ADMIN_CMDS_H_
@@ -38,11 +42,18 @@ enum efa_admin_aq_feature_id {
 	EFA_ADMIN_DEVICE_ATTR                       = 1,
 	EFA_ADMIN_AENQ_CONFIG                       = 2,
 	EFA_ADMIN_NETWORK_ATTR                      = 3,
+<<<<<<< HEAD
 	EFA_ADMIN_QUEUE_ATTR_1                      = 4,
 	EFA_ADMIN_HW_HINTS                          = 5,
 	EFA_ADMIN_HOST_INFO                         = 6,
 	EFA_ADMIN_EVENT_QUEUE_ATTR                  = 7,
 	EFA_ADMIN_QUEUE_ATTR_2                      = 9,
+=======
+	EFA_ADMIN_QUEUE_ATTR                        = 4,
+	EFA_ADMIN_HW_HINTS                          = 5,
+	EFA_ADMIN_HOST_INFO                         = 6,
+	EFA_ADMIN_EVENT_QUEUE_ATTR                  = 7,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* QP transport type */
@@ -745,19 +756,27 @@ struct efa_admin_feature_device_attr_desc {
 	u32 reserved1;
 };
 
+<<<<<<< HEAD
 struct efa_admin_feature_queue_attr_desc_1 {
+=======
+struct efa_admin_feature_queue_attr_desc {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* The maximum number of queue pairs supported */
 	u32 max_qp;
 
 	/* Maximum number of WQEs per Send Queue */
 	u32 max_sq_depth;
 
+<<<<<<< HEAD
 	/*
 	 * Maximum size of data that can be sent inline in a Send WQE
 	 * (deprecated by
 	 * efa_admin_feature_queue_attr_desc_2::inline_buf_size_ex on
 	 * supporting devices)
 	 */
+=======
+	/* Maximum size of data that can be sent inline in a Send WQE */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 inline_buf_size;
 
 	/* Maximum number of buffer descriptors per Recv Queue */
@@ -811,11 +830,14 @@ struct efa_admin_feature_queue_attr_desc_1 {
 	u16 max_tx_batch;
 };
 
+<<<<<<< HEAD
 struct efa_admin_feature_queue_attr_desc_2 {
 	/* Maximum size of data that can be sent inline in a Send WQE */
 	u16 inline_buf_size_ex;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct efa_admin_event_queue_attr_desc {
 	/* The maximum number of event queues supported */
 	u32 max_eq;
@@ -883,9 +905,13 @@ struct efa_admin_get_feature_resp {
 
 		struct efa_admin_feature_network_attr_desc network_attr;
 
+<<<<<<< HEAD
 		struct efa_admin_feature_queue_attr_desc_1 queue_attr_1;
 
 		struct efa_admin_feature_queue_attr_desc_2 queue_attr_2;
+=======
+		struct efa_admin_feature_queue_attr_desc queue_attr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		struct efa_admin_event_queue_attr_desc event_queue_attr;
 

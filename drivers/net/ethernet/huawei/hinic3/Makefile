@@ -6,7 +6,10 @@ obj-$(CONFIG_HINIC3) += hinic3.o
 hinic3-objs := hinic3_cmdq.o \
 	       hinic3_common.o \
 	       hinic3_eqs.o \
+<<<<<<< HEAD
 	       hinic3_ethtool.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       hinic3_filter.o \
 	       hinic3_hw_cfg.o \
 	       hinic3_hw_comm.o \

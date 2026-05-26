@@ -13,9 +13,15 @@
 #include "linux/psp-sev.h"
 #include "sev.h"
 
+<<<<<<< HEAD
 static void guest_sev_test_msr(u32 msr)
 {
 	u64 val = rdmsr(msr);
+=======
+static void guest_sev_test_msr(uint32_t msr)
+{
+	uint64_t val = rdmsr(msr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wrmsr(msr, val);
 	GUEST_ASSERT(val == rdmsr(msr));
@@ -23,7 +29,11 @@ static void guest_sev_test_msr(u32 msr)
 
 #define guest_sev_test_reg(reg)			\
 do {						\
+<<<<<<< HEAD
 	u64 val = get_##reg();			\
+=======
+	uint64_t val = get_##reg();		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						\
 	set_##reg(val);				\
 	GUEST_ASSERT(val == get_##reg());	\
@@ -42,7 +52,11 @@ static void guest_sev_test_regs(void)
 
 static void guest_snp_code(void)
 {
+<<<<<<< HEAD
 	u64 sev_msr = rdmsr(MSR_AMD64_SEV);
+=======
+	uint64_t sev_msr = rdmsr(MSR_AMD64_SEV);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(sev_msr & MSR_AMD64_SEV_ENABLED);
 	GUEST_ASSERT(sev_msr & MSR_AMD64_SEV_ES_ENABLED);
@@ -104,19 +118,32 @@ static void compare_xsave(u8 *from_host, u8 *from_guest)
 		abort();
 }
 
+<<<<<<< HEAD
 static void test_sync_vmsa(u32 type, u64 policy)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	gva_t gva;
+=======
+static void test_sync_vmsa(uint32_t type, uint64_t policy)
+{
+	struct kvm_vcpu *vcpu;
+	struct kvm_vm *vm;
+	vm_vaddr_t gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *hva;
 
 	double x87val = M_PI;
 	struct kvm_xsave __attribute__((aligned(64))) xsave = { 0 };
 
 	vm = vm_sev_create_with_one_vcpu(type, guest_code_xsave, &vcpu);
+<<<<<<< HEAD
 	gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
 			      MEM_REGION_TEST_DATA);
+=======
+	gva = vm_vaddr_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
+				    MEM_REGION_TEST_DATA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hva = addr_gva2hva(vm, gva);
 
 	vcpu_args_set(vcpu, 1, gva);
@@ -150,7 +177,11 @@ static void test_sync_vmsa(u32 type, u64 policy)
 	kvm_vm_free(vm);
 }
 
+<<<<<<< HEAD
 static void test_sev(void *guest_code, u32 type, u64 policy)
+=======
+static void test_sev(void *guest_code, uint32_t type, uint64_t policy)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
@@ -201,7 +232,11 @@ static void guest_shutdown_code(void)
 	__asm__ __volatile__("ud2");
 }
 
+<<<<<<< HEAD
 static void test_sev_shutdown(u32 type, u64 policy)
+=======
+static void test_sev_shutdown(uint32_t type, uint64_t policy)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
@@ -218,7 +253,11 @@ static void test_sev_shutdown(u32 type, u64 policy)
 	kvm_vm_free(vm);
 }
 
+<<<<<<< HEAD
 static void test_sev_smoke(void *guest, u32 type, u64 policy)
+=======
+static void test_sev_smoke(void *guest, uint32_t type, uint64_t policy)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const u64 xf_mask = XFEATURE_MASK_X87_AVX;
 

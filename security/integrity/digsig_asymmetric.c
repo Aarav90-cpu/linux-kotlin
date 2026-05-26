@@ -131,6 +131,7 @@ out:
 	pr_debug("%s() = %d\n", __func__, ret);
 	return ret;
 }
+<<<<<<< HEAD
 
 /*
  * calc_file_id_hash - calculate the hash of the ima_file_id struct data
@@ -190,3 +191,5 @@ int asymmetric_verify_v3(struct key *keyring, const char *sig, int siglen,
 	return asymmetric_verify(keyring, sig, siglen, hash.digest,
 				 hash.hdr.length);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

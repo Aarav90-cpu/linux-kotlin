@@ -116,8 +116,12 @@ static void svc_rdma_wc_send(struct ib_cq *cq, struct ib_wc *wc);
 static struct svc_rdma_send_ctxt *
 svc_rdma_send_ctxt_alloc(struct svcxprt_rdma *rdma)
 {
+<<<<<<< HEAD
 	struct ib_device *device = rdma->sc_cm_id->device;
 	int node = ibdev_to_node(device);
+=======
+	int node = ibdev_to_node(rdma->sc_cm_id->device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct svc_rdma_send_ctxt *ctxt;
 	unsigned long pages;
 	dma_addr_t addr;
@@ -137,9 +141,15 @@ svc_rdma_send_ctxt_alloc(struct svcxprt_rdma *rdma)
 	buffer = kmalloc_node(rdma->sc_max_req_size, GFP_KERNEL, node);
 	if (!buffer)
 		goto fail2;
+<<<<<<< HEAD
 	addr = ib_dma_map_single(device, buffer, rdma->sc_max_req_size,
 				 DMA_TO_DEVICE);
 	if (ib_dma_mapping_error(device, addr))
+=======
+	addr = ib_dma_map_single(rdma->sc_pd->device, buffer,
+				 rdma->sc_max_req_size, DMA_TO_DEVICE);
+	if (ib_dma_mapping_error(rdma->sc_pd->device, addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail3;
 
 	svc_rdma_send_cid_init(rdma, &ctxt->sc_cid);
@@ -150,7 +160,10 @@ svc_rdma_send_ctxt_alloc(struct svcxprt_rdma *rdma)
 	ctxt->sc_send_wr.sg_list = ctxt->sc_sges;
 	ctxt->sc_send_wr.send_flags = IB_SEND_SIGNALED;
 	ctxt->sc_cqe.done = svc_rdma_wc_send;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&ctxt->sc_write_info_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctxt->sc_xprt_buf = buffer;
 	xdr_buf_init(&ctxt->sc_hdrbuf, ctxt->sc_xprt_buf,
 		     rdma->sc_max_req_size);
@@ -177,14 +190,24 @@ fail0:
  */
 void svc_rdma_send_ctxts_destroy(struct svcxprt_rdma *rdma)
 {
+<<<<<<< HEAD
 	struct ib_device *device = rdma->sc_cm_id->device;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct svc_rdma_send_ctxt *ctxt;
 	struct llist_node *node;
 
 	while ((node = llist_del_first(&rdma->sc_send_ctxts)) != NULL) {
 		ctxt = llist_entry(node, struct svc_rdma_send_ctxt, sc_node);
+<<<<<<< HEAD
 		ib_dma_unmap_single(device, ctxt->sc_sges[0].addr,
 				    rdma->sc_max_req_size, DMA_TO_DEVICE);
+=======
+		ib_dma_unmap_single(rdma->sc_pd->device,
+				    ctxt->sc_sges[0].addr,
+				    rdma->sc_max_req_size,
+				    DMA_TO_DEVICE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(ctxt->sc_xprt_buf);
 		kfree(ctxt->sc_pages);
 		kfree(ctxt);
@@ -238,7 +261,10 @@ static void svc_rdma_send_ctxt_release(struct svcxprt_rdma *rdma,
 	struct ib_device *device = rdma->sc_cm_id->device;
 	unsigned int i;
 
+<<<<<<< HEAD
 	svc_rdma_write_chunk_release(rdma, ctxt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	svc_rdma_reply_chunk_release(rdma, ctxt);
 
 	if (ctxt->sc_page_count)
@@ -297,6 +323,7 @@ void svc_rdma_wake_send_waiters(struct svcxprt_rdma *rdma, int avail)
 }
 
 /**
+<<<<<<< HEAD
  * svc_rdma_sq_wait - Wait for SQ slots using fair queuing
  * @rdma: controlling transport
  * @cid: completion ID for tracing
@@ -408,6 +435,8 @@ int svc_rdma_post_send_err(struct svcxprt_rdma *rdma,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * svc_rdma_wc_send - Invoked by RDMA provider for each polled Send WC
  * @cq: Completion Queue context
  * @wc: Work Completion object
@@ -449,6 +478,14 @@ flushed:
  * that these values remain available after the ib_post_send() call.
  * In some error flow cases, svc_rdma_wc_send() releases @ctxt.
  *
+<<<<<<< HEAD
+=======
+ * Note there is potential for starvation when the Send Queue is
+ * full because there is no order to when waiting threads are
+ * awoken. The transport is typically provisioned with a deep
+ * enough Send Queue that SQ exhaustion should be a rare event.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return values:
  *   %0: @ctxt's WR chain was posted successfully
  *   %-ENOTCONN: The connection was lost
@@ -465,11 +502,16 @@ int svc_rdma_post_send(struct svcxprt_rdma *rdma,
 	might_sleep();
 
 	/* Sync the transport header buffer */
+<<<<<<< HEAD
 	ib_dma_sync_single_for_device(rdma->sc_cm_id->device,
+=======
+	ib_dma_sync_single_for_device(rdma->sc_pd->device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      send_wr->sg_list[0].addr,
 				      send_wr->sg_list[0].length,
 				      DMA_TO_DEVICE);
 
+<<<<<<< HEAD
 	ret = svc_rdma_sq_wait(rdma, &cid, sqecount);
 	if (ret < 0)
 		return ret;
@@ -480,6 +522,44 @@ int svc_rdma_post_send(struct svcxprt_rdma *rdma,
 		return svc_rdma_post_send_err(rdma, &cid, bad_wr,
 					      first_wr, sqecount, ret);
 	return 0;
+=======
+	/* If the SQ is full, wait until an SQ entry is available */
+	while (!test_bit(XPT_CLOSE, &rdma->sc_xprt.xpt_flags)) {
+		if (atomic_sub_return(sqecount, &rdma->sc_sq_avail) < 0) {
+			svc_rdma_wake_send_waiters(rdma, sqecount);
+
+			/* When the transport is torn down, assume
+			 * ib_drain_sq() will trigger enough Send
+			 * completions to wake us. The XPT_CLOSE test
+			 * above should then cause the while loop to
+			 * exit.
+			 */
+			percpu_counter_inc(&svcrdma_stat_sq_starve);
+			trace_svcrdma_sq_full(rdma, &cid);
+			wait_event(rdma->sc_send_wait,
+				   atomic_read(&rdma->sc_sq_avail) > 0);
+			trace_svcrdma_sq_retry(rdma, &cid);
+			continue;
+		}
+
+		trace_svcrdma_post_send(ctxt);
+		ret = ib_post_send(rdma->sc_qp, first_wr, &bad_wr);
+		if (ret) {
+			trace_svcrdma_sq_post_err(rdma, &cid, ret);
+			svc_xprt_deferred_close(&rdma->sc_xprt);
+
+			/* If even one WR was posted, there will be a
+			 * Send completion that bumps sc_sq_avail.
+			 */
+			if (bad_wr == first_wr) {
+				svc_rdma_wake_send_waiters(rdma, sqecount);
+				break;
+			}
+		}
+		return 0;
+	}
+	return -ENOTCONN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -940,8 +1020,12 @@ int svc_rdma_map_reply_msg(struct svcxprt_rdma *rdma,
 
 /* The svc_rqst and all resources it owns are released as soon as
  * svc_rdma_sendto returns. Transfer pages under I/O to the ctxt
+<<<<<<< HEAD
  * so they are released only after Send completion, and not by
  * svc_rqst_release_pages().
+=======
+ * so they are released by the Send completion handler.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void svc_rdma_save_io_pages(struct svc_rqst *rqstp,
 				   struct svc_rdma_send_ctxt *ctxt)
@@ -953,6 +1037,12 @@ static void svc_rdma_save_io_pages(struct svc_rqst *rqstp,
 		ctxt->sc_pages[i] = rqstp->rq_respages[i];
 		rqstp->rq_respages[i] = NULL;
 	}
+<<<<<<< HEAD
+=======
+
+	/* Prevent svc_xprt_release from releasing pages in rq_pages */
+	rqstp->rq_next_page = rqstp->rq_respages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Prepare the portion of the RPC Reply that will be transmitted
@@ -1056,12 +1146,15 @@ void svc_rdma_send_error_msg(struct svcxprt_rdma *rdma,
 	sctxt->sc_send_wr.num_sge = 1;
 	sctxt->sc_send_wr.opcode = IB_WR_SEND;
 	sctxt->sc_sges[0].length = sctxt->sc_hdrbuf.len;
+<<<<<<< HEAD
 
 	/* Ensure only the error message is posted, not any previously
 	 * prepared Write chunk WRs.
 	 */
 	sctxt->sc_wr_chain = &sctxt->sc_send_wr;
 	sctxt->sc_sqecount = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (svc_rdma_post_send(rdma, sctxt))
 		goto put_ctxt;
 	return;
@@ -1109,7 +1202,11 @@ int svc_rdma_sendto(struct svc_rqst *rqstp)
 	if (!p)
 		goto put_ctxt;
 
+<<<<<<< HEAD
 	ret = svc_rdma_prepare_write_list(rdma, rctxt, sctxt, &rqstp->rq_res);
+=======
+	ret = svc_rdma_send_write_list(rdma, rctxt, &rqstp->rq_res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto put_ctxt;
 

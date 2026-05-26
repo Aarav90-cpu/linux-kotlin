@@ -5722,6 +5722,7 @@ ath12k_htt_print_tx_hwq_stats_cmn_tlv(const void *tag_buf, u16 tag_len,
 	stats_req->buf_len = len;
 }
 
+<<<<<<< HEAD
 static void
 ath12k_htt_print_chan_switch_stats_tlv(const void *tag_buf, u16 tag_len,
 				       struct debug_htt_stats_req *stats_req)
@@ -5791,6 +5792,8 @@ ath12k_htt_print_chan_switch_stats_tlv(const void *tag_buf, u16 tag_len,
 	stats_req->buf_len = len;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
 					  u16 tag, u16 len, const void *tag_buf,
 					  void *user_data)
@@ -6093,9 +6096,12 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
 	case HTT_STATS_TX_HWQ_CMN_TAG:
 		ath12k_htt_print_tx_hwq_stats_cmn_tlv(tag_buf, len, stats_req);
 		break;
+<<<<<<< HEAD
 	case HTT_STATS_CHAN_SWITCH_STATS_TAG:
 		ath12k_htt_print_chan_switch_stats_tlv(tag_buf, len, stats_req);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}

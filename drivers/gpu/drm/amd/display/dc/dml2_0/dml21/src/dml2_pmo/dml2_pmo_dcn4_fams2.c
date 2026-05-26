@@ -23,7 +23,10 @@ static const struct dml2_pmo_pstate_strategy base_strategy_list_1_display[] = {
 		.allow_state_increase = true,
 	},
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// Then VBlank
 	{
 		.per_stream_pstate_method = { dml2_pstate_method_vblank, dml2_pstate_method_na, dml2_pstate_method_na, dml2_pstate_method_na },
@@ -54,7 +57,10 @@ static const struct dml2_pmo_pstate_strategy base_strategy_list_2_display[] = {
 		.allow_state_increase = true,
 	},
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// Then VActive + VBlank
 	{
 		.per_stream_pstate_method = { dml2_pstate_method_vactive, dml2_pstate_method_vblank, dml2_pstate_method_na, dml2_pstate_method_na },
@@ -115,7 +121,10 @@ static const struct dml2_pmo_pstate_strategy base_strategy_list_3_display[] = {
 		.allow_state_increase = true,
 	},
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// VActive + 1 VBlank
 	{
 		.per_stream_pstate_method = { dml2_pstate_method_vactive, dml2_pstate_method_vactive, dml2_pstate_method_vblank, dml2_pstate_method_na },
@@ -152,7 +161,10 @@ static const struct dml2_pmo_pstate_strategy base_strategy_list_4_display[] = {
 		.allow_state_increase = true,
 	},
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// VActive + 1 VBlank
 	{
 		.per_stream_pstate_method = { dml2_pstate_method_vactive, dml2_pstate_method_vactive, dml2_pstate_method_vactive, dml2_pstate_method_vblank },
@@ -428,7 +440,10 @@ static void insert_strategy_into_expanded_list(
 	struct dml2_pmo_pstate_strategy *expanded_strategy_list,
 	unsigned int *num_expanded_strategies)
 {
+<<<<<<< HEAD
 	(void)stream_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (expanded_strategy_list && num_expanded_strategies) {
 		memcpy(&expanded_strategy_list[*num_expanded_strategies], per_stream_pstate_strategy, sizeof(struct dml2_pmo_pstate_strategy));
 
@@ -521,7 +536,10 @@ static bool is_variant_method_valid(const struct dml2_pmo_pstate_strategy *base_
 		const unsigned int num_streams_per_variant_method[PMO_DCN4_MAX_DISPLAYS],
 		const unsigned int stream_count)
 {
+<<<<<<< HEAD
 	(void)variant_strategy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool valid = true;
 	unsigned int i;
 
@@ -1182,7 +1200,10 @@ static bool all_timings_support_svp(const struct dml2_pmo_instance *pmo,
 
 static void insert_into_candidate_list(const struct dml2_pmo_pstate_strategy *pstate_strategy, int stream_count, struct dml2_pmo_scratch *scratch)
 {
+<<<<<<< HEAD
 	(void)stream_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	scratch->pmo_dcn4.pstate_strategy_candidates[scratch->pmo_dcn4.num_pstate_candidates] = *pstate_strategy;
 	scratch->pmo_dcn4.num_pstate_candidates++;
 }
@@ -1658,11 +1679,18 @@ static bool validate_pstate_support_strategy_cofunctionality(struct dml2_pmo_ins
 	if (svp_count > 0 && (pmo->options->disable_svp || !all_timings_support_svp(pmo, display_cfg, svp_stream_mask)))
 		return false;
 
+<<<<<<< HEAD
 
 	return is_config_schedulable(pmo, display_cfg, pstate_strategy);
 }
 
 int dcn4_get_vactive_pstate_margin(const struct display_configuation_with_meta *display_cfg, int plane_mask)
+=======
+	return is_config_schedulable(pmo, display_cfg, pstate_strategy);
+}
+
+static int get_vactive_pstate_margin(const struct display_configuation_with_meta *display_cfg, int plane_mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int i;
 	int min_vactive_margin_us = 0xFFFFFFF;
@@ -1850,7 +1878,10 @@ static void build_subvp_meta_per_stream(struct dml2_pmo_instance *pmo,
 	struct display_configuation_with_meta *display_config,
 	int stream_index)
 {
+<<<<<<< HEAD
 	(void)display_config;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dml2_implicit_svp_meta *stream_svp_meta = &pmo->scratch.pmo_dcn4.stream_svp_meta[stream_index];
 	struct dml2_pstate_meta *stream_pstate_meta = &pmo->scratch.pmo_dcn4.stream_pstate_meta[stream_index];
 
@@ -1907,7 +1938,11 @@ bool pmo_dcn4_fams2_init_for_pstate_support(struct dml2_pmo_init_for_pstate_supp
 
 	// Figure out which streams can do vactive, and also build up implicit SVP and FAMS2 meta
 	for (stream_index = 0; stream_index < display_config->display_config.num_streams; stream_index++) {
+<<<<<<< HEAD
 		if (dcn4_get_vactive_pstate_margin(display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) >= (int)(MIN_VACTIVE_MARGIN_PCT * pmo->soc_bb->power_management_parameters.dram_clk_change_blackout_us))
+=======
+		if (get_vactive_pstate_margin(display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) >= (int)(MIN_VACTIVE_MARGIN_PCT * pmo->soc_bb->power_management_parameters.dram_clk_change_blackout_us))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			set_bit_in_bitfield(&s->pmo_dcn4.stream_vactive_capability_mask, stream_index);
 
 		/* FAMS2 meta */
@@ -1989,12 +2024,18 @@ static void reset_display_configuration(struct display_configuation_with_meta *d
 	}
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void setup_planes_for_drr_by_mask(struct display_configuation_with_meta *display_config,
 	struct dml2_pmo_instance *pmo,
 	int plane_mask)
 {
+<<<<<<< HEAD
 	(void)pmo;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int plane_index;
 	struct dml2_plane_parameters *plane;
 
@@ -2182,9 +2223,13 @@ static bool setup_display_config(struct display_configuation_with_meta *display_
 	return success;
 }
 
+<<<<<<< HEAD
 int dcn4_get_minimum_reserved_time_us_for_planes(
 	const struct display_configuation_with_meta *display_config,
 	int plane_mask)
+=======
+static int get_minimum_reserved_time_us_for_planes(struct display_configuation_with_meta *display_config, int plane_mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int min_time_us = 0xFFFFFF;
 	unsigned int plane_index = 0;
@@ -2224,16 +2269,26 @@ bool pmo_dcn4_fams2_test_for_pstate_support(struct dml2_pmo_test_for_pstate_supp
 
 		if (s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.cur_pstate_candidate].per_stream_pstate_method[stream_index] == dml2_pstate_method_vactive ||
 				s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.cur_pstate_candidate].per_stream_pstate_method[stream_index] == dml2_pstate_method_fw_vactive_drr) {
+<<<<<<< HEAD
 			if (dcn4_get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < (MIN_VACTIVE_MARGIN_PCT * in_out->instance->soc_bb->power_management_parameters.dram_clk_change_blackout_us) ||
+=======
+			if (get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < (MIN_VACTIVE_MARGIN_PCT * in_out->instance->soc_bb->power_management_parameters.dram_clk_change_blackout_us) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					get_vactive_det_fill_latency_delay_us(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) > stream_pstate_meta->method_vactive.max_vactive_det_fill_delay_us) {
 				p_state_supported = false;
 				break;
 			}
 		} else if (s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.cur_pstate_candidate].per_stream_pstate_method[stream_index] == dml2_pstate_method_vblank ||
 				s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.cur_pstate_candidate].per_stream_pstate_method[stream_index] == dml2_pstate_method_fw_vblank_drr) {
+<<<<<<< HEAD
 			if (dcn4_get_minimum_reserved_time_us_for_planes(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) <
 				REQUIRED_RESERVED_TIME ||
 				dcn4_get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < MIN_VACTIVE_MARGIN_VBLANK) {
+=======
+			if (get_minimum_reserved_time_us_for_planes(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) <
+				REQUIRED_RESERVED_TIME ||
+				get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < MIN_VACTIVE_MARGIN_VBLANK) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				p_state_supported = false;
 				break;
 			}
@@ -2245,7 +2300,11 @@ bool pmo_dcn4_fams2_test_for_pstate_support(struct dml2_pmo_test_for_pstate_supp
 			}
 		} else if (s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.cur_pstate_candidate].per_stream_pstate_method[stream_index] == dml2_pstate_method_fw_drr) {
 			if (!all_planes_match_method(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index], dml2_pstate_method_fw_drr) ||
+<<<<<<< HEAD
 				dcn4_get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < MIN_VACTIVE_MARGIN_DRR) {
+=======
+				get_vactive_pstate_margin(in_out->base_display_config, s->pmo_dcn4.stream_plane_mask[stream_index]) < MIN_VACTIVE_MARGIN_DRR) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				p_state_supported = false;
 				break;
 			}

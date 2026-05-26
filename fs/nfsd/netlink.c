@@ -24,13 +24,20 @@ const struct nla_policy nfsd_version_nl_policy[NFSD_A_VERSION_ENABLED + 1] = {
 };
 
 /* NFSD_CMD_THREADS_SET - do */
+<<<<<<< HEAD
 static const struct nla_policy nfsd_threads_set_nl_policy[NFSD_A_SERVER_FH_KEY + 1] = {
+=======
+static const struct nla_policy nfsd_threads_set_nl_policy[NFSD_A_SERVER_MIN_THREADS + 1] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFSD_A_SERVER_THREADS] = { .type = NLA_U32, },
 	[NFSD_A_SERVER_GRACETIME] = { .type = NLA_U32, },
 	[NFSD_A_SERVER_LEASETIME] = { .type = NLA_U32, },
 	[NFSD_A_SERVER_SCOPE] = { .type = NLA_NUL_STRING, },
 	[NFSD_A_SERVER_MIN_THREADS] = { .type = NLA_U32, },
+<<<<<<< HEAD
 	[NFSD_A_SERVER_FH_KEY] = NLA_POLICY_EXACT_LEN(16),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* NFSD_CMD_VERSION_SET - do */
@@ -59,7 +66,11 @@ static const struct genl_split_ops nfsd_nl_ops[] = {
 		.cmd		= NFSD_CMD_THREADS_SET,
 		.doit		= nfsd_nl_threads_set_doit,
 		.policy		= nfsd_threads_set_nl_policy,
+<<<<<<< HEAD
 		.maxattr	= NFSD_A_SERVER_FH_KEY,
+=======
+		.maxattr	= NFSD_A_SERVER_MIN_THREADS,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
 	},
 	{

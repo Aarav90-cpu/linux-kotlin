@@ -175,6 +175,7 @@ enum {
 	PT_FEAT_VTDSS_FORCE_WRITEABLE,
 };
 
+<<<<<<< HEAD
 struct pt_riscv_32 {
 	struct pt_common common;
 };
@@ -191,6 +192,8 @@ enum {
 
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pt_x86_64 {
 	struct pt_common common;
 };

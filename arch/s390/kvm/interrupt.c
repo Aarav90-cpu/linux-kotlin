@@ -956,9 +956,12 @@ static int __must_check __deliver_service(struct kvm_vcpu *vcpu)
 		set_bit(IRQ_PEND_EXT_SERVICE, &fi->masked_irqs);
 	spin_unlock(&fi->lock);
 
+<<<<<<< HEAD
 	if (!ext.ext_params)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VCPU_EVENT(vcpu, 4, "deliver: sclp parameter 0x%x",
 		   ext.ext_params);
 	vcpu->stat.deliver_service_signal++;
@@ -3310,7 +3313,12 @@ static void aen_host_forward(unsigned long si)
 	struct zpci_gaite *gaite;
 	struct kvm *kvm;
 
+<<<<<<< HEAD
 	gaite = aift->gait + si;
+=======
+	gaite = (struct zpci_gaite *)aift->gait +
+		(si * sizeof(struct zpci_gaite));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gaite->count == 0)
 		return;
 	if (gaite->aisb != 0)

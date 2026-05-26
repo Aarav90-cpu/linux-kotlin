@@ -9,7 +9,10 @@ host1x-y = \
 	job.o \
 	debug.o \
 	mipi.o \
+<<<<<<< HEAD
 	tegra114-mipi.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fence.o \
 	hw/host1x01.o \
 	hw/host1x02.o \

@@ -130,16 +130,25 @@ class DamosQuota:
     sz = None                   # size quota, in bytes
     ms = None                   # time quota
     goals = None                # quota goals
+<<<<<<< HEAD
     goal_tuner = None           # quota goal tuner
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     reset_interval_ms = None    # quota reset interval
     weight_sz_permil = None
     weight_nr_accesses_permil = None
     weight_age_permil = None
     scheme = None               # owner scheme
 
+<<<<<<< HEAD
     def __init__(self, sz=0, ms=0, goals=None, goal_tuner='consist',
                  reset_interval_ms=0, weight_sz_permil=0,
                  weight_nr_accesses_permil=0, weight_age_permil=0):
+=======
+    def __init__(self, sz=0, ms=0, goals=None, reset_interval_ms=0,
+                 weight_sz_permil=0, weight_nr_accesses_permil=0,
+                 weight_age_permil=0):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.sz = sz
         self.ms = ms
         self.reset_interval_ms = reset_interval_ms
@@ -147,7 +156,10 @@ class DamosQuota:
         self.weight_nr_accesses_permil = weight_nr_accesses_permil
         self.weight_age_permil = weight_age_permil
         self.goals = goals if goals is not None else []
+<<<<<<< HEAD
         self.goal_tuner = goal_tuner
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         for idx, goal in enumerate(self.goals):
             goal.idx = idx
             goal.quota = self
@@ -193,10 +205,13 @@ class DamosQuota:
             err = goal.stage()
             if err is not None:
                 return err
+<<<<<<< HEAD
         err = write_file(
                 os.path.join(self.sysfs_dir(), 'goal_tuner'), self.goal_tuner)
         if err is not None:
             return err
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return None
 
 class DamosWatermarks:

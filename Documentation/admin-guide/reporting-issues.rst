@@ -48,6 +48,7 @@ Once the report is out, answer any questions that come up and help where you
 can. That includes keeping the ball rolling by occasionally retesting with newer
 releases and sending a status update afterwards.
 
+<<<<<<< HEAD
 ..
    Note: If you see this note, you are reading the text's source file. You
    might want to switch to a rendered version: It makes it a lot easier to
@@ -58,6 +59,8 @@ releases and sending a status update afterwards.
    https://docs.kernel.org/admin-guide/reporting-issues.html
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Step-by-step guide how to report issues to the kernel maintainers
 =================================================================
 
@@ -241,6 +244,7 @@ kernels regularly rebased on those. If that is the case, follow these steps:
 The reference section below explains each of these steps in more detail.
 
 
+<<<<<<< HEAD
 Conclusion of the step-by-step guide
 ------------------------------------
 
@@ -289,6 +293,47 @@ A few words of general advice:
 
 With that off the table, find below details for the steps from the detailed
 guide on reporting issues to the Linux kernel developers.
+=======
+Reference section: Reporting issues to the kernel maintainers
+=============================================================
+
+The detailed guides above outline all the major steps in brief fashion, which
+should be enough for most people. But sometimes there are situations where even
+experienced users might wonder how to actually do one of those steps. That's
+what this section is for, as it will provide a lot more details on each of the
+above steps. Consider this as reference documentation: it's possible to read it
+from top to bottom. But it's mainly meant to skim over and a place to look up
+details how to actually perform those steps.
+
+A few words of general advice before digging into the details:
+
+ * The Linux kernel developers are well aware this process is complicated and
+   demands more than other FLOSS projects. We'd love to make it simpler. But
+   that would require work in various places as well as some infrastructure,
+   which would need constant maintenance; nobody has stepped up to do that
+   work, so that's just how things are for now.
+
+ * A warranty or support contract with some vendor doesn't entitle you to
+   request fixes from developers in the upstream Linux kernel community: such
+   contracts are completely outside the scope of the Linux kernel, its
+   development community, and this document. That's why you can't demand
+   anything such a contract guarantees in this context, not even if the
+   developer handling the issue works for the vendor in question. If you want
+   to claim your rights, use the vendor's support channel instead. When doing
+   so, you might want to mention you'd like to see the issue fixed in the
+   upstream Linux kernel; motivate them by saying it's the only way to ensure
+   the fix in the end will get incorporated in all Linux distributions.
+
+ * If you never reported an issue to a FLOSS project before you should consider
+   reading `How to Report Bugs Effectively
+   <https://www.chiark.greenend.org.uk/~sgtatham/bugs.html>`_, `How To Ask
+   Questions The Smart Way
+   <http://www.catb.org/esr/faqs/smart-questions.html>`_, and `How to ask good
+   questions <https://jvns.ca/blog/good-questions/>`_.
+
+With that off the table, find below the details on how to properly report
+issues to the Linux kernel developers.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 Make sure you're using the upstream Linux kernel
@@ -1693,6 +1738,7 @@ for the subsystem where the issue seems to have its roots; CC the mailing list
 for the subsystem as well as the stable mailing list (stable@vger.kernel.org).
 
 
+<<<<<<< HEAD
 Appendix: Why it is somewhat hard to report kernel bugs
 =======================================================
 
@@ -1746,6 +1792,74 @@ nature of kernels, Linux' development model, and how the world uses the kernel:
 Some of these aspects could be improved to facilitate bug reporting -- many
 Linux kernel developers are well aware of this and would be glad if a few
 individuals or an entity would make this their mission.
+=======
+Why some issues won't get any reaction or remain unfixed after being reported
+=============================================================================
+
+When reporting a problem to the Linux developers, be aware only 'issues of high
+priority' (regressions, security issues, severe problems) are definitely going
+to get resolved. The maintainers or if all else fails Linus Torvalds himself
+will make sure of that. They and the other kernel developers will fix a lot of
+other issues as well. But be aware that sometimes they can't or won't help; and
+sometimes there isn't even anyone to send a report to.
+
+This is best explained with kernel developers that contribute to the Linux
+kernel in their spare time. Quite a few of the drivers in the kernel were
+written by such programmers, often because they simply wanted to make their
+hardware usable on their favorite operating system.
+
+These programmers most of the time will happily fix problems other people
+report. But nobody can force them to do, as they are contributing voluntarily.
+
+Then there are situations where such developers really want to fix an issue,
+but can't: sometimes they lack hardware programming documentation to do so.
+This often happens when the publicly available docs are superficial or the
+driver was written with the help of reverse engineering.
+
+Sooner or later spare time developers will also stop caring for the driver.
+Maybe their test hardware broke, got replaced by something more fancy, or is so
+old that it's something you don't find much outside of computer museums
+anymore. Sometimes developer stops caring for their code and Linux at all, as
+something different in their life became way more important. In some cases
+nobody is willing to take over the job as maintainer – and nobody can be forced
+to, as contributing to the Linux kernel is done on a voluntary basis. Abandoned
+drivers nevertheless remain in the kernel: they are still useful for people and
+removing would be a regression.
+
+The situation is not that different with developers that are paid for their
+work on the Linux kernel. Those contribute most changes these days. But their
+employers sooner or later also stop caring for their code or make its
+programmer focus on other things. Hardware vendors for example earn their money
+mainly by selling new hardware; quite a few of them hence are not investing
+much time and energy in maintaining a Linux kernel driver for something they
+stopped selling years ago. Enterprise Linux distributors often care for a
+longer time period, but in new versions often leave support for old and rare
+hardware aside to limit the scope. Often spare time contributors take over once
+a company orphans some code, but as mentioned above: sooner or later they will
+leave the code behind, too.
+
+Priorities are another reason why some issues are not fixed, as maintainers
+quite often are forced to set those, as time to work on Linux is limited.
+That's true for spare time or the time employers grant their developers to
+spend on maintenance work on the upstream kernel. Sometimes maintainers also
+get overwhelmed with reports, even if a driver is working nearly perfectly. To
+not get completely stuck, the programmer thus might have no other choice than
+to prioritize issue reports and reject some of them.
+
+But don't worry too much about all of this, a lot of drivers have active
+maintainers who are quite interested in fixing as many issues as possible.
+
+
+Closing words
+=============
+
+Compared with other Free/Libre & Open Source Software it's hard to report
+issues to the Linux kernel developers: the length and complexity of this
+document and the implications between the lines illustrate that. But that's how
+it is for now. The main author of this text hopes documenting the state of the
+art will lay some groundwork to improve the situation over time.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ..
    end-of-content

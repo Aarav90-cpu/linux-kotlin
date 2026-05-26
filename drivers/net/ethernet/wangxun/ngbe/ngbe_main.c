@@ -57,16 +57,26 @@ static void ngbe_init_type_code(struct wx *wx)
 
 	wx->mac.type = wx_mac_em;
 	type_mask = (u16)(wx->subsystem_device_id & NGBE_OEM_MASK);
+<<<<<<< HEAD
 	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
 	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
+=======
+	ncsi_mask = wx->subsystem_device_id & NGBE_NCSI_MASK;
+	wol_mask = wx->subsystem_device_id & NGBE_WOL_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = rd32(wx, WX_CFG_PORT_ST);
 	wx->mac_type = (val & BIT(7)) >> 7 ?
 		       em_mac_type_rgmii :
 		       em_mac_type_mdi;
 
+<<<<<<< HEAD
 	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
 	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
+=======
+	wx->wol_hw_supported = (wol_mask == NGBE_WOL_SUP) ? 1 : 0;
+	wx->ncsi_enabled = (ncsi_mask == NGBE_NCSI_MASK ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
 
 	switch (type_mask) {
@@ -139,6 +149,7 @@ static int ngbe_sw_init(struct wx *wx)
 }
 
 /**
+<<<<<<< HEAD
  * ngbe_service_task - manages and runs subtasks
  * @work: pointer to work_struct containing our data
  **/
@@ -159,6 +170,8 @@ static void ngbe_init_service(struct wx *wx)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ngbe_irq_enable - Enable default interrupt generation settings
  * @wx: board private structure
  * @queues: enable all queues interrupts
@@ -388,10 +401,13 @@ static void ngbe_disable_device(struct wx *wx)
 	wx_napi_disable_all(wx);
 	netif_tx_stop_all_queues(netdev);
 	netif_tx_disable(netdev);
+<<<<<<< HEAD
 
 	timer_delete_sync(&wx->service_timer);
 	cancel_work_sync(&wx->service_task);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (wx->gpio_ctrl)
 		ngbe_sfp_modules_txrx_powerctl(wx, false);
 	wx_irq_disable(wx);
@@ -431,7 +447,10 @@ void ngbe_up(struct wx *wx)
 	wx_napi_enable_all(wx);
 	/* enable transmits */
 	netif_tx_start_all_queues(wx->netdev);
+<<<<<<< HEAD
 	mod_timer(&wx->service_timer, jiffies);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* clear any pending interrupts, may auto mask */
 	rd32(wx, WX_PX_IC(0));
@@ -545,9 +564,15 @@ static void ngbe_dev_shutdown(struct pci_dev *pdev, bool *enable_wake)
 	if (wufc) {
 		wx_set_rx_mode(netdev);
 		wx_configure_rx(wx);
+<<<<<<< HEAD
 		wr32(wx, WX_PSR_WKUP_CTL, wufc);
 	} else {
 		wr32(wx, WX_PSR_WKUP_CTL, 0);
+=======
+		wr32(wx, NGBE_PSR_WKUP_CTL, wufc);
+	} else {
+		wr32(wx, NGBE_PSR_WKUP_CTL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	pci_wake_from_d3(pdev, !!wufc);
 	*enable_wake = !!wufc;
@@ -767,10 +792,17 @@ static int ngbe_probe(struct pci_dev *pdev,
 
 	wx->wol = 0;
 	if (wx->wol_hw_supported)
+<<<<<<< HEAD
 		wx->wol = WX_PSR_WKUP_CTL_MAG;
 
 	netdev->ethtool->wol_enabled = !!(wx->wol);
 	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
+=======
+		wx->wol = NGBE_PSR_WKUP_CTL_MAG;
+
+	netdev->ethtool->wol_enabled = !!(wx->wol);
+	wr32(wx, NGBE_PSR_WKUP_CTL, wx->wol);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_set_wakeup_enable(&pdev->dev, wx->wol);
 
 	/* Save off EEPROM version number and Option Rom version which
@@ -795,11 +827,17 @@ static int ngbe_probe(struct pci_dev *pdev,
 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
 
+<<<<<<< HEAD
 	ngbe_init_service(wx);
 
 	err = wx_init_interrupt_scheme(wx);
 	if (err)
 		goto err_cancel_service;
+=======
+	err = wx_init_interrupt_scheme(wx);
+	if (err)
+		goto err_free_mac_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* phy Interface Configuration */
 	err = ngbe_mdio_init(wx);
@@ -819,9 +857,12 @@ err_register:
 	wx_control_hw(wx, false);
 err_clear_interrupt_scheme:
 	wx_clear_interrupt_scheme(wx);
+<<<<<<< HEAD
 err_cancel_service:
 	timer_delete_sync(&wx->service_timer);
 	cancel_work_sync(&wx->service_task);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_mac_table:
 	kfree(wx->rss_key);
 	kfree(wx->mac_table);
@@ -850,10 +891,13 @@ static void ngbe_remove(struct pci_dev *pdev)
 	netdev = wx->netdev;
 	wx_disable_sriov(wx);
 	unregister_netdev(netdev);
+<<<<<<< HEAD
 
 	timer_shutdown_sync(&wx->service_timer);
 	cancel_work_sync(&wx->service_task);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phylink_destroy(wx->phylink);
 	pci_release_selected_regions(pdev,
 				     pci_select_bars(pdev, IORESOURCE_MEM));

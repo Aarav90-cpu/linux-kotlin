@@ -56,10 +56,21 @@ static int xe_dma_buf_pin(struct dma_buf_attachment *attach)
 	bool allow_vram = true;
 	int ret;
 
+<<<<<<< HEAD
 	list_for_each_entry(attach, &dmabuf->attachments, node) {
 		if (!attach->peer2peer) {
 			allow_vram = false;
 			break;
+=======
+	if (!IS_ENABLED(CONFIG_DMABUF_MOVE_NOTIFY)) {
+		allow_vram = false;
+	} else {
+		list_for_each_entry(attach, &dmabuf->attachments, node) {
+			if (!attach->peer2peer) {
+				allow_vram = false;
+				break;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -193,6 +204,7 @@ static int xe_dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void xe_dma_buf_release(struct dma_buf *dmabuf)
 {
 	struct drm_gem_object *obj = dmabuf->priv;
@@ -205,6 +217,8 @@ static void xe_dma_buf_release(struct dma_buf *dmabuf)
 	drm_gem_dmabuf_release(dmabuf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dma_buf_ops xe_dmabuf_ops = {
 	.attach = xe_dma_buf_attach,
 	.detach = xe_dma_buf_detach,
@@ -212,7 +226,11 @@ static const struct dma_buf_ops xe_dmabuf_ops = {
 	.unpin = xe_dma_buf_unpin,
 	.map_dma_buf = xe_dma_buf_map,
 	.unmap_dma_buf = xe_dma_buf_unmap,
+<<<<<<< HEAD
 	.release = xe_dma_buf_release,
+=======
+	.release = drm_gem_dmabuf_release,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.begin_cpu_access = xe_dma_buf_begin_cpu_access,
 	.mmap = drm_gem_dmabuf_mmap,
 	.vmap = drm_gem_dmabuf_vmap,
@@ -235,6 +253,7 @@ struct dma_buf *xe_gem_prime_export(struct drm_gem_object *obj, int flags)
 	if (bo->vm)
 		return ERR_PTR(-EPERM);
 
+<<<<<<< HEAD
 	/*
 	 * Reject exporting purgeable BOs. DONTNEED BOs can be purged
 	 * at any time, making the exported dma-buf unusable. Purged BOs
@@ -280,6 +299,29 @@ out_unlock:
 
 static struct drm_gem_object *
 xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf *dma_buf)
+=======
+	ret = ttm_bo_setup_export(&bo->ttm, &ctx);
+	if (ret)
+		return ERR_PTR(ret);
+
+	buf = drm_gem_prime_export(obj, flags);
+	if (!IS_ERR(buf))
+		buf->ops = &xe_dmabuf_ops;
+
+	return buf;
+}
+
+/*
+ * Takes ownership of @storage: on success it is transferred to the returned
+ * drm_gem_object; on failure it is freed before returning the error.
+ * This matches the contract of xe_bo_init_locked() which frees @storage on
+ * its error paths, so callers need not (and must not) free @storage after
+ * this call.
+ */
+static struct drm_gem_object *
+xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
+		    struct dma_buf *dma_buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dma_resv *resv = dma_buf->resv;
 	struct xe_device *xe = to_xe_device(dev);
@@ -290,8 +332,15 @@ xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf *dma_buf)
 	int ret = 0;
 
 	dummy_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
+<<<<<<< HEAD
 	if (!dummy_obj)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!dummy_obj) {
+		xe_bo_free(storage);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dummy_obj->resv = resv;
 	xe_validation_guard(&ctx, &xe->val, &exec, (struct xe_val_flags) {}, ret) {
@@ -300,7 +349,12 @@ xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf *dma_buf)
 		if (ret)
 			break;
 
+<<<<<<< HEAD
 		bo = xe_bo_init_locked(xe, NULL, NULL, resv, NULL, dma_buf->size,
+=======
+		/* xe_bo_init_locked() frees storage on error */
+		bo = xe_bo_init_locked(xe, storage, NULL, resv, NULL, dma_buf->size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       0, /* Will require 1way or 2way for vm_bind */
 				       ttm_bo_type_sg, XE_BO_FLAG_SYSTEM, &exec);
 		drm_exec_retry_on_contention(&exec);
@@ -326,7 +380,11 @@ static void xe_dma_buf_move_notify(struct dma_buf_attachment *attach)
 
 static const struct dma_buf_attach_ops xe_dma_buf_attach_ops = {
 	.allow_peer2peer = true,
+<<<<<<< HEAD
 	.invalidate_mappings = xe_dma_buf_move_notify
+=======
+	.move_notify = xe_dma_buf_move_notify
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
@@ -351,6 +409,10 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
 	const struct dma_buf_attach_ops *attach_ops;
 	struct dma_buf_attachment *attach;
 	struct drm_gem_object *obj;
+<<<<<<< HEAD
+=======
+	struct xe_bo *bo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dma_buf->ops == &xe_dmabuf_ops) {
 		obj = dma_buf->priv;
@@ -366,6 +428,7 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * This needs to happen before the attach, since it will create a new
 	 * attachment for this, and add it to the list of attachments, at which
 	 * point it is globally visible, and at any point the export side can
@@ -375,6 +438,15 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
 	obj = xe_dma_buf_create_obj(dev, dma_buf);
 	if (IS_ERR(obj))
 		return obj;
+=======
+	 * Don't publish the bo until we have a valid attachment, and a
+	 * valid attachment needs the bo address. So pre-create a bo before
+	 * creating the attachment and publish.
+	 */
+	bo = xe_bo_alloc();
+	if (IS_ERR(bo))
+		return ERR_CAST(bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	attach_ops = &xe_dma_buf_attach_ops;
 #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
@@ -382,6 +454,7 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
 		attach_ops = test->attach_ops;
 #endif
 
+<<<<<<< HEAD
 	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, obj);
 	if (IS_ERR(attach)) {
 		xe_bo_put(gem_to_xe_bo(obj));
@@ -391,6 +464,31 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
 	get_dma_buf(dma_buf);
 	obj->import_attach = attach;
 	return obj;
+=======
+	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, &bo->ttm.base);
+	if (IS_ERR(attach)) {
+		obj = ERR_CAST(attach);
+		goto out_err;
+	}
+
+	/*
+	 * xe_dma_buf_init_obj() takes ownership of bo on both success
+	 * and failure, so we must not touch bo after this call.
+	 */
+	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
+	if (IS_ERR(obj)) {
+		dma_buf_detach(dma_buf, attach);
+		return obj;
+	}
+	get_dma_buf(dma_buf);
+	obj->import_attach = attach;
+	return obj;
+
+out_err:
+	xe_bo_free(bo);
+
+	return obj;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)

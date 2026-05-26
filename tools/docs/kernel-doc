@@ -210,6 +210,10 @@ def main():
                         help="Enable debug messages")
 
     parser.add_argument("-M", "-modulename", "--modulename",
+<<<<<<< HEAD
+=======
+                        default="Kernel API",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                         help="Allow setting a module name at the output.")
 
     parser.add_argument("-l", "-enable-lineno", "--enable_lineno",
@@ -240,9 +244,17 @@ def main():
                         help=EXPORT_FILE_DESC)
 
     #
+<<<<<<< HEAD
     # Output format
     #
     out_fmt = parser.add_argument_group("Output format selection (mutually exclusive)")
+=======
+    # Output format mutually-exclusive group
+    #
+    out_group = parser.add_argument_group("Output format selection (mutually exclusive)")
+
+    out_fmt = out_group.add_mutually_exclusive_group()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     out_fmt.add_argument("-m", "-man", "--man", action="store_true",
                          help="Output troff manual page format.")
@@ -251,12 +263,15 @@ def main():
     out_fmt.add_argument("-N", "-none", "--none", action="store_true",
                          help="Do not output documentation, only warnings.")
 
+<<<<<<< HEAD
     out_fmt.add_argument("-y", "--yaml-file", "--yaml",
                          help="Stores kernel-doc output on a yaml file.")
     out_fmt.add_argument("-k", "--kdoc-item", "--kdoc", action="store_true",
                          help="Store KdocItem inside yaml file. Ued together with --yaml.")
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #
     # Output selection mutually-exclusive group
     #
@@ -327,6 +342,7 @@ def main():
     from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
     from kdoc.kdoc_output import RestFormat, ManFormat  # pylint: disable=C0415
 
+<<<<<<< HEAD
     yaml_content = set()
     if args.yaml_file:
         out_style = None
@@ -363,6 +379,16 @@ def main():
 
     kfiles = KernelFiles(verbose=args.verbose,
                          yaml_file=args.yaml_file, yaml_content=yaml_content,
+=======
+    if args.man:
+        out_style = ManFormat(modulename=args.modulename)
+    elif args.none:
+        out_style = None
+    else:
+        out_style = RestFormat()
+
+    kfiles = KernelFiles(verbose=args.verbose,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                          out_style=out_style, werror=args.werror,
                          wreturn=args.wreturn, wshort_desc=args.wshort_desc,
                          wcontents_before_sections=args.wcontents_before_sections)

@@ -35,6 +35,7 @@ bool intel_dsc_source_support(const struct intel_crtc_state *crtc_state)
 	return true;
 }
 
+<<<<<<< HEAD
 int intel_dsc_line_slice_count(const struct intel_dsc_slice_config *config)
 {
 	return config->pipes_per_line * config->streams_per_pipe * config->slices_per_stream;
@@ -87,6 +88,8 @@ bool intel_dsc_get_slice_config(struct intel_display *display,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool is_pipe_dsc(struct intel_crtc *crtc, enum transcoder cpu_transcoder)
 {
 	struct intel_display *display = to_intel_display(crtc);
@@ -330,9 +333,14 @@ int intel_dsc_compute_params(struct intel_crtc_state *pipe_config)
 	int ret;
 
 	vdsc_cfg->pic_width = pipe_config->hw.adjusted_mode.crtc_hdisplay;
+<<<<<<< HEAD
 	vdsc_cfg->slice_width =
 		DIV_ROUND_UP(vdsc_cfg->pic_width,
 			     intel_dsc_line_slice_count(&pipe_config->dsc.slice_config));
+=======
+	vdsc_cfg->slice_width = DIV_ROUND_UP(vdsc_cfg->pic_width,
+					     pipe_config->dsc.slice_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = intel_dsc_slice_dimensions_valid(pipe_config, vdsc_cfg);
 
@@ -469,7 +477,11 @@ intel_dsc_power_domain(struct intel_crtc *crtc, enum transcoder cpu_transcoder)
 
 static int intel_dsc_get_vdsc_per_pipe(const struct intel_crtc_state *crtc_state)
 {
+<<<<<<< HEAD
 	return crtc_state->dsc.slice_config.streams_per_pipe;
+=======
+	return crtc_state->dsc.num_streams;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int intel_dsc_get_num_vdsc_instances(const struct intel_crtc_state *crtc_state)
@@ -1094,6 +1106,7 @@ void intel_dsc_get_config(struct intel_crtc_state *crtc_state)
 	if (!crtc_state->dsc.compression_enable)
 		goto out;
 
+<<<<<<< HEAD
 	/* TODO: Read out slice_config.pipes_per_line/slices_per_stream as well */
 	if (dss_ctl1 & JOINER_ENABLE && dss_ctl2 & (VDSC2_ENABLE | SMALL_JOINER_CONFIG_3_ENGINES))
 		crtc_state->dsc.slice_config.streams_per_pipe = 3;
@@ -1101,6 +1114,14 @@ void intel_dsc_get_config(struct intel_crtc_state *crtc_state)
 		crtc_state->dsc.slice_config.streams_per_pipe = 2;
 	else
 		crtc_state->dsc.slice_config.streams_per_pipe = 1;
+=======
+	if (dss_ctl1 & JOINER_ENABLE && dss_ctl2 & (VDSC2_ENABLE | SMALL_JOINER_CONFIG_3_ENGINES))
+		crtc_state->dsc.num_streams = 3;
+	else if (dss_ctl1 & JOINER_ENABLE && dss_ctl2 & VDSC1_ENABLE)
+		crtc_state->dsc.num_streams = 2;
+	else
+		crtc_state->dsc.num_streams = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_dsc_get_pps_config(crtc_state);
 out:
@@ -1113,8 +1134,13 @@ static void intel_vdsc_dump_state(struct drm_printer *p, int indent,
 	drm_printf_indent(p, indent,
 			  "dsc-dss: compressed-bpp:" FXP_Q4_FMT ", slice-count: %d, num_streams: %d\n",
 			  FXP_Q4_ARGS(crtc_state->dsc.compressed_bpp_x16),
+<<<<<<< HEAD
 			  intel_dsc_line_slice_count(&crtc_state->dsc.slice_config),
 			  crtc_state->dsc.slice_config.streams_per_pipe);
+=======
+			  crtc_state->dsc.slice_count,
+			  crtc_state->dsc.num_streams);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void intel_vdsc_state_dump(struct drm_printer *p, int indent,
@@ -1127,6 +1153,10 @@ void intel_vdsc_state_dump(struct drm_printer *p, int indent,
 	drm_dsc_dump_config(p, indent, &crtc_state->dsc.config);
 }
 
+<<<<<<< HEAD
+=======
+static
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int intel_dsc_get_pixel_rate_with_dsc_bubbles(struct intel_display *display,
 					      int pixel_rate, int htotal,
 					      int dsc_horizontal_slices)
@@ -1148,7 +1178,11 @@ int intel_vdsc_min_cdclk(const struct intel_crtc_state *crtc_state)
 	struct intel_display *display = to_intel_display(crtc_state);
 	int num_vdsc_instances = intel_dsc_get_num_vdsc_instances(crtc_state);
 	int htotal = crtc_state->hw.adjusted_mode.crtc_htotal;
+<<<<<<< HEAD
 	int dsc_slices = intel_dsc_line_slice_count(&crtc_state->dsc.slice_config);
+=======
+	int dsc_slices = crtc_state->dsc.slice_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pixel_rate;
 	int min_cdclk;
 

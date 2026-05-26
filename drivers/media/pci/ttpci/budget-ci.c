@@ -249,7 +249,10 @@ static void msp430_ir_deinit(struct budget_ci *budget_ci)
 	cancel_work_sync(&budget_ci->ir.msp430_irq_bh_work);
 
 	rc_unregister_device(budget_ci->ir.dev);
+<<<<<<< HEAD
 	rc_free_device(budget_ci->ir.dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ciintf_read_attribute_mem(struct dvb_ca_en50221 *ca, int slot, int address)

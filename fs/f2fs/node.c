@@ -10,7 +10,11 @@
 #include <linux/mpage.h>
 #include <linux/sched/mm.h>
 #include <linux/blkdev.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/swap.h>
 
 #include "f2fs.h"
@@ -78,7 +82,11 @@ bool f2fs_available_free_memory(struct f2fs_sb_info *sbi, int type)
 		if (excess_cached_nats(sbi))
 			res = false;
 	} else if (type == DIRTY_DENTS) {
+<<<<<<< HEAD
 		if (bdi_wb_dirty_exceeded(sbi->sb->s_bdi))
+=======
+		if (sbi->sb->s_bdi->wb.dirty_exceeded)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 		mem_size = get_pages(sbi, F2FS_DIRTY_DENTS);
 		res = mem_size < ((avail_ram * nm_i->ram_thresh / 100) >> 1);
@@ -119,7 +127,11 @@ bool f2fs_available_free_memory(struct f2fs_sb_info *sbi, int type)
 		res = false;
 #endif
 	} else {
+<<<<<<< HEAD
 		if (!bdi_wb_dirty_exceeded(sbi->sb->s_bdi))
+=======
+		if (!sbi->sb->s_bdi->wb.dirty_exceeded)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return true;
 	}
 	return res;
@@ -325,7 +337,11 @@ static unsigned int __gang_lookup_nat_set(struct f2fs_nm_info *nm_i,
 							start, nr);
 }
 
+<<<<<<< HEAD
 bool f2fs_in_warm_node_list(struct folio *folio)
+=======
+bool f2fs_in_warm_node_list(struct f2fs_sb_info *sbi, struct folio *folio)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return is_node_folio(folio) && IS_DNODE(folio) && is_cold_node(folio);
 }
@@ -391,7 +407,11 @@ void f2fs_reset_fsync_node_info(struct f2fs_sb_info *sbi)
 	spin_unlock_irqrestore(&sbi->fsync_node_lock, flags);
 }
 
+<<<<<<< HEAD
 bool f2fs_need_dentry_mark(struct f2fs_sb_info *sbi, nid_t nid)
+=======
+int f2fs_need_dentry_mark(struct f2fs_sb_info *sbi, nid_t nid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct f2fs_nm_info *nm_i = NM_I(sbi);
 	struct nat_entry *e;
@@ -427,9 +447,13 @@ bool f2fs_need_inode_block_update(struct f2fs_sb_info *sbi, nid_t ino)
 	struct f2fs_nm_info *nm_i = NM_I(sbi);
 	struct nat_entry *e;
 	bool need_update = true;
+<<<<<<< HEAD
 	struct f2fs_lock_context lc;
 
 	f2fs_down_read_trace(&sbi->node_write, &lc);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	f2fs_down_read(&nm_i->nat_tree_lock);
 	e = __lookup_nat_cache(nm_i, ino, false);
 	if (e && get_nat_flag(e, HAS_LAST_FSYNC) &&
@@ -437,7 +461,10 @@ bool f2fs_need_inode_block_update(struct f2fs_sb_info *sbi, nid_t ino)
 			 get_nat_flag(e, HAS_FSYNCED_INODE)))
 		need_update = false;
 	f2fs_up_read(&nm_i->nat_tree_lock);
+<<<<<<< HEAD
 	f2fs_up_read_trace(&sbi->node_write, &lc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return need_update;
 }
 
@@ -850,7 +877,11 @@ int f2fs_get_dnode_of_data(struct dnode_of_data *dn, pgoff_t index, int mode)
 			err = -EFSCORRUPTED;
 			f2fs_err_ratelimited(sbi,
 				"inode mapping table is corrupted, run fsck to fix it, "
+<<<<<<< HEAD
 				"ino:%llu, nid:%u, level:%d, offset:%d",
+=======
+				"ino:%lu, nid:%u, level:%d, offset:%d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dn->inode->i_ino, nids[i], level, offset[level]);
 			set_sbi_flag(sbi, SBI_NEED_FSCK);
 			goto release_pages;
@@ -1016,7 +1047,11 @@ static int truncate_dnode(struct dnode_of_data *dn)
 		return PTR_ERR(folio);
 
 	if (IS_INODE(folio) || ino_of_node(folio) != dn->inode->i_ino) {
+<<<<<<< HEAD
 		f2fs_err(sbi, "incorrect node reference, ino: %llu, nid: %u, ino_of_node: %u",
+=======
+		f2fs_err(sbi, "incorrect node reference, ino: %lu, nid: %u, ino_of_node: %u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dn->inode->i_ino, dn->nid, ino_of_node(folio));
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
 		f2fs_handle_error(sbi, ERROR_INVALID_NODE_REFERENCE);
@@ -1116,7 +1151,11 @@ out_err:
 }
 
 static int truncate_partial_nodes(struct dnode_of_data *dn,
+<<<<<<< HEAD
 			int *offset, int depth)
+=======
+			struct f2fs_inode *ri, int *offset, int depth)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct folio *folios[2];
 	nid_t nid[3];
@@ -1187,6 +1226,10 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
 	int err = 0, cont = 1;
 	int level, offset[4], noffset[4];
 	unsigned int nofs = 0;
+<<<<<<< HEAD
+=======
+	struct f2fs_inode *ri;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dnode_of_data dn;
 	struct folio *folio;
 
@@ -1196,7 +1239,11 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
 	if (level <= 0) {
 		if (!level) {
 			level = -EFSCORRUPTED;
+<<<<<<< HEAD
 			f2fs_err(sbi, "%s: inode ino=%llx has corrupted node block, from:%lu addrs:%u",
+=======
+			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					__func__, inode->i_ino,
 					from, ADDRS_PER_INODE(inode));
 			set_sbi_flag(sbi, SBI_NEED_FSCK);
@@ -1214,6 +1261,10 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
 	set_new_dnode(&dn, inode, folio, NULL, 0);
 	folio_unlock(folio);
 
+<<<<<<< HEAD
+=======
+	ri = F2FS_INODE(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (level) {
 	case 0:
 	case 1:
@@ -1223,7 +1274,11 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
 		nofs = noffset[1];
 		if (!offset[level - 1])
 			goto skip_partial;
+<<<<<<< HEAD
 		err = truncate_partial_nodes(&dn, offset, level);
+=======
+		err = truncate_partial_nodes(&dn, ri, offset, level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0 && err != -ENOENT)
 			goto fail;
 		nofs += 1 + NIDS_PER_BLOCK;
@@ -1232,7 +1287,11 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
 		nofs = 5 + 2 * NIDS_PER_BLOCK;
 		if (!offset[level - 1])
 			goto skip_partial;
+<<<<<<< HEAD
 		err = truncate_partial_nodes(&dn, offset, level);
+=======
+		err = truncate_partial_nodes(&dn, ri, offset, level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0 && err != -ENOENT)
 			goto fail;
 		break;
@@ -1266,7 +1325,11 @@ skip_partial:
 			set_sbi_flag(F2FS_F_SB(folio), SBI_NEED_FSCK);
 			f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
 			f2fs_err_ratelimited(sbi,
+<<<<<<< HEAD
 				"truncate node fail, ino:%llu, nid:%u, "
+=======
+				"truncate node fail, ino:%lu, nid:%u, "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				"offset[0]:%d, offset[1]:%d, nofs:%d",
 				inode->i_ino, dn.nid, offset[0],
 				offset[1], nofs);
@@ -1352,7 +1415,11 @@ int f2fs_remove_inode_page(struct inode *inode)
 
 	if (unlikely(inode->i_blocks != 0 && inode->i_blocks != 8)) {
 		f2fs_warn(F2FS_I_SB(inode),
+<<<<<<< HEAD
 			"f2fs_remove_inode_page: inconsistent i_blocks, ino:%llu, iblocks:%llu",
+=======
+			"f2fs_remove_inode_page: inconsistent i_blocks, ino:%lu, iblocks:%llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, (unsigned long long)inode->i_blocks);
 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
 	}
@@ -1778,7 +1845,11 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool do_fsync,
 
 	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
 					NODE_TYPE_REGULAR, false)) {
+<<<<<<< HEAD
 		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_CORRUPTED_NID);
+=======
+		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto redirty_out;
 	}
 
@@ -1813,7 +1884,11 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool do_fsync,
 				f2fs_need_dentry_mark(sbi, ino_of_node(folio)));
 
 	/* should add to global list before clearing PAGECACHE status */
+<<<<<<< HEAD
 	if (f2fs_in_warm_node_list(folio)) {
+=======
+	if (f2fs_in_warm_node_list(sbi, folio)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq = f2fs_add_fsync_node_entry(sbi, folio);
 		if (seq_id)
 			*seq_id = seq;
@@ -2006,7 +2081,11 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int f2fs_match_ino(struct inode *inode, u64 ino, void *data)
+=======
+static int f2fs_match_ino(struct inode *inode, unsigned long ino, void *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
 	bool clean;

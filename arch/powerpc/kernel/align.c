@@ -165,6 +165,7 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
 		temp.ll = data.ll = 0;
 		p = addr;
 
+<<<<<<< HEAD
 		scoped_user_read_access_size(addr, nb, efault) {
 			switch (nb) {
 			case 8:
@@ -182,6 +183,27 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
 				unsafe_get_user(temp.v[7], p++, efault);
 			}
 		}
+=======
+		if (!user_read_access_begin(addr, nb))
+			return -EFAULT;
+
+		switch (nb) {
+		case 8:
+			unsafe_get_user(temp.v[0], p++, Efault_read);
+			unsafe_get_user(temp.v[1], p++, Efault_read);
+			unsafe_get_user(temp.v[2], p++, Efault_read);
+			unsafe_get_user(temp.v[3], p++, Efault_read);
+			fallthrough;
+		case 4:
+			unsafe_get_user(temp.v[4], p++, Efault_read);
+			unsafe_get_user(temp.v[5], p++, Efault_read);
+			fallthrough;
+		case 2:
+			unsafe_get_user(temp.v[6], p++, Efault_read);
+			unsafe_get_user(temp.v[7], p++, Efault_read);
+		}
+		user_read_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		switch (instr) {
 		case EVLDD:
@@ -250,6 +272,7 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
 	if (flags & ST) {
 		p = addr;
 
+<<<<<<< HEAD
 		scoped_user_write_access_size(addr, nb, efault) {
 			switch (nb) {
 			case 8:
@@ -267,6 +290,27 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
 				unsafe_put_user(data.v[7], p++, efault);
 			}
 		}
+=======
+		if (!user_write_access_begin(addr, nb))
+			return -EFAULT;
+
+		switch (nb) {
+		case 8:
+			unsafe_put_user(data.v[0], p++, Efault_write);
+			unsafe_put_user(data.v[1], p++, Efault_write);
+			unsafe_put_user(data.v[2], p++, Efault_write);
+			unsafe_put_user(data.v[3], p++, Efault_write);
+			fallthrough;
+		case 4:
+			unsafe_put_user(data.v[4], p++, Efault_write);
+			unsafe_put_user(data.v[5], p++, Efault_write);
+			fallthrough;
+		case 2:
+			unsafe_put_user(data.v[6], p++, Efault_write);
+			unsafe_put_user(data.v[7], p++, Efault_write);
+		}
+		user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		*evr = data.w[0];
 		regs->gpr[reg] = data.w[1];
@@ -274,7 +318,16 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
 
 	return 1;
 
+<<<<<<< HEAD
 efault:
+=======
+Efault_read:
+	user_read_access_end();
+	return -EFAULT;
+
+Efault_write:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EFAULT;
 }
 #endif /* CONFIG_SPE */

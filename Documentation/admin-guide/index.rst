@@ -94,7 +94,10 @@ likely to be of interest on almost any system.
 
    cgroup-v2
    cgroup-v1/index
+<<<<<<< HEAD
    cpu-isolation
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    cpu-load
    mm/index
    module-signing

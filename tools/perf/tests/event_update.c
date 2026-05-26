@@ -8,7 +8,10 @@
 #include "header.h"
 #include "machine.h"
 #include "util/synthetic-events.h"
+<<<<<<< HEAD
 #include "target.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "tool.h"
 #include "tests.h"
 #include "debug.h"
@@ -82,8 +85,12 @@ static int test__event_update(struct test_suite *test __maybe_unused, int subtes
 {
 	struct evsel *evsel;
 	struct event_name tmp;
+<<<<<<< HEAD
 	struct target target = {};
 	struct evlist *evlist = evlist__new_default(&target, /*sample_callchains=*/false);
+=======
+	struct evlist *evlist = evlist__new_default();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT_VAL("failed to get evlist", evlist);
 

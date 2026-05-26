@@ -59,7 +59,11 @@ static int vprbrd_probe(struct usb_interface *interface,
 
 	mutex_init(&vb->lock);
 
+<<<<<<< HEAD
 	vb->usb_dev = interface_to_usbdev(interface);
+=======
+	vb->usb_dev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* save our data pointer in this interface device */
 	usb_set_intfdata(interface, vb);
@@ -96,8 +100,15 @@ static int vprbrd_probe(struct usb_interface *interface,
 	return 0;
 
 error:
+<<<<<<< HEAD
 	if (vb)
 		kfree(vb);
+=======
+	if (vb) {
+		usb_put_dev(vb->usb_dev);
+		kfree(vb);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -108,6 +119,10 @@ static void vprbrd_disconnect(struct usb_interface *interface)
 
 	mfd_remove_devices(&interface->dev);
 	usb_set_intfdata(interface, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(vb->usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(vb);
 
 	dev_dbg(&interface->dev, "disconnected\n");

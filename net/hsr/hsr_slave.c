@@ -243,11 +243,15 @@ void hsr_del_port(struct hsr_port *port)
 		if (!port->hsr->fwd_offloaded)
 			dev_set_promiscuity(port->dev, -1);
 		netdev_upper_dev_unlink(port->dev, master->dev);
+<<<<<<< HEAD
 		if (hsr->prot_version == PRP_V1 &&
 		    port->type == HSR_PT_SLAVE_B) {
 			eth_hw_addr_set(port->dev, port->original_macaddress);
 			call_netdevice_notifiers(NETDEV_CHANGEADDR, port->dev);
 		}
+=======
+		eth_hw_addr_set(port->dev, port->original_macaddress);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	kfree_rcu(port, rcu);

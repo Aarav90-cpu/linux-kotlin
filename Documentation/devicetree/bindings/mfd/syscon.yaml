@@ -61,7 +61,10 @@ select:
           - cirrus,ep7209-syscon2
           - cirrus,ep7209-syscon3
           - cnxt,cx92755-uc
+<<<<<<< HEAD
           - econet,en751221-chip-scu
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - freecom,fsg-cs2-system-controller
           - fsl,imx93-aonmix-ns-syscfg
           - fsl,imx93-wakeupmix-syscfg
@@ -174,7 +177,10 @@ properties:
               - cirrus,ep7209-syscon2
               - cirrus,ep7209-syscon3
               - cnxt,cx92755-uc
+<<<<<<< HEAD
               - econet,en751221-chip-scu
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - freecom,fsg-cs2-system-controller
               - fsl,imx93-aonmix-ns-syscfg
               - fsl,imx93-wakeupmix-syscfg

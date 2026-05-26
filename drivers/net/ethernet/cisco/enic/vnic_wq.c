@@ -72,16 +72,25 @@ void vnic_wq_free(struct vnic_wq *wq)
 	wq->ctrl = NULL;
 }
 
+<<<<<<< HEAD
 int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
 			    unsigned int index, unsigned int desc_count,
 			    unsigned int desc_size, unsigned int res_type)
+=======
+int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
+	unsigned int desc_count, unsigned int desc_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 
 	wq->index = index;
 	wq->vdev = vdev;
 
+<<<<<<< HEAD
 	wq->ctrl = vnic_dev_get_res(vdev, res_type, index);
+=======
+	wq->ctrl = vnic_dev_get_res(vdev, RES_TYPE_WQ, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!wq->ctrl) {
 		vdev_err(vdev, "Failed to hook WQ[%d] resource\n", index);
 		return -EINVAL;
@@ -102,6 +111,7 @@ int vnic_wq_alloc_with_type(struct vnic_dev *vdev, struct vnic_wq *wq,
 	return 0;
 }
 
+<<<<<<< HEAD
 int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
 		  unsigned int desc_count, unsigned int desc_size)
 {
@@ -109,6 +119,8 @@ int vnic_wq_alloc(struct vnic_dev *vdev, struct vnic_wq *wq, unsigned int index,
 				       RES_TYPE_WQ);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int enic_wq_devcmd2_alloc(struct vnic_dev *vdev, struct vnic_wq *wq,
 			  unsigned int desc_count, unsigned int desc_size)
 {

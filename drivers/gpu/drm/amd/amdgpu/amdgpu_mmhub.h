@@ -63,18 +63,22 @@ struct amdgpu_mmhub_funcs {
 				uint64_t page_table_base);
 	void (*update_power_gating)(struct amdgpu_device *adev,
                                 bool enable);
+<<<<<<< HEAD
 	int (*get_xgmi_info)(struct amdgpu_device *adev);
 };
 
 struct amdgpu_mmhub_client_ids {
 	const char * const (*names)[2];
 	unsigned int size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct amdgpu_mmhub {
 	struct ras_common_if *ras_if;
 	const struct amdgpu_mmhub_funcs *funcs;
 	struct amdgpu_mmhub_ras  *ras;
+<<<<<<< HEAD
 	struct amdgpu_mmhub_client_ids client_ids;
 };
 
@@ -97,6 +101,10 @@ amdgpu_mmhub_client_name(struct amdgpu_mmhub *mmhub,
 	return NULL;
 }
 
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_mmhub_ras_sw_init(struct amdgpu_device *adev);
 
 #endif

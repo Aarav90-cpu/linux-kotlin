@@ -313,6 +313,10 @@ static const struct nft_expr_ops nft_counter_ops = {
 	.destroy_clone	= nft_counter_destroy,
 	.dump		= nft_counter_dump,
 	.clone		= nft_counter_clone,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.offload	= nft_counter_offload,
 	.offload_stats	= nft_counter_offload_stats,
 };

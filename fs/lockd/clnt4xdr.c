@@ -13,8 +13,12 @@
 #include <linux/sunrpc/xdr.h>
 #include <linux/sunrpc/clnt.h>
 #include <linux/sunrpc/stats.h>
+<<<<<<< HEAD
 
 #include "lockd.h"
+=======
+#include <linux/lockd/lockd.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <uapi/linux/nfs3.h>
 
@@ -285,7 +289,11 @@ static int decode_nlm4_holder(struct xdr_stream *xdr, struct nlm_res *result)
 	fl->c.flc_type  = exclusive != 0 ? F_WRLCK : F_RDLCK;
 	p = xdr_decode_hyper(p, &l_offset);
 	xdr_decode_hyper(p, &l_len);
+<<<<<<< HEAD
 	lockd_set_file_lock_range4(fl, l_offset, l_len);
+=======
+	nlm4svc_set_file_lock_range(fl, l_offset, l_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = 0;
 out:
 	return error;

@@ -299,11 +299,19 @@ static u32 vi_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.pcie.lock, flags);
 	WREG32_NO_KIQ(mmPCIE_INDEX, reg);
 	(void)RREG32_NO_KIQ(mmPCIE_INDEX);
 	r = RREG32_NO_KIQ(mmPCIE_DATA);
 	spin_unlock_irqrestore(&adev->reg.pcie.lock, flags);
+=======
+	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
+	WREG32_NO_KIQ(mmPCIE_INDEX, reg);
+	(void)RREG32_NO_KIQ(mmPCIE_INDEX);
+	r = RREG32_NO_KIQ(mmPCIE_DATA);
+	spin_unlock_irqrestore(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -311,12 +319,20 @@ static void vi_pcie_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.pcie.lock, flags);
+=======
+	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WREG32_NO_KIQ(mmPCIE_INDEX, reg);
 	(void)RREG32_NO_KIQ(mmPCIE_INDEX);
 	WREG32_NO_KIQ(mmPCIE_DATA, v);
 	(void)RREG32_NO_KIQ(mmPCIE_DATA);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&adev->reg.pcie.lock, flags);
+=======
+	spin_unlock_irqrestore(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 vi_smc_rreg(struct amdgpu_device *adev, u32 reg)
@@ -324,10 +340,17 @@ static u32 vi_smc_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32_NO_KIQ(mmSMC_IND_INDEX_11, (reg));
 	r = RREG32_NO_KIQ(mmSMC_IND_DATA_11);
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32_NO_KIQ(mmSMC_IND_INDEX_11, (reg));
+	r = RREG32_NO_KIQ(mmSMC_IND_DATA_11);
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -335,10 +358,17 @@ static void vi_smc_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32_NO_KIQ(mmSMC_IND_INDEX_11, (reg));
 	WREG32_NO_KIQ(mmSMC_IND_DATA_11, (v));
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32_NO_KIQ(mmSMC_IND_INDEX_11, (reg));
+	WREG32_NO_KIQ(mmSMC_IND_DATA_11, (v));
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* smu_8_0_d.h */
@@ -350,10 +380,17 @@ static u32 cz_smc_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32(mmMP0PUB_IND_INDEX, (reg));
 	r = RREG32(mmMP0PUB_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32(mmMP0PUB_IND_INDEX, (reg));
+	r = RREG32(mmMP0PUB_IND_DATA);
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -361,10 +398,17 @@ static void cz_smc_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32(mmMP0PUB_IND_INDEX, (reg));
 	WREG32(mmMP0PUB_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32(mmMP0PUB_IND_INDEX, (reg));
+	WREG32(mmMP0PUB_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 vi_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
@@ -372,10 +416,17 @@ static u32 vi_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
 	r = RREG32(mmUVD_CTX_DATA);
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
+	r = RREG32(mmUVD_CTX_DATA);
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -383,10 +434,17 @@ static void vi_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
 	WREG32(mmUVD_CTX_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
+	WREG32(mmUVD_CTX_DATA, (v));
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 vi_didt_rreg(struct amdgpu_device *adev, u32 reg)
@@ -394,10 +452,17 @@ static u32 vi_didt_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(mmDIDT_IND_INDEX, (reg));
 	r = RREG32(mmDIDT_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(mmDIDT_IND_INDEX, (reg));
+	r = RREG32(mmDIDT_IND_DATA);
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -405,10 +470,17 @@ static void vi_didt_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(mmDIDT_IND_INDEX, (reg));
 	WREG32(mmDIDT_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(mmDIDT_IND_INDEX, (reg));
+	WREG32(mmDIDT_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 vi_gc_cac_rreg(struct amdgpu_device *adev, u32 reg)
@@ -416,10 +488,17 @@ static u32 vi_gc_cac_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.gc_cac.lock, flags);
 	WREG32(mmGC_CAC_IND_INDEX, (reg));
 	r = RREG32(mmGC_CAC_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.gc_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->gc_cac_idx_lock, flags);
+	WREG32(mmGC_CAC_IND_INDEX, (reg));
+	r = RREG32(mmGC_CAC_IND_DATA);
+	spin_unlock_irqrestore(&adev->gc_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -427,10 +506,17 @@ static void vi_gc_cac_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.gc_cac.lock, flags);
 	WREG32(mmGC_CAC_IND_INDEX, (reg));
 	WREG32(mmGC_CAC_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.gc_cac.lock, flags);
+=======
+	spin_lock_irqsave(&adev->gc_cac_idx_lock, flags);
+	WREG32(mmGC_CAC_IND_INDEX, (reg));
+	WREG32(mmGC_CAC_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->gc_cac_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 
@@ -649,7 +735,11 @@ static bool vi_read_bios_from_rom(struct amdgpu_device *adev,
 	dw_ptr = (u32 *)bios;
 	length_dw = ALIGN(length_bytes, 4) / 4;
 	/* take the smc lock since we are using the smc index */
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* set rom index to 0 */
 	WREG32(mmSMC_IND_INDEX_11, ixROM_INDEX);
 	WREG32(mmSMC_IND_DATA_11, 0);
@@ -657,7 +747,11 @@ static bool vi_read_bios_from_rom(struct amdgpu_device *adev,
 	WREG32(mmSMC_IND_INDEX_11, ixROM_DATA);
 	for (i = 0; i < length_dw; i++)
 		dw_ptr[i] = RREG32(mmSMC_IND_DATA_11);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -1454,6 +1548,7 @@ static int vi_common_early_init(struct amdgpu_ip_block *ip_block)
 	struct amdgpu_device *adev = ip_block->adev;
 
 	if (adev->flags & AMD_IS_APU) {
+<<<<<<< HEAD
 		adev->reg.smc.rreg = cz_smc_rreg;
 		adev->reg.smc.wreg = cz_smc_wreg;
 	} else {
@@ -1468,6 +1563,22 @@ static int vi_common_early_init(struct amdgpu_ip_block *ip_block)
 	adev->reg.didt.wreg = &vi_didt_wreg;
 	adev->reg.gc_cac.rreg = &vi_gc_cac_rreg;
 	adev->reg.gc_cac.wreg = &vi_gc_cac_wreg;
+=======
+		adev->smc_rreg = &cz_smc_rreg;
+		adev->smc_wreg = &cz_smc_wreg;
+	} else {
+		adev->smc_rreg = &vi_smc_rreg;
+		adev->smc_wreg = &vi_smc_wreg;
+	}
+	adev->pcie_rreg = &vi_pcie_rreg;
+	adev->pcie_wreg = &vi_pcie_wreg;
+	adev->uvd_ctx_rreg = &vi_uvd_ctx_rreg;
+	adev->uvd_ctx_wreg = &vi_uvd_ctx_wreg;
+	adev->didt_rreg = &vi_didt_rreg;
+	adev->didt_wreg = &vi_didt_wreg;
+	adev->gc_cac_rreg = &vi_gc_cac_rreg;
+	adev->gc_cac_wreg = &vi_gc_cac_wreg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adev->asic_funcs = &vi_asic_funcs;
 

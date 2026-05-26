@@ -185,16 +185,22 @@ void btrfs_free_extent_state(struct extent_state *state)
 
 static int add_extent_changeset(struct extent_state *state, u32 bits,
 				 struct extent_changeset *changeset,
+<<<<<<< HEAD
 				 bool set)
 {
 	int ret;
 
+=======
+				 int set)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!changeset)
 		return 0;
 	if (set && (state->state & bits) == bits)
 		return 0;
 	if (!set && (state->state & bits) == 0)
 		return 0;
+<<<<<<< HEAD
 
 	changeset->bytes_changed += state->end - state->start + 1;
 	if (!extent_changeset_tracks_ranges(changeset))
@@ -204,6 +210,11 @@ static int add_extent_changeset(struct extent_state *state, u32 bits,
 	if (ret < 0)
 		return ret;
 	return 0;
+=======
+	changeset->bytes_changed += state->end - state->start + 1;
+
+	return ulist_add(&changeset->range_changed, state->start, state->end, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct extent_state *next_state(struct extent_state *state)
@@ -334,10 +345,22 @@ static inline struct extent_state *tree_search(struct extent_io_tree *tree, u64 
 	return tree_search_for_insert(tree, offset, NULL, NULL);
 }
 
+<<<<<<< HEAD
 #define extent_io_tree_panic(tree, state, opname, err)                      \
 	btrfs_panic(btrfs_extent_io_tree_to_fs_info((tree)), (err),         \
 		    "extent io tree error on %s state start %llu end %llu", \
 		    (opname), (state)->start, (state)->end)
+=======
+static void __cold extent_io_tree_panic(const struct extent_io_tree *tree,
+					const struct extent_state *state,
+					const char *opname,
+					int err)
+{
+	btrfs_panic(btrfs_extent_io_tree_to_fs_info(tree), err,
+		    "extent io tree error on %s state start %llu end %llu",
+		    opname, state->start, state->end);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void merge_prev_state(struct extent_io_tree *tree, struct extent_state *state)
 {
@@ -397,9 +420,14 @@ static void set_state_bits(struct extent_io_tree *tree,
 	if (tree->owner == IO_TREE_INODE_IO)
 		btrfs_set_delalloc_extent(tree->inode, state, bits);
 
+<<<<<<< HEAD
 	ret = add_extent_changeset(state, bits_to_set, changeset, true);
 	if (unlikely(ret))
 		extent_io_tree_panic(tree, state, "add_extent_changeset", ret);
+=======
+	ret = add_extent_changeset(state, bits_to_set, changeset, 1);
+	BUG_ON(ret < 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	state->state |= bits_to_set;
 }
 
@@ -539,6 +567,7 @@ static int split_state(struct extent_io_tree *tree, struct extent_state *orig,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void state_wake_up(struct extent_io_tree *tree,
 				 struct extent_state *state, u32 bits)
 {
@@ -557,6 +586,8 @@ static inline void state_wake_up(struct extent_io_tree *tree,
 	cond_wake_up_nomb(&state->wq);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Use this during tree iteration to avoid doing next node searches when it's
  * not needed (the current record ends at or after the target range's end).
@@ -571,14 +602,22 @@ static inline struct extent_state *next_search_state(struct extent_state *state,
 
 /*
  * Utility function to clear some bits in an extent state struct.  It will
+<<<<<<< HEAD
  * optionally wake up anyone waiting on this state.
+=======
+ * optionally wake up anyone waiting on this state (wake == 1).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * If no bits are set on the state struct after clearing things, the
  * struct is freed and removed from the tree
  */
 static struct extent_state *clear_state_bit(struct extent_io_tree *tree,
 					    struct extent_state *state,
+<<<<<<< HEAD
 					    u32 bits, u64 end,
+=======
+					    u32 bits, int wake, u64 end,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    struct extent_changeset *changeset)
 {
 	struct extent_state *next;
@@ -588,6 +627,7 @@ static struct extent_state *clear_state_bit(struct extent_io_tree *tree,
 	if (tree->owner == IO_TREE_INODE_IO)
 		btrfs_clear_delalloc_extent(tree->inode, state, bits);
 
+<<<<<<< HEAD
 	ret = add_extent_changeset(state, bits_to_clear, changeset, false);
 	if (unlikely(ret))
 		extent_io_tree_panic(tree, state, "add_extent_changeset", ret);
@@ -601,6 +641,22 @@ static struct extent_state *clear_state_bit(struct extent_io_tree *tree,
 		rb_erase(&state->rb_node, &tree->state);
 		RB_CLEAR_NODE(&state->rb_node);
 		btrfs_free_extent_state(state);
+=======
+	ret = add_extent_changeset(state, bits_to_clear, changeset, 0);
+	BUG_ON(ret < 0);
+	state->state &= ~bits_to_clear;
+	if (wake)
+		wake_up(&state->wq);
+	if (state->state == 0) {
+		next = next_search_state(state, end);
+		if (extent_state_in_tree(state)) {
+			rb_erase(&state->rb_node, &tree->state);
+			RB_CLEAR_NODE(&state->rb_node);
+			btrfs_free_extent_state(state);
+		} else {
+			WARN_ON(1);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		merge_state(tree, state);
 		next = next_search_state(state, end);
@@ -637,8 +693,13 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
 	u64 last_end;
 	int ret = 0;
 	bool clear;
+<<<<<<< HEAD
 	const bool delete = (bits & EXTENT_CLEAR_ALL_BITS);
 	const u32 bits_to_clear = (bits & ~EXTENT_CTLBITS);
+=======
+	bool wake;
+	const bool delete = (bits & EXTENT_CLEAR_ALL_BITS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gfp_t mask;
 
 	set_gfp_mask_from_bits(&bits, &mask);
@@ -651,6 +712,10 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
 	if (bits & EXTENT_DELALLOC)
 		bits |= EXTENT_NORESERVE;
 
+<<<<<<< HEAD
+=======
+	wake = (bits & EXTENT_LOCK_BITS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear = (bits & (EXTENT_LOCK_BITS | EXTENT_BOUNDARY));
 again:
 	if (!prealloc) {
@@ -716,6 +781,7 @@ hit_next:
 	 */
 
 	if (state->start < start) {
+<<<<<<< HEAD
 		/*
 		 * If all bits are cleared, there's no point in allocating or
 		 * using the prealloc extent, split the state record, insert the
@@ -757,17 +823,28 @@ hit_next:
 			goto next;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prealloc = alloc_extent_state_atomic(prealloc);
 		if (!prealloc)
 			goto search_again;
 		ret = split_state(tree, state, prealloc, start);
 		prealloc = NULL;
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 			goto out;
 		}
 		if (state->end <= end) {
+<<<<<<< HEAD
 			state = clear_state_bit(tree, state, bits, end, changeset);
+=======
+			state = clear_state_bit(tree, state, bits, wake, end,
+						changeset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto next;
 		}
 		if (need_resched())
@@ -784,6 +861,7 @@ hit_next:
 	 * We need to split the extent, and clear the bit on the first half.
 	 */
 	if (state->start <= end && state->end > end) {
+<<<<<<< HEAD
 		/*
 		 * If all bits are cleared, there's no point in allocating or
 		 * using the prealloc extent, split the state record, insert the
@@ -819,25 +897,42 @@ hit_next:
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prealloc = alloc_extent_state_atomic(prealloc);
 		if (!prealloc)
 			goto search_again;
 		ret = split_state(tree, state, prealloc, end + 1);
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 			prealloc = NULL;
 			goto out;
 		}
 
+<<<<<<< HEAD
 		state_wake_up(tree, state, bits);
 
 		clear_state_bit(tree, prealloc, bits, end, changeset);
+=======
+		if (wake)
+			wake_up(&state->wq);
+
+		clear_state_bit(tree, prealloc, bits, wake, end, changeset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		prealloc = NULL;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	state = clear_state_bit(tree, state, bits, end, changeset);
+=======
+	state = clear_state_bit(tree, state, bits, wake, end, changeset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 next:
 	if (last_end >= end)
 		goto out;
@@ -919,13 +1014,20 @@ process_node:
 		}
 	}
 out:
+<<<<<<< HEAD
 	spin_unlock(&tree->lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* This state is no longer useful, clear it and free it up. */
 	if (cached_state && *cached_state) {
 		state = *cached_state;
 		*cached_state = NULL;
 		btrfs_free_extent_state(state);
 	}
+<<<<<<< HEAD
+=======
+	spin_unlock(&tree->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void cache_state_if_flags(struct extent_state *state,
@@ -1263,7 +1365,11 @@ hit_next:
 		if (!prealloc)
 			goto search_again;
 		ret = split_state(tree, state, prealloc, start);
+<<<<<<< HEAD
 		if (unlikely(ret))
+=======
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 
 		prealloc = NULL;
@@ -1353,7 +1459,11 @@ hit_next:
 		if (!prealloc)
 			goto search_again;
 		ret = split_state(tree, state, prealloc, end + 1);
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 			prealloc = NULL;
 			goto out;
@@ -1476,7 +1586,11 @@ hit_next:
 	if (state->start == start && state->end <= end) {
 		set_state_bits(tree, state, bits, NULL);
 		cache_state(state, cached_state);
+<<<<<<< HEAD
 		state = clear_state_bit(tree, state, clear_bits, end, NULL);
+=======
+		state = clear_state_bit(tree, state, clear_bits, 0, end, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (last_end >= end)
 			goto out;
 		start = last_end + 1;
@@ -1508,14 +1622,22 @@ hit_next:
 		}
 		ret = split_state(tree, state, prealloc, start);
 		prealloc = NULL;
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 			goto out;
 		}
 		if (state->end <= end) {
 			set_state_bits(tree, state, bits, NULL);
 			cache_state(state, cached_state);
+<<<<<<< HEAD
 			state = clear_state_bit(tree, state, clear_bits, end, NULL);
+=======
+			state = clear_state_bit(tree, state, clear_bits, 0, end, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (last_end >= end)
 				goto out;
 			start = last_end + 1;
@@ -1592,7 +1714,11 @@ hit_next:
 		}
 
 		ret = split_state(tree, state, prealloc, end + 1);
+<<<<<<< HEAD
 		if (unlikely(ret)) {
+=======
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			extent_io_tree_panic(tree, state, "split", ret);
 			prealloc = NULL;
 			goto out;
@@ -1600,7 +1726,11 @@ hit_next:
 
 		set_state_bits(tree, prealloc, bits, NULL);
 		cache_state(prealloc, cached_state);
+<<<<<<< HEAD
 		clear_state_bit(tree, prealloc, clear_bits, end, NULL);
+=======
+		clear_state_bit(tree, prealloc, clear_bits, 0, end, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prealloc = NULL;
 		goto out;
 	}

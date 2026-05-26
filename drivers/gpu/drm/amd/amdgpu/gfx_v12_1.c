@@ -45,7 +45,10 @@
 #include "v12_structs.h"
 #include "gfx_v12_1.h"
 #include "mes_v12_1.h"
+<<<<<<< HEAD
 #include "amdgpu_ras_mgr.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define GFX12_MEC_HPD_SIZE	2048
 #define NUM_SIMD_PER_CU_GFX12_1	4
@@ -137,6 +140,10 @@ static void gfx_v12_1_kiq_map_queues(struct amdgpu_ring *kiq_ring,
 			  PACKET3_MAP_QUEUES_PIPE(ring->pipe) |
 			  PACKET3_MAP_QUEUES_ME((me)) |
 			  PACKET3_MAP_QUEUES_QUEUE_TYPE(0) | /*queue_type: normal compute queue */
+<<<<<<< HEAD
+=======
+			  PACKET3_MAP_QUEUES_ALLOC_FORMAT(0) | /* alloc format: all_on_one_pipe */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  PACKET3_MAP_QUEUES_ENGINE_SEL(eng_sel) |
 			  PACKET3_MAP_QUEUES_NUM_QUEUES(1)); /* num_queues: must be 1 */
 	amdgpu_ring_write(kiq_ring, PACKET3_MAP_QUEUES_DOORBELL_OFFSET(ring->doorbell_index));
@@ -245,7 +252,12 @@ static void gfx_v12_1_wait_reg_mem(struct amdgpu_ring *ring, int eng_sel,
 			  /* memory (1) or register (0) */
 			  (WAIT_REG_MEM_MEM_SPACE(mem_space) |
 			   WAIT_REG_MEM_OPERATION(opt) | /* wait */
+<<<<<<< HEAD
 			   WAIT_REG_MEM_FUNCTION(3)));  /* equal */
+=======
+			   WAIT_REG_MEM_FUNCTION(3) |  /* equal */
+			   WAIT_REG_MEM_ENGINE(eng_sel)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mem_space)
 		BUG_ON(addr0 & 0x3); /* Dword align */
@@ -1154,6 +1166,7 @@ static int gfx_v12_1_sw_init(struct amdgpu_ip_block *ip_block)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (adev->gfx.num_compute_rings) {
 		/* recalculate compute rings to use based on hardware configuration */
 		num_compute_rings = (adev->gfx.mec.num_pipe_per_mec *
@@ -1161,6 +1174,13 @@ static int gfx_v12_1_sw_init(struct amdgpu_ip_block *ip_block)
 		adev->gfx.num_compute_rings = min(adev->gfx.num_compute_rings,
 						  num_compute_rings);
 	}
+=======
+	/* recalculate compute rings to use based on hardware configuration */
+	num_compute_rings = (adev->gfx.mec.num_pipe_per_mec *
+			     adev->gfx.mec.num_queue_per_pipe) / 2;
+	adev->gfx.num_compute_rings = min(adev->gfx.num_compute_rings,
+					  num_compute_rings);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
 
@@ -1185,6 +1205,7 @@ static int gfx_v12_1_sw_init(struct amdgpu_ip_block *ip_block)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	/* RLC POISON Error */
 	r = amdgpu_irq_add_id(adev, SOC_V1_0_IH_CLIENTID_RLC,
 				GFX_12_1_0__SRCID__RLC_POISON_INTERRUPT,
@@ -1192,6 +1213,8 @@ static int gfx_v12_1_sw_init(struct amdgpu_ip_block *ip_block)
 	if (r)
 		return r;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adev->gfx.gfx_current_status = AMDGPU_GFX_NORMAL_MODE;
 
 	r = gfx_v12_1_rlc_init(adev);
@@ -1413,7 +1436,11 @@ static void gfx_v12_1_xcc_init_compute_vmid(struct amdgpu_device *adev,
 	/*
 	 * Configure apertures:
 	 * LDS:         0x20000000'00000000 - 0x20000001'00000000 (4GB)
+<<<<<<< HEAD
 	 * Scratch:     0x10000000'00000000 - 0x11ffffff'ffffffff (128PB 57-bit)
+=======
+	 * Scratch:     0x10000000'00000000 - 0x10000001'00000000 (4GB)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	sh_mem_bases = REG_SET_FIELD(0, SH_MEM_BASES, PRIVATE_BASE,
 				     (adev->gmc.private_aperture_start >> 58));
@@ -2637,6 +2664,27 @@ static void gfx_v12_1_xcc_disable_gpa_mode(struct amdgpu_device *adev,
 	WREG32_SOC15(GC, GET_INST(GC, xcc_id), regCPG_PSP_DEBUG, data);
 }
 
+<<<<<<< HEAD
+=======
+static void gfx_v12_1_xcc_setup_tcp_thrashing_ctrl(struct amdgpu_device *adev,
+					 int xcc_id)
+{
+	uint32_t val;
+
+	/* Set the TCP UTCL0 register to enable atomics */
+	val = RREG32_SOC15(GC, GET_INST(GC, xcc_id),
+					regTCP_UTCL0_THRASHING_CTRL);
+	val = REG_SET_FIELD(val, TCP_UTCL0_THRASHING_CTRL, THRASHING_EN, 0x2);
+	val = REG_SET_FIELD(val, TCP_UTCL0_THRASHING_CTRL,
+					RETRY_FRAGMENT_THRESHOLD_UP_EN, 0x1);
+	val = REG_SET_FIELD(val, TCP_UTCL0_THRASHING_CTRL,
+					RETRY_FRAGMENT_THRESHOLD_DOWN_EN, 0x1);
+
+	WREG32_SOC15(GC, GET_INST(GC, xcc_id),
+					regTCP_UTCL0_THRASHING_CTRL, val);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void gfx_v12_1_xcc_enable_atomics(struct amdgpu_device *adev,
 					 int xcc_id)
 {
@@ -2685,6 +2733,10 @@ static void gfx_v12_1_init_golden_registers(struct amdgpu_device *adev)
 	for (i = 0; i < NUM_XCC(adev->gfx.xcc_mask); i++) {
 		gfx_v12_1_xcc_disable_burst(adev, i);
 		gfx_v12_1_xcc_enable_atomics(adev, i);
+<<<<<<< HEAD
+=======
+		gfx_v12_1_xcc_setup_tcp_thrashing_ctrl(adev, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gfx_v12_1_xcc_disable_early_write_ack(adev, i);
 		gfx_v12_1_xcc_disable_tcp_spill_cache(adev, i);
 	}
@@ -2783,6 +2835,7 @@ static void gfx_v12_1_xcc_fini(struct amdgpu_device *adev,
 	gfx_v12_1_xcc_enable_gui_idle_interrupt(adev, false, xcc_id);
 }
 
+<<<<<<< HEAD
 static int gfx_v12_1_set_userq_eop_interrupts(struct amdgpu_device *adev,
 					      bool enable)
 {
@@ -2810,6 +2863,8 @@ static int gfx_v12_1_set_userq_eop_interrupts(struct amdgpu_device *adev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int gfx_v12_1_hw_fini(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -2817,7 +2872,10 @@ static int gfx_v12_1_hw_fini(struct amdgpu_ip_block *ip_block)
 
 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
+<<<<<<< HEAD
 	gfx_v12_1_set_userq_eop_interrupts(adev, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
 	for (i = 0; i < num_xcc; i++) {
@@ -2885,6 +2943,7 @@ static int gfx_v12_1_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
 
+<<<<<<< HEAD
 
 	switch (amdgpu_user_queue) {
 	case -1:
@@ -2905,6 +2964,12 @@ static int gfx_v12_1_early_init(struct amdgpu_ip_block *ip_block)
 	else
 		adev->gfx.num_compute_rings = min(amdgpu_gfx_get_num_kcq(adev),
 						  AMDGPU_MAX_COMPUTE_RINGS);
+=======
+	adev->gfx.funcs = &gfx_v12_1_gfx_funcs;
+
+	adev->gfx.num_compute_rings = min(amdgpu_gfx_get_num_kcq(adev),
+					  AMDGPU_MAX_COMPUTE_RINGS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gfx_v12_1_set_kiq_pm4_funcs(adev);
 	gfx_v12_1_set_ring_funcs(adev);
@@ -2931,10 +2996,13 @@ static int gfx_v12_1_late_init(struct amdgpu_ip_block *ip_block)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = gfx_v12_1_set_userq_eop_interrupts(adev, true);
 	if (r)
 		return r;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -3418,10 +3486,18 @@ static void gfx_v12_1_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
 
 static void gfx_v12_1_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
 {
+<<<<<<< HEAD
 	uint32_t seq = ring->fence_drv.sync_seq;
 	uint64_t addr = ring->fence_drv.gpu_addr;
 
 	gfx_v12_1_wait_reg_mem(ring, 0, 1, 0, lower_32_bits(addr),
+=======
+	int usepfp = (ring->funcs->type == AMDGPU_RING_TYPE_GFX);
+	uint32_t seq = ring->fence_drv.sync_seq;
+	uint64_t addr = ring->fence_drv.gpu_addr;
+
+	gfx_v12_1_wait_reg_mem(ring, usepfp, 1, 0, lower_32_bits(addr),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       upper_32_bits(addr), seq, 0xffffffff, 4);
 }
 
@@ -3460,7 +3536,12 @@ static void gfx_v12_1_ring_emit_fence_kiq(struct amdgpu_ring *ring, u64 addr,
 
 	/* write fence seq to the "addr" */
 	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+<<<<<<< HEAD
 	amdgpu_ring_write(ring, (WRITE_DATA_DST_SEL(5) | WR_CONFIRM));
+=======
+	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(0) |
+				 WRITE_DATA_DST_SEL(5) | WR_CONFIRM));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_ring_write(ring, lower_32_bits(addr));
 	amdgpu_ring_write(ring, upper_32_bits(addr));
 	amdgpu_ring_write(ring, lower_32_bits(seq));
@@ -3468,7 +3549,12 @@ static void gfx_v12_1_ring_emit_fence_kiq(struct amdgpu_ring *ring, u64 addr,
 	if (flags & AMDGPU_FENCE_FLAG_INT) {
 		/* set register to trigger INT */
 		amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+<<<<<<< HEAD
 		amdgpu_ring_write(ring, (WRITE_DATA_DST_SEL(0) | WR_CONFIRM));
+=======
+		amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(0) |
+					 WRITE_DATA_DST_SEL(0) | WR_CONFIRM));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_ring_write(ring, SOC15_REG_OFFSET(GC, GET_INST(GC, 0), regCPC_INT_STATUS));
 		amdgpu_ring_write(ring, 0);
 		amdgpu_ring_write(ring, 0x20000000); /* src_id is 178 */
@@ -3527,7 +3613,13 @@ static void gfx_v12_1_ring_emit_reg_write_reg_wait(struct amdgpu_ring *ring,
 						   uint32_t reg0, uint32_t reg1,
 						   uint32_t ref, uint32_t mask)
 {
+<<<<<<< HEAD
 	gfx_v12_1_wait_reg_mem(ring, 0, 0, 1, reg0, reg1,
+=======
+	int usepfp = (ring->funcs->type == AMDGPU_RING_TYPE_GFX);
+
+	gfx_v12_1_wait_reg_mem(ring, usepfp, 0, 1, reg0, reg1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       ref, mask, 0x20);
 }
 
@@ -3643,7 +3735,19 @@ static int gfx_v12_1_eop_irq(struct amdgpu_device *adev,
 	DRM_DEBUG("IH: CP EOP\n");
 
 	if (adev->enable_mes && doorbell_offset) {
+<<<<<<< HEAD
 		amdgpu_userq_process_fence_irq(adev, doorbell_offset);
+=======
+		struct amdgpu_userq_fence_driver *fence_drv = NULL;
+		struct xarray *xa = &adev->userq_xa;
+		unsigned long flags;
+
+		xa_lock_irqsave(xa, flags);
+		fence_drv = xa_load(xa, doorbell_offset);
+		if (fence_drv)
+			amdgpu_userq_fence_driver_process(fence_drv);
+		xa_unlock_irqrestore(xa, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		me_id = (entry->ring_id & 0x0c) >> 2;
 		pipe_id = (entry->ring_id & 0x03) >> 0;
@@ -3654,6 +3758,15 @@ static int gfx_v12_1_eop_irq(struct amdgpu_device *adev,
 			return -EINVAL;
 
 		switch (me_id) {
+<<<<<<< HEAD
+=======
+		case 0:
+			if (pipe_id == 0)
+				amdgpu_fence_process(&adev->gfx.gfx_ring[0]);
+			else
+				amdgpu_fence_process(&adev->gfx.gfx_ring[1]);
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case 1:
 		case 2:
 			for (i = 0; i < adev->gfx.num_compute_rings; i++) {
@@ -3670,9 +3783,12 @@ static int gfx_v12_1_eop_irq(struct amdgpu_device *adev,
 					amdgpu_fence_process(ring);
 			}
 			break;
+<<<<<<< HEAD
 		default:
 			dev_dbg(adev->dev, "Unexpected me %d in eop_irq\n", me_id);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -3740,6 +3856,7 @@ static void gfx_v12_1_handle_priv_fault(struct amdgpu_device *adev,
 	if (xcc_id == -EINVAL)
 		return;
 
+<<<<<<< HEAD
 	if (!adev->gfx.disable_kq) {
 		switch (me_id) {
 		case 1:
@@ -3757,6 +3874,31 @@ static void gfx_v12_1_handle_priv_fault(struct amdgpu_device *adev,
 			dev_dbg(adev->dev, "Unexpected me %d in priv_fault\n", me_id);
 			break;
 		}
+=======
+	switch (me_id) {
+	case 0:
+		for (i = 0; i < adev->gfx.num_gfx_rings; i++) {
+			ring = &adev->gfx.gfx_ring[i];
+			/* we only enabled 1 gfx queue per pipe for now */
+			if (ring->me == me_id && ring->pipe == pipe_id)
+				drm_sched_fault(&ring->sched);
+		}
+		break;
+	case 1:
+	case 2:
+		for (i = 0; i < adev->gfx.num_compute_rings; i++) {
+			ring = &adev->gfx.compute_ring
+					[i +
+					 xcc_id * adev->gfx.num_compute_rings];
+			if (ring->me == me_id && ring->pipe == pipe_id &&
+			    ring->queue == queue_id)
+				drm_sched_fault(&ring->sched);
+		}
+		break;
+	default:
+		BUG();
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -3778,6 +3920,7 @@ static int gfx_v12_1_priv_inst_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int gfx_v12_1_rlc_poison_irq(struct amdgpu_device *adev,
 				  struct amdgpu_irq_src *source,
 				  struct amdgpu_iv_entry *entry)
@@ -3807,6 +3950,8 @@ static int gfx_v12_1_rlc_poison_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void gfx_v12_1_emit_mem_sync(struct amdgpu_ring *ring)
 {
 	const unsigned int gcr_cntl =
@@ -3931,10 +4076,13 @@ static const struct amdgpu_irq_src_funcs gfx_v12_1_priv_inst_irq_funcs = {
 	.process = gfx_v12_1_priv_inst_irq,
 };
 
+<<<<<<< HEAD
 static const struct amdgpu_irq_src_funcs gfx_v12_1_rlc_poison_irq_funcs = {
 	.process = gfx_v12_1_rlc_poison_irq,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void gfx_v12_1_set_irq_funcs(struct amdgpu_device *adev)
 {
 	adev->gfx.eop_irq.num_types = AMDGPU_CP_IRQ_LAST;
@@ -3945,9 +4093,12 @@ static void gfx_v12_1_set_irq_funcs(struct amdgpu_device *adev)
 
 	adev->gfx.priv_inst_irq.num_types = 1;
 	adev->gfx.priv_inst_irq.funcs = &gfx_v12_1_priv_inst_irq_funcs;
+<<<<<<< HEAD
 
 	adev->gfx.rlc_poison_irq.num_types = 1;
 	adev->gfx.rlc_poison_irq.funcs = &gfx_v12_1_rlc_poison_irq_funcs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gfx_v12_1_set_imu_funcs(struct amdgpu_device *adev)

@@ -3,7 +3,11 @@
 #
 # Copyright (C) 2019-2022 Red Hat, Inc. Daniel Bristot de Oliveira <bristot@kernel.org>
 #
+<<<<<<< HEAD
 # dot2c: parse an automaton in dot file digraph format into a C
+=======
+# dot2c: parse an automata in dot file digraph format into a C
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #
 # This program was written in the development of this paper:
 #  de Oliveira, D. B. and Cucinotta, T. and de Oliveira, R. S.
@@ -13,13 +17,20 @@
 # For further information, see:
 #   Documentation/trace/rv/deterministic_automata.rst
 
+<<<<<<< HEAD
 from .automata import Automata, AutomataError
+=======
+from .automata import Automata
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 class Dot2c(Automata):
     enum_suffix = ""
     enum_states_def = "states"
     enum_events_def = "events"
+<<<<<<< HEAD
     enum_envs_def = "envs"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     struct_automaton_def = "automaton"
     var_automaton_def = "aut"
 
@@ -29,17 +40,29 @@ class Dot2c(Automata):
 
     def __get_enum_states_content(self) -> list[str]:
         buff = []
+<<<<<<< HEAD
         buff.append(f"\t{self.initial_state}{self.enum_suffix},")
         for state in self.states:
             if state != self.initial_state:
                 buff.append(f"\t{state}{self.enum_suffix},")
         buff.append(f"\tstate_max{self.enum_suffix},")
+=======
+        buff.append("\t%s%s," % (self.initial_state, self.enum_suffix))
+        for state in self.states:
+            if state != self.initial_state:
+                buff.append("\t%s%s," % (state, self.enum_suffix))
+        buff.append("\tstate_max%s," % (self.enum_suffix))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         return buff
 
     def format_states_enum(self) -> list[str]:
         buff = []
+<<<<<<< HEAD
         buff.append(f"enum {self.enum_states_def} {{")
+=======
+        buff.append("enum %s {" % self.enum_states_def)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff += self.__get_enum_states_content()
         buff.append("};\n")
 
@@ -48,20 +71,31 @@ class Dot2c(Automata):
     def __get_enum_events_content(self) -> list[str]:
         buff = []
         for event in self.events:
+<<<<<<< HEAD
             buff.append(f"\t{event}{self.enum_suffix},")
 
         buff.append(f"\tevent_max{self.enum_suffix},")
+=======
+            buff.append("\t%s%s," % (event, self.enum_suffix))
+
+        buff.append("\tevent_max%s," % self.enum_suffix)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         return buff
 
     def format_events_enum(self) -> list[str]:
         buff = []
+<<<<<<< HEAD
         buff.append(f"enum {self.enum_events_def} {{")
+=======
+        buff.append("enum %s {" % self.enum_events_def)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff += self.__get_enum_events_content()
         buff.append("};\n")
 
         return buff
 
+<<<<<<< HEAD
     def __get_non_stored_envs(self) -> list[str]:
         return [e for e in self.envs if e not in self.env_stored]
 
@@ -104,12 +138,26 @@ class Dot2c(Automata):
 
         if len(self.states) > 1000000:
             raise AutomataError(f"Too many states: {len(self.states)}")
+=======
+    def get_minimun_type(self) -> str:
+        min_type = "unsigned char"
+
+        if self.states.__len__() > 255:
+            min_type = "unsigned short"
+
+        if self.states.__len__() > 65535:
+            min_type = "unsigned int"
+
+        if self.states.__len__() > 1000000:
+            raise Exception("Too many states: %d" % self.states.__len__())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         return min_type
 
     def format_automaton_definition(self) -> list[str]:
         min_type = self.get_minimun_type()
         buff = []
+<<<<<<< HEAD
         buff.append(f"struct {self.struct_automaton_def} {{")
         buff.append(f"\tchar *state_names[state_max{self.enum_suffix}];")
         buff.append(f"\tchar *event_names[event_max{self.enum_suffix}];")
@@ -118,12 +166,24 @@ class Dot2c(Automata):
         buff.append(f"\t{min_type} function[state_max{self.enum_suffix}][event_max{self.enum_suffix}];")
         buff.append(f"\t{min_type} initial_state;")
         buff.append(f"\tbool final_states[state_max{self.enum_suffix}];")
+=======
+        buff.append("struct %s {" % self.struct_automaton_def)
+        buff.append("\tchar *state_names[state_max%s];" % (self.enum_suffix))
+        buff.append("\tchar *event_names[event_max%s];" % (self.enum_suffix))
+        buff.append("\t%s function[state_max%s][event_max%s];" % (min_type, self.enum_suffix, self.enum_suffix))
+        buff.append("\t%s initial_state;" % min_type)
+        buff.append("\tbool final_states[state_max%s];" % (self.enum_suffix))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff.append("};\n")
         return buff
 
     def format_aut_init_header(self) -> list[str]:
         buff = []
+<<<<<<< HEAD
         buff.append(f"static const struct {self.struct_automaton_def} {self.var_automaton_def} = {{")
+=======
+        buff.append("static const struct %s %s = {" % (self.struct_automaton_def, self.var_automaton_def))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return buff
 
     def __get_string_vector_per_line_content(self, entries: list[str]) -> str:
@@ -147,6 +207,7 @@ class Dot2c(Automata):
 
         return buff
 
+<<<<<<< HEAD
     def format_aut_init_envs_string(self) -> list[str]:
         buff = []
         if self.is_hybrid_automata():
@@ -165,6 +226,15 @@ class Dot2c(Automata):
     def get_aut_init_function(self) -> str:
         nr_states = len(self.states)
         nr_events = len(self.events)
+=======
+    def __get_max_strlen_of_states(self) -> int:
+        max_state_name = max(self.states, key = len).__len__()
+        return max(max_state_name, self.invalid_state_str.__len__())
+
+    def get_aut_init_function(self) -> str:
+        nr_states = self.states.__len__()
+        nr_events = self.events.__len__()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff = []
 
         maxlen = self.__get_max_strlen_of_states() + len(self.enum_suffix)
@@ -179,10 +249,17 @@ class Dot2c(Automata):
                     next_state = self.function[x][y] + self.enum_suffix
 
                 if linetoolong:
+<<<<<<< HEAD
                     line += f"\t\t\t{next_state}"
                 else:
                     line += f"{next_state:>{maxlen}}"
                 if y != nr_events - 1:
+=======
+                    line += "\t\t\t%s" % next_state
+                else:
+                    line += "%*s" % (maxlen, next_state)
+                if y != nr_events-1:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     line += ",\n" if linetoolong else ", "
                 else:
                     line += ",\n\t\t}," if linetoolong else " },"
@@ -225,7 +302,11 @@ class Dot2c(Automata):
 
     def format_aut_init_final_states(self) -> list[str]:
        buff = []
+<<<<<<< HEAD
        buff.append(f"\t.final_states = {{ {self.get_aut_init_final_states()} }},")
+=======
+       buff.append("\t.final_states = { %s }," % self.get_aut_init_final_states())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
        return buff
 
@@ -241,7 +322,11 @@ class Dot2c(Automata):
 
     def format_invalid_state(self) -> list[str]:
         buff = []
+<<<<<<< HEAD
         buff.append(f"#define {self.invalid_state_str} state_max{self.enum_suffix}\n")
+=======
+        buff.append("#define %s state_max%s\n" % (self.invalid_state_str, self.enum_suffix))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         return buff
 
@@ -250,12 +335,18 @@ class Dot2c(Automata):
         buff += self.format_states_enum()
         buff += self.format_invalid_state()
         buff += self.format_events_enum()
+<<<<<<< HEAD
         buff += self.format_envs_enum()
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff += self.format_automaton_definition()
         buff += self.format_aut_init_header()
         buff += self.format_aut_init_states_string()
         buff += self.format_aut_init_events_string()
+<<<<<<< HEAD
         buff += self.format_aut_init_envs_string()
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff += self.format_aut_init_function()
         buff += self.format_aut_init_initial_state()
         buff += self.format_aut_init_final_states()

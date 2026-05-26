@@ -1076,6 +1076,14 @@ static inline int __sev_do_init_locked(int *psp_ret)
 		return __sev_init_locked(psp_ret);
 }
 
+<<<<<<< HEAD
+=======
+static void snp_set_hsave_pa(void *arg)
+{
+	wrmsrq(MSR_VM_HSAVE_PA, 0);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Hypervisor Fixed pages API interface */
 static void snp_hv_fixed_pages_state_update(struct sev_device *sev,
 					    enum snp_hv_fixed_pages_state page_state)
@@ -1219,7 +1227,11 @@ static void snp_add_hv_fixed_pages(struct sev_device *sev, struct sev_data_range
 
 static void snp_leak_hv_fixed_pages(void)
 {
+<<<<<<< HEAD
 	struct snp_hv_fixed_pages_entry *entry, *nentry;
+=======
+	struct snp_hv_fixed_pages_entry *entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* List is protected by sev_cmd_mutex */
 	lockdep_assert_held(&sev_cmd_mutex);
@@ -1227,6 +1239,7 @@ static void snp_leak_hv_fixed_pages(void)
 	if (list_empty(&snp_hv_fixed_pages))
 		return;
 
+<<<<<<< HEAD
 	list_for_each_entry_safe(entry, nentry, &snp_hv_fixed_pages, list) {
 		if (entry->free && entry->page_state != HV_FIXED)
 			__free_pages(entry->page, entry->order);
@@ -1237,6 +1250,12 @@ static void snp_leak_hv_fixed_pages(void)
 		list_del(&entry->list);
 		kfree(entry);
 	}
+=======
+	list_for_each_entry(entry, &snp_hv_fixed_pages, list)
+		if (entry->page_state == HV_FIXED)
+			__snp_leak_pages(page_to_pfn(entry->page),
+					 1 << entry->order, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool sev_is_snp_ciphertext_hiding_supported(void)
@@ -1374,7 +1393,12 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	snp_prepare();
+=======
+	/* SNP_INIT requires MSR_VM_HSAVE_PA to be cleared on all CPUs. */
+	on_each_cpu(snp_set_hsave_pa, NULL, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Starting in SNP firmware v1.52, the SNP_INIT_EX command takes a list
@@ -1971,11 +1995,19 @@ static int sev_get_firmware(struct device *dev,
 /* Don't fail if SEV FW couldn't be updated. Continue with existing SEV FW */
 static int sev_update_firmware(struct device *dev)
 {
+<<<<<<< HEAD
 	struct sev_data_download_firmware data;
 	const struct firmware *firmware;
 	int ret, error, order;
 	struct page *p;
 	void *fw_blob;
+=======
+	struct sev_data_download_firmware *data;
+	const struct firmware *firmware;
+	int ret, error, order;
+	struct page *p;
+	u64 data_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sev_version_greater_or_equal(0, 15)) {
 		dev_dbg(dev, "DOWNLOAD_FIRMWARE not supported\n");
@@ -1987,7 +2019,20 @@ static int sev_update_firmware(struct device *dev)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	order = get_order(firmware->size);
+=======
+	/*
+	 * SEV FW expects the physical address given to it to be 32
+	 * byte aligned. Memory allocated has structure placed at the
+	 * beginning followed by the firmware being passed to the SEV
+	 * FW. Allocate enough memory for data structure + alignment
+	 * padding + SEV FW.
+	 */
+	data_size = ALIGN(sizeof(struct sev_data_download_firmware), 32);
+
+	order = get_order(firmware->size + data_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	p = alloc_pages(GFP_KERNEL, order);
 	if (!p) {
 		ret = -1;
@@ -1998,6 +2043,7 @@ static int sev_update_firmware(struct device *dev)
 	 * Copy firmware data to a kernel allocated contiguous
 	 * memory region.
 	 */
+<<<<<<< HEAD
 	fw_blob = page_address(p);
 	memcpy(fw_blob, firmware->data, firmware->size);
 
@@ -2005,13 +2051,26 @@ static int sev_update_firmware(struct device *dev)
 	data.len = firmware->size;
 
 	ret = sev_do_cmd(SEV_CMD_DOWNLOAD_FIRMWARE, &data, &error);
+=======
+	data = page_address(p);
+	memcpy(page_address(p) + data_size, firmware->data, firmware->size);
+
+	data->address = __psp_pa(page_address(p) + data_size);
+	data->len = firmware->size;
+
+	ret = sev_do_cmd(SEV_CMD_DOWNLOAD_FIRMWARE, data, &error);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * A quirk for fixing the committed TCB version, when upgrading from
 	 * earlier firmware version than 1.50.
 	 */
 	if (!ret && !sev_version_greater_or_equal(1, 50))
+<<<<<<< HEAD
 		ret = sev_do_cmd(SEV_CMD_DOWNLOAD_FIRMWARE, &data, &error);
+=======
+		ret = sev_do_cmd(SEV_CMD_DOWNLOAD_FIRMWARE, data, &error);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		dev_dbg(dev, "Failed to update SEV firmware: %#x\n", error);
@@ -2042,8 +2101,11 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
 	memset(&data, 0, sizeof(data));
 	data.len = sizeof(data);
 	data.iommu_snp_shutdown = 1;
+<<<<<<< HEAD
 	if (sev->snp_feat_info_0.ecx & SNP_X86_SHUTDOWN_SUPPORTED)
 		data.x86_snp_shutdown = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If invoked during panic handling, local interrupts are disabled
@@ -2077,6 +2139,7 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (data.x86_snp_shutdown) {
 		if (!panic)
 			snp_shutdown();
@@ -2100,6 +2163,25 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
 			dev_err(sev->dev, "SNP IOMMU shutdown failed\n");
 			return ret;
 		}
+=======
+	/*
+	 * SNP_SHUTDOWN_EX with IOMMU_SNP_SHUTDOWN set to 1 disables SNP
+	 * enforcement by the IOMMU and also transitions all pages
+	 * associated with the IOMMU to the Reclaim state.
+	 * Firmware was transitioning the IOMMU pages to Hypervisor state
+	 * before version 1.53. But, accounting for the number of assigned
+	 * 4kB pages in a 2M page was done incorrectly by not transitioning
+	 * to the Reclaim state. This resulted in RMP #PF when later accessing
+	 * the 2M page containing those pages during kexec boot. Hence, the
+	 * firmware now transitions these pages to Reclaim state and hypervisor
+	 * needs to transition these pages to shared state. SNP Firmware
+	 * version 1.53 and above are needed for kexec boot.
+	 */
+	ret = amd_iommu_snp_disable();
+	if (ret) {
+		dev_err(sev->dev, "SNP IOMMU shutdown failed\n");
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	snp_leak_hv_fixed_pages();

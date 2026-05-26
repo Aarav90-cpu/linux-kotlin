@@ -11,6 +11,7 @@
 
 static struct rapl_if_priv rapl_mmio_priv;
 
+<<<<<<< HEAD
 /* bitmasks for RAPL MSRs, used by primitive access functions */
 #define MMIO_ENERGY_STATUS_MASK			GENMASK(31, 0)
 
@@ -82,6 +83,8 @@ static struct rapl_primitive_info rpi_mmio[NR_RAPL_PRIMITIVES] = {
 						      RAPL_DOMAIN_REG_POLICY, ARBITRARY_UNIT, 0),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct rapl_mmio_regs rapl_mmio_default = {
 	.reg_unit = 0x5938,
 	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930, 0x59b0},
@@ -90,6 +93,7 @@ static const struct rapl_mmio_regs rapl_mmio_default = {
 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
 };
 
+<<<<<<< HEAD
 static const struct rapl_defaults rapl_defaults_mmio = {
 	.floor_freq_reg_addr = 0,
 	.check_unit = rapl_default_check_unit,
@@ -97,6 +101,8 @@ static const struct rapl_defaults rapl_defaults_mmio = {
 	.compute_time_window = rapl_default_compute_time_window,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rapl_mmio_read_raw(int cpu, struct reg_action *ra, bool atomic)
 {
 	if (!ra->reg.mmio)
@@ -145,8 +151,11 @@ int proc_thermal_rapl_add(struct pci_dev *pdev, struct proc_thermal_device *proc
 
 	rapl_mmio_priv.read_raw = rapl_mmio_read_raw;
 	rapl_mmio_priv.write_raw = rapl_mmio_write_raw;
+<<<<<<< HEAD
 	rapl_mmio_priv.defaults = &rapl_defaults_mmio;
 	rapl_mmio_priv.rpi = rpi_mmio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rapl_mmio_priv.control_type = powercap_register_control_type(NULL, "intel-rapl-mmio", NULL);
 	if (IS_ERR(rapl_mmio_priv.control_type)) {
@@ -191,5 +200,8 @@ void proc_thermal_rapl_remove(void)
 EXPORT_SYMBOL_GPL(proc_thermal_rapl_remove);
 
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("INTEL_RAPL");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("RAPL interface using MMIO");

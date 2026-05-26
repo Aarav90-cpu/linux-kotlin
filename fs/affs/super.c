@@ -108,7 +108,10 @@ static struct inode *affs_alloc_inode(struct super_block *sb)
 	i->i_lc = NULL;
 	i->i_ext_bh = NULL;
 	i->i_pa_cnt = 0;
+<<<<<<< HEAD
 	mmb_init(&i->i_metadata_bhs, &i->vfs_inode.i_data);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return &i->vfs_inode;
 }

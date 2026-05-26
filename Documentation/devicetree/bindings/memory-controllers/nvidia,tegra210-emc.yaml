@@ -52,9 +52,12 @@ properties:
       Should contain freqs and voltages and opp-supported-hw property, which
       is a bitfield indicating SoC speedo ID mask.
 
+<<<<<<< HEAD
 allOf:
   - $ref: /schemas/thermal/thermal-cooling-devices.yaml
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -62,7 +65,11 @@ required:
   - clock-names
   - nvidia,memory-controller
 
+<<<<<<< HEAD
 unevaluatedProperties: false
+=======
+additionalProperties: false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |
@@ -93,5 +100,8 @@ examples:
         operating-points-v2 = <&dvfs_opp_table>;
 
         #interconnect-cells = <0>;
+<<<<<<< HEAD
         #cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

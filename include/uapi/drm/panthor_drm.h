@@ -410,6 +410,7 @@ struct drm_panthor_csif_info {
 };
 
 /**
+<<<<<<< HEAD
  * enum drm_panthor_timestamp_info_flags - drm_panthor_timestamp_info.flags
  */
 enum drm_panthor_timestamp_info_flags {
@@ -442,6 +443,8 @@ enum drm_panthor_timestamp_info_flags {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct drm_panthor_timestamp_info - Timestamp information
  *
  * Structure grouping all queryable information relating to the GPU timestamp.
@@ -453,6 +456,7 @@ struct drm_panthor_timestamp_info {
 	 */
 	__u64 timestamp_frequency;
 
+<<<<<<< HEAD
 	/** @current_timestamp: The current GPU timestamp. */
 	__u64 current_timestamp;
 
@@ -485,6 +489,13 @@ struct drm_panthor_timestamp_info {
 
 	/** @cpu_timestamp_nsec: Nanseconds part of CPU timestamp. */
 	__u64 cpu_timestamp_nsec;
+=======
+	/** @current_timestamp: The current timestamp. */
+	__u64 current_timestamp;
+
+	/** @timestamp_offset: The offset of the timestamp timer. */
+	__u64 timestamp_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

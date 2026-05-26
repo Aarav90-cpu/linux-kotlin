@@ -121,8 +121,11 @@
 #define HPRE_DFX_COMMON2_LEN		0xE
 #define HPRE_DFX_CORE_LEN		0x43
 
+<<<<<<< HEAD
 #define HPRE_MAX_CHANNEL_NUM		2
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char hpre_name[] = "hisi_hpre";
 static struct dentry *hpre_debugfs_root;
 static const struct pci_device_id hpre_dev_ids[] = {
@@ -372,11 +375,14 @@ static struct dfx_diff_registers hpre_diff_regs[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const char *hpre_channel_name[HPRE_MAX_CHANNEL_NUM] = {
 	"RSA",
 	"ECC",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct hisi_qm_err_ini hpre_err_ini;
 
 bool hpre_check_alg_support(struct hisi_qm *qm, u32 alg)
@@ -1241,6 +1247,7 @@ static int hpre_pre_store_cap_reg(struct hisi_qm *qm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void hpre_set_channels(struct hisi_qm *qm)
 {
 	struct qm_channel *channel_data = &qm->channel_data;
@@ -1251,6 +1258,8 @@ static void hpre_set_channels(struct hisi_qm *qm)
 		channel_data->channel_name[i] = hpre_channel_name[i];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hpre_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 {
 	u64 alg_msk;
@@ -1284,7 +1293,10 @@ static int hpre_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	hpre_set_channels(qm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Fetch and save the value of capability registers */
 	ret = hpre_pre_store_cap_reg(qm);
 	if (ret) {

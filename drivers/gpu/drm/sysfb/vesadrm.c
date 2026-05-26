@@ -48,6 +48,7 @@ static const struct drm_format_info *vesadrm_get_format_si(struct drm_device *de
 		{ PIXEL_FORMAT_XBGR8888, DRM_FORMAT_XBGR8888, },
 		{ PIXEL_FORMAT_C8, DRM_FORMAT_C8, },
 	};
+<<<<<<< HEAD
 	struct pixel_format pixel;
 	int ret;
 
@@ -56,6 +57,10 @@ static const struct drm_format_info *vesadrm_get_format_si(struct drm_device *de
 		return NULL;
 
 	return drm_sysfb_get_format(dev, formats, ARRAY_SIZE(formats), &pixel);
+=======
+
+	return drm_sysfb_get_format_si(dev, formats, ARRAY_SIZE(formats), si);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

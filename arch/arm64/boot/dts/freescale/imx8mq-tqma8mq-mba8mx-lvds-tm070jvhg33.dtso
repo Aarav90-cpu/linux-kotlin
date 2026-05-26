@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 /*
+<<<<<<< HEAD
  * Copyright (c) 2019-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+=======
+ * Copyright (c) 2019-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * D-82229 Seefeld, Germany.
  * Author: Alexander Stein
  */
@@ -10,6 +14,13 @@
 
 #include <dt-bindings/gpio/gpio.h>
 
+<<<<<<< HEAD
+=======
+&{/} {
+	compatible = "tq,imx8mq-tqma8mq-mba8mx", "tq,imx8mq-tqma8mq", "fsl,imx8mq";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &backlight_lvds {
 	status = "okay";
 };

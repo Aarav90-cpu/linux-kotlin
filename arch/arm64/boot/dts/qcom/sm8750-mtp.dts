@@ -54,6 +54,7 @@
 		vdd-px-supply = <&vreg_l2i_1p2>;
 
 		#sound-dai-cells = <1>;
+<<<<<<< HEAD
 
 		mode-switch;
 		orientation-switch;
@@ -63,6 +64,8 @@
 				remote-endpoint = <&wcd_usbss_headset_out>;
 			};
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
@@ -239,7 +242,10 @@
 					reg = <2>;
 
 					pmic_glink_sbu: endpoint {
+<<<<<<< HEAD
 						remote-endpoint = <&wcd_usbss_sbu_mux>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 				};
 			};
@@ -935,6 +941,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &i2c3 {
 	status = "okay";
 
@@ -971,6 +978,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &iris {
 	status = "okay";
 };
@@ -983,6 +992,7 @@
 	qcom,dmic-sample-rate = <4800000>;
 };
 
+<<<<<<< HEAD
 &mdss {
 	status = "okay";
 };
@@ -1033,6 +1043,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pm8550_flash {
 	status = "okay";
 
@@ -1149,11 +1161,14 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &qup_i2c3_data_clk {
 	/* Use internal I2C pull-up */
 	bias-pull-up = <2200>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &qupv3_1 {
 	status = "okay";
 };
@@ -1326,6 +1341,7 @@
 		bias-pull-up;
 	};
 
+<<<<<<< HEAD
 	mdp_vsync: mdp-vsync-state {
 		pins = "gpio86";
 		function = "mdp_vsync";
@@ -1347,6 +1363,8 @@
 		bias-pull-down;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wcd_default: wcd-reset-n-active-state {
 		pins = "gpio101";
 		function = "gpio";

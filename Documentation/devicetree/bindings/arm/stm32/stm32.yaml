@@ -183,12 +183,19 @@ properties:
           - const: seeed,stm32mp157c-odyssey-som
           - const: st,stm32mp157
 
+<<<<<<< HEAD
       - description: Phytec STM32MP157 SoM based Boards
         items:
           - enum:
               - phytec,phycore-stm32mp1-3 # phyBOARD-Sargas with phyCORE-STM32MP157C SoM
           - enum:
               - phytec,phycore-stm32mp157c-som # phyCORE-STM32MP157C SoM
+=======
+      - description: Phytec STM32MP1 SoM based Boards
+        items:
+          - const: phytec,phycore-stm32mp1-3
+          - const: phytec,phycore-stm32mp157c-som
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: st,stm32mp157
 
       - description: Ultratronik STM32MP1 SBC based Boards

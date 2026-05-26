@@ -4,9 +4,15 @@
 #ifndef _IONIC_IBDEV_H_
 #define _IONIC_IBDEV_H_
 
+<<<<<<< HEAD
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_pack.h>
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+#include <rdma/ib_verbs.h>
+#include <rdma/ib_pack.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/uverbs_ioctl.h>
 
 #include <rdma/ionic-abi.h>

@@ -70,6 +70,10 @@ struct crc_data {
 
 struct crc_info {
 	struct crc_data crc[MAX_CRC_WINDOW_NUM];
+<<<<<<< HEAD
+=======
+	struct completion completion;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spinlock_t lock;
 };
 

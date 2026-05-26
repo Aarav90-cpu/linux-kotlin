@@ -10,13 +10,19 @@
 #include <linux/delay.h>
 #include <linux/time64.h>
 #include <linux/ulpi/regs.h>
+<<<<<<< HEAD
 #include <linux/ulpi/driver.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "core.h"
 #include "io.h"
 
+<<<<<<< HEAD
 #define USB_VENDOR_MICROCHIP 0x0424
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DWC3_ULPI_ADDR(a) \
 		((a >= ULPI_EXT_VENDOR_SPECIFIC) ? \
 		DWC3_GUSB2PHYACC_ADDR(ULPI_ACCESS_EXTENDED) | \
@@ -86,6 +92,7 @@ static const struct ulpi_ops dwc3_ulpi_ops = {
 	.write = dwc3_ulpi_write,
 };
 
+<<<<<<< HEAD
 static void dwc3_ulpi_detect_config(struct dwc3 *dwc)
 {
 	struct ulpi *ulpi = dwc->ulpi;
@@ -106,6 +113,8 @@ static void dwc3_ulpi_detect_config(struct dwc3 *dwc)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int dwc3_ulpi_init(struct dwc3 *dwc)
 {
 	/* Register the interface */
@@ -115,8 +124,11 @@ int dwc3_ulpi_init(struct dwc3 *dwc)
 		return PTR_ERR(dwc->ulpi);
 	}
 
+<<<<<<< HEAD
 	dwc3_ulpi_detect_config(dwc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

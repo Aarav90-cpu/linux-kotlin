@@ -292,8 +292,11 @@ int bpf_core_parse_spec(const char *prog_name, const struct btf *btf,
 			++spec_str;
 		if (sscanf(spec_str, "%d%n", &access_idx, &parsed_len) != 1)
 			return -EINVAL;
+<<<<<<< HEAD
 		if (access_idx < 0)
 			return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (spec->raw_len == BPF_CORE_SPEC_MAX_LEN)
 			return -E2BIG;
 		spec_str += parsed_len;

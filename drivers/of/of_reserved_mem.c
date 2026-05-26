@@ -24,6 +24,11 @@
 #include <linux/slab.h>
 #include <linux/memblock.h>
 #include <linux/kmemleak.h>
+<<<<<<< HEAD
+=======
+#include <linux/cma.h>
+#include <linux/dma-map-ops.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "of_private.h"
 
@@ -102,12 +107,39 @@ static void __init alloc_reserved_mem_array(void)
 	reserved_mem = new_array;
 }
 
+<<<<<<< HEAD
 static void fdt_init_reserved_mem_node(unsigned long node, const char *uname,
 				       phys_addr_t base, phys_addr_t size);
 static int fdt_validate_reserved_mem_node(unsigned long node,
 					  phys_addr_t *align);
 static int fdt_fixup_reserved_mem_node(unsigned long node,
 				       phys_addr_t base, phys_addr_t size);
+=======
+static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem);
+/*
+ * fdt_reserved_mem_save_node() - save fdt node for second pass initialization
+ */
+static void __init fdt_reserved_mem_save_node(unsigned long node, const char *uname,
+					      phys_addr_t base, phys_addr_t size)
+{
+	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
+
+	if (reserved_mem_count == total_reserved_mem_cnt) {
+		pr_err("not enough space for all defined regions.\n");
+		return;
+	}
+
+	rmem->fdt_node = node;
+	rmem->name = uname;
+	rmem->base = base;
+	rmem->size = size;
+
+	/* Call the region specific initialization function */
+	fdt_init_reserved_mem_node(rmem);
+
+	reserved_mem_count++;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int __init early_init_dt_reserve_memory(phys_addr_t base,
 					       phys_addr_t size, bool nomap)
@@ -134,19 +166,34 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
 					     const char *uname)
 {
 	phys_addr_t base, size;
+<<<<<<< HEAD
 	int i, len, err;
 	const __be32 *prop;
 	bool nomap;
+=======
+	int i, len;
+	const __be32 *prop;
+	bool nomap, default_cma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	prop = of_flat_dt_get_addr_size_prop(node, "reg", &len);
 	if (!prop)
 		return -ENOENT;
 
 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+<<<<<<< HEAD
 
 	err = fdt_validate_reserved_mem_node(node, NULL);
 	if (err && err != -ENODEV)
 		return err;
+=======
+	default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
+
+	if (default_cma && cma_skip_dt_default_reserved_mem()) {
+		pr_err("Skipping dt linux,cma-default for \"cma=\" kernel param.\n");
+		return -EINVAL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < len; i++) {
 		u64 b, s;
@@ -157,7 +204,14 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
 		size = s;
 
 		if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
+<<<<<<< HEAD
 			fdt_fixup_reserved_mem_node(node, base, size);
+=======
+			/* Architecture specific contiguous memory fixup. */
+			if (of_flat_dt_is_compatible(node, "shared-dma-pool") &&
+			    of_get_flat_dt_prop(node, "reusable", NULL))
+				dma_contiguous_early_fixup(base, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
 				uname, &base, (unsigned long)(size / SZ_1M));
 		} else {
@@ -191,6 +245,7 @@ static int __init __reserved_mem_check_root(unsigned long node)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __init __rmem_cmp(const void *a, const void *b)
 {
 	const struct reserved_mem *ra = a, *rb = b;
@@ -251,6 +306,21 @@ static void __init __rmem_check_for_overlap(void)
  * function and stored in the global reserved_mem array.
  */
 void __init fdt_scan_reserved_mem_late(void)
+=======
+static void __init __rmem_check_for_overlap(void);
+
+/**
+ * fdt_scan_reserved_mem_reg_nodes() - Store info for the "reg" defined
+ * reserved memory regions.
+ *
+ * This function is used to scan through the DT and store the
+ * information for the reserved memory regions that are defined using
+ * the "reg" property. The region node number, name, base address, and
+ * size are all stored in the reserved_mem array by calling the
+ * fdt_reserved_mem_save_node() function.
+ */
+void __init fdt_scan_reserved_mem_reg_nodes(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const void *fdt = initial_boot_params;
 	phys_addr_t base, size;
@@ -275,6 +345,7 @@ void __init fdt_scan_reserved_mem_late(void)
 
 	fdt_for_each_subnode(child, fdt, node) {
 		const char *uname;
+<<<<<<< HEAD
 		u64 b, s;
 		int ret;
 
@@ -286,6 +357,17 @@ void __init fdt_scan_reserved_mem_late(void)
 
 		ret = fdt_validate_reserved_mem_node(child, NULL);
 		if (ret && ret != -ENODEV)
+=======
+		bool default_cma = of_get_flat_dt_prop(child, "linux,cma-default", NULL);
+		u64 b, s;
+
+		if (!of_fdt_device_is_available(fdt, child))
+			continue;
+		if (default_cma && cma_skip_dt_default_reserved_mem())
+			continue;
+
+		if (!of_flat_dt_get_addr_size(child, "reg", &b, &s))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		base = b;
@@ -293,7 +375,11 @@ void __init fdt_scan_reserved_mem_late(void)
 
 		if (size) {
 			uname = fdt_get_name(fdt, child, NULL);
+<<<<<<< HEAD
 			fdt_init_reserved_mem_node(child, uname, base, size);
+=======
+			fdt_reserved_mem_save_node(child, uname, base, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -304,6 +390,7 @@ void __init fdt_scan_reserved_mem_late(void)
 static int __init __reserved_mem_alloc_size(unsigned long node, const char *uname);
 
 /*
+<<<<<<< HEAD
  * fdt_scan_reserved_mem() - reserve and allocate memory occupied by
  * reserved memory regions.
  *
@@ -312,6 +399,9 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
  * Then memory for all dynamic regions (defined by size & alignment) is
  * allocated, a region specific init function is called and region information
  * is stored in the reserved_mem array.
+=======
+ * fdt_scan_reserved_mem() - scan a single FDT node for reserved memory
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int __init fdt_scan_reserved_mem(void)
 {
@@ -428,7 +518,11 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
 	phys_addr_t base = 0, align = 0, size;
 	int i, len;
 	const __be32 *prop;
+<<<<<<< HEAD
 	bool nomap;
+=======
+	bool nomap, default_cma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	prop = of_get_flat_dt_prop(node, "size", &len);
@@ -452,10 +546,26 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
 	}
 
 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+<<<<<<< HEAD
 
 	ret = fdt_validate_reserved_mem_node(node, &align);
 	if (ret && ret != -ENODEV)
 		return ret;
+=======
+	default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
+
+	if (default_cma && cma_skip_dt_default_reserved_mem()) {
+		pr_err("Skipping dt linux,cma-default for \"cma=\" kernel param.\n");
+		return -EINVAL;
+	}
+
+	/* Need adjust the alignment to satisfy the CMA requirement */
+	if (IS_ENABLED(CONFIG_CMA)
+	    && of_flat_dt_is_compatible(node, "shared-dma-pool")
+	    && of_get_flat_dt_prop(node, "reusable", NULL)
+	    && !nomap)
+		align = max_t(phys_addr_t, align, CMA_MIN_ALIGNMENT_BYTES);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	prop = of_flat_dt_get_addr_size_prop(node, "alloc-ranges", &len);
 	if (prop) {
@@ -490,6 +600,7 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
 		       uname, (unsigned long)(size / SZ_1M));
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 
 	fdt_fixup_reserved_mem_node(node, base, size);
 	fdt_init_reserved_mem_node(node, uname, base, size);
@@ -590,11 +701,47 @@ static int __init __reserved_mem_init_node(struct reserved_mem *rmem,
 			pr_info("initialized node %s, compatible id %s\n",
 				rmem->name, compat);
 			return ret;
+=======
+	/* Architecture specific contiguous memory fixup. */
+	if (of_flat_dt_is_compatible(node, "shared-dma-pool") &&
+	    of_get_flat_dt_prop(node, "reusable", NULL))
+		dma_contiguous_early_fixup(base, size);
+	/* Save region in the reserved_mem array */
+	fdt_reserved_mem_save_node(node, uname, base, size);
+	return 0;
+}
+
+static const struct of_device_id __rmem_of_table_sentinel
+	__used __section("__reservedmem_of_table_end");
+
+/*
+ * __reserved_mem_init_node() - call region specific reserved memory init code
+ */
+static int __init __reserved_mem_init_node(struct reserved_mem *rmem)
+{
+	extern const struct of_device_id __reservedmem_of_table[];
+	const struct of_device_id *i;
+	int ret = -ENOENT;
+
+	for (i = __reservedmem_of_table; i < &__rmem_of_table_sentinel; i++) {
+		reservedmem_of_init_fn initfn = i->data;
+		const char *compat = i->compatible;
+
+		if (!of_flat_dt_is_compatible(rmem->fdt_node, compat))
+			continue;
+
+		ret = initfn(rmem);
+		if (ret == 0) {
+			pr_info("initialized node %s, compatible id %s\n",
+				rmem->name, compat);
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * fdt_init_reserved_mem_node() - Initialize a reserved memory region
  * @node: fdt node of the initialized region
@@ -630,11 +777,89 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
 		pr_info("node %s compatible matching fail\n", rmem->name);
 		rmem->name = NULL;
 
+=======
+static int __init __rmem_cmp(const void *a, const void *b)
+{
+	const struct reserved_mem *ra = a, *rb = b;
+
+	if (ra->base < rb->base)
+		return -1;
+
+	if (ra->base > rb->base)
+		return 1;
+
+	/*
+	 * Put the dynamic allocations (address == 0, size == 0) before static
+	 * allocations at address 0x0 so that overlap detection works
+	 * correctly.
+	 */
+	if (ra->size < rb->size)
+		return -1;
+	if (ra->size > rb->size)
+		return 1;
+
+	if (ra->fdt_node < rb->fdt_node)
+		return -1;
+	if (ra->fdt_node > rb->fdt_node)
+		return 1;
+
+	return 0;
+}
+
+static void __init __rmem_check_for_overlap(void)
+{
+	int i;
+
+	if (reserved_mem_count < 2)
+		return;
+
+	sort(reserved_mem, reserved_mem_count, sizeof(reserved_mem[0]),
+	     __rmem_cmp, NULL);
+	for (i = 0; i < reserved_mem_count - 1; i++) {
+		struct reserved_mem *this, *next;
+
+		this = &reserved_mem[i];
+		next = &reserved_mem[i + 1];
+
+		if (this->base + this->size > next->base) {
+			phys_addr_t this_end, next_end;
+
+			this_end = this->base + this->size;
+			next_end = next->base + next->size;
+			pr_err("OVERLAP DETECTED!\n%s (%pa--%pa) overlaps with %s (%pa--%pa)\n",
+			       this->name, &this->base, &this_end,
+			       next->name, &next->base, &next_end);
+		}
+	}
+}
+
+/**
+ * fdt_init_reserved_mem_node() - Initialize a reserved memory region
+ * @rmem: reserved_mem struct of the memory region to be initialized.
+ *
+ * This function is used to call the region specific initialization
+ * function for a reserved memory region.
+ */
+static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem)
+{
+	unsigned long node = rmem->fdt_node;
+	int err = 0;
+	bool nomap;
+
+	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+
+	err = __reserved_mem_init_node(rmem);
+	if (err != 0 && err != -ENOENT) {
+		pr_info("node %s compatible matching fail\n", rmem->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (nomap)
 			memblock_clear_nomap(rmem->base, rmem->size);
 		else
 			memblock_phys_free(rmem->base, rmem->size);
+<<<<<<< HEAD
 		return;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		phys_addr_t end = rmem->base + rmem->size - 1;
 		bool reusable =
@@ -646,8 +871,11 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
 			reusable ? "reusable" : "non-reusable",
 			rmem->name ? rmem->name : "unknown");
 	}
+<<<<<<< HEAD
 
 	reserved_mem_count++;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct rmem_assigned_device {

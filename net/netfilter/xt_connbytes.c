@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Kernel module to match connection tracking byte counter.
  *  (C) 2002 Martin Devera (devik@cdi.cz).
+=======
+/* Kernel module to match connection tracking byte counter.
+ * GPL (C) 2002 Martin Devera (devik@cdi.cz).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 #include <linux/module.h>

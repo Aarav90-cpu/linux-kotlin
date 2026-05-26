@@ -11,6 +11,7 @@ if [[ $# -eq 0 ]]; then
         exit $?
 fi
 
+<<<<<<< HEAD
 export ALL_TESTS="
         team_test_options
         team_test_enabled_implicit_changes
@@ -19,6 +20,12 @@ export ALL_TESTS="
 "
 
 # shellcheck disable=SC1091
+=======
+ALL_TESTS="
+        team_test_options
+"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "${test_dir}/../../../net/lib.sh"
 
 TEAM_PORT="team0"
@@ -180,14 +187,18 @@ team_test_options()
         team_test_option mcast_rejoin_count 0 5
         team_test_option mcast_rejoin_interval 0 5
         team_test_option enabled true false "${MEMBER_PORT}"
+<<<<<<< HEAD
         team_test_option rx_enabled true false "${MEMBER_PORT}"
         team_test_option tx_enabled true false "${MEMBER_PORT}"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         team_test_option user_linkup true false "${MEMBER_PORT}"
         team_test_option user_linkup_enabled true false "${MEMBER_PORT}"
         team_test_option priority 10 20 "${MEMBER_PORT}"
         team_test_option queue_id 0 1 "${MEMBER_PORT}"
 }
 
+<<<<<<< HEAD
 team_test_enabled_implicit_changes()
 {
         export RET=0
@@ -279,6 +290,8 @@ team_test_tx_enabled_implicit_changes()
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 require_command teamnl
 setup
 tests_run

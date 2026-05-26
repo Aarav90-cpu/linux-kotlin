@@ -7,7 +7,11 @@
 #include "hdmi.h"
 
 static void hdmi_phy_8960_powerup(struct hdmi_phy *phy,
+<<<<<<< HEAD
 				  unsigned long pixclock)
+=======
+				  unsigned long int pixclock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	DBG("pixclock: %lu", pixclock);
 

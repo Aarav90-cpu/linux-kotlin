@@ -37,7 +37,10 @@
 #include "intel_crtc.h"
 #include "intel_de.h"
 #include "intel_display_types.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_lpe_audio.h"
 
 /**
@@ -185,6 +188,20 @@ static const struct hdmi_aud_ncts hdmi_aud_ncts_36bpp[] = {
 	{ 192000, TMDS_445_5M, 20480, 371250 },
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * WA_14020863754: Implement Audio Workaround
+ * Corner case with Min Hblank Fix can cause audio hang
+ */
+static bool needs_wa_14020863754(struct intel_display *display)
+{
+	return DISPLAY_VERx100(display) == 3000 ||
+		DISPLAY_VERx100(display) == 2000 ||
+		DISPLAY_VERx100(display) == 1401;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* get AUD_CONFIG_PIXEL_CLOCK_HDMI_* value for mode */
 static u32 audio_config_hdmi_pixel_clock(const struct intel_crtc_state *crtc_state)
 {
@@ -430,11 +447,15 @@ static void hsw_audio_codec_disable(struct intel_encoder *encoder,
 	intel_de_rmw(display, HSW_AUD_PIN_ELD_CP_VLD,
 		     AUDIO_OUTPUT_ENABLE(cpu_transcoder), 0);
 
+<<<<<<< HEAD
 	/*
 	 * WA_14020863754: Implement Audio Workaround
 	 * Corner case with Min Hblank Fix can cause audio hang
 	 */
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14020863754))
+=======
+	if (needs_wa_14020863754(display))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, AUD_CHICKENBIT_REG3, DACBE_DISABLE_MIN_HBLANK_FIX, 0);
 
 	intel_audio_sdp_split_update(old_crtc_state, false);
@@ -566,11 +587,15 @@ static void hsw_audio_codec_enable(struct intel_encoder *encoder,
 
 	intel_audio_sdp_split_update(crtc_state, true);
 
+<<<<<<< HEAD
 	/*
 	 * WA_14020863754: Implement Audio Workaround
 	 * Corner case with Min Hblank Fix can cause audio hang
 	 */
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14020863754))
+=======
+	if (needs_wa_14020863754(display))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, AUD_CHICKENBIT_REG3, 0, DACBE_DISABLE_MIN_HBLANK_FIX);
 
 	/* Enable audio presence detect */

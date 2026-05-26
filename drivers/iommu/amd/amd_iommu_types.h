@@ -15,7 +15,10 @@
 #include <linux/mutex.h>
 #include <linux/msi.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/sizes.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/spinlock.h>
 #include <linux/pci.h>
 #include <linux/iommufd.h>
@@ -142,6 +145,10 @@
 #define MMIO_STATUS_GALOG_INT_MASK		BIT(10)
 
 /* event logging constants */
+<<<<<<< HEAD
+=======
+#define EVENT_ENTRY_SIZE	0x10
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define EVENT_TYPE_SHIFT	28
 #define EVENT_TYPE_MASK		0xf
 #define EVENT_TYPE_ILL_DEV	0x1
@@ -259,6 +266,7 @@
 #define MMIO_CMD_BUFFER_TAIL(x) FIELD_GET(MMIO_CMD_TAIL_MASK, (x))
 
 /* constants for event buffer handling */
+<<<<<<< HEAD
 #define EVTLOG_ENTRY_SIZE	0x10
 #define EVTLOG_SIZE_SHIFT	56
 #define EVTLOG_SIZE_DEF		SZ_8K /* 512 entries */
@@ -273,6 +281,17 @@
 #define PPRLOG_LEN_MASK_DEF	(0x9ULL << PPRLOG_SIZE_SHIFT)
 #define PPRLOG_SIZE_MAX		SZ_512K	/* 32K entries */
 #define PPRLOG_LEN_MASK_MAX	(0xFULL << PPRLOG_SIZE_SHIFT)
+=======
+#define EVT_BUFFER_SIZE		8192 /* 512 entries */
+#define EVT_LEN_MASK		(0x9ULL << 56)
+
+/* Constants for PPR Log handling */
+#define PPR_LOG_ENTRIES		512
+#define PPR_LOG_SIZE_SHIFT	56
+#define PPR_LOG_SIZE_512	(0x9ULL << PPR_LOG_SIZE_SHIFT)
+#define PPR_ENTRY_SIZE		16
+#define PPR_LOG_SIZE		(PPR_ENTRY_SIZE * PPR_LOG_ENTRIES)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* PAGE_SERVICE_REQUEST PPR Log Buffer Entry flags */
 #define PPR_FLAG_EXEC		0x002	/* Execute permission requested */

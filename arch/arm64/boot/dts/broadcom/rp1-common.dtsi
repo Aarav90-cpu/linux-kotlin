@@ -26,6 +26,7 @@ pci_ep_bus: pci-ep-bus@1 {
 				       <200000000>;  // RP1_CLK_SYS
 	};
 
+<<<<<<< HEAD
 	rp1_i2c0: i2c@40070000 {
 		compatible = "snps,designware-i2c";
 		reg = <0x0 0x40070000  0x0 0x1000>;
@@ -103,6 +104,8 @@ pci_ep_bus: pci-ep-bus@1 {
 		status = "disabled";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rp1_gpio: pinctrl@400d0000 {
 		compatible = "raspberrypi,rp1-gpio";
 		reg = <0x00 0x400d0000  0x0 0xc000>,
@@ -133,6 +136,7 @@ pci_ep_bus: pci-ep-bus@1 {
 		#size-cells = <0>;
 	};
 
+<<<<<<< HEAD
 	rp1_csi0: csi@40110000 {
 		compatible = "raspberrypi,rp1-cfe";
 		reg = <0x0 0x40110000  0x0 0x100>, // CSI2 DMA address
@@ -161,6 +165,8 @@ pci_ep_bus: pci-ep-bus@1 {
 		status = "disabled";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rp1_usb0: usb@40200000 {
 		compatible = "snps,dwc3";
 		reg = <0x00 0x40200000  0x0 0x100000>;

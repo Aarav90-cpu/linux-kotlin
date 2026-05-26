@@ -29,7 +29,10 @@
 #include <linux/netfilter.h>
 #include <linux/netfilter_ipv4.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/rcupdate_wait.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <net/net_namespace.h>
 #include <linux/nsproxy.h>
@@ -49,7 +52,11 @@
 
 MODULE_ALIAS_GENL_FAMILY(IPVS_GENL_NAME);
 
+<<<<<<< HEAD
 static struct lock_class_key __ipvs_service_key;
+=======
+DEFINE_MUTEX(__ip_vs_mutex); /* Serialize configuration with sockopt/netlink */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* sysctl variables */
 
@@ -261,6 +268,7 @@ static void est_reload_work_handler(struct work_struct *work)
 		if (!kd)
 			continue;
 		/* New config ? Stop kthread tasks */
+<<<<<<< HEAD
 		if (genid != genid_done) {
 			if (!id) {
 				/* Only we can stop kt 0 but not under mutex */
@@ -283,6 +291,14 @@ static void est_reload_work_handler(struct work_struct *work)
 			else
 				start = kd->needed;
 			if (start && ip_vs_est_kthread_start(ipvs, kd) < 0)
+=======
+		if (genid != genid_done)
+			ip_vs_est_kthread_stop(kd);
+		if (!kd->task && !ip_vs_est_stopped(ipvs)) {
+			/* Do not start kthreads above 0 in calc phase */
+			if ((!id || !ipvs->est_calc_phase) &&
+			    ip_vs_est_kthread_start(ipvs, kd) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				repeat = true;
 		}
 	}
@@ -297,6 +313,7 @@ unlock:
 	mutex_unlock(&ipvs->est_mutex);
 }
 
+<<<<<<< HEAD
 static int get_conn_tab_size(struct netns_ipvs *ipvs)
 {
 	const struct ip_vs_rht *t;
@@ -311,6 +328,8 @@ static int get_conn_tab_size(struct netns_ipvs *ipvs)
 	return size;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int
 ip_vs_use_count_inc(void)
 {
@@ -324,6 +343,7 @@ ip_vs_use_count_dec(void)
 }
 
 
+<<<<<<< HEAD
 /* Service hashing:
  * Operation			Locking order
  * ---------------------------------------------------------------------------
@@ -358,20 +378,56 @@ ip_vs_use_count_dec(void)
  * replace (svc_replace_sem) when we can see entries twice but we
  * prefer to run concurrently with the rehashing.
  */
+=======
+/*
+ *	Hash table: for virtual service lookups
+ */
+#define IP_VS_SVC_TAB_BITS 8
+#define IP_VS_SVC_TAB_SIZE (1 << IP_VS_SVC_TAB_BITS)
+#define IP_VS_SVC_TAB_MASK (IP_VS_SVC_TAB_SIZE - 1)
+
+/* the service table hashed by <protocol, addr, port> */
+static struct hlist_head ip_vs_svc_table[IP_VS_SVC_TAB_SIZE];
+/* the service table hashed by fwmark */
+static struct hlist_head ip_vs_svc_fwm_table[IP_VS_SVC_TAB_SIZE];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *	Returns hash value for virtual service
  */
+<<<<<<< HEAD
 static inline u32
 ip_vs_svc_hashval(struct ip_vs_rht *t, int af, unsigned int proto,
 		  const union nf_inet_addr *addr, __be16 port)
 {
 	return ip_vs_rht_hash_linfo(t, af, addr, ntohs(port), proto);
+=======
+static inline unsigned int
+ip_vs_svc_hashkey(struct netns_ipvs *ipvs, int af, unsigned int proto,
+		  const union nf_inet_addr *addr, __be16 port)
+{
+	unsigned int porth = ntohs(port);
+	__be32 addr_fold = addr->ip;
+	__u32 ahash;
+
+#ifdef CONFIG_IP_VS_IPV6
+	if (af == AF_INET6)
+		addr_fold = addr->ip6[0]^addr->ip6[1]^
+			    addr->ip6[2]^addr->ip6[3];
+#endif
+	ahash = ntohl(addr_fold);
+	ahash ^= ((size_t) ipvs >> 8);
+
+	return (proto ^ ahash ^ (porth >> IP_VS_SVC_TAB_BITS) ^ porth) &
+	       IP_VS_SVC_TAB_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  *	Returns hash value of fwmark for virtual service lookup
  */
+<<<<<<< HEAD
 static inline u32 ip_vs_svc_fwm_hashval(struct ip_vs_rht *t, int af,
 					__u32 fwmark)
 {
@@ -385,6 +441,21 @@ static int ip_vs_svc_hash(struct ip_vs_service *svc)
 	struct hlist_bl_head *head;
 	struct ip_vs_rht *t;
 	u32 hash;
+=======
+static inline unsigned int ip_vs_svc_fwm_hashkey(struct netns_ipvs *ipvs, __u32 fwmark)
+{
+	return (((size_t)ipvs>>8) ^ fwmark) & IP_VS_SVC_TAB_MASK;
+}
+
+/*
+ *	Hashes a service in the ip_vs_svc_table by <netns,proto,addr,port>
+ *	or in the ip_vs_svc_fwm_table by fwmark.
+ *	Should be called with locked tables.
+ */
+static int ip_vs_svc_hash(struct ip_vs_service *svc)
+{
+	unsigned int hash;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (svc->flags & IP_VS_SVC_F_HASHED) {
 		pr_err("%s(): request for already hashed, called from %pS\n",
@@ -392,6 +463,7 @@ static int ip_vs_svc_hash(struct ip_vs_service *svc)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/* increase its refcnt because it is referenced by the svc table */
 	atomic_inc(&svc->refcnt);
 
@@ -425,30 +497,61 @@ static int ip_vs_svc_hash(struct ip_vs_service *svc)
 	hlist_bl_add_head_rcu(&svc->s_list, head);
 	hlist_bl_unlock(head);
 
+<<<<<<< HEAD
 	rcu_read_unlock();
 
+=======
+=======
+	if (svc->fwmark == 0) {
+		/*
+		 *  Hash it by <netns,protocol,addr,port> in ip_vs_svc_table
+		 */
+		hash = ip_vs_svc_hashkey(svc->ipvs, svc->af, svc->protocol,
+					 &svc->addr, svc->port);
+		hlist_add_head_rcu(&svc->s_list, &ip_vs_svc_table[hash]);
+	} else {
+		/*
+		 *  Hash it by fwmark in svc_fwm_table
+		 */
+		hash = ip_vs_svc_fwm_hashkey(svc->ipvs, svc->fwmark);
+		hlist_add_head_rcu(&svc->f_list, &ip_vs_svc_fwm_table[hash]);
+	}
+
+	svc->flags |= IP_VS_SVC_F_HASHED;
+	/* increase its refcnt because it is referenced by the svc table */
+	atomic_inc(&svc->refcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	return 1;
 }
 
 
 /*
+<<<<<<< HEAD
  *	Unhashes a service from svc_table.
+=======
+ *	Unhashes a service from svc_table / svc_fwm_table.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	Should be called with locked tables.
  */
 static int ip_vs_svc_unhash(struct ip_vs_service *svc)
 {
+<<<<<<< HEAD
 	struct netns_ipvs *ipvs = svc->ipvs;
 	struct hlist_bl_head *head;
 	struct ip_vs_rht *t;
 	u32 hash_key2;
 	u32 hash_key;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(svc->flags & IP_VS_SVC_F_HASHED)) {
 		pr_err("%s(): request for unhash flagged, called from %pS\n",
 		       __func__, __builtin_return_address(0));
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/* We know if new table is attached under service_mutex but rely on
 	 * RCU to hold the old table to be freed in resizer
 	 */
@@ -456,6 +559,10 @@ static int ip_vs_svc_unhash(struct ip_vs_service *svc)
 
 	/* This can be the old or the new table */
 	t = rcu_dereference(ipvs->svc_table);
+=======
+<<<<<<< HEAD
+	t = rcu_dereference_protected(ipvs->svc_table, 1);
+>>>>>>> 7fb39c93c52e (Sync)
 	hash_key = READ_ONCE(svc->hash_key);
 	/* We need to lock the bucket in the right table */
 	if (ip_vs_rht_same_table(t, hash_key)) {
@@ -482,8 +589,23 @@ static int ip_vs_svc_unhash(struct ip_vs_service *svc)
 	svc->flags &= ~IP_VS_SVC_F_HASHED;
 	atomic_dec(&svc->refcnt);
 	hlist_bl_unlock(head);
+<<<<<<< HEAD
 
 	rcu_read_unlock();
+=======
+=======
+	if (svc->fwmark == 0) {
+		/* Remove it from the svc_table table */
+		hlist_del_rcu(&svc->s_list);
+	} else {
+		/* Remove it from the svc_fwm_table table */
+		hlist_del_rcu(&svc->f_list);
+	}
+
+	svc->flags &= ~IP_VS_SVC_F_HASHED;
+	atomic_dec(&svc->refcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	return 1;
 }
 
@@ -495,6 +617,7 @@ static inline struct ip_vs_service *
 __ip_vs_service_find(struct netns_ipvs *ipvs, int af, __u16 protocol,
 		     const union nf_inet_addr *vaddr, __be16 vport)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKET_RCU();
 	struct hlist_bl_head *head;
 	struct ip_vs_service *svc;
@@ -518,6 +641,22 @@ __ip_vs_service_find(struct netns_ipvs *ipvs, int af, __u16 protocol,
 					return svc;
 				}
 			}
+=======
+	unsigned int hash;
+	struct ip_vs_service *svc;
+
+	/* Check for "full" addressed entries */
+	hash = ip_vs_svc_hashkey(ipvs, af, protocol, vaddr, vport);
+
+	hlist_for_each_entry_rcu(svc, &ip_vs_svc_table[hash], s_list) {
+		if ((svc->af == af)
+		    && ip_vs_addr_equal(af, &svc->addr, vaddr)
+		    && (svc->port == vport)
+		    && (svc->protocol == protocol)
+		    && (svc->ipvs == ipvs)) {
+			/* HIT */
+			return svc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -531,6 +670,7 @@ __ip_vs_service_find(struct netns_ipvs *ipvs, int af, __u16 protocol,
 static inline struct ip_vs_service *
 __ip_vs_svc_fwm_find(struct netns_ipvs *ipvs, int af, __u32 fwmark)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKET_RCU();
 	struct hlist_bl_head *head;
 	struct ip_vs_service *svc;
@@ -551,6 +691,19 @@ __ip_vs_svc_fwm_find(struct netns_ipvs *ipvs, int af, __u32 fwmark)
 					return svc;
 				}
 			}
+=======
+	unsigned int hash;
+	struct ip_vs_service *svc;
+
+	/* Check for fwmark addressed entries */
+	hash = ip_vs_svc_fwm_hashkey(ipvs, fwmark);
+
+	hlist_for_each_entry_rcu(svc, &ip_vs_svc_fwm_table[hash], f_list) {
+		if (svc->fwmark == fwmark && svc->af == af
+		    && (svc->ipvs == ipvs)) {
+			/* HIT */
+			return svc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -562,42 +715,66 @@ struct ip_vs_service *
 ip_vs_service_find(struct netns_ipvs *ipvs, int af, __u32 fwmark, __u16 protocol,
 		   const union nf_inet_addr *vaddr, __be16 vport)
 {
+<<<<<<< HEAD
 	struct ip_vs_service *svc = NULL;
 	int af_id = ip_vs_af_index(af);
+=======
+	struct ip_vs_service *svc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 *	Check the table hashed by fwmark first
 	 */
+<<<<<<< HEAD
 	if (fwmark && atomic_read(&ipvs->fwm_services[af_id])) {
+=======
+	if (fwmark) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svc = __ip_vs_svc_fwm_find(ipvs, af, fwmark);
 		if (svc)
 			goto out;
 	}
 
+<<<<<<< HEAD
 	if (!atomic_read(&ipvs->nonfwm_services[af_id]))
 		goto out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 *	Check the table hashed by <protocol,addr,port>
 	 *	for "full" addressed entries
 	 */
 	svc = __ip_vs_service_find(ipvs, af, protocol, vaddr, vport);
+<<<<<<< HEAD
 	if (svc)
 		goto out;
 
 	if (protocol == IPPROTO_TCP &&
 	    atomic_read(&ipvs->ftpsvc_counter[af_id]) &&
+=======
+
+	if (!svc && protocol == IPPROTO_TCP &&
+	    atomic_read(&ipvs->ftpsvc_counter) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    (vport == FTPDATA || !inet_port_requires_bind_service(ipvs->net, ntohs(vport)))) {
 		/*
 		 * Check if ftp service entry exists, the packet
 		 * might belong to FTP data connections.
 		 */
 		svc = __ip_vs_service_find(ipvs, af, protocol, vaddr, FTPPORT);
+<<<<<<< HEAD
 		if (svc)
 			goto out;
 	}
 
 	if (atomic_read(&ipvs->nullsvc_counter[af_id])) {
+=======
+	}
+
+	if (svc == NULL
+	    && atomic_read(&ipvs->nullsvc_counter)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Check if the catch-all port (port zero) exists
 		 */
@@ -613,6 +790,7 @@ ip_vs_service_find(struct netns_ipvs *ipvs, int af, __u32 fwmark, __u16 protocol
 	return svc;
 }
 
+<<<<<<< HEAD
 /* Return the number of registered services */
 static int ip_vs_get_num_services(struct netns_ipvs *ipvs)
 {
@@ -828,6 +1006,8 @@ unlock_m:
 	mutex_unlock(&ipvs->service_mutex);
 	goto unlock_sem;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void
 __ip_vs_bind_svc(struct ip_vs_dest *dest, struct ip_vs_service *svc)
@@ -1144,6 +1324,7 @@ out:
 	return dest;
 }
 
+<<<<<<< HEAD
 /* Put destination in trash */
 static void ip_vs_trash_put_dest(struct netns_ipvs *ipvs,
 				 struct ip_vs_dest *dest, unsigned long istart,
@@ -1162,6 +1343,8 @@ static void ip_vs_trash_put_dest(struct netns_ipvs *ipvs,
 	spin_unlock_bh(&ipvs->dest_trash_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ip_vs_dest_rcu_free(struct rcu_head *head)
 {
 	struct ip_vs_dest *dest;
@@ -1175,6 +1358,10 @@ static void ip_vs_dest_free(struct ip_vs_dest *dest)
 {
 	struct ip_vs_service *svc = rcu_dereference_protected(dest->svc, 1);
 
+<<<<<<< HEAD
+=======
+	__ip_vs_dst_cache_reset(dest);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__ip_vs_svc_put(svc);
 	call_rcu(&dest->rcu_head, ip_vs_dest_rcu_free);
 }
@@ -1377,6 +1564,13 @@ __ip_vs_update_dest(struct ip_vs_service *svc, struct ip_vs_dest *dest,
 
 	dest->af = udest->af;
 
+<<<<<<< HEAD
+=======
+	spin_lock_bh(&dest->dst_lock);
+	__ip_vs_dst_cache_reset(dest);
+	spin_unlock_bh(&dest->dst_lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (add) {
 		list_add_rcu(&dest->n_list, &svc->destinations);
 		svc->num_dests++;
@@ -1384,10 +1578,13 @@ __ip_vs_update_dest(struct ip_vs_service *svc, struct ip_vs_dest *dest,
 		if (sched && sched->add_dest)
 			sched->add_dest(svc, dest);
 	} else {
+<<<<<<< HEAD
 		spin_lock_bh(&dest->dst_lock);
 		__ip_vs_dst_cache_reset(dest);
 		spin_unlock_bh(&dest->dst_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sched = rcu_dereference_protected(svc->scheduler, 1);
 		if (sched && sched->upd_dest)
 			sched->upd_dest(svc, dest);
@@ -1521,12 +1718,18 @@ ip_vs_add_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
 			      ntohs(dest->vport));
 
 		ret = ip_vs_start_estimator(svc->ipvs, &dest->stats);
+<<<<<<< HEAD
 		/* On error put back dest into the trash */
 		if (ret < 0)
 			ip_vs_trash_put_dest(svc->ipvs, dest, dest->idle_start,
 					     false);
 		else
 			__ip_vs_update_dest(svc, dest, udest, 1);
+=======
+		if (ret < 0)
+			return ret;
+		__ip_vs_update_dest(svc, dest, udest, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * Allocate and initialize the dest structure
@@ -1596,7 +1799,21 @@ static void __ip_vs_del_dest(struct netns_ipvs *ipvs, struct ip_vs_dest *dest,
 	 */
 	ip_vs_rs_unhash(dest);
 
+<<<<<<< HEAD
 	ip_vs_trash_put_dest(ipvs, dest, 0, cleanup);
+=======
+	spin_lock_bh(&ipvs->dest_trash_lock);
+	IP_VS_DBG_BUF(3, "Moving dest %s:%u into trash, dest->refcnt=%d\n",
+		      IP_VS_DBG_ADDR(dest->af, &dest->addr), ntohs(dest->port),
+		      refcount_read(&dest->refcnt));
+	if (list_empty(&ipvs->dest_trash) && !cleanup)
+		mod_timer(&ipvs->dest_trash_timer,
+			  jiffies + (IP_VS_DEST_TRASH_PERIOD >> 1));
+	/* dest lives in trash with reference */
+	list_add(&dest->t_list, &ipvs->dest_trash);
+	dest->idle_start = 0;
+	spin_unlock_bh(&ipvs->dest_trash_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Queue up delayed work to expire all no destination connections.
 	 * No-op when CONFIG_SYSCTL is disabled.
@@ -1615,10 +1832,13 @@ static void __ip_vs_unlink_dest(struct ip_vs_service *svc,
 {
 	dest->flags &= ~IP_VS_DEST_F_AVAILABLE;
 
+<<<<<<< HEAD
 	spin_lock_bh(&dest->dst_lock);
 	__ip_vs_dst_cache_reset(dest);
 	spin_unlock_bh(&dest->dst_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 *  Remove it from the d-linked destination list.
 	 */
@@ -1709,6 +1929,7 @@ static int
 ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 		  struct ip_vs_service **svc_p)
 {
+<<<<<<< HEAD
 	struct ip_vs_scheduler *sched = NULL;
 	struct ip_vs_rht *tc_new = NULL;
 	struct ip_vs_rht *t, *t_new = NULL;
@@ -1717,7 +1938,17 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 	struct ip_vs_pe *pe = NULL;
 	int ret_hooks = -1;
 	int ret = 0;
+<<<<<<< HEAD
 	bool grow;
+=======
+=======
+	int ret = 0;
+	struct ip_vs_scheduler *sched = NULL;
+	struct ip_vs_pe *pe = NULL;
+	struct ip_vs_service *svc = NULL;
+	int ret_hooks = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 	/* increase the module use count */
 	if (!ip_vs_use_count_inc())
@@ -1759,9 +1990,14 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 	}
 #endif
 
+<<<<<<< HEAD
 	/* The old table can be freed, protect it with RCU */
 	rcu_read_lock();
 	t = rcu_dereference(ipvs->svc_table);
+=======
+<<<<<<< HEAD
+	t = rcu_dereference_protected(ipvs->svc_table, 1);
+>>>>>>> 7fb39c93c52e (Sync)
 	if (!t) {
 		int lfactor = sysctl_svc_lfactor(ipvs);
 		int new_size = ip_vs_svc_desired_size(ipvs, NULL, lfactor);
@@ -1792,6 +2028,10 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 	}
 
 	if (!atomic_read(&ipvs->num_services[af_id])) {
+=======
+	if ((u->af == AF_INET && !ipvs->num_services) ||
+	    (u->af == AF_INET6 && !ipvs->num_services6)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = ip_vs_register_hooks(ipvs, u->af);
 		if (ret < 0)
 			goto out_err;
@@ -1835,6 +2075,7 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 	if (ret < 0)
 		goto out_err;
 
+<<<<<<< HEAD
 	if (t_new) {
 		/* Add table for first time */
 		clear_bit(IP_VS_WORK_SVC_NORESIZE, &ipvs->work_flags);
@@ -1853,20 +2094,38 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 		atomic_inc(&ipvs->nullsvc_counter[af_id]);
 	if (pe && pe->conn_out)
 		atomic_inc(&ipvs->conn_out_counter[af_id]);
+=======
+	/* Update the virtual service counters */
+	if (svc->port == FTPPORT)
+		atomic_inc(&ipvs->ftpsvc_counter);
+	else if (svc->port == 0)
+		atomic_inc(&ipvs->nullsvc_counter);
+	if (pe && pe->conn_out)
+		atomic_inc(&ipvs->conn_out_counter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Bind the ct retriever */
 	RCU_INIT_POINTER(svc->pe, pe);
 	pe = NULL;
 
+<<<<<<< HEAD
 	if (svc->fwmark)
 		atomic_inc(&ipvs->fwm_services[af_id]);
 	else
 		atomic_inc(&ipvs->nonfwm_services[af_id]);
 	atomic_inc(&ipvs->num_services[af_id]);
+=======
+	/* Count only IPv4 services for old get/setsockopt interface */
+	if (svc->af == AF_INET)
+		ipvs->num_services++;
+	else if (svc->af == AF_INET6)
+		ipvs->num_services6++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Hash the service into the service table */
 	ip_vs_svc_hash(svc);
 
+<<<<<<< HEAD
 	/* Schedule resize work */
 	if (grow && !test_and_set_bit(IP_VS_WORK_SVC_RESIZE, &ipvs->work_flags))
 		queue_delayed_work(system_unbound_wq, &ipvs->svc_resize_work,
@@ -1885,16 +2144,29 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
 		/* Start estimation for first time */
 		ip_vs_est_reload_start(ipvs, true);
 		mutex_unlock(&ipvs->est_mutex);
+=======
+	*svc_p = svc;
+
+	if (!READ_ONCE(ipvs->enable)) {
+		/* Now there is a service - full throttle */
+		WRITE_ONCE(ipvs->enable, 1);
+
+		/* Start estimation for first time */
+		ip_vs_est_reload_start(ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 
 
  out_err:
+<<<<<<< HEAD
 	if (tc_new)
 		ip_vs_rht_free(tc_new);
 	if (t_new)
 		ip_vs_rht_free(t_new);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret_hooks >= 0)
 		ip_vs_unregister_hooks(ipvs, u->af);
 	if (svc != NULL) {
@@ -1921,8 +2193,11 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
 	struct ip_vs_pe *pe = NULL, *old_pe = NULL;
 	int ret = 0;
 	bool new_pe_conn_out, old_pe_conn_out;
+<<<<<<< HEAD
 	struct netns_ipvs *ipvs = svc->ipvs;
 	int af_id = ip_vs_af_index(svc->af);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Lookup the scheduler, by 'u->sched_name'
@@ -1991,9 +2266,15 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
 		new_pe_conn_out = (pe && pe->conn_out) ? true : false;
 		old_pe_conn_out = (old_pe && old_pe->conn_out) ? true : false;
 		if (new_pe_conn_out && !old_pe_conn_out)
+<<<<<<< HEAD
 			atomic_inc(&ipvs->conn_out_counter[af_id]);
 		if (old_pe_conn_out && !new_pe_conn_out)
 			atomic_dec(&ipvs->conn_out_counter[af_id]);
+=======
+			atomic_inc(&svc->ipvs->conn_out_counter);
+		if (old_pe_conn_out && !new_pe_conn_out)
+			atomic_dec(&svc->ipvs->conn_out_counter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:
@@ -2013,6 +2294,7 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
 	struct ip_vs_scheduler *old_sched;
 	struct ip_vs_pe *old_pe;
 	struct netns_ipvs *ipvs = svc->ipvs;
+<<<<<<< HEAD
 	int af_id = ip_vs_af_index(svc->af);
 
 	atomic_dec(&ipvs->num_services[af_id]);
@@ -2022,6 +2304,18 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
 		atomic_dec(&ipvs->fwm_services[af_id]);
 	else
 		atomic_dec(&ipvs->nonfwm_services[af_id]);
+=======
+
+	if (svc->af == AF_INET) {
+		ipvs->num_services--;
+		if (!ipvs->num_services)
+			ip_vs_unregister_hooks(ipvs, svc->af);
+	} else if (svc->af == AF_INET6) {
+		ipvs->num_services6--;
+		if (!ipvs->num_services6)
+			ip_vs_unregister_hooks(ipvs, svc->af);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ip_vs_stop_estimator(svc->ipvs, &svc->stats);
 
@@ -2033,7 +2327,11 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
 	/* Unbind persistence engine, keep svc->pe */
 	old_pe = rcu_dereference_protected(svc->pe, 1);
 	if (old_pe && old_pe->conn_out)
+<<<<<<< HEAD
 		atomic_dec(&ipvs->conn_out_counter[af_id]);
+=======
+		atomic_dec(&ipvs->conn_out_counter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ip_vs_pe_put(old_pe);
 
 	/*
@@ -2048,9 +2346,15 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
 	 *    Update the virtual service counters
 	 */
 	if (svc->port == FTPPORT)
+<<<<<<< HEAD
 		atomic_dec(&ipvs->ftpsvc_counter[af_id]);
 	else if (!svc->port && !svc->fwmark)
 		atomic_dec(&ipvs->nullsvc_counter[af_id]);
+=======
+		atomic_dec(&ipvs->ftpsvc_counter);
+	else if (svc->port == 0)
+		atomic_dec(&ipvs->nullsvc_counter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 *    Free the service if nobody refers to it
@@ -2082,6 +2386,7 @@ static void ip_vs_unlink_service(struct ip_vs_service *svc, bool cleanup)
  */
 static int ip_vs_del_service(struct ip_vs_service *svc)
 {
+<<<<<<< HEAD
 	struct netns_ipvs *ipvs;
 	struct ip_vs_rht *t, *p;
 	int ns;
@@ -2125,6 +2430,12 @@ static int ip_vs_del_service(struct ip_vs_service *svc)
 			queue_delayed_work(system_unbound_wq,
 					   &ipvs->svc_resize_work, 1);
 	}
+=======
+	if (svc == NULL)
+		return -EEXIST;
+	ip_vs_unlink_service(svc, false);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2134,6 +2445,7 @@ static int ip_vs_del_service(struct ip_vs_service *svc)
  */
 static int ip_vs_flush(struct netns_ipvs *ipvs, bool cleanup)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKETS();
 	struct hlist_bl_head *head;
 	struct ip_vs_service *svc;
@@ -2149,10 +2461,24 @@ static int ip_vs_flush(struct netns_ipvs *ipvs, bool cleanup)
 	if (ip_vs_get_num_services(ipvs)) {
 		ip_vs_rht_walk_buckets(ipvs->svc_table, head) {
 			hlist_bl_for_each_entry_safe(svc, e, ne, head, s_list)
+=======
+	int idx;
+	struct ip_vs_service *svc;
+	struct hlist_node *n;
+
+	/*
+	 * Flush the service table hashed by <netns,protocol,addr,port>
+	 */
+	for(idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry_safe(svc, n, &ip_vs_svc_table[idx],
+					  s_list) {
+			if (svc->ipvs == ipvs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ip_vs_unlink_service(svc, cleanup);
 		}
 	}
 
+<<<<<<< HEAD
 	/* Unregister the hash table and release it after RCU grace period */
 	t = rcu_dereference_protected(ipvs->svc_table, 1);
 	if (t) {
@@ -2173,6 +2499,19 @@ static int ip_vs_flush(struct netns_ipvs *ipvs, bool cleanup)
 	 */
 	if (cleanup)
 		ip_vs_stop_estimator_tot_stats(ipvs);
+=======
+	/*
+	 * Flush the service table hashed by fwmark
+	 */
+	for(idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry_safe(svc, n, &ip_vs_svc_fwm_table[idx],
+					  f_list) {
+			if (svc->ipvs == ipvs)
+				ip_vs_unlink_service(svc, cleanup);
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2186,12 +2525,21 @@ void ip_vs_service_nets_cleanup(struct list_head *net_list)
 	struct net *net;
 
 	/* Check for "full" addressed entries */
+<<<<<<< HEAD
 	list_for_each_entry(net, net_list, exit_list) {
 		ipvs = net_ipvs(net);
 		mutex_lock(&ipvs->service_mutex);
 		ip_vs_flush(ipvs, true);
 		mutex_unlock(&ipvs->service_mutex);
 	}
+=======
+	mutex_lock(&__ip_vs_mutex);
+	list_for_each_entry(net, net_list, exit_list) {
+		ipvs = net_ipvs(net);
+		ip_vs_flush(ipvs, true);
+	}
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Put all references for device (dst_cache) */
@@ -2222,17 +2570,28 @@ static int ip_vs_dst_event(struct notifier_block *this, unsigned long event,
 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
 	struct net *net = dev_net(dev);
 	struct netns_ipvs *ipvs = net_ipvs(net);
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKETS_RCU();
 	unsigned int resched_score = 0;
 	struct hlist_bl_head *head;
 	struct ip_vs_service *svc;
 	struct hlist_bl_node *e;
 	struct ip_vs_dest *dest;
+<<<<<<< HEAD
 	int old_gen;
+=======
+	int old_gen, new_gen;
+=======
+	struct ip_vs_service *svc;
+	struct ip_vs_dest *dest;
+	unsigned int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 	if (event != NETDEV_DOWN || !ipvs)
 		return NOTIFY_DONE;
 	IP_VS_DBG(3, "%s() dev=%s\n", __func__, dev->name);
+<<<<<<< HEAD
 
 	/* Allow concurrent rehashing on resize but to avoid loop
 	 * serialize with installing the new table.
@@ -2267,6 +2626,36 @@ done:
 	rcu_read_unlock();
 	up_read(&ipvs->svc_replace_sem);
 
+=======
+	mutex_lock(&__ip_vs_mutex);
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_table[idx], s_list) {
+			if (svc->ipvs == ipvs) {
+				list_for_each_entry(dest, &svc->destinations,
+						    n_list) {
+					ip_vs_forget_dev(dest, dev);
+				}
+			}
+		}
+
+		hlist_for_each_entry(svc, &ip_vs_svc_fwm_table[idx], f_list) {
+			if (svc->ipvs == ipvs) {
+				list_for_each_entry(dest, &svc->destinations,
+						    n_list) {
+					ip_vs_forget_dev(dest, dev);
+				}
+			}
+
+		}
+	}
+
+	spin_lock_bh(&ipvs->dest_trash_lock);
+	list_for_each_entry(dest, &ipvs->dest_trash, t_list) {
+		ip_vs_forget_dev(dest, dev);
+	}
+	spin_unlock_bh(&ipvs->dest_trash_lock);
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NOTIFY_DONE;
 }
 
@@ -2286,6 +2675,7 @@ static int ip_vs_zero_service(struct ip_vs_service *svc)
 
 static int ip_vs_zero_all(struct netns_ipvs *ipvs)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKETS_RCU();
 	unsigned int resched_score = 0;
 	struct hlist_bl_head *head;
@@ -2311,7 +2701,28 @@ static int ip_vs_zero_all(struct netns_ipvs *ipvs)
 	}
 
 	rcu_read_unlock();
+<<<<<<< HEAD
 	up_read(&ipvs->svc_replace_sem);
+=======
+=======
+	int idx;
+	struct ip_vs_service *svc;
+
+	for(idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_table[idx], s_list) {
+			if (svc->ipvs == ipvs)
+				ip_vs_zero_service(svc);
+		}
+	}
+
+	for(idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_fwm_table[idx], f_list) {
+			if (svc->ipvs == ipvs)
+				ip_vs_zero_service(svc);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 	ip_vs_zero_stats(&ipvs->tot_stats->s);
 	return 0;
@@ -2427,7 +2838,11 @@ static int ipvs_proc_est_cpumask_set(const struct ctl_table *table,
 	/* est_max_threads may depend on cpulist size */
 	ipvs->est_max_threads = ip_vs_est_max_threads(ipvs);
 	ipvs->est_calc_phase = 1;
+<<<<<<< HEAD
 	ip_vs_est_reload_start(ipvs, true);
+=======
+	ip_vs_est_reload_start(ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	mutex_unlock(&ipvs->est_mutex);
@@ -2447,6 +2862,7 @@ static int ipvs_proc_est_cpumask_get(const struct ctl_table *table,
 
 	mutex_lock(&ipvs->est_mutex);
 
+<<<<<<< HEAD
 	/* HK_TYPE_KTHREAD cpumask needs RCU protection */
 	scoped_guard(rcu) {
 		if (ipvs->est_cpulist_valid)
@@ -2455,6 +2871,13 @@ static int ipvs_proc_est_cpumask_get(const struct ctl_table *table,
 			mask = (struct cpumask *)housekeeping_cpumask(HK_TYPE_KTHREAD);
 		ret = scnprintf(buffer, size, "%*pbl\n", cpumask_pr_args(mask));
 	}
+=======
+	if (ipvs->est_cpulist_valid)
+		mask = *valp;
+	else
+		mask = (struct cpumask *)housekeeping_cpumask(HK_TYPE_KTHREAD);
+	ret = scnprintf(buffer, size, "%*pbl\n", cpumask_pr_args(mask));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&ipvs->est_mutex);
 
@@ -2510,7 +2933,11 @@ static int ipvs_proc_est_nice(const struct ctl_table *table, int write,
 			mutex_lock(&ipvs->est_mutex);
 			if (*valp != val) {
 				*valp = val;
+<<<<<<< HEAD
 				ip_vs_est_reload_start(ipvs, true);
+=======
+				ip_vs_est_reload_start(ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			mutex_unlock(&ipvs->est_mutex);
 		}
@@ -2537,13 +2964,18 @@ static int ipvs_proc_run_estimation(const struct ctl_table *table, int write,
 		mutex_lock(&ipvs->est_mutex);
 		if (*valp != val) {
 			*valp = val;
+<<<<<<< HEAD
 			ip_vs_est_reload_start(ipvs, true);
+=======
+			ip_vs_est_reload_start(ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		mutex_unlock(&ipvs->est_mutex);
 	}
 	return ret;
 }
 
+<<<<<<< HEAD
 static int ipvs_proc_conn_lfactor(const struct ctl_table *table, int write,
 				  void *buffer, size_t *lenp, loff_t *ppos)
 {
@@ -2604,6 +3036,8 @@ static int ipvs_proc_svc_lfactor(const struct ctl_table *table, int write,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  *	IPVS sysctl table (under the /proc/sys/net/ipv4/vs/)
  *	Do not change order or insert new entries without
@@ -2792,6 +3226,7 @@ static struct ctl_table vs_vars[] = {
 		.mode		= 0644,
 		.proc_handler	= ipvs_proc_est_nice,
 	},
+<<<<<<< HEAD
 	{
 		.procname	= "conn_lfactor",
 		.maxlen		= sizeof(int),
@@ -2804,6 +3239,8 @@ static struct ctl_table vs_vars[] = {
 		.mode		= 0644,
 		.proc_handler	= ipvs_proc_svc_lfactor,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_IP_VS_DEBUG
 	{
 		.procname	= "debug_level",
@@ -2821,8 +3258,13 @@ static struct ctl_table vs_vars[] = {
 
 struct ip_vs_iter {
 	struct seq_net_private p;  /* Do not move this, netns depends upon it*/
+<<<<<<< HEAD
 	struct ip_vs_rht *t;
 	u32 bucket;
+=======
+	struct hlist_head *table;
+	int bucket;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -2843,6 +3285,7 @@ static inline const char *ip_vs_fwd_name(unsigned int flags)
 	}
 }
 
+<<<<<<< HEAD
 /* Do not expect consistent view during add, del and move(table resize).
  * We may miss entries and even show duplicates.
  */
@@ -2861,33 +3304,76 @@ static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
 			if (!ip_vs_rht_same_table(t, READ_ONCE(svc->hash_key)))
 				break;
 			if (pos-- == 0) {
+=======
+
+/* Get the Nth entry in the two lists */
+static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
+{
+	struct net *net = seq_file_net(seq);
+	struct netns_ipvs *ipvs = net_ipvs(net);
+	struct ip_vs_iter *iter = seq->private;
+	int idx;
+	struct ip_vs_service *svc;
+
+	/* look in hash by protocol */
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry_rcu(svc, &ip_vs_svc_table[idx], s_list) {
+			if ((svc->ipvs == ipvs) && pos-- == 0) {
+				iter->table = ip_vs_svc_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				iter->bucket = idx;
 				return svc;
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	/* keep looking in fwmark */
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry_rcu(svc, &ip_vs_svc_fwm_table[idx],
+					 f_list) {
+			if ((svc->ipvs == ipvs) && pos-- == 0) {
+				iter->table = ip_vs_svc_fwm_table;
+				iter->bucket = idx;
+				return svc;
+			}
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 
 static void *ip_vs_info_seq_start(struct seq_file *seq, loff_t *pos)
 	__acquires(RCU)
 {
+<<<<<<< HEAD
 	struct ip_vs_iter *iter = seq->private;
 	struct net *net = seq_file_net(seq);
 	struct netns_ipvs *ipvs = net_ipvs(net);
 
 	rcu_read_lock();
 	iter->t = rcu_dereference(ipvs->svc_table);
+=======
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return *pos ? ip_vs_info_array(seq, *pos - 1) : SEQ_START_TOKEN;
 }
 
 
 static void *ip_vs_info_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 {
+<<<<<<< HEAD
 	struct ip_vs_service *svc;
 	struct ip_vs_iter *iter;
 	struct hlist_bl_node *e;
 	struct ip_vs_rht *t;
+=======
+	struct hlist_node *e;
+	struct ip_vs_iter *iter;
+	struct ip_vs_service *svc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	++*pos;
 	if (v == SEQ_START_TOKEN)
@@ -2895,6 +3381,7 @@ static void *ip_vs_info_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 
 	svc = v;
 	iter = seq->private;
+<<<<<<< HEAD
 	t = iter->t;
 	if (!t)
 		return NULL;
@@ -2914,6 +3401,41 @@ static void *ip_vs_info_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 			return svc;
 		}
 	}
+=======
+
+	if (iter->table == ip_vs_svc_table) {
+		/* next service in table hashed by protocol */
+		e = rcu_dereference(hlist_next_rcu(&svc->s_list));
+		if (e)
+			return hlist_entry(e, struct ip_vs_service, s_list);
+
+		while (++iter->bucket < IP_VS_SVC_TAB_SIZE) {
+			hlist_for_each_entry_rcu(svc,
+						 &ip_vs_svc_table[iter->bucket],
+						 s_list) {
+				return svc;
+			}
+		}
+
+		iter->table = ip_vs_svc_fwm_table;
+		iter->bucket = -1;
+		goto scan_fwmark;
+	}
+
+	/* next service in hashed by fwmark */
+	e = rcu_dereference(hlist_next_rcu(&svc->f_list));
+	if (e)
+		return hlist_entry(e, struct ip_vs_service, f_list);
+
+ scan_fwmark:
+	while (++iter->bucket < IP_VS_SVC_TAB_SIZE) {
+		hlist_for_each_entry_rcu(svc,
+					 &ip_vs_svc_fwm_table[iter->bucket],
+					 f_list)
+			return svc;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 
@@ -2926,6 +3448,7 @@ static void ip_vs_info_seq_stop(struct seq_file *seq, void *v)
 
 static int ip_vs_info_seq_show(struct seq_file *seq, void *v)
 {
+<<<<<<< HEAD
 	struct net *net = seq_file_net(seq);
 	struct netns_ipvs *ipvs = net_ipvs(net);
 
@@ -2933,17 +3456,36 @@ static int ip_vs_info_seq_show(struct seq_file *seq, void *v)
 		seq_printf(seq,
 			"IP Virtual Server version %d.%d.%d (size=%d)\n",
 			NVERSION(IP_VS_VERSION_CODE), get_conn_tab_size(ipvs));
+=======
+	if (v == SEQ_START_TOKEN) {
+		seq_printf(seq,
+			"IP Virtual Server version %d.%d.%d (size=%d)\n",
+			NVERSION(IP_VS_VERSION_CODE), ip_vs_conn_tab_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_puts(seq,
 			 "Prot LocalAddress:Port Scheduler Flags\n");
 		seq_puts(seq,
 			 "  -> RemoteAddress:Port Forward Weight ActiveConn InActConn\n");
 	} else {
+<<<<<<< HEAD
 		const struct ip_vs_service *svc = v;
+=======
+		struct net *net = seq_file_net(seq);
+		struct netns_ipvs *ipvs = net_ipvs(net);
+		const struct ip_vs_service *svc = v;
+		const struct ip_vs_iter *iter = seq->private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const struct ip_vs_dest *dest;
 		struct ip_vs_scheduler *sched = rcu_dereference(svc->scheduler);
 		char *sched_name = sched ? sched->name : "none";
 
+<<<<<<< HEAD
 		if (!svc->fwmark) {
+=======
+		if (svc->ipvs != ipvs)
+			return 0;
+		if (iter->table == ip_vs_svc_table) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_IP_VS_IPV6
 			if (svc->af == AF_INET6)
 				seq_printf(seq, "%s  [%pI6]:%04X %s ",
@@ -3095,6 +3637,7 @@ static int ip_vs_stats_percpu_show(struct seq_file *seq, void *v)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int ip_vs_status_show(struct seq_file *seq, void *v)
 {
@@ -3250,6 +3793,8 @@ after_svc:
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /*
@@ -3420,7 +3965,11 @@ do_ip_vs_set_ctl(struct sock *sk, int cmd, sockptr_t ptr, unsigned int len)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&ipvs->service_mutex);
+=======
+	mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cmd == IP_VS_SO_SET_FLUSH) {
 		/* Flush the virtual service */
 		ret = ip_vs_flush(ipvs, false);
@@ -3517,7 +4066,11 @@ do_ip_vs_set_ctl(struct sock *sk, int cmd, sockptr_t ptr, unsigned int len)
 	}
 
   out_unlock:
+<<<<<<< HEAD
 	mutex_unlock(&ipvs->service_mutex);
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -3549,6 +4102,7 @@ __ip_vs_get_service_entries(struct netns_ipvs *ipvs,
 			    const struct ip_vs_get_services *get,
 			    struct ip_vs_get_services __user *uptr)
 {
+<<<<<<< HEAD
 	struct ip_vs_service_entry entry;
 	DECLARE_IP_VS_RHT_WALK_BUCKETS();
 	struct hlist_bl_head *head;
@@ -3563,6 +4117,17 @@ __ip_vs_get_service_entries(struct netns_ipvs *ipvs,
 		hlist_bl_for_each_entry(svc, e, head, s_list) {
 			/* Only expose IPv4 entries to old interface */
 			if (svc->af != AF_INET)
+=======
+	int idx, count=0;
+	struct ip_vs_service *svc;
+	struct ip_vs_service_entry entry;
+	int ret = 0;
+
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_table[idx], s_list) {
+			/* Only expose IPv4 entries to old interface */
+			if (svc->af != AF_INET || (svc->ipvs != ipvs))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 
 			if (count >= get->num_services)
@@ -3578,6 +4143,27 @@ __ip_vs_get_service_entries(struct netns_ipvs *ipvs,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_fwm_table[idx], f_list) {
+			/* Only expose IPv4 entries to old interface */
+			if (svc->af != AF_INET || (svc->ipvs != ipvs))
+				continue;
+
+			if (count >= get->num_services)
+				goto out;
+			memset(&entry, 0, sizeof(entry));
+			ip_vs_copy_service(&entry, svc);
+			if (copy_to_user(&uptr->entrytable[count],
+					 &entry, sizeof(entry))) {
+				ret = -EFAULT;
+				goto out;
+			}
+			count++;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return ret;
 }
@@ -3732,6 +4318,7 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (cmd == IP_VS_SO_GET_SERVICES) {
 		struct ip_vs_get_services *get;
 		size_t size;
@@ -3762,13 +4349,20 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
 	}
 
 	mutex_lock(&ipvs->service_mutex);
+=======
+	mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (cmd) {
 	case IP_VS_SO_GET_VERSION:
 	{
 		char buf[64];
 
 		sprintf(buf, "IP Virtual Server version %d.%d.%d (size=%d)",
+<<<<<<< HEAD
 			NVERSION(IP_VS_VERSION_CODE), get_conn_tab_size(ipvs));
+=======
+			NVERSION(IP_VS_VERSION_CODE), ip_vs_conn_tab_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (copy_to_user(user, buf, strlen(buf)+1) != 0) {
 			ret = -EFAULT;
 			goto out;
@@ -3780,16 +4374,41 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
 	case IP_VS_SO_GET_INFO:
 	{
 		struct ip_vs_getinfo info;
+<<<<<<< HEAD
 
 		info.version = IP_VS_VERSION_CODE;
 		info.size = get_conn_tab_size(ipvs);
 		info.num_services =
 			atomic_read(&ipvs->num_services[IP_VS_AF_INET]);
+=======
+		info.version = IP_VS_VERSION_CODE;
+		info.size = ip_vs_conn_tab_size;
+		info.num_services = ipvs->num_services;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (copy_to_user(user, &info, sizeof(info)) != 0)
 			ret = -EFAULT;
 	}
 	break;
 
+<<<<<<< HEAD
+=======
+	case IP_VS_SO_GET_SERVICES:
+	{
+		struct ip_vs_get_services *get;
+		size_t size;
+
+		get = (struct ip_vs_get_services *)arg;
+		size = struct_size(get, entrytable, get->num_services);
+		if (*len != size) {
+			pr_err("length: %u != %zu\n", *len, size);
+			ret = -EINVAL;
+			goto out;
+		}
+		ret = __ip_vs_get_service_entries(ipvs, get, user);
+	}
+	break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IP_VS_SO_GET_SERVICE:
 	{
 		struct ip_vs_service_entry *entry;
@@ -3846,7 +4465,11 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
 	}
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(&ipvs->service_mutex);
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -4025,9 +4648,15 @@ static int ip_vs_genl_fill_service(struct sk_buff *skb,
 			goto nla_put_failure;
 	}
 
+<<<<<<< HEAD
 	sched = rcu_dereference(svc->scheduler);
 	sched_name = sched ? sched->name : "none";
 	pe = rcu_dereference(svc->pe);
+=======
+	sched = rcu_dereference_protected(svc->scheduler, 1);
+	sched_name = sched ? sched->name : "none";
+	pe = rcu_dereference_protected(svc->pe, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nla_put_string(skb, IPVS_SVC_ATTR_SCHED_NAME, sched_name) ||
 	    (pe && nla_put_string(skb, IPVS_SVC_ATTR_PE_NAME, pe->name)) ||
 	    nla_put(skb, IPVS_SVC_ATTR_FLAGS, sizeof(flags), &flags) ||
@@ -4075,6 +4704,7 @@ nla_put_failure:
 static int ip_vs_genl_dump_services(struct sk_buff *skb,
 				    struct netlink_callback *cb)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKETS_SAFE_RCU();
 	struct net *net = sock_net(skb->sk);
 	struct netns_ipvs *ipvs = net_ipvs(net);
@@ -4090,6 +4720,29 @@ static int ip_vs_genl_dump_services(struct sk_buff *skb,
 	ip_vs_rht_walk_buckets_safe_rcu(ipvs->svc_table, head) {
 		hlist_bl_for_each_entry_rcu(svc, e, head, s_list) {
 			if (++idx <= start)
+=======
+	int idx = 0, i;
+	int start = cb->args[0];
+	struct ip_vs_service *svc;
+	struct net *net = sock_net(skb->sk);
+	struct netns_ipvs *ipvs = net_ipvs(net);
+
+	mutex_lock(&__ip_vs_mutex);
+	for (i = 0; i < IP_VS_SVC_TAB_SIZE; i++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_table[i], s_list) {
+			if (++idx <= start || (svc->ipvs != ipvs))
+				continue;
+			if (ip_vs_genl_dump_service(skb, svc, cb) < 0) {
+				idx--;
+				goto nla_put_failure;
+			}
+		}
+	}
+
+	for (i = 0; i < IP_VS_SVC_TAB_SIZE; i++) {
+		hlist_for_each_entry(svc, &ip_vs_svc_fwm_table[i], f_list) {
+			if (++idx <= start || (svc->ipvs != ipvs))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 			if (ip_vs_genl_dump_service(skb, svc, cb) < 0) {
 				idx--;
@@ -4099,8 +4752,12 @@ static int ip_vs_genl_dump_services(struct sk_buff *skb,
 	}
 
 nla_put_failure:
+<<<<<<< HEAD
 	rcu_read_unlock();
 	up_read(&ipvs->svc_resize_sem);
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cb->args[0] = idx;
 
 	return skb->len;
@@ -4156,11 +4813,19 @@ static int ip_vs_genl_parse_service(struct netns_ipvs *ipvs,
 		usvc->fwmark = 0;
 	}
 
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (usvc->fwmark)
 		svc = __ip_vs_svc_fwm_find(ipvs, usvc->af, usvc->fwmark);
 	else
 		svc = __ip_vs_service_find(ipvs, usvc->af, usvc->protocol,
 					   &usvc->addr, usvc->port);
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*ret_svc = svc;
 
 	/* If a full entry was requested, check for the additional fields */
@@ -4287,7 +4952,11 @@ static int ip_vs_genl_dump_dests(struct sk_buff *skb,
 	struct net *net = sock_net(skb->sk);
 	struct netns_ipvs *ipvs = net_ipvs(net);
 
+<<<<<<< HEAD
 	rcu_read_lock();
+=======
+	mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Try to find the service for which to dump destinations */
 	if (nlmsg_parse_deprecated(cb->nlh, GENL_HDRLEN, attrs, IPVS_CMD_ATTR_MAX, ip_vs_cmd_policy, cb->extack))
@@ -4299,7 +4968,11 @@ static int ip_vs_genl_dump_dests(struct sk_buff *skb,
 		goto out_err;
 
 	/* Dump the destinations */
+<<<<<<< HEAD
 	list_for_each_entry_rcu(dest, &svc->destinations, n_list) {
+=======
+	list_for_each_entry(dest, &svc->destinations, n_list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (++idx <= start)
 			continue;
 		if (ip_vs_genl_dump_dest(skb, dest, cb) < 0) {
@@ -4312,7 +4985,11 @@ nla_put_failure:
 	cb->args[0] = idx;
 
 out_err:
+<<<<<<< HEAD
 	rcu_read_unlock();
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return skb->len;
 }
@@ -4595,7 +5272,11 @@ static int ip_vs_genl_set_cmd(struct sk_buff *skb, struct genl_info *info)
 
 	cmd = info->genlhdr->cmd;
 
+<<<<<<< HEAD
 	mutex_lock(&ipvs->service_mutex);
+=======
+	mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cmd == IPVS_CMD_FLUSH) {
 		ret = ip_vs_flush(ipvs, false);
@@ -4615,12 +5296,18 @@ static int ip_vs_genl_set_cmd(struct sk_buff *skb, struct genl_info *info)
 	if (cmd == IPVS_CMD_NEW_SERVICE || cmd == IPVS_CMD_SET_SERVICE)
 		need_full_svc = true;
 
+<<<<<<< HEAD
 	/* We use function that requires RCU lock (hlist_bl) */
 	rcu_read_lock();
 	ret = ip_vs_genl_parse_service(ipvs, &usvc,
 				       info->attrs[IPVS_CMD_ATTR_SERVICE],
 				       need_full_svc, &svc);
 	rcu_read_unlock();
+=======
+	ret = ip_vs_genl_parse_service(ipvs, &usvc,
+				       info->attrs[IPVS_CMD_ATTR_SERVICE],
+				       need_full_svc, &svc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto out;
 
@@ -4710,7 +5397,11 @@ static int ip_vs_genl_set_cmd(struct sk_buff *skb, struct genl_info *info)
 	}
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(&ipvs->service_mutex);
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -4740,7 +5431,11 @@ static int ip_vs_genl_get_cmd(struct sk_buff *skb, struct genl_info *info)
 	if (!msg)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	rcu_read_lock();
+=======
+	mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reply = genlmsg_put_reply(msg, info, &ip_vs_genl_family, 0, reply_cmd);
 	if (reply == NULL)
@@ -4792,7 +5487,11 @@ static int ip_vs_genl_get_cmd(struct sk_buff *skb, struct genl_info *info)
 		if (nla_put_u32(msg, IPVS_INFO_ATTR_VERSION,
 				IP_VS_VERSION_CODE) ||
 		    nla_put_u32(msg, IPVS_INFO_ATTR_CONN_TAB_SIZE,
+<<<<<<< HEAD
 				get_conn_tab_size(ipvs)))
+=======
+				ip_vs_conn_tab_size))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto nla_put_failure;
 		break;
 	}
@@ -4808,7 +5507,11 @@ nla_put_failure:
 out_err:
 	nlmsg_free(msg);
 out:
+<<<<<<< HEAD
 	rcu_read_unlock();
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -4925,7 +5628,10 @@ static struct genl_family ip_vs_genl_family __ro_after_init = {
 	.small_ops	= ip_vs_genl_ops,
 	.n_small_ops	= ARRAY_SIZE(ip_vs_genl_ops),
 	.resv_start_op	= IPVS_CMD_FLUSH + 1,
+<<<<<<< HEAD
 	.parallel_ops	= 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init ip_vs_genl_register(void)
@@ -5042,6 +5748,7 @@ static int __net_init ip_vs_control_net_init_sysctl(struct netns_ipvs *ipvs)
 	tbl[idx].extra2 = ipvs;
 	tbl[idx++].data = &ipvs->sysctl_est_nice;
 
+<<<<<<< HEAD
 	if (unpriv)
 		tbl[idx].mode = 0444;
 	tbl[idx].extra2 = ipvs;
@@ -5052,6 +5759,8 @@ static int __net_init ip_vs_control_net_init_sysctl(struct netns_ipvs *ipvs)
 	tbl[idx].extra2 = ipvs;
 	tbl[idx++].data = &ipvs->sysctl_svc_lfactor;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_IP_VS_DEBUG
 	/* Global sysctls must be ro in non-init netns */
 	if (!net_eq(net, &init_net))
@@ -5090,6 +5799,7 @@ static void __net_exit ip_vs_control_net_cleanup_sysctl(struct netns_ipvs *ipvs)
 	cancel_delayed_work_sync(&ipvs->defense_work);
 	cancel_work_sync(&ipvs->defense_work.work);
 	unregister_net_sysctl_table(ipvs->sysctl_hdr);
+<<<<<<< HEAD
 	if (ipvs->tot_stats->s.est.ktid != -2) {
 		/* Not stopped yet? This happens only on netns init error and
 		 * we even do not need to lock the service_mutex for this case.
@@ -5098,6 +5808,9 @@ static void __net_exit ip_vs_control_net_cleanup_sysctl(struct netns_ipvs *ipvs)
 		ip_vs_stop_estimator(ipvs, &ipvs->tot_stats->s);
 		mutex_unlock(&ipvs->service_mutex);
 	}
+=======
+	ip_vs_stop_estimator(ipvs, &ipvs->tot_stats->s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ipvs->est_cpulist_valid)
 		free_cpumask_var(ipvs->sysctl_est_cpulist);
@@ -5125,6 +5838,7 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 	int ret = -ENOMEM;
 	int idx;
 
+<<<<<<< HEAD
 	/* Initialize service_mutex, svc_table per netns */
 	__mutex_init(&ipvs->service_mutex, "ipvs->service_mutex", &__ipvs_service_key);
 	init_rwsem(&ipvs->svc_resize_sem);
@@ -5133,6 +5847,8 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 	atomic_set(&ipvs->svc_table_changes, 0);
 	RCU_INIT_POINTER(ipvs->svc_table, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Initialize rs_table */
 	for (idx = 0; idx < IP_VS_RTAB_SIZE; idx++)
 		INIT_HLIST_HEAD(&ipvs->rs_table[idx]);
@@ -5140,6 +5856,7 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 	INIT_LIST_HEAD(&ipvs->dest_trash);
 	spin_lock_init(&ipvs->dest_trash_lock);
 	timer_setup(&ipvs->dest_trash_timer, ip_vs_dest_trash_expire, 0);
+<<<<<<< HEAD
 	for (idx = 0; idx < IP_VS_AF_MAX; idx++) {
 		atomic_set(&ipvs->num_services[idx], 0);
 		atomic_set(&ipvs->fwm_services[idx], 0);
@@ -5151,6 +5868,13 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 
 	INIT_DELAYED_WORK(&ipvs->est_reload_work, est_reload_work_handler);
 	ipvs->sysctl_svc_lfactor = ip_vs_svc_default_load_factor(ipvs);
+=======
+	atomic_set(&ipvs->ftpsvc_counter, 0);
+	atomic_set(&ipvs->nullsvc_counter, 0);
+	atomic_set(&ipvs->conn_out_counter, 0);
+
+	INIT_DELAYED_WORK(&ipvs->est_reload_work, est_reload_work_handler);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* procfs stats */
 	ipvs->tot_stats = kzalloc_obj(*ipvs->tot_stats);
@@ -5170,9 +5894,12 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 				    ipvs->net->proc_net,
 				    ip_vs_stats_percpu_show, NULL))
 		goto err_percpu;
+<<<<<<< HEAD
 	if (!proc_create_net_single("ip_vs_status", 0440, ipvs->net->proc_net,
 				    ip_vs_status_show, NULL))
 		goto err_status;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	ret = ip_vs_control_net_init_sysctl(ipvs);
@@ -5183,9 +5910,12 @@ int __net_init ip_vs_control_net_init(struct netns_ipvs *ipvs)
 
 err:
 #ifdef CONFIG_PROC_FS
+<<<<<<< HEAD
 	remove_proc_entry("ip_vs_status", ipvs->net->proc_net);
 
 err_status:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	remove_proc_entry("ip_vs_stats_percpu", ipvs->net->proc_net);
 
 err_percpu:
@@ -5211,7 +5941,10 @@ void __net_exit ip_vs_control_net_cleanup(struct netns_ipvs *ipvs)
 	ip_vs_control_net_cleanup_sysctl(ipvs);
 	cancel_delayed_work_sync(&ipvs->est_reload_work);
 #ifdef CONFIG_PROC_FS
+<<<<<<< HEAD
 	remove_proc_entry("ip_vs_status", ipvs->net->proc_net);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	remove_proc_entry("ip_vs_stats_percpu", ipvs->net->proc_net);
 	remove_proc_entry("ip_vs_stats", ipvs->net->proc_net);
 	remove_proc_entry("ip_vs", ipvs->net->proc_net);
@@ -5250,8 +5983,22 @@ void ip_vs_unregister_nl_ioctl(void)
 
 int __init ip_vs_control_init(void)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+	int idx;
+	int ret;
+
+	/* Initialize svc_table, ip_vs_svc_fwm_table */
+	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+		INIT_HLIST_HEAD(&ip_vs_svc_table[idx]);
+		INIT_HLIST_HEAD(&ip_vs_svc_fwm_table[idx]);
+	}
+
+	smp_wmb();	/* Do we really need it now ? */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = register_netdevice_notifier(&ip_vs_dst_notifier);
 	if (ret < 0)
 		return ret;

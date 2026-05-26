@@ -13,10 +13,19 @@ description:
   The TI DS90UB9XX devices are FPD-Link video deserializers with I2C and GPIO
   forwarding.
 
+<<<<<<< HEAD
 properties:
   compatible:
     enum:
       - ti,ds90ub954-q1
+=======
+allOf:
+  - $ref: /schemas/i2c/i2c-atr.yaml#
+
+properties:
+  compatible:
+    enum:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - ti,ds90ub960-q1
       - ti,ds90ub9702-q1
 
@@ -123,9 +132,115 @@ properties:
 
   ports:
     $ref: /schemas/graph.yaml#/properties/ports
+<<<<<<< HEAD
     description:
       Ports represent FPD-Link inputs to the deserializer and CSI TX outputs
       from the deserializer. The number of ports is model-dependent.
+=======
+
+    properties:
+      port@0:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: FPD-Link input 0
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+            description:
+              Endpoint for FPD-Link port. If the RX mode for this port is RAW,
+              hsync-active and vsync-active must be defined.
+
+      port@1:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: FPD-Link input 1
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+            description:
+              Endpoint for FPD-Link port. If the RX mode for this port is RAW,
+              hsync-active and vsync-active must be defined.
+
+      port@2:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: FPD-Link input 2
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+            description:
+              Endpoint for FPD-Link port. If the RX mode for this port is RAW,
+              hsync-active and vsync-active must be defined.
+
+      port@3:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: FPD-Link input 3
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+            description:
+              Endpoint for FPD-Link port. If the RX mode for this port is RAW,
+              hsync-active and vsync-active must be defined.
+
+      port@4:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: CSI-2 Output 0
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+
+            properties:
+              data-lanes:
+                minItems: 1
+                maxItems: 4
+              link-frequencies:
+                maxItems: 1
+
+            required:
+              - data-lanes
+              - link-frequencies
+
+      port@5:
+        $ref: /schemas/graph.yaml#/$defs/port-base
+        unevaluatedProperties: false
+        description: CSI-2 Output 1
+
+        properties:
+          endpoint:
+            $ref: /schemas/media/video-interfaces.yaml#
+            unevaluatedProperties: false
+
+            properties:
+              data-lanes:
+                minItems: 1
+                maxItems: 4
+              link-frequencies:
+                maxItems: 1
+
+            required:
+              - data-lanes
+              - link-frequencies
+
+    required:
+      - port@0
+      - port@1
+      - port@2
+      - port@3
+      - port@4
+      - port@5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible
@@ -134,6 +249,7 @@ required:
   - clock-names
   - ports
 
+<<<<<<< HEAD
 $defs:
   FPDLink-input-port:
     $ref: /schemas/graph.yaml#/$defs/port-base
@@ -245,6 +361,8 @@ allOf:
             link@2: false
             link@3: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

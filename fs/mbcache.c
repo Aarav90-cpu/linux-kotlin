@@ -406,7 +406,10 @@ void mb_cache_destroy(struct mb_cache *cache)
 {
 	struct mb_cache_entry *entry, *next;
 
+<<<<<<< HEAD
 	cancel_work_sync(&cache->c_shrink_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	shrinker_free(cache->c_shrink);
 
 	/*

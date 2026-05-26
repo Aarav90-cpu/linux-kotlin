@@ -20,6 +20,10 @@
 #include <linux/platform_device.h>
 #include <linux/pm_domain.h>
 #include <linux/pm_opp.h>
+<<<<<<< HEAD
+=======
+#include <linux/reboot.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regulator/driver.h>
 #include <linux/regulator/fixed.h>
 #include <linux/gpio/consumer.h>
@@ -29,6 +33,12 @@
 #include <linux/regulator/machine.h>
 #include <linux/clk.h>
 
+<<<<<<< HEAD
+=======
+/* Default time in millisecond to wait for emergency shutdown */
+#define FV_DEF_EMERG_SHUTDWN_TMO	10
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct fixed_voltage_data {
 	struct regulator_desc desc;
 	struct regulator_dev *dev;

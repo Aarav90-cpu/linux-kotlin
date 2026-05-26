@@ -172,6 +172,7 @@ check_name(struct dentry *direntry, struct cifs_tcon *tcon)
 	return 0;
 }
 
+<<<<<<< HEAD
 static char *alloc_parent_path(struct dentry *dentry, size_t namelen)
 {
 	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry);
@@ -204,12 +205,27 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 			    umode_t mode, __u32 *oplock, struct cifs_fid *fid,
 			    struct cifs_open_info_data *buf,
 			    struct inode **inode)
+=======
+
+/* Inode operations in similar order to how they appear in Linux file fs.h */
+
+static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
+			  struct tcon_link *tlink, unsigned int oflags, umode_t mode, __u32 *oplock,
+			  struct cifs_fid *fid, struct cifs_open_info_data *buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc = -ENOENT;
 	int create_options = CREATE_NOT_DIR;
 	int desired_access;
+<<<<<<< HEAD
 	struct cifs_sb_info *cifs_sb = CIFS_SB(dir);
 	struct cifs_tcon *tcon = tlink_tcon(tlink);
+=======
+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode);
+	struct cifs_tcon *tcon = tlink_tcon(tlink);
+	const char *full_path;
+	void *page = alloc_dentry_path();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct inode *newinode = NULL;
 	unsigned int sbflags = cifs_sb_flags(cifs_sb);
 	int disposition;
@@ -219,20 +235,38 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 	int rdwr_for_fscache = 0;
 	__le32 lease_flags = 0;
 
+<<<<<<< HEAD
 	*inode = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*oplock = 0;
 	if (tcon->ses->server->oplocks)
 		*oplock = REQ_OPLOCK;
 
+<<<<<<< HEAD
 	/* If we're caching, we need to be able to fill in around partial writes. */
 	if (cifs_fscache_enabled(dir) && (oflags & O_ACCMODE) == O_WRONLY)
+=======
+	full_path = build_path_from_dentry(direntry, page);
+	if (IS_ERR(full_path)) {
+		rc = PTR_ERR(full_path);
+		goto out;
+	}
+
+	/* If we're caching, we need to be able to fill in around partial writes. */
+	if (cifs_fscache_enabled(inode) && (oflags & O_ACCMODE) == O_WRONLY)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rdwr_for_fscache = 1;
 
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	if (tcon->unix_ext && cap_unix(tcon->ses) && !tcon->broken_posix_open &&
 	    (CIFS_UNIX_POSIX_PATH_OPS_CAP &
 			le64_to_cpu(tcon->fsUnixInfo.Capability))) {
+<<<<<<< HEAD
 		rc = cifs_posix_open(full_path, &newinode, dir->i_sb, mode,
+=======
+		rc = cifs_posix_open(full_path, &newinode, inode->i_sb, mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     oflags, oplock, &fid->netfid, xid);
 		switch (rc) {
 		case 0:
@@ -244,7 +278,12 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 			if (S_ISDIR(newinode->i_mode)) {
 				CIFSSMBClose(xid, tcon, fid->netfid);
 				iput(newinode);
+<<<<<<< HEAD
 				return -EISDIR;
+=======
+				rc = -EISDIR;
+				goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			if (!S_ISREG(newinode->i_mode)) {
@@ -287,7 +326,11 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 			break;
 
 		default:
+<<<<<<< HEAD
 			return rc;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/*
 		 * fallthrough to retry, using older open call, this is case
@@ -305,6 +348,7 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 		desired_access |= GENERIC_WRITE;
 	if (rdwr_for_fscache == 1)
 		desired_access |= GENERIC_READ;
+<<<<<<< HEAD
 	if (oflags & O_TMPFILE)
 		desired_access |= DELETE;
 
@@ -321,14 +365,33 @@ static int __cifs_do_create(struct inode *dir, struct dentry *direntry,
 	} else {
 		cifs_dbg(FYI, "Create flag not set in create function\n");
 	}
+=======
+
+	disposition = FILE_OVERWRITE_IF;
+	if ((oflags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL))
+		disposition = FILE_CREATE;
+	else if ((oflags & (O_CREAT | O_TRUNC)) == (O_CREAT | O_TRUNC))
+		disposition = FILE_OVERWRITE_IF;
+	else if ((oflags & O_CREAT) == O_CREAT)
+		disposition = FILE_OPEN_IF;
+	else
+		cifs_dbg(FYI, "Create flag not set in create function\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * BB add processing to set equivalent of mode - e.g. via CreateX with
 	 * ACLs
 	 */
 
+<<<<<<< HEAD
 	if (!server->ops->open)
 		return -EOPNOTSUPP;
+=======
+	if (!server->ops->open) {
+		rc = -ENOSYS;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	create_options |= cifs_open_create_options(oflags, create_options);
 	/*
@@ -380,10 +443,17 @@ retry_open:
 			rdwr_for_fscache = 2;
 			goto retry_open;
 		}
+<<<<<<< HEAD
 		return rc;
 	}
 	if (rdwr_for_fscache == 2)
 		cifs_invalidate_cache(dir, FSCACHE_INVAL_DIO_WRITE);
+=======
+		goto out;
+	}
+	if (rdwr_for_fscache == 2)
+		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	/*
@@ -401,8 +471,13 @@ retry_open:
 
 		if (sbflags & CIFS_MOUNT_SET_UID) {
 			args.uid = current_fsuid();
+<<<<<<< HEAD
 			if (dir->i_mode & S_ISGID)
 				args.gid = dir->i_gid;
+=======
+			if (inode->i_mode & S_ISGID)
+				args.gid = inode->i_gid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			else
 				args.gid = current_fsgid();
 		} else {
@@ -424,14 +499,22 @@ retry_open:
 cifs_create_get_file_info:
 	/* server might mask mode so we have to query for it */
 	if (tcon->unix_ext)
+<<<<<<< HEAD
 		rc = cifs_get_inode_info_unix(&newinode, full_path, dir->i_sb,
+=======
+		rc = cifs_get_inode_info_unix(&newinode, full_path, inode->i_sb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      xid);
 	else {
 #else
 	{
 #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 		/* TODO: Add support for calling POSIX query info here, but passing in fid */
+<<<<<<< HEAD
 		rc = cifs_get_inode_info(&newinode, full_path, buf, dir->i_sb, xid, fid);
+=======
+		rc = cifs_get_inode_info(&newinode, full_path, buf, inode->i_sb, xid, fid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (newinode) {
 			if (server->ops->set_lease_key)
 				server->ops->set_lease_key(newinode, fid);
@@ -440,8 +523,13 @@ cifs_create_get_file_info:
 					newinode->i_mode = mode;
 				if (sbflags & CIFS_MOUNT_SET_UID) {
 					newinode->i_uid = current_fsuid();
+<<<<<<< HEAD
 					if (dir->i_mode & S_ISGID)
 						newinode->i_gid = dir->i_gid;
+=======
+					if (inode->i_mode & S_ISGID)
+						newinode->i_gid = inode->i_gid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					else
 						newinode->i_gid = current_fsgid();
 				}
@@ -458,12 +546,26 @@ cifs_create_set_dentry:
 		goto out_err;
 	}
 
+<<<<<<< HEAD
 	if (newinode && S_ISDIR(newinode->i_mode)) {
 		rc = -EISDIR;
 		goto out_err;
 	}
 
 	*inode = newinode;
+=======
+	if (newinode)
+		if (S_ISDIR(newinode->i_mode)) {
+			rc = -EISDIR;
+			goto out_err;
+		}
+
+	d_drop(direntry);
+	d_add(direntry, newinode);
+
+out:
+	free_dentry_path(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 
 out_err:
@@ -471,6 +573,7 @@ out_err:
 		server->ops->close(xid, tcon, fid);
 	if (newinode)
 		iput(newinode);
+<<<<<<< HEAD
 	return rc;
 }
 
@@ -509,6 +612,16 @@ int cifs_atomic_open(struct inode *dir, struct dentry *direntry,
 		     struct file *file, unsigned int oflags, umode_t mode)
 {
 	struct cifs_sb_info *cifs_sb = CIFS_SB(dir);
+=======
+	goto out;
+}
+
+int
+cifs_atomic_open(struct inode *inode, struct dentry *direntry,
+		 struct file *file, unsigned int oflags, umode_t mode)
+{
+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cifs_open_info_data buf = {};
 	struct TCP_Server_Info *server;
 	struct cifsFileInfo *file_info;
@@ -517,8 +630,11 @@ int cifs_atomic_open(struct inode *dir, struct dentry *direntry,
 	struct tcon_link *tlink;
 	struct cifs_tcon *tcon;
 	unsigned int sbflags;
+<<<<<<< HEAD
 	struct dentry *alias;
 	struct inode *inode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int xid;
 	__u32 oplock;
 	int rc;
@@ -545,13 +661,21 @@ int cifs_atomic_open(struct inode *dir, struct dentry *direntry,
 		if (!d_in_lookup(direntry))
 			return -ENOENT;
 
+<<<<<<< HEAD
 		return finish_no_open(file, cifs_lookup(dir, direntry, 0));
+=======
+		return finish_no_open(file, cifs_lookup(inode, direntry, 0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	xid = get_xid();
 
 	cifs_dbg(FYI, "parent inode = 0x%p name is: %pd and dentry = 0x%p\n",
+<<<<<<< HEAD
 		 dir, direntry, direntry);
+=======
+		 inode, direntry, direntry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tlink = cifs_sb_tlink(cifs_sb);
 	if (IS_ERR(tlink)) {
@@ -572,13 +696,19 @@ int cifs_atomic_open(struct inode *dir, struct dentry *direntry,
 
 	cifs_add_pending_open(&fid, tlink, &open);
 
+<<<<<<< HEAD
 	rc = cifs_do_create(dir, direntry, xid, tlink, oflags, mode,
 			    &oplock, &fid, &buf, &inode);
+=======
+	rc = cifs_do_create(inode, direntry, xid, tlink, oflags, mode,
+			    &oplock, &fid, &buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc) {
 		cifs_del_pending_open(&open);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (d_in_lookup(direntry)) {
 		alias = d_splice_alias(inode, direntry);
 		if (!IS_ERR_OR_NULL(alias))
@@ -587,6 +717,8 @@ int cifs_atomic_open(struct inode *dir, struct dentry *direntry,
 		d_instantiate(direntry, inode);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((oflags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL))
 		file->f_mode |= FMODE_CREATED;
 
@@ -626,6 +758,7 @@ out_free_xid:
 	return rc;
 }
 
+<<<<<<< HEAD
 /*
  * Create a CIFS file.
  *
@@ -636,6 +769,11 @@ int cifs_create(struct mnt_idmap *idmap, struct inode *dir,
 		struct dentry *direntry, umode_t mode, bool excl)
 {
 	struct cifs_sb_info *cifs_sb = CIFS_SB(dir);
+=======
+int cifs_create(struct mnt_idmap *idmap, struct inode *inode,
+		struct dentry *direntry, umode_t mode, bool excl)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 	unsigned int xid = get_xid();
 	/*
@@ -649,20 +787,33 @@ int cifs_create(struct mnt_idmap *idmap, struct inode *dir,
 	struct tcon_link *tlink;
 	struct cifs_tcon *tcon;
 	struct TCP_Server_Info *server;
+<<<<<<< HEAD
 	struct inode *inode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cifs_fid fid;
 	__u32 oplock;
 	struct cifs_open_info_data buf = {};
 
 	cifs_dbg(FYI, "cifs_create parent inode = 0x%p name is: %pd and dentry = 0x%p\n",
+<<<<<<< HEAD
 		 dir, direntry, direntry);
 
 	if (unlikely(cifs_forced_shutdown(cifs_sb))) {
+=======
+		 inode, direntry, direntry);
+
+	if (unlikely(cifs_forced_shutdown(CIFS_SB(inode->i_sb)))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = smb_EIO(smb_eio_trace_forced_shutdown);
 		goto out_free_xid;
 	}
 
+<<<<<<< HEAD
 	tlink = cifs_sb_tlink(cifs_sb);
+=======
+	tlink = cifs_sb_tlink(CIFS_SB(inode->i_sb));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = PTR_ERR(tlink);
 	if (IS_ERR(tlink))
 		goto out_free_xid;
@@ -673,6 +824,7 @@ int cifs_create(struct mnt_idmap *idmap, struct inode *dir,
 	if (server->ops->new_lease_key)
 		server->ops->new_lease_key(&fid);
 
+<<<<<<< HEAD
 	rc = cifs_do_create(dir, direntry, xid, tlink, oflags,
 			    mode, &oplock, &fid, &buf, &inode);
 	if (!rc) {
@@ -680,6 +832,11 @@ int cifs_create(struct mnt_idmap *idmap, struct inode *dir,
 		if (server->ops->close)
 			server->ops->close(xid, tcon, &fid);
 	}
+=======
+	rc = cifs_do_create(inode, direntry, xid, tlink, oflags, mode, &oplock, &fid, &buf);
+	if (!rc && server->ops->close)
+		server->ops->close(xid, tcon, &fid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cifs_free_open_info(&buf);
 	cifs_put_tlink(tlink);
@@ -1028,6 +1185,7 @@ static int cifs_ci_compare(const struct dentry *dentry,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int set_tmpfile_attr(const unsigned int xid, unsigned int oflags,
 			    struct inode *inode, const char *full_path,
 			    struct TCP_Server_Info *server)
@@ -1192,6 +1350,8 @@ char *cifs_silly_fullpath(struct dentry *dentry)
 	return ERR_PTR(-EBUSY);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct dentry_operations cifs_ci_dentry_ops = {
 	.d_revalidate = cifs_d_revalidate,
 	.d_hash = cifs_ci_hash,

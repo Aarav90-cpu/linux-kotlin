@@ -4,13 +4,17 @@
 #include <linux/types.h>
 #include <linux/percpu_counter.h>
 #include <linux/math64.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
 
 #include <linux/ceph/decode.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "metric.h"
 #include "mds_client.h"
 
+<<<<<<< HEAD
 static bool metrics_disable_warned;
 
 static inline u32 ceph_subvolume_entry_payload_len(void)
@@ -82,6 +86,8 @@ enc_err:
 	return -ERANGE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ktime_to_ceph_timespec(struct ceph_timespec *ts, ktime_t val)
 {
 	struct timespec64 t = ktime_to_timespec64(val);
@@ -103,14 +109,20 @@ static bool ceph_mdsc_send_metrics(struct ceph_mds_client *mdsc,
 	struct ceph_read_io_size *rsize;
 	struct ceph_write_io_size *wsize;
 	struct ceph_client_metric *m = &mdsc->metric;
+<<<<<<< HEAD
 	struct ceph_subvol_metric_snapshot *subvols = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 nr_caps = atomic64_read(&m->total_caps);
 	u32 header_len = sizeof(struct ceph_metric_header);
 	struct ceph_client *cl = mdsc->fsc->client;
 	struct ceph_msg *msg;
+<<<<<<< HEAD
 	u32 nr_subvols = 0;
 	size_t subvol_len = 0;
 	void *cursor;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s64 sum;
 	s32 items = 0;
 	s32 len;
@@ -123,6 +135,7 @@ static bool ceph_mdsc_send_metrics(struct ceph_mds_client *mdsc,
 	}
 	mutex_unlock(&mdsc->mutex);
 
+<<<<<<< HEAD
 	if (ceph_subvolume_metrics_enabled(&mdsc->subvol_metrics) &&
 	    test_bit(CEPHFS_FEATURE_SUBVOLUME_METRICS, &s->s_features)) {
 		int ret;
@@ -153,12 +166,21 @@ static bool ceph_mdsc_send_metrics(struct ceph_mds_client *mdsc,
 	      + sizeof(*meta) + sizeof(*dlease) + sizeof(*files)
 	      + sizeof(*icaps) + sizeof(*inodes) + sizeof(*rsize)
 	      + sizeof(*wsize) + subvol_len;
+=======
+	len = sizeof(*head) + sizeof(*cap) + sizeof(*read) + sizeof(*write)
+	      + sizeof(*meta) + sizeof(*dlease) + sizeof(*files)
+	      + sizeof(*icaps) + sizeof(*inodes) + sizeof(*rsize)
+	      + sizeof(*wsize);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	msg = ceph_msg_new(CEPH_MSG_CLIENT_METRICS, len, GFP_NOFS, true);
 	if (!msg) {
 		pr_err_client(cl, "to mds%d, failed to allocate message\n",
 			      s->s_mds);
+<<<<<<< HEAD
 		kfree(subvols);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	}
 
@@ -277,6 +299,7 @@ static bool ceph_mdsc_send_metrics(struct ceph_mds_client *mdsc,
 	wsize->total_size = cpu_to_le64(m->metric[METRIC_WRITE].size_sum);
 	items++;
 
+<<<<<<< HEAD
 	cursor = wsize + 1;
 
 	if (nr_subvols) {
@@ -327,6 +350,15 @@ static bool ceph_mdsc_send_metrics(struct ceph_mds_client *mdsc,
 	}
 	kfree(subvols);
 
+=======
+	put_unaligned_le32(items, &head->num);
+	msg->front.iov_len = len;
+	msg->hdr.version = cpu_to_le16(1);
+	msg->hdr.compat_version = cpu_to_le16(1);
+	msg->hdr.front_len = cpu_to_le32(msg->front.iov_len);
+	ceph_con_send(&s->s_con, msg);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -346,6 +378,7 @@ static void metric_get_session(struct ceph_mds_client *mdsc)
 		 * Skip it if MDS doesn't support the metric collection,
 		 * or the MDS will close the session's socket connection
 		 * directly when it get this message.
+<<<<<<< HEAD
 		 *
 		 * Also skip sessions that don't support SUBVOLUME_METRICS
 		 * when subvolume metrics collection is enabled. This ensures
@@ -360,6 +393,11 @@ static void metric_get_session(struct ceph_mds_client *mdsc)
 				ceph_put_mds_session(s);
 				continue;
 			}
+=======
+		 */
+		if (check_session_state(s) &&
+		    test_bit(CEPHFS_FEATURE_METRIC_COLLECT, &s->s_features)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mdsc->metric.session = s;
 			break;
 		}
@@ -376,6 +414,7 @@ static void metric_delayed_work(struct work_struct *work)
 	struct ceph_mds_client *mdsc =
 		container_of(m, struct ceph_mds_client, metric);
 
+<<<<<<< HEAD
 	if (mdsc->stopping)
 		return;
 
@@ -388,6 +427,11 @@ static void metric_delayed_work(struct work_struct *work)
 	}
 	metrics_disable_warned = false;
 
+=======
+	if (mdsc->stopping || disable_send_metrics)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!m->session || !check_session_state(m->session)) {
 		if (m->session) {
 			ceph_put_mds_session(m->session);
@@ -395,6 +439,7 @@ static void metric_delayed_work(struct work_struct *work)
 		}
 		metric_get_session(mdsc);
 	}
+<<<<<<< HEAD
 
 	if (m->session)
 		ceph_mdsc_send_metrics(mdsc, m->session);
@@ -402,6 +447,12 @@ static void metric_delayed_work(struct work_struct *work)
 		pr_warn_ratelimited("ceph: metrics worker has no MDS session\n");
 
 	metric_schedule_delayed(m);
+=======
+	if (m->session) {
+		ceph_mdsc_send_metrics(mdsc, m->session);
+		metric_schedule_delayed(m);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ceph_metric_init(struct ceph_client_metric *m)

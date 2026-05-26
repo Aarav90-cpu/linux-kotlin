@@ -86,10 +86,13 @@
 	touchscreen@44 {
 		compatible = "st,stmpe811";
 		reg = <0x44>;
+<<<<<<< HEAD
 		interrupt-parent = <&gpio5>;
 		interrupts = <RK_PB4 IRQ_TYPE_EDGE_FALLING>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&ts_irq_pin>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	adc@64 {
@@ -98,7 +101,11 @@
 	};
 
 	i2c_rtc: rtc@68 {
+<<<<<<< HEAD
 		compatible = "microcrystal,rv4162";
+=======
+		compatible = "rv4162";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0x68>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2c_rtc_int>;
@@ -125,25 +132,41 @@
 		compatible = "nxp,pca9533";
 		reg = <0x62>;
 
+<<<<<<< HEAD
 		led-1 {
+=======
+		led1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "red:user1";
 			linux,default-trigger = "none";
 			type = <PCA9532_TYPE_LED>;
 		};
 
+<<<<<<< HEAD
 		led-2 {
+=======
+		led2 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "green:user2";
 			linux,default-trigger = "none";
 			type = <PCA9532_TYPE_LED>;
 		};
 
+<<<<<<< HEAD
 		led-3 {
+=======
+		led3 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "blue:user3";
 			linux,default-trigger = "none";
 			type = <PCA9532_TYPE_LED>;
 		};
 
+<<<<<<< HEAD
 		led-4 {
+=======
+		led4 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "red:user4";
 			linux,default-trigger = "none";
 			type = <PCA9532_TYPE_LED>;
@@ -203,7 +226,11 @@
 
 	touchscreen {
 		ts_irq_pin: ts-irq-pin {
+<<<<<<< HEAD
 			rockchip,pins = <5 RK_PB4 RK_FUNC_GPIO &pcfg_pull_up>;
+=======
+			rockchip,pins = <5 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 

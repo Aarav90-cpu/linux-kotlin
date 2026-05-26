@@ -166,11 +166,14 @@ struct hfsplus_attr_unistr {
 	hfsplus_unichr unicode[HFSPLUS_ATTR_MAX_STRLEN];
 } __packed;
 
+<<<<<<< HEAD
 enum {
 	HFS_REGULAR_NAME,
 	HFS_XATTR_NAME,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct hfs_extent {
 	__be16 block;
 	__be16 count;
@@ -515,11 +518,15 @@ struct hfs_btree_header_rec {
 #define HFSPLUS_NODE_MXSZ			32768
 #define HFSPLUS_ATTR_TREE_NODE_SIZE		8192
 #define HFSPLUS_BTREE_HDR_NODE_RECS_COUNT	3
+<<<<<<< HEAD
 #define HFSPLUS_BTREE_HDR_MAP_REC_INDEX		2	/* Map (bitmap) record in Header node */
 #define HFSPLUS_BTREE_MAP_NODE_REC_INDEX	0	/* Map record in Map Node */
 #define HFSPLUS_BTREE_HDR_USER_BYTES		128
 #define HFSPLUS_BTREE_MAP_NODE_RECS_COUNT	2
 #define HFSPLUS_BTREE_MAP_NODE_RESERVED_BYTES	2
+=======
+#define HFSPLUS_BTREE_HDR_USER_BYTES		128
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* btree key type */
 #define HFSPLUS_KEY_CASEFOLDING		0xCF	/* case-insensitive */

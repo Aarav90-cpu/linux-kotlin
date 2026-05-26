@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-15 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -205,8 +209,11 @@ struct dc_edid_caps {
 	uint32_t audio_latency;
 	uint32_t video_latency;
 
+<<<<<<< HEAD
 	unsigned char freesync_vcp_code;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint8_t qs_bit;
 	uint8_t qy_bit;
 
@@ -1146,12 +1153,19 @@ union replay_low_refresh_rate_enable_options {
 
 union replay_optimization {
 	struct {
+<<<<<<< HEAD
 		//BIT[0-1]: Replay Teams Optimization
 		unsigned int TEAMS_OPTIMIZATION_VER_1           :1;
 		unsigned int TEAMS_OPTIMIZATION_VER_2           :1;
 		//BIT[2]: Replay Live Capture with CVT
 		unsigned int LIVE_CAPTURE_WITH_CVT              :1;
 		unsigned int RESERVED_3                         :1;
+=======
+		//BIT[0-3]: Replay Teams Optimization
+		unsigned int TEAMS_OPTIMIZATION_VER_1           :1;
+		unsigned int TEAMS_OPTIMIZATION_VER_2           :1;
+		unsigned int RESERVED_2_3                       :2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} bits;
 
 	unsigned int raw;
@@ -1198,10 +1212,13 @@ struct replay_config {
 	union replay_optimization replay_optimization;
 	/* Replay sub feature Frame Skipping is supported */
 	bool frame_skip_supported;
+<<<<<<< HEAD
 	/* Replay Received Frame Skipping Error HPD. */
 	bool received_frame_skipping_error_hpd;
 	/* Live capture with CVT is activated */
 	bool live_capture_with_cvt_activated;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Replay feature flags*/
@@ -1315,10 +1332,13 @@ struct dc_panel_config {
 	} rio;
 };
 
+<<<<<<< HEAD
 struct mccs_caps {
 	bool freesync_supported;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_SINKS_PER_LINK 4
 
 /*
@@ -1358,7 +1378,10 @@ enum dc_cm2_gpu_mem_layout {
 
 enum dc_cm2_gpu_mem_pixel_component_order {
 	DC_CM2_GPU_MEM_PIXEL_COMPONENT_ORDER_RGBA,
+<<<<<<< HEAD
 	DC_CM2_GPU_MEM_PIXEL_COMPONENT_ORDER_BGRA
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum dc_cm2_gpu_mem_format {
@@ -1380,9 +1403,12 @@ struct dc_cm2_gpu_mem_format_parameters {
 
 enum dc_cm2_gpu_mem_size {
 	DC_CM2_GPU_MEM_SIZE_171717,
+<<<<<<< HEAD
 	DC_CM2_GPU_MEM_SIZE_333333,
 	DC_CM2_GPU_MEM_SIZE_454545,
 	DC_CM2_GPU_MEM_SIZE_656565,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DC_CM2_GPU_MEM_SIZE_TRANSFORMED,
 };
 
@@ -1493,6 +1519,7 @@ struct dc_validation_dpia_set {
 	uint32_t required_bw;
 };
 
+<<<<<<< HEAD
 enum dc_cm_lut_swizzle {
 	CM_LUT_3D_SWIZZLE_LINEAR_RGB,
 	CM_LUT_3D_SWIZZLE_LINEAR_BGR,
@@ -1517,4 +1544,6 @@ enum dc_cm_lut_size {
 	CM_LUT_SIZE_656565,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* DC_TYPES_H_ */

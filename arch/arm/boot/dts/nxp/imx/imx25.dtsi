@@ -195,7 +195,11 @@
 				status = "disabled";
 			};
 
+<<<<<<< HEAD
 			iomuxc: pinmux@43fac000 {
+=======
+			iomuxc: iomuxc@43fac000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				compatible = "fsl,imx25-iomuxc";
 				reg = <0x43fac000 0x4000>;
 			};
@@ -305,7 +309,11 @@
 					status = "disabled";
 				};
 
+<<<<<<< HEAD
 				tsc: touchscreen@50030400 {
+=======
+				tsc: tcq@50030400 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					compatible = "fsl,imx25-tcq";
 					reg = <0x50030400 0x60>;
 					interrupt-parent = <&tscadc>;

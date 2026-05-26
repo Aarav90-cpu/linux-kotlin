@@ -97,13 +97,21 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
 	u64 exit_info_2;
 	u32 exit_int_info;
 	u32 exit_int_info_err;
+<<<<<<< HEAD
 	u64 misc_ctl;
+=======
+	u64 nested_ctl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 avic_vapic_bar;
 	u8 reserved_4[8];
 	u32 event_inj;
 	u32 event_inj_err;
 	u64 nested_cr3;
+<<<<<<< HEAD
 	u64 misc_ctl2;
+=======
+	u64 virt_ext;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 clean;
 	u32 reserved_5;
 	u64 next_rip;
@@ -155,6 +163,12 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
 #define AVIC_ENABLE_SHIFT 31
 #define AVIC_ENABLE_MASK (1 << AVIC_ENABLE_SHIFT)
 
+<<<<<<< HEAD
+=======
+#define LBR_CTL_ENABLE_MASK BIT_ULL(0)
+#define VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK BIT_ULL(1)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SVM_INTERRUPT_SHADOW_MASK 1
 
 #define SVM_IOIO_STR_SHIFT 2
@@ -172,11 +186,16 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
 #define SVM_VM_CR_SVM_LOCK_MASK 0x0008ULL
 #define SVM_VM_CR_SVM_DIS_MASK  0x0010ULL
 
+<<<<<<< HEAD
 #define SVM_MISC_ENABLE_NP		BIT(0)
 #define SVM_MISC_ENABLE_SEV		BIT(1)
 
 #define SVM_MISC2_ENABLE_V_LBR BIT_ULL(0)
 #define SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE BIT_ULL(1)
+=======
+#define SVM_NESTED_CTL_NP_ENABLE	BIT(0)
+#define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct __attribute__ ((__packed__)) vmcb_seg {
 	u16 selector;

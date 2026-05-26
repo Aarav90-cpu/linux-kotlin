@@ -70,6 +70,7 @@ static void tegra210_emc_table_device_release(struct reserved_mem *rmem,
 	memunmap(timings);
 }
 
+<<<<<<< HEAD
 static int tegra210_emc_table_init(unsigned long node,
 				   struct reserved_mem *rmem)
 {
@@ -81,9 +82,26 @@ static int tegra210_emc_table_init(unsigned long node,
 
 static const struct reserved_mem_ops tegra210_emc_table_ops = {
 	.node_init = tegra210_emc_table_init,
+=======
+static const struct reserved_mem_ops tegra210_emc_table_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.device_init = tegra210_emc_table_device_init,
 	.device_release = tegra210_emc_table_device_release,
 };
 
+<<<<<<< HEAD
 RESERVEDMEM_OF_DECLARE(tegra210_emc_table, "nvidia,tegra210-emc-table",
 		       &tegra210_emc_table_ops);
+=======
+static int tegra210_emc_table_init(struct reserved_mem *rmem)
+{
+	pr_debug("Tegra210 EMC table at %pa, size %lu bytes\n", &rmem->base,
+		 (unsigned long)rmem->size);
+
+	rmem->ops = &tegra210_emc_table_ops;
+
+	return 0;
+}
+RESERVEDMEM_OF_DECLARE(tegra210_emc_table, "nvidia,tegra210-emc-table",
+		       tegra210_emc_table_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

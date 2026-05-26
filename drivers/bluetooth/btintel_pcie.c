@@ -9,9 +9,13 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/firmware.h>
+<<<<<<< HEAD
 #include <linux/overflow.h>
 #include <linux/pci.h>
 #include <linux/string.h>
+=======
+#include <linux/pci.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/wait.h>
 #include <linux/delay.h>
 #include <linux/interrupt.h>
@@ -37,8 +41,11 @@
 
 #define POLL_INTERVAL_US	10
 
+<<<<<<< HEAD
 #define BTINTEL_PCIE_DMA_ALIGN_128B	128 /* 128 byte aligned */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Intel Bluetooth PCIe device id table */
 static const struct pci_device_id btintel_pcie_table[] = {
 	/* BlazarI, Wildcat Lake */
@@ -49,10 +56,13 @@ static const struct pci_device_id btintel_pcie_table[] = {
 	{ BTINTEL_PCI_DEVICE(0xE376, PCI_ANY_ID) },
 	 /* Scorpious, Panther Lake-H404 */
 	{ BTINTEL_PCI_DEVICE(0xE476, PCI_ANY_ID) },
+<<<<<<< HEAD
 	 /* Scorpious2, Nova Lake-PCD-H */
 	{ BTINTEL_PCI_DEVICE(0xD346, PCI_ANY_ID) },
 	 /* Scorpious2, Nova Lake-PCD-S */
 	{ BTINTEL_PCI_DEVICE(0x6E74, PCI_ANY_ID) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ 0 }
 };
 MODULE_DEVICE_TABLE(pci, btintel_pcie_table);
@@ -80,9 +90,12 @@ struct btintel_pcie_dev_recovery {
 #define BTINTEL_PCIE_SCP_HWEXP_SIZE		4096
 #define BTINTEL_PCIE_SCP_HWEXP_DMP_ADDR		0xB030F800
 
+<<<<<<< HEAD
 #define BTINTEL_PCIE_SCP2_HWEXP_SIZE		4096
 #define BTINTEL_PCIE_SCP2_HWEXP_DMP_ADDR	0xB031D000
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BTINTEL_PCIE_MAGIC_NUM	0xA5A5A5A5
 
 #define BTINTEL_PCIE_TRIGGER_REASON_USER_TRIGGER	0x17A2
@@ -279,7 +292,11 @@ static inline void btintel_pcie_dump_debug_registers(struct hci_dev *hdev)
 	if (!skb)
 		return;
 
+<<<<<<< HEAD
 	strscpy(buf, "---- Dump of debug registers ---");
+=======
+	snprintf(buf, sizeof(buf), "%s", "---- Dump of debug registers ---");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bt_dev_dbg(hdev, "%s", buf);
 	skb_put_data(skb, buf, strlen(buf));
 
@@ -289,9 +306,12 @@ static inline void btintel_pcie_dump_debug_registers(struct hci_dev *hdev)
 	skb_put_data(skb, buf, strlen(buf));
 	data->boot_stage_cache = reg;
 
+<<<<<<< HEAD
 	if (reg & BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_WARNING)
 		bt_dev_warn(hdev, "Controller device warning (boot_stage: 0x%8.8x)", reg);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_IPC_STATUS_REG);
 	snprintf(buf, sizeof(buf), "ipc status: 0x%8.8x", reg);
 	skb_put_data(skb, buf, strlen(buf));
@@ -354,7 +374,11 @@ static inline void btintel_pcie_dump_debug_registers(struct hci_dev *hdev)
 	snprintf(buf, sizeof(buf), "txq: cr_tia: %u cr_hia: %u", cr_tia, cr_hia);
 	skb_put_data(skb, buf, strlen(buf));
 	bt_dev_dbg(hdev, "%s", buf);
+<<<<<<< HEAD
 	strscpy(buf, "--------------------------------");
+=======
+	snprintf(buf, sizeof(buf), "--------------------------------");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bt_dev_dbg(hdev, "%s", buf);
 
 	hci_recv_diag(hdev, skb);
@@ -656,7 +680,11 @@ static int btintel_pcie_read_dram_buffers(struct btintel_pcie_data *data)
 	else
 		return -EINVAL;
 
+<<<<<<< HEAD
 	strscpy(vendor, "Vendor: Intel\n");
+=======
+	snprintf(vendor, sizeof(vendor), "Vendor: Intel\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snprintf(driver, sizeof(driver), "Driver: %s\n",
 		 data->dmp_hdr.driver_name);
 
@@ -875,11 +903,16 @@ static inline bool btintel_pcie_in_lockdown(struct btintel_pcie_data *data)
 
 static inline bool btintel_pcie_in_error(struct btintel_pcie_data *data)
 {
+<<<<<<< HEAD
 	if (data->boot_stage_cache & BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_WARNING)
 		bt_dev_warn(data->hdev, "Controller device warning (boot_stage: 0x%8.8x)",
 			    data->boot_stage_cache);
 
 	return	data->boot_stage_cache & BTINTEL_PCIE_CSR_BOOT_STAGE_ABORT_HANDLER;
+=======
+	return (data->boot_stage_cache & BTINTEL_PCIE_CSR_BOOT_STAGE_DEVICE_ERR) ||
+		(data->boot_stage_cache & BTINTEL_PCIE_CSR_BOOT_STAGE_ABORT_HANDLER);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void btintel_pcie_msix_gp1_handler(struct btintel_pcie_data *data)
@@ -912,8 +945,12 @@ static void btintel_pcie_msix_gp0_handler(struct btintel_pcie_data *data)
 		data->img_resp_cache = reg;
 
 	if (btintel_pcie_in_error(data)) {
+<<<<<<< HEAD
 		bt_dev_err(data->hdev, "Controller in error state (boot_stage: 0x%8.8x)",
 			   data->boot_stage_cache);
+=======
+		bt_dev_err(data->hdev, "Controller in error state");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btintel_pcie_dump_debug_registers(data->hdev);
 		return;
 	}
@@ -1234,6 +1271,7 @@ static void btintel_pcie_read_hwexp(struct btintel_pcie_data *data)
 			return;
 		len = BTINTEL_PCIE_BLZR_HWEXP_SIZE; /* exception data length */
 		addr = BTINTEL_PCIE_BLZR_HWEXP_DMP_ADDR;
+<<<<<<< HEAD
 		break;
 	case BTINTEL_CNVI_SCP:
 		len = BTINTEL_PCIE_SCP_HWEXP_SIZE;
@@ -1244,6 +1282,13 @@ static void btintel_pcie_read_hwexp(struct btintel_pcie_data *data)
 		len = BTINTEL_PCIE_SCP2_HWEXP_SIZE;
 		addr = BTINTEL_PCIE_SCP2_HWEXP_DMP_ADDR;
 		break;
+=======
+	break;
+	case BTINTEL_CNVI_SCP:
+		len = BTINTEL_PCIE_SCP_HWEXP_SIZE;
+		addr = BTINTEL_PCIE_SCP_HWEXP_DMP_ADDR;
+	break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		bt_dev_err(data->hdev, "Unsupported cnvi 0x%8.8x", data->dmp_hdr.cnvi_top);
 		return;
@@ -1752,6 +1797,30 @@ static int btintel_pcie_setup_rxq_bufs(struct btintel_pcie_data *data,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void btintel_pcie_setup_ia(struct btintel_pcie_data *data,
+				  dma_addr_t p_addr, void *v_addr,
+				  struct ia *ia)
+{
+	/* TR Head Index Array */
+	ia->tr_hia_p_addr = p_addr;
+	ia->tr_hia = v_addr;
+
+	/* TR Tail Index Array */
+	ia->tr_tia_p_addr = p_addr + sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES;
+	ia->tr_tia = v_addr + sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES;
+
+	/* CR Head index Array */
+	ia->cr_hia_p_addr = p_addr + (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 2);
+	ia->cr_hia = v_addr + (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 2);
+
+	/* CR Tail Index Array */
+	ia->cr_tia_p_addr = p_addr + (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 3);
+	ia->cr_tia = v_addr + (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 3);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void btintel_pcie_free(struct btintel_pcie_data *data)
 {
 	btintel_pcie_free_rxq_bufs(data, &data->rxq);
@@ -1769,16 +1838,23 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 	size_t total;
 	dma_addr_t p_addr;
 	void *v_addr;
+<<<<<<< HEAD
 	size_t tfd_size, frbd_size, ctx_size, ci_size, urbd0_size, urbd1_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate the chunk of DMA memory for descriptors, index array, and
 	 * context information, instead of allocating individually.
 	 * The DMA memory for data buffer is allocated while setting up the
 	 * each queue.
 	 *
+<<<<<<< HEAD
 	 * Total size is sum of the following and each of the individual sizes
 	 * are aligned to 128 bytes before adding up.
 	 *
+=======
+	 * Total size is sum of the following
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *  + size of TFD * Number of descriptors in queue
 	 *  + size of URBD0 * Number of descriptors in queue
 	 *  + size of FRBD * Number of descriptors in queue
@@ -1786,6 +1862,7 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 	 *  + size of index * Number of queues(2) * type of index array(4)
 	 *  + size of context information
 	 */
+<<<<<<< HEAD
 	tfd_size = ALIGN(sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT,
 			 BTINTEL_PCIE_DMA_ALIGN_128B);
 	urbd0_size = ALIGN(sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT,
@@ -1805,6 +1882,17 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 
 	data->dma_pool = dma_pool_create(KBUILD_MODNAME, &data->pdev->dev,
 					 total, BTINTEL_PCIE_DMA_ALIGN_128B, 0);
+=======
+	total = (sizeof(struct tfd) + sizeof(struct urbd0)) * BTINTEL_PCIE_TX_DESCS_COUNT;
+	total += (sizeof(struct frbd) + sizeof(struct urbd1)) * BTINTEL_PCIE_RX_DESCS_COUNT;
+
+	/* Add the sum of size of index array and size of ci struct */
+	total += (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4) + sizeof(struct ctx_info);
+
+	/* Allocate DMA Pool */
+	data->dma_pool = dma_pool_create(KBUILD_MODNAME, &data->pdev->dev,
+					 total, BTINTEL_PCIE_DMA_POOL_ALIGNMENT, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!data->dma_pool) {
 		err = -ENOMEM;
 		goto exit_error;
@@ -1829,29 +1917,49 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 	data->txq.tfds_p_addr = p_addr;
 	data->txq.tfds = v_addr;
 
+<<<<<<< HEAD
 	p_addr += tfd_size;
 	v_addr += tfd_size;
+=======
+	p_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
+	v_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup urbd0 */
 	data->txq.urbd0s_p_addr = p_addr;
 	data->txq.urbd0s = v_addr;
 
+<<<<<<< HEAD
 	p_addr += urbd0_size;
 	v_addr += urbd0_size;
+=======
+	p_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
+	v_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup FRBD*/
 	data->rxq.frbds_p_addr = p_addr;
 	data->rxq.frbds = v_addr;
 
+<<<<<<< HEAD
 	p_addr += frbd_size;
 	v_addr += frbd_size;
+=======
+	p_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
+	v_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup urbd1 */
 	data->rxq.urbd1s_p_addr = p_addr;
 	data->rxq.urbd1s = v_addr;
 
+<<<<<<< HEAD
 	p_addr += urbd1_size;
 	v_addr += urbd1_size;
+=======
+	p_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
+	v_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup data buffers for txq */
 	err = btintel_pcie_setup_txq_bufs(data, &data->txq);
@@ -1863,6 +1971,7 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 	if (err)
 		goto exit_error_txq;
 
+<<<<<<< HEAD
 	/* TR Head Index Array */
 	data->ia.tr_hia_p_addr = p_addr;
 	data->ia.tr_hia = v_addr;
@@ -1886,6 +1995,10 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 	data->ia.cr_tia = v_addr;
 	p_addr += ci_size;
 	v_addr += ci_size;
+=======
+	/* Setup Index Array */
+	btintel_pcie_setup_ia(data, p_addr, v_addr, &data->ia);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup data buffers for dbgc */
 	err = btintel_pcie_setup_dbgc(data);
@@ -1893,6 +2006,12 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
 		goto exit_error_txq;
 
 	/* Setup Context Information */
+<<<<<<< HEAD
+=======
+	p_addr += sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4;
+	v_addr += sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data->ci = v_addr;
 	data->ci_p_addr = p_addr;
 
@@ -2118,8 +2237,11 @@ static int btintel_pcie_setup_internal(struct hci_dev *hdev)
 	switch (INTEL_HW_VARIANT(ver_tlv.cnvi_bt)) {
 	case 0x1e:	/* BzrI */
 	case 0x1f:	/* ScP  */
+<<<<<<< HEAD
 	case 0x20:	/* ScP2 */
 	case 0x21:	/* ScP2 F */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 0x22:	/* BzrIW */
 		/* Display version information of TLV type */
 		btintel_version_info_tlv(hdev, &ver_tlv);
@@ -2399,7 +2521,11 @@ static int btintel_pcie_hci_drv_read_info(struct hci_dev *hdev, void *data,
 	u16 opcode, num_supported_commands =
 		ARRAY_SIZE(btintel_pcie_hci_drv_supported_commands);
 
+<<<<<<< HEAD
 	rp_size = struct_size(rp, supported_commands, num_supported_commands);
+=======
+	rp_size = sizeof(*rp) + num_supported_commands * 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rp = kmalloc(rp_size, GFP_KERNEL);
 	if (!rp)

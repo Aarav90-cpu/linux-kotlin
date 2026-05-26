@@ -21,7 +21,10 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include "vm_util.h"
+<<<<<<< HEAD
 #include "thp_settings.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "../pidfd/pidfd.h"
 
@@ -2196,9 +2199,12 @@ TEST_F(guard_regions, collapse)
 	char *ptr;
 	int i;
 
+<<<<<<< HEAD
 	if (!thp_available())
 		SKIP(return, "Transparent Hugepages not available\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Need file to be correct size for tests for non-anon. */
 	if (variant->backing != ANON_BACKED)
 		ASSERT_EQ(ftruncate(self->fd, size), 0);

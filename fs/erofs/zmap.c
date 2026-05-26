@@ -10,7 +10,11 @@
 struct z_erofs_maprecorder {
 	struct inode *inode;
 	struct erofs_map_blocks *map;
+<<<<<<< HEAD
 	u64 lcn;
+=======
+	unsigned long lcn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* compression extent information gathered */
 	u8  type, headtype;
 	u16 clusterofs;
@@ -20,7 +24,12 @@ struct z_erofs_maprecorder {
 	bool partialref, in_mbox;
 };
 
+<<<<<<< HEAD
 static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m, u64 lcn)
+=======
+static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+				      unsigned long lcn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *const inode = m->inode;
 	struct erofs_inode *const vi = EROFS_I(inode);
@@ -93,7 +102,11 @@ static int get_compacted_la_distance(unsigned int lobits,
 }
 
 static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+<<<<<<< HEAD
 					 u64 lcn, bool lookahead)
+=======
+					 unsigned long lcn, bool lookahead)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *const inode = m->inode;
 	struct erofs_inode *const vi = EROFS_I(inode);
@@ -233,7 +246,11 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
 }
 
 static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
+<<<<<<< HEAD
 					   u64 lcn, bool lookahead)
+=======
+					   unsigned int lcn, bool lookahead)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct erofs_inode *vi = EROFS_I(m->inode);
 	int err;
@@ -248,7 +265,11 @@ static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
 		return err;
 
 	if (m->type >= Z_EROFS_LCLUSTER_TYPE_MAX) {
+<<<<<<< HEAD
 		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
+=======
+		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %u of nid %llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  m->type, lcn, EROFS_I(m->inode)->nid);
 		DBG_BUGON(1);
 		return -EOPNOTSUPP;
@@ -268,7 +289,11 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
 	const unsigned int lclusterbits = vi->z_lclusterbits;
 
 	while (m->lcn >= lookback_distance) {
+<<<<<<< HEAD
 		u64 lcn = m->lcn - lookback_distance;
+=======
+		unsigned long lcn = m->lcn - lookback_distance;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int err;
 
 		if (!lookback_distance)
@@ -285,7 +310,11 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
 		m->map->m_la = (lcn << lclusterbits) | m->clusterofs;
 		return 0;
 	}
+<<<<<<< HEAD
 	erofs_err(sb, "bogus lookback distance %u @ lcn %llu of nid %llu",
+=======
+	erofs_err(sb, "bogus lookback distance %u @ lcn %lu of nid %llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  lookback_distance, m->lcn, vi->nid);
 	DBG_BUGON(1);
 	return -EFSCORRUPTED;
@@ -299,7 +328,11 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
 	struct erofs_inode *vi = EROFS_I(inode);
 	bool bigpcl1 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
 	bool bigpcl2 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_2;
+<<<<<<< HEAD
 	u64 lcn = m->lcn + 1;
+=======
+	unsigned long lcn = m->lcn + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	DBG_BUGON(m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
@@ -330,7 +363,11 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
 		  m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
 
 	if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD && m->delta[0] != 1) {
+<<<<<<< HEAD
 		erofs_err(sb, "bogus CBLKCNT @ lcn %llu of nid %llu", lcn, vi->nid);
+=======
+		erofs_err(sb, "bogus CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		DBG_BUGON(1);
 		return -EFSCORRUPTED;
 	}
@@ -418,7 +455,11 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
 
 	if ((flags & EROFS_GET_BLOCKS_FINDTAIL) && ztailpacking)
 		vi->z_fragmentoff = m.nextpackoff;
+<<<<<<< HEAD
 	map->m_flags = EROFS_MAP_MAPPED | EROFS_MAP_PARTIAL_MAPPED;
+=======
+	map->m_flags = EROFS_MAP_MAPPED | EROFS_MAP_ENCODED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	end = (m.lcn + 1ULL) << lclusterbits;
 
 	if (m.type != Z_EROFS_LCLUSTER_TYPE_NONHEAD && endoff >= m.clusterofs) {
@@ -434,7 +475,11 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
 	} else {
 		if (m.type != Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
 			end = (m.lcn << lclusterbits) | m.clusterofs;
+<<<<<<< HEAD
 			map->m_flags &= ~EROFS_MAP_PARTIAL_MAPPED;
+=======
+			map->m_flags |= EROFS_MAP_FULL_MAPPED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			m.delta[0] = 1;
 		}
 		/* get the corresponding first chunk */
@@ -472,6 +517,14 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
 	}
 
 	if (m.headtype == Z_EROFS_LCLUSTER_TYPE_PLAIN) {
+<<<<<<< HEAD
+=======
+		if (map->m_llen > map->m_plen) {
+			DBG_BUGON(1);
+			err = -EFSCORRUPTED;
+			goto unmap_out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER)
 			map->m_algorithmformat = Z_EROFS_COMPRESSION_INTERLACED;
 		else
@@ -490,7 +543,11 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
 	      map->m_llen >= i_blocksize(inode))) {
 		err = z_erofs_get_extent_decompressedlen(&m);
 		if (!err)
+<<<<<<< HEAD
 			map->m_flags &= ~EROFS_MAP_PARTIAL_MAPPED;
+=======
+			map->m_flags |= EROFS_MAP_FULL_MAPPED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 unmap_out:
@@ -588,7 +645,12 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
 			if (recsz > offsetof(struct z_erofs_extent, pstart_lo))
 				vi->z_fragmentoff |= map->m_pa << 32;
 		} else if (map->m_plen & Z_EROFS_EXTENT_PLEN_MASK) {
+<<<<<<< HEAD
 			map->m_flags |= EROFS_MAP_MAPPED;
+=======
+			map->m_flags |= EROFS_MAP_MAPPED |
+				EROFS_MAP_FULL_MAPPED | EROFS_MAP_ENCODED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			fmt = map->m_plen >> Z_EROFS_EXTENT_PLEN_FMT_BIT;
 			if (map->m_plen & Z_EROFS_EXTENT_PLEN_PARTIAL)
 				map->m_flags |= EROFS_MAP_PARTIAL_REF;
@@ -707,13 +769,18 @@ static int z_erofs_map_sanity_check(struct inode *inode,
 	struct erofs_sb_info *sbi = EROFS_I_SB(inode);
 	u64 pend;
 
+<<<<<<< HEAD
 	if (!(map->m_flags & EROFS_MAP_MAPPED))
+=======
+	if (!(map->m_flags & EROFS_MAP_ENCODED))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	if (unlikely(map->m_algorithmformat >= Z_EROFS_COMPRESSION_RUNTIME_MAX)) {
 		erofs_err(inode->i_sb, "unknown algorithm %d @ pos %llu for nid %llu, please upgrade kernel",
 			  map->m_algorithmformat, map->m_la, EROFS_I(inode)->nid);
 		return -EOPNOTSUPP;
 	}
+<<<<<<< HEAD
 
 	if (map->m_algorithmformat < Z_EROFS_COMPRESSION_MAX) {
 		if (sbi->available_compr_algs ^ BIT(map->m_algorithmformat)) {
@@ -729,6 +796,12 @@ static int z_erofs_map_sanity_check(struct inode *inode,
 	} else if (map->m_llen > map->m_plen) {
 		erofs_err(inode->i_sb, "not enough plain data on disk @ la %llu of nid %llu",
 			  map->m_la, EROFS_I(inode)->nid);
+=======
+	if (unlikely(map->m_algorithmformat < Z_EROFS_COMPRESSION_MAX &&
+		     !(sbi->available_compr_algs & (1 << map->m_algorithmformat)))) {
+		erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
+			  map->m_algorithmformat, EROFS_I(inode)->nid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFSCORRUPTED;
 	}
 	if (unlikely(map->m_plen > Z_EROFS_PCLUSTER_MAX_SIZE ||
@@ -785,12 +858,19 @@ static int z_erofs_iomap_begin_report(struct inode *inode, loff_t offset,
 	iomap->bdev = inode->i_sb->s_bdev;
 	iomap->offset = map.m_la;
 	iomap->length = map.m_llen;
+<<<<<<< HEAD
 	if (map.m_flags & EROFS_MAP_FRAGMENT) {
 		iomap->type = IOMAP_MAPPED;
 		iomap->addr = IOMAP_NULL_ADDR;
 	} else if (map.m_flags & EROFS_MAP_MAPPED) {
 		iomap->type = IOMAP_MAPPED;
 		iomap->addr = map.m_pa;
+=======
+	if (map.m_flags & EROFS_MAP_MAPPED) {
+		iomap->type = IOMAP_MAPPED;
+		iomap->addr = map.m_flags & __EROFS_MAP_FRAGMENT ?
+			      IOMAP_NULL_ADDR : map.m_pa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		iomap->type = IOMAP_HOLE;
 		iomap->addr = IOMAP_NULL_ADDR;

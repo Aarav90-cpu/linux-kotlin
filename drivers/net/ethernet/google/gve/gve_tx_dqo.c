@@ -311,6 +311,10 @@ static int gve_tx_alloc_ring_dqo(struct gve_priv *priv,
 {
 	struct device *hdev = &priv->pdev->dev;
 	int num_pending_packets;
+<<<<<<< HEAD
+=======
+	int qpl_page_cnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t bytes;
 	u32 qpl_id;
 	int i;
@@ -391,9 +395,16 @@ static int gve_tx_alloc_ring_dqo(struct gve_priv *priv,
 
 	if (!cfg->raw_addressing) {
 		qpl_id = gve_tx_qpl_id(priv, tx->q_num);
+<<<<<<< HEAD
 
 		tx->dqo.qpl = gve_alloc_queue_page_list(priv, qpl_id,
 							cfg->pages_per_qpl);
+=======
+		qpl_page_cnt = priv->tx_pages_per_qpl;
+
+		tx->dqo.qpl = gve_alloc_queue_page_list(priv, qpl_id,
+							qpl_page_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!tx->dqo.qpl)
 			goto err;
 
@@ -570,11 +581,17 @@ static void gve_tx_fill_pkt_desc_dqo(struct gve_tx_ring *tx, u32 *desc_idx,
  */
 static int gve_prep_tso(struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct skb_shared_info *shinfo = skb_shinfo(skb);
 	u32 paylen, l4_start;
 	struct tcphdr *tcp;
 	struct udphdr *udp;
 	int header_len;
+=======
+	struct tcphdr *tcp;
+	int header_len;
+	u32 paylen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	/* Note: HW requires MSS (gso_size) to be <= 9728 and the total length
@@ -585,14 +602,24 @@ static int gve_prep_tso(struct sk_buff *skb)
 	 * - Kernel will not produce a TSO larger than 64k
 	 */
 
+<<<<<<< HEAD
 	if (unlikely(shinfo->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
 		return -1;
 
+=======
+	if (unlikely(skb_shinfo(skb)->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
+		return -1;
+
+	if (!(skb_shinfo(skb)->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Needed because we will modify header. */
 	err = skb_cow_head(skb, 0);
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	l4_start = skb_transport_offset(skb);
 	paylen = skb->len - l4_start;
 
@@ -613,6 +640,12 @@ static int gve_prep_tso(struct sk_buff *skb)
 	default:
 		return -EINVAL;
 	}
+=======
+	tcp = tcp_hdr(skb);
+	paylen = skb->len - skb_transport_offset(skb);
+	csum_replace_by_diff(&tcp->check, (__force __wsum)htonl(paylen));
+	header_len = skb_tcp_all_headers(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(header_len > GVE_TX_MAX_HDR_SIZE_DQO))
 		return -EINVAL;

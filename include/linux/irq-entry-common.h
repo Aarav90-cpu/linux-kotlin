@@ -3,7 +3,10 @@
 #define __LINUX_IRQENTRYCOMMON_H
 
 #include <linux/context_tracking.h>
+<<<<<<< HEAD
 #include <linux/hrtimer_rearm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kmsan.h>
 #include <linux/rseq_entry.h>
 #include <linux/static_call_types.h>
@@ -34,6 +37,7 @@
 	 _TIF_PATCH_PENDING | _TIF_NOTIFY_SIGNAL | _TIF_RSEQ |		\
 	 ARCH_EXIT_TO_USER_MODE_WORK)
 
+<<<<<<< HEAD
 #ifdef CONFIG_HRTIMER_REARM_DEFERRED
 # define EXIT_TO_USER_MODE_WORK_SYSCALL	(EXIT_TO_USER_MODE_WORK)
 # define EXIT_TO_USER_MODE_WORK_IRQ	(EXIT_TO_USER_MODE_WORK | _TIF_HRTIMER_REARM)
@@ -42,6 +46,8 @@
 # define EXIT_TO_USER_MODE_WORK_IRQ	(EXIT_TO_USER_MODE_WORK)
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * arch_enter_from_user_mode - Architecture specific sanity check for user mode regs
  * @regs:	Pointer to currents pt_regs
@@ -110,6 +116,40 @@ static __always_inline void enter_from_user_mode(struct pt_regs *regs)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * local_irq_enable_exit_to_user - Exit to user variant of local_irq_enable()
+ * @ti_work:	Cached TIF flags gathered with interrupts disabled
+ *
+ * Defaults to local_irq_enable(). Can be supplied by architecture specific
+ * code.
+ */
+static inline void local_irq_enable_exit_to_user(unsigned long ti_work);
+
+#ifndef local_irq_enable_exit_to_user
+static __always_inline void local_irq_enable_exit_to_user(unsigned long ti_work)
+{
+	local_irq_enable();
+}
+#endif
+
+/**
+ * local_irq_disable_exit_to_user - Exit to user variant of local_irq_disable()
+ *
+ * Defaults to local_irq_disable(). Can be supplied by architecture specific
+ * code.
+ */
+static inline void local_irq_disable_exit_to_user(void);
+
+#ifndef local_irq_disable_exit_to_user
+static __always_inline void local_irq_disable_exit_to_user(void)
+{
+	local_irq_disable();
+}
+#endif
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * arch_exit_to_user_mode_work - Architecture specific TIF work for exit
  *				 to user mode.
  * @regs:	Pointer to currents pt_regs
@@ -181,7 +221,10 @@ unsigned long exit_to_user_mode_loop(struct pt_regs *regs, unsigned long ti_work
 /**
  * __exit_to_user_mode_prepare - call exit_to_user_mode_loop() if required
  * @regs:	Pointer to pt_regs on entry stack
+<<<<<<< HEAD
  * @work_mask:	Which TIF bits need to be evaluated
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * 1) check that interrupts are disabled
  * 2) call tick_nohz_user_enter_prepare()
@@ -191,8 +234,12 @@ unsigned long exit_to_user_mode_loop(struct pt_regs *regs, unsigned long ti_work
  *
  * Don't invoke directly, use the syscall/irqentry_ prefixed variants below
  */
+<<<<<<< HEAD
 static __always_inline void __exit_to_user_mode_prepare(struct pt_regs *regs,
 							const unsigned long work_mask)
+=======
+static __always_inline void __exit_to_user_mode_prepare(struct pt_regs *regs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long ti_work;
 
@@ -202,10 +249,15 @@ static __always_inline void __exit_to_user_mode_prepare(struct pt_regs *regs,
 	tick_nohz_user_enter_prepare();
 
 	ti_work = read_thread_flags();
+<<<<<<< HEAD
 	if (unlikely(ti_work & work_mask)) {
 		if (!hrtimer_rearm_deferred_user_irq(&ti_work, work_mask))
 			ti_work = exit_to_user_mode_loop(regs, ti_work);
 	}
+=======
+	if (unlikely(ti_work & EXIT_TO_USER_MODE_WORK))
+		ti_work = exit_to_user_mode_loop(regs, ti_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	arch_exit_to_user_mode_prepare(regs, ti_work);
 }
@@ -218,6 +270,21 @@ static __always_inline void __exit_to_user_mode_validate(void)
 	lockdep_sys_exit();
 }
 
+<<<<<<< HEAD
+=======
+/* Temporary workaround to keep ARM64 alive */
+static __always_inline void exit_to_user_mode_prepare_legacy(struct pt_regs *regs)
+{
+<<<<<<< HEAD
+	__exit_to_user_mode_prepare(regs, EXIT_TO_USER_MODE_WORK);
+=======
+	__exit_to_user_mode_prepare(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	rseq_exit_to_user_mode_legacy();
+	__exit_to_user_mode_validate();
+}
+
+>>>>>>> 7fb39c93c52e (Sync)
 /**
  * syscall_exit_to_user_mode_prepare - call exit_to_user_mode_loop() if required
  * @regs:	Pointer to pt_regs on entry stack
@@ -227,7 +294,11 @@ static __always_inline void __exit_to_user_mode_validate(void)
  */
 static __always_inline void syscall_exit_to_user_mode_prepare(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	__exit_to_user_mode_prepare(regs, EXIT_TO_USER_MODE_WORK_SYSCALL);
+=======
+	__exit_to_user_mode_prepare(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rseq_syscall_exit_to_user_mode();
 	__exit_to_user_mode_validate();
 }
@@ -241,7 +312,11 @@ static __always_inline void syscall_exit_to_user_mode_prepare(struct pt_regs *re
  */
 static __always_inline void irqentry_exit_to_user_mode_prepare(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	__exit_to_user_mode_prepare(regs, EXIT_TO_USER_MODE_WORK_IRQ);
+=======
+	__exit_to_user_mode_prepare(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rseq_irqentry_exit_to_user_mode();
 	__exit_to_user_mode_validate();
 }
@@ -309,8 +384,11 @@ static __always_inline void irqentry_enter_from_user_mode(struct pt_regs *regs)
  */
 static __always_inline void irqentry_exit_to_user_mode(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	lockdep_assert_irqs_disabled();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	instrumentation_begin();
 	irqentry_exit_to_user_mode_prepare(regs);
 	instrumentation_end();
@@ -342,6 +420,7 @@ typedef struct irqentry_state {
 #endif
 
 /**
+<<<<<<< HEAD
  * irqentry_exit_cond_resched - Conditionally reschedule on return from interrupt
  *
  * Conditional reschedule with additional sanity checks.
@@ -543,6 +622,8 @@ static __always_inline void irqentry_exit_to_kernel_mode(struct pt_regs *regs,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * irqentry_enter - Handle state tracking on ordinary interrupt entries
  * @regs:	Pointer to pt_regs of interrupted context
  *
@@ -571,11 +652,40 @@ static __always_inline void irqentry_exit_to_kernel_mode(struct pt_regs *regs,
  * establish the proper context for NOHZ_FULL. Otherwise scheduling on exit
  * would not be possible.
  *
+<<<<<<< HEAD
  * Returns: An opaque object that must be passed to irqentry_exit()
+=======
+ * Returns: An opaque object that must be passed to idtentry_exit()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 irqentry_state_t noinstr irqentry_enter(struct pt_regs *regs);
 
 /**
+<<<<<<< HEAD
+=======
+ * irqentry_exit_cond_resched - Conditionally reschedule on return from interrupt
+ *
+ * Conditional reschedule with additional sanity checks.
+ */
+void raw_irqentry_exit_cond_resched(void);
+
+#ifdef CONFIG_PREEMPT_DYNAMIC
+#if defined(CONFIG_HAVE_PREEMPT_DYNAMIC_CALL)
+#define irqentry_exit_cond_resched_dynamic_enabled	raw_irqentry_exit_cond_resched
+#define irqentry_exit_cond_resched_dynamic_disabled	NULL
+DECLARE_STATIC_CALL(irqentry_exit_cond_resched, raw_irqentry_exit_cond_resched);
+#define irqentry_exit_cond_resched()	static_call(irqentry_exit_cond_resched)()
+#elif defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+void dynamic_irqentry_exit_cond_resched(void);
+#define irqentry_exit_cond_resched()	dynamic_irqentry_exit_cond_resched()
+#endif
+#else /* CONFIG_PREEMPT_DYNAMIC */
+#define irqentry_exit_cond_resched()	raw_irqentry_exit_cond_resched()
+#endif /* CONFIG_PREEMPT_DYNAMIC */
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * irqentry_exit - Handle return from exception that used irqentry_enter()
  * @regs:	Pointer to pt_regs (exception entry regs)
  * @state:	Return value from matching call to irqentry_enter()

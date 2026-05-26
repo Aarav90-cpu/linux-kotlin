@@ -56,10 +56,13 @@
 #define EQ_CI_SIMPLE_INDIR_SET(val, member)  \
 	FIELD_PREP(EQ_CI_SIMPLE_INDIR_##member##_MASK, val)
 
+<<<<<<< HEAD
 #define EQ_CONS_IDX_REG_ADDR(eq)  \
 	(((eq)->type == HINIC3_AEQ) ?  \
 	 HINIC3_CSR_AEQ_CONS_IDX_ADDR : HINIC3_CSR_CEQ_CONS_IDX_ADDR)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define EQ_CI_SIMPLE_INDIR_REG_ADDR(eq)  \
 	(((eq)->type == HINIC3_AEQ) ?  \
 	 HINIC3_CSR_AEQ_CI_SIMPLE_INDIR_ADDR :  \
@@ -357,7 +360,10 @@ static irqreturn_t ceq_interrupt(int irq, void *data)
 	struct hinic3_eq *ceq = data;
 	int err;
 
+<<<<<<< HEAD
 	ceq->soft_intr_jif = jiffies;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* clear resend timer counters */
 	hinic3_msix_intr_clear_resend_bit(ceq->hwdev, ceq->msix_entry_idx,
 					  EQ_MSIX_RESEND_TIMER_CLEAR);
@@ -718,6 +724,7 @@ void hinic3_aeqs_free(struct hinic3_hwdev *hwdev)
 	kfree(aeqs);
 }
 
+<<<<<<< HEAD
 void hinic3_dump_aeq_info(struct hinic3_hwdev *hwdev)
 {
 	const struct hinic3_aeq_elem *aeqe_pos;
@@ -751,6 +758,8 @@ void hinic3_dump_aeq_info(struct hinic3_hwdev *hwdev)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hinic3_ceqs_init(struct hinic3_hwdev *hwdev, u16 num_ceqs,
 		     struct msix_entry *msix_entries)
 {
@@ -811,6 +820,7 @@ void hinic3_ceqs_free(struct hinic3_hwdev *hwdev)
 
 	kfree(ceqs);
 }
+<<<<<<< HEAD
 
 void hinic3_dump_ceq_info(struct hinic3_hwdev *hwdev)
 {
@@ -838,3 +848,5 @@ void hinic3_dump_ceq_info(struct hinic3_hwdev *hwdev)
 			jiffies_to_msecs(jiffies - eq->soft_intr_jif));
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

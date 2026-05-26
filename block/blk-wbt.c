@@ -782,11 +782,18 @@ void wbt_init_enable_default(struct gendisk *disk)
 		return;
 
 	rwb = wbt_alloc();
+<<<<<<< HEAD
 	if (!rwb)
 		return;
 
 	if (wbt_init(disk, rwb)) {
 		pr_warn("%s: failed to enable wbt\n", disk->disk_name);
+=======
+	if (WARN_ON_ONCE(!rwb))
+		return;
+
+	if (WARN_ON_ONCE(wbt_init(disk, rwb))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wbt_free(rwb);
 		return;
 	}

@@ -1688,7 +1688,11 @@ static int __dwc3_gadget_kick_transfer(struct dwc3_ep *dep)
 	 * transfer, there's no need to update the transfer.
 	 */
 	if (!ret && !starting)
+<<<<<<< HEAD
 		return 0;
+=======
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	req = next_request(&dep->started_list);
 	if (!req) {

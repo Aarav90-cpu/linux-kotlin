@@ -823,7 +823,11 @@ void skl_pfit_enable(const struct intel_crtc_state *crtc_state)
 			crtc_state->scaler_state.scaler_id < 0))
 		return;
 
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14011503117))
+=======
+	if (intel_display_wa(display, 14011503117))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		adl_scaler_ecc_mask(crtc_state);
 
 	drm_rect_init(&src, 0, 0,

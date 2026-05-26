@@ -29,7 +29,15 @@
 #define PAGE_OFFSET_L5		_AC(0xff60000000000000, UL)
 #define PAGE_OFFSET_L4		_AC(0xffffaf8000000000, UL)
 #define PAGE_OFFSET_L3		_AC(0xffffffd600000000, UL)
+<<<<<<< HEAD
 #define PAGE_OFFSET		kernel_map.page_offset
+=======
+#ifdef CONFIG_XIP_KERNEL
+#define PAGE_OFFSET		PAGE_OFFSET_L3
+#else
+#define PAGE_OFFSET		kernel_map.page_offset
+#endif /* CONFIG_XIP_KERNEL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 #define PAGE_OFFSET		_AC(0xc0000000, UL)
 #endif /* CONFIG_64BIT */
@@ -100,8 +108,20 @@ struct kernel_mapping {
 	/* Offset between linear mapping virtual address and kernel load address */
 	unsigned long va_pa_offset;
 	/* Offset between kernel mapping virtual address and kernel load address */
+<<<<<<< HEAD
 	unsigned long page_offset;
 	unsigned long va_kernel_pa_offset;
+=======
+#ifdef CONFIG_XIP_KERNEL
+	unsigned long va_kernel_xip_text_pa_offset;
+	unsigned long va_kernel_xip_data_pa_offset;
+	uintptr_t xiprom;
+	uintptr_t xiprom_sz;
+#else
+	unsigned long page_offset;
+	unsigned long va_kernel_pa_offset;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern struct kernel_mapping kernel_map;
@@ -120,7 +140,20 @@ extern unsigned long vmemmap_start_pfn;
 void *linear_mapping_pa_to_va(unsigned long x);
 #endif
 
+<<<<<<< HEAD
 #define kernel_mapping_pa_to_va(y) ((void *)((unsigned long)(y) + kernel_map.va_kernel_pa_offset))
+=======
+#ifdef CONFIG_XIP_KERNEL
+#define kernel_mapping_pa_to_va(y)	({					\
+	unsigned long _y = (unsigned long)(y);					\
+	(_y < phys_ram_base) ?							\
+		(void *)(_y + kernel_map.va_kernel_xip_text_pa_offset) :	\
+		(void *)(_y + kernel_map.va_kernel_xip_data_pa_offset);		\
+	})
+#else
+#define kernel_mapping_pa_to_va(y) ((void *)((unsigned long)(y) + kernel_map.va_kernel_pa_offset))
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __pa_to_va_nodebug(x)		linear_mapping_pa_to_va(x)
 
@@ -130,7 +163,20 @@ void *linear_mapping_pa_to_va(unsigned long x);
 phys_addr_t linear_mapping_va_to_pa(unsigned long x);
 #endif
 
+<<<<<<< HEAD
 #define kernel_mapping_va_to_pa(y) ((unsigned long)(y) - kernel_map.va_kernel_pa_offset)
+=======
+#ifdef CONFIG_XIP_KERNEL
+#define kernel_mapping_va_to_pa(y) ({						\
+	unsigned long _y = (unsigned long)(y);					\
+	(_y < kernel_map.virt_addr + kernel_map.xiprom_sz) ?			\
+		(_y - kernel_map.va_kernel_xip_text_pa_offset) :		\
+		(_y - kernel_map.va_kernel_xip_data_pa_offset);			\
+	})
+#else
+#define kernel_mapping_va_to_pa(y) ((unsigned long)(y) - kernel_map.va_kernel_pa_offset)
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __va_to_pa_nodebug(x)	({						\
 	unsigned long _x = x;							\
@@ -161,10 +207,14 @@ extern phys_addr_t __phys_addr_symbol(unsigned long x);
 
 #define sym_to_pfn(x)           __phys_to_pfn(__pa_symbol(x))
 
+<<<<<<< HEAD
 static inline unsigned long kaslr_offset(void)
 {
 	return kernel_map.virt_offset;
 }
+=======
+unsigned long kaslr_offset(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __always_inline void *pfn_to_kaddr(unsigned long pfn)
 {
@@ -178,7 +228,11 @@ static __always_inline void *pfn_to_kaddr(unsigned long pfn)
 	(unsigned long)(_addr) >= PAGE_OFFSET && pfn_valid(virt_to_pfn(_addr));	\
 })
 
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+=======
+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm-generic/memory_model.h>
 #include <asm-generic/getorder.h>

@@ -6,7 +6,10 @@
 #include <linux/cc_platform.h>
 #include <linux/configfs.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define KEY_NUM_MAX 128	/* maximum dm crypt keys */
 #define KEY_SIZE_MAX 256	/* maximum dm crypt key size */
@@ -116,7 +119,11 @@ static int restore_dm_crypt_keys_to_thread_keyring(void)
 
 	addr = dm_crypt_keys_addr;
 	dm_crypt_keys_read((char *)&key_count, sizeof(key_count), &addr);
+<<<<<<< HEAD
 	if (key_count > KEY_NUM_MAX) {
+=======
+	if (key_count < 0 || key_count > KEY_NUM_MAX) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kexec_dprintk("Failed to read the number of dm-crypt keys\n");
 		return -1;
 	}
@@ -140,7 +147,11 @@ static int restore_dm_crypt_keys_to_thread_keyring(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int read_key_from_user_keyring(struct dm_crypt_key *dm_key)
+=======
+static int read_key_from_user_keying(struct dm_crypt_key *dm_key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct user_key_payload *ukp;
 	struct key *key;
@@ -190,7 +201,11 @@ static inline struct config_key *to_config_key(struct config_item *item)
 
 static ssize_t config_key_description_show(struct config_item *item, char *page)
 {
+<<<<<<< HEAD
 	return sysfs_emit(page, "%s\n", to_config_key(item)->description);
+=======
+	return sprintf(page, "%s\n", to_config_key(item)->description);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t config_key_description_store(struct config_item *item,
@@ -266,7 +281,11 @@ static struct config_item *config_keys_make_item(struct config_group *group,
 
 static ssize_t config_keys_count_show(struct config_item *item, char *page)
 {
+<<<<<<< HEAD
 	return sysfs_emit(page, "%d\n", key_count);
+=======
+	return sprintf(page, "%d\n", key_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 CONFIGFS_ATTR_RO(config_keys_, count);
@@ -275,7 +294,11 @@ static bool is_dm_key_reused;
 
 static ssize_t config_keys_reuse_show(struct config_item *item, char *page)
 {
+<<<<<<< HEAD
 	return sysfs_emit(page, "%d\n", is_dm_key_reused);
+=======
+	return sprintf(page, "%d\n", is_dm_key_reused);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t config_keys_reuse_store(struct config_item *item,
@@ -322,7 +345,11 @@ static bool restore;
 
 static ssize_t config_keys_restore_show(struct config_item *item, char *page)
 {
+<<<<<<< HEAD
 	return sysfs_emit(page, "%d\n", restore);
+=======
+	return sprintf(page, "%d\n", restore);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t config_keys_restore_store(struct config_item *item,
@@ -388,7 +415,11 @@ static int build_keys_header(void)
 
 		strscpy(keys_header->keys[i].key_desc, key->description,
 			KEY_DESC_MAX_LEN);
+<<<<<<< HEAD
 		r = read_key_from_user_keyring(&keys_header->keys[i]);
+=======
+		r = read_key_from_user_keying(&keys_header->keys[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (r != 0) {
 			kexec_dprintk("Failed to read key %s\n",
 				      keys_header->keys[i].key_desc);
@@ -415,16 +446,25 @@ int crash_load_dm_crypt_keys(struct kimage *image)
 
 	if (key_count <= 0) {
 		kexec_dprintk("No dm-crypt keys\n");
+<<<<<<< HEAD
 		return 0;
+=======
+		return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!is_dm_key_reused) {
 		image->dm_crypt_keys_addr = 0;
 		r = build_keys_header();
+<<<<<<< HEAD
 		if (r) {
 			pr_err("Failed to build dm-crypt keys header, ret=%d\n", r);
 			return r;
 		}
+=======
+		if (r)
+			return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	kbuf.buffer = keys_header;
@@ -435,7 +475,10 @@ int crash_load_dm_crypt_keys(struct kimage *image)
 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
 	r = kexec_add_buffer(&kbuf);
 	if (r) {
+<<<<<<< HEAD
 		pr_err("Failed to call kexec_add_buffer, ret=%d\n", r);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvfree((void *)kbuf.buffer);
 		return r;
 	}

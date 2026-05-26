@@ -27,8 +27,13 @@ static void do_idle(void)
 static void guest_irq_handler(struct ex_regs *regs)
 {
 	unsigned int intid;
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
 	u64 xcnt, val, cfg, xcnt_diff_us;
+=======
+	uint32_t cpu = guest_get_vcpuid();
+	uint64_t xcnt, val, cfg, xcnt_diff_us;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	intid = !!(regs->estat & BIT(INT_TI));
@@ -62,10 +67,17 @@ static void guest_irq_handler(struct ex_regs *regs)
 	WRITE_ONCE(shared_data->nr_iter, shared_data->nr_iter + 1);
 }
 
+<<<<<<< HEAD
 static void guest_test_period_timer(u32 cpu)
 {
 	u32 irq_iter, config_iter;
 	u64 us;
+=======
+static void guest_test_period_timer(uint32_t cpu)
+{
+	uint32_t irq_iter, config_iter;
+	uint64_t us;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	shared_data->nr_iter = test_args.nr_iter;
@@ -86,10 +98,17 @@ static void guest_test_period_timer(u32 cpu)
 			irq_iter);
 }
 
+<<<<<<< HEAD
 static void guest_test_oneshot_timer(u32 cpu)
 {
 	u32 irq_iter, config_iter;
 	u64 us;
+=======
+static void guest_test_oneshot_timer(uint32_t cpu)
+{
+	uint32_t irq_iter, config_iter;
+	uint64_t us;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	shared_data->nr_iter = 0;
@@ -112,10 +131,17 @@ static void guest_test_oneshot_timer(u32 cpu)
 	}
 }
 
+<<<<<<< HEAD
 static void guest_test_emulate_timer(u32 cpu)
 {
 	u32 config_iter;
 	u64 xcnt_diff_us, us;
+=======
+static void guest_test_emulate_timer(uint32_t cpu)
+{
+	uint32_t config_iter;
+	uint64_t xcnt_diff_us, us;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	local_irq_disable();
@@ -136,9 +162,15 @@ static void guest_test_emulate_timer(u32 cpu)
 	local_irq_enable();
 }
 
+<<<<<<< HEAD
 static void guest_time_count_test(u32 cpu)
 {
 	u32 config_iter;
+=======
+static void guest_time_count_test(uint32_t cpu)
+{
+	uint32_t config_iter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long start, end, prev, us;
 
 	/* Assuming that test case starts to run in 1 second */
@@ -165,7 +197,11 @@ static void guest_time_count_test(u32 cpu)
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* must run at first */
 	guest_time_count_test(cpu);

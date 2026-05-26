@@ -29,6 +29,7 @@ MODULE_PARM_DESC(force_cmdlist, "Force use command list (Default true)");
 
 #define HWCTX_MAX_TIMEOUT	60000 /* milliseconds */
 
+<<<<<<< HEAD
 struct aie2_ctx_health {
 	struct amdxdna_ctx_health header;
 	u32 txn_op_idx;
@@ -39,6 +40,8 @@ struct aie2_ctx_health {
 	u32 fatal_error_app_module;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void aie2_job_release(struct kref *ref)
 {
 	struct amdxdna_sched_job *job;
@@ -49,7 +52,10 @@ static void aie2_job_release(struct kref *ref)
 	wake_up(&job->hwctx->priv->job_free_wq);
 	if (job->out_fence)
 		dma_fence_put(job->out_fence);
+<<<<<<< HEAD
 	kfree(job->aie2_job_health);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(job);
 }
 
@@ -79,8 +85,12 @@ static int aie2_hwctx_restart(struct amdxdna_dev *xdna, struct amdxdna_hwctx *hw
 	}
 
 	ret = aie2_map_host_buf(xdna->dev_handle, hwctx->fw_ctx_id,
+<<<<<<< HEAD
 				amdxdna_obj_dma_addr(heap),
 				heap->mem.size);
+=======
+				heap->mem.userptr, heap->mem.size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		XDNA_ERR(xdna, "Map host buf failed, ret %d", ret);
 		goto out;
@@ -186,6 +196,7 @@ aie2_sched_notify(struct amdxdna_sched_job *job)
 	aie2_job_put(job);
 }
 
+<<<<<<< HEAD
 static void aie2_set_cmd_timeout(struct amdxdna_sched_job *job)
 {
 	struct aie2_ctx_health *aie2_health __free(kfree) = NULL;
@@ -230,6 +241,8 @@ set_timeout:
 			      aie2_health, sizeof(*aie2_health));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
 {
@@ -241,13 +254,21 @@ aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
 	cmd_abo = job->cmd_bo;
 
 	if (unlikely(job->job_timeout)) {
+<<<<<<< HEAD
 		aie2_set_cmd_timeout(job);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_TIMEOUT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}
 
 	if (unlikely(!data) || unlikely(size != sizeof(u32))) {
+<<<<<<< HEAD
 		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ABORT, NULL, 0);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ABORT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}
@@ -257,7 +278,11 @@ aie2_sched_resp_handler(void *handle, void __iomem *data, size_t size)
 	if (status == AIE2_STATUS_SUCCESS)
 		amdxdna_cmd_set_state(cmd_abo, ERT_CMD_STATE_COMPLETED);
 	else
+<<<<<<< HEAD
 		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ERROR, NULL, 0);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ERROR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	aie2_sched_notify(job);
@@ -291,21 +316,34 @@ aie2_sched_cmdlist_resp_handler(void *handle, void __iomem *data, size_t size)
 	struct amdxdna_sched_job *job = handle;
 	struct amdxdna_gem_obj *cmd_abo;
 	struct amdxdna_dev *xdna;
+<<<<<<< HEAD
 	u32 fail_cmd_idx = 0;
 	u32 fail_cmd_status;
+=======
+	u32 fail_cmd_status;
+	u32 fail_cmd_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 cmd_status;
 	int ret = 0;
 
 	cmd_abo = job->cmd_bo;
 
 	if (unlikely(job->job_timeout)) {
+<<<<<<< HEAD
 		aie2_set_cmd_timeout(job);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_TIMEOUT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}
 
 	if (unlikely(!data) || unlikely(size != sizeof(u32) * 3)) {
+<<<<<<< HEAD
 		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ABORT, NULL, 0);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, 0, ERT_CMD_STATE_ABORT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}
@@ -325,10 +363,17 @@ aie2_sched_cmdlist_resp_handler(void *handle, void __iomem *data, size_t size)
 		 fail_cmd_idx, fail_cmd_status);
 
 	if (fail_cmd_status == AIE2_STATUS_SUCCESS) {
+<<<<<<< HEAD
 		amdxdna_cmd_set_error(cmd_abo, job, fail_cmd_idx, ERT_CMD_STATE_ABORT, NULL, 0);
 		ret = -EINVAL;
 	} else {
 		amdxdna_cmd_set_error(cmd_abo, job, fail_cmd_idx, ERT_CMD_STATE_ERROR, NULL, 0);
+=======
+		amdxdna_cmd_set_error(cmd_abo, job, fail_cmd_idx, ERT_CMD_STATE_ABORT);
+		ret = -EINVAL;
+	} else {
+		amdxdna_cmd_set_error(cmd_abo, job, fail_cmd_idx, ERT_CMD_STATE_ERROR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:
@@ -408,13 +453,18 @@ aie2_sched_job_timedout(struct drm_sched_job *sched_job)
 {
 	struct amdxdna_sched_job *job = drm_job_to_xdna_job(sched_job);
 	struct amdxdna_hwctx *hwctx = job->hwctx;
+<<<<<<< HEAD
 	struct app_health_report *report;
 	struct amdxdna_dev *xdna;
 	int ret;
+=======
+	struct amdxdna_dev *xdna;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xdna = hwctx->client->xdna;
 	trace_xdna_job(sched_job, hwctx->name, "job timedout", job->seq);
 	job->job_timeout = true;
+<<<<<<< HEAD
 
 	mutex_lock(&xdna->dev_lock);
 	report = kzalloc_obj(*report);
@@ -428,6 +478,9 @@ aie2_sched_job_timedout(struct drm_sched_job *sched_job)
 		job->aie2_job_health = report;
 
 reset_hwctx:
+=======
+	mutex_lock(&xdna->dev_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	aie2_hwctx_stop(xdna, hwctx, sched_job);
 
 	aie2_hwctx_restart(xdna, hwctx);
@@ -649,14 +702,22 @@ int aie2_hwctx_init(struct amdxdna_hwctx *hwctx)
 			.size = MAX_CHAIN_CMDBUF_SIZE,
 		};
 
+<<<<<<< HEAD
 		abo = amdxdna_drm_create_dev_bo(&xdna->ddev, &args, client->filp);
+=======
+		abo = amdxdna_drm_alloc_dev_bo(&xdna->ddev, &args, client->filp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(abo)) {
 			ret = PTR_ERR(abo);
 			goto free_cmd_bufs;
 		}
 
 		XDNA_DBG(xdna, "Command buf %d addr 0x%llx size 0x%lx",
+<<<<<<< HEAD
 			 i, amdxdna_gem_dev_addr(abo), abo->mem.size);
+=======
+			 i, abo->mem.dev_addr, abo->mem.size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		priv->cmd_buf[i] = abo;
 	}
 
@@ -697,8 +758,12 @@ int aie2_hwctx_init(struct amdxdna_hwctx *hwctx)
 	}
 
 	ret = aie2_map_host_buf(xdna->dev_handle, hwctx->fw_ctx_id,
+<<<<<<< HEAD
 				amdxdna_obj_dma_addr(heap),
 				heap->mem.size);
+=======
+				heap->mem.userptr, heap->mem.size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		XDNA_ERR(xdna, "Map host buffer failed, ret %d", ret);
 		goto release_resource;

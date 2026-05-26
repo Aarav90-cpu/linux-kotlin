@@ -288,7 +288,10 @@ struct cpuset top_cpuset = {
 	.flags = BIT(CS_CPU_EXCLUSIVE) |
 		 BIT(CS_MEM_EXCLUSIVE) | BIT(CS_SCHED_LOAD_BALANCE),
 	.partition_root_state = PRS_ROOT,
+<<<<<<< HEAD
 	.dl_bw_cpu = -1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -580,8 +583,11 @@ static struct cpuset *dup_or_alloc_cpuset(struct cpuset *cs)
 	if (!trial)
 		return NULL;
 
+<<<<<<< HEAD
 	trial->dl_bw_cpu = -1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Setup cpumask pointer array */
 	cpumask_var_t *pmask[4] = {
 		&trial->cpus_allowed,
@@ -767,7 +773,11 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
+=======
+#if defined(CONFIG_SMP) && !defined(CONFIG_SCHED_ALT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * generate_sched_domains()
@@ -1011,7 +1021,11 @@ void rebuild_sched_domains_locked(void)
 	/* Have scheduler rebuild the domains */
 	partition_sched_domains(ndoms, doms, attr);
 }
+<<<<<<< HEAD
 #else /* !CONFIG_SMP */
+=======
+#else /* !CONFIG_SMP || CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void rebuild_sched_domains_locked(void)
 {
 }
@@ -1718,8 +1732,12 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
 		 */
 		if (is_partition_valid(parent))
 			adding = cpumask_and(tmp->addmask,
+<<<<<<< HEAD
 					     cs->effective_xcpus,
 					     parent->effective_xcpus);
+=======
+					     xcpus, parent->effective_xcpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (old_prs > 0)
 			new_prs = -old_prs;
 
@@ -2984,7 +3002,10 @@ static void reset_migrate_dl_data(struct cpuset *cs)
 {
 	cs->nr_migrate_dl_tasks = 0;
 	cs->sum_migrate_dl_bw = 0;
+<<<<<<< HEAD
 	cs->dl_bw_cpu = -1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Called by cgroups to determine if a cpuset is usable; cpuset_mutex held */
@@ -2994,7 +3015,11 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
 	struct cpuset *cs, *oldcs;
 	struct task_struct *task;
 	bool setsched_check;
+<<<<<<< HEAD
 	int cpu, ret;
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* used later by cpuset_attach() */
 	cpuset_attach_old_cs = task_cs(cgroup_taskset_first(tset, &css));
@@ -3038,6 +3063,7 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
 				goto out_unlock;
 		}
 
+<<<<<<< HEAD
 		if (dl_task(task)) {
 			/*
 			 * Count all migrating DL tasks for cpuset task accounting.
@@ -3066,15 +3092,51 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
 	cs->dl_bw_cpu = cpu;
 
 out_success:
+=======
+#ifndef CONFIG_SCHED_ALT
+		if (dl_task(task)) {
+			cs->nr_migrate_dl_tasks++;
+			cs->sum_migrate_dl_bw += task->dl.dl_bw;
+		}
+#endif
+	}
+
+#ifndef CONFIG_SCHED_ALT
+	if (!cs->nr_migrate_dl_tasks)
+		goto out_success;
+
+	if (!cpumask_intersects(oldcs->effective_cpus, cs->effective_cpus)) {
+		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
+
+		if (unlikely(cpu >= nr_cpu_ids)) {
+			reset_migrate_dl_data(cs);
+			ret = -EINVAL;
+			goto out_unlock;
+		}
+
+		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+		if (ret) {
+			reset_migrate_dl_data(cs);
+			goto out_unlock;
+		}
+	}
+
+out_success:
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Mark attach is in progress.  This makes validate_change() fail
 	 * changes which zero cpus/mems_allowed.
 	 */
 	cs->attach_in_progress++;
+<<<<<<< HEAD
 
 out_unlock:
 	if (ret)
 		reset_migrate_dl_data(cs);
+=======
+out_unlock:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&cpuset_mutex);
 	return ret;
 }
@@ -3090,11 +3152,22 @@ static void cpuset_cancel_attach(struct cgroup_taskset *tset)
 	mutex_lock(&cpuset_mutex);
 	dec_attach_in_progress_locked(cs);
 
+<<<<<<< HEAD
 	if (cs->dl_bw_cpu >= 0)
 		dl_bw_free(cs->dl_bw_cpu, cs->sum_migrate_dl_bw);
 
 	if (cs->nr_migrate_dl_tasks)
 		reset_migrate_dl_data(cs);
+=======
+#ifndef CONFIG_SCHED_ALT
+	if (cs->nr_migrate_dl_tasks) {
+		int cpu = cpumask_any(cs->effective_cpus);
+
+		dl_bw_free(cpu, cs->sum_migrate_dl_bw);
+		reset_migrate_dl_data(cs);
+	}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&cpuset_mutex);
 }
@@ -4180,11 +4253,19 @@ static struct cpuset *nearest_hardwall_ancestor(struct cpuset *cs)
  * current's mems_allowed, yes.  If it's not a __GFP_HARDWALL request and this
  * node is set in the nearest hardwalled cpuset ancestor to current's cpuset,
  * yes.  If current has access to memory reserves as an oom victim, yes.
+<<<<<<< HEAD
  * If the current task is PF_EXITING, yes. Otherwise, no.
  *
  * GFP_USER allocations are marked with the __GFP_HARDWALL bit,
  * and do not allow allocations outside the current tasks cpuset
  * unless the task has been OOM killed or is exiting.
+=======
+ * Otherwise, no.
+ *
+ * GFP_USER allocations are marked with the __GFP_HARDWALL bit,
+ * and do not allow allocations outside the current tasks cpuset
+ * unless the task has been OOM killed.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * GFP_KERNEL allocations are not so marked, so can escape to the
  * nearest enclosing hardwalled ancestor cpuset.
  *
@@ -4198,9 +4279,13 @@ static struct cpuset *nearest_hardwall_ancestor(struct cpuset *cs)
  * The first call here from mm/page_alloc:get_page_from_freelist()
  * has __GFP_HARDWALL set in gfp_mask, enforcing hardwall cpusets,
  * so no allocation on a node outside the cpuset is allowed (unless
+<<<<<<< HEAD
  * in interrupt, of course).  The PF_EXITING check must therefore
  * come before the __GFP_HARDWALL check, otherwise a dying task
  * would be blocked on the fast path.
+=======
+ * in interrupt, of course).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The second pass through get_page_from_freelist() doesn't even call
  * here for GFP_ATOMIC calls.  For those calls, the __alloc_pages()
@@ -4210,7 +4295,10 @@ static struct cpuset *nearest_hardwall_ancestor(struct cpuset *cs)
  *	in_interrupt - any node ok (current task context irrelevant)
  *	GFP_ATOMIC   - any node ok
  *	tsk_is_oom_victim   - any node ok
+<<<<<<< HEAD
  *	PF_EXITING   - any node ok (let dying task exit quickly)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	GFP_KERNEL   - any node in enclosing hardwalled cpuset ok
  *	GFP_USER     - only nodes in current tasks mems allowed ok.
  */
@@ -4230,11 +4318,20 @@ bool cpuset_current_node_allowed(int node, gfp_t gfp_mask)
 	 */
 	if (unlikely(tsk_is_oom_victim(current)))
 		return true;
+<<<<<<< HEAD
 	if (current->flags & PF_EXITING) /* Let dying task have memory */
 		return true;
 	if (gfp_mask & __GFP_HARDWALL)	/* If hardwall request, stop here */
 		return false;
 
+=======
+	if (gfp_mask & __GFP_HARDWALL)	/* If hardwall request, stop here */
+		return false;
+
+	if (current->flags & PF_EXITING) /* Let dying task have memory */
+		return true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Not hardwall and node outside mems_allowed: scan up cpusets */
 	spin_lock_irqsave(&callback_lock, flags);
 

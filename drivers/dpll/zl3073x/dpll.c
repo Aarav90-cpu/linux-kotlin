@@ -13,7 +13,10 @@
 #include <linux/module.h>
 #include <linux/netlink.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/sprintf.h>
 
@@ -31,34 +34,54 @@
  * @dpll: DPLL the pin is registered to
  * @dpll_pin: pointer to registered dpll_pin
  * @tracker: tracking object for the acquired reference
+<<<<<<< HEAD
  * @fwnode: firmware node handle
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @label: package label
  * @dir: pin direction
  * @id: pin id
  * @prio: pin priority <0, 14>
+<<<<<<< HEAD
+=======
+ * @selectable: pin is selectable in automatic mode
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @esync_control: embedded sync is controllable
  * @phase_gran: phase adjustment granularity
  * @pin_state: last saved pin state
  * @phase_offset: last saved pin phase offset
  * @freq_offset: last saved fractional frequency offset
+<<<<<<< HEAD
  * @measured_freq: last saved measured frequency
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct zl3073x_dpll_pin {
 	struct list_head	list;
 	struct zl3073x_dpll	*dpll;
 	struct dpll_pin		*dpll_pin;
 	dpll_tracker		tracker;
+<<<<<<< HEAD
 	struct fwnode_handle	*fwnode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char			label[8];
 	enum dpll_pin_direction	dir;
 	u8			id;
 	u8			prio;
+<<<<<<< HEAD
+=======
+	bool			selectable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool			esync_control;
 	s32			phase_gran;
 	enum dpll_pin_state	pin_state;
 	s64			phase_offset;
 	s64			freq_offset;
+<<<<<<< HEAD
 	u32			measured_freq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -136,6 +159,7 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
 	ref_id = zl3073x_input_pin_ref_get(pin->id);
 	ref = zl3073x_ref_state_get(zldev, ref_id);
 
+<<<<<<< HEAD
 	if (!pin->esync_control || zl3073x_ref_freq_get(ref) <= 1)
 		return -EOPNOTSUPP;
 
@@ -143,6 +167,9 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
 	esync->range_num = ARRAY_SIZE(esync_freq_ranges);
 
 	switch (zl3073x_ref_sync_mode_get(ref)) {
+=======
+	switch (FIELD_GET(ZL_REF_SYNC_CTRL_MODE, ref->sync_ctrl)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75:
 		esync->freq = ref->esync_n_div == ZL_REF_ESYNC_DIV_1HZ ? 1 : 0;
 		esync->pulse = 25;
@@ -153,6 +180,20 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If the pin supports esync control expose its range but only
+	 * if the current reference frequency is > 1 Hz.
+	 */
+	if (pin->esync_control && zl3073x_ref_freq_get(ref) > 1) {
+		esync->range = esync_freq_ranges;
+		esync->range_num = ARRAY_SIZE(esync_freq_ranges);
+	} else {
+		esync->range = NULL;
+		esync->range_num = 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -178,7 +219,12 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
 	else
 		sync_mode = ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75;
 
+<<<<<<< HEAD
 	zl3073x_ref_sync_mode_set(&ref, sync_mode);
+=======
+	ref.sync_ctrl &= ~ZL_REF_SYNC_CTRL_MODE;
+	ref.sync_ctrl |= FIELD_PREP(ZL_REF_SYNC_CTRL_MODE, sync_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (freq) {
 		/* 1 Hz is only supported frequency now */
@@ -190,6 +236,7 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
 }
 
 static int
+<<<<<<< HEAD
 zl3073x_dpll_input_pin_ref_sync_get(const struct dpll_pin *dpll_pin,
 				    void *pin_priv,
 				    const struct dpll_pin *ref_sync_pin,
@@ -293,6 +340,8 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 zl3073x_dpll_input_pin_ffo_get(const struct dpll_pin *dpll_pin, void *pin_priv,
 			       const struct dpll_device *dpll, void *dpll_priv,
 			       s64 *ffo, struct netlink_ext_ack *extack)
@@ -305,6 +354,7 @@ zl3073x_dpll_input_pin_ffo_get(const struct dpll_pin *dpll_pin, void *pin_priv,
 }
 
 static int
+<<<<<<< HEAD
 zl3073x_dpll_input_pin_measured_freq_get(const struct dpll_pin *dpll_pin,
 					 void *pin_priv,
 					 const struct dpll_device *dpll,
@@ -320,6 +370,8 @@ zl3073x_dpll_input_pin_measured_freq_get(const struct dpll_pin *dpll_pin,
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 zl3073x_dpll_input_pin_frequency_get(const struct dpll_pin *dpll_pin,
 				     void *pin_priv,
 				     const struct dpll_device *dpll,
@@ -361,6 +413,7 @@ zl3073x_dpll_input_pin_frequency_set(const struct dpll_pin *dpll_pin,
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_dpll_connected_ref_get - get currently connected reference
  * @zldpll: pointer to zl3073x_dpll
  *
@@ -381,6 +434,157 @@ zl3073x_dpll_connected_ref_get(struct zl3073x_dpll *zldpll)
 		return zl3073x_chan_refsel_ref_get(chan);
 
 	return ZL3073X_DPLL_REF_NONE;
+=======
+ * zl3073x_dpll_selected_ref_get - get currently selected reference
+ * @zldpll: pointer to zl3073x_dpll
+ * @ref: place to store selected reference
+ *
+ * Check for currently selected reference the DPLL should be locked to
+ * and stores its index to given @ref.
+ *
+ * Return: 0 on success, <0 on error
+ */
+static int
+zl3073x_dpll_selected_ref_get(struct zl3073x_dpll *zldpll, u8 *ref)
+{
+	struct zl3073x_dev *zldev = zldpll->dev;
+	u8 state, value;
+	int rc;
+
+	switch (zldpll->refsel_mode) {
+	case ZL_DPLL_MODE_REFSEL_MODE_AUTO:
+		/* For automatic mode read refsel_status register */
+		rc = zl3073x_read_u8(zldev,
+				     ZL_REG_DPLL_REFSEL_STATUS(zldpll->id),
+				     &value);
+		if (rc)
+			return rc;
+
+		/* Extract reference state */
+		state = FIELD_GET(ZL_DPLL_REFSEL_STATUS_STATE, value);
+
+		/* Return the reference only if the DPLL is locked to it */
+		if (state == ZL_DPLL_REFSEL_STATUS_STATE_LOCK)
+			*ref = FIELD_GET(ZL_DPLL_REFSEL_STATUS_REFSEL, value);
+		else
+			*ref = ZL3073X_DPLL_REF_NONE;
+		break;
+	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+		/* For manual mode return stored value */
+		*ref = zldpll->forced_ref;
+		break;
+	default:
+		/* For other modes like NCO, freerun... there is no input ref */
+		*ref = ZL3073X_DPLL_REF_NONE;
+		break;
+	}
+
+	return 0;
+}
+
+/**
+ * zl3073x_dpll_selected_ref_set - select reference in manual mode
+ * @zldpll: pointer to zl3073x_dpll
+ * @ref: input reference to be selected
+ *
+ * Selects the given reference for the DPLL channel it should be
+ * locked to.
+ *
+ * Return: 0 on success, <0 on error
+ */
+static int
+zl3073x_dpll_selected_ref_set(struct zl3073x_dpll *zldpll, u8 ref)
+{
+	struct zl3073x_dev *zldev = zldpll->dev;
+	u8 mode, mode_refsel;
+	int rc;
+
+	mode = zldpll->refsel_mode;
+
+	switch (mode) {
+	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+		/* Manual mode with ref selected */
+		if (ref == ZL3073X_DPLL_REF_NONE) {
+			switch (zldpll->lock_status) {
+			case DPLL_LOCK_STATUS_LOCKED_HO_ACQ:
+			case DPLL_LOCK_STATUS_HOLDOVER:
+				/* Switch to forced holdover */
+				mode = ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER;
+				break;
+			default:
+				/* Switch to freerun */
+				mode = ZL_DPLL_MODE_REFSEL_MODE_FREERUN;
+				break;
+			}
+			/* Keep selected reference */
+			ref = zldpll->forced_ref;
+		} else if (ref == zldpll->forced_ref) {
+			/* No register update - same mode and same ref */
+			return 0;
+		}
+		break;
+	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
+	case ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER:
+		/* Manual mode without no ref */
+		if (ref == ZL3073X_DPLL_REF_NONE)
+			/* No register update - keep current mode */
+			return 0;
+
+		/* Switch to reflock mode and update ref selection */
+		mode = ZL_DPLL_MODE_REFSEL_MODE_REFLOCK;
+		break;
+	default:
+		/* For other modes like automatic or NCO ref cannot be selected
+		 * manually
+		 */
+		return -EOPNOTSUPP;
+	}
+
+	/* Build mode_refsel value */
+	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, mode) |
+		      FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
+
+	/* Update dpll_mode_refsel register */
+	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+			      mode_refsel);
+	if (rc)
+		return rc;
+
+	/* Store new mode and forced reference */
+	zldpll->refsel_mode = mode;
+	zldpll->forced_ref = ref;
+
+	return rc;
+}
+
+/**
+ * zl3073x_dpll_connected_ref_get - get currently connected reference
+ * @zldpll: pointer to zl3073x_dpll
+ * @ref: place to store selected reference
+ *
+ * Looks for currently connected the DPLL is locked to and stores its index
+ * to given @ref.
+ *
+ * Return: 0 on success, <0 on error
+ */
+static int
+zl3073x_dpll_connected_ref_get(struct zl3073x_dpll *zldpll, u8 *ref)
+{
+	struct zl3073x_dev *zldev = zldpll->dev;
+	int rc;
+
+	/* Get currently selected input reference */
+	rc = zl3073x_dpll_selected_ref_get(zldpll, ref);
+	if (rc)
+		return rc;
+
+	/* If the monitor indicates an error nothing is connected */
+	if (ZL3073X_DPLL_REF_IS_VALID(*ref) &&
+	    !zl3073x_dev_ref_is_status_ok(zldev, *ref))
+		*ref = ZL3073X_DPLL_REF_NONE;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -396,9 +600,18 @@ zl3073x_dpll_input_pin_phase_offset_get(const struct dpll_pin *dpll_pin,
 	const struct zl3073x_ref *ref;
 	u8 conn_id, ref_id;
 	s64 ref_phase;
+<<<<<<< HEAD
 
 	/* Get currently connected reference */
 	conn_id = zl3073x_dpll_connected_ref_get(zldpll);
+=======
+	int rc;
+
+	/* Get currently connected reference */
+	rc = zl3073x_dpll_connected_ref_get(zldpll, &conn_id);
+	if (rc)
+		return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Report phase offset only for currently connected pin if the phase
 	 * monitor feature is disabled and only if the input pin signal is
@@ -436,7 +649,11 @@ zl3073x_dpll_input_pin_phase_offset_get(const struct dpll_pin *dpll_pin,
 
 	*phase_offset = ref_phase * DPLL_PHASE_OFFSET_DIVIDER;
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -500,6 +717,101 @@ zl3073x_dpll_input_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * zl3073x_dpll_ref_prio_get - get priority for given input pin
+ * @pin: pointer to pin
+ * @prio: place to store priority
+ *
+ * Reads current priority for the given input pin and stores the value
+ * to @prio.
+ *
+ * Return: 0 on success, <0 on error
+ */
+static int
+zl3073x_dpll_ref_prio_get(struct zl3073x_dpll_pin *pin, u8 *prio)
+{
+	struct zl3073x_dpll *zldpll = pin->dpll;
+	struct zl3073x_dev *zldev = zldpll->dev;
+	u8 ref, ref_prio;
+	int rc;
+
+	guard(mutex)(&zldev->multiop_lock);
+
+	/* Read DPLL configuration */
+	rc = zl3073x_mb_op(zldev, ZL_REG_DPLL_MB_SEM, ZL_DPLL_MB_SEM_RD,
+			   ZL_REG_DPLL_MB_MASK, BIT(zldpll->id));
+	if (rc)
+		return rc;
+
+	/* Read reference priority - one value for P&N pins (4 bits/pin) */
+	ref = zl3073x_input_pin_ref_get(pin->id);
+	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_REF_PRIO(ref / 2),
+			     &ref_prio);
+	if (rc)
+		return rc;
+
+	/* Select nibble according pin type */
+	if (zl3073x_dpll_is_p_pin(pin))
+		*prio = FIELD_GET(ZL_DPLL_REF_PRIO_REF_P, ref_prio);
+	else
+		*prio = FIELD_GET(ZL_DPLL_REF_PRIO_REF_N, ref_prio);
+
+	return rc;
+}
+
+/**
+ * zl3073x_dpll_ref_prio_set - set priority for given input pin
+ * @pin: pointer to pin
+ * @prio: place to store priority
+ *
+ * Sets priority for the given input pin.
+ *
+ * Return: 0 on success, <0 on error
+ */
+static int
+zl3073x_dpll_ref_prio_set(struct zl3073x_dpll_pin *pin, u8 prio)
+{
+	struct zl3073x_dpll *zldpll = pin->dpll;
+	struct zl3073x_dev *zldev = zldpll->dev;
+	u8 ref, ref_prio;
+	int rc;
+
+	guard(mutex)(&zldev->multiop_lock);
+
+	/* Read DPLL configuration into mailbox */
+	rc = zl3073x_mb_op(zldev, ZL_REG_DPLL_MB_SEM, ZL_DPLL_MB_SEM_RD,
+			   ZL_REG_DPLL_MB_MASK, BIT(zldpll->id));
+	if (rc)
+		return rc;
+
+	/* Read reference priority - one value shared between P&N pins */
+	ref = zl3073x_input_pin_ref_get(pin->id);
+	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_REF_PRIO(ref / 2), &ref_prio);
+	if (rc)
+		return rc;
+
+	/* Update nibble according pin type */
+	if (zl3073x_dpll_is_p_pin(pin)) {
+		ref_prio &= ~ZL_DPLL_REF_PRIO_REF_P;
+		ref_prio |= FIELD_PREP(ZL_DPLL_REF_PRIO_REF_P, prio);
+	} else {
+		ref_prio &= ~ZL_DPLL_REF_PRIO_REF_N;
+		ref_prio |= FIELD_PREP(ZL_DPLL_REF_PRIO_REF_N, prio);
+	}
+
+	/* Update reference priority */
+	rc = zl3073x_write_u8(zldev, ZL_REG_DPLL_REF_PRIO(ref / 2), ref_prio);
+	if (rc)
+		return rc;
+
+	/* Commit configuration */
+	return zl3073x_mb_op(zldev, ZL_REG_DPLL_MB_SEM, ZL_DPLL_MB_SEM_WR,
+			     ZL_REG_DPLL_MB_MASK, BIT(zldpll->id));
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_dpll_ref_state_get - get status for given input pin
  * @pin: pointer to pin
  * @state: place to store status
@@ -515,6 +827,7 @@ zl3073x_dpll_ref_state_get(struct zl3073x_dpll_pin *pin,
 {
 	struct zl3073x_dpll *zldpll = pin->dpll;
 	struct zl3073x_dev *zldev = zldpll->dev;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 	u8 ref;
 
@@ -523,6 +836,19 @@ zl3073x_dpll_ref_state_get(struct zl3073x_dpll_pin *pin,
 
 	/* Check if the pin reference is connected */
 	if (ref == zl3073x_dpll_connected_ref_get(zldpll)) {
+=======
+	u8 ref, ref_conn;
+	int rc;
+
+	ref = zl3073x_input_pin_ref_get(pin->id);
+
+	/* Get currently connected reference */
+	rc = zl3073x_dpll_connected_ref_get(zldpll, &ref_conn);
+	if (rc)
+		return rc;
+
+	if (ref == ref_conn) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*state = DPLL_PIN_STATE_CONNECTED;
 		return 0;
 	}
@@ -531,9 +857,14 @@ zl3073x_dpll_ref_state_get(struct zl3073x_dpll_pin *pin,
 	 * selectable and its monitor does not report any error then report
 	 * pin as selectable.
 	 */
+<<<<<<< HEAD
 	if (zl3073x_chan_mode_get(chan) == ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
 	    zl3073x_dev_ref_is_status_ok(zldev, ref) &&
 	    zl3073x_chan_ref_is_selectable(chan, ref)) {
+=======
+	if (zldpll->refsel_mode == ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
+	    zl3073x_dev_ref_is_status_ok(zldev, ref) && pin->selectable) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*state = DPLL_PIN_STATE_SELECTABLE;
 		return 0;
 	}
@@ -567,6 +898,7 @@ zl3073x_dpll_input_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
 {
 	struct zl3073x_dpll *zldpll = dpll_priv;
 	struct zl3073x_dpll_pin *pin = pin_priv;
+<<<<<<< HEAD
 	struct zl3073x_chan chan;
 	u8 mode, ref;
 	int rc;
@@ -596,10 +928,18 @@ zl3073x_dpll_input_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
 			goto invalid_state;
 		}
 		break;
+=======
+	u8 new_ref;
+	int rc;
+
+	switch (zldpll->refsel_mode) {
+	case ZL_DPLL_MODE_REFSEL_MODE_REFLOCK:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
 	case ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER:
 		if (state == DPLL_PIN_STATE_CONNECTED) {
 			/* Choose the pin as new selected reference */
+<<<<<<< HEAD
 			zl3073x_chan_ref_set(&chan, ref);
 			/* Switch to reflock mode */
 			zl3073x_chan_mode_set(&chan,
@@ -626,10 +966,57 @@ zl3073x_dpll_input_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
 			goto invalid_state;
 		}
 		break;
+=======
+			new_ref = zl3073x_input_pin_ref_get(pin->id);
+		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+			/* No reference */
+			new_ref = ZL3073X_DPLL_REF_NONE;
+		} else {
+			NL_SET_ERR_MSG_MOD(extack,
+					   "Invalid pin state for manual mode");
+			return -EINVAL;
+		}
+
+		rc = zl3073x_dpll_selected_ref_set(zldpll, new_ref);
+		break;
+
+	case ZL_DPLL_MODE_REFSEL_MODE_AUTO:
+		if (state == DPLL_PIN_STATE_SELECTABLE) {
+			if (pin->selectable)
+				return 0; /* Pin is already selectable */
+
+			/* Restore pin priority in HW */
+			rc = zl3073x_dpll_ref_prio_set(pin, pin->prio);
+			if (rc)
+				return rc;
+
+			/* Mark pin as selectable */
+			pin->selectable = true;
+		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+			if (!pin->selectable)
+				return 0; /* Pin is already disconnected */
+
+			/* Set pin priority to none in HW */
+			rc = zl3073x_dpll_ref_prio_set(pin,
+						       ZL_DPLL_REF_PRIO_NONE);
+			if (rc)
+				return rc;
+
+			/* Mark pin as non-selectable */
+			pin->selectable = false;
+		} else {
+			NL_SET_ERR_MSG(extack,
+				       "Invalid pin state for automatic mode");
+			return -EINVAL;
+		}
+		break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		/* In other modes we cannot change input reference */
 		NL_SET_ERR_MSG(extack,
 			       "Pin state cannot be changed in current mode");
+<<<<<<< HEAD
 		return -EOPNOTSUPP;
 	}
 
@@ -642,6 +1029,13 @@ zl3073x_dpll_input_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
 invalid_state:
 	NL_SET_ERR_MSG_MOD(extack, "Invalid pin state for this device mode");
 	return -EINVAL;
+=======
+		rc = -EOPNOTSUPP;
+		break;
+	}
+
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -661,21 +1055,30 @@ zl3073x_dpll_input_pin_prio_set(const struct dpll_pin *dpll_pin, void *pin_priv,
 				const struct dpll_device *dpll, void *dpll_priv,
 				u32 prio, struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
 	struct zl3073x_dpll *zldpll = dpll_priv;
 	struct zl3073x_dpll_pin *pin = pin_priv;
 	struct zl3073x_chan chan;
 	u8 ref;
+=======
+	struct zl3073x_dpll_pin *pin = pin_priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	if (prio > ZL_DPLL_REF_PRIO_MAX)
 		return -EINVAL;
 
 	/* If the pin is selectable then update HW registers */
+<<<<<<< HEAD
 	chan = *zl3073x_chan_state_get(zldpll->dev, zldpll->id);
 	ref = zl3073x_input_pin_ref_get(pin->id);
 	if (zl3073x_chan_ref_is_selectable(&chan, ref)) {
 		zl3073x_chan_ref_prio_set(&chan, ref, prio);
 		rc = zl3073x_chan_state_set(zldpll->dev, zldpll->id, &chan);
+=======
+	if (pin->selectable) {
+		rc = zl3073x_dpll_ref_prio_set(pin, prio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			return rc;
 	}
@@ -699,8 +1102,13 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
 	struct zl3073x_dpll_pin *pin = pin_priv;
 	const struct zl3073x_synth *synth;
 	const struct zl3073x_out *out;
+<<<<<<< HEAD
 	u32 synth_freq, out_freq;
 	u8 out_id;
+=======
+	u8 clock_type, out_id;
+	u32 synth_freq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	out_id = zl3073x_output_pin_out_get(pin->id);
 	out = zl3073x_out_state_get(zldev, out_id);
@@ -709,12 +1117,23 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
 	 * for N-division is also used for the esync divider so both cannot
 	 * be used.
 	 */
+<<<<<<< HEAD
 	if (zl3073x_out_is_ndiv(out))
 		return -EOPNOTSUPP;
+=======
+	switch (zl3073x_out_signal_format_get(out)) {
+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV:
+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV:
+		return -EOPNOTSUPP;
+	default:
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get attached synth frequency */
 	synth = zl3073x_synth_state_get(zldev, zl3073x_out_synth_get(out));
 	synth_freq = zl3073x_synth_freq_get(synth);
+<<<<<<< HEAD
 	out_freq = synth_freq / out->div;
 
 	if (!pin->esync_control || out_freq <= 1)
@@ -724,15 +1143,28 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
 	esync->range_num = ARRAY_SIZE(esync_freq_ranges);
 
 	if (zl3073x_out_clock_type_get(out) != ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
+=======
+
+	clock_type = FIELD_GET(ZL_OUTPUT_MODE_CLOCK_TYPE, out->mode);
+	if (clock_type != ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* No need to read esync data if it is not enabled */
 		esync->freq = 0;
 		esync->pulse = 0;
 
+<<<<<<< HEAD
 		return 0;
 	}
 
 	/* Compute esync frequency */
 	esync->freq = out_freq / out->esync_n_period;
+=======
+		goto finish;
+	}
+
+	/* Compute esync frequency */
+	esync->freq = synth_freq / out->div / out->esync_n_period;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* By comparing the esync_pulse_width to the half of the pulse width
 	 * the esync pulse percentage can be determined.
@@ -741,6 +1173,21 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
 	 */
 	esync->pulse = (50 * out->esync_n_width) / out->div;
 
+<<<<<<< HEAD
+=======
+finish:
+	/* Set supported esync ranges if the pin supports esync control and
+	 * if the output frequency is > 1 Hz.
+	 */
+	if (pin->esync_control && (synth_freq / out->div) > 1) {
+		esync->range = esync_freq_ranges;
+		esync->range_num = ARRAY_SIZE(esync_freq_ranges);
+	} else {
+		esync->range = NULL;
+		esync->range_num = 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -756,8 +1203,13 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
 	struct zl3073x_dpll_pin *pin = pin_priv;
 	const struct zl3073x_synth *synth;
 	struct zl3073x_out out;
+<<<<<<< HEAD
 	u32 synth_freq;
 	u8 out_id;
+=======
+	u8 clock_type, out_id;
+	u32 synth_freq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	out_id = zl3073x_output_pin_out_get(pin->id);
 	out = *zl3073x_out_state_get(zldev, out_id);
@@ -766,6 +1218,7 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
 	 * for N-division is also used for the esync divider so both cannot
 	 * be used.
 	 */
+<<<<<<< HEAD
 	if (zl3073x_out_is_ndiv(&out))
 		return -EOPNOTSUPP;
 
@@ -776,6 +1229,25 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
 	else
 		zl3073x_out_clock_type_set(&out,
 					   ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
+=======
+	switch (zl3073x_out_signal_format_get(&out)) {
+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV:
+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV:
+		return -EOPNOTSUPP;
+	default:
+		break;
+	}
+
+	/* Select clock type */
+	if (freq)
+		clock_type = ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC;
+	else
+		clock_type = ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL;
+
+	/* Update clock type in output mode */
+	out.mode &= ~ZL_OUTPUT_MODE_CLOCK_TYPE;
+	out.mode |= FIELD_PREP(ZL_OUTPUT_MODE_CLOCK_TYPE, clock_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If esync is being disabled just write mailbox and finish */
 	if (!freq)
@@ -827,9 +1299,15 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
 	struct zl3073x_dev *zldev = zldpll->dev;
 	struct zl3073x_dpll_pin *pin = pin_priv;
 	const struct zl3073x_synth *synth;
+<<<<<<< HEAD
 	u32 new_div, synth_freq;
 	struct zl3073x_out out;
 	u8 out_id;
+=======
+	u8 out_id, signal_format;
+	u32 new_div, synth_freq;
+	struct zl3073x_out out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	out_id = zl3073x_output_pin_out_get(pin->id);
 	out = *zl3073x_out_state_get(zldev, out_id);
@@ -839,8 +1317,17 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
 	synth_freq = zl3073x_synth_freq_get(synth);
 	new_div = synth_freq / (u32)frequency;
 
+<<<<<<< HEAD
 	/* Check signal format */
 	if (!zl3073x_out_is_ndiv(&out)) {
+=======
+	/* Get used signal format for the given output */
+	signal_format = zl3073x_out_signal_format_get(&out);
+
+	/* Check signal format */
+	if (signal_format != ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV &&
+	    signal_format != ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* For non N-divided signal formats the frequency is computed
 		 * as division of synth frequency and output divisor.
 		 */
@@ -952,6 +1439,7 @@ zl3073x_dpll_output_pin_state_on_dpll_get(const struct dpll_pin *dpll_pin,
 }
 
 static int
+<<<<<<< HEAD
 zl3073x_dpll_temp_get(const struct dpll_device *dpll, void *dpll_priv,
 		      s32 *temp, struct netlink_ext_ack *extack)
 {
@@ -971,17 +1459,27 @@ zl3073x_dpll_temp_get(const struct dpll_device *dpll, void *dpll_priv,
 }
 
 static int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
 			     enum dpll_lock_status *status,
 			     enum dpll_lock_status_error *status_error,
 			     struct netlink_ext_ack *extack)
 {
 	struct zl3073x_dpll *zldpll = dpll_priv;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 
 	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
 
 	switch (zl3073x_chan_mode_get(chan)) {
+=======
+	struct zl3073x_dev *zldev = zldpll->dev;
+	u8 mon_status, state;
+	int rc;
+
+	switch (zldpll->refsel_mode) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
 	case ZL_DPLL_MODE_REFSEL_MODE_NCO:
 		/* In FREERUN and NCO modes the DPLL is always unlocked */
@@ -992,9 +1490,22 @@ zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
 		break;
 	}
 
+<<<<<<< HEAD
 	switch (zl3073x_chan_lock_state_get(chan)) {
 	case ZL_DPLL_MON_STATUS_STATE_LOCK:
 		if (zl3073x_chan_is_ho_ready(chan))
+=======
+	/* Read DPLL monitor status */
+	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_MON_STATUS(zldpll->id),
+			     &mon_status);
+	if (rc)
+		return rc;
+	state = FIELD_GET(ZL_DPLL_MON_STATUS_STATE, mon_status);
+
+	switch (state) {
+	case ZL_DPLL_MON_STATUS_STATE_LOCK:
+		if (FIELD_GET(ZL_DPLL_MON_STATUS_HO_READY, mon_status))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*status = DPLL_LOCK_STATUS_LOCKED_HO_ACQ;
 		else
 			*status = DPLL_LOCK_STATUS_LOCKED;
@@ -1004,9 +1515,14 @@ zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
 		*status = DPLL_LOCK_STATUS_HOLDOVER;
 		break;
 	default:
+<<<<<<< HEAD
 		dev_warn(zldpll->dev->dev,
 			 "Unknown DPLL monitor status: 0x%02x\n",
 			 chan->mon_status);
+=======
+		dev_warn(zldev->dev, "Unknown DPLL monitor status: 0x%02x\n",
+			 mon_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*status = DPLL_LOCK_STATUS_UNLOCKED;
 		break;
 	}
@@ -1020,16 +1536,23 @@ zl3073x_dpll_supported_modes_get(const struct dpll_device *dpll,
 				 struct netlink_ext_ack *extack)
 {
 	struct zl3073x_dpll *zldpll = dpll_priv;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 
 	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* We support switching between automatic and manual mode, except in
 	 * a case where the DPLL channel is configured to run in NCO mode.
 	 * In this case, report only the manual mode to which the NCO is mapped
 	 * as the only supported one.
 	 */
+<<<<<<< HEAD
 	if (zl3073x_chan_mode_get(chan) != ZL_DPLL_MODE_REFSEL_MODE_NCO)
+=======
+	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_NCO)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__set_bit(DPLL_MODE_AUTOMATIC, modes);
 
 	__set_bit(DPLL_MODE_MANUAL, modes);
@@ -1042,11 +1565,16 @@ zl3073x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
 		      enum dpll_mode *mode, struct netlink_ext_ack *extack)
 {
 	struct zl3073x_dpll *zldpll = dpll_priv;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 
 	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
 
 	switch (zl3073x_chan_mode_get(chan)) {
+=======
+
+	switch (zldpll->refsel_mode) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ZL_DPLL_MODE_REFSEL_MODE_FREERUN:
 	case ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER:
 	case ZL_DPLL_MODE_REFSEL_MODE_NCO:
@@ -1125,12 +1653,23 @@ zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
 		      enum dpll_mode mode, struct netlink_ext_ack *extack)
 {
 	struct zl3073x_dpll *zldpll = dpll_priv;
+<<<<<<< HEAD
 	struct zl3073x_chan chan;
 	u8 hw_mode, ref;
 	int rc;
 
 	chan = *zl3073x_chan_state_get(zldpll->dev, zldpll->id);
 	ref = zl3073x_chan_refsel_ref_get(&chan);
+=======
+	u8 hw_mode, mode_refsel, ref;
+	int rc;
+
+	rc = zl3073x_dpll_selected_ref_get(zldpll, &ref);
+	if (rc) {
+		NL_SET_ERR_MSG_MOD(extack, "failed to get selected reference");
+		return rc;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mode == DPLL_MODE_MANUAL) {
 		/* We are switching from automatic to manual mode:
@@ -1153,6 +1692,7 @@ zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
 		 *   it is selectable after switch to automatic mode
 		 * - switch to automatic mode
 		 */
+<<<<<<< HEAD
 		if (ZL3073X_DPLL_REF_IS_VALID(ref) &&
 		    !zl3073x_chan_ref_is_selectable(&chan, ref)) {
 			struct zl3073x_dpll_pin *pin;
@@ -1163,22 +1703,57 @@ zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
 				zl3073x_chan_ref_prio_set(&chan, ref,
 							  pin->prio);
 			}
+=======
+		struct zl3073x_dpll_pin *pin;
+
+		pin = zl3073x_dpll_pin_get_by_ref(zldpll, ref);
+		if (pin && !pin->selectable) {
+			/* Restore pin priority in HW */
+			rc = zl3073x_dpll_ref_prio_set(pin, pin->prio);
+			if (rc) {
+				NL_SET_ERR_MSG_MOD(extack,
+						   "failed to restore pin priority");
+				return rc;
+			}
+
+			pin->selectable = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		hw_mode = ZL_DPLL_MODE_REFSEL_MODE_AUTO;
 	}
 
+<<<<<<< HEAD
 	zl3073x_chan_mode_set(&chan, hw_mode);
 	if (ZL3073X_DPLL_REF_IS_VALID(ref))
 		zl3073x_chan_ref_set(&chan, ref);
 
 	rc = zl3073x_chan_state_set(zldpll->dev, zldpll->id, &chan);
+=======
+	/* Build mode_refsel value */
+	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, hw_mode);
+
+	if (ZL3073X_DPLL_REF_IS_VALID(ref))
+		mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
+
+	/* Update dpll_mode_refsel register */
+	rc = zl3073x_write_u8(zldpll->dev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+			      mode_refsel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc) {
 		NL_SET_ERR_MSG_MOD(extack,
 				   "failed to set reference selection mode");
 		return rc;
 	}
 
+<<<<<<< HEAD
+=======
+	zldpll->refsel_mode = hw_mode;
+
+	if (ZL3073X_DPLL_REF_IS_VALID(ref))
+		zldpll->forced_ref = ref;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1211,6 +1786,7 @@ zl3073x_dpll_phase_offset_monitor_set(const struct dpll_device *dpll,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 zl3073x_dpll_freq_monitor_get(const struct dpll_device *dpll,
 			      void *dpll_priv,
@@ -1240,6 +1816,8 @@ zl3073x_dpll_freq_monitor_set(const struct dpll_device *dpll,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
 	.direction_get = zl3073x_dpll_pin_direction_get,
 	.esync_get = zl3073x_dpll_input_pin_esync_get,
@@ -1247,14 +1825,20 @@ static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
 	.ffo_get = zl3073x_dpll_input_pin_ffo_get,
 	.frequency_get = zl3073x_dpll_input_pin_frequency_get,
 	.frequency_set = zl3073x_dpll_input_pin_frequency_set,
+<<<<<<< HEAD
 	.measured_freq_get = zl3073x_dpll_input_pin_measured_freq_get,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.phase_offset_get = zl3073x_dpll_input_pin_phase_offset_get,
 	.phase_adjust_get = zl3073x_dpll_input_pin_phase_adjust_get,
 	.phase_adjust_set = zl3073x_dpll_input_pin_phase_adjust_set,
 	.prio_get = zl3073x_dpll_input_pin_prio_get,
 	.prio_set = zl3073x_dpll_input_pin_prio_set,
+<<<<<<< HEAD
 	.ref_sync_get = zl3073x_dpll_input_pin_ref_sync_get,
 	.ref_sync_set = zl3073x_dpll_input_pin_ref_sync_set,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.state_on_dpll_get = zl3073x_dpll_input_pin_state_on_dpll_get,
 	.state_on_dpll_set = zl3073x_dpll_input_pin_state_on_dpll_set,
 };
@@ -1278,8 +1862,11 @@ static const struct dpll_device_ops zl3073x_dpll_device_ops = {
 	.phase_offset_avg_factor_set = zl3073x_dpll_phase_offset_avg_factor_set,
 	.phase_offset_monitor_get = zl3073x_dpll_phase_offset_monitor_get,
 	.phase_offset_monitor_set = zl3073x_dpll_phase_offset_monitor_set,
+<<<<<<< HEAD
 	.freq_monitor_get = zl3073x_dpll_freq_monitor_get,
 	.freq_monitor_set = zl3073x_dpll_freq_monitor_set,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.supported_modes_get = zl3073x_dpll_supported_modes_get,
 };
 
@@ -1347,15 +1934,21 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
 	if (IS_ERR(props))
 		return PTR_ERR(props);
 
+<<<<<<< HEAD
 	/* Save package label, fwnode, esync capability and phase adjust
 	 * granularity.
 	 */
 	strscpy(pin->label, props->package_label);
 	pin->fwnode = fwnode_handle_get(props->fwnode);
+=======
+	/* Save package label, esync capability and phase adjust granularity */
+	strscpy(pin->label, props->package_label);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pin->esync_control = props->esync_control;
 	pin->phase_gran = props->dpll_props.phase_gran;
 
 	if (zl3073x_dpll_is_input_pin(pin)) {
+<<<<<<< HEAD
 		const struct zl3073x_chan *chan;
 		u8 ref;
 
@@ -1366,6 +1959,20 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
 		if (pin->prio == ZL_DPLL_REF_PRIO_NONE)
 			/* Clamp prio to max value */
 			pin->prio = ZL_DPLL_REF_PRIO_MAX;
+=======
+		rc = zl3073x_dpll_ref_prio_get(pin, &pin->prio);
+		if (rc)
+			goto err_prio_get;
+
+		if (pin->prio == ZL_DPLL_REF_PRIO_NONE) {
+			/* Clamp prio to max value & mark pin non-selectable */
+			pin->prio = ZL_DPLL_REF_PRIO_MAX;
+			pin->selectable = false;
+		} else {
+			/* Mark pin as selectable */
+			pin->selectable = true;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Create or get existing DPLL pin */
@@ -1394,10 +2001,20 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
 
 err_register:
 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	pin->dpll_pin = NULL;
+>>>>>>> 7fb39c93c52e (Sync)
 err_pin_get:
 	pin->dpll_pin = NULL;
 	fwnode_handle_put(pin->fwnode);
 	pin->fwnode = NULL;
+=======
+err_prio_get:
+	pin->dpll_pin = NULL;
+err_pin_get:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	zl3073x_pin_props_put(props);
 
 	return rc;
@@ -1427,9 +2044,12 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
 
 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
 	pin->dpll_pin = NULL;
+<<<<<<< HEAD
 
 	fwnode_handle_put(pin->fwnode);
 	pin->fwnode = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1470,18 +2090,28 @@ zl3073x_dpll_pin_is_registrable(struct zl3073x_dpll *zldpll,
 				enum dpll_pin_direction dir, u8 index)
 {
 	struct zl3073x_dev *zldev = zldpll->dev;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 	bool is_diff, is_enabled;
 	const char *name;
 
 	chan = zl3073x_chan_state_get(zldev, zldpll->id);
 
+=======
+	bool is_diff, is_enabled;
+	const char *name;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dir == DPLL_PIN_DIRECTION_INPUT) {
 		u8 ref_id = zl3073x_input_pin_ref_get(index);
 		const struct zl3073x_ref *ref;
 
 		/* Skip the pin if the DPLL is running in NCO mode */
+<<<<<<< HEAD
 		if (zl3073x_chan_mode_get(chan) == ZL_DPLL_MODE_REFSEL_MODE_NCO)
+=======
+		if (zldpll->refsel_mode == ZL_DPLL_MODE_REFSEL_MODE_NCO)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 
 		name = "REF";
@@ -1591,11 +2221,28 @@ static int
 zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
 {
 	struct zl3073x_dev *zldev = zldpll->dev;
+<<<<<<< HEAD
 	int rc;
 
 	zldpll->ops = zl3073x_dpll_device_ops;
 	if (zldev->info->flags & ZL3073X_FLAG_DIE_TEMP)
 		zldpll->ops.temp_get = zl3073x_dpll_temp_get;
+=======
+	u8 dpll_mode_refsel;
+	int rc;
+
+	/* Read DPLL mode and forcibly selected reference */
+	rc = zl3073x_read_u8(zldev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
+			     &dpll_mode_refsel);
+	if (rc)
+		return rc;
+
+	/* Extract mode and selected input reference */
+	zldpll->refsel_mode = FIELD_GET(ZL_DPLL_MODE_REFSEL_MODE,
+					dpll_mode_refsel);
+	zldpll->forced_ref = FIELD_GET(ZL_DPLL_MODE_REFSEL_REF,
+				       dpll_mode_refsel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	zldpll->dpll_dev = dpll_device_get(zldev->clock_id, zldpll->id,
 					   THIS_MODULE, &zldpll->tracker);
@@ -1608,7 +2255,11 @@ zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
 
 	rc = dpll_device_register(zldpll->dpll_dev,
 				  zl3073x_prop_dpll_type_get(zldev, zldpll->id),
+<<<<<<< HEAD
 				  &zldpll->ops, zldpll);
+=======
+				  &zl3073x_dpll_device_ops, zldpll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc) {
 		dpll_device_put(zldpll->dpll_dev, &zldpll->tracker);
 		zldpll->dpll_dev = NULL;
@@ -1631,7 +2282,12 @@ zl3073x_dpll_device_unregister(struct zl3073x_dpll *zldpll)
 
 	cancel_work_sync(&zldpll->change_work);
 
+<<<<<<< HEAD
 	dpll_device_unregister(zldpll->dpll_dev, &zldpll->ops, zldpll);
+=======
+	dpll_device_unregister(zldpll->dpll_dev, &zl3073x_dpll_device_ops,
+			       zldpll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dpll_device_put(zldpll->dpll_dev, &zldpll->tracker);
 	zldpll->dpll_dev = NULL;
 }
@@ -1711,7 +2367,10 @@ zl3073x_dpll_pin_ffo_check(struct zl3073x_dpll_pin *pin)
 	struct zl3073x_dev *zldev = zldpll->dev;
 	const struct zl3073x_ref *ref;
 	u8 ref_id;
+<<<<<<< HEAD
 	s64 ffo;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get reference monitor status */
 	ref_id = zl3073x_input_pin_ref_get(pin->id);
@@ -1722,6 +2381,7 @@ zl3073x_dpll_pin_ffo_check(struct zl3073x_dpll_pin *pin)
 		return false;
 
 	/* Compare with previous value */
+<<<<<<< HEAD
 	ffo = zl3073x_ref_ffo_get(ref);
 	if (pin->freq_offset != ffo) {
 		dev_dbg(zldev->dev, "%s freq offset changed: %lld -> %lld\n",
@@ -1763,6 +2423,12 @@ zl3073x_dpll_pin_measured_freq_check(struct zl3073x_dpll_pin *pin)
 		dev_dbg(zldev->dev, "%s measured freq changed: %u -> %u\n",
 			pin->label, pin->measured_freq, freq);
 		pin->measured_freq = freq;
+=======
+	if (pin->freq_offset != ref->ffo) {
+		dev_dbg(zldev->dev, "%s freq offset changed: %lld -> %lld\n",
+			pin->label, pin->freq_offset, ref->ffo);
+		pin->freq_offset = ref->ffo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return true;
 	}
@@ -1785,10 +2451,15 @@ zl3073x_dpll_changes_check(struct zl3073x_dpll *zldpll)
 	struct zl3073x_dev *zldev = zldpll->dev;
 	enum dpll_lock_status lock_status;
 	struct device *dev = zldev->dev;
+<<<<<<< HEAD
 	const struct zl3073x_chan *chan;
 	struct zl3073x_dpll_pin *pin;
 	int rc;
 	u8 mode;
+=======
+	struct zl3073x_dpll_pin *pin;
+	int rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	zldpll->check_count++;
 
@@ -1810,10 +2481,15 @@ zl3073x_dpll_changes_check(struct zl3073x_dpll *zldpll)
 	/* Input pin monitoring does make sense only in automatic
 	 * or forced reference modes.
 	 */
+<<<<<<< HEAD
 	chan = zl3073x_chan_state_get(zldev, zldpll->id);
 	mode = zl3073x_chan_mode_get(chan);
 	if (mode != ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
 	    mode != ZL_DPLL_MODE_REFSEL_MODE_REFLOCK)
+=======
+	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_AUTO &&
+	    zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_REFLOCK)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* Update phase offset latch registers for this DPLL if the phase
@@ -1854,18 +2530,25 @@ zl3073x_dpll_changes_check(struct zl3073x_dpll *zldpll)
 			pin_changed = true;
 		}
 
+<<<<<<< HEAD
 		/* Check for phase offset, ffo, and measured freq change
 		 * once per second.
 		 */
+=======
+		/* Check for phase offset and ffo change once per second */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (zldpll->check_count % 2 == 0) {
 			if (zl3073x_dpll_pin_phase_offset_check(pin))
 				pin_changed = true;
 
 			if (zl3073x_dpll_pin_ffo_check(pin))
 				pin_changed = true;
+<<<<<<< HEAD
 
 			if (zl3073x_dpll_pin_measured_freq_check(pin))
 				pin_changed = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (pin_changed)
@@ -1946,6 +2629,7 @@ zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_dpll_ref_sync_pair_register - register ref_sync pairs for a pin
  * @pin: pointer to zl3073x_dpll_pin structure
  *
@@ -2028,6 +2712,8 @@ zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_dpll_register - register DPLL device and all its pins
  * @zldpll: pointer to zl3073x_dpll structure
  *
@@ -2050,6 +2736,7 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	rc = zl3073x_dpll_ref_sync_pairs_register(zldpll);
 	if (rc) {
 		zl3073x_dpll_pins_unregister(zldpll);
@@ -2057,6 +2744,8 @@ zl3073x_dpll_register(struct zl3073x_dpll *zldpll)
 		return rc;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

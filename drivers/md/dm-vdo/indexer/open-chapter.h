@@ -40,7 +40,11 @@ struct open_chapter_zone {
 	/* The number of slots in the hash table */
 	unsigned int slot_count;
 	/* The hash table slots, referencing virtual record numbers */
+<<<<<<< HEAD
 	struct open_chapter_zone_slot slots[] __counted_by(slot_count);
+=======
+	struct open_chapter_zone_slot slots[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int __must_check uds_make_open_chapter(const struct index_geometry *geometry,

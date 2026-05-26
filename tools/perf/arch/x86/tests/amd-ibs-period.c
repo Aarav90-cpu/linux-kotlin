@@ -8,6 +8,10 @@
 
 #include "arch-tests.h"
 #include "linux/perf_event.h"
+<<<<<<< HEAD
+=======
+#include "linux/zalloc.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "tests/tests.h"
 #include "../perf-sys.h"
 #include "pmu.h"
@@ -59,7 +63,11 @@ static int dummy_workload_1(unsigned long count)
 		0xcc, /* int 3 */
 	};
 
+<<<<<<< HEAD
 	p = calloc(2, page_size);
+=======
+	p = zalloc(2 * page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!p) {
 		printf("malloc() failed. %m");
 		return 1;

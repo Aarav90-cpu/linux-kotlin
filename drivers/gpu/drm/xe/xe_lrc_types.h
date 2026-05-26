@@ -22,12 +22,15 @@ struct xe_lrc {
 	 */
 	struct xe_bo *bo;
 
+<<<<<<< HEAD
 	/**
 	 * @seqno_bo: Buffer object (memory) for seqno numbers. Always in system
 	 * memory as this a CPU read, GPU write path object.
 	 */
 	struct xe_bo *seqno_bo;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @size: size of the lrc and optional indirect ring state */
 	u32 size;
 

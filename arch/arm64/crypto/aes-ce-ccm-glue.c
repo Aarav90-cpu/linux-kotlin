@@ -31,6 +31,13 @@ static int num_rounds(struct crypto_aes_ctx *ctx)
 	return 6 + ctx->key_length / 4;
 }
 
+<<<<<<< HEAD
+=======
+asmlinkage u32 ce_aes_mac_update(u8 const in[], u32 const rk[], int rounds,
+				 int blocks, u8 dg[], int enc_before,
+				 int enc_after);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 asmlinkage void ce_aes_ccm_encrypt(u8 out[], u8 const in[], u32 cbytes,
 				   u32 const rk[], u32 rounds, u8 mac[],
 				   u8 ctr[], u8 const final_iv[]);
@@ -101,11 +108,24 @@ static u32 ce_aes_ccm_auth_data(u8 mac[], u8 const in[], u32 abytes,
 		u32 blocks = abytes / AES_BLOCK_SIZE;
 
 		if (macp == AES_BLOCK_SIZE || (!macp && blocks > 0)) {
+<<<<<<< HEAD
 			ce_aes_mac_update(in, rk, rounds, blocks, mac, macp,
 					  enc_after);
 			macp = enc_after ? 0 : AES_BLOCK_SIZE;
 			in += blocks * AES_BLOCK_SIZE;
 			abytes -= blocks * AES_BLOCK_SIZE;
+=======
+			u32 rem = ce_aes_mac_update(in, rk, rounds, blocks, mac,
+						    macp, enc_after);
+			u32 adv = (blocks - rem) * AES_BLOCK_SIZE;
+
+			macp = enc_after ? 0 : AES_BLOCK_SIZE;
+			in += adv;
+			abytes -= adv;
+
+			if (unlikely(rem))
+				macp = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			u32 l = min(AES_BLOCK_SIZE - macp, abytes);
 

@@ -126,6 +126,10 @@ enum sync_action {
 struct serial_in_rdev {
 	struct rb_root_cached serial_rb;
 	spinlock_t serial_lock;
+<<<<<<< HEAD
+=======
+	wait_queue_head_t serial_io_wait;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -380,11 +384,15 @@ struct serial_info {
 	struct rb_node node;
 	sector_t start;		/* start sector of rb node */
 	sector_t last;		/* end sector of rb node */
+<<<<<<< HEAD
 	sector_t wnode_start; /* address of waiting nodes on the same list */
 	sector_t _subtree_last; /* highest sector in subtree of rb node */
 	struct list_head	list_node;
 	struct list_head	waiters;
 	struct completion	ready;
+=======
+	sector_t _subtree_last; /* highest sector in subtree of rb node */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -920,6 +928,10 @@ extern void md_finish_reshape(struct mddev *mddev);
 void md_submit_discard_bio(struct mddev *mddev, struct md_rdev *rdev,
 			struct bio *bio, sector_t start, sector_t size);
 void md_account_bio(struct mddev *mddev, struct bio **bio);
+<<<<<<< HEAD
+=======
+void md_free_cloned_bio(struct bio *bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern bool __must_check md_flush_request(struct mddev *mddev, struct bio *bio);
 void md_write_metadata(struct mddev *mddev, struct md_rdev *rdev,
@@ -934,9 +946,12 @@ extern void md_allow_write(struct mddev *mddev);
 extern void md_wait_for_blocked_rdev(struct md_rdev *rdev, struct mddev *mddev);
 extern void md_set_array_sectors(struct mddev *mddev, sector_t array_sectors);
 extern int md_check_no_bitmap(struct mddev *mddev);
+<<<<<<< HEAD
 bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev);
 int md_bitmap_create_nosysfs(struct mddev *mddev);
 void md_bitmap_destroy_nosysfs(struct mddev *mddev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int md_integrity_register(struct mddev *mddev);
 extern int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale);
 
@@ -1017,7 +1032,11 @@ static inline int mddev_suspend_and_lock(struct mddev *mddev)
 static inline void mddev_suspend_and_lock_nointr(struct mddev *mddev)
 {
 	mddev_suspend(mddev, false);
+<<<<<<< HEAD
 	mddev_lock_nointr(mddev);
+=======
+	mutex_lock(&mddev->reconfig_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void mddev_unlock_and_resume(struct mddev *mddev)

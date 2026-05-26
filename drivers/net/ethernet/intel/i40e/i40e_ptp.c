@@ -940,13 +940,20 @@ int i40e_ptp_hwtstamp_get(struct net_device *netdev,
  *
  * Release memory allocated for PTP pins.
  **/
+<<<<<<< HEAD
 void i40e_ptp_free_pins(struct i40e_pf *pf)
+=======
+static void i40e_ptp_free_pins(struct i40e_pf *pf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
 		kfree(pf->ptp_pins);
 		kfree(pf->ptp_caps.pin_config);
 		pf->ptp_pins = NULL;
+<<<<<<< HEAD
 		pf->ptp_caps.pin_config = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

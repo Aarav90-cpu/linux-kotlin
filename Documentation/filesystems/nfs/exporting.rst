@@ -206,6 +206,7 @@ following flags are defined:
     all of an inode's dirty data on last close. Exports that behave this
     way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
     waiting for writeback when closing such files.
+<<<<<<< HEAD
 
 Signed Filehandles
 ------------------
@@ -291,3 +292,5 @@ following behaviors should be expected:
 Because filehandles are often cached persistently by clients, adding or
 removing this option should generally be done during a scheduled maintenance
 window involving a NFS client unmount/remount.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

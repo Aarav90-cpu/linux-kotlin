@@ -58,7 +58,11 @@ int main(int argc, char *argv[])
 		goto close_fd;
 	}
 
+<<<<<<< HEAD
 	printf("UID received: 0x%llx\n", *(unsigned long long *)(uid.uid));
+=======
+	printf("UID received: 0x%llx\n", *(unsigned long long int *)(uid.uid));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get certificate */
 	printf("Get IMS certificate\n");

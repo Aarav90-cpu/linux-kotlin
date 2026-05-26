@@ -954,16 +954,24 @@ static int resctrl_io_alloc_parse_line(char *line,  struct rdt_resource *r,
 				       struct resctrl_schema *s, u32 closid)
 {
 	enum resctrl_conf_type peer_type;
+<<<<<<< HEAD
 	unsigned long dom_id = ULONG_MAX;
 	struct rdt_parse_data data;
 	struct rdt_ctrl_domain *d;
 	bool update_all = false;
 	char *dom = NULL, *id;
+=======
+	struct rdt_parse_data data;
+	struct rdt_ctrl_domain *d;
+	char *dom = NULL, *id;
+	unsigned long dom_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 next:
 	if (!line || line[0] == '\0')
 		return 0;
 
+<<<<<<< HEAD
 	if (update_all) {
 		rdt_last_cmd_puts("Configurations after global '*'\n");
 		return -EINVAL;
@@ -975,13 +983,22 @@ next:
 	if (dom && !strcmp(id, "*")) {
 		update_all = true;
 	} else if (!dom || kstrtoul(id, 10, &dom_id)) {
+=======
+	dom = strsep(&line, ";");
+	id = strsep(&dom, "=");
+	if (!dom || kstrtoul(id, 10, &dom_id)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rdt_last_cmd_puts("Missing '=' or non-numeric domain\n");
 		return -EINVAL;
 	}
 
 	dom = strim(dom);
 	list_for_each_entry(d, &r->ctrl_domains, hdr.list) {
+<<<<<<< HEAD
 		if (update_all || d->hdr.id == dom_id) {
+=======
+		if (d->hdr.id == dom_id) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data.buf = dom;
 			data.mode = RDT_MODE_SHAREABLE;
 			data.closid = closid;
@@ -997,6 +1014,7 @@ next:
 				       &d->staged_config[s->conf_type],
 				       sizeof(d->staged_config[0]));
 			}
+<<<<<<< HEAD
 			if (!update_all)
 				goto next;
 		}
@@ -1006,6 +1024,12 @@ next:
 		goto next;
 
 	rdt_last_cmd_printf("Invalid domain %lu\n", dom_id);
+=======
+			goto next;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EINVAL;
 }
 

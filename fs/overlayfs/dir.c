@@ -66,9 +66,16 @@ void ovl_tempname(char name[OVL_TEMPNAME_SIZE])
 }
 
 static struct dentry *ovl_start_creating_temp(struct ovl_fs *ofs,
+<<<<<<< HEAD
 					      struct dentry *workdir,
 					      char name[OVL_TEMPNAME_SIZE])
 {
+=======
+					      struct dentry *workdir)
+{
+	char name[OVL_TEMPNAME_SIZE];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ovl_tempname(name);
 	return start_creating(ovl_upper_mnt_idmap(ofs), workdir,
 			      &QSTR(name));
@@ -80,12 +87,19 @@ static struct dentry *ovl_whiteout(struct ovl_fs *ofs)
 	struct dentry *whiteout, *link;
 	struct dentry *workdir = ofs->workdir;
 	struct inode *wdir = workdir->d_inode;
+<<<<<<< HEAD
 	char name[OVL_TEMPNAME_SIZE];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guard(mutex)(&ofs->whiteout_lock);
 
 	if (!ofs->whiteout) {
+<<<<<<< HEAD
 		whiteout = ovl_start_creating_temp(ofs, workdir, name);
+=======
+		whiteout = ovl_start_creating_temp(ofs, workdir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(whiteout))
 			return whiteout;
 		err = ovl_do_whiteout(ofs, wdir, whiteout);
@@ -97,7 +111,11 @@ static struct dentry *ovl_whiteout(struct ovl_fs *ofs)
 	}
 
 	if (!ofs->no_shared_whiteout) {
+<<<<<<< HEAD
 		link = ovl_start_creating_temp(ofs, workdir, name);
+=======
+		link = ovl_start_creating_temp(ofs, workdir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(link))
 			return link;
 		err = ovl_do_link(ofs, ofs->whiteout, wdir, link);
@@ -159,8 +177,12 @@ kill_whiteout:
 }
 
 struct dentry *ovl_create_real(struct ovl_fs *ofs, struct dentry *parent,
+<<<<<<< HEAD
 			       struct dentry *newdentry, struct qstr *qname,
 			       struct ovl_cattr *attr)
+=======
+			       struct dentry *newdentry, struct ovl_cattr *attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *dir = parent->d_inode;
 	int err;
@@ -222,6 +244,7 @@ struct dentry *ovl_create_real(struct ovl_fs *ofs, struct dentry *parent,
 		struct dentry *d;
 		/*
 		 * Some filesystems (i.e. casefolded) may return an unhashed
+<<<<<<< HEAD
 		 * negative dentry from the ovl_start_creating_upper() call before
 		 * ovl_create_real().
 		 * In that case, lookup again after making the newdentry
@@ -246,6 +269,21 @@ struct dentry *ovl_create_real(struct ovl_fs *ofs, struct dentry *parent,
 		end_creating(d);
 		dput(newdentry);
 		return ERR_PTR(err);
+=======
+		 * negative dentry from the ovl_lookup_upper() call before
+		 * ovl_create_real().
+		 * In that case, lookup again after making the newdentry
+		 * positive, so ovl_create_upper() always returns a hashed
+		 * positive dentry.
+		 */
+		d = ovl_lookup_upper(ofs, newdentry->d_name.name, parent,
+				     newdentry->d_name.len);
+		dput(newdentry);
+		if (IS_ERR_OR_NULL(d))
+			err = d ? PTR_ERR(d) : -ENOENT;
+		else
+			return d;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 out:
 	if (err) {
@@ -259,12 +297,19 @@ struct dentry *ovl_create_temp(struct ovl_fs *ofs, struct dentry *workdir,
 			       struct ovl_cattr *attr)
 {
 	struct dentry *ret;
+<<<<<<< HEAD
 	char name[OVL_TEMPNAME_SIZE];
 
 	ret = ovl_start_creating_temp(ofs, workdir, name);
 	if (IS_ERR(ret))
 		return ret;
 	ret = ovl_create_real(ofs, workdir, ret, &QSTR(name), attr);
+=======
+	ret = ovl_start_creating_temp(ofs, workdir);
+	if (IS_ERR(ret))
+		return ret;
+	ret = ovl_create_real(ofs, workdir, ret, attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return end_creating_keep(ret);
 }
 
@@ -364,6 +409,7 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
 	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
 	struct dentry *upperdir = ovl_dentry_upper(dentry->d_parent);
 	struct dentry *newdentry;
+<<<<<<< HEAD
 	struct qstr qname = QSTR_LEN(dentry->d_name.name,
 				     dentry->d_name.len);
 	int err;
@@ -373,6 +419,16 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
 	if (IS_ERR(newdentry))
 		return PTR_ERR(newdentry);
 	newdentry = ovl_create_real(ofs, upperdir, newdentry, &qname, attr);
+=======
+	int err;
+
+	newdentry = ovl_start_creating_upper(ofs, upperdir,
+					     &QSTR_LEN(dentry->d_name.name,
+						       dentry->d_name.len));
+	if (IS_ERR(newdentry))
+		return PTR_ERR(newdentry);
+	newdentry = ovl_create_real(ofs, upperdir, newdentry, attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(newdentry))
 		return PTR_ERR(newdentry);
 
@@ -919,7 +975,11 @@ static void ovl_drop_nlink(struct dentry *dentry)
 
 	/* Try to find another, hashed alias */
 	spin_lock(&inode->i_lock);
+<<<<<<< HEAD
 	for_each_alias(alias, inode) {
+=======
+	hlist_for_each_entry(alias, &inode->i_dentry, d_u.d_alias) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (alias != dentry && !d_unhashed(alias))
 			break;
 	}

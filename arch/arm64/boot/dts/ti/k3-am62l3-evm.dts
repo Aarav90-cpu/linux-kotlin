@@ -272,9 +272,15 @@
 			AM62LX_IOPAD(0x0230, PIN_INPUT, 0) /* (Y3) MMC1_CMD */
 			AM62LX_IOPAD(0x0228, PIN_OUTPUT, 0) /* (Y2) MMC1_CLK */
 			AM62LX_IOPAD(0x0224, PIN_INPUT, 0) /* (AA1) MMC1_DAT0 */
+<<<<<<< HEAD
 			AM62LX_IOPAD(0x0220, PIN_INPUT, 0) /* (Y4) MMC1_DAT1 */
 			AM62LX_IOPAD(0x021c, PIN_INPUT, 0) /* (AA2) MMC1_DAT2 */
 			AM62LX_IOPAD(0x0218, PIN_INPUT, 0) /* (AB2) MMC1_DAT3 */
+=======
+			AM62LX_IOPAD(0x0220, PIN_INPUT_PULLUP, 0) /* (Y4) MMC1_DAT1 */
+			AM62LX_IOPAD(0x021c, PIN_INPUT_PULLUP, 0) /* (AA2) MMC1_DAT2 */
+			AM62LX_IOPAD(0x0218, PIN_INPUT_PULLUP, 0) /* (AB2) MMC1_DAT3 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			AM62LX_IOPAD(0x0234, PIN_INPUT, 0) /* (B6) MMC1_SDCD */
 		>;
 		bootph-all;
@@ -288,6 +294,7 @@
 		bootph-all;
 	};
 
+<<<<<<< HEAD
 	uart0_pins_wakeup: uart0-wakeup-pins {
 		pinctrl-single,pins = <
 			AM62LX_IOPAD(0x01b4, PIN_INPUT | PIN_WKUP_EN, 0) /* (D13) UART0_RXD */
@@ -295,6 +302,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb1_default_pins: usb1-default-pins {
 		pinctrl-single,pins = <
 			AM62LX_IOPAD(0x0248, PIN_INPUT | PIN_DS_PULLUD_ENABLE | PIN_DS_PULL_UP, 0) /* (A5) USB1_DRVVBUS */
@@ -313,12 +322,15 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	wkup_uart0_pins_default: wkup-uart0-default-pins {
 		pinctrl-single,pins = <
 			AM62LX_IOPAD(0x0000, PIN_INPUT, 0) /* (Y22) WKUP_UART0_RXD */
 			AM62LX_IOPAD(0x0004, PIN_OUTPUT, 0) /* (AA23) WKUP_UART0_TXD */
 		>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &sdhci0 {
@@ -342,9 +354,13 @@
 
 &uart0 {
 	pinctrl-0 = <&uart0_pins_default>;
+<<<<<<< HEAD
 	pinctrl-1 = <&uart0_pins_wakeup>;
 	pinctrl-names = "default", "wakeup";
 	wakeup-source;
+=======
+	pinctrl-names = "default";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 	bootph-all;
 };
@@ -374,6 +390,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&usb1_default_pins>;
 };
+<<<<<<< HEAD
 
 &wkup_uart0 {
 	pinctrl-0 = <&wkup_uart0_pins_default>;
@@ -383,3 +400,5 @@
 &wkup_uart0_target {
 	status = "okay";
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -413,7 +413,11 @@ static int __init efipostcore_init(void)
 		 * ordered workqueue (which creates only one execution context)
 		 * should suffice for all our needs.
 		 */
+<<<<<<< HEAD
 		efi_rts_wq = alloc_ordered_workqueue("efi_runtime", WQ_SYSFS);
+=======
+		efi_rts_wq = alloc_ordered_workqueue("efi_rts_wq", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!efi_rts_wq) {
 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
@@ -604,9 +608,13 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
 		return;
 
 	if (!memblock_is_region_reserved(addr, size))
+<<<<<<< HEAD
 		memblock_reserve_kern(addr, size);
 	else
 		memblock_reserved_mark_kern(addr, size);
+=======
+		memblock_reserve(addr, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Some architectures (x86) reserve all boot services ranges
@@ -989,12 +997,27 @@ char * __init efi_md_typeattr_format(char *buf, size_t size,
  */
 u64 efi_mem_attributes(unsigned long phys_addr)
 {
+<<<<<<< HEAD
 	efi_memory_desc_t md;
 
 	if (efi_mem_desc_lookup(phys_addr, &md))
 		return 0;
 
 	return md.attribute;
+=======
+	efi_memory_desc_t *md;
+
+	if (!efi_enabled(EFI_MEMMAP))
+		return 0;
+
+	for_each_efi_memory_desc(md) {
+		if ((md->phys_addr <= phys_addr) &&
+		    (phys_addr < (md->phys_addr +
+		    (md->num_pages << EFI_PAGE_SHIFT))))
+			return md->attribute;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1007,6 +1030,7 @@ u64 efi_mem_attributes(unsigned long phys_addr)
  */
 int efi_mem_type(unsigned long phys_addr)
 {
+<<<<<<< HEAD
 	efi_memory_desc_t md;
 
 	if (!efi_enabled(EFI_MEMMAP) && !efi_enabled(EFI_PARAVIRT))
@@ -1016,6 +1040,20 @@ int efi_mem_type(unsigned long phys_addr)
 		return -EINVAL;
 
 	return md.type;
+=======
+	const efi_memory_desc_t *md;
+
+	if (!efi_enabled(EFI_MEMMAP))
+		return -ENOTSUPP;
+
+	for_each_efi_memory_desc(md) {
+		if ((md->phys_addr <= phys_addr) &&
+		    (phys_addr < (md->phys_addr +
+				  (md->num_pages << EFI_PAGE_SHIFT))))
+			return md->type;
+	}
+	return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int efi_status_to_err(efi_status_t status)

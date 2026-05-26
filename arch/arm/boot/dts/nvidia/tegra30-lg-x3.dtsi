@@ -20,8 +20,11 @@
 		rtc0 = &pmic;
 		rtc1 = "/rtc@7000e000";
 
+<<<<<<< HEAD
 		display0 = &lcd;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		serial0 = &uartd; /* Console */
 		serial1 = &uartc; /* Bluetooth */
 		serial2 = &uartb; /* GPS */
@@ -73,6 +76,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	host1x@50000000 {
 		lcd: dc@54200000 {
 			rgb {
@@ -88,6 +92,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vde@6001a000 {
 		assigned-clocks = <&tegra_car TEGRA30_CLK_VDE>;
 		assigned-clock-parents = <&tegra_car TEGRA30_CLK_PLL_P>;
@@ -1070,6 +1076,7 @@
 				syna,clip-y-low = <0>;
 			};
 		};
+<<<<<<< HEAD
 
 		max14526: muic@44 {
 			compatible = "maxim,max14526";
@@ -1102,6 +1109,8 @@
 			ti,x-plate-ohms = <1>;
 			#io-channel-cells = <1>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	cam_i2c: i2c@7000c500 {
@@ -1358,6 +1367,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		max8971: charger@35 {
 			compatible = "maxim,max8971";
 			reg = <0x35>;
@@ -1374,6 +1384,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fuel-gauge@36 {
 			compatible = "maxim,max17043";
 			reg = <0x36>;
@@ -1382,10 +1394,13 @@
 			interrupts = <TEGRA_GPIO(S, 0) IRQ_TYPE_EDGE_FALLING>;
 
 			monitored-battery = <&battery>;
+<<<<<<< HEAD
 			power-supplies = <&max8971>;
 
 			io-channels = <&tbattery 0>;
 			io-channel-names = "temp";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			maxim,alert-low-soc-level = <10>;
 			wakeup-source;
@@ -1426,6 +1441,7 @@
 		status = "okay";
 		spi-max-frequency = <25000000>;
 
+<<<<<<< HEAD
 		dsi@2 {
 			compatible = "solomon,ssd2825";
 			reg = <2>;
@@ -1478,6 +1494,9 @@
 				};
 			};
 		};
+=======
+		/* DSI bridge */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pmc@7000e400 {
@@ -1566,13 +1585,21 @@
 	usb@7d000000 {
 		compatible = "nvidia,tegra30-udc";
 		status = "okay";
+<<<<<<< HEAD
 		dr_mode = "otg";
 		extcon = <&max14526>, <&max14526>;
+=======
+		dr_mode = "peripheral";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	usb-phy@7d000000 {
 		status = "okay";
+<<<<<<< HEAD
 		dr_mode = "otg";
+=======
+		dr_mode = "peripheral";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nvidia,hssync-start-delay = <0>;
 		nvidia,xcvr-lsfslew = <2>;
 		nvidia,xcvr-lsrslew = <2>;
@@ -1738,6 +1765,7 @@
 		vin-supply = <&vdd_3v3_vbat>;
 	};
 
+<<<<<<< HEAD
 	vdd_1v2_rgb: regulator-rgb1v2 {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_1v2_rgb";
@@ -1749,6 +1777,8 @@
 		vin-supply = <&vdd_3v3_vbat>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vcc_3v0_lcd: regulator-lcd3v {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_3v0_lcd";
@@ -1856,6 +1886,7 @@
 					 <&tegra_car TEGRA30_CLK_EXTERN1>;
 	};
 
+<<<<<<< HEAD
 	tbattery: thermal-sensor-battery {
 		compatible = "generic-adc-thermal";
 		#thermal-sensor-cells = <0>;
@@ -1893,6 +1924,9 @@
 			};
 		};
 
+=======
+	thermal-zones {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * NCT72 has two sensors:
 		 *

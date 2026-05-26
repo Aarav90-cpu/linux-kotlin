@@ -47,12 +47,15 @@
 #  define __nolibc_fallthrough do { } while (0)
 #endif /* __nolibc_has_attribute(fallthrough) */
 
+<<<<<<< HEAD
 #if defined(__STDC_VERSION__)
 #  define __nolibc_stdc_version __STDC_VERSION__
 #else
 #  define __nolibc_stdc_version 0
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define __nolibc_version(_major, _minor, _patch) ((_major) * 10000 + (_minor) * 100 + (_patch))
 
 #ifdef __GNUC__
@@ -69,7 +72,11 @@
 #  define __nolibc_clang_version 0
 #endif /* __clang__ */
 
+<<<<<<< HEAD
 #if __nolibc_stdc_version >= 201112L || \
+=======
+#if __STDC_VERSION__ >= 201112L || \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__nolibc_gnuc_version >= __nolibc_version(4, 6, 0) || \
 	__nolibc_clang_version >= __nolibc_version(3, 0, 0)
 #  define __nolibc_static_assert(_t) _Static_assert(_t, "")
@@ -77,6 +84,7 @@
 #  define __nolibc_static_assert(_t)
 #endif
 
+<<<<<<< HEAD
 /* Make the optimizer believe the variable can be manipulated arbitrarily. */
 #define _NOLIBC_OPTIMIZER_HIDE_VAR(var)	__asm__ ("" : "+r" (var))
 
@@ -90,4 +98,6 @@
 #  define __nolibc_no_sanitize_undefined
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _NOLIBC_COMPILER_H */

@@ -221,6 +221,7 @@ unsigned long hash__pmd_hugepage_update(struct mm_struct *mm, unsigned long addr
 	return old;
 }
 
+<<<<<<< HEAD
 static void do_nothing(void *arg)
 {
 
@@ -242,6 +243,8 @@ static void serialize_against_pte_lookup(struct mm_struct *mm)
 	smp_call_function_many(mm_cpumask(mm), do_nothing, mm, 1);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long address,
 			    pmd_t *pmdp)
 {

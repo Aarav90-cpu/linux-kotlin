@@ -86,6 +86,7 @@ static ssize_t open_dice_write(struct file *filp, const char __user *ptr,
 /*
  * Creates a mapping of the reserved memory region in user address space.
  */
+<<<<<<< HEAD
 static int open_dice_mmap_prepare(struct vm_area_desc *desc)
 {
 	struct file *filp = desc->file;
@@ -105,13 +106,35 @@ static int open_dice_mmap_prepare(struct vm_area_desc *desc)
 	mmap_action_simple_ioremap(desc, drvdata->rmem->base,
 				   drvdata->rmem->size);
 	return 0;
+=======
+static int open_dice_mmap(struct file *filp, struct vm_area_struct *vma)
+{
+	struct open_dice_drvdata *drvdata = to_open_dice_drvdata(filp);
+
+	if (vma->vm_flags & VM_MAYSHARE) {
+		/* Do not allow userspace to modify the underlying data. */
+		if (vma->vm_flags & VM_WRITE)
+			return -EPERM;
+		/* Ensure userspace cannot acquire VM_WRITE later. */
+		vm_flags_clear(vma, VM_MAYWRITE);
+	}
+
+	/* Create write-combine mapping so all clients observe a wipe. */
+	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+	vm_flags_set(vma, VM_DONTCOPY | VM_DONTDUMP);
+	return vm_iomap_memory(vma, drvdata->rmem->base, drvdata->rmem->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct file_operations open_dice_fops = {
 	.owner = THIS_MODULE,
 	.read = open_dice_read,
 	.write = open_dice_write,
+<<<<<<< HEAD
 	.mmap_prepare = open_dice_mmap_prepare,
+=======
+	.mmap = open_dice_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init open_dice_probe(struct platform_device *pdev)

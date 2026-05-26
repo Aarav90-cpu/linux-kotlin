@@ -295,8 +295,13 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
  * for our hash-based implementation, we fix that up here.
  */
 #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
 		unsigned long addr, pte_t *ptep)
+=======
+static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+					      unsigned long addr, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long old;
 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
@@ -438,7 +443,11 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
 	return true;
 }
 
+<<<<<<< HEAD
 static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
+=======
+static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pte_present(pte) && !is_kernel_addr(addr);
 }

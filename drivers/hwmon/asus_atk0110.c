@@ -17,7 +17,10 @@
 #include <linux/jiffies.h>
 #include <linux/err.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/string_choices.h>
 
 #define ATK_HID "ATK0110"
@@ -108,7 +111,11 @@ enum atk_pack_member {
 struct atk_data {
 	struct device *hwmon_dev;
 	acpi_handle atk_handle;
+<<<<<<< HEAD
 	struct device *dev;
+=======
+	struct acpi_device *acpi_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bool old_interface;
 
@@ -188,6 +195,7 @@ struct atk_acpi_input_buf {
 	u32 param2;
 };
 
+<<<<<<< HEAD
 static int atk_probe(struct platform_device *pdev);
 static void atk_remove(struct platform_device *pdev);
 static void atk_print_sensor(struct atk_data *data, union acpi_object *obj);
@@ -199,6 +207,20 @@ static struct platform_driver atk_driver = {
 	.driver = {
 		.name = ATK_HID,
 		.acpi_match_table = atk_ids,
+=======
+static int atk_add(struct acpi_device *device);
+static void atk_remove(struct acpi_device *device);
+static void atk_print_sensor(struct atk_data *data, union acpi_object *obj);
+static int atk_read_value(struct atk_sensor_data *sensor, u64 *value);
+
+static struct acpi_driver atk_driver = {
+	.name	= ATK_HID,
+	.class	= "hwmon",
+	.ids	= atk_ids,
+	.ops	= {
+		.add	= atk_add,
+		.remove	= atk_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -327,7 +349,11 @@ static union acpi_object *atk_get_pack_member(struct atk_data *data,
  */
 static int validate_hwmon_pack(struct atk_data *data, union acpi_object *obj)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *tmp;
 	bool old_if = data->old_interface;
 	int const expected_size = old_if ? _HWMON_OLD_PACK_SIZE :
@@ -422,7 +448,11 @@ static char const *atk_sensor_type(union acpi_object *flags)
 static void atk_print_sensor(struct atk_data *data, union acpi_object *obj)
 {
 #ifdef DEBUG
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *flags;
 	union acpi_object *name;
 	union acpi_object *limit1;
@@ -449,7 +479,11 @@ static void atk_print_sensor(struct atk_data *data, union acpi_object *obj)
 static int atk_read_value_old(struct atk_sensor_data *sensor, u64 *value)
 {
 	struct atk_data *data = sensor->data;
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_object_list params;
 	union acpi_object id;
 	acpi_status status;
@@ -487,7 +521,11 @@ static int atk_read_value_old(struct atk_sensor_data *sensor, u64 *value)
 
 static union acpi_object *atk_ggrp(struct atk_data *data, u16 mux)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_buffer buf;
 	acpi_status ret;
 	struct acpi_object_list params;
@@ -523,7 +561,11 @@ static union acpi_object *atk_ggrp(struct atk_data *data, u16 mux)
 
 static union acpi_object *atk_gitm(struct atk_data *data, u64 id)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct atk_acpi_input_buf buf;
 	union acpi_object tmp;
 	struct acpi_object_list params;
@@ -565,7 +607,11 @@ static union acpi_object *atk_gitm(struct atk_data *data, u64 id)
 static union acpi_object *atk_sitm(struct atk_data *data,
 		struct atk_acpi_input_buf *buf)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_object_list params;
 	union acpi_object tmp;
 	struct acpi_buffer ret;
@@ -602,7 +648,11 @@ static union acpi_object *atk_sitm(struct atk_data *data,
 static int atk_read_value_new(struct atk_sensor_data *sensor, u64 *value)
 {
 	struct atk_data *data = sensor->data;
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *obj;
 	struct atk_acpi_ret_buffer *buf;
 	int err = 0;
@@ -819,7 +869,11 @@ static void atk_debugfs_cleanup(struct atk_data *data)
 
 static int atk_add_sensor(struct atk_data *data, union acpi_object *obj)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *flags;
 	union acpi_object *name;
 	union acpi_object *limit1;
@@ -937,7 +991,11 @@ static int atk_add_sensor(struct atk_data *data, union acpi_object *obj)
 
 static int atk_enumerate_old_hwmon(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_buffer buf;
 	union acpi_object *pack;
 	acpi_status status;
@@ -1012,7 +1070,11 @@ static int atk_enumerate_old_hwmon(struct atk_data *data)
 
 static int atk_ec_present(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *pack;
 	union acpi_object *ec;
 	int ret;
@@ -1058,7 +1120,11 @@ static int atk_ec_present(struct atk_data *data)
 
 static int atk_ec_enabled(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *obj;
 	struct atk_acpi_ret_buffer *buf;
 	int err;
@@ -1084,7 +1150,11 @@ static int atk_ec_enabled(struct atk_data *data)
 
 static int atk_ec_ctl(struct atk_data *data, int enable)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *obj;
 	struct atk_acpi_input_buf sitm;
 	struct atk_acpi_ret_buffer *ec_ret;
@@ -1113,7 +1183,11 @@ static int atk_ec_ctl(struct atk_data *data, int enable)
 
 static int atk_enumerate_new_hwmon(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *pack;
 	int err;
 	int i;
@@ -1155,7 +1229,11 @@ static int atk_enumerate_new_hwmon(struct atk_data *data)
 
 static int atk_init_attribute_groups(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct atk_sensor_data *s;
 	struct attribute **attrs;
 	int i = 0;
@@ -1181,7 +1259,11 @@ static int atk_init_attribute_groups(struct atk_data *data)
 
 static int atk_register_hwmon(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(dev, "registering hwmon device\n");
 	data->hwmon_dev = hwmon_device_register_with_groups(dev, "atk0110",
@@ -1193,7 +1275,11 @@ static int atk_register_hwmon(struct atk_data *data)
 
 static int atk_probe_if(struct atk_data *data)
 {
+<<<<<<< HEAD
 	struct device *dev = data->dev;
+=======
+	struct device *dev = &data->acpi_dev->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_handle ret;
 	acpi_status status;
 	int err = 0;
@@ -1266,7 +1352,11 @@ static int atk_probe_if(struct atk_data *data)
 	return err;
 }
 
+<<<<<<< HEAD
 static int atk_probe(struct platform_device *pdev)
+=======
+static int atk_add(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	acpi_status ret;
 	int err;
@@ -1275,6 +1365,7 @@ static int atk_probe(struct platform_device *pdev)
 	struct atk_data *data;
 	acpi_handle handle;
 
+<<<<<<< HEAD
 	dev_dbg(&pdev->dev, "adding...\n");
 
 	handle = ACPI_HANDLE(&pdev->dev);
@@ -1286,7 +1377,21 @@ static int atk_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	data->dev = &pdev->dev;
+<<<<<<< HEAD
 	data->atk_handle = handle;
+=======
+	data->atk_handle = ACPI_HANDLE(&pdev->dev);
+=======
+	dev_dbg(&device->dev, "adding...\n");
+
+	data = devm_kzalloc(&device->dev, sizeof(*data), GFP_KERNEL);
+	if (!data)
+		return -ENOMEM;
+
+	data->acpi_dev = device;
+	data->atk_handle = device->handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	INIT_LIST_HEAD(&data->sensor_list);
 	data->disable_ec = false;
 
@@ -1294,13 +1399,21 @@ static int atk_probe(struct platform_device *pdev)
 	ret = acpi_evaluate_object_typed(data->atk_handle, BOARD_ID, NULL,
 			&buf, ACPI_TYPE_PACKAGE);
 	if (ret != AE_OK) {
+<<<<<<< HEAD
 		dev_dbg(&pdev->dev, "atk: method MBIF not found\n");
+=======
+		dev_dbg(&device->dev, "atk: method MBIF not found\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		obj = buf.pointer;
 		if (obj->package.count >= 2) {
 			union acpi_object *id = &obj->package.elements[1];
 			if (id->type == ACPI_TYPE_STRING)
+<<<<<<< HEAD
 				dev_dbg(&pdev->dev, "board ID = %s\n",
+=======
+				dev_dbg(&device->dev, "board ID = %s\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					id->string.pointer);
 		}
 		ACPI_FREE(buf.pointer);
@@ -1308,21 +1421,36 @@ static int atk_probe(struct platform_device *pdev)
 
 	err = atk_probe_if(data);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "No usable hwmon interface detected\n");
+=======
+		dev_err(&device->dev, "No usable hwmon interface detected\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
 	if (data->old_interface) {
+<<<<<<< HEAD
 		dev_dbg(&pdev->dev, "Using old hwmon interface\n");
 		err = atk_enumerate_old_hwmon(data);
 	} else {
 		dev_dbg(&pdev->dev, "Using new hwmon interface\n");
+=======
+		dev_dbg(&device->dev, "Using old hwmon interface\n");
+		err = atk_enumerate_old_hwmon(data);
+	} else {
+		dev_dbg(&device->dev, "Using new hwmon interface\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = atk_enumerate_new_hwmon(data);
 	}
 	if (err < 0)
 		goto out;
 	if (err == 0) {
+<<<<<<< HEAD
 		dev_info(&pdev->dev,
+=======
+		dev_info(&device->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "No usable sensor detected, bailing out\n");
 		err = -ENODEV;
 		goto out;
@@ -1337,8 +1465,12 @@ static int atk_probe(struct platform_device *pdev)
 
 	atk_debugfs_init(data);
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, data);
 
+=======
+	device->driver_data = data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 out:
 	if (data->disable_ec)
@@ -1346,11 +1478,20 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static void atk_remove(struct platform_device *pdev)
 {
 	struct atk_data *data = platform_get_drvdata(pdev);
 
 	dev_dbg(&pdev->dev, "removing...\n");
+=======
+static void atk_remove(struct acpi_device *device)
+{
+	struct atk_data *data = device->driver_data;
+	dev_dbg(&device->dev, "removing...\n");
+
+	device->driver_data = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atk_debugfs_cleanup(data);
 
@@ -1358,7 +1499,11 @@ static void atk_remove(struct platform_device *pdev)
 
 	if (data->disable_ec) {
 		if (atk_ec_ctl(data, 0))
+<<<<<<< HEAD
 			dev_err(&pdev->dev, "Failed to disable EC\n");
+=======
+			dev_err(&device->dev, "Failed to disable EC\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1375,16 +1520,26 @@ static int __init atk0110_init(void)
 	if (dmi_check_system(atk_force_new_if))
 		new_if = true;
 
+<<<<<<< HEAD
 	ret = platform_driver_register(&atk_driver);
 	if (ret)
 		pr_info("platform_driver_register failed: %d\n", ret);
+=======
+	ret = acpi_bus_register_driver(&atk_driver);
+	if (ret)
+		pr_info("acpi_bus_register_driver failed: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
 
 static void __exit atk0110_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&atk_driver);
+=======
+	acpi_bus_unregister_driver(&atk_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(atk0110_init);

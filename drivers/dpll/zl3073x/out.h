@@ -4,7 +4,10 @@
 #define _ZL3073X_OUT_H
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/stddef.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #include "regs.h"
@@ -18,6 +21,7 @@ struct zl3073x_dev;
  * @esync_n_period: embedded sync or n-pin period (for n-div formats)
  * @esync_n_width: embedded sync or n-pin pulse width
  * @phase_comp: phase compensation
+<<<<<<< HEAD
  * @mode: output mode
  * @ctrl: output control
  */
@@ -33,6 +37,19 @@ struct zl3073x_out {
 	struct_group(inv, /* Invariants */
 		u8	ctrl;
 	);
+=======
+ * @ctrl: output control
+ * @mode: output mode
+ */
+struct zl3073x_out {
+	u32	div;
+	u32	width;
+	u32	esync_n_period;
+	u32	esync_n_width;
+	s32	phase_comp;
+	u8	ctrl;
+	u8	mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int zl3073x_out_state_fetch(struct zl3073x_dev *zldev, u8 index);
@@ -43,6 +60,7 @@ int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8 index,
 			  const struct zl3073x_out *out);
 
 /**
+<<<<<<< HEAD
  * zl3073x_out_clock_type_get - get output clock type
  * @out: pointer to out state
  *
@@ -65,6 +83,8 @@ zl3073x_out_clock_type_set(struct zl3073x_out *out, u8 type)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_out_signal_format_get - get output signal format
  * @out: pointer to out state
  *

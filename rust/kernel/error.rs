@@ -67,7 +67,10 @@ pub mod code {
     declare_err!(EDOM, "Math argument out of domain of func.");
     declare_err!(ERANGE, "Math result not representable.");
     declare_err!(EOVERFLOW, "Value too large for defined data type.");
+<<<<<<< HEAD
     declare_err!(EMSGSIZE, "Message too long.");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     declare_err!(ETIMEDOUT, "Connection timed out.");
     declare_err!(ERESTARTSYS, "Restart the system call.");
     declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
@@ -217,42 +220,60 @@ impl fmt::Debug for Error {
 }
 
 impl From<AllocError> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: AllocError) -> Error {
         code::ENOMEM
     }
 }
 
 impl From<TryFromIntError> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: TryFromIntError) -> Error {
         code::EINVAL
     }
 }
 
 impl From<Utf8Error> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: Utf8Error) -> Error {
         code::EINVAL
     }
 }
 
 impl From<LayoutError> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: LayoutError) -> Error {
         code::ENOMEM
     }
 }
 
 impl From<fmt::Error> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: fmt::Error) -> Error {
         code::EINVAL
     }
 }
 
 impl From<core::convert::Infallible> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(e: core::convert::Infallible) -> Error {
         match e {}
     }
@@ -453,9 +474,12 @@ pub fn to_result(err: crate::ffi::c_int) -> Result {
 /// for errors. This function performs the check and converts the "error pointer"
 /// to a normal pointer in an idiomatic fashion.
 ///
+<<<<<<< HEAD
 /// Note that a `NULL` pointer is not considered an error pointer, and is returned
 /// as-is, wrapped in [`Ok`].
 ///
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// # Examples
 ///
 /// ```ignore
@@ -470,6 +494,7 @@ pub fn to_result(err: crate::ffi::c_int) -> Result {
 ///     from_err_ptr(unsafe { bindings::devm_platform_ioremap_resource(pdev.to_ptr(), index) })
 /// }
 /// ```
+<<<<<<< HEAD
 ///
 /// ```
 /// # use kernel::error::from_err_ptr;
@@ -498,6 +523,8 @@ pub fn to_result(err: crate::ffi::c_int) -> Result {
 /// let non_null = from_err_ptr(unsafe { bindings::non_null_ptr() }).unwrap();
 /// assert_ne!(non_null, core::ptr::null_mut());
 /// ```
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
     // CAST: Casting a pointer to `*const crate::ffi::c_void` is always valid.
     let const_ptr: *const crate::ffi::c_void = ptr.cast();

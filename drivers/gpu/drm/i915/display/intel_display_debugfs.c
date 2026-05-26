@@ -13,9 +13,15 @@
 #include <drm/drm_file.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_misc_regs.h>
 
 #include "hsw_ips.h"
+=======
+
+#include "hsw_ips.h"
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_wm_regs.h"
 #include "intel_alpm.h"
 #include "intel_bo.h"

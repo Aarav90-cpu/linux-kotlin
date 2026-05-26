@@ -169,6 +169,11 @@ more information on the validation of devicetrees.
 For new platforms, or additions to existing ones, ``make dtbs_check`` should not
 add any new warnings.  For RISC-V and Samsung SoC, ``make dtbs_check W=1`` is
 required to not add any new warnings.
+<<<<<<< HEAD
+=======
+If in any doubt about a devicetree change, reach out to the devicetree
+maintainers.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Branches and Pull Requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -207,6 +212,7 @@ The subject line of a pull request should begin with "[GIT PULL]" and made using
 a signed tag, rather than a branch.  This tag should contain a short description
 summarising the changes in the pull request.  For more detail on sending pull
 requests, please see Documentation/maintainer/pull-requests.rst.
+<<<<<<< HEAD
 
 Defconfigs purpose
 ~~~~~~~~~~~~~~~~~~
@@ -217,3 +223,5 @@ explain why the kernel developers in general would want such option, e.g. by
 providing a name of an upstream-supported machine/board using that new option.
 This implies that enabling options in defconfig for non-upstream machines shall
 not be accepted.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

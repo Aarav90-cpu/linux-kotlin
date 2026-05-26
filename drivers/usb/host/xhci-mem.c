@@ -129,6 +129,7 @@ static void xhci_initialize_ring_segments(struct xhci_hcd *xhci, struct xhci_rin
 	ring->last_seg->trbs[TRBS_PER_SEGMENT - 1].link.control |= cpu_to_le32(LINK_TOGGLE);
 }
 
+<<<<<<< HEAD
 void xhci_ring_init(struct xhci_hcd *xhci, struct xhci_ring *ring)
 {
 	xhci_initialize_ring_segments(xhci, ring);
@@ -136,6 +137,8 @@ void xhci_ring_init(struct xhci_hcd *xhci, struct xhci_ring *ring)
 	trace_xhci_ring_alloc(ring);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Link the src ring segments to the dst ring.
  * Set Toggle Cycle for the new ring if needed.
@@ -396,6 +399,12 @@ struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci, unsigned int num_segs,
 	if (ret)
 		goto fail;
 
+<<<<<<< HEAD
+=======
+	xhci_initialize_ring_segments(xhci, ring);
+	xhci_initialize_ring_info(ring);
+	trace_xhci_ring_alloc(ring);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ring;
 
 fail:
@@ -672,8 +681,11 @@ struct xhci_stream_info *xhci_alloc_stream_info(struct xhci_hcd *xhci,
 		cur_ring = stream_info->stream_rings[cur_stream];
 		if (!cur_ring)
 			goto cleanup_rings;
+<<<<<<< HEAD
 
 		xhci_ring_init(xhci, cur_ring);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cur_ring->stream_id = cur_stream;
 		cur_ring->trb_address_map = &stream_info->trb_address_map;
 		/* Set deq ptr, cycle bit, and stream context type */
@@ -936,7 +948,11 @@ void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_device *dev,
  * that tt_info, then free the child first. Recursive.
  * We can't rely on udev at this point to find child-parent relationships.
  */
+<<<<<<< HEAD
 void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_id)
+=======
+static void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xhci_virt_device *vdev;
 	struct list_head *tt_list_head;
@@ -994,14 +1010,22 @@ int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
 	if (!dev->out_ctx)
 		goto fail;
 
+<<<<<<< HEAD
 	xhci_dbg(xhci, "Slot %d output ctx = %pad (dma)\n", slot_id, &dev->out_ctx->dma);
+=======
+	xhci_dbg(xhci, "Slot %d output ctx = 0x%pad (dma)\n", slot_id, &dev->out_ctx->dma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate the (input) device context for address device command */
 	dev->in_ctx = xhci_alloc_container_ctx(xhci, XHCI_CTX_TYPE_INPUT, flags);
 	if (!dev->in_ctx)
 		goto fail;
 
+<<<<<<< HEAD
 	xhci_dbg(xhci, "Slot %d input ctx = %pad (dma)\n", slot_id, &dev->in_ctx->dma);
+=======
+	xhci_dbg(xhci, "Slot %d input ctx = 0x%pad (dma)\n", slot_id, &dev->in_ctx->dma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialize the cancellation and bandwidth list for each ep */
 	for (i = 0; i < 31; i++) {
@@ -1017,8 +1041,11 @@ int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
 	if (!dev->eps[0].ring)
 		goto fail;
 
+<<<<<<< HEAD
 	xhci_ring_init(xhci, dev->eps[0].ring);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->udev = udev;
 
 	/* Point to output device context in dcbaa. */
@@ -1500,7 +1527,10 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
 
 	virt_dev->eps[ep_index].skip = false;
 	ep_ring = virt_dev->eps[ep_index].new_ring;
+<<<<<<< HEAD
 	xhci_ring_init(xhci, ep_ring);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Fill the endpoint context */
 	ep_ctx->ep_info = cpu_to_le32(EP_MAX_ESIT_PAYLOAD_HI(max_esit_payload) |
@@ -1904,6 +1934,7 @@ void xhci_remove_secondary_interrupter(struct usb_hcd *hcd, struct xhci_interrup
 }
 EXPORT_SYMBOL_GPL(xhci_remove_secondary_interrupter);
 
+<<<<<<< HEAD
 /* Cleanup roothub bandwidth data */
 void xhci_rh_bw_cleanup(struct xhci_hcd *xhci)
 {
@@ -1934,6 +1965,12 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
 {
 	struct device	*dev = xhci_to_hcd(xhci)->self.sysdev;
 	int i;
+=======
+void xhci_mem_cleanup(struct xhci_hcd *xhci)
+{
+	struct device	*dev = xhci_to_hcd(xhci)->self.sysdev;
+	int i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cancel_delayed_work_sync(&xhci->cmd_timer);
 
@@ -1952,6 +1989,18 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Freed command ring");
 	xhci_cleanup_command_queue(xhci);
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < xhci->max_ports && xhci->rh_bw; i++) {
+		struct xhci_interval_bw_table *bwt = &xhci->rh_bw[i].bw_table;
+		for (j = 0; j < XHCI_MAX_INTERVAL; j++) {
+			struct list_head *ep = &bwt->interval_bw[j].endpoints;
+			while (!list_empty(ep))
+				list_del_init(ep->next);
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = xhci->max_slots; i > 0; i--)
 		xhci_free_virt_devices_depth_first(xhci, i);
 
@@ -1985,9 +2034,24 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
 
 	scratchpad_free(xhci);
 
+<<<<<<< HEAD
 	if (xhci->rh_bw)
 		xhci_rh_bw_cleanup(xhci);
 
+=======
+	if (!xhci->rh_bw)
+		goto no_bw;
+
+	for (i = 0; i < xhci->max_ports; i++) {
+		struct xhci_tt_bw_info *tt, *n;
+		list_for_each_entry_safe(tt, n, &xhci->rh_bw[i].tts, tt_list) {
+			list_del(&tt->tt_list);
+			kfree(tt);
+		}
+	}
+
+no_bw:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xhci->cmd_ring_reserved_trbs = 0;
 	xhci->usb2_rhub.num_ports = 0;
 	xhci->usb3_rhub.num_ports = 0;
@@ -2009,6 +2073,10 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
 	xhci->port_caps = NULL;
 	xhci->interrupters = NULL;
 
+<<<<<<< HEAD
+=======
+	xhci->page_size = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xhci->usb2_rhub.bus_state.bus_suspended = 0;
 	xhci->usb3_rhub.bus_state.bus_suspended = 0;
 }
@@ -2165,13 +2233,19 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
 	/* FIXME: Should we disable ports not in the Extended Capabilities? */
 }
 
+<<<<<<< HEAD
 static void xhci_create_rhub_port_array(struct xhci_hcd *xhci, struct xhci_hub *rhub,
 					unsigned int max_ports, gfp_t flags)
+=======
+static void xhci_create_rhub_port_array(struct xhci_hcd *xhci,
+					struct xhci_hub *rhub, gfp_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int port_index = 0;
 	int i;
 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
 
+<<<<<<< HEAD
 	if (!rhub->num_ports) {
 		xhci_info(xhci, "USB%u root hub has no ports\n", rhub->maj_rev);
 		return;
@@ -2187,6 +2261,10 @@ static void xhci_create_rhub_port_array(struct xhci_hcd *xhci, struct xhci_hub *
 			       rhub->maj_rev, max_ports);
 	}
 
+=======
+	if (!rhub->num_ports)
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rhub->ports = kcalloc_node(rhub->num_ports, sizeof(*rhub->ports),
 			flags, dev_to_node(dev));
 	if (!rhub->ports)
@@ -2282,8 +2360,35 @@ static int xhci_setup_port_arrays(struct xhci_hcd *xhci, gfp_t flags)
 		       "Found %u USB 2.0 ports and %u USB 3.0 ports.",
 		       xhci->usb2_rhub.num_ports, xhci->usb3_rhub.num_ports);
 
+<<<<<<< HEAD
 	xhci_create_rhub_port_array(xhci, &xhci->usb2_rhub, USB_MAXCHILDREN, flags);
 	xhci_create_rhub_port_array(xhci, &xhci->usb3_rhub, USB_SS_MAXPORTS, flags);
+=======
+	/* Place limits on the number of roothub ports so that the hub
+	 * descriptors aren't longer than the USB core will allocate.
+	 */
+	if (xhci->usb3_rhub.num_ports > USB_SS_MAXPORTS) {
+		xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+				"Limiting USB 3.0 roothub ports to %u.",
+				USB_SS_MAXPORTS);
+		xhci->usb3_rhub.num_ports = USB_SS_MAXPORTS;
+	}
+	if (xhci->usb2_rhub.num_ports > USB_MAXCHILDREN) {
+		xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+				"Limiting USB 2.0 roothub ports to %u.",
+				USB_MAXCHILDREN);
+		xhci->usb2_rhub.num_ports = USB_MAXCHILDREN;
+	}
+
+	if (!xhci->usb2_rhub.num_ports)
+		xhci_info(xhci, "USB2 root hub has no ports\n");
+
+	if (!xhci->usb3_rhub.num_ports)
+		xhci_info(xhci, "USB3 root hub has no ports\n");
+
+	xhci_create_rhub_port_array(xhci, &xhci->usb2_rhub, flags);
+	xhci_create_rhub_port_array(xhci, &xhci->usb3_rhub, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2369,8 +2474,11 @@ xhci_create_secondary_interrupter(struct usb_hcd *hcd, unsigned int segs,
 	if (!ir)
 		return NULL;
 
+<<<<<<< HEAD
 	xhci_ring_init(xhci, ir->event_ring);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_irq(&xhci->lock);
 	if (!intr_num) {
 		/* Find available secondary interrupter, interrupter 0 is reserved for primary */
@@ -2412,8 +2520,11 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
 	struct device	*dev = xhci_to_hcd(xhci)->self.sysdev;
 	dma_addr_t	dma;
 
+<<<<<<< HEAD
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Starting %s", __func__);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * xHCI section 5.4.6 - Device Context array must be
 	 * "physically contiguous and 64-byte (cache line) aligned".
@@ -2424,7 +2535,11 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
 
 	xhci->dcbaa->dma = dma;
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+<<<<<<< HEAD
 		       "Device context base array address = %pad (DMA), %p (virt)",
+=======
+		       "Device context base array address = 0x%pad (DMA), %p (virt)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       &xhci->dcbaa->dma, xhci->dcbaa);
 
 	/*
@@ -2485,6 +2600,18 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
 		goto fail;
 
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Allocated command ring at %p", xhci->cmd_ring);
+<<<<<<< HEAD
+=======
+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "First segment DMA is 0x%pad",
+		       &xhci->cmd_ring->first_seg->dma);
+
+	/*
+	 * Reserve one command ring TRB for disabling LPM.
+	 * Since the USB core grabs the shared usb_bus bandwidth mutex before
+	 * disabling LPM, we only need to reserve one TRB for all devices.
+	 */
+	xhci->cmd_ring_reserved_trbs++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate and set up primary interrupter 0 with an event ring. */
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Allocating primary event ring");
@@ -2503,7 +2630,10 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
 	if (xhci_setup_port_arrays(xhci, flags))
 		goto fail;
 
+<<<<<<< HEAD
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Finished %s", __func__);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 fail:

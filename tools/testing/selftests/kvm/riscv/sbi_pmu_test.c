@@ -24,7 +24,11 @@ union sbi_pmu_ctr_info ctrinfo_arr[RISCV_MAX_PMU_COUNTERS];
 /* Snapshot shared memory data */
 #define PMU_SNAPSHOT_GPA_BASE		BIT(30)
 static void *snapshot_gva;
+<<<<<<< HEAD
 static gpa_t snapshot_gpa;
+=======
+static vm_paddr_t snapshot_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int vcpu_shared_irq_count;
 static int counter_in_use;
@@ -86,7 +90,11 @@ unsigned long pmu_csr_read_num(int csr_num)
 #undef switchcase_csr_read
 }
 
+<<<<<<< HEAD
 static inline void dummy_func_loop(u64 iter)
+=======
+static inline void dummy_func_loop(uint64_t iter)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i = 0;
 
@@ -259,7 +267,11 @@ static inline void verify_sbi_requirement_assert(void)
 		__GUEST_ASSERT(0, "SBI implementation version doesn't support PMU Snapshot");
 }
 
+<<<<<<< HEAD
 static void snapshot_set_shmem(gpa_t gpa, unsigned long flags)
+=======
+static void snapshot_set_shmem(vm_paddr_t gpa, unsigned long flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long lo = (unsigned long)gpa;
 #if __riscv_xlen == 32
@@ -436,7 +448,10 @@ static void test_pmu_basic_sanity(void)
 	struct sbiret ret;
 	int num_counters = 0, i;
 	union sbi_pmu_ctr_info ctrinfo;
+<<<<<<< HEAD
 	unsigned long fw_eidx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	probe = guest_sbi_probe_extension(SBI_EXT_PMU, &out_val);
 	GUEST_ASSERT(probe && out_val == 1);
@@ -462,6 +477,7 @@ static void test_pmu_basic_sanity(void)
 			pmu_csr_read_num(ctrinfo.csr);
 			GUEST_ASSERT(illegal_handler_invoked);
 		} else if (ctrinfo.type == SBI_PMU_CTR_TYPE_FW) {
+<<<<<<< HEAD
 			/* Read without configure should fail */
 			ret = sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_FW_READ,
 					i, 0, 0, 0, 0, 0);
@@ -480,6 +496,9 @@ static void test_pmu_basic_sanity(void)
 				GUEST_ASSERT(ret.value == i);
 				read_fw_counter(i, ctrinfo);
 			}
+=======
+			read_fw_counter(i, ctrinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -610,7 +629,11 @@ static void test_vm_setup_snapshot_mem(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
 	virt_map(vm, PMU_SNAPSHOT_GPA_BASE, PMU_SNAPSHOT_GPA_BASE, 1);
 
 	snapshot_gva = (void *)(PMU_SNAPSHOT_GPA_BASE);
+<<<<<<< HEAD
 	snapshot_gpa = addr_gva2gpa(vcpu->vm, (gva_t)snapshot_gva);
+=======
+	snapshot_gpa = addr_gva2gpa(vcpu->vm, (vm_vaddr_t)snapshot_gva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sync_global_to_guest(vcpu->vm, snapshot_gva);
 	sync_global_to_guest(vcpu->vm, snapshot_gpa);
 }

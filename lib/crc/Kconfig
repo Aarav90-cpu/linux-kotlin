@@ -48,7 +48,11 @@ config CRC_T10DIF_ARCH
 	bool
 	depends on CRC_T10DIF && CRC_OPTIMIZATIONS
 	default y if ARM && KERNEL_MODE_NEON
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if PPC64 && ALTIVEC
 	default y if RISCV && RISCV_ISA_ZBC
 	default y if X86
@@ -65,7 +69,11 @@ config CRC32_ARCH
 	depends on CRC32 && CRC_OPTIMIZATIONS
 	default y if ARM && KERNEL_MODE_NEON
 	default y if ARM64
+<<<<<<< HEAD
 	default y if LOONGARCH && 64BIT
+=======
+	default y if LOONGARCH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if MIPS && CPU_MIPSR6
 	default y if PPC64 && ALTIVEC
 	default y if RISCV && RISCV_ISA_ZBC
@@ -82,7 +90,10 @@ config CRC64
 config CRC64_ARCH
 	bool
 	depends on CRC64 && CRC_OPTIMIZATIONS
+<<<<<<< HEAD
 	default y if ARM64
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if RISCV && RISCV_ISA_ZBC && 64BIT
 	default y if X86_64
 
@@ -108,6 +119,7 @@ config CRC_KUNIT_TEST
 	  This is intended to help people writing architecture-specific
 	  optimized versions.  If unsure, say N.
 
+<<<<<<< HEAD
 config CRC_ENABLE_ALL_FOR_KUNIT
 	tristate "Enable all CRC functions for KUnit test"
 	depends on KUNIT
@@ -122,6 +134,8 @@ config CRC_ENABLE_ALL_FOR_KUNIT
 	  Enable this only if you'd like the CRC KUnit test suite to test all
 	  the CRC variants, even ones that wouldn't otherwise need to be built.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRC_BENCHMARK
 	bool "Benchmark for the CRC functions"
 	depends on CRC_KUNIT_TEST

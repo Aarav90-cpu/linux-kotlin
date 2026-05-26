@@ -9,14 +9,20 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/auxiliary_bus.h>
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/intel_rapl.h>
 #include <linux/intel_tpmi.h>
 #include <linux/intel_vsec.h>
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/units.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define TPMI_RAPL_MAJOR_VERSION 0
 #define TPMI_RAPL_MINOR_VERSION 1
@@ -62,6 +68,7 @@ static DEFINE_MUTEX(tpmi_rapl_lock);
 
 static struct powercap_control_type *tpmi_control_type;
 
+<<<<<<< HEAD
 /* bitmasks for RAPL TPMI, used by primitive access functions */
 #define TPMI_POWER_LIMIT_MASK			GENMASK_ULL(17, 0)
 #define TPMI_POWER_LIMIT_ENABLE			BIT_ULL(62)
@@ -114,6 +121,8 @@ static struct rapl_primitive_info rpi_tpmi[NR_RAPL_PRIMITIVES] = {
 						      0, RAPL_DOMAIN_REG_PERF, TIME_UNIT, 0),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tpmi_rapl_read_raw(int id, struct reg_action *ra, bool atomic)
 {
 	if (!ra->reg.mmio)
@@ -304,6 +313,7 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* TPMI Unit register has different layout */
 #define TPMI_ENERGY_UNIT_SCALE		1000
 #define TPMI_POWER_UNIT_OFFSET		0x00
@@ -348,6 +358,8 @@ static const struct rapl_defaults defaults_tpmi = {
 	.compute_time_window = rapl_default_compute_time_window,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int intel_rapl_tpmi_probe(struct auxiliary_device *auxdev,
 				 const struct auxiliary_device_id *id)
 {
@@ -395,8 +407,11 @@ static int intel_rapl_tpmi_probe(struct auxiliary_device *auxdev,
 	trp->priv.read_raw = tpmi_rapl_read_raw;
 	trp->priv.write_raw = tpmi_rapl_write_raw;
 	trp->priv.control_type = tpmi_control_type;
+<<<<<<< HEAD
 	trp->priv.defaults = &defaults_tpmi;
 	trp->priv.rpi = rpi_tpmi;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* RAPL TPMI I/F is per physical package */
 	trp->rp = rapl_find_package_domain(info->package_id, &trp->priv, false);
@@ -448,7 +463,10 @@ static struct auxiliary_driver intel_rapl_tpmi_driver = {
 
 module_auxiliary_driver(intel_rapl_tpmi_driver)
 
+<<<<<<< HEAD
 MODULE_IMPORT_NS("INTEL_RAPL");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_IMPORT_NS("INTEL_TPMI");
 
 MODULE_DESCRIPTION("Intel RAPL TPMI Driver");

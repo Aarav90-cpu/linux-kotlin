@@ -366,6 +366,7 @@ unsigned long io_uring_get_unmapped_area(struct file *filp, unsigned long addr,
 
 #else /* !CONFIG_MMU */
 
+<<<<<<< HEAD
 /*
  * Drop the pages that were initially referenced and added in
  * io_uring_mmap(). We cannot have had a mremap() as that isn't supported,
@@ -413,6 +414,11 @@ int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
 
 	vma->vm_ops = &io_uring_nommu_vm_ops;
 	return 0;
+=======
+int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	return is_nommu_shared_mapping(vma->vm_flags) ? 0 : -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 unsigned int io_uring_nommu_mmap_capabilities(struct file *file)

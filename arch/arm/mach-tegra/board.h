@@ -19,4 +19,9 @@
 void __init tegra_map_common_io(void);
 void __init tegra_init_irq(void);
 
+<<<<<<< HEAD
+=======
+void __init tegra_paz00_wifikill_init(void);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

@@ -108,7 +108,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&led_pin_gpio3_5>;
 
+<<<<<<< HEAD
 		led-user {
+=======
+		user {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "Heartbeat";
 			gpios = <&gpio3 5 0>;
 			linux,default-trigger = "heartbeat";

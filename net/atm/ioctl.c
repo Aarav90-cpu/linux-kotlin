@@ -11,10 +11,20 @@
 #include <linux/net.h>		/* struct socket, struct proto_ops */
 #include <linux/atm.h>		/* ATM stuff */
 #include <linux/atmdev.h>
+<<<<<<< HEAD
+=======
+#include <linux/atmclip.h>	/* CLIP_*ENCAP */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/atmarp.h>	/* manifest constants */
 #include <linux/capability.h>
 #include <linux/sonet.h>	/* for ioctls */
 #include <linux/atmsvc.h>
+<<<<<<< HEAD
+=======
+#include <linux/atmmpc.h>
+#include <net/atmclip.h>
+#include <linux/atmlec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mutex.h>
 #include <asm/ioctls.h>
 #include <net/compat.h>
@@ -134,6 +144,19 @@ static int do_vcc_ioctl(struct socket *sock, unsigned int cmd,
 		}
 		break;
 	}
+<<<<<<< HEAD
+=======
+	case ATMMPC_CTRL:
+	case ATMMPC_DATA:
+		request_module("mpoa");
+		break;
+	case ATMARPD_CTRL:
+		request_module("clip");
+		break;
+	case ATMLEC_CTRL:
+		request_module("lec");
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	error = -ENOIOCTLCMD;

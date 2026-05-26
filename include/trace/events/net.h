@@ -10,7 +10,10 @@
 #include <linux/if_vlan.h>
 #include <linux/ip.h>
 #include <linux/tracepoint.h>
+<<<<<<< HEAD
 #include <net/busy_poll.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_EVENT(net_dev_start_xmit,
 
@@ -209,8 +212,12 @@ DECLARE_EVENT_CLASS(net_dev_rx_verbose_template,
 	TP_fast_assign(
 		__assign_str(name);
 #ifdef CONFIG_NET_RX_BUSY_POLL
+<<<<<<< HEAD
 		__entry->napi_id = napi_id_valid(skb->napi_id) ?
 				   skb->napi_id : 0;
+=======
+		__entry->napi_id = skb->napi_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 		__entry->napi_id = 0;
 #endif

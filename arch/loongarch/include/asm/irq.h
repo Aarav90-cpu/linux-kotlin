@@ -48,6 +48,10 @@ void spurious_interrupt(void);
  */
 #define NR_VECTORS		256
 #define NR_LEGACY_VECTORS	16
+<<<<<<< HEAD
+=======
+#define IRQ_MATRIX_BITS		NR_VECTORS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define AVEC_IRQ_SHIFT		4
 #define AVEC_IRQ_BIT		8

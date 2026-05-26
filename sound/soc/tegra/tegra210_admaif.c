@@ -408,7 +408,10 @@ static int tegra_admaif_start(struct snd_soc_dai *dai, int direction)
 		reg = CH_RX_REG(TEGRA_ADMAIF_RX_ENABLE, dai->id);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(dai->dev, "invalid stream direction: %d\n", direction);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -442,7 +445,10 @@ static int tegra_admaif_stop(struct snd_soc_dai *dai, int direction)
 		reset_reg = CH_RX_REG(TEGRA_ADMAIF_RX_SOFT_RESET, dai->id);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(dai->dev, "invalid stream direction: %d\n", direction);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -491,7 +497,10 @@ static int tegra_admaif_trigger(struct snd_pcm_substream *substream, int cmd,
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		return tegra_admaif_stop(dai, substream->stream);
 	default:
+<<<<<<< HEAD
 		dev_err(dai->dev, "invalid trigger command: %d\n", cmd);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 }
@@ -842,7 +851,11 @@ static struct snd_kcontrol_new tegra264_admaif_controls[] = {
 static const struct snd_soc_component_driver tegra210_admaif_cmpnt = {
 	.controls		= tegra210_admaif_controls,
 	.num_controls		= ARRAY_SIZE(tegra210_admaif_controls),
+<<<<<<< HEAD
 	.pcm_new		= tegra_pcm_new,
+=======
+	.pcm_construct		= tegra_pcm_construct,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open			= tegra_pcm_open,
 	.close			= tegra_pcm_close,
 	.hw_params		= tegra_pcm_hw_params,
@@ -852,7 +865,11 @@ static const struct snd_soc_component_driver tegra210_admaif_cmpnt = {
 static const struct snd_soc_component_driver tegra186_admaif_cmpnt = {
 	.controls		= tegra186_admaif_controls,
 	.num_controls		= ARRAY_SIZE(tegra186_admaif_controls),
+<<<<<<< HEAD
 	.pcm_new		= tegra_pcm_new,
+=======
+	.pcm_construct		= tegra_pcm_construct,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open			= tegra_pcm_open,
 	.close			= tegra_pcm_close,
 	.hw_params		= tegra_pcm_hw_params,
@@ -862,7 +879,11 @@ static const struct snd_soc_component_driver tegra186_admaif_cmpnt = {
 static const struct snd_soc_component_driver tegra264_admaif_cmpnt = {
 	.controls		= tegra264_admaif_controls,
 	.num_controls		= ARRAY_SIZE(tegra264_admaif_controls),
+<<<<<<< HEAD
 	.pcm_new		= tegra_pcm_new,
+=======
+	.pcm_construct		= tegra_pcm_construct,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open			= tegra_pcm_open,
 	.close			= tegra_pcm_close,
 	.hw_params		= tegra_pcm_hw_params,
@@ -961,15 +982,29 @@ static int tegra_admaif_probe(struct platform_device *pdev)
 
 	admaif->regmap = devm_regmap_init_mmio(&pdev->dev, regs,
 					       admaif->soc_data->regmap_conf);
+<<<<<<< HEAD
 	if (IS_ERR(admaif->regmap))
 		return dev_err_probe(&pdev->dev, PTR_ERR(admaif->regmap),
 				     "regmap init failed\n");
+=======
+	if (IS_ERR(admaif->regmap)) {
+		dev_err(&pdev->dev, "regmap init failed\n");
+		return PTR_ERR(admaif->regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(admaif->regmap, true);
 
 	err = tegra_isomgr_adma_register(&pdev->dev);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+	if (err) {
+		dev_err(&pdev->dev, "Failed to add interconnect path\n");
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regmap_update_bits(admaif->regmap, admaif->soc_data->global_base +
 			   TEGRA_ADMAIF_GLOBAL_ENABLE, 1, 1);
@@ -1009,9 +1044,17 @@ static int tegra_admaif_probe(struct platform_device *pdev)
 					      admaif->soc_data->cmpnt,
 					      admaif->soc_data->dais,
 					      admaif->soc_data->num_ch);
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(&pdev->dev, err,
 				     "can't register ADMAIF component\n");
+=======
+	if (err) {
+		dev_err(&pdev->dev,
+			"can't register ADMAIF component, err: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_enable(&pdev->dev);
 

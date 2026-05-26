@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2020-2026 Intel Corporation
+=======
+ * Copyright (C) 2020-2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/circ_buf.h>
@@ -964,7 +968,10 @@ void ivpu_mmu_irq_evtq_handler(struct ivpu_device *vdev)
 		file_priv = xa_load(&vdev->context_xa, ssid);
 		if (file_priv) {
 			if (!READ_ONCE(file_priv->has_mmu_faults)) {
+<<<<<<< HEAD
 				atomic_set(&vdev->faults_detected, 1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ivpu_mmu_dump_event(vdev, event);
 				WRITE_ONCE(file_priv->has_mmu_faults, true);
 			}

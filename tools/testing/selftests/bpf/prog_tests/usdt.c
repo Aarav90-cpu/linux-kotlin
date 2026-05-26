@@ -247,6 +247,7 @@ cleanup:
 #undef TRIGGER
 }
 
+<<<<<<< HEAD
 #ifdef __x86_64__
 extern void usdt_1(void);
 extern void usdt_2(void);
@@ -337,6 +338,8 @@ cleanup:
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned short test_usdt_100_semaphore SEC(".probes");
 unsigned short test_usdt_300_semaphore SEC(".probes");
 unsigned short test_usdt_400_semaphore SEC(".probes");
@@ -606,8 +609,11 @@ void test_usdt(void)
 #ifdef __x86_64__
 	if (test__start_subtest("basic_optimized"))
 		subtest_basic_usdt(true);
+<<<<<<< HEAD
 	if (test__start_subtest("optimized_attach"))
 		subtest_optimized_attach();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	if (test__start_subtest("multispec"))
 		subtest_multispec_usdt();

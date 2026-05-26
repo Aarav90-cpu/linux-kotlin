@@ -344,6 +344,7 @@ toofar:
 #undef jmp_offset
 }
 
+<<<<<<< HEAD
 static void emit_store_stack_imm64(struct jit_ctx *ctx, int reg, int stack_off, u64 imm64)
 {
 	move_imm(ctx, reg, imm64, false);
@@ -351,6 +352,9 @@ static void emit_store_stack_imm64(struct jit_ctx *ctx, int reg, int stack_off, 
 }
 
 static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
+=======
+static void emit_atomic(const struct bpf_insn *insn, struct jit_ctx *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const u8 t1 = LOONGARCH_GPR_T1;
 	const u8 t2 = LOONGARCH_GPR_T2;
@@ -369,6 +373,7 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 	switch (imm) {
 	/* lock *(size *)(dst + off) <op>= src */
 	case BPF_ADD:
+<<<<<<< HEAD
 		switch (BPF_SIZE(insn->code)) {
 		case BPF_B:
 			if (!cpu_has_lam_bh) {
@@ -391,6 +396,12 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 			emit_insn(ctx, amaddd, t2, t1, src);
 			break;
 		}
+=======
+		if (isdw)
+			emit_insn(ctx, amaddd, t2, t1, src);
+		else
+			emit_insn(ctx, amaddw, t2, t1, src);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case BPF_AND:
 		if (isdw)
@@ -412,6 +423,7 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 		break;
 	/* src = atomic_fetch_<op>(dst + off, src) */
 	case BPF_ADD | BPF_FETCH:
+<<<<<<< HEAD
 		switch (BPF_SIZE(insn->code)) {
 		case BPF_B:
 			if (!cpu_has_lam_bh) {
@@ -436,6 +448,13 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 		case BPF_DW:
 			emit_insn(ctx, amaddd, src, t1, t3);
 			break;
+=======
+		if (isdw) {
+			emit_insn(ctx, amaddd, src, t1, t3);
+		} else {
+			emit_insn(ctx, amaddw, src, t1, t3);
+			emit_zext_32(ctx, src, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	case BPF_AND | BPF_FETCH:
@@ -464,6 +483,7 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 		break;
 	/* src = atomic_xchg(dst + off, src); */
 	case BPF_XCHG:
+<<<<<<< HEAD
 		switch (BPF_SIZE(insn->code)) {
 		case BPF_B:
 			if (!cpu_has_lam_bh) {
@@ -488,6 +508,13 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 		case BPF_DW:
 			emit_insn(ctx, amswapd, src, t1, t3);
 			break;
+=======
+		if (isdw) {
+			emit_insn(ctx, amswapd, src, t1, t3);
+		} else {
+			emit_insn(ctx, amswapw, src, t1, t3);
+			emit_zext_32(ctx, src, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	/* r0 = atomic_cmpxchg(dst + off, r0, src); */
@@ -510,6 +537,7 @@ static int emit_atomic_rmw(const struct bpf_insn *insn, struct jit_ctx *ctx)
 			emit_zext_32(ctx, r0, true);
 		}
 		break;
+<<<<<<< HEAD
 	default:
 		pr_err_once("bpf-jit: invalid atomic read-modify-write opcode %02x\n", imm);
 		return -EINVAL;
@@ -609,6 +637,9 @@ static int emit_atomic_ld_st(const struct bpf_insn *insn, struct jit_ctx *ctx)
 	}
 
 	return 0;
+=======
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool is_signed_bpf_cond(u8 cond)
@@ -1414,6 +1445,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
 			return ret;
 		break;
 
+<<<<<<< HEAD
 	/* Atomics */
 	case BPF_STX | BPF_ATOMIC | BPF_B:
 	case BPF_STX | BPF_ATOMIC | BPF_H:
@@ -1425,6 +1457,11 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
 			ret = emit_atomic_ld_st(insn, ctx);
 		if (ret)
 			return ret;
+=======
+	case BPF_STX | BPF_ATOMIC | BPF_W:
+	case BPF_STX | BPF_ATOMIC | BPF_DW:
+		emit_atomic(insn, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	/* Speculation barrier */
@@ -1634,6 +1671,7 @@ int bpf_arch_text_invalidate(void *dst, size_t len)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void store_args(struct jit_ctx *ctx, int nr_arg_slots, int args_off)
 {
 	int i;
@@ -1647,20 +1685,37 @@ static void store_args(struct jit_ctx *ctx, int nr_arg_slots, int args_off)
 				  16 + (i - LOONGARCH_MAX_REG_ARGS) * 8);
 			emit_insn(ctx, std, LOONGARCH_GPR_T1, LOONGARCH_GPR_FP, -args_off);
 		}
+=======
+static void store_args(struct jit_ctx *ctx, int nargs, int args_off)
+{
+	int i;
+
+	for (i = 0; i < nargs; i++) {
+		emit_insn(ctx, std, LOONGARCH_GPR_A0 + i, LOONGARCH_GPR_FP, -args_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		args_off -= 8;
 	}
 }
 
+<<<<<<< HEAD
 static void restore_args(struct jit_ctx *ctx, int nr_reg_args, int args_off)
 {
 	int i;
 
 	for (i = 0; i < nr_reg_args; i++) {
+=======
+static void restore_args(struct jit_ctx *ctx, int nargs, int args_off)
+{
+	int i;
+
+	for (i = 0; i < nargs; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		emit_insn(ctx, ldd, LOONGARCH_GPR_A0 + i, LOONGARCH_GPR_FP, -args_off);
 		args_off -= 8;
 	}
 }
 
+<<<<<<< HEAD
 static void restore_stk_args(struct jit_ctx *ctx, int nr_stk_args, int args_off, int stk_args_off)
 {
 	int i;
@@ -1674,6 +1729,8 @@ static void restore_stk_args(struct jit_ctx *ctx, int nr_stk_args, int args_off,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
 			   int args_off, int retval_off, int run_ctx_off, bool save_ret)
 {
@@ -1682,11 +1739,20 @@ static int invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
 	struct bpf_prog *p = l->link.prog;
 	int cookie_off = offsetof(struct bpf_tramp_run_ctx, bpf_cookie);
 
+<<<<<<< HEAD
 	if (l->cookie)
 		emit_store_stack_imm64(ctx, LOONGARCH_GPR_T1,
 				      -run_ctx_off + cookie_off, l->cookie);
 	else
 		emit_insn(ctx, std, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_FP, -run_ctx_off + cookie_off);
+=======
+	if (l->cookie) {
+		move_imm(ctx, LOONGARCH_GPR_T1, l->cookie, false);
+		emit_insn(ctx, std, LOONGARCH_GPR_T1, LOONGARCH_GPR_FP, -run_ctx_off + cookie_off);
+	} else {
+		emit_insn(ctx, std, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_FP, -run_ctx_off + cookie_off);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* arg1: prog */
 	move_imm(ctx, LOONGARCH_GPR_A0, (const s64)p, false);
@@ -1737,6 +1803,7 @@ static int invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int invoke_bpf(struct jit_ctx *ctx, struct bpf_tramp_links *tl,
 		      int args_off, int retval_off, int run_ctx_off,
 		      int func_meta_off, bool save_ret, u64 func_meta, int cookie_off)
@@ -1758,6 +1825,20 @@ static int invoke_bpf(struct jit_ctx *ctx, struct bpf_tramp_links *tl,
 	}
 
 	return 0;
+=======
+static void invoke_bpf_mod_ret(struct jit_ctx *ctx, struct bpf_tramp_links *tl,
+			       int args_off, int retval_off, int run_ctx_off, u32 **branches)
+{
+	int i;
+
+	emit_insn(ctx, std, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_FP, -retval_off);
+	for (i = 0; i < tl->nr_links; i++) {
+		invoke_bpf_prog(ctx, tl->links[i], args_off, retval_off, run_ctx_off, true);
+		emit_insn(ctx, ldd, LOONGARCH_GPR_T1, LOONGARCH_GPR_FP, -retval_off);
+		branches[i] = (u32 *)ctx->image + ctx->idx;
+		emit_insn(ctx, nop);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void *arch_alloc_bpf_trampoline(unsigned int size)
@@ -1811,10 +1892,15 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 					 void *func_addr, u32 flags)
 {
 	int i, ret, save_ret;
+<<<<<<< HEAD
 	int cookie_cnt, cookie_off;
 	int stack_size, args_off, stk_args_off, nr_arg_slots = 0;
 	int retval_off, func_meta_off, ip_off, run_ctx_off, sreg_off, tcc_ptr_off;
 	unsigned long long func_meta;
+=======
+	int stack_size, nargs;
+	int retval_off, args_off, nargs_off, ip_off, run_ctx_off, sreg_off, tcc_ptr_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool is_struct_ops = flags & BPF_TRAMP_F_INDIRECT;
 	void *orig_call = func_addr;
 	struct bpf_tramp_links *fentry = &tlinks[BPF_TRAMP_FENTRY];
@@ -1832,6 +1918,7 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	 * FP - 16      [ FP of traced func ] frame pointer of traced
 	 *                    function
 	 *
+<<<<<<< HEAD
 	 * FP - retval_off   [ return value      ] BPF_TRAMP_F_CALL_ORIG or
 	 *                                         BPF_TRAMP_F_RET_FENTRY_RET
 	 *                   [ arg regN          ]
@@ -1870,6 +1957,32 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		 * bytes.
 		 */
 		nr_arg_slots += round_up(m->arg_size[i], 8) / 8;
+=======
+	 * FP - retval_off  [ return value      ] BPF_TRAMP_F_CALL_ORIG or
+	 *                    BPF_TRAMP_F_RET_FENTRY_RET
+	 *                  [ argN              ]
+	 *                  [ ...               ]
+	 * FP - args_off    [ arg1              ]
+	 *
+	 * FP - nargs_off   [ regs count        ]
+	 *
+	 * FP - ip_off      [ traced func   ] BPF_TRAMP_F_IP_ARG
+	 *
+	 * FP - run_ctx_off [ bpf_tramp_run_ctx ]
+	 *
+	 * FP - sreg_off    [ callee saved reg  ]
+	 *
+	 * FP - tcc_ptr_off [ tail_call_cnt_ptr ]
+	 */
+
+	if (m->nr_args > LOONGARCH_MAX_REG_ARGS)
+		return -ENOTSUPP;
+
+	/* FIXME: No support of struct argument */
+	for (i = 0; i < m->nr_args; i++) {
+		if (m->arg_flags[i] & BTF_FMODEL_STRUCT_ARG)
+			return -ENOTSUPP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (flags & (BPF_TRAMP_F_ORIG_STACK | BPF_TRAMP_F_SHARE_IPMODIFY))
@@ -1885,12 +1998,22 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	retval_off = stack_size;
 
 	/* Room of trampoline frame to store args */
+<<<<<<< HEAD
 	stack_size += nr_arg_slots * 8;
 	args_off = stack_size;
 
 	/* Room of function metadata, such as regs count */
 	stack_size += 8;
 	func_meta_off = stack_size;
+=======
+	nargs = m->nr_args;
+	stack_size += nargs * 8;
+	args_off = stack_size;
+
+	/* Room of trampoline frame to store args number */
+	stack_size += 8;
+	nargs_off = stack_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Room of trampoline frame to store ip address */
 	if (flags & BPF_TRAMP_F_IP_ARG) {
@@ -1898,12 +2021,15 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		ip_off = stack_size;
 	}
 
+<<<<<<< HEAD
 	cookie_cnt = bpf_fsession_cookie_cnt(tlinks);
 
 	/* Room for session cookies */
 	stack_size += cookie_cnt * 8;
 	cookie_off = stack_size;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Room of trampoline frame to store struct bpf_tramp_run_ctx */
 	stack_size += round_up(sizeof(struct bpf_tramp_run_ctx), 8);
 	run_ctx_off = stack_size;
@@ -1917,6 +2043,7 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		tcc_ptr_off = stack_size;
 	}
 
+<<<<<<< HEAD
 	if ((flags & BPF_TRAMP_F_CALL_ORIG) && (nr_arg_slots - LOONGARCH_MAX_REG_ARGS > 0))
 		stack_size += (nr_arg_slots - LOONGARCH_MAX_REG_ARGS) * 8;
 
@@ -1925,6 +2052,10 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	/* Room for args on stack must be at the top of stack */
 	stk_args_off = stack_size;
 
+=======
+	stack_size = round_up(stack_size, 16);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_struct_ops) {
 		/*
 		 * For the trampoline called directly, just handle
@@ -1960,6 +2091,7 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	emit_insn(ctx, std, LOONGARCH_GPR_S1, LOONGARCH_GPR_FP, -sreg_off);
 
 	/* store ip address of the traced function */
+<<<<<<< HEAD
 	if (flags & BPF_TRAMP_F_IP_ARG)
 		emit_store_stack_imm64(ctx, LOONGARCH_GPR_T1, -ip_off, (u64)func_addr);
 
@@ -1978,6 +2110,19 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		emit_insn(ctx, std, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_FP, -retval_off);
 	}
 
+=======
+	if (flags & BPF_TRAMP_F_IP_ARG) {
+		move_imm(ctx, LOONGARCH_GPR_T1, (const s64)func_addr, false);
+		emit_insn(ctx, std, LOONGARCH_GPR_T1, LOONGARCH_GPR_FP, -ip_off);
+	}
+
+	/* store nargs number */
+	move_imm(ctx, LOONGARCH_GPR_T1, nargs, false);
+	emit_insn(ctx, std, LOONGARCH_GPR_T1, LOONGARCH_GPR_FP, -nargs_off);
+
+	store_args(ctx, nargs, args_off);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* To traced function */
 	/* Ftrace jump skips 2 NOP instructions */
 	if (is_kernel_text((unsigned long)orig_call) ||
@@ -1994,9 +2139,15 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 			return ret;
 	}
 
+<<<<<<< HEAD
 	if (fentry->nr_links) {
 		ret = invoke_bpf(ctx, fentry, args_off, retval_off, run_ctx_off, func_meta_off,
 				 flags & BPF_TRAMP_F_RET_FENTRY_RET, func_meta, cookie_off);
+=======
+	for (i = 0; i < fentry->nr_links; i++) {
+		ret = invoke_bpf_prog(ctx, fentry->links[i], args_off, retval_off,
+				      run_ctx_off, flags & BPF_TRAMP_F_RET_FENTRY_RET);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -2005,6 +2156,7 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		if (!branches)
 			return -ENOMEM;
 
+<<<<<<< HEAD
 		emit_insn(ctx, std, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_FP, -retval_off);
 		for (i = 0; i < fmod_ret->nr_links; i++) {
 			ret = invoke_bpf_prog(ctx, fmod_ret->links[i],
@@ -2020,6 +2172,13 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
 		restore_args(ctx, min_t(int, nr_arg_slots, LOONGARCH_MAX_REG_ARGS), args_off);
 		restore_stk_args(ctx, nr_arg_slots - LOONGARCH_MAX_REG_ARGS, args_off, stk_args_off);
+=======
+		invoke_bpf_mod_ret(ctx, fmod_ret, args_off, retval_off, run_ctx_off, branches);
+	}
+
+	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+		restore_args(ctx, m->nr_args, args_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
 			emit_insn(ctx, ldd, REG_TCC, LOONGARCH_GPR_FP, -tcc_ptr_off);
@@ -2040,6 +2199,7 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 		*branches[i] = larch_insn_gen_bne(LOONGARCH_GPR_T1, LOONGARCH_GPR_ZERO, offset);
 	}
 
+<<<<<<< HEAD
 	/* Set "is_return" flag for fsession */
 	func_meta |= (1ULL << BPF_TRAMP_IS_RETURN_SHIFT);
 	if (bpf_fsession_cnt(tlinks))
@@ -2048,6 +2208,10 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	if (fexit->nr_links) {
 		ret = invoke_bpf(ctx, fexit, args_off, retval_off, run_ctx_off,
 				 func_meta_off, false, func_meta, cookie_off);
+=======
+	for (i = 0; i < fexit->nr_links; i++) {
+		ret = invoke_bpf_prog(ctx, fexit->links[i], args_off, retval_off, run_ctx_off, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto out;
 	}
@@ -2061,7 +2225,11 @@ static int __arch_prepare_bpf_trampoline(struct jit_ctx *ctx, struct bpf_tramp_i
 	}
 
 	if (flags & BPF_TRAMP_F_RESTORE_REGS)
+<<<<<<< HEAD
 		restore_args(ctx, min_t(int, nr_arg_slots, LOONGARCH_MAX_REG_ARGS), args_off);
+=======
+		restore_args(ctx, m->nr_args, args_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (save_ret) {
 		emit_insn(ctx, ldd, regmap[BPF_REG_0], LOONGARCH_GPR_FP, -(retval_off - 8));
@@ -2166,28 +2334,63 @@ int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
 	return ret < 0 ? ret : ret * LOONGARCH_INSN_SIZE;
 }
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 	bool extra_pass = false;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+{
+	bool tmp_blinded = false, extra_pass = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *image_ptr, *ro_image_ptr;
 	int image_size, prog_size, extable_size;
 	struct jit_ctx ctx;
 	struct jit_data *jit_data;
 	struct bpf_binary_header *header;
 	struct bpf_binary_header *ro_header;
+<<<<<<< HEAD
+=======
+	struct bpf_prog *tmp, *orig_prog = prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If BPF JIT was not enabled then we must fall back to
 	 * the interpreter.
 	 */
 	if (!prog->jit_requested)
+<<<<<<< HEAD
 		return prog;
+=======
+		return orig_prog;
+
+	tmp = bpf_jit_blind_constants(prog);
+	/*
+	 * If blinding was requested and we failed during blinding,
+	 * we must fall back to the interpreter. Otherwise, we save
+	 * the new JITed code.
+	 */
+	if (IS_ERR(tmp))
+		return orig_prog;
+
+	if (tmp != prog) {
+		tmp_blinded = true;
+		prog = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	jit_data = prog->aux->jit_data;
 	if (!jit_data) {
 		jit_data = kzalloc_obj(*jit_data);
+<<<<<<< HEAD
 		if (!jit_data)
 			return prog;
+=======
+		if (!jit_data) {
+			prog = orig_prog;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		prog->aux->jit_data = jit_data;
 	}
 	if (jit_data->ctx.offset) {
@@ -2207,6 +2410,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	ctx.user_vm_start = bpf_arena_get_user_vm_start(prog->aux->arena);
 
 	ctx.offset = kvcalloc(prog->len + 1, sizeof(u32), GFP_KERNEL);
+<<<<<<< HEAD
 	if (ctx.offset == NULL)
 		goto out_offset;
 
@@ -2214,6 +2418,19 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	build_prologue(&ctx);
 	if (build_body(&ctx, extra_pass))
 		goto out_offset;
+=======
+	if (ctx.offset == NULL) {
+		prog = orig_prog;
+		goto out_offset;
+	}
+
+	/* 1. Initial fake pass to compute ctx->idx and set ctx->flags */
+	build_prologue(&ctx);
+	if (build_body(&ctx, extra_pass)) {
+		prog = orig_prog;
+		goto out_offset;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx.epilogue_offset = ctx.idx;
 	build_epilogue(&ctx);
 
@@ -2229,8 +2446,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	/* Now we know the size of the structure to make */
 	ro_header = bpf_jit_binary_pack_alloc(image_size, &ro_image_ptr, sizeof(u32),
 					      &header, &image_ptr, jit_fill_hole);
+<<<<<<< HEAD
 	if (!ro_header)
 		goto out_offset;
+=======
+	if (!ro_header) {
+		prog = orig_prog;
+		goto out_offset;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 2. Now, the actual pass to generate final JIT code */
 	/*
@@ -2250,6 +2474,7 @@ skip_init_ctx:
 	ctx.num_exentries = 0;
 
 	build_prologue(&ctx);
+<<<<<<< HEAD
 	if (build_body(&ctx, extra_pass))
 		goto out_free;
 	build_epilogue(&ctx);
@@ -2257,6 +2482,19 @@ skip_init_ctx:
 	/* 3. Extra pass to validate JITed code */
 	if (validate_ctx(&ctx))
 		goto out_free;
+=======
+	if (build_body(&ctx, extra_pass)) {
+		prog = orig_prog;
+		goto out_free;
+	}
+	build_epilogue(&ctx);
+
+	/* 3. Extra pass to validate JITed code */
+	if (validate_ctx(&ctx)) {
+		prog = orig_prog;
+		goto out_free;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* And we're done */
 	if (bpf_jit_enable > 1)
@@ -2269,9 +2507,15 @@ skip_init_ctx:
 			goto out_free;
 		}
 		if (WARN_ON(bpf_jit_binary_pack_finalize(ro_header, header))) {
+<<<<<<< HEAD
 			/* ro_header and header have been freed */
 			ro_header = NULL;
 			header = NULL;
+=======
+			/* ro_header has been freed */
+			ro_header = NULL;
+			prog = orig_prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_free;
 		}
 		/*
@@ -2303,6 +2547,7 @@ out_offset:
 		prog->aux->jit_data = NULL;
 	}
 
+<<<<<<< HEAD
 	return prog;
 
 out_free:
@@ -2312,6 +2557,15 @@ out_free:
 		prog->jited_len = 0;
 	}
 
+=======
+out:
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(prog, prog == orig_prog ? tmp : orig_prog);
+
+	return prog;
+
+out_free:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (header) {
 		bpf_arch_text_copy(&ro_header->size, &header->size, sizeof(header->size));
 		bpf_jit_binary_pack_free(ro_header, header);
@@ -2357,11 +2611,14 @@ bool bpf_jit_supports_arena(void)
 	return true;
 }
 
+<<<<<<< HEAD
 bool bpf_jit_supports_fsession(void)
 {
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
 bool bpf_jit_supports_subprog_tailcalls(void)
 {

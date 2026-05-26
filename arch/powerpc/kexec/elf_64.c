@@ -79,10 +79,13 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
 			goto out;
 		}
 
+<<<<<<< HEAD
 		ret = crash_load_dm_crypt_keys(image);
 		if (ret)
 			goto out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Setup cmdline for kdump kernel case */
 		modified_cmdline = setup_kdump_cmdline(image, cmdline,
 						       cmdline_len);

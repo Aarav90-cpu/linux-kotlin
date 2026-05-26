@@ -492,7 +492,11 @@ void rtw_stop_drv_threads(struct adapter *padapter)
 {
 	rtw_stop_cmd_thread(padapter);
 
+<<<<<<< HEAD
 	/*  Below is to terminate tx_thread... */
+=======
+	/*  Below is to termindate tx_thread... */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	complete(&padapter->xmitpriv.xmit_comp);
 	wait_for_completion(&padapter->xmitpriv.terminate_xmitthread_comp);
 
@@ -618,10 +622,18 @@ void rtw_reset_drv_sw(struct adapter *padapter)
 	padapter->xmitpriv.tx_pkts = 0;
 	padapter->recvpriv.rx_pkts = 0;
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.busy_traffic = false;
 
 	pmlmepriv->link_detect_info.traffic_transition_count = 0;
 	pmlmepriv->link_detect_info.low_power_transition_count = 0;
+=======
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
+
+	/* pmlmepriv->LinkDetectInfo.TrafficBusyState = false; */
+	pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
+	pmlmepriv->LinkDetectInfo.LowPowerTransitionCount = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING);
 
@@ -959,6 +971,10 @@ static int netdev_close(struct net_device *pnetdev)
 	}
 
 	rtw_scan_abort(padapter);
+<<<<<<< HEAD
+=======
+	adapter_wdev_data(padapter)->bandroid_scan = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1135,10 +1151,17 @@ static int rtw_resume_process_normal(struct adapter *padapter)
 	pwrpriv = adapter_to_pwrctl(padapter);
 	pmlmepriv = &padapter->mlmepriv;
 	/*  interface init */
+<<<<<<< HEAD
 	if (padapter->intf_init) {
 		ret = padapter->intf_init(adapter_to_dvobj(padapter));
 		if (ret)
 			goto exit;
+=======
+	/* if (sdio_init(adapter_to_dvobj(padapter)) != _SUCCESS) */
+	if ((padapter->intf_init) && (padapter->intf_init(adapter_to_dvobj(padapter)) != _SUCCESS)) {
+		ret = -1;
+		goto exit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	rtw_hal_disable_interrupt(padapter);
 	/* if (sdio_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS) */

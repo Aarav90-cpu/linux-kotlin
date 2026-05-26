@@ -11,29 +11,57 @@
 #define DM_MSG_PREFIX	"verity-fec"
 
 /*
+<<<<<<< HEAD
  * When correcting a block, the FEC implementation performs optimally when it
  * can collect all the associated RS codewords at the same time.  As each byte
  * is part of a different codeword, there are '1 << data_dev_block_bits'
  * codewords.  Each buffer has space for the message bytes for
  * '1 << DM_VERITY_FEC_BUF_RS_BITS' codewords, so that gives
  * '1 << (data_dev_block_bits - DM_VERITY_FEC_BUF_RS_BITS)' buffers.
+=======
+ * When correcting a data block, the FEC code performs optimally when it can
+ * collect all the associated RS blocks at the same time.  As each byte is part
+ * of a different RS block, there are '1 << data_dev_block_bits' RS blocks.
+ * There are '1 << DM_VERITY_FEC_BUF_RS_BITS' RS blocks per buffer, so that
+ * gives '1 << (data_dev_block_bits - DM_VERITY_FEC_BUF_RS_BITS)' buffers.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline unsigned int fec_max_nbufs(struct dm_verity *v)
 {
 	return 1 << (v->data_dev_block_bits - DM_VERITY_FEC_BUF_RS_BITS);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Return an interleaved offset for a byte in RS block.
+ */
+static inline u64 fec_interleave(struct dm_verity *v, u64 offset)
+{
+	u32 mod;
+
+	mod = do_div(offset, v->fec->rsn);
+	return offset + mod * (v->fec->rounds << v->data_dev_block_bits);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Loop over each allocated buffer. */
 #define fec_for_each_buffer(io, __i) \
 	for (__i = 0; __i < (io)->nbufs; __i++)
 
+<<<<<<< HEAD
 /* Loop over each RS message in each allocated buffer. */
 /* To stop early, use 'goto', not 'break' (since this uses nested loops). */
 #define fec_for_each_buffer_rs_message(io, __i, __j) \
+=======
+/* Loop over each RS block in each allocated buffer. */
+#define fec_for_each_buffer_rs_block(io, __i, __j) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fec_for_each_buffer(io, __i) \
 		for (__j = 0; __j < 1 << DM_VERITY_FEC_BUF_RS_BITS; __j++)
 
 /*
+<<<<<<< HEAD
  * Return a pointer to the current RS message when called inside
  * fec_for_each_buffer_rs_message.
  */
@@ -58,6 +86,40 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
 	unsigned int n, i, j, parity_pos, to_copy;
 	uint16_t par_buf[DM_VERITY_FEC_MAX_ROOTS];
 	u8 *par, *msg_buf;
+=======
+ * Return a pointer to the current RS block when called inside
+ * fec_for_each_buffer_rs_block.
+ */
+static inline u8 *fec_buffer_rs_block(struct dm_verity *v,
+				      struct dm_verity_fec_io *fio,
+				      unsigned int i, unsigned int j)
+{
+	return &fio->bufs[i][j * v->fec->rsn];
+}
+
+/*
+ * Return an index to the current RS block when called inside
+ * fec_for_each_buffer_rs_block.
+ */
+static inline unsigned int fec_buffer_rs_index(unsigned int i, unsigned int j)
+{
+	return (i << DM_VERITY_FEC_BUF_RS_BITS) + j;
+}
+
+/*
+ * Decode all RS blocks from buffers and copy corrected bytes into fio->output
+ * starting from block_offset.
+ */
+static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+			   struct dm_verity_fec_io *fio, u64 rsb, int byte_index,
+			   unsigned int block_offset, int neras)
+{
+	int r, corrected = 0, res;
+	struct dm_buffer *buf;
+	unsigned int n, i, j, parity_pos, to_copy;
+	uint16_t par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+	u8 *par, *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 parity_block;
 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
 
@@ -65,35 +127,59 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
 	 * Compute the index of the first parity block that will be needed and
 	 * the starting position in that block.  Then read that block.
 	 *
+<<<<<<< HEAD
 	 * block_size is always a power of 2, but roots might not be.  Note that
 	 * when it's not, a codeword's parity bytes can span a block boundary.
 	 */
 	parity_block = ((index_in_region << v->data_dev_block_bits) + out_pos) *
 		       v->fec->roots;
 	parity_pos = parity_block & (v->fec->block_size - 1);
+=======
+	 * io_size is always a power of 2, but roots might not be.  Note that
+	 * when it's not, a codeword's parity bytes can span a block boundary.
+	 */
+	parity_block = (rsb + block_offset) * v->fec->roots;
+	parity_pos = parity_block & (v->fec->io_size - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	parity_block >>= v->data_dev_block_bits;
 	par = dm_bufio_read_with_ioprio(v->fec->bufio, parity_block, &buf,
 					bio->bi_ioprio);
 	if (IS_ERR(par)) {
 		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
+<<<<<<< HEAD
 		      v->data_dev->name, target_block, parity_block,
 		      PTR_ERR(par));
+=======
+		      v->data_dev->name, rsb, parity_block, PTR_ERR(par));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return PTR_ERR(par);
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Decode the RS codewords whose message bytes are in bufs. Each RS
 	 * codeword results in one corrected target byte and consumes fec->roots
 	 * parity bytes.
 	 */
 	fec_for_each_buffer_rs_message(fio, n, i) {
 		msg_buf = fec_buffer_rs_message(v, fio, n, i);
+=======
+	 * Decode the RS blocks we have in bufs. Each RS block results in
+	 * one corrected target byte and consumes fec->roots parity bytes.
+	 */
+	fec_for_each_buffer_rs_block(fio, n, i) {
+		block = fec_buffer_rs_block(v, fio, n, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Copy the next 'roots' parity bytes to 'par_buf', reading
 		 * another parity block if needed.
 		 */
+<<<<<<< HEAD
 		to_copy = min(v->fec->block_size - parity_pos, v->fec->roots);
+=======
+		to_copy = min(v->fec->io_size - parity_pos, v->fec->roots);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (j = 0; j < to_copy; j++)
 			par_buf[j] = par[parity_pos++];
 		if (to_copy < v->fec->roots) {
@@ -106,14 +192,20 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
 							bio->bi_ioprio);
 			if (IS_ERR(par)) {
 				DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
+<<<<<<< HEAD
 				      v->data_dev->name, target_block,
 				      parity_block, PTR_ERR(par));
+=======
+				      v->data_dev->name, rsb, parity_block,
+				      PTR_ERR(par));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return PTR_ERR(par);
 			}
 			for (; j < v->fec->roots; j++)
 				par_buf[j] = par[parity_pos++];
 		}
 
+<<<<<<< HEAD
 		/* Decode an RS codeword using the Reed-Solomon library. */
 		res = decode_rs8(fio->rs, msg_buf, par_buf, v->fec->rs_k,
 				 NULL, neras, fio->erasures, 0, NULL);
@@ -128,14 +220,41 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
 			goto done;
 	}
 done:
+=======
+		/* Decode an RS block using Reed-Solomon */
+		res = decode_rs8(fio->rs, block, par_buf, v->fec->rsn,
+				 NULL, neras, fio->erasures, 0, NULL);
+		if (res < 0) {
+			r = res;
+			goto error;
+		}
+
+		corrected += res;
+		fio->output[block_offset] = block[byte_index];
+
+		block_offset++;
+		if (block_offset >= 1 << v->data_dev_block_bits)
+			goto done;
+	}
+done:
+	r = corrected;
+error:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dm_bufio_release(buf);
 
 	if (r < 0 && neras)
 		DMERR_LIMIT("%s: FEC %llu: failed to correct: %d",
+<<<<<<< HEAD
 			    v->data_dev->name, target_block, r);
 	else if (r == 0)
 		DMWARN_LIMIT("%s: FEC %llu: corrected %d errors",
 			     v->data_dev->name, target_block, corrected);
+=======
+			    v->data_dev->name, (unsigned long long)rsb, r);
+	else if (r > 0)
+		DMWARN_LIMIT("%s: FEC %llu: corrected %d errors",
+			     v->data_dev->name, (unsigned long long)rsb, r);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return r;
 }
@@ -146,7 +265,11 @@ done:
 static int fec_is_erasure(struct dm_verity *v, struct dm_verity_io *io,
 			  const u8 *want_digest, const u8 *data)
 {
+<<<<<<< HEAD
 	if (unlikely(verity_hash(v, io, data, v->fec->block_size,
+=======
+	if (unlikely(verity_hash(v, io, data, 1 << v->data_dev_block_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 io->tmp_digest)))
 		return 0;
 
@@ -154,6 +277,7 @@ static int fec_is_erasure(struct dm_verity *v, struct dm_verity_io *io,
 }
 
 /*
+<<<<<<< HEAD
  * Read the message block at index @index_in_region within each of the
  * @v->fec->rs_k regions and deinterleave their contents into @io->fec_io->bufs.
  *
@@ -183,6 +307,24 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 	u8 *bbuf;
 	u8 want_digest[HASH_MAX_DIGESTSIZE];
 	unsigned int n, src_pos;
+=======
+ * Read data blocks that are part of the RS block and deinterleave as much as
+ * fits into buffers. Check for erasure locations if @neras is non-NULL.
+ */
+static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
+			 u64 rsb, u64 target, unsigned int block_offset,
+			 int *neras)
+{
+	bool is_zero;
+	int i, j, target_index = -1;
+	struct dm_buffer *buf;
+	struct dm_bufio_client *bufio;
+	struct dm_verity_fec_io *fio = io->fec_io;
+	u64 block, ileaved;
+	u8 *bbuf, *rs_block;
+	u8 want_digest[HASH_MAX_DIGESTSIZE];
+	unsigned int n, k;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
 
 	if (neras)
@@ -191,12 +333,30 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 	if (WARN_ON(v->digest_size > sizeof(want_digest)))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	for (i = 0; i < v->fec->rs_k; i++) {
 		/*
 		 * Read the block from region i.  It contains the i'th message
 		 * byte of the target block's RS codewords.
 		 */
 		block = i * v->fec->region_blocks + index_in_region;
+=======
+	/*
+	 * read each of the rsn data blocks that are part of the RS block, and
+	 * interleave contents to available bufs
+	 */
+	for (i = 0; i < v->fec->rsn; i++) {
+		ileaved = fec_interleave(v, rsb * v->fec->rsn + i);
+
+		/*
+		 * target is the data block we want to correct, target_index is
+		 * the index of this block within the rsn RS blocks
+		 */
+		if (ileaved == target)
+			target_index = i;
+
+		block = ileaved >> v->data_dev_block_bits;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bufio = v->fec->data_bufio;
 
 		if (block >= v->data_blocks) {
@@ -216,8 +376,14 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 		bbuf = dm_bufio_read_with_ioprio(bufio, block, &buf, bio->bi_ioprio);
 		if (IS_ERR(bbuf)) {
 			DMWARN_LIMIT("%s: FEC %llu: read failed (%llu): %ld",
+<<<<<<< HEAD
 				     v->data_dev->name, target_block, block,
 				     PTR_ERR(bbuf));
+=======
+				     v->data_dev->name,
+				     (unsigned long long)rsb,
+				     (unsigned long long)block, PTR_ERR(bbuf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* assume the block is corrupted */
 			if (neras && *neras <= v->fec->roots)
@@ -244,6 +410,7 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 		}
 
 		/*
+<<<<<<< HEAD
 		 * Deinterleave the bytes of the block, starting from 'out_pos',
 		 * into the i'th byte of the RS message buffers.  Stop when
 		 * end-of-block is reached or there are no more buffers.
@@ -253,11 +420,29 @@ static int fec_read_bufs(struct dm_verity *v, struct dm_verity_io *io,
 			if (src_pos >= v->fec->block_size)
 				goto done;
 			fec_buffer_rs_message(v, fio, n, j)[i] = bbuf[src_pos++];
+=======
+		 * deinterleave and copy the bytes that fit into bufs,
+		 * starting from block_offset
+		 */
+		fec_for_each_buffer_rs_block(fio, n, j) {
+			k = fec_buffer_rs_index(n, j) + block_offset;
+
+			if (k >= 1 << v->data_dev_block_bits)
+				goto done;
+
+			rs_block = fec_buffer_rs_block(v, fio, n, j);
+			rs_block[i] = bbuf[k];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 done:
 		dm_bufio_release(buf);
 	}
+<<<<<<< HEAD
 	return 0;
+=======
+
+	return target_index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -304,12 +489,17 @@ static void fec_init_bufs(struct dm_verity *v, struct dm_verity_fec_io *fio)
 	unsigned int n;
 
 	fec_for_each_buffer(fio, n)
+<<<<<<< HEAD
 		memset(fio->bufs[n], 0, v->fec->rs_k << DM_VERITY_FEC_BUF_RS_BITS);
+=======
+		memset(fio->bufs[n], 0, v->fec->rsn << DM_VERITY_FEC_BUF_RS_BITS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(fio->erasures, 0, sizeof(fio->erasures));
 }
 
 /*
+<<<<<<< HEAD
  * Try to correct the message (data or hash) block at index @target_block.
  *
  * If @use_erasures is true, use verity hashes to locate erasures.  This makes
@@ -343,10 +533,28 @@ static int fec_decode(struct dm_verity *v, struct dm_verity_io *io,
 		fec_init_bufs(v, fio);
 
 		r = fec_read_bufs(v, io, target_block, index_in_region, out_pos,
+=======
+ * Decode all RS blocks in a single data block and return the target block
+ * (indicated by @offset) in fio->output. If @use_erasures is non-zero, uses
+ * hashes to locate erasures.
+ */
+static int fec_decode_rsb(struct dm_verity *v, struct dm_verity_io *io,
+			  struct dm_verity_fec_io *fio, u64 rsb, u64 offset,
+			  const u8 *want_digest, bool use_erasures)
+{
+	int r, neras = 0;
+	unsigned int pos;
+
+	for (pos = 0; pos < 1 << v->data_dev_block_bits; ) {
+		fec_init_bufs(v, fio);
+
+		r = fec_read_bufs(v, io, rsb, offset, pos,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  use_erasures ? &neras : NULL);
 		if (unlikely(r < 0))
 			return r;
 
+<<<<<<< HEAD
 		r = fec_decode_bufs(v, io, fio, target_block, target_region,
 				    index_in_region, out_pos, neras);
 		if (r < 0)
@@ -357,12 +565,28 @@ static int fec_decode(struct dm_verity *v, struct dm_verity_io *io,
 
 	/* Always re-validate the corrected block against the expected hash */
 	r = verity_hash(v, io, fio->output, v->fec->block_size, io->tmp_digest);
+=======
+		r = fec_decode_bufs(v, io, fio, rsb, r, pos, neras);
+		if (r < 0)
+			return r;
+
+		pos += fio->nbufs << DM_VERITY_FEC_BUF_RS_BITS;
+	}
+
+	/* Always re-validate the corrected block against the expected hash */
+	r = verity_hash(v, io, fio->output, 1 << v->data_dev_block_bits,
+			io->tmp_digest);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(r < 0))
 		return r;
 
 	if (memcmp(io->tmp_digest, want_digest, v->digest_size)) {
 		DMERR_LIMIT("%s: FEC %llu: failed to correct (%d erasures)",
+<<<<<<< HEAD
 			    v->data_dev->name, target_block, neras);
+=======
+			    v->data_dev->name, (unsigned long long)rsb, neras);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EILSEQ;
 	}
 
@@ -376,6 +600,10 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
 {
 	int r;
 	struct dm_verity_fec_io *fio;
+<<<<<<< HEAD
+=======
+	u64 offset, res, rsb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!verity_fec_is_enabled(v))
 		return -EOPNOTSUPP;
@@ -393,18 +621,50 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
 		block = block - v->hash_start + v->data_blocks;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * For RS(M, N), the continuous FEC data is divided into blocks of N
+	 * bytes. Since block size may not be divisible by N, the last block
+	 * is zero padded when decoding.
+	 *
+	 * Each byte of the block is covered by a different RS(M, N) code,
+	 * and each code is interleaved over N blocks to make it less likely
+	 * that bursty corruption will leave us in unrecoverable state.
+	 */
+
+	offset = block << v->data_dev_block_bits;
+	res = div64_u64(offset, v->fec->rounds << v->data_dev_block_bits);
+
+	/*
+	 * The base RS block we can feed to the interleaver to find out all
+	 * blocks required for decoding.
+	 */
+	rsb = offset - res * (v->fec->rounds << v->data_dev_block_bits);
+
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Locating erasures is slow, so attempt to recover the block without
 	 * them first. Do a second attempt with erasures if the corruption is
 	 * bad enough.
 	 */
+<<<<<<< HEAD
 	r = fec_decode(v, io, fio, block, want_digest, false);
 	if (r < 0) {
 		r = fec_decode(v, io, fio, block, want_digest, true);
+=======
+	r = fec_decode_rsb(v, io, fio, rsb, offset, want_digest, false);
+	if (r < 0) {
+		r = fec_decode_rsb(v, io, fio, rsb, offset, want_digest, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (r < 0)
 			goto done;
 	}
 
+<<<<<<< HEAD
 	memcpy(dest, fio->output, v->fec->block_size);
+=======
+	memcpy(dest, fio->output, 1 << v->data_dev_block_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic64_inc(&v->fec->corrected);
 
 done:
@@ -552,8 +812,13 @@ int verity_fec_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 
 	} else if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_ROOTS)) {
 		if (sscanf(arg_value, "%hhu%c", &num_c, &dummy) != 1 || !num_c ||
+<<<<<<< HEAD
 		    num_c < DM_VERITY_FEC_MIN_ROOTS ||
 		    num_c > DM_VERITY_FEC_MAX_ROOTS) {
+=======
+		    num_c < (DM_VERITY_FEC_RSM - DM_VERITY_FEC_MAX_RSN) ||
+		    num_c > (DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ti->error = "Invalid " DM_VERITY_OPT_FEC_ROOTS;
 			return -EINVAL;
 		}
@@ -615,7 +880,11 @@ int verity_fec_ctr(struct dm_verity *v)
 	 * hash device after the hash blocks.
 	 */
 
+<<<<<<< HEAD
 	hash_blocks = v->hash_end - v->hash_start;
+=======
+	hash_blocks = v->hash_blocks - v->hash_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Require matching block sizes for data and hash devices for
@@ -625,28 +894,45 @@ int verity_fec_ctr(struct dm_verity *v)
 		ti->error = "Block sizes must match to use FEC";
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	f->block_size = 1 << v->data_dev_block_bits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!f->roots) {
 		ti->error = "Missing " DM_VERITY_OPT_FEC_ROOTS;
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	f->rs_k = DM_VERITY_FEC_RS_N - f->roots;
+=======
+	f->rsn = DM_VERITY_FEC_RSM - f->roots;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!f->blocks) {
 		ti->error = "Missing " DM_VERITY_OPT_FEC_BLOCKS;
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	f->region_blocks = f->blocks;
 	if (sector_div(f->region_blocks, f->rs_k))
 		f->region_blocks++;
+=======
+	f->rounds = f->blocks;
+	if (sector_div(f->rounds, f->rsn))
+		f->rounds++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Due to optional metadata, f->blocks can be larger than
 	 * data_blocks and hash_blocks combined.
 	 */
+<<<<<<< HEAD
 	if (f->blocks < v->data_blocks + hash_blocks || !f->region_blocks) {
+=======
+	if (f->blocks < v->data_blocks + hash_blocks || !f->rounds) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ti->error = "Invalid " DM_VERITY_OPT_FEC_BLOCKS;
 		return -EINVAL;
 	}
@@ -663,7 +949,14 @@ int verity_fec_ctr(struct dm_verity *v)
 		return -E2BIG;
 	}
 
+<<<<<<< HEAD
 	f->bufio = dm_bufio_client_create(f->dev->bdev, f->block_size,
+=======
+	f->io_size = 1 << v->data_dev_block_bits;
+
+	f->bufio = dm_bufio_client_create(f->dev->bdev,
+					  f->io_size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  1, 0, NULL, NULL, 0);
 	if (IS_ERR(f->bufio)) {
 		ti->error = "Cannot initialize FEC bufio client";
@@ -672,12 +965,21 @@ int verity_fec_ctr(struct dm_verity *v)
 
 	dm_bufio_set_sector_offset(f->bufio, f->start << (v->data_dev_block_bits - SECTOR_SHIFT));
 
+<<<<<<< HEAD
 	if (dm_bufio_get_device_size(f->bufio) < f->region_blocks * f->roots) {
+=======
+	if (dm_bufio_get_device_size(f->bufio) < f->rounds * f->roots) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ti->error = "FEC device is too small";
 		return -E2BIG;
 	}
 
+<<<<<<< HEAD
 	f->data_bufio = dm_bufio_client_create(v->data_dev->bdev, f->block_size,
+=======
+	f->data_bufio = dm_bufio_client_create(v->data_dev->bdev,
+					       1 << v->data_dev_block_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       1, 0, NULL, NULL, 0);
 	if (IS_ERR(f->data_bufio)) {
 		ti->error = "Cannot initialize FEC data bufio client";
@@ -707,7 +1009,11 @@ int verity_fec_ctr(struct dm_verity *v)
 	}
 
 	f->cache = kmem_cache_create("dm_verity_fec_buffers",
+<<<<<<< HEAD
 				     f->rs_k << DM_VERITY_FEC_BUF_RS_BITS,
+=======
+				     f->rsn << DM_VERITY_FEC_BUF_RS_BITS,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     0, 0, NULL);
 	if (!f->cache) {
 		ti->error = "Cannot create FEC buffer cache";
@@ -724,7 +1030,11 @@ int verity_fec_ctr(struct dm_verity *v)
 
 	/* Preallocate an output buffer for each thread */
 	ret = mempool_init_kmalloc_pool(&f->output_pool, num_online_cpus(),
+<<<<<<< HEAD
 					f->block_size);
+=======
+					1 << v->data_dev_block_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		ti->error = "Cannot allocate FEC output pool";
 		return ret;

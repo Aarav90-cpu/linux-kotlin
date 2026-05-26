@@ -57,11 +57,16 @@ INTERVAL_TREE_DEFINE(struct serial_info, node, sector_t, _subtree_last,
 		     START, LAST, static inline, raid1_rb);
 
 static int check_and_add_serial(struct md_rdev *rdev, struct r1bio *r1_bio,
+<<<<<<< HEAD
 				struct serial_info *si)
+=======
+				struct serial_info *si, int idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long flags;
 	int ret = 0;
 	sector_t lo = r1_bio->sector;
+<<<<<<< HEAD
 	sector_t hi = lo + r1_bio->sectors - 1;
 	int idx = sector_to_idx(r1_bio->sector);
 	struct serial_in_rdev *serial = &rdev->serial[idx];
@@ -80,6 +85,18 @@ static int check_and_add_serial(struct md_rdev *rdev, struct r1bio *r1_bio,
 		si->start = lo;
 		si->last = hi;
 		si->wnode_start = si->start;
+=======
+	sector_t hi = lo + r1_bio->sectors;
+	struct serial_in_rdev *serial = &rdev->serial[idx];
+
+	spin_lock_irqsave(&serial->serial_lock, flags);
+	/* collision happened */
+	if (raid1_rb_iter_first(&serial->serial_rb, lo, hi))
+		ret = -EBUSY;
+	else {
+		si->start = lo;
+		si->last = hi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raid1_rb_insert(si, &serial->serial_rb);
 	}
 	spin_unlock_irqrestore(&serial->serial_lock, flags);
@@ -91,10 +108,16 @@ static void wait_for_serialization(struct md_rdev *rdev, struct r1bio *r1_bio)
 {
 	struct mddev *mddev = rdev->mddev;
 	struct serial_info *si;
+<<<<<<< HEAD
+=======
+	int idx = sector_to_idx(r1_bio->sector);
+	struct serial_in_rdev *serial = &rdev->serial[idx];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(!mddev->serial_info_pool))
 		return;
 	si = mempool_alloc(mddev->serial_info_pool, GFP_NOIO);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&si->waiters);
 	INIT_LIST_HEAD(&si->list_node);
 	init_completion(&si->ready);
@@ -102,11 +125,19 @@ static void wait_for_serialization(struct md_rdev *rdev, struct r1bio *r1_bio)
 		wait_for_completion(&si->ready);
 		reinit_completion(&si->ready);
 	}
+=======
+	wait_event(serial->serial_io_wait,
+		   check_and_add_serial(rdev, r1_bio, si, idx) == 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void remove_serial(struct md_rdev *rdev, sector_t lo, sector_t hi)
 {
+<<<<<<< HEAD
 	struct serial_info *si, *iter_si;
+=======
+	struct serial_info *si;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	int found = 0;
 	struct mddev *mddev = rdev->mddev;
@@ -117,10 +148,16 @@ static void remove_serial(struct md_rdev *rdev, sector_t lo, sector_t hi)
 	for (si = raid1_rb_iter_first(&serial->serial_rb, lo, hi);
 	     si; si = raid1_rb_iter_next(si, lo, hi)) {
 		if (si->start == lo && si->last == hi) {
+<<<<<<< HEAD
+=======
+			raid1_rb_remove(si, &serial->serial_rb);
+			mempool_free(si, mddev->serial_info_pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			found = 1;
 			break;
 		}
 	}
+<<<<<<< HEAD
 	if (found) {
 		raid1_rb_remove(si, &serial->serial_rb);
 		if (!list_empty(&si->waiters)) {
@@ -139,6 +176,12 @@ static void remove_serial(struct md_rdev *rdev, sector_t lo, sector_t hi)
 		WARN(1, "The write IO is not recorded for serialization\n");
 	}
 	spin_unlock_irqrestore(&serial->serial_lock, flags);
+=======
+	if (!found)
+		WARN(1, "The write IO is not recorded for serialization\n");
+	spin_unlock_irqrestore(&serial->serial_lock, flags);
+	wake_up(&serial->serial_io_wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -475,7 +518,11 @@ static void raid1_end_write_request(struct bio *bio)
 	int mirror = find_bio_disk(r1_bio, bio);
 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
 	sector_t lo = r1_bio->sector;
+<<<<<<< HEAD
 	sector_t hi = r1_bio->sector + r1_bio->sectors - 1;
+=======
+	sector_t hi = r1_bio->sector + r1_bio->sectors;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool ignore_error = !raid1_should_handle_error(bio) ||
 		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
 
@@ -1510,14 +1557,31 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
 	    mddev->cluster_ops->area_resyncing(mddev, WRITE,
 		     bio->bi_iter.bi_sector, bio_end_sector(bio))) {
 
+<<<<<<< HEAD
+=======
+		DEFINE_WAIT(w);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (bio->bi_opf & REQ_NOWAIT) {
 			bio_wouldblock_error(bio);
 			return;
 		}
+<<<<<<< HEAD
 		wait_event_idle(conf->wait_barrier,
 				!mddev->cluster_ops->area_resyncing(mddev, WRITE,
 								    bio->bi_iter.bi_sector,
 								    bio_end_sector(bio)));
+=======
+		for (;;) {
+			prepare_to_wait(&conf->wait_barrier,
+					&w, TASK_IDLE);
+			if (!mddev->cluster_ops->area_resyncing(mddev, WRITE,
+							bio->bi_iter.bi_sector,
+							bio_end_sector(bio)))
+				break;
+			schedule();
+		}
+		finish_wait(&conf->wait_barrier, &w);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1894,7 +1958,11 @@ static bool raid1_add_conf(struct r1conf *conf, struct md_rdev *rdev, int disk,
 	if (info->rdev)
 		return false;
 
+<<<<<<< HEAD
 	if (!bdev_rot(rdev->bdev)) {
+=======
+	if (bdev_nonrot(rdev->bdev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_bit(Nonrot, &rdev->flags);
 		WRITE_ONCE(conf->nonrot_disks, conf->nonrot_disks + 1);
 	}

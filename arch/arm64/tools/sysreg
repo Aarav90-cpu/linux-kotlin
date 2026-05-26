@@ -1496,7 +1496,10 @@ UnsignedEnum	27:24	B16B16
 	0b0000	NI
 	0b0001	IMP
 	0b0010	BFSCALE
+<<<<<<< HEAD
 	0b0011	B16MM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EndEnum
 UnsignedEnum	23:20	BF16
 	0b0000	NI
@@ -1523,7 +1526,10 @@ UnsignedEnum	3:0	SVEver
 	0b0001	SVE2
 	0b0010	SVE2p1
 	0b0011	SVE2p2
+<<<<<<< HEAD
 	0b0100	SVE2p3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EndEnum
 EndSysreg
 
@@ -1532,11 +1538,15 @@ UnsignedEnum	63	FA64
 	0b0	NI
 	0b1	IMP
 EndEnum
+<<<<<<< HEAD
 Res0	62
 UnsignedEnum	61	LUT6
 	0b0	NI
 	0b1	IMP
 EndEnum
+=======
+Res0	62:61
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 UnsignedEnum	60	LUTv2
 	0b0	NI
 	0b1	IMP
@@ -1546,7 +1556,10 @@ UnsignedEnum	59:56	SMEver
 	0b0001	SME2
 	0b0010	SME2p1
 	0b0011	SME2p2
+<<<<<<< HEAD
 	0b0100	SME2p3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EndEnum
 UnsignedEnum	55:52	I16I64
 	0b0000	NI
@@ -1661,6 +1674,7 @@ UnsignedEnum	26	F8MM4
 	0b0	NI
 	0b1	IMP
 EndEnum
+<<<<<<< HEAD
 Res0	25:16
 UnsignedEnum	15	F16MM2
 	0b0	NI
@@ -1668,6 +1682,9 @@ UnsignedEnum	15	F16MM2
 EndEnum
 Res0	14:8
 Raz	7:2
+=======
+Res0	25:2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 UnsignedEnum	1	F8E4M3
 	0b0	NI
 	0b1	IMP
@@ -1848,8 +1865,11 @@ EndEnum
 UnsignedEnum	51:48	FHM
 	0b0000	NI
 	0b0001	IMP
+<<<<<<< HEAD
 	0b0010	F16F32DOT
 	0b0011	F16F32MM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EndEnum
 UnsignedEnum	47:44	DP
 	0b0000	NI
@@ -1991,7 +2011,10 @@ EndEnum
 UnsignedEnum	59:56	LUT
 	0b0000	NI
 	0b0001	IMP
+<<<<<<< HEAD
 	0b0010	LUT6
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EndEnum
 UnsignedEnum	55:52	CSSC
 	0b0000	NI
@@ -3259,6 +3282,7 @@ UnsignedEnum	3:0	ID_BITS
 EndEnum
 EndSysreg
 
+<<<<<<< HEAD
 Sysreg	ICC_HPPIR_EL1	3	0	12	10	3
 Res0	63:33
 Field	32	HPPIV
@@ -3267,6 +3291,8 @@ Res0	28:24
 Field	23:0	ID
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ICC_ICSR_EL1	3	0	12	10	4
 Res0	63:48
 Field	47:32	IAFFID
@@ -3281,11 +3307,14 @@ Field	1	Enabled
 Field	0	F
 EndSysreg
 
+<<<<<<< HEAD
 Sysreg	ICC_IAFFIDR_EL1	3	0	12	10	5
 Res0	63:16
 Field	15:0	IAFFID
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SysregFields	ICC_PPI_ENABLERx_EL1
 Field	63	EN63
 Field	62	EN62
@@ -3684,6 +3713,7 @@ Field	3:0	BS
 EndSysreg
 
 Sysreg	SMIDR_EL1	3	1	0	0	6
+<<<<<<< HEAD
 Res0	63:60
 Field	59:56	NSMC
 Field	55:52	HIP
@@ -3732,6 +3762,16 @@ Field	1	P1
 Field	0	P0
 EndSysreg
 
+=======
+Res0	63:32
+Field	31:24	IMPLEMENTER
+Field	23:16	REVISION
+Field	15	SMPS
+Res0	14:12
+Field	11:0	AFFINITY
+EndSysreg
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ICC_CR0_EL1	3	1	12	0	1
 Res0	63:39
 Field	38	PID
@@ -4756,6 +4796,7 @@ Field	31:16	PhyPARTID29
 Field	15:0	PhyPARTID28
 EndSysreg
 
+<<<<<<< HEAD
 Sysreg	ICH_APR_EL2	3	4	12	8	4
 Res0	63:32
 Field	31	P31
@@ -4792,6 +4833,8 @@ Field	1	P1
 Field	0	P0
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ICH_HFGRTR_EL2	3	4	12	9	4
 Res0	63:21
 Field	20	ICC_PPI_ACTIVERn_EL1
@@ -4840,6 +4883,7 @@ Field	1	GICCDDIS
 Field	0	GICCDEN
 EndSysreg
 
+<<<<<<< HEAD
 SysregFields	ICH_PPI_DVIRx_EL2
 Field	63	DVI63
 Field	62	DVI62
@@ -5140,6 +5184,8 @@ Sysreg	ICH_PPI_ACTIVER1_EL2	3	4	12	10	7
 Fields ICH_PPI_ACTIVERx_EL2
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ICH_HCR_EL2	3	4	12	11	0
 Res0	63:32
 Field	31:27	EOIcount
@@ -5194,6 +5240,7 @@ Field	1	V3
 Field	0	En
 EndSysreg
 
+<<<<<<< HEAD
 Sysreg	ICH_CONTEXTR_EL2	3	4	12	11	6
 Field	63	V
 Field	62	F
@@ -5206,6 +5253,8 @@ Res0	31:16
 Field	15:0	VM
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ICH_VMCR_EL2	3	4	12	11	7
 Prefix	FEAT_GCIE
 Res0	63:32
@@ -5227,6 +5276,7 @@ Field	1	VENG1
 Field	0	VENG0
 EndSysreg
 
+<<<<<<< HEAD
 SysregFields	ICH_PPI_PRIORITYRx_EL2
 Res0	63:61
 Field	60:56	Priority7
@@ -5310,6 +5360,8 @@ Sysreg	ICH_PPI_PRIORITYR15_EL2	3	4	12	15	7
 Fields	ICH_PPI_PRIORITYRx_EL2
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	CONTEXTIDR_EL2	3	4	13	0	1
 Fields	CONTEXTIDR_ELx
 EndSysreg
@@ -5672,6 +5724,7 @@ Field	31:16	PARTID_D
 Field	15:0	PARTID_I
 EndSysreg
 
+<<<<<<< HEAD
 Sysreg	MPAMSM_EL1	3	0	10	5	3
 Res0	63:48
 Field	47:40	PMG_D
@@ -5680,6 +5733,8 @@ Field	31:16	PARTID_D
 Res0	15:0
 EndSysreg
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sysreg	ISR_EL1	3	0	12	1	0
 Res0	63:11
 Field	10	IS

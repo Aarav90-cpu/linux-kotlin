@@ -300,6 +300,7 @@ properties:
     $ref: /schemas/types.yaml#/definitions/uint8-array
     maxItems: 4
 
+<<<<<<< HEAD
   sink-load-step:
     description: Indicates the preferred load step slew rate in mA/usec for
       the port (in sink mode). This property is defined in "6.5.13.7" of
@@ -334,6 +335,8 @@ properties:
     minimum: 0
     maximum: 100000
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dependencies:
   pd-disable: [typec-power-opmode]
   sink-vdos-v1: [ sink-vdos ]
@@ -365,9 +368,14 @@ $defs:
           "Universal Serial Bus Power Delivery Specification" chapter 6.4.1.3
           Sink Capabilities Message, the order of each entry(PDO) should follow the
           PD spec chapter 6.4.1. Required for power sink and power dual role. User
+<<<<<<< HEAD
           can specify the sink PDO array via
           PDO_FIXED/BATT/VAR/PPS_APDO/SPR_AVS_SNK_APDO() defined in
           dt-bindings/usb/pd.h.
+=======
+          can specify the sink PDO array via PDO_FIXED/BATT/VAR/PPS_APDO() defined
+          in dt-bindings/usb/pd.h.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         minItems: 1
         maxItems: 7
         $ref: /schemas/types.yaml#/definitions/uint32-array

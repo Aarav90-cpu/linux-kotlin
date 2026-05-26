@@ -93,11 +93,16 @@
 /* I2C3 */
 &lpi2c3 {
 	clock-frequency = <400000>;
+<<<<<<< HEAD
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_lpi2c3>;
 	pinctrl-1 = <&pinctrl_lpi2c3_gpio>;
 	scl-gpios = <&gpio2 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	sda-gpios = <&gpio2 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpi2c3>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	pmic@25 {
@@ -237,6 +242,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_lpi2c3_gpio: lpi2c3gpiogrp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO28__GPIO2_IO28		0x31e
@@ -244,6 +250,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_pmic: pmicgrp {
 		fsl,pins = <
 			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e

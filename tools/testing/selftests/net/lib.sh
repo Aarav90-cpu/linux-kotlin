@@ -224,6 +224,7 @@ setup_ns()
 	NS_LIST+=("${ns_list[@]}")
 }
 
+<<<<<<< HEAD
 in_all_ns()
 {
 	local ret=0
@@ -237,6 +238,8 @@ in_all_ns()
 	return "${ret}"
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # Create netdevsim with given id and net namespace.
 create_netdevsim() {
     local id="$1"
@@ -527,8 +530,12 @@ mac_get()
 {
 	local if_name=$1
 
+<<<<<<< HEAD
 	run_on "$if_name" \
 		ip -j link show dev "$if_name" | jq -r '.[]["address"]'
+=======
+	ip -j link show dev $if_name | jq -r '.[]["address"]'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 kill_process()
@@ -684,8 +691,11 @@ cmd_jq()
 	# return success only in case of non-empty output
 	[ ! -z "$output" ]
 }
+<<<<<<< HEAD
 
 run_on()
 {
 	shift; "$@"
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

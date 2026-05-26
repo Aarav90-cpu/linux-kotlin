@@ -52,6 +52,7 @@
 #define ILI9341_MADCTL_MX	BIT(6)
 #define ILI9341_MADCTL_MY	BIT(7)
 
+<<<<<<< HEAD
 struct ili9341_device {
 	struct mipi_dbi_dev dbidev;
 
@@ -89,11 +90,22 @@ static void ili9341_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	struct drm_device *drm = crtc->dev;
 	struct ili9341_device *ili9341 = to_ili9341_device(drm);
 	struct mipi_dbi_dev *dbidev = &ili9341->dbidev;
+=======
+static void yx240qv29_enable(struct drm_simple_display_pipe *pipe,
+			     struct drm_crtc_state *crtc_state,
+			     struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi *dbi = &dbidev->dbi;
 	u8 addr_mode;
 	int ret, idx;
 
+<<<<<<< HEAD
 	if (!drm_dev_enter(drm, &idx))
+=======
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	DRM_DEBUG_KMS("\n");
@@ -165,12 +177,17 @@ out_enable:
 	}
 	addr_mode |= ILI9341_MADCTL_BGR;
 	mipi_dbi_command(dbi, MIPI_DCS_SET_ADDRESS_MODE, addr_mode);
+<<<<<<< HEAD
 
 	backlight_enable(dbidev->backlight);
+=======
+	mipi_dbi_enable_flush(dbidev, crtc_state, plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs ili9341_crtc_helper_funcs = {
 	DRM_MIPI_DBI_CRTC_HELPER_FUNCS,
 	.atomic_enable = ili9341_crtc_helper_atomic_enable,
@@ -200,6 +217,10 @@ static const struct drm_mode_config_helper_funcs ili9341_mode_config_helper_func
 
 static const struct drm_mode_config_funcs ili9341_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
+=======
+static const struct drm_simple_display_pipe_funcs ili9341_pipe_funcs = {
+	DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS(yx240qv29_enable),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct drm_display_mode yx240qv29_mode = {
@@ -235,11 +256,15 @@ MODULE_DEVICE_TABLE(spi, ili9341_id);
 static int ili9341_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
+<<<<<<< HEAD
 	struct ili9341_device *ili9341;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi_dev *dbidev;
 	struct drm_device *drm;
 	struct mipi_dbi *dbi;
 	struct gpio_desc *dc;
+<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
@@ -251,6 +276,16 @@ static int ili9341_probe(struct spi_device *spi)
 	if (IS_ERR(ili9341))
 		return PTR_ERR(ili9341);
 	dbidev = &ili9341->dbidev;
+=======
+	u32 rotation = 0;
+	int ret;
+
+	dbidev = devm_drm_dev_alloc(dev, &ili9341_driver,
+				    struct mipi_dbi_dev, drm);
+	if (IS_ERR(dbidev))
+		return PTR_ERR(dbidev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
 
@@ -272,6 +307,7 @@ static int ili9341_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &yx240qv29_mode, ili9341_plane_formats[0],
 				    rotation, 0);
 	if (ret)
@@ -319,6 +355,9 @@ static int ili9341_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &ili9341_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init(dbidev, &ili9341_pipe_funcs, &yx240qv29_mode, rotation);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

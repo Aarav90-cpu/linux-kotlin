@@ -4,9 +4,12 @@
  *
  * Copyright (C) 2023 SKIDATA GmbH
  * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+<<<<<<< HEAD
  *
  * Copyright (c) 2025 Svyatoslav Ryhel <clamor95@gmail.com>
  * Copyright (c) 2025 Jonas Schwöbel <jonasschwoebel@yahoo.de>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 /*
@@ -15,6 +18,7 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/clk/tegra.h>
 #include <linux/delay.h>
@@ -24,6 +28,12 @@
 #include <linux/kthread.h>
 #include <linux/pm_runtime.h>
 #include <linux/tegra-mipi-cal.h>
+=======
+#include <linux/delay.h>
+#include <linux/host1x.h>
+#include <linux/kernel.h>
+#include <linux/kthread.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/v4l2-mediabus.h>
 
 #include "vip.h"
@@ -31,6 +41,7 @@
 
 #define TEGRA_VI_SYNCPT_WAIT_TIMEOUT			msecs_to_jiffies(200)
 
+<<<<<<< HEAD
 #define TEGRA20_MIN_WIDTH	32U
 #define TEGRA20_MAX_WIDTH	8190U
 #define TEGRA20_MIN_HEIGHT	32U
@@ -41,17 +52,30 @@ enum tegra_vi_out {
 	TEGRA_VI_OUT_1 = 0,
 	TEGRA_VI_OUT_2 = 1,
 };
+=======
+/* This are just good-sense numbers. The actual min/max is not documented. */
+#define TEGRA20_MIN_WIDTH	32U
+#define TEGRA20_MIN_HEIGHT	32U
+#define TEGRA20_MAX_WIDTH	2048U
+#define TEGRA20_MAX_HEIGHT	2048U
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* --------------------------------------------------------------------------
  * Registers
  */
 
+<<<<<<< HEAD
 #define TEGRA_VI_CONT_SYNCPT_OUT(n)			(0x0060 + (n) * 4)
 #define       VI_CONT_SYNCPT_OUT_CONTINUOUS_SYNCPT	BIT(8)
 #define       VI_CONT_SYNCPT_OUT_SYNCPT_IDX_SFT		0
 
 #define TEGRA_VI_CONT_SYNCPT_CSI_PP_FRAME_START(n)	(0x0070 + (n) * 8)
 #define TEGRA_VI_CONT_SYNCPT_CSI_PP_FRAME_END(n)	(0x0074 + (n) * 8)
+=======
+#define TEGRA_VI_CONT_SYNCPT_OUT_1			0x0060
+#define       VI_CONT_SYNCPT_OUT_1_CONTINUOUS_SYNCPT	BIT(8)
+#define       VI_CONT_SYNCPT_OUT_1_SYNCPT_IDX_SFT	0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define TEGRA_VI_VI_INPUT_CONTROL			0x0088
 #define       VI_INPUT_FIELD_DETECT			BIT(27)
@@ -63,7 +87,10 @@ enum tegra_vi_out {
 #define       VI_INPUT_YUV_INPUT_FORMAT_YVYU		(3 << VI_INPUT_YUV_INPUT_FORMAT_SFT)
 #define       VI_INPUT_INPUT_FORMAT_SFT			2  /* bits [5:2] */
 #define       VI_INPUT_INPUT_FORMAT_YUV422		(0 << VI_INPUT_INPUT_FORMAT_SFT)
+<<<<<<< HEAD
 #define       VI_INPUT_INPUT_FORMAT_BAYER		(2 << VI_INPUT_INPUT_FORMAT_SFT)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define       VI_INPUT_VIP_INPUT_ENABLE			BIT(1)
 
 #define TEGRA_VI_VI_CORE_CONTROL			0x008c
@@ -84,7 +111,11 @@ enum tegra_vi_out {
 #define       VI_VI_CORE_CONTROL_OUTPUT_TO_EPP_SFT	2
 #define       VI_VI_CORE_CONTROL_OUTPUT_TO_ISP_SFT	0
 
+<<<<<<< HEAD
 #define TEGRA_VI_VI_OUTPUT_CONTROL(n)			(0x0090 + (n) * 4)
+=======
+#define TEGRA_VI_VI_FIRST_OUTPUT_CONTROL		0x0090
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define       VI_OUTPUT_FORMAT_EXT			BIT(22)
 #define       VI_OUTPUT_V_DIRECTION			BIT(20)
 #define       VI_OUTPUT_H_DIRECTION			BIT(19)
@@ -98,10 +129,13 @@ enum tegra_vi_out {
 #define       VI_OUTPUT_OUTPUT_FORMAT_SFT		0
 #define       VI_OUTPUT_OUTPUT_FORMAT_YUV422POST	(3 << VI_OUTPUT_OUTPUT_FORMAT_SFT)
 #define       VI_OUTPUT_OUTPUT_FORMAT_YUV420PLANAR	(6 << VI_OUTPUT_OUTPUT_FORMAT_SFT)
+<<<<<<< HEAD
 /* TEGRA_VI_OUT_2 supported formats */
 #define       VI_OUTPUT_OUTPUT_FORMAT_CSI_PPA_BAYER	(7 << VI_OUTPUT_OUTPUT_FORMAT_SFT)
 #define       VI_OUTPUT_OUTPUT_FORMAT_CSI_PPB_BAYER	(8 << VI_OUTPUT_OUTPUT_FORMAT_SFT)
 #define       VI_OUTPUT_OUTPUT_FORMAT_VIP_BAYER_DIRECT	(9 << VI_OUTPUT_OUTPUT_FORMAT_SFT)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define TEGRA_VI_VIP_H_ACTIVE				0x00a4
 #define       VI_VIP_H_ACTIVE_PERIOD_SFT		16 /* active pixels/line, must be even */
@@ -111,13 +145,19 @@ enum tegra_vi_out {
 #define       VI_VIP_V_ACTIVE_PERIOD_SFT		16 /* active lines */
 #define       VI_VIP_V_ACTIVE_START_SFT			0
 
+<<<<<<< HEAD
 #define TEGRA_VI_VB0_START_ADDRESS(n)			(0x00c4 + (n) * 44)
 #define TEGRA_VI_VB0_BASE_ADDRESS(n)			(0x00c8 + (n) * 44)
+=======
+#define TEGRA_VI_VB0_START_ADDRESS_FIRST		0x00c4
+#define TEGRA_VI_VB0_BASE_ADDRESS_FIRST			0x00c8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TEGRA_VI_VB0_START_ADDRESS_U			0x00cc
 #define TEGRA_VI_VB0_BASE_ADDRESS_U			0x00d0
 #define TEGRA_VI_VB0_START_ADDRESS_V			0x00d4
 #define TEGRA_VI_VB0_BASE_ADDRESS_V			0x00d8
 
+<<<<<<< HEAD
 #define TEGRA_VI_OUTPUT_FRAME_SIZE(n)			(0x00e0 + (n) * 24)
 #define       VI_OUTPUT_FRAME_HEIGHT_SFT		16
 #define       VI_OUTPUT_FRAME_WIDTH_SFT			0
@@ -131,6 +171,21 @@ enum tegra_vi_out {
 #define TEGRA_VI_VB0_BUFFER_STRIDE(n)			(0x00ec + (n) * 24)
 #define       VI_VB0_BUFFER_STRIDE_CHROMA_SFT		30
 #define       VI_VB0_BUFFER_STRIDE_LUMA_SFT		0
+=======
+#define TEGRA_VI_FIRST_OUTPUT_FRAME_SIZE		0x00e0
+#define       VI_FIRST_OUTPUT_FRAME_HEIGHT_SFT		16
+#define       VI_FIRST_OUTPUT_FRAME_WIDTH_SFT		0
+
+#define TEGRA_VI_VB0_COUNT_FIRST			0x00e4
+
+#define TEGRA_VI_VB0_SIZE_FIRST				0x00e8
+#define       VI_VB0_SIZE_FIRST_V_SFT			16
+#define       VI_VB0_SIZE_FIRST_H_SFT			0
+
+#define TEGRA_VI_VB0_BUFFER_STRIDE_FIRST		0x00ec
+#define       VI_VB0_BUFFER_STRIDE_FIRST_CHROMA_SFT	30
+#define       VI_VB0_BUFFER_STRIDE_FIRST_LUMA_SFT	0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define TEGRA_VI_H_LPF_CONTROL				0x0108
 #define       VI_H_LPF_CONTROL_CHROMA_SFT		16
@@ -158,13 +213,18 @@ enum tegra_vi_out {
 #define       VI_CAMERA_CONTROL_TEST_MODE		BIT(1)
 #define       VI_CAMERA_CONTROL_VIP_ENABLE		BIT(0)
 
+<<<<<<< HEAD
 #define TEGRA_VI_VI_ENABLE(n)				(0x01a4 + (n) * 4)
+=======
+#define TEGRA_VI_VI_ENABLE				0x01a4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define       VI_VI_ENABLE_SW_FLOW_CONTROL_OUT1		BIT(1)
 #define       VI_VI_ENABLE_FIRST_OUTPUT_TO_MEM_DISABLE	BIT(0)
 
 #define TEGRA_VI_VI_RAISE				0x01ac
 #define       VI_VI_RAISE_ON_EDGE			BIT(0)
 
+<<<<<<< HEAD
 #define TEGRA_VI_CSI_PP_RAISE_FRAME_START(n)		(0x01d8 + (n) * 8)
 #define TEGRA_VI_CSI_PP_RAISE_FRAME_END(n)		(0x01dc + (n) * 8)
 #define TEGRA_VI_CSI_PP_H_ACTIVE(n)			(0x01e8 + (n) * 8)
@@ -265,6 +325,10 @@ enum tegra_vi_out {
 
 /* --------------------------------------------------------------------------
  * Read and Write helpers
+=======
+/* --------------------------------------------------------------------------
+ * VI
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 static void tegra20_vi_write(struct tegra_vi_channel *chan, unsigned int addr, u32 val)
@@ -272,6 +336,7 @@ static void tegra20_vi_write(struct tegra_vi_channel *chan, unsigned int addr, u
 	writel(val, chan->vi->iomem + addr);
 }
 
+<<<<<<< HEAD
 static int __maybe_unused tegra20_vi_read(struct tegra_vi_channel *chan, unsigned int addr)
 {
 	return readl(chan->vi->iomem + addr);
@@ -301,6 +366,8 @@ static int __maybe_unused tegra20_mipi_read(struct tegra_csi *csi, unsigned int 
  * VI
  */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Get the main input format (YUV/RGB...) and the YUV variant as values to
  * be written into registers for the current VI input mbus code.
@@ -327,6 +394,7 @@ static void tegra20_vi_get_input_formats(struct tegra_vi_channel *chan,
 	case MEDIA_BUS_FMT_YVYU8_2X8:
 		(*yuv_input_format) = VI_INPUT_YUV_INPUT_FORMAT_YVYU;
 		break;
+<<<<<<< HEAD
 	/* RAW8 */
 	case MEDIA_BUS_FMT_SBGGR8_1X8:
 	case MEDIA_BUS_FMT_SGBRG8_1X8:
@@ -339,6 +407,8 @@ static void tegra20_vi_get_input_formats(struct tegra_vi_channel *chan,
 	case MEDIA_BUS_FMT_SRGGB10_1X10:
 		(*main_input_format) = VI_INPUT_INPUT_FORMAT_BAYER;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -373,6 +443,7 @@ static void tegra20_vi_get_output_formats(struct tegra_vi_channel *chan,
 	case V4L2_PIX_FMT_YVU420:
 		(*main_output_format) = VI_OUTPUT_OUTPUT_FORMAT_YUV420PLANAR;
 		break;
+<<<<<<< HEAD
 	/* RAW8 */
 	case V4L2_PIX_FMT_SBGGR8:
 	case V4L2_PIX_FMT_SGBRG8:
@@ -385,6 +456,8 @@ static void tegra20_vi_get_output_formats(struct tegra_vi_channel *chan,
 	case V4L2_PIX_FMT_SRGGB10:
 		(*main_output_format) = VI_OUTPUT_OUTPUT_FORMAT_VIP_BAYER_DIRECT;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -423,6 +496,7 @@ static int tegra20_vi_enable(struct tegra_vi *vi, bool on)
 static int tegra20_channel_host1x_syncpt_init(struct tegra_vi_channel *chan)
 {
 	struct tegra_vi *vi = chan->vi;
+<<<<<<< HEAD
 	struct host1x_syncpt *out_sp, *fs_sp;
 
 	out_sp = host1x_syncpt_request(&vi->client, HOST1X_SYNCPT_CLIENT_MANAGED);
@@ -437,13 +511,26 @@ static int tegra20_channel_host1x_syncpt_init(struct tegra_vi_channel *chan)
 
 	chan->frame_start_sp[0] = fs_sp;
 
+=======
+	struct host1x_syncpt *out_sp;
+
+	out_sp = host1x_syncpt_request(&vi->client, HOST1X_SYNCPT_CLIENT_MANAGED);
+	if (!out_sp)
+		return -ENOMEM;
+
+	chan->mw_ack_sp[0] = out_sp;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static void tegra20_channel_host1x_syncpt_free(struct tegra_vi_channel *chan)
 {
 	host1x_syncpt_put(chan->mw_ack_sp[0]);
+<<<<<<< HEAD
 	host1x_syncpt_put(chan->frame_start_sp[0]);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void tegra20_fmt_align(struct v4l2_pix_format *pix, unsigned int bpp)
@@ -451,6 +538,7 @@ static void tegra20_fmt_align(struct v4l2_pix_format *pix, unsigned int bpp)
 	pix->width  = clamp(pix->width,  TEGRA20_MIN_WIDTH,  TEGRA20_MAX_WIDTH);
 	pix->height = clamp(pix->height, TEGRA20_MIN_HEIGHT, TEGRA20_MAX_HEIGHT);
 
+<<<<<<< HEAD
 	pix->bytesperline = roundup(pix->width, 8) * bpp;
 	pix->sizeimage = pix->bytesperline * pix->height;
 
@@ -458,6 +546,20 @@ static void tegra20_fmt_align(struct v4l2_pix_format *pix, unsigned int bpp)
 	case V4L2_PIX_FMT_YUV420:
 	case V4L2_PIX_FMT_YVU420:
 		pix->sizeimage = pix->sizeimage * 3 / 2;
+=======
+	switch (pix->pixelformat) {
+	case V4L2_PIX_FMT_UYVY:
+	case V4L2_PIX_FMT_VYUY:
+	case V4L2_PIX_FMT_YUYV:
+	case V4L2_PIX_FMT_YVYU:
+		pix->bytesperline = roundup(pix->width, 2) * 2;
+		pix->sizeimage = roundup(pix->width, 2) * 2 * pix->height;
+		break;
+	case V4L2_PIX_FMT_YUV420:
+	case V4L2_PIX_FMT_YVU420:
+		pix->bytesperline = roundup(pix->width, 8);
+		pix->sizeimage = roundup(pix->width, 8) * pix->height * 3 / 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 }
@@ -479,6 +581,7 @@ static void tegra20_channel_queue_setup(struct tegra_vi_channel *chan)
 	case V4L2_PIX_FMT_VYUY:
 	case V4L2_PIX_FMT_YUYV:
 	case V4L2_PIX_FMT_YVYU:
+<<<<<<< HEAD
 	/* RAW8 */
 	case V4L2_PIX_FMT_SRGGB8:
 	case V4L2_PIX_FMT_SGRBG8:
@@ -489,6 +592,8 @@ static void tegra20_channel_queue_setup(struct tegra_vi_channel *chan)
 	case V4L2_PIX_FMT_SGRBG10:
 	case V4L2_PIX_FMT_SGBRG10:
 	case V4L2_PIX_FMT_SBGGR10:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (chan->vflip)
 			chan->start_offset += stride * (height - 1);
 		if (chan->hflip)
@@ -551,6 +656,7 @@ static void tegra20_channel_vi_buffer_setup(struct tegra_vi_channel *chan,
 	case V4L2_PIX_FMT_VYUY:
 	case V4L2_PIX_FMT_YUYV:
 	case V4L2_PIX_FMT_YVYU:
+<<<<<<< HEAD
 		tegra20_vi_write(chan, TEGRA_VI_VB0_BASE_ADDRESS(TEGRA_VI_OUT_1),  base);
 		tegra20_vi_write(chan, TEGRA_VI_VB0_START_ADDRESS(TEGRA_VI_OUT_1), base + chan->start_offset);
 		break;
@@ -566,11 +672,16 @@ static void tegra20_channel_vi_buffer_setup(struct tegra_vi_channel *chan,
 	case V4L2_PIX_FMT_SBGGR10:
 		tegra20_vi_write(chan, TEGRA_VI_VB0_BASE_ADDRESS(TEGRA_VI_OUT_2),  base);
 		tegra20_vi_write(chan, TEGRA_VI_VB0_START_ADDRESS(TEGRA_VI_OUT_2), base + chan->start_offset);
+=======
+		tegra20_vi_write(chan, TEGRA_VI_VB0_BASE_ADDRESS_FIRST,  base);
+		tegra20_vi_write(chan, TEGRA_VI_VB0_START_ADDRESS_FIRST, base + chan->start_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 }
 
 static int tegra20_channel_capture_frame(struct tegra_vi_channel *chan,
+<<<<<<< HEAD
 					 struct tegra_channel_buffer *buf,
 					 struct tegra_csi_channel *csi_chan)
 {
@@ -641,12 +752,41 @@ exit:
 	release_buffer(chan, buf, VB2_BUF_STATE_DONE);
 
 	return err;
+=======
+					 struct tegra_channel_buffer *buf)
+{
+	int err;
+
+	chan->next_out_sp_idx++;
+
+	tegra20_channel_vi_buffer_setup(chan, buf);
+
+	tegra20_vi_write(chan, TEGRA_VI_CAMERA_CONTROL, VI_CAMERA_CONTROL_VIP_ENABLE);
+
+	/* Wait for syncpt counter to reach frame start event threshold */
+	err = host1x_syncpt_wait(chan->mw_ack_sp[0], chan->next_out_sp_idx,
+				 TEGRA_VI_SYNCPT_WAIT_TIMEOUT, NULL);
+	if (err) {
+		host1x_syncpt_incr(chan->mw_ack_sp[0]);
+		dev_err_ratelimited(&chan->video.dev, "frame start syncpt timeout: %d\n", err);
+		release_buffer(chan, buf, VB2_BUF_STATE_ERROR);
+		return err;
+	}
+
+	tegra20_vi_write(chan, TEGRA_VI_CAMERA_CONTROL,
+			 VI_CAMERA_CONTROL_STOP_CAPTURE | VI_CAMERA_CONTROL_VIP_ENABLE);
+
+	release_buffer(chan, buf, VB2_BUF_STATE_DONE);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int tegra20_chan_capture_kthread_start(void *data)
 {
 	struct tegra_vi_channel *chan = data;
 	struct tegra_channel_buffer *buf;
+<<<<<<< HEAD
 	struct v4l2_subdev *csi_subdev = NULL;
 	struct tegra_csi_channel *csi_chan = NULL;
 	unsigned int retries = 0;
@@ -656,6 +796,11 @@ static int tegra20_chan_capture_kthread_start(void *data)
 	if (csi_subdev)
 		csi_chan = to_csi_chan(csi_subdev);
 
+=======
+	unsigned int retries = 0;
+	int err = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (1) {
 		/*
 		 * Source is not streaming if error is non-zero.
@@ -680,7 +825,11 @@ static int tegra20_chan_capture_kthread_start(void *data)
 		list_del_init(&buf->queue);
 		spin_unlock(&chan->start_lock);
 
+<<<<<<< HEAD
 		err = tegra20_channel_capture_frame(chan, buf, csi_chan);
+=======
+		err = tegra20_channel_capture_frame(chan, buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!err) {
 			retries = 0;
 			continue;
@@ -698,6 +847,7 @@ static int tegra20_chan_capture_kthread_start(void *data)
 static void tegra20_camera_capture_setup(struct tegra_vi_channel *chan)
 {
 	u32 output_fourcc = chan->format.pixelformat;
+<<<<<<< HEAD
 	u32 data_type = chan->fmtinfo->img_dt;
 	int width  = chan->format.width;
 	int height = chan->format.height;
@@ -740,6 +890,17 @@ static int tegra20_vi_start_streaming(struct vb2_queue *vq, u32 count)
 	err = video_device_pipeline_start(&chan->video, pipe);
 	if (err)
 		goto error_pipeline_start;
+=======
+	int width  = chan->format.width;
+	int height = chan->format.height;
+	int stride_l = chan->format.bytesperline;
+	int stride_c = (output_fourcc == V4L2_PIX_FMT_YUV420 ||
+			output_fourcc == V4L2_PIX_FMT_YVU420) ? 1 : 0;
+	int main_output_format;
+	int yuv_output_format;
+
+	tegra20_vi_get_output_formats(chan, &main_output_format, &yuv_output_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Set up low pass filter.  Use 0x240 for chromaticity and 0x240
@@ -753,12 +914,61 @@ static int tegra20_vi_start_streaming(struct vb2_queue *vq, u32 count)
 	/* Set up raise-on-edge, so we get an interrupt on end of frame. */
 	tegra20_vi_write(chan, TEGRA_VI_VI_RAISE, VI_VI_RAISE_ON_EDGE);
 
+<<<<<<< HEAD
+=======
+	tegra20_vi_write(chan, TEGRA_VI_VI_FIRST_OUTPUT_CONTROL,
+			 (chan->vflip ? VI_OUTPUT_V_DIRECTION : 0) |
+			 (chan->hflip ? VI_OUTPUT_H_DIRECTION : 0) |
+			 yuv_output_format << VI_OUTPUT_YUV_OUTPUT_FORMAT_SFT |
+			 main_output_format << VI_OUTPUT_OUTPUT_FORMAT_SFT);
+
+	/* Set up frame size */
+	tegra20_vi_write(chan, TEGRA_VI_FIRST_OUTPUT_FRAME_SIZE,
+			 height << VI_FIRST_OUTPUT_FRAME_HEIGHT_SFT |
+			 width  << VI_FIRST_OUTPUT_FRAME_WIDTH_SFT);
+
+	/* First output memory enabled */
+	tegra20_vi_write(chan, TEGRA_VI_VI_ENABLE, 0);
+
+	/* Set the number of frames in the buffer */
+	tegra20_vi_write(chan, TEGRA_VI_VB0_COUNT_FIRST, 1);
+
+	/* Set up buffer frame size */
+	tegra20_vi_write(chan, TEGRA_VI_VB0_SIZE_FIRST,
+			 height << VI_VB0_SIZE_FIRST_V_SFT |
+			 width  << VI_VB0_SIZE_FIRST_H_SFT);
+
+	tegra20_vi_write(chan, TEGRA_VI_VB0_BUFFER_STRIDE_FIRST,
+			 stride_l << VI_VB0_BUFFER_STRIDE_FIRST_LUMA_SFT |
+			 stride_c << VI_VB0_BUFFER_STRIDE_FIRST_CHROMA_SFT);
+
+	tegra20_vi_write(chan, TEGRA_VI_VI_ENABLE, 0);
+}
+
+static int tegra20_vi_start_streaming(struct vb2_queue *vq, u32 count)
+{
+	struct tegra_vi_channel *chan = vb2_get_drv_priv(vq);
+	struct media_pipeline *pipe = &chan->video.pipe;
+	int err;
+
+	chan->next_out_sp_idx = host1x_syncpt_read(chan->mw_ack_sp[0]);
+
+	err = video_device_pipeline_start(&chan->video, pipe);
+	if (err)
+		goto error_pipeline_start;
+
+	tegra20_camera_capture_setup(chan);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = tegra_channel_set_stream(chan, true);
 	if (err)
 		goto error_set_stream;
 
+<<<<<<< HEAD
 	tegra20_camera_capture_setup(chan);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chan->sequence = 0;
 
 	chan->kthread_start_capture = kthread_run(tegra20_chan_capture_kthread_start,
@@ -806,6 +1016,7 @@ static const struct tegra_vi_ops tegra20_vi_ops = {
 	.vi_stop_streaming = tegra20_vi_stop_streaming,
 };
 
+<<<<<<< HEAD
 #define TEGRA20_VIDEO_FMT(DATA_TYPE, BIT_WIDTH, MBUS_CODE, BPP, FOURCC)	\
 {									\
 	.img_dt		= TEGRA_IMAGE_DT_##DATA_TYPE,			\
@@ -840,6 +1051,22 @@ static const struct tegra_video_format tegra20_video_formats[] = {
 	TEGRA20_VIDEO_FMT(RAW10, 10, SGRBG10_1X10, 2, SGRBG10),
 	TEGRA20_VIDEO_FMT(RAW10, 10, SGBRG10_1X10, 2, SGBRG10),
 	TEGRA20_VIDEO_FMT(RAW10, 10, SBGGR10_1X10, 2, SBGGR10),
+=======
+#define TEGRA20_VIDEO_FMT(MBUS_CODE, BPP, FOURCC)	\
+{							\
+	.code    = MEDIA_BUS_FMT_##MBUS_CODE,		\
+	.bpp     = BPP,					\
+	.fourcc  = V4L2_PIX_FMT_##FOURCC,		\
+}
+
+static const struct tegra_video_format tegra20_video_formats[] = {
+	TEGRA20_VIDEO_FMT(UYVY8_2X8, 2, UYVY),
+	TEGRA20_VIDEO_FMT(VYUY8_2X8, 2, VYUY),
+	TEGRA20_VIDEO_FMT(YUYV8_2X8, 2, YUYV),
+	TEGRA20_VIDEO_FMT(YVYU8_2X8, 2, YVYU),
+	TEGRA20_VIDEO_FMT(UYVY8_2X8, 1, YUV420),
+	TEGRA20_VIDEO_FMT(UYVY8_2X8, 1, YVU420),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 const struct tegra_vi_soc tegra20_vi_soc = {
@@ -847,13 +1074,19 @@ const struct tegra_vi_soc tegra20_vi_soc = {
 	.nformats = ARRAY_SIZE(tegra20_video_formats),
 	.default_video_format = &tegra20_video_formats[0],
 	.ops = &tegra20_vi_ops,
+<<<<<<< HEAD
 	.hw_revision = 1,
 	.vi_max_channels = 2, /* TEGRA_VI_OUT_1 and TEGRA_VI_OUT_2 */
 	.vi_max_clk_hz = 450000000,
+=======
+	.vi_max_channels = 1, /* parallel input (VIP) */
+	.vi_max_clk_hz = 150000000,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_h_v_flip = true,
 };
 
 /* --------------------------------------------------------------------------
+<<<<<<< HEAD
  * MIPI Calibration
  */
 static int tegra20_start_pad_calibration(struct tegra_mipi_device *mipi)
@@ -1193,6 +1426,8 @@ const struct tegra_csi_soc tegra30_csi_soc = {
 };
 
 /* --------------------------------------------------------------------------
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * VIP
  */
 
@@ -1205,6 +1440,7 @@ const struct tegra_csi_soc tegra30_csi_soc = {
 static int tegra20_vip_start_streaming(struct tegra_vip_channel *vip_chan)
 {
 	struct tegra_vi_channel *vi_chan = v4l2_get_subdev_hostdata(&vip_chan->subdev);
+<<<<<<< HEAD
 	u32 data_type = vi_chan->fmtinfo->img_dt;
 	int width  = vi_chan->format.width;
 	int height = vi_chan->format.height;
@@ -1216,6 +1452,15 @@ static int tegra20_vip_start_streaming(struct tegra_vip_channel *vip_chan)
 
 	tegra20_vi_get_input_formats(vi_chan, &main_input_format, &yuv_input_format);
 	tegra20_vi_get_output_formats(vi_chan, &main_output_format, &yuv_output_format);
+=======
+	int width  = vi_chan->format.width;
+	int height = vi_chan->format.height;
+
+	unsigned int main_input_format;
+	unsigned int yuv_input_format;
+
+	tegra20_vi_get_input_formats(vi_chan, &main_input_format, &yuv_input_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tegra20_vi_write(vi_chan, TEGRA_VI_VI_CORE_CONTROL, 0);
 
@@ -1241,6 +1486,7 @@ static int tegra20_vip_start_streaming(struct tegra_vip_channel *vip_chan)
 			 GENMASK(9, 2) << VI_DATA_INPUT_SFT);
 	tegra20_vi_write(vi_chan, TEGRA_VI_PIN_INVERSION, 0);
 
+<<<<<<< HEAD
 	tegra20_vi_write(vi_chan, TEGRA_VI_CONT_SYNCPT_OUT(output_channel),
 			 VI_CONT_SYNCPT_OUT_CONTINUOUS_SYNCPT |
 			 host1x_syncpt_id(vi_chan->mw_ack_sp[0])
@@ -1253,6 +1499,15 @@ static int tegra20_vip_start_streaming(struct tegra_vip_channel *vip_chan)
 			 (vi_chan->hflip ? VI_OUTPUT_H_DIRECTION : 0) |
 			  yuv_output_format | main_output_format);
 
+=======
+	tegra20_vi_write(vi_chan, TEGRA_VI_CONT_SYNCPT_OUT_1,
+			 VI_CONT_SYNCPT_OUT_1_CONTINUOUS_SYNCPT |
+			 host1x_syncpt_id(vi_chan->mw_ack_sp[0])
+			 << VI_CONT_SYNCPT_OUT_1_SYNCPT_IDX_SFT);
+
+	tegra20_vi_write(vi_chan, TEGRA_VI_CAMERA_CONTROL, VI_CAMERA_CONTROL_STOP_CAPTURE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

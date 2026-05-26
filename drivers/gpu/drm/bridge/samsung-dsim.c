@@ -1988,7 +1988,13 @@ of_find_panel_or_bridge:
 	return 0;
 
 err_release_next_bridge:
+<<<<<<< HEAD
 	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
+=======
+	drm_bridge_put(dsi->bridge.next_bridge);
+	dsi->bridge.next_bridge = NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
 		samsung_dsim_unregister_te_irq(dsi);
 err_remove_bridge:
@@ -2005,7 +2011,12 @@ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
 	if (pdata->host_ops && pdata->host_ops->detach)
 		pdata->host_ops->detach(dsi, device);
 
+<<<<<<< HEAD
 	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
+=======
+	drm_bridge_put(dsi->bridge.next_bridge);
+	dsi->bridge.next_bridge = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	samsung_dsim_unregister_te_irq(dsi);
 

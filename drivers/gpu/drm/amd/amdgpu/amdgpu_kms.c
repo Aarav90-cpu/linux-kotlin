@@ -873,19 +873,32 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 				    ? -EFAULT : 0;
 	}
 	case AMDGPU_INFO_READ_MMR_REG: {
+<<<<<<< HEAD
+=======
+		int ret = 0;
+		unsigned int n, alloc_size;
+		uint32_t *regs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsigned int se_num = (info->read_mmr_reg.instance >>
 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
 		unsigned int sh_num = (info->read_mmr_reg.instance >>
 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+<<<<<<< HEAD
 		unsigned int alloc_size;
 		uint32_t *regs;
 		int ret;
+=======
+
+		if (!down_read_trylock(&adev->reset_domain->sem))
+			return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* set full masks if the userspace set all bits
 		 * in the bitfields
 		 */
+<<<<<<< HEAD
 		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
 			se_num = 0xffffffff;
 		else if (se_num >= AMDGPU_GFX_MAX_SE)
@@ -908,12 +921,43 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
 		amdgpu_gfx_off_ctrl(adev, false);
 		ret = 0;
+=======
+		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
+			se_num = 0xffffffff;
+		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
+			sh_num = 0xffffffff;
+		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		if (info->read_mmr_reg.count > 128) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+		if (!regs) {
+			ret = -ENOMEM;
+			goto out;
+		}
+
+		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+
+		amdgpu_gfx_off_ctrl(adev, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < info->read_mmr_reg.count; i++) {
 			if (amdgpu_asic_read_register(adev, se_num, sh_num,
 						      info->read_mmr_reg.dword_offset + i,
 						      &regs[i])) {
 				DRM_DEBUG_KMS("unallowed offset %#x\n",
 					      info->read_mmr_reg.dword_offset + i);
+<<<<<<< HEAD
 				ret = -EFAULT;
 				break;
 			}
@@ -926,6 +970,20 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 				? -EFAULT : 0;
 		}
 		kfree(regs);
+=======
+				kfree(regs);
+				amdgpu_gfx_off_ctrl(adev, true);
+				ret = -EFAULT;
+				goto out;
+			}
+		}
+		amdgpu_gfx_off_ctrl(adev, true);
+		n = copy_to_user(out, regs, min(size, alloc_size));
+		kfree(regs);
+		ret = (n ? -EFAULT : 0);
+out:
+		up_read(&adev->reset_domain->sem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 	case AMDGPU_INFO_DEV_INFO: {
@@ -1513,7 +1571,14 @@ int amdgpu_driver_open_kms(struct drm_device *dev, struct drm_file *file_priv)
 			 "Failed to init usermode queue manager (%d), use legacy workload submission only\n",
 			 r);
 
+<<<<<<< HEAD
 	amdgpu_evf_mgr_init(&fpriv->evf_mgr);
+=======
+	r = amdgpu_eviction_fence_init(&fpriv->evf_mgr);
+	if (r)
+		goto error_vm;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_ctx_mgr_init(&fpriv->ctx_mgr, adev);
 
 	file_priv->driver_priv = fpriv;

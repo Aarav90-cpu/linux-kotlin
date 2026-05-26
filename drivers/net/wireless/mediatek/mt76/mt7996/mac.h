@@ -37,4 +37,12 @@ struct mt7996_dfs_pattern {
 	u32 min_stgpr_diff;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct mt7996_dfs_radar_spec {
+	struct mt7996_dfs_pulse pulse_th;
+	struct mt7996_dfs_pattern radar_pattern[16];
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

@@ -130,7 +130,11 @@ typedef compat_ulong_t compat_elf_gregset_t[COMPAT_ELF_NGREG];
 
 static inline int __is_compat_task(struct task_struct *t)
 {
+<<<<<<< HEAD
 	return IS_ENABLED(CONFIG_COMPAT) && test_tsk_thread_flag(t, TIF_32BIT);
+=======
+	return test_tsk_thread_flag(t, TIF_32BIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int is_compat_task(void)

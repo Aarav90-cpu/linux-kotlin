@@ -14,7 +14,11 @@ obj-$(CONFIG_IO_URING)		+= io_uring.o opdef.o kbuf.o rsrc.o notif.o \
 					advise.o openclose.o statx.o timeout.o \
 					cancel.o waitid.o register.o \
 					truncate.o memmap.o alloc_cache.o \
+<<<<<<< HEAD
 					query.o loop.o
+=======
+					query.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 obj-$(CONFIG_IO_URING_ZCRX)	+= zcrx.o
 obj-$(CONFIG_IO_WQ)		+= io-wq.o
@@ -25,4 +29,7 @@ obj-$(CONFIG_NET) += net.o cmd_net.o
 obj-$(CONFIG_PROC_FS) += fdinfo.o
 obj-$(CONFIG_IO_URING_MOCK_FILE) += mock_file.o
 obj-$(CONFIG_IO_URING_BPF) += bpf_filter.o
+<<<<<<< HEAD
 obj-$(CONFIG_IO_URING_BPF_OPS) += bpf-ops.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

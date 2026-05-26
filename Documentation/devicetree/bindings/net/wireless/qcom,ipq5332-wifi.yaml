@@ -17,7 +17,10 @@ properties:
   compatible:
     enum:
       - qcom,ipq5332-wifi
+<<<<<<< HEAD
       - qcom,ipq5424-wifi
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

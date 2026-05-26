@@ -138,6 +138,12 @@ struct nested_vmx {
 	 */
 	bool enlightened_vmcs_enabled;
 
+<<<<<<< HEAD
+=======
+	/* L2 must run next, and mustn't decide to exit to L1. */
+	bool nested_run_pending;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Pending MTF VM-exit into L1.  */
 	bool mtf_pending;
 

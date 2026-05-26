@@ -591,7 +591,11 @@ out:
 
 fail:
 	inode = d_inode(real);
+<<<<<<< HEAD
 	pr_warn_ratelimited("failed to verify %s (%pd2, ino=%llu, err=%i)\n",
+=======
+	pr_warn_ratelimited("failed to verify %s (%pd2, ino=%lu, err=%i)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    is_upper ? "upper" : "origin", real,
 			    inode ? inode->i_ino : 0, err);
 	goto out;
@@ -831,7 +835,11 @@ struct dentry *ovl_lookup_index(struct ovl_fs *ofs, struct dentry *upper,
 			index = NULL;
 			goto out;
 		}
+<<<<<<< HEAD
 		pr_warn_ratelimited("failed inode index lookup (ino=%llu, key=%.*s, err=%i);\n"
+=======
+		pr_warn_ratelimited("failed inode index lookup (ino=%lu, key=%.*s, err=%i);\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    "overlayfs: mount with '-o index=off' to disable inodes index.\n",
 				    d_inode(origin)->i_ino, name.len, name.name,
 				    err);

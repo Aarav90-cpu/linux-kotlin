@@ -14,9 +14,15 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
 	TP_ARGS(inode, dir, mode),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64,		ino)
 		__field(u64,		dir)
 		__field(dev_t,		dev)
+=======
+		__field(dev_t,		dev)
+		__field(ino_t,		ino)
+		__field(ino_t,		dir)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(__u16,		mode)
 	),
 
@@ -27,10 +33,17 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
 		__entry->mode		= mode;
 	),
 
+<<<<<<< HEAD
 	TP_printk("dev %d,%d ino %llu dir %llu mode 0%o",
 		MAJOR(__entry->dev), MINOR(__entry->dev),
 		__entry->ino,
 		__entry->dir, __entry->mode)
+=======
+	TP_printk("dev %d,%d ino %lu dir %lu mode 0%o",
+		MAJOR(__entry->dev), MINOR(__entry->dev),
+		(unsigned long) __entry->ino,
+		(unsigned long) __entry->dir, __entry->mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DECLARE_EVENT_CLASS(hugetlbfs__inode,
@@ -40,6 +53,7 @@ DECLARE_EVENT_CLASS(hugetlbfs__inode,
 	TP_ARGS(inode),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64,		ino)
 		__field(loff_t,		size)
 		__field(blkcnt_t,	blocks)
@@ -47,6 +61,15 @@ DECLARE_EVENT_CLASS(hugetlbfs__inode,
 		__field(unsigned int,	nlink)
 		__field(unsigned int,	seals)
 		__field(__u16,		mode)
+=======
+		__field(dev_t,		dev)
+		__field(ino_t,		ino)
+		__field(__u16,		mode)
+		__field(loff_t,		size)
+		__field(unsigned int,	nlink)
+		__field(unsigned int,	seals)
+		__field(blkcnt_t,	blocks)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
@@ -59,8 +82,13 @@ DECLARE_EVENT_CLASS(hugetlbfs__inode,
 		__entry->blocks		= inode->i_blocks;
 	),
 
+<<<<<<< HEAD
 	TP_printk("dev %d,%d ino %llu mode 0%o size %lld nlink %u seals %u blocks %llu",
 		MAJOR(__entry->dev), MINOR(__entry->dev), __entry->ino,
+=======
+	TP_printk("dev %d,%d ino %lu mode 0%o size %lld nlink %u seals %u blocks %llu",
+		MAJOR(__entry->dev), MINOR(__entry->dev), (unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->mode, __entry->size, __entry->nlink, __entry->seals,
 		(unsigned long long)__entry->blocks)
 );
@@ -87,14 +115,24 @@ TRACE_EVENT(hugetlbfs_setattr,
 	TP_ARGS(inode, dentry, attr),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64,		ino)
 		__field(loff_t,		old_size)
 		__field(loff_t,		ia_size)
 		__field(dev_t,		dev)
+=======
+		__field(dev_t,		dev)
+		__field(ino_t,		ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(unsigned int,	d_len)
 		__string(d_name,	dentry->d_name.name)
 		__field(unsigned int,	ia_valid)
 		__field(unsigned int,	ia_mode)
+<<<<<<< HEAD
+=======
+		__field(loff_t,		old_size)
+		__field(loff_t,		ia_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
@@ -108,8 +146,13 @@ TRACE_EVENT(hugetlbfs_setattr,
 		__entry->ia_size	= attr->ia_size;
 	),
 
+<<<<<<< HEAD
 	TP_printk("dev %d,%d ino %llu name %.*s valid %#x mode 0%o old_size %lld size %lld",
 		MAJOR(__entry->dev), MINOR(__entry->dev), __entry->ino,
+=======
+	TP_printk("dev %d,%d ino %lu name %.*s valid %#x mode 0%o old_size %lld size %lld",
+		MAJOR(__entry->dev), MINOR(__entry->dev), (unsigned long)__entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->d_len, __get_str(d_name), __entry->ia_valid, __entry->ia_mode,
 		__entry->old_size, __entry->ia_size)
 );
@@ -122,12 +165,21 @@ TRACE_EVENT(hugetlbfs_fallocate,
 	TP_ARGS(inode, mode, offset, len, ret),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64,		ino)
 		__field(loff_t,		offset)
 		__field(loff_t,		len)
 		__field(loff_t,		size)
 		__field(dev_t,		dev)
 		__field(int,		mode)
+=======
+		__field(dev_t,		dev)
+		__field(ino_t,		ino)
+		__field(int,		mode)
+		__field(loff_t,		offset)
+		__field(loff_t,		len)
+		__field(loff_t,		size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(int,		ret)
 	),
 
@@ -141,9 +193,15 @@ TRACE_EVENT(hugetlbfs_fallocate,
 		__entry->ret		= ret;
 	),
 
+<<<<<<< HEAD
 	TP_printk("dev %d,%d ino %llu mode 0%o offset %lld len %lld size %lld ret %d",
 		MAJOR(__entry->dev), MINOR(__entry->dev),
 		__entry->ino, __entry->mode,
+=======
+	TP_printk("dev %d,%d ino %lu mode 0%o offset %lld len %lld size %lld ret %d",
+		MAJOR(__entry->dev), MINOR(__entry->dev),
+		(unsigned long)__entry->ino, __entry->mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		(unsigned long long)__entry->offset,
 		(unsigned long long)__entry->len,
 		(unsigned long long)__entry->size,

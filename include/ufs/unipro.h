@@ -10,8 +10,11 @@
  * M-TX Configuration Attributes
  */
 #define TX_HIBERN8TIME_CAPABILITY		0x000F
+<<<<<<< HEAD
 #define TX_HS_DEEMPHASIS_SETTING_CAP		0x0012
 #define TX_HS_PRESHOOT_SETTING_CAP		0x0015
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TX_MODE					0x0021
 #define TX_HSRATE_SERIES			0x0022
 #define TX_HSGEAR				0x0023
@@ -32,8 +35,11 @@
 #define TX_LCC_SEQUENCER			0x0032
 #define TX_MIN_ACTIVATETIME			0x0033
 #define TX_PWM_G6_G7_SYNC_LENGTH		0x0034
+<<<<<<< HEAD
 #define TX_HS_DEEMPHASIS_SETTING		0x0037
 #define TX_HS_PRESHOOT_SETTING			0x003B
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TX_REFCLKFREQ				0x00EB
 #define TX_CFGCLKFREQVAL			0x00EC
 #define	CFGEXTRATTR				0x00F0
@@ -42,9 +48,12 @@
 /*
  * M-RX Configuration Attributes
  */
+<<<<<<< HEAD
 #define RX_HS_G5_ADAPT_INITIAL_CAP		0x0074
 #define RX_HS_G6_ADAPT_INITIAL_CAP		0x007B
 #define RX_HS_G6_ADAPT_INITIAL_L0L1L2L3_CAP	0x007D
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RX_HS_G1_SYNC_LENGTH_CAP		0x008B
 #define RX_HS_G1_PREP_LENGTH_CAP		0x008C
 #define RX_MIN_ACTIVATETIME_CAPABILITY		0x008F
@@ -57,7 +66,10 @@
 #define RX_HIBERN8TIME_CAP			0x0092
 #define RX_ADV_HIBERN8TIME_CAP			0x0099
 #define RX_ADV_MIN_ACTIVATETIME_CAP		0x009A
+<<<<<<< HEAD
 #define RX_HS_G4_ADAPT_INITIAL_CAP		0x009F
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RX_MODE					0x00A1
 #define RX_HSRATE_SERIES			0x00A2
 #define RX_HSGEAR				0x00A3
@@ -72,12 +84,16 @@
 #define CFGRXCDR8				0x00BA
 #define CFGRXOVR8				0x00BD
 #define CFGRXOVR6				0x00BF
+<<<<<<< HEAD
 #define RX_FOM					0x00C2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RXDIRECTCTRL2				0x00C7
 #define CFGRXOVR4				0x00E9
 #define RX_REFCLKFREQ				0x00EB
 #define	RX_CFGCLKFREQVAL			0x00EC
 #define CFGWIDEINLN				0x00F0
+<<<<<<< HEAD
 #define RX_EYEMON_CAP				0x00F1
 #define RX_EYEMON_TIMING_MAX_STEPS_CAP		0x00F2
 #define RX_EYEMON_TIMING_MAX_OFFSET_CAP		0x00F3
@@ -92,12 +108,17 @@
 #define RX_EYEMON_START				0x00FC
 #define RX_EYEMON_EXTENDED_ERROR_COUNT		0x00FD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ENARXDIRECTCFG4				0x00F2
 #define ENARXDIRECTCFG3				0x00F3
 #define ENARXDIRECTCFG2				0x00F4
 
+<<<<<<< HEAD
 #define RX_EYEMON_NEGATIVE_STEP_BIT		BIT(6)
 #define RX_EYEMON_EXTENDED_VRANGE_BIT		BIT(6)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define is_mphy_tx_attr(attr)			(attr < RX_MODE)
 #define RX_ADV_FINE_GRAN_STEP(x)		((((x) & 0x3) << 1) | 0x1)
@@ -124,6 +145,7 @@
 
 #define UNIPRO_CB_OFFSET(x)			(0x8000 | x)
 
+<<<<<<< HEAD
 #define ADAPT_LENGTH_MASK			0x7F
 #define ADAPT_RANGE_BIT				BIT(7)
 #define IS_ADAPT_RANGE_COARSE(x)		((x) & ADAPT_RANGE_BIT)
@@ -136,6 +158,8 @@
 #define TADAPT_L0L3_FACTOR			(1 << 9)
 #define TADAPT_L0L1L2L3_FACTOR			(1 << 15)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * PHY Adapter attributes
  */
@@ -201,6 +225,7 @@
 #define PA_PACPERRORCOUNT	0x15C1
 #define PA_PHYTESTCONTROL	0x15C2
 #define PA_TXHSG4SYNCLENGTH	0x15D0
+<<<<<<< HEAD
 #define PA_PEERRXHSG4ADAPTINITIAL		0x15D3
 #define PA_TXHSADAPTTYPE	0x15D4
 #define PA_TXHSG5SYNCLENGTH	0x15D6
@@ -221,6 +246,12 @@
 #define PA_TXADAPTLENGTH_EQTR			0x15EB
 
 /* Adapt type for PA_TXHSADAPTTYPE attribute */
+=======
+#define PA_TXHSADAPTTYPE	0x15D4
+#define PA_TXHSG5SYNCLENGTH	0x15D6
+
+/* Adpat type for PA_TXHSADAPTTYPE attribute */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PA_REFRESH_ADAPT       0x00
 #define PA_INITIAL_ADAPT       0x01
 #define PA_NO_ADAPT            0x03
@@ -240,6 +271,7 @@
 /* PHY Adapter Protocol Constants */
 #define PA_MAXDATALANES	4
 
+<<<<<<< HEAD
 /*
  * TX EQTR's minimum TAdapt should not be less than 10us.
  * This value is rounded up into the nearest Unit Intervals (UI)
@@ -322,6 +354,8 @@ enum ufs_eom_eye_mask {
 	UFS_EOM_EYE_MASK_U,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DL_FC0ProtectionTimeOutVal_Default	8191
 #define DL_TC0ReplayTimeOutVal_Default		65535
 #define DL_AFC0ReqTimeOutVal_Default		32767
@@ -333,11 +367,14 @@ enum ufs_eom_eye_mask {
 #define DME_LocalTC0ReplayTimeOutVal		0xD042
 #define DME_LocalAFC0ReqTimeOutVal		0xD043
 
+<<<<<<< HEAD
 enum ufs_op_mode {
 	LS_MODE = 1,
 	HS_MODE = 2,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* PA power modes */
 enum ufs_pa_pwr_mode {
 	FAST_MODE	= 1,
@@ -373,9 +410,13 @@ enum ufs_hs_gear_tag {
 	UFS_HS_G2,		/* HS Gear 2 */
 	UFS_HS_G3,		/* HS Gear 3 */
 	UFS_HS_G4,		/* HS Gear 4 */
+<<<<<<< HEAD
 	UFS_HS_G5,		/* HS Gear 5 */
 	UFS_HS_G6,		/* HS Gear 6 */
 	UFS_HS_GEAR_MAX = UFS_HS_G6,
+=======
+	UFS_HS_G5		/* HS Gear 5 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum ufs_lanes {

@@ -113,7 +113,11 @@ static const struct v4l2_ctrl_config clu_mode_control = {
 };
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * V4L2 Subdevice Operations
+=======
+ * V4L2 Subdevice Pad Operations
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 static const unsigned int clu_codes[] = {
@@ -122,6 +126,7 @@ static const unsigned int clu_codes[] = {
 	MEDIA_BUS_FMT_AYUV8_1X32,
 };
 
+<<<<<<< HEAD
 static const struct v4l2_subdev_pad_ops clu_pad_ops = {
 	.enum_mbus_code = vsp1_subdev_enum_mbus_code,
 	.enum_frame_size = vsp1_subdev_enum_frame_size,
@@ -131,6 +136,48 @@ static const struct v4l2_subdev_pad_ops clu_pad_ops = {
 
 static const struct v4l2_subdev_ops clu_ops = {
 	.core	= &vsp1_entity_core_ops,
+=======
+static int clu_enum_mbus_code(struct v4l2_subdev *subdev,
+			      struct v4l2_subdev_state *sd_state,
+			      struct v4l2_subdev_mbus_code_enum *code)
+{
+	return vsp1_subdev_enum_mbus_code(subdev, sd_state, code, clu_codes,
+					  ARRAY_SIZE(clu_codes));
+}
+
+static int clu_enum_frame_size(struct v4l2_subdev *subdev,
+			       struct v4l2_subdev_state *sd_state,
+			       struct v4l2_subdev_frame_size_enum *fse)
+{
+	return vsp1_subdev_enum_frame_size(subdev, sd_state, fse,
+					   CLU_MIN_SIZE,
+					   CLU_MIN_SIZE, CLU_MAX_SIZE,
+					   CLU_MAX_SIZE);
+}
+
+static int clu_set_format(struct v4l2_subdev *subdev,
+			  struct v4l2_subdev_state *sd_state,
+			  struct v4l2_subdev_format *fmt)
+{
+	return vsp1_subdev_set_pad_format(subdev, sd_state, fmt, clu_codes,
+					  ARRAY_SIZE(clu_codes),
+					  CLU_MIN_SIZE, CLU_MIN_SIZE,
+					  CLU_MAX_SIZE, CLU_MAX_SIZE);
+}
+
+/* -----------------------------------------------------------------------------
+ * V4L2 Subdevice Operations
+ */
+
+static const struct v4l2_subdev_pad_ops clu_pad_ops = {
+	.enum_mbus_code = clu_enum_mbus_code,
+	.enum_frame_size = clu_enum_frame_size,
+	.get_fmt = vsp1_subdev_get_pad_format,
+	.set_fmt = clu_set_format,
+};
+
+static const struct v4l2_subdev_ops clu_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pad    = &clu_pad_ops,
 };
 
@@ -216,12 +263,15 @@ struct vsp1_clu *vsp1_clu_create(struct vsp1_device *vsp1)
 
 	clu->entity.ops = &clu_entity_ops;
 	clu->entity.type = VSP1_ENTITY_CLU;
+<<<<<<< HEAD
 	clu->entity.codes = clu_codes;
 	clu->entity.num_codes = ARRAY_SIZE(clu_codes);
 	clu->entity.min_width = CLU_MIN_SIZE;
 	clu->entity.min_height = CLU_MIN_SIZE;
 	clu->entity.max_width = CLU_MAX_SIZE;
 	clu->entity.max_height = CLU_MAX_SIZE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vsp1_entity_init(vsp1, &clu->entity, "clu", 2, &clu_ops,
 			       MEDIA_ENT_F_PROC_VIDEO_LUT);

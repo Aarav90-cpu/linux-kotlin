@@ -23,7 +23,11 @@ easier.
 
 Some subsystems and maintainer trees have additional information about
 their workflow and expectations, see
+<<<<<<< HEAD
 Documentation/process/maintainer-handbooks.rst.
+=======
+:ref:`Documentation/process/maintainer-handbooks.rst <maintainer_handbooks_main>`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Obtain a current source tree
 ----------------------------
@@ -634,6 +638,7 @@ bugzilla.kernel.org is a public place in this sense, but email addresses
 used there are private; so do not expose them in tags, unless the person
 used them in earlier contributions.
 
+<<<<<<< HEAD
 Using Assisted-by:
 ------------------
 
@@ -644,6 +649,8 @@ Documentation/process/coding-assistants.rst for details regarding the
 acknowledgment of coding assistants.
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _the_canonical_patch_format:
 
 The canonical patch format

@@ -47,9 +47,13 @@
 static int numdummies = 1;
 
 /* fake multicast ability */
+<<<<<<< HEAD
 static void set_multicast_list(struct net_device *dev,
 			       struct netdev_hw_addr_list *uc,
 			       struct netdev_hw_addr_list *mc)
+=======
+static void set_multicast_list(struct net_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 }
 
@@ -89,7 +93,11 @@ static const struct net_device_ops dummy_netdev_ops = {
 	.ndo_init		= dummy_dev_init,
 	.ndo_start_xmit		= dummy_xmit,
 	.ndo_validate_addr	= eth_validate_addr,
+<<<<<<< HEAD
 	.ndo_set_rx_mode_async	= set_multicast_list,
+=======
+	.ndo_set_rx_mode	= set_multicast_list,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_set_mac_address	= eth_mac_addr,
 	.ndo_get_stats64	= dummy_get_stats64,
 	.ndo_change_carrier	= dummy_change_carrier,

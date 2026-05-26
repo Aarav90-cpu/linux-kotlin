@@ -847,11 +847,19 @@ struct task_struct {
 #endif
 
 	int				on_cpu;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct __call_single_node	wake_entry;
 	unsigned int			wakee_flips;
 	unsigned long			wakee_flip_decay_ts;
 	struct task_struct		*last_wakee;
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * recent_used_cpu is initially set as the last CPU used by a task
 	 * that wakes affine another task. Waker/wakee relationships can
@@ -861,6 +869,10 @@ struct task_struct {
 	 */
 	int				recent_used_cpu;
 	int				wake_cpu;
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int				on_rq;
 
 	int				prio;
@@ -868,6 +880,22 @@ struct task_struct {
 	int				normal_prio;
 	unsigned int			rt_priority;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+	u64				last_ran;
+	s64				time_slice;
+	struct list_head		sq_node;
+#ifdef CONFIG_SCHED_BMQ
+	int				boost_prio;
+#endif /* CONFIG_SCHED_BMQ */
+#ifdef CONFIG_SCHED_PDS
+	u64				deadline;
+#endif /* CONFIG_SCHED_PDS */
+	/* sched_clock time spent running */
+	u64				sched_time;
+#else /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sched_entity		se;
 	struct sched_rt_entity		rt;
 	struct sched_dl_entity		dl;
@@ -882,6 +910,10 @@ struct task_struct {
 	unsigned long			core_cookie;
 	unsigned int			core_occupation;
 #endif
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_CGROUP_SCHED
 	struct task_group		*sched_task_group;
@@ -923,9 +955,19 @@ struct task_struct {
 	const cpumask_t			*cpus_ptr;
 	cpumask_t			*user_cpus_ptr;
 	cpumask_t			cpus_mask;
+<<<<<<< HEAD
 	void				*migration_pending;
 	unsigned short			migration_disabled;
 	unsigned short			migration_flags;
+=======
+#ifndef CONFIG_SCHED_ALT
+	void				*migration_pending;
+#endif
+	unsigned short			migration_disabled;
+#ifndef CONFIG_SCHED_ALT
+	unsigned short			migration_flags;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PREEMPT_RCU
 	int				rcu_read_lock_nesting;
@@ -949,6 +991,7 @@ struct task_struct {
 	struct srcu_ctr __percpu	*trc_reader_scp;
 #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
 
+<<<<<<< HEAD
 #ifdef CONFIG_TRIVIAL_PREEMPT_RCU
 	int				rcu_trivial_preempt_nesting;
 #endif /* #ifdef CONFIG_TRIVIAL_PREEMPT_RCU */
@@ -958,6 +1001,15 @@ struct task_struct {
 	struct list_head		tasks;
 	struct plist_node		pushable_tasks;
 	struct rb_node			pushable_dl_tasks;
+=======
+	struct sched_info		sched_info;
+
+	struct list_head		tasks;
+#ifndef CONFIG_SCHED_ALT
+	struct plist_node		pushable_tasks;
+	struct rb_node			pushable_dl_tasks;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct mm_struct		*mm;
 	struct mm_struct		*active_mm;
@@ -1166,9 +1218,18 @@ struct task_struct {
 	/*
 	 * executable name, excluding path.
 	 *
+<<<<<<< HEAD
 	 * - normally initialized by begin_new_exec()
 	 * - set it with set_task_comm() to ensure it is always
 	 *   NUL-terminated and zero-padded
+=======
+	 * - normally initialized begin_new_exec()
+	 * - set it with set_task_comm()
+	 *   - strscpy_pad() to ensure it is always NUL-terminated and
+	 *     zero-padded
+	 *   - task_lock() to ensure the operation is atomic and the name is
+	 *     fully updated.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	char				comm[TASK_COMM_LEN];
 
@@ -1242,7 +1303,10 @@ struct task_struct {
 #endif
 
 	struct mutex			*blocked_on;	/* lock we're blocked on */
+<<<<<<< HEAD
 	raw_spinlock_t			blocked_lock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
 	/*
@@ -1538,7 +1602,11 @@ struct task_struct {
 	/* Used by memcontrol for targeted memcg charge: */
 	struct mem_cgroup		*active_memcg;
 
+<<<<<<< HEAD
 	/* Cache for current->cgroups->memcg->nodeinfo[nid]->objcg lookups: */
+=======
+	/* Cache for current->cgroups->memcg->objcg lookups: */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct obj_cgroup		*objcg;
 #endif
 
@@ -1597,6 +1665,13 @@ struct task_struct {
 	unsigned long			prev_lowest_stack;
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+	u32				kstack_offset;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_X86_MCE
 	void __user			*mce_vaddr;
 	__u64				mce_kflags;
@@ -1664,6 +1739,18 @@ static inline bool sched_proxy_exec(void)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+#define tsk_seruntime(t)		((t)->sched_time)
+/* replace the uncertian rt_timeout with 0UL */
+#define tsk_rttimeout(t)		(0UL)
+#else /* !CONFIG_SCHED_ALT: */
+#define tsk_seruntime(t)	((t)->se.sum_exec_runtime)
+#define tsk_rttimeout(t)	((t)->rt.timeout)
+#endif /* !CONFIG_SCHED_ALT */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TASK_REPORT_IDLE	(TASK_REPORT + 1)
 #define TASK_REPORT_MAX		(TASK_REPORT_IDLE << 1)
 
@@ -2184,6 +2271,7 @@ extern int __cond_resched_rwlock_write(rwlock_t *lock) __must_hold(lock);
 })
 
 #ifndef CONFIG_PREEMPT_RT
+<<<<<<< HEAD
 
 /*
  * With proxy exec, if a task has been proxy-migrated, it may be a donor
@@ -2198,26 +2286,57 @@ static inline struct mutex *__get_task_blocked_on(struct task_struct *p)
 {
 	lockdep_assert_held_once(&p->blocked_lock);
 	return p->blocked_on == PROXY_WAKING ? NULL : p->blocked_on;
+=======
+static inline struct mutex *__get_task_blocked_on(struct task_struct *p)
+{
+	struct mutex *m = p->blocked_on;
+
+	if (m)
+		lockdep_assert_held_once(&m->wait_lock);
+	return m;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void __set_task_blocked_on(struct task_struct *p, struct mutex *m)
 {
+<<<<<<< HEAD
 	WARN_ON_ONCE(!m);
 	/* The task should only be setting itself as blocked */
 	WARN_ON_ONCE(p != current);
 	/* Currently we serialize blocked_on under the task::blocked_lock */
 	lockdep_assert_held_once(&p->blocked_lock);
+=======
+	struct mutex *blocked_on = READ_ONCE(p->blocked_on);
+
+	WARN_ON_ONCE(!m);
+	/* The task should only be setting itself as blocked */
+	WARN_ON_ONCE(p != current);
+	/* Currently we serialize blocked_on under the mutex::wait_lock */
+	lockdep_assert_held_once(&m->wait_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Check ensure we don't overwrite existing mutex value
 	 * with a different mutex. Note, setting it to the same
 	 * lock repeatedly is ok.
 	 */
+<<<<<<< HEAD
 	WARN_ON_ONCE(p->blocked_on && p->blocked_on != m);
 	p->blocked_on = m;
+=======
+	WARN_ON_ONCE(blocked_on && blocked_on != m);
+	WRITE_ONCE(p->blocked_on, m);
+}
+
+static inline void set_task_blocked_on(struct task_struct *p, struct mutex *m)
+{
+	guard(raw_spinlock_irqsave)(&m->wait_lock);
+	__set_task_blocked_on(p, m);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void __clear_task_blocked_on(struct task_struct *p, struct mutex *m)
 {
+<<<<<<< HEAD
 	/* Currently we serialize blocked_on under the task::blocked_lock */
 	lockdep_assert_held_once(&p->blocked_lock);
 	/*
@@ -2227,10 +2346,26 @@ static inline void __clear_task_blocked_on(struct task_struct *p, struct mutex *
 	 */
 	WARN_ON_ONCE(m && p->blocked_on && p->blocked_on != m && p->blocked_on != PROXY_WAKING);
 	p->blocked_on = NULL;
+=======
+	if (m) {
+		struct mutex *blocked_on = READ_ONCE(p->blocked_on);
+
+		/* Currently we serialize blocked_on under the mutex::wait_lock */
+		lockdep_assert_held_once(&m->wait_lock);
+		/*
+		 * There may be cases where we re-clear already cleared
+		 * blocked_on relationships, but make sure we are not
+		 * clearing the relationship with a different lock.
+		 */
+		WARN_ON_ONCE(blocked_on && blocked_on != m);
+	}
+	WRITE_ONCE(p->blocked_on, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void clear_task_blocked_on(struct task_struct *p, struct mutex *m)
 {
+<<<<<<< HEAD
 	guard(raw_spinlock_irqsave)(&p->blocked_lock);
 	__clear_task_blocked_on(p, m);
 }
@@ -2263,6 +2398,11 @@ static inline void set_task_blocked_on_waking(struct task_struct *p, struct mute
 	__set_task_blocked_on_waking(p, m);
 }
 
+=======
+	guard(raw_spinlock_irqsave)(&m->wait_lock);
+	__clear_task_blocked_on(p, m);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline void __clear_task_blocked_on(struct task_struct *p, struct rt_mutex *m)
 {
@@ -2271,6 +2411,7 @@ static inline void __clear_task_blocked_on(struct task_struct *p, struct rt_mute
 static inline void clear_task_blocked_on(struct task_struct *p, struct rt_mutex *m)
 {
 }
+<<<<<<< HEAD
 
 static inline void __set_task_blocked_on_waking(struct task_struct *p, struct rt_mutex *m)
 {
@@ -2279,6 +2420,8 @@ static inline void __set_task_blocked_on_waking(struct task_struct *p, struct rt
 static inline void set_task_blocked_on_waking(struct task_struct *p, struct rt_mutex *m)
 {
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_PREEMPT_RT */
 
 static __always_inline bool need_resched(void)
@@ -2313,7 +2456,15 @@ static inline void set_task_cpu(struct task_struct *p, unsigned int cpu)
 
 static inline bool task_is_runnable(struct task_struct *p)
 {
+<<<<<<< HEAD
 	return p->on_rq && !p->se.sched_delayed;
+=======
+#ifdef CONFIG_SCHED_ALT
+	return p->on_rq;
+#else
+	return p->on_rq && !p->se.sched_delayed;
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 extern bool sched_task_on_rq(struct task_struct *p);
@@ -2434,6 +2585,28 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 #endif
 #define this_rq_pinned() (*(unsigned int *)((void *)this_rq_raw() + RQ_nr_pinned))
 
+<<<<<<< HEAD
+=======
+static inline void
+__do_set_cpus_ptr(struct task_struct *p, const struct cpumask *new_mask)
+{
+	/*
+	 * This here violates the locking rules for affinity, since we're only
+	 * supposed to change these variables while holding both rq->lock and
+	 * p->pi_lock.
+	 *
+	 * HOWEVER, it magically works, because ttwu() is the only code that
+	 * accesses these variables under p->pi_lock and only does so after
+	 * smp_cond_load_acquire(&p->on_cpu, !VAL), and we're in __schedule()
+	 * before finish_task().
+	 *
+	 * XXX do further audits, this smells like something putrid.
+	 */
+	WARN_ON_ONCE(!p->on_cpu);
+	p->cpus_ptr = new_mask;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void __migrate_enable(void)
 {
 	struct task_struct *p = current;
@@ -2457,8 +2630,22 @@ static inline void __migrate_enable(void)
 	 * __set_cpus_allowed_ptr(SCA_MIGRATE_ENABLE) doesn't schedule().
 	 */
 	guard(preempt)();
+<<<<<<< HEAD
 	if (unlikely(p->cpus_ptr != &p->cpus_mask))
 		___migrate_enable();
+=======
+#ifdef CONFIG_SCHED_ALT
+	/*
+	 * Assumption: current should be running on allowed cpu
+	 */
+	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &p->cpus_mask));
+	if (p->cpus_ptr != &p->cpus_mask)
+		__do_set_cpus_ptr(p, &p->cpus_mask);
+#else
+	if (unlikely(p->cpus_ptr != &p->cpus_mask))
+		___migrate_enable();
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Mustn't clear migration_disabled() until cpus_ptr points back at the
 	 * regular cpus_mask, otherwise things that race (eg.
@@ -2485,8 +2672,25 @@ static inline void __migrate_disable(void)
 	}
 
 	guard(preempt)();
+<<<<<<< HEAD
 	this_rq_pinned()++;
 	p->migration_disabled = 1;
+=======
+#ifdef CONFIG_SCHED_ALT
+	int cpu = smp_processor_id();
+	if (cpumask_test_cpu(cpu, &p->cpus_mask)) {
+#endif
+	this_rq_pinned()++;
+	p->migration_disabled = 1;
+#ifdef CONFIG_SCHED_ALT
+		/*
+		 * Violates locking rules! see comment in __do_set_cpus_ptr().
+		 */
+		if (p->cpus_ptr == &p->cpus_mask)
+				__do_set_cpus_ptr(p, cpumask_of(cpu));
+	}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else /* !COMPILE_OFFSETS */
 static inline void __migrate_disable(void) { }

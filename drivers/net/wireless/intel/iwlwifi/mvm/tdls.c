@@ -234,7 +234,11 @@ void iwl_mvm_rx_tdls_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
 	 * Also convert TU to msec.
 	 */
 	delay = TU_TO_MS(vif->bss_conf.dtim_period * vif->bss_conf.beacon_int);
+<<<<<<< HEAD
 	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+=======
+	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 msecs_to_jiffies(delay));
 
 	iwl_mvm_tdls_update_cs_state(mvm, IWL_MVM_TDLS_SW_ACTIVE);
@@ -548,7 +552,11 @@ iwl_mvm_tdls_channel_switch(struct ieee80211_hw *hw,
 	 */
 	delay = 2 * TU_TO_MS(vif->bss_conf.dtim_period *
 			     vif->bss_conf.beacon_int);
+<<<<<<< HEAD
 	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+=======
+	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 msecs_to_jiffies(delay));
 	return 0;
 }
@@ -659,6 +667,10 @@ retry:
 	/* register a timeout in case we don't succeed in switching */
 	delay = vif->bss_conf.dtim_period * vif->bss_conf.beacon_int *
 		1024 / 1000;
+<<<<<<< HEAD
 	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+=======
+	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 msecs_to_jiffies(delay));
 }

@@ -7141,7 +7141,11 @@ static int igc_probe(struct pci_dev *pdev,
 	if (err)
 		goto err_pci_reg;
 
+<<<<<<< HEAD
 	err = pci_enable_ptm(pdev);
+=======
+	err = pci_enable_ptm(pdev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0)
 		dev_info(&pdev->dev, "PCIe PTM not supported by PCIe bus/controller\n");
 

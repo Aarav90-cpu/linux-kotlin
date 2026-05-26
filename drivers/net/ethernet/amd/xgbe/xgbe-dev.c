@@ -718,6 +718,7 @@ static void xgbe_disable_ecc_sec(struct xgbe_prv_data *pdata,
 
 static int xgbe_set_speed(struct xgbe_prv_data *pdata, int speed)
 {
+<<<<<<< HEAD
 	unsigned int ss, ver;
 
 	switch (speed) {
@@ -737,6 +738,22 @@ static int xgbe_set_speed(struct xgbe_prv_data *pdata, int speed)
 		break;
 	case SPEED_10000:
 		ss = XGBE_MAC_SS_10G;
+=======
+	unsigned int ss;
+
+	switch (speed) {
+	case SPEED_10:
+		ss = 0x07;
+		break;
+	case SPEED_1000:
+		ss = 0x03;
+		break;
+	case SPEED_2500:
+		ss = 0x02;
+		break;
+	case SPEED_10000:
+		ss = 0x00;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;
@@ -1075,8 +1092,11 @@ static void xgbe_get_pcs_index_and_offset(struct xgbe_prv_data *pdata,
 					  unsigned int *index,
 					  unsigned int *offset)
 {
+<<<<<<< HEAD
 	unsigned int ver;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* The PCS registers are accessed using mmio. The underlying
 	 * management interface uses indirect addressing to access the MMD
 	 * register sets. This requires accessing of the PCS register in two
@@ -1088,6 +1108,7 @@ static void xgbe_get_pcs_index_and_offset(struct xgbe_prv_data *pdata,
 	 */
 	mmd_address <<= 1;
 	*index = mmd_address & ~pdata->xpcs_window_mask;
+<<<<<<< HEAD
 
 	ver = XGMAC_GET_BITS(pdata->hw_feat.version, MAC_VR, SNPSVER);
 
@@ -1109,6 +1130,9 @@ static void xgbe_get_pcs_index_and_offset(struct xgbe_prv_data *pdata,
 	else
 		*offset = pdata->xpcs_window +
 			  (mmd_address & pdata->xpcs_window_mask);
+=======
+	*offset = pdata->xpcs_window + (mmd_address & pdata->xpcs_window_mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int xgbe_read_mmd_regs_v3(struct xgbe_prv_data *pdata, int prtad,
@@ -3186,6 +3210,7 @@ static void xgbe_txq_prepare_tx_stop(struct xgbe_prv_data *pdata,
 	/* The Tx engine cannot be stopped if it is actively processing
 	 * packets. Wait for the Tx queue to empty the Tx fifo.  Don't
 	 * wait forever though...
+<<<<<<< HEAD
 	 *
 	 * Optimization: Skip the wait when link is down. Hardware won't
 	 * complete TX processing, so waiting serves no purpose and only
@@ -3196,6 +3221,9 @@ static void xgbe_txq_prepare_tx_stop(struct xgbe_prv_data *pdata,
 	if (!pdata->phy.link)
 		return;
 
+=======
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tx_timeout = jiffies + (XGBE_DMA_STOP_TIMEOUT * HZ);
 	while (time_before(jiffies, tx_timeout)) {
 		tx_status = XGMAC_MTL_IOREAD(pdata, queue, MTL_Q_TQDR);
@@ -3276,6 +3304,7 @@ static void xgbe_enable_tx(struct xgbe_prv_data *pdata)
 	XGMAC_IOWRITE_BITS(pdata, MAC_TCR, TE, 1);
 }
 
+<<<<<<< HEAD
 /**
  * xgbe_wait_for_dma_tx_complete - Wait for DMA to complete pending TX
  * @pdata: driver private data
@@ -3327,10 +3356,13 @@ static int xgbe_wait_for_dma_tx_complete(struct xgbe_prv_data *pdata)
 	return -ETIMEDOUT;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void xgbe_disable_tx(struct xgbe_prv_data *pdata)
 {
 	unsigned int i;
 
+<<<<<<< HEAD
 	/* Step 1: Wait for DMA to complete pending descriptors */
 	xgbe_wait_for_dma_tx_complete(pdata);
 
@@ -3353,6 +3385,26 @@ static void xgbe_disable_tx(struct xgbe_prv_data *pdata)
 
 	/* Step 5: Disable MAC TX last */
 	XGMAC_IOWRITE_BITS(pdata, MAC_TCR, TE, 0);
+=======
+	/* Prepare for Tx DMA channel stop */
+	for (i = 0; i < pdata->tx_q_count; i++)
+		xgbe_prepare_tx_stop(pdata, i);
+
+	/* Disable MAC Tx */
+	XGMAC_IOWRITE_BITS(pdata, MAC_TCR, TE, 0);
+
+	/* Disable each Tx queue */
+	for (i = 0; i < pdata->tx_q_count; i++)
+		XGMAC_MTL_IOWRITE_BITS(pdata, i, MTL_Q_TQOMR, TXQEN, 0);
+
+	/* Disable each Tx DMA channel */
+	for (i = 0; i < pdata->channel_count; i++) {
+		if (!pdata->channel[i]->tx_ring)
+			break;
+
+		XGMAC_DMA_IOWRITE_BITS(pdata->channel[i], DMA_CH_TCR, ST, 0);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xgbe_prepare_rx_stop(struct xgbe_prv_data *pdata,

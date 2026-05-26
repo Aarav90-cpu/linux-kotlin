@@ -2,6 +2,10 @@
 config ATH11K
 	tristate "Qualcomm Technologies 802.11ax chipset support"
 	depends on MAC80211 && HAS_DMA
+<<<<<<< HEAD
+=======
+	select CRYPTO_MICHAEL_MIC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ATH_COMMON
 	select QCOM_QMI_HELPERS
 	help

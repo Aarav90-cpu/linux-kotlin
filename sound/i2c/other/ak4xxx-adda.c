@@ -53,6 +53,7 @@ static void ak4524_reset(struct snd_akm4xxx *ak, int state)
 	}
 }
 
+<<<<<<< HEAD
 /* reset procedure for AK4529 */
 static void ak4529_reset(struct snd_akm4xxx *ak, int state)
 {
@@ -78,6 +79,8 @@ static void ak4529_reset(struct snd_akm4xxx *ak, int state)
 			  snd_akm4xxx_get(ak, 0, 0x09) | 0x01);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* reset procedure for AK4355 and AK4358 */
 static void ak435X_reset(struct snd_akm4xxx *ak, int state)
 {
@@ -124,7 +127,11 @@ void snd_akm4xxx_reset(struct snd_akm4xxx *ak, int state)
 		ak4524_reset(ak, state);
 		break;
 	case SND_AK4529:
+<<<<<<< HEAD
 		ak4529_reset(ak, state);
+=======
+		/* FIXME: needed for ak4529? */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SND_AK4355:
 		ak435X_reset(ak, state);
@@ -281,9 +288,12 @@ void snd_akm4xxx_init(struct snd_akm4xxx *ak)
 		0x07, 0x00, /* 7: ROUT muted */
 		0xff, 0xff
 	};
+<<<<<<< HEAD
 	static const unsigned char ak5365_defaults[] = {
 		0x01, 0x00, 0x00, 0x2b, 0x7f, 0x7f, 0x28, 0x89,
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	int chip;
 	const unsigned char *ptr, *inits;
@@ -330,12 +340,19 @@ void snd_akm4xxx_init(struct snd_akm4xxx *ak)
 		ak->total_regs = 0x05;
 		break;
 	case SND_AK5365:
+<<<<<<< HEAD
 		ak->num_chips = 1;
 		ak->name = "ak5365";
 		ak->total_regs = 0x08;
 		memcpy(ak->images, ak5365_defaults, sizeof(ak5365_defaults));
 		snd_akm4xxx_set_vol(ak, 0, 0x04, 127);
 		snd_akm4xxx_set_vol(ak, 0, 0x05, 127);
+=======
+		/* FIXME: any init sequence? */
+		ak->num_chips = 1;
+		ak->name = "ak5365";
+		ak->total_regs = 0x08;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	case SND_AK4620:
 		inits = inits_ak4620;

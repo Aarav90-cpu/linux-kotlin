@@ -62,6 +62,7 @@ DECLARE_EVENT_CLASS(error_da_monitor,
 #include <monitors/scpd/scpd_trace.h>
 #include <monitors/snep/snep_trace.h>
 #include <monitors/sts/sts_trace.h>
+<<<<<<< HEAD
 // Add new monitors based on CONFIG_DA_MON_EVENTS_IMPLICIT here
 
 #ifdef CONFIG_HA_MON_EVENTS_IMPLICIT
@@ -94,6 +95,10 @@ DECLARE_EVENT_CLASS(error_env_da_monitor,
 // Add new monitors based on CONFIG_HA_MON_EVENTS_IMPLICIT here
 
 #endif
+=======
+#include <monitors/opid/opid_trace.h>
+// Add new monitors based on CONFIG_DA_MON_EVENTS_IMPLICIT here
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* CONFIG_DA_MON_EVENTS_IMPLICIT */
 
@@ -158,6 +163,7 @@ DECLARE_EVENT_CLASS(error_da_monitor_id,
 #include <monitors/sssw/sssw_trace.h>
 // Add new monitors based on CONFIG_DA_MON_EVENTS_ID here
 
+<<<<<<< HEAD
 #ifdef CONFIG_HA_MON_EVENTS_ID
 /* For simplicity this class is marked as DA although relevant only for HA */
 DECLARE_EVENT_CLASS(error_env_da_monitor_id,
@@ -193,6 +199,8 @@ DECLARE_EVENT_CLASS(error_env_da_monitor_id,
 
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_DA_MON_EVENTS_ID */
 #ifdef CONFIG_LTL_MON_EVENTS_ID
 DECLARE_EVENT_CLASS(event_ltl_monitor_id,

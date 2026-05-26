@@ -97,7 +97,11 @@ struct uio_device {
  * @irq_flags:		flags for request_irq()
  * @priv:		optional private data
  * @handler:		the device's irq handler
+<<<<<<< HEAD
  * @mmap_prepare:	mmap_prepare operation for this uio device
+=======
+ * @mmap:		mmap operation for this uio device
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @open:		open operation for this uio device
  * @release:		release operation for this uio device
  * @irqcontrol:		disable/enable irqs when 0/1 is written to /dev/uioX
@@ -112,7 +116,11 @@ struct uio_info {
 	unsigned long		irq_flags;
 	void			*priv;
 	irqreturn_t (*handler)(int irq, struct uio_info *dev_info);
+<<<<<<< HEAD
 	int (*mmap_prepare)(struct uio_info *info, struct vm_area_desc *desc);
+=======
+	int (*mmap)(struct uio_info *info, struct vm_area_struct *vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*open)(struct uio_info *info, struct inode *inode);
 	int (*release)(struct uio_info *info, struct inode *inode);
 	int (*irqcontrol)(struct uio_info *info, s32 irq_on);

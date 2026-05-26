@@ -12,7 +12,11 @@
 #include <linux/vmalloc.h>
 #include <net/addrconf.h>
 #include <rdma/erdma-abi.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/uverbs_ioctl.h>
 
 #include "erdma.h"
@@ -1039,7 +1043,12 @@ int erdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attrs,
 	qp->attrs.rq_size = roundup_pow_of_two(attrs->cap.max_recv_wr);
 
 	if (uctx) {
+<<<<<<< HEAD
 		ret = ib_copy_validate_udata_in(udata, ureq, rsvd0);
+=======
+		ret = ib_copy_from_udata(&ureq, udata,
+					 min(sizeof(ureq), udata->inlen));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto err_out_xa;
 
@@ -1979,7 +1988,12 @@ int erdma_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 		struct erdma_ureq_create_cq ureq;
 		struct erdma_uresp_create_cq uresp;
 
+<<<<<<< HEAD
 		ret = ib_copy_validate_udata_in(udata, ureq, rsvd0);
+=======
+		ret = ib_copy_from_udata(&ureq, udata,
+					 min(udata->inlen, sizeof(ureq)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			goto err_out_xa;
 

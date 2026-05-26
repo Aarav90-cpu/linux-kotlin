@@ -8,10 +8,13 @@
 
 char _license[] SEC("license") = "GPL";
 
+<<<<<<< HEAD
 #ifndef SMC_HS_CTRL_NAME_MAX
 #define SMC_HS_CTRL_NAME_MAX 16
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	BPF_SMC_LISTEN	= 10,
 };
@@ -22,6 +25,7 @@ struct smc_sock___local {
 	bool use_fallback;
 } __attribute__((preserve_access_index));
 
+<<<<<<< HEAD
 struct smc_hs_ctrl___local {
 	char name[SMC_HS_CTRL_NAME_MAX];
 	int (*syn_option)(struct tcp_sock *);
@@ -36,6 +40,8 @@ struct net___local {
 	struct netns_smc___local smc;
 } __attribute__((preserve_access_index));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smc_cnt = 0;
 int fallback_cnt = 0;
 
@@ -106,6 +112,7 @@ int BPF_PROG(smc_run, int family, int type, int protocol)
 
 	task = bpf_get_current_task_btf();
 	/* Prevent from affecting other tests */
+<<<<<<< HEAD
 	if (!task) {
 		return protocol;
 	} else {
@@ -114,6 +121,10 @@ int BPF_PROG(smc_run, int family, int type, int protocol)
 		if (!bpf_core_field_exists(struct net___local, smc) || !net->smc.hs_ctrl)
 			return protocol;
 	}
+=======
+	if (!task || !task->nsproxy->net_ns->smc.hs_ctrl)
+		return protocol;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IPPROTO_SMC;
 }
@@ -134,7 +145,11 @@ int BPF_PROG(bpf_smc_set_tcp_option, struct tcp_sock *tp)
 }
 
 SEC(".struct_ops")
+<<<<<<< HEAD
 struct smc_hs_ctrl___local  linkcheck = {
+=======
+struct smc_hs_ctrl  linkcheck = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.name		= "linkcheck",
 	.syn_option	= (void *)bpf_smc_set_tcp_option,
 	.synack_option	= (void *)bpf_smc_set_tcp_option_cond,

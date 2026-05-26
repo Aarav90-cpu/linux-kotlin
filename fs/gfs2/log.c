@@ -72,7 +72,11 @@ unsigned int gfs2_struct2blk(struct gfs2_sbd *sdp, unsigned int nstruct)
  *
  */
 
+<<<<<<< HEAD
 static void gfs2_remove_from_ail(struct gfs2_bufdata *bd)
+=======
+void gfs2_remove_from_ail(struct gfs2_bufdata *bd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bd->bd_tr = NULL;
 	list_del_init(&bd->bd_ail_st_list);
@@ -467,9 +471,14 @@ void gfs2_log_release(struct gfs2_sbd *sdp, unsigned int blks)
 {
 	atomic_add(blks, &sdp->sd_log_blks_free);
 	trace_gfs2_log_blocks(sdp, blks);
+<<<<<<< HEAD
 	gfs2_assert_withdraw(sdp, !sdp->sd_jdesc ||
 			atomic_read(&sdp->sd_log_blks_free) <=
 			sdp->sd_jdesc->jd_blocks);
+=======
+	gfs2_assert_withdraw(sdp, atomic_read(&sdp->sd_log_blks_free) <=
+				  sdp->sd_jdesc->jd_blocks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (atomic_read(&sdp->sd_log_blks_needed))
 		wake_up(&sdp->sd_log_waitq);
 }
@@ -801,9 +810,15 @@ void gfs2_flush_revokes(struct gfs2_sbd *sdp)
 	/* number of revokes we still have room for */
 	unsigned int max_revokes = atomic_read(&sdp->sd_log_revokes_available);
 
+<<<<<<< HEAD
 	spin_lock(&sdp->sd_log_lock);
 	gfs2_ail1_empty(sdp, max_revokes);
 	spin_unlock(&sdp->sd_log_lock);
+=======
+	gfs2_log_lock(sdp);
+	gfs2_ail1_empty(sdp, max_revokes);
+	gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -984,6 +999,7 @@ static void empty_ail1_list(struct gfs2_sbd *sdp)
 	}
 }
 
+<<<<<<< HEAD
 static void gfs2_trans_drain_list(struct gfs2_sbd *sdp, struct list_head *list)
 {
 	struct gfs2_bufdata *bd;
@@ -1004,12 +1020,17 @@ static void gfs2_trans_drain_list(struct gfs2_sbd *sdp, struct list_head *list)
 /**
  * gfs2_trans_drain - drain the buf and databuf queue for a failed transaction
  * @sdp: the filesystem
+=======
+/**
+ * trans_drain - drain the buf and databuf queue for a failed transaction
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @tr: the transaction to drain
  *
  * When this is called, we're taking an error exit for a log write that failed
  * but since we bypassed the after_commit functions, we need to remove the
  * items from the buf and databuf queue.
  */
+<<<<<<< HEAD
 static void gfs2_trans_drain(struct gfs2_sbd *sdp, struct gfs2_trans *tr)
 {
 	if (!tr)
@@ -1060,14 +1081,48 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
 
 /**
  * __gfs2_log_flush - flush incore transaction(s)
+=======
+static void trans_drain(struct gfs2_trans *tr)
+{
+	struct gfs2_bufdata *bd;
+	struct list_head *head;
+
+	if (!tr)
+		return;
+
+	head = &tr->tr_buf;
+	while (!list_empty(head)) {
+		bd = list_first_entry(head, struct gfs2_bufdata, bd_list);
+		list_del_init(&bd->bd_list);
+		if (!list_empty(&bd->bd_ail_st_list))
+			gfs2_remove_from_ail(bd);
+		kmem_cache_free(gfs2_bufdata_cachep, bd);
+	}
+	head = &tr->tr_databuf;
+	while (!list_empty(head)) {
+		bd = list_first_entry(head, struct gfs2_bufdata, bd_list);
+		list_del_init(&bd->bd_list);
+		if (!list_empty(&bd->bd_ail_st_list))
+			gfs2_remove_from_ail(bd);
+		kmem_cache_free(gfs2_bufdata_cachep, bd);
+	}
+}
+
+/**
+ * gfs2_log_flush - flush incore transaction(s)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @sdp: The filesystem
  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
  *
  */
 
+<<<<<<< HEAD
 static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
 			     u32 flags)
+=======
+void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct gfs2_trans *tr = NULL;
 	unsigned int reserved_blocks = 0, used_blocks = 0;
@@ -1075,6 +1130,10 @@ static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
 	unsigned int first_log_head;
 	unsigned int reserved_revokes = 0;
 
+<<<<<<< HEAD
+=======
+	down_write(&sdp->sd_log_flush_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_gfs2_log_flush(sdp, 1, flags);
 
 repeat:
@@ -1151,7 +1210,11 @@ repeat:
 		goto out_withdraw;
 	lops_after_commit(sdp, tr);
 
+<<<<<<< HEAD
 	spin_lock(&sdp->sd_log_lock);
+=======
+	gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdp->sd_log_blks_reserved = 0;
 
 	spin_lock(&sdp->sd_ail_lock);
@@ -1160,7 +1223,11 @@ repeat:
 		tr = NULL;
 	}
 	spin_unlock(&sdp->sd_ail_lock);
+<<<<<<< HEAD
 	spin_unlock(&sdp->sd_log_lock);
+=======
+	gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(flags & GFS2_LOG_HEAD_FLUSH_NORMAL)) {
 		if (!sdp->sd_log_idle) {
@@ -1186,16 +1253,24 @@ out:
 		gfs2_assert_withdraw(sdp, used_blocks < reserved_blocks);
 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
 	}
+<<<<<<< HEAD
+=======
+	up_write(&sdp->sd_log_flush_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gfs2_trans_free(sdp, tr);
 	trace_gfs2_log_flush(sdp, 0, flags);
 	return;
 
 out_withdraw:
+<<<<<<< HEAD
 	if (sdp->sd_jdesc->jd_log_bio) {
 		bio_io_error(sdp->sd_jdesc->jd_log_bio);
 		sdp->sd_jdesc->jd_log_bio = NULL;
 	}
 	gfs2_trans_drain(sdp, tr);
+=======
+	trans_drain(tr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * If the tr_list is empty, we're withdrawing during a log
 	 * flush that targets a transaction, but the transaction was
@@ -1210,6 +1285,7 @@ out_withdraw:
 	goto out_end;
 }
 
+<<<<<<< HEAD
 void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
 {
 	down_write(&sdp->sd_log_flush_lock);
@@ -1217,6 +1293,8 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
 	up_write(&sdp->sd_log_flush_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * gfs2_merge_trans - Merge a new transaction into a cached transaction
  * @sdp: the filesystem
@@ -1251,7 +1329,11 @@ static void log_refund(struct gfs2_sbd *sdp, struct gfs2_trans *tr)
 	unsigned int unused;
 	unsigned int maxres;
 
+<<<<<<< HEAD
 	spin_lock(&sdp->sd_log_lock);
+=======
+	gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdp->sd_log_tr) {
 		gfs2_merge_trans(sdp, tr);
@@ -1269,7 +1351,11 @@ static void log_refund(struct gfs2_sbd *sdp, struct gfs2_trans *tr)
 		gfs2_log_release(sdp, unused);
 	sdp->sd_log_blks_reserved = reserved;
 
+<<<<<<< HEAD
 	spin_unlock(&sdp->sd_log_lock);
+=======
+	gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int gfs2_jrnl_flush_reqd(struct gfs2_sbd *sdp)
@@ -1348,17 +1434,24 @@ int gfs2_logd(void *data)
 			break;
 
 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
+<<<<<<< HEAD
 			down_write(&sdp->sd_log_flush_lock);
 			gfs2_ail1_empty(sdp, 0);
 			__gfs2_log_flush(sdp, NULL,
 					 GFS2_LOG_HEAD_FLUSH_NORMAL |
 					 GFS2_LFC_LOGD_JFLUSH_REQD);
 			up_write(&sdp->sd_log_flush_lock);
+=======
+			gfs2_ail1_empty(sdp, 0);
+			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+						  GFS2_LFC_LOGD_JFLUSH_REQD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
 		    gfs2_ail_flush_reqd(sdp)) {
 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
+<<<<<<< HEAD
 			down_write(&sdp->sd_log_flush_lock);
 			gfs2_ail1_start(sdp);
 			gfs2_ail1_wait(sdp);
@@ -1367,6 +1460,13 @@ int gfs2_logd(void *data)
 					 GFS2_LOG_HEAD_FLUSH_NORMAL |
 					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
 			up_write(&sdp->sd_log_flush_lock);
+=======
+			gfs2_ail1_start(sdp);
+			gfs2_ail1_wait(sdp);
+			gfs2_ail1_empty(sdp, 0);
+			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;

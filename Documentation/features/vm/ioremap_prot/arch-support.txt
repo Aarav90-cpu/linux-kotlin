@@ -20,7 +20,11 @@
     |    openrisc: | TODO |
     |      parisc: | TODO |
     |     powerpc: |  ok  |
+<<<<<<< HEAD
     |       riscv: |  ok  |
+=======
+    |       riscv: | TODO |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     |        s390: |  ok  |
     |          sh: |  ok  |
     |       sparc: | TODO |

@@ -19,7 +19,11 @@
 #include <linux/types.h>
 
 /* those are commonly provided by sys/types.h */
+<<<<<<< HEAD
 typedef uint64_t              dev_t;
+=======
+typedef unsigned int          dev_t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef uint64_t              ino_t;
 typedef unsigned int         mode_t;
 typedef   signed int          pid_t;

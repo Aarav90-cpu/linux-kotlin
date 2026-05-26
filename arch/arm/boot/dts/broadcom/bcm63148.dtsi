@@ -97,7 +97,11 @@
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
+<<<<<<< HEAD
 		ranges = <0 0xfffe8000 0x20000>;
+=======
+		ranges = <0 0xfffe8000 0x8000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* GPIOs 0 .. 31 */
 		gpio0: gpio@100 {
@@ -197,6 +201,7 @@
 				reg = <0>;
 			};
 		};
+<<<<<<< HEAD
 
 		i2c0: i2c@3e00 {
 			compatible = "brcm,brcmper-i2c";
@@ -206,5 +211,7 @@
 			#size-cells = <0>;
 			status = "disabled";
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

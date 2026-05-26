@@ -425,7 +425,10 @@ static int aldebaran_set_default_dpm_table(struct smu_context *smu)
 		dpm_table->dpm_levels[0].enabled = true;
 		dpm_table->dpm_levels[1].value = pptable->GfxclkFmax;
 		dpm_table->dpm_levels[1].enabled = true;
+<<<<<<< HEAD
 		dpm_table->flags |= SMU_DPM_TABLE_FINE_GRAINED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		dpm_table->count = 1;
 		dpm_table->dpm_levels[0].value = smu->smu_table.boot_values.gfxclk / 100;
@@ -1847,7 +1850,10 @@ static int aldebaran_mode2_reset(struct smu_context *smu)
 		amdgpu_device_load_pci_state(adev->pdev);
 
 		dev_dbg(adev->dev, "wait for reset ack\n");
+<<<<<<< HEAD
 		ret = -ETIME;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		while (ret == -ETIME && timeout)  {
 			ret = smu_msg_wait_response(ctl, 0);
 			/* Wait a bit more time for getting ACK */
@@ -1857,7 +1863,11 @@ static int aldebaran_mode2_reset(struct smu_context *smu)
 				continue;
 			}
 
+<<<<<<< HEAD
 			if (ret != 0) {
+=======
+			if (ret != 1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dev_err(adev->dev, "failed to send mode2 message \tparam: 0x%08x response %#x\n",
 						SMU_RESET_MODE_2, ret);
 				goto out;
@@ -1867,9 +1877,16 @@ static int aldebaran_mode2_reset(struct smu_context *smu)
 	} else {
 		dev_err(adev->dev, "smu fw 0x%x does not support MSG_GfxDeviceDriverReset MSG\n",
 				smu->smc_fw_version);
+<<<<<<< HEAD
 		ret = -EOPNOTSUPP;
 	}
 
+=======
+	}
+
+	if (ret == 1)
+		ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	mutex_unlock(&ctl->lock);
 
@@ -1989,7 +2006,11 @@ static const struct pptable_funcs aldebaran_ppt_funcs = {
 	/* pptable related */
 	.setup_pptable = aldebaran_setup_pptable,
 	.get_vbios_bootup_values = smu_v13_0_get_vbios_bootup_values,
+<<<<<<< HEAD
 	.check_fw_version = smu_cmn_check_fw_version,
+=======
+	.check_fw_version = smu_v13_0_check_fw_version,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.write_pptable = smu_cmn_write_pptable,
 	.set_driver_table_location = smu_v13_0_set_driver_table_location,
 	.set_tool_table_location = smu_v13_0_set_tool_table_location,

@@ -100,4 +100,8 @@ static __always_inline bool test_and_change_bit(long nr, volatile unsigned long 
 	return arch_test_and_change_bit(nr, addr);
 }
 
+<<<<<<< HEAD
 #endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H */
+=======
+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

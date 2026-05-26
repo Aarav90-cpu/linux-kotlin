@@ -235,9 +235,12 @@ struct scmi_transport_ops {
  *		      to have an execution latency lesser-equal to the threshold
  *		      should be considered for atomic mode operation: such
  *		      decision is finally left up to the SCMI drivers.
+<<<<<<< HEAD
  * @no_completion_irq: Flag to indicate that this transport has no completion
  *		       interrupt and has to be polled. This is similar to the
  *		       force_polling below, except this is set via DT property.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @force_polling: Flag to force this whole transport to use SCMI core polling
  *		   mechanism instead of completion interrupts even if available.
  * @sync_cmds_completed_on_ret: Flag to indicate that the transport assures
@@ -257,7 +260,10 @@ struct scmi_desc {
 	int max_msg;
 	int max_msg_size;
 	unsigned int atomic_threshold;
+<<<<<<< HEAD
 	bool no_completion_irq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const bool force_polling;
 	const bool sync_cmds_completed_on_ret;
 	const bool atomic_enabled;

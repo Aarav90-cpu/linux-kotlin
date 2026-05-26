@@ -10,7 +10,10 @@
 
 #include <linux/uio.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <linux/mmzone.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/page-flags.h>
 #include <linux/slab.h>
 #include <linux/crc32.h>
@@ -29,6 +32,11 @@
 #include <linux/fscrypt.h>
 #include <linux/fsverity.h>
 
+<<<<<<< HEAD
+=======
+struct pagevec;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_F2FS_CHECK_FS
 #define f2fs_bug_on(sbi, condition)	BUG_ON(condition)
 #else
@@ -2033,8 +2041,11 @@ struct f2fs_sb_info {
 	unsigned long long iostat_count[NR_IO_TYPE];
 	unsigned long long iostat_bytes[NR_IO_TYPE];
 	unsigned long long prev_iostat_bytes[NR_IO_TYPE];
+<<<<<<< HEAD
 	unsigned long long iostat_read_folio_count[NR_PAGE_ORDERS];
 	unsigned long long prev_iostat_read_folio_count[NR_PAGE_ORDERS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool iostat_enable;
 	unsigned long iostat_next_period;
 	unsigned int iostat_period_ms;
@@ -2710,7 +2721,11 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
 
 	spin_lock(&sbi->stat_lock);
 	if (unlikely(sbi->total_valid_block_count < count)) {
+<<<<<<< HEAD
 		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%llu, count:%u",
+=======
+		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  sbi->total_valid_block_count, inode->i_ino, count);
 		sbi->total_valid_block_count = 0;
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
@@ -2723,7 +2738,11 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
 					sbi->current_reserved_blocks + count);
 	spin_unlock(&sbi->stat_lock);
 	if (unlikely(inode->i_blocks < sectors)) {
+<<<<<<< HEAD
 		f2fs_warn(sbi, "Inconsistent i_blocks, ino:%llu, iblocks:%llu, sectors:%llu",
+=======
+		f2fs_warn(sbi, "Inconsistent i_blocks, ino:%lu, iblocks:%llu, sectors:%llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  inode->i_ino,
 			  (unsigned long long)inode->i_blocks,
 			  (unsigned long long)sectors);
@@ -2997,7 +3016,11 @@ static inline void dec_valid_node_count(struct f2fs_sb_info *sbi,
 		dquot_free_inode(inode);
 	} else {
 		if (unlikely(inode->i_blocks == 0)) {
+<<<<<<< HEAD
 			f2fs_warn(sbi, "dec_valid_node_count: inconsistent i_blocks, ino:%llu, iblocks:%llu",
+=======
+			f2fs_warn(sbi, "dec_valid_node_count: inconsistent i_blocks, ino:%lu, iblocks:%llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  inode->i_ino,
 				  (unsigned long long)inode->i_blocks);
 			set_sbi_flag(sbi, SBI_NEED_FSCK);
@@ -3906,6 +3929,10 @@ int f2fs_do_quota_sync(struct super_block *sb, int type);
 loff_t max_file_blocks(struct inode *inode);
 void f2fs_quota_off_umount(struct super_block *sb);
 void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag);
+<<<<<<< HEAD
+=======
+void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error);
 int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
 int f2fs_sync_fs(struct super_block *sb, int sync);
@@ -3924,11 +3951,19 @@ enum node_type;
 
 int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid);
 bool f2fs_available_free_memory(struct f2fs_sb_info *sbi, int type);
+<<<<<<< HEAD
 bool f2fs_in_warm_node_list(struct folio *folio);
 void f2fs_init_fsync_node_info(struct f2fs_sb_info *sbi);
 void f2fs_del_fsync_node_entry(struct f2fs_sb_info *sbi, struct folio *folio);
 void f2fs_reset_fsync_node_info(struct f2fs_sb_info *sbi);
 bool f2fs_need_dentry_mark(struct f2fs_sb_info *sbi, nid_t nid);
+=======
+bool f2fs_in_warm_node_list(struct f2fs_sb_info *sbi, struct folio *folio);
+void f2fs_init_fsync_node_info(struct f2fs_sb_info *sbi);
+void f2fs_del_fsync_node_entry(struct f2fs_sb_info *sbi, struct folio *folio);
+void f2fs_reset_fsync_node_info(struct f2fs_sb_info *sbi);
+int f2fs_need_dentry_mark(struct f2fs_sb_info *sbi, nid_t nid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool f2fs_is_checkpointed_node(struct f2fs_sb_info *sbi, nid_t nid);
 bool f2fs_need_inode_block_update(struct f2fs_sb_info *sbi, nid_t ino);
 int f2fs_get_node_info(struct f2fs_sb_info *sbi, nid_t nid,
@@ -4293,7 +4328,10 @@ struct f2fs_stat_info {
 	int gc_secs[2][2];
 	int tot_blks, data_blks, node_blks;
 	int bg_data_blks, bg_node_blks;
+<<<<<<< HEAD
 	unsigned int defrag_blks;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int blkoff[NR_CURSEG_TYPE];
 	int curseg[NR_CURSEG_TYPE];
 	int cursec[NR_CURSEG_TYPE];
@@ -4428,9 +4466,12 @@ static inline struct f2fs_stat_info *F2FS_STAT(struct f2fs_sb_info *sbi)
 		si->bg_node_blks += ((gc_type) == BG_GC) ? (blks) : 0;	\
 	} while (0)
 
+<<<<<<< HEAD
 #define stat_inc_defrag_blk_count(sbi, blks)				\
 	(F2FS_STAT(sbi)->defrag_blks += (blks))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int f2fs_build_stats(struct f2fs_sb_info *sbi);
 void f2fs_destroy_stats(struct f2fs_sb_info *sbi);
 void __init f2fs_create_root_stats(void);
@@ -4472,7 +4513,10 @@ void f2fs_update_sit_info(struct f2fs_sb_info *sbi);
 #define stat_inc_tot_blk_count(si, blks)		do { } while (0)
 #define stat_inc_data_blk_count(sbi, blks, gc_type)	do { } while (0)
 #define stat_inc_node_blk_count(sbi, blks, gc_type)	do { } while (0)
+<<<<<<< HEAD
 #define stat_inc_defrag_blk_count(sbi, blks)		do { } while (0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int f2fs_build_stats(struct f2fs_sb_info *sbi) { return 0; }
 static inline void f2fs_destroy_stats(struct f2fs_sb_info *sbi) { }
@@ -5075,6 +5119,7 @@ static inline void f2fs_handle_page_eio(struct f2fs_sb_info *sbi,
 		return;
 
 	if (ofs == sbi->page_eio_ofs[type]) {
+<<<<<<< HEAD
 		if (sbi->page_eio_cnt[type]++ == MAX_RETRY_PAGE_EIO) {
 			enum stop_cp_reason stop_reason;
 
@@ -5094,6 +5139,10 @@ static inline void f2fs_handle_page_eio(struct f2fs_sb_info *sbi,
 			}
 			f2fs_stop_checkpoint(sbi, false, stop_reason);
 		}
+=======
+		if (sbi->page_eio_cnt[type]++ == MAX_RETRY_PAGE_EIO)
+			set_ckpt_flags(sbi, CP_ERROR_FLAG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		sbi->page_eio_ofs[type] = ofs;
 		sbi->page_eio_cnt[type] = 0;

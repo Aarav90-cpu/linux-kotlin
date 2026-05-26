@@ -241,7 +241,11 @@
 
 	pinctrl_pmic: pmicgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
+=======
+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 

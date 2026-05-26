@@ -995,7 +995,10 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
 	int data_direction, payload_length;
 	struct iscsi_ecdb_ahdr *ecdb_ahdr;
 	struct iscsi_scsi_req *hdr;
+<<<<<<< HEAD
 	u16 ahslength, cdb_length;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int iscsi_task_attr;
 	unsigned char *cdb;
 	int sam_task_attr;
@@ -1109,6 +1112,7 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
 				ISCSI_REASON_CMD_NOT_SUPPORTED, buf);
 		}
 
+<<<<<<< HEAD
 		ahslength = be16_to_cpu(ecdb_ahdr->ahslength);
 		if (!ahslength) {
 			pr_err("Extended CDB AHS with zero length, protocol error.\n");
@@ -1125,11 +1129,20 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
 		cdb_length = ahslength - 1 + ISCSI_CDB_SIZE;
 
 		cdb = kmalloc(cdb_length, GFP_KERNEL);
+=======
+		cdb = kmalloc(be16_to_cpu(ecdb_ahdr->ahslength) + 15,
+			      GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cdb == NULL)
 			return iscsit_add_reject_cmd(cmd,
 				ISCSI_REASON_BOOKMARK_NO_RESOURCES, buf);
 		memcpy(cdb, hdr->cdb, ISCSI_CDB_SIZE);
+<<<<<<< HEAD
 		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb, cdb_length - ISCSI_CDB_SIZE);
+=======
+		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb,
+		       be16_to_cpu(ecdb_ahdr->ahslength) - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	data_direction = (hdr->flags & ISCSI_FLAG_CMD_WRITE) ? DMA_TO_DEVICE :

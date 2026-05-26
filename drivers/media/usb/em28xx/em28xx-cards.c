@@ -387,6 +387,7 @@ static const struct em28xx_reg_seq c3tech_digital_duo_digital[] = {
  * GPIO 7 = P07_LED (green LED)
  */
 static const struct em28xx_reg_seq pctv_461e[] = {
+<<<<<<< HEAD
 	{EM2874_R80_GPIO_P0_CTRL,	0x7f,	0xff,	0},
 	{0x0d,				0xff,	0xff,	0},
 	{EM2874_R80_GPIO_P0_CTRL,	0x3f,	0xff,	100}, /* reset demod */
@@ -395,6 +396,16 @@ static const struct em28xx_reg_seq pctv_461e[] = {
 	{EM2874_R80_GPIO_P0_CTRL,	0xeb,	0xff,	0},
 	{EM2874_R5F_TS_ENABLE,		0x84,	0x84,	0}, /* parallel? | null discard */
 	{-1,				-1,	-1,	-1},
+=======
+	{EM2874_R80_GPIO_P0_CTRL,      0x7f, 0xff,    0},
+	{0x0d,                 0xff, 0xff,    0},
+	{EM2874_R80_GPIO_P0_CTRL,      0x3f, 0xff,  100}, /* reset demod */
+	{EM2874_R80_GPIO_P0_CTRL,      0x7f, 0xff,  200}, /* reset demod */
+	{0x0d,                 0x42, 0xff,    0},
+	{EM2874_R80_GPIO_P0_CTRL,      0xeb, 0xff,    0},
+	{EM2874_R5F_TS_ENABLE, 0x84, 0x84,    0}, /* parallel? | null discard */
+	{                  -1,   -1,   -1,   -1},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if 0
@@ -553,6 +564,7 @@ static struct em28xx_reg_seq hauppauge_usb_quadhd_atsc_reg_seq[] = {
 	{EM2874_R5E_TS2_PKT_SIZE,      0x05, 0xff,     50},
 	{-1,                           -1,   -1,       -1},
 };
+<<<<<<< HEAD
 /* Hauppauge HVR-935 \ HVR-955 / HVR-975 V2 */
 static const struct em28xx_reg_seq hauppauge_hvr_9x5_v2[] = {
 	{EM2874_R80_GPIO_P0_CTRL,	0xdc,	0xff,	50},
@@ -583,6 +595,8 @@ static const struct em28xx_reg_seq hauppauge_hvr_9x5_v2_dvb[] = {
 	{0x0b,		0x80,	0xff,	100},
 	{-1,		-1,	-1,	-1},
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * MyGica USB TV Box
@@ -719,6 +733,7 @@ static struct em28xx_led hauppauge_usb_quadhd_leds[] = {
 	{-1, 0, 0, 0},
 };
 
+<<<<<<< HEAD
 static struct em28xx_led hauppauge_9x5_v2_leds[] = {
 	{
 		.role      = EM28XX_LED_DIGITAL_CAPTURING,
@@ -729,6 +744,8 @@ static struct em28xx_led hauppauge_9x5_v2_leds[] = {
 	{-1, 0, 0, 0},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  *  Board definitions
  */
@@ -2497,6 +2514,7 @@ const struct em28xx_board em28xx_boards[] = {
 		.ir_codes      = RC_MAP_PINNACLE_PCTV_HD,
 	},
 	/*
+<<<<<<< HEAD
 	 * 2013:x462 PCTV DVB-S2 Stick (461e_v3)
 	 * Empia EM28178, Montage M88DS3103c, Montage M88TS2022, Allegro A8293
 	 */
@@ -2511,6 +2529,8 @@ const struct em28xx_board em28xx_boards[] = {
 		.ir_codes      = RC_MAP_PINNACLE_PCTV_HD,
 	},
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * 2013:025f PCTV tripleStick (292e).
 	 * Empia EM28178, Silicon Labs Si2168, Silicon Labs Si2157
 	 */
@@ -2576,12 +2596,24 @@ const struct em28xx_board em28xx_boards[] = {
 		.def_i2c_bus   = 1,
 		.i2c_speed     = EM28XX_I2C_CLK_WAIT_ENABLE |
 				 EM28XX_I2C_FREQ_400_KHZ,
+<<<<<<< HEAD
 		.tuner_type    = TUNER_ABSENT,
+=======
+		.tuner_type    = TUNER_SI2157,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.tuner_gpio    = hauppauge_dualhd_dvb,
 		.has_dvb       = 1,
 		.has_dual_ts   = 1,
 		.ir_codes      = RC_MAP_HAUPPAUGE,
 		.leds          = hauppauge_dualhd_leds,
+<<<<<<< HEAD
+=======
+		.input         = { {
+			.type     = EM28XX_VMUX_COMPOSITE,
+			.vmux     = TVP5150_COMPOSITE1,
+			.amux     = EM28XX_AMUX_LINE_IN,
+		} },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	/*
 	 * 2040:026d Hauppauge WinTV-dualHD (model 01595 - ATSC/QAM) Isoc.
@@ -2677,6 +2709,7 @@ const struct em28xx_board em28xx_boards[] = {
 			.gpio     = mygica_utv3_tuner_audio_gpio,
 		} },
 	},
+<<<<<<< HEAD
 	[EM2828X_BOARD_HAUPPAUGE_USB_LIVE2] = {
 		.name         = "Hauppauge USB Live2",
 		.vchannels    = 2,
@@ -2797,6 +2830,8 @@ const struct em28xx_board em28xx_boards[] = {
 
 		} },
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL_GPL(em28xx_boards);
 
@@ -2926,14 +2961,18 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB },
 	{ USB_DEVICE(0x2040, 0x8265),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x2040, 0x8269),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB },
 	{ USB_DEVICE(0x2040, 0x8278),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ USB_DEVICE(0x2040, 0x026d),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_01595 },
 	{ USB_DEVICE(0x2040, 0x826d),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_01595 },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x2040, 0x826e),
 			.driver_info = EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_01595 },
 	{ USB_DEVICE(0x2040, 0x826f),
@@ -2958,6 +2997,10 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM2828X_BOARD_HAUPPAUGE_975_V2 },
 	{ USB_DEVICE(0x2040, 0x836a),
 			.driver_info = EM2828X_BOARD_HAUPPAUGE_975_V2 },
+=======
+	{ USB_DEVICE(0x2040, 0x846d),
+			.driver_info = EM2874_BOARD_HAUPPAUGE_USB_QUADHD },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ USB_DEVICE(0x0438, 0xb002),
 			.driver_info = EM2880_BOARD_AMD_ATI_TV_WONDER_HD_600 },
 	{ USB_DEVICE(0x2001, 0xf112),
@@ -3026,10 +3069,13 @@ struct usb_device_id em28xx_id_table[] = {
 			.driver_info = EM28178_BOARD_PCTV_461E_V2 },
 	{ USB_DEVICE(0x2013, 0x0259),
 			.driver_info = EM28178_BOARD_PCTV_461E_V2 },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x2013, 0x0462),
 			.driver_info = EM28178_BOARD_PCTV_461E_V3 },
 	{ USB_DEVICE(0x2013, 0x8462), /* Bulk transport 461e v3 */
 			.driver_info = EM28178_BOARD_PCTV_461E_V3 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ USB_DEVICE(0x2013, 0x025f),
 			.driver_info = EM28178_BOARD_PCTV_292E },
 	{ USB_DEVICE(0x2013, 0x0264), /* Hauppauge WinTV-soloHD 292e SE */
@@ -3452,10 +3498,13 @@ static void em28xx_card_setup(struct em28xx *dev)
 	case EM2884_BOARD_HAUPPAUGE_WINTV_HVR_930C:
 	case EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB:
 	case EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_01595:
+<<<<<<< HEAD
 	case EM2828X_BOARD_HAUPPAUGE_USB_LIVE2:
 	case EM2828X_BOARD_HAUPPAUGE_935_V2:
 	case EM2828X_BOARD_HAUPPAUGE_955_V2:
 	case EM2828X_BOARD_HAUPPAUGE_975_V2:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		struct tveeprom tv;
 
@@ -3829,11 +3878,14 @@ static int em28xx_init_dev(struct em28xx *dev, struct usb_device *udev,
 			}
 			/* NOTE: the em2820 is used in webcams, too ! */
 			break;
+<<<<<<< HEAD
 		case CHIP_ID_EM2828X:
 			chip_name = "em2828X";
 			dev->wait_after_write = 0;
 			dev->eeprom_addrwidth_16bit = 1;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case CHIP_ID_EM2840:
 			chip_name = "em2840";
 			break;
@@ -3992,7 +4044,10 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 	 *  0x84	bulk		=> analog or digital**
 	 *  0x85	isoc		=> digital TS2
 	 *  0x85	bulk		=> digital TS2
+<<<<<<< HEAD
 	 *  0x8a	isoc		=> digital video
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * (*: audio should always be isoc)
 	 * (**: analog, if ep 0x82 is isoc, otherwise digital)
 	 *
@@ -4016,8 +4071,11 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 	/* Only inspect input endpoints */
 
 	switch (e->bEndpointAddress) {
+<<<<<<< HEAD
 	case 0x81:	/* unknown function */
 		return;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 0x82:
 		*has_video = true;
 		if (usb_endpoint_xfer_isoc(e)) {
@@ -4035,10 +4093,14 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 				"error: skipping audio endpoint 0x83, because it uses bulk transfers !\n");
 		return;
 	case 0x84:
+<<<<<<< HEAD
 		if (*has_dvb && (usb_endpoint_xfer_bulk(e))) {
 			*has_dvb = true;
 			dev->dvb_ep_bulk = e->bEndpointAddress;
 		} else if (*has_video && (usb_endpoint_xfer_bulk(e))) {
+=======
+		if (*has_video && (usb_endpoint_xfer_bulk(e))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->analog_ep_bulk = e->bEndpointAddress;
 		} else {
 			if (usb_endpoint_xfer_isoc(e)) {
@@ -4072,6 +4134,7 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 			dev->dvb_ep_bulk_ts2 = e->bEndpointAddress;
 		}
 		return;
+<<<<<<< HEAD
 	case 0x8a:
 		*has_video = true;
 		*has_dvb = true;
@@ -4083,6 +4146,9 @@ static void em28xx_check_usb_descriptor(struct em28xx *dev,
 		}
 		return;
 	};
+=======
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -4264,8 +4330,11 @@ static int em28xx_usb_probe(struct usb_interface *intf,
 			try_bulk = 1;
 		else
 			try_bulk = 0;
+<<<<<<< HEAD
 	} else if (dev->board.decoder == EM28XX_BUILTIN && dev->analog_xfer_mode) {
 		try_bulk = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		try_bulk = usb_xfer_mode > 0;
 	}

@@ -128,6 +128,13 @@ struct azx {
 	unsigned int beep_mode;
 	bool ctl_dev_id;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SND_HDA_PATCH_LOADER
+	const struct firmware *fw;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* flags */
 	int bdl_pos_adj;
 	unsigned int running:1;

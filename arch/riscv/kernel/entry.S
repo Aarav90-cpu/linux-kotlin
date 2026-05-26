@@ -498,7 +498,10 @@ SYM_DATA_START_LOCAL(excp_vect_table)
 	RISCV_PTR do_trap_unknown /* cause=16 */
 	RISCV_PTR do_trap_unknown /* cause=17 */
 	RISCV_PTR do_trap_software_check /* cause=18 is sw check exception */
+<<<<<<< HEAD
 	RISCV_PTR do_trap_hardware_error /* hardware error (19) */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SYM_DATA_END_LABEL(excp_vect_table, SYM_L_LOCAL, excp_vect_table_end)
 
 #ifndef CONFIG_MMU

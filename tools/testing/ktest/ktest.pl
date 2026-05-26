@@ -85,7 +85,10 @@ my %default = (
 );
 
 my $test_log_start = 0;
+<<<<<<< HEAD
 my $dry_run = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 my $ktest_config = "ktest.conf";
 my $version;
@@ -101,9 +104,13 @@ my $test_type;
 my $build_type;
 my $build_options;
 my $final_post_ktest;
+<<<<<<< HEAD
 my $post_ktest_done = 0;
 my $pre_ktest;
 my $pre_ktest_die;
+=======
+my $pre_ktest;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 my $post_ktest;
 my $pre_test;
 my $pre_test_die;
@@ -286,7 +293,10 @@ my %option_map = (
     "BUILD_DIR"			=> \$builddir,
     "TEST_TYPE"			=> \$test_type,
     "PRE_KTEST"			=> \$pre_ktest,
+<<<<<<< HEAD
     "PRE_KTEST_DIE"		=> \$pre_ktest_die,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     "POST_KTEST"		=> \$post_ktest,
     "PRE_TEST"			=> \$pre_test,
     "PRE_TEST_DIE"		=> \$pre_test_die,
@@ -588,7 +598,11 @@ sub end_monitor;
 sub wait_for_monitor;
 
 sub _logit {
+<<<<<<< HEAD
     if (defined($opt{"LOG_FILE"}) && defined(fileno(LOG))) {
+=======
+    if (defined($opt{"LOG_FILE"})) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	print LOG @_;
     }
 }
@@ -914,6 +928,7 @@ sub set_variable {
     if (defined($command_tmp_vars{$lvalue})) {
 	return;
     }
+<<<<<<< HEAD
 
     # If a variable is undefined, treat an unescaped self-reference as empty.
     if (!defined($variable{$lvalue})) {
@@ -922,6 +937,8 @@ sub set_variable {
 	$rvalue =~ s/\s+$//;
     }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if ($rvalue =~ /^\s*$/) {
 	delete $variable{$lvalue};
     } else {
@@ -1366,9 +1383,12 @@ sub read_config {
 	    print "$option\n";
 	}
 	print "Set IGNORE_UNUSED = 1 to have ktest ignore unused variables\n";
+<<<<<<< HEAD
 	if ($dry_run) {
 	    return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!read_yn "Do you want to continue?") {
 	    exit -1;
 	}
@@ -1506,6 +1526,7 @@ sub reboot {
     }
 
     if ($powercycle) {
+<<<<<<< HEAD
 	start_monitor;
 	if (defined($time)) {
 		# Flush stale console output from the old kernel before power-cycling.
@@ -1514,6 +1535,15 @@ sub reboot {
 
 	run_command "$power_cycle";
 
+=======
+	run_command "$power_cycle";
+
+	start_monitor;
+	# flush out current monitor
+	# May contain the reboot success line
+	wait_for_monitor 1;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     } else {
 	# Make sure everything has been written to disk
 	run_ssh("sync", 10);
@@ -1591,6 +1621,7 @@ sub get_test_name() {
     return $name;
 }
 
+<<<<<<< HEAD
 sub run_post_ktest {
     my $cmd;
 
@@ -1609,6 +1640,8 @@ sub run_post_ktest {
     $post_ktest_done = 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sub dodie {
     # avoid recursion
     return if ($in_die);
@@ -1635,11 +1668,14 @@ sub dodie {
 	print " See $opt{LOG_FILE} for more info.\n";
     }
 
+<<<<<<< HEAD
     # Fatal paths bypass fail(), so STORE_FAILURES needs to be handled here.
     if (defined($store_failures)) {
 	save_logs("fail", $store_failures);
     }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if ($email_on_error) {
 	my $name = get_test_name;
 	my $log_file;
@@ -1673,7 +1709,10 @@ sub dodie {
     if (defined($post_test)) {
 	run_command $post_test;
     }
+<<<<<<< HEAD
     run_post_ktest;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     die @_, "\n";
 }
@@ -1878,12 +1917,15 @@ sub save_logs {
 	"testlog" => $testlog,
     );
 
+<<<<<<< HEAD
     if (defined($opt{"LOG_FILE"})) {
 	if (-f $opt{"LOG_FILE"}) {
 	    cp $opt{"LOG_FILE"}, "$dir/logfile";
 	}
     }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     while (my ($name, $source) = each(%files)) {
 	if (-f "$source") {
 	    cp "$source", "$dir/$name" or
@@ -1959,10 +2001,14 @@ sub run_command {
     doprint("$command ... ");
     $start_time = time;
 
+<<<<<<< HEAD
     $pid = open(CMD, "-|",
 		"sh", "-c",
 		'command=$1; shift; exec 2>&1; eval "$command"',
 		"sh", $command) or
+=======
+    $pid = open(CMD, "$command 2>&1 |") or
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(fail "unable to exec $command" and return 0);
 
     if (defined($opt{"LOG_FILE"})) {
@@ -2557,7 +2603,11 @@ sub check_buildlog {
     my $save_no_reboot = $no_reboot;
     $no_reboot = 1;
 
+<<<<<<< HEAD
     if (defined($warnings_file) && -f $warnings_file) {
+=======
+    if (-f $warnings_file) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	open(IN, $warnings_file) or
 	    dodie "Error opening $warnings_file";
 
@@ -4232,8 +4282,12 @@ sub __set_test_option {
 
     my $option = "$name\[$i\]";
 
+<<<<<<< HEAD
     if (exists($opt{$option})) {
 	return undef if (!option_defined($option));
+=======
+    if (option_defined($option)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return $opt{$option};
     }
 
@@ -4241,8 +4295,12 @@ sub __set_test_option {
 	if ($i >= $test &&
 	    $i < $test + $repeat_tests{$test}) {
 	    $option = "$name\[$test\]";
+<<<<<<< HEAD
 	    if (exists($opt{$option})) {
 		return undef if (!option_defined($option));
+=======
+	    if (option_defined($option)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return $opt{$option};
 	    }
 	}
@@ -4264,6 +4322,7 @@ sub set_test_option {
     return eval_option($name, $option, $i);
 }
 
+<<<<<<< HEAD
 sub print_test_preamble {
     my ($resolved) = @_;
 
@@ -4311,6 +4370,8 @@ sub print_test_preamble {
     }
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sub find_mailer {
     my ($mailer) = @_;
 
@@ -4396,7 +4457,10 @@ sub cancel_test {
 	send_email("KTEST: Your [$name] test was cancelled",
 	    "Your test started at $script_start_time was cancelled: sig int");
     }
+<<<<<<< HEAD
     run_post_ktest;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     die "\nCaught Sig Int, test interrupted: $!\n"
 }
 
@@ -4410,8 +4474,11 @@ ktest.pl version: $VERSION
                     Sets global BUILD_NOCLEAN to 1
                 -D TEST_TYPE[2]=build
                     Sets TEST_TYPE of test 2 to "build"
+<<<<<<< HEAD
        --dry-run
                 Print resolved test options and exit without running tests.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	        It can also override all temp variables.
                  -D USE_TEMP_DIR:=1
@@ -4443,9 +4510,12 @@ while ( $#ARGV >= 0 ) {
 	} else {
 	    $command_vars[$#command_vars + 1] = $val;
 	}
+<<<<<<< HEAD
     } elsif ( $ARGV[0] eq "--dry-run" ) {
 	$dry_run = 1;
 	shift;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     } elsif ( $ARGV[0] eq "-h" ) {
 	die_usage;
     } else {
@@ -4494,6 +4564,7 @@ EOF
 }
 read_config $ktest_config;
 
+<<<<<<< HEAD
 if ($dry_run) {
     print_test_preamble 1;
     exit 0;
@@ -4501,6 +4572,10 @@ if ($dry_run) {
 
 if (defined($opt{"LOG_FILE"})) {
     $opt{"LOG_FILE"} = set_test_option("LOG_FILE", 1);
+=======
+if (defined($opt{"LOG_FILE"})) {
+    $opt{"LOG_FILE"} = eval_option("LOG_FILE", $opt{"LOG_FILE"}, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 # Append any configs entered in manually to the config file.
@@ -4530,7 +4605,35 @@ if (defined($opt{"LOG_FILE"})) {
     LOG->autoflush(1);
 }
 
+<<<<<<< HEAD
 print_test_preamble 0;
+=======
+doprint "\n\nSTARTING AUTOMATED TESTS\n\n";
+
+for (my $i = 0, my $repeat = 1; $i <= $opt{"NUM_TESTS"}; $i += $repeat) {
+
+    if (!$i) {
+	doprint "DEFAULT OPTIONS:\n";
+    } else {
+	doprint "\nTEST $i OPTIONS";
+	if (defined($repeat_tests{$i})) {
+	    $repeat = $repeat_tests{$i};
+	    doprint " ITERATE $repeat";
+	}
+	doprint "\n";
+    }
+
+    foreach my $option (sort keys %opt) {
+	if ($option =~ /\[(\d+)\]$/) {
+	    next if ($i != $1);
+	} else {
+	    next if ($i);
+	}
+
+	doprint "$option = $opt{$option}\n";
+    }
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 $SIG{INT} = qw(cancel_test);
 
@@ -4577,11 +4680,15 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
     if ($i == 1) {
 	if (defined($pre_ktest)) {
 	    doprint "\n";
+<<<<<<< HEAD
 	    my $ret = run_command $pre_ktest;
 	    if (!$ret && defined($pre_ktest_die) &&
 		$pre_ktest_die) {
 		dodie "failed to pre_ktest\n";
 	    }
+=======
+	    run_command $pre_ktest;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if ($email_when_started) {
 	    my $name = get_test_name;
@@ -4748,7 +4855,15 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
     success $i;
 }
 
+<<<<<<< HEAD
 run_post_ktest;
+=======
+if (defined($final_post_ktest)) {
+
+    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
+    run_command $cp_final_post_ktest;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 if ($opt{"POWEROFF_ON_SUCCESS"}) {
     halt;

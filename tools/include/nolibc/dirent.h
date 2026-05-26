@@ -73,7 +73,11 @@ int readdir_r(DIR *dirp, struct dirent *entry, struct dirent **result)
 
 	fd = ~i;
 
+<<<<<<< HEAD
 	ret = _sys_getdents64(fd, ldir, sizeof(buf));
+=======
+	ret = sys_getdents64(fd, ldir, sizeof(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return -ret;
 	if (ret == 0) {
@@ -86,7 +90,11 @@ int readdir_r(DIR *dirp, struct dirent *entry, struct dirent **result)
 	 * readdir() can only return one entry at a time.
 	 * Make sure the non-returned ones are not skipped.
 	 */
+<<<<<<< HEAD
 	ret = _sys_lseek(fd, ldir->d_off, SEEK_SET);
+=======
+	ret = sys_lseek(fd, ldir->d_off, SEEK_SET);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return -ret;
 

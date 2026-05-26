@@ -158,24 +158,42 @@ config ADXL372
 	select IIO_TRIGGERED_BUFFER
 
 config ADXL372_SPI
+<<<<<<< HEAD
 	tristate "Analog Devices ADXL371/ADXL372 3-Axis Accelerometer SPI Driver"
+=======
+	tristate "Analog Devices ADXL372 3-Axis Accelerometer SPI Driver"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on SPI
 	select ADXL372
 	select REGMAP_SPI
 	help
+<<<<<<< HEAD
 	  Say yes here to add support for the Analog Devices ADXL371/ADXL372
 	  triaxial acceleration sensor.
+=======
+	  Say yes here to add support for the Analog Devices ADXL372 triaxial
+	  acceleration sensor.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  To compile this driver as a module, choose M here: the
 	  module will be called adxl372_spi.
 
 config ADXL372_I2C
+<<<<<<< HEAD
 	tristate "Analog Devices ADXL371/ADXL372 3-Axis Accelerometer I2C Driver"
+=======
+	tristate "Analog Devices ADXL372 3-Axis Accelerometer I2C Driver"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on I2C
 	select ADXL372
 	select REGMAP_I2C
 	help
+<<<<<<< HEAD
 	  Say yes here to add support for the Analog Devices ADXL371/ADXL372
 	  triaxial acceleration sensor.
+=======
+	  Say yes here to add support for the Analog Devices ADXL372 triaxial
+	  acceleration sensor.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  To compile this driver as a module, choose M here: the
 	  module will be called adxl372_i2c.
 

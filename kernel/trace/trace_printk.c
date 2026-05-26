@@ -197,7 +197,10 @@ struct notifier_block module_trace_bprintk_format_nb = {
 	.notifier_call = module_trace_bprintk_format_notify,
 };
 
+<<<<<<< HEAD
 __printf(2, 3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __trace_bprintk(unsigned long ip, const char *fmt, ...)
 {
 	int ret;

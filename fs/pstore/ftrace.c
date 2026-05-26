@@ -18,12 +18,16 @@
 #include <linux/cache.h>
 #include <linux/slab.h>
 #include <asm/barrier.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "internal.h"
 
 /* This doesn't need to be atomic: speed is chosen over correctness here. */
 static u64 pstore_ftrace_stamp;
 
+<<<<<<< HEAD
 static inline unsigned long adjust_ip(unsigned long ip)
 {
 #if defined(CONFIG_RANDOMIZE_BASE) && !defined(PSTORE_CPU_IN_IP) && IS_BUILTIN(CONFIG_PSTORE)
@@ -47,6 +51,8 @@ inline unsigned long decode_ip(unsigned long ip)
 	return ip;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void notrace pstore_ftrace_call(unsigned long ip,
 				       unsigned long parent_ip,
 				       struct ftrace_ops *op,
@@ -71,8 +77,13 @@ static void notrace pstore_ftrace_call(unsigned long ip,
 
 	local_irq_save(flags);
 
+<<<<<<< HEAD
 	rec.ip = adjust_ip(ip);
 	rec.parent_ip = adjust_ip(parent_ip);
+=======
+	rec.ip = ip;
+	rec.parent_ip = parent_ip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pstore_ftrace_write_timestamp(&rec, pstore_ftrace_stamp++);
 	pstore_ftrace_encode_cpu(&rec, raw_smp_processor_id());
 	psinfo->write(&record);
@@ -86,16 +97,24 @@ static struct ftrace_ops pstore_ftrace_ops __read_mostly = {
 };
 
 static DEFINE_MUTEX(pstore_ftrace_lock);
+<<<<<<< HEAD
 static bool record_ftrace;
 module_param(record_ftrace, bool, 0400);
 MODULE_PARM_DESC(record_ftrace,
 		 "enable ftrace recording immediately (default: off)");
+=======
+static bool pstore_ftrace_enabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int pstore_set_ftrace_enabled(bool on)
 {
 	ssize_t ret;
 
+<<<<<<< HEAD
 	if (on == record_ftrace)
+=======
+	if (on == pstore_ftrace_enabled)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	if (on) {
@@ -109,7 +128,11 @@ static int pstore_set_ftrace_enabled(bool on)
 		pr_err("%s: unable to %sregister ftrace ops: %zd\n",
 		       __func__, on ? "" : "un", ret);
 	} else {
+<<<<<<< HEAD
 		record_ftrace = on;
+=======
+		pstore_ftrace_enabled = on;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -138,7 +161,11 @@ static ssize_t pstore_ftrace_knob_write(struct file *f, const char __user *buf,
 static ssize_t pstore_ftrace_knob_read(struct file *f, char __user *buf,
 				       size_t count, loff_t *ppos)
 {
+<<<<<<< HEAD
 	char val[] = { '0' + record_ftrace, '\n' };
+=======
+	char val[] = { '0' + pstore_ftrace_enabled, '\n' };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return simple_read_from_buffer(buf, count, ppos, val, sizeof(val));
 }
@@ -151,6 +178,14 @@ static const struct file_operations pstore_knob_fops = {
 
 static struct dentry *pstore_ftrace_dir;
 
+<<<<<<< HEAD
+=======
+static bool record_ftrace;
+module_param(record_ftrace, bool, 0400);
+MODULE_PARM_DESC(record_ftrace,
+		 "enable ftrace recording immediately (default: off)");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void pstore_register_ftrace(void)
 {
 	if (!psinfo->write)
@@ -167,9 +202,15 @@ void pstore_register_ftrace(void)
 void pstore_unregister_ftrace(void)
 {
 	mutex_lock(&pstore_ftrace_lock);
+<<<<<<< HEAD
 	if (record_ftrace) {
 		unregister_ftrace_function(&pstore_ftrace_ops);
 		record_ftrace = false;
+=======
+	if (pstore_ftrace_enabled) {
+		unregister_ftrace_function(&pstore_ftrace_ops);
+		pstore_ftrace_enabled = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	mutex_unlock(&pstore_ftrace_lock);
 

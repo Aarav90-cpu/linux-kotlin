@@ -17,6 +17,7 @@ static void enetc_msg_vsi_write_msg(struct enetc_hw *hw,
 	enetc_wr(hw, ENETC_VSIMSGSNDAR0, val);
 }
 
+<<<<<<< HEAD
 static void enetc_msg_dma_free(struct device *dev, struct enetc_msg_swbd *msg)
 {
 	if (msg->vaddr) {
@@ -47,6 +48,13 @@ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
 	/* Free the DMA buffer of the last message */
 	enetc_msg_dma_free(dev, &si->msg);
 	si->msg = *msg;
+=======
+static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
+{
+	int timeout = 100;
+	u32 vsimsgsr;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enetc_msg_vsi_write_msg(&si->hw, msg);
 
 	do {
@@ -57,6 +65,7 @@ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
 		usleep_range(1000, 2000);
 	} while (--timeout);
 
+<<<<<<< HEAD
 	if (!timeout) {
 		dev_err(dev, "VSI mailbox timeout\n");
 
@@ -66,6 +75,14 @@ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
 	/* check for message delivery error */
 	if (vsimsgsr & ENETC_VSIMSGSR_MS) {
 		dev_err(dev, "VSI command execute error: %d\n",
+=======
+	if (!timeout)
+		return -ETIMEDOUT;
+
+	/* check for message delivery error */
+	if (vsimsgsr & ENETC_VSIMSGSR_MS) {
+		dev_err(&si->pdev->dev, "VSI command execute error: %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ENETC_SIMSGSR_GET_MC(vsimsgsr));
 		return -EIO;
 	}
@@ -78,6 +95,10 @@ static int enetc_msg_vsi_set_primary_mac_addr(struct enetc_ndev_priv *priv,
 {
 	struct enetc_msg_cmd_set_primary_mac *cmd;
 	struct enetc_msg_swbd msg;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	msg.size = ALIGN(sizeof(struct enetc_msg_cmd_set_primary_mac), 64);
 	msg.vaddr = dma_alloc_coherent(priv->dev, msg.size, &msg.dma,
@@ -94,7 +115,15 @@ static int enetc_msg_vsi_set_primary_mac_addr(struct enetc_ndev_priv *priv,
 	memcpy(&cmd->mac, saddr, sizeof(struct sockaddr));
 
 	/* send the command and wait */
+<<<<<<< HEAD
 	return enetc_msg_vsi_send(priv->si, &msg);
+=======
+	err = enetc_msg_vsi_send(priv->si, &msg);
+
+	dma_free_coherent(priv->dev, msg.size, msg.vaddr, msg.dma);
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
@@ -282,7 +311,10 @@ static void enetc_vf_remove(struct pci_dev *pdev)
 {
 	struct enetc_si *si = pci_get_drvdata(pdev);
 	struct enetc_ndev_priv *priv;
+<<<<<<< HEAD
 	struct enetc_msg_swbd msg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = netdev_priv(si->ndev);
 	unregister_netdev(si->ndev);
@@ -294,9 +326,13 @@ static void enetc_vf_remove(struct pci_dev *pdev)
 
 	free_netdev(si->ndev);
 
+<<<<<<< HEAD
 	msg = si->msg;
 	enetc_pci_remove(pdev);
 	enetc_msg_dma_free(&pdev->dev, &msg);
+=======
+	enetc_pci_remove(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct pci_device_id enetc_vf_id_table[] = {

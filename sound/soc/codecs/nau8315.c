@@ -11,6 +11,10 @@
 #include <linux/acpi.h>
 #include <linux/device.h>
 #include <linux/err.h>
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/gpio/consumer.h>
 #include <linux/kernel.h>
 #include <linux/module.h>

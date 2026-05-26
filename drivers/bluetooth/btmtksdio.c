@@ -42,27 +42,37 @@ struct btmtksdio_data {
 	const char *fwname;
 	u16 chipid;
 	bool lp_mbox_supported;
+<<<<<<< HEAD
 	bool pm_runtime_supported;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct btmtksdio_data mt7663_data = {
 	.fwname = FIRMWARE_MT7663,
 	.chipid = 0x7663,
 	.lp_mbox_supported = false,
+<<<<<<< HEAD
 	.pm_runtime_supported = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct btmtksdio_data mt7668_data = {
 	.fwname = FIRMWARE_MT7668,
 	.chipid = 0x7668,
 	.lp_mbox_supported = false,
+<<<<<<< HEAD
 	.pm_runtime_supported = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct btmtksdio_data mt7921_data = {
 	.fwname = FIRMWARE_MT7961,
 	.chipid = 0x7921,
 	.lp_mbox_supported = true,
+<<<<<<< HEAD
 	.pm_runtime_supported = true,
 };
 
@@ -71,6 +81,8 @@ static const struct btmtksdio_data mt7902_data = {
 	.chipid = 0x7902,
 	.lp_mbox_supported = false,
 	.pm_runtime_supported = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct sdio_device_id btmtksdio_table[] = {
@@ -80,8 +92,11 @@ static const struct sdio_device_id btmtksdio_table[] = {
 	 .driver_data = (kernel_ulong_t)&mt7668_data },
 	{SDIO_DEVICE(SDIO_VENDOR_ID_MEDIATEK, SDIO_DEVICE_ID_MEDIATEK_MT7961),
 	 .driver_data = (kernel_ulong_t)&mt7921_data },
+<<<<<<< HEAD
 	{SDIO_DEVICE(SDIO_VENDOR_ID_MEDIATEK, SDIO_DEVICE_ID_MEDIATEK_MT7902),
 	.driver_data = (kernel_ulong_t)&mt7902_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }	/* Terminating entry */
 };
 MODULE_DEVICE_TABLE(sdio, btmtksdio_table);
@@ -883,7 +898,11 @@ static int mt79xx_setup(struct hci_dev *hdev, const char *fwname)
 	u8 param = 0x1;
 	int err;
 
+<<<<<<< HEAD
 	err = btmtk_setup_firmware_79xx(hdev, fwname, mtk_hci_wmt_sync, 0);
+=======
+	err = btmtk_setup_firmware_79xx(hdev, fwname, mtk_hci_wmt_sync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0) {
 		bt_dev_err(hdev, "Failed to setup 79xx firmware (%d)", err);
 		return err;
@@ -1103,7 +1122,10 @@ static int btmtksdio_setup(struct hci_dev *hdev)
 	set_bit(BTMTKSDIO_HW_TX_READY, &bdev->tx_state);
 
 	switch (bdev->data->chipid) {
+<<<<<<< HEAD
 	case 0x7902:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case 0x7921:
 		if (test_bit(BTMTKSDIO_HW_RESET_ACTIVE, &bdev->tx_state)) {
 			err = btmtksdio_mtk_reg_read(hdev, MT7921_DLSTATUS,
@@ -1181,6 +1203,7 @@ static int btmtksdio_setup(struct hci_dev *hdev)
 	delta = ktime_sub(rettime, calltime);
 	duration = (unsigned long long)ktime_to_ns(delta) >> 10;
 
+<<<<<<< HEAD
 	if (bdev->data->pm_runtime_supported) {
 		pm_runtime_set_autosuspend_delay(bdev->dev,
 						 MTKBTSDIO_AUTOSUSPEND_DELAY);
@@ -1199,6 +1222,24 @@ static int btmtksdio_setup(struct hci_dev *hdev)
 		if (enable_autosuspend)
 			pm_runtime_allow(bdev->dev);
 	}
+=======
+	pm_runtime_set_autosuspend_delay(bdev->dev,
+					 MTKBTSDIO_AUTOSUSPEND_DELAY);
+	pm_runtime_use_autosuspend(bdev->dev);
+
+	err = pm_runtime_set_active(bdev->dev);
+	if (err < 0)
+		return err;
+
+	/* Default forbid runtime auto suspend, that can be allowed by
+	 * enable_autosuspend flag or the PM runtime entry under sysfs.
+	 */
+	pm_runtime_forbid(bdev->dev);
+	pm_runtime_enable(bdev->dev);
+
+	if (enable_autosuspend)
+		pm_runtime_allow(bdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bt_dev_info(hdev, "Device setup in %llu usecs", duration);
 

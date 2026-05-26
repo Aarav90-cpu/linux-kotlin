@@ -442,7 +442,11 @@ static void get_vma_name(struct vm_area_struct *vma,
 static void show_vma_header_prefix(struct seq_file *m,
 				   unsigned long start, unsigned long end,
 				   vm_flags_t flags, unsigned long long pgoff,
+<<<<<<< HEAD
 				   dev_t dev, u64 ino)
+=======
+				   dev_t dev, unsigned long ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	seq_setwidth(m, 25 + sizeof(void *) * 6 - 1);
 	seq_put_hex_ll(m, NULL, start, 8);
@@ -465,7 +469,11 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 	const struct path *path;
 	const char *name_fmt, *name;
 	vm_flags_t flags = vma->vm_flags;
+<<<<<<< HEAD
 	u64 ino = 0;
+=======
+	unsigned long ino = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long long pgoff = 0;
 	unsigned long start, end;
 	dev_t dev = 0;

@@ -34,7 +34,11 @@ struct ovpn_pktid_xmit {
  */
 struct ovpn_pktid_recv {
 	/* "sliding window" bitmask of recent packet IDs received */
+<<<<<<< HEAD
 	DECLARE_BITMAP(history, REPLAY_WINDOW_SIZE);
+=======
+	u8 history[REPLAY_WINDOW_BYTES];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* bit position of deque base in history */
 	unsigned int base;
 	/* extent (in bits) of deque in history */

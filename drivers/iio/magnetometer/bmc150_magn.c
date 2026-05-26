@@ -12,7 +12,10 @@
 #include <linux/module.h>
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/slab.h>
 #include <linux/pm.h>
@@ -149,6 +152,7 @@ struct bmc150_magn_data {
 static const struct {
 	int freq;
 	u8 reg_val;
+<<<<<<< HEAD
 } bmc150_magn_samp_freq_table[] = {
 	{ 2, 0x01 },
 	{ 6, 0x02 },
@@ -159,6 +163,16 @@ static const struct {
 	{ 25, 0x06 },
 	{ 30, 0x07 },
 };
+=======
+} bmc150_magn_samp_freq_table[] = { {2, 0x01},
+				    {6, 0x02},
+				    {8, 0x03},
+				    {10, 0x00},
+				    {15, 0x04},
+				    {20, 0x05},
+				    {25, 0x06},
+				    {30, 0x07} };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum bmc150_magn_presets {
 	LOW_POWER_PRESET,
@@ -172,10 +186,17 @@ static const struct bmc150_magn_preset {
 	u8 rep_z;
 	u8 odr;
 } bmc150_magn_presets_table[] = {
+<<<<<<< HEAD
 	[LOW_POWER_PRESET] = { 3, 3, 10 },
 	[REGULAR_PRESET] = { 9, 15, 10 },
 	[ENHANCED_REGULAR_PRESET] = { 15, 27, 10 },
 	[HIGH_ACCURACY_PRESET] = { 47, 83, 20 },
+=======
+	[LOW_POWER_PRESET] = {3, 3, 10},
+	[REGULAR_PRESET] =  {9, 15, 10},
+	[ENHANCED_REGULAR_PRESET] =  {15, 27, 10},
+	[HIGH_ACCURACY_PRESET] =  {47, 83, 20},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define BMC150_MAGN_DEFAULT_PRESET REGULAR_PRESET
@@ -258,6 +279,7 @@ static int bmc150_magn_set_power_mode(struct bmc150_magn_data *data,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int bmc150_magn_set_power_mode_locked(struct bmc150_magn_data *data,
 					     enum bmc150_magn_power_modes mode)
 {
@@ -265,6 +287,8 @@ static int bmc150_magn_set_power_mode_locked(struct bmc150_magn_data *data,
 	return bmc150_magn_set_power_mode(data, mode, true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bmc150_magn_set_power_state(struct bmc150_magn_data *data, bool on)
 {
 	int ret = 0;
@@ -463,6 +487,7 @@ static int bmc150_magn_read_raw(struct iio_dev *indio_dev,
 	s32 values[AXIS_XYZ_MAX];
 
 	switch (mask) {
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW: {
 		if (iio_buffer_enabled(indio_dev))
 			return -EBUSY;
@@ -472,20 +497,46 @@ static int bmc150_magn_read_raw(struct iio_dev *indio_dev,
 		ret = bmc150_magn_set_power_state(data, true);
 		if (ret < 0)
 			return ret;
+=======
+	case IIO_CHAN_INFO_RAW:
+		if (iio_buffer_enabled(indio_dev))
+			return -EBUSY;
+		mutex_lock(&data->mutex);
+
+		ret = bmc150_magn_set_power_state(data, true);
+		if (ret < 0) {
+			mutex_unlock(&data->mutex);
+			return ret;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = bmc150_magn_read_xyz(data, values);
 		if (ret < 0) {
 			bmc150_magn_set_power_state(data, false);
+<<<<<<< HEAD
+=======
+			mutex_unlock(&data->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 		}
 		*val = values[chan->scan_index];
 
 		ret = bmc150_magn_set_power_state(data, false);
+<<<<<<< HEAD
 		if (ret < 0)
 			return ret;
 
 		return IIO_VAL_INT;
 	}
+=======
+		if (ret < 0) {
+			mutex_unlock(&data->mutex);
+			return ret;
+		}
+
+		mutex_unlock(&data->mutex);
+		return IIO_VAL_INT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IIO_CHAN_INFO_SCALE:
 		/*
 		 * The API/driver performs an off-chip temperature
@@ -533,6 +584,7 @@ static int bmc150_magn_write_raw(struct iio_dev *indio_dev,
 	int ret;
 
 	switch (mask) {
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_SAMP_FREQ: {
 		if (val > data->max_odr)
 			return -EINVAL;
@@ -566,6 +618,50 @@ static int bmc150_magn_write_raw(struct iio_dev *indio_dev,
 						 BMC150_MAGN_REG_REP_DATAMASK,
 						 BMC150_MAGN_REPZ_TO_REGVAL(val));
 		}
+=======
+	case IIO_CHAN_INFO_SAMP_FREQ:
+		if (val > data->max_odr)
+			return -EINVAL;
+		mutex_lock(&data->mutex);
+		ret = bmc150_magn_set_odr(data, val);
+		mutex_unlock(&data->mutex);
+		return ret;
+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+		switch (chan->channel2) {
+		case IIO_MOD_X:
+		case IIO_MOD_Y:
+			if (val < 1 || val > 511)
+				return -EINVAL;
+			mutex_lock(&data->mutex);
+			ret = bmc150_magn_set_max_odr(data, val, 0, 0);
+			if (ret < 0) {
+				mutex_unlock(&data->mutex);
+				return ret;
+			}
+			ret = regmap_update_bits(data->regmap,
+						 BMC150_MAGN_REG_REP_XY,
+						 BMC150_MAGN_REG_REP_DATAMASK,
+						 BMC150_MAGN_REPXY_TO_REGVAL
+						 (val));
+			mutex_unlock(&data->mutex);
+			return ret;
+		case IIO_MOD_Z:
+			if (val < 1 || val > 256)
+				return -EINVAL;
+			mutex_lock(&data->mutex);
+			ret = bmc150_magn_set_max_odr(data, 0, val, 0);
+			if (ret < 0) {
+				mutex_unlock(&data->mutex);
+				return ret;
+			}
+			ret = regmap_update_bits(data->regmap,
+						 BMC150_MAGN_REG_REP_Z,
+						 BMC150_MAGN_REG_REP_DATAMASK,
+						 BMC150_MAGN_REPZ_TO_REGVAL
+						 (val));
+			mutex_unlock(&data->mutex);
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			return -EINVAL;
 		}
@@ -652,9 +748,14 @@ static const struct iio_info bmc150_magn_info = {
 };
 
 static const unsigned long bmc150_magn_scan_masks[] = {
+<<<<<<< HEAD
 	BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
 	0
 };
+=======
+					BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
+					0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static irqreturn_t bmc150_magn_trigger_handler(int irq, void *p)
 {
@@ -693,7 +794,11 @@ static int bmc150_magn_init(struct bmc150_magn_data *data)
 	 * 3ms power-on time according to datasheet, let's better
 	 * be safe than sorry and set this delay to 5ms.
 	 */
+<<<<<<< HEAD
 	fsleep(5 * USEC_PER_MSEC);
+=======
+	msleep(5);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND,
 					 false);
@@ -780,8 +885,14 @@ static void bmc150_magn_trig_reen(struct iio_trigger *trig)
 	if (!data->dready_trigger_on)
 		return;
 
+<<<<<<< HEAD
 	guard(mutex)(&data->mutex);
 	ret = bmc150_magn_reset_intr(data);
+=======
+	mutex_lock(&data->mutex);
+	ret = bmc150_magn_reset_intr(data);
+	mutex_unlock(&data->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		dev_err(data->dev, "Failed to reset interrupt\n");
 }
@@ -791,28 +902,52 @@ static int bmc150_magn_data_rdy_trigger_set_state(struct iio_trigger *trig,
 {
 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
 	struct bmc150_magn_data *data = iio_priv(indio_dev);
+<<<<<<< HEAD
 	int ret;
 
 	guard(mutex)(&data->mutex);
 
 	if (state == data->dready_trigger_on)
 		return 0;
+=======
+	int ret = 0;
+
+	mutex_lock(&data->mutex);
+	if (state == data->dready_trigger_on)
+		goto err_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = regmap_update_bits(data->regmap, BMC150_MAGN_REG_INT_DRDY,
 				 BMC150_MAGN_MASK_DRDY_EN,
 				 state << BMC150_MAGN_SHIFT_DRDY_EN);
 	if (ret < 0)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->dready_trigger_on = state;
 
 	if (state) {
 		ret = bmc150_magn_reset_intr(data);
 		if (ret < 0)
+<<<<<<< HEAD
 			return ret;
 	}
 
 	return 0;
+=======
+			goto err_unlock;
+	}
+	mutex_unlock(&data->mutex);
+
+	return 0;
+
+err_unlock:
+	mutex_unlock(&data->mutex);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct iio_trigger_ops bmc150_magn_trigger_ops = {
@@ -970,7 +1105,13 @@ void bmc150_magn_remove(struct device *dev)
 	if (data->dready_trig)
 		iio_trigger_unregister(data->dready_trig);
 
+<<<<<<< HEAD
 	bmc150_magn_set_power_mode_locked(data, BMC150_MAGN_POWER_MODE_SUSPEND);
+=======
+	mutex_lock(&data->mutex);
+	bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SUSPEND, true);
+	mutex_unlock(&data->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
 }
@@ -983,8 +1124,15 @@ static int bmc150_magn_runtime_suspend(struct device *dev)
 	struct bmc150_magn_data *data = iio_priv(indio_dev);
 	int ret;
 
+<<<<<<< HEAD
 	ret = bmc150_magn_set_power_mode_locked(data,
 						BMC150_MAGN_POWER_MODE_SLEEP);
+=======
+	mutex_lock(&data->mutex);
+	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SLEEP,
+					 true);
+	mutex_unlock(&data->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0) {
 		dev_err(dev, "powering off device failed\n");
 		return ret;
@@ -1010,18 +1158,40 @@ static int bmc150_magn_suspend(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct bmc150_magn_data *data = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	return bmc150_magn_set_power_mode_locked(data,
 						 BMC150_MAGN_POWER_MODE_SLEEP);
+=======
+	int ret;
+
+	mutex_lock(&data->mutex);
+	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_SLEEP,
+					 true);
+	mutex_unlock(&data->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bmc150_magn_resume(struct device *dev)
 {
 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
 	struct bmc150_magn_data *data = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	return bmc150_magn_set_power_mode_locked(data,
 						 BMC150_MAGN_POWER_MODE_NORMAL);
+=======
+	int ret;
+
+	mutex_lock(&data->mutex);
+	ret = bmc150_magn_set_power_mode(data, BMC150_MAGN_POWER_MODE_NORMAL,
+					 true);
+	mutex_unlock(&data->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 

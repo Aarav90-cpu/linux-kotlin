@@ -238,12 +238,16 @@ static struct inode *fsnotify_update_iref(struct fsnotify_mark_connector *conn,
 	return inode;
 }
 
+<<<<<<< HEAD
 /*
  * Calculate mask of events for a list of marks.
  *
  * Return true if any of the attached marks want to hold an inode reference.
  */
 static bool __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+=======
+static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 new_mask = 0;
 	bool want_iref = false;
@@ -267,6 +271,7 @@ static bool __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
 	 */
 	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
 
+<<<<<<< HEAD
 	return want_iref;
 }
 
@@ -295,6 +300,8 @@ static void *fsnotify_recalc_mask_clear_iref(struct fsnotify_mark_connector *con
 {
 	bool want_iref = __fsnotify_recalc_mask(conn);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return fsnotify_update_iref(conn, want_iref);
 }
 
@@ -331,7 +338,11 @@ void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
 
 	spin_lock(&conn->lock);
 	update_children = !fsnotify_conn_watches_children(conn);
+<<<<<<< HEAD
 	fsnotify_recalc_mask_set_iref(conn);
+=======
+	__fsnotify_recalc_mask(conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	update_children &= fsnotify_conn_watches_children(conn);
 	spin_unlock(&conn->lock);
 	/*
@@ -452,7 +463,11 @@ void fsnotify_put_mark(struct fsnotify_mark *mark)
 		/* Update watched objects after detaching mark */
 		if (sb)
 			fsnotify_update_sb_watchers(sb, conn);
+<<<<<<< HEAD
 		objp = fsnotify_recalc_mask_clear_iref(conn);
+=======
+		objp = __fsnotify_recalc_mask(conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		type = conn->type;
 	}
 	WRITE_ONCE(mark->connector, NULL);

@@ -10,7 +10,10 @@
 #include <linux/notifier.h>
 #include <linux/soc/qcom/qcom_aoss.h>
 #include "msm_drv.h"
+<<<<<<< HEAD
 #include "adreno_gpu.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "a6xx_hfi.h"
 
 struct a6xx_gmu_bo {
@@ -111,7 +114,11 @@ struct a6xx_gmu {
 
 	unsigned long freq;
 
+<<<<<<< HEAD
 	struct a6xx_hfi_queue queues[HFI_MAX_QUEUES];
+=======
+	struct a6xx_hfi_queue queues[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bool initialized;
 	bool hung;
@@ -130,8 +137,11 @@ struct a6xx_gmu {
 #define GMU_STATUS_PDC_SLEEP	1
 /* To track Perfcounter OOB set status */
 #define GMU_STATUS_OOB_PERF_SET 2
+<<<<<<< HEAD
 /* To track whether secure world init was done */
 #define GMU_STATUS_SECURE_INIT	3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long status;
 };
 
@@ -234,9 +244,13 @@ void a6xx_hfi_stop(struct a6xx_gmu *gmu);
 int a6xx_hfi_send_prep_slumber(struct a6xx_gmu *gmu);
 int a6xx_hfi_set_freq(struct a6xx_gmu *gmu, u32 perf_index, u32 bw_index);
 
+<<<<<<< HEAD
 bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
 bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
 bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
+=======
+bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu);
 void a6xx_sptprac_disable(struct a6xx_gmu *gmu);
 int a6xx_sptprac_enable(struct a6xx_gmu *gmu);

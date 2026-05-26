@@ -54,23 +54,36 @@
 	};
 
 	clocks {
+<<<<<<< HEAD
 		ckil: ckil {
+=======
+		ckil {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "fixed-clock";
 			#clock-cells = <0>;
 			clock-frequency = <32768>;
 		};
 
+<<<<<<< HEAD
 		ckih1: ckih1 {
+=======
+		ckih1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "fixed-clock";
 			#clock-cells = <0>;
 			clock-frequency = <0>;
 		};
 
+<<<<<<< HEAD
 		osc: osc {
+=======
+		osc {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "fixed-clock";
 			#clock-cells = <0>;
 			clock-frequency = <24000000>;
 		};
+<<<<<<< HEAD
 
 		anaclk1: anaclk1 {
 			compatible = "fixed-clock";
@@ -83,6 +96,8 @@
 			#clock-cells = <0>;
 			clock-frequency = <0>;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	ldb: ldb {
@@ -161,7 +176,10 @@
 		compatible = "simple-bus";
 		interrupt-parent = <&gpc>;
 		ranges;
+<<<<<<< HEAD
 		bootph-all;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		dma_apbh: dma-controller@110000 {
 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
@@ -310,7 +328,10 @@
 			#size-cells = <1>;
 			reg = <0x02000000 0x100000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			spba-bus@2000000 {
 				compatible = "fsl,spba-bus", "simple-bus";
@@ -318,7 +339,10 @@
 				#size-cells = <1>;
 				reg = <0x02000000 0x40000>;
 				ranges;
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				spdif: spdif@2004000 {
 					compatible = "fsl,imx35-spdif";
@@ -935,7 +959,10 @@
 			iomuxc: pinctrl@20e0000 {
 				compatible = "fsl,imx6dl-iomuxc", "fsl,imx6q-iomuxc";
 				reg = <0x20e0000 0x4000>;
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 
 			dcic1: dcic@20e4000 {
@@ -966,7 +993,10 @@
 			#size-cells = <1>;
 			reg = <0x02100000 0x100000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			crypto: crypto@2100000 {
 				compatible = "fsl,sec-v4.0";
@@ -1337,7 +1367,10 @@
 				 <&clks IMX6QDL_CLK_IPU1_DI1>;
 			clock-names = "bus", "di0", "di1";
 			resets = <&src 2>;
+<<<<<<< HEAD
 			bootph-all;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			ipu1_csi0: port@0 {
 				reg = <0>;

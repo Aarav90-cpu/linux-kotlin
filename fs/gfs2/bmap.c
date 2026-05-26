@@ -1539,7 +1539,11 @@ more_rgrps:
 			revokes = jblocks_rqsted;
 			if (meta)
 				revokes += end - start;
+<<<<<<< HEAD
 			else if (ip->i_diskflags & GFS2_DIF_EXHASH)
+=======
+			else if (ip->i_depth)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				revokes += sdp->sd_inptrs;
 			ret = gfs2_trans_begin(sdp, jblocks_rqsted, revokes);
 			if (ret)

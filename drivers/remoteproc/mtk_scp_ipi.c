@@ -156,7 +156,11 @@ EXPORT_SYMBOL_GPL(scp_ipi_unlock);
  *
  * Return: 0 if sending data successfully, -error on error.
  **/
+<<<<<<< HEAD
 int scp_ipi_send(struct mtk_scp *scp, u32 id, const void *buf, unsigned int len,
+=======
+int scp_ipi_send(struct mtk_scp *scp, u32 id, void *buf, unsigned int len,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 unsigned int wait)
 {
 	struct mtk_share_obj __iomem *send_obj = scp->send_buf;

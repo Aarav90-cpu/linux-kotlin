@@ -231,6 +231,10 @@ static const struct iio_event_spec ads1015_events[] = {
 }
 
 struct ads1015_channel_data {
+<<<<<<< HEAD
+=======
+	bool enabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int pga;
 	unsigned int data_rate;
 };

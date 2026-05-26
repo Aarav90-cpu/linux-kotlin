@@ -70,6 +70,10 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
 static void set_priority(struct v10_compute_mqd *m, struct queue_properties *q)
 {
 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
+<<<<<<< HEAD
+=======
+	/* m->cp_hqd_queue_priority = q->priority; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,

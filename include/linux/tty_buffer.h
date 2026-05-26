@@ -34,7 +34,10 @@ static inline u8 *flag_buf_ptr(struct tty_buffer *b, unsigned int ofs)
 
 struct tty_bufhead {
 	struct tty_buffer *head;	/* Queue head */
+<<<<<<< HEAD
 	struct workqueue_struct *flip_wq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct work_struct work;
 	struct mutex	   lock;
 	atomic_t	   priority;

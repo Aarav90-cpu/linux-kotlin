@@ -43,7 +43,11 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
 		return -ESPIPE;
 
 	mapping = file->f_mapping;
+<<<<<<< HEAD
 	if (!mapping || len < 0 || offset < 0)
+=======
+	if (!mapping || len < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	bdi = inode_to_bdi(mapping->host);

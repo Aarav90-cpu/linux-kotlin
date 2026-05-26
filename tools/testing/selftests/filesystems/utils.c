@@ -158,7 +158,11 @@ static int get_userns_fd_cb(void *data)
 	_exit(0);
 }
 
+<<<<<<< HEAD
 int wait_for_pid(pid_t pid)
+=======
+static int wait_for_pid(pid_t pid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int status, ret;
 
@@ -450,7 +454,11 @@ out_close:
 	return fret;
 }
 
+<<<<<<< HEAD
 int write_file(const char *path, const char *val)
+=======
+static int write_file(const char *path, const char *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int fd = open(path, O_WRONLY);
 	size_t len = strlen(val);

@@ -17,9 +17,13 @@
 #include <linux/bug.h>
 #include <linux/ctype.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
 #include <linux/cache.h>
 #include <linux/compiler.h>
 #include <linux/sprintf.h>
+=======
+#include <linux/kernel.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/memblock.h>
 #include <linux/string.h>
 
@@ -66,14 +70,22 @@ static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
 	if (early)
 		memblock_free(addr, size);
 	else if (addr)
+<<<<<<< HEAD
 		memblock_free(addr, size);
+=======
+		memblock_free_late(__pa(addr), size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else /* !__KERNEL__ */
 
 static inline void *xbc_alloc_mem(size_t size)
 {
+<<<<<<< HEAD
 	return calloc(1, size);
+=======
+	return malloc(size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void xbc_free_mem(void *addr, size_t size, bool early)
@@ -81,7 +93,10 @@ static inline void xbc_free_mem(void *addr, size_t size, bool early)
 	free(addr);
 }
 #endif
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xbc_get_info() - Get the information of loaded boot config
  * @node_size: A pointer to store the number of nodes.
@@ -115,7 +130,11 @@ static int __init xbc_parse_error(const char *msg, const char *p)
  * xbc_root_node() - Get the root node of extended boot config
  *
  * Return the address of root node of extended boot config. If the
+<<<<<<< HEAD
  * extended boot config is not initialized, return NULL.
+=======
+ * extended boot config is not initiized, return NULL.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct xbc_node * __init xbc_root_node(void)
 {
@@ -131,9 +150,15 @@ struct xbc_node * __init xbc_root_node(void)
  *
  * Return the index number of @node in XBC node list.
  */
+<<<<<<< HEAD
 uint16_t __init xbc_node_index(struct xbc_node *node)
 {
 	return (uint16_t)(node - &xbc_nodes[0]);
+=======
+int __init xbc_node_index(struct xbc_node *node)
+{
+	return node - &xbc_nodes[0];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -183,7 +208,11 @@ struct xbc_node * __init xbc_node_get_next(struct xbc_node *node)
  */
 const char * __init xbc_node_get_data(struct xbc_node *node)
 {
+<<<<<<< HEAD
 	size_t offset = node->data & ~XBC_VALUE;
+=======
+	int offset = node->data & ~XBC_VALUE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(offset >= xbc_data_size))
 		return NULL;
@@ -195,7 +224,11 @@ static bool __init
 xbc_node_match_prefix(struct xbc_node *node, const char **prefix)
 {
 	const char *p = xbc_node_get_data(node);
+<<<<<<< HEAD
 	size_t len = strlen(p);
+=======
+	int len = strlen(p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (strncmp(*prefix, p, len))
 		return false;
@@ -367,7 +400,11 @@ struct xbc_node * __init xbc_node_find_next_leaf(struct xbc_node *root,
 			node = xbc_node_get_parent(node);
 			if (node == root)
 				return NULL;
+<<<<<<< HEAD
 			/* User passed a node which is not under parent */
+=======
+			/* User passed a node which is not uder parent */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (WARN_ON(!node))
 				return NULL;
 		}
@@ -410,11 +447,19 @@ const char * __init xbc_node_find_next_key_value(struct xbc_node *root,
 
 /* XBC parse and tree build */
 
+<<<<<<< HEAD
 static int __init xbc_init_node(struct xbc_node *node, char *data, uint16_t flag)
 {
 	long offset = data - xbc_data;
 
 	if (WARN_ON(offset < 0 || offset >= XBC_DATA_MAX))
+=======
+static int __init xbc_init_node(struct xbc_node *node, char *data, uint32_t flag)
+{
+	unsigned long offset = data - xbc_data;
+
+	if (WARN_ON(offset >= XBC_DATA_MAX))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	node->data = (uint16_t)offset | flag;
@@ -424,17 +469,27 @@ static int __init xbc_init_node(struct xbc_node *node, char *data, uint16_t flag
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct xbc_node * __init xbc_add_node(char *data, uint16_t flag)
+=======
+static struct xbc_node * __init xbc_add_node(char *data, uint32_t flag)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xbc_node *node;
 
 	if (xbc_node_num == XBC_NODE_MAX)
 		return NULL;
 
+<<<<<<< HEAD
 	node = &xbc_nodes[xbc_node_num];
 	if (xbc_init_node(node, data, flag) < 0)
 		return NULL;
 	xbc_node_num++;
+=======
+	node = &xbc_nodes[xbc_node_num++];
+	if (xbc_init_node(node, data, flag) < 0)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return node;
 }
@@ -455,7 +510,11 @@ static inline __init struct xbc_node *xbc_last_child(struct xbc_node *node)
 	return node;
 }
 
+<<<<<<< HEAD
 static struct xbc_node * __init __xbc_add_sibling(char *data, uint16_t flag, bool head)
+=======
+static struct xbc_node * __init __xbc_add_sibling(char *data, uint32_t flag, bool head)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xbc_node *sib, *node = xbc_add_node(data, flag);
 
@@ -476,24 +535,41 @@ static struct xbc_node * __init __xbc_add_sibling(char *data, uint16_t flag, boo
 				sib->next = xbc_node_index(node);
 			}
 		}
+<<<<<<< HEAD
 	} else {
 		xbc_parse_error("Too many nodes", data);
 	}
+=======
+	} else
+		xbc_parse_error("Too many nodes", data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return node;
 }
 
+<<<<<<< HEAD
 static inline struct xbc_node * __init xbc_add_sibling(char *data, uint16_t flag)
+=======
+static inline struct xbc_node * __init xbc_add_sibling(char *data, uint32_t flag)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __xbc_add_sibling(data, flag, false);
 }
 
+<<<<<<< HEAD
 static inline struct xbc_node * __init xbc_add_head_sibling(char *data, uint16_t flag)
+=======
+static inline struct xbc_node * __init xbc_add_head_sibling(char *data, uint32_t flag)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __xbc_add_sibling(data, flag, true);
 }
 
+<<<<<<< HEAD
 static inline __init struct xbc_node *xbc_add_child(char *data, uint16_t flag)
+=======
+static inline __init struct xbc_node *xbc_add_child(char *data, uint32_t flag)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xbc_node *node = xbc_add_sibling(data, flag);
 
@@ -660,9 +736,15 @@ static int __init __xbc_add_key(char *k)
 	if (unlikely(xbc_node_num == 0))
 		goto add_node;
 
+<<<<<<< HEAD
 	if (!last_parent) {	/* the first level */
 		node = find_match_node(xbc_nodes, k);
 	} else {
+=======
+	if (!last_parent)	/* the first level */
+		node = find_match_node(xbc_nodes, k);
+	else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		child = xbc_node_get_child(last_parent);
 		/* Since the value node is the first child, skip it. */
 		if (child && xbc_node_is_value(child))
@@ -670,9 +752,15 @@ static int __init __xbc_add_key(char *k)
 		node = find_match_node(child, k);
 	}
 
+<<<<<<< HEAD
 	if (node) {
 		last_parent = node;
 	} else {
+=======
+	if (node)
+		last_parent = node;
+	else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 add_node:
 		node = xbc_add_child(k, XBC_KEY);
 		if (!node)
@@ -803,8 +891,12 @@ static int __init xbc_close_brace(char **k, char *n)
 
 static int __init xbc_verify_tree(void)
 {
+<<<<<<< HEAD
 	int i, depth;
 	size_t len, wlen;
+=======
+	int i, depth, len, wlen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xbc_node *n, *m;
 
 	/* Brace closing */
@@ -821,6 +913,7 @@ static int __init xbc_verify_tree(void)
 	}
 
 	for (i = 0; i < xbc_node_num; i++) {
+<<<<<<< HEAD
 		if (xbc_nodes[i].next >= xbc_node_num) {
 			return xbc_parse_error("No closing brace",
 				xbc_node_get_data(xbc_nodes + i));
@@ -829,6 +922,12 @@ static int __init xbc_verify_tree(void)
 			return xbc_parse_error("Broken child node",
 				xbc_node_get_data(xbc_nodes + i));
 		}
+=======
+		if (xbc_nodes[i].next > xbc_node_num) {
+			return xbc_parse_error("No closing brace",
+				xbc_node_get_data(xbc_nodes + i));
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Key tree limitation check */
@@ -990,6 +1089,10 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
 		_xbc_exit(true);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
+=======
+	memset(xbc_nodes, 0, sizeof(struct xbc_node) * XBC_NODE_MAX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = xbc_parse_tree();
 	if (!ret)
@@ -1001,9 +1104,14 @@ int __init xbc_init(const char *data, size_t size, const char **emsg, int *epos)
 		if (emsg)
 			*emsg = xbc_err_msg;
 		_xbc_exit(true);
+<<<<<<< HEAD
 	} else {
 		ret = xbc_node_num;
 	}
+=======
+	} else
+		ret = xbc_node_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

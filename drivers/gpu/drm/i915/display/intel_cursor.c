@@ -19,7 +19,10 @@
 #include "intel_display.h"
 #include "intel_display_types.h"
 #include "intel_display_utils.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_fb.h"
 #include "intel_fb_pin.h"
 #include "intel_frontbuffer.h"
@@ -425,7 +428,11 @@ static u32 i9xx_cursor_ctl(const struct intel_plane_state *plane_state)
 		cntl |= MCURSOR_ROTATE_180;
 
 	/* Wa_22012358565:adl-p */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_22012358565))
+=======
+	if (DISPLAY_VER(display) == 13)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cntl |= MCURSOR_ARB_SLOTS(1);
 
 	return cntl;

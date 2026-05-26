@@ -26,9 +26,16 @@ struct erofs_map_blocks;
 #define show_mflags(flags) __print_flags(flags, "",	\
 	{ EROFS_MAP_MAPPED,		"M" },		\
 	{ EROFS_MAP_META,		"I" },		\
+<<<<<<< HEAD
 	{ EROFS_MAP_PARTIAL_MAPPED,	"T" },		\
 	{ EROFS_MAP_PARTIAL_REF,	"P" },		\
 	{ EROFS_MAP_FRAGMENT,		"R" })
+=======
+	{ EROFS_MAP_ENCODED,		"E" },		\
+	{ EROFS_MAP_FULL_MAPPED,	"F" },		\
+	{ EROFS_MAP_FRAGMENT,		"R" },		\
+	{ EROFS_MAP_PARTIAL_REF,	"P" })
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_EVENT(erofs_lookup,
 

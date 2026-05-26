@@ -89,9 +89,15 @@ static inline void arch_leave_lazy_mmu_mode(void)
 
 /* Set stride and tlb_level in flush_*_tlb_range */
 #define flush_pmd_tlb_range(vma, addr, end)	\
+<<<<<<< HEAD
 	__flush_tlb_range(vma, addr, end, PMD_SIZE, 2, TLBF_NONE)
 #define flush_pud_tlb_range(vma, addr, end)	\
 	__flush_tlb_range(vma, addr, end, PUD_SIZE, 1, TLBF_NONE)
+=======
+	__flush_tlb_range(vma, addr, end, PMD_SIZE, false, 2)
+#define flush_pud_tlb_range(vma, addr, end)	\
+	__flush_tlb_range(vma, addr, end, PUD_SIZE, false, 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
 /*
@@ -101,11 +107,25 @@ static inline void arch_leave_lazy_mmu_mode(void)
  * entries exist.
  */
 #define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
+<<<<<<< HEAD
 	__flush_tlb_page(vma, address, TLBF_NOBROADCAST | TLBF_NONOTIFY)
 
 #define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)			\
 	__flush_tlb_range(vma, address, address + PMD_SIZE, PMD_SIZE, 2,	\
 			  TLBF_NOBROADCAST | TLBF_NONOTIFY | TLBF_NOWALKCACHE)
+=======
+	local_flush_tlb_page_nonotify(vma, address)
+
+#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
+	local_flush_tlb_page_nonotify(vma, address)
+
+/*
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+#define ZERO_PAGE(vaddr)	phys_to_page(__pa_symbol(empty_zero_page))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define pte_ERROR(e)	\
 	pr_err("%s:%d: bad pte %016llx.\n", __FILE__, __LINE__, pte_val(e))
@@ -778,6 +798,7 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
 
 #define pmd_table(pmd)		((pmd_val(pmd) & PMD_TYPE_MASK) == \
 				 PMD_TYPE_TABLE)
+<<<<<<< HEAD
 
 #define pmd_leaf pmd_leaf
 static inline bool pmd_leaf(pmd_t pmd)
@@ -785,6 +806,11 @@ static inline bool pmd_leaf(pmd_t pmd)
 	return pmd_present(pmd) && !pmd_table(pmd);
 }
 
+=======
+#define pmd_sect(pmd)		((pmd_val(pmd) & PMD_TYPE_MASK) == \
+				 PMD_TYPE_SECT)
+#define pmd_leaf(pmd)		(pmd_present(pmd) && !pmd_table(pmd))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define pmd_bad(pmd)		(!pmd_table(pmd))
 
 #define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
@@ -802,8 +828,16 @@ static inline int pmd_trans_huge(pmd_t pmd)
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
 #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
+<<<<<<< HEAD
 static inline bool pud_table(pud_t pud) { return true; }
 #else
+=======
+static inline bool pud_sect(pud_t pud) { return false; }
+static inline bool pud_table(pud_t pud) { return true; }
+#else
+#define pud_sect(pud)		((pud_val(pud) & PUD_TYPE_MASK) == \
+				 PUD_TYPE_SECT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define pud_table(pud)		((pud_val(pud) & PUD_TYPE_MASK) == \
 				 PUD_TYPE_TABLE)
 #endif
@@ -873,11 +907,15 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
 				 PUD_TYPE_TABLE)
 #define pud_present(pud)	pte_present(pud_pte(pud))
 #ifndef __PAGETABLE_PMD_FOLDED
+<<<<<<< HEAD
 #define pud_leaf pud_leaf
 static inline bool pud_leaf(pud_t pud)
 {
 	return pud_present(pud) && !pud_table(pud);
 }
+=======
+#define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 #define pud_leaf(pud)		false
 #endif
@@ -1251,6 +1289,7 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
 	return pte_pmd(pte_modify(pmd_pte(pmd), newprot));
 }
 
+<<<<<<< HEAD
 extern int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
 					 unsigned long address, pte_t *ptep,
 					 pte_t entry, int dirty,
@@ -1263,6 +1302,11 @@ static inline int __ptep_set_access_flags(struct vm_area_struct *vma,
 	return __ptep_set_access_flags_anysz(vma, address, ptep, entry, dirty,
 					     PAGE_SIZE);
 }
+=======
+extern int __ptep_set_access_flags(struct vm_area_struct *vma,
+				 unsigned long address, pte_t *ptep,
+				 pte_t entry, int dirty);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
@@ -1270,23 +1314,40 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
 					unsigned long address, pmd_t *pmdp,
 					pmd_t entry, int dirty)
 {
+<<<<<<< HEAD
 	return __ptep_set_access_flags_anysz(vma, address, (pte_t *)pmdp,
 					     pmd_pte(entry), dirty, PMD_SIZE);
+=======
+	return __ptep_set_access_flags(vma, address, (pte_t *)pmdp,
+							pmd_pte(entry), dirty);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
 #ifdef CONFIG_PAGE_TABLE_CHECK
+<<<<<<< HEAD
 static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
+=======
+static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pte_valid(pte) && (pte_user(pte) || pte_user_exec(pte));
 }
 
+<<<<<<< HEAD
 static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsigned long addr, pmd_t pmd)
+=======
+static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pmd_valid(pmd) && !pmd_table(pmd) && (pmd_user(pmd) || pmd_user_exec(pmd));
 }
 
+<<<<<<< HEAD
 static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long addr, pud_t pud)
+=======
+static inline bool pud_user_accessible_page(pud_t pud, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pud_valid(pud) && !pud_table(pud) && (pud_user(pud) || pud_user_exec(pud));
 }
@@ -1302,8 +1363,14 @@ static inline void __pte_clear(struct mm_struct *mm,
 	__set_pte(ptep, __pte(0));
 }
 
+<<<<<<< HEAD
 static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
+=======
+static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma,
+					      unsigned long address,
+					      pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pte_t old_pte, pte;
 
@@ -1318,10 +1385,17 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
 	return pte_young(pte);
 }
 
+<<<<<<< HEAD
 static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
 {
 	bool young = __ptep_test_and_clear_young(vma, address, ptep);
+=======
+static inline int __ptep_clear_flush_young(struct vm_area_struct *vma,
+					 unsigned long address, pte_t *ptep)
+{
+	int young = __ptep_test_and_clear_young(vma, address, ptep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (young) {
 		/*
@@ -1332,7 +1406,11 @@ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
 		 * context-switch, which provides a DSB to complete the TLB
 		 * invalidation.
 		 */
+<<<<<<< HEAD
 		__flush_tlb_page(vma, address, TLBF_NOSYNC);
+=======
+		flush_tlb_page_nosync(vma, address);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return young;
@@ -1340,8 +1418,14 @@ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
 
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
 #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
+=======
+static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long address,
+					    pmd_t *pmdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
 	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
@@ -1664,9 +1748,15 @@ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
 extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
 				unsigned long addr, pte_t *ptep,
 				unsigned int nr, int full);
+<<<<<<< HEAD
 bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
 				unsigned long addr, pte_t *ptep, unsigned int nr);
 bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+=======
+int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+				unsigned long addr, pte_t *ptep, unsigned int nr);
+int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				unsigned long addr, pte_t *ptep, unsigned int nr);
 extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
 				pte_t *ptep, unsigned int nr);
@@ -1830,6 +1920,7 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
 	return __ptep_get_and_clear(mm, addr, ptep);
 }
 
+<<<<<<< HEAD
 #define test_and_clear_young_ptes test_and_clear_young_ptes
 static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep, unsigned int nr)
@@ -1850,6 +1941,23 @@ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep)
+=======
+#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+				unsigned long addr, pte_t *ptep)
+{
+	pte_t orig_pte = __ptep_get(ptep);
+
+	if (likely(!pte_valid_cont(orig_pte)))
+		return __ptep_test_and_clear_young(vma, addr, ptep);
+
+	return contpte_test_and_clear_young_ptes(vma, addr, ptep, 1);
+}
+
+#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+				unsigned long addr, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pte_t orig_pte = __ptep_get(ptep);
 
@@ -1860,8 +1968,14 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
 }
 
 #define clear_flush_young_ptes clear_flush_young_ptes
+<<<<<<< HEAD
 static inline bool clear_flush_young_ptes(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep, unsigned int nr)
+=======
+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+					 unsigned long addr, pte_t *ptep,
+					 unsigned int nr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
 		return __ptep_clear_flush_young(vma, addr, ptep);

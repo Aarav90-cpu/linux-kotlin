@@ -1211,7 +1211,11 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
 	ssize_t i, size;
 	unsigned int no;
 	const void *accel, *gyro, *timestamp;
+<<<<<<< HEAD
 	const s8 *temp;
+=======
+	const int8_t *temp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int odr;
 	int64_t ts_val;
 	/* buffer is copied to userspace, zeroing it to avoid any data leak */

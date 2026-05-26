@@ -3,9 +3,12 @@
 # Building vDSO images for sparc.
 #
 
+<<<<<<< HEAD
 # Include the generic Makefile to check the built vDSO:
 include $(srctree)/lib/vdso/Makefile.include
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # files to link into the vdso
 vobjs-y := vdso-note.o vclock_gettime.o
 
@@ -93,9 +96,12 @@ KBUILD_CFLAGS_32 += -DDISABLE_BRANCH_PROFILING
 KBUILD_CFLAGS_32 += -mv8plus
 $(obj)/vdso32.so.dbg: KBUILD_CFLAGS = $(KBUILD_CFLAGS_32)
 
+<<<<<<< HEAD
 CHECKFLAGS_32 := $(filter-out -m64 -D__sparc_v9__ -D__arch64__, $(CHECKFLAGS)) -m32
 $(obj)/vdso32.so.dbg: CHECKFLAGS = $(CHECKFLAGS_32)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 $(obj)/vdso32.so.dbg: FORCE \
 			$(obj)/vdso32/vdso32.lds \
 			$(obj)/vdso32/vclock_gettime.o \
@@ -108,7 +114,13 @@ $(obj)/vdso32.so.dbg: FORCE \
 quiet_cmd_vdso = VDSO    $@
       cmd_vdso = $(LD) -nostdlib -o $@ \
 		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
+<<<<<<< HEAD
 		       -T $(filter %.lds,$^) $(filter %.o,$^); \
 		       $(cmd_vdso_check)
 
 VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined -z noexecstack
+=======
+		       -T $(filter %.lds,$^) $(filter %.o,$^)
+
+VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

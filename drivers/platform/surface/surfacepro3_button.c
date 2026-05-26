@@ -14,7 +14,10 @@
 #include <linux/types.h>
 #include <linux/input.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <acpi/button.h>
 
 #define SURFACE_PRO3_BUTTON_HID		"MSHW0028"
@@ -73,10 +76,16 @@ struct surface_button {
 	bool suspended;
 };
 
+<<<<<<< HEAD
 static void surface_button_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct device *dev = data;
 	struct surface_button *button = dev_get_drvdata(dev);
+=======
+static void surface_button_notify(struct acpi_device *device, u32 event)
+{
+	struct surface_button *button = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct input_dev *input;
 	int key_code = KEY_RESERVED;
 	bool pressed = false;
@@ -111,17 +120,29 @@ static void surface_button_notify(acpi_handle handle, u32 event, void *data)
 		key_code = KEY_VOLUMEDOWN;
 		break;
 	case SURFACE_BUTTON_NOTIFY_TABLET_MODE:
+<<<<<<< HEAD
 		dev_warn_once(dev, "Tablet mode is not supported\n");
 		break;
 	default:
 		dev_info_ratelimited(dev, "Unsupported event [0x%x]\n", event);
+=======
+		dev_warn_once(&device->dev, "Tablet mode is not supported\n");
+		break;
+	default:
+		dev_info_ratelimited(&device->dev,
+				     "Unsupported event [0x%x]\n", event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 	input = button->input;
 	if (key_code == KEY_RESERVED)
 		return;
 	if (pressed)
+<<<<<<< HEAD
 		pm_wakeup_dev_event(dev, 0, button->suspended);
+=======
+		pm_wakeup_dev_event(&device->dev, 0, button->suspended);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (button->suspended)
 		return;
 	input_report_key(input, key_code, pressed?1:0);
@@ -131,7 +152,12 @@ static void surface_button_notify(acpi_handle handle, u32 event, void *data)
 #ifdef CONFIG_PM_SLEEP
 static int surface_button_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	struct surface_button *button = dev_get_drvdata(dev);
+=======
+	struct acpi_device *device = to_acpi_device(dev);
+	struct surface_button *button = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	button->suspended = true;
 	return 0;
@@ -139,7 +165,12 @@ static int surface_button_suspend(struct device *dev)
 
 static int surface_button_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct surface_button *button = dev_get_drvdata(dev);
+=======
+	struct acpi_device *device = to_acpi_device(dev);
+	struct surface_button *button = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	button->suspended = false;
 	return 0;
@@ -154,8 +185,14 @@ static int surface_button_resume(struct device *dev)
  * Returns true if the driver should bind to this device, i.e. the device is
  * either MSWH0028 (Pro 3) or MSHW0040 on a Pro 4 or Book 1.
  */
+<<<<<<< HEAD
 static bool surface_button_check_MSHW0040(struct device *dev, acpi_handle handle)
 {
+=======
+static bool surface_button_check_MSHW0040(struct acpi_device *dev)
+{
+	acpi_handle handle = dev->handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union acpi_object *result;
 	u64 oem_platform_rev = 0;	// valid revisions are nonzero
 
@@ -177,14 +214,27 @@ static bool surface_button_check_MSHW0040(struct device *dev, acpi_handle handle
 		ACPI_FREE(result);
 	}
 
+<<<<<<< HEAD
 	dev_dbg(dev, "OEM Platform Revision %llu\n", oem_platform_rev);
+=======
+	dev_dbg(&dev->dev, "OEM Platform Revision %llu\n", oem_platform_rev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return oem_platform_rev == 0;
 }
 
 
+<<<<<<< HEAD
 static int surface_button_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int surface_button_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct surface_button *button;
 	struct acpi_device *device;
 	struct input_dev *input;
@@ -198,14 +248,22 @@ static int surface_button_probe(struct platform_device *pdev)
 	    strlen(SURFACE_BUTTON_OBJ_NAME)))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (!surface_button_check_MSHW0040(&pdev->dev, device->handle))
+=======
+	if (!surface_button_check_MSHW0040(device))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	button = kzalloc_obj(struct surface_button);
 	if (!button)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, button);
+=======
+	device->driver_data = button;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	button->input = input = input_allocate_device();
 	if (!input) {
 		error = -ENOMEM;
@@ -219,7 +277,11 @@ static int surface_button_probe(struct platform_device *pdev)
 	input->name = acpi_device_name(device);
 	input->phys = button->phys;
 	input->id.bustype = BUS_HOST;
+<<<<<<< HEAD
 	input->dev.parent = &pdev->dev;
+=======
+	input->dev.parent = &device->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	input_set_capability(input, EV_KEY, KEY_POWER);
 	input_set_capability(input, EV_KEY, KEY_LEFTMETA);
 	input_set_capability(input, EV_KEY, KEY_VOLUMEUP);
@@ -229,6 +291,7 @@ static int surface_button_probe(struct platform_device *pdev)
 	if (error)
 		goto err_free_input;
 
+<<<<<<< HEAD
 	device_init_wakeup(&pdev->dev, true);
 
 	error = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
@@ -240,6 +303,10 @@ static int surface_button_probe(struct platform_device *pdev)
 	}
 
 	dev_info(&pdev->dev, "%s [%s]\n", acpi_device_name(device),
+=======
+	device_init_wakeup(&device->dev, true);
+	dev_info(&device->dev, "%s [%s]\n", acpi_device_name(device),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 acpi_device_bid(device));
 	return 0;
 
@@ -250,6 +317,7 @@ static int surface_button_probe(struct platform_device *pdev)
 	return error;
 }
 
+<<<<<<< HEAD
 static void surface_button_remove(struct platform_device *pdev)
 {
 	struct surface_button *button = platform_get_drvdata(pdev);
@@ -257,6 +325,12 @@ static void surface_button_remove(struct platform_device *pdev)
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_DEVICE_NOTIFY, surface_button_notify);
 	device_init_wakeup(&pdev->dev, false);
+=======
+static void surface_button_remove(struct acpi_device *device)
+{
+	struct surface_button *button = acpi_driver_data(device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	input_unregister_device(button->input);
 	kfree(button);
 }
@@ -264,6 +338,7 @@ static void surface_button_remove(struct platform_device *pdev)
 static SIMPLE_DEV_PM_OPS(surface_button_pm,
 		surface_button_suspend, surface_button_resume);
 
+<<<<<<< HEAD
 static struct platform_driver surface_button_driver = {
 	.probe = surface_button_probe,
 	.remove = surface_button_remove,
@@ -275,3 +350,18 @@ static struct platform_driver surface_button_driver = {
 };
 
 module_platform_driver(surface_button_driver);
+=======
+static struct acpi_driver surface_button_driver = {
+	.name = "surface_pro3_button",
+	.class = "SurfacePro3",
+	.ids = surface_button_device_ids,
+	.ops = {
+		.add = surface_button_add,
+		.remove = surface_button_remove,
+		.notify = surface_button_notify,
+	},
+	.drv.pm = &surface_button_pm,
+};
+
+module_acpi_driver(surface_button_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

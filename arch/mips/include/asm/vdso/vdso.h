@@ -4,9 +4,12 @@
  * Author: Alex Smith <alex.smith@imgtec.com>
  */
 
+<<<<<<< HEAD
 #ifndef __ASM_VDSO_VDSO_H
 #define __ASM_VDSO_VDSO_H
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/sgidefs.h>
 #include <vdso/page.h>
 
@@ -73,5 +76,8 @@ static inline void __iomem *get_gic(const struct vdso_time_data *data)
 #endif /* CONFIG_CLKSRC_MIPS_GIC */
 
 #endif /* __ASSEMBLER__ */
+<<<<<<< HEAD
 
 #endif /* __ASM_VDSO_VDSO_H */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

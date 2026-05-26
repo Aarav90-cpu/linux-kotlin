@@ -9,7 +9,10 @@
  *                         Cirrus Logic International Semiconductor Ltd.
  */
 
+<<<<<<< HEAD
 #include <kunit/static_stub.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <kunit/visibility.h>
 #include <linux/cleanup.h>
 #include <linux/ctype.h>
@@ -19,7 +22,10 @@
 #include <linux/minmax.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/seq_file.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
@@ -32,6 +38,7 @@
 /*
  * When the KUnit test is running the error-case tests will cause a lot
  * of messages. Rate-limit to prevent overflowing the kernel log buffer
+<<<<<<< HEAD
  * during KUnit test runs and allow the test to redirect this function.
  * In normal (not KUnit) builds this collapses to only return true.
  */
@@ -73,6 +80,47 @@ EXPORT_SYMBOL_IF_KUNIT(cs_dsp_can_emit_message);
 		if (cs_dsp_can_emit_message())					   \
 			dev_dbg(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__); \
 	} while (false)
+=======
+ * during KUnit test runs.
+ */
+#if IS_ENABLED(CONFIG_FW_CS_DSP_KUNIT_TEST)
+bool cs_dsp_suppress_err_messages;
+EXPORT_SYMBOL_IF_KUNIT(cs_dsp_suppress_err_messages);
+
+bool cs_dsp_suppress_warn_messages;
+EXPORT_SYMBOL_IF_KUNIT(cs_dsp_suppress_warn_messages);
+
+bool cs_dsp_suppress_info_messages;
+EXPORT_SYMBOL_IF_KUNIT(cs_dsp_suppress_info_messages);
+
+#define cs_dsp_err(_dsp, fmt, ...) \
+	do { \
+		if (!cs_dsp_suppress_err_messages) \
+			dev_err_ratelimited(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__); \
+	} while (false)
+#define cs_dsp_warn(_dsp, fmt, ...) \
+	do { \
+		if (!cs_dsp_suppress_warn_messages) \
+			dev_warn_ratelimited(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__); \
+	} while (false)
+#define cs_dsp_info(_dsp, fmt, ...) \
+	do { \
+		if (!cs_dsp_suppress_info_messages) \
+			dev_info_ratelimited(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__); \
+	} while (false)
+#define cs_dsp_dbg(_dsp, fmt, ...) \
+	dev_dbg_ratelimited(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__)
+#else
+#define cs_dsp_err(_dsp, fmt, ...) \
+	dev_err(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__)
+#define cs_dsp_warn(_dsp, fmt, ...) \
+	dev_warn(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__)
+#define cs_dsp_info(_dsp, fmt, ...) \
+	dev_info(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__)
+#define cs_dsp_dbg(_dsp, fmt, ...) \
+	dev_dbg(_dsp->dev, "%s: " fmt, _dsp->name, ##__VA_ARGS__)
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ADSP1_CONTROL_1                   0x00
 #define ADSP1_CONTROL_2                   0x02
@@ -519,7 +567,10 @@ void cs_dsp_init_debugfs(struct cs_dsp *dsp, struct dentry *debugfs_root)
 
 	debugfs_create_bool("booted", 0444, root, &dsp->booted);
 	debugfs_create_bool("running", 0444, root, &dsp->running);
+<<<<<<< HEAD
 	debugfs_create_bool("hibernating", 0444, root, &dsp->hibernating);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_create_x32("fw_id", 0444, root, &dsp->fw_id);
 	debugfs_create_x32("fw_version", 0444, root, &dsp->fw_id_version);
 
@@ -708,7 +759,11 @@ int cs_dsp_coeff_write_acked_control(struct cs_dsp_coeff_ctl *ctl, unsigned int 
 
 	lockdep_assert_held(&dsp->pwr_lock);
 
+<<<<<<< HEAD
 	if (!dsp->running || dsp->hibernating)
+=======
+	if (!dsp->running)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EPERM;
 
 	ret = cs_dsp_coeff_base_reg(ctl, &reg, 0);
@@ -832,7 +887,11 @@ int cs_dsp_coeff_write_ctrl(struct cs_dsp_coeff_ctl *ctl,
 	}
 
 	ctl->set = 1;
+<<<<<<< HEAD
 	if (ctl->enabled && ctl->dsp->running && !ctl->dsp->hibernating)
+=======
+	if (ctl->enabled && ctl->dsp->running)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = cs_dsp_coeff_write_ctrl_raw(ctl, off, buf, len);
 
 	if (ret < 0)
@@ -925,12 +984,20 @@ int cs_dsp_coeff_read_ctrl(struct cs_dsp_coeff_ctl *ctl,
 		return -EINVAL;
 
 	if (ctl->flags & WMFW_CTL_FLAG_VOLATILE) {
+<<<<<<< HEAD
 		if (ctl->enabled && ctl->dsp->running && !ctl->dsp->hibernating)
+=======
+		if (ctl->enabled && ctl->dsp->running)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return cs_dsp_coeff_read_ctrl_raw(ctl, off, buf, len);
 		else
 			return -EPERM;
 	} else {
+<<<<<<< HEAD
 		if (!ctl->flags && ctl->enabled && ctl->dsp->running && !ctl->dsp->hibernating)
+=======
+		if (!ctl->flags && ctl->enabled && ctl->dsp->running)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = cs_dsp_coeff_read_ctrl_raw(ctl, 0, ctl->cache, ctl->len);
 
 		if (buf != ctl->cache)
@@ -1113,6 +1180,7 @@ err_ctl:
 	return ret;
 }
 
+<<<<<<< HEAD
 
 /**
  * cs_dsp_hibernate() - Disable or enable all controls for a DSP
@@ -1151,6 +1219,8 @@ out:
 }
 EXPORT_SYMBOL_NS_GPL(cs_dsp_hibernate, "FW_CS_DSP");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct cs_dsp_coeff_parsed_alg {
 	int id;
 	const u8 *name;
@@ -2553,7 +2623,10 @@ int cs_dsp_adsp1_power_up(struct cs_dsp *dsp,
 		goto err_ena;
 
 	dsp->booted = true;
+<<<<<<< HEAD
 	dsp->hibernating = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Start the core running */
 	regmap_update_bits(dsp->regmap, dsp->base + ADSP1_CONTROL_30,
@@ -2832,7 +2905,10 @@ int cs_dsp_power_up(struct cs_dsp *dsp,
 		dsp->ops->disable_core(dsp);
 
 	dsp->booted = true;
+<<<<<<< HEAD
 	dsp->hibernating = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&dsp->pwr_lock);
 

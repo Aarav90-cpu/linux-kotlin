@@ -152,6 +152,10 @@ obj-$(CONFIG_CHR_DEV_SCH)	+= ch.o
 obj-$(CONFIG_SCSI_ENCLOSURE)	+= ses.o
 
 obj-$(CONFIG_SCSI_HISI_SAS) += hisi_sas/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_VHBA)		+= vhba/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # This goes last, so that "real" scsi devices probe earlier
 obj-$(CONFIG_SCSI_DEBUG)	+= scsi_debug.o

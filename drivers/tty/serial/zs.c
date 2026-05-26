@@ -1252,7 +1252,11 @@ console_initcall(zs_serial_console_init);
 
 static struct uart_driver zs_reg = {
 	.owner			= THIS_MODULE,
+<<<<<<< HEAD
 	.driver_name		= "serial_zs",
+=======
+	.driver_name		= "serial",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dev_name		= "ttyS",
 	.major			= TTY_MAJOR,
 	.minor			= 64,

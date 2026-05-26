@@ -4,13 +4,21 @@
 $id: http://devicetree.org/schemas/input/matrix-keymap.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
+<<<<<<< HEAD
 title: Common Key Matrices on Matrix-connected Keyboards
+=======
+title: Common Key Matrices on Matrix-connected Key Boards
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 maintainers:
   - Olof Johansson <olof@lixom.net>
 
 description: |
+<<<<<<< HEAD
   A simple common binding for matrix-connected keyboards. Currently targeted at
+=======
+  A simple common binding for matrix-connected key boards. Currently targeted at
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   defining the keys in the scope of linux key codes since that is a stable and
   standardized interface at this time.
 

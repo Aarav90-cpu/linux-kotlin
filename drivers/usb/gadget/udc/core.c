@@ -1266,9 +1266,14 @@ static inline void usb_gadget_udc_stop_locked(struct usb_udc *udc)
  * @speed: The maximum speed to allowed to run
  *
  * This call is issued by the UDC Class driver before calling
+<<<<<<< HEAD
  * usb_gadget_udc_start_locked() in order to make sure that
  * we don't try to connect on speeds the gadget driver
  * doesn't support.
+=======
+ * usb_gadget_udc_start() in order to make sure that we don't try to
+ * connect on speeds the gadget driver doesn't support.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline void usb_gadget_udc_set_speed(struct usb_udc *udc,
 					    enum usb_device_speed speed)

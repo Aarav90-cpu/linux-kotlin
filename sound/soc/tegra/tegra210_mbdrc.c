@@ -307,14 +307,21 @@ static int tegra210_mbdrc_band_params_get(struct snd_kcontrol *kcontrol,
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct tegra210_ope *ope = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 	u32 regs = params->soc.base;
 	u32 mask = params->soc.mask;
 	u32 shift = params->shift;
 	unsigned int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < params->soc.num_regs; i++, regs += val_bytes) {
+=======
+	for (i = 0; i < params->soc.num_regs; i++, regs += cmpnt->val_bytes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regmap_read(ope->mbdrc_regmap, regs, &data[i]);
 
 		data[i] = ((data[i] & mask) >> shift);
@@ -329,7 +336,10 @@ static int tegra210_mbdrc_band_params_put(struct snd_kcontrol *kcontrol,
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct tegra210_ope *ope = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 	u32 regs = params->soc.base;
 	u32 mask = params->soc.mask;
@@ -337,7 +347,11 @@ static int tegra210_mbdrc_band_params_put(struct snd_kcontrol *kcontrol,
 	bool change = false;
 	unsigned int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < params->soc.num_regs; i++, regs += val_bytes) {
+=======
+	for (i = 0; i < params->soc.num_regs; i++, regs += cmpnt->val_bytes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool update = false;
 
 		regmap_update_bits_check(ope->mbdrc_regmap, regs, mask,
@@ -355,14 +369,21 @@ static int tegra210_mbdrc_threshold_get(struct snd_kcontrol *kcontrol,
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct tegra210_ope *ope = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 	u32 regs = params->soc.base;
 	u32 num_regs = params->soc.num_regs;
 	u32 val;
 	unsigned int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < num_regs; i += 4, regs += val_bytes) {
+=======
+	for (i = 0; i < num_regs; i += 4, regs += cmpnt->val_bytes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		regmap_read(ope->mbdrc_regmap, regs, &val);
 
 		data[i] = (val & TEGRA210_MBDRC_THRESH_1ST_MASK) >>
@@ -384,14 +405,21 @@ static int tegra210_mbdrc_threshold_put(struct snd_kcontrol *kcontrol,
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct tegra210_ope *ope = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 	u32 regs = params->soc.base;
 	u32 num_regs = params->soc.num_regs;
 	bool change = false;
 	unsigned int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < num_regs; i += 4, regs += val_bytes) {
+=======
+	for (i = 0; i < num_regs; i += 4, regs += cmpnt->val_bytes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool update = false;
 
 		data[i] = (((data[i] >> TEGRA210_MBDRC_THRESH_1ST_SHIFT) &
@@ -417,10 +445,16 @@ static int tegra210_mbdrc_biquad_coeffs_get(struct snd_kcontrol *kcontrol,
 {
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 
 	memset(data, 0, params->soc.num_regs * val_bytes);
+=======
+	u32 *data = (u32 *)ucontrol->value.bytes.data;
+
+	memset(data, 0, params->soc.num_regs * cmpnt->val_bytes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -431,9 +465,14 @@ static int tegra210_mbdrc_biquad_coeffs_put(struct snd_kcontrol *kcontrol,
 	struct tegra_soc_bytes *params = (void *)kcontrol->private_value;
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct tegra210_ope *ope = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
 	u32 reg_ctrl = params->soc.base;
 	u32 reg_data = reg_ctrl + val_bytes;
+=======
+	u32 reg_ctrl = params->soc.base;
+	u32 reg_data = reg_ctrl + cmpnt->val_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 *data = (u32 *)ucontrol->value.bytes.data;
 
 	tegra210_mbdrc_write_ram(ope->mbdrc_regmap, reg_ctrl, reg_data,
@@ -994,6 +1033,7 @@ int tegra210_mbdrc_regmap_init(struct platform_device *pdev)
 
 	child = of_get_child_by_name(dev->of_node, "dynamic-range-compressor");
 	if (!child)
+<<<<<<< HEAD
 		return dev_err_probe(dev, -ENODEV,
 				     "missing 'dynamic-range-compressor' DT child node\n");
 
@@ -1002,6 +1042,16 @@ int tegra210_mbdrc_regmap_init(struct platform_device *pdev)
 	if (err < 0)
 		return dev_err_probe(dev, err,
 				     "failed to get MBDRC resource\n");
+=======
+		return -ENODEV;
+
+	err = of_address_to_resource(child, 0, &mem);
+	of_node_put(child);
+	if (err < 0) {
+		dev_err(dev, "fail to get MBDRC resource\n");
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mem.flags = IORESOURCE_MEM;
 	regs = devm_ioremap_resource(dev, &mem);
@@ -1010,9 +1060,16 @@ int tegra210_mbdrc_regmap_init(struct platform_device *pdev)
 
 	ope->mbdrc_regmap = devm_regmap_init_mmio(dev, regs,
 						  &tegra210_mbdrc_regmap_cfg);
+<<<<<<< HEAD
 	if (IS_ERR(ope->mbdrc_regmap))
 		return dev_err_probe(dev, PTR_ERR(ope->mbdrc_regmap),
 				     "MBDRC regmap init failed\n");
+=======
+	if (IS_ERR(ope->mbdrc_regmap)) {
+		dev_err(dev, "regmap init failed\n");
+		return PTR_ERR(ope->mbdrc_regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(ope->mbdrc_regmap, true);
 

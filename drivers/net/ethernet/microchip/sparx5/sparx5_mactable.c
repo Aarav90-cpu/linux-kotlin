@@ -419,7 +419,11 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
 				  true);
 }
 
+<<<<<<< HEAD
 static void sparx5_mact_pull_work(struct work_struct *work)
+=======
+void sparx5_mact_pull_work(struct work_struct *work)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct delayed_work *del_work = to_delayed_work(work);
 	struct sparx5 *sparx5 = container_of(del_work, struct sparx5,
@@ -489,10 +493,15 @@ void sparx5_set_ageing(struct sparx5 *sparx5, int msecs)
 		 LRN_AUTOAGE_CFG(0));
 }
 
+<<<<<<< HEAD
 int sparx5_mact_init(struct sparx5 *sparx5)
 {
 	char queue_name[32];
 
+=======
+void sparx5_mact_init(struct sparx5 *sparx5)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&sparx5->lock);
 
 	/*  Flush MAC table */
@@ -504,6 +513,7 @@ int sparx5_mact_init(struct sparx5 *sparx5)
 		dev_warn(sparx5->dev, "MAC flush error\n");
 
 	sparx5_set_ageing(sparx5, BR_DEFAULT_AGEING_TIME / HZ * 1000);
+<<<<<<< HEAD
 
 	/* Add host mode BC address (points only to CPU) */
 	sparx5_mact_learn(sparx5, sparx5_get_pgid(sparx5, PGID_CPU),
@@ -532,4 +542,6 @@ void sparx5_mact_deinit(struct sparx5 *sparx5)
 	cancel_delayed_work_sync(&sparx5->mact_work);
 	destroy_workqueue(sparx5->mact_queue);
 	mutex_destroy(&sparx5->mact_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

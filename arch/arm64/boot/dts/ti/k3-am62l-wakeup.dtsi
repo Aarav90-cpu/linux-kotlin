@@ -81,7 +81,11 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	wkup_uart0_target: target-module@2b300050 {
+=======
+	target-module@2b300050 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "ti,sysc-omap2", "ti,sysc";
 		reg = <0x00 0x2b300050 0x00 0x4>,
 		      <0x00 0x2b300054 0x00 0x4>,
@@ -127,11 +131,14 @@
 			bootph-all;
 		};
 
+<<<<<<< HEAD
 		opp_efuse_table: syscon@18 {
 			compatible = "ti,am62-opp-efuse-table", "syscon";
 			reg = <0x18 0x4>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpsw_mac_syscon: ethernet-mac-syscon@2000 {
 			compatible = "ti,am62p-cpsw-mac-efuse", "syscon";
 			reg = <0x2000 0x8>;

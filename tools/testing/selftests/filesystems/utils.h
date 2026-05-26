@@ -44,8 +44,11 @@ static inline bool switch_userns(int fd, uid_t uid, gid_t gid, bool drop_caps)
 	return true;
 }
 
+<<<<<<< HEAD
 extern int wait_for_pid(pid_t pid);
 extern int write_file(const char *path, const char *val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern uint64_t get_unique_mnt_id(const char *path);
 
 #endif /* __IDMAP_UTILS_H */

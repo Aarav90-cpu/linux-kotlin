@@ -199,7 +199,11 @@ static int sbsm_gpio_get_value(struct gpio_chip *gc, unsigned int off)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	return !!(ret & BIT(off));
+=======
+	return ret & BIT(off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

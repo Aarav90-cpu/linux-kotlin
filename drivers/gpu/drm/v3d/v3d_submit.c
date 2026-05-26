@@ -103,9 +103,12 @@ v3d_job_free(struct kref *ref)
 	if (job->perfmon)
 		v3d_perfmon_put(job->perfmon);
 
+<<<<<<< HEAD
 	v3d_stats_put(job->client_stats);
 	v3d_stats_put(job->global_stats);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(job);
 }
 
@@ -224,9 +227,12 @@ v3d_job_init(struct v3d_dev *v3d, struct drm_file *file_priv,
 
 	kref_init(&job->refcount);
 
+<<<<<<< HEAD
 	job->client_stats = v3d_stats_get(v3d_priv->stats[queue]);
 	job->global_stats = v3d_stats_get(v3d->queue[queue].stats);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 fail_deps:

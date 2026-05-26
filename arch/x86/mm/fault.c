@@ -1314,7 +1314,11 @@ void do_user_addr_fault(struct pt_regs *regs,
 	 * to consider the PF_PK bit.
 	 */
 	if (is_vsyscall_vaddr(address)) {
+<<<<<<< HEAD
 		if (emulate_vsyscall_pf(error_code, regs, address))
+=======
+		if (emulate_vsyscall(error_code, regs, address))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 	}
 #endif

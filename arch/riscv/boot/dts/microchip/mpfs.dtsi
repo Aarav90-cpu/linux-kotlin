@@ -254,6 +254,7 @@
 		mss_top_sysreg: syscon@20002000 {
 			compatible = "microchip,mpfs-mss-top-sysreg", "syscon", "simple-mfd";
 			reg = <0x0 0x20002000 0x0 0x1000>;
+<<<<<<< HEAD
 			#address-cells = <1>;
 			#size-cells = <1>;
 			#reset-cells = <1>;
@@ -279,6 +280,9 @@
 				/* on icicle ref design at least */
 				pinctrl-use-default;
 			};
+=======
+			#reset-cells = <1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		sysreg_scb: syscon@20003000 {
@@ -474,8 +478,13 @@
 			interrupt-parent = <&plic>;
 			interrupts = <64>, <65>, <66>, <67>, <68>, <69>;
 			local-mac-address = [00 00 00 00 00 00];
+<<<<<<< HEAD
 			clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>, <&refclk>;
 			clock-names = "pclk", "hclk", "tsu_clk";
+=======
+			clocks = <&clkcfg CLK_MAC0>, <&clkcfg CLK_AHB>;
+			clock-names = "pclk", "hclk";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			resets = <&mss_top_sysreg CLK_MAC0>;
 			status = "disabled";
 		};
@@ -488,8 +497,13 @@
 			interrupt-parent = <&plic>;
 			interrupts = <70>, <71>, <72>, <73>, <74>, <75>;
 			local-mac-address = [00 00 00 00 00 00];
+<<<<<<< HEAD
 			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>, <&refclk>;
 			clock-names = "pclk", "hclk", "tsu_clk";
+=======
+			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
+			clock-names = "pclk", "hclk";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			resets = <&mss_top_sysreg CLK_MAC1>;
 			status = "disabled";
 		};
@@ -497,6 +511,7 @@
 		gpio0: gpio@20120000 {
 			compatible = "microchip,mpfs-gpio";
 			reg = <0x0 0x20120000 0x0 0x1000>;
+<<<<<<< HEAD
 			interrupt-parent = <&irqmux>;
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -508,12 +523,21 @@
 			gpio-controller;
 			#gpio-cells = <2>;
 			ngpios = <14>;
+=======
+			interrupt-parent = <&plic>;
+			interrupt-controller;
+			#interrupt-cells = <1>;
+			clocks = <&clkcfg CLK_GPIO0>;
+			gpio-controller;
+			#gpio-cells = <2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
 		gpio1: gpio@20121000 {
 			compatible = "microchip,mpfs-gpio";
 			reg = <0x0 0x20121000 0x0 0x1000>;
+<<<<<<< HEAD
 			interrupt-parent = <&irqmux>;
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -527,12 +551,21 @@
 			gpio-controller;
 			#gpio-cells = <2>;
 			ngpios = <24>;
+=======
+			interrupt-parent = <&plic>;
+			interrupt-controller;
+			#interrupt-cells = <1>;
+			clocks = <&clkcfg CLK_GPIO1>;
+			gpio-controller;
+			#gpio-cells = <2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
 		gpio2: gpio@20122000 {
 			compatible = "microchip,mpfs-gpio";
 			reg = <0x0 0x20122000 0x0 0x1000>;
+<<<<<<< HEAD
 			interrupt-parent = <&irqmux>;
 			interrupt-controller;
 			#interrupt-cells = <1>;
@@ -548,6 +581,14 @@
 			gpio-controller;
 			#gpio-cells = <2>;
 			ngpios = <32>;
+=======
+			interrupt-parent = <&plic>;
+			interrupt-controller;
+			#interrupt-cells = <1>;
+			clocks = <&clkcfg CLK_GPIO2>;
+			gpio-controller;
+			#gpio-cells = <2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 

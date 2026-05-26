@@ -10,7 +10,10 @@
 #include "kprobe_multi_session_cookie.skel.h"
 #include "kprobe_multi_verifier.skel.h"
 #include "kprobe_write_ctx.skel.h"
+<<<<<<< HEAD
 #include "kprobe_multi_sleepable.skel.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bpf/libbpf_internal.h"
 #include "bpf/hashmap.h"
 
@@ -221,9 +224,13 @@ static void test_attach_api_syms(void)
 static void test_attach_api_fails(void)
 {
 	LIBBPF_OPTS(bpf_kprobe_multi_opts, opts);
+<<<<<<< HEAD
 	LIBBPF_OPTS(bpf_test_run_opts, topts);
 	struct kprobe_multi *skel = NULL;
 	struct kprobe_multi_sleepable *sl_skel = NULL;
+=======
+	struct kprobe_multi *skel = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bpf_link *link = NULL;
 	unsigned long long addrs[2];
 	const char *syms[2] = {
@@ -231,7 +238,11 @@ static void test_attach_api_fails(void)
 		"bpf_fentry_test2",
 	};
 	__u64 cookies[2];
+<<<<<<< HEAD
 	int saved_error, err;
+=======
+	int saved_error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	addrs[0] = ksym_get_addr("bpf_fentry_test1");
 	addrs[1] = ksym_get_addr("bpf_fentry_test2");
@@ -330,6 +341,7 @@ static void test_attach_api_fails(void)
 	if (!ASSERT_EQ(saved_error, -E2BIG, "fail_6_error"))
 		goto cleanup;
 
+<<<<<<< HEAD
 	/* fail_7 - non-existent wildcard pattern (slow path) */
 	LIBBPF_OPTS_RESET(opts);
 
@@ -387,6 +399,11 @@ cleanup:
 	bpf_link__destroy(link);
 	kprobe_multi__destroy(skel);
 	kprobe_multi_sleepable__destroy(sl_skel);
+=======
+cleanup:
+	bpf_link__destroy(link);
+	kprobe_multi__destroy(skel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void test_session_skel_api(void)
@@ -412,6 +429,7 @@ static void test_session_skel_api(void)
 	ASSERT_OK(err, "test_run");
 	ASSERT_EQ(topts.retval, 0, "test_run");
 
+<<<<<<< HEAD
 	/*
 	 * bpf_fentry_test1 is hit by both the wildcard probe and the exact
 	 * name probe (test_kprobe_syms), so entry + return fires twice: 4.
@@ -419,6 +437,10 @@ static void test_session_skel_api(void)
 	 */
 	ASSERT_EQ(skel->bss->kprobe_session_result[0], 4, "kprobe_session_result");
 	for (i = 1; i < 4; i++)
+=======
+	/* bpf_fentry_test1-4 trigger return probe, result is 2 */
+	for (i = 0; i < 4; i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ASSERT_EQ(skel->bss->kprobe_session_result[i], 2, "kprobe_session_result");
 
 	/* bpf_fentry_test5-8 trigger only entry probe, result is 1 */
@@ -666,6 +688,7 @@ static void test_attach_write_ctx(void)
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * Test kprobe_multi handles shadow symbols (vmlinux + module duplicate).
  * bpf_fentry_shadow_test exists in both vmlinux and bpf_testmod.
@@ -704,6 +727,8 @@ cleanup:
 	kprobe_multi__destroy(skel);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void serial_test_kprobe_multi_bench_attach(void)
 {
 	if (test__start_subtest("kernel"))
@@ -747,7 +772,10 @@ void test_kprobe_multi_test(void)
 		test_unique_match();
 	if (test__start_subtest("attach_write_ctx"))
 		test_attach_write_ctx();
+<<<<<<< HEAD
 	if (test__start_subtest("dup_sym"))
 		test_attach_probe_dup_sym();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RUN_TESTS(kprobe_multi_verifier);
 }

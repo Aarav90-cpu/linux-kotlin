@@ -19,7 +19,11 @@
 #include <linux/freezer.h>
 #include <linux/kthread.h>
 #include <linux/crc32.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/sched/signal.h>
 
@@ -2024,7 +2028,11 @@ static int nilfs_segctor_collect_dirty_files(struct nilfs_sc_info *sci,
 				ifile, ii->vfs_inode.i_ino, &ibh);
 			if (unlikely(err)) {
 				nilfs_warn(sci->sc_super,
+<<<<<<< HEAD
 					   "log writer: error %d getting inode block (ino=%llu)",
+=======
+					   "log writer: error %d getting inode block (ino=%lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   err, ii->vfs_inode.i_ino);
 				return err;
 			}

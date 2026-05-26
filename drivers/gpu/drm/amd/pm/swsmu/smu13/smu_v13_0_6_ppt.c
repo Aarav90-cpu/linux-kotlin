@@ -373,9 +373,12 @@ static void smu_v13_0_12_init_caps(struct smu_context *smu)
 	} else {
 		smu_v13_0_12_tables_fini(smu);
 	}
+<<<<<<< HEAD
 
 	if (fw_ver >= 0x04561000)
 		smu_v13_0_6_cap_set(smu, SMU_CAP(TEMP_AID_XCD_HBM));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void smu_v13_0_6_init_caps(struct smu_context *smu)
@@ -461,7 +464,10 @@ static void smu_v13_0_6_init_caps(struct smu_context *smu)
 		smu_v13_0_6_cap_set(smu, SMU_CAP(SDMA_RESET));
 
 	if ((pgm == 0 && fw_ver >= 0x00558200) ||
+<<<<<<< HEAD
 	    (pgm == 4 && fw_ver >= 0x04557100) ||
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    (pgm == 7 && fw_ver >= 0x07551400))
 		smu_v13_0_6_cap_set(smu, SMU_CAP(VCN_RESET));
 }
@@ -482,7 +488,11 @@ static int smu_v13_0_6_check_fw_version(struct smu_context *smu)
 {
 	int r;
 
+<<<<<<< HEAD
 	r = smu_cmn_check_fw_version(smu);
+=======
+	r = smu_v13_0_check_fw_version(smu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Initialize caps flags once fw version is fetched */
 	if (!r)
 		smu_v13_0_x_init_caps(smu);
@@ -778,10 +788,14 @@ int smu_v13_0_6_get_metrics_table(struct smu_context *smu, void *metrics_table,
 		}
 
 		amdgpu_hdp_invalidate(smu->adev, NULL);
+<<<<<<< HEAD
 		ret = smu_cmn_vram_cpy(smu, smu_table->metrics_table,
 				       table->cpu_addr, table_size);
 		if (ret)
 			return ret;
+=======
+		memcpy(smu_table->metrics_table, table->cpu_addr, table_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		smu_table->metrics_time = jiffies;
 	}
@@ -860,9 +874,15 @@ int smu_v13_0_6_get_static_metrics_table(struct smu_context *smu)
 	}
 
 	amdgpu_hdp_invalidate(smu->adev, NULL);
+<<<<<<< HEAD
 
 	return smu_cmn_vram_cpy(smu, smu_table->metrics_table,
 				table->cpu_addr, table_size);
+=======
+	memcpy(smu_table->metrics_table, table->cpu_addr, table_size);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void smu_v13_0_6_update_caps(struct smu_context *smu)
@@ -1129,7 +1149,10 @@ static int smu_v13_0_6_set_default_dpm_table(struct smu_context *smu)
 	/* gfxclk dpm table setup */
 	dpm_table = &dpm_context->dpm_tables.gfx_table;
 	dpm_table->clk_type = SMU_GFXCLK;
+<<<<<<< HEAD
 	dpm_table->flags = SMU_DPM_TABLE_FINE_GRAINED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_GFXCLK_BIT)) {
 		/* In the case of gfxclk, only fine-grained dpm is honored.
 		 * Get min/max values from FW.
@@ -1204,7 +1227,10 @@ static int smu_v13_0_6_populate_umd_state_clk(struct smu_context *smu)
 	struct smu_dpm_table *gfx_table = &dpm_context->dpm_tables.gfx_table;
 	struct smu_dpm_table *mem_table = &dpm_context->dpm_tables.uclk_table;
 	struct smu_dpm_table *soc_table = &dpm_context->dpm_tables.soc_table;
+<<<<<<< HEAD
 	struct smu_dpm_table *fclk_table = &dpm_context->dpm_tables.fclk_table;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct smu_umd_pstate_table *pstate_table = &smu->pstate_table;
 
 	pstate_table->gfxclk_pstate.min = SMU_DPM_TABLE_MIN(gfx_table);
@@ -1222,12 +1248,15 @@ static int smu_v13_0_6_populate_umd_state_clk(struct smu_context *smu)
 	pstate_table->socclk_pstate.curr.min = SMU_DPM_TABLE_MIN(soc_table);
 	pstate_table->socclk_pstate.curr.max = SMU_DPM_TABLE_MAX(soc_table);
 
+<<<<<<< HEAD
 	pstate_table->fclk_pstate.min = SMU_DPM_TABLE_MIN(fclk_table);
 	pstate_table->fclk_pstate.peak = SMU_DPM_TABLE_MAX(fclk_table);
 	pstate_table->fclk_pstate.curr.min = SMU_DPM_TABLE_MIN(fclk_table);
 	pstate_table->fclk_pstate.curr.max = SMU_DPM_TABLE_MAX(fclk_table);
 	pstate_table->fclk_pstate.standard = SMU_DPM_TABLE_MIN(fclk_table);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gfx_table->count > SMU_13_0_6_UMD_PSTATE_GFXCLK_LEVEL &&
 	    mem_table->count > SMU_13_0_6_UMD_PSTATE_MCLK_LEVEL &&
 	    soc_table->count > SMU_13_0_6_UMD_PSTATE_SOCCLK_LEVEL) {
@@ -1413,6 +1442,7 @@ static int smu_v13_0_6_emit_clk_levels(struct smu_context *smu,
 				      pstate_table->uclk_pstate.curr.min,
 				      pstate_table->uclk_pstate.curr.max);
 		break;
+<<<<<<< HEAD
 	case SMU_OD_FCLK:
 		if (!smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_FCLK_BIT))
 			return -EOPNOTSUPP;
@@ -1422,6 +1452,9 @@ static int smu_v13_0_6_emit_clk_levels(struct smu_context *smu,
 				      pstate_table->fclk_pstate.curr.min,
 				      pstate_table->fclk_pstate.curr.max);
 		break;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SMU_SCLK:
 	case SMU_GFXCLK:
 		single_dpm_table = &(dpm_context->dpm_tables.gfx_table);
@@ -2063,7 +2096,11 @@ static int smu_v13_0_6_set_soft_freq_limited_range(struct smu_context *smu,
 	int ret = 0;
 
 	if (clk_type != SMU_GFXCLK && clk_type != SMU_SCLK &&
+<<<<<<< HEAD
 	    clk_type != SMU_UCLK && clk_type != SMU_FCLK)
+=======
+	    clk_type != SMU_UCLK)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if ((smu_dpm->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL) &&
@@ -2104,6 +2141,7 @@ static int smu_v13_0_6_set_soft_freq_limited_range(struct smu_context *smu,
 				pstate_table->uclk_pstate.curr.max = max;
 		}
 
+<<<<<<< HEAD
 		if (clk_type == SMU_FCLK) {
 			if (max == pstate_table->fclk_pstate.curr.max)
 				return 0;
@@ -2113,6 +2151,8 @@ static int smu_v13_0_6_set_soft_freq_limited_range(struct smu_context *smu,
 				pstate_table->fclk_pstate.curr.max = max;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -2155,7 +2195,10 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 	struct smu_dpm_context *smu_dpm = &(smu->smu_dpm);
 	struct smu_13_0_dpm_context *dpm_context = smu_dpm->dpm_context;
 	struct smu_dpm_table *uclk_table = &dpm_context->dpm_tables.uclk_table;
+<<<<<<< HEAD
 	struct smu_dpm_table *fclk_table = &dpm_context->dpm_tables.fclk_table;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct smu_umd_pstate_table *pstate_table = &smu->pstate_table;
 	uint32_t min_clk;
 	uint32_t max_clk;
@@ -2236,6 +2279,7 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 			pstate_table->uclk_pstate.custom.max = input[1];
 		}
 		break;
+<<<<<<< HEAD
 	case PP_OD_EDIT_FCLK_TABLE:
 		if (size != 2) {
 			dev_err(smu->adev->dev,
@@ -2270,6 +2314,8 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 			return -EINVAL;
 		}
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	case PP_OD_RESTORE_DEFAULT_TABLE:
 		if (size != 0) {
@@ -2299,6 +2345,7 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 				if (ret)
 					return ret;
 			}
+<<<<<<< HEAD
 
 			if (SMU_DPM_TABLE_MAX(fclk_table) !=
 			    pstate_table->fclk_pstate.curr.max) {
@@ -2310,6 +2357,8 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 				if (ret)
 					return ret;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			smu_v13_0_reset_custom_level(smu);
 		}
 		break;
@@ -2336,6 +2385,7 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 			if (ret)
 				return ret;
 
+<<<<<<< HEAD
 			if (pstate_table->fclk_pstate.custom.max) {
 				min_clk = pstate_table->fclk_pstate.curr.min;
 				max_clk = pstate_table->fclk_pstate.custom.max;
@@ -2346,6 +2396,8 @@ static int smu_v13_0_6_usr_edit_dpm_table(struct smu_context *smu,
 					return ret;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!pstate_table->uclk_pstate.custom.max)
 				return 0;
 
@@ -2408,6 +2460,7 @@ static int smu_v13_0_6_request_i2c_xfer(struct smu_context *smu,
 
 	table_size = smu_table->tables[SMU_TABLE_I2C_COMMANDS].size;
 
+<<<<<<< HEAD
 	ret = smu_cmn_vram_cpy(smu, table->cpu_addr, table_data, table_size);
 	if (ret)
 		return ret;
@@ -2417,6 +2470,15 @@ static int smu_v13_0_6_request_i2c_xfer(struct smu_context *smu,
 
 	return smu_cmn_send_smc_msg(smu, SMU_MSG_RequestI2cTransaction,
 				    NULL);
+=======
+	memcpy(table->cpu_addr, table_data, table_size);
+	/* Flush hdp cache */
+	amdgpu_hdp_flush(adev, NULL);
+	ret = smu_cmn_send_smc_msg(smu, SMU_MSG_RequestI2cTransaction,
+					  NULL);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int smu_v13_0_6_i2c_xfer(struct i2c_adapter *i2c_adap,
@@ -3253,18 +3315,24 @@ static int smu_v13_0_6_reset_vcn(struct smu_context *smu, uint32_t inst_mask)
 
 static int smu_v13_0_6_ras_send_msg(struct smu_context *smu, enum smu_message_type msg, uint32_t param, uint32_t *read_arg)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = smu->adev;
 	int ret;
 
 	if (amdgpu_sriov_vf(adev))
 		return -EOPNOTSUPP;
 
+=======
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (msg) {
 	case SMU_MSG_QueryValidMcaCount:
 	case SMU_MSG_QueryValidMcaCeCount:
 	case SMU_MSG_McaBankDumpDW:
 	case SMU_MSG_McaBankCeDumpDW:
 	case SMU_MSG_ClearMcaOnRead:
+<<<<<<< HEAD
 	case SMU_MSG_GetRASTableVersion:
 	case SMU_MSG_GetBadPageCount:
 	case SMU_MSG_GetBadPageMcaAddr:
@@ -3272,6 +3340,8 @@ static int smu_v13_0_6_ras_send_msg(struct smu_context *smu, enum smu_message_ty
 	case SMU_MSG_GetTimestamp:
 	case SMU_MSG_GetBadPageIpid:
 	case SMU_MSG_EraseRasTable:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = smu_cmn_send_smc_msg_with_param(smu, msg, param, read_arg);
 		break;
 	default:

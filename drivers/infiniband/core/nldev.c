@@ -37,13 +37,19 @@
 #include <net/netlink.h>
 #include <rdma/rdma_cm.h>
 #include <rdma/rdma_netlink.h>
+<<<<<<< HEAD
 #include <rdma/frmr_pools.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "core_priv.h"
 #include "cma_priv.h"
 #include "restrack.h"
 #include "uverbs.h"
+<<<<<<< HEAD
 #include "frmr_pools.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This determines whether a non-privileged user is allowed to specify a
@@ -174,6 +180,7 @@ static const struct nla_policy nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
 	[RDMA_NLDEV_ATTR_NAME_ASSIGN_TYPE]	= { .type = NLA_U8 },
 	[RDMA_NLDEV_ATTR_EVENT_TYPE]		= { .type = NLA_U8 },
 	[RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED] = { .type = NLA_U8 },
+<<<<<<< HEAD
 	[RDMA_NLDEV_ATTR_FRMR_POOLS]		= { .type = NLA_NESTED },
 	[RDMA_NLDEV_ATTR_FRMR_POOL_ENTRY]	= { .type = NLA_NESTED },
 	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY]		= { .type = NLA_NESTED },
@@ -187,6 +194,8 @@ static const struct nla_policy nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
 	[RDMA_NLDEV_ATTR_FRMR_POOLS_AGING_PERIOD] = { .type = NLA_U32 },
 	[RDMA_NLDEV_ATTR_FRMR_POOL_PINNED_HANDLES] = { .type = NLA_U32 },
 	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY_KERNEL_VENDOR_KEY] = { .type = NLA_U64 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int put_driver_name_print_type(struct sk_buff *msg, const char *name,
@@ -1839,6 +1848,7 @@ static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * This path is triggered by the 'rdma link delete' administrative command.
 	 * For Soft-RoCE (RXE), we ensure that transport sockets are closed here.
@@ -1851,6 +1861,8 @@ static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
 			return err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ib_unregister_device_and_put(device);
 	return 0;
 }
@@ -2664,6 +2676,7 @@ static int nldev_deldev(struct sk_buff *skb, struct nlmsghdr *nlh,
 	return ib_del_sub_device_and_put(device);
 }
 
+<<<<<<< HEAD
 static int fill_frmr_pool_key(struct sk_buff *msg, struct ib_frmr_key *key)
 {
 	struct nlattr *key_attr;
@@ -2928,6 +2941,8 @@ free_tb:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 	[RDMA_NLDEV_CMD_GET] = {
 		.doit = nldev_get_doit,
@@ -3034,6 +3049,7 @@ static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 		.doit = nldev_deldev,
 		.flags = RDMA_NL_ADMIN_PERM,
 	},
+<<<<<<< HEAD
 	[RDMA_NLDEV_CMD_FRMR_POOLS_GET] = {
 		.dump = nldev_frmr_pools_get_dumpit,
 	},
@@ -3041,6 +3057,8 @@ static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
 		.doit = nldev_frmr_pools_set_doit,
 		.flags = RDMA_NL_ADMIN_PERM,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int fill_mon_netdev_rename(struct sk_buff *msg,

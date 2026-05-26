@@ -140,10 +140,17 @@ static void run_vcpu(struct kvm_vcpu *vcpu, int stage)
 	}
 }
 
+<<<<<<< HEAD
 struct kvm_cpuid2 *vcpu_alloc_cpuid(struct kvm_vm *vm, gva_t *p_gva, struct kvm_cpuid2 *cpuid)
 {
 	int size = sizeof(*cpuid) + cpuid->nent * sizeof(cpuid->entries[0]);
 	gva_t gva = vm_alloc(vm, size, KVM_UTIL_MIN_VADDR);
+=======
+struct kvm_cpuid2 *vcpu_alloc_cpuid(struct kvm_vm *vm, vm_vaddr_t *p_gva, struct kvm_cpuid2 *cpuid)
+{
+	int size = sizeof(*cpuid) + cpuid->nent * sizeof(cpuid->entries[0]);
+	vm_vaddr_t gva = vm_vaddr_alloc(vm, size, KVM_UTIL_MIN_VADDR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_cpuid2 *guest_cpuids = addr_gva2hva(vm, gva);
 
 	memcpy(guest_cpuids, cpuid, size);
@@ -217,7 +224,11 @@ static void test_get_cpuid2(struct kvm_vcpu *vcpu)
 int main(void)
 {
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	gva_t cpuid_gva;
+=======
+	vm_vaddr_t cpuid_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vm *vm;
 	int stage;
 

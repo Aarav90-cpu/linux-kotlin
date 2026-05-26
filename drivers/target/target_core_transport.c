@@ -902,6 +902,7 @@ static bool target_cmd_interrupted(struct se_cmd *cmd)
 	return false;
 }
 
+<<<<<<< HEAD
 static void target_complete(struct se_cmd *cmd, int success)
 {
 	struct se_wwn *wwn = cmd->se_sess->se_tpg->se_tpg_wwn;
@@ -949,12 +950,20 @@ queue_work:
 	queue_work_on(cpu, target_completion_wq, &cmd->work);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* May be called from interrupt context so must not sleep. */
 void target_complete_cmd_with_sense(struct se_cmd *cmd, u8 scsi_status,
 				    sense_reason_t sense_reason)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 	int success;
+=======
+	struct se_wwn *wwn = cmd->se_sess->se_tpg->se_tpg_wwn;
+	int success, cpu;
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (target_cmd_interrupted(cmd))
 		return;
@@ -979,7 +988,19 @@ void target_complete_cmd_with_sense(struct se_cmd *cmd, u8 scsi_status,
 	cmd->transport_state |= (CMD_T_COMPLETE | CMD_T_ACTIVE);
 	spin_unlock_irqrestore(&cmd->t_state_lock, flags);
 
+<<<<<<< HEAD
 	target_complete(cmd, success);
+=======
+	INIT_WORK(&cmd->work, success ? target_complete_ok_work :
+		  target_complete_failure_work);
+
+	if (!wwn || wwn->cmd_compl_affinity == SE_COMPL_AFFINITY_CPUID)
+		cpu = cmd->cpuid;
+	else
+		cpu = wwn->cmd_compl_affinity;
+
+	queue_work_on(cpu, target_completion_wq, &cmd->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(target_complete_cmd_with_sense);
 
@@ -1150,7 +1171,11 @@ void transport_dump_vpd_proto_id(
 	}
 
 	if (p_buf)
+<<<<<<< HEAD
 		strscpy(p_buf, buf, p_buf_len);
+=======
+		strncpy(p_buf, buf, p_buf_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		pr_debug("%s", buf);
 }
@@ -1200,7 +1225,11 @@ int transport_dump_vpd_assoc(
 	}
 
 	if (p_buf)
+<<<<<<< HEAD
 		strscpy(p_buf, buf, p_buf_len);
+=======
+		strncpy(p_buf, buf, p_buf_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		pr_debug("%s", buf);
 
@@ -1260,7 +1289,11 @@ int transport_dump_vpd_ident_type(
 	if (p_buf) {
 		if (p_buf_len < strlen(buf)+1)
 			return -EINVAL;
+<<<<<<< HEAD
 		strscpy(p_buf, buf, p_buf_len);
+=======
+		strncpy(p_buf, buf, p_buf_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		pr_debug("%s", buf);
 	}
@@ -1314,7 +1347,11 @@ int transport_dump_vpd_ident(
 	}
 
 	if (p_buf)
+<<<<<<< HEAD
 		strscpy(p_buf, buf, p_buf_len);
+=======
+		strncpy(p_buf, buf, p_buf_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		pr_debug("%s", buf);
 

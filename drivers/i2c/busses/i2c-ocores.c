@@ -24,7 +24,10 @@
 #include <linux/io.h>
 #include <linux/log2.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/jiffies.h>
 
 /*
@@ -259,7 +262,11 @@ static void ocores_process_timeout(struct ocores_i2c *i2c)
  * @reg: register to query
  * @mask: bitmask to apply on register value
  * @val: expected result
+<<<<<<< HEAD
  * @timeout_us: timeout in microseconds
+=======
+ * @timeout: timeout in jiffies
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Timeout is necessary to avoid to stay here forever when the chip
  * does not answer correctly.
@@ -268,6 +275,7 @@ static void ocores_process_timeout(struct ocores_i2c *i2c)
  */
 static int ocores_wait(struct ocores_i2c *i2c,
 		       int reg, u8 mask, u8 val,
+<<<<<<< HEAD
 		       unsigned long timeout_us)
 {
 	u8 status;
@@ -276,6 +284,23 @@ static int ocores_wait(struct ocores_i2c *i2c,
 					(status & mask) == val,
 					0, timeout_us, false,
 					i2c, reg);
+=======
+		       const unsigned long timeout)
+{
+	unsigned long j;
+
+	j = jiffies + timeout;
+	while (1) {
+		u8 status = oc_getreg(i2c, reg);
+
+		if ((status & mask) == val)
+			break;
+
+		if (time_after(jiffies, j))
+			return -ETIMEDOUT;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -308,7 +333,11 @@ static int ocores_poll_wait(struct ocores_i2c *i2c)
 	 * once we are here we expect to get the expected result immediately
 	 * so if after 1ms we timeout then something is broken.
 	 */
+<<<<<<< HEAD
 	err = ocores_wait(i2c, OCI2C_STATUS, mask, 0, 1000);
+=======
+	err = ocores_wait(i2c, OCI2C_STATUS, mask, 0, msecs_to_jiffies(1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		dev_warn(i2c->adap.dev.parent,
 			 "%s: STATUS timeout, bit 0x%x did not clear in 1ms\n",

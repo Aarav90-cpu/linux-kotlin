@@ -16,9 +16,21 @@
 #include "base.h"
 #include "trace.h"
 
+<<<<<<< HEAD
 struct devres {
 	struct devres_node		node;
 	dr_release_t			release;
+=======
+struct devres_node {
+	struct list_head		entry;
+	dr_release_t			release;
+	const char			*name;
+	size_t				size;
+};
+
+struct devres {
+	struct devres_node		node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Some archs want to perform DMA into kmalloc caches
 	 * and need a guaranteed alignment larger than
@@ -36,6 +48,7 @@ struct devres_group {
 	/* -- 8 pointers */
 };
 
+<<<<<<< HEAD
 void devres_node_init(struct devres_node *node,
 		      dr_node_release_t release,
 		      dr_node_free_t free_node)
@@ -51,6 +64,9 @@ static inline void free_node(struct devres_node *node)
 }
 
 void devres_set_node_dbginfo(struct devres_node *node, const char *name,
+=======
+static void set_node_dbginfo(struct devres_node *node, const char *name,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     size_t size)
 {
 	node->name = name;
@@ -83,12 +99,20 @@ static void devres_log(struct device *dev, struct devres_node *node,
  * Release functions for devres group.  These callbacks are used only
  * for identification.
  */
+<<<<<<< HEAD
 static void group_open_release(struct device *dev, struct devres_node *node)
+=======
+static void group_open_release(struct device *dev, void *res)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* noop */
 }
 
+<<<<<<< HEAD
 static void group_close_release(struct device *dev, struct devres_node *node)
+=======
+static void group_close_release(struct device *dev, void *res)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* noop */
 }
@@ -115,6 +139,7 @@ static bool check_dr_size(size_t size, size_t *tot_size)
 	return true;
 }
 
+<<<<<<< HEAD
 static void dr_node_release(struct device *dev, struct devres_node *node)
 {
 	struct devres *dr = container_of(node, struct devres, node);
@@ -129,6 +154,8 @@ static void dr_node_free(struct devres_node *node)
 	kfree(dr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline struct devres *alloc_dr(dr_release_t release,
 					       size_t size, gfp_t gfp, int nid)
 {
@@ -146,8 +173,13 @@ static __always_inline struct devres *alloc_dr(dr_release_t release,
 	if (!(gfp & __GFP_ZERO))
 		memset(dr, 0, offsetof(struct devres, data));
 
+<<<<<<< HEAD
 	devres_node_init(&dr->node, dr_node_release, dr_node_free);
 	dr->release = release;
+=======
+	INIT_LIST_HEAD(&dr->node.entry);
+	dr->node.release = release;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return dr;
 }
 
@@ -189,7 +221,11 @@ void *__devres_alloc_node(dr_release_t release, size_t size, gfp_t gfp, int nid,
 	dr = alloc_dr(release, size, gfp | __GFP_ZERO, nid);
 	if (unlikely(!dr))
 		return NULL;
+<<<<<<< HEAD
 	devres_set_node_dbginfo(&dr->node, name, size);
+=======
+	set_node_dbginfo(&dr->node, name, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return dr->data;
 }
 EXPORT_SYMBOL_GPL(__devres_alloc_node);
@@ -216,23 +252,36 @@ void devres_for_each_res(struct device *dev, dr_release_t release,
 {
 	struct devres_node *node;
 	struct devres_node *tmp;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!fn)
 		return;
 
+<<<<<<< HEAD
 	guard(spinlock_irqsave)(&dev->devres_lock);
+=======
+	spin_lock_irqsave(&dev->devres_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry_safe_reverse(node, tmp,
 			&dev->devres_head, entry) {
 		struct devres *dr = container_of(node, struct devres, node);
 
+<<<<<<< HEAD
 		if (node->release != dr_node_release)
 			continue;
 		if (dr->release != release)
+=======
+		if (node->release != release)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		if (match && !match(dev, dr->data, match_data))
 			continue;
 		fn(dev, dr->data, data);
 	}
+<<<<<<< HEAD
 }
 EXPORT_SYMBOL_GPL(devres_for_each_res);
 
@@ -241,6 +290,12 @@ static inline void free_dr(struct devres *dr)
 	free_node(&dr->node);
 }
 
+=======
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+}
+EXPORT_SYMBOL_GPL(devres_for_each_res);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devres_free - Free device resource data
  * @res: Pointer to devres data to free
@@ -253,11 +308,16 @@ void devres_free(void *res)
 		struct devres *dr = container_of(res, struct devres, data);
 
 		BUG_ON(!list_empty(&dr->node.entry));
+<<<<<<< HEAD
 		free_dr(dr);
+=======
+		kfree(dr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 EXPORT_SYMBOL_GPL(devres_free);
 
+<<<<<<< HEAD
 void devres_node_add(struct device *dev, struct devres_node *node)
 {
 	guard(spinlock_irqsave)(&dev->devres_lock);
@@ -265,6 +325,8 @@ void devres_node_add(struct device *dev, struct devres_node *node)
 	add_dr(dev, node);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devres_add - Register device resource
  * @dev: Device to add resource to
@@ -277,8 +339,16 @@ void devres_node_add(struct device *dev, struct devres_node *node)
 void devres_add(struct device *dev, void *res)
 {
 	struct devres *dr = container_of(res, struct devres, data);
+<<<<<<< HEAD
 
 	devres_node_add(dev, &dr->node);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->devres_lock, flags);
+	add_dr(dev, &dr->node);
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(devres_add);
 
@@ -290,9 +360,13 @@ static struct devres *find_dr(struct device *dev, dr_release_t release,
 	list_for_each_entry_reverse(node, &dev->devres_head, entry) {
 		struct devres *dr = container_of(node, struct devres, node);
 
+<<<<<<< HEAD
 		if (node->release != dr_node_release)
 			continue;
 		if (dr->release != release)
+=======
+		if (node->release != release)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		if (match && !match(dev, dr->data, match_data))
 			continue;
@@ -320,12 +394,23 @@ void *devres_find(struct device *dev, dr_release_t release,
 		  dr_match_t match, void *match_data)
 {
 	struct devres *dr;
+<<<<<<< HEAD
 
 	guard(spinlock_irqsave)(&dev->devres_lock);
 	dr = find_dr(dev, release, match, match_data);
 	if (dr)
 		return dr->data;
 
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->devres_lock, flags);
+	dr = find_dr(dev, release, match, match_data);
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+
+	if (dr)
+		return dr->data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(devres_find);
@@ -352,7 +437,11 @@ void *devres_get(struct device *dev, void *new_res,
 	unsigned long flags;
 
 	spin_lock_irqsave(&dev->devres_lock, flags);
+<<<<<<< HEAD
 	dr = find_dr(dev, new_dr->release, match, match_data);
+=======
+	dr = find_dr(dev, new_dr->node.release, match, match_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dr) {
 		add_dr(dev, &new_dr->node);
 		dr = new_dr;
@@ -365,6 +454,7 @@ void *devres_get(struct device *dev, void *new_res,
 }
 EXPORT_SYMBOL_GPL(devres_get);
 
+<<<<<<< HEAD
 bool devres_node_remove(struct device *dev, struct devres_node *node)
 {
 	struct devres_node *__node;
@@ -381,6 +471,8 @@ bool devres_node_remove(struct device *dev, struct devres_node *node)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devres_remove - Find a device resource and remove it
  * @dev: Device to find resource from
@@ -400,15 +492,29 @@ void *devres_remove(struct device *dev, dr_release_t release,
 		    dr_match_t match, void *match_data)
 {
 	struct devres *dr;
+<<<<<<< HEAD
 
 	guard(spinlock_irqsave)(&dev->devres_lock);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->devres_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dr = find_dr(dev, release, match, match_data);
 	if (dr) {
 		list_del_init(&dr->node.entry);
 		devres_log(dev, &dr->node, "REM");
+<<<<<<< HEAD
 		return dr->data;
 	}
 
+=======
+	}
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+
+	if (dr)
+		return dr->data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(devres_remove);
@@ -539,12 +645,24 @@ static int remove_nodes(struct device *dev,
 
 static void release_nodes(struct device *dev, struct list_head *todo)
 {
+<<<<<<< HEAD
 	struct devres_node *node, *tmp;
 
 	list_for_each_entry_safe_reverse(node, tmp, todo, entry) {
 		devres_log(dev, node, "REL");
 		node->release(dev, node);
 		free_node(node);
+=======
+	struct devres *dr, *tmp;
+
+	/* Release.  Note that both devres and devres_group are
+	 * handled as devres in the following loop.  This is safe.
+	 */
+	list_for_each_entry_safe_reverse(dr, tmp, todo, node.entry) {
+		devres_log(dev, &dr->node, "REL");
+		dr->node.release(dev, dr->data);
+		kfree(dr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -577,6 +695,7 @@ int devres_release_all(struct device *dev)
 	return cnt;
 }
 
+<<<<<<< HEAD
 static void devres_group_free(struct devres_node *node)
 {
 	struct devres_group *grp = container_of(node, struct devres_group, node[0]);
@@ -584,6 +703,8 @@ static void devres_group_free(struct devres_node *node)
 	kfree(grp);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devres_open_group - Open a new devres group
  * @dev: Device to open devres group for
@@ -600,21 +721,40 @@ static void devres_group_free(struct devres_node *node)
 void *devres_open_group(struct device *dev, void *id, gfp_t gfp)
 {
 	struct devres_group *grp;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	grp = kmalloc_obj(*grp, gfp);
 	if (unlikely(!grp))
 		return NULL;
 
+<<<<<<< HEAD
 	devres_node_init(&grp->node[0], &group_open_release, devres_group_free);
 	devres_node_init(&grp->node[1], &group_close_release, NULL);
 	devres_set_node_dbginfo(&grp->node[0], "grp<", 0);
 	devres_set_node_dbginfo(&grp->node[1], "grp>", 0);
+=======
+	grp->node[0].release = &group_open_release;
+	grp->node[1].release = &group_close_release;
+	INIT_LIST_HEAD(&grp->node[0].entry);
+	INIT_LIST_HEAD(&grp->node[1].entry);
+	set_node_dbginfo(&grp->node[0], "grp<", 0);
+	set_node_dbginfo(&grp->node[1], "grp>", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	grp->id = grp;
 	if (id)
 		grp->id = id;
 	grp->color = 0;
 
+<<<<<<< HEAD
 	devres_node_add(dev, &grp->node[0]);
+=======
+	spin_lock_irqsave(&dev->devres_lock, flags);
+	add_dr(dev, &grp->node[0]);
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return grp->id;
 }
 EXPORT_SYMBOL_GPL(devres_open_group);
@@ -656,13 +796,25 @@ static struct devres_group *find_group(struct device *dev, void *id)
 void devres_close_group(struct device *dev, void *id)
 {
 	struct devres_group *grp;
+<<<<<<< HEAD
 
 	guard(spinlock_irqsave)(&dev->devres_lock);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->devres_lock, flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	grp = find_group(dev, id);
 	if (grp)
 		add_dr(dev, &grp->node[1]);
 	else
 		WARN_ON(1);
+<<<<<<< HEAD
+=======
+
+	spin_unlock_irqrestore(&dev->devres_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(devres_close_group);
 
@@ -716,6 +868,10 @@ int devres_release_group(struct device *dev, void *id)
 	int cnt = 0;
 
 	spin_lock_irqsave(&dev->devres_lock, flags);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	grp = find_group(dev, id);
 	if (grp) {
 		struct list_head *first = &grp->node[0].entry;
@@ -725,18 +881,32 @@ int devres_release_group(struct device *dev, void *id)
 			end = grp->node[1].entry.next;
 
 		cnt = remove_nodes(dev, first, end, &todo);
+<<<<<<< HEAD
+=======
+		spin_unlock_irqrestore(&dev->devres_lock, flags);
+
+		release_nodes(dev, &todo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (list_empty(&dev->devres_head)) {
 		/*
 		 * dev is probably dying via devres_release_all(): groups
 		 * have already been removed and are on the process of
 		 * being released - don't touch and don't warn.
 		 */
+<<<<<<< HEAD
 	} else {
 		WARN_ON(1);
 	}
 	spin_unlock_irqrestore(&dev->devres_lock, flags);
 
 	release_nodes(dev, &todo);
+=======
+		spin_unlock_irqrestore(&dev->devres_lock, flags);
+	} else {
+		WARN_ON(1);
+		spin_unlock_irqrestore(&dev->devres_lock, flags);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return cnt;
 }
@@ -752,6 +922,7 @@ struct action_devres {
 	void (*action)(void *);
 };
 
+<<<<<<< HEAD
 struct devres_action {
 	struct devres_node node;
 	struct action_devres action;
@@ -775,6 +946,22 @@ static void devm_action_free(struct devres_node *node)
 	struct devres_action *action = container_of(node, struct devres_action, node);
 
 	kfree(action);
+=======
+static int devm_action_match(struct device *dev, void *res, void *p)
+{
+	struct action_devres *devres = res;
+	struct action_devres *target = p;
+
+	return devres->action == target->action &&
+	       devres->data == target->data;
+}
+
+static void devm_action_release(struct device *dev, void *res)
+{
+	struct action_devres *devres = res;
+
+	devres->action(devres->data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -789,6 +976,7 @@ static void devm_action_free(struct devres_node *node)
  */
 int __devm_add_action(struct device *dev, void (*action)(void *), void *data, const char *name)
 {
+<<<<<<< HEAD
 	struct devres_action *devres;
 
 	devres = kzalloc_obj(*devres);
@@ -802,20 +990,40 @@ int __devm_add_action(struct device *dev, void (*action)(void *), void *data, co
 	devres->action.action = action;
 
 	devres_node_add(dev, &devres->node);
+=======
+	struct action_devres *devres;
+
+	devres = __devres_alloc_node(devm_action_release, sizeof(struct action_devres),
+				     GFP_KERNEL, NUMA_NO_NODE, name);
+	if (!devres)
+		return -ENOMEM;
+
+	devres->data = data;
+	devres->action = action;
+
+	devres_add(dev, devres);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(__devm_add_action);
 
+<<<<<<< HEAD
 static struct devres_action *devres_action_find(struct device *dev,
 						void (*action)(void *),
 						void *data)
 {
 	struct devres_node *node;
 	struct action_devres target = {
+=======
+bool devm_is_action_added(struct device *dev, void (*action)(void *), void *data)
+{
+	struct action_devres devres = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.data = data,
 		.action = action,
 	};
 
+<<<<<<< HEAD
 	list_for_each_entry_reverse(node, &dev->devres_head, entry) {
 		struct devres_action *dr = container_of(node, struct devres_action, node);
 
@@ -854,6 +1062,12 @@ static struct devres_action *remove_action(struct device *dev,
 	return dr;
 }
 
+=======
+	return devres_find(dev, devm_action_release, devm_action_match, &devres);
+}
+EXPORT_SYMBOL_GPL(devm_is_action_added);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devm_remove_action_nowarn() - removes previously added custom action
  * @dev: Device that owns the action
@@ -878,6 +1092,7 @@ int devm_remove_action_nowarn(struct device *dev,
 			      void (*action)(void *),
 			      void *data)
 {
+<<<<<<< HEAD
 	struct devres_action *dr;
 
 	dr = remove_action(dev, action, data);
@@ -887,6 +1102,15 @@ int devm_remove_action_nowarn(struct device *dev,
 	kfree(dr);
 
 	return 0;
+=======
+	struct action_devres devres = {
+		.data = data,
+		.action = action,
+	};
+
+	return devres_destroy(dev, devm_action_release, devm_action_match,
+			      &devres);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(devm_remove_action_nowarn);
 
@@ -902,6 +1126,7 @@ EXPORT_SYMBOL_GPL(devm_remove_action_nowarn);
  */
 void devm_release_action(struct device *dev, void (*action)(void *), void *data)
 {
+<<<<<<< HEAD
 	struct devres_action *dr;
 
 	dr = remove_action(dev, action, data);
@@ -911,6 +1136,16 @@ void devm_release_action(struct device *dev, void (*action)(void *), void *data)
 	dr->action.action(dr->action.data);
 
 	kfree(dr);
+=======
+	struct action_devres devres = {
+		.data = data,
+		.action = action,
+	};
+
+	WARN_ON(devres_release(dev, devm_action_release, devm_action_match,
+			       &devres));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(devm_release_action);
 
@@ -956,7 +1191,11 @@ void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp)
 	 * This is named devm_kzalloc_release for historical reasons
 	 * The initial implementation did not support kmalloc, only kzalloc
 	 */
+<<<<<<< HEAD
 	devres_set_node_dbginfo(&dr->node, "devm_kzalloc_release", size);
+=======
+	set_node_dbginfo(&dr->node, "devm_kzalloc_release", size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	devres_add(dev, dr->data);
 	return dr->data;
 }
@@ -1027,8 +1266,11 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
 	if (!new_dr)
 		return NULL;
 
+<<<<<<< HEAD
 	devres_set_node_dbginfo(&new_dr->node, "devm_krealloc_release", new_size);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The spinlock protects the linked list against concurrent
 	 * modifications but not the resource itself.
@@ -1038,7 +1280,11 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
 	old_dr = find_dr(dev, devm_kmalloc_release, devm_kmalloc_match, ptr);
 	if (!old_dr) {
 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+<<<<<<< HEAD
 		free_dr(new_dr);
+=======
+		kfree(new_dr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN(1, "Memory chunk not managed or managed by a different device.");
 		return NULL;
 	}
@@ -1058,7 +1304,11 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
 	 * list. This is also the reason why we must not use devm_kfree() - the
 	 * links are no longer valid.
 	 */
+<<<<<<< HEAD
 	free_dr(old_dr);
+=======
+	kfree(old_dr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return new_dr->data;
 }

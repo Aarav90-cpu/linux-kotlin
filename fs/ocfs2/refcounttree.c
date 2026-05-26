@@ -31,6 +31,10 @@
 #include <linux/blkdev.h>
 #include <linux/slab.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/swap.h>
 #include <linux/security.h>
 #include <linux/string.h>
@@ -2340,7 +2344,11 @@ static int ocfs2_mark_extent_refcounted(struct inode *inode,
 					   cpos, len, phys);
 
 	if (!ocfs2_refcount_tree(OCFS2_SB(inode->i_sb))) {
+<<<<<<< HEAD
 		ret = ocfs2_error(inode->i_sb, "Inode %llu want to use refcount tree, but the feature bit is not set in the super block\n",
+=======
+		ret = ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  inode->i_ino);
 		goto out;
 	}
@@ -2523,7 +2531,11 @@ int ocfs2_prepare_refcount_change_for_del(struct inode *inode,
 	u64 start_cpos = ocfs2_blocks_to_clusters(inode->i_sb, phys_blkno);
 
 	if (!ocfs2_refcount_tree(OCFS2_SB(inode->i_sb))) {
+<<<<<<< HEAD
 		ret = ocfs2_error(inode->i_sb, "Inode %llu want to use refcount tree, but the feature bit is not set in the super block\n",
+=======
+		ret = ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  inode->i_ino);
 		goto out;
 	}
@@ -2649,7 +2661,11 @@ static int ocfs2_refcount_cal_cow_clusters(struct inode *inode,
 
 		if (el->l_tree_depth) {
 			ret = ocfs2_error(inode->i_sb,
+<<<<<<< HEAD
 					  "Inode %llu has non zero tree depth in leaf block %llu\n",
+=======
+					  "Inode %lu has non zero tree depth in leaf block %llu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  inode->i_ino,
 					  (unsigned long long)eb_bh->b_blocknr);
 			goto out;
@@ -2661,7 +2677,11 @@ static int ocfs2_refcount_cal_cow_clusters(struct inode *inode,
 		rec = &el->l_recs[i];
 
 		if (ocfs2_is_empty_extent(rec)) {
+<<<<<<< HEAD
 			mlog_bug_on_msg(i != 0, "Inode %llu has empty record in "
+=======
+			mlog_bug_on_msg(i != 0, "Inode %lu has empty record in "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					"index %d\n", inode->i_ino, i);
 			continue;
 		}
@@ -3324,7 +3344,11 @@ static int ocfs2_replace_cow(struct ocfs2_cow_context *context)
 	struct ocfs2_super *osb = OCFS2_SB(inode->i_sb);
 
 	if (!ocfs2_refcount_tree(osb)) {
+<<<<<<< HEAD
 		return ocfs2_error(inode->i_sb, "Inode %llu want to use refcount tree, but the feature bit is not set in the super block\n",
+=======
+		return ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   inode->i_ino);
 	}
 

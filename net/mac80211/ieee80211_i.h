@@ -256,8 +256,11 @@ struct ieee80211_rx_data {
 			u8 pn[IEEE80211_CCMP_PN_LEN];
 		} ccm_gcm;
 	};
+<<<<<<< HEAD
 
 	u8 link_addrs[3 * ETH_ALEN];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ieee80211_csa_settings {
@@ -928,9 +931,12 @@ struct ieee80211_chanctx {
 
 	bool radar_detected;
 
+<<<<<<< HEAD
 	/* This chanctx is in process of getting used */
 	bool will_be_used;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* MUST be last - ends in a flexible-array member. */
 	struct ieee80211_chanctx_conf conf;
 };
@@ -987,16 +993,22 @@ struct ieee80211_if_mntr {
  *
  * @conf: current NAN configuration
  * @started: true iff NAN is started
+<<<<<<< HEAD
  * @de: Discovery Engine state (only valid if !WIPHY_NAN_FLAGS_USERSPACE_DE)
  * @de.func_lock: lock for @de.function_inst_ids
  * @de.function_inst_ids: a bitmap of available instance_id's
  * @removed_channels: bitmap of channels that should be removed from the NAN
  *	schedule once the deferred schedule update is completed.
+=======
+ * @func_lock: lock for @func_inst_ids
+ * @function_inst_ids: a bitmap of available instance_id's
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ieee80211_if_nan {
 	struct cfg80211_nan_conf conf;
 	bool started;
 
+<<<<<<< HEAD
 	struct {
 		/* protects function_inst_ids */
 		spinlock_t func_lock;
@@ -1014,6 +1026,11 @@ struct ieee80211_if_nan {
  */
 struct ieee80211_if_nan_data {
 	struct ieee80211_sub_if_data __rcu *nmi;
+=======
+	/* protects function_inst_ids */
+	spinlock_t func_lock;
+	struct idr function_inst_ids;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ieee80211_link_data_managed {
@@ -1214,7 +1231,10 @@ struct ieee80211_sub_if_data {
 		struct ieee80211_if_ocb ocb;
 		struct ieee80211_if_mntr mntr;
 		struct ieee80211_if_nan nan;
+<<<<<<< HEAD
 		struct ieee80211_if_nan_data nan_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} u;
 
 	struct ieee80211_link_data deflink;
@@ -1940,6 +1960,13 @@ ieee80211_vif_get_num_mcast_if(struct ieee80211_sub_if_data *sdata)
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+				     struct ieee80211_rx_status *status,
+				     unsigned int mpdu_len,
+				     unsigned int mpdu_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ieee80211_hw_config(struct ieee80211_local *local, int radio_idx,
 			u32 changed);
 int ieee80211_hw_conf_chan(struct ieee80211_local *local);
@@ -2039,6 +2066,7 @@ int ieee80211_mesh_csa_beacon(struct ieee80211_sub_if_data *sdata,
 int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata,
 			      u64 *changed);
 
+<<<<<<< HEAD
 /* NAN code */
 int ieee80211_nan_set_local_sched(struct ieee80211_sub_if_data *sdata,
 				  struct cfg80211_nan_local_sched *sched);
@@ -2047,6 +2075,8 @@ int ieee80211_nan_set_peer_sched(struct ieee80211_sub_if_data *sdata,
 void ieee80211_nan_free_peer_sched(struct ieee80211_nan_peer_sched *sched);
 void ieee80211_nan_update_ndi_carrier(struct ieee80211_sub_if_data *ndi_sdata);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* scan/BSS handling */
 void ieee80211_scan_work(struct wiphy *wiphy, struct wiphy_work *work);
 int ieee80211_request_ibss_scan(struct ieee80211_sub_if_data *sdata,
@@ -2210,13 +2240,21 @@ void ieee80211_aggr_check(struct ieee80211_sub_if_data *sdata,
 void ieee80211_apply_htcap_overrides(struct ieee80211_sub_if_data *sdata,
 				     struct ieee80211_sta_ht_cap *ht_cap);
 bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
+<<<<<<< HEAD
 				       const struct ieee80211_sta_ht_cap *own_cap,
+=======
+				       struct ieee80211_supported_band *sband,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       const struct ieee80211_ht_cap *ht_cap_ie,
 				       struct link_sta_info *link_sta);
 void ieee80211_send_delba(struct ieee80211_sub_if_data *sdata,
 			  const u8 *da, u16 tid,
+<<<<<<< HEAD
 			  u16 initiator, u16 reason_code,
 			  bool use_ndp);
+=======
+			  u16 initiator, u16 reason_code);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
 			       enum ieee80211_smps_mode smps, const u8 *da,
 			       const u8 *bssid, int link_id);
@@ -2232,7 +2270,10 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
 				     u8 dialog_token, u16 timeout,
 				     u16 start_seq_num, u16 ba_policy, u16 tid,
 				     u16 buf_size, bool tx, bool auto_seq,
+<<<<<<< HEAD
 				     bool req_ndp,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     const u8 addba_ext_data);
 void ieee80211_sta_tear_down_BA_sessions(struct sta_info *sta,
 					 enum ieee80211_agg_stop_reason reason);
@@ -2295,7 +2336,10 @@ void ieee80211_ht_handle_chanwidth_notif(struct ieee80211_local *local,
 void
 ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
 				    struct ieee80211_supported_band *sband,
+<<<<<<< HEAD
 				    const struct ieee80211_sta_vht_cap *own_vht_cap,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    const struct ieee80211_vht_cap *vht_cap_ie,
 				    const struct ieee80211_vht_cap *vht_cap_ie2,
 				    struct link_sta_info *link_sta);
@@ -2336,12 +2380,15 @@ ieee80211_sta_rx_bw_to_chan_width(struct link_sta_info *sta);
 
 /* HE */
 void
+<<<<<<< HEAD
 _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 				   const struct ieee80211_sta_he_cap *own_he_cap,
 				   const u8 *he_cap_ie, u8 he_cap_len,
 				   const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
 				   struct link_sta_info *link_sta);
 void
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 				  struct ieee80211_supported_band *sband,
 				  const u8 *he_cap_ie, u8 he_cap_len,
@@ -2365,8 +2412,11 @@ void ieee80211_s1g_status_twt_action(struct ieee80211_sub_if_data *sdata,
 void ieee80211_s1g_cap_to_sta_s1g_cap(struct ieee80211_sub_if_data *sdata,
 				      const struct ieee80211_s1g_cap *s1g_cap_ie,
 				      struct link_sta_info *link_sta);
+<<<<<<< HEAD
 bool ieee80211_s1g_use_ndp_ba(const struct ieee80211_sub_if_data *sdata,
 			      const struct sta_info *sta);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Spectrum management */
 void ieee80211_process_measurement_req(struct ieee80211_sub_if_data *sdata,
@@ -2835,6 +2885,7 @@ int ieee80211_max_num_channels(struct ieee80211_local *local, int radio_idx);
 u32 ieee80211_get_radio_mask(struct wiphy *wiphy, struct net_device *dev);
 void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
 				       struct ieee80211_chanctx *ctx);
+<<<<<<< HEAD
 struct ieee80211_chanctx *
 ieee80211_find_or_create_chanctx(struct ieee80211_sub_if_data *sdata,
 				 const struct ieee80211_chan_req *chanreq,
@@ -2846,6 +2897,9 @@ void ieee80211_free_chanctx(struct ieee80211_local *local,
 			    bool skip_idle_recalc);
 int ieee80211_chanctx_num_assigned(struct ieee80211_local *local,
 				   struct ieee80211_chanctx *ctx);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* TDLS */
 int ieee80211_tdls_mgmt(struct wiphy *wiphy, struct net_device *dev,
 			const u8 *peer, int link_id,

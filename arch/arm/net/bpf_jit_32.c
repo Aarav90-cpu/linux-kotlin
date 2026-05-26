@@ -1852,9 +1852,12 @@ exit:
 	{
 		u64 val = (u32)imm | (u64)insn[1].imm << 32;
 
+<<<<<<< HEAD
 		if (insn->src_reg == BPF_PSEUDO_FUNC)
 			goto notyet;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		emit_a32_mov_i64(dst, val, ctx);
 
 		return 1;
@@ -2058,9 +2061,12 @@ go_jmp:
 		const s8 *r5 = bpf2a32[BPF_REG_5];
 		const u32 func = (u32)__bpf_call_base + (u32)imm;
 
+<<<<<<< HEAD
 		if (insn->src_reg == BPF_PSEUDO_CALL)
 			goto notyet;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		emit_a32_mov_r64(true, r0, r1, ctx);
 		emit_a32_mov_r64(true, r1, r2, ctx);
 		emit_push_r64(r5, ctx);
@@ -2148,9 +2154,17 @@ bool bpf_jit_needs_zext(void)
 	return true;
 }
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 	struct bpf_binary_header *header;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+{
+	struct bpf_prog *tmp, *orig_prog = prog;
+	struct bpf_binary_header *header;
+	bool tmp_blinded = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct jit_ctx ctx;
 	unsigned int tmp_idx;
 	unsigned int image_size;
@@ -2160,7 +2174,24 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	 * the interpreter.
 	 */
 	if (!prog->jit_requested)
+<<<<<<< HEAD
 		return prog;
+=======
+		return orig_prog;
+
+	/* If constant blinding was enabled and we failed during blinding
+	 * then we must fall back to the interpreter. Otherwise, we save
+	 * the new JITed code.
+	 */
+	tmp = bpf_jit_blind_constants(prog);
+
+	if (IS_ERR(tmp))
+		return orig_prog;
+	if (tmp != prog) {
+		tmp_blinded = true;
+		prog = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(&ctx, 0, sizeof(ctx));
 	ctx.prog = prog;
@@ -2170,8 +2201,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	 * we must fall back to the interpreter
 	 */
 	ctx.offsets = kcalloc(prog->len, sizeof(int), GFP_KERNEL);
+<<<<<<< HEAD
 	if (ctx.offsets == NULL)
 		return prog;
+=======
+	if (ctx.offsets == NULL) {
+		prog = orig_prog;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 1) fake pass to find in the length of the JITed code,
 	 * to compute ctx->offsets and other context variables
@@ -2183,8 +2221,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	 * being successful in the second pass, so just fall back
 	 * to the interpreter.
 	 */
+<<<<<<< HEAD
 	if (build_body(&ctx))
 		goto out_off;
+=======
+	if (build_body(&ctx)) {
+		prog = orig_prog;
+		goto out_off;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tmp_idx = ctx.idx;
 	build_prologue(&ctx);
@@ -2200,8 +2245,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	ctx.idx += ctx.imm_count;
 	if (ctx.imm_count) {
 		ctx.imms = kcalloc(ctx.imm_count, sizeof(u32), GFP_KERNEL);
+<<<<<<< HEAD
 		if (ctx.imms == NULL)
 			goto out_off;
+=======
+		if (ctx.imms == NULL) {
+			prog = orig_prog;
+			goto out_off;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 #else
 	/* there's nothing about the epilogue on ARMv7 */
@@ -2223,8 +2275,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	/* Not able to allocate memory for the structure then
 	 * we must fall back to the interpretation
 	 */
+<<<<<<< HEAD
 	if (header == NULL)
 		goto out_imms;
+=======
+	if (header == NULL) {
+		prog = orig_prog;
+		goto out_imms;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 2.) Actual pass to generate final JIT code */
 	ctx.target = (u32 *) image_ptr;
@@ -2261,12 +2320,23 @@ out_imms:
 #endif
 out_off:
 	kfree(ctx.offsets);
+<<<<<<< HEAD
 
+=======
+out:
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(prog, prog == orig_prog ?
+					   tmp : orig_prog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return prog;
 
 out_free:
 	image_ptr = NULL;
 	bpf_jit_binary_free(header);
+<<<<<<< HEAD
+=======
+	prog = orig_prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	goto out_imms;
 }
 

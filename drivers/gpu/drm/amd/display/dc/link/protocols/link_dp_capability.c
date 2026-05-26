@@ -750,9 +750,12 @@ static bool decide_dp_link_settings(struct dc_link *link, struct dc_link_setting
 	if (req_bw > dp_link_bandwidth_kbps(link, &link->verified_link_cap))
 		return false;
 
+<<<<<<< HEAD
 	if (link->preferred_link_setting.link_rate != LINK_RATE_UNKNOWN)
 		initial_link_setting.link_rate = link->preferred_link_setting.link_rate;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* search for the minimum link setting that:
 	 * 1. is supported according to the link training result
 	 * 2. could support the b/w requested by the timing

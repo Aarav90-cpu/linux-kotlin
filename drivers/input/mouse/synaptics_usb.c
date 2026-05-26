@@ -220,6 +220,28 @@ resubmit:
 			__func__, error);
 }
 
+<<<<<<< HEAD
+=======
+static struct usb_endpoint_descriptor *
+synusb_get_in_endpoint(struct usb_host_interface *iface)
+{
+
+	struct usb_endpoint_descriptor *endpoint;
+	int i;
+
+	for (i = 0; i < iface->desc.bNumEndpoints; ++i) {
+		endpoint = &iface->endpoint[i].desc;
+
+		if (usb_endpoint_is_int_in(endpoint)) {
+			/* we found our interrupt in endpoint */
+			return endpoint;
+		}
+	}
+
+	return NULL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int synusb_open(struct input_dev *dev)
 {
 	struct synusb *synusb = input_get_drvdata(dev);
@@ -288,8 +310,13 @@ static int synusb_probe(struct usb_interface *intf,
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = usb_find_int_in_endpoint(intf->cur_altsetting, &ep);
 	if (error)
+=======
+	ep = synusb_get_in_endpoint(intf->cur_altsetting);
+	if (!ep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	synusb = kzalloc_obj(*synusb);

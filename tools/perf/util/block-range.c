@@ -4,7 +4,11 @@
 #include <assert.h>
 #include <stdlib.h>
 
+<<<<<<< HEAD
 static struct {
+=======
+struct {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rb_root root;
 	u64 blocks;
 } block_ranges;

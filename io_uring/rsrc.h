@@ -109,6 +109,7 @@ static inline void io_put_rsrc_node(struct io_ring_ctx *ctx, struct io_rsrc_node
 }
 
 static inline bool io_reset_rsrc_node(struct io_ring_ctx *ctx,
+<<<<<<< HEAD
 				      struct io_rsrc_data *data,
 				      unsigned int index)
 {
@@ -118,6 +119,12 @@ static inline bool io_reset_rsrc_node(struct io_ring_ctx *ctx,
 		return false;
 	index = array_index_nospec(index, data->nr);
 	node = data->nodes[index];
+=======
+				      struct io_rsrc_data *data, int index)
+{
+	struct io_rsrc_node *node = data->nodes[index];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!node)
 		return false;
 	io_put_rsrc_node(ctx, node);

@@ -6841,8 +6841,12 @@ bool ftrace_filter_param __initdata;
 static int __init set_ftrace_notrace(char *str)
 {
 	ftrace_filter_param = true;
+<<<<<<< HEAD
 	trace_append_boot_param(ftrace_notrace_buf, str, ',',
 				FTRACE_FILTER_SIZE);
+=======
+	strscpy(ftrace_notrace_buf, str, FTRACE_FILTER_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 __setup("ftrace_notrace=", set_ftrace_notrace);
@@ -6850,8 +6854,12 @@ __setup("ftrace_notrace=", set_ftrace_notrace);
 static int __init set_ftrace_filter(char *str)
 {
 	ftrace_filter_param = true;
+<<<<<<< HEAD
 	trace_append_boot_param(ftrace_filter_buf, str, ',',
 				FTRACE_FILTER_SIZE);
+=======
+	strscpy(ftrace_filter_buf, str, FTRACE_FILTER_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 __setup("ftrace_filter=", set_ftrace_filter);
@@ -6863,16 +6871,24 @@ static int ftrace_graph_set_hash(struct ftrace_hash *hash, char *buffer);
 
 static int __init set_graph_function(char *str)
 {
+<<<<<<< HEAD
 	trace_append_boot_param(ftrace_graph_buf, str, ',',
 				FTRACE_FILTER_SIZE);
+=======
+	strscpy(ftrace_graph_buf, str, FTRACE_FILTER_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 __setup("ftrace_graph_filter=", set_graph_function);
 
 static int __init set_graph_notrace_function(char *str)
 {
+<<<<<<< HEAD
 	trace_append_boot_param(ftrace_graph_notrace_buf, str, ',',
 				FTRACE_FILTER_SIZE);
+=======
+	strscpy(ftrace_graph_notrace_buf, str, FTRACE_FILTER_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 __setup("ftrace_graph_notrace=", set_graph_notrace_function);
@@ -9271,6 +9287,7 @@ static int kallsyms_callback(void *data, const char *name, unsigned long addr)
  * @addrs array, which needs to be big enough to store at least @cnt
  * addresses.
  *
+<<<<<<< HEAD
  * For a single symbol (cnt == 1), uses kallsyms_lookup_name() which
  * performs an O(log N) binary search via the sorted kallsyms index.
  * This avoids the full O(N) linear scan over all kernel symbols that
@@ -9280,6 +9297,8 @@ static int kallsyms_callback(void *data, const char *name, unsigned long addr)
  * kallsyms_on_each_symbol() with binary search into the sorted input
  * array.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Returns: 0 if all provided symbols are found, -ESRCH otherwise.
  */
 int ftrace_lookup_symbols(const char **sorted_syms, size_t cnt, unsigned long *addrs)
@@ -9287,6 +9306,7 @@ int ftrace_lookup_symbols(const char **sorted_syms, size_t cnt, unsigned long *a
 	struct kallsyms_data args;
 	int found_all;
 
+<<<<<<< HEAD
 	/* Fast path: single symbol uses O(log N) binary search */
 	if (cnt == 1) {
 		addrs[0] = kallsyms_lookup_name(sorted_syms[0]);
@@ -9300,6 +9320,8 @@ int ftrace_lookup_symbols(const char **sorted_syms, size_t cnt, unsigned long *a
 	}
 
 	/* Batch path: single-pass O(N) linear scan */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(addrs, 0, sizeof(*addrs) * cnt);
 	args.addrs = addrs;
 	args.syms = sorted_syms;

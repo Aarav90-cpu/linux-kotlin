@@ -30,7 +30,10 @@ properties:
           - realtek,rtl8390-gpio
           - realtek,rtl9300-gpio
           - realtek,rtl9310-gpio
+<<<<<<< HEAD
           - realtek,rtl9607-gpio
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - const: realtek,otto-gpio
 
   reg: true

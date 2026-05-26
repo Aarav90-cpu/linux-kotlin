@@ -9,6 +9,7 @@
 #define MTD_CONCAT_H
 
 
+<<<<<<< HEAD
 /*
  * Our storage structure:
  * Subdev points to an array of pointers to struct mtd_info objects
@@ -21,6 +22,8 @@ struct mtd_concat {
 	struct mtd_info *subdev[];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mtd_info *mtd_concat_create(
     struct mtd_info *subdev[],  /* subdevices to concatenate */
     int num_devs,               /* number of subdevices      */
@@ -28,6 +31,7 @@ struct mtd_info *mtd_concat_create(
 
 void mtd_concat_destroy(struct mtd_info *mtd);
 
+<<<<<<< HEAD
 /**
  * mtd_virt_concat_node_create - Create a component for concatenation
  *
@@ -79,3 +83,7 @@ void mtd_virt_concat_destroy_joins(void);
 void mtd_virt_concat_destroy_items(void);
 
 #endif
+=======
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

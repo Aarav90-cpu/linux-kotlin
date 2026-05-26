@@ -18,7 +18,10 @@
 #include "xe_ggtt_types.h"
 
 struct xe_device;
+<<<<<<< HEAD
 struct xe_mem_pool_node;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_vm;
 
 #define XE_BO_MAX_PLACEMENTS	3
@@ -89,7 +92,11 @@ struct xe_bo {
 	bool ccs_cleared;
 
 	/** @bb_ccs: BB instructions of CCS read/write. Valid only for VF */
+<<<<<<< HEAD
 	struct xe_mem_pool_node *bb_ccs[XE_SRIOV_VF_CCS_CTX_COUNT];
+=======
+	struct xe_bb *bb_ccs[XE_SRIOV_VF_CCS_CTX_COUNT];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * @cpu_caching: CPU caching mode. Currently only used for userspace
@@ -109,6 +116,7 @@ struct xe_bo {
 	 * from default
 	 */
 	u64 min_align;
+<<<<<<< HEAD
 
 	/**
 	 * @purgeable: Purgeability state and accounting.
@@ -137,6 +145,8 @@ struct xe_bo {
 		 */
 		u32 willneed_count;
 	} purgeable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif

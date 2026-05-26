@@ -234,6 +234,7 @@ static int alarmtimer_suspend(struct device *dev)
 	if (!rtc)
 		return 0;
 
+<<<<<<< HEAD
 	/* Find the soonest timer to expire */
 	for (i = 0; i < ALARM_NUMTYPE; i++) {
 		struct alarm_base *base = &alarm_bases[i];
@@ -251,6 +252,21 @@ static int alarmtimer_suspend(struct device *dev)
 		delta = ktime_sub(next_expires, base->get_ktime());
 		if (!min || (delta < min)) {
 			expires = next_expires;
+=======
+	/* Find the soonest timer to expire*/
+	for (i = 0; i < ALARM_NUMTYPE; i++) {
+		struct alarm_base *base = &alarm_bases[i];
+		struct timerqueue_node *next;
+		ktime_t delta;
+
+		scoped_guard(spinlock_irqsave, &base->lock)
+			next = timerqueue_getnext(&base->timerqueue);
+		if (!next)
+			continue;
+		delta = ktime_sub(next->expires, base->get_ktime());
+		if (!min || (delta < min)) {
+			expires = next->expires;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			min = delta;
 			type = i;
 		}

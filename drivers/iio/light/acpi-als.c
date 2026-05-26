@@ -18,7 +18,10 @@
 #include <linux/err.h>
 #include <linux/irq.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/iio/iio.h>
 #include <linux/iio/buffer.h>
@@ -91,9 +94,15 @@ static int acpi_als_read_value(struct acpi_als *als, char *prop, s32 *val)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void acpi_als_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct iio_dev *indio_dev = data;
+=======
+static void acpi_als_notify(struct acpi_device *device, u32 event)
+{
+	struct iio_dev *indio_dev = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_als *als = iio_priv(indio_dev);
 
 	if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev)) {
@@ -103,7 +112,11 @@ static void acpi_als_notify(acpi_handle handle, u32 event, void *data)
 			break;
 		default:
 			/* Unhandled event */
+<<<<<<< HEAD
 			dev_dbg(&als->device->dev,
+=======
+			dev_dbg(&device->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				"Unhandled ACPI ALS event (%08x)!\n",
 				event);
 		}
@@ -176,10 +189,16 @@ out:
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int acpi_als_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct acpi_device *device = ACPI_COMPANION(dev);
+=======
+static int acpi_als_add(struct acpi_device *device)
+{
+	struct device *dev = &device->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_dev *indio_dev;
 	struct acpi_als *als;
 	int ret;
@@ -190,6 +209,10 @@ static int acpi_als_probe(struct platform_device *pdev)
 
 	als = iio_priv(indio_dev);
 
+<<<<<<< HEAD
+=======
+	device->driver_data = indio_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	als->device = device;
 	mutex_init(&als->lock);
 
@@ -219,6 +242,7 @@ static int acpi_als_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = devm_iio_device_register(dev, indio_dev);
 	if (ret)
 		return ret;
@@ -231,6 +255,9 @@ static void acpi_als_remove(struct platform_device *pdev)
 {
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_DEVICE_NOTIFY, acpi_als_notify);
+=======
+	return devm_iio_device_register(dev, indio_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct acpi_device_id acpi_als_device_ids[] = {
@@ -240,6 +267,7 @@ static const struct acpi_device_id acpi_als_device_ids[] = {
 
 MODULE_DEVICE_TABLE(acpi, acpi_als_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver acpi_als_driver = {
 	.probe = acpi_als_probe,
 	.remove = acpi_als_remove,
@@ -249,6 +277,19 @@ static struct platform_driver acpi_als_driver = {
 	},
 };
 module_platform_driver(acpi_als_driver);
+=======
+static struct acpi_driver acpi_als_driver = {
+	.name	= "acpi_als",
+	.class	= ACPI_ALS_CLASS,
+	.ids	= acpi_als_device_ids,
+	.ops = {
+		.add	= acpi_als_add,
+		.notify	= acpi_als_notify,
+	},
+};
+
+module_acpi_driver(acpi_als_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Zhang Rui <rui.zhang@intel.com>");
 MODULE_AUTHOR("Martin Liska <marxin.liska@gmail.com>");

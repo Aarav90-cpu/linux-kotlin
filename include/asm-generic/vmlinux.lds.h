@@ -508,25 +508,48 @@
 									\
 	PRINTK_INDEX							\
 									\
+<<<<<<< HEAD
 	/* Kernel symbol table */					\
+=======
+	/* Kernel symbol table: Normal symbols */			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__ksymtab         : AT(ADDR(__ksymtab) - LOAD_OFFSET) {		\
 		__start___ksymtab = .;					\
 		KEEP(*(SORT(___ksymtab+*)))				\
 		__stop___ksymtab = .;					\
 	}								\
 									\
+<<<<<<< HEAD
 	/* Kernel symbol CRC table */					\
+=======
+	/* Kernel symbol table: GPL-only symbols */			\
+	__ksymtab_gpl     : AT(ADDR(__ksymtab_gpl) - LOAD_OFFSET) {	\
+		__start___ksymtab_gpl = .;				\
+		KEEP(*(SORT(___ksymtab_gpl+*)))				\
+		__stop___ksymtab_gpl = .;				\
+	}								\
+									\
+	/* Kernel symbol table: Normal symbols */			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__kcrctab         : AT(ADDR(__kcrctab) - LOAD_OFFSET) {		\
 		__start___kcrctab = .;					\
 		KEEP(*(SORT(___kcrctab+*)))				\
 		__stop___kcrctab = .;					\
 	}								\
 									\
+<<<<<<< HEAD
 	/* Kernel symbol flags table */					\
 	__kflagstab       : AT(ADDR(__kflagstab) - LOAD_OFFSET) {	\
 		__start___kflagstab = .;				\
 		KEEP(*(SORT(___kflagstab+*)))				\
 		__stop___kflagstab = .;					\
+=======
+	/* Kernel symbol table: GPL-only symbols */			\
+	__kcrctab_gpl     : AT(ADDR(__kcrctab_gpl) - LOAD_OFFSET) {	\
+		__start___kcrctab_gpl = .;				\
+		KEEP(*(SORT(___kcrctab_gpl+*)))				\
+		__stop___kcrctab_gpl = .;				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}								\
 									\
 	/* Kernel symbol table: strings */				\
@@ -968,9 +991,13 @@
 		RUNTIME_CONST(shift, d_hash_shift)			\
 		RUNTIME_CONST(ptr, dentry_hashtable)			\
 		RUNTIME_CONST(ptr, __dentry_cache)			\
+<<<<<<< HEAD
 		RUNTIME_CONST(ptr, __names_cache)			\
 		RUNTIME_CONST(ptr, __filp_cache)			\
 		RUNTIME_CONST(ptr, __bfilp_cache)
+=======
+		RUNTIME_CONST(ptr, __names_cache)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
 #define KUNIT_TABLE()							\

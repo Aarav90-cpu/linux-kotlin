@@ -6,7 +6,10 @@
 #include <crypto/scatterwalk.h>
 #include <linux/dma-mapping.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
 #include <linux/zstd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "adf_accel_devices.h"
 #include "adf_common_drv.h"
 #include "adf_dc.h"
@@ -14,6 +17,7 @@
 #include "qat_comp_req.h"
 #include "qat_compression.h"
 #include "qat_algs_send.h"
+<<<<<<< HEAD
 #include "qat_comp_zstd_utils.h"
 
 #define QAT_ZSTD_SCRATCH_SIZE		524288
@@ -112,6 +116,11 @@ static struct crypto_acomp_streams qat_zstd_streams = {
 	.alloc_ctx = qat_zstd_alloc_scratch,
 	.free_ctx = qat_zstd_free_scratch,
 };
+=======
+
+static DEFINE_MUTEX(algs_lock);
+static unsigned int active_devs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum direction {
 	DECOMPRESSION = 0,
@@ -120,6 +129,7 @@ enum direction {
 
 struct qat_compression_req;
 
+<<<<<<< HEAD
 struct qat_callback_params {
 	unsigned int produced;
 	unsigned int dlen;
@@ -132,6 +142,12 @@ struct qat_compression_ctx {
 	int (*qat_comp_callback)(struct qat_compression_req *qat_req, void *resp,
 				 struct qat_callback_params *params);
 	struct crypto_acomp *ftfm;
+=======
+struct qat_compression_ctx {
+	u8 comp_ctx[QAT_COMP_CTX_SIZE];
+	struct qat_compression_instance *inst;
+	int (*qat_comp_callback)(struct qat_compression_req *qat_req, void *resp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct qat_compression_req {
@@ -166,7 +182,10 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 	struct adf_accel_dev *accel_dev = ctx->inst->accel_dev;
 	struct crypto_acomp *tfm = crypto_acomp_reqtfm(areq);
 	struct qat_compression_instance *inst = ctx->inst;
+<<<<<<< HEAD
 	struct qat_callback_params params = { };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int consumed, produced;
 	s8 cmp_err, xlt_err;
 	int res = -EBADMSG;
@@ -181,10 +200,13 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 	consumed = qat_comp_get_consumed_ctr(resp);
 	produced = qat_comp_get_produced_ctr(resp);
 
+<<<<<<< HEAD
 	/* Cache parameters for algorithm specific callback */
 	params.produced = produced;
 	params.dlen = areq->dlen;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(&GET_DEV(accel_dev),
 		"[%s][%s][%s] slen = %8d dlen = %8d consumed = %8d produced = %8d cmp_err = %3d xlt_err = %3d",
 		crypto_tfm_alg_driver_name(crypto_acomp_tfm(tfm)),
@@ -192,6 +214,7 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 		status ? "ERR" : "OK ",
 		areq->slen, areq->dlen, consumed, produced, cmp_err, xlt_err);
 
+<<<<<<< HEAD
 	if (unlikely(status != ICP_QAT_FW_COMN_STATUS_FLAG_OK)) {
 		if (cmp_err == ERR_CODE_OVERFLOW_ERROR || xlt_err == ERR_CODE_OVERFLOW_ERROR)
 			res = -E2BIG;
@@ -199,13 +222,22 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 		areq->dlen = 0;
 		goto end;
 	}
+=======
+	areq->dlen = 0;
+
+	if (unlikely(status != ICP_QAT_FW_COMN_STATUS_FLAG_OK))
+		goto end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (qat_req->dir == COMPRESSION) {
 		cnv = qat_comp_get_cmp_cnv_flag(resp);
 		if (unlikely(!cnv)) {
 			dev_err(&GET_DEV(accel_dev),
 				"Verified compression not supported\n");
+<<<<<<< HEAD
 			areq->dlen = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto end;
 		}
 
@@ -215,6 +247,7 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 			dev_dbg(&GET_DEV(accel_dev),
 				"Actual buffer overflow: produced=%d, dlen=%d\n",
 				produced, qat_req->actual_dlen);
+<<<<<<< HEAD
 
 			res = -E2BIG;
 			areq->dlen = 0;
@@ -222,24 +255,36 @@ static void qat_comp_generic_callback(struct qat_compression_req *qat_req,
 		}
 
 		params.plain = !!qat_comp_get_cmp_uncomp_flag(resp);
+=======
+			goto end;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	res = 0;
 	areq->dlen = produced;
 
 	if (ctx->qat_comp_callback)
+<<<<<<< HEAD
 		res = ctx->qat_comp_callback(qat_req, resp, &params);
+=======
+		res = ctx->qat_comp_callback(qat_req, resp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 end:
 	qat_bl_free_bufl(accel_dev, &qat_req->buf);
 	acomp_request_complete(areq, res);
+<<<<<<< HEAD
 	qat_alg_send_backlog(qat_req->alg_req.backlog);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void qat_comp_alg_callback(void *resp)
 {
 	struct qat_compression_req *qat_req =
 			(void *)(__force long)qat_comp_get_opaque(resp);
+<<<<<<< HEAD
 
 	qat_comp_generic_callback(qat_req, resp);
 }
@@ -250,6 +295,21 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm, int alg)
 	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
 	struct qat_compression_instance *inst;
 	int node, ret;
+=======
+	struct qat_instance_backlog *backlog = qat_req->alg_req.backlog;
+
+	qat_comp_generic_callback(qat_req, resp);
+
+	qat_alg_send_backlog(backlog);
+}
+
+static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm)
+{
+	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
+	struct qat_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+	struct qat_compression_instance *inst;
+	int node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (tfm->node == NUMA_NO_NODE)
 		node = numa_node_id();
@@ -257,11 +317,16 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm, int alg)
 		node = tfm->node;
 
 	memset(ctx, 0, sizeof(*ctx));
+<<<<<<< HEAD
 	inst = qat_compression_get_instance_node(node, alg);
+=======
+	inst = qat_compression_get_instance_node(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!inst)
 		return -EINVAL;
 	ctx->inst = inst;
 
+<<<<<<< HEAD
 	ret = qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, alg);
 	if (ret) {
 		qat_compression_put_instance(inst);
@@ -274,11 +339,19 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm, int alg)
 static int qat_comp_alg_deflate_init_tfm(struct crypto_acomp *acomp_tfm)
 {
 	return qat_comp_alg_init_tfm(acomp_tfm, QAT_DEFLATE);
+=======
+	return qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, QAT_DEFLATE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void qat_comp_alg_exit_tfm(struct crypto_acomp *acomp_tfm)
 {
+<<<<<<< HEAD
 	struct qat_compression_ctx *ctx = acomp_tfm_ctx(acomp_tfm);
+=======
+	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
+	struct qat_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	qat_compression_put_instance(ctx->inst);
 	memset(ctx, 0, sizeof(*ctx));
@@ -290,7 +363,12 @@ static int qat_comp_alg_compress_decompress(struct acomp_req *areq, enum directi
 {
 	struct qat_compression_req *qat_req = acomp_request_ctx(areq);
 	struct crypto_acomp *acomp_tfm = crypto_acomp_reqtfm(areq);
+<<<<<<< HEAD
 	struct qat_compression_ctx *ctx = acomp_tfm_ctx(acomp_tfm);
+=======
+	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
+	struct qat_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct qat_compression_instance *inst = ctx->inst;
 	gfp_t f = qat_algs_alloc_flags(&areq->base);
 	struct qat_sgl_to_bufl_params params = {0};
@@ -358,6 +436,7 @@ static int qat_comp_alg_decompress(struct acomp_req *req)
 	return qat_comp_alg_compress_decompress(req, DECOMPRESSION, 0, 0, 0, 0);
 }
 
+<<<<<<< HEAD
 static int qat_comp_alg_zstd_decompress(struct acomp_req *req)
 {
 	struct crypto_acomp *acomp_tfm = crypto_acomp_reqtfm(req);
@@ -586,6 +665,9 @@ static int qat_comp_alg_sw_decompress(struct acomp_req *req)
 }
 
 static struct acomp_alg qat_acomp_deflate[] = { {
+=======
+static struct acomp_alg qat_acomp[] = { {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.base = {
 		.cra_name = "deflate",
 		.cra_driver_name = "qat_deflate",
@@ -595,12 +677,17 @@ static struct acomp_alg qat_acomp_deflate[] = { {
 		.cra_reqsize = sizeof(struct qat_compression_req),
 		.cra_module = THIS_MODULE,
 	},
+<<<<<<< HEAD
 	.init = qat_comp_alg_deflate_init_tfm,
+=======
+	.init = qat_comp_alg_init_tfm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.exit = qat_comp_alg_exit_tfm,
 	.compress = qat_comp_alg_compress,
 	.decompress = qat_comp_alg_decompress,
 }};
 
+<<<<<<< HEAD
 static struct acomp_alg qat_acomp_zstd_lz4s = {
 	.base = {
 		.cra_name = "zstd",
@@ -636,10 +723,14 @@ static struct acomp_alg qat_acomp_zstd_native = {
 };
 
 static int qat_comp_algs_register_deflate(void)
+=======
+int qat_comp_algs_register(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 
 	mutex_lock(&algs_lock);
+<<<<<<< HEAD
 	if (++active_devs_deflate == 1) {
 		ret = crypto_register_acomps(qat_acomp_deflate,
 					     ARRAY_SIZE(qat_acomp_deflate));
@@ -757,3 +848,18 @@ void qat_comp_algs_unregister(u32 caps)
 	if (caps & ADF_ACCEL_CAPABILITIES_EXT_ZSTD)
 		qat_comp_algs_unregister_zstd();
 }
+=======
+	if (++active_devs == 1)
+		ret = crypto_register_acomps(qat_acomp, ARRAY_SIZE(qat_acomp));
+	mutex_unlock(&algs_lock);
+	return ret;
+}
+
+void qat_comp_algs_unregister(void)
+{
+	mutex_lock(&algs_lock);
+	if (--active_devs == 0)
+		crypto_unregister_acomps(qat_acomp, ARRAY_SIZE(qat_acomp));
+	mutex_unlock(&algs_lock);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

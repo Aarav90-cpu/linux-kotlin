@@ -41,14 +41,20 @@ static void xe_tlb_inval_fence_fini(struct xe_tlb_inval_fence *fence)
 static void
 xe_tlb_inval_fence_signal(struct xe_tlb_inval_fence *fence)
 {
+<<<<<<< HEAD
 	struct xe_tlb_inval *tlb_inval = fence->tlb_inval;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool stack = test_bit(FENCE_STACK_BIT, &fence->base.flags);
 
 	lockdep_assert_held(&fence->tlb_inval->pending_lock);
 
 	list_del(&fence->link);
+<<<<<<< HEAD
 	if (list_empty(&tlb_inval->pending_fences))
 		cancel_delayed_work(&tlb_inval->fence_tdr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_xe_tlb_inval_fence_signal(fence->tlb_inval->xe, fence);
 	xe_tlb_inval_fence_fini(fence);
 	dma_fence_signal(&fence->base);
@@ -114,6 +120,7 @@ static void tlb_inval_fini(struct drm_device *drm, void *arg)
 	xe_tlb_inval_reset(tlb_inval);
 }
 
+<<<<<<< HEAD
 static void primelockdep(struct xe_tlb_inval *tlb_inval)
 {
 	if (!IS_ENABLED(CONFIG_LOCKDEP))
@@ -124,6 +131,8 @@ static void primelockdep(struct xe_tlb_inval *tlb_inval)
 	fs_reclaim_release(GFP_KERNEL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_gt_tlb_inval_init_early() - Initialize TLB invalidation state
  * @gt: GT structure
@@ -150,8 +159,11 @@ int xe_gt_tlb_inval_init_early(struct xe_gt *gt)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	primelockdep(tlb_inval);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tlb_inval->job_wq = drmm_alloc_ordered_workqueue(&xe->drm,
 							 "gt-tbl-inval-job-wq",
 							 WQ_MEM_RECLAIM);
@@ -468,6 +480,7 @@ void xe_tlb_inval_fence_init(struct xe_tlb_inval *tlb_inval,
 		dma_fence_get(&fence->base);
 	fence->tlb_inval = tlb_inval;
 }
+<<<<<<< HEAD
 
 /**
  * xe_tlb_inval_idle() - Initialize TLB invalidation is idle
@@ -570,3 +583,5 @@ wait:
 
 	return err;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

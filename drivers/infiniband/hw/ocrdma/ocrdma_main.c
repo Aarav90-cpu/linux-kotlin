@@ -166,7 +166,11 @@ static const struct ib_device_ops ocrdma_dev_ops = {
 	.query_qp = ocrdma_query_qp,
 	.reg_user_mr = ocrdma_reg_user_mr,
 	.req_notify_cq = ocrdma_arm_cq,
+<<<<<<< HEAD
 	.resize_user_cq = ocrdma_resize_cq,
+=======
+	.resize_cq = ocrdma_resize_cq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_RDMA_OBJ_SIZE(ib_ah, ocrdma_ah, ibah),
 	INIT_RDMA_OBJ_SIZE(ib_cq, ocrdma_cq, ibcq),

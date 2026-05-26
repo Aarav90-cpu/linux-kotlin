@@ -6,6 +6,7 @@ rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
 obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
 always-$(CONFIG_RUST) += exports_core_generated.h
 
+<<<<<<< HEAD
 ifdef CONFIG_RUST_INLINE_HELPERS
 always-$(CONFIG_RUST) += helpers/helpers.bc helpers/helpers_module.bc
 else
@@ -14,11 +15,21 @@ always-$(CONFIG_RUST) += exports_helpers_generated.h
 endif
 # Missing prototypes are expected in the helpers since these are exported
 # for Rust only, thus there is no header nor prototypes.
+=======
+# Missing prototypes are expected in the helpers since these are exported
+# for Rust only, thus there is no header nor prototypes.
+obj-$(CONFIG_RUST) += helpers/helpers.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CFLAGS_REMOVE_helpers/helpers.o = -Wmissing-prototypes -Wmissing-declarations
 
 always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
 obj-$(CONFIG_RUST) += bindings.o pin_init.o kernel.o
+<<<<<<< HEAD
 always-$(CONFIG_RUST) += exports_bindings_generated.h exports_kernel_generated.h
+=======
+always-$(CONFIG_RUST) += exports_helpers_generated.h \
+    exports_bindings_generated.h exports_kernel_generated.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 always-$(CONFIG_RUST) += uapi/uapi_generated.rs
 obj-$(CONFIG_RUST) += uapi.o
@@ -75,7 +86,12 @@ core-edition := $(if $(call rustc-min-version,108700),2024,2021)
 
 core-skip_flags := \
     --edition=2021 \
+<<<<<<< HEAD
     -Wunreachable_pub
+=======
+    -Wunreachable_pub \
+    -Wrustdoc::unescaped_backticks
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 core-flags := \
     --edition=$(core-edition) \
@@ -86,8 +102,15 @@ proc_macro2-cfgs := \
     wrap_proc_macro \
     $(if $(call rustc-min-version,108800),proc_macro_span_file proc_macro_span_location)
 
+<<<<<<< HEAD
 proc_macro2-flags := \
     --cap-lints=allow \
+=======
+# Stable since Rust 1.79.0: `feature(proc_macro_byte_character,proc_macro_c_str_literals)`.
+proc_macro2-flags := \
+    --cap-lints=allow \
+    -Zcrate-attr='feature(proc_macro_byte_character,proc_macro_c_str_literals)' \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     $(call cfgs-to-flags,$(proc_macro2-cfgs))
 
 quote-cfgs := \
@@ -119,7 +142,11 @@ syn-flags := \
     $(call cfgs-to-flags,$(syn-cfgs))
 
 pin_init_internal-cfgs := \
+<<<<<<< HEAD
     kernel USE_RUSTC_FEATURES
+=======
+    kernel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 pin_init_internal-flags := \
     --extern proc_macro2 \
@@ -128,7 +155,11 @@ pin_init_internal-flags := \
     $(call cfgs-to-flags,$(pin_init_internal-cfgs))
 
 pin_init-cfgs := \
+<<<<<<< HEAD
     kernel USE_RUSTC_FEATURES
+=======
+    kernel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 pin_init-flags := \
     --extern pin_init_internal \
@@ -142,10 +173,22 @@ rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-a
 # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
 doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
 
+<<<<<<< HEAD
 quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
       cmd_rustdoc = \
 	OBJTREE=$(abspath $(objtree)) \
 	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-scope=%,$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+=======
+# `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
+# since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
+# 1.82.0 (https://github.com/rust-lang/rust/issues/138520). Thus workaround both
+# issues skipping the flag. The former also applies to `RUSTDOC TK`.
+quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+      cmd_rustdoc = \
+	OBJTREE=$(abspath $(objtree)) \
+	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-prefix=% --remap-path-scope=%, \
+			$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		$(rustc_target_flags) -L$(objtree)/$(obj) \
 		-Zunstable-options --generate-link-to-definition \
 		--output $(rustdoc_output) \
@@ -206,6 +249,11 @@ rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean rustdoc-proc_macro2 \
     rustdoc-quote rustdoc-syn FORCE
 	+$(call if_changed,rustdoc)
 
+<<<<<<< HEAD
+=======
+# Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` should
+# not be needed -- see https://github.com/rust-lang/rust/pull/128307.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 rustdoc-core: private skip_flags = $(core-skip_flags)
 rustdoc-core: private rustc_target_flags = $(core-flags)
 rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
@@ -329,7 +377,11 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
 	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
 	OBJTREE=$(abspath $(objtree)) \
+<<<<<<< HEAD
 	$(RUSTDOC) --test $(filter-out --remap-path-scope=%,$(rust_flags)) \
+=======
+	$(RUSTDOC) --test $(filter-out --remap-path-prefix=% --remap-path-scope=%,$(rust_flags)) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		-L$(objtree)/$(obj) --extern ffi --extern pin_init \
 		--extern kernel --extern build_error --extern macros \
 		--extern bindings --extern uapi \
@@ -403,8 +455,11 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
 BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
 BINDGEN_TARGET_arm	:= arm-linux-gnueabi
 BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+<<<<<<< HEAD
 # This is only for i386 UM builds, which need the 32-bit target not -m32
 BINDGEN_TARGET_i386	:= i386-linux-gnu
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
 BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
 
@@ -443,10 +498,29 @@ endif
 # architecture instead of generating `usize`.
 bindgen_c_flags_final = $(bindgen_c_flags_lto) -fno-builtin -D__BINDGEN__
 
+<<<<<<< HEAD
 # `--rust-target` points to our minimum supported Rust version.
 quiet_cmd_bindgen = BINDGEN $@
       cmd_bindgen = \
 	$(BINDGEN) $< $(bindgen_target_flags) --rust-target 1.85 \
+=======
+# Each `bindgen` release may upgrade the list of Rust target versions. By
+# default, the highest stable release in their list is used. Thus we need to set
+# a `--rust-target` to avoid future `bindgen` releases emitting code that
+# `rustc` may not understand. On top of that, `bindgen` does not support passing
+# an unknown Rust target version.
+#
+# Therefore, the Rust target for `bindgen` can be only as high as the minimum
+# Rust version the kernel supports and only as high as the greatest stable Rust
+# target supported by the minimum `bindgen` version the kernel supports (that
+# is, if we do not test the actual `rustc`/`bindgen` versions running).
+#
+# Starting with `bindgen` 0.71.0, we will be able to set any future Rust version
+# instead, i.e. we will be able to set here our minimum supported Rust version.
+quiet_cmd_bindgen = BINDGEN $@
+      cmd_bindgen = \
+	$(BINDGEN) $< $(bindgen_target_flags) --rust-target 1.68 \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		--use-core --with-derive-default --ctypes-prefix ffi --no-layout-tests \
 		--no-debug '.*' --enable-function-attribute-detection \
 		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
@@ -480,6 +554,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: private bindgen_target_extra = ; 
 $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
 	$(call if_changed_dep,bindgen)
 
+<<<<<<< HEAD
 quiet_cmd_rust_helper = HELPER  $@
       cmd_rust_helper = \
 	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) \
@@ -490,6 +565,8 @@ $(obj)/helpers/helpers_module.bc: private part-of-module := y
 $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpers.c FORCE
 	+$(call if_changed_dep,rust_helper)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
 
 quiet_cmd_exports = EXPORTS $@
@@ -570,16 +647,23 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L 
 	OBJTREE=$(abspath $(objtree)) \
 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
 		$(filter-out $(skip_flags),$(rust_flags)) $(rustc_target_flags) \
+<<<<<<< HEAD
 		--emit=dep-info=$(depfile) --emit=$(if $(link_helper),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) \
+=======
+		--emit=dep-info=$(depfile) --emit=obj=$@ \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
 		--crate-type rlib -L$(objtree)/$(obj) \
 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
 		--sysroot=/dev/null \
 		-Zunstable-options \
+<<<<<<< HEAD
 	$(if $(link_helper),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
 		$(obj)/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
 		$(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@ \
 		$(cmd_ld_single)) \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
 	$(cmd_objtool)
 
@@ -589,8 +673,11 @@ rust-analyzer:
 		--cfgs='proc_macro2=$(proc_macro2-cfgs)' \
 		--cfgs='quote=$(quote-cfgs)' \
 		--cfgs='syn=$(syn-cfgs)' \
+<<<<<<< HEAD
 		--cfgs='pin_init_internal=$(pin_init_internal-cfgs)' \
 		--cfgs='pin_init=$(pin_init-cfgs)' \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		$(realpath $(srctree)) $(realpath $(objtree)) \
 		$(rustc_sysroot) $(RUST_LIB_SRC) $(if $(KBUILD_EXTMOD),$(srcroot)) \
 		> rust-project.json
@@ -711,9 +798,12 @@ $(obj)/kernel.o: $(obj)/kernel/generated_arch_warn_asm.rs $(obj)/kernel/generate
 endif
 endif
 
+<<<<<<< HEAD
 ifdef CONFIG_RUST_INLINE_HELPERS
 $(obj)/kernel.o: private link_helper = 1
 $(obj)/kernel.o: $(obj)/helpers/helpers.bc
 endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif # CONFIG_RUST

@@ -59,7 +59,12 @@ svm_migrate_gart_map(struct amdgpu_ring *ring,
 	void *cpu_addr;
 	int r;
 
+<<<<<<< HEAD
 	*gart_addr = amdgpu_compute_gart_address(&adev->gmc, entity, 0);
+=======
+	/* use gart window 0 */
+	*gart_addr = adev->gmc.gart_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	num_dw = ALIGN(adev->mman.buffer_funcs->copy_num_dw, 8);
 	num_bytes = npages * 8 * AMDGPU_GPU_PAGES_IN_CPU_PAGE;
@@ -77,7 +82,10 @@ svm_migrate_gart_map(struct amdgpu_ring *ring,
 	src_addr += job->ibs[0].gpu_addr;
 
 	dst_addr = amdgpu_bo_gpu_offset(adev->gart.bo);
+<<<<<<< HEAD
 	dst_addr += (entity->gart_window_offs[0] >> AMDGPU_GPU_PAGE_SHIFT) * 8;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_emit_copy_buffer(adev, &job->ibs[0], src_addr,
 				dst_addr, num_bytes, 0);
 
@@ -116,7 +124,11 @@ svm_migrate_gart_map(struct amdgpu_ring *ring,
  * multiple GTT_MAX_PAGES transfer, all sdma operations are serialized, wait for
  * the last sdma finish fence which is returned to check copy memory is done.
  *
+<<<<<<< HEAD
  * Context: Process context
+=======
+ * Context: Process context, takes and releases gtt_window_lock
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return:
  * 0 - OK, otherwise error code
@@ -136,9 +148,15 @@ svm_migrate_copy_memory_gart(struct amdgpu_device *adev, dma_addr_t *sys,
 	u64 size;
 	int r;
 
+<<<<<<< HEAD
 	entity = &adev->mman.move_entities[0];
 
 	mutex_lock(&entity->lock);
+=======
+	entity = &adev->mman.default_entity;
+
+	mutex_lock(&adev->mman.gtt_window_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (npages) {
 		size = min(GTT_MAX_PAGES, npages);
@@ -175,7 +193,11 @@ svm_migrate_copy_memory_gart(struct amdgpu_device *adev, dma_addr_t *sys,
 	}
 
 out_unlock:
+<<<<<<< HEAD
 	mutex_unlock(&entity->lock);
+=======
+	mutex_unlock(&adev->mman.gtt_window_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return r;
 }

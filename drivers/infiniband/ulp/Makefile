@@ -4,4 +4,8 @@ obj-$(CONFIG_INFINIBAND_SRP)		+= srp/
 obj-$(CONFIG_INFINIBAND_SRPT)		+= srpt/
 obj-$(CONFIG_INFINIBAND_ISER)		+= iser/
 obj-$(CONFIG_INFINIBAND_ISERT)		+= isert/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_INFINIBAND_OPA_VNIC)	+= opa_vnic/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_INFINIBAND_RTRS)		+= rtrs/

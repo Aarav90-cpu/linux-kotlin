@@ -1636,6 +1636,7 @@ static inline void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
 
 #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
 /*
+<<<<<<< HEAD
  * kvm_arch_shutdown() is invoked immediately prior to forcefully disabling
  * hardware virtualization on all CPUs via IPI function calls (in preparation
  * for shutdown or reboot), e.g. to allow arch code to prepare for disabling
@@ -1643,6 +1644,8 @@ static inline void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
  */
 void kvm_arch_shutdown(void);
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * kvm_arch_{enable,disable}_virtualization() are called on one CPU, under
  * kvm_usage_lock, immediately after/before 0=>1 and 1=>0 transitions of
  * kvm_usage_count, i.e. at the beginning of the generic hardware enabling
@@ -2315,6 +2318,10 @@ static inline bool kvm_check_request(int req, struct kvm_vcpu *vcpu)
 
 #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
 extern bool enable_virt_at_load;
+<<<<<<< HEAD
+=======
+extern bool kvm_rebooting;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 extern unsigned int halt_poll_ns;
@@ -2380,7 +2387,10 @@ void kvm_unregister_device_ops(u32 type);
 extern struct kvm_device_ops kvm_mpic_ops;
 extern struct kvm_device_ops kvm_arm_vgic_v2_ops;
 extern struct kvm_device_ops kvm_arm_vgic_v3_ops;
+<<<<<<< HEAD
 extern struct kvm_device_ops kvm_arm_vgic_v5_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT
 
@@ -2609,4 +2619,15 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
 				    struct kvm_pre_fault_memory *range);
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
+int kvm_enable_virtualization(void);
+void kvm_disable_virtualization(void);
+#else
+static inline int kvm_enable_virtualization(void) { return 0; }
+static inline void kvm_disable_virtualization(void) { }
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

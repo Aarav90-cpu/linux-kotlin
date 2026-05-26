@@ -27,7 +27,10 @@
 #include "xe_device.h"
 #include "xe_drm_client.h"
 #include "xe_exec_queue.h"
+<<<<<<< HEAD
 #include "xe_gt.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_migrate.h"
 #include "xe_pat.h"
 #include "xe_pm.h"
@@ -40,7 +43,10 @@
 #include "xe_tile.h"
 #include "xe_tlb_inval.h"
 #include "xe_trace_bo.h"
+<<<<<<< HEAD
 #include "xe_vm_madvise.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_wa.h"
 
 static struct drm_gem_object *xe_vm_obj(struct xe_vm *vm)
@@ -328,7 +334,10 @@ void xe_vm_kill(struct xe_vm *vm, bool unlocked)
 static int xe_gpuvm_validate(struct drm_gpuvm_bo *vm_bo, struct drm_exec *exec)
 {
 	struct xe_vm *vm = gpuvm_to_vm(vm_bo->vm);
+<<<<<<< HEAD
 	struct xe_bo *bo = gem_to_xe_bo(vm_bo->obj);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_gpuva *gpuva;
 	int ret;
 
@@ -337,6 +346,7 @@ static int xe_gpuvm_validate(struct drm_gpuvm_bo *vm_bo, struct drm_exec *exec)
 		list_move_tail(&gpuva_to_vma(gpuva)->combined_links.rebind,
 			       &vm->rebind_list);
 
+<<<<<<< HEAD
 	/* Skip re-populating purged BOs, rebind maps scratch pages. */
 	if (xe_bo_is_purged(bo)) {
 		vm_bo->evicted = false;
@@ -347,6 +357,12 @@ static int xe_gpuvm_validate(struct drm_gpuvm_bo *vm_bo, struct drm_exec *exec)
 		return -EAGAIN;
 
 	ret = xe_bo_validate(bo, vm, false, exec);
+=======
+	if (!try_wait_for_completion(&vm->xe->pm_block))
+		return -EAGAIN;
+
+	ret = xe_bo_validate(gem_to_xe_bo(vm_bo->obj), vm, false, exec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -586,6 +602,7 @@ out_unlock_outer:
 	trace_xe_vm_rebind_worker_exit(vm);
 }
 
+<<<<<<< HEAD
 /**
  * xe_vm_add_fault_entry_pf() - Add pagefault to vm fault list
  * @vm: The VM.
@@ -654,6 +671,8 @@ static void xe_vm_clear_fault_entries(struct xe_vm *vm)
 	vm->faults.len = 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int xe_vma_ops_alloc(struct xe_vma_ops *vops, bool array_of_binds)
 {
 	int i;
@@ -1120,6 +1139,7 @@ static struct xe_vma *xe_vma_create(struct xe_vm *vm,
 
 		xe_bo_assert_held(bo);
 
+<<<<<<< HEAD
 		/*
 		 * Reject only WILLNEED mappings on DONTNEED/PURGED BOs. This
 		 * gates new vm_bind ioctls (user supplies WILLNEED) while
@@ -1139,6 +1159,8 @@ static struct xe_vma *xe_vma_create(struct xe_vm *vm,
 			}
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vm_bo = drm_gpuvm_bo_obtain_locked(vma->gpuva.vm, &bo->ttm.base);
 		if (IS_ERR(vm_bo)) {
 			xe_vma_free(vma);
@@ -1150,10 +1172,13 @@ static struct xe_vma *xe_vma_create(struct xe_vm *vm,
 		vma->gpuva.gem.offset = bo_offset_or_userptr;
 		drm_gpuva_link(&vma->gpuva, vm_bo);
 		drm_gpuvm_bo_put(vm_bo);
+<<<<<<< HEAD
 
 		xe_bo_vma_count_inc_locked(bo);
 		if (vma->attr.purgeable_state == XE_MADV_PURGEABLE_WILLNEED)
 			xe_bo_willneed_get_locked(bo);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else /* userptr or null */ {
 		if (!is_null && !is_cpu_addr_mirror) {
 			struct xe_userptr_vma *uvma = to_userptr_vma(vma);
@@ -1178,7 +1203,10 @@ static struct xe_vma *xe_vma_create(struct xe_vm *vm,
 static void xe_vma_destroy_late(struct xe_vma *vma)
 {
 	struct xe_vm *vm = xe_vma_vm(vma);
+<<<<<<< HEAD
 	struct xe_bo *bo = xe_vma_bo(vma);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vma->ufence) {
 		xe_sync_ufence_put(vma->ufence);
@@ -1193,7 +1221,11 @@ static void xe_vma_destroy_late(struct xe_vma *vma)
 	} else if (xe_vma_is_null(vma) || xe_vma_is_cpu_addr_mirror(vma)) {
 		xe_vm_put(vm);
 	} else {
+<<<<<<< HEAD
 		xe_bo_put(bo);
+=======
+		xe_bo_put(xe_vma_bo(vma));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	xe_vma_free(vma);
@@ -1213,13 +1245,20 @@ static void vma_destroy_cb(struct dma_fence *fence,
 	struct xe_vma *vma = container_of(cb, struct xe_vma, destroy_cb);
 
 	INIT_WORK(&vma->destroy_work, vma_destroy_work_func);
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &vma->destroy_work);
+=======
+	queue_work(system_unbound_wq, &vma->destroy_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xe_vma_destroy(struct xe_vma *vma, struct dma_fence *fence)
 {
 	struct xe_vm *vm = xe_vma_vm(vma);
+<<<<<<< HEAD
 	struct xe_bo *bo = xe_vma_bo(vma);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_held_write(&vm->lock);
 	xe_assert(vm->xe, list_empty(&vma->combined_links.destroy));
@@ -1228,6 +1267,7 @@ static void xe_vma_destroy(struct xe_vma *vma, struct dma_fence *fence)
 		xe_assert(vm->xe, vma->gpuva.flags & XE_VMA_DESTROYED);
 		xe_userptr_destroy(to_userptr_vma(vma));
 	} else if (!xe_vma_is_null(vma) && !xe_vma_is_cpu_addr_mirror(vma)) {
+<<<<<<< HEAD
 		xe_bo_assert_held(bo);
 
 		drm_gpuva_unlink(&vma->gpuva);
@@ -1235,6 +1275,11 @@ static void xe_vma_destroy(struct xe_vma *vma, struct dma_fence *fence)
 		xe_bo_vma_count_dec_locked(bo);
 		if (vma->attr.purgeable_state == XE_MADV_PURGEABLE_WILLNEED)
 			xe_bo_willneed_put_locked(bo);
+=======
+		xe_bo_assert_held(xe_vma_bo(vma));
+
+		drm_gpuva_unlink(&vma->gpuva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	xe_vm_assert_held(vm);
@@ -1464,9 +1509,12 @@ static u64 xelp_pte_encode_bo(struct xe_bo *bo, u64 bo_offset,
 static u64 xelp_pte_encode_vma(u64 pte, struct xe_vma *vma,
 			       u16 pat_index, u32 pt_level)
 {
+<<<<<<< HEAD
 	struct xe_bo *bo = xe_vma_bo(vma);
 	struct xe_vm *vm = xe_vma_vm(vma);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pte |= XE_PAGE_PRESENT;
 
 	if (likely(!xe_vma_read_only(vma)))
@@ -1475,6 +1523,7 @@ static u64 xelp_pte_encode_vma(u64 pte, struct xe_vma *vma,
 	pte |= pte_encode_pat_index(pat_index, pt_level);
 	pte |= pte_encode_ps(pt_level);
 
+<<<<<<< HEAD
 	/*
 	 * NULL PTEs redirect to scratch page (return zeros on read).
 	 * Set for: 1) explicit null VMAs, 2) purged BOs on scratch VMs.
@@ -1482,6 +1531,9 @@ static u64 xelp_pte_encode_vma(u64 pte, struct xe_vma *vma,
 	 */
 	if (unlikely(xe_vma_is_null(vma) ||
 		     (bo && xe_bo_is_purged(bo) && xe_vm_has_scratch(vm))))
+=======
+	if (unlikely(xe_vma_is_null(vma)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pte |= XE_PTE_NULL;
 
 	return pte;
@@ -1589,6 +1641,7 @@ static void xe_vm_pt_destroy(struct xe_vm *vm)
 	}
 }
 
+<<<<<<< HEAD
 static void xe_vm_init_prove_locking(struct xe_device *xe, struct xe_vm *vm)
 {
 	if (!IS_ENABLED(CONFIG_PROVE_LOCKING))
@@ -1603,6 +1656,8 @@ static void xe_vm_init_prove_locking(struct xe_device *xe, struct xe_vm *vm)
 	up_read(&vm->exec_queues.lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
 {
 	struct drm_gem_object *vm_resv_obj;
@@ -1653,24 +1708,33 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
 	INIT_LIST_HEAD(&vm->userptr.invalidated);
 	spin_lock_init(&vm->userptr.invalidated_lock);
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&vm->faults.list);
 	spin_lock_init(&vm->faults.lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ttm_lru_bulk_move_init(&vm->lru_bulk_move);
 
 	INIT_WORK(&vm->destroy_work, vm_destroy_work_func);
 
 	INIT_LIST_HEAD(&vm->preempt.exec_queues);
+<<<<<<< HEAD
 	for (id = 0; id < XE_MAX_TILES_PER_DEVICE * XE_MAX_GT_PER_TILE; ++id)
 		INIT_LIST_HEAD(&vm->exec_queues.list[id]);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (flags & XE_VM_FLAG_FAULT_MODE)
 		vm->preempt.min_run_period_ms = xe->min_run_period_pf_ms;
 	else
 		vm->preempt.min_run_period_ms = xe->min_run_period_lr_ms;
 
+<<<<<<< HEAD
 	init_rwsem(&vm->exec_queues.lock);
 	xe_vm_init_prove_locking(xe, vm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_tile(tile, xe, id)
 		xe_range_fence_tree_init(&vm->rftree[id]);
 
@@ -1775,9 +1839,12 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
 			if (!vm->pt_root[id])
 				continue;
 
+<<<<<<< HEAD
 			if (!xef) /* Not from userspace */
 				create_flags |= EXEC_QUEUE_FLAG_KERNEL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			q = xe_exec_queue_create_bind(xe, tile, vm, create_flags, 0);
 			if (IS_ERR(q)) {
 				err = PTR_ERR(q);
@@ -1793,7 +1860,11 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
 		down_write(&xe->usm.lock);
 		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
 				      XA_LIMIT(1, XE_MAX_ASID - 1),
+<<<<<<< HEAD
 				      &xe->usm.next_asid, GFP_NOWAIT);
+=======
+				      &xe->usm.next_asid, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		up_write(&xe->usm.lock);
 		if (err < 0)
 			goto err_close;
@@ -1972,8 +2043,11 @@ void xe_vm_close_and_put(struct xe_vm *vm)
 	}
 	up_write(&xe->usm.lock);
 
+<<<<<<< HEAD
 	xe_vm_clear_fault_entries(vm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_tile(tile, xe, id)
 		xe_range_fence_tree_fini(&vm->rftree[id]);
 
@@ -2017,7 +2091,11 @@ static void xe_vm_free(struct drm_gpuvm *gpuvm)
 	struct xe_vm *vm = container_of(gpuvm, struct xe_vm, gpuvm);
 
 	/* To destroy the VM we need to be able to sleep */
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &vm->destroy_work);
+=======
+	queue_work(system_unbound_wq, &vm->destroy_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct xe_vm *xe_vm_lookup(struct xe_file *xef, u32 id)
@@ -2061,8 +2139,12 @@ find_ufence_get(struct xe_sync_entry *syncs, u32 num_syncs)
 
 #define ALL_DRM_XE_VM_CREATE_FLAGS (DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE | \
 				    DRM_XE_VM_CREATE_FLAG_LR_MODE | \
+<<<<<<< HEAD
 				    DRM_XE_VM_CREATE_FLAG_FAULT_MODE | \
 				    DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT)
+=======
+				    DRM_XE_VM_CREATE_FLAG_FAULT_MODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int xe_vm_create_ioctl(struct drm_device *dev, void *data,
 		       struct drm_file *file)
@@ -2101,18 +2183,24 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
 			 args->flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (XE_IOCTL_DBG(xe, !(args->flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) &&
 			 args->flags & DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (args->flags & DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE)
 		flags |= XE_VM_FLAG_SCRATCH_PAGE;
 	if (args->flags & DRM_XE_VM_CREATE_FLAG_LR_MODE)
 		flags |= XE_VM_FLAG_LR_MODE;
 	if (args->flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE)
 		flags |= XE_VM_FLAG_FAULT_MODE;
+<<<<<<< HEAD
 	if (args->flags & DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT)
 		flags |= XE_VM_FLAG_NO_VM_OVERCOMMIT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vm = xe_vm_create(xe, flags, xef);
 	if (IS_ERR(vm))
@@ -2482,7 +2570,10 @@ vm_bind_ioctl_ops_create(struct xe_vm *vm, struct xe_vma_ops *vops,
 				op->map.vma_flags |= XE_VMA_DUMPABLE;
 			if (flags & DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET)
 				op->map.vma_flags |= XE_VMA_MADV_AUTORESET;
+<<<<<<< HEAD
 			op->map.request_decompress = flags & DRM_XE_VM_BIND_FLAG_DECOMPRESS;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			op->map.pat_index = pat_index;
 			op->map.invalidate_on_bind =
 				__xe_vm_needs_clear_scratch_pages(vm, flags);
@@ -2797,7 +2888,10 @@ static int vm_bind_ioctl_ops_parse(struct xe_vm *vm, struct drm_gpuva_ops *ops,
 				.atomic_access = DRM_XE_ATOMIC_UNDEFINED,
 				.default_pat_index = op->map.pat_index,
 				.pat_index = op->map.pat_index,
+<<<<<<< HEAD
 				.purgeable_state = XE_MADV_PURGEABLE_WILLNEED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 
 			flags |= op->map.vma_flags & XE_VMA_CREATE_MASK;
@@ -3037,6 +3131,7 @@ static void vm_bind_ioctl_ops_unwind(struct xe_vm *vm,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * struct xe_vma_lock_and_validate_flags - Flags for vma_lock_and_validate()
  * @res_evict: Allow evicting resources during validation
@@ -3057,11 +3152,19 @@ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
 	struct xe_bo *bo = xe_vma_bo(vma);
 	struct xe_vm *vm = xe_vma_vm(vma);
 	bool validate_bo = flags.validate;
+=======
+static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
+				 bool res_evict, bool validate)
+{
+	struct xe_bo *bo = xe_vma_bo(vma);
+	struct xe_vm *vm = xe_vma_vm(vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = 0;
 
 	if (bo) {
 		if (!bo->vm)
 			err = drm_exec_lock_obj(exec, &bo->ttm.base);
+<<<<<<< HEAD
 
 		/* Reject new mappings to DONTNEED/purged BOs; allow cleanup operations */
 		if (!err && flags.check_purged) {
@@ -3085,6 +3188,12 @@ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
 
 		if (flags.request_decompress)
 			err = xe_bo_decompress(bo);
+=======
+		if (!err && validate)
+			err = xe_bo_validate(bo, vm,
+					     !xe_vm_in_preempt_fence_mode(vm) &&
+					     res_evict, exec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return err;
@@ -3177,6 +3286,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 	case DRM_GPUVA_OP_MAP:
 		if (!op->map.invalidate_on_bind)
 			err = vma_lock_and_validate(exec, op->map.vma,
+<<<<<<< HEAD
 						    (struct xe_vma_lock_and_validate_flags) {
 							.res_evict = res_evict,
 							.validate = !xe_vm_in_fault_mode(vm) ||
@@ -3185,6 +3295,11 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 							op->map.request_decompress,
 							.check_purged = false,
 						    });
+=======
+						    res_evict,
+						    !xe_vm_in_fault_mode(vm) ||
+						    op->map.immediate);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DRM_GPUVA_OP_REMAP:
 		err = check_ufence(gpuva_to_vma(op->base.remap.unmap->va));
@@ -3193,6 +3308,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 
 		err = vma_lock_and_validate(exec,
 					    gpuva_to_vma(op->base.remap.unmap->va),
+<<<<<<< HEAD
 					    (struct xe_vma_lock_and_validate_flags) {
 						    .res_evict = res_evict,
 						    .validate = false,
@@ -3215,6 +3331,15 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 							    .request_decompress = false,
 							    .check_purged = false,
 						    });
+=======
+					    res_evict, false);
+		if (!err && op->remap.prev)
+			err = vma_lock_and_validate(exec, op->remap.prev,
+						    res_evict, true);
+		if (!err && op->remap.next)
+			err = vma_lock_and_validate(exec, op->remap.next,
+						    res_evict, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DRM_GPUVA_OP_UNMAP:
 		err = check_ufence(gpuva_to_vma(op->base.unmap.va));
@@ -3223,12 +3348,16 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 
 		err = vma_lock_and_validate(exec,
 					    gpuva_to_vma(op->base.unmap.va),
+<<<<<<< HEAD
 					    (struct xe_vma_lock_and_validate_flags) {
 						    .res_evict = res_evict,
 						    .validate = false,
 						    .request_decompress = false,
 						    .check_purged = false,
 					    });
+=======
+					    res_evict, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DRM_GPUVA_OP_PREFETCH:
 	{
@@ -3241,6 +3370,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 				  region <= ARRAY_SIZE(region_to_mem_type));
 		}
 
+<<<<<<< HEAD
 		/*
 		 * PREFETCH is the only op that still gates on BO purge state.
 		 * MAP/REMAP handle this inside xe_vma_create() so partial
@@ -3256,6 +3386,11 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
 						    .request_decompress = false,
 						    .check_purged = true,
 					    });
+=======
+		err = vma_lock_and_validate(exec,
+					    gpuva_to_vma(op->base.prefetch.va),
+					    res_evict, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!err && !xe_vma_has_no_bo(vma))
 			err = xe_bo_migrate(xe_vma_bo(vma),
 					    region_to_mem_type[region],
@@ -3577,8 +3712,12 @@ ALLOW_ERROR_INJECTION(vm_bind_ioctl_ops_execute, ERRNO);
 	 DRM_XE_VM_BIND_FLAG_DUMPABLE | \
 	 DRM_XE_VM_BIND_FLAG_CHECK_PXP | \
 	 DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR | \
+<<<<<<< HEAD
 	 DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET | \
 	 DRM_XE_VM_BIND_FLAG_DECOMPRESS)
+=======
+	 DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef TEST_VM_OPS_ERROR
 #define SUPPORTED_FLAGS	(SUPPORTED_FLAGS_STUB | FORCE_OP_ERROR)
@@ -3638,7 +3777,10 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 		bool is_null = flags & DRM_XE_VM_BIND_FLAG_NULL;
 		bool is_cpu_addr_mirror = flags &
 			DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR;
+<<<<<<< HEAD
 		bool is_decompress = flags & DRM_XE_VM_BIND_FLAG_DECOMPRESS;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u16 pat_index = (*bind_ops)[i].pat_index;
 		u16 coh_mode;
 		bool comp_en;
@@ -3664,7 +3806,11 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 			goto free_bind_ops;
 		}
 
+<<<<<<< HEAD
 		if (XE_WARN_ON(coh_mode > XE_COH_2WAY)) {
+=======
+		if (XE_WARN_ON(coh_mode > XE_COH_AT_LEAST_1WAY)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = -EINVAL;
 			goto free_bind_ops;
 		}
@@ -3675,9 +3821,13 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 		    XE_IOCTL_DBG(xe, obj_offset && (is_null ||
 						    is_cpu_addr_mirror)) ||
 		    XE_IOCTL_DBG(xe, op != DRM_XE_VM_BIND_OP_MAP &&
+<<<<<<< HEAD
 				 (is_decompress || is_null || is_cpu_addr_mirror)) ||
 		    XE_IOCTL_DBG(xe, is_decompress &&
 				 xe_pat_index_get_comp_en(xe, pat_index)) ||
+=======
+				 (is_null || is_cpu_addr_mirror)) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    XE_IOCTL_DBG(xe, !obj &&
 				 op == DRM_XE_VM_BIND_OP_MAP &&
 				 !is_null && !is_cpu_addr_mirror) ||
@@ -3691,12 +3841,15 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
 		    XE_IOCTL_DBG(xe, coh_mode == XE_COH_NONE &&
 				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+<<<<<<< HEAD
 		    XE_IOCTL_DBG(xe, !IS_DGFX(xe) && coh_mode == XE_COH_NONE &&
 				 is_cpu_addr_mirror) ||
 		    XE_IOCTL_DBG(xe, xe_device_is_l2_flush_optimized(xe) &&
 				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR ||
 				  is_cpu_addr_mirror) &&
 				 (pat_index != 19 && coh_mode != XE_COH_2WAY)) ||
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    XE_IOCTL_DBG(xe, comp_en &&
 				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
 		    XE_IOCTL_DBG(xe, op == DRM_XE_VM_BIND_OP_MAP_USERPTR &&
@@ -3725,6 +3878,7 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 			err = -EINVAL;
 			goto free_bind_ops;
 		}
+<<<<<<< HEAD
 
 		if (is_decompress && (XE_IOCTL_DBG(xe, !xe_device_has_flat_ccs(xe)) ||
 				      XE_IOCTL_DBG(xe, GRAPHICS_VER(xe) < 20) ||
@@ -3732,6 +3886,8 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
 			err = -EOPNOTSUPP;
 			goto free_bind_ops;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -3838,10 +3994,13 @@ static int xe_vm_bind_ioctl_validate_bo(struct xe_device *xe, struct xe_bo *bo,
 	if (XE_IOCTL_DBG(xe, bo->ttm.base.import_attach && comp_en))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (XE_IOCTL_DBG(xe, bo->ttm.base.import_attach && xe_device_is_l2_flush_optimized(xe) &&
 			 (pat_index != 19 && coh_mode != XE_COH_2WAY)))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If a BO is protected it can only be mapped if the key is still valid */
 	if ((bind_flags & DRM_XE_VM_BIND_FLAG_CHECK_PXP) && xe_bo_is_protected(bo) &&
 	    op != DRM_XE_VM_BIND_OP_UNMAP && op != DRM_XE_VM_BIND_OP_UNMAP_ALL)
@@ -4087,6 +4246,7 @@ put_vm:
 	return err;
 }
 
+<<<<<<< HEAD
 /*
  * Map access type, fault type, and fault level from current bspec
  * specification to user spec abstraction.  The current mapping is
@@ -4205,6 +4365,8 @@ int xe_vm_get_property_ioctl(struct drm_device *drm, void *data,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_vm_bind_kernel_bo - bind a kernel BO to a VM
  * @vm: VM to bind the BO to
@@ -4313,6 +4475,7 @@ void xe_vm_unlock(struct xe_vm *vm)
 }
 
 /**
+<<<<<<< HEAD
  * xe_vm_invalidate_vma_submit - Submit a job to invalidate GPU mappings for
  * VMA.
  * @vma: VMA to invalidate
@@ -4327,6 +4490,78 @@ void xe_vm_unlock(struct xe_vm *vm)
  * Returns 0 for success, negative error code otherwise.
  */
 int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch)
+=======
+ * xe_vm_range_tilemask_tlb_inval - Issue a TLB invalidation on this tilemask for an
+ * address range
+ * @vm: The VM
+ * @start: start address
+ * @end: end address
+ * @tile_mask: mask for which gt's issue tlb invalidation
+ *
+ * Issue a range based TLB invalidation for gt's in tilemask
+ *
+ * Returns 0 for success, negative error code otherwise.
+ */
+int xe_vm_range_tilemask_tlb_inval(struct xe_vm *vm, u64 start,
+				   u64 end, u8 tile_mask)
+{
+	struct xe_tlb_inval_fence
+		fence[XE_MAX_TILES_PER_DEVICE * XE_MAX_GT_PER_TILE];
+	struct xe_tile *tile;
+	u32 fence_id = 0;
+	u8 id;
+	int err;
+
+	if (!tile_mask)
+		return 0;
+
+	for_each_tile(tile, vm->xe, id) {
+		if (!(tile_mask & BIT(id)))
+			continue;
+
+		xe_tlb_inval_fence_init(&tile->primary_gt->tlb_inval,
+					&fence[fence_id], true);
+
+		err = xe_tlb_inval_range(&tile->primary_gt->tlb_inval,
+					 &fence[fence_id], start, end,
+					 vm->usm.asid, NULL);
+		if (err)
+			goto wait;
+		++fence_id;
+
+		if (!tile->media_gt)
+			continue;
+
+		xe_tlb_inval_fence_init(&tile->media_gt->tlb_inval,
+					&fence[fence_id], true);
+
+		err = xe_tlb_inval_range(&tile->media_gt->tlb_inval,
+					 &fence[fence_id], start, end,
+					 vm->usm.asid, NULL);
+		if (err)
+			goto wait;
+		++fence_id;
+	}
+
+wait:
+	for (id = 0; id < fence_id; ++id)
+		xe_tlb_inval_fence_wait(&fence[id]);
+
+	return err;
+}
+
+/**
+ * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without a lock
+ * @vma: VMA to invalidate
+ *
+ * Walks a list of page tables leaves which it memset the entries owned by this
+ * VMA to zero, invalidates the TLBs, and block until TLBs invalidation is
+ * complete.
+ *
+ * Returns 0 for success, negative error code otherwise.
+ */
+int xe_vm_invalidate_vma(struct xe_vma *vma)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_device *xe = xe_vma_vm(vma)->xe;
 	struct xe_vm *vm = xe_vma_vm(vma);
@@ -4370,6 +4605,7 @@ int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *b
 
 	xe_device_wmb(xe);
 
+<<<<<<< HEAD
 	ret = xe_tlb_inval_range_tilemask_submit(xe, xe_vma_vm(vma)->usm.asid,
 						 xe_vma_start(vma), xe_vma_end(vma),
 						 tile_mask, batch);
@@ -4399,6 +4635,14 @@ int xe_vm_invalidate_vma(struct xe_vma *vma)
 		return ret;
 
 	xe_tlb_inval_batch_wait(&batch);
+=======
+	ret = xe_vm_range_tilemask_tlb_inval(xe_vma_vm(vma), xe_vma_start(vma),
+					     xe_vma_end(vma), tile_mask);
+
+	/* WRITE_ONCE pairs with READ_ONCE in xe_vm_has_valid_gpu_mapping() */
+	WRITE_ONCE(vma->tile_invalidated, vma->tile_mask);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -4913,6 +5157,7 @@ int xe_vm_alloc_cpu_addr_mirror_vma(struct xe_vm *vm, uint64_t start, uint64_t r
 	return xe_vm_alloc_vma(vm, &map_req, false);
 }
 
+<<<<<<< HEAD
 /**
  * xe_vm_add_exec_queue() - Add exec queue to VM
  * @vm: The VM.
@@ -4962,3 +5207,5 @@ void xe_vm_remove_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q)
 	}
 	up_write(&vm->exec_queues.lock);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

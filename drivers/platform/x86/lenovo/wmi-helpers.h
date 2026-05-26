@@ -7,8 +7,11 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct device;
 struct notifier_block;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct wmi_device;
 
 struct wmi_method_args_32 {
@@ -16,6 +19,7 @@ struct wmi_method_args_32 {
 	u32 arg1;
 };
 
+<<<<<<< HEAD
 enum lwmi_event_type {
 	LWMI_GZ_GET_THERMAL_MODE = 0x01,
 };
@@ -38,4 +42,9 @@ int devm_lwmi_tm_register_notifier(struct device *dev,
 				   struct notifier_block *nb);
 int lwmi_tm_notifier_call(enum thermal_mode *mode);
 
+=======
+int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
+			  unsigned char *buf, size_t size, u32 *retval);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !_LENOVO_WMI_HELPERS_H_ */

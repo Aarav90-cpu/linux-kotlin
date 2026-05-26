@@ -839,9 +839,18 @@ static int _ad74413r_get_single_adc_result(struct ad74413r_state *st,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!wait_for_completion_timeout(&st->adc_data_completion,
 					 msecs_to_jiffies(1000)))
 		return -ETIMEDOUT;
+=======
+	ret = wait_for_completion_timeout(&st->adc_data_completion,
+					  msecs_to_jiffies(1000));
+	if (!ret) {
+		ret = -ETIMEDOUT;
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = regmap_read(st->regmap, AD74413R_REG_ADC_RESULT_X(channel),
 			  &uval);

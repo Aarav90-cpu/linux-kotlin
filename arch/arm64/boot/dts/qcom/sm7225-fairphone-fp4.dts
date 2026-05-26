@@ -1019,14 +1019,20 @@
 	 * the Bluetooth module drives the pin in either
 	 * direction or leaves the pin fully unpowered.
 	 */
+<<<<<<< HEAD
 	/delete-property/ bias-disable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bias-bus-hold;
 };
 
 &qup_uart1_rts {
 	/* We'll drive RTS, so no pull */
 	drive-strength = <2>;
+<<<<<<< HEAD
 	/delete-property/ bias-pull-down;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bias-disable;
 };
 
@@ -1037,14 +1043,20 @@
 	 * in tri-state (module powered off or not driving the
 	 * signal yet).
 	 */
+<<<<<<< HEAD
 	/delete-property/ bias-disable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bias-pull-up;
 };
 
 &qup_uart1_tx {
 	/* We'll drive TX, so no pull */
 	drive-strength = <2>;
+<<<<<<< HEAD
 	/delete-property/ bias-pull-up;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bias-disable;
 };
 

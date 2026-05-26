@@ -129,6 +129,10 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_0[] = {
 
 static void sdma_v4_0_set_ring_funcs(struct amdgpu_device *adev);
 static void sdma_v4_0_set_buffer_funcs(struct amdgpu_device *adev);
+<<<<<<< HEAD
+=======
+static void sdma_v4_0_set_vm_pte_funcs(struct amdgpu_device *adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdma_v4_0_set_irq_funcs(struct amdgpu_device *adev);
 static void sdma_v4_0_set_ras_funcs(struct amdgpu_device *adev);
 
@@ -1750,6 +1754,7 @@ static bool sdma_v4_0_fw_support_paging_queue(struct amdgpu_device *adev)
 	}
 }
 
+<<<<<<< HEAD
 static const struct amdgpu_vm_pte_funcs sdma_v4_0_vm_pte_funcs = {
 	.copy_pte_num_dw = 7,
 	.copy_pte = sdma_v4_0_vm_copy_pte,
@@ -1758,6 +1763,8 @@ static const struct amdgpu_vm_pte_funcs sdma_v4_0_vm_pte_funcs = {
 	.set_pte_pde = sdma_v4_0_vm_set_pte_pde,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sdma_v4_0_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -1776,7 +1783,11 @@ static int sdma_v4_0_early_init(struct amdgpu_ip_block *ip_block)
 
 	sdma_v4_0_set_ring_funcs(adev);
 	sdma_v4_0_set_buffer_funcs(adev);
+<<<<<<< HEAD
 	amdgpu_sdma_set_vm_pte_scheds(adev, &sdma_v4_0_vm_pte_funcs);
+=======
+	sdma_v4_0_set_vm_pte_funcs(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdma_v4_0_set_irq_funcs(adev);
 	sdma_v4_0_set_ras_funcs(adev);
 
@@ -2604,6 +2615,7 @@ static void sdma_v4_0_emit_fill_buffer(struct amdgpu_ib *ib,
 }
 
 static const struct amdgpu_buffer_funcs sdma_v4_0_buffer_funcs = {
+<<<<<<< HEAD
 	.copy_max_bytes = 1 << 22,
 	.copy_num_dw = 7,
 	.emit_copy_buffer = sdma_v4_0_emit_copy_buffer,
@@ -2619,22 +2631,60 @@ static const struct amdgpu_buffer_funcs sdma_v4_4_buffer_funcs = {
 	.emit_copy_buffer = sdma_v4_0_emit_copy_buffer,
 
 	.fill_max_bytes = 1 << 30,
+=======
+	.copy_max_bytes = 0x400000,
+	.copy_num_dw = 7,
+	.emit_copy_buffer = sdma_v4_0_emit_copy_buffer,
+
+	.fill_max_bytes = 0x400000,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.fill_num_dw = 5,
 	.emit_fill_buffer = sdma_v4_0_emit_fill_buffer,
 };
 
 static void sdma_v4_0_set_buffer_funcs(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) >= IP_VERSION(4, 4, 0))
 		adev->mman.buffer_funcs = &sdma_v4_4_buffer_funcs;
 	else
 		adev->mman.buffer_funcs = &sdma_v4_0_buffer_funcs;
+=======
+	adev->mman.buffer_funcs = &sdma_v4_0_buffer_funcs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (adev->sdma.has_page_queue)
 		adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].page;
 	else
 		adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].ring;
 }
 
+<<<<<<< HEAD
+=======
+static const struct amdgpu_vm_pte_funcs sdma_v4_0_vm_pte_funcs = {
+	.copy_pte_num_dw = 7,
+	.copy_pte = sdma_v4_0_vm_copy_pte,
+
+	.write_pte = sdma_v4_0_vm_write_pte,
+	.set_pte_pde = sdma_v4_0_vm_set_pte_pde,
+};
+
+static void sdma_v4_0_set_vm_pte_funcs(struct amdgpu_device *adev)
+{
+	struct drm_gpu_scheduler *sched;
+	unsigned i;
+
+	adev->vm_manager.vm_pte_funcs = &sdma_v4_0_vm_pte_funcs;
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		if (adev->sdma.has_page_queue)
+			sched = &adev->sdma.instance[i].page.sched;
+		else
+			sched = &adev->sdma.instance[i].ring.sched;
+		adev->vm_manager.vm_pte_scheds[i] = sched;
+	}
+	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdma_v4_0_get_ras_error_count(uint32_t value,
 					uint32_t instance,
 					uint32_t *sec_count)

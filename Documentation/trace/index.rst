@@ -55,7 +55,10 @@ applications.
    events-nmi
    events-msr
    events-pci
+<<<<<<< HEAD
    events-pci-controller
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    boottime-trace
    histogram
    histogram-design
@@ -92,6 +95,7 @@ interactions.
    user_events
    uprobetracer
 
+<<<<<<< HEAD
 Remote Tracing
 --------------
 
@@ -103,6 +107,8 @@ entities outside of the kernel (most likely firmware or hypervisor)
 
    remotes
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Additional Resources
 --------------------
 

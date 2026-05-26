@@ -446,11 +446,20 @@ static int msg2638_suspend(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct msg2638_ts_data *msg2638 = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	guard(mutex)(&msg2638->input_dev->mutex);
+=======
+	mutex_lock(&msg2638->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(msg2638->input_dev))
 		msg2638_stop(msg2638);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&msg2638->input_dev->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -458,6 +467,7 @@ static int msg2638_resume(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct msg2638_ts_data *msg2638 = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&msg2638->input_dev->mutex);
@@ -469,6 +479,18 @@ static int msg2638_resume(struct device *dev)
 	}
 
 	return 0;
+=======
+	int ret = 0;
+
+	mutex_lock(&msg2638->input_dev->mutex);
+
+	if (input_device_enabled(msg2638->input_dev))
+		ret = msg2638_start(msg2638);
+
+	mutex_unlock(&msg2638->input_dev->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(msg2638_pm_ops, msg2638_suspend, msg2638_resume);

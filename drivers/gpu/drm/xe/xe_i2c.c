@@ -27,7 +27,11 @@
 #include "regs/xe_i2c_regs.h"
 #include "regs/xe_irq_regs.h"
 
+<<<<<<< HEAD
 #include "xe_device.h"
+=======
+#include "xe_device_types.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_i2c.h"
 #include "xe_mmio.h"
 #include "xe_sriov.h"
@@ -176,6 +180,7 @@ static bool xe_i2c_irq_present(struct xe_device *xe)
  */
 void xe_i2c_irq_handler(struct xe_device *xe, u32 master_ctl)
 {
+<<<<<<< HEAD
 	struct xe_mmio *mmio = xe_root_tile_mmio(xe);
 
 	if (!(master_ctl & I2C_IRQ) || !xe_i2c_irq_present(xe))
@@ -188,6 +193,13 @@ void xe_i2c_irq_handler(struct xe_device *xe, u32 master_ctl)
 	xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_INTX_DISABLE);
 	/* Reassert to allow subsequent interrupt generation */
 	xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, PCI_COMMAND_INTX_DISABLE, 0);
+=======
+	if (!xe_i2c_irq_present(xe))
+		return;
+
+	if (master_ctl & I2C_IRQ)
+		generic_handle_irq_safe(xe->i2c->adapter_irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void xe_i2c_irq_reset(struct xe_device *xe)
@@ -197,7 +209,10 @@ void xe_i2c_irq_reset(struct xe_device *xe)
 	if (!xe_i2c_irq_present(xe))
 		return;
 
+<<<<<<< HEAD
 	xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, 0, PCI_COMMAND_INTX_DISABLE);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_mmio_rmw32(mmio, I2C_BRIDGE_PCICFGCTL, ACPI_INTR_EN, 0);
 }
 
@@ -209,7 +224,10 @@ void xe_i2c_irq_postinstall(struct xe_device *xe)
 		return;
 
 	xe_mmio_rmw32(mmio, I2C_BRIDGE_PCICFGCTL, 0, ACPI_INTR_EN);
+<<<<<<< HEAD
 	xe_mmio_rmw32(mmio, I2C_CONFIG_CMD, PCI_COMMAND_INTX_DISABLE, 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int xe_i2c_irq_map(struct irq_domain *h, unsigned int virq,

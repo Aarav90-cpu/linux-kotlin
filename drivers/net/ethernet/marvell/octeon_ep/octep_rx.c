@@ -392,7 +392,11 @@ static void octep_oq_drop_rx(struct octep_oq *oq,
 	while (data_len > 0) {
 		octep_oq_next_pkt(oq, buff_info, read_idx, desc_used);
 		data_len -= oq->buffer_size;
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

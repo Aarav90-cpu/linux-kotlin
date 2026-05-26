@@ -577,12 +577,15 @@ struct fuse_pqueue {
  * Fuse device instance
  */
 struct fuse_dev {
+<<<<<<< HEAD
 	/** Reference count of this object */
 	refcount_t ref;
 
 	/** Issue FUSE_INIT synchronously */
 	bool sync_init;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** Fuse connection for this device */
 	struct fuse_conn *fc;
 
@@ -606,11 +609,20 @@ static inline bool fuse_is_inode_dax_mode(enum fuse_dax_mode mode)
 }
 
 struct fuse_fs_context {
+<<<<<<< HEAD
 	struct fuse_dev *fud;
+=======
+	int fd;
+	struct file *file;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int rootmode;
 	kuid_t user_id;
 	kgid_t group_id;
 	bool is_bdev:1;
+<<<<<<< HEAD
+=======
+	bool fd_present:1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool rootmode_present:1;
 	bool user_id_present:1;
 	bool group_id_present:1;
@@ -627,6 +639,12 @@ struct fuse_fs_context {
 
 	/* DAX device, may be NULL */
 	struct dax_device *dax_dev;
+<<<<<<< HEAD
+=======
+
+	/* fuse_dev pointer to fill in, should contain NULL on entry */
+	void **fudptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct fuse_sync_bucket {
@@ -650,6 +668,12 @@ struct fuse_conn {
 	/** Refcount */
 	refcount_t count;
 
+<<<<<<< HEAD
+=======
+	/** Number of fuse_dev's */
+	atomic_t dev_count;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** Current epoch for up-to-date dentries */
 	atomic_t epoch;
 
@@ -1342,7 +1366,11 @@ void fuse_conn_put(struct fuse_conn *fc);
 struct fuse_dev *fuse_dev_alloc_install(struct fuse_conn *fc);
 struct fuse_dev *fuse_dev_alloc(void);
 void fuse_dev_install(struct fuse_dev *fud, struct fuse_conn *fc);
+<<<<<<< HEAD
 void fuse_dev_put(struct fuse_dev *fud);
+=======
+void fuse_dev_free(struct fuse_dev *fud);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int fuse_send_init(struct fuse_mount *fm);
 
 /**

@@ -8,17 +8,24 @@ set -e
 # data type profiling manifestation
 
 # Values in testtypes and testprogs should match
+<<<<<<< HEAD
 testtypes=("# data-type: struct Buf" "# data-type: struct buf")
+=======
+testtypes=("# data-type: struct Buf" "# data-type: struct _buf")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 testprogs=("perf test -w code_with_type" "perf test -w datasym")
 
 err=0
 perfdata=$(mktemp /tmp/__perf_test.perf.data.XXXXX)
 perfout=$(mktemp /tmp/__perf_test.perf.out.XXXXX)
 
+<<<<<<< HEAD
 # Check for support of perf mem before trap handler
 perf mem record -o /dev/null -- true  2>&1 | \
   		grep -q "failed: no PMU supports the memory events" && exit 2
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 cleanup() {
   rm -rf "${perfdata}" "${perfout}"
   rm -rf "${perfdata}".old

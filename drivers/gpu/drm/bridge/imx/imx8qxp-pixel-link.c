@@ -23,6 +23,10 @@
 
 struct imx8qxp_pixel_link {
 	struct drm_bridge bridge;
+<<<<<<< HEAD
+=======
+	struct drm_bridge *next_bridge;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev;
 	struct imx_sc_ipc *ipc_handle;
 	u8 stream_id;
@@ -139,7 +143,11 @@ static int imx8qxp_pixel_link_bridge_attach(struct drm_bridge *bridge,
 	}
 
 	return drm_bridge_attach(encoder,
+<<<<<<< HEAD
 				 pl->bridge.next_bridge, bridge,
+=======
+				 pl->next_bridge, bridge,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
 }
 
@@ -255,6 +263,7 @@ static int imx8qxp_pixel_link_disable_all_controls(struct imx8qxp_pixel_link *pl
 	return imx8qxp_pixel_link_disable_sync(pl);
 }
 
+<<<<<<< HEAD
 static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
 {
 	struct device_node *np = pl->dev->of_node;
@@ -262,6 +271,19 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
 	u32 port_id;
 	bool found_port = false;
 	int reg;
+=======
+static struct drm_bridge *
+imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+{
+	struct device_node *np = pl->dev->of_node;
+	struct device_node *port, *remote;
+	struct drm_bridge *next_bridge[PL_MAX_NEXT_BRIDGES];
+	u32 port_id;
+	bool found_port = false;
+	int reg, ep_cnt = 0;
+	/* select the first next bridge by default */
+	int bridge_sel = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (port_id = 1; port_id <= PL_MAX_MST_ADDR + 1; port_id++) {
 		port = of_graph_get_port_by_id(np, port_id);
@@ -279,12 +301,20 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
 
 	if (!found_port) {
 		DRM_DEV_ERROR(pl->dev, "no available output port\n");
+<<<<<<< HEAD
 		return -ENODEV;
 	}
 
 	for (reg = 0; reg < PL_MAX_NEXT_BRIDGES; reg++) {
 		struct device_node *remote __free(device_node) =
 			of_graph_get_remote_node(np, port_id, reg);
+=======
+		return ERR_PTR(-ENODEV);
+	}
+
+	for (reg = 0; reg < PL_MAX_NEXT_BRIDGES; reg++) {
+		remote = of_graph_get_remote_node(np, port_id, reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!remote)
 			continue;
 
@@ -292,6 +322,7 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
 			DRM_DEV_DEBUG(pl->dev,
 				      "port%u endpoint%u remote parent is not available\n",
 				      port_id, reg);
+<<<<<<< HEAD
 			continue;
 		}
 
@@ -307,11 +338,34 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
 			if (!pl->bridge.next_bridge)
 				return -EPROBE_DEFER;
 		}
+=======
+			of_node_put(remote);
+			continue;
+		}
+
+		next_bridge[ep_cnt] = of_drm_find_bridge(remote);
+		if (!next_bridge[ep_cnt]) {
+			of_node_put(remote);
+			return ERR_PTR(-EPROBE_DEFER);
+		}
+
+		/* specially select the next bridge with companion PXL2DPI */
+		if (of_property_present(remote, "fsl,companion-pxl2dpi"))
+			bridge_sel = ep_cnt;
+
+		ep_cnt++;
+
+		of_node_put(remote);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	pl->mst_addr = port_id - 1;
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return next_bridge[bridge_sel];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imx8qxp_pixel_link_bridge_probe(struct platform_device *pdev)
@@ -367,9 +421,15 @@ static int imx8qxp_pixel_link_bridge_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = imx8qxp_pixel_link_find_next_bridge(pl);
 	if (ret)
 		return ret;
+=======
+	pl->next_bridge = imx8qxp_pixel_link_find_next_bridge(pl);
+	if (IS_ERR(pl->next_bridge))
+		return PTR_ERR(pl->next_bridge);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	platform_set_drvdata(pdev, pl);
 

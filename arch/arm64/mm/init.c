@@ -328,11 +328,14 @@ void __init bootmem_init(void)
 	memblock_dump_all();
 }
 
+<<<<<<< HEAD
 void __init arch_setup_zero_pages(void)
 {
 	__zero_page = phys_to_page(__pa_symbol(empty_zero_page));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __init arch_mm_preinit(void)
 {
 	unsigned int flags = SWIOTLB_VERBOSE;
@@ -397,6 +400,12 @@ void free_initmem(void)
 	WARN_ON(!IS_ALIGNED((unsigned long)lm_init_begin, PAGE_SIZE));
 	WARN_ON(!IS_ALIGNED((unsigned long)lm_init_end, PAGE_SIZE));
 
+<<<<<<< HEAD
+=======
+	/* Delete __init region from memblock.reserved. */
+	memblock_free(lm_init_begin, lm_init_end - lm_init_begin);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_reserved_area(lm_init_begin, lm_init_end,
 			   POISON_FREE_INITMEM, "unused kernel");
 	/*

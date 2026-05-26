@@ -409,7 +409,11 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
 		case M_VIDEO_PLL:
 			{
 				u_int8_t tmp;
+<<<<<<< HEAD
 				unsigned int mnp __maybe_unused;
+=======
+				unsigned int mnp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				unsigned long flags;
 
 				matroxfb_DAC_lock_irqsave(flags);

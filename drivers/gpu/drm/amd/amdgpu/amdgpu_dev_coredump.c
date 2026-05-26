@@ -32,6 +32,7 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 		     bool vram_lost, struct amdgpu_job *job)
 {
 }
+<<<<<<< HEAD
 void amdgpu_coredump_init(struct amdgpu_device *adev)
 {
 }
@@ -42,6 +43,10 @@ void amdgpu_coredump_fini(struct amdgpu_device *adev)
 
 #define AMDGPU_CORE_DUMP_SIZE_MAX (256 * 1024 * 1024)
 
+=======
+#else
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const char *hw_ip_names[MAX_HWIP] = {
 	[GC_HWIP]		= "GC",
 	[HDP_HWIP]		= "HDP",
@@ -195,6 +200,7 @@ static void amdgpu_devcoredump_fw_info(struct amdgpu_device *adev,
 	drm_printf(p, "VPE feature version: %u, fw version: 0x%08x\n",
 		   adev->vpe.feature_version, adev->vpe.fw_version);
 
+<<<<<<< HEAD
 	if (adev->bios) {
 		drm_printf(p, "\nVBIOS Information\n");
 		drm_printf(p, "vbios name       : %s\n", ctx->name);
@@ -230,6 +236,30 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
 	sizing_pass = buffer == NULL;
 	iter.data = buffer;
 	iter.offset = 0;
+=======
+	drm_printf(p, "\nVBIOS Information\n");
+	drm_printf(p, "vbios name       : %s\n", ctx->name);
+	drm_printf(p, "vbios pn         : %s\n", ctx->vbios_pn);
+	drm_printf(p, "vbios version    : %d\n", ctx->version);
+	drm_printf(p, "vbios ver_str    : %s\n", ctx->vbios_ver_str);
+	drm_printf(p, "vbios date       : %s\n", ctx->date);
+}
+
+static ssize_t
+amdgpu_devcoredump_read(char *buffer, loff_t offset, size_t count,
+			void *data, size_t datalen)
+{
+	struct drm_printer p;
+	struct amdgpu_coredump_info *coredump = data;
+	struct drm_print_iterator iter;
+	struct amdgpu_vm_fault_info *fault_info;
+	struct amdgpu_ip_block *ip_block;
+	int ver;
+
+	iter.data = buffer;
+	iter.offset = 0;
+	iter.start = offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iter.remain = count;
 
 	p = drm_coredump_printer(&iter);
@@ -282,8 +312,11 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
 		}
 	}
 
+<<<<<<< HEAD
 	amdgpu_discovery_dump(coredump->adev, &p);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* IP firmware information */
 	drm_printf(&p, "\nIP Firmwares\n");
 	amdgpu_devcoredump_fw_info(coredump->adev, &p);
@@ -315,6 +348,7 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
 
 	/* Add ring buffer information */
 	drm_printf(&p, "Ring buffer information\n");
+<<<<<<< HEAD
 	if (coredump->num_rings) {
 		for (i = 0; i < coredump->num_rings; i++) {
 			ring_idx = coredump->rings[i].ring_index;
@@ -334,6 +368,25 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
 			for (j = 0; j < ring->ring_size; j += 4)
 				drm_printf(&p, "0x%x \t 0x%x\n", j,
 					   coredump->rings_dw[off + j / 4]);
+=======
+	for (int i = 0; i < coredump->adev->num_rings; i++) {
+		int j = 0;
+		struct amdgpu_ring *ring = coredump->adev->rings[i];
+
+		drm_printf(&p, "ring name: %s\n", ring->name);
+		drm_printf(&p, "Rptr: 0x%llx Wptr: 0x%llx RB mask: %x\n",
+			   amdgpu_ring_get_rptr(ring),
+			   amdgpu_ring_get_wptr(ring),
+			   ring->buf_mask);
+		drm_printf(&p, "Ring size in dwords: %d\n",
+			   ring->ring_size / 4);
+		drm_printf(&p, "Ring contents\n");
+		drm_printf(&p, "Offset \t Value\n");
+
+		while (j < ring->ring_size) {
+			drm_printf(&p, "0x%x \t 0x%x\n", j, ring->ring[j / 4]);
+			j += 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -342,6 +395,7 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
 	else if (coredump->reset_vram_lost)
 		drm_printf(&p, "VRAM is lost due to GPU reset!\n");
 
+<<<<<<< HEAD
 	if (coredump->num_ibs) {
 		/* Don't try to lookup the VM or map the BOs when calculating the
 		 * size required to store the devcoredump.
@@ -488,6 +542,14 @@ static void amdgpu_devcoredump_deferred_work(struct work_struct *work)
 
 end:
 	adev->coredump = NULL;
+=======
+	return count - iter.remain;
+}
+
+static void amdgpu_devcoredump_free(void *data)
+{
+	kfree(data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
@@ -495,6 +557,7 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 {
 	struct drm_device *dev = adev_to_drm(adev);
 	struct amdgpu_coredump_info *coredump;
+<<<<<<< HEAD
 	size_t size = sizeof(*coredump);
 	struct drm_sched_job *s_job;
 	u64 total_ring_size, ring_count;
@@ -509,6 +572,11 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 		size += sizeof(struct amdgpu_coredump_ib_info) * job->num_ibs;
 
 	coredump = kzalloc(size, GFP_NOWAIT);
+=======
+	struct drm_sched_job *s_job;
+
+	coredump = kzalloc_obj(*coredump, GFP_NOWAIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!coredump)
 		return;
 
@@ -523,12 +591,15 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 			coredump->reset_task_info = *ti;
 			amdgpu_vm_put_task_info(ti);
 		}
+<<<<<<< HEAD
 		coredump->pasid = job->pasid;
 		coredump->num_ibs = job->num_ibs;
 		for (i = 0; i < job->num_ibs; ++i) {
 			coredump->ibs[i].gpu_addr = job->ibs[i].gpu_addr;
 			coredump->ibs[i].ib_size_dw = job->ibs[i].length_dw;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (job) {
@@ -536,6 +607,7 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 		coredump->ring = to_amdgpu_ring(s_job->sched);
 	}
 
+<<<<<<< HEAD
 	/* Dump ring content if memory allocation succeeds. */
 	ring_count = 0;
 	total_ring_size = 0;
@@ -577,21 +649,29 @@ void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 		coredump->rings = NULL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	coredump->adev = adev;
 
 	ktime_get_ts64(&coredump->reset_time);
 
+<<<<<<< HEAD
 	/* Update the current coredump pointer (no lock needed, this function can only be called
 	 * from a single thread)
 	 */
 	adev->coredump = coredump;
 	/* Kick off coredump formatting to a worker thread. */
 	queue_work(system_unbound_wq, &adev->coredump_work);
+=======
+	dev_coredumpm(dev->dev, THIS_MODULE, coredump, 0, GFP_NOWAIT,
+		      amdgpu_devcoredump_read, amdgpu_devcoredump_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_info(dev, "AMDGPU device coredump file has been created\n");
 	drm_info(dev, "Check your /sys/class/drm/card%d/device/devcoredump/data\n",
 		 dev->primary->index);
 }
+<<<<<<< HEAD
 
 void amdgpu_coredump_init(struct amdgpu_device *adev)
 {
@@ -603,4 +683,6 @@ void amdgpu_coredump_fini(struct amdgpu_device *adev)
 	/* Finish deferred coredump formatting before HW/IP teardown. */
 	flush_work(&adev->coredump_work);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

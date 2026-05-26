@@ -17,6 +17,10 @@
 #include <linux/fsverity.h>
 #include <linux/mount.h>
 #include <linux/posix_acl.h>
+<<<<<<< HEAD
+=======
+#include <linux/buffer_head.h> /* for inode_has_buffers */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/ratelimit.h>
 #include <linux/list_lru.h>
 #include <linux/iversion.h>
@@ -283,6 +287,10 @@ int inode_init_always_gfp(struct super_block *sb, struct inode *inode, gfp_t gfp
 	atomic_set(&mapping->nr_thps, 0);
 #endif
 	mapping_set_gfp_mask(mapping, GFP_HIGHUSER_MOVABLE);
+<<<<<<< HEAD
+=======
+	mapping->i_private_data = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mapping->writeback_index = 0;
 	init_rwsem(&mapping->invalidate_lock);
 	lockdep_set_class_and_name(&mapping->invalidate_lock,
@@ -365,6 +373,10 @@ struct inode *alloc_inode(struct super_block *sb)
 
 void __destroy_inode(struct inode *inode)
 {
+<<<<<<< HEAD
+=======
+	BUG_ON(inode_has_buffers(inode));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	inode_detach_wb(inode);
 	security_inode_free(inode);
 	fsnotify_inode_delete(inode);
@@ -481,6 +493,10 @@ static void __address_space_init_once(struct address_space *mapping)
 {
 	xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
 	init_rwsem(&mapping->i_mmap_rwsem);
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&mapping->i_private_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&mapping->i_private_lock);
 	mapping->i_mmap = RB_ROOT_CACHED;
 }
@@ -668,7 +684,11 @@ static inline void inode_sb_list_del(struct inode *inode)
 	}
 }
 
+<<<<<<< HEAD
 static unsigned long hash(struct super_block *sb, u64 hashval)
+=======
+static unsigned long hash(struct super_block *sb, unsigned long hashval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long tmp;
 
@@ -681,12 +701,20 @@ static unsigned long hash(struct super_block *sb, u64 hashval)
 /**
  *	__insert_inode_hash - hash an inode
  *	@inode: unhashed inode
+<<<<<<< HEAD
  *	@hashval: u64 value used to locate this object in the
+=======
+ *	@hashval: unsigned long value used to locate this object in the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *		inode_hashtable.
  *
  *	Add an inode to the inode hash for this superblock.
  */
+<<<<<<< HEAD
 void __insert_inode_hash(struct inode *inode, u64 hashval)
+=======
+void __insert_inode_hash(struct inode *inode, unsigned long hashval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *b = inode_hashtable + hash(inode->i_sb, hashval);
 
@@ -722,7 +750,11 @@ void dump_mapping(const struct address_space *mapping)
 	struct dentry *dentry_ptr;
 	struct dentry dentry;
 	char fname[64] = {};
+<<<<<<< HEAD
 	u64 ino;
+=======
+	unsigned long ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If mapping is an invalid pointer, we don't want to crash
@@ -746,6 +778,7 @@ void dump_mapping(const struct address_space *mapping)
 	}
 
 	if (!dentry_first) {
+<<<<<<< HEAD
 		pr_warn("aops:%ps ino:%llx\n", a_ops, ino);
 		return;
 	}
@@ -754,6 +787,16 @@ void dump_mapping(const struct address_space *mapping)
 	if (get_kernel_nofault(dentry, dentry_ptr) ||
 	    !dentry.d_parent || !dentry.d_name.name) {
 		pr_warn("aops:%ps ino:%llx invalid dentry:%px\n",
+=======
+		pr_warn("aops:%ps ino:%lx\n", a_ops, ino);
+		return;
+	}
+
+	dentry_ptr = container_of(dentry_first, struct dentry, d_u.d_alias);
+	if (get_kernel_nofault(dentry, dentry_ptr) ||
+	    !dentry.d_parent || !dentry.d_name.name) {
+		pr_warn("aops:%ps ino:%lx invalid dentry:%px\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				a_ops, ino, dentry_ptr);
 		return;
 	}
@@ -764,7 +807,11 @@ void dump_mapping(const struct address_space *mapping)
 	 * Even if strncpy_from_kernel_nofault() succeeded,
 	 * the fname could be unreliable
 	 */
+<<<<<<< HEAD
 	pr_warn("aops:%ps ino:%llx dentry name(?):\"%s\"\n",
+=======
+	pr_warn("aops:%ps ino:%lx dentry name(?):\"%s\"\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		a_ops, ino, fname);
 }
 
@@ -794,6 +841,10 @@ void clear_inode(struct inode *inode)
 	 * nor even WARN_ON(!mapping_empty).
 	 */
 	xa_unlock_irq(&inode->i_data.i_pages);
+<<<<<<< HEAD
+=======
+	BUG_ON(!list_empty(&inode->i_data.i_private_list));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BUG_ON(!(inode_state_read_once(inode) & I_FREEING));
 	BUG_ON(inode_state_read_once(inode) & I_CLEAR);
 	BUG_ON(!list_empty(&inode->i_wb_list));
@@ -989,6 +1040,7 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
 	 * page cache in order to free up struct inodes: lowmem might
 	 * be under pressure before the cache inside the highmem zone.
 	 */
+<<<<<<< HEAD
 	if (!mapping_empty(&inode->i_data)) {
 		unsigned long reap;
 
@@ -1001,6 +1053,21 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
 		else
 			__count_vm_events(PGINODESTEAL, reap);
 		mm_account_reclaimed_pages(reap);
+=======
+	if (inode_has_buffers(inode) || !mapping_empty(&inode->i_data)) {
+		inode_pin_lru_isolating(inode);
+		spin_unlock(&inode->i_lock);
+		spin_unlock(&lru->lock);
+		if (remove_inode_buffers(inode)) {
+			unsigned long reap;
+			reap = invalidate_mapping_pages(&inode->i_data, 0, -1);
+			if (current_is_kswapd())
+				__count_vm_events(KSWAPD_INODESTEAL, reap);
+			else
+				__count_vm_events(PGINODESTEAL, reap);
+			mm_account_reclaimed_pages(reap);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode_unpin_lru_isolating(inode);
 		return LRU_RETRY;
 	}
@@ -1081,7 +1148,11 @@ repeat:
  * iget_locked for details.
  */
 static struct inode *find_inode_fast(struct super_block *sb,
+<<<<<<< HEAD
 				struct hlist_head *head, u64 ino,
+=======
+				struct hlist_head *head, unsigned long ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				bool hash_locked, bool *isnew)
 {
 	struct inode *inode = NULL;
@@ -1295,7 +1366,11 @@ EXPORT_SYMBOL(unlock_two_nondirectories);
  * Note that both @test and @set are called with the inode_hash_lock held, so
  * they can't sleep.
  */
+<<<<<<< HEAD
 struct inode *inode_insert5(struct inode *inode, u64 hashval,
+=======
+struct inode *inode_insert5(struct inode *inode, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    int (*test)(struct inode *, void *),
 			    int (*set)(struct inode *, void *), void *data)
 {
@@ -1372,7 +1447,11 @@ EXPORT_SYMBOL(inode_insert5);
  * Note that both @test and @set are called with the inode_hash_lock held, so
  * they can't sleep.
  */
+<<<<<<< HEAD
 struct inode *iget5_locked(struct super_block *sb, u64 hashval,
+=======
+struct inode *iget5_locked(struct super_block *sb, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int (*test)(struct inode *, void *),
 		int (*set)(struct inode *, void *), void *data)
 {
@@ -1402,7 +1481,11 @@ EXPORT_SYMBOL(iget5_locked);
  * This is equivalent to iget5_locked, except the @test callback must
  * tolerate the inode not being stable, including being mid-teardown.
  */
+<<<<<<< HEAD
 struct inode *iget5_locked_rcu(struct super_block *sb, u64 hashval,
+=======
+struct inode *iget5_locked_rcu(struct super_block *sb, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int (*test)(struct inode *, void *),
 		int (*set)(struct inode *, void *), void *data)
 {
@@ -1449,7 +1532,11 @@ EXPORT_SYMBOL_GPL(iget5_locked_rcu);
  * hashed, and with the I_NEW flag set.  The file system gets to fill it in
  * before unlocking it via unlock_new_inode().
  */
+<<<<<<< HEAD
 struct inode *iget_locked(struct super_block *sb, u64 ino)
+=======
+struct inode *iget_locked(struct super_block *sb, unsigned long ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *head = inode_hashtable + hash(sb, ino);
 	struct inode *inode;
@@ -1521,7 +1608,11 @@ EXPORT_SYMBOL(iget_locked);
  *
  * Returns 1 if the inode number is unique, 0 if it is not.
  */
+<<<<<<< HEAD
 static int test_inode_iunique(struct super_block *sb, u64 ino)
+=======
+static int test_inode_iunique(struct super_block *sb, unsigned long ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *b = inode_hashtable + hash(sb, ino);
 	struct inode *inode;
@@ -1610,7 +1701,11 @@ EXPORT_SYMBOL(igrab);
  *
  * Note2: @test is called with the inode_hash_lock held, so can't sleep.
  */
+<<<<<<< HEAD
 struct inode *ilookup5_nowait(struct super_block *sb, u64 hashval,
+=======
+struct inode *ilookup5_nowait(struct super_block *sb, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int (*test)(struct inode *, void *), void *data, bool *isnew)
 {
 	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
@@ -1641,7 +1736,11 @@ EXPORT_SYMBOL(ilookup5_nowait);
  *
  * Note: @test is called with the inode_hash_lock held, so can't sleep.
  */
+<<<<<<< HEAD
 struct inode *ilookup5(struct super_block *sb, u64 hashval,
+=======
+struct inode *ilookup5(struct super_block *sb, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int (*test)(struct inode *, void *), void *data)
 {
 	struct inode *inode;
@@ -1671,7 +1770,11 @@ EXPORT_SYMBOL(ilookup5);
  * Search for the inode @ino in the inode cache, and if the inode is in the
  * cache, the inode is returned with an incremented reference count.
  */
+<<<<<<< HEAD
 struct inode *ilookup(struct super_block *sb, u64 ino)
+=======
+struct inode *ilookup(struct super_block *sb, unsigned long ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *head = inode_hashtable + hash(sb, ino);
 	struct inode *inode;
@@ -1720,8 +1823,13 @@ EXPORT_SYMBOL(ilookup);
  * very carefully implemented.
  */
 struct inode *find_inode_nowait(struct super_block *sb,
+<<<<<<< HEAD
 				u64 hashval,
 				int (*match)(struct inode *, u64,
+=======
+				unsigned long hashval,
+				int (*match)(struct inode *, unsigned long,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					     void *),
 				void *data)
 {
@@ -1767,7 +1875,11 @@ EXPORT_SYMBOL(find_inode_nowait);
  *
  * The caller must hold the RCU read lock.
  */
+<<<<<<< HEAD
 struct inode *find_inode_rcu(struct super_block *sb, u64 hashval,
+=======
+struct inode *find_inode_rcu(struct super_block *sb, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     int (*test)(struct inode *, void *), void *data)
 {
 	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
@@ -1806,7 +1918,11 @@ EXPORT_SYMBOL(find_inode_rcu);
  * The caller must hold the RCU read lock.
  */
 struct inode *find_inode_by_ino_rcu(struct super_block *sb,
+<<<<<<< HEAD
 				    u64 ino)
+=======
+				    unsigned long ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *head = inode_hashtable + hash(sb, ino);
 	struct inode *inode;
@@ -1827,7 +1943,11 @@ EXPORT_SYMBOL(find_inode_by_ino_rcu);
 int insert_inode_locked(struct inode *inode)
 {
 	struct super_block *sb = inode->i_sb;
+<<<<<<< HEAD
 	u64 ino = inode->i_ino;
+=======
+	ino_t ino = inode->i_ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hlist_head *head = inode_hashtable + hash(sb, ino);
 	bool isnew;
 
@@ -1878,7 +1998,11 @@ repeat:
 }
 EXPORT_SYMBOL(insert_inode_locked);
 
+<<<<<<< HEAD
 int insert_inode_locked4(struct inode *inode, u64 hashval,
+=======
+int insert_inode_locked4(struct inode *inode, unsigned long hashval,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int (*test)(struct inode *, void *), void *data)
 {
 	struct inode *old;
@@ -2641,8 +2765,14 @@ void init_special_inode(struct inode *inode, umode_t mode, dev_t rdev)
 		/* leave it no_open_fops */
 		break;
 	default:
+<<<<<<< HEAD
 		pr_debug("init_special_inode: bogus i_mode (%o) for inode %s:%llu\n",
 			 mode, inode->i_sb->s_id, inode->i_ino);
+=======
+		printk(KERN_DEBUG "init_special_inode: bogus i_mode (%o) for"
+				  " inode %s:%lu\n", mode, inode->i_sb->s_id,
+				  inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 }

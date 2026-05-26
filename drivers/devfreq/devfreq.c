@@ -38,7 +38,10 @@
 
 static struct class *devfreq_class;
 static struct dentry *devfreq_debugfs;
+<<<<<<< HEAD
 static const struct attribute_group gov_attr_group;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * devfreq core provides delayed work based load monitoring helper
@@ -147,9 +150,16 @@ void devfreq_get_freq_range(struct devfreq *devfreq,
 					     DEV_PM_QOS_MIN_FREQUENCY);
 	qos_max_freq = dev_pm_qos_read_value(devfreq->dev.parent,
 					     DEV_PM_QOS_MAX_FREQUENCY);
+<<<<<<< HEAD
 	*min_freq = max(*min_freq, HZ_PER_KHZ * qos_min_freq);
 	if (qos_max_freq != PM_QOS_MAX_FREQUENCY_DEFAULT_VALUE)
 		*max_freq = min(*max_freq, HZ_PER_KHZ * qos_max_freq);
+=======
+	*min_freq = max(*min_freq, (unsigned long)HZ_PER_KHZ * qos_min_freq);
+	if (qos_max_freq != PM_QOS_MAX_FREQUENCY_DEFAULT_VALUE)
+		*max_freq = min(*max_freq,
+				(unsigned long)HZ_PER_KHZ * qos_max_freq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Apply constraints from OPP interface */
 	*max_freq = clamp(*max_freq, devfreq->scaling_min_freq, devfreq->scaling_max_freq);
@@ -785,6 +795,14 @@ static void devfreq_dev_release(struct device *dev)
 	kfree(devfreq);
 }
 
+<<<<<<< HEAD
+=======
+static void create_sysfs_files(struct devfreq *devfreq,
+				const struct devfreq_governor *gov);
+static void remove_sysfs_files(struct devfreq *devfreq,
+				const struct devfreq_governor *gov);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * devfreq_add_device() - Add devfreq feature to the device
  * @dev:	the device to add devfreq feature.
@@ -951,10 +969,14 @@ struct devfreq *devfreq_add_device(struct device *dev,
 			 __func__);
 		goto err_init;
 	}
+<<<<<<< HEAD
 
 	err = sysfs_update_group(&devfreq->dev.kobj, &gov_attr_group);
 	if (err)
 		goto err_init;
+=======
+	create_sysfs_files(devfreq, devfreq->governor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_add(&devfreq->node, &devfreq_list);
 
@@ -993,9 +1015,18 @@ int devfreq_remove_device(struct devfreq *devfreq)
 
 	devfreq_cooling_unregister(devfreq->cdev);
 
+<<<<<<< HEAD
 	if (devfreq->governor)
 		devfreq->governor->event_handler(devfreq,
 						 DEVFREQ_GOV_STOP, NULL);
+=======
+	if (devfreq->governor) {
+		devfreq->governor->event_handler(devfreq,
+						 DEVFREQ_GOV_STOP, NULL);
+		remove_sysfs_files(devfreq, devfreq->governor);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_unregister(&devfreq->dev);
 
 	return 0;
@@ -1455,6 +1486,10 @@ static ssize_t governor_store(struct device *dev, struct device_attribute *attr,
 			 __func__, df->governor->name, ret);
 		goto out;
 	}
+<<<<<<< HEAD
+=======
+	remove_sysfs_files(df, df->governor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Start the new governor and create the specific sysfs files
@@ -1483,7 +1518,11 @@ static ssize_t governor_store(struct device *dev, struct device_attribute *attr,
 	 * Create the sysfs files for the new governor. But if failed to start
 	 * the new governor, restore the sysfs files of previous governor.
 	 */
+<<<<<<< HEAD
 	ret = sysfs_update_group(&df->dev.kobj, &gov_attr_group);
+=======
+	create_sysfs_files(df, df->governor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	mutex_unlock(&devfreq_list_lock);
@@ -1801,17 +1840,25 @@ static struct attribute *devfreq_attrs[] = {
 	&dev_attr_trans_stat.attr,
 	NULL,
 };
+<<<<<<< HEAD
+=======
+ATTRIBUTE_GROUPS(devfreq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t polling_interval_show(struct device *dev,
 				     struct device_attribute *attr, char *buf)
 {
 	struct devfreq *df = to_devfreq(dev);
 
+<<<<<<< HEAD
 	/* Protect against race between sysfs attrs update and read/write */
 	guard(mutex)(&devfreq_list_lock);
 
 	if (!df->profile || !df->governor ||
 	    !IS_SUPPORTED_ATTR(df->governor->attrs, POLLING_INTERVAL))
+=======
+	if (!df->profile)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	return sprintf(buf, "%d\n", df->profile->polling_ms);
@@ -1825,10 +1872,14 @@ static ssize_t polling_interval_store(struct device *dev,
 	unsigned int value;
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&devfreq_list_lock);
 
 	if (!df->governor ||
 	    !IS_SUPPORTED_ATTR(df->governor->attrs, POLLING_INTERVAL))
+=======
+	if (!df->governor)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	ret = sscanf(buf, "%u", &value);
@@ -1847,10 +1898,14 @@ static ssize_t timer_show(struct device *dev,
 {
 	struct devfreq *df = to_devfreq(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&devfreq_list_lock);
 
 	if (!df->profile || !df->governor ||
 	    !IS_SUPPORTED_ATTR(df->governor->attrs, TIMER))
+=======
+	if (!df->profile)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	return sprintf(buf, "%s\n", timer_name[df->profile->timer]);
@@ -1864,10 +1919,14 @@ static ssize_t timer_store(struct device *dev, struct device_attribute *attr,
 	int timer = -1;
 	int ret = 0, i;
 
+<<<<<<< HEAD
 	guard(mutex)(&devfreq_list_lock);
 
 	if (!df->governor || !df->profile ||
 	    !IS_SUPPORTED_ATTR(df->governor->attrs, TIMER))
+=======
+	if (!df->governor || !df->profile)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	ret = sscanf(buf, "%16s", str_timer);
@@ -1911,6 +1970,7 @@ out:
 }
 static DEVICE_ATTR_RW(timer);
 
+<<<<<<< HEAD
 static struct attribute *governor_attrs[] = {
 	&dev_attr_polling_interval.attr,
 	&dev_attr_timer.attr,
@@ -1951,6 +2011,38 @@ static const struct attribute_group *devfreq_groups[] = {
 	&gov_attr_group,
 	NULL
 };
+=======
+#define CREATE_SYSFS_FILE(df, name)					\
+{									\
+	int ret;							\
+	ret = sysfs_create_file(&df->dev.kobj, &dev_attr_##name.attr);	\
+	if (ret < 0) {							\
+		dev_warn(&df->dev,					\
+			"Unable to create attr(%s)\n", "##name");	\
+	}								\
+}									\
+
+/* Create the specific sysfs files which depend on each governor. */
+static void create_sysfs_files(struct devfreq *devfreq,
+				const struct devfreq_governor *gov)
+{
+	if (IS_SUPPORTED_ATTR(gov->attrs, POLLING_INTERVAL))
+		CREATE_SYSFS_FILE(devfreq, polling_interval);
+	if (IS_SUPPORTED_ATTR(gov->attrs, TIMER))
+		CREATE_SYSFS_FILE(devfreq, timer);
+}
+
+/* Remove the specific sysfs files which depend on each governor. */
+static void remove_sysfs_files(struct devfreq *devfreq,
+				const struct devfreq_governor *gov)
+{
+	if (IS_SUPPORTED_ATTR(gov->attrs, POLLING_INTERVAL))
+		sysfs_remove_file(&devfreq->dev.kobj,
+				&dev_attr_polling_interval.attr);
+	if (IS_SUPPORTED_ATTR(gov->attrs, TIMER))
+		sysfs_remove_file(&devfreq->dev.kobj, &dev_attr_timer.attr);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * devfreq_summary_show() - Show the summary of the devfreq devices

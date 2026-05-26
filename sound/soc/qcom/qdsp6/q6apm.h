@@ -14,10 +14,16 @@
 #include <linux/of_platform.h>
 #include <linux/jiffies.h>
 #include <linux/soc/qcom/apr.h>
+<<<<<<< HEAD
 #include "../common.h"
 #include "audioreach.h"
 
 #define APM_PORT_MAX		LPASS_MAX_PORT
+=======
+#include "audioreach.h"
+
+#define APM_PORT_MAX		127
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define APM_PORT_MAX_AUDIO_CHAN_CNT 8
 #define PCM_CHANNEL_NULL 0
 #define PCM_CHANNEL_FL    1	/* Front left channel. */
@@ -78,6 +84,10 @@ struct audioreach_graph_data {
 	struct audio_buffer *buf;
 	uint32_t num_periods;
 	uint32_t dsp_buf;
+<<<<<<< HEAD
+=======
+	uint32_t mem_map_handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_t hw_ptr;
 };
 
@@ -98,7 +108,10 @@ struct q6apm_graph {
 	void *priv;
 	q6apm_cb cb;
 	uint32_t id;
+<<<<<<< HEAD
 	uint32_t shm_iid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev;
 	struct q6apm *apm;
 	gpr_port_t *port;
@@ -113,7 +126,11 @@ struct q6apm_graph {
 
 /* Graph Operations */
 struct q6apm_graph *q6apm_graph_open(struct device *dev, q6apm_cb cb,
+<<<<<<< HEAD
 				     void *priv, int graph_id, int dir);
+=======
+				     void *priv, int graph_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int q6apm_graph_close(struct q6apm_graph *graph);
 int q6apm_graph_prepare(struct q6apm_graph *graph);
 int q6apm_graph_start(struct q6apm_graph *graph);
@@ -133,6 +150,7 @@ int q6apm_write_async(struct q6apm_graph *graph, uint32_t len, uint32_t msw_ts,
 		      uint32_t lsw_ts, uint32_t wflags);
 
 /* Memory Map related */
+<<<<<<< HEAD
 int q6apm_map_memory_fixed_region(struct device *dev,
 			     unsigned int graph_id, phys_addr_t phys,
 			     size_t sz);
@@ -143,6 +161,15 @@ int q6apm_free_fragments(struct q6apm_graph *graph, unsigned int dir);
 int q6apm_unmap_memory_fixed_region(struct device *dev, unsigned int graph_id);
 /* Helpers */
 int q6apm_send_cmd_sync(struct q6apm *apm, const struct gpr_pkt *pkt,
+=======
+int q6apm_map_memory_regions(struct q6apm_graph *graph,
+			     unsigned int dir, phys_addr_t phys,
+			     size_t period_sz, unsigned int periods);
+int q6apm_unmap_memory_regions(struct q6apm_graph *graph,
+			       unsigned int dir);
+/* Helpers */
+int q6apm_send_cmd_sync(struct q6apm *apm, struct gpr_pkt *pkt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			uint32_t rsp_opcode);
 
 /* Callback for graph specific */

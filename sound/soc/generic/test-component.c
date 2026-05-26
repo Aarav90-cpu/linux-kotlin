@@ -273,8 +273,13 @@ static int test_component_resume(struct snd_soc_component *component)
 }
 
 #define PREALLOC_BUFFER		(32 * 1024)
+<<<<<<< HEAD
 static int test_component_pcm_new(struct snd_soc_component *component,
 				  struct snd_soc_pcm_runtime *rtd)
+=======
+static int test_component_pcm_construct(struct snd_soc_component *component,
+					struct snd_soc_pcm_runtime *rtd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	mile_stone(component);
 
@@ -287,8 +292,13 @@ static int test_component_pcm_new(struct snd_soc_component *component,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void test_component_pcm_free(struct snd_soc_component *component,
 				    struct snd_pcm *pcm)
+=======
+static void test_component_pcm_destruct(struct snd_soc_component *component,
+					struct snd_pcm *pcm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	mile_stone(component);
 }
@@ -562,7 +572,11 @@ static int test_driver_probe(struct platform_device *pdev)
 
 	if (adata->is_cpu) {
 		cdriv->name			= "test_cpu";
+<<<<<<< HEAD
 		cdriv->pcm_new			= test_component_pcm_new;
+=======
+		cdriv->pcm_construct		= test_component_pcm_construct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cdriv->pointer			= test_component_pointer;
 		cdriv->trigger			= test_component_trigger;
 		cdriv->legacy_dai_naming	= 1;
@@ -597,7 +611,11 @@ static int test_driver_probe(struct platform_device *pdev)
 		cdriv->be_hw_params_fixup	= test_component_be_hw_params_fixup;
 
 		if (adata->is_cpu)
+<<<<<<< HEAD
 			cdriv->pcm_free	= test_component_pcm_free;
+=======
+			cdriv->pcm_destruct	= test_component_pcm_destruct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	i = 0;

@@ -55,11 +55,16 @@
 };
 
 &edma2 {
+<<<<<<< HEAD
 	/*
 	 * channels 0 and 1 reserved for V2X fast hash,
 	 * channels 30 and 31 reserved for FW usage
 	 */
 	dma-channel-mask = <0xc0000003>, <0x0>;
+=======
+	/* channels 30 and 31 reserved for FW usage */
+	dma-channel-mask = <0xc0000000>, <0x0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &sai3 {

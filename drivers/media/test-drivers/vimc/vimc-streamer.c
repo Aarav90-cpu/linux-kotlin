@@ -140,6 +140,7 @@ static int vimc_streamer_pipeline_init(struct vimc_stream *stream,
 }
 
 /**
+<<<<<<< HEAD
  * vimc_streamer_get_sensor() - Get sensor from pipeline
  * @stream: the pipeline
  *
@@ -163,6 +164,8 @@ static struct vimc_sensor_device *vimc_streamer_get_sensor(struct vimc_stream *s
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * vimc_streamer_thread - Process frames through the pipeline
  *
  * @data:	vimc_stream struct of the current stream
@@ -177,6 +180,7 @@ static struct vimc_sensor_device *vimc_streamer_get_sensor(struct vimc_stream *s
 static int vimc_streamer_thread(void *data)
 {
 	struct vimc_stream *stream = data;
+<<<<<<< HEAD
 	struct vimc_sensor_device *vsensor;
 	u8 *frame = NULL;
 	int i;
@@ -185,23 +189,38 @@ static int vimc_streamer_thread(void *data)
 
 	set_freezable();
 	vsensor = vimc_streamer_get_sensor(stream);
+=======
+	u8 *frame = NULL;
+	int i;
+
+	set_freezable();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (;;) {
 		try_to_freeze();
 		if (kthread_should_stop())
 			break;
 
+<<<<<<< HEAD
 		/* Read from hardware configuration */
 		fps_jiffies = vsensor ? vsensor->hw.fps_jiffies : default_jiffies;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = stream->pipe_size - 1; i >= 0; i--) {
 			frame = stream->ved_pipeline[i]->process_frame(
 					stream->ved_pipeline[i], frame);
 			if (!frame || IS_ERR(frame))
 				break;
 		}
+<<<<<<< HEAD
 		set_current_state(TASK_UNINTERRUPTIBLE);
 		schedule_timeout(fps_jiffies);
+=======
+		//wait for 60hz
+		set_current_state(TASK_UNINTERRUPTIBLE);
+		schedule_timeout(HZ / 60);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

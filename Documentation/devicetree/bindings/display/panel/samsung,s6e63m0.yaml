@@ -21,6 +21,11 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  reset-gpios: true
+  port: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   default-brightness: true
   max-brightness: true
 

@@ -73,6 +73,7 @@ static struct net_device *get_dpdev(const struct datapath *dp)
 	return local->dev;
 }
 
+<<<<<<< HEAD
 struct vport *ovs_netdev_link(struct vport *vport, bool tunnel)
 {
 	int err;
@@ -81,6 +82,32 @@ struct vport *ovs_netdev_link(struct vport *vport, bool tunnel)
 		err = -ENODEV;
 		goto error_free_vport;
 	}
+=======
+struct vport *ovs_netdev_link(struct vport *vport, const char *name)
+{
+	int err;
+
+	vport->dev = dev_get_by_name(ovs_dp_get_net(vport->dp), name);
+	if (!vport->dev) {
+		err = -ENODEV;
+		goto error_free_vport;
+	}
+	/* Ensure that the device exists and that the provided
+	 * name is not one of its aliases.
+	 */
+	if (strcmp(name, ovs_vport_name(vport))) {
+		err = -ENODEV;
+		goto error_put;
+	}
+	netdev_tracker_alloc(vport->dev, &vport->dev_tracker, GFP_KERNEL);
+	if (vport->dev->flags & IFF_LOOPBACK ||
+	    (vport->dev->type != ARPHRD_ETHER &&
+	     vport->dev->type != ARPHRD_NONE) ||
+	    ovs_is_internal_dev(vport->dev)) {
+		err = -EINVAL;
+		goto error_put;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtnl_lock();
 	/* Do not link devices that are not registered to avoid a potential
@@ -95,7 +122,11 @@ struct vport *ovs_netdev_link(struct vport *vport, bool tunnel)
 					   get_dpdev(vport->dp),
 					   NULL, NULL, NULL);
 	if (err)
+<<<<<<< HEAD
 		goto error_put_unlock;
+=======
+		goto error_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = netdev_rx_handler_register(vport->dev, netdev_frame_hook,
 					 vport);
@@ -111,11 +142,18 @@ struct vport *ovs_netdev_link(struct vport *vport, bool tunnel)
 
 error_master_upper_dev_unlink:
 	netdev_upper_dev_unlink(vport->dev, get_dpdev(vport->dp));
+<<<<<<< HEAD
 error_put_unlock:
 	if (tunnel && vport->dev->reg_state == NETREG_REGISTERED)
 		rtnl_delete_link(vport->dev, 0, NULL);
 	netdev_put(vport->dev, &vport->dev_tracker);
 	rtnl_unlock();
+=======
+error_unlock:
+	rtnl_unlock();
+error_put:
+	netdev_put(vport->dev, &vport->dev_tracker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 error_free_vport:
 	ovs_vport_free(vport);
 	return ERR_PTR(err);
@@ -125,12 +163,16 @@ EXPORT_SYMBOL_GPL(ovs_netdev_link);
 static struct vport *netdev_create(const struct vport_parms *parms)
 {
 	struct vport *vport;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vport = ovs_vport_alloc(0, &ovs_netdev_vport_ops, parms);
 	if (IS_ERR(vport))
 		return vport;
 
+<<<<<<< HEAD
 	vport->dev = dev_get_by_name(ovs_dp_get_net(vport->dp), parms->name);
 	if (!vport->dev) {
 		err = -ENODEV;
@@ -158,6 +200,9 @@ error_put:
 error_free_vport:
 	ovs_vport_free(vport);
 	return ERR_PTR(err);
+=======
+	return ovs_netdev_link(vport, parms->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void vport_netdev_free(struct rcu_head *rcu)

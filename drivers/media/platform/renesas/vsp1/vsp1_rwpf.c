@@ -14,10 +14,17 @@
 #include "vsp1_rwpf.h"
 #include "vsp1_video.h"
 
+<<<<<<< HEAD
+=======
+#define RWPF_MIN_WIDTH				1
+#define RWPF_MIN_HEIGHT				1
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* -----------------------------------------------------------------------------
  * V4L2 Subdevice Operations
  */
 
+<<<<<<< HEAD
 /* Keep HSV last. */
 static const unsigned int rwpf_codes[] = {
 	MEDIA_BUS_FMT_AYUV8_1X32,
@@ -25,10 +32,13 @@ static const unsigned int rwpf_codes[] = {
 	MEDIA_BUS_FMT_AHSV8888_1X32,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int vsp1_rwpf_enum_mbus_code(struct v4l2_subdev *subdev,
 				    struct v4l2_subdev_state *sd_state,
 				    struct v4l2_subdev_mbus_code_enum *code)
 {
+<<<<<<< HEAD
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 	struct v4l2_subdev_state *state;
 	struct v4l2_mbus_framefmt *format;
@@ -61,6 +71,21 @@ static int vsp1_rwpf_enum_mbus_code(struct v4l2_subdev *subdev,
 	}
 
 	if (code->code == MEDIA_BUS_FMT_AYUV8_1X32)
+=======
+	static const unsigned int codes[] = {
+		MEDIA_BUS_FMT_ARGB8888_1X32,
+		MEDIA_BUS_FMT_AHSV8888_1X32,
+		MEDIA_BUS_FMT_AYUV8_1X32,
+	};
+
+	if (code->index >= ARRAY_SIZE(codes))
+		return -EINVAL;
+
+	code->code = codes[code->index];
+
+	if (code->pad == RWPF_PAD_SOURCE &&
+	    code->code == MEDIA_BUS_FMT_AYUV8_1X32)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		code->flags = V4L2_SUBDEV_MBUS_CODE_CSC_YCBCR_ENC
 			    | V4L2_SUBDEV_MBUS_CODE_CSC_QUANTIZATION;
 
@@ -71,6 +96,7 @@ static int vsp1_rwpf_enum_frame_size(struct v4l2_subdev *subdev,
 				     struct v4l2_subdev_state *sd_state,
 				     struct v4l2_subdev_frame_size_enum *fse)
 {
+<<<<<<< HEAD
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 	struct v4l2_subdev_state *state;
 	struct v4l2_mbus_framefmt *format;
@@ -107,6 +133,14 @@ static int vsp1_rwpf_enum_frame_size(struct v4l2_subdev *subdev,
 	fse->max_height = format->height;
 
 	return 0;
+=======
+	struct vsp1_rwpf *rwpf = to_rwpf(subdev);
+
+	return vsp1_subdev_enum_frame_size(subdev, sd_state, fse,
+					   RWPF_MIN_WIDTH,
+					   RWPF_MIN_HEIGHT, rwpf->max_width,
+					   rwpf->max_height);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int vsp1_rwpf_set_format(struct v4l2_subdev *subdev,
@@ -179,9 +213,15 @@ static int vsp1_rwpf_set_format(struct v4l2_subdev *subdev,
 
 	format->code = fmt->format.code;
 	format->width = clamp_t(unsigned int, fmt->format.width,
+<<<<<<< HEAD
 				RWPF_MIN_WIDTH, rwpf->entity.max_width);
 	format->height = clamp_t(unsigned int, fmt->format.height,
 				 RWPF_MIN_HEIGHT, rwpf->entity.max_height);
+=======
+				RWPF_MIN_WIDTH, rwpf->max_width);
+	format->height = clamp_t(unsigned int, fmt->format.height,
+				 RWPF_MIN_HEIGHT, rwpf->max_height);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	format->field = V4L2_FIELD_NONE;
 
 	format->colorspace = fmt->format.colorspace;
@@ -269,8 +309,11 @@ static int vsp1_rwpf_set_selection(struct v4l2_subdev *subdev,
 				   struct v4l2_subdev_state *sd_state,
 				   struct v4l2_subdev_selection *sel)
 {
+<<<<<<< HEAD
 	unsigned int min_width = RWPF_MIN_WIDTH;
 	unsigned int min_height = RWPF_MIN_HEIGHT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vsp1_rwpf *rwpf = to_rwpf(subdev);
 	struct v4l2_subdev_state *state;
 	struct v4l2_mbus_framefmt *format;
@@ -299,14 +342,20 @@ static int vsp1_rwpf_set_selection(struct v4l2_subdev *subdev,
 	format = v4l2_subdev_state_get_format(state, RWPF_PAD_SINK);
 
 	/*
+<<<<<<< HEAD
 	 * For YUV formats, restrict the crop rectangle coordinates to multiples
 	 * of 2 to avoid shifting the color plane.
+=======
+	 * Restrict the crop rectangle coordinates to multiples of 2 to avoid
+	 * shifting the color plane.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (format->code == MEDIA_BUS_FMT_AYUV8_1X32) {
 		sel->r.left = ALIGN(sel->r.left, 2);
 		sel->r.top = ALIGN(sel->r.top, 2);
 		sel->r.width = round_down(sel->r.width, 2);
 		sel->r.height = round_down(sel->r.height, 2);
+<<<<<<< HEAD
 
 		/*
 		 * The RPF doesn't enforces the alignment constraint on the sink
@@ -332,6 +381,15 @@ static int vsp1_rwpf_set_selection(struct v4l2_subdev *subdev,
 	sel->r.width = clamp(sel->r.width, min_width,
 			     format->width - sel->r.left);
 	sel->r.height = clamp(sel->r.height, min_height,
+=======
+	}
+
+	sel->r.left = min_t(unsigned int, sel->r.left, format->width - 2);
+	sel->r.top = min_t(unsigned int, sel->r.top, format->height - 2);
+	sel->r.width = min_t(unsigned int, sel->r.width,
+			     format->width - sel->r.left);
+	sel->r.height = min_t(unsigned int, sel->r.height,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      format->height - sel->r.top);
 
 	crop = v4l2_subdev_state_get_crop(state, RWPF_PAD_SINK);
@@ -357,7 +415,10 @@ static const struct v4l2_subdev_pad_ops vsp1_rwpf_pad_ops = {
 };
 
 const struct v4l2_subdev_ops vsp1_rwpf_subdev_ops = {
+<<<<<<< HEAD
 	.core	= &vsp1_entity_core_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pad    = &vsp1_rwpf_pad_ops,
 };
 
@@ -385,9 +446,12 @@ static const struct v4l2_ctrl_ops vsp1_rwpf_ctrl_ops = {
 
 int vsp1_rwpf_init_ctrls(struct vsp1_rwpf *rwpf, unsigned int ncontrols)
 {
+<<<<<<< HEAD
 	rwpf->entity.codes = rwpf_codes;
 	rwpf->entity.num_codes = ARRAY_SIZE(rwpf_codes);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	v4l2_ctrl_handler_init(&rwpf->ctrls, ncontrols + 1);
 	v4l2_ctrl_new_std(&rwpf->ctrls, &vsp1_rwpf_ctrl_ops,
 			  V4L2_CID_ALPHA_COMPONENT, 0, 255, 1, 255);

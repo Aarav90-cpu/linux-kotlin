@@ -228,10 +228,18 @@ static int q6apm_dai_prepare(struct snd_soc_component *component,
 	cfg.bit_width = prtd->bits_per_sample;
 	cfg.fmt = SND_AUDIOCODEC_PCM;
 	audioreach_set_default_channel_mapping(cfg.channel_map, runtime->channels);
+<<<<<<< HEAD
 	if (prtd->state) {
 		/* clear the previous setup if any  */
 		q6apm_graph_stop(prtd->graph);
 		q6apm_free_fragments(prtd->graph, substream->stream);
+=======
+
+	if (prtd->state) {
+		/* clear the previous setup if any  */
+		q6apm_graph_stop(prtd->graph);
+		q6apm_unmap_memory_regions(prtd->graph, substream->stream);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
@@ -246,8 +254,13 @@ static int q6apm_dai_prepare(struct snd_soc_component *component,
 	if (ret < 0)
 		dev_err(dev, "%s: CMD Format block failed\n", __func__);
 
+<<<<<<< HEAD
 	ret = q6apm_alloc_fragments(prtd->graph, substream->stream, prtd->phys,
 				(prtd->pcm_size / prtd->periods), prtd->periods);
+=======
+	ret = q6apm_map_memory_regions(prtd->graph, substream->stream, prtd->phys,
+				       (prtd->pcm_size / prtd->periods), prtd->periods);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret < 0) {
 		dev_err(dev, "Audio Start: Buffer Allocation failed rc = %d\n",	ret);
@@ -354,7 +367,11 @@ static int q6apm_dai_open(struct snd_soc_component *component,
 
 	spin_lock_init(&prtd->lock);
 	prtd->substream = substream;
+<<<<<<< HEAD
 	prtd->graph = q6apm_graph_open(dev, event_handler, prtd, graph_id, substream->stream);
+=======
+	prtd->graph = q6apm_graph_open(dev, event_handler, prtd, graph_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(prtd->graph)) {
 		dev_err(dev, "%s: Could not allocate memory\n", __func__);
 		ret = PTR_ERR(prtd->graph);
@@ -415,10 +432,16 @@ static int q6apm_dai_close(struct snd_soc_component *component,
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct q6apm_dai_rtd *prtd = runtime->private_data;
 
+<<<<<<< HEAD
 	if (prtd->state) {
 		/* only stop graph that is started */
 		q6apm_graph_stop(prtd->graph);
 		q6apm_free_fragments(prtd->graph, substream->stream);
+=======
+	if (prtd->state) { /* only stop graph that is started */
+		q6apm_graph_stop(prtd->graph);
+		q6apm_unmap_memory_regions(prtd->graph, substream->stream);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	q6apm_graph_close(prtd->graph);
@@ -467,6 +490,7 @@ static int q6apm_dai_hw_params(struct snd_soc_component *component,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int q6apm_dai_memory_map(struct snd_soc_component *component,
 				struct snd_pcm_substream *substream, int graph_id)
 {
@@ -560,6 +584,13 @@ static void q6apm_dai_pcm_free(struct snd_soc_component *component, struct snd_p
 	substream = pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream;
 	if (substream)
 		q6apm_dai_memory_unmap(component, substream);
+=======
+static int q6apm_dai_pcm_new(struct snd_soc_component *component, struct snd_soc_pcm_runtime *rtd)
+{
+	int size = BUFFER_BYTES_MAX;
+
+	return snd_pcm_set_fixed_buffer_all(rtd->pcm, SNDRV_DMA_TYPE_DEV, component->dev, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int q6apm_dai_compr_open(struct snd_soc_component *component,
@@ -584,8 +615,12 @@ static int q6apm_dai_compr_open(struct snd_soc_component *component,
 		return -ENOMEM;
 
 	prtd->cstream = stream;
+<<<<<<< HEAD
 	prtd->graph = q6apm_graph_open(dev, event_handler_compr, prtd, graph_id,
 					SNDRV_PCM_STREAM_PLAYBACK);
+=======
+	prtd->graph = q6apm_graph_open(dev, event_handler_compr, prtd, graph_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(prtd->graph)) {
 		ret = PTR_ERR(prtd->graph);
 		kfree(prtd);
@@ -618,8 +653,12 @@ static int q6apm_dai_compr_free(struct snd_soc_component *component,
 	struct q6apm_dai_rtd *prtd = runtime->private_data;
 
 	q6apm_graph_stop(prtd->graph);
+<<<<<<< HEAD
 	q6apm_free_fragments(prtd->graph, SNDRV_PCM_STREAM_PLAYBACK);
 	q6apm_unmap_memory_fixed_region(component->dev, prtd->graph->id);
+=======
+	q6apm_unmap_memory_regions(prtd->graph, SNDRV_PCM_STREAM_PLAYBACK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q6apm_graph_close(prtd->graph);
 	snd_dma_free_pages(&prtd->dma_buffer);
 	prtd->graph = NULL;
@@ -768,9 +807,15 @@ static int q6apm_dai_compr_set_params(struct snd_soc_component *component,
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		ret = q6apm_alloc_fragments(prtd->graph, SNDRV_PCM_STREAM_PLAYBACK,
 					prtd->phys, (prtd->pcm_size / prtd->periods),
 					prtd->periods);
+=======
+		ret = q6apm_map_memory_regions(prtd->graph, SNDRV_PCM_STREAM_PLAYBACK,
+					       prtd->phys, (prtd->pcm_size / prtd->periods),
+					       prtd->periods);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return -ENOMEM;
 
@@ -922,8 +967,12 @@ static const struct snd_soc_component_driver q6apm_fe_dai_component = {
 	.open		= q6apm_dai_open,
 	.close		= q6apm_dai_close,
 	.prepare	= q6apm_dai_prepare,
+<<<<<<< HEAD
 	.pcm_new	= q6apm_dai_pcm_new,
 	.pcm_free	= q6apm_dai_pcm_free,
+=======
+	.pcm_construct	= q6apm_dai_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.hw_params	= q6apm_dai_hw_params,
 	.pointer	= q6apm_dai_pointer,
 	.trigger	= q6apm_dai_trigger,

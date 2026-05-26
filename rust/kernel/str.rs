@@ -189,7 +189,10 @@ macro_rules! b_str {
 //
 // - error[E0379]: functions in trait impls cannot be declared const
 #[inline]
+<<<<<<< HEAD
 #[expect(clippy::disallowed_methods, reason = "internal implementation")]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub const fn as_char_ptr_in_const_context(c_str: &CStr) -> *const c_char {
     c_str.as_ptr().cast()
 }
@@ -320,7 +323,10 @@ unsafe fn to_bytes_mut(s: &mut CStr) -> &mut [u8] {
 
 impl CStrExt for CStr {
     #[inline]
+<<<<<<< HEAD
     #[expect(clippy::disallowed_methods, reason = "internal implementation")]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     unsafe fn from_char_ptr<'a>(ptr: *const c_char) -> &'a Self {
         // SAFETY: The safety preconditions are the same as for `CStr::from_ptr`.
         unsafe { CStr::from_ptr(ptr.cast()) }
@@ -336,7 +342,10 @@ impl CStrExt for CStr {
     }
 
     #[inline]
+<<<<<<< HEAD
     #[expect(clippy::disallowed_methods, reason = "internal implementation")]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn as_char_ptr(&self) -> *const c_char {
         self.as_ptr().cast()
     }
@@ -379,6 +388,7 @@ impl AsRef<BStr> for CStr {
     }
 }
 
+<<<<<<< HEAD
 /// Creates a new [`CStr`] at compile time.
 ///
 /// Rust supports C string literals since Rust 1.77, and they should be used instead of this macro
@@ -388,12 +398,18 @@ impl AsRef<BStr> for CStr {
 /// # Panics
 ///
 /// This macro panics if the operand contains an interior `NUL` byte.
+=======
+/// Creates a new [`CStr`] from a string literal.
+///
+/// The string literal should not contain any `NUL` bytes.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// # Examples
 ///
 /// ```
 /// # use kernel::c_str;
 /// # use kernel::str::CStr;
+<<<<<<< HEAD
 /// // This is allowed, but `c"literal"` should be preferred for literals.
 /// const BAD: &CStr = c_str!("literal");
 ///
@@ -405,6 +421,12 @@ macro_rules! c_str {
     // NB: We could write `($str:lit) => compile_error!("use a C string literal instead");` here but
     // that would trigger when the literal is at the top of several macro expansions. That would be
     // too limiting to macro authors.
+=======
+/// const MY_CSTR: &CStr = c_str!("My awesome CStr!");
+/// ```
+#[macro_export]
+macro_rules! c_str {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ($str:expr) => {{
         const S: &str = concat!($str, "\0");
         const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
@@ -844,10 +866,14 @@ impl CString {
         f.write_str("\0")?;
 
         // SAFETY: The number of bytes that can be written to `f` is bounded by `size`, which is
+<<<<<<< HEAD
         // `buf`'s capacity. The `Formatter` is created with `size` as its limit, and the `?`
         // operators on `write_fmt` and `write_str` above ensure that if writing exceeds this
         // limit, an error is returned early. The contents of the buffer have been initialised
         // by writes to `f`.
+=======
+        // `buf`'s capacity. The contents of the buffer have been initialised by writes to `f`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         unsafe { buf.inc_len(f.bytes_written()) };
 
         // Check that there are no `NUL` bytes before the end.

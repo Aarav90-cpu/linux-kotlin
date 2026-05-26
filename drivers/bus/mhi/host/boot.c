@@ -308,6 +308,10 @@ static void mhi_free_bhi_buffer(struct mhi_controller *mhi_cntrl,
 	struct mhi_buf *mhi_buf = image_info->mhi_buf;
 
 	dma_free_coherent(mhi_cntrl->cntrl_dev, mhi_buf->len, mhi_buf->buf, mhi_buf->dma_addr);
+<<<<<<< HEAD
+=======
+	kfree(image_info->mhi_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(image_info);
 }
 
@@ -321,6 +325,10 @@ void mhi_free_bhie_table(struct mhi_controller *mhi_cntrl,
 		dma_free_coherent(mhi_cntrl->cntrl_dev, mhi_buf->len,
 				  mhi_buf->buf, mhi_buf->dma_addr);
 
+<<<<<<< HEAD
+=======
+	kfree(image_info->mhi_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(image_info);
 }
 
@@ -331,10 +339,22 @@ static int mhi_alloc_bhi_buffer(struct mhi_controller *mhi_cntrl,
 	struct image_info *img_info;
 	struct mhi_buf *mhi_buf;
 
+<<<<<<< HEAD
 	img_info = kzalloc_flex(*img_info, mhi_buf, 1);
 	if (!img_info)
 		return -ENOMEM;
 
+=======
+	img_info = kzalloc_obj(*img_info);
+	if (!img_info)
+		return -ENOMEM;
+
+	/* Allocate memory for entry */
+	img_info->mhi_buf = kzalloc_obj(*img_info->mhi_buf);
+	if (!img_info->mhi_buf)
+		goto error_alloc_mhi_buf;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Allocate and populate vector table */
 	mhi_buf = img_info->mhi_buf;
 
@@ -351,6 +371,11 @@ static int mhi_alloc_bhi_buffer(struct mhi_controller *mhi_cntrl,
 	return 0;
 
 error_alloc_segment:
+<<<<<<< HEAD
+=======
+	kfree(mhi_buf);
+error_alloc_mhi_buf:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(img_info);
 
 	return -ENOMEM;
@@ -366,11 +391,22 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
 	struct image_info *img_info;
 	struct mhi_buf *mhi_buf;
 
+<<<<<<< HEAD
 	img_info = kzalloc_flex(*img_info, mhi_buf, segments);
 	if (!img_info)
 		return -ENOMEM;
 
 	img_info->entries = segments;
+=======
+	img_info = kzalloc_obj(*img_info);
+	if (!img_info)
+		return -ENOMEM;
+
+	/* Allocate memory for entries */
+	img_info->mhi_buf = kzalloc_objs(*img_info->mhi_buf, segments);
+	if (!img_info->mhi_buf)
+		goto error_alloc_mhi_buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate and populate vector table */
 	mhi_buf = img_info->mhi_buf;
@@ -390,6 +426,10 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
 	}
 
 	img_info->bhi_vec = img_info->mhi_buf[segments - 1].buf;
+<<<<<<< HEAD
+=======
+	img_info->entries = segments;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*image_info = img_info;
 
 	return 0;
@@ -398,6 +438,12 @@ error_alloc_segment:
 	for (--i, --mhi_buf; i >= 0; i--, mhi_buf--)
 		dma_free_coherent(mhi_cntrl->cntrl_dev, mhi_buf->len,
 				  mhi_buf->buf, mhi_buf->dma_addr);
+<<<<<<< HEAD
+=======
+	kfree(img_info->mhi_buf);
+
+error_alloc_mhi_buf:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(img_info);
 
 	return -ENOMEM;

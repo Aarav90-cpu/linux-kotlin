@@ -4,7 +4,14 @@
 //! running on [`Sec2`], that is used on Turing/Ampere to load the GSP firmware into the GSP falcon
 //! (and optionally unload it through a separate firmware image).
 
+<<<<<<< HEAD
 use core::marker::PhantomData;
+=======
+use core::{
+    marker::PhantomData,
+    ops::Deref, //
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 use kernel::{
     device,
@@ -13,11 +20,16 @@ use kernel::{
 };
 
 use crate::{
+<<<<<<< HEAD
+=======
+    dma::DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     driver::Bar0,
     falcon::{
         sec2::Sec2,
         Falcon,
         FalconBromParams,
+<<<<<<< HEAD
         FalconDmaLoadTarget,
         FalconDmaLoadable,
         FalconFirmware, //
@@ -25,6 +37,15 @@ use crate::{
     firmware::{
         BinFirmware,
         FirmwareObject,
+=======
+        FalconFirmware,
+        FalconLoadParams,
+        FalconLoadTarget, //
+    },
+    firmware::{
+        BinFirmware,
+        FirmwareDmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         FirmwareSignature,
         Signed,
         Unsigned, //
@@ -39,9 +60,14 @@ use crate::{
 /// Local convenience function to return a copy of `S` by reinterpreting the bytes starting at
 /// `offset` in `slice`.
 fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S> {
+<<<<<<< HEAD
     let end = offset.checked_add(size_of::<S>()).ok_or(EINVAL)?;
     slice
         .get(offset..end)
+=======
+    slice
+        .get(offset..offset + size_of::<S>())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         .and_then(S::from_bytes_copy)
         .ok_or(EINVAL)
 }
@@ -116,6 +142,7 @@ impl<'a> HsFirmwareV2<'a> {
             Some(sig_size) => {
                 let patch_sig =
                     frombytes_at::<u32>(self.fw, self.hdr.patch_sig_offset.into_safe_cast())?;
+<<<<<<< HEAD
 
                 let signatures_start = self
                     .hdr
@@ -131,6 +158,16 @@ impl<'a> HsFirmwareV2<'a> {
                 self.fw
                     // Get signatures range.
                     .get(signatures_start..signatures_end)
+=======
+                let signatures_start = usize::from_safe_cast(self.hdr.sig_prod_offset + patch_sig);
+
+                self.fw
+                    // Get signatures range.
+                    .get(
+                        signatures_start
+                            ..signatures_start + usize::from_safe_cast(self.hdr.sig_prod_size),
+                    )
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     .ok_or(EINVAL)?
                     .chunks_exact(sig_size.into_safe_cast())
             }
@@ -256,6 +293,7 @@ impl<'a> FirmwareSignature<BooterFirmware> for BooterSignature<'a> {}
 /// The `Booter` loader firmware, responsible for loading the GSP.
 pub(crate) struct BooterFirmware {
     // Load parameters for Secure `IMEM` falcon memory.
+<<<<<<< HEAD
     imem_sec_load_target: FalconDmaLoadTarget,
     // Load parameters for Non-Secure `IMEM` falcon memory,
     // used only on Turing and GA100
@@ -274,6 +312,23 @@ impl FirmwareObject<BooterFirmware, Unsigned> {
         ucode.extend_from_slice(data, GFP_KERNEL)?;
 
         Ok(Self(ucode, PhantomData))
+=======
+    imem_sec_load_target: FalconLoadTarget,
+    // Load parameters for Non-Secure `IMEM` falcon memory,
+    // used only on Turing and GA100
+    imem_ns_load_target: Option<FalconLoadTarget>,
+    // Load parameters for `DMEM` falcon memory.
+    dmem_load_target: FalconLoadTarget,
+    // BROM falcon parameters.
+    brom_params: FalconBromParams,
+    // Device-mapped firmware image.
+    ucode: FirmwareDmaObject<Self, Signed>,
+}
+
+impl FirmwareDmaObject<BooterFirmware, Unsigned> {
+    fn new_booter(dev: &device::Device<device::Bound>, data: &[u8]) -> Result<Self> {
+        DmaObject::from_data(dev, data).map(|ucode| Self(ucode, PhantomData))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
@@ -327,7 +382,11 @@ impl BooterFirmware {
         let ucode = bin_fw
             .data()
             .ok_or(EINVAL)
+<<<<<<< HEAD
             .and_then(FirmwareObject::<Self, _>::new_booter)?;
+=======
+            .and_then(|data| FirmwareDmaObject::<Self, _>::new_booter(dev, data))?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         let ucode_signed = {
             let mut signatures = hs_fw.signatures_iter()?.peekable();
@@ -370,7 +429,11 @@ impl BooterFirmware {
         let (imem_sec_dst_start, imem_ns_load_target) = if chipset <= Chipset::GA100 {
             (
                 app0.offset,
+<<<<<<< HEAD
                 Some(FalconDmaLoadTarget {
+=======
+                Some(FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     src_start: 0,
                     dst_start: load_hdr.os_code_offset,
                     len: load_hdr.os_code_size,
@@ -381,13 +444,21 @@ impl BooterFirmware {
         };
 
         Ok(Self {
+<<<<<<< HEAD
             imem_sec_load_target: FalconDmaLoadTarget {
+=======
+            imem_sec_load_target: FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 src_start: app0.offset,
                 dst_start: imem_sec_dst_start,
                 len: app0.len,
             },
             imem_ns_load_target,
+<<<<<<< HEAD
             dmem_load_target: FalconDmaLoadTarget {
+=======
+            dmem_load_target: FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 src_start: load_hdr.os_data_offset,
                 dst_start: 0,
                 len: load_hdr.os_data_size,
@@ -398,6 +469,7 @@ impl BooterFirmware {
     }
 }
 
+<<<<<<< HEAD
 impl FalconDmaLoadable for BooterFirmware {
     fn as_slice(&self) -> &[u8] {
         self.ucode.0.as_slice()
@@ -418,6 +490,20 @@ impl FalconDmaLoadable for BooterFirmware {
 
 impl FalconFirmware for BooterFirmware {
     type Target = Sec2;
+=======
+impl FalconLoadParams for BooterFirmware {
+    fn imem_sec_load_params(&self) -> FalconLoadTarget {
+        self.imem_sec_load_target.clone()
+    }
+
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+        self.imem_ns_load_target.clone()
+    }
+
+    fn dmem_load_params(&self) -> FalconLoadTarget {
+        self.dmem_load_target.clone()
+    }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     fn brom_params(&self) -> FalconBromParams {
         self.brom_params.clone()
@@ -431,3 +517,18 @@ impl FalconFirmware for BooterFirmware {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+impl Deref for BooterFirmware {
+    type Target = DmaObject;
+
+    fn deref(&self) -> &Self::Target {
+        &self.ucode.0
+    }
+}
+
+impl FalconFirmware for BooterFirmware {
+    type Target = Sec2;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

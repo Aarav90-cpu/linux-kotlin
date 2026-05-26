@@ -510,11 +510,21 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
 		WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
 
 		/*
+<<<<<<< HEAD
 		 * For Xe_LPG and beyond up to NVL-P (excluding), PPGTT PTE
 		 * lookups are also non-coherent and require a CPU:WC mapping.
 		 */
 		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_FORCE_WC) ||
 		    (!xe->info.has_cached_pt && bo->flags & XE_BO_FLAG_PAGETABLE))
+=======
+		 * Display scanout is always non-coherent with the CPU cache.
+		 *
+		 * For Xe_LPG and beyond, PPGTT PTE lookups are also
+		 * non-coherent and require a CPU:WC mapping.
+		 */
+		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
+		     (!xe->info.has_cached_pt && bo->flags & XE_BO_FLAG_PAGETABLE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			caching = ttm_write_combined;
 	}
 
@@ -687,12 +697,16 @@ static int xe_bo_trigger_rebind(struct xe_device *xe, struct xe_bo *bo,
 
 		if (!xe_vm_in_fault_mode(vm)) {
 			drm_gpuvm_bo_evict(vm_bo, true);
+<<<<<<< HEAD
 			/*
 			 * L2 cache may not be flushed, so ensure that is done in
 			 * xe_vm_invalidate_vma() below
 			 */
 			if (!xe_device_is_l2_flush_optimized(xe))
 				continue;
+=======
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (!idle) {
@@ -821,7 +835,11 @@ static int xe_bo_move_notify(struct xe_bo *bo,
 
 	/* Don't call move_notify() for imported dma-bufs. */
 	if (ttm_bo->base.dma_buf && !ttm_bo->base.import_attach)
+<<<<<<< HEAD
 		dma_buf_invalidate_mappings(ttm_bo->base.dma_buf);
+=======
+		dma_buf_move_notify(ttm_bo->base.dma_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * TTM has already nuked the mmap for us (see ttm_bo_unmap_virtual),
@@ -838,6 +856,7 @@ static int xe_bo_move_notify(struct xe_bo *bo,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * xe_bo_set_purgeable_shrinker() - Update shrinker accounting for purgeable state
  * @bo: Buffer object
@@ -954,6 +973,8 @@ static int xe_ttm_bo_purge(struct ttm_buffer_object *ttm_bo, struct ttm_operatio
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 		      struct ttm_operation_ctx *ctx,
 		      struct ttm_resource *new_mem,
@@ -973,6 +994,7 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 				  ttm && ttm_tt_is_populated(ttm)) ? true : false;
 	int ret = 0;
 
+<<<<<<< HEAD
 	/*
 	 * Purge only non-shared BOs explicitly marked DONTNEED by userspace.
 	 * The move_notify callback will handle invalidation asynchronously.
@@ -987,6 +1009,8 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Bo creation path, moving to system or TT. */
 	if ((!old_mem && ttm) && !handle_system_ccs) {
 		if (new_mem->mem_type == XE_PL_TT)
@@ -1284,9 +1308,12 @@ long xe_bo_shrink(struct ttm_operation_ctx *ctx, struct ttm_buffer_object *bo,
 			lret = xe_bo_move_notify(xe_bo, ctx);
 		if (!lret)
 			lret = xe_bo_shrink_purge(ctx, bo, scanned);
+<<<<<<< HEAD
 		if (lret > 0 && xe_bo_madv_is_dontneed(xe_bo))
 			xe_bo_set_purgeable_state(xe_bo,
 						  XE_MADV_PURGEABLE_PURGED);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_unref;
 	}
 
@@ -1739,6 +1766,21 @@ static void xe_ttm_bo_delete_mem_notify(struct ttm_buffer_object *ttm_bo)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void xe_ttm_bo_purge(struct ttm_buffer_object *ttm_bo, struct ttm_operation_ctx *ctx)
+{
+	struct xe_device *xe = ttm_to_xe_device(ttm_bo->bdev);
+
+	if (ttm_bo->ttm) {
+		struct ttm_placement place = {};
+		int ret = ttm_bo_validate(ttm_bo, &place, ctx);
+
+		drm_WARN_ON(&xe->drm, ret);
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void xe_ttm_bo_swap_notify(struct ttm_buffer_object *ttm_bo)
 {
 	struct ttm_operation_ctx ctx = {
@@ -2023,6 +2065,7 @@ static vm_fault_t xe_bo_cpu_fault_fastpath(struct vm_fault *vmf, struct xe_devic
 	if (!dma_resv_trylock(tbo->base.resv))
 		goto out_validation;
 
+<<<<<<< HEAD
 	/*
 	 * Reject CPU faults to purgeable BOs. DONTNEED BOs can be purged
 	 * at any time, and purged BOs have no backing store. Either case
@@ -2033,6 +2076,8 @@ static vm_fault_t xe_bo_cpu_fault_fastpath(struct vm_fault *vmf, struct xe_devic
 		goto out_unlock;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (xe_ttm_bo_is_imported(tbo)) {
 		ret = VM_FAULT_SIGBUS;
 		drm_dbg(&xe->drm, "CPU trying to access an imported buffer object.\n");
@@ -2123,6 +2168,7 @@ static vm_fault_t xe_bo_cpu_fault(struct vm_fault *vmf)
 		if (err)
 			break;
 
+<<<<<<< HEAD
 		/*
 		 * Reject CPU faults to purgeable BOs. DONTNEED BOs can be
 		 * purged at any time, and purged BOs have no backing store.
@@ -2132,6 +2178,8 @@ static vm_fault_t xe_bo_cpu_fault(struct vm_fault *vmf)
 			break;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (xe_ttm_bo_is_imported(tbo)) {
 			err = -EFAULT;
 			drm_dbg(&xe->drm, "CPU trying to access an imported buffer object.\n");
@@ -2209,6 +2257,7 @@ static const struct vm_operations_struct xe_gem_vm_ops = {
 	.access = xe_bo_vm_access,
 };
 
+<<<<<<< HEAD
 static int xe_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma)
 {
 	struct xe_bo *bo = gem_to_xe_bo(obj);
@@ -2238,6 +2287,12 @@ static const struct drm_gem_object_funcs xe_gem_object_funcs = {
 	.free = xe_gem_object_free,
 	.close = xe_gem_object_close,
 	.mmap = xe_gem_object_mmap,
+=======
+static const struct drm_gem_object_funcs xe_gem_object_funcs = {
+	.free = xe_gem_object_free,
+	.close = xe_gem_object_close,
+	.mmap = drm_gem_ttm_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.export = xe_gem_prime_export,
 	.vm_ops = &xe_gem_vm_ops,
 };
@@ -2367,9 +2422,12 @@ struct xe_bo *xe_bo_init_locked(struct xe_device *xe, struct xe_bo *bo,
 #endif
 	INIT_LIST_HEAD(&bo->vram_userfault_link);
 
+<<<<<<< HEAD
 	/* Initialize purge advisory state */
 	bo->purgeable.state = XE_MADV_PURGEABLE_WILLNEED;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
 
 	if (resv) {
@@ -3371,11 +3429,16 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 	if (args->flags & DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING)
 		bo_flags |= XE_BO_FLAG_DEFER_BACKING;
 
+<<<<<<< HEAD
 	/*
 	 * Display scanout is always non-coherent with the CPU cache.
 	 */
 	if (args->flags & DRM_XE_GEM_CREATE_FLAG_SCANOUT)
 		bo_flags |= XE_BO_FLAG_FORCE_WC;
+=======
+	if (args->flags & DRM_XE_GEM_CREATE_FLAG_SCANOUT)
+		bo_flags |= XE_BO_FLAG_SCANOUT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (args->flags & DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION) {
 		if (XE_IOCTL_DBG(xe, GRAPHICS_VER(xe) < 20))
@@ -3387,7 +3450,11 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 
 	/* CCS formats need physical placement at a 64K alignment in VRAM. */
 	if ((bo_flags & XE_BO_FLAG_VRAM_MASK) &&
+<<<<<<< HEAD
 	    (args->flags & DRM_XE_GEM_CREATE_FLAG_SCANOUT) &&
+=======
+	    (bo_flags & XE_BO_FLAG_SCANOUT) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    !(xe->info.vram_flags & XE_VRAM_FLAGS_NEED64K) &&
 	    IS_ALIGNED(args->size, SZ_64K))
 		bo_flags |= XE_BO_FLAG_NEEDS_64K;
@@ -3407,7 +3474,11 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 			 args->cpu_caching != DRM_XE_GEM_CPU_CACHING_WC))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (XE_IOCTL_DBG(xe, bo_flags & XE_BO_FLAG_FORCE_WC &&
+=======
+	if (XE_IOCTL_DBG(xe, bo_flags & XE_BO_FLAG_SCANOUT &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 args->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
 		return -EINVAL;
 
@@ -3509,6 +3580,7 @@ int xe_gem_mmap_offset_ioctl(struct drm_device *dev, void *data,
 }
 
 /**
+<<<<<<< HEAD
  * xe_bo_decompress - schedule in-place decompress and install fence
  * @bo: buffer object (caller should hold drm_exec reservations for VM+BO)
  *
@@ -3564,6 +3636,8 @@ int xe_bo_decompress(struct xe_bo *bo)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_bo_lock() - Lock the buffer object's dma_resv object
  * @bo: The struct xe_bo whose lock is to be taken
  * @intr: Whether to perform any wait interruptible
@@ -3875,7 +3949,11 @@ int xe_bo_dumb_create(struct drm_file *file_priv,
 	bo = xe_bo_create_user(xe, NULL, args->size,
 			       DRM_XE_GEM_CPU_CACHING_WC,
 			       XE_BO_FLAG_VRAM_IF_DGFX(xe_device_get_root_tile(xe)) |
+<<<<<<< HEAD
 			       XE_BO_FLAG_FORCE_WC |
+=======
+			       XE_BO_FLAG_SCANOUT |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       XE_BO_FLAG_NEEDS_CPU_ACCESS, NULL);
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);

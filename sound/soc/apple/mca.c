@@ -1002,8 +1002,13 @@ static const struct snd_soc_component_driver mca_component = {
 	.hw_params = mca_hw_params,
 	.trigger = mca_trigger,
 	.pointer = mca_pointer,
+<<<<<<< HEAD
 	.pcm_new = mca_pcm_new,
 	.pcm_free = mca_pcm_free,
+=======
+	.pcm_construct = mca_pcm_new,
+	.pcm_destruct = mca_pcm_free,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void apple_mca_release(struct mca_data *mca)

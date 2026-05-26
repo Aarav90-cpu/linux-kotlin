@@ -78,7 +78,11 @@ int cpu_suspend(unsigned long arg,
 	suspend_save_csrs(&context);
 
 	/*
+<<<<<<< HEAD
 	 * Function graph tracer state gets inconsistent when the kernel
+=======
+	 * Function graph tracer state gets incosistent when the kernel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * calls functions that never return (aka finishers) hence disable
 	 * graph tracing during their execution.
 	 */

@@ -12,8 +12,12 @@
 
 #define TC_INDIRECT_SCOPE
 
+<<<<<<< HEAD
 extern struct static_key_false tc_skip_wrapper_act;
 extern struct static_key_false tc_skip_wrapper_cls;
+=======
+extern struct static_key_false tc_skip_wrapper;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* TC Actions */
 #ifdef CONFIG_NET_CLS_ACT
@@ -47,7 +51,11 @@ TC_INDIRECT_ACTION_DECLARE(tunnel_key_act);
 static inline int tc_act(struct sk_buff *skb, const struct tc_action *a,
 			   struct tcf_result *res)
 {
+<<<<<<< HEAD
 	if (static_branch_likely(&tc_skip_wrapper_act))
+=======
+	if (static_branch_likely(&tc_skip_wrapper))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto skip;
 
 #if IS_BUILTIN(CONFIG_NET_ACT_GACT)
@@ -154,7 +162,11 @@ TC_INDIRECT_FILTER_DECLARE(u32_classify);
 static inline int tc_classify(struct sk_buff *skb, const struct tcf_proto *tp,
 				struct tcf_result *res)
 {
+<<<<<<< HEAD
 	if (static_branch_likely(&tc_skip_wrapper_cls))
+=======
+	if (static_branch_likely(&tc_skip_wrapper))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto skip;
 
 #if IS_BUILTIN(CONFIG_NET_CLS_BPF)
@@ -203,6 +215,7 @@ skip:
 static inline void tc_wrapper_init(void)
 {
 #ifdef CONFIG_X86
+<<<<<<< HEAD
 	int cnt_cls = IS_BUILTIN(CONFIG_NET_CLS_BPF) +
 		IS_BUILTIN(CONFIG_NET_CLS_U32)  +
 		IS_BUILTIN(CONFIG_NET_CLS_FLOWER) +
@@ -241,6 +254,10 @@ static inline void tc_wrapper_init(void)
 
 	if (cnt_act > 1)
 		static_branch_enable(&tc_skip_wrapper_act);
+=======
+	if (!cpu_feature_enabled(X86_FEATURE_RETPOLINE))
+		static_branch_enable(&tc_skip_wrapper);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 

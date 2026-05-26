@@ -5,7 +5,10 @@
  * Trademarks are the property of their respective owners.
  */
 
+<<<<<<< HEAD
 #include <linux/array_size.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/delay.h>
 #include <linux/serio.h>
@@ -13,7 +16,10 @@
 #include <linux/input.h>
 #include <linux/libps2.h>
 #include <linux/proc_fs.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/uaccess.h>
 #include "psmouse.h"
 #include "trackpoint.h"
@@ -395,6 +401,7 @@ static int trackpoint_reconnect(struct psmouse *psmouse)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* List of known incapable device PNP IDs */
 static const char * const dt_incompatible_devices[] = {
 	"LEN0304",
@@ -433,6 +440,8 @@ static bool trackpoint_is_dt_capable(const char *pnp_id)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int trackpoint_detect(struct psmouse *psmouse, bool set_properties)
 {
 	struct ps2dev *ps2dev = &psmouse->ps2dev;
@@ -510,12 +519,15 @@ int trackpoint_detect(struct psmouse *psmouse, bool set_properties)
 		     psmouse->vendor, firmware_id,
 		     (button_info & 0xf0) >> 4, button_info & 0x0f);
 
+<<<<<<< HEAD
 	if (trackpoint_is_dt_capable(ps2dev->serio->firmware_id)) {
 		error = trackpoint_write(ps2dev, TP_DOUBLETAP, TP_DOUBLETAP_ENABLE);
 		if (error)
 			psmouse_warn(psmouse, "Failed to enable doubletap: %d\n", error);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

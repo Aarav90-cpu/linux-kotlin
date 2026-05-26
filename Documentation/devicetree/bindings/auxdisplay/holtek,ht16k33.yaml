@@ -10,7 +10,10 @@ maintainers:
   - Robin van der Gracht <robin@protonic.nl>
 
 allOf:
+<<<<<<< HEAD
   - $ref: /schemas/input/input.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - $ref: /schemas/input/matrix-keymap.yaml#
 
 properties:
@@ -34,7 +37,13 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   debounce-delay-ms: true
+=======
+  debounce-delay-ms:
+    maxItems: 1
+    description: Debouncing interval time in milliseconds
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   linux,keymap: true
 

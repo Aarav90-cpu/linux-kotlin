@@ -111,8 +111,12 @@ static int parse_path(char *env_path, const char ***const path_list)
 	LANDLOCK_ACCESS_FS_WRITE_FILE | \
 	LANDLOCK_ACCESS_FS_READ_FILE | \
 	LANDLOCK_ACCESS_FS_TRUNCATE | \
+<<<<<<< HEAD
 	LANDLOCK_ACCESS_FS_IOCTL_DEV | \
 	LANDLOCK_ACCESS_FS_RESOLVE_UNIX)
+=======
+	LANDLOCK_ACCESS_FS_IOCTL_DEV)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* clang-format on */
 
@@ -296,12 +300,20 @@ out_unset:
 	LANDLOCK_ACCESS_FS_MAKE_SYM | \
 	LANDLOCK_ACCESS_FS_REFER | \
 	LANDLOCK_ACCESS_FS_TRUNCATE | \
+<<<<<<< HEAD
 	LANDLOCK_ACCESS_FS_IOCTL_DEV | \
 	LANDLOCK_ACCESS_FS_RESOLVE_UNIX)
 
 /* clang-format on */
 
 #define LANDLOCK_ABI_LAST 9
+=======
+	LANDLOCK_ACCESS_FS_IOCTL_DEV)
+
+/* clang-format on */
+
+#define LANDLOCK_ABI_LAST 8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define XSTR(s) #s
 #define STR(s) XSTR(s)
@@ -440,10 +452,13 @@ int main(const int argc, char *const argv[], char *const *const envp)
 			~LANDLOCK_RESTRICT_SELF_LOG_NEW_EXEC_ON;
 		__attribute__((fallthrough));
 	case 7:
+<<<<<<< HEAD
 	case 8:
 		/* Removes LANDLOCK_ACCESS_FS_RESOLVE_UNIX for ABI < 9 */
 		ruleset_attr.handled_access_fs &=
 			~LANDLOCK_ACCESS_FS_RESOLVE_UNIX;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Must be printed for any ABI < LANDLOCK_ABI_LAST. */
 		fprintf(stderr,
 			"Hint: You should update the running kernel "

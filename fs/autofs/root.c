@@ -7,7 +7,10 @@
 
 #include <linux/capability.h>
 #include <linux/compat.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "autofs_i.h"
 
@@ -579,6 +582,10 @@ static int autofs_dir_symlink(struct mnt_idmap *idmap,
 	struct autofs_info *ino = autofs_dentry_ino(dentry);
 	struct autofs_info *p_ino;
 	struct inode *inode;
+<<<<<<< HEAD
+=======
+	size_t size = strlen(symname);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *cp;
 
 	pr_debug("%s <- %pd\n", symname, dentry);
@@ -589,17 +596,30 @@ static int autofs_dir_symlink(struct mnt_idmap *idmap,
 
 	autofs_del_active(dentry);
 
+<<<<<<< HEAD
 	cp = kstrdup(symname, GFP_KERNEL);
 	if (!cp)
 		return -ENOMEM;
 
+=======
+	cp = kmalloc(size + 1, GFP_KERNEL);
+	if (!cp)
+		return -ENOMEM;
+
+	strcpy(cp, symname);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	inode = autofs_get_inode(dir->i_sb, S_IFLNK | 0555);
 	if (!inode) {
 		kfree(cp);
 		return -ENOMEM;
 	}
 	inode->i_private = cp;
+<<<<<<< HEAD
 	inode->i_size = strlen(cp);
+=======
+	inode->i_size = size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	d_make_persistent(dentry, inode);
 	p_ino = autofs_dentry_ino(dentry->d_parent);

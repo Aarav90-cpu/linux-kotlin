@@ -6,10 +6,16 @@
  */
 #include <linux/kernel.h>
 #include <linux/jump_label.h>
+<<<<<<< HEAD
 #include <asm/cacheflush.h>
 #include <asm/inst.h>
 
 bool arch_jump_label_transform_queue(struct jump_entry *entry, enum jump_label_type type)
+=======
+#include <asm/inst.h>
+
+void arch_jump_label_transform(struct jump_entry *entry, enum jump_label_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 insn;
 	void *addr = (void *)jump_entry_code(entry);
@@ -19,6 +25,7 @@ bool arch_jump_label_transform_queue(struct jump_entry *entry, enum jump_label_t
 	else
 		insn = larch_insn_gen_nop();
 
+<<<<<<< HEAD
 	larch_insn_write(addr, insn);
 
 	return true;
@@ -27,4 +34,7 @@ bool arch_jump_label_transform_queue(struct jump_entry *entry, enum jump_label_t
 void arch_jump_label_transform_apply(void)
 {
 	flush_icache_all();
+=======
+	larch_insn_patch_text(addr, insn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

@@ -15,6 +15,7 @@
 #include <linux/string.h>
 #include <linux/unaligned.h>
 
+<<<<<<< HEAD
 static const struct sm3_block_state sm3_iv = {
 	.h = {
 		SM3_IVA, SM3_IVB, SM3_IVC, SM3_IVD,
@@ -22,6 +23,8 @@ static const struct sm3_block_state sm3_iv = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const u32 ____cacheline_aligned K[64] = {
 	0x79cc4519, 0xf3988a32, 0xe7311465, 0xce6228cb,
 	0x9cc45197, 0x3988a32f, 0x7311465e, 0xe6228cbc,
@@ -79,6 +82,7 @@ static const u32 ____cacheline_aligned K[64] = {
 		^ rol32(W[(i-13) & 0x0f], 7)		\
 		^ W[(i-6) & 0x0f])
 
+<<<<<<< HEAD
 static void sm3_block_generic(struct sm3_block_state *state,
 			      const u8 data[SM3_BLOCK_SIZE], u32 W[16])
 {
@@ -92,6 +96,20 @@ static void sm3_block_generic(struct sm3_block_state *state,
 	f = state->h[5];
 	g = state->h[6];
 	h = state->h[7];
+=======
+static void sm3_transform(struct sm3_state *sctx, u8 const *data, u32 W[16])
+{
+	u32 a, b, c, d, e, f, g, h, ss1, ss2;
+
+	a = sctx->state[0];
+	b = sctx->state[1];
+	c = sctx->state[2];
+	d = sctx->state[3];
+	e = sctx->state[4];
+	f = sctx->state[5];
+	g = sctx->state[6];
+	h = sctx->state[7];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	R1(a, b, c, d, e, f, g, h, K[0], I(0), I(4));
 	R1(d, a, b, c, h, e, f, g, K[1], I(1), I(5));
@@ -161,6 +179,7 @@ static void sm3_block_generic(struct sm3_block_state *state,
 	R2(c, d, a, b, g, h, e, f, K[62], W1(62), W2(66));
 	R2(b, c, d, a, f, g, h, e, K[63], W1(63), W2(67));
 
+<<<<<<< HEAD
 	state->h[0] ^= a;
 	state->h[1] ^= b;
 	state->h[2] ^= c;
@@ -169,6 +188,16 @@ static void sm3_block_generic(struct sm3_block_state *state,
 	state->h[5] ^= f;
 	state->h[6] ^= g;
 	state->h[7] ^= h;
+=======
+	sctx->state[0] ^= a;
+	sctx->state[1] ^= b;
+	sctx->state[2] ^= c;
+	sctx->state[3] ^= d;
+	sctx->state[4] ^= e;
+	sctx->state[5] ^= f;
+	sctx->state[6] ^= g;
+	sctx->state[7] ^= h;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #undef R
 #undef R1
@@ -177,12 +206,17 @@ static void sm3_block_generic(struct sm3_block_state *state,
 #undef W1
 #undef W2
 
+<<<<<<< HEAD
 static void __maybe_unused sm3_blocks_generic(struct sm3_block_state *state,
 					      const u8 *data, size_t nblocks)
+=======
+void sm3_block_generic(struct sm3_state *sctx, u8 const *data, int blocks)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 W[16];
 
 	do {
+<<<<<<< HEAD
 		sm3_block_generic(state, data, W);
 		data += SM3_BLOCK_SIZE;
 	} while (--nblocks);
@@ -287,4 +321,15 @@ module_exit(sm3_mod_exit);
 #endif
 
 MODULE_DESCRIPTION("SM3 library functions");
+=======
+		sm3_transform(sctx, data, W);
+		data += SM3_BLOCK_SIZE;
+	} while (--blocks);
+
+	memzero_explicit(W, sizeof(W));
+}
+EXPORT_SYMBOL_GPL(sm3_block_generic);
+
+MODULE_DESCRIPTION("Generic SM3 library");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL v2");

@@ -13,7 +13,10 @@
 #include <linux/msdos_fs.h>
 #include <linux/writeback.h>
 #include <linux/filelock.h>
+<<<<<<< HEAD
 #include <linux/falloc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "exfat_raw.h"
 #include "exfat_fs.h"
@@ -34,7 +37,10 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
 		return ret;
 
 	num_clusters = EXFAT_B_TO_CLU(exfat_ondisk_size(inode), sbi);
+<<<<<<< HEAD
 	/* integer overflow is already checked in inode_newsize_ok(). */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	new_num_clusters = EXFAT_B_TO_CLU_ROUND_UP(size, sbi);
 
 	if (new_num_clusters == num_clusters)
@@ -92,6 +98,7 @@ free_clu:
 	return -EIO;
 }
 
+<<<<<<< HEAD
 /*
  * Preallocate space for a file. This implements exfat's fallocate file
  * operation, which gets called from sys_fallocate system call. User space
@@ -131,6 +138,8 @@ error:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool exfat_allow_set_time(struct mnt_idmap *idmap,
 				 struct exfat_sb_info *sbi, struct inode *inode)
 {
@@ -618,7 +627,11 @@ int exfat_file_fsync(struct file *filp, loff_t start, loff_t end, int datasync)
 	if (unlikely(exfat_forced_shutdown(inode->i_sb)))
 		return -EIO;
 
+<<<<<<< HEAD
 	err = simple_fsync_noflush(filp, start, end, datasync);
+=======
+	err = __generic_file_fsync(filp, start, end, datasync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -812,7 +825,10 @@ const struct file_operations exfat_file_operations = {
 	.fsync		= exfat_file_fsync,
 	.splice_read	= exfat_splice_read,
 	.splice_write	= iter_file_splice_write,
+<<<<<<< HEAD
 	.fallocate	= exfat_fallocate,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.setlease	= generic_setlease,
 };
 

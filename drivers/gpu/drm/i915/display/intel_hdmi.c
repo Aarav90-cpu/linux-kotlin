@@ -56,7 +56,10 @@
 #include "intel_display_types.h"
 #include "intel_display_utils.h"
 #include "intel_dp.h"
+<<<<<<< HEAD
 #include "intel_dpll.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_gmbus.h"
 #include "intel_hdcp.h"
 #include "intel_hdcp_regs.h"
@@ -71,6 +74,7 @@
 
 bool intel_hdmi_is_frl(u32 clock)
 {
+<<<<<<< HEAD
 	u32 rates[] = { 300000, 600000, 800000, 1000000, 1200000 };
 	int i;
 
@@ -79,6 +83,18 @@ bool intel_hdmi_is_frl(u32 clock)
 			return true;
 
 	return false;
+=======
+	switch (clock) {
+	case 300000: /* 3 Gbps */
+	case 600000: /* 6 Gbps */
+	case 800000: /* 8 Gbps */
+	case 1000000: /* 10 Gbps */
+	case 1200000: /* 12 Gbps */
+		return true;
+	default:
+		return false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void

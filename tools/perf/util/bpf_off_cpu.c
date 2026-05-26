@@ -39,7 +39,11 @@ union off_cpu_data {
 	u64 array[1024 / sizeof(u64)];
 };
 
+<<<<<<< HEAD
 static u64 off_cpu_raw[MAX_STACKS + 5];
+=======
+u64 off_cpu_raw[MAX_STACKS + 5];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int off_cpu_config(struct evlist *evlist)
 {
@@ -67,7 +71,11 @@ static void off_cpu_start(void *arg)
 	struct evlist *evlist = arg;
 	struct evsel *evsel;
 	struct perf_cpu pcpu;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* update task filter for the given workload */
 	if (skel->rodata->has_task && skel->rodata->uses_tgid &&

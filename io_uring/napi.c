@@ -38,8 +38,12 @@ static inline ktime_t net_to_ktime(unsigned long t)
 	return ns_to_ktime(t << 10);
 }
 
+<<<<<<< HEAD
 int __io_napi_add_id(struct io_ring_ctx *ctx, unsigned int napi_id,
 		     unsigned int mode)
+=======
+int __io_napi_add_id(struct io_ring_ctx *ctx, unsigned int napi_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hlist_head *hash_list;
 	struct io_napi_entry *e;
@@ -70,11 +74,14 @@ int __io_napi_add_id(struct io_ring_ctx *ctx, unsigned int napi_id,
 	 * kfree()
 	 */
 	spin_lock(&ctx->napi_lock);
+<<<<<<< HEAD
 	if (unlikely(READ_ONCE(ctx->napi_track_mode) != mode)) {
 		spin_unlock(&ctx->napi_lock);
 		kfree(e);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(io_napi_hash_find(hash_list, napi_id))) {
 		spin_unlock(&ctx->napi_lock);
 		kfree(e);
@@ -202,6 +209,7 @@ __io_napi_do_busy_loop(struct io_ring_ctx *ctx,
 		       bool (*loop_end)(void *, unsigned long),
 		       void *loop_end_arg)
 {
+<<<<<<< HEAD
 	switch (READ_ONCE(ctx->napi_track_mode)) {
 	case IO_URING_NAPI_TRACKING_STATIC:
 		return static_tracking_do_busy_loop(ctx, loop_end, loop_end_arg);
@@ -210,6 +218,11 @@ __io_napi_do_busy_loop(struct io_ring_ctx *ctx,
 	default:
 		return false;
 	}
+=======
+	if (READ_ONCE(ctx->napi_track_mode) == IO_URING_NAPI_TRACKING_STATIC)
+		return static_tracking_do_busy_loop(ctx, loop_end, loop_end_arg);
+	return dynamic_tracking_do_busy_loop(ctx, loop_end, loop_end_arg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_napi_blocking_busy_loop(struct io_ring_ctx *ctx,
@@ -284,6 +297,7 @@ static int io_napi_register_napi(struct io_ring_ctx *ctx,
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	WRITE_ONCE(ctx->napi_track_mode, IO_URING_NAPI_TRACKING_INACTIVE);
 	io_napi_free(ctx);
 	/* cap NAPI at 10 msec of spin time */
@@ -291,6 +305,13 @@ static int io_napi_register_napi(struct io_ring_ctx *ctx,
 	WRITE_ONCE(ctx->napi_busy_poll_dt, napi->busy_poll_to * NSEC_PER_USEC);
 	WRITE_ONCE(ctx->napi_prefer_busy_poll, !!napi->prefer_busy_poll);
 	WRITE_ONCE(ctx->napi_track_mode, napi->op_param);
+=======
+	/* clean the napi list for new settings */
+	io_napi_free(ctx);
+	WRITE_ONCE(ctx->napi_track_mode, napi->op_param);
+	WRITE_ONCE(ctx->napi_busy_poll_dt, napi->busy_poll_to * NSEC_PER_USEC);
+	WRITE_ONCE(ctx->napi_prefer_busy_poll, !!napi->prefer_busy_poll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -326,8 +347,12 @@ int io_register_napi(struct io_ring_ctx *ctx, void __user *arg)
 	case IO_URING_NAPI_STATIC_ADD_ID:
 		if (curr.op_param != IO_URING_NAPI_TRACKING_STATIC)
 			return -EINVAL;
+<<<<<<< HEAD
 		return __io_napi_add_id(ctx, napi.op_param,
 					IO_URING_NAPI_TRACKING_STATIC);
+=======
+		return __io_napi_add_id(ctx, napi.op_param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IO_URING_NAPI_STATIC_DEL_ID:
 		if (curr.op_param != IO_URING_NAPI_TRACKING_STATIC)
 			return -EINVAL;
@@ -355,10 +380,16 @@ int io_unregister_napi(struct io_ring_ctx *ctx, void __user *arg)
 	if (arg && copy_to_user(arg, &curr, sizeof(curr)))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	WRITE_ONCE(ctx->napi_track_mode, IO_URING_NAPI_TRACKING_INACTIVE);
 	WRITE_ONCE(ctx->napi_busy_poll_dt, 0);
 	WRITE_ONCE(ctx->napi_prefer_busy_poll, false);
 	io_napi_free(ctx);
+=======
+	WRITE_ONCE(ctx->napi_busy_poll_dt, 0);
+	WRITE_ONCE(ctx->napi_prefer_busy_poll, false);
+	WRITE_ONCE(ctx->napi_track_mode, IO_URING_NAPI_TRACKING_INACTIVE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

@@ -319,6 +319,7 @@ static int nf_ip_reroute(struct sk_buff *skb, const struct nf_queue_entry *entry
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nf_ip6_reroute(struct sk_buff *skb,
 			  const struct nf_queue_entry *entry)
 {
@@ -338,6 +339,11 @@ static int nf_ip6_reroute(struct sk_buff *skb,
 
 static int nf_reroute(struct sk_buff *skb, struct nf_queue_entry *entry)
 {
+=======
+static int nf_reroute(struct sk_buff *skb, struct nf_queue_entry *entry)
+{
+	const struct nf_ipv6_ops *v6ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	switch (entry->state.pf) {
@@ -345,7 +351,13 @@ static int nf_reroute(struct sk_buff *skb, struct nf_queue_entry *entry)
 		ret = nf_ip_reroute(skb, entry);
 		break;
 	case AF_INET6:
+<<<<<<< HEAD
 		ret = nf_ip6_reroute(skb, entry);
+=======
+		v6ops = rcu_dereference(nf_ipv6_ops);
+		if (v6ops)
+			ret = v6ops->reroute(skb, entry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 	return ret;
@@ -522,13 +534,17 @@ nfqnl_put_packet_info(struct sk_buff *nlskb, struct sk_buff *packet,
 
 static int nfqnl_put_sk_uidgid(struct sk_buff *skb, struct sock *sk)
 {
+<<<<<<< HEAD
 	const struct socket *sock;
 	const struct file *file;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct cred *cred;
 
 	if (!sk_fullsock(sk))
 		return 0;
 
+<<<<<<< HEAD
 	/* The sk pointer remains valid as long as the skb is.
 	 * The sk_socket and file pointer may become NULL
 	 * if the socket is closed.
@@ -539,6 +555,11 @@ static int nfqnl_put_sk_uidgid(struct sk_buff *skb, struct sock *sk)
 	file = sock ? READ_ONCE(sock->file) : NULL;
 	if (file) {
 		cred = file->f_cred;
+=======
+	read_lock_bh(&sk->sk_callback_lock);
+	if (sk->sk_socket && sk->sk_socket->file) {
+		cred = sk->sk_socket->file->f_cred;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (nla_put_be32(skb, NFQA_UID,
 		    htonl(from_kuid_munged(&init_user_ns, cred->fsuid))))
 			goto nla_put_failure;
@@ -546,9 +567,17 @@ static int nfqnl_put_sk_uidgid(struct sk_buff *skb, struct sock *sk)
 		    htonl(from_kgid_munged(&init_user_ns, cred->fsgid))))
 			goto nla_put_failure;
 	}
+<<<<<<< HEAD
 	return 0;
 
 nla_put_failure:
+=======
+	read_unlock_bh(&sk->sk_callback_lock);
+	return 0;
+
+nla_put_failure:
+	read_unlock_bh(&sk->sk_callback_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -1;
 }
 
@@ -569,8 +598,20 @@ static int nfqnl_get_sk_secctx(struct sk_buff *skb, struct lsm_context *ctx)
 {
 	int seclen = 0;
 #if IS_ENABLED(CONFIG_NETWORK_SECMARK)
+<<<<<<< HEAD
 	if (skb->secmark)
 		seclen = security_secid_to_secctx(skb->secmark, ctx);
+=======
+
+	if (!skb || !sk_fullsock(skb->sk))
+		return 0;
+
+	read_lock_bh(&skb->sk->sk_callback_lock);
+
+	if (skb->secmark)
+		seclen = security_secid_to_secctx(skb->secmark, ctx);
+	read_unlock_bh(&skb->sk->sk_callback_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return seclen;
 }
@@ -579,7 +620,10 @@ static u32 nfqnl_get_bridge_size(struct nf_queue_entry *entry)
 {
 	struct sk_buff *entskb = entry->skb;
 	u32 nlalen = 0;
+<<<<<<< HEAD
 	u32 mac_len;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (entry->state.pf != PF_BRIDGE || !skb_mac_header_was_set(entskb))
 		return 0;
@@ -588,9 +632,15 @@ static u32 nfqnl_get_bridge_size(struct nf_queue_entry *entry)
 		nlalen += nla_total_size(nla_total_size(sizeof(__be16)) +
 					 nla_total_size(sizeof(__be16)));
 
+<<<<<<< HEAD
 	mac_len = skb_mac_header_len(entskb);
 	if (mac_len > 0)
 		nlalen += nla_total_size(mac_len);
+=======
+	if (entskb->network_header > entskb->mac_header)
+		nlalen += nla_total_size((entskb->network_header -
+					  entskb->mac_header));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nlalen;
 }
@@ -598,7 +648,10 @@ static u32 nfqnl_get_bridge_size(struct nf_queue_entry *entry)
 static int nfqnl_put_bridge(struct nf_queue_entry *entry, struct sk_buff *skb)
 {
 	struct sk_buff *entskb = entry->skb;
+<<<<<<< HEAD
 	u32 mac_len;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (entry->state.pf != PF_BRIDGE || !skb_mac_header_was_set(entskb))
 		return 0;
@@ -617,10 +670,19 @@ static int nfqnl_put_bridge(struct nf_queue_entry *entry, struct sk_buff *skb)
 		nla_nest_end(skb, nest);
 	}
 
+<<<<<<< HEAD
 	mac_len = skb_mac_header_len(entskb);
 	if (mac_len > 0 &&
 	    nla_put(skb, NFQA_L2HDR, mac_len, skb_mac_header(entskb)))
 		goto nla_put_failure;
+=======
+	if (entskb->mac_header < entskb->network_header) {
+		int len = (int)(entskb->network_header - entskb->mac_header);
+
+		if (nla_put(skb, NFQA_L2HDR, len, skb_mac_header(entskb)))
+			goto nla_put_failure;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -1004,13 +1066,21 @@ nf_queue_entry_dup(struct nf_queue_entry *e)
 static void nf_bridge_adjust_skb_data(struct sk_buff *skb)
 {
 	if (nf_bridge_info_get(skb))
+<<<<<<< HEAD
 		__skb_push(skb, skb_mac_header_len(skb));
+=======
+		__skb_push(skb, skb->network_header - skb->mac_header);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void nf_bridge_adjust_segmented_data(struct sk_buff *skb)
 {
 	if (nf_bridge_info_get(skb))
+<<<<<<< HEAD
 		__skb_pull(skb, skb_mac_header_len(skb));
+=======
+		__skb_pull(skb, skb->network_header - skb->mac_header);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else
 #define nf_bridge_adjust_skb_data(s) do {} while (0)
@@ -1471,7 +1541,12 @@ static int nfqa_parse_bridge(struct nf_queue_entry *entry,
 	}
 
 	if (nfqa[NFQA_L2HDR]) {
+<<<<<<< HEAD
 		u32 mac_header_len = skb_mac_header_len(entry->skb);
+=======
+		int mac_header_len = entry->skb->network_header -
+			entry->skb->mac_header;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (mac_header_len != nla_len(nfqa[NFQA_L2HDR]))
 			return -EINVAL;
@@ -1563,7 +1638,11 @@ static const struct nla_policy nfqa_cfg_policy[NFQA_CFG_MAX+1] = {
 	[NFQA_CFG_PARAMS]	= { .len = sizeof(struct nfqnl_msg_config_params) },
 	[NFQA_CFG_QUEUE_MAXLEN]	= { .type = NLA_U32 },
 	[NFQA_CFG_MASK]		= { .type = NLA_U32 },
+<<<<<<< HEAD
 	[NFQA_CFG_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NFQA_CFG_F_MAX - 1),
+=======
+	[NFQA_CFG_FLAGS]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nf_queue_handler nfqh = {

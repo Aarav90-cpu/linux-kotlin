@@ -9,7 +9,11 @@
 #include <linux/bug.h>
 #include <linux/cache.h>
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * List of possible attributes associated with a DMA mapping. The semantics
  * of each attribute should be defined in Documentation/core-api/dma-attributes.rst.
  */
@@ -92,6 +96,7 @@
  * flushing.
  */
 #define DMA_ATTR_REQUIRE_COHERENT	(1UL << 12)
+<<<<<<< HEAD
 /*
  * DMA_ATTR_CC_SHARED: Indicates the DMA mapping is shared (decrypted) for
  * confidential computing guests. For normal system memory the caller must have
@@ -102,6 +107,8 @@
  * a struct page is required.
  */
 #define DMA_ATTR_CC_SHARED	(1UL << 13)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can

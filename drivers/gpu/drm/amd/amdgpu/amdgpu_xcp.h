@@ -132,8 +132,11 @@ struct amdgpu_xcp_mgr {
 	struct amdgpu_xcp_cfg *xcp_cfg;
 	uint32_t supp_xcp_modes;
 	uint32_t avail_xcp_modes;
+<<<<<<< HEAD
 	/* used to determin KFD memory alloc mode for each partition */
 	uint32_t mem_alloc_mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct amdgpu_xcp_mgr_funcs {

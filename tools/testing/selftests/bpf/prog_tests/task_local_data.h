@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause) */
+=======
+/* SPDX-License-Identifier: GPL-2.0 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __TASK_LOCAL_DATA_H
 #define __TASK_LOCAL_DATA_H
 
@@ -22,17 +26,25 @@
 /*
  * OPTIONS
  *
+<<<<<<< HEAD
  *   Define the option before including the header. Using different options in
  *   different translation units is strongly discouraged.
+=======
+ *   Define the option before including the header
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *   TLD_FREE_DATA_ON_THREAD_EXIT - Frees memory on thread exit automatically
  *
  *   Thread-specific memory for storing TLD is allocated lazily on the first call to
  *   tld_get_data(). The thread that calls it must also call tld_free() on thread exit
  *   to prevent memory leak. Pthread will be included if the option is defined. A pthread
+<<<<<<< HEAD
  *   key will be registered with a destructor that calls tld_free(). Enabled only when
  *   the option is defined and TLD_DEFINE_KEY/tld_create_key() is called in the same
  *   translation unit.
+=======
+ *   key will be registered with a destructor that calls tld_free().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *
  *   TLD_DYN_DATA_SIZE - The maximum size of memory allocated for TLDs created dynamically
@@ -50,6 +62,7 @@
  *   TLD_NAME_LEN - The maximum length of the name of a TLD (default: 62)
  *
  *   Setting TLD_NAME_LEN will affect the maximum number of TLDs a process can store,
+<<<<<<< HEAD
  *   TLD_MAX_DATA_CNT. Must be consistent with task_local_data.bpf.h.
  *
  *
@@ -60,6 +73,21 @@
  *   does not need to be an integral multiple of alignment and it can be fulfilled
  *   without using round_up(size, alignment) bytes of memory. Enable this option to
  *   reduce memory usage.
+=======
+ *   TLD_MAX_DATA_CNT.
+ *
+ *
+ *   TLD_DATA_USE_ALIGNED_ALLOC - Always use aligned_alloc() instead of malloc()
+ *
+ *   When allocating the memory for storing TLDs, we need to make sure there is a memory
+ *   region of the X bytes within a page. This is due to the limit posed by UPTR: memory
+ *   pinned to the kernel cannot exceed a page nor can it cross the page boundary. The
+ *   library normally calls malloc(2*X) given X bytes of total TLDs, and only uses
+ *   aligned_alloc(PAGE_SIZE, X) when X >= PAGE_SIZE / 2. This is to reduce memory wastage
+ *   as not all memory allocator can use the exact amount of memory requested to fulfill
+ *   aligned_alloc(). For example, some may round the size up to the alignment. Enable the
+ *   option to always use aligned_alloc() if the implementation has low memory overhead.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #define TLD_PAGE_SIZE getpagesize()
@@ -68,7 +96,11 @@
 #define TLD_ROUND_MASK(x, y) ((__typeof__(x))((y) - 1))
 #define TLD_ROUND_UP(x, y) ((((x) - 1) | TLD_ROUND_MASK(x, y)) + 1)
 
+<<<<<<< HEAD
 #define TLD_ROUND_UP_POWER_OF_TWO(x) (1UL << (sizeof(x) * 8 - __builtin_clzl(x - 1)))
+=======
+#define TLD_READ_ONCE(x) (*(volatile typeof(x) *)&(x))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifndef TLD_DYN_DATA_SIZE
 #define TLD_DYN_DATA_SIZE 64
@@ -90,7 +122,11 @@ typedef struct {
 
 struct tld_metadata {
 	char name[TLD_NAME_LEN];
+<<<<<<< HEAD
 	_Atomic __u16 size; /* size of tld_data_u->data */
+=======
+	_Atomic __u16 size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tld_meta_u {
@@ -99,6 +135,7 @@ struct tld_meta_u {
 	struct tld_metadata metadata[];
 };
 
+<<<<<<< HEAD
 /*
  * The unused field ensures map_val.start > 0. On the BPF side, __tld_fetch_key()
  * calculates off by summing map_val.start and tld_key_t.off and treats off == 0
@@ -107,26 +144,43 @@ struct tld_meta_u {
 struct tld_data_u {
 	__u64 unused;
 	char data[] __attribute__((aligned(8)));
+=======
+struct tld_data_u {
+	__u64 start; /* offset of tld_data_u->data in a page */
+	char data[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tld_map_value {
 	void *data;
 	struct tld_meta_u *meta;
+<<<<<<< HEAD
 	__u16 start; /* offset of tld_data_u->data in a page */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tld_meta_u * _Atomic tld_meta_p __attribute__((weak));
 __thread struct tld_data_u *tld_data_p __attribute__((weak));
+<<<<<<< HEAD
 
 #ifdef TLD_FREE_DATA_ON_THREAD_EXIT
 bool _Atomic tld_pthread_key_init __attribute__((weak));
+=======
+__thread void *tld_data_alloc_p __attribute__((weak));
+
+#ifdef TLD_FREE_DATA_ON_THREAD_EXIT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pthread_key_t tld_pthread_key __attribute__((weak));
 
 static void tld_free(void);
 
 static void __tld_thread_exit_handler(void *unused)
 {
+<<<<<<< HEAD
 	(void)unused;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tld_free();
 }
 #endif
@@ -150,16 +204,30 @@ static int __tld_init_meta_p(void)
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef TLD_FREE_DATA_ON_THREAD_EXIT
+	pthread_key_create(&tld_pthread_key, __tld_thread_exit_handler);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return err;
 }
 
 static int __tld_init_data_p(int map_fd)
 {
+<<<<<<< HEAD
 	struct tld_map_value map_val;
 	struct tld_data_u *data;
 	int err, tid_fd = -1;
 	size_t size, size_pot;
+=======
+	bool use_aligned_alloc = false;
+	struct tld_map_value map_val;
+	struct tld_data_u *data;
+	void *data_alloc = NULL;
+	int err, tid_fd = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tid_fd = syscall(SYS_pidfd_open, sys_gettid(), O_EXCL);
 	if (tid_fd < 0) {
@@ -167,10 +235,18 @@ static int __tld_init_data_p(int map_fd)
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef TLD_DATA_USE_ALIGNED_ALLOC
+	use_aligned_alloc = true;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * tld_meta_p->size = TLD_DYN_DATA_SIZE +
 	 *          total size of TLDs defined via TLD_DEFINE_KEY()
 	 */
+<<<<<<< HEAD
 	size = tld_meta_p->size + sizeof(struct tld_data_u);
 	size_pot = TLD_ROUND_UP_POWER_OF_TWO(size);
 #ifdef TLD_DONT_ROUND_UP_DATA_SIZE
@@ -179,12 +255,19 @@ static int __tld_init_data_p(int map_fd)
 	data = (struct tld_data_u *)aligned_alloc(size_pot, size_pot);
 #endif
 	if (!data) {
+=======
+	data_alloc = (use_aligned_alloc || tld_meta_p->size * 2 >= TLD_PAGE_SIZE) ?
+		aligned_alloc(TLD_PAGE_SIZE, tld_meta_p->size) :
+		malloc(tld_meta_p->size * 2);
+	if (!data_alloc) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -ENOMEM;
 		goto out;
 	}
 
 	/*
 	 * Always pass a page-aligned address to UPTR since the size of tld_map_value::data
+<<<<<<< HEAD
 	 * is a page in BTF.
 	 */
 	map_val.data = (void *)(TLD_PAGE_MASK & (intptr_t)data);
@@ -194,10 +277,34 @@ static int __tld_init_data_p(int map_fd)
 	err = bpf_map_update_elem(map_fd, &tid_fd, &map_val, 0);
 	if (err) {
 		free(data);
+=======
+	 * is a page in BTF. If data_alloc spans across two pages, use the page that contains large
+	 * enough memory.
+	 */
+	if (TLD_PAGE_SIZE - (~TLD_PAGE_MASK & (intptr_t)data_alloc) >= tld_meta_p->size) {
+		map_val.data = (void *)(TLD_PAGE_MASK & (intptr_t)data_alloc);
+		data = data_alloc;
+		data->start = (~TLD_PAGE_MASK & (intptr_t)data_alloc) +
+			      offsetof(struct tld_data_u, data);
+	} else {
+		map_val.data = (void *)(TLD_ROUND_UP((intptr_t)data_alloc, TLD_PAGE_SIZE));
+		data = (void *)(TLD_ROUND_UP((intptr_t)data_alloc, TLD_PAGE_SIZE));
+		data->start = offsetof(struct tld_data_u, data);
+	}
+	map_val.meta = TLD_READ_ONCE(tld_meta_p);
+
+	err = bpf_map_update_elem(map_fd, &tid_fd, &map_val, 0);
+	if (err) {
+		free(data_alloc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
 	tld_data_p = data;
+<<<<<<< HEAD
+=======
+	tld_data_alloc_p = data_alloc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef TLD_FREE_DATA_ON_THREAD_EXIT
 	pthread_setspecific(tld_pthread_key, (void *)1);
 #endif
@@ -210,6 +317,7 @@ out:
 static tld_key_t __tld_create_key(const char *name, size_t size, bool dyn_data)
 {
 	int err, i, sz, off = 0;
+<<<<<<< HEAD
 	bool uninit = false;
 	__u16 cnt;
 
@@ -228,6 +336,17 @@ static tld_key_t __tld_create_key(const char *name, size_t size, bool dyn_data)
 #endif
 
 	for (i = 0; i < (int)TLD_MAX_DATA_CNT; i++) {
+=======
+	__u16 cnt;
+
+	if (!TLD_READ_ONCE(tld_meta_p)) {
+		err = __tld_init_meta_p();
+		if (err)
+			return (tld_key_t){err};
+	}
+
+	for (i = 0; i < TLD_MAX_DATA_CNT; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 retry:
 		cnt = atomic_load(&tld_meta_p->cnt);
 		if (i < cnt) {
@@ -247,8 +366,12 @@ retry:
 		 * TLD_DYN_DATA_SIZE is allocated for tld_create_key()
 		 */
 		if (dyn_data) {
+<<<<<<< HEAD
 			if (off + TLD_ROUND_UP(size, 8) > tld_meta_p->size ||
 			    tld_meta_p->size > TLD_PAGE_SIZE - sizeof(struct tld_data_u))
+=======
+			if (off + TLD_ROUND_UP(size, 8) > tld_meta_p->size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return (tld_key_t){-E2BIG};
 		} else {
 			if (off + TLD_ROUND_UP(size, 8) > TLD_PAGE_SIZE - sizeof(struct tld_data_u))
@@ -293,7 +416,11 @@ retry:
 #define TLD_DEFINE_KEY(key, name, size)			\
 tld_key_t key;						\
 							\
+<<<<<<< HEAD
 __attribute__((constructor(101)))			\
+=======
+__attribute__((constructor))				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __tld_define_key_##key(void)			\
 {							\
 	key = __tld_create_key(name, size, false);	\
@@ -353,7 +480,11 @@ static inline int tld_key_err_or_zero(tld_key_t key)
 __attribute__((unused))
 static void *tld_get_data(int map_fd, tld_key_t key)
 {
+<<<<<<< HEAD
 	if (!tld_meta_p)
+=======
+	if (!TLD_READ_ONCE(tld_meta_p))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	/* tld_data_p is allocated on the first invocation of tld_get_data() */
@@ -370,14 +501,24 @@ static void *tld_get_data(int map_fd, tld_key_t key)
  *
  * Users must call tld_free() on thread exit to prevent memory leak. Alternatively,
  * define TLD_FREE_DATA_ON_THREAD_EXIT and a thread exit handler will be registered
+<<<<<<< HEAD
  * to free the memory automatically. Calling tld_free() before thread exit is
  * undefined behavior, which may lead to null-pointer dereference.
+=======
+ * to free the memory automatically.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 __attribute__((unused))
 static void tld_free(void)
 {
+<<<<<<< HEAD
 	if (tld_data_p) {
 		free(tld_data_p);
+=======
+	if (tld_data_alloc_p) {
+		free(tld_data_alloc_p);
+		tld_data_alloc_p = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tld_data_p = NULL;
 	}
 }

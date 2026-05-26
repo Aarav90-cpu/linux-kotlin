@@ -246,8 +246,20 @@ static int exfat_search_empty_slot(struct super_block *sb,
 		i += ret;
 
 		while (i >= dentries_per_clu) {
+<<<<<<< HEAD
 			if (exfat_chain_advance(sb, &clu, 1))
 				return -EIO;
+=======
+			if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+				if (--clu.size > 0)
+					clu.dir++;
+				else
+					clu.dir = EXFAT_EOF_CLUSTER;
+			} else {
+				if (exfat_get_next_cluster(sb, &clu.dir))
+					return -EIO;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			i -= dentries_per_clu;
 		}
@@ -358,8 +370,12 @@ int exfat_find_empty_entry(struct inode *inode,
 			/* no-fat-chain bit is disabled,
 			 * so fat-chain should be synced with alloc-bitmap
 			 */
+<<<<<<< HEAD
 			if (exfat_chain_cont_cluster(sb, p_dir->dir, p_dir->size))
 				return -EIO;
+=======
+			exfat_chain_cont_cluster(sb, p_dir->dir, p_dir->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			p_dir->flags = ALLOC_FAT_CHAIN;
 			hint_femp.cur.flags = ALLOC_FAT_CHAIN;
 		}
@@ -867,10 +883,16 @@ static struct dentry *exfat_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 
 	i_pos = exfat_make_i_pos(&info);
 	inode = exfat_build_inode(sb, &info, i_pos);
+<<<<<<< HEAD
 	if (IS_ERR(inode)) {
 		err = PTR_ERR(inode);
 		goto unlock;
 	}
+=======
+	err = PTR_ERR_OR_ZERO(inode);
+	if (err)
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	inode_inc_iversion(inode);
 	EXFAT_I(inode)->i_crtime = simple_inode_init_ts(inode);
@@ -881,7 +903,11 @@ static struct dentry *exfat_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 
 unlock:
 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+<<<<<<< HEAD
 	return err ? ERR_PTR(err) : NULL;
+=======
+	return ERR_PTR(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int exfat_check_dir_empty(struct super_block *sb,
@@ -918,12 +944,28 @@ static int exfat_check_dir_empty(struct super_block *sb,
 			return -ENOTEMPTY;
 		}
 
+<<<<<<< HEAD
 		if (exfat_chain_advance(sb, &clu, 1))
 			return -EIO;
 
 		/* break if the cluster chain includes a loop */
 		if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
 			break;
+=======
+		if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+			if (--clu.size > 0)
+				clu.dir++;
+			else
+				clu.dir = EXFAT_EOF_CLUSTER;
+		} else {
+			if (exfat_get_next_cluster(sb, &(clu.dir)))
+				return -EIO;
+
+			/* break if the cluster chain includes a loop */
+			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
+				break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

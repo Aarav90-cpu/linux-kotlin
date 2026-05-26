@@ -30,7 +30,11 @@ properties:
               - fsl,imx93-npu
           - const: arm,ethos-u65
       - items:
+<<<<<<< HEAD
           - const: arm,corstone1000-ethos-u85
+=======
+          - {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: arm,ethos-u85
 
   reg:

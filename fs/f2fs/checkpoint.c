@@ -11,7 +11,11 @@
 #include <linux/writeback.h>
 #include <linux/blkdev.h>
 #include <linux/f2fs_fs.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/swap.h>
 #include <linux/kthread.h>
 #include <linux/delayacct.h>
@@ -28,7 +32,11 @@ static inline void get_lock_elapsed_time(struct f2fs_time_stat *ts)
 {
 	ts->total_time = ktime_get();
 #ifdef CONFIG_64BIT
+<<<<<<< HEAD
 	ts->running_time = current->se.sum_exec_runtime;
+=======
+	ts->running_time = tsk_seruntime(current);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 #if defined(CONFIG_SCHED_INFO) && defined(CONFIG_SCHEDSTATS)
 	ts->runnable_time = current->sched_info.run_delay;
@@ -232,6 +240,18 @@ static inline void f2fs_unlock_all(struct f2fs_sb_info *sbi)
 static struct kmem_cache *ino_entry_slab;
 struct kmem_cache *f2fs_inode_entry_slab;
 
+<<<<<<< HEAD
+=======
+void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io,
+						unsigned char reason)
+{
+	f2fs_build_fault_attr(sbi, 0, 0, FAULT_ALL);
+	if (!end_io)
+		f2fs_flush_merged_writes(sbi);
+	f2fs_handle_critical_error(sbi, reason);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We guarantee no failure on the returned page.
  */

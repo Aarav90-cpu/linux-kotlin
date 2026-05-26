@@ -133,8 +133,11 @@ config VIRT
 	select GOLDFISH_TIMER
 	select GOLDFISH_TTY
 	select M68040
+<<<<<<< HEAD
 	select POWER_RESET
 	select POWER_RESET_QEMU_VIRT_CTRL
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select RTC_CLASS
 	select RTC_DRV_GOLDFISH
 	select TTY

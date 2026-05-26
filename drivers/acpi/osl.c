@@ -13,8 +13,11 @@
 
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/panic.h>
 #include <linux/reboot.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/mm.h>
 #include <linux/highmem.h>
@@ -72,10 +75,13 @@ static bool acpi_os_initialized;
 unsigned int acpi_sci_irq = INVALID_ACPI_IRQ;
 bool acpi_permanent_mmap = false;
 
+<<<<<<< HEAD
 static bool poweroff_on_fatal = true;
 module_param(poweroff_on_fatal, bool, 0);
 MODULE_PARM_DESC(poweroff_on_fatal, "Poweroff when encountering a fatal ACPI error");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * This list of permanent mappings is for memory that may be accessed from
  * interrupt context, where we can't do the ioremap().
@@ -1263,7 +1269,11 @@ acpi_status acpi_os_delete_semaphore(acpi_handle handle)
 
 	ACPI_DEBUG_PRINT((ACPI_DB_MUTEX, "Deleting semaphore[%p].\n", handle));
 
+<<<<<<< HEAD
 	BUG_ON(sem->first_waiter);
+=======
+	BUG_ON(!list_empty(&sem->wait_list));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sem);
 	sem = NULL;
 
@@ -1387,6 +1397,7 @@ acpi_status acpi_os_notify_command_complete(void)
 
 acpi_status acpi_os_signal(u32 function, void *info)
 {
+<<<<<<< HEAD
 	struct acpi_signal_fatal_info *fatal_info;
 
 	switch (function) {
@@ -1401,6 +1412,11 @@ acpi_status acpi_os_signal(u32 function, void *info)
 		else
 			add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STILL_OK);
 
+=======
+	switch (function) {
+	case ACPI_SIGNAL_FATAL:
+		pr_err("Fatal opcode executed\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case ACPI_SIGNAL_BREAKPOINT:
 		/*

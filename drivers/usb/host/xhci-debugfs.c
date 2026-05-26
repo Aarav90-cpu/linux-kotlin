@@ -700,10 +700,13 @@ static int xhci_port_bw_show(struct xhci_hcd *xhci, u8 dev_speed,
 		seq_printf(s, "port[%d] available bw: %d%%.\n", i,
 				ctx->bytes[i]);
 err_out:
+<<<<<<< HEAD
 	if (ret == -EIO) {
 		seq_puts(s, "Get Port Bandwidth failed\n");
 		ret = 0;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_put_sync(dev);
 	xhci_free_port_bw_ctx(xhci, ctx);
 	return ret;
@@ -714,7 +717,11 @@ static int xhci_ss_bw_show(struct seq_file *s, void *unused)
 	int ret;
 	struct xhci_hcd		*xhci = (struct xhci_hcd *)s->private;
 
+<<<<<<< HEAD
 	ret = xhci_port_bw_show(xhci, DEV_PORT_SPEED(XDEV_SS), s);
+=======
+	ret = xhci_port_bw_show(xhci, USB_SPEED_SUPER, s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -723,7 +730,11 @@ static int xhci_hs_bw_show(struct seq_file *s, void *unused)
 	int ret;
 	struct xhci_hcd		*xhci = (struct xhci_hcd *)s->private;
 
+<<<<<<< HEAD
 	ret = xhci_port_bw_show(xhci, DEV_PORT_SPEED(XDEV_HS), s);
+=======
+	ret = xhci_port_bw_show(xhci, USB_SPEED_HIGH, s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -732,7 +743,11 @@ static int xhci_fs_bw_show(struct seq_file *s, void *unused)
 	int ret;
 	struct xhci_hcd		*xhci = (struct xhci_hcd *)s->private;
 
+<<<<<<< HEAD
 	ret = xhci_port_bw_show(xhci, DEV_PORT_SPEED(XDEV_FS), s);
+=======
+	ret = xhci_port_bw_show(xhci, USB_SPEED_FULL, s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

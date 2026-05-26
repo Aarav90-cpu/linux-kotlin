@@ -218,7 +218,11 @@ void drm_self_refresh_helper_alter_state(struct drm_atomic_state *state)
 			 ewma_psr_time_read(&sr_data->exit_avg_ms)) * 2;
 		mutex_unlock(&sr_data->avg_mutex);
 
+<<<<<<< HEAD
 		mod_delayed_work(system_percpu_wq, &sr_data->entry_work,
+=======
+		mod_delayed_work(system_wq, &sr_data->entry_work,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 msecs_to_jiffies(delay));
 	}
 }

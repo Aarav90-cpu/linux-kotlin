@@ -79,6 +79,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of page walks completed due to load DTLB misses to a 4K page.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x08",
@@ -89,6 +90,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Page walks completed due to a demand data load to a 4K page.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0x12",
@@ -189,6 +192,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of page walks completed due to store DTLB misses to a 4K page.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x49",
@@ -199,6 +203,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Page walks completed due to a demand data store to a 4K page.",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0x13",
@@ -288,6 +294,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of page walks completed due to instruction fetch misses to a 4K page.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x85",
@@ -298,6 +305,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Code miss in all TLB levels causes a page walk that completes. (4K)",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "EventCode": "0x11",

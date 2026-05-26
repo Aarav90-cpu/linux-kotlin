@@ -119,7 +119,10 @@ enum irdma_vers {
 	IRDMA_GEN_1,
 	IRDMA_GEN_2,
 	IRDMA_GEN_3,
+<<<<<<< HEAD
 	IRDMA_GEN_4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	IRDMA_GEN_NEXT,
 	IRDMA_GEN_MAX = IRDMA_GEN_NEXT-1
 };

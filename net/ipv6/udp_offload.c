@@ -128,7 +128,12 @@ static struct sock *udp6_gro_lookup_skb(struct sk_buff *skb, __be16 sport,
 	inet6_get_iif_sdif(skb, &iif, &sdif);
 
 	return __udp6_lib_lookup(net, &iph->saddr, sport,
+<<<<<<< HEAD
 				 &iph->daddr, dport, iif, sdif, NULL);
+=======
+				 &iph->daddr, dport, iif,
+				 sdif, net->ipv4.udp_table, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct sk_buff *udp6_gro_receive(struct list_head *head, struct sk_buff *skb)

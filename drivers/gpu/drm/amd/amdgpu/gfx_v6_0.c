@@ -1571,6 +1571,7 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
 	mutex_unlock(&adev->grbm_idx_mutex);
 }
 
+<<<<<<< HEAD
 /**
  * gfx_v6_0_setup_tcc() - setup which TCCs are used
  *
@@ -1636,6 +1637,8 @@ static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
 	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void gfx_v6_0_config_init(struct amdgpu_device *adev)
 {
 	adev->gfx.config.double_offchip_lds_buf = 0;
@@ -1794,7 +1797,10 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
 	gfx_v6_0_tiling_mode_table_init(adev);
 
 	gfx_v6_0_setup_rb(adev);
+<<<<<<< HEAD
 	gfx_v6_0_setup_tcc(adev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gfx_v6_0_setup_spi(adev);
 

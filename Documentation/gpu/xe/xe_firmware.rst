@@ -31,9 +31,12 @@ GuC Power Conservation (PC)
 .. kernel-doc:: drivers/gpu/drm/xe/xe_guc_pc.c
    :doc: GuC Power Conservation (PC)
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/xe/xe_guc_rc.c
    :doc: GuC Render C-states (GuC RC)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 PCIe Gen5 Limitations
 =====================
 

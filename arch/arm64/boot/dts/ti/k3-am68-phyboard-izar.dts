@@ -298,6 +298,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &dss {
 	/*
 	 * VP0 - Displayport
@@ -315,6 +316,8 @@
 				 <&k3_clks 158 22>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c_som_rtc {
 	trickle-resistor-ohms = <3000>;
 };

@@ -1245,7 +1245,11 @@ static long do_get_mempolicy(int *policy, nodemask_t *nmask,
 	return err;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA_MIGRATION
+=======
+#ifdef CONFIG_MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool migrate_folio_add(struct folio *folio, struct list_head *foliolist,
 				unsigned long flags)
 {
@@ -2455,7 +2459,11 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
 
 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
 	    /* filter "hugepage" allocation, unless from alloc_pages() */
+<<<<<<< HEAD
 	    is_pmd_order(order) && ilx != NO_INTERLEAVE_INDEX) {
+=======
+	    order == HPAGE_PMD_ORDER && ilx != NO_INTERLEAVE_INDEX) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * For hugepage allocation and non-interleave policy which
 		 * allows the current node (or other explicitly preferred
@@ -3788,11 +3796,17 @@ static void wi_state_free(void)
 	}
 }
 
+<<<<<<< HEAD
 static struct kobj_attribute wi_auto_attr = {
 	.attr = { .name = "auto", .mode = 0664 },
 	.show = weighted_interleave_auto_show,
 	.store = weighted_interleave_auto_store,
 };
+=======
+static struct kobj_attribute wi_auto_attr =
+	__ATTR(auto, 0664, weighted_interleave_auto_show,
+			   weighted_interleave_auto_store);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void wi_cleanup(void) {
 	sysfs_remove_file(&wi_group->wi_kobj, &wi_auto_attr.attr);

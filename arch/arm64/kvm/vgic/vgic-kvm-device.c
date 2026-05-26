@@ -336,10 +336,13 @@ int kvm_register_vgic_device(unsigned long type)
 			break;
 		ret = kvm_vgic_register_its_device();
 		break;
+<<<<<<< HEAD
 	case KVM_DEV_TYPE_ARM_VGIC_V5:
 		ret = kvm_register_device_ops(&kvm_arm_vgic_v5_ops,
 					      KVM_DEV_TYPE_ARM_VGIC_V5);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -643,7 +646,11 @@ static int vgic_v3_set_attr(struct kvm_device *dev,
 		if (vgic_initialized(dev->kvm))
 			return -EBUSY;
 
+<<<<<<< HEAD
 		if (!irq_is_ppi(dev->kvm, val))
+=======
+		if (!irq_is_ppi(val))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 
 		dev->kvm->arch.vgic.mi_intid = val;
@@ -719,6 +726,7 @@ struct kvm_device_ops kvm_arm_vgic_v3_ops = {
 	.get_attr = vgic_v3_get_attr,
 	.has_attr = vgic_v3_has_attr,
 };
+<<<<<<< HEAD
 
 static int vgic_v5_get_userspace_ppis(struct kvm_device *dev,
 				      struct kvm_device_attr *attr)
@@ -820,3 +828,5 @@ struct kvm_device_ops kvm_arm_vgic_v5_ops = {
 	.get_attr = vgic_v5_get_attr,
 	.has_attr = vgic_v5_has_attr,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

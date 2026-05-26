@@ -9,7 +9,10 @@
 #include <linux/interconnect-provider.h>
 #include <linux/module.h>
 #include <linux/of_platform.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/interconnect/qcom,glymur-rpmh.h>
 
 #include "bcm-voter.h"
@@ -1986,7 +1989,11 @@ static struct qcom_icc_bcm * const cnoc_cfg_bcms[] = {
 	&bcm_cn1,
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node *cnoc_cfg_nodes[] = {
+=======
+static struct qcom_icc_node * const cnoc_cfg_nodes[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[MASTER_CNOC_CFG] = &qsm_cfg,
 	[SLAVE_AHB2PHY_SOUTH] = &qhs_ahb2phy0,
 	[SLAVE_AHB2PHY_NORTH] = &qhs_ahb2phy1,
@@ -2094,7 +2101,11 @@ static struct qcom_icc_bcm * const hscnoc_bcms[] = {
 	&bcm_sh1,
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node *hscnoc_nodes[] = {
+=======
+static struct qcom_icc_node * const hscnoc_nodes[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[MASTER_GPU_TCU] = &alm_gpu_tcu,
 	[MASTER_PCIE_TCU] = &alm_pcie_qtc,
 	[MASTER_SYS_TCU] = &alm_sys_tcu,
@@ -2378,7 +2389,11 @@ static struct qcom_icc_bcm * const pcie_west_anoc_bcms[] = {
 	&bcm_sn6,
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node *pcie_west_anoc_nodes[] = {
+=======
+static struct qcom_icc_node * const pcie_west_anoc_nodes[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[MASTER_PCIE_WEST_ANOC_CFG] = &qsm_pcie_west_anoc_cfg,
 	[MASTER_PCIE_2] = &xm_pcie_2,
 	[MASTER_PCIE_3A] = &xm_pcie_3a,
@@ -2410,7 +2425,11 @@ static struct qcom_icc_bcm * const pcie_west_slv_noc_bcms[] = {
 	&bcm_sn6,
 };
 
+<<<<<<< HEAD
 static struct qcom_icc_node *pcie_west_slv_noc_nodes[] = {
+=======
+static struct qcom_icc_node * const pcie_west_slv_noc_nodes[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[MASTER_HSCNOC_PCIE_WEST] = &qnm_hscnoc_pcie_west,
 	[MASTER_CNOC_PCIE_WEST_SLAVE_CFG] = &qsm_cnoc_pcie_west_slave_cfg,
 	[SLAVE_HSCNOC_PCIE_WEST_MS_MPU_CFG] = &qhs_hscnoc_pcie_west_ms_mpu_cfg,
@@ -2471,6 +2490,7 @@ static const struct qcom_icc_desc glymur_system_noc = {
 	.num_bcms = ARRAY_SIZE(system_noc_bcms),
 };
 
+<<<<<<< HEAD
 static int glymur_qnoc_probe(struct platform_device *pdev)
 {
 	if (device_is_compatible(&pdev->dev, "qcom,mahua-mc-virt")) {
@@ -2493,6 +2513,8 @@ static int glymur_qnoc_probe(struct platform_device *pdev)
 	return qcom_icc_rpmh_probe(pdev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id qnoc_of_match[] = {
 	{ .compatible = "qcom,glymur-aggre1-noc", .data = &glymur_aggre1_noc},
 	{ .compatible = "qcom,glymur-aggre2-noc", .data = &glymur_aggre2_noc},
@@ -2500,15 +2522,23 @@ static const struct of_device_id qnoc_of_match[] = {
 	{ .compatible = "qcom,glymur-aggre4-noc", .data = &glymur_aggre4_noc},
 	{ .compatible = "qcom,glymur-clk-virt", .data = &glymur_clk_virt},
 	{ .compatible = "qcom,glymur-cnoc-cfg", .data = &glymur_cnoc_cfg},
+<<<<<<< HEAD
 	{ .compatible = "qcom,mahua-cnoc-cfg", .data = &glymur_cnoc_cfg},
 	{ .compatible = "qcom,glymur-cnoc-main", .data = &glymur_cnoc_main},
 	{ .compatible = "qcom,glymur-hscnoc", .data = &glymur_hscnoc},
 	{ .compatible = "qcom,mahua-hscnoc", .data = &glymur_hscnoc},
+=======
+	{ .compatible = "qcom,glymur-cnoc-main", .data = &glymur_cnoc_main},
+	{ .compatible = "qcom,glymur-hscnoc", .data = &glymur_hscnoc},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,glymur-lpass-ag-noc", .data = &glymur_lpass_ag_noc},
 	{ .compatible = "qcom,glymur-lpass-lpiaon-noc", .data = &glymur_lpass_lpiaon_noc},
 	{ .compatible = "qcom,glymur-lpass-lpicx-noc", .data = &glymur_lpass_lpicx_noc},
 	{ .compatible = "qcom,glymur-mc-virt", .data = &glymur_mc_virt},
+<<<<<<< HEAD
 	{ .compatible = "qcom,mahua-mc-virt", .data = &glymur_mc_virt},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,glymur-mmss-noc", .data = &glymur_mmss_noc},
 	{ .compatible = "qcom,glymur-nsinoc", .data = &glymur_nsinoc},
 	{ .compatible = "qcom,glymur-nsp-noc", .data = &glymur_nsp_noc},
@@ -2516,16 +2546,24 @@ static const struct of_device_id qnoc_of_match[] = {
 	{ .compatible = "qcom,glymur-pcie-east-anoc", .data = &glymur_pcie_east_anoc},
 	{ .compatible = "qcom,glymur-pcie-east-slv-noc", .data = &glymur_pcie_east_slv_noc},
 	{ .compatible = "qcom,glymur-pcie-west-anoc", .data = &glymur_pcie_west_anoc},
+<<<<<<< HEAD
 	{ .compatible = "qcom,mahua-pcie-west-anoc", .data = &glymur_pcie_west_anoc},
 	{ .compatible = "qcom,glymur-pcie-west-slv-noc", .data = &glymur_pcie_west_slv_noc},
 	{ .compatible = "qcom,mahua-pcie-west-slv-noc", .data = &glymur_pcie_west_slv_noc},
+=======
+	{ .compatible = "qcom,glymur-pcie-west-slv-noc", .data = &glymur_pcie_west_slv_noc},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "qcom,glymur-system-noc", .data = &glymur_system_noc},
 	{ }
 };
 MODULE_DEVICE_TABLE(of, qnoc_of_match);
 
 static struct platform_driver qnoc_driver = {
+<<<<<<< HEAD
 	.probe = glymur_qnoc_probe,
+=======
+	.probe = qcom_icc_rpmh_probe,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.remove = qcom_icc_rpmh_remove,
 	.driver = {
 		.name = "qnoc-glymur",
@@ -2546,5 +2584,9 @@ static void __exit qnoc_driver_exit(void)
 }
 module_exit(qnoc_driver_exit);
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("Glymur NoC driver");
+=======
+MODULE_DESCRIPTION("GLYMUR NoC driver");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

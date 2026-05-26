@@ -63,9 +63,13 @@ allOf:
       properties:
         compatible:
           contains:
+<<<<<<< HEAD
             enum:
               - spacemit,k1-uart
               - spacemit,k3-uart
+=======
+            const: spacemit,k1-uart
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         clock-names:
@@ -78,7 +82,10 @@ allOf:
           contains:
             enum:
               - spacemit,k1-uart
+<<<<<<< HEAD
               - spacemit,k3-uart
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - nxp,lpc1850-uart
     then:
       required:
@@ -182,7 +189,10 @@ properties:
           - const: ns16550a
       - items:
           - enum:
+<<<<<<< HEAD
               - loongson,ls3a4000-uart
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - loongson,ls3a5000-uart
               - loongson,ls3a6000-uart
               - loongson,ls2k2000-uart

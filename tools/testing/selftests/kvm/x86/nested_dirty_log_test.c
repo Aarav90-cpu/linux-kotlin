@@ -47,10 +47,17 @@
 #define TEST_SYNC_WRITE_FAULT		BIT(1)
 #define TEST_SYNC_NO_FAULT		BIT(2)
 
+<<<<<<< HEAD
 static void l2_guest_code(gva_t base)
 {
 	gva_t page0 = TEST_GUEST_ADDR(base, 0);
 	gva_t page1 = TEST_GUEST_ADDR(base, 1);
+=======
+static void l2_guest_code(vm_vaddr_t base)
+{
+	vm_vaddr_t page0 = TEST_GUEST_ADDR(base, 0);
+	vm_vaddr_t page1 = TEST_GUEST_ADDR(base, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	READ_ONCE(*(u64 *)page0);
 	GUEST_SYNC(page0 | TEST_SYNC_READ_FAULT);
@@ -143,7 +150,11 @@ static void l1_guest_code(void *data)
 static void test_handle_ucall_sync(struct kvm_vm *vm, u64 arg,
 				   unsigned long *bmap)
 {
+<<<<<<< HEAD
 	gva_t gva = arg & ~(PAGE_SIZE - 1);
+=======
+	vm_vaddr_t gva = arg & ~(PAGE_SIZE - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int page_nr, i;
 
 	/*
@@ -198,7 +209,11 @@ static void test_handle_ucall_sync(struct kvm_vm *vm, u64 arg,
 
 static void test_dirty_log(bool nested_tdp)
 {
+<<<<<<< HEAD
 	gva_t nested_gva = 0;
+=======
+	vm_vaddr_t nested_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long *bmap;
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;

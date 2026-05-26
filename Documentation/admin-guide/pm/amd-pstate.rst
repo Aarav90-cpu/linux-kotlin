@@ -239,12 +239,17 @@ control its functionality at the system level. They are located in the
 
  root@hr-test1:/home/ray# ls /sys/devices/system/cpu/cpufreq/policy0/*amd*
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_highest_perf
+<<<<<<< HEAD
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_hw_prefcore
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_lowest_nonlinear_freq
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_max_freq
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_floor_freq
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_floor_count
  /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_prefcore_ranking
+=======
+ /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_lowest_nonlinear_freq
+ /sys/devices/system/cpu/cpufreq/policy0/amd_pstate_max_freq
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 ``amd_pstate_highest_perf / amd_pstate_max_freq``
@@ -268,14 +273,20 @@ This attribute is read-only.
 
 ``amd_pstate_hw_prefcore``
 
+<<<<<<< HEAD
 Whether the platform supports the preferred core feature and it has
 been enabled. This attribute is read-only. This file is only visible
 on platforms which support the preferred core feature.
+=======
+Whether the platform supports the preferred core feature and it has been
+enabled. This attribute is read-only.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ``amd_pstate_prefcore_ranking``
 
 The performance ranking of the core. This number doesn't have any unit, but
 larger numbers are preferred at the time of reading. This can change at
+<<<<<<< HEAD
 runtime based on platform conditions. This attribute is read-only. This file
 is only visible on platforms which support the preferred core feature.
 
@@ -308,6 +319,9 @@ Performance Priority feature.
 which the CPU is throttled under power or thermal constraints is
 undefined when the number of unique values of ``amd_pstate_floor_freq``
 across all CPUs in the system exceeds ``amd_pstate_floor_count``.
+=======
+runtime based on platform conditions. This attribute is read-only.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ``energy_performance_available_preferences``
 
@@ -316,13 +330,18 @@ A list of all the supported EPP preferences that could be used for
 These profiles represent different hints that are provided
 to the low-level firmware about the user's desired energy vs efficiency
 tradeoff.  ``default`` represents the epp value is set by platform
+<<<<<<< HEAD
 firmware. ``custom`` designates that integer values 0-255 may be written
 as well.  This attribute is read-only.
+=======
+firmware. This attribute is read-only.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ``energy_performance_preference``
 
 The current energy performance preference can be read from this attribute.
 and user can change current preference according to energy or performance needs
+<<<<<<< HEAD
 Coarse named profiles are available in the attribute
 ``energy_performance_available_preferences``.
 Users can also write individual integer values between 0 to 255.
@@ -332,6 +351,12 @@ towards improved performance while a higher epp value shifts the bias towards
 power-savings. The exact impact can change from one platform to the other.
 If a valid integer was last written, then a number will be returned on future reads.
 If a valid string was last written then a string will be returned on future reads.
+=======
+Please get all support profiles list from
+``energy_performance_available_preferences`` attribute, all the profiles are
+integer values defined between 0 to 255 when EPP feature is enabled by platform
+firmware, if EPP feature is disabled, driver will ignore the written value
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 This attribute is read-write.
 
 ``boost``
@@ -353,6 +378,7 @@ boost or `1` to enable it, for the respective CPU using the sysfs path
 Other performance and frequency values can be read back from
 ``/sys/devices/system/cpu/cpuX/acpi_cppc/``, see :ref:`cppc_sysfs`.
 
+<<<<<<< HEAD
 Dynamic energy performance profile
 ==================================
 The amd-pstate driver supports dynamically selecting the energy performance
@@ -371,6 +397,8 @@ based on the power source and will not react to user desired power state.
 
 Attempting to manually write to the ``energy_performance_preference`` sysfs
 file will fail when ``dynamic_epp`` is enabled.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ``amd-pstate`` vs ``acpi-cpufreq``
 ======================================
@@ -482,12 +510,15 @@ For systems that support ``amd-pstate`` preferred core, the core rankings will
 always be advertised by the platform. But OS can choose to ignore that via the
 kernel parameter ``amd_prefcore=disable``.
 
+<<<<<<< HEAD
 ``amd_dynamic_epp``
 
 When AMD pstate is in auto mode, dynamic EPP will control whether the kernel
 autonomously changes the EPP mode. The default is disabled. It can be enabled
 with the kernel parameter ``amd_dynamic_epp=enable``.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 User Space Interface in ``sysfs`` - General
 ===========================================
 
@@ -856,13 +887,21 @@ Reference
 ===========
 
 .. [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+<<<<<<< HEAD
        https://docs.amd.com/v/u/en-US/24593_3.44_APM_Vol2
+=======
+       https://www.amd.com/system/files/TechDocs/24593.pdf
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .. [2] Advanced Configuration and Power Interface Specification,
        https://uefi.org/sites/default/files/resources/ACPI_Spec_6_4_Jan22.pdf
 
 .. [3] Processor Programming Reference (PPR) for AMD Family 19h Model 51h, Revision A1 Processors
+<<<<<<< HEAD
        https://docs.amd.com/v/u/en-US/56569-A1-PUB_3.03
+=======
+       https://www.amd.com/system/files/TechDocs/56569-A1-PUB.zip
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .. [4] Linux Kernel Selftests,
        https://www.kernel.org/doc/html/latest/dev-tools/kselftest.html

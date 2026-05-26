@@ -1671,6 +1671,7 @@ static int vidioc_log_status(struct file *file, void *fh)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int vidioc_dqbuf(struct file *file, void *priv, struct v4l2_buffer *b)
 {
 	struct au0828_dev *dev = video_drvdata(file);
@@ -1692,6 +1693,8 @@ static int vidioc_dqbuf(struct file *file, void *priv, struct v4l2_buffer *b)
 	return vb2_ioctl_dqbuf(file, priv, b);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void au0828_v4l2_suspend(struct au0828_dev *dev)
 {
 	struct urb *urb;
@@ -1785,8 +1788,13 @@ static const struct v4l2_ioctl_ops video_ioctl_ops = {
 	.vidioc_prepare_buf         = vb2_ioctl_prepare_buf,
 	.vidioc_querybuf            = vb2_ioctl_querybuf,
 	.vidioc_qbuf                = vb2_ioctl_qbuf,
+<<<<<<< HEAD
 	.vidioc_dqbuf               = vidioc_dqbuf,
 	.vidioc_expbuf              = vb2_ioctl_expbuf,
+=======
+	.vidioc_dqbuf               = vb2_ioctl_dqbuf,
+	.vidioc_expbuf               = vb2_ioctl_expbuf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.vidioc_s_std               = vidioc_s_std,
 	.vidioc_g_std               = vidioc_g_std,

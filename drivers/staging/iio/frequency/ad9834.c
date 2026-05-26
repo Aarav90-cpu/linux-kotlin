@@ -281,12 +281,25 @@ ssize_t ad9834_show_out0_wavetype_available(struct device *dev,
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct ad9834_state *st = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	if (st->devid == ID_AD9833 || st->devid == ID_AD9837)
 		return sysfs_emit(buf, "sine triangle square\n");
 	if (st->control & AD9834_OPBITEN)
 		return sysfs_emit(buf, "sine\n");
 	return sysfs_emit(buf, "sine triangle\n");
+=======
+	char *str;
+
+	if (st->devid == ID_AD9833 || st->devid == ID_AD9837)
+		str = "sine triangle square";
+	else if (st->control & AD9834_OPBITEN)
+		str = "sine";
+	else
+		str = "sine triangle";
+
+	return sprintf(buf, "%s\n", str);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static IIO_DEVICE_ATTR(out_altvoltage0_out0_wavetype_available, 0444,
@@ -299,10 +312,21 @@ ssize_t ad9834_show_out1_wavetype_available(struct device *dev,
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct ad9834_state *st = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	if (st->control & AD9834_MODE)
 		return sysfs_emit(buf, "\n");
 	return sysfs_emit(buf, "square\n");
+=======
+	char *str;
+
+	if (st->control & AD9834_MODE)
+		str = "";
+	else
+		str = "square";
+
+	return sprintf(buf, "%s\n", str);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static IIO_DEVICE_ATTR(out_altvoltage0_out1_wavetype_available, 0444,

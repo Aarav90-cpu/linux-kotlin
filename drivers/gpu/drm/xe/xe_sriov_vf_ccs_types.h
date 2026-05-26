@@ -17,6 +17,12 @@ enum xe_sriov_vf_ccs_rw_ctxs {
 	XE_SRIOV_VF_CCS_CTX_COUNT
 };
 
+<<<<<<< HEAD
+=======
+struct xe_migrate;
+struct xe_sa_manager;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct xe_sriov_vf_ccs_ctx - VF CCS migration context data.
  */
@@ -30,7 +36,11 @@ struct xe_sriov_vf_ccs_ctx {
 	/** @mem: memory data */
 	struct {
 		/** @mem.ccs_bb_pool: Pool from which batch buffers are allocated. */
+<<<<<<< HEAD
 		struct xe_mem_pool *ccs_bb_pool;
+=======
+		struct xe_sa_manager *ccs_bb_pool;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} mem;
 };
 

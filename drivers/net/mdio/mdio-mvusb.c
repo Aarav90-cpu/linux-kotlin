@@ -67,6 +67,10 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
 	struct device *dev = &interface->dev;
 	struct mvusb_mdio *mvusb;
 	struct mii_bus *mdio;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mdio = devm_mdiobus_alloc_size(dev, sizeof(*mvusb));
 	if (!mdio)
@@ -74,7 +78,11 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
 
 	mvusb = mdio->priv;
 	mvusb->mdio = mdio;
+<<<<<<< HEAD
 	mvusb->udev = interface_to_usbdev(interface);
+=======
+	mvusb->udev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Reversed from USB PCAPs, no idea what these mean. */
 	mvusb->buf[MVUSB_CMD_PREAMBLE0] = cpu_to_le16(0xe800);
@@ -87,16 +95,36 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
 	mdio->write = mvusb_mdio_write;
 
 	usb_set_intfdata(interface, mvusb);
+<<<<<<< HEAD
 
 	return of_mdiobus_register(mdio, dev->of_node);
+=======
+	ret = of_mdiobus_register(mdio, dev->of_node);
+	if (ret)
+		goto put_dev;
+
+	return 0;
+
+put_dev:
+	usb_put_dev(mvusb->udev);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mvusb_mdio_disconnect(struct usb_interface *interface)
 {
 	struct mvusb_mdio *mvusb = usb_get_intfdata(interface);
+<<<<<<< HEAD
 
 	mdiobus_unregister(mvusb->mdio);
 	usb_set_intfdata(interface, NULL);
+=======
+	struct usb_device *udev = mvusb->udev;
+
+	mdiobus_unregister(mvusb->mdio);
+	usb_set_intfdata(interface, NULL);
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct usb_driver mvusb_mdio_driver = {

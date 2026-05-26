@@ -162,8 +162,26 @@ static int __init disable_randmaps(char *s)
 }
 __setup("norandmaps", disable_randmaps);
 
+<<<<<<< HEAD
 unsigned long highest_memmap_pfn __read_mostly;
 
+=======
+unsigned long zero_pfn __read_mostly;
+EXPORT_SYMBOL(zero_pfn);
+
+unsigned long highest_memmap_pfn __read_mostly;
+
+/*
+ * CONFIG_MMU architectures set up ZERO_PAGE in their paging_init()
+ */
+static int __init init_zero_pfn(void)
+{
+	zero_pfn = page_to_pfn(ZERO_PAGE(0));
+	return 0;
+}
+early_initcall(init_zero_pfn);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mm_trace_rss_stat(struct mm_struct *mm, int member)
 {
 	trace_rss_stat(mm, member);
@@ -1349,7 +1367,11 @@ again:
 
 	if (ret == -EIO) {
 		VM_WARN_ON_ONCE(!entry.val);
+<<<<<<< HEAD
 		if (swap_retry_table_alloc(entry, GFP_KERNEL) < 0) {
+=======
+		if (add_swap_count_continuation(entry, GFP_KERNEL) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -ENOMEM;
 			goto out;
 		}
@@ -1570,6 +1592,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
 static inline bool should_zap_cows(struct zap_details *details)
 {
 	/* By default, zap all pages */
+<<<<<<< HEAD
 	if (!details)
 		return true;
 
@@ -1577,6 +1600,13 @@ static inline bool should_zap_cows(struct zap_details *details)
 
 	/* Or, we zap COWed pages only if the caller wants to */
 	return !details->skip_cows;
+=======
+	if (!details || details->reclaim_pt)
+		return true;
+
+	/* Or, we zap COWed pages only if the caller wants to */
+	return details->even_cows;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Decides whether we should zap this folio with the folio pointer specified */
@@ -2011,7 +2041,17 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
 		} else if (details && details->single_folio &&
 			   folio_test_pmd_mappable(details->single_folio) &&
 			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+<<<<<<< HEAD
 			sync_with_folio_pmd_zap(tlb->mm, pmd);
+=======
+			spinlock_t *ptl = pmd_lock(tlb->mm, pmd);
+			/*
+			 * Take and drop THP pmd lock so that we cannot return
+			 * prematurely, while zap_huge_pmd() has cleared *pmd,
+			 * but not yet decremented compound_mapcount().
+			 */
+			spin_unlock(ptl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (pmd_none(*pmd)) {
 			addr = next;
@@ -2072,6 +2112,7 @@ static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
 	return addr;
 }
 
+<<<<<<< HEAD
 static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
 		unsigned long start, unsigned long end,
 		struct zap_details *details)
@@ -2140,6 +2181,67 @@ int zap_vma_for_reaping(struct vm_area_struct *vma)
 	mmu_notifier_invalidate_range_end(&range);
 	tlb_finish_mmu(&tlb);
 	return 0;
+=======
+void unmap_page_range(struct mmu_gather *tlb,
+			     struct vm_area_struct *vma,
+			     unsigned long addr, unsigned long end,
+			     struct zap_details *details)
+{
+	pgd_t *pgd;
+	unsigned long next;
+
+	BUG_ON(addr >= end);
+	tlb_start_vma(tlb, vma);
+	pgd = pgd_offset(vma->vm_mm, addr);
+	do {
+		next = pgd_addr_end(addr, end);
+		if (pgd_none_or_clear_bad(pgd))
+			continue;
+		next = zap_p4d_range(tlb, vma, pgd, addr, next, details);
+	} while (pgd++, addr = next, addr != end);
+	tlb_end_vma(tlb, vma);
+}
+
+
+static void unmap_single_vma(struct mmu_gather *tlb,
+		struct vm_area_struct *vma, unsigned long start_addr,
+		unsigned long end_addr, struct zap_details *details)
+{
+	unsigned long start = max(vma->vm_start, start_addr);
+	unsigned long end;
+
+	if (start >= vma->vm_end)
+		return;
+	end = min(vma->vm_end, end_addr);
+	if (end <= vma->vm_start)
+		return;
+
+	if (vma->vm_file)
+		uprobe_munmap(vma, start, end);
+
+	if (start != end) {
+		if (unlikely(is_vm_hugetlb_page(vma))) {
+			/*
+			 * It is undesirable to test vma->vm_file as it
+			 * should be non-null for valid hugetlb area.
+			 * However, vm_file will be NULL in the error
+			 * cleanup path of mmap_region. When
+			 * hugetlbfs ->mmap method fails,
+			 * mmap_region() nullifies vma->vm_file
+			 * before calling this function to clean up.
+			 * Since no pte has actually been setup, it is
+			 * safe to do nothing in this case.
+			 */
+			if (vma->vm_file) {
+				zap_flags_t zap_flags = details ?
+				    details->zap_flags : 0;
+				__unmap_hugepage_range(tlb, vma, start, end,
+							     NULL, zap_flags);
+			}
+		} else
+			unmap_page_range(tlb, vma, start, end, details);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2164,6 +2266,11 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
 	struct mmu_notifier_range range;
 	struct zap_details details = {
 		.zap_flags = ZAP_FLAG_DROP_MARKER | ZAP_FLAG_UNMAP,
+<<<<<<< HEAD
+=======
+		/* Careful - we need to zap private pages too! */
+		.even_cows = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	vma = unmap->first;
@@ -2171,11 +2278,18 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
 				unmap->vma_start, unmap->vma_end);
 	mmu_notifier_invalidate_range_start(&range);
 	do {
+<<<<<<< HEAD
 		unsigned long start = max(vma->vm_start, unmap->vma_start);
 		unsigned long end = min(vma->vm_end, unmap->vma_end);
 
 		hugetlb_zap_begin(vma, &start, &end);
 		__zap_vma_range(tlb, vma, start, end, &details);
+=======
+		unsigned long start = unmap->vma_start;
+		unsigned long end = unmap->vma_end;
+		hugetlb_zap_begin(vma, &start, &end);
+		unmap_single_vma(tlb, vma, start, end, &details);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hugetlb_zap_end(vma, &details);
 		vma = mas_find(unmap->mas, unmap->tree_end - 1);
 	} while (vma);
@@ -2183,6 +2297,7 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
 }
 
 /**
+<<<<<<< HEAD
  * zap_vma_range_batched - zap page table entries in a vma range
  * @tlb: pointer to the caller's struct mmu_gather
  * @vma: the vma covering the range to zap
@@ -2197,6 +2312,19 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
  * If @details is NULL, this function will zap all page table entries.
  */
 void zap_vma_range_batched(struct mmu_gather *tlb,
+=======
+ * zap_page_range_single_batched - remove user pages in a given range
+ * @tlb: pointer to the caller's struct mmu_gather
+ * @vma: vm_area_struct holding the applicable pages
+ * @address: starting address of pages to remove
+ * @size: number of bytes to remove
+ * @details: details of shared cache invalidation
+ *
+ * @tlb shouldn't be NULL.  The range must fit into one VMA.  If @vma is for
+ * hugetlb, @tlb is flushed and re-initialized by this function.
+ */
+void zap_page_range_single_batched(struct mmu_gather *tlb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct vm_area_struct *vma, unsigned long address,
 		unsigned long size, struct zap_details *details)
 {
@@ -2205,9 +2333,12 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
 
 	VM_WARN_ON_ONCE(!tlb || tlb->mm != vma->vm_mm);
 
+<<<<<<< HEAD
 	if (unlikely(!size))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
 				address, end);
 	hugetlb_zap_begin(vma, &range.start, &range.end);
@@ -2217,7 +2348,11 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
 	 * unmap 'address-end' not 'range.start-range.end' as range
 	 * could have been expanded for hugetlb pmd sharing.
 	 */
+<<<<<<< HEAD
 	__zap_vma_range(tlb, vma, address, end, details);
+=======
+	unmap_single_vma(tlb, vma, address, end, details);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mmu_notifier_invalidate_range_end(&range);
 	if (is_vm_hugetlb_page(vma)) {
 		/*
@@ -2231,6 +2366,7 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
 }
 
 /**
+<<<<<<< HEAD
  * zap_vma_range - zap all page table entries in a vma range
  * @vma: the vma covering the range to zap
  * @address: starting address of the range to zap
@@ -2240,15 +2376,32 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
  */
 void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
 		unsigned long size)
+=======
+ * zap_page_range_single - remove user pages in a given range
+ * @vma: vm_area_struct holding the applicable pages
+ * @address: starting address of pages to zap
+ * @size: number of bytes to zap
+ * @details: details of shared cache invalidation
+ *
+ * The range must fit into one VMA.
+ */
+void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+		unsigned long size, struct zap_details *details)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mmu_gather tlb;
 
 	tlb_gather_mmu(&tlb, vma->vm_mm);
+<<<<<<< HEAD
 	zap_vma_range_batched(&tlb, vma, address, size, NULL);
+=======
+	zap_page_range_single_batched(&tlb, vma, address, size, details);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tlb_finish_mmu(&tlb);
 }
 
 /**
+<<<<<<< HEAD
  * zap_special_vma_range - zap all page table entries in a special vma range
  * @vma: the vma covering the range to zap
  * @address: starting address of the range to zap
@@ -2267,6 +2420,28 @@ void zap_special_vma_range(struct vm_area_struct *vma, unsigned long address,
 	zap_vma_range(vma, address, size);
 }
 EXPORT_SYMBOL_GPL(zap_special_vma_range);
+=======
+ * zap_vma_ptes - remove ptes mapping the vma
+ * @vma: vm_area_struct holding ptes to be zapped
+ * @address: starting address of pages to zap
+ * @size: number of bytes to zap
+ *
+ * This function only unmaps ptes assigned to VM_PFNMAP vmas.
+ *
+ * The entire address range must be fully contained within the vma.
+ *
+ */
+void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+		unsigned long size)
+{
+	if (!range_in_vma(vma, address, address + size) ||
+	    		!(vma->vm_flags & VM_PFNMAP))
+		return;
+
+	zap_page_range_single(vma, address, size, NULL);
+}
+EXPORT_SYMBOL_GPL(zap_vma_ptes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
 {
@@ -2500,6 +2675,7 @@ out:
 int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
 			struct page **pages, unsigned long *num)
 {
+<<<<<<< HEAD
 	const unsigned long nr_pages = *num;
 	const unsigned long end = addr + PAGE_SIZE * nr_pages;
 
@@ -2508,6 +2684,15 @@ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
 	if (!(vma->vm_flags & VM_MIXEDMAP)) {
 		VM_WARN_ON_ONCE(mmap_read_trylock(vma->vm_mm));
 		VM_WARN_ON_ONCE(vma->vm_flags & VM_PFNMAP);
+=======
+	const unsigned long end_addr = addr + (*num * PAGE_SIZE) - 1;
+
+	if (addr < vma->vm_start || end_addr >= vma->vm_end)
+		return -EFAULT;
+	if (!(vma->vm_flags & VM_MIXEDMAP)) {
+		BUG_ON(mmap_read_trylock(vma->vm_mm));
+		BUG_ON(vma->vm_flags & VM_PFNMAP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vm_flags_set(vma, VM_MIXEDMAP);
 	}
 	/* Defer page refcount checking till we're about to map that page. */
@@ -2515,6 +2700,7 @@ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
 }
 EXPORT_SYMBOL(vm_insert_pages);
 
+<<<<<<< HEAD
 int map_kernel_pages_prepare(struct vm_area_desc *desc)
 {
 	const struct mmap_action *action = &desc->action;
@@ -2548,6 +2734,8 @@ int map_kernel_pages_complete(struct vm_area_struct *vma,
 }
 EXPORT_SYMBOL(map_kernel_pages_complete);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * vm_insert_page - insert single page into user vma
  * @vma: user vma to map to
@@ -3032,7 +3220,11 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(!vma_test_all_mask(vma, VMA_REMAP_FLAGS));
+=======
+	VM_WARN_ON_ONCE(!vma_test_all_flags_mask(vma, VMA_REMAP_FLAGS));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BUG_ON(addr >= end);
 	pfn -= addr >> PAGE_SHIFT;
@@ -3066,7 +3258,11 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
 	 * maintain page reference counts, and callers may free
 	 * pages due to the error. So zap it early.
 	 */
+<<<<<<< HEAD
 	zap_vma_range(vma, addr, size);
+=======
+	zap_page_range_single(vma, addr, size, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return error;
 }
 
@@ -3158,9 +3354,12 @@ int remap_pfn_range_prepare(struct vm_area_desc *desc)
 	const bool is_cow = vma_desc_is_cow_mapping(desc);
 	int err;
 
+<<<<<<< HEAD
 	if (!range_in_vma_desc(desc, start, end))
 		return -EFAULT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = get_remap_pgoff(is_cow, start, end, desc->start, desc->end, pfn,
 			      &desc->pgoff);
 	if (err)
@@ -3223,6 +3422,7 @@ int remap_pfn_range_complete(struct vm_area_struct *vma,
 	return do_remap_pfn_range(vma, start, pfn, size, prot);
 }
 
+<<<<<<< HEAD
 static int __simple_ioremap_prep(unsigned long vm_len, pgoff_t vm_pgoff,
 				 phys_addr_t start_phys, unsigned long size,
 				 unsigned long *pfnp)
@@ -3275,6 +3475,8 @@ int simple_ioremap_prepare(struct vm_area_desc *desc)
 	return io_remap_pfn_range_prepare(desc);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * vm_iomap_memory - remap memory to userspace
  * @vma: user vma to map to
@@ -3292,6 +3494,7 @@ int simple_ioremap_prepare(struct vm_area_desc *desc)
  */
 int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len)
 {
+<<<<<<< HEAD
 	const unsigned long vm_start = vma->vm_start;
 	const unsigned long vm_end = vma->vm_end;
 	const unsigned long vm_len = vm_end - vm_start;
@@ -3301,6 +3504,34 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
 	err = __simple_ioremap_prep(vm_len, vma->vm_pgoff, start, len, &pfn);
 	if (err)
 		return err;
+=======
+	unsigned long vm_len, pfn, pages;
+
+	/* Check that the physical memory area passed in looks valid */
+	if (start + len < start)
+		return -EINVAL;
+	/*
+	 * You *really* shouldn't map things that aren't page-aligned,
+	 * but we've historically allowed it because IO memory might
+	 * just have smaller alignment.
+	 */
+	len += start & ~PAGE_MASK;
+	pfn = start >> PAGE_SHIFT;
+	pages = (len + ~PAGE_MASK) >> PAGE_SHIFT;
+	if (pfn + pages < pfn)
+		return -EINVAL;
+
+	/* We start the mapping 'vm_pgoff' pages into the area */
+	if (vma->vm_pgoff > pages)
+		return -EINVAL;
+	pfn += vma->vm_pgoff;
+	pages -= vma->vm_pgoff;
+
+	/* Can we fit all of the mapping? */
+	vm_len = vma->vm_end - vma->vm_start;
+	if (vm_len >> PAGE_SHIFT > pages)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Ok, let it rip */
 	return io_remap_pfn_range(vma, vma->vm_start, pfn, vm_len, vma->vm_page_prot);
@@ -4336,12 +4567,23 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
 	return wp_page_copy(vmf);
 }
 
+<<<<<<< HEAD
+=======
+static void unmap_mapping_range_vma(struct vm_area_struct *vma,
+		unsigned long start_addr, unsigned long end_addr,
+		struct zap_details *details)
+{
+	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
 					    pgoff_t first_index,
 					    pgoff_t last_index,
 					    struct zap_details *details)
 {
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	unsigned long start, size;
 	struct mmu_gather tlb;
 
@@ -4355,6 +4597,20 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
 		tlb_gather_mmu(&tlb, vma->vm_mm);
 		zap_vma_range_batched(&tlb, vma, start, size, details);
 		tlb_finish_mmu(&tlb);
+=======
+	pgoff_t vba, vea, zba, zea;
+
+	vma_interval_tree_foreach(vma, root, first_index, last_index) {
+		vba = vma->vm_pgoff;
+		vea = vba + vma_pages(vma) - 1;
+		zba = max(first_index, vba);
+		zea = min(last_index, vea);
+
+		unmap_mapping_range_vma(vma,
+			((zba - vba) << PAGE_SHIFT) + vma->vm_start,
+			((zea - vba + 1) << PAGE_SHIFT) + vma->vm_start,
+				details);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -4381,7 +4637,11 @@ void unmap_mapping_folio(struct folio *folio)
 	first_index = folio->index;
 	last_index = folio_next_index(folio) - 1;
 
+<<<<<<< HEAD
 	details.skip_cows = true;
+=======
+	details.even_cows = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	details.single_folio = folio;
 	details.zap_flags = ZAP_FLAG_DROP_MARKER;
 
@@ -4411,7 +4671,11 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
 	pgoff_t	first_index = start;
 	pgoff_t	last_index = start + nr - 1;
 
+<<<<<<< HEAD
 	details.skip_cows = !even_cows;
+=======
+	details.even_cows = even_cows;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (last_index < first_index)
 		last_index = ULONG_MAX;
 
@@ -5298,6 +5562,7 @@ fallback:
 	return folio_prealloc(vma->vm_mm, vma, vmf->address, true);
 }
 
+<<<<<<< HEAD
 void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
 		struct vm_area_struct *vma, unsigned long addr,
 		bool uffd_wp)
@@ -5329,6 +5594,8 @@ static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
 	count_mthp_stat(order, MTHP_STAT_ANON_FAULT_ALLOC);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We enter with non-exclusive mmap_lock (to exclude vma changes,
  * but allow concurrent faults), and pte mapped but not yet locked.
@@ -5340,7 +5607,11 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 	unsigned long addr = vmf->address;
 	struct folio *folio;
 	vm_fault_t ret = 0;
+<<<<<<< HEAD
 	int nr_pages;
+=======
+	int nr_pages = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pte_t entry;
 
 	/* File mapping without ->vm_ops ? */
@@ -5357,7 +5628,11 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 	/* Use the zero-page for reads */
 	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
 			!mm_forbids_zeropage(vma->vm_mm)) {
+<<<<<<< HEAD
 		entry = pte_mkspecial(pfn_pte(zero_pfn(vmf->address),
+=======
+		entry = pte_mkspecial(pfn_pte(my_zero_pfn(vmf->address),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						vma->vm_page_prot));
 		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
 				vmf->address, &vmf->ptl);
@@ -5375,6 +5650,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 			pte_unmap_unlock(vmf->pte, vmf->ptl);
 			return handle_userfault(vmf, VM_UFFD_MISSING);
 		}
+<<<<<<< HEAD
 		if (vmf_orig_pte_uffd_wp(vmf))
 			entry = pte_mkuffd_wp(entry);
 		set_pte_at(vma->vm_mm, addr, vmf->pte, entry);
@@ -5382,6 +5658,9 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 		/* No need to invalidate - it was non-present before */
 		update_mmu_cache(vma, addr, vmf->pte);
 		goto unlock;
+=======
+		goto setpte;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Allocate our own private page. */
@@ -5405,6 +5684,14 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 	 */
 	__folio_mark_uptodate(folio);
 
+<<<<<<< HEAD
+=======
+	entry = folio_mk_pte(folio, vma->vm_page_prot);
+	entry = pte_sw_mkyoung(entry);
+	if (vma->vm_flags & VM_WRITE)
+		entry = pte_mkwrite(pte_mkdirty(entry), vma);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
 	if (!vmf->pte)
 		goto release;
@@ -5426,8 +5713,24 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 		folio_put(folio);
 		return handle_userfault(vmf, VM_UFFD_MISSING);
 	}
+<<<<<<< HEAD
 	map_anon_folio_pte_pf(folio, vmf->pte, vma, addr,
 			      vmf_orig_pte_uffd_wp(vmf));
+=======
+
+	folio_ref_add(folio, nr_pages - 1);
+	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
+	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
+	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
+	folio_add_lru_vma(folio, vma);
+setpte:
+	if (vmf_orig_pte_uffd_wp(vmf))
+		entry = pte_mkuffd_wp(entry);
+	set_ptes(vma->vm_mm, addr, vmf->pte, entry, nr_pages);
+
+	/* No need to invalidate - it was non-present before */
+	update_mmu_cache_range(vmf, vma, addr, vmf->pte, nr_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	if (vmf->pte)
 		pte_unmap_unlock(vmf->pte, vmf->ptl);
@@ -5536,7 +5839,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
 		return ret;
 
+<<<<<<< HEAD
 	if (!is_pmd_order(folio_order(folio)))
+=======
+	if (folio_order(folio) != HPAGE_PMD_ORDER)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	page = &folio->page;
 

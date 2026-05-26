@@ -47,6 +47,12 @@ properties:
   vddneg-supply:
     description: phandle of the negative boost supply regulator
 
+<<<<<<< HEAD
+=======
+  port: true
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

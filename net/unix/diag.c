@@ -50,7 +50,11 @@ static int sk_diag_dump_vfs(struct sock *sk, struct sk_buff *nlskb)
 static int sk_diag_dump_peer(struct sock *sk, struct sk_buff *nlskb)
 {
 	struct sock *peer;
+<<<<<<< HEAD
 	u64 ino;
+=======
+	int ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	peer = unix_peer_get(sk);
 	if (peer) {
@@ -117,7 +121,11 @@ static int sk_diag_dump_uid(struct sock *sk, struct sk_buff *nlskb,
 
 static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_req *req,
 			struct user_namespace *user_ns,
+<<<<<<< HEAD
 			u32 portid, u32 seq, u32 flags, u64 sk_ino)
+=======
+			u32 portid, u32 seq, u32 flags, int sk_ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct nlmsghdr *nlh;
 	struct unix_diag_msg *rep;
@@ -191,7 +199,11 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
 		num = 0;
 		spin_lock(&net->unx.table.locks[slot]);
 		sk_for_each(sk, &net->unx.table.buckets[slot]) {
+<<<<<<< HEAD
 			u64 sk_ino;
+=======
+			int sk_ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (num < s_num)
 				goto next;

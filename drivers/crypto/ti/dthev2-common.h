@@ -36,10 +36,14 @@
 enum dthe_aes_mode {
 	DTHE_AES_ECB = 0,
 	DTHE_AES_CBC,
+<<<<<<< HEAD
 	DTHE_AES_CTR,
 	DTHE_AES_XTS,
 	DTHE_AES_GCM,
 	DTHE_AES_CCM,
+=======
+	DTHE_AES_XTS,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Driver specific struct definitions */
@@ -80,15 +84,21 @@ struct dthe_list {
  * struct dthe_tfm_ctx - Transform ctx struct containing ctx for all sub-components of DTHE V2
  * @dev_data: Device data struct pointer
  * @keylen: AES key length
+<<<<<<< HEAD
  * @authsize: Authentication size for modes with authentication
  * @key: AES key
  * @aes_mode: AES mode
  * @aead_fb: Fallback crypto aead handle
+=======
+ * @key: AES key
+ * @aes_mode: AES mode
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @skcipher_fb: Fallback crypto skcipher handle for AES-XTS mode
  */
 struct dthe_tfm_ctx {
 	struct dthe_data *dev_data;
 	unsigned int keylen;
+<<<<<<< HEAD
 	unsigned int authsize;
 	u32 key[DTHE_MAX_KEYSIZE / sizeof(u32)];
 	enum dthe_aes_mode aes_mode;
@@ -96,17 +106,28 @@ struct dthe_tfm_ctx {
 		struct crypto_sync_aead *aead_fb;
 		struct crypto_sync_skcipher *skcipher_fb;
 	};
+=======
+	u32 key[DTHE_MAX_KEYSIZE / sizeof(u32)];
+	enum dthe_aes_mode aes_mode;
+	struct crypto_sync_skcipher *skcipher_fb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
  * struct dthe_aes_req_ctx - AES engine req ctx struct
  * @enc: flag indicating encryption or decryption operation
+<<<<<<< HEAD
  * @padding: padding buffer for handling unaligned data
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @aes_compl: Completion variable for use in manual completion in case of DMA callback failure
  */
 struct dthe_aes_req_ctx {
 	int enc;
+<<<<<<< HEAD
 	u8 padding[2 * AES_BLOCK_SIZE];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct completion aes_compl;
 };
 
@@ -114,6 +135,7 @@ struct dthe_aes_req_ctx {
 
 struct dthe_data *dthe_get_dev(struct dthe_tfm_ctx *ctx);
 
+<<<<<<< HEAD
 /**
  * dthe_copy_sg - Copy sg entries from src to dst
  * @dst: Destination sg to be filled
@@ -128,6 +150,8 @@ struct scatterlist *dthe_copy_sg(struct scatterlist *dst,
 				 struct scatterlist *src,
 				 int buflen);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int dthe_register_aes_algs(void);
 void dthe_unregister_aes_algs(void);
 

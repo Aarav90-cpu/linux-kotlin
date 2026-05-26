@@ -313,8 +313,16 @@ static const struct pci_epc_features keembay_pcie_epc_features = {
 	.msi_capable		= true,
 	.msix_capable		= true,
 	.bar[BAR_0]		= { .only_64bit = true, },
+<<<<<<< HEAD
 	.bar[BAR_2]		= { .only_64bit = true, },
 	.bar[BAR_4]		= { .only_64bit = true, },
+=======
+	.bar[BAR_1]		= { .type = BAR_RESERVED, },
+	.bar[BAR_2]		= { .only_64bit = true, },
+	.bar[BAR_3]		= { .type = BAR_RESERVED, },
+	.bar[BAR_4]		= { .only_64bit = true, },
+	.bar[BAR_5]		= { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.align			= SZ_16K,
 };
 

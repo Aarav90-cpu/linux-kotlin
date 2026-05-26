@@ -27,12 +27,15 @@ properties:
   clocks:
     maxItems: 1
 
+<<<<<<< HEAD
   access-controllers:
     minItems: 1
     items:
       - description: debug configuration access controller
       - description: access controller that manages the HDP as a peripheral
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 patternProperties:
   "^hdp[0-7]-pins$":
     type: object

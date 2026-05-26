@@ -92,7 +92,11 @@ v3d_irq_signal_fence(struct v3d_dev *v3d, enum v3d_queue q,
 	struct v3d_queue_state *queue = &v3d->queue[q];
 	struct v3d_fence *fence = to_v3d_fence(queue->active_job->irq_fence);
 
+<<<<<<< HEAD
 	v3d_job_update_stats(queue->active_job);
+=======
+	v3d_job_update_stats(queue->active_job, q);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_irq(&v3d->drm, fence->seqno);
 
 	queue->active_job = NULL;

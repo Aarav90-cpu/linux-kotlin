@@ -74,7 +74,11 @@ display_control_adjust_SM750LE(struct mode_parameter *mode_param,
 	return disp_control;
 }
 
+<<<<<<< HEAD
 /* only timing related registers will be programmed */
+=======
+/* only timing related registers will be  programed */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void program_mode_registers(struct mode_parameter *mode_param,
 				   struct pll_value *pll)
 {

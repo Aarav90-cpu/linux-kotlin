@@ -48,7 +48,11 @@ lib-$(CONFIG_SPARC64) += GENmemcpy.o GENcopy_from_user.o GENcopy_to_user.o
 lib-$(CONFIG_SPARC64) += GENpatch.o GENpage.o GENbzero.o
 
 lib-$(CONFIG_SPARC64) += copy_in_user.o memmove.o
+<<<<<<< HEAD
 lib-$(CONFIG_SPARC64) += mcount.o ipcsum.o hweight.o ffs.o
+=======
+lib-$(CONFIG_SPARC64) += mcount.o ipcsum.o xor.o hweight.o ffs.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 obj-$(CONFIG_SPARC64) += iomap.o
 obj-$(CONFIG_SPARC32) += atomic32.o

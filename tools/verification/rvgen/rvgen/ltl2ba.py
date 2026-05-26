@@ -9,7 +9,10 @@
 
 from ply.lex import lex
 from ply.yacc import yacc
+<<<<<<< HEAD
 from .automata import AutomataError
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Grammar:
 # 	ltl ::= opd | ( ltl ) | ltl binop ltl | unop ltl
@@ -63,7 +66,11 @@ t_ignore_COMMENT = r'\#.*'
 t_ignore = ' \t\n'
 
 def t_error(t):
+<<<<<<< HEAD
     raise AutomataError(f"Illegal character '{t.value[0]}'")
+=======
+    raise ValueError(f"Illegal character '{t.value[0]}'")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 lexer = lex()
 
@@ -395,7 +402,11 @@ class Variable:
     @staticmethod
     def expand(n: ASTNode, node: GraphNode, node_set) -> set[GraphNode]:
         for f in node.old:
+<<<<<<< HEAD
             if isinstance(f.op, NotOp) and f.op.child is n:
+=======
+            if isinstance(f, NotOp) and f.op.child is n:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 return node_set
         node.old |= {n}
         return node.expand(node_set)
@@ -488,7 +499,11 @@ def p_unop(p):
     elif p[1] == "not":
         op = NotOp(p[2])
     else:
+<<<<<<< HEAD
         raise AutomataError(f"Invalid unary operator {p[1]}")
+=======
+        raise ValueError(f"Invalid unary operator {p[1]}")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     p[0] = ASTNode(op)
 
@@ -508,7 +523,11 @@ def p_binop(p):
     elif p[2] == "imply":
         op = ImplyOp(p[1], p[3])
     else:
+<<<<<<< HEAD
         raise AutomataError(f"Invalid binary operator {p[2]}")
+=======
+        raise ValueError(f"Invalid binary operator {p[2]}")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     p[0] = ASTNode(op)
 
@@ -527,7 +546,11 @@ def parse_ltl(s: str) -> ASTNode:
             subexpr[assign[0]] = assign[1]
 
     if rule is None:
+<<<<<<< HEAD
         raise AutomataError("Please define your specification in the \"RULE = <LTL spec>\" format")
+=======
+        raise ValueError("Please define your specification in the \"RULE = <LTL spec>\" format")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     for node in rule:
         if not isinstance(node.op, Variable):

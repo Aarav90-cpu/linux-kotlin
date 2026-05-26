@@ -11,7 +11,11 @@
 #
 # Adds per-version torture-module parameters to kernels supporting them.
 per_version_boot_params () {
+<<<<<<< HEAD
 	echo	refscale.shutdown_secs=$3 \
+=======
+	echo	refscale.shutdown=1 \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		refscale.verbose=0 \
 		$1
 }

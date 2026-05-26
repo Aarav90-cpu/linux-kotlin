@@ -28,7 +28,10 @@ enum {
 	LINE6_PODHD500X,
 	LINE6_PODHDDESKTOP,
 	LINE6_PODHDPROX,
+<<<<<<< HEAD
 	LINE6_PODHDPRO,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct usb_line6_podhd {
@@ -443,7 +446,10 @@ static const struct usb_device_id podhd_id_table[] = {
 	{ LINE6_IF_NUM(0x4159, 0), .driver_info = LINE6_PODHD500X },
 	{ LINE6_IF_NUM(0x4156, 0), .driver_info = LINE6_PODHDDESKTOP },
 	{ LINE6_IF_NUM(0x415A, 0), .driver_info = LINE6_PODHDPROX },
+<<<<<<< HEAD
 	{ LINE6_IF_NUM(0x4157, 0), .driver_info = LINE6_PODHDPRO },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 
@@ -544,6 +550,7 @@ static const struct line6_properties podhd_properties_table[] = {
 		.ep_audio_r = 0x86,
 		.ep_audio_w = 0x02,
 	},
+<<<<<<< HEAD
 	[LINE6_PODHDPRO] = {
 		.id = "PODHDPRO",
 		.name = "POD HD PRO",
@@ -556,6 +563,8 @@ static const struct line6_properties podhd_properties_table[] = {
 		.ep_audio_r = 0x86,
 		.ep_audio_w = 0x02,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

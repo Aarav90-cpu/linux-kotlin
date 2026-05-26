@@ -260,12 +260,15 @@ static int prueth_emac_common_start(struct prueth *prueth)
 	icssg_class_default(prueth->miig_rt, ICSS_SLICE0, 0, false);
 	icssg_class_default(prueth->miig_rt, ICSS_SLICE1, 0, false);
 
+<<<<<<< HEAD
 	/* Configure HSR/PRP protocol filtering if in HSR offload mode */
 	if (prueth->is_hsr_offload_mode) {
 		icssg_ft3_hsr_configurations(prueth->miig_rt, ICSS_SLICE0, prueth);
 		icssg_ft3_hsr_configurations(prueth->miig_rt, ICSS_SLICE1, prueth);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
 		icssg_init_fw_offload_mode(prueth);
 	else
@@ -669,6 +672,7 @@ static int icssg_prueth_del_mcast(struct net_device *ndev, const u8 *addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * icssg_is_addr_synced - Check if address is synced from HSR master
  * @ndev: network device
@@ -781,11 +785,26 @@ static void icssg_prueth_hsr_fdb_add_del(struct prueth_emac *emac,
 			icssg_hsr_fdb_update(emac, addr, vid,
 					     other_port_membership, true);
 	}
+=======
+static void icssg_prueth_hsr_fdb_add_del(struct prueth_emac *emac,
+					 const u8 *addr, u8 vid, bool add)
+{
+	icssg_fdb_add_del(emac, addr, vid,
+			  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
+			  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
+			  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
+			  ICSSG_FDB_ENTRY_BLOCK, add);
+
+	if (add)
+		icssg_vtbl_modify(emac, vid, BIT(emac->port_id),
+				  BIT(emac->port_id), add);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
 {
 	struct net_device *real_dev, *port_dev;
+<<<<<<< HEAD
 	bool is_synced, is_vlan_path;
 	struct prueth_emac *emac;
 	u8 vlan_id, i;
@@ -796,6 +815,13 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
 
 	/* Check if this address is synced from HSR master */
 	is_synced = icssg_is_addr_synced(ndev, addr);
+=======
+	struct prueth_emac *emac;
+	u8 vlan_id, i;
+
+	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_HSR;
+	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_hsr_master(real_dev)) {
 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
@@ -806,14 +832,21 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
 				return -EINVAL;
 			}
 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
+<<<<<<< HEAD
 						     is_synced, is_vlan_path,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						     true);
 			dev_put(port_dev);
 		}
 	} else {
 		emac = netdev_priv(real_dev);
+<<<<<<< HEAD
 		icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
 					     is_synced, is_vlan_path, true);
+=======
+		icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -822,6 +855,7 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
 static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
 {
 	struct net_device *real_dev, *port_dev;
+<<<<<<< HEAD
 	bool is_synced, is_vlan_path;
 	struct prueth_emac *emac;
 	u8 vlan_id, i;
@@ -832,6 +866,13 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
 
 	/* Check if this address was synced from HSR master */
 	is_synced = icssg_is_addr_synced(ndev, addr);
+=======
+	struct prueth_emac *emac;
+	u8 vlan_id, i;
+
+	vlan_id = is_vlan_dev(ndev) ? vlan_dev_vlan_id(ndev) : PRUETH_DFLT_VLAN_HSR;
+	real_dev = is_vlan_dev(ndev) ? vlan_dev_real_dev(ndev) : ndev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_hsr_master(real_dev)) {
 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
@@ -842,14 +883,21 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
 				return -EINVAL;
 			}
 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
+<<<<<<< HEAD
 						     is_synced, is_vlan_path,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						     false);
 			dev_put(port_dev);
 		}
 	} else {
 		emac = netdev_priv(real_dev);
+<<<<<<< HEAD
 		icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
 					     is_synced, is_vlan_path, false);
+=======
+		icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -1173,6 +1221,7 @@ static int emac_ndo_stop(struct net_device *ndev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * icssg_hsr_handle_multicast_sync() - Handle HSR multicast overlapping memberships
  * @emac: PRUETH EMAC private structure
@@ -1271,6 +1320,8 @@ static void icssg_hsr_handle_multicast_sync(struct prueth_emac *emac)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void emac_ndo_set_rx_mode_work(struct work_struct *work)
 {
 	struct prueth_emac *emac = container_of(work, struct prueth_emac, rx_mode_work);
@@ -1297,6 +1348,7 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
 	}
 
 	if (emac->prueth->is_hsr_offload_mode) {
+<<<<<<< HEAD
 		/* Track basic add/delete via callbacks */
 		__dev_mc_sync(ndev, icssg_prueth_hsr_add_mcast,
 			      icssg_prueth_hsr_del_mcast);
@@ -1304,6 +1356,10 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
 		/* Handle overlapping memberships */
 		icssg_hsr_handle_multicast_sync(emac);
 
+=======
+		__dev_mc_sync(ndev, icssg_prueth_hsr_add_mcast,
+			      icssg_prueth_hsr_del_mcast);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rtnl_trylock()) {
 			vlan_for_each(emac->prueth->hsr_dev,
 				      icssg_update_vlan_mcast, emac);

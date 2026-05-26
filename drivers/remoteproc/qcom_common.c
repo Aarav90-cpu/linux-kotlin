@@ -28,6 +28,10 @@
 #define to_ssr_subdev(d) container_of(d, struct qcom_rproc_ssr, subdev)
 #define to_pdm_subdev(d) container_of(d, struct qcom_rproc_pdm, subdev)
 
+<<<<<<< HEAD
+=======
+#define MAX_NUM_OF_SS           10
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_REGION_NAME_LENGTH  16
 #define SBL_MINIDUMP_SMEM_ID	602
 #define MINIDUMP_REGION_VALID		('V' << 24 | 'A' << 16 | 'L' << 8 | 'I' << 0)
@@ -79,7 +83,11 @@ struct minidump_global_toc {
 	__le32				status;
 	__le32				md_revision;
 	__le32				enabled;
+<<<<<<< HEAD
 	struct minidump_subsystem	subsystems[];
+=======
+	struct minidump_subsystem	subsystems[MAX_NUM_OF_SS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct qcom_ssr_subsystem {
@@ -150,11 +158,17 @@ void qcom_minidump(struct rproc *rproc, unsigned int minidump_id,
 	int ret;
 	struct minidump_subsystem *subsystem;
 	struct minidump_global_toc *toc;
+<<<<<<< HEAD
 	unsigned int num_ss;
 	size_t toc_size;
 
 	/* Get Global minidump ToC*/
 	toc = qcom_smem_get(QCOM_SMEM_HOST_ANY, SBL_MINIDUMP_SMEM_ID, &toc_size);
+=======
+
+	/* Get Global minidump ToC*/
+	toc = qcom_smem_get(QCOM_SMEM_HOST_ANY, SBL_MINIDUMP_SMEM_ID, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* check if global table pointer exists and init is set */
 	if (IS_ERR(toc) || !toc->status) {
@@ -162,6 +176,7 @@ void qcom_minidump(struct rproc *rproc, unsigned int minidump_id,
 		return;
 	}
 
+<<<<<<< HEAD
 	/* Derive the number of subsystems from the actual SMEM item size */
 	num_ss = (toc_size - offsetof(struct minidump_global_toc, subsystems)) /
 		 sizeof(struct minidump_subsystem);
@@ -172,6 +187,8 @@ void qcom_minidump(struct rproc *rproc, unsigned int minidump_id,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Get subsystem table of contents using the minidump id */
 	subsystem = &toc->subsystems[minidump_id];
 

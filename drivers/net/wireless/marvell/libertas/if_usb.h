@@ -48,9 +48,12 @@ struct if_usb_card {
 	struct urb *rx_urb, *tx_urb;
 	struct lbs_private *priv;
 
+<<<<<<< HEAD
 	struct usb_anchor rx_submitted;
 	struct usb_anchor tx_submitted;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sk_buff *rx_skb;
 
 	uint8_t ep_in;

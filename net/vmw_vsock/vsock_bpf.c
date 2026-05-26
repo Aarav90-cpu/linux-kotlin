@@ -74,7 +74,11 @@ static int __vsock_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int 
 }
 
 static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+<<<<<<< HEAD
 			     size_t len, int flags)
+=======
+			     size_t len, int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sk_psock *psock;
 	struct vsock_sock *vsk;

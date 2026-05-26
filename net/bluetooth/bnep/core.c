@@ -330,6 +330,7 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
 				goto badframe;
 			break;
 		case BNEP_FILTER_MULTI_ADDR_SET:
+<<<<<<< HEAD
 		case BNEP_FILTER_NET_TYPE_SET: {
 			u8 *hdr;
 
@@ -342,6 +343,13 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
 				goto badframe;
 			break;
 		}
+=======
+		case BNEP_FILTER_NET_TYPE_SET:
+			/* Pull: ctrl type (1 b), len (2 b), data (len bytes) */
+			if (!skb_pull(skb, 3 + *(u16 *)(skb->data + 1) * 2))
+				goto badframe;
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			kfree_skb(skb);
 			return 0;

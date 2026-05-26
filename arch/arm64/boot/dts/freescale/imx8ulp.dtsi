@@ -86,7 +86,12 @@
 	pmu {
 		compatible = "arm,cortex-a35-pmu";
 		interrupt-parent = <&gic>;
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		interrupts = <GIC_PPI 7
+			     (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_HIGH)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		interrupt-affinity = <&A35_0>, <&A35_1>;
 	};
 

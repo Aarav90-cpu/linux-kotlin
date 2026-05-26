@@ -303,9 +303,12 @@ int btrfs_run_sanity_tests(void)
 		}
 	}
 	ret = btrfs_test_extent_map();
+<<<<<<< HEAD
 	if (ret)
 		goto out;
 	ret = btrfs_test_zoned();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	btrfs_destroy_test_fs();

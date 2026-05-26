@@ -74,6 +74,15 @@ static struct lbuf *log_redrive_list;
 static DEFINE_SPINLOCK(log_redrive_lock);
 
 
+<<<<<<< HEAD
+=======
+/*
+ *	log read/write serialization (per log)
+ */
+#define LOG_LOCK_INIT(log)	mutex_init(&(log)->loglock)
+#define LOG_LOCK(log)		mutex_lock(&((log)->loglock))
+#define LOG_UNLOCK(log)		mutex_unlock(&((log)->loglock))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 /*
@@ -198,6 +207,7 @@ static void write_special_inodes(struct jfs_log *log,
 	struct jfs_sb_info *sbi;
 
 	list_for_each_entry(sbi, &log->sb_list, log_list) {
+<<<<<<< HEAD
 		/* These pointers can be NULL before list_del during umount */
 		if (sbi->ipbmap)
 			writer(sbi->ipbmap->i_mapping);
@@ -205,6 +215,11 @@ static void write_special_inodes(struct jfs_log *log,
 			writer(sbi->ipimap->i_mapping);
 		if (sbi->direct_inode)
 			writer(sbi->direct_inode->i_mapping);
+=======
+		writer(sbi->ipbmap->i_mapping);
+		writer(sbi->ipimap->i_mapping);
+		writer(sbi->direct_inode->i_mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2178,6 +2193,11 @@ static void lbmIODone(struct bio *bio)
 
 	LCACHE_LOCK(flags);		/* disable+lock */
 
+<<<<<<< HEAD
+=======
+	bp->l_flag |= lbmDONE;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (bio->bi_status) {
 		bp->l_flag |= lbmERROR;
 
@@ -2192,10 +2212,19 @@ static void lbmIODone(struct bio *bio)
 	if (bp->l_flag & lbmREAD) {
 		bp->l_flag &= ~lbmREAD;
 
+<<<<<<< HEAD
 		/* wakeup I/O initiator */
 		LCACHE_WAKEUP(&bp->l_ioevent);
 
 		goto out;
+=======
+		LCACHE_UNLOCK(flags);	/* unlock+enable */
+
+		/* wakeup I/O initiator */
+		LCACHE_WAKEUP(&bp->l_ioevent);
+
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -2219,7 +2248,12 @@ static void lbmIODone(struct bio *bio)
 
 	if (bp->l_flag & lbmDIRECT) {
 		LCACHE_WAKEUP(&bp->l_ioevent);
+<<<<<<< HEAD
 		goto out;
+=======
+		LCACHE_UNLOCK(flags);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	tail = log->wqueue;
@@ -2271,6 +2305,11 @@ static void lbmIODone(struct bio *bio)
 	 * leave buffer for i/o initiator to dispose
 	 */
 	if (bp->l_flag & lbmSYNC) {
+<<<<<<< HEAD
+=======
+		LCACHE_UNLOCK(flags);	/* unlock+enable */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* wakeup I/O initiator */
 		LCACHE_WAKEUP(&bp->l_ioevent);
 	}
@@ -2281,7 +2320,10 @@ static void lbmIODone(struct bio *bio)
 	else if (bp->l_flag & lbmGC) {
 		LCACHE_UNLOCK(flags);
 		lmPostGC(bp);
+<<<<<<< HEAD
 		LCACHE_LOCK(flags);		/* disable+lock */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -2294,11 +2336,17 @@ static void lbmIODone(struct bio *bio)
 		assert(bp->l_flag & lbmRELEASE);
 		assert(bp->l_flag & lbmFREE);
 		lbmfree(bp);
+<<<<<<< HEAD
 	}
 
 out:
 	bp->l_flag |= lbmDONE;
 	LCACHE_UNLOCK(flags);
+=======
+
+		LCACHE_UNLOCK(flags);	/* unlock+enable */
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int jfsIOWait(void *arg)

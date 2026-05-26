@@ -414,7 +414,11 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
 	/*
 	 * When the LPAR lost credits due to core removal or during
 	 * migration, invalidate the existing mapping for the current
+<<<<<<< HEAD
 	 * paste addresses and set windows in-active (zap_vma() in
+=======
+	 * paste addresses and set windows in-active (zap_vma_pages in
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * reconfig_close_windows()).
 	 * New mapping will be done later after migration or new credits
 	 * available. So continue to receive faults if the user space

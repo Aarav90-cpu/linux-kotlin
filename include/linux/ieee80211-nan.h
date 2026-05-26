@@ -9,7 +9,11 @@
  * Copyright (c) 2006, Michael Wu <flamingice@sourmilk.net>
  * Copyright (c) 2013 - 2014 Intel Mobile Communications GmbH
  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (c) 2018 - 2026 Intel Corporation
+=======
+ * Copyright (c) 2018 - 2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #ifndef LINUX_IEEE80211_NAN_H
@@ -23,11 +27,14 @@
 #define NAN_OP_MODE_160MHZ		0x04
 #define NAN_OP_MODE_PNDL_SUPPRTED	0x08
 
+<<<<<<< HEAD
 #define NAN_DEV_CAPA_NUM_TX_ANT_POS	0
 #define NAN_DEV_CAPA_NUM_TX_ANT_MASK	0x0f
 #define NAN_DEV_CAPA_NUM_RX_ANT_POS	4
 #define NAN_DEV_CAPA_NUM_RX_ANT_MASK	0xf0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* NAN Device capabilities, as defined in Wi-Fi Aware (TM) specification
  * Table 79
  */
@@ -37,6 +44,7 @@
 #define NAN_DEV_CAPA_NDPE_SUPPORTED		0x08
 #define NAN_DEV_CAPA_S3_SUPPORTED		0x10
 
+<<<<<<< HEAD
 /* NAN attributes, as defined in Wi-Fi Aware (TM) specification 4.0 Table 42 */
 #define NAN_ATTR_MASTER_INDICATION		0x00
 #define NAN_ATTR_CLUSTER_INFO			0x01
@@ -74,4 +82,6 @@ struct ieee80211_nan_anchor_master_info {
 	     _attr = (const struct ieee80211_nan_attr *)		\
 		(_attr->data + le16_to_cpu(_attr->length)))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* LINUX_IEEE80211_NAN_H */

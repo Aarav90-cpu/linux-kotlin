@@ -184,7 +184,11 @@ struct sk_buff *hsr_get_untagged_frame(struct hsr_frame_info *frame,
 				create_stripped_skb_hsr(frame->skb_hsr, frame);
 		else
 			netdev_warn_once(port->dev,
+<<<<<<< HEAD
 					 "Unexpected frame received in %s()\n", __func__);
+=======
+					 "Unexpected frame received in hsr_get_untagged_frame()\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!frame->skb_std)
 			return NULL;

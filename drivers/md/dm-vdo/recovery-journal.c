@@ -593,6 +593,7 @@ static int __must_check initialize_lock_counter(struct recovery_journal *journal
 	struct thread_config *config = &vdo->thread_config;
 	struct lock_counter *counter = &journal->lock_counter;
 
+<<<<<<< HEAD
 	result = vdo_allocate(journal->size, __func__, &counter->journal_counters);
 	if (result != VDO_SUCCESS)
 		return result;
@@ -602,20 +603,46 @@ static int __must_check initialize_lock_counter(struct recovery_journal *journal
 		return result;
 
 	result = vdo_allocate(journal->size * config->logical_zone_count, __func__,
+=======
+	result = vdo_allocate(journal->size, u16, __func__, &counter->journal_counters);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(journal->size, atomic_t, __func__,
+			      &counter->journal_decrement_counts);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(journal->size * config->logical_zone_count, u16, __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &counter->logical_counters);
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(journal->size, __func__, &counter->logical_zone_counts);
 	if (result != VDO_SUCCESS)
 		return result;
 
 	result = vdo_allocate(journal->size * config->physical_zone_count, __func__,
+=======
+	result = vdo_allocate(journal->size, atomic_t, __func__,
+			      &counter->logical_zone_counts);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(journal->size * config->physical_zone_count, u16, __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &counter->physical_counters);
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(journal->size, __func__, &counter->physical_zone_counts);
+=======
+	result = vdo_allocate(journal->size, atomic_t, __func__,
+			      &counter->physical_zone_counts);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -669,7 +696,11 @@ static int initialize_recovery_block(struct vdo *vdo, struct recovery_journal *j
 	 * Allocate a full block for the journal block even though not all of the space is used
 	 * since the VIO needs to write a full disk block.
 	 */
+<<<<<<< HEAD
 	result = vdo_allocate(VDO_BLOCK_SIZE, __func__, &data);
+=======
+	result = vdo_allocate(VDO_BLOCK_SIZE, char, __func__, &data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -708,8 +739,15 @@ int vdo_decode_recovery_journal(struct recovery_journal_state_7_0 state, nonce_t
 	struct recovery_journal *journal;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(RECOVERY_JOURNAL_RESERVED_BLOCKS, blocks,
 				       __func__, &journal);
+=======
+	result = vdo_allocate_extended(struct recovery_journal,
+				       RECOVERY_JOURNAL_RESERVED_BLOCKS,
+				       struct recovery_journal_block, __func__,
+				       &journal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

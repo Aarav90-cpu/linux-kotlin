@@ -2,7 +2,11 @@
 /*
  * maple_tree.c: Userspace testing for maple tree test-suite
  * Copyright (c) 2018-2022 Oracle Corporation
+<<<<<<< HEAD
  * Author: Liam R. Howlett <liam@infradead.org>
+=======
+ * Author: Liam R. Howlett <Liam.Howlett@Oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Any tests that require internal knowledge of the tree or threads and other
  * difficult to handle in kernel tests.
@@ -38,7 +42,10 @@ struct rcu_test_struct2 {
 
 	unsigned long index[RCU_RANGE_COUNT];
 	unsigned long last[RCU_RANGE_COUNT];
+<<<<<<< HEAD
 	pthread_mutex_t dump;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct rcu_test_struct3 {
@@ -33998,6 +34005,7 @@ static void *rcu_reader_fwd(void *ptr)
 				}
 			}
 
+<<<<<<< HEAD
 			if (mas.index != r_start) {
 				if (pthread_mutex_trylock(&test->dump) != 0) {
 					rcu_read_unlock();
@@ -34017,6 +34025,10 @@ static void *rcu_reader_fwd(void *ptr)
 				       mas.last, mas.last, r_end, r_end);
 				RCU_MT_BUG_ON(test, mas.last != r_end);
 			}
+=======
+			RCU_MT_BUG_ON(test, mas.index != r_start);
+			RCU_MT_BUG_ON(test, mas.last != r_end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (i == reader->flip) {
 				alt = xa_mk_value(index + i + RCU_RANGE_COUNT);
@@ -34032,8 +34044,12 @@ static void *rcu_reader_fwd(void *ptr)
 				else if (entry == alt)
 					toggled  = true;
 				else {
+<<<<<<< HEAD
 					printk("!!%lu-%lu -> %p not %p or %p\n",
 					       mas.index, mas.last, entry, expected, alt);
+=======
+					printk("!!%lu-%lu -> %p not %p or %p\n", mas.index, mas.last, entry, expected, alt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					RCU_MT_BUG_ON(test, 1);
 				}
 
@@ -34066,11 +34082,17 @@ static void *rcu_reader_fwd(void *ptr)
 		usleep(test->pause);
 	}
 
+<<<<<<< HEAD
 quit:
 	rcu_unregister_thread();
 	return NULL;
 }
 
+=======
+	rcu_unregister_thread();
+	return NULL;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* RCU reader in decreasing index */
 static void *rcu_reader_rev(void *ptr)
 {
@@ -34140,6 +34162,7 @@ static void *rcu_reader_rev(void *ptr)
 				line = __LINE__;
 
 			if (mas.index != r_start) {
+<<<<<<< HEAD
 				if (pthread_mutex_trylock(&test->dump) != 0) {
 					rcu_read_unlock();
 					goto quit;
@@ -34151,6 +34174,15 @@ static void *rcu_reader_rev(void *ptr)
 				printk("Error: %p %lu-%lu %p != %lu-%lu %p %p line %d i %d\n",
 				       mas.node, mas.index, mas.last, entry,
 				       r_start, r_end, expected, alt, line, i);
+=======
+				alt = xa_mk_value(index + i * 2 + 1 +
+						  RCU_RANGE_COUNT);
+				mt_dump(test->mt, mt_dump_dec);
+				printk("Error: %lu-%lu %p != %lu-%lu %p %p line %d i %d\n",
+				       mas.index, mas.last, entry,
+				       r_start, r_end, expected, alt,
+				       line, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			RCU_MT_BUG_ON(test, mas.index != r_start);
 			RCU_MT_BUG_ON(test, mas.last != r_end);
@@ -34205,7 +34237,10 @@ static void *rcu_reader_rev(void *ptr)
 		usleep(test->pause);
 	}
 
+<<<<<<< HEAD
 quit:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_unregister_thread();
 	return NULL;
 }
@@ -34355,7 +34390,10 @@ static void rcu_stress(struct maple_tree *mt, bool forward)
 	test.seen_modified = 0;
 	test.thread_count = 0;
 	test.start = test.stop = false;
+<<<<<<< HEAD
 	pthread_mutex_init(&test.dump, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seed = time(NULL);
 	srand(seed);
 	for (i = 0; i < RCU_RANGE_COUNT; i++) {
@@ -34441,7 +34479,10 @@ struct rcu_test_struct {
 	unsigned long removed;		/* The index of the removed entry */
 	unsigned long added;		/* The index of the removed entry */
 	unsigned long toggle;		/* The index of the removed entry */
+<<<<<<< HEAD
 	pthread_mutex_t dump;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline
@@ -34534,9 +34575,13 @@ static void *rcu_loop(void *ptr)
 			/* Out of the interesting range */
 			if (mas.index < test->index || mas.index > test->last) {
 				if (entry != expected) {
+<<<<<<< HEAD
 					if (pthread_mutex_trylock(&test->dump) != 0)
 						break;
 					printk("\nERROR: %lx - %lx = %p not %p\n",
+=======
+					printk("%lx - %lx = %p not %p\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       mas.index, mas.last, entry, expected);
 				}
 				MT_BUG_ON(test->mt, entry != expected);
@@ -34884,7 +34929,10 @@ static noinline void __init check_rcu_threaded(struct maple_tree *mt)
 	vals.range_end = ULONG_MAX;
 	vals.seen_entry2 = 0;
 	vals.seen_entry3 = 0;
+<<<<<<< HEAD
 	pthread_mutex_init(&vals.dump, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	run_check_rcu(mt, &vals);
 	mtree_destroy(mt);
@@ -35281,8 +35329,11 @@ static noinline void __init check_spanning_write(struct maple_tree *mt)
 {
 	unsigned long i, max = 5000;
 	MA_STATE(mas, mt, 1200, 2380);
+<<<<<<< HEAD
 	struct maple_enode *enode;
 	struct maple_node *pnode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i <= max; i++)
 		mtree_test_store_range(mt, i * 10, i * 10 + 5, &i);
@@ -35406,6 +35457,7 @@ static noinline void __init check_spanning_write(struct maple_tree *mt)
 	mt_init_flags(mt, MT_FLAGS_ALLOC_RANGE);
 	for (i = 0; i <= max; i++)
 		mtree_test_store_range(mt, i * 10, i * 10 + 5, &i);
+<<<<<<< HEAD
 
 	mtree_lock(mt);
 	if (MAPLE_32BIT) {
@@ -35418,6 +35470,9 @@ static noinline void __init check_spanning_write(struct maple_tree *mt)
 		} while (mas_data_end(&mas) < mt_slot_count(mas.node) - 1);
 	}
 
+=======
+	mtree_lock(mt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mas_set(&mas, 47606);
 	mas_store_gfp(&mas, check_spanning_write, GFP_KERNEL);
 	mas_set(&mas, 47607);
@@ -35454,6 +35509,7 @@ static noinline void __init check_spanning_write(struct maple_tree *mt)
 	mas_set_range(&mas, 76, 875);
 	mas_store_gfp(&mas, NULL, GFP_KERNEL);
 	mtree_unlock(mt);
+<<<<<<< HEAD
 	mtree_destroy(mt);
 
 	mt_init_flags(mt, MT_FLAGS_ALLOC_RANGE);
@@ -35576,6 +35632,8 @@ static noinline void __init check_spanning_write(struct maple_tree *mt)
 	mtree_unlock(mt);
 	mtree_destroy(mt);
 	rcu_barrier();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 /* End of spanning write testing */
 
@@ -35899,6 +35957,7 @@ unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static noinline void __init check_erase_rebalance(struct maple_tree *mt)
 {
 	unsigned long val;
@@ -36020,6 +36079,8 @@ static noinline void __init check_erase_rebalance(struct maple_tree *mt)
 	mas_unlock(&mas);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static noinline void __init check_mtree_dup(struct maple_tree *mt)
 {
 	DEFINE_MTREE(new);
@@ -36316,6 +36377,10 @@ static inline int check_vma_modification(struct maple_tree *mt)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void farmer_tests(void)
 {
 	struct maple_node *node;
@@ -36381,10 +36446,13 @@ void farmer_tests(void)
 	check_mtree_dup(&tree);
 	mtree_destroy(&tree);
 
+<<<<<<< HEAD
 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
 	check_erase_rebalance(&tree);
 	mtree_destroy(&tree);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* RCU testing */
 	mt_init_flags(&tree, 0);
 	check_erase_testset(&tree);

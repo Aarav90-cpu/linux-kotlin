@@ -421,7 +421,11 @@
 #define RT5677_DAC3_R_VOL_MASK			(0xff)
 #define RT5677_DAC3_R_VOL_SFT			0
 
+<<<<<<< HEAD
 /* DAC1 Digital Volume (0x19) */
+=======
+/* DAC3 Digital Volume (0x19) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RT5677_DAC1_L_VOL_MASK			(0xff << 8)
 #define RT5677_DAC1_L_VOL_SFT			8
 #define RT5677_DAC1_R_VOL_MASK			(0xff)

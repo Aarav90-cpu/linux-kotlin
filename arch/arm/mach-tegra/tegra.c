@@ -84,6 +84,13 @@ static void __init tegra_dt_init(void)
 static void __init tegra_dt_init_late(void)
 {
 	if (IS_ENABLED(CONFIG_ARCH_TEGRA_2x_SOC) &&
+<<<<<<< HEAD
+=======
+	    of_machine_is_compatible("compal,paz00"))
+		tegra_paz00_wifikill_init();
+
+	if (IS_ENABLED(CONFIG_ARCH_TEGRA_2x_SOC) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    of_machine_is_compatible("nvidia,tegra20"))
 		platform_device_register_simple("tegra20-cpufreq", -1, NULL, 0);
 

@@ -136,7 +136,11 @@ static bool rzv2n_regmap_writeable_reg(struct device *dev, unsigned int reg)
 	}
 }
 
+<<<<<<< HEAD
 const struct rz_sysc_init_data rzv2n_sys_init_data __initconst = {
+=======
+const struct rz_sysc_init_data rzv2n_sys_init_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.soc_id_init_data = &rzv2n_sys_soc_id_init_data,
 	.readable_reg = rzv2n_regmap_readable_reg,
 	.writeable_reg = rzv2n_regmap_writeable_reg,

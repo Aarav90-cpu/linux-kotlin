@@ -92,9 +92,21 @@ torture_param(int, nreaders, -1, "Number of readers, -1 for 75% of CPUs.");
 torture_param(int, nruns, 30, "Number of experiments to run.");
 // Reader delay in nanoseconds, 0 for no delay.
 torture_param(int, readdelay, 0, "Read-side delay in nanoseconds.");
+<<<<<<< HEAD
 // Maximum shutdown delay in seconds, or zero for no shutdown.
 torture_param(int, shutdown_secs, !IS_MODULE(CONFIG_REPRO_TEST) * 300,
 	      "Shutdown at end of scalability tests or at specified timeout (s).");
+=======
+
+#ifdef MODULE
+# define REFSCALE_SHUTDOWN 0
+#else
+# define REFSCALE_SHUTDOWN 1
+#endif
+
+torture_param(bool, shutdown, REFSCALE_SHUTDOWN,
+	      "Shutdown at end of scalability tests.");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct reader_task {
 	struct task_struct *task;
@@ -103,8 +115,17 @@ struct reader_task {
 	u64 last_duration_ns;
 };
 
+<<<<<<< HEAD
 static struct task_struct *main_task;
 static wait_queue_head_t main_wq;
+=======
+static struct task_struct *shutdown_task;
+static wait_queue_head_t shutdown_wq;
+
+static struct task_struct *main_task;
+static wait_queue_head_t main_wq;
+static int shutdown_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct reader_task *reader_tasks;
 
@@ -1347,8 +1368,11 @@ static u64 process_durations(int n)
 	return sum;
 }
 
+<<<<<<< HEAD
 static void ref_scale_cleanup(void);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // The main_func is the main orchestrator, it performs a bunch of
 // experiments.  For every experiment, it orders all the readers
 // involved to start and waits for them to finish the experiment. It
@@ -1435,10 +1459,16 @@ static int main_func(void *arg)
 
 oom_exit:
 	// This will shutdown everything including us.
+<<<<<<< HEAD
 	if (shutdown_secs) {
 		main_task = NULL;  // Avoid self-kill deadlock.
 		ref_scale_cleanup();
 		kernel_power_off();
+=======
+	if (shutdown) {
+		shutdown_start = 1;
+		wake_up(&shutdown_wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	// Wait for torture to stop us
@@ -1456,8 +1486,13 @@ static void
 ref_scale_print_module_parms(const struct ref_scale_ops *cur_ops, const char *tag)
 {
 	pr_alert("%s" SCALE_FLAG
+<<<<<<< HEAD
 		 "--- %s:  verbose=%d verbose_batched=%d shutdown_secs=%d holdoff=%d lookup_instances=%ld loops=%d nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
 		 verbose, verbose_batched, shutdown_secs, holdoff, lookup_instances, loops, nreaders, nruns, readdelay);
+=======
+		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%d nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
+		 verbose, verbose_batched, shutdown, holdoff, lookup_instances, loops, nreaders, nruns, readdelay);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -1490,6 +1525,22 @@ ref_scale_cleanup(void)
 	torture_cleanup_end();
 }
 
+<<<<<<< HEAD
+=======
+// Shutdown kthread.  Just waits to be awakened, then shuts down system.
+static int
+ref_scale_shutdown(void *arg)
+{
+	wait_event_idle(shutdown_wq, shutdown_start);
+
+	smp_mb(); // Wake before output.
+	ref_scale_cleanup();
+	kernel_power_off();
+
+	return -EINVAL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init
 ref_scale_init(void)
 {
@@ -1533,10 +1584,20 @@ ref_scale_init(void)
 	ref_scale_print_module_parms(cur_ops, "Start of test");
 
 	// Shutdown task
+<<<<<<< HEAD
 	if (shutdown_secs) {
 		firsterr = torture_shutdown_init(shutdown_secs, ref_scale_cleanup);
 		if (torture_init_error(firsterr))
 			goto unwind;
+=======
+	if (shutdown) {
+		init_waitqueue_head(&shutdown_wq);
+		firsterr = torture_create_kthread(ref_scale_shutdown, NULL,
+						  shutdown_task);
+		if (torture_init_error(firsterr))
+			goto unwind;
+		schedule_timeout_uninterruptible(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	// Reader tasks (default to ~75% of online CPUs).
@@ -1581,7 +1642,11 @@ ref_scale_init(void)
 unwind:
 	torture_init_end();
 	ref_scale_cleanup();
+<<<<<<< HEAD
 	if (shutdown_secs) {
+=======
+	if (shutdown) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON(!IS_MODULE(CONFIG_RCU_REF_SCALE_TEST));
 		kernel_power_off();
 	}

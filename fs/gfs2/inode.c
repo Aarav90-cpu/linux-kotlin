@@ -892,7 +892,11 @@ retry:
 		goto fail_gunlock4;
 
 	mark_inode_dirty(inode);
+<<<<<<< HEAD
 	d_instantiate_new(dentry, inode);
+=======
+	d_instantiate(dentry, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* After instantiate, errors should result in evict which will destroy
 	 * both inode and iopen glocks properly. */
 	if (file) {
@@ -904,6 +908,10 @@ retry:
 	gfs2_glock_dq_uninit(&gh);
 	gfs2_glock_put(io_gl);
 	gfs2_qa_put(dip);
+<<<<<<< HEAD
+=======
+	unlock_new_inode(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return error;
 
 fail_gunlock4:

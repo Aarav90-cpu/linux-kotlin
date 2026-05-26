@@ -7,7 +7,10 @@
  *  Copyright (C) 2004, 2005, 2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
  */
 #ifndef CONFIG_PREEMPT_RT
+<<<<<<< HEAD
 #include <linux/mutex.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * This is the control structure for tasks blocked on mutex, which resides
  * on the blocked task's kernel stack:
@@ -48,12 +51,15 @@ static inline struct task_struct *__mutex_owner(struct mutex *lock)
 	return (struct task_struct *)(atomic_long_read(&lock->owner) & ~MUTEX_FLAGS);
 }
 
+<<<<<<< HEAD
 static inline struct mutex *get_task_blocked_on(struct task_struct *p)
 {
 	guard(raw_spinlock_irqsave)(&p->blocked_lock);
 	return __get_task_blocked_on(p);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DEBUG_MUTEXES
 extern void debug_mutex_lock_common(struct mutex *lock,
 				    struct mutex_waiter *waiter);

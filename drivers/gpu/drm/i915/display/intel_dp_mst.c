@@ -43,7 +43,10 @@
 #include "intel_display_regs.h"
 #include "intel_display_types.h"
 #include "intel_display_utils.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_dp.h"
 #include "intel_dp_hdcp.h"
 #include "intel_dp_link_training.h"
@@ -596,6 +599,7 @@ mst_stream_compute_config_limits(struct intel_dp *intel_dp,
 							    dsc);
 }
 
+<<<<<<< HEAD
 static int mst_stream_compute_link_for_joined_pipes(struct intel_encoder *encoder,
 						    struct intel_crtc_state *pipe_config,
 						    struct drm_connector_state *conn_state,
@@ -612,6 +616,41 @@ static int mst_stream_compute_link_for_joined_pipes(struct intel_encoder *encode
 	int ret = 0;
 
 	intel_dp_dsc_reset_config(pipe_config);
+=======
+static int mst_stream_compute_config(struct intel_encoder *encoder,
+				     struct intel_crtc_state *pipe_config,
+				     struct drm_connector_state *conn_state)
+{
+	struct intel_display *display = to_intel_display(encoder);
+	struct intel_atomic_state *state = to_intel_atomic_state(conn_state->state);
+	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
+	struct intel_dp *intel_dp = to_primary_dp(encoder);
+	struct intel_connector *connector =
+		to_intel_connector(conn_state->connector);
+	const struct drm_display_mode *adjusted_mode =
+		&pipe_config->hw.adjusted_mode;
+	struct link_config_limits limits;
+	bool dsc_needed, joiner_needs_dsc;
+	int num_joined_pipes;
+	int ret = 0;
+
+	if (pipe_config->fec_enable &&
+	    !intel_dp_supports_fec(intel_dp, connector, pipe_config))
+		return -EINVAL;
+
+	if (adjusted_mode->flags & DRM_MODE_FLAG_DBLSCAN)
+		return -EINVAL;
+
+	num_joined_pipes = intel_dp_num_joined_pipes(intel_dp, connector,
+						     adjusted_mode->crtc_hdisplay,
+						     adjusted_mode->crtc_clock);
+	if (num_joined_pipes > 1)
+		pipe_config->joiner_pipes = GENMASK(crtc->pipe + num_joined_pipes - 1, crtc->pipe);
+
+	pipe_config->sink_format = INTEL_OUTPUT_FORMAT_RGB;
+	pipe_config->output_format = INTEL_OUTPUT_FORMAT_RGB;
+	pipe_config->has_pch_encoder = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	joiner_needs_dsc = intel_dp_joiner_needs_dsc(display, num_joined_pipes);
 
@@ -626,12 +665,16 @@ static int mst_stream_compute_link_for_joined_pipes(struct intel_encoder *encode
 		if (ret == -EDEADLK)
 			return ret;
 
+<<<<<<< HEAD
 		if (ret ||
 		    !intel_dp_dotclk_valid(display,
 					   adjusted_mode->clock,
 					   adjusted_mode->htotal,
 					   0,
 					   num_joined_pipes))
+=======
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dsc_needed = true;
 	}
 
@@ -642,8 +685,11 @@ static int mst_stream_compute_link_for_joined_pipes(struct intel_encoder *encode
 
 	/* enable compression if the mode doesn't fit available BW */
 	if (dsc_needed) {
+<<<<<<< HEAD
 		int dsc_slice_count;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg_kms(display->drm, "Try DSC (fallback=%s, joiner=%s, force=%s)\n",
 			    str_yes_no(ret), str_yes_no(joiner_needs_dsc),
 			    str_yes_no(intel_dp->force_dsc_en));
@@ -674,6 +720,7 @@ static int mst_stream_compute_link_for_joined_pipes(struct intel_encoder *encode
 		ret = intel_dp_dsc_compute_config(intel_dp, pipe_config,
 						  conn_state, &limits,
 						  pipe_config->dp_m_n.tu);
+<<<<<<< HEAD
 		if (ret)
 			return ret;
 
@@ -734,6 +781,8 @@ static int mst_stream_compute_config(struct intel_encoder *encoder,
 							       num_joined_pipes);
 		if (ret == 0 || ret == -EDEADLK)
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ret)
@@ -746,6 +795,13 @@ static int mst_stream_compute_config(struct intel_encoder *encoder,
 		pipe_config->lane_lat_optim_mask =
 			bxt_dpio_phy_calc_lane_lat_optim_mask(pipe_config->lane_count);
 
+<<<<<<< HEAD
+=======
+	ret = intel_dp_compute_min_hblank(pipe_config, conn_state);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_vrr_compute_config(pipe_config, conn_state);
 
 	intel_dp_audio_compute_config(encoder, pipe_config, conn_state);
@@ -1277,7 +1333,11 @@ static void enable_bs_jitter_was(const struct intel_crtc_state *crtc_state)
 		set |= DP_MST_FEC_BS_JITTER_WA(crtc_state->cpu_transcoder);
 
 	/* Wa_14014143976:adlp */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14014143976)) {
+=======
+	if (IS_DISPLAY_STEP(display, STEP_E0, STEP_FOREVER)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (intel_dp_is_uhbr(crtc_state))
 			set |= DP_MST_SHORT_HBLANK_WA(crtc_state->cpu_transcoder);
 		else if (crtc_state->fec_enable)
@@ -1466,11 +1526,19 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 	struct intel_dp *intel_dp = connector->mst.dp;
 	struct drm_dp_mst_topology_mgr *mgr = &intel_dp->mst.mgr;
 	struct drm_dp_mst_port *port = connector->mst.port;
+<<<<<<< HEAD
 	int max_rate, mode_rate, max_lanes, max_link_clock;
 	unsigned long bw_overhead_flags =
 		DRM_DP_BW_OVERHEAD_MST | DRM_DP_BW_OVERHEAD_SSC_REF_CLK;
 	int min_link_bpp_x16 = fxp_q4_from_int(18);
 	static bool supports_dsc;
+=======
+	const int min_bpp = 18;
+	int max_dotclk = display->cdclk.max_dotclk_freq;
+	int max_rate, mode_rate, max_lanes, max_link_clock;
+	unsigned long bw_overhead_flags =
+		DRM_DP_BW_OVERHEAD_MST | DRM_DP_BW_OVERHEAD_SSC_REF_CLK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	bool dsc = false;
 	int target_clock = mode->clock;
@@ -1495,6 +1563,7 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	supports_dsc = intel_dp_has_dsc(connector) &&
 		       drm_dp_sink_supports_fec(connector->dp.fec_capability);
 
@@ -1502,6 +1571,8 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 		min_link_bpp_x16 = intel_dp_compute_min_compressed_bpp_x16(connector,
 									   INTEL_OUTPUT_FORMAT_RGB);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	max_link_clock = intel_dp_max_link_rate(intel_dp);
 	max_lanes = intel_dp_max_lane_count(intel_dp);
 
@@ -1509,12 +1580,17 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 					       max_link_clock, max_lanes);
 	mode_rate = intel_dp_link_required(max_link_clock, max_lanes,
 					   mode->clock, mode->hdisplay,
+<<<<<<< HEAD
 					   min_link_bpp_x16,
+=======
+					   fxp_q4_from_int(min_bpp),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   bw_overhead_flags);
 
 	/*
 	 * TODO:
 	 * - Also check if compression would allow for the mode
+<<<<<<< HEAD
 	 *   in non-passthrough mode, i.e. the last branch device
 	 *   decompressing the stream. This makes a difference only if
 	 *   the BW on the link between the last branch device and the
@@ -1522,6 +1598,8 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 	 *   source to the last branch device. Relying on the extra BW
 	 *   this provides also requires the
 	 *   DFP_Link_Available_Payload_Bandwidth_Number described below.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * - Calculate the overhead using drm_dp_bw_overhead() /
 	 *   drm_dp_bw_channel_coding_efficiency(), similarly to the
 	 *   compute config code, as drm_dp_calc_pbn_mode() doesn't
@@ -1531,16 +1609,29 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 	 *   corresponding link capabilities of the sink) in case the
 	 *   stream is uncompressed for it by the last branch device.
 	 */
+<<<<<<< HEAD
+=======
+	num_joined_pipes = intel_dp_num_joined_pipes(intel_dp, connector,
+						     mode->hdisplay, target_clock);
+	max_dotclk *= num_joined_pipes;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = drm_modeset_lock(&mgr->base.lock, ctx);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (mode_rate > max_rate ||
 	    drm_dp_calc_pbn_mode(mode->clock, min_link_bpp_x16) > port->full_pbn) {
+=======
+	if (mode_rate > max_rate || mode->clock > max_dotclk ||
+	    drm_dp_calc_pbn_mode(mode->clock, min_bpp << 4) > port->full_pbn) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*status = MODE_CLOCK_HIGH;
 		return 0;
 	}
 
+<<<<<<< HEAD
 	*status = MODE_CLOCK_HIGH;
 	for_each_joiner_candidate(connector, mode, num_joined_pipes) {
 		int dsc_slice_count = 0;
@@ -1598,6 +1689,37 @@ mst_connector_mode_valid_ctx(struct drm_connector *_connector,
 		break;
 	}
 
+=======
+	if (intel_dp_has_dsc(connector) && drm_dp_sink_supports_fec(connector->dp.fec_capability)) {
+		/*
+		 * TBD pass the connector BPC,
+		 * for now U8_MAX so that max BPC on that platform would be picked
+		 */
+		int pipe_bpp = intel_dp_dsc_compute_max_bpp(connector, U8_MAX);
+
+		if (!drm_dp_is_uhbr_rate(max_link_clock))
+			bw_overhead_flags |= DRM_DP_BW_OVERHEAD_FEC;
+
+		dsc = intel_dp_mode_valid_with_dsc(connector,
+						   max_link_clock, max_lanes,
+						   target_clock, mode->hdisplay,
+						   num_joined_pipes,
+						   INTEL_OUTPUT_FORMAT_RGB, pipe_bpp,
+						   bw_overhead_flags);
+	}
+
+	if (intel_dp_joiner_needs_dsc(display, num_joined_pipes) && !dsc) {
+		*status = MODE_CLOCK_HIGH;
+		return 0;
+	}
+
+	if (mode_rate > max_rate && !dsc) {
+		*status = MODE_CLOCK_HIGH;
+		return 0;
+	}
+
+	*status = intel_mode_valid_max_plane_size(display, mode, num_joined_pipes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

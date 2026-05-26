@@ -16,7 +16,10 @@
 #include <linux/cdev.h>
 #include <uapi/linux/vfio.h>
 #include <linux/iova_bitmap.h>
+<<<<<<< HEAD
 #include <linux/uaccess.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct kvm;
 struct iommufd_ctx;
@@ -53,7 +56,10 @@ struct vfio_device {
 	struct vfio_device_set *dev_set;
 	struct list_head dev_set_list;
 	unsigned int migration_flags;
+<<<<<<< HEAD
 	u8 precopy_info_v2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm *kvm;
 
 	/* Members below here are private, not for driver use */
@@ -74,11 +80,19 @@ struct vfio_device {
 	u8 iommufd_attached:1;
 #endif
 	u8 cdev_opened:1;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_FS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * debug_root is a static property of the vfio_device
 	 * which must be set prior to registering the vfio_device.
 	 */
 	struct dentry *debug_root;
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -284,6 +298,7 @@ static inline int vfio_check_feature(u32 flags, size_t argsz, u32 supported_ops,
 	return 1;
 }
 
+<<<<<<< HEAD
 /**
  * vfio_check_precopy_ioctl - Validate user input for the VFIO_MIG_GET_PRECOPY_INFO ioctl
  * @vdev: The vfio device
@@ -322,6 +337,8 @@ vfio_check_precopy_ioctl(struct vfio_device *vdev, unsigned int cmd,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct vfio_device *_vfio_alloc_device(size_t size, struct device *dev,
 				       const struct vfio_device_ops *ops);
 #define vfio_alloc_device(dev_struct, member, dev, ops)				\

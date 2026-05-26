@@ -1231,6 +1231,7 @@ static struct sock *unix_find_bsd(struct sockaddr_un *sunaddr, int addr_len,
 		goto path_put;
 
 	err = -EPROTOTYPE;
+<<<<<<< HEAD
 	if (sk->sk_type != type)
 		goto sock_put;
 
@@ -1240,6 +1241,13 @@ static struct sock *unix_find_bsd(struct sockaddr_un *sunaddr, int addr_len,
 
 	touch_atime(&path);
 
+=======
+	if (sk->sk_type == type)
+		touch_atime(&path);
+	else
+		goto sock_put;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	path_put(&path);
 
 	return sk;
@@ -1968,6 +1976,7 @@ static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
 
 static void unix_destruct_scm(struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct scm_cookie scm = {};
 
 	swap(scm.pid, UNIXCB(skb).pid);
@@ -1981,6 +1990,18 @@ static void unix_destruct_scm(struct sk_buff *skb)
 static void unix_wfree(struct sk_buff *skb)
 {
 	unix_destruct_scm(skb);
+=======
+	struct scm_cookie scm;
+
+	memset(&scm, 0, sizeof(scm));
+	scm.pid = UNIXCB(skb).pid;
+	if (UNIXCB(skb).fp)
+		unix_detach_fds(&scm, skb);
+
+	/* Alas, it calls VFS */
+	/* So fscking what? fput() had been SMP-safe since the last Summer */
+	scm_destroy(&scm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sock_wfree(skb);
 }
 
@@ -1996,7 +2017,11 @@ static int unix_scm_to_skb(struct scm_cookie *scm, struct sk_buff *skb, bool sen
 	if (scm->fp && send_fds)
 		err = unix_attach_fds(scm, skb);
 
+<<<<<<< HEAD
 	skb->destructor = unix_wfree;
+=======
+	skb->destructor = unix_destruct_scm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -2073,6 +2098,7 @@ static void scm_stat_del(struct sock *sk, struct sk_buff *skb)
 	}
 }
 
+<<<<<<< HEAD
 static void unix_orphan_scm(struct sock *sk, struct sk_buff *skb)
 {
 	scm_stat_del(sk, skb);
@@ -2080,6 +2106,8 @@ static void unix_orphan_scm(struct sock *sk, struct sk_buff *skb)
 	skb->destructor = sock_wfree;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  *	Send AF_UNIX data.
  */
@@ -2681,7 +2709,11 @@ static int unix_dgram_recvmsg(struct socket *sock, struct msghdr *msg, size_t si
 	const struct proto *prot = READ_ONCE(sk->sk_prot);
 
 	if (prot != &unix_dgram_proto)
+<<<<<<< HEAD
 		return prot->recvmsg(sk, msg, size, flags);
+=======
+		return prot->recvmsg(sk, msg, size, flags, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return __unix_dgram_recvmsg(sk, msg, size, flags);
 }
@@ -2693,6 +2725,7 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 	int err;
 
 	mutex_lock(&u->iolock);
+<<<<<<< HEAD
 
 	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
 	if (!skb) {
@@ -2703,6 +2736,12 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 	unix_orphan_scm(sk, skb);
 
 	mutex_unlock(&u->iolock);
+=======
+	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
+	mutex_unlock(&u->iolock);
+	if (!skb)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return recv_actor(sk, skb);
 }
@@ -2900,9 +2939,12 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 #endif
 
 	spin_unlock(&queue->lock);
+<<<<<<< HEAD
 
 	unix_orphan_scm(sk, skb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&u->iolock);
 
 	return recv_actor(sk, skb);
@@ -3157,7 +3199,11 @@ static int unix_stream_recvmsg(struct socket *sock, struct msghdr *msg,
 	const struct proto *prot = READ_ONCE(sk->sk_prot);
 
 	if (prot != &unix_stream_proto)
+<<<<<<< HEAD
 		return prot->recvmsg(sk, msg, size, flags);
+=======
+		return prot->recvmsg(sk, msg, size, flags, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return unix_stream_read_generic(&state, true);
 }
@@ -3558,7 +3604,11 @@ static int unix_seq_show(struct seq_file *seq, void *v)
 		struct unix_sock *u = unix_sk(s);
 		unix_state_lock(s);
 
+<<<<<<< HEAD
 		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5llu",
+=======
+		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5lu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			s,
 			refcount_read(&s->sk_refcnt),
 			0,
@@ -3750,15 +3800,25 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
 	struct bpf_prog *prog;
 	struct sock *sk = v;
 	uid_t uid;
+<<<<<<< HEAD
+=======
+	bool slow;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (v == SEQ_START_TOKEN)
 		return 0;
 
+<<<<<<< HEAD
 	lock_sock(sk);
 	unix_state_lock(sk);
 
 	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+=======
+	slow = lock_sock_fast(sk);
+
+	if (unlikely(sk_unhashed(sk))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = SEQ_SKIP;
 		goto unlock;
 	}
@@ -3768,8 +3828,12 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
 	prog = bpf_iter_get_info(&meta, false);
 	ret = unix_prog_seq_show(prog, &meta, v, uid);
 unlock:
+<<<<<<< HEAD
 	unix_state_unlock(sk);
 	release_sock(sk);
+=======
+	unlock_sock_fast(sk, slow);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

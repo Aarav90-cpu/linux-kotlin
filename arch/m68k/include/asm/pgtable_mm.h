@@ -110,6 +110,18 @@ extern unsigned long m68k_vmalloc_end;
 #define VMALLOC_END KMAP_START
 #endif
 
+<<<<<<< HEAD
+=======
+/* zero page used for uninitialized stuff */
+extern void *empty_zero_page;
+
+/*
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void kernel_set_cachemode(void *addr, unsigned long size, int cmode);
 
 /*

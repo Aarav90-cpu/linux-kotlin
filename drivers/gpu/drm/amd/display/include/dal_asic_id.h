@@ -252,7 +252,10 @@ enum {
 #define AMDGPU_FAMILY_GC_11_0_0 145
 #define AMDGPU_FAMILY_GC_11_0_1 148
 #define AMDGPU_FAMILY_GC_11_5_0 150
+<<<<<<< HEAD
 #define AMDGPU_FAMILY_GC_11_5_4	154
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GC_11_0_0_A0 0x1
 #define GC_11_0_2_A0 0x10
 #define GC_11_0_3_A0 0x20

@@ -209,8 +209,14 @@
 
 /*
  * On A10/A23, this is the size of the NDFC User Data Register, containing the
+<<<<<<< HEAD
  * mandatory user data bytes preceding the ECC for each ECC step.
  * Thus, for each ECC step, we need the ECC bytes + USER_DATA_SZ.
+=======
+ * mandatory user data bytes following the ECC for each ECC step.
+ * Thus, for each ECC step, we need the ECC bytes + USER_DATA_SZ.
+ * Those bits are currently unsused, and kept as default value 0xffffffff.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * On H6/H616, this size became configurable, from 0 bytes to 32, via the
  * USER_DATA_LEN registers.
@@ -248,7 +254,10 @@ struct sunxi_nand_hw_ecc {
  * @timing_ctl: TIMING_CTL register value for this NAND chip
  * @nsels: number of CS lines required by the NAND chip
  * @sels: array of CS lines descriptions
+<<<<<<< HEAD
  * @user_data_bytes: array of user data lengths for all ECC steps
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct sunxi_nand_chip {
 	struct list_head node;
@@ -257,7 +266,10 @@ struct sunxi_nand_chip {
 	unsigned long clk_rate;
 	u32 timing_cfg;
 	u32 timing_ctl;
+<<<<<<< HEAD
 	u8 *user_data_bytes;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int nsels;
 	struct sunxi_nand_chip_sel sels[] __counted_by(nsels);
 };
@@ -273,11 +285,17 @@ static inline struct sunxi_nand_chip *to_sunxi_nand(struct nand_chip *nand)
  *
  * @has_mdma:		Use mbus dma mode, otherwise general dma
  *			through MBUS on A23/A33 needs extra configuration.
+<<<<<<< HEAD
  * @has_ecc_block_512:	If the ECC can handle 512B or only 1024B chunks
  * @has_ecc_clk:	If the controller needs an ECC clock.
  * @has_mbus_clk:	If the controller needs a mbus clock.
  * @legacy_max_strength:If the maximize strength function was off by 2 bytes
  *			NB: this should not be used in new controllers
+=======
+ * @has_ecc_block_512:	If the ECC can handle 512B or only 1024B chuncks
+ * @has_ecc_clk:	If the controller needs an ECC clock.
+ * @has_mbus_clk:	If the controller needs a mbus clock.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @reg_io_data:	I/O data register
  * @reg_ecc_err_cnt:	ECC error counter register
  * @reg_user_data:	User data register
@@ -295,7 +313,11 @@ static inline struct sunxi_nand_chip *to_sunxi_nand(struct nand_chip *nand)
  * @nstrengths:		Size of @ecc_strengths
  * @max_ecc_steps:	Maximum supported steps for ECC, this is also the
  *			number of user data registers
+<<<<<<< HEAD
  * @user_data_len_tab:  Table of lengths supported by USER_DATA_LEN register
+=======
+ * @user_data_len_tab:  Table of lenghts supported by USER_DATA_LEN register
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *			The table index is the value to set in NFC_USER_DATA_LEN
  *			registers, and the corresponding value is the number of
  *			bytes to write
@@ -307,7 +329,10 @@ struct sunxi_nfc_caps {
 	bool has_ecc_block_512;
 	bool has_ecc_clk;
 	bool has_mbus_clk;
+<<<<<<< HEAD
 	bool legacy_max_strength;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int reg_io_data;
 	unsigned int reg_ecc_err_cnt;
 	unsigned int reg_user_data;
@@ -824,6 +849,7 @@ static inline u32 sunxi_nfc_buf_to_user_data(const u8 *buf)
 	return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 }
 
+<<<<<<< HEAD
 static u8 sunxi_nfc_user_data_sz(struct sunxi_nand_chip *sunxi_nand, int step)
 {
 	if (!sunxi_nand->user_data_bytes)
@@ -868,6 +894,14 @@ static void sunxi_nfc_hw_ecc_get_prot_oob_bytes(struct nand_chip *nand, u8 *oob,
 			sunxi_nfc_user_data_to_buf(user_data, ptr);
 		}
 	}
+=======
+static void sunxi_nfc_hw_ecc_get_prot_oob_bytes(struct nand_chip *nand, u8 *oob,
+						int step, bool bbm, int page)
+{
+	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+
+	sunxi_nfc_user_data_to_buf(readl(nfc->regs + NFC_REG_USER_DATA(nfc, step)), oob);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* De-randomize the Bad Block Marker. */
 	if (bbm && (nand->options & NAND_NEED_SCRAMBLING))
@@ -926,6 +960,7 @@ static void sunxi_nfc_hw_ecc_set_prot_oob_bytes(struct nand_chip *nand,
 						bool bbm, int page)
 {
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
 	unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, step);
 	u8 *user_data = NULL;
@@ -934,10 +969,18 @@ static void sunxi_nfc_hw_ecc_set_prot_oob_bytes(struct nand_chip *nand,
 	if (bbm && (nand->options & NAND_NEED_SCRAMBLING)) {
 		user_data = kmalloc(user_data_sz, GFP_KERNEL);
 		memcpy(user_data, oob, user_data_sz);
+=======
+	u8 user_data[USER_DATA_SZ];
+
+	/* Randomize the Bad Block Marker. */
+	if (bbm && (nand->options & NAND_NEED_SCRAMBLING)) {
+		memcpy(user_data, oob, sizeof(user_data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sunxi_nfc_randomize_bbm(nand, page, user_data);
 		oob = user_data;
 	}
 
+<<<<<<< HEAD
 	if (!nfc->caps->reg_user_data_len) {
 		/*
 		 * For A10, the user data for step n is in the nth
@@ -966,6 +1009,10 @@ static void sunxi_nfc_hw_ecc_set_prot_oob_bytes(struct nand_chip *nand,
 	}
 
 	kfree(user_data);
+=======
+	writel(sunxi_nfc_buf_to_user_data(oob),
+	       nfc->regs + NFC_REG_USER_DATA(nfc, step));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sunxi_nfc_hw_ecc_update_stats(struct nand_chip *nand,
@@ -986,8 +1033,11 @@ static int sunxi_nfc_hw_ecc_correct(struct nand_chip *nand, u8 *data, u8 *oob,
 				    bool *erased)
 {
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
 	unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, step);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	u32 tmp;
 
@@ -1010,7 +1060,11 @@ static int sunxi_nfc_hw_ecc_correct(struct nand_chip *nand, u8 *data, u8 *oob,
 			memset(data, pattern, ecc->size);
 
 		if (oob)
+<<<<<<< HEAD
 			memset(oob, pattern, ecc->bytes + user_data_sz);
+=======
+			memset(oob, pattern, ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return 0;
 	}
@@ -1025,6 +1079,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 				       u8 *oob, int oob_off,
 				       int *cur_off,
 				       unsigned int *max_bitflips,
+<<<<<<< HEAD
 				       int step, bool oob_required, int page)
 {
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
@@ -1038,6 +1093,16 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 	int ret;
 	/* From the controller point of view, we are at step 0 */
 	const int nfc_step = 0;
+=======
+				       bool bbm, bool oob_required, int page)
+{
+	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+	struct nand_ecc_ctrl *ecc = &nand->ecc;
+	int raw_mode = 0;
+	u32 pattern_found;
+	bool erased;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (*cur_off != data_off)
 		nand_change_read_column_op(nand, data_off, NULL, 0, false);
@@ -1051,7 +1116,12 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	sunxi_nfc_set_user_data_len(nfc, user_data_sz, nfc_step);
+=======
+	sunxi_nfc_reset_user_data_len(nfc);
+	sunxi_nfc_set_user_data_len(nfc, USER_DATA_SZ, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sunxi_nfc_randomizer_config(nand, page, false);
 	sunxi_nfc_randomizer_enable(nand);
 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
@@ -1062,14 +1132,25 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	*cur_off = oob_off + ecc->bytes + user_data_sz;
+=======
+	*cur_off = oob_off + ecc->bytes + USER_DATA_SZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pattern_found = readl(nfc->regs + nfc->caps->reg_pat_found);
 	pattern_found = field_get(NFC_ECC_PAT_FOUND_MSK(nfc), pattern_found);
 
+<<<<<<< HEAD
 	ret = sunxi_nfc_hw_ecc_correct(nand, data, oob_required ? oob : NULL,
 				       nfc_step, readl(nfc->regs + NFC_REG_ECC_ST),
 				       pattern_found, &erased);
+=======
+	ret = sunxi_nfc_hw_ecc_correct(nand, data, oob_required ? oob : NULL, 0,
+				       readl(nfc->regs + NFC_REG_ECC_ST),
+				       pattern_found,
+				       &erased);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (erased)
 		return 1;
 
@@ -1086,10 +1167,17 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 				      ecc->size);
 
 		nand_change_read_column_op(nand, oob_off, oob,
+<<<<<<< HEAD
 					   ecc->bytes + user_data_sz, false);
 
 		ret = nand_check_erased_ecc_chunk(data,	ecc->size, oob,
 						  ecc->bytes + user_data_sz,
+=======
+					   ecc->bytes + USER_DATA_SZ, false);
+
+		ret = nand_check_erased_ecc_chunk(data,	ecc->size, oob,
+						  ecc->bytes + USER_DATA_SZ,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						  NULL, 0, ecc->strength);
 		if (ret >= 0)
 			raw_mode = 1;
@@ -1099,11 +1187,19 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 		if (oob_required) {
 			nand_change_read_column_op(nand, oob_off, NULL, 0,
 						   false);
+<<<<<<< HEAD
 			sunxi_nfc_randomizer_read_buf(nand, oob, ecc->bytes + user_data_sz,
 						      true, page);
 
 			sunxi_nfc_hw_ecc_get_prot_oob_bytes(nand, oob, nfc_step,
 							    bbm, page, user_data_sz);
+=======
+			sunxi_nfc_randomizer_read_buf(nand, oob, ecc->bytes + USER_DATA_SZ,
+						      true, page);
+
+			sunxi_nfc_hw_ecc_get_prot_oob_bytes(nand, oob, 0,
+							    bbm, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1112,6 +1208,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(struct nand_chip *nand,
 	return raw_mode;
 }
 
+<<<<<<< HEAD
 /*
  * Returns the offset of the OOB for each step.
  * (it includes the user data before the ECC data.)
@@ -1140,22 +1237,36 @@ static int sunxi_get_ecc_offset(struct sunxi_nand_chip *sunxi_nand,
 		sunxi_nfc_user_data_sz(sunxi_nand, step);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
 					    u8 *oob, int *cur_off,
 					    bool randomize, int page)
 {
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	int offset = sunxi_get_oob_offset(sunxi_nand, ecc, ecc->steps);
+=======
+	struct mtd_info *mtd = nand_to_mtd(nand);
+	struct nand_ecc_ctrl *ecc = &nand->ecc;
+	int offset = ((ecc->bytes + 4) * ecc->steps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int len = mtd->oobsize - offset;
 
 	if (len <= 0)
 		return;
 
+<<<<<<< HEAD
 	if (!cur_off || *cur_off != (offset + mtd->writesize))
 		nand_change_read_column_op(nand, mtd->writesize + offset,
 					   NULL, 0, false);
+=======
+	if (!cur_off || *cur_off != offset)
+		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
+					   false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!randomize)
 		sunxi_nfc_read_buf(nand, oob + offset, len);
@@ -1172,7 +1283,10 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 					    int nchunks)
 {
 	bool randomized = nand->options & NAND_NEED_SCRAMBLING;
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
@@ -1192,8 +1306,12 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 
 	sunxi_nfc_hw_ecc_enable(nand);
 	sunxi_nfc_reset_user_data_len(nfc);
+<<<<<<< HEAD
 	for (i = 0; i < nchunks; i++)
 		sunxi_nfc_set_user_data_len(nfc, sunxi_nfc_user_data_sz(sunxi_nand, i), i);
+=======
+	sunxi_nfc_set_user_data_len(nfc, USER_DATA_SZ, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sunxi_nfc_randomizer_config(nand, page, false);
 	sunxi_nfc_randomizer_enable(nand);
 
@@ -1228,8 +1346,12 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 
 	for (i = 0; i < nchunks; i++) {
 		int data_off = i * ecc->size;
+<<<<<<< HEAD
 		unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, i);
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+		int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 *data = buf + data_off;
 		u8 *oob = nand->oob_poi + oob_off;
 		bool erased;
@@ -1247,10 +1369,17 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 			/* TODO: use DMA to retrieve OOB */
 			nand_change_read_column_op(nand,
 						   mtd->writesize + oob_off,
+<<<<<<< HEAD
 						   oob, ecc->bytes + user_data_sz, false);
 
 			sunxi_nfc_hw_ecc_get_prot_oob_bytes(nand, oob, i, !i,
 							    page, user_data_sz);
+=======
+						   oob, ecc->bytes + USER_DATA_SZ, false);
+
+			sunxi_nfc_hw_ecc_get_prot_oob_bytes(nand, oob, i,
+							    !i, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (erased)
@@ -1262,8 +1391,12 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 	if (status & NFC_ECC_ERR_MSK(nfc)) {
 		for (i = 0; i < nchunks; i++) {
 			int data_off = i * ecc->size;
+<<<<<<< HEAD
 			unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, i);
 			int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+			int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			u8 *data = buf + data_off;
 			u8 *oob = nand->oob_poi + oob_off;
 
@@ -1283,10 +1416,17 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 			/* TODO: use DMA to retrieve OOB */
 			nand_change_read_column_op(nand,
 						   mtd->writesize + oob_off,
+<<<<<<< HEAD
 						   oob, ecc->bytes + user_data_sz, false);
 
 			ret = nand_check_erased_ecc_chunk(data,	ecc->size, oob,
 							  ecc->bytes + user_data_sz,
+=======
+						   oob, ecc->bytes + USER_DATA_SZ, false);
+
+			ret = nand_check_erased_ecc_chunk(data,	ecc->size, oob,
+							  ecc->bytes + USER_DATA_SZ,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							  NULL, 0,
 							  ecc->strength);
 			if (ret >= 0)
@@ -1307,6 +1447,7 @@ static int sunxi_nfc_hw_ecc_read_chunks_dma(struct nand_chip *nand, uint8_t *buf
 static int sunxi_nfc_hw_ecc_write_chunk(struct nand_chip *nand,
 					const u8 *data, int data_off,
 					const u8 *oob, int oob_off,
+<<<<<<< HEAD
 					int *cur_off, int step,
 					int page)
 {
@@ -1318,6 +1459,14 @@ static int sunxi_nfc_hw_ecc_write_chunk(struct nand_chip *nand,
 	int ret;
 	/* From the controller point of view, we are at step 0 */
 	const int nfc_step = 0;
+=======
+					int *cur_off, bool bbm,
+					int page)
+{
+	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+	struct nand_ecc_ctrl *ecc = &nand->ecc;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (data_off != *cur_off)
 		nand_change_write_column_op(nand, data_off, NULL, 0, false);
@@ -1333,8 +1482,14 @@ static int sunxi_nfc_hw_ecc_write_chunk(struct nand_chip *nand,
 
 	sunxi_nfc_randomizer_config(nand, page, false);
 	sunxi_nfc_randomizer_enable(nand);
+<<<<<<< HEAD
 	sunxi_nfc_set_user_data_len(nfc, user_data_sz, nfc_step);
 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, nfc_step, bbm, page);
+=======
+	sunxi_nfc_reset_user_data_len(nfc);
+	sunxi_nfc_set_user_data_len(nfc, USER_DATA_SZ, 0);
+	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD |
 	       NFC_ACCESS_DIR | NFC_ECC_OP,
@@ -1345,7 +1500,11 @@ static int sunxi_nfc_hw_ecc_write_chunk(struct nand_chip *nand,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	*cur_off = oob_off + ecc->bytes + user_data_sz;
+=======
+	*cur_off = oob_off + ecc->bytes + USER_DATA_SZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1355,9 +1514,14 @@ static void sunxi_nfc_hw_ecc_write_extra_oob(struct nand_chip *nand,
 					     int page)
 {
 	struct mtd_info *mtd = nand_to_mtd(nand);
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	int offset = sunxi_get_oob_offset(sunxi_nand, ecc, ecc->steps);
+=======
+	struct nand_ecc_ctrl *ecc = &nand->ecc;
+	int offset = ((ecc->bytes + USER_DATA_SZ) * ecc->steps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int len = mtd->oobsize - offset;
 
 	if (len <= 0)
@@ -1376,8 +1540,11 @@ static void sunxi_nfc_hw_ecc_write_extra_oob(struct nand_chip *nand,
 static int sunxi_nfc_hw_ecc_read_page(struct nand_chip *nand, uint8_t *buf,
 				      int oob_required, int page)
 {
+<<<<<<< HEAD
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	unsigned int max_bitflips = 0;
@@ -1390,17 +1557,27 @@ static int sunxi_nfc_hw_ecc_read_page(struct nand_chip *nand, uint8_t *buf,
 
 	sunxi_nfc_hw_ecc_enable(nand);
 
+<<<<<<< HEAD
 	sunxi_nfc_reset_user_data_len(nfc);
 	for (i = 0; i < ecc->steps; i++) {
 		int data_off = i * ecc->size;
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+	for (i = 0; i < ecc->steps; i++) {
+		int data_off = i * ecc->size;
+		int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 *data = buf + data_off;
 		u8 *oob = nand->oob_poi + oob_off;
 
 		ret = sunxi_nfc_hw_ecc_read_chunk(nand, data, data_off, oob,
 						  oob_off + mtd->writesize,
 						  &cur_off, &max_bitflips,
+<<<<<<< HEAD
 						  i, oob_required, page);
+=======
+						  !i, oob_required, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 		else if (ret)
@@ -1438,8 +1615,11 @@ static int sunxi_nfc_hw_ecc_read_subpage(struct nand_chip *nand,
 					 u32 data_offs, u32 readlen,
 					 u8 *bufpoi, int page)
 {
+<<<<<<< HEAD
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	int ret, i, cur_off = 0;
@@ -1451,18 +1631,29 @@ static int sunxi_nfc_hw_ecc_read_subpage(struct nand_chip *nand,
 
 	sunxi_nfc_hw_ecc_enable(nand);
 
+<<<<<<< HEAD
 	sunxi_nfc_reset_user_data_len(nfc);
 	for (i = data_offs / ecc->size;
 	     i < DIV_ROUND_UP(data_offs + readlen, ecc->size); i++) {
 		int data_off = i * ecc->size;
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+	for (i = data_offs / ecc->size;
+	     i < DIV_ROUND_UP(data_offs + readlen, ecc->size); i++) {
+		int data_off = i * ecc->size;
+		int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 *data = bufpoi + data_off;
 		u8 *oob = nand->oob_poi + oob_off;
 
 		ret = sunxi_nfc_hw_ecc_read_chunk(nand, data, data_off,
 						  oob,
 						  oob_off + mtd->writesize,
+<<<<<<< HEAD
 						  &cur_off, &max_bitflips, i,
+=======
+						  &cur_off, &max_bitflips, !i,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						  false, page);
 		if (ret < 0)
 			return ret;
@@ -1497,8 +1688,11 @@ static int sunxi_nfc_hw_ecc_write_page(struct nand_chip *nand,
 				       const uint8_t *buf, int oob_required,
 				       int page)
 {
+<<<<<<< HEAD
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	int ret, i, cur_off = 0;
@@ -1509,16 +1703,26 @@ static int sunxi_nfc_hw_ecc_write_page(struct nand_chip *nand,
 
 	sunxi_nfc_hw_ecc_enable(nand);
 
+<<<<<<< HEAD
 	sunxi_nfc_reset_user_data_len(nfc);
 	for (i = 0; i < ecc->steps; i++) {
 		int data_off = i * ecc->size;
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+	for (i = 0; i < ecc->steps; i++) {
+		int data_off = i * ecc->size;
+		int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const u8 *data = buf + data_off;
 		const u8 *oob = nand->oob_poi + oob_off;
 
 		ret = sunxi_nfc_hw_ecc_write_chunk(nand, data, data_off, oob,
 						   oob_off + mtd->writesize,
+<<<<<<< HEAD
 						   &cur_off, i, page);
+=======
+						   &cur_off, !i, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -1537,8 +1741,11 @@ static int sunxi_nfc_hw_ecc_write_subpage(struct nand_chip *nand,
 					  const u8 *buf, int oob_required,
 					  int page)
 {
+<<<<<<< HEAD
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	int ret, i, cur_off = 0;
@@ -1549,17 +1756,28 @@ static int sunxi_nfc_hw_ecc_write_subpage(struct nand_chip *nand,
 
 	sunxi_nfc_hw_ecc_enable(nand);
 
+<<<<<<< HEAD
 	sunxi_nfc_reset_user_data_len(nfc);
 	for (i = data_offs / ecc->size;
 	     i < DIV_ROUND_UP(data_offs + data_len, ecc->size); i++) {
 		int data_off = i * ecc->size;
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
+=======
+	for (i = data_offs / ecc->size;
+	     i < DIV_ROUND_UP(data_offs + data_len, ecc->size); i++) {
+		int data_off = i * ecc->size;
+		int oob_off = i * (ecc->bytes + USER_DATA_SZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const u8 *data = buf + data_off;
 		const u8 *oob = nand->oob_poi + oob_off;
 
 		ret = sunxi_nfc_hw_ecc_write_chunk(nand, data, data_off, oob,
 						   oob_off + mtd->writesize,
+<<<<<<< HEAD
 						   &cur_off, i, page);
+=======
+						   &cur_off, !i, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -1575,7 +1793,10 @@ static int sunxi_nfc_hw_ecc_write_page_dma(struct nand_chip *nand,
 					   int page)
 {
 	struct sunxi_nfc *nfc = to_sunxi_nfc(nand->controller);
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
 	struct scatterlist sg;
 	u32 wait;
@@ -1594,12 +1815,19 @@ static int sunxi_nfc_hw_ecc_write_page_dma(struct nand_chip *nand,
 
 	sunxi_nfc_reset_user_data_len(nfc);
 	for (i = 0; i < ecc->steps; i++) {
+<<<<<<< HEAD
 		unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, i);
 		int oob_off = sunxi_get_oob_offset(sunxi_nand, ecc, i);
 		const u8 *oob = nand->oob_poi + oob_off;
 
 		sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, i, !i, page);
 		sunxi_nfc_set_user_data_len(nfc, user_data_sz, i);
+=======
+		const u8 *oob = nand->oob_poi + (i * (ecc->bytes + USER_DATA_SZ));
+
+		sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, i, !i, page);
+		sunxi_nfc_set_user_data_len(nfc, USER_DATA_SZ, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	nand_prog_page_begin_op(nand, page, 0, NULL, 0);
@@ -1863,12 +2091,19 @@ static int sunxi_nand_ooblayout_ecc(struct mtd_info *mtd, int section,
 {
 	struct nand_chip *nand = mtd_to_nand(mtd);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (section >= ecc->steps)
 		return -ERANGE;
 
+<<<<<<< HEAD
 	oobregion->offset = sunxi_get_ecc_offset(sunxi_nand, ecc, section);
+=======
+	oobregion->offset = section * (ecc->bytes + USER_DATA_SZ) + 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	oobregion->length = ecc->bytes;
 
 	return 0;
@@ -1879,13 +2114,32 @@ static int sunxi_nand_ooblayout_free(struct mtd_info *mtd, int section,
 {
 	struct nand_chip *nand = mtd_to_nand(mtd);
 	struct nand_ecc_ctrl *ecc = &nand->ecc;
+<<<<<<< HEAD
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
 	unsigned int user_data_sz = sunxi_nfc_user_data_sz(sunxi_nand, section);
+=======
+
+	if (section > ecc->steps)
+		return -ERANGE;
+
+	/*
+	 * The first 2 bytes are used for BB markers, hence we
+	 * only have 2 bytes available in the first user data
+	 * section.
+	 */
+	if (!section && ecc->engine_type == NAND_ECC_ENGINE_TYPE_ON_HOST) {
+		oobregion->offset = 2;
+		oobregion->length = 2;
+
+		return 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The controller does not provide access to OOB bytes
 	 * past the end of the ECC data.
 	 */
+<<<<<<< HEAD
 	if (section >= ecc->steps)
 		return -ERANGE;
 
@@ -1903,6 +2157,17 @@ static int sunxi_nand_ooblayout_free(struct mtd_info *mtd, int section,
 
 	oobregion->offset = sunxi_get_ecc_offset(sunxi_nand, ecc, section);
 	oobregion->length = user_data_sz;
+=======
+	if (section == ecc->steps && ecc->engine_type == NAND_ECC_ENGINE_TYPE_ON_HOST)
+		return -ERANGE;
+
+	oobregion->offset = section * (ecc->bytes + USER_DATA_SZ);
+
+	if (section < ecc->steps)
+		oobregion->length = USER_DATA_SZ;
+	else
+		oobregion->length = mtd->oobsize - oobregion->offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1912,6 +2177,7 @@ static const struct mtd_ooblayout_ops sunxi_nand_ooblayout_ops = {
 	.free = sunxi_nand_ooblayout_free,
 };
 
+<<<<<<< HEAD
 static void sunxi_nand_detach_chip(struct nand_chip *nand)
 {
 	struct sunxi_nand_chip *sunxi_nand = to_sunxi_nand(nand);
@@ -1949,6 +2215,8 @@ static int sunxi_nfc_maximize_user_data(struct nand_chip *nand, uint32_t oobsize
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 				       struct nand_ecc_ctrl *ecc,
 				       struct device_node *np)
@@ -1958,6 +2226,7 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 	const u8 *strengths = nfc->caps->ecc_strengths;
 	struct mtd_info *mtd = nand_to_mtd(nand);
 	struct nand_device *nanddev = mtd_to_nanddev(mtd);
+<<<<<<< HEAD
 	int total_user_data_sz = 0;
 	int nsectors;
 	int ecc_mode;
@@ -1965,10 +2234,18 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 
 	if (nanddev->ecc.user_conf.flags & NAND_ECC_MAXIMIZE_STRENGTH) {
 		int bytes = mtd->oobsize;
+=======
+	int nsectors;
+	int i;
+
+	if (nanddev->ecc.user_conf.flags & NAND_ECC_MAXIMIZE_STRENGTH) {
+		int bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ecc->size = 1024;
 		nsectors = mtd->writesize / ecc->size;
 
+<<<<<<< HEAD
 		if (!nfc->caps->reg_user_data_len) {
 			/*
 			 * If there's a fixed user data length, subtract it before
@@ -2002,6 +2279,13 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 		 * for ECC bytes
 		 */
 		bytes /= nsectors;
+=======
+		/* Reserve 2 bytes for the BBM */
+		bytes = (mtd->oobsize - 2) / nsectors;
+
+		/* 4 non-ECC bytes are added before each ECC bytes section */
+		bytes -= USER_DATA_SZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* and bytes has to be even. */
 		if (bytes % 2)
@@ -2030,18 +2314,31 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 	}
 
 	/* Add ECC info retrieval from DT */
+<<<<<<< HEAD
 	for (ecc_mode = 0; ecc_mode < nfc->caps->nstrengths; ecc_mode++) {
 		if (ecc->strength <= strengths[ecc_mode]) {
+=======
+	for (i = 0; i < nfc->caps->nstrengths; i++) {
+		if (ecc->strength <= strengths[i]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Update ecc->strength value with the actual strength
 			 * that will be used by the ECC engine.
 			 */
+<<<<<<< HEAD
 			ecc->strength = strengths[ecc_mode];
+=======
+			ecc->strength = strengths[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
 
+<<<<<<< HEAD
 	if (ecc_mode >= nfc->caps->nstrengths) {
+=======
+	if (i >= nfc->caps->nstrengths) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(nfc->dev, "unsupported strength\n");
 		return -ENOTSUPP;
 	}
@@ -2054,6 +2351,7 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 
 	nsectors = mtd->writesize / ecc->size;
 
+<<<<<<< HEAD
 	/*
 	 * The rationale for variable data length is to prioritize maximum ECC
 	 * strength, and then use the remaining space for user data.
@@ -2067,6 +2365,9 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 			total_user_data_sz += sunxi_nfc_user_data_sz(sunxi_nand, i);
 
 	if (mtd->oobsize < (ecc->bytes * nsectors + total_user_data_sz))
+=======
+	if (mtd->oobsize < ((ecc->bytes + USER_DATA_SZ) * nsectors))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	ecc->read_oob = sunxi_nfc_hw_ecc_read_oob;
@@ -2089,7 +2390,11 @@ static int sunxi_nand_hw_ecc_ctrl_init(struct nand_chip *nand,
 	ecc->read_oob_raw = nand_read_oob_std;
 	ecc->write_oob_raw = nand_write_oob_std;
 
+<<<<<<< HEAD
 	sunxi_nand->ecc.ecc_ctl = NFC_ECC_MODE(nfc, ecc_mode) | NFC_ECC_EXCEPTION |
+=======
+	sunxi_nand->ecc.ecc_ctl = NFC_ECC_MODE(nfc, i) | NFC_ECC_EXCEPTION |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  NFC_ECC_PIPELINE | NFC_ECC_EN;
 
 	if (ecc->size == 512) {
@@ -2296,7 +2601,10 @@ static int sunxi_nfc_exec_op(struct nand_chip *nand,
 
 static const struct nand_controller_ops sunxi_nand_controller_ops = {
 	.attach_chip = sunxi_nand_attach_chip,
+<<<<<<< HEAD
 	.detach_chip = sunxi_nand_detach_chip,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.setup_interface = sunxi_nfc_setup_interface,
 	.exec_op = sunxi_nfc_exec_op,
 };
@@ -2578,7 +2886,10 @@ static const u8 sunxi_user_data_len_h6[] = {
 
 static const struct sunxi_nfc_caps sunxi_nfc_a10_caps = {
 	.has_ecc_block_512 = true,
+<<<<<<< HEAD
 	.legacy_max_strength = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reg_io_data = NFC_REG_A10_IO_DATA,
 	.reg_ecc_err_cnt = NFC_REG_A10_ECC_ERR_CNT,
 	.reg_user_data = NFC_REG_A10_USER_DATA,
@@ -2600,7 +2911,10 @@ static const struct sunxi_nfc_caps sunxi_nfc_a10_caps = {
 static const struct sunxi_nfc_caps sunxi_nfc_a23_caps = {
 	.has_mdma = true,
 	.has_ecc_block_512 = true,
+<<<<<<< HEAD
 	.legacy_max_strength = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reg_io_data = NFC_REG_A23_IO_DATA,
 	.reg_ecc_err_cnt = NFC_REG_A10_ECC_ERR_CNT,
 	.reg_user_data = NFC_REG_A10_USER_DATA,

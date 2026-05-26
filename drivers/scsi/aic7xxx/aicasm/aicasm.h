@@ -82,7 +82,11 @@ extern int   src_mode;
 extern int   dst_mode;
 struct symbol;
 
+<<<<<<< HEAD
 void __attribute__((noreturn)) stop(const char *errstring, int err_code);
+=======
+void stop(const char *errstring, int err_code);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void include_file(char *file_name, include_type type);
 void expand_macro(struct symbol *macro_symbol);
 struct instruction *seq_alloc(void);

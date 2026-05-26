@@ -181,7 +181,11 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
 			    !tp->delivered_ce)
+<<<<<<< HEAD
 				WRITE_ONCE(tp->delivered_ce, 1);
+=======
+				tp->delivered_ce++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	}
@@ -606,10 +610,16 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
 	use_ecn = tcp_ecn == TCP_ECN_IN_ECN_OUT_ECN ||
 		  tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ECN ||
 		  tcp_ca_needs_ecn(sk) || bpf_needs_ecn || use_accecn;
+<<<<<<< HEAD
 
 	if (!use_ecn) {
 		const struct dst_entry *dst = __sk_dst_get(sk);
 
+=======
+	const struct dst_entry *dst = __sk_dst_get(sk);
+
+	if (!use_ecn) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dst && dst_feature(dst, RTAX_FEATURE_ECN))
 			use_ecn = true;
 	}
@@ -627,6 +637,12 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
 			tp->syn_ect_snt = inet_sk(sk)->tos & INET_ECN_MASK;
 		} else {
 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
+<<<<<<< HEAD
+=======
+
+			if (dst)
+				tcp_set_ecn_low_from_dst(sk, dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }

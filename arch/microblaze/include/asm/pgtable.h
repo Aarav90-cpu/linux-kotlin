@@ -207,6 +207,19 @@ extern pte_t *va_to_pte(unsigned long address);
  * Also, write permissions imply read permissions.
  */
 
+<<<<<<< HEAD
+=======
+#ifndef __ASSEMBLER__
+/*
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+extern unsigned long empty_zero_page[1024];
+#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+
+#endif /* __ASSEMBLER__ */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define pte_none(pte)		((pte_val(pte) & ~_PTE_NONE_MASK) == 0)
 #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
 #define pte_clear(mm, addr, ptep) \
@@ -318,7 +331,11 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
 
 #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 struct vm_area_struct;
+<<<<<<< HEAD
 static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+=======
+static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsigned long address, pte_t *ptep)
 {
 	return (pte_update(ptep, _PAGE_ACCESSED, 0) & _PAGE_ACCESSED) != 0;

@@ -3,8 +3,13 @@
  * Copyright © 2023 Intel Corporation
  */
 
+<<<<<<< HEAD
 #ifndef _XE_HW_ENGINE_CLASS_SYSFS_H_
 #define _XE_HW_ENGINE_CLASS_SYSFS_H_
+=======
+#ifndef _XE_ENGINE_CLASS_SYSFS_H_
+#define _XE_ENGINE_CLASS_SYSFS_H_
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/kobject.h>
 

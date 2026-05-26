@@ -133,9 +133,12 @@ struct snd_card {
 #ifdef CONFIG_SND_DEBUG
 	struct dentry *debugfs_root;    /* debugfs root for card */
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_SND_CTL_DEBUG
 	struct snd_ctl_elem_value *value_buf; /* buffer for kctl->put() verification */
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PM
 	unsigned int power_state;	/* power state */

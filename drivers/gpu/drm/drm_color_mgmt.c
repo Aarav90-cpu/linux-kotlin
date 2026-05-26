@@ -831,7 +831,11 @@ static void fill_palette_332(struct drm_crtc *crtc, u16 r, u16 g, u16 b,
 }
 
 /**
+<<<<<<< HEAD
  * drm_crtc_fill_palette_332 - Programs a default palette for RGB332-like formats
+=======
+ * drm_crtc_fill_palette_332 - Programs a default palette for R332-like formats
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @crtc: The displaying CRTC
  * @set_palette: Callback for programming the hardware gamma LUT
  *

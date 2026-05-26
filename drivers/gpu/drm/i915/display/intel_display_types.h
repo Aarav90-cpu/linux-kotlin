@@ -145,7 +145,11 @@ struct intel_framebuffer {
 		struct intel_fb_view remapped_view;
 	};
 
+<<<<<<< HEAD
 	struct intel_dpt *dpt;
+=======
+	struct i915_address_space *dpt_vm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int min_alignment;
 	unsigned int vtd_guard;
@@ -351,7 +355,10 @@ struct intel_vbt_panel_data {
 		bool low_vswing;
 		bool hobl;
 		bool dsc_disable;
+<<<<<<< HEAD
 		bool pipe_joiner_enable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} edp;
 
 	struct {
@@ -836,7 +843,10 @@ struct intel_pipe_wm {
 
 struct skl_wm_level {
 	u16 min_ddb_alloc;
+<<<<<<< HEAD
 	u16 min_ddb_alloc_uv; /* for pre-icl */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 blocks;
 	u8 lines;
 	bool enable;
@@ -847,11 +857,19 @@ struct skl_wm_level {
 
 struct skl_plane_wm {
 	struct skl_wm_level wm[8];
+<<<<<<< HEAD
+=======
+	struct skl_wm_level uv_wm[8];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct skl_wm_level trans_wm;
 	struct {
 		struct skl_wm_level wm0;
 		struct skl_wm_level trans_wm;
 	} sagv;
+<<<<<<< HEAD
+=======
+	bool is_planar;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct skl_pipe_wm {
@@ -1163,7 +1181,10 @@ struct intel_crtc_state {
 	} dsi_pll;
 
 	int max_link_bpp_x16;	/* in 1/16 bpp units */
+<<<<<<< HEAD
 	int max_pipe_bpp;	/* in 1 bpp units */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pipe_bpp;		/* in 1 bpp units */
 	int min_hblank;
 	struct intel_link_m_n dp_m_n;
@@ -1336,6 +1357,7 @@ struct intel_crtc_state {
 		/* Only used for state computation, not read out from the HW. */
 		bool compression_enabled_on_link;
 		bool compression_enable;
+<<<<<<< HEAD
 		struct intel_dsc_slice_config {
 			int pipes_per_line;
 			int streams_per_pipe;
@@ -1343,6 +1365,12 @@ struct intel_crtc_state {
 		} slice_config;
 		/* Compressed Bpp in U6.4 format (first 4 bits for fractional part) */
 		u16 compressed_bpp_x16;
+=======
+		int num_streams;
+		/* Compressed Bpp in U6.4 format (first 4 bits for fractional part) */
+		u16 compressed_bpp_x16;
+		u8 slice_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct drm_dsc_config config;
 	} dsc;
 
@@ -1485,7 +1513,10 @@ struct intel_flipq {
 
 struct intel_crtc {
 	struct drm_crtc base;
+<<<<<<< HEAD
 	struct list_head pipe_head;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum pipe pipe;
 	/*
 	 * Whether the crtc and the connected output pipeline is active. Implies
@@ -1798,7 +1829,10 @@ struct intel_dp {
 	int link_rate;
 	u8 lane_count;
 	u8 sink_count;
+<<<<<<< HEAD
 	bool downstream_port_changed;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool needs_modeset_retry;
 	bool use_max_params;
 	u8 dpcd[DP_RECEIVER_CAP_SIZE];

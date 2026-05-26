@@ -229,6 +229,7 @@ config BATTERY_SAMSUNG_SDI
 	  Say Y to enable support for Samsung SDI battery data.
 	  These batteries are used in Samsung mobile phones.
 
+<<<<<<< HEAD
 config BATTERY_S2MU005
 	tristate "Samsung S2MU005 PMIC fuel gauge driver"
 	depends on I2C
@@ -240,6 +241,8 @@ config BATTERY_S2MU005
 
 	  This driver, if built as a module, will be called s2mu005-fuel-gauge.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config BATTERY_COLLIE
 	tristate "Sharp SL-5500 (collie) battery"
 	depends on SA1100_COLLIE && MCP_UCB1200
@@ -642,6 +645,7 @@ config CHARGER_MAX77705
 	help
 	  Say Y to enable support for the Maxim MAX77705 battery charger.
 
+<<<<<<< HEAD
 config CHARGER_MAX77759
 	tristate "Maxim MAX77759 battery charger driver"
 	depends on MFD_MAX77759 && REGULATOR
@@ -653,6 +657,8 @@ config CHARGER_MAX77759
 
 	  If built as a module, it will be called max77759_charger.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CHARGER_MAX77976
 	tristate "Maxim MAX77976 battery charger driver"
 	depends on I2C
@@ -1154,6 +1160,7 @@ config FUEL_GAUGE_MM8013
 	  the state of charge, temperature, cycle count, actual and design
 	  capacity, etc.
 
+<<<<<<< HEAD
 config MACSMC_POWER
 	tristate "Apple SMC Battery and Power Driver"
 	depends on MFD_MACSMC
@@ -1165,4 +1172,6 @@ config MACSMC_POWER
 
 	  Say Y or M here if you have an Apple Silicon based Mac.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif # POWER_SUPPLY

@@ -62,7 +62,11 @@ static int wmi_bmof_probe(struct wmi_device *wdev, const void *context)
 	if (!buffer)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = wmidev_query_block(wdev, 0, buffer, 0);
+=======
+	ret = wmidev_query_block(wdev, 0, buffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 

@@ -68,6 +68,7 @@ static void ceph_cap_reclaim_work(struct work_struct *work);
 
 static const struct ceph_connection_operations mds_con_ops;
 
+<<<<<<< HEAD
 static void ceph_metric_bind_session(struct ceph_mds_client *mdsc,
 				     struct ceph_mds_session *session)
 {
@@ -83,6 +84,8 @@ static void ceph_metric_bind_session(struct ceph_mds_client *mdsc,
 
 	metric_schedule_delayed(&mdsc->metric);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * mds reply parsing
@@ -111,6 +114,7 @@ bad:
 	return -EIO;
 }
 
+<<<<<<< HEAD
 static int parse_reply_info_in(void **p, void *end,
 			       struct ceph_mds_reply_info_in *info,
 			       u64 features,
@@ -124,6 +128,21 @@ static int parse_reply_info_in(void **p, void *end,
 	info->subvolume_id = CEPH_SUBVOLUME_ID_NONE;
 
 	if (features == (u64)-1) {
+=======
+/*
+ * parse individual inode info
+ */
+static int parse_reply_info_in(void **p, void *end,
+			       struct ceph_mds_reply_info_in *info,
+			       u64 features)
+{
+	int err = 0;
+	u8 struct_v = 0;
+
+	if (features == (u64)-1) {
+		u32 struct_len;
+		u8 struct_compat;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ceph_decode_8_safe(p, end, struct_v, bad);
 		ceph_decode_8_safe(p, end, struct_compat, bad);
 		/* struct_v is expected to be >= 1. we only understand
@@ -247,6 +266,7 @@ static int parse_reply_info_in(void **p, void *end,
 						      info->fscrypt_file_len, bad);
 			}
 		}
+<<<<<<< HEAD
 
 		/*
 		 * InodeStat encoding versions:
@@ -271,6 +291,8 @@ static int parse_reply_info_in(void **p, void *end,
 		if (struct_v >= 9)
 			ceph_decode_64_safe(p, end, info->subvolume_id, bad);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*p = end;
 	} else {
 		/* legacy (unversioned) struct */
@@ -403,13 +425,21 @@ bad:
  */
 static int parse_reply_info_trace(void **p, void *end,
 				  struct ceph_mds_reply_info_parsed *info,
+<<<<<<< HEAD
 				  u64 features,
 				  struct ceph_mds_client *mdsc)
+=======
+				  u64 features)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 
 	if (info->head->is_dentry) {
+<<<<<<< HEAD
 		err = parse_reply_info_in(p, end, &info->diri, features, mdsc);
+=======
+		err = parse_reply_info_in(p, end, &info->diri, features);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_bad;
 
@@ -429,8 +459,12 @@ static int parse_reply_info_trace(void **p, void *end,
 	}
 
 	if (info->head->is_target) {
+<<<<<<< HEAD
 		err = parse_reply_info_in(p, end, &info->targeti, features,
 					  mdsc);
+=======
+		err = parse_reply_info_in(p, end, &info->targeti, features);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_bad;
 	}
@@ -451,8 +485,12 @@ out_bad:
  */
 static int parse_reply_info_readdir(void **p, void *end,
 				    struct ceph_mds_request *req,
+<<<<<<< HEAD
 				    u64 features,
 				    struct ceph_mds_client *mdsc)
+=======
+				    u64 features)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ceph_mds_reply_info_parsed *info = &req->r_reply_info;
 	struct ceph_client *cl = req->r_mdsc->fsc->client;
@@ -567,7 +605,11 @@ static int parse_reply_info_readdir(void **p, void *end,
 		rde->name_len = oname.len;
 
 		/* inode */
+<<<<<<< HEAD
 		err = parse_reply_info_in(p, end, &rde->inode, features, mdsc);
+=======
+		err = parse_reply_info_in(p, end, &rde->inode, features);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_bad;
 		/* ceph_readdir_prepopulate() will update it */
@@ -775,8 +817,12 @@ static int parse_reply_info_extra(void **p, void *end,
 	if (op == CEPH_MDS_OP_GETFILELOCK)
 		return parse_reply_info_filelock(p, end, info, features);
 	else if (op == CEPH_MDS_OP_READDIR || op == CEPH_MDS_OP_LSSNAP)
+<<<<<<< HEAD
 		return parse_reply_info_readdir(p, end, req, features,
 						req->r_mdsc);
+=======
+		return parse_reply_info_readdir(p, end, req, features);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (op == CEPH_MDS_OP_CREATE)
 		return parse_reply_info_create(p, end, info, features, s);
 	else if (op == CEPH_MDS_OP_GETVXATTR)
@@ -805,8 +851,12 @@ static int parse_reply_info(struct ceph_mds_session *s, struct ceph_msg *msg,
 	ceph_decode_32_safe(&p, end, len, bad);
 	if (len > 0) {
 		ceph_decode_need(&p, end, len, bad);
+<<<<<<< HEAD
 		err = parse_reply_info_trace(&p, p + len, info, features,
 					     s->s_mdsc);
+=======
+		err = parse_reply_info_trace(&p, p+len, info, features);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_bad;
 	}
@@ -815,7 +865,11 @@ static int parse_reply_info(struct ceph_mds_session *s, struct ceph_msg *msg,
 	ceph_decode_32_safe(&p, end, len, bad);
 	if (len > 0) {
 		ceph_decode_need(&p, end, len, bad);
+<<<<<<< HEAD
 		err = parse_reply_info_extra(&p, p + len, req, features, s);
+=======
+		err = parse_reply_info_extra(&p, p+len, req, features, s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_bad;
 	}
@@ -4013,7 +4067,10 @@ static void handle_reply(struct ceph_mds_session *session, struct ceph_msg *msg)
 			goto out_err;
 		}
 		req->r_target_inode = in;
+<<<<<<< HEAD
 		ceph_inode_set_subvolume(in, rinfo->targeti.subvolume_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_lock(&session->s_mutex);
@@ -4362,11 +4419,14 @@ skip_cap_auths:
 		}
 		mdsc->s_cap_auths_num = cap_auths_num;
 		mdsc->s_cap_auths = cap_auths;
+<<<<<<< HEAD
 
 		session->s_features = features;
 		if (test_bit(CEPHFS_FEATURE_METRIC_COLLECT,
 			     &session->s_features))
 			ceph_metric_bind_session(mdsc, session);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (op == CEPH_SESSION_CLOSE) {
 		ceph_get_mds_session(session);
@@ -4393,11 +4453,15 @@ skip_cap_auths:
 			pr_info_client(cl, "mds%d reconnect success\n",
 				       session->s_mds);
 
+<<<<<<< HEAD
 		if (test_bit(CEPHFS_FEATURE_SUBVOLUME_METRICS,
 			     &session->s_features))
 			ceph_subvolume_metrics_enable(&mdsc->subvol_metrics, true);
 		else
 			ceph_subvolume_metrics_enable(&mdsc->subvol_metrics, false);
+=======
+		session->s_features = features;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (session->s_state == CEPH_MDS_SESSION_OPEN) {
 			pr_notice_client(cl, "mds%d is already opened\n",
 					 session->s_mds);
@@ -4662,13 +4726,21 @@ static struct dentry* d_find_primary(struct inode *inode)
 		goto out_unlock;
 
 	if (S_ISDIR(inode->i_mode)) {
+<<<<<<< HEAD
 		alias = hlist_entry(inode->i_dentry.first, struct dentry, d_alias);
+=======
+		alias = hlist_entry(inode->i_dentry.first, struct dentry, d_u.d_alias);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!IS_ROOT(alias))
 			dn = dget(alias);
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	for_each_alias(alias, inode) {
+=======
+	hlist_for_each_entry(alias, &inode->i_dentry, d_u.d_alias) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&alias->d_lock);
 		if (!d_unhashed(alias) &&
 		    (ceph_dentry(alias)->flags & CEPH_DENTRY_PRIMARY_LINK)) {
@@ -5010,7 +5082,11 @@ static void send_mds_reconnect(struct ceph_mds_client *mdsc,
 	/* placeholder for nr_caps */
 	err = ceph_pagelist_encode_32(recon_state.pagelist, 0);
 	if (err)
+<<<<<<< HEAD
 		goto fail_clear_cap_reconnect;
+=======
+		goto fail;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (test_bit(CEPHFS_FEATURE_MULTI_RECONNECT, &session->s_features)) {
 		recon_state.msg_version = 3;
@@ -5100,10 +5176,13 @@ static void send_mds_reconnect(struct ceph_mds_client *mdsc,
 	ceph_pagelist_release(recon_state.pagelist);
 	return;
 
+<<<<<<< HEAD
 fail_clear_cap_reconnect:
 	spin_lock(&session->s_cap_lock);
 	session->s_cap_reconnect = 0;
 	spin_unlock(&session->s_cap_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail:
 	ceph_msg_put(reply);
 	up_read(&mdsc->snap_rwsem);
@@ -5640,12 +5719,15 @@ int ceph_mdsc_init(struct ceph_fs_client *fsc)
 	err = ceph_metric_init(&mdsc->metric);
 	if (err)
 		goto err_mdsmap;
+<<<<<<< HEAD
 	ceph_subvolume_metrics_init(&mdsc->subvol_metrics);
 	mutex_init(&mdsc->subvol_metrics_last_mutex);
 	mdsc->subvol_metrics_last = NULL;
 	mdsc->subvol_metrics_last_nr = 0;
 	mdsc->subvol_metrics_sent = 0;
 	mdsc->subvol_metrics_nonzero_sends = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_init(&mdsc->dentry_list_lock);
 	INIT_LIST_HEAD(&mdsc->dentry_leases);
@@ -6179,8 +6261,11 @@ void ceph_mdsc_destroy(struct ceph_fs_client *fsc)
 	ceph_mdsc_stop(mdsc);
 
 	ceph_metric_destroy(&mdsc->metric);
+<<<<<<< HEAD
 	ceph_subvolume_metrics_destroy(&mdsc->subvol_metrics);
 	kfree(mdsc->subvol_metrics_last);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fsc->mdsc = NULL;
 	kfree(mdsc);

@@ -220,10 +220,13 @@ enum {
 	IP_VER_MT6991_B0 = 0x10470000,
 	IP_VER_MT6993    = 0x10480000,
 
+<<<<<<< HEAD
 	/* UFSHCI 5.0 */
 	IP_VER_MT6995_A0 = 0x10490000,
 	IP_VER_MT6995_B0 = 0x10500000,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	IP_VER_NONE      = 0xFFFFFFFF
 };
 

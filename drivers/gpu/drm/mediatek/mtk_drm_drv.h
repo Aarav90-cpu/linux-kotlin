@@ -54,6 +54,10 @@ struct mtk_mmsys_driver_data {
 
 struct mtk_drm_private {
 	struct drm_device *drm;
+<<<<<<< HEAD
+=======
+	struct device *dma_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool mtk_drm_bound;
 	bool drm_master;
 	struct device *dev;

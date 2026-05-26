@@ -371,6 +371,10 @@ static const struct dpu_wb_cfg glymur_wb[] = {
 		.format_list = wb2_formats_rgb_yuv,
 		.num_formats = ARRAY_SIZE(wb2_formats_rgb_yuv),
 		.xin_id = 6,
+<<<<<<< HEAD
+=======
+		.vbif_idx = VBIF_RT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.maxlinewidth = 4096,
 		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
 	},
@@ -425,7 +429,11 @@ static const struct dpu_intf_cfg glymur_intf[] = {
 	}, {
 		.name = "intf_3", .id = INTF_3,
 		.base = 0x37000, .len = 0x400,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 30),
@@ -457,7 +465,11 @@ static const struct dpu_intf_cfg glymur_intf[] = {
 	}, {
 		.name = "intf_7", .id = INTF_7,
 		.base = 0x3b000, .len = 0x400,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_2,	/* pair with intf_6 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 18),
@@ -465,7 +477,11 @@ static const struct dpu_intf_cfg glymur_intf[] = {
 	}, {
 		.name = "intf_8", .id = INTF_8,
 		.base = 0x3c000, .len = 0x400,
+<<<<<<< HEAD
 		.type = INTF_DP,
+=======
+		.type = INTF_NONE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.controller_id = MSM_DP_CONTROLLER_1,	/* pair with intf_4 for DP MST */
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 12),
@@ -532,7 +548,12 @@ const struct dpu_mdss_cfg dpu_glymur_cfg = {
 	.cwb = sm8650_cwb,
 	.intf_count = ARRAY_SIZE(glymur_intf),
 	.intf = glymur_intf,
+<<<<<<< HEAD
 	.vbif = &sm8650_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sm8650_vbif),
+	.vbif = sm8650_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &glymur_perf_data,
 };
 

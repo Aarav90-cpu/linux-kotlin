@@ -4,6 +4,10 @@
 #define __LIBBPF_VERSION_H
 
 #define LIBBPF_MAJOR_VERSION 1
+<<<<<<< HEAD
 #define LIBBPF_MINOR_VERSION 8
+=======
+#define LIBBPF_MINOR_VERSION 7
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __LIBBPF_VERSION_H */

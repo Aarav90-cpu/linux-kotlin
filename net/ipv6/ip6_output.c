@@ -259,6 +259,7 @@ bool ip6_autoflowlabel(struct net *net, const struct sock *sk)
 	return inet6_test_bit(AUTOFLOWLABEL, sk);
 }
 
+<<<<<<< HEAD
 int ip6_dst_hoplimit(struct dst_entry *dst)
 {
 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
@@ -280,6 +281,8 @@ int ip6_dst_hoplimit(struct dst_entry *dst)
 }
 EXPORT_SYMBOL(ip6_dst_hoplimit);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * xmit an sk_buff (used by TCP and SCTP)
  * Note : socket lock is not held for SYNACK packets, but might be modified
@@ -468,7 +471,10 @@ static int ip6_forward_proxy_check(struct sk_buff *skb)
 		default:
 			break;
 		}
+<<<<<<< HEAD
 		hdr = ipv6_hdr(skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -583,8 +589,11 @@ int ip6_forward(struct sk_buff *skb)
 	if (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
 	    pneigh_lookup(&nd_tbl, net, &hdr->daddr, skb->dev)) {
 		int proxied = ip6_forward_proxy_check(skb);
+<<<<<<< HEAD
 
 		hdr = ipv6_hdr(skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (proxied > 0) {
 			/* It's tempting to decrease the hop limit
 			 * here by 1, as we do at the end of the
@@ -897,11 +906,14 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
 	__be32 frag_id;
 	u8 *prevhdr, nexthdr = 0;
 
+<<<<<<< HEAD
 	if (!ipv6_mod_enabled()) {
 		kfree_skb(skb);
 		return -EAFNOSUPPORT;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = ip6_find_1stfragopt(skb, &prevhdr);
 	if (err < 0)
 		goto fail;
@@ -1074,7 +1086,10 @@ fail:
 	kfree_skb(skb);
 	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ip6_fragment);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int ip6_rt_check(const struct rt6key *rt_key,
 			       const struct in6_addr *fl_addr,
@@ -1286,8 +1301,11 @@ struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk, st
 	struct dst_entry *dst = NULL;
 	int err;
 
+<<<<<<< HEAD
 	if (!ipv6_mod_enabled())
 		return ERR_PTR(-EAFNOSUPPORT);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = ip6_dst_lookup_tail(net, sk, &dst, fl6);
 	if (err)
 		return ERR_PTR(err);

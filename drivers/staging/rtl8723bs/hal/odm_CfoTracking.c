@@ -47,8 +47,13 @@ static void odm_SetATCStatus(void *pDM_VOID, bool ATCStatus)
 
 	PHY_SetBBReg(
 		pDM_Odm->Adapter,
+<<<<<<< HEAD
 		ODM_REG(BB_ATC),
 		ODM_BIT(BB_ATC),
+=======
+		ODM_REG(BB_ATC, pDM_Odm),
+		ODM_BIT(BB_ATC, pDM_Odm),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ATCStatus
 	);
 	pCfoTrack->bATCStatus = ATCStatus;
@@ -61,8 +66,13 @@ static bool odm_GetATCStatus(void *pDM_VOID)
 
 	ATCStatus = (bool)PHY_QueryBBReg(
 		pDM_Odm->Adapter,
+<<<<<<< HEAD
 		ODM_REG(BB_ATC),
 		ODM_BIT(BB_ATC)
+=======
+		ODM_REG(BB_ATC, pDM_Odm),
+		ODM_BIT(BB_ATC, pDM_Odm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	);
 	return ATCStatus;
 }

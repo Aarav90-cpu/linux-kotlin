@@ -91,7 +91,11 @@ static int usbtv_probe(struct usb_interface *intf,
 	if (usbtv == NULL)
 		return -ENOMEM;
 	usbtv->dev = dev;
+<<<<<<< HEAD
 	usbtv->udev = interface_to_usbdev(intf);
+=======
+	usbtv->udev = usb_get_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usbtv->iso_size = size;
 
@@ -119,6 +123,10 @@ usbtv_audio_fail:
 
 usbtv_video_fail:
 	usb_set_intfdata(intf, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(usbtv->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(usbtv);
 
 	return ret;
@@ -136,6 +144,10 @@ static void usbtv_disconnect(struct usb_interface *intf)
 	usbtv_audio_free(usbtv);
 	usbtv_video_free(usbtv);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(usbtv->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usbtv->udev = NULL;
 
 	/* the usbtv structure will be deallocated when v4l2 will be

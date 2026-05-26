@@ -920,7 +920,11 @@ umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n)
 	return attr->mode;
 }
 
+<<<<<<< HEAD
 enum efi_secureboot_mode __x86_efi_boot_mode(void)
+=======
+enum efi_secureboot_mode __x86_ima_efi_boot_mode(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return boot_params.secure_boot;
 }

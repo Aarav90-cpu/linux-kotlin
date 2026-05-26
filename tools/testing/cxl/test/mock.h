@@ -2,7 +2,10 @@
 
 #include <linux/list.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/dax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <cxl.h>
 
 struct cxl_mock_ops {
@@ -28,6 +31,7 @@ struct cxl_mock_ops {
 	int (*hmat_get_extended_linear_cache_size)(struct resource *backing_res,
 						   int nid,
 						   resource_size_t *cache_size);
+<<<<<<< HEAD
 	int (*walk_hmem_resources)(struct device *host, walk_hmem_fn fn);
 	int (*region_intersects)(resource_size_t start, size_t size,
 				 unsigned long flags, unsigned long desc);
@@ -37,6 +41,10 @@ struct cxl_mock_ops {
 
 int hmem_test_init(void);
 void hmem_test_exit(void);
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void register_cxl_mock_ops(struct cxl_mock_ops *ops);
 void unregister_cxl_mock_ops(struct cxl_mock_ops *ops);
 struct cxl_mock_ops *get_cxl_mock_ops(int *index);

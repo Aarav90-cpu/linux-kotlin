@@ -178,6 +178,7 @@ void snd_gf1_timers_done(struct snd_gus_card * gus)
 		gus->gf1.timer2 = NULL;
 	}
 }
+<<<<<<< HEAD
 
 void snd_gf1_timers_resume(struct snd_gus_card *gus)
 {
@@ -192,3 +193,5 @@ void snd_gf1_timers_resume(struct snd_gus_card *gus)
 			snd_gf1_timer2_start(gus->gf1.timer2);
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -34,7 +34,10 @@ void __init driver_init(void)
 	 */
 	faux_bus_init();
 	of_core_init();
+<<<<<<< HEAD
 	software_node_init();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_bus_init();
 	auxiliary_bus_init();
 	memory_dev_init();

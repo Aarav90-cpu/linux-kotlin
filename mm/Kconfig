@@ -172,7 +172,10 @@ config SLUB
 config KVFREE_RCU_BATCHED
 	def_bool y
 	depends on !SLUB_TINY && !TINY_RCU
+<<<<<<< HEAD
 	depends on !RCU_STRICT_GRACE_PERIOD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SLUB_TINY
 	bool "Configure for minimal memory footprint"
@@ -466,11 +469,21 @@ config HAVE_BOOTMEM_INFO_NODE
 config ARCH_ENABLE_MEMORY_HOTPLUG
 	bool
 
+<<<<<<< HEAD
+=======
+config ARCH_ENABLE_MEMORY_HOTREMOVE
+	bool
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # eventually, we can have this option just 'select SPARSEMEM'
 menuconfig MEMORY_HOTPLUG
 	bool "Memory hotplug"
 	select MEMORY_ISOLATION
+<<<<<<< HEAD
 	depends on SPARSEMEM_VMEMMAP
+=======
+	depends on SPARSEMEM
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on ARCH_ENABLE_MEMORY_HOTPLUG
 	depends on 64BIT
 	select NUMA_KEEP_MEMINFO if NUMA
@@ -538,8 +551,13 @@ endchoice
 config MEMORY_HOTREMOVE
 	bool "Allow for memory hot remove"
 	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
+<<<<<<< HEAD
 	depends on MEMORY_HOTPLUG
 	select MIGRATION
+=======
+	depends on MEMORY_HOTPLUG && ARCH_ENABLE_MEMORY_HOTREMOVE
+	depends on MIGRATION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config MHP_MEMMAP_ON_MEMORY
 	def_bool y
@@ -570,7 +588,10 @@ config SPLIT_PTE_PTLOCKS
 	depends on !ARM || CPU_CACHE_VIPT
 	depends on !PARISC || PA20
 	depends on !SPARC32
+<<<<<<< HEAD
 	depends on !UML
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config ARCH_ENABLE_SPLIT_PMD_PTLOCK
 	bool
@@ -616,7 +637,11 @@ config COMPACTION
 config COMPACT_UNEVICTABLE_DEFAULT
 	int
 	depends on COMPACTION
+<<<<<<< HEAD
 	default 0 if PREEMPT_RT
+=======
+	default 0 if PREEMPT_RT || ZEN_INTERACTIVE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default 1
 
 #
@@ -629,6 +654,7 @@ config PAGE_REPORTING
 	  those pages to another entity, such as a hypervisor, so that the
 	  memory can be freed within the host for other uses.
 
+<<<<<<< HEAD
 config NUMA_MIGRATION
 	bool "NUMA page migration"
 	default y
@@ -643,6 +669,22 @@ config NUMA_MIGRATION
 config MIGRATION
 	bool
 	depends on MMU
+=======
+#
+# support for page migration
+#
+config MIGRATION
+	bool "Page migration"
+	default y
+	depends on (NUMA || ARCH_ENABLE_MEMORY_HOTREMOVE || COMPACTION || CMA) && MMU
+	help
+	  Allows the migration of the physical location of pages of processes
+	  while the virtual addresses are not changed. This is useful in
+	  two situations. The first is on NUMA systems to put pages nearer
+	  to the processors accessing. The second is when allocating huge
+	  pages as migration can relocate pages to satisfy a huge page
+	  allocation instead of reclaiming.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config DEVICE_MIGRATION
 	def_bool MIGRATION && ZONE_DEVICE

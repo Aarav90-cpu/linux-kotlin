@@ -257,7 +257,11 @@ int hfi1_user_exp_rcv_setup(struct hfi1_filedata *fd,
 	if (tinfo->length == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	tidbuf = kzalloc_flex(*tidbuf, psets, uctxt->expected_count);
+=======
+	tidbuf = kzalloc(sizeof(*tidbuf), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!tidbuf)
 		return -ENOMEM;
 
@@ -265,6 +269,15 @@ int hfi1_user_exp_rcv_setup(struct hfi1_filedata *fd,
 	tidbuf->vaddr = tinfo->vaddr;
 	tidbuf->length = tinfo->length;
 	tidbuf->npages = num_user_pages(tidbuf->vaddr, tidbuf->length);
+<<<<<<< HEAD
+=======
+	tidbuf->psets = kcalloc(uctxt->expected_count, sizeof(*tidbuf->psets),
+				GFP_KERNEL);
+	if (!tidbuf->psets) {
+		ret = -ENOMEM;
+		goto fail_release_mem;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (fd->use_mn) {
 		ret = mmu_interval_notifier_insert(
@@ -300,7 +313,11 @@ int hfi1_user_exp_rcv_setup(struct hfi1_filedata *fd,
 	}
 
 	ngroups = pageset_count / dd->rcv_entries.group_size;
+<<<<<<< HEAD
 	tidlist = kzalloc_objs(*tidlist, pageset_count);
+=======
+	tidlist = kcalloc(pageset_count, sizeof(*tidlist), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!tidlist) {
 		ret = -ENOMEM;
 		goto fail_unreserve;
@@ -442,6 +459,10 @@ unlock:
 	if (fd->use_mn)
 		mmu_interval_notifier_remove(&tidbuf->notifier);
 	kfree(tidbuf->pages);
+<<<<<<< HEAD
+=======
+	kfree(tidbuf->psets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(tidbuf);
 	kfree(tidlist);
 	return 0;
@@ -464,6 +485,10 @@ fail_unpin:
 		unpin_rcv_pages(fd, tidbuf, NULL, 0, pinned, false);
 fail_release_mem:
 	kfree(tidbuf->pages);
+<<<<<<< HEAD
+=======
+	kfree(tidbuf->psets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(tidbuf);
 	kfree(tidlist);
 	return ret;
@@ -519,7 +544,11 @@ int hfi1_user_exp_rcv_invalid(struct hfi1_filedata *fd,
 	 * for a long time.
 	 * Copy the data to a local buffer so we can release the lock.
 	 */
+<<<<<<< HEAD
 	array = kzalloc_objs(*array, uctxt->expected_count);
+=======
+	array = kcalloc(uctxt->expected_count, sizeof(*array), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!array)
 		return -EFAULT;
 

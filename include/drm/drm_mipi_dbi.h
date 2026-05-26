@@ -9,12 +9,17 @@
 #define __LINUX_MIPI_DBI_H
 
 #include <linux/mutex.h>
+<<<<<<< HEAD
 
 #include <drm/drm_atomic_state_helper.h>
 #include <drm/drm_device.h>
 #include <drm/drm_gem_atomic_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_probe_helper.h>
+=======
+#include <drm/drm_device.h>
+#include <drm/drm_simple_kms_helper.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct drm_format_conv_state;
 struct drm_rect;
@@ -91,6 +96,19 @@ struct mipi_dbi_dev {
 	struct drm_device drm;
 
 	/**
+<<<<<<< HEAD
+=======
+	 * @pipe: Display pipe structure
+	 */
+	struct drm_simple_display_pipe pipe;
+
+	/**
+	 * @connector: Connector
+	 */
+	struct drm_connector connector;
+
+	/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @mode: Fixed display mode
 	 */
 	struct drm_display_mode mode;
@@ -158,9 +176,36 @@ static inline struct mipi_dbi_dev *drm_to_mipi_dbi_dev(struct drm_device *drm)
 
 int mipi_dbi_spi_init(struct spi_device *spi, struct mipi_dbi *dbi,
 		      struct gpio_desc *dc);
+<<<<<<< HEAD
 
 int drm_mipi_dbi_dev_init(struct mipi_dbi_dev *dbidev, const struct drm_display_mode *mode,
 			  u32 format, unsigned int rotation, size_t tx_buf_size);
+=======
+int mipi_dbi_dev_init_with_formats(struct mipi_dbi_dev *dbidev,
+				   const struct drm_simple_display_pipe_funcs *funcs,
+				   const uint32_t *formats, unsigned int format_count,
+				   const struct drm_display_mode *mode,
+				   unsigned int rotation, size_t tx_buf_size);
+int mipi_dbi_dev_init(struct mipi_dbi_dev *dbidev,
+		      const struct drm_simple_display_pipe_funcs *funcs,
+		      const struct drm_display_mode *mode, unsigned int rotation);
+enum drm_mode_status mipi_dbi_pipe_mode_valid(struct drm_simple_display_pipe *pipe,
+					      const struct drm_display_mode *mode);
+void mipi_dbi_pipe_update(struct drm_simple_display_pipe *pipe,
+			  struct drm_plane_state *old_state);
+void mipi_dbi_enable_flush(struct mipi_dbi_dev *dbidev,
+			   struct drm_crtc_state *crtc_state,
+			   struct drm_plane_state *plan_state);
+void mipi_dbi_pipe_disable(struct drm_simple_display_pipe *pipe);
+int mipi_dbi_pipe_begin_fb_access(struct drm_simple_display_pipe *pipe,
+				  struct drm_plane_state *plane_state);
+void mipi_dbi_pipe_end_fb_access(struct drm_simple_display_pipe *pipe,
+				 struct drm_plane_state *plane_state);
+void mipi_dbi_pipe_reset_plane(struct drm_simple_display_pipe *pipe);
+struct drm_plane_state *mipi_dbi_pipe_duplicate_plane_state(struct drm_simple_display_pipe *pipe);
+void mipi_dbi_pipe_destroy_plane_state(struct drm_simple_display_pipe *pipe,
+				       struct drm_plane_state *plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void mipi_dbi_hw_reset(struct mipi_dbi *dbi);
 bool mipi_dbi_display_is_on(struct mipi_dbi *dbi);
@@ -202,6 +247,7 @@ int mipi_dbi_buf_copy(void *dst, struct iosys_map *src, struct drm_framebuffer *
 	ret; \
 })
 
+<<<<<<< HEAD
 /*
  * Plane
  */
@@ -283,10 +329,36 @@ int drm_mipi_dbi_connector_helper_get_modes(struct drm_connector *connector);
  * Debug FS
  */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DEBUG_FS
 void mipi_dbi_debugfs_init(struct drm_minor *minor);
 #else
 static inline void mipi_dbi_debugfs_init(struct drm_minor *minor) {}
 #endif
 
+<<<<<<< HEAD
+=======
+/**
+ * DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS - Initializes struct drm_simple_display_pipe_funcs
+ *                                          for MIPI-DBI devices
+ * @enable_: Enable-callback implementation
+ *
+ * This macro initializes struct drm_simple_display_pipe_funcs with default
+ * values for MIPI-DBI-based devices. The only callback that depends on the
+ * hardware is @enable, for which the driver has to provide an implementation.
+ * MIPI-based drivers are encouraged to use this macro for initialization.
+ */
+#define DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS(enable_) \
+	.mode_valid = mipi_dbi_pipe_mode_valid, \
+	.enable = (enable_), \
+	.disable = mipi_dbi_pipe_disable, \
+	.update = mipi_dbi_pipe_update, \
+	.begin_fb_access = mipi_dbi_pipe_begin_fb_access, \
+	.end_fb_access = mipi_dbi_pipe_end_fb_access, \
+	.reset_plane = mipi_dbi_pipe_reset_plane, \
+	.duplicate_plane_state = mipi_dbi_pipe_duplicate_plane_state, \
+	.destroy_plane_state = mipi_dbi_pipe_destroy_plane_state
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __LINUX_MIPI_DBI_H */

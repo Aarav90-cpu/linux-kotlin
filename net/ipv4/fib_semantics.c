@@ -585,8 +585,14 @@ static int fib_detect_death(struct fib_info *fi, int order,
 
 	if (likely(nhc->nhc_gw_family == AF_INET))
 		n = neigh_lookup(&arp_tbl, &nhc->nhc_gw.ipv4, nhc->nhc_dev);
+<<<<<<< HEAD
 	else if (IS_ENABLED(CONFIG_IPV6) && nhc->nhc_gw_family == AF_INET6)
 		n = neigh_lookup(&nd_tbl, &nhc->nhc_gw.ipv6, nhc->nhc_dev);
+=======
+	else if (nhc->nhc_gw_family == AF_INET6)
+		n = neigh_lookup(ipv6_stub->nd_tbl, &nhc->nhc_gw.ipv6,
+				 nhc->nhc_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		n = NULL;
 
@@ -1082,7 +1088,11 @@ static int fib_check_nh_v6_gw(struct net *net, struct fib_nh *nh,
 	struct fib6_nh fib6_nh = {};
 	int err;
 
+<<<<<<< HEAD
 	err = fib6_nh_init(net, &fib6_nh, &cfg, GFP_KERNEL, extack);
+=======
+	err = ipv6_stub->fib6_nh_init(net, &fib6_nh, &cfg, GFP_KERNEL, extack);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!err) {
 		nh->fib_nh_dev = fib6_nh.fib_nh_dev;
 		netdev_hold(nh->fib_nh_dev, &nh->fib_nh_dev_tracker,
@@ -1090,7 +1100,11 @@ static int fib_check_nh_v6_gw(struct net *net, struct fib_nh *nh,
 		nh->fib_nh_oif = nh->fib_nh_dev->ifindex;
 		nh->fib_nh_scope = RT_SCOPE_LINK;
 
+<<<<<<< HEAD
 		fib6_nh_release(&fib6_nh);
+=======
+		ipv6_stub->fib6_nh_release(&fib6_nh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return err;
@@ -2146,10 +2160,16 @@ static bool fib_good_nh(const struct fib_nh *nh)
 		if (likely(nh->fib_nh_gw_family == AF_INET))
 			n = __ipv4_neigh_lookup_noref(nh->fib_nh_dev,
 						   (__force u32)nh->fib_nh_gw4);
+<<<<<<< HEAD
 		else if (IS_ENABLED(CONFIG_IPV6) &&
 			 nh->fib_nh_gw_family == AF_INET6)
 			n = __ipv6_neigh_lookup_noref(nh->fib_nh_dev,
 						      &nh->fib_nh_gw6);
+=======
+		else if (nh->fib_nh_gw_family == AF_INET6)
+			n = __ipv6_neigh_lookup_noref_stub(nh->fib_nh_dev,
+							   &nh->fib_nh_gw6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			n = NULL;
 		if (n)

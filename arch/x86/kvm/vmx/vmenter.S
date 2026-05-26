@@ -310,7 +310,11 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
 	RET
 
 .Lfixup:
+<<<<<<< HEAD
 	cmpb $0, _ASM_RIP(virt_rebooting)
+=======
+	cmpb $0, _ASM_RIP(kvm_rebooting)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jne .Lvmfail
 	ud2
 .Lvmfail:

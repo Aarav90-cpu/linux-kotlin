@@ -41,7 +41,11 @@
 				reg = <0>;
 
 				adv7535_from_dsim: endpoint {
+<<<<<<< HEAD
 					remote-endpoint = <&mipi_dsi_out>;
+=======
+					remote-endpoint = <&dsim_to_adv7535>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 			};
 
@@ -71,8 +75,18 @@
 &mipi_dsi {
 	samsung,esc-clock-frequency = <10000000>;
 	status = "okay";
+<<<<<<< HEAD
 };
 
 &mipi_dsi_out {
 	remote-endpoint = <&adv7535_from_dsim>;
+=======
+
+	port@1 {
+		dsim_to_adv7535: endpoint {
+			remote-endpoint = <&adv7535_from_dsim>;
+			attach-bridge;
+		};
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

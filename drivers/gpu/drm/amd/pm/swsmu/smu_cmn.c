@@ -405,7 +405,11 @@ static int __smu_msg_v1_ras_filter(struct smu_msg_ctl *ctl,
 }
 
 /**
+<<<<<<< HEAD
  * smu_msg_v1_send_msg - Complete V1 protocol with all filtering
+=======
+ * smu_msg_proto_v1_send_msg - Complete V1 protocol with all filtering
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ctl: Message control block
  * @args: Message arguments
  *
@@ -496,8 +500,12 @@ static int smu_msg_v1_send_msg(struct smu_msg_ctl *ctl,
 	}
 
 	/* Read output args */
+<<<<<<< HEAD
 	if ((ret == 0 || (args->flags & SMU_MSG_FLAG_FORCE_READ_ARG)) &&
 	    args->num_out_args > 0) {
+=======
+	if (ret == 0 && args->num_out_args > 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__smu_msg_v1_read_out_args(ctl, args);
 		dev_dbg(adev->dev, "smu send message: %s(%d) resp : 0x%08x",
 			smu_get_message_name(smu, args->msg), index, reg);
@@ -881,7 +889,11 @@ static const char *smu_get_feature_name(struct smu_context *smu,
 size_t smu_cmn_get_pp_feature_mask(struct smu_context *smu,
 				   char *buf)
 {
+<<<<<<< HEAD
 	int16_t sort_feature[MAX(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
+=======
+	int8_t sort_feature[MAX(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct smu_feature_bits feature_mask;
 	uint32_t features[2];
 	int i, feature_index;
@@ -1036,6 +1048,7 @@ int smu_cmn_get_smc_version(struct smu_context *smu,
 	return ret;
 }
 
+<<<<<<< HEAD
 int smu_cmn_check_fw_version(struct smu_context *smu)
 {
 	struct amdgpu_device *adev = smu->adev;
@@ -1073,12 +1086,26 @@ int smu_cmn_update_table_read_arg(struct smu_context *smu,
 	struct smu_table *table = &smu_table->driver_table;
 	struct smu_msg_ctl *ctl = &smu->msg_ctl;
 	struct smu_msg_args args;
+=======
+int smu_cmn_update_table(struct smu_context *smu,
+			 enum smu_table_id table_index,
+			 int argument,
+			 void *table_data,
+			 bool drv2smu)
+{
+	struct smu_table_context *smu_table = &smu->smu_table;
+	struct amdgpu_device *adev = smu->adev;
+	struct smu_table *table = &smu_table->driver_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int table_id = smu_cmn_to_asic_specific_index(smu,
 						      CMN2ASIC_MAPPING_TABLE,
 						      table_index);
 	uint32_t table_size;
 	int ret = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!table_data || table_index >= SMU_TABLE_COUNT || table_id < 0)
 		return -EINVAL;
 
@@ -1093,6 +1120,7 @@ int smu_cmn_update_table_read_arg(struct smu_context *smu,
 		amdgpu_hdp_flush(adev, NULL);
 	}
 
+<<<<<<< HEAD
 	args.msg = drv2smu ? SMU_MSG_TransferTableDram2Smu : SMU_MSG_TransferTableSmu2Dram;
 	args.args[0] = ((argument & 0xFFFF) << 16) | (table_id  & 0xffff);
 	args.num_args = 1;
@@ -1106,6 +1134,13 @@ int smu_cmn_update_table_read_arg(struct smu_context *smu,
 	if (read_arg)
 		*read_arg = args.out_args[0];
 
+=======
+	ret = smu_cmn_send_smc_msg_with_param(smu, drv2smu ?
+					  SMU_MSG_TransferTableDram2Smu :
+					  SMU_MSG_TransferTableSmu2Dram,
+					  table_id | ((argument & 0xFFFF) << 16),
+					  NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1117,6 +1152,7 @@ int smu_cmn_update_table_read_arg(struct smu_context *smu,
 	return 0;
 }
 
+<<<<<<< HEAD
 int smu_cmn_vram_cpy(struct smu_context *smu, void *dst, const void *src,
 		     size_t len)
 {
@@ -1129,6 +1165,8 @@ int smu_cmn_vram_cpy(struct smu_context *smu, void *dst, const void *src,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smu_cmn_write_watermarks_table(struct smu_context *smu)
 {
 	void *watermarks_table = smu->smu_table.watermarks_table;
@@ -1326,6 +1364,7 @@ void smu_cmn_get_backend_workload_mask(struct smu_context *smu,
 	}
 }
 
+<<<<<<< HEAD
 void smu_cmn_reset_custom_level(struct smu_context *smu)
 {
 	struct smu_umd_pstate_table *pstate_table = &smu->pstate_table;
@@ -1336,6 +1375,8 @@ void smu_cmn_reset_custom_level(struct smu_context *smu)
 	pstate_table->uclk_pstate.custom.max = 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool smu_cmn_freqs_match(uint32_t freq1, uint32_t freq2)
 {
 	/* Frequencies within 25 MHz are considered equal */
@@ -1370,7 +1411,11 @@ int smu_cmn_print_dpm_clk_levels(struct smu_context *smu,
 		level_index = 1;
 	}
 
+<<<<<<< HEAD
 	if (!is_fine_grained || count == 1) {
+=======
+	if (!is_fine_grained) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < count; i++) {
 			freq_match = !is_deep_sleep &&
 				     smu_cmn_freqs_match(

@@ -148,6 +148,16 @@ struct epitem {
 	/* The file descriptor information this item refers to */
 	struct epoll_filefd ffd;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Protected by file->f_lock, true for to-be-released epitem already
+	 * removed from the "struct file" items list; together with
+	 * eventpoll->refcount orchestrates "struct eventpoll" disposal
+	 */
+	bool dying;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* List containing poll wait queues */
 	struct eppoll_entry *pwqlist;
 
@@ -213,7 +223,14 @@ struct eventpoll {
 	struct hlist_head refs;
 	u8 loop_check_depth;
 
+<<<<<<< HEAD
 	/* usage count, orchestrates "struct eventpoll" disposal */
+=======
+	/*
+	 * usage count, used together with epitem->dying to
+	 * orchestrate the disposal of this struct
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	refcount_t refcount;
 
 	/* used to defer freeing past ep_get_upwards_depth_proc() RCU walk */
@@ -817,6 +834,7 @@ static void ep_free(struct eventpoll *ep)
 }
 
 /*
+<<<<<<< HEAD
  * The ffd.file pointer may be in the process of being torn down due to
  * being closed, but we may not have finished eventpoll_release() yet.
  *
@@ -858,6 +876,38 @@ static void ep_remove_file(struct eventpoll *ep, struct epitem *epi,
 	spin_lock(&file->f_lock);
 	head = file->f_ep;
 	if (hlist_is_singular_node(&epi->fllink, head)) {
+=======
+ * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+ * all the associated resources. Must be called with "mtx" held.
+ * If the dying flag is set, do the removal only if force is true.
+ * This prevents ep_clear_and_put() from dropping all the ep references
+ * while running concurrently with eventpoll_release_file().
+ * Returns true if the eventpoll can be disposed.
+ */
+static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+{
+	struct file *file = epi->ffd.file;
+	struct epitems_head *to_free;
+	struct hlist_head *head;
+
+	lockdep_assert_irqs_enabled();
+
+	/*
+	 * Removes poll wait queue hooks.
+	 */
+	ep_unregister_pollwait(ep, epi);
+
+	/* Remove the current item from the list of epoll hooks */
+	spin_lock(&file->f_lock);
+	if (epi->dying && !force) {
+		spin_unlock(&file->f_lock);
+		return false;
+	}
+
+	to_free = NULL;
+	head = file->f_ep;
+	if (head->first == &epi->fllink && !epi->fllink.next) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* See eventpoll_release() for details. */
 		WRITE_ONCE(file->f_ep, NULL);
 		if (!is_file_epoll(file)) {
@@ -870,11 +920,14 @@ static void ep_remove_file(struct eventpoll *ep, struct epitem *epi,
 	hlist_del_rcu(&epi->fllink);
 	spin_unlock(&file->f_lock);
 	free_ephead(to_free);
+<<<<<<< HEAD
 }
 
 static void ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
 {
 	lockdep_assert_held(&ep->mtx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rb_erase_cached(&epi->rbn, &ep->rbr);
 
@@ -894,11 +947,16 @@ static void ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
 	kfree_rcu(epi, rcu);
 
 	percpu_counter_dec(&ep->user->epoll_watches);
+<<<<<<< HEAD
+=======
+	return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * ep_remove variant for callers owing an additional reference to the ep
  */
+<<<<<<< HEAD
 static void ep_remove(struct eventpoll *ep, struct epitem *epi)
 {
 	struct file *file __free(fput) = NULL;
@@ -920,6 +978,12 @@ static void ep_remove(struct eventpoll *ep, struct epitem *epi)
 	ep_remove_file(ep, epi, file);
 	ep_remove_epi(ep, epi);
 	WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+=======
+static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+{
+	if (__ep_remove(ep, epi, false))
+		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ep_clear_and_put(struct eventpoll *ep)
@@ -945,7 +1009,11 @@ static void ep_clear_and_put(struct eventpoll *ep)
 
 	/*
 	 * Walks through the whole tree and try to free each "struct epitem".
+<<<<<<< HEAD
 	 * Note that ep_remove() will not remove the epitem in case of a
+=======
+	 * Note that ep_remove_safe() will not remove the epitem in case of a
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * racing eventpoll_release_file(); the latter will do the removal.
 	 * At this point we are sure no poll callbacks will be lingering around.
 	 * Since we still own a reference to the eventpoll struct, the loop can't
@@ -954,7 +1022,11 @@ static void ep_clear_and_put(struct eventpoll *ep)
 	for (rbp = rb_first_cached(&ep->rbr); rbp; rbp = next) {
 		next = rb_next(rbp);
 		epi = rb_entry(rbp, struct epitem, rbn);
+<<<<<<< HEAD
 		ep_remove(ep, epi);
+=======
+		ep_remove_safe(ep, epi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cond_resched();
 	}
 
@@ -1035,6 +1107,37 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * The ffd.file pointer may be in the process of being torn down due to
+ * being closed, but we may not have finished eventpoll_release() yet.
+ *
+ * Normally, even with the atomic_long_inc_not_zero, the file may have
+ * been free'd and then gotten re-allocated to something else (since
+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
+ *
+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
+ * the process of being free'd will block in eventpoll_release_file()
+ * and thus the underlying file allocation will not be free'd, and the
+ * file re-use cannot happen.
+ *
+ * For the same reason we can avoid a rcu_read_lock() around the
+ * operation - 'ffd.file' cannot go away even if the refcount has
+ * reached zero (but we must still not call out to ->poll() functions
+ * etc).
+ */
+static struct file *epi_fget(const struct epitem *epi)
+{
+	struct file *file;
+
+	file = epi->ffd.file;
+	if (!file_ref_get(&file->f_ref))
+		file = NULL;
+	return file;
+}
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Differs from ep_eventpoll_poll() in that internal callers already have
  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
  * is correctly annotated.
@@ -1078,7 +1181,11 @@ static void ep_show_fdinfo(struct seq_file *m, struct file *f)
 		struct inode *inode = file_inode(epi->ffd.file);
 
 		seq_printf(m, "tfd: %8d events: %8x data: %16llx "
+<<<<<<< HEAD
 			   " pos:%lli ino:%llx sdev:%x\n",
+=======
+			   " pos:%lli ino:%lx sdev:%x\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   epi->ffd.fd, epi->event.events,
 			   (long long)epi->event.data,
 			   (long long)epi->ffd.file->f_pos,
@@ -1111,17 +1218,30 @@ void eventpoll_release_file(struct file *file)
 {
 	struct eventpoll *ep;
 	struct epitem *epi;
+<<<<<<< HEAD
 
 	/*
 	 * A concurrent ep_remove() cannot outrace us: it pins @file via
 	 * epi_fget(), which fails once __fput() has dropped the refcount
 	 * to zero -- the path we're on. So any racing ep_remove() bails
 	 * and leaves the epi for us to clean up here.
+=======
+	bool dispose;
+
+	/*
+	 * Use the 'dying' flag to prevent a concurrent ep_clear_and_put() from
+	 * touching the epitems list before eventpoll_release_file() can access
+	 * the ep->mtx.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 again:
 	spin_lock(&file->f_lock);
 	if (file->f_ep && file->f_ep->first) {
 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
+<<<<<<< HEAD
+=======
+		epi->dying = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(&file->f_lock);
 
 		/*
@@ -1130,6 +1250,7 @@ again:
 		 */
 		ep = epi->ep;
 		mutex_lock(&ep->mtx);
+<<<<<<< HEAD
 
 		ep_unregister_pollwait(ep, epi);
 
@@ -1139,6 +1260,12 @@ again:
 		mutex_unlock(&ep->mtx);
 
 		if (ep_refcount_dec_and_test(ep))
+=======
+		dispose = __ep_remove(ep, epi, true);
+		mutex_unlock(&ep->mtx);
+
+		if (dispose && ep_refcount_dec_and_test(ep))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ep_free(ep);
 		goto again;
 	}
@@ -1617,21 +1744,33 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
 		mutex_unlock(&tep->mtx);
 
 	/*
+<<<<<<< HEAD
 	 * ep_remove() calls in the later error paths can't lead to
+=======
+	 * ep_remove_safe() calls in the later error paths can't lead to
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * ep_free() as the ep file itself still holds an ep reference.
 	 */
 	ep_get(ep);
 
 	/* now check if we've created too many backpaths */
 	if (unlikely(full_check && reverse_path_check())) {
+<<<<<<< HEAD
 		ep_remove(ep, epi);
+=======
+		ep_remove_safe(ep, epi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
 	if (epi->event.events & EPOLLWAKEUP) {
 		error = ep_create_wakeup_source(epi);
 		if (error) {
+<<<<<<< HEAD
 			ep_remove(ep, epi);
+=======
+			ep_remove_safe(ep, epi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return error;
 		}
 	}
@@ -1655,7 +1794,11 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
 	 * high memory pressure.
 	 */
 	if (unlikely(!epq.epi)) {
+<<<<<<< HEAD
 		ep_remove(ep, epi);
+=======
+		ep_remove_safe(ep, epi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 	}
 
@@ -2350,7 +2493,11 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 			 * The eventpoll itself is still alive: the refcount
 			 * can't go to zero here.
 			 */
+<<<<<<< HEAD
 			ep_remove(ep, epi);
+=======
+			ep_remove_safe(ep, epi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			error = 0;
 		} else {
 			error = -ENOENT;

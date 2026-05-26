@@ -364,6 +364,10 @@ static const struct dpu_wb_cfg sm8750_wb[] = {
 		.format_list = wb2_formats_rgb_yuv,
 		.num_formats = ARRAY_SIZE(wb2_formats_rgb_yuv),
 		.xin_id = 6,
+<<<<<<< HEAD
+=======
+		.vbif_idx = VBIF_RT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.maxlinewidth = 4096,
 		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
 	},
@@ -419,7 +423,11 @@ static const struct dpu_intf_cfg sm8750_intf[] = {
 		.name = "intf_3", .id = INTF_3,
 		.base = 0x37000, .len = 0x4bc,
 		.type = INTF_DP,
+<<<<<<< HEAD
 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
+=======
+		.controller_id = MSM_DP_CONTROLLER_1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.prog_fetch_lines_worst_case = 24,
 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 30),
 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 31),
@@ -485,7 +493,12 @@ const struct dpu_mdss_cfg dpu_sm8750_cfg = {
 	.cwb = sm8650_cwb,
 	.intf_count = ARRAY_SIZE(sm8750_intf),
 	.intf = sm8750_intf,
+<<<<<<< HEAD
 	.vbif = &sm8650_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(sm8650_vbif),
+	.vbif = sm8650_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &sm8750_perf_data,
 };
 

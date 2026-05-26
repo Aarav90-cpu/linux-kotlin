@@ -3,10 +3,15 @@
 
 #include <linux/bpf.h>
 #include <bpf/bpf_helpers.h>
+<<<<<<< HEAD
 #include "../../../include/linux/filter.h"
 #include "bpf_misc.h"
 
 char _license[] SEC("license") = "GPL";
+=======
+#include "bpf_misc.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct {
 	__uint(type, BPF_MAP_TYPE_HASH);
 	__uint(max_entries, 1);
@@ -14,6 +19,7 @@ struct {
 	__type(value, long long);
 } map SEC(".maps");
 
+<<<<<<< HEAD
 struct {
 	__uint(type, BPF_MAP_TYPE_ARRAY);
 	__uint(max_entries, 1);
@@ -28,6 +34,16 @@ __log_level(2)
 __msg("0: (79) r1 = *(u64 *)(r10 -8)        ; use: fp0-8")
 __msg("1: (79) r2 = *(u64 *)(r10 -24)       ; use: fp0-24")
 __msg("2: (7b) *(u64 *)(r10 -8) = r1        ; def: fp0-8")
+=======
+SEC("socket")
+__log_level(2)
+__msg("(0) frame 0 insn 2 +written -8")
+__msg("(0) frame 0 insn 1 +live -24")
+__msg("(0) frame 0 insn 1 +written -8")
+__msg("(0) frame 0 insn 0 +live -8,-24")
+__msg("(0) frame 0 insn 0 +written -8")
+__msg("(0) live stack update done in 2 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void simple_read_simple_write(void)
 {
 	asm volatile (
@@ -41,8 +57,17 @@ __naked void simple_read_simple_write(void)
 
 SEC("socket")
 __log_level(2)
+<<<<<<< HEAD
 __msg("2: (79) r0 = *(u64 *)(r10 -8)        ; use: fp0-8")
 __msg("6: (79) r0 = *(u64 *)(r10 -16)       ; use: fp0-16")
+=======
+__msg("(0) frame 0 insn 1 +live -8")
+__not_msg("(0) frame 0 insn 1 +written")
+__msg("(0) live stack update done in 2 iterations")
+__msg("(0) frame 0 insn 1 +live -16")
+__msg("(0) frame 0 insn 1 +written -32")
+__msg("(0) live stack update done in 2 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void read_write_join(void)
 {
 	asm volatile (
@@ -62,9 +87,19 @@ __naked void read_write_join(void)
 
 SEC("socket")
 __log_level(2)
+<<<<<<< HEAD
 __msg("stack use/def subprog#0 must_write_not_same_slot (d0,cs0):")
 __msg("6: (7b) *(u64 *)(r2 +0) = r0{{$}}")
 __msg("Live regs before insn:")
+=======
+__msg("2: (25) if r0 > 0x2a goto pc+1")
+__msg("7: (95) exit")
+__msg("(0) frame 0 insn 2 +written -16")
+__msg("(0) live stack update done in 2 iterations")
+__msg("7: (95) exit")
+__not_msg("(0) frame 0 insn 2")
+__msg("(0) live stack update done in 1 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void must_write_not_same_slot(void)
 {
 	asm volatile (
@@ -83,8 +118,15 @@ __naked void must_write_not_same_slot(void)
 
 SEC("socket")
 __log_level(2)
+<<<<<<< HEAD
 __msg("0: (7a) *(u64 *)(r10 -8) = 0         ; def: fp0-8")
 __msg("5: (85) call bpf_map_lookup_elem#1   ; use: fp0-8h")
+=======
+__msg("(0) frame 0 insn 0 +written -8,-16")
+__msg("(0) live stack update done in 2 iterations")
+__msg("(0) frame 0 insn 0 +written -8")
+__msg("(0) live stack update done in 2 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void must_write_not_same_type(void)
 {
 	asm volatile (
@@ -108,11 +150,18 @@ __naked void must_write_not_same_type(void)
 
 SEC("socket")
 __log_level(2)
+<<<<<<< HEAD
 /* Callee writes fp[0]-8: stack_use at call site has slots 0,1 live */
 __msg("stack use/def subprog#0 caller_stack_write (d0,cs0):")
 __msg("2: (85) call pc+1{{$}}")
 __msg("stack use/def subprog#1 write_first_param (d1,cs2):")
 __msg("4: (7a) *(u64 *)(r1 +0) = 7          ; def: fp0-8")
+=======
+__msg("(2,4) frame 0 insn 4 +written -8")
+__msg("(2,4) live stack update done in 2 iterations")
+__msg("(0) frame 0 insn 2 +written -8")
+__msg("(0) live stack update done in 2 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void caller_stack_write(void)
 {
 	asm volatile (
@@ -134,6 +183,7 @@ static __used __naked void write_first_param(void)
 
 SEC("socket")
 __log_level(2)
+<<<<<<< HEAD
 __msg("stack use/def subprog#0 caller_stack_read (d0,cs0):")
 __msg("2: (85) call pc+{{.*}}                   ; use: fp0-8{{$}}")
 __msg("5: (85) call pc+{{.*}}                   ; use: fp0-16{{$}}")
@@ -143,6 +193,25 @@ __msg("8: (95) exit")
 __msg("stack use/def subprog#1 read_first_param (d1,cs5):")
 __msg("7: (79) r0 = *(u64 *)(r1 +0)         ; use: fp0-16{{$}}")
 __msg("8: (95) exit")
+=======
+/* caller_stack_read() function */
+__msg("2: .12345.... (85) call pc+4")
+__msg("5: .12345.... (85) call pc+1")
+__msg("6: 0......... (95) exit")
+/* read_first_param() function */
+__msg("7: .1........ (79) r0 = *(u64 *)(r1 +0)")
+__msg("8: 0......... (95) exit")
+/* update for callsite at (2) */
+__msg("(2,7) frame 0 insn 7 +live -8")
+__msg("(2,7) live stack update done in 2 iterations")
+__msg("(0) frame 0 insn 2 +live -8")
+__msg("(0) live stack update done in 2 iterations")
+/* update for callsite at (5) */
+__msg("(5,7) frame 0 insn 7 +live -16")
+__msg("(5,7) live stack update done in 2 iterations")
+__msg("(0) frame 0 insn 5 +live -16")
+__msg("(0) live stack update done in 2 iterations")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void caller_stack_read(void)
 {
 	asm volatile (
@@ -165,6 +234,7 @@ static __used __naked void read_first_param(void)
 }
 
 SEC("socket")
+<<<<<<< HEAD
 __success
 __naked void arg_track_join_convergence(void)
 {
@@ -207,6 +277,22 @@ __msg("12: (95) exit")
  * Checkpoint at goto +0 fires because fp0-8 is dead → state pruning.
  */
 __msg("12: safe")
+=======
+__flag(BPF_F_TEST_STATE_FREQ)
+__log_level(2)
+/* read_first_param2() function */
+__msg(" 9: .1........ (79) r0 = *(u64 *)(r1 +0)")
+__msg("10: .......... (b7) r0 = 0")
+__msg("11: 0......... (05) goto pc+0")
+__msg("12: 0......... (95) exit")
+/*
+ * The purpose of the test is to check that checkpoint in
+ * read_first_param2() stops path traversal. This will only happen if
+ * verifier understands that fp[0]-8 at insn (12) is not alive.
+ */
+__msg("12: safe")
+__msg("processed 20 insns")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void caller_stack_pruning(void)
 {
 	asm volatile (
@@ -361,6 +447,7 @@ static __used __naked unsigned long write_tail_call(void)
           __imm_addr(map_array)
         : __clobber_all);
 }
+<<<<<<< HEAD
 
 /* Test precise subprog stack access analysis.
  * Caller passes fp-32 (SPI 3) to callee that only accesses arg+0 and arg+8
@@ -2840,3 +2927,5 @@ static __used __naked void imprecise_dst_spill_join_sub(void)
 	:: __imm(bpf_get_prandom_u32)
 	: __clobber_all);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

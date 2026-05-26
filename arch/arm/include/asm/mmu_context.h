@@ -80,7 +80,11 @@ static inline void check_and_switch_context(struct mm_struct *mm,
 #ifndef MODULE
 #define finish_arch_post_lock_switch \
 	finish_arch_post_lock_switch
+<<<<<<< HEAD
 static inline void finish_arch_post_lock_switch(void)
+=======
+static __always_inline void finish_arch_post_lock_switch(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mm_struct *mm = current->mm;
 

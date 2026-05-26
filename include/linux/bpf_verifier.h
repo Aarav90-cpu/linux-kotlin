@@ -38,9 +38,16 @@ struct bpf_reg_state {
 	/* Ordering of fields matters.  See states_equal() */
 	enum bpf_reg_type type;
 	/*
+<<<<<<< HEAD
 	 * Constant delta between "linked" scalars with the same ID.
 	 */
 	s32 delta;
+=======
+	 * Fixed part of pointer offset, pointer types only.
+	 * Or constant delta between "linked" scalars with the same ID.
+	 */
+	s32 off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union {
 		/* valid when type == PTR_TO_PACKET */
 		int range;
@@ -145,9 +152,15 @@ struct bpf_reg_state {
 	 * Upper bit of ID is used to remember relationship between "linked"
 	 * registers. Example:
 	 * r1 = r2;    both will have r1->id == r2->id == N
+<<<<<<< HEAD
 	 * r1 += 10;   r1->id == N | BPF_ADD_CONST and r1->delta == 10
 	 * r3 = r2;    both will have r3->id == r2->id == N
 	 * w3 += 10;   r3->id == N | BPF_ADD_CONST32 and r3->delta == 10
+=======
+	 * r1 += 10;   r1->id == N | BPF_ADD_CONST and r1->off == 10
+	 * r3 = r2;    both will have r3->id == r2->id == N
+	 * w3 += 10;   r3->id == N | BPF_ADD_CONST32 and r3->off == 10
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 #define BPF_ADD_CONST64 (1U << 31)
 #define BPF_ADD_CONST32 (1U << 30)
@@ -220,11 +233,15 @@ enum bpf_stack_slot_type {
 	STACK_DYNPTR,
 	STACK_ITER,
 	STACK_IRQ_FLAG,
+<<<<<<< HEAD
 	STACK_POISON,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define BPF_REG_SIZE 8	/* size of eBPF register in bytes */
 
+<<<<<<< HEAD
 /* 4-byte stack slot granularity for liveness analysis */
 #define BPF_HALF_REG_SIZE	4
 #define STACK_SLOT_SZ		4
@@ -275,12 +292,17 @@ static inline void spis_or_range(spis_t *mask, u32 lo, u32 hi)
 		mask->v[w / 64] |= BIT_ULL(w % 64);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BPF_REGMASK_ARGS ((1 << BPF_REG_1) | (1 << BPF_REG_2) | \
 			  (1 << BPF_REG_3) | (1 << BPF_REG_4) | \
 			  (1 << BPF_REG_5))
 
+<<<<<<< HEAD
 #define BPF_MAIN_FUNC (-1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BPF_DYNPTR_SIZE		sizeof(struct bpf_dynptr_kern)
 #define BPF_DYNPTR_NR_SLOTS		(BPF_DYNPTR_SIZE / BPF_REG_SIZE)
 
@@ -318,7 +340,10 @@ struct bpf_reference_state {
 struct bpf_retval_range {
 	s32 minval;
 	s32 maxval;
+<<<<<<< HEAD
 	bool return_32bit;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* state of the program:
@@ -477,6 +502,10 @@ struct bpf_verifier_state {
 
 	bool speculative;
 	bool in_sleepable;
+<<<<<<< HEAD
+=======
+	bool cleaned;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* first and last insn idx of this verifier state */
 	u32 first_insn_idx;
@@ -630,6 +659,7 @@ struct bpf_insn_aux_data {
 
 	/* below fields are initialized once */
 	unsigned int orig_idx; /* original instruction index */
+<<<<<<< HEAD
 	u32 jmp_point:1;
 	u32 prune_point:1;
 	/* ensure we check state equivalence and save state checkpoint and
@@ -641,6 +671,18 @@ struct bpf_insn_aux_data {
 	 */
 	u32 calls_callback:1;
 	u32 indirect_target:1; /* if it is an indirect jump target */
+=======
+	bool jmp_point;
+	bool prune_point;
+	/* ensure we check state equivalence and save state checkpoint and
+	 * this instruction, regardless of any heuristics
+	 */
+	bool force_checkpoint;
+	/* true if instruction is a call to a helper function that
+	 * accepts callback function as a parameter.
+	 */
+	bool calls_callback;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * CFG strongly connected component this instruction belongs to,
 	 * zero if it is a singleton SCC.
@@ -648,6 +690,7 @@ struct bpf_insn_aux_data {
 	u32 scc;
 	/* registers alive before this instruction. */
 	u16 live_regs_before;
+<<<<<<< HEAD
 	/*
 	 * Bitmask of R0-R9 that hold known values at this instruction.
 	 * const_reg_mask: scalar constants that fit in 32 bits.
@@ -660,6 +703,8 @@ struct bpf_insn_aux_data {
 	u16 const_reg_map_mask;
 	u16 const_reg_subprog_mask;
 	u32 const_reg_vals[10];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF program */
@@ -717,7 +762,11 @@ enum priv_stack_mode {
 };
 
 struct bpf_subprog_info {
+<<<<<<< HEAD
 	const char *name; /* name extracted from BTF */
+=======
+	/* 'start' has to be the first field otherwise find_subprog() won't work */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 start; /* insn idx of function entry point */
 	u32 linfo_idx; /* The idx to the main_prog->aux->linfo */
 	u32 postorder_start; /* The idx to the env->cfg.insn_postorder */
@@ -852,8 +901,11 @@ struct bpf_verifier_env {
 	const struct bpf_line_info *prev_linfo;
 	struct bpf_verifier_log log;
 	struct bpf_subprog_info subprog_info[BPF_MAX_SUBPROGS + 2]; /* max + 2 for the fake and exception subprogs */
+<<<<<<< HEAD
 	/* subprog indices sorted in topological order: leaves first, callers last */
 	int subprog_topo_order[BPF_MAX_SUBPROGS + 2];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union {
 		struct bpf_idmap idmap_scratch;
 		struct bpf_idset idset_scratch;
@@ -872,8 +924,11 @@ struct bpf_verifier_env {
 	} cfg;
 	struct backtrack_state bt;
 	struct bpf_jmp_history_entry *cur_hist_ent;
+<<<<<<< HEAD
 	/* Per-callsite copy of parent's converged at_stack_in for cross-frame fills. */
 	struct arg_track **callsite_at_stack;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 pass_cnt; /* number of times do_check() was called */
 	u32 subprog_cnt;
 	/* number of instructions analyzed by the verifier */
@@ -906,9 +961,13 @@ struct bpf_verifier_env {
 	u64 scratched_stack_slots;
 	u64 prev_log_pos, prev_insn_print_pos;
 	/* buffer used to temporary hold constants as scalar registers */
+<<<<<<< HEAD
 	struct bpf_reg_state fake_reg[1];
 	/* buffers used to save updated reg states while simulating branches */
 	struct bpf_reg_state true_reg1, true_reg2, false_reg1, false_reg2;
+=======
+	struct bpf_reg_state fake_reg[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* buffer used to generate temporary string representations,
 	 * e.g., in reg_type_str() to generate reg_type string
 	 */
@@ -934,6 +993,7 @@ static inline struct bpf_subprog_info *subprog_info(struct bpf_verifier_env *env
 	return &env->subprog_info[subprog];
 }
 
+<<<<<<< HEAD
 struct bpf_call_summary {
 	u8 num_params;
 	bool is_void;
@@ -958,6 +1018,8 @@ static inline bool bpf_pseudo_kfunc_call(const struct bpf_insn *insn)
 	       insn->src_reg == BPF_PSEUDO_KFUNC_CALL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __printf(2, 0) void bpf_verifier_vlog(struct bpf_verifier_log *log,
 				      const char *fmt, va_list args);
 __printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
@@ -986,6 +1048,7 @@ __printf(3, 4) void verbose_linfo(struct bpf_verifier_env *env,
 		bpf_log(&env->log, "verifier bug: " fmt "\n", ##args);				\
 	})
 
+<<<<<<< HEAD
 static inline void mark_prune_point(struct bpf_verifier_env *env, int idx)
 {
 	env->insn_aux_data[idx].prune_point = true;
@@ -1021,6 +1084,8 @@ static inline void mark_jmp_point(struct bpf_verifier_env *env, int idx)
 	env->insn_aux_data[idx].jmp_point = true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct bpf_func_state *cur_func(struct bpf_verifier_env *env)
 {
 	struct bpf_verifier_state *cur = env->cur_state;
@@ -1062,11 +1127,14 @@ static inline void bpf_trampoline_unpack_key(u64 key, u32 *obj_id, u32 *btf_id)
 		*btf_id = key & 0x7FFFFFFF;
 }
 
+<<<<<<< HEAD
 int bpf_check_btf_info_early(struct bpf_verifier_env *env,
 			     const union bpf_attr *attr, bpfptr_t uattr);
 int bpf_check_btf_info(struct bpf_verifier_env *env,
 		       const union bpf_attr *attr, bpfptr_t uattr);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int bpf_check_attach_target(struct bpf_verifier_log *log,
 			    const struct bpf_prog *prog,
 			    const struct bpf_prog *tgt_prog,
@@ -1076,6 +1144,7 @@ void bpf_free_kfunc_btf_tab(struct bpf_kfunc_btf_tab *tab);
 
 int mark_chain_precision(struct bpf_verifier_env *env, int regno);
 
+<<<<<<< HEAD
 int bpf_is_state_visited(struct bpf_verifier_env *env, int insn_idx);
 int bpf_update_branch_counts(struct bpf_verifier_env *env, struct bpf_verifier_state *st);
 
@@ -1163,6 +1232,8 @@ bool bpf_map_is_rdonly(const struct bpf_map *map);
 int bpf_map_direct_read(struct bpf_map *map, int off, int size, u64 *val,
 			bool is_ldsx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BPF_BASE_TYPE_MASK	GENMASK(BPF_BASE_TYPE_BITS - 1, 0)
 
 /* extract base type from bpf_{arg, return, reg}_type. */
@@ -1299,12 +1370,16 @@ void print_verifier_state(struct bpf_verifier_env *env, const struct bpf_verifie
 			  u32 frameno, bool print_all);
 void print_insn_state(struct bpf_verifier_env *env, const struct bpf_verifier_state *vstate,
 		      u32 frameno);
+<<<<<<< HEAD
 u32 bpf_vlog_alignment(u32 pos);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct bpf_subprog_info *bpf_find_containing_subprog(struct bpf_verifier_env *env, int off);
 int bpf_jmp_offset(struct bpf_insn *insn);
 struct bpf_iarray *bpf_insn_successors(struct bpf_verifier_env *env, u32 idx);
 void bpf_fmt_stack_mask(char *buf, ssize_t buf_sz, u64 stack_mask);
+<<<<<<< HEAD
 bool bpf_subprog_is_global(const struct bpf_verifier_env *env, int subprog);
 
 int bpf_find_subprog(struct bpf_verifier_env *env, int off);
@@ -1488,5 +1563,19 @@ int bpf_convert_ctx_accesses(struct bpf_verifier_env *env);
 int bpf_jit_subprogs(struct bpf_verifier_env *env);
 int bpf_fixup_call_args(struct bpf_verifier_env *env);
 int bpf_do_misc_fixups(struct bpf_verifier_env *env);
+=======
+bool bpf_calls_callback(struct bpf_verifier_env *env, int insn_idx);
+
+int bpf_stack_liveness_init(struct bpf_verifier_env *env);
+void bpf_stack_liveness_free(struct bpf_verifier_env *env);
+int bpf_update_live_stack(struct bpf_verifier_env *env);
+int bpf_mark_stack_read(struct bpf_verifier_env *env, u32 frameno, u32 insn_idx, u64 mask);
+void bpf_mark_stack_write(struct bpf_verifier_env *env, u32 frameno, u64 mask);
+int bpf_reset_stack_write_marks(struct bpf_verifier_env *env, u32 insn_idx);
+int bpf_commit_stack_write_marks(struct bpf_verifier_env *env);
+int bpf_live_stack_query_init(struct bpf_verifier_env *env, struct bpf_verifier_state *st);
+bool bpf_stack_slot_alive(struct bpf_verifier_env *env, u32 frameno, u32 spi);
+void bpf_reset_live_stack_callchain(struct bpf_verifier_env *env);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _LINUX_BPF_VERIFIER_H */

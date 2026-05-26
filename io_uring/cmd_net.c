@@ -7,6 +7,7 @@
 #include "uring_cmd.h"
 #include "io_uring.h"
 
+<<<<<<< HEAD
 static int io_uring_cmd_get_sock_ioctl(struct socket *sock, int op)
 {
 	struct sock *sk = sock->sk;
@@ -22,6 +23,8 @@ static int io_uring_cmd_get_sock_ioctl(struct socket *sock, int op)
 	return arg;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int io_uring_cmd_getsockopt(struct socket *sock,
 					  struct io_uring_cmd *cmd,
 					  unsigned int issue_flags)
@@ -171,12 +174,36 @@ static int io_uring_cmd_getsockname(struct socket *sock,
 int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
 {
 	struct socket *sock = cmd->file->private_data;
+<<<<<<< HEAD
 
 	switch (cmd->cmd_op) {
 	case SOCKET_URING_OP_SIOCINQ:
 		return io_uring_cmd_get_sock_ioctl(sock, SIOCINQ);
 	case SOCKET_URING_OP_SIOCOUTQ:
 		return io_uring_cmd_get_sock_ioctl(sock, SIOCOUTQ);
+=======
+	struct sock *sk = sock->sk;
+	struct proto *prot = READ_ONCE(sk->sk_prot);
+	int ret, arg = 0;
+
+	switch (cmd->cmd_op) {
+	case SOCKET_URING_OP_SIOCINQ:
+		if (!prot || !prot->ioctl)
+			return -EOPNOTSUPP;
+
+		ret = prot->ioctl(sk, SIOCINQ, &arg);
+		if (ret)
+			return ret;
+		return arg;
+	case SOCKET_URING_OP_SIOCOUTQ:
+		if (!prot || !prot->ioctl)
+			return -EOPNOTSUPP;
+
+		ret = prot->ioctl(sk, SIOCOUTQ, &arg);
+		if (ret)
+			return ret;
+		return arg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SOCKET_URING_OP_GETSOCKOPT:
 		return io_uring_cmd_getsockopt(sock, cmd, issue_flags);
 	case SOCKET_URING_OP_SETSOCKOPT:

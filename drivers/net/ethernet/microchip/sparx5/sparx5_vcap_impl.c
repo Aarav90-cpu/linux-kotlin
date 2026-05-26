@@ -2083,7 +2083,11 @@ int sparx5_vcap_init(struct sparx5 *sparx5)
 	return err;
 }
 
+<<<<<<< HEAD
 void sparx5_vcap_deinit(struct sparx5 *sparx5)
+=======
+void sparx5_vcap_destroy(struct sparx5 *sparx5)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vcap_control *ctrl = sparx5->vcap_ctrl;
 	struct vcap_admin *admin, *admin_next;

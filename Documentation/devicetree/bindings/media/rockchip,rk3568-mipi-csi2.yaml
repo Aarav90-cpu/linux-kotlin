@@ -17,7 +17,10 @@ description:
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - fsl,imx93-mipi-csi2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - rockchip,rk3568-mipi-csi2
 
   reg:
@@ -27,12 +30,16 @@ properties:
     items:
       - description: Interrupt that signals changes in CSI2HOST_ERR1.
       - description: Interrupt that signals changes in CSI2HOST_ERR2.
+<<<<<<< HEAD
     minItems: 1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   interrupt-names:
     items:
       - const: err1
       - const: err2
+<<<<<<< HEAD
     minItems: 1
 
   clocks:
@@ -44,6 +51,11 @@ properties:
       - const: per
       - const: pixel
     minItems: 1
+=======
+
+  clocks:
+    maxItems: 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   phys:
     maxItems: 1
@@ -98,6 +110,7 @@ required:
   - phys
   - ports
   - power-domains
+<<<<<<< HEAD
 
 additionalProperties: false
 
@@ -135,6 +148,12 @@ allOf:
         clock-names:
           minItems: 2
 
+=======
+  - resets
+
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     #include <dt-bindings/clock/rk3568-cru.h>

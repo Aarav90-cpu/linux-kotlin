@@ -46,8 +46,13 @@ int setattr_should_drop_sgid(struct mnt_idmap *idmap,
 EXPORT_SYMBOL(setattr_should_drop_sgid);
 
 /**
+<<<<<<< HEAD
  * setattr_should_drop_suidgid - determine whether the set{g,u}id bit
  *                               needs to be dropped
+=======
+ * setattr_should_drop_suidgid - determine whether the set{g,u}id bit needs to
+ *                               be dropped
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @idmap:	idmap of the mount @inode was found from
  * @inode:	inode to check
  *
@@ -165,7 +170,11 @@ int setattr_prepare(struct mnt_idmap *idmap, struct dentry *dentry,
 	unsigned int ia_valid = attr->ia_valid;
 
 	/*
+<<<<<<< HEAD
 	 * First check size constraints.  These can't be overridden using
+=======
+	 * First check size constraints.  These can't be overriden using
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * ATTR_FORCE.
 	 */
 	if (ia_valid & ATTR_SIZE) {

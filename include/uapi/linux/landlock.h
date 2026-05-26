@@ -250,6 +250,7 @@ struct landlock_net_port_attr {
  *
  *   This access right is available since the fifth version of the Landlock
  *   ABI.
+<<<<<<< HEAD
  * - %LANDLOCK_ACCESS_FS_RESOLVE_UNIX: Look up pathname UNIX domain sockets
  *   (:manpage:`unix(7)`).  On UNIX domain sockets, this restricts both calls to
  *   :manpage:`connect(2)` as well as calls to :manpage:`sendmsg(2)` with an
@@ -270,6 +271,8 @@ struct landlock_net_port_attr {
  *
  *   The rationale for this design is described in
  *   :ref:`Documentation/security/landlock.rst <scoped-flags-interaction>`.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Whether an opened file can be truncated with :manpage:`ftruncate(2)` or used
  * with `ioctl(2)` is determined during :manpage:`open(2)`, in the same way as
@@ -355,7 +358,10 @@ struct landlock_net_port_attr {
 #define LANDLOCK_ACCESS_FS_REFER			(1ULL << 13)
 #define LANDLOCK_ACCESS_FS_TRUNCATE			(1ULL << 14)
 #define LANDLOCK_ACCESS_FS_IOCTL_DEV			(1ULL << 15)
+<<<<<<< HEAD
 #define LANDLOCK_ACCESS_FS_RESOLVE_UNIX			(1ULL << 16)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* clang-format on */
 
 /**

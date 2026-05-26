@@ -9,14 +9,22 @@ Classes for navigating through the files that kernel-doc needs to handle
 to generate documentation.
 """
 
+<<<<<<< HEAD
+=======
+import argparse
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 import logging
 import os
 import re
 
 from kdoc.kdoc_parser import KernelDoc
+<<<<<<< HEAD
 from kdoc.xforms_lists import CTransforms
 from kdoc.kdoc_output import OutputFormat
 from kdoc.kdoc_yaml_file import KDocTestFile
+=======
+from kdoc.kdoc_output import OutputFormat
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 class GlobSourceFiles:
@@ -87,6 +95,7 @@ class GlobSourceFiles:
                 file_not_found_cb(fname)
 
 
+<<<<<<< HEAD
 class KdocConfig():
     """
     Stores all configuration attributes that kdoc_parser and kdoc_output
@@ -109,10 +118,13 @@ class KdocConfig():
 
         self.warning = self.log.warning
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 class KernelFiles():
     """
     Parse kernel-doc tags on multiple kernel source files.
 
+<<<<<<< HEAD
     This is the main entry point to run kernel-doc. This class is initialized
     using a series of optional arguments:
 
@@ -162,6 +174,9 @@ class KernelFiles():
     Note:
         There are two type of parsers defined here:
 
+=======
+    There are two type of parsers defined here:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - self.parse_file(): parses both kernel-doc markups and
           ``EXPORT_SYMBOL*`` macros;
         - self.process_export_file(): parses only ``EXPORT_SYMBOL*`` macros.
@@ -188,12 +203,16 @@ class KernelFiles():
         if fname in self.files:
             return
 
+<<<<<<< HEAD
         if self.test_file:
             store_src = True
         else:
             store_src = False
 
         doc = KernelDoc(self.config, fname, self.xforms, store_src=store_src)
+=======
+        doc = KernelDoc(self.config, fname)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         export_table, entries = doc.parse_kdoc()
 
         self.export_table[fname] = export_table
@@ -229,21 +248,32 @@ class KernelFiles():
 
         self.error(f"Cannot find file {fname}")
 
+<<<<<<< HEAD
     def __init__(self, verbose=False, out_style=None, xforms=None,
                  werror=False, wreturn=False, wshort_desc=False,
                  wcontents_before_sections=False,
                  yaml_file=None, yaml_content=None, logger=None):
+=======
+    def __init__(self, verbose=False, out_style=None,
+                 werror=False, wreturn=False, wshort_desc=False,
+                 wcontents_before_sections=False,
+                 logger=None):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Initialize startup variables and parse all files.
         """
 
         if not verbose:
+<<<<<<< HEAD
             try:
                 verbose = bool(int(os.environ.get("KBUILD_VERBOSE", 0)))
             except ValueError:
                 # Handles an eventual case where verbosity is not a number
                 # like KBUILD_VERBOSE=""
                 verbose = False
+=======
+            verbose = bool(os.environ.get("KBUILD_VERBOSE", 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         if out_style is None:
             out_style = OutputFormat()
@@ -262,6 +292,7 @@ class KernelFiles():
             if kdoc_werror:
                 werror = kdoc_werror
 
+<<<<<<< HEAD
         if not logger:
            logger = logging.getLogger("kernel-doc")
         else:
@@ -286,12 +317,35 @@ class KernelFiles():
         else:
             self.xforms = CTransforms()
 
+=======
+        # Some variables are global to the parser logic as a whole as they are
+        # used to send control configuration to KernelDoc class. As such,
+        # those variables are read-only inside the KernelDoc.
+        self.config = argparse.Namespace
+
+        self.config.verbose = verbose
+        self.config.werror = werror
+        self.config.wreturn = wreturn
+        self.config.wshort_desc = wshort_desc
+        self.config.wcontents_before_sections = wcontents_before_sections
+
+        if not logger:
+            self.config.log = logging.getLogger("kernel-doc")
+        else:
+            self.config.log = logger
+
+        self.config.warning = self.warning
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.config.src_tree = os.environ.get("SRCTREE", None)
 
         # Initialize variables that are internal to KernelFiles
 
         self.out_style = out_style
+<<<<<<< HEAD
         self.out_style.set_config(self.config)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         self.errors = 0
         self.results = {}
@@ -334,6 +388,11 @@ class KernelFiles():
         returning kernel-doc markups on each interaction.
         """
 
+<<<<<<< HEAD
+=======
+        self.out_style.set_config(self.config)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         if not filenames:
             filenames = sorted(self.results.keys())
 
@@ -353,11 +412,20 @@ class KernelFiles():
                 for s in symbol:
                     function_table.add(s)
 
+<<<<<<< HEAD
+=======
+            self.out_style.set_filter(export, internal, symbol, nosymbol,
+                                      function_table, enable_lineno,
+                                      no_doc_sections)
+
+            msg = ""
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             if fname not in self.results:
                 self.config.log.warning("No kernel-doc for file %s", fname)
                 continue
 
             symbols = self.results[fname]
+<<<<<<< HEAD
 
             if self.test_file:
                 self.test_file.set_filter(export, internal, symbol, nosymbol,
@@ -378,3 +446,21 @@ class KernelFiles():
 
         if self.test_file:
             self.test_file.write()
+=======
+            self.out_style.set_symbols(symbols)
+
+            for arg in symbols:
+                m = self.out_msg(fname, arg.name, arg)
+
+                if m is None:
+                    ln = arg.get("ln", 0)
+                    dtype = arg.get('type', "")
+
+                    self.config.log.warning("%s:%d Can't handle %s",
+                                            fname, ln, dtype)
+                else:
+                    msg += m
+
+            if msg:
+                yield fname, msg
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

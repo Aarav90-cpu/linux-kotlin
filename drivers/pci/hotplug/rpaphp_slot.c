@@ -82,6 +82,10 @@ EXPORT_SYMBOL_GPL(rpaphp_deregister_slot);
 int rpaphp_register_slot(struct slot *slot)
 {
 	struct hotplug_slot *php_slot = &slot->hotplug_slot;
+<<<<<<< HEAD
+=======
+	struct device_node *child;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 my_index;
 	int retval;
 	int slotno = -1;
@@ -96,10 +100,18 @@ int rpaphp_register_slot(struct slot *slot)
 		return -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	for_each_child_of_node_scoped(slot->dn, child) {
 		retval = of_property_read_u32(child, "ibm,my-drc-index", &my_index);
 		if (my_index == slot->index) {
 			slotno = PCI_SLOT(PCI_DN(child)->devfn);
+=======
+	for_each_child_of_node(slot->dn, child) {
+		retval = of_property_read_u32(child, "ibm,my-drc-index", &my_index);
+		if (my_index == slot->index) {
+			slotno = PCI_SLOT(PCI_DN(child)->devfn);
+			of_node_put(child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}

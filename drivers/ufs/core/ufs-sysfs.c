@@ -605,6 +605,7 @@ static ssize_t device_lvl_exception_id_show(struct device *dev,
 	return sysfs_emit(buf, "%llu\n", exception_id);
 }
 
+<<<<<<< HEAD
 static ssize_t dme_qos_notification_show(struct device *dev,
 					 struct device_attribute *attr,
 					 char *buf)
@@ -633,6 +634,8 @@ static ssize_t dme_qos_notification_store(struct device *dev,
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEVICE_ATTR_RW(rpm_lvl);
 static DEVICE_ATTR_RO(rpm_target_dev_state);
 static DEVICE_ATTR_RO(rpm_target_link_state);
@@ -649,7 +652,10 @@ static DEVICE_ATTR_RW(pm_qos_enable);
 static DEVICE_ATTR_RO(critical_health);
 static DEVICE_ATTR_RW(device_lvl_exception_count);
 static DEVICE_ATTR_RO(device_lvl_exception_id);
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dme_qos_notification);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct attribute *ufs_sysfs_ufshcd_attrs[] = {
 	&dev_attr_rpm_lvl.attr,
@@ -668,7 +674,10 @@ static struct attribute *ufs_sysfs_ufshcd_attrs[] = {
 	&dev_attr_critical_health.attr,
 	&dev_attr_device_lvl_exception_count.attr,
 	&dev_attr_device_lvl_exception_id.attr,
+<<<<<<< HEAD
 	&dev_attr_dme_qos_notification.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 

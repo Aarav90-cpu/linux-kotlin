@@ -81,7 +81,11 @@ static int ip6t_nat_register_lookups(struct net *net)
 			while (i)
 				nf_nat_ipv6_unregister_fn(net, &ops[--i]);
 
+<<<<<<< HEAD
 			kfree_rcu(ops, rcu);
+=======
+			kfree(ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 		}
 	}
@@ -102,7 +106,11 @@ static void ip6t_nat_unregister_lookups(struct net *net)
 	for (i = 0; i < ARRAY_SIZE(nf_nat_ipv6_ops); i++)
 		nf_nat_ipv6_unregister_fn(net, &ops[i]);
 
+<<<<<<< HEAD
 	kfree_rcu(ops, rcu);
+=======
+	kfree(ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ip6table_nat_table_init(struct net *net)
@@ -121,11 +129,16 @@ static int ip6table_nat_table_init(struct net *net)
 	}
 
 	ret = ip6t_nat_register_lookups(net);
+<<<<<<< HEAD
 	if (ret < 0) {
 		xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
 		synchronize_rcu();
 		ip6t_unregister_table_exit(net, "nat");
 	}
+=======
+	if (ret < 0)
+		ip6t_unregister_table_exit(net, "nat");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(repl);
 	return ret;
@@ -134,7 +147,10 @@ static int ip6table_nat_table_init(struct net *net)
 static void __net_exit ip6table_nat_net_pre_exit(struct net *net)
 {
 	ip6t_nat_unregister_lookups(net);
+<<<<<<< HEAD
 	xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __net_exit ip6table_nat_net_exit(struct net *net)

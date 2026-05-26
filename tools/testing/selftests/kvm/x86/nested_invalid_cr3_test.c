@@ -78,7 +78,11 @@ int main(int argc, char *argv[])
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	gva_t guest_gva = 0;
+=======
+	vm_vaddr_t guest_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) ||
 		     kvm_cpu_has(X86_FEATURE_SVM));

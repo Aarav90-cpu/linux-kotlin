@@ -486,7 +486,11 @@ static void virtio_fs_free_devs(struct virtio_fs *fs)
 		if (!fsvq->fud)
 			continue;
 
+<<<<<<< HEAD
 		fuse_dev_put(fsvq->fud);
+=======
+		fuse_dev_free(fsvq->fud);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fsvq->fud = NULL;
 	}
 }
@@ -758,6 +762,7 @@ static void copy_args_from_argbuf(struct fuse_args *args, struct fuse_req *req)
 	req->argbuf = NULL;
 }
 
+<<<<<<< HEAD
 /* Verify that the server properly follows the FUSE protocol */
 static bool virtio_fs_verify_response(struct fuse_req *req, unsigned int len)
 {
@@ -779,6 +784,8 @@ static bool virtio_fs_verify_response(struct fuse_req *req, unsigned int len)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Work function for request completion */
 static void virtio_fs_request_complete(struct fuse_req *req,
 				       struct virtio_fs_vq *fsvq)
@@ -788,6 +795,13 @@ static void virtio_fs_request_complete(struct fuse_req *req,
 	unsigned int len, i, thislen;
 	struct folio *folio;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * TODO verify that server properly follows FUSE protocol
+	 * (oh.uniq, oh.len)
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	args = req->args;
 	copy_args_from_argbuf(args, req);
 
@@ -841,10 +855,13 @@ static void virtio_fs_requests_done_work(struct work_struct *work)
 		virtqueue_disable_cb(vq);
 
 		while ((req = virtqueue_get_buf(vq, &len)) != NULL) {
+<<<<<<< HEAD
 			if (!virtio_fs_verify_response(req, len)) {
 				req->out.h.error = -EIO;
 				req->out.h.len = sizeof(struct fuse_out_header);
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_lock(&fpq->lock);
 			list_move_tail(&req->list, &reqs);
 			spin_unlock(&fpq->lock);
@@ -1590,6 +1607,11 @@ static int virtio_fs_fill_super(struct super_block *sb, struct fs_context *fsc)
 			goto err_free_fuse_devs;
 	}
 
+<<<<<<< HEAD
+=======
+	/* virtiofs allocates and installs its own fuse devices */
+	ctx->fudptr = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctx->dax_mode != FUSE_DAX_NEVER) {
 		if (ctx->dax_mode == FUSE_DAX_ALWAYS && !fs->dax_dev) {
 			err = -EINVAL;

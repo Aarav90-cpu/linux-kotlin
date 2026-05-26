@@ -85,6 +85,7 @@ static u32 airoha_ppe_get_timestamp(struct airoha_ppe *ppe)
 	return FIELD_GET(AIROHA_FOE_IB1_BIND_TIMESTAMP, timestamp);
 }
 
+<<<<<<< HEAD
 void airoha_ppe_set_cpu_port(struct airoha_gdm_port *port, u8 ppe_id, u8 fport)
 {
 	struct airoha_qdma *qdma = port->qdma;
@@ -98,6 +99,8 @@ void airoha_ppe_set_cpu_port(struct airoha_gdm_port *port, u8 ppe_id, u8 fport)
 		      __field_prep(DFT_CPORT_MASK(fport), fe_cpu_port));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
 {
 	u32 sram_ppe_num_data_entries = PPE_SRAM_NUM_ENTRIES, sram_num_entries;
@@ -124,13 +127,22 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
 		airoha_fe_rmw(eth, REG_PPE_BND_AGE0(i),
 			      PPE_BIND_AGE0_DELTA_NON_L4 |
 			      PPE_BIND_AGE0_DELTA_UDP,
+<<<<<<< HEAD
 			      FIELD_PREP(PPE_BIND_AGE0_DELTA_NON_L4, 60) |
 			      FIELD_PREP(PPE_BIND_AGE0_DELTA_UDP, 60));
+=======
+			      FIELD_PREP(PPE_BIND_AGE0_DELTA_NON_L4, 1) |
+			      FIELD_PREP(PPE_BIND_AGE0_DELTA_UDP, 12));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		airoha_fe_rmw(eth, REG_PPE_BND_AGE1(i),
 			      PPE_BIND_AGE1_DELTA_TCP_FIN |
 			      PPE_BIND_AGE1_DELTA_TCP,
 			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP_FIN, 1) |
+<<<<<<< HEAD
 			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP, 60));
+=======
+			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP, 7));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		airoha_fe_rmw(eth, REG_PPE_TB_HASH_CFG(i),
 			      PPE_SRAM_TABLE_EN_MASK |
@@ -158,6 +170,7 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
 			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
 					 dram_num_entries));
 
+<<<<<<< HEAD
 		airoha_fe_rmw(eth, REG_PPE_BIND_RATE(i),
 			      PPE_BIND_RATE_L2B_BIND_MASK |
 			      PPE_BIND_RATE_BIND_MASK,
@@ -171,6 +184,11 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
 		for (p = 0; p < ARRAY_SIZE(eth->ports); p++) {
 			struct airoha_gdm_port *port = eth->ports[p];
 
+=======
+		airoha_fe_wr(eth, REG_PPE_HASH_SEED(i), PPE_HASH_SEED);
+
+		for (p = 0; p < ARRAY_SIZE(eth->ports); p++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			airoha_fe_rmw(eth, REG_PPE_MTU(i, p),
 				      FP0_EGRESS_MTU_MASK |
 				      FP1_EGRESS_MTU_MASK,
@@ -178,12 +196,15 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
 						 AIROHA_MAX_MTU) |
 				      FIELD_PREP(FP1_EGRESS_MTU_MASK,
 						 AIROHA_MAX_MTU));
+<<<<<<< HEAD
 			if (!port)
 				continue;
 
 			airoha_ppe_set_cpu_port(port, i,
 						airoha_get_fe_port(port));
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -352,7 +373,11 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
 			/* For downlink traffic consume SRAM memory for hw
 			 * forwarding descriptors queue.
 			 */
+<<<<<<< HEAD
 			if (airoha_is_lan_gdm_port(port))
+=======
+			if (airhoa_is_lan_gdm_port(port))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				val |= AIROHA_FOE_IB2_FAST_PATH;
 			if (dsa_port >= 0)
 				val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ,
@@ -1356,6 +1381,7 @@ static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
 	return npu;
 }
 
+<<<<<<< HEAD
 static int airoha_ppe_wait_for_npu_init(struct airoha_eth *eth)
 {
 	int err;
@@ -1379,6 +1405,8 @@ static int airoha_ppe_wait_for_npu_init(struct airoha_eth *eth)
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int airoha_ppe_offload_setup(struct airoha_eth *eth)
 {
 	struct airoha_npu *npu = airoha_ppe_npu_get(eth);
@@ -1392,11 +1420,14 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
 	if (err)
 		goto error_npu_put;
 
+<<<<<<< HEAD
 	/* Wait for NPU PPE configuration to complete */
 	err = airoha_ppe_wait_for_npu_init(eth);
 	if (err)
 		goto error_npu_put;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
 	if (ppe_num_stats_entries > 0) {
 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,

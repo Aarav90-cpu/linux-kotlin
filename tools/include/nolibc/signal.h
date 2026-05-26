@@ -20,7 +20,11 @@ int raise(int signal);
 __attribute__((weak,unused,section(".text.nolibc_raise")))
 int raise(int signal)
 {
+<<<<<<< HEAD
 	return _sys_kill(_sys_getpid(), signal);
+=======
+	return sys_kill(sys_getpid(), signal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_SIGNAL_H */

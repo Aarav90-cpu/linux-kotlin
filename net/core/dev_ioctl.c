@@ -586,26 +586,40 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
 		return err;
 
 	case SIOCADDMULTI:
+<<<<<<< HEAD
 		if ((!ops->ndo_set_rx_mode && !ops->ndo_set_rx_mode_async) ||
+=======
+		if (!ops->ndo_set_rx_mode ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    ifr->ifr_hwaddr.sa_family != AF_UNSPEC)
 			return -EINVAL;
 		if (!netif_device_present(dev))
 			return -ENODEV;
 		netdev_lock_ops(dev);
 		err = dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
+<<<<<<< HEAD
 		netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		netdev_unlock_ops(dev);
 		return err;
 
 	case SIOCDELMULTI:
+<<<<<<< HEAD
 		if ((!ops->ndo_set_rx_mode && !ops->ndo_set_rx_mode_async) ||
+=======
+		if (!ops->ndo_set_rx_mode ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    ifr->ifr_hwaddr.sa_family != AF_UNSPEC)
 			return -EINVAL;
 		if (!netif_device_present(dev))
 			return -ENODEV;
 		netdev_lock_ops(dev);
 		err = dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
+<<<<<<< HEAD
 		netif_rx_mode_sync(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		netdev_unlock_ops(dev);
 		return err;
 

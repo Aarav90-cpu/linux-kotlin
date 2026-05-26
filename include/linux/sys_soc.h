@@ -37,6 +37,7 @@ void soc_device_unregister(struct soc_device *soc_dev);
  */
 struct device *soc_device_to_device(struct soc_device *soc);
 
+<<<<<<< HEAD
 /**
  * soc_attr_read_machine - retrieve the machine model and store it in
  *                         the soc_device_attribute structure
@@ -47,6 +48,8 @@ struct device *soc_device_to_device(struct soc_device *soc);
  */
 int soc_attr_read_machine(struct soc_device_attribute *soc_dev_attr);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SOC_BUS
 const struct soc_device_attribute *soc_device_match(
 	const struct soc_device_attribute *matches);

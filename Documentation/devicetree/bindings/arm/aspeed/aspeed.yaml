@@ -35,7 +35,10 @@ properties:
               - ampere,mtjade-bmc
               - aspeed,ast2500-evb
               - asrock,altrad8-bmc
+<<<<<<< HEAD
               - asrock,ast2500-paul-ipmi-card
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - asrock,e3c246d4i-bmc
               - asrock,e3c256d4i-bmc
               - asrock,romed8hm3-bmc
@@ -81,7 +84,10 @@ properties:
               - ampere,mtmitchell-bmc
               - aspeed,ast2600-evb
               - aspeed,ast2600-evb-a1
+<<<<<<< HEAD
               - asus,ast2600-kommando-ipmi-card
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - asus,x4tf-bmc
               - facebook,anacapa-bmc
               - facebook,bletchley-bmc

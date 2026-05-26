@@ -85,24 +85,33 @@ static void ovpn_netdev_write(struct ovpn_peer *peer, struct sk_buff *skb)
 	skb_scrub_packet(skb, true);
 
 	/* network header reset in ovpn_decrypt_post() */
+<<<<<<< HEAD
 	skb_reset_mac_header(skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_reset_transport_header(skb);
 	skb_reset_inner_headers(skb);
 
 	/* cause packet to be "received" by the interface */
 	pkt_len = skb->len;
+<<<<<<< HEAD
 	/* we may get here in process context in case of TCP connections,
 	 * therefore we have to disable BHs to ensure gro_cells_receive()
 	 * and dev_dstats_rx_add() do not get corrupted or enter deadlock
 	 */
 	local_bh_disable();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = gro_cells_receive(&peer->ovpn->gro_cells, skb);
 	if (likely(ret == NET_RX_SUCCESS)) {
 		/* update RX stats with the size of decrypted packet */
 		ovpn_peer_stats_increment_rx(&peer->vpn_stats, pkt_len);
 		dev_dstats_rx_add(peer->ovpn->dev, pkt_len);
 	}
+<<<<<<< HEAD
 	local_bh_enable();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void ovpn_decrypt_post(void *data, int ret)
@@ -126,7 +135,13 @@ void ovpn_decrypt_post(void *data, int ret)
 	peer = ovpn_skb_cb(skb)->peer;
 
 	/* crypto is done, cleanup skb CB and its members */
+<<<<<<< HEAD
 	kfree(ovpn_skb_cb(skb)->crypto_tmp);
+=======
+	kfree(ovpn_skb_cb(skb)->iv);
+	kfree(ovpn_skb_cb(skb)->sg);
+	aead_request_free(ovpn_skb_cb(skb)->req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(ret < 0))
 		goto drop;
@@ -253,7 +268,13 @@ void ovpn_encrypt_post(void *data, int ret)
 	peer = ovpn_skb_cb(skb)->peer;
 
 	/* crypto is done, cleanup skb CB and its members */
+<<<<<<< HEAD
 	kfree(ovpn_skb_cb(skb)->crypto_tmp);
+=======
+	kfree(ovpn_skb_cb(skb)->iv);
+	kfree(ovpn_skb_cb(skb)->sg);
+	aead_request_free(ovpn_skb_cb(skb)->req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(ret == -ERANGE)) {
 		/* we ran out of IVs and we must kill the key as it can't be

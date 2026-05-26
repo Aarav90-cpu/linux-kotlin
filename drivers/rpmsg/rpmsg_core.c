@@ -153,7 +153,11 @@ EXPORT_SYMBOL(rpmsg_destroy_ept);
  *
  * Return: 0 on success and an appropriate error value on failure.
  */
+<<<<<<< HEAD
 int rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+int rpmsg_send(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (WARN_ON(!ept))
 		return -EINVAL;
@@ -182,7 +186,11 @@ EXPORT_SYMBOL(rpmsg_send);
  *
  * Return: 0 on success and an appropriate error value on failure.
  */
+<<<<<<< HEAD
 int rpmsg_sendto(struct rpmsg_endpoint *ept, const void *data, int len, u32 dst)
+=======
+int rpmsg_sendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (WARN_ON(!ept))
 		return -EINVAL;
@@ -210,7 +218,11 @@ EXPORT_SYMBOL(rpmsg_sendto);
  *
  * Return: 0 on success and an appropriate error value on failure.
  */
+<<<<<<< HEAD
 int rpmsg_trysend(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+int rpmsg_trysend(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (WARN_ON(!ept))
 		return -EINVAL;
@@ -238,7 +250,11 @@ EXPORT_SYMBOL(rpmsg_trysend);
  *
  * Return: 0 on success and an appropriate error value on failure.
  */
+<<<<<<< HEAD
 int rpmsg_trysendto(struct rpmsg_endpoint *ept, const void *data, int len, u32 dst)
+=======
+int rpmsg_trysendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (WARN_ON(!ept))
 		return -EINVAL;
@@ -650,7 +666,11 @@ static int __init rpmsg_init(void)
 	ret = bus_register(&rpmsg_bus);
 	if (ret) {
 		pr_err("failed to register rpmsg bus: %d\n", ret);
+<<<<<<< HEAD
 		class_unregister(&rpmsg_class);
+=======
+		class_destroy(&rpmsg_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return ret;
 }
@@ -659,7 +679,11 @@ postcore_initcall(rpmsg_init);
 static void __exit rpmsg_fini(void)
 {
 	bus_unregister(&rpmsg_bus);
+<<<<<<< HEAD
 	class_unregister(&rpmsg_class);
+=======
+	class_destroy(&rpmsg_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 module_exit(rpmsg_fini);
 

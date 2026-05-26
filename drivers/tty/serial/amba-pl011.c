@@ -114,8 +114,11 @@ struct vendor_data {
 	bool			cts_event_workaround;
 	bool			always_enabled;
 	bool			fixed_options;
+<<<<<<< HEAD
 	bool			skip_ibrd_fbrd;
 	bool			set_uartclk_rate;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int (*get_fifosize)(struct amba_device *dev);
 };
@@ -218,6 +221,7 @@ static struct vendor_data vendor_st = {
 	.get_fifosize		= get_fifosize_st,
 };
 
+<<<<<<< HEAD
 static unsigned int get_fifosize_nvidia(struct amba_device *dev)
 {
 	return 32;
@@ -240,6 +244,8 @@ static struct vendor_data vendor_nvidia = {
 	.get_fifosize		= get_fifosize_nvidia,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Deals with DMA transactions */
 
 struct pl011_dmabuf {
@@ -649,6 +655,7 @@ static int pl011_dma_tx_refill(struct uart_amba_port *uap)
 		count = PL011_DMA_BUFFER_SIZE;
 
 	count = kfifo_out_peek(&tport->xmit_fifo, dmatx->buf, count);
+<<<<<<< HEAD
 
 	/*
 	 * Align the TX buffer length to the DMA controller's copy_align
@@ -658,6 +665,8 @@ static int pl011_dma_tx_refill(struct uart_amba_port *uap)
 	if (chan->device->copy_align)
 		count = ALIGN_DOWN(count, 1 << chan->device->copy_align);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dmatx->len = count;
 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
 				    DMA_TO_DEVICE);
@@ -2128,7 +2137,10 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 	unsigned int lcr_h, old_cr;
 	unsigned long flags;
 	unsigned int baud, quot, clkdiv;
+<<<<<<< HEAD
 	unsigned int max_baud;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int bits;
 
 	if (uap->vendor->oversampling)
@@ -2136,6 +2148,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 	else
 		clkdiv = 16;
 
+<<<<<<< HEAD
 	max_baud = port->uartclk / clkdiv;
 
 	if (uap->vendor->set_uartclk_rate) {
@@ -2164,6 +2177,13 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 		}
 	}
 
+=======
+	/*
+	 * Ask the core to calculate the divisor for us.
+	 */
+	baud = uart_get_baud_rate(port, termios, old, 0,
+				  port->uartclk / clkdiv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DMA_ENGINE
 	/*
 	 * Adjust RX DMA polling rate with baud rate if not specified.
@@ -2172,6 +2192,14 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 		uap->dmarx.poll_rate = DIV_ROUND_UP(10000000, baud);
 #endif
 
+<<<<<<< HEAD
+=======
+	if (baud > port->uartclk / 16)
+		quot = DIV_ROUND_CLOSEST(port->uartclk * 8, baud);
+	else
+		quot = DIV_ROUND_CLOSEST(port->uartclk * 4, baud);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (termios->c_cflag & CSIZE) {
 	case CS5:
 		lcr_h = UART01x_LCRH_WLEN_5;
@@ -2242,6 +2270,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 			old_cr &= ~ST_UART011_CR_OVSFACT;
 	}
 
+<<<<<<< HEAD
 	if (!uap->vendor->skip_ibrd_fbrd) {
 		if (baud > port->uartclk / 16)
 			quot = DIV_ROUND_CLOSEST(port->uartclk * 8, baud);
@@ -2264,6 +2293,23 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
 		pl011_write(quot & 0x3f, uap, REG_FBRD);
 		pl011_write(quot >> 6, uap, REG_IBRD);
 	}
+=======
+	/*
+	 * Workaround for the ST Micro oversampling variants to
+	 * increase the bitrate slightly, by lowering the divisor,
+	 * to avoid delayed sampling of start bit at high speeds,
+	 * else we see data corruption.
+	 */
+	if (uap->vendor->oversampling) {
+		if (baud >= 3000000 && baud < 3250000 && quot > 1)
+			quot -= 1;
+		else if (baud > 3250000 && quot > 2)
+			quot -= 2;
+	}
+	/* Set baud rate */
+	pl011_write(quot & 0x3f, uap, REG_FBRD);
+	pl011_write(quot >> 6, uap, REG_IBRD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * ----------v----------v----------v----------v-----
@@ -2433,7 +2479,10 @@ static void pl011_console_get_options(struct uart_amba_port *uap, int *baud,
 				      int *parity, int *bits)
 {
 	unsigned int lcr_h, ibrd, fbrd;
+<<<<<<< HEAD
 	unsigned int clkdiv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(pl011_read(uap, REG_CR) & UART01x_CR_UARTEN))
 		return;
@@ -2453,6 +2502,7 @@ static void pl011_console_get_options(struct uart_amba_port *uap, int *baud,
 	else
 		*bits = 8;
 
+<<<<<<< HEAD
 	if (uap->vendor->skip_ibrd_fbrd) {
 		clkdiv = 64;
 	} else {
@@ -2462,6 +2512,12 @@ static void pl011_console_get_options(struct uart_amba_port *uap, int *baud,
 	}
 
 	*baud = uap->port.uartclk * 4 / clkdiv;
+=======
+	ibrd = pl011_read(uap, REG_IBRD);
+	fbrd = pl011_read(uap, REG_FBRD);
+
+	*baud = uap->port.uartclk * 4 / (64 * ibrd + fbrd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (uap->vendor->oversampling &&
 	    (pl011_read(uap, REG_CR) & ST_UART011_CR_OVSFACT))
@@ -2766,14 +2822,18 @@ static int pl011_early_read(struct console *con, char *s, unsigned int n)
 static int __init pl011_early_console_setup(struct earlycon_device *device,
 					    const char *opt)
 {
+<<<<<<< HEAD
 	unsigned int cr;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!device->port.membase)
 		return -ENODEV;
 
 	device->con->write = pl011_early_write;
 	device->con->read = pl011_early_read;
 
+<<<<<<< HEAD
 	if (device->port.iotype == UPIO_MEM32)
 		cr = readl(device->port.membase + UART011_CR);
 	else
@@ -2785,11 +2845,14 @@ static int __init pl011_early_console_setup(struct earlycon_device *device,
 	else
 		writew(cr, device->port.membase + UART011_CR);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 OF_EARLYCON_DECLARE(pl011, "arm,pl011", pl011_early_console_setup);
 
+<<<<<<< HEAD
 /*
  * The SBSA UART has no defined control register and is assumed to
  * be pre-enabled by firmware, so we do not write to UART011_CR.
@@ -2807,6 +2870,9 @@ static int __init sbsa_uart_early_console_setup(struct earlycon_device *device,
 }
 
 OF_EARLYCON_DECLARE(pl011, "arm,sbsa-uart", sbsa_uart_early_console_setup);
+=======
+OF_EARLYCON_DECLARE(pl011, "arm,sbsa-uart", pl011_early_console_setup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * On Qualcomm Datacenter Technologies QDF2400 SOCs affected by
@@ -3175,11 +3241,14 @@ static const struct amba_id pl011_ids[] = {
 		.mask	= 0x00ffffff,
 		.data	= &vendor_st,
 	},
+<<<<<<< HEAD
 	{
 		.id	= 0x0006b011,
 		.mask	= 0x000fffff,
 		.data	= &vendor_nvidia,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ 0, 0 },
 };
 

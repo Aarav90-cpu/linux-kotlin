@@ -7,7 +7,10 @@
 /plugin/;
 
 #include <dt-bindings/gpio/gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/interrupt-controller/irq.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "imx8mp-pinfunc.h"
 
 &{/} {
@@ -78,6 +81,7 @@
 	touchscreen@5d {
 		compatible = "goodix,gt928";
 		reg = <0x5d>;
+<<<<<<< HEAD
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_touch>;
 		interrupt-parent = <&gpio1>;
@@ -86,6 +90,14 @@
 		AVDD28-supply = <&reg_vcc_panel>;
 		VDDIO-supply = <&reg_vcc_panel>;
 		reset-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+=======
+		interrupt-parent = <&gpio1>;
+		interrupts = <6 8>;
+		irq-gpios = <&gpio1 6 0>;
+		AVDD28-supply = <&reg_vcc_panel>;
+		VDDIO-supply = <&reg_vcc_panel>;
+		reset-gpios = <&gpio1 7 0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -101,6 +113,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 /* redefine to remove touch controller GPIOs */
 &pinctrl_gpio1 {
 	fsl,pins = <
@@ -111,6 +124,8 @@
 	>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pwm1 {
 	status = "okay";
 };
@@ -121,6 +136,7 @@
 			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28		0x19
 		>;
 	};
+<<<<<<< HEAD
 
 	pinctrl_touch: touchgrp {
 		fsl,pins = <
@@ -128,4 +144,6 @@
 			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x150
 		>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

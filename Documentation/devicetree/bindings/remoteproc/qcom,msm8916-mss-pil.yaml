@@ -17,6 +17,7 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - qcom,mdm9607-mss-pil
           - qcom,msm8226-mss-pil
           - qcom,msm8909-mss-pil
@@ -25,6 +26,12 @@ properties:
           - qcom,msm8926-mss-pil
           - qcom,msm8937-mss-pil
           - qcom,msm8940-mss-pil
+=======
+          - qcom,msm8226-mss-pil
+          - qcom,msm8909-mss-pil
+          - qcom,msm8916-mss-pil
+          - qcom,msm8926-mss-pil
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,msm8953-mss-pil
           - qcom,msm8974-mss-pil
 
@@ -93,7 +100,11 @@ properties:
     description: PLL proxy supply (control handed over after startup)
 
   mss-supply:
+<<<<<<< HEAD
     description: MSS power domain supply
+=======
+    description: MSS power domain supply (only valid for qcom,msm8974-mss-pil)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   resets:
     items:
@@ -141,6 +152,10 @@ properties:
       - description: MPSS reserved region
 
   firmware-name:
+<<<<<<< HEAD
+=======
+    $ref: /schemas/types.yaml#/definitions/string-array
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: Name of MBA firmware
       - description: Name of modem firmware
@@ -229,12 +244,17 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,mdm9607-mss-pil
               - qcom,msm8909-mss-pil
               - qcom,msm8916-mss-pil
               - qcom,msm8917-mss-pil
               - qcom,msm8937-mss-pil
               - qcom,msm8940-mss-pil
+=======
+              - qcom,msm8909-mss-pil
+              - qcom,msm8916-mss-pil
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         power-domains:
@@ -278,9 +298,12 @@ allOf:
           contains:
             enum:
               - qcom,msm8926-mss-pil
+<<<<<<< HEAD
               - qcom,msm8917-mss-pil
               - qcom,msm8937-mss-pil
               - qcom,msm8940-mss-pil
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,msm8974-mss-pil
     then:
       required:

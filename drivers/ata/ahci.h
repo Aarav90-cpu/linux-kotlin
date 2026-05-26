@@ -357,6 +357,10 @@ struct ahci_host_priv {
 	 * If platform uses PHYs. There is a 1:1 relation between the port number and
 	 * the PHY position in this array.
 	 */
+<<<<<<< HEAD
+=======
+	struct phy		**phys;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned		nports;		/* Number of ports */
 	void			*plat_data;	/* Other platform data */
 	unsigned int		irq;		/* interrupt line */
@@ -378,8 +382,11 @@ struct ahci_host_priv {
 	/* only required for per-port MSI(-X) support */
 	int			(*get_irq_vector)(struct ata_host *host,
 						  int port);
+<<<<<<< HEAD
 
 	struct phy		*phys[] __counted_by(nports);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

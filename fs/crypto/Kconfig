@@ -3,7 +3,10 @@ config FS_ENCRYPTION
 	bool "FS Encryption (Per-file encryption)"
 	select CRYPTO
 	select CRYPTO_SKCIPHER
+<<<<<<< HEAD
 	select CRYPTO_LIB_AES
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_LIB_SHA256
 	select CRYPTO_LIB_SHA512
 	select KEYS
@@ -31,6 +34,10 @@ config FS_ENCRYPTION_ALGS
 	select CRYPTO_AES
 	select CRYPTO_CBC
 	select CRYPTO_CTS
+<<<<<<< HEAD
+=======
+	select CRYPTO_ECB
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_XTS
 
 config FS_ENCRYPTION_INLINE_CRYPT

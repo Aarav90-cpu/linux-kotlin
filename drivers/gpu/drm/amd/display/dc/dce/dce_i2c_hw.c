@@ -69,7 +69,10 @@ static enum i2c_channel_operation_result get_channel_status(
 	struct dce_i2c_hw *dce_i2c_hw,
 	uint8_t *returned_bytes)
 {
+<<<<<<< HEAD
 	(void)returned_bytes;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t i2c_sw_status = 0;
 	uint32_t value =
 		REG_GET(DC_I2C_SW_STATUS, DC_I2C_SW_STATUS, &i2c_sw_status);
@@ -632,7 +635,10 @@ bool dce_i2c_submit_command_hw(
 	struct i2c_command *cmd,
 	struct dce_i2c_hw *dce_i2c_hw)
 {
+<<<<<<< HEAD
 	(void)ddc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint8_t index_of_payload = 0;
 	bool result;
 

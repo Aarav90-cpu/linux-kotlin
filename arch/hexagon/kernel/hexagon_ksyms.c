@@ -17,6 +17,10 @@ EXPORT_SYMBOL(raw_copy_to_user);
 EXPORT_SYMBOL(__vmgetie);
 EXPORT_SYMBOL(__vmsetie);
 EXPORT_SYMBOL(__vmyield);
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(empty_zero_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL(memcpy);
 EXPORT_SYMBOL(memset);
 

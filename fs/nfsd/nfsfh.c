@@ -11,7 +11,10 @@
 #include <linux/exportfs.h>
 
 #include <linux/sunrpc/svcauth_gss.h>
+<<<<<<< HEAD
 #include <crypto/utils.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "nfsd.h"
 #include "vfs.h"
 #include "auth.h"
@@ -106,12 +109,18 @@ static __be32 nfsd_setuser_and_check_port(struct svc_rqst *rqstp,
 {
 	/* Check if the request originated from a secure port. */
 	if (rqstp && !nfsd_originating_port_ok(rqstp, cred, exp)) {
+<<<<<<< HEAD
 		if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
 			char buf[RPC_MAX_ADDRBUFLEN];
 
 			dprintk("nfsd: request from insecure port %s!\n",
 			        svc_print_addr(rqstp, buf, sizeof(buf)));
 		}
+=======
+		RPC_IFDEBUG(char buf[RPC_MAX_ADDRBUFLEN]);
+		dprintk("nfsd: request from insecure port %s!\n",
+		        svc_print_addr(rqstp, buf, sizeof(buf)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return nfserr_perm;
 	}
 
@@ -141,6 +150,7 @@ static inline __be32 check_pseudo_root(struct dentry *dentry,
 	return nfs_ok;
 }
 
+<<<<<<< HEAD
 /* Size of a file handle MAC, in 4-octet words */
 #define FH_MAC_WORDS (sizeof(__le64) / 4)
 
@@ -192,6 +202,8 @@ static bool fh_verify_mac(struct svc_fh *fhp, struct net *net)
 					&hash, sizeof(hash)) == 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Use the given filehandle to look up the corresponding export and
  * dentry.  On success, the results are used to set fh_export and
@@ -288,6 +300,7 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct net *net,
 	/*
 	 * Look up the dentry using the NFS file handle.
 	 */
+<<<<<<< HEAD
 	fileid_type = fh->fh_fileid_type;
 	error = nfserr_stale;
 
@@ -303,6 +316,15 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct net *net,
 			data_left -= FH_MAC_WORDS;
 		}
 
+=======
+	error = nfserr_badhandle;
+
+	fileid_type = fh->fh_fileid_type;
+
+	if (fileid_type == FILEID_ROOT)
+		dentry = dget(exp->ex_path.dentry);
+	else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dentry = exportfs_decode_fh_raw(exp->ex_path.mnt, fid,
 						data_left, fileid_type, 0,
 						nfsd_acceptable, exp);
@@ -318,8 +340,11 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct net *net,
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	error = nfserr_badhandle;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dentry == NULL)
 		goto out;
 	if (IS_ERR(dentry)) {
@@ -560,10 +585,13 @@ static void _fh_update(struct svc_fh *fhp, struct svc_export *exp,
 		fhp->fh_handle.fh_fileid_type =
 			fileid_type > 0 ? fileid_type : FILEID_INVALID;
 		fhp->fh_handle.fh_size += maxsize * 4;
+<<<<<<< HEAD
 
 		if (exp->ex_flags & NFSEXP_SIGN_FH)
 			if (!fh_append_mac(fhp, exp->cd->net))
 				fhp->fh_handle.fh_fileid_type = FILEID_INVALID;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		fhp->fh_handle.fh_fileid_type = FILEID_ROOT;
 	}
@@ -670,9 +698,15 @@ fh_compose(struct svc_fh *fhp, struct svc_export *exp, struct dentry *dentry,
 	struct inode * inode = d_inode(dentry);
 	dev_t ex_dev = exp_sb(exp)->s_dev;
 
+<<<<<<< HEAD
 	dprintk("nfsd: fh_compose(exp %02x:%02x/%llu %pd2, ino=%llu)\n",
 		MAJOR(ex_dev), MINOR(ex_dev),
 		d_inode(exp->ex_path.dentry)->i_ino,
+=======
+	dprintk("nfsd: fh_compose(exp %02x:%02x/%ld %pd2, ino=%ld)\n",
+		MAJOR(ex_dev), MINOR(ex_dev),
+		(long) d_inode(exp->ex_path.dentry)->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dentry,
 		(inode ? inode->i_ino : 0));
 

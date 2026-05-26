@@ -49,7 +49,13 @@ hfi1-y := \
 	user_pages.o \
 	user_sdma.o \
 	verbs.o \
+<<<<<<< HEAD
 	verbs_txreq.o
+=======
+	verbs_txreq.o \
+	vnic_main.o \
+	vnic_sdma.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifdef CONFIG_DEBUG_FS
 hfi1-y += debugfs.o

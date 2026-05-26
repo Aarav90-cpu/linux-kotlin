@@ -23,6 +23,7 @@ autocorking_size - INTEGER
 	Default: 64K
 
 smcr_buf_type - INTEGER
+<<<<<<< HEAD
 	Controls which type of sndbufs and RMBs to use in later newly created
 	SMC-R link group. Only for SMC-R.
 
@@ -34,6 +35,19 @@ smcr_buf_type - INTEGER
 	- 1 - Use virtually contiguous buffers
 	- 2 - Mixed use of the two types. Try physically contiguous buffers first.
 	  If not available, use virtually contiguous buffers then.
+=======
+        Controls which type of sndbufs and RMBs to use in later newly created
+        SMC-R link group. Only for SMC-R.
+
+        Default: 0 (physically contiguous sndbufs and RMBs)
+
+        Possible values:
+
+        - 0 - Use physically contiguous buffers
+        - 1 - Use virtually contiguous buffers
+        - 2 - Mixed use of the two types. Try physically contiguous buffers first.
+          If not available, use virtually contiguous buffers then.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 smcr_testlink_time - INTEGER
 	How frequently SMC-R link sends out TEST_LINK LLC messages to confirm
@@ -111,6 +125,7 @@ smcr_max_recv_wr - INTEGER
 	like before having this control.
 
 	Default: 48
+<<<<<<< HEAD
 
 limit_smc_hs - INTEGER
 	Whether to limit SMC handshake for newly created sockets.
@@ -138,3 +153,5 @@ hs_ctrl - STRING
 	Write an empty string to clear the current profile.
 
 	Default: empty string
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

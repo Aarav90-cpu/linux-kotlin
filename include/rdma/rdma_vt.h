@@ -149,7 +149,10 @@ struct rvt_driver_params {
 /* User context */
 struct rvt_ucontext {
 	struct ib_ucontext ibucontext;
+<<<<<<< HEAD
 	void *priv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Protection domain */
@@ -360,6 +363,7 @@ struct rvt_driver_provided {
 
 	/* Get and return CPU to pin CQ processing thread */
 	int (*comp_vect_cpu_lookup)(struct rvt_dev_info *rdi, int comp_vect);
+<<<<<<< HEAD
 
 	/* allocate a ucontext */
 	int (*alloc_ucontext)(struct ib_ucontext *uctx, struct ib_udata *udata);
@@ -369,6 +373,8 @@ struct rvt_driver_provided {
 
 	/* driver mmap */
 	int (*mmap)(struct ib_ucontext *context, struct vm_area_struct *vma);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct rvt_dev_info {

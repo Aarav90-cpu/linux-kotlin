@@ -313,7 +313,11 @@ static int hfsplus_link(struct dentry *src_dentry, struct inode *dst_dir,
 	if (!S_ISREG(inode->i_mode))
 		return -EPERM;
 
+<<<<<<< HEAD
 	hfs_dbg("src_dir->i_ino %llu, dst_dir->i_ino %llu, inode->i_ino %llu\n",
+=======
+	hfs_dbg("src_dir->i_ino %lu, dst_dir->i_ino %lu, inode->i_ino %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		src_dir->i_ino, dst_dir->i_ino, inode->i_ino);
 
 	mutex_lock(&sbi->vh_mutex);
@@ -385,7 +389,11 @@ static int hfsplus_unlink(struct inode *dir, struct dentry *dentry)
 	if (HFSPLUS_IS_RSRC(inode))
 		return -EPERM;
 
+<<<<<<< HEAD
 	hfs_dbg("dir->i_ino %llu, inode->i_ino %llu\n",
+=======
+	hfs_dbg("dir->i_ino %lu, inode->i_ino %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dir->i_ino, inode->i_ino);
 
 	mutex_lock(&sbi->vh_mutex);
@@ -393,7 +401,11 @@ static int hfsplus_unlink(struct inode *dir, struct dentry *dentry)
 	if (inode->i_ino == cnid &&
 	    atomic_read(&HFSPLUS_I(inode)->opencnt)) {
 		str.name = name;
+<<<<<<< HEAD
 		str.len = sprintf(name, "temp%llu", inode->i_ino);
+=======
+		str.len = sprintf(name, "temp%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		res = hfsplus_rename_cat(inode->i_ino,
 					 dir, &dentry->d_name,
 					 sbi->hidden_dir, &str);
@@ -478,9 +490,12 @@ static int hfsplus_symlink(struct mnt_idmap *idmap, struct inode *dir,
 	if (!inode)
 		goto out;
 
+<<<<<<< HEAD
 	hfs_dbg("dir->i_ino %llu, inode->i_ino %llu\n",
 		dir->i_ino, inode->i_ino);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	res = page_symlink(inode, symname, strlen(symname) + 1);
 	if (res)
 		goto out_err;
@@ -529,9 +544,12 @@ static int hfsplus_mknod(struct mnt_idmap *idmap, struct inode *dir,
 	if (!inode)
 		goto out;
 
+<<<<<<< HEAD
 	hfs_dbg("dir->i_ino %llu, inode->i_ino %llu\n",
 		dir->i_ino, inode->i_ino);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (S_ISBLK(mode) || S_ISCHR(mode) || S_ISFIFO(mode) || S_ISSOCK(mode))
 		init_special_inode(inode, mode, rdev);
 
@@ -603,6 +621,7 @@ static int hfsplus_rename(struct mnt_idmap *idmap,
 				 old_dir, &old_dentry->d_name,
 				 new_dir, &new_dentry->d_name);
 	if (!res) {
+<<<<<<< HEAD
 		struct inode *inode = d_inode(old_dentry);
 
 		new_dentry->d_fsdata = old_dentry->d_fsdata;
@@ -619,6 +638,13 @@ static int hfsplus_rename(struct mnt_idmap *idmap,
 			return res;
 
 		res = hfsplus_cat_write_inode(inode);
+=======
+		new_dentry->d_fsdata = old_dentry->d_fsdata;
+
+		res = hfsplus_cat_write_inode(old_dir);
+		if (!res)
+			res = hfsplus_cat_write_inode(new_dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return res;
 }

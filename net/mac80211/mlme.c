@@ -216,6 +216,7 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
 			return IEEE80211_CONN_MODE_LEGACY;
 		}
 
+<<<<<<< HEAD
 		if (eht_oper && ieee80211_hw_check(&sdata->local->hw, STRICT)) {
 			struct cfg80211_chan_def he_chandef = *chandef;
 
@@ -234,6 +235,8 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
 			}
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (mode <= IEEE80211_CONN_MODE_EHT)
 			return mode;
 		goto check_uhr;
@@ -438,6 +441,7 @@ ieee80211_verify_sta_ht_mcs_support(struct ieee80211_sub_if_data *sdata,
 	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
 
 	/*
+<<<<<<< HEAD
 	 * Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
 	 * their basic HT-MCS set. On cards with lower spatial streams, the check
 	 * would fail, and we'd be stuck with no HT when it in fact work fine with
@@ -447,6 +451,8 @@ ieee80211_verify_sta_ht_mcs_support(struct ieee80211_sub_if_data *sdata,
 		return true;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * P802.11REVme/D7.0 - 6.5.4.2.4
 	 * ...
 	 * If the MLME of an HT STA receives an MLME-JOIN.request primitive
@@ -2523,9 +2529,15 @@ void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
 	fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_STYPE_NULLFUNC |
 			 IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS);
 	nullfunc->frame_control = fc;
+<<<<<<< HEAD
 	memcpy(nullfunc->addr1, sdata->vif.cfg.ap_addr, ETH_ALEN);
 	memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
 	memcpy(nullfunc->addr3, sdata->vif.cfg.ap_addr, ETH_ALEN);
+=======
+	memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+	memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
+	memcpy(nullfunc->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(nullfunc->addr4, sdata->vif.addr, ETH_ALEN);
 
 	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
@@ -4947,7 +4959,11 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 				   struct ieee80211_mgmt *mgmt, size_t len)
 {
 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+<<<<<<< HEAD
 	u16 auth_alg, auth_transaction, status_code, encap_len;
+=======
+	u16 auth_alg, auth_transaction, status_code;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_event event = {
 		.type = MLME_EVENT,
 		.u.mlme.data = AUTH_EVENT,
@@ -4956,7 +4972,10 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 		.subtype = IEEE80211_STYPE_AUTH,
 	};
 	bool sae_need_confirm = false;
+<<<<<<< HEAD
 	bool auth_fail = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
 
@@ -4973,6 +4992,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 	auth_transaction = le16_to_cpu(mgmt->u.auth.auth_transaction);
 	status_code = le16_to_cpu(mgmt->u.auth.status_code);
 
+<<<<<<< HEAD
 	/*
 	 * IEEE 802.1X Authentication:
 	 * Header + Authentication Algorithm Number(2 byte) + Authentication
@@ -4982,6 +5002,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 	if (auth_alg == WLAN_AUTH_IEEE8021X && len < 24 + 8)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	info.link_id = ifmgd->auth_data->link_id;
 
 	if (auth_alg != ifmgd->auth_data->algorithm ||
@@ -4997,6 +5019,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 		goto notify_driver;
 	}
 
+<<<<<<< HEAD
 	switch (auth_alg) {
 	case WLAN_AUTH_IEEE8021X:
 		if (status_code != WLAN_STATUS_SUCCESS &&
@@ -5015,6 +5038,9 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 	}
 
 	if (auth_fail) {
+=======
+	if (status_code != WLAN_STATUS_SUCCESS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
 
 		if (auth_alg == WLAN_AUTH_SAE &&
@@ -5051,7 +5077,10 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 	case WLAN_AUTH_FILS_SK_PFS:
 	case WLAN_AUTH_FILS_PK:
 	case WLAN_AUTH_EPPKE:
+<<<<<<< HEAD
 	case WLAN_AUTH_IEEE8021X:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case WLAN_AUTH_SHARED_KEY:
 		if (ifmgd->auth_data->expected_transaction != 4) {
@@ -5072,6 +5101,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 	if (ifmgd->auth_data->algorithm != WLAN_AUTH_SAE ||
 	    (auth_transaction == 2 &&
 	     ifmgd->auth_data->expected_transaction == 2)) {
+<<<<<<< HEAD
 		switch (ifmgd->auth_data->algorithm) {
 		case WLAN_AUTH_IEEE8021X:
 			/*
@@ -5103,6 +5133,10 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
 
 			break;
 		}
+=======
+		if (!ieee80211_mark_sta_auth(sdata))
+			return; /* ignore frame -- wait for timeout */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
 		   auth_transaction == 1) {
 		sae_need_confirm = true;
@@ -5595,7 +5629,11 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
 
 	/* Set up internal HT/VHT capabilities */
 	if (elems->ht_cap_elem && link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HT)
+<<<<<<< HEAD
 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, &sband->ht_cap,
+=======
+		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						  elems->ht_cap_elem,
 						  link_sta);
 
@@ -5631,7 +5669,10 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
 		}
 
 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
+<<<<<<< HEAD
 						    &sband->vht_cap,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    elems->vht_cap_elem,
 						    bss_vht_cap, link_sta);
 		rcu_read_unlock();
@@ -6094,8 +6135,12 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
 
 	if (is_5ghz &&
 	    !(vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+<<<<<<< HEAD
 			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ |
 			     IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))) {
+=======
+			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_80;
 		mlme_link_id_dbg(sdata, link_id,
 				 "no VHT 160 MHz capability on 5 GHz, limiting to 80 MHz");
@@ -6750,7 +6795,11 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
 	sdata_info(sdata,
 		   "RX %sssocResp from %pM (capab=0x%x status=%d aid=%d)\n",
 		   reassoc ? "Rea" : "A", assoc_data->ap_addr,
+<<<<<<< HEAD
 		   capab_info, status_code, aid);
+=======
+		   capab_info, status_code, (u16)(aid & ~(BIT(15) | BIT(14))));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ifmgd->broken_ap = false;
 
@@ -7087,7 +7136,10 @@ static void ieee80211_ml_reconf_work(struct wiphy *wiphy,
 		container_of(work, struct ieee80211_sub_if_data,
 			     u.mgd.ml_reconf_work.work);
 	u16 new_valid_links, new_active_links, new_dormant_links;
+<<<<<<< HEAD
 	struct sta_info *sta;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (!sdata->u.mgd.removed_links)
@@ -7123,6 +7175,7 @@ static void ieee80211_ml_reconf_work(struct wiphy *wiphy,
 		}
 	}
 
+<<<<<<< HEAD
 	sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
 	if (sta) {
 		unsigned long removed_links = sdata->u.mgd.removed_links;
@@ -7133,6 +7186,8 @@ static void ieee80211_ml_reconf_work(struct wiphy *wiphy,
 			ieee80211_sta_remove_link(sta, link_id);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	new_dormant_links = sdata->vif.dormant_links & ~sdata->u.mgd.removed_links;
 
 	ret = ieee80211_vif_set_links(sdata, new_valid_links,
@@ -7997,7 +8052,11 @@ ieee80211_send_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_mgmt *mgmt;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_req);
+=======
+	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.ttlm_req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
 		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
 
@@ -8014,8 +8073,14 @@ ieee80211_send_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
 	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
 
 	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
+<<<<<<< HEAD
 	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_REQ;
 	mgmt->u.action.ttlm_req.dialog_token = dialog_token;
+=======
+	mgmt->u.action.u.ttlm_req.action_code =
+		WLAN_PROTECTED_EHT_ACTION_TTLM_REQ;
+	mgmt->u.action.u.ttlm_req.dialog_token = dialog_token;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee80211_neg_ttlm_add_suggested_map(skb, neg_ttlm);
 	ieee80211_tx_skb(sdata, skb);
 }
@@ -8065,7 +8130,11 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_mgmt *mgmt;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_res);
+=======
+	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.ttlm_res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
 		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
 	u16 status_code;
@@ -8083,8 +8152,14 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
 	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
 
 	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
+<<<<<<< HEAD
 	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_RES;
 	mgmt->u.action.ttlm_res.dialog_token = dialog_token;
+=======
+	mgmt->u.action.u.ttlm_res.action_code =
+		WLAN_PROTECTED_EHT_ACTION_TTLM_RES;
+	mgmt->u.action.u.ttlm_res.dialog_token = dialog_token;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (ttlm_res) {
 	default:
 		WARN_ON(1);
@@ -8101,7 +8176,11 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
 		break;
 	}
 
+<<<<<<< HEAD
 	mgmt->u.action.ttlm_res.status_code = cpu_to_le16(status_code);
+=======
+	mgmt->u.action.u.ttlm_res.status_code = cpu_to_le16(status_code);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee80211_tx_skb(sdata, skb);
 }
 
@@ -8201,9 +8280,16 @@ void ieee80211_process_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
 	if (!ieee80211_vif_is_mld(&sdata->vif))
 		return;
 
+<<<<<<< HEAD
 	dialog_token = mgmt->u.action.ttlm_req.dialog_token;
 	ies_len  = len - IEEE80211_MIN_ACTION_SIZE(ttlm_req);
 	elems = ieee802_11_parse_elems(mgmt->u.action.ttlm_req.variable,
+=======
+	dialog_token = mgmt->u.action.u.ttlm_req.dialog_token;
+	ies_len  = len - offsetof(struct ieee80211_mgmt,
+				  u.action.u.ttlm_req.variable);
+	elems = ieee802_11_parse_elems(mgmt->u.action.u.ttlm_req.variable,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       ies_len,
 				       IEEE80211_FTYPE_MGMT |
 				       IEEE80211_STYPE_ACTION,
@@ -8254,7 +8340,12 @@ void ieee80211_process_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
 				    struct ieee80211_mgmt *mgmt, size_t len)
 {
 	if (!ieee80211_vif_is_mld(&sdata->vif) ||
+<<<<<<< HEAD
 	    mgmt->u.action.ttlm_res.dialog_token != sdata->u.mgd.dialog_token_alloc)
+=======
+	    mgmt->u.action.u.ttlm_req.dialog_token !=
+	    sdata->u.mgd.dialog_token_alloc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
@@ -8268,7 +8359,11 @@ void ieee80211_process_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
 	 * This can be better implemented in the future, to handle request
 	 * rejections.
 	 */
+<<<<<<< HEAD
 	if (le16_to_cpu(mgmt->u.action.ttlm_res.status_code) != WLAN_STATUS_SUCCESS)
+=======
+	if (le16_to_cpu(mgmt->u.action.u.ttlm_res.status_code) != WLAN_STATUS_SUCCESS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__ieee80211_disconnect(sdata);
 }
 
@@ -8301,11 +8396,19 @@ static void ieee80211_teardown_ttlm_work(struct wiphy *wiphy,
 
 void ieee80211_send_teardown_neg_ttlm(struct ieee80211_vif *vif)
 {
+<<<<<<< HEAD
 	int frame_len = IEEE80211_MIN_ACTION_SIZE(ttlm_tear_down);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_mgmt *mgmt;
 	struct sk_buff *skb;
+<<<<<<< HEAD
+=======
+	int frame_len = offsetofend(struct ieee80211_mgmt,
+				  u.action.u.ttlm_tear_down);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_tx_info *info;
 
 	skb = dev_alloc_skb(local->hw.extra_tx_headroom + frame_len);
@@ -8321,7 +8424,12 @@ void ieee80211_send_teardown_neg_ttlm(struct ieee80211_vif *vif)
 	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
 
 	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
+<<<<<<< HEAD
 	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_TEARDOWN;
+=======
+	mgmt->u.action.u.ttlm_tear_down.action_code =
+		WLAN_PROTECTED_EHT_ACTION_TTLM_TEARDOWN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	info = IEEE80211_SKB_CB(skb);
 	info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
@@ -8404,13 +8512,21 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
 		case WLAN_CATEGORY_SPECTRUM_MGMT:
 			ies_len = skb->len -
 				  offsetof(struct ieee80211_mgmt,
+<<<<<<< HEAD
 					   u.action.chan_switch.variable);
+=======
+					   u.action.u.chan_switch.variable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (ies_len < 0)
 				break;
 
 			/* CSA IE cannot be overridden, no need for BSSID */
+<<<<<<< HEAD
 			elems = ieee802_11_parse_elems(mgmt->u.action.chan_switch.variable,
+=======
+			elems = ieee802_11_parse_elems(mgmt->u.action.u.chan_switch.variable,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						       ies_len,
 						       IEEE80211_FTYPE_MGMT |
 						       IEEE80211_STYPE_ACTION,
@@ -8432,7 +8548,11 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
 		case WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION:
 			ies_len = skb->len -
 				  offsetof(struct ieee80211_mgmt,
+<<<<<<< HEAD
 					   u.action.ext_chan_switch.variable);
+=======
+					   u.action.u.ext_chan_switch.variable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (ies_len < 0)
 				break;
@@ -8441,7 +8561,11 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
 			 * extended CSA IE can't be overridden, no need for
 			 * BSSID
 			 */
+<<<<<<< HEAD
 			elems = ieee802_11_parse_elems(mgmt->u.action.ext_chan_switch.variable,
+=======
+			elems = ieee802_11_parse_elems(mgmt->u.action.u.ext_chan_switch.variable,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						       ies_len,
 						       IEEE80211_FTYPE_MGMT |
 						       IEEE80211_STYPE_ACTION,
@@ -8458,7 +8582,11 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
 
 				/* for the handling code pretend it was an IE */
 				elems->ext_chansw_ie =
+<<<<<<< HEAD
 					&mgmt->u.action.ext_chan_switch.data;
+=======
+					&mgmt->u.action.u.ext_chan_switch.data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				ieee80211_sta_process_chanswitch(link,
 								 rx_status->mactime,
@@ -8532,8 +8660,12 @@ static int ieee80211_auth(struct ieee80211_sub_if_data *sdata)
 		return -ETIMEDOUT;
 	}
 
+<<<<<<< HEAD
 	if (auth_data->algorithm == WLAN_AUTH_SAE ||
 	    auth_data->algorithm == WLAN_AUTH_EPPKE)
+=======
+	if (auth_data->algorithm == WLAN_AUTH_SAE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		info.duration = jiffies_to_msecs(IEEE80211_AUTH_TIMEOUT_SAE);
 
 	info.link_id = auth_data->link_id;
@@ -8552,10 +8684,13 @@ static int ieee80211_auth(struct ieee80211_sub_if_data *sdata)
 	} else if (auth_data->algorithm == WLAN_AUTH_EPPKE) {
 		trans = auth_data->trans;
 		status = auth_data->status;
+<<<<<<< HEAD
 	} else if (auth_data->algorithm == WLAN_AUTH_IEEE8021X) {
 		trans = auth_data->trans;
 		status = auth_data->status;
 		auth_data->expected_transaction = trans + 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS))
@@ -9210,8 +9345,12 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
 		}
 
 		if (ifmgd->auth_data &&
+<<<<<<< HEAD
 		    (ifmgd->auth_data->algorithm == WLAN_AUTH_EPPKE ||
 		     ifmgd->auth_data->algorithm == WLAN_AUTH_IEEE8021X))
+=======
+		    ifmgd->auth_data->algorithm == WLAN_AUTH_EPPKE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			new_sta->sta.epp_peer = true;
 
 		new_sta->sta.mlo = mlo;
@@ -9473,9 +9612,12 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
 	case NL80211_AUTHTYPE_EPPKE:
 		auth_alg = WLAN_AUTH_EPPKE;
 		break;
+<<<<<<< HEAD
 	case NL80211_AUTHTYPE_IEEE8021X:
 		auth_alg = WLAN_AUTH_IEEE8021X;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -9501,8 +9643,12 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
 
 	if (req->auth_data_len >= 4) {
 		if (req->auth_type == NL80211_AUTHTYPE_SAE ||
+<<<<<<< HEAD
 		    req->auth_type == NL80211_AUTHTYPE_EPPKE ||
 		    req->auth_type == NL80211_AUTHTYPE_IEEE8021X) {
+=======
+		    req->auth_type == NL80211_AUTHTYPE_EPPKE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__le16 *pos = (__le16 *) req->auth_data;
 
 			auth_data->trans = le16_to_cpu(pos[0]);
@@ -9867,6 +10013,13 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++)
 		size += req->links[i].elems_len;
 
+<<<<<<< HEAD
+=======
+	/* FIXME: no support for 4-addr MLO yet */
+	if (sdata->u.mgd.use_4addr && req->link_id >= 0)
+		return -EOPNOTSUPP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	assoc_data = kzalloc(size, GFP_KERNEL);
 	if (!assoc_data)
 		return -ENOMEM;
@@ -10455,6 +10608,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
 	u8 *pos;
 
 	if (!ieee80211_vif_is_mld(&sdata->vif) ||
+<<<<<<< HEAD
 	    len < IEEE80211_MIN_ACTION_SIZE(ml_reconf_resp) ||
 	    mgmt->u.action.ml_reconf_resp.dialog_token !=
 		sdata->u.mgd.reconf.dialog_token ||
@@ -10469,16 +10623,39 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
 		sdata_info(sdata,
 			   "mlo: reconf: unexpected len=%zu, count=%u\n",
 			   len, mgmt->u.action.ml_reconf_resp.count);
+=======
+	    len < offsetofend(typeof(*mgmt), u.action.u.ml_reconf_resp) ||
+	    mgmt->u.action.u.ml_reconf_resp.dialog_token !=
+	    sdata->u.mgd.reconf.dialog_token ||
+	    !sta_changed_links)
+		return;
+
+	pos = mgmt->u.action.u.ml_reconf_resp.variable;
+	len -= offsetofend(typeof(*mgmt), u.action.u.ml_reconf_resp);
+
+	/* each status duple is 3 octets */
+	if (len < mgmt->u.action.u.ml_reconf_resp.count * 3) {
+		sdata_info(sdata,
+			   "mlo: reconf: unexpected len=%zu, count=%u\n",
+			   len, mgmt->u.action.u.ml_reconf_resp.count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto disconnect;
 	}
 
 	link_mask = sta_changed_links;
+<<<<<<< HEAD
 	for (i = 0; i < mgmt->u.action.ml_reconf_resp.count; i++) {
 		struct ieee80211_ml_reconf_status *reconf_status = (void *)pos;
 		u16 status = le16_to_cpu(reconf_status->status);
 
 		link_id = u8_get_bits(reconf_status->info,
 				      IEEE80211_ML_RECONF_LINK_ID_MASK);
+=======
+	for (i = 0; i < mgmt->u.action.u.ml_reconf_resp.count; i++) {
+		u16 status = get_unaligned_le16(pos + 1);
+
+		link_id = *pos;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!(link_mask & BIT(link_id))) {
 			sdata_info(sdata,
@@ -10513,8 +10690,13 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
 			sdata->u.mgd.reconf.added_links &= ~BIT(link_id);
 		}
 
+<<<<<<< HEAD
 		pos += sizeof(*reconf_status);
 		len -= sizeof(*reconf_status);
+=======
+		pos += 3;
+		len -= 3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (link_mask) {
@@ -10760,7 +10942,12 @@ ieee80211_build_ml_reconf_req(struct ieee80211_sub_if_data *sdata,
 		return NULL;
 
 	skb_reserve(skb, local->hw.extra_tx_headroom);
+<<<<<<< HEAD
 	mgmt = skb_put_zero(skb, IEEE80211_MIN_ACTION_SIZE(ml_reconf_req));
+=======
+	mgmt = skb_put_zero(skb, offsetofend(struct ieee80211_mgmt,
+					     u.action.u.ml_reconf_req));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Add the MAC header */
 	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
@@ -10771,11 +10958,20 @@ ieee80211_build_ml_reconf_req(struct ieee80211_sub_if_data *sdata,
 
 	/* Add the action frame fixed fields */
 	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
+<<<<<<< HEAD
 	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_LINK_RECONFIG_REQ;
 
 	/* allocate a dialog token and store it */
 	sdata->u.mgd.reconf.dialog_token = ++sdata->u.mgd.dialog_token_alloc;
 	mgmt->u.action.ml_reconf_req.dialog_token =
+=======
+	mgmt->u.action.u.ml_reconf_req.action_code =
+		WLAN_PROTECTED_EHT_ACTION_LINK_RECONFIG_REQ;
+
+	/* allocate a dialog token and store it */
+	sdata->u.mgd.reconf.dialog_token = ++sdata->u.mgd.dialog_token_alloc;
+	mgmt->u.action.u.ml_reconf_req.dialog_token =
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sdata->u.mgd.reconf.dialog_token;
 
 	/* Add the ML reconfiguration element and the common information  */
@@ -11145,10 +11341,18 @@ static bool ieee80211_mgd_epcs_supp(struct ieee80211_sub_if_data *sdata)
 
 int ieee80211_mgd_set_epcs(struct ieee80211_sub_if_data *sdata, bool enable)
 {
+<<<<<<< HEAD
 	int frame_len = IEEE80211_MIN_ACTION_SIZE(epcs) + (enable ? 1 : 0);
 	struct ieee80211_local *local = sdata->local;
 	struct ieee80211_mgmt *mgmt;
 	struct sk_buff *skb;
+=======
+	struct ieee80211_local *local = sdata->local;
+	struct ieee80211_mgmt *mgmt;
+	struct sk_buff *skb;
+	int frame_len = offsetofend(struct ieee80211_mgmt,
+				    u.action.u.epcs) + (enable ? 1 : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ieee80211_mgd_epcs_supp(sdata))
 		return -EINVAL;
@@ -11177,15 +11381,25 @@ int ieee80211_mgd_set_epcs(struct ieee80211_sub_if_data *sdata, bool enable)
 
 	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
 	if (enable) {
+<<<<<<< HEAD
 		u8 *pos = mgmt->u.action.epcs.variable;
 
 		mgmt->u.action.action_code =
+=======
+		u8 *pos = mgmt->u.action.u.epcs.variable;
+
+		mgmt->u.action.u.epcs.action_code =
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			WLAN_PROTECTED_EHT_ACTION_EPCS_ENABLE_REQ;
 
 		*pos = ++sdata->u.mgd.dialog_token_alloc;
 		sdata->u.mgd.epcs.dialog_token = *pos;
 	} else {
+<<<<<<< HEAD
 		mgmt->u.action.action_code =
+=======
+		mgmt->u.action.u.epcs.action_code =
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			WLAN_PROTECTED_EHT_ACTION_EPCS_ENABLE_TEARDOWN;
 
 		ieee80211_epcs_teardown(sdata);
@@ -11277,7 +11491,11 @@ void ieee80211_process_epcs_ena_resp(struct ieee80211_sub_if_data *sdata,
 		return;
 
 	/* Handle dialog token and status code */
+<<<<<<< HEAD
 	pos = mgmt->u.action.epcs.variable;
+=======
+	pos = mgmt->u.action.u.epcs.variable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dialog_token = *pos;
 	status_code = get_unaligned_le16(pos + 1);
 
@@ -11299,7 +11517,12 @@ void ieee80211_process_epcs_ena_resp(struct ieee80211_sub_if_data *sdata,
 		return;
 
 	pos += IEEE80211_EPCS_ENA_RESP_BODY_LEN;
+<<<<<<< HEAD
 	ies_len = len - IEEE80211_MIN_ACTION_SIZE(epcs) -
+=======
+	ies_len = len - offsetof(struct ieee80211_mgmt,
+				 u.action.u.epcs.variable) -
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		IEEE80211_EPCS_ENA_RESP_BODY_LEN;
 
 	elems = ieee802_11_parse_elems(pos, ies_len,

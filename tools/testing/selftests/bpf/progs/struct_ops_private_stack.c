@@ -7,6 +7,15 @@
 
 char _license[] SEC("license") = "GPL";
 
+<<<<<<< HEAD
+=======
+#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
+bool skip __attribute((__section__(".data"))) = false;
+#else
+bool skip = true;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bpf_testmod_ops3_call_test_2(void) __ksym;
 
 int val_i, val_j;

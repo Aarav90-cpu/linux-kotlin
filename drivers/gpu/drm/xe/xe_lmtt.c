@@ -57,6 +57,7 @@ static u64 lmtt_page_size(struct xe_lmtt *lmtt)
 	return BIT_ULL(lmtt->ops->lmtt_pte_shift(0));
 }
 
+<<<<<<< HEAD
 /**
  * xe_lmtt_page_size() - Get LMTT page size.
  * @lmtt: the &xe_lmtt
@@ -74,6 +75,8 @@ u64 xe_lmtt_page_size(struct xe_lmtt *lmtt)
 	return lmtt_page_size(lmtt);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct xe_lmtt_pt *lmtt_pt_alloc(struct xe_lmtt *lmtt, unsigned int level)
 {
 	unsigned int num_entries = level ? lmtt->ops->lmtt_pte_num(level) : 0;

@@ -322,11 +322,18 @@ enum ixgbe_ring_state_t {
 	__IXGBE_HANG_CHECK_ARMED,
 	__IXGBE_TX_XDP_RING,
 	__IXGBE_TX_DISABLED,
+<<<<<<< HEAD
 	__IXGBE_RING_STATE_NBITS, /* must be last */
 };
 
 #define ring_uses_build_skb(ring) \
 	test_bit(__IXGBE_RX_BUILD_SKB_ENABLED, (ring)->state)
+=======
+};
+
+#define ring_uses_build_skb(ring) \
+	test_bit(__IXGBE_RX_BUILD_SKB_ENABLED, &(ring)->state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct ixgbe_fwd_adapter {
 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
@@ -337,6 +344,7 @@ struct ixgbe_fwd_adapter {
 };
 
 #define check_for_tx_hang(ring) \
+<<<<<<< HEAD
 	test_bit(__IXGBE_TX_DETECT_HANG, (ring)->state)
 #define set_check_for_tx_hang(ring) \
 	set_bit(__IXGBE_TX_DETECT_HANG, (ring)->state)
@@ -354,6 +362,25 @@ struct ixgbe_fwd_adapter {
 	set_bit(__IXGBE_TX_XDP_RING, (ring)->state)
 #define clear_ring_xdp(ring) \
 	clear_bit(__IXGBE_TX_XDP_RING, (ring)->state)
+=======
+	test_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
+#define set_check_for_tx_hang(ring) \
+	set_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
+#define clear_check_for_tx_hang(ring) \
+	clear_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
+#define ring_is_rsc_enabled(ring) \
+	test_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
+#define set_ring_rsc_enabled(ring) \
+	set_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
+#define clear_ring_rsc_enabled(ring) \
+	clear_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
+#define ring_is_xdp(ring) \
+	test_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
+#define set_ring_xdp(ring) \
+	set_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
+#define clear_ring_xdp(ring) \
+	clear_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ixgbe_ring {
 	struct ixgbe_ring *next;	/* pointer to next ring in q_vector */
 	struct ixgbe_q_vector *q_vector; /* backpointer to host q_vector */
@@ -365,7 +392,11 @@ struct ixgbe_ring {
 		struct ixgbe_tx_buffer *tx_buffer_info;
 		struct ixgbe_rx_buffer *rx_buffer_info;
 	};
+<<<<<<< HEAD
 	DECLARE_BITMAP(state, __IXGBE_RING_STATE_NBITS);
+=======
+	unsigned long state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 __iomem *tail;
 	dma_addr_t dma;			/* phys. address of descriptor ring */
 	unsigned int size;		/* length in bytes */
@@ -454,7 +485,11 @@ struct ixgbe_ring_feature {
  */
 static inline unsigned int ixgbe_rx_bufsz(struct ixgbe_ring *ring)
 {
+<<<<<<< HEAD
 	if (test_bit(__IXGBE_RX_3K_BUFFER, ring->state))
+=======
+	if (test_bit(__IXGBE_RX_3K_BUFFER, &ring->state))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return IXGBE_RXBUFFER_3K;
 #if (PAGE_SIZE < 8192)
 	if (ring_uses_build_skb(ring))
@@ -466,7 +501,11 @@ static inline unsigned int ixgbe_rx_bufsz(struct ixgbe_ring *ring)
 static inline unsigned int ixgbe_rx_pg_order(struct ixgbe_ring *ring)
 {
 #if (PAGE_SIZE < 8192)
+<<<<<<< HEAD
 	if (test_bit(__IXGBE_RX_3K_BUFFER, ring->state))
+=======
+	if (test_bit(__IXGBE_RX_3K_BUFFER, &ring->state))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 #endif
 	return 0;

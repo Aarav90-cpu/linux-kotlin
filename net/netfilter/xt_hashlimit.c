@@ -658,8 +658,11 @@ hashlimit_init_dst(const struct xt_hashlimit_htable *hinfo,
 		if (!(hinfo->cfg.mode &
 		      (XT_HASHLIMIT_HASH_DPT | XT_HASHLIMIT_HASH_SPT)))
 			return 0;
+<<<<<<< HEAD
 		if (ntohs(ip_hdr(skb)->frag_off) & IP_OFFSET)
 			return -1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nexthdr = ip_hdr(skb)->protocol;
 		break;
 #if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
@@ -683,7 +686,11 @@ hashlimit_init_dst(const struct xt_hashlimit_htable *hinfo,
 			return 0;
 		nexthdr = ipv6_hdr(skb)->nexthdr;
 		protoff = ipv6_skip_exthdr(skb, sizeof(struct ipv6hdr), &nexthdr, &frag_off);
+<<<<<<< HEAD
 		if ((int)protoff < 0 || ntohs(frag_off) & IP6_OFFSET)
+=======
+		if ((int)protoff < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -1;
 		break;
 	}

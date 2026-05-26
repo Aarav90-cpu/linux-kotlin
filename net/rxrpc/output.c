@@ -16,6 +16,11 @@
 #include <net/udp.h>
 #include "ar-internal.h"
 
+<<<<<<< HEAD
+=======
+extern int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ssize_t do_udp_sendmsg(struct socket *socket, struct msghdr *msg, size_t len)
 {
 	struct sockaddr *sa = msg->msg_name;

@@ -159,7 +159,11 @@
  *
  * This macro does not rely on timekeeping.  Hence it is safe to call even when
  * timekeeping is suspended, at the expense of an underestimation of wall clock
+<<<<<<< HEAD
  * time, which is rather minimal with a non-zero @delay_us.
+=======
+ * time, which is rather minimal with a non-zero delay_us.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * When available, you'll probably want to use one of the specialized
  * macros defined below rather than this macro directly.
@@ -167,9 +171,15 @@
  * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
  * case, the last read value at @args is stored in @val.
  */
+<<<<<<< HEAD
 #define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
 				 delay_before_read, args...) \
 	poll_timeout_us_atomic((val) = op(args), cond, delay_us, timeout_us, delay_before_read)
+=======
+#define read_poll_timeout_atomic(op, val, cond, sleep_us, timeout_us, \
+				 sleep_before_read, args...) \
+	poll_timeout_us_atomic((val) = op(args), cond, sleep_us, timeout_us, sleep_before_read)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs

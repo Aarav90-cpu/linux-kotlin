@@ -2104,7 +2104,11 @@ static struct clk_alpha_pll *cam_cc_milos_plls[] = {
 	&cam_cc_pll6,
 };
 
+<<<<<<< HEAD
 static const u32 cam_cc_milos_critical_cbcrs[] = {
+=======
+static u32 cam_cc_milos_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x25038, /* CAM_CC_GDSC_CLK */
 	0x2505c, /* CAM_CC_SLEEP_CLK */
 };
@@ -2117,7 +2121,11 @@ static const struct regmap_config cam_cc_milos_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data cam_cc_milos_driver_data = {
+=======
+static struct qcom_cc_driver_data cam_cc_milos_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = cam_cc_milos_plls,
 	.num_alpha_plls = ARRAY_SIZE(cam_cc_milos_plls),
 	.clk_cbcrs = cam_cc_milos_critical_cbcrs,

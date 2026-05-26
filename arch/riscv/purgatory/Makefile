@@ -2,7 +2,11 @@
 
 purgatory-y := purgatory.o sha256.o entry.o string.o ctype.o memcpy.o memset.o
 ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+<<<<<<< HEAD
 purgatory-y += strcmp.o strlen.o strncmp.o strnlen.o strchr.o strrchr.o
+=======
+purgatory-y += strcmp.o strlen.o strncmp.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 
 targets += $(purgatory-y)
@@ -32,6 +36,7 @@ $(obj)/strncmp.o: $(srctree)/arch/riscv/lib/strncmp.S FORCE
 $(obj)/sha256.o: $(srctree)/lib/crypto/sha256.c FORCE
 	$(call if_changed_rule,cc_o_c)
 
+<<<<<<< HEAD
 $(obj)/strnlen.o: $(srctree)/arch/riscv/lib/strnlen.S FORCE
 	$(call if_changed_rule,as_o_S)
 
@@ -41,6 +46,8 @@ $(obj)/strchr.o: $(srctree)/arch/riscv/lib/strchr.S FORCE
 $(obj)/strrchr.o: $(srctree)/arch/riscv/lib/strrchr.S FORCE
 	$(call if_changed_rule,as_o_S)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CFLAGS_sha256.o := -D__DISABLE_EXPORTS -D__NO_FORTIFY
 CFLAGS_string.o := -D__DISABLE_EXPORTS
 CFLAGS_ctype.o := -D__DISABLE_EXPORTS

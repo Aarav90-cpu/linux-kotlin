@@ -4270,6 +4270,7 @@
 			snps,dis-u1-entry-quirk;
 			snps,dis-u2-entry-quirk;
 
+<<<<<<< HEAD
 			usb-role-switch;
 
 			status = "disabled";
@@ -4278,6 +4279,9 @@
 				usb_2_dwc3_hs: endpoint {
 				};
 			};
+=======
+			status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		tcsr_mutex: hwlock@1f40000 {
@@ -4632,19 +4636,31 @@
 
 				opp-444000000 {
 					opp-hz = /bits/ 64 <444000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-533000000 {
 					opp-hz = /bits/ 64 <533000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 
 				opp-560000000 {
 					opp-hz = /bits/ 64 <560000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo_l1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo_l1>;
 				};
 			};
@@ -5411,8 +5427,13 @@
 				dp_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5499,8 +5520,13 @@
 				dp1_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -8582,10 +8608,17 @@
 
 	arch_timer: timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	turing-llm-tpdm {

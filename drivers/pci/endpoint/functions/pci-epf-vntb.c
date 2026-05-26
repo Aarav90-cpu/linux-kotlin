@@ -527,20 +527,33 @@ static int epf_ntb_db_bar_init_msi_doorbell(struct epf_ntb *ntb,
 	struct msi_msg *msg;
 	size_t sz;
 	int ret;
+<<<<<<< HEAD
 	int i, req;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = pci_epf_alloc_doorbell(epf,  ntb->db_count);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	for (req = 0; req < ntb->db_count; req++) {
 		ret = request_irq(epf->db_msg[req].virq, epf_ntb_doorbell_handler,
+=======
+	for (i = 0; i < ntb->db_count; i++) {
+		ret = request_irq(epf->db_msg[i].virq, epf_ntb_doorbell_handler,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  0, "pci_epf_vntb_db", ntb);
 
 		if (ret) {
 			dev_err(&epf->dev,
 				"Failed to request doorbell IRQ: %d\n",
+<<<<<<< HEAD
 				epf->db_msg[req].virq);
+=======
+				epf->db_msg[i].virq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto err_free_irq;
 		}
 	}
@@ -598,8 +611,13 @@ static int epf_ntb_db_bar_init_msi_doorbell(struct epf_ntb *ntb,
 	return 0;
 
 err_free_irq:
+<<<<<<< HEAD
 	for (req--; req >= 0; req--)
 		free_irq(epf->db_msg[req].virq, ntb);
+=======
+	for (i--; i >= 0; i--)
+		free_irq(epf->db_msg[i].virq, ntb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pci_epf_free_doorbell(ntb->epf);
 	return ret;
@@ -983,11 +1001,16 @@ static ssize_t epf_ntb_##_name##_show(struct config_item *item,		\
 	struct config_group *group = to_config_group(item);		\
 	struct epf_ntb *ntb = to_epf_ntb(group);			\
 	struct device *dev = &ntb->epf->dev;				\
+<<<<<<< HEAD
 	int win_no, idx;						\
+=======
+	int win_no;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 									\
 	if (sscanf(#_name, "mw%d", &win_no) != 1)			\
 		return -EINVAL;						\
 									\
+<<<<<<< HEAD
 	idx = win_no - 1;						\
 	if (idx < 0 || idx >= ntb->num_mws) {				\
 		dev_err(dev, "MW%d out of range (num_mws=%d)\n",	\
@@ -996,6 +1019,14 @@ static ssize_t epf_ntb_##_name##_show(struct config_item *item,		\
 	}								\
 	idx = array_index_nospec(idx, ntb->num_mws);			\
 	return sprintf(page, "%llu\n", ntb->mws_size[idx]);		\
+=======
+	if (win_no <= 0 || win_no > ntb->num_mws) {			\
+		dev_err(dev, "Invalid num_nws: %d value\n", ntb->num_mws); \
+		return -EINVAL;						\
+	}								\
+									\
+	return sprintf(page, "%lld\n", ntb->mws_size[win_no - 1]);	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define EPF_NTB_MW_W(_name)						\
@@ -1005,7 +1036,11 @@ static ssize_t epf_ntb_##_name##_store(struct config_item *item,	\
 	struct config_group *group = to_config_group(item);		\
 	struct epf_ntb *ntb = to_epf_ntb(group);			\
 	struct device *dev = &ntb->epf->dev;				\
+<<<<<<< HEAD
 	int win_no, idx;						\
+=======
+	int win_no;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 val;							\
 	int ret;							\
 									\
@@ -1016,6 +1051,7 @@ static ssize_t epf_ntb_##_name##_store(struct config_item *item,	\
 	if (sscanf(#_name, "mw%d", &win_no) != 1)			\
 		return -EINVAL;						\
 									\
+<<<<<<< HEAD
 	idx = win_no - 1;						\
 	if (idx < 0 || idx >= ntb->num_mws) {				\
 		dev_err(dev, "MW%d out of range (num_mws=%d)\n",	\
@@ -1024,6 +1060,14 @@ static ssize_t epf_ntb_##_name##_store(struct config_item *item,	\
 	}								\
 	idx = array_index_nospec(idx, ntb->num_mws);			\
 	ntb->mws_size[idx] = val;					\
+=======
+	if (win_no <= 0 || win_no > ntb->num_mws) {			\
+		dev_err(dev, "Invalid num_nws: %d value\n", ntb->num_mws); \
+		return -EINVAL;						\
+	}								\
+									\
+	ntb->mws_size[win_no - 1] = val;				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 									\
 	return len;							\
 }
@@ -1428,6 +1472,7 @@ static int vntb_epf_link_disable(struct ntb_dev *ntb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct device *vntb_epf_get_dma_dev(struct ntb_dev *ndev)
 {
 	struct epf_ntb *ntb = ntb_ndev(ndev);
@@ -1436,6 +1481,8 @@ static struct device *vntb_epf_get_dma_dev(struct ntb_dev *ndev)
 	return epc->dev.parent;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ntb_dev_ops vntb_epf_ops = {
 	.mw_count		= vntb_epf_mw_count,
 	.spad_count		= vntb_epf_spad_count,
@@ -1457,7 +1504,10 @@ static const struct ntb_dev_ops vntb_epf_ops = {
 	.db_clear_mask		= vntb_epf_db_clear_mask,
 	.db_clear		= vntb_epf_db_clear,
 	.link_disable		= vntb_epf_link_disable,
+<<<<<<< HEAD
 	.get_dma_dev		= vntb_epf_get_dma_dev,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int pci_vntb_probe(struct pci_dev *pdev, const struct pci_device_id *id)

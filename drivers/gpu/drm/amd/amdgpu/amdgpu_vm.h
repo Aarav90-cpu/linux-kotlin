@@ -515,7 +515,11 @@ int amdgpu_vm_validate(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 		       struct ww_acquire_ctx *ticket,
 		       int (*callback)(void *p, struct amdgpu_bo *bo),
 		       void *param);
+<<<<<<< HEAD
 void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job, bool need_pipe_sync);
+=======
+int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job, bool need_pipe_sync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_vm_update_pdes(struct amdgpu_device *adev,
 			  struct amdgpu_vm *vm, bool immediate);
 int amdgpu_vm_clear_freed(struct amdgpu_device *adev,
@@ -592,9 +596,12 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
 			    u32 vmid, u32 node_id, uint64_t addr, uint64_t ts,
 			    bool write_fault);
 
+<<<<<<< HEAD
 struct amdgpu_vm *amdgpu_vm_lock_by_pasid(struct amdgpu_device *adev,
 					  struct amdgpu_bo **root, u32 pasid);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_vm_set_task_info(struct amdgpu_vm *vm);
 
 void amdgpu_vm_move_to_lru_tail(struct amdgpu_device *adev,
@@ -644,7 +651,11 @@ static inline uint64_t amdgpu_vm_tlb_seq(struct amdgpu_vm *vm)
 	 * sure that the dma_fence structure isn't freed up.
 	 */
 	rcu_read_lock();
+<<<<<<< HEAD
 	lock = dma_fence_spinlock(vm->last_tlb_flush);
+=======
+	lock = vm->last_tlb_flush->lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 
 	spin_lock_irqsave(lock, flags);

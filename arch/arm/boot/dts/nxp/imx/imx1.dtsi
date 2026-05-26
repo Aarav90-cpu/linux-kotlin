@@ -202,7 +202,11 @@
 				#clock-cells = <1>;
 			};
 
+<<<<<<< HEAD
 			iomuxc: pinmux@21c000 {
+=======
+			iomuxc: iomuxc@21c000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				compatible = "fsl,imx1-iomuxc";
 				reg = <0x0021c000 0x1000>;
 				#address-cells = <1>;

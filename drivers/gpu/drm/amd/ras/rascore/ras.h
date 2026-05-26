@@ -36,7 +36,10 @@
 #include "ras_mp1.h"
 #include "ras_psp.h"
 #include "ras_log_ring.h"
+<<<<<<< HEAD
 #include "ras_eeprom_fw.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RAS_HW_ERR		"[Hardware Error]: "
 
@@ -50,6 +53,7 @@
 #define GPU_RESET_CAUSE_FATAL   (RAS_CORE_RESET_GPU | 0x0002)
 #define GPU_RESET_CAUSE_RMA     (RAS_CORE_RESET_GPU | 0x0004)
 
+<<<<<<< HEAD
 enum ras_gpu_health_status {
 	RAS_GPU_HEALTH_NONE = 0,
 	RAS_GPU_HEALTH_USABLE = 1,
@@ -61,6 +65,8 @@ enum ras_core_fw_feature_flags {
 	RAS_CORE_FW_FEATURE_BIT__RAS_EEPROM = BIT_ULL(0),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum ras_block_id {
 	RAS_BLOCK_ID__UMC = 0,
 	RAS_BLOCK_ID__SDMA,
@@ -139,6 +145,7 @@ enum ras_gpu_status {
 	RAS_GPU_STATUS__IS_VF = 0x8,
 };
 
+<<<<<<< HEAD
 enum ras_fw_eeprom_cmd {
 	RAS_SMU_GetRASTableVersion = 0,
 	RAS_SMU_GetBadPageCount,
@@ -149,6 +156,8 @@ enum ras_fw_eeprom_cmd {
 	RAS_SMU_GetBadPageMcaAddr,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ras_core_context;
 struct ras_bank_ecc;
 struct ras_umc;
@@ -163,10 +172,13 @@ struct ras_mp1_sys_func {
 			u32 msg, u32 *count);
 	int (*mp1_dump_valid_bank)(struct ras_core_context *ras_core,
 			u32 msg, u32 idx, u32 reg_idx, u64 *val);
+<<<<<<< HEAD
 	int (*mp1_send_eeprom_msg)(struct ras_core_context *ras_core,
 			enum ras_fw_eeprom_cmd index, uint32_t param, uint32_t *read_arg);
 	int (*mp1_get_ras_enabled_mask)(struct ras_core_context *ras_core,
 			uint64_t *enabled_mask);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ras_eeprom_sys_func {
@@ -248,7 +260,10 @@ struct ras_bank_ecc {
 	uint64_t status;
 	uint64_t ipid;
 	uint64_t addr;
+<<<<<<< HEAD
 	uint64_t ts;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ras_bank_ecc_node {
@@ -321,7 +336,10 @@ struct ras_core_context {
 
 	bool ras_eeprom_supported;
 	struct ras_eeprom_control ras_eeprom;
+<<<<<<< HEAD
 	struct ras_fw_eeprom_control ras_fw_eeprom;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct ras_psp ras_psp;
 	struct ras_umc ras_umc;
@@ -345,8 +363,11 @@ struct ras_core_context {
 	spinlock_t seqno_lock;
 
 	bool ras_core_enabled;
+<<<<<<< HEAD
 
 	u64 ras_fw_features;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ras_core_context *ras_core_create(struct ras_core_config *init_config);

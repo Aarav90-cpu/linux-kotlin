@@ -32,9 +32,12 @@ config DEV_DAX_HMEM
 	depends on EFI_SOFT_RESERVE
 	select NUMA_KEEP_MEMINFO if NUMA_MEMBLKS
 	default DEV_DAX
+<<<<<<< HEAD
 	depends on CXL_ACPI || !CXL_ACPI
 	depends on CXL_PCI || !CXL_PCI
 	depends on CXL_BUS || !CXL_BUS
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  EFI 2.8 platforms, and others, may advertise 'specific purpose'
 	  memory. For example, a high bandwidth memory pool. The
@@ -51,7 +54,10 @@ config DEV_DAX_CXL
 	tristate "CXL DAX: direct access to CXL RAM regions"
 	depends on CXL_BUS && CXL_REGION && DEV_DAX
 	default CXL_REGION && DEV_DAX
+<<<<<<< HEAD
 	depends on DEV_DAX_HMEM || !DEV_DAX_HMEM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  CXL RAM regions are either mapped by platform-firmware
 	  and published in the initial system-memory map as "System RAM", mapped
@@ -65,11 +71,14 @@ config DEV_DAX_HMEM_DEVICES
 	depends on DEV_DAX_HMEM && DAX
 	def_bool y
 
+<<<<<<< HEAD
 config DEV_DAX_FSDEV
 	tristate
 	depends on DEV_DAX && FS_DAX
 	default DEV_DAX
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DEV_DAX_KMEM
 	tristate "KMEM DAX: map dax-devices as System-RAM"
 	default DEV_DAX

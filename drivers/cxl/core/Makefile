@@ -15,7 +15,11 @@ cxl_core-y += hdm.o
 cxl_core-y += pmu.o
 cxl_core-y += cdat.o
 cxl_core-$(CONFIG_TRACING) += trace.o
+<<<<<<< HEAD
 cxl_core-$(CONFIG_CXL_REGION) += region.o region_pmem.o region_dax.o
+=======
+cxl_core-$(CONFIG_CXL_REGION) += region.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 cxl_core-$(CONFIG_CXL_MCE) += mce.o
 cxl_core-$(CONFIG_CXL_FEATURES) += features.o
 cxl_core-$(CONFIG_CXL_EDAC_MEM_FEATURES) += edac.o

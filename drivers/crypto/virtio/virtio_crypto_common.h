@@ -11,7 +11,10 @@
 #include <linux/crypto.h>
 #include <linux/spinlock.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/aead.h>
 #include <crypto/aes.h>
 #include <crypto/engine.h>
@@ -30,7 +33,11 @@ struct data_queue {
 	char name[32];
 
 	struct crypto_engine *engine;
+<<<<<<< HEAD
 	struct work_struct done_work;
+=======
+	struct tasklet_struct done_task;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct virtio_crypto {

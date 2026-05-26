@@ -300,6 +300,10 @@ void inet_hashinfo2_init(struct inet_hashinfo *h, const char *name,
 			 unsigned long numentries, int scale,
 			 unsigned long low_limit,
 			 unsigned long high_limit);
+<<<<<<< HEAD
+=======
+int inet_hashinfo2_init_mod(struct inet_hashinfo *h);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk);
 bool inet_ehash_nolisten(struct sock *sk, struct sock *osk,

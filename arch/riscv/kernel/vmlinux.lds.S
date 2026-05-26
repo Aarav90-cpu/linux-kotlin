@@ -7,6 +7,13 @@
 #define RO_EXCEPTION_TABLE_ALIGN	4
 #define RUNTIME_DISCARD_EXIT
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_XIP_KERNEL
+#include "vmlinux-xip.lds.S"
+#else
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/pgtable.h>
 #define LOAD_OFFSET KERNEL_LINK_ADDR
 
@@ -172,3 +179,7 @@ SECTIONS
 
 	DISCARDS
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_XIP_KERNEL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

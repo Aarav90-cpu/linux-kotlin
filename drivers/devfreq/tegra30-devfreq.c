@@ -941,6 +941,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * The activity counter is incremented every 256 memory transactions. However,
  * the number of clock cycles required for each transaction varies across
@@ -955,6 +956,16 @@ static const struct tegra_devfreq_soc_data tegra124_soc = {
 static const struct tegra_devfreq_soc_data tegra114_soc = {
 	.configs = tegra124_device_configs,
 	.count_weight = 256,
+=======
+static const struct tegra_devfreq_soc_data tegra124_soc = {
+	.configs = tegra124_device_configs,
+
+	/*
+	 * Activity counter is incremented every 256 memory transactions,
+	 * and each transaction takes 4 EMC clocks.
+	 */
+	.count_weight = 4 * 256,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct tegra_devfreq_soc_data tegra30_soc = {
@@ -964,7 +975,10 @@ static const struct tegra_devfreq_soc_data tegra30_soc = {
 
 static const struct of_device_id tegra_devfreq_of_match[] = {
 	{ .compatible = "nvidia,tegra30-actmon",  .data = &tegra30_soc, },
+<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra114-actmon", .data = &tegra114_soc, },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "nvidia,tegra124-actmon", .data = &tegra124_soc, },
 	{ },
 };

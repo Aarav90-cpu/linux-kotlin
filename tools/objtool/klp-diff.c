@@ -272,7 +272,11 @@ static bool is_uncorrelated_static_local(struct symbol *sym)
  */
 static bool is_clang_tmp_label(struct symbol *sym)
 {
+<<<<<<< HEAD
 	return is_notype_sym(sym) &&
+=======
+	return sym->type == STT_NOTYPE &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       is_text_sec(sym->sec) &&
 	       strstarts(sym->name, ".Ltmp") &&
 	       isdigit(sym->name[5]);
@@ -356,6 +360,7 @@ static bool dont_correlate(struct symbol *sym)
 	       strstarts(sym->name, "__initcall__");
 }
 
+<<<<<<< HEAD
 struct process_demangled_name_data {
 	struct symbol *ret;
 	int count;
@@ -396,6 +401,8 @@ static int find_global_symbol_by_demangled_name(struct elf *elf, struct symbol *
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * For each symbol in the original kernel, find its corresponding "twin" in the
  * patched kernel.
@@ -494,12 +501,18 @@ static int correlate_symbols(struct elfs *e)
 			continue;
 
 		sym2 = find_global_symbol_by_name(e->patched, sym1->name);
+<<<<<<< HEAD
 		if (sym2 && !sym2->twin) {
+=======
+
+		if (sym2 && !sym2->twin && !strcmp(sym1->name, sym2->name)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sym1->twin = sym2;
 			sym2->twin = sym1;
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Correlate globals with demangled_name.
 	 * A separate loop is needed because we want to finish all the
@@ -548,6 +561,8 @@ static int correlate_symbols(struct elfs *e)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_sym(e->orig, sym1) {
 		if (sym1->twin || dont_correlate(sym1))
 			continue;
@@ -568,7 +583,11 @@ static unsigned long find_sympos(struct elf *elf, struct symbol *sym)
 	if (sym->bind != STB_LOCAL)
 		return 0;
 
+<<<<<<< HEAD
 	if (vmlinux && is_func_sym(sym)) {
+=======
+	if (vmlinux && sym->type == STT_FUNC) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * HACK: Unfortunately, symbol ordering can differ between
 		 * vmlinux.o and vmlinux due to the linker script emitting
@@ -1134,8 +1153,13 @@ static int clone_reloc_klp(struct elfs *e, struct reloc *patched_reloc,
 		   sec->name, offset, patched_sym->name,				\
 		   addend >= 0 ? "+" : "-", labs(addend),				\
 		   sym_type(patched_sym),						\
+<<<<<<< HEAD
 		   is_sec_sym(patched_sym) ? "" : " ",					\
 		   is_sec_sym(patched_sym) ? "" : sym_bind(patched_sym),		\
+=======
+		   patched_sym->type == STT_SECTION ? "" : " ",				\
+		   patched_sym->type == STT_SECTION ? "" : sym_bind(patched_sym),	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   is_undef_sym(patched_sym) ? " UNDEF" : "",				\
 		   export ? " EXPORTED" : "",						\
 		   klp ? " KLP" : "")

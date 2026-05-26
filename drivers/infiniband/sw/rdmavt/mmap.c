@@ -9,11 +9,14 @@
 #include <rdma/uverbs_ioctl.h>
 #include "mmap.h"
 
+<<<<<<< HEAD
 /* number of reserved mmaps for the driver */
 #define MMAP_RESERVED 256
 /* start point for dynamic offsets */
 #define MMAP_OFFSET_START (MMAP_RESERVED * PAGE_SIZE)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * rvt_mmap_init - init link list and lock for mem map
  * @rdi: rvt dev struct
@@ -22,7 +25,11 @@ void rvt_mmap_init(struct rvt_dev_info *rdi)
 {
 	INIT_LIST_HEAD(&rdi->pending_mmaps);
 	spin_lock_init(&rdi->pending_lock);
+<<<<<<< HEAD
 	rdi->mmap_offset = MMAP_OFFSET_START;
+=======
+	rdi->mmap_offset = PAGE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&rdi->mmap_offset_lock);
 }
 
@@ -78,6 +85,7 @@ int rvt_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 	struct rvt_mmap_info *ip, *pp;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
 	/* call driver if in reserved range */
 	if (offset < MMAP_OFFSET_START) {
 		if (rdi->driver_f.mmap)
@@ -85,6 +93,8 @@ int rvt_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Search the device's list of objects waiting for a mmap call.
 	 * Normally, this list is very short since a call to create a
@@ -141,9 +151,15 @@ struct rvt_mmap_info *rvt_create_mmap_info(struct rvt_dev_info *rdi, u32 size,
 
 	spin_lock_irq(&rdi->mmap_offset_lock);
 	if (rdi->mmap_offset == 0)
+<<<<<<< HEAD
 		rdi->mmap_offset = MMAP_OFFSET_START;
 	ip->offset = rdi->mmap_offset;
 	rdi->mmap_offset += PAGE_SIZE;
+=======
+		rdi->mmap_offset = ALIGN(PAGE_SIZE, SHMLBA);
+	ip->offset = rdi->mmap_offset;
+	rdi->mmap_offset += ALIGN(size, SHMLBA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irq(&rdi->mmap_offset_lock);
 
 	INIT_LIST_HEAD(&ip->pending_mmaps);
@@ -171,9 +187,15 @@ void rvt_update_mmap_info(struct rvt_dev_info *rdi, struct rvt_mmap_info *ip,
 
 	spin_lock_irq(&rdi->mmap_offset_lock);
 	if (rdi->mmap_offset == 0)
+<<<<<<< HEAD
 		rdi->mmap_offset = MMAP_OFFSET_START;
 	ip->offset = rdi->mmap_offset;
 	rdi->mmap_offset += PAGE_SIZE;
+=======
+		rdi->mmap_offset = PAGE_SIZE;
+	ip->offset = rdi->mmap_offset;
+	rdi->mmap_offset += size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irq(&rdi->mmap_offset_lock);
 
 	ip->size = size;

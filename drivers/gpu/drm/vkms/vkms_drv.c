@@ -259,6 +259,10 @@ void vkms_destroy(struct vkms_config *config)
 
 	fdev = config->dev->faux_dev;
 
+<<<<<<< HEAD
+=======
+	drm_colorop_pipeline_destroy(&config->dev->drm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_dev_unregister(&config->dev->drm);
 	drm_atomic_helper_shutdown(&config->dev->drm);
 	devres_release_group(&fdev->dev, NULL);

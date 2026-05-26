@@ -6,6 +6,10 @@
 menuconfig TIPC
 	tristate "The TIPC Protocol"
 	depends on INET
+<<<<<<< HEAD
+=======
+	depends on IPV6 || IPV6=n
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  The Transparent Inter Process Communication (TIPC) protocol is
 	  specially designed for intra cluster communication. This protocol

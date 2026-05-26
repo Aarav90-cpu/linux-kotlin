@@ -638,7 +638,11 @@ void kasan_report_async(void)
  */
 void kasan_non_canonical_hook(unsigned long addr)
 {
+<<<<<<< HEAD
 	unsigned long orig_addr, user_orig_addr;
+=======
+	unsigned long orig_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *bug_type;
 
 	/*
@@ -650,9 +654,12 @@ void kasan_non_canonical_hook(unsigned long addr)
 
 	orig_addr = (unsigned long)kasan_shadow_to_mem((void *)addr);
 
+<<<<<<< HEAD
 	/* Strip pointer tag before comparing against userspace ranges */
 	user_orig_addr = (unsigned long)set_tag((void *)orig_addr, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * For faults near the shadow address for NULL, we can be fairly certain
 	 * that this is a KASAN shadow memory access.
@@ -664,6 +671,7 @@ void kasan_non_canonical_hook(unsigned long addr)
 	 * address, but make it clear that this is not necessarily what's
 	 * actually going on.
 	 */
+<<<<<<< HEAD
 	if (user_orig_addr < PAGE_SIZE) {
 		bug_type = "null-ptr-deref";
 		orig_addr = user_orig_addr;
@@ -671,6 +679,13 @@ void kasan_non_canonical_hook(unsigned long addr)
 		bug_type = "probably user-memory-access";
 		orig_addr = user_orig_addr;
 	} else if (addr_in_shadow((void *)addr))
+=======
+	if (orig_addr < PAGE_SIZE)
+		bug_type = "null-ptr-deref";
+	else if (orig_addr < TASK_SIZE)
+		bug_type = "probably user-memory-access";
+	else if (addr_in_shadow((void *)addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bug_type = "probably wild-memory-access";
 	else
 		bug_type = "maybe wild-memory-access";

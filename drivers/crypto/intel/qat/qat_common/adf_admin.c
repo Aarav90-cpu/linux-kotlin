@@ -6,10 +6,15 @@
 #include <linux/iopoll.h>
 #include <linux/pci.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include "adf_accel_devices.h"
 #include "adf_admin.h"
 #include "adf_anti_rb.h"
+=======
+#include "adf_accel_devices.h"
+#include "adf_admin.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "adf_common_drv.h"
 #include "adf_cfg.h"
 #include "adf_heartbeat.h"
@@ -21,7 +26,10 @@
 #define ADF_ADMIN_POLL_DELAY_US 20
 #define ADF_ADMIN_POLL_TIMEOUT_US (5 * USEC_PER_SEC)
 #define ADF_ONE_AE 1
+<<<<<<< HEAD
 #define ADF_ADMIN_RETRY_MAX 60
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const u8 const_tab[1024] __aligned(1024) = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -539,6 +547,7 @@ int adf_send_admin_tl_stop(struct adf_accel_dev *accel_dev)
 	return adf_send_admin(accel_dev, &req, &resp, ae_mask);
 }
 
+<<<<<<< HEAD
 static int adf_send_admin_retry(struct adf_accel_dev *accel_dev, u8 cmd_id,
 				struct icp_qat_fw_init_admin_resp *resp,
 				unsigned int sleep_ms)
@@ -606,6 +615,8 @@ int adf_send_admin_arb_commit(struct adf_accel_dev *accel_dev)
 	return adf_send_admin_svn(accel_dev, ICP_QAT_FW_SVN_COMMIT, &resp);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int adf_init_admin_comms(struct adf_accel_dev *accel_dev)
 {
 	struct adf_admin_comms *admin;

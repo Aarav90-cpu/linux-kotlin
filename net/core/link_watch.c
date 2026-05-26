@@ -181,7 +181,11 @@ static void linkwatch_do_dev(struct net_device *dev)
 		if (netif_carrier_ok(dev))
 			dev_activate(dev);
 		else
+<<<<<<< HEAD
 			dev_deactivate(dev, true);
+=======
+			dev_deactivate(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		netif_state_change(dev);
 	}

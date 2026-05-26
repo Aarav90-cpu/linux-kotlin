@@ -92,10 +92,14 @@ void dpp2_power_on_obuf(
 void dpp2_dummy_program_input_lut(
 		struct dpp *dpp_base,
 		const struct dc_gamma *gamma)
+<<<<<<< HEAD
 {
 	(void)dpp_base;
 	(void)gamma;
 }
+=======
+{}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void dpp2_cnv_setup (
 		struct dpp *dpp_base,
@@ -372,11 +376,15 @@ void oppn20_dummy_program_regamma_pwl(
 		struct dpp *dpp,
 		const struct pwl_params *params,
 		enum opp_regamma mode)
+<<<<<<< HEAD
 {
 	(void)dpp;
 	(void)params;
 	(void)mode;
 }
+=======
+{}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct dpp_funcs dcn20_dpp_funcs = {
 	.dpp_read_state = dpp20_read_state,

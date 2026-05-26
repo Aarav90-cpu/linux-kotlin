@@ -638,11 +638,16 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 				color = 0x10;
 			}
 		}
+<<<<<<< HEAD
 	} else if (params->std & (V4L2_STD_MN | V4L2_STD_NTSC_443)) {
+=======
+	} else if (params->std & V4L2_STD_MN) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		std = "MN";
 		bandwidth = 6000000;
 		if_frequency = 5400000;
 		system = 2;
+<<<<<<< HEAD
 		if (params->std & V4L2_STD_PAL_N) {
 			std = "palN";
 			color = 0x10;
@@ -654,11 +659,21 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 		std = "palI";
 		bandwidth = 8000000;
 		if_frequency = 7250000;
+=======
+	} else if (params->std & V4L2_STD_PAL_I) {
+		std = "palI";
+		bandwidth = 8000000;
+		if_frequency = 7250000; /* TODO: does not work yet */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		system = 4;
 	} else if (params->std & V4L2_STD_DK) {
 		std = "palDK";
 		bandwidth = 8000000;
+<<<<<<< HEAD
 		if_frequency = 6900000;
+=======
+		if_frequency = 6900000; /* TODO: does not work yet */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		system = 5;
 		if (params->std & V4L2_STD_SECAM_DK) {
 			std = "secamDK";
@@ -667,7 +682,11 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 	} else if (params->std & V4L2_STD_SECAM_L) {
 		std = "secamL";
 		bandwidth = 8000000;
+<<<<<<< HEAD
 		if_frequency = 6900000;
+=======
+		if_frequency = 6750000; /* TODO: untested */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		system = 6;
 		color = 0x10;
 	} else if (params->std & V4L2_STD_SECAM_LC) {
@@ -687,6 +706,7 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 		params->mode, system, std, params->frequency,
 		freq, if_frequency, bandwidth);
 
+<<<<<<< HEAD
 	if (dev->part_id != SI2177) {
 		/* AGC speed */
 		memcpy(cmd.args, "\x14\x00\x11\x06\x00\x00", 6);
@@ -782,12 +802,69 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 
 	/* AFC qcuisition range 1.5MHz */
 	memcpy(cmd.args, "\x14\x00\x10\x06\xdc\x05", 6);
+=======
+	/* set analog IF port */
+	memcpy(cmd.args, "\x14\x00\x03\x06\x08\x02", 6);
+	/* in using dev->if_port, we assume analog and digital IF's */
+	/*   are always on different ports */
+	/* assumes if_port definition is 0 or 1 for digital out */
+	cmd.args[4] = (dev->if_port == 1) ? 8 : 10;
+	/* Analog AGC assumed external */
+	cmd.args[5] = (dev->if_port == 1) ? 2 : 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd.wlen = 6;
 	cmd.rlen = 4;
 	ret = si2157_cmd_execute(client, &cmd);
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
+=======
+	/* set analog IF output config */
+	memcpy(cmd.args, "\x14\x00\x0d\x06\x94\x64", 6);
+	cmd.wlen = 6;
+	cmd.rlen = 4;
+	ret = si2157_cmd_execute(client, &cmd);
+	if (ret)
+		goto err;
+
+	/* make this distinct from a digital IF */
+	dev->if_frequency = if_frequency | 1;
+
+	/* calc and set tuner analog if center frequency */
+	if_frequency = if_frequency + 1250000 - (bandwidth / 2);
+	dev_dbg(&client->dev, "IF Ctr freq=%d\n", if_frequency);
+
+	memcpy(cmd.args, "\x14\x00\x0C\x06", 4);
+	cmd.args[4] = (if_frequency / 1000) & 0xff;
+	cmd.args[5] = ((if_frequency / 1000) >> 8) & 0xff;
+	cmd.wlen = 6;
+	cmd.rlen = 4;
+	ret = si2157_cmd_execute(client, &cmd);
+	if (ret)
+		goto err;
+
+	/* set analog AGC config */
+	memcpy(cmd.args, "\x14\x00\x07\x06\x32\xc8", 6);
+	cmd.wlen = 6;
+	cmd.rlen = 4;
+	ret = si2157_cmd_execute(client, &cmd);
+	if (ret)
+		goto err;
+
+	/* set analog video mode */
+	memcpy(cmd.args, "\x14\x00\x04\x06\x00\x00", 6);
+	cmd.args[4] = system | color;
+	/* can use dev->inversion if assumed applies to both digital/analog */
+	if (invert_analog)
+		cmd.args[5] |= 0x02;
+	cmd.wlen = 6;
+	cmd.rlen = 1;
+	ret = si2157_cmd_execute(client, &cmd);
+	if (ret)
+		goto err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* set analog frequency */
 	memcpy(cmd.args, "\x41\x01\x00\x00\x00\x00\x00\x00", 8);
 	cmd.args[4] = (freq >>  0) & 0xff;
@@ -800,6 +877,7 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	if (dev->part_id == SI2177) {
 		/* Ref driver tunes, resets registers, then retunes, leaving steps as is */
 		/* set analog video mode - Si2158_ATV_VIDEO_MODE_PROP */
@@ -870,6 +948,8 @@ static int si2157_set_analog_params(struct dvb_frontend *fe,
 			goto err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->bandwidth = bandwidth;
 
 	si2157_tune_wait(client, 0); /* wait to complete, ignore any errors */

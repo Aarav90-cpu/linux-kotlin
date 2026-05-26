@@ -16,7 +16,11 @@
 
 #include "copy-unaligned.h"
 
+<<<<<<< HEAD
 #define MISALIGNED_ACCESS_NS 8000000
+=======
+#define MISALIGNED_ACCESS_JIFFIES_LG2 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MISALIGNED_BUFFER_SIZE 0x4000
 #define MISALIGNED_BUFFER_ORDER get_order(MISALIGNED_BUFFER_SIZE)
 #define MISALIGNED_COPY_SIZE ((MISALIGNED_BUFFER_SIZE / 2) - 0x80)
@@ -29,6 +33,7 @@ static long unaligned_vector_speed_param = RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNO
 
 static cpumask_t fast_misaligned_access;
 
+<<<<<<< HEAD
 static u64 __maybe_unused
 measure_cycles(void (*func)(void *dst, const void *src, size_t len),
 	       void *dst, void *src, size_t len)
@@ -40,11 +45,43 @@ measure_cycles(void (*func)(void *dst, const void *src, size_t len),
 	func(dst, src, len);
 
 	preempt_disable();
+=======
+#ifdef CONFIG_RISCV_PROBE_UNALIGNED_ACCESS
+static int check_unaligned_access(void *param)
+{
+	int cpu = smp_processor_id();
+	u64 start_cycles, end_cycles;
+	u64 word_cycles;
+	u64 byte_cycles;
+	int ratio;
+	unsigned long start_jiffies, now;
+	struct page *page = param;
+	void *dst;
+	void *src;
+	long speed = RISCV_HWPROBE_MISALIGNED_SCALAR_SLOW;
+
+	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
+		return 0;
+
+	/* Make an unaligned destination buffer. */
+	dst = (void *)((unsigned long)page_address(page) | 0x1);
+	/* Unalign src as well, but differently (off by 1 + 2 = 3). */
+	src = dst + (MISALIGNED_BUFFER_SIZE / 2);
+	src += 2;
+	word_cycles = -1ULL;
+	/* Do a warmup. */
+	__riscv_copy_words_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+	preempt_disable();
+	start_jiffies = jiffies;
+	while ((now = jiffies) == start_jiffies)
+		cpu_relax();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * For a fixed amount of time, repeatedly try the function, and take
 	 * the best time in cycles as the measurement.
 	 */
+<<<<<<< HEAD
 	start_ns = ktime_get_mono_fast_ns();
 	while (ktime_get_mono_fast_ns() < start_ns + MISALIGNED_ACCESS_NS) {
 		start_cycles = get_cycles64();
@@ -56,10 +93,39 @@ measure_cycles(void (*func)(void *dst, const void *src, size_t len),
 		end_cycles = get_cycles64();
 		if ((end_cycles - start_cycles) < cycles)
 			cycles = end_cycles - start_cycles;
+=======
+	while (time_before(jiffies, now + (1 << MISALIGNED_ACCESS_JIFFIES_LG2))) {
+		start_cycles = get_cycles64();
+		/* Ensure the CSR read can't reorder WRT to the copy. */
+		mb();
+		__riscv_copy_words_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+		/* Ensure the copy ends before the end time is snapped. */
+		mb();
+		end_cycles = get_cycles64();
+		if ((end_cycles - start_cycles) < word_cycles)
+			word_cycles = end_cycles - start_cycles;
+	}
+
+	byte_cycles = -1ULL;
+	__riscv_copy_bytes_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+	start_jiffies = jiffies;
+	while ((now = jiffies) == start_jiffies)
+		cpu_relax();
+
+	while (time_before(jiffies, now + (1 << MISALIGNED_ACCESS_JIFFIES_LG2))) {
+		start_cycles = get_cycles64();
+		mb();
+		__riscv_copy_bytes_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+		mb();
+		end_cycles = get_cycles64();
+		if ((end_cycles - start_cycles) < byte_cycles)
+			byte_cycles = end_cycles - start_cycles;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	preempt_enable();
 
+<<<<<<< HEAD
 	return cycles;
 }
 
@@ -126,11 +192,33 @@ static int check_unaligned_access(struct page *page)
 				       buf, "scalar");
 	if (ret < 0)
 		return 0;
+=======
+	/* Don't divide by zero. */
+	if (!word_cycles || !byte_cycles) {
+		pr_warn("cpu%d: rdtime lacks granularity needed to measure unaligned access speed\n",
+			cpu);
+
+		return 0;
+	}
+
+	if (word_cycles < byte_cycles)
+		speed = RISCV_HWPROBE_MISALIGNED_SCALAR_FAST;
+
+	ratio = div_u64((byte_cycles * 100), word_cycles);
+	pr_info("cpu%d: Ratio of byte access time to unaligned word access is %d.%02d, unaligned accesses are %s\n",
+		cpu,
+		ratio / 100,
+		ratio % 100,
+		(speed == RISCV_HWPROBE_MISALIGNED_SCALAR_FAST) ? "fast" : "slow");
+
+	per_cpu(misaligned_access_speed, cpu) = speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Set the value of fast_misaligned_access of a CPU. These operations
 	 * are atomic to avoid race conditions.
 	 */
+<<<<<<< HEAD
 	if (ret) {
 		per_cpu(misaligned_access_speed, cpu) = RISCV_HWPROBE_MISALIGNED_SCALAR_FAST;
 		cpumask_set_cpu(cpu, &fast_misaligned_access);
@@ -138,16 +226,31 @@ static int check_unaligned_access(struct page *page)
 		per_cpu(misaligned_access_speed, cpu) = RISCV_HWPROBE_MISALIGNED_SCALAR_SLOW;
 		cpumask_clear_cpu(cpu, &fast_misaligned_access);
 	}
+=======
+	if (speed == RISCV_HWPROBE_MISALIGNED_SCALAR_FAST)
+		cpumask_set_cpu(cpu, &fast_misaligned_access);
+	else
+		cpumask_clear_cpu(cpu, &fast_misaligned_access);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __init _check_unaligned_access(void *param)
+=======
+static void __init check_unaligned_access_nonboot_cpu(void *param)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int cpu = smp_processor_id();
 	struct page **pages = param;
 
+<<<<<<< HEAD
 	check_unaligned_access(pages[cpu]);
+=======
+	if (smp_processor_id() != 0)
+		check_unaligned_access(pages[cpu]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Measure unaligned access speed on all CPUs present at boot in parallel. */
@@ -174,7 +277,15 @@ static void __init check_unaligned_access_speed_all_cpus(void)
 		}
 	}
 
+<<<<<<< HEAD
 	on_each_cpu(_check_unaligned_access, bufs, 1);
+=======
+	/* Check everybody except 0, who stays behind to tend jiffies. */
+	on_each_cpu(check_unaligned_access_nonboot_cpu, bufs, 1);
+
+	/* Check core 0. */
+	smp_call_on_cpu(0, check_unaligned_access, bufs[0], true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	for_each_cpu(cpu, cpu_online_mask) {
@@ -293,8 +404,20 @@ static int riscv_offline_cpu(unsigned int cpu)
 static void check_vector_unaligned_access(struct work_struct *work __always_unused)
 {
 	int cpu = smp_processor_id();
+<<<<<<< HEAD
 	struct page *page;
 	int ret;
+=======
+	u64 start_cycles, end_cycles;
+	u64 word_cycles;
+	u64 byte_cycles;
+	int ratio;
+	unsigned long start_jiffies, now;
+	struct page *page;
+	void *dst;
+	void *src;
+	long speed = RISCV_HWPROBE_MISALIGNED_VECTOR_SLOW;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (per_cpu(vector_misaligned_access, cpu) != RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN)
 		return;
@@ -305,6 +428,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
 		return;
 	}
 
+<<<<<<< HEAD
 	kernel_vector_begin();
 
 	ret = compare_unaligned_access(__riscv_copy_vec_words_unaligned,
@@ -319,6 +443,78 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
 		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_FAST;
 	else
 		per_cpu(vector_misaligned_access, cpu) = RISCV_HWPROBE_MISALIGNED_VECTOR_SLOW;
+=======
+	/* Make an unaligned destination buffer. */
+	dst = (void *)((unsigned long)page_address(page) | 0x1);
+	/* Unalign src as well, but differently (off by 1 + 2 = 3). */
+	src = dst + (MISALIGNED_BUFFER_SIZE / 2);
+	src += 2;
+	word_cycles = -1ULL;
+
+	/* Do a warmup. */
+	kernel_vector_begin();
+	__riscv_copy_vec_words_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+
+	start_jiffies = jiffies;
+	while ((now = jiffies) == start_jiffies)
+		cpu_relax();
+
+	/*
+	 * For a fixed amount of time, repeatedly try the function, and take
+	 * the best time in cycles as the measurement.
+	 */
+	while (time_before(jiffies, now + (1 << MISALIGNED_ACCESS_JIFFIES_LG2))) {
+		start_cycles = get_cycles64();
+		/* Ensure the CSR read can't reorder WRT to the copy. */
+		mb();
+		__riscv_copy_vec_words_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+		/* Ensure the copy ends before the end time is snapped. */
+		mb();
+		end_cycles = get_cycles64();
+		if ((end_cycles - start_cycles) < word_cycles)
+			word_cycles = end_cycles - start_cycles;
+	}
+
+	byte_cycles = -1ULL;
+	__riscv_copy_vec_bytes_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+	start_jiffies = jiffies;
+	while ((now = jiffies) == start_jiffies)
+		cpu_relax();
+
+	while (time_before(jiffies, now + (1 << MISALIGNED_ACCESS_JIFFIES_LG2))) {
+		start_cycles = get_cycles64();
+		/* Ensure the CSR read can't reorder WRT to the copy. */
+		mb();
+		__riscv_copy_vec_bytes_unaligned(dst, src, MISALIGNED_COPY_SIZE);
+		/* Ensure the copy ends before the end time is snapped. */
+		mb();
+		end_cycles = get_cycles64();
+		if ((end_cycles - start_cycles) < byte_cycles)
+			byte_cycles = end_cycles - start_cycles;
+	}
+
+	kernel_vector_end();
+
+	/* Don't divide by zero. */
+	if (!word_cycles || !byte_cycles) {
+		pr_warn("cpu%d: rdtime lacks granularity needed to measure unaligned vector access speed\n",
+			cpu);
+
+		goto free;
+	}
+
+	if (word_cycles < byte_cycles)
+		speed = RISCV_HWPROBE_MISALIGNED_VECTOR_FAST;
+
+	ratio = div_u64((byte_cycles * 100), word_cycles);
+	pr_info("cpu%d: Ratio of vector byte access time to vector unaligned word access is %d.%02d, unaligned accesses are %s\n",
+		cpu,
+		ratio / 100,
+		ratio % 100,
+		(speed ==  RISCV_HWPROBE_MISALIGNED_VECTOR_FAST) ? "fast" : "slow");
+
+	per_cpu(vector_misaligned_access, cpu) = speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 free:
 	__free_pages(page, MISALIGNED_BUFFER_ORDER);
@@ -443,4 +639,8 @@ static int __init check_unaligned_access_all_cpus(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 late_initcall(check_unaligned_access_all_cpus);
+=======
+arch_initcall(check_unaligned_access_all_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

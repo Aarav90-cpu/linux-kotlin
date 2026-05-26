@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Linux multicast routing support
  * Common logic shared by IPv4 [ipmr] and IPv6 [ip6mr] implementation
  */
@@ -27,6 +30,7 @@ void vif_device_init(struct vif_device *v,
 	else
 		v->link = dev->ifindex;
 }
+<<<<<<< HEAD
 
 static void __mr_free_table(struct work_struct *work)
 {
@@ -41,6 +45,9 @@ void mr_table_free(struct mr_table *mrt)
 {
 	queue_rcu_work(system_unbound_wq, &mrt->work);
 }
+=======
+EXPORT_SYMBOL(vif_device_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct mr_table *
 mr_table_alloc(struct net *net, u32 id,
@@ -64,8 +71,11 @@ mr_table_alloc(struct net *net, u32 id,
 		kfree(mrt);
 		return ERR_PTR(err);
 	}
+<<<<<<< HEAD
 
 	INIT_RCU_WORK(&mrt->work, __mr_free_table);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&mrt->mfc_cache_list);
 	INIT_LIST_HEAD(&mrt->mfc_unres_queue);
 
@@ -75,6 +85,10 @@ mr_table_alloc(struct net *net, u32 id,
 	table_set(mrt, net);
 	return mrt;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_table_alloc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_mfc_find_parent(struct mr_table *mrt, void *hasharg, int parent)
 {
@@ -88,6 +102,10 @@ void *mr_mfc_find_parent(struct mr_table *mrt, void *hasharg, int parent)
 
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_mfc_find_parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_mfc_find_any_parent(struct mr_table *mrt, int vifi)
 {
@@ -102,6 +120,10 @@ void *mr_mfc_find_any_parent(struct mr_table *mrt, int vifi)
 
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_mfc_find_any_parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_mfc_find_any(struct mr_table *mrt, int vifi, void *hasharg)
 {
@@ -121,6 +143,10 @@ void *mr_mfc_find_any(struct mr_table *mrt, int vifi, void *hasharg)
 
 	return mr_mfc_find_any_parent(mrt, vifi);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_mfc_find_any);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PROC_FS
 void *mr_vif_seq_idx(struct net *net, struct mr_vif_iter *iter, loff_t pos)
@@ -135,6 +161,10 @@ void *mr_vif_seq_idx(struct net *net, struct mr_vif_iter *iter, loff_t pos)
 	}
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_vif_seq_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_vif_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 {
@@ -153,6 +183,10 @@ void *mr_vif_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 	}
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_vif_seq_next);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_mfc_seq_idx(struct net *net,
 		     struct mr_mfc_iter *it, loff_t pos)
@@ -177,6 +211,10 @@ void *mr_mfc_seq_idx(struct net *net,
 	it->cache = NULL;
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_mfc_seq_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *mr_mfc_seq_next(struct seq_file *seq, void *v,
 		      loff_t *pos)
@@ -211,6 +249,10 @@ end_of_list:
 
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_mfc_seq_next);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 int mr_fill_mroute(struct mr_table *mrt, struct sk_buff *skb,
@@ -231,7 +273,11 @@ int mr_fill_mroute(struct mr_table *mrt, struct sk_buff *skb,
 
 	rcu_read_lock();
 	vif_dev = rcu_dereference(mrt->vif_table[c->mfc_parent].dev);
+<<<<<<< HEAD
 	if (vif_dev && nla_put_u32(skb, RTA_IIF, READ_ONCE(vif_dev->ifindex)) < 0) {
+=======
+	if (vif_dev && nla_put_u32(skb, RTA_IIF, vif_dev->ifindex) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_read_unlock();
 		return -EMSGSIZE;
 	}
@@ -260,7 +306,11 @@ int mr_fill_mroute(struct mr_table *mrt, struct sk_buff *skb,
 
 			nhp->rtnh_flags = 0;
 			nhp->rtnh_hops = c->mfc_un.res.ttls[ct];
+<<<<<<< HEAD
 			nhp->rtnh_ifindex = READ_ONCE(vif_dev->ifindex);
+=======
+			nhp->rtnh_ifindex = vif_dev->ifindex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			nhp->rtnh_len = sizeof(*nhp);
 		}
 	}
@@ -282,6 +332,10 @@ int mr_fill_mroute(struct mr_table *mrt, struct sk_buff *skb,
 	rtm->rtm_type = RTN_MULTICAST;
 	return 1;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_fill_mroute);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static bool mr_mfc_uses_dev(const struct mr_table *mrt,
 			    const struct mr_mfc *c,
@@ -353,6 +407,10 @@ out:
 	cb->args[1] = e;
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_table_dump);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb,
 		     struct mr_table *(*iter)(struct net *net,
@@ -395,6 +453,10 @@ next_table:
 
 	return skb->len;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_rtm_dumproute);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int mr_dump(struct net *net, struct notifier_block *nb, unsigned short family,
 	    int (*rules_dump)(struct net *net,
@@ -448,3 +510,7 @@ int mr_dump(struct net *net, struct notifier_block *nb, unsigned short family,
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mr_dump);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

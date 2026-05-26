@@ -103,9 +103,14 @@ enum pci_barno pci_epc_get_next_free_bar(const struct pci_epc_features
 		bar++;
 
 	for (i = bar; i < PCI_STD_NUM_BARS; i++) {
+<<<<<<< HEAD
 		/* If the BAR is not reserved or disabled, return it. */
 		if (epc_features->bar[i].type != BAR_RESERVED &&
 		    epc_features->bar[i].type != BAR_DISABLED)
+=======
+		/* If the BAR is not reserved, return it. */
+		if (epc_features->bar[i].type != BAR_RESERVED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return i;
 	}
 

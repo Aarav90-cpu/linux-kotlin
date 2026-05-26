@@ -35,9 +35,12 @@ struct intel_colorop *intel_colorop_create(enum intel_color_block id)
 
 	return colorop;
 }
+<<<<<<< HEAD
 
 void intel_colorop_destroy(struct drm_colorop *colorop)
 {
 	drm_colorop_cleanup(colorop);
 	kfree(to_intel_colorop(colorop));
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

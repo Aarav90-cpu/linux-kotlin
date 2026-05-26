@@ -125,8 +125,13 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 	struct kvm_s390_sie_block *scb_o = vsie_page->scb_o;
 	int newflags, cpuflags = atomic_read(&scb_o->cpuflags);
 
+<<<<<<< HEAD
 	/* we don't allow ESA/390 guests unless explicitly enabled */
 	if (!(cpuflags & CPUSTAT_ZARCH) && !vcpu->kvm->arch.allow_vsie_esamode)
+=======
+	/* we don't allow ESA/390 guests */
+	if (!(cpuflags & CPUSTAT_ZARCH))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return set_validity_icpt(scb_s, 0x0001U);
 
 	if (cpuflags & (CPUSTAT_RRF | CPUSTAT_MCDS))
@@ -135,9 +140,13 @@ static int prepare_cpuflags(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 		return set_validity_icpt(scb_s, 0x0007U);
 
 	/* intervention requests will be set later */
+<<<<<<< HEAD
 	newflags = 0;
 	if (cpuflags & CPUSTAT_ZARCH)
 		newflags = CPUSTAT_ZARCH;
+=======
+	newflags = CPUSTAT_ZARCH;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cpuflags & CPUSTAT_GED && test_kvm_facility(vcpu->kvm, 8))
 		newflags |= CPUSTAT_GED;
 	if (cpuflags & CPUSTAT_GED2 && test_kvm_facility(vcpu->kvm, 78)) {
@@ -387,6 +396,7 @@ end:
 	return 0;
 }
 
+<<<<<<< HEAD
 static void shadow_esa(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 {
 	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
@@ -398,6 +408,8 @@ static void shadow_esa(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 	scb_s->ecd &= ~ECD_HOSTREGMGMT;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* shadow (round up/down) the ibc to avoid validity icpt */
 static void prepare_ibc(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 {
@@ -479,7 +491,11 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
 	/* READ_ONCE does not work on bitfields - use a temporary variable */
 	const uint32_t __new_prefix = scb_o->prefix;
+<<<<<<< HEAD
 	uint32_t new_prefix = READ_ONCE(__new_prefix);
+=======
+	const uint32_t new_prefix = READ_ONCE(__new_prefix);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const bool wants_tx = READ_ONCE(scb_o->ecb) & ECB_TE;
 	bool had_tx = scb_s->ecb & ECB_TE;
 	unsigned long new_mso = 0;
@@ -527,11 +543,14 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 
 	scb_s->icpua = scb_o->icpua;
 
+<<<<<<< HEAD
 	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_ZARCH))
 		new_prefix &= GUEST_PREFIX_MASK_ESA;
 	else
 		new_prefix &= GUEST_PREFIX_MASK_ZARCH;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_SM))
 		new_mso = READ_ONCE(scb_o->mso) & 0xfffffffffff00000UL;
 	/* if the hva of the prefix changes, we have to remap the prefix */
@@ -606,9 +625,12 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
 	scb_s->hpid = HPID_VSIE;
 	scb_s->cpnc = scb_o->cpnc;
 
+<<<<<<< HEAD
 	if (!(atomic_read(&scb_s->cpuflags) & CPUSTAT_ZARCH))
 		shadow_esa(vcpu, vsie_page);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	prepare_ibc(vcpu, vsie_page);
 	rc = shadow_crycb(vcpu, vsie_page);
 out:

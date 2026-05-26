@@ -27,6 +27,10 @@
 #include <linux/dax.h>
 #include <linux/filelock.h>
 #include <linux/quotaops.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/uio.h>
 #include <linux/mman.h>
 #include <linux/backing-dev.h>
@@ -270,8 +274,11 @@ static ssize_t ext4_generic_write_checks(struct kiocb *iocb,
 
 static ssize_t ext4_write_checks(struct kiocb *iocb, struct iov_iter *from)
 {
+<<<<<<< HEAD
 	struct inode *inode = file_inode(iocb->ki_filp);
 	loff_t old_size = i_size_read(inode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ssize_t ret, count;
 
 	count = ext4_generic_write_checks(iocb, from);
@@ -281,6 +288,7 @@ static ssize_t ext4_write_checks(struct kiocb *iocb, struct iov_iter *from)
 	ret = file_modified(iocb->ki_filp);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 
 	/*
 	 * If the position is beyond the EOF, it is necessary to zero out the
@@ -296,6 +304,8 @@ static ssize_t ext4_write_checks(struct kiocb *iocb, struct iov_iter *from)
 			return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return count;
 }
 

@@ -15,7 +15,11 @@
 
 #include <linux/tracepoint.h>
 
+<<<<<<< HEAD
 TRACE_EVENT(binder_ioctl,
+=======
+TRACE_EVENT(rust_binder_ioctl,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TP_PROTO(unsigned int cmd, unsigned long arg),
 	TP_ARGS(cmd, arg),
 
@@ -30,6 +34,7 @@ TRACE_EVENT(binder_ioctl,
 	TP_printk("cmd=0x%x arg=0x%lx", __entry->cmd, __entry->arg)
 );
 
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(binder_function_return_class,
 	TP_PROTO(int ret),
 	TP_ARGS(ret),
@@ -70,6 +75,9 @@ TRACE_EVENT(binder_wait_for_work,
 );
 
 TRACE_EVENT(binder_transaction,
+=======
+TRACE_EVENT(rust_binder_transaction,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TP_PROTO(bool reply, rust_binder_transaction t, struct task_struct *thread),
 	TP_ARGS(reply, t, thread),
 	TP_STRUCT__entry(
@@ -99,6 +107,7 @@ TRACE_EVENT(binder_transaction,
 		  __entry->reply, __entry->flags, __entry->code)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(binder_transaction_received,
 	TP_PROTO(rust_binder_transaction t),
 	TP_ARGS(t),
@@ -177,6 +186,8 @@ TRACE_EVENT(binder_return,
 			  "unknown")
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _RUST_BINDER_TRACE_H */
 
 /* This part must be outside protection */

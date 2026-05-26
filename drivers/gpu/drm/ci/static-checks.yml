@@ -1,5 +1,8 @@
 check-patch:
+<<<<<<< HEAD
   stage: static-checks
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   extends:
     - .build
     - .use-debian/x86_64_build

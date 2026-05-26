@@ -78,10 +78,14 @@ static int m88ds3103b_dt_write(struct m88ds3103_dev *dev, int reg, int data)
 		.addr = dev->dt_addr, .flags = 0, .buf = buf, .len = 2
 	};
 
+<<<<<<< HEAD
 	if (dev->chip_id == M88DS3103C_CHIP_ID)
 		m88ds3103_update_bits(dev, 0x04, 0x10, 0x00);
 	else
 		m88ds3103_update_bits(dev, 0x11, 0x01, 0x00);
+=======
+	m88ds3103_update_bits(dev, 0x11, 0x01, 0x00);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = 0x11;
 	ret = regmap_write(dev->regmap, 0x03, val);
@@ -93,6 +97,7 @@ static int m88ds3103b_dt_write(struct m88ds3103_dev *dev, int reg, int data)
 		dev_err(&client->dev, "0x%02x (ret=%i, reg=0x%02x, value=0x%02x)\n",
 			dev->dt_addr, ret, reg, data);
 
+<<<<<<< HEAD
 		if (dev->chip_id == M88DS3103C_CHIP_ID)
 			m88ds3103_update_bits(dev, 0x04, 0x10, 0x10);
 		else
@@ -105,6 +110,12 @@ static int m88ds3103b_dt_write(struct m88ds3103_dev *dev, int reg, int data)
 		m88ds3103_update_bits(dev, 0x04, 0x10, 0x10);
 	else
 		m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+=======
+		m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+		return -EREMOTEIO;
+	}
+	m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&client->dev, "0x%02x reg 0x%02x, value 0x%02x\n",
 		dev->dt_addr, reg, data);
@@ -138,6 +149,7 @@ static int m88ds3103b_dt_read(struct m88ds3103_dev *dev, u8 reg)
 		}
 	};
 
+<<<<<<< HEAD
 	if (dev->chip_id == M88DS3103C_CHIP_ID) {
 		m88ds3103_update_bits(dev, 0x04, 0x10, 0x00);
 		val = 0x11;
@@ -146,6 +158,11 @@ static int m88ds3103b_dt_read(struct m88ds3103_dev *dev, u8 reg)
 		val = 0x12;
 	}
 
+=======
+	m88ds3103_update_bits(dev, 0x11, 0x01, 0x00);
+
+	val = 0x12;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_write(dev->regmap, 0x03, val);
 	if (ret)
 		dev_dbg(&client->dev, "fail=%d\n", ret);
@@ -155,6 +172,7 @@ static int m88ds3103b_dt_read(struct m88ds3103_dev *dev, u8 reg)
 		dev_err(&client->dev, "0x%02x (ret=%d, reg=0x%02x)\n",
 			dev->dt_addr, ret, reg);
 
+<<<<<<< HEAD
 		if (dev->chip_id == M88DS3103C_CHIP_ID)
 			m88ds3103_update_bits(dev, 0x04, 0x10, 0x10);
 		else
@@ -167,6 +185,12 @@ static int m88ds3103b_dt_read(struct m88ds3103_dev *dev, u8 reg)
 		m88ds3103_update_bits(dev, 0x04, 0x10, 0x10);
 	else
 		m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+=======
+		m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+		return -EREMOTEIO;
+	}
+	m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&client->dev, "0x%02x reg 0x%02x, value 0x%02x\n",
 		dev->dt_addr, reg, b1[0]);
@@ -209,6 +233,7 @@ static int m88ds3103_read_status(struct dvb_frontend *fe,
 
 	switch (c->delivery_system) {
 	case SYS_DVBS:
+<<<<<<< HEAD
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
 			ret = regmap_read(dev->regmap, 0x0d, &utmp);
 			if (ret)
@@ -228,6 +253,16 @@ static int m88ds3103_read_status(struct dvb_frontend *fe,
 					  FE_HAS_VITERBI | FE_HAS_SYNC |
 					  FE_HAS_LOCK;
 		}
+=======
+		ret = regmap_read(dev->regmap, 0xd1, &utmp);
+		if (ret)
+			goto err;
+
+		if ((utmp & 0x07) == 0x07)
+			*status = FE_HAS_SIGNAL | FE_HAS_CARRIER |
+					FE_HAS_VITERBI | FE_HAS_SYNC |
+					FE_HAS_LOCK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SYS_DVBS2:
 		ret = regmap_read(dev->regmap, 0x0d, &utmp);
@@ -236,8 +271,13 @@ static int m88ds3103_read_status(struct dvb_frontend *fe,
 
 		if ((utmp & 0x8f) == 0x8f)
 			*status = FE_HAS_SIGNAL | FE_HAS_CARRIER |
+<<<<<<< HEAD
 				  FE_HAS_VITERBI | FE_HAS_SYNC |
 				  FE_HAS_LOCK;
+=======
+					FE_HAS_VITERBI | FE_HAS_SYNC |
+					FE_HAS_LOCK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_dbg(&client->dev, "invalid delivery_system\n");
@@ -406,7 +446,10 @@ static int m88ds3103_read_status(struct dvb_frontend *fe,
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -464,10 +507,15 @@ static int m88ds3103b_select_mclk(struct m88ds3103_dev *dev)
 
 	reg15 = m88ds3103b_dt_read(dev, 0x15);
 
+<<<<<<< HEAD
 	if (dev->chiptype != M88DS3103_CHIPTYPE_3103C) {
 		m88ds3103b_dt_write(dev, 0x05, 0x40);
 		m88ds3103b_dt_write(dev, 0x11, 0x08);
 	}
+=======
+	m88ds3103b_dt_write(dev, 0x05, 0x40);
+	m88ds3103b_dt_write(dev, 0x11, 0x08);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (big_symbol)
 		reg15 |= 0x02;
@@ -479,10 +527,15 @@ static int m88ds3103b_select_mclk(struct m88ds3103_dev *dev)
 
 	usleep_range(5000, 5500);
 
+<<<<<<< HEAD
 	if (dev->chiptype != M88DS3103_CHIPTYPE_3103C) {
 		m88ds3103b_dt_write(dev, 0x05, 0x00);
 		m88ds3103b_dt_write(dev, 0x11, (u8)(big_symbol ? 0x0E : 0x0A));
 	}
+=======
+	m88ds3103b_dt_write(dev, 0x05, 0x00);
+	m88ds3103b_dt_write(dev, 0x11, (u8)(big_symbol ? 0x0E : 0x0A));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usleep_range(5000, 5500);
 
@@ -623,6 +676,15 @@ static int m88ds3103b_set_mclk(struct m88ds3103_dev *dev, u32 mclk_khz)
 
 	sm = N - 1;
 
+<<<<<<< HEAD
+=======
+	/* Write to registers */
+	//reg15 &= 0x01;
+	//reg15 |= (pll_div_fb >> 8) & 0x01;
+
+	//reg16 = pll_div_fb & 0xFF;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg1D &= ~0x03;
 	reg1D |= sm;
 	reg1D |= 0x80;
@@ -630,11 +692,16 @@ static int m88ds3103b_set_mclk(struct m88ds3103_dev *dev, u32 mclk_khz)
 	reg1E = ((f3 << 4) + f2) & 0xFF;
 	reg1F = ((f1 << 4) + f0) & 0xFF;
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
 		m88ds3103b_dt_write(dev, 0x05, 0x40);
 		m88ds3103b_dt_write(dev, 0x11, 0x08);
 	}
 
+=======
+	m88ds3103b_dt_write(dev, 0x05, 0x40);
+	m88ds3103b_dt_write(dev, 0x11, 0x08);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	m88ds3103b_dt_write(dev, 0x1D, reg1D);
 	m88ds3103b_dt_write(dev, 0x1E, reg1E);
 	m88ds3103b_dt_write(dev, 0x1F, reg1F);
@@ -644,16 +711,22 @@ static int m88ds3103b_set_mclk(struct m88ds3103_dev *dev, u32 mclk_khz)
 
 	usleep_range(5000, 5500);
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
 		m88ds3103b_dt_write(dev, 0x05, 0x00);
 		m88ds3103b_dt_write(dev, 0x11, 0x0A);
 	}
+=======
+	m88ds3103b_dt_write(dev, 0x05, 0x00);
+	m88ds3103b_dt_write(dev, 0x11, 0x0A);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usleep_range(5000, 5500);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mt_fe_dmd_ds3103c_set_ts_out_mode(struct dvb_frontend *fe, enum m88ds3103_ts_mode mode)
 {
 	struct m88ds3103_dev *dev = fe->demodulator_priv;
@@ -726,6 +799,8 @@ static int mt_fe_dmd_ds3103c_set_ts_out_mode(struct dvb_frontend *fe, enum m88ds
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 {
 	struct m88ds3103_dev *dev = fe->demodulator_priv;
@@ -738,7 +813,10 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	u16 u16tmp;
 	u32 tuner_frequency_khz, target_mclk, u32tmp;
 	s32 s32tmp;
+<<<<<<< HEAD
 	unsigned int utmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static const struct reg_sequence reset_buf[] = {
 		{0x07, 0x80}, {0x07, 0x00}
 	};
@@ -758,6 +836,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	/* Clear TS */
 	ret = regmap_write(dev->regmap, 0xf5, 0x00);
 
@@ -766,6 +845,11 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	    dev->chip_id == M88DS3103C_CHIP_ID) {
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 		    dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
+=======
+	/* Disable demod clock path */
+	if (dev->chip_id == M88RS6000_CHIP_ID) {
+		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = regmap_read(dev->regmap, 0xb2, &u32tmp);
 			if (ret)
 				goto err;
@@ -805,8 +889,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	}
 
 	/* set M88RS6000/DS3103B demod main mclk and ts mclk from tuner die */
+<<<<<<< HEAD
 	if (dev->chip_id == M88RS6000_CHIP_ID ||
 	    dev->chip_id == M88DS3103C_CHIP_ID) {
+=======
+	if (dev->chip_id == M88RS6000_CHIP_ID) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (c->symbol_rate > 45010000)
 			dev->mclk = 110250000;
 		else
@@ -817,8 +905,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 		else
 			target_mclk = 144000000;
 
+<<<<<<< HEAD
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 		    dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
+=======
+		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			m88ds3103b_select_mclk(dev);
 			m88ds3103b_set_mclk(dev, target_mclk / 1000);
 		}
@@ -891,9 +983,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 		if (dev->chip_id == M88RS6000_CHIP_ID) {
 			len = ARRAY_SIZE(m88rs6000_dvbs_init_reg_vals);
 			init = m88rs6000_dvbs_init_reg_vals;
+<<<<<<< HEAD
 		} else if (dev->chip_id == M88DS3103C_CHIP_ID) {
 			len = ARRAY_SIZE(m88ds3103c_dvbs_init_reg_vals);
 			init = m88ds3103c_dvbs_init_reg_vals;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			len = ARRAY_SIZE(m88ds3103_dvbs_init_reg_vals);
 			init = m88ds3103_dvbs_init_reg_vals;
@@ -903,9 +998,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 		if (dev->chip_id == M88RS6000_CHIP_ID) {
 			len = ARRAY_SIZE(m88rs6000_dvbs2_init_reg_vals);
 			init = m88rs6000_dvbs2_init_reg_vals;
+<<<<<<< HEAD
 		} else if (dev->chip_id == M88DS3103C_CHIP_ID) {
 			len = ARRAY_SIZE(m88ds3103c_dvbs_init_reg_vals);
 			init = m88ds3103c_dvbs_init_reg_vals;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			len = ARRAY_SIZE(m88ds3103_dvbs2_init_reg_vals);
 			init = m88ds3103_dvbs2_init_reg_vals;
@@ -924,8 +1022,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 			goto err;
 	}
 
+<<<<<<< HEAD
 	if (dev->chip_id == M88RS6000_CHIP_ID ||
 	    dev->chip_id == M88DS3103C_CHIP_ID) {
+=======
+	if (dev->chip_id == M88RS6000_CHIP_ID) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (c->delivery_system == SYS_DVBS2 &&
 		    c->symbol_rate <= 5000000) {
 			ret = regmap_write(dev->regmap, 0xc0, 0x04);
@@ -938,6 +1040,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 			if (ret)
 				goto err;
 		}
+<<<<<<< HEAD
 		if (dev->chip_id != M88DS3103C_CHIP_ID) {
 			ret = m88ds3103_update_bits(dev, 0x9d, 0x08, 0x08);
 			if (ret)
@@ -946,6 +1049,13 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 		    dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
+=======
+		ret = m88ds3103_update_bits(dev, 0x9d, 0x08, 0x08);
+		if (ret)
+			goto err;
+
+		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			buf[0] = m88ds3103b_dt_read(dev, 0x15);
 			buf[1] = m88ds3103b_dt_read(dev, 0x16);
 
@@ -967,6 +1077,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 			m88ds3103b_dt_write(dev, 0x16, buf[1]);
 
 			regmap_read(dev->regmap, 0x30, &u32tmp);
+<<<<<<< HEAD
 			if (dev->chip_id == M88DS3103C_CHIP_ID) {
 				regmap_write(dev->regmap, 0x30, dev->config.agc_inv ? 0x18 : 0x08);
 			} else {
@@ -983,6 +1094,17 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 
 		if (dev->chiptype != M88DS3103_CHIPTYPE_3103B &&
 		    dev->chiptype != M88DS3103_CHIPTYPE_3103C) {
+=======
+			u32tmp &= ~0x80;
+			regmap_write(dev->regmap, 0x30, u32tmp & 0xff);
+		}
+
+		ret = regmap_write(dev->regmap, 0xf1, 0x01);
+		if (ret)
+			goto err;
+
+		if (dev->chiptype != M88DS3103_CHIPTYPE_3103B) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = m88ds3103_update_bits(dev, 0x30, 0x80, 0x80);
 			if (ret)
 				goto err;
@@ -1000,8 +1122,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 		break;
 	case M88DS3103_TS_PARALLEL:
 		u8tmp = 0x02;
+<<<<<<< HEAD
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 		    dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
+=======
+		if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			u8tmp = 0x01;
 			u8tmp1 = 0x01;
 		}
@@ -1018,12 +1144,19 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	if (dev->cfg->ts_clk_pol)
 		u8tmp |= 0x40;
 
+<<<<<<< HEAD
 	if (dev->chiptype != M88DS3103_CHIPTYPE_3103C) {
 		/* TS mode */
 		ret = regmap_write(dev->regmap, 0xfd, u8tmp);
 		if (ret)
 			goto err;
 	}
+=======
+	/* TS mode */
+	ret = regmap_write(dev->regmap, 0xfd, u8tmp);
+	if (ret)
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (dev->cfg->ts_mode) {
 	case M88DS3103_TS_SERIAL:
@@ -1057,12 +1190,16 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	ret = regmap_update_bits(dev->regmap, 0xfe, 0x0f, u8tmp);
 	if (ret)
 		goto err;
+<<<<<<< HEAD
 
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C)
 		u8tmp = 0xcb;
 	else
 		u8tmp = ((u8tmp1 & 0x03) << 6) | u8tmp2 >> 0;
 
+=======
+	u8tmp = ((u8tmp1 & 0x03) << 6) | u8tmp2 >> 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_write(dev->regmap, 0xea, u8tmp);
 	if (ret)
 		goto err;
@@ -1074,8 +1211,12 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	else
 		u8tmp = 0x06;
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 	    dev->chiptype == M88DS3103_CHIPTYPE_3103C)
+=======
+	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		m88ds3103b_set_mclk(dev, target_mclk / 1000);
 
 	ret = regmap_write(dev->regmap, 0xc3, 0x08);
@@ -1094,6 +1235,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C)
 		u16tmp = DIV_ROUND_CLOSEST_ULL((((u64)c->symbol_rate << 15) + dev->mclk / 4),
 					       (dev->mclk / 2));
@@ -1103,6 +1245,11 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	buf[0] = (u16tmp >> 0) & 0xff;
 	buf[1] = (u16tmp >> 8) & 0xff;
 
+=======
+	u16tmp = DIV_ROUND_CLOSEST_ULL((u64)c->symbol_rate * 0x10000, dev->mclk);
+	buf[0] = (u16tmp >> 0) & 0xff;
+	buf[1] = (u16tmp >> 8) & 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_bulk_write(dev->regmap, 0x61, buf, 2);
 	if (ret)
 		goto err;
@@ -1111,6 +1258,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
 		ret = m88ds3103_update_bits(dev, 0x30, 0x08, dev->cfg->agc_inv << 3);
 	} else if (dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
@@ -1120,6 +1268,9 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	} else {
 		ret = m88ds3103_update_bits(dev, 0x30, 0x10, dev->cfg->agc_inv << 4);
 	}
+=======
+	ret = m88ds3103_update_bits(dev, 0x30, 0x10, dev->cfg->agc_inv << 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err;
 
@@ -1133,6 +1284,7 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 				(c->delivery_system == SYS_DVBS) ? 0x10 : 0x0);
 		if (ret)
 			goto err;
+<<<<<<< HEAD
 	}
 
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
@@ -1143,10 +1295,13 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 		ret = m88ds3103_update_bits(dev, 0x22, 0x01, 0x01);
 		ret = m88ds3103_update_bits(dev, 0x23, 0x01, 0x00);
 		ret = m88ds3103_update_bits(dev, 0x24, 0x01, 0x00);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = m88ds3103_update_bits(dev, 0xc9, 0x08, 0x08);
 		if (ret)
 			goto err;
+<<<<<<< HEAD
 
 		ret = regmap_read(dev->regmap, 0x08, &utmp);
 		if (ret)
@@ -1164,6 +1319,8 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 			regmap_write(dev->regmap, 0x08, utmp);
 			regmap_write(dev->regmap, 0xe0, 0xf8);
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	dev_dbg(&client->dev, "carrier offset=%d\n",
@@ -1172,12 +1329,17 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	/* Use 32-bit calc as there is no s64 version of DIV_ROUND_CLOSEST() */
 	s32tmp = 0x10000 * (tuner_frequency_khz - c->frequency);
 	s32tmp = DIV_ROUND_CLOSEST(s32tmp, dev->mclk / 1000);
+<<<<<<< HEAD
 
 	usleep_range(1000, 1200);
 
 	buf[0] = (s32tmp >> 0) & 0xff;
 	buf[1] = (s32tmp >> 8) & 0xff;
 
+=======
+	buf[0] = (s32tmp >> 0) & 0xff;
+	buf[1] = (s32tmp >> 8) & 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regmap_bulk_write(dev->regmap, 0x5e, buf, 2);
 	if (ret)
 		goto err;
@@ -1202,7 +1364,10 @@ static int m88ds3103_set_frontend(struct dvb_frontend *fe)
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1222,6 +1387,7 @@ static int m88ds3103_init(struct dvb_frontend *fe)
 	dev->warm = false;
 
 	/* wake up device from sleep */
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
 		ret = m88ds3103_update_bits(dev, 0x0b, 0x90, 0x80);	/* set dt_addr */
 
@@ -1281,6 +1447,15 @@ static int m88ds3103_init(struct dvb_frontend *fe)
 	if (ret)
 		goto err;
 	ret = regmap_write(dev->regmap, 0x07, 0x00);
+=======
+	ret = m88ds3103_update_bits(dev, 0x08, 0x01, 0x01);
+	if (ret)
+		goto err;
+	ret = m88ds3103_update_bits(dev, 0x04, 0x01, 0x00);
+	if (ret)
+		goto err;
+	ret = m88ds3103_update_bits(dev, 0x23, 0x10, 0x00);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err;
 
@@ -1294,14 +1469,28 @@ static int m88ds3103_init(struct dvb_frontend *fe)
 	if (utmp)
 		goto warm;
 
+<<<<<<< HEAD
+=======
+	/* global reset, global diseqc reset, global fec reset */
+	ret = regmap_write(dev->regmap, 0x07, 0xe0);
+	if (ret)
+		goto err;
+	ret = regmap_write(dev->regmap, 0x07, 0x00);
+	if (ret)
+		goto err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* cold state - try to download firmware */
 	dev_info(&client->dev, "found a '%s' in cold state\n",
 		 dev->fe.ops.info.name);
 
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B)
 		name = M88DS3103B_FIRMWARE;
+<<<<<<< HEAD
 	else if (dev->chiptype == M88DS3103_CHIPTYPE_3103C)
 		name = M88DS3103C_FIRMWARE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (dev->chip_id == M88RS6000_CHIP_ID)
 		name = M88RS6000_FIRMWARE;
 	else
@@ -1353,6 +1542,7 @@ static int m88ds3103_init(struct dvb_frontend *fe)
 	dev_info(&client->dev, "firmware version: %X.%X\n",
 		 (utmp >> 4) & 0xf, (utmp >> 0 & 0xf));
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
 		mt_fe_dmd_ds3103c_set_ts_out_mode(fe, dev->cfg->ts_mode);
 
@@ -1365,6 +1555,8 @@ static int m88ds3103_init(struct dvb_frontend *fe)
 			goto err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
 		m88ds3103b_dt_write(dev, 0x21, 0x92);
 		m88ds3103b_dt_write(dev, 0x15, 0x6C);
@@ -1388,7 +1580,10 @@ err_release_firmware:
 	release_firmware(firmware);
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1407,8 +1602,11 @@ static int m88ds3103_sleep(struct dvb_frontend *fe)
 	/* TS Hi-Z */
 	if (dev->chip_id == M88RS6000_CHIP_ID)
 		utmp = 0x29;
+<<<<<<< HEAD
 	else if (dev->chip_id == M88DS3103C_CHIP_ID)
 		utmp = 0x0b;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		utmp = 0x27;
 	ret = m88ds3103_update_bits(dev, utmp, 0x01, 0x00);
@@ -1419,6 +1617,7 @@ static int m88ds3103_sleep(struct dvb_frontend *fe)
 	ret = m88ds3103_update_bits(dev, 0x08, 0x01, 0x00);
 	if (ret)
 		goto err;
+<<<<<<< HEAD
 
 	/* Internal tuner sleep */
 	if (dev->chip_id == M88DS3103C_CHIP_ID) {
@@ -1430,6 +1629,8 @@ static int m88ds3103_sleep(struct dvb_frontend *fe)
 			goto err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = m88ds3103_update_bits(dev, 0x04, 0x01, 0x01);
 	if (ret)
 		goto err;
@@ -1440,7 +1641,10 @@ static int m88ds3103_sleep(struct dvb_frontend *fe)
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1605,13 +1809,19 @@ static int m88ds3103_get_frontend(struct dvb_frontend *fe,
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 //	dev_dbg(&client->dev, "%s()  0x%X  |  0x%X\n", __func__, buf[0], buf[1]);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	c->symbol_rate = DIV_ROUND_CLOSEST_ULL((u64)(buf[1] << 8 | buf[0] << 0) * dev->mclk, 0x10000);
 
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1644,8 +1854,12 @@ static int m88ds3103_set_tone(struct dvb_frontend *fe,
 	int ret;
 	unsigned int utmp, tone, reg_a1_mask;
 
+<<<<<<< HEAD
 	dev_dbg(&client->dev, "fe_sec_tone_mode=%s\n",
 		fe_sec_tone_mode == SEC_TONE_ON ? "ON" : "OFF");
+=======
+	dev_dbg(&client->dev, "fe_sec_tone_mode=%d\n", fe_sec_tone_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!dev->warm) {
 		ret = -EAGAIN;
@@ -1680,7 +1894,10 @@ static int m88ds3103_set_tone(struct dvb_frontend *fe,
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1731,7 +1948,10 @@ static int m88ds3103_set_voltage(struct dvb_frontend *fe,
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1811,7 +2031,10 @@ static int m88ds3103_diseqc_send_master_cmd(struct dvb_frontend *fe,
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1891,7 +2114,10 @@ static int m88ds3103_diseqc_send_burst(struct dvb_frontend *fe,
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -2089,7 +2315,10 @@ static int m88ds3103_probe(struct i2c_client *client)
 	switch (dev->chip_id) {
 	case M88RS6000_CHIP_ID:
 	case M88DS3103_CHIP_ID:
+<<<<<<< HEAD
 	case M88DS3103C_CHIP_ID:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		ret = -ENODEV;
@@ -2119,8 +2348,12 @@ static int m88ds3103_probe(struct i2c_client *client)
 
 	/* 0x29 register is defined differently for m88rs6000. */
 	/* set internal tuner address to 0x21 */
+<<<<<<< HEAD
 	if (dev->chip_id == M88RS6000_CHIP_ID ||
 	    dev->chip_id == M88DS3103C_CHIP_ID)
+=======
+	if (dev->chip_id == M88RS6000_CHIP_ID)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		utmp = 0x00;
 
 	ret = regmap_write(dev->regmap, 0x29, utmp);
@@ -2155,9 +2388,12 @@ static int m88ds3103_probe(struct i2c_client *client)
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B)
 		strscpy(dev->fe.ops.info.name, "Montage Technology M88DS3103B",
 			sizeof(dev->fe.ops.info.name));
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103C)
 		strscpy(dev->fe.ops.info.name, "Montage Technology M88DS3103C",
 			sizeof(dev->fe.ops.info.name));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (dev->chip_id == M88RS6000_CHIP_ID)
 		strscpy(dev->fe.ops.info.name, "Montage Technology M88RS6000",
 			sizeof(dev->fe.ops.info.name));
@@ -2170,6 +2406,7 @@ static int m88ds3103_probe(struct i2c_client *client)
 	pdata->get_dvb_frontend = m88ds3103_get_dvb_frontend;
 	pdata->get_i2c_adapter = m88ds3103_get_i2c_adapter;
 
+<<<<<<< HEAD
 	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B ||
 	    dev->chiptype == M88DS3103_CHIPTYPE_3103C) {
 		/* enable i2c repeater for tuner */
@@ -2177,15 +2414,24 @@ static int m88ds3103_probe(struct i2c_client *client)
 			m88ds3103_update_bits(dev, 0x04, 0x10, 0x10);
 		else
 			m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+=======
+	if (dev->chiptype == M88DS3103_CHIPTYPE_3103B) {
+		/* enable i2c repeater for tuner */
+		m88ds3103_update_bits(dev, 0x11, 0x01, 0x01);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* get frontend address */
 		ret = regmap_read(dev->regmap, 0x29, &utmp);
 		if (ret)
 			goto err_del_adapters;
+<<<<<<< HEAD
 
 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
 		if (dev->chiptype == M88DS3103_CHIPTYPE_3103C)
 			dev->dt_addr = 0x5c >> 1;
+=======
+		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
 
 		dev->dt_client = i2c_new_dummy_device(client->adapter,
@@ -2224,7 +2470,10 @@ static const struct i2c_device_id m88ds3103_id_table[] = {
 	{"m88ds3103",  M88DS3103_CHIPTYPE_3103},
 	{"m88rs6000",  M88DS3103_CHIPTYPE_RS6000},
 	{"m88ds3103b", M88DS3103_CHIPTYPE_3103B},
+<<<<<<< HEAD
 	{"m88ds3103c", M88DS3103_CHIPTYPE_3103C},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, m88ds3103_id_table);

@@ -104,7 +104,10 @@ static double get_refcyc_per_delivery(
 		unsigned int delivery_width,
 		unsigned int req_per_swath_ub)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double refcyc_per_delivery = 0.0;
 
 	if (vratio <= 1.0) {
@@ -134,7 +137,10 @@ static double get_vratio_pre(
 		double vinit,
 		double l_sw)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double prefill = dml_floor(vinit, 1);
 	double vratio_pre = 1.0;
 
@@ -176,7 +182,10 @@ static void get_swath_need(
 		unsigned int swath_height,
 		double vinit)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double prefill = dml_floor(vinit, 1);
 	unsigned int max_partial_sw_int;
 

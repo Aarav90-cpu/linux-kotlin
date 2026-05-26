@@ -452,6 +452,11 @@ static struct nft_pipapo_elem *pipapo_get_slow(const struct nft_pipapo_match *m,
 			pipapo_and_field_buckets_4bit(f, res_map, data);
 		NFT_PIPAPO_GROUP_BITS_ARE_8_OR_4;
 
+<<<<<<< HEAD
+=======
+		data += f->groups / NFT_PIPAPO_GROUPS_PER_BYTE(f);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Now populate the bitmap for the next field, unless this is
 		 * the last field, in which case return the matched 'ext'
 		 * pointer if any.
@@ -496,7 +501,11 @@ next_match:
 		map_index = !map_index;
 		swap(res_map, fill_map);
 
+<<<<<<< HEAD
 		data += NFT_PIPAPO_GROUPS_PADDED_SIZE(f);
+=======
+		data += NFT_PIPAPO_GROUPS_PADDING(f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	__local_unlock_nested_bh(&scratch->bh_lock);

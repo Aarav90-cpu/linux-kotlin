@@ -243,6 +243,7 @@ static struct sk_buff *cbs_dequeue(struct Qdisc *sch)
 	return q->dequeue(sch);
 }
 
+<<<<<<< HEAD
 static void cbs_reset(struct Qdisc *sch)
 {
 	struct cbs_sched_data *q = qdisc_priv(sch);
@@ -257,6 +258,8 @@ static void cbs_reset(struct Qdisc *sch)
 	q->last = 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct nla_policy cbs_policy[TCA_CBS_MAX + 1] = {
 	[TCA_CBS_PARMS]	= { .len = sizeof(struct tc_cbs_qopt) },
 };
@@ -554,7 +557,11 @@ static struct Qdisc_ops cbs_qdisc_ops __read_mostly = {
 	.dequeue	=	cbs_dequeue,
 	.peek		=	qdisc_peek_dequeued,
 	.init		=	cbs_init,
+<<<<<<< HEAD
 	.reset		=	cbs_reset,
+=======
+	.reset		=	qdisc_reset_queue,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.destroy	=	cbs_destroy,
 	.change		=	cbs_change,
 	.dump		=	cbs_dump,

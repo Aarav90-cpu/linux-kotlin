@@ -950,6 +950,11 @@ static int __init ps3_start_probe_thread(enum ps3_bus_type bus_type)
 
 static int __init ps3_register_devices(void)
 {
+<<<<<<< HEAD
+=======
+	int result;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!firmware_has_feature(FW_FEATURE_PS3_LV1))
 		return -ENODEV;
 
@@ -957,7 +962,11 @@ static int __init ps3_register_devices(void)
 
 	/* ps3_repository_dump_bus_info(); */
 
+<<<<<<< HEAD
 	ps3_start_probe_thread(PS3_BUS_TYPE_STORAGE);
+=======
+	result = ps3_start_probe_thread(PS3_BUS_TYPE_STORAGE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ps3_register_vuart_devices();
 

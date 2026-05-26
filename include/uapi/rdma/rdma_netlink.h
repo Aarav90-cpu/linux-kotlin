@@ -308,10 +308,13 @@ enum rdma_nldev_command {
 
 	RDMA_NLDEV_CMD_MONITOR,
 
+<<<<<<< HEAD
 	RDMA_NLDEV_CMD_FRMR_POOLS_GET, /* can dump */
 
 	RDMA_NLDEV_CMD_FRMR_POOLS_SET,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RDMA_NLDEV_NUM_OPS
 };
 
@@ -586,6 +589,7 @@ enum rdma_nldev_attr {
 	RDMA_NLDEV_SYS_ATTR_MONITOR_MODE,	/* u8 */
 
 	RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED,	/* u8 */
+<<<<<<< HEAD
 
 	/*
 	 * FRMR Pools attributes
@@ -604,6 +608,8 @@ enum rdma_nldev_attr {
 	RDMA_NLDEV_ATTR_FRMR_POOL_PINNED_HANDLES,	/* u32 */
 	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_KERNEL_VENDOR_KEY,	/* u64 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Always the end
 	 */

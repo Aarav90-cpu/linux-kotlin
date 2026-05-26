@@ -109,7 +109,11 @@ static int pn_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
 }
 
 static int pn_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 		      int flags)
+=======
+		      int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sk_buff *skb = NULL;
 	struct sockaddr_pn sa;
@@ -143,7 +147,11 @@ static int pn_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 	if (msg->msg_name != NULL) {
 		__sockaddr_check_size(sizeof(sa));
 		memcpy(msg->msg_name, &sa, sizeof(sa));
+<<<<<<< HEAD
 		msg->msg_namelen = sizeof(sa);
+=======
+		*addr_len = sizeof(sa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:

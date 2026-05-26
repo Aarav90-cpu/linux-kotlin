@@ -94,7 +94,10 @@ static inline int __ww_mutex_check_kill(struct rt_mutex *lock,
 
 static __always_inline struct task_struct *
 rt_mutex_owner_encode(struct rt_mutex_base *lock, struct task_struct *owner)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long val = (unsigned long)owner;
 
@@ -106,7 +109,10 @@ rt_mutex_owner_encode(struct rt_mutex_base *lock, struct task_struct *owner)
 
 static __always_inline void
 rt_mutex_set_owner(struct rt_mutex_base *lock, struct task_struct *owner)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * lock->wait_lock is held but explicit acquire semantics are needed
@@ -116,14 +122,20 @@ rt_mutex_set_owner(struct rt_mutex_base *lock, struct task_struct *owner)
 }
 
 static __always_inline void rt_mutex_clear_owner(struct rt_mutex_base *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* lock->wait_lock is held so the unlock provides release semantics. */
 	WRITE_ONCE(lock->owner, rt_mutex_owner_encode(lock, NULL));
 }
 
 static __always_inline void clear_rt_mutex_waiters(struct rt_mutex_base *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lock->owner = (struct task_struct *)
 			((unsigned long)lock->owner & ~RT_MUTEX_HAS_WAITERS);
@@ -131,7 +143,10 @@ static __always_inline void clear_rt_mutex_waiters(struct rt_mutex_base *lock)
 
 static __always_inline void
 fixup_rt_mutex_waiters(struct rt_mutex_base *lock, bool acquire_lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long owner, *p = (unsigned long *) &lock->owner;
 
@@ -333,7 +348,10 @@ static __always_inline bool rt_mutex_cmpxchg_release(struct rt_mutex_base *lock,
 }
 
 static __always_inline void mark_rt_mutex_waiters(struct rt_mutex_base *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lock->owner = (struct task_struct *)
 			((unsigned long)lock->owner | RT_MUTEX_HAS_WAITERS);
@@ -372,7 +390,11 @@ waiter_update_prio(struct rt_mutex_waiter *waiter, struct task_struct *task)
 	lockdep_assert(RB_EMPTY_NODE(&waiter->tree.entry));
 
 	waiter->tree.prio = __waiter_prio(task);
+<<<<<<< HEAD
 	waiter->tree.deadline = task->dl.deadline;
+=======
+	waiter->tree.deadline = __tsk_deadline(task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -393,16 +415,30 @@ waiter_clone_prio(struct rt_mutex_waiter *waiter, struct task_struct *task)
  * Only use with rt_waiter_node_{less,equal}()
  */
 #define task_to_waiter_node(p)	\
+<<<<<<< HEAD
 	&(struct rt_waiter_node){ .prio = __waiter_prio(p), .deadline = (p)->dl.deadline }
+=======
+	&(struct rt_waiter_node){ .prio = __waiter_prio(p), .deadline = __tsk_deadline(p) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define task_to_waiter(p)	\
 	&(struct rt_mutex_waiter){ .tree = *task_to_waiter_node(p) }
 
 static __always_inline int rt_waiter_node_less(struct rt_waiter_node *left,
 					       struct rt_waiter_node *right)
 {
+<<<<<<< HEAD
 	if (left->prio < right->prio)
 		return 1;
 
+=======
+#ifdef CONFIG_SCHED_PDS
+	return (left->deadline < right->deadline);
+#else
+	if (left->prio < right->prio)
+		return 1;
+
+#ifndef CONFIG_SCHED_BMQ
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If both waiters have dl_prio(), we check the deadlines of the
 	 * associated tasks.
@@ -411,16 +447,33 @@ static __always_inline int rt_waiter_node_less(struct rt_waiter_node *left,
 	 */
 	if (dl_prio(left->prio))
 		return dl_time_before(left->deadline, right->deadline);
+<<<<<<< HEAD
 
 	return 0;
+=======
+#endif
+
+	return 0;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline int rt_waiter_node_equal(struct rt_waiter_node *left,
 						 struct rt_waiter_node *right)
 {
+<<<<<<< HEAD
 	if (left->prio != right->prio)
 		return 0;
 
+=======
+#ifdef CONFIG_SCHED_PDS
+	return (left->deadline == right->deadline);
+#else
+	if (left->prio != right->prio)
+		return 0;
+
+#ifndef CONFIG_SCHED_BMQ
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If both waiters have dl_prio(), we check the deadlines of the
 	 * associated tasks.
@@ -429,8 +482,15 @@ static __always_inline int rt_waiter_node_equal(struct rt_waiter_node *left,
 	 */
 	if (dl_prio(left->prio))
 		return left->deadline == right->deadline;
+<<<<<<< HEAD
 
 	return 1;
+=======
+#endif
+
+	return 1;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
@@ -1212,7 +1272,10 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
 					   struct ww_acquire_ctx *ww_ctx,
 					   enum rtmutex_chainwalk chwalk,
 					   struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct task_struct *owner = rt_mutex_owner(lock);
 	struct rt_mutex_waiter *top_waiter = waiter;
@@ -1256,7 +1319,10 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
 
 		/* Check whether the waiter should back out immediately */
 		rtm = container_of(lock, struct rt_mutex, rtmutex);
+<<<<<<< HEAD
 		__assume_ctx_lock(&rtm->rtmutex.wait_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx, wake_q);
 		if (res) {
 			raw_spin_lock(&task->pi_lock);
@@ -1364,7 +1430,10 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
 }
 
 static int __sched __rt_mutex_slowtrylock(struct rt_mutex_base *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = try_to_take_rt_mutex(lock, current, NULL);
 
@@ -1514,7 +1583,11 @@ static bool rtmutex_spin_on_owner(struct rt_mutex_base *lock,
 		 *  - the VCPU on which owner runs is preempted
 		 */
 		if (!owner_on_cpu(owner) || need_resched() ||
+<<<<<<< HEAD
 		    !data_race(rt_mutex_waiter_is_top_waiter(lock, waiter))) {
+=======
+		    !rt_mutex_waiter_is_top_waiter(lock, waiter)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			res = false;
 			break;
 		}
@@ -1549,7 +1622,10 @@ static bool rtmutex_spin_on_owner(struct rt_mutex_base *lock,
  */
 static void __sched remove_waiter(struct rt_mutex_base *lock,
 				  struct rt_mutex_waiter *waiter)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
 	struct task_struct *owner = rt_mutex_owner(lock);
@@ -1626,8 +1702,11 @@ static int __sched rt_mutex_slowlock_block(struct rt_mutex_base *lock,
 	struct task_struct *owner;
 	int ret = 0;
 
+<<<<<<< HEAD
 	__assume_ctx_lock(&rtm->rtmutex.wait_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockevent_inc(rtmutex_slow_block);
 	for (;;) {
 		/* Try to acquire the lock: */
@@ -1673,7 +1752,10 @@ static int __sched rt_mutex_slowlock_block(struct rt_mutex_base *lock,
 static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
 					     struct rt_mutex_base *lock,
 					     struct rt_mutex_waiter *w)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * If the result is not -EDEADLOCK or the caller requested
@@ -1710,13 +1792,19 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
 				       enum rtmutex_chainwalk chwalk,
 				       struct rt_mutex_waiter *waiter,
 				       struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rt_mutex *rtm = container_of(lock, struct rt_mutex, rtmutex);
 	struct ww_mutex *ww = ww_container_of(rtm);
 	int ret;
 
+<<<<<<< HEAD
 	__assume_ctx_lock(&rtm->rtmutex.wait_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockdep_assert_held(&lock->wait_lock);
 	lockevent_inc(rtmutex_slowlock);
 
@@ -1768,7 +1856,10 @@ static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
 					     struct ww_acquire_ctx *ww_ctx,
 					     unsigned int state,
 					     struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rt_mutex_waiter waiter;
 	int ret;

@@ -7,8 +7,13 @@
 #include <linux/sysfs.h>
 #include <drm/drm_managed.h>
 
+<<<<<<< HEAD
 #include "xe_device_types.h"
 #include "xe_pm.h"
+=======
+#include "xe_pm.h"
+#include "xe_tile.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_tile_sysfs.h"
 #include "xe_vram_freq.h"
 

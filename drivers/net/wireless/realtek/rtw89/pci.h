@@ -55,8 +55,11 @@
 #define B_AX_CALIB_EN			BIT(13)
 #define B_AX_DIV			GENMASK(15, 14)
 #define RAC_SET_PPR_V1			0x31
+<<<<<<< HEAD
 #define RAC_ANA40			0x40
 #define PHY_ERR_IMR_DIS			(BIT(9) | BIT(0))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RAC_ANA41			0x41
 #define PHY_ERR_FLAG_EN		        BIT(6)
 
@@ -1018,7 +1021,10 @@
 #define B_BE_PL1_IGNORE_HOT_RST BIT(30)
 #define B_BE_PL1_TIMER_UNIT_MASK GENMASK(19, 17)
 #define PCIE_SER_TIMER_UNIT 0x2
+<<<<<<< HEAD
 #define PCIE_SER_WOW_TIMER_UNIT 0x4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_BE_PL1_TIMER_CLEAR BIT(0)
 
 #define R_BE_REG_PL1_MASK 0x34B0
@@ -1031,7 +1037,10 @@
 #define B_BE_SER_PMU_IMR BIT(0)
 
 #define R_BE_REG_PL1_ISR 0x34B4
+<<<<<<< HEAD
 #define B_PCIE_SER_ALL_ISR 0x7F
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define R_BE_RX_APPEND_MODE 0x8920
 #define B_BE_APPEND_OFFSET_MASK GENMASK(23, 16)
@@ -1105,9 +1114,12 @@
 			    B_BE_CH6_BUSY | B_BE_CH7_BUSY | B_BE_CH8_BUSY | \
 			    B_BE_CH9_BUSY | B_BE_CH10_BUSY | B_BE_CH11_BUSY | \
 			    B_BE_CH12_BUSY | B_BE_CH13_BUSY | B_BE_CH14_BUSY)
+<<<<<<< HEAD
 #define DMA_BUSY1_CHECK_BE_V1 (B_BE_CH0_BUSY | B_BE_CH2_BUSY | B_BE_CH4_BUSY | \
 			       B_BE_CH6_BUSY | B_BE_CH8_BUSY | B_BE_CH10_BUSY | \
 			       B_BE_CH12_BUSY)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define R_BE_HAXI_EXP_CTRL_V1 0xB020
 #define B_BE_R_NO_SEC_ACCESS BIT(31)

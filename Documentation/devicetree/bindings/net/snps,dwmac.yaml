@@ -69,7 +69,10 @@ properties:
         - ingenic,x2000-mac
         - loongson,ls2k-dwmac
         - loongson,ls7a-dwmac
+<<<<<<< HEAD
         - nuvoton,ma35d1-dwmac
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - nxp,s32g2-dwmac
         - qcom,qcs404-ethqos
         - qcom,sa8775p-ethqos
@@ -110,7 +113,10 @@ properties:
         - snps,dwmac-5.10a
         - snps,dwmac-5.20
         - snps,dwmac-5.30a
+<<<<<<< HEAD
         - snps,dwmac-5.40a
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - snps,dwxgmac
         - snps,dwxgmac-2.10
         - sophgo,sg2042-dwmac
@@ -204,8 +210,16 @@ properties:
         * snps,xit_frm, unlock on WoL
         * snps,wr_osr_lmt, max write outstanding req. limit
         * snps,rd_osr_lmt, max read outstanding req. limit
+<<<<<<< HEAD
         * snps,blen, this is a vector of supported burst length.
         * snps,fb, fixed-burst
+=======
+        * snps,kbbe, do not cross 1KiB boundary.
+        * snps,blen, this is a vector of supported burst length.
+        * snps,fb, fixed-burst
+        * snps,mb, mixed-burst
+        * snps,rb, rebuild INCRx Burst
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   snps,mtl-rx-config:
     $ref: /schemas/types.yaml#/definitions/phandle
@@ -585,6 +599,14 @@ properties:
         description:
           max read outstanding req. limit
 
+<<<<<<< HEAD
+=======
+      snps,kbbe:
+        $ref: /schemas/types.yaml#/definitions/flag
+        description:
+          do not cross 1KiB boundary.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       snps,blen:
         $ref: /schemas/types.yaml#/definitions/uint32-array
         description:
@@ -597,6 +619,19 @@ properties:
         description:
           fixed-burst
 
+<<<<<<< HEAD
+=======
+      snps,mb:
+        $ref: /schemas/types.yaml#/definitions/flag
+        description:
+          mixed-burst
+
+      snps,rb:
+        $ref: /schemas/types.yaml#/definitions/flag
+        description:
+          rebuild INCRx Burst
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -640,7 +675,10 @@ allOf:
                 - snps,dwmac-5.10a
                 - snps,dwmac-5.20
                 - snps,dwmac-5.30a
+<<<<<<< HEAD
                 - snps,dwmac-5.40a
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 - snps,dwxgmac
                 - snps,dwxgmac-2.10
                 - st,spear600-gmac

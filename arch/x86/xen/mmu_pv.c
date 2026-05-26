@@ -2145,10 +2145,14 @@ static void xen_set_fixmap(unsigned idx, phys_addr_t phys, pgprot_t prot)
 
 static void xen_enter_lazy_mmu(void)
 {
+<<<<<<< HEAD
 	preempt_disable();
 	if (xen_get_lazy_mode() != XEN_LAZY_MMU)
 		enter_lazy(XEN_LAZY_MMU);
 	preempt_enable();
+=======
+	enter_lazy(XEN_LAZY_MMU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void xen_flush_lazy_mmu(void)
@@ -2185,8 +2189,12 @@ static void xen_leave_lazy_mmu(void)
 {
 	preempt_disable();
 	xen_mc_flush();
+<<<<<<< HEAD
 	if (xen_get_lazy_mode() != XEN_LAZY_NONE)
 		leave_lazy(XEN_LAZY_MMU);
+=======
+	leave_lazy(XEN_LAZY_MMU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	preempt_enable();
 }
 

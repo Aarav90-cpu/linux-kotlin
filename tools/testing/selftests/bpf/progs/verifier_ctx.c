@@ -4,10 +4,13 @@
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
 #include "bpf_misc.h"
+<<<<<<< HEAD
 #include "../test_kmods/bpf_testmod_kfunc.h"
 
 static const char ctx_strncmp_target[] = "ctx";
 static const char ctx_snprintf_fmt[] = "";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 SEC("tc")
 __description("context stores via BPF_ATOMIC")
@@ -73,6 +76,10 @@ __naked void ctx_pointer_to_helper_1(void)
 SEC("socket")
 __description("pass modified ctx pointer to helper, 2")
 __failure __msg("negative offset ctx ptr R1 off=-612 disallowed")
+<<<<<<< HEAD
+=======
+__failure_unpriv __msg_unpriv("negative offset ctx ptr R1 off=-612 disallowed")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void ctx_pointer_to_helper_2(void)
 {
 	asm volatile ("					\
@@ -295,6 +302,7 @@ padding_access("cgroup/post_bind4", bpf_sock, dst_port, 2);
 __failure __msg("invalid bpf_context access")
 padding_access("sk_reuseport", sk_reuseport_md, hash, 4);
 
+<<<<<<< HEAD
 SEC("?syscall")
 __description("syscall: write to ctx with fixed offset")
 __success
@@ -859,4 +867,6 @@ no_rewrite_ctx_access("fentry/bpf_modify_return_test", fentry, 8, u64);
 no_rewrite_ctx_access("cgroup/dev", cgroup_dev, 4, u32);
 no_rewrite_ctx_access("netfilter", netfilter, offsetof(struct bpf_nf_ctx, skb), u64);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

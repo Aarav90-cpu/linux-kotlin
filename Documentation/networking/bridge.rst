@@ -148,6 +148,7 @@ called by the kernel when STP is enabled/disabled on a bridge
 stp_state <0|1>``).  The kernel enables user_stp mode if that command returns
 0, or enables kernel_stp mode if that command returns any other value.
 
+<<<<<<< HEAD
 STP mode selection
 ------------------
 
@@ -170,6 +171,8 @@ Example::
 
 The mode can only be changed while STP is disabled.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 VLAN
 ====
 

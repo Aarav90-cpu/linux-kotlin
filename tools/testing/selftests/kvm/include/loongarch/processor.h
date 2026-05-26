@@ -83,8 +83,11 @@
 #define LOONGARCH_CSR_PRMD		0x1
 #define LOONGARCH_CSR_EUEN		0x2
 #define LOONGARCH_CSR_ECFG		0x4
+<<<<<<< HEAD
 #define  ECFGB_PMU			10
 #define  ECFGF_PMU			(BIT_ULL(ECFGB_PMU))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define  ECFGB_TIMER			11
 #define  ECFGF_TIMER			(BIT_ULL(ECFGB_TIMER))
 #define LOONGARCH_CSR_ESTAT		0x5  /* Exception status */
@@ -92,7 +95,10 @@
 #define  CSR_ESTAT_EXC_WIDTH		6
 #define  CSR_ESTAT_EXC			(0x3f << CSR_ESTAT_EXC_SHIFT)
 #define    EXCCODE_INT			0    /* Interrupt */
+<<<<<<< HEAD
 #define	     INT_PMI			10   /* PMU interrupt */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define      INT_TI			11   /* Timer interrupt*/
 #define LOONGARCH_CSR_ERA		0x6  /* ERA */
 #define LOONGARCH_CSR_BADV		0x7  /* Bad virtual address */
@@ -131,6 +137,7 @@
 #define  CSR_TLBREHI_PS_SHIFT		0
 #define  CSR_TLBREHI_PS			(0x3fUL << CSR_TLBREHI_PS_SHIFT)
 
+<<<<<<< HEAD
 #define read_cpucfg(reg)			\
 ({						\
 	register unsigned long __v;		\
@@ -142,6 +149,8 @@
 	 __v;					\
 })
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define csr_read(csr)				\
 ({						\
 	register unsigned long __v;		\
@@ -192,7 +201,10 @@ struct handlers {
 	handler_fn exception_handlers[VECTOR_NUM];
 };
 
+<<<<<<< HEAD
 void loongarch_vcpu_setup(struct kvm_vcpu *vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vm_init_descriptor_tables(struct kvm_vm *vm);
 void vm_install_exception_handler(struct kvm_vm *vm, int vector, handler_fn handler);
 

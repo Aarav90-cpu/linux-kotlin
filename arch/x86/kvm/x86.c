@@ -83,8 +83,11 @@
 #include <asm/intel_pt.h>
 #include <asm/emulate_prefix.h>
 #include <asm/sgx.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <clocksource/hyperv_timer.h>
 
 #define CREATE_TRACE_POINTS
@@ -715,7 +718,11 @@ static void drop_user_return_notifiers(void)
 noinstr void kvm_spurious_fault(void)
 {
 	/* Fault while not rebooting.  We want the trace. */
+<<<<<<< HEAD
 	BUG_ON(!virt_rebooting);
+=======
+	BUG_ON(!kvm_rebooting);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_spurious_fault);
 
@@ -7787,6 +7794,7 @@ static void kvm_init_msr_lists(void)
 }
 
 static int vcpu_mmio_write(struct kvm_vcpu *vcpu, gpa_t addr, int len,
+<<<<<<< HEAD
 			   void *__v)
 {
 	const void *v = __v;
@@ -7795,6 +7803,13 @@ static int vcpu_mmio_write(struct kvm_vcpu *vcpu, gpa_t addr, int len,
 
 	trace_kvm_mmio(KVM_TRACE_MMIO_WRITE, len, addr, __v);
 
+=======
+			   const void *v)
+{
+	int handled = 0;
+	int n;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		n = min(len, 8);
 		if (!(lapic_in_kernel(vcpu) &&
@@ -7829,9 +7844,12 @@ static int vcpu_mmio_read(struct kvm_vcpu *vcpu, gpa_t addr, int len, void *v)
 		v += n;
 	} while (len);
 
+<<<<<<< HEAD
 	if (len)
 		trace_kvm_mmio(KVM_TRACE_MMIO_READ_UNSATISFIED, len, addr, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return handled;
 }
 
@@ -8120,6 +8138,7 @@ static int vcpu_mmio_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
 	return vcpu_is_mmio_gpa(vcpu, gva, *gpa, write);
 }
 
+<<<<<<< HEAD
 struct read_write_emulator_ops {
 	int (*read_write_guest)(struct kvm_vcpu *vcpu, gpa_t gpa,
 				void *val, int bytes);
@@ -8136,6 +8155,10 @@ static int emulator_read_guest(struct kvm_vcpu *vcpu, gpa_t gpa,
 
 static int emulator_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa,
 				void *val, int bytes)
+=======
+int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t gpa,
+			const void *val, int bytes)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
@@ -8146,6 +8169,81 @@ static int emulator_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa,
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+struct read_write_emulator_ops {
+	int (*read_write_prepare)(struct kvm_vcpu *vcpu, void *val,
+				  int bytes);
+	int (*read_write_emulate)(struct kvm_vcpu *vcpu, gpa_t gpa,
+				  void *val, int bytes);
+	int (*read_write_mmio)(struct kvm_vcpu *vcpu, gpa_t gpa,
+			       int bytes, void *val);
+	int (*read_write_exit_mmio)(struct kvm_vcpu *vcpu, gpa_t gpa,
+				    void *val, int bytes);
+	bool write;
+};
+
+static int read_prepare(struct kvm_vcpu *vcpu, void *val, int bytes)
+{
+	if (vcpu->mmio_read_completed) {
+		trace_kvm_mmio(KVM_TRACE_MMIO_READ, bytes,
+			       vcpu->mmio_fragments[0].gpa, val);
+		vcpu->mmio_read_completed = 0;
+		return 1;
+	}
+
+	return 0;
+}
+
+static int read_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
+			void *val, int bytes)
+{
+	return !kvm_vcpu_read_guest(vcpu, gpa, val, bytes);
+}
+
+static int write_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
+			 void *val, int bytes)
+{
+	return emulator_write_phys(vcpu, gpa, val, bytes);
+}
+
+static int write_mmio(struct kvm_vcpu *vcpu, gpa_t gpa, int bytes, void *val)
+{
+	trace_kvm_mmio(KVM_TRACE_MMIO_WRITE, bytes, gpa, val);
+	return vcpu_mmio_write(vcpu, gpa, bytes, val);
+}
+
+static int read_exit_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+			  void *val, int bytes)
+{
+	trace_kvm_mmio(KVM_TRACE_MMIO_READ_UNSATISFIED, bytes, gpa, NULL);
+	return X86EMUL_IO_NEEDED;
+}
+
+static int write_exit_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+			   void *val, int bytes)
+{
+	struct kvm_mmio_fragment *frag = &vcpu->mmio_fragments[0];
+
+	memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+	return X86EMUL_CONTINUE;
+}
+
+static const struct read_write_emulator_ops read_emultor = {
+	.read_write_prepare = read_prepare,
+	.read_write_emulate = read_emulate,
+	.read_write_mmio = vcpu_mmio_read,
+	.read_write_exit_mmio = read_exit_mmio,
+};
+
+static const struct read_write_emulator_ops write_emultor = {
+	.read_write_emulate = write_emulate,
+	.read_write_mmio = write_mmio,
+	.read_write_exit_mmio = write_exit_mmio,
+	.write = true,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int emulator_read_write_onepage(unsigned long addr, void *val,
 				       unsigned int bytes,
 				       struct x86_exception *exception,
@@ -8175,6 +8273,7 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
 			return X86EMUL_PROPAGATE_FAULT;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * If the memory is not _known_ to be emulated MMIO, attempt to access
 	 * guest memory.  If accessing guest memory fails, e.g. because there's
@@ -8191,6 +8290,13 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
 	 * to an in-kernel local or I/O APIC, or to an ioeventfd range attached
 	 * to MMIO bus.  If the access isn't fully resolved, insert an MMIO
 	 * fragment with the relevant details.
+=======
+	if (!ret && ops->read_write_emulate(vcpu, gpa, val, bytes))
+		return X86EMUL_CONTINUE;
+
+	/*
+	 * Is this MMIO handled locally?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	handled = ops->read_write_mmio(vcpu, gpa, bytes, val);
 	if (handled == bytes)
@@ -8211,6 +8317,7 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
 		frag->data = val;
 	}
 	frag->len = bytes;
+<<<<<<< HEAD
 
 	/*
 	 * Continue emulating, even though KVM needs to (eventually) do an MMIO
@@ -8218,6 +8325,8 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
 	 * needs to exit to userspace only after emulating both parts of the
 	 * access.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return X86EMUL_CONTINUE;
 }
 
@@ -8228,11 +8337,16 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
 			const struct read_write_emulator_ops *ops)
 {
 	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
+<<<<<<< HEAD
+=======
+	gpa_t gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
 		return X86EMUL_UNHANDLEABLE;
 
+<<<<<<< HEAD
 	/*
 	 * If the read was already completed via a userspace MMIO exit, there's
 	 * nothing left to do except trace the MMIO read.  When completing MMIO
@@ -8255,6 +8369,11 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
 		vcpu->mmio_read_completed = 0;
 		return X86EMUL_CONTINUE;
 	}
+=======
+	if (ops->read_write_prepare &&
+		  ops->read_write_prepare(vcpu, val, bytes))
+		return X86EMUL_CONTINUE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu->mmio_nr_fragments = 0;
 
@@ -8283,6 +8402,7 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
 	if (!vcpu->mmio_nr_fragments)
 		return X86EMUL_CONTINUE;
 
+<<<<<<< HEAD
 	vcpu->mmio_needed = 1;
 	vcpu->mmio_cur_fragment = 0;
 	vcpu->mmio_is_write = ops->write;
@@ -8298,6 +8418,19 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
 	 * x86_emulate_instruction()).
 	 */
 	return ops->write ? X86EMUL_CONTINUE : X86EMUL_IO_NEEDED;
+=======
+	gpa = vcpu->mmio_fragments[0].gpa;
+
+	vcpu->mmio_needed = 1;
+	vcpu->mmio_cur_fragment = 0;
+
+	vcpu->run->mmio.len = min(8u, vcpu->mmio_fragments[0].len);
+	vcpu->run->mmio.is_write = vcpu->mmio_is_write = ops->write;
+	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+	vcpu->run->mmio.phys_addr = gpa;
+
+	return ops->read_write_exit_mmio(vcpu, gpa, val, bytes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
@@ -8306,6 +8439,7 @@ static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
 				  unsigned int bytes,
 				  struct x86_exception *exception)
 {
+<<<<<<< HEAD
 	static const struct read_write_emulator_ops ops = {
 		.read_write_guest = emulator_read_guest,
 		.read_write_mmio = vcpu_mmio_read,
@@ -8313,6 +8447,10 @@ static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
 	};
 
 	return emulator_read_write(ctxt, addr, val, bytes, exception, &ops);
+=======
+	return emulator_read_write(ctxt, addr, val, bytes,
+				   exception, &read_emultor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int emulator_write_emulated(struct x86_emulate_ctxt *ctxt,
@@ -8321,6 +8459,7 @@ static int emulator_write_emulated(struct x86_emulate_ctxt *ctxt,
 			    unsigned int bytes,
 			    struct x86_exception *exception)
 {
+<<<<<<< HEAD
 	static const struct read_write_emulator_ops ops = {
 		.read_write_guest = emulator_write_guest,
 		.read_write_mmio = vcpu_mmio_write,
@@ -8328,6 +8467,10 @@ static int emulator_write_emulated(struct x86_emulate_ctxt *ctxt,
 	};
 
 	return emulator_read_write(ctxt, addr, (void *)val, bytes, exception, &ops);
+=======
+	return emulator_read_write(ctxt, addr, (void *)val, bytes,
+				   exception, &write_emultor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define emulator_try_cmpxchg_user(t, ptr, old, new) \
@@ -8916,11 +9059,14 @@ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt), flags);
 }
 
+<<<<<<< HEAD
 static bool emulator_page_address_valid(struct x86_emulate_ctxt *ctxt, gpa_t gpa)
 {
 	return page_address_valid(emul_to_vcpu(ctxt), gpa);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct x86_emulate_ops emulate_ops = {
 	.vm_bugged           = emulator_vm_bugged,
 	.read_gpr            = emulator_read_gpr,
@@ -8968,7 +9114,10 @@ static const struct x86_emulate_ops emulate_ops = {
 	.set_xcr             = emulator_set_xcr,
 	.get_untagged_addr   = emulator_get_untagged_addr,
 	.is_canonical_addr   = emulator_is_canonical_addr,
+<<<<<<< HEAD
 	.page_address_valid  = emulator_page_address_valid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
@@ -9726,8 +9875,12 @@ static int complete_fast_pio_in(struct kvm_vcpu *vcpu)
 	unsigned long val;
 
 	/* We should only ever be called with arch.pio.count equal to 1 */
+<<<<<<< HEAD
 	if (KVM_BUG_ON(vcpu->arch.pio.count != 1, vcpu->kvm))
 		return -EIO;
+=======
+	BUG_ON(vcpu->arch.pio.count != 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(!kvm_is_linear_rip(vcpu, vcpu->arch.cui_linear_rip))) {
 		vcpu->arch.pio.count = 0;
@@ -10031,6 +10184,7 @@ void kvm_setup_xss_caps(void)
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_setup_xss_caps);
 
+<<<<<<< HEAD
 static void kvm_setup_efer_caps(void)
 {
 	if (kvm_cpu_cap_has(X86_FEATURE_NX))
@@ -10043,6 +10197,8 @@ static void kvm_setup_efer_caps(void)
 		kvm_enable_efer_bits(EFER_AUTOIBRS);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void kvm_ops_update(struct kvm_x86_init_ops *ops)
 {
 	memcpy(&kvm_x86_ops, ops->runtime_ops, sizeof(kvm_x86_ops));
@@ -10179,8 +10335,11 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
 	if (r != 0)
 		goto out_mmu_exit;
 
+<<<<<<< HEAD
 	kvm_setup_efer_caps();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enable_device_posted_irqs &= enable_apicv &&
 				     irq_remapping_cap(IRQ_POSTING_CAP);
 
@@ -10783,10 +10942,19 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
 			__kvm_set_rflags(vcpu, kvm_get_rflags(vcpu) |
 					     X86_EFLAGS_RF);
 
+<<<<<<< HEAD
 		if (vcpu->arch.exception.vector == DB_VECTOR &&
 		    vcpu->arch.dr7 & DR7_GD) {
 			vcpu->arch.dr7 &= ~DR7_GD;
 			kvm_update_dr7(vcpu);
+=======
+		if (vcpu->arch.exception.vector == DB_VECTOR) {
+			kvm_deliver_exception_payload(vcpu, &vcpu->arch.exception);
+			if (vcpu->arch.dr7 & DR7_GD) {
+				vcpu->arch.dr7 &= ~DR7_GD;
+				kvm_update_dr7(vcpu);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		kvm_inject_exception(vcpu);
@@ -11018,11 +11186,15 @@ void __kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
 
 	old = new = kvm->arch.apicv_inhibit_reasons;
 
+<<<<<<< HEAD
 	if (reason != APICV_INHIBIT_REASON_IRQWIN)
 		set_or_clear_apicv_inhibit(&new, reason, set);
 
 	set_or_clear_apicv_inhibit(&new, APICV_INHIBIT_REASON_IRQWIN,
 				   atomic_read(&kvm->arch.apicv_nr_irq_window_req));
+=======
+	set_or_clear_apicv_inhibit(&new, reason, set);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!!old != !!new) {
 		/*
@@ -11063,6 +11235,7 @@ void kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_or_clear_apicv_inhibit);
 
+<<<<<<< HEAD
 void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc)
 {
 	int add = inc ? 1 : -1;
@@ -11102,6 +11275,8 @@ void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc)
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_inc_or_dec_irq_window_inhibit);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
 {
 	if (!kvm_apic_present(vcpu))
@@ -11892,8 +12067,12 @@ static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
 
 static int complete_emulated_pio(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (KVM_BUG_ON(!vcpu->arch.pio.count, vcpu->kvm))
 		return -EIO;
+=======
+	BUG_ON(!vcpu->arch.pio.count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return complete_emulated_io(vcpu);
 }
@@ -11922,8 +12101,12 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
 	struct kvm_mmio_fragment *frag;
 	unsigned len;
 
+<<<<<<< HEAD
 	if (KVM_BUG_ON(!vcpu->mmio_needed, vcpu->kvm))
 		return -EIO;
+=======
+	BUG_ON(!vcpu->mmio_needed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Complete previous fragment */
 	frag = &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
@@ -11955,7 +12138,16 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
 		return complete_emulated_io(vcpu);
 	}
 
+<<<<<<< HEAD
 	kvm_prepare_emulated_mmio_exit(vcpu, frag);
+=======
+	run->exit_reason = KVM_EXIT_MMIO;
+	run->mmio.phys_addr = frag->gpa;
+	if (vcpu->mmio_is_write)
+		memcpy(run->mmio.data, frag->data, min(8u, frag->len));
+	run->mmio.len = min(8u, frag->len);
+	run->mmio.is_write = vcpu->mmio_is_write;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vcpu->arch.complete_userspace_io = complete_emulated_mmio;
 	return 0;
 }
@@ -11985,6 +12177,7 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
 static int kvm_x86_vcpu_pre_run(struct kvm_vcpu *vcpu)
 {
 	/*
+<<<<<<< HEAD
 	 * Userspace may have modified vCPU state, mark nested_run_pending as
 	 * "untrusted" to avoid triggering false-positive WARNs.
 	 */
@@ -11992,6 +12185,8 @@ static int kvm_x86_vcpu_pre_run(struct kvm_vcpu *vcpu)
 		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * SIPI_RECEIVED is obsolete; KVM leaves the vCPU in Wait-For-SIPI and
 	 * tracks the pending SIPI separately.  SIPI_RECEIVED is still accepted
 	 * by KVM_SET_VCPU_EVENTS for backwards compatibility, but should be
@@ -12626,7 +12821,11 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
 
 	if (dbg->control & (KVM_GUESTDBG_INJECT_DB | KVM_GUESTDBG_INJECT_BP)) {
 		r = -EBUSY;
+<<<<<<< HEAD
 		if (kvm_is_exception_pending(vcpu) || vcpu->arch.exception.injected)
+=======
+		if (kvm_is_exception_pending(vcpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		if (dbg->control & KVM_GUESTDBG_INJECT_DB)
 			kvm_queue_exception(vcpu, DB_VECTOR);
@@ -13170,12 +13369,20 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_deliver_sipi_vector);
 
 void kvm_arch_enable_virtualization(void)
 {
+<<<<<<< HEAD
 	x86_virt_register_emergency_callback(kvm_x86_ops.emergency_disable_virtualization_cpu);
+=======
+	cpu_emergency_register_virt_callback(kvm_x86_ops.emergency_disable_virtualization_cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void kvm_arch_disable_virtualization(void)
 {
+<<<<<<< HEAD
 	x86_virt_unregister_emergency_callback(kvm_x86_ops.emergency_disable_virtualization_cpu);
+=======
+	cpu_emergency_unregister_virt_callback(kvm_x86_ops.emergency_disable_virtualization_cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int kvm_arch_enable_virtualization_cpu(void)
@@ -13274,6 +13481,7 @@ int kvm_arch_enable_virtualization_cpu(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 void kvm_arch_shutdown(void)
 {
 	/*
@@ -13293,6 +13501,8 @@ void kvm_arch_shutdown(void)
 	smp_wmb();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void kvm_arch_disable_virtualization_cpu(void)
 {
 	kvm_x86_call(disable_virtualization_cpu)();
@@ -13307,7 +13517,11 @@ void kvm_arch_disable_virtualization_cpu(void)
 	 * disable virtualization arrives.  Handle the extreme edge case here
 	 * instead of trying to account for it in the normal flows.
 	 */
+<<<<<<< HEAD
 	if (in_task() || WARN_ON_ONCE(!virt_rebooting))
+=======
+	if (in_task() || WARN_ON_ONCE(!kvm_rebooting))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drop_user_return_notifiers();
 	else
 		__module_get(THIS_MODULE);
@@ -14359,8 +14573,12 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
 	struct kvm_mmio_fragment *frag;
 	unsigned int len;
 
+<<<<<<< HEAD
 	if (KVM_BUG_ON(!vcpu->mmio_needed, vcpu->kvm))
 		return -EIO;
+=======
+	BUG_ON(!vcpu->mmio_needed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Complete previous fragment */
 	frag = &vcpu->mmio_fragments[vcpu->mmio_cur_fragment];
@@ -14382,14 +14600,20 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
 	if (vcpu->mmio_cur_fragment >= vcpu->mmio_nr_fragments) {
 		vcpu->mmio_needed = 0;
 
+<<<<<<< HEAD
 		/*
 		 * All done, as frag->data always points at the GHCB scratch
 		 * area and VMGEXIT is trap-like (RIP is advanced by hardware).
 		 */
+=======
+		// VMG change, at this point, we're always done
+		// RIP has already been advanced
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 	}
 
 	// More MMIO is needed
+<<<<<<< HEAD
 	kvm_prepare_emulated_mmio_exit(vcpu, frag);
 	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
 	return 0;
@@ -14408,6 +14632,30 @@ int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
 		handled = vcpu_mmio_write(vcpu, gpa, bytes, data);
 	else
 		handled = vcpu_mmio_read(vcpu, gpa, bytes, data);
+=======
+	run->mmio.phys_addr = frag->gpa;
+	run->mmio.len = min(8u, frag->len);
+	run->mmio.is_write = vcpu->mmio_is_write;
+	if (run->mmio.is_write)
+		memcpy(run->mmio.data, frag->data, min(8u, frag->len));
+	run->exit_reason = KVM_EXIT_MMIO;
+
+	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
+
+	return 0;
+}
+
+int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+			  void *data)
+{
+	int handled;
+	struct kvm_mmio_fragment *frag;
+
+	if (!data)
+		return -EINVAL;
+
+	handled = write_emultor.read_write_mmio(vcpu, gpa, bytes, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (handled == bytes)
 		return 1;
 
@@ -14415,17 +14663,24 @@ int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
 	gpa += handled;
 	data += handled;
 
+<<<<<<< HEAD
 	/*
 	 * TODO: Determine whether or not userspace plays nice with MMIO
 	 *       requests that split a page boundary.
 	 */
 	frag = vcpu->mmio_fragments;
+=======
+	/*TODO: Check if need to increment number of frags */
+	frag = vcpu->mmio_fragments;
+	vcpu->mmio_nr_fragments = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	frag->len = bytes;
 	frag->gpa = gpa;
 	frag->data = data;
 
 	vcpu->mmio_needed = 1;
 	vcpu->mmio_cur_fragment = 0;
+<<<<<<< HEAD
 	vcpu->mmio_nr_fragments = 1;
 	vcpu->mmio_is_write = is_write;
 
@@ -14434,6 +14689,58 @@ int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
 	return 0;
 }
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio);
+=======
+
+	vcpu->run->mmio.phys_addr = gpa;
+	vcpu->run->mmio.len = min(8u, frag->len);
+	vcpu->run->mmio.is_write = 1;
+	memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+
+	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
+
+	return 0;
+}
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_write);
+
+int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+			 void *data)
+{
+	int handled;
+	struct kvm_mmio_fragment *frag;
+
+	if (!data)
+		return -EINVAL;
+
+	handled = read_emultor.read_write_mmio(vcpu, gpa, bytes, data);
+	if (handled == bytes)
+		return 1;
+
+	bytes -= handled;
+	gpa += handled;
+	data += handled;
+
+	/*TODO: Check if need to increment number of frags */
+	frag = vcpu->mmio_fragments;
+	vcpu->mmio_nr_fragments = 1;
+	frag->len = bytes;
+	frag->gpa = gpa;
+	frag->data = data;
+
+	vcpu->mmio_needed = 1;
+	vcpu->mmio_cur_fragment = 0;
+
+	vcpu->run->mmio.phys_addr = gpa;
+	vcpu->run->mmio.len = min(8u, frag->len);
+	vcpu->run->mmio.is_write = 0;
+	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+
+	vcpu->arch.complete_userspace_io = complete_sev_es_emulated_mmio;
+
+	return 0;
+}
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_read);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void advance_sev_es_emulated_pio(struct kvm_vcpu *vcpu, unsigned count, int size)
 {

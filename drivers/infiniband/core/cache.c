@@ -116,9 +116,15 @@ struct ib_gid_table {
 	/* rwlock protects data_vec[ix]->state and entry pointer.
 	 */
 	rwlock_t			rwlock;
+<<<<<<< HEAD
 	/* bit field, each bit indicates the index of default GID */
 	u32				default_gid_indices;
 	struct ib_gid_table_entry	*data_vec[] __counted_by(sz);
+=======
+	struct ib_gid_table_entry	**data_vec;
+	/* bit field, each bit indicates the index of default GID */
+	u32				default_gid_indices;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void dispatch_gid_change_event(struct ib_device *ib_dev, u32 port)
@@ -770,16 +776,36 @@ const struct ib_gid_attr *rdma_find_gid_by_filter(
 
 static struct ib_gid_table *alloc_gid_table(int sz)
 {
+<<<<<<< HEAD
 	struct ib_gid_table *table = kzalloc_flex(*table, data_vec, sz);
+=======
+	struct ib_gid_table *table = kzalloc_obj(*table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!table)
 		return NULL;
 
+<<<<<<< HEAD
 	table->sz = sz;
 
 	mutex_init(&table->lock);
 	rwlock_init(&table->rwlock);
 	return table;
+=======
+	table->data_vec = kzalloc_objs(*table->data_vec, sz);
+	if (!table->data_vec)
+		goto err_free_table;
+
+	mutex_init(&table->lock);
+
+	table->sz = sz;
+	rwlock_init(&table->rwlock);
+	return table;
+
+err_free_table:
+	kfree(table);
+	return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void release_gid_table(struct ib_device *device,
@@ -801,6 +827,10 @@ static void release_gid_table(struct ib_device *device,
 	}
 
 	mutex_destroy(&table->lock);
+<<<<<<< HEAD
+=======
+	kfree(table->data_vec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(table);
 }
 

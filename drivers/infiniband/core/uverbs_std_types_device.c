@@ -247,6 +247,7 @@ static int UVERBS_HANDLER(UVERBS_METHOD_GET_CONTEXT)(
 {
 	u32 num_comp = attrs->ufile->device->num_comp_vectors;
 	u64 core_support = IB_UVERBS_CORE_SUPPORT_OPTIONAL_MR_ACCESS;
+<<<<<<< HEAD
 	struct ib_device *ib_dev;
 	int ret;
 
@@ -255,13 +256,20 @@ static int UVERBS_HANDLER(UVERBS_METHOD_GET_CONTEXT)(
 	if (!ib_dev)
 		return -EIO;
 
+=======
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = uverbs_copy_to(attrs, UVERBS_ATTR_GET_CONTEXT_NUM_COMP_VECTORS,
 			     &num_comp, sizeof(num_comp));
 	if (IS_UVERBS_COPY_ERR(ret))
 		return ret;
 
+<<<<<<< HEAD
 	if (ib_dev->ops.uverbs_robust_udata)
 		core_support |= IB_UVERBS_CORE_SUPPORT_ROBUST_UDATA;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = uverbs_copy_to(attrs, UVERBS_ATTR_GET_CONTEXT_CORE_SUPPORT,
 			     &core_support, sizeof(core_support));
 	if (IS_UVERBS_COPY_ERR(ret))

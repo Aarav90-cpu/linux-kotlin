@@ -807,7 +807,11 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
 		 * is done before the original mmap() and after the ioctl.
 		 */
 		if (vma)
+<<<<<<< HEAD
 			zap_vma(vma);
+=======
+			zap_vma_pages(vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		mutex_unlock(&task_ref->mmap_mutex);
 		mmap_write_unlock(task_ref->mm);

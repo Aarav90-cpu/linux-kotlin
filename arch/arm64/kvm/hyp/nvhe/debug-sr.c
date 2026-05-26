@@ -14,20 +14,34 @@
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_mmu.h>
 
+<<<<<<< HEAD
 static void __debug_save_spe(void)
 {
 	u64 *pmscr_el1, *pmblimitr_el1;
 
 	pmscr_el1 = host_data_ptr(host_debug_state.pmscr_el1);
 	pmblimitr_el1 = host_data_ptr(host_debug_state.pmblimitr_el1);
+=======
+static void __debug_save_spe(u64 *pmscr_el1)
+{
+	u64 reg;
+
+	/* Clear pmscr in case of early return */
+	*pmscr_el1 = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * At this point, we know that this CPU implements
 	 * SPE and is available to the host.
 	 * Check if the host is actually using it ?
 	 */
+<<<<<<< HEAD
 	*pmblimitr_el1 = read_sysreg_s(SYS_PMBLIMITR_EL1);
 	if (!(*pmblimitr_el1 & BIT(PMBLIMITR_EL1_E_SHIFT)))
+=======
+	reg = read_sysreg_s(SYS_PMBLIMITR_EL1);
+	if (!(reg & BIT(PMBLIMITR_EL1_E_SHIFT)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* Yes; save the control register and disable data generation */
@@ -37,6 +51,7 @@ static void __debug_save_spe(void)
 
 	/* Now drain all buffered data to memory */
 	psb_csync();
+<<<<<<< HEAD
 	dsb(nsh);
 
 	/* And disable the profiling buffer */
@@ -49,17 +64,29 @@ static void __debug_restore_spe(void)
 	u64 pmblimitr_el1 = *host_data_ptr(host_debug_state.pmblimitr_el1);
 
 	if (!(pmblimitr_el1 & BIT(PMBLIMITR_EL1_E_SHIFT)))
+=======
+}
+
+static void __debug_restore_spe(u64 pmscr_el1)
+{
+	if (!pmscr_el1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* The host page table is installed, but not yet synchronised */
 	isb();
 
+<<<<<<< HEAD
 	/* Re-enable the profiling buffer. */
 	write_sysreg_s(pmblimitr_el1, SYS_PMBLIMITR_EL1);
 	isb();
 
 	/* Re-enable data generation */
 	write_sysreg_el1(*host_data_ptr(host_debug_state.pmscr_el1), SYS_PMSCR);
+=======
+	/* Re-enable data generation */
+	write_sysreg_el1(pmscr_el1, SYS_PMSCR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __trace_do_switch(u64 *saved_trfcr, u64 new_trfcr)
@@ -68,6 +95,7 @@ static void __trace_do_switch(u64 *saved_trfcr, u64 new_trfcr)
 	write_sysreg_el1(new_trfcr, SYS_TRFCR);
 }
 
+<<<<<<< HEAD
 static void __trace_drain_and_disable(void)
 {
 	u64 *trblimitr_el1 = host_data_ptr(host_debug_state.trblimitr_el1);
@@ -116,6 +144,14 @@ static void __trace_drain_and_disable(void)
 		 */
 		isb();
 	}
+=======
+static bool __trace_needs_drain(void)
+{
+	if (is_protected_kvm_enabled() && host_data_test_flag(HAS_TRBE))
+		return read_sysreg_s(SYS_TRBLIMITR_EL1) & TRBLIMITR_EL1_E;
+
+	return host_data_test_flag(TRBE_ENABLED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool __trace_needs_switch(void)
@@ -132,11 +168,20 @@ static void __trace_switch_to_guest(void)
 
 	__trace_do_switch(host_data_ptr(host_debug_state.trfcr_el1),
 			  *host_data_ptr(trfcr_while_in_guest));
+<<<<<<< HEAD
 	__trace_drain_and_disable();
+=======
+
+	if (__trace_needs_drain()) {
+		isb();
+		tsb_csync();
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __trace_switch_to_host(void)
 {
+<<<<<<< HEAD
 	u64 trblimitr_el1 = *host_data_ptr(host_debug_state.trblimitr_el1);
 
 	if (trblimitr_el1 & TRBLIMITR_EL1_E) {
@@ -152,14 +197,21 @@ static void __trace_switch_to_host(void)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__trace_do_switch(host_data_ptr(trfcr_while_in_guest),
 			  *host_data_ptr(host_debug_state.trfcr_el1));
 }
 
+<<<<<<< HEAD
 static void __debug_save_brbe(void)
 {
 	u64 *brbcr_el1 = host_data_ptr(host_debug_state.brbcr_el1);
 
+=======
+static void __debug_save_brbe(u64 *brbcr_el1)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*brbcr_el1 = 0;
 
 	/* Check if the BRBE is enabled */
@@ -175,10 +227,15 @@ static void __debug_save_brbe(void)
 	write_sysreg_el1(0, SYS_BRBCR);
 }
 
+<<<<<<< HEAD
 static void __debug_restore_brbe(void)
 {
 	u64 brbcr_el1 = *host_data_ptr(host_debug_state.brbcr_el1);
 
+=======
+static void __debug_restore_brbe(u64 brbcr_el1)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!brbcr_el1)
 		return;
 
@@ -190,11 +247,19 @@ void __debug_save_host_buffers_nvhe(struct kvm_vcpu *vcpu)
 {
 	/* Disable and flush SPE data generation */
 	if (host_data_test_flag(HAS_SPE))
+<<<<<<< HEAD
 		__debug_save_spe();
 
 	/* Disable BRBE branch records */
 	if (host_data_test_flag(HAS_BRBE))
 		__debug_save_brbe();
+=======
+		__debug_save_spe(host_data_ptr(host_debug_state.pmscr_el1));
+
+	/* Disable BRBE branch records */
+	if (host_data_test_flag(HAS_BRBE))
+		__debug_save_brbe(host_data_ptr(host_debug_state.brbcr_el1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (__trace_needs_switch())
 		__trace_switch_to_guest();
@@ -208,9 +273,15 @@ void __debug_switch_to_guest(struct kvm_vcpu *vcpu)
 void __debug_restore_host_buffers_nvhe(struct kvm_vcpu *vcpu)
 {
 	if (host_data_test_flag(HAS_SPE))
+<<<<<<< HEAD
 		__debug_restore_spe();
 	if (host_data_test_flag(HAS_BRBE))
 		__debug_restore_brbe();
+=======
+		__debug_restore_spe(*host_data_ptr(host_debug_state.pmscr_el1));
+	if (host_data_test_flag(HAS_BRBE))
+		__debug_restore_brbe(*host_data_ptr(host_debug_state.brbcr_el1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (__trace_needs_switch())
 		__trace_switch_to_host();
 }

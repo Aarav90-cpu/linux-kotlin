@@ -547,9 +547,12 @@ static int wcd937x_codec_aux_dac_event(struct snd_soc_dapm_widget *w,
 					      WCD937X_DIGITAL_CDC_ANA_CLK_CTL,
 					      BIT(2), BIT(2));
 		snd_soc_component_update_bits(component,
+<<<<<<< HEAD
 					      WCD937X_AUX_AUXPA,
 					      BIT(4), BIT(4));
 		snd_soc_component_update_bits(component,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      WCD937X_DIGITAL_CDC_DIG_CLK_CTL,
 					      BIT(2), BIT(2));
 		snd_soc_component_update_bits(component,
@@ -565,9 +568,12 @@ static int wcd937x_codec_aux_dac_event(struct snd_soc_dapm_widget *w,
 		snd_soc_component_update_bits(component,
 					      WCD937X_DIGITAL_CDC_ANA_CLK_CTL,
 					      BIT(2), 0x00);
+<<<<<<< HEAD
 		snd_soc_component_update_bits(component,
 					      WCD937X_AUX_AUXPA,
 					      BIT(4), 0x00);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 
@@ -736,6 +742,7 @@ static int wcd937x_codec_enable_aux_pa(struct snd_soc_dapm_widget *w,
 			snd_soc_component_update_bits(component,
 						      WCD937X_ANA_RX_SUPPLIES,
 						      BIT(1), BIT(1));
+<<<<<<< HEAD
 		/* Enable AUX PA related RX supplies */
 		snd_soc_component_update_bits(component,
 					      WCD937X_ANA_RX_SUPPLIES,
@@ -743,16 +750,21 @@ static int wcd937x_codec_enable_aux_pa(struct snd_soc_dapm_widget *w,
 		snd_soc_component_update_bits(component,
 					      WCD937X_ANA_RX_SUPPLIES,
 					      BIT(7), BIT(7));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enable_irq(wcd937x->aux_pdm_wd_int);
 		break;
 	case SND_SOC_DAPM_PRE_PMD:
 		disable_irq_nosync(wcd937x->aux_pdm_wd_int);
+<<<<<<< HEAD
 		snd_soc_component_update_bits(component,
 					      WCD937X_ANA_RX_SUPPLIES,
 					      BIT(6), 0x00);
 		snd_soc_component_update_bits(component,
 					      WCD937X_ANA_RX_SUPPLIES,
 					      BIT(7), 0x00);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SND_SOC_DAPM_POST_PMD:
 		usleep_range(2000, 2010);
@@ -2070,12 +2082,16 @@ static const struct snd_kcontrol_new wcd937x_snd_controls[] = {
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
 	SOC_SINGLE_EXT("LO Switch", WCD937X_LO, 0, 1, 0,
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
+<<<<<<< HEAD
 	SOC_SINGLE_EXT("CLSH PA Switch", WCD937X_CLSH, 0, 1, 0,
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
 	SOC_SINGLE_EXT("DSD_L Switch", WCD937X_DSD_L, 0, 1, 0,
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
 	SOC_SINGLE_EXT("DSD_R Switch", WCD937X_DSD_R, 0, 1, 0,
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SOC_SINGLE_EXT("ADC1 Switch", WCD937X_ADC1, 1, 1, 0,
 		       wcd937x_get_swr_port, wcd937x_set_swr_port),
 	SOC_SINGLE_EXT("ADC2 Switch", WCD937X_ADC2, 1, 1, 0,

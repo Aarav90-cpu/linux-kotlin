@@ -19,6 +19,12 @@ struct dummy_drvdata {
 	u8				traceid;
 };
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(source_devs, "dummy_source");
+DEFINE_CORESIGHT_DEVLIST(sink_devs, "dummy_sink");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dummy_source_enable(struct coresight_device *csdev,
 			       struct perf_event *event, enum cs_mode mode,
 			       __maybe_unused struct coresight_path *path)
@@ -123,7 +129,11 @@ static int dummy_probe(struct platform_device *pdev)
 
 	if (of_device_is_compatible(node, "arm,coresight-dummy-source")) {
 
+<<<<<<< HEAD
 		desc.name = coresight_alloc_device_name("dummy_source", dev);
+=======
+		desc.name = coresight_alloc_device_name(&source_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!desc.name)
 			return -ENOMEM;
 
@@ -152,7 +162,11 @@ static int dummy_probe(struct platform_device *pdev)
 		drvdata->traceid = (u8)trace_id;
 
 	} else if (of_device_is_compatible(node, "arm,coresight-dummy-sink")) {
+<<<<<<< HEAD
 		desc.name = coresight_alloc_device_name("dummy_sink", dev);
+=======
+		desc.name = coresight_alloc_device_name(&sink_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!desc.name)
 			return -ENOMEM;
 

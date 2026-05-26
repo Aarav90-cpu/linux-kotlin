@@ -1302,11 +1302,15 @@ update_stats_dequeue_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se,
 			int flags)
 {
 	struct task_struct *p = NULL;
+<<<<<<< HEAD
 	struct rq *rq = rq_of_rt_rq(rt_rq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!schedstat_enabled())
 		return;
 
+<<<<<<< HEAD
 	if (rt_entity_is_task(rt_se)) {
 		p = rt_task_of(rt_se);
 
@@ -1314,6 +1318,11 @@ update_stats_dequeue_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se,
 			update_stats_wait_end_rt(rt_rq, rt_se);
 	}
 
+=======
+	if (rt_entity_is_task(rt_se))
+		p = rt_task_of(rt_se);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((flags & DEQUEUE_SLEEP) && p) {
 		unsigned int state;
 
@@ -1858,12 +1867,17 @@ static int find_lowest_rq(struct task_struct *task)
 
 static struct task_struct *pick_next_pushable_task(struct rq *rq)
 {
+<<<<<<< HEAD
 	struct plist_head *head = &rq->rt.pushable_tasks;
 	struct task_struct *i, *p = NULL;
+=======
+	struct task_struct *p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!has_pushable_tasks(rq))
 		return NULL;
 
+<<<<<<< HEAD
 	plist_for_each_entry(i, head, pushable_tasks) {
 		/* make sure task isn't on_cpu (possible with proxy-exec) */
 		if (!task_on_cpu(rq, i)) {
@@ -1874,6 +1888,10 @@ static struct task_struct *pick_next_pushable_task(struct rq *rq)
 
 	if (!p)
 		return NULL;
+=======
+	p = plist_first_entry(&rq->rt.pushable_tasks,
+			      struct task_struct, pushable_tasks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BUG_ON(rq->cpu != task_cpu(p));
 	BUG_ON(task_current(rq, p));
@@ -2690,6 +2708,12 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
 	    tg->rt_bandwidth.rt_runtime && tg_has_rt_tasks(tg))
 		return -EBUSY;
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON(!rt_group_sched_enabled() && tg != &root_task_group))
+		return -EBUSY;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	total = to_ratio(period, runtime);
 
 	/*
@@ -2829,6 +2853,22 @@ long sched_group_rt_period(struct task_group *tg)
 	return rt_period_us;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SYSCTL
+static int sched_rt_global_constraints(void)
+{
+	int ret = 0;
+
+	mutex_lock(&rt_constraints_mutex);
+	ret = __rt_schedulable(NULL, 0, 0);
+	mutex_unlock(&rt_constraints_mutex);
+
+	return ret;
+}
+#endif /* CONFIG_SYSCTL */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int sched_rt_can_attach(struct task_group *tg, struct task_struct *tsk)
 {
 	/* Don't accept real-time tasks when there is no way for them to run */
@@ -2838,6 +2878,17 @@ int sched_rt_can_attach(struct task_group *tg, struct task_struct *tsk)
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+#else /* !CONFIG_RT_GROUP_SCHED: */
+
+#ifdef CONFIG_SYSCTL
+static int sched_rt_global_constraints(void)
+{
+	return 0;
+}
+#endif /* CONFIG_SYSCTL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_RT_GROUP_SCHED */
 
 #ifdef CONFIG_SYSCTL
@@ -2849,6 +2900,7 @@ static int sched_rt_global_validate(void)
 			NSEC_PER_USEC > max_rt_runtime)))
 		return -EINVAL;
 
+<<<<<<< HEAD
 #ifdef CONFIG_RT_GROUP_SCHED
 	if (!rt_group_sched_enabled())
 		return 0;
@@ -2859,6 +2911,15 @@ static int sched_rt_global_validate(void)
 	return 0;
 }
 
+=======
+	return 0;
+}
+
+static void sched_rt_do_global(void)
+{
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sched_rt_handler(const struct ctl_table *table, int write, void *buffer,
 		size_t *lenp, loff_t *ppos)
 {
@@ -2882,6 +2943,14 @@ static int sched_rt_handler(const struct ctl_table *table, int write, void *buff
 		if (ret)
 			goto undo;
 
+<<<<<<< HEAD
+=======
+		ret = sched_rt_global_constraints();
+		if (ret)
+			goto undo;
+
+		sched_rt_do_global();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sched_dl_do_global();
 	}
 	if (0) {

@@ -5,10 +5,37 @@
  * Copyright 2022 Google LLC
  */
 
+<<<<<<< HEAD
 #include <crypto/gcm.h>
 #include <crypto/utils.h>
 #include <linux/export.h>
 #include <linux/module.h>
+=======
+#include <crypto/algapi.h>
+#include <crypto/gcm.h>
+#include <crypto/ghash.h>
+#include <linux/export.h>
+#include <linux/module.h>
+#include <asm/irqflags.h>
+
+static void aesgcm_encrypt_block(const struct aes_enckey *key, void *dst,
+				 const void *src)
+{
+	unsigned long flags;
+
+	/*
+	 * In AES-GCM, both the GHASH key derivation and the CTR mode
+	 * encryption operate on known plaintext, making them susceptible to
+	 * timing attacks on the encryption key. The AES library already
+	 * mitigates this risk to some extent by pulling the entire S-box into
+	 * the caches before doing any substitutions, but this strategy is more
+	 * effective when running with interrupts disabled.
+	 */
+	local_irq_save(flags);
+	aes_encrypt(key, dst, src);
+	local_irq_restore(flags);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * aesgcm_expandkey - Expands the AES and GHASH keys for the AES-GCM key
@@ -25,7 +52,11 @@
 int aesgcm_expandkey(struct aesgcm_ctx *ctx, const u8 *key,
 		     unsigned int keysize, unsigned int authsize)
 {
+<<<<<<< HEAD
 	u8 h[AES_BLOCK_SIZE] = {};
+=======
+	u8 kin[AES_BLOCK_SIZE] = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = crypto_gcm_check_authsize(authsize) ?:
@@ -34,13 +65,33 @@ int aesgcm_expandkey(struct aesgcm_ctx *ctx, const u8 *key,
 		return ret;
 
 	ctx->authsize = authsize;
+<<<<<<< HEAD
 	aes_encrypt(&ctx->aes_key, h, h);
 	ghash_preparekey(&ctx->ghash_key, h);
 	memzero_explicit(h, sizeof(h));
+=======
+	aesgcm_encrypt_block(&ctx->aes_key, &ctx->ghash_key, kin);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 EXPORT_SYMBOL(aesgcm_expandkey);
 
+<<<<<<< HEAD
+=======
+static void aesgcm_ghash(be128 *ghash, const be128 *key, const void *src,
+			 int len)
+{
+	while (len > 0) {
+		crypto_xor((u8 *)ghash, src, min(len, GHASH_BLOCK_SIZE));
+		gf128mul_lle(ghash, key);
+
+		src += GHASH_BLOCK_SIZE;
+		len -= GHASH_BLOCK_SIZE;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * aesgcm_mac - Generates the authentication tag using AES-GCM algorithm.
  * @ctx: The data structure that will hold the AES-GCM key schedule
@@ -57,6 +108,7 @@ EXPORT_SYMBOL(aesgcm_expandkey);
 static void aesgcm_mac(const struct aesgcm_ctx *ctx, const u8 *src, int src_len,
 		       const u8 *assoc, int assoc_len, __be32 *ctr, u8 *authtag)
 {
+<<<<<<< HEAD
 	static const u8 zeroes[GHASH_BLOCK_SIZE];
 	__be64 tail[2] = {
 		cpu_to_be64((u64)assoc_len * 8),
@@ -84,6 +136,22 @@ static void aesgcm_mac(const struct aesgcm_ctx *ctx, const u8 *src, int src_len,
 
 	memzero_explicit(ghash_out, sizeof(ghash_out));
 	memzero_explicit(enc_ctr, sizeof(enc_ctr));
+=======
+	be128 tail = { cpu_to_be64(assoc_len * 8), cpu_to_be64(src_len * 8) };
+	u8 buf[AES_BLOCK_SIZE];
+	be128 ghash = {};
+
+	aesgcm_ghash(&ghash, &ctx->ghash_key, assoc, assoc_len);
+	aesgcm_ghash(&ghash, &ctx->ghash_key, src, src_len);
+	aesgcm_ghash(&ghash, &ctx->ghash_key, &tail, sizeof(tail));
+
+	ctr[3] = cpu_to_be32(1);
+	aesgcm_encrypt_block(&ctx->aes_key, buf, ctr);
+	crypto_xor_cpy(authtag, buf, (u8 *)&ghash, ctx->authsize);
+
+	memzero_explicit(&ghash, sizeof(ghash));
+	memzero_explicit(buf, sizeof(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void aesgcm_crypt(const struct aesgcm_ctx *ctx, u8 *dst, const u8 *src,
@@ -101,7 +169,11 @@ static void aesgcm_crypt(const struct aesgcm_ctx *ctx, u8 *dst, const u8 *src,
 		 * len', this cannot happen, so no explicit test is necessary.
 		 */
 		ctr[3] = cpu_to_be32(n++);
+<<<<<<< HEAD
 		aes_encrypt(&ctx->aes_key, buf, (const u8 *)ctr);
+=======
+		aesgcm_encrypt_block(&ctx->aes_key, buf, ctr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		crypto_xor_cpy(dst, src, buf, min(len, AES_BLOCK_SIZE));
 
 		dst += AES_BLOCK_SIZE;

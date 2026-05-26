@@ -9,7 +9,10 @@ GPU Driver Developer's Guide
    drm-mm
    drm-kms
    drm-kms-helpers
+<<<<<<< HEAD
    drm-ras
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    drm-uapi
    drm-usage-stats
    driver-uapi

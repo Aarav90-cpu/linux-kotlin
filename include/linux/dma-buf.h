@@ -322,13 +322,21 @@ struct dma_buf {
 	 * @vmapping_counter:
 	 *
 	 * Used internally to refcnt the vmaps returned by dma_buf_vmap().
+<<<<<<< HEAD
 	 * Protected by @resv.
+=======
+	 * Protected by @lock.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	unsigned vmapping_counter;
 
 	/**
 	 * @vmap_ptr:
+<<<<<<< HEAD
 	 * The current vmap ptr if @vmapping_counter > 0. Protected by @resv.
+=======
+	 * The current vmap ptr if @vmapping_counter > 0. Protected by @lock.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	struct iosys_map vmap_ptr;
 
@@ -407,7 +415,11 @@ struct dma_buf {
 	 *   through the device.
 	 *
 	 * - Dynamic importers should set fences for any access that they can't
+<<<<<<< HEAD
 	 *   disable immediately from their &dma_buf_attach_ops.invalidate_mappings
+=======
+	 *   disable immediately from their &dma_buf_attach_ops.move_notify
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *   callback.
 	 *
 	 * IMPORTANT:
@@ -446,7 +458,11 @@ struct dma_buf_attach_ops {
 	bool allow_peer2peer;
 
 	/**
+<<<<<<< HEAD
 	 * @invalidate_mappings: [optional] notification that the DMA-buf is moving
+=======
+	 * @move_notify: [optional] notification that the DMA-buf is moving
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * If this callback is provided the framework can avoid pinning the
 	 * backing store while mappings exists.
@@ -456,10 +472,21 @@ struct dma_buf_attach_ops {
 	 * called with this lock held as well. This makes sure that no mapping
 	 * is created concurrently with an ongoing move operation.
 	 *
+<<<<<<< HEAD
 	 * See the kdoc for dma_buf_invalidate_mappings() for details on the
 	 * required behavior.
 	 */
 	void (*invalidate_mappings)(struct dma_buf_attachment *attach);
+=======
+	 * Mappings stay valid and are not directly affected by this callback.
+	 * But the DMA-buf can now be in a different physical location, so all
+	 * mappings should be destroyed and re-created as soon as possible.
+	 *
+	 * New mappings can be created after this callback returns, and will
+	 * point to the new location of the DMA-buf.
+	 */
+	void (*move_notify)(struct dma_buf_attachment *attach);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -574,8 +601,12 @@ struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *,
 					enum dma_data_direction);
 void dma_buf_unmap_attachment(struct dma_buf_attachment *, struct sg_table *,
 				enum dma_data_direction);
+<<<<<<< HEAD
 void dma_buf_invalidate_mappings(struct dma_buf *dma_buf);
 bool dma_buf_attach_revocable(struct dma_buf_attachment *attach);
+=======
+void dma_buf_move_notify(struct dma_buf *dma_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
 			     enum dma_data_direction dir);
 int dma_buf_end_cpu_access(struct dma_buf *dma_buf,

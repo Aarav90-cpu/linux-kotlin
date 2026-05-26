@@ -6,6 +6,7 @@
 
 #include <asm/barrier.h>
 #include <vdso/datapage.h>
+<<<<<<< HEAD
 #include <vdso/processor.h>
 #include <vdso/clocksource.h>
 
@@ -13,6 +14,8 @@ static __always_inline bool vdso_is_timens_clock(const struct vdso_clock *vc)
 {
 	return IS_ENABLED(CONFIG_TIME_NS) && vc->clock_mode == VDSO_CLOCKMODE_TIMENS;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __always_inline u32 vdso_read_begin(const struct vdso_clock *vc)
 {
@@ -25,6 +28,7 @@ static __always_inline u32 vdso_read_begin(const struct vdso_clock *vc)
 	return seq;
 }
 
+<<<<<<< HEAD
 /*
  * Variant of vdso_read_begin() to handle VDSO_CLOCKMODE_TIMENS.
  *
@@ -47,6 +51,8 @@ static __always_inline bool vdso_read_begin_timens(const struct vdso_clock *vc, 
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline u32 vdso_read_retry(const struct vdso_clock *vc,
 					   u32 start)
 {
@@ -54,7 +60,11 @@ static __always_inline u32 vdso_read_retry(const struct vdso_clock *vc,
 
 	smp_rmb();
 	seq = READ_ONCE(vc->seq);
+<<<<<<< HEAD
 	return unlikely(seq != start);
+=======
+	return seq != start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline void vdso_write_seq_begin(struct vdso_clock *vc)

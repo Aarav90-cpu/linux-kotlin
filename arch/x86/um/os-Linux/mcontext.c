@@ -4,6 +4,7 @@
 #include <linux/string.h>
 #include <sys/ucontext.h>
 #include <asm/ptrace.h>
+<<<<<<< HEAD
 /*
  * musl defines struct sigcontext in <bits/signal.h>.  Rename the kernel's
  * copy to avoid redefinition while keeping the FP-state types available.
@@ -11,6 +12,9 @@
 #define sigcontext __kernel_sigcontext
 #include <asm/sigcontext.h>
 #undef sigcontext
+=======
+#include <asm/sigcontext.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sysdep/ptrace.h>
 #include <sysdep/mcontext.h>
 #include <arch.h>

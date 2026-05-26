@@ -302,6 +302,7 @@ extern const char xen_early_idt_handler_array[NUM_EXCEPTION_VECTORS][XEN_EARLY_I
  * failure to fully clear the cached descriptor is only observable for
  * FS and GS.
  */
+<<<<<<< HEAD
 #define LOAD_SEGMENT(seg)						\
 static inline void __loadsegment_##seg(u16 value)			\
 {									\
@@ -313,6 +314,21 @@ static inline void __loadsegment_##seg(u16 value)			\
 LOAD_SEGMENT(ss)
 LOAD_SEGMENT(ds)
 LOAD_SEGMENT(es)
+=======
+#define __loadsegment_simple(seg, value)				\
+do {									\
+	unsigned short __val = (value);					\
+									\
+	asm volatile("						\n"	\
+		     "1:	movl %k0,%%" #seg "		\n"	\
+		     _ASM_EXTABLE_TYPE_REG(1b, 1b, EX_TYPE_ZERO_REG, %k0)\
+		     : "+r" (__val) : : "memory");			\
+} while (0)
+
+#define __loadsegment_ss(value) __loadsegment_simple(ss, (value))
+#define __loadsegment_ds(value) __loadsegment_simple(ds, (value))
+#define __loadsegment_es(value) __loadsegment_simple(es, (value))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_X86_32
 
@@ -320,6 +336,7 @@ LOAD_SEGMENT(es)
  * On 32-bit systems, the hidden parts of FS and GS are unobservable if
  * the selector is NULL, so there's no funny business here.
  */
+<<<<<<< HEAD
 LOAD_SEGMENT(fs)
 LOAD_SEGMENT(gs)
 
@@ -331,19 +348,40 @@ static inline void __loadsegment_fs(u16 value)
 		     "2:\n"
 		     _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_CLEAR_FS)
 		     : : ASM_INPUT_RM (value) : "memory");
+=======
+#define __loadsegment_fs(value) __loadsegment_simple(fs, (value))
+#define __loadsegment_gs(value) __loadsegment_simple(gs, (value))
+
+#else
+
+static inline void __loadsegment_fs(unsigned short value)
+{
+	asm volatile("						\n"
+		     "1:	movw %0, %%fs			\n"
+		     "2:					\n"
+
+		     _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_CLEAR_FS)
+
+		     : : "rm" (value) : "memory");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* __loadsegment_gs is intentionally undefined.  Use load_gs_index instead. */
 
 #endif
 
+<<<<<<< HEAD
 #undef LOAD_SEGMENT
 
 #define loadsegment(seg, val) __loadsegment_##seg(val)
+=======
+#define loadsegment(seg, value) __loadsegment_ ## seg (value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Save a segment register away:
  */
+<<<<<<< HEAD
 #define SAVE_SEGMENT(seg)				\
 static inline unsigned long __savesegment_##seg(void)	\
 {							\
@@ -362,6 +400,10 @@ SAVE_SEGMENT(gs)
 #undef SAVE_SEGMENT
 
 #define savesegment(seg, var) ((var) = __savesegment_##seg())
+=======
+#define savesegment(seg, value)				\
+	asm("movl %%" #seg ",%k0" : "=r" (value) : : "memory")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* !__ASSEMBLER__ */
 #endif /* __KERNEL__ */

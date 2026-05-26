@@ -366,6 +366,7 @@ static int imagis_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct imagis_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&ts->input_dev->mutex);
@@ -377,12 +378,25 @@ static int imagis_suspend(struct device *dev)
 	}
 
 	return 0;
+=======
+	int retval = 0;
+
+	mutex_lock(&ts->input_dev->mutex);
+
+	if (input_device_enabled(ts->input_dev))
+		retval = imagis_stop(ts);
+
+	mutex_unlock(&ts->input_dev->mutex);
+
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imagis_resume(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct imagis_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&ts->input_dev->mutex);
@@ -394,6 +408,18 @@ static int imagis_resume(struct device *dev)
 	}
 
 	return 0;
+=======
+	int retval = 0;
+
+	mutex_lock(&ts->input_dev->mutex);
+
+	if (input_device_enabled(ts->input_dev))
+		retval = imagis_start(ts);
+
+	mutex_unlock(&ts->input_dev->mutex);
+
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);

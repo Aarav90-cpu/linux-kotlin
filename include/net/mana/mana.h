@@ -61,11 +61,16 @@ enum TRI_STATE {
 
 #define MAX_PORTS_IN_MANA_DEV 256
 
+<<<<<<< HEAD
 /* Maximum number of packets per coalesced CQE */
 #define MANA_RXCOMP_OOB_NUM_PPI 4
 
 /* Update this count whenever the respective structures are changed */
 #define MANA_STATS_RX_COUNT (6 + MANA_RXCOMP_OOB_NUM_PPI - 1)
+=======
+/* Update this count whenever the respective structures are changed */
+#define MANA_STATS_RX_COUNT 5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MANA_STATS_TX_COUNT 11
 
 #define MANA_RX_FRAG_ALIGNMENT 64
@@ -76,8 +81,11 @@ struct mana_stats_rx {
 	u64 xdp_drop;
 	u64 xdp_tx;
 	u64 xdp_redirect;
+<<<<<<< HEAD
 	u64 pkt_len0_err;
 	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct u64_stats_sync syncp;
 };
 
@@ -232,6 +240,11 @@ struct mana_rxcomp_perpkt_info {
 	u32 pkt_hash;
 }; /* HW DATA */
 
+<<<<<<< HEAD
+=======
+#define MANA_RXCOMP_OOB_NUM_PPI 4
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Receive completion OOB */
 struct mana_rxcomp_oob {
 	struct mana_cqe_header cqe_hdr;
@@ -381,6 +394,10 @@ struct mana_ethtool_stats {
 	u64 tx_cqe_err;
 	u64 tx_cqe_unknown_type;
 	u64 tx_linear_pkt_cnt;
+<<<<<<< HEAD
+=======
+	u64 rx_coalesced_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 rx_cqe_unknown_type;
 };
 
@@ -559,9 +576,12 @@ struct mana_port_context {
 	bool port_is_up;
 	bool port_st_save; /* Saved port state */
 
+<<<<<<< HEAD
 	u8 cqe_coalescing_enable;
 	u32 cqe_coalescing_timeout_ns;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mana_ethtool_stats eth_stats;
 
 	struct mana_ethtool_phy_stats phy_stats;
@@ -908,10 +928,13 @@ struct mana_cfg_rx_steer_req_v2 {
 
 struct mana_cfg_rx_steer_resp {
 	struct gdma_resp_hdr hdr;
+<<<<<<< HEAD
 
 	/* V2 */
 	u32 cqe_coalescing_timeout_ns;
 	u32 reserved1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }; /* HW DATA */
 
 /* Register HW vPort */
@@ -1008,7 +1031,10 @@ struct mana_deregister_filter_resp {
 #define STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR		0x0000000004000000
 
 #define MANA_MAX_NUM_QUEUES 64
+<<<<<<< HEAD
 #define MANA_DEF_NUM_QUEUES 16
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MANA_SHORT_VPORT_OFFSET_MAX ((1U << 8) - 1)
 

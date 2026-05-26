@@ -674,8 +674,14 @@ static int yenta_search_res(struct yenta_socket *socket, struct resource *res,
 			    u32 min)
 {
 	struct resource *root;
+<<<<<<< HEAD
 
 	pci_bus_for_each_resource(socket->dev->bus, root) {
+=======
+	int i;
+
+	pci_bus_for_each_resource(socket->dev->bus, root, i) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!root)
 			continue;
 

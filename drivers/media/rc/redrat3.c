@@ -1131,6 +1131,7 @@ static void redrat3_dev_disconnect(struct usb_interface *intf)
 {
 	struct usb_device *udev = interface_to_usbdev(intf);
 	struct redrat3_dev *rr3 = usb_get_intfdata(intf);
+<<<<<<< HEAD
 	struct rc_dev *rc = rr3->rc;
 
 	usb_set_intfdata(intf, NULL);
@@ -1138,6 +1139,13 @@ static void redrat3_dev_disconnect(struct usb_interface *intf)
 	led_classdev_unregister(&rr3->led);
 	redrat3_delete(rr3, udev);
 	rc_free_device(rc);
+=======
+
+	usb_set_intfdata(intf, NULL);
+	rc_unregister_device(rr3->rc);
+	led_classdev_unregister(&rr3->led);
+	redrat3_delete(rr3, udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int redrat3_dev_suspend(struct usb_interface *intf, pm_message_t message)

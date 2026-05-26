@@ -351,12 +351,17 @@ static struct amd_iommu *__rlookup_amd_iommu(u16 seg, u16 devid)
 	struct amd_iommu_pci_seg *pci_seg;
 
 	for_each_pci_segment(pci_seg) {
+<<<<<<< HEAD
 		if (pci_seg->id != seg)
 			continue;
 		/* IVRS may not describe every device on the bus */
 		if (devid > pci_seg->last_bdf)
 			return NULL;
 		return pci_seg->rlookup_table[devid];
+=======
+		if (pci_seg->id == seg)
+			return pci_seg->rlookup_table[devid];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return NULL;
 }
@@ -407,12 +412,19 @@ struct iommu_dev_data *search_dev_data(struct amd_iommu *iommu, u16 devid)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int clone_alias(struct pci_dev *pdev_origin, u16 alias, void *data)
+=======
+static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dev_table_entry new;
 	struct amd_iommu *iommu;
 	struct iommu_dev_data *dev_data, *alias_data;
+<<<<<<< HEAD
 	struct pci_dev *pdev = data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 devid = pci_dev_id(pdev);
 	int ret = 0;
 
@@ -459,9 +471,15 @@ static void clone_aliases(struct amd_iommu *iommu, struct device *dev)
 	 * part of the PCI DMA aliases if it's bus differs
 	 * from the original device.
 	 */
+<<<<<<< HEAD
 	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], pdev);
 
 	pci_for_each_dma_alias(pdev, clone_alias, pdev);
+=======
+	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], NULL);
+
+	pci_for_each_dma_alias(pdev, clone_alias, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void setup_aliases(struct amd_iommu *iommu, struct device *dev)
@@ -1014,7 +1032,11 @@ static void iommu_poll_events(struct amd_iommu *iommu)
 		iommu_print_event(iommu, iommu->evt_buf + head);
 
 		/* Update head pointer of hardware ring-buffer */
+<<<<<<< HEAD
 		head = (head + EVTLOG_ENTRY_SIZE) % amd_iommu_evtlog_size;
+=======
+		head = (head + EVENT_ENTRY_SIZE) % EVT_BUFFER_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		writel(head, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
 	}
 
@@ -2153,8 +2175,12 @@ static void set_dte_passthrough(struct iommu_dev_data *dev_data,
 	new->data[0] |= DTE_FLAG_TV | DTE_FLAG_IR | DTE_FLAG_IW;
 
 	new->data[1] |= FIELD_PREP(DTE_DOMID_MASK, domain->id) |
+<<<<<<< HEAD
 			(dev_data->ats_enabled ? DTE_FLAG_IOTLB : 0);
 
+=======
+			(dev_data->ats_enabled) ? DTE_FLAG_IOTLB : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void set_dte_entry(struct amd_iommu *iommu,
@@ -2997,17 +3023,25 @@ static bool amd_iommu_capable(struct device *dev, enum iommu_cap cap)
 		return amdr_ivrs_remap_support;
 	case IOMMU_CAP_ENFORCE_CACHE_COHERENCY:
 		return true;
+<<<<<<< HEAD
+=======
+	case IOMMU_CAP_DEFERRED_FLUSH:
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IOMMU_CAP_DIRTY_TRACKING: {
 		struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
 
 		return amd_iommu_hd_support(iommu);
 	}
+<<<<<<< HEAD
 	case IOMMU_CAP_PCI_ATS_SUPPORTED: {
 		struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
 
 		return amd_iommu_iotlb_sup &&
 			 (dev_data->flags & AMD_IOMMU_DEVICE_FLAG_ATS_SUP);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}
@@ -3189,6 +3223,7 @@ const struct iommu_ops amd_iommu_ops = {
 static struct irq_chip amd_ir_chip;
 static DEFINE_SPINLOCK(iommu_table_lock);
 
+<<<<<<< HEAD
 static int iommu_flush_dev_irt(struct pci_dev *unused, u16 devid, void *data)
 {
 	int ret;
@@ -3200,18 +3235,25 @@ static int iommu_flush_dev_irt(struct pci_dev *unused, u16 devid, void *data)
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
 {
 	int ret;
 	u64 data;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct iommu_cmd cmd;
 	struct pci_dev *pdev = NULL;
 	struct iommu_dev_data *dev_data = search_dev_data(iommu, devid);
+=======
+	struct iommu_cmd cmd, cmd2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (iommu->irtcachedis_enabled)
 		return;
 
+<<<<<<< HEAD
 	if (dev_data && dev_data->dev && dev_is_pci(dev_data->dev))
 		pdev = to_pci_dev(dev_data->dev);
 
@@ -3227,6 +3269,18 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
 		goto out_err;
 
 	ret = __iommu_queue_command_sync(iommu, &cmd, false);
+=======
+	build_inv_irt(&cmd, devid);
+
+	raw_spin_lock_irqsave(&iommu->lock, flags);
+	data = get_cmdsem_val(iommu);
+	build_completion_wait(&cmd2, iommu, data);
+
+	ret = __iommu_queue_command_sync(iommu, &cmd, true);
+	if (ret)
+		goto out_err;
+	ret = __iommu_queue_command_sync(iommu, &cmd2, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto out_err;
 	raw_spin_unlock_irqrestore(&iommu->lock, flags);

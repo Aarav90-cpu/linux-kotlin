@@ -9,9 +9,15 @@
 
 static int mlx5e_legacy_rq_validate_xsk(struct mlx5_core_dev *mdev,
 					struct mlx5e_params *params,
+<<<<<<< HEAD
 					struct mlx5e_rq_opt_param *rqo)
 {
 	if (!mlx5e_rx_is_linear_skb(mdev, params, rqo)) {
+=======
+					struct mlx5e_xsk_param *xsk)
+{
+	if (!mlx5e_rx_is_linear_skb(mdev, params, xsk)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mlx5_core_err(mdev, "Legacy RQ linear mode for XSK can't be activated with current params\n");
 		return -EINVAL;
 	}
@@ -25,6 +31,7 @@ static int mlx5e_legacy_rq_validate_xsk(struct mlx5_core_dev *mdev,
 #define MLX5E_MIN_XSK_CHUNK_SIZE max(2048, XDP_UMEM_MIN_CHUNK_SIZE)
 
 bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
+<<<<<<< HEAD
 			      struct mlx5e_rq_opt_param *rqo,
 			      struct mlx5_core_dev *mdev)
 {
@@ -33,6 +40,11 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
 	if (WARN_ON(!xsk))
 		return false;
 
+=======
+			      struct mlx5e_xsk_param *xsk,
+			      struct mlx5_core_dev *mdev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* AF_XDP doesn't support frames larger than PAGE_SIZE,
 	 * and xsk->chunk_size is limited to 65535 bytes.
 	 */
@@ -47,12 +59,30 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
 	 */
 	switch (params->rq_wq_type) {
 	case MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ:
+<<<<<<< HEAD
 		return !mlx5e_mpwrq_validate_xsk(mdev, params, rqo);
 	default: /* MLX5_WQ_TYPE_CYCLIC */
 		return !mlx5e_legacy_rq_validate_xsk(mdev, params, rqo);
 	}
 }
 
+=======
+		return !mlx5e_mpwrq_validate_xsk(mdev, params, xsk);
+	default: /* MLX5_WQ_TYPE_CYCLIC */
+		return !mlx5e_legacy_rq_validate_xsk(mdev, params, xsk);
+	}
+}
+
+static void mlx5e_build_xsk_cparam(struct mlx5_core_dev *mdev,
+				   struct mlx5e_params *params,
+				   struct mlx5e_xsk_param *xsk,
+				   struct mlx5e_channel_param *cparam)
+{
+	mlx5e_build_rq_param(mdev, params, xsk, &cparam->rq);
+	mlx5e_build_xdpsq_param(mdev, params, &cparam->xdp_sq);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mlx5e_init_xsk_rq(struct mlx5e_channel *c,
 			     struct mlx5e_params *params,
 			     struct xsk_buff_pool *pool,
@@ -86,6 +116,7 @@ static int mlx5e_init_xsk_rq(struct mlx5e_channel *c,
 	return xdp_rxq_info_reg(&rq->xdp_rxq, rq->netdev, rq_xdp_ix, c->napi.napi_id);
 }
 
+<<<<<<< HEAD
 static int mlx5e_open_xsk_rq(struct mlx5e_channel *c,
 			     struct mlx5e_params *params,
 			     struct mlx5e_channel_param *cparam,
@@ -93,16 +124,30 @@ static int mlx5e_open_xsk_rq(struct mlx5e_channel *c,
 {
 	struct mlx5e_rq_param *rq_param = &cparam->rq;
 	struct mlx5e_rq_opt_param *rqo = &cparam->rq_opt;
+=======
+static int mlx5e_open_xsk_rq(struct mlx5e_channel *c, struct mlx5e_params *params,
+			     struct mlx5e_rq_param *rq_params, struct xsk_buff_pool *pool,
+			     struct mlx5e_xsk_param *xsk)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 q_counter = c->priv->q_counter[c->sd_ix];
 	struct mlx5e_rq *xskrq = &c->xskrq;
 	int err;
 
+<<<<<<< HEAD
 	err = mlx5e_init_xsk_rq(c, params, pool, rqo->xsk, xskrq);
 	if (err)
 		return err;
 
 	err = mlx5e_open_rq(params, rq_param, rqo, cpu_to_node(c->cpu),
 			    q_counter, xskrq);
+=======
+	err = mlx5e_init_xsk_rq(c, params, pool, xsk, xskrq);
+	if (err)
+		return err;
+
+	err = mlx5e_open_rq(params, rq_params, xsk, cpu_to_node(c->cpu), q_counter, xskrq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -111,15 +156,23 @@ static int mlx5e_open_xsk_rq(struct mlx5e_channel *c,
 }
 
 int mlx5e_open_xsk(struct mlx5e_priv *priv, struct mlx5e_params *params,
+<<<<<<< HEAD
 		   struct mlx5e_channel_param *cparam,
 		   struct xsk_buff_pool *pool,
 		   struct mlx5e_channel *c)
 {
+=======
+		   struct mlx5e_xsk_param *xsk, struct xsk_buff_pool *pool,
+		   struct mlx5e_channel *c)
+{
+	struct mlx5e_channel_param *cparam;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5e_create_cq_param ccp;
 	int err;
 
 	mlx5e_build_create_cq_param(&ccp, c);
 
+<<<<<<< HEAD
 	if (!mlx5e_validate_xsk_param(params, &cparam->rq_opt, priv->mdev))
 		return -EINVAL;
 
@@ -129,6 +182,23 @@ int mlx5e_open_xsk(struct mlx5e_priv *priv, struct mlx5e_params *params,
 		return err;
 
 	err = mlx5e_open_xsk_rq(c, params, cparam, pool);
+=======
+	if (!mlx5e_validate_xsk_param(params, xsk, priv->mdev))
+		return -EINVAL;
+
+	cparam = kvzalloc_obj(*cparam);
+	if (!cparam)
+		return -ENOMEM;
+
+	mlx5e_build_xsk_cparam(priv->mdev, params, xsk, cparam);
+
+	err = mlx5e_open_cq(c->mdev, params->rx_cq_moderation, &cparam->rq.cqp, &ccp,
+			    &c->xskrq.cq);
+	if (unlikely(err))
+		goto err_free_cparam;
+
+	err = mlx5e_open_xsk_rq(c, params, &cparam->rq, pool, xsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(err))
 		goto err_close_rx_cq;
 
@@ -147,6 +217,11 @@ int mlx5e_open_xsk(struct mlx5e_priv *priv, struct mlx5e_params *params,
 	if (unlikely(err))
 		goto err_close_tx_cq;
 
+<<<<<<< HEAD
+=======
+	kvfree(cparam);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_bit(MLX5E_CHANNEL_STATE_XSK, c->state);
 
 	return 0;
@@ -160,6 +235,12 @@ err_close_rq:
 err_close_rx_cq:
 	mlx5e_close_cq(&c->xskrq.cq);
 
+<<<<<<< HEAD
+=======
+err_free_cparam:
+	kvfree(cparam);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 

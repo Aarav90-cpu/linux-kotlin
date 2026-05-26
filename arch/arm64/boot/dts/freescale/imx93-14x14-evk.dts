@@ -25,7 +25,10 @@
 		mmc1 = &usdhc2;
 		rtc0 = &bbnsm_rtc;
 		serial0 = &lpuart1;
+<<<<<<< HEAD
 		serial4 = &lpuart5;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	bt_sco_codec: bt-sco-codec {
@@ -401,6 +404,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &lpuart5 {
 	/* BT */
 	pinctrl-names = "default";
@@ -412,6 +416,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mu1 {
 	status = "okay";
 };

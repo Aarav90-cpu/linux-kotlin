@@ -110,6 +110,7 @@ int fdt_check_header(const void *fdt)
 		    || (fdt_totalsize(fdt) > INT_MAX))
 			return -FDT_ERR_TRUNCATED;
 
+<<<<<<< HEAD
 		/* memrsv block must be 8 byte aligned */
 		if (fdt_off_mem_rsvmap(fdt) % sizeof(uint64_t))
 			return -FDT_ERR_ALIGNMENT;
@@ -118,6 +119,8 @@ int fdt_check_header(const void *fdt)
 		if (fdt_off_dt_struct(fdt) % FDT_TAGSIZE)
 			return -FDT_ERR_ALIGNMENT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Bounds check memrsv block */
 		if (!check_off_(hdrsize, fdt_totalsize(fdt),
 				fdt_off_mem_rsvmap(fdt)))

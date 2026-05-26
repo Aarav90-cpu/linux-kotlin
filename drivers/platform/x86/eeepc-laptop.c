@@ -1204,10 +1204,16 @@ static void eeepc_input_notify(struct eeepc_laptop *eeepc, int event)
 		pr_info("Unknown key %x pressed\n", event);
 }
 
+<<<<<<< HEAD
 static void eeepc_acpi_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct eeepc_laptop *eeepc = data;
 	struct acpi_device *device = eeepc->device;
+=======
+static void eeepc_acpi_notify(struct acpi_device *device, u32 event)
+{
+	struct eeepc_laptop *eeepc = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int old_brightness, new_brightness;
 	u16 count;
 
@@ -1361,9 +1367,18 @@ static void eeepc_enable_camera(struct eeepc_laptop *eeepc)
 
 static bool eeepc_device_present;
 
+<<<<<<< HEAD
 static int eeepc_acpi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int eeepc_acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct eeepc_laptop *eeepc;
 	int result;
 
@@ -1378,10 +1393,16 @@ static int eeepc_acpi_probe(struct platform_device *pdev)
 	eeepc->handle = device->handle;
 	strscpy(acpi_device_name(device), EEEPC_ACPI_DEVICE_NAME);
 	strscpy(acpi_device_class(device), EEEPC_ACPI_CLASS);
+<<<<<<< HEAD
 	eeepc->device = device;
 
 	platform_set_drvdata(pdev, eeepc);
 
+=======
+	device->driver_data = eeepc;
+	eeepc->device = device;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eeepc->hotplug_disabled = hotplug_disabled;
 
 	eeepc_dmi_check(eeepc);
@@ -1429,6 +1450,7 @@ static int eeepc_acpi_probe(struct platform_device *pdev)
 	if (result)
 		goto fail_rfkill;
 
+<<<<<<< HEAD
 	result = acpi_dev_install_notify_handler(device, ACPI_ALL_NOTIFY,
 						 eeepc_acpi_notify, eeepc);
 	if (result)
@@ -1439,6 +1461,11 @@ static int eeepc_acpi_probe(struct platform_device *pdev)
 
 fail_acpi_notifier:
 	eeepc_rfkill_exit(eeepc);
+=======
+	eeepc_device_present = true;
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail_rfkill:
 	eeepc_led_exit(eeepc);
 fail_led:
@@ -1454,12 +1481,19 @@ fail_platform:
 	return result;
 }
 
+<<<<<<< HEAD
 static void eeepc_acpi_remove(struct platform_device *pdev)
 {
 	struct eeepc_laptop *eeepc = platform_get_drvdata(pdev);
 
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_ALL_NOTIFY, eeepc_acpi_notify);
+=======
+static void eeepc_acpi_remove(struct acpi_device *device)
+{
+	struct eeepc_laptop *eeepc = acpi_driver_data(device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eeepc_backlight_exit(eeepc);
 	eeepc_rfkill_exit(eeepc);
 	eeepc_input_exit(eeepc);
@@ -1476,12 +1510,24 @@ static const struct acpi_device_id eeepc_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, eeepc_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver eeepc_acpi_driver = {
 	.probe = eeepc_acpi_probe,
 	.remove = eeepc_acpi_remove,
 	.driver = {
 		.name = EEEPC_LAPTOP_NAME,
 		.acpi_match_table = eeepc_device_ids,
+=======
+static struct acpi_driver eeepc_acpi_driver = {
+	.name = EEEPC_LAPTOP_NAME,
+	.class = EEEPC_ACPI_CLASS,
+	.ids = eeepc_device_ids,
+	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+	.ops = {
+		.add = eeepc_acpi_add,
+		.remove = eeepc_acpi_remove,
+		.notify = eeepc_acpi_notify,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -1494,7 +1540,11 @@ static int __init eeepc_laptop_init(void)
 	if (result < 0)
 		return result;
 
+<<<<<<< HEAD
 	result = platform_driver_register(&eeepc_acpi_driver);
+=======
+	result = acpi_bus_register_driver(&eeepc_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result < 0)
 		goto fail_acpi_driver;
 
@@ -1506,7 +1556,11 @@ static int __init eeepc_laptop_init(void)
 	return 0;
 
 fail_no_device:
+<<<<<<< HEAD
 	platform_driver_unregister(&eeepc_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&eeepc_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail_acpi_driver:
 	platform_driver_unregister(&platform_driver);
 	return result;
@@ -1514,7 +1568,11 @@ fail_acpi_driver:
 
 static void __exit eeepc_laptop_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&eeepc_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&eeepc_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_driver_unregister(&platform_driver);
 }
 

@@ -8,7 +8,10 @@
 #include "parse-events.h"
 #include "pmu-events/pmu-events.h"
 #include "pfm.h"
+<<<<<<< HEAD
 #include "target.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <subcmd/parse-options.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -100,8 +103,12 @@ out:	for (i = 0; i < nr_events; i++)
 static int expand_default_events(void)
 {
 	int ret;
+<<<<<<< HEAD
 	struct target target = {};
 	struct evlist *evlist = evlist__new_default(&target, /*sample_callchains=*/false);
+=======
+	struct evlist *evlist = evlist__new_default();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT_VAL("failed to get evlist", evlist);
 

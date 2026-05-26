@@ -596,6 +596,10 @@ config CLKSRC_VERSATILE
 config CLKSRC_MIPS_GIC
 	bool
 	depends on MIPS_GIC
+<<<<<<< HEAD
+=======
+	select CLOCKSOURCE_WATCHDOG
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select TIMER_OF
 
 config CLKSRC_PXA

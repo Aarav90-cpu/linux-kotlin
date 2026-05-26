@@ -349,7 +349,13 @@ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
 	cmd->req.sg = NULL;
 }
 
+<<<<<<< HEAD
 static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+=======
+static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
+
+static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bio_vec *iov = cmd->iov;
 	struct scatterlist *sg;
@@ -362,19 +368,37 @@ static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
 	offset = cmd->rbytes_done;
 	cmd->sg_idx = offset / PAGE_SIZE;
 	sg_offset = offset % PAGE_SIZE;
+<<<<<<< HEAD
 	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt)
 		return -EPROTO;
 
+=======
+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
+		nvmet_tcp_fatal_error(cmd->queue);
+		return;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sg = &cmd->req.sg[cmd->sg_idx];
 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
 
 	while (length) {
+<<<<<<< HEAD
 		if (!sg_remaining)
 			return -EPROTO;
 
 		if (!sg->length || sg->length <= sg_offset)
 			return -EPROTO;
 
+=======
+		if (!sg_remaining) {
+			nvmet_tcp_fatal_error(cmd->queue);
+			return;
+		}
+		if (!sg->length || sg->length <= sg_offset) {
+			nvmet_tcp_fatal_error(cmd->queue);
+			return;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
 
 		bvec_set_page(iov, sg_page(sg), iov_len,
@@ -389,10 +413,16 @@ static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
 
 	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
 		      nr_pages, cmd->pdu_len);
+<<<<<<< HEAD
 	return 0;
 }
 
 static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
+=======
+}
+
+static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Keep rcv_state at RECV_ERR even for the internal -ESHUTDOWN path.
@@ -408,10 +438,26 @@ static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
 	 * That is why queue->rcv_state needs to be updated before we return.
 	 */
 	queue->rcv_state = NVMET_TCP_RECV_ERR;
+<<<<<<< HEAD
 	if (status == -EPIPE || status == -ECONNRESET || !queue->nvme_sq.ctrl)
 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
 	else
 		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
+=======
+	if (queue->nvme_sq.ctrl)
+		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
+	else
+		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
+}
+
+static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
+{
+	queue->rcv_state = NVMET_TCP_RECV_ERR;
+	if (status == -EPIPE || status == -ECONNRESET)
+		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
+	else
+		nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
@@ -887,6 +933,10 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
 	if (le32_to_cpu(icreq->hdr.plen) != sizeof(struct nvme_tcp_icreq_pdu)) {
 		pr_err("bad nvme-tcp pdu length (%d)\n",
 			le32_to_cpu(icreq->hdr.plen));
+<<<<<<< HEAD
+=======
+		nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EPROTO;
 	}
 
@@ -943,7 +993,11 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+=======
+static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct nvmet_tcp_cmd *cmd, struct nvmet_req *req)
 {
 	size_t data_len = le32_to_cpu(req->cmd->common.dptr.sgl.length);
@@ -959,12 +1013,17 @@ static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
 	if (!nvme_is_write(cmd->req.cmd) || !data_len ||
 	    data_len > cmd->req.port->inline_data_size) {
 		nvmet_prepare_receive_pdu(queue);
+<<<<<<< HEAD
 		return 0;
+=======
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = nvmet_tcp_map_data(cmd);
 	if (unlikely(ret)) {
 		pr_err("queue %d: failed to map data\n", queue->idx);
+<<<<<<< HEAD
 		return -EPROTO;
 	}
 
@@ -975,6 +1034,15 @@ static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
 		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
 
 	return ret;
+=======
+		nvmet_tcp_fatal_error(queue);
+		return;
+	}
+
+	queue->rcv_state = NVMET_TCP_RECV_DATA;
+	nvmet_tcp_build_pdu_iovec(cmd);
+	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
@@ -1026,10 +1094,14 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
 		goto err_proto;
 	}
 	cmd->pdu_recv = 0;
+<<<<<<< HEAD
 	if (unlikely(nvmet_tcp_build_pdu_iovec(cmd))) {
 		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
 		goto err_proto;
 	}
+=======
+	nvmet_tcp_build_pdu_iovec(cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	queue->cmd = cmd;
 	queue->rcv_state = NVMET_TCP_RECV_DATA;
 
@@ -1037,6 +1109,10 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
 
 err_proto:
 	/* FIXME: use proper transport errors */
+<<<<<<< HEAD
+=======
+	nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -EPROTO;
 }
 
@@ -1051,6 +1127,10 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
 		if (hdr->type != nvme_tcp_icreq) {
 			pr_err("unexpected pdu type (%d) before icreq\n",
 				hdr->type);
+<<<<<<< HEAD
+=======
+			nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EPROTO;
 		}
 		return nvmet_tcp_handle_icreq(queue);
@@ -1059,6 +1139,10 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
 	if (unlikely(hdr->type == nvme_tcp_icreq)) {
 		pr_err("queue %d: received icreq pdu in state %d\n",
 			queue->idx, queue->state);
+<<<<<<< HEAD
+=======
+		nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EPROTO;
 	}
 
@@ -1075,6 +1159,10 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
 		pr_err("queue %d: out of commands (%d) send_list_len: %d, opcode: %d",
 			queue->idx, queue->nr_cmds, queue->send_list_len,
 			nvme_cmd->common.opcode);
+<<<<<<< HEAD
+=======
+		nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 	}
 
@@ -1088,16 +1176,27 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
 			le32_to_cpu(req->cmd->common.dptr.sgl.length),
 			le16_to_cpu(req->cqe->status));
 
+<<<<<<< HEAD
 		return nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
+=======
+		nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = nvmet_tcp_map_data(queue->cmd);
 	if (unlikely(ret)) {
 		pr_err("queue %d: failed to map data\n", queue->idx);
 		if (nvmet_tcp_has_inline_data(queue->cmd))
+<<<<<<< HEAD
 			return -EPROTO;
 
 		nvmet_req_complete(req, ret);
+=======
+			nvmet_tcp_fatal_error(queue);
+		else
+			nvmet_req_complete(req, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EAGAIN;
 		goto out;
 	}
@@ -1105,11 +1204,16 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
 	if (nvmet_tcp_need_data_in(queue->cmd)) {
 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
 			queue->rcv_state = NVMET_TCP_RECV_DATA;
+<<<<<<< HEAD
 			ret = nvmet_tcp_build_pdu_iovec(queue->cmd);
 			if (unlikely(ret))
 				pr_err("queue %d: failed to build PDU iovec\n",
 					queue->idx);
 			return ret;
+=======
+			nvmet_tcp_build_pdu_iovec(queue->cmd);
+			return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* send back R2T */
 		nvmet_tcp_queue_response(&queue->cmd->req);
@@ -1220,6 +1324,10 @@ recv:
 
 		if (unlikely(!nvmet_tcp_pdu_valid(hdr->type))) {
 			pr_err("unexpected pdu type %d\n", hdr->type);
+<<<<<<< HEAD
+=======
+			nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EIO;
 		}
 
@@ -1233,12 +1341,25 @@ recv:
 	}
 
 	if (queue->hdr_digest &&
+<<<<<<< HEAD
 	    nvmet_tcp_verify_hdgst(queue, &queue->pdu, hdr->hlen))
 		return -EPROTO;
 
 	if (queue->data_digest &&
 	    nvmet_tcp_check_ddgst(queue, &queue->pdu))
 		return -EPROTO;
+=======
+	    nvmet_tcp_verify_hdgst(queue, &queue->pdu, hdr->hlen)) {
+		nvmet_tcp_fatal_error(queue); /* fatal */
+		return -EPROTO;
+	}
+
+	if (queue->data_digest &&
+	    nvmet_tcp_check_ddgst(queue, &queue->pdu)) {
+		nvmet_tcp_fatal_error(queue); /* fatal */
+		return -EPROTO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nvmet_tcp_done_recv_pdu(queue);
 }
@@ -1321,11 +1442,17 @@ static int nvmet_tcp_try_recv_ddgst(struct nvmet_tcp_queue *queue)
 			queue->idx, cmd->req.cmd->common.command_id,
 			queue->pdu.cmd.hdr.type, le32_to_cpu(cmd->recv_ddgst),
 			le32_to_cpu(cmd->exp_ddgst));
+<<<<<<< HEAD
 		if (!(cmd->flags & NVMET_TCP_F_INIT_FAILED)) {
 			cmd->req.cqe->status = NVME_SC_CMD_SEQ_ERROR;
 			nvmet_req_uninit(&cmd->req);
 		}
 		nvmet_tcp_free_cmd_buffers(cmd);
+=======
+		nvmet_req_uninit(&cmd->req);
+		nvmet_tcp_free_cmd_buffers(cmd);
+		nvmet_tcp_fatal_error(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EPROTO;
 		goto out;
 	}
@@ -2238,7 +2365,11 @@ static int __init nvmet_tcp_init(void)
 	int ret;
 
 	nvmet_tcp_wq = alloc_workqueue("nvmet_tcp_wq",
+<<<<<<< HEAD
 				WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_PERCPU, 0);
+=======
+				WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nvmet_tcp_wq)
 		return -ENOMEM;
 

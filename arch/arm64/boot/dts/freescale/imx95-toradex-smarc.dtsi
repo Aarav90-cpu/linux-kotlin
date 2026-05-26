@@ -144,6 +144,7 @@
 		startup-delay-us = <2000>;
 	};
 
+<<<<<<< HEAD
 	remoteproc-cm7 {
 		compatible = "fsl,imx95-cm7";
 		mboxes = <&mu7 0 1 &mu7 1 1 &mu7 3 1>;
@@ -152,6 +153,8 @@
 				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>, <&m7_reserved>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -164,6 +167,7 @@
 			alloc-ranges = <0 0x80000000 0 0x7f000000>;
 			linux,cma-default;
 		};
+<<<<<<< HEAD
 
 		m7_reserved: memory@80000000 {
 			reg = <0 0x80000000 0 0x1000000>;
@@ -200,6 +204,8 @@
 			reg = <0 0x88020000 0 0x100000>;
 			no-map;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -615,10 +621,13 @@
 	pinctrl-0 = <&pinctrl_uart3>;
 };
 
+<<<<<<< HEAD
 &mu7 {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* SMARC MDIO, shared between all ethernet ports */
 &netc_emdio {
 	pinctrl-names = "default";

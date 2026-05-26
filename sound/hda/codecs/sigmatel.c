@@ -309,7 +309,19 @@ static void stac_gpio_set(struct hda_codec *codec, unsigned int mask,
 	/* Configure GPIOx as CMOS */
 	snd_hda_codec_write(codec, fg, 0, 0x7e7, 0);
 
+<<<<<<< HEAD
 	snd_hda_codec_set_gpio(codec, gpiomask, gpiodir, gpiostate, 1);
+=======
+	snd_hda_codec_write(codec, fg, 0,
+			    AC_VERB_SET_GPIO_MASK, gpiomask);
+	snd_hda_codec_read(codec, fg, 0,
+			   AC_VERB_SET_GPIO_DIRECTION, gpiodir); /* sync */
+
+	msleep(1);
+
+	snd_hda_codec_read(codec, fg, 0,
+			   AC_VERB_SET_GPIO_DATA, gpiostate); /* sync */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* hook for controlling mic-mute LED GPIO */

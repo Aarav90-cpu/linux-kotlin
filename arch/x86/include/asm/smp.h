@@ -130,6 +130,10 @@ __visible void smp_call_function_interrupt(struct pt_regs *regs);
 __visible void smp_call_function_single_interrupt(struct pt_regs *r);
 
 #define cpu_physical_id(cpu)	per_cpu(x86_cpu_to_apicid, cpu)
+<<<<<<< HEAD
+=======
+#define cpu_acpi_id(cpu)	per_cpu(x86_cpu_to_acpiid, cpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This function is needed by all SMP systems. It must _always_ be valid

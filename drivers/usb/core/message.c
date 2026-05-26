@@ -1063,7 +1063,11 @@ int usb_string(struct usb_device *dev, int index, char *buf, size_t size)
 }
 EXPORT_SYMBOL_GPL(usb_string);
 
+<<<<<<< HEAD
 /* one 16-bit character, when UTF-8-encoded, has at most three bytes */
+=======
+/* one UTF-8-encoded 16-bit character has at most three bytes */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_USB_STRING_SIZE (127 * 3 + 1)
 
 /**
@@ -1084,6 +1088,7 @@ char *usb_cache_string(struct usb_device *udev, int index)
 		return NULL;
 
 	buf = kmalloc(MAX_USB_STRING_SIZE, GFP_NOIO);
+<<<<<<< HEAD
 	if (!buf)
 		return NULL;
 
@@ -1096,6 +1101,18 @@ char *usb_cache_string(struct usb_device *udev, int index)
 	smallbuf = krealloc(buf, len + 1, GFP_NOIO);
 	if (unlikely(!smallbuf))
 		return buf;
+=======
+	if (buf) {
+		len = usb_string(udev, index, buf, MAX_USB_STRING_SIZE);
+		if (len > 0) {
+			smallbuf = kmalloc(++len, GFP_NOIO);
+			if (!smallbuf)
+				return buf;
+			memcpy(smallbuf, buf, len);
+		}
+		kfree(buf);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return smallbuf;
 }
 EXPORT_SYMBOL_GPL(usb_cache_string);

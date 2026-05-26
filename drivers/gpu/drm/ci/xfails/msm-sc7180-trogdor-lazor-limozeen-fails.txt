@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 core_setmaster@master-drop-set-user,Fail
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_color@ctm-0-25,Fail
 kms_color@ctm-0-50,Fail
 kms_color@ctm-0-75,Fail
@@ -15,8 +18,16 @@ kms_flip@flip-vs-modeset-vs-hang,Fail
 kms_flip@flip-vs-panning-vs-hang,Fail
 kms_lease@lease-uevent,Fail
 kms_pipe_crc_basic@compare-crc-sanitycheck-nv12,Fail
+<<<<<<< HEAD
 kms_plane_alpha_blend@alpha-7efc,Fail
 kms_plane_alpha_blend@coverage-7efc,Fail
 kms_plane_alpha_blend@coverage-vs-premult-vs-constant,Fail
 kms_plane@pixel-format,Fail
 kms_plane@pixel-format-source-clamping,Fail
+=======
+kms_plane@pixel-format,Fail
+kms_plane@pixel-format-source-clamping,Fail
+kms_plane_alpha_blend@alpha-7efc,Fail
+kms_plane_alpha_blend@coverage-7efc,Fail
+kms_plane_alpha_blend@coverage-vs-premult-vs-constant,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

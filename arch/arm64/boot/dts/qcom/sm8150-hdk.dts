@@ -20,7 +20,10 @@
 
 	aliases {
 		serial0 = &uart2;
+<<<<<<< HEAD
 		serial1 = &uart13;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
@@ -67,6 +70,7 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	wcn3998-pmu {
 		compatible = "qcom,wcn3998-pmu";
@@ -104,6 +108,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &apps_rsc {
@@ -636,10 +642,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &qupv3_id_2 {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &remoteproc_adsp {
 	status = "okay";
 
@@ -672,6 +681,7 @@
 		bias-disable;
 	};
 
+<<<<<<< HEAD
 	qup_uart13_default: qup-uart13-default-state {
 		cts-pins {
 			pins = "gpio43";
@@ -737,12 +747,15 @@
 		function = "gpio";
 		bias-pull-down;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart2 {
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart13 {
 	/delete-property/ interrupts;
 	interrupts-extended = <&intc GIC_SPI 585 IRQ_TYPE_LEVEL_HIGH>,
@@ -763,6 +776,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &ufs_mem_hc {
 	status = "okay";
 
@@ -836,6 +851,7 @@
 };
 
 &wifi {
+<<<<<<< HEAD
 	/* SoC */
 	vdd-0.8-cx-mx-supply = <&vreg_l1a_0p75>;
 
@@ -848,4 +864,14 @@
 	qcom,calibration-variant = "Qualcomm_sm8150hdk";
 
 	status = "okay";
+=======
+	status = "okay";
+
+	vdd-0.8-cx-mx-supply = <&vreg_l1a_0p75>;
+	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+	vdd-1.3-rfa-supply = <&vreg_l2c_1p3>;
+	vdd-3.3-ch0-supply = <&vreg_l11c_3p3>;
+
+	qcom,calibration-variant = "Qualcomm_sm8150hdk";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

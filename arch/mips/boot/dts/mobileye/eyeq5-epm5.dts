@@ -29,6 +29,7 @@
 		label = "U60";
 	};
 };
+<<<<<<< HEAD
 
 &macb0 {
 	phy-mode = "sgmii";
@@ -55,3 +56,5 @@
 		};
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

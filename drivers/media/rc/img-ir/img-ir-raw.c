@@ -136,7 +136,10 @@ void img_ir_remove_raw(struct img_ir_priv *priv)
 	if (!rdev)
 		return;
 
+<<<<<<< HEAD
 	rc_unregister_device(rdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* switch off and disable raw (edge) interrupts */
 	spin_lock_irq(&priv->lock);
 	raw->rdev = NULL;
@@ -146,7 +149,11 @@ void img_ir_remove_raw(struct img_ir_priv *priv)
 	img_ir_write(priv, IMG_IR_IRQ_CLEAR, IMG_IR_IRQ_EDGE);
 	spin_unlock_irq(&priv->lock);
 
+<<<<<<< HEAD
 	rc_free_device(rdev);
+=======
+	rc_unregister_device(rdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	timer_delete_sync(&raw->timer);
 }

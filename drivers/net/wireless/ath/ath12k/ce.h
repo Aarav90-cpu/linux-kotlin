@@ -38,6 +38,7 @@
 #define PIPEDIR_INOUT		3 /* bidirectional */
 #define PIPEDIR_INOUT_H2H	4 /* bidirectional, host to host */
 
+<<<<<<< HEAD
 /* IPQ5332 CE address/mask */
 #define CE_HOST_IPQ5332_IE_ADDRESS	0x75804C
 #define CE_HOST_IPQ5332_IE_2_ADDRESS	0x758050
@@ -47,6 +48,12 @@
 #define CE_HOST_IPQ5424_IE_ADDRESS	0x21804C
 #define CE_HOST_IPQ5424_IE_2_ADDRESS	0x218050
 #define CE_HOST_IPQ5424_IE_3_ADDRESS	CE_HOST_IPQ5424_IE_ADDRESS
+=======
+/* CE address/mask */
+#define CE_HOST_IE_ADDRESS	0x75804C
+#define CE_HOST_IE_2_ADDRESS	0x758050
+#define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CE_HOST_IE_3_SHIFT	0xC
 

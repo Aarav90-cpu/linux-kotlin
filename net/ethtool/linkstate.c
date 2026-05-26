@@ -1,11 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include <linux/phy.h>
 #include <linux/phylib_stubs.h>
 
 #include "common.h"
 #include "netlink.h"
 
+=======
+#include "netlink.h"
+#include "common.h"
+#include <linux/phy.h>
+#include <linux/phylib_stubs.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct linkstate_req_info {
 	struct ethnl_req_info		base;
 };

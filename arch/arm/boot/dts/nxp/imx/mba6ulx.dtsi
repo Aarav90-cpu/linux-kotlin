@@ -95,7 +95,10 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	reg_mba6ul_5v0: regulator-mba6ul-5v0 {
@@ -337,7 +340,10 @@
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -394,7 +400,10 @@
 	no-1-8-v;
 	no-mmc;
 	no-sdio;
+<<<<<<< HEAD
 	bootph-all;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -402,7 +411,10 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_wdog1>;
 	fsl,ext-reset-output;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -498,7 +510,10 @@
 			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
 			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
 		>;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pinctrl_uart3: uart3grp {
@@ -547,7 +562,10 @@
 			/* CD */
 			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
 		>;
+<<<<<<< HEAD
 		bootph-all;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {

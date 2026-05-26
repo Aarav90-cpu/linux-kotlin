@@ -93,7 +93,11 @@ long rbtree_refcounted_node_ref_escapes_owning_input(void *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 SEC("?fentry.s/" SYS_PREFIX "sys_getpgid")
+=======
+SEC("?fentry.s/bpf_testmod_test_read")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __failure __msg("function calls are not allowed while holding a lock")
 int BPF_PROG(rbtree_fail_sleepable_lock_across_rcu,
 	     struct file *file, struct kobject *kobj,

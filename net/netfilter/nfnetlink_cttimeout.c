@@ -457,6 +457,10 @@ static int cttimeout_default_get(struct sk_buff *skb,
 		timeouts = nf_tcp_pernet(info->net)->timeouts;
 		break;
 	case IPPROTO_UDP:
+<<<<<<< HEAD
+=======
+	case IPPROTO_UDPLITE:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		timeouts = nf_udp_pernet(info->net)->timeouts;
 		break;
 	case IPPROTO_ICMPV6:

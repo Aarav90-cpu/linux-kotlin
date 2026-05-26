@@ -35,9 +35,17 @@ unsigned self_inum __ro_after_init;
 
 int proc_setup_self(struct super_block *s)
 {
+<<<<<<< HEAD
 	struct dentry *self;
 	int ret = -ENOMEM;
 
+=======
+	struct inode *root_inode = d_inode(s->s_root);
+	struct dentry *self;
+	int ret = -ENOMEM;
+
+	inode_lock(root_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	self = d_alloc_name(s->s_root, "self");
 	if (self) {
 		struct inode *inode = new_inode(s);
@@ -53,6 +61,10 @@ int proc_setup_self(struct super_block *s)
 		}
 		dput(self);
 	}
+<<<<<<< HEAD
+=======
+	inode_unlock(root_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		pr_err("proc_fill_super: can't allocate /proc/self\n");

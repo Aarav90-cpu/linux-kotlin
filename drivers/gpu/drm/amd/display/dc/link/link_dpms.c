@@ -181,8 +181,12 @@ void link_set_all_streams_dpms_off_for_link(struct dc_link *link)
 	/* link can be also enabled by vbios. In this case it is not recorded
 	 * in pipe_ctx. Disable link phy here to make sure it is completely off
 	 */
+<<<<<<< HEAD
 	if (dc_is_dp_signal(link->connector_signal))
 		dp_disable_link_phy(link, &link_res, link->connector_signal);
+=======
+	dp_disable_link_phy(link, &link_res, link->connector_signal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void link_resume(struct dc_link *link)
@@ -224,6 +228,7 @@ void link_get_master_pipes_with_dpms_on(const struct dc_link *link,
 	}
 }
 
+<<<<<<< HEAD
 static struct ext_hdmi_settings create_ext_hdmi_settings(
 		uint8_t address,
 		uint8_t reg_num,
@@ -250,6 +255,18 @@ static bool get_ext_hdmi_settings(
 )
 {
 	if (!settings || !info)
+=======
+static bool get_ext_hdmi_settings(struct pipe_ctx *pipe_ctx,
+		enum engine_id eng_id,
+		struct ext_hdmi_settings *settings)
+{
+	bool result = false;
+	int i = 0;
+	struct integrated_info *integrated_info =
+			pipe_ctx->stream->ctx->dc_bios->integrated_info;
+
+	if (integrated_info == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/*
@@ -259,6 +276,7 @@ static bool get_ext_hdmi_settings(
 	 */
 
 	// Check if current bios contains ext Hdmi settings
+<<<<<<< HEAD
 	if (!(info->gpu_cap_info & 0x20))
 		return false;
 
@@ -432,10 +450,119 @@ static bool write_i2c_retimer_byte(
 
 static bool write_i2c_retimer_setting(
 		const struct dc_link *link,
+=======
+	if (integrated_info->gpu_cap_info & 0x20) {
+		switch (eng_id) {
+		case ENGINE_ID_DIGA:
+			settings->slv_addr = integrated_info->dp0_ext_hdmi_slv_addr;
+			settings->reg_num = integrated_info->dp0_ext_hdmi_6g_reg_num;
+			settings->reg_num_6g = integrated_info->dp0_ext_hdmi_6g_reg_num;
+			memmove(settings->reg_settings,
+					integrated_info->dp0_ext_hdmi_reg_settings,
+					sizeof(integrated_info->dp0_ext_hdmi_reg_settings));
+			memmove(settings->reg_settings_6g,
+					integrated_info->dp0_ext_hdmi_6g_reg_settings,
+					sizeof(integrated_info->dp0_ext_hdmi_6g_reg_settings));
+			result = true;
+			break;
+		case ENGINE_ID_DIGB:
+			settings->slv_addr = integrated_info->dp1_ext_hdmi_slv_addr;
+			settings->reg_num = integrated_info->dp1_ext_hdmi_6g_reg_num;
+			settings->reg_num_6g = integrated_info->dp1_ext_hdmi_6g_reg_num;
+			memmove(settings->reg_settings,
+					integrated_info->dp1_ext_hdmi_reg_settings,
+					sizeof(integrated_info->dp1_ext_hdmi_reg_settings));
+			memmove(settings->reg_settings_6g,
+					integrated_info->dp1_ext_hdmi_6g_reg_settings,
+					sizeof(integrated_info->dp1_ext_hdmi_6g_reg_settings));
+			result = true;
+			break;
+		case ENGINE_ID_DIGC:
+			settings->slv_addr = integrated_info->dp2_ext_hdmi_slv_addr;
+			settings->reg_num = integrated_info->dp2_ext_hdmi_6g_reg_num;
+			settings->reg_num_6g = integrated_info->dp2_ext_hdmi_6g_reg_num;
+			memmove(settings->reg_settings,
+					integrated_info->dp2_ext_hdmi_reg_settings,
+					sizeof(integrated_info->dp2_ext_hdmi_reg_settings));
+			memmove(settings->reg_settings_6g,
+					integrated_info->dp2_ext_hdmi_6g_reg_settings,
+					sizeof(integrated_info->dp2_ext_hdmi_6g_reg_settings));
+			result = true;
+			break;
+		case ENGINE_ID_DIGD:
+			settings->slv_addr = integrated_info->dp3_ext_hdmi_slv_addr;
+			settings->reg_num = integrated_info->dp3_ext_hdmi_6g_reg_num;
+			settings->reg_num_6g = integrated_info->dp3_ext_hdmi_6g_reg_num;
+			memmove(settings->reg_settings,
+					integrated_info->dp3_ext_hdmi_reg_settings,
+					sizeof(integrated_info->dp3_ext_hdmi_reg_settings));
+			memmove(settings->reg_settings_6g,
+					integrated_info->dp3_ext_hdmi_6g_reg_settings,
+					sizeof(integrated_info->dp3_ext_hdmi_6g_reg_settings));
+			result = true;
+			break;
+		default:
+			break;
+		}
+
+		if (result == true) {
+			// Validate settings from bios integrated info table
+			if (settings->slv_addr == 0)
+				return false;
+			if (settings->reg_num > 9)
+				return false;
+			if (settings->reg_num_6g > 3)
+				return false;
+
+			for (i = 0; i < settings->reg_num; i++) {
+				if (settings->reg_settings[i].i2c_reg_index > 0x20)
+					return false;
+			}
+
+			for (i = 0; i < settings->reg_num_6g; i++) {
+				if (settings->reg_settings_6g[i].i2c_reg_index > 0x20)
+					return false;
+			}
+		}
+	}
+
+	return result;
+}
+
+static bool write_i2c(struct pipe_ctx *pipe_ctx,
+		uint8_t address, uint8_t *buffer, uint32_t length)
+{
+	struct i2c_command cmd = {0};
+	struct i2c_payload payload = {0};
+
+	memset(&payload, 0, sizeof(payload));
+	memset(&cmd, 0, sizeof(cmd));
+
+	cmd.number_of_payloads = 1;
+	cmd.engine = I2C_COMMAND_ENGINE_DEFAULT;
+	cmd.speed = pipe_ctx->stream->ctx->dc->caps.i2c_speed_in_khz;
+
+	payload.address = address;
+	payload.data = buffer;
+	payload.length = length;
+	payload.write = true;
+	cmd.payloads = &payload;
+
+	if (dm_helpers_submit_i2c(pipe_ctx->stream->ctx,
+			pipe_ctx->stream->link, &cmd))
+		return true;
+
+	return false;
+}
+
+static void write_i2c_retimer_setting(
+		struct pipe_ctx *pipe_ctx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool is_vga_mode,
 		bool is_over_340mhz,
 		struct ext_hdmi_settings *settings)
 {
+<<<<<<< HEAD
 	DC_LOGGER_INIT(link->ctx->logger);
 	const uint8_t address = settings->slv_addr >> 1;
 
@@ -457,11 +584,122 @@ static bool write_i2c_retimer_setting(
 			if (!write_i2c_retimer_byte(link, address, index, value)) {
 				DC_LOG_ERROR("Set retimer failed, 6g index: %zu\n", i);
 				return false;
+=======
+	uint8_t slave_address = (settings->slv_addr >> 1);
+	uint8_t buffer[2];
+	const uint8_t apply_rx_tx_change = 0x4;
+	uint8_t offset = 0xA;
+	uint8_t value = 0;
+	int i = 0;
+	bool i2c_success = false;
+	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+
+	memset(&buffer, 0, sizeof(buffer));
+
+	/* Start Ext-Hdmi programming*/
+
+	for (i = 0; i < settings->reg_num; i++) {
+		/* Apply 3G settings */
+		if (settings->reg_settings[i].i2c_reg_index <= 0x20) {
+
+			buffer[0] = settings->reg_settings[i].i2c_reg_index;
+			buffer[1] = settings->reg_settings[i].i2c_reg_val;
+			i2c_success = write_i2c(pipe_ctx, slave_address,
+						buffer, sizeof(buffer));
+			RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+				offset = 0x%x, reg_val= 0x%x, i2c_success = %d\n",
+				slave_address, buffer[0], buffer[1], i2c_success?1:0);
+
+			if (!i2c_success)
+				goto i2c_write_fail;
+
+			/* Based on DP159 specs, APPLY_RX_TX_CHANGE bit in 0x0A
+			 * needs to be set to 1 on every 0xA-0xC write.
+			 */
+			if (settings->reg_settings[i].i2c_reg_index == 0xA ||
+				settings->reg_settings[i].i2c_reg_index == 0xB ||
+				settings->reg_settings[i].i2c_reg_index == 0xC) {
+
+				/* Query current value from offset 0xA */
+				if (settings->reg_settings[i].i2c_reg_index == 0xA)
+					value = settings->reg_settings[i].i2c_reg_val;
+				else {
+					i2c_success =
+						link_query_ddc_data(
+						pipe_ctx->stream->link->ddc,
+						slave_address, &offset, 1, &value, 1);
+					if (!i2c_success)
+						goto i2c_write_fail;
+				}
+
+				buffer[0] = offset;
+				/* Set APPLY_RX_TX_CHANGE bit to 1 */
+				buffer[1] = value | apply_rx_tx_change;
+				i2c_success = write_i2c(pipe_ctx, slave_address,
+						buffer, sizeof(buffer));
+				RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+					offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+					slave_address, buffer[0], buffer[1], i2c_success?1:0);
+				if (!i2c_success)
+					goto i2c_write_fail;
+			}
+		}
+	}
+
+	/* Apply 3G settings */
+	if (is_over_340mhz) {
+		for (i = 0; i < settings->reg_num_6g; i++) {
+			/* Apply 3G settings */
+			if (settings->reg_settings[i].i2c_reg_index <= 0x20) {
+
+				buffer[0] = settings->reg_settings_6g[i].i2c_reg_index;
+				buffer[1] = settings->reg_settings_6g[i].i2c_reg_val;
+				i2c_success = write_i2c(pipe_ctx, slave_address,
+							buffer, sizeof(buffer));
+				RETIMER_REDRIVER_INFO("above 340Mhz: retimer write to slave_address = 0x%x,\
+					offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+					slave_address, buffer[0], buffer[1], i2c_success?1:0);
+
+				if (!i2c_success)
+					goto i2c_write_fail;
+
+				/* Based on DP159 specs, APPLY_RX_TX_CHANGE bit in 0x0A
+				 * needs to be set to 1 on every 0xA-0xC write.
+				 */
+				if (settings->reg_settings_6g[i].i2c_reg_index == 0xA ||
+					settings->reg_settings_6g[i].i2c_reg_index == 0xB ||
+					settings->reg_settings_6g[i].i2c_reg_index == 0xC) {
+
+					/* Query current value from offset 0xA */
+					if (settings->reg_settings_6g[i].i2c_reg_index == 0xA)
+						value = settings->reg_settings_6g[i].i2c_reg_val;
+					else {
+						i2c_success =
+								link_query_ddc_data(
+								pipe_ctx->stream->link->ddc,
+								slave_address, &offset, 1, &value, 1);
+						if (!i2c_success)
+							goto i2c_write_fail;
+					}
+
+					buffer[0] = offset;
+					/* Set APPLY_RX_TX_CHANGE bit to 1 */
+					buffer[1] = value | apply_rx_tx_change;
+					i2c_success = write_i2c(pipe_ctx, slave_address,
+							buffer, sizeof(buffer));
+					RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+						offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+						slave_address, buffer[0], buffer[1], i2c_success?1:0);
+					if (!i2c_success)
+						goto i2c_write_fail;
+				}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
 
 	if (is_vga_mode) {
+<<<<<<< HEAD
 		return write_i2c_retimer_vga(link, address);
 	}
 	return true;
@@ -521,6 +759,201 @@ static bool write_i2c_redriver_setting(
 	if (!success)
 		DC_LOG_ERROR("Set redriver failed");
 	return success;
+=======
+		/* Program additional settings if using 640x480 resolution */
+
+		/* Write offset 0xFF to 0x01 */
+		buffer[0] = 0xff;
+		buffer[1] = 0x01;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+				offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+				slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+
+		/* Write offset 0x00 to 0x23 */
+		buffer[0] = 0x00;
+		buffer[1] = 0x23;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+			offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+			slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+
+		/* Write offset 0xff to 0x00 */
+		buffer[0] = 0xff;
+		buffer[1] = 0x00;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write to slave_address = 0x%x,\
+			offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+			slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+
+	}
+
+	return;
+
+i2c_write_fail:
+	DC_LOG_DEBUG("Set retimer failed");
+}
+
+static void write_i2c_default_retimer_setting(
+		struct pipe_ctx *pipe_ctx,
+		bool is_vga_mode,
+		bool is_over_340mhz)
+{
+	uint8_t slave_address = (0xBA >> 1);
+	uint8_t buffer[2];
+	bool i2c_success = false;
+	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+
+	memset(&buffer, 0, sizeof(buffer));
+
+	/* Program Slave Address for tuning single integrity */
+	/* Write offset 0x0A to 0x13 */
+	buffer[0] = 0x0A;
+	buffer[1] = 0x13;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer writes default setting to slave_address = 0x%x,\
+		offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+	/* Write offset 0x0A to 0x17 */
+	buffer[0] = 0x0A;
+	buffer[1] = 0x17;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+		offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+	/* Write offset 0x0B to 0xDA or 0xD8 */
+	buffer[0] = 0x0B;
+	buffer[1] = is_over_340mhz ? 0xDA : 0xD8;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+		offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+	/* Write offset 0x0A to 0x17 */
+	buffer[0] = 0x0A;
+	buffer[1] = 0x17;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+		offset = 0x%x, reg_val= 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+	/* Write offset 0x0C to 0x1D or 0x91 */
+	buffer[0] = 0x0C;
+	buffer[1] = is_over_340mhz ? 0x1D : 0x91;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+		offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+	/* Write offset 0x0A to 0x17 */
+	buffer[0] = 0x0A;
+	buffer[1] = 0x17;
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+			buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+		offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+		slave_address, buffer[0], buffer[1], i2c_success?1:0);
+	if (!i2c_success)
+		goto i2c_write_fail;
+
+
+	if (is_vga_mode) {
+		/* Program additional settings if using 640x480 resolution */
+
+		/* Write offset 0xFF to 0x01 */
+		buffer[0] = 0xff;
+		buffer[1] = 0x01;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+			offset = 0x%x, reg_val = 0x%x, i2c_success = %d\n",
+			slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+
+		/* Write offset 0x00 to 0x23 */
+		buffer[0] = 0x00;
+		buffer[1] = 0x23;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write to slave_addr = 0x%x,\
+			offset = 0x%x, reg_val= 0x%x, i2c_success = %d\n",
+			slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+
+		/* Write offset 0xff to 0x00 */
+		buffer[0] = 0xff;
+		buffer[1] = 0x00;
+		i2c_success = write_i2c(pipe_ctx, slave_address,
+				buffer, sizeof(buffer));
+		RETIMER_REDRIVER_INFO("retimer write default setting to slave_addr = 0x%x,\
+			offset = 0x%x, reg_val= 0x%x, i2c_success = %d end here\n",
+			slave_address, buffer[0], buffer[1], i2c_success?1:0);
+		if (!i2c_success)
+			goto i2c_write_fail;
+	}
+
+	return;
+
+i2c_write_fail:
+	DC_LOG_DEBUG("Set default retimer failed");
+}
+
+static void write_i2c_redriver_setting(
+		struct pipe_ctx *pipe_ctx,
+		bool is_over_340mhz)
+{
+	uint8_t slave_address = (0xF0 >> 1);
+	uint8_t buffer[16];
+	bool i2c_success = false;
+	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+
+	memset(&buffer, 0, sizeof(buffer));
+
+	// Program Slave Address for tuning single integrity
+	buffer[3] = 0x4E;
+	buffer[4] = 0x4E;
+	buffer[5] = 0x4E;
+	buffer[6] = is_over_340mhz ? 0x4E : 0x4A;
+
+	i2c_success = write_i2c(pipe_ctx, slave_address,
+					buffer, sizeof(buffer));
+	RETIMER_REDRIVER_INFO("redriver write 0 to all 16 reg offset expect following:\n\
+		\t slave_addr = 0x%x, offset[3] = 0x%x, offset[4] = 0x%x,\
+		offset[5] = 0x%x,offset[6] is_over_340mhz = 0x%x,\
+		i2c_success = %d\n",
+		slave_address, buffer[3], buffer[4], buffer[5], buffer[6], i2c_success?1:0);
+
+	if (!i2c_success)
+		DC_LOG_DEBUG("Set redriver failed");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void update_psp_stream_config(struct pipe_ctx *pipe_ctx, bool dpms_off)
@@ -1796,6 +2229,7 @@ static void enable_link_hdmi(struct pipe_ctx *pipe_ctx)
 			/* DP159, Retimer settings */
 			eng_id = pipe_ctx->stream_res.stream_enc->id;
 
+<<<<<<< HEAD
 			if (get_ext_hdmi_settings(stream->ctx->dc_bios->integrated_info, eng_id, &settings)) {
 				write_i2c_retimer_setting(link, is_vga_mode, is_over_340mhz, &settings);
 			} else {
@@ -1804,6 +2238,18 @@ static void enable_link_hdmi(struct pipe_ctx *pipe_ctx)
 		} else if (masked_chip_caps == AMD_EXT_DISPLAY_PATH_CAPS__HDMI20_PI3EQX1204) {
 			/* PI3EQX1204, Redriver settings */
 			write_i2c_redriver_setting(link, is_over_340mhz);
+=======
+			if (get_ext_hdmi_settings(pipe_ctx, eng_id, &settings)) {
+				write_i2c_retimer_setting(pipe_ctx,
+						is_vga_mode, is_over_340mhz, &settings);
+			} else {
+				write_i2c_default_retimer_setting(pipe_ctx,
+						is_vga_mode, is_over_340mhz);
+			}
+		} else if (masked_chip_caps == AMD_EXT_DISPLAY_PATH_CAPS__HDMI20_PI3EQX1204) {
+			/* PI3EQX1204, Redriver settings */
+			write_i2c_redriver_setting(pipe_ctx, is_over_340mhz);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -2225,6 +2671,7 @@ void link_set_dpms_off(struct pipe_ctx *pipe_ctx)
 			false);
 		if (masked_chip_caps == AMD_EXT_DISPLAY_PATH_CAPS__HDMI20_TISN65DP159RSBT) {
 			/* DP159, Retimer settings */
+<<<<<<< HEAD
 			if (get_ext_hdmi_settings(stream->ctx->dc_bios->integrated_info, eng_id, &settings))
 				write_i2c_retimer_setting(link, false, false, &settings);
 			else
@@ -2232,6 +2679,17 @@ void link_set_dpms_off(struct pipe_ctx *pipe_ctx)
 		} else if (masked_chip_caps == AMD_EXT_DISPLAY_PATH_CAPS__HDMI20_PI3EQX1204) {
 			/* PI3EQX1204, Redriver settings */
 			write_i2c_redriver_setting(link, false);
+=======
+			if (get_ext_hdmi_settings(pipe_ctx, eng_id, &settings))
+				write_i2c_retimer_setting(pipe_ctx,
+						false, false, &settings);
+			else
+				write_i2c_default_retimer_setting(pipe_ctx,
+						false, false);
+		} else if (masked_chip_caps == AMD_EXT_DISPLAY_PATH_CAPS__HDMI20_PI3EQX1204) {
+			/* PI3EQX1204, Redriver settings */
+			write_i2c_redriver_setting(pipe_ctx, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

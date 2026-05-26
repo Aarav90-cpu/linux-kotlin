@@ -56,6 +56,7 @@ struct memfd_luo_folio_ser {
 	u64 index;
 } __packed;
 
+<<<<<<< HEAD
 /*
  * The set of seals this version supports preserving. If support for any new
  * seals is needed, add it here and bump version.
@@ -67,13 +68,18 @@ struct memfd_luo_folio_ser {
 			     F_SEAL_FUTURE_WRITE | \
 			     F_SEAL_EXEC)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct memfd_luo_ser - Main serialization structure for a memfd.
  * @pos:       The file's current position (f_pos).
  * @size:      The total size of the file in bytes (i_size).
+<<<<<<< HEAD
  * @seals:     The seals present on the memfd. The seals are uABI so it is safe
  *             to directly use them in the ABI.
  * @flags:     Flags for the file. Unused flag bits must be set to 0.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @nr_folios: Number of folios in the folios array.
  * @folios:    KHO vmalloc descriptor pointing to the array of
  *             struct memfd_luo_folio_ser.
@@ -81,13 +87,20 @@ struct memfd_luo_folio_ser {
 struct memfd_luo_ser {
 	u64 pos;
 	u64 size;
+<<<<<<< HEAD
 	u32 seals;
 	u32 flags;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 nr_folios;
 	struct kho_vmalloc folios;
 } __packed;
 
 /* The compatibility string for memfd file handler */
+<<<<<<< HEAD
 #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
+=======
+#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v1"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _LINUX_KHO_ABI_MEMFD_H */

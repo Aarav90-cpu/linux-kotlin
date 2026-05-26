@@ -418,8 +418,12 @@ hung_task_detect_count
 ======================
 
 Indicates the total number of tasks that have been detected as hung since
+<<<<<<< HEAD
 the system boot or since the counter was reset. The counter is zeroed when
 a value of 0 is written.
+=======
+the system boot.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 This file shows up if ``CONFIG_DETECT_HUNG_TASK`` is enabled.
 
@@ -1734,3 +1738,15 @@ is 10 seconds.
 
 The softlockup threshold is (``2 * watchdog_thresh``). Setting this
 tunable to zero will disable lockup detection altogether.
+<<<<<<< HEAD
+=======
+
+yield_type:
+===========
+
+BMQ/PDS CPU scheduler only. This determines what type of yield calls
+to sched_yield() will be performed.
+
+  0 - No yield.
+  1 - Requeue task. (default)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

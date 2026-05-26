@@ -13,10 +13,17 @@
 #include "rtw8852b_table.h"
 #include "txrx.h"
 
+<<<<<<< HEAD
 #define RTW8852B_FW_FORMAT_MAX 2
 #define RTW8852B_FW_BASENAME "rtw89/rtw8852b_fw"
 #define RTW8852B_MODULE_FIRMWARE \
 	RTW89_GEN_MODULE_FWNAME(RTW8852B_FW_BASENAME, RTW8852B_FW_FORMAT_MAX)
+=======
+#define RTW8852B_FW_FORMAT_MAX 1
+#define RTW8852B_FW_BASENAME "rtw89/rtw8852b_fw"
+#define RTW8852B_MODULE_FIRMWARE \
+	RTW8852B_FW_BASENAME "-" __stringify(RTW8852B_FW_FORMAT_MAX) ".bin"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct rtw89_hfc_ch_cfg rtw8852b_hfc_chcfg_pcie[] = {
 	{5, 341, grp_0}, /* ACH 0 */
@@ -50,25 +57,43 @@ static const struct rtw89_hfc_param_ini rtw8852b_hfc_param_ini_pcie[] = {
 };
 
 static const struct rtw89_hfc_ch_cfg rtw8852b_hfc_chcfg_usb[] = {
+<<<<<<< HEAD
 	{18, 210, grp_0}, /* ACH 0 */
 	{18, 210, grp_0}, /* ACH 1 */
 	{18, 210, grp_0}, /* ACH 2 */
 	{18, 210, grp_0}, /* ACH 3 */
+=======
+	{18, 152, grp_0}, /* ACH 0 */
+	{18, 152, grp_0}, /* ACH 1 */
+	{18, 152, grp_0}, /* ACH 2 */
+	{18, 152, grp_0}, /* ACH 3 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{0, 0, grp_0}, /* ACH 4 */
 	{0, 0, grp_0}, /* ACH 5 */
 	{0, 0, grp_0}, /* ACH 6 */
 	{0, 0, grp_0}, /* ACH 7 */
+<<<<<<< HEAD
 	{18, 210, grp_0}, /* B0MGQ */
 	{18, 210, grp_0}, /* B0HIQ */
+=======
+	{18, 152, grp_0}, /* B0MGQ */
+	{18, 152, grp_0}, /* B0HIQ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{0, 0, grp_0}, /* B1MGQ */
 	{0, 0, grp_0}, /* B1HIQ */
 	{0, 0, 0} /* FWCMDQ */
 };
 
 static const struct rtw89_hfc_pub_cfg rtw8852b_hfc_pubcfg_usb = {
+<<<<<<< HEAD
 	210, /* Group 0 */
 	0, /* Group 1 */
 	210, /* Public Max */
+=======
+	152, /* Group 0 */
+	0, /* Group 1 */
+	152, /* Public Max */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0 /* WP threshold */
 };
 
@@ -109,10 +134,17 @@ static const struct rtw89_dle_mem rtw8852b_dle_mem_pcie[] = {
 };
 
 static const struct rtw89_dle_mem rtw8852b_dle_mem_usb3[] = {
+<<<<<<< HEAD
 	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size30,
 			   &rtw89_mac_size.ple_size31, &rtw89_mac_size.wde_qt30,
 			   &rtw89_mac_size.wde_qt30, &rtw89_mac_size.ple_qt27,
 			   &rtw89_mac_size.ple_qt28},
+=======
+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size25,
+			   &rtw89_mac_size.ple_size33, &rtw89_mac_size.wde_qt25,
+			   &rtw89_mac_size.wde_qt25, &rtw89_mac_size.ple_qt74,
+			   &rtw89_mac_size.ple_qt75},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size9,
 			    &rtw89_mac_size.ple_size8, &rtw89_mac_size.wde_qt4,
 			    &rtw89_mac_size.wde_qt4, &rtw89_mac_size.ple_qt13,
@@ -911,11 +943,16 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
 	.ops			= &rtw8852b_chip_ops,
 	.mac_def		= &rtw89_mac_gen_ax,
 	.phy_def		= &rtw89_phy_gen_ax,
+<<<<<<< HEAD
 	.fw_def			= {
 		.fw_basename	= RTW8852B_FW_BASENAME,
 		.fw_format_max	= RTW8852B_FW_FORMAT_MAX,
 		.fw_b_aid	= 0,
 	},
+=======
+	.fw_basename		= RTW8852B_FW_BASENAME,
+	.fw_format_max		= RTW8852B_FW_FORMAT_MAX,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.try_ce_fw		= true,
 	.bbmcu_nr		= 0,
 	.needed_fw_elms		= 0,
@@ -974,7 +1011,11 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
 	.support_noise		= false,
 	.ul_tb_waveform_ctrl	= true,
 	.ul_tb_pwr_diff		= false,
+<<<<<<< HEAD
 	.rx_freq_from_ie	= true,
+=======
+	.rx_freq_frome_ie	= true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.hw_sec_hdr		= false,
 	.hw_mgmt_tx_encrypt	= false,
 	.hw_tkip_crypto		= false,
@@ -1014,10 +1055,13 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
 	.rf_para_ulink		= rtw89_btc_8852b_rf_ul,
 	.rf_para_dlink_num	= ARRAY_SIZE(rtw89_btc_8852b_rf_dl),
 	.rf_para_dlink		= rtw89_btc_8852b_rf_dl,
+<<<<<<< HEAD
 	.rf_para_ulink_v9	= NULL,
 	.rf_para_dlink_v9	= NULL,
 	.rf_para_ulink_num_v9	= 0,
 	.rf_para_dlink_num_v9	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ps_mode_supported	= BIT(RTW89_PS_MODE_RFOFF) |
 				  BIT(RTW89_PS_MODE_CLK_GATED) |
 				  BIT(RTW89_PS_MODE_PWR_GATED),

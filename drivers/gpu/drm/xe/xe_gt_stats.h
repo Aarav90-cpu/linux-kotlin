@@ -14,16 +14,22 @@ struct xe_gt;
 struct drm_printer;
 
 #ifdef CONFIG_DEBUG_FS
+<<<<<<< HEAD
 int xe_gt_stats_init(struct xe_gt *gt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_gt_stats_print_info(struct xe_gt *gt, struct drm_printer *p);
 void xe_gt_stats_clear(struct xe_gt *gt);
 void xe_gt_stats_incr(struct xe_gt *gt, const enum xe_gt_stats_id id, int incr);
 #else
+<<<<<<< HEAD
 static inline int xe_gt_stats_init(struct xe_gt *gt)
 {
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void
 xe_gt_stats_incr(struct xe_gt *gt, const enum xe_gt_stats_id id,
 		 int incr)

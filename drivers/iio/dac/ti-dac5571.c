@@ -45,6 +45,10 @@ static const struct dac5571_spec dac5571_spec[] = {
 
 struct dac5571_data {
 	struct i2c_client *client;
+<<<<<<< HEAD
+=======
+	int id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex lock;
 	struct regulator *vref;
 	u16 val[4];

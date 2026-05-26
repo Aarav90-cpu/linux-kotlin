@@ -34,14 +34,22 @@ static ssize_t multi_intensity_store(struct device *dev,
 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
 	struct led_classdev_mc *mcled_cdev = lcdev_to_mccdev(led_cdev);
 	int nrchars, offset = 0;
+<<<<<<< HEAD
 	unsigned int intensity_value[LED_COLOR_ID_MAX];
+=======
+	int intensity_value[LED_COLOR_ID_MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	ssize_t ret;
 
 	mutex_lock(&led_cdev->led_access);
 
 	for (i = 0; i < mcled_cdev->num_colors; i++) {
+<<<<<<< HEAD
 		ret = sscanf(buf + offset, "%u%n",
+=======
+		ret = sscanf(buf + offset, "%i%n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     &intensity_value[i], &nrchars);
 		if (ret != 1) {
 			ret = -EINVAL;

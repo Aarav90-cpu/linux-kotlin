@@ -193,9 +193,18 @@ void _rtw_xmit_entry(struct sk_buff *pkt, struct net_device *pnetdev)
 
 	rtw_check_xmit_resource(padapter, pkt);
 
+<<<<<<< HEAD
 	if (!rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) &&
 	    (IP_MCAST_MAC(pkt->data) || ICMPV6_MCAST_MAC(pkt->data)) &&
 	    !padapter->registrypriv.wifi_spec) {
+=======
+	if (!rtw_mc2u_disable
+		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == true
+		&& (IP_MCAST_MAC(pkt->data)
+			|| ICMPV6_MCAST_MAC(pkt->data)
+			)
+		&& padapter->registrypriv.wifi_spec == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME / 4)) {
 			res = rtw_mlcst2unicst(padapter, pkt);
 			if (res)

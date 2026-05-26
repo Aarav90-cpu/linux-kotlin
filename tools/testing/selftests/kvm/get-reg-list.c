@@ -216,7 +216,11 @@ static void run_test(struct vcpu_reg_list *c)
 	 * since we don't know the capabilities of any new registers.
 	 */
 	for_each_present_blessed_reg(i) {
+<<<<<<< HEAD
 		u8 addr[2048 / 8];
+=======
+		uint8_t addr[2048 / 8];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct kvm_one_reg reg = {
 			.id = reg_list->reg[i],
 			.addr = (__u64)&addr,

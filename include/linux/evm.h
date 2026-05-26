@@ -18,8 +18,11 @@ extern enum integrity_status evm_verifyxattr(struct dentry *dentry,
 					     const char *xattr_name,
 					     void *xattr_value,
 					     size_t xattr_value_len);
+<<<<<<< HEAD
 int evm_fix_hmac(struct dentry *dentry, const char *xattr_name,
 		 const char *xattr_value, size_t xattr_value_len);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int evm_inode_init_security(struct inode *inode, struct inode *dir,
 			    const struct qstr *qstr, struct xattr *xattrs,
 			    int *xattr_count);
@@ -53,12 +56,15 @@ static inline enum integrity_status evm_verifyxattr(struct dentry *dentry,
 {
 	return INTEGRITY_UNKNOWN;
 }
+<<<<<<< HEAD
 
 static inline int evm_fix_hmac(struct dentry *dentry, const char *xattr_name,
 			       const char *xattr_value, size_t xattr_value_len)
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static inline int evm_inode_init_security(struct inode *inode, struct inode *dir,

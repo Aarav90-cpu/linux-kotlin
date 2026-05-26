@@ -382,7 +382,10 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
 }
 
 extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
+<<<<<<< HEAD
 extern struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Use a define to avoid include chaining to get THIS_MODULE */
 #define spi_register_driver(driver) \
@@ -701,7 +704,11 @@ struct spi_controller {
 	int			(*transfer)(struct spi_device *spi,
 						struct spi_message *mesg);
 
+<<<<<<< HEAD
 	/* Called on deregistration to free memory provided by spi_controller */
+=======
+	/* Called on release() to free memory provided by spi_controller */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void			(*cleanup)(struct spi_device *spi);
 
 	/*
@@ -1019,7 +1026,11 @@ struct spi_res {
  *	this value may have changed compared to what was requested, depending
  *	on the available snapshotting resolution (DMA transfer,
  *	@ptp_sts_supported is false, etc).
+<<<<<<< HEAD
  * @ptp_sts_word_post: See @ptp_sts_word_pre. The two can be equal (meaning
+=======
+ * @ptp_sts_word_post: See @ptp_sts_word_post. The two can be equal (meaning
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	that a single byte should be snapshotted).
  *	If the core takes care of the timestamp (if @ptp_sts_supported is false
  *	for this controller), it will set @ptp_sts_word_pre to 0, and

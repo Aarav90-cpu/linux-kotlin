@@ -59,7 +59,11 @@ SEE ALSO
 ========
 **rtla-osnoise**\(1), **rtla-osnoise-top**\(1)
 
+<<<<<<< HEAD
 `Osnoise tracer <https://docs.kernel.org/trace/osnoise-tracer.html>`__
+=======
+*osnoise* tracer documentation: <https://www.kernel.org/doc/html/latest/trace/osnoise-tracer.html>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AUTHOR
 ======

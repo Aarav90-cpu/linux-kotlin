@@ -25,7 +25,10 @@ adreno-y := \
 	adreno/a6xx_hfi.o \
 	adreno/a6xx_preempt.o \
 	adreno/a8xx_gpu.o \
+<<<<<<< HEAD
 	adreno/a8xx_preempt.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 adreno-$(CONFIG_DEBUG_FS) += adreno/a5xx_debugfs.o \
 

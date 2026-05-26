@@ -37,6 +37,7 @@
 		#size-cells = <2>;
 		ranges;
 
+<<<<<<< HEAD
 		linux,cma {
 			compatible = "shared-dma-pool";
 			reusable;
@@ -44,6 +45,8 @@
 			linux,cma-default;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ramoops@9c700000 {
 			compatible = "ramoops";
 			reg = <0x00 0x9c700000 0x00 0x00100000>;

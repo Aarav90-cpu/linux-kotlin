@@ -494,6 +494,7 @@ static int cyttsp_disable(struct cyttsp *ts)
 static int cyttsp_suspend(struct device *dev)
 {
 	struct cyttsp *ts = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&ts->input->mutex);
@@ -506,18 +507,43 @@ static int cyttsp_suspend(struct device *dev)
 
 	ts->suspended = true;
 	return 0;
+=======
+	int retval = 0;
+
+	mutex_lock(&ts->input->mutex);
+
+	if (input_device_enabled(ts->input)) {
+		retval = cyttsp_disable(ts);
+		if (retval == 0)
+			ts->suspended = true;
+	}
+
+	mutex_unlock(&ts->input->mutex);
+
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int cyttsp_resume(struct device *dev)
 {
 	struct cyttsp *ts = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
+=======
+	mutex_lock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(ts->input))
 		cyttsp_enable(ts);
 
 	ts->suspended = false;
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

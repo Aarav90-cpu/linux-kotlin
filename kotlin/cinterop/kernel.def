@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# Kotlin/Native cinterop definition file for Linux kernel headers.
+#
+# This file tells the Kotlin/Native cinterop tool how to generate
+# Kotlin bindings from C kernel headers. It specifies which headers
+# to process, which functions/types to expose, and compiler flags
+# needed to parse kernel headers correctly.
+#
+# Usage (invoked by the build system):
+#   cinterop -def kotlin/cinterop/kernel.def -o kernel_bindings
+#
+# See: https://kotlinlang.org/docs/native-c-interop.html
+
+headers = linux/kernel.h \
+          linux/module.h \
+          linux/printk.h \
+          linux/slab.h \
+          linux/gfp.h \
+          linux/err.h \
+          linux/mutex.h \
+          linux/spinlock.h \
+          linux/types.h \
+          linux/init.h \
+          linux/uaccess.h \
+          linux/refcount.h \
+          linux/pci.h \
+          linux/usb.h \
+          pci_helpers.h
+
+# Package name for the generated Kotlin bindings
+package = kernel.bindings
+
+# Additional compiler flags for parsing kernel headers.
+# These mirror the flags used when compiling kernel C code.
+compilerOpts = -D__KERNEL__ \
+               -D__linux__ \
+               -DMODULE \
+               -nostdinc \
+               -I/usr/src/linux/include \
+               -I/usr/src/linux/arch/x86/include \
+               -I/usr/src/linux/include/uapi \
+               -I/usr/src/linux/arch/x86/include/uapi \
+               -Ikotlin
+
+# Linker flags (not used directly, but documented for completeness)
+# linkerOpts = -L/lib/modules/$(uname -r)/build
+
+# Functions to explicitly include in the bindings
+# (the kotlin_helper_* functions from helpers.c)
+headerFilter = linux/* kotlin_helper_*

@@ -3,6 +3,7 @@
  *  Kernel timekeeping code and accessor functions. Based on code from
  *  timer.c, moved in commit 8524070b7982.
  */
+<<<<<<< HEAD
 #include <linux/audit.h>
 #include <linux/clocksource.h>
 #include <linux/compiler.h>
@@ -21,12 +22,41 @@
 #include <linux/time.h>
 #include <linux/timex.h>
 #include <linux/timekeeper_internal.h>
+=======
+#include <linux/timekeeper_internal.h>
+#include <linux/module.h>
+#include <linux/interrupt.h>
+#include <linux/kobject.h>
+#include <linux/percpu.h>
+#include <linux/init.h>
+#include <linux/mm.h>
+#include <linux/nmi.h>
+#include <linux/sched.h>
+#include <linux/sched/loadavg.h>
+#include <linux/sched/clock.h>
+#include <linux/syscore_ops.h>
+#include <linux/clocksource.h>
+#include <linux/jiffies.h>
+#include <linux/time.h>
+#include <linux/timex.h>
+#include <linux/tick.h>
+#include <linux/stop_machine.h>
+#include <linux/pvclock_gtod.h>
+#include <linux/compiler.h>
+#include <linux/audit.h>
+#include <linux/random.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <vdso/auxclock.h>
 
 #include "tick-internal.h"
+<<<<<<< HEAD
 #include "timekeeping_internal.h"
 #include "ntp_internal.h"
+=======
+#include "ntp_internal.h"
+#include "timekeeping_internal.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define TK_CLEAR_NTP		(1 << 0)
 #define TK_CLOCK_WAS_SET	(1 << 1)
@@ -271,11 +301,14 @@ static inline void tk_update_sleep_time(struct timekeeper *tk, ktime_t delta)
 	tk->monotonic_to_boot = ktime_to_timespec64(tk->offs_boot);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_WANTS_CLOCKSOURCE_READ_INLINE
 #include <asm/clock_inlined.h>
 
 static DEFINE_STATIC_KEY_FALSE(clocksource_read_inlined);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * tk_clock_read - atomic clocksource read() helper
  *
@@ -289,6 +322,7 @@ static DEFINE_STATIC_KEY_FALSE(clocksource_read_inlined);
  * a read of the fast-timekeeper tkrs (which is protected by its own locking
  * and update logic).
  */
+<<<<<<< HEAD
 static __always_inline u64 tk_clock_read(const struct tk_read_base *tkr)
 {
 	struct clocksource *clock = READ_ONCE(tkr->clock);
@@ -310,14 +344,20 @@ static inline void clocksource_enable_inline_read(void)
 }
 #else
 static __always_inline u64 tk_clock_read(const struct tk_read_base *tkr)
+=======
+static inline u64 tk_clock_read(const struct tk_read_base *tkr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct clocksource *clock = READ_ONCE(tkr->clock);
 
 	return clock->read(clock);
 }
+<<<<<<< HEAD
 static inline void clocksource_disable_inline_read(void) { }
 static inline void clocksource_enable_inline_read(void) { }
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * tk_setup_internals - Set up internals to use clocksource clock.
@@ -391,6 +431,7 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
 	tk->tkr_raw.mult = clock->mult;
 	tk->ntp_err_mult = 0;
 	tk->skip_second_overflow = 0;
+<<<<<<< HEAD
 
 	tk->cs_id = clock->id;
 
@@ -412,6 +453,8 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
 		 */
 		tk->cs_ns_to_cyc_maxns = div_u64(clock->mask, tk->cs_ns_to_cyc_mult);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Timekeeper helper functions. */
@@ -420,7 +463,11 @@ static noinline u64 delta_to_ns_safe(const struct tk_read_base *tkr, u64 delta)
 	return mul_u64_u32_add_u64_shr(delta, tkr->mult, tkr->xtime_nsec, tkr->shift);
 }
 
+<<<<<<< HEAD
 static __always_inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
+=======
+static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Calculate the delta since the last update_wall_time() */
 	u64 mask = tkr->mask, delta = (cycles - tkr->cycle_last) & mask;
@@ -741,6 +788,7 @@ static inline void tk_update_ktime_data(struct timekeeper *tk)
 	tk->tkr_raw.base = ns_to_ktime(tk->raw_sec * NSEC_PER_SEC);
 }
 
+<<<<<<< HEAD
 static inline void tk_update_ns_to_cyc(struct timekeeper *tks, struct timekeeper *tkc)
 {
 	struct tk_read_base *tkrs = &tks->tkr_mono;
@@ -771,6 +819,8 @@ static inline void tk_update_ns_to_cyc(struct timekeeper *tks, struct timekeeper
 	tks->cs_ns_to_cyc_maxns = div_u64(tkrs->clock->mask, tks->cs_ns_to_cyc_mult);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Restore the shadow timekeeper from the real timekeeper.
  */
@@ -805,7 +855,10 @@ static void timekeeping_update_from_shadow(struct tk_data *tkd, unsigned int act
 	tk->tkr_mono.base_real = tk->tkr_mono.base + tk->offs_real;
 
 	if (tk->id == TIMEKEEPER_CORE) {
+<<<<<<< HEAD
 		tk_update_ns_to_cyc(tk, &tkd->timekeeper);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		update_vsyscall(tk);
 		update_pvclock_gtod(tk, action & TK_CLOCK_WAS_SET);
 
@@ -860,6 +913,7 @@ static void timekeeping_forward_now(struct timekeeper *tk)
 	tk_update_coarse_nsecs(tk);
 }
 
+<<<<<<< HEAD
 /*
  * ktime_expiry_to_cycles - Convert a expiry time to clocksource cycles
  * @id:		Clocksource ID which is required for validity
@@ -925,6 +979,8 @@ bool ktime_expiry_to_cycles(enum clocksource_ids id, ktime_t expires_ns, u64 *cy
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ktime_get_real_ts64 - Returns the time of day in a timespec64.
  * @ts:		pointer to the timespec to be set
@@ -989,7 +1045,11 @@ u32 ktime_get_resolution_ns(void)
 }
 EXPORT_SYMBOL_GPL(ktime_get_resolution_ns);
 
+<<<<<<< HEAD
 static const ktime_t *const offsets[TK_OFFS_MAX] = {
+=======
+static ktime_t *offsets[TK_OFFS_MAX] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[TK_OFFS_REAL]	= &tk_core.timekeeper.offs_real,
 	[TK_OFFS_BOOT]	= &tk_core.timekeeper.offs_boot,
 	[TK_OFFS_TAI]	= &tk_core.timekeeper.offs_tai,
@@ -998,9 +1058,14 @@ static const ktime_t *const offsets[TK_OFFS_MAX] = {
 ktime_t ktime_get_with_offset(enum tk_offsets offs)
 {
 	struct timekeeper *tk = &tk_core.timekeeper;
+<<<<<<< HEAD
 	const ktime_t *offset = offsets[offs];
 	unsigned int seq;
 	ktime_t base;
+=======
+	unsigned int seq;
+	ktime_t base, *offset = offsets[offs];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 nsecs;
 
 	WARN_ON(timekeeping_suspended);
@@ -1020,9 +1085,14 @@ EXPORT_SYMBOL_GPL(ktime_get_with_offset);
 ktime_t ktime_get_coarse_with_offset(enum tk_offsets offs)
 {
 	struct timekeeper *tk = &tk_core.timekeeper;
+<<<<<<< HEAD
 	const ktime_t *offset = offsets[offs];
 	unsigned int seq;
 	ktime_t base;
+=======
+	ktime_t base, *offset = offsets[offs];
+	unsigned int seq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 nsecs;
 
 	WARN_ON(timekeeping_suspended);
@@ -1045,7 +1115,11 @@ EXPORT_SYMBOL_GPL(ktime_get_coarse_with_offset);
  */
 ktime_t ktime_mono_to_any(ktime_t tmono, enum tk_offsets offs)
 {
+<<<<<<< HEAD
 	const ktime_t *offset = offsets[offs];
+=======
+	ktime_t *offset = offsets[offs];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int seq;
 	ktime_t tconv;
 
@@ -1774,6 +1848,7 @@ int timekeeping_notify(struct clocksource *clock)
 
 	if (tk->tkr_mono.clock == clock)
 		return 0;
+<<<<<<< HEAD
 
 	/* Disable inlined reads accross the clocksource switch */
 	clocksource_disable_inline_read();
@@ -1787,6 +1862,9 @@ int timekeeping_notify(struct clocksource *clock)
 	if (tk->tkr_mono.clock == clock && clock->flags & CLOCK_SOURCE_CAN_INLINE_READ)
 		clocksource_enable_inline_read();
 
+=======
+	stop_machine(change_clocksource, clock, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tick_clock_notify();
 	return tk->tkr_mono.clock == clock ? 0 : -1;
 }
@@ -2989,7 +3067,11 @@ static void tk_aux_update_clocksource(void)
 			continue;
 
 		timekeeping_forward_now(tks);
+<<<<<<< HEAD
 		tk_setup_internals(tks, tk_core.timekeeper.tkr_raw.clock);
+=======
+		tk_setup_internals(tks, tk_core.timekeeper.tkr_mono.clock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		timekeeping_update_from_shadow(tkd, TK_UPDATE_ALL);
 	}
 }

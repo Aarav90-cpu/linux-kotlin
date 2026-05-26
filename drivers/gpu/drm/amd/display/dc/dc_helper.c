@@ -108,7 +108,10 @@ static void set_reg_field_values(struct dc_reg_value_masks *field_value_mask,
 		uint8_t shift1, uint32_t mask1, uint32_t field_value1,
 		va_list ap)
 {
+<<<<<<< HEAD
 	(void)addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t shift, mask, field_value;
 	int i = 1;
 
@@ -752,8 +755,11 @@ char *dce_version_to_string(const int version)
 		return "DCN 3.6";
 	case DCN_VERSION_4_01:
 		return "DCN 4.0.1";
+<<<<<<< HEAD
 	case DCN_VERSION_4_2:
 		return "DCN 4.2";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return "Unknown";
 	}

@@ -1954,6 +1954,7 @@ static inline int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
 }
 #endif	/* CONFIG_SECURITY_NETWORK */
 
+<<<<<<< HEAD
 #if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
 
 int security_unix_find(const struct path *path, struct sock *other, int flags);
@@ -1965,6 +1966,8 @@ static inline int security_unix_find(const struct path *path, struct sock *other
 }
 #endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SECURITY_INFINIBAND
 int security_ib_pkey_access(void *sec, u64 subnet_prefix, u16 pkey);
 int security_ib_endport_manage_subnet(void *sec, const char *name, u8 port_num);

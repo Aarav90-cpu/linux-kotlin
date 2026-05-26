@@ -9,6 +9,7 @@
 struct dma_fence;
 struct drm_crtc;
 struct drm_device;
+<<<<<<< HEAD
 struct drm_file;
 struct drm_framebuffer;
 struct drm_gem_object;
@@ -19,11 +20,19 @@ struct i915_vma;
 struct intel_dpt;
 struct intel_dsb_buffer;
 struct intel_frontbuffer;
+=======
+struct drm_framebuffer;
+struct drm_gem_object;
+struct drm_plane_state;
+struct drm_scanout_buffer;
+struct i915_vma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_hdcp_gsc_context;
 struct intel_initial_plane_config;
 struct intel_panic;
 struct intel_stolen_node;
 struct ref_tracker;
+<<<<<<< HEAD
 struct seq_file;
 struct vm_area_struct;
 
@@ -69,6 +78,11 @@ struct intel_display_frontbuffer_interface {
 	void (*flush_for_display)(struct intel_frontbuffer *front);
 };
 
+=======
+
+/* Keep struct definitions sorted */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_display_hdcp_interface {
 	ssize_t (*gsc_msg_send)(struct intel_hdcp_gsc_context *gsc_context,
 				void *msg_in, size_t msg_in_len,
@@ -91,6 +105,7 @@ struct intel_display_irq_interface {
 	void (*synchronize)(struct drm_device *drm);
 };
 
+<<<<<<< HEAD
 struct intel_display_overlay_interface {
 	bool (*is_active)(struct drm_device *drm);
 
@@ -120,6 +135,8 @@ struct intel_display_overlay_interface {
 	void (*cleanup)(struct drm_device *drm);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_display_panic_interface {
 	struct intel_panic *(*alloc)(void);
 	int (*setup)(struct intel_panic *panic, struct drm_scanout_buffer *sb);
@@ -131,6 +148,7 @@ struct intel_display_pc8_interface {
 	void (*unblock)(struct drm_device *drm);
 };
 
+<<<<<<< HEAD
 struct intel_display_pcode_interface {
 	int (*read)(struct drm_device *drm, u32 mbox, u32 *val, u32 *val1);
 	int (*write)(struct drm_device *drm, u32 mbox, u32 val, int timeout_ms);
@@ -138,6 +156,8 @@ struct intel_display_pcode_interface {
 		       u32 reply_mask, u32 reply, int timeout_base_ms);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_display_rpm_interface {
 	struct ref_tracker *(*get)(const struct drm_device *drm);
 	struct ref_tracker *(*get_raw)(const struct drm_device *drm);
@@ -176,10 +196,13 @@ struct intel_display_stolen_interface {
 	void (*node_free)(const struct intel_stolen_node *node);
 };
 
+<<<<<<< HEAD
 struct intel_display_vma_interface {
 	int (*fence_id)(const struct i915_vma *vma);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct intel_display_parent_interface - services parent driver provides to display
  *
@@ -193,6 +216,7 @@ struct intel_display_vma_interface {
  * check the optional pointers.
  */
 struct intel_display_parent_interface {
+<<<<<<< HEAD
 	/** @bo: BO interface */
 	const struct intel_display_bo_interface *bo;
 
@@ -205,6 +229,8 @@ struct intel_display_parent_interface {
 	/** @frontbuffer: Frontbuffer interface */
 	const struct intel_display_frontbuffer_interface *frontbuffer;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @hdcp: HDCP GSC interface */
 	const struct intel_display_hdcp_interface *hdcp;
 
@@ -217,6 +243,7 @@ struct intel_display_parent_interface {
 	/** @panic: Panic interface */
 	const struct intel_display_panic_interface *panic;
 
+<<<<<<< HEAD
 	/** @overlay: Overlay. Optional. */
 	const struct intel_display_overlay_interface *overlay;
 
@@ -226,6 +253,11 @@ struct intel_display_parent_interface {
 	/** @pcode: Pcode interface */
 	const struct intel_display_pcode_interface *pcode;
 
+=======
+	/** @pc8: PC8 interface. Optional. */
+	const struct intel_display_pc8_interface *pc8;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @rpm: Runtime PM functions */
 	const struct intel_display_rpm_interface *rpm;
 
@@ -235,9 +267,12 @@ struct intel_display_parent_interface {
 	/** @stolen: Stolen memory. */
 	const struct intel_display_stolen_interface *stolen;
 
+<<<<<<< HEAD
 	/** @vma: VMA interface. Optional. */
 	const struct intel_display_vma_interface *vma;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Generic independent functions */
 	struct {
 		/** @fence_priority_display: Set display priority. Optional. */

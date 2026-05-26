@@ -35,9 +35,17 @@ unsigned thread_self_inum __ro_after_init;
 
 int proc_setup_thread_self(struct super_block *s)
 {
+<<<<<<< HEAD
 	struct dentry *thread_self;
 	int ret = -ENOMEM;
 
+=======
+	struct inode *root_inode = d_inode(s->s_root);
+	struct dentry *thread_self;
+	int ret = -ENOMEM;
+
+	inode_lock(root_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	thread_self = d_alloc_name(s->s_root, "thread-self");
 	if (thread_self) {
 		struct inode *inode = new_inode(s);
@@ -53,6 +61,10 @@ int proc_setup_thread_self(struct super_block *s)
 		}
 		dput(thread_self);
 	}
+<<<<<<< HEAD
+=======
+	inode_unlock(root_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		pr_err("proc_fill_super: can't allocate /proc/thread-self\n");

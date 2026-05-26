@@ -224,8 +224,13 @@ static int mext_move_begin(struct mext_data *mext, struct folio *folio[2],
 	}
 
 	/* Adjust the moving length according to the length of shorter folio. */
+<<<<<<< HEAD
 	move_len = umin(folio_next_pos(folio[0]) - orig_pos,
 			folio_next_pos(folio[1]) - donor_pos);
+=======
+	move_len = umin(folio_pos(folio[0]) + folio_size(folio[0]) - orig_pos,
+			folio_pos(folio[1]) + folio_size(folio[1]) - donor_pos);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	move_len >>= blkbits;
 	if (move_len < mext->orig_map.m_len)
 		mext->orig_map.m_len = move_len;
@@ -420,21 +425,33 @@ static int mext_check_validity(struct inode *orig_inode,
 
 	/* origin and donor should be different inodes */
 	if (orig_inode == donor_inode) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: The argument files should not be same inode [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: The argument files should not be same inode [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}
 
 	/* origin and donor should belone to the same filesystem */
 	if (orig_inode->i_sb != donor_inode->i_sb) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: The argument files should be in same FS [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: The argument files should be in same FS [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}
 
 	/* Regular file check */
 	if (!S_ISREG(orig_inode->i_mode) || !S_ISREG(donor_inode->i_mode)) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: The argument files should be regular file [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: The argument files should be regular file [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}
@@ -477,26 +494,42 @@ static int mext_check_validity(struct inode *orig_inode,
 	}
 
 	if (donor_inode->i_mode & (S_ISUID|S_ISGID)) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: suid or sgid is set to donor file [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: suid or sgid is set to donor file [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}
 
 	if (IS_IMMUTABLE(donor_inode) || IS_APPEND(donor_inode)) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: donor should not be immutable or append file [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: donor should not be immutable or append file [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EPERM;
 	}
 
 	/* Ext4 move extent does not support swap files */
 	if (IS_SWAPFILE(orig_inode) || IS_SWAPFILE(donor_inode)) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: The argument files should not be swap files [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: The argument files should not be swap files [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -ETXTBSY;
 	}
 
 	if (ext4_is_quota_file(orig_inode) || ext4_is_quota_file(donor_inode)) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EOPNOTSUPP;
 	}
@@ -523,7 +556,11 @@ static int mext_check_adjust_range(struct inode *orig_inode,
 	/* Start offset should be same */
 	if ((orig_start & ~(PAGE_MASK >> orig_inode->i_blkbits)) !=
 	    (donor_start & ~(PAGE_MASK >> orig_inode->i_blkbits))) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: orig and donor's start offsets are not aligned [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: orig and donor's start offsets are not aligned [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}
@@ -533,7 +570,11 @@ static int mext_check_adjust_range(struct inode *orig_inode,
 	    (*len > EXT_MAX_BLOCKS) ||
 	    (donor_start + *len >= EXT_MAX_BLOCKS) ||
 	    (orig_start + *len >= EXT_MAX_BLOCKS))  {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: Can't handle over [%u] blocks [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: Can't handle over [%u] blocks [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   EXT_MAX_BLOCKS,
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
@@ -550,7 +591,11 @@ static int mext_check_adjust_range(struct inode *orig_inode,
 	else if (donor_eof < donor_start + *len - 1)
 		*len = donor_eof - donor_start;
 	if (!*len) {
+<<<<<<< HEAD
 		ext4_debug("ext4 move extent: len should not be 0 [ino:orig %llu, donor %llu]\n",
+=======
+		ext4_debug("ext4 move extent: len should not be 0 [ino:orig %lu, donor %lu]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   orig_inode->i_ino, donor_inode->i_ino);
 		return -EINVAL;
 	}

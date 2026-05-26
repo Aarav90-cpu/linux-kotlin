@@ -88,7 +88,10 @@ int dml21_find_dc_pipes_for_plane(const struct dc *in_dc,
 		struct pipe_ctx *dc_phantom_pipes[__DML2_WRAPPER_MAX_STREAMS_PLANES__],
 		int dml_plane_idx)
 {
+<<<<<<< HEAD
 	(void)in_dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int dml_stream_index;
 	unsigned int main_stream_id;
 	unsigned int dc_plane_index;
@@ -283,7 +286,10 @@ static struct dc_plane_state *dml21_add_phantom_plane(struct dml2_context *dml_c
 	struct dc_plane_state *main_plane,
 	struct dml2_per_plane_programming *plane_programming)
 {
+<<<<<<< HEAD
 	(void)plane_programming;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_plane_state *phantom_plane;
 
 	phantom_plane = dml_ctx->config.svp_pstate.callbacks.create_phantom_plane(dc, context, main_plane);
@@ -376,6 +382,7 @@ void dml21_handle_phantom_streams_planes(const struct dc *dc, struct dc_state *c
 		dml2_map_dc_pipes(dml_ctx, context, NULL, &dml_ctx->v21.dml_to_dc_pipe_mapping, dc->current_state);
 }
 
+<<<<<<< HEAD
 
 static unsigned int dml21_build_fams2_stream_programming_v2(const struct dc *dc,
 		struct dc_state *context,
@@ -496,10 +503,16 @@ static unsigned int dml21_build_fams2_stream_programming_v2(const struct dc *dc,
 	return num_fams2_streams;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dml21_build_fams2_programming(const struct dc *dc,
 		struct dc_state *context,
 		struct dml2_context *dml_ctx)
 {
+<<<<<<< HEAD
+=======
+	int i, j, k;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int num_fams2_streams = 0;
 
 	/* reset fams2 data */
@@ -508,10 +521,122 @@ void dml21_build_fams2_programming(const struct dc *dc,
 	memset(&context->bw_ctx.bw.dcn.fams2_stream_sub_params_v2, 0, sizeof(union dmub_fams2_stream_static_sub_state_v2) * DML2_MAX_PLANES);
 	memset(&context->bw_ctx.bw.dcn.fams2_global_config, 0, sizeof(struct dmub_cmd_fams2_global_config));
 
+<<<<<<< HEAD
 	if (dml_ctx->v21.mode_programming.programming->fams2_required ||
 			dml_ctx->v21.mode_programming.programming->legacy_pstate_info_for_dmu) {
 		if (dc->debug.fams_version.major == 2) {
 			num_fams2_streams = dml21_build_fams2_stream_programming_v2(dc, context, dml_ctx);
+=======
+	if ((dml_ctx->v21.mode_programming.programming->fams2_required) ||
+		(dml_ctx->v21.mode_programming.programming->legacy_pstate_info_for_dmu)) {
+		for (i = 0; i < context->stream_count; i++) {
+			int dml_stream_idx;
+			struct dc_stream_state *phantom_stream;
+			struct dc_stream_status *phantom_status;
+			enum fams2_stream_type type = 0;
+
+			union dmub_cmd_fams2_config *static_base_state = &context->bw_ctx.bw.dcn.fams2_stream_base_params[num_fams2_streams];
+			union dmub_cmd_fams2_config *static_sub_state = &context->bw_ctx.bw.dcn.fams2_stream_sub_params[num_fams2_streams];
+
+			struct dc_stream_state *stream = context->streams[i];
+
+			if (context->stream_status[i].plane_count == 0 ||
+					dml_ctx->config.svp_pstate.callbacks.get_stream_subvp_type(context, stream) == SUBVP_PHANTOM) {
+				/* can ignore blanked or phantom streams */
+				continue;
+			}
+
+			dml_stream_idx = dml21_helper_find_dml_pipe_idx_by_stream_id(dml_ctx, stream->stream_id);
+			if (dml_stream_idx < 0) {
+				ASSERT(dml_stream_idx >= 0);
+				continue;
+			}
+
+			/* copy static state from PMO */
+			memcpy(static_base_state,
+					&dml_ctx->v21.mode_programming.programming->stream_programming[dml_stream_idx].fams2_base_params,
+					sizeof(union dmub_cmd_fams2_config));
+
+			if (dc->debug.fams_version.major == 3) {
+				memcpy(&context->bw_ctx.bw.dcn.fams2_stream_sub_params_v2[num_fams2_streams],
+						&dml_ctx->v21.mode_programming.programming->stream_programming[dml_stream_idx].fams2_sub_params_v2,
+						sizeof(union dmub_fams2_stream_static_sub_state_v2));
+			} else {
+				memcpy(static_sub_state,
+						&dml_ctx->v21.mode_programming.programming->stream_programming[dml_stream_idx].fams2_sub_params,
+						sizeof(union dmub_cmd_fams2_config));
+			}
+
+			switch (dc->debug.fams_version.minor) {
+			case 1:
+			default:
+				type = static_base_state->stream_v1.base.type;
+
+				/* get information from context */
+				static_base_state->stream_v1.base.num_planes = context->stream_status[i].plane_count;
+				static_base_state->stream_v1.base.otg_inst = context->stream_status[i].primary_otg_inst;
+
+				/* populate pipe masks for planes */
+				for (j = 0; j < context->stream_status[i].plane_count; j++) {
+					for (k = 0; k < dc->res_pool->pipe_count; k++) {
+						if (context->res_ctx.pipe_ctx[k].stream &&
+								context->res_ctx.pipe_ctx[k].stream->stream_id == stream->stream_id &&
+								context->res_ctx.pipe_ctx[k].plane_state == context->stream_status[i].plane_states[j]) {
+							static_base_state->stream_v1.base.pipe_mask |= (1 << k);
+							static_base_state->stream_v1.base.plane_pipe_masks[j] |= (1 << k);
+						}
+					}
+				}
+			}
+
+
+			/* get per method programming */
+			switch (type) {
+			case FAMS2_STREAM_TYPE_VBLANK:
+			case FAMS2_STREAM_TYPE_VACTIVE:
+			case FAMS2_STREAM_TYPE_DRR:
+				break;
+			case FAMS2_STREAM_TYPE_SUBVP:
+				phantom_stream = dml_ctx->config.svp_pstate.callbacks.get_paired_subvp_stream(context, stream);
+				if (!phantom_stream)
+					break;
+
+				phantom_status = dml_ctx->config.callbacks.get_stream_status(context, phantom_stream);
+
+				/* phantom status should always be present */
+				ASSERT(phantom_status);
+				if (!phantom_status)
+					break;
+
+				switch (dc->debug.fams_version.minor) {
+				case 1:
+				default:
+					static_sub_state->stream_v1.sub_state.subvp.phantom_otg_inst = phantom_status->primary_otg_inst;
+
+					/* populate pipe masks for phantom planes */
+					for (j = 0; j < phantom_status->plane_count; j++) {
+						for (k = 0; k < dc->res_pool->pipe_count; k++) {
+							if (context->res_ctx.pipe_ctx[k].stream &&
+									context->res_ctx.pipe_ctx[k].stream->stream_id == phantom_stream->stream_id &&
+									context->res_ctx.pipe_ctx[k].plane_state == phantom_status->plane_states[j]) {
+								switch (dc->debug.fams_version.minor) {
+								case 1:
+								default:
+									static_sub_state->stream_v1.sub_state.subvp.phantom_pipe_mask |= (1 << k);
+									static_sub_state->stream_v1.sub_state.subvp.phantom_plane_pipe_masks[j] |= (1 << k);
+								}
+							}
+						}
+					}
+				}
+				break;
+			default:
+				ASSERT(false);
+				break;
+			}
+
+			num_fams2_streams++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -524,8 +649,12 @@ void dml21_build_fams2_programming(const struct dc *dc,
 		context->bw_ctx.bw.dcn.fams2_global_config.num_streams = num_fams2_streams;
 	}
 
+<<<<<<< HEAD
 	context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching =
 			(context->bw_ctx.bw.dcn.fams2_global_config.features.bits.enable != 0);
+=======
+	context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching = context->bw_ctx.bw.dcn.fams2_global_config.features.bits.enable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool dml21_is_plane1_enabled(enum dml2_source_format_class source_format)

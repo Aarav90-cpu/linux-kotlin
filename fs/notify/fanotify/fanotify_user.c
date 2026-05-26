@@ -1210,7 +1210,10 @@ static int fanotify_find_path(int dfd, const char __user *filename,
 
 		*path = fd_file(f)->f_path;
 		path_get(path);
+<<<<<<< HEAD
 		ret = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		unsigned int lookup_flags = 0;
 
@@ -1220,7 +1223,26 @@ static int fanotify_find_path(int dfd, const char __user *filename,
 			lookup_flags |= LOOKUP_DIRECTORY;
 
 		ret = user_path_at(dfd, filename, lookup_flags, path);
+<<<<<<< HEAD
 	}
+=======
+		if (ret)
+			goto out;
+	}
+
+	/* you can only watch an inode if you have read permissions on it */
+	ret = path_permission(path, MAY_READ);
+	if (ret) {
+		path_put(path);
+		goto out;
+	}
+
+	ret = security_path_notify(path, mask, obj_type);
+	if (ret)
+		path_put(path);
+
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1601,6 +1623,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 	pr_debug("%s: flags=%x event_f_flags=%x\n",
 		 __func__, flags, event_f_flags);
 
+<<<<<<< HEAD
 	/*
 	 * An unprivileged user can setup an fanotify group with limited
 	 * functionality - an unprivileged group is limited to notification
@@ -1613,6 +1636,19 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 		return -EPERM;
 
 	if (!ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
+=======
+	if (!capable(CAP_SYS_ADMIN)) {
+		/*
+		 * An unprivileged user can setup an fanotify group with
+		 * limited functionality - an unprivileged group is limited to
+		 * notification events with file handles or mount ids and it
+		 * cannot use unlimited queue/marks.
+		 */
+		if ((flags & FANOTIFY_ADMIN_INIT_FLAGS) ||
+		    !(flags & (FANOTIFY_FID_BITS | FAN_REPORT_MNT)))
+			return -EPERM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Setting the internal flag FANOTIFY_UNPRIV on the group
 		 * prevents setting mount/filesystem marks on this group and
@@ -1977,8 +2013,13 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
 	 * A user is allowed to setup sb/mount/mntns marks only if it is
 	 * capable in the user ns where the group was created.
 	 */
+<<<<<<< HEAD
 	if (mark_type != FAN_MARK_INODE &&
 	    !ns_capable(group->user_ns, CAP_SYS_ADMIN))
+=======
+	if (!ns_capable(group->user_ns, CAP_SYS_ADMIN) &&
+	    mark_type != FAN_MARK_INODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EPERM;
 
 	/*
@@ -2044,6 +2085,7 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
 			goto path_put_and_out;
 	}
 
+<<<<<<< HEAD
 	/* you can only watch an inode if you have read permissions on it */
 	ret = path_permission(&path, MAY_READ);
 	if (ret)
@@ -2053,6 +2095,8 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
 	if (ret)
 		goto path_put_and_out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fid_mode) {
 		ret = fanotify_test_fsid(path.dentry, flags, &__fsid);
 		if (ret)

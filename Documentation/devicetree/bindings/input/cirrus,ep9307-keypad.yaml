@@ -10,7 +10,10 @@ maintainers:
   - Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
 allOf:
+<<<<<<< HEAD
   - $ref: input.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - $ref: /schemas/input/matrix-keymap.yaml#
 
 description:
@@ -38,8 +41,15 @@ properties:
   clocks:
     maxItems: 1
 
+<<<<<<< HEAD
   # Time for state change interrupt to trigger
   debounce-delay-ms: true
+=======
+  debounce-delay-ms:
+    description: |
+          Time in microseconds that key must be pressed or
+          released for state change interrupt to trigger.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   cirrus,prescale:
     description: row/column counter pre-scaler load value

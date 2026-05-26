@@ -616,7 +616,11 @@ out:
 }
 
 static int vdic_link_setup(struct media_entity *entity,
+<<<<<<< HEAD
 			   const struct media_pad *local,
+=======
+			    const struct media_pad *local,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    const struct media_pad *remote, u32 flags)
 {
 	struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);

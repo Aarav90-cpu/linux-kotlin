@@ -273,8 +273,13 @@ static const struct snd_soc_component_driver imx_soc_component_fiq = {
 	.prepare	= snd_imx_pcm_prepare,
 	.trigger	= snd_imx_pcm_trigger,
 	.pointer	= snd_imx_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= snd_imx_pcm_new,
 	.pcm_free	= snd_imx_pcm_free,
+=======
+	.pcm_construct	= snd_imx_pcm_new,
+	.pcm_destruct	= snd_imx_pcm_free,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int imx_pcm_fiq_init(struct platform_device *pdev,

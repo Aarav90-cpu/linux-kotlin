@@ -9,6 +9,10 @@
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/err.h>
+<<<<<<< HEAD
+=======
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/crc32.h>
 #include <linux/base64.h>
 #include <linux/ctype.h>
@@ -44,6 +48,18 @@ int nvmet_auth_set_key(struct nvmet_host *host, const char *secret,
 			 key_hash);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if (key_hash > 0) {
+		/* Validate selected hash algorithm */
+		const char *hmac = nvme_auth_hmac_name(key_hash);
+
+		if (!crypto_has_shash(hmac, 0, 0)) {
+			pr_err("DH-HMAC-CHAP hash %s unsupported\n", hmac);
+			return -ENOTSUPP;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dhchap_secret = kstrdup(secret, GFP_KERNEL);
 	if (!dhchap_secret)
 		return -ENOMEM;
@@ -130,7 +146,11 @@ int nvmet_setup_dhgroup(struct nvmet_ctrl *ctrl, u8 dhgroup_id)
 	return ret;
 }
 
+<<<<<<< HEAD
 u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset)
+=======
+u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	struct nvmet_host_link *p;
@@ -144,6 +164,10 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset)
 		goto out_unlock;
 
 	list_for_each_entry(p, &ctrl->subsys->hosts, entry) {
+<<<<<<< HEAD
+=======
+		pr_debug("check %s\n", nvmet_host_name(p->host));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (strcmp(nvmet_host_name(p->host), ctrl->hostnqn))
 			continue;
 		host = p->host;
@@ -155,7 +179,11 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset)
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	if (!reset && nvmet_queue_tls_keyid(sq)) {
+=======
+	if (nvmet_queue_tls_keyid(sq)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("host %s tls enabled\n", ctrl->hostnqn);
 		goto out_unlock;
 	}
@@ -188,12 +216,19 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset)
 		ctrl->host_key = NULL;
 		goto out_free_hash;
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_NVME_TARGET_AUTH_DEBUG
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("%s: using hash %s key %*ph\n", __func__,
 		 ctrl->host_key->hash > 0 ?
 		 nvme_auth_hmac_name(ctrl->host_key->hash) : "none",
 		 (int)ctrl->host_key->len, ctrl->host_key->key);
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nvme_auth_free_key(ctrl->ctrl_key);
 	if (!host->dhchap_ctrl_secret) {
 		ctrl->ctrl_key = NULL;
@@ -207,12 +242,19 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq, bool reset)
 		ctrl->ctrl_key = NULL;
 		goto out_free_hash;
 	}
+<<<<<<< HEAD
 #ifdef CONFIG_NVME_TARGET_AUTH_DEBUG
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("%s: using ctrl hash %s key %*ph\n", __func__,
 		 ctrl->ctrl_key->hash > 0 ?
 		 nvme_auth_hmac_name(ctrl->ctrl_key->hash) : "none",
 		 (int)ctrl->ctrl_key->len, ctrl->ctrl_key->key);
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_free_hash:
 	if (ret) {
 		if (ctrl->host_key) {
@@ -230,6 +272,12 @@ out_unlock:
 void nvmet_auth_sq_free(struct nvmet_sq *sq)
 {
 	cancel_delayed_work(&sq->auth_expired_work);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NVME_TARGET_TCP_TLS
+	sq->tls_key = NULL;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sq->dhchap_c1);
 	sq->dhchap_c1 = NULL;
 	kfree(sq->dhchap_c2);
@@ -280,23 +328,62 @@ bool nvmet_check_auth_status(struct nvmet_req *req)
 int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
 			 unsigned int shash_len)
 {
+<<<<<<< HEAD
 	struct nvme_auth_hmac_ctx hmac;
 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+=======
+	struct crypto_shash *shash_tfm;
+	SHASH_DESC_ON_STACK(shash, shash_tfm);
+	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+	const char *hash_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *challenge = req->sq->dhchap_c1;
 	struct nvme_dhchap_key *transformed_key;
 	u8 buf[4];
 	int ret;
 
+<<<<<<< HEAD
 	transformed_key = nvme_auth_transform_key(ctrl->host_key,
 						  ctrl->hostnqn);
 	if (IS_ERR(transformed_key))
 		return PTR_ERR(transformed_key);
 
 	ret = nvme_auth_hmac_init(&hmac, ctrl->shash_id, transformed_key->key,
+=======
+	hash_name = nvme_auth_hmac_name(ctrl->shash_id);
+	if (!hash_name) {
+		pr_warn("Hash ID %d invalid\n", ctrl->shash_id);
+		return -EINVAL;
+	}
+
+	shash_tfm = crypto_alloc_shash(hash_name, 0, 0);
+	if (IS_ERR(shash_tfm)) {
+		pr_err("failed to allocate shash %s\n", hash_name);
+		return PTR_ERR(shash_tfm);
+	}
+
+	if (shash_len != crypto_shash_digestsize(shash_tfm)) {
+		pr_err("%s: hash len mismatch (len %d digest %d)\n",
+			__func__, shash_len,
+			crypto_shash_digestsize(shash_tfm));
+		ret = -EINVAL;
+		goto out_free_tfm;
+	}
+
+	transformed_key = nvme_auth_transform_key(ctrl->host_key,
+						  ctrl->hostnqn);
+	if (IS_ERR(transformed_key)) {
+		ret = PTR_ERR(transformed_key);
+		goto out_free_tfm;
+	}
+
+	ret = crypto_shash_setkey(shash_tfm, transformed_key->key,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  transformed_key->len);
 	if (ret)
 		goto out_free_response;
 
+<<<<<<< HEAD
 	if (shash_len != nvme_auth_hmac_hash_len(ctrl->shash_id)) {
 		pr_err("%s: hash len mismatch (len %u digest %zu)\n", __func__,
 		       shash_len, nvme_auth_hmac_hash_len(ctrl->shash_id));
@@ -304,6 +391,8 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
 		goto out_free_response;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctrl->dh_gid != NVME_AUTH_DHGROUP_NULL) {
 		challenge = kmalloc(shash_len, GFP_KERNEL);
 		if (!challenge) {
@@ -316,12 +405,19 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
 						    req->sq->dhchap_c1,
 						    challenge, shash_len);
 		if (ret)
+<<<<<<< HEAD
 			goto out_free_challenge;
 	}
+=======
+			goto out;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("ctrl %d qid %d host response seq %u transaction %d\n",
 		 ctrl->cntlid, req->sq->qid, req->sq->dhchap_s1,
 		 req->sq->dhchap_tid);
 
+<<<<<<< HEAD
 	nvme_auth_hmac_update(&hmac, challenge, shash_len);
 
 	put_unaligned_le32(req->sq->dhchap_s1, buf);
@@ -346,29 +442,111 @@ out_free_challenge:
 out_free_response:
 	memzero_explicit(&hmac, sizeof(hmac));
 	nvme_auth_free_key(transformed_key);
+=======
+	shash->tfm = shash_tfm;
+	ret = crypto_shash_init(shash);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, challenge, shash_len);
+	if (ret)
+		goto out;
+	put_unaligned_le32(req->sq->dhchap_s1, buf);
+	ret = crypto_shash_update(shash, buf, 4);
+	if (ret)
+		goto out;
+	put_unaligned_le16(req->sq->dhchap_tid, buf);
+	ret = crypto_shash_update(shash, buf, 2);
+	if (ret)
+		goto out;
+	*buf = req->sq->sc_c;
+	ret = crypto_shash_update(shash, buf, 1);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, "HostHost", 8);
+	if (ret)
+		goto out;
+	memset(buf, 0, 4);
+	ret = crypto_shash_update(shash, ctrl->hostnqn, strlen(ctrl->hostnqn));
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, buf, 1);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, ctrl->subsys->subsysnqn,
+				  strlen(ctrl->subsys->subsysnqn));
+	if (ret)
+		goto out;
+	ret = crypto_shash_final(shash, response);
+out:
+	if (challenge != req->sq->dhchap_c1)
+		kfree(challenge);
+out_free_response:
+	nvme_auth_free_key(transformed_key);
+out_free_tfm:
+	crypto_free_shash(shash_tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
 int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 			 unsigned int shash_len)
 {
+<<<<<<< HEAD
 	struct nvme_auth_hmac_ctx hmac;
 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+=======
+	struct crypto_shash *shash_tfm;
+	struct shash_desc *shash;
+	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+	const char *hash_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *challenge = req->sq->dhchap_c2;
 	struct nvme_dhchap_key *transformed_key;
 	u8 buf[4];
 	int ret;
 
+<<<<<<< HEAD
 	transformed_key = nvme_auth_transform_key(ctrl->ctrl_key,
 						ctrl->subsys->subsysnqn);
 	if (IS_ERR(transformed_key))
 		return PTR_ERR(transformed_key);
 
 	ret = nvme_auth_hmac_init(&hmac, ctrl->shash_id, transformed_key->key,
+=======
+	hash_name = nvme_auth_hmac_name(ctrl->shash_id);
+	if (!hash_name) {
+		pr_warn("Hash ID %d invalid\n", ctrl->shash_id);
+		return -EINVAL;
+	}
+
+	shash_tfm = crypto_alloc_shash(hash_name, 0, 0);
+	if (IS_ERR(shash_tfm)) {
+		pr_err("failed to allocate shash %s\n", hash_name);
+		return PTR_ERR(shash_tfm);
+	}
+
+	if (shash_len != crypto_shash_digestsize(shash_tfm)) {
+		pr_debug("%s: hash len mismatch (len %d digest %d)\n",
+			 __func__, shash_len,
+			 crypto_shash_digestsize(shash_tfm));
+		ret = -EINVAL;
+		goto out_free_tfm;
+	}
+
+	transformed_key = nvme_auth_transform_key(ctrl->ctrl_key,
+						ctrl->subsys->subsysnqn);
+	if (IS_ERR(transformed_key)) {
+		ret = PTR_ERR(transformed_key);
+		goto out_free_tfm;
+	}
+
+	ret = crypto_shash_setkey(shash_tfm, transformed_key->key,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  transformed_key->len);
 	if (ret)
 		goto out_free_response;
 
+<<<<<<< HEAD
 	if (shash_len != nvme_auth_hmac_hash_len(ctrl->shash_id)) {
 		pr_err("%s: hash len mismatch (len %u digest %zu)\n", __func__,
 		       shash_len, nvme_auth_hmac_hash_len(ctrl->shash_id));
@@ -376,6 +554,8 @@ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 		goto out_free_response;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctrl->dh_gid != NVME_AUTH_DHGROUP_NULL) {
 		challenge = kmalloc(shash_len, GFP_KERNEL);
 		if (!challenge) {
@@ -391,6 +571,7 @@ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 			goto out_free_challenge;
 	}
 
+<<<<<<< HEAD
 	nvme_auth_hmac_update(&hmac, challenge, shash_len);
 
 	put_unaligned_le32(req->sq->dhchap_s2, buf);
@@ -409,12 +590,62 @@ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 	nvme_auth_hmac_update(&hmac, ctrl->hostnqn, strlen(ctrl->hostnqn));
 	nvme_auth_hmac_final(&hmac, response);
 	ret = 0;
+=======
+	shash = kzalloc(sizeof(*shash) + crypto_shash_descsize(shash_tfm),
+			GFP_KERNEL);
+	if (!shash) {
+		ret = -ENOMEM;
+		goto out_free_challenge;
+	}
+	shash->tfm = shash_tfm;
+
+	ret = crypto_shash_init(shash);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, challenge, shash_len);
+	if (ret)
+		goto out;
+	put_unaligned_le32(req->sq->dhchap_s2, buf);
+	ret = crypto_shash_update(shash, buf, 4);
+	if (ret)
+		goto out;
+	put_unaligned_le16(req->sq->dhchap_tid, buf);
+	ret = crypto_shash_update(shash, buf, 2);
+	if (ret)
+		goto out;
+	memset(buf, 0, 4);
+	ret = crypto_shash_update(shash, buf, 1);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, "Controller", 10);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, ctrl->subsys->subsysnqn,
+			    strlen(ctrl->subsys->subsysnqn));
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, buf, 1);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(shash, ctrl->hostnqn, strlen(ctrl->hostnqn));
+	if (ret)
+		goto out;
+	ret = crypto_shash_final(shash, response);
+out:
+	kfree(shash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_free_challenge:
 	if (challenge != req->sq->dhchap_c2)
 		kfree(challenge);
 out_free_response:
+<<<<<<< HEAD
 	memzero_explicit(&hmac, sizeof(hmac));
 	nvme_auth_free_key(transformed_key);
+=======
+	nvme_auth_free_key(transformed_key);
+out_free_tfm:
+	crypto_free_shash(shash_tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -434,21 +665,31 @@ int nvmet_auth_ctrl_exponential(struct nvmet_req *req,
 		ret = -EINVAL;
 	} else {
 		memcpy(buf, ctrl->dh_key, buf_size);
+<<<<<<< HEAD
 #ifdef CONFIG_NVME_TARGET_AUTH_DEBUG
 		pr_debug("%s: ctrl %d public key %*ph\n", __func__,
 			 ctrl->cntlid, (int)buf_size, buf);
 #endif
+=======
+		pr_debug("%s: ctrl %d public key %*ph\n", __func__,
+			 ctrl->cntlid, (int)buf_size, buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
 }
 
 int nvmet_auth_ctrl_sesskey(struct nvmet_req *req,
+<<<<<<< HEAD
 			    const u8 *pkey, int pkey_size)
+=======
+			    u8 *pkey, int pkey_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
 	int ret;
 
+<<<<<<< HEAD
 	req->sq->dhchap_skey_len = nvme_auth_hmac_hash_len(ctrl->shash_id);
 	req->sq->dhchap_skey = kzalloc(req->sq->dhchap_skey_len, GFP_KERNEL);
 	if (!req->sq->dhchap_skey)
@@ -466,14 +707,35 @@ int nvmet_auth_ctrl_sesskey(struct nvmet_req *req,
 			 (int)req->sq->dhchap_skey_len,
 			 req->sq->dhchap_skey);
 #endif
+=======
+	req->sq->dhchap_skey_len = ctrl->dh_keysize;
+	req->sq->dhchap_skey = kzalloc(req->sq->dhchap_skey_len, GFP_KERNEL);
+	if (!req->sq->dhchap_skey)
+		return -ENOMEM;
+	ret = nvme_auth_gen_shared_secret(ctrl->dh_tfm,
+					  pkey, pkey_size,
+					  req->sq->dhchap_skey,
+					  req->sq->dhchap_skey_len);
+	if (ret)
+		pr_debug("failed to compute shared secret, err %d\n", ret);
+	else
+		pr_debug("%s: shared secret %*ph\n", __func__,
+			 (int)req->sq->dhchap_skey_len,
+			 req->sq->dhchap_skey);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
 void nvmet_auth_insert_psk(struct nvmet_sq *sq)
 {
 	int hash_len = nvme_auth_hmac_hash_len(sq->ctrl->shash_id);
+<<<<<<< HEAD
 	u8 *psk, *tls_psk;
 	char *digest;
+=======
+	u8 *psk, *digest, *tls_psk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t psk_len;
 	int ret;
 #ifdef CONFIG_NVME_TARGET_TCP_TLS

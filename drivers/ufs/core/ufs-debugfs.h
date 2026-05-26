@@ -5,9 +5,12 @@
 #ifndef __UFS_DEBUGFS_H__
 #define __UFS_DEBUGFS_H__
 
+<<<<<<< HEAD
 #include <linux/init.h>
 #include <linux/types.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ufs_hba;
 
 #ifdef CONFIG_DEBUG_FS

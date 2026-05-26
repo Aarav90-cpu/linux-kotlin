@@ -343,7 +343,12 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
 }
 
 static int damon_pa_scheme_score(struct damon_ctx *context,
+<<<<<<< HEAD
 		struct damon_region *r, struct damos *scheme)
+=======
+		struct damon_target *t, struct damon_region *r,
+		struct damos *scheme)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (scheme->action) {
 	case DAMOS_PAGEOUT:

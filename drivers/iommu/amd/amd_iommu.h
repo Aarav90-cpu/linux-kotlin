@@ -11,9 +11,12 @@
 
 #include "amd_iommu_types.h"
 
+<<<<<<< HEAD
 extern int amd_iommu_evtlog_size;
 extern int amd_iommu_pprlog_size;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 irqreturn_t amd_iommu_int_thread(int irq, void *data);
 irqreturn_t amd_iommu_int_thread_evtlog(int irq, void *data);
 irqreturn_t amd_iommu_int_thread_pprlog(int irq, void *data);

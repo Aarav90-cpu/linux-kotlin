@@ -358,7 +358,11 @@ static void tcp_data_ecn_check(struct sock *sk, const struct sk_buff *skb)
 			tcp_enter_quickack_mode(sk, 2);
 		break;
 	case INET_ECN_CE:
+<<<<<<< HEAD
 		if (tcp_ca_needs_ecn(sk))
+=======
+		if (tcp_ca_wants_ce_events(sk))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tcp_ca_event(sk, CA_EVENT_ECN_IS_CE);
 
 		if (!(tp->ecn_flags & TCP_ECN_DEMAND_CWR) &&
@@ -376,7 +380,11 @@ static void tcp_data_ecn_check(struct sock *sk, const struct sk_buff *skb)
 		tp->ecn_flags |= TCP_ECN_SEEN;
 		break;
 	default:
+<<<<<<< HEAD
 		if (tcp_ca_needs_ecn(sk))
+=======
+		if (tcp_ca_wants_ce_events(sk))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tcp_ca_event(sk, CA_EVENT_ECN_NO_CE);
 		if (!tcp_ecn_mode_rfc3168(tp))
 			break;
@@ -476,14 +484,22 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
 
 static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
 {
+<<<<<<< HEAD
 	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
+=======
+	tp->delivered_ce += ecn_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Updates the delivered and delivered_ce counts */
 static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
 				bool ece_ack)
 {
+<<<<<<< HEAD
 	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
+=======
+	tp->delivered += delivered;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
 		tcp_count_delivered_ce(tp, delivered);
 }
@@ -814,6 +830,10 @@ void tcp_initialize_rcv_mss(struct sock *sk)
 
 	inet_csk(sk)->icsk_ack.rcv_mss = hint;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_initialize_rcv_mss);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Receiver "autotuning" code.
  *
@@ -1132,7 +1152,11 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
 
 		tcp_bpf_rtt(sk, mrtt_us, srtt);
 	}
+<<<<<<< HEAD
 	WRITE_ONCE(tp->srtt_us, max(1U, srtt));
+=======
+	tp->srtt_us = max(1U, srtt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void tcp_update_pacing_rate(struct sock *sk)
@@ -1246,7 +1270,11 @@ static u32 tcp_dsack_seen(struct tcp_sock *tp, u32 start_seq,
 	else if (tp->tlp_high_seq && tp->tlp_high_seq == end_seq)
 		state->flag |= FLAG_DSACK_TLP;
 
+<<<<<<< HEAD
 	WRITE_ONCE(tp->dsack_dups, tp->dsack_dups + dup_segs);
+=======
+	tp->dsack_dups += dup_segs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Skip the DSACK if dup segs weren't retransmitted by sender */
 	if (tp->dsack_dups > tp->total_retrans)
 		return 0;
@@ -1293,6 +1321,7 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
 			 tp->sacked_out,
 			 tp->undo_marker ? tp->undo_retrans : 0);
 #endif
+<<<<<<< HEAD
 		WRITE_ONCE(tp->reordering,
 			   min_t(u32, (metric + mss - 1) / mss,
 				 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
@@ -1300,6 +1329,14 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
 
 	/* This exciting event is worth to be remembered. 8) */
 	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+=======
+		tp->reordering = min_t(u32, (metric + mss - 1) / mss,
+				       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
+	}
+
+	/* This exciting event is worth to be remembered. 8) */
+	tp->reord_seen++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NET_INC_STATS(sock_net(sk),
 		      ts ? LINUX_MIB_TCPTSREORDER : LINUX_MIB_TCPSACKREORDER);
 }
@@ -1323,7 +1360,16 @@ static void tcp_verify_retransmit_hint(struct tcp_sock *tp, struct sk_buff *skb)
  */
 static void tcp_notify_skb_loss_event(struct tcp_sock *tp, const struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	tp->lost += tcp_skb_pcount(skb);
+=======
+	struct sock *sk = (struct sock *)tp;
+	const struct tcp_congestion_ops *ca_ops = inet_csk(sk)->icsk_ca_ops;
+
+	tp->lost += tcp_skb_pcount(skb);
+	if (ca_ops->skb_marked_lost)
+		ca_ops->skb_marked_lost(sk, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void tcp_mark_skb_lost(struct sock *sk, struct sk_buff *skb)
@@ -1751,6 +1797,10 @@ static void tcp_rate_gen(struct sock *sk, u32 delivered, u32 lost,
 		return;
 	}
 	rs->delivered   = tp->delivered - rs->prior_delivered;
+<<<<<<< HEAD
+=======
+	rs->lost        = tp->lost - rs->prior_lost;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rs->delivered_ce = tp->delivered_ce - rs->prior_delivered_ce;
 	/* delivered_ce occupies less than 32 bits in the skb control block */
@@ -1762,7 +1812,11 @@ static void tcp_rate_gen(struct sock *sk, u32 delivered, u32 lost,
 	 * longer phase.
 	 */
 	snd_us = rs->interval_us;				/* send phase */
+<<<<<<< HEAD
 	ack_us = tcp_stamp_us_delta(tp->tcp_mstamp,
+=======
+	ack_us = tcp_stamp32_us_delta(tp->tcp_mstamp,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    rs->prior_mstamp); /* ack phase */
 	rs->interval_us = max(snd_us, ack_us);
 
@@ -1819,19 +1873,33 @@ static void tcp_rate_skb_delivered(struct sock *sk, struct sk_buff *skb,
 	if (!rs->prior_delivered ||
 	    tcp_skb_sent_after(tx_tstamp, tp->first_tx_mstamp,
 			       scb->end_seq, rs->last_end_seq)) {
+<<<<<<< HEAD
+=======
+		rs->prior_lost	     = scb->tx.lost;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rs->prior_delivered_ce  = scb->tx.delivered_ce;
 		rs->prior_delivered  = scb->tx.delivered;
 		rs->prior_mstamp     = scb->tx.delivered_mstamp;
 		rs->is_app_limited   = scb->tx.is_app_limited;
 		rs->is_retrans	     = scb->sacked & TCPCB_RETRANS;
+<<<<<<< HEAD
+=======
+		rs->tx_in_flight     = scb->tx.in_flight;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rs->last_end_seq     = scb->end_seq;
 
 		/* Record send time of most recently ACKed packet: */
 		tp->first_tx_mstamp  = tx_tstamp;
 		/* Find the duration of the "send phase" of this window: */
+<<<<<<< HEAD
 		rs->interval_us = tcp_stamp_us_delta(tp->first_tx_mstamp,
 						     scb->tx.first_tx_mstamp);
 
+=======
+		rs->interval_us      = tcp_stamp32_us_delta(
+						tp->first_tx_mstamp,
+						scb->tx.first_tx_mstamp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/* Mark off the skb delivered once it's sacked to avoid being
 	 * used again when it's cumulatively acked. For acked packets
@@ -1874,6 +1942,20 @@ static bool tcp_shifted_skb(struct sock *sk, struct sk_buff *prev,
 	WARN_ON_ONCE(tcp_skb_pcount(skb) < pcount);
 	tcp_skb_pcount_add(skb, -pcount);
 
+<<<<<<< HEAD
+=======
+	/* Adjust tx.in_flight as pcount is shifted from skb to prev. */
+	if (WARN_ONCE(TCP_SKB_CB(skb)->tx.in_flight < pcount,
+		      "prev in_flight: %u skb in_flight: %u pcount: %u",
+		      TCP_SKB_CB(prev)->tx.in_flight,
+		      TCP_SKB_CB(skb)->tx.in_flight,
+		      pcount))
+		TCP_SKB_CB(skb)->tx.in_flight = 0;
+	else
+		TCP_SKB_CB(skb)->tx.in_flight -= pcount;
+	TCP_SKB_CB(prev)->tx.in_flight += pcount;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* When we're adding to gso_segs == 1, gso_size will be zero,
 	 * in theory this shouldn't be necessary but as long as DSACK
 	 * code can come after this skb later on it's better to keep
@@ -2440,10 +2522,16 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
 	if (!tcp_limit_reno_sacked(tp))
 		return;
 
+<<<<<<< HEAD
 	WRITE_ONCE(tp->reordering,
 		   min_t(u32, tp->packets_out + addend,
 			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
 	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+=======
+	tp->reordering = min_t(u32, tp->packets_out + addend,
+			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
+	tp->reord_seen++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
 }
 
@@ -2567,7 +2655,11 @@ void tcp_enter_loss(struct sock *sk)
 	    (icsk->icsk_ca_state == TCP_CA_Loss && !icsk->icsk_retransmits)) {
 		tp->prior_ssthresh = tcp_current_ssthresh(sk);
 		tp->prior_cwnd = tcp_snd_cwnd(tp);
+<<<<<<< HEAD
 		WRITE_ONCE(tp->snd_ssthresh, icsk->icsk_ca_ops->ssthresh(sk));
+=======
+		tp->snd_ssthresh = icsk->icsk_ca_ops->ssthresh(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcp_ca_event(sk, CA_EVENT_LOSS);
 		tcp_init_undo(tp);
 	}
@@ -2581,8 +2673,13 @@ void tcp_enter_loss(struct sock *sk)
 	reordering = READ_ONCE(net->ipv4.sysctl_tcp_reordering);
 	if (icsk->icsk_ca_state <= TCP_CA_Disorder &&
 	    tp->sacked_out >= reordering)
+<<<<<<< HEAD
 		WRITE_ONCE(tp->reordering,
 			   min_t(unsigned int, tp->reordering, reordering));
+=======
+		tp->reordering = min_t(unsigned int, tp->reordering,
+				       reordering);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tcp_set_ca_state(sk, TCP_CA_Loss);
 	tp->high_seq = tp->snd_nxt;
@@ -2860,7 +2957,11 @@ static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
 		tcp_snd_cwnd_set(tp, icsk->icsk_ca_ops->undo_cwnd(sk));
 
 		if (tp->prior_ssthresh > tp->snd_ssthresh) {
+<<<<<<< HEAD
 			WRITE_ONCE(tp->snd_ssthresh, tp->prior_ssthresh);
+=======
+			tp->snd_ssthresh = tp->prior_ssthresh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tcp_ecn_withdraw_cwr(tp);
 		}
 	}
@@ -2978,7 +3079,11 @@ static void tcp_init_cwnd_reduction(struct sock *sk)
 	tp->prior_cwnd = tcp_snd_cwnd(tp);
 	tp->prr_delivered = 0;
 	tp->prr_out = 0;
+<<<<<<< HEAD
 	WRITE_ONCE(tp->snd_ssthresh, inet_csk(sk)->icsk_ca_ops->ssthresh(sk));
+=======
+	tp->snd_ssthresh = inet_csk(sk)->icsk_ca_ops->ssthresh(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcp_ecn_queue_cwr(tp);
 }
 
@@ -3120,7 +3225,11 @@ static void tcp_non_congestion_loss_retransmit(struct sock *sk)
 
 	if (icsk->icsk_ca_state != TCP_CA_Loss) {
 		tp->high_seq = tp->snd_nxt;
+<<<<<<< HEAD
 		WRITE_ONCE(tp->snd_ssthresh, tcp_current_ssthresh(sk));
+=======
+		tp->snd_ssthresh = tcp_current_ssthresh(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tp->prior_ssthresh = 0;
 		tp->undo_marker = 0;
 		tcp_set_ca_state(sk, TCP_CA_Loss);
@@ -3173,6 +3282,10 @@ void tcp_simple_retransmit(struct sock *sk)
 	 */
 	tcp_non_congestion_loss_retransmit(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_simple_retransmit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_enter_recovery(struct sock *sk, bool ece_ack)
 {
@@ -3552,7 +3665,11 @@ void tcp_rearm_rto(struct sock *sk)
 /* Try to schedule a loss probe; if that doesn't work, then schedule an RTO. */
 static void tcp_set_xmit_timer(struct sock *sk)
 {
+<<<<<<< HEAD
 	if (!tcp_sk(sk)->packets_out || !tcp_schedule_loss_probe(sk, true))
+=======
+	if (!tcp_schedule_loss_probe(sk, true))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcp_rearm_rto(sk);
 }
 
@@ -3912,7 +4029,11 @@ static void tcp_snd_una_update(struct tcp_sock *tp, u32 ack)
 	sock_owned_by_me((struct sock *)tp);
 	tp->bytes_acked += delta;
 	tcp_snd_sne_update(tp, ack);
+<<<<<<< HEAD
 	WRITE_ONCE(tp->snd_una, ack);
+=======
+	tp->snd_una = ack;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void tcp_rcv_sne_update(struct tcp_sock *tp, u32 seq)
@@ -4109,7 +4230,12 @@ static int tcp_replace_ts_recent(struct tcp_sock *tp, u32 seq)
 /* This routine deals with acks during a TLP episode and ends an episode by
  * resetting tlp_high_seq. Ref: TLP algorithm in RFC8985
  */
+<<<<<<< HEAD
 static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
+=======
+static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag,
+				struct rate_sample *rs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
@@ -4126,6 +4252,10 @@ static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
 		/* ACK advances: there was a loss, so reduce cwnd. Reset
 		 * tlp_high_seq in tcp_init_cwnd_reduction()
 		 */
+<<<<<<< HEAD
+=======
+		tcp_ca_event(sk, CA_EVENT_TLP_RECOVERY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcp_init_cwnd_reduction(sk);
 		tcp_set_ca_state(sk, TCP_CA_CWR);
 		tcp_end_cwnd_reduction(sk);
@@ -4136,6 +4266,14 @@ static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
 			     FLAG_NOT_DUP | FLAG_DATA_SACKED))) {
 		/* Pure dupack: original and TLP probe arrived; no loss */
 		tp->tlp_high_seq = 0;
+<<<<<<< HEAD
+=======
+	} else {
+		/* This ACK matches a TLP retransmit. We cannot yet tell if
+		 * this ACK is for the original or the TLP retransmit.
+		 */
+		rs->is_acking_tlp_retrans_seq = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -4286,6 +4424,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 		goto old_ack;
 	}
 
+<<<<<<< HEAD
 	/* If the ack includes data we haven't sent yet, drop the
 	 * segment.  RFC 793 Section 3.9 and RFC 5961 Section 5.2
 	 * require us to send an ACK back in that case.
@@ -4295,6 +4434,13 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 			tcp_send_challenge_ack(sk, false);
 		return -SKB_DROP_REASON_TCP_ACK_UNSENT_DATA;
 	}
+=======
+	/* If the ack includes data we haven't sent yet, discard
+	 * this segment (RFC793 Section 3.9).
+	 */
+	if (after(ack, tp->snd_nxt))
+		return -SKB_DROP_REASON_TCP_ACK_UNSENT_DATA;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (after(ack, prior_snd_una)) {
 		flag |= FLAG_SND_UNA_ADVANCED;
@@ -4309,6 +4455,10 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 
 	prior_fack = tcp_is_sack(tp) ? tcp_highest_sack_seq(tp) : tp->snd_una;
 	rs.prior_in_flight = tcp_packets_in_flight(tp);
+<<<<<<< HEAD
+=======
+	tcp_rate_check_app_limited(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* ts_recent update must be made after we are sure that the packet
 	 * is in window.
@@ -4381,7 +4531,11 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 	tcp_in_ack_event(sk, flag);
 
 	if (unlikely(tp->tlp_high_seq))
+<<<<<<< HEAD
 		tcp_process_tlp_ack(sk, ack, flag);
+=======
+		tcp_process_tlp_ack(sk, ack, flag, &rs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (tcp_ack_is_dubious(sk, flag)) {
 		if (!(flag & (FLAG_SND_UNA_ADVANCED |
@@ -4406,6 +4560,10 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 
 	lost = tp->lost - lost;			/* freshly marked lost */
 	rs.is_ack_delayed = !!(flag & FLAG_ACK_MAYBE_DELAYED);
+<<<<<<< HEAD
+=======
+	rs.is_ece = !!(flag & FLAG_ECE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcp_rate_gen(sk, delivered, lost, is_sack_reneg, sack_state.rate);
 	tcp_cong_control(sk, ack, delivered, flag, sack_state.rate);
 	tcp_xmit_recovery(sk, rexmit);
@@ -4431,7 +4589,11 @@ no_queue:
 	tcp_ack_probe(sk);
 
 	if (unlikely(tp->tlp_high_seq))
+<<<<<<< HEAD
 		tcp_process_tlp_ack(sk, ack, flag);
+=======
+		tcp_process_tlp_ack(sk, ack, flag, &rs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 
 old_ack:
@@ -4718,6 +4880,63 @@ static bool tcp_fast_parse_options(const struct net *net,
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+/*
+ * Parse Signature options
+ */
+int tcp_do_parse_auth_options(const struct tcphdr *th,
+			      const u8 **md5_hash, const u8 **ao_hash)
+{
+	int length = (th->doff << 2) - sizeof(*th);
+	const u8 *ptr = (const u8 *)(th + 1);
+	unsigned int minlen = TCPOLEN_MD5SIG;
+
+	if (IS_ENABLED(CONFIG_TCP_AO))
+		minlen = sizeof(struct tcp_ao_hdr) + 1;
+
+	*md5_hash = NULL;
+	*ao_hash = NULL;
+
+	/* If not enough data remaining, we can short cut */
+	while (length >= minlen) {
+		int opcode = *ptr++;
+		int opsize;
+
+		switch (opcode) {
+		case TCPOPT_EOL:
+			return 0;
+		case TCPOPT_NOP:
+			length--;
+			continue;
+		default:
+			opsize = *ptr++;
+			if (opsize < 2 || opsize > length)
+				return -EINVAL;
+			if (opcode == TCPOPT_MD5SIG) {
+				if (opsize != TCPOLEN_MD5SIG)
+					return -EINVAL;
+				if (unlikely(*md5_hash || *ao_hash))
+					return -EEXIST;
+				*md5_hash = ptr;
+			} else if (opcode == TCPOPT_AO) {
+				if (opsize <= sizeof(struct tcp_ao_hdr))
+					return -EINVAL;
+				if (unlikely(*md5_hash || *ao_hash))
+					return -EEXIST;
+				*ao_hash = ptr;
+			}
+		}
+		ptr += opsize - 2;
+		length -= opsize;
+	}
+	return 0;
+}
+EXPORT_SYMBOL(tcp_do_parse_auth_options);
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Sorry, PAWS as specified is broken wrt. pure-ACKs -DaveM
  *
  * It is not fatal. If this ACK does _not_ change critical state (seqs, window)
@@ -4812,10 +5031,15 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
 					 const struct tcphdr *th)
 {
 	const struct tcp_sock *tp = tcp_sk(sk);
+<<<<<<< HEAD
+=======
+	u32 seq_limit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (before(end_seq, tp->rcv_wup))
 		return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
 
+<<<<<<< HEAD
 	if (unlikely(after(end_seq, tp->rcv_nxt + tcp_max_receive_window(tp)))) {
 		/* Some stacks are known to handle FIN incorrectly; allow the
 		 * FIN to extend beyond the window and check it in detail later.
@@ -4824,6 +5048,17 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
 			return SKB_NOT_DROPPED_YET;
 
 		if (after(seq, tp->rcv_nxt + tcp_max_receive_window(tp)))
+=======
+	seq_limit = tp->rcv_nxt + tcp_receive_window(tp);
+	if (unlikely(after(end_seq, seq_limit))) {
+		/* Some stacks are known to handle FIN incorrectly; allow the
+		 * FIN to extend beyond the window and check it in detail later.
+		 */
+		if (!after(end_seq - th->fin, seq_limit))
+			return SKB_NOT_DROPPED_YET;
+
+		if (after(seq, seq_limit))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return SKB_DROP_REASON_TCP_INVALID_SEQUENCE;
 
 		/* Only accept this packet if receive queue is empty. */
@@ -4847,6 +5082,10 @@ void tcp_done_with_error(struct sock *sk, int err)
 	if (!sock_flag(sk, SOCK_DEAD))
 		sk_error_report(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_done_with_error);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* When we get a reset we do this. */
 void tcp_reset(struct sock *sk, struct sk_buff *skb)
@@ -5681,7 +5920,10 @@ drop:
 	if (!before(TCP_SKB_CB(skb)->seq,
 		    tp->rcv_nxt + tcp_receive_window(tp))) {
 		reason = SKB_DROP_REASON_TCP_OVERWINDOW;
+<<<<<<< HEAD
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_BEYOND_WINDOW);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_of_window;
 	}
 
@@ -6088,13 +6330,22 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
 
 	    /* More than one full frame received... */
 	if (((tp->rcv_nxt - tp->rcv_wup) > inet_csk(sk)->icsk_ack.rcv_mss &&
+<<<<<<< HEAD
+=======
+	     (tp->fast_ack_mode == 1 ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     /* ... and right edge of window advances far enough.
 	      * (tcp_recvmsg() will send ACK otherwise).
 	      * If application uses SO_RCVLOWAT, we want send ack now if
 	      * we have not received enough bytes to satisfy the condition.
 	      */
+<<<<<<< HEAD
 	    (tp->rcv_nxt - tp->copied_seq < sk->sk_rcvlowat ||
 	     __tcp_select_window(sk) >= tp->rcv_wnd)) ||
+=======
+	      (tp->rcv_nxt - tp->copied_seq < sk->sk_rcvlowat ||
+	       __tcp_select_window(sk) >= tp->rcv_wnd))) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    /* We ACK each frame or... */
 	    tcp_in_quickack_mode(sk) ||
 	    /* Protocol state mandates a one-time immediate ACK */
@@ -6668,6 +6919,10 @@ csum_error:
 discard:
 	tcp_drop_reason(sk, skb, reason);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_rcv_established);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
 {
@@ -6783,7 +7038,11 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
 		/* SYN-data is counted as two separate packets in tcp_ack() */
 		if (tp->delivered > 1)
+<<<<<<< HEAD
 			WRITE_ONCE(tp->delivered, tp->delivered - 1);
+=======
+			--tp->delivered;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	tcp_fastopen_add_skb(sk, synack);
@@ -6904,7 +7163,10 @@ consume:
 		 */
 		WRITE_ONCE(tp->rcv_nxt, TCP_SKB_CB(skb)->seq + 1);
 		tp->rcv_wup = TCP_SKB_CB(skb)->seq + 1;
+<<<<<<< HEAD
 		tp->rcv_mwnd_seq = tp->rcv_wup + tp->rcv_wnd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* RFC1323: The window in SYN & SYN/ACK segments is
 		 * never scaled.
@@ -7017,7 +7279,10 @@ consume:
 		WRITE_ONCE(tp->rcv_nxt, TCP_SKB_CB(skb)->seq + 1);
 		WRITE_ONCE(tp->copied_seq, tp->rcv_nxt);
 		tp->rcv_wup = TCP_SKB_CB(skb)->seq + 1;
+<<<<<<< HEAD
 		tp->rcv_mwnd_seq = tp->rcv_wup + tp->rcv_wnd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* RFC1323: The window in SYN & SYN/ACK segments is
 		 * never scaled.
@@ -7216,7 +7481,11 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
 	SKB_DR_SET(reason, NOT_SPECIFIED);
 	switch (sk->sk_state) {
 	case TCP_SYN_RECV:
+<<<<<<< HEAD
 		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
+=======
+		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!tp->srtt_us)
 			tcp_synack_rtt_meas(sk, req);
 
@@ -7244,7 +7513,11 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
 		if (sk->sk_socket)
 			sk_wake_async(sk, SOCK_WAKE_IO, POLL_OUT);
 
+<<<<<<< HEAD
 		WRITE_ONCE(tp->snd_una, TCP_SKB_CB(skb)->ack_seq);
+=======
+		tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
 
@@ -7386,6 +7659,10 @@ consume:
 	__kfree_skb(skb);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_rcv_state_process);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
 {
@@ -7583,6 +7860,10 @@ u16 tcp_get_syncookie_mss(struct request_sock_ops *rsk_ops,
 
 	return mss;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_get_syncookie_mss);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		     const struct tcp_request_sock_ops *af_ops,
@@ -7661,10 +7942,14 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		goto drop_and_free;
 
 	if (tmp_opt.tstamp_ok || (!want_cookie && !isn))
+<<<<<<< HEAD
 		st = INDIRECT_CALL_INET(af_ops->init_seq_and_ts_off,
 					tcp_v6_init_seq_and_ts_off,
 					tcp_v4_init_seq_and_ts_off,
 					net, skb);
+=======
+		st = af_ops->init_seq_and_ts_off(net, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (tmp_opt.tstamp_ok) {
 		tcp_rsk(req)->req_usec_ts = dst_tcp_usec_ts(dst);
@@ -7762,3 +8047,7 @@ drop:
 	tcp_listendrop(sk);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_conn_request);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

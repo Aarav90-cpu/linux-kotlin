@@ -25,8 +25,13 @@ struct tegra_pmx {
 	int nbanks;
 	void __iomem **regs;
 	u32 *backup_regs;
+<<<<<<< HEAD
 	unsigned int num_pingroup_configs;
 	struct tegra_pingroup_config pingroup_configs[] __counted_by(num_pingroup_configs);
+=======
+	/* Array of size soc->ngroups */
+	struct tegra_pingroup_config *pingroup_configs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum tegra_pinconf_param {

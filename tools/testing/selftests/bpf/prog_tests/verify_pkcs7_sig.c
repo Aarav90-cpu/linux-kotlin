@@ -18,7 +18,10 @@
 #include <linux/keyctl.h>
 #include <sys/xattr.h>
 #include <linux/fsverity.h>
+<<<<<<< HEAD
 #include <linux/module_signature.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <test_progs.h>
 
 #include "test_verify_pkcs7_sig.skel.h"
@@ -34,6 +37,32 @@
 #define SHA256_DIGEST_SIZE      32
 #endif
 
+<<<<<<< HEAD
+=======
+/* In stripped ARM and x86-64 modules, ~ is surprisingly rare. */
+#define MODULE_SIG_STRING "~Module signature appended~\n"
+
+/*
+ * Module signature information block.
+ *
+ * The constituents of the signature section are, in order:
+ *
+ *	- Signer's name
+ *	- Key identifier
+ *	- Signature data
+ *	- Information block
+ */
+struct module_signature {
+	__u8	algo;		/* Public-key crypto algorithm [0] */
+	__u8	hash;		/* Digest algorithm [0] */
+	__u8	id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
+	__u8	signer_len;	/* Length of signer's name [0] */
+	__u8	key_id_len;	/* Length of key identifier [0] */
+	__u8	__pad[3];
+	__be32	sig_len;	/* Length of signature data */
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct data {
 	__u8 data[MAX_DATA_SIZE];
 	__u32 data_len;
@@ -193,7 +222,11 @@ static int populate_data_item_mod(struct data *data_item)
 		return 0;
 
 	modlen = st.st_size;
+<<<<<<< HEAD
 	marker_len = sizeof(MODULE_SIGNATURE_MARKER) - 1;
+=======
+	marker_len = sizeof(MODULE_SIG_STRING) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fd = open(mod_path, O_RDONLY);
 	if (fd == -1)
@@ -206,7 +239,11 @@ static int populate_data_item_mod(struct data *data_item)
 	if (mod == MAP_FAILED)
 		return -errno;
 
+<<<<<<< HEAD
 	if (strncmp(mod + modlen - marker_len, MODULE_SIGNATURE_MARKER, marker_len)) {
+=======
+	if (strncmp(mod + modlen - marker_len, MODULE_SIG_STRING, marker_len)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}

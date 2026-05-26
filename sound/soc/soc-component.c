@@ -342,6 +342,7 @@ int snd_soc_component_of_xlate_dai_name(struct snd_soc_component *component,
 	return -ENOTSUPP;
 }
 
+<<<<<<< HEAD
 int snd_soc_component_regmap_val_bytes(struct snd_soc_component *component)
 {
 	int val_bytes;
@@ -358,6 +359,16 @@ int snd_soc_component_regmap_val_bytes(struct snd_soc_component *component)
 	return val_bytes;
 }
 EXPORT_SYMBOL_GPL(snd_soc_component_regmap_val_bytes);
+=======
+void snd_soc_component_setup_regmap(struct snd_soc_component *component)
+{
+	int val_bytes = regmap_get_val_bytes(component->regmap);
+
+	/* Errors are legitimate for non-integer byte multiples */
+	if (val_bytes > 0)
+		component->val_bytes = val_bytes;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_REGMAP
 
@@ -376,6 +387,10 @@ void snd_soc_component_init_regmap(struct snd_soc_component *component,
 				   struct regmap *regmap)
 {
 	component->regmap = regmap;
+<<<<<<< HEAD
+=======
+	snd_soc_component_setup_regmap(component);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(snd_soc_component_init_regmap);
 
@@ -1044,8 +1059,13 @@ int snd_soc_pcm_component_new(struct snd_soc_pcm_runtime *rtd)
 	int i;
 
 	for_each_rtd_components(rtd, i, component) {
+<<<<<<< HEAD
 		if (component->driver->pcm_new) {
 			ret = component->driver->pcm_new(component, rtd);
+=======
+		if (component->driver->pcm_construct) {
+			ret = component->driver->pcm_construct(component, rtd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret < 0)
 				return soc_component_ret(component, ret);
 		}
@@ -1063,8 +1083,13 @@ void snd_soc_pcm_component_free(struct snd_soc_pcm_runtime *rtd)
 		return;
 
 	for_each_rtd_components(rtd, i, component)
+<<<<<<< HEAD
 		if (component->driver->pcm_free)
 			component->driver->pcm_free(component, rtd->pcm);
+=======
+		if (component->driver->pcm_destruct)
+			component->driver->pcm_destruct(component, rtd->pcm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int snd_soc_pcm_component_prepare(struct snd_pcm_substream *substream)

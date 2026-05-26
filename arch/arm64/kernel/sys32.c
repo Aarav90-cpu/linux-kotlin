@@ -89,7 +89,11 @@ COMPAT_SYSCALL_DEFINE4(aarch32_truncate64, const char __user *, pathname,
 COMPAT_SYSCALL_DEFINE4(aarch32_ftruncate64, unsigned int, fd, u32, __pad,
 		       arg_u32p(length))
 {
+<<<<<<< HEAD
 	return ksys_ftruncate(fd, arg_u64(length), FTRUNCATE_LFS);
+=======
+	return ksys_ftruncate(fd, arg_u64(length));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 COMPAT_SYSCALL_DEFINE5(aarch32_readahead, int, fd, u32, __pad,

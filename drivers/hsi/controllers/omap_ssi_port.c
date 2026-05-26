@@ -452,6 +452,10 @@ static int ssi_setup(struct hsi_client *cl)
 	void __iomem *sst = omap_port->sst_base;
 	void __iomem *ssr = omap_port->ssr_base;
 	u32 div;
+<<<<<<< HEAD
+=======
+	u32 val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = 0;
 
 	pm_runtime_get_sync(omap_port->pdev);
@@ -469,7 +473,11 @@ static int ssi_setup(struct hsi_client *cl)
 	writel_relaxed(SSI_MODE_SLEEP, sst + SSI_SST_MODE_REG);
 	writel_relaxed(SSI_MODE_SLEEP, ssr + SSI_SSR_MODE_REG);
 	/* Flush posted write */
+<<<<<<< HEAD
 	readl(ssr + SSI_SSR_MODE_REG);
+=======
+	val = readl(ssr + SSI_SSR_MODE_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* TX */
 	writel_relaxed(31, sst + SSI_SST_FRAMESIZE_REG);
 	writel_relaxed(div, sst + SSI_SST_DIVISOR_REG);
@@ -1117,7 +1125,11 @@ static int ssi_port_probe(struct platform_device *pd)
 
 	dev_dbg(&pd->dev, "init ssi port...\n");
 
+<<<<<<< HEAD
 	if (!omap_ssi->port) {
+=======
+	if (!ssi->port || !omap_ssi->port) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&pd->dev, "ssi controller not initialized!\n");
 		err = -ENODEV;
 		goto error;
@@ -1298,12 +1310,21 @@ static int ssi_restore_port_ctx(struct omap_ssi_port *omap_port)
 
 static int ssi_restore_port_mode(struct omap_ssi_port *omap_port)
 {
+<<<<<<< HEAD
+=======
+	u32 mode;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	writel_relaxed(omap_port->sst.mode,
 				omap_port->sst_base + SSI_SST_MODE_REG);
 	writel_relaxed(omap_port->ssr.mode,
 				omap_port->ssr_base + SSI_SSR_MODE_REG);
 	/* OCP barrier */
+<<<<<<< HEAD
 	readl(omap_port->ssr_base + SSI_SSR_MODE_REG);
+=======
+	mode = readl(omap_port->ssr_base + SSI_SSR_MODE_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

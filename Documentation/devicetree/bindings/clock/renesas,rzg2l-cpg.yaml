@@ -28,13 +28,17 @@ properties:
       - renesas,r9a07g044-cpg # RZ/G2{L,LC}
       - renesas,r9a07g054-cpg # RZ/V2L
       - renesas,r9a08g045-cpg # RZ/G3S
+<<<<<<< HEAD
       - renesas,r9a08g046-cpg # RZ/G3L
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - renesas,r9a09g011-cpg # RZ/V2M
 
   reg:
     maxItems: 1
 
   clocks:
+<<<<<<< HEAD
     minItems: 1
     items:
       - description: Clock source to CPG can be either from external clock
@@ -52,6 +56,15 @@ properties:
       - const: eth0_rxc_rx_clk
       - const: eth1_txc_tx_clk
       - const: eth1_rxc_rx_clk
+=======
+    maxItems: 1
+
+  clock-names:
+    description:
+      Clock source to CPG can be either from external clock input (EXCLK) or
+      crystal oscillator (XIN/XOUT).
+    const: extal
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   '#clock-cells':
     description: |
@@ -85,6 +98,7 @@ required:
   - '#power-domain-cells'
   - '#reset-cells'
 
+<<<<<<< HEAD
 allOf:
   - if:
       properties:
@@ -104,6 +118,8 @@ allOf:
         clock-names:
           maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

@@ -11,7 +11,10 @@
 #include <linux/extable.h>
 #include <linux/moduleloader.h>
 #include <linux/module_signature.h>
+<<<<<<< HEAD
 #include <linux/module_symbol.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/trace_events.h>
 #include <linux/init.h>
 #include <linux/kallsyms.h>
@@ -88,7 +91,11 @@ struct mod_tree_root mod_tree __cacheline_aligned = {
 struct symsearch {
 	const struct kernel_symbol *start, *stop;
 	const u32 *crcs;
+<<<<<<< HEAD
 	const u8 *flagstab;
+=======
+	enum mod_license license;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -365,13 +372,20 @@ static bool find_exported_symbol_in_section(const struct symsearch *syms,
 					    struct find_symbol_arg *fsa)
 {
 	struct kernel_symbol *sym;
+<<<<<<< HEAD
 	u8 sym_flags;
+=======
+
+	if (!fsa->gplok && syms->license == GPL_ONLY)
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sym = bsearch(fsa->name, syms->start, syms->stop - syms->start,
 			sizeof(struct kernel_symbol), cmp_name);
 	if (!sym)
 		return false;
 
+<<<<<<< HEAD
 	sym_flags = *(syms->flagstab + (sym - syms->start));
 	if (!fsa->gplok && (sym_flags & KSYM_FLAG_GPL_ONLY))
 		return false;
@@ -380,6 +394,12 @@ static bool find_exported_symbol_in_section(const struct symsearch *syms,
 	fsa->crc = symversion(syms->crcs, sym - syms->start);
 	fsa->sym = sym;
 	fsa->license = (sym_flags & KSYM_FLAG_GPL_ONLY) ? GPL_ONLY : NOT_GPL_ONLY;
+=======
+	fsa->owner = owner;
+	fsa->crc = symversion(syms->crcs, sym - syms->start);
+	fsa->sym = sym;
+	fsa->license = syms->license;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -390,6 +410,7 @@ static bool find_exported_symbol_in_section(const struct symsearch *syms,
  */
 bool find_symbol(struct find_symbol_arg *fsa)
 {
+<<<<<<< HEAD
 	const struct symsearch syms = {
 		.start		= __start___ksymtab,
 		.stop		= __stop___ksymtab,
@@ -408,13 +429,43 @@ bool find_symbol(struct find_symbol_arg *fsa)
 			.stop		= mod->syms + mod->num_syms,
 			.crcs		= mod->crcs,
 			.flagstab	= mod->flagstab,
+=======
+	static const struct symsearch arr[] = {
+		{ __start___ksymtab, __stop___ksymtab, __start___kcrctab,
+		  NOT_GPL_ONLY },
+		{ __start___ksymtab_gpl, __stop___ksymtab_gpl,
+		  __start___kcrctab_gpl,
+		  GPL_ONLY },
+	};
+	struct module *mod;
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(arr); i++)
+		if (find_exported_symbol_in_section(&arr[i], NULL, fsa))
+			return true;
+
+	list_for_each_entry_rcu(mod, &modules, list,
+				lockdep_is_held(&module_mutex)) {
+		struct symsearch arr[] = {
+			{ mod->syms, mod->syms + mod->num_syms, mod->crcs,
+			  NOT_GPL_ONLY },
+			{ mod->gpl_syms, mod->gpl_syms + mod->num_gpl_syms,
+			  mod->gpl_crcs,
+			  GPL_ONLY },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		if (mod->state == MODULE_STATE_UNFORMED)
 			continue;
 
+<<<<<<< HEAD
 		if (find_exported_symbol_in_section(&syms, mod, fsa))
 			return true;
+=======
+		for (i = 0; i < ARRAY_SIZE(arr); i++)
+			if (find_exported_symbol_in_section(&arr[i], mod, fsa))
+				return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	pr_debug("Failed to find symbol %s\n", fsa->name);
@@ -605,6 +656,7 @@ static const struct module_attribute modinfo_##field = {              \
 MODINFO_ATTR(version);
 MODINFO_ATTR(srcversion);
 
+<<<<<<< HEAD
 static void setup_modinfo_import_ns(struct module *mod, const char *s)
 {
 	mod->imported_namespaces = NULL;
@@ -635,6 +687,8 @@ static const struct module_attribute modinfo_import_ns = {
 	.free = free_modinfo_import_ns,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct {
 	char name[MODULE_NAME_LEN];
 	char taints[MODULE_FLAGS_BUF_SIZE];
@@ -1086,7 +1140,10 @@ const struct module_attribute *const modinfo_attrs[] = {
 	&module_uevent,
 	&modinfo_version,
 	&modinfo_srcversion,
+<<<<<<< HEAD
 	&modinfo_import_ns,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&modinfo_initstate,
 	&modinfo_coresize,
 #ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
@@ -1437,7 +1494,11 @@ static void free_module(struct module *mod)
 	module_unload_free(mod);
 
 	/* Free any allocated parameters. */
+<<<<<<< HEAD
 	module_destroy_params(mod->kp, mod->num_kp);
+=======
+	destroy_params(mod->kp, mod->num_kp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_livepatch_module(mod))
 		free_module_elf(mod);
@@ -1495,6 +1556,7 @@ EXPORT_SYMBOL_GPL(__symbol_get);
  */
 static int verify_exported_symbols(struct module *mod)
 {
+<<<<<<< HEAD
 	const struct kernel_symbol *s;
 	for (s = mod->syms; s < mod->syms + mod->num_syms; s++) {
 		struct find_symbol_arg fsa = {
@@ -1506,6 +1568,31 @@ static int verify_exported_symbols(struct module *mod)
 				mod->name, kernel_symbol_name(s),
 				module_name(fsa.owner));
 			return -ENOEXEC;
+=======
+	unsigned int i;
+	const struct kernel_symbol *s;
+	struct {
+		const struct kernel_symbol *sym;
+		unsigned int num;
+	} arr[] = {
+		{ mod->syms, mod->num_syms },
+		{ mod->gpl_syms, mod->num_gpl_syms },
+	};
+
+	for (i = 0; i < ARRAY_SIZE(arr); i++) {
+		for (s = arr[i].sym; s < arr[i].sym + arr[i].num; s++) {
+			struct find_symbol_arg fsa = {
+				.name	= kernel_symbol_name(s),
+				.gplok	= true,
+			};
+			if (find_symbol(&fsa)) {
+				pr_err("%s: exports duplicate symbol %s"
+				       " (owned by %s)\n",
+				       mod->name, kernel_symbol_name(s),
+				       module_name(fsa.owner));
+				return -ENOEXEC;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	return 0;
@@ -1777,6 +1864,7 @@ static void module_license_taint_check(struct module *mod, const char *license)
 	}
 }
 
+<<<<<<< HEAD
 static int copy_modinfo_import_ns(struct module *mod, struct load_info *info)
 {
 	char *ns;
@@ -1809,11 +1897,17 @@ static int copy_modinfo_import_ns(struct module *mod, struct load_info *info)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int setup_modinfo(struct module *mod, struct load_info *info)
 {
 	const struct module_attribute *attr;
 	char *imported_namespace;
+<<<<<<< HEAD
 	int i, err;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; (attr = modinfo_attrs[i]); i++) {
 		if (attr->setup)
@@ -1832,10 +1926,13 @@ static int setup_modinfo(struct module *mod, struct load_info *info)
 		}
 	}
 
+<<<<<<< HEAD
 	err = copy_modinfo_import_ns(mod, info);
 	if (err)
 		return err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2663,6 +2760,7 @@ static int find_module_sections(struct module *mod, struct load_info *info)
 	mod->syms = section_objs(info, "__ksymtab",
 				 sizeof(*mod->syms), &mod->num_syms);
 	mod->crcs = section_addr(info, "__kcrctab");
+<<<<<<< HEAD
 	mod->flagstab = section_addr(info, "__kflagstab");
 
 	if (section_addr(info, "__ksymtab_gpl"))
@@ -2671,6 +2769,12 @@ static int find_module_sections(struct module *mod, struct load_info *info)
 	if (section_addr(info, "__kcrctab_gpl"))
 		pr_warn("%s: ignoring obsolete section __kcrctab_gpl\n",
 			mod->name);
+=======
+	mod->gpl_syms = section_objs(info, "__ksymtab_gpl",
+				     sizeof(*mod->gpl_syms),
+				     &mod->num_gpl_syms);
+	mod->gpl_crcs = section_addr(info, "__kcrctab_gpl");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_CONSTRUCTORS
 	mod->ctors = section_objs(info, ".ctors",
@@ -2874,6 +2978,7 @@ out_err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int check_export_symbol_sections(struct module *mod)
 {
 	if (mod->num_syms && !mod->flagstab) {
@@ -2882,6 +2987,13 @@ static int check_export_symbol_sections(struct module *mod)
 	}
 #ifdef CONFIG_MODVERSIONS
 	if (mod->num_syms && !mod->crcs) {
+=======
+static int check_export_symbol_versions(struct module *mod)
+{
+#ifdef CONFIG_MODVERSIONS
+	if ((mod->num_syms && !mod->crcs) ||
+	    (mod->num_gpl_syms && !mod->gpl_crcs)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return try_to_force_load(mod,
 					 "no versions for exported symbols");
 	}
@@ -3105,6 +3217,7 @@ static noinline int do_init_module(struct module *mod)
 	if (mod->init != NULL)
 		ret = do_one_initcall(mod->init);
 	if (ret < 0) {
+<<<<<<< HEAD
 		/*
 		 * -EEXIST is reserved by [f]init_module() to signal to userspace that
 		 * a module with this name is already loaded. Use something else if the
@@ -3118,6 +3231,17 @@ static noinline int do_init_module(struct module *mod)
 	if (ret > 0)
 		pr_warn("%s: init suspiciously returned %d, it should follow 0/-E convention\n",
 			mod->name, ret);
+=======
+		goto fail_free_freeinit;
+	}
+	if (ret > 0) {
+		pr_warn("%s: '%s'->init suspiciously returned %d, it should "
+			"follow 0/-E convention\n"
+			"%s: loading module anyway...\n",
+			__func__, mod->name, ret, __func__);
+		dump_stack();
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now it's a first class citizen! */
 	mod->state = MODULE_STATE_LIVE;
@@ -3498,7 +3622,11 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	if (err)
 		goto free_unload;
 
+<<<<<<< HEAD
 	err = check_export_symbol_sections(mod);
+=======
+	err = check_export_symbol_versions(mod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto free_unload;
 
@@ -3583,7 +3711,11 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	mod_sysfs_teardown(mod);
  coming_cleanup:
 	mod->state = MODULE_STATE_GOING;
+<<<<<<< HEAD
 	module_destroy_params(mod->kp, mod->num_kp);
+=======
+	destroy_params(mod->kp, mod->num_kp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blocking_notifier_call_chain(&module_notify_list,
 				     MODULE_STATE_GOING, mod);
 	klp_module_going(mod);

@@ -826,6 +826,7 @@ definitions:
       - name: none
       - name: default
   -
+<<<<<<< HEAD
     name: netkit-pairing
     type: enum
     enum-name: netkit-pairing
@@ -833,6 +834,8 @@ definitions:
       - name: pair
       - name: single
   -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: ovpn-mode
     enum-name: ovpn-mode
     name-prefix: ovpn-mode
@@ -840,6 +843,7 @@ definitions:
     entries:
       - p2p
       - mp
+<<<<<<< HEAD
   -
     name: br-stp-mode
     type: enum
@@ -848,6 +852,8 @@ definitions:
       - auto
       - user
       - kernel
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 attribute-sets:
   -
@@ -1558,10 +1564,13 @@ attribute-sets:
       -
         name: fdb-max-learned
         type: u32
+<<<<<<< HEAD
       -
         name: stp-mode
         type: u32
         enum: br-stp-mode
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: linkinfo-brport-attrs
     name-prefix: ifla-brport-
@@ -2318,10 +2327,13 @@ attribute-sets:
       -
         name: tailroom
         type: u16
+<<<<<<< HEAD
       -
         name: pairing
         type: u32
         enum: netkit-pairing
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: linkinfo-ovpn-attrs
     name-prefix: ifla-ovpn-

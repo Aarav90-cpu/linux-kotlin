@@ -142,7 +142,15 @@ static void do_trap_error(struct pt_regs *regs, int signo, int code,
 	}
 }
 
+<<<<<<< HEAD
 #define __trap_section noinstr
+=======
+#if defined(CONFIG_XIP_KERNEL) && defined(CONFIG_RISCV_ALTERNATIVE)
+#define __trap_section __noinstr_section(".xip.traps")
+#else
+#define __trap_section noinstr
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DO_ERROR_INFO(name, signo, code, str)					\
 asmlinkage __visible __trap_section void name(struct pt_regs *regs)		\
 {										\
@@ -161,8 +169,11 @@ asmlinkage __visible __trap_section void name(struct pt_regs *regs)		\
 
 DO_ERROR_INFO(do_trap_unknown,
 	SIGILL, ILL_ILLTRP, "unknown exception");
+<<<<<<< HEAD
 DO_ERROR_INFO(do_trap_hardware_error,
 	SIGBUS, BUS_MCEERR_AR, "hardware error");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DO_ERROR_INFO(do_trap_insn_misaligned,
 	SIGBUS, BUS_ADRALN, "instruction address misaligned");
 DO_ERROR_INFO(do_trap_insn_fault,
@@ -342,6 +353,21 @@ void do_trap_ecall_u(struct pt_regs *regs)
 			syscall_handler(regs, syscall);
 		}
 
+<<<<<<< HEAD
+=======
+		/*
+		 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
+		 * so the maximum stack offset is 1k bytes (10 bits).
+		 *
+		 * The actual entropy will be further reduced by the compiler when
+		 * applying stack alignment constraints: 16-byte (i.e. 4-bit) aligned
+		 * for RV32I or RV64I.
+		 *
+		 * The resulting 6 bits of entropy is seen in SP[9:4].
+		 */
+		choose_random_kstack_offset(get_random_u16());
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		syscall_exit_to_user_mode(regs);
 	} else {
 		irqentry_state_t state = irqentry_nmi_enter(regs);

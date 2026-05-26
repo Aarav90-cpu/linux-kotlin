@@ -16,10 +16,15 @@
 #include <linux/mm_types.h>
 #include <linux/cpufeature.h>
 #include <linux/page-flags.h>
+<<<<<<< HEAD
 #include <linux/page_table_check.h>
 #include <linux/radix-tree.h>
 #include <linux/atomic.h>
 #include <linux/mmap_lock.h>
+=======
+#include <linux/radix-tree.h>
+#include <linux/atomic.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/ctlreg.h>
 #include <asm/bug.h>
 #include <asm/page.h>
@@ -1166,8 +1171,13 @@ pte_t ptep_xchg_direct(struct mm_struct *, unsigned long, pte_t *, pte_t);
 pte_t ptep_xchg_lazy(struct mm_struct *, unsigned long, pte_t *, pte_t);
 
 #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep)
+=======
+static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long addr, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pte_t pte = *ptep;
 
@@ -1176,8 +1186,13 @@ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 }
 
 #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
+=======
+static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+					 unsigned long address, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return ptep_test_and_clear_young(vma, address, ptep);
 }
@@ -1192,7 +1207,10 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
 	/* At this point the reference through the mapping is still present */
 	if (mm_is_protected(mm) && pte_present(res))
 		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
+<<<<<<< HEAD
 	page_table_check_pte_clear(mm, addr, res);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return res;
 }
 
@@ -1211,7 +1229,10 @@ static inline pte_t ptep_clear_flush(struct vm_area_struct *vma,
 	/* At this point the reference through the mapping is still present */
 	if (mm_is_protected(vma->vm_mm) && pte_present(res))
 		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
+<<<<<<< HEAD
 	page_table_check_pte_clear(vma->vm_mm, addr, res);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return res;
 }
 
@@ -1235,9 +1256,12 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
 	} else {
 		res = ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
 	}
+<<<<<<< HEAD
 
 	page_table_check_pte_clear(mm, addr, res);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Nothing to do */
 	if (!mm_is_protected(mm) || !pte_present(res))
 		return res;
@@ -1334,7 +1358,10 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
 {
 	if (pte_present(entry))
 		entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
+<<<<<<< HEAD
 	page_table_check_ptes_set(mm, addr, ptep, entry, nr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (;;) {
 		set_pte(ptep, entry);
 		if (--nr == 0)
@@ -1691,8 +1718,13 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
 }
 
 #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long addr, pmd_t *pmdp)
+=======
+static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long addr, pmd_t *pmdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pmd_t pmd = *pmdp;
 
@@ -1701,8 +1733,13 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 }
 
 #define __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 static inline bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long addr, pmd_t *pmdp)
+=======
+static inline int pmdp_clear_flush_young(struct vm_area_struct *vma,
+					 unsigned long addr, pmd_t *pmdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	VM_BUG_ON(addr & ~HPAGE_MASK);
 	return pmdp_test_and_clear_young(vma, addr, pmdp);
@@ -1711,7 +1748,10 @@ static inline bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 static inline void set_pmd_at(struct mm_struct *mm, unsigned long addr,
 			      pmd_t *pmdp, pmd_t entry)
 {
+<<<<<<< HEAD
 	page_table_check_pmd_set(mm, addr, pmdp, entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_pmd(pmdp, entry);
 }
 
@@ -1726,11 +1766,15 @@ static inline pmd_t pmd_mkhuge(pmd_t pmd)
 static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
 					    unsigned long addr, pmd_t *pmdp)
 {
+<<<<<<< HEAD
 	pmd_t pmd;
 
 	pmd = pmdp_xchg_direct(mm, addr, pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
 	page_table_check_pmd_clear(mm, addr, pmd);
 	return pmd;
+=======
+	return pmdp_xchg_direct(mm, addr, pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR_FULL
@@ -1738,6 +1782,7 @@ static inline pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
 						 unsigned long addr,
 						 pmd_t *pmdp, int full)
 {
+<<<<<<< HEAD
 	pmd_t pmd;
 
 	if (full) {
@@ -1749,6 +1794,14 @@ static inline pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
 	pmd = pmdp_xchg_lazy(vma->vm_mm, addr, pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
 	page_table_check_pmd_clear(vma->vm_mm, addr, pmd);
 	return pmd;
+=======
+	if (full) {
+		pmd_t pmd = *pmdp;
+		set_pmd(pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+		return pmd;
+	}
+	return pmdp_xchg_lazy(vma->vm_mm, addr, pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define __HAVE_ARCH_PMDP_HUGE_CLEAR_FLUSH
@@ -1762,6 +1815,7 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
 static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
 				   unsigned long addr, pmd_t *pmdp)
 {
+<<<<<<< HEAD
 	pmd_t pmd = *pmdp;
 
 	VM_WARN_ON_ONCE(!pmd_present(pmd));
@@ -1772,6 +1826,13 @@ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
 	page_table_check_pmd_set(vma->vm_mm, addr, pmdp, pmd);
 	pmd = pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
 	return pmd;
+=======
+	pmd_t pmd;
+
+	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+	pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
+	return pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define __HAVE_ARCH_PMDP_SET_WRPROTECT
@@ -1806,6 +1867,7 @@ static inline int has_transparent_hugepage(void)
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_TABLE_CHECK
 static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
 {
@@ -1829,6 +1891,8 @@ static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long 
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * 64 bit swap entry format:
  * A page-table entry has some bits we have to treat in a special way.

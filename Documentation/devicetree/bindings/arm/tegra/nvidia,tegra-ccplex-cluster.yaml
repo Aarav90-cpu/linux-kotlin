@@ -24,7 +24,10 @@ properties:
     enum:
       - nvidia,tegra186-ccplex-cluster
       - nvidia,tegra234-ccplex-cluster
+<<<<<<< HEAD
       - nvidia,tegra238-ccplex-cluster
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

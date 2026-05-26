@@ -59,7 +59,11 @@
  *   0.  cpu_hotplug_lock
  *   1.  slab_mutex (Global Mutex)
  *   2a. kmem_cache->cpu_sheaves->lock (Local trylock)
+<<<<<<< HEAD
  *   2b. barn->lock (Spinlock)
+=======
+ *   2b. node->barn->lock (Spinlock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   2c. node->list_lock (Spinlock)
  *   3.  slab_lock(slab) (Only on some arches)
  *   4.  object_map_lock (Only for debugging)
@@ -136,7 +140,11 @@
  *   or spare sheaf can handle the allocation or free, there is no other
  *   overhead.
  *
+<<<<<<< HEAD
  *   barn->lock (spinlock)
+=======
+ *   node->barn->lock (spinlock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *   This lock protects the operations on per-NUMA-node barn. It can quickly
  *   serve an empty or full sheaf if available, and avoid more expensive refill
@@ -436,10 +444,15 @@ struct kmem_cache_node {
 	atomic_long_t total_objects;
 	struct list_head full;
 #endif
+<<<<<<< HEAD
+=======
+	struct node_barn *barn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
 {
+<<<<<<< HEAD
 	return s->per_node[node].node;
 }
 
@@ -454,6 +467,23 @@ static inline struct node_barn *get_barn_node(struct kmem_cache *s, int node)
 static inline struct node_barn *get_barn(struct kmem_cache *s)
 {
 	return get_barn_node(s, numa_node_id());
+=======
+	return s->node[node];
+}
+
+/*
+ * Get the barn of the current cpu's closest memory node. It may not exist on
+ * systems with memoryless nodes but without CONFIG_HAVE_MEMORYLESS_NODES
+ */
+static inline struct node_barn *get_barn(struct kmem_cache *s)
+{
+	struct kmem_cache_node *n = get_node(s, numa_mem_id());
+
+	if (!n)
+		return NULL;
+
+	return n->barn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -473,12 +503,15 @@ static inline struct node_barn *get_barn(struct kmem_cache *s)
 static nodemask_t slab_nodes;
 
 /*
+<<<<<<< HEAD
  * Similar to slab_nodes but for where we have node_barn allocated.
  * Corresponds to N_ONLINE nodes.
  */
 static nodemask_t slab_barn_nodes;
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Workqueue used for flushing cpu and kfree_rcu sheaves.
  */
 static struct workqueue_struct *flushwq;
@@ -2826,6 +2859,27 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf);
+
+static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+{
+	struct slab_sheaf *sheaf = alloc_empty_sheaf(s, gfp);
+
+	if (!sheaf)
+		return NULL;
+
+	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+		sheaf_flush_unused(s, sheaf);
+		free_empty_sheaf(s, sheaf);
+		return NULL;
+	}
+
+	return sheaf;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Maximum number of objects freed during a single flush of main pcs sheaf.
  * Translates directly to an on-stack array size.
@@ -4069,6 +4123,7 @@ void flush_all_rcu_sheaves(void)
 	rcu_barrier();
 }
 
+<<<<<<< HEAD
 static int slub_cpu_setup(unsigned int cpu)
 {
 	int nid = cpu_to_node(cpu);
@@ -4114,6 +4169,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Use the cpu notifier to insure that the cpu slabs are flushed when
  * necessary.
@@ -4643,6 +4700,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, 
 	if (!allow_spin)
 		return NULL;
 
+<<<<<<< HEAD
 	if (!empty) {
 		empty = alloc_empty_sheaf(s, gfp);
 		if (!empty)
@@ -4662,16 +4720,43 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, 
 
 	full = empty;
 	empty = NULL;
+=======
+	if (empty) {
+		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+			full = empty;
+		} else {
+			/*
+			 * we must be very low on memory so don't bother
+			 * with the barn
+			 */
+			sheaf_flush_unused(s, empty);
+			free_empty_sheaf(s, empty);
+		}
+	} else {
+		full = alloc_full_sheaf(s, gfp);
+	}
+
+	if (!full)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!local_trylock(&s->cpu_sheaves->lock))
 		goto barn_put;
 	pcs = this_cpu_ptr(s->cpu_sheaves);
 
 	/*
+<<<<<<< HEAD
 	 * If we put any empty or full sheaf to the barn below, it's due to
 	 * racing or being migrated to a different cpu. Breaching the barn's
 	 * sheaf limits should be thus rare enough so just ignore them to
 	 * simplify the recovery.
+=======
+	 * If we are returning empty sheaf, we either got it from the
+	 * barn or had to allocate one. If we are returning a full
+	 * sheaf, it's due to racing or being migrated to a different
+	 * cpu. Breaching the barn's sheaf limits should be thus rare
+	 * enough so just ignore them to simplify the recovery.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 
 	if (pcs->main->size == 0) {
@@ -5121,6 +5206,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
 }
 
 /*
+<<<<<<< HEAD
  * Refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
  * the given size.
  *
@@ -5130,6 +5216,14 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
  *
  * Return: -ENOMEM on failure. Some objects might have been added to the sheaf
  * but the sheaf will not be replaced.
+=======
+ * refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
+ * the given size
+ *
+ * the sheaf might be replaced by a new one when requesting more than
+ * s->sheaf_capacity objects if such replacement is necessary, but the refill
+ * fails (returning -ENOMEM), the existing sheaf is left intact
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * In practice we always refill to full sheaf's capacity.
  */
@@ -5828,6 +5922,10 @@ bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
 
 static void rcu_free_sheaf(struct rcu_head *head)
 {
+<<<<<<< HEAD
+=======
+	struct kmem_cache_node *n;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct slab_sheaf *sheaf;
 	struct node_barn *barn = NULL;
 	struct kmem_cache *s;
@@ -5850,10 +5948,19 @@ static void rcu_free_sheaf(struct rcu_head *head)
 	if (__rcu_free_sheaf_prepare(s, sheaf))
 		goto flush;
 
+<<<<<<< HEAD
 	barn = get_barn_node(s, sheaf->node);
 	if (!barn)
 		goto flush;
 
+=======
+	n = get_node(s, sheaf->node);
+	if (!n)
+		goto flush;
+
+	barn = n->barn;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* due to slab_free_hook() */
 	if (unlikely(sheaf->size == 0))
 		goto empty;
@@ -5975,7 +6082,11 @@ do_free:
 		rcu_sheaf = NULL;
 	} else {
 		pcs->rcu_free = NULL;
+<<<<<<< HEAD
 		rcu_sheaf->node = numa_node_id();
+=======
+		rcu_sheaf->node = numa_mem_id();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -5997,6 +6108,7 @@ fail:
 	return false;
 }
 
+<<<<<<< HEAD
 static __always_inline bool can_free_to_pcs(struct slab *slab)
 {
 	int slab_node;
@@ -6048,6 +6160,8 @@ check_pfmemalloc:
 	return likely(!slab_test_pfmemalloc(slab));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Bulk free objects to the percpu sheaves.
  * Unlike free_to_pcs() this includes the calls to all necessary hooks
@@ -6062,6 +6176,10 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
 	struct node_barn *barn;
 	void *remote_objects[PCS_BATCH_MAX];
 	unsigned int remote_nr = 0;
+<<<<<<< HEAD
+=======
+	int node = numa_mem_id();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 next_remote_batch:
 	while (i < size) {
@@ -6075,7 +6193,12 @@ next_remote_batch:
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (unlikely(!can_free_to_pcs(slab))) {
+=======
+		if (unlikely((IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) != node)
+			     || slab_test_pfmemalloc(slab))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			remote_objects[remote_nr] = p[i];
 			p[i] = p[--size];
 			if (++remote_nr >= PCS_BATCH_MAX)
@@ -6251,8 +6374,16 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
 	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
 		return;
 
+<<<<<<< HEAD
 	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, object, true)))
 		return;
+=======
+	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
+	    && likely(!slab_test_pfmemalloc(slab))) {
+		if (likely(free_to_pcs(s, object, true)))
+			return;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__slab_free(s, slab, object, object, 1, addr);
 	stat(s, FREE_SLOWPATH);
@@ -6623,8 +6754,15 @@ void kfree_nolock(const void *object)
 	 */
 	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
 
+<<<<<<< HEAD
 	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
 		return;
+=======
+	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())) {
+		if (likely(free_to_pcs(s, x, false)))
+			return;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
@@ -6884,6 +7022,7 @@ void kvfree(const void *addr)
 EXPORT_SYMBOL(kvfree);
 
 /**
+<<<<<<< HEAD
  * kvfree_atomic() - Free memory.
  * @addr: Pointer to allocated memory.
  *
@@ -6900,6 +7039,8 @@ void kvfree_atomic(const void *addr)
 EXPORT_SYMBOL(kvfree_atomic);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * kvfree_sensitive - Free a data object containing sensitive information.
  * @addr: address of the data object to be freed.
  * @len: length of the data object.
@@ -7524,7 +7665,11 @@ static inline int calculate_order(unsigned int size)
 }
 
 static void
+<<<<<<< HEAD
 init_kmem_cache_node(struct kmem_cache_node *n)
+=======
+init_kmem_cache_node(struct kmem_cache_node *n, struct node_barn *barn)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	n->nr_partial = 0;
 	spin_lock_init(&n->list_lock);
@@ -7534,6 +7679,12 @@ init_kmem_cache_node(struct kmem_cache_node *n)
 	atomic_long_set(&n->total_objects, 0);
 	INIT_LIST_HEAD(&n->full);
 #endif
+<<<<<<< HEAD
+=======
+	n->barn = barn;
+	if (barn)
+		barn_init(barn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_SLUB_STATS
@@ -7628,8 +7779,13 @@ static void early_kmem_cache_node_alloc(int node)
 	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
 	slab->freelist = get_freepointer(kmem_cache_node, n);
 	slab->inuse = 1;
+<<<<<<< HEAD
 	kmem_cache_node->per_node[node].node = n;
 	init_kmem_cache_node(n);
+=======
+	kmem_cache_node->node[node] = n;
+	init_kmem_cache_node(n, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	inc_slabs_node(kmem_cache_node, node, slab->objects);
 
 	/*
@@ -7644,6 +7800,7 @@ static void free_kmem_cache_nodes(struct kmem_cache *s)
 	int node;
 	struct kmem_cache_node *n;
 
+<<<<<<< HEAD
 	for_each_node(node) {
 		struct node_barn *barn = get_barn_node(s, node);
 
@@ -7658,6 +7815,17 @@ static void free_kmem_cache_nodes(struct kmem_cache *s)
 
 	for_each_kmem_cache_node(s, node, n) {
 		s->per_node[node].node = NULL;
+=======
+	for_each_kmem_cache_node(s, node, n) {
+		if (n->barn) {
+			WARN_ON(n->barn->nr_full);
+			WARN_ON(n->barn->nr_empty);
+			kfree(n->barn);
+			n->barn = NULL;
+		}
+
+		s->node[node] = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kmem_cache_free(kmem_cache_node, n);
 	}
 }
@@ -7678,12 +7846,17 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
 
 	for_each_node_mask(node, slab_nodes) {
 		struct kmem_cache_node *n;
+<<<<<<< HEAD
+=======
+		struct node_barn *barn = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (slab_state == DOWN) {
 			early_kmem_cache_node_alloc(node);
 			continue;
 		}
 
+<<<<<<< HEAD
 		n = kmem_cache_alloc_node(kmem_cache_node,
 						GFP_KERNEL, node);
 		if (!n)
@@ -7708,6 +7881,26 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
 		s->per_node[node].barn = barn;
 	}
 
+=======
+		if (cache_has_sheaves(s)) {
+			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
+
+			if (!barn)
+				return 0;
+		}
+
+		n = kmem_cache_alloc_node(kmem_cache_node,
+						GFP_KERNEL, node);
+		if (!n) {
+			kfree(barn);
+			return 0;
+		}
+
+		init_kmem_cache_node(n, barn);
+
+		s->node[node] = n;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -7996,6 +8189,7 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
 	if (cache_has_sheaves(s))
 		rcu_barrier();
 
+<<<<<<< HEAD
 	for_each_node(node) {
 		struct node_barn *barn = get_barn_node(s, node);
 
@@ -8005,6 +8199,12 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
 
 	/* Attempt to free all objects */
 	for_each_kmem_cache_node(s, node, n) {
+=======
+	/* Attempt to free all objects */
+	for_each_kmem_cache_node(s, node, n) {
+		if (n->barn)
+			barn_shrink(s, n->barn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		free_partial(s, n);
 		if (n->nr_partial || node_nr_slabs(n))
 			return 1;
@@ -8214,6 +8414,7 @@ static int __kmem_cache_do_shrink(struct kmem_cache *s)
 	unsigned long flags;
 	int ret = 0;
 
+<<<<<<< HEAD
 	for_each_node(node) {
 		struct node_barn *barn = get_barn_node(s, node);
 
@@ -8221,11 +8422,19 @@ static int __kmem_cache_do_shrink(struct kmem_cache *s)
 			barn_shrink(s, barn);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_kmem_cache_node(s, node, n) {
 		INIT_LIST_HEAD(&discard);
 		for (i = 0; i < SHRINK_PROMOTE_MAX; i++)
 			INIT_LIST_HEAD(promote + i);
 
+<<<<<<< HEAD
+=======
+		if (n->barn)
+			barn_shrink(s, n->barn);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irqsave(&n->list_lock, flags);
 
 		/*
@@ -8314,8 +8523,12 @@ static int slab_mem_going_online_callback(int nid)
 		if (get_node(s, nid))
 			continue;
 
+<<<<<<< HEAD
 		if (cache_has_sheaves(s) && !get_barn_node(s, nid)) {
 
+=======
+		if (cache_has_sheaves(s)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, nid);
 
 			if (!barn) {
@@ -8336,6 +8549,7 @@ static int slab_mem_going_online_callback(int nid)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		init_kmem_cache_node(n);
 		s->per_node[nid].node = n;
 
@@ -8350,6 +8564,17 @@ static int slab_mem_going_online_callback(int nid)
 	 */
 	node_set(nid, slab_nodes);
 	node_set(nid, slab_barn_nodes);
+=======
+		init_kmem_cache_node(n, barn);
+
+		s->node[nid] = n;
+	}
+	/*
+	 * Any cache created after this point will also have kmem_cache_node
+	 * initialized for the new node.
+	 */
+	node_set(nid, slab_nodes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	mutex_unlock(&slab_mutex);
 	return ret;
@@ -8428,7 +8653,11 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
 	if (!capacity)
 		return;
 
+<<<<<<< HEAD
 	for_each_node_mask(node, slab_barn_nodes) {
+=======
+	for_each_node_mask(node, slab_nodes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct node_barn *barn;
 
 		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
@@ -8439,7 +8668,11 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
 		}
 
 		barn_init(barn);
+<<<<<<< HEAD
 		s->per_node[node].barn = barn;
+=======
+		get_node(s, node)->barn = barn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for_each_possible_cpu(cpu) {
@@ -8500,9 +8733,12 @@ void __init kmem_cache_init(void)
 	for_each_node_state(node, N_MEMORY)
 		node_set(node, slab_nodes);
 
+<<<<<<< HEAD
 	for_each_online_node(node)
 		node_set(node, slab_barn_nodes);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	create_boot_cache(kmem_cache_node, "kmem_cache_node",
 			sizeof(struct kmem_cache_node),
 			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
@@ -8513,8 +8749,13 @@ void __init kmem_cache_init(void)
 	slab_state = PARTIAL;
 
 	create_boot_cache(kmem_cache, "kmem_cache",
+<<<<<<< HEAD
 			offsetof(struct kmem_cache, per_node) +
 				nr_node_ids * sizeof(struct kmem_cache_per_node_ptrs),
+=======
+			offsetof(struct kmem_cache, node) +
+				nr_node_ids * sizeof(struct kmem_cache_node *),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
 
 	kmem_cache = bootstrap(&boot_kmem_cache);
@@ -8529,7 +8770,11 @@ void __init kmem_cache_init(void)
 	/* Setup random freelists for each cache */
 	init_freelist_randomization();
 
+<<<<<<< HEAD
 	cpuhp_setup_state_nocalls(CPUHP_SLUB_DEAD, "slub:dead", slub_cpu_setup,
+=======
+	cpuhp_setup_state_nocalls(CPUHP_SLUB_DEAD, "slub:dead", NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  slub_cpu_dead);
 
 	pr_info("SLUB: HWalign=%d, Order=%u-%u, MinObjects=%u, CPUs=%u, Nodes=%u\n",
@@ -8996,7 +9241,11 @@ static ssize_t show_slab_objects(struct kmem_cache *s,
 	return len;
 }
 
+<<<<<<< HEAD
 #define to_slab_attr(n) container_of_const(n, struct slab_attribute, attr)
+=======
+#define to_slab_attr(n) container_of(n, struct slab_attribute, attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define to_slab(n) container_of(n, struct kmem_cache, kobj)
 
 struct slab_attribute {
@@ -9006,10 +9255,17 @@ struct slab_attribute {
 };
 
 #define SLAB_ATTR_RO(_name) \
+<<<<<<< HEAD
 	static const struct slab_attribute _name##_attr = __ATTR_RO_MODE(_name, 0400)
 
 #define SLAB_ATTR(_name) \
 	static const struct slab_attribute _name##_attr = __ATTR_RW_MODE(_name, 0600)
+=======
+	static struct slab_attribute _name##_attr = __ATTR_RO_MODE(_name, 0400)
+
+#define SLAB_ATTR(_name) \
+	static struct slab_attribute _name##_attr = __ATTR_RW_MODE(_name, 0600)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t slab_size_show(struct kmem_cache *s, char *buf)
 {
@@ -9403,7 +9659,11 @@ static ssize_t skip_kfence_store(struct kmem_cache *s,
 SLAB_ATTR(skip_kfence);
 #endif
 
+<<<<<<< HEAD
 static const struct attribute *const slab_attrs[] = {
+=======
+static struct attribute *slab_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&slab_size_attr.attr,
 	&object_size_attr.attr,
 	&objs_per_slab_attr.attr,
@@ -9480,13 +9740,23 @@ static const struct attribute *const slab_attrs[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 ATTRIBUTE_GROUPS(slab);
+=======
+static const struct attribute_group slab_attr_group = {
+	.attrs = slab_attrs,
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t slab_attr_show(struct kobject *kobj,
 				struct attribute *attr,
 				char *buf)
 {
+<<<<<<< HEAD
 	const struct slab_attribute *attribute;
+=======
+	struct slab_attribute *attribute;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kmem_cache *s;
 
 	attribute = to_slab_attr(attr);
@@ -9502,7 +9772,11 @@ static ssize_t slab_attr_store(struct kobject *kobj,
 				struct attribute *attr,
 				const char *buf, size_t len)
 {
+<<<<<<< HEAD
 	const struct slab_attribute *attribute;
+=======
+	struct slab_attribute *attribute;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kmem_cache *s;
 
 	attribute = to_slab_attr(attr);
@@ -9527,7 +9801,10 @@ static const struct sysfs_ops slab_sysfs_ops = {
 static const struct kobj_type slab_ktype = {
 	.sysfs_ops = &slab_sysfs_ops,
 	.release = kmem_cache_release,
+<<<<<<< HEAD
 	.default_groups = slab_groups,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct kset *slab_kset;
@@ -9615,6 +9892,13 @@ static int sysfs_slab_add(struct kmem_cache *s)
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
+=======
+	err = sysfs_create_group(&s->kobj, &slab_attr_group);
+	if (err)
+		goto out_del_kobj;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!unmergeable) {
 		/* Setup first alias */
 		sysfs_slab_alias(s, s->name);
@@ -9623,6 +9907,12 @@ out:
 	if (!unmergeable)
 		kfree(name);
 	return err;
+<<<<<<< HEAD
+=======
+out_del_kobj:
+	kobject_del(&s->kobj);
+	goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void sysfs_slab_unlink(struct kmem_cache *s)

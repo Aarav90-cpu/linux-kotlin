@@ -33,7 +33,10 @@
 
 #include <drm/drm_debugfs.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_misc_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "gem/i915_gem_context.h"
 #include "gt/intel_gt.h"

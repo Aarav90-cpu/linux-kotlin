@@ -29,7 +29,11 @@
 		bootargs = "root=/dev/mmcblk0p2 rootwait udbg-immortal";
 	};
 
+<<<<<<< HEAD
 	memory@0 {
+=======
+	memory {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		device_type = "memory";
 		reg = <0x00000000 0x01800000	/* MEM1 24MB 1T-SRAM */
 		       0x10000000 0x04000000>;	/* MEM2 64MB GDDR3 */
@@ -246,7 +250,11 @@
 		compatible = "gpio-leds";
 
 		/* This is the blue LED in the disk drive slot */
+<<<<<<< HEAD
 		led-0 {
+=======
+		drive-slot {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "wii:blue:drive_slot";
 			gpios = <&GPIO 5 GPIO_ACTIVE_HIGH>;
 			panic-indicator;
@@ -256,13 +264,21 @@
 	gpio-keys {
 		compatible = "gpio-keys";
 
+<<<<<<< HEAD
 		button-power {
+=======
+		power {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "Power Button";
 			gpios = <&GPIO 0 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_POWER>;
 		};
 
+<<<<<<< HEAD
 		button-eject {
+=======
+		eject {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "Eject Button";
 			gpios = <&GPIO 6 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_EJECTCD>;

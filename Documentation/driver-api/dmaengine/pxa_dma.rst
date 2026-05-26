@@ -40,7 +40,11 @@ Design
 ======
 a) Virtual channels
 Same concept as in sa11x0 driver, ie. a driver was assigned a "virtual
+<<<<<<< HEAD
 channel" linked to the requester line, and the physical DMA channel is
+=======
+channel" linked to the requestor line, and the physical DMA channel is
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 assigned on the fly when the transfer is issued.
 
 b) Transfer anatomy for a scatter-gather transfer

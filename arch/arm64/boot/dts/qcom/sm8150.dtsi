@@ -3954,8 +3954,13 @@
 				dp_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 

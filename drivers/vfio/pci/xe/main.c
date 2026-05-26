@@ -85,6 +85,7 @@ again:
 	spin_unlock(&xe_vdev->reset_lock);
 }
 
+<<<<<<< HEAD
 static void xe_vfio_pci_reset_prepare(struct pci_dev *pdev)
 {
 	struct xe_vfio_pci_core_device *xe_vdev = pci_get_drvdata(pdev);
@@ -98,6 +99,8 @@ static void xe_vfio_pci_reset_prepare(struct pci_dev *pdev)
 		dev_err(&pdev->dev, "Failed to prepare FLR: %d\n", ret);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void xe_vfio_pci_reset_done(struct pci_dev *pdev)
 {
 	struct xe_vfio_pci_core_device *xe_vdev = pci_get_drvdata(pdev);
@@ -140,7 +143,10 @@ static void xe_vfio_pci_reset_done(struct pci_dev *pdev)
 }
 
 static const struct pci_error_handlers xe_vfio_pci_err_handlers = {
+<<<<<<< HEAD
 	.reset_prepare = xe_vfio_pci_reset_prepare,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reset_done = xe_vfio_pci_reset_done,
 	.error_detected = vfio_pci_core_aer_err_detected,
 };

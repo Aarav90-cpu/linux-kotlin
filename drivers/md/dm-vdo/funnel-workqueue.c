@@ -322,7 +322,11 @@ static int make_simple_work_queue(const char *thread_name_prefix, const char *na
 			    "queue priority count %u within limit %u", type->max_priority,
 			    VDO_WORK_Q_MAX_PRIORITY);
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "simple work queue", &queue);
+=======
+	result = vdo_allocate(1, struct simple_work_queue, "simple work queue", &queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -405,11 +409,21 @@ int vdo_make_work_queue(const char *thread_name_prefix, const char *name,
 		return result;
 	}
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "round-robin work queue", &queue);
 	if (result != VDO_SUCCESS)
 		return result;
 
 	result = vdo_allocate(thread_count, "subordinate work queues", &queue->service_queues);
+=======
+	result = vdo_allocate(1, struct round_robin_work_queue, "round-robin work queue",
+			      &queue);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(thread_count, struct simple_work_queue *,
+			      "subordinate work queues", &queue->service_queues);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		vdo_free(queue);
 		return result;

@@ -10,8 +10,13 @@
 
 #include "saa7164.h"
 
+<<<<<<< HEAD
 #define SAA7164_REV2_FIRMWARE		"v4l-saa7164-1.0.2-3.fw"
 #define SAA7164_REV2_FIRMWARE_SIZE	4038864
+=======
+#define SAA7164_REV2_FIRMWARE		"NXP7164-2010-03-10.1.fw"
+#define SAA7164_REV2_FIRMWARE_SIZE	4019072
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SAA7164_REV3_FIRMWARE		"NXP7164-2010-03-10.1.fw"
 #define SAA7164_REV3_FIRMWARE_SIZE	4019072

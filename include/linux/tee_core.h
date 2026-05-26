@@ -50,7 +50,11 @@ enum tee_dma_heap_id {
  * @dev:	embedded basic device structure
  * @cdev:	embedded cdev
  * @num_users:	number of active users of this device
+<<<<<<< HEAD
  * @c_no_users:	completion used when unregistering the device
+=======
+ * @c_no_user:	completion used when unregistering the device
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @mutex:	mutex protecting @num_users and @idr
  * @idr:	register of user space shared memory objects allocated or
  *		registered on this device
@@ -132,7 +136,10 @@ struct tee_driver_ops {
 /* Size for TEE revision string buffer used by get_tee_revision(). */
 #define TEE_REVISION_STR_SIZE	128
 
+<<<<<<< HEAD
 #define TEE_DESC_PRIVILEGED	0x1
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct tee_desc - Describes the TEE driver to the subsystem
  * @name:	name of driver
@@ -140,6 +147,10 @@ struct tee_driver_ops {
  * @owner:	module providing the driver
  * @flags:	Extra properties of driver, defined by TEE_DESC_* below
  */
+<<<<<<< HEAD
+=======
+#define TEE_DESC_PRIVILEGED	0x1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tee_desc {
 	const char *name;
 	const struct tee_driver_ops *ops;
@@ -187,7 +198,11 @@ struct tee_protmem_pool_ops {
  * Allocates a new struct tee_device instance. The device is
  * removed by tee_device_unregister().
  *
+<<<<<<< HEAD
  * @returns: a pointer to a 'struct tee_device' or an ERR_PTR on failure
+=======
+ * @returns a pointer to a 'struct tee_device' or an ERR_PTR on failure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
 				    struct device *dev,
@@ -201,7 +216,11 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
  * tee_device_unregister() need to be called to remove the @teedev if
  * this function fails.
  *
+<<<<<<< HEAD
  * @returns: < 0 on failure
+=======
+ * @returns < 0 on failure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int tee_device_register(struct tee_device *teedev);
 
@@ -254,14 +273,22 @@ void tee_device_set_dev_groups(struct tee_device *teedev,
  * tee_session_calc_client_uuid() - Calculates client UUID for session
  * @uuid:		Resulting UUID
  * @connection_method:	Connection method for session (TEE_IOCTL_LOGIN_*)
+<<<<<<< HEAD
  * @connection_data:	Connection data for opening session
+=======
+ * @connectuon_data:	Connection data for opening session
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Based on connection method calculates UUIDv5 based client UUID.
  *
  * For group based logins verifies that calling process has specified
  * credentials.
  *
+<<<<<<< HEAD
  * @returns: < 0 on failure
+=======
+ * @return < 0 on failure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
 				 const u8 connection_data[TEE_IOCTL_UUID_LEN]);
@@ -295,7 +322,11 @@ struct tee_shm_pool_ops {
  * @paddr:	Physical address of start of pool
  * @size:	Size in bytes of the pool
  *
+<<<<<<< HEAD
  * @returns: pointer to a 'struct tee_shm_pool' or an ERR_PTR on failure.
+=======
+ * @returns pointer to a 'struct tee_shm_pool' or an ERR_PTR on failure.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_shm_pool *tee_shm_pool_alloc_res_mem(unsigned long vaddr,
 						phys_addr_t paddr, size_t size,
@@ -318,16 +349,24 @@ static inline void tee_shm_pool_free(struct tee_shm_pool *pool)
  * @paddr:	Physical address of start of pool
  * @size:	Size in bytes of the pool
  *
+<<<<<<< HEAD
  * @returns: pointer to a 'struct tee_protmem_pool' or an ERR_PTR on failure.
+=======
+ * @returns pointer to a 'struct tee_protmem_pool' or an ERR_PTR on failure.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_protmem_pool *tee_protmem_static_pool_alloc(phys_addr_t paddr,
 						       size_t size);
 
 /**
  * tee_get_drvdata() - Return driver_data pointer
+<<<<<<< HEAD
  * @teedev: Pointer to the tee_device
  *
  * @returns: the driver_data pointer supplied to tee_register().
+=======
+ * @returns the driver_data pointer supplied to tee_register().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void *tee_get_drvdata(struct tee_device *teedev);
 
@@ -336,7 +375,11 @@ void *tee_get_drvdata(struct tee_device *teedev);
  *                            TEE driver
  * @ctx:	The TEE context for shared memory allocation
  * @size:	Shared memory allocation size
+<<<<<<< HEAD
  * @returns: a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
+=======
+ * @returns a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_shm *tee_shm_alloc_priv_buf(struct tee_context *ctx, size_t size);
 
@@ -356,7 +399,11 @@ void tee_dyn_shm_free_helper(struct tee_shm *shm,
 /**
  * tee_shm_is_dynamic() - Check if shared memory object is of the dynamic kind
  * @shm:	Shared memory handle
+<<<<<<< HEAD
  * @returns: true if object is dynamic shared memory
+=======
+ * @returns true if object is dynamic shared memory
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline bool tee_shm_is_dynamic(struct tee_shm *shm)
 {
@@ -372,7 +419,11 @@ void tee_shm_put(struct tee_shm *shm);
 /**
  * tee_shm_get_id() - Get id of a shared memory object
  * @shm:	Shared memory handle
+<<<<<<< HEAD
  * @returns: id
+=======
+ * @returns id
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline int tee_shm_get_id(struct tee_shm *shm)
 {
@@ -384,7 +435,11 @@ static inline int tee_shm_get_id(struct tee_shm *shm)
  * count
  * @ctx:	Context owning the shared memory
  * @id:		Id of shared memory object
+<<<<<<< HEAD
  * @returns: a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
+=======
+ * @returns a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_shm *tee_shm_get_from_id(struct tee_context *ctx, int id);
 
@@ -404,7 +459,11 @@ static inline bool tee_param_is_memref(struct tee_param *param)
  * teedev_open() - Open a struct tee_device
  * @teedev:	Device to open
  *
+<<<<<<< HEAD
  * @returns: pointer to struct tee_context on success or an ERR_PTR on failure.
+=======
+ * @return a pointer to struct tee_context on success or an ERR_PTR on failure.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tee_context *teedev_open(struct tee_device *teedev);
 

@@ -5620,8 +5620,11 @@ static int mvneta_probe(struct platform_device *pdev)
 	}
 
 	err = of_get_ethdev_address(dn, dev);
+<<<<<<< HEAD
 	if (err == -EPROBE_DEFER)
 		goto err_free_stats;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!err) {
 		mac_from = "device tree";
 	} else {
@@ -5757,7 +5760,10 @@ err_netdev:
 				       1 << pp->id);
 		mvneta_bm_put(pp->bm_priv);
 	}
+<<<<<<< HEAD
 err_free_stats:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_percpu(pp->stats);
 err_free_ports:
 	free_percpu(pp->ports);

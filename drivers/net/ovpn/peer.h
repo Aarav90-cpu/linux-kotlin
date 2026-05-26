@@ -21,8 +21,12 @@
  * struct ovpn_peer - the main remote peer object
  * @ovpn: main openvpn instance this peer belongs to
  * @dev_tracker: reference tracker for associated dev
+<<<<<<< HEAD
  * @id: unique identifier, used to match incoming packets
  * @tx_id: identifier to be used in TX packets
+=======
+ * @id: unique identifier
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @vpn_addrs: IP addresses assigned over the tunnel
  * @vpn_addrs.ipv4: IPv4 assigned to peer on the tunnel
  * @vpn_addrs.ipv6: IPv6 assigned to peer on the tunnel
@@ -65,7 +69,10 @@ struct ovpn_peer {
 	struct ovpn_priv *ovpn;
 	netdevice_tracker dev_tracker;
 	u32 id;
+<<<<<<< HEAD
 	u32 tx_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		struct in_addr ipv4;
 		struct in6_addr ipv6;

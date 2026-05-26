@@ -80,11 +80,21 @@ static void sclp_conf_receiver_fn(struct evbuf_header *evbuf)
 
 static struct sclp_register sclp_conf_register =
 {
+<<<<<<< HEAD
 	.send_mask    = EVTYP_CONFMGMDATA_MASK,
+=======
+#ifdef CONFIG_SCLP_OFB
+	.send_mask    = EVTYP_CONFMGMDATA_MASK,
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.receive_mask = EVTYP_CONFMGMDATA_MASK,
 	.receiver_fn  = sclp_conf_receiver_fn,
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCLP_OFB
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sclp_ofb_send_req(char *ev_data, size_t len)
 {
 	static DEFINE_MUTEX(send_mutex);
@@ -140,9 +150,17 @@ static const struct bin_attribute ofb_bin_attr = {
 	},
 	.write = sysfs_ofb_data_write,
 };
+<<<<<<< HEAD
 
 static int __init sclp_ofb_setup(void)
 {
+=======
+#endif
+
+static int __init sclp_ofb_setup(void)
+{
+#ifdef CONFIG_SCLP_OFB
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kset *ofb_kset;
 	int rc;
 
@@ -154,6 +172,10 @@ static int __init sclp_ofb_setup(void)
 		kset_unregister(ofb_kset);
 		return rc;
 	}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

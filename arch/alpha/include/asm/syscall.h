@@ -3,10 +3,13 @@
 #define _ASM_ALPHA_SYSCALL_H
 
 #include <uapi/linux/audit.h>
+<<<<<<< HEAD
 #include <linux/audit.h>
 #include <linux/sched.h>
 #include <linux/types.h>
 #include <asm/ptrace.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int syscall_get_arch(struct task_struct *task)
 {
@@ -16,6 +19,7 @@ static inline int syscall_get_arch(struct task_struct *task)
 static inline long syscall_get_return_value(struct task_struct *task,
 					    struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	return regs->r19 ? -(long)regs->r0 : (long)regs->r0;
 }
 
@@ -101,6 +105,9 @@ static inline void syscall_rollback(struct task_struct *task,
 					struct pt_regs *regs)
 {
 	regs->r1 = regs->r2;
+=======
+	return regs->r0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif	/* _ASM_ALPHA_SYSCALL_H */

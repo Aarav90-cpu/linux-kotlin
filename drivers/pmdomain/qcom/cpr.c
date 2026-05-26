@@ -239,6 +239,10 @@ struct cpr_drv {
 	u32			gcnt;
 	unsigned long		flags;
 
+<<<<<<< HEAD
+=======
+	struct fuse_corner	*fuse_corners;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct corner		*corners;
 
 	const struct cpr_desc *desc;
@@ -246,8 +250,11 @@ struct cpr_drv {
 	const struct cpr_fuse *cpr_fuses;
 
 	struct dentry *debugfs;
+<<<<<<< HEAD
 
 	struct fuse_corner	fuse_corners[];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static bool cpr_is_allowed(struct cpr_drv *drv)
@@ -1601,15 +1608,28 @@ static int cpr_probe(struct platform_device *pdev)
 	if (!data || !data->cpr_desc || !data->acc_desc)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	drv = devm_kzalloc(dev,
 			struct_size(drv, fuse_corners, data->cpr_desc->num_fuse_corners),
 			GFP_KERNEL);
+=======
+	drv = devm_kzalloc(dev, sizeof(*drv), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!drv)
 		return -ENOMEM;
 	drv->dev = dev;
 	drv->desc = data->cpr_desc;
 	drv->acc_desc = data->acc_desc;
 
+<<<<<<< HEAD
+=======
+	drv->fuse_corners = devm_kcalloc(dev, drv->desc->num_fuse_corners,
+					 sizeof(*drv->fuse_corners),
+					 GFP_KERNEL);
+	if (!drv->fuse_corners)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	np = of_parse_phandle(dev->of_node, "acc-syscon", 0);
 	if (!np)
 		return -ENODEV;

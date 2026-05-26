@@ -5,8 +5,11 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/if_ether.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static u8 P802_1H_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0xf8 };
 static u8 RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
@@ -130,7 +133,11 @@ s32 _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 		/* Tx buf allocation may fail sometimes, so sleep and retry. */
 		res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, (MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), true);
 		if (res == _FAIL) {
+<<<<<<< HEAD
 			fsleep(10 * USEC_PER_MSEC);
+=======
+			msleep(10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf, (MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), true);
 			if (res == _FAIL)
 				goto exit;
@@ -1196,13 +1203,21 @@ s32 rtw_mgmt_xmitframe_coalesce(struct adapter *padapter, struct sk_buff *pkt, s
 	pwlanhdr = (struct ieee80211_hdr *)pframe;
 
 	ori_len = BIP_AAD_SIZE + pattrib->pktlen;
+<<<<<<< HEAD
 	BIP_AAD = kzalloc(ori_len, GFP_ATOMIC);
+=======
+	tmp_buf = BIP_AAD = kzalloc(ori_len, GFP_ATOMIC);
+	subtype = GetFrameSubType(pframe); /* bit(7)~bit(2) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!BIP_AAD)
 		return _FAIL;
 
+<<<<<<< HEAD
 	tmp_buf = BIP_AAD;
 	subtype = GetFrameSubType(pframe); /* bit(7)~bit(2) */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_bh(&padapter->security_key_mutex);
 
 	/* only support station mode */
@@ -1417,7 +1432,11 @@ void rtw_count_tx_stats(struct adapter *padapter, struct xmit_frame *pxmitframe,
 	if ((pxmitframe->frame_tag & 0x0f) == DATA_FRAMETAG) {
 		pkt_num = pxmitframe->agg_num;
 
+<<<<<<< HEAD
 		pmlmepriv->link_detect_info.num_tx_ok_in_period += pkt_num;
+=======
+		pmlmepriv->LinkDetectInfo.NumTxOkInPeriod += pkt_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pxmitpriv->tx_pkts += pkt_num;
 
@@ -2029,8 +2048,13 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 	if (registry->hiq_filter == RTW_HIQ_FILTER_ALLOW_SPECIAL) {
 		struct pkt_attrib *attrib = &xmitframe->attrib;
 
+<<<<<<< HEAD
 		if (attrib->ether_type == ETH_P_ARP ||
 		    attrib->ether_type == ETH_P_PAE ||
+=======
+		if (attrib->ether_type == 0x0806 ||
+		    attrib->ether_type == 0x888e ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    attrib->dhcp_pkt
 		)
 			allow = true;

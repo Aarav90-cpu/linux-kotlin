@@ -25,6 +25,14 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  label: true
+  reset-gpios: true
+  backlight: true
+  port: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   spi-cpha: true
   spi-cpol: true
 

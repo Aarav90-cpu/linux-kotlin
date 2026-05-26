@@ -350,7 +350,12 @@ extern void bioset_exit(struct bio_set *);
 extern int biovec_init_pool(mempool_t *pool, int pool_entries);
 
 struct bio *bio_alloc_bioset(struct block_device *bdev, unsigned short nr_vecs,
+<<<<<<< HEAD
 			     blk_opf_t opf, gfp_t gfp, struct bio_set *bs);
+=======
+			     blk_opf_t opf, gfp_t gfp_mask,
+			     struct bio_set *bs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bio *bio_kmalloc(unsigned short nr_vecs, gfp_t gfp_mask);
 extern void bio_put(struct bio *);
 
@@ -432,8 +437,11 @@ extern void bio_uninit(struct bio *);
 void bio_reset(struct bio *bio, struct block_device *bdev, blk_opf_t opf);
 void bio_reuse(struct bio *bio, blk_opf_t opf);
 void bio_chain(struct bio *, struct bio *);
+<<<<<<< HEAD
 void bio_await(struct bio *bio, void *priv,
 	       void (*submit)(struct bio *bio, void *priv));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int __must_check bio_add_page(struct bio *bio, struct page *page, unsigned len,
 			      unsigned off);
@@ -475,8 +483,12 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty);
 extern void bio_set_pages_dirty(struct bio *bio);
 extern void bio_check_pages_dirty(struct bio *bio);
 
+<<<<<<< HEAD
 int bio_iov_iter_bounce(struct bio *bio, struct iov_iter *iter, size_t maxlen,
 		size_t minsize);
+=======
+int bio_iov_iter_bounce(struct bio *bio, struct iov_iter *iter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bio_iov_iter_unbounce(struct bio *bio, bool is_error, bool mark_dirty);
 
 extern void bio_copy_data_iter(struct bio *dst, struct bvec_iter *dst_iter,

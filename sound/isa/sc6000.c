@@ -100,6 +100,7 @@ MODULE_PARM_DESC(joystick, "Enable gameport.");
 #define PFX "sc6000: "
 #define DRV_NAME "SC-6000"
 
+<<<<<<< HEAD
 struct snd_sc6000 {
 	char __iomem *vport;
 	char __iomem *vmss_port;
@@ -110,6 +111,8 @@ struct snd_sc6000 {
 	bool old_dsp;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* hardware dependent functions */
 
 /*
@@ -277,7 +280,11 @@ static int sc6000_dsp_reset(char __iomem *vport)
 
 /* detection and initialization */
 static int sc6000_hw_cfg_write(struct device *devptr,
+<<<<<<< HEAD
 			       char __iomem *vport, const u8 *cfg)
+=======
+			       char __iomem *vport, const int *cfg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
 		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
@@ -363,7 +370,12 @@ static int sc6000_init_mss(struct device *devptr,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sc6000_hw_cfg_encode(struct device *devptr, u8 *cfg,
+=======
+static void sc6000_hw_cfg_encode(struct device *devptr,
+				 char __iomem *vport, int *cfg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 long xport, long xmpu,
 				 long xmss_port, int joystick)
 {
@@ -385,6 +397,7 @@ static void sc6000_hw_cfg_encode(struct device *devptr, u8 *cfg,
 	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
 }
 
+<<<<<<< HEAD
 static void sc6000_prepare_board(struct device *devptr,
 				 struct snd_sc6000 *sc6000,
 				 unsigned int dev, int xirq, int xdma)
@@ -454,14 +467,34 @@ static int sc6000_init_board(struct device *devptr, struct snd_sc6000 *sc6000)
 	int err;
 
 	err = sc6000_dsp_reset(sc6000->vport);
+=======
+static int sc6000_init_board(struct device *devptr,
+			     char __iomem *vport,
+			     char __iomem *vmss_port, int dev)
+{
+	char answer[15];
+	char version[2];
+	int mss_config = sc6000_irq_to_softcfg(irq[dev]) |
+			 sc6000_dma_to_softcfg(dma[dev]);
+	int config = mss_config |
+		     sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
+	int err;
+	int old = 0;
+
+	err = sc6000_dsp_reset(vport);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0) {
 		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
 		return err;
 	}
 
 	memset(answer, 0, sizeof(answer));
+<<<<<<< HEAD
 	err = sc6000_dsp_get_answer(devptr, sc6000->vport, GET_DSP_COPYRIGHT,
 				    answer, 15);
+=======
+	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err <= 0) {
 		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
 		return -ENODEV;
@@ -473,17 +506,65 @@ static int sc6000_init_board(struct device *devptr, struct snd_sc6000 *sc6000)
 	if (strncmp("SC-6000", answer, 7))
 		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
 
+<<<<<<< HEAD
 	if (sc6000_dsp_get_answer(devptr, sc6000->vport,
 				  GET_DSP_VERSION, version, 2) < 2) {
+=======
+	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(devptr, "sc6000_dsp_version: failed!\n");
 		return -ENODEV;
 	}
 	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
 		answer, version[0], version[1]);
 
+<<<<<<< HEAD
 	sc6000_detect_old_dsp(devptr, sc6000);
 
 	return sc6000_program_board(devptr, sc6000);
+=======
+	/* set configuration */
+	sc6000_write(devptr, vport, COMMAND_5C);
+	if (sc6000_read(vport) < 0)
+		old = 1;
+
+	if (!old) {
+		int cfg[2];
+		sc6000_hw_cfg_encode(devptr,
+				     vport, &cfg[0], port[dev], mpu_port[dev],
+				     mss_port[dev], joystick[dev]);
+		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
+			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
+			return -EIO;
+		}
+	}
+	err = sc6000_setup_board(devptr, vport, config);
+	if (err < 0) {
+		dev_err(devptr, "sc6000_setup_board: failed!\n");
+		return -ENODEV;
+	}
+
+	sc6000_dsp_reset(vport);
+
+	if (!old) {
+		sc6000_write(devptr, vport, COMMAND_60);
+		sc6000_write(devptr, vport, 0x02);
+		sc6000_dsp_reset(vport);
+	}
+
+	err = sc6000_setup_board(devptr, vport, config);
+	if (err < 0) {
+		dev_err(devptr, "sc6000_setup_board: failed!\n");
+		return -ENODEV;
+	}
+	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
+	if (err < 0) {
+		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
+		return -ENODEV;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int snd_sc6000_mixer(struct snd_wss *chip)
@@ -566,10 +647,17 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
 
 static void snd_sc6000_free(struct snd_card *card)
 {
+<<<<<<< HEAD
 	struct snd_sc6000 *sc6000 = card->private_data;
 
 	if (sc6000->vport)
 		sc6000_setup_board(card->dev, sc6000->vport, 0);
+=======
+	char __iomem *vport = (char __force __iomem *)card->private_data;
+
+	if (vport)
+		sc6000_setup_board(card->dev, vport, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
@@ -580,17 +668,26 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
 	int xirq = irq[dev];
 	int xdma = dma[dev];
 	struct snd_card *card;
+<<<<<<< HEAD
 	struct snd_sc6000 *sc6000;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_wss *chip;
 	struct snd_opl3 *opl3;
 	char __iomem *vport;
 	char __iomem *vmss_port;
 
 	err = snd_devm_card_new(devptr, index[dev], id[dev], THIS_MODULE,
+<<<<<<< HEAD
 				sizeof(*sc6000), &card);
 	if (err < 0)
 		return err;
 	sc6000 = card->private_data;
+=======
+				0, &card);
+	if (err < 0)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xirq == SNDRV_AUTO_IRQ) {
 		xirq = snd_legacy_find_free_irq(possible_irqs);
@@ -617,7 +714,11 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
 		dev_err(devptr, "I/O port cannot be iomapped.\n");
 		return -EBUSY;
 	}
+<<<<<<< HEAD
 	sc6000->vport = vport;
+=======
+	card->private_data = (void __force *)vport;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* to make it marked as used */
 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
@@ -630,15 +731,22 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
 		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
 		return -EBUSY;
 	}
+<<<<<<< HEAD
 	sc6000->vmss_port = vmss_port;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
 		port[dev], xirq, xdma,
 		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
 
+<<<<<<< HEAD
 	sc6000_prepare_board(devptr, sc6000, dev, xirq, xdma);
 
 	err = sc6000_init_board(devptr, sc6000);
+=======
+	err = sc6000_init_board(devptr, vport, vmss_port, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0)
 		return err;
 	card->private_free = snd_sc6000_free;
@@ -647,7 +755,10 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
 			     WSS_HW_DETECT, 0, &chip);
 	if (err < 0)
 		return err;
+<<<<<<< HEAD
 	sc6000->chip = chip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = snd_wss_pcm(chip, 0);
 	if (err < 0) {
@@ -704,6 +815,7 @@ static int snd_sc6000_probe(struct device *devptr, unsigned int dev)
 	return snd_card_free_on_error(devptr, __snd_sc6000_probe(devptr, dev));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_sc6000_suspend(struct device *devptr, unsigned int dev,
 			      pm_message_t state)
@@ -745,6 +857,12 @@ static struct isa_driver snd_sc6000_driver = {
 	.suspend	= snd_sc6000_suspend,
 	.resume		= snd_sc6000_resume,
 #endif
+=======
+static struct isa_driver snd_sc6000_driver = {
+	.match		= snd_sc6000_match,
+	.probe		= snd_sc6000_probe,
+	/* FIXME: suspend/resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver		= {
 		.name	= DRV_NAME,
 	},

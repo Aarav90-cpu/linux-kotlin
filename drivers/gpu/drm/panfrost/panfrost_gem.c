@@ -702,7 +702,11 @@ static void panfrost_gem_debugfs_bo_print(struct panfrost_gem_object *bo,
 		   resident_size,
 		   drm_vma_node_start(&bo->base.base.vma_node));
 
+<<<<<<< HEAD
 	if (drm_gem_is_imported(&bo->base.base))
+=======
+	if (bo->base.base.import_attach)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gem_state_flags |= PANFROST_DEBUGFS_GEM_STATE_FLAG_IMPORTED;
 	if (bo->base.base.dma_buf)
 		gem_state_flags |= PANFROST_DEBUGFS_GEM_STATE_FLAG_EXPORTED;

@@ -2020,7 +2020,11 @@ static int atcphy_dwc3_reset_deassert(struct reset_controller_dev *rcdev, unsign
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct reset_control_ops atcphy_dwc3_reset_ops = {
+=======
+const struct reset_control_ops atcphy_dwc3_reset_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.assert = atcphy_dwc3_reset_assert,
 	.deassert = atcphy_dwc3_reset_deassert,
 };
@@ -2219,6 +2223,7 @@ static int atcphy_map_resources(struct platform_device *pdev, struct apple_atcph
 		{ "pipehandler", &atcphy->regs.pipehandler, NULL },
 	};
 	struct resource *res;
+<<<<<<< HEAD
 	void __iomem *addr;
 
 	for (int i = 0; i < ARRAY_SIZE(resources); i++) {
@@ -2229,6 +2234,16 @@ static int atcphy_map_resources(struct platform_device *pdev, struct apple_atcph
 					     "Unable to map %s regs", resources[i].name);
 
 		*resources[i].addr = addr;
+=======
+
+	for (int i = 0; i < ARRAY_SIZE(resources); i++) {
+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, resources[i].name);
+		*resources[i].addr = devm_ioremap_resource(&pdev->dev, res);
+		if (IS_ERR(resources[i].addr))
+			return dev_err_probe(atcphy->dev, PTR_ERR(resources[i].addr),
+					     "Unable to map %s regs", resources[i].name);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (resources[i].res)
 			*resources[i].res = res;
 	}

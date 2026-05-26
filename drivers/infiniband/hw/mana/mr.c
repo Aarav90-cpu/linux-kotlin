@@ -6,7 +6,11 @@
 #include "mana_ib.h"
 
 #define VALID_MR_FLAGS (IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_READ |\
+<<<<<<< HEAD
 			IB_ACCESS_REMOTE_ATOMIC | IB_ACCESS_MW_BIND | IB_ZERO_BASED)
+=======
+			IB_ACCESS_REMOTE_ATOMIC | IB_ZERO_BASED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define VALID_DMA_MR_FLAGS (IB_ACCESS_LOCAL_WRITE)
 
@@ -27,9 +31,12 @@ mana_ib_verbs_to_gdma_access_flags(int access_flags)
 	if (access_flags & IB_ACCESS_REMOTE_ATOMIC)
 		flags |= GDMA_ACCESS_FLAG_REMOTE_ATOMIC;
 
+<<<<<<< HEAD
 	if (access_flags & IB_ACCESS_MW_BIND)
 		flags |= GDMA_ACCESS_FLAG_BIND_MW;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return flags;
 }
 
@@ -73,8 +80,20 @@ static int mana_ib_gd_create_mr(struct mana_ib_dev *dev, struct mana_ib_mr *mr,
 	}
 
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+
+	if (err || resp.hdr.status) {
+		ibdev_dbg(&dev->ib_dev, "Failed to create mr %d, %u", err,
+			  resp.hdr.status);
+		if (!err)
+			err = -EPROTO;
+
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mr->ibmr.lkey = resp.lkey;
 	mr->ibmr.rkey = resp.rkey;
@@ -88,13 +107,30 @@ static int mana_ib_gd_destroy_mr(struct mana_ib_dev *dev, u64 mr_handle)
 	struct gdma_destroy_mr_response resp = {};
 	struct gdma_destroy_mr_request req = {};
 	struct gdma_context *gc = mdev_to_gc(dev);
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, GDMA_DESTROY_MR, sizeof(req),
 			     sizeof(resp));
 
 	req.mr_handle = mr_handle;
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err || resp.hdr.status) {
+		dev_err(gc->dev, "Failed to destroy MR: %d, 0x%x\n", err,
+			resp.hdr.status);
+		if (!err)
+			err = -EPROTO;
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct ib_mr *mana_ib_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,
@@ -290,6 +326,7 @@ err_free:
 	return ERR_PTR(err);
 }
 
+<<<<<<< HEAD
 static int mana_ib_gd_create_mw(struct mana_ib_dev *dev, struct mana_ib_pd *pd, struct ib_mw *ibmw)
 {
 	struct mana_ib_mw *mw = container_of(ibmw, struct mana_ib_mw, ibmw);
@@ -339,6 +376,8 @@ int mana_ib_dealloc_mw(struct ib_mw *ibmw)
 	return mana_ib_gd_destroy_mr(dev, mw->mw_handle);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mana_ib_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
 {
 	struct mana_ib_mr *mr = container_of(ibmr, struct mana_ib_mr, ibmr);
@@ -374,8 +413,17 @@ static int mana_ib_gd_alloc_dm(struct mana_ib_dev *mdev, struct mana_ib_dm *dm,
 	req.flags =  attr->flags;
 
 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+	if (err || resp.hdr.status) {
+		if (!err)
+			err = -EPROTO;
+
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dm->dm_handle = resp.dm_handle;
 
@@ -411,11 +459,27 @@ static int mana_ib_gd_destroy_dm(struct mana_ib_dev *mdev, struct mana_ib_dm *dm
 	struct gdma_context *gc = mdev_to_gc(mdev);
 	struct gdma_destroy_dm_resp resp = {};
 	struct gdma_destroy_dm_req req = {};
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mana_gd_init_req_hdr(&req.hdr, GDMA_DESTROY_DM, sizeof(req), sizeof(resp));
 	req.dm_handle = dm->dm_handle;
 
+<<<<<<< HEAD
 	return mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+=======
+	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
+	if (err || resp.hdr.status) {
+		if (!err)
+			err = -EPROTO;
+
+		return err;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int mana_ib_dealloc_dm(struct ib_dm *ibdm, struct uverbs_attr_bundle *attrs)

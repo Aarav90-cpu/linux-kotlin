@@ -157,7 +157,11 @@ void panthor_kernel_bo_destroy(struct panthor_kernel_bo *bo)
 /**
  * panthor_kernel_bo_create() - Create and map a GEM object to a VM
  * @ptdev: Device.
+<<<<<<< HEAD
  * @vm: VM to map the GEM to.
+=======
+ * @vm: VM to map the GEM to. If NULL, the kernel object is not GPU mapped.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @size: Size of the buffer object.
  * @bo_flags: Combination of drm_panthor_bo_flags flags.
  * @vm_map_flags: Combination of drm_panthor_vm_bind_op_flags (only those
@@ -666,7 +670,11 @@ static void panthor_gem_debugfs_bo_print(struct panthor_gem_object *bo,
 		   resident_size,
 		   drm_vma_node_start(&bo->base.base.vma_node));
 
+<<<<<<< HEAD
 	if (drm_gem_is_imported(&bo->base.base))
+=======
+	if (bo->base.base.import_attach)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gem_state_flags |= PANTHOR_DEBUGFS_GEM_STATE_FLAG_IMPORTED;
 	if (bo->base.base.dma_buf)
 		gem_state_flags |= PANTHOR_DEBUGFS_GEM_STATE_FLAG_EXPORTED;

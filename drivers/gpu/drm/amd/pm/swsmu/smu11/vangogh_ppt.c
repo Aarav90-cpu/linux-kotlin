@@ -2511,7 +2511,11 @@ static u32 vangogh_get_gfxoff_entrycount(struct smu_context *smu, uint64_t *entr
 static const struct pptable_funcs vangogh_ppt_funcs = {
 
 	.check_fw_status = smu_v11_0_check_fw_status,
+<<<<<<< HEAD
 	.check_fw_version = smu_cmn_check_fw_version,
+=======
+	.check_fw_version = smu_v11_0_check_fw_version,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.init_smc_tables = vangogh_init_smc_tables,
 	.fini_smc_tables = smu_v11_0_fini_smc_tables,
 	.init_power = smu_v11_0_init_power,
@@ -2561,6 +2565,9 @@ void vangogh_set_ppt_funcs(struct smu_context *smu)
 	smu->table_map = vangogh_table_map;
 	smu->workload_map = vangogh_workload_map;
 	smu->is_apu = true;
+<<<<<<< HEAD
 	smu->smc_driver_if_version = SMU13_DRIVER_IF_VERSION;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu_v11_0_init_msg_ctl(smu, vangogh_message_map);
 }

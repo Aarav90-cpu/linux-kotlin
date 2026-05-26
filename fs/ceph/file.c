@@ -19,6 +19,7 @@
 #include "cache.h"
 #include "io.h"
 #include "metric.h"
+<<<<<<< HEAD
 #include "subvolume_metrics.h"
 
 /*
@@ -38,6 +39,8 @@ static inline void ceph_record_subvolume_io(struct inode *inode, bool is_write,
 					 ceph_inode(inode),
 					 is_write, bytes, start, end);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __le32 ceph_flags_sys2wire(struct ceph_mds_client *mdsc, u32 flags)
 {
@@ -1159,6 +1162,7 @@ ssize_t __ceph_sync_read(struct inode *inode, loff_t *ki_pos,
 					 req->r_start_latency,
 					 req->r_end_latency,
 					 read_len, ret);
+<<<<<<< HEAD
 		/*
 		 * Only record subvolume metrics for actual bytes read.
 		 * ret == 0 means EOF (no data), not an I/O operation.
@@ -1168,6 +1172,8 @@ ssize_t __ceph_sync_read(struct inode *inode, loff_t *ki_pos,
 						 req->r_start_latency,
 						 req->r_end_latency,
 						 ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (ret > 0)
 			objver = req->r_version;
@@ -1413,6 +1419,7 @@ static void ceph_aio_complete_req(struct ceph_osd_request *req)
 
 	/* r_start_latency == 0 means the request was not submitted */
 	if (req->r_start_latency) {
+<<<<<<< HEAD
 		if (aio_req->write) {
 			ceph_update_write_metrics(metric, req->r_start_latency,
 						  req->r_end_latency, len, rc);
@@ -1430,6 +1437,14 @@ static void ceph_aio_complete_req(struct ceph_osd_request *req)
 							 req->r_end_latency,
 							 rc);
 		}
+=======
+		if (aio_req->write)
+			ceph_update_write_metrics(metric, req->r_start_latency,
+						  req->r_end_latency, len, rc);
+		else
+			ceph_update_read_metrics(metric, req->r_start_latency,
+						 req->r_end_latency, len, rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	put_bvecs(osd_data->bvec_pos.bvecs, osd_data->num_bvecs,
@@ -1653,6 +1668,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
 		ceph_osdc_start_request(req->r_osdc, req);
 		ret = ceph_osdc_wait_request(&fsc->client->osdc, req);
 
+<<<<<<< HEAD
 		if (write) {
 			ceph_update_write_metrics(metric, req->r_start_latency,
 						  req->r_end_latency, len, ret);
@@ -1670,6 +1686,14 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
 							 req->r_end_latency,
 							 ret);
 		}
+=======
+		if (write)
+			ceph_update_write_metrics(metric, req->r_start_latency,
+						  req->r_end_latency, len, ret);
+		else
+			ceph_update_read_metrics(metric, req->r_start_latency,
+						 req->r_end_latency, len, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		size = i_size_read(inode);
 		if (!write) {
@@ -1922,11 +1946,14 @@ ceph_sync_write(struct kiocb *iocb, struct iov_iter *from, loff_t pos,
 						 req->r_start_latency,
 						 req->r_end_latency,
 						 read_len, ret);
+<<<<<<< HEAD
 			if (ret > 0)
 				ceph_record_subvolume_io(inode, false,
 							 req->r_start_latency,
 							 req->r_end_latency,
 							 ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* Ok if object is not already present */
 			if (ret == -ENOENT) {
@@ -2091,11 +2118,14 @@ ceph_sync_write(struct kiocb *iocb, struct iov_iter *from, loff_t pos,
 
 		ceph_update_write_metrics(&fsc->mdsc->metric, req->r_start_latency,
 					  req->r_end_latency, len, ret);
+<<<<<<< HEAD
 		if (ret >= 0 && write_len)
 			ceph_record_subvolume_io(inode, true,
 						 req->r_start_latency,
 						 req->r_end_latency,
 						 write_len);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ceph_osdc_put_request(req);
 		if (ret != 0) {
 			doutc(cl, "osd write returned %d\n", ret);

@@ -18,6 +18,7 @@ struct swap_table {
  * (physical or virtual) device. The swap table in each cluster is a
  * 1:1 map of the swap slots in this cluster.
  *
+<<<<<<< HEAD
  * Swap table entry type and bits layouts:
  *
  * NULL:     |---------------- 0 ---------------| - Free slot
@@ -81,6 +82,12 @@ struct swap_table {
 /* Macro for shadow offset calculation */
 #define SWAP_COUNT_SHIFT	SWP_TB_COUNT_BITS
 
+=======
+ * Each swap table entry could be a pointer (folio), a XA_VALUE
+ * (shadow), or NULL.
+ */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Helpers for casting one type of info into a swap table entry.
  */
@@ -90,6 +97,7 @@ static inline unsigned long null_to_swp_tb(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline unsigned long __count_to_swp_tb(unsigned char count)
 {
 	/*
@@ -131,6 +139,20 @@ static inline unsigned long shadow_to_swp_tb(void *shadow, unsigned int count)
 	VM_WARN_ON_ONCE(shadow && ((unsigned long)shadow & SWP_TB_COUNT_MASK));
 
 	return (unsigned long)shadow | __count_to_swp_tb(count) | SWP_TB_SHADOW_MARK;
+=======
+static inline unsigned long folio_to_swp_tb(struct folio *folio)
+{
+	BUILD_BUG_ON(sizeof(unsigned long) != sizeof(void *));
+	return (unsigned long)folio;
+}
+
+static inline unsigned long shadow_swp_to_tb(void *shadow)
+{
+	BUILD_BUG_ON((BITS_PER_XA_VALUE + 1) !=
+		     BITS_PER_BYTE * sizeof(unsigned long));
+	VM_WARN_ON_ONCE(shadow && !xa_is_value(shadow));
+	return (unsigned long)shadow;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -143,7 +165,11 @@ static inline bool swp_tb_is_null(unsigned long swp_tb)
 
 static inline bool swp_tb_is_folio(unsigned long swp_tb)
 {
+<<<<<<< HEAD
 	return ((swp_tb & SWP_TB_PFN_MARK_MASK) == SWP_TB_PFN_MARK);
+=======
+	return !xa_is_value((void *)swp_tb) && !swp_tb_is_null(swp_tb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool swp_tb_is_shadow(unsigned long swp_tb)
@@ -151,6 +177,7 @@ static inline bool swp_tb_is_shadow(unsigned long swp_tb)
 	return xa_is_value((void *)swp_tb);
 }
 
+<<<<<<< HEAD
 static inline bool swp_tb_is_bad(unsigned long swp_tb)
 {
 	return swp_tb == SWP_TB_BAD;
@@ -162,18 +189,25 @@ static inline bool swp_tb_is_countable(unsigned long swp_tb)
 		swp_tb_is_null(swp_tb));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Helpers for retrieving info from swap table.
  */
 static inline struct folio *swp_tb_to_folio(unsigned long swp_tb)
 {
 	VM_WARN_ON(!swp_tb_is_folio(swp_tb));
+<<<<<<< HEAD
 	return pfn_folio((swp_tb & ~SWP_TB_COUNT_MASK) >> SWP_TB_PFN_MARK_BITS);
+=======
+	return (void *)swp_tb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void *swp_tb_to_shadow(unsigned long swp_tb)
 {
 	VM_WARN_ON(!swp_tb_is_shadow(swp_tb));
+<<<<<<< HEAD
 	/* No shift needed, xa_value is stored as it is in the lower bits. */
 	return (void *)(swp_tb & ~SWP_TB_COUNT_MASK);
 }
@@ -194,6 +228,9 @@ static inline int swp_tb_get_count(unsigned long swp_tb)
 static inline unsigned long __swp_tb_mk_count(unsigned long swp_tb, int count)
 {
 	return ((swp_tb & ~SWP_TB_COUNT_MASK) | __count_to_swp_tb(count));
+=======
+	return (void *)swp_tb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -238,8 +275,11 @@ static inline unsigned long swap_table_get(struct swap_cluster_info *ci,
 	atomic_long_t *table;
 	unsigned long swp_tb;
 
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(off >= SWAPFILE_CLUSTER);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	table = rcu_dereference(ci->table);
 	swp_tb = table ? atomic_long_read(&table[off]) : null_to_swp_tb();

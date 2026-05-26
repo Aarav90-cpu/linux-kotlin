@@ -17,6 +17,11 @@ extern char reboot_command[];
  */
 extern unsigned char boot_cpu_id;
 
+<<<<<<< HEAD
+=======
+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int serial_console;
 static inline int con_is_present(void)
 {

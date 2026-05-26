@@ -12,9 +12,12 @@
 
 #define NTMP_EID_REQ_LEN	8
 #define NETC_CBDR_BD_NUM	256
+<<<<<<< HEAD
 #define NETC_CBDRCIR_INDEX	GENMASK(9, 0)
 #define NETC_CBDRCIR_SBE	BIT(31)
 #define NETC_CBDR_CLEAN_WORK	16
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 union netc_cbd {
 	struct {
@@ -57,6 +60,16 @@ union netc_cbd {
 	} resp_hdr; /* NTMP Response Message Header Format */
 };
 
+<<<<<<< HEAD
+=======
+struct ntmp_dma_buf {
+	struct device *dev;
+	size_t size;
+	void *buf;
+	dma_addr_t dma;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ntmp_cmn_req_data {
 	__le16 update_act;
 	u8 dbg_opt;

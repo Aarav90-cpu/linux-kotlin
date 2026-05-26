@@ -23,8 +23,11 @@ properties:
     oneOf:
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,glymur-pmic-glink
               - qcom,kaanapali-pmic-glink
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,qcm6490-pmic-glink
               - qcom,sc8180x-pmic-glink
               - qcom,sc8280xp-pmic-glink

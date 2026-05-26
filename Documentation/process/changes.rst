@@ -19,17 +19,26 @@ Current Minimal Requirements
 
 Upgrade to at **least** these software revisions before thinking you've
 encountered a bug!  If you're unsure what version you're currently
+<<<<<<< HEAD
 running, the suggested command should tell you. For a list of the programs
 on your system including their version execute ./scripts/ver_linux
+=======
+running, the suggested command should tell you.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Again, keep in mind that this list assumes you are already functionally
 running a Linux kernel.  Also, not all tools are necessary on all
 systems; obviously, if you don't have any PC Card hardware, for example,
+<<<<<<< HEAD
 you probably do not need to concern yourself with pcmciautils.
+=======
+you probably needn't concern yourself with pcmciautils.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ====================== ===============  ========================================
         Program        Minimal version       Command to check the version
 ====================== ===============  ========================================
+<<<<<<< HEAD
 bash                   4.2              bash --version
 bc                     1.06.95          bc --version
 bindgen (optional)     0.71.1           bindgen --version
@@ -65,6 +74,42 @@ squashfs-tools         4.0              mksquashfs -version
 udev                   081              udevadm --version
 util-linux             2.10o            mount --version
 xfsprogs               2.6.0            xfs_db -V
+=======
+GNU C                  8.1              gcc --version
+Clang/LLVM (optional)  15.0.0           clang --version
+Rust (optional)        1.78.0           rustc --version
+bindgen (optional)     0.65.1           bindgen --version
+GNU make               4.0              make --version
+bash                   4.2              bash --version
+binutils               2.30             ld -v
+flex                   2.5.35           flex --version
+bison                  2.0              bison --version
+pahole                 1.22             pahole --version
+util-linux             2.10o            mount --version
+kmod                   13               depmod -V
+e2fsprogs              1.41.4           e2fsck -V
+jfsutils               1.1.3            fsck.jfs -V
+xfsprogs               2.6.0            xfs_db -V
+squashfs-tools         4.0              mksquashfs -version
+btrfs-progs            0.18             btrfs --version
+pcmciautils            004              pccardctl -V
+quota-tools            3.09             quota -V
+PPP                    2.4.0            pppd --version
+nfs-utils              1.0.5            showmount --version
+procps                 3.2.0            ps --version
+udev                   081              udevd --version
+grub                   0.93             grub --version || grub-install --version
+mcelog                 0.6              mcelog --version
+iptables               1.4.2            iptables -V
+openssl & libcrypto    1.0.0            openssl version
+bc                     1.06.95          bc --version
+Sphinx\ [#f1]_         3.4.3            sphinx-build --version
+GNU tar                1.28             tar --version
+gtags (optional)       6.6.5            gtags --version
+mkimage (optional)     2017.01          mkimage --version
+Python                 3.9.x            python3 --version
+GNU AWK (optional)     5.1.0            gawk --version
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ====================== ===============  ========================================
 
 .. [#f1] Sphinx is needed only to build the Kernel documentation
@@ -393,7 +438,11 @@ Kernel documentation
 Sphinx
 ------
 
+<<<<<<< HEAD
 Please see :ref:`sphinx_install` in Documentation/doc-guide/sphinx.rst
+=======
+Please see :ref:`sphinx_install` in :ref:`Documentation/doc-guide/sphinx.rst <sphinxdoc>`
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 for details about Sphinx requirements.
 
 rustdoc

@@ -33,7 +33,10 @@ config OCTEONTX2_PF
 	select OCTEONTX2_MBOX
 	select NET_DEVLINK
 	select PAGE_POOL
+<<<<<<< HEAD
 	select CRYPTO_LIB_AES if MACSEC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on (64BIT && COMPILE_TEST) || ARM64
 	select DIMLIB
 	depends on PCI

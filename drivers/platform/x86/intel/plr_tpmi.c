@@ -22,7 +22,10 @@
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/seq_file.h>
 #include <linux/sprintf.h>
 #include <linux/types.h>
@@ -61,8 +64,11 @@ struct tpmi_plr {
 	struct tpmi_plr_die *die_info;
 	int num_dies;
 	struct auxiliary_device *auxdev;
+<<<<<<< HEAD
 	struct notifier_block nb;
 	struct mutex lock;	/* Protect access to dbgfs_dir */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char * const plr_coarse_reasons[] = {
@@ -258,6 +264,7 @@ static ssize_t plr_status_write(struct file *filp, const char __user *ubuf,
 }
 DEFINE_SHOW_STORE_ATTRIBUTE(plr_status);
 
+<<<<<<< HEAD
 static int intel_plr_notify(struct notifier_block *self, unsigned long action, void *data)
 {
 	struct tpmi_plr *plr = container_of(self, struct tpmi_plr, nb);
@@ -282,6 +289,8 @@ static void intel_plr_unregister_notifier(struct notifier_block *nb)
 	tpmi_unregister_notifier(nb);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
 {
 	struct oobmsm_plat_info *plat_info;
@@ -309,6 +318,7 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
 	if (!plr)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = devm_mutex_init(&auxdev->dev, &plr->lock);
 	if (err)
 		return err;
@@ -321,6 +331,12 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
 		err = -ENOMEM;
 		goto err_notify;
 	}
+=======
+	plr->die_info = devm_kcalloc(&auxdev->dev, num_resources, sizeof(*plr->die_info),
+				     GFP_KERNEL);
+	if (!plr->die_info)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	plr->num_dies = num_resources;
 	plr->dbgfs_dir = debugfs_create_dir("plr", dentry);
@@ -361,9 +377,12 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
 
 err:
 	debugfs_remove_recursive(plr->dbgfs_dir);
+<<<<<<< HEAD
 err_notify:
 	intel_plr_unregister_notifier(&plr->nb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -371,9 +390,12 @@ static void intel_plr_remove(struct auxiliary_device *auxdev)
 {
 	struct tpmi_plr *plr = auxiliary_get_drvdata(auxdev);
 
+<<<<<<< HEAD
 	intel_plr_unregister_notifier(&plr->nb);
 
 	guard(mutex)(&plr->lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove_recursive(plr->dbgfs_dir);
 }
 

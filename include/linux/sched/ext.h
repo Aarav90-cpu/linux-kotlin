@@ -62,6 +62,7 @@ enum scx_dsq_id_flags {
 	SCX_DSQ_LOCAL_CPU_MASK	= 0xffffffffLLU,
 };
 
+<<<<<<< HEAD
 struct scx_deferred_reenq_user {
 	struct list_head	node;
 	u64			flags;
@@ -72,6 +73,8 @@ struct scx_dsq_pcpu {
 	struct scx_deferred_reenq_user deferred_reenq_user;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * A dispatch queue (DSQ) can be either a FIFO or p->scx.dsq_vtime ordered
  * queue. A built-in DSQ is always a FIFO. The built-in local DSQs are used to
@@ -88,6 +91,7 @@ struct scx_dispatch_q {
 	u64			id;
 	struct rhash_head	hash_node;
 	struct llist_node	free_node;
+<<<<<<< HEAD
 	struct scx_sched	*sched;
 	struct scx_dsq_pcpu __percpu *pcpu;
 	struct rcu_head		rcu;
@@ -144,6 +148,32 @@ enum scx_ent_flags {
 
 	/* iteration cursor, not a task */
 	SCX_TASK_CURSOR		= 1 << 31,
+=======
+	struct rcu_head		rcu;
+};
+
+/* scx_entity.flags */
+enum scx_ent_flags {
+	SCX_TASK_QUEUED		= 1 << 0, /* on ext runqueue */
+	SCX_TASK_RESET_RUNNABLE_AT = 1 << 2, /* runnable_at should be reset */
+	SCX_TASK_DEQD_FOR_SLEEP	= 1 << 3, /* last dequeue was for SLEEP */
+
+	SCX_TASK_STATE_SHIFT	= 8,	  /* bit 8 and 9 are used to carry scx_task_state */
+	SCX_TASK_STATE_BITS	= 2,
+	SCX_TASK_STATE_MASK	= ((1 << SCX_TASK_STATE_BITS) - 1) << SCX_TASK_STATE_SHIFT,
+
+	SCX_TASK_CURSOR		= 1 << 31, /* iteration cursor, not a task */
+};
+
+/* scx_entity.flags & SCX_TASK_STATE_MASK */
+enum scx_task_state {
+	SCX_TASK_NONE,		/* ops.init_task() not called yet */
+	SCX_TASK_INIT,		/* ops.init_task() succeeded, but task can be cancelled */
+	SCX_TASK_READY,		/* fully initialized, but not in sched_ext */
+	SCX_TASK_ENABLED,	/* fully initialized and in sched_ext */
+
+	SCX_TASK_NR_STATES,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* scx_entity.dsq_flags */
@@ -151,6 +181,36 @@ enum scx_ent_dsq_flags {
 	SCX_TASK_DSQ_ON_PRIQ	= 1 << 0, /* task is queued on the priority queue of a dsq */
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Mask bits for scx_entity.kf_mask. Not all kfuncs can be called from
+ * everywhere and the following bits track which kfunc sets are currently
+ * allowed for %current. This simple per-task tracking works because SCX ops
+ * nest in a limited way. BPF will likely implement a way to allow and disallow
+ * kfuncs depending on the calling context which will replace this manual
+ * mechanism. See scx_kf_allow().
+ */
+enum scx_kf_mask {
+	SCX_KF_UNLOCKED		= 0,	  /* sleepable and not rq locked */
+	/* ENQUEUE and DISPATCH may be nested inside CPU_RELEASE */
+	SCX_KF_CPU_RELEASE	= 1 << 0, /* ops.cpu_release() */
+	/*
+	 * ops.dispatch() may release rq lock temporarily and thus ENQUEUE and
+	 * SELECT_CPU may be nested inside. ops.dequeue (in REST) may also be
+	 * nested inside DISPATCH.
+	 */
+	SCX_KF_DISPATCH		= 1 << 1, /* ops.dispatch() */
+	SCX_KF_ENQUEUE		= 1 << 2, /* ops.enqueue() and ops.select_cpu() */
+	SCX_KF_SELECT_CPU	= 1 << 3, /* ops.select_cpu() */
+	SCX_KF_REST		= 1 << 4, /* other rq-locked operations */
+
+	__SCX_KF_RQ_LOCKED	= SCX_KF_CPU_RELEASE | SCX_KF_DISPATCH |
+				  SCX_KF_ENQUEUE | SCX_KF_SELECT_CPU | SCX_KF_REST,
+	__SCX_KF_TERMINAL	= SCX_KF_ENQUEUE | SCX_KF_SELECT_CPU | SCX_KF_REST,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum scx_dsq_lnode_flags {
 	SCX_DSQ_LNODE_ITER_CURSOR = 1 << 0,
 
@@ -164,6 +224,7 @@ struct scx_dsq_list_node {
 	u32			priv;		/* can be used by iter cursor */
 };
 
+<<<<<<< HEAD
 #define INIT_DSQ_LIST_CURSOR(__cursor, __dsq, __flags)				\
 	(struct scx_dsq_list_node) {						\
 		.node = LIST_HEAD_INIT((__cursor).node),			\
@@ -173,11 +234,21 @@ struct scx_dsq_list_node {
 
 struct scx_sched;
 
+=======
+#define INIT_DSQ_LIST_CURSOR(__node, __flags, __priv)				\
+	(struct scx_dsq_list_node) {						\
+		.node = LIST_HEAD_INIT((__node).node),				\
+		.flags = SCX_DSQ_LNODE_ITER_CURSOR | (__flags),			\
+		.priv = (__priv),						\
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The following is embedded in task_struct and contains all fields necessary
  * for a task to be scheduled by SCX.
  */
 struct sched_ext_entity {
+<<<<<<< HEAD
 #ifdef CONFIG_CGROUPS
 	/*
 	 * Associated scx_sched. Updated either during fork or while holding
@@ -189,6 +260,9 @@ struct sched_ext_entity {
 	atomic_long_t		ops_state;
 	u64			ddsp_dsq_id;
 	u64			ddsp_enq_flags;
+=======
+	struct scx_dispatch_q	*dsq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct scx_dsq_list_node dsq_list;	/* dispatch order */
 	struct rb_node		dsq_priq;	/* p->scx.dsq_vtime order */
 	u32			dsq_seq;
@@ -198,7 +272,13 @@ struct sched_ext_entity {
 	s32			sticky_cpu;
 	s32			holding_cpu;
 	s32			selected_cpu;
+<<<<<<< HEAD
 	struct task_struct	*kf_tasks[2];	/* see SCX_CALL_OP_TASK() */
+=======
+	u32			kf_mask;	/* see scx_kf_mask above */
+	struct task_struct	*kf_tasks[2];	/* see SCX_CALL_OP_TASK() */
+	atomic_long_t		ops_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct list_head	runnable_node;	/* rq->scx.runnable_list */
 	unsigned long		runnable_at;
@@ -206,6 +286,11 @@ struct sched_ext_entity {
 #ifdef CONFIG_SCHED_CORE
 	u64			core_sched_at;	/* see scx_prio_less() */
 #endif
+<<<<<<< HEAD
+=======
+	u64			ddsp_dsq_id;
+	u64			ddsp_enq_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* BPF scheduler modifiable fields */
 

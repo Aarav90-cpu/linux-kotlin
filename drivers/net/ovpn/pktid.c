@@ -65,7 +65,11 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
 	if (likely(pkt_id == pr->id + 1)) {
 		/* well-formed ID sequence (incremented by 1) */
 		pr->base = REPLAY_INDEX(pr->base, -1);
+<<<<<<< HEAD
 		__set_bit(pr->base, pr->history);
+=======
+		pr->history[pr->base / 8] |= (1 << (pr->base % 8));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pr->extent < REPLAY_WINDOW_SIZE)
 			++pr->extent;
 		pr->id = pkt_id;
@@ -77,14 +81,22 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
 			unsigned int i;
 
 			pr->base = REPLAY_INDEX(pr->base, -delta);
+<<<<<<< HEAD
 			__set_bit(pr->base, pr->history);
+=======
+			pr->history[pr->base / 8] |= (1 << (pr->base % 8));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr->extent += delta;
 			if (pr->extent > REPLAY_WINDOW_SIZE)
 				pr->extent = REPLAY_WINDOW_SIZE;
 			for (i = 1; i < delta; ++i) {
 				unsigned int newb = REPLAY_INDEX(pr->base, i);
 
+<<<<<<< HEAD
 				__clear_bit(newb, pr->history);
+=======
+				pr->history[newb / 8] &= ~BIT(newb % 8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		} else {
 			pr->base = 0;
@@ -103,11 +115,22 @@ int ovpn_pktid_recv(struct ovpn_pktid_recv *pr, u32 pkt_id, u32 pkt_time)
 			if (pkt_id > pr->id_floor) {
 				const unsigned int ri = REPLAY_INDEX(pr->base,
 								     delta);
+<<<<<<< HEAD
 
 				if (__test_and_set_bit(ri, pr->history)) {
 					ret = -EINVAL;
 					goto out;
 				}
+=======
+				u8 *p = &pr->history[ri / 8];
+				const u8 mask = (1 << (ri % 8));
+
+				if (*p & mask) {
+					ret = -EINVAL;
+					goto out;
+				}
+				*p |= mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				ret = -EINVAL;
 				goto out;

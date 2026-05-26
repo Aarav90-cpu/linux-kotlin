@@ -545,7 +545,11 @@ fib4_nexthop()
 fib6_nexthop()
 {
 	local lldummy=$(get_linklocal dummy0)
+<<<<<<< HEAD
 	local llv1=$(get_linklocal veth1)
+=======
+	local llv1=$(get_linklocal dummy0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if [ -z "$lldummy" ]; then
 		echo "Failed to get linklocal address for dummy0"
@@ -1589,6 +1593,7 @@ fib6_ra_to_static()
 
 	log_test $ret 0 "ipv6 promote RA route to static"
 
+<<<<<<< HEAD
 	# Prepare for RA route with gateway
 	$NS_EXEC sysctl -wq net.ipv6.conf.veth1.accept_ra_rt_info_max_plen=64
 
@@ -1606,6 +1611,8 @@ fib6_ra_to_static()
 
 	log_test "$ret" 0 "ipv6 RA route with nexthop do not merge into ECMP with static"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set +e
 
 	cleanup &> /dev/null

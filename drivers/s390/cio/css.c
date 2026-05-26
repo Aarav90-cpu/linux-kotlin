@@ -159,6 +159,10 @@ static void css_subchannel_release(struct device *dev)
 
 	sch->config.intparm = 0;
 	cio_commit_config(sch);
+<<<<<<< HEAD
+=======
+	kfree(sch->driver_override);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sch);
 }
 
@@ -322,9 +326,43 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR_RO(modalias);
 
+<<<<<<< HEAD
 static struct attribute *subch_attrs[] = {
 	&dev_attr_type.attr,
 	&dev_attr_modalias.attr,
+=======
+static ssize_t driver_override_store(struct device *dev,
+				     struct device_attribute *attr,
+				     const char *buf, size_t count)
+{
+	struct subchannel *sch = to_subchannel(dev);
+	int ret;
+
+	ret = driver_set_override(dev, &sch->driver_override, buf, count);
+	if (ret)
+		return ret;
+
+	return count;
+}
+
+static ssize_t driver_override_show(struct device *dev,
+				    struct device_attribute *attr, char *buf)
+{
+	struct subchannel *sch = to_subchannel(dev);
+	ssize_t len;
+
+	device_lock(dev);
+	len = sysfs_emit(buf, "%s\n", sch->driver_override);
+	device_unlock(dev);
+	return len;
+}
+static DEVICE_ATTR_RW(driver_override);
+
+static struct attribute *subch_attrs[] = {
+	&dev_attr_type.attr,
+	&dev_attr_modalias.attr,
+	&dev_attr_driver_override.attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 
@@ -1327,11 +1365,17 @@ static int css_bus_match(struct device *dev, const struct device_driver *drv)
 	struct subchannel *sch = to_subchannel(dev);
 	const struct css_driver *driver = to_cssdriver(drv);
 	struct css_device_id *id;
+<<<<<<< HEAD
 	int ret;
 
 	/* When driver_override is set, only bind to the matching driver */
 	ret = device_match_driver_override(dev, drv);
 	if (ret == 0)
+=======
+
+	/* When driver_override is set, only bind to the matching driver */
+	if (sch->driver_override && strcmp(sch->driver_override, drv->name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	for (id = driver->subchannel_type; id->match_flags; id++) {
@@ -1388,7 +1432,10 @@ static int css_uevent(const struct device *dev, struct kobj_uevent_env *env)
 
 static const struct bus_type css_bus_type = {
 	.name     = "css",
+<<<<<<< HEAD
 	.driver_override = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.match    = css_bus_match,
 	.probe    = css_probe,
 	.remove   = css_remove,

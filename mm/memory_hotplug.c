@@ -221,7 +221,11 @@ void put_online_mems(void)
 bool movable_node_enabled = false;
 
 static int mhp_default_online_type = -1;
+<<<<<<< HEAD
 enum mmop mhp_get_default_online_type(void)
+=======
+int mhp_get_default_online_type(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (mhp_default_online_type >= 0)
 		return mhp_default_online_type;
@@ -240,7 +244,11 @@ enum mmop mhp_get_default_online_type(void)
 	return mhp_default_online_type;
 }
 
+<<<<<<< HEAD
 void mhp_set_default_online_type(enum mmop online_type)
+=======
+void mhp_set_default_online_type(int online_type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	mhp_default_online_type = online_type;
 }
@@ -319,6 +327,7 @@ static void release_memory_resource(struct resource *res)
 static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
 {
 	/*
+<<<<<<< HEAD
 	 * Disallow all operations smaller than a sub-section.
 	 * Note that check_hotplug_memory_range() enforces a larger
 	 * memory_block_size_bytes() granularity for memory that will be marked
@@ -326,6 +335,23 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
 	 * arch_{add,remove}_memory() users outside of add_memory_resource().
 	 */
 	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION))
+=======
+	 * Disallow all operations smaller than a sub-section and only
+	 * allow operations smaller than a section for
+	 * SPARSEMEM_VMEMMAP. Note that check_hotplug_memory_range()
+	 * enforces a larger memory_block_size_bytes() granularity for
+	 * memory that will be marked online, so this check should only
+	 * fire for direct arch_{add,remove}_memory() users outside of
+	 * add_memory_resource().
+	 */
+	unsigned long min_align;
+
+	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
+		min_align = PAGES_PER_SUBSECTION;
+	else
+		min_align = PAGES_PER_SECTION;
+	if (!IS_ALIGNED(pfn | nr_pages, min_align))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	return 0;
 }
@@ -1038,7 +1064,11 @@ static inline struct zone *default_zone_for_pfn(int nid, unsigned long start_pfn
 	return movable_node_enabled ? movable_zone : kernel_zone;
 }
 
+<<<<<<< HEAD
 struct zone *zone_for_pfn_range(enum mmop online_type, int nid,
+=======
+struct zone *zone_for_pfn_range(int online_type, int nid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct memory_group *group, unsigned long start_pfn,
 		unsigned long nr_pages)
 {
@@ -1746,8 +1776,12 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
 {
 	unsigned long pfn;
 
+<<<<<<< HEAD
 	for (pfn = start; pfn < end; pfn++) {
 		unsigned long nr_pages;
+=======
+	for_each_valid_pfn(pfn, start, end) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct page *page;
 		struct folio *folio;
 
@@ -1764,9 +1798,15 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
 		if (PageOffline(page) && page_count(page))
 			return -EBUSY;
 
+<<<<<<< HEAD
 		folio = page_folio(page);
 		if (!folio_test_hugetlb(folio))
 			continue;
+=======
+		if (!PageHuge(page))
+			continue;
+		folio = page_folio(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * This test is racy as we hold no reference or lock.  The
 		 * hugetlb page could have been free'ed and head is no longer
@@ -1776,11 +1816,15 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
 		 */
 		if (folio_test_hugetlb_migratable(folio))
 			goto found;
+<<<<<<< HEAD
 		nr_pages = folio_nr_pages(folio);
 		if (unlikely(nr_pages < 1 || nr_pages > MAX_FOLIO_NR_PAGES ||
 			     !is_power_of_2(nr_pages)))
 			continue;
 		pfn |= nr_pages - 1;
+=======
+		pfn |= folio_nr_pages(folio) - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return -ENOENT;
 found:
@@ -1796,7 +1840,11 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
 	static DEFINE_RATELIMIT_STATE(migrate_rs, DEFAULT_RATELIMIT_INTERVAL,
 				      DEFAULT_RATELIMIT_BURST);
 
+<<<<<<< HEAD
 	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+=======
+	for_each_valid_pfn(pfn, start_pfn, end_pfn) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct page *page;
 
 		page = pfn_to_page(pfn);
@@ -2324,7 +2372,11 @@ EXPORT_SYMBOL_GPL(remove_memory);
 
 static int try_offline_memory_block(struct memory_block *mem, void *arg)
 {
+<<<<<<< HEAD
 	enum mmop online_type = MMOP_ONLINE_KERNEL;
+=======
+	uint8_t online_type = MMOP_ONLINE_KERNEL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint8_t **online_types = arg;
 	struct page *page;
 	int rc;
@@ -2357,7 +2409,11 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
 	int rc;
 
 	if (**online_types != MMOP_OFFLINE) {
+<<<<<<< HEAD
 		mem->online_type = (enum mmop)**online_types;
+=======
+		mem->online_type = **online_types;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rc = device_online(&mem->dev);
 		if (rc < 0)
 			pr_warn("%s: Failed to re-online memory: %d",

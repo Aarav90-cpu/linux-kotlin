@@ -99,6 +99,7 @@ typedef u64 kvm_pte_t;
 					 KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
 					 KVM_PTE_LEAF_ATTR_HI_S2_XN)
 
+<<<<<<< HEAD
 /* pKVM invalid pte encodings */
 #define KVM_INVALID_PTE_TYPE_MASK	GENMASK(63, 60)
 #define KVM_INVALID_PTE_ANNOT_MASK	~(KVM_PTE_VALID | \
@@ -123,6 +124,16 @@ enum kvm_invalid_pte_type {
 	 */
 	KVM_GUEST_INVALID_PTE_TYPE_POISONED,
 };
+=======
+#define KVM_INVALID_PTE_OWNER_MASK	GENMASK(9, 2)
+#define KVM_MAX_OWNER_ID		1
+
+/*
+ * Used to indicate a pte for which a 'break-before-make' sequence is in
+ * progress.
+ */
+#define KVM_INVALID_PTE_LOCKED		BIT(10)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool kvm_pte_valid(kvm_pte_t pte)
 {
@@ -674,18 +685,27 @@ int kvm_pgtable_stage2_map(struct kvm_pgtable *pgt, u64 addr, u64 size,
 			   void *mc, enum kvm_pgtable_walk_flags flags);
 
 /**
+<<<<<<< HEAD
  * kvm_pgtable_stage2_annotate() - Unmap and annotate pages in the IPA space
  *				   to track ownership (and more).
+=======
+ * kvm_pgtable_stage2_set_owner() - Unmap and annotate pages in the IPA space to
+ *				    track ownership.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
  * @addr:	Base intermediate physical address to annotate.
  * @size:	Size of the annotated range.
  * @mc:		Cache of pre-allocated and zeroed memory from which to allocate
  *		page-table pages.
+<<<<<<< HEAD
  * @type:	The type of the annotation, determining its meaning and format.
  * @annotation:	A 59-bit value that will be stored in the page tables.
  *		@annotation[0] and @annotation[63:60] must be 0.
  * 		@annotation[59:1] is stored in the page tables, along
  *		with @type.
+=======
+ * @owner_id:	Unique identifier for the owner of the page.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * By default, all page-tables are owned by identifier 0. This function can be
  * used to mark portions of the IPA space as owned by other entities. When a
@@ -694,9 +714,14 @@ int kvm_pgtable_stage2_map(struct kvm_pgtable *pgt, u64 addr, u64 size,
  *
  * Return: 0 on success, negative error code on failure.
  */
+<<<<<<< HEAD
 int kvm_pgtable_stage2_annotate(struct kvm_pgtable *pgt, u64 addr, u64 size,
 				void *mc, enum kvm_invalid_pte_type type,
 				kvm_pte_t annotation);
+=======
+int kvm_pgtable_stage2_set_owner(struct kvm_pgtable *pgt, u64 addr, u64 size,
+				 void *mc, u8 owner_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * kvm_pgtable_stage2_unmap() - Remove a mapping from a guest stage-2 page-table.

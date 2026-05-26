@@ -135,10 +135,55 @@ static void mlx4_ib_free_cq_buf(struct mlx4_ib_dev *dev, struct mlx4_ib_cq_buf *
 	mlx4_buf_free(dev->dev, (cqe + 1) * buf->entry_size, &buf->buf);
 }
 
+<<<<<<< HEAD
 #define CQ_CREATE_FLAGS_SUPPORTED IB_UVERBS_CQ_FLAGS_TIMESTAMP_COMPLETION
 int mlx4_ib_create_user_cq(struct ib_cq *ibcq,
 			   const struct ib_cq_init_attr *attr,
 			   struct uverbs_attr_bundle *attrs)
+=======
+static int mlx4_ib_get_cq_umem(struct mlx4_ib_dev *dev,
+			       struct mlx4_ib_cq_buf *buf,
+			       struct ib_umem **umem, u64 buf_addr, int cqe)
+{
+	int err;
+	int cqe_size = dev->dev->caps.cqe_size;
+	int shift;
+	int n;
+
+	*umem = ib_umem_get(&dev->ib_dev, buf_addr, cqe * cqe_size,
+			    IB_ACCESS_LOCAL_WRITE);
+	if (IS_ERR(*umem))
+		return PTR_ERR(*umem);
+
+	shift = mlx4_ib_umem_calc_optimal_mtt_size(*umem, 0, &n);
+	if (shift < 0) {
+		err = shift;
+		goto err_buf;
+	}
+
+	err = mlx4_mtt_init(dev->dev, n, shift, &buf->mtt);
+	if (err)
+		goto err_buf;
+
+	err = mlx4_ib_umem_write_mtt(dev, &buf->mtt, *umem);
+	if (err)
+		goto err_mtt;
+
+	return 0;
+
+err_mtt:
+	mlx4_mtt_cleanup(dev->dev, &buf->mtt);
+
+err_buf:
+	ib_umem_release(*umem);
+
+	return err;
+}
+
+#define CQ_CREATE_FLAGS_SUPPORTED IB_UVERBS_CQ_FLAGS_TIMESTAMP_COMPLETION
+int mlx4_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+		      struct uverbs_attr_bundle *attrs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ib_udata *udata = &attrs->driver_udata;
 	struct ib_device *ibdev = ibcq->device;
@@ -146,16 +191,25 @@ int mlx4_ib_create_user_cq(struct ib_cq *ibcq,
 	int vector = attr->comp_vector;
 	struct mlx4_ib_dev *dev = to_mdev(ibdev);
 	struct mlx4_ib_cq *cq = to_mcq(ibcq);
+<<<<<<< HEAD
 	struct mlx4_ib_create_cq ucmd;
 	int cqe_size = dev->dev->caps.cqe_size;
 	void *buf_addr;
 	int shift;
 	int n;
+=======
+	struct mlx4_uar *uar;
+	void *buf_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 	struct mlx4_ib_ucontext *context = rdma_udata_to_drv_context(
 		udata, struct mlx4_ib_ucontext, ibucontext);
 
+<<<<<<< HEAD
 	if (attr->cqe > dev->dev->caps.max_cqes)
+=======
+	if (entries < 1 || entries > dev->dev->caps.max_cqes)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (attr->flags & ~CQ_CREATE_FLAGS_SUPPORTED)
@@ -165,6 +219,7 @@ int mlx4_ib_create_user_cq(struct ib_cq *ibcq,
 	cq->ibcq.cqe = entries - 1;
 	mutex_init(&cq->resize_mutex);
 	spin_lock_init(&cq->lock);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&cq->send_qp_list);
 	INIT_LIST_HEAD(&cq->recv_qp_list);
 
@@ -223,6 +278,76 @@ int mlx4_ib_create_user_cq(struct ib_cq *ibcq,
 		err = -EFAULT;
 		goto err_cq_free;
 	}
+=======
+	cq->resize_buf = NULL;
+	cq->resize_umem = NULL;
+	cq->create_flags = attr->flags;
+	INIT_LIST_HEAD(&cq->send_qp_list);
+	INIT_LIST_HEAD(&cq->recv_qp_list);
+
+	if (udata) {
+		struct mlx4_ib_create_cq ucmd;
+
+		if (ib_copy_from_udata(&ucmd, udata, sizeof ucmd)) {
+			err = -EFAULT;
+			goto err_cq;
+		}
+
+		buf_addr = (void *)(unsigned long)ucmd.buf_addr;
+		err = mlx4_ib_get_cq_umem(dev, &cq->buf, &cq->umem,
+					  ucmd.buf_addr, entries);
+		if (err)
+			goto err_cq;
+
+		err = mlx4_ib_db_map_user(udata, ucmd.db_addr, &cq->db);
+		if (err)
+			goto err_mtt;
+
+		uar = &context->uar;
+		cq->mcq.usage = MLX4_RES_USAGE_USER_VERBS;
+	} else {
+		err = mlx4_db_alloc(dev->dev, &cq->db, 1);
+		if (err)
+			goto err_cq;
+
+		cq->mcq.set_ci_db  = cq->db.db;
+		cq->mcq.arm_db     = cq->db.db + 1;
+		*cq->mcq.set_ci_db = 0;
+		*cq->mcq.arm_db    = 0;
+
+		err = mlx4_ib_alloc_cq_buf(dev, &cq->buf, entries);
+		if (err)
+			goto err_db;
+
+		buf_addr = &cq->buf.buf;
+
+		uar = &dev->priv_uar;
+		cq->mcq.usage = MLX4_RES_USAGE_DRIVER;
+	}
+
+	if (dev->eq_table)
+		vector = dev->eq_table[vector % ibdev->num_comp_vectors];
+
+	err = mlx4_cq_alloc(dev->dev, entries, &cq->buf.mtt, uar, cq->db.dma,
+			    &cq->mcq, vector, 0,
+			    !!(cq->create_flags &
+			       IB_UVERBS_CQ_FLAGS_TIMESTAMP_COMPLETION),
+			    buf_addr, !!udata);
+	if (err)
+		goto err_dbmap;
+
+	if (udata)
+		cq->mcq.tasklet_ctx.comp = mlx4_ib_cq_comp;
+	else
+		cq->mcq.comp = mlx4_ib_cq_comp;
+	cq->mcq.event = mlx4_ib_cq_event;
+
+	if (udata)
+		if (ib_copy_to_udata(udata, &cq->mcq.cqn, sizeof (__u32))) {
+			err = -EFAULT;
+			goto err_cq_free;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -230,6 +355,7 @@ err_cq_free:
 	mlx4_cq_free(dev->dev, &cq->mcq);
 
 err_dbmap:
+<<<<<<< HEAD
 	mlx4_ib_db_unmap_user(context, &cq->db);
 
 err_mtt:
@@ -296,6 +422,22 @@ err_buf:
 
 err_db:
 	mlx4_db_free(dev->dev, &cq->db);
+=======
+	if (udata)
+		mlx4_ib_db_unmap_user(context, &cq->db);
+
+err_mtt:
+	mlx4_mtt_cleanup(dev->dev, &cq->buf.mtt);
+
+	ib_umem_release(cq->umem);
+	if (!udata)
+		mlx4_ib_free_cq_buf(dev, &cq->buf, cq->ibcq.cqe);
+
+err_db:
+	if (!udata)
+		mlx4_db_free(dev->dev, &cq->db);
+err_cq:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -327,22 +469,31 @@ static int mlx4_alloc_resize_umem(struct mlx4_ib_dev *dev, struct mlx4_ib_cq *cq
 				   int entries, struct ib_udata *udata)
 {
 	struct mlx4_ib_resize_cq ucmd;
+<<<<<<< HEAD
 	int cqe_size = dev->dev->caps.cqe_size;
 	int shift;
 	int n;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	if (cq->resize_umem)
 		return -EBUSY;
 
+<<<<<<< HEAD
 	err = ib_copy_validate_udata_in(udata, ucmd, buf_addr);
 	if (err)
 		return err;
+=======
+	if (ib_copy_from_udata(&ucmd, udata, sizeof ucmd))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cq->resize_buf = kmalloc_obj(*cq->resize_buf);
 	if (!cq->resize_buf)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	cq->resize_umem = ib_umem_get(&dev->ib_dev, ucmd.buf_addr,
 				      entries * cqe_size,
 				      IB_ACCESS_LOCAL_WRITE);
@@ -380,6 +531,19 @@ err_buf:
 	kfree(cq->resize_buf);
 	cq->resize_buf = NULL;
 	return err;
+=======
+	err = mlx4_ib_get_cq_umem(dev, &cq->resize_buf->buf, &cq->resize_umem,
+				  ucmd.buf_addr, entries);
+	if (err) {
+		kfree(cq->resize_buf);
+		cq->resize_buf = NULL;
+		return err;
+	}
+
+	cq->resize_buf->cqe = entries - 1;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mlx4_ib_get_outstanding_cqes(struct mlx4_ib_cq *cq)
@@ -418,8 +582,12 @@ static void mlx4_ib_cq_resize_copy_cqes(struct mlx4_ib_cq *cq)
 	++cq->mcq.cons_index;
 }
 
+<<<<<<< HEAD
 int mlx4_ib_resize_cq(struct ib_cq *ibcq, unsigned int entries,
 		      struct ib_udata *udata)
+=======
+int mlx4_ib_resize_cq(struct ib_cq *ibcq, int entries, struct ib_udata *udata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mlx4_ib_dev *dev = to_mdev(ibcq->device);
 	struct mlx4_ib_cq *cq = to_mcq(ibcq);
@@ -428,7 +596,11 @@ int mlx4_ib_resize_cq(struct ib_cq *ibcq, unsigned int entries,
 	int err;
 
 	mutex_lock(&cq->resize_mutex);
+<<<<<<< HEAD
 	if (entries > dev->dev->caps.max_cqes) {
+=======
+	if (entries < 1 || entries > dev->dev->caps.max_cqes) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -EINVAL;
 		goto out;
 	}
@@ -471,8 +643,13 @@ int mlx4_ib_resize_cq(struct ib_cq *ibcq, unsigned int entries,
 	if (ibcq->uobject) {
 		cq->buf      = cq->resize_buf->buf;
 		cq->ibcq.cqe = cq->resize_buf->cqe;
+<<<<<<< HEAD
 		ib_umem_release(cq->ibcq.umem);
 		cq->ibcq.umem     = cq->resize_umem;
+=======
+		ib_umem_release(cq->umem);
+		cq->umem     = cq->resize_umem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		kfree(cq->resize_buf);
 		cq->resize_buf = NULL;
@@ -532,11 +709,18 @@ int mlx4_ib_destroy_cq(struct ib_cq *cq, struct ib_udata *udata)
 				struct mlx4_ib_ucontext,
 				ibucontext),
 			&mcq->db);
+<<<<<<< HEAD
 		/* UMEM is released by ib_core */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		mlx4_ib_free_cq_buf(dev, &mcq->buf, cq->cqe);
 		mlx4_db_free(dev->dev, &mcq->db);
 	}
+<<<<<<< HEAD
+=======
+	ib_umem_release(mcq->umem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

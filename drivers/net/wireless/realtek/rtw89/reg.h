@@ -4291,6 +4291,7 @@
 #define B_BE_VERIFY_ENV_MASK GENMASK(9, 8)
 #define B_BE_HW_ID_MASK GENMASK(7, 0)
 
+<<<<<<< HEAD
 #define R_BE_SCOREBOARD_0 0x0110
 #define B_BE_SB0_TOGGLE BIT(31)
 #define B_BE_SB0_WL_DATA_LINE_MASK GENMASK(30, 0)
@@ -4305,6 +4306,8 @@
 #define R_BE_SCOREBOARD_1_BT_DATA 0x011C
 #define B_BE_SB1_BT_DATA_LINE_MASK GENMASK(30, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_BE_HALT_H2C_CTRL 0x0160
 #define B_BE_HALT_H2C_TRIGGER BIT(0)
 
@@ -4417,6 +4420,7 @@
 #define B_BE_FS_GPIO17_INT_EN BIT(1)
 #define B_BE_FS_GPIO16_INT_EN BIT(0)
 
+<<<<<<< HEAD
 #define R_BE_FWS1ISR 0x019C
 #define B_BE_FS_WL_HW_RADIO_OFF_INT BIT(28)
 #define B_BE_SWRD_BOD_INT BIT(27)
@@ -4442,6 +4446,8 @@
 #define B_BE_FS_GPIO17_INT BIT(1)
 #define B_BE_FS_GPIO16_INT BIT(0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_BE_HIMR0 0x01A0
 #define B_BE_WDT_DATACPU_TIMEOUT_INT_EN BIT(25)
 #define B_BE_HALT_D2H_INT_EN BIT(24)
@@ -4542,6 +4548,7 @@
 #define R_BE_UDM2 0x01F8
 #define B_BE_UDM2_EPC_RA_MASK GENMASK(31, 0)
 
+<<<<<<< HEAD
 #define R_BE_SPS_DIG_ON_CTRL1 0x0204
 #define B_BE_SN_N_L_MASK GENMASK(31, 28)
 #define B_BE_SP_N_L_MASK GENMASK(27, 24)
@@ -4580,6 +4587,8 @@
 #define B_BE_REG_MOS_HALF_L_ANA BIT(1)
 #define B_BE_CURRENT_SENSE_MOS_ANA BIT(0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_BE_AFE_ON_CTRL0 0x0240
 #define B_BE_REG_LPF_R3_3_0_MASK GENMASK(31, 29)
 #define B_BE_REG_LPF_R2_MASK GENMASK(28, 24)
@@ -6815,7 +6824,10 @@
 #define R_BE_MUEDCA_EN 0x10370
 #define R_BE_MUEDCA_EN_C1 0x14370
 #define B_BE_SIFS_TIMEOUT_TB_T2_MASK GENMASK(30, 24)
+<<<<<<< HEAD
 #define B_BE_SIFS_MACTXEN_TB_T1_DOT05US_MASK GENMASK(23, 16)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_BE_SIFS_MACTXEN_TB_T1_MASK GENMASK(22, 16)
 #define B_BE_MUEDCA_WMM_SEL BIT(8)
 #define B_BE_SET_MUEDCATIMER_TF_MASK GENMASK(5, 4)
@@ -8398,9 +8410,12 @@
 #define B_BE_PWR_BT_VAL GENMASK(8, 0)
 #define B_BE_PWR_FORCE_COEX_ON GENMASK(29, 27)
 
+<<<<<<< HEAD
 #define R_PWR_BOOST_BE4 0x11A64
 #define B_PWR_BOOST_BE4 BIT(8)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_BE_PWR_TH 0x11A78
 #define R_BE_PWR_RSSI_TARGET_LMT 0x11A84
 
@@ -8459,8 +8474,11 @@
 #define RR_MOD_M_RXBB GENMASK(9, 5)
 #define RR_MOD_LO_SEL BIT(1)
 #define RR_MODOPT 0x01
+<<<<<<< HEAD
 #define RR_MODOPT_V1 0x10001
 #define RR_SW_SEL BIT(19)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RR_TXG_SEL GENMASK(19, 17)
 #define RR_MODOPT_M_TXPWR GENMASK(5, 0)
 #define RR_WLSEL 0x02
@@ -8537,7 +8555,10 @@
 #define RR_LUTWD0_LB GENMASK(5, 0)
 #define RR_TM 0x42
 #define RR_TM_TRI BIT(19)
+<<<<<<< HEAD
 #define RR_TM_TRM GENMASK(17, 11)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RR_TM_VAL_V1 GENMASK(7, 0)
 #define RR_TM_VAL GENMASK(6, 1)
 #define RR_TM2 0x43
@@ -8670,7 +8691,10 @@
 #define RR_LDO 0xb1
 #define RR_LDO_SEL GENMASK(8, 6)
 #define RR_VCO 0xb2
+<<<<<<< HEAD
 #define RR_VCO_VAL GENMASK(18, 14)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RR_VCO_SEL GENMASK(9, 8)
 #define RR_VCI 0xb3
 #define RR_VCI_ON BIT(7)
@@ -8794,7 +8818,10 @@
 #define B_P0_HW_ANTSW_DIS_BY_GNT_BT BIT(12)
 #define B_P0_TRSW_TX_EXTEND GENMASK(3, 0)
 #define R_MAC_PIN_SEL 0x0734
+<<<<<<< HEAD
 #define R_MAC_PIN_SEL_BE4 0x20734
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_CH_IDX_SEG0 GENMASK(23, 16)
 #define R_PLCP_HISTOGRAM 0x0738
 #define R_PLCP_HISTOGRAM_BE_V1 0x20738
@@ -8823,7 +8850,10 @@
 #define R_PHY_STS_BITMAP_EHT 0x0788
 #define R_PHY_STS_BITMAP_EHT_BE4 0x20788
 #define R_EDCCA_RPTREG_SEL_BE 0x078C
+<<<<<<< HEAD
 #define R_EDCCA_RPTREG_SEL_BE4 0x2078C
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_EDCCA_RPTREG_SEL_BE_MSK GENMASK(22, 20)
 #define R_PMAC_GNT 0x0980
 #define B_PMAC_GNT_TXEN BIT(0)
@@ -8937,7 +8967,10 @@
 #define R_UDP_COEEF 0x0CBC
 #define B_UDP_COEEF BIT(19)
 #define R_TX_COLLISION_T2R_ST_BE 0x0CC8
+<<<<<<< HEAD
 #define R_TX_COLLISION_T2R_ST_BE4 0x20CC8
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_TX_COLLISION_T2R_ST_BE_M GENMASK(13, 8)
 #define R_RXHT_MCS_LIMIT 0x0D18
 #define B_RXHT_MCS_LIMIT GENMASK(9, 8)
@@ -9166,11 +9199,15 @@
 #define R_P1_EN_SOUND_WO_NDP 0x2D7C
 #define B_P1_EN_SOUND_WO_NDP BIT(1)
 #define R_EDCCA_RPT_A_BE 0x2E38
+<<<<<<< HEAD
 #define R_EDCCA_RPT_A_BE4 0x2EE30
 #define R_EDCCA_RPT_A_BE4_C1 0x2FE30
 #define R_EDCCA_RPT_B_BE 0x2E3C
 #define R_EDCCA_RPT_B_BE4 0x2EE34
 #define R_EDCCA_RPT_B_BE4_C1 0x2FE34
+=======
+#define R_EDCCA_RPT_B_BE 0x2E3C
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_EDCCA_RPT_P1_A_BE 0x2E40
 #define R_EDCCA_RPT_P1_B_BE 0x2E44
 #define R_S1_HW_SI_DIS 0x3200
@@ -9354,13 +9391,19 @@
 #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V1 0x4C24
 #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V2 0x46E8
 #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V3 0x41C8
+<<<<<<< HEAD
 #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_BE4 0x241C8
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_PATH0_P20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
 #define R_PATH0_S20_FOLLOW_BY_PAGCUGC 0x46A4
 #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V1 0x4C28
 #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V2 0x46EC
 #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V3 0x41CC
+<<<<<<< HEAD
 #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_BE4 0x241CC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_PATH0_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
 #define R_PATH0_RXB_INIT_V1 0x46A8
 #define B_PATH0_RXB_INIT_IDX_MSK_V1 GENMASK(14, 10)
@@ -9407,13 +9450,19 @@
 #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V1 0x4CE8
 #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V2 0x47A8
 #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V3 0x45C8
+<<<<<<< HEAD
 #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_BE4 0x245C8
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_PATH1_P20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
 #define R_PATH1_S20_FOLLOW_BY_PAGCUGC 0x4778
 #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V1 0x4CEC
 #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V2 0x47AC
 #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V3 0x45CC
+<<<<<<< HEAD
 #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_BE4 0x245CC
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_PATH1_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
 #define R_PATH1_G_TIA0_LNA6_OP1DB_V1 0x4778
 #define B_PATH1_G_TIA0_LNA6_OP1DB_V1 GENMASK(7, 0)
@@ -9434,7 +9483,10 @@
 #define R_SEG0R_PD 0x481C
 #define R_SEG0R_PD_V1 0x4860
 #define R_SEG0R_PD_V2 0x6A74
+<<<<<<< HEAD
 #define R_SEG0R_PD_BE4 0x26210
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_SEG0R_EDCCA_LVL 0x4840
 #define R_SEG0R_EDCCA_LVL_V1 0x4884
 #define B_EDCCA_LVL_MSK3 GENMASK(31, 24)
@@ -9573,11 +9625,17 @@
 #define B_DCFO_COMP_S0_V1_MSK GENMASK(13, 0)
 #define R_BMODE_PDTH_V1 0x4B64
 #define R_BMODE_PDTH_V2 0x6708
+<<<<<<< HEAD
 #define R_BMODE_PDTH_BE4 0x26040
 #define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
 #define R_BMODE_PDTH_EN_V1 0x4B74
 #define R_BMODE_PDTH_EN_V2 0x6718
 #define R_BMODE_PDTH_EN_BE4 0x26050
+=======
+#define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
+#define R_BMODE_PDTH_EN_V1 0x4B74
+#define R_BMODE_PDTH_EN_V2 0x6718
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_BMODE_PDTH_LIMIT_EN_MSK_V1 BIT(30)
 #define R_BSS_CLR_VLD_V2 0x4EBC
 #define B_BSS_CLR_VLD0_V2 BIT(2)
@@ -9752,9 +9810,13 @@
 #define R_CCK_FC0INV 0x675c
 #define B_CCK_FC0INV GENMASK(18, 0)
 #define R_SEG0R_EDCCA_LVL_BE 0x69EC
+<<<<<<< HEAD
 #define R_SEG0R_EDCCA_LVL_BE4 0x2623C
 #define R_SEG0R_PPDU_LVL_BE 0x69F0
 #define R_SEG0R_PPDU_LVL_BE4 0x26240
+=======
+#define R_SEG0R_PPDU_LVL_BE 0x69F0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_SEGSND 0x6A14
 #define B_SEGSND_EN BIT(31)
 #define R_DBCC 0x6B48
@@ -10249,8 +10311,11 @@
 #define B_TSSI_CONT_EN BIT(3)
 #define R_P0_TXPWRB_BE 0xE61C
 #define R_P1_TXPWRB_BE 0xE71C
+<<<<<<< HEAD
 #define R_P0_TXPWRB_BE4 0x2251C
 #define R_P1_TXPWRB_BE4 0x2261C
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define B_TXPWRB_MAX_BE GENMASK(20, 12)
 #define R_TSSI_MAP_OFST_P0 0xE620
 #define R_TSSI_MAP_OFST_P1 0xE720
@@ -10269,8 +10334,11 @@
 #define R_TSSI_K_P1 0xE7A0
 #define B_TSSI_K_OFDM_P1 GENMASK(29, 20)
 
+<<<<<<< HEAD
 #define R_BBWRAP_ELMSR_BE4 0x11974
 #define B_BBWRAP_ELMSR_EN_BE4 GENMASK(29, 28)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_COMP_CIM3K_BE4 0x11998
 #define B_COMP_CIM3K_OW_BE4 BIT(1)
 #define B_COMP_CIM3K_TH_BE4 BIT(2)
@@ -10475,6 +10543,7 @@
 #define R_BANDEDGE_DBWY_BE4 0x11AD0
 #define B_BANDEDGE_DBW160_BE4 BIT(0)
 
+<<<<<<< HEAD
 #define R_SYS_DBCC_BE4 0x20000
 #define B_SYS_DBCC_BE4 BIT(0)
 #define B_SYS_DBCC_24G_BAND_SEL_BE4 BIT(1)
@@ -10486,12 +10555,19 @@
 #define R_SEL_GNT_BT_RX_BE4 0x2010C
 #define B_SEL_GNT_BT_RX_PATH0_BE4 GENMASK(3, 0)
 #define B_SEL_GNT_BT_RX_PATH1_BE4 GENMASK(11, 8)
+=======
+#define R_CHINFO_SEG_BE4 0x200B4
+#define B_CHINFO_SEG_LEN_BE4 GENMASK(12, 10)
+#define R_STS_HDR2_PARSING_BE4 0x2070C
+#define B_STS_HDR2_PARSING_BE4 BIT(10)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_SW_SI_WDATA_BE4 0x20370
 #define B_SW_SI_DATA_PATH_BE4 GENMASK(31, 28)
 #define B_SW_SI_DATA_ADR_BE4 GENMASK(27, 20)
 #define B_SW_SI_DATA_DAT_BE4 GENMASK(19, 0)
 #define R_SW_SI_READ_ADDR_BE4 0x20378
 #define B_SW_SI_READ_ADDR_BE4 GENMASK(10, 0)
+<<<<<<< HEAD
 #define R_RXBW67_BE4 0x2040C
 #define B_RXBW6_BE4 GENMASK(22, 20)
 #define B_RXBW7_BE4 GENMASK(25, 23)
@@ -10520,6 +10596,8 @@
 #define B_TXINFO_PATH_MB_BE4 BIT(19)
 #define R_SHAPER_COEFF_BE4 0x20CBC
 #define B_SHAPER_COEFF_BE4 BIT(19)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_IFS_T1_AVG_BE4 0x20EDC
 #define B_IFS_T1_AVG_BE4 GENMASK(15, 0)
 #define B_IFS_T2_AVG_BE4 GENMASK(31, 16)
@@ -10542,6 +10620,7 @@
 #define B_IFS_T3_HIS_BE4 GENMASK(15, 0)
 #define B_IFS_T4_HIS_BE4 GENMASK(31, 16)
 
+<<<<<<< HEAD
 #define R_TX_ERROR_SEL_BE4 0x21254
 #define B_TX_ERROR_PSDU_BE4 BIT(11)
 #define B_TX_ERROR_NSYM_BE4 BIT(10)
@@ -10638,12 +10717,18 @@
 #define R_CSI_WGT_BE4 0x26770
 #define B_CSI_WGT_EN_BE4 BIT(0)
 #define B_CSI_WGT_IDX_BE4 GENMASK(31, 20)
+=======
+#define R_TX_CFR_MANUAL_EN_BE4 0x2483C
+#define B_TX_CFR_MANUAL_EN_BE4_M BIT(30)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define R_CHINFO_OPT_BE4 0x267C8
 #define B_CHINFO_OPT_BE4 GENMASK(14, 13)
 #define R_CHINFO_NX_BE4 0x267D0
 #define B_CHINFO_NX_BE4 GENMASK(16, 6)
 #define R_CHINFO_ALG_BE4 0x267C8
 #define B_CHINFO_ALG_BE4 GENMASK(31, 30)
+<<<<<<< HEAD
 #define R_RX_AWGN02_BE4 0x2680C
 #define B_RX_AWGN11_BE4 GENMASK(23, 18)
 #define R_RX_AWGN00_BE4 0x26814
@@ -10673,6 +10758,8 @@
 #define R_BSS_CLR_MAP_BE4 0x26914
 #define R_BSS_CLR_VLD_BE4 0x26920
 #define B_BSS_CLR_VLD_BE4 BIT(2)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define R_SW_SI_DATA_BE4 0x2CF4C
 #define B_SW_SI_READ_DATA_BE4 GENMASK(19, 0)
@@ -10680,6 +10767,7 @@
 #define B_SW_SI_R_BUSY_BE4 BIT(25)
 #define B_SW_SI_READ_DATA_DONE_BE4 BIT(26)
 
+<<<<<<< HEAD
 #define R_RX_PATH0_TBL0_BE4 0x2E028
 #define R_RX_PATH1_TBL0_BE4 0x2E128
 
@@ -10699,6 +10787,8 @@
 #define R_TC_VAL_BE4 0x3c208
 #define B_TC_VAL_BE4 GENMASK(7, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* WiFi CPU local domain */
 #define R_AX_WDT_CTRL 0x0040
 #define B_AX_WDT_EN BIT(31)

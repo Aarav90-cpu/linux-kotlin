@@ -69,7 +69,11 @@ static int bd9571mwv_gpio_get(struct gpio_chip *chip, unsigned int offset)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	return !!(val & BIT(offset));
+=======
+	return val & BIT(offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bd9571mwv_gpio_set(struct gpio_chip *chip, unsigned int offset,

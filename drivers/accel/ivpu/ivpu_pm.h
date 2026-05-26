@@ -18,7 +18,10 @@ struct ivpu_pm_info {
 	struct rw_semaphore reset_lock;
 	atomic_t reset_counter;
 	atomic_t reset_pending;
+<<<<<<< HEAD
 	atomic_t engine_reset_counter;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 dct_active_percent;
 };
 

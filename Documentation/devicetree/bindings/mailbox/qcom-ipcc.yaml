@@ -24,7 +24,10 @@ properties:
   compatible:
     items:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-ipcc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,glymur-ipcc
           - qcom,kaanapali-ipcc
           - qcom,milos-ipcc

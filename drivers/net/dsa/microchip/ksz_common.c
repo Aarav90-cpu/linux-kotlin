@@ -3983,7 +3983,11 @@ static void ksz9477_phylink_mac_link_up(struct phylink_config *config,
 	if (dev->info->internal_phy[port])
 		return;
 
+<<<<<<< HEAD
 	p->speed = speed;
+=======
+	p->phydev.speed = speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ksz_port_set_xmii_speed(dev, port, speed);
 

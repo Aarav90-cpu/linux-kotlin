@@ -479,9 +479,13 @@ struct drm_amdgpu_userq_signal {
 	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
 	 * @syncobj_handles.
 	 */
+<<<<<<< HEAD
 	__u16	num_syncobj_handles;
 	__u16	pad0;
 	__u32	pad1;
+=======
+	__u64	num_syncobj_handles;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @bo_read_handles: The list of BO handles that the submitted user queue job
 	 * is using for read only. This will update BO fences in the kernel.
@@ -565,8 +569,12 @@ struct drm_amdgpu_userq_wait {
 	 * @num_syncobj_handles: A count that represents the number of syncobj handles in
 	 * @syncobj_handles.
 	 */
+<<<<<<< HEAD
 	__u16	num_syncobj_handles;
 	__u16	pad0;
+=======
+	__u32	num_syncobj_handles;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @num_bo_read_handles: A count that represents the number of read BO handles in
 	 * @bo_read_handles.

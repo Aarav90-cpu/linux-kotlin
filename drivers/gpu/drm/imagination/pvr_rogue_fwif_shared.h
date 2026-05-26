@@ -236,6 +236,7 @@ enum rogue_context_reset_reason {
 	ROGUE_CONTEXT_RESET_REASON_INNOCENT_OVERRUNING = 4,
 	/* Forced reset to ensure scheduling requirements */
 	ROGUE_CONTEXT_RESET_REASON_HARD_CONTEXT_SWITCH = 5,
+<<<<<<< HEAD
 	/* CDM Mission/safety checksum mismatch */
 	ROGUE_CONTEXT_RESET_REASON_WGP_CHECKSUM = 6,
 	/* TRP checksum mismatch */
@@ -248,6 +249,8 @@ enum rogue_context_reset_reason {
 	ROGUE_CONTEXT_RESET_REASON_FW_ECC_OK = 10,
 	/* FW ECC error (uncorrected, ERR) */
 	ROGUE_CONTEXT_RESET_REASON_FW_ECC_ERR = 11,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* FW Safety watchdog triggered */
 	ROGUE_CONTEXT_RESET_REASON_FW_WATCHDOG = 12,
 	/* FW page fault (no HWR) */
@@ -261,11 +264,15 @@ enum rogue_context_reset_reason {
 };
 
 struct rogue_context_reset_reason_data {
+<<<<<<< HEAD
 	/*
 	 * The valid values for reset_reason are the ones from
 	 * enum rogue_context_reset_reason
 	 */
 	u32 reset_reason;
+=======
+	enum rogue_context_reset_reason reset_reason;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 reset_ext_job_ref;
 };
 

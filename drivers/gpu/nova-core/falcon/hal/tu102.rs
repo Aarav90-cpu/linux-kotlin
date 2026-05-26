@@ -3,11 +3,15 @@
 use core::marker::PhantomData;
 
 use kernel::{
+<<<<<<< HEAD
     io::{
         poll::read_poll_timeout,
         register::WithBase,
         Io, //
     },
+=======
+    io::poll::read_poll_timeout,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     prelude::*,
     time::Delta, //
 };
@@ -53,14 +57,23 @@ impl<E: FalconEngine> FalconHal<E> for Tu102<E> {
     }
 
     fn is_riscv_active(&self, bar: &Bar0) -> bool {
+<<<<<<< HEAD
         bar.read(regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::of::<E>())
             .active_stat()
+=======
+        let cpuctl = regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::read(bar, &E::ID);
+        cpuctl.active_stat()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
         // TIMEOUT: memory scrubbing should complete in less than 10ms.
         read_poll_timeout(
+<<<<<<< HEAD
             || Ok(bar.read(regs::NV_PFALCON_FALCON_DMACTL::of::<E>())),
+=======
+            || Ok(regs::NV_PFALCON_FALCON_DMACTL::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             |r| r.mem_scrubbing_done(),
             Delta::ZERO,
             Delta::from_millis(10),

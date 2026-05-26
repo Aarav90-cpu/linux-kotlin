@@ -92,6 +92,7 @@
 #include "dml/dcn32/dcn32_fpu.h"
 
 #include "dc_state_priv.h"
+<<<<<<< HEAD
 #include "dc_fpu.h"
 
 #include "dml2_0/dml2_wrapper.h"
@@ -100,6 +101,11 @@
 #define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
 #endif
 
+=======
+
+#include "dml2_0/dml2_wrapper.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DC_LOGGER_INIT(logger)
 
 enum dcn32_clk_src_array_id {
@@ -1689,8 +1695,12 @@ static void dcn32_enable_phantom_plane(struct dc *dc,
 		if (curr_pipe->top_pipe && curr_pipe->top_pipe->plane_state == curr_pipe->plane_state)
 			phantom_plane = prev_phantom_plane;
 		else
+<<<<<<< HEAD
 			DC_RUN_WITH_PREEMPTION_ENABLED(phantom_plane =
 				dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state));
+=======
+			phantom_plane = dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!phantom_plane)
 			continue;
@@ -2153,7 +2163,10 @@ static struct resource_funcs dcn32_res_pool_funcs = {
 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
 	.update_soc_for_wm_a = dcn30_update_soc_for_wm_a,
 	.add_phantom_pipes = dcn32_add_phantom_pipes,
+<<<<<<< HEAD
 	.get_default_tiling_info = dcn10_get_default_tiling_info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
 	.calculate_mall_ways_from_bytes = dcn32_calculate_mall_ways_from_bytes,
 	.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe,
@@ -2232,7 +2245,11 @@ static bool dcn32_resource_construct(
 	/*************************************************
 	 *  Resource + asic cap harcoding                *
 	 *************************************************/
+<<<<<<< HEAD
 	pool->base.underlay_pipe_index = (unsigned int)NO_UNDERLAY_PIPE;
+=======
+	pool->base.underlay_pipe_index = NO_UNDERLAY_PIPE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pool->base.timing_generator_count = num_pipes;
 	pool->base.pipe_count = num_pipes;
 	pool->base.mpcc_count = num_pipes;

@@ -385,6 +385,7 @@ int kptr_xchg_possibly_null(struct __sk_buff *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 SEC("?tc")
 __failure __msg("invalid kptr access, R")
 int reject_scalar_store_to_kptr(struct __sk_buff *ctx)
@@ -400,4 +401,6 @@ int reject_scalar_store_to_kptr(struct __sk_buff *ctx)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

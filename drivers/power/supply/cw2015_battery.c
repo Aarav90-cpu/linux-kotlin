@@ -694,8 +694,12 @@ static int cw_bat_probe(struct i2c_client *client)
 			 "No monitored battery, some properties will be missing\n");
 	}
 
+<<<<<<< HEAD
 	cw_bat->battery_workqueue = devm_alloc_ordered_workqueue(&client->dev,
 								 "rk_battery", 0);
+=======
+	cw_bat->battery_workqueue = create_singlethread_workqueue("rk_battery");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cw_bat->battery_workqueue)
 		return -ENOMEM;
 

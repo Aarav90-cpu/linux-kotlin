@@ -16,6 +16,11 @@
 #include <drm/drm_gem.h>
 #include <drm/drm_kunit_helpers.h>
 
+<<<<<<< HEAD
+=======
+#include "../lib/drm_random.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_exec_priv {
 	struct device *dev;
 	struct drm_device *drm;

@@ -92,6 +92,24 @@ iSCSI Extensions for RDMA (iSER)
 .. kernel-doc:: drivers/infiniband/ulp/iser/iser_verbs.c
    :internal:
 
+<<<<<<< HEAD
+=======
+Omni-Path (OPA) Virtual NIC support
+-----------------------------------
+
+.. kernel-doc:: drivers/infiniband/ulp/opa_vnic/opa_vnic_internal.h
+   :internal:
+
+.. kernel-doc:: drivers/infiniband/ulp/opa_vnic/opa_vnic_encap.h
+   :internal:
+
+.. kernel-doc:: drivers/infiniband/ulp/opa_vnic/opa_vnic_vema_iface.c
+   :internal:
+
+.. kernel-doc:: drivers/infiniband/ulp/opa_vnic/opa_vnic_vema.c
+   :internal:
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 InfiniBand SCSI RDMA protocol target support
 --------------------------------------------
 

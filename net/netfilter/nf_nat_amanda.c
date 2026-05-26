@@ -50,7 +50,11 @@ static unsigned int help(struct sk_buff *skb,
 		return NF_DROP;
 	}
 
+<<<<<<< HEAD
 	snprintf(buffer, sizeof(buffer), "%u", port);
+=======
+	sprintf(buffer, "%u", port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nf_nat_mangle_udp_packet(skb, exp->master, ctinfo,
 				      protoff, matchoff, matchlen,
 				      buffer, strlen(buffer))) {

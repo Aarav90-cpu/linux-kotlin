@@ -758,6 +758,7 @@ static ssize_t dev_nack_retry_count_store(struct device *dev,
 
 static DEVICE_ATTR_RW(dev_nack_retry_count);
 
+<<<<<<< HEAD
 static ssize_t do_daa_store(struct device *dev,
 			    struct device_attribute *attr,
 			    const char *buf, size_t count)
@@ -784,6 +785,8 @@ static ssize_t do_daa_store(struct device *dev,
 
 static DEVICE_ATTR_WO(do_daa);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *i3c_masterdev_attrs[] = {
 	&dev_attr_mode.attr,
 	&dev_attr_current_master.attr,
@@ -795,7 +798,10 @@ static struct attribute *i3c_masterdev_attrs[] = {
 	&dev_attr_dynamic_address.attr,
 	&dev_attr_hdrcap.attr,
 	&dev_attr_hotjoin.attr,
+<<<<<<< HEAD
 	&dev_attr_do_daa.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 ATTRIBUTE_GROUPS(i3c_masterdev);
@@ -925,6 +931,7 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
 	cmd->err = I3C_ERROR_UNKNOWN;
 }
 
+<<<<<<< HEAD
 /**
  * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
  * @master: master used to send frames on the bus
@@ -936,6 +943,13 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
 static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
 					  struct i3c_ccc_cmd *cmd)
 {
+=======
+static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+					  struct i3c_ccc_cmd *cmd)
+{
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cmd || !master)
 		return -EINVAL;
 
@@ -953,7 +967,19 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
 	    !master->ops->supports_ccc_cmd(master, cmd))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	return master->ops->send_ccc_cmd(master, cmd);
+=======
+	ret = master->ops->send_ccc_cmd(master, cmd);
+	if (ret) {
+		if (cmd->err != I3C_ERROR_UNKNOWN)
+			return cmd->err;
+
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct i2c_dev_desc *
@@ -1041,10 +1067,13 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
 	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
 	i3c_ccc_cmd_dest_cleanup(&dest);
 
+<<<<<<< HEAD
 	/* No active devices on the bus. */
 	if (ret && cmd.err == I3C_ERROR_M2)
 		ret = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1061,7 +1090,12 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
  *
  * This function must be called with the bus lock held in write mode.
  *
+<<<<<<< HEAD
  * Return: 0 in case of success, or a negative error code otherwise.
+=======
+ * Return: 0 in case of success, a positive I3C error code if the error is
+ * one of the official Mx error codes, and a negative error code otherwise.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int i3c_master_entdaa_locked(struct i3c_master_controller *master)
 {
@@ -1074,17 +1108,24 @@ int i3c_master_entdaa_locked(struct i3c_master_controller *master)
 	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
 	i3c_ccc_cmd_dest_cleanup(&dest);
 
+<<<<<<< HEAD
 	/* No active devices need an address. */
 	if (ret && cmd.err == I3C_ERROR_M2)
 		ret = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(i3c_master_entdaa_locked);
 
 static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
+<<<<<<< HEAD
 					u8 addr, bool enable, u8 evts,
 					bool suppress_m2)
+=======
+					u8 addr, bool enable, u8 evts)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct i3c_ccc_events *events;
 	struct i3c_ccc_cmd_dest dest;
@@ -1104,9 +1145,12 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
 	ret = i3c_master_send_ccc_cmd_locked(master, &cmd);
 	i3c_ccc_cmd_dest_cleanup(&dest);
 
+<<<<<<< HEAD
 	if (suppress_m2 && ret && cmd.err == I3C_ERROR_M2)
 		ret = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1121,12 +1165,21 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
  *
  * This function must be called with the bus lock held in write mode.
  *
+<<<<<<< HEAD
  * Return: 0 in case of success, or a negative error code otherwise.
+=======
+ * Return: 0 in case of success, a positive I3C error code if the error is
+ * one of the official Mx error codes, and a negative error code otherwise.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
 			    u8 evts)
 {
+<<<<<<< HEAD
 	return i3c_master_enec_disec_locked(master, addr, false, evts, false);
+=======
+	return i3c_master_enec_disec_locked(master, addr, false, evts);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
 
@@ -1141,12 +1194,21 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
  *
  * This function must be called with the bus lock held in write mode.
  *
+<<<<<<< HEAD
  * Return: 0 in case of success, or a negative error code otherwise.
+=======
+ * Return: 0 in case of success, a positive I3C error code if the error is
+ * one of the official Mx error codes, and a negative error code otherwise.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
 			   u8 evts)
 {
+<<<<<<< HEAD
 	return i3c_master_enec_disec_locked(master, addr, true, evts, false);
+=======
+	return i3c_master_enec_disec_locked(master, addr, true, evts);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
 
@@ -1166,7 +1228,12 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
  *
  * This function must be called with the bus lock held in write mode.
  *
+<<<<<<< HEAD
  * Return: 0 in case of success, or a negative error code otherwise.
+=======
+ * Return: 0 in case of success, a positive I3C error code if the error is
+ * one of the official Mx error codes, and a negative error code otherwise.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int i3c_master_defslvs_locked(struct i3c_master_controller *master)
 {
@@ -1827,8 +1894,16 @@ int i3c_master_do_daa_ext(struct i3c_master_controller *master, bool rstdaa)
 
 	i3c_bus_maintenance_lock(&master->bus);
 
+<<<<<<< HEAD
 	if (rstdaa)
 		rstret = i3c_master_rstdaa_locked(master, I3C_BROADCAST_ADDR);
+=======
+	if (rstdaa) {
+		rstret = i3c_master_rstdaa_locked(master, I3C_BROADCAST_ADDR);
+		if (rstret == I3C_ERROR_M2)
+			rstret = 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = master->ops->do_daa(master);
 
@@ -2123,7 +2198,11 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
 	 * (assigned by the bootloader for example).
 	 */
 	ret = i3c_master_rstdaa_locked(master, I3C_BROADCAST_ADDR);
+<<<<<<< HEAD
 	if (ret)
+=======
+	if (ret && ret != I3C_ERROR_M2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_bus_cleanup;
 
 	if (master->ops->set_speed) {
@@ -2132,6 +2211,7 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
 			goto err_bus_cleanup;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Disable all slave events before starting DAA. When no active device
 	 * is on the bus, returns Mx error code M2, this error is ignored.
@@ -2140,6 +2220,13 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
 					   I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
 					   I3C_CCC_EVENT_HJ, true);
 	if (ret)
+=======
+	/* Disable all slave events before starting DAA. */
+	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
+				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
+				      I3C_CCC_EVENT_HJ);
+	if (ret && ret != I3C_ERROR_M2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_bus_cleanup;
 
 	/*
@@ -2429,7 +2516,11 @@ of_i3c_master_add_i2c_boardinfo(struct i3c_master_controller *master,
 	 * DEFSLVS command.
 	 */
 	if (boardinfo->base.flags & I2C_CLIENT_TEN) {
+<<<<<<< HEAD
 		dev_err(dev, "I2C device with 10 bit address not supported.\n");
+=======
+		dev_err(dev, "I2C device with 10 bit address not supported.");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 	}
 
@@ -2826,10 +2917,17 @@ struct i3c_generic_ibi_slot {
 struct i3c_generic_ibi_pool {
 	spinlock_t lock;
 	unsigned int num_slots;
+<<<<<<< HEAD
 	void *payload_buf;
 	struct list_head free_slots;
 	struct list_head pending;
 	struct i3c_generic_ibi_slot slots[] __counted_by(num_slots);
+=======
+	struct i3c_generic_ibi_slot *slots;
+	void *payload_buf;
+	struct list_head free_slots;
+	struct list_head pending;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -2857,6 +2955,10 @@ void i3c_generic_ibi_free_pool(struct i3c_generic_ibi_pool *pool)
 	WARN_ON(nslots != pool->num_slots);
 
 	kfree(pool->payload_buf);
+<<<<<<< HEAD
+=======
+	kfree(pool->slots);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(pool);
 }
 EXPORT_SYMBOL_GPL(i3c_generic_ibi_free_pool);
@@ -2879,16 +2981,32 @@ i3c_generic_ibi_alloc_pool(struct i3c_dev_desc *dev,
 	unsigned int i;
 	int ret;
 
+<<<<<<< HEAD
 	pool = kzalloc_flex(*pool, slots, req->num_slots);
 	if (!pool)
 		return ERR_PTR(-ENOMEM);
 
 	pool->num_slots = req->num_slots;
 
+=======
+	pool = kzalloc_obj(*pool);
+	if (!pool)
+		return ERR_PTR(-ENOMEM);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&pool->lock);
 	INIT_LIST_HEAD(&pool->free_slots);
 	INIT_LIST_HEAD(&pool->pending);
 
+<<<<<<< HEAD
+=======
+	pool->slots = kzalloc_objs(*slot, req->num_slots);
+	if (!pool->slots) {
+		ret = -ENOMEM;
+		goto err_free_pool;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (req->max_payload_len) {
 		pool->payload_buf = kcalloc(req->num_slots,
 					    req->max_payload_len, GFP_KERNEL);
@@ -2907,6 +3025,10 @@ i3c_generic_ibi_alloc_pool(struct i3c_dev_desc *dev,
 					  (i * req->max_payload_len);
 
 		list_add_tail(&slot->node, &pool->free_slots);
+<<<<<<< HEAD
+=======
+		pool->num_slots++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return pool;

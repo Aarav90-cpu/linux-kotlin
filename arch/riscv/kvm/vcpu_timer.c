@@ -12,7 +12,10 @@
 #include <linux/uaccess.h>
 #include <clocksource/timer-riscv.h>
 #include <asm/delay.h>
+<<<<<<< HEAD
 #include <asm/kvm_isa.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_nacl.h>
 #include <asm/kvm_vcpu_timer.h>
 
@@ -254,7 +257,11 @@ int kvm_riscv_vcpu_timer_init(struct kvm_vcpu *vcpu)
 	t->next_set = false;
 
 	/* Enable sstc for every vcpu if available in hardware */
+<<<<<<< HEAD
 	if (!kvm_riscv_isa_check_host(SSTC)) {
+=======
+	if (riscv_isa_extension_available(NULL, SSTC)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		t->sstc_enabled = true;
 		hrtimer_setup(&t->hrt, kvm_riscv_vcpu_vstimer_expired, CLOCK_MONOTONIC,
 			      HRTIMER_MODE_REL);

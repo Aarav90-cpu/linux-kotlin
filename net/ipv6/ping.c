@@ -24,7 +24,12 @@
 #include <net/ping.h>
 
 /* Compatibility glue so we can support IPv6 when it's compiled as a module */
+<<<<<<< HEAD
 static int dummy_ipv6_recv_error(struct sock *sk, struct msghdr *msg, int len)
+=======
+static int dummy_ipv6_recv_error(struct sock *sk, struct msghdr *msg, int len,
+				 int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -EAFNOSUPPORT;
 }

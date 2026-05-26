@@ -1579,7 +1579,11 @@ static int gnttab_setup(void)
 	}
 	return gnttab_map(0, nr_grant_frames - 1);
 }
+<<<<<<< HEAD
 #ifdef CONFIG_HIBERNATE_CALLBACKS
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int gnttab_resume(void)
 {
 	gnttab_request_version();
@@ -1592,7 +1596,10 @@ int gnttab_suspend(void)
 		gnttab_interface->unmap_frames();
 	return 0;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int gnttab_expand(unsigned int req_entries)
 {

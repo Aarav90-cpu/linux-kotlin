@@ -1,6 +1,57 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause
 /*
  * PCIe NTB Network Linux driver
+=======
+/*
+ * This file is provided under a dual BSD/GPLv2 license.  When using or
+ *   redistributing this file, you may do so under either license.
+ *
+ *   GPL LICENSE SUMMARY
+ *
+ *   Copyright(c) 2012 Intel Corporation. All rights reserved.
+ *   Copyright (C) 2015 EMC Corporation. All Rights Reserved.
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of version 2 of the GNU General Public License as
+ *   published by the Free Software Foundation.
+ *
+ *   BSD LICENSE
+ *
+ *   Copyright(c) 2012 Intel Corporation. All rights reserved.
+ *   Copyright (C) 2015 EMC Corporation. All Rights Reserved.
+ *
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions
+ *   are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copy
+ *       notice, this list of conditions and the following disclaimer in
+ *       the documentation and/or other materials provided with the
+ *       distribution.
+ *     * Neither the name of Intel Corporation nor the names of its
+ *       contributors may be used to endorse or promote products derived
+ *       from this software without specific prior written permission.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * PCIe NTB Network Linux driver
+ *
+ * Contact Information:
+ * Jon Mason <jon.mason@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <linux/etherdevice.h>
 #include <linux/ethtool.h>
@@ -8,7 +59,10 @@
 #include <linux/pci.h>
 #include <linux/ntb.h>
 #include <linux/ntb_transport.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define NTB_NETDEV_VER	"0.7"
 
@@ -26,6 +80,7 @@ static unsigned int tx_start = 10;
 /* Number of descriptors still available before stop upper layer tx */
 static unsigned int tx_stop = 5;
 
+<<<<<<< HEAD
 #define NTB_NETDEV_MAX_QUEUES		64
 #define NTB_NETDEV_DEFAULT_QUEUES	1
 
@@ -44,11 +99,19 @@ struct ntb_netdev {
 	struct net_device *ndev;
 	unsigned int num_queues;
 	struct ntb_netdev_queue *queues;
+=======
+struct ntb_netdev {
+	struct pci_dev *pdev;
+	struct net_device *ndev;
+	struct ntb_transport_qp *qp;
+	struct timer_list tx_timer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define	NTB_TX_TIMEOUT_MS	1000
 #define	NTB_RXQ_SIZE		100
 
+<<<<<<< HEAD
 static void ntb_netdev_update_carrier(struct ntb_netdev *dev)
 {
 	struct net_device *ndev;
@@ -120,11 +183,28 @@ static void ntb_netdev_event_handler(void *data, int link_is_up)
 	}
 
 	ntb_netdev_update_carrier(dev);
+=======
+static void ntb_netdev_event_handler(void *data, int link_is_up)
+{
+	struct net_device *ndev = data;
+	struct ntb_netdev *dev = netdev_priv(ndev);
+
+	netdev_dbg(ndev, "Event %x, Link %x\n", link_is_up,
+		   ntb_transport_link_query(dev->qp));
+
+	if (link_is_up) {
+		if (ntb_transport_link_query(dev->qp))
+			netif_carrier_on(ndev);
+	} else {
+		netif_carrier_off(ndev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
 				  void *data, int len)
 {
+<<<<<<< HEAD
 	struct ntb_netdev_queue *q = qp_data;
 	struct ntb_netdev *dev = q->ntdev;
 	struct net_device *ndev;
@@ -132,6 +212,12 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
 	int rc;
 
 	ndev = dev->ndev;
+=======
+	struct net_device *ndev = qp_data;
+	struct sk_buff *skb;
+	int rc;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb = data;
 	if (!skb)
 		return;
@@ -147,7 +233,10 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
 	skb_put(skb, len);
 	skb->protocol = eth_type_trans(skb, ndev);
 	skb->ip_summed = CHECKSUM_NONE;
+<<<<<<< HEAD
 	skb_record_rx_queue(skb, q->qid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (netif_rx(skb) == NET_RX_DROP) {
 		ndev->stats.rx_errors++;
@@ -174,15 +263,24 @@ enqueue_again:
 }
 
 static int __ntb_netdev_maybe_stop_tx(struct net_device *netdev,
+<<<<<<< HEAD
 				      struct ntb_netdev_queue *q, int size)
 {
 	netif_stop_subqueue(netdev, q->qid);
 
+=======
+				      struct ntb_transport_qp *qp, int size)
+{
+	struct ntb_netdev *dev = netdev_priv(netdev);
+
+	netif_stop_queue(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Make sure to see the latest value of ntb_transport_tx_free_entry()
 	 * since the queue was last started.
 	 */
 	smp_mb();
 
+<<<<<<< HEAD
 	if (likely(ntb_transport_tx_free_entry(q->qp) < size)) {
 		mod_timer(&q->tx_timer, jiffies + usecs_to_jiffies(tx_time));
 		return -EBUSY;
@@ -192,10 +290,19 @@ static int __ntb_netdev_maybe_stop_tx(struct net_device *netdev,
 	if (ntb_transport_link_query(q->qp))
 		netif_start_subqueue(netdev, q->qid);
 
+=======
+	if (likely(ntb_transport_tx_free_entry(qp) < size)) {
+		mod_timer(&dev->tx_timer, jiffies + usecs_to_jiffies(tx_time));
+		return -EBUSY;
+	}
+
+	netif_start_queue(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int ntb_netdev_maybe_stop_tx(struct net_device *ndev,
+<<<<<<< HEAD
 				    struct ntb_netdev_queue *q, int size)
 {
 	if (__netif_subqueue_stopped(ndev, q->qid) ||
@@ -203,17 +310,33 @@ static int ntb_netdev_maybe_stop_tx(struct net_device *ndev,
 		return 0;
 
 	return __ntb_netdev_maybe_stop_tx(ndev, q, size);
+=======
+				    struct ntb_transport_qp *qp, int size)
+{
+	if (netif_queue_stopped(ndev) ||
+	    (ntb_transport_tx_free_entry(qp) >= size))
+		return 0;
+
+	return __ntb_netdev_maybe_stop_tx(ndev, qp, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ntb_netdev_tx_handler(struct ntb_transport_qp *qp, void *qp_data,
 				  void *data, int len)
 {
+<<<<<<< HEAD
 	struct ntb_netdev_queue *q = qp_data;
 	struct ntb_netdev *dev = q->ntdev;
 	struct net_device *ndev;
 	struct sk_buff *skb;
 
 	ndev = dev->ndev;
+=======
+	struct net_device *ndev = qp_data;
+	struct sk_buff *skb;
+	struct ntb_netdev *dev = netdev_priv(ndev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb = data;
 	if (!skb || !ndev)
 		return;
@@ -228,11 +351,16 @@ static void ntb_netdev_tx_handler(struct ntb_transport_qp *qp, void *qp_data,
 
 	dev_kfree_skb_any(skb);
 
+<<<<<<< HEAD
 	if (ntb_transport_tx_free_entry(qp) >= tx_start) {
+=======
+	if (ntb_transport_tx_free_entry(dev->qp) >= tx_start) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Make sure anybody stopping the queue after this sees the new
 		 * value of ntb_transport_tx_free_entry()
 		 */
 		smp_mb();
+<<<<<<< HEAD
 		if (__netif_subqueue_stopped(ndev, q->qid) &&
 		    ntb_transport_link_query(q->qp))
 			netif_wake_subqueue(ndev, q->qid);
@@ -245,10 +373,18 @@ static const struct ntb_queue_handlers ntb_netdev_handlers = {
 	.event_handler = ntb_netdev_event_handler,
 };
 
+=======
+		if (netif_queue_stopped(ndev))
+			netif_wake_queue(ndev);
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
 					 struct net_device *ndev)
 {
 	struct ntb_netdev *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	u16 qid = skb_get_queue_mapping(skb);
 	struct ntb_netdev_queue *q;
 	int rc;
@@ -258,11 +394,22 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
 	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
 
 	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len);
+=======
+	int rc;
+
+	ntb_netdev_maybe_stop_tx(ndev, dev->qp, tx_stop);
+
+	rc = ntb_transport_tx_enqueue(dev->qp, skb, skb->data, skb->len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		goto err;
 
 	/* check for next submit */
+<<<<<<< HEAD
 	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
+=======
+	ntb_netdev_maybe_stop_tx(ndev, dev->qp, tx_stop);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return NETDEV_TX_OK;
 
@@ -274,6 +421,7 @@ err:
 
 static void ntb_netdev_tx_timer(struct timer_list *t)
 {
+<<<<<<< HEAD
 	struct ntb_netdev_queue *q = timer_container_of(q, t, tx_timer);
 	struct ntb_netdev *dev = q->ntdev;
 	struct net_device *ndev;
@@ -282,22 +430,35 @@ static void ntb_netdev_tx_timer(struct timer_list *t)
 
 	if (ntb_transport_tx_free_entry(q->qp) < tx_stop) {
 		mod_timer(&q->tx_timer, jiffies + usecs_to_jiffies(tx_time));
+=======
+	struct ntb_netdev *dev = timer_container_of(dev, t, tx_timer);
+	struct net_device *ndev = dev->ndev;
+
+	if (ntb_transport_tx_free_entry(dev->qp) < tx_stop) {
+		mod_timer(&dev->tx_timer, jiffies + usecs_to_jiffies(tx_time));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/* Make sure anybody stopping the queue after this sees the new
 		 * value of ntb_transport_tx_free_entry()
 		 */
 		smp_mb();
+<<<<<<< HEAD
 
 		/* The subqueue must be kept stopped if the link is down */
 		if (__netif_subqueue_stopped(ndev, q->qid) &&
 		    ntb_transport_link_query(q->qp))
 			netif_wake_subqueue(ndev, q->qid);
+=======
+		if (netif_queue_stopped(ndev))
+			netif_wake_queue(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 static int ntb_netdev_open(struct net_device *ndev)
 {
 	struct ntb_netdev *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	struct ntb_netdev_queue *queue;
 	unsigned int q;
 	int rc = 0;
@@ -318,20 +479,52 @@ static int ntb_netdev_open(struct net_device *ndev)
 
 	for (q = 0; q < dev->num_queues; q++)
 		ntb_transport_link_up(dev->queues[q].qp);
+=======
+	struct sk_buff *skb;
+	int rc, i, len;
+
+	/* Add some empty rx bufs */
+	for (i = 0; i < NTB_RXQ_SIZE; i++) {
+		skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
+		if (!skb) {
+			rc = -ENOMEM;
+			goto err;
+		}
+
+		rc = ntb_transport_rx_enqueue(dev->qp, skb, skb->data,
+					      ndev->mtu + ETH_HLEN);
+		if (rc) {
+			dev_kfree_skb(skb);
+			goto err;
+		}
+	}
+
+	timer_setup(&dev->tx_timer, ntb_netdev_tx_timer, 0);
+
+	netif_carrier_off(ndev);
+	ntb_transport_link_up(dev->qp);
+	netif_start_queue(ndev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
 err:
+<<<<<<< HEAD
 	for (q = 0; q < dev->num_queues; q++) {
 		queue = &dev->queues[q];
 		ntb_netdev_queue_rx_drain(queue);
 	}
+=======
+	while ((skb = ntb_transport_rx_remove(dev->qp, &len)))
+		dev_kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 
 static int ntb_netdev_close(struct net_device *ndev)
 {
 	struct ntb_netdev *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	struct ntb_netdev_queue *queue;
 	unsigned int q;
 
@@ -345,6 +538,17 @@ static int ntb_netdev_close(struct net_device *ndev)
 		ntb_netdev_queue_rx_drain(queue);
 		timer_delete_sync(&queue->tx_timer);
 	}
+=======
+	struct sk_buff *skb;
+	int len;
+
+	ntb_transport_link_down(dev->qp);
+
+	while ((skb = ntb_transport_rx_remove(dev->qp, &len)))
+		dev_kfree_skb(skb);
+
+	timer_delete_sync(&dev->tx_timer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -352,12 +556,19 @@ static int ntb_netdev_close(struct net_device *ndev)
 static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
 {
 	struct ntb_netdev *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	struct ntb_netdev_queue *queue;
 	struct sk_buff *skb;
 	unsigned int q, i;
 	int len, rc = 0;
 
 	if (new_mtu > ntb_transport_max_size(dev->queues[0].qp) - ETH_HLEN)
+=======
+	struct sk_buff *skb;
+	int len, rc;
+
+	if (new_mtu > ntb_transport_max_size(dev->qp) - ETH_HLEN)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (!netif_running(ndev)) {
@@ -366,6 +577,7 @@ static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
 	}
 
 	/* Bring down the link and dispose of posted rx entries */
+<<<<<<< HEAD
 	for (q = 0; q < dev->num_queues; q++)
 		ntb_transport_link_down(dev->queues[q].qp);
 
@@ -394,18 +606,45 @@ static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
 					dev_kfree_skb(skb);
 					goto err;
 				}
+=======
+	ntb_transport_link_down(dev->qp);
+
+	if (ndev->mtu < new_mtu) {
+		int i;
+
+		for (i = 0; (skb = ntb_transport_rx_remove(dev->qp, &len)); i++)
+			dev_kfree_skb(skb);
+
+		for (; i; i--) {
+			skb = netdev_alloc_skb(ndev, new_mtu + ETH_HLEN);
+			if (!skb) {
+				rc = -ENOMEM;
+				goto err;
+			}
+
+			rc = ntb_transport_rx_enqueue(dev->qp, skb, skb->data,
+						      new_mtu + ETH_HLEN);
+			if (rc) {
+				dev_kfree_skb(skb);
+				goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
 
 	WRITE_ONCE(ndev->mtu, new_mtu);
 
+<<<<<<< HEAD
 	for (q = 0; q < dev->num_queues; q++)
 		ntb_transport_link_up(dev->queues[q].qp);
+=======
+	ntb_transport_link_up(dev->qp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
 err:
+<<<<<<< HEAD
 	for (q = 0; q < dev->num_queues; q++) {
 		struct ntb_netdev_queue *queue = &dev->queues[q];
 
@@ -413,6 +652,12 @@ err:
 
 		ntb_netdev_queue_rx_drain(queue);
 	}
+=======
+	ntb_transport_link_down(dev->qp);
+
+	while ((skb = ntb_transport_rx_remove(dev->qp, &len)))
+		dev_kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netdev_err(ndev, "Error changing MTU, device inoperable\n");
 	return rc;
@@ -453,6 +698,7 @@ static int ntb_get_link_ksettings(struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void ntb_get_channels(struct net_device *ndev,
 			     struct ethtool_channels *channels)
 {
@@ -596,12 +842,23 @@ static int ntb_set_channels(struct net_device *ndev,
 		return ntb_inc_channels(ndev, old, new);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ethtool_ops ntb_ethtool_ops = {
 	.get_drvinfo = ntb_get_drvinfo,
 	.get_link = ethtool_op_get_link,
 	.get_link_ksettings = ntb_get_link_ksettings,
+<<<<<<< HEAD
 	.get_channels = ntb_get_channels,
 	.set_channels = ntb_set_channels,
+=======
+};
+
+static const struct ntb_queue_handlers ntb_netdev_handlers = {
+	.tx_handler = ntb_netdev_tx_handler,
+	.rx_handler = ntb_netdev_rx_handler,
+	.event_handler = ntb_netdev_event_handler,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int ntb_netdev_probe(struct device *client_dev)
@@ -610,7 +867,10 @@ static int ntb_netdev_probe(struct device *client_dev)
 	struct net_device *ndev;
 	struct pci_dev *pdev;
 	struct ntb_netdev *dev;
+<<<<<<< HEAD
 	unsigned int q;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	ntb = dev_ntb(client_dev->parent);
@@ -618,7 +878,11 @@ static int ntb_netdev_probe(struct device *client_dev)
 	if (!pdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ndev = alloc_etherdev_mq(sizeof(*dev), NTB_NETDEV_MAX_QUEUES);
+=======
+	ndev = alloc_etherdev(sizeof(*dev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ndev)
 		return -ENOMEM;
 
@@ -627,6 +891,7 @@ static int ntb_netdev_probe(struct device *client_dev)
 	dev = netdev_priv(ndev);
 	dev->ndev = ndev;
 	dev->pdev = pdev;
+<<<<<<< HEAD
 	dev->client_dev = client_dev;
 	dev->num_queues = 0;
 
@@ -637,6 +902,8 @@ static int ntb_netdev_probe(struct device *client_dev)
 		goto err_free_netdev;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ndev->features = NETIF_F_HIGHDMA;
 
 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
@@ -653,6 +920,7 @@ static int ntb_netdev_probe(struct device *client_dev)
 	ndev->min_mtu = 0;
 	ndev->max_mtu = ETH_MAX_MTU;
 
+<<<<<<< HEAD
 	for (q = 0; q < NTB_NETDEV_DEFAULT_QUEUES; q++) {
 		struct ntb_netdev_queue *queue = &dev->queues[q];
 
@@ -694,6 +962,28 @@ err_free_queues:
 	kfree(dev->queues);
 
 err_free_netdev:
+=======
+	dev->qp = ntb_transport_create_queue(ndev, client_dev,
+					     &ntb_netdev_handlers);
+	if (!dev->qp) {
+		rc = -EIO;
+		goto err;
+	}
+
+	ndev->mtu = ntb_transport_max_size(dev->qp) - ETH_HLEN;
+
+	rc = register_netdev(ndev);
+	if (rc)
+		goto err1;
+
+	dev_set_drvdata(client_dev, ndev);
+	dev_info(&pdev->dev, "%s created\n", ndev->name);
+	return 0;
+
+err1:
+	ntb_transport_free_queue(dev->qp);
+err:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_netdev(ndev);
 	return rc;
 }
@@ -702,6 +992,7 @@ static void ntb_netdev_remove(struct device *client_dev)
 {
 	struct net_device *ndev = dev_get_drvdata(client_dev);
 	struct ntb_netdev *dev = netdev_priv(ndev);
+<<<<<<< HEAD
 	unsigned int q;
 
 	unregister_netdev(ndev);
@@ -709,6 +1000,11 @@ static void ntb_netdev_remove(struct device *client_dev)
 		ntb_transport_free_queue(dev->queues[q].qp);
 
 	kfree(dev->queues);
+=======
+
+	unregister_netdev(ndev);
+	ntb_transport_free_queue(dev->qp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_netdev(ndev);
 }
 

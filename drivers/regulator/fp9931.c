@@ -446,7 +446,11 @@ static int fp9931_probe(struct i2c_client *client)
 		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
 				     "failed to allocate regmap!\n");
 
+<<<<<<< HEAD
 	data->vin_reg = devm_regulator_get(&client->dev, "vin");
+=======
+	data->vin_reg = devm_regulator_get_optional(&client->dev, "vin");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(data->vin_reg))
 		return dev_err_probe(&client->dev, PTR_ERR(data->vin_reg),
 				     "failed to get vin regulator\n");

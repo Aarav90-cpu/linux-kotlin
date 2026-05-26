@@ -16,9 +16,12 @@ description: |
   The MAX77759 includes Battery Charger, Fuel Gauge, temperature sensors, USB
   Type-C Port Controller (TCPC), NVMEM, and a GPIO expander.
 
+<<<<<<< HEAD
 allOf:
   - $ref: /schemas/power/supply/power-supply.yaml#
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 properties:
   compatible:
     const: maxim,max77759
@@ -40,18 +43,25 @@ properties:
   nvmem-0:
     $ref: /schemas/nvmem/maxim,max77759-nvmem.yaml
 
+<<<<<<< HEAD
   chgin-otg-regulator:
     type: object
     description: Provides Boost for sourcing VBUS.
     $ref: /schemas/regulator/regulator.yaml#
     unevaluatedProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - interrupts
   - reg
 
+<<<<<<< HEAD
 unevaluatedProperties: false
+=======
+additionalProperties: false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |
@@ -68,11 +78,14 @@ examples:
 
             interrupt-controller;
             #interrupt-cells = <2>;
+<<<<<<< HEAD
             power-supplies = <&maxtcpci>;
 
             chgin-otg-regulator {
                 regulator-name = "chgin-otg";
             };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             gpio {
                 compatible = "maxim,max77759-gpio";

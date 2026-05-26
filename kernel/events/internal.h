@@ -67,7 +67,10 @@ static inline void rb_free_rcu(struct rcu_head *rcu_head)
 	struct perf_buffer *rb;
 
 	rb = container_of(rcu_head, struct perf_buffer, rcu_head);
+<<<<<<< HEAD
 	free_uid(rb->mmap_user);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rb_free(rb);
 }
 

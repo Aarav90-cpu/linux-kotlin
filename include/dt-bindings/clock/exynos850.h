@@ -126,7 +126,10 @@
 #define CLK_GOUT_GPIO_ALIVE_PCLK	22
 #define CLK_GOUT_PMU_ALIVE_PCLK		23
 #define CLK_GOUT_SYSREG_APM_PCLK	24
+<<<<<<< HEAD
 #define CLK_GOUT_MAILBOX_APM_AP_PCLK	25
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* CMU_AUD */
 #define CLK_DOUT_AUD_AUDIF		1

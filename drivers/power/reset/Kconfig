@@ -97,7 +97,11 @@ config POWER_RESET_GEMINI_POWEROFF
 
 config POWER_RESET_GPIO
 	bool "GPIO power-off driver"
+<<<<<<< HEAD
 	depends on OF
+=======
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver supports turning off your board via a GPIO line.
 	  If your board needs a GPIO high/low to power down, say Y and
@@ -105,7 +109,11 @@ config POWER_RESET_GPIO
 
 config POWER_RESET_GPIO_RESTART
 	bool "GPIO restart driver"
+<<<<<<< HEAD
 	depends on OF
+=======
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver supports restarting your board via a GPIO line.
 	  If your board needs a GPIO high/low to restart, say Y and
@@ -181,7 +189,11 @@ config POWER_RESET_PIIX4_POWEROFF
 
 config POWER_RESET_LTC2952
 	bool "LTC2952 PowerPath power-off driver"
+<<<<<<< HEAD
 	depends on OF
+=======
+	depends on OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver supports an external powerdown trigger and board power
 	  down via the LTC2952. Bindings are made in the device tree.
@@ -198,7 +210,11 @@ config POWER_RESET_MT6323
 
 config POWER_RESET_QNAP
 	bool "QNAP power-off driver"
+<<<<<<< HEAD
 	depends on PLAT_ORION
+=======
+	depends on OF_GPIO && PLAT_ORION
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This driver supports turning off QNAP NAS devices by sending
 	  commands to the microcontroller which controls the main power.
@@ -354,6 +370,7 @@ config POWER_MLXBF
 	help
 	  This driver supports reset or low power mode handling for Mellanox BlueField.
 
+<<<<<<< HEAD
 config POWER_RESET_QEMU_VIRT_CTRL
 	tristate "QEMU Virt Machine System Controller"
 	depends on HAS_IOMEM
@@ -364,4 +381,6 @@ config POWER_RESET_QEMU_VIRT_CTRL
 	  Say Y here if you are running Linux on a QEMU virtual machine that
 	  provides this controller, such as the m68k virt machine.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif

@@ -2453,7 +2453,12 @@ static int allocate_slab_counters(struct vdo_slab *slab)
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(slab->reference_block_count, __func__, &slab->reference_blocks);
+=======
+	result = vdo_allocate(slab->reference_block_count, struct reference_block,
+			      __func__, &slab->reference_blocks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -2462,7 +2467,12 @@ static int allocate_slab_counters(struct vdo_slab *slab)
 	 * so we can word-search even at the very end.
 	 */
 	bytes = (slab->reference_block_count * COUNTS_PER_BLOCK) + (2 * BYTES_PER_WORD);
+<<<<<<< HEAD
 	result = vdo_allocate(bytes, "ref counts array", &slab->counters);
+=======
+	result = vdo_allocate(bytes, vdo_refcount_t, "ref counts array",
+			      &slab->counters);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		vdo_free(vdo_forget(slab->reference_blocks));
 		return result;
@@ -3561,7 +3571,12 @@ static int get_slab_statuses(struct block_allocator *allocator,
 	struct slab_status *statuses;
 	struct slab_iterator iterator = get_slab_iterator(allocator);
 
+<<<<<<< HEAD
 	result = vdo_allocate(allocator->slab_count, __func__, &statuses);
+=======
+	result = vdo_allocate(allocator->slab_count, struct slab_status, __func__,
+			      &statuses);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -3736,12 +3751,22 @@ static int initialize_slab_journal(struct vdo_slab *slab)
 	const struct slab_config *slab_config = &slab->allocator->depot->slab_config;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(slab_config->slab_journal_blocks, __func__, &journal->locks);
 	if (result != VDO_SUCCESS)
 		return result;
 
 	BUILD_BUG_ON(sizeof(*journal->block) != VDO_BLOCK_SIZE);
 	result = vdo_allocate(1, "struct packed_slab_journal_block", &journal->block);
+=======
+	result = vdo_allocate(slab_config->slab_journal_blocks, struct journal_lock,
+			      __func__, &journal->locks);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(VDO_BLOCK_SIZE, char, "struct packed_slab_journal_block",
+			      (char **) &journal->block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -3796,7 +3821,11 @@ static int __must_check make_slab(physical_block_number_t slab_origin,
 	struct vdo_slab *slab;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, __func__, &slab);
+=======
+	result = vdo_allocate(1, struct vdo_slab, __func__, &slab);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -3853,7 +3882,12 @@ static int allocate_slabs(struct slab_depot *depot, slab_count_t slab_count)
 	physical_block_number_t slab_origin;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(slab_count, "slab pointer array", &depot->new_slabs);
+=======
+	result = vdo_allocate(slab_count, struct vdo_slab *,
+			      "slab pointer array", &depot->new_slabs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -4006,7 +4040,12 @@ static int initialize_slab_scrubber(struct block_allocator *allocator)
 	char *journal_data;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(VDO_BLOCK_SIZE * slab_journal_size, __func__, &journal_data);
+=======
+	result = vdo_allocate(VDO_BLOCK_SIZE * slab_journal_size,
+			      char, __func__, &journal_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -4039,7 +4078,11 @@ static int __must_check initialize_slab_summary_block(struct block_allocator *al
 	struct slab_summary_block *block = &allocator->summary_blocks[index];
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(VDO_BLOCK_SIZE, __func__, &block->outgoing_entries);
+=======
+	result = vdo_allocate(VDO_BLOCK_SIZE, char, __func__, &block->outgoing_entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -4108,7 +4151,12 @@ static int __must_check initialize_block_allocator(struct slab_depot *depot,
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(VDO_SLAB_SUMMARY_BLOCKS_PER_ZONE, __func__,
+=======
+	result = vdo_allocate(VDO_SLAB_SUMMARY_BLOCKS_PER_ZONE,
+			      struct slab_summary_block, __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &allocator->summary_blocks);
 	if (result != VDO_SUCCESS)
 		return result;
@@ -4167,7 +4215,12 @@ static int allocate_components(struct slab_depot *depot,
 
 	depot->summary_origin = summary_partition->offset;
 	depot->hint_shift = vdo_get_slab_summary_hint_shift(depot->slab_size_shift);
+<<<<<<< HEAD
 	result = vdo_allocate(MAXIMUM_VDO_SLAB_SUMMARY_ENTRIES, __func__,
+=======
+	result = vdo_allocate(MAXIMUM_VDO_SLAB_SUMMARY_ENTRIES,
+			      struct slab_summary_entry, __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &depot->summary_entries);
 	if (result != VDO_SUCCESS)
 		return result;
@@ -4254,12 +4307,18 @@ int vdo_decode_slab_depot(struct slab_depot_state_2_0 state, struct vdo *vdo,
 	}
 	slab_size_shift = ilog2(slab_size);
 
+<<<<<<< HEAD
 	if (state.zone_count > MAX_VDO_PHYSICAL_ZONES)
 		return vdo_log_error_strerror(UDS_CORRUPT_DATA,
 					      "invalid zone count");
 
 	result = vdo_allocate_extended(vdo->thread_config.physical_zone_count,
 				       allocators, __func__, &depot);
+=======
+	result = vdo_allocate_extended(struct slab_depot,
+				       vdo->thread_config.physical_zone_count,
+				       struct block_allocator, __func__, &depot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

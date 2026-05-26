@@ -156,8 +156,12 @@ static int test__cpu_map_print(struct test_suite *test __maybe_unused, int subte
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __test__cpu_map_merge(const char *lhs, const char *rhs, unsigned int nr,
 				 const char *expected)
+=======
+static int __test__cpu_map_merge(const char *lhs, const char *rhs, int nr, const char *expected)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct perf_cpu_map *a = perf_cpu_map__new(lhs);
 	struct perf_cpu_map *b = perf_cpu_map__new(rhs);
@@ -205,8 +209,12 @@ static int test__cpu_map_merge(struct test_suite *test __maybe_unused,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __test__cpu_map_intersect(const char *lhs, const char *rhs, unsigned int nr,
 				     const char *expected)
+=======
+static int __test__cpu_map_intersect(const char *lhs, const char *rhs, int nr, const char *expected)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct perf_cpu_map *a = perf_cpu_map__new(lhs);
 	struct perf_cpu_map *b = perf_cpu_map__new(rhs);

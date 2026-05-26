@@ -26,10 +26,13 @@ The netdevice against which tests will be run must exist, be running
 Refer to list of :ref:`Variables` later in this file to set up running
 the tests against a real device.
 
+<<<<<<< HEAD
 The current support for bash tests restricts the use of the same interface name
 on the local system and the remote one and will bail if this case is
 encountered.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Both modes required
 ~~~~~~~~~~~~~~~~~~~
 
@@ -51,10 +54,13 @@ or::
   # Variable set in a file
   NETIF=eth0
 
+<<<<<<< HEAD
 Please note that the config parser is very simple, if there are
 any non-alphanumeric characters in the value it needs to be in
 double quotes.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Local test (which don't require endpoint for sending / receiving traffic)
 need only the ``NETIF`` variable. Remaining variables define the endpoint
 and communication method.
@@ -70,6 +76,7 @@ LOCAL_V4, LOCAL_V6, REMOTE_V4, REMOTE_V6
 
 Local and remote endpoint IP addresses.
 
+<<<<<<< HEAD
 LOCAL_PREFIX_V6
 ~~~~~~~~~~~~~~~
 
@@ -108,6 +115,8 @@ Example:
       +---| 2001:db8:1::2 |
           +---------------+
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 REMOTE_TYPE
 ~~~~~~~~~~~
 
@@ -153,7 +162,11 @@ On the target machine, running the tests will use netdevsim by default::
   1..1
   # timeout set to 45
   # selftests: drivers/net: ping.py
+<<<<<<< HEAD
   # KTAP version 1
+=======
+  # TAP version 13
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   # 1..3
   # ok 1 ping.test_v4
   # ok 2 ping.test_v6
@@ -174,12 +187,17 @@ Create a config with remote info::
 Run the test::
 
   [/root] # ./ksft-net-drv/drivers/net/ping.py
+<<<<<<< HEAD
   KTAP version 1
+=======
+  TAP version 13
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   1..3
   ok 1 ping.test_v4
   ok 2 ping.test_v6 # SKIP Test requires IPv6 connectivity
   ok 3 ping.test_tcp
   # Totals: pass:2 fail:0 xfail:0 xpass:0 skip:1 error:0
+<<<<<<< HEAD
 
 Dependencies
 ~~~~~~~~~~~~
@@ -301,3 +319,5 @@ Running tests CI-style
 
 See https://github.com/linux-netdev/nipa/wiki for instructions on how
 to easily run the tests using ``virtme-ng``.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

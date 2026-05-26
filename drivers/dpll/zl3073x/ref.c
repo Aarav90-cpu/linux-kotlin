@@ -52,6 +52,7 @@ zl3073x_ref_freq_factorize(u32 freq, u16 *base, u16 *mult)
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_ref_state_update - update input reference status from HW
  * @zldev: pointer to zl3073x_dev structure
  * @index: input reference index
@@ -67,6 +68,8 @@ int zl3073x_ref_state_update(struct zl3073x_dev *zldev, u8 index)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_ref_state_fetch - fetch input reference state from hardware
  * @zldev: pointer to zl3073x_dev structure
  * @index: input reference index to fetch state for
@@ -88,17 +91,31 @@ int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
 		struct zl3073x_ref *p_ref = ref - 1; /* P-pin counterpart*/
 
 		/* Copy the shared items from the P-pin */
+<<<<<<< HEAD
 		ref->cfg = p_ref->cfg;
 		ref->inv = p_ref->inv;
+=======
+		ref->config = p_ref->config;
+		ref->esync_n_div = p_ref->esync_n_div;
+		ref->freq_base = p_ref->freq_base;
+		ref->freq_mult = p_ref->freq_mult;
+		ref->freq_ratio_m = p_ref->freq_ratio_m;
+		ref->freq_ratio_n = p_ref->freq_ratio_n;
+		ref->phase_comp = p_ref->phase_comp;
+		ref->sync_ctrl = p_ref->sync_ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return 0; /* Finish - no non-shared items for now */
 	}
 
+<<<<<<< HEAD
 	/* Read reference status */
 	rc = zl3073x_ref_state_update(zldev, index);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(mutex)(&zldev->multiop_lock);
 
 	/* Read reference configuration */
@@ -168,6 +185,7 @@ zl3073x_ref_state_get(struct zl3073x_dev *zldev, u8 index)
 	return &zldev->ref[index];
 }
 
+<<<<<<< HEAD
 /**
  * zl3073x_ref_state_set - commit input reference state changes to hardware
  * @zldev: pointer to zl3073x_dev structure
@@ -180,12 +198,15 @@ zl3073x_ref_state_get(struct zl3073x_dev *zldev, u8 index)
  *
  * Return: 0 on success, -EINVAL if invariants changed, <0 on HW error
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
 			  const struct zl3073x_ref *ref)
 {
 	struct zl3073x_ref *dref = &zldev->ref[index];
 	int rc;
 
+<<<<<<< HEAD
 	/* Reject attempts to change invariant fields (set at init only) */
 	if (WARN_ON(memcmp(&dref->inv, &ref->inv, sizeof(ref->inv))))
 		return -EINVAL;
@@ -194,6 +215,8 @@ int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
 	if (!memcmp(&dref->cfg, &ref->cfg, sizeof(ref->cfg)))
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(mutex)(&zldev->multiop_lock);
 
 	/* Read reference configuration into mailbox */
@@ -241,7 +264,17 @@ int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
 		return rc;
 
 	/* After successful commit store new state */
+<<<<<<< HEAD
 	dref->cfg = ref->cfg;
+=======
+	dref->freq_base = ref->freq_base;
+	dref->freq_mult = ref->freq_mult;
+	dref->freq_ratio_m = ref->freq_ratio_m;
+	dref->freq_ratio_n = ref->freq_ratio_n;
+	dref->esync_n_div = ref->esync_n_div;
+	dref->sync_ctrl = ref->sync_ctrl;
+	dref->phase_comp = ref->phase_comp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

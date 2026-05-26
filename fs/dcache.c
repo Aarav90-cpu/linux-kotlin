@@ -40,7 +40,11 @@
 /*
  * Usage:
  * dcache->d_inode->i_lock protects:
+<<<<<<< HEAD
  *   - i_dentry, d_alias, d_inode of aliases
+=======
+ *   - i_dentry, d_u.d_alias, d_inode of aliases
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * dcache_hash_bucket lock protects:
  *   - the dcache hash table
  * s_roots bl list spinlock protects:
@@ -55,7 +59,11 @@
  *   - d_unhashed()
  *   - d_parent and d_chilren
  *   - childrens' d_sib and d_parent
+<<<<<<< HEAD
  *   - d_alias, d_inode
+=======
+ *   - d_u.d_alias, d_inode
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Ordering:
  * dentry->d_inode->i_lock
@@ -341,14 +349,22 @@ static inline struct external_name *external_name(struct dentry *dentry)
 
 static void __d_free(struct rcu_head *head)
 {
+<<<<<<< HEAD
 	struct dentry *dentry = container_of(head, struct dentry, d_rcu);
+=======
+	struct dentry *dentry = container_of(head, struct dentry, d_u.d_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kmem_cache_free(dentry_cache, dentry); 
 }
 
 static void __d_free_external(struct rcu_head *head)
 {
+<<<<<<< HEAD
 	struct dentry *dentry = container_of(head, struct dentry, d_rcu);
+=======
+	struct dentry *dentry = container_of(head, struct dentry, d_u.d_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(external_name(dentry));
 	kmem_cache_free(dentry_cache, dentry);
 }
@@ -428,19 +444,33 @@ static inline void __d_clear_type_and_inode(struct dentry *dentry)
 
 static void dentry_free(struct dentry *dentry)
 {
+<<<<<<< HEAD
 	WARN_ON(d_really_is_positive(dentry));
 	if (unlikely(dname_external(dentry))) {
 		struct external_name *p = external_name(dentry);
 		if (likely(atomic_dec_and_test(&p->count))) {
 			call_rcu(&dentry->d_rcu, __d_free_external);
+=======
+	WARN_ON(!hlist_unhashed(&dentry->d_u.d_alias));
+	if (unlikely(dname_external(dentry))) {
+		struct external_name *p = external_name(dentry);
+		if (likely(atomic_dec_and_test(&p->count))) {
+			call_rcu(&dentry->d_u.d_rcu, __d_free_external);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 		}
 	}
 	/* if dentry was never visible to RCU, immediate free is OK */
 	if (dentry->d_flags & DCACHE_NORCU)
+<<<<<<< HEAD
 		__d_free(&dentry->d_rcu);
 	else
 		call_rcu(&dentry->d_rcu, __d_free);
+=======
+		__d_free(&dentry->d_u.d_rcu);
+	else
+		call_rcu(&dentry->d_u.d_rcu, __d_free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -455,6 +485,7 @@ static void dentry_unlink_inode(struct dentry * dentry)
 
 	raw_write_seqcount_begin(&dentry->d_seq);
 	__d_clear_type_and_inode(dentry);
+<<<<<<< HEAD
 	hlist_del_init(&dentry->d_alias);
 	/*
 	 * dentry becomes negative, so the space occupied by ->d_alias
@@ -465,6 +496,9 @@ static void dentry_unlink_inode(struct dentry * dentry)
 	 * and removing zeroing would be too clumsy...
 	 */
 	dentry->waiters = NULL;
+=======
+	hlist_del_init(&dentry->d_u.d_alias);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_write_seqcount_end(&dentry->d_seq);
 	spin_unlock(&dentry->d_lock);
 	spin_unlock(&inode->i_lock);
@@ -614,6 +648,7 @@ void d_drop(struct dentry *dentry)
 }
 EXPORT_SYMBOL(d_drop);
 
+<<<<<<< HEAD
 struct completion_list {
 	struct completion_list *next;
 	struct completion completion;
@@ -652,6 +687,8 @@ static inline void d_complete_waiters(struct dentry *dentry)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void dentry_unlist(struct dentry *dentry)
 {
 	struct dentry *next;
@@ -660,7 +697,10 @@ static inline void dentry_unlist(struct dentry *dentry)
 	 * attached to the dentry tree
 	 */
 	dentry->d_flags |= DCACHE_DENTRY_KILLED;
+<<<<<<< HEAD
 	d_complete_waiters(dentry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(hlist_unhashed(&dentry->d_sib)))
 		return;
 	__hlist_del(&dentry->d_sib);
@@ -838,7 +878,11 @@ void d_mark_dontcache(struct inode *inode)
 	struct dentry *de;
 
 	spin_lock(&inode->i_lock);
+<<<<<<< HEAD
 	for_each_alias(de, inode) {
+=======
+	hlist_for_each_entry(de, &inode->i_dentry, d_u.d_alias) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&de->d_lock);
 		de->d_flags |= DCACHE_DONTCACHE;
 		spin_unlock(&de->d_lock);
@@ -1058,7 +1102,11 @@ static struct dentry * __d_find_any_alias(struct inode *inode)
 
 	if (hlist_empty(&inode->i_dentry))
 		return NULL;
+<<<<<<< HEAD
 	alias = hlist_entry(inode->i_dentry.first, struct dentry, d_alias);
+=======
+	alias = hlist_entry(inode->i_dentry.first, struct dentry, d_u.d_alias);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockref_get(&alias->d_lockref);
 	return alias;
 }
@@ -1088,7 +1136,11 @@ static struct dentry *__d_find_alias(struct inode *inode)
 	if (S_ISDIR(inode->i_mode))
 		return __d_find_any_alias(inode);
 
+<<<<<<< HEAD
 	for_each_alias(alias, inode) {
+=======
+	hlist_for_each_entry(alias, &inode->i_dentry, d_u.d_alias) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&alias->d_lock);
  		if (!d_unhashed(alias)) {
 			dget_dlock(alias);
@@ -1141,9 +1193,15 @@ struct dentry *d_find_alias_rcu(struct inode *inode)
 	// used without having I_FREEING set, which means no aliases left
 	if (likely(!(inode_state_read(inode) & I_FREEING) && !hlist_empty(l))) {
 		if (S_ISDIR(inode->i_mode)) {
+<<<<<<< HEAD
 			de = hlist_entry(l->first, struct dentry, d_alias);
 		} else {
 			hlist_for_each_entry(de, l, d_alias)
+=======
+			de = hlist_entry(l->first, struct dentry, d_u.d_alias);
+		} else {
+			hlist_for_each_entry(de, l, d_u.d_alias)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (!d_unhashed(de))
 					break;
 		}
@@ -1181,7 +1239,11 @@ void d_prune_aliases(struct inode *inode)
 	struct dentry *dentry;
 
 	spin_lock(&inode->i_lock);
+<<<<<<< HEAD
 	for_each_alias(dentry, inode)
+=======
+	hlist_for_each_entry(dentry, &inode->i_dentry, d_u.d_alias)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		d_dispose_if_unused(dentry, &dispose);
 	spin_unlock(&inode->i_lock);
 	shrink_dentry_list(&dispose);
@@ -1617,10 +1679,13 @@ static enum d_walk_ret select_collect2(void *_data, struct dentry *dentry)
 			return D_WALK_QUIT;
 		}
 		to_shrink_list(dentry, &data->dispose);
+<<<<<<< HEAD
 	} else if (dentry->d_lockref.count < 0) {
 		rcu_read_lock();
 		data->victim = dentry;
 		return D_WALK_QUIT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/*
 	 * We can return to the caller if we have found some (this
@@ -1660,6 +1725,7 @@ static void shrink_dcache_tree(struct dentry *parent, bool for_umount)
 		data.victim = NULL;
 		d_walk(parent, &data, select_collect2);
 		if (data.victim) {
+<<<<<<< HEAD
 			struct dentry *v = data.victim;
 
 			spin_lock(&v->d_lock);
@@ -1681,6 +1747,14 @@ static void shrink_dcache_tree(struct dentry *parent, bool for_umount)
 				rcu_read_unlock();
 			} else {
 				shrink_kill(v);
+=======
+			spin_lock(&data.victim->d_lock);
+			if (!lock_for_kill(data.victim)) {
+				spin_unlock(&data.victim->d_lock);
+				rcu_read_unlock();
+			} else {
+				shrink_kill(data.victim);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 		if (!list_empty(&data.dispose))
@@ -1704,11 +1778,19 @@ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
 	if (dentry == _data && dentry->d_lockref.count == 1)
 		return D_WALK_CONTINUE;
 
+<<<<<<< HEAD
 	WARN(1, "BUG: Dentry %p{i=%llx,n=%pd} "
 			" still in use (%d) [unmount of %s %s]\n",
 		       dentry,
 		       dentry->d_inode ?
 		       dentry->d_inode->i_ino : (u64)0,
+=======
+	WARN(1, "BUG: Dentry %p{i=%lx,n=%pd} "
+			" still in use (%d) [unmount of %s %s]\n",
+		       dentry,
+		       dentry->d_inode ?
+		       dentry->d_inode->i_ino : 0UL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       dentry,
 		       dentry->d_lockref.count,
 		       dentry->d_sb->s_type->name,
@@ -1854,7 +1936,11 @@ static struct dentry *__d_alloc(struct super_block *sb, const struct qstr *name)
 	INIT_HLIST_BL_NODE(&dentry->d_hash);
 	INIT_LIST_HEAD(&dentry->d_lru);
 	INIT_HLIST_HEAD(&dentry->d_children);
+<<<<<<< HEAD
 	dentry->waiters = NULL;
+=======
+	INIT_HLIST_NODE(&dentry->d_u.d_alias);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_HLIST_NODE(&dentry->d_sib);
 
 	if (dentry->d_op && dentry->d_op->d_init) {
@@ -2047,7 +2133,11 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
 	if ((dentry->d_flags &
 	     (DCACHE_LRU_LIST|DCACHE_SHRINK_LIST)) == DCACHE_LRU_LIST)
 		this_cpu_dec(nr_dentry_negative);
+<<<<<<< HEAD
 	hlist_add_head(&dentry->d_alias, &inode->i_dentry);
+=======
+	hlist_add_head(&dentry->d_u.d_alias, &inode->i_dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_write_seqcount_begin(&dentry->d_seq);
 	__d_set_inode_and_type(dentry, inode, add_flags);
 	raw_write_seqcount_end(&dentry->d_seq);
@@ -2071,7 +2161,11 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
  
 void d_instantiate(struct dentry *entry, struct inode * inode)
 {
+<<<<<<< HEAD
 	BUG_ON(d_really_is_positive(entry));
+=======
+	BUG_ON(!hlist_unhashed(&entry->d_u.d_alias));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (inode) {
 		security_d_instantiate(entry, inode);
 		spin_lock(&inode->i_lock);
@@ -2091,7 +2185,11 @@ EXPORT_SYMBOL(d_instantiate);
  */
 void d_instantiate_new(struct dentry *entry, struct inode *inode)
 {
+<<<<<<< HEAD
 	BUG_ON(d_really_is_positive(entry));
+=======
+	BUG_ON(!hlist_unhashed(&entry->d_u.d_alias));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BUG_ON(!inode);
 	lockdep_annotate_inode_mutex_key(inode);
 	security_d_instantiate(entry, inode);
@@ -2154,7 +2252,11 @@ static struct dentry *__d_obtain_alias(struct inode *inode, bool disconnected)
 
 		spin_lock(&new->d_lock);
 		__d_set_inode_and_type(new, inode, add_flags);
+<<<<<<< HEAD
 		hlist_add_head(&new->d_alias, &inode->i_dentry);
+=======
+		hlist_add_head(&new->d_u.d_alias, &inode->i_dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!disconnected) {
 			hlist_bl_lock(&sb->s_roots);
 			hlist_bl_add_head(&new->d_hash, &sb->s_roots);
@@ -2725,7 +2827,11 @@ retry:
 	 * we unlock the chain.  All fields are stable in everything
 	 * we encounter.
 	 */
+<<<<<<< HEAD
 	hlist_bl_for_each_entry(dentry, node, b, d_in_lookup_hash) {
+=======
+	hlist_bl_for_each_entry(dentry, node, b, d_u.d_in_lookup_hash) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dentry->d_name.hash != hash)
 			continue;
 		if (dentry->d_parent != parent)
@@ -2767,7 +2873,11 @@ retry:
 	}
 	rcu_read_unlock();
 	new->d_wait = wq;
+<<<<<<< HEAD
 	hlist_bl_add_head(&new->d_in_lookup_hash, b);
+=======
+	hlist_bl_add_head(&new->d_u.d_in_lookup_hash, b);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hlist_bl_unlock(b);
 	return new;
 mismatch:
@@ -2792,11 +2902,19 @@ static wait_queue_head_t *__d_lookup_unhash(struct dentry *dentry)
 	b = in_lookup_hash(dentry->d_parent, dentry->d_name.hash);
 	hlist_bl_lock(b);
 	dentry->d_flags &= ~DCACHE_PAR_LOOKUP;
+<<<<<<< HEAD
 	__hlist_bl_del(&dentry->d_in_lookup_hash);
 	d_wait = dentry->d_wait;
 	dentry->d_wait = NULL;
 	hlist_bl_unlock(b);
 	dentry->waiters = NULL;
+=======
+	__hlist_bl_del(&dentry->d_u.d_in_lookup_hash);
+	d_wait = dentry->d_wait;
+	dentry->d_wait = NULL;
+	hlist_bl_unlock(b);
+	INIT_HLIST_NODE(&dentry->d_u.d_alias);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&dentry->d_lru);
 	return d_wait;
 }
@@ -2827,7 +2945,11 @@ static inline void __d_add(struct dentry *dentry, struct inode *inode,
 		d_set_d_op(dentry, ops);
 	if (inode) {
 		unsigned add_flags = d_flags_for_inode(inode);
+<<<<<<< HEAD
 		hlist_add_head(&dentry->d_alias, &inode->i_dentry);
+=======
+		hlist_add_head(&dentry->d_u.d_alias, &inode->i_dentry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raw_write_seqcount_begin(&dentry->d_seq);
 		__d_set_inode_and_type(dentry, inode, add_flags);
 		raw_write_seqcount_end(&dentry->d_seq);
@@ -2862,7 +2984,11 @@ EXPORT_SYMBOL(d_add);
 
 struct dentry *d_make_persistent(struct dentry *dentry, struct inode *inode)
 {
+<<<<<<< HEAD
 	WARN_ON(d_really_is_positive(dentry));
+=======
+	WARN_ON(!hlist_unhashed(&dentry->d_u.d_alias));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON(!inode);
 	security_d_instantiate(dentry, inode);
 	spin_lock(&inode->i_lock);
@@ -3252,7 +3378,11 @@ void d_mark_tmpfile(struct file *file, struct inode *inode)
 	struct dentry *dentry = file->f_path.dentry;
 
 	BUG_ON(dname_external(dentry) ||
+<<<<<<< HEAD
 		d_really_is_positive(dentry) ||
+=======
+		!hlist_unhashed(&dentry->d_u.d_alias) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		!d_unlinked(dentry));
 	spin_lock(&dentry->d_parent->d_lock);
 	spin_lock_nested(&dentry->d_lock, DENTRY_D_LOCK_NESTED);
@@ -3263,6 +3393,7 @@ void d_mark_tmpfile(struct file *file, struct inode *inode)
 }
 EXPORT_SYMBOL(d_mark_tmpfile);
 
+<<<<<<< HEAD
 int d_mark_tmpfile_name(struct file *file, const struct qstr *name)
 {
 	struct dentry *dentry = file->f_path.dentry;
@@ -3286,6 +3417,8 @@ int d_mark_tmpfile_name(struct file *file, const struct qstr *name)
 }
 EXPORT_SYMBOL(d_mark_tmpfile_name);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void d_tmpfile(struct file *file, struct inode *inode)
 {
 	struct dentry *dentry = file->f_path.dentry;

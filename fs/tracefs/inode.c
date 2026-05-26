@@ -94,14 +94,42 @@ static struct tracefs_dir_ops {
 	int (*rmdir)(const char *name);
 } tracefs_ops __ro_after_init;
 
+<<<<<<< HEAD
+=======
+static char *get_dname(struct dentry *dentry)
+{
+	const char *dname;
+	char *name;
+	int len = dentry->d_name.len;
+
+	dname = dentry->d_name.name;
+	name = kmalloc(len + 1, GFP_KERNEL);
+	if (!name)
+		return NULL;
+	memcpy(name, dname, len);
+	name[len] = 0;
+	return name;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct dentry *tracefs_syscall_mkdir(struct mnt_idmap *idmap,
 					    struct inode *inode, struct dentry *dentry,
 					    umode_t mode)
 {
 	struct tracefs_inode *ti;
+<<<<<<< HEAD
 	struct name_snapshot name;
 	int ret;
 
+=======
+	char *name;
+	int ret;
+
+	name = get_dname(dentry);
+	if (!name)
+		return ERR_PTR(-ENOMEM);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * This is a new directory that does not take the default of
 	 * the rootfs. It becomes the default permissions for all the
@@ -116,20 +144,38 @@ static struct dentry *tracefs_syscall_mkdir(struct mnt_idmap *idmap,
 	 * the files within the tracefs system. It is up to the individual
 	 * mkdir routine to handle races.
 	 */
+<<<<<<< HEAD
 	take_dentry_name_snapshot(&name, dentry);
 	inode_unlock(inode);
 	ret = tracefs_ops.mkdir(name.name.name);
 	inode_lock(inode);
 	release_dentry_name_snapshot(&name);
+=======
+	inode_unlock(inode);
+	ret = tracefs_ops.mkdir(name);
+	inode_lock(inode);
+
+	kfree(name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ERR_PTR(ret);
 }
 
 static int tracefs_syscall_rmdir(struct inode *inode, struct dentry *dentry)
 {
+<<<<<<< HEAD
 	struct name_snapshot name;
 	int ret;
 
+=======
+	char *name;
+	int ret;
+
+	name = get_dname(dentry);
+	if (!name)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The rmdir call can call the generic functions that create
 	 * the files within the tracefs system. It is up to the individual
@@ -137,6 +183,7 @@ static int tracefs_syscall_rmdir(struct inode *inode, struct dentry *dentry)
 	 * This time we need to unlock not only the parent (inode) but
 	 * also the directory that is being deleted.
 	 */
+<<<<<<< HEAD
 	take_dentry_name_snapshot(&name, dentry);
 	inode_unlock(inode);
 	inode_unlock(d_inode(dentry));
@@ -146,6 +193,17 @@ static int tracefs_syscall_rmdir(struct inode *inode, struct dentry *dentry)
 	inode_lock_nested(inode, I_MUTEX_PARENT);
 	inode_lock(d_inode(dentry));
 	release_dentry_name_snapshot(&name);
+=======
+	inode_unlock(inode);
+	inode_unlock(d_inode(dentry));
+
+	ret = tracefs_ops.rmdir(name);
+
+	inode_lock_nested(inode, I_MUTEX_PARENT);
+	inode_lock(d_inode(dentry));
+
+	kfree(name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -645,7 +703,10 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
 	fsnotify_create(d_inode(dentry->d_parent), dentry);
 	return tracefs_end_creating(dentry);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(tracefs_create_file);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct dentry *__create_dir(const char *name, struct dentry *parent,
 				   const struct inode_operations *ops)

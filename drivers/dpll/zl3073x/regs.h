@@ -7,6 +7,7 @@
 #include <linux/bits.h>
 
 /*
+<<<<<<< HEAD
  * Hardware limits for ZL3073x chip family
  */
 #define ZL3073X_MAX_CHANNELS	5
@@ -19,6 +20,8 @@
 				 ZL3073X_NUM_OUTPUT_PINS)
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Register address structure:
  * ===========================
  *  25        19 18  16 15     7 6           0
@@ -90,8 +93,11 @@
 #define ZL_REG_RESET_STATUS			ZL_REG(0, 0x18, 1)
 #define ZL_REG_RESET_STATUS_RESET		BIT(0)
 
+<<<<<<< HEAD
 #define ZL_REG_DIE_TEMP_STATUS			ZL_REG(0, 0x44, 2)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*************************
  * Register Page 2, Status
  *************************/
@@ -213,9 +219,13 @@
 #define ZL_REG_REF_SYNC_CTRL			ZL_REG(10, 0x2e, 1)
 #define ZL_REF_SYNC_CTRL_MODE			GENMASK(2, 0)
 #define ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR_OFF	0
+<<<<<<< HEAD
 #define ZL_REF_SYNC_CTRL_MODE_REFSYNC_PAIR	1
 #define ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75	2
 #define ZL_REF_SYNC_CTRL_PAIR			GENMASK(7, 4)
+=======
+#define ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75	2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ZL_REG_REF_ESYNC_DIV			ZL_REG(10, 0x30, 4)
 #define ZL_REF_ESYNC_DIV_1HZ			0

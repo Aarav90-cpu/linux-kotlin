@@ -197,6 +197,7 @@ static int ocfs2_validate_gd_self(struct super_block *sb,
 			 8 * le16_to_cpu(gd->bg_size));
 	}
 
+<<<<<<< HEAD
 	/*
 	 * For discontiguous block groups, validate the on-disk extent list
 	 * against the maximum number of extent records that can physically
@@ -222,6 +223,8 @@ static int ocfs2_validate_gd_self(struct super_block *sb,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

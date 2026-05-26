@@ -604,6 +604,12 @@ void __init mem_init(void)
 #endif
 }
 
+<<<<<<< HEAD
+=======
+unsigned long *empty_zero_page __ro_after_init;
+EXPORT_SYMBOL(empty_zero_page);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * pagetable_init() sets up the page tables
  *
@@ -636,6 +642,12 @@ static void __init pagetable_init(void)
 			  initrd_end - initrd_start, PAGE_KERNEL, 0);
 	}
 #endif
+<<<<<<< HEAD
+=======
+
+	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __init gateway_init(void)

@@ -30,7 +30,11 @@ static int mount_count;
 static void securityfs_free_inode(struct inode *inode)
 {
 	if (S_ISLNK(inode->i_mode))
+<<<<<<< HEAD
 		kfree_const(inode->i_link);
+=======
+		kfree(inode->i_link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_inode_nonrcu(inode);
 }
 
@@ -258,17 +262,30 @@ struct dentry *securityfs_create_symlink(const char *name,
 					 const struct inode_operations *iops)
 {
 	struct dentry *dent;
+<<<<<<< HEAD
 	const char *link = NULL;
 
 	if (target) {
 		link = kstrdup_const(target, GFP_KERNEL);
+=======
+	char *link = NULL;
+
+	if (target) {
+		link = kstrdup(target, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!link)
 			return ERR_PTR(-ENOMEM);
 	}
 	dent = securityfs_create_dentry(name, S_IFLNK | 0444, parent,
+<<<<<<< HEAD
 					(void *)link, NULL, iops);
 	if (IS_ERR(dent))
 		kfree_const(link);
+=======
+					link, NULL, iops);
+	if (IS_ERR(dent))
+		kfree(link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return dent;
 }

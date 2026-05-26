@@ -26,7 +26,10 @@ struct cs35l56_hda {
 	struct work_struct dsp_work;
 
 	int index;
+<<<<<<< HEAD
 	int num_amps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *system_name;
 	const char *amp_name;
 

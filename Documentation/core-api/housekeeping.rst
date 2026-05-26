@@ -15,7 +15,11 @@ various deferrals etc...
 Sometimes housekeeping is just some unbound work (unbound workqueues,
 unbound timers, ...) that gets easily assigned to non-isolated CPUs.
 But sometimes housekeeping is tied to a specific CPU and requires
+<<<<<<< HEAD
 elaborate tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
+=======
+elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 scheduler tick, etc...).
 
 Thus, a housekeeping CPU can be considered as the reverse of an isolated

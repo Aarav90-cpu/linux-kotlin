@@ -222,6 +222,15 @@ static int fsp3y_detect(struct i2c_client *client)
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
+=======
+static const struct i2c_device_id fsp3y_id[] = {
+	{"ym2151e", ym2151e},
+	{"yh5151e", yh5151e},
+	{ }
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fsp3y_probe(struct i2c_client *client)
 {
 	struct fsp3y_data *data;
@@ -236,7 +245,11 @@ static int fsp3y_probe(struct i2c_client *client)
 	if (data->chip < 0)
 		return data->chip;
 
+<<<<<<< HEAD
 	id = i2c_client_get_device_id(client);
+=======
+	id = i2c_match_id(fsp3y_id, client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data->chip != id->driver_data)
 		dev_warn(&client->dev, "Device mismatch: Configured %s (%d), detected %d\n",
 			 id->name, (int)id->driver_data, data->chip);
@@ -270,11 +283,14 @@ static int fsp3y_probe(struct i2c_client *client)
 	return pmbus_do_probe(client, &data->info);
 }
 
+<<<<<<< HEAD
 static const struct i2c_device_id fsp3y_id[] = {
 	{"ym2151e", ym2151e},
 	{"yh5151e", yh5151e},
 	{ }
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DEVICE_TABLE(i2c, fsp3y_id);
 
 static struct i2c_driver fsp3y_driver = {

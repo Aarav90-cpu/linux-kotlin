@@ -17,7 +17,11 @@
 #include "intel_display_core.h"
 #include "intel_display_rpm.h"
 #include "intel_display_types.h"
+<<<<<<< HEAD
 #include "i915_dpt.h"
+=======
+#include "intel_dpt.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_fb.h"
 #include "intel_fb_pin.h"
 #include "intel_plane.h"
@@ -27,14 +31,21 @@ intel_fb_pin_to_dpt(const struct drm_framebuffer *fb,
 		    const struct i915_gtt_view *view,
 		    unsigned int alignment,
 		    unsigned long *out_flags,
+<<<<<<< HEAD
 		    struct intel_dpt *dpt)
+=======
+		    struct i915_address_space *vm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct drm_device *dev = fb->dev;
 	struct intel_display *display = to_intel_display(dev);
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct drm_gem_object *_obj = intel_fb_bo(fb);
 	struct drm_i915_gem_object *obj = to_intel_bo(_obj);
+<<<<<<< HEAD
 	struct i915_address_space *vm = i915_dpt_to_vm(dpt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct i915_gem_ww_ctx ww;
 	struct i915_vma *vma;
 	int ret;
@@ -285,7 +296,11 @@ int intel_plane_pin_fb(struct intel_plane_state *plane_state,
 	} else {
 		unsigned int alignment = intel_plane_fb_min_alignment(plane_state);
 
+<<<<<<< HEAD
 		vma = i915_dpt_pin_to_ggtt(fb->dpt, alignment / 512);
+=======
+		vma = intel_dpt_pin_to_ggtt(fb->dpt_vm, alignment / 512);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(vma))
 			return PTR_ERR(vma);
 
@@ -293,9 +308,15 @@ int intel_plane_pin_fb(struct intel_plane_state *plane_state,
 
 		vma = intel_fb_pin_to_dpt(&fb->base, &plane_state->view.gtt,
 					  alignment, &plane_state->flags,
+<<<<<<< HEAD
 					  fb->dpt);
 		if (IS_ERR(vma)) {
 			i915_dpt_unpin_from_ggtt(fb->dpt);
+=======
+					  fb->dpt_vm);
+		if (IS_ERR(vma)) {
+			intel_dpt_unpin_from_ggtt(fb->dpt_vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			plane_state->ggtt_vma = NULL;
 			return PTR_ERR(vma);
 		}
@@ -308,7 +329,11 @@ int intel_plane_pin_fb(struct intel_plane_state *plane_state,
 		 * The DPT object contains only one vma, and there is no VT-d
 		 * guard, so the VMA's offset within the DPT is always 0.
 		 */
+<<<<<<< HEAD
 		drm_WARN_ON(display->drm, i915_dpt_offset(plane_state->dpt_vma));
+=======
+		drm_WARN_ON(display->drm, intel_dpt_offset(plane_state->dpt_vma));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -347,7 +372,11 @@ void intel_plane_unpin_fb(struct intel_plane_state *old_plane_state)
 
 		vma = fetch_and_zero(&old_plane_state->ggtt_vma);
 		if (vma)
+<<<<<<< HEAD
 			i915_dpt_unpin_from_ggtt(fb->dpt);
+=======
+			intel_dpt_unpin_from_ggtt(fb->dpt_vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

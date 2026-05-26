@@ -27,10 +27,13 @@ FULL_AMD_PATH=$(src)/..
 DISPLAY_FOLDER_NAME=display
 FULL_AMD_DISPLAY_PATH = $(FULL_AMD_PATH)/$(DISPLAY_FOLDER_NAME)
 
+<<<<<<< HEAD
 ifdef CONFIG_GCOV_PROFILE_AMDGPU
 GCOV_PROFILE := y
 endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ccflags-y := -I$(FULL_AMD_PATH)/include/asic_reg \
 	-I$(FULL_AMD_PATH)/include \
 	-I$(FULL_AMD_PATH)/amdgpu \
@@ -51,7 +54,11 @@ subdir-ccflags-$(CONFIG_DRM_AMDGPU_WERROR) += -Werror
 amdgpu-y := amdgpu_drv.o
 
 # add KMS driver
+<<<<<<< HEAD
 amdgpu-y += amdgpu_device.o amdgpu_reg_access.o amdgpu_doorbell_mgr.o amdgpu_kms.o \
+=======
+amdgpu-y += amdgpu_device.o amdgpu_doorbell_mgr.o amdgpu_kms.o \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_atombios.o atombios_crtc.o amdgpu_connectors.o \
 	atom.o amdgpu_fence.o amdgpu_ttm.o amdgpu_object.o amdgpu_gart.o \
 	amdgpu_encoders.o amdgpu_display.o amdgpu_i2c.o \
@@ -90,7 +97,11 @@ amdgpu-y += \
 	nbio_v7_2.o hdp_v4_0.o hdp_v5_0.o aldebaran_reg_init.o aldebaran.o soc21.o soc24.o \
 	sienna_cichlid.o smu_v13_0_10.o nbio_v4_3.o hdp_v6_0.o nbio_v7_7.o hdp_v5_2.o lsdma_v6_0.o \
 	nbio_v7_9.o aqua_vanjaram.o nbio_v7_11.o lsdma_v7_0.o hdp_v7_0.o nbif_v6_3_1.o \
+<<<<<<< HEAD
 	cyan_skillfish_reg_init.o soc_v1_0.o lsdma_v7_1.o
+=======
+	cyan_skillfish_reg_init.o soc_v1_0.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # add DF block
 amdgpu-y += \
@@ -217,7 +228,10 @@ amdgpu-y += \
 	vcn_v4_0_5.o \
 	vcn_v5_0_0.o \
 	vcn_v5_0_1.o \
+<<<<<<< HEAD
 	vcn_v5_0_2.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_jpeg.o \
 	jpeg_v1_0.o \
 	jpeg_v2_0.o \
@@ -228,7 +242,10 @@ amdgpu-y += \
 	jpeg_v4_0_5.o \
 	jpeg_v5_0_0.o \
 	jpeg_v5_0_1.o \
+<<<<<<< HEAD
 	jpeg_v5_0_2.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jpeg_v5_3_0.o
 
 # add VPE block

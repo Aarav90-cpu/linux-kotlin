@@ -89,6 +89,7 @@ enum tegra234_cbb_fabric_ids {
 	T234_MAX_FABRIC_ID,
 };
 
+<<<<<<< HEAD
 enum tegra238_cbb_fabric_ids {
 	T238_CBB_FABRIC_ID  = 0,
 	T238_AON_FABRIC_ID  = 4,
@@ -98,6 +99,8 @@ enum tegra238_cbb_fabric_ids {
 	T238_MAX_FABRIC_ID,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum tegra264_cbb_fabric_ids {
 	T264_SYSTEM_CBB_FABRIC_ID,
 	T264_TOP_0_CBB_FABRIC_ID,
@@ -322,6 +325,7 @@ static void tegra234_cbb_lookup_apbslv(struct seq_file *file, const char *target
 	}
 }
 
+<<<<<<< HEAD
 static struct tegra234_cbb *tegra234_cbb_get_fabric(u8 fab_id)
 {
 	struct tegra_cbb *entry;
@@ -336,10 +340,13 @@ static struct tegra234_cbb *tegra234_cbb_get_fabric(u8 fab_id)
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegra234_cbb *cbb,
 					      u8 target_id, u8 fab_id)
 {
 	const struct tegra234_target_lookup *map = cbb->fabric->fab_list[fab_id].target_map;
+<<<<<<< HEAD
 	struct tegra234_cbb *target_cbb = NULL;
 	void __iomem *addr;
 
@@ -353,6 +360,10 @@ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegr
 		return;
 	}
 
+=======
+	void __iomem *addr;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (target_id >= cbb->fabric->fab_list[fab_id].max_targets) {
 		tegra_cbb_print_err(file, "\t  Invalid target_id:%d\n", target_id);
 		return;
@@ -375,7 +386,11 @@ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegr
 	 *	e) Goto step-a till all bits are set.
 	 */
 
+<<<<<<< HEAD
 	addr = target_cbb->regs + map[target_id].offset;
+=======
+	addr = cbb->regs + map[target_id].offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (strstr(map[target_id].name, "AXI2APB")) {
 		addr += APB_BLOCK_TMO_STATUS_0;
@@ -915,7 +930,11 @@ static const struct tegra234_fabric_lookup tegra234_cbb_fab_list[] = {
 				 ARRAY_SIZE(tegra234_common_target_map) },
 	[T234_AON_FABRIC_ID] = { "aon-fabric", true,
 				 tegra234_aon_target_map,
+<<<<<<< HEAD
 				 ARRAY_SIZE(tegra234_aon_target_map) },
+=======
+				 ARRAY_SIZE(tegra234_bpmp_target_map) },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[T234_PSC_FABRIC_ID] = { "psc-fabric" },
 	[T234_BPMP_FABRIC_ID] = { "bpmp-fabric", true,
 				 tegra234_bpmp_target_map,
@@ -1008,6 +1027,7 @@ static const struct tegra234_cbb_fabric tegra234_sce_fabric = {
 	.firewall_wr_ctl = 0x288,
 };
 
+<<<<<<< HEAD
 static const struct tegra234_target_lookup tegra238_ape_target_map[] = {
 	{ "AXI2APB", 0x00000 },
 	{ "AGIC",    0x15000 },
@@ -1129,6 +1149,8 @@ static const struct tegra234_cbb_fabric tegra238_cbb_fabric = {
 	.firewall_wr_ctl = 0x2228,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char * const tegra241_initiator_id[] = {
 	[0x0] = "TZ",
 	[0x1] = "CCPLEX",
@@ -1315,7 +1337,11 @@ static const struct tegra234_fabric_lookup tegra241_cbb_fab_list[] = {
 	[T234_CBB_FABRIC_ID]  = { "cbb-fabric", true,
 				  tegra241_cbb_target_map, ARRAY_SIZE(tegra241_cbb_target_map) },
 	[T234_BPMP_FABRIC_ID] = { "bpmp-fabric", true,
+<<<<<<< HEAD
 				  tegra241_bpmp_target_map, ARRAY_SIZE(tegra241_bpmp_target_map) },
+=======
+				  tegra241_bpmp_target_map, ARRAY_SIZE(tegra241_cbb_target_map) },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 static const struct tegra234_cbb_fabric tegra241_cbb_fabric = {
 	.fab_id = T234_CBB_FABRIC_ID,
@@ -1635,10 +1661,13 @@ static const struct of_device_id tegra234_cbb_dt_ids[] = {
 	{ .compatible = "nvidia,tegra234-dce-fabric", .data = &tegra234_dce_fabric },
 	{ .compatible = "nvidia,tegra234-rce-fabric", .data = &tegra234_rce_fabric },
 	{ .compatible = "nvidia,tegra234-sce-fabric", .data = &tegra234_sce_fabric },
+<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra238-aon-fabric", .data = &tegra238_aon_fabric },
 	{ .compatible = "nvidia,tegra238-ape-fabric", .data = &tegra238_ape_fabric },
 	{ .compatible = "nvidia,tegra238-bpmp-fabric", .data = &tegra238_bpmp_fabric },
 	{ .compatible = "nvidia,tegra238-cbb-fabric", .data = &tegra238_cbb_fabric },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "nvidia,tegra264-sys-cbb-fabric", .data = &tegra264_sys_cbb_fabric },
 	{ .compatible = "nvidia,tegra264-top0-cbb-fabric", .data = &tegra264_top0_cbb_fabric },
 	{ .compatible = "nvidia,tegra264-uphy0-cbb-fabric", .data = &tegra264_uphy0_cbb_fabric },
@@ -1745,10 +1774,13 @@ static int __maybe_unused tegra234_cbb_resume_noirq(struct device *dev)
 {
 	struct tegra234_cbb *cbb = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	/* set ERD bit to mask SError and generate interrupt to report error */
 	if (cbb->fabric->off_mask_erd)
 		tegra234_cbb_mask_serror(cbb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tegra234_cbb_error_enable(&cbb->base);
 
 	dev_dbg(dev, "%s resumed\n", cbb->fabric->fab_list[cbb->fabric->fab_id].name);

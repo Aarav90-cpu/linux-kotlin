@@ -46,7 +46,15 @@
  * This is used before the kernel initializes the BSS so it can't be in the
  * BSS.
  */
+<<<<<<< HEAD
 atomic_t hart_lottery __section(".sdata");
+=======
+atomic_t hart_lottery __section(".sdata")
+#ifdef CONFIG_XIP_KERNEL
+= ATOMIC_INIT(0xC001BEEF)
+#endif
+;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned long boot_cpu_hartid;
 EXPORT_SYMBOL_GPL(boot_cpu_hartid);
 

@@ -122,6 +122,7 @@ static const struct link_encoder_funcs dce110_lnk_enc_funcs = {
 	.program_hpd_filter = dce110_program_hpd_filter,
 };
 
+<<<<<<< HEAD
 static const struct link_encoder_funcs dce110_lnk_enc_funcs_no_hpd = {
 	.validate_output_with_stream =
 		dce110_link_encoder_validate_output_with_stream,
@@ -149,6 +150,8 @@ static const struct link_encoder_funcs dce110_lnk_enc_funcs_no_hpd = {
 	.program_hpd_filter = dce110_program_hpd_filter,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static enum bp_result link_transmitter_control(
 	struct dce110_link_encoder *enc110,
 	struct bp_transmitter_control *cntl)
@@ -847,7 +850,10 @@ bool dce110_link_encoder_validate_dp_output(
 	const struct dce110_link_encoder *enc110,
 	const struct dc_crtc_timing *crtc_timing)
 {
+<<<<<<< HEAD
 	(void)enc110;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (crtc_timing->pixel_encoding == PIXEL_ENCODING_YCBCR420)
 		return false;
 
@@ -893,10 +899,14 @@ void dce110_link_encoder_construct(
 	const struct dc_vbios_funcs *bp_funcs = init_data->ctx->dc_bios->funcs;
 	enum bp_result result = BP_RESULT_OK;
 
+<<<<<<< HEAD
 	if (hpd_regs)
 		enc110->base.funcs = &dce110_lnk_enc_funcs;
 	else
 		enc110->base.funcs = &dce110_lnk_enc_funcs_no_hpd;
+=======
+	enc110->base.funcs = &dce110_lnk_enc_funcs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enc110->base.ctx = init_data->ctx;
 	enc110->base.id = init_data->encoder;
 	enc110->base.analog_id = init_data->analog_encoder;
@@ -1102,9 +1112,13 @@ void dce110_link_encoder_hw_init(
 		ASSERT(result == BP_RESULT_OK);
 
 	}
+<<<<<<< HEAD
 
 	if (enc110->aux_regs)
 		aux_initialize(enc110);
+=======
+	aux_initialize(enc110);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* reinitialize HPD.
 	 * hpd_initialize() will pass DIG_FE id to HW context.
@@ -1888,6 +1902,7 @@ static const struct link_encoder_funcs dce60_lnk_enc_funcs = {
 	.program_hpd_filter = dce110_program_hpd_filter,
 };
 
+<<<<<<< HEAD
 static const struct link_encoder_funcs dce60_lnk_enc_funcs_no_hpd = {
 	.validate_output_with_stream =
 		dce110_link_encoder_validate_output_with_stream,
@@ -1915,6 +1930,8 @@ static const struct link_encoder_funcs dce60_lnk_enc_funcs_no_hpd = {
 	.program_hpd_filter = dce110_program_hpd_filter,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dce60_link_encoder_construct(
 	struct dce110_link_encoder *enc110,
 	const struct encoder_init_data *init_data,
@@ -1927,10 +1944,14 @@ void dce60_link_encoder_construct(
 	const struct dc_vbios_funcs *bp_funcs = init_data->ctx->dc_bios->funcs;
 	enum bp_result result = BP_RESULT_OK;
 
+<<<<<<< HEAD
 	if (hpd_regs)
 		enc110->base.funcs = &dce60_lnk_enc_funcs;
 	else
 		enc110->base.funcs = &dce60_lnk_enc_funcs_no_hpd;
+=======
+	enc110->base.funcs = &dce60_lnk_enc_funcs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enc110->base.ctx = init_data->ctx;
 	enc110->base.id = init_data->encoder;
 	enc110->base.analog_id = init_data->analog_encoder;

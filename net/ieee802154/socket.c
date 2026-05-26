@@ -313,7 +313,11 @@ out:
 }
 
 static int raw_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 		       int flags)
+=======
+		       int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t copied = 0;
 	int err = -EOPNOTSUPP;
@@ -703,7 +707,11 @@ out:
 }
 
 static int dgram_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 			 int flags)
+=======
+			 int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t copied = 0;
 	int err = -EOPNOTSUPP;
@@ -737,7 +745,11 @@ static int dgram_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 
 		saddr->family = AF_IEEE802154;
 		ieee802154_addr_to_sa(&saddr->addr, &mac_cb(skb)->source);
+<<<<<<< HEAD
 		msg->msg_namelen = sizeof(*saddr);
+=======
+		*addr_len = sizeof(*saddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ro->want_lqi) {

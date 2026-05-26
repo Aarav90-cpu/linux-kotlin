@@ -507,10 +507,13 @@ static void misc(void)
 
 	ASSERT_EQ(misc_skel->bss->nr_hwtstamp, 0, "nr_hwtstamp");
 
+<<<<<<< HEAD
 	ASSERT_TRUE(misc_skel->bss->nodelay_est_ok, "nodelay_est_ok");
 	ASSERT_TRUE(misc_skel->bss->nodelay_hdr_len_reject, "nodelay_hdr_len_reject");
 	ASSERT_TRUE(misc_skel->bss->nodelay_write_hdr_reject, "nodelay_write_hdr_reject");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 check_linum:
 	ASSERT_FALSE(check_error_linum(&sk_fds), "check_error_linum");
 	sk_fds_close(&sk_fds);

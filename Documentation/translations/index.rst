@@ -10,11 +10,19 @@ Translations
    zh_CN/index
    zh_TW/index
    it_IT/index
+<<<<<<< HEAD
    ja_JP/index
    ko_KR/index
    pt_BR/index
    sp_SP/index
 
+=======
+   ko_KR/index
+   ja_JP/index
+   sp_SP/index
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. _translations_disclaimer:
 
 Disclaimer

@@ -65,7 +65,11 @@ void msm_hdmi_hpd_enable(struct drm_bridge *bridge)
 	struct hdmi_bridge *hdmi_bridge = to_hdmi_bridge(bridge);
 	struct hdmi *hdmi = hdmi_bridge->hdmi;
 	struct device *dev = &hdmi->pdev->dev;
+<<<<<<< HEAD
 	u32 hpd_ctrl;
+=======
+	uint32_t hpd_ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	unsigned long flags;
 
@@ -125,7 +129,11 @@ void msm_hdmi_hpd_irq(struct drm_bridge *bridge)
 {
 	struct hdmi_bridge *hdmi_bridge = to_hdmi_bridge(bridge);
 	struct hdmi *hdmi = hdmi_bridge->hdmi;
+<<<<<<< HEAD
 	u32 hpd_int_status, hpd_int_ctrl;
+=======
+	uint32_t hpd_int_status, hpd_int_ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Process HPD: */
 	hpd_int_status = hdmi_read(hdmi, REG_HDMI_HPD_INT_STATUS);

@@ -31,7 +31,13 @@ properties:
     description: Negative 5V supply
 
   reset-gpios: true
+<<<<<<< HEAD
   enable-gpios: true
+=======
+
+  enable-gpios: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   port: true
 
 required:

@@ -14,7 +14,10 @@
 #include <linux/input.h>
 #include <linux/types.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/uaccess.h>
 
 #define ACPI_ATLAS_NAME		"Atlas ACPI"
@@ -58,9 +61,14 @@ static acpi_status acpi_atlas_button_handler(u32 function,
 	return status;
 }
 
+<<<<<<< HEAD
 static int atlas_acpi_button_probe(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int atlas_acpi_button_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status status;
 	int i;
 	int err;
@@ -108,9 +116,14 @@ static int atlas_acpi_button_probe(struct platform_device *pdev)
 	return err;
 }
 
+<<<<<<< HEAD
 static void atlas_acpi_button_remove(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static void atlas_acpi_button_remove(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status status;
 
 	status = acpi_remove_address_space_handler(device->handle,
@@ -127,6 +140,7 @@ static const struct acpi_device_id atlas_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, atlas_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver atlas_acpi_driver = {
 	.probe = atlas_acpi_button_probe,
 	.remove = atlas_acpi_button_remove,
@@ -136,6 +150,18 @@ static struct platform_driver atlas_acpi_driver = {
 	},
 };
 module_platform_driver(atlas_acpi_driver);
+=======
+static struct acpi_driver atlas_acpi_driver = {
+	.name	= ACPI_ATLAS_NAME,
+	.class	= ACPI_ATLAS_CLASS,
+	.ids	= atlas_device_ids,
+	.ops	= {
+		.add	= atlas_acpi_button_add,
+		.remove	= atlas_acpi_button_remove,
+	},
+};
+module_acpi_driver(atlas_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Jaya Kumar");
 MODULE_LICENSE("GPL");

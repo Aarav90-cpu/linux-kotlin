@@ -33,7 +33,10 @@ properties:
       - qcom,sc7280-llcc
       - qcom,sc8180x-llcc
       - qcom,sc8280xp-llcc
+<<<<<<< HEAD
       - qcom,sdm670-llcc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - qcom,sdm845-llcc
       - qcom,sm6350-llcc
       - qcom,sm7150-llcc
@@ -205,7 +208,10 @@ allOf:
           contains:
             enum:
               - qcom,sc7280-llcc
+<<<<<<< HEAD
               - qcom,sdm670-llcc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         reg:

@@ -4,6 +4,7 @@
 #define __MXL862XX_H
 
 #include <linux/mdio.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
 #include <net/dsa.h>
 
@@ -281,6 +282,15 @@ struct mxl862xx_priv {
 	u16 evlan_egress_size;
 	u16 vf_block_size;
 	struct delayed_work stats_work;
+=======
+#include <net/dsa.h>
+
+#define MXL862XX_MAX_PORTS		17
+
+struct mxl862xx_priv {
+	struct dsa_switch *ds;
+	struct mdio_device *mdiodev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* __MXL862XX_H */

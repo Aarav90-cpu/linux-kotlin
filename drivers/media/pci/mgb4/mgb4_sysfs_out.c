@@ -143,6 +143,7 @@ end:
 	return ret;
 }
 
+<<<<<<< HEAD
 static ssize_t color_mapping_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -201,6 +202,8 @@ static ssize_t color_mapping_store(struct device *dev,
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t display_width_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -769,7 +772,10 @@ static DEVICE_ATTR_RW(hback_porch);
 static DEVICE_ATTR_RW(hfront_porch);
 static DEVICE_ATTR_RW(vback_porch);
 static DEVICE_ATTR_RW(vfront_porch);
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(color_mapping);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static DEVICE_ATTR_RW(fpdl3_output_width);
 
@@ -790,7 +796,10 @@ struct attribute *mgb4_fpdl3_out_attrs[] = {
 	&dev_attr_vback_porch.attr,
 	&dev_attr_vfront_porch.attr,
 	&dev_attr_fpdl3_output_width.attr,
+<<<<<<< HEAD
 	&dev_attr_color_mapping.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -800,7 +809,10 @@ struct attribute *mgb4_gmsl3_out_attrs[] = {
 	&dev_attr_display_width.attr,
 	&dev_attr_display_height.attr,
 	&dev_attr_frame_rate.attr,
+<<<<<<< HEAD
 	&dev_attr_color_mapping.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -820,6 +832,9 @@ struct attribute *mgb4_gmsl1_out_attrs[] = {
 	&dev_attr_hfront_porch.attr,
 	&dev_attr_vback_porch.attr,
 	&dev_attr_vfront_porch.attr,
+<<<<<<< HEAD
 	&dev_attr_color_mapping.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };

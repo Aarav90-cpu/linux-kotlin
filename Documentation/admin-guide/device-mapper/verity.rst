@@ -102,6 +102,7 @@ ignore_zero_blocks
     that are not guaranteed to contain zeroes.
 
 use_fec_from_device <fec_dev>
+<<<<<<< HEAD
     Use forward error correction (FEC) parity data from the specified device to
     try to automatically recover from corruption and I/O errors.
 
@@ -138,6 +139,31 @@ fec_blocks <num>
 fec_start <offset>
     This is the offset, in <data_block_size> blocks, from the start of <fec_dev>
     to the beginning of the parity data.
+=======
+    Use forward error correction (FEC) to recover from corruption if hash
+    verification fails. Use encoding data from the specified device. This
+    may be the same device where data and hash blocks reside, in which case
+    fec_start must be outside data and hash areas.
+
+    If the encoding data covers additional metadata, it must be accessible
+    on the hash device after the hash blocks.
+
+    Note: block sizes for data and hash devices must match. Also, if the
+    verity <dev> is encrypted the <fec_dev> should be too.
+
+fec_roots <num>
+    Number of generator roots. This equals to the number of parity bytes in
+    the encoding data. For example, in RS(M, N) encoding, the number of roots
+    is M-N.
+
+fec_blocks <num>
+    The number of encoding data blocks on the FEC device. The block size for
+    the FEC device is <data_block_size>.
+
+fec_start <offset>
+    This is the offset, in <data_block_size> blocks, from the start of the
+    FEC device to the beginning of the encoding data.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 check_at_most_once
     Verify data blocks only the first time they are read from the data device,
@@ -193,6 +219,14 @@ per-block basis. This allows for a lightweight hash computation on first read
 into the page cache. Block hashes are stored linearly, aligned to the nearest
 block size.
 
+<<<<<<< HEAD
+=======
+If forward error correction (FEC) support is enabled any recovery of
+corrupted data will be verified using the cryptographic hash of the
+corresponding data. This is why combining error correction with
+integrity checking is essential.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Hash Tree
 ---------
 
@@ -220,6 +254,7 @@ The tree looks something like:
            / ... \             /   . . .  \             /           \
      blk_0 ... blk_127  blk_16256   blk_16383      blk_32640 . . . blk_32767
 
+<<<<<<< HEAD
 Forward error correction
 ------------------------
 
@@ -294,6 +329,8 @@ these parameters for the parity data to match exactly:
 - The codes used are systematic, BCH-view codes
 - Primitive element alpha is 'x'
 - First consecutive root of code generator polynomial is 'x^0'
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 On-disk format
 ==============

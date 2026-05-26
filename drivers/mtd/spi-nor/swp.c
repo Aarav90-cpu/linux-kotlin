@@ -28,10 +28,15 @@ static u8 spi_nor_get_sr_tb_mask(struct spi_nor *nor)
 {
 	if (nor->flags & SNOR_F_HAS_SR_TB_BIT6)
 		return SR_TB_BIT6;
+<<<<<<< HEAD
 	else if (nor->flags & SNOR_F_HAS_SR_TB)
 		return SR_TB_BIT5;
 	else
 		return 0;
+=======
+	else
+		return SR_TB_BIT5;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u64 spi_nor_get_min_prot_length_sr(struct spi_nor *nor)

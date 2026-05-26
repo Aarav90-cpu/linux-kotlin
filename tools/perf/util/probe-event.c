@@ -11,6 +11,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+<<<<<<< HEAD
+=======
+#include <libgen.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -228,7 +232,11 @@ static int convert_exec_to_group(const char *exec, char **result)
 	if (!exec_copy)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ptr1 = (char *)perf_basename(exec_copy);
+=======
+	ptr1 = basename(exec_copy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ptr1) {
 		ret = -EINVAL;
 		goto out;
@@ -1849,7 +1857,11 @@ int parse_perf_probe_command(const char *cmd, struct perf_probe_event *pev)
 
 	/* Copy arguments and ensure return probe has no C argument */
 	pev->nargs = argc - 1;
+<<<<<<< HEAD
 	pev->args = calloc(pev->nargs, sizeof(struct perf_probe_arg));
+=======
+	pev->args = zalloc(sizeof(struct perf_probe_arg) * pev->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pev->args == NULL) {
 		ret = -ENOMEM;
 		goto out;
@@ -1999,7 +2011,11 @@ int parse_probe_trace_command(const char *cmd, struct probe_trace_event *tev)
 	}
 
 	tev->nargs = argc - 2;
+<<<<<<< HEAD
 	tev->args = calloc(tev->nargs, sizeof(struct probe_trace_arg));
+=======
+	tev->args = zalloc(sizeof(struct probe_trace_arg) * tev->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tev->args == NULL) {
 		ret = -ENOMEM;
 		goto out;
@@ -2372,7 +2388,11 @@ static int convert_to_perf_probe_event(struct probe_trace_event *tev,
 
 	/* Convert trace_arg to probe_arg */
 	pev->nargs = tev->nargs;
+<<<<<<< HEAD
 	pev->args = calloc(pev->nargs, sizeof(struct perf_probe_arg));
+=======
+	pev->args = zalloc(sizeof(struct perf_probe_arg) * pev->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pev->args == NULL)
 		return -ENOMEM;
 	for (i = 0; i < tev->nargs && ret >= 0; i++) {
@@ -2479,7 +2499,11 @@ int perf_probe_event__copy(struct perf_probe_event *dst,
 	if (perf_probe_point__copy(&dst->point, &src->point) < 0)
 		goto out_err;
 
+<<<<<<< HEAD
 	dst->args = calloc(src->nargs, sizeof(struct perf_probe_arg));
+=======
+	dst->args = zalloc(sizeof(struct perf_probe_arg) * src->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dst->args)
 		goto out_err;
 	dst->nargs = src->nargs;
@@ -3178,7 +3202,11 @@ static int find_probe_trace_events_from_map(struct perf_probe_event *pev,
 	}
 
 	/* Setup result trace-probe-events */
+<<<<<<< HEAD
 	*tevs = calloc(num_matched_functions, sizeof(*tev));
+=======
+	*tevs = zalloc(sizeof(*tev) * num_matched_functions);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*tevs) {
 		ret = -ENOMEM;
 		goto out;
@@ -3250,7 +3278,12 @@ static int find_probe_trace_events_from_map(struct perf_probe_event *pev,
 		tev->uprobes = pev->uprobes;
 		tev->nargs = pev->nargs;
 		if (tev->nargs) {
+<<<<<<< HEAD
 			tev->args = calloc(tev->nargs, sizeof(struct probe_trace_arg));
+=======
+			tev->args = zalloc(sizeof(struct probe_trace_arg) *
+					   tev->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (tev->args == NULL)
 				goto nomem_out;
 		}
@@ -3361,7 +3394,11 @@ static int try_to_find_absolute_address(struct perf_probe_event *pev,
 	}
 
 	tev->nargs = pev->nargs;
+<<<<<<< HEAD
 	tev->args = calloc(tev->nargs, sizeof(struct probe_trace_arg));
+=======
+	tev->args = zalloc(sizeof(struct probe_trace_arg) * tev->nargs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!tev->args)
 		goto errout;
 
@@ -3547,7 +3584,11 @@ static int find_probe_trace_events_from_cache(struct perf_probe_event *pev,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	*tevs = calloc(ret, sizeof(*tev));
+=======
+	*tevs = zalloc(ret * sizeof(*tev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*tevs) {
 		ret = -ENOMEM;
 		goto out;

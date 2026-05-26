@@ -125,8 +125,14 @@ void odm_ConfigBB_PHY_REG_PG_8723B(
 {
 	if (Addr == 0xfe || Addr == 0xffe)
 		msleep(50);
+<<<<<<< HEAD
 	else
 		PHY_StoreTxPowerByRate(pDM_Odm->Adapter, RfPath, Addr, Bitmask, Data);
+=======
+	else {
+		PHY_StoreTxPowerByRate(pDM_Odm->Adapter, RfPath, Addr, Bitmask, Data);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void odm_ConfigBB_PHY_8723B(
@@ -148,8 +154,14 @@ void odm_ConfigBB_PHY_8723B(
 		udelay(5);
 	else if (Addr == 0xf9)
 		udelay(1);
+<<<<<<< HEAD
 	else
 		PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
+=======
+	else {
+		PHY_SetBBReg(pDM_Odm->Adapter, Addr, Bitmask, Data);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*  Add 1us delay between BB/RF register setting. */
 	udelay(1);

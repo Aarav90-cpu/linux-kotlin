@@ -960,30 +960,46 @@ static void qcom_smd_destroy_ept(struct rpmsg_endpoint *ept)
 	kref_put(&ept->refcount, __ept_release);
 }
 
+<<<<<<< HEAD
 static int qcom_smd_send(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int qcom_smd_send(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qcom_smd_endpoint *qsept = to_smd_endpoint(ept);
 
 	return __qcom_smd_send(qsept->qsch, data, len, true);
 }
 
+<<<<<<< HEAD
 static int qcom_smd_trysend(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int qcom_smd_trysend(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qcom_smd_endpoint *qsept = to_smd_endpoint(ept);
 
 	return __qcom_smd_send(qsept->qsch, data, len, false);
 }
 
+<<<<<<< HEAD
 static int qcom_smd_sendto(struct rpmsg_endpoint *ept, const void *data, int len,
 			   u32 dst)
+=======
+static int qcom_smd_sendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qcom_smd_endpoint *qsept = to_smd_endpoint(ept);
 
 	return __qcom_smd_send(qsept->qsch, data, len, true);
 }
 
+<<<<<<< HEAD
 static int qcom_smd_trysendto(struct rpmsg_endpoint *ept, const void *data,
 			      int len, u32 dst)
+=======
+static int qcom_smd_trysendto(struct rpmsg_endpoint *ept, void *data, int len, u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qcom_smd_endpoint *qsept = to_smd_endpoint(ept);
 

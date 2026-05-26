@@ -152,6 +152,7 @@ struct pvr_device {
 	 * @power: Optional power domain devices.
 	 *
 	 * On platforms with more than one power domain for the GPU, they are
+<<<<<<< HEAD
 	 * stored here in @domains, along with links between them in
 	 * @domain_links. The size of @domain_links is one less than
 	 * struct dev_pm_domain_list->num_pds in @domains.
@@ -159,6 +160,17 @@ struct pvr_device {
 	struct pvr_device_power {
 		struct dev_pm_domain_list *domains;
 		struct device_link **domain_links;
+=======
+	 * stored here in @domain_devs, along with links between them in
+	 * @domain_links. The size of @domain_devs is given by @domain_count,
+	 * while the size of @domain_links is (2 * @domain_count) - 1.
+	 */
+	struct pvr_device_power {
+		struct device **domain_devs;
+		struct device_link **domain_links;
+
+		u32 domain_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} power;
 
 	/**

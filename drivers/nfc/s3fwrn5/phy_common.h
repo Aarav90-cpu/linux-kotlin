@@ -12,7 +12,10 @@
 #define __NFC_S3FWRN5_PHY_COMMON_H
 
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/nfc/nci_core.h>
 
 #include "s3fwrn5.h"
@@ -22,8 +25,13 @@
 struct phy_common {
 	struct nci_dev *ndev;
 
+<<<<<<< HEAD
 	struct gpio_desc *gpio_en;
 	struct gpio_desc *gpio_fw_wake;
+=======
+	int gpio_en;
+	int gpio_fw_wake;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct mutex mutex;
 

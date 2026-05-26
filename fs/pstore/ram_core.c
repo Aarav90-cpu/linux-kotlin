@@ -12,6 +12,10 @@
 #include <linux/io.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
+<<<<<<< HEAD
+=======
+#include <linux/memblock.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/rslib.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
@@ -449,7 +453,11 @@ static void *persistent_ram_vmap(phys_addr_t start, size_t size,
 		pages[i] = pfn_to_page(addr >> PAGE_SHIFT);
 	}
 	/*
+<<<<<<< HEAD
 	 * VM_IOREMAP used here to bypass this region during vread_iter()
+=======
+	 * VM_IOREMAP used here to bypass this region during vread()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * and kmap_atomic() (i.e. kcore) to avoid __va() failures.
 	 */
 	vaddr = vmap(pages, page_count, VM_MAP | VM_IOREMAP, prot);
@@ -487,10 +495,13 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
 	else
 		va = ioremap_wc(start, size);
 
+<<<<<<< HEAD
 	/* We must release the mem region if ioremap fails. */
 	if (!va)
 		release_mem_region(start, size);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Since request_mem_region() and ioremap() are byte-granularity
 	 * there is no need handle anything special like we do when the

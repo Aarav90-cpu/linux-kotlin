@@ -582,7 +582,11 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
 	.dump_regs = dwmac4_dump_dma_regs,
 	.dma_rx_mode = dwmac4_dma_rx_chan_op_mode,
 	.dma_tx_mode = dwmac4_dma_tx_chan_op_mode,
+<<<<<<< HEAD
 	.enable_dma_irq = dwmac4_enable_dma_irq,
+=======
+	.enable_dma_irq = dwmac410_enable_dma_irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.disable_dma_irq = dwmac4_disable_dma_irq,
 	.start_tx = dwmac4_dma_start_tx,
 	.stop_tx = dwmac4_dma_stop_tx,

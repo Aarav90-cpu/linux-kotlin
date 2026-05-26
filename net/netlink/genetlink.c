@@ -92,8 +92,15 @@ static unsigned long mc_group_start = 0x3 | BIT(GENL_ID_CTRL) |
 static unsigned long *mc_groups = &mc_group_start;
 static unsigned long mc_groups_longs = 1;
 
+<<<<<<< HEAD
 static struct nla_policy genl_policy_reject_all[] = {
 	{ .type = NLA_REJECT },
+=======
+/* We need the last attribute with non-zero ID therefore a 2-entry array */
+static struct nla_policy genl_policy_reject_all[] = {
+	{ .type = NLA_REJECT },
+	{ .type = NLA_REJECT },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int genl_ctrl_event(int event, const struct genl_family *family,
@@ -104,10 +111,19 @@ static void
 genl_op_fill_in_reject_policy(const struct genl_family *family,
 			      struct genl_ops *op)
 {
+<<<<<<< HEAD
+=======
+	BUILD_BUG_ON(ARRAY_SIZE(genl_policy_reject_all) - 1 != 1);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (op->policy || op->cmd < family->resv_start_op)
 		return;
 
 	op->policy = genl_policy_reject_all;
+<<<<<<< HEAD
+=======
+	op->maxattr = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -118,6 +134,10 @@ genl_op_fill_in_reject_policy_split(const struct genl_family *family,
 		return;
 
 	op->policy = genl_policy_reject_all;
+<<<<<<< HEAD
+=======
+	op->maxattr = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct genl_family *genl_family_find_byid(unsigned int id)
@@ -244,7 +264,10 @@ genl_get_cmd_split(u32 cmd, u8 flag, const struct genl_family *family,
 		if (family->split_ops[i].cmd == cmd &&
 		    family->split_ops[i].flags & flag) {
 			*op = family->split_ops[i];
+<<<<<<< HEAD
 			genl_op_fill_in_reject_policy_split(family, op);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return 0;
 		}
 
@@ -929,6 +952,7 @@ genl_family_rcv_msg_attrs_parse(const struct genl_family *family,
 	struct nlattr **attrbuf;
 	int err;
 
+<<<<<<< HEAD
 	if (!ops->policy)
 		return NULL;
 
@@ -940,6 +964,14 @@ genl_family_rcv_msg_attrs_parse(const struct genl_family *family,
 		/* Reject all policy, __nlmsg_parse() will just validate */
 		attrbuf = NULL;
 	}
+=======
+	if (!ops->maxattr)
+		return NULL;
+
+	attrbuf = kmalloc_objs(struct nlattr *, ops->maxattr + 1);
+	if (!attrbuf)
+		return ERR_PTR(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = __nlmsg_parse(nlh, hdrlen, attrbuf, ops->maxattr, ops->policy,
 			    validate, extack);
@@ -1972,10 +2004,15 @@ int genlmsg_multicast_allns(const struct genl_family *family,
 			    struct sk_buff *skb, u32 portid,
 			    unsigned int group)
 {
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(group >= family->n_mcgrps)) {
 		kfree_skb(skb);
 		return -EINVAL;
 	}
+=======
+	if (WARN_ON_ONCE(group >= family->n_mcgrps))
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	group = family->mcgrp_offset + group;
 	return genlmsg_mcast(skb, portid, group);
@@ -1988,10 +2025,15 @@ void genl_notify(const struct genl_family *family, struct sk_buff *skb,
 	struct net *net = genl_info_net(info);
 	struct sock *sk = net->genl_sock;
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(group >= family->n_mcgrps)) {
 		kfree_skb(skb);
 		return;
 	}
+=======
+	if (WARN_ON_ONCE(group >= family->n_mcgrps))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	group = family->mcgrp_offset + group;
 	nlmsg_notify(sk, skb, info->snd_portid, group,

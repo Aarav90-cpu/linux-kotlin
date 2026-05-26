@@ -64,9 +64,12 @@
 #define ENETC4_PPAUONTR			0x108
 #define ENETC4_PPAUOFFTR		0x10c
 
+<<<<<<< HEAD
 /* Port ingress congestion DRa (a=0,1,2,3) discard count register */
 #define ENETC4_PICDRDCR(a)		((a) * 0x10 + 0x140)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port Station interface promiscuous MAC mode register */
 #define ENETC4_PSIPMMR			0x200
 #define  PSIPMMR_SI_MAC_UP(a)		BIT(a) /* a = SI index */
@@ -75,12 +78,15 @@
 /* Port Station interface promiscuous VLAN mode register */
 #define ENETC4_PSIPVMR			0x204
 
+<<<<<<< HEAD
 /* Port broadcast frames dropped due to MAC filtering register */
 #define ENETC4_PBFDSIR			0x208
 
 /* Port frame drop MAC source address pruning register */
 #define ENETC4_PFDMSAPR			0x20c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port RSS key register n. n = 0,1,2,...,9 */
 #define ENETC4_PRSSKR(n)		((n) * 0x4 + 0x250)
 
@@ -88,12 +94,15 @@
 #define ENETC4_PSIMAFCAPR		0x280
 #define  PSIMAFCAPR_NUM_MAC_AFTE	GENMASK(11, 0)
 
+<<<<<<< HEAD
 /* Port unicast frames dropped due to MAC filtering register */
 #define ENETC4_PUFDMFR			0x284
 
 /* Port multicast frames dropped due to MAC filtering register */
 #define ENETC4_PMFDMFR			0x288
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port station interface VLAN filtering capability register */
 #define ENETC4_PSIVLANFCAPR		0x2c0
 #define  PSIVLANFCAPR_NUM_VLAN_FTE	GENMASK(11, 0)
@@ -102,6 +111,7 @@
 #define ENETC4_PSIVLANFMR		0x2c4
 #define  PSIVLANFMR_VS			BIT(0)
 
+<<<<<<< HEAD
 /* Port unicast frames dropped VLAN filtering register */
 #define ENETC4_PUFDVFR			0x2d0
 
@@ -111,6 +121,8 @@
 /* Port broadcast frames dropped VLAN filtering register */
 #define ENETC4_PBFDVFR			0x2d8
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port Station interface a primary MAC address registers */
 #define ENETC4_PSIPMAR0(a)		((a) * 0x80 + 0x2000)
 #define ENETC4_PSIPMAR1(a)		((a) * 0x80 + 0x2004)
@@ -165,6 +177,7 @@
 #define ENETC4_PSR			0x4104
 #define  PSR_RX_BUSY			BIT(1)
 
+<<<<<<< HEAD
 /* Port Rx discard count register */
 #define ENETC4_PRXDCR			0x41c0
 
@@ -177,6 +190,8 @@
 /* Port Rx discard count reason register 1 */
 #define ENETC4_PRXDCRR1			0x41cc
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port traffic class a transmit maximum SDU register */
 #define ENETC4_PTCTMSDUR(a)		((a) * 0x20 + 0x4208)
 #define  PTCTMSDUR_MAXSDU		GENMASK(15, 0)
@@ -232,6 +247,7 @@
 #define  PM_SINGLE_STEP_OFFSET_SET(o)	FIELD_PREP(PM_SINGLE_STEP_OFFSET, o)
 #define  PM_SINGLE_STEP_EN		BIT(31)
 
+<<<<<<< HEAD
 /* Port MAC 0/1 Receive Ethernet Octets Counter */
 #define ENETC4_PM_REOCT(mac)		(0x5100 + (mac) * 0x400)
 
@@ -388,6 +404,8 @@
 /* Port MAC 0/1 Transmit Invalid Octets Counter */
 #define ENETC4_PM_TIOCT(mac)		(0x52f8 + (mac) * 0x400)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Port MAC 0 Interface Mode Control Register */
 #define ENETC4_PM_IF_MODE(mac)		(0x5300 + (mac) * 0x400)
 #define  PM_IF_MODE_IFMODE		GENMASK(2, 0)

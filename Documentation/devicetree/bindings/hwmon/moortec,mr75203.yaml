@@ -105,7 +105,11 @@ properties:
       G coefficient for temperature equation.
       Default for series 5 = 60000
       Default for series 6 = 57400
+<<<<<<< HEAD
     multipleOf: 10
+=======
+    multipleOf: 100
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     minimum: 1000
     $ref: /schemas/types.yaml#/definitions/uint32
 
@@ -131,7 +135,11 @@ properties:
       J coefficient for temperature equation.
       Default for series 5 = -100
       Default for series 6 = 0
+<<<<<<< HEAD
     multipleOf: 10
+=======
+    multipleOf: 100
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     maximum: 0
     $ref: /schemas/types.yaml#/definitions/int32
 

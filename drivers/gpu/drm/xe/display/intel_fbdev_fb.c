@@ -23,6 +23,7 @@ u32 intel_fbdev_fb_pitch_align(u32 stride)
 	return ALIGN(stride, XE_PAGE_SIZE);
 }
 
+<<<<<<< HEAD
 bool intel_fbdev_fb_prefer_stolen(struct drm_device *drm, unsigned int size)
 {
 	struct xe_device *xe = to_xe_device(drm);
@@ -46,6 +47,8 @@ bool intel_fbdev_fb_prefer_stolen(struct drm_device *drm, unsigned int size)
 	return stolen->size >= size * 2;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_gem_object *intel_fbdev_fb_bo_create(struct drm_device *drm, int size)
 {
 	struct xe_device *xe = to_xe_device(drm);
@@ -53,6 +56,7 @@ struct drm_gem_object *intel_fbdev_fb_bo_create(struct drm_device *drm, int size
 
 	obj = ERR_PTR(-ENODEV);
 
+<<<<<<< HEAD
 	if (intel_fbdev_fb_prefer_stolen(drm, size)) {
 		obj = xe_bo_create_pin_map_novm(xe, xe_device_get_root_tile(xe),
 						size,
@@ -61,21 +65,38 @@ struct drm_gem_object *intel_fbdev_fb_bo_create(struct drm_device *drm, int size
 						XE_BO_FLAG_STOLEN |
 						XE_BO_FLAG_GGTT,
 						false);
+=======
+	if (!IS_DGFX(xe) && !XE_DEVICE_WA(xe, 22019338487_display)) {
+		obj = xe_bo_create_pin_map_novm(xe, xe_device_get_root_tile(xe),
+						size,
+						ttm_bo_type_kernel, XE_BO_FLAG_SCANOUT |
+						XE_BO_FLAG_STOLEN |
+						XE_BO_FLAG_GGTT, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!IS_ERR(obj))
 			drm_info(&xe->drm, "Allocated fbdev into stolen\n");
 		else
 			drm_info(&xe->drm, "Allocated fbdev into stolen failed: %li\n", PTR_ERR(obj));
+<<<<<<< HEAD
 	} else {
 		drm_info(&xe->drm, "Allocating fbdev: Stolen memory not preferred.\n");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (IS_ERR(obj)) {
 		obj = xe_bo_create_pin_map_novm(xe, xe_device_get_root_tile(xe), size,
+<<<<<<< HEAD
 						ttm_bo_type_kernel,
 						XE_BO_FLAG_FORCE_WC |
 						XE_BO_FLAG_VRAM_IF_DGFX(xe_device_get_root_tile(xe)) |
 						XE_BO_FLAG_GGTT,
 						false);
+=======
+						ttm_bo_type_kernel, XE_BO_FLAG_SCANOUT |
+						XE_BO_FLAG_VRAM_IF_DGFX(xe_device_get_root_tile(xe)) |
+						XE_BO_FLAG_GGTT, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (IS_ERR(obj)) {

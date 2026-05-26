@@ -251,6 +251,7 @@ struct cxl_dport *__wrap_devm_cxl_add_dport_by_dev(struct cxl_port *port,
 }
 EXPORT_SYMBOL_NS_GPL(__wrap_devm_cxl_add_dport_by_dev, "CXL");
 
+<<<<<<< HEAD
 int __wrap_region_intersects(resource_size_t start, size_t size,
 			     unsigned long flags, unsigned long desc)
 {
@@ -301,6 +302,8 @@ int __wrap_walk_hmem_resources(struct device *host, walk_hmem_fn fn)
 }
 EXPORT_SYMBOL_GPL(__wrap_walk_hmem_resources);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("cxl_test: emulation module");
 MODULE_IMPORT_NS("ACPI");

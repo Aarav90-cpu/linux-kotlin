@@ -18,7 +18,11 @@ strong integrity guarantees over both the executable code, and specific
 *data files* on the system, that were critical to its function. These
 specific data files would not be readable unless they passed integrity
 policy. A mandatory access control system would be present, and
+<<<<<<< HEAD
 as a result, xattrs would have to be protected. This led to a selection
+=======
+as a result, xattrs would have to be protected. This lead to a selection
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 of what would provide the integrity claims. At the time, there were two
 main mechanisms considered that could guarantee integrity for the system
 with these requirements:
@@ -195,7 +199,11 @@ of the policy to apply the minute usermode starts. Generally, that storage
 can be handled in one of three ways:
 
   1. The policy file(s) live on disk and the kernel loads the policy prior
+<<<<<<< HEAD
      to a code path that would result in an enforcement decision.
+=======
+     to an code path that would result in an enforcement decision.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   2. The policy file(s) are passed by the bootloader to the kernel, who
      parses the policy.
   3. There is a policy file that is compiled into the kernel that is
@@ -235,8 +243,13 @@ Updatable, Rebootless Policy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As requirements change over time (vulnerabilities are found in previously
+<<<<<<< HEAD
 trusted applications, keys roll, etcetera), updating a kernel to meet
 those security goals is not always a suitable option, as updates are not
+=======
+trusted applications, keys roll, etcetera). Updating a kernel to change the
+meet those security goals is not always a suitable option, as updates are not
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 always risk-free, and blocking a security update leaves systems vulnerable.
 This means IPE requires a policy that can be completely updated (allowing
 revocations of existing policy) from a source external to the kernel (allowing
@@ -370,7 +383,11 @@ Simplified Policy:
 Finally, IPE's policy is designed for sysadmins, not kernel developers. Instead
 of covering individual LSM hooks (or syscalls), IPE covers operations. This means
 instead of sysadmins needing to know that the syscalls ``mmap``, ``mprotect``,
+<<<<<<< HEAD
 ``execve``, and ``uselib`` must have rules protecting them, they must simply know
+=======
+``execve``, and ``uselib`` must have rules protecting them, they must simple know
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 that they want to restrict code execution. This limits the amount of bypasses that
 could occur due to a lack of knowledge of the underlying system; whereas the
 maintainers of IPE, being kernel developers can make the correct choice to determine

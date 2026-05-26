@@ -102,6 +102,7 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
 	return dest_dst;
 }
 
+<<<<<<< HEAD
 /* Based on ip_exceeds_mtu(). */
 static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
 {
@@ -114,6 +115,8 @@ static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool
 __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
 {
@@ -123,9 +126,16 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
 		 */
 		if (IP6CB(skb)->frag_max_size > mtu)
 			return true; /* largest fragment violate MTU */
+<<<<<<< HEAD
 	} else if (ip_vs_exceeds_mtu(skb, mtu))
 		return true; /* Packet size violate MTU size */
 
+=======
+	}
+	else if (skb->len > mtu && !skb_is_gso(skb)) {
+		return true; /* Packet size violate MTU size */
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
@@ -243,7 +253,11 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
 			return true;
 
 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+<<<<<<< HEAD
 			     ip_vs_exceeds_mtu(skb, mtu) &&
+=======
+			     skb->len > mtu && !skb_is_gso(skb) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     !ip_vs_iph_icmp(ipvsh))) {
 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
 				  htonl(mtu));
@@ -347,11 +361,17 @@ __ip_vs_get_out_rt(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
 				goto err_unreach;
 			}
 			/* It is forbidden to attach dest->dest_dst if
+<<<<<<< HEAD
 			 * device is going down or if server is removed and
 			 * stored in dest_trash.
 			 */
 			if (!rt_dev_is_down(dst_dev_rcu(&rt->dst)) &&
 			    dest->flags & IP_VS_DEST_F_AVAILABLE)
+=======
+			 * device is going down.
+			 */
+			if (!rt_dev_is_down(dst_dev_rcu(&rt->dst)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				__ip_vs_dst_set(dest, dest_dst, &rt->dst, 0);
 			else
 				noref = 0;
@@ -526,11 +546,17 @@ __ip_vs_get_out_rt_v6(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
 			rt = dst_rt6_info(dst);
 			cookie = rt6_get_cookie(rt);
 			/* It is forbidden to attach dest->dest_dst if
+<<<<<<< HEAD
 			 * device is going down or if server is removed and
 			 * stored in dest_trash.
 			 */
 			if (!rt_dev_is_down(dst_dev_rcu(&rt->dst)) &&
 			    dest->flags & IP_VS_DEST_F_AVAILABLE)
+=======
+			 * device is going down.
+			 */
+			if (!rt_dev_is_down(dst_dev_rcu(&rt->dst)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				__ip_vs_dst_set(dest, dest_dst, &rt->dst, cookie);
 			else
 				noref = 0;

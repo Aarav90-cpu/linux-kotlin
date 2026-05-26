@@ -202,7 +202,11 @@ l0_%=:	/* exit */					\
 
 SEC("tc")
 __description("bounds check based on reg_off + var_off + insn_off. test1")
+<<<<<<< HEAD
 __failure __msg("map_value pointer offset 1073741822 is not allowed")
+=======
+__failure __msg("value_size=8 off=1073741825")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void var_off_insn_off_test1(void)
 {
 	asm volatile ("					\
@@ -1066,6 +1070,10 @@ l0_%=:	r0 = 0;						\
 SEC("xdp")
 __description("bound check with JMP_JSLT for crossing 64-bit signed boundary")
 __success __retval(0)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void crossing_64_bit_signed_boundary_2(void)
 {
 	asm volatile ("					\
@@ -1147,6 +1155,10 @@ l0_%=:	r0 = 0;						\
 SEC("xdp")
 __description("bound check with JMP32_JSLT for crossing 32-bit signed boundary")
 __success __retval(0)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void crossing_32_bit_signed_boundary_2(void)
 {
 	asm volatile ("					\
@@ -1534,7 +1546,11 @@ __naked void sub32_partial_overflow(void)
 SEC("socket")
 __description("dead branch on jset, does not result in invariants violation error")
 __success __log_level(2)
+<<<<<<< HEAD
 __retval(0)
+=======
+__retval(0) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_range_analysis(void)
 {
 	asm volatile ("			\
@@ -1570,7 +1586,11 @@ l0_%=:	r0 = 0;				\
  */
 SEC("socket")
 __description("bounds deduction cross sign boundary, negative overlap")
+<<<<<<< HEAD
 __success __log_level(2)
+=======
+__success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=smin32=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,umin32=0xfffffd71,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
 __retval(0)
 __naked void bounds_deduct_negative_overlap(void)
@@ -1614,7 +1634,11 @@ l0_%=:	r0 = 0;				\
  */
 SEC("socket")
 __description("bounds deduction cross sign boundary, positive overlap")
+<<<<<<< HEAD
 __success __log_level(2)
+=======
+__success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("3: (2d) if r0 > r1 {{.*}} R0=scalar(smin=smin32=0,smax=umax=smax32=umax32=127,var_off=(0x0; 0x7f))")
 __retval(0)
 __naked void bounds_deduct_positive_overlap(void)
@@ -1647,7 +1671,11 @@ l0_%=:	r0 = 0;				\
  */
 SEC("socket")
 __description("bounds deduction cross sign boundary, two overlaps")
+<<<<<<< HEAD
 __failure
+=======
+__failure __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("3: (2d) if r0 > r1 {{.*}} R0=scalar(smin=smin32=-128,smax=smax32=127,umax=0xffffffffffffff80)")
 __msg("frame pointer is read only")
 __naked void bounds_deduct_two_overlaps(void)
@@ -1711,7 +1739,11 @@ SEC("socket")
 __description("conditional jump on same register, branch taken")
 __not_msg("20: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
 __retval(0)
+=======
+__retval(0) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void condition_jump_on_same_register(void *ctx)
 {
 	asm volatile("			\
@@ -1746,7 +1778,11 @@ SEC("socket")
 __description("jset on same register, constant value branch taken")
 __not_msg("7: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
 __retval(0)
+=======
+__retval(0) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_on_same_register_1(void *ctx)
 {
 	asm volatile("			\
@@ -1768,7 +1804,11 @@ SEC("socket")
 __description("jset on same register, scalar value branch taken")
 __not_msg("12: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
 __retval(0)
+=======
+__retval(0) __flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_on_same_register_2(void *ctx)
 {
 	asm volatile("			\
@@ -1798,6 +1838,10 @@ __description("jset on same register, scalar value unknown branch 1")
 __msg("3: (b7) r0 = 0 {{.*}} R0=0")
 __msg("5: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_on_same_register_3(void *ctx)
 {
 	asm volatile("			\
@@ -1819,6 +1863,10 @@ __description("jset on same register, scalar value unknown branch 2")
 __msg("4: (b7) r0 = 0 {{.*}} R0=0")
 __msg("6: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_on_same_register_4(void *ctx)
 {
 	asm volatile("			\
@@ -1841,6 +1889,10 @@ __description("jset on same register, scalar value unknown branch 3")
 __msg("4: (b7) r0 = 0 {{.*}} R0=0")
 __msg("6: (b7) r0 = 1 {{.*}} R0=1")
 __success __log_level(2)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void jset_on_same_register_5(void *ctx)
 {
 	asm volatile("			\
@@ -1872,6 +1924,10 @@ SEC("socket")
 __description("bounds refinement with single-value tnum on umax")
 __msg("3: (15) if r0 == 0xe0 {{.*}} R0=240")
 __success __log_level(2)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void bounds_refinement_tnum_umax(void *ctx)
 {
 	asm volatile("			\
@@ -1901,6 +1957,10 @@ SEC("socket")
 __description("bounds refinement with single-value tnum on umin")
 __msg("3: (15) if r0 == 0xf0 {{.*}} R0=224")
 __success __log_level(2)
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void bounds_refinement_tnum_umin(void *ctx)
 {
 	asm volatile("			\
@@ -1995,6 +2055,10 @@ __naked void bounds_refinement_multiple_overlaps(void *ctx)
 
 SEC("socket")
 __success
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void signed_unsigned_intersection32_case1(void *ctx)
 {
 	asm volatile("									\
@@ -2012,6 +2076,10 @@ __naked void signed_unsigned_intersection32_case1(void *ctx)
 
 SEC("socket")
 __success
+<<<<<<< HEAD
+=======
+__flag(BPF_F_TEST_REG_INVARIANTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void signed_unsigned_intersection32_case2(void *ctx)
 {
 	asm volatile("									\
@@ -2028,6 +2096,7 @@ __naked void signed_unsigned_intersection32_case2(void *ctx)
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 /*
  * After instruction 3, the u64 and s64 ranges look as follows:
  * 0  umin=2                             umax=0xff..ff00..03   U64_MAX
@@ -2062,6 +2131,8 @@ __naked void refinement_32bounds_not_overwriting_64bounds(void *ctx)
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SEC("socket")
 __description("maybe_fork_scalars: OR with constant rejects OOB")
 __failure __msg("invalid access to map value")
@@ -2156,6 +2227,7 @@ l0_%=:	r0 = 0;						\
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 /*
  * Last jump can be detected as always taken because the intersection of R5 and
  * R7 32bit tnums produces a constant that isn't within R7's s32 bounds.
@@ -2184,4 +2256,6 @@ __naked void tnums_equal_impossible_constant(void *ctx)
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

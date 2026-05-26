@@ -55,7 +55,10 @@
  */
 static u64 efi_va = EFI_VA_START;
 static struct mm_struct *efi_prev_mm;
+<<<<<<< HEAD
 static unsigned long efi_cr4_lass;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * We need our own copy of the higher levels of the page tables
@@ -444,6 +447,7 @@ static void efi_leave_mm(void)
 	unuse_temporary_mm(efi_prev_mm);
 }
 
+<<<<<<< HEAD
 /*
  * Toggle LASS to allow EFI to access any 1:1 mapped region in the lower
  * half.
@@ -476,18 +480,26 @@ static void efi_enable_lass(void)
 	cr4_set_bits(efi_cr4_lass);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void arch_efi_call_virt_setup(void)
 {
 	efi_sync_low_kernel_mappings();
 	efi_fpu_begin();
 	firmware_restrict_branch_speculation_start();
 	efi_enter_mm();
+<<<<<<< HEAD
 	efi_disable_lass();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void arch_efi_call_virt_teardown(void)
 {
+<<<<<<< HEAD
 	efi_enable_lass();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	efi_leave_mm();
 	firmware_restrict_branch_speculation_end();
 	efi_fpu_end();

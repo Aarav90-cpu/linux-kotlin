@@ -618,7 +618,11 @@ static const struct device_type hsr_type = {
 	.name = "hsr",
 };
 
+<<<<<<< HEAD
 static const struct hsr_proto_ops hsr_ops = {
+=======
+static struct hsr_proto_ops hsr_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.send_sv_frame = send_hsr_supervision_frame,
 	.create_tagged_frame = hsr_create_tagged_frame,
 	.get_untagged_frame = hsr_get_untagged_frame,
@@ -628,7 +632,11 @@ static const struct hsr_proto_ops hsr_ops = {
 	.register_frame_out = hsr_register_frame_out,
 };
 
+<<<<<<< HEAD
 static const struct hsr_proto_ops prp_ops = {
+=======
+static struct hsr_proto_ops prp_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.send_sv_frame = send_prp_supervision_frame,
 	.create_tagged_frame = prp_create_tagged_frame,
 	.get_untagged_frame = prp_get_untagged_frame,
@@ -744,7 +752,11 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
 		hsr->proto_ops = &hsr_ops;
 	}
 
+<<<<<<< HEAD
 	/* Make sure we recognize frames from ourselves in hsr_handle_frame() */
+=======
+	/* Make sure we recognize frames from ourselves in hsr_rcv() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	res = hsr_create_self_node(hsr, hsr_dev->dev_addr,
 				   slave[1]->dev_addr);
 	if (res < 0)

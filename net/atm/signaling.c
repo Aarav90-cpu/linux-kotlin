@@ -179,7 +179,10 @@ as_indicate_complete:
 		break;
 	default:
 		pr_alert("bad message type %d\n", (int)msg->type);
+<<<<<<< HEAD
 		dev_kfree_skb(skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Paired with find_get_vcc(msg->vcc) above */
 		sock_put(sk);
 		return -EINVAL;

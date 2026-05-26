@@ -18,7 +18,10 @@
 #include <asm/ptrace.h>
 #include <asm/kvm_tlb.h>
 #include <asm/kvm_vmid.h>
+<<<<<<< HEAD
 #include <asm/kvm_vcpu_config.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_vcpu_fp.h>
 #include <asm/kvm_vcpu_insn.h>
 #include <asm/kvm_vcpu_sbi.h>
@@ -48,6 +51,21 @@
 
 #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
 
+<<<<<<< HEAD
+=======
+#define KVM_HEDELEG_DEFAULT		(BIT(EXC_INST_MISALIGNED) | \
+					 BIT(EXC_INST_ILLEGAL)     | \
+					 BIT(EXC_BREAKPOINT)      | \
+					 BIT(EXC_SYSCALL)         | \
+					 BIT(EXC_INST_PAGE_FAULT) | \
+					 BIT(EXC_LOAD_PAGE_FAULT) | \
+					 BIT(EXC_STORE_PAGE_FAULT))
+
+#define KVM_HIDELEG_DEFAULT		(BIT(IRQ_VS_SOFT)  | \
+					 BIT(IRQ_VS_TIMER) | \
+					 BIT(IRQ_VS_EXT))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define KVM_DIRTY_LOG_MANUAL_CAPS	(KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
 					 KVM_DIRTY_LOG_INITIALLY_SET)
 
@@ -83,7 +101,10 @@ struct kvm_arch {
 	/* G-stage page table */
 	pgd_t *pgd;
 	phys_addr_t pgd_phys;
+<<<<<<< HEAD
 	unsigned long pgd_levels;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Guest Timer */
 	struct kvm_guest_timer timer;
@@ -157,6 +178,15 @@ struct kvm_vcpu_csr {
 	unsigned long senvcfg;
 };
 
+<<<<<<< HEAD
+=======
+struct kvm_vcpu_config {
+	u64 henvcfg;
+	u64 hstateen0;
+	unsigned long hedeleg;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct kvm_vcpu_smstateen_csr {
 	unsigned long sstateen0;
 };
@@ -257,9 +287,12 @@ struct kvm_vcpu_arch {
 	/* 'static' configurations which are set only once */
 	struct kvm_vcpu_config cfg;
 
+<<<<<<< HEAD
 	/* Indicates modified guest CSRs */
 	bool csr_dirty;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* SBI steal-time accounting */
 	struct {
 		gpa_t shmem;

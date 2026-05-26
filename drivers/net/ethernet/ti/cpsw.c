@@ -706,7 +706,11 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
 	struct cpsw_common *cpsw = priv->cpsw;
 
 	/* soft reset the controller and initialize ale */
+<<<<<<< HEAD
 	cpsw_soft_reset("cpsw", &cpsw->regs->soft_reset);
+=======
+	soft_reset("cpsw", &cpsw->regs->soft_reset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpsw_ale_start(cpsw->ale);
 
 	/* switch to vlan aware mode */

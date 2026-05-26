@@ -1098,7 +1098,11 @@ static int smu_v13_0_4_set_fine_grain_gfx_freq_parameters(struct smu_context *sm
 
 static const struct pptable_funcs smu_v13_0_4_ppt_funcs = {
 	.check_fw_status = smu_v13_0_check_fw_status,
+<<<<<<< HEAD
 	.check_fw_version = smu_cmn_check_fw_version,
+=======
+	.check_fw_version = smu_v13_0_check_fw_version,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.init_smc_tables = smu_v13_0_4_init_smc_tables,
 	.fini_smc_tables = smu_v13_0_4_fini_smc_tables,
 	.get_vbios_bootup_values = smu_v13_0_get_vbios_bootup_values,

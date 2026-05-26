@@ -51,8 +51,12 @@ static inline void xfwrite(const void *str, size_t len, size_t count, FILE *out)
 }
 
 /* util.c */
+<<<<<<< HEAD
 const char *file_lookup(const char *name,
 			const char *parent_name, int parent_lineno);
+=======
+const char *file_lookup(const char *name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* lexer.l */
 int yylex(void);

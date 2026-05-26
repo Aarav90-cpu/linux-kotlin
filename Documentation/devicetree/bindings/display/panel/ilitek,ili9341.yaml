@@ -40,6 +40,11 @@ properties:
   spi-max-frequency:
     const: 10000000
 
+<<<<<<< HEAD
+=======
+  port: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   vci-supply:
     description: Analog voltage supply (2.5 .. 3.3V)
 
@@ -49,6 +54,11 @@ properties:
   vddi-led-supply:
     description: Voltage supply for the LED driver (1.65 .. 3.3 V)
 
+<<<<<<< HEAD
+=======
+unevaluatedProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -64,8 +74,11 @@ then:
   required:
     - port
 
+<<<<<<< HEAD
 unevaluatedProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |+
     #include <dt-bindings/gpio/gpio.h>

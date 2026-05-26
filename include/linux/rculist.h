@@ -261,6 +261,7 @@ static inline void list_replace_rcu(struct list_head *old,
 	old->prev = LIST_POISON2;
 }
 
+<<<<<<< HEAD
 static inline void __list_splice_rcu(struct list_head *list,
 				     struct list_head *prev,
 				     struct list_head *next)
@@ -290,6 +291,8 @@ static inline void list_splice_rcu(struct list_head *list,
 		__list_splice_rcu(list, head, head->next);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __list_splice_init_rcu - join an RCU-protected list into an existing list.
  * @list:	the RCU-protected list to splice

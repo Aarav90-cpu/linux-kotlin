@@ -2440,7 +2440,14 @@ static int get_tree_block_key(struct btrfs_fs_info *fs_info,
 	eb = read_tree_block(fs_info, block->bytenr, &check);
 	if (IS_ERR(eb))
 		return PTR_ERR(eb);
+<<<<<<< HEAD
 
+=======
+	if (unlikely(!extent_buffer_uptodate(eb))) {
+		free_extent_buffer(eb);
+		return -EIO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (block->level == 0)
 		btrfs_item_key_to_cpu(eb, &block->key, 0);
 	else
@@ -2607,7 +2614,11 @@ int relocate_tree_blocks(struct btrfs_trans_handle *trans,
 		if (!block->key_ready)
 			btrfs_readahead_tree_block(fs_info, block->bytenr,
 						   block->owner, 0,
+<<<<<<< HEAD
 						   block->level, NULL);
+=======
+						   block->level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Get first keys */
@@ -3642,7 +3653,16 @@ restart:
 	btrfs_block_rsv_release(fs_info, rc->block_rsv, (u64)-1, NULL);
 
 	/* get rid of pinned extents */
+<<<<<<< HEAD
 	ret = btrfs_commit_current_transaction(rc->extent_root);
+=======
+	trans = btrfs_join_transaction(rc->extent_root);
+	if (IS_ERR(trans)) {
+		err = PTR_ERR(trans);
+		goto out_free;
+	}
+	ret = btrfs_commit_transaction(trans);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret && !err)
 		err = ret;
 out_free:
@@ -3876,7 +3896,11 @@ static int add_remap_tree_entries(struct btrfs_trans_handle *trans, struct btrfs
 		ret = btrfs_insert_empty_items(trans, fs_info->remap_root, path, &batch);
 		btrfs_release_path(path);
 
+<<<<<<< HEAD
 		if (ret || num_entries <= max_items)
+=======
+		if (num_entries <= max_items)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		num_entries -= max_items;
@@ -4174,12 +4198,15 @@ static int move_existing_remap(struct btrfs_fs_info *fs_info,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (ins.offset < length) {
 		spin_lock(&sinfo->lock);
 		btrfs_space_info_update_bytes_may_use(sinfo, ins.offset - length);
 		spin_unlock(&sinfo->lock);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dest_addr = ins.objectid;
 	dest_length = ins.offset;
 
@@ -5006,12 +5033,15 @@ static int do_remap_reloc_trans(struct btrfs_fs_info *fs_info,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (ins.offset < remap_length) {
 		spin_lock(&sinfo->lock);
 		btrfs_space_info_update_bytes_may_use(sinfo, ins.offset - remap_length);
 		spin_unlock(&sinfo->lock);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	made_reservation = true;
 
 	new_addr = ins.objectid;
@@ -5035,6 +5065,7 @@ static int do_remap_reloc_trans(struct btrfs_fs_info *fs_info,
 
 	if (bg_needs_free_space) {
 		ret = btrfs_add_block_group_free_space(trans, dest_bg);
+<<<<<<< HEAD
 		if (ret) {
 			btrfs_abort_transaction(trans, ret);
 			goto fail;
@@ -5056,6 +5087,23 @@ static int do_remap_reloc_trans(struct btrfs_fs_info *fs_info,
 	ret = add_remap_entry(trans, path, src_bg, start, new_addr, length);
 	if (ret) {
 		btrfs_abort_transaction(trans, ret);
+=======
+		if (ret)
+			goto fail;
+	}
+
+	ret = copy_remapped_data(fs_info, start, new_addr, length);
+	if (ret)
+		goto fail;
+
+	ret = btrfs_remove_from_free_space_tree(trans, new_addr, length);
+	if (ret)
+		goto fail;
+
+	ret = add_remap_entry(trans, path, src_bg, start, new_addr, length);
+	if (ret) {
+		btrfs_add_to_free_space_tree(trans, new_addr, length);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 

@@ -525,7 +525,10 @@ static void split_stream_across_pipes(
 		struct pipe_ctx *primary_pipe,
 		struct pipe_ctx *secondary_pipe)
 {
+<<<<<<< HEAD
 	(void)res_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pipe_idx = secondary_pipe->pipe_idx;
 
 	if (!primary_pipe->plane_state)

@@ -104,6 +104,11 @@ struct rzv2h_ivc {
 	struct {
 		/* Spinlock to guard buffer queue */
 		spinlock_t lock;
+<<<<<<< HEAD
+=======
+		struct workqueue_struct *async_wq;
+		struct work_struct work;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct list_head queue;
 		struct rzv2h_ivc_buf *curr;
 		unsigned int sequence;
@@ -128,4 +133,7 @@ void rzv2h_ivc_deinit_subdevice(struct rzv2h_ivc *ivc);
 void rzv2h_ivc_write(struct rzv2h_ivc *ivc, u32 addr, u32 val);
 void rzv2h_ivc_update_bits(struct rzv2h_ivc *ivc, unsigned int addr,
 			   u32 mask, u32 val);
+<<<<<<< HEAD
 void rzv2h_ivc_transfer_buffer(struct rzv2h_ivc *ivc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

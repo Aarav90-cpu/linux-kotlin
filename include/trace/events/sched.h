@@ -896,6 +896,7 @@ DECLARE_TRACE(sched_set_need_resched,
 	TP_PROTO(struct task_struct *tsk, int cpu, int tif),
 	TP_ARGS(tsk, cpu, tif));
 
+<<<<<<< HEAD
 #define DL_OTHER 0
 #define DL_TASK 1
 #define DL_SERVER_FAIR 2
@@ -922,6 +923,8 @@ DECLARE_TRACE(sched_dl_server_stop,
 	TP_PROTO(struct sched_dl_entity *dl_se, int cpu, u8 type),
 	TP_ARGS(dl_se, cpu, type));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _TRACE_SCHED_H */
 
 /* This part must be outside protection */

@@ -24,8 +24,11 @@
  * @P9_DEBUG_PKT: packet marshalling/unmarshalling
  * @P9_DEBUG_FSC: FS-cache tracing
  * @P9_DEBUG_VPKT: Verbose packet debugging (full packet dump)
+<<<<<<< HEAD
  * @P9_DEBUG_CACHE: cache operations tracing
  * @P9_DEBUG_MMAP: memory-mapped I/O tracing
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * These flags are passed at mount time to turn on various levels of
  * verbosity and tracing which will be output to the system logs.
@@ -70,12 +73,16 @@ void _p9_debug(enum p9_debug_flags level, const char *func,
  * @P9_RSYMLINK: make symlink response
  * @P9_TMKNOD: create a special file object request
  * @P9_RMKNOD: create a special file object response
+<<<<<<< HEAD
  * @P9_TLOPEN: open a file for I/O (9P2000.L)
  * @P9_RLOPEN: response with qid and iounit (9P2000.L)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @P9_TLCREATE: prepare a handle for I/O on an new file for 9P2000.L
  * @P9_RLCREATE: response with file access information for 9P2000.L
  * @P9_TRENAME: rename request
  * @P9_RRENAME: rename response
+<<<<<<< HEAD
  * @P9_TREADLINK: read symbolic link target (9P2000.L)
  * @P9_RREADLINK: response with symbolic link target (9P2000.L)
  * @P9_TGETATTR: get file attributes request (9P2000.L)
@@ -103,6 +110,11 @@ void _p9_debug(enum p9_debug_flags level, const char *func,
  * @P9_TMKDIR: create a directory request (9P2000.L)
  * @P9_RMKDIR: create a directory response (9P2000.L)
  * @P9_TVERSION: negotiate protocol version and message size
+=======
+ * @P9_TMKDIR: create a directory request
+ * @P9_RMKDIR: create a directory response
+ * @P9_TVERSION: version handshake request
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @P9_RVERSION: version handshake response
  * @P9_TAUTH: request to establish authentication channel
  * @P9_RAUTH: response with authentication information
@@ -222,10 +234,13 @@ enum p9_msg_t {
  * @P9_ORCLOSE: remove the file when the file is closed
  * @P9_OAPPEND: open the file and seek to the end
  * @P9_OEXCL: only create a file, do not open it
+<<<<<<< HEAD
  * @P9L_MODE_MASK: mask for protocol mode bits (client-side only)
  * @P9L_DIRECT: disable client-side caching for this file
  * @P9L_NOWRITECACHE: disable write caching for this file
  * @P9L_LOOSE: enable loose cache consistency
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * 9P open modes differ slightly from Posix standard modes.
  * In particular, there are extra modes which specify different

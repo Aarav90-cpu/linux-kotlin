@@ -174,7 +174,11 @@
 		pinctrl-0 = <&pmic_pins>;
 		pinctrl-names = "default";
 		interrupt-parent = <&gpio1>;
+<<<<<<< HEAD
 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <3 GPIO_ACTIVE_LOW>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nxp,i2c-lt-enable;
 
 		regulators {
@@ -417,7 +421,11 @@
 
 	pmic_pins: pinctrl-pmic-grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
+=======
+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 

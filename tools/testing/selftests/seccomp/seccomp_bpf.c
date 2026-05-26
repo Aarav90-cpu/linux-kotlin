@@ -170,12 +170,15 @@ struct seccomp_data {
 # endif
 #endif
 
+<<<<<<< HEAD
 #ifndef __NR_uprobe
 # if defined(__x86_64__)
 #  define __NR_uprobe 336
 # endif
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef SECCOMP_SET_MODE_STRICT
 #define SECCOMP_SET_MODE_STRICT 0
 #endif

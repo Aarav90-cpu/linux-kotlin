@@ -9,7 +9,11 @@
 
 void iwl_mld_get_bios_tables(struct iwl_mld *mld);
 void iwl_mld_configure_lari(struct iwl_mld *mld);
+<<<<<<< HEAD
 void iwl_mld_init_ap_type_tables(struct iwl_mld *mld);
+=======
+void iwl_mld_init_uats(struct iwl_mld *mld);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void iwl_mld_init_tas(struct iwl_mld *mld);
 
 int iwl_mld_init_ppag(struct iwl_mld *mld);

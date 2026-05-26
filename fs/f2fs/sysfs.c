@@ -338,6 +338,7 @@ static ssize_t avg_vblocks_show(struct f2fs_attr *a,
 	f2fs_update_sit_info(sbi);
 	return sysfs_emit(buf, "%llu\n", (unsigned long long)(si->avg_vblocks));
 }
+<<<<<<< HEAD
 
 static ssize_t defrag_blocks_show(struct f2fs_attr *a,
 				struct f2fs_sb_info *sbi, char *buf)
@@ -346,6 +347,8 @@ static ssize_t defrag_blocks_show(struct f2fs_attr *a,
 
 	return sysfs_emit(buf, "%llu\n", (unsigned long long)(si->defrag_blks));
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static ssize_t main_blkaddr_show(struct f2fs_attr *a,
@@ -387,12 +390,19 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
 	if (!strcmp(a->attr.name, "extension_list")) {
 		__u8 (*extlist)[F2FS_EXTENSION_LEN] =
 					sbi->raw_super->extension_list;
+<<<<<<< HEAD
 		int cold_count, hot_count;
 		int len = 0, i;
 
 		f2fs_down_read(&sbi->sb_lock);
 		cold_count = le32_to_cpu(sbi->raw_super->extension_count);
 		hot_count = sbi->raw_super->hot_ext_count;
+=======
+		int cold_count = le32_to_cpu(sbi->raw_super->extension_count);
+		int hot_count = sbi->raw_super->hot_ext_count;
+		int len = 0, i;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		len += sysfs_emit_at(buf, len, "cold file extension:\n");
 		for (i = 0; i < cold_count; i++)
 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
@@ -400,7 +410,10 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
 		len += sysfs_emit_at(buf, len, "hot file extension:\n");
 		for (i = cold_count; i < cold_count + hot_count; i++)
 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
+<<<<<<< HEAD
 		f2fs_up_read(&sbi->sb_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return len;
 	}
@@ -1362,7 +1375,10 @@ F2FS_GENERAL_RO_ATTR(gc_mode);
 F2FS_GENERAL_RO_ATTR(moved_blocks_background);
 F2FS_GENERAL_RO_ATTR(moved_blocks_foreground);
 F2FS_GENERAL_RO_ATTR(avg_vblocks);
+<<<<<<< HEAD
 F2FS_GENERAL_RO_ATTR(defrag_blocks);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifdef CONFIG_FS_ENCRYPTION
@@ -1485,7 +1501,10 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(moved_blocks_foreground),
 	ATTR_LIST(moved_blocks_background),
 	ATTR_LIST(avg_vblocks),
+<<<<<<< HEAD
 	ATTR_LIST(defrag_blocks),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 #ifdef CONFIG_BLK_DEV_ZONED
 	ATTR_LIST(unusable_blocks_per_sec),

@@ -24,7 +24,11 @@
 #ifdef __NR_userfaultfd
 
 static int nr_vcpus = 1;
+<<<<<<< HEAD
 static u64 guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
+=======
+static uint64_t guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static size_t demand_paging_size;
 static char *guest_data_prototype;
@@ -58,7 +62,11 @@ static int handle_uffd_page_request(int uffd_mode, int uffd,
 		struct uffd_msg *msg)
 {
 	pid_t tid = syscall(__NR_gettid);
+<<<<<<< HEAD
 	u64 addr = msg->arg.pagefault.address;
+=======
+	uint64_t addr = msg->arg.pagefault.address;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timespec start;
 	struct timespec ts_diff;
 	int r;
@@ -68,7 +76,11 @@ static int handle_uffd_page_request(int uffd_mode, int uffd,
 	if (uffd_mode == UFFDIO_REGISTER_MODE_MISSING) {
 		struct uffdio_copy copy;
 
+<<<<<<< HEAD
 		copy.src = (u64)guest_data_prototype;
+=======
+		copy.src = (uint64_t)guest_data_prototype;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		copy.dst = addr;
 		copy.len = demand_paging_size;
 		copy.mode = 0;
@@ -138,7 +150,11 @@ struct test_params {
 	bool partition_vcpu_memory_access;
 };
 
+<<<<<<< HEAD
 static void prefault_mem(void *alias, u64 len)
+=======
+static void prefault_mem(void *alias, uint64_t len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t p;
 
@@ -154,7 +170,11 @@ static void run_test(enum vm_guest_mode mode, void *arg)
 	struct memstress_vcpu_args *vcpu_args;
 	struct test_params *p = arg;
 	struct uffd_desc **uffd_descs = NULL;
+<<<<<<< HEAD
 	u64 uffd_region_size;
+=======
+	uint64_t uffd_region_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timespec start;
 	struct timespec ts_diff;
 	double vcpu_paging_rate;

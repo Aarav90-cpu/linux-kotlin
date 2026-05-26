@@ -248,7 +248,11 @@ config ARM_TEGRA186_CPUFREQ
 
 config ARM_TEGRA194_CPUFREQ
 	tristate "Tegra194 CPUFreq support"
+<<<<<<< HEAD
 	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC
+=======
+	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC || (64BIT && COMPILE_TEST)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on TEGRA_BPMP
 	default ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC
 	help

@@ -74,7 +74,10 @@ Common FPDL3/GMSL input parameters
 
     | 0 - OLDI/JEIDA
     | 1 - SPWG/VESA (default)
+<<<<<<< HEAD
     | 2 - ZDML
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 **link_status** (R):
     Video link status. If the link is locked, chips are properly connected and
@@ -241,6 +244,7 @@ Common FPDL3/GMSL output parameters
     *Note: This parameter can not be changed while the output v4l2 device is
     open.*
 
+<<<<<<< HEAD
 **color_mapping** (RW):
     Mapping of the outgoing bits in the signal to the colour bits of the pixels.
 
@@ -248,6 +252,8 @@ Common FPDL3/GMSL output parameters
     | 1 - SPWG/VESA (default)
     | 2 - ZDML
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 **frame_rate** (RW):
     Output video signal frame rate limit in frames per second. Due to
     the limited output pixel clock steps, the card can not always generate

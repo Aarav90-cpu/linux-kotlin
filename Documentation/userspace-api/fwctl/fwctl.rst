@@ -148,7 +148,10 @@ area resulting in clashes will be resolved in favour of a kernel implementation.
 fwctl User API
 ==============
 
+<<<<<<< HEAD
 .. kernel-doc:: include/uapi/fwctl/bnxt.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .. kernel-doc:: include/uapi/fwctl/fwctl.h
 .. kernel-doc:: include/uapi/fwctl/mlx5.h
 .. kernel-doc:: include/uapi/fwctl/pds.h

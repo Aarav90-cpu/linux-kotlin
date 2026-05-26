@@ -445,13 +445,21 @@ static void nf_flow_encap_pop(struct nf_flowtable_ctx *ctx,
 		switch (skb->protocol) {
 		case htons(ETH_P_8021Q):
 			vlan_hdr = (struct vlan_hdr *)skb->data;
+<<<<<<< HEAD
 			skb_pull_rcsum(skb, VLAN_HLEN);
+=======
+			__skb_pull(skb, VLAN_HLEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			vlan_set_encap_proto(skb, vlan_hdr);
 			skb_reset_network_header(skb);
 			break;
 		case htons(ETH_P_PPP_SES):
 			skb->protocol = __nf_flow_pppoe_proto(skb);
+<<<<<<< HEAD
 			skb_pull_rcsum(skb, PPPOE_SES_HLEN);
+=======
+			skb_pull(skb, PPPOE_SES_HLEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			skb_reset_network_header(skb);
 			break;
 		}
@@ -462,6 +470,26 @@ static void nf_flow_encap_pop(struct nf_flowtable_ctx *ctx,
 		nf_flow_ip_tunnel_pop(ctx, skb);
 }
 
+<<<<<<< HEAD
+=======
+struct nf_flow_xmit {
+	const void		*dest;
+	const void		*source;
+	struct net_device	*outdev;
+};
+
+static unsigned int nf_flow_queue_xmit(struct net *net, struct sk_buff *skb,
+				       struct nf_flow_xmit *xmit)
+{
+	skb->dev = xmit->outdev;
+	dev_hard_header(skb, skb->dev, ntohs(skb->protocol),
+			xmit->dest, xmit->source, skb->len);
+	dev_queue_xmit(skb);
+
+	return NF_STOLEN;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct flow_offload_tuple_rhash *
 nf_flow_offload_lookup(struct nf_flowtable_ctx *ctx,
 		       struct nf_flowtable *flow_table, struct sk_buff *skb)
@@ -507,7 +535,11 @@ static int nf_flow_offload_forward(struct nf_flowtable_ctx *ctx,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (skb_ensure_writable(skb, thoff + ctx->hdrsize))
+=======
+	if (skb_try_make_writable(skb, thoff + ctx->hdrsize))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 
 	flow_offload_refresh(flow_table, flow, false);
@@ -527,6 +559,7 @@ static int nf_flow_offload_forward(struct nf_flowtable_ctx *ctx,
 	return 1;
 }
 
+<<<<<<< HEAD
 /* Similar to skb_vlan_push. */
 static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id,
 			     u32 needed_headroom)
@@ -555,6 +588,9 @@ static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id,
 
 static int nf_flow_pppoe_push(struct sk_buff *skb, u16 id,
 			      u32 needed_headroom)
+=======
+static int nf_flow_pppoe_push(struct sk_buff *skb, u16 id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int data_len = skb->len + sizeof(__be16);
 	struct ppp_hdr {
@@ -563,7 +599,11 @@ static int nf_flow_pppoe_push(struct sk_buff *skb, u16 id,
 	} *ph;
 	__be16 proto;
 
+<<<<<<< HEAD
 	if (skb_cow_head(skb, needed_headroom + PPPOE_SES_HLEN))
+=======
+	if (skb_cow_head(skb, PPPOE_SES_HLEN))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 
 	switch (skb->protocol) {
@@ -740,6 +780,7 @@ static int nf_flow_tunnel_v6_push(struct net *net, struct sk_buff *skb,
 }
 
 static int nf_flow_encap_push(struct sk_buff *skb,
+<<<<<<< HEAD
 			      struct flow_offload_tuple *tuple,
 			      struct net_device *outdev)
 {
@@ -758,6 +799,23 @@ static int nf_flow_encap_push(struct sk_buff *skb,
 		case htons(ETH_P_PPP_SES):
 			if (nf_flow_pppoe_push(skb, tuple->encap[i].id,
 					       needed_headroom) < 0)
+=======
+			      struct flow_offload_tuple *tuple)
+{
+	int i;
+
+	for (i = 0; i < tuple->encap_num; i++) {
+		switch (tuple->encap[i].proto) {
+		case htons(ETH_P_8021Q):
+		case htons(ETH_P_8021AD):
+			skb_reset_mac_header(skb);
+			if (skb_vlan_push(skb, tuple->encap[i].proto,
+					  tuple->encap[i].id) < 0)
+				return -1;
+			break;
+		case htons(ETH_P_PPP_SES):
+			if (nf_flow_pppoe_push(skb, tuple->encap[i].id) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return -1;
 			break;
 		}
@@ -766,6 +824,7 @@ static int nf_flow_encap_push(struct sk_buff *skb,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct nf_flow_xmit {
 	const void		*dest;
 	const void		*source;
@@ -836,6 +895,8 @@ static unsigned int nf_flow_queue_xmit(struct net *net, struct sk_buff *skb,
 	return NF_STOLEN;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned int
 nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
 			const struct nf_hook_state *state)
@@ -880,6 +941,12 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
 	if (nf_flow_tunnel_v4_push(state->net, skb, other_tuple, &ip_daddr) < 0)
 		return NF_DROP;
 
+<<<<<<< HEAD
+=======
+	if (nf_flow_encap_push(skb, other_tuple) < 0)
+		return NF_DROP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (tuplehash->tuple.xmit_type) {
 	case FLOW_OFFLOAD_XMIT_NEIGH:
 		rt = dst_rtable(tuplehash->tuple.dst_cache);
@@ -909,8 +976,11 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
 		WARN_ON_ONCE(1);
 		return NF_DROP;
 	}
+<<<<<<< HEAD
 	xmit.tuple = other_tuple;
 	xmit.needs_gso_segment = tuplehash->tuple.needs_gso_segment;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nf_flow_queue_xmit(state->net, skb, &xmit);
 }
@@ -1119,7 +1189,11 @@ static int nf_flow_offload_ipv6_forward(struct nf_flowtable_ctx *ctx,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (skb_ensure_writable(skb, thoff + ctx->hdrsize))
+=======
+	if (skb_try_make_writable(skb, thoff + ctx->hdrsize))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 
 	flow_offload_refresh(flow_table, flow, false);
@@ -1201,6 +1275,12 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_buff *skb,
 				   &ip6_daddr, encap_limit) < 0)
 		return NF_DROP;
 
+<<<<<<< HEAD
+=======
+	if (nf_flow_encap_push(skb, other_tuple) < 0)
+		return NF_DROP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (tuplehash->tuple.xmit_type) {
 	case FLOW_OFFLOAD_XMIT_NEIGH:
 		rt = dst_rt6_info(tuplehash->tuple.dst_cache);
@@ -1230,8 +1310,11 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_buff *skb,
 		WARN_ON_ONCE(1);
 		return NF_DROP;
 	}
+<<<<<<< HEAD
 	xmit.tuple = other_tuple;
 	xmit.needs_gso_segment = tuplehash->tuple.needs_gso_segment;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nf_flow_queue_xmit(state->net, skb, &xmit);
 }

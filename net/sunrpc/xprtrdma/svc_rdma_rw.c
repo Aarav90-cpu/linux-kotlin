@@ -252,6 +252,7 @@ static void svc_rdma_write_info_free(struct svc_rdma_write_info *info)
 }
 
 /**
+<<<<<<< HEAD
  * svc_rdma_write_chunk_release - Release Write chunk I/O resources
  * @rdma: controlling transport
  * @ctxt: Send context that is being released
@@ -274,6 +275,8 @@ void svc_rdma_write_chunk_release(struct svcxprt_rdma *rdma,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * svc_rdma_reply_chunk_release - Release Reply chunk I/O resources
  * @rdma: controlling transport
  * @ctxt: Send context that is being released
@@ -329,11 +332,20 @@ static void svc_rdma_write_done(struct ib_cq *cq, struct ib_wc *wc)
 	struct ib_cqe *cqe = wc->wr_cqe;
 	struct svc_rdma_chunk_ctxt *cc =
 			container_of(cqe, struct svc_rdma_chunk_ctxt, cc_cqe);
+<<<<<<< HEAD
+=======
+	struct svc_rdma_write_info *info =
+			container_of(cc, struct svc_rdma_write_info, wi_cc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (wc->status) {
 	case IB_WC_SUCCESS:
 		trace_svcrdma_wc_write(&cc->cc_cid);
+<<<<<<< HEAD
 		return;
+=======
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IB_WC_WR_FLUSH_ERR:
 		trace_svcrdma_wc_write_flush(wc, &cc->cc_cid);
 		break;
@@ -341,11 +353,20 @@ static void svc_rdma_write_done(struct ib_cq *cq, struct ib_wc *wc)
 		trace_svcrdma_wc_write_err(wc, &cc->cc_cid);
 	}
 
+<<<<<<< HEAD
 	/* The RDMA Write has flushed, so the client won't get
 	 * some of the outgoing RPC message. Signal the loss
 	 * to the client by closing the connection.
 	 */
 	svc_xprt_deferred_close(&rdma->sc_xprt);
+=======
+	svc_rdma_wake_send_waiters(rdma, cc->cc_sqecount);
+
+	if (unlikely(wc->status != IB_WC_SUCCESS))
+		svc_xprt_deferred_close(&rdma->sc_xprt);
+
+	svc_rdma_write_info_free(info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -424,6 +445,7 @@ static int svc_rdma_post_chunk_ctxt(struct svcxprt_rdma *rdma,
 		cqe = NULL;
 	}
 
+<<<<<<< HEAD
 	ret = svc_rdma_sq_wait(rdma, &cc->cc_cid, cc->cc_sqecount);
 	if (ret < 0)
 		return ret;
@@ -435,6 +457,36 @@ static int svc_rdma_post_chunk_ctxt(struct svcxprt_rdma *rdma,
 					      first_wr, cc->cc_sqecount,
 					      ret);
 	return 0;
+=======
+	do {
+		if (atomic_sub_return(cc->cc_sqecount,
+				      &rdma->sc_sq_avail) > 0) {
+			cc->cc_posttime = ktime_get();
+			ret = ib_post_send(rdma->sc_qp, first_wr, &bad_wr);
+			if (ret)
+				break;
+			return 0;
+		}
+
+		percpu_counter_inc(&svcrdma_stat_sq_starve);
+		trace_svcrdma_sq_full(rdma, &cc->cc_cid);
+		atomic_add(cc->cc_sqecount, &rdma->sc_sq_avail);
+		wait_event(rdma->sc_send_wait,
+			   atomic_read(&rdma->sc_sq_avail) > cc->cc_sqecount);
+		trace_svcrdma_sq_retry(rdma, &cc->cc_cid);
+	} while (1);
+
+	trace_svcrdma_sq_post_err(rdma, &cc->cc_cid, ret);
+	svc_xprt_deferred_close(&rdma->sc_xprt);
+
+	/* If even one was posted, there will be a completion. */
+	if (bad_wr != first_wr)
+		return 0;
+
+	atomic_add(cc->cc_sqecount, &rdma->sc_sq_avail);
+	wake_up(&rdma->sc_send_wait);
+	return -ENOTCONN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Build a bvec that covers one kvec in an xdr_buf.
@@ -619,6 +671,7 @@ static int svc_rdma_xb_write(const struct xdr_buf *xdr, void *data)
 	return xdr->len;
 }
 
+<<<<<<< HEAD
 /* Link chunk WRs onto @sctxt's WR chain. Completion is requested
  * for the tail WR, which is posted first.
  */
@@ -650,6 +703,11 @@ static int svc_rdma_prepare_write_chunk(struct svcxprt_rdma *rdma,
 					struct svc_rdma_send_ctxt *sctxt,
 					const struct svc_rdma_chunk *chunk,
 					const struct xdr_buf *xdr)
+=======
+static int svc_rdma_send_write_chunk(struct svcxprt_rdma *rdma,
+				     const struct svc_rdma_chunk *chunk,
+				     const struct xdr_buf *xdr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct svc_rdma_write_info *info;
 	struct svc_rdma_chunk_ctxt *cc;
@@ -669,6 +727,7 @@ static int svc_rdma_prepare_write_chunk(struct svcxprt_rdma *rdma,
 	if (ret != payload.len)
 		goto out_err;
 
+<<<<<<< HEAD
 	ret = -EINVAL;
 	if (unlikely(sctxt->sc_sqecount + cc->cc_sqecount > rdma->sc_sq_depth))
 		goto out_err;
@@ -677,6 +736,12 @@ static int svc_rdma_prepare_write_chunk(struct svcxprt_rdma *rdma,
 	list_add(&info->wi_list, &sctxt->sc_write_info_list);
 
 	trace_svcrdma_post_write_chunk(&cc->cc_cid, cc->cc_sqecount);
+=======
+	trace_svcrdma_post_write_chunk(&cc->cc_cid, cc->cc_sqecount);
+	ret = svc_rdma_post_chunk_ctxt(rdma, cc);
+	if (ret < 0)
+		goto out_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 out_err:
@@ -685,6 +750,7 @@ out_err:
 }
 
 /**
+<<<<<<< HEAD
  * svc_rdma_prepare_write_list - Construct WR chain for sending Write list
  * @rdma: controlling RDMA transport
  * @rctxt: Write list provisioned by the client
@@ -698,6 +764,19 @@ int svc_rdma_prepare_write_list(struct svcxprt_rdma *rdma,
 				const struct svc_rdma_recv_ctxt *rctxt,
 				struct svc_rdma_send_ctxt *sctxt,
 				const struct xdr_buf *xdr)
+=======
+ * svc_rdma_send_write_list - Send all chunks on the Write list
+ * @rdma: controlling RDMA transport
+ * @rctxt: Write list provisioned by the client
+ * @xdr: xdr_buf containing an RPC Reply message
+ *
+ * Returns zero on success, or a negative errno if one or more
+ * Write chunks could not be sent.
+ */
+int svc_rdma_send_write_list(struct svcxprt_rdma *rdma,
+			     const struct svc_rdma_recv_ctxt *rctxt,
+			     const struct xdr_buf *xdr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct svc_rdma_chunk *chunk;
 	int ret;
@@ -705,7 +784,11 @@ int svc_rdma_prepare_write_list(struct svcxprt_rdma *rdma,
 	pcl_for_each_chunk(chunk, &rctxt->rc_write_pcl) {
 		if (!chunk->ch_payload_length)
 			break;
+<<<<<<< HEAD
 		ret = svc_rdma_prepare_write_chunk(rdma, sctxt, chunk, xdr);
+=======
+		ret = svc_rdma_send_write_chunk(rdma, chunk, xdr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 	}
@@ -735,6 +818,12 @@ int svc_rdma_prepare_reply_chunk(struct svcxprt_rdma *rdma,
 {
 	struct svc_rdma_write_info *info = &sctxt->sc_reply_info;
 	struct svc_rdma_chunk_ctxt *cc = &info->wi_cc;
+<<<<<<< HEAD
+=======
+	struct ib_send_wr *first_wr;
+	struct list_head *pos;
+	struct ib_cqe *cqe;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	info->wi_rdma = rdma;
@@ -748,12 +837,28 @@ int svc_rdma_prepare_reply_chunk(struct svcxprt_rdma *rdma,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	svc_rdma_cc_link_wrs(rdma, sctxt, cc);
+=======
+	first_wr = sctxt->sc_wr_chain;
+	cqe = &cc->cc_cqe;
+	list_for_each(pos, &cc->cc_rwctxts) {
+		struct svc_rdma_rw_ctxt *rwc;
+
+		rwc = list_entry(pos, struct svc_rdma_rw_ctxt, rw_list);
+		first_wr = rdma_rw_ctx_wrs(&rwc->rw_ctx, rdma->sc_qp,
+					   rdma->sc_port_num, cqe, first_wr);
+		cqe = NULL;
+	}
+	sctxt->sc_wr_chain = first_wr;
+	sctxt->sc_sqecount += cc->cc_sqecount;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_svcrdma_post_reply_chunk(&cc->cc_cid, cc->cc_sqecount);
 	return xdr->len;
 }
 
+<<<<<<< HEAD
 /*
  * Cap contiguous RDMA Read sink allocations at order-4.
  * Higher orders risk allocation failure under
@@ -964,6 +1069,8 @@ static int svc_rdma_build_read_segment_contig(struct svc_rqst *rqstp,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * svc_rdma_build_read_segment - Build RDMA Read WQEs to pull one RDMA segment
  * @rqstp: RPC transaction context
@@ -990,6 +1097,7 @@ static int svc_rdma_build_read_segment(struct svc_rqst *rqstp,
 	if (check_add_overflow(head->rc_pageoff, len, &total))
 		return -EINVAL;
 	nr_bvec = PAGE_ALIGN(total) >> PAGE_SHIFT;
+<<<<<<< HEAD
 
 	if (head->rc_pageoff == 0 && nr_bvec >= 2) {
 		ret = svc_rdma_build_read_segment_contig(rqstp, head,
@@ -998,6 +1106,8 @@ static int svc_rdma_build_read_segment(struct svc_rqst *rqstp,
 			return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctxt = svc_rdma_get_rw_ctxt(rdma, nr_bvec);
 	if (!ctxt)
 		return -ENOMEM;
@@ -1343,16 +1453,22 @@ static void svc_rdma_clear_rqst_pages(struct svc_rqst *rqstp,
 {
 	unsigned int i;
 
+<<<<<<< HEAD
 	/*
 	 * Move only pages containing RPC data into rc_pages[]. Pages
 	 * from a contiguous allocation that were not used for the
 	 * payload remain in rq_pages[] for subsequent reuse.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < head->rc_page_count; i++) {
 		head->rc_pages[i] = rqstp->rq_pages[i];
 		rqstp->rq_pages[i] = NULL;
 	}
+<<<<<<< HEAD
 	rqstp->rq_pages_nfree = head->rc_page_count;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

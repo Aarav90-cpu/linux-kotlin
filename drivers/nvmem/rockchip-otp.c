@@ -27,7 +27,10 @@
 #define OTPC_USER_CTRL			0x0100
 #define OTPC_USER_ADDR			0x0104
 #define OTPC_USER_ENABLE		0x0108
+<<<<<<< HEAD
 #define OTPC_USER_QP			0x0120
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define OTPC_USER_Q			0x0124
 #define OTPC_INT_STATUS			0x0304
 #define OTPC_SBPI_CMD0_OFFSET		0x1000
@@ -60,6 +63,10 @@
 #define RK3588_OTPC_AUTO_EN		0x08
 #define RK3588_OTPC_INT_ST		0x84
 #define RK3588_OTPC_DOUT0		0x20
+<<<<<<< HEAD
+=======
+#define RK3588_NBYTES			4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RK3588_BURST_NUM		1
 #define RK3588_BURST_SHIFT		8
 #define RK3588_ADDR_SHIFT		16
@@ -69,7 +76,10 @@
 struct rockchip_data {
 	int size;
 	int read_offset;
+<<<<<<< HEAD
 	int word_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char * const *clks;
 	int num_clks;
 	nvmem_reg_read_t reg_read;
@@ -185,6 +195,7 @@ read_end:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int rk3568_otp_read(void *context, unsigned int offset, void *val,
 			   size_t count)
 {
@@ -246,12 +257,35 @@ static int rk3588_otp_read(void *context, unsigned int offset,
 
 	while (count--) {
 		writel((offset++ << RK3588_ADDR_SHIFT) |
+=======
+static int rk3588_otp_read(void *context, unsigned int offset,
+			   void *val, size_t bytes)
+{
+	struct rockchip_otp *otp = context;
+	unsigned int addr_start, addr_end, addr_len;
+	int ret, i = 0;
+	u32 data;
+	u8 *buf;
+
+	addr_start = round_down(offset, RK3588_NBYTES) / RK3588_NBYTES;
+	addr_end = round_up(offset + bytes, RK3588_NBYTES) / RK3588_NBYTES;
+	addr_len = addr_end - addr_start;
+	addr_start += otp->data->read_offset / RK3588_NBYTES;
+
+	buf = kzalloc(array_size(addr_len, RK3588_NBYTES), GFP_KERNEL);
+	if (!buf)
+		return -ENOMEM;
+
+	while (addr_len--) {
+		writel((addr_start << RK3588_ADDR_SHIFT) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       (RK3588_BURST_NUM << RK3588_BURST_SHIFT),
 		       otp->base + RK3588_OTPC_AUTO_CTRL);
 		writel(RK3588_AUTO_EN, otp->base + RK3588_OTPC_AUTO_EN);
 
 		ret = rockchip_otp_wait_status(otp, RK3588_OTPC_INT_ST,
 					       RK3588_RD_DONE);
+<<<<<<< HEAD
 		if (ret) {
 			dev_err(otp->dev, "timeout during read setup\n");
 			return ret;
@@ -260,6 +294,25 @@ static int rk3588_otp_read(void *context, unsigned int offset,
 		*buf++ = readl(otp->base + RK3588_OTPC_DOUT0);
 	}
 
+=======
+		if (ret < 0) {
+			dev_err(otp->dev, "timeout during read setup\n");
+			goto read_end;
+		}
+
+		data = readl(otp->base + RK3588_OTPC_DOUT0);
+		memcpy(&buf[i], &data, RK3588_NBYTES);
+
+		i += RK3588_NBYTES;
+		addr_start++;
+	}
+
+	memcpy(val, buf + offset % RK3588_NBYTES, bytes);
+
+read_end:
+	kfree(buf);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -267,7 +320,11 @@ static int rockchip_otp_read(void *context, unsigned int offset,
 			     void *val, size_t bytes)
 {
 	struct rockchip_otp *otp = context;
+<<<<<<< HEAD
 	int ret, word_size;
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!otp->data || !otp->data->reg_read)
 		return -EINVAL;
@@ -278,6 +335,7 @@ static int rockchip_otp_read(void *context, unsigned int offset,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	offset += otp->data->read_offset;
 	word_size = otp->data->word_size;
 
@@ -306,6 +364,10 @@ static int rockchip_otp_read(void *context, unsigned int offset,
 	}
 
 err:
+=======
+	ret = otp->data->reg_read(context, offset, val, bytes);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clk_bulk_disable_unprepare(otp->data->num_clks, otp->clks);
 
 	return ret;
@@ -318,7 +380,11 @@ static struct nvmem_config otp_config = {
 	.type = NVMEM_TYPE_OTP,
 	.read_only = true,
 	.stride = 1,
+<<<<<<< HEAD
 	.word_size = sizeof(u8),
+=======
+	.word_size = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reg_read = rockchip_otp_read,
 };
 
@@ -333,6 +399,7 @@ static const struct rockchip_data px30_data = {
 	.reg_read = px30_otp_read,
 };
 
+<<<<<<< HEAD
 static const char * const rk3528_otp_clocks[] = {
 	"otp", "apb_pclk", "sbpi",
 };
@@ -361,6 +428,11 @@ static const struct rockchip_data rk3576_data = {
 	.size = 0x100,
 	.read_offset = 0x700,
 	.word_size = sizeof(u32),
+=======
+static const struct rockchip_data rk3576_data = {
+	.size = 0x100,
+	.read_offset = 0x700,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.clks = px30_otp_clocks,
 	.num_clks = ARRAY_SIZE(px30_otp_clocks),
 	.reg_read = rk3588_otp_read,
@@ -373,7 +445,10 @@ static const char * const rk3588_otp_clocks[] = {
 static const struct rockchip_data rk3588_data = {
 	.size = 0x400,
 	.read_offset = 0xc00,
+<<<<<<< HEAD
 	.word_size = sizeof(u32),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.clks = rk3588_otp_clocks,
 	.num_clks = ARRAY_SIZE(rk3588_otp_clocks),
 	.reg_read = rk3588_otp_read,
@@ -389,6 +464,7 @@ static const struct of_device_id rockchip_otp_match[] = {
 		.data = &px30_data,
 	},
 	{
+<<<<<<< HEAD
 		.compatible = "rockchip,rk3528-otp",
 		.data = &rk3528_data,
 	},
@@ -401,6 +477,8 @@ static const struct of_device_id rockchip_otp_match[] = {
 		.data = &rk3568_data,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "rockchip,rk3576-otp",
 		.data = &rk3576_data,
 	},

@@ -446,6 +446,7 @@ static void fbcon_del_cursor_work(struct fb_info *info)
 	cancel_delayed_work_sync(&par->cursor_work);
 }
 
+<<<<<<< HEAD
 void fbcon_fill_cursor_mask(struct fbcon_par *par, struct vc_data *vc, unsigned char *mask)
 {
 	static const unsigned int pattern = 0xffffffff;
@@ -486,6 +487,8 @@ void fbcon_fill_cursor_mask(struct fbcon_par *par, struct vc_data *vc, unsigned 
 		*mask++ = (unsigned char)pattern;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef MODULE
 static int __init fb_console_setup(char *this_opt)
 {
@@ -787,9 +790,13 @@ static void fbcon_release(struct fb_info *info)
 		kfree(par->cursor_state.mask);
 		kfree(par->cursor_data);
 		kfree(par->cursor_src);
+<<<<<<< HEAD
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE_ROTATION
 		kfree(par->rotated.buf);
 #endif
+=======
+		kfree(par->fontbuffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(info->fbcon_par);
 		info->fbcon_par = NULL;
 	}
@@ -1042,9 +1049,13 @@ static const char *fbcon_startup(void)
 	par = info->fbcon_par;
 	par->currcon = -1;
 	par->graphics = 1;
+<<<<<<< HEAD
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE_ROTATION
 	par->rotated.buf_rotate = -1;
 #endif
+=======
+	par->cur_rotate = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	p->con_rotate = initial_rotation;
 	if (p->con_rotate == -1)
@@ -1063,11 +1074,16 @@ static const char *fbcon_startup(void)
 						info->pixmap.blit_y);
 		vc->vc_font.width = font->width;
 		vc->vc_font.height = font->height;
+<<<<<<< HEAD
 		vc->vc_font.data = font_data_buf(font->data);
 		vc->vc_font.charcount = font->charcount;
 
 		p->fontdata = font->data;
 		font_data_get(p->fontdata);
+=======
+		vc->vc_font.data = (void *)(p->fontdata = font->data);
+		vc->vc_font.charcount = font->charcount;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	cols = FBCON_SWAP(par->rotate, info->var.xres, info->var.yres);
@@ -1125,6 +1141,7 @@ static void fbcon_init(struct vc_data *vc, bool init)
 		if (t->fontdata) {
 			struct vc_data *fvc = vc_cons[fg_console].d;
 
+<<<<<<< HEAD
 			vc->vc_font.data = fvc->vc_font.data;
 			vc->vc_font.width = fvc->vc_font.width;
 			vc->vc_font.height = fvc->vc_font.height;
@@ -1132,6 +1149,17 @@ static void fbcon_init(struct vc_data *vc, bool init)
 
 			p->fontdata = t->fontdata;
 			font_data_get(p->fontdata);
+=======
+			vc->vc_font.data = (void *)(p->fontdata =
+						    fvc->vc_font.data);
+			vc->vc_font.width = fvc->vc_font.width;
+			vc->vc_font.height = fvc->vc_font.height;
+			vc->vc_font.charcount = fvc->vc_font.charcount;
+			p->userfont = t->userfont;
+
+			if (p->userfont)
+				REFCOUNT(p->fontdata)++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			const struct font_desc *font = NULL;
 
@@ -1142,11 +1170,16 @@ static void fbcon_init(struct vc_data *vc, bool init)
 							info->pixmap.blit_y);
 			vc->vc_font.width = font->width;
 			vc->vc_font.height = font->height;
+<<<<<<< HEAD
 			vc->vc_font.data = font_data_buf(font->data);
 			vc->vc_font.charcount = font->charcount;
 
 			p->fontdata = font->data;
 			font_data_get(p->fontdata);
+=======
+			vc->vc_font.data = (void *)(p->fontdata = font->data);
+			vc->vc_font.charcount = font->charcount;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1237,10 +1270,17 @@ static void fbcon_init(struct vc_data *vc, bool init)
 
 static void fbcon_free_font(struct fbcon_display *p)
 {
+<<<<<<< HEAD
 	if (p->fontdata) {
 		font_data_put(p->fontdata);
 		p->fontdata = NULL;
 	}
+=======
+	if (p->userfont && p->fontdata && (--REFCOUNT(p->fontdata) == 0))
+		kfree(p->fontdata - FONT_EXTRA_WORDS * sizeof(int));
+	p->fontdata = NULL;
+	p->userfont = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void set_vc_hi_font(struct vc_data *vc, bool set);
@@ -1457,6 +1497,7 @@ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
 	svc = *default_mode;
 	t = &fb_display[svc->vc_num];
 
+<<<<<<< HEAD
 	if (!p->fontdata) {
 		vc->vc_font.data = font_data_buf(t->fontdata);
 		vc->vc_font.width = (*default_mode)->vc_font.width;
@@ -1464,6 +1505,16 @@ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
 		vc->vc_font.charcount = (*default_mode)->vc_font.charcount;
 		p->fontdata = t->fontdata;
 		font_data_get(p->fontdata);
+=======
+	if (!vc->vc_font.data) {
+		vc->vc_font.data = (void *)(p->fontdata = t->fontdata);
+		vc->vc_font.width = (*default_mode)->vc_font.width;
+		vc->vc_font.height = (*default_mode)->vc_font.height;
+		vc->vc_font.charcount = (*default_mode)->vc_font.charcount;
+		p->userfont = t->userfont;
+		if (p->userfont)
+			REFCOUNT(p->fontdata)++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	var->activate = FB_ACTIVATE_NOW;
@@ -2083,6 +2134,12 @@ static void updatescrollmode(struct fbcon_display *p,
 	updatescrollmode_accel(p, info, vc);
 }
 
+<<<<<<< HEAD
+=======
+#define PITCH(w) (((w) + 7) >> 3)
+#define CALC_FONTSZ(h, p, c) ((h) * (p) * (c)) /* size = height * pitch * charcount */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fbcon_resize(struct vc_data *vc, unsigned int width,
 			unsigned int height, bool from_user)
 {
@@ -2092,8 +2149,14 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
 	struct fb_var_screeninfo var = info->var;
 	int x_diff, y_diff, virt_w, virt_h, virt_fw, virt_fh;
 
+<<<<<<< HEAD
 	if (font_data_size(p->fontdata)) {
 		unsigned int size = vc_font_size(&vc->vc_font);
+=======
+	if (p->userfont && FNTSIZE(vc->vc_font.data)) {
+		int size;
+		int pitch = PITCH(vc->vc_font.width);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * If user font, ensure that a possible change to user font
@@ -2102,7 +2165,14 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
 		 * charcount can change and cannot be used to determine the
 		 * font data allocated size.
 		 */
+<<<<<<< HEAD
 		if (!size || size > font_data_size(p->fontdata))
+=======
+		if (pitch <= 0)
+			return -EINVAL;
+		size = CALC_FONTSZ(vc->vc_font.height, pitch, vc->vc_font.charcount);
+		if (size > FNTSIZE(vc->vc_font.data))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 	}
 
@@ -2326,15 +2396,76 @@ static bool fbcon_blank(struct vc_data *vc, enum vesa_blank_mode blank,
 
 static int fbcon_get_font(struct vc_data *vc, struct console_font *font, unsigned int vpitch)
 {
+<<<<<<< HEAD
 	const struct fbcon_display *p = &fb_display[vc->vc_num];
+=======
+	u8 *fontdata = vc->vc_font.data;
+	u8 *data = font->data;
+	int i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	font->width = vc->vc_font.width;
 	font->height = vc->vc_font.height;
 	if (font->height > vpitch)
 		return -ENOSPC;
 	font->charcount = vc->vc_hi_font_mask ? 512 : 256;
+<<<<<<< HEAD
 
 	return font_data_export(p->fontdata, font, vpitch);
+=======
+	if (!font->data)
+		return 0;
+
+	if (font->width <= 8) {
+		j = vc->vc_font.height;
+		if (font->charcount * j > FNTSIZE(fontdata))
+			return -EINVAL;
+
+		for (i = 0; i < font->charcount; i++) {
+			memcpy(data, fontdata, j);
+			memset(data + j, 0, vpitch - j);
+			data += vpitch;
+			fontdata += j;
+		}
+	} else if (font->width <= 16) {
+		j = vc->vc_font.height * 2;
+		if (font->charcount * j > FNTSIZE(fontdata))
+			return -EINVAL;
+
+		for (i = 0; i < font->charcount; i++) {
+			memcpy(data, fontdata, j);
+			memset(data + j, 0, 2*vpitch - j);
+			data += 2*vpitch;
+			fontdata += j;
+		}
+	} else if (font->width <= 24) {
+		if (font->charcount * (vc->vc_font.height * sizeof(u32)) > FNTSIZE(fontdata))
+			return -EINVAL;
+
+		for (i = 0; i < font->charcount; i++) {
+			for (j = 0; j < vc->vc_font.height; j++) {
+				*data++ = fontdata[0];
+				*data++ = fontdata[1];
+				*data++ = fontdata[2];
+				fontdata += sizeof(u32);
+			}
+			memset(data, 0, 3 * (vpitch - j));
+			data += 3 * (vpitch - j);
+		}
+	} else {
+		j = vc->vc_font.height * 4;
+		if (font->charcount * j > FNTSIZE(fontdata))
+			return -EINVAL;
+
+		for (i = 0; i < font->charcount; i++) {
+			memcpy(data, fontdata, j);
+			memset(data + j, 0, 4 * vpitch - j);
+			data += 4 * vpitch;
+			fontdata += j;
+		}
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* set/clear vc_hi_font_mask and update vc attrs accordingly */
@@ -2399,11 +2530,16 @@ static void set_vc_hi_font(struct vc_data *vc, bool set)
 }
 
 static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+<<<<<<< HEAD
 			     font_data_t *data)
+=======
+			     const u8 * data, int userfont)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct fb_info *info = fbcon_info_from_console(vc->vc_num);
 	struct fbcon_par *par = info->fbcon_par;
 	struct fbcon_display *p = &fb_display[vc->vc_num];
+<<<<<<< HEAD
 	int resize, ret, old_width, old_height, old_charcount;
 	font_data_t *old_fontdata = p->fontdata;
 	const u8 *old_data = vc->vc_font.data;
@@ -2413,6 +2549,17 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
 	p->fontdata = data;
 	vc->vc_font.data = font_data_buf(p->fontdata);
+=======
+	int resize, ret, old_userfont, old_width, old_height, old_charcount;
+	u8 *old_data = vc->vc_font.data;
+
+	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
+	vc->vc_font.data = (void *)(p->fontdata = data);
+	old_userfont = p->userfont;
+	if ((p->userfont = userfont))
+		REFCOUNT(data)++;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old_width = vc->vc_font.width;
 	old_height = vc->vc_font.height;
 	old_charcount = vc->vc_font.charcount;
@@ -2441,6 +2588,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
 		update_screen(vc);
 	}
 
+<<<<<<< HEAD
 	if (old_fontdata)
 		font_data_put(old_fontdata);
 
@@ -2449,12 +2597,31 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
 err_out:
 	p->fontdata = old_fontdata;
 	vc->vc_font.data = old_data;
+=======
+	if (old_userfont && (--REFCOUNT(old_data) == 0))
+		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
+	return 0;
+
+err_out:
+	p->fontdata = old_data;
+	vc->vc_font.data = old_data;
+
+	if (userfont) {
+		p->userfont = old_userfont;
+		if (--REFCOUNT(data) == 0)
+			kfree(data - FONT_EXTRA_WORDS * sizeof(int));
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vc->vc_font.width = old_width;
 	vc->vc_font.height = old_height;
 	vc->vc_font.charcount = old_charcount;
 
+<<<<<<< HEAD
 	font_data_put(data);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -2470,8 +2637,15 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
 	unsigned charcount = font->charcount;
 	int w = font->width;
 	int h = font->height;
+<<<<<<< HEAD
 	int i, ret;
 	font_data_t *new_data;
+=======
+	int size, alloc_size;
+	int i, csum;
+	u8 *new_data, *data = font->data;
+	int pitch = PITCH(font->width);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Is there a reason why fbconsole couldn't handle any charcount >256?
 	 * If not this check should be changed to charcount < 256 */
@@ -2495,6 +2669,7 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
 	if (fbcon_invalid_charcount(info, charcount))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	new_data = font_data_import(font, vpitch, crc32);
 	if (IS_ERR(new_data))
 		return PTR_ERR(new_data);
@@ -2513,6 +2688,52 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
 	font_data_put(new_data);
 
 	return ret;
+=======
+	/* Check for integer overflow in font size calculation */
+	if (check_mul_overflow(h, pitch, &size) ||
+	    check_mul_overflow(size, charcount, &size))
+		return -EINVAL;
+
+	/* Check for overflow in allocation size calculation */
+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
+		return -EINVAL;
+
+	new_data = kmalloc(alloc_size, GFP_USER);
+
+	if (!new_data)
+		return -ENOMEM;
+
+	memset(new_data, 0, FONT_EXTRA_WORDS * sizeof(int));
+
+	new_data += FONT_EXTRA_WORDS * sizeof(int);
+	FNTSIZE(new_data) = size;
+	REFCOUNT(new_data) = 0;	/* usage counter */
+	for (i=0; i< charcount; i++) {
+		memcpy(new_data + i*h*pitch, data +  i*vpitch*pitch, h*pitch);
+	}
+
+	/* Since linux has a nice crc32 function use it for counting font
+	 * checksums. */
+	csum = crc32(0, new_data, size);
+
+	FNTSUM(new_data) = csum;
+	/* Check if the same font is on some other console already */
+	for (i = first_fb_vc; i <= last_fb_vc; i++) {
+		struct vc_data *tmp = vc_cons[i].d;
+
+		if (fb_display[i].userfont &&
+		    fb_display[i].fontdata &&
+		    FNTSUM(fb_display[i].fontdata) == csum &&
+		    FNTSIZE(fb_display[i].fontdata) == size &&
+		    tmp->vc_font.width == w &&
+		    !memcmp(fb_display[i].fontdata, new_data, size)) {
+			kfree(new_data - FONT_EXTRA_WORDS * sizeof(int));
+			new_data = (u8 *)fb_display[i].fontdata;
+			break;
+		}
+	}
+	return fbcon_do_set_font(vc, font->width, font->height, charcount, new_data, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int fbcon_set_def_font(struct vc_data *vc, struct console_font *font,
@@ -2529,7 +2750,11 @@ static int fbcon_set_def_font(struct vc_data *vc, struct console_font *font,
 
 	font->width = f->width;
 	font->height = f->height;
+<<<<<<< HEAD
 	return fbcon_do_set_font(vc, f->width, f->height, f->charcount, f->data);
+=======
+	return fbcon_do_set_font(vc, f->width, f->height, f->charcount, f->data, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u16 palette_red[16];

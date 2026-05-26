@@ -106,7 +106,10 @@ static bool is_fru_eeprom_supported(struct amdgpu_device *adev, u32 *fru_addr)
 				*fru_addr = FRU_EEPROM_MADDR_8;
 			return true;
 	case IP_VERSION(13, 0, 12):
+<<<<<<< HEAD
 	case IP_VERSION(15, 0, 8):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (fru_addr)
 				*fru_addr = FRU_EEPROM_MADDR_INV;
 			return true;

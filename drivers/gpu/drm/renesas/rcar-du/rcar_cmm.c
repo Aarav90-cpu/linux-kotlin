@@ -59,7 +59,11 @@ static void rcar_cmm_lut_write(struct rcar_cmm *rcmm,
 
 /*
  * rcar_cmm_setup() - Configure the CMM unit
+<<<<<<< HEAD
  * @dev: The device associated with the CMM instance
+=======
+ * @pdev: The platform device associated with the CMM instance
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @config: The CMM unit configuration
  *
  * Configure the CMM unit with the given configuration. Currently enabling,
@@ -73,10 +77,17 @@ static void rcar_cmm_lut_write(struct rcar_cmm *rcmm,
  * TODO: Add support for LUT double buffer operations to avoid updating the
  * LUT table entries while a frame is being displayed.
  */
+<<<<<<< HEAD
 int rcar_cmm_setup(struct device *dev,
 		   const struct rcar_cmm_config *config)
 {
 	struct rcar_cmm *rcmm = dev_get_drvdata(dev);
+=======
+int rcar_cmm_setup(struct platform_device *pdev,
+		   const struct rcar_cmm_config *config)
+{
+	struct rcar_cmm *rcmm = platform_get_drvdata(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Disable LUT if no table is provided. */
 	if (!config->lut.table) {
@@ -102,7 +113,11 @@ EXPORT_SYMBOL_GPL(rcar_cmm_setup);
 
 /*
  * rcar_cmm_enable() - Enable the CMM unit
+<<<<<<< HEAD
  * @dev: The device associated with the CMM instance
+=======
+ * @pdev: The platform device associated with the CMM instance
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * When the output of the corresponding DU channel is routed to the CMM unit,
  * the unit shall be enabled before the DU channel is started, and remain
@@ -113,11 +128,19 @@ EXPORT_SYMBOL_GPL(rcar_cmm_setup);
  * It is an error to attempt to enable an already enabled CMM unit, or to
  * attempt to disable a disabled unit.
  */
+<<<<<<< HEAD
 int rcar_cmm_enable(struct device *dev)
 {
 	int ret;
 
 	ret = pm_runtime_resume_and_get(dev);
+=======
+int rcar_cmm_enable(struct platform_device *pdev)
+{
+	int ret;
+
+	ret = pm_runtime_resume_and_get(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -127,7 +150,11 @@ EXPORT_SYMBOL_GPL(rcar_cmm_enable);
 
 /*
  * rcar_cmm_disable() - Disable the CMM unit
+<<<<<<< HEAD
  * @dev: The device associated with the CMM instance
+=======
+ * @pdev: The platform device associated with the CMM instance
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * See rcar_cmm_enable() for usage information.
  *
@@ -135,27 +162,47 @@ EXPORT_SYMBOL_GPL(rcar_cmm_enable);
  * state shall thus be restored with rcar_cmm_setup() when re-enabling the CMM
  * unit after the next rcar_cmm_enable() call.
  */
+<<<<<<< HEAD
 void rcar_cmm_disable(struct device *dev)
 {
 	struct rcar_cmm *rcmm = dev_get_drvdata(dev);
+=======
+void rcar_cmm_disable(struct platform_device *pdev)
+{
+	struct rcar_cmm *rcmm = platform_get_drvdata(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rcar_cmm_write(rcmm, CM2_LUT_CTRL, 0);
 	rcmm->lut.enabled = false;
 
+<<<<<<< HEAD
 	pm_runtime_put(dev);
+=======
+	pm_runtime_put(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(rcar_cmm_disable);
 
 /*
  * rcar_cmm_init() - Initialize the CMM unit
+<<<<<<< HEAD
  * @dev: The device associated with the CMM instance
+=======
+ * @pdev: The platform device associated with the CMM instance
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 on success, -EPROBE_DEFER if the CMM is not available yet,
  *         -ENODEV if the DRM_RCAR_CMM config option is disabled
  */
+<<<<<<< HEAD
 int rcar_cmm_init(struct device *dev)
 {
 	struct rcar_cmm *rcmm = dev_get_drvdata(dev);
+=======
+int rcar_cmm_init(struct platform_device *pdev)
+{
+	struct rcar_cmm *rcmm = platform_get_drvdata(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!rcmm)
 		return -EPROBE_DEFER;

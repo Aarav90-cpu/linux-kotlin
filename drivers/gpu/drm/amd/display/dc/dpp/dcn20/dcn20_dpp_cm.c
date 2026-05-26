@@ -1016,7 +1016,10 @@ static void dpp20_set_3dlut_mode(
 		bool is_color_channel_12bits,
 		bool is_lut_size17x17x17)
 {
+<<<<<<< HEAD
 	(void)is_color_channel_12bits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t lut_mode;
 	struct dcn20_dpp *dpp = TO_DCN20_DPP(dpp_base);
 

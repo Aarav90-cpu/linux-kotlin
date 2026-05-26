@@ -73,7 +73,11 @@ static inline void on_each_cpu(smp_call_func_t func, void *info, int wait)
 }
 
 /**
+<<<<<<< HEAD
  * on_each_cpu_mask() - Run a function on processors specified by
+=======
+ * on_each_cpu_mask(): Run a function on processors specified by
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * cpumask, which may include the local processor.
  * @mask: The set of cpus to run on (only runs on online subset).
  * @func: The function to run. This must be fast and non-blocking.
@@ -239,6 +243,7 @@ static inline int get_boot_cpu_id(void)
 
 #endif /* !SMP */
 
+<<<<<<< HEAD
 /*
  * raw_smp_processor_id() - get the current (unstable) CPU id
  *
@@ -249,6 +254,31 @@ static inline int get_boot_cpu_id(void)
  * CPU id.
  */
 
+=======
+/**
+ * raw_smp_processor_id() - get the current (unstable) CPU id
+ *
+ * For then you know what you are doing and need an unstable
+ * CPU id.
+ */
+
+/**
+ * smp_processor_id() - get the current (stable) CPU id
+ *
+ * This is the normal accessor to the CPU id and should be used
+ * whenever possible.
+ *
+ * The CPU id is stable when:
+ *
+ *  - IRQs are disabled;
+ *  - preemption is disabled;
+ *  - the task is CPU affine.
+ *
+ * When CONFIG_DEBUG_PREEMPT; we verify these assumption and WARN
+ * when smp_processor_id() is used when the CPU id is not stable.
+ */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Allow the architecture to differentiate between a stable and unstable read.
  * For example, x86 uses an IRQ-safe asm-volatile read for the unstable but a
@@ -261,6 +291,7 @@ static inline int get_boot_cpu_id(void)
 #ifdef CONFIG_DEBUG_PREEMPT
   extern unsigned int debug_smp_processor_id(void);
 # define smp_processor_id() debug_smp_processor_id()
+<<<<<<< HEAD
 
 #else
 /**
@@ -279,6 +310,9 @@ static inline int get_boot_cpu_id(void)
  * when smp_processor_id() is used when the CPU id is not stable.
  */
 
+=======
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # define smp_processor_id() __smp_processor_id()
 #endif
 

@@ -4,6 +4,7 @@
 Kernel-doc parser stage
 =======================
 
+<<<<<<< HEAD
 C replacement rules used by the parser
 ======================================
 
@@ -12,6 +13,8 @@ C replacement rules used by the parser
    :show-inheritance:
    :undoc-members:
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 File handler classes
 ====================
 

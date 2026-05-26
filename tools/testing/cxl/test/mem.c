@@ -1695,9 +1695,12 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
 	struct cxl_dpa_info range_info = { 0 };
 	int rc;
 
+<<<<<<< HEAD
 	/* Increase async probe race window */
 	usleep_range(500*1000, 1000*1000);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mdata = devm_kzalloc(dev, sizeof(*mdata), GFP_KERNEL);
 	if (!mdata)
 		return -ENOMEM;
@@ -1719,7 +1722,11 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	mds = cxl_memdev_state_create(dev, pdev->id + 1, 0);
+=======
+	mds = cxl_memdev_state_create(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(mds))
 		return PTR_ERR(mds);
 
@@ -1735,6 +1742,10 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
 	mds->event.buf = (struct cxl_get_event_payload *) mdata->event_buf;
 	INIT_DELAYED_WORK(&mds->security.poll_dwork, cxl_mockmem_sanitize_work);
 
+<<<<<<< HEAD
+=======
+	cxlds->serial = pdev->id + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_rcd(pdev))
 		cxlds->rcd = true;
 

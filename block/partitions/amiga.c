@@ -81,8 +81,18 @@ int amiga_partition(struct parsed_partitions *state)
 	/* blksize is blocks per 512 byte standard block */
 	blksize = be32_to_cpu( rdb->rdb_BlockBytes ) / 512;
 
+<<<<<<< HEAD
 	/* Be more informative */
 	seq_buf_printf(&state->pp_buf, " RDSK (%d)", blksize * 512);
+=======
+	{
+		char tmp[7 + 10 + 1 + 1];
+
+		/* Be more informative */
+		snprintf(tmp, sizeof(tmp), " RDSK (%d)", blksize * 512);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blk = be32_to_cpu(rdb->rdb_PartitionList);
 	put_dev_sector(sect);
 	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
@@ -174,10 +184,15 @@ int amiga_partition(struct parsed_partitions *state)
 		{
 			/* Be even more informative to aid mounting */
 			char dostype[4];
+<<<<<<< HEAD
+=======
+			char tmp[42];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			__be32 *dt = (__be32 *)dostype;
 			*dt = pb->pb_Environment[16];
 			if (dostype[3] < ' ')
+<<<<<<< HEAD
 				seq_buf_printf(&state->pp_buf,
 					       " (%c%c%c^%c)",
 					       dostype[0], dostype[1],
@@ -195,6 +210,24 @@ int amiga_partition(struct parsed_partitions *state)
 		res = 1;
 	}
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+				snprintf(tmp, sizeof(tmp), " (%c%c%c^%c)",
+					dostype[0], dostype[1],
+					dostype[2], dostype[3] + '@' );
+			else
+				snprintf(tmp, sizeof(tmp), " (%c%c%c%c)",
+					dostype[0], dostype[1],
+					dostype[2], dostype[3]);
+			strlcat(state->pp_buf, tmp, PAGE_SIZE);
+			snprintf(tmp, sizeof(tmp), "(res %d spb %d)",
+				be32_to_cpu(pb->pb_Environment[6]),
+				be32_to_cpu(pb->pb_Environment[4]));
+			strlcat(state->pp_buf, tmp, PAGE_SIZE);
+		}
+		res = 1;
+	}
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 rdb_done:
 	return res;

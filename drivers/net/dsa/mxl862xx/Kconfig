@@ -2,7 +2,10 @@
 config NET_DSA_MXL862
 	tristate "MaxLinear MxL862xx"
 	depends on NET_DSA
+<<<<<<< HEAD
 	select CRC16
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select NET_DSA_TAG_MXL_862XX
 	help
 	  This enables support for the MaxLinear MxL862xx switch family.

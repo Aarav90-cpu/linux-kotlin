@@ -27,6 +27,7 @@
 
 #define to_amd_sdw(b)	container_of(b, struct amd_sdw_manager, bus)
 
+<<<<<<< HEAD
 static int amd_sdw_clk_init_ctrl(struct amd_sdw_manager *amd_manager)
 {
 	struct sdw_bus *bus = &amd_manager->bus;
@@ -57,6 +58,8 @@ static int amd_sdw_clk_init_ctrl(struct amd_sdw_manager *amd_manager)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int amd_init_sdw_manager(struct amd_sdw_manager *amd_manager)
 {
 	u32 val;
@@ -467,16 +470,23 @@ static u32 amd_sdw_read_ping_status(struct sdw_bus *bus)
 
 static int amd_sdw_compute_params(struct sdw_bus *bus, struct sdw_stream_runtime *stream)
 {
+<<<<<<< HEAD
 	struct amd_sdw_manager *amd_manager = to_amd_sdw(bus);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sdw_transport_data t_data = {0};
 	struct sdw_master_runtime *m_rt;
 	struct sdw_port_runtime *p_rt;
 	struct sdw_bus_params *b_params = &bus->params;
 	int port_bo, hstart, hstop, sample_int;
+<<<<<<< HEAD
 	unsigned int rate, bps, channels;
 	unsigned int stream_slot_size, max_slots;
 	static unsigned int next_offset[AMD_SDW_MAX_MANAGER_COUNT] = {1};
 	unsigned int inst_id = amd_manager->instance;
+=======
+	unsigned int rate, bps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	port_bo = 0;
 	hstart = 1;
@@ -487,6 +497,7 @@ static int amd_sdw_compute_params(struct sdw_bus *bus, struct sdw_stream_runtime
 	list_for_each_entry(m_rt, &bus->m_rt_list, bus_node) {
 		rate = m_rt->stream->params.rate;
 		bps = m_rt->stream->params.bps;
+<<<<<<< HEAD
 		channels = m_rt->stream->params.ch_count;
 		sample_int = (bus->params.curr_dr_freq / rate);
 
@@ -532,6 +543,13 @@ static int amd_sdw_compute_params(struct sdw_bus *bus, struct sdw_stream_runtime
 				p_rt->num, hstart, hstop, port_bo, stream_slot_size,
 				amd_manager->max_ports);
 
+=======
+		sample_int = (bus->params.curr_dr_freq / rate);
+		list_for_each_entry(p_rt, &m_rt->port_list, port_node) {
+			port_bo = (p_rt->num * 64) + 1;
+			dev_dbg(bus->dev, "p_rt->num=%d hstart=%d hstop=%d port_bo=%d\n",
+				p_rt->num, hstart, hstop, port_bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sdw_fill_xport_params(&p_rt->transport_params, p_rt->num,
 					      false, SDW_BLK_GRP_CNT_1, sample_int,
 					      port_bo, port_bo >> 8, hstart, hstop,
@@ -1034,9 +1052,12 @@ int amd_sdw_manager_start(struct amd_sdw_manager *amd_manager)
 
 	prop = &amd_manager->bus.prop;
 	if (!prop->hw_disabled) {
+<<<<<<< HEAD
 		ret = amd_sdw_clk_init_ctrl(amd_manager);
 		if (ret)
 			return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = amd_init_sdw_manager(amd_manager);
 		if (ret)
 			return ret;
@@ -1061,6 +1082,10 @@ static int amd_sdw_manager_probe(struct platform_device *pdev)
 	struct resource *res;
 	struct device *dev = &pdev->dev;
 	struct sdw_master_prop *prop;
+<<<<<<< HEAD
+=======
+	struct sdw_bus_params *params;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct amd_sdw_manager *amd_manager;
 	int ret;
 
@@ -1123,6 +1148,7 @@ static int amd_sdw_manager_probe(struct platform_device *pdev)
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	amd_manager->max_ports = amd_manager->num_dout_ports + amd_manager->num_din_ports;
 	amd_manager->port_offset_map = devm_kcalloc(dev, amd_manager->max_ports,
 						    sizeof(int), GFP_KERNEL);
@@ -1131,6 +1157,17 @@ static int amd_sdw_manager_probe(struct platform_device *pdev)
 
 	prop = &amd_manager->bus.prop;
 	prop->mclk_freq = AMD_SDW_BUS_BASE_FREQ;
+=======
+
+	params = &amd_manager->bus.params;
+
+	params->col = AMD_SDW_DEFAULT_COLUMNS;
+	params->row = AMD_SDW_DEFAULT_ROWS;
+	prop = &amd_manager->bus.prop;
+	prop->clk_freq = &amd_sdw_freq_tbl[0];
+	prop->mclk_freq = AMD_SDW_BUS_BASE_FREQ;
+	prop->max_clk_freq = AMD_SDW_DEFAULT_CLK_FREQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = sdw_bus_master_add(&amd_manager->bus, dev, dev->fwnode);
 	if (ret) {
@@ -1422,9 +1459,12 @@ static int __maybe_unused amd_resume_runtime(struct device *dev)
 			}
 		}
 		sdw_clear_slave_status(bus, SDW_UNATTACH_REQUEST_MASTER_RESET);
+<<<<<<< HEAD
 		ret = amd_sdw_clk_init_ctrl(amd_manager);
 		if (ret)
 			return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amd_init_sdw_manager(amd_manager);
 		amd_enable_sdw_interrupts(amd_manager);
 		ret = amd_enable_sdw_manager(amd_manager);

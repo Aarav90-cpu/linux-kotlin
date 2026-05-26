@@ -57,6 +57,10 @@
 
 struct desc_buf {
 	u64 dma_addr;
+<<<<<<< HEAD
+=======
+	void *buff_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 dma_len;
 	u8 map_as_page;
 };
@@ -69,6 +73,10 @@ struct emac_tx_desc_buffer {
 struct emac_rx_desc_buffer {
 	struct sk_buff *skb;
 	u64 dma_addr;
+<<<<<<< HEAD
+=======
+	void *buff_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 dma_len;
 	u8 map_as_page;
 };
@@ -338,6 +346,10 @@ static void emac_free_tx_buf(struct emac_priv *priv, int i)
 
 		buf->dma_addr = 0;
 		buf->map_as_page = false;
+<<<<<<< HEAD
+=======
+		buf->buff_addr = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (tx_buf->skb) {

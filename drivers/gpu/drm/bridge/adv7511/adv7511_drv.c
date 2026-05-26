@@ -228,7 +228,11 @@ static void adv7511_set_config_csc(struct adv7511 *adv7511,
 		config.csc_coefficents = adv7511_csc_ycbcr_to_rgb;
 
 		if ((connector->display_info.color_formats &
+<<<<<<< HEAD
 		     BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422)) &&
+=======
+		     DRM_COLOR_FORMAT_YCBCR422) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    connector->display_info.is_hdmi) {
 			config.csc_enable = false;
 			output_format_422 = true;

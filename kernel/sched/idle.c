@@ -451,6 +451,10 @@ void cpu_startup_entry(enum cpuhp_state state)
 		do_idle();
 }
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * idle-task scheduling class.
  */
@@ -588,3 +592,7 @@ DEFINE_SCHED_CLASS(idle) = {
 	.switching_to		= switching_to_idle,
 	.update_curr		= update_curr_idle,
 };
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

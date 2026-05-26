@@ -36,7 +36,11 @@ static int fd3;
 static int overflows;
 static int overflows_2;
 
+<<<<<<< HEAD
 static volatile long the_var;
+=======
+volatile long the_var;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 /*

@@ -332,6 +332,10 @@ void __init mem_init(void)
 	cpu_cache_init();
 
 	/* clear the zero-page */
+<<<<<<< HEAD
+=======
+	memset(empty_zero_page, 0, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__flush_wback_region(empty_zero_page, PAGE_SIZE);
 
 	vsyscall_init();

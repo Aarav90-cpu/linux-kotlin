@@ -33,10 +33,16 @@ Options:
     -v             Verbose operation (print more information about each header being checked).
 
 Environmental args:
+<<<<<<< HEAD
     ABIDIFF        Custom path to abidiff binary
     CROSS_COMPILE  Toolchain prefix for compiler
     CC             C compiler (default is "\${CROSS_COMPILE}gcc")
     ARCH           Target architecture for the UAPI check (default is host arch)
+=======
+    ABIDIFF  Custom path to abidiff binary
+    CC       C compiler (default is "gcc")
+    ARCH     Target architecture for the UAPI check (default is host arch)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Exit codes:
     $SUCCESS) Success
@@ -191,7 +197,10 @@ do_compile() {
 		  -fno-eliminate-unused-debug-types \
 		  -g \
 		  "-I${inc_dir}" \
+<<<<<<< HEAD
 		  "-Iusr/dummy-include" \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  -include "$header" \
 		  -
 }
@@ -200,7 +209,11 @@ do_compile() {
 run_make_headers_install() {
 	local -r ref="$1"
 	local -r install_dir="$(get_header_tree "$ref")"
+<<<<<<< HEAD
 	make -j "$MAX_THREADS" CROSS_COMPILE="${CROSS_COMPILE}" ARCH="$ARCH" INSTALL_HDR_PATH="$install_dir" \
+=======
+	make -j "$MAX_THREADS" ARCH="$ARCH" INSTALL_HDR_PATH="$install_dir" \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		headers_install > /dev/null
 }
 
@@ -409,7 +422,11 @@ min_version_is_satisfied() {
 # Make sure we have the tools we need and the arguments make sense
 check_deps() {
 	ABIDIFF="${ABIDIFF:-abidiff}"
+<<<<<<< HEAD
 	CC="${CC:-${CROSS_COMPILE}gcc}"
+=======
+	CC="${CC:-gcc}"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ARCH="${ARCH:-$(uname -m)}"
 	if [ "$ARCH" = "x86_64" ]; then
 		ARCH="x86"

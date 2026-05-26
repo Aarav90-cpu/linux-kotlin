@@ -149,7 +149,12 @@ static int efx_bind_neigh(struct efx_nic *efx,
 #if IS_ENABLED(CONFIG_IPV6)
 			struct dst_entry *dst;
 
+<<<<<<< HEAD
 			dst = ip6_dst_lookup_flow(net, NULL, &flow6, NULL);
+=======
+			dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &flow6,
+							      NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rc = PTR_ERR_OR_ZERO(dst);
 			if (rc) {
 				NL_SET_ERR_MSG_MOD(extack, "Failed to lookup route for IPv6 encap");
@@ -530,7 +535,11 @@ static int efx_neigh_event(struct efx_nic *efx, struct neighbour *n)
 	if (n->tbl == &arp_tbl) {
 		keysize = sizeof(keys.dst_ip);
 #if IS_ENABLED(CONFIG_IPV6)
+<<<<<<< HEAD
 	} else if (n->tbl == &nd_tbl) {
+=======
+	} else if (n->tbl == ipv6_stub->nd_tbl) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ipv6 = true;
 		keysize = sizeof(keys.dst_ip6);
 #endif

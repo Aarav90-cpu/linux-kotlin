@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0-only
 config CRYPTO_DEV_QAT
 	tristate
+<<<<<<< HEAD
 	select CRYPTO_ACOMP
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_AEAD
 	select CRYPTO_AUTHENC
 	select CRYPTO_SKCIPHER
@@ -12,7 +15,10 @@ config CRYPTO_DEV_QAT
 	select CRYPTO_LIB_SHA1
 	select CRYPTO_LIB_SHA256
 	select CRYPTO_LIB_SHA512
+<<<<<<< HEAD
 	select CRYPTO_ZSTD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select FW_LOADER
 	select CRC8
 

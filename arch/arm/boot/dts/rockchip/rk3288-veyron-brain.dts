@@ -91,12 +91,20 @@
 			regulator-min-microvolt = <1000000>;
 			regulator-max-microvolt = <1000000>;
 			regulator-name = "vdd10_lcd";
+<<<<<<< HEAD
+=======
+			regulator-suspend-mem-disabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		vcc18_hdmi: SWITCH_REG2 {
 			regulator-always-on;
 			regulator-boot-on;
 			regulator-name = "vcc18_hdmi";
+<<<<<<< HEAD
+=======
+			regulator-suspend-mem-disabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };

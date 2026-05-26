@@ -68,7 +68,10 @@ enum mac_version {
 	RTL_GIGA_MAC_VER_61,
 	RTL_GIGA_MAC_VER_63,
 	RTL_GIGA_MAC_VER_64,
+<<<<<<< HEAD
 	RTL_GIGA_MAC_VER_65,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RTL_GIGA_MAC_VER_66,
 	RTL_GIGA_MAC_VER_70,
 	RTL_GIGA_MAC_VER_80,

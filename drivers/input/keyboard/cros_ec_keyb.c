@@ -29,12 +29,15 @@
 
 #include <linux/unaligned.h>
 
+<<<<<<< HEAD
 /*
  * Maximum size of the normal key matrix, this is limited by the host command
  * key_matrix field defined in ec_response_get_next_data_v3
  */
 #define CROS_EC_KEYBOARD_COLS_MAX 18
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct cros_ec_keyb - Structure representing EC keyboard device
  *
@@ -50,17 +53,25 @@
  * @bs_idev: The input device for non-matrix buttons and switches (or NULL).
  * @notifier: interrupt event notifier for transport devices
  * @vdata: vivaldi function row data
+<<<<<<< HEAD
  * @has_fn_map: whether the driver uses an fn function-map layer
  * @fn_active: tracks whether the function key is currently pressed
  * @fn_combo_active: tracks whether another key was pressed while fn is active
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct cros_ec_keyb {
 	unsigned int rows;
 	unsigned int cols;
 	int row_shift;
 	bool ghost_filter;
+<<<<<<< HEAD
 	u8 valid_keys[CROS_EC_KEYBOARD_COLS_MAX];
 	u8 old_kb_state[CROS_EC_KEYBOARD_COLS_MAX];
+=======
+	uint8_t *valid_keys;
+	uint8_t *old_kb_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct device *dev;
 	struct cros_ec_device *ec;
@@ -70,10 +81,13 @@ struct cros_ec_keyb {
 	struct notifier_block notifier;
 
 	struct vivaldi_data vdata;
+<<<<<<< HEAD
 
 	bool has_fn_map;
 	bool fn_active;
 	bool fn_combo_active;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -145,11 +159,19 @@ static const struct cros_ec_bs_map cros_ec_keyb_bs[] = {
  * Returns true when there is at least one combination of pressed keys that
  * results in ghosting.
  */
+<<<<<<< HEAD
 static bool cros_ec_keyb_has_ghosting(struct cros_ec_keyb *ckdev, u8 *buf)
 {
 	int col1, col2, buf1, buf2;
 	struct device *dev = ckdev->dev;
 	u8 *valid_keys = ckdev->valid_keys;
+=======
+static bool cros_ec_keyb_has_ghosting(struct cros_ec_keyb *ckdev, uint8_t *buf)
+{
+	int col1, col2, buf1, buf2;
+	struct device *dev = ckdev->dev;
+	uint8_t *valid_keys = ckdev->valid_keys;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Ghosting happens if for any pressed key X there are other keys
@@ -179,6 +201,7 @@ static bool cros_ec_keyb_has_ghosting(struct cros_ec_keyb *ckdev, u8 *buf)
 	return false;
 }
 
+<<<<<<< HEAD
 static void cros_ec_emit_fn_key(struct input_dev *input, unsigned int pos)
 {
 	input_event(input, EV_MSC, MSC_SCAN, pos);
@@ -281,6 +304,22 @@ static void cros_ec_keyb_process_col(struct cros_ec_keyb *ckdev, int col,
  */
 static void cros_ec_keyb_process(struct cros_ec_keyb *ckdev, u8 *kb_state, int len)
 {
+=======
+
+/*
+ * Compares the new keyboard state to the old one and produces key
+ * press/release events accordingly.  The keyboard state is 13 bytes (one byte
+ * per column)
+ */
+static void cros_ec_keyb_process(struct cros_ec_keyb *ckdev,
+			 uint8_t *kb_state, int len)
+{
+	struct input_dev *idev = ckdev->idev;
+	int col, row;
+	int new_state;
+	int old_state;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ckdev->ghost_filter && cros_ec_keyb_has_ghosting(ckdev, kb_state)) {
 		/*
 		 * Simple-minded solution: ignore this state. The obvious
@@ -291,6 +330,7 @@ static void cros_ec_keyb_process(struct cros_ec_keyb *ckdev, u8 *kb_state, int l
 		return;
 	}
 
+<<<<<<< HEAD
 	for (int col = 0; col < ckdev->cols; col++) {
 		u8 changed = kb_state[col] ^ ckdev->old_kb_state[col];
 
@@ -300,6 +340,27 @@ static void cros_ec_keyb_process(struct cros_ec_keyb *ckdev, u8 *kb_state, int l
 	}
 
 	memcpy(ckdev->old_kb_state, kb_state, sizeof(ckdev->old_kb_state));
+=======
+	for (col = 0; col < ckdev->cols; col++) {
+		for (row = 0; row < ckdev->rows; row++) {
+			int pos = MATRIX_SCAN_CODE(row, col, ckdev->row_shift);
+			const unsigned short *keycodes = idev->keycode;
+
+			new_state = kb_state[col] & (1 << row);
+			old_state = ckdev->old_kb_state[col] & (1 << row);
+			if (new_state != old_state) {
+				dev_dbg(ckdev->dev,
+					"changed: [r%d c%d]: byte %02x\n",
+					row, col, new_state);
+
+				input_event(idev, EV_MSC, MSC_SCAN, pos);
+				input_report_key(idev, keycodes[pos],
+						 new_state);
+			}
+		}
+		ckdev->old_kb_state[col] = kb_state[col];
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	input_sync(ckdev->idev);
 }
 
@@ -337,10 +398,15 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 {
 	struct cros_ec_keyb *ckdev = container_of(nb, struct cros_ec_keyb,
 						  notifier);
+<<<<<<< HEAD
 	struct ec_response_get_next_event_v3 *event_data;
 	unsigned int event_size;
 	unsigned int ev_type;
 	u32 val;
+=======
+	u32 val;
+	unsigned int ev_type;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If not wake enabled, discard key state changes during
@@ -350,32 +416,55 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 	if (queued_during_suspend && !device_may_wakeup(ckdev->dev))
 		return NOTIFY_OK;
 
+<<<<<<< HEAD
 	event_data = &ckdev->ec->event_data;
 	event_size = ckdev->ec->event_size;
 
 	switch (event_data->event_type) {
+=======
+	switch (ckdev->ec->event_data.event_type) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case EC_MKBP_EVENT_KEY_MATRIX:
 		pm_wakeup_event(ckdev->dev, 0);
 
 		if (!ckdev->idev) {
+<<<<<<< HEAD
 			dev_warn_once(ckdev->dev, "Unexpected key matrix event\n");
 			return NOTIFY_OK;
 		}
 
 		if (event_size != ckdev->cols) {
+=======
+			dev_warn_once(ckdev->dev,
+				      "Unexpected key matrix event\n");
+			return NOTIFY_OK;
+		}
+
+		if (ckdev->ec->event_size != ckdev->cols) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev_err(ckdev->dev,
 				"Discarded key matrix event, unexpected length: %d != %d\n",
 				ckdev->ec->event_size, ckdev->cols);
 			return NOTIFY_OK;
 		}
 
+<<<<<<< HEAD
 		cros_ec_keyb_process(ckdev, event_data->data.key_matrix, event_size);
+=======
+		cros_ec_keyb_process(ckdev,
+				     ckdev->ec->event_data.data.key_matrix,
+				     ckdev->ec->event_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	case EC_MKBP_EVENT_SYSRQ:
 		pm_wakeup_event(ckdev->dev, 0);
 
+<<<<<<< HEAD
 		val = get_unaligned_le32(&event_data->data.sysrq);
+=======
+		val = get_unaligned_le32(&ckdev->ec->event_data.data.sysrq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_dbg(ckdev->dev, "sysrq code from EC: %#x\n", val);
 		handle_sysrq(val);
 		break;
@@ -384,11 +473,21 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 	case EC_MKBP_EVENT_SWITCH:
 		pm_wakeup_event(ckdev->dev, 0);
 
+<<<<<<< HEAD
 		if (event_data->event_type == EC_MKBP_EVENT_BUTTON) {
 			val = get_unaligned_le32(&event_data->data.buttons);
 			ev_type = EV_KEY;
 		} else {
 			val = get_unaligned_le32(&event_data->data.switches);
+=======
+		if (ckdev->ec->event_data.event_type == EC_MKBP_EVENT_BUTTON) {
+			val = get_unaligned_le32(
+					&ckdev->ec->event_data.data.buttons);
+			ev_type = EV_KEY;
+		} else {
+			val = get_unaligned_le32(
+					&ckdev->ec->event_data.data.switches);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ev_type = EV_SW;
 		}
 		cros_ec_keyb_report_bs(ckdev, ev_type, val);
@@ -417,8 +516,13 @@ static void cros_ec_keyb_compute_valid_keys(struct cros_ec_keyb *ckdev)
 	for (col = 0; col < ckdev->cols; col++) {
 		for (row = 0; row < ckdev->rows; row++) {
 			code = keymap[MATRIX_SCAN_CODE(row, col, row_shift)];
+<<<<<<< HEAD
 			if (code != KEY_RESERVED && code != KEY_BATTERY)
 				ckdev->valid_keys[col] |= BIT(row);
+=======
+			if (code && (code != KEY_BATTERY))
+				ckdev->valid_keys[col] |= 1 << row;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		dev_dbg(ckdev->dev, "valid_keys[%02d] = 0x%02x\n",
 			col, ckdev->valid_keys[col]);
@@ -674,6 +778,7 @@ static void cros_ec_keyb_parse_vivaldi_physmap(struct cros_ec_keyb *ckdev)
 	ckdev->vdata.num_function_row_keys = n_physmap;
 }
 
+<<<<<<< HEAD
 /* Returns true if there is a KEY_FN code defined in the normal keymap */
 static bool cros_ec_keyb_has_fn_key(struct cros_ec_keyb *ckdev)
 {
@@ -730,6 +835,8 @@ static int cros_ec_keyb_setkeycode(struct input_dev *idev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * cros_ec_keyb_register_matrix - Register matrix keys
  *
@@ -751,11 +858,21 @@ static int cros_ec_keyb_register_matrix(struct cros_ec_keyb *ckdev)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (ckdev->cols > CROS_EC_KEYBOARD_COLS_MAX) {
 		dev_err(dev, "keypad,num-columns too large: %d (max: %d)\n",
 			ckdev->cols, CROS_EC_KEYBOARD_COLS_MAX);
 		return -EINVAL;
 	}
+=======
+	ckdev->valid_keys = devm_kzalloc(dev, ckdev->cols, GFP_KERNEL);
+	if (!ckdev->valid_keys)
+		return -ENOMEM;
+
+	ckdev->old_kb_state = devm_kzalloc(dev, ckdev->cols, GFP_KERNEL);
+	if (!ckdev->old_kb_state)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * We call the keyboard matrix 'input0'. Allocate phys before input
@@ -777,11 +894,19 @@ static int cros_ec_keyb_register_matrix(struct cros_ec_keyb *ckdev)
 	idev->id.version = 1;
 	idev->id.product = 0;
 	idev->dev.parent = dev;
+<<<<<<< HEAD
 	idev->setkeycode = cros_ec_keyb_setkeycode;
 
 	ckdev->ghost_filter = device_property_read_bool(dev, "google,needs-ghost-filter");
 
 	err = matrix_keypad_build_keymap(NULL, NULL, ckdev->rows * 2, ckdev->cols,
+=======
+
+	ckdev->ghost_filter = device_property_read_bool(dev,
+					"google,needs-ghost-filter");
+
+	err = matrix_keypad_build_keymap(NULL, NULL, ckdev->rows, ckdev->cols,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 NULL, idev);
 	if (err) {
 		dev_err(dev, "cannot build key matrix\n");
@@ -796,8 +921,11 @@ static int cros_ec_keyb_register_matrix(struct cros_ec_keyb *ckdev)
 	cros_ec_keyb_compute_valid_keys(ckdev);
 	cros_ec_keyb_parse_vivaldi_physmap(ckdev);
 
+<<<<<<< HEAD
 	ckdev->has_fn_map = cros_ec_keyb_has_fn_map(ckdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = input_register_device(ckdev->idev);
 	if (err) {
 		dev_err(dev, "cannot register input device\n");

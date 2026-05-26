@@ -56,7 +56,11 @@ static void guest_validate_irq(unsigned int intid,
 				struct test_vcpu_shared_data *shared_data)
 {
 	enum guest_stage stage = shared_data->guest_stage;
+<<<<<<< HEAD
 	u64 xcnt = 0, xcnt_diff_us, cval = 0;
+=======
+	uint64_t xcnt = 0, xcnt_diff_us, cval = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long xctl = 0;
 	unsigned int timer_irq = 0;
 	unsigned int accessor;
@@ -105,7 +109,11 @@ static void guest_validate_irq(unsigned int intid,
 static void guest_irq_handler(struct ex_regs *regs)
 {
 	unsigned int intid = gic_get_and_ack_irq();
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	guest_validate_irq(intid, shared_data);
@@ -116,7 +124,11 @@ static void guest_irq_handler(struct ex_regs *regs)
 static void guest_run_stage(struct test_vcpu_shared_data *shared_data,
 				enum guest_stage stage)
 {
+<<<<<<< HEAD
 	u32 irq_iter, config_iter;
+=======
+	uint32_t irq_iter, config_iter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	shared_data->guest_stage = stage;
 	shared_data->nr_iter = 0;
@@ -140,7 +152,11 @@ static void guest_run_stage(struct test_vcpu_shared_data *shared_data,
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct test_vcpu_shared_data *shared_data = &vcpu_shared_data[cpu];
 
 	local_irq_disable();

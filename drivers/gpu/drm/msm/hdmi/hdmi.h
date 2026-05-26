@@ -43,7 +43,11 @@ struct hdmi {
 	bool power_on;
 	bool hpd_enabled;
 	struct mutex state_mutex; /* protects two booleans */
+<<<<<<< HEAD
 	unsigned long pixclock;
+=======
+	unsigned long int pixclock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void __iomem *mmio;
 	void __iomem *qfprom_mmio;
@@ -132,7 +136,11 @@ enum hdmi_phy_type {
 
 struct hdmi_phy_cfg {
 	enum hdmi_phy_type type;
+<<<<<<< HEAD
 	void (*powerup)(struct hdmi_phy *phy, unsigned long pixclock);
+=======
+	void (*powerup)(struct hdmi_phy *phy, unsigned long int pixclock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void (*powerdown)(struct hdmi_phy *phy);
 	const char * const *reg_names;
 	int num_regs;
@@ -167,7 +175,11 @@ static inline u32 hdmi_phy_read(struct hdmi_phy *phy, u32 reg)
 
 int msm_hdmi_phy_resource_enable(struct hdmi_phy *phy);
 void msm_hdmi_phy_resource_disable(struct hdmi_phy *phy);
+<<<<<<< HEAD
 void msm_hdmi_phy_powerup(struct hdmi_phy *phy, unsigned long pixclock);
+=======
+void msm_hdmi_phy_powerup(struct hdmi_phy *phy, unsigned long int pixclock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void msm_hdmi_phy_powerdown(struct hdmi_phy *phy);
 void __init msm_hdmi_phy_driver_register(void);
 void __exit msm_hdmi_phy_driver_unregister(void);

@@ -68,7 +68,11 @@ static void bpf_sk_storage_map_free(struct bpf_map *map)
 
 static struct bpf_map *bpf_sk_storage_map_alloc(union bpf_attr *attr)
 {
+<<<<<<< HEAD
 	return bpf_local_storage_map_alloc(attr, &sk_cache);
+=======
+	return bpf_local_storage_map_alloc(attr, &sk_cache, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int notsupp_get_next_key(struct bpf_map *map, void *key,
@@ -106,7 +110,11 @@ static long bpf_fd_sk_storage_update_elem(struct bpf_map *map, void *key,
 	if (sock) {
 		sdata = bpf_local_storage_update(
 			sock->sk, (struct bpf_local_storage_map *)map, value,
+<<<<<<< HEAD
 			map_flags, false);
+=======
+			map_flags, false, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sockfd_put(sock);
 		return PTR_ERR_OR_ZERO(sdata);
 	}
@@ -137,7 +145,11 @@ bpf_sk_storage_clone_elem(struct sock *newsk,
 {
 	struct bpf_local_storage_elem *copy_selem;
 
+<<<<<<< HEAD
 	copy_selem = bpf_selem_alloc(smap, newsk, NULL, false);
+=======
+	copy_selem = bpf_selem_alloc(smap, newsk, NULL, false, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!copy_selem)
 		return NULL;
 
@@ -172,7 +184,11 @@ int bpf_sk_storage_clone(const struct sock *sk, struct sock *newsk)
 		struct bpf_map *map;
 
 		smap = rcu_dereference(SDATA(selem)->smap);
+<<<<<<< HEAD
 		if (!smap || !(smap->map.map_flags & BPF_F_CLONE))
+=======
+		if (!(smap->map.map_flags & BPF_F_CLONE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		/* Note that for lockless listeners adding new element
@@ -202,7 +218,11 @@ int bpf_sk_storage_clone(const struct sock *sk, struct sock *newsk)
 			}
 			bpf_selem_link_storage_nolock(new_sk_storage, copy_selem);
 		} else {
+<<<<<<< HEAD
 			ret = bpf_local_storage_alloc(newsk, smap, copy_selem);
+=======
+			ret = bpf_local_storage_alloc(newsk, smap, copy_selem, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret) {
 				bpf_selem_free(copy_selem, true);
 				atomic_sub(smap->elem_size,
@@ -227,8 +247,14 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 BPF_CALL_4(bpf_sk_storage_get, struct bpf_map *, map, struct sock *, sk,
 	   void *, value, u64, flags)
+=======
+/* *gfp_flags* is a hidden argument provided by the verifier */
+BPF_CALL_5(bpf_sk_storage_get, struct bpf_map *, map, struct sock *, sk,
+	   void *, value, u64, flags, gfp_t, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_data *sdata;
 
@@ -249,7 +275,11 @@ BPF_CALL_4(bpf_sk_storage_get, struct bpf_map *, map, struct sock *, sk,
 	    refcount_inc_not_zero(&sk->sk_refcnt)) {
 		sdata = bpf_local_storage_update(
 			sk, (struct bpf_local_storage_map *)map, value,
+<<<<<<< HEAD
 			BPF_NOEXIST, false);
+=======
+			BPF_NOEXIST, false, gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* sk must be a fullsock (guaranteed by verifier),
 		 * so sock_gen_put() is unnecessary.
 		 */
@@ -382,14 +412,25 @@ static bool bpf_sk_storage_tracing_allowed(const struct bpf_prog *prog)
 	return false;
 }
 
+<<<<<<< HEAD
 BPF_CALL_4(bpf_sk_storage_get_tracing, struct bpf_map *, map, struct sock *, sk,
 	   void *, value, u64, flags)
+=======
+/* *gfp_flags* is a hidden argument provided by the verifier */
+BPF_CALL_5(bpf_sk_storage_get_tracing, struct bpf_map *, map, struct sock *, sk,
+	   void *, value, u64, flags, gfp_t, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	WARN_ON_ONCE(!bpf_rcu_lock_held());
 	if (in_hardirq() || in_nmi())
 		return (unsigned long)NULL;
 
+<<<<<<< HEAD
 	return (unsigned long)____bpf_sk_storage_get(map, sk, value, flags);
+=======
+	return (unsigned long)____bpf_sk_storage_get(map, sk, value, flags,
+						     gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 BPF_CALL_2(bpf_sk_storage_delete_tracing, struct bpf_map *, map,
@@ -531,10 +572,17 @@ err_free:
 }
 EXPORT_SYMBOL_GPL(bpf_sk_storage_diag_alloc);
 
+<<<<<<< HEAD
 static int diag_get(struct bpf_local_storage_map *smap,
 		    struct bpf_local_storage_data *sdata, struct sk_buff *skb)
 {
 	struct nlattr *nla_stg, *nla_value;
+=======
+static int diag_get(struct bpf_local_storage_data *sdata, struct sk_buff *skb)
+{
+	struct nlattr *nla_stg, *nla_value;
+	struct bpf_local_storage_map *smap;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* It cannot exceed max nlattr's payload */
 	BUILD_BUG_ON(U16_MAX - NLA_HDRLEN < BPF_LOCAL_STORAGE_MAX_VALUE_SIZE);
@@ -543,6 +591,10 @@ static int diag_get(struct bpf_local_storage_map *smap,
 	if (!nla_stg)
 		return -EMSGSIZE;
 
+<<<<<<< HEAD
+=======
+	smap = rcu_dereference(sdata->smap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nla_put_u32(skb, SK_DIAG_BPF_STORAGE_MAP_ID, smap->map.id))
 		goto errout;
 
@@ -557,7 +609,10 @@ static int diag_get(struct bpf_local_storage_map *smap,
 				      sdata->data, true);
 	else
 		copy_map_value(&smap->map, nla_data(nla_value), sdata->data);
+<<<<<<< HEAD
 	check_and_init_map_value(&smap->map, nla_data(nla_value));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nla_nest_end(skb, nla_stg);
 	return 0;
@@ -596,11 +651,17 @@ static int bpf_sk_storage_diag_put_all(struct sock *sk, struct sk_buff *skb,
 	saved_len = skb->len;
 	hlist_for_each_entry_rcu(selem, &sk_storage->list, snode) {
 		smap = rcu_dereference(SDATA(selem)->smap);
+<<<<<<< HEAD
 		if (!smap)
 			continue;
 		diag_size += nla_value_size(smap->map.value_size);
 
 		if (nla_stgs && diag_get(smap, SDATA(selem), skb))
+=======
+		diag_size += nla_value_size(smap->map.value_size);
+
+		if (nla_stgs && diag_get(SDATA(selem), skb))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Continue to learn diag_size */
 			err = -EMSGSIZE;
 	}
@@ -667,7 +728,11 @@ int bpf_sk_storage_diag_put(struct bpf_sk_storage_diag *diag,
 
 		diag_size += nla_value_size(diag->maps[i]->value_size);
 
+<<<<<<< HEAD
 		if (nla_stgs && diag_get((struct bpf_local_storage_map *)diag->maps[i], sdata, skb))
+=======
+		if (nla_stgs && diag_get(sdata, skb))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Continue to learn diag_size */
 			err = -EMSGSIZE;
 	}

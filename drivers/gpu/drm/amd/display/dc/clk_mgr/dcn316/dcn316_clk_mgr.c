@@ -255,9 +255,12 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
 static void dcn316_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
 		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
 {
+<<<<<<< HEAD
 	(void)regs_and_bypass;
 	(void)clk_mgr_base;
 	(void)log_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return;
 }
 
@@ -639,12 +642,20 @@ void dcn316_clk_mgr_construct(
 		clk_mgr->base.base.dentist_vco_freq_khz = 2500000; /* 2400MHz */
 
 
+<<<<<<< HEAD
 	if (ctx->dc_bios->integrated_info &&
 	    ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType)
 		dcn316_bw_params.wm_table = lpddr5_wm_table;
 	else
 		dcn316_bw_params.wm_table = ddr4_wm_table;
 
+=======
+	if (ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType) {
+		dcn316_bw_params.wm_table = lpddr5_wm_table;
+	} else {
+		dcn316_bw_params.wm_table = ddr4_wm_table;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Saved clocks configured at boot for debug purposes */
 	dcn316_dump_clk_registers(&clk_mgr->base.base.boot_snapshot,
 				  &clk_mgr->base.base, &log_info);

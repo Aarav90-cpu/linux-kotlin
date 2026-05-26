@@ -139,7 +139,11 @@ int ocfs2_get_block(struct inode *inode, sector_t iblock,
 			      (unsigned long long)iblock, bh_result, create);
 
 	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE)
+<<<<<<< HEAD
 		mlog(ML_NOTICE, "get_block on system inode 0x%p (%llu)\n",
+=======
+		mlog(ML_NOTICE, "get_block on system inode 0x%p (%lu)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     inode, inode->i_ino);
 
 	if (S_ISLNK(inode->i_mode)) {
@@ -2148,7 +2152,11 @@ static int ocfs2_dio_wr_get_block(struct inode *inode, sector_t iblock,
 	    ((iblock + ((len - 1) >> i_blkbits)) > endblk))
 		len = (endblk - iblock + 1) << i_blkbits;
 
+<<<<<<< HEAD
 	mlog(0, "get block of %llu at %llu:%u req %u\n",
+=======
+	mlog(0, "get block of %lu at %llu:%u req %u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, pos, len, total_len);
 
 	/*

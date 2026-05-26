@@ -1104,7 +1104,11 @@ conditional:
 		last_scope = TAILQ_LAST(&scope_context->inner_scope,
 					scope_tailq);
 		if (last_scope == NULL
+<<<<<<< HEAD
 		 || last_scope->type == (int)T_ELSE) {
+=======
+		 || last_scope->type == T_ELSE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			stop("'else if' without leading 'if'", EX_DATAERR);
 			/* NOTREACHED */

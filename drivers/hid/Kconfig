@@ -107,6 +107,10 @@ menu "Special HID drivers"
 
 config HID_A4TECH
 	tristate "A4TECH mice"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for some A4TECH mice with two scroll wheels.
 
@@ -139,6 +143,10 @@ config HID_APPLE
 	tristate "Apple {i,Power,Mac}Books"
 	depends on LEDS_CLASS
 	depends on NEW_LEDS
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for some Apple devices which less or more break
 	HID specification.
@@ -207,6 +215,10 @@ config HID_AUREAL
 
 config HID_BELKIN
 	tristate "Belkin Flip KVM and Wireless keyboard"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Belkin Flip KVM and Wireless keyboard.
 
@@ -234,12 +246,20 @@ config HID_BIGBEN_FF
 
 config HID_CHERRY
 	tristate "Cherry Cymotion keyboard"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Cherry Cymotion keyboard.
 
 config HID_CHICONY
 	tristate "Chicony devices"
 	depends on USB_HID
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Chicony Tactical pad and special keys on Chicony keyboards.
 
@@ -317,6 +337,10 @@ config HID_CREATIVE_SB0540
 
 config HID_CYPRESS
 	tristate "Cypress mouse and barcode readers"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for cypress mouse and barcode readers.
 
@@ -382,6 +406,10 @@ config HID_EVISION
 
 config HID_EZKEY
 	tristate "Ezkey BTC 8193 keyboard"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Ezkey BTC 8193 keyboard.
 
@@ -557,6 +585,10 @@ config HID_ICADE
 
 config HID_ITE
 	tristate "ITE devices"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for ITE devices not fully compliant with HID standard.
 
@@ -577,6 +609,10 @@ config HID_TWINHAN
 
 config HID_KENSINGTON
 	tristate "Kensington Slimblade Trackball"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Kensington Slimblade Trackball.
 
@@ -601,7 +637,12 @@ config HID_LED
 
 config HID_LENOVO
 	tristate "Lenovo / Thinkpad devices"
+<<<<<<< HEAD
 	depends on LEDS_CLASS
+=======
+	select NEW_LEDS
+	select LEDS_CLASS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for IBM/Lenovo devices that are not fully compliant with HID standard.
 
@@ -613,6 +654,7 @@ config HID_LENOVO
 	- ThinkPad Compact Bluetooth Keyboard with TrackPoint (supports Fn keys)
 	- ThinkPad Compact USB Keyboard with TrackPoint (supports Fn keys)
 
+<<<<<<< HEAD
 config HID_LENOVO_GO
 	tristate "HID Driver for Lenovo Legion Go Series Controllers"
 	depends on USB_HID
@@ -635,6 +677,8 @@ config HID_LENOVO_GO_S
 	S. Say M here to compile this driver as a module. The module will be called
 	hid-lenovo-go-s.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config HID_LETSKETCH
 	tristate "Letsketch WP9620N tablets"
 	depends on USB_HID
@@ -654,6 +698,10 @@ config HID_LOGITECH
 	depends on USB_HID
 	depends on LEDS_CLASS
 	depends on LEDS_CLASS_MULTICOLOR
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Logitech devices that are not fully compliant with HID standard.
 
@@ -768,17 +816,29 @@ config HID_MEGAWORLD_FF
 
 config HID_REDRAGON
 	tristate "Redragon keyboards"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
     Support for Redragon keyboards that need fix-ups to work properly.
 
 config HID_MICROSOFT
 	tristate "Microsoft non-fully HID-compliant devices"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select INPUT_FF_MEMLESS
 	help
 	Support for Microsoft devices that are not fully compliant with HID standard.
 
 config HID_MONTEREY
 	tristate "Monterey Genius KB29E keyboard"
+<<<<<<< HEAD
+=======
+	default !EXPERT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	Support for Monterey Genius KB29E.
 
@@ -1108,6 +1168,7 @@ config HID_SONY
 	help
 	Support for
 
+<<<<<<< HEAD
 	  * Sixaxis controllers for PS3
 	  * Buzz controllers
 	  * Blu-ray Disc Remote Control for PS3
@@ -1117,6 +1178,15 @@ config HID_SONY
 	  * Rock Band 1, 2 and 3 PS3 and Wii instruments
 	  * Rock Band 4 PS4 and PS5 guitars
 	  * DJ Hero Turntable for PS3
+=======
+	  * Sony PS3 6-axis controllers
+	  * Buzz controllers
+	  * Sony PS3 Blue-ray Disk Remote Control (Bluetooth)
+	  * Logitech Harmony adapter for Sony Playstation 3 (Bluetooth)
+	  * Guitar Hero Live PS3, Wii U and PS4 guitar dongles
+	  * Guitar Hero PS3 and PC guitar dongles
+	  * Rock Band 4 PS4 and PS5 guitars
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SONY_FF
 	bool "Sony PS2/3/4 accessories force feedback support"
@@ -1445,6 +1515,7 @@ config HID_KUNIT_TEST
 
 	  If in doubt, say "N".
 
+<<<<<<< HEAD
 config HID_HUAWEI
 	tristate "Huawei HID devices support"
 	depends on USB_HID
@@ -1452,6 +1523,8 @@ config HID_HUAWEI
 	  Support for huawei cd30 keyboard or other hid devices
 	  that need fix-ups to work properly.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endmenu
 
 source "drivers/hid/bpf/Kconfig"

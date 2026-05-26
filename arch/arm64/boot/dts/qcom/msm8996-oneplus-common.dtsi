@@ -745,7 +745,18 @@
 		bias-pull-down;
 	};
 
+<<<<<<< HEAD
 	mdss_te: mdss-te-state {
+=======
+	mdss_te_active: mdss-te-active-state {
+		pins = "gpio10";
+		function = "mdp_vsync";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	mdss_te_suspend: mdss-te-suspend-state {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pins = "gpio10";
 		function = "mdp_vsync";
 		drive-strength = <2>;

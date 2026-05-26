@@ -78,7 +78,11 @@ int bio_integrity_add_page(struct bio *bio, struct page *page, unsigned int len,
 int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter);
 int bio_integrity_map_iter(struct bio *bio, struct uio_meta *meta);
 void bio_integrity_unmap_user(struct bio *bio);
+<<<<<<< HEAD
 void bio_integrity_prep(struct bio *bio, unsigned int action);
+=======
+bool bio_integrity_prep(struct bio *bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bio_integrity_advance(struct bio *bio, unsigned int bytes_done);
 void bio_integrity_trim(struct bio *bio);
 int bio_integrity_clone(struct bio *bio, struct bio *bio_src, gfp_t gfp_mask);
@@ -104,8 +108,14 @@ static inline void bio_integrity_unmap_user(struct bio *bio)
 {
 }
 
+<<<<<<< HEAD
 static inline void bio_integrity_prep(struct bio *bio, unsigned int action)
 {
+=======
+static inline bool bio_integrity_prep(struct bio *bio)
+{
+	return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int bio_integrity_clone(struct bio *bio, struct bio *bio_src,
@@ -143,6 +153,7 @@ static inline int bio_integrity_add_page(struct bio *bio, struct page *page,
 
 void bio_integrity_alloc_buf(struct bio *bio, bool zero_buffer);
 void bio_integrity_free_buf(struct bio_integrity_payload *bip);
+<<<<<<< HEAD
 void bio_integrity_setup_default(struct bio *bio);
 
 unsigned int fs_bio_integrity_alloc(struct bio *bio);
@@ -150,5 +161,7 @@ void fs_bio_integrity_free(struct bio *bio);
 void fs_bio_integrity_generate(struct bio *bio);
 int fs_bio_integrity_verify(struct bio *bio, sector_t sector,
 		unsigned int size);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _LINUX_BIO_INTEGRITY_H */

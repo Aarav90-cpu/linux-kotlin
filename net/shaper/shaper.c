@@ -21,8 +21,11 @@
 
 #define NET_SHAPER_ID_UNSPEC NET_SHAPER_ID_MASK
 
+<<<<<<< HEAD
 static_assert(NET_SHAPER_ID_UNSPEC == NET_SHAPER_MAX_HANDLE_ID + 1);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct net_shaper_hierarchy {
 	struct xarray shapers;
 };
@@ -92,12 +95,15 @@ static int net_shaper_handle_size(void)
 			      nla_total_size(sizeof(u32)));
 }
 
+<<<<<<< HEAD
 static int net_shaper_group_reply_size(void)
 {
 	return nla_total_size(sizeof(u32)) +	/* NET_SHAPER_A_IFINDEX */
 	       net_shaper_handle_size();	/* NET_SHAPER_A_HANDLE */
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int net_shaper_fill_binding(struct sk_buff *msg,
 				   const struct net_shaper_binding *binding,
 				   u32 type)
@@ -306,6 +312,25 @@ static void net_shaper_default_parent(const struct net_shaper_handle *handle,
 	parent->id = 0;
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+/* MARK_0 is already in use due to XA_FLAGS_ALLOC. The VALID mark is set on
+ * an entry only after the device-side configuration has completed
+ * successfully (see net_shaper_commit()). Lookups and dumps must filter on
+ * this mark to avoid exposing tentative entries inserted by
+ * net_shaper_pre_insert() while the driver call is still in flight.
+ */
+#define NET_SHAPER_VALID	XA_MARK_1
+=======
+/*
+ * MARK_0 is already in use due to XA_FLAGS_ALLOC, can't reuse such flag as
+ * it's cleared by xa_store().
+ */
+#define NET_SHAPER_NOT_VALID XA_MARK_1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+
+>>>>>>> 7fb39c93c52e (Sync)
 static struct net_shaper *
 net_shaper_lookup(struct net_shaper_binding *binding,
 		  const struct net_shaper_handle *handle)
@@ -315,6 +340,7 @@ net_shaper_lookup(struct net_shaper_binding *binding,
 	struct net_shaper *cur;
 
 	hierarchy = net_shaper_hierarchy_rcu(binding);
+<<<<<<< HEAD
 	if (!hierarchy)
 		return NULL;
 
@@ -324,6 +350,24 @@ net_shaper_lookup(struct net_shaper_binding *binding,
 		return NULL;
 
 	return cur;
+=======
+<<<<<<< HEAD
+	if (!hierarchy || !xa_get_mark(&hierarchy->shapers, index,
+				       NET_SHAPER_VALID))
+		return NULL;
+
+	/* Pairs with smp_wmb() in net_shaper_commit(): if the entry is
+	 * valid, its contents must be visible too.
+	 */
+	smp_rmb();
+=======
+	if (!hierarchy || xa_get_mark(&hierarchy->shapers, index,
+				      NET_SHAPER_NOT_VALID))
+		return NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	return xa_load(&hierarchy->shapers, index);
+>>>>>>> 7fb39c93c52e (Sync)
 }
 
 /* Allocate on demand the per device shaper's hierarchy container.
@@ -378,7 +422,11 @@ static int net_shaper_pre_insert(struct net_shaper_binding *binding,
 	    handle->id == NET_SHAPER_ID_UNSPEC) {
 		u32 min, max;
 
+<<<<<<< HEAD
 		handle->id = NET_SHAPER_MAX_HANDLE_ID;
+=======
+		handle->id = NET_SHAPER_ID_MASK - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		max = net_shaper_handle_to_index(handle);
 		handle->id = 0;
 		min = net_shaper_handle_to_index(handle);
@@ -400,10 +448,20 @@ static int net_shaper_pre_insert(struct net_shaper_binding *binding,
 		goto free_id;
 	}
 
+<<<<<<< HEAD
 	/* Insert as 'tentative' (no VALID mark). The mark will be set by
 	 * net_shaper_commit() once the driver-side configuration succeeds.
 	 */
 	prev = xa_store(&hierarchy->shapers, index, cur, GFP_KERNEL);
+=======
+	/* Mark 'tentative' shaper inside the hierarchy container.
+	 * xa_set_mark is a no-op if the previous store fails.
+	 */
+	xa_lock(&hierarchy->shapers);
+	prev = __xa_store(&hierarchy->shapers, index, cur, GFP_KERNEL);
+	__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_NOT_VALID);
+	xa_unlock(&hierarchy->shapers);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (xa_err(prev)) {
 		NL_SET_ERR_MSG(extack, "Can't insert shaper into device store");
 		kfree_rcu(cur, rcu);
@@ -437,10 +495,25 @@ static void net_shaper_commit(struct net_shaper_binding *binding,
 		if (WARN_ON_ONCE(!cur))
 			continue;
 
+<<<<<<< HEAD
 		/* Successful update: update the hierarchy container... */
 		net_shaper_copy(cur, &shapers[i]);
 		/* ... publish to lockless readers. */
 		smp_store_release(&cur->valid, true);
+=======
+		/* Successful update: drop the tentative mark
+		 * and update the hierarchy container.
+		 */
+<<<<<<< HEAD
+		*cur = shapers[i];
+		smp_wmb();
+		__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_VALID);
+=======
+		__xa_clear_mark(&hierarchy->shapers, index,
+				NET_SHAPER_NOT_VALID);
+		*cur = shapers[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	}
 	xa_unlock(&hierarchy->shapers);
 }
@@ -456,9 +529,14 @@ static void net_shaper_rollback(struct net_shaper_binding *binding)
 		return;
 
 	xa_lock(&hierarchy->shapers);
+<<<<<<< HEAD
 	xa_for_each(&hierarchy->shapers, index, cur) {
 		if (cur->valid)
 			continue;
+=======
+	xa_for_each_marked(&hierarchy->shapers, index, cur,
+			   NET_SHAPER_NOT_VALID) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__xa_erase(&hierarchy->shapers, index);
 		kfree_rcu(cur, rcu);
 	}
@@ -491,6 +569,7 @@ static int net_shaper_parse_handle(const struct nlattr *attr,
 	 * shaper (any other value).
 	 */
 	id_attr = tb[NET_SHAPER_A_HANDLE_ID];
+<<<<<<< HEAD
 	if (id_attr) {
 		id = nla_get_u32(id_attr);
 	} else if (handle->scope == NET_SHAPER_SCOPE_NODE) {
@@ -506,6 +585,12 @@ static int net_shaper_parse_handle(const struct nlattr *attr,
 				    "Netdev scope is a singleton, must use ID 0");
 		return -EINVAL;
 	}
+=======
+	if (id_attr)
+		id = nla_get_u32(id_attr);
+	else if (handle->scope == NET_SHAPER_SCOPE_NODE)
+		id = NET_SHAPER_ID_UNSPEC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	handle->id = id;
 	return 0;
@@ -873,12 +958,25 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
 		goto out_unlock;
 
 	for (; (shaper = xa_find(&hierarchy->shapers, &ctx->start_index,
+<<<<<<< HEAD
 				 U32_MAX, XA_PRESENT));
 	     ctx->start_index++) {
 		/* Check valid before reading fields */
 		if (!smp_load_acquire(&shaper->valid))
 			continue;
 
+=======
+<<<<<<< HEAD
+				 U32_MAX, NET_SHAPER_VALID));
+	     ctx->start_index++) {
+		/* Pairs with smp_wmb() in net_shaper_commit(): the entry
+		 * is marked VALID, so its contents must be visible too.
+		 */
+		smp_rmb();
+=======
+				 U32_MAX, XA_PRESENT)); ctx->start_index++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		ret = net_shaper_fill_one(skb, binding, shaper, info);
 		if (ret)
 			break;
@@ -974,6 +1072,7 @@ static int net_shaper_handle_cmp(const struct net_shaper_handle *a,
 	return memcmp(a, b, sizeof(*a));
 }
 
+<<<<<<< HEAD
 static int net_shaper_parse_leaves(struct net_shaper_binding *binding,
 				   struct genl_info *info,
 				   const struct net_shaper *node,
@@ -1014,6 +1113,8 @@ static int net_shaper_parse_leaves(struct net_shaper_binding *binding,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int net_shaper_parent_from_leaves(int leaves_count,
 					 const struct net_shaper *leaves,
 					 struct net_shaper *node,
@@ -1046,6 +1147,7 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
 	int i, ret;
 
 	if (node->handle.scope == NET_SHAPER_SCOPE_NODE) {
+<<<<<<< HEAD
 		struct net_shaper *cur = NULL;
 
 		new_node = node->handle.id == NET_SHAPER_ID_UNSPEC;
@@ -1062,6 +1164,17 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
 						   node->handle.id);
 				return -ENOENT;
 			}
+=======
+		new_node = node->handle.id == NET_SHAPER_ID_UNSPEC;
+
+		if (!new_node && !net_shaper_lookup(binding, &node->handle)) {
+			/* The related attribute is not available when
+			 * reaching here from the delete() op.
+			 */
+			NL_SET_ERR_MSG_FMT(extack, "Node shaper %d:%d does not exists",
+					   node->handle.scope, node->handle.id);
+			return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* When unspecified, the node parent scope is inherited from
@@ -1075,6 +1188,7 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
 				return ret;
 		}
 
+<<<<<<< HEAD
 		if (cur && net_shaper_handle_cmp(&cur->parent,
 						 &node->parent)) {
 			NL_SET_ERR_MSG_FMT(extack,
@@ -1084,6 +1198,8 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
 			return -EOPNOTSUPP;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		net_shaper_default_parent(&node->handle, &node->parent);
 	}
@@ -1260,7 +1376,11 @@ static int net_shaper_group_send_reply(struct net_shaper_binding *binding,
 free_msg:
 	/* Should never happen as msg is pre-allocated with enough space. */
 	WARN_ONCE(true, "calculated message payload length (%d)",
+<<<<<<< HEAD
 		  net_shaper_group_reply_size());
+=======
+		  net_shaper_handle_size());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nlmsg_free(msg);
 	return -EMSGSIZE;
 }
@@ -1270,9 +1390,16 @@ int net_shaper_nl_group_doit(struct sk_buff *skb, struct genl_info *info)
 	struct net_shaper **old_nodes, *leaves, node = {};
 	struct net_shaper_hierarchy *hierarchy;
 	struct net_shaper_binding *binding;
+<<<<<<< HEAD
 	int i, ret, leaves_count;
 	int old_nodes_count = 0;
 	struct sk_buff *msg;
+=======
+	int i, ret, rem, leaves_count;
+	int old_nodes_count = 0;
+	struct sk_buff *msg;
+	struct nlattr *attr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (GENL_REQ_ATTR_CHECK(info, NET_SHAPER_A_LEAVES))
 		return -EINVAL;
@@ -1300,19 +1427,41 @@ int net_shaper_nl_group_doit(struct sk_buff *skb, struct genl_info *info)
 	if (ret)
 		goto free_leaves;
 
+<<<<<<< HEAD
 	ret = net_shaper_parse_leaves(binding, info, &node,
 				      leaves, leaves_count);
 	if (ret)
 		goto free_leaves;
+=======
+	i = 0;
+	nla_for_each_attr_type(attr, NET_SHAPER_A_LEAVES,
+			       genlmsg_data(info->genlhdr),
+			       genlmsg_len(info->genlhdr), rem) {
+		if (WARN_ON_ONCE(i >= leaves_count))
+			goto free_leaves;
+
+		ret = net_shaper_parse_leaf(binding, attr, info,
+					    &node, &leaves[i]);
+		if (ret)
+			goto free_leaves;
+		i++;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Prepare the msg reply in advance, to avoid device operation
 	 * rollback on allocation failure.
 	 */
+<<<<<<< HEAD
 	msg = genlmsg_new(net_shaper_group_reply_size(), GFP_KERNEL);
 	if (!msg) {
 		ret = -ENOMEM;
 		goto free_leaves;
 	}
+=======
+	msg = genlmsg_new(net_shaper_handle_size(), GFP_KERNEL);
+	if (!msg)
+		goto free_leaves;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hierarchy = net_shaper_hierarchy_setup(binding);
 	if (!hierarchy) {

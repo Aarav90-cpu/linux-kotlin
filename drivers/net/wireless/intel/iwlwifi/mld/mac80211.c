@@ -754,6 +754,7 @@ void iwl_mld_mac80211_remove_interface(struct ieee80211_hw *hw,
 	mld->monitor.phy.valid = false;
 }
 
+<<<<<<< HEAD
 static
 int iwl_mld_mac80211_change_interface(struct ieee80211_hw *hw,
 				      struct ieee80211_vif *vif,
@@ -778,6 +779,8 @@ int iwl_mld_mac80211_change_interface(struct ieee80211_hw *hw,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct iwl_mld_mc_iter_data {
 	struct iwl_mld *mld;
 	int port_id;
@@ -1148,8 +1151,11 @@ int iwl_mld_assign_vif_chanctx(struct ieee80211_hw *hw,
 
 	/* Now activate the link */
 	if (iwl_mld_can_activate_link(mld, vif, link)) {
+<<<<<<< HEAD
 		iwl_mld_tlc_update_phy(mld, vif, link);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = iwl_mld_activate_link(mld, link);
 		if (ret)
 			goto err;
@@ -1211,8 +1217,11 @@ void iwl_mld_unassign_vif_chanctx(struct ieee80211_hw *hw,
 
 	RCU_INIT_POINTER(mld_link->chan_ctx, NULL);
 
+<<<<<<< HEAD
 	iwl_mld_tlc_update_phy(mld, vif, link);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* in the non-MLO case, remove/re-add the link to clean up FW state.
 	 * In MLO, it'll be done in drv_change_vif_link
 	 */
@@ -1755,6 +1764,7 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
 				return -EBUSY;
 		}
 
+<<<<<<< HEAD
 		ret = iwl_mld_add_sta(mld, sta, vif);
 		if (ret)
 			return ret;
@@ -1772,6 +1782,16 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
 					    iwl_mld_get_primary_link(vif));
 		}
 
+=======
+		ret = iwl_mld_add_sta(mld, sta, vif, STATION_TYPE_PEER);
+		if (ret)
+			return ret;
+
+		/* just added first TDLS STA, so disable PM */
+		if (sta->tdls && tdls_count == 0)
+			iwl_mld_update_mac_power(mld, vif, false);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
 			mld_vif->ap_sta = sta;
 
@@ -1917,6 +1937,7 @@ static int iwl_mld_move_sta_state_down(struct iwl_mld *mld,
 		iwl_mld_remove_sta(mld, sta);
 
 		if (sta->tdls && iwl_mld_tdls_sta_count(mld) == 0) {
+<<<<<<< HEAD
 			/* just removed last TDLS STA, so enable PM
 			 * and unblock EMLSR
 			 */
@@ -1925,6 +1946,10 @@ static int iwl_mld_move_sta_state_down(struct iwl_mld *mld,
 			/* Unblock EMLSR when TDLS connection is torn down */
 			iwl_mld_unblock_emlsr(mld, vif,
 					      IWL_MLD_EMLSR_BLOCKED_TDLS);
+=======
+			/* just removed last TDLS STA, so enable PM */
+			iwl_mld_update_mac_power(mld, vif, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (sta->tdls) {
@@ -2778,7 +2803,10 @@ const struct ieee80211_ops iwl_mld_hw_ops = {
 	.get_antenna = iwl_mld_get_antenna,
 	.set_antenna = iwl_mld_set_antenna,
 	.add_interface = iwl_mld_mac80211_add_interface,
+<<<<<<< HEAD
 	.change_interface = iwl_mld_mac80211_change_interface,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.remove_interface = iwl_mld_mac80211_remove_interface,
 	.conf_tx = iwl_mld_mac80211_conf_tx,
 	.prepare_multicast = iwl_mld_mac80211_prepare_multicast,

@@ -22,15 +22,49 @@
 #include <linux/fips.h>
 #include <linux/iov_iter.h>
 #include <crypto/aead.h>
+<<<<<<< HEAD
 #include <crypto/aes-cbc-macs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/arc4.h>
 #include <crypto/md5.h>
 #include <crypto/sha2.h>
 
+<<<<<<< HEAD
+=======
+static int cifs_sig_update(struct cifs_calc_sig_ctx *ctx,
+			   const u8 *data, size_t len)
+{
+	if (ctx->md5) {
+		md5_update(ctx->md5, data, len);
+		return 0;
+	}
+	if (ctx->hmac) {
+		hmac_sha256_update(ctx->hmac, data, len);
+		return 0;
+	}
+	return crypto_shash_update(ctx->shash, data, len);
+}
+
+static int cifs_sig_final(struct cifs_calc_sig_ctx *ctx, u8 *out)
+{
+	if (ctx->md5) {
+		md5_final(ctx->md5, out);
+		return 0;
+	}
+	if (ctx->hmac) {
+		hmac_sha256_final(ctx->hmac, out);
+		return 0;
+	}
+	return crypto_shash_final(ctx->shash, out);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static size_t cifs_sig_step(void *iter_base, size_t progress, size_t len,
 			    void *priv, void *priv2)
 {
 	struct cifs_calc_sig_ctx *ctx = priv;
+<<<<<<< HEAD
 
 	if (ctx->md5)
 		md5_update(ctx->md5, iter_base, len);
@@ -49,6 +83,16 @@ static void cifs_sig_final(struct cifs_calc_sig_ctx *ctx, u8 *out)
 		hmac_sha256_final(ctx->hmac, out);
 	else
 		aes_cmac_final(ctx->cmac, out);
+=======
+	int ret, *pret = priv2;
+
+	ret = cifs_sig_update(ctx, iter_base, len);
+	if (ret < 0) {
+		*pret = ret;
+		return len;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -59,8 +103,14 @@ static int cifs_sig_iter(const struct iov_iter *iter, size_t maxsize,
 {
 	struct iov_iter tmp_iter = *iter;
 	size_t did;
+<<<<<<< HEAD
 
 	did = iterate_and_advance_kernel(&tmp_iter, maxsize, ctx, NULL,
+=======
+	int err;
+
+	did = iterate_and_advance_kernel(&tmp_iter, maxsize, ctx, &err,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 cifs_sig_step);
 	if (did != maxsize)
 		return smb_EIO2(smb_eio_trace_sig_iter, did, maxsize);
@@ -91,8 +141,16 @@ int __cifs_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
 	if (rc < 0)
 		return rc;
 
+<<<<<<< HEAD
 	cifs_sig_final(ctx, signature);
 	return 0;
+=======
+	rc = cifs_sig_final(ctx, signature);
+	if (rc)
+		cifs_dbg(VFS, "%s: Could not generate hash\n", __func__);
+
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Build a proper attribute value/target info pairs blob.
@@ -503,6 +561,11 @@ calc_seckey(struct cifs_ses *ses)
 void
 cifs_crypto_secmech_release(struct TCP_Server_Info *server)
 {
+<<<<<<< HEAD
+=======
+	cifs_free_hash(&server->secmech.aes_cmac);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (server->secmech.enc) {
 		crypto_free_aead(server->secmech.enc);
 		server->secmech.enc = NULL;

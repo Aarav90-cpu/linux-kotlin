@@ -15,13 +15,21 @@
 #include <linux/mutex.h>
 #include <linux/sunrpc/svc.h>
 #include <linux/sunrpc/addr.h>
+<<<<<<< HEAD
+=======
+#include <linux/lockd/lockd.h>
+#include <linux/lockd/share.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/mount.h>
 #include <uapi/linux/nfs2.h>
 
+<<<<<<< HEAD
 #include "lockd.h"
 #include "share.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NLMDBG_FACILITY		NLMDBG_SVCSUBS
 
 
@@ -48,7 +56,11 @@ static inline void nlm_debug_print_file(char *msg, struct nlm_file *file)
 {
 	struct inode *inode = nlmsvc_file_inode(file);
 
+<<<<<<< HEAD
 	dprintk("lockd: %s %s/%llu\n",
+=======
+	dprintk("lockd: %s %s/%ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		msg, inode->i_sb->s_id, inode->i_ino);
 }
 #else
@@ -88,6 +100,7 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
 			   struct nlm_file *file, int mode)
 {
 	struct file **fp = &file->f_file[mode];
+<<<<<<< HEAD
 	__be32 nlmerr = nlm_granted;
 	int error;
 
@@ -111,6 +124,16 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
 	}
 
 	return nlmerr;
+=======
+	__be32	nfserr;
+
+	if (*fp)
+		return 0;
+	nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
+	if (nfserr)
+		dprintk("lockd: open failed (error %d)\n", nfserr);
+	return nfserr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

@@ -17,6 +17,7 @@ struct {
 	__type(value, struct htab_val);
 	__uint(map_flags, BPF_F_NO_PREALLOC);
 } htab SEC(".maps");
+<<<<<<< HEAD
 
 #define HTAB_NDATA 256
 
@@ -33,3 +34,5 @@ struct {
 	__type(value, struct htab_val_large);
 	__uint(map_flags, BPF_F_NO_PREALLOC);
 } htab_lock_consistency SEC(".maps");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

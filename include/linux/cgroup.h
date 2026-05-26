@@ -42,6 +42,7 @@ struct kernel_clone_args;
 
 #ifdef CONFIG_CGROUPS
 
+<<<<<<< HEAD
 /*
  * To avoid confusing the compiler (and generating warnings) with code
  * that attempts to access what would be a 0-element array (i.e. sized
@@ -54,6 +55,11 @@ enum css_task_iter_flags {
 	CSS_TASK_ITER_PROCS    = (1U << 0),  /* walk only threadgroup leaders */
 	CSS_TASK_ITER_THREADED = (1U << 1),  /* walk all threaded css_sets in the domain */
 	CSS_TASK_ITER_WITH_DEAD = (1U << 2),  /* include exiting tasks */
+=======
+enum css_task_iter_flags {
+	CSS_TASK_ITER_PROCS    = (1U << 0),  /* walk only threadgroup leaders */
+	CSS_TASK_ITER_THREADED = (1U << 1),  /* walk all threaded css_sets in the domain */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	CSS_TASK_ITER_SKIPPED  = (1U << 16), /* internal flags */
 };
 
@@ -85,7 +91,10 @@ enum cgroup_lifetime_events {
 extern struct file_system_type cgroup_fs_type;
 extern struct cgroup_root cgrp_dfl_root;
 extern struct css_set init_css_set;
+<<<<<<< HEAD
 extern struct mutex cgroup_mutex;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern spinlock_t css_set_lock;
 extern struct blocking_notifier_head cgroup_lifetime_notifier;
 
@@ -113,8 +122,11 @@ extern struct blocking_notifier_head cgroup_lifetime_notifier;
 #define cgroup_subsys_on_dfl(ss)						\
 	static_branch_likely(&ss ## _on_dfl_key)
 
+<<<<<<< HEAD
 bool cgroup_on_dfl(const struct cgroup *cgrp);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool css_has_online_children(struct cgroup_subsys_state *css);
 struct cgroup_subsys_state *css_from_id(int id, struct cgroup_subsys *ss);
 struct cgroup_subsys_state *cgroup_e_css(struct cgroup *cgroup,
@@ -286,6 +298,7 @@ void css_task_iter_end(struct css_task_iter *it);
 	for ((pos) = css_next_descendant_post(NULL, (css)); (pos);	\
 	     (pos) = css_next_descendant_post((pos), (css)))
 
+<<<<<<< HEAD
 /* iterate over child cgrps, lock should be held throughout iteration */
 #define cgroup_for_each_live_child(child, cgrp)				\
 	list_for_each_entry((child), &(cgrp)->self.children, self.sibling) \
@@ -312,6 +325,8 @@ void css_task_iter_end(struct css_task_iter *it);
 			;						\
 		else
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * cgroup_taskset_for_each - iterate cgroup_taskset
  * @task: the loop cursor
@@ -375,6 +390,7 @@ static inline u64 cgroup_id(const struct cgroup *cgrp)
 }
 
 /**
+<<<<<<< HEAD
  * cgroup_css - obtain a cgroup's css for the specified subsystem
  * @cgrp: the cgroup of interest
  * @ss: the subsystem of interest (%NULL returns @cgrp->self)
@@ -396,6 +412,8 @@ static inline struct cgroup_subsys_state *cgroup_css(struct cgroup *cgrp,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * css_is_dying - test whether the specified css is dying
  * @css: target css
  *
@@ -431,11 +449,14 @@ static inline bool css_is_self(struct cgroup_subsys_state *css)
 	return false;
 }
 
+<<<<<<< HEAD
 static inline bool cgroup_is_dead(const struct cgroup *cgrp)
 {
 	return !(cgrp->self.flags & CSS_ONLINE);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void cgroup_get(struct cgroup *cgrp)
 {
 	css_get(&cgrp->self);
@@ -451,6 +472,11 @@ static inline void cgroup_put(struct cgroup *cgrp)
 	css_put(&cgrp->self);
 }
 
+<<<<<<< HEAD
+=======
+extern struct mutex cgroup_mutex;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void cgroup_lock(void)
 {
 	mutex_lock(&cgroup_mutex);
@@ -624,6 +650,30 @@ static inline struct cgroup *cgroup_ancestor(struct cgroup *cgrp,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * cgroup_common_ancestor - find common ancestor of two cgroups
+ * @a: first cgroup to find common ancestor of
+ * @b: second cgroup to find common ancestor of
+ *
+ * Find the first cgroup that is an ancestor of both @a and @b, if it exists
+ * and return a pointer to it. If such a cgroup doesn't exist, return NULL.
+ *
+ * This function is safe to call as long as both @a and @b are accessible.
+ */
+static inline struct cgroup *cgroup_common_ancestor(struct cgroup *a,
+						    struct cgroup *b)
+{
+	int level;
+
+	for (level = min(a->level, b->level); level >= 0; level--)
+		if (a->ancestors[level] == b->ancestors[level])
+			return a->ancestors[level];
+	return NULL;
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * task_under_cgroup_hierarchy - test task's membership of cgroup ancestry
  * @task: the task to be tested
  * @ancestor: possible ancestor of @task's cgroup

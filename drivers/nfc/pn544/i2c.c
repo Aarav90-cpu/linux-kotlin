@@ -526,7 +526,11 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
 
 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
 
+<<<<<<< HEAD
 	strscpy(phy->firmware_name, firmware_name);
+=======
+	strcpy(phy->firmware_name, firmware_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	phy->hw_variant = hw_variant;
 	phy->fw_work_state = FW_WORK_STATE_START;

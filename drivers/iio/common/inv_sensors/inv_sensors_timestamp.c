@@ -154,7 +154,11 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
 		valid = inv_update_chip_period(ts, period);
 	}
 
+<<<<<<< HEAD
 	/* no previous data, compute theoretical value from interrupt */
+=======
+	/* no previous data, compute theoritical value from interrupt */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ts->timestamp == 0) {
 		/* elapsed time: sensor period * sensor samples number */
 		interval = (int64_t)ts->period * (int64_t)sample_nb;
@@ -185,7 +189,11 @@ void inv_sensors_timestamp_apply_odr(struct inv_sensors_timestamp *ts,
 
 	/*
 	 * After ODR change the time interval with the previous sample is
+<<<<<<< HEAD
 	 * undertermined (depends when the change occurs). So we compute the
+=======
+	 * undertermined (depends when the change occures). So we compute the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * timestamp from the current interrupt using the new FIFO period, the
 	 * total number of samples and the current sample numero.
 	 */

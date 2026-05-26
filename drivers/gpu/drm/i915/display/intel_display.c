@@ -50,6 +50,10 @@
 #include "g4x_hdmi.h"
 #include "hsw_ips.h"
 #include "i915_config.h"
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_plane.h"
 #include "i9xx_plane_regs.h"
 #include "i9xx_wm.h"
@@ -85,6 +89,10 @@
 #include "intel_dpll.h"
 #include "intel_dpll_mgr.h"
 #include "intel_dpt.h"
+<<<<<<< HEAD
+=======
+#include "intel_dpt_common.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_drrs.h"
 #include "intel_dsb.h"
 #include "intel_dsi.h"
@@ -453,7 +461,11 @@ void intel_enable_transcoder(const struct intel_crtc_state *new_crtc_state)
 	}
 
 	/* Wa_22012358565:adl-p */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_22012358565))
+=======
+	if (DISPLAY_VER(display) == 13)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, PIPE_ARB_CTL(display, pipe),
 			     0, PIPE_ARB_USE_PROG_SLOTS);
 
@@ -707,7 +719,11 @@ static void icl_set_pipe_chicken(const struct intel_crtc_state *crtc_state)
 		tmp |= UNDERRUN_RECOVERY_DISABLE_ADLP;
 
 	/* Wa_14010547955:dg2 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14010547955))
+=======
+	if (display->platform.dg2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tmp |= DG2_RENDER_CCSTAG_4_3_EN;
 
 	intel_de_write(display, PIPE_CHICKEN(pipe), tmp);
@@ -1006,6 +1022,7 @@ static bool intel_casf_disabling(const struct intel_crtc_state *old_crtc_state,
 	return is_disabling(hw.casf_params.casf_enable, old_crtc_state, new_crtc_state);
 }
 
+<<<<<<< HEAD
 static bool intel_crtc_lobf_enabling(const struct intel_crtc_state *old_crtc_state,
 				     const struct intel_crtc_state *new_crtc_state)
 {
@@ -1028,6 +1045,8 @@ static bool intel_crtc_lobf_disabling(const struct intel_crtc_state *old_crtc_st
 		 (new_crtc_state->update_lrr || new_crtc_state->update_m_n));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #undef is_disabling
 #undef is_enabling
 
@@ -1070,13 +1089,21 @@ static void intel_post_plane_update(struct intel_atomic_state *state,
 	if (audio_enabling(old_crtc_state, new_crtc_state))
 		intel_encoders_audio_enable(state, crtc);
 
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_14011503117)) {
+=======
+	if (intel_display_wa(display, 14011503117)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (old_crtc_state->pch_pfit.enabled != new_crtc_state->pch_pfit.enabled)
 			adl_scaler_ecc_unmask(new_crtc_state);
 	}
 
+<<<<<<< HEAD
 	if (intel_crtc_lobf_enabling(old_crtc_state, new_crtc_state))
 		intel_alpm_lobf_enable(new_crtc_state);
+=======
+	intel_alpm_post_plane_update(state, crtc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	intel_psr_post_plane_update(state, crtc);
 }
@@ -1173,9 +1200,13 @@ static void intel_pre_plane_update(struct intel_atomic_state *state,
 		intel_atomic_get_new_crtc_state(state, crtc);
 	enum pipe pipe = crtc->pipe;
 
+<<<<<<< HEAD
 	if (intel_crtc_lobf_disabling(old_crtc_state, new_crtc_state))
 		intel_alpm_lobf_disable(new_crtc_state);
 
+=======
+	intel_alpm_pre_plane_update(state, crtc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_psr_pre_plane_update(state, crtc);
 
 	if (intel_crtc_vrr_disabling(state, crtc)) {
@@ -4347,6 +4378,7 @@ static int intel_crtc_atomic_check(struct intel_atomic_state *state,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bpc_to_bpp(int bpc)
 {
 	switch (bpc) {
@@ -4364,6 +4396,8 @@ static int bpc_to_bpp(int bpc)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 compute_sink_pipe_bpp(const struct drm_connector_state *conn_state,
 		      struct intel_crtc_state *crtc_state)
@@ -4371,6 +4405,7 @@ compute_sink_pipe_bpp(const struct drm_connector_state *conn_state,
 	struct intel_display *display = to_intel_display(crtc_state);
 	struct drm_connector *connector = conn_state->connector;
 	const struct drm_display_info *info = &connector->display_info;
+<<<<<<< HEAD
 	int edid_bpc = info->bpc ? : 8;
 	int target_pipe_bpp;
 	int max_edid_bpp;
@@ -4399,6 +4434,38 @@ compute_sink_pipe_bpp(const struct drm_connector_state *conn_state,
 			    crtc_state->pipe_bpp);
 
 		crtc_state->pipe_bpp = target_pipe_bpp;
+=======
+	int bpp;
+
+	switch (conn_state->max_bpc) {
+	case 6 ... 7:
+		bpp = 6 * 3;
+		break;
+	case 8 ... 9:
+		bpp = 8 * 3;
+		break;
+	case 10 ... 11:
+		bpp = 10 * 3;
+		break;
+	case 12 ... 16:
+		bpp = 12 * 3;
+		break;
+	default:
+		MISSING_CASE(conn_state->max_bpc);
+		return -EINVAL;
+	}
+
+	if (bpp < crtc_state->pipe_bpp) {
+		drm_dbg_kms(display->drm,
+			    "[CONNECTOR:%d:%s] Limiting display bpp to %d "
+			    "(EDID bpp %d, max requested bpp %d, max platform bpp %d)\n",
+			    connector->base.id, connector->name,
+			    bpp, 3 * info->bpc,
+			    3 * conn_state->max_requested_bpc,
+			    crtc_state->pipe_bpp);
+
+		crtc_state->pipe_bpp = bpp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -5063,6 +5130,27 @@ static bool allow_vblank_delay_fastset(const struct intel_crtc_state *old_crtc_s
 	       !intel_crtc_has_type(old_crtc_state, INTEL_OUTPUT_DSI);
 }
 
+<<<<<<< HEAD
+=======
+static void
+pipe_config_lt_phy_pll_mismatch(struct drm_printer *p, bool fastset,
+				const struct intel_crtc *crtc,
+				const char *name,
+				const struct intel_lt_phy_pll_state *a,
+				const struct intel_lt_phy_pll_state *b)
+{
+	struct intel_display *display = to_intel_display(crtc);
+	char *chipname = "LTPHY";
+
+	pipe_config_mismatch(p, fastset, crtc, name, chipname);
+
+	drm_printf(p, "expected:\n");
+	intel_lt_phy_dump_hw_state(display, a);
+	drm_printf(p, "found:\n");
+	intel_lt_phy_dump_hw_state(display, b);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool
 intel_pipe_config_compare(const struct intel_crtc_state *current_config,
 			  const struct intel_crtc_state *pipe_config,
@@ -5177,6 +5265,19 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
 	} \
 } while (0)
 
+<<<<<<< HEAD
+=======
+#define PIPE_CONF_CHECK_PLL_LT(name) do { \
+	if (!intel_lt_phy_pll_compare_hw_state(&current_config->name, \
+					       &pipe_config->name)) { \
+		pipe_config_lt_phy_pll_mismatch(&p, fastset, crtc, __stringify(name), \
+						&current_config->name, \
+						&pipe_config->name); \
+		ret = false; \
+	} \
+} while (0)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PIPE_CONF_CHECK_TIMINGS(name) do {     \
 	PIPE_CONF_CHECK_I(name.crtc_hdisplay); \
 	PIPE_CONF_CHECK_I(name.crtc_htotal); \
@@ -5403,6 +5504,13 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
 	if (display->dpll.mgr || HAS_GMCH(display))
 		PIPE_CONF_CHECK_PLL(dpll_hw_state);
 
+<<<<<<< HEAD
+=======
+	/* FIXME convert MTL+ platforms over to dpll_mgr */
+	if (HAS_LT_PHY(display))
+		PIPE_CONF_CHECK_PLL_LT(dpll_hw_state.ltpll);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PIPE_CONF_CHECK_X(dsi_pll.ctrl);
 	PIPE_CONF_CHECK_X(dsi_pll.div);
 
@@ -5470,7 +5578,11 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
 	PIPE_CONF_CHECK_I(dsc.config.nsl_bpg_offset);
 
 	PIPE_CONF_CHECK_BOOL(dsc.compression_enable);
+<<<<<<< HEAD
 	PIPE_CONF_CHECK_I(dsc.slice_config.streams_per_pipe);
+=======
+	PIPE_CONF_CHECK_I(dsc.num_streams);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PIPE_CONF_CHECK_I(dsc.compressed_bpp_x16);
 
 	PIPE_CONF_CHECK_BOOL(splitter.enable);
@@ -5939,6 +6051,20 @@ static int intel_atomic_check_joiner(struct intel_atomic_state *state,
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
+=======
+		/*
+		 * The state copy logic assumes the primary crtc gets processed
+		 * before the secondary crtc during the main compute_config loop.
+		 * This works because the crtcs are created in pipe order,
+		 * and the hardware requires primary pipe < secondary pipe as well.
+		 * Should that change we need to rethink the logic.
+		 */
+		if (WARN_ON(drm_crtc_index(&primary_crtc->base) >
+			    drm_crtc_index(&secondary_crtc->base)))
+			return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg_kms(display->drm,
 			    "[CRTC:%d:%s] Used as secondary for joiner primary [CRTC:%d:%s]\n",
 			    secondary_crtc->base.base.id, secondary_crtc->base.name,
@@ -6316,7 +6442,13 @@ static int intel_atomic_check_config(struct intel_atomic_state *state,
 
 	for_each_new_intel_crtc_in_state(state, crtc, new_crtc_state, i) {
 		if (!intel_crtc_needs_modeset(new_crtc_state)) {
+<<<<<<< HEAD
 			if (!intel_crtc_is_joiner_secondary(new_crtc_state))
+=======
+			if (intel_crtc_is_joiner_secondary(new_crtc_state))
+				copy_joiner_crtc_state_nomodeset(state, crtc);
+			else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				intel_crtc_copy_uapi_to_hw_state_nomodeset(state, crtc);
 			continue;
 		}
@@ -6447,11 +6579,16 @@ int intel_atomic_check(struct drm_device *dev,
 		goto fail;
 
 	for_each_new_intel_crtc_in_state(state, crtc, new_crtc_state, i) {
+<<<<<<< HEAD
 		if (!intel_crtc_needs_modeset(new_crtc_state)) {
 			if (intel_crtc_is_joiner_secondary(new_crtc_state))
 				copy_joiner_crtc_state_nomodeset(state, crtc);
 			continue;
 		}
+=======
+		if (!intel_crtc_needs_modeset(new_crtc_state))
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (intel_crtc_is_joiner_secondary(new_crtc_state)) {
 			drm_WARN_ON(display->drm, new_crtc_state->uapi.enable);
@@ -7358,6 +7495,12 @@ static void intel_atomic_dsb_finish(struct intel_atomic_state *state,
 		intel_psr_trigger_frame_change_event(new_crtc_state->dsb_commit,
 						     state, crtc);
 
+<<<<<<< HEAD
+=======
+		intel_psr_wait_for_idle_dsb(new_crtc_state->dsb_commit,
+					    new_crtc_state);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (new_crtc_state->use_dsb)
 			intel_dsb_vblank_evade(state, new_crtc_state->dsb_commit);
 
@@ -7388,6 +7531,7 @@ static void intel_atomic_dsb_finish(struct intel_atomic_state *state,
 				new_crtc_state->dsb_color);
 
 	if (new_crtc_state->use_dsb && !intel_color_uses_chained_dsb(new_crtc_state)) {
+<<<<<<< HEAD
 		/*
 		 * Dsb wait vblank may or may not skip. Let's remove it for PSR
 		 * trans push case to ensure we are not waiting two vblanks
@@ -7419,6 +7563,11 @@ static void intel_atomic_dsb_finish(struct intel_atomic_state *state,
 		if (intel_psr_use_trans_push(new_crtc_state))
 			intel_dsb_wait_vblanks(new_crtc_state->dsb_commit, 1);
 
+=======
+		intel_dsb_wait_vblanks(new_crtc_state->dsb_commit, 1);
+
+		intel_vrr_send_push(new_crtc_state->dsb_commit, new_crtc_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_dsb_wait_for_delayed_vblank(state, new_crtc_state->dsb_commit);
 		intel_vrr_check_push_sent(new_crtc_state->dsb_commit,
 					  new_crtc_state);
@@ -7854,8 +8003,12 @@ static bool intel_ddi_crt_present(struct intel_display *display)
 
 bool assert_port_valid(struct intel_display *display, enum port port)
 {
+<<<<<<< HEAD
 	return !drm_WARN(display->drm,
 			 !(port >= 0 && DISPLAY_RUNTIME_INFO(display)->port_mask & BIT(port)),
+=======
+	return !drm_WARN(display->drm, !(DISPLAY_RUNTIME_INFO(display)->port_mask & BIT(port)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "Platform does not support port %c\n", port_name(port));
 }
 
@@ -8028,6 +8181,7 @@ void intel_setup_outputs(struct intel_display *display)
 	drm_helper_move_panel_connectors_to_head(display->drm);
 }
 
+<<<<<<< HEAD
 int intel_max_uncompressed_dotclock(struct intel_display *display)
 {
 	int max_dotclock = display->cdclk.max_dotclk_freq;
@@ -8047,6 +8201,8 @@ int intel_max_uncompressed_dotclock(struct intel_display *display)
 	return min(max_dotclock, limit);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int max_dotclock(struct intel_display *display)
 {
 	int max_dotclock = display->cdclk.max_dotclk_freq;

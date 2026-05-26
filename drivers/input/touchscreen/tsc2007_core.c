@@ -122,10 +122,16 @@ static irqreturn_t tsc2007_soft_irq(int irq, void *handle)
 
 		/* pen is down, continue with the measurement */
 
+<<<<<<< HEAD
 		/* Serialize access between the ISR and IIO reads. */
 		scoped_guard(mutex, &ts->mlock) {
 			tsc2007_read_values(ts, &tc);
 		}
+=======
+		mutex_lock(&ts->mlock);
+		tsc2007_read_values(ts, &tc);
+		mutex_unlock(&ts->mlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rt = tsc2007_calculate_resistance(ts, &tc);
 

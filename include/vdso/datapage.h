@@ -4,16 +4,36 @@
 
 #ifndef __ASSEMBLY__
 
+<<<<<<< HEAD
 #include <linux/types.h>
 
 #include <uapi/linux/bits.h>
 #include <uapi/linux/time.h>
+=======
+#include <linux/compiler.h>
+#include <uapi/linux/bits.h>
+#include <uapi/linux/time.h>
+#include <uapi/linux/types.h>
+#include <uapi/asm-generic/errno-base.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <vdso/align.h>
 #include <vdso/bits.h>
 #include <vdso/cache.h>
+<<<<<<< HEAD
 #include <vdso/page.h>
 #include <vdso/time.h>
+=======
+#include <vdso/clocksource.h>
+#include <vdso/ktime.h>
+#include <vdso/limits.h>
+#include <vdso/math64.h>
+#include <vdso/page.h>
+#include <vdso/processor.h>
+#include <vdso/time.h>
+#include <vdso/time32.h>
+#include <vdso/time64.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_ARCH_HAS_VDSO_TIME_DATA
 #include <asm/vdso/time_data.h>
@@ -72,8 +92,13 @@ struct vdso_timestamp {
  * @mask:		clocksource mask
  * @mult:		clocksource multiplier
  * @shift:		clocksource shift
+<<<<<<< HEAD
  * @basetime:		basetime per clock_id
  * @offset:		time namespace offset per clock_id
+=======
+ * @basetime[clock_id]:	basetime per clock_id
+ * @offset[clock_id]:	time namespace offset per clock_id
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * See also struct vdso_time_data for basic access and ordering information as
  * struct vdso_clock is used there.
@@ -176,6 +201,20 @@ enum vdso_pages {
 	VDSO_NR_PAGES
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * The generic vDSO implementation requires that gettimeofday.h
+ * provides:
+ * - __arch_get_hw_counter(): to get the hw counter based on the
+ *   clock_mode.
+ * - gettimeofday_fallback(): fallback for gettimeofday.
+ * - clock_gettime_fallback(): fallback for clock_gettime.
+ * - clock_getres_fallback(): fallback for clock_getres.
+ */
+#include <asm/vdso/gettimeofday.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else /* !__ASSEMBLY__ */
 
 #ifdef CONFIG_VDSO_GETRANDOM

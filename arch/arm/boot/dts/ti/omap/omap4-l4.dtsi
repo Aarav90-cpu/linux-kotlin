@@ -72,13 +72,21 @@
 					#size-cells = <1>;
 				};
 
+<<<<<<< HEAD
 				omap_control_usb2phy: phy@300 {
+=======
+				omap_control_usb2phy: control-phy@300 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					compatible = "ti,control-phy-usb2";
 					reg = <0x300 0x4>;
 					reg-names = "power";
 				};
 
+<<<<<<< HEAD
 				omap_control_usbotg: phy@33c {
+=======
+				omap_control_usbotg: control-phy@33c {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					compatible = "ti,control-phy-otghs";
 					reg = <0x33c 0x4>;
 					reg-names = "otghs_control";

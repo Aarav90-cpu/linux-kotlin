@@ -5,8 +5,12 @@ lib_dir=$(dirname $0)/../../../net/forwarding
 
 ALL_TESTS="fw_flash_test params_test  \
 	   params_default_test regions_test reload_test \
+<<<<<<< HEAD
 	   netns_reload_test resource_test resource_dump_test \
 	   port_resource_doit_test dev_info_test \
+=======
+	   netns_reload_test resource_test dev_info_test \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	   empty_reporter_test dummy_reporter_test rate_test"
 NUM_NETIFS=0
 source $lib_dir/lib.sh
@@ -483,6 +487,7 @@ resource_test()
 	log_test "resource test"
 }
 
+<<<<<<< HEAD
 resource_dump_test()
 {
 	RET=0
@@ -533,6 +538,8 @@ resource_dump_test()
 	log_test "resource dump test"
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 info_get()
 {
 	local name=$1
@@ -819,6 +826,7 @@ rate_node_del()
 	devlink port function rate del $handle
 }
 
+<<<<<<< HEAD
 port_resource_doit_test()
 {
 	RET=0
@@ -845,6 +853,8 @@ port_resource_doit_test()
 	log_test "port resource doit test"
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 rate_test()
 {
 	RET=0

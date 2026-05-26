@@ -270,7 +270,11 @@ void hfs_delete_inode(struct inode *inode)
 {
 	struct super_block *sb = inode->i_sb;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu\n", inode->i_ino);
+=======
+	hfs_dbg("ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (S_ISDIR(inode->i_mode)) {
 		atomic64_dec(&HFS_SB(sb)->folder_count);
 		if (HFS_I(inode)->cat_key.ParID == cpu_to_be32(HFS_ROOT_CNID))
@@ -455,7 +459,11 @@ int hfs_write_inode(struct inode *inode, struct writeback_control *wbc)
 	hfs_cat_rec rec;
 	int res;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu\n", inode->i_ino);
+=======
+	hfs_dbg("ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	res = hfs_ext_write_extent(inode);
 	if (res)
 		return res;
@@ -622,6 +630,26 @@ static int hfs_file_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * hfs_notify_change()
+ *
+ * Based very closely on fs/msdos/inode.c by Werner Almesberger
+ *
+ * This is the notify_change() field in the super_operations structure
+ * for HFS file systems.  The purpose is to take that changes made to
+ * an inode and apply then in a filesystem-dependent manner.  In this
+ * case the process has a few of tasks to do:
+ *  1) prevent changes to the i_uid and i_gid fields.
+ *  2) map file permissions to the closest allowable permissions
+ *  3) Since multiple Linux files can share the same on-disk inode under
+ *     HFS (for instance the data and resource forks of a file) a change
+ *     to permissions must be applied to all other in-core inodes which
+ *     correspond to the same HFS file.
+ */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hfs_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 		      struct iattr *attr)
 {
@@ -629,7 +657,12 @@ int hfs_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 	struct hfs_sb_info *hsb = HFS_SB(inode->i_sb);
 	int error;
 
+<<<<<<< HEAD
 	error = setattr_prepare(&nop_mnt_idmap, dentry, attr);
+=======
+	error = setattr_prepare(&nop_mnt_idmap, dentry,
+				attr); /* basic permission checks */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (error)
 		return error;
 
@@ -645,7 +678,10 @@ int hfs_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 		return hsb->s_quiet ? 0 : error;
 	}
 
+<<<<<<< HEAD
 	/* map file permissions to the closest allowable permissions in HFS */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (attr->ia_valid & ATTR_MODE) {
 		/* Only the 'w' bits can ever change and only all together. */
 		if (attr->ia_mode & S_IWUSR)

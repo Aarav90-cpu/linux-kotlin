@@ -19,6 +19,7 @@ struct drm_printer;
 
 int xe_reg_sr_init(struct xe_reg_sr *sr, const char *name, struct xe_device *xe);
 void xe_reg_sr_dump(struct xe_reg_sr *sr, struct drm_printer *p);
+<<<<<<< HEAD
 void xe_reg_sr_readback_check(struct xe_reg_sr *sr,
 			      struct xe_gt *gt,
 			      struct drm_printer *p);
@@ -26,6 +27,8 @@ void xe_reg_sr_lrc_check(struct xe_reg_sr *sr,
 			 struct xe_gt *gt,
 			 struct xe_hw_engine *hwe,
 			 struct drm_printer *p);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int xe_reg_sr_add(struct xe_reg_sr *sr, const struct xe_reg_sr_entry *e,
 		  struct xe_gt *gt);

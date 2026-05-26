@@ -163,7 +163,11 @@ struct edac_device_ctl_info {
 	 * If attributes are desired, then set to array of attributes
 	 * If no attributes are desired, leave NULL
 	 */
+<<<<<<< HEAD
 	const struct edac_dev_sysfs_attribute *sysfs_attributes;
+=======
+	struct edac_dev_sysfs_attribute *sysfs_attributes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* pointer to main 'edac' subsys in sysfs */
 	const struct bus_type *edac_subsys;

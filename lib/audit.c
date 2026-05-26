@@ -42,7 +42,11 @@ int audit_classify_syscall(int abi, unsigned syscall)
 	if (audit_is_compat(abi))
 		return audit_classify_compat_syscall(abi, syscall);
 
+<<<<<<< HEAD
 	switch (syscall) {
+=======
+	switch(syscall) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef __NR_open
 	case __NR_open:
 		return AUDITSC_OPEN;

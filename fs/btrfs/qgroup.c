@@ -2740,6 +2740,11 @@ static void qgroup_iterator_nested_clean(struct list_head *head)
 	}
 }
 
+<<<<<<< HEAD
+=======
+#define UPDATE_NEW	0
+#define UPDATE_OLD	1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Walk all of the roots that points to the bytenr and adjust their refcnts.
  */
@@ -2978,10 +2983,17 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
 	seq = fs_info->qgroup_seq;
 
 	/* Update old refcnts using old_roots */
+<<<<<<< HEAD
 	qgroup_update_refcnt(fs_info, old_roots, &qgroups, seq, true);
 
 	/* Update new refcnts using new_roots */
 	qgroup_update_refcnt(fs_info, new_roots, &qgroups, seq, false);
+=======
+	qgroup_update_refcnt(fs_info, old_roots, &qgroups, seq, UPDATE_OLD);
+
+	/* Update new refcnts using new_roots */
+	qgroup_update_refcnt(fs_info, new_roots, &qgroups, seq, UPDATE_NEW);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	qgroup_update_counters(fs_info, &qgroups, nr_old_roots, nr_new_roots,
 			       num_bytes, seq);
@@ -4324,7 +4336,11 @@ static int qgroup_free_reserved_data(struct btrfs_inode *inode,
 	u64 freed = 0;
 	int ret;
 
+<<<<<<< HEAD
 	extent_changeset_init_bytes_only(&changeset);
+=======
+	extent_changeset_init(&changeset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	len = round_up(start + len, root->fs_info->sectorsize);
 	start = round_down(start, root->fs_info->sectorsize);
 
@@ -4389,7 +4405,11 @@ static int __btrfs_qgroup_release_data(struct btrfs_inode *inode,
 	WARN_ON(!free && reserved);
 	if (free && reserved)
 		return qgroup_free_reserved_data(inode, reserved, start, len, released);
+<<<<<<< HEAD
 	extent_changeset_init_bytes_only(&changeset);
+=======
+	extent_changeset_init(&changeset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = btrfs_clear_record_extent_bits(&inode->io_tree, start, start + len - 1,
 					     EXTENT_QGROUP_RESERVED, &changeset);
 	if (ret < 0)
@@ -4489,8 +4509,13 @@ static int sub_root_meta_rsv(struct btrfs_root *root, int num_bytes,
 	return num_bytes;
 }
 
+<<<<<<< HEAD
 static int btrfs_qgroup_reserve_meta(struct btrfs_root *root, int num_bytes,
 				     enum btrfs_qgroup_rsv_type type, bool enforce)
+=======
+int btrfs_qgroup_reserve_meta(struct btrfs_root *root, int num_bytes,
+			      enum btrfs_qgroup_rsv_type type, bool enforce)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_fs_info *fs_info = root->fs_info;
 	int ret;
@@ -4516,6 +4541,7 @@ static int btrfs_qgroup_reserve_meta(struct btrfs_root *root, int num_bytes,
 	return ret;
 }
 
+<<<<<<< HEAD
 int btrfs_qgroup_reserve_meta_prealloc(struct btrfs_root *root, int num_bytes,
 				       bool enforce, bool noflush)
 {
@@ -4523,14 +4549,27 @@ int btrfs_qgroup_reserve_meta_prealloc(struct btrfs_root *root, int num_bytes,
 
 	ret = btrfs_qgroup_reserve_meta(root, num_bytes,
 					BTRFS_QGROUP_RSV_META_PREALLOC, enforce);
+=======
+int __btrfs_qgroup_reserve_meta(struct btrfs_root *root, int num_bytes,
+				enum btrfs_qgroup_rsv_type type, bool enforce,
+				bool noflush)
+{
+	int ret;
+
+	ret = btrfs_qgroup_reserve_meta(root, num_bytes, type, enforce);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((ret <= 0 && ret != -EDQUOT) || noflush)
 		return ret;
 
 	ret = try_flush_qgroup(root);
 	if (ret < 0)
 		return ret;
+<<<<<<< HEAD
 	return btrfs_qgroup_reserve_meta(root, num_bytes,
 					 BTRFS_QGROUP_RSV_META_PREALLOC, enforce);
+=======
+	return btrfs_qgroup_reserve_meta(root, num_bytes, type, enforce);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -4552,7 +4591,12 @@ void btrfs_qgroup_free_meta_all_pertrans(struct btrfs_root *root)
 				  BTRFS_QGROUP_RSV_META_PERTRANS);
 }
 
+<<<<<<< HEAD
 void btrfs_qgroup_free_meta_prealloc(struct btrfs_root *root, int num_bytes)
+=======
+void __btrfs_qgroup_free_meta(struct btrfs_root *root, int num_bytes,
+			      enum btrfs_qgroup_rsv_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_fs_info *fs_info = root->fs_info;
 
@@ -4565,6 +4609,7 @@ void btrfs_qgroup_free_meta_prealloc(struct btrfs_root *root, int num_bytes)
 	 * which can lead to underflow.
 	 * Here ensure we will only free what we really have reserved.
 	 */
+<<<<<<< HEAD
 	num_bytes = sub_root_meta_rsv(root, num_bytes,
 				      BTRFS_QGROUP_RSV_META_PREALLOC);
 	BUG_ON(num_bytes != round_down(num_bytes, fs_info->nodesize));
@@ -4572,6 +4617,12 @@ void btrfs_qgroup_free_meta_prealloc(struct btrfs_root *root, int num_bytes)
 					BTRFS_QGROUP_RSV_META_PREALLOC);
 	btrfs_qgroup_free_refroot(fs_info, btrfs_root_id(root), num_bytes,
 				  BTRFS_QGROUP_RSV_META_PREALLOC);
+=======
+	num_bytes = sub_root_meta_rsv(root, num_bytes, type);
+	BUG_ON(num_bytes != round_down(num_bytes, fs_info->nodesize));
+	trace_btrfs_qgroup_meta_reserve(root, -(s64)num_bytes, type);
+	btrfs_qgroup_free_refroot(fs_info, btrfs_root_id(root), num_bytes, type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void qgroup_convert_meta(struct btrfs_fs_info *fs_info, u64 ref_root,
@@ -4647,7 +4698,10 @@ void btrfs_qgroup_check_reserved_leak(struct btrfs_inode *inode)
 
 	WARN_ON(ret < 0);
 	if (WARN_ON(changeset.bytes_changed)) {
+<<<<<<< HEAD
 		ASSERT(extent_changeset_tracks_ranges(&changeset));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ULIST_ITER_INIT(&iter);
 		while ((unode = ulist_next(&changeset.range_changed, &iter))) {
 			btrfs_warn(inode->root->fs_info,
@@ -4885,6 +4939,13 @@ int btrfs_qgroup_trace_subtree_after_cow(struct btrfs_trans_handle *trans,
 		reloc_eb = NULL;
 		goto free_out;
 	}
+<<<<<<< HEAD
+=======
+	if (unlikely(!extent_buffer_uptodate(reloc_eb))) {
+		ret = -EIO;
+		goto free_out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = qgroup_trace_subtree_swap(trans, reloc_eb, subvol_eb,
 			block->last_snapshot, block->trace_leaf);

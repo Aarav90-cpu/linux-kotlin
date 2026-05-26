@@ -84,11 +84,16 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
 	CPU_ZERO_S(cpu_mask_size, cpu_mask);
 
 	perf_sample__init(&sample, /*all=*/false);
+<<<<<<< HEAD
 	if (evlist == NULL) { /* Fallback for kernels lacking PERF_COUNT_SW_DUMMY */
 		struct target target = {};
 
 		evlist = evlist__new_default(&target, /*sample_callchains=*/false);
 	}
+=======
+	if (evlist == NULL) /* Fallback for kernels lacking PERF_COUNT_SW_DUMMY */
+		evlist = evlist__new_default();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (evlist == NULL) {
 		pr_debug("Not enough memory to create evlist\n");
@@ -300,7 +305,10 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
 				}
 
 				perf_mmap__consume(&md->core);
+<<<<<<< HEAD
 				perf_sample__exit(&sample);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			perf_mmap__read_done(&md->core);
 		}

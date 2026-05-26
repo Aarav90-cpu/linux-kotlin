@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+<<<<<<< HEAD
 /* Copyright 2019, 2024-2026 NXP */
+=======
+/* Copyright 2019 NXP */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/acpi.h>
 #include <linux/pcs-lynx.h>
@@ -15,6 +19,7 @@
 #define DPMAC_PROTOCOL_CHANGE_VER_MAJOR		4
 #define DPMAC_PROTOCOL_CHANGE_VER_MINOR		8
 
+<<<<<<< HEAD
 #define DPMAC_STATS_BUNDLE_VER_MAJOR		4
 #define DPMAC_STATS_BUNDLE_VER_MINOR		10
 
@@ -204,6 +209,9 @@ static void dpaa2_mac_clear_stats(struct dpaa2_mac *mac,
 		stats->values_dma_mem = NULL;
 	}
 }
+=======
+#define DPAA2_MAC_FEATURE_PROTOCOL_CHANGE	BIT(0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int dpaa2_mac_cmp_ver(struct dpaa2_mac *mac,
 			     u16 ver_major, u16 ver_minor)
@@ -220,6 +228,7 @@ static void dpaa2_mac_detect_features(struct dpaa2_mac *mac)
 	if (dpaa2_mac_cmp_ver(mac, DPMAC_PROTOCOL_CHANGE_VER_MAJOR,
 			      DPMAC_PROTOCOL_CHANGE_VER_MINOR) >= 0)
 		mac->features |= DPAA2_MAC_FEATURE_PROTOCOL_CHANGE;
+<<<<<<< HEAD
 
 	if (dpaa2_mac_cmp_ver(mac, DPMAC_STATS_BUNDLE_VER_MAJOR,
 			      DPMAC_STATS_BUNDLE_VER_MINOR) >= 0)
@@ -228,6 +237,8 @@ static void dpaa2_mac_detect_features(struct dpaa2_mac *mac)
 	if (dpaa2_mac_cmp_ver(mac, DPMAC_STANDARD_STATS_VER_MAJOR,
 			      DPMAC_STANDARD_STATS_VER_MINOR) >= 0)
 		mac->features |= DPAA2_MAC_FEATURE_STANDARD_STATS;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int phy_mode(enum dpmac_eth_if eth_if, phy_interface_t *if_mode)
@@ -544,7 +555,10 @@ void dpaa2_mac_start(struct dpaa2_mac *mac)
 
 	phylink_start(mac->phylink);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_start);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dpaa2_mac_stop(struct dpaa2_mac *mac)
 {
@@ -555,7 +569,10 @@ void dpaa2_mac_stop(struct dpaa2_mac *mac)
 	if (mac->serdes_phy)
 		phy_power_off(mac->serdes_phy);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_stop);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int dpaa2_mac_connect(struct dpaa2_mac *mac)
 {
@@ -648,7 +665,10 @@ err_pcs_destroy:
 
 	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_connect);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dpaa2_mac_disconnect(struct dpaa2_mac *mac)
 {
@@ -661,7 +681,10 @@ void dpaa2_mac_disconnect(struct dpaa2_mac *mac)
 	of_phy_put(mac->serdes_phy);
 	mac->serdes_phy = NULL;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_disconnect);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int dpaa2_mac_open(struct dpaa2_mac *mac)
 {
@@ -704,6 +727,7 @@ int dpaa2_mac_open(struct dpaa2_mac *mac)
 	mac->fw_node = fw_node;
 	net_dev->dev.of_node = to_of_node(mac->fw_node);
 
+<<<<<<< HEAD
 	if (mac->features & DPAA2_MAC_FEATURE_STATS_BUNDLE)
 		dpaa2_mac_setup_stats(mac, &mac->ethtool_stats,
 				      DPAA2_MAC_NUM_ETHTOOL_STATS,
@@ -727,18 +751,24 @@ int dpaa2_mac_open(struct dpaa2_mac *mac)
 				      dpaa2_mac_eth_mac_stats);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_close_dpmac:
 	dpmac_close(mac->mc_io, 0, dpmac_dev->mc_handle);
 	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_open);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dpaa2_mac_close(struct dpaa2_mac *mac)
 {
 	struct fsl_mc_device *dpmac_dev = mac->mc_dev;
 
+<<<<<<< HEAD
 	if (mac->features & DPAA2_MAC_FEATURE_STATS_BUNDLE)
 		dpaa2_mac_clear_stats(mac, &mac->ethtool_stats,
 				      DPAA2_MAC_NUM_ETHTOOL_STATS);
@@ -754,10 +784,13 @@ void dpaa2_mac_close(struct dpaa2_mac *mac)
 				      DPAA2_MAC_NUM_ETH_MAC_STATS);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dpmac_close(mac->mc_io, 0, dpmac_dev->mc_handle);
 	if (mac->fw_node)
 		fwnode_handle_put(mac->fw_node);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_close);
 
 static void dpaa2_mac_transfer_stats(const struct dpmac_counter *counters,
@@ -873,11 +906,52 @@ int dpaa2_mac_get_sset_count(void)
 	return DPAA2_MAC_NUM_ETHTOOL_STATS;
 }
 EXPORT_SYMBOL_GPL(dpaa2_mac_get_sset_count);
+=======
+
+static char dpaa2_mac_ethtool_stats[][ETH_GSTRING_LEN] = {
+	[DPMAC_CNT_ING_ALL_FRAME]		= "[mac] rx all frames",
+	[DPMAC_CNT_ING_GOOD_FRAME]		= "[mac] rx frames ok",
+	[DPMAC_CNT_ING_ERR_FRAME]		= "[mac] rx frame errors",
+	[DPMAC_CNT_ING_FRAME_DISCARD]		= "[mac] rx frame discards",
+	[DPMAC_CNT_ING_UCAST_FRAME]		= "[mac] rx u-cast",
+	[DPMAC_CNT_ING_BCAST_FRAME]		= "[mac] rx b-cast",
+	[DPMAC_CNT_ING_MCAST_FRAME]		= "[mac] rx m-cast",
+	[DPMAC_CNT_ING_FRAME_64]		= "[mac] rx 64 bytes",
+	[DPMAC_CNT_ING_FRAME_127]		= "[mac] rx 65-127 bytes",
+	[DPMAC_CNT_ING_FRAME_255]		= "[mac] rx 128-255 bytes",
+	[DPMAC_CNT_ING_FRAME_511]		= "[mac] rx 256-511 bytes",
+	[DPMAC_CNT_ING_FRAME_1023]		= "[mac] rx 512-1023 bytes",
+	[DPMAC_CNT_ING_FRAME_1518]		= "[mac] rx 1024-1518 bytes",
+	[DPMAC_CNT_ING_FRAME_1519_MAX]		= "[mac] rx 1519-max bytes",
+	[DPMAC_CNT_ING_FRAG]			= "[mac] rx frags",
+	[DPMAC_CNT_ING_JABBER]			= "[mac] rx jabber",
+	[DPMAC_CNT_ING_ALIGN_ERR]		= "[mac] rx align errors",
+	[DPMAC_CNT_ING_OVERSIZED]		= "[mac] rx oversized",
+	[DPMAC_CNT_ING_VALID_PAUSE_FRAME]	= "[mac] rx pause",
+	[DPMAC_CNT_ING_BYTE]			= "[mac] rx bytes",
+	[DPMAC_CNT_EGR_GOOD_FRAME]		= "[mac] tx frames ok",
+	[DPMAC_CNT_EGR_UCAST_FRAME]		= "[mac] tx u-cast",
+	[DPMAC_CNT_EGR_MCAST_FRAME]		= "[mac] tx m-cast",
+	[DPMAC_CNT_EGR_BCAST_FRAME]		= "[mac] tx b-cast",
+	[DPMAC_CNT_EGR_ERR_FRAME]		= "[mac] tx frame errors",
+	[DPMAC_CNT_EGR_UNDERSIZED]		= "[mac] tx undersized",
+	[DPMAC_CNT_EGR_VALID_PAUSE_FRAME]	= "[mac] tx b-pause",
+	[DPMAC_CNT_EGR_BYTE]			= "[mac] tx bytes",
+};
+
+#define DPAA2_MAC_NUM_STATS	ARRAY_SIZE(dpaa2_mac_ethtool_stats)
+
+int dpaa2_mac_get_sset_count(void)
+{
+	return DPAA2_MAC_NUM_STATS;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dpaa2_mac_get_strings(u8 **data)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < DPAA2_MAC_NUM_ETHTOOL_STATS; i++)
 		ethtool_puts(data, dpaa2_mac_ethtool_stats[i].name);
 }
@@ -924,6 +998,21 @@ fallback:
 	for (i = 0; i < DPAA2_MAC_NUM_ETHTOOL_STATS; i++) {
 		err = dpmac_get_counter(mac->mc_io, 0, dpmac_dev->mc_handle,
 					dpaa2_mac_ethtool_stats[i].id, &value);
+=======
+	for (i = 0; i < DPAA2_MAC_NUM_STATS; i++)
+		ethtool_puts(data, dpaa2_mac_ethtool_stats[i]);
+}
+
+void dpaa2_mac_get_ethtool_stats(struct dpaa2_mac *mac, u64 *data)
+{
+	struct fsl_mc_device *dpmac_dev = mac->mc_dev;
+	int i, err;
+	u64 value;
+
+	for (i = 0; i < DPAA2_MAC_NUM_STATS; i++) {
+		err = dpmac_get_counter(mac->mc_io, 0, dpmac_dev->mc_handle,
+					i, &value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err) {
 			netdev_err_once(mac->net_dev,
 					"dpmac_get_counter error %d\n", err);
@@ -933,7 +1022,10 @@ fallback:
 		*(data + i) = value;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dpaa2_mac_get_ethtool_stats);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("DPAA2 Ethernet MAC library");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

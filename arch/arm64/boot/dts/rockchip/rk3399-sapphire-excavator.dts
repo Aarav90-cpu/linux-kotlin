@@ -141,8 +141,11 @@
 };
 
 &edp {
+<<<<<<< HEAD
 	pinctrl-names = "default";
 	pinctrl-0 = <&edp_hpd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 

@@ -347,8 +347,11 @@ bool hv_result_needs_memory(u64 status);
 int hv_deposit_memory_node(int node, u64 partition_id, u64 status);
 int hv_call_deposit_pages(int node, u64 partition_id, u32 num_pages);
 int hv_call_add_logical_proc(int node, u32 lp_index, u32 acpi_id);
+<<<<<<< HEAD
 int hv_call_notify_all_processors_started(void);
 bool hv_lp_exists(u32 lp_index);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hv_call_create_vp(int node, u64 partition_id, u32 vp_index, u32 flags);
 
 #else /* CONFIG_MSHV_ROOT */
@@ -368,6 +371,7 @@ static inline int hv_call_add_logical_proc(int node, u32 lp_index, u32 acpi_id)
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 static inline int hv_call_notify_all_processors_started(void)
 {
 	return -EOPNOTSUPP;
@@ -376,6 +380,8 @@ static inline bool hv_lp_exists(u32 lp_index)
 {
 	return false;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int hv_call_create_vp(int node, u64 partition_id, u32 vp_index, u32 flags)
 {
 	return -EOPNOTSUPP;

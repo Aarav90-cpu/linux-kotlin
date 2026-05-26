@@ -15,7 +15,10 @@ select:
     compatible:
       contains:
         enum:
+<<<<<<< HEAD
           - qcom,eliza-ufshc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,kaanapali-ufshc
           - qcom,sm8650-ufshc
           - qcom,sm8750-ufshc
@@ -26,7 +29,10 @@ properties:
   compatible:
     items:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-ufshc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,kaanapali-ufshc
           - qcom,sm8650-ufshc
           - qcom,sm8750-ufshc
@@ -68,6 +74,7 @@ required:
 
 allOf:
   - $ref: qcom,ufs-common.yaml
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -80,6 +87,8 @@ allOf:
           minItems: 2
         reg-names:
           minItems: 2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unevaluatedProperties: false
 

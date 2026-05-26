@@ -200,7 +200,11 @@ struct pbn_lock_pool {
 	/** @idle_list: A list containing all idle PBN lock instances. */
 	struct list_head idle_list;
 	/** @locks: The memory for all the locks allocated by this pool. */
+<<<<<<< HEAD
 	idle_pbn_lock locks[] __counted_by(capacity);
+=======
+	idle_pbn_lock locks[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -240,7 +244,12 @@ static int make_pbn_lock_pool(size_t capacity, struct pbn_lock_pool **pool_ptr)
 	struct pbn_lock_pool *pool;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(capacity, locks, __func__, &pool);
+=======
+	result = vdo_allocate_extended(struct pbn_lock_pool, capacity, idle_pbn_lock,
+				       __func__, &pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -367,7 +376,12 @@ int vdo_make_physical_zones(struct vdo *vdo, struct physical_zones **zones_ptr)
 	if (zone_count == 0)
 		return VDO_SUCCESS;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(zone_count, zones, __func__, &zones);
+=======
+	result = vdo_allocate_extended(struct physical_zones, zone_count,
+				       struct physical_zone, __func__, &zones);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

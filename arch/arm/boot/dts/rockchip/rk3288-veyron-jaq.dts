@@ -48,7 +48,11 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 
+<<<<<<< HEAD
 	btmrvl: bluetooth@2 {
+=======
+	btmrvl: btmrvl@2 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "marvell,sd8897-bt";
 		reg = <2>;
 		interrupt-parent = <&gpio4>;

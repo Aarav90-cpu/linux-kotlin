@@ -191,7 +191,12 @@ int apr_send_pkt(struct apr_device *adev, struct apr_pkt *pkt);
 gpr_port_t *gpr_alloc_port(gpr_device_t *gdev, struct device *dev,
 				gpr_port_cb cb, void *priv);
 void gpr_free_port(gpr_port_t *port);
+<<<<<<< HEAD
 int gpr_send_port_pkt(gpr_port_t *port, const struct gpr_pkt *pkt);
 int gpr_send_pkt(gpr_device_t *gdev, const struct gpr_pkt *pkt);
+=======
+int gpr_send_port_pkt(gpr_port_t *port, struct gpr_pkt *pkt);
+int gpr_send_pkt(gpr_device_t *gdev, struct gpr_pkt *pkt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __QCOM_APR_H_ */

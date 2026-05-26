@@ -5,8 +5,11 @@
  * Copyright 2018-2019 NXP
  */
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef _MXC_JPEG_HW_H
 #define _MXC_JPEG_HW_H
 
@@ -75,7 +78,10 @@
 #define GLB_CTRL_DEC_GO					(0x1 << 2)
 #define GLB_CTRL_L_ENDIAN(le)				((le) << 3)
 #define GLB_CTRL_SLOT_EN(slot)				(0x1 << ((slot) + 4))
+<<<<<<< HEAD
 #define GLB_CTRL_CUR_VERSION(r)				FIELD_GET(GENMASK_U32(19, 16), r)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* COM_STAUS fields */
 #define COM_STATUS_DEC_ONGOING(r)		(((r) & (1 << 31)) >> 31)

@@ -38,7 +38,11 @@ fence_notify(struct i915_sw_fence *fence, enum i915_sw_fence_notify state)
 			if (test_bit(DMA_FENCE_WORK_IMM, &f->dma.flags))
 				fence_work(&f->work);
 			else
+<<<<<<< HEAD
 				queue_work(system_dfl_wq, &f->work);
+=======
+				queue_work(system_unbound_wq, &f->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			fence_complete(f);
 		}

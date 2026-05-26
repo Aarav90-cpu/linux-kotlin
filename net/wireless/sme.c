@@ -5,7 +5,11 @@
  * (for nl80211's connect() and wext)
  *
  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+<<<<<<< HEAD
  * Copyright (C) 2009, 2020, 2022-2026 Intel Corporation. All rights reserved.
+=======
+ * Copyright (C) 2009, 2020, 2022-2025 Intel Corporation. All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Copyright 2017	Intel Deutschland GmbH
  */
 
@@ -1386,7 +1390,11 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
 			    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
 			max_key_idx = 7;
 		for (i = 0; i <= max_key_idx; i++)
+<<<<<<< HEAD
 			rdev_del_key(rdev, wdev, -1, i, false, NULL);
+=======
+			rdev_del_key(rdev, dev, -1, i, false, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rdev_set_qos_map(rdev, dev, NULL);

@@ -267,7 +267,11 @@ xfs_rmap_update_diff_items(
 	struct xfs_rmap_intent		*ra = ri_entry(a);
 	struct xfs_rmap_intent		*rb = ri_entry(b);
 
+<<<<<<< HEAD
 	return cmp_int(ra->ri_group->xg_gno, rb->ri_group->xg_gno);
+=======
+	return ra->ri_group->xg_gno - rb->ri_group->xg_gno;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Log rmap updates in the intent item. */

@@ -26,7 +26,10 @@
 #include "mt8183-pm-domains.h"
 #include "mt8186-pm-domains.h"
 #include "mt8188-pm-domains.h"
+<<<<<<< HEAD
 #include "mt8189-pm-domains.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mt8192-pm-domains.h"
 #include "mt8195-pm-domains.h"
 #include "mt8196-pm-domains.h"
@@ -251,7 +254,11 @@ static int scpsys_bus_protect_set(struct scpsys_domain *pd,
 					MTK_POLL_DELAY_US, MTK_POLL_TIMEOUT);
 }
 
+<<<<<<< HEAD
 static int scpsys_bus_protect_enable(struct scpsys_domain *pd, u8 flags)
+=======
+static int scpsys_bus_protect_enable(struct scpsys_domain *pd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	for (int i = 0; i < SPM_MAX_BUS_PROT_DATA; i++) {
 		const struct scpsys_bus_prot_data *bpd = &pd->data->bp_cfg[i];
@@ -260,10 +267,13 @@ static int scpsys_bus_protect_enable(struct scpsys_domain *pd, u8 flags)
 		if (!bpd->bus_prot_set_clr_mask)
 			break;
 
+<<<<<<< HEAD
 		if ((bpd->flags & BUS_PROT_IGNORE_SUBCLK) !=
 		    (flags & BUS_PROT_IGNORE_SUBCLK))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (bpd->flags & BUS_PROT_INVERTED)
 			ret = scpsys_bus_protect_clear(pd, bpd);
 		else
@@ -275,7 +285,11 @@ static int scpsys_bus_protect_enable(struct scpsys_domain *pd, u8 flags)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int scpsys_bus_protect_disable(struct scpsys_domain *pd, u8 flags)
+=======
+static int scpsys_bus_protect_disable(struct scpsys_domain *pd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	for (int i = SPM_MAX_BUS_PROT_DATA - 1; i >= 0; i--) {
 		const struct scpsys_bus_prot_data *bpd = &pd->data->bp_cfg[i];
@@ -284,10 +298,13 @@ static int scpsys_bus_protect_disable(struct scpsys_domain *pd, u8 flags)
 		if (!bpd->bus_prot_set_clr_mask)
 			continue;
 
+<<<<<<< HEAD
 		if ((bpd->flags & BUS_PROT_IGNORE_SUBCLK) !=
 		    (flags & BUS_PROT_IGNORE_SUBCLK))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (bpd->flags & BUS_PROT_INVERTED)
 			ret = scpsys_bus_protect_set(pd, bpd);
 		else
@@ -642,6 +659,7 @@ static int scpsys_power_on(struct generic_pm_domain *genpd)
 		goto err_pwr_ack;
 
 	/*
+<<<<<<< HEAD
 	 * In MT8189 mminfra power domain, the bus protect policy separates
 	 * into two parts, one is set before subsys clocks enabled, and another
 	 * need to enable after subsys clocks enable.
@@ -651,6 +669,8 @@ static int scpsys_power_on(struct generic_pm_domain *genpd)
 		goto err_pwr_ack;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * In few Mediatek platforms(e.g. MT6779), the bus protect policy is
 	 * stricter, which leads to bus protect release must be prior to bus
 	 * access.
@@ -666,7 +686,11 @@ static int scpsys_power_on(struct generic_pm_domain *genpd)
 	if (ret < 0)
 		goto err_disable_subsys_clks;
 
+<<<<<<< HEAD
 	ret = scpsys_bus_protect_disable(pd, 0);
+=======
+	ret = scpsys_bus_protect_disable(pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		goto err_disable_sram;
 
@@ -680,7 +704,11 @@ static int scpsys_power_on(struct generic_pm_domain *genpd)
 	return 0;
 
 err_enable_bus_protect:
+<<<<<<< HEAD
 	scpsys_bus_protect_enable(pd, 0);
+=======
+	scpsys_bus_protect_enable(pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_disable_sram:
 	scpsys_sram_disable(pd);
 err_disable_subsys_clks:
@@ -701,7 +729,11 @@ static int scpsys_power_off(struct generic_pm_domain *genpd)
 	bool tmp;
 	int ret;
 
+<<<<<<< HEAD
 	ret = scpsys_bus_protect_enable(pd, 0);
+=======
+	ret = scpsys_bus_protect_enable(pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -715,10 +747,13 @@ static int scpsys_power_off(struct generic_pm_domain *genpd)
 
 	clk_bulk_disable_unprepare(pd->num_subsys_clks, pd->subsys_clks);
 
+<<<<<<< HEAD
 	ret = scpsys_bus_protect_enable(pd, BUS_PROT_IGNORE_SUBCLK);
 	if (ret < 0)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (MTK_SCPD_CAPS(pd, MTK_SCPD_MODEM_PWRSEQ))
 		scpsys_modem_pwrseq_off(pd);
 	else
@@ -1177,10 +1212,13 @@ static const struct of_device_id scpsys_of_match[] = {
 		.data = &mt8188_scpsys_data,
 	},
 	{
+<<<<<<< HEAD
 		.compatible = "mediatek,mt8189-power-controller",
 		.data = &mt8189_scpsys_data,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.compatible = "mediatek,mt8192-power-controller",
 		.data = &mt8192_scpsys_data,
 	},
@@ -1212,6 +1250,10 @@ static int scpsys_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	const struct scpsys_soc_data *soc;
+<<<<<<< HEAD
+=======
+	struct device_node *node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *parent;
 	struct scpsys *scpsys;
 	int num_domains, ret;
@@ -1255,18 +1297,33 @@ static int scpsys_probe(struct platform_device *pdev)
 		return ret;
 
 	ret = -ENODEV;
+<<<<<<< HEAD
 	for_each_available_child_of_node_scoped(np, node) {
+=======
+	for_each_available_child_of_node(np, node) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct generic_pm_domain *domain;
 
 		domain = scpsys_add_one_domain(scpsys, node);
 		if (IS_ERR(domain)) {
 			ret = PTR_ERR(domain);
+<<<<<<< HEAD
+=======
+			of_node_put(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto err_cleanup_domains;
 		}
 
 		ret = scpsys_add_subdomain(scpsys, node);
+<<<<<<< HEAD
 		if (ret)
 			goto err_cleanup_domains;
+=======
+		if (ret) {
+			of_node_put(node);
+			goto err_cleanup_domains;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ret) {

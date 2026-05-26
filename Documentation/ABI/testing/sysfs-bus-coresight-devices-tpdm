@@ -278,6 +278,7 @@ Date:           Aug 2025
 KernelVersion   6.18
 Contact:        Mao Jinlong <quic_jinlmao@quicinc.com>
 Description:    (Read) Show hardware context information of device.
+<<<<<<< HEAD
 
 What:		/sys/bus/coresight/devices/<tpdm-name>/traceid
 Date:		March 2026
@@ -288,3 +289,5 @@ Description:
 		coming from this TPDM. The trace ID is inherited from the
 		connected TPDA device and is fixed for the lifetime of the
 		device. Returns -EINVAL if the device has not been enabled yet.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

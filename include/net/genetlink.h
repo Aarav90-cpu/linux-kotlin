@@ -489,10 +489,15 @@ genlmsg_multicast_netns_filtered(const struct genl_family *family,
 				 netlink_filter_fn filter,
 				 void *filter_data)
 {
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(group >= family->n_mcgrps)) {
 		nlmsg_free(skb);
 		return -EINVAL;
 	}
+=======
+	if (WARN_ON_ONCE(group >= family->n_mcgrps))
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	group = family->mcgrp_offset + group;
 	return nlmsg_multicast_filtered(net->genl_sock, skb, portid, group,
 					flags, filter, filter_data);

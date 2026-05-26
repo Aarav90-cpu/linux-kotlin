@@ -52,7 +52,10 @@
 #include <asm/switch_to.h>
 #include <asm/unwind.h>
 #include <asm/vdso.h>
+<<<<<<< HEAD
 #include <asm/vdso/vdso.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_STACKPROTECTOR
 #include <linux/stackprotector.h>
@@ -136,8 +139,11 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	dst->thread.fpu.fcsr =  src->thread.fpu.fcsr;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!used_math())
 		memcpy(dst, src, offsetof(struct task_struct, thread.fpu.fpr));
 	else

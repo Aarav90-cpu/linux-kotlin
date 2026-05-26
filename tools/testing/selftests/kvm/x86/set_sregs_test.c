@@ -46,9 +46,15 @@ do {										\
 				X86_CR4_MCE | X86_CR4_PGE | X86_CR4_PCE |	\
 				X86_CR4_OSFXSR | X86_CR4_OSXMMEXCPT)
 
+<<<<<<< HEAD
 static u64 calc_supported_cr4_feature_bits(void)
 {
 	u64 cr4 = KVM_ALWAYS_ALLOWED_CR4;
+=======
+static uint64_t calc_supported_cr4_feature_bits(void)
+{
+	uint64_t cr4 = KVM_ALWAYS_ALLOWED_CR4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (kvm_cpu_has(X86_FEATURE_UMIP))
 		cr4 |= X86_CR4_UMIP;
@@ -74,7 +80,11 @@ static u64 calc_supported_cr4_feature_bits(void)
 	return cr4;
 }
 
+<<<<<<< HEAD
 static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
+=======
+static void test_cr_bits(struct kvm_vcpu *vcpu, uint64_t cr4)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_sregs sregs;
 	int rc, i;

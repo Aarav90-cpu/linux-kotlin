@@ -329,6 +329,50 @@ __printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
 }
 EXPORT_SYMBOL_GPL(bpf_log);
 
+<<<<<<< HEAD
+=======
+static const struct bpf_line_info *
+find_linfo(const struct bpf_verifier_env *env, u32 insn_off)
+{
+	const struct bpf_line_info *linfo;
+	const struct bpf_prog *prog;
+	u32 nr_linfo;
+	int l, r, m;
+
+	prog = env->prog;
+	nr_linfo = prog->aux->nr_linfo;
+
+	if (!nr_linfo || insn_off >= prog->len)
+		return NULL;
+
+	linfo = prog->aux->linfo;
+	/* Loop invariant: linfo[l].insn_off <= insns_off.
+	 * linfo[0].insn_off == 0 which always satisfies above condition.
+	 * Binary search is searching for rightmost linfo entry that satisfies
+	 * the above invariant, giving us the desired record that covers given
+	 * instruction offset.
+	 */
+	l = 0;
+	r = nr_linfo - 1;
+	while (l < r) {
+		/* (r - l + 1) / 2 means we break a tie to the right, so if:
+		 * l=1, r=2, linfo[l].insn_off <= insn_off, linfo[r].insn_off > insn_off,
+		 * then m=2, we see that linfo[m].insn_off > insn_off, and so
+		 * r becomes 1 and we exit the loop with correct l==1.
+		 * If the tie was broken to the left, m=1 would end us up in
+		 * an endless loop where l and m stay at 1 and r stays at 2.
+		 */
+		m = l + (r - l + 1) / 2;
+		if (linfo[m].insn_off <= insn_off)
+			l = m;
+		else
+			r = m - 1;
+	}
+
+	return &linfo[l];
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *ltrim(const char *s)
 {
 	while (isspace(*s))
@@ -349,7 +393,11 @@ __printf(3, 4) void verbose_linfo(struct bpf_verifier_env *env,
 		return;
 
 	prev_linfo = env->prev_linfo;
+<<<<<<< HEAD
 	linfo = bpf_find_linfo(env->prog, insn_off);
+=======
+	linfo = find_linfo(env, insn_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!linfo || linfo == prev_linfo)
 		return;
 
@@ -501,8 +549,12 @@ static char slot_type_char[] = {
 	[STACK_ZERO]	= '0',
 	[STACK_DYNPTR]	= 'd',
 	[STACK_ITER]	= 'i',
+<<<<<<< HEAD
 	[STACK_IRQ_FLAG] = 'f',
 	[STACK_POISON]	= 'p',
+=======
+	[STACK_IRQ_FLAG] = 'f'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define UNUM_MAX_DECIMAL U16_MAX
@@ -541,8 +593,11 @@ int tnum_strn(char *str, size_t size, struct tnum a)
 	if (a.mask == 0) {
 		if (is_unum_decimal(a.value))
 			return snprintf(str, size, "%llu", a.value);
+<<<<<<< HEAD
 		if (is_snum_decimal(a.value))
 			return snprintf(str, size, "%lld", a.value);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			return snprintf(str, size, "%#llx", a.value);
 	}
@@ -654,7 +709,11 @@ static void print_reg_state(struct bpf_verifier_env *env,
 		if (state->frameno != reg->frameno)
 			verbose(env, "[%d]", reg->frameno);
 		if (tnum_is_const(reg->var_off)) {
+<<<<<<< HEAD
 			verbose_snum(env, reg->var_off.value + reg->delta);
+=======
+			verbose_snum(env, reg->var_off.value + reg->off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 		}
 	}
@@ -664,7 +723,11 @@ static void print_reg_state(struct bpf_verifier_env *env,
 	if (reg->id)
 		verbose_a("id=%d", reg->id & ~BPF_ADD_CONST);
 	if (reg->id & BPF_ADD_CONST)
+<<<<<<< HEAD
 		verbose(env, "%+d", reg->delta);
+=======
+		verbose(env, "%+d", reg->off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (reg->ref_obj_id)
 		verbose_a("ref_obj_id=%d", reg->ref_obj_id);
 	if (type_is_non_owning_ref(reg->type))
@@ -676,9 +739,15 @@ static void print_reg_state(struct bpf_verifier_env *env,
 			  reg->map_ptr->key_size,
 			  reg->map_ptr->value_size);
 	}
+<<<<<<< HEAD
 	if (t != SCALAR_VALUE && reg->delta) {
 		verbose_a("off=");
 		verbose_snum(env, reg->delta);
+=======
+	if (t != SCALAR_VALUE && reg->off) {
+		verbose_a("off=");
+		verbose_snum(env, reg->off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (type_is_pkt_pointer(t)) {
 		verbose_a("r=");
@@ -739,7 +808,11 @@ void print_verifier_state(struct bpf_verifier_env *env, const struct bpf_verifie
 
 		for (j = 0; j < BPF_REG_SIZE; j++) {
 			slot_type = state->stack[i].slot_type[j];
+<<<<<<< HEAD
 			if (slot_type != STACK_INVALID && slot_type != STACK_POISON)
+=======
+			if (slot_type != STACK_INVALID)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				valid = true;
 			types_buf[j] = slot_type_char[slot_type];
 		}
@@ -807,7 +880,11 @@ void print_verifier_state(struct bpf_verifier_env *env, const struct bpf_verifie
 		mark_verifier_state_clean(env);
 }
 
+<<<<<<< HEAD
 u32 bpf_vlog_alignment(u32 pos)
+=======
+static inline u32 vlog_alignment(u32 pos)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return round_up(max(pos + BPF_LOG_MIN_ALIGNMENT / 2, BPF_LOG_ALIGNMENT),
 			BPF_LOG_MIN_ALIGNMENT) - pos - 1;
@@ -819,7 +896,11 @@ void print_insn_state(struct bpf_verifier_env *env, const struct bpf_verifier_st
 	if (env->prev_log_pos && env->prev_log_pos == env->log.end_pos) {
 		/* remove new line character */
 		bpf_vlog_reset(&env->log, env->prev_log_pos - 1);
+<<<<<<< HEAD
 		verbose(env, "%*c;", bpf_vlog_alignment(env->prev_insn_print_pos), ' ');
+=======
+		verbose(env, "%*c;", vlog_alignment(env->prev_insn_print_pos), ' ');
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		verbose(env, "%d:", env->insn_idx);
 	}

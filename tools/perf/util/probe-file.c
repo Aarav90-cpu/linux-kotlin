@@ -414,7 +414,11 @@ int probe_cache_entry__get_event(struct probe_cache_entry *entry,
 	if (ret > probe_conf.max_probes)
 		return -E2BIG;
 
+<<<<<<< HEAD
 	*tevs = calloc(ret, sizeof(*tev));
+=======
+	*tevs = zalloc(ret * sizeof(*tev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*tevs)
 		return -ENOMEM;
 

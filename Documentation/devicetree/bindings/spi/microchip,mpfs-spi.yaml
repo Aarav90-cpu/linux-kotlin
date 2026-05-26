@@ -35,10 +35,17 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks:
     maxItems: 1
 
   resets:
+=======
+  clock-names:
+    maxItems: 1
+
+  clocks:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     maxItems: 1
 
   microchip,apb-datawidth:

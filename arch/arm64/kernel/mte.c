@@ -291,9 +291,12 @@ void mte_thread_switch(struct task_struct *next)
 	/* TCO may not have been disabled on exception entry for the current task. */
 	mte_disable_tco_entry(next);
 
+<<<<<<< HEAD
 	if (!system_uses_mte_async_or_asymm_mode())
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Check if an async tag exception occurred at EL1.
 	 *
@@ -318,8 +321,13 @@ void mte_cpu_setup(void)
 	 * CnP is not a boot feature so MTE gets enabled before CnP, but let's
 	 * make sure that is the case.
 	 */
+<<<<<<< HEAD
 	BUG_ON(read_sysreg(ttbr0_el1) & TTBRx_EL1_CnP);
 	BUG_ON(read_sysreg(ttbr1_el1) & TTBRx_EL1_CnP);
+=======
+	BUG_ON(read_sysreg(ttbr0_el1) & TTBR_CNP_BIT);
+	BUG_ON(read_sysreg(ttbr1_el1) & TTBR_CNP_BIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Normal Tagged memory type at the corresponding MAIR index */
 	sysreg_clear_set(mair_el1,
@@ -353,9 +361,12 @@ void mte_suspend_enter(void)
 	if (!system_supports_mte())
 		return;
 
+<<<<<<< HEAD
 	if (!system_uses_mte_async_or_asymm_mode())
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The barriers are required to guarantee that the indirect writes
 	 * to TFSR_EL1 are synchronized before we report the state.

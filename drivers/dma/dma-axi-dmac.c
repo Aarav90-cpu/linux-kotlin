@@ -134,7 +134,10 @@ struct axi_dmac_desc {
 	struct axi_dmac_chan *chan;
 
 	bool cyclic;
+<<<<<<< HEAD
 	bool cyclic_eot;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool have_partial_xfer;
 
 	unsigned int num_submitted;
@@ -163,7 +166,10 @@ struct axi_dmac_chan {
 	bool hw_cyclic;
 	bool hw_2d;
 	bool hw_sg;
+<<<<<<< HEAD
 	bool hw_cyclic_hotfix;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct axi_dmac {
@@ -229,6 +235,7 @@ static bool axi_dmac_check_addr(struct axi_dmac_chan *chan, dma_addr_t addr)
 	return true;
 }
 
+<<<<<<< HEAD
 static struct axi_dmac_desc *axi_dmac_active_desc(struct axi_dmac_chan *chan)
 {
 	return list_first_entry_or_null(&chan->active_descs,
@@ -304,19 +311,41 @@ static struct axi_dmac_desc *axi_dmac_get_next_desc(struct axi_dmac *dmac,
 static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 {
 	struct axi_dmac *dmac = chan_to_axi_dmac(chan);
+=======
+static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
+{
+	struct axi_dmac *dmac = chan_to_axi_dmac(chan);
+	struct virt_dma_desc *vdesc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct axi_dmac_desc *desc;
 	struct axi_dmac_sg *sg;
 	unsigned int flags = 0;
 	unsigned int val;
 
+<<<<<<< HEAD
 	desc = axi_dmac_get_next_desc(dmac, chan);
 	if (!desc)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	val = axi_dmac_read(dmac, AXI_DMAC_REG_START_TRANSFER);
 	if (val) /* Queue is full, wait for the next SOT IRQ */
 		return;
 
+<<<<<<< HEAD
+=======
+	desc = chan->next_desc;
+
+	if (!desc) {
+		vdesc = vchan_next_desc(&chan->vchan);
+		if (!vdesc)
+			return;
+		list_move_tail(&vdesc->node, &chan->active_descs);
+		desc = to_axi_dmac_desc(vdesc);
+		chan->next_desc = desc;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sg = &desc->sg[desc->num_submitted];
 
 	/* Already queued in cyclic mode. Wait for it to finish */
@@ -358,12 +387,19 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 	 * call, enable hw cyclic mode to avoid unnecessary interrupts.
 	 */
 	if (chan->hw_cyclic && desc->cyclic && !desc->vdesc.tx.callback) {
+<<<<<<< HEAD
 		if (chan->hw_sg) {
 			desc->sg[desc->num_sgs - 1].hw->flags &= ~AXI_DMAC_HW_FLAG_IRQ;
 		} else if (desc->num_sgs == 1) {
 			chan->next_desc = NULL;
 			flags |= AXI_DMAC_FLAG_CYCLIC;
 		}
+=======
+		if (chan->hw_sg)
+			desc->sg[desc->num_sgs - 1].hw->flags &= ~AXI_DMAC_HW_FLAG_IRQ;
+		else if (desc->num_sgs == 1)
+			flags |= AXI_DMAC_FLAG_CYCLIC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (chan->hw_partial_xfer)
@@ -381,6 +417,15 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
 	axi_dmac_write(dmac, AXI_DMAC_REG_START_TRANSFER, 1);
 }
 
+<<<<<<< HEAD
+=======
+static struct axi_dmac_desc *axi_dmac_active_desc(struct axi_dmac_chan *chan)
+{
+	return list_first_entry_or_null(&chan->active_descs,
+		struct axi_dmac_desc, vdesc.node);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int axi_dmac_total_sg_bytes(struct axi_dmac_chan *chan,
 	struct axi_dmac_sg *sg)
 {
@@ -461,6 +506,7 @@ static void axi_dmac_compute_residue(struct axi_dmac_chan *chan,
 	}
 }
 
+<<<<<<< HEAD
 static bool axi_dmac_handle_cyclic_eot(struct axi_dmac_chan *chan,
 				       struct axi_dmac_desc *active)
 {
@@ -516,6 +562,8 @@ static bool axi_dmac_handle_cyclic_eot(struct axi_dmac_chan *chan,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool axi_dmac_transfer_done(struct axi_dmac_chan *chan,
 	unsigned int completed_transfers)
 {
@@ -534,7 +582,10 @@ static bool axi_dmac_transfer_done(struct axi_dmac_chan *chan,
 	if (chan->hw_sg) {
 		if (active->cyclic) {
 			vchan_cyclic_callback(&active->vdesc);
+<<<<<<< HEAD
 			start_next = axi_dmac_handle_cyclic_eot(chan, active);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			list_del(&active->vdesc.node);
 			vchan_cookie_complete(&active->vdesc);
@@ -564,8 +615,12 @@ static bool axi_dmac_transfer_done(struct axi_dmac_chan *chan,
 			if (active->num_completed == active->num_sgs ||
 			    sg->partial_len) {
 				if (active->cyclic) {
+<<<<<<< HEAD
 					/* keep start_next as is, if already true... */
 					start_next |= axi_dmac_handle_cyclic_eot(chan, active);
+=======
+					active->num_completed = 0; /* wrap around */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				} else {
 					list_del(&active->vdesc.node);
 					vchan_cookie_complete(&active->vdesc);
@@ -777,12 +832,16 @@ axi_dmac_prep_peripheral_dma_vec(struct dma_chan *c, const struct dma_vec *vecs,
 					      vecs[i].len, dsg);
 	}
 
+<<<<<<< HEAD
 	desc->cyclic = flags & DMA_PREP_REPEAT;
 	if (desc->cyclic) {
 		/* Chain the last descriptor to the first, and remove its "last" flag */
 		desc->sg[num_sgs - 1].hw->flags &= ~AXI_DMAC_HW_FLAG_LAST;
 		desc->sg[num_sgs - 1].hw->next_sg_addr = desc->sg[0].hw_phys;
 	}
+=======
+	desc->cyclic = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return vchan_tx_prep(&chan->vchan, &desc->vdesc, flags);
 }
@@ -1178,9 +1237,12 @@ static int axi_dmac_detect_caps(struct axi_dmac *dmac, unsigned int version)
 		chan->length_align_mask = chan->address_align_mask;
 	}
 
+<<<<<<< HEAD
 	if (version < ADI_AXI_PCORE_VER(4, 6, 0) && !chan->hw_sg)
 		chan->hw_cyclic_hotfix = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

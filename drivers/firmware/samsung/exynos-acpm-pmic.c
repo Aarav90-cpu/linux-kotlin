@@ -41,7 +41,11 @@ static const int acpm_pmic_linux_errmap[] = {
 	[2] = -EACCES, /* Write register can't be accessed or issues to access it. */
 };
 
+<<<<<<< HEAD
 static int acpm_pmic_to_linux_err(unsigned int err)
+=======
+static int acpm_pmic_to_linux_err(int err)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (err >= 0 && err < ARRAY_SIZE(acpm_pmic_linux_errmap))
 		return acpm_pmic_linux_errmap[err];
@@ -63,8 +67,13 @@ static void acpm_pmic_set_xfer(struct acpm_xfer *xfer, u32 *cmd, size_t cmdlen,
 {
 	xfer->txd = cmd;
 	xfer->rxd = cmd;
+<<<<<<< HEAD
 	xfer->txcnt = cmdlen;
 	xfer->rxcnt = cmdlen;
+=======
+	xfer->txlen = cmdlen;
+	xfer->rxlen = cmdlen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xfer->acpm_chan_id = acpm_chan_id;
 }
 
@@ -86,7 +95,11 @@ int acpm_pmic_read_reg(struct acpm_handle *handle,
 	int ret;
 
 	acpm_pmic_init_read_cmd(cmd, type, reg, chan);
+<<<<<<< HEAD
 	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
+=======
+	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = acpm_do_xfer(handle, &xfer);
 	if (ret)
@@ -119,7 +132,11 @@ int acpm_pmic_bulk_read(struct acpm_handle *handle,
 		return -EINVAL;
 
 	acpm_pmic_init_bulk_read_cmd(cmd, type, reg, chan, count);
+<<<<<<< HEAD
 	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
+=======
+	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = acpm_do_xfer(handle, &xfer);
 	if (ret)
@@ -159,7 +176,11 @@ int acpm_pmic_write_reg(struct acpm_handle *handle,
 	int ret;
 
 	acpm_pmic_init_write_cmd(cmd, type, reg, chan, value);
+<<<<<<< HEAD
 	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
+=======
+	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = acpm_do_xfer(handle, &xfer);
 	if (ret)
@@ -199,7 +220,11 @@ int acpm_pmic_bulk_write(struct acpm_handle *handle,
 		return -EINVAL;
 
 	acpm_pmic_init_bulk_write_cmd(cmd, type, reg, chan, count, buf);
+<<<<<<< HEAD
 	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
+=======
+	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = acpm_do_xfer(handle, &xfer);
 	if (ret)
@@ -229,7 +254,11 @@ int acpm_pmic_update_reg(struct acpm_handle *handle,
 	int ret;
 
 	acpm_pmic_init_update_cmd(cmd, type, reg, chan, value, mask);
+<<<<<<< HEAD
 	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
+=======
+	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = acpm_do_xfer(handle, &xfer);
 	if (ret)

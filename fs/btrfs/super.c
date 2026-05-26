@@ -1299,7 +1299,11 @@ static int btrfs_remount_rw(struct btrfs_fs_info *fs_info)
 {
 	int ret;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+=======
+	if (BTRFS_FS_ERROR(fs_info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 			  "remounting read-write after error is not allowed");
 		return -EINVAL;
@@ -2423,6 +2427,10 @@ static long btrfs_free_cached_objects(struct super_block *sb, struct shrink_cont
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_BTRFS_EXPERIMENTAL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int btrfs_remove_bdev(struct super_block *sb, struct block_device *bdev)
 {
 	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
@@ -2480,6 +2488,10 @@ static void btrfs_shutdown(struct super_block *sb)
 
 	btrfs_force_shutdown(fs_info);
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int btrfs_show_stats(struct seq_file *seq, struct dentry *root)
 {
@@ -2509,8 +2521,15 @@ static const struct super_operations btrfs_super_ops = {
 	.nr_cached_objects = btrfs_nr_cached_objects,
 	.free_cached_objects = btrfs_free_cached_objects,
 	.show_stats	= btrfs_show_stats,
+<<<<<<< HEAD
 	.remove_bdev	= btrfs_remove_bdev,
 	.shutdown	= btrfs_shutdown,
+=======
+#ifdef CONFIG_BTRFS_EXPERIMENTAL
+	.remove_bdev	= btrfs_remove_bdev,
+	.shutdown	= btrfs_shutdown,
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct file_operations btrfs_ctl_fops = {

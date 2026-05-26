@@ -592,6 +592,7 @@ static int bcm54xx_set_wakeup_irq(struct phy_device *phydev, bool state)
 
 static int bcm54xx_suspend(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	struct bcm54xx_phy_priv *priv = phydev->priv;
 	int ret = 0;
 
@@ -599,6 +600,10 @@ static int bcm54xx_suspend(struct phy_device *phydev)
 	bcm_phy_update_stats_shadow(phydev, priv->stats);
 	mutex_unlock(&phydev->lock);
 
+=======
+	int ret = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bcm54xx_ptp_stop(phydev);
 
 	/* Acknowledge any Wake-on-LAN interrupt prior to suspend */
@@ -1457,12 +1462,15 @@ static int bcm54811_read_status(struct phy_device *phydev)
 	return genphy_read_status(phydev);
 }
 
+<<<<<<< HEAD
 static int bcm54xx_disable_autonomous_eee(struct phy_device *phydev)
 {
 	return bcm_phy_modify_exp(phydev, BCM54XX_TOP_MISC_MII_BUF_CNTL0,
 				  BCM54XX_MII_BUF_CNTL0_AUTOGREEEN_EN, 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct phy_driver broadcom_drivers[] = {
 {
 	PHY_ID_MATCH_MODEL(PHY_ID_BCM5411),
@@ -1506,7 +1514,10 @@ static struct phy_driver broadcom_drivers[] = {
 	.get_wol	= bcm54xx_phy_get_wol,
 	.set_wol	= bcm54xx_phy_set_wol,
 	.led_brightness_set	= bcm_phy_led_brightness_set,
+<<<<<<< HEAD
 	.disable_autonomous_eee	= bcm54xx_disable_autonomous_eee,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }, {
 	PHY_ID_MATCH_MODEL(PHY_ID_BCM5461),
 	.name		= "Broadcom BCM5461",

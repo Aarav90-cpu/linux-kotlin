@@ -26,11 +26,19 @@ const struct file_operations adfs_file_operations = {
 	.llseek		= generic_file_llseek,
 	.read_iter	= generic_file_read_iter,
 	.mmap_prepare	= generic_file_mmap_prepare,
+<<<<<<< HEAD
 	.fsync		= simple_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.write_iter	= generic_file_write_iter,
 	.splice_read	= filemap_splice_read,
 };
 
 const struct inode_operations adfs_file_inode_operations = {
+<<<<<<< HEAD
 	.setattr	= adfs_setattr,
+=======
+	.setattr	= adfs_notify_change,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

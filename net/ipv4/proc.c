@@ -35,6 +35,10 @@
 #include <net/mptcp.h>
 #include <net/proto_memory.h>
 #include <net/udp.h>
+<<<<<<< HEAD
+=======
+#include <net/udplite.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bottom_half.h>
 #include <linux/inetdevice.h>
 #include <linux/proc_fs.h>
@@ -64,6 +68,11 @@ static int sockstat_seq_show(struct seq_file *seq, void *v)
 	seq_printf(seq, "UDP: inuse %d mem %ld\n",
 		   sock_prot_inuse_get(net, &udp_prot),
 		   proto_memory_allocated(&udp_prot));
+<<<<<<< HEAD
+=======
+	seq_printf(seq, "UDPLITE: inuse %d\n",
+		   sock_prot_inuse_get(net, &udplite_prot));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seq_printf(seq, "RAW: inuse %d\n",
 		   sock_prot_inuse_get(net, &raw_prot));
 	seq_printf(seq,  "FRAG: inuse %u memory %lu\n",
@@ -444,6 +453,22 @@ static int snmp_seq_show_tcp_udp(struct seq_file *seq, void *v)
 	for (i = 0; i < udp_cnt; i++)
 		seq_printf(seq, " %lu", buff[i]);
 
+<<<<<<< HEAD
+=======
+	memset(buff, 0, udp_cnt * sizeof(unsigned long));
+
+	/* the UDP and UDP-Lite MIBs are the same */
+	seq_puts(seq, "\nUdpLite:");
+	snmp_get_cpu_field_batch_cnt(buff, snmp4_udp_list,
+				     udp_cnt,
+				     net->mib.udplite_statistics);
+	for (i = 0; i < udp_cnt; i++)
+		seq_printf(seq, " %s", snmp4_udp_list[i].name);
+	seq_puts(seq, "\nUdpLite:");
+	for (i = 0; i < udp_cnt; i++)
+		seq_printf(seq, " %lu", buff[i]);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seq_putc(seq, '\n');
 	return 0;
 }

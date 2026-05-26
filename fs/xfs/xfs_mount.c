@@ -44,6 +44,7 @@
 #include "xfs_healthmon.h"
 
 static DEFINE_MUTEX(xfs_uuid_table_mutex);
+<<<<<<< HEAD
 static DEFINE_XARRAY_ALLOC(xfs_uuid_table);
 
 static uuid_t *
@@ -68,12 +69,24 @@ xfs_uuid_delete(
 	ASSERT(uuid_equal(xa_load(&xfs_uuid_table, index), uuid));
 	xa_erase(&xfs_uuid_table, index);
 }
+=======
+static int xfs_uuid_table_size;
+static uuid_t *xfs_uuid_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void
 xfs_uuid_table_free(void)
 {
+<<<<<<< HEAD
 	ASSERT(xa_empty(&xfs_uuid_table));
 	xa_destroy(&xfs_uuid_table);
+=======
+	if (xfs_uuid_table_size == 0)
+		return;
+	kfree(xfs_uuid_table);
+	xfs_uuid_table = NULL;
+	xfs_uuid_table_size = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -85,7 +98,11 @@ xfs_uuid_mount(
 	struct xfs_mount	*mp)
 {
 	uuid_t			*uuid = &mp->m_sb.sb_uuid;
+<<<<<<< HEAD
 	int			ret;
+=======
+	int			hole, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Publish UUID in struct super_block */
 	super_set_uuid(mp->m_super, uuid->b, sizeof(*uuid));
@@ -99,6 +116,7 @@ xfs_uuid_mount(
 	}
 
 	mutex_lock(&xfs_uuid_table_mutex);
+<<<<<<< HEAD
 	if (unlikely(xfs_uuid_search(uuid))) {
 		xfs_warn(mp, "Filesystem has duplicate UUID %pU - can't mount",
 				uuid);
@@ -110,6 +128,32 @@ xfs_uuid_mount(
 				xa_limit_32b, GFP_KERNEL);
 	mutex_unlock(&xfs_uuid_table_mutex);
 	return ret;
+=======
+	for (i = 0, hole = -1; i < xfs_uuid_table_size; i++) {
+		if (uuid_is_null(&xfs_uuid_table[i])) {
+			hole = i;
+			continue;
+		}
+		if (uuid_equal(uuid, &xfs_uuid_table[i]))
+			goto out_duplicate;
+	}
+
+	if (hole < 0) {
+		xfs_uuid_table = krealloc(xfs_uuid_table,
+			(xfs_uuid_table_size + 1) * sizeof(*xfs_uuid_table),
+			GFP_KERNEL | __GFP_NOFAIL);
+		hole = xfs_uuid_table_size++;
+	}
+	xfs_uuid_table[hole] = *uuid;
+	mutex_unlock(&xfs_uuid_table_mutex);
+
+	return 0;
+
+ out_duplicate:
+	mutex_unlock(&xfs_uuid_table_mutex);
+	xfs_warn(mp, "Filesystem has duplicate UUID %pU - can't mount", uuid);
+	return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 STATIC void
@@ -117,12 +161,28 @@ xfs_uuid_unmount(
 	struct xfs_mount	*mp)
 {
 	uuid_t			*uuid = &mp->m_sb.sb_uuid;
+<<<<<<< HEAD
+=======
+	int			i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xfs_has_nouuid(mp))
 		return;
 
 	mutex_lock(&xfs_uuid_table_mutex);
+<<<<<<< HEAD
 	xfs_uuid_delete(uuid, mp->m_uuid_table_index);
+=======
+	for (i = 0; i < xfs_uuid_table_size; i++) {
+		if (uuid_is_null(&xfs_uuid_table[i]))
+			continue;
+		if (!uuid_equal(uuid, &xfs_uuid_table[i]))
+			continue;
+		memset(&xfs_uuid_table[i], 0, sizeof(uuid_t));
+		break;
+	}
+	ASSERT(i < xfs_uuid_table_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&xfs_uuid_table_mutex);
 }
 

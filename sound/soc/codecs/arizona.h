@@ -100,7 +100,10 @@ struct arizona_priv {
 	struct snd_soc_jack *jack;
 	struct regulator *micvdd;
 	struct gpio_desc *micd_pol_gpio;
+<<<<<<< HEAD
 	struct gpio_desc *hpdet_id_gpio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u16 last_jackdet;
 

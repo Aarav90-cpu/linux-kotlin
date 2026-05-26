@@ -1367,14 +1367,23 @@ static __initconst const struct x86_pmu p4_pmu = {
 
 __init int p4_pmu_init(void)
 {
+<<<<<<< HEAD
 	unsigned int misc;
+=======
+	unsigned int low, high;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, reg;
 
 	/* If we get stripped -- indexing fails */
 	BUILD_BUG_ON(ARCH_P4_MAX_CCCR > INTEL_PMC_MAX_GENERIC);
 
+<<<<<<< HEAD
 	rdmsrq(MSR_IA32_MISC_ENABLE, misc);
 	if (!(misc & MSR_IA32_MISC_ENABLE_EMON)) {
+=======
+	rdmsr(MSR_IA32_MISC_ENABLE, low, high);
+	if (!(low & (1 << 7))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_cont("unsupported Netburst CPU model %d ",
 			boot_cpu_data.x86_model);
 		return -ENODEV;

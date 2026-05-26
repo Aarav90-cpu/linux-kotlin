@@ -6,7 +6,10 @@
  */
 #include <linux/fs.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/unaligned.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "cifs_fs_sb.h"
 #include "cifs_unicode.h"
 #include "cifsglob.h"

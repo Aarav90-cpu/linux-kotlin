@@ -94,7 +94,12 @@ int vdo_make_logical_zones(struct vdo *vdo, struct logical_zones **zones_ptr)
 	if (zone_count == 0)
 		return VDO_SUCCESS;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(zone_count, zones, __func__, &zones);
+=======
+	result = vdo_allocate_extended(struct logical_zones, zone_count,
+				       struct logical_zone, __func__, &zones);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

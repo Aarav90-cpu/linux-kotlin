@@ -146,6 +146,7 @@ properties:
       this platform. If set, the value should be non-zero.
     minimum: 1
 
+<<<<<<< HEAD
   arm,no-completion-irq:
     type: boolean
     description:
@@ -153,6 +154,8 @@ properties:
       completion interrupts and can be used to unconditionally enable forced
       polling mode of operation.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   arm,smc-id:
     $ref: /schemas/types.yaml#/definitions/uint32
     description:
@@ -386,9 +389,12 @@ then:
     - shmem
 
 else:
+<<<<<<< HEAD
   properties:
     arm,no-completion-irq: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   if:
     properties:
       compatible:

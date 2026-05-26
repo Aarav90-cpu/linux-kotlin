@@ -792,7 +792,11 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
 	size_t read_len;
 	int ret;
 
+<<<<<<< HEAD
 	temperature_calib = nvmem_cell_get(dev, "temperature_calib");
+=======
+	temperature_calib = devm_nvmem_cell_get(dev, "temperature_calib");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(temperature_calib)) {
 		ret = PTR_ERR(temperature_calib);
 
@@ -806,9 +810,19 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
 		return dev_err_probe(dev, ret, "failed to get temperature_calib cell\n");
 	}
 
+<<<<<<< HEAD
 	read_len = MESON_SAR_ADC_EFUSE_BYTES;
 	buf = nvmem_cell_read(temperature_calib, &read_len);
 	nvmem_cell_put(temperature_calib);
+=======
+	priv->tsc_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "amlogic,hhi-sysctrl");
+	if (IS_ERR(priv->tsc_regmap))
+		return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap),
+				     "failed to get amlogic,hhi-sysctrl regmap\n");
+
+	read_len = MESON_SAR_ADC_EFUSE_BYTES;
+	buf = nvmem_cell_read(temperature_calib, &read_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(buf))
 		return dev_err_probe(dev, PTR_ERR(buf), "failed to read temperature_calib cell\n");
 	if (read_len != MESON_SAR_ADC_EFUSE_BYTES) {
@@ -816,11 +830,14 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
 		return dev_err_probe(dev, -EINVAL, "invalid read size of temperature_calib cell\n");
 	}
 
+<<<<<<< HEAD
 	priv->tsc_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "amlogic,hhi-sysctrl");
 	if (IS_ERR(priv->tsc_regmap))
 		return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap),
 				     "failed to get amlogic,hhi-sysctrl regmap\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trimming_bits = priv->param->temperature_trimming_bits;
 	trimming_mask = BIT(trimming_bits) - 1;
 
@@ -1314,11 +1331,14 @@ static const struct meson_sar_adc_data meson_sar_adc_g12a_data = {
 	.name = "meson-g12a-saradc",
 };
 
+<<<<<<< HEAD
 static const struct meson_sar_adc_data meson_sar_adc_s4_data = {
 	.param = &meson_sar_adc_g12a_param,
 	.name = "meson-s4-saradc",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id meson_sar_adc_of_match[] = {
 	{
 		.compatible = "amlogic,meson8-saradc",
@@ -1347,9 +1367,12 @@ static const struct of_device_id meson_sar_adc_of_match[] = {
 	}, {
 		.compatible = "amlogic,meson-g12a-saradc",
 		.data = &meson_sar_adc_g12a_data,
+<<<<<<< HEAD
 	}, {
 		.compatible = "amlogic,meson-s4-saradc",
 		.data = &meson_sar_adc_s4_data,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{ }
 };

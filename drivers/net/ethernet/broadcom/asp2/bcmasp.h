@@ -6,7 +6,10 @@
 #include <linux/phy.h>
 #include <linux/io-64-nonatomic-hi-lo.h>
 #include <uapi/linux/ethtool.h>
+<<<<<<< HEAD
 #include <net/page_pool/helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ASP_INTR2_OFFSET			0x1000
 #define  ASP_INTR2_STATUS			0x0
@@ -299,11 +302,16 @@ struct bcmasp_intf {
 	void __iomem			*rx_edpkt_cfg;
 	void __iomem			*rx_edpkt_dma;
 	int				rx_edpkt_index;
+<<<<<<< HEAD
+=======
+	int				rx_buf_order;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bcmasp_desc		*rx_edpkt_cpu;
 	dma_addr_t			rx_edpkt_dma_addr;
 	dma_addr_t			rx_edpkt_dma_read;
 	dma_addr_t			rx_edpkt_dma_valid;
 
+<<<<<<< HEAD
 	/* Streaming RX data ring (RBUF_4K mode) */
 	void				*rx_ring_cpu;
 	dma_addr_t			rx_ring_dma;
@@ -312,6 +320,12 @@ struct bcmasp_intf {
 
 	/* Page pool for recycling RX SKB data pages */
 	struct page_pool		*rx_page_pool;
+=======
+	/* RX buffer prefetcher ring*/
+	void				*rx_ring_cpu;
+	dma_addr_t			rx_ring_dma;
+	dma_addr_t			rx_ring_dma_valid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct napi_struct		rx_napi;
 
 	struct bcmasp_res		res;

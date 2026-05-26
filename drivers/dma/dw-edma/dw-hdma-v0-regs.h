@@ -12,7 +12,10 @@
 #include <linux/dmaengine.h>
 
 #define HDMA_V0_MAX_NR_CH			8
+<<<<<<< HEAD
 #define HDMA_V0_CH_EN				BIT(0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HDMA_V0_LOCAL_ABORT_INT_EN		BIT(6)
 #define HDMA_V0_REMOTE_ABORT_INT_EN		BIT(5)
 #define HDMA_V0_LOCAL_STOP_INT_EN		BIT(4)

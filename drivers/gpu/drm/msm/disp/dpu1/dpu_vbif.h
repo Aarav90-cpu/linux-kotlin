@@ -15,20 +15,36 @@ struct dpu_vbif_set_ot_params {
 	u32 frame_rate;
 	bool rd;
 	bool is_wfd;
+<<<<<<< HEAD
+=======
+	u32 vbif_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dpu_vbif_set_memtype_params {
 	u32 xin_id;
+<<<<<<< HEAD
+=======
+	u32 vbif_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool is_cacheable;
 };
 
 /**
  * struct dpu_vbif_set_qos_params - QoS remapper parameter
+<<<<<<< HEAD
+=======
+ * @vbif_idx: vbif identifier
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @xin_id: client interface identifier
  * @num: pipe identifier (debug only)
  * @is_rt: true if pipe is used in real-time use case
  */
 struct dpu_vbif_set_qos_params {
+<<<<<<< HEAD
+=======
+	u32 vbif_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 xin_id;
 	u32 num;
 	bool is_rt;

@@ -184,9 +184,13 @@ static int uclogic_input_configured(struct hid_device *hdev,
 			suffix = "System Control";
 			break;
 		}
+<<<<<<< HEAD
 	}
 
 	if (suffix) {
+=======
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
 						 "%s %s", hdev->name, suffix);
 		if (!hi->input->name)

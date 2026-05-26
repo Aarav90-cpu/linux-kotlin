@@ -611,8 +611,12 @@ static struct iova_magazine *iova_magazine_alloc(gfp_t flags)
 
 static void iova_magazine_free(struct iova_magazine *mag)
 {
+<<<<<<< HEAD
 	if (mag)
 		kmem_cache_free(iova_magazine_cache, mag);
+=======
+	kmem_cache_free(iova_magazine_cache, mag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void

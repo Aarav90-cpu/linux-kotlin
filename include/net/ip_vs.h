@@ -11,7 +11,10 @@
 #include <asm/types.h>                  /* for __uXX types */
 
 #include <linux/list.h>                 /* for struct list_head */
+<<<<<<< HEAD
 #include <linux/rculist_bl.h>           /* for struct hlist_bl_head */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/spinlock.h>             /* for struct rwlock_t */
 #include <linux/atomic.h>               /* for struct atomic_t */
 #include <linux/refcount.h>             /* for struct refcount_t */
@@ -31,11 +34,15 @@
 #endif
 #include <net/net_namespace.h>		/* Netw namespace */
 #include <linux/sched/isolation.h>
+<<<<<<< HEAD
 #include <linux/siphash.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define IP_VS_HDR_INVERSE	1
 #define IP_VS_HDR_ICMP		2
 
+<<<<<<< HEAD
 /* conn_tab limits (as per Kconfig) */
 #define IP_VS_CONN_TAB_MIN_BITS	8
 #if BITS_PER_LONG > 32
@@ -48,6 +55,8 @@
 #define IP_VS_SVC_TAB_MIN_BITS	4
 #define IP_VS_SVC_TAB_MAX_BITS	20
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Generic access of ipvs struct */
 static inline struct netns_ipvs *net_ipvs(struct net* net)
 {
@@ -57,6 +66,11 @@ static inline struct netns_ipvs *net_ipvs(struct net* net)
 /* Connections' size value needed by ip_vs_ctl.c */
 extern int ip_vs_conn_tab_size;
 
+<<<<<<< HEAD
+=======
+extern struct mutex __ip_vs_mutex;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ip_vs_iphdr {
 	int hdr_flags;	/* ipvs flags */
 	__u32 off;	/* Where IP or IPv4 header starts */
@@ -277,6 +291,7 @@ static inline const char *ip_vs_dbg_addr(int af, char *buf, size_t buf_len,
 			pr_err(msg, ##__VA_ARGS__);			\
 	} while (0)
 
+<<<<<<< HEAD
 struct ip_vs_aligned_lock {
 	spinlock_t	l;	/* Protect buckets */
 } ____cacheline_aligned_in_smp;
@@ -300,6 +315,8 @@ enum {
 	IP_VS_WORK_CONN_RESIZE,		/* Schedule conn_resize_work */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* The port number of FTP service (in network order). */
 #define FTPPORT  cpu_to_be16(21)
 #define FTPDATA  cpu_to_be16(20)
@@ -491,7 +508,10 @@ struct ip_vs_est_kt_data {
 	DECLARE_BITMAP(avail, IPVS_EST_NTICKS);	/* tick has space for ests */
 	unsigned long		est_timer;	/* estimation timer (jiffies) */
 	struct ip_vs_stats	*calc_stats;	/* Used for calculation */
+<<<<<<< HEAD
 	int			needed;		/* task is needed */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			tick_len[IPVS_EST_NTICKS];	/* est count */
 	int			id;		/* ktid per netns */
 	int			chain_max;	/* max ests per tick chain */
@@ -502,6 +522,7 @@ struct ip_vs_est_kt_data {
 	int			est_row;	/* estimated row */
 };
 
+<<<<<<< HEAD
 /* IPVS resizable hash tables */
 struct ip_vs_rht {
 	struct hlist_bl_head		*buckets;
@@ -694,6 +715,8 @@ void ip_vs_rht_set_thresholds(struct ip_vs_rht *t, int size, int lfactor,
 u32 ip_vs_rht_hash_linfo(struct ip_vs_rht *t, int af,
 			 const union nf_inet_addr *addr, u32 v1, u32 v2);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dst_entry;
 struct iphdr;
 struct ip_vs_conn;
@@ -787,6 +810,7 @@ struct ip_vs_conn_param {
 	__u8				pe_data_len;
 };
 
+<<<<<<< HEAD
 /* Hash node in conn_tab */
 struct ip_vs_conn_hnode {
 	struct hlist_bl_node	node;		/* node in conn_tab */
@@ -813,11 +837,37 @@ struct ip_vs_conn {
 	const struct ip_vs_pe	*pe;
 	char			*pe_data;
 	__u8			pe_data_len;
+=======
+/* IP_VS structure allocated for each dynamically scheduled connection */
+struct ip_vs_conn {
+	struct hlist_node	c_list;         /* hashed list heads */
+	/* Protocol, addresses and port numbers */
+	__be16                  cport;
+	__be16                  dport;
+	__be16                  vport;
+	u16			af;		/* address family */
+	union nf_inet_addr      caddr;          /* client address */
+	union nf_inet_addr      vaddr;          /* virtual address */
+	union nf_inet_addr      daddr;          /* destination address */
+	volatile __u32          flags;          /* status flags */
+	__u16                   protocol;       /* Which protocol (TCP/UDP) */
+	__u16			daf;		/* Address family of the dest */
+	struct netns_ipvs	*ipvs;
+
+	/* counter and timer */
+	refcount_t		refcnt;		/* reference count */
+	struct timer_list	timer;		/* Expiration timer */
+	volatile unsigned long	timeout;	/* timeout */
+
+	/* Flags and state transition */
+	spinlock_t              lock;           /* lock for state transition */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	volatile __u16          state;          /* state info */
 	volatile __u16          old_state;      /* old state, to be used for
 						 * state transition triggered
 						 * synchronization
 						 */
+<<<<<<< HEAD
 	/* 2-byte hole */
 	/* 64/96 */
 
@@ -853,6 +903,16 @@ struct ip_vs_conn {
 	/* 188/256 */
 	unsigned long		sync_endtime;	/* jiffies + sent_retries */
 	struct netns_ipvs	*ipvs;
+=======
+	__u32			fwmark;		/* Fire wall mark from skb */
+	unsigned long		sync_endtime;	/* jiffies + sent_retries */
+
+	/* Control members */
+	struct ip_vs_conn       *control;       /* Master control connection */
+	atomic_t                n_control;      /* Number of controlled ones */
+	struct ip_vs_dest       *dest;          /* real server */
+	atomic_t                in_pkts;        /* incoming packet counter */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Packet transmitter for different forwarding methods.  If it
 	 * mangles the packet, it must return NF_DROP or better NF_STOLEN,
@@ -862,6 +922,24 @@ struct ip_vs_conn {
 	int (*packet_xmit)(struct sk_buff *skb, struct ip_vs_conn *cp,
 			   struct ip_vs_protocol *pp, struct ip_vs_iphdr *iph);
 
+<<<<<<< HEAD
+=======
+	/* Note: we can group the following members into a structure,
+	 * in order to save more space, and the following members are
+	 * only used in VS/NAT anyway
+	 */
+	struct ip_vs_app        *app;           /* bound ip_vs_app object */
+	void                    *app_data;      /* Application private data */
+	struct_group(sync_conn_opt,
+		struct ip_vs_seq  in_seq;       /* incoming seq. struct */
+		struct ip_vs_seq  out_seq;      /* outgoing seq. struct */
+	);
+
+	const struct ip_vs_pe	*pe;
+	char			*pe_data;
+	__u8			pe_data_len;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rcu_head		rcu_head;
 };
 
@@ -916,6 +994,7 @@ struct ip_vs_dest_user_kern {
  * forwarding entries.
  */
 struct ip_vs_service {
+<<<<<<< HEAD
 	struct hlist_bl_node	s_list;   /* node in service table */
 	u32			hash_key; /* Key for the hash table */
 	u16			af;       /* address family */
@@ -925,6 +1004,17 @@ struct ip_vs_service {
 	__u32                   fwmark;   /* firewall mark of the service */
 	atomic_t		refcnt;   /* reference counter */
 	__be16			port;	  /* port number for the service */
+=======
+	struct hlist_node	s_list;   /* for normal service table */
+	struct hlist_node	f_list;   /* for fwmark-based service table */
+	atomic_t		refcnt;   /* reference counter */
+
+	u16			af;       /* address family */
+	__u16			protocol; /* which protocol (TCP/UDP) */
+	union nf_inet_addr	addr;	  /* IP address for virtual service */
+	__be16			port;	  /* port number for the service */
+	__u32                   fwmark;   /* firewall mark of the service */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		flags;	  /* service status flags */
 	unsigned int		timeout;  /* persistent timeout in ticks */
 	__be32			netmask;  /* grouping granularity, mask/plen */
@@ -1034,8 +1124,13 @@ struct ip_vs_pe {
 	int (*fill_param)(struct ip_vs_conn_param *p, struct sk_buff *skb);
 	bool (*ct_match)(const struct ip_vs_conn_param *p,
 			 struct ip_vs_conn *ct);
+<<<<<<< HEAD
 	u32 (*hashkey_raw)(const struct ip_vs_conn_param *p,
 			   struct ip_vs_rht *t, bool inverse);
+=======
+	u32 (*hashkey_raw)(const struct ip_vs_conn_param *p, u32 initval,
+			   bool inverse);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*show_pe_data)(const struct ip_vs_conn *cp, char *buf);
 	/* create connections for real-server outgoing packets */
 	struct ip_vs_conn* (*conn_out)(struct ip_vs_service *svc,
@@ -1174,16 +1269,26 @@ struct netns_ipvs {
 #endif
 	/* ip_vs_conn */
 	atomic_t		conn_count;      /* connection counter */
+<<<<<<< HEAD
 	atomic_t		no_cport_conns[IP_VS_AF_MAX];
 	struct delayed_work	conn_resize_work;/* resize conn_tab */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* ip_vs_ctl */
 	struct ip_vs_stats_rcu	*tot_stats;      /* Statistics & est. */
 
+<<<<<<< HEAD
+=======
+	int			num_services;    /* no of virtual services */
+	int			num_services6;   /* IPv6 virtual services */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Trash for destinations */
 	struct list_head	dest_trash;
 	spinlock_t		dest_trash_lock;
 	struct timer_list	dest_trash_timer; /* expiration timer */
+<<<<<<< HEAD
 	struct mutex		service_mutex;    /* service reconfig */
 	struct rw_semaphore	svc_resize_sem;   /* svc_table resizing */
 	struct rw_semaphore	svc_replace_sem;  /* svc_table replace */
@@ -1196,6 +1301,12 @@ struct netns_ipvs {
 	atomic_t		ftpsvc_counter[IP_VS_AF_MAX]; /* FTPPORT */
 	atomic_t		nullsvc_counter[IP_VS_AF_MAX];/* Zero port */
 	atomic_t		conn_out_counter[IP_VS_AF_MAX];/* out conn */
+=======
+	/* Service counters */
+	atomic_t		ftpsvc_counter;
+	atomic_t		nullsvc_counter;
+	atomic_t		conn_out_counter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SYSCTL
 	/* delayed work for expiring no dest connections */
@@ -1206,7 +1317,10 @@ struct netns_ipvs {
 	int			drop_counter;
 	int			old_secure_tcp;
 	atomic_t		dropentry;
+<<<<<<< HEAD
 	s8			dropentry_counters[8];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* locks in ctl.c */
 	spinlock_t		dropentry_lock;  /* drop entry handling */
 	spinlock_t		droppacket_lock; /* drop packet handling */
@@ -1253,8 +1367,11 @@ struct netns_ipvs {
 	int			sysctl_est_nice;	/* kthread nice */
 	int			est_stopped;		/* stop tasks */
 #endif
+<<<<<<< HEAD
 	int			sysctl_conn_lfactor;
 	int			sysctl_svc_lfactor;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* ip_vs_lblc */
 	int			sysctl_lblc_expiration;
@@ -1264,7 +1381,10 @@ struct netns_ipvs {
 	int			sysctl_lblcr_expiration;
 	struct ctl_table_header	*lblcr_ctl_header;
 	struct ctl_table	*lblcr_ctl_table;
+<<<<<<< HEAD
 	unsigned long		work_flags;	/* IP_VS_WORK_* flags */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ip_vs_est */
 	struct delayed_work	est_reload_work;/* Reload kthread tasks */
 	struct mutex		est_mutex;	/* protect kthread tasks */
@@ -1295,10 +1415,13 @@ struct netns_ipvs {
 	 */
 	unsigned int		mixed_address_family_dests;
 	unsigned int		hooks_afmask;	/* &1=AF_INET, &2=AF_INET6 */
+<<<<<<< HEAD
 
 	struct ip_vs_rht __rcu	*svc_table;	/* Services */
 	struct ip_vs_rht __rcu	*conn_tab;	/* Connections */
 	atomic_t		conn_tab_changes;/* ++ on new table */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DEFAULT_SYNC_THRESHOLD	3
@@ -1413,7 +1536,11 @@ static inline int sysctl_run_estimation(struct netns_ipvs *ipvs)
 	return ipvs->sysctl_run_estimation;
 }
 
+<<<<<<< HEAD
 static inline const struct cpumask *__sysctl_est_cpulist(struct netns_ipvs *ipvs)
+=======
+static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (ipvs->est_cpulist_valid)
 		return ipvs->sysctl_est_cpulist;
@@ -1531,7 +1658,11 @@ static inline int sysctl_run_estimation(struct netns_ipvs *ipvs)
 	return 1;
 }
 
+<<<<<<< HEAD
 static inline const struct cpumask *__sysctl_est_cpulist(struct netns_ipvs *ipvs)
+=======
+static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return housekeeping_cpumask(HK_TYPE_KTHREAD);
 }
@@ -1548,6 +1679,7 @@ static inline int sysctl_est_nice(struct netns_ipvs *ipvs)
 
 #endif
 
+<<<<<<< HEAD
 /* Get load factor to map conn_count/u_thresh to t->size */
 static inline int sysctl_conn_lfactor(struct netns_ipvs *ipvs)
 {
@@ -1578,6 +1710,8 @@ static inline unsigned int sysctl_est_cpulist_weight(struct netns_ipvs *ipvs)
 	return cpumask_weight(__sysctl_est_cpulist(ipvs));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* IPVS core functions
  * (from ip_vs_core.c)
  */
@@ -1651,6 +1785,7 @@ static inline void __ip_vs_conn_put(struct ip_vs_conn *cp)
 }
 void ip_vs_conn_put(struct ip_vs_conn *cp);
 void ip_vs_conn_fill_cport(struct ip_vs_conn *cp, __be16 cport);
+<<<<<<< HEAD
 int ip_vs_conn_desired_size(struct netns_ipvs *ipvs, struct ip_vs_rht *t,
 			    int lfactor);
 struct ip_vs_rht *ip_vs_conn_tab_alloc(struct netns_ipvs *ipvs, int buckets,
@@ -1668,6 +1803,8 @@ ip_vs_hn_to_conn(struct ip_vs_conn_hnode *hn)
 	return hn->dir ? container_of(hn, struct ip_vs_conn, hn1) :
 			 container_of(hn, struct ip_vs_conn, hn0);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct ip_vs_conn *ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 				  const union nf_inet_addr *daddr,
@@ -1898,11 +2035,16 @@ int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats);
 void ip_vs_stop_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats);
 void ip_vs_zero_estimator(struct ip_vs_stats *stats);
 void ip_vs_read_estimator(struct ip_vs_kstats *dst, struct ip_vs_stats *stats);
+<<<<<<< HEAD
 void ip_vs_est_reload_start(struct netns_ipvs *ipvs, bool restart);
+=======
+void ip_vs_est_reload_start(struct netns_ipvs *ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ip_vs_est_kthread_start(struct netns_ipvs *ipvs,
 			    struct ip_vs_est_kt_data *kd);
 void ip_vs_est_kthread_stop(struct ip_vs_est_kt_data *kd);
 
+<<<<<<< HEAD
 static inline void ip_vs_stop_estimator_tot_stats(struct netns_ipvs *ipvs)
 {
 #ifdef CONFIG_SYSCTL
@@ -1911,13 +2053,19 @@ static inline void ip_vs_stop_estimator_tot_stats(struct netns_ipvs *ipvs)
 #endif
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void ip_vs_est_stopped_recalc(struct netns_ipvs *ipvs)
 {
 #ifdef CONFIG_SYSCTL
 	/* Stop tasks while cpulist is empty or if disabled with flag */
 	ipvs->est_stopped = !sysctl_run_estimation(ipvs) ||
 			    (ipvs->est_cpulist_valid &&
+<<<<<<< HEAD
 			     sysctl_est_cpulist_empty(ipvs));
+=======
+			     cpumask_empty(sysctl_est_cpulist(ipvs)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -1933,7 +2081,11 @@ static inline bool ip_vs_est_stopped(struct netns_ipvs *ipvs)
 static inline int ip_vs_est_max_threads(struct netns_ipvs *ipvs)
 {
 	unsigned int limit = IPVS_EST_CPU_KTHREADS *
+<<<<<<< HEAD
 			     sysctl_est_cpulist_weight(ipvs);
+=======
+			     cpumask_weight(sysctl_est_cpulist(ipvs));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return max(1U, limit);
 }
@@ -2029,6 +2181,7 @@ static inline char ip_vs_fwd_tag(struct ip_vs_conn *cp)
 	return fwd;
 }
 
+<<<<<<< HEAD
 /* Check if connection uses double hashing */
 static inline bool ip_vs_conn_use_hash2(struct ip_vs_conn *cp)
 {
@@ -2036,6 +2189,8 @@ static inline bool ip_vs_conn_use_hash2(struct ip_vs_conn *cp)
 	       !(cp->flags & IP_VS_CONN_F_TEMPLATE);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ip_vs_nat_icmp(struct sk_buff *skb, struct ip_vs_protocol *pp,
 		    struct ip_vs_conn *cp, int dir);
 

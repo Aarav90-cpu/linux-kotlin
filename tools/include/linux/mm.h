@@ -17,7 +17,10 @@
 
 #define __va(x) ((void *)((unsigned long)(x)))
 #define __pa(x) ((unsigned long)(x))
+<<<<<<< HEAD
 #define __pa_symbol(x) ((unsigned long)(x))
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define pfn_to_page(pfn) ((void *)((pfn) * PAGE_SIZE))
 
@@ -33,6 +36,11 @@ static inline phys_addr_t virt_to_phys(volatile void *address)
 	return (phys_addr_t)address;
 }
 
+<<<<<<< HEAD
+=======
+void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void totalram_pages_inc(void)
 {
 }

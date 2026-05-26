@@ -29,6 +29,7 @@
 	.endm
 
 	.macro		hwordle, reg
+<<<<<<< HEAD
 	.endm
 
 	.macro		hwordbe, reg
@@ -37,11 +38,30 @@
 	.endm
 
 	.macro		le, regs:vararg
+=======
+CPU_BE(	rev16		\reg, \reg	)
+	.endm
+
+	.macro		hwordbe, reg
+CPU_LE(	rev		\reg, \reg	)
+	rbit		\reg, \reg
+CPU_BE(	lsr		\reg, \reg, #16	)
+	.endm
+
+	.macro		le, regs:vararg
+	.irp		r, \regs
+CPU_BE(	rev		\r, \r		)
+	.endr
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.endm
 
 	.macro		be, regs:vararg
 	.irp		r, \regs
+<<<<<<< HEAD
 	rev		\r, \r
+=======
+CPU_LE(	rev		\r, \r		)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.endr
 	.irp		r, \regs
 	rbit		\r, \r

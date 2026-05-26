@@ -842,6 +842,7 @@ vgic_find_mmio_region(const struct vgic_register_region *regions,
 
 void vgic_set_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr)
 {
+<<<<<<< HEAD
 	const struct vgic_dist *dist = &vcpu->kvm->arch.vgic;
 
 	switch (dist->vgic_model) {
@@ -860,10 +861,17 @@ void vgic_set_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr)
 	default:
 		BUG();
 	}
+=======
+	if (kvm_vgic_global_state.type == VGIC_V2)
+		vgic_v2_set_vmcr(vcpu, vmcr);
+	else
+		vgic_v3_set_vmcr(vcpu, vmcr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void vgic_get_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr)
 {
+<<<<<<< HEAD
 	const struct vgic_dist *dist = &vcpu->kvm->arch.vgic;
 
 	switch (dist->vgic_model) {
@@ -882,6 +890,12 @@ void vgic_get_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr)
 	default:
 		BUG();
 	}
+=======
+	if (kvm_vgic_global_state.type == VGIC_V2)
+		vgic_v2_get_vmcr(vcpu, vmcr);
+	else
+		vgic_v3_get_vmcr(vcpu, vmcr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

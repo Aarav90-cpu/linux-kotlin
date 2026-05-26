@@ -167,6 +167,7 @@ static int histo_enum_mbus_code(struct v4l2_subdev *subdev,
 				struct v4l2_subdev_state *sd_state,
 				struct v4l2_subdev_mbus_code_enum *code)
 {
+<<<<<<< HEAD
 	if (code->pad == HISTO_PAD_SOURCE) {
 		if (code->index > 0)
 			return -EINVAL;
@@ -176,6 +177,18 @@ static int histo_enum_mbus_code(struct v4l2_subdev *subdev,
 	}
 
 	return vsp1_subdev_enum_mbus_code(subdev, sd_state, code);
+=======
+	struct vsp1_histogram *histo = subdev_to_histo(subdev);
+
+	if (code->pad == HISTO_PAD_SOURCE) {
+		code->code = MEDIA_BUS_FMT_FIXED;
+		return 0;
+	}
+
+	return vsp1_subdev_enum_mbus_code(subdev, sd_state, code,
+					  histo->formats,
+					  histo->num_formats);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int histo_enum_frame_size(struct v4l2_subdev *subdev,
@@ -183,9 +196,18 @@ static int histo_enum_frame_size(struct v4l2_subdev *subdev,
 				 struct v4l2_subdev_frame_size_enum *fse)
 {
 	if (fse->pad != HISTO_PAD_SINK)
+<<<<<<< HEAD
 		return -ENOTTY;
 
 	return vsp1_subdev_enum_frame_size(subdev, sd_state, fse);
+=======
+		return -EINVAL;
+
+	return vsp1_subdev_enum_frame_size(subdev, sd_state, fse,
+					   HISTO_MIN_SIZE,
+					   HISTO_MIN_SIZE, HISTO_MAX_SIZE,
+					   HISTO_MAX_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int histo_get_selection(struct v4l2_subdev *subdev,
@@ -350,6 +372,7 @@ static int histo_set_format(struct v4l2_subdev *subdev,
 			    struct v4l2_subdev_state *sd_state,
 			    struct v4l2_subdev_format *fmt)
 {
+<<<<<<< HEAD
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 	struct v4l2_subdev_state *state;
 	struct v4l2_mbus_framefmt *format;
@@ -412,6 +435,24 @@ static int histo_set_format(struct v4l2_subdev *subdev,
 	fmt->format = *format;
 
 	return 0;
+=======
+	struct vsp1_histogram *histo = subdev_to_histo(subdev);
+
+	if (fmt->pad == HISTO_PAD_SOURCE) {
+		fmt->format.code = MEDIA_BUS_FMT_FIXED;
+		fmt->format.width = 0;
+		fmt->format.height = 0;
+		fmt->format.field = V4L2_FIELD_NONE;
+		fmt->format.colorspace = V4L2_COLORSPACE_RAW;
+
+		return 0;
+	}
+
+	return vsp1_subdev_set_pad_format(subdev, sd_state, fmt,
+					  histo->formats, histo->num_formats,
+					  HISTO_MIN_SIZE, HISTO_MIN_SIZE,
+					  HISTO_MAX_SIZE, HISTO_MAX_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct v4l2_subdev_pad_ops histo_pad_ops = {
@@ -424,7 +465,10 @@ static const struct v4l2_subdev_pad_ops histo_pad_ops = {
 };
 
 static const struct v4l2_subdev_ops histo_ops = {
+<<<<<<< HEAD
 	.core	= &vsp1_entity_core_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pad    = &histo_pad_ops,
 };
 
@@ -533,6 +577,11 @@ int vsp1_histogram_init(struct vsp1_device *vsp1, struct vsp1_histogram *histo,
 {
 	int ret;
 
+<<<<<<< HEAD
+=======
+	histo->formats = formats;
+	histo->num_formats = num_formats;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	histo->data_size = data_size;
 	histo->meta_format = meta_format;
 
@@ -547,12 +596,15 @@ int vsp1_histogram_init(struct vsp1_device *vsp1, struct vsp1_histogram *histo,
 	/* Initialize the VSP entity... */
 	histo->entity.ops = ops;
 	histo->entity.type = type;
+<<<<<<< HEAD
 	histo->entity.codes = formats;
 	histo->entity.num_codes = num_formats;
 	histo->entity.min_width = HISTO_MIN_SIZE;
 	histo->entity.min_height = HISTO_MIN_SIZE;
 	histo->entity.max_width = HISTO_MAX_SIZE;
 	histo->entity.max_height = HISTO_MAX_SIZE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vsp1_entity_init(vsp1, &histo->entity, name, 2, &histo_ops,
 			       MEDIA_ENT_F_PROC_VIDEO_STATISTICS);

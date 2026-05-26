@@ -308,7 +308,11 @@ TRACE_EVENT(netfs_read,
 		    __field(loff_t,			start)
 		    __field(size_t,			len)
 		    __field(enum netfs_read_trace,	what)
+<<<<<<< HEAD
 		    __field(u64,			netfs_inode)
+=======
+		    __field(unsigned int,		netfs_inode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     ),
 
 	    TP_fast_assign(
@@ -321,7 +325,11 @@ TRACE_EVENT(netfs_read,
 		    __entry->netfs_inode = rreq->inode->i_ino;
 			   ),
 
+<<<<<<< HEAD
 	    TP_printk("R=%08x %s c=%08x ni=%llx s=%llx l=%zx sz=%llx",
+=======
+	    TP_printk("R=%08x %s c=%08x ni=%x s=%llx l=%zx sz=%llx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      __entry->rreq,
 		      __print_symbolic(__entry->what, netfs_read_traces),
 		      __entry->cookie,
@@ -494,7 +502,11 @@ TRACE_EVENT(netfs_folio,
 	    TP_ARGS(folio, why),
 
 	    TP_STRUCT__entry(
+<<<<<<< HEAD
 		    __field(u64,			ino)
+=======
+		    __field(ino_t,			ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    __field(pgoff_t,			index)
 		    __field(unsigned int,		nr)
 		    __field(enum netfs_folio_trace,	why)
@@ -508,7 +520,11 @@ TRACE_EVENT(netfs_folio,
 		    __entry->nr = folio_nr_pages(folio);
 			   ),
 
+<<<<<<< HEAD
 	    TP_printk("i=%05llx ix=%05lx-%05lx %s",
+=======
+	    TP_printk("i=%05lx ix=%05lx-%05lx %s",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      __entry->ino, __entry->index, __entry->index + __entry->nr - 1,
 		      __print_symbolic(__entry->why, netfs_folio_traces))
 	    );

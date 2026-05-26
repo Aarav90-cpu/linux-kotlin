@@ -22,6 +22,10 @@ unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
 void __init efi_memattr_init(void)
 {
 	efi_memory_attributes_table_t *tbl;
+<<<<<<< HEAD
+=======
+	unsigned long size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
 		return;
@@ -39,6 +43,7 @@ void __init efi_memattr_init(void)
 		goto unmap;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * The EFI memory attributes table descriptors might potentially be
 	 * smaller than those used by the EFI memory map, as long as they can
@@ -69,12 +74,28 @@ void __init efi_memattr_init(void)
 	 * system RAM.
 	 */
 	if (tbl->num_entries > SZ_64K) {
+=======
+
+	/*
+	 * Sanity check: the Memory Attributes Table contains up to 3 entries
+	 * for each entry of type EfiRuntimeServicesCode in the EFI memory map.
+	 * So if the size of the table exceeds 3x the size of the entire EFI
+	 * memory map, there is clearly something wrong, and the table should
+	 * just be ignored altogether.
+	 */
+	size = tbl->num_entries * tbl->desc_size;
+	if (size > 3 * efi.memmap.nr_map * efi.memmap.desc_size) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u)\n",
 			tbl->version, tbl->desc_size, tbl->num_entries);
 		goto unmap;
 	}
 
+<<<<<<< HEAD
 	tbl_size = sizeof(*tbl) + tbl->num_entries * tbl->desc_size;
+=======
+	tbl_size = sizeof(*tbl) + size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memblock_reserve(efi_mem_attr_table, tbl_size);
 	set_bit(EFI_MEM_ATTR, &efi.flags);
 

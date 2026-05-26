@@ -25,7 +25,10 @@ properties:
       - items:
           - enum:
               - renesas,riic-r9a08g045   # RZ/G3S
+<<<<<<< HEAD
               - renesas,riic-r9a08g046   # RZ/G3L
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - renesas,riic-r9a09g047   # RZ/G3E
               - renesas,riic-r9a09g056   # RZ/V2N
           - const: renesas,riic-r9a09g057   # RZ/V2H(P)

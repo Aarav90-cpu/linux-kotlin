@@ -87,7 +87,10 @@
 #include "msg_ring.h"
 #include "memmap.h"
 #include "zcrx.h"
+<<<<<<< HEAD
 #include "bpf-ops.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "timeout.h"
 #include "poll.h"
@@ -96,7 +99,10 @@
 #include "eventfd.h"
 #include "wait.h"
 #include "bpf_filter.h"
+<<<<<<< HEAD
 #include "loop.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SQE_COMMON_FLAGS (IOSQE_FIXED_FILE | IOSQE_IO_LINK | \
 			  IOSQE_IO_HARDLINK | IOSQE_ASYNC)
@@ -358,6 +364,10 @@ static struct io_kiocb *__io_prep_linked_timeout(struct io_kiocb *req)
 static void io_prep_async_work(struct io_kiocb *req)
 {
 	const struct io_issue_def *def = &io_issue_defs[req->opcode];
+<<<<<<< HEAD
+=======
+	struct io_ring_ctx *ctx = req->ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(req->flags & REQ_F_CREDS)) {
 		req->flags |= REQ_F_CREDS;
@@ -379,7 +389,11 @@ static void io_prep_async_work(struct io_kiocb *req)
 		if (should_hash && (req->file->f_flags & O_DIRECT) &&
 		    (req->file->f_op->fop_flags & FOP_DIO_PARALLEL_WRITE))
 			should_hash = false;
+<<<<<<< HEAD
 		if (should_hash || (req->flags & REQ_F_IOPOLL))
+=======
+		if (should_hash || (ctx->flags & IORING_SETUP_IOPOLL))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			io_wq_hash_work(&req->work, file_inode(req->file));
 	} else if (!req->file || !S_ISBLK(file_inode(req->file)->i_mode)) {
 		if (def->unbound_nonreg_file)
@@ -478,17 +492,29 @@ static __cold noinline void io_queue_deferred(struct io_ring_ctx *ctx)
 
 void __io_commit_cqring_flush(struct io_ring_ctx *ctx)
 {
+<<<<<<< HEAD
 	if (ctx->int_flags & IO_RING_F_POLL_ACTIVATED)
 		io_poll_wq_wake(ctx);
 	if (ctx->int_flags & IO_RING_F_OFF_TIMEOUT_USED)
 		io_flush_timeouts(ctx);
 	if (ctx->int_flags & IO_RING_F_HAS_EVFD)
+=======
+	if (ctx->poll_activated)
+		io_poll_wq_wake(ctx);
+	if (ctx->off_timeout_used)
+		io_flush_timeouts(ctx);
+	if (ctx->has_evfd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		io_eventfd_signal(ctx, true);
 }
 
 static inline void __io_cq_lock(struct io_ring_ctx *ctx)
 {
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_LOCKLESS_CQ))
+=======
+	if (!ctx->lockless_cq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&ctx->completion_lock);
 }
 
@@ -501,11 +527,19 @@ static inline void io_cq_lock(struct io_ring_ctx *ctx)
 static inline void __io_cq_unlock_post(struct io_ring_ctx *ctx)
 {
 	io_commit_cqring(ctx);
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_TASK_COMPLETE)) {
 		if (!(ctx->int_flags & IO_RING_F_LOCKLESS_CQ))
 			spin_unlock(&ctx->completion_lock);
 		/* IOPOLL rings only need to wake up if it's also SQPOLL */
 		if (!(ctx->int_flags & IO_RING_F_SYSCALL_IOPOLL))
+=======
+	if (!ctx->task_complete) {
+		if (!ctx->lockless_cq)
+			spin_unlock(&ctx->completion_lock);
+		/* IOPOLL rings only need to wake up if it's also SQPOLL */
+		if (!ctx->syscall_iopoll)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			io_cqring_wake(ctx);
 	}
 	io_commit_cqring_flush(ctx);
@@ -590,11 +624,14 @@ void io_cqring_do_overflow_flush(struct io_ring_ctx *ctx)
 	mutex_unlock(&ctx->uring_lock);
 }
 
+<<<<<<< HEAD
 void io_cqring_overflow_flush_locked(struct io_ring_ctx *ctx)
 {
 	__io_cqring_overflow_flush(ctx, false);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* must to be called somewhat shortly after putting a request */
 static inline void io_put_task(struct io_kiocb *req)
 {
@@ -687,6 +724,7 @@ static struct io_overflow_cqe *io_alloc_ocqe(struct io_ring_ctx *ctx,
 }
 
 /*
+<<<<<<< HEAD
  * Compute queued CQEs for free-space calculation, clamped to cq_entries.
  */
 static unsigned int io_cqring_queued(struct io_ring_ctx *ctx)
@@ -701,12 +739,18 @@ static unsigned int io_cqring_queued(struct io_ring_ctx *ctx)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Fill an empty dummy CQE, in case alignment is off for posting a 32b CQE
  * because the ring is a single 16b entry away from wrapping.
  */
 static bool io_fill_nop_cqe(struct io_ring_ctx *ctx, unsigned int off)
 {
+<<<<<<< HEAD
 	if (io_cqring_queued(ctx) < ctx->cq_entries) {
+=======
+	if (__io_cqring_events(ctx) < ctx->cq_entries) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct io_uring_cqe *cqe = &ctx->rings->cqes[off];
 
 		cqe->user_data = 0;
@@ -727,7 +771,11 @@ bool io_cqe_cache_refill(struct io_ring_ctx *ctx, bool overflow, bool cqe32)
 {
 	struct io_rings *rings = ctx->rings;
 	unsigned int off = ctx->cached_cq_tail & (ctx->cq_entries - 1);
+<<<<<<< HEAD
 	unsigned int free, len;
+=======
+	unsigned int free, queued, len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Posting into the CQ when there are pending overflowed CQEs may break
@@ -747,7 +795,13 @@ bool io_cqe_cache_refill(struct io_ring_ctx *ctx, bool overflow, bool cqe32)
 		off = 0;
 	}
 
+<<<<<<< HEAD
 	free = ctx->cq_entries - io_cqring_queued(ctx);
+=======
+	/* userspace may cheat modifying the tail, be safe and do min */
+	queued = min(__io_cqring_events(ctx), ctx->cq_entries);
+	free = ctx->cq_entries - queued;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* we need a contiguous range, limit based on the current array offset */
 	len = min(free, ctx->cq_entries - off);
 	if (len < (cqe32 + 1))
@@ -848,7 +902,11 @@ bool io_post_aux_cqe(struct io_ring_ctx *ctx, u64 user_data, s32 res, u32 cflags
 void io_add_aux_cqe(struct io_ring_ctx *ctx, u64 user_data, s32 res, u32 cflags)
 {
 	lockdep_assert_held(&ctx->uring_lock);
+<<<<<<< HEAD
 	lockdep_assert(ctx->int_flags & IO_RING_F_LOCKLESS_CQ);
+=======
+	lockdep_assert(ctx->lockless_cq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!io_fill_cqe_aux(ctx, user_data, res, cflags)) {
 		struct io_cqe cqe = io_init_cqe(user_data, res, cflags);
@@ -878,7 +936,11 @@ bool io_req_post_cqe(struct io_kiocb *req, s32 res, u32 cflags)
 	lockdep_assert(!io_wq_current_is_worker());
 	lockdep_assert_held(&ctx->uring_lock);
 
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_LOCKLESS_CQ)) {
+=======
+	if (!ctx->lockless_cq) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&ctx->completion_lock);
 		posted = io_fill_cqe_aux(ctx, req->cqe.user_data, res, cflags);
 		spin_unlock(&ctx->completion_lock);
@@ -903,7 +965,11 @@ bool io_req_post_cqe32(struct io_kiocb *req, struct io_uring_cqe cqe[2])
 	lockdep_assert_held(&ctx->uring_lock);
 
 	cqe[0].user_data = req->cqe.user_data;
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_LOCKLESS_CQ)) {
+=======
+	if (!ctx->lockless_cq) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&ctx->completion_lock);
 		posted = io_fill_cqe_aux32(ctx, cqe);
 		spin_unlock(&ctx->completion_lock);
@@ -931,7 +997,11 @@ static void io_req_complete_post(struct io_kiocb *req, unsigned issue_flags)
 	 * Handle special CQ sync cases via task_work. DEFER_TASKRUN requires
 	 * the submitter task context, IOPOLL protects with uring_lock.
 	 */
+<<<<<<< HEAD
 	if ((ctx->int_flags & IO_RING_F_LOCKLESS_CQ) || (req->flags & REQ_F_REISSUE)) {
+=======
+	if (ctx->lockless_cq || (req->flags & REQ_F_REISSUE)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 defer_complete:
 		req->io_task_work.func = io_req_task_complete;
 		io_req_task_work_add(req);
@@ -1085,6 +1155,7 @@ void io_queue_next(struct io_kiocb *req)
 
 static inline void io_req_put_rsrc_nodes(struct io_kiocb *req)
 {
+<<<<<<< HEAD
 	struct io_ring_ctx *ctx = req->ctx;
 
 	if (req->file_node) {
@@ -1093,6 +1164,14 @@ static inline void io_req_put_rsrc_nodes(struct io_kiocb *req)
 	}
 	if (req->flags & REQ_F_BUF_NODE)
 		io_put_rsrc_node(ctx, req->buf_node);
+=======
+	if (req->file_node) {
+		io_put_rsrc_node(req->ctx, req->file_node);
+		req->file_node = NULL;
+	}
+	if (req->flags & REQ_F_BUF_NODE)
+		io_put_rsrc_node(req->ctx, req->buf_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_free_batch_list(struct io_ring_ctx *ctx,
@@ -1155,7 +1234,11 @@ void __io_submit_flush_completions(struct io_ring_ctx *ctx)
 		 */
 		if (!(req->flags & (REQ_F_CQE_SKIP | REQ_F_REISSUE)) &&
 		    unlikely(!io_fill_cqe_req(ctx, req))) {
+<<<<<<< HEAD
 			if (ctx->int_flags & IO_RING_F_LOCKLESS_CQ)
+=======
+			if (ctx->lockless_cq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				io_cqe_overflow(ctx, &req->cqe, &req->big_cqe);
 			else
 				io_cqe_overflow_locked(ctx, &req->cqe, &req->big_cqe);
@@ -1168,7 +1251,11 @@ void __io_submit_flush_completions(struct io_ring_ctx *ctx)
 		INIT_WQ_LIST(&state->compl_reqs);
 	}
 
+<<<<<<< HEAD
 	if (unlikely(ctx->int_flags & IO_RING_F_DRAIN_ACTIVE))
+=======
+	if (unlikely(ctx->drain_active))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		io_queue_deferred(ctx);
 
 	ctx->submit_state.cq_flush = false;
@@ -1207,6 +1294,10 @@ __cold void io_iopoll_try_reap_events(struct io_ring_ctx *ctx)
 
 static int io_iopoll_check(struct io_ring_ctx *ctx, unsigned int min_events)
 {
+<<<<<<< HEAD
+=======
+	unsigned int nr_events = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long check_cq;
 
 	min_events = min(min_events, ctx->cq_entries);
@@ -1249,6 +1340,11 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, unsigned int min_events)
 		 * very same mutex.
 		 */
 		if (list_empty(&ctx->iopoll_list) || io_task_work_pending(ctx)) {
+<<<<<<< HEAD
+=======
+			u32 tail = ctx->cached_cq_tail;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			(void) io_run_local_work_locked(ctx, min_events);
 
 			if (task_work_pending(current) || list_empty(&ctx->iopoll_list)) {
@@ -1257,7 +1353,11 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, unsigned int min_events)
 				mutex_lock(&ctx->uring_lock);
 			}
 			/* some requests don't go through iopoll_list */
+<<<<<<< HEAD
 			if (list_empty(&ctx->iopoll_list))
+=======
+			if (tail != ctx->cached_cq_tail || list_empty(&ctx->iopoll_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 		}
 		ret = io_do_iopoll(ctx, !min_events);
@@ -1268,7 +1368,13 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, unsigned int min_events)
 			return -EINTR;
 		if (need_resched())
 			break;
+<<<<<<< HEAD
 	} while (io_cqring_events(ctx) < min_events);
+=======
+
+		nr_events += ret;
+	} while (nr_events < min_events);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1359,7 +1465,11 @@ static __cold void io_drain_req(struct io_kiocb *req)
 	list_add_tail(&de->list, &ctx->defer_list);
 	io_queue_deferred(ctx);
 	if (!drain && list_empty(&ctx->defer_list))
+<<<<<<< HEAD
 		ctx->int_flags &= ~IO_RING_F_DRAIN_ACTIVE;
+=======
+		ctx->drain_active = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool io_assign_file(struct io_kiocb *req, const struct io_issue_def *def,
@@ -1433,7 +1543,12 @@ static int io_issue_sqe(struct io_kiocb *req, unsigned int issue_flags)
 	if (ret == IOU_ISSUE_SKIP_COMPLETE) {
 		ret = 0;
 
+<<<<<<< HEAD
 		if (req->flags & REQ_F_IOPOLL)
+=======
+		/* If the op doesn't have a file, we're not polling for it */
+		if ((req->ctx->flags & IORING_SETUP_IOPOLL) && def->iopoll_queue)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			io_iopoll_req_issued(req, issue_flags);
 	}
 	return ret;
@@ -1449,7 +1564,11 @@ int io_poll_issue(struct io_kiocb *req, io_tw_token_t tw)
 	io_tw_lock(req->ctx, tw);
 
 	WARN_ON_ONCE(!req->file);
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(req->flags & REQ_F_IOPOLL))
+=======
+	if (WARN_ON_ONCE(req->ctx->flags & IORING_SETUP_IOPOLL))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 
 	ret = __io_issue_sqe(req, issue_flags, &io_issue_defs[req->opcode]);
@@ -1464,6 +1583,7 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
 	struct io_kiocb *nxt = NULL;
 
 	if (req_ref_put_and_test_atomic(req)) {
+<<<<<<< HEAD
 		if (req->flags & IO_REQ_LINK_FLAGS) {
 			struct io_ring_ctx *ctx = req->ctx;
 
@@ -1471,6 +1591,10 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
 			nxt = io_req_find_next(req);
 			mutex_unlock(&ctx->uring_lock);
 		}
+=======
+		if (req->flags & IO_REQ_LINK_FLAGS)
+			nxt = io_req_find_next(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		io_free_req(req);
 	}
 	return nxt ? &nxt->work : NULL;
@@ -1552,7 +1676,11 @@ fail:
 		 * wait for request slots on the block side.
 		 */
 		if (!needs_poll) {
+<<<<<<< HEAD
 			if (!(req->flags & REQ_F_IOPOLL))
+=======
+			if (!(req->ctx->flags & IORING_SETUP_IOPOLL))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 			if (io_wq_worker_stopped())
 				break;
@@ -1674,7 +1802,11 @@ static void io_queue_sqe_fallback(struct io_kiocb *req)
 	} else {
 		/* can't fail with IO_URING_F_INLINE */
 		io_req_sqe_copy(req, IO_URING_F_INLINE);
+<<<<<<< HEAD
 		if (unlikely(req->ctx->int_flags & IO_RING_F_DRAIN_ACTIVE))
+=======
+		if (unlikely(req->ctx->drain_active))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			io_drain_req(req);
 		else
 			io_queue_iowq(req);
@@ -1690,7 +1822,11 @@ static inline bool io_check_restriction(struct io_ring_ctx *ctx,
 					struct io_kiocb *req,
 					unsigned int sqe_flags)
 {
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_OP_RESTRICTED))
+=======
+	if (!ctx->op_restricted)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	if (!test_bit(req->opcode, ctx->restrictions.sqe_op))
 		return false;
@@ -1710,7 +1846,11 @@ static void io_init_drain(struct io_ring_ctx *ctx)
 {
 	struct io_kiocb *head = ctx->submit_state.link.head;
 
+<<<<<<< HEAD
 	ctx->int_flags |= IO_RING_F_DRAIN_ACTIVE;
+=======
+	ctx->drain_active = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (head) {
 		/*
 		 * If we need to drain a request in the middle of a link, drain
@@ -1720,7 +1860,11 @@ static void io_init_drain(struct io_ring_ctx *ctx)
 		 * link.
 		 */
 		head->flags |= REQ_F_IO_DRAIN | REQ_F_FORCE_ASYNC;
+<<<<<<< HEAD
 		ctx->int_flags |= IO_RING_F_DRAIN_NEXT;
+=======
+		ctx->drain_next = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1785,13 +1929,20 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
 			req->buf_index = READ_ONCE(sqe->buf_group);
 		}
 		if (sqe_flags & IOSQE_CQE_SKIP_SUCCESS)
+<<<<<<< HEAD
 			ctx->int_flags |= IO_RING_F_DRAIN_DISABLED;
 		if (sqe_flags & IOSQE_IO_DRAIN) {
 			if (ctx->int_flags & IO_RING_F_DRAIN_DISABLED)
+=======
+			ctx->drain_disabled = true;
+		if (sqe_flags & IOSQE_IO_DRAIN) {
+			if (ctx->drain_disabled)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return io_init_fail_req(req, -EOPNOTSUPP);
 			io_init_drain(ctx);
 		}
 	}
+<<<<<<< HEAD
 	if (unlikely(ctx->int_flags & (IO_RING_F_OP_RESTRICTED | IO_RING_F_DRAIN_ACTIVE | IO_RING_F_DRAIN_NEXT))) {
 		if (!io_check_restriction(ctx, req, sqe_flags))
 			return io_init_fail_req(req, -EACCES);
@@ -1802,6 +1953,18 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
 		if (unlikely(ctx->int_flags & IO_RING_F_DRAIN_NEXT) && !ctx->submit_state.link.head) {
 			ctx->int_flags &= ~IO_RING_F_DRAIN_NEXT;
 			ctx->int_flags |= IO_RING_F_DRAIN_ACTIVE;
+=======
+	if (unlikely(ctx->op_restricted || ctx->drain_active || ctx->drain_next)) {
+		if (!io_check_restriction(ctx, req, sqe_flags))
+			return io_init_fail_req(req, -EACCES);
+		/* knock it to the slow queue path, will be drained there */
+		if (ctx->drain_active)
+			req->flags |= REQ_F_FORCE_ASYNC;
+		/* if there is no link, we're at "next" request and need to drain */
+		if (unlikely(ctx->drain_next) && !ctx->submit_state.link.head) {
+			ctx->drain_next = false;
+			ctx->drain_active = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			req->flags |= REQ_F_IO_DRAIN | REQ_F_FORCE_ASYNC;
 		}
 	}
@@ -2166,13 +2329,20 @@ static __cold void io_req_caches_free(struct io_ring_ctx *ctx)
 
 static __cold void io_ring_ctx_free(struct io_ring_ctx *ctx)
 {
+<<<<<<< HEAD
 	io_unregister_bpf_ops(ctx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	io_sq_thread_finish(ctx);
 
 	mutex_lock(&ctx->uring_lock);
 	io_sqe_buffers_unregister(ctx);
 	io_sqe_files_unregister(ctx);
+<<<<<<< HEAD
 	io_unregister_zcrx(ctx);
+=======
+	io_unregister_zcrx_ifqs(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	io_cqring_overflow_kill(ctx);
 	io_eventfd_unregister(ctx);
 	io_free_alloc_caches(ctx);
@@ -2223,7 +2393,11 @@ static __cold void io_activate_pollwq_cb(struct callback_head *cb)
 					       poll_wq_task_work);
 
 	mutex_lock(&ctx->uring_lock);
+<<<<<<< HEAD
 	ctx->int_flags |= IO_RING_F_POLL_ACTIVATED;
+=======
+	ctx->poll_activated = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ctx->uring_lock);
 
 	/*
@@ -2238,9 +2412,15 @@ __cold void io_activate_pollwq(struct io_ring_ctx *ctx)
 {
 	spin_lock(&ctx->completion_lock);
 	/* already activated or in progress */
+<<<<<<< HEAD
 	if ((ctx->int_flags & IO_RING_F_POLL_ACTIVATED) || ctx->poll_wq_task_work.func)
 		goto out;
 	if (WARN_ON_ONCE(!(ctx->int_flags & IO_RING_F_TASK_COMPLETE)))
+=======
+	if (ctx->poll_activated || ctx->poll_wq_task_work.func)
+		goto out;
+	if (WARN_ON_ONCE(!ctx->task_complete))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	if (!ctx->submitter_task)
 		goto out;
@@ -2261,7 +2441,11 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
 	struct io_ring_ctx *ctx = file->private_data;
 	__poll_t mask = 0;
 
+<<<<<<< HEAD
 	if (unlikely(!(data_race(ctx->int_flags) & IO_RING_F_POLL_ACTIVATED)))
+=======
+	if (unlikely(!ctx->poll_activated))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		io_activate_pollwq(ctx);
 	/*
 	 * provides mb() which pairs with barrier from wq_has_sleeper
@@ -2562,6 +2746,7 @@ uaccess_end:
 #endif
 }
 
+<<<<<<< HEAD
 /*
  * Given an 'fd' value, return the ctx associated with if. If 'registered' is
  * true, then the registered index is used. Otherwise, the normal fd table.
@@ -2597,6 +2782,8 @@ struct file *io_uring_ctx_get_file(unsigned int fd, bool registered)
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
 		u32, min_complete, u32, flags, const void __user *, argp,
 		size_t, argsz)
@@ -2608,9 +2795,34 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
 	if (unlikely(flags & ~IORING_ENTER_FLAGS))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	file = io_uring_ctx_get_file(fd, flags & IORING_ENTER_REGISTERED_RING);
 	if (IS_ERR(file))
 		return PTR_ERR(file);
+=======
+	/*
+	 * Ring fd has been registered via IORING_REGISTER_RING_FDS, we
+	 * need only dereference our task private array to find it.
+	 */
+	if (flags & IORING_ENTER_REGISTERED_RING) {
+		struct io_uring_task *tctx = current->io_uring;
+
+		if (unlikely(!tctx || fd >= IO_RINGFD_REG_MAX))
+			return -EINVAL;
+		fd = array_index_nospec(fd, IO_RINGFD_REG_MAX);
+		file = tctx->registered_rings[fd];
+		if (unlikely(!file))
+			return -EBADF;
+	} else {
+		file = fget(fd);
+		if (unlikely(!file))
+			return -EBADF;
+		ret = -EOPNOTSUPP;
+		if (unlikely(!io_is_uring_fops(file)))
+			goto out;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx = file->private_data;
 	ret = -EBADFD;
 	/*
@@ -2620,11 +2832,14 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
 	if (unlikely(smp_load_acquire(&ctx->flags) & IORING_SETUP_R_DISABLED))
 		goto out;
 
+<<<<<<< HEAD
 	if (io_has_loop_ops(ctx)) {
 		ret = io_run_loop(ctx);
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * For SQ polling, the thread will do all submissions and completions.
 	 * Just return the requested submit count, and wake the thread if
@@ -2654,7 +2869,11 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
 			goto out;
 		}
 		if (flags & IORING_ENTER_GETEVENTS) {
+<<<<<<< HEAD
 			if (ctx->int_flags & IO_RING_F_SYSCALL_IOPOLL)
+=======
+			if (ctx->syscall_iopoll)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto iopoll_locked;
 			/*
 			 * Ignore errors, we'll soon call io_cqring_wait() and
@@ -2669,7 +2888,11 @@ SYSCALL_DEFINE6(io_uring_enter, unsigned int, fd, u32, to_submit,
 	if (flags & IORING_ENTER_GETEVENTS) {
 		int ret2;
 
+<<<<<<< HEAD
 		if (ctx->int_flags & IO_RING_F_SYSCALL_IOPOLL) {
+=======
+		if (ctx->syscall_iopoll) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * We disallow the app entering submit/complete with
 			 * polling, but we still need to lock the ring to
@@ -2970,9 +3193,15 @@ static void io_ctx_restriction_clone(struct io_ring_ctx *ctx,
 	if (dst->bpf_filters)
 		WRITE_ONCE(ctx->bpf_filters, dst->bpf_filters->filters);
 	if (dst->op_registered)
+<<<<<<< HEAD
 		ctx->int_flags |= IO_RING_F_OP_RESTRICTED;
 	if (dst->reg_registered)
 		ctx->int_flags |= IO_RING_F_REG_RESTRICTED;
+=======
+		ctx->op_restricted = 1;
+	if (dst->reg_registered)
+		ctx->reg_restricted = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __cold int io_uring_create(struct io_ctx_config *config)
@@ -2999,18 +3228,30 @@ static __cold int io_uring_create(struct io_ctx_config *config)
 
 	if ((ctx->flags & IORING_SETUP_DEFER_TASKRUN) &&
 	    !(ctx->flags & IORING_SETUP_IOPOLL))
+<<<<<<< HEAD
 		ctx->int_flags |= IO_RING_F_TASK_COMPLETE;
 
 	if ((ctx->int_flags & IO_RING_F_TASK_COMPLETE) ||
 	    (ctx->flags & IORING_SETUP_IOPOLL))
 		ctx->int_flags |= IO_RING_F_LOCKLESS_CQ;
+=======
+		ctx->task_complete = true;
+
+	if (ctx->task_complete || (ctx->flags & IORING_SETUP_IOPOLL))
+		ctx->lockless_cq = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * lazy poll_wq activation relies on ->task_complete for synchronisation
 	 * purposes, see io_activate_pollwq()
 	 */
+<<<<<<< HEAD
 	if (!(ctx->int_flags & IO_RING_F_TASK_COMPLETE))
 		ctx->int_flags |= IO_RING_F_POLL_ACTIVATED;
+=======
+	if (!ctx->task_complete)
+		ctx->poll_activated = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * When SETUP_IOPOLL and SETUP_SQPOLL are both enabled, user
@@ -3020,10 +3261,16 @@ static __cold int io_uring_create(struct io_ctx_config *config)
 	 */
 	if (ctx->flags & IORING_SETUP_IOPOLL &&
 	    !(ctx->flags & IORING_SETUP_SQPOLL))
+<<<<<<< HEAD
 		ctx->int_flags |= IO_RING_F_SYSCALL_IOPOLL;
 
 	if (in_compat_syscall())
 		ctx->int_flags |= IO_RING_F_COMPAT;
+=======
+		ctx->syscall_iopoll = 1;
+
+	ctx->compat = in_compat_syscall();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ns_capable_noaudit(&init_user_ns, CAP_IPC_LOCK))
 		ctx->user = get_uid(current_user());
 

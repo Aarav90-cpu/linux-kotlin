@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+/* SPDX--License-Identifier: GPL-2.0 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifndef __PLATFORM_EARLY__
 #define __PLATFORM_EARLY__

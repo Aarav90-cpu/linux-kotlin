@@ -681,8 +681,13 @@ static int max98520_i2c_probe(struct i2c_client *i2c)
 	struct max98520_priv *max98520;
 	struct i2c_adapter *adapter = to_i2c_adapter(i2c->dev.parent);
 
+<<<<<<< HEAD
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE |
 					      I2C_FUNC_SMBUS_BYTE_DATA)) {
+=======
+	ret = i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_BYTE_DATA);
+	if (!ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&i2c->dev, "I2C check functionality failed\n");
 		return -ENXIO;
 	}

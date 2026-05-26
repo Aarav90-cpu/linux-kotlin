@@ -273,7 +273,10 @@ struct mctp_dst {
 	struct mctp_dev *dev;
 	unsigned int mtu;
 	mctp_eid_t nexthop;
+<<<<<<< HEAD
 	mctp_eid_t saddr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* set for direct addressing */
 	unsigned char halen;

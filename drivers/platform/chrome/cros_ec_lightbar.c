@@ -461,8 +461,11 @@ static ssize_t sequence_store(struct device *dev, struct device_attribute *attr,
 	param = (struct ec_params_lightbar *)msg->data;
 	param->cmd = LIGHTBAR_CMD_SEQ;
 	param->seq.num = num;
+<<<<<<< HEAD
 	msg->outsize = offsetof(typeof(*param), seq) + sizeof(param->seq);
 	msg->insize = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = lb_throttle();
 	if (ret)
 		goto exit;
@@ -518,7 +521,10 @@ static ssize_t program_store(struct device *dev, struct device_attribute *attr,
 	if (ret)
 		goto exit;
 	param = (struct ec_params_lightbar *)msg->data;
+<<<<<<< HEAD
 	msg->insize = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (lb_version < 3) {
 		dev_info(dev, "Copying %zu byte program to EC", count);

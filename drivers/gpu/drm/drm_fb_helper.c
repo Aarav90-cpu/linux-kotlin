@@ -37,7 +37,10 @@
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_framebuffer.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_modeset_helper_vtables.h>
 #include <drm/drm_print.h>
 #include <drm/drm_vblank.h>
@@ -344,6 +347,21 @@ EXPORT_SYMBOL(drm_fb_helper_unprepare);
 int drm_fb_helper_init(struct drm_device *dev,
 		       struct drm_fb_helper *fb_helper)
 {
+<<<<<<< HEAD
+=======
+	int ret;
+
+	/*
+	 * If this is not the generic fbdev client, initialize a drm_client
+	 * without callbacks so we can use the modesets.
+	 */
+	if (!fb_helper->client.funcs) {
+		ret = drm_client_init(dev, &fb_helper->client, "drm_fb_helper", NULL);
+		if (ret)
+			return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->fb_helper = fb_helper;
 
 	return 0;
@@ -426,6 +444,12 @@ void drm_fb_helper_fini(struct drm_fb_helper *fb_helper)
 	cancel_work_sync(&fb_helper->damage_work);
 
 	drm_fb_helper_release_info(fb_helper);
+<<<<<<< HEAD
+=======
+
+	if (!fb_helper->client.funcs)
+		drm_client_release(&fb_helper->client);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(drm_fb_helper_fini);
 
@@ -490,7 +514,11 @@ static void drm_fb_helper_memory_range_to_clip(struct fb_info *info, off_t off, 
 		 * the number of horizontal pixels that need an update.
 		 */
 		off_t bit_off = (off % line_length) * 8;
+<<<<<<< HEAD
 		off_t bit_end = bit_off + len * 8;
+=======
+		off_t bit_end = (end % line_length) * 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		x1 = bit_off / info->var.bits_per_pixel;
 		x2 = DIV_ROUND_UP(bit_end, info->var.bits_per_pixel);
@@ -1627,10 +1655,15 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
 	drm_client_modeset_probe(&fb_helper->client, width, height);
 
 	info = drm_fb_helper_alloc_info(fb_helper);
+<<<<<<< HEAD
 	if (IS_ERR(info)) {
 		mutex_unlock(&fb_helper->lock);
 		return PTR_ERR(info);
 	}
+=======
+	if (IS_ERR(info))
+		return PTR_ERR(info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = drm_fb_helper_single_fb_probe(fb_helper);
 	if (ret < 0) {
@@ -1774,6 +1807,7 @@ int drm_fb_helper_hotplug_event(struct drm_fb_helper *fb_helper)
 	return 0;
 }
 EXPORT_SYMBOL(drm_fb_helper_hotplug_event);
+<<<<<<< HEAD
 
 /**
  * drm_fb_helper_gem_is_fb - Tests if GEM object is framebuffer
@@ -1803,3 +1837,5 @@ bool drm_fb_helper_gem_is_fb(const struct drm_fb_helper *fb_helper,
 }
 EXPORT_SYMBOL_GPL(drm_fb_helper_gem_is_fb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

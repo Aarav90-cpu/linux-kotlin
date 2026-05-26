@@ -3290,7 +3290,10 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
 		tx_rings[i].desc = NULL;
 		tx_rings[i].tx_buf = NULL;
 		tx_rings[i].tstamp_ring = NULL;
+<<<<<<< HEAD
 		clear_bit(ICE_TX_RING_FLAGS_TXTIME, tx_rings[i].flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tx_rings[i].tx_tstamps = &pf->ptp.port.tx;
 		err = ice_setup_tx_ring(&tx_rings[i]);
 		if (err) {

@@ -5,7 +5,10 @@
 
 #include <linux/acpi.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 
 MODULE_DESCRIPTION("Intel Rapid Start Technology Driver");
@@ -100,9 +103,18 @@ static struct device_attribute irst_timeout_attr = {
 	.store = irst_store_wakeup_time
 };
 
+<<<<<<< HEAD
 static int irst_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *acpi;
+=======
+	struct acpi_device *acpi = ACPI_COMPANION(&pdev->dev);
+=======
+static int irst_add(struct acpi_device *acpi)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	int error;
 
 	acpi = ACPI_COMPANION(&pdev->dev);
@@ -120,10 +132,15 @@ static int irst_probe(struct platform_device *pdev)
 	return error;
 }
 
+<<<<<<< HEAD
 static void irst_remove(struct platform_device *pdev)
 {
 	struct acpi_device *acpi = ACPI_COMPANION(&pdev->dev);
 
+=======
+static void irst_remove(struct acpi_device *acpi)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_remove_file(&acpi->dev, &irst_wakeup_attr);
 	device_remove_file(&acpi->dev, &irst_timeout_attr);
 }
@@ -133,6 +150,7 @@ static const struct acpi_device_id irst_ids[] = {
 	{"", 0}
 };
 
+<<<<<<< HEAD
 static struct platform_driver irst_driver = {
 	.probe = irst_probe,
 	.remove = irst_remove,
@@ -143,5 +161,18 @@ static struct platform_driver irst_driver = {
 };
 
 module_platform_driver(irst_driver);
+=======
+static struct acpi_driver irst_driver = {
+	.name = "intel_rapid_start",
+	.class = "intel_rapid_start",
+	.ids = irst_ids,
+	.ops = {
+		.add = irst_add,
+		.remove = irst_remove,
+	},
+};
+
+module_acpi_driver(irst_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_DEVICE_TABLE(acpi, irst_ids);

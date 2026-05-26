@@ -829,20 +829,43 @@ static int atp_probe(struct usb_interface *iface,
 	struct atp *dev;
 	struct input_dev *input_dev;
 	struct usb_device *udev = interface_to_usbdev(iface);
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep;
 	int error;
+=======
+	struct usb_host_interface *iface_desc;
+	struct usb_endpoint_descriptor *endpoint;
+	int int_in_endpointAddr = 0;
+	int i, error = -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct atp_info *info = (const struct atp_info *)id->driver_info;
 
 	/* set up the endpoint information */
 	/* use only the first interrupt-in endpoint */
+<<<<<<< HEAD
 	error = usb_find_int_in_endpoint(iface->cur_altsetting, &ep);
 	if (error) {
+=======
+	iface_desc = iface->cur_altsetting;
+	for (i = 0; i < iface_desc->desc.bNumEndpoints; i++) {
+		endpoint = &iface_desc->endpoint[i].desc;
+		if (!int_in_endpointAddr && usb_endpoint_is_int_in(endpoint)) {
+			/* we found an interrupt in endpoint */
+			int_in_endpointAddr = endpoint->bEndpointAddress;
+			break;
+		}
+	}
+	if (!int_in_endpointAddr) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&iface->dev, "Could not find int-in endpoint\n");
 		return -EIO;
 	}
 
 	/* allocate memory for our device state and initialize it */
+<<<<<<< HEAD
 	error = -ENOMEM;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev = kzalloc_obj(*dev);
 	input_dev = input_allocate_device();
 	if (!dev || !input_dev) {
@@ -866,7 +889,11 @@ static int atp_probe(struct usb_interface *iface,
 		goto err_free_urb;
 
 	usb_fill_int_urb(dev->urb, udev,
+<<<<<<< HEAD
 			 usb_rcvintpipe(udev, usb_endpoint_num(ep)),
+=======
+			 usb_rcvintpipe(udev, int_in_endpointAddr),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 dev->data, dev->info->datalen,
 			 dev->info->callback, dev, 1);
 

@@ -17,9 +17,13 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-rpmhpd
           - qcom,glymur-rpmhpd
           - qcom,hawi-rpmhpd
+=======
+          - qcom,glymur-rpmhpd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,kaanapali-rpmhpd
           - qcom,mdm9607-rpmpd
           - qcom,milos-rpmhpd

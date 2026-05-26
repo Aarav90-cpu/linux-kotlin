@@ -57,8 +57,11 @@ void linear_range_get_selector_within(const struct linear_range *r,
 int linear_range_get_selector_low_array(const struct linear_range *r,
 					int ranges, unsigned int val,
 					unsigned int *selector, bool *found);
+<<<<<<< HEAD
 int linear_range_get_selector_high_array(const struct linear_range *r,
 					 int ranges, unsigned int val,
 					 unsigned int *selector, bool *found);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

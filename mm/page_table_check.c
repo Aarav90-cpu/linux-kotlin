@@ -151,8 +151,14 @@ void __page_table_check_pte_clear(struct mm_struct *mm, unsigned long addr,
 	if (&init_mm == mm)
 		return;
 
+<<<<<<< HEAD
 	if (pte_user_accessible_page(mm, addr, pte))
 		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
+=======
+	if (pte_user_accessible_page(pte, addr)) {
+		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(__page_table_check_pte_clear);
 
@@ -162,8 +168,14 @@ void __page_table_check_pmd_clear(struct mm_struct *mm, unsigned long addr,
 	if (&init_mm == mm)
 		return;
 
+<<<<<<< HEAD
 	if (pmd_user_accessible_page(mm, addr, pmd))
 		page_table_check_clear(pmd_pfn(pmd), PMD_SIZE >> PAGE_SHIFT);
+=======
+	if (pmd_user_accessible_page(pmd, addr)) {
+		page_table_check_clear(pmd_pfn(pmd), PMD_SIZE >> PAGE_SHIFT);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(__page_table_check_pmd_clear);
 
@@ -173,8 +185,14 @@ void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
 	if (&init_mm == mm)
 		return;
 
+<<<<<<< HEAD
 	if (pud_user_accessible_page(mm, addr, pud))
 		page_table_check_clear(pud_pfn(pud), PUD_SIZE >> PAGE_SHIFT);
+=======
+	if (pud_user_accessible_page(pud, addr)) {
+		page_table_check_clear(pud_pfn(pud), PUD_SIZE >> PAGE_SHIFT);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(__page_table_check_pud_clear);
 
@@ -208,7 +226,11 @@ void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
 
 	for (i = 0; i < nr; i++)
 		__page_table_check_pte_clear(mm, addr + PAGE_SIZE * i, ptep_get(ptep + i));
+<<<<<<< HEAD
 	if (pte_user_accessible_page(mm, addr, pte))
+=======
+	if (pte_user_accessible_page(pte, addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
 }
 EXPORT_SYMBOL(__page_table_check_ptes_set);
@@ -238,7 +260,11 @@ void __page_table_check_pmds_set(struct mm_struct *mm, unsigned long addr,
 
 	for (i = 0; i < nr; i++)
 		__page_table_check_pmd_clear(mm, addr + PMD_SIZE * i, *(pmdp + i));
+<<<<<<< HEAD
 	if (pmd_user_accessible_page(mm, addr, pmd))
+=======
+	if (pmd_user_accessible_page(pmd, addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page_table_check_set(pmd_pfn(pmd), stride * nr, pmd_write(pmd));
 }
 EXPORT_SYMBOL(__page_table_check_pmds_set);
@@ -254,7 +280,11 @@ void __page_table_check_puds_set(struct mm_struct *mm, unsigned long addr,
 
 	for (i = 0; i < nr; i++)
 		__page_table_check_pud_clear(mm, addr + PUD_SIZE * i, *(pudp + i));
+<<<<<<< HEAD
 	if (pud_user_accessible_page(mm, addr, pud))
+=======
+	if (pud_user_accessible_page(pud, addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page_table_check_set(pud_pfn(pud), stride * nr, pud_write(pud));
 }
 EXPORT_SYMBOL(__page_table_check_puds_set);

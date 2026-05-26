@@ -239,6 +239,10 @@ static struct gpiod_lookup_table wm8994_gpiod_table = {
 static struct arizona_pdata wm5102_reva_pdata = {
 	.gpio_base = CODEC_GPIO_BASE,
 	.irq_flags = IRQF_TRIGGER_HIGH,
+<<<<<<< HEAD
+=======
+	.micd_pol_gpio = CODEC_GPIO_BASE + 4,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.micd_rate = 6,
 	.gpio_defaults = {
 		[2] = 0x10000, /* AIF3TXLRCLK */
@@ -264,8 +268,11 @@ static struct gpiod_lookup_table wm5102_reva_gpiod_table = {
 	.table = {
 		GPIO_LOOKUP("GPION", 7,
 			    "wlf,ldoena", GPIO_ACTIVE_HIGH),
+<<<<<<< HEAD
 		GPIO_LOOKUP("arizona", 4,
 			    "wlf,micd-pol", GPIO_ACTIVE_HIGH),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ },
 	},
 };
@@ -273,6 +280,10 @@ static struct gpiod_lookup_table wm5102_reva_gpiod_table = {
 static struct arizona_pdata wm5102_pdata = {
 	.gpio_base = CODEC_GPIO_BASE,
 	.irq_flags = IRQF_TRIGGER_HIGH,
+<<<<<<< HEAD
+=======
+	.micd_pol_gpio = CODEC_GPIO_BASE + 2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.gpio_defaults = {
 		[2] = 0x10000, /* AIF3TXLRCLK */
 		[3] = 0x4,     /* OPCLK */
@@ -297,8 +308,11 @@ static struct gpiod_lookup_table wm5102_gpiod_table = {
 	.table = {
 		GPIO_LOOKUP("GPION", 7,
 			    "wlf,ldo1ena", GPIO_ACTIVE_HIGH),
+<<<<<<< HEAD
 		GPIO_LOOKUP("arizona", 2,
 			    "wlf,micd-pol", GPIO_ACTIVE_HIGH),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ },
 	},
 };

@@ -36,7 +36,11 @@ static int agdi_sdei_probe(struct platform_device *pdev,
 
 	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Failed to register for SDEI event %d\n",
+=======
+		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			adata->sdei_event);
 		return err;
 	}

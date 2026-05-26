@@ -764,6 +764,7 @@ static void mcp251xfd_chip_stop(struct mcp251xfd_priv *priv,
 	mcp251xfd_chip_set_mode(priv, MCP251XFD_REG_CON_MODE_CONFIG);
 }
 
+<<<<<<< HEAD
 static int mcp251xfd_chip_xstbyen_enable(const struct mcp251xfd_priv *priv)
 {
 	/* Configure the INT0/GPIO0/XSTBY pin as transceiver standby control:
@@ -789,6 +790,8 @@ static int mcp251xfd_chip_xstbyen_enable(const struct mcp251xfd_priv *priv)
 				  MCP251XFD_REG_IOCON_XSTBYEN);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mcp251xfd_chip_start(struct mcp251xfd_priv *priv)
 {
 	int err;
@@ -821,12 +824,15 @@ static int mcp251xfd_chip_start(struct mcp251xfd_priv *priv)
 
 	priv->can.state = CAN_STATE_ERROR_ACTIVE;
 
+<<<<<<< HEAD
 	if (priv->xstbyen) {
 		err = mcp251xfd_chip_xstbyen_enable(priv);
 		if (err)
 			goto out_chip_stop;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = mcp251xfd_chip_set_normal_mode(priv);
 	if (err)
 		goto out_chip_stop;
@@ -1836,11 +1842,14 @@ static int mcp251xfd_gpio_request(struct gpio_chip *chip, unsigned int offset)
 	u32 pin_mask = MCP251XFD_REG_IOCON_PM(offset);
 	int ret;
 
+<<<<<<< HEAD
 	if (priv->xstbyen && offset == 0) {
 		netdev_err(priv->ndev, "Can't use GPIO 0 with XSTBYEN!\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (priv->rx_int && offset == 1) {
 		netdev_err(priv->ndev, "Can't use GPIO 1 with RX-INT!\n");
 		return -EINVAL;
@@ -2307,7 +2316,10 @@ static int mcp251xfd_probe(struct spi_device *spi)
 	priv->pll_enable = pll_enable;
 	priv->reg_vdd = reg_vdd;
 	priv->reg_xceiver = reg_xceiver;
+<<<<<<< HEAD
 	priv->xstbyen = device_property_present(&spi->dev, "microchip,xstbyen");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	priv->devtype_data = *(struct mcp251xfd_devtype_data *)spi_get_device_match_data(spi);
 
 	/* Errata Reference:

@@ -144,7 +144,11 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int 
 		count = of_count_phandle_with_args(child, "thermal-sensors",
 						   "#thermal-sensor-cells");
 		if (count <= 0) {
+<<<<<<< HEAD
 			pr_err("%pOFP: missing thermal sensor\n", child);
+=======
+			pr_err("%pOFn: missing thermal sensor\n", child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ERR_PTR(-EINVAL);
 		}
 
@@ -156,14 +160,22 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int 
 							 "#thermal-sensor-cells",
 							 i, &sensor_specs);
 			if (ret < 0) {
+<<<<<<< HEAD
 				pr_err("%pOFP: Failed to read thermal-sensors cells: %d\n", child, ret);
+=======
+				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", child, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return ERR_PTR(ret);
 			}
 
 			of_node_put(sensor_specs.np);
 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
 								  sensor_specs.args[0] : 0)) {
+<<<<<<< HEAD
 				pr_debug("sensor %pOFP id=%d belongs to %pOFP\n", sensor, id, child);
+=======
+				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return no_free_ptr(child);
 			}
 		}
@@ -180,7 +192,11 @@ static int thermal_of_monitor_init(struct device_node *np, int *delay, int *pdel
 	if (ret == -EINVAL) {
 		*pdelay = 0;
 	} else if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%pOFP: Couldn't get polling-delay-passive: %d\n", np, ret);
+=======
+		pr_err("%pOFn: Couldn't get polling-delay-passive: %d\n", np, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -188,7 +204,11 @@ static int thermal_of_monitor_init(struct device_node *np, int *delay, int *pdel
 	if (ret == -EINVAL) {
 		*delay = 0;
 	} else if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%pOFP: Couldn't get polling-delay: %d\n", np, ret);
+=======
+		pr_err("%pOFn: Couldn't get polling-delay: %d\n", np, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -380,23 +400,39 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
 	np = of_thermal_zone_find(sensor, id);
 	if (IS_ERR(np)) {
 		if (PTR_ERR(np) != -ENODEV)
+<<<<<<< HEAD
 			pr_err("Failed to find thermal zone for %pOFP id=%d\n", sensor, id);
+=======
+			pr_err("Failed to find thermal zone for %pOFn id=%d\n", sensor, id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ERR_CAST(np);
 	}
 
 	trips = thermal_of_trips_init(np, &ntrips);
 	if (IS_ERR(trips)) {
+<<<<<<< HEAD
 		pr_err("Failed to parse trip points for %pOFP id=%d\n", sensor, id);
+=======
+		pr_err("Failed to parse trip points for %pOFn id=%d\n", sensor, id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = PTR_ERR(trips);
 		goto out_of_node_put;
 	}
 
 	if (!trips)
+<<<<<<< HEAD
 		pr_info("No trip points found for %pOFP id=%d\n", sensor, id);
 
 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
 	if (ret) {
 		pr_err("Failed to initialize monitoring delays from %pOFP\n", np);
+=======
+		pr_info("No trip points found for %pOFn id=%d\n", sensor, id);
+
+	ret = thermal_of_monitor_init(np, &delay, &pdelay);
+	if (ret) {
+		pr_err("Failed to initialize monitoring delays from %pOFn\n", np);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_kfree_trips;
 	}
 
@@ -417,7 +453,11 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
 						     pdelay, delay);
 	if (IS_ERR(tz)) {
 		ret = PTR_ERR(tz);
+<<<<<<< HEAD
 		pr_err("Failed to register thermal zone %pOFP: %d\n", np, ret);
+=======
+		pr_err("Failed to register thermal zone %pOFn: %d\n", np, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_kfree_trips;
 	}
 

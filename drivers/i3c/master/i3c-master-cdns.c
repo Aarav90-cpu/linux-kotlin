@@ -1143,7 +1143,11 @@ static int cdns_i3c_master_do_daa(struct i3c_master_controller *m)
 	}
 
 	ret = i3c_master_entdaa_locked(&master->base);
+<<<<<<< HEAD
 	if (ret)
+=======
+	if (ret && ret != I3C_ERROR_M2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 
 	newdevs = readl(master->regs + DEVS_CTRL) & DEVS_CTRL_DEVS_ACTIVE_MASK;

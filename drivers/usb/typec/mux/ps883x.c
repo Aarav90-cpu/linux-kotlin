@@ -444,7 +444,10 @@ static int ps883x_retimer_probe(struct i2c_client *client)
 		goto err_switch_unregister;
 	}
 
+<<<<<<< HEAD
 	i2c_set_clientdata(client, retimer);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_switch_unregister:

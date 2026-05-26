@@ -6,6 +6,10 @@
 obj-$(CONFIG_BT)	+= bluetooth.o
 obj-$(CONFIG_BT_RFCOMM)	+= rfcomm/
 obj-$(CONFIG_BT_BNEP)	+= bnep/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_BT_CMTP)	+= cmtp/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_BT_HIDP)	+= hidp/
 obj-$(CONFIG_BT_6LOWPAN) += bluetooth_6lowpan.o
 

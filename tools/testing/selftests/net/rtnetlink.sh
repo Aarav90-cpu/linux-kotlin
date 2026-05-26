@@ -23,7 +23,10 @@ ALL_TESTS="
 	kci_test_encap
 	kci_test_macsec
 	kci_test_macsec_vlan
+<<<<<<< HEAD
 	kci_test_team_bridge_macvlan
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kci_test_ipsec
 	kci_test_ipsec_offload
 	kci_test_fdb_get
@@ -637,6 +640,7 @@ kci_test_macsec_vlan()
 	end_test "PASS: macsec_vlan"
 }
 
+<<<<<<< HEAD
 # Test ndo_change_rx_flags call from dev_uc_add under addr_list_lock spinlock.
 # When we are flipping the promisc, make sure it runs on the work queue.
 #
@@ -680,6 +684,8 @@ kci_test_team_bridge_macvlan()
 	end_test "PASS: team_bridge_macvlan"
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #-------------------------------------------------------------------
 # Example commands
 #   ip x s add proto esp src 14.0.0.52 dst 14.0.0.70 \

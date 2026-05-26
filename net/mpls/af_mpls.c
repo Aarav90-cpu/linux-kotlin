@@ -24,6 +24,10 @@
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6.h>
 #endif
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/rtnh.h>
 #include "internal.h"
 
@@ -655,9 +659,18 @@ static struct net_device *inet6_fib_lookup_dev(struct net *net,
 	struct dst_entry *dst;
 	struct flowi6 fl6;
 
+<<<<<<< HEAD
 	memset(&fl6, 0, sizeof(fl6));
 	memcpy(&fl6.daddr, addr, sizeof(struct in6_addr));
 	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
+=======
+	if (!ipv6_stub)
+		return ERR_PTR(-EAFNOSUPPORT);
+
+	memset(&fl6, 0, sizeof(fl6));
+	memcpy(&fl6.daddr, addr, sizeof(struct in6_addr));
+	dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &fl6, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(dst))
 		return ERR_CAST(dst);
 

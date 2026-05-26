@@ -317,7 +317,11 @@ static void check_ldimm64_off_load(struct bpf_gotox *skel __always_unused)
 
 static int __check_ldimm64_gotox_prog_load(struct bpf_insn *insns,
 					   __u32 insn_cnt,
+<<<<<<< HEAD
 					   int off1, int off2, int off3)
+=======
+					   __u32 off1, __u32 off2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const __u32 values[] = {5, 7, 9, 11, 13, 15};
 	const __u32 max_entries = ARRAY_SIZE(values);
@@ -349,14 +353,18 @@ static int __check_ldimm64_gotox_prog_load(struct bpf_insn *insns,
 	/* r1 += off2 */
 	insns[2].imm = off2;
 
+<<<<<<< HEAD
 	/* r1 = *(r1 + off3) */
 	insns[3].off = off3;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = prog_load(insns, insn_cnt);
 	close(map_fd);
 	return ret;
 }
 
+<<<<<<< HEAD
 static void
 allow_offsets(struct bpf_insn *insns, __u32 insn_cnt, int off1, int off2, int off3)
 {
@@ -389,6 +397,13 @@ reject_offsets(struct bpf_insn *insns, __u32 insn_cnt, int off1, int off2, int o
 	int prog_fd;
 
 	prog_fd = __check_ldimm64_gotox_prog_load(insns, insn_cnt, off1, off2, off3);
+=======
+static void reject_offsets(struct bpf_insn *insns, __u32 insn_cnt, __u32 off1, __u32 off2)
+{
+	int prog_fd;
+
+	prog_fd = __check_ldimm64_gotox_prog_load(insns, insn_cnt, off1, off2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ASSERT_EQ(prog_fd, -EACCES, "__check_ldimm64_gotox_prog_load"))
 		close(prog_fd);
 }
@@ -406,7 +421,11 @@ static void check_ldimm64_off_gotox(struct bpf_gotox *skel __always_unused)
 		 * The program rewrites the offsets in the instructions below:
 		 *     r1 = &map + offset1
 		 *     r1 += offset2
+<<<<<<< HEAD
 		 *     r1 = *(r1 + offset3)
+=======
+		 *     r1 = *r1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 *     gotox r1
 		 */
 		BPF_LD_IMM64_RAW(BPF_REG_1, BPF_PSEUDO_MAP_VALUE, 0),
@@ -433,6 +452,7 @@ static void check_ldimm64_off_gotox(struct bpf_gotox *skel __always_unused)
 		BPF_MOV64_IMM(BPF_REG_0, 5),
 		BPF_EXIT_INSN(),
 	};
+<<<<<<< HEAD
 	int off1, off2, off3;
 
 	/* allow all combinations off1 + off2 + off3 < 6 */
@@ -482,6 +502,45 @@ static void check_ldimm64_off_gotox_llvm(struct bpf_gotox *skel)
 
 	for (i = 0; i < ARRAY_SIZE(in); i++)
 		check_simple(skel, skel->progs.load_with_nonzero_offset, in[i], out[i]);
+=======
+	int prog_fd, err;
+	__u32 off1, off2;
+
+	/* allow all combinations off1 + off2 < 6 */
+	for (off1 = 0; off1 < 6; off1++) {
+		for (off2 = 0; off1 + off2 < 6; off2++) {
+			LIBBPF_OPTS(bpf_test_run_opts, topts);
+
+			prog_fd = __check_ldimm64_gotox_prog_load(insns, ARRAY_SIZE(insns),
+								  off1 * 8, off2 * 8);
+			if (!ASSERT_GE(prog_fd, 0, "__check_ldimm64_gotox_prog_load"))
+				return;
+
+			err = bpf_prog_test_run_opts(prog_fd, &topts);
+			if (!ASSERT_OK(err, "test_run_opts err")) {
+				close(prog_fd);
+				return;
+			}
+
+			if (!ASSERT_EQ(topts.retval, off1 + off2, "test_run_opts retval")) {
+				close(prog_fd);
+				return;
+			}
+
+			close(prog_fd);
+		}
+	}
+
+	/* reject off1 + off2 >= 6 */
+	reject_offsets(insns, ARRAY_SIZE(insns), 8 * 3, 8 * 3);
+	reject_offsets(insns, ARRAY_SIZE(insns), 8 * 7, 8 * 0);
+	reject_offsets(insns, ARRAY_SIZE(insns), 8 * 0, 8 * 7);
+
+	/* reject (off1 + off2) % 8 != 0 */
+	reject_offsets(insns, ARRAY_SIZE(insns), 3, 3);
+	reject_offsets(insns, ARRAY_SIZE(insns), 7, 0);
+	reject_offsets(insns, ARRAY_SIZE(insns), 0, 7);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void test_bpf_gotox(void)
@@ -538,8 +597,11 @@ void test_bpf_gotox(void)
 	if (test__start_subtest("check-ldimm64-off-gotox"))
 		__subtest(skel, check_ldimm64_off_gotox);
 
+<<<<<<< HEAD
 	if (test__start_subtest("check-ldimm64-off-gotox-llvm"))
 		__subtest(skel, check_ldimm64_off_gotox_llvm);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bpf_gotox__destroy(skel);
 }

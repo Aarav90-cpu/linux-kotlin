@@ -4,8 +4,11 @@
 #ifndef _I40E_HMC_H_
 #define _I40E_HMC_H_
 
+<<<<<<< HEAD
 #include <linux/wordpart.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i40e_alloc.h"
 #include "i40e_io.h"
 #include "i40e_register.h"

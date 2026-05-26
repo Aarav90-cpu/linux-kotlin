@@ -58,13 +58,17 @@ SCHED_FEAT(CACHE_HOT_BUDDY, true)
 SCHED_FEAT(DELAY_DEQUEUE, true)
 SCHED_FEAT(DELAY_ZERO, true)
 
+<<<<<<< HEAD
 SCHED_FEAT(PARANOID_AVG, false)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Allow wakeup-time preemption of the current task:
  */
 SCHED_FEAT(WAKEUP_PREEMPTION, true)
 
+<<<<<<< HEAD
 #ifdef CONFIG_HRTIMER_REARM_DEFERRED
 SCHED_FEAT(HRTICK, true)
 SCHED_FEAT(HRTICK_DL, true)
@@ -72,6 +76,10 @@ SCHED_FEAT(HRTICK_DL, true)
 SCHED_FEAT(HRTICK, false)
 SCHED_FEAT(HRTICK_DL, false)
 #endif
+=======
+SCHED_FEAT(HRTICK, false)
+SCHED_FEAT(HRTICK_DL, false)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Decrement CPU capacity based on time not spent running tasks
@@ -133,4 +141,7 @@ SCHED_FEAT(LATENCY_WARN, false)
  * Do newidle balancing proportional to its success rate using randomization.
  */
 SCHED_FEAT(NI_RANDOM, true)
+<<<<<<< HEAD
 SCHED_FEAT(NI_RATE, true)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

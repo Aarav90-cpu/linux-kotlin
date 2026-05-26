@@ -607,11 +607,15 @@ static void xgbe_service_timer(struct timer_list *t)
 	struct xgbe_prv_data *pdata = timer_container_of(pdata, t,
 							 service_timer);
 	struct xgbe_channel *channel;
+<<<<<<< HEAD
 	unsigned int poll_interval;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i;
 
 	queue_work(pdata->dev_workqueue, &pdata->service_work);
 
+<<<<<<< HEAD
 	/* Adaptive link status polling for fast failure detection:
 	 *
 	 * - When carrier is UP: poll every 100ms for rapid link-down detection
@@ -634,6 +638,9 @@ static void xgbe_service_timer(struct timer_list *t)
 		poll_interval = HZ;  /* 1 second when down */
 
 	mod_timer(&pdata->service_timer, jiffies + poll_interval);
+=======
+	mod_timer(&pdata->service_timer, jiffies + HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pdata->tx_usecs)
 		return;
@@ -1138,11 +1145,16 @@ static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
 	return pdata->phy_if.phy_reset(pdata);
 }
 
+<<<<<<< HEAD
 int xgbe_powerdown(struct net_device *netdev)
+=======
+int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
 
+<<<<<<< HEAD
 	if (!netif_running(netdev)) {
 		netdev_dbg(netdev, "Device is not running, skipping powerdown\n");
 		return -EINVAL;
@@ -1154,11 +1166,26 @@ int xgbe_powerdown(struct net_device *netdev)
 	}
 
 	netif_device_detach(netdev);
+=======
+	DBGPR("-->xgbe_powerdown\n");
+
+	if (!netif_running(netdev) ||
+	    (caller == XGMAC_IOCTL_CONTEXT && pdata->power_down)) {
+		netdev_alert(netdev, "Device is already powered down\n");
+		DBGPR("<--xgbe_powerdown\n");
+		return -EINVAL;
+	}
+
+	if (caller == XGMAC_DRIVER_CONTEXT)
+		netif_device_detach(netdev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netif_tx_stop_all_queues(netdev);
 
 	xgbe_stop_timers(pdata);
 	flush_workqueue(pdata->dev_workqueue);
 
+<<<<<<< HEAD
 	xgbe_napi_disable(pdata, 0);
 
 	hw_if->powerdown_tx(pdata);
@@ -1170,10 +1197,26 @@ int xgbe_powerdown(struct net_device *netdev)
 }
 
 int xgbe_powerup(struct net_device *netdev)
+=======
+	hw_if->powerdown_tx(pdata);
+	hw_if->powerdown_rx(pdata);
+
+	xgbe_napi_disable(pdata, 0);
+
+	pdata->power_down = 1;
+
+	DBGPR("<--xgbe_powerdown\n");
+
+	return 0;
+}
+
+int xgbe_powerup(struct net_device *netdev, unsigned int caller)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
 
+<<<<<<< HEAD
 	if (!netif_running(netdev)) {
 		netdev_dbg(netdev, "Device is not running, skipping powerup\n");
 		return -EINVAL;
@@ -1183,10 +1226,25 @@ int xgbe_powerup(struct net_device *netdev)
 		netdev_dbg(netdev, "Device is already powered up\n");
 		return -EINVAL;
 	}
+=======
+	DBGPR("-->xgbe_powerup\n");
+
+	if (!netif_running(netdev) ||
+	    (caller == XGMAC_IOCTL_CONTEXT && !pdata->power_down)) {
+		netdev_alert(netdev, "Device is already powered up\n");
+		DBGPR("<--xgbe_powerup\n");
+		return -EINVAL;
+	}
+
+	pdata->power_down = 0;
+
+	xgbe_napi_enable(pdata, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hw_if->powerup_tx(pdata);
 	hw_if->powerup_rx(pdata);
 
+<<<<<<< HEAD
 	xgbe_napi_enable(pdata, 0);
 
 	netif_tx_start_all_queues(netdev);
@@ -1194,6 +1252,16 @@ int xgbe_powerup(struct net_device *netdev)
 	netif_device_attach(netdev);
 
 	pdata->power_down = 0;
+=======
+	if (caller == XGMAC_DRIVER_CONTEXT)
+		netif_device_attach(netdev);
+
+	netif_tx_start_all_queues(netdev);
+
+	xgbe_start_timers(pdata);
+
+	DBGPR("<--xgbe_powerup\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2169,7 +2237,10 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 	struct net_device *netdev = pdata->netdev;
 	struct netdev_queue *txq;
 	int processed = 0;
+<<<<<<< HEAD
 	int force_cleanup;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int tx_packets = 0, tx_bytes = 0;
 	unsigned int cur;
 
@@ -2186,6 +2257,7 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 
 	txq = netdev_get_tx_queue(netdev, channel->queue_index);
 
+<<<<<<< HEAD
 	/* Smart descriptor cleanup during link-down conditions.
 	 *
 	 * When link is down, hardware stops processing TX descriptors (OWN bit
@@ -2199,11 +2271,14 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 	 */
 	force_cleanup = !pdata->phy.link;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while ((processed < XGBE_TX_DESC_MAX_PROC) &&
 	       (ring->dirty != cur)) {
 		rdata = XGBE_GET_DESC_DATA(ring, ring->dirty);
 		rdesc = rdata->rdesc;
 
+<<<<<<< HEAD
 		if (!hw_if->tx_complete(rdesc)) {
 			if (!force_cleanup)
 				break;
@@ -2221,6 +2296,10 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 				  "force-freeing stuck TX desc %u (link down)\n",
 				  ring->dirty);
 		}
+=======
+		if (!hw_if->tx_complete(rdesc))
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Make sure descriptor fields are read after reading the OWN
 		 * bit */
@@ -2229,6 +2308,7 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 		if (netif_msg_tx_done(pdata))
 			xgbe_dump_tx_desc(pdata, ring, ring->dirty, 1, 0);
 
+<<<<<<< HEAD
 		/* Only count packets actually transmitted (not force-cleaned)
 		 */
 		if (!force_cleanup || hw_if->is_last_desc(rdesc)) {
@@ -2236,6 +2316,11 @@ static int xgbe_tx_poll(struct xgbe_channel *channel)
 				tx_packets += rdata->tx.packets;
 				tx_bytes += rdata->tx.bytes;
 			}
+=======
+		if (hw_if->is_last_desc(rdesc)) {
+			tx_packets += rdata->tx.packets;
+			tx_bytes += rdata->tx.bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* Free the SKB and reset the descriptor for re-use */

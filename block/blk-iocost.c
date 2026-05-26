@@ -1596,8 +1596,12 @@ static enum hrtimer_restart iocg_waitq_timer_fn(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
+<<<<<<< HEAD
 static void ioc_lat_stat(struct ioc *ioc, u32 *missed_ppm_ar, u32 *rq_wait_pct_p,
 			 u32 *nr_done)
+=======
+static void ioc_lat_stat(struct ioc *ioc, u32 *missed_ppm_ar, u32 *rq_wait_pct_p)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 nr_met[2] = { };
 	u32 nr_missed[2] = { };
@@ -1634,8 +1638,11 @@ static void ioc_lat_stat(struct ioc *ioc, u32 *missed_ppm_ar, u32 *rq_wait_pct_p
 
 	*rq_wait_pct_p = div64_u64(rq_wait_ns * 100,
 				   ioc->period_us * NSEC_PER_USEC);
+<<<<<<< HEAD
 
 	*nr_done = nr_met[READ] + nr_met[WRITE] + nr_missed[READ] + nr_missed[WRITE];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* was iocg idle this period? */
@@ -2253,12 +2260,20 @@ static void ioc_timer_fn(struct timer_list *timer)
 	u64 usage_us_sum = 0;
 	u32 ppm_rthr;
 	u32 ppm_wthr;
+<<<<<<< HEAD
 	u32 missed_ppm[2], rq_wait_pct, nr_done;
+=======
+	u32 missed_ppm[2], rq_wait_pct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 period_vtime;
 	int prev_busy_level;
 
 	/* how were the latencies during the period? */
+<<<<<<< HEAD
 	ioc_lat_stat(ioc, missed_ppm, &rq_wait_pct, &nr_done);
+=======
+	ioc_lat_stat(ioc, missed_ppm, &rq_wait_pct);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* take care of active iocgs */
 	spin_lock_irq(&ioc->lock);
@@ -2400,6 +2415,7 @@ static void ioc_timer_fn(struct timer_list *timer)
 	 * and should increase vtime rate.
 	 */
 	prev_busy_level = ioc->busy_level;
+<<<<<<< HEAD
 	if (!nr_done && nr_lagging) {
 		/*
 		 * When there are lagging IOs but no completions, we don't
@@ -2411,6 +2427,11 @@ static void ioc_timer_fn(struct timer_list *timer)
 	} else if (rq_wait_pct > RQ_WAIT_BUSY_PCT ||
 		   missed_ppm[READ] > ppm_rthr ||
 		   missed_ppm[WRITE] > ppm_wthr) {
+=======
+	if (rq_wait_pct > RQ_WAIT_BUSY_PCT ||
+	    missed_ppm[READ] > ppm_rthr ||
+	    missed_ppm[WRITE] > ppm_wthr) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* clearly missing QoS targets, slow down vrate */
 		ioc->busy_level = max(ioc->busy_level, 0);
 		ioc->busy_level++;

@@ -1632,8 +1632,13 @@ common:
 	/*
 	   Initialize the Host Adapter Full Model Name from the Model Name.
 	 */
+<<<<<<< HEAD
 	scnprintf(adapter->full_model, sizeof(adapter->full_model),
 		  "BusLogic %s", adapter->model);
+=======
+	strcpy(adapter->full_model, "BusLogic ");
+	strcat(adapter->full_model, adapter->model);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	   Select an appropriate value for the Tagged Queue Depth either from a
 	   BusLogic Driver Options specification, or based on whether this Host

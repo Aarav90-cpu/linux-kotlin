@@ -46,8 +46,11 @@
 #include <linux/kref.h>
 #include <linux/kfifo.h>
 #include <linux/blk-integrity.h>
+<<<<<<< HEAD
 #include <linux/maple_tree.h>
 #include <linux/xarray.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/fs.h>
 #include <uapi/linux/ublk_cmd.h>
 
@@ -60,11 +63,14 @@
 #define UBLK_CMD_UPDATE_SIZE	_IOC_NR(UBLK_U_CMD_UPDATE_SIZE)
 #define UBLK_CMD_QUIESCE_DEV	_IOC_NR(UBLK_U_CMD_QUIESCE_DEV)
 #define UBLK_CMD_TRY_STOP_DEV	_IOC_NR(UBLK_U_CMD_TRY_STOP_DEV)
+<<<<<<< HEAD
 #define UBLK_CMD_REG_BUF	_IOC_NR(UBLK_U_CMD_REG_BUF)
 #define UBLK_CMD_UNREG_BUF	_IOC_NR(UBLK_U_CMD_UNREG_BUF)
 
 /* Default max shmem buffer size: 4GB (may be increased in future) */
 #define UBLK_SHMEM_BUF_SIZE_MAX	(1ULL << 32)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define UBLK_IO_REGISTER_IO_BUF		_IOC_NR(UBLK_U_IO_REGISTER_IO_BUF)
 #define UBLK_IO_UNREGISTER_IO_BUF	_IOC_NR(UBLK_U_IO_UNREGISTER_IO_BUF)
@@ -88,8 +94,12 @@
 		| (IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY) ? UBLK_F_INTEGRITY : 0) \
 		| UBLK_F_SAFE_STOP_DEV \
 		| UBLK_F_BATCH_IO \
+<<<<<<< HEAD
 		| UBLK_F_NO_AUTO_PART_SCAN \
 		| UBLK_F_SHMEM_ZC)
+=======
+		| UBLK_F_NO_AUTO_PART_SCAN)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define UBLK_F_ALL_RECOVERY_FLAGS (UBLK_F_USER_RECOVERY \
 		| UBLK_F_USER_RECOVERY_REISSUE \
@@ -297,6 +307,7 @@ struct ublk_queue {
 	struct ublk_io ios[] __counted_by(q_depth);
 };
 
+<<<<<<< HEAD
 /* Maple tree value: maps a PFN range to buffer location */
 struct ublk_buf_range {
 	unsigned short buf_index;
@@ -304,6 +315,8 @@ struct ublk_buf_range {
 	unsigned int base_offset;	/* byte offset within buffer */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ublk_device {
 	struct gendisk		*ub_disk;
 
@@ -338,10 +351,13 @@ struct ublk_device {
 
 	bool			block_open; /* protected by open_mutex */
 
+<<<<<<< HEAD
 	/* shared memory zero copy */
 	struct maple_tree	buf_tree;
 	struct ida		buf_ida;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ublk_queue       *queues[];
 };
 
@@ -353,9 +369,12 @@ struct ublk_params_header {
 
 static void ublk_io_release(void *priv);
 static void ublk_stop_dev_unlocked(struct ublk_device *ub);
+<<<<<<< HEAD
 static bool ublk_try_buf_match(struct ublk_device *ub, struct request *rq,
 				  u32 *buf_idx, u32 *buf_off);
 static void ublk_buf_cleanup(struct ublk_device *ub);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
 static inline struct request *__ublk_check_and_get_req(struct ublk_device *ub,
 		u16 q_id, u16 tag, struct ublk_io *io);
@@ -420,6 +439,7 @@ static inline bool ublk_dev_support_zero_copy(const struct ublk_device *ub)
 	return ub->dev_info.flags & UBLK_F_SUPPORT_ZERO_COPY;
 }
 
+<<<<<<< HEAD
 static inline bool ublk_support_shmem_zc(const struct ublk_queue *ubq)
 {
 	return ubq->flags & UBLK_F_SHMEM_ZC;
@@ -436,6 +456,8 @@ static inline bool ublk_dev_support_shmem_zc(const struct ublk_device *ub)
 	return ub->dev_info.flags & UBLK_F_SHMEM_ZC;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool ublk_support_auto_buf_reg(const struct ublk_queue *ubq)
 {
 	return ubq->flags & UBLK_F_AUTO_BUF_REG;
@@ -846,7 +868,11 @@ static void ublk_dev_param_basic_apply(struct ublk_device *ub)
 
 static int ublk_integrity_flags(u32 flags)
 {
+<<<<<<< HEAD
 	int ret_flags = BLK_SPLIT_INTERVAL_CAPABLE;
+=======
+	int ret_flags = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (flags & LBMD_PI_CAP_INTEGRITY) {
 		flags &= ~LBMD_PI_CAP_INTEGRITY;
@@ -900,6 +926,7 @@ static int ublk_validate_params(const struct ublk_device *ub)
 		if (p->logical_bs_shift > PAGE_SHIFT || p->logical_bs_shift < 9)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		/*
 		 * 256M is a reasonable upper bound for physical block size,
 		 * io_min and io_opt; it aligns with the maximum physical
@@ -914,15 +941,20 @@ static int ublk_validate_params(const struct ublk_device *ub)
 		if (p->io_opt_shift > ilog2(SZ_256M))
 			return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (p->logical_bs_shift > p->physical_bs_shift)
 			return -EINVAL;
 
 		if (p->max_sectors > (ub->dev_info.max_io_buf_bytes >> 9))
 			return -EINVAL;
 
+<<<<<<< HEAD
 		if (p->max_sectors < PAGE_SECTORS)
 			return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ublk_dev_is_zoned(ub) && !p->chunk_sectors)
 			return -EINVAL;
 	} else
@@ -1336,6 +1368,7 @@ static bool ublk_copy_user_bvec(const struct bio_vec *bv, unsigned *offset,
 
 	len = bv->bv_len - *offset;
 	bv_buf = kmap_local_page(bv->bv_page) + bv->bv_offset + *offset;
+<<<<<<< HEAD
 	/*
 	 * Bio pages may originate from slab caches without a usercopy region
 	 * (e.g. jbd2 frozen metadata buffers).  This is the same data that
@@ -1348,6 +1381,12 @@ static bool ublk_copy_user_bvec(const struct bio_vec *bv, unsigned *offset,
 		copied = _copy_to_iter(bv_buf, len, uiter);
 	else
 		copied = _copy_from_iter(bv_buf, len, uiter);
+=======
+	if (dir == ITER_DEST)
+		copied = copy_to_iter(bv_buf, len, uiter);
+	else
+		copied = copy_from_iter(bv_buf, len, uiter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kunmap_local(bv_buf);
 
@@ -1523,6 +1562,7 @@ static blk_status_t ublk_setup_iod(struct ublk_queue *ubq, struct request *req)
 	iod->op_flags = ublk_op | ublk_req_build_flags(req);
 	iod->nr_sectors = blk_rq_sectors(req);
 	iod->start_sector = blk_rq_pos(req);
+<<<<<<< HEAD
 
 	/* Try shmem zero-copy match before setting addr */
 	if (ublk_support_shmem_zc(ubq) && ublk_rq_has_data(req)) {
@@ -1536,6 +1576,8 @@ static blk_status_t ublk_setup_iod(struct ublk_queue *ubq, struct request *req)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iod->addr = io->buf.addr;
 
 	return BLK_STS_OK;
@@ -1581,10 +1623,13 @@ static inline void __ublk_complete_rq(struct request *req, struct ublk_io *io,
 	    req_op(req) != REQ_OP_DRV_IN)
 		goto exit;
 
+<<<<<<< HEAD
 	/* shmem zero copy: no data to unmap, pages already shared */
 	if (ublk_iod_is_shmem_zc(req->mq_hctx->driver_data, req->tag))
 		goto exit;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* for READ request, writing data in iod->addr to rq buffers */
 	unmapped_bytes = ublk_unmap_io(need_map, req, io);
 
@@ -1743,6 +1788,7 @@ static void ublk_auto_buf_dispatch(const struct ublk_queue *ubq,
 static bool ublk_start_io(const struct ublk_queue *ubq, struct request *req,
 			  struct ublk_io *io)
 {
+<<<<<<< HEAD
 	unsigned mapped_bytes;
 
 	/* shmem zero copy: skip data copy, pages already shared */
@@ -1750,6 +1796,9 @@ static bool ublk_start_io(const struct ublk_queue *ubq, struct request *req,
 		return true;
 
 	mapped_bytes = ublk_map_io(ubq, req, io);
+=======
+	unsigned mapped_bytes = ublk_map_io(ubq, req, io);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* partially mapped, update io descriptor */
 	if (unlikely(mapped_bytes != blk_rq_bytes(req))) {
@@ -1875,7 +1924,11 @@ static bool ublk_batch_prep_dispatch(struct ublk_queue *ubq,
  * Filter out UBLK_BATCH_IO_UNUSED_TAG entries from tag_buf.
  * Returns the new length after filtering.
  */
+<<<<<<< HEAD
 static noinline unsigned int ublk_filter_unused_tags(unsigned short *tag_buf,
+=======
+static unsigned int ublk_filter_unused_tags(unsigned short *tag_buf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    unsigned int len)
 {
 	unsigned int i, j;
@@ -1891,6 +1944,7 @@ static noinline unsigned int ublk_filter_unused_tags(unsigned short *tag_buf,
 	return j;
 }
 
+<<<<<<< HEAD
 static noinline void ublk_batch_dispatch_fail(struct ublk_queue *ubq,
 		const struct ublk_batch_io_data *data,
 		unsigned short *tag_buf, size_t len, int ret)
@@ -1926,6 +1980,8 @@ static noinline void ublk_batch_dispatch_fail(struct ublk_queue *ubq,
 			ret);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAX_NR_TAG 128
 static int __ublk_batch_dispatch(struct ublk_queue *ubq,
 				 const struct ublk_batch_io_data *data,
@@ -1969,8 +2025,42 @@ static int __ublk_batch_dispatch(struct ublk_queue *ubq,
 
 	sel.val = ublk_batch_copy_io_tags(fcmd, sel.addr, tag_buf, len * tag_sz);
 	ret = ublk_batch_fetch_post_cqe(fcmd, &sel, data->issue_flags);
+<<<<<<< HEAD
 	if (unlikely(ret < 0))
 		ublk_batch_dispatch_fail(ubq, data, tag_buf, len, ret);
+=======
+	if (unlikely(ret < 0)) {
+		int i, res;
+
+		/*
+		 * Undo prep state for all IOs since userspace never received them.
+		 * This restores IOs to pre-prepared state so they can be cleanly
+		 * re-prepared when tags are pulled from FIFO again.
+		 */
+		for (i = 0; i < len; i++) {
+			struct ublk_io *io = &ubq->ios[tag_buf[i]];
+			int index = -1;
+
+			ublk_io_lock(io);
+			if (io->flags & UBLK_IO_FLAG_AUTO_BUF_REG)
+				index = io->buf.auto_reg.index;
+			io->flags &= ~(UBLK_IO_FLAG_OWNED_BY_SRV | UBLK_IO_FLAG_AUTO_BUF_REG);
+			io->flags |= UBLK_IO_FLAG_ACTIVE;
+			ublk_io_unlock(io);
+
+			if (index != -1)
+				io_buffer_unregister_bvec(data->cmd, index,
+						data->issue_flags);
+		}
+
+		res = kfifo_in_spinlocked_noirqsave(&ubq->evts_fifo,
+			tag_buf, len, &ubq->evts_lock);
+
+		pr_warn_ratelimited("%s: copy tags or post CQE failure, move back "
+				"tags(%d %zu) ret %d\n", __func__, res, len,
+				ret);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -2414,6 +2504,7 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
 		struct ublk_queue *ubq = ublk_get_queue(ub, i);
 
@@ -2422,6 +2513,10 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
 		ublk_queue_reinit(ub, ubq);
 		spin_unlock(&ubq->cancel_lock);
 	}
+=======
+	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
+		ublk_queue_reinit(ub, ublk_get_queue(ub, i));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* set to NULL, otherwise new tasks cannot mmap io_cmd_buf */
 	ub->mm = NULL;
@@ -2762,7 +2857,10 @@ static void ublk_cancel_cmd(struct ublk_queue *ubq, unsigned tag,
 {
 	struct ublk_io *io = &ubq->ios[tag];
 	struct ublk_device *ub = ubq->dev;
+<<<<<<< HEAD
 	struct io_uring_cmd *cmd = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct request *req;
 	bool done;
 
@@ -2785,6 +2883,7 @@ static void ublk_cancel_cmd(struct ublk_queue *ubq, unsigned tag,
 
 	spin_lock(&ubq->cancel_lock);
 	done = !!(io->flags & UBLK_IO_FLAG_CANCELED);
+<<<<<<< HEAD
 	if (!done) {
 		io->flags |= UBLK_IO_FLAG_CANCELED;
 		cmd = io->cmd;
@@ -2794,6 +2893,14 @@ static void ublk_cancel_cmd(struct ublk_queue *ubq, unsigned tag,
 
 	if (!done && cmd)
 		io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, issue_flags);
+=======
+	if (!done)
+		io->flags |= UBLK_IO_FLAG_CANCELED;
+	spin_unlock(&ubq->cancel_lock);
+
+	if (!done)
+		io_uring_cmd_done(io->cmd, UBLK_IO_RES_ABORT, issue_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -3012,6 +3119,7 @@ static void ublk_stop_dev(struct ublk_device *ub)
 	ublk_cancel_dev(ub);
 }
 
+<<<<<<< HEAD
 static void ublk_reset_io_flags(struct ublk_queue *ubq, struct ublk_io *io)
 {
 	/* UBLK_IO_FLAG_CANCELED can be cleared now */
@@ -3024,14 +3132,29 @@ static void ublk_reset_io_flags(struct ublk_queue *ubq, struct ublk_io *io)
 static void ublk_queue_reset_io_flags(struct ublk_queue *ubq)
 {
 	spin_lock(&ubq->cancel_lock);
+=======
+/* reset per-queue io flags */
+static void ublk_queue_reset_io_flags(struct ublk_queue *ubq)
+{
+	int j;
+
+	/* UBLK_IO_FLAG_CANCELED can be cleared now */
+	spin_lock(&ubq->cancel_lock);
+	for (j = 0; j < ubq->q_depth; j++)
+		ubq->ios[j].flags &= ~UBLK_IO_FLAG_CANCELED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ubq->canceling = false;
 	spin_unlock(&ubq->cancel_lock);
 	ubq->fail_io = false;
 }
 
 /* device can only be started after all IOs are ready */
+<<<<<<< HEAD
 static void ublk_mark_io_ready(struct ublk_device *ub, u16 q_id,
 	struct ublk_io *io)
+=======
+static void ublk_mark_io_ready(struct ublk_device *ub, u16 q_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__must_hold(&ub->mutex)
 {
 	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
@@ -3040,7 +3163,10 @@ static void ublk_mark_io_ready(struct ublk_device *ub, u16 q_id,
 		ub->unprivileged_daemons = true;
 
 	ubq->nr_io_ready++;
+<<<<<<< HEAD
 	ublk_reset_io_flags(ubq, io);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Check if this specific queue is now fully ready */
 	if (ublk_queue_ready(ubq)) {
@@ -3303,7 +3429,11 @@ static int ublk_fetch(struct io_uring_cmd *cmd, struct ublk_device *ub,
 	if (!ret)
 		ret = ublk_config_io_buf(ub, io, cmd, buf_addr, NULL);
 	if (!ret)
+<<<<<<< HEAD
 		ublk_mark_io_ready(ub, q_id, io);
+=======
+		ublk_mark_io_ready(ub, q_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ub->mutex);
 	return ret;
 }
@@ -3523,10 +3653,15 @@ static void ublk_ch_uring_cmd_cb(struct io_tw_req tw_req, io_tw_token_t tw)
 {
 	unsigned int issue_flags = IO_URING_CMD_TASK_WORK_ISSUE_FLAGS;
 	struct io_uring_cmd *cmd = io_uring_cmd_from_tw(tw_req);
+<<<<<<< HEAD
 	int ret = -ECANCELED;
 
 	if (!tw.cancel)
 		ret = ublk_ch_uring_cmd_local(cmd, issue_flags);
+=======
+	int ret = ublk_ch_uring_cmd_local(cmd, issue_flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret != -EIOCBQUEUED)
 		io_uring_cmd_done(cmd, ret, issue_flags);
 }
@@ -3713,7 +3848,11 @@ static int ublk_batch_prep_io(struct ublk_queue *ubq,
 	ublk_io_unlock(io);
 
 	if (!ret)
+<<<<<<< HEAD
 		ublk_mark_io_ready(data->ub, ubq->q_id, io);
+=======
+		ublk_mark_io_ready(data->ub, ubq->q_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -4309,7 +4448,10 @@ static void ublk_cdev_rel(struct device *dev)
 {
 	struct ublk_device *ub = container_of(dev, struct ublk_device, cdev_dev);
 
+<<<<<<< HEAD
 	ublk_buf_cleanup(ub);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blk_mq_free_tag_set(&ub->tag_set);
 	ublk_deinit_queues(ub);
 	ublk_free_dev_number(ub);
@@ -4731,8 +4873,11 @@ static int ublk_ctrl_add_dev(const struct ublksrv_ctrl_cmd *header)
 	mutex_init(&ub->mutex);
 	spin_lock_init(&ub->lock);
 	mutex_init(&ub->cancel_mutex);
+<<<<<<< HEAD
 	mt_init(&ub->buf_tree);
 	ida_init(&ub->buf_ida);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_WORK(&ub->partition_scan_work, ublk_partition_scan_work);
 
 	ret = ublk_alloc_dev_number(ub, header->dev_id);
@@ -5019,15 +5164,22 @@ static int ublk_ctrl_set_params(struct ublk_device *ub,
 		 */
 		ret = -EACCES;
 	} else if (copy_from_user(&ub->params, argp, ph.len)) {
+<<<<<<< HEAD
 		/* zero out partial copy so no stale params survive */
 		memset(&ub->params, 0, sizeof(ub->params));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EFAULT;
 	} else {
 		/* clear all we don't support yet */
 		ub->params.types &= UBLK_PARAM_TYPE_ALL;
 		ret = ublk_validate_params(ub);
 		if (ret)
+<<<<<<< HEAD
 			memset(&ub->params, 0, sizeof(ub->params));
+=======
+			ub->params.types = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	mutex_unlock(&ub->mutex);
 
@@ -5285,6 +5437,7 @@ exit:
 	return err;
 }
 
+<<<<<<< HEAD
 /*
  * Lock for maple tree modification: acquire ub->mutex, then freeze queue
  * if device is started. If device is not yet started, only mutex is
@@ -5622,6 +5775,8 @@ static bool ublk_try_buf_match(struct ublk_device *ub,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
 		u32 cmd_op, struct ublksrv_ctrl_cmd *header)
 {
@@ -5679,8 +5834,11 @@ static int ublk_ctrl_uring_cmd_permission(struct ublk_device *ub,
 	case UBLK_CMD_UPDATE_SIZE:
 	case UBLK_CMD_QUIESCE_DEV:
 	case UBLK_CMD_TRY_STOP_DEV:
+<<<<<<< HEAD
 	case UBLK_CMD_REG_BUF:
 	case UBLK_CMD_UNREG_BUF:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mask = MAY_READ | MAY_WRITE;
 		break;
 	default:
@@ -5805,12 +5963,15 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
 	case UBLK_CMD_TRY_STOP_DEV:
 		ret = ublk_ctrl_try_stop_dev(ub);
 		break;
+<<<<<<< HEAD
 	case UBLK_CMD_REG_BUF:
 		ret = ublk_ctrl_reg_buf(ub, &header);
 		break;
 	case UBLK_CMD_UNREG_BUF:
 		ret = ublk_ctrl_unreg_buf(ub, &header);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ret = -EOPNOTSUPP;
 		break;

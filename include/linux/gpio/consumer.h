@@ -6,8 +6,11 @@
 #include <linux/err.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include "defs.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct acpi_device;
 struct device;
 struct fwnode_handle;

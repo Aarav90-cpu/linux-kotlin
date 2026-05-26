@@ -222,6 +222,7 @@ AMD_DAL_RESOURCE_DCN401 = $(addprefix $(AMDDALPATH)/dc/resource/dcn401/,$(RESOUR
 
 AMD_DISPLAY_FILES += $(AMD_DAL_RESOURCE_DCN401)
 
+<<<<<<< HEAD
 ###############################################################################
 # DCN42
 ###############################################################################
@@ -241,3 +242,6 @@ CFLAGS_REMOVE_$(AMDDALPATH)/dc/resource/dcn42/dcn42_resource_fpu.o := $(resource
 ###############################################################################
 endif
 
+=======
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

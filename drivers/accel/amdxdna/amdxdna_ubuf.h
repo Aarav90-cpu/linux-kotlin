@@ -8,7 +8,16 @@
 #include <drm/drm_device.h>
 #include <linux/dma-buf.h>
 
+<<<<<<< HEAD
 struct dma_buf *amdxdna_get_ubuf(struct drm_device *dev,
+=======
+enum amdxdna_ubuf_flag {
+	AMDXDNA_UBUF_FLAG_MAP_DMA = 1,
+};
+
+struct dma_buf *amdxdna_get_ubuf(struct drm_device *dev,
+				 enum amdxdna_ubuf_flag flags,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 u32 num_entries, void __user *va_entries);
 
 #endif /* _AMDXDNA_UBUF_H_ */

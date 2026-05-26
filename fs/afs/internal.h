@@ -31,6 +31,10 @@
 
 #define AFS_CELL_MAX_ADDRS 15
 
+<<<<<<< HEAD
+=======
+struct pagevec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct afs_call;
 struct afs_vnode;
 struct afs_server_probe;

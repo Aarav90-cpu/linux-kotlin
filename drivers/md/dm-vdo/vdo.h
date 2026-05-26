@@ -144,6 +144,7 @@ struct thread_config {
 
 struct thread_count_config;
 
+<<<<<<< HEAD
 struct vdo_geometry_block {
 	/* The vio for reading and writing the geometry block to disk */
 	struct vio vio;
@@ -151,6 +152,8 @@ struct vdo_geometry_block {
 	u8 *buffer;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct vdo_super_block {
 	/* The vio for reading and writing the super block to disk */
 	struct vio vio;
@@ -193,9 +196,12 @@ struct vdo {
 	/* The thread mapping */
 	struct thread_config thread_config;
 
+<<<<<<< HEAD
 	/* The geometry block */
 	struct vdo_geometry_block geometry_block;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* The super block */
 	struct vdo_super_block super_block;
 
@@ -246,7 +252,10 @@ struct vdo {
 	const struct admin_state_code *suspend_type;
 	bool allocations_allowed;
 	bool dump_on_shutdown;
+<<<<<<< HEAD
 	bool needs_formatting;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_t processing_message;
 
 	/*
@@ -315,10 +324,13 @@ int __must_check vdo_make(unsigned int instance, struct device_config *config,
 
 void vdo_destroy(struct vdo *vdo);
 
+<<<<<<< HEAD
 int __must_check vdo_format_components(struct vdo *vdo);
 
 void vdo_format_super_block(struct vdo *vdo, struct vdo_completion *parent);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vdo_load_super_block(struct vdo *vdo, struct vdo_completion *parent);
 
 struct block_device * __must_check vdo_get_backing_device(const struct vdo *vdo);
@@ -341,10 +353,13 @@ enum vdo_state __must_check vdo_get_state(const struct vdo *vdo);
 
 void vdo_set_state(struct vdo *vdo, enum vdo_state state);
 
+<<<<<<< HEAD
 int vdo_clear_layout(struct vdo *vdo);
 void vdo_save_geometry_block(struct vdo *vdo, struct vdo_completion *parent);
 void vdo_save_super_block(struct vdo *vdo, struct vdo_completion *parent);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vdo_save_components(struct vdo *vdo, struct vdo_completion *parent);
 
 int vdo_register_read_only_listener(struct vdo *vdo, void *listener,

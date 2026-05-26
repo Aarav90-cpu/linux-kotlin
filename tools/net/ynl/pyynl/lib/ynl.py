@@ -78,22 +78,31 @@ class Netlink:
 
     # nlctrl
     CTRL_CMD_GETFAMILY = 3
+<<<<<<< HEAD
     CTRL_CMD_GETPOLICY = 10
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     CTRL_ATTR_FAMILY_ID = 1
     CTRL_ATTR_FAMILY_NAME = 2
     CTRL_ATTR_MAXATTR = 5
     CTRL_ATTR_MCAST_GROUPS = 7
+<<<<<<< HEAD
     CTRL_ATTR_POLICY = 8
     CTRL_ATTR_OP_POLICY = 9
     CTRL_ATTR_OP = 10
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     CTRL_ATTR_MCAST_GRP_NAME = 1
     CTRL_ATTR_MCAST_GRP_ID = 2
 
+<<<<<<< HEAD
     CTRL_ATTR_POLICY_DO = 1
     CTRL_ATTR_POLICY_DUMP = 2
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     # Extack types
     NLMSGERR_ATTR_MSG = 1
     NLMSGERR_ATTR_OFFS = 2
@@ -144,6 +153,7 @@ class ConfigError(Exception):
     pass
 
 
+<<<<<<< HEAD
 class NlPolicy:
     """Kernel policy for one mode (do or dump) of one operation.
 
@@ -257,6 +267,8 @@ class NlPolicy:
         return repr(self.to_dict())
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 class NlAttr:
     ScalarFormat = namedtuple('ScalarFormat', ['native', 'big', 'little'])
     type_formats = {
@@ -368,7 +380,11 @@ class NlMsg:
                 elif extack.type == Netlink.NLMSGERR_ATTR_OFFS:
                     self.extack['bad-attr-offs'] = extack.as_scalar('u32')
                 elif extack.type == Netlink.NLMSGERR_ATTR_POLICY:
+<<<<<<< HEAD
                     self.extack['policy'] = _genl_decode_policy(extack.raw)
+=======
+                    self.extack['policy'] = self._decode_policy(extack.raw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 else:
                     if 'unknown' not in self.extack:
                         self.extack['unknown'] = []
@@ -377,6 +393,33 @@ class NlMsg:
             if attr_space:
                 self.annotate_extack(attr_space)
 
+<<<<<<< HEAD
+=======
+    def _decode_policy(self, raw):
+        policy = {}
+        for attr in NlAttrs(raw):
+            if attr.type == Netlink.NL_POLICY_TYPE_ATTR_TYPE:
+                type_ = attr.as_scalar('u32')
+                policy['type'] = Netlink.AttrType(type_).name
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MIN_VALUE_S:
+                policy['min-value'] = attr.as_scalar('s64')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MAX_VALUE_S:
+                policy['max-value'] = attr.as_scalar('s64')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MIN_VALUE_U:
+                policy['min-value'] = attr.as_scalar('u64')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MAX_VALUE_U:
+                policy['max-value'] = attr.as_scalar('u64')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MIN_LENGTH:
+                policy['min-length'] = attr.as_scalar('u32')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MAX_LENGTH:
+                policy['max-length'] = attr.as_scalar('u32')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_BITFIELD32_MASK:
+                policy['bitfield32-mask'] = attr.as_scalar('u32')
+            elif attr.type == Netlink.NL_POLICY_TYPE_ATTR_MASK:
+                policy['mask'] = attr.as_scalar('u64')
+        return policy
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def annotate_extack(self, attr_space):
         """ Make extack more human friendly with attribute information """
 
@@ -430,6 +473,7 @@ def _genl_msg_finalize(msg):
     return struct.pack("I", len(msg) + 4) + msg
 
 
+<<<<<<< HEAD
 def _genl_decode_policy(raw):
     policy = {}
     for attr in NlAttrs(raw):
@@ -457,6 +501,8 @@ def _genl_decode_policy(raw):
     return policy
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # pylint: disable=too-many-nested-blocks
 def _genl_load_families():
     genl_family_name_to_id = {}
@@ -505,6 +551,7 @@ def _genl_load_families():
                     genl_family_name_to_id[fam['name']] = fam
 
 
+<<<<<<< HEAD
 # pylint: disable=too-many-nested-blocks
 def _genl_policy_dump(family_id, op):
     op_policy = {}
@@ -551,6 +598,8 @@ def _genl_policy_dump(family_id, op):
                                 policy_table[policy_idx][attr_id] = decoded
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 class GenlMsg:
     def __init__(self, nl_msg):
         self.nl = nl_msg
@@ -658,6 +707,7 @@ class SpaceAttrs:
 
 
 class YnlFamily(SpecFamily):
+<<<<<<< HEAD
     """
     YNL family -- a Netlink interface built from a YAML spec.
 
@@ -690,6 +740,8 @@ class YnlFamily(SpecFamily):
 
       ynl.get_policy(op_name, mode)      -- query kernel policy for an op
     """
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def __init__(self, def_path, schema=None, process_unknown=False,
                  recv_size=0):
         super().__init__(def_path, schema)
@@ -733,6 +785,7 @@ class YnlFamily(SpecFamily):
             bound_f = functools.partial(self._op, op_name)
             setattr(self, op.ident_name, bound_f)
 
+<<<<<<< HEAD
     def close(self):
         if self.sock is not None:
             self.sock.close()
@@ -743,6 +796,8 @@ class YnlFamily(SpecFamily):
 
     def __exit__(self, exc_type, exc, tb):
         self.close()
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def ntf_subscribe(self, mcast_name):
         mcast_id = self.nlproto.get_mcast_id(mcast_name, self.mcast_groups)
@@ -1043,9 +1098,13 @@ class YnlFamily(SpecFamily):
                 continue
 
             try:
+<<<<<<< HEAD
                 if attr_spec["type"] == 'pad':
                     continue
                 elif attr_spec["type"] == 'nest':
+=======
+                if attr_spec["type"] == 'nest':
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     subdict = self._decode(NlAttrs(attr.raw),
                                            attr_spec['nested-attributes'],
                                            search_attrs)
@@ -1429,6 +1488,7 @@ class YnlFamily(SpecFamily):
 
     def do_multi(self, ops):
         return self._ops(ops)
+<<<<<<< HEAD
 
     def get_policy(self, op_name, mode):
         """Query running kernel for the Netlink policy of an operation.
@@ -1454,3 +1514,5 @@ class YnlFamily(SpecFamily):
             return None
         policy_idx = op_policy[mode]
         return NlPolicy(self, policy_idx, policy_table, op.attr_set)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

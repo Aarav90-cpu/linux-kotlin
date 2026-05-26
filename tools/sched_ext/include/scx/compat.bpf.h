@@ -28,11 +28,16 @@ struct cgroup *scx_bpf_task_cgroup___new(struct task_struct *p) __ksym __weak;
  *
  * scx_bpf_dispatch_from_dsq() and friends were added during v6.12 by
  * 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()").
+<<<<<<< HEAD
  *
  * v7.1: scx_bpf_dsq_move_to_local___v2() to add @enq_flags.
  */
 bool scx_bpf_dsq_move_to_local___v2(u64 dsq_id, u64 enq_flags) __ksym __weak;
 bool scx_bpf_dsq_move_to_local___v1(u64 dsq_id) __ksym __weak;
+=======
+ */
+bool scx_bpf_dsq_move_to_local___new(u64 dsq_id) __ksym __weak;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void scx_bpf_dsq_move_set_slice___new(struct bpf_iter_scx_dsq *it__iter, u64 slice) __ksym __weak;
 void scx_bpf_dsq_move_set_vtime___new(struct bpf_iter_scx_dsq *it__iter, u64 vtime) __ksym __weak;
 bool scx_bpf_dsq_move___new(struct bpf_iter_scx_dsq *it__iter, struct task_struct *p, u64 dsq_id, u64 enq_flags) __ksym __weak;
@@ -44,12 +49,19 @@ void scx_bpf_dispatch_from_dsq_set_vtime___old(struct bpf_iter_scx_dsq *it__iter
 bool scx_bpf_dispatch_from_dsq___old(struct bpf_iter_scx_dsq *it__iter, struct task_struct *p, u64 dsq_id, u64 enq_flags) __ksym __weak;
 bool scx_bpf_dispatch_vtime_from_dsq___old(struct bpf_iter_scx_dsq *it__iter, struct task_struct *p, u64 dsq_id, u64 enq_flags) __ksym __weak;
 
+<<<<<<< HEAD
 #define scx_bpf_dsq_move_to_local(dsq_id, enq_flags)				\
 	(bpf_ksym_exists(scx_bpf_dsq_move_to_local___v2) ?			\
 	 scx_bpf_dsq_move_to_local___v2((dsq_id), (enq_flags)) :		\
 	 (bpf_ksym_exists(scx_bpf_dsq_move_to_local___v1) ?			\
 	  scx_bpf_dsq_move_to_local___v1((dsq_id)) :				\
 	  scx_bpf_consume___old((dsq_id))))
+=======
+#define scx_bpf_dsq_move_to_local(dsq_id)					\
+	(bpf_ksym_exists(scx_bpf_dsq_move_to_local___new) ?			\
+	 scx_bpf_dsq_move_to_local___new((dsq_id)) :				\
+	 scx_bpf_consume___old((dsq_id)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define scx_bpf_dsq_move_set_slice(it__iter, slice)				\
 	(bpf_ksym_exists(scx_bpf_dsq_move_set_slice___new) ?			\
@@ -108,6 +120,7 @@ static inline struct task_struct *__COMPAT_scx_bpf_dsq_peek(u64 dsq_id)
 	return p;
 }
 
+<<<<<<< HEAD
 /*
  * v7.1: scx_bpf_sub_dispatch() for sub-sched dispatch. Preserve until
  * we drop the compat layer for older kernels that lack the kfunc.
@@ -121,6 +134,8 @@ static inline bool scx_bpf_sub_dispatch(u64 cgroup_id)
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __COMPAT_is_enq_cpu_selected - Test if SCX_ENQ_CPU_SELECTED is on
  * in a compatible way. We will preserve this __COMPAT helper until v6.16.
@@ -284,6 +299,7 @@ scx_bpf_select_cpu_and(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
 	}
 }
 
+<<<<<<< HEAD
 /*
  * scx_bpf_select_cpu_and() is now an inline wrapper. Use this instead of
  * bpf_ksym_exists(scx_bpf_select_cpu_and) to test availability.
@@ -292,6 +308,8 @@ scx_bpf_select_cpu_and(struct task_struct *p, s32 prev_cpu, u64 wake_flags,
 	(bpf_core_type_exists(struct scx_bpf_select_cpu_and_args) ||	\
 	 bpf_ksym_exists(scx_bpf_select_cpu_and___compat))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * scx_bpf_dsq_insert_vtime - Insert a task into the vtime priority queue of a DSQ
  * @p: task_struct to insert
@@ -402,6 +420,7 @@ static inline void scx_bpf_reenqueue_local(void)
 }
 
 /*
+<<<<<<< HEAD
  * v6.20: New scx_bpf_dsq_reenq() that allows re-enqueues on more DSQs. This
  * will eventually deprecate scx_bpf_reenqueue_local().
  */
@@ -423,6 +442,8 @@ static inline void scx_bpf_dsq_reenq(u64 dsq_id, u64 reenq_flags)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Define sched_ext_ops. This may be expanded to define multiple variants for
  * backward compatibility. See compat.h::SCX_OPS_LOAD/ATTACH().
  */

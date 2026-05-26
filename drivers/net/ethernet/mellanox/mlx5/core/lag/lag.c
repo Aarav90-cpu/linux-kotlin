@@ -35,7 +35,10 @@
 #include <linux/mlx5/driver.h>
 #include <linux/mlx5/eswitch.h>
 #include <linux/mlx5/vport.h>
+<<<<<<< HEAD
 #include <linux/mlx5/lag.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "lib/mlx5.h"
 #include "lib/devcom.h"
 #include "mlx5_core.h"
@@ -233,7 +236,10 @@ static void mlx5_do_bond_work(struct work_struct *work);
 static void mlx5_ldev_free(struct kref *ref)
 {
 	struct mlx5_lag *ldev = container_of(ref, struct mlx5_lag, ref);
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct net *net;
 	int i;
 
@@ -243,6 +249,7 @@ static void mlx5_ldev_free(struct kref *ref)
 	}
 
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, i);
 		if (pf->port_change_nb.nb.notifier_call) {
 			struct mlx5_nb *nb = &pf->port_change_nb;
@@ -253,6 +260,15 @@ static void mlx5_ldev_free(struct kref *ref)
 		kfree(pf);
 	}
 	xa_destroy(&ldev->pfs);
+=======
+		if (ldev->pf[i].dev &&
+		    ldev->pf[i].port_change_nb.nb.notifier_call) {
+			struct mlx5_nb *nb = &ldev->pf[i].port_change_nb;
+
+			mlx5_eq_notifier_unregister(ldev->pf[i].dev, nb);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mlx5_lag_mp_cleanup(ldev);
 	cancel_delayed_work_sync(&ldev->bond_work);
@@ -289,7 +305,10 @@ static struct mlx5_lag *mlx5_lag_dev_alloc(struct mlx5_core_dev *dev)
 
 	kref_init(&ldev->ref);
 	mutex_init(&ldev->lock);
+<<<<<<< HEAD
 	xa_init_flags(&ldev->pfs, XA_FLAGS_ALLOC);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_DELAYED_WORK(&ldev->bond_work, mlx5_do_bond_work);
 	INIT_WORK(&ldev->speed_update_work, mlx5_mpesw_speed_update_work);
 
@@ -315,6 +334,7 @@ static struct mlx5_lag *mlx5_lag_dev_alloc(struct mlx5_core_dev *dev)
 int mlx5_lag_dev_get_netdev_idx(struct mlx5_lag *ldev,
 				struct net_device *ndev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -323,10 +343,18 @@ int mlx5_lag_dev_get_netdev_idx(struct mlx5_lag *ldev,
 		if (pf->netdev == ndev)
 			return i;
 	}
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (ldev->pf[i].netdev == ndev)
+			return i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -ENOENT;
 }
 
+<<<<<<< HEAD
 static int mlx5_lag_get_master_idx(struct mlx5_lag *ldev)
 {
 	unsigned long idx = 0;
@@ -345,10 +373,16 @@ static int mlx5_lag_get_master_idx(struct mlx5_lag *ldev)
 int mlx5_lag_get_dev_index_by_seq(struct mlx5_lag *ldev, int seq)
 {
 	int master_idx, i, num = 0;
+=======
+int mlx5_lag_get_dev_index_by_seq(struct mlx5_lag *ldev, int seq)
+{
+	int i, num = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ldev)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	master_idx = mlx5_lag_get_master_idx(ldev);
 
 	/* If seq 0 is requested and there's a primary PF, return it */
@@ -363,6 +397,9 @@ int mlx5_lag_get_dev_index_by_seq(struct mlx5_lag *ldev, int seq)
 		if (i == master_idx)
 			continue;
 
+=======
+	mlx5_ldev_for_each(i, 0, ldev) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (num == seq)
 			return i;
 		num++;
@@ -370,6 +407,7 @@ int mlx5_lag_get_dev_index_by_seq(struct mlx5_lag *ldev, int seq)
 	return -ENOENT;
 }
 
+<<<<<<< HEAD
 /* Reverse of mlx5_lag_get_dev_index_by_seq: given a device, return its
  * sequence number in the LAG. Master is always 0, others numbered
  * sequentially starting from 1.
@@ -472,6 +510,8 @@ static int mlx5_lag_devcom_event(int event, void *my_data, void *event_data)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mlx5_lag_num_devs(struct mlx5_lag *ldev)
 {
 	int i, num = 0;
@@ -488,17 +528,26 @@ int mlx5_lag_num_devs(struct mlx5_lag *ldev)
 
 int mlx5_lag_num_netdevs(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, num = 0;
 
 	if (!ldev)
 		return 0;
 
+<<<<<<< HEAD
 	mlx5_ldev_for_each(i, 0, ldev) {
 		pf = mlx5_lag_pf(ldev, i);
 		if (pf->netdev)
 			num++;
 	}
+=======
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (ldev->pf[i].netdev)
+			num++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return num;
 }
 
@@ -542,12 +591,19 @@ static void mlx5_infer_tx_affinity_mapping(struct lag_tracker *tracker,
 
 	/* Use native mapping by default where each port's buckets
 	 * point the native port: 1 1 1 .. 1 2 2 2 ... 2 3 3 3 ... 3 etc
+<<<<<<< HEAD
 	 * ports[] values are 1-indexed device indices for FW.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	mlx5_ldev_for_each(i, 0, ldev) {
 		for (j = 0; j < buckets; j++) {
 			idx = i * buckets + j;
+<<<<<<< HEAD
 			ports[idx] = mlx5_lag_xa_to_dev_idx(ldev, i) + 1;
+=======
+			ports[idx] = i + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -559,18 +615,24 @@ static void mlx5_infer_tx_affinity_mapping(struct lag_tracker *tracker,
 	/* Go over the disabled ports and for each assign a random active port */
 	for (i = 0; i < disabled_ports_num; i++) {
 		for (j = 0; j < buckets; j++) {
+<<<<<<< HEAD
 			int rand_xa_idx;
 
 			get_random_bytes(&rand, 4);
 			rand_xa_idx = enabled[rand % enabled_ports_num];
 			ports[disabled[i] * buckets + j] =
 				mlx5_lag_xa_to_dev_idx(ldev, rand_xa_idx) + 1;
+=======
+			get_random_bytes(&rand, 4);
+			ports[disabled[i] * buckets + j] = enabled[rand % enabled_ports_num] + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
 
 static bool mlx5_lag_has_drop_rule(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -579,11 +641,19 @@ static bool mlx5_lag_has_drop_rule(struct mlx5_lag *ldev)
 		if (pf->has_drop)
 			return true;
 	}
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (ldev->pf[i].has_drop)
+			return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
 static void mlx5_lag_drop_rule_cleanup(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -595,6 +665,17 @@ static void mlx5_lag_drop_rule_cleanup(struct mlx5_lag *ldev)
 		mlx5_esw_acl_ingress_vport_drop_rule_destroy(pf->dev->priv.eswitch,
 							     MLX5_VPORT_UPLINK);
 		pf->has_drop = false;
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev) {
+		if (!ldev->pf[i].has_drop)
+			continue;
+
+		mlx5_esw_acl_ingress_vport_drop_rule_destroy(ldev->pf[i].dev->priv.eswitch,
+							     MLX5_VPORT_UPLINK);
+		ldev->pf[i].has_drop = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -603,7 +684,10 @@ static void mlx5_lag_drop_rule_setup(struct mlx5_lag *ldev,
 {
 	u8 disabled_ports[MLX5_MAX_PORTS] = {};
 	struct mlx5_core_dev *dev;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int disabled_index;
 	int num_disabled;
 	int err;
@@ -621,12 +705,20 @@ static void mlx5_lag_drop_rule_setup(struct mlx5_lag *ldev,
 
 	for (i = 0; i < num_disabled; i++) {
 		disabled_index = disabled_ports[i];
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, disabled_index);
 		dev = pf->dev;
 		err = mlx5_esw_acl_ingress_vport_drop_rule_create(dev->priv.eswitch,
 								  MLX5_VPORT_UPLINK);
 		if (!err)
 			pf->has_drop = true;
+=======
+		dev = ldev->pf[disabled_index].dev;
+		err = mlx5_esw_acl_ingress_vport_drop_rule_create(dev->priv.eswitch,
+								  MLX5_VPORT_UPLINK);
+		if (!err)
+			ldev->pf[disabled_index].has_drop = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			mlx5_core_err(dev,
 				      "Failed to create lag drop rule, error: %d", err);
@@ -658,7 +750,11 @@ static int _mlx5_modify_lag(struct mlx5_lag *ldev, u8 *ports)
 	if (idx < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, idx)->dev;
+=======
+	dev0 = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (test_bit(MLX5_LAG_MODE_FLAG_HASH_BASED, &ldev->mode_flags)) {
 		ret = mlx5_lag_port_sel_modify(ldev, ports);
 		if (ret ||
@@ -675,7 +771,10 @@ static int _mlx5_modify_lag(struct mlx5_lag *ldev, u8 *ports)
 static struct net_device *mlx5_lag_active_backup_get_netdev(struct mlx5_core_dev *dev)
 {
 	struct net_device *ndev = NULL;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_lag *ldev;
 	unsigned long flags;
 	int i, last_idx;
@@ -686,17 +785,27 @@ static struct net_device *mlx5_lag_active_backup_get_netdev(struct mlx5_core_dev
 	if (!ldev)
 		goto unlock;
 
+<<<<<<< HEAD
 	mlx5_ldev_for_each(i, 0, ldev) {
 		pf = mlx5_lag_pf(ldev, i);
 		if (ldev->tracker.netdev_state[i].tx_enabled)
 			ndev = pf->netdev;
 	}
+=======
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (ldev->tracker.netdev_state[i].tx_enabled)
+			ndev = ldev->pf[i].netdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ndev) {
 		last_idx = mlx5_lag_get_dev_index_by_seq(ldev, ldev->ports - 1);
 		if (last_idx < 0)
 			goto unlock;
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, last_idx);
 		ndev = pf->netdev;
+=======
+		ndev = ldev->pf[last_idx].netdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	dev_hold(ndev);
@@ -721,7 +830,11 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
 	if (first_idx < 0)
 		return;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev0 = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_infer_tx_affinity_mapping(tracker, ldev, ldev->buckets, ports);
 
 	mlx5_ldev_for_each(i, 0, ldev) {
@@ -773,7 +886,11 @@ static int mlx5_lag_set_port_sel_mode(struct mlx5_lag *ldev,
 	    mode == MLX5_LAG_MODE_MULTIPATH)
 		return 0;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev0 = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!MLX5_CAP_PORT_SELECTION(dev0, port_select_flow_table)) {
 		if (ldev->ports > 2)
@@ -819,12 +936,17 @@ char *mlx5_get_str_port_sel_mode(enum mlx5_lag_mode mode, unsigned long flags)
 
 static int mlx5_lag_create_single_fdb(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	int master_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+=======
+	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_eswitch *master_esw;
 	struct mlx5_core_dev *dev0;
 	int i, j;
 	int err;
 
+<<<<<<< HEAD
 	if (master_idx < 0)
 		return -EINVAL;
 
@@ -837,6 +959,15 @@ static int mlx5_lag_create_single_fdb(struct mlx5_lag *ldev)
 			continue;
 
 		slave_esw = mlx5_lag_pf(ldev, i)->dev->priv.eswitch;
+=======
+	if (first_idx < 0)
+		return -EINVAL;
+
+	dev0 = ldev->pf[first_idx].dev;
+	master_esw = dev0->priv.eswitch;
+	mlx5_ldev_for_each(i, first_idx + 1, ldev) {
+		struct mlx5_eswitch *slave_esw = ldev->pf[i].dev->priv.eswitch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		err = mlx5_eswitch_offloads_single_fdb_add_one(master_esw,
 							       slave_esw, ldev->ports);
@@ -845,12 +976,18 @@ static int mlx5_lag_create_single_fdb(struct mlx5_lag *ldev)
 	}
 	return 0;
 err:
+<<<<<<< HEAD
 	mlx5_ldev_for_each_reverse(j, i, 0, ldev) {
 		if (j == master_idx)
 			continue;
 		mlx5_eswitch_offloads_single_fdb_del_one(master_esw,
 							 mlx5_lag_pf(ldev, j)->dev->priv.eswitch);
 	}
+=======
+	mlx5_ldev_for_each_reverse(j, i, first_idx + 1, ldev)
+		mlx5_eswitch_offloads_single_fdb_del_one(master_esw,
+							 ldev->pf[j].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -859,8 +996,13 @@ static int mlx5_create_lag(struct mlx5_lag *ldev,
 			   enum mlx5_lag_mode mode,
 			   unsigned long flags)
 {
+<<<<<<< HEAD
 	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
 	bool shared_fdb = test_bit(MLX5_LAG_MODE_FLAG_SHARED_FDB, &flags);
+=======
+	bool shared_fdb = test_bit(MLX5_LAG_MODE_FLAG_SHARED_FDB, &flags);
+	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 in[MLX5_ST_SZ_DW(destroy_lag_in)] = {};
 	struct mlx5_core_dev *dev0;
 	int err;
@@ -868,7 +1010,11 @@ static int mlx5_create_lag(struct mlx5_lag *ldev,
 	if (first_idx < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, first_idx)->dev;
+=======
+	dev0 = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tracker)
 		mlx5_lag_print_mapping(dev0, ldev, tracker, flags);
 	mlx5_core_info(dev0, "shared_fdb:%d mode:%s\n",
@@ -906,6 +1052,7 @@ int mlx5_activate_lag(struct mlx5_lag *ldev,
 		      enum mlx5_lag_mode mode,
 		      bool shared_fdb)
 {
+<<<<<<< HEAD
 	bool roce_lag = mode == MLX5_LAG_MODE_ROCE;
 	struct mlx5_core_dev *dev0;
 	unsigned long flags = 0;
@@ -917,6 +1064,18 @@ int mlx5_activate_lag(struct mlx5_lag *ldev,
 		return -EINVAL;
 
 	dev0 = mlx5_lag_pf(ldev, master_idx)->dev;
+=======
+	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+	bool roce_lag = mode == MLX5_LAG_MODE_ROCE;
+	struct mlx5_core_dev *dev0;
+	unsigned long flags = 0;
+	int err;
+
+	if (first_idx < 0)
+		return -EINVAL;
+
+	dev0 = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = mlx5_lag_set_flags(ldev, mode, tracker, shared_fdb, &flags);
 	if (err)
 		return err;
@@ -960,7 +1119,11 @@ int mlx5_activate_lag(struct mlx5_lag *ldev,
 
 int mlx5_deactivate_lag(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	int master_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+=======
+	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 in[MLX5_ST_SZ_DW(destroy_lag_in)] = {};
 	bool roce_lag = __mlx5_lag_is_roce(ldev);
 	unsigned long flags = ldev->mode_flags;
@@ -969,22 +1132,35 @@ int mlx5_deactivate_lag(struct mlx5_lag *ldev)
 	int err;
 	int i;
 
+<<<<<<< HEAD
 	if (master_idx < 0)
 		return -EINVAL;
 
 	dev0 = mlx5_lag_pf(ldev, master_idx)->dev;
+=======
+	if (first_idx < 0)
+		return -EINVAL;
+
+	dev0 = ldev->pf[first_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	master_esw = dev0->priv.eswitch;
 	ldev->mode = MLX5_LAG_MODE_NONE;
 	ldev->mode_flags = 0;
 	mlx5_lag_mp_reset(ldev);
 
 	if (test_bit(MLX5_LAG_MODE_FLAG_SHARED_FDB, &flags)) {
+<<<<<<< HEAD
 		mlx5_ldev_for_each(i, 0, ldev) {
 			if (i == master_idx)
 				continue;
 			mlx5_eswitch_offloads_single_fdb_del_one(master_esw,
 								 mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
 		}
+=======
+		mlx5_ldev_for_each(i, first_idx + 1, ldev)
+			mlx5_eswitch_offloads_single_fdb_del_one(master_esw,
+								 ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clear_bit(MLX5_LAG_MODE_FLAG_SHARED_FDB, &flags);
 	}
 
@@ -1014,26 +1190,42 @@ int mlx5_deactivate_lag(struct mlx5_lag *ldev)
 
 bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	int master_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+=======
+	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MLX5_ESWITCH
 	struct mlx5_core_dev *dev;
 	u8 mode;
 #endif
+<<<<<<< HEAD
 	struct lag_func *pf;
 	bool roce_support;
 	int i;
 
 	if (master_idx < 0 || mlx5_lag_num_devs(ldev) != ldev->ports)
+=======
+	bool roce_support;
+	int i;
+
+	if (first_idx < 0 || mlx5_lag_num_devs(ldev) != ldev->ports)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 #ifdef CONFIG_MLX5_ESWITCH
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, i);
 		dev = pf->dev;
+=======
+		dev = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (mlx5_eswitch_num_vfs(dev->priv.eswitch) && !is_mdev_switchdev_mode(dev))
 			return false;
 	}
 
+<<<<<<< HEAD
 	pf = mlx5_lag_pf(ldev, master_idx);
 	dev = pf->dev;
 	mode = mlx5_eswitch_mode(dev);
@@ -1059,12 +1251,30 @@ bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
 		if (mlx5_get_roce_state(pf->dev) != roce_support)
 			return false;
 	}
+=======
+	dev = ldev->pf[first_idx].dev;
+	mode = mlx5_eswitch_mode(dev);
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (mlx5_eswitch_mode(ldev->pf[i].dev) != mode)
+			return false;
+
+#else
+	mlx5_ldev_for_each(i, 0, ldev)
+		if (mlx5_sriov_is_enabled(ldev->pf[i].dev))
+			return false;
+#endif
+	roce_support = mlx5_get_roce_state(ldev->pf[first_idx].dev);
+	mlx5_ldev_for_each(i, first_idx + 1, ldev)
+		if (mlx5_get_roce_state(ldev->pf[i].dev) != roce_support)
+			return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
 
 void mlx5_lag_add_devices(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -1075,11 +1285,23 @@ void mlx5_lag_add_devices(struct mlx5_lag *ldev)
 
 		pf->dev->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
 		mlx5_rescan_drivers_locked(pf->dev);
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev) {
+		if (ldev->pf[i].dev->priv.flags &
+		    MLX5_PRIV_FLAGS_DISABLE_ALL_ADEV)
+			continue;
+
+		ldev->pf[i].dev->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
+		mlx5_rescan_drivers_locked(ldev->pf[i].dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 void mlx5_lag_remove_devices(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -1090,6 +1312,17 @@ void mlx5_lag_remove_devices(struct mlx5_lag *ldev)
 
 		pf->dev->priv.flags |= MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
 		mlx5_rescan_drivers_locked(pf->dev);
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev) {
+		if (ldev->pf[i].dev->priv.flags &
+		    MLX5_PRIV_FLAGS_DISABLE_ALL_ADEV)
+			continue;
+
+		ldev->pf[i].dev->priv.flags |= MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
+		mlx5_rescan_drivers_locked(ldev->pf[i].dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1105,7 +1338,11 @@ void mlx5_disable_lag(struct mlx5_lag *ldev)
 	if (idx < 0)
 		return;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, idx)->dev;
+=======
+	dev0 = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	roce_lag = __mlx5_lag_is_roce(ldev);
 
 	if (shared_fdb) {
@@ -1115,11 +1352,16 @@ void mlx5_disable_lag(struct mlx5_lag *ldev)
 			dev0->priv.flags |= MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
 			mlx5_rescan_drivers_locked(dev0);
 		}
+<<<<<<< HEAD
 		mlx5_ldev_for_each(i, 0, ldev) {
 			if (i == idx)
 				continue;
 			mlx5_nic_vport_disable_roce(mlx5_lag_pf(ldev, i)->dev);
 		}
+=======
+		mlx5_ldev_for_each(i, idx + 1, ldev)
+			mlx5_nic_vport_disable_roce(ldev->pf[i].dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = mlx5_deactivate_lag(ldev);
@@ -1131,12 +1373,18 @@ void mlx5_disable_lag(struct mlx5_lag *ldev)
 
 	if (shared_fdb)
 		mlx5_ldev_for_each(i, 0, ldev)
+<<<<<<< HEAD
 			if (!(mlx5_lag_pf(ldev, i)->dev->priv.flags & MLX5_PRIV_FLAGS_DISABLE_ALL_ADEV))
 				mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
+=======
+			if (!(ldev->pf[i].dev->priv.flags & MLX5_PRIV_FLAGS_DISABLE_ALL_ADEV))
+				mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool mlx5_lag_shared_fdb_supported(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	struct mlx5_core_dev *dev;
 	bool ret = false;
 	int idx;
@@ -1150,6 +1398,17 @@ bool mlx5_lag_shared_fdb_supported(struct mlx5_lag *ldev)
 		if (i == idx)
 			continue;
 		dev = mlx5_lag_pf(ldev, i)->dev;
+=======
+	int idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+	struct mlx5_core_dev *dev;
+	int i;
+
+	if (idx < 0)
+		return false;
+
+	mlx5_ldev_for_each(i, idx + 1, ldev) {
+		dev = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (is_mdev_switchdev_mode(dev) &&
 		    mlx5_eswitch_vport_match_metadata_enabled(dev->priv.eswitch) &&
 		    MLX5_CAP_GEN(dev, lag_native_fdb_selection) &&
@@ -1160,20 +1419,31 @@ bool mlx5_lag_shared_fdb_supported(struct mlx5_lag *ldev)
 		return false;
 	}
 
+<<<<<<< HEAD
 	dev = mlx5_lag_pf(ldev, idx)->dev;
+=======
+	dev = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_mdev_switchdev_mode(dev) &&
 	    mlx5_eswitch_vport_match_metadata_enabled(dev->priv.eswitch) &&
 	    mlx5_esw_offloads_devcom_is_ready(dev->priv.eswitch) &&
 	    MLX5_CAP_ESW(dev, esw_shared_ingress_acl) &&
 	    mlx5_eswitch_get_npeers(dev->priv.eswitch) == MLX5_CAP_GEN(dev, num_lag_ports) - 1)
+<<<<<<< HEAD
 		ret = true;
 
 	return ret;
+=======
+		return true;
+
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool mlx5_lag_is_roce_lag(struct mlx5_lag *ldev)
 {
 	bool roce_lag = true;
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -1187,6 +1457,16 @@ static bool mlx5_lag_is_roce_lag(struct mlx5_lag *ldev)
 		pf = mlx5_lag_pf(ldev, i);
 		roce_lag = roce_lag && is_mdev_legacy_mode(pf->dev);
 	}
+=======
+	int i;
+
+	mlx5_ldev_for_each(i, 0, ldev)
+		roce_lag = roce_lag && !mlx5_sriov_is_enabled(ldev->pf[i].dev);
+
+#ifdef CONFIG_MLX5_ESWITCH
+	mlx5_ldev_for_each(i, 0, ldev)
+		roce_lag = roce_lag && is_mdev_legacy_mode(ldev->pf[i].dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	return roce_lag;
@@ -1210,17 +1490,24 @@ mlx5_lag_sum_devices_speed(struct mlx5_lag *ldev, u32 *sum_speed,
 			   int (*get_speed)(struct mlx5_core_dev *, u32 *))
 {
 	struct mlx5_core_dev *pf_mdev;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pf_idx;
 	u32 speed;
 	int ret;
 
 	*sum_speed = 0;
 	mlx5_ldev_for_each(pf_idx, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, pf_idx);
 		if (!pf)
 			continue;
 		pf_mdev = pf->dev;
+=======
+		pf_mdev = ldev->pf[pf_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!pf_mdev)
 			continue;
 
@@ -1291,7 +1578,10 @@ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
 void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev)
 {
 	struct mlx5_core_dev *mdev;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 speed;
 	int pf_idx;
 
@@ -1311,10 +1601,14 @@ void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev)
 	speed = speed / MLX5_MAX_TX_SPEED_UNIT;
 
 	mlx5_ldev_for_each(pf_idx, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, pf_idx);
 		if (!pf)
 			continue;
 		mdev = pf->dev;
+=======
+		mdev = ldev->pf[pf_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!mdev)
 			continue;
 
@@ -1325,16 +1619,23 @@ void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev)
 void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
 {
 	struct mlx5_core_dev *mdev;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 speed;
 	int pf_idx;
 	int ret;
 
 	mlx5_ldev_for_each(pf_idx, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, pf_idx);
 		if (!pf)
 			continue;
 		mdev = pf->dev;
+=======
+		mdev = ldev->pf[pf_idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!mdev)
 			continue;
 
@@ -1365,7 +1666,11 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 	if (idx < 0)
 		return;
 
+<<<<<<< HEAD
 	dev0 = mlx5_lag_pf(ldev, idx)->dev;
+=======
+	dev0 = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!mlx5_lag_is_ready(ldev)) {
 		do_bond = false;
 	} else {
@@ -1395,6 +1700,7 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 				mlx5_lag_add_devices(ldev);
 			if (shared_fdb) {
 				mlx5_ldev_for_each(i, 0, ldev)
+<<<<<<< HEAD
 					mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
 			}
 
@@ -1412,6 +1718,18 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 				dev = mlx5_lag_pf(ldev, i)->dev;
 				if (mlx5_get_roce_state(dev))
 					mlx5_nic_vport_enable_roce(dev);
+=======
+					mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+			}
+
+			return;
+		} else if (roce_lag) {
+			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
+			mlx5_rescan_drivers_locked(dev0);
+			mlx5_ldev_for_each(i, idx + 1, ldev) {
+				if (mlx5_get_roce_state(ldev->pf[i].dev))
+					mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		} else if (shared_fdb) {
 			int i;
@@ -1420,7 +1738,11 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 			mlx5_rescan_drivers_locked(dev0);
 
 			mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 				err = mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
+=======
+				err = mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (err)
 					break;
 			}
@@ -1431,7 +1753,11 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 				mlx5_deactivate_lag(ldev);
 				mlx5_lag_add_devices(ldev);
 				mlx5_ldev_for_each(i, 0, ldev)
+<<<<<<< HEAD
 					mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
+=======
+					mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				mlx5_core_err(dev0, "Failed to enable lag\n");
 				return;
 			}
@@ -1463,19 +1789,28 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
 struct mlx5_devcom_comp_dev *mlx5_lag_get_devcom_comp(struct mlx5_lag *ldev)
 {
 	struct mlx5_devcom_comp_dev *devcom = NULL;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	mutex_lock(&ldev->lock);
 	i = mlx5_get_next_ldev_func(ldev, 0);
+<<<<<<< HEAD
 	if (i < MLX5_MAX_PORTS) {
 		pf = mlx5_lag_pf(ldev, i);
 		devcom = pf->dev->priv.hca_devcom_comp;
 	}
+=======
+	if (i < MLX5_MAX_PORTS)
+		devcom = ldev->pf[i].dev->priv.hca_devcom_comp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ldev->lock);
 	return devcom;
 }
 
+<<<<<<< HEAD
 static int mlx5_lag_demux_ft_fg_init(struct mlx5_core_dev *dev,
 				     struct mlx5_flow_table_attr *ft_attr,
 				     struct mlx5_lag *ldev)
@@ -1628,6 +1963,8 @@ void mlx5_lag_demux_rule_del(struct mlx5_core_dev *dev, int index)
 }
 EXPORT_SYMBOL(mlx5_lag_demux_rule_del);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mlx5_queue_bond_work(struct mlx5_lag *ldev, unsigned long delay)
 {
 	queue_delayed_work(ldev->wq, &ldev->bond_work, delay);
@@ -1672,7 +2009,10 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
 	struct netdev_lag_upper_info *lag_upper_info = NULL;
 	bool is_bonded, is_in_lag, mode_supported;
 	bool has_inactive = 0;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct slave *slave;
 	u8 bond_status = 0;
 	int num_slaves = 0;
@@ -1693,8 +2033,12 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
 	rcu_read_lock();
 	for_each_netdev_in_bond_rcu(upper, ndev_tmp) {
 		mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 			pf = mlx5_lag_pf(ldev, i);
 			if (pf->netdev == ndev_tmp) {
+=======
+			if (ldev->pf[i].netdev == ndev_tmp) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				idx++;
 				break;
 			}
@@ -1914,6 +2258,7 @@ static void mlx5_ldev_add_netdev(struct mlx5_lag *ldev,
 				struct mlx5_core_dev *dev,
 				struct net_device *netdev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	unsigned long flags;
 	int i;
@@ -1929,27 +2274,45 @@ static void mlx5_ldev_add_netdev(struct mlx5_lag *ldev,
 			break;
 		}
 	}
+=======
+	unsigned int fn = mlx5_get_dev_index(dev);
+	unsigned long flags;
+
+	spin_lock_irqsave(&lag_lock, flags);
+	ldev->pf[fn].netdev = netdev;
+	ldev->tracker.netdev_state[fn].link_up = 0;
+	ldev->tracker.netdev_state[fn].tx_enabled = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irqrestore(&lag_lock, flags);
 }
 
 static void mlx5_ldev_remove_netdev(struct mlx5_lag *ldev,
 				    struct net_device *netdev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	int i;
 
 	spin_lock_irqsave(&lag_lock, flags);
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, i);
 		if (pf->netdev == netdev) {
 			pf->netdev = NULL;
+=======
+		if (ldev->pf[i].netdev == netdev) {
+			ldev->pf[i].netdev = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
 	spin_unlock_irqrestore(&lag_lock, flags);
 }
 
+<<<<<<< HEAD
 static int mlx5_ldev_add_mdev(struct mlx5_lag *ldev,
 			      struct mlx5_core_dev *dev)
 {
@@ -1977,11 +2340,25 @@ static int mlx5_ldev_add_mdev(struct mlx5_lag *ldev,
 	mlx5_eq_notifier_register(dev, &pf->port_change_nb);
 
 	return 0;
+=======
+static void mlx5_ldev_add_mdev(struct mlx5_lag *ldev,
+			      struct mlx5_core_dev *dev)
+{
+	unsigned int fn = mlx5_get_dev_index(dev);
+
+	ldev->pf[fn].dev = dev;
+	dev->priv.lag = ldev;
+
+	MLX5_NB_INIT(&ldev->pf[fn].port_change_nb,
+		     mlx5_lag_mpesw_port_change_event, PORT_CHANGE);
+	mlx5_eq_notifier_register(dev, &ldev->pf[fn].port_change_nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mlx5_ldev_remove_mdev(struct mlx5_lag *ldev,
 				  struct mlx5_core_dev *dev)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -2000,6 +2377,19 @@ static void mlx5_ldev_remove_mdev(struct mlx5_lag *ldev,
 	dev->priv.lag = NULL;
 	xa_erase(&ldev->pfs, pf->idx);
 	kfree(pf);
+=======
+	int fn;
+
+	fn = mlx5_get_dev_index(dev);
+	if (ldev->pf[fn].dev != dev)
+		return;
+
+	if (ldev->pf[fn].port_change_nb.nb.notifier_call)
+		mlx5_eq_notifier_unregister(dev, &ldev->pf[fn].port_change_nb);
+
+	ldev->pf[fn].dev = NULL;
+	dev->priv.lag = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Must be called with HCA devcom component lock held */
@@ -2008,7 +2398,10 @@ static int __mlx5_lag_dev_add_mdev(struct mlx5_core_dev *dev)
 	struct mlx5_devcom_comp_dev *pos = NULL;
 	struct mlx5_lag *ldev = NULL;
 	struct mlx5_core_dev *tmp_dev;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tmp_dev = mlx5_devcom_get_next_peer_data(dev->priv.hca_devcom_comp, &pos);
 	if (tmp_dev)
@@ -2020,12 +2413,16 @@ static int __mlx5_lag_dev_add_mdev(struct mlx5_core_dev *dev)
 			mlx5_core_err(dev, "Failed to alloc lag dev\n");
 			return 0;
 		}
+<<<<<<< HEAD
 		err = mlx5_ldev_add_mdev(ldev, dev);
 		if (err) {
 			mlx5_core_err(dev, "Failed to add mdev to lag dev\n");
 			mlx5_ldev_put(ldev);
 			return 0;
 		}
+=======
+		mlx5_ldev_add_mdev(ldev, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -2035,12 +2432,16 @@ static int __mlx5_lag_dev_add_mdev(struct mlx5_core_dev *dev)
 		return -EAGAIN;
 	}
 	mlx5_ldev_get(ldev);
+<<<<<<< HEAD
 	err = mlx5_ldev_add_mdev(ldev, dev);
 	if (err) {
 		mlx5_ldev_put(ldev);
 		mutex_unlock(&ldev->lock);
 		return err;
 	}
+=======
+	mlx5_ldev_add_mdev(ldev, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ldev->lock);
 
 	return 0;
@@ -2068,8 +2469,12 @@ static int mlx5_lag_register_hca_devcom_comp(struct mlx5_core_dev *dev)
 	dev->priv.hca_devcom_comp =
 		mlx5_devcom_register_component(dev->priv.devc,
 					       MLX5_DEVCOM_HCA_PORTS,
+<<<<<<< HEAD
 					       &attr, mlx5_lag_devcom_event,
 					       dev);
+=======
+					       &attr, NULL, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dev->priv.hca_devcom_comp) {
 		mlx5_core_err(dev,
 			      "Failed to register devcom HCA component.");
@@ -2100,9 +2505,12 @@ recheck:
 	}
 	mlx5_ldev_remove_mdev(ldev, dev);
 	mutex_unlock(&ldev->lock);
+<<<<<<< HEAD
 	/* Send devcom event to notify peers that a device is being removed */
 	mlx5_devcom_send_event(dev->priv.hca_devcom_comp,
 			       LAG_DEVCOM_UNPAIR, LAG_DEVCOM_UNPAIR, dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_lag_unregister_hca_devcom_comp(dev);
 	mlx5_ldev_put(ldev);
 }
@@ -2126,9 +2534,12 @@ recheck:
 		msleep(100);
 		goto recheck;
 	}
+<<<<<<< HEAD
 	/* Send devcom event to notify peers that a device was added */
 	mlx5_devcom_send_event(dev->priv.hca_devcom_comp,
 			       LAG_DEVCOM_PAIR, LAG_DEVCOM_UNPAIR, dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_ldev_add_debugfs(dev);
 }
 
@@ -2174,6 +2585,7 @@ void mlx5_lag_add_netdev(struct mlx5_core_dev *dev,
 
 int mlx5_get_pre_ldev_func(struct mlx5_lag *ldev, int start_idx, int end_idx)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	int i;
 
@@ -2182,17 +2594,32 @@ int mlx5_get_pre_ldev_func(struct mlx5_lag *ldev, int start_idx, int end_idx)
 		if (pf && pf->dev)
 			return i;
 	}
+=======
+	int i;
+
+	for (i = start_idx; i >= end_idx; i--)
+		if (ldev->pf[i].dev)
+			return i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return -1;
 }
 
 int mlx5_get_next_ldev_func(struct mlx5_lag *ldev, int start_idx)
 {
+<<<<<<< HEAD
 	struct lag_func *pf;
 	unsigned long idx;
 
 	xa_for_each_start(&ldev->pfs, idx, pf, start_idx)
 		if (pf->dev)
 			return idx;
+=======
+	int i;
+
+	for (i = start_idx; i < MLX5_MAX_PORTS; i++)
+		if (ldev->pf[i].dev)
+			return i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return MLX5_MAX_PORTS;
 }
 
@@ -2246,17 +2673,24 @@ bool mlx5_lag_is_master(struct mlx5_core_dev *dev)
 {
 	struct mlx5_lag *ldev;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool res = false;
 	int idx;
 
 	spin_lock_irqsave(&lag_lock, flags);
 	ldev = mlx5_lag_dev(dev);
 	idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+<<<<<<< HEAD
 	if (ldev && __mlx5_lag_is_active(ldev) && idx >= 0) {
 		pf = mlx5_lag_pf(ldev, idx);
 		res = pf && dev == pf->dev;
 	}
+=======
+	res = ldev && __mlx5_lag_is_active(ldev) && idx >= 0 && dev == ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irqrestore(&lag_lock, flags);
 
 	return res;
@@ -2335,7 +2769,10 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
 {
 	struct mlx5_lag *ldev;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 port = 0;
 	int i;
 
@@ -2345,8 +2782,12 @@ u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
 		goto unlock;
 
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		pf = mlx5_lag_pf(ldev, i);
 		if (pf->netdev == slave) {
+=======
+		if (ldev->pf[i].netdev == slave) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			port = i;
 			break;
 		}
@@ -2377,7 +2818,10 @@ struct mlx5_core_dev *mlx5_lag_get_next_peer_mdev(struct mlx5_core_dev *dev, int
 	struct mlx5_core_dev *peer_dev = NULL;
 	struct mlx5_lag *ldev;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int idx;
 
 	spin_lock_irqsave(&lag_lock, flags);
@@ -2387,11 +2831,17 @@ struct mlx5_core_dev *mlx5_lag_get_next_peer_mdev(struct mlx5_core_dev *dev, int
 
 	if (*i == MLX5_MAX_PORTS)
 		goto unlock;
+<<<<<<< HEAD
 	mlx5_ldev_for_each(idx, *i, ldev) {
 		pf = mlx5_lag_pf(ldev, idx);
 		if (pf->dev != dev)
 			break;
 	}
+=======
+	mlx5_ldev_for_each(idx, *i, ldev)
+		if (ldev->pf[idx].dev != dev)
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (idx == MLX5_MAX_PORTS) {
 		*i = idx;
@@ -2399,8 +2849,12 @@ struct mlx5_core_dev *mlx5_lag_get_next_peer_mdev(struct mlx5_core_dev *dev, int
 	}
 	*i = idx + 1;
 
+<<<<<<< HEAD
 	pf = mlx5_lag_pf(ldev, idx);
 	peer_dev = pf->dev;
+=======
+	peer_dev = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	spin_unlock_irqrestore(&lag_lock, flags);
@@ -2418,7 +2872,10 @@ int mlx5_lag_query_cong_counters(struct mlx5_core_dev *dev,
 	int ret = 0, i, j, idx = 0;
 	struct mlx5_lag *ldev;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct lag_func *pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int num_ports;
 	void *out;
 
@@ -2438,10 +2895,15 @@ int mlx5_lag_query_cong_counters(struct mlx5_core_dev *dev,
 	ldev = mlx5_lag_dev(dev);
 	if (ldev && __mlx5_lag_is_active(ldev)) {
 		num_ports = ldev->ports;
+<<<<<<< HEAD
 		mlx5_ldev_for_each(i, 0, ldev) {
 			pf = mlx5_lag_pf(ldev, i);
 			mdev[idx++] = pf->dev;
 		}
+=======
+		mlx5_ldev_for_each(i, 0, ldev)
+			mdev[idx++] = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		num_ports = 1;
 		mdev[MLX5_LAG_P1] = dev;

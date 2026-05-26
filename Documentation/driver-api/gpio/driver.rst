@@ -87,6 +87,7 @@ atomic context on realtime kernels (inside hard IRQ handlers and similar
 contexts). Normally this should not be required.
 
 
+<<<<<<< HEAD
 GPIO level semantics
 --------------------
 
@@ -114,6 +115,8 @@ not worry about this, and can for example assert a RESET line tied to a GPIO
 pin by setting it to logic 1 even if it is physically active low.
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 GPIO electrical configuration
 -----------------------------
 

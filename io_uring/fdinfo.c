@@ -190,9 +190,14 @@ static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
 			get_task_struct(tsk);
 			rcu_read_unlock();
 			usec = io_sq_cpu_usec(tsk);
+<<<<<<< HEAD
 			sq_pid = task_pid_nr_ns(tsk,
 						proc_pid_ns(file_inode(m->file)->i_sb));
 			put_task_struct(tsk);
+=======
+			put_task_struct(tsk);
+			sq_pid = sq->task_pid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sq_cpu = sq->sq_cpu;
 			sq_total_time = usec;
 			sq_work_time = sq->work_time;

@@ -88,7 +88,11 @@ EXPORT_SYMBOL(of_graph_is_present);
  * Search for a property in a device node and count the number of elements of
  * size elem_size in it.
  *
+<<<<<<< HEAD
  * Return: The number of elements on success, -EINVAL if the property does not
+=======
+ * Return: The number of elements on sucess, -EINVAL if the property does not
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * exist or its length does not match a multiple of elem_size and -ENODATA if
  * the property does not have a value.
  */
@@ -1620,6 +1624,7 @@ static int of_fwnode_irq_get(const struct fwnode_handle *fwnode,
 	return of_irq_get(to_of_node(fwnode), index);
 }
 
+<<<<<<< HEAD
 static int match_property_by_path(const char *node_path, const char *prop_name,
 				  const char *value)
 {
@@ -1644,12 +1649,18 @@ static bool of_is_fwnode_add_links_supported(void)
 	return !!is_supported;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int of_fwnode_add_links(struct fwnode_handle *fwnode)
 {
 	const struct property *p;
 	struct device_node *con_np = to_of_node(fwnode);
 
+<<<<<<< HEAD
 	if (!of_is_fwnode_add_links_supported())
+=======
+	if (IS_ENABLED(CONFIG_X86))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	if (!con_np)

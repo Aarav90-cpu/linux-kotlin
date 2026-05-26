@@ -5,6 +5,13 @@
 #ifndef _KERNEL_SCHED_SCHED_H
 #define _KERNEL_SCHED_SCHED_H
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+#include "alt_sched.h"
+#else
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/prandom.h>
 #include <linux/sched/affinity.h>
 #include <linux/sched/autogroup.h>
@@ -356,7 +363,11 @@ extern int  sched_dl_global_validate(void);
 extern void sched_dl_do_global(void);
 extern int  sched_dl_overflow(struct task_struct *p, int policy, const struct sched_attr *attr);
 extern void __setparam_dl(struct task_struct *p, const struct sched_attr *attr);
+<<<<<<< HEAD
 extern void __getparam_dl(struct task_struct *p, struct sched_attr *attr, unsigned int flags);
+=======
+extern void __getparam_dl(struct task_struct *p, struct sched_attr *attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern bool __checkparam_dl(const struct sched_attr *attr);
 extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
 extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
@@ -684,9 +695,14 @@ struct cfs_rq {
 
 	s64			sum_w_vruntime;
 	u64			sum_weight;
+<<<<<<< HEAD
 	u64			zero_vruntime;
 	unsigned int		sum_shift;
 
+=======
+
+	u64			zero_vruntime;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SCHED_CORE
 	unsigned int		forceidle_seq;
 	u64			zero_vruntime_fi;
@@ -783,6 +799,10 @@ enum scx_rq_flags {
 	SCX_RQ_ONLINE		= 1 << 0,
 	SCX_RQ_CAN_STOP_TICK	= 1 << 1,
 	SCX_RQ_BAL_KEEP		= 1 << 3, /* balance decided to keep current */
+<<<<<<< HEAD
+=======
+	SCX_RQ_BYPASSING	= 1 << 4,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SCX_RQ_CLK_VALID	= 1 << 5, /* RQ clock is fresh and valid */
 	SCX_RQ_BAL_CB_PENDING	= 1 << 6, /* must queue a cb after dispatching */
 
@@ -798,10 +818,15 @@ struct scx_rq {
 	u64			extra_enq_flags;	/* see move_task_to_local_dsq() */
 	u32			nr_running;
 	u32			cpuperf_target;		/* [0, SCHED_CAPACITY_SCALE] */
+<<<<<<< HEAD
 	bool			in_select_cpu;
 	bool			cpu_released;
 	u32			flags;
 	u32			nr_immed;		/* ENQ_IMMED tasks on local_dsq */
+=======
+	bool			cpu_released;
+	u32			flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64			clock;			/* current per-rq clock -- see scx_bpf_now() */
 	cpumask_var_t		cpus_to_kick;
 	cpumask_var_t		cpus_to_kick_if_idle;
@@ -810,6 +835,7 @@ struct scx_rq {
 	cpumask_var_t		cpus_to_sync;
 	bool			kick_sync_pending;
 	unsigned long		kick_sync;
+<<<<<<< HEAD
 
 	struct task_struct	*sub_dispatch_prev;
 
@@ -817,10 +843,17 @@ struct scx_rq {
 	u64			deferred_reenq_locals_seq;
 	struct list_head	deferred_reenq_locals;	/* scheds requesting reenq of local DSQ */
 	struct list_head	deferred_reenq_users;	/* user DSQs requesting reenq */
+=======
+	local_t			reenq_local_deferred;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct balance_callback	deferred_bal_cb;
 	struct balance_callback	kick_sync_bal_cb;
 	struct irq_work		deferred_irq_work;
 	struct irq_work		kick_cpus_irq_work;
+<<<<<<< HEAD
+=======
+	struct scx_dispatch_q	bypass_dsq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #endif /* CONFIG_SCHED_CLASS_EXT */
 
@@ -1295,8 +1328,11 @@ struct rq {
 	call_single_data_t	hrtick_csd;
 	struct hrtimer		hrtick_timer;
 	ktime_t			hrtick_time;
+<<<<<<< HEAD
 	ktime_t			hrtick_delay;
 	unsigned int		hrtick_sched;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifdef CONFIG_SCHEDSTATS
@@ -1441,12 +1477,20 @@ static inline struct cpumask *sched_group_span(struct sched_group *sg);
 
 DECLARE_STATIC_KEY_FALSE(__sched_core_enabled);
 
+<<<<<<< HEAD
 static inline bool sched_core_enabled(struct rq *rq)
+=======
+static __always_inline bool sched_core_enabled(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return static_branch_unlikely(&__sched_core_enabled) && rq->core_enabled;
 }
 
+<<<<<<< HEAD
 static inline bool sched_core_disabled(void)
+=======
+static __always_inline bool sched_core_disabled(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return !static_branch_unlikely(&__sched_core_enabled);
 }
@@ -1455,7 +1499,11 @@ static inline bool sched_core_disabled(void)
  * Be careful with this function; not for general use. The return value isn't
  * stable unless you actually hold a relevant rq->__lock.
  */
+<<<<<<< HEAD
 static inline raw_spinlock_t *rq_lockp(struct rq *rq)
+=======
+static __always_inline raw_spinlock_t *rq_lockp(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (sched_core_enabled(rq))
 		return &rq->core->__lock;
@@ -1463,7 +1511,11 @@ static inline raw_spinlock_t *rq_lockp(struct rq *rq)
 	return &rq->__lock;
 }
 
+<<<<<<< HEAD
 static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
+=======
+static __always_inline raw_spinlock_t *__rq_lockp(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__returns_ctx_lock(rq_lockp(rq)) /* alias them */
 {
 	if (rq->core_enabled)
@@ -1558,12 +1610,20 @@ static inline bool sched_core_disabled(void)
 	return true;
 }
 
+<<<<<<< HEAD
 static inline raw_spinlock_t *rq_lockp(struct rq *rq)
+=======
+static __always_inline raw_spinlock_t *rq_lockp(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return &rq->__lock;
 }
 
+<<<<<<< HEAD
 static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
+=======
+static __always_inline raw_spinlock_t *__rq_lockp(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__returns_ctx_lock(rq_lockp(rq)) /* alias them */
 {
 	return &rq->__lock;
@@ -1618,26 +1678,42 @@ extern void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
 extern bool raw_spin_rq_trylock(struct rq *rq)
 	__cond_acquires(true, __rq_lockp(rq));
 
+<<<<<<< HEAD
 static inline void raw_spin_rq_lock(struct rq *rq)
+=======
+static __always_inline void raw_spin_rq_lock(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__acquires(__rq_lockp(rq))
 {
 	raw_spin_rq_lock_nested(rq, 0);
 }
 
+<<<<<<< HEAD
 static inline void raw_spin_rq_unlock(struct rq *rq)
+=======
+static __always_inline void raw_spin_rq_unlock(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(__rq_lockp(rq))
 {
 	raw_spin_unlock(rq_lockp(rq));
 }
 
+<<<<<<< HEAD
 static inline void raw_spin_rq_lock_irq(struct rq *rq)
+=======
+static __always_inline void raw_spin_rq_lock_irq(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__acquires(__rq_lockp(rq))
 {
 	local_irq_disable();
 	raw_spin_rq_lock(rq);
 }
 
+<<<<<<< HEAD
 static inline void raw_spin_rq_unlock_irq(struct rq *rq)
+=======
+static __always_inline void raw_spin_rq_unlock_irq(struct rq *rq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(__rq_lockp(rq))
 {
 	raw_spin_rq_unlock(rq);
@@ -1868,6 +1944,7 @@ static inline void scx_rq_clock_update(struct rq *rq, u64 clock) {}
 static inline void scx_rq_clock_invalidate(struct rq *rq) {}
 #endif /* !CONFIG_SCHED_CLASS_EXT */
 
+<<<<<<< HEAD
 static inline void assert_balance_callbacks_empty(struct rq *rq)
 {
 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PROVE_LOCKING) &&
@@ -1875,6 +1952,8 @@ static inline void assert_balance_callbacks_empty(struct rq *rq)
 		     rq->balance_callback != &balance_push_callback);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Lockdep annotation that avoids accidental unlocks; it's like a
  * sticky/continuous lockdep_assert_held().
@@ -1891,7 +1970,11 @@ static inline void rq_pin_lock(struct rq *rq, struct rq_flags *rf)
 
 	rq->clock_update_flags &= (RQCF_REQ_SKIP|RQCF_ACT_SKIP);
 	rf->clock_update_flags = 0;
+<<<<<<< HEAD
 	assert_balance_callbacks_empty(rq);
+=======
+	WARN_ON_ONCE(rq->balance_callback && rq->balance_callback != &balance_push_callback);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void rq_unpin_lock(struct rq *rq, struct rq_flags *rf)
@@ -2871,7 +2954,11 @@ static inline void idle_set_state(struct rq *rq,
 
 static inline struct cpuidle_state *idle_get_state(struct rq *rq)
 {
+<<<<<<< HEAD
 	lockdep_assert(rcu_read_lock_any_held());
+=======
+	WARN_ON_ONCE(!rcu_read_lock_held());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return rq->idle_state;
 }
@@ -3023,6 +3110,7 @@ extern void deactivate_task(struct rq *rq, struct task_struct *p, int flags);
 
 extern void wakeup_preempt(struct rq *rq, struct task_struct *p, int flags);
 
+<<<<<<< HEAD
 /*
  * attach_task() -- attach the task detached by detach_task() to its new rq.
  */
@@ -3047,6 +3135,9 @@ static inline void attach_one_task(struct rq *rq, struct task_struct *p)
 }
 
 #ifdef CONFIG_PREEMPT_RT
+=======
+#if defined(CONFIG_PREEMPT_RT) || defined(CONFIG_ZEN_INTERACTIVE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # define SCHED_NR_MIGRATE_BREAK 8
 #else
 # define SCHED_NR_MIGRATE_BREAK 32
@@ -3075,6 +3166,7 @@ extern unsigned int sysctl_numa_balancing_hot_threshold;
  *  - enabled by features
  *  - hrtimer is actually high res
  */
+<<<<<<< HEAD
 static inline bool hrtick_enabled(struct rq *rq)
 {
 	return cpu_active(cpu_of(rq)) && hrtimer_highres_enabled();
@@ -3100,6 +3192,48 @@ static inline bool hrtick_active(struct rq *rq)
 static inline bool hrtick_enabled_fair(struct rq *rq) { return false; }
 static inline bool hrtick_enabled_dl(struct rq *rq) { return false; }
 static inline bool hrtick_enabled(struct rq *rq) { return false; }
+=======
+static inline int hrtick_enabled(struct rq *rq)
+{
+	if (!cpu_active(cpu_of(rq)))
+		return 0;
+	return hrtimer_is_hres_active(&rq->hrtick_timer);
+}
+
+static inline int hrtick_enabled_fair(struct rq *rq)
+{
+	if (!sched_feat(HRTICK))
+		return 0;
+	return hrtick_enabled(rq);
+}
+
+static inline int hrtick_enabled_dl(struct rq *rq)
+{
+	if (!sched_feat(HRTICK_DL))
+		return 0;
+	return hrtick_enabled(rq);
+}
+
+extern void hrtick_start(struct rq *rq, u64 delay);
+
+#else /* !CONFIG_SCHED_HRTICK: */
+
+static inline int hrtick_enabled_fair(struct rq *rq)
+{
+	return 0;
+}
+
+static inline int hrtick_enabled_dl(struct rq *rq)
+{
+	return 0;
+}
+
+static inline int hrtick_enabled(struct rq *rq)
+{
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_SCHED_HRTICK */
 
 #ifndef arch_scale_freq_tick
@@ -4136,4 +4270,12 @@ DEFINE_CLASS_IS_UNCONDITIONAL(sched_change)
 
 #include "ext.h"
 
+<<<<<<< HEAD
+=======
+static inline int task_running_nice(struct task_struct *p)
+{
+	return (task_nice(p) > 0);
+}
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _KERNEL_SCHED_SCHED_H */

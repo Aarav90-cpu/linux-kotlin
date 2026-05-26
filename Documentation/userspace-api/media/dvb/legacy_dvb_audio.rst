@@ -444,7 +444,11 @@ Description
 ~~~~~~~~~~~
 
 A call to `AUDIO_GET_CAPABILITIES`_ returns an unsigned integer with the
+<<<<<<< HEAD
 following bits set according to the hardware's capabilities.
+=======
+following bits set according to the hardwares capabilities.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 -----

@@ -2265,6 +2265,7 @@ static inline int nla_nest_end(struct sk_buff *skb, struct nlattr *start)
 }
 
 /**
+<<<<<<< HEAD
  * nla_nest_end_safe - Validate and finalize nesting of attributes
  * @skb: socket buffer the attributes are stored in
  * @start: container attribute
@@ -2284,6 +2285,8 @@ static inline int nla_nest_end_safe(struct sk_buff *skb, struct nlattr *start)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * nla_nest_cancel - Cancel nesting of attributes
  * @skb: socket buffer the message is stored in
  * @start: container attribute

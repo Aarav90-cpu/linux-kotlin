@@ -198,6 +198,10 @@ query the reset line status using reset_control_status().
                reset_control_rearm
                reset_control_put
                of_reset_control_get_count
+<<<<<<< HEAD
+=======
+               of_reset_control_array_get
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                devm_reset_control_array_get
                reset_control_get_count
 

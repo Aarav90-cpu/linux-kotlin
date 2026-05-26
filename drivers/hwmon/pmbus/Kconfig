@@ -77,6 +77,7 @@ config SENSORS_ADP1050_REGULATOR
 	  µModule regulators that can provide microprocessor power from 54V
 	  power distribution architecture.
 
+<<<<<<< HEAD
 config SENSORS_APS_379
 	tristate "Sony APS-379 Power Supplies"
 	help
@@ -86,6 +87,8 @@ config SENSORS_APS_379
 	  This driver can also be built as a module. If so, the module will
 	  be called aps-379.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SENSORS_BEL_PFE
 	tristate "Bel PFE Compatible Power Supplies"
 	help
@@ -711,6 +714,7 @@ config SENSORS_XDP710
 	  This driver can also be built as a module. If so, the module will
 	  be called xdp710.
 
+<<<<<<< HEAD
 config SENSORS_XDP720
 	tristate "Infineon XDP720 family"
 	help
@@ -720,6 +724,8 @@ config SENSORS_XDP720
 	  This driver can also be built as a module. If so, the module will
 	  be called xdp720.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SENSORS_XDPE152
 	tristate "Infineon XDPE152 family"
 	help
@@ -729,6 +735,7 @@ config SENSORS_XDPE152
 	  This driver can also be built as a module. If so, the module will
 	  be called xdpe152c4.
 
+<<<<<<< HEAD
 config SENSORS_XDPE1A2G7B
 	tristate "Infineon XDPE1A2G7B"
 	help
@@ -738,6 +745,8 @@ config SENSORS_XDPE1A2G7B
 	  This driver can also be built as a module. If so, the module will
 	  be called xdpe1a2g7b.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SENSORS_XDPE122
 	tristate "Infineon XDPE122 family"
 	help

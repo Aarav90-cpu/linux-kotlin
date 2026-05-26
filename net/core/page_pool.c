@@ -327,11 +327,14 @@ static void page_pool_uninit(struct page_pool *pool)
 	if (!pool->system)
 		free_percpu(pool->recycle_stats);
 #endif
+<<<<<<< HEAD
 
 	if (pool->mp_ops) {
 		pool->mp_ops->destroy(pool);
 		static_branch_dec(&page_pool_mem_providers);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -707,6 +710,7 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
 
 void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
 {
+<<<<<<< HEAD
 	struct page *page;
 
 	netmem_set_pp(netmem, pool);
@@ -719,6 +723,10 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
 	 */
 	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
 	__SetPageNetpp(page);
+=======
+	netmem_set_pp(netmem, pool);
+	netmem_or_pp_magic(netmem, PP_SIGNATURE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Ensuring all pages have been split into one fragment initially:
 	 * page_pool_set_pp_info() is only called once for every page when it
@@ -733,6 +741,7 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
 
 void page_pool_clear_pp_info(netmem_ref netmem)
 {
+<<<<<<< HEAD
 	struct page *page;
 
 	/* XXX: Now that the offset of page_type is shared between
@@ -744,6 +753,9 @@ void page_pool_clear_pp_info(netmem_ref netmem)
 	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
 	__ClearPageNetpp(page);
 
+=======
+	netmem_clear_pp_magic(netmem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netmem_set_pp(netmem, NULL);
 }
 
@@ -1151,6 +1163,14 @@ static void __page_pool_destroy(struct page_pool *pool)
 	page_pool_unlist(pool);
 	page_pool_uninit(pool);
 
+<<<<<<< HEAD
+=======
+	if (pool->mp_ops) {
+		pool->mp_ops->destroy(pool);
+		static_branch_dec(&page_pool_mem_providers);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(pool);
 }
 

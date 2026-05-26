@@ -170,7 +170,11 @@ static struct cxl_hdm *devm_cxl_setup_hdm(struct cxl_port *port,
 	}
 
 	parse_hdm_decoder_caps(cxlhdm);
+<<<<<<< HEAD
 	if (cxlhdm->decoder_count < 0) {
+=======
+	if (cxlhdm->decoder_count == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "Spec violation. Caps invalid\n");
 		return ERR_PTR(-ENXIO);
 	}

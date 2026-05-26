@@ -380,6 +380,7 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 			container_of(dattr, struct edt_ft5x06_attribute, dattr);
 	u8 *field = (u8 *)tsdata + attr->field_offset;
 	unsigned int val;
+<<<<<<< HEAD
 	int error;
 	u8 addr;
 
@@ -387,6 +388,18 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 
 	if (tsdata->factory_mode)
 		return -EIO;
+=======
+	size_t count = 0;
+	int error = 0;
+	u8 addr;
+
+	mutex_lock(&tsdata->mutex);
+
+	if (tsdata->factory_mode) {
+		error = -EIO;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (tsdata->version) {
 	case EDT_M06:
@@ -404,7 +417,12 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 		break;
 
 	default:
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		error = -ENODEV;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (addr != NO_REGISTER) {
@@ -413,7 +431,11 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 			dev_err(&tsdata->client->dev,
 				"Failed to fetch attribute %s, error %d\n",
 				dattr->attr.name, error);
+<<<<<<< HEAD
 			return error;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		val = *field;
@@ -426,7 +448,14 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 		*field = val;
 	}
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", val);
+=======
+	count = sysfs_emit(buf, "%d\n", val);
+out:
+	mutex_unlock(&tsdata->mutex);
+	return error ?: count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t edt_ft5x06_setting_store(struct device *dev,
@@ -442,6 +471,7 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 	int error;
 	u8 addr;
 
+<<<<<<< HEAD
 	guard(mutex)(&tsdata->mutex);
 
 	if (tsdata->factory_mode)
@@ -453,6 +483,23 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 
 	if (val < attr->limit_low || val > attr->limit_high)
 		return -ERANGE;
+=======
+	mutex_lock(&tsdata->mutex);
+
+	if (tsdata->factory_mode) {
+		error = -EIO;
+		goto out;
+	}
+
+	error = kstrtouint(buf, 0, &val);
+	if (error)
+		goto out;
+
+	if (val < attr->limit_low || val > attr->limit_high) {
+		error = -ERANGE;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (tsdata->version) {
 	case EDT_M06:
@@ -470,7 +517,12 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 		break;
 
 	default:
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		error = -ENODEV;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (addr != NO_REGISTER) {
@@ -479,12 +531,22 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 			dev_err(&tsdata->client->dev,
 				"Failed to update attribute %s, error: %d\n",
 				dattr->attr.name, error);
+<<<<<<< HEAD
 			return error;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	*field = val;
 
+<<<<<<< HEAD
 	return count;
+=======
+out:
+	mutex_unlock(&tsdata->mutex);
+	return error ?: count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* m06, m09: range 0-31, m12: range 0-5 */
@@ -700,10 +762,15 @@ static int edt_ft5x06_debugfs_mode_get(void *data, u64 *mode)
 static int edt_ft5x06_debugfs_mode_set(void *data, u64 mode)
 {
 	struct edt_ft5x06_ts_data *tsdata = data;
+<<<<<<< HEAD
+=======
+	int retval = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mode > 1)
 		return -ERANGE;
 
+<<<<<<< HEAD
 	guard(mutex)(&tsdata->mutex);
 
 	if (mode == tsdata->factory_mode)
@@ -711,6 +778,18 @@ static int edt_ft5x06_debugfs_mode_set(void *data, u64 mode)
 
 	return mode ? edt_ft5x06_factory_mode(tsdata) :
 		      edt_ft5x06_work_mode(tsdata);
+=======
+	mutex_lock(&tsdata->mutex);
+
+	if (mode != tsdata->factory_mode) {
+		retval = mode ? edt_ft5x06_factory_mode(tsdata) :
+				edt_ft5x06_work_mode(tsdata);
+	}
+
+	mutex_unlock(&tsdata->mutex);
+
+	return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 DEFINE_SIMPLE_ATTRIBUTE(debugfs_mode_fops, edt_ft5x06_debugfs_mode_get,
@@ -732,16 +811,29 @@ static ssize_t edt_ft5x06_debugfs_raw_data_read(struct file *file,
 	if (*off < 0 || *off >= tsdata->raw_bufsize)
 		return 0;
 
+<<<<<<< HEAD
 	guard(mutex)(&tsdata->mutex);
 
 	if (!tsdata->factory_mode || !tsdata->raw_buffer)
 		return -EIO;
+=======
+	mutex_lock(&tsdata->mutex);
+
+	if (!tsdata->factory_mode || !tsdata->raw_buffer) {
+		error = -EIO;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error = regmap_write(tsdata->regmap, 0x08, 0x01);
 	if (error) {
 		dev_err(&client->dev,
 			"failed to write 0x08 register, error %d\n", error);
+<<<<<<< HEAD
 		return error;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	do {
@@ -751,7 +843,11 @@ static ssize_t edt_ft5x06_debugfs_raw_data_read(struct file *file,
 			dev_err(&client->dev,
 				"failed to read 0x08 register, error %d\n",
 				error);
+<<<<<<< HEAD
 			return error;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (val == 1)
@@ -761,7 +857,12 @@ static ssize_t edt_ft5x06_debugfs_raw_data_read(struct file *file,
 	if (retries == 0) {
 		dev_err(&client->dev,
 			"timed out waiting for register to settle\n");
+<<<<<<< HEAD
 		return -ETIMEDOUT;
+=======
+		error = -ETIMEDOUT;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rdbuf = tsdata->raw_buffer;
@@ -771,17 +872,33 @@ static ssize_t edt_ft5x06_debugfs_raw_data_read(struct file *file,
 		rdbuf[0] = i;  /* column index */
 		error = regmap_bulk_read(tsdata->regmap, 0xf5, rdbuf, colbytes);
 		if (error)
+<<<<<<< HEAD
 			return error;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rdbuf += colbytes;
 	}
 
 	read = min_t(size_t, count, tsdata->raw_bufsize - *off);
+<<<<<<< HEAD
 	if (copy_to_user(buf, tsdata->raw_buffer + *off, read))
 		return -EFAULT;
 
 	*off += read;
 	return read;
+=======
+	if (copy_to_user(buf, tsdata->raw_buffer + *off, read)) {
+		error = -EFAULT;
+		goto out;
+	}
+
+	*off += read;
+out:
+	mutex_unlock(&tsdata->mutex);
+	return error ?: read;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct file_operations debugfs_raw_data_fops = {

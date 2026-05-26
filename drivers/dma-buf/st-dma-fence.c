@@ -14,18 +14,43 @@
 
 #include "selftest.h"
 
+<<<<<<< HEAD
+=======
+static struct kmem_cache *slab_fences;
+
+static struct mock_fence {
+	struct dma_fence base;
+	struct spinlock lock;
+} *to_mock_fence(struct dma_fence *f) {
+	return container_of(f, struct mock_fence, base);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *mock_name(struct dma_fence *f)
 {
 	return "mock";
 }
 
+<<<<<<< HEAD
 static const struct dma_fence_ops mock_ops = {
 	.get_driver_name = mock_name,
 	.get_timeline_name = mock_name,
+=======
+static void mock_fence_release(struct dma_fence *f)
+{
+	kmem_cache_free(slab_fences, to_mock_fence(f));
+}
+
+static const struct dma_fence_ops mock_ops = {
+	.get_driver_name = mock_name,
+	.get_timeline_name = mock_name,
+	.release = mock_fence_release,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct dma_fence *mock_fence(void)
 {
+<<<<<<< HEAD
 	struct dma_fence *f;
 
 	f = kmalloc(sizeof(*f), GFP_KERNEL);
@@ -34,6 +59,18 @@ static struct dma_fence *mock_fence(void)
 
 	dma_fence_init(f, &mock_ops, NULL, 0, 0);
 	return f;
+=======
+	struct mock_fence *f;
+
+	f = kmem_cache_alloc(slab_fences, GFP_KERNEL);
+	if (!f)
+		return NULL;
+
+	spin_lock_init(&f->lock);
+	dma_fence_init(&f->base, &mock_ops, &f->lock, 0, 0);
+
+	return &f->base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int sanitycheck(void *arg)
@@ -83,11 +120,14 @@ static int test_signaling(void *arg)
 		goto err_free;
 	}
 
+<<<<<<< HEAD
 	if (rcu_dereference_protected(f->ops, true)) {
 		pr_err("Fence ops not cleared on signal\n");
 		goto err_free;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = 0;
 err_free:
 	dma_fence_put(f);
@@ -398,10 +438,15 @@ struct race_thread {
 
 static void __wait_for_callbacks(struct dma_fence *f)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 
 	dma_fence_lock_irqsave(f, flags);
 	dma_fence_unlock_irqrestore(f, flags);
+=======
+	spin_lock_irq(f->lock);
+	spin_unlock_irq(f->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int thread_signal_callback(void *arg)
@@ -528,7 +573,25 @@ int dma_fence(void)
 		SUBTEST(test_stub),
 		SUBTEST(race_signal_callback),
 	};
+<<<<<<< HEAD
 
 	pr_info("sizeof(dma_fence)=%zu\n", sizeof(struct dma_fence));
 	return subtests(tests, NULL);
+=======
+	int ret;
+
+	pr_info("sizeof(dma_fence)=%zu\n", sizeof(struct dma_fence));
+
+	slab_fences = KMEM_CACHE(mock_fence,
+				 SLAB_TYPESAFE_BY_RCU |
+				 SLAB_HWCACHE_ALIGN);
+	if (!slab_fences)
+		return -ENOMEM;
+
+	ret = subtests(tests, NULL);
+
+	kmem_cache_destroy(slab_fences);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

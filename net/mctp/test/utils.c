@@ -80,6 +80,7 @@ struct mctp_test_dev *mctp_test_create_dev(void)
 	return __mctp_test_create_dev(0, NULL);
 }
 
+<<<<<<< HEAD
 struct mctp_test_dev *mctp_test_create_dev_with_addr(mctp_eid_t addr)
 {
 	struct mctp_test_dev *dev;
@@ -100,6 +101,8 @@ struct mctp_test_dev *mctp_test_create_dev_with_addr(mctp_eid_t addr)
 	return dev;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mctp_test_dev *mctp_test_create_dev_lladdr(unsigned short lladdr_len,
 						  const unsigned char *lladdr)
 {
@@ -116,7 +119,11 @@ void mctp_test_destroy_dev(struct mctp_test_dev *dev)
 static int mctp_test_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
 {
 	skb->dev = dst->dev->dev;
+<<<<<<< HEAD
 	dev_direct_xmit(skb, 0);
+=======
+	dev_queue_xmit(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -191,8 +198,11 @@ struct mctp_test_route *mctp_test_create_route_gw(struct net *net,
 void mctp_test_dst_setup(struct kunit *test, struct mctp_dst *dst,
 			 struct mctp_test_dev *dev, unsigned int mtu)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_EXPECT_NOT_ERR_OR_NULL(test, dev);
 
 	memset(dst, 0, sizeof(*dst));
@@ -201,11 +211,14 @@ void mctp_test_dst_setup(struct kunit *test, struct mctp_dst *dst,
 	__mctp_dev_get(dst->dev->dev);
 	dst->mtu = mtu;
 	dst->output = mctp_test_dst_output;
+<<<<<<< HEAD
 	dst->saddr = MCTP_ADDR_NULL;
 	spin_lock_irqsave(&dev->mdev->addrs_lock, flags);
 	if (dev->mdev->num_addrs)
 		dst->saddr = dev->mdev->addrs[0];
 	spin_unlock_irqrestore(&dev->mdev->addrs_lock, flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void mctp_test_route_destroy(struct kunit *test, struct mctp_test_route *rt)

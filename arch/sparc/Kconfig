@@ -104,6 +104,10 @@ config SPARC64
 	select ARCH_USE_QUEUED_RWLOCKS
 	select ARCH_USE_QUEUED_SPINLOCKS
 	select GENERIC_TIME_VSYSCALL
+<<<<<<< HEAD
+=======
+	select ARCH_CLOCKSOURCE_DATA
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ARCH_HAS_PTE_SPECIAL
 	select PCI_DOMAINS if PCI
 	select ARCH_HAS_GIGANTIC_PAGE
@@ -114,8 +118,11 @@ config SPARC64
 	select ARCH_SUPPORTS_SCHED_SMT if SMP
 	select ARCH_SUPPORTS_SCHED_MC  if SMP
 	select ARCH_HAS_LAZY_MMU_MODE
+<<<<<<< HEAD
 	select HAVE_GENERIC_VDSO
 	select GENERIC_GETTIMEOFDAY
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config ARCH_PROC_KCORE_TEXT
 	def_bool y

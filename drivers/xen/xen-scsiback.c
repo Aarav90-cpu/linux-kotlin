@@ -1832,7 +1832,10 @@ static const struct target_core_fabric_ops scsiback_ops = {
 	.tfc_tpg_base_attrs		= scsiback_tpg_attrs,
 	.tfc_tpg_param_attrs		= scsiback_param_attrs,
 
+<<<<<<< HEAD
 	.default_compl_type		= TARGET_QUEUE_COMPL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_submit_type		= TARGET_DIRECT_SUBMIT,
 	.direct_submit_supp		= 1,
 };

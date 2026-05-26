@@ -149,7 +149,11 @@ retry:
 		}
 		ASSERT(d_backing_inode(subdir));
 
+<<<<<<< HEAD
 		_debug("mkdir -> %pd{ino=%llu}",
+=======
+		_debug("mkdir -> %pd{ino=%lu}",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       subdir, d_backing_inode(subdir)->i_ino);
 		if (_is_new)
 			*_is_new = true;
@@ -160,7 +164,11 @@ retry:
 	end_creating_keep(subdir);
 
 	if (!__cachefiles_mark_inode_in_use(NULL, d_inode(subdir))) {
+<<<<<<< HEAD
 		pr_notice("cachefiles: Inode already in use: %pd (B=%llx)\n",
+=======
+		pr_notice("cachefiles: Inode already in use: %pd (B=%lx)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  subdir, d_inode(subdir)->i_ino);
 		goto mark_error;
 	}
@@ -185,7 +193,11 @@ retry:
 	    !d_backing_inode(subdir)->i_op->unlink)
 		goto check_error;
 
+<<<<<<< HEAD
 	_leave(" = [%llu]", d_backing_inode(subdir)->i_ino);
+=======
+	_leave(" = [%lu]", d_backing_inode(subdir)->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return subdir;
 
 check_error:
@@ -272,8 +284,12 @@ int cachefiles_bury_object(struct cachefiles_cache *cache,
 			   struct dentry *rep,
 			   enum fscache_why_object_killed why)
 {
+<<<<<<< HEAD
 	struct dentry *grave;
 	struct renamedata rd = {};
+=======
+	struct dentry *grave, *trap;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct path path, path_to_graveyard;
 	char nbuffer[8 + 8 + 1];
 	int ret;
@@ -305,6 +321,7 @@ try_again:
 		(uint32_t) ktime_get_real_seconds(),
 		(uint32_t) atomic_inc_return(&cache->gravecounter));
 
+<<<<<<< HEAD
 	rd.mnt_idmap = &nop_mnt_idmap;
 	rd.old_parent = dir;
 	rd.new_parent = cache->graveyard;
@@ -331,29 +348,96 @@ try_again:
 		}
 
 		cachefiles_io_error(cache, "Lookup error %d", ret);
+=======
+	/* do the multiway lock magic */
+	trap = lock_rename(cache->graveyard, dir);
+	if (IS_ERR(trap))
+		return PTR_ERR(trap);
+
+	/* do some checks before getting the grave dentry */
+	if (rep->d_parent != dir || IS_DEADDIR(d_inode(rep))) {
+		/* the entry was probably culled when we dropped the parent dir
+		 * lock */
+		unlock_rename(cache->graveyard, dir);
+		_leave(" = 0 [culled?]");
+		return 0;
+	}
+
+	if (!d_can_lookup(cache->graveyard)) {
+		unlock_rename(cache->graveyard, dir);
+		cachefiles_io_error(cache, "Graveyard no longer a directory");
+		return -EIO;
+	}
+
+	if (trap == rep) {
+		unlock_rename(cache->graveyard, dir);
+		cachefiles_io_error(cache, "May not make directory loop");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 
 	if (d_mountpoint(rep)) {
+<<<<<<< HEAD
 		end_renaming(&rd);
+=======
+		unlock_rename(cache->graveyard, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cachefiles_io_error(cache, "Mountpoint in cache");
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	grave = rd.new_dentry;
 	if (d_is_positive(grave)) {
 		end_renaming(&rd);
+=======
+	grave = lookup_one(&nop_mnt_idmap, &QSTR(nbuffer), cache->graveyard);
+	if (IS_ERR(grave)) {
+		unlock_rename(cache->graveyard, dir);
+		trace_cachefiles_vfs_error(object, d_inode(cache->graveyard),
+					   PTR_ERR(grave),
+					   cachefiles_trace_lookup_error);
+
+		if (PTR_ERR(grave) == -ENOMEM) {
+			_leave(" = -ENOMEM");
+			return -ENOMEM;
+		}
+
+		cachefiles_io_error(cache, "Lookup error %ld", PTR_ERR(grave));
+		return -EIO;
+	}
+
+	if (d_is_positive(grave)) {
+		unlock_rename(cache->graveyard, dir);
+		dput(grave);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		grave = NULL;
 		cond_resched();
 		goto try_again;
 	}
 
 	if (d_mountpoint(grave)) {
+<<<<<<< HEAD
 		end_renaming(&rd);
+=======
+		unlock_rename(cache->graveyard, dir);
+		dput(grave);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cachefiles_io_error(cache, "Mountpoint in graveyard");
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	/* target should not be an ancestor of source */
+	if (trap == grave) {
+		unlock_rename(cache->graveyard, dir);
+		dput(grave);
+		cachefiles_io_error(cache, "May not make directory loop");
+		return -EIO;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* attempt the rename */
 	path.mnt = cache->mnt;
 	path.dentry = dir;
@@ -363,6 +447,16 @@ try_again:
 	if (ret < 0) {
 		cachefiles_io_error(cache, "Rename security error %d", ret);
 	} else {
+<<<<<<< HEAD
+=======
+		struct renamedata rd = {
+			.mnt_idmap	= &nop_mnt_idmap,
+			.old_parent	= dir,
+			.old_dentry	= rep,
+			.new_parent	= cache->graveyard,
+			.new_dentry	= grave,
+		};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		trace_cachefiles_rename(object, d_inode(rep)->i_ino, why);
 		ret = cachefiles_inject_read_error();
 		if (ret == 0)
@@ -376,7 +470,12 @@ try_again:
 	}
 
 	__cachefiles_unmark_inode_in_use(object, d_inode(rep));
+<<<<<<< HEAD
 	end_renaming(&rd);
+=======
+	unlock_rename(cache->graveyard, dir);
+	dput(grave);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	_leave(" = 0");
 	return 0;
 }
@@ -502,7 +601,11 @@ static bool cachefiles_create_file(struct cachefiles_object *object)
 
 	set_bit(FSCACHE_COOKIE_NEEDS_UPDATE, &object->cookie->flags);
 	set_bit(CACHEFILES_OBJECT_USING_TMPFILE, &object->flags);
+<<<<<<< HEAD
 	_debug("create -> %pD{ino=%llu}", file, file_inode(file)->i_ino);
+=======
+	_debug("create -> %pD{ino=%lu}", file, file_inode(file)->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	object->file = file;
 	return true;
 }
@@ -522,7 +625,11 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
 	_enter("%pd", dentry);
 
 	if (!cachefiles_mark_inode_in_use(object, d_inode(dentry))) {
+<<<<<<< HEAD
 		pr_notice("cachefiles: Inode already in use: %pd (B=%llx)\n",
+=======
+		pr_notice("cachefiles: Inode already in use: %pd (B=%lx)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  dentry, d_inode(dentry)->i_ino);
 		return false;
 	}
@@ -630,7 +737,11 @@ bool cachefiles_look_up_object(struct cachefiles_object *object)
 	if (!ret)
 		return false;
 
+<<<<<<< HEAD
 	_leave(" = t [%llu]", file_inode(object->file)->i_ino);
+=======
+	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 
 new_file:

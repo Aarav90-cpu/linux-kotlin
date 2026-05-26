@@ -74,7 +74,10 @@ struct netns_ipv4 {
 
 	/* TXRX readonly hotpath cache lines */
 	__cacheline_group_begin(netns_ipv4_read_txrx);
+<<<<<<< HEAD
 	u8		sysctl_tcp_shrink_window;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__cacheline_group_end(netns_ipv4_read_txrx);
 
 	/* RX readonly hotpath cache line */
@@ -123,6 +126,10 @@ struct netns_ipv4 {
 #endif
 	bool			fib_has_custom_local_routes;
 	bool			fib_offload_disabled;
+<<<<<<< HEAD
+=======
+	u8			sysctl_tcp_shrink_window;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_IP_ROUTE_CLASSID
 	atomic_t		fib_num_tclassid_users;
 #endif
@@ -166,7 +173,10 @@ struct netns_ipv4 {
 	u8 sysctl_ip_autobind_reuse;
 	/* Shall we try to damage output packets if routing dev changes? */
 	u8 sysctl_ip_dynaddr;
+<<<<<<< HEAD
 	u32 sysctl_ip_local_port_step_width;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NET_L3_MASTER_DEV
 	u8 sysctl_raw_l3mdev_accept;
 #endif
@@ -275,14 +285,21 @@ struct netns_ipv4 {
 
 #ifdef CONFIG_IP_MROUTE
 #ifndef CONFIG_IP_MROUTE_MULTIPLE_TABLES
+<<<<<<< HEAD
 	struct mr_table __rcu	*mrt;
+=======
+	struct mr_table		*mrt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 	struct list_head	mr_tables;
 	struct fib_rules_ops	*mr_rules_ops;
 #endif
+<<<<<<< HEAD
 	struct fib_notifier_ops	*ipmr_notifier_ops;
 	atomic_t		ipmr_seq;
 	struct mutex		mfc_mutex;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 	struct sysctl_fib_multipath_hash_seed sysctl_fib_multipath_hash_seed;
@@ -294,6 +311,12 @@ struct netns_ipv4 {
 	struct fib_notifier_ops	*notifier_ops;
 	unsigned int	fib_seq;	/* writes protected by rtnl_mutex */
 
+<<<<<<< HEAD
+=======
+	struct fib_notifier_ops	*ipmr_notifier_ops;
+	unsigned int	ipmr_seq;	/* protected by rtnl_mutex */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_t	rt_genid;
 	siphash_key_t	ip_id_key;
 	struct hlist_head	*inet_addr_lst;

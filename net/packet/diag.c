@@ -130,7 +130,11 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
 			struct packet_diag_req *req,
 			bool may_report_filterinfo,
 			struct user_namespace *user_ns,
+<<<<<<< HEAD
 			u32 portid, u32 seq, u32 flags, u64 sk_ino)
+=======
+			u32 portid, u32 seq, u32 flags, int sk_ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct nlmsghdr *nlh;
 	struct packet_diag_msg *rp;

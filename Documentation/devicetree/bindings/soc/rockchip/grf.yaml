@@ -63,7 +63,10 @@ properties:
               - rockchip,rk3588-vo0-grf
               - rockchip,rk3588-vo1-grf
               - rockchip,rk3588-vop-grf
+<<<<<<< HEAD
               - rockchip,rv1103b-ioc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - rockchip,rv1108-usbgrf
           - const: syscon
       - items:
@@ -99,7 +102,10 @@ properties:
               - rockchip,rk3576-pmu0-grf
               - rockchip,rk3576-usb2phy-grf
               - rockchip,rk3588-usb2phy-grf
+<<<<<<< HEAD
               - rockchip,rv1103b-pmu-grf
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - rockchip,rv1108-grf
               - rockchip,rv1108-pmugrf
               - rockchip,rv1126-grf
@@ -233,7 +239,10 @@ allOf:
               - rockchip,rk3036-grf
               - rockchip,rk3308-grf
               - rockchip,rk3368-pmugrf
+<<<<<<< HEAD
               - rockchip,rv1103b-pmu-grf
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     then:
       properties:

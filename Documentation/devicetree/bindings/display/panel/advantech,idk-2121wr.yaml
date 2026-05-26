@@ -56,6 +56,11 @@ properties:
       - port@0
       - port@1
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - width-mm
@@ -63,8 +68,11 @@ required:
   - data-mapping
   - panel-timing
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |+
     panel-lvds {

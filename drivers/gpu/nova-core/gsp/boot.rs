@@ -2,9 +2,15 @@
 
 use kernel::{
     device,
+<<<<<<< HEAD
     dma::Coherent,
     io::poll::read_poll_timeout,
     io::Io,
+=======
+    dma::CoherentAllocation,
+    dma_write,
+    io::poll::read_poll_timeout,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pci,
     prelude::*,
     time::Delta, //
@@ -24,7 +30,10 @@ use crate::{
             BooterKind, //
         },
         fwsec::{
+<<<<<<< HEAD
             bootloader::FwsecFirmwareWithBl,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             FwsecCommand,
             FwsecFirmware, //
         },
@@ -49,7 +58,10 @@ impl super::Gsp {
     /// created the WPR2 region.
     fn run_fwsec_frts(
         dev: &device::Device<device::Bound>,
+<<<<<<< HEAD
         chipset: Chipset,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         falcon: &Falcon<Gsp>,
         bar: &Bar0,
         bios: &Vbios,
@@ -57,7 +69,11 @@ impl super::Gsp {
     ) -> Result<()> {
         // Check that the WPR2 region does not already exists - if it does, we cannot run
         // FWSEC-FRTS until the GPU is reset.
+<<<<<<< HEAD
         if bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound() != 0 {
+=======
+        if regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound() != 0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             dev_err!(
                 dev,
                 "WPR2 region already exists - GPU needs to be reset to proceed\n"
@@ -65,7 +81,10 @@ impl super::Gsp {
             return Err(EBUSY);
         }
 
+<<<<<<< HEAD
         // FWSEC-FRTS will create the WPR2 region.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let fwsec_frts = FwsecFirmware::new(
             dev,
             falcon,
@@ -73,6 +92,7 @@ impl super::Gsp {
             bios,
             FwsecCommand::Frts {
                 frts_addr: fb_layout.frts.start,
+<<<<<<< HEAD
                 frts_size: fb_layout.frts.len(),
             },
         )?;
@@ -90,6 +110,17 @@ impl super::Gsp {
         let frts_status = bar
             .read(regs::NV_PBUS_SW_SCRATCH_0E_FRTS_ERR)
             .frts_err_code();
+=======
+                frts_size: fb_layout.frts.end - fb_layout.frts.start,
+            },
+        )?;
+
+        // Run FWSEC-FRTS to create the WPR2 region.
+        fwsec_frts.run(dev, falcon, bar)?;
+
+        // SCRATCH_E contains the error code for FWSEC-FRTS.
+        let frts_status = regs::NV_PBUS_SW_SCRATCH_0E_FRTS_ERR::read(bar).frts_err_code();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         if frts_status != 0 {
             dev_err!(
                 dev,
@@ -102,8 +133,13 @@ impl super::Gsp {
 
         // Check that the WPR2 region has been created as we requested.
         let (wpr2_lo, wpr2_hi) = (
+<<<<<<< HEAD
             bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO).lower_bound(),
             bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound(),
+=======
+            regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO::read(bar).lower_bound(),
+            regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound(),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         );
 
         match (wpr2_lo, wpr2_hi) {
@@ -139,7 +175,11 @@ impl super::Gsp {
     ///
     /// Upon return, the GSP is up and running, and its runtime object given as return value.
     pub(crate) fn boot(
+<<<<<<< HEAD
         self: Pin<&mut Self>,
+=======
+        mut self: Pin<&mut Self>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         pdev: &pci::Device<device::Bound>,
         bar: &Bar0,
         chipset: Chipset,
@@ -155,7 +195,11 @@ impl super::Gsp {
         let fb_layout = FbLayout::new(chipset, bar, &gsp_fw)?;
         dev_dbg!(dev, "{:#x?}\n", fb_layout);
 
+<<<<<<< HEAD
         Self::run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, &fb_layout)?;
+=======
+        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, &fb_layout)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         let booter_loader = BooterFirmware::new(
             dev,
@@ -166,12 +210,22 @@ impl super::Gsp {
             bar,
         )?;
 
+<<<<<<< HEAD
         let wpr_meta = Coherent::init(dev, GFP_KERNEL, GspFwWprMeta::new(&gsp_fw, &fb_layout))?;
 
         self.cmdq
             .send_command_no_wait(bar, commands::SetSystemInfo::new(pdev))?;
         self.cmdq
             .send_command_no_wait(bar, commands::SetRegistry::new())?;
+=======
+        let wpr_meta =
+            CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
+        dma_write!(wpr_meta, [0]?, GspFwWprMeta::new(&gsp_fw, &fb_layout));
+
+        self.cmdq
+            .send_command(bar, commands::SetSystemInfo::new(pdev))?;
+        self.cmdq.send_command(bar, commands::SetRegistry::new())?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         gsp_falcon.reset(bar)?;
         let libos_handle = self.libos.dma_handle();
@@ -180,25 +234,57 @@ impl super::Gsp {
             Some(libos_handle as u32),
             Some((libos_handle >> 32) as u32),
         )?;
+<<<<<<< HEAD
         dev_dbg!(pdev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
 
         dev_dbg!(
             pdev,
+=======
+        dev_dbg!(
+            pdev.as_ref(),
+            "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
+            mbox0,
+            mbox1
+        );
+
+        dev_dbg!(
+            pdev.as_ref(),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             "Using SEC2 to load and run the booter_load firmware...\n"
         );
 
         sec2_falcon.reset(bar)?;
+<<<<<<< HEAD
         sec2_falcon.load(dev, bar, &booter_loader)?;
+=======
+        sec2_falcon.load(bar, &booter_loader)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let wpr_handle = wpr_meta.dma_handle();
         let (mbox0, mbox1) = sec2_falcon.boot(
             bar,
             Some(wpr_handle as u32),
             Some((wpr_handle >> 32) as u32),
         )?;
+<<<<<<< HEAD
         dev_dbg!(pdev, "SEC2 MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
 
         if mbox0 != 0 {
             dev_err!(pdev, "Booter-load failed with error {:#x}\n", mbox0);
+=======
+        dev_dbg!(
+            pdev.as_ref(),
+            "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n",
+            mbox0,
+            mbox1
+        );
+
+        if mbox0 != 0 {
+            dev_err!(
+                pdev.as_ref(),
+                "Booter-load failed with error {:#x}\n",
+                mbox0
+            );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             return Err(ENODEV);
         }
 
@@ -212,7 +298,15 @@ impl super::Gsp {
             Delta::from_secs(5),
         )?;
 
+<<<<<<< HEAD
         dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(bar),);
+=======
+        dev_dbg!(
+            pdev.as_ref(),
+            "RISC-V active? {}\n",
+            gsp_falcon.is_riscv_active(bar),
+        );
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // Create and run the GSP sequencer.
         let seq_params = GspSequencerParams {
@@ -223,6 +317,7 @@ impl super::Gsp {
             dev: pdev.as_ref().into(),
             bar,
         };
+<<<<<<< HEAD
         GspSequencer::run(&self.cmdq, seq_params)?;
 
         // Wait until GSP is fully initialized.
@@ -233,6 +328,18 @@ impl super::Gsp {
         match info.gpu_name() {
             Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
             Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
+=======
+        GspSequencer::run(&mut self.cmdq, seq_params)?;
+
+        // Wait until GSP is fully initialized.
+        commands::wait_gsp_init_done(&mut self.cmdq)?;
+
+        // Obtain and display basic GPU information.
+        let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
+        match info.gpu_name() {
+            Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
+            Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
 
         Ok(())

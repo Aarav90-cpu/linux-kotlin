@@ -110,8 +110,11 @@
 #define EC_ADDR_BAT_CYCLE_COUNT_2	0x04A7
 
 #define EC_ADDR_PROJECT_ID		0x0740
+<<<<<<< HEAD
 #define PROJECT_ID_PH4TRX1		0x12
 #define PROJECT_ID_PH6TRX1		0x15
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define EC_ADDR_AP_OEM			0x0741
 #define	ENABLE_MANUAL_CTRL		BIT(0)
@@ -268,8 +271,13 @@
 #define BATTERY_CHARGE_FULL_OVER_24H	BIT(3)
 #define BATTERY_ERM_STATUS_REACHED	BIT(4)
 
+<<<<<<< HEAD
 #define EC_ADDR_USB_C_POWER_PRIORITY	0x07CC
 #define USB_C_POWER_PRIORITY		BIT(7)
+=======
+#define EC_ADDR_CHARGE_PRIO		0x07CC
+#define CHARGING_PERFORMANCE		BIT(7)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Same bits as EC_ADDR_LIGHTBAR_AC_CTRL except LIGHTBAR_S3_OFF */
 #define EC_ADDR_LIGHTBAR_BAT_CTRL	0x07E2
@@ -321,6 +329,7 @@
 #define UNIWILL_FEATURE_TOUCHPAD_TOGGLE		BIT(2)
 #define UNIWILL_FEATURE_LIGHTBAR		BIT(3)
 #define UNIWILL_FEATURE_BATTERY			BIT(4)
+<<<<<<< HEAD
 #define UNIWILL_FEATURE_CPU_TEMP		BIT(5)
 #define UNIWILL_FEATURE_GPU_TEMP		BIT(6)
 #define UNIWILL_FEATURE_PRIMARY_FAN		BIT(7)
@@ -332,6 +341,10 @@ enum usb_c_power_priority_options {
 	USB_C_POWER_PRIORITY_CHARGING = 0,
 	USB_C_POWER_PRIORITY_PERFORMANCE,
 };
+=======
+#define UNIWILL_FEATURE_HWMON			BIT(5)
+#define UNIWILL_FEATURE_NVIDIA_CTGP_CONTROL	BIT(6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct uniwill_data {
 	struct device *dev;
@@ -351,8 +364,11 @@ struct uniwill_data {
 	struct mutex input_lock;	/* Protects input sequence during notify */
 	struct input_dev *input_device;
 	struct notifier_block nb;
+<<<<<<< HEAD
 	struct mutex usb_c_power_priority_lock; /* Protects dependent bit write and state safe */
 	enum usb_c_power_priority_options last_usb_c_power_priority_option;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct uniwill_battery_entry {
@@ -440,7 +456,11 @@ static const struct key_entry uniwill_keymap[] = {
 	{ KE_END }
 };
 
+<<<<<<< HEAD
 static inline bool uniwill_device_supports(const struct uniwill_data *data,
+=======
+static inline bool uniwill_device_supports(struct uniwill_data *data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   unsigned int features)
 {
 	return (data->features & features) == features;
@@ -537,7 +557,10 @@ static bool uniwill_writeable_reg(struct device *dev, unsigned int reg)
 	case EC_ADDR_CTGP_DB_CTGP_OFFSET:
 	case EC_ADDR_CTGP_DB_TPP_OFFSET:
 	case EC_ADDR_CTGP_DB_DB_OFFSET:
+<<<<<<< HEAD
 	case EC_ADDR_USB_C_POWER_PRIORITY:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	default:
 		return false;
@@ -576,7 +599,10 @@ static bool uniwill_readable_reg(struct device *dev, unsigned int reg)
 	case EC_ADDR_CTGP_DB_CTGP_OFFSET:
 	case EC_ADDR_CTGP_DB_TPP_OFFSET:
 	case EC_ADDR_CTGP_DB_DB_OFFSET:
+<<<<<<< HEAD
 	case EC_ADDR_USB_C_POWER_PRIORITY:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	default:
 		return false;
@@ -599,7 +625,10 @@ static bool uniwill_volatile_reg(struct device *dev, unsigned int reg)
 	case EC_ADDR_TRIGGER:
 	case EC_ADDR_SWITCH_STATUS:
 	case EC_ADDR_CHARGE_CTRL:
+<<<<<<< HEAD
 	case EC_ADDR_USB_C_POWER_PRIORITY:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	default:
 		return false;
@@ -896,6 +925,7 @@ static int uniwill_nvidia_ctgp_init(struct uniwill_data *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const char * const usb_c_power_priority_text[] = {
 	[USB_C_POWER_PRIORITY_CHARGING]		= "charging",
 	[USB_C_POWER_PRIORITY_PERFORMANCE]	= "performance",
@@ -995,6 +1025,8 @@ static int usb_c_power_priority_init(struct uniwill_data *data)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *uniwill_attrs[] = {
 	/* Keyboard-related */
 	&dev_attr_fn_lock.attr,
@@ -1005,7 +1037,10 @@ static struct attribute *uniwill_attrs[] = {
 	&dev_attr_breathing_in_suspend.attr,
 	/* Power-management-related */
 	&dev_attr_ctgp_offset.attr,
+<<<<<<< HEAD
 	&dev_attr_usb_c_power_priority.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -1040,11 +1075,14 @@ static umode_t uniwill_attr_is_visible(struct kobject *kobj, struct attribute *a
 			return attr->mode;
 	}
 
+<<<<<<< HEAD
 	if (attr == &dev_attr_usb_c_power_priority.attr) {
 		if (uniwill_device_supports(data, UNIWILL_FEATURE_USB_C_POWER_PRIORITY))
 			return attr->mode;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1058,6 +1096,7 @@ static const struct attribute_group *uniwill_groups[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static umode_t uniwill_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
 				  int channel)
 {
@@ -1100,6 +1139,8 @@ static umode_t uniwill_is_visible(const void *drvdata, enum hwmon_sensor_types t
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int uniwill_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
 			long *val)
 {
@@ -1183,7 +1224,11 @@ static int uniwill_read_string(struct device *dev, enum hwmon_sensor_types type,
 }
 
 static const struct hwmon_ops uniwill_ops = {
+<<<<<<< HEAD
 	.is_visible = uniwill_is_visible,
+=======
+	.visible = 0444,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.read = uniwill_read,
 	.read_string = uniwill_read_string,
 };
@@ -1211,10 +1256,14 @@ static int uniwill_hwmon_init(struct uniwill_data *data)
 {
 	struct device *hdev;
 
+<<<<<<< HEAD
 	if (!uniwill_device_supports(data, UNIWILL_FEATURE_CPU_TEMP) &&
 	    !uniwill_device_supports(data, UNIWILL_FEATURE_GPU_TEMP) &&
 	    !uniwill_device_supports(data, UNIWILL_FEATURE_PRIMARY_FAN) &&
 	    !uniwill_device_supports(data, UNIWILL_FEATURE_SECONDARY_FAN))
+=======
+	if (!uniwill_device_supports(data, UNIWILL_FEATURE_HWMON))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	hdev = devm_hwmon_device_register_with_info(data->dev, "uniwill", data,
@@ -1568,10 +1617,18 @@ static int uniwill_notifier_call(struct notifier_block *nb, unsigned long action
 
 		return NOTIFY_OK;
 	case UNIWILL_OSD_DC_ADAPTER_CHANGED:
+<<<<<<< HEAD
 		if (!uniwill_device_supports(data, UNIWILL_FEATURE_USB_C_POWER_PRIORITY))
 			return NOTIFY_DONE;
 
 		return notifier_from_errno(usb_c_power_priority_restore(data));
+=======
+		/* noop for the time being, will change once charging priority
+		 * gets implemented.
+		 */
+
+		return NOTIFY_OK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case UNIWILL_OSD_FN_LOCK:
 		if (!uniwill_device_supports(data, UNIWILL_FEATURE_FN_LOCK))
 			return NOTIFY_DONE;
@@ -1665,7 +1722,10 @@ static int uniwill_probe(struct platform_device *pdev)
 		return PTR_ERR(regmap);
 
 	data->regmap = regmap;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = devm_mutex_init(&pdev->dev, &data->super_key_lock);
 	if (ret < 0)
 		return ret;
@@ -1703,10 +1763,13 @@ static int uniwill_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = usb_c_power_priority_init(data);
 	if (ret < 0)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return uniwill_input_init(data);
 }
 
@@ -1836,6 +1899,7 @@ static int uniwill_resume_nvidia_ctgp(struct uniwill_data *data)
 			       CTGP_DB_DB_ENABLE | CTGP_DB_CTGP_ENABLE);
 }
 
+<<<<<<< HEAD
 static int uniwill_resume_usb_c_power_priority(struct uniwill_data *data)
 {
 	if (!uniwill_device_supports(data, UNIWILL_FEATURE_USB_C_POWER_PRIORITY))
@@ -1844,6 +1908,8 @@ static int uniwill_resume_usb_c_power_priority(struct uniwill_data *data)
 	return usb_c_power_priority_restore(data);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int uniwill_resume(struct device *dev)
 {
 	struct uniwill_data *data = dev_get_drvdata(dev);
@@ -1867,11 +1933,15 @@ static int uniwill_resume(struct device *dev)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = uniwill_resume_nvidia_ctgp(data);
 	if (ret < 0)
 		return ret;
 
 	return uniwill_resume_usb_c_power_priority(data);
+=======
+	return uniwill_resume_nvidia_ctgp(data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(uniwill_pm_ops, uniwill_suspend, uniwill_resume);
@@ -1897,6 +1967,7 @@ static struct platform_driver uniwill_driver = {
 	.shutdown = uniwill_shutdown,
 };
 
+<<<<<<< HEAD
 static struct uniwill_device_descriptor lapqc71a_lapqc71b_descriptor __initdata = {
 	.features = UNIWILL_FEATURE_SUPER_KEY |
 		    UNIWILL_FEATURE_BATTERY |
@@ -1906,15 +1977,21 @@ static struct uniwill_device_descriptor lapqc71a_lapqc71b_descriptor __initdata 
 		    UNIWILL_FEATURE_SECONDARY_FAN,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct uniwill_device_descriptor lapac71h_descriptor __initdata = {
 	.features = UNIWILL_FEATURE_FN_LOCK |
 		    UNIWILL_FEATURE_SUPER_KEY |
 		    UNIWILL_FEATURE_TOUCHPAD_TOGGLE |
 		    UNIWILL_FEATURE_BATTERY |
+<<<<<<< HEAD
 		    UNIWILL_FEATURE_CPU_TEMP |
 		    UNIWILL_FEATURE_GPU_TEMP |
 		    UNIWILL_FEATURE_PRIMARY_FAN |
 		    UNIWILL_FEATURE_SECONDARY_FAN,
+=======
+		    UNIWILL_FEATURE_HWMON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct uniwill_device_descriptor lapkc71f_descriptor __initdata = {
@@ -1923,6 +2000,7 @@ static struct uniwill_device_descriptor lapkc71f_descriptor __initdata = {
 		    UNIWILL_FEATURE_TOUCHPAD_TOGGLE |
 		    UNIWILL_FEATURE_LIGHTBAR |
 		    UNIWILL_FEATURE_BATTERY |
+<<<<<<< HEAD
 		    UNIWILL_FEATURE_CPU_TEMP |
 		    UNIWILL_FEATURE_GPU_TEMP |
 		    UNIWILL_FEATURE_PRIMARY_FAN |
@@ -2006,6 +2084,9 @@ static struct uniwill_device_descriptor phxtxx1_descriptor __initdata = {
 		    UNIWILL_FEATURE_PRIMARY_FAN |
 		    UNIWILL_FEATURE_USB_C_POWER_PRIORITY,
 	.probe = phxtxx1_probe,
+=======
+		    UNIWILL_FEATURE_HWMON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int phxarx1_phxaqf1_probe(struct uniwill_data *data)
@@ -2018,13 +2099,18 @@ static int phxarx1_phxaqf1_probe(struct uniwill_data *data)
 		return ret;
 
 	if (value & HAS_GPU)
+<<<<<<< HEAD
 		data->features |= UNIWILL_FEATURE_GPU_TEMP |
 				  UNIWILL_FEATURE_NVIDIA_CTGP_CONTROL;
+=======
+		data->features |= UNIWILL_FEATURE_NVIDIA_CTGP_CONTROL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 };
 
 static struct uniwill_device_descriptor phxarx1_phxaqf1_descriptor __initdata = {
+<<<<<<< HEAD
 	.features = UNIWILL_FEATURE_FN_LOCK |
 		    UNIWILL_FEATURE_SUPER_KEY |
 		    UNIWILL_FEATURE_CPU_TEMP |
@@ -2044,18 +2130,40 @@ static struct uniwill_device_descriptor pf5pu1g_descriptor __initdata = {
 static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 	{
 		.ident = "XMG FUSION 15 (L19)",
+=======
+	.probe = phxarx1_phxaqf1_probe,
+};
+
+static struct uniwill_device_descriptor tux_featureset_1_descriptor __initdata = {
+	.features = UNIWILL_FEATURE_NVIDIA_CTGP_CONTROL,
+};
+
+static struct uniwill_device_descriptor empty_descriptor __initdata = {};
+
+static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
+	{
+		.ident = "XMG FUSION 15",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "SchenkerTechnologiesGmbH"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
 		},
+<<<<<<< HEAD
 		.driver_data = &lapqc71a_lapqc71b_descriptor,
 	},
 	{
 		.ident = "XMG FUSION 15 (L19)",
+=======
+		.driver_data = &empty_descriptor,
+	},
+	{
+		.ident = "XMG FUSION 15",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "SchenkerTechnologiesGmbH"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "LAPQC71B"),
 		},
+<<<<<<< HEAD
 		.driver_data = &lapqc71a_lapqc71b_descriptor,
 	},
 	{
@@ -2073,6 +2181,9 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "LAPQC71B"),
 		},
 		.driver_data = &lapqc71a_lapqc71b_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "Intel NUC x15",
@@ -2096,7 +2207,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PHxTxX1"),
 		},
+<<<<<<< HEAD
 		.driver_data = &phxtxx1_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14 Gen6 Intel",
@@ -2104,7 +2219,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PHxTQx1"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/16 Gen7 Intel",
@@ -2120,7 +2239,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PH6AG01_PH6AQ71_PH6AQI1"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/16 Gen8 Intel/Commodore Omnia-Book Pro Gen 8",
@@ -2128,7 +2251,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14 Gen8 Intel/Commodore Omnia-Book Pro Gen 8",
@@ -2136,7 +2263,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PH4PG31"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 16 Gen8 Intel",
@@ -2144,7 +2275,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PH6PG01_PH6PG71"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/15 Gen9 AMD",
@@ -2152,7 +2287,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/15 Gen9 Intel/Commodore Omnia-Book 15 Gen9",
@@ -2160,7 +2299,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GXxMRXx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/15 Gen10 AMD",
@@ -2168,7 +2311,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 14/15 Gen10 AMD",
@@ -2176,7 +2323,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Pro 15 Gen10 Intel",
@@ -2184,7 +2335,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "XxAR4NAx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Max 15 Gen10 AMD",
@@ -2192,7 +2347,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X5KK45xS_X5SP45xS"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Max 16 Gen10 AMD",
@@ -2200,7 +2359,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6HP45xU"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Max 16 Gen10 AMD",
@@ -2208,7 +2371,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Max 15 Gen10 Intel",
@@ -2216,7 +2383,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X5AR45xS"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO InfinityBook Max 16 Gen10 Intel",
@@ -2224,7 +2395,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6AR55xU"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15 Gen1 AMD",
@@ -2232,7 +2407,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1501A1650TI"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15 Gen1 AMD",
@@ -2240,7 +2419,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1501A2060"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 17 Gen1 AMD",
@@ -2248,7 +2431,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1701A1650TI"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 17 Gen1 AMD",
@@ -2256,7 +2443,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1701A2060"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15 Gen1 Intel",
@@ -2264,7 +2455,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1501I1650TI"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15 Gen1 Intel",
@@ -2272,7 +2467,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1501I2060"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 17 Gen1 Intel",
@@ -2280,7 +2479,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1701I1650TI"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 17 Gen1 Intel",
@@ -2288,7 +2491,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "POLARIS1701I2060"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Trinity 15 Intel Gen1",
@@ -2296,7 +2503,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "TRINITY1501I"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Trinity 17 Intel Gen1",
@@ -2304,7 +2515,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "TRINITY1701I"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_nvidia_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15/17 Gen2 AMD",
@@ -2312,7 +2527,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxMGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15/17 Gen2 Intel",
@@ -2320,7 +2539,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxNGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris/Polaris 15/17 Gen3 AMD",
@@ -2328,7 +2551,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxZGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris/Polaris 15/17 Gen3 Intel",
@@ -2336,7 +2563,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxTGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris/Polaris 15/17 Gen4 AMD",
@@ -2344,7 +2575,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 15 Gen4 Intel",
@@ -2352,7 +2587,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxAGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Polaris 15/17 Gen5 AMD",
@@ -2360,7 +2599,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_2_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen5 AMD",
@@ -2368,7 +2611,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16/17 Gen5 Intel/Commodore ORION Gen 5",
@@ -2376,7 +2623,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxPXxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris Slim 15 Gen6 AMD",
@@ -2384,7 +2635,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris Slim 15 Gen6 Intel/Commodore ORION Slim 15 Gen6",
@@ -2392,7 +2647,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GM5IXxA"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen6 Intel/Commodore ORION 16 Gen6",
@@ -2400,7 +2659,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GM6IXxB_MB1"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen6 Intel/Commodore ORION 16 Gen6",
@@ -2408,7 +2671,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GM6IXxB_MB2"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 17 Gen6 Intel/Commodore ORION 17 Gen6",
@@ -2416,7 +2683,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GM7IXxN"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen7 AMD",
@@ -2424,7 +2695,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6FR5xxY"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen7 Intel",
@@ -2432,7 +2707,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6AR5xxY"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Stellaris 16 Gen7 Intel",
@@ -2440,7 +2719,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "X6AR5xxY_mLED"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_3_nvidia_descriptor,
+=======
+		.driver_data = &tux_featureset_1_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Book BA15 Gen10 AMD",
@@ -2448,7 +2731,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PF5PU1G"),
 		},
+<<<<<<< HEAD
 		.driver_data = &pf5pu1g_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Pulse 14 Gen1 AMD",
@@ -2456,7 +2743,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PULSE1401"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Pulse 15 Gen1 AMD",
@@ -2464,7 +2755,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PULSE1501"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.ident = "TUXEDO Pulse 15 Gen2 AMD",
@@ -2472,7 +2767,11 @@ static const struct dmi_system_id uniwill_dmi_table[] __initconst = {
 			DMI_MATCH(DMI_SYS_VENDOR, "TUXEDO"),
 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "PF5LUXG"),
 		},
+<<<<<<< HEAD
 		.driver_data = &tux_featureset_1_descriptor,
+=======
+		.driver_data = &empty_descriptor,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{ }
 };

@@ -245,7 +245,10 @@
 #define QCOM_ID_IPQ5000			503
 #define QCOM_ID_IPQ0509			504
 #define QCOM_ID_IPQ0518			505
+<<<<<<< HEAD
 #define QCOM_ID_SM7450			506
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define QCOM_ID_SM6375			507
 #define QCOM_ID_IPQ9514			510
 #define QCOM_ID_IPQ9550			511
@@ -261,12 +264,18 @@
 #define QCOM_ID_SM8475			530
 #define QCOM_ID_SM8475P			531
 #define QCOM_ID_SA8255P			532
+<<<<<<< HEAD
 #define QCOM_ID_SA8650P			533
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define QCOM_ID_SA8775P			534
 #define QCOM_ID_QRU1000			539
 #define QCOM_ID_SM8475_2		540
 #define QCOM_ID_QDU1000			545
+<<<<<<< HEAD
 #define QCOM_ID_SM7450P			547
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define QCOM_ID_X1E80100		555
 #define QCOM_ID_SM8650			557
 #define QCOM_ID_SM4450			568
@@ -297,6 +306,7 @@
 #define QCOM_ID_QCS8275			675
 #define QCOM_ID_QCS9075			676
 #define QCOM_ID_QCS615			680
+<<<<<<< HEAD
 #define QCOM_ID_CQ7790M			731
 #define QCOM_ID_CQ7790S			732
 #define QCOM_ID_IPQ5200			765
@@ -304,6 +314,8 @@
 #define QCOM_ID_QCF2200			767
 #define QCOM_ID_QCF3200			768
 #define QCOM_ID_QCF3210			769
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * The board type and revision information, used by Qualcomm bootloaders and

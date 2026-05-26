@@ -49,6 +49,10 @@ static const struct nft_expr_ops nft_fib_inet_ops = {
 	.init		= nft_fib_init,
 	.dump		= nft_fib_dump,
 	.validate	= nft_fib_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_fib_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_fib_inet_type __read_mostly = {

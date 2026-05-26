@@ -37,15 +37,21 @@
 #include "xfs_ioctl.h"
 #include "xfs_xattr.h"
 #include "xfs_rtbitmap.h"
+<<<<<<< HEAD
 #include "xfs_rtrmap_btree.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xfs_file.h"
 #include "xfs_exchrange.h"
 #include "xfs_handle.h"
 #include "xfs_rtgroup.h"
 #include "xfs_healthmon.h"
 #include "xfs_verify_media.h"
+<<<<<<< HEAD
 #include "xfs_zone_priv.h"
 #include "xfs_zone_alloc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/mount.h>
 #include <linux/fileattr.h>
@@ -416,7 +422,10 @@ xfs_ioc_rtgroup_geometry(
 {
 	struct xfs_rtgroup	*rtg;
 	struct xfs_rtgroup_geometry rgeo;
+<<<<<<< HEAD
 	xfs_rgblock_t		highest_rgbno;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			error;
 
 	if (copy_from_user(&rgeo, arg, sizeof(rgeo)))
@@ -437,6 +446,7 @@ xfs_ioc_rtgroup_geometry(
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	if (xfs_has_zoned(mp)) {
 		xfs_rtgroup_lock(rtg, XFS_RTGLOCK_RMAP);
 		if (rtg->rtg_open_zone) {
@@ -452,6 +462,8 @@ xfs_ioc_rtgroup_geometry(
 		rgeo.rg_flags |= XFS_RTGROUP_GEOM_WRITEPOINTER;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (copy_to_user(arg, &rgeo, sizeof(rgeo)))
 		return -EFAULT;
 	return 0;

@@ -354,6 +354,7 @@ void cpu_do_switch_mm(phys_addr_t pgd_phys, struct mm_struct *mm)
 
 	/* Skip CNP for the reserved ASID */
 	if (system_supports_cnp() && asid)
+<<<<<<< HEAD
 		ttbr0 |= TTBRx_EL1_CnP;
 
 	/* SW PAN needs a copy of the ASID in TTBR0 for entry */
@@ -363,6 +364,17 @@ void cpu_do_switch_mm(phys_addr_t pgd_phys, struct mm_struct *mm)
 	/* Set ASID in TTBR1 since TCR.A1 is set */
 	ttbr1 &= ~TTBRx_EL1_ASID_MASK;
 	ttbr1 |= FIELD_PREP(TTBRx_EL1_ASID_MASK, asid);
+=======
+		ttbr0 |= TTBR_CNP_BIT;
+
+	/* SW PAN needs a copy of the ASID in TTBR0 for entry */
+	if (IS_ENABLED(CONFIG_ARM64_SW_TTBR0_PAN))
+		ttbr0 |= FIELD_PREP(TTBR_ASID_MASK, asid);
+
+	/* Set ASID in TTBR1 since TCR.A1 is set */
+	ttbr1 &= ~TTBR_ASID_MASK;
+	ttbr1 |= FIELD_PREP(TTBR_ASID_MASK, asid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cpu_set_reserved_ttbr0_nosync();
 	write_sysreg(ttbr1, ttbr1_el1);

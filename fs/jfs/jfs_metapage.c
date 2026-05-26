@@ -270,7 +270,10 @@ static inline struct metapage *alloc_metapage(gfp_t gfp_mask)
 		mp->clsn = 0;
 		mp->log = NULL;
 		init_waitqueue_head(&mp->wait);
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&mp->synclist);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return mp;
 }
@@ -380,7 +383,11 @@ static void remove_from_logsync(struct metapage *mp)
 		mp->lsn = 0;
 		mp->clsn = 0;
 		log->count--;
+<<<<<<< HEAD
 		list_del_init(&mp->synclist);
+=======
+		list_del(&mp->synclist);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	LOGSYNC_UNLOCK(log, flags);
 }
@@ -693,7 +700,11 @@ struct metapage *__get_metapage(struct inode *inode, unsigned long lblock,
 	unsigned long page_index;
 	unsigned long page_offset;
 
+<<<<<<< HEAD
 	jfs_info("__get_metapage: ino = %llu, lblock = 0x%lx, abs=%d",
+=======
+	jfs_info("__get_metapage: ino = %ld, lblock = 0x%lx, abs=%d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 inode->i_ino, lblock, absolute);
 
 	l2bsize = inode->i_blkbits;

@@ -16,7 +16,11 @@ struct memstress_args memstress_args;
  * Guest virtual memory offset of the testing memory slot.
  * Must not conflict with identity mapped test code.
  */
+<<<<<<< HEAD
 static u64 guest_test_virt_mem = DEFAULT_GUEST_TEST_MEM;
+=======
+static uint64_t guest_test_virt_mem = DEFAULT_GUEST_TEST_MEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct vcpu_thread {
 	/* The index of the vCPU. */
@@ -44,15 +48,26 @@ static struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
  * Continuously write to the first 8 bytes of each page in the
  * specified region.
  */
+<<<<<<< HEAD
 void memstress_guest_code(u32 vcpu_idx)
+=======
+void memstress_guest_code(uint32_t vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct memstress_args *args = &memstress_args;
 	struct memstress_vcpu_args *vcpu_args = &args->vcpu_args[vcpu_idx];
 	struct guest_random_state rand_state;
+<<<<<<< HEAD
 	gva_t gva;
 	u64 pages;
 	u64 addr;
 	u64 page;
+=======
+	uint64_t gva;
+	uint64_t pages;
+	uint64_t addr;
+	uint64_t page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	rand_state = new_guest_random_state(guest_random_seed + vcpu_idx);
@@ -76,9 +91,15 @@ void memstress_guest_code(u32 vcpu_idx)
 			addr = gva + (page * args->guest_page_size);
 
 			if (__guest_random_bool(&rand_state, args->write_percent))
+<<<<<<< HEAD
 				*(u64 *)addr = 0x0123456789ABCDEF;
 			else
 				READ_ONCE(*(u64 *)addr);
+=======
+				*(uint64_t *)addr = 0x0123456789ABCDEF;
+			else
+				READ_ONCE(*(uint64_t *)addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		GUEST_SYNC(1);
@@ -87,7 +108,11 @@ void memstress_guest_code(u32 vcpu_idx)
 
 void memstress_setup_vcpus(struct kvm_vm *vm, int nr_vcpus,
 			   struct kvm_vcpu *vcpus[],
+<<<<<<< HEAD
 			   u64 vcpu_memory_bytes,
+=======
+			   uint64_t vcpu_memory_bytes,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   bool partition_vcpu_memory_access)
 {
 	struct memstress_args *args = &memstress_args;
@@ -122,15 +147,25 @@ void memstress_setup_vcpus(struct kvm_vm *vm, int nr_vcpus,
 }
 
 struct kvm_vm *memstress_create_vm(enum vm_guest_mode mode, int nr_vcpus,
+<<<<<<< HEAD
 				   u64 vcpu_memory_bytes, int slots,
+=======
+				   uint64_t vcpu_memory_bytes, int slots,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   enum vm_mem_backing_src_type backing_src,
 				   bool partition_vcpu_memory_access)
 {
 	struct memstress_args *args = &memstress_args;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 guest_num_pages, slot0_pages = 0;
 	u64 backing_src_pagesz = get_backing_src_pagesz(backing_src);
 	u64 region_end_gfn;
+=======
+	uint64_t guest_num_pages, slot0_pages = 0;
+	uint64_t backing_src_pagesz = get_backing_src_pagesz(backing_src);
+	uint64_t region_end_gfn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	pr_info("Testing guest mode: %s\n", vm_guest_mode_string(mode));
@@ -196,14 +231,26 @@ struct kvm_vm *memstress_create_vm(enum vm_guest_mode mode, int nr_vcpus,
 
 	args->gpa = (region_end_gfn - guest_num_pages - 1) * args->guest_page_size;
 	args->gpa = align_down(args->gpa, backing_src_pagesz);
+<<<<<<< HEAD
+=======
+#ifdef __s390x__
+	/* Align to 1M (segment size) */
+	args->gpa = align_down(args->gpa, 1 << 20);
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	args->size = guest_num_pages * args->guest_page_size;
 	pr_info("guest physical test memory: [0x%lx, 0x%lx)\n",
 		args->gpa, args->gpa + args->size);
 
 	/* Add extra memory slots for testing */
 	for (i = 0; i < slots; i++) {
+<<<<<<< HEAD
 		u64 region_pages = guest_num_pages / slots;
 		gpa_t region_start = args->gpa + region_pages * args->guest_page_size * i;
+=======
+		uint64_t region_pages = guest_num_pages / slots;
+		vm_paddr_t region_start = args->gpa + region_pages * args->guest_page_size * i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		vm_userspace_mem_region_add(vm, backing_src, region_start,
 					    MEMSTRESS_MEM_SLOT_INDEX + i,
@@ -232,7 +279,11 @@ void memstress_destroy_vm(struct kvm_vm *vm)
 	kvm_vm_free(vm);
 }
 
+<<<<<<< HEAD
 void memstress_set_write_percent(struct kvm_vm *vm, u32 write_percent)
+=======
+void memstress_set_write_percent(struct kvm_vm *vm, uint32_t write_percent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	memstress_args.write_percent = write_percent;
 	sync_global_to_guest(vm, memstress_args.write_percent);
@@ -244,7 +295,11 @@ void memstress_set_random_access(struct kvm_vm *vm, bool random_access)
 	sync_global_to_guest(vm, memstress_args.random_access);
 }
 
+<<<<<<< HEAD
 u64 __weak memstress_nested_pages(int nr_vcpus)
+=======
+uint64_t __weak memstress_nested_pages(int nr_vcpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
@@ -349,7 +404,11 @@ void memstress_get_dirty_log(struct kvm_vm *vm, unsigned long *bitmaps[], int sl
 }
 
 void memstress_clear_dirty_log(struct kvm_vm *vm, unsigned long *bitmaps[],
+<<<<<<< HEAD
 			       int slots, u64 pages_per_slot)
+=======
+			       int slots, uint64_t pages_per_slot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -360,7 +419,11 @@ void memstress_clear_dirty_log(struct kvm_vm *vm, unsigned long *bitmaps[],
 	}
 }
 
+<<<<<<< HEAD
 unsigned long **memstress_alloc_bitmaps(int slots, u64 pages_per_slot)
+=======
+unsigned long **memstress_alloc_bitmaps(int slots, uint64_t pages_per_slot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long **bitmaps;
 	int i;

@@ -34,7 +34,11 @@ struct net_device *rdma_read_gid_attr_ndev_rcu(const struct ib_gid_attr *attr);
 
 /**
  * ib_get_cached_pkey - Returns a cached PKey table entry
+<<<<<<< HEAD
  * @device_handle: The device to query.
+=======
+ * @device: The device to query.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @port_num: The port number of the device to query.
  * @index: The index into the cached PKey table to query.
  * @pkey: The PKey value found at the specified index.
@@ -80,7 +84,11 @@ int ib_get_cached_lmc(struct ib_device *device,
  * ib_get_cached_port_state - Returns a cached port state table entry
  * @device: The device to query.
  * @port_num: The port number of the device to query.
+<<<<<<< HEAD
  * @port_active: port_state for the specified port for that device.
+=======
+ * @port_state: port_state for the specified port for that device.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * ib_get_cached_port_state() fetches the specified port_state table entry stored in
  * the local software cache.

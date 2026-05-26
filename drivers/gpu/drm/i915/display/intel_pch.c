@@ -5,9 +5,12 @@
 
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
 #include "intel_de.h"
 #include "intel_display.h"
 #include "intel_display_regs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_display_core.h"
 #include "intel_display_utils.h"
 #include "intel_pch.h"
@@ -217,6 +220,7 @@ intel_pch_type(const struct intel_display *display, unsigned short id)
 	}
 }
 
+<<<<<<< HEAD
 static void intel_pch_ibx_init_clock_gating(struct intel_display *display)
 {
 	/*
@@ -307,6 +311,8 @@ void intel_pch_init_clock_gating(struct intel_display *display)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool intel_is_virt_pch(unsigned short id,
 			      unsigned short svendor, unsigned short sdevice)
 {

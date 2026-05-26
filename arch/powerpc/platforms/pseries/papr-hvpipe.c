@@ -190,6 +190,7 @@ static int hvpipe_rtas_recv_msg(char __user *buf, int size)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Recv HVPIPE RTAS is successful.
 	 * When releasing FD or no one is waiting on the
@@ -218,6 +219,36 @@ static int hvpipe_rtas_recv_msg(char __user *buf, int size)
 		ret = bytes_written;
 
 out:
+=======
+	ret = rtas_ibm_receive_hvpipe_msg(work_area, &srcID,
+					&bytes_written);
+	if (!ret) {
+		/*
+		 * Recv HVPIPE RTAS is successful.
+		 * When releasing FD or no one is waiting on the
+		 * specific source, issue recv HVPIPE RTAS call
+		 * so that pipe is not blocked - this func is called
+		 * with NULL buf.
+		 */
+		if (buf) {
+			if (size < bytes_written) {
+				pr_err("Received the payload size = %d, but the buffer size = %d\n",
+					bytes_written, size);
+				bytes_written = size;
+			}
+			if (copy_to_user(buf,
+					rtas_work_area_raw_buf(work_area),
+					bytes_written))
+				ret = -EFAULT;
+			else
+				ret = bytes_written;
+		}
+	} else {
+		pr_err("ibm,receive-hvpipe-msg failed with %d\n",
+				ret);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rtas_work_area_free(work_area);
 	return ret;
 }
@@ -460,7 +491,10 @@ static int papr_hvpipe_handle_release(struct inode *inode,
 	src_info = file->private_data;
 	list_del(&src_info->list);
 	file->private_data = NULL;
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If the pipe for this specific source has any pending
 	 * payload, issue recv HVPIPE RTAS so that pipe will not
@@ -468,8 +502,15 @@ static int papr_hvpipe_handle_release(struct inode *inode,
 	 */
 	if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE) {
 		src_info->hvpipe_status = 0;
+<<<<<<< HEAD
 		hvpipe_rtas_recv_msg(NULL, 0);
 	}
+=======
+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+		hvpipe_rtas_recv_msg(NULL, 0);
+	} else
+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(src_info);
 	return 0;
@@ -493,6 +534,10 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
 		return -ENOMEM;
 
 	src_info->srcID = srcID;
+<<<<<<< HEAD
+=======
+	src_info->tsk = current;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_waitqueue_head(&src_info->recv_wqh);
 
 	/*
@@ -502,8 +547,13 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
 	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
 	if (hvpipe_find_source(srcID)) {
 		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+<<<<<<< HEAD
 		pr_err("pid(%s:%d) could not get the source(%d)\n",
 				current->comm, task_pid_nr(current), srcID);
+=======
+		pr_err("pid(%d) could not get the source(%d)\n",
+				src_info->tsk->pid, srcID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(src_info);
 		return -EALREADY;
 	}
@@ -693,11 +743,16 @@ static int __init enable_hvpipe_IRQ(void)
 	struct device_node *np;
 
 	hvpipe_check_exception_token = rtas_function_token(RTAS_FN_CHECK_EXCEPTION);
+<<<<<<< HEAD
 	if (hvpipe_check_exception_token == RTAS_UNKNOWN_SERVICE)
+=======
+	if (hvpipe_check_exception_token  == RTAS_UNKNOWN_SERVICE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* hvpipe events */
 	np = of_find_node_by_path("/event-sources/ibm,hvpipe-msg-events");
+<<<<<<< HEAD
 	if (!np) {
 		pr_err("No device node found, could not enable hvpipe event IRQ\n");
 		return -ENODEV;
@@ -706,6 +761,17 @@ static int __init enable_hvpipe_IRQ(void)
 	request_event_sources_irqs(np, hvpipe_event_interrupt, "HPIPE_EVENT");
 	of_node_put(np);
 
+=======
+	if (np != NULL) {
+		request_event_sources_irqs(np, hvpipe_event_interrupt,
+					"HPIPE_EVENT");
+		of_node_put(np);
+	} else {
+		pr_err("Can not enable hvpipe event IRQ\n");
+		return -ENODEV;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

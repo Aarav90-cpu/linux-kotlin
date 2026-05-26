@@ -120,6 +120,7 @@ static inline unsigned int exttable_size(struct extended_sigtable *et)
 	return et->count * EXT_SIGNATURE_SIZE + EXT_HEADER_SIZE;
 }
 
+<<<<<<< HEAD
 
 /*
  * Use CPUID to generate a "vfm" value. Useful before cpuinfo_x86
@@ -158,6 +159,21 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
 	sig->sig = cpuid_eax(1);
 	sig->rev = intel_get_microcode_revision();
 	sig->pf  = 1 << intel_get_platform_id();
+=======
+void intel_collect_cpu_info(struct cpu_signature *sig)
+{
+	sig->sig = cpuid_eax(1);
+	sig->pf = 0;
+	sig->rev = intel_get_microcode_revision();
+
+	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
+		unsigned int val[2];
+
+		/* get processor flags from MSR 0x17 */
+		native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
+		sig->pf = 1 << ((val[1] >> 18) & 7);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
 
@@ -167,6 +183,7 @@ static inline bool cpu_signatures_match(struct cpu_signature *s1, unsigned int s
 	if (s1->sig != sig2)
 		return false;
 
+<<<<<<< HEAD
 	/*
 	 * Consider an empty mask to match everything. This
 	 * should only occur for one CPU model, the PII.
@@ -176,6 +193,10 @@ static inline bool cpu_signatures_match(struct cpu_signature *s1, unsigned int s
 
 	/* Is the CPU's platform ID in the signature mask? */
 	return s1->pf & pf2;
+=======
+	/* Processor flags are either both 0 or they intersect. */
+	return ((!s1->pf && !pf2) || (s1->pf & pf2));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool intel_find_matching_signature(void *mc, struct cpu_signature *sig)

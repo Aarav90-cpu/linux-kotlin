@@ -127,7 +127,11 @@ SEE ALSO
 --------
 **rtla-timerlat**\(1), **rtla-timerlat-hist**\(1)
 
+<<<<<<< HEAD
 `Timerlat tracer <https://docs.kernel.org/trace/timerlat-tracer.html>`__
+=======
+*timerlat* tracer documentation: <https://www.kernel.org/doc/html/latest/trace/timerlat-tracer.html>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AUTHOR
 ------

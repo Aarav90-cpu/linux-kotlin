@@ -110,6 +110,11 @@ struct channel_space {
 	unsigned long		*guaranteed;
 };
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(stm_devs, "stm");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct stm_drvdata - specifics associated to an STM component
  * @base:		memory mapped base address for this component.
@@ -832,7 +837,11 @@ static int __stm_probe(struct device *dev, struct resource *res)
 	struct resource ch_res;
 	struct coresight_desc desc = { 0 };
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("stm", dev);
+=======
+	desc.name = coresight_alloc_device_name(&stm_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 

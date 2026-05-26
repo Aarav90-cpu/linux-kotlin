@@ -223,6 +223,7 @@ static int dw_edma_device_config(struct dma_chan *dchan,
 				 struct dma_slave_config *config)
 {
 	struct dw_edma_chan *chan = dchan2dw_edma_chan(dchan);
+<<<<<<< HEAD
 	bool cfg_non_ll;
 	int non_ll = 0;
 
@@ -260,6 +261,8 @@ static int dw_edma_device_config(struct dma_chan *dchan,
 			"peripheral config param applicable only for HDMA\n");
 		return -EINVAL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memcpy(&chan->config, config, sizeof(*config));
 	chan->configured = true;
@@ -395,7 +398,10 @@ dw_edma_device_transfer(struct dw_edma_transfer *xfer)
 	struct dw_edma_desc *desc;
 	u64 src_addr, dst_addr;
 	size_t fsz = 0;
+<<<<<<< HEAD
 	u32 bursts_max;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 cnt = 0;
 	int i;
 
@@ -453,6 +459,7 @@ dw_edma_device_transfer(struct dw_edma_transfer *xfer)
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * For non-LL mode, only a single burst can be handled
 	 * in a single chunk unlike LL mode where multiple bursts
@@ -460,6 +467,8 @@ dw_edma_device_transfer(struct dw_edma_transfer *xfer)
 	 */
 	bursts_max = chan->non_ll ? 1 : chan->ll_max;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc = dw_edma_alloc_desc(chan);
 	if (unlikely(!desc))
 		goto err_alloc;
@@ -495,7 +504,11 @@ dw_edma_device_transfer(struct dw_edma_transfer *xfer)
 		if (xfer->type == EDMA_XFER_SCATTER_GATHER && !sg)
 			break;
 
+<<<<<<< HEAD
 		if (chunk->bursts_alloc == bursts_max) {
+=======
+		if (chunk->bursts_alloc == chan->ll_max) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			chunk = dw_edma_alloc_chunk(desc);
 			if (unlikely(!chunk))
 				goto err_alloc;
@@ -708,6 +721,7 @@ static void dw_edma_abort_interrupt(struct dw_edma_chan *chan)
 	chan->status = EDMA_ST_IDLE;
 }
 
+<<<<<<< HEAD
 static void dw_edma_emul_irq_ack(struct irq_data *d)
 {
 	struct dw_edma *dw = irq_data_get_irq_chip_data(d);
@@ -798,6 +812,9 @@ static inline irqreturn_t dw_edma_interrupt_emulated(void *data)
 }
 
 static inline irqreturn_t dw_edma_interrupt_write_inner(int irq, void *data)
+=======
+static inline irqreturn_t dw_edma_interrupt_write(int irq, void *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dw_edma_irq *dw_irq = data;
 
@@ -806,7 +823,11 @@ static inline irqreturn_t dw_edma_interrupt_write_inner(int irq, void *data)
 				       dw_edma_abort_interrupt);
 }
 
+<<<<<<< HEAD
 static inline irqreturn_t dw_edma_interrupt_read_inner(int irq, void *data)
+=======
+static inline irqreturn_t dw_edma_interrupt_read(int irq, void *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dw_edma_irq *dw_irq = data;
 
@@ -815,6 +836,7 @@ static inline irqreturn_t dw_edma_interrupt_read_inner(int irq, void *data)
 				       dw_edma_abort_interrupt);
 }
 
+<<<<<<< HEAD
 static inline irqreturn_t dw_edma_interrupt_write(int irq, void *data)
 {
 	irqreturn_t ret = IRQ_NONE;
@@ -842,6 +864,14 @@ static inline irqreturn_t dw_edma_interrupt_common(int irq, void *data)
 	ret |= dw_edma_interrupt_write_inner(irq, data);
 	ret |= dw_edma_interrupt_read_inner(irq, data);
 	ret |= dw_edma_interrupt_emulated(data);
+=======
+static irqreturn_t dw_edma_interrupt_common(int irq, void *data)
+{
+	irqreturn_t ret = IRQ_NONE;
+
+	ret |= dw_edma_interrupt_write(irq, data);
+	ret |= dw_edma_interrupt_read(irq, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1132,11 +1162,14 @@ int dw_edma_probe(struct dw_edma_chip *chip)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	/* Allocate a dedicated virtual IRQ for interrupt-emulation doorbells */
 	err = dw_edma_emul_irq_alloc(dw);
 	if (err)
 		dev_warn(dev, "Failed to allocate emulation IRQ: %d\n", err);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Setup write/read channels */
 	err = dw_edma_channel_setup(dw, wr_alloc, rd_alloc);
 	if (err)
@@ -1152,7 +1185,10 @@ int dw_edma_probe(struct dw_edma_chip *chip)
 err_irq_free:
 	for (i = (dw->nr_irqs - 1); i >= 0; i--)
 		free_irq(chip->ops->irq_vector(dev, i), &dw->irq[i]);
+<<<<<<< HEAD
 	dw_edma_emul_irq_free(dw);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return err;
 }
@@ -1175,7 +1211,10 @@ int dw_edma_remove(struct dw_edma_chip *chip)
 	/* Free irqs */
 	for (i = (dw->nr_irqs - 1); i >= 0; i--)
 		free_irq(chip->ops->irq_vector(dev, i), &dw->irq[i]);
+<<<<<<< HEAD
 	dw_edma_emul_irq_free(dw);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Deregister eDMA device */
 	dma_async_device_unregister(&dw->dma);

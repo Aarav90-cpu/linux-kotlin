@@ -87,12 +87,21 @@ struct ethqos_emac_por {
 };
 
 struct ethqos_emac_driver_data {
+<<<<<<< HEAD
 	const struct ethqos_emac_por *rgmii_por;
 	unsigned int num_rgmii_por;
 	bool rgmii_config_loopback_en;
 	bool has_emac_ge_3;
 	u8 dma_addr_width;
 	const char *link_clk_name;
+=======
+	const struct ethqos_emac_por *por;
+	unsigned int num_por;
+	bool rgmii_config_loopback_en;
+	bool has_emac_ge_3;
+	const char *link_clk_name;
+	u32 dma_addr_width;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dwmac4_addrs dwmac4_addrs;
 	bool needs_sgmii_loopback;
 };
@@ -100,12 +109,25 @@ struct ethqos_emac_driver_data {
 struct qcom_ethqos {
 	struct platform_device *pdev;
 	void __iomem *rgmii_base;
+<<<<<<< HEAD
 	struct clk *link_clk;
 	struct phy *serdes_phy;
 	phy_interface_t phy_mode;
 
 	const struct ethqos_emac_por *rgmii_por;
 	unsigned int num_rgmii_por;
+=======
+	int (*configure_func)(struct qcom_ethqos *ethqos, int speed);
+
+	unsigned int link_clk_rate;
+	struct clk *link_clk;
+	struct phy *serdes_phy;
+	int serdes_speed;
+	phy_interface_t phy_mode;
+
+	const struct ethqos_emac_por *por;
+	unsigned int num_por;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool rgmii_config_loopback_en;
 	bool has_emac_ge_3;
 	bool needs_sgmii_loopback;
@@ -170,6 +192,7 @@ static void rgmii_dump(void *priv)
 		rgmii_readl(ethqos, EMAC_SYSTEM_LOW_POWER_DEBUG));
 }
 
+<<<<<<< HEAD
 static int ethqos_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
 				  phy_interface_t interface, int speed)
 {
@@ -184,6 +207,21 @@ static int ethqos_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
 		return rate;
 
 	return clk_set_rate(ethqos->link_clk, rate * 2);
+=======
+static void
+ethqos_update_link_clk(struct qcom_ethqos *ethqos, int speed)
+{
+	long rate;
+
+	if (!phy_interface_mode_is_rgmii(ethqos->phy_mode))
+		return;
+
+	rate = rgmii_clock(speed);
+	if (rate > 0)
+		ethqos->link_clk_rate = rate * 2;
+
+	clk_set_rate(ethqos->link_clk, ethqos->link_clk_rate);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -201,6 +239,10 @@ qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
 
 static void ethqos_set_func_clk_en(struct qcom_ethqos *ethqos)
 {
+<<<<<<< HEAD
+=======
+	qcom_ethqos_set_sgmii_loopback(ethqos, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rgmii_setmask(ethqos, RGMII_CONFIG_FUNC_CLK_EN, RGMII_IO_MACRO_CONFIG);
 }
 
@@ -214,8 +256,13 @@ static const struct ethqos_emac_por emac_v2_3_0_por[] = {
 };
 
 static const struct ethqos_emac_driver_data emac_v2_3_0_data = {
+<<<<<<< HEAD
 	.rgmii_por = emac_v2_3_0_por,
 	.num_rgmii_por = ARRAY_SIZE(emac_v2_3_0_por),
+=======
+	.por = emac_v2_3_0_por,
+	.num_por = ARRAY_SIZE(emac_v2_3_0_por),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.rgmii_config_loopback_en = true,
 	.has_emac_ge_3 = false,
 };
@@ -230,8 +277,13 @@ static const struct ethqos_emac_por emac_v2_1_0_por[] = {
 };
 
 static const struct ethqos_emac_driver_data emac_v2_1_0_data = {
+<<<<<<< HEAD
 	.rgmii_por = emac_v2_1_0_por,
 	.num_rgmii_por = ARRAY_SIZE(emac_v2_1_0_por),
+=======
+	.por = emac_v2_1_0_por,
+	.num_por = ARRAY_SIZE(emac_v2_1_0_por),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.rgmii_config_loopback_en = false,
 	.has_emac_ge_3 = false,
 };
@@ -246,8 +298,13 @@ static const struct ethqos_emac_por emac_v3_0_0_por[] = {
 };
 
 static const struct ethqos_emac_driver_data emac_v3_0_0_data = {
+<<<<<<< HEAD
 	.rgmii_por = emac_v3_0_0_por,
 	.num_rgmii_por = ARRAY_SIZE(emac_v3_0_0_por),
+=======
+	.por = emac_v3_0_0_por,
+	.num_por = ARRAY_SIZE(emac_v3_0_0_por),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.rgmii_config_loopback_en = false,
 	.has_emac_ge_3 = true,
 	.dwmac4_addrs = {
@@ -278,8 +335,13 @@ static const struct ethqos_emac_por emac_v4_0_0_por[] = {
 };
 
 static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
+<<<<<<< HEAD
 	.rgmii_por = emac_v4_0_0_por,
 	.num_rgmii_por = ARRAY_SIZE(emac_v4_0_0_por),
+=======
+	.por = emac_v4_0_0_por,
+	.num_por = ARRAY_SIZE(emac_v4_0_0_por),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.rgmii_config_loopback_en = false,
 	.has_emac_ge_3 = true,
 	.link_clk_name = "phyaux",
@@ -357,12 +419,19 @@ static int ethqos_dll_configure(struct qcom_ethqos *ethqos)
 			      SDCC_HC_REG_DLL_CONFIG2);
 
 		rgmii_updatel(ethqos, SDCC_DLL_CONFIG2_MCLK_FREQ_CALC,
+<<<<<<< HEAD
 			      FIELD_PREP(SDCC_DLL_CONFIG2_MCLK_FREQ_CALC, 26),
 			      SDCC_HC_REG_DLL_CONFIG2);
 
 		rgmii_updatel(ethqos, SDCC_DLL_CONFIG2_DDR_TRAFFIC_INIT_SEL,
 			      FIELD_PREP(SDCC_DLL_CONFIG2_DDR_TRAFFIC_INIT_SEL,
 					 1), SDCC_HC_REG_DLL_CONFIG2);
+=======
+			      0x1A << 10, SDCC_HC_REG_DLL_CONFIG2);
+
+		rgmii_updatel(ethqos, SDCC_DLL_CONFIG2_DDR_TRAFFIC_INIT_SEL,
+			      BIT(2), SDCC_HC_REG_DLL_CONFIG2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rgmii_setmask(ethqos, SDCC_DLL_CONFIG2_DDR_TRAFFIC_INIT_SW,
 			      SDCC_HC_REG_DLL_CONFIG2);
@@ -374,6 +443,7 @@ static int ethqos_dll_configure(struct qcom_ethqos *ethqos)
 static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
 {
 	struct device *dev = &ethqos->pdev->dev;
+<<<<<<< HEAD
 	unsigned int prg_rclk_dly, loopback;
 	unsigned int phase_shift;
 
@@ -409,6 +479,10 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
 
 	rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
 		      RGMII_IO_MACRO_CONFIG2);
+=======
+	int phase_shift;
+	int loopback;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
 	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
@@ -417,6 +491,7 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
 	else
 		phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
 
+<<<<<<< HEAD
 	rgmii_updatel(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN, phase_shift,
 		      RGMII_IO_MACRO_CONFIG2);
 
@@ -472,17 +547,143 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
 			      SDCC_HC_REG_DDR_CONFIG);
 	}
 
+=======
+	/* Disable loopback mode */
+	rgmii_clrmask(ethqos, RGMII_CONFIG2_TX_TO_RX_LOOPBACK_EN,
+		      RGMII_IO_MACRO_CONFIG2);
+
+	/* Determine if this platform wants loopback enabled after programming */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ethqos->rgmii_config_loopback_en)
 		loopback = RGMII_CONFIG_LOOPBACK_EN;
 	else
 		loopback = 0;
 
+<<<<<<< HEAD
 	rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN, loopback,
 		      RGMII_IO_MACRO_CONFIG);
+=======
+	/* Select RGMII, write 0 to interface select */
+	rgmii_clrmask(ethqos, RGMII_CONFIG_INTF_SEL, RGMII_IO_MACRO_CONFIG);
+
+	switch (speed) {
+	case SPEED_1000:
+		rgmii_setmask(ethqos, RGMII_CONFIG_DDR_MODE,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG_BYPASS_TX_ID_EN,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_setmask(ethqos, RGMII_CONFIG_POS_NEG_DATA_SEL,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_setmask(ethqos, RGMII_CONFIG_PROG_SWAP,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
+			      RGMII_IO_MACRO_CONFIG2);
+
+		rgmii_updatel(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN,
+			      phase_shift, RGMII_IO_MACRO_CONFIG2);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_RSVD_CONFIG15,
+			      RGMII_IO_MACRO_CONFIG2);
+		rgmii_setmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP,
+			      RGMII_IO_MACRO_CONFIG2);
+
+		/* PRG_RCLK_DLY = TCXO period * TCXO_CYCLES_CNT / 2 * RX delay ns,
+		 * in practice this becomes PRG_RCLK_DLY = 52 * 4 / 2 * RX delay ns
+		 */
+		if (ethqos->has_emac_ge_3) {
+			/* 0.9 ns */
+			rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+				      115, SDCC_HC_REG_DDR_CONFIG);
+		} else {
+			/* 1.8 ns */
+			rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+				      57, SDCC_HC_REG_DDR_CONFIG);
+		}
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_PRG_DLY_EN,
+			      SDCC_HC_REG_DDR_CONFIG);
+		rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN,
+			      loopback, RGMII_IO_MACRO_CONFIG);
+		break;
+
+	case SPEED_100:
+		rgmii_setmask(ethqos, RGMII_CONFIG_DDR_MODE,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_setmask(ethqos, RGMII_CONFIG_BYPASS_TX_ID_EN,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG_POS_NEG_DATA_SEL,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG_PROG_SWAP,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
+			      RGMII_IO_MACRO_CONFIG2);
+		rgmii_updatel(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN,
+			      phase_shift, RGMII_IO_MACRO_CONFIG2);
+		rgmii_updatel(ethqos, RGMII_CONFIG_MAX_SPD_PRG_2,
+			      BIT(6), RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_RSVD_CONFIG15,
+			      RGMII_IO_MACRO_CONFIG2);
+
+		if (ethqos->has_emac_ge_3)
+			rgmii_setmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP,
+				      RGMII_IO_MACRO_CONFIG2);
+		else
+			rgmii_clrmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP,
+				      RGMII_IO_MACRO_CONFIG2);
+
+		/* Write 0x5 to PRG_RCLK_DLY_CODE */
+		rgmii_updatel(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_CODE,
+			      (BIT(29) | BIT(27)), SDCC_HC_REG_DDR_CONFIG);
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY,
+			      SDCC_HC_REG_DDR_CONFIG);
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_EN,
+			      SDCC_HC_REG_DDR_CONFIG);
+		rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN,
+			      loopback, RGMII_IO_MACRO_CONFIG);
+		break;
+
+	case SPEED_10:
+		rgmii_setmask(ethqos, RGMII_CONFIG_DDR_MODE,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_setmask(ethqos, RGMII_CONFIG_BYPASS_TX_ID_EN,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG_POS_NEG_DATA_SEL,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG_PROG_SWAP,
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
+			      RGMII_IO_MACRO_CONFIG2);
+		rgmii_updatel(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN,
+			      phase_shift, RGMII_IO_MACRO_CONFIG2);
+		rgmii_updatel(ethqos, RGMII_CONFIG_MAX_SPD_PRG_9,
+			      BIT(12) | GENMASK(9, 8),
+			      RGMII_IO_MACRO_CONFIG);
+		rgmii_clrmask(ethqos, RGMII_CONFIG2_RSVD_CONFIG15,
+			      RGMII_IO_MACRO_CONFIG2);
+		if (ethqos->has_emac_ge_3)
+			rgmii_setmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP,
+				      RGMII_IO_MACRO_CONFIG2);
+		else
+			rgmii_clrmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP,
+				      RGMII_IO_MACRO_CONFIG2);
+		/* Write 0x5 to PRG_RCLK_DLY_CODE */
+		rgmii_updatel(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_CODE,
+			      (BIT(29) | BIT(27)), SDCC_HC_REG_DDR_CONFIG);
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY,
+			      SDCC_HC_REG_DDR_CONFIG);
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_EN,
+			      SDCC_HC_REG_DDR_CONFIG);
+		rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN,
+			      loopback, RGMII_IO_MACRO_CONFIG);
+		break;
+	default:
+		dev_err(dev, "Invalid speed %d\n", speed);
+		return -EINVAL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
 				       phy_interface_t interface, int speed,
 				       unsigned int mode)
@@ -499,6 +700,18 @@ static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
 		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
 			     ethqos->rgmii_por[i].offset);
 
+=======
+static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
+{
+	struct device *dev = &ethqos->pdev->dev;
+	unsigned int i;
+	u32 val;
+
+	/* Reset to POR values and enable clk */
+	for (i = 0; i < ethqos->num_por; i++)
+		rgmii_writel(ethqos, ethqos->por[i].value,
+			     ethqos->por[i].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ethqos_set_func_clk_en(ethqos);
 
 	/* Initialize the DLL first */
@@ -554,6 +767,7 @@ static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
 		ethqos_dll_configure(ethqos);
 
 	ethqos_rgmii_macro_init(ethqos, speed);
+<<<<<<< HEAD
 }
 
 static void ethqos_pcs_set_inband(struct qcom_ethqos *ethqos, bool enable)
@@ -561,12 +775,29 @@ static void ethqos_pcs_set_inband(struct qcom_ethqos *ethqos, bool enable)
 	struct net_device *dev = platform_get_drvdata(ethqos->pdev);
 	struct stmmac_priv *priv = netdev_priv(dev);
 
+=======
+
+	return 0;
+}
+
+static void ethqos_set_serdes_speed(struct qcom_ethqos *ethqos, int speed)
+{
+	if (ethqos->serdes_speed != speed) {
+		phy_set_speed(ethqos->serdes_phy, speed);
+		ethqos->serdes_speed = speed;
+	}
+}
+
+static void ethqos_pcs_set_inband(struct stmmac_priv *priv, bool enable)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stmmac_pcs_ctrl_ane(priv, enable, 0);
 }
 
 /* On interface toggle MAC registers gets reset.
  * Configure MAC block for SGMII on ethernet phy link up
  */
+<<<<<<< HEAD
 static void ethqos_fix_mac_speed_sgmii(void *bsp_priv,
 				       phy_interface_t interface, int speed,
 				       unsigned int mode)
@@ -580,16 +811,62 @@ static void ethqos_fix_mac_speed_sgmii(void *bsp_priv,
 			      RGMII_IO_MACRO_CONFIG2);
 		break;
 	case SPEED_100:
+=======
+static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
+{
+	struct net_device *dev = platform_get_drvdata(ethqos->pdev);
+	struct stmmac_priv *priv = netdev_priv(dev);
+
+	switch (speed) {
+	case SPEED_2500:
+		rgmii_setmask(ethqos, RGMII_CONFIG2_RGMII_CLK_SEL_CFG,
+			      RGMII_IO_MACRO_CONFIG2);
+		ethqos_set_serdes_speed(ethqos, SPEED_2500);
+		ethqos_pcs_set_inband(priv, false);
+		break;
+	case SPEED_1000:
+		rgmii_setmask(ethqos, RGMII_CONFIG2_RGMII_CLK_SEL_CFG,
+			      RGMII_IO_MACRO_CONFIG2);
+		ethqos_set_serdes_speed(ethqos, SPEED_1000);
+		ethqos_pcs_set_inband(priv, true);
+		break;
+	case SPEED_100:
+		ethqos_set_serdes_speed(ethqos, SPEED_1000);
+		ethqos_pcs_set_inband(priv, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case SPEED_10:
 		rgmii_updatel(ethqos, RGMII_CONFIG_SGMII_CLK_DVDR,
 			      FIELD_PREP(RGMII_CONFIG_SGMII_CLK_DVDR,
 					 SGMII_10M_RX_CLK_DVDR),
 			      RGMII_IO_MACRO_CONFIG);
+<<<<<<< HEAD
 		break;
 	}
 
 	ethqos_pcs_set_inband(ethqos, interface == PHY_INTERFACE_MODE_SGMII);
+=======
+		ethqos_set_serdes_speed(ethqos, SPEED_1000);
+		ethqos_pcs_set_inband(priv, true);
+		break;
+	}
+
+	return 0;
+}
+
+static int ethqos_configure(struct qcom_ethqos *ethqos, int speed)
+{
+	return ethqos->configure_func(ethqos, speed);
+}
+
+static void ethqos_fix_mac_speed(void *priv, int speed, unsigned int mode)
+{
+	struct qcom_ethqos *ethqos = priv;
+
+	qcom_ethqos_set_sgmii_loopback(ethqos, false);
+	ethqos_update_link_clk(ethqos, speed);
+	ethqos_configure(ethqos, speed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int qcom_ethqos_serdes_powerup(struct net_device *ndev, void *priv)
@@ -602,8 +879,21 @@ static int qcom_ethqos_serdes_powerup(struct net_device *ndev, void *priv)
 		return ret;
 
 	ret = phy_power_on(ethqos->serdes_phy);
+<<<<<<< HEAD
 	if (ret)
 		phy_exit(ethqos->serdes_phy);
+=======
+	if (ret) {
+		phy_exit(ethqos->serdes_phy);
+		return ret;
+	}
+
+	ret = phy_set_speed(ethqos->serdes_phy, ethqos->serdes_speed);
+	if (ret) {
+		phy_power_off(ethqos->serdes_phy);
+		phy_exit(ethqos->serdes_phy);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -616,6 +906,7 @@ static void qcom_ethqos_serdes_powerdown(struct net_device *ndev, void *priv)
 	phy_exit(ethqos->serdes_phy);
 }
 
+<<<<<<< HEAD
 static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
 				    unsigned int mode,
 				    phy_interface_t interface)
@@ -633,6 +924,8 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ethqos_clks_config(void *priv, bool enabled)
 {
 	struct qcom_ethqos *ethqos = priv;
@@ -648,9 +941,14 @@ static int ethqos_clks_config(void *priv, bool enabled)
 		/* Enable functional clock to prevent DMA reset to timeout due
 		 * to lacking PHY clock after the hardware block has been power
 		 * cycled. The actual configuration will be adjusted once
+<<<<<<< HEAD
 		 * ethqos' fix_mac_speed() method is invoked.
 		 */
 		qcom_ethqos_set_sgmii_loopback(ethqos, true);
+=======
+		 * ethqos_fix_mac_speed() is invoked.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ethqos_set_func_clk_en(ethqos);
 	} else {
 		clk_disable_unprepare(ethqos->link_clk);
@@ -714,12 +1012,20 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
 	case PHY_INTERFACE_MODE_RGMII_ID:
 	case PHY_INTERFACE_MODE_RGMII_RXID:
 	case PHY_INTERFACE_MODE_RGMII_TXID:
+<<<<<<< HEAD
 		plat_dat->fix_mac_speed = ethqos_fix_mac_speed_rgmii;
 		break;
 	case PHY_INTERFACE_MODE_2500BASEX:
 	case PHY_INTERFACE_MODE_SGMII:
 		plat_dat->fix_mac_speed = ethqos_fix_mac_speed_sgmii;
 		plat_dat->mac_finish = ethqos_mac_finish_serdes;
+=======
+		ethqos->configure_func = ethqos_configure_rgmii;
+		break;
+	case PHY_INTERFACE_MODE_2500BASEX:
+	case PHY_INTERFACE_MODE_SGMII:
+		ethqos->configure_func = ethqos_configure_sgmii;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_err(dev, "Unsupported phy mode %s\n",
@@ -734,8 +1040,13 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
 				     "Failed to map rgmii resource\n");
 
 	data = of_device_get_match_data(dev);
+<<<<<<< HEAD
 	ethqos->rgmii_por = data->rgmii_por;
 	ethqos->num_rgmii_por = data->num_rgmii_por;
+=======
+	ethqos->por = data->por;
+	ethqos->num_por = data->num_por;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
 	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
 	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
@@ -758,6 +1069,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(ethqos->serdes_phy),
 				     "Failed to get serdes phy\n");
 
+<<<<<<< HEAD
 	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
 			       SPEED_1000);
 
@@ -772,12 +1084,24 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
 	plat_dat->clk_csr = STMMAC_CSR_60_100M;
 	plat_dat->bsp_priv = ethqos;
 	plat_dat->set_clk_tx_rate = ethqos_set_clk_tx_rate;
+=======
+	ethqos->serdes_speed = SPEED_1000;
+	ethqos_update_link_clk(ethqos, SPEED_1000);
+	ethqos_set_func_clk_en(ethqos);
+
+	plat_dat->bsp_priv = ethqos;
+	plat_dat->fix_mac_speed = ethqos_fix_mac_speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat_dat->dump_debug_regs = rgmii_dump;
 	plat_dat->ptp_clk_freq_config = ethqos_ptp_clk_freq_config;
 	plat_dat->core_type = DWMAC_CORE_GMAC4;
 	if (ethqos->has_emac_ge_3)
 		plat_dat->dwmac4_addrs = &data->dwmac4_addrs;
+<<<<<<< HEAD
 	plat_dat->pmt = true;
+=======
+	plat_dat->pmt = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (of_property_read_bool(np, "snps,tso"))
 		plat_dat->flags |= STMMAC_FLAG_TSO_EN;
 	if (of_device_is_compatible(np, "qcom,qcs404-ethqos"))

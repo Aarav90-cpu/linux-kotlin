@@ -1078,7 +1078,11 @@ static void scp_unregister_ipi(struct platform_device *pdev, u32 id)
 	scp_ipi_unregister(scp, id);
 }
 
+<<<<<<< HEAD
 static int scp_send_ipi(struct platform_device *pdev, u32 id, const void *buf,
+=======
+static int scp_send_ipi(struct platform_device *pdev, u32 id, void *buf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			unsigned int len, unsigned int wait)
 {
 	struct mtk_scp *scp = platform_get_drvdata(pdev);

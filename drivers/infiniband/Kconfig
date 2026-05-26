@@ -4,6 +4,10 @@ menuconfig INFINIBAND
 	depends on HAS_IOMEM && HAS_DMA
 	depends on NET
 	depends on INET
+<<<<<<< HEAD
+=======
+	depends on m || IPV6 != m
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on !ALPHA
 	select DMA_SHARED_BUFFER
 	select IRQ_POLL
@@ -111,4 +115,9 @@ source "drivers/infiniband/ulp/iser/Kconfig"
 source "drivers/infiniband/ulp/isert/Kconfig"
 source "drivers/infiniband/ulp/rtrs/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/infiniband/ulp/opa_vnic/Kconfig"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif # INFINIBAND

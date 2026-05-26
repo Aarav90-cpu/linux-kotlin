@@ -191,8 +191,12 @@ enum dpll_pin_capabilities {
 	DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE = 4,
 };
 
+<<<<<<< HEAD
 #define DPLL_PHASE_OFFSET_DIVIDER		1000
 #define DPLL_PIN_MEASURED_FREQUENCY_DIVIDER	1000
+=======
+#define DPLL_PHASE_OFFSET_DIVIDER	1000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * enum dpll_feature_state - Allow control (enable/disable) and status checking
@@ -219,7 +223,10 @@ enum dpll_a {
 	DPLL_A_CLOCK_QUALITY_LEVEL,
 	DPLL_A_PHASE_OFFSET_MONITOR,
 	DPLL_A_PHASE_OFFSET_AVG_FACTOR,
+<<<<<<< HEAD
 	DPLL_A_FREQUENCY_MONITOR,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__DPLL_A_MAX,
 	DPLL_A_MAX = (__DPLL_A_MAX - 1)
@@ -256,7 +263,10 @@ enum dpll_a_pin {
 	DPLL_A_PIN_REFERENCE_SYNC,
 	DPLL_A_PIN_PHASE_ADJUST_GRAN,
 	DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET_PPT,
+<<<<<<< HEAD
 	DPLL_A_PIN_MEASURED_FREQUENCY,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__DPLL_A_PIN_MAX,
 	DPLL_A_PIN_MAX = (__DPLL_A_PIN_MAX - 1)

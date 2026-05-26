@@ -198,7 +198,11 @@ int uds_make_request_queue(const char *queue_name,
 	int result;
 	struct uds_request_queue *queue;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, __func__, &queue);
+=======
+	result = vdo_allocate(1, struct uds_request_queue, __func__, &queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

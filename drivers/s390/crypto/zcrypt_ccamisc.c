@@ -305,7 +305,11 @@ static inline void prep_xcrb(struct ica_xcRB *pxcrb,
 			     struct CPRBX *prepcblk)
 {
 	memset(pxcrb, 0, sizeof(*pxcrb));
+<<<<<<< HEAD
 	memcpy(&pxcrb->agent_ID, "CA", 2);
+=======
+	pxcrb->agent_ID = 0x4341; /* 'CA' */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pxcrb->user_defined = (cardnr == 0xFFFF ? AUTOSELECT : cardnr);
 	pxcrb->request_control_blk_length =
 		preqcblk->cprb_len + preqcblk->req_parml;
@@ -1710,8 +1714,13 @@ out:
 EXPORT_SYMBOL(cca_get_info);
 
 int cca_findcard2(u32 *apqns, u32 *nr_apqns, u16 cardnr, u16 domain,
+<<<<<<< HEAD
 		  int minhwtype, int mktype,
 		  const u8 *ptr_cur_mkvp, const u8 *ptr_old_mkvp, u32 xflags)
+=======
+		  int minhwtype, int mktype, u64 cur_mkvp, u64 old_mkvp,
+		  u32 xflags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct zcrypt_device_status_ext *device_status;
 	int i, card, dom, curmatch, oldmatch;
@@ -1755,6 +1764,7 @@ int cca_findcard2(u32 *apqns, u32 *nr_apqns, u16 cardnr, u16 domain,
 		/* check min hardware type */
 		if (minhwtype > 0 && minhwtype > ci.hwtype)
 			continue;
+<<<<<<< HEAD
 		if (ptr_cur_mkvp || ptr_old_mkvp) {
 			/* check mkvps */
 			curmatch = oldmatch = 0;
@@ -1777,6 +1787,22 @@ int cca_findcard2(u32 *apqns, u32 *nr_apqns, u16 cardnr, u16 domain,
 				    ci.old_apka_mk_state == '2' &&
 				    !memcmp(ptr_old_mkvp, ci.old_apka_mkvp,
 					    sizeof(ci.old_apka_mkvp)))
+=======
+		if (cur_mkvp || old_mkvp) {
+			/* check mkvps */
+			curmatch = oldmatch = 0;
+			if (mktype == AES_MK_SET) {
+				if (cur_mkvp && cur_mkvp == ci.cur_aes_mkvp)
+					curmatch = 1;
+				if (old_mkvp && ci.old_aes_mk_state == '2' &&
+				    old_mkvp == ci.old_aes_mkvp)
+					oldmatch = 1;
+			} else {
+				if (cur_mkvp && cur_mkvp == ci.cur_apka_mkvp)
+					curmatch = 1;
+				if (old_mkvp && ci.old_apka_mk_state == '2' &&
+				    old_mkvp == ci.old_apka_mkvp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					oldmatch = 1;
 			}
 			if (curmatch + oldmatch < 1)

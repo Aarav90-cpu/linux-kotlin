@@ -3,7 +3,10 @@
 #include <linux/errno.h>
 #include <linux/file.h>
 #include <linux/io_uring.h>
+<<<<<<< HEAD
 #include <linux/time_namespace.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <trace/events/io_uring.h>
 
@@ -31,11 +34,16 @@ struct io_timeout_rem {
 	u64				addr;
 
 	/* timeout update */
+<<<<<<< HEAD
 	ktime_t				time;
+=======
+	struct timespec64		ts;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32				flags;
 	bool				ltimeout;
 };
 
+<<<<<<< HEAD
 static clockid_t io_flags_to_clock(unsigned flags)
 {
 	switch (flags & IORING_TIMEOUT_CLOCK_MASK) {
@@ -74,6 +82,8 @@ out:
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct io_kiocb *__io_disarm_linked_timeout(struct io_kiocb *req,
 						   struct io_kiocb *link);
 
@@ -119,7 +129,11 @@ static void io_timeout_complete(struct io_tw_req tw_req, io_tw_token_t tw)
 			/* re-arm timer */
 			raw_spin_lock_irq(&ctx->timeout_lock);
 			list_add(&timeout->list, ctx->timeout_list.prev);
+<<<<<<< HEAD
 			hrtimer_start(&data->timer, data->time, data->mode);
+=======
+			hrtimer_start(&data->timer, timespec64_to_ktime(data->ts), data->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			raw_spin_unlock_irq(&ctx->timeout_lock);
 			return;
 		}
@@ -284,10 +298,13 @@ static struct io_kiocb *__io_disarm_linked_timeout(struct io_kiocb *req,
 	struct io_timeout *timeout = io_kiocb_to_cmd(link, struct io_timeout);
 
 	io_remove_next_linked(req);
+<<<<<<< HEAD
 
 	/* If this is NULL, then timer already claimed it and will complete it */
 	if (!timeout->head)
 		return NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timeout->head = NULL;
 	if (hrtimer_try_to_cancel(&io->timer) != -1) {
 		list_del(&timeout->list);
@@ -308,8 +325,13 @@ static enum hrtimer_restart io_timeout_fn(struct hrtimer *timer)
 
 	raw_spin_lock_irqsave(&ctx->timeout_lock, flags);
 	list_del_init(&timeout->list);
+<<<<<<< HEAD
 	atomic_set(&ctx->cq_timeouts,
 		atomic_read(&ctx->cq_timeouts) + 1);
+=======
+	atomic_set(&req->ctx->cq_timeouts,
+		atomic_read(&req->ctx->cq_timeouts) + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_unlock_irqrestore(&ctx->timeout_lock, flags);
 
 	if (!(data->flags & IORING_TIMEOUT_ETIME_SUCCESS))
@@ -371,6 +393,7 @@ static void io_req_task_link_timeout(struct io_tw_req tw_req, io_tw_token_t tw)
 	int ret;
 
 	if (prev) {
+<<<<<<< HEAD
 		/*
 		 * splice the linked timeout out of prev's chain if the regular
 		 * completion path didn't already do it.
@@ -379,6 +402,8 @@ static void io_req_task_link_timeout(struct io_tw_req tw_req, io_tw_token_t tw)
 			prev->link = req->link;
 		req->link = NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!tw.cancel) {
 			struct io_cancel_data cd = {
 				.ctx		= req->ctx,
@@ -413,12 +438,23 @@ static enum hrtimer_restart io_link_timeout_fn(struct hrtimer *timer)
 
 	/*
 	 * We don't expect the list to be empty, that will only happen if we
+<<<<<<< HEAD
 	 * race with the completion of the linked work. Splice of prev is
 	 * done in io_req_task_link_timeout(), if needed.
 	 */
 	if (prev) {
+<<<<<<< HEAD
 		if (!req_ref_inc_not_zero(prev)) {
 			io_remove_next_linked(prev);
+=======
+=======
+	 * race with the completion of the linked work.
+	 */
+	if (prev) {
+		io_remove_next_linked(prev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+		if (!req_ref_inc_not_zero(prev))
+>>>>>>> 7fb39c93c52e (Sync)
 			prev = NULL;
 		}
 	}
@@ -433,11 +469,30 @@ static enum hrtimer_restart io_link_timeout_fn(struct hrtimer *timer)
 
 static clockid_t io_timeout_get_clock(struct io_timeout_data *data)
 {
+<<<<<<< HEAD
 	return io_flags_to_clock(data->flags);
 }
 
 static int io_linked_timeout_update(struct io_ring_ctx *ctx, __u64 user_data,
 				    ktime_t ts, enum hrtimer_mode mode)
+=======
+	switch (data->flags & IORING_TIMEOUT_CLOCK_MASK) {
+	case IORING_TIMEOUT_BOOTTIME:
+		return CLOCK_BOOTTIME;
+	case IORING_TIMEOUT_REALTIME:
+		return CLOCK_REALTIME;
+	default:
+		/* can't happen, vetted at prep time */
+		WARN_ON_ONCE(1);
+		fallthrough;
+	case 0:
+		return CLOCK_MONOTONIC;
+	}
+}
+
+static int io_linked_timeout_update(struct io_ring_ctx *ctx, __u64 user_data,
+				    struct timespec64 *ts, enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__must_hold(&ctx->timeout_lock)
 {
 	struct io_timeout_data *io;
@@ -459,12 +514,20 @@ static int io_linked_timeout_update(struct io_ring_ctx *ctx, __u64 user_data,
 	if (hrtimer_try_to_cancel(&io->timer) == -1)
 		return -EALREADY;
 	hrtimer_setup(&io->timer, io_link_timeout_fn, io_timeout_get_clock(io), mode);
+<<<<<<< HEAD
 	hrtimer_start(&io->timer, ts, mode);
+=======
+	hrtimer_start(&io->timer, timespec64_to_ktime(*ts), mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int io_timeout_update(struct io_ring_ctx *ctx, __u64 user_data,
+<<<<<<< HEAD
 			     ktime_t time, enum hrtimer_mode mode)
+=======
+			     struct timespec64 *ts, enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__must_hold(&ctx->timeout_lock)
 {
 	struct io_cancel_data cd = { .ctx = ctx, .data = user_data, };
@@ -477,18 +540,29 @@ static int io_timeout_update(struct io_ring_ctx *ctx, __u64 user_data,
 
 	timeout->off = 0; /* noseq */
 	data = req->async_data;
+<<<<<<< HEAD
 	data->time = time;
 
 	list_add_tail(&timeout->list, &ctx->timeout_list);
 	hrtimer_setup(&data->timer, io_timeout_fn, io_timeout_get_clock(data), mode);
 	hrtimer_start(&data->timer, data->time, mode);
+=======
+	data->ts = *ts;
+
+	list_add_tail(&timeout->list, &ctx->timeout_list);
+	hrtimer_setup(&data->timer, io_timeout_fn, io_timeout_get_clock(data), mode);
+	hrtimer_start(&data->timer, timespec64_to_ktime(data->ts), mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int io_timeout_remove_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 {
 	struct io_timeout_rem *tr = io_kiocb_to_cmd(req, struct io_timeout_rem);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(req->flags & (REQ_F_FIXED_FILE | REQ_F_BUFFER_SELECT)))
 		return -EINVAL;
@@ -505,6 +579,7 @@ int io_timeout_remove_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 			return -EINVAL;
 		if (tr->flags & IORING_LINK_TIMEOUT_UPDATE)
 			tr->ltimeout = true;
+<<<<<<< HEAD
 		if (tr->flags & ~(IORING_TIMEOUT_UPDATE_MASK |
 				  IORING_TIMEOUT_ABS |
 				  IORING_TIMEOUT_IMMEDIATE_ARG))
@@ -512,6 +587,14 @@ int io_timeout_remove_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 		ret = io_parse_user_time(&tr->time, READ_ONCE(sqe->addr2), tr->flags);
 		if (ret)
 			return ret;
+=======
+		if (tr->flags & ~(IORING_TIMEOUT_UPDATE_MASK|IORING_TIMEOUT_ABS))
+			return -EINVAL;
+		if (get_timespec64(&tr->ts, u64_to_user_ptr(READ_ONCE(sqe->addr2))))
+			return -EFAULT;
+		if (tr->ts.tv_sec < 0 || tr->ts.tv_nsec < 0)
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (tr->flags) {
 		/* timeout removal doesn't support flags */
 		return -EINVAL;
@@ -546,9 +629,15 @@ int io_timeout_remove(struct io_kiocb *req, unsigned int issue_flags)
 
 		raw_spin_lock_irq(&ctx->timeout_lock);
 		if (tr->ltimeout)
+<<<<<<< HEAD
 			ret = io_linked_timeout_update(ctx, tr->addr, tr->time, mode);
 		else
 			ret = io_timeout_update(ctx, tr->addr, tr->time, mode);
+=======
+			ret = io_linked_timeout_update(ctx, tr->addr, &tr->ts, mode);
+		else
+			ret = io_timeout_update(ctx, tr->addr, &tr->ts, mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raw_spin_unlock_irq(&ctx->timeout_lock);
 	}
 
@@ -566,7 +655,10 @@ static int __io_timeout_prep(struct io_kiocb *req,
 	struct io_timeout_data *data;
 	unsigned flags;
 	u32 off = READ_ONCE(sqe->off);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sqe->addr3 || sqe->__pad2[0])
 		return -EINVAL;
@@ -577,8 +669,12 @@ static int __io_timeout_prep(struct io_kiocb *req,
 	flags = READ_ONCE(sqe->timeout_flags);
 	if (flags & ~(IORING_TIMEOUT_ABS | IORING_TIMEOUT_CLOCK_MASK |
 		      IORING_TIMEOUT_ETIME_SUCCESS |
+<<<<<<< HEAD
 		      IORING_TIMEOUT_MULTISHOT |
 		      IORING_TIMEOUT_IMMEDIATE_ARG))
+=======
+		      IORING_TIMEOUT_MULTISHOT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	/* more than one clock specified is invalid, obviously */
 	if (hweight32(flags & IORING_TIMEOUT_CLOCK_MASK) > 1)
@@ -589,8 +685,13 @@ static int __io_timeout_prep(struct io_kiocb *req,
 
 	INIT_LIST_HEAD(&timeout->list);
 	timeout->off = off;
+<<<<<<< HEAD
 	if (unlikely(off && !(req->ctx->int_flags & IO_RING_F_OFF_TIMEOUT_USED)))
 		req->ctx->int_flags |= IO_RING_F_OFF_TIMEOUT_USED;
+=======
+	if (unlikely(off && !req->ctx->off_timeout_used))
+		req->ctx->off_timeout_used = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * for multishot reqs w/ fixed nr of repeats, repeats tracks the
 	 * remaining nr
@@ -607,9 +708,17 @@ static int __io_timeout_prep(struct io_kiocb *req,
 	data->req = req;
 	data->flags = flags;
 
+<<<<<<< HEAD
 	ret = io_parse_user_time(&data->time, READ_ONCE(sqe->addr), flags);
 	if (ret)
 		return ret;
+=======
+	if (get_timespec64(&data->ts, u64_to_user_ptr(READ_ONCE(sqe->addr))))
+		return -EFAULT;
+
+	if (data->ts.tv_sec < 0 || data->ts.tv_nsec < 0)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->mode = io_translate_timeout_mode(flags);
 
@@ -685,7 +794,11 @@ int io_timeout(struct io_kiocb *req, unsigned int issue_flags)
 	}
 add:
 	list_add(&timeout->list, entry);
+<<<<<<< HEAD
 	hrtimer_start(&data->timer, data->time, data->mode);
+=======
+	hrtimer_start(&data->timer, timespec64_to_ktime(data->ts), data->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_unlock_irq(&ctx->timeout_lock);
 	return IOU_ISSUE_SKIP_COMPLETE;
 }
@@ -703,7 +816,12 @@ void io_queue_linked_timeout(struct io_kiocb *req)
 	if (timeout->head) {
 		struct io_timeout_data *data = req->async_data;
 
+<<<<<<< HEAD
 		hrtimer_start(&data->timer, data->time, data->mode);
+=======
+		hrtimer_start(&data->timer, timespec64_to_ktime(data->ts),
+				data->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_add_tail(&timeout->list, &ctx->ltimeout_list);
 	}
 	raw_spin_unlock_irq(&ctx->timeout_lock);

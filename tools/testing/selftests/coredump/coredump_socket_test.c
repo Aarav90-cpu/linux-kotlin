@@ -435,8 +435,11 @@ out:
  *
  * Verify that when using simple socket-based coredump (@ pattern),
  * the coredump_signal field is correctly exposed as SIGSEGV.
+<<<<<<< HEAD
  * Also check that the coredump_code field is correctly exposed
  * as SEGV_MAPERR.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 TEST_F(coredump, socket_coredump_signal_sigsegv)
 {
@@ -511,6 +514,7 @@ TEST_F(coredump, socket_coredump_signal_sigsegv)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		/* Verify coredump_code is available and correct */
 		if (!(info.mask & PIDFD_INFO_COREDUMP_CODE)) {
 			fprintf(stderr, "socket_coredump_signal_sigsegv: PIDFD_INFO_COREDUMP_CODE not set in mask\n");
@@ -523,6 +527,8 @@ TEST_F(coredump, socket_coredump_signal_sigsegv)
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fd_core_file = open_coredump_tmpfile(self->fd_tmpfs_detached);
 		if (fd_core_file < 0) {
 			fprintf(stderr, "socket_coredump_signal_sigsegv: open_coredump_tmpfile failed: %m\n");
@@ -586,8 +592,11 @@ out:
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP));
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP_SIGNAL));
 	ASSERT_EQ(info.coredump_signal, SIGSEGV);
+<<<<<<< HEAD
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP_CODE));
 	ASSERT_EQ(info.coredump_code, SEGV_MAPERR);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
 }
@@ -597,8 +606,11 @@ out:
  *
  * Verify that when using simple socket-based coredump (@ pattern),
  * the coredump_signal field is correctly exposed as SIGABRT.
+<<<<<<< HEAD
  * Also check that the coredump_code field is correctly exposed
  * as SI_TKILL.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 TEST_F(coredump, socket_coredump_signal_sigabrt)
 {
@@ -673,6 +685,7 @@ TEST_F(coredump, socket_coredump_signal_sigabrt)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		/* Verify coredump_code is available and correct */
 		if (!(info.mask & PIDFD_INFO_COREDUMP_CODE)) {
 			fprintf(stderr, "socket_coredump_signal_sigabrt: PIDFD_INFO_COREDUMP_CODE not set in mask\n");
@@ -685,6 +698,8 @@ TEST_F(coredump, socket_coredump_signal_sigabrt)
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fd_core_file = open_coredump_tmpfile(self->fd_tmpfs_detached);
 		if (fd_core_file < 0) {
 			fprintf(stderr, "socket_coredump_signal_sigabrt: open_coredump_tmpfile failed: %m\n");
@@ -748,8 +763,11 @@ out:
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP));
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP_SIGNAL));
 	ASSERT_EQ(info.coredump_signal, SIGABRT);
+<<<<<<< HEAD
 	ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP_CODE));
 	ASSERT_EQ(info.coredump_code, SI_TKILL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
 }

@@ -162,7 +162,11 @@ static inline bool dev_xmit_complete(int rc)
 
 #if defined(CONFIG_HYPERV_NET)
 # define LL_MAX_HEADER 128
+<<<<<<< HEAD
 #elif defined(CONFIG_WLAN)
+=======
+#elif defined(CONFIG_WLAN) || IS_ENABLED(CONFIG_AX25)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # if defined(CONFIG_MAC80211_MESH)
 #  define LL_MAX_HEADER 128
 # else
@@ -1119,6 +1123,7 @@ struct netdev_net_notifier {
  *	This function is called device changes address list filtering.
  *	If driver handles unicast address filtering, it should set
  *	IFF_UNICAST_FLT in its priv_flags.
+<<<<<<< HEAD
  *	Cannot sleep, called with netif_addr_lock_bh held.
  *	Deprecated in favor of ndo_set_rx_mode_async.
  *
@@ -1129,6 +1134,8 @@ struct netdev_net_notifier {
  *	with rtnl_lock and netdev_lock_ops(dev) held. The uc/mc parameters
  *	are snapshots of the address lists - iterate with
  *	netdev_hw_addr_list_for_each(ha, uc).
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
  *	This function  is called when the Media Access Control address
@@ -1449,10 +1456,13 @@ struct net_device_ops {
 	void			(*ndo_change_rx_flags)(struct net_device *dev,
 						       int flags);
 	void			(*ndo_set_rx_mode)(struct net_device *dev);
+<<<<<<< HEAD
 	void			(*ndo_set_rx_mode_async)(
 					struct net_device *dev,
 					struct netdev_hw_addr_list *uc,
 					struct netdev_hw_addr_list *mc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			(*ndo_set_mac_address)(struct net_device *dev,
 						       void *addr);
 	int			(*ndo_validate_addr)(struct net_device *dev);
@@ -1730,6 +1740,10 @@ struct net_device_ops {
  * @IFF_OPENVSWITCH: device is a Open vSwitch master
  * @IFF_L3MDEV_SLAVE: device is enslaved to an L3 master device
  * @IFF_TEAM: device is a team device
+<<<<<<< HEAD
+=======
+ * @IFF_RXFH_CONFIGURED: device has had Rx Flow indirection table configured
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @IFF_PHONY_HEADROOM: the headroom value is controlled by an external
  *	entity (i.e. the master device for bridged veth)
  * @IFF_MACSEC: device is a MACsec device
@@ -1765,6 +1779,10 @@ enum netdev_priv_flags {
 	IFF_OPENVSWITCH			= 1<<20,
 	IFF_L3MDEV_SLAVE		= 1<<21,
 	IFF_TEAM			= 1<<22,
+<<<<<<< HEAD
+=======
+	IFF_RXFH_CONFIGURED		= 1<<23,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	IFF_PHONY_HEADROOM		= 1<<24,
 	IFF_MACSEC			= 1<<25,
 	IFF_NO_RX_HANDLER		= 1<<26,
@@ -1917,9 +1935,12 @@ enum netdev_reg_state {
  *				has been enabled due to the need to listen to
  *				additional unicast addresses in a device that
  *				does not implement ndo_set_rx_mode()
+<<<<<<< HEAD
  *	@rx_mode_node:		List entry for rx_mode work processing
  *	@rx_mode_tracker:	Refcount tracker for rx_mode work
  *	@rx_mode_addr_cache:	Recycled snapshot entries for rx_mode work
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	@uc:			unicast mac addresses
  *	@mc:			multicast mac addresses
  *	@dev_addrs:		list of device hw addresses
@@ -2311,9 +2332,12 @@ struct net_device {
 	unsigned int		promiscuity;
 	unsigned int		allmulti;
 	bool			uc_promisc;
+<<<<<<< HEAD
 	struct list_head	rx_mode_node;
 	netdevice_tracker	rx_mode_tracker;
 	struct netdev_hw_addr_list	rx_mode_addr_cache;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_LOCKDEP
 	unsigned char		nested_level;
 #endif
@@ -2336,6 +2360,12 @@ struct net_device {
 #if IS_ENABLED(CONFIG_ATALK)
 	void 			*atalk_ptr;
 #endif
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_AX25)
+	struct ax25_dev	__rcu	*ax25_ptr;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_CFG80211)
 	struct wireless_dev	*ieee80211_ptr;
 #endif
@@ -2578,6 +2608,7 @@ struct net_device {
 	 * Also protects some fields in:
 	 *	struct napi_struct, struct netdev_queue, struct netdev_rx_queue
 	 *
+<<<<<<< HEAD
 	 * Ordering:
 	 *
 	 * - take after rtnl_lock
@@ -2586,6 +2617,9 @@ struct net_device {
 	 *   taken for both the virtual and the physical device; to prevent
 	 *   deadlocks, the virtual device's lock must always be acquired
 	 *   before the physical device's (see netdev_nl_queue_create_doit)
+=======
+	 * Ordering: take after rtnl_lock.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	struct mutex		lock;
 
@@ -2787,6 +2821,7 @@ static inline void *netdev_priv(const struct net_device *dev)
 	return (void *)dev->priv;
 }
 
+<<<<<<< HEAD
 /**
  * netdev_from_priv() - get network device from priv
  * @priv: network device private data
@@ -2798,6 +2833,8 @@ static inline struct net_device *netdev_from_priv(const void *priv)
 	return container_of(priv, struct net_device, priv);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Set the sysfs physical device reference for the network logical device
  * if set prior to registration will cause a symlink during initialization.
  */
@@ -3437,8 +3474,11 @@ static inline int dev_direct_xmit(struct sk_buff *skb, u16 queue_id)
 int register_netdevice(struct net_device *dev);
 void unregister_netdevice_queue(struct net_device *dev, struct list_head *head);
 void unregister_netdevice_many(struct list_head *head);
+<<<<<<< HEAD
 bool unregister_netdevice_queued(const struct net_device *dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void unregister_netdevice(struct net_device *dev)
 {
 	unregister_netdevice_queue(dev, NULL);
@@ -5021,6 +5061,7 @@ void __hw_addr_unsync_dev(struct netdev_hw_addr_list *list,
 			  int (*unsync)(struct net_device *,
 					const unsigned char *));
 void __hw_addr_init(struct netdev_hw_addr_list *list);
+<<<<<<< HEAD
 void __hw_addr_flush(struct netdev_hw_addr_list *list);
 int __hw_addr_list_snapshot(struct netdev_hw_addr_list *snap,
 			    const struct netdev_hw_addr_list *list,
@@ -5029,6 +5070,8 @@ void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
 			      struct netdev_hw_addr_list *work,
 			      struct netdev_hw_addr_list *ref, int addr_len,
 			      struct netdev_hw_addr_list *cache);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Functions used for device addresses handling */
 void dev_addr_mod(struct net_device *dev, unsigned int offset,
@@ -5612,7 +5655,14 @@ static inline bool netif_is_lag_port(const struct net_device *dev)
 	return netif_is_bond_slave(dev) || netif_is_team_port(dev);
 }
 
+<<<<<<< HEAD
 bool netif_is_rxfh_configured(const struct net_device *dev);
+=======
+static inline bool netif_is_rxfh_configured(const struct net_device *dev)
+{
+	return dev->priv_flags & IFF_RXFH_CONFIGURED;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool netif_is_failover(const struct net_device *dev)
 {

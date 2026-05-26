@@ -31,7 +31,10 @@ properties:
       - mediatek,mt8183-power-controller
       - mediatek,mt8186-power-controller
       - mediatek,mt8188-power-controller
+<<<<<<< HEAD
       - mediatek,mt8189-power-controller
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - mediatek,mt8192-power-controller
       - mediatek,mt8195-power-controller
       - mediatek,mt8196-hwv-hfrp-power-controller

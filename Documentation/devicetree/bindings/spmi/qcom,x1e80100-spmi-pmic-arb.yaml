@@ -24,9 +24,13 @@ properties:
   compatible:
     oneOf:
       - items:
+<<<<<<< HEAD
           - enum:
               - qcom,eliza-spmi-pmic-arb
               - qcom,sar2130p-spmi-pmic-arb
+=======
+          - const: qcom,sar2130p-spmi-pmic-arb
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,x1e80100-spmi-pmic-arb
       - const: qcom,x1e80100-spmi-pmic-arb
 

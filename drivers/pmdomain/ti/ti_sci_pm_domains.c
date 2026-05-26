@@ -91,9 +91,14 @@ static inline void ti_sci_pd_set_wkup_constraint(struct device *dev)
 		 * If device can wakeup using IO daisy chain wakeups,
 		 * we do not want to set a constraint.
 		 */
+<<<<<<< HEAD
 		if (device_out_band_wakeup(dev)) {
 			dev_dbg(dev, "%s: has out of band wakeup, not setting constraints\n", \
 					__func__);
+=======
+		if (dev->power.wakeirq) {
+			dev_dbg(dev, "%s: has wake IRQ, not setting constraints\n", __func__);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 		}
 

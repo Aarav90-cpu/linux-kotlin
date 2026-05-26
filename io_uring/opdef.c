@@ -67,6 +67,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.vectored		= 1,
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_readv,
@@ -81,6 +85,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.vectored		= 1,
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_writev,
@@ -100,6 +108,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_read_fixed,
 		.issue			= io_read_fixed,
@@ -113,6 +125,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_write_fixed,
 		.issue			= io_write_fixed,
@@ -246,6 +262,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_read,
 		.issue			= io_read,
@@ -259,6 +279,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_write,
 		.issue			= io_write,
@@ -417,6 +441,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.needs_file		= 1,
 		.plug			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.async_size		= sizeof(struct io_async_cmd),
 		.prep			= io_uring_cmd_prep,
 		.issue			= io_uring_cmd,
@@ -430,7 +458,11 @@ const struct io_issue_def io_issue_defs[] = {
 #if defined(CONFIG_NET)
 		.async_size		= sizeof(struct io_async_msghdr),
 		.prep			= io_send_zc_prep,
+<<<<<<< HEAD
 		.issue			= io_sendmsg_zc,
+=======
+		.issue			= io_send_zc,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 		.prep			= io_eopnotsupp_prep,
 #endif
@@ -549,6 +581,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.vectored		= 1,
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_readv_fixed,
@@ -563,6 +599,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.audit_skip		= 1,
 		.ioprio			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.vectored		= 1,
 		.async_size		= sizeof(struct io_async_rw),
 		.prep			= io_prep_writev_fixed,
@@ -584,6 +624,10 @@ const struct io_issue_def io_issue_defs[] = {
 		.needs_file		= 1,
 		.plug			= 1,
 		.iopoll			= 1,
+<<<<<<< HEAD
+=======
+		.iopoll_queue		= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.is_128			= 1,
 		.async_size		= sizeof(struct io_async_cmd),
 		.prep			= io_uring_cmd_prep,

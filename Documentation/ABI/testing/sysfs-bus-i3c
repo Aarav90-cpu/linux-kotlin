@@ -172,6 +172,7 @@ Description:
 		the automatic retries. Exist only when I3C constroller supports
 		this retry on nack feature.
 
+<<<<<<< HEAD
 What:		/sys/bus/i3c/devices/i3c-<bus-id>/do_daa
 KernelVersion:  7.0
 Contact:	linux-i3c@vger.kernel.org
@@ -192,3 +193,5 @@ Description:
 		Note that this mechanism is distinct from Hot-Join, since this is
 		controller-initiated discovery, while Hot-Join is device-initiated
 		method to provoke controller discovery procedure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -906,9 +906,14 @@
  * @NL80211_CMD_UNEXPECTED_FRAME: Used by an application controlling an AP
  *	(or GO) interface (i.e. hostapd) to ask for unexpected frames to
  *	implement sending deauth to stations that send unexpected class 3
+<<<<<<< HEAD
  *	frames. For NAN_DATA interfaces, this is used to report frames from
  *	unknown peers (A2 not assigned to any active NDP).
  *	Also used as the event sent by the kernel when such a frame is received.
+=======
+ *	frames. Also used as the event sent by the kernel when such a frame
+ *	is received.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	For the event, the %NL80211_ATTR_MAC attribute carries the TA and
  *	other attributes like the interface index are present.
  *	If used as the command it must have an interface index and you can
@@ -1362,6 +1367,7 @@
  *	user space that the NAN new cluster has been joined. The cluster ID is
  *	indicated by %NL80211_ATTR_MAC.
  *
+<<<<<<< HEAD
  * @NL80211_CMD_INCUMBENT_SIGNAL_DETECT: Once any incumbent signal is detected
  *	on the operating channel in 6 GHz band, userspace is notified with the
  *	signal interference bitmap using
@@ -1415,6 +1421,8 @@
  *	identifying the evacuated channel.
  *	User space may reconfigure the local schedule in response to this
  *	notification.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @NL80211_CMD_MAX: highest used command number
  * @__NL80211_CMD_AFTER_LAST: internal use
  */
@@ -1678,6 +1686,7 @@ enum nl80211_commands {
 	NL80211_CMD_NAN_NEXT_DW_NOTIFICATION,
 	NL80211_CMD_NAN_CLUSTER_JOINED,
 
+<<<<<<< HEAD
 	NL80211_CMD_INCUMBENT_SIGNAL_DETECT,
 
 	NL80211_CMD_NAN_SET_LOCAL_SCHED,
@@ -1690,6 +1699,8 @@ enum nl80211_commands {
 
 	NL80211_CMD_NAN_CHANNEL_EVAC,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* add new commands above here */
 
 	/* used to define NL80211_CMD_MAX below */
@@ -2717,8 +2728,12 @@ enum nl80211_commands {
  *      a flow is assigned on each round of the DRR scheduler.
  * @NL80211_ATTR_HE_CAPABILITY: HE Capability information element (from
  *	association request when used with NL80211_CMD_NEW_STATION). Can be set
+<<<<<<< HEAD
  *	only if %NL80211_STA_FLAG_WME is set (except for NAN, which uses WME
  *	anyway).
+=======
+ *	only if %NL80211_STA_FLAG_WME is set.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @NL80211_ATTR_FTM_RESPONDER: nested attribute which user-space can include
  *	in %NL80211_CMD_START_AP or %NL80211_CMD_SET_BEACON for fine timing
@@ -3050,6 +3065,7 @@ enum nl80211_commands {
  * @NL80211_ATTR_DISABLE_UHR: Force UHR capable interfaces to disable
  *	this feature during association. This is a flag attribute.
  *	Currently only supported in mac80211 drivers.
+<<<<<<< HEAD
  * @NL80211_ATTR_NAN_CHANNEL: This is a nested attribute. There can be multiple
  *	attributes of this type, each one represents a channel definition and
  *	consists of top-level attributes like %NL80211_ATTR_WIPHY_FREQ.
@@ -3139,6 +3155,8 @@ enum nl80211_commands {
  * @NL80211_ATTR_UHR_OPERATION: Full UHR Operation element, as it appears in
  *	association response etc., since it's abridged in the beacon. Used
  *	for START_AP etc.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
  * @NL80211_ATTR_MAX: highest attribute number currently defined
@@ -3713,6 +3731,7 @@ enum nl80211_attrs {
 	NL80211_ATTR_UHR_CAPABILITY,
 	NL80211_ATTR_DISABLE_UHR,
 
+<<<<<<< HEAD
 	NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP,
 
 	NL80211_ATTR_UHR_OPERATION,
@@ -3733,6 +3752,8 @@ enum nl80211_attrs {
 	NL80211_ATTR_NAN_MAX_CHAN_SWITCH_TIME,
 	NL80211_ATTR_NAN_PEER_MAPS,
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* add attributes here, update the policy in nl80211.c */
 
 	__NL80211_ATTR_AFTER_LAST,
@@ -3826,9 +3847,12 @@ enum nl80211_attrs {
  * @NL80211_IFTYPE_OCB: Outside Context of a BSS
  *	This mode corresponds to the MIB variable dot11OCBActivated=true
  * @NL80211_IFTYPE_NAN: NAN device interface type (not a netdev)
+<<<<<<< HEAD
  * @NL80211_IFTYPE_NAN_DATA: NAN data interface type (netdev); NAN data
  *	interfaces can only be brought up (IFF_UP) when a NAN interface
  *	already exists and NAN has been started (using %NL80211_CMD_START_NAN).
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @NL80211_IFTYPE_MAX: highest interface type number currently defined
  * @NUM_NL80211_IFTYPES: number of defined interface types
  *
@@ -3850,7 +3874,10 @@ enum nl80211_iftype {
 	NL80211_IFTYPE_P2P_DEVICE,
 	NL80211_IFTYPE_OCB,
 	NL80211_IFTYPE_NAN,
+<<<<<<< HEAD
 	NL80211_IFTYPE_NAN_DATA,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* keep last */
 	NUM_NL80211_IFTYPES,
@@ -4540,6 +4567,7 @@ enum nl80211_band_attr {
 #define NL80211_BAND_ATTR_HT_CAPA NL80211_BAND_ATTR_HT_CAPA
 
 /**
+<<<<<<< HEAD
  * enum nl80211_nan_phy_cap_attr - NAN PHY capabilities attributes
  * @__NL80211_NAN_PHY_CAP_ATTR_INVALID: attribute number 0 is reserved
  * @NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET: 16-byte attribute containing HT MCS set
@@ -4580,6 +4608,8 @@ enum nl80211_nan_phy_cap_attr {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enum nl80211_wmm_rule - regulatory wmm rule
  *
  * @__NL80211_WMMR_INVALID: attribute number 0 is reserved
@@ -4700,10 +4730,13 @@ enum nl80211_wmm_rule {
  *	as a non-primary subchannel. Only applicable to S1G channels.
  * @NL80211_FREQUENCY_ATTR_NO_UHR: UHR operation is not allowed on this channel
  *	in current regulatory domain.
+<<<<<<< HEAD
  * @NL80211_FREQUENCY_ATTR_CAC_START_TIME: Channel Availability Check (CAC)
  *	start time (CLOCK_BOOTTIME, nanoseconds). Only present when CAC is
  *	currently in progress on this channel.
  * @NL80211_FREQUENCY_ATTR_PAD: attribute used for padding for 64-bit alignment
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
  *	currently defined
  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
@@ -4754,8 +4787,11 @@ enum nl80211_frequency_attr {
 	NL80211_FREQUENCY_ATTR_NO_16MHZ,
 	NL80211_FREQUENCY_ATTR_S1G_NO_PRIMARY,
 	NL80211_FREQUENCY_ATTR_NO_UHR,
+<<<<<<< HEAD
 	NL80211_FREQUENCY_ATTR_CAC_START_TIME,
 	NL80211_FREQUENCY_ATTR_PAD,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* keep last */
 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
@@ -5692,8 +5728,11 @@ enum nl80211_bss_status {
  * @NL80211_AUTHTYPE_FILS_SK_PFS: Fast Initial Link Setup shared key with PFS
  * @NL80211_AUTHTYPE_FILS_PK: Fast Initial Link Setup public key
  * @NL80211_AUTHTYPE_EPPKE: Enhanced Privacy Protection Key Exchange
+<<<<<<< HEAD
  * @NL80211_AUTHTYPE_IEEE8021X: IEEE 802.1X authentication utilizing
  *	Authentication frames
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @__NL80211_AUTHTYPE_NUM: internal
  * @NL80211_AUTHTYPE_MAX: maximum valid auth algorithm
  * @NL80211_AUTHTYPE_AUTOMATIC: determine automatically (if necessary by
@@ -5710,7 +5749,10 @@ enum nl80211_auth_type {
 	NL80211_AUTHTYPE_FILS_SK_PFS,
 	NL80211_AUTHTYPE_FILS_PK,
 	NL80211_AUTHTYPE_EPPKE,
+<<<<<<< HEAD
 	NL80211_AUTHTYPE_IEEE8021X,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* keep last */
 	__NL80211_AUTHTYPE_NUM,
@@ -7024,11 +7066,14 @@ enum nl80211_feature_flags {
  *	frames in both non‑AP STA and AP mode as specified in
  *	"IEEE P802.11bi/D3.0, 12.16.6".
  *
+<<<<<<< HEAD
  * @NL80211_EXT_FEATURE_IEEE8021X_AUTH: Driver supports IEEE 802.1X
  *	authentication utilizing Authentication frames with user space SME
  *	(NL80211_CMD_AUTHENTICATE) in non-AP STA mode, as specified in
  *	"IEEE P802.11bi/D4.0, 12.16.5".
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @NUM_NL80211_EXT_FEATURES: number of extended features.
  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
  */
@@ -7107,7 +7152,10 @@ enum nl80211_ext_feature_index {
 	NL80211_EXT_FEATURE_BEACON_RATE_EHT,
 	NL80211_EXT_FEATURE_EPPKE,
 	NL80211_EXT_FEATURE_ASSOC_FRAME_ENCRYPTION,
+<<<<<<< HEAD
 	NL80211_EXT_FEATURE_IEEE8021X_AUTH,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* add new features before the definition below */
 	NUM_NL80211_EXT_FEATURES,
@@ -8752,8 +8800,11 @@ enum nl80211_s1g_short_beacon_attrs {
  * @NL80211_NAN_CAPA_CAPABILITIES: u8 attribute containing the
  *	capabilities of the device as defined in Wi-Fi Aware (TM)
  *	specification Table 79 (Capabilities field).
+<<<<<<< HEAD
  * @NL80211_NAN_CAPA_PHY: nested attribute containing band-agnostic
  *	capabilities for NAN data path. See &enum nl80211_nan_phy_cap_attr.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @__NL80211_NAN_CAPABILITIES_LAST: Internal
  * @NL80211_NAN_CAPABILITIES_MAX: Highest NAN capability attribute.
  */
@@ -8766,12 +8817,16 @@ enum nl80211_nan_capabilities {
 	NL80211_NAN_CAPA_NUM_ANTENNAS,
 	NL80211_NAN_CAPA_MAX_CHANNEL_SWITCH_TIME,
 	NL80211_NAN_CAPA_CAPABILITIES,
+<<<<<<< HEAD
 	NL80211_NAN_CAPA_PHY,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* keep last */
 	__NL80211_NAN_CAPABILITIES_LAST,
 	NL80211_NAN_CAPABILITIES_MAX = __NL80211_NAN_CAPABILITIES_LAST - 1,
 };
 
+<<<<<<< HEAD
 /**
  * enum nl80211_nan_peer_map_attrs - NAN peer schedule map attributes
  *
@@ -8800,4 +8855,6 @@ enum nl80211_nan_peer_map_attrs {
 
 #define NL80211_NAN_SCHED_NOT_AVAIL_SLOT 0xff
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __LINUX_NL80211_H */

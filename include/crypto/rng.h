@@ -12,8 +12,11 @@
 #include <linux/atomic.h>
 #include <linux/container_of.h>
 #include <linux/crypto.h>
+<<<<<<< HEAD
 #include <linux/fips.h>
 #include <linux/random.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct crypto_rng;
 
@@ -59,6 +62,7 @@ struct crypto_rng {
 	struct crypto_tfm base;
 };
 
+<<<<<<< HEAD
 int __crypto_stdrng_get_bytes(void *buf, unsigned int len);
 
 /**
@@ -80,6 +84,12 @@ static inline int crypto_stdrng_get_bytes(void *buf, unsigned int len)
 		return __crypto_stdrng_get_bytes(buf, len);
 	return get_random_bytes_wait(buf, len);
 }
+=======
+extern struct crypto_rng *crypto_default_rng;
+
+int crypto_get_default_rng(void);
+void crypto_put_default_rng(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: Random number generator API

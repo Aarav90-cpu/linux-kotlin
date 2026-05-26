@@ -26,10 +26,17 @@ MODULE_PARM_DESC(size_limit_mb, "Max size of a dmabuf, in megabytes. Default is 
 
 struct udmabuf {
 	pgoff_t pagecount;
+<<<<<<< HEAD
 	struct folio **folios;
 
 	/**
 	 * Unlike folios, pinned_folios is only used for unpin.
+=======
+	struct page **pages;
+
+	/**
+	 * Unlike pages, pinned_folios is only used for unpin.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * So, nr_pinned is not the same to pagecount, the pinned_folios
 	 * only set each folio which already pinned when udmabuf_create.
 	 * Note that, since a folio may be pinned multiple times, each folio
@@ -41,7 +48,10 @@ struct udmabuf {
 
 	struct sg_table *sg;
 	struct miscdevice *device;
+<<<<<<< HEAD
 	pgoff_t *offsets;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static vm_fault_t udmabuf_vm_fault(struct vm_fault *vmf)
@@ -55,8 +65,12 @@ static vm_fault_t udmabuf_vm_fault(struct vm_fault *vmf)
 	if (pgoff >= ubuf->pagecount)
 		return VM_FAULT_SIGBUS;
 
+<<<<<<< HEAD
 	pfn = folio_pfn(ubuf->folios[pgoff]);
 	pfn += ubuf->offsets[pgoff] >> PAGE_SHIFT;
+=======
+	pfn = page_to_pfn(ubuf->pages[pgoff]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vmf_insert_pfn(vma, vmf->address, pfn);
 	if (ret & VM_FAULT_ERROR)
@@ -73,8 +87,12 @@ static vm_fault_t udmabuf_vm_fault(struct vm_fault *vmf)
 		if (WARN_ON(pgoff >= ubuf->pagecount))
 			break;
 
+<<<<<<< HEAD
 		pfn = folio_pfn(ubuf->folios[pgoff]);
 		pfn += ubuf->offsets[pgoff] >> PAGE_SHIFT;
+=======
+		pfn = page_to_pfn(ubuf->pages[pgoff]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/**
 		 * If the below vmf_insert_pfn() fails, we do not return an
@@ -109,6 +127,7 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
 static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
 {
 	struct udmabuf *ubuf = buf->priv;
+<<<<<<< HEAD
 	struct page **pages;
 	void *vaddr;
 	pgoff_t pg;
@@ -125,6 +144,13 @@ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
 
 	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
 	kvfree(pages);
+=======
+	void *vaddr;
+
+	dma_resv_assert_held(buf->resv);
+
+	vaddr = vm_map_ram(ubuf->pages, ubuf->pagecount, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vaddr)
 		return -EINVAL;
 
@@ -146,14 +172,18 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
 {
 	struct udmabuf *ubuf = buf->priv;
 	struct sg_table *sg;
+<<<<<<< HEAD
 	struct scatterlist *sgl;
 	unsigned int i = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	sg = kzalloc_obj(*sg);
 	if (!sg)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	ret = sg_alloc_table(sg, ubuf->pagecount, GFP_KERNEL);
 	if (ret < 0)
 		goto err_alloc;
@@ -162,6 +192,14 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
 		sg_set_folio(sgl, ubuf->folios[i], PAGE_SIZE,
 			     ubuf->offsets[i]);
 
+=======
+	ret = sg_alloc_table_from_pages(sg, ubuf->pages, ubuf->pagecount, 0,
+					ubuf->pagecount << PAGE_SHIFT,
+					GFP_KERNEL);
+	if (ret < 0)
+		goto err_alloc;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = dma_map_sgtable(dev, sg, direction, 0);
 	if (ret < 0)
 		goto err_map;
@@ -207,12 +245,17 @@ static void unpin_all_folios(struct udmabuf *ubuf)
 
 static __always_inline int init_udmabuf(struct udmabuf *ubuf, pgoff_t pgcnt)
 {
+<<<<<<< HEAD
 	ubuf->folios = kvmalloc_objs(*ubuf->folios, pgcnt);
 	if (!ubuf->folios)
 		return -ENOMEM;
 
 	ubuf->offsets = kvzalloc_objs(*ubuf->offsets, pgcnt);
 	if (!ubuf->offsets)
+=======
+	ubuf->pages = kvmalloc_objs(*ubuf->pages, pgcnt);
+	if (!ubuf->pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	ubuf->pinned_folios = kvmalloc_objs(*ubuf->pinned_folios, pgcnt);
@@ -225,8 +268,12 @@ static __always_inline int init_udmabuf(struct udmabuf *ubuf, pgoff_t pgcnt)
 static __always_inline void deinit_udmabuf(struct udmabuf *ubuf)
 {
 	unpin_all_folios(ubuf);
+<<<<<<< HEAD
 	kvfree(ubuf->offsets);
 	kvfree(ubuf->folios);
+=======
+	kvfree(ubuf->pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void release_udmabuf(struct dma_buf *buf)
@@ -344,8 +391,13 @@ static long udmabuf_pin_folios(struct udmabuf *ubuf, struct file *memfd,
 		ubuf->pinned_folios[nr_pinned++] = folios[cur_folio];
 
 		for (; subpgoff < fsize; subpgoff += PAGE_SIZE) {
+<<<<<<< HEAD
 			ubuf->folios[upgcnt] = folios[cur_folio];
 			ubuf->offsets[upgcnt] = subpgoff;
+=======
+			ubuf->pages[upgcnt] = folio_page(folios[cur_folio],
+						subpgoff >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			++upgcnt;
 
 			if (++cur_pgcnt >= pgcnt)

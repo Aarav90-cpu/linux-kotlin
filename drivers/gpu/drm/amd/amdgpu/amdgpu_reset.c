@@ -116,7 +116,11 @@ static int amdgpu_reset_xgmi_reset_on_init_perform_reset(
 	/* Mode1 reset needs to be triggered on all devices together */
 	list_for_each_entry(tmp_adev, reset_device_list, reset_list) {
 		/* For XGMI run all resets in parallel to speed up the process */
+<<<<<<< HEAD
 		if (!queue_work(system_dfl_wq, &tmp_adev->xgmi_reset_work))
+=======
+		if (!queue_work(system_unbound_wq, &tmp_adev->xgmi_reset_work))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			r = -EALREADY;
 		if (r) {
 			dev_err(tmp_adev->dev,

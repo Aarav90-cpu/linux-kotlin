@@ -87,6 +87,14 @@
 	ldp		w8, w9, [rk], #16
 	ldp		w10, w11, [rk, #-8]
 
+<<<<<<< HEAD
+=======
+CPU_BE(	rev		w4, w4		)
+CPU_BE(	rev		w5, w5		)
+CPU_BE(	rev		w6, w6		)
+CPU_BE(	rev		w7, w7		)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eor		w4, w4, w8
 	eor		w5, w5, w9
 	eor		w6, w6, w10
@@ -107,6 +115,14 @@
 3:	adr_l		tt, \ltab
 	\round		w4, w5, w6, w7, w8, w9, w10, w11, \bsz, b
 
+<<<<<<< HEAD
+=======
+CPU_BE(	rev		w4, w4		)
+CPU_BE(	rev		w5, w5		)
+CPU_BE(	rev		w6, w6		)
+CPU_BE(	rev		w7, w7		)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stp		w4, w5, [out]
 	stp		w6, w7, [out, #8]
 	ret

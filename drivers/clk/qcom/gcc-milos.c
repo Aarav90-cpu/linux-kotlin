@@ -3152,7 +3152,11 @@ static struct gdsc *gcc_milos_gdscs[] = {
 	[USB3_PHY_GDSC] = &usb3_phy_gdsc,
 };
 
+<<<<<<< HEAD
 static const u32 gcc_milos_critical_cbcrs[] = {
+=======
+static u32 gcc_milos_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x26004, /* GCC_CAMERA_AHB_CLK */
 	0x26018, /* GCC_CAMERA_HF_XO_CLK */
 	0x2601c, /* GCC_CAMERA_SF_XO_CLK */
@@ -3171,7 +3175,11 @@ static const struct regmap_config gcc_milos_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data gcc_milos_driver_data = {
+=======
+static struct qcom_cc_driver_data gcc_milos_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.clk_cbcrs = gcc_milos_critical_cbcrs,
 	.num_clk_cbcrs = ARRAY_SIZE(gcc_milos_critical_cbcrs),
 	.dfs_rcgs = gcc_milos_dfs_clocks,

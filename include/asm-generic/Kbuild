@@ -65,3 +65,7 @@ mandatory-y += vermagic.h
 mandatory-y += vga.h
 mandatory-y += video.h
 mandatory-y += word-at-a-time.h
+<<<<<<< HEAD
+=======
+mandatory-y += xor.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

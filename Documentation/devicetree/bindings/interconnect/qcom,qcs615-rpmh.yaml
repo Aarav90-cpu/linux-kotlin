@@ -34,6 +34,7 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
   clocks:
     items:
       - description: aggre UFS PHY AXI clock
@@ -41,6 +42,8 @@ properties:
       - description: aggre USB3 PRIM AXI clock
       - description: RPMH CC IPA clock
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
 
@@ -60,6 +63,7 @@ allOf:
       required:
         - reg
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -76,6 +80,8 @@ allOf:
       properties:
         clocks: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

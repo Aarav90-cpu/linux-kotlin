@@ -231,19 +231,26 @@ static int amdgpu_ctx_init_entity(struct amdgpu_ctx *ctx, u32 hw_ip,
 	} else {
 		struct amdgpu_fpriv *fpriv;
 
+<<<<<<< HEAD
 		/* TODO: Stop using fpriv here, we only need the xcp_id. */
 		fpriv = container_of(ctx->mgr, struct amdgpu_fpriv, ctx_mgr);
+=======
+		fpriv = container_of(ctx->ctx_mgr, struct amdgpu_fpriv, ctx_mgr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r = amdgpu_xcp_select_scheds(adev, hw_ip, hw_prio, fpriv,
 						&num_scheds, &scheds);
 		if (r)
 			goto error_free_entity;
 	}
 
+<<<<<<< HEAD
 	if (num_scheds == 0) {
 		r = -EINVAL;
 		goto error_free_entity;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* disable load balance if the hw engine retains context among dependent jobs */
 	if (hw_ip == AMDGPU_HW_IP_VCN_ENC ||
 	    hw_ip == AMDGPU_HW_IP_VCN_DEC ||
@@ -354,6 +361,10 @@ static int amdgpu_ctx_init(struct amdgpu_ctx_mgr *mgr, int32_t priority,
 	else
 		ctx->stable_pstate = current_stable_pstate;
 
+<<<<<<< HEAD
+=======
+	ctx->ctx_mgr = &(fpriv->ctx_mgr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

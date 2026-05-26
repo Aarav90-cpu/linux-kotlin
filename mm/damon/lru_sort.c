@@ -282,6 +282,15 @@ static int damon_lru_sort_apply_parameters(void)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * If monitor_region_start/end are unset, always silently
+	 * reset addr_unit to 1.
+	 */
+	if (!monitor_region_start && !monitor_region_end)
+		addr_unit = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	param_ctx->addr_unit = addr_unit;
 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
 
@@ -330,7 +339,10 @@ static int damon_lru_sort_apply_parameters(void)
 	err = damon_set_region_biggest_system_ram_default(param_target,
 					&monitor_region_start,
 					&monitor_region_end,
+<<<<<<< HEAD
 					param_ctx->addr_unit,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					param_ctx->min_region_sz);
 	if (err)
 		goto out;

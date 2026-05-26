@@ -7,7 +7,11 @@
 #include <linux/swap.h>
 #include <linux/pagemap.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/task_io_accounting_ops.h>
 #include <linux/signal.h>
 #include <linux/iversion.h>
@@ -19,7 +23,10 @@
 #include "mds_client.h"
 #include "cache.h"
 #include "metric.h"
+<<<<<<< HEAD
 #include "subvolume_metrics.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "crypto.h"
 #include <linux/ceph/osd_client.h>
 #include <linux/ceph/striper.h>
@@ -260,10 +267,13 @@ static void finish_netfs_read(struct ceph_osd_request *req)
 					osd_data->length), false);
 	}
 	if (err > 0) {
+<<<<<<< HEAD
 		ceph_subvolume_metrics_record_io(fsc->mdsc, ceph_inode(inode),
 						 false, err,
 						 req->r_start_latency,
 						 req->r_end_latency);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		subreq->transferred = err;
 		err = 0;
 	}
@@ -828,10 +838,13 @@ static int write_folio_nounlock(struct folio *folio,
 
 	ceph_update_write_metrics(&fsc->mdsc->metric, req->r_start_latency,
 				  req->r_end_latency, len, err);
+<<<<<<< HEAD
 	if (err >= 0 && len > 0)
 		ceph_subvolume_metrics_record_io(fsc->mdsc, ci, true, len,
 						 req->r_start_latency,
 						 req->r_end_latency);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fscrypt_free_bounce_page(bounce_page);
 	ceph_osdc_put_request(req);
 	if (err == 0)
@@ -972,11 +985,14 @@ static void writepages_finish(struct ceph_osd_request *req)
 	ceph_update_write_metrics(&fsc->mdsc->metric, req->r_start_latency,
 				  req->r_end_latency, len, rc);
 
+<<<<<<< HEAD
 	if (rc >= 0 && len > 0)
 		ceph_subvolume_metrics_record_io(mdsc, ci, true, len,
 						 req->r_start_latency,
 						 req->r_end_latency);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ceph_put_wrbuffer_cap_refs(ci, total_pages, snapc);
 
 	osd_data = osd_req_op_extent_osd_data(req, 0);
@@ -1336,7 +1352,10 @@ void ceph_process_folio_batch(struct address_space *mapping,
 						  ceph_wbc, folio);
 		if (rc == -ENODATA) {
 			folio_unlock(folio);
+<<<<<<< HEAD
 			folio_put(folio);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ceph_wbc->fbatch.folios[i] = NULL;
 			continue;
 		} else if (rc == -E2BIG) {
@@ -1347,7 +1366,10 @@ void ceph_process_folio_batch(struct address_space *mapping,
 		if (!folio_clear_dirty_for_io(folio)) {
 			doutc(cl, "%p !folio_clear_dirty_for_io\n", folio);
 			folio_unlock(folio);
+<<<<<<< HEAD
 			folio_put(folio);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ceph_wbc->fbatch.folios[i] = NULL;
 			continue;
 		}

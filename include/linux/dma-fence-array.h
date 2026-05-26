@@ -38,6 +38,10 @@ struct dma_fence_array_cb {
 struct dma_fence_array {
 	struct dma_fence base;
 
+<<<<<<< HEAD
+=======
+	spinlock_t lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned num_fences;
 	atomic_t num_pending;
 	struct dma_fence **fences;

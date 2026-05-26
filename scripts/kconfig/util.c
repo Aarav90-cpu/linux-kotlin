@@ -18,6 +18,7 @@ static HASHTABLE_DEFINE(file_hashtable, 1U << 11);
 
 struct file {
 	struct hlist_node node;
+<<<<<<< HEAD
 	struct {
 		const char *name;
 		int lineno;
@@ -41,10 +42,19 @@ const char *file_lookup(const char *name,
 			const char *parent_name, int parent_lineno)
 {
 	const char *parent = NULL;
+=======
+	char name[];
+};
+
+/* file already present in list? If not add it */
+const char *file_lookup(const char *name)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct file *file;
 	size_t len;
 	int hash = hash_str(name);
 
+<<<<<<< HEAD
 	if (parent_name)
 		parent = file_lookup(parent_name, NULL, 0);
 
@@ -54,14 +64,22 @@ const char *file_lookup(const char *name,
 				return file->name;
 			die_duplicated_include(file, parent, parent_lineno);
 		}
+=======
+	hash_for_each_possible(file_hashtable, file, node, hash)
+		if (!strcmp(name, file->name))
+			return file->name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = strlen(name);
 	file = xmalloc(sizeof(*file) + len + 1);
 	memset(file, 0, sizeof(*file));
 	memcpy(file->name, name, len);
 	file->name[len] = '\0';
+<<<<<<< HEAD
 	file->parent.name = parent;
 	file->parent.lineno = parent_lineno;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hash_add(file_hashtable, &file->node, hash);
 

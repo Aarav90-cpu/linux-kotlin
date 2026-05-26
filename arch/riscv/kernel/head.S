@@ -14,6 +14,10 @@
 #include <asm/hwcap.h>
 #include <asm/image.h>
 #include <asm/scs.h>
+<<<<<<< HEAD
+=======
+#include <asm/xip_fixup.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/usercfi.h>
 #include "efi-header.S"
 
@@ -74,12 +78,20 @@ pe_head_start:
 relocate_enable_mmu:
 	/* Relocate return address */
 	la a1, kernel_map
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_L a1, KERNEL_MAP_VIRT_ADDR(a1)
 	la a2, _start
 	sub a1, a1, a2
 	add ra, ra, a1
 
+<<<<<<< HEAD
 	/* Point stvec to virtual address of instruction after satp write */
+=======
+	/* Point stvec to virtual address of intruction after satp write */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	la a2, 1f
 	add a2, a2, a1
 	csrw CSR_TVEC, a2
@@ -87,6 +99,10 @@ relocate_enable_mmu:
 	/* Compute satp for kernel page tables, but don't load it yet */
 	srl a2, a0, PAGE_SHIFT
 	la a1, satp_mode
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_L a1, 0(a1)
 	or a2, a2, a1
 
@@ -97,6 +113,10 @@ relocate_enable_mmu:
 	 * to ensure the new translations are in use.
 	 */
 	la a0, trampoline_pg_dir
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	srl a0, a0, PAGE_SHIFT
 	or a0, a0, a1
 	sfence.vma
@@ -150,9 +170,17 @@ secondary_start_sbi:
 
 	/* a0 contains the hartid & a1 contains boot data */
 	li a2, SBI_HART_BOOT_TASK_PTR_OFFSET
+<<<<<<< HEAD
 	add a2, a2, a1
 	REG_L tp, (a2)
 	li a3, SBI_HART_BOOT_STACK_PTR_OFFSET
+=======
+	XIP_FIXUP_OFFSET a2
+	add a2, a2, a1
+	REG_L tp, (a2)
+	li a3, SBI_HART_BOOT_STACK_PTR_OFFSET
+	XIP_FIXUP_OFFSET a3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	add a3, a3, a1
 	REG_L sp, (a3)
 
@@ -161,6 +189,10 @@ secondary_start_sbi:
 #ifdef CONFIG_MMU
 	/* Enable virtual memory and relocate to virtual address */
 	la a0, swapper_pg_dir
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	call relocate_enable_mmu
 #endif
 	call .Lsetup_trap_vector
@@ -262,13 +294,48 @@ SYM_CODE_START(_start_kernel)
 .Lgood_cores:
 
 	/* The lottery system is only required for spinwait booting method */
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Pick one hart to run the main boot sequence */
 	la a3, hart_lottery
 	li a2, 1
 	amoadd.w a3, a2, (a3)
 	bnez a3, .Lsecondary_start
+<<<<<<< HEAD
 #endif /* CONFIG_RISCV_BOOT_SPINWAIT */
 
+=======
+
+#else
+	/* hart_lottery in flash contains a magic number */
+	la a3, hart_lottery
+	mv a2, a3
+	XIP_FIXUP_OFFSET a2
+	XIP_FIXUP_FLASH_OFFSET a3
+	lw t1, (a3)
+	amoswap.w t0, t1, (a2)
+	/* first time here if hart_lottery in RAM is not set */
+	beq t0, t1, .Lsecondary_start
+
+#endif /* CONFIG_XIP */
+#endif /* CONFIG_RISCV_BOOT_SPINWAIT */
+
+#ifdef CONFIG_XIP_KERNEL
+	la sp, _end + THREAD_SIZE
+	XIP_FIXUP_OFFSET sp
+	mv s0, a0
+	mv s1, a1
+	call __copy_data
+
+	/* Restore a0 & a1 copy */
+	mv a0, s0
+	mv a1, s1
+#endif
+
+#ifndef CONFIG_XIP_KERNEL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Clear BSS for flat non-ELF images */
 	la a3, __bss_start
 	la a4, __bss_stop
@@ -278,16 +345,30 @@ SYM_CODE_START(_start_kernel)
 	add a3, a3, RISCV_SZPTR
 	blt a3, a4, .Lclear_bss
 .Lclear_bss_done:
+<<<<<<< HEAD
 	la a2, boot_cpu_hartid
+=======
+#endif
+	la a2, boot_cpu_hartid
+	XIP_FIXUP_OFFSET a2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_S a0, (a2)
 
 	/* Initialize page tables and relocate to virtual addresses */
 	la tp, init_task
 	la sp, init_thread_union + THREAD_SIZE
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET sp
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	addi sp, sp, -PT_SIZE_ON_STACK
 	scs_load_init_stack
 #ifdef CONFIG_BUILTIN_DTB
 	la a0, __dtb_start
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 	mv a0, a1
 #endif /* CONFIG_BUILTIN_DTB */
@@ -297,6 +378,10 @@ SYM_CODE_START(_start_kernel)
 	call setup_vm
 #ifdef CONFIG_MMU
 	la a0, early_pg_dir
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET a0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	call relocate_enable_mmu
 #endif /* CONFIG_MMU */
 
@@ -335,7 +420,13 @@ SYM_CODE_START(_start_kernel)
 
 	slli a3, a0, LGREG
 	la a1, __cpu_spinwait_stack_pointer
+<<<<<<< HEAD
 	la a2, __cpu_spinwait_task_pointer
+=======
+	XIP_FIXUP_OFFSET a1
+	la a2, __cpu_spinwait_task_pointer
+	XIP_FIXUP_OFFSET a2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	add a1, a3, a1
 	add a2, a3, a2
 

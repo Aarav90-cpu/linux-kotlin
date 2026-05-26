@@ -215,7 +215,10 @@ static struct vga_device *__vga_tryget(struct vga_device *vgadev,
 	struct vga_device *conflict;
 	unsigned int pci_bits;
 	u32 flags = 0;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Account for "normal" resources to lock. If we decode the legacy,
@@ -308,9 +311,13 @@ static struct vga_device *__vga_tryget(struct vga_device *vgadev,
 		if (change_bridge)
 			flags |= PCI_VGA_STATE_CHANGE_BRIDGE;
 
+<<<<<<< HEAD
 		err = pci_set_vga_state(conflict->pdev, false, pci_bits, flags);
 		if (err)
 			return ERR_PTR(err);
+=======
+		pci_set_vga_state(conflict->pdev, false, pci_bits, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		conflict->owns &= ~match;
 
 		/* If we disabled normal decoding, reflect it in owns */
@@ -340,9 +347,13 @@ enable_them:
 	if (wants & VGA_RSRC_LEGACY_MASK)
 		flags |= PCI_VGA_STATE_CHANGE_BRIDGE;
 
+<<<<<<< HEAD
 	err = pci_set_vga_state(vgadev->pdev, true, pci_bits, flags);
 	if (err)
 		return ERR_PTR(err);
+=======
+	pci_set_vga_state(vgadev->pdev, true, pci_bits, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vgadev->owns |= wants;
 lock_them:
@@ -460,10 +471,13 @@ int vga_get(struct pci_dev *pdev, unsigned int rsrc, int interruptible)
 		}
 		conflict = __vga_tryget(vgadev, rsrc);
 		spin_unlock_irqrestore(&vga_lock, flags);
+<<<<<<< HEAD
 		if (IS_ERR(conflict)) {
 			rc = PTR_ERR(conflict);
 			break;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (conflict == NULL)
 			break;
 
@@ -1143,7 +1157,10 @@ static ssize_t vga_arb_write(struct file *file, const char __user *buf,
 	char kbuf[64], *curr_pos;
 	size_t remaining = count;
 
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret_val;
 	int i;
 
@@ -1175,11 +1192,15 @@ static ssize_t vga_arb_write(struct file *file, const char __user *buf,
 			goto done;
 		}
 
+<<<<<<< HEAD
 		err = vga_get_uninterruptible(pdev, io_state);
 		if (err) {
 			ret_val = err;
 			goto done;
 		}
+=======
+		vga_get_uninterruptible(pdev, io_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Update the client's locks lists */
 		for (i = 0; i < MAX_USER_CARDS; i++) {

@@ -7,6 +7,7 @@
  *  minix regular file handling primitives
  */
 
+<<<<<<< HEAD
 #include <linux/buffer_head.h>
 #include "minix.h"
 
@@ -17,6 +18,10 @@ int minix_fsync(struct file *file, loff_t start, loff_t end, int datasync)
 			start, end, datasync);
 }
 
+=======
+#include "minix.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We have mostly NULLs here: the current defaults are OK for
  * the minix filesystem.
@@ -26,7 +31,11 @@ const struct file_operations minix_file_operations = {
 	.read_iter	= generic_file_read_iter,
 	.write_iter	= generic_file_write_iter,
 	.mmap_prepare	= generic_file_mmap_prepare,
+<<<<<<< HEAD
 	.fsync		= minix_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.splice_read	= filemap_splice_read,
 };
 

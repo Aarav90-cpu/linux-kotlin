@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * ALSA SoC Synopsys PIO PCM for I2S driver
  *
@@ -6,6 +9,13 @@
  *
  * Copyright (C) 2016 Synopsys
  * Jose Abreu <joabreu@synopsys.com>
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2. This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/io.h>
@@ -253,7 +263,11 @@ static const struct snd_soc_component_driver dw_pcm_component = {
 	.hw_params	= dw_pcm_hw_params,
 	.trigger	= dw_pcm_trigger,
 	.pointer	= dw_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= dw_pcm_new,
+=======
+	.pcm_construct	= dw_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int dw_pcm_register(struct platform_device *pdev)

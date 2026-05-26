@@ -59,6 +59,7 @@
 #define MAX77759_MAXQ_REG_AP_DATAIN0            0xb1
 #define MAX77759_MAXQ_REG_UIC_SWRST             0xe0
 
+<<<<<<< HEAD
 #define MAX77759_CHGR_REG_CHG_INT                      0xb0
 #define   MAX77759_CHGR_REG_CHG_INT_AICL               BIT(7)
 #define   MAX77759_CHGR_REG_CHG_INT_CHGIN              BIT(6)
@@ -118,6 +119,37 @@
 #define MAX77759_CHGR_REG_CHG_CNFG_18                  0xcb
 #define   MAX77759_CHGR_REG_CHG_CNFG_18_WDTEN          BIT(0)
 #define MAX77759_CHGR_REG_CHG_CNFG_19                  0xcc
+=======
+#define MAX77759_CHGR_REG_CHG_INT               0xb0
+#define MAX77759_CHGR_REG_CHG_INT2              0xb1
+#define MAX77759_CHGR_REG_CHG_INT_MASK          0xb2
+#define MAX77759_CHGR_REG_CHG_INT2_MASK         0xb3
+#define MAX77759_CHGR_REG_CHG_INT_OK            0xb4
+#define MAX77759_CHGR_REG_CHG_DETAILS_00        0xb5
+#define MAX77759_CHGR_REG_CHG_DETAILS_01        0xb6
+#define MAX77759_CHGR_REG_CHG_DETAILS_02        0xb7
+#define MAX77759_CHGR_REG_CHG_DETAILS_03        0xb8
+#define MAX77759_CHGR_REG_CHG_CNFG_00           0xb9
+#define MAX77759_CHGR_REG_CHG_CNFG_01           0xba
+#define MAX77759_CHGR_REG_CHG_CNFG_02           0xbb
+#define MAX77759_CHGR_REG_CHG_CNFG_03           0xbc
+#define MAX77759_CHGR_REG_CHG_CNFG_04           0xbd
+#define MAX77759_CHGR_REG_CHG_CNFG_05           0xbe
+#define MAX77759_CHGR_REG_CHG_CNFG_06           0xbf
+#define MAX77759_CHGR_REG_CHG_CNFG_07           0xc0
+#define MAX77759_CHGR_REG_CHG_CNFG_08           0xc1
+#define MAX77759_CHGR_REG_CHG_CNFG_09           0xc2
+#define MAX77759_CHGR_REG_CHG_CNFG_10           0xc3
+#define MAX77759_CHGR_REG_CHG_CNFG_11           0xc4
+#define MAX77759_CHGR_REG_CHG_CNFG_12           0xc5
+#define MAX77759_CHGR_REG_CHG_CNFG_13           0xc6
+#define MAX77759_CHGR_REG_CHG_CNFG_14           0xc7
+#define MAX77759_CHGR_REG_CHG_CNFG_15           0xc8
+#define MAX77759_CHGR_REG_CHG_CNFG_16           0xc9
+#define MAX77759_CHGR_REG_CHG_CNFG_17           0xca
+#define MAX77759_CHGR_REG_CHG_CNFG_18           0xcb
+#define MAX77759_CHGR_REG_CHG_CNFG_19           0xcc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* MaxQ opcodes for max77759_maxq_command() */
 #define MAX77759_MAXQ_OPCODE_MAXLENGTH (MAX77759_MAXQ_REG_AP_DATAOUT32 - \
@@ -132,6 +164,7 @@
 #define MAX77759_MAXQ_OPCODE_USER_SPACE_WRITE    0x82
 
 /**
+<<<<<<< HEAD
  * enum max77759_chgr_chgin_dtls_status - Charger Input Status
  * @MAX77759_CHGR_CHGIN_DTLS_VBUS_UNDERVOLTAGE:
  *     Charger input voltage (Vchgin) < Under Voltage Threshold (Vuvlo)
@@ -210,6 +243,8 @@ enum max77759_chgr_mode {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct max77759 - core max77759 internal data structure
  *
  * @regmap_top: Regmap for accessing TOP registers

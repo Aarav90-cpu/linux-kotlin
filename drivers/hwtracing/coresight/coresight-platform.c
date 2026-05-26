@@ -220,8 +220,11 @@ static int of_coresight_parse_endpoint(struct device *dev,
 		rparent = of_coresight_get_port_parent(rep);
 		if (!rparent)
 			break;
+<<<<<<< HEAD
 		if (!of_device_is_available(rparent))
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (of_graph_parse_endpoint(rep, &rendpoint))
 			break;
 
@@ -851,7 +854,11 @@ coresight_get_platform_data(struct device *dev)
 error:
 	if (!IS_ERR_OR_NULL(pdata))
 		/* Cleanup the connection information */
+<<<<<<< HEAD
 		coresight_release_platform_data(dev, pdata);
+=======
+		coresight_release_platform_data(NULL, dev, pdata);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 EXPORT_SYMBOL_GPL(coresight_get_platform_data);

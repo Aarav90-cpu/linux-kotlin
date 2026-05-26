@@ -926,8 +926,12 @@ const char *evsel__name(struct evsel *evsel)
 		break;
 
 	case PERF_TYPE_TRACEPOINT:
+<<<<<<< HEAD
 		scnprintf(bf, sizeof(bf), "unknown tracepoint id=%#"PRIx64,
 			  evsel->core.attr.config);
+=======
+		scnprintf(bf, sizeof(bf), "%s", "unknown tracepoint");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 
 	case PERF_TYPE_BREAKPOINT:
@@ -939,8 +943,13 @@ const char *evsel__name(struct evsel *evsel)
 		break;
 
 	default:
+<<<<<<< HEAD
 		scnprintf(bf, sizeof(bf), "unknown event PMU=%d config=%#"PRIx64,
 			  evsel->core.attr.type, evsel->core.attr.config);
+=======
+		scnprintf(bf, sizeof(bf), "unknown attr type: %d",
+			  evsel->core.attr.type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 
@@ -1016,17 +1025,25 @@ uint16_t evsel__e_machine(struct evsel *evsel, uint32_t *e_flags)
 	return perf_session__e_machine(session, e_flags);
 }
 
+<<<<<<< HEAD
 static void __evsel__config_callchain(struct evsel *evsel, const struct record_opts *opts,
 				      const struct callchain_param *param)
+=======
+static void __evsel__config_callchain(struct evsel *evsel, struct record_opts *opts,
+				      struct callchain_param *param)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bool function = evsel__is_function_event(evsel);
 	struct perf_event_attr *attr = &evsel->core.attr;
 
+<<<<<<< HEAD
 	if (EM_HOST == EM_S390 && param->record_mode == CALLCHAIN_FP) {
 		pr_warning_once(
 			"Framepointer unwinding lacks kernel support. Use '--call-graph dwarf'\n");
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	evsel__set_sample_bit(evsel, CALLCHAIN);
 
 	attr->sample_max_stack = param->max_stack;
@@ -1086,14 +1103,23 @@ static void __evsel__config_callchain(struct evsel *evsel, const struct record_o
 		attr->defer_callchain = 1;
 }
 
+<<<<<<< HEAD
 void evsel__config_callchain(struct evsel *evsel, const struct record_opts *opts,
 			     const struct callchain_param *param)
+=======
+void evsel__config_callchain(struct evsel *evsel, struct record_opts *opts,
+			     struct callchain_param *param)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (param->enabled)
 		return __evsel__config_callchain(evsel, opts, param);
 }
 
+<<<<<<< HEAD
 static void evsel__reset_callgraph(struct evsel *evsel, const struct callchain_param *param)
+=======
+static void evsel__reset_callgraph(struct evsel *evsel, struct callchain_param *param)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct perf_event_attr *attr = &evsel->core.attr;
 
@@ -1112,7 +1138,11 @@ static void evsel__reset_callgraph(struct evsel *evsel, const struct callchain_p
 
 static void evsel__apply_ratio_to_prev(struct evsel *evsel,
 				       struct perf_event_attr *attr,
+<<<<<<< HEAD
 				       const struct record_opts *opts,
+=======
+				       struct record_opts *opts,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       const char *buf)
 {
 	struct perf_event_attr *prev_attr = NULL;
@@ -1176,7 +1206,11 @@ static void evsel__apply_ratio_to_prev(struct evsel *evsel,
 }
 
 static void evsel__apply_config_terms(struct evsel *evsel,
+<<<<<<< HEAD
 				      const struct record_opts *opts, bool track)
+=======
+				      struct record_opts *opts, bool track)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct evsel_config_term *term;
 	struct list_head *config_terms = &evsel->config_terms;
@@ -1451,7 +1485,11 @@ void __weak arch_evsel__apply_ratio_to_prev(struct evsel *evsel __maybe_unused,
 {
 }
 
+<<<<<<< HEAD
 static void evsel__set_default_freq_period(const struct record_opts *opts,
+=======
+static void evsel__set_default_freq_period(struct record_opts *opts,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   struct perf_event_attr *attr)
 {
 	if (opts->freq) {
@@ -1496,8 +1534,13 @@ bool evsel__is_offcpu_event(struct evsel *evsel)
  *     enable/disable events specifically, as there's no
  *     initial traced exec call.
  */
+<<<<<<< HEAD
 void evsel__config(struct evsel *evsel, const struct record_opts *opts,
 		   const struct callchain_param *callchain)
+=======
+void evsel__config(struct evsel *evsel, struct record_opts *opts,
+		   struct callchain_param *callchain)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct evsel *leader = evsel__leader(evsel);
 	struct perf_event_attr *attr = &evsel->core.attr;
@@ -3073,7 +3116,11 @@ static inline bool overflow(const void *endp, u16 max_size, const void *offset,
 #define OVERFLOW_CHECK(offset, size, max_size)				\
 	do {								\
 		if (overflow(endp, (max_size), (offset), (size)))	\
+<<<<<<< HEAD
 			goto out_efault;				\
+=======
+			return -EFAULT;					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (0)
 
 #define OVERFLOW_CHECK_u64(offset) \
@@ -3205,8 +3252,11 @@ static int __set_offcpu_sample(struct perf_sample *data)
 	data->cgroup = *array;
 
 	return 0;
+<<<<<<< HEAD
 out_efault:
 	return -EFAULT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
@@ -3225,8 +3275,12 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 	 */
 	union u64_swap u;
 
+<<<<<<< HEAD
 	perf_sample__init(data, /*all=*/true);
 	data->evsel = evsel;
+=======
+	memset(data, 0, sizeof(*data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data->cpu = data->pid = data->tid = -1;
 	data->stream_id = data->id = data->time = -1ULL;
 	data->period = evsel->core.attr.sample_period;
@@ -3240,26 +3294,43 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 
 		data->callchain = (struct ip_callchain *)&event->callchain_deferred.nr;
 		if (data->callchain->nr > max_callchain_nr)
+<<<<<<< HEAD
 			goto out_efault;
+=======
+			return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		data->deferred_cookie = event->callchain_deferred.cookie;
 
 		if (evsel->core.attr.sample_id_all)
 			perf_evsel__parse_id_sample(evsel, event, data);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
 	if (event->header.type != PERF_RECORD_SAMPLE) {
+<<<<<<< HEAD
 		if (evsel->core.attr.sample_id_all)
 			perf_evsel__parse_id_sample(evsel, event, data);
 		return 0;
+=======
+		if (!evsel->core.attr.sample_id_all)
+			return 0;
+		return perf_evsel__parse_id_sample(evsel, event, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	array = event->sample.array;
 
 	if (perf_event__check_size(event, evsel->sample_size))
+<<<<<<< HEAD
 		goto out_efault;
+=======
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (type & PERF_SAMPLE_IDENTIFIER) {
 		data->id = *array;
@@ -3352,7 +3423,11 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 					sizeof(struct sample_read_value);
 
 			if (data->read.group.nr > max_group_nr)
+<<<<<<< HEAD
 				goto out_efault;
+=======
+				return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			sz = data->read.group.nr * sample_read_value_size(read_format);
 			OVERFLOW_CHECK(array, sz, max_size);
@@ -3380,7 +3455,11 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 		data->callchain = (struct ip_callchain *)array++;
 		callchain_nr = data->callchain->nr;
 		if (callchain_nr > max_callchain_nr)
+<<<<<<< HEAD
 			goto out_efault;
+=======
+			return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sz = callchain_nr * sizeof(u64);
 		/*
 		 * Save the cookie for the deferred user callchain.  The last 2
@@ -3438,7 +3517,11 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 		data->branch_stack = (struct branch_stack *)array++;
 
 		if (data->branch_stack->nr > max_branch_nr)
+<<<<<<< HEAD
 			goto out_efault;
+=======
+			return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		sz = data->branch_stack->nr * sizeof(struct branch_entry);
 		if (evsel__has_branch_hw_idx(evsel)) {
@@ -3515,7 +3598,11 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 			data->user_stack.size = *array++;
 			if (WARN_ONCE(data->user_stack.size > sz,
 				      "user stack dump failure\n"))
+<<<<<<< HEAD
 				goto out_efault;
+=======
+				return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -3592,6 +3679,7 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 		array = (void *)array + sz;
 	}
 
+<<<<<<< HEAD
 	if (evsel__is_offcpu_event(evsel)) {
 		if (__set_offcpu_sample(data))
 			goto out_efault;
@@ -3601,6 +3689,12 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 out_efault:
 	perf_sample__exit(data);
 	return -EFAULT;
+=======
+	if (evsel__is_offcpu_event(evsel))
+		return __set_offcpu_sample(data);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int evsel__parse_sample_timestamp(struct evsel *evsel, union perf_event *event,
@@ -3800,6 +3894,7 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
 {
 	int paranoid;
 
+<<<<<<< HEAD
 	if ((err == ENODEV || err == ENOENT || err == ENXIO) &&
 	    evsel__match(evsel, HARDWARE, HW_CPU_CYCLES)) {
 		/*
@@ -3836,6 +3931,27 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
 		scnprintf(msg, msgsize,
 			  "The cycles event is not supported, trying to fall back to %s",
 			  evsel__name(evsel));
+=======
+	if ((err == ENOENT || err == ENXIO || err == ENODEV) &&
+	    evsel->core.attr.type   == PERF_TYPE_HARDWARE &&
+	    evsel->core.attr.config == PERF_COUNT_HW_CPU_CYCLES) {
+		/*
+		 * If it's cycles then fall back to hrtimer based cpu-clock sw
+		 * counter, which is always available even if no PMU support.
+		 *
+		 * PPC returns ENXIO until 2.6.37 (behavior changed with commit
+		 * b0a873e).
+		 */
+		evsel->core.attr.type   = PERF_TYPE_SOFTWARE;
+		evsel->core.attr.config = target__has_cpu(target)
+			? PERF_COUNT_SW_CPU_CLOCK
+			: PERF_COUNT_SW_TASK_CLOCK;
+		scnprintf(msg, msgsize,
+			"The cycles event is not supported, trying to fall back to %s",
+			target__has_cpu(target) ? "cpu-clock" : "task-clock");
+
+		zfree(&evsel->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	} else if (err == EACCES && !evsel->core.attr.exclude_kernel &&
 		   (paranoid = perf_event_paranoid()) > 1) {
@@ -3862,7 +3978,11 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
 			  " samples", paranoid);
 		evsel->core.attr.exclude_kernel = 1;
 		evsel->core.attr.exclude_hv     = 1;
+<<<<<<< HEAD
 		evsel->fallenback_eacces = true;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	} else if (err == EOPNOTSUPP && !evsel->core.attr.exclude_guest &&
 		   !evsel->exclude_GH) {
@@ -3883,7 +4003,11 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
 		/* Apple M1 requires exclude_guest */
 		scnprintf(msg, msgsize, "Trying to fall back to excluding guest samples");
 		evsel->core.attr.exclude_guest = 1;
+<<<<<<< HEAD
 		evsel->fallenback_eopnotsupp = true;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	}
 no_fallback:

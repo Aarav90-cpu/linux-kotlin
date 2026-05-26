@@ -535,8 +535,12 @@ static void padata_init_reorder_list(struct parallel_data *pd)
 }
 
 /* Allocate and initialize the internal cpumask dependend resources. */
+<<<<<<< HEAD
 static struct parallel_data *padata_alloc_pd(struct padata_shell *ps,
 					     int offlining_cpu)
+=======
+static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct padata_instance *pinst = ps->pinst;
 	struct parallel_data *pd;
@@ -562,10 +566,13 @@ static struct parallel_data *padata_alloc_pd(struct padata_shell *ps,
 
 	cpumask_and(pd->cpumask.pcpu, pinst->cpumask.pcpu, cpu_online_mask);
 	cpumask_and(pd->cpumask.cbcpu, pinst->cpumask.cbcpu, cpu_online_mask);
+<<<<<<< HEAD
 	if (offlining_cpu >= 0) {
 		__cpumask_clear_cpu(offlining_cpu, pd->cpumask.pcpu);
 		__cpumask_clear_cpu(offlining_cpu, pd->cpumask.cbcpu);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	padata_init_reorder_list(pd);
 	padata_init_squeues(pd);
@@ -612,11 +619,19 @@ static void __padata_stop(struct padata_instance *pinst)
 }
 
 /* Replace the internal control structure with a new one. */
+<<<<<<< HEAD
 static int padata_replace_one(struct padata_shell *ps, int offlining_cpu)
 {
 	struct parallel_data *pd_new;
 
 	pd_new = padata_alloc_pd(ps, offlining_cpu);
+=======
+static int padata_replace_one(struct padata_shell *ps)
+{
+	struct parallel_data *pd_new;
+
+	pd_new = padata_alloc_pd(ps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pd_new)
 		return -ENOMEM;
 
@@ -626,7 +641,11 @@ static int padata_replace_one(struct padata_shell *ps, int offlining_cpu)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int padata_replace(struct padata_instance *pinst, int offlining_cpu)
+=======
+static int padata_replace(struct padata_instance *pinst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct padata_shell *ps;
 	int err = 0;
@@ -634,7 +653,11 @@ static int padata_replace(struct padata_instance *pinst, int offlining_cpu)
 	pinst->flags |= PADATA_RESET;
 
 	list_for_each_entry(ps, &pinst->pslist, list) {
+<<<<<<< HEAD
 		err = padata_replace_one(ps, offlining_cpu);
+=======
+		err = padata_replace_one(ps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			break;
 	}
@@ -651,6 +674,7 @@ static int padata_replace(struct padata_instance *pinst, int offlining_cpu)
 
 /* If cpumask contains no active cpu, we mark the instance as invalid. */
 static bool padata_validate_cpumask(struct padata_instance *pinst,
+<<<<<<< HEAD
 				    const struct cpumask *cpumask,
 				    int offlining_cpu)
 {
@@ -666,6 +690,11 @@ static bool padata_validate_cpumask(struct padata_instance *pinst,
 		__cpumask_clear_cpu(offlining_cpu, pinst->validate_cpumask);
 
 	if (!cpumask_intersects(cpumask, pinst->validate_cpumask)) {
+=======
+				    const struct cpumask *cpumask)
+{
+	if (!cpumask_intersects(cpumask, cpu_online_mask)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinst->flags |= PADATA_INVALID;
 		return false;
 	}
@@ -681,13 +710,21 @@ static int __padata_set_cpumasks(struct padata_instance *pinst,
 	int valid;
 	int err;
 
+<<<<<<< HEAD
 	valid = padata_validate_cpumask(pinst, pcpumask, -1);
+=======
+	valid = padata_validate_cpumask(pinst, pcpumask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!valid) {
 		__padata_stop(pinst);
 		goto out_replace;
 	}
 
+<<<<<<< HEAD
 	valid = padata_validate_cpumask(pinst, cbcpumask, -1);
+=======
+	valid = padata_validate_cpumask(pinst, cbcpumask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!valid)
 		__padata_stop(pinst);
 
@@ -695,7 +732,11 @@ out_replace:
 	cpumask_copy(pinst->cpumask.pcpu, pcpumask);
 	cpumask_copy(pinst->cpumask.cbcpu, cbcpumask);
 
+<<<<<<< HEAD
 	err = padata_setup_cpumasks(pinst) ?: padata_replace(pinst, -1);
+=======
+	err = padata_setup_cpumasks(pinst) ?: padata_replace(pinst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (valid)
 		__padata_start(pinst);
@@ -747,6 +788,39 @@ EXPORT_SYMBOL(padata_set_cpumask);
 
 #ifdef CONFIG_HOTPLUG_CPU
 
+<<<<<<< HEAD
+=======
+static int __padata_add_cpu(struct padata_instance *pinst, int cpu)
+{
+	int err = 0;
+
+	if (cpumask_test_cpu(cpu, cpu_online_mask)) {
+		err = padata_replace(pinst);
+
+		if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
+		    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
+			__padata_start(pinst);
+	}
+
+	return err;
+}
+
+static int __padata_remove_cpu(struct padata_instance *pinst, int cpu)
+{
+	int err = 0;
+
+	if (!cpumask_test_cpu(cpu, cpu_online_mask)) {
+		if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
+		    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
+			__padata_stop(pinst);
+
+		err = padata_replace(pinst);
+	}
+
+	return err;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int pinst_has_cpu(struct padata_instance *pinst, int cpu)
 {
 	return cpumask_test_cpu(cpu, pinst->cpumask.pcpu) ||
@@ -758,11 +832,16 @@ static int padata_cpu_online(unsigned int cpu, struct hlist_node *node)
 	struct padata_instance *pinst;
 	int ret;
 
+<<<<<<< HEAD
 	pinst = hlist_entry_safe(node, struct padata_instance, cpuhp_node);
+=======
+	pinst = hlist_entry_safe(node, struct padata_instance, cpu_online_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pinst_has_cpu(pinst, cpu))
 		return 0;
 
 	mutex_lock(&pinst->lock);
+<<<<<<< HEAD
 
 	ret = padata_replace(pinst, -1);
 
@@ -770,20 +849,32 @@ static int padata_cpu_online(unsigned int cpu, struct hlist_node *node)
 	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu, -1))
 		__padata_start(pinst);
 
+=======
+	ret = __padata_add_cpu(pinst, cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&pinst->lock);
 	return ret;
 }
 
+<<<<<<< HEAD
 static int padata_cpu_offline(unsigned int cpu, struct hlist_node *node)
+=======
+static int padata_cpu_dead(unsigned int cpu, struct hlist_node *node)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct padata_instance *pinst;
 	int ret;
 
+<<<<<<< HEAD
 	pinst = hlist_entry_safe(node, struct padata_instance, cpuhp_node);
+=======
+	pinst = hlist_entry_safe(node, struct padata_instance, cpu_dead_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pinst_has_cpu(pinst, cpu))
 		return 0;
 
 	mutex_lock(&pinst->lock);
+<<<<<<< HEAD
 
 	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu, cpu) ||
 	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu, cpu))
@@ -791,6 +882,9 @@ static int padata_cpu_offline(unsigned int cpu, struct hlist_node *node)
 
 	ret = padata_replace(pinst, cpu);
 
+=======
+	ret = __padata_remove_cpu(pinst, cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&pinst->lock);
 	return ret;
 }
@@ -801,14 +895,23 @@ static enum cpuhp_state hp_online;
 static void __padata_free(struct padata_instance *pinst)
 {
 #ifdef CONFIG_HOTPLUG_CPU
+<<<<<<< HEAD
 	cpuhp_state_remove_instance_nocalls(hp_online, &pinst->cpuhp_node);
+=======
+	cpuhp_state_remove_instance_nocalls(CPUHP_PADATA_DEAD,
+					    &pinst->cpu_dead_node);
+	cpuhp_state_remove_instance_nocalls(hp_online, &pinst->cpu_online_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	WARN_ON(!list_empty(&pinst->pslist));
 
 	free_cpumask_var(pinst->cpumask.pcpu);
 	free_cpumask_var(pinst->cpumask.cbcpu);
+<<<<<<< HEAD
 	free_cpumask_var(pinst->validate_cpumask);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	destroy_workqueue(pinst->serial_wq);
 	destroy_workqueue(pinst->parallel_wq);
 	kfree(pinst);
@@ -969,10 +1072,17 @@ struct padata_instance *padata_alloc(const char *name)
 
 	if (!alloc_cpumask_var(&pinst->cpumask.pcpu, GFP_KERNEL))
 		goto err_free_serial_wq;
+<<<<<<< HEAD
 	if (!alloc_cpumask_var(&pinst->cpumask.cbcpu, GFP_KERNEL))
 		goto err_free_p_mask;
 	if (!alloc_cpumask_var(&pinst->validate_cpumask, GFP_KERNEL))
 		goto err_free_cb_mask;
+=======
+	if (!alloc_cpumask_var(&pinst->cpumask.cbcpu, GFP_KERNEL)) {
+		free_cpumask_var(pinst->cpumask.pcpu);
+		goto err_free_serial_wq;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_LIST_HEAD(&pinst->pslist);
 
@@ -980,7 +1090,11 @@ struct padata_instance *padata_alloc(const char *name)
 	cpumask_copy(pinst->cpumask.cbcpu, cpu_possible_mask);
 
 	if (padata_setup_cpumasks(pinst))
+<<<<<<< HEAD
 		goto err_free_v_mask;
+=======
+		goto err_free_masks;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__padata_start(pinst);
 
@@ -989,19 +1103,31 @@ struct padata_instance *padata_alloc(const char *name)
 
 #ifdef CONFIG_HOTPLUG_CPU
 	cpuhp_state_add_instance_nocalls_cpuslocked(hp_online,
+<<<<<<< HEAD
 						    &pinst->cpuhp_node);
+=======
+						    &pinst->cpu_online_node);
+	cpuhp_state_add_instance_nocalls_cpuslocked(CPUHP_PADATA_DEAD,
+						    &pinst->cpu_dead_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	cpus_read_unlock();
 
 	return pinst;
 
+<<<<<<< HEAD
 err_free_v_mask:
 	free_cpumask_var(pinst->validate_cpumask);
 err_free_cb_mask:
 	free_cpumask_var(pinst->cpumask.cbcpu);
 err_free_p_mask:
 	free_cpumask_var(pinst->cpumask.pcpu);
+=======
+err_free_masks:
+	free_cpumask_var(pinst->cpumask.pcpu);
+	free_cpumask_var(pinst->cpumask.cbcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_serial_wq:
 	destroy_workqueue(pinst->serial_wq);
 err_put_cpus:
@@ -1044,7 +1170,11 @@ struct padata_shell *padata_alloc_shell(struct padata_instance *pinst)
 	ps->pinst = pinst;
 
 	cpus_read_lock();
+<<<<<<< HEAD
 	pd = padata_alloc_pd(ps, -1);
+=======
+	pd = padata_alloc_pd(ps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpus_read_unlock();
 
 	if (!pd)
@@ -1093,24 +1223,47 @@ void __init padata_init(void)
 	int ret;
 
 	ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, "padata:online",
+<<<<<<< HEAD
 				      padata_cpu_online, padata_cpu_offline);
 	if (ret < 0)
 		goto err;
 	hp_online = ret;
+=======
+				      padata_cpu_online, NULL);
+	if (ret < 0)
+		goto err;
+	hp_online = ret;
+
+	ret = cpuhp_setup_state_multi(CPUHP_PADATA_DEAD, "padata:dead",
+				      NULL, padata_cpu_dead);
+	if (ret < 0)
+		goto remove_online_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	possible_cpus = num_possible_cpus();
 	padata_works = kmalloc_objs(struct padata_work, possible_cpus);
 	if (!padata_works)
+<<<<<<< HEAD
 		goto remove_online_state;
+=======
+		goto remove_dead_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < possible_cpus; ++i)
 		list_add(&padata_works[i].pw_list, &padata_free_works);
 
 	return;
 
+<<<<<<< HEAD
 remove_online_state:
 #ifdef CONFIG_HOTPLUG_CPU
+=======
+remove_dead_state:
+#ifdef CONFIG_HOTPLUG_CPU
+	cpuhp_remove_multi_state(CPUHP_PADATA_DEAD);
+remove_online_state:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpuhp_remove_multi_state(hp_online);
 err:
 #endif

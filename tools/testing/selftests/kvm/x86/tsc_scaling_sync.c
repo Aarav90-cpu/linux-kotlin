@@ -21,10 +21,17 @@ pthread_spinlock_t create_lock;
 #define TEST_TSC_KHZ    2345678UL
 #define TEST_TSC_OFFSET 200000000
 
+<<<<<<< HEAD
 u64 tsc_sync;
 static void guest_code(void)
 {
 	u64 start_tsc, local_tsc, tmp;
+=======
+uint64_t tsc_sync;
+static void guest_code(void)
+{
+	uint64_t start_tsc, local_tsc, tmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	start_tsc = rdtsc();
 	do {

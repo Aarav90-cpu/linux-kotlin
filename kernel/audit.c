@@ -355,8 +355,13 @@ void audit_panic(const char *message)
 
 static inline int audit_rate_check(void)
 {
+<<<<<<< HEAD
 	static unsigned long	last_check;
 	static int		messages;
+=======
+	static unsigned long	last_check = 0;
+	static int		messages   = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static DEFINE_SPINLOCK(lock);
 	unsigned long		flags;
 	unsigned long		now;
@@ -391,7 +396,11 @@ static inline int audit_rate_check(void)
 */
 void audit_log_lost(const char *message)
 {
+<<<<<<< HEAD
 	static unsigned long	last_msg;
+=======
+	static unsigned long	last_msg = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static DEFINE_SPINLOCK(lock);
 	unsigned long		flags;
 	unsigned long		now;
@@ -1295,8 +1304,11 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
 		memset(&s, 0, sizeof(s));
 		/* guard against past and future API changes */
 		memcpy(&s, data, min_t(size_t, sizeof(s), data_len));
+<<<<<<< HEAD
 		if (s.mask & ~AUDIT_STATUS_ALL)
 			return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (s.mask & AUDIT_STATUS_ENABLED) {
 			err = audit_set_enabled(s.enabled);
 			if (err < 0)
@@ -1468,8 +1480,11 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
 		err = audit_list_rules_send(skb, seq);
 		break;
 	case AUDIT_TRIM:
+<<<<<<< HEAD
 		if (audit_enabled == AUDIT_LOCKED)
 			return -EPERM;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		audit_trim_trees();
 		audit_log_common_recv_msg(audit_context(), &ab,
 					  AUDIT_CONFIG_CHANGE);
@@ -1482,8 +1497,11 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
 		size_t msglen = data_len;
 		char *old, *new;
 
+<<<<<<< HEAD
 		if (audit_enabled == AUDIT_LOCKED)
 			return -EPERM;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -EINVAL;
 		if (msglen < 2 * sizeof(u32))
 			break;

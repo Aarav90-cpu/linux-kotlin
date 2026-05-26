@@ -4,8 +4,13 @@
  */
 
 #include <linux/clk-provider.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+=======
+#include <linux/module.h>
+#include <linux/of.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 

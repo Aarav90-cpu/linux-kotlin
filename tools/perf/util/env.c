@@ -718,7 +718,11 @@ int perf_env__numa_node(struct perf_env *env, struct perf_cpu cpu)
 
 		for (i = 0; i < env->nr_numa_nodes; i++) {
 			struct perf_cpu tmp;
+<<<<<<< HEAD
 			unsigned int j;
+=======
+			int j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			nn = &env->numa_nodes[i];
 			perf_cpu_map__for_each_cpu(tmp, j, nn->map)

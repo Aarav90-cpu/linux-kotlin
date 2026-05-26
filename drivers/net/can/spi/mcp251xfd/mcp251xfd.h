@@ -672,7 +672,10 @@ struct mcp251xfd_priv {
 	struct gpio_desc *rx_int;
 	struct clk *clk;
 	bool pll_enable;
+<<<<<<< HEAD
 	bool xstbyen;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct regulator *reg_vdd;
 	struct regulator *reg_xceiver;
 

@@ -813,6 +813,7 @@ static int wdt87xx_load_chunk(struct i2c_client *client,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int wdt87xx_do_update_firmware(struct wdt87xx_data *wdt,
 				      const struct firmware *fw,
 				      unsigned int chunk_id)
@@ -820,22 +821,50 @@ static int wdt87xx_do_update_firmware(struct wdt87xx_data *wdt,
 	struct i2c_client *client = wdt->client;
 	int error;
 
+=======
+static int wdt87xx_do_update_firmware(struct i2c_client *client,
+				      const struct firmware *fw,
+				      unsigned int chunk_id)
+{
+	struct wdt87xx_data *wdt = i2c_get_clientdata(client);
+	int error;
+
+	error = wdt87xx_validate_firmware(wdt, fw);
+	if (error)
+		return error;
+
+	error = mutex_lock_interruptible(&wdt->fw_mutex);
+	if (error)
+		return error;
+
+	disable_irq(client->irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = wdt87xx_load_chunk(client, fw, chunk_id);
 	if (error) {
 		dev_err(&client->dev,
 			"firmware load failed (type: %d): %d\n",
 			chunk_id, error);
+<<<<<<< HEAD
 		return error;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	error = wdt87xx_sw_reset(client);
 	if (error) {
 		dev_err(&client->dev, "soft reset failed: %d\n", error);
+<<<<<<< HEAD
 		return error;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Refresh the parameters */
 	error = wdt87xx_get_sysparam(client, &wdt->param);
+<<<<<<< HEAD
 	if (error) {
 		dev_err(&client->dev,
 			"failed to refresh system parameters: %d\n", error);
@@ -843,16 +872,32 @@ static int wdt87xx_do_update_firmware(struct wdt87xx_data *wdt,
 	}
 
 	return 0;
+=======
+	if (error)
+		dev_err(&client->dev,
+			"failed to refresh system parameters: %d\n", error);
+out:
+	enable_irq(client->irq);
+	mutex_unlock(&wdt->fw_mutex);
+
+	return error ? error : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int wdt87xx_update_firmware(struct device *dev,
 				   const char *fw_name, unsigned int chunk_id)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
 	struct wdt87xx_data *wdt = i2c_get_clientdata(client);
 	int error;
 
 	const struct firmware *fw __free(firmware) = NULL;
+=======
+	const struct firmware *fw;
+	int error;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = request_firmware(&fw, fw_name, dev);
 	if (error) {
 		dev_err(&client->dev, "unable to retrieve firmware %s: %d\n",
@@ -860,6 +905,7 @@ static int wdt87xx_update_firmware(struct device *dev,
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = wdt87xx_validate_firmware(wdt, fw);
 	if (error)
 		return error;
@@ -873,6 +919,13 @@ static int wdt87xx_update_firmware(struct device *dev,
 	}
 
 	return 0;
+=======
+	error = wdt87xx_do_update_firmware(client, fw, chunk_id);
+
+	release_firmware(fw);
+
+	return error ? error : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t config_csum_show(struct device *dev,

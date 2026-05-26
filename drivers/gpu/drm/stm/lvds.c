@@ -897,14 +897,23 @@ static int lvds_connector_atomic_check(struct drm_connector *connector,
 	if (!conn_state)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!conn_state->crtc)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (list_empty(&connector->modes)) {
 		drm_dbg(connector->dev, "connector: empty modes list\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!conn_state->crtc)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	panel_mode = list_first_entry(&connector->modes,
 				      struct drm_display_mode, head);
 

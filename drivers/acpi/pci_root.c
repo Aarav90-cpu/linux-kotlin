@@ -24,6 +24,11 @@
 #include <linux/platform_data/x86/apple.h>
 #include "internal.h"
 
+<<<<<<< HEAD
+=======
+#define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+#define ACPI_PCI_ROOT_DEVICE_NAME	"PCI Root Bridge"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int acpi_pci_root_add(struct acpi_device *device,
 			     const struct acpi_device_id *not_used);
 static void acpi_pci_root_remove(struct acpi_device *device);
@@ -687,6 +692,11 @@ static int acpi_pci_root_add(struct acpi_device *device,
 
 	root->device = device;
 	root->segment = segment & 0xFFFF;
+<<<<<<< HEAD
+=======
+	strscpy(acpi_device_name(device), ACPI_PCI_ROOT_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_PCI_ROOT_CLASS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device->driver_data = root;
 
 	if (hotadd && dmar_device_add(handle)) {
@@ -694,8 +704,14 @@ static int acpi_pci_root_add(struct acpi_device *device,
 		goto end;
 	}
 
+<<<<<<< HEAD
 	pr_info("PCI Root Bridge [%s] (domain %04x %pR)\n",
 		acpi_device_bid(device), root->segment, &root->secondary);
+=======
+	pr_info("%s [%s] (domain %04x %pR)\n",
+	       acpi_device_name(device), acpi_device_bid(device),
+	       root->segment, &root->secondary);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	root->mcfg_addr = acpi_pci_root_get_mcfg_addr(handle);
 

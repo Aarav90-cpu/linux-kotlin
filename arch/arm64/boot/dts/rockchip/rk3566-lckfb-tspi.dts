@@ -635,10 +635,17 @@
 	status = "okay";
 
 	bluetooth: bluetooth {
+<<<<<<< HEAD
 		compatible = "brcm,bcm43430a1-bt";
 		clocks = <&rk809 1>;
 		clock-names = "lpo";
 		max-speed = <1500000>;
+=======
+		compatible = "brcm,bcm43438-bt";
+		clocks = <&rk809 1>;
+		clock-names = "lpo";
+		max-speed = <3000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinctrl-names = "default";
 		pinctrl-0 = <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
 		shutdown-gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_HIGH>;

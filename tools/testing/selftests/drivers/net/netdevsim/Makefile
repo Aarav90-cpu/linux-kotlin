@@ -11,6 +11,10 @@ TEST_PROGS := \
 	fib.sh \
 	fib_notifications.sh \
 	hw_stats_l3.sh \
+<<<<<<< HEAD
+=======
+	macsec-offload.sh \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nexthop.sh \
 	peer.sh \
 	psample.sh \

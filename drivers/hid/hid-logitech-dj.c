@@ -1858,8 +1858,12 @@ static int logi_dj_raw_event(struct hid_device *hdev,
 static int logi_dj_probe(struct hid_device *hdev,
 			 const struct hid_device_id *id)
 {
+<<<<<<< HEAD
 	struct hid_report_enum *input_report_enum;
 	struct hid_report_enum *output_report_enum;
+=======
+	struct hid_report_enum *rep_enum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hid_report *rep;
 	struct dj_receiver_dev *djrcv_dev;
 	struct usb_interface *intf;
@@ -1904,6 +1908,7 @@ static int logi_dj_probe(struct hid_device *hdev,
 		}
 	}
 
+<<<<<<< HEAD
 	output_report_enum = &hdev->report_enum[HID_OUTPUT_REPORT];
 	rep = output_report_enum->report_id_hash[REPORT_ID_DJ_SHORT];
 
@@ -1918,6 +1923,12 @@ static int logi_dj_probe(struct hid_device *hdev,
 
 	/* no input reports, bail out */
 	if (list_empty(&input_report_enum->report_list))
+=======
+	rep_enum = &hdev->report_enum[HID_INPUT_REPORT];
+
+	/* no input reports, bail out */
+	if (list_empty(&rep_enum->report_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/*
@@ -1925,7 +1936,11 @@ static int logi_dj_probe(struct hid_device *hdev,
 	 * Note: we should theoretically check for HID++ and DJ
 	 * collections, but this will do.
 	 */
+<<<<<<< HEAD
 	list_for_each_entry(rep, &input_report_enum->report_list, list) {
+=======
+	list_for_each_entry(rep, &rep_enum->report_list, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rep->application == 0xff000001)
 			has_hidpp = true;
 	}
@@ -1938,7 +1953,11 @@ static int logi_dj_probe(struct hid_device *hdev,
 		return -ENODEV;
 
 	/* get the current application attached to the node */
+<<<<<<< HEAD
 	rep = list_first_entry(&input_report_enum->report_list, struct hid_report, list);
+=======
+	rep = list_first_entry(&rep_enum->report_list, struct hid_report, list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	djrcv_dev = dj_get_receiver_dev(hdev, id->driver_data,
 					rep->application, has_hidpp);
 	if (!djrcv_dev) {
@@ -1946,7 +1965,11 @@ static int logi_dj_probe(struct hid_device *hdev,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (!input_report_enum->numbered)
+=======
+	if (!rep_enum->numbered)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		djrcv_dev->unnumbered_application = rep->application;
 
 	/* Starts the usb device and connects to upper interfaces hiddev and

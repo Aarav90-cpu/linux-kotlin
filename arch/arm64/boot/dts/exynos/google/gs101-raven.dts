@@ -15,6 +15,7 @@
 	compatible = "google,gs101-raven", "google,gs101";
 };
 
+<<<<<<< HEAD
 &acpm_ipc {
 	pmic-2 {
 		regulators {
@@ -33,6 +34,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &cont_splash_mem {
 	reg = <0x0 0xfac00000 (1440 * 3120 * 4)>;
 	status = "okay";

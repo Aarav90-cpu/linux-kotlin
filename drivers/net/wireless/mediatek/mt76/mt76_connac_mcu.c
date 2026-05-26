@@ -4,7 +4,10 @@
 #include <linux/firmware.h>
 #include "mt76_connac2_mac.h"
 #include "mt76_connac_mcu.h"
+<<<<<<< HEAD
 #include "mt792x_regs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int mt76_connac_mcu_start_firmware(struct mt76_dev *dev, u32 addr, u32 option)
 {
@@ -66,7 +69,11 @@ int mt76_connac_mcu_init_download(struct mt76_dev *dev, u32 addr, u32 len,
 	int cmd;
 
 	if ((!is_connac_v1(dev) && addr == MCU_PATCH_ADDRESS) ||
+<<<<<<< HEAD
 	    (is_connac2(dev) && addr == 0x900000) ||
+=======
+	    (is_mt7921(dev) && addr == 0x900000) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    (is_mt7925(dev) && (addr == 0x900000 || addr == 0xe0002800)) ||
 	    (is_mt799x(dev) && addr == 0x900000))
 		cmd = MCU_CMD(PATCH_START_REQ);
@@ -403,7 +410,11 @@ void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
 	switch (vif->type) {
 	case NL80211_IFTYPE_MESH_POINT:
 	case NL80211_IFTYPE_AP:
+<<<<<<< HEAD
 		if (vif->p2p && !is_connac2(dev))
+=======
+		if (vif->p2p && !is_mt7921(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			conn_type = CONNECTION_P2P_GC;
 		else
 			conn_type = CONNECTION_INFRA_STA;
@@ -411,7 +422,11 @@ void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
 		basic->aid = cpu_to_le16(link_sta->sta->aid);
 		break;
 	case NL80211_IFTYPE_STATION:
+<<<<<<< HEAD
 		if (vif->p2p && !is_connac2(dev))
+=======
+		if (vif->p2p && !is_mt7921(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			conn_type = CONNECTION_P2P_GO;
 		else
 			conn_type = CONNECTION_INFRA_AP;
@@ -875,7 +890,11 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
 		struct sta_rec_vht *vht;
 		int len;
 
+<<<<<<< HEAD
 		len = is_connac2(dev) ? sizeof(*vht) : sizeof(*vht) - 4;
+=======
+		len = is_mt7921(dev) ? sizeof(*vht) : sizeof(*vht) - 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_VHT, len);
 		vht = (struct sta_rec_vht *)tlv;
 		vht->vht_cap = cpu_to_le32(sta->deflink.vht_cap.cap);
@@ -886,7 +905,11 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
 	/* starec uapsd */
 	mt76_connac_mcu_sta_uapsd(skb, vif, sta);
 
+<<<<<<< HEAD
 	if (!is_connac2(dev))
+=======
+	if (!is_mt7921(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (sta->deflink.ht_cap.ht_supported || sta->deflink.he_cap.has_he)
@@ -1296,10 +1319,15 @@ int mt76_connac_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
 				    wtbl_hdr);
 
 	ret = mt76_connac_mcu_sta_wed_update(dev, skb);
+<<<<<<< HEAD
 	if (ret) {
 		dev_kfree_skb(skb);
 		return ret;
 	}
+=======
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = mt76_mcu_skb_send_msg(dev, skb, cmd, true);
 	if (ret)
@@ -1312,10 +1340,15 @@ int mt76_connac_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
 	mt76_connac_mcu_sta_ba_tlv(skb, params, enable, tx);
 
 	ret = mt76_connac_mcu_sta_wed_update(dev, skb);
+<<<<<<< HEAD
 	if (ret) {
 		dev_kfree_skb(skb);
 		return ret;
 	}
+=======
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return mt76_mcu_skb_send_msg(dev, skb, cmd, true);
 }
@@ -1779,7 +1812,11 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
 	req->ssid_type_ext = n_ssids ? BIT(0) : 0;
 	req->ssids_num = n_ssids;
 
+<<<<<<< HEAD
 	duration = is_connac2(phy->dev) ? 0 : MT76_CONNAC_SCAN_CHANNEL_TIME;
+=======
+	duration = is_mt7921(phy->dev) ? 0 : MT76_CONNAC_SCAN_CHANNEL_TIME;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* increase channel time for passive scan */
 	if (!sreq->n_ssids)
 		duration *= 2;
@@ -1822,7 +1859,11 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
 		req->ies_len = cpu_to_le16(sreq->ie_len);
 	}
 
+<<<<<<< HEAD
 	if (is_connac2(phy->dev))
+=======
+	if (is_mt7921(phy->dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req->scan_func |= SCAN_FUNC_SPLIT_SCAN;
 
 	memcpy(req->bssid, sreq->bssid, ETH_ALEN);
@@ -1898,7 +1939,11 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
 		get_random_mask_addr(addr, sreq->mac_addr,
 				     sreq->mac_addr_mask);
 	}
+<<<<<<< HEAD
 	if (is_connac2(phy->dev)) {
+=======
+	if (is_mt7921(phy->dev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req->mt7921.bss_idx = mvif->idx;
 		req->mt7921.delay = cpu_to_le32(sreq->delay);
 	}
@@ -2038,7 +2083,11 @@ mt76_connac_mcu_build_sku(struct mt76_dev *dev, s8 *sku,
 			  struct mt76_power_limits *limits,
 			  enum nl80211_band band)
 {
+<<<<<<< HEAD
 	int max_power = is_connac2(dev) ? 127 : 63;
+=======
+	int max_power = is_mt7921(dev) ? 127 : 63;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, offset = sizeof(limits->cck);
 
 	memset(sku, max_power, MT_SKU_POWER_LIMIT);
@@ -2066,7 +2115,11 @@ mt76_connac_mcu_build_sku(struct mt76_dev *dev, s8 *sku,
 		offset += 12;
 	}
 
+<<<<<<< HEAD
 	if (!is_connac2(dev))
+=======
+	if (!is_mt7921(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* he */
@@ -2122,7 +2175,11 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
 				  enum nl80211_band band)
 {
 	struct mt76_dev *dev = phy->dev;
+<<<<<<< HEAD
 	int sku_len, batch_len = is_connac2(dev) ? 8 : 16;
+=======
+	int sku_len, batch_len = is_mt7921(dev) ? 8 : 16;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static const u8 chan_list_2ghz[] = {
 		1, 2,  3,  4,  5,  6,  7,
 		8, 9, 10, 11, 12, 13, 14
@@ -2163,7 +2220,11 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
 	if (!limits)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	sku_len = is_connac2(dev) ? sizeof(sku_tlbv) : sizeof(sku_tlbv) - 92;
+=======
+	sku_len = is_mt7921(dev) ? sizeof(sku_tlbv) : sizeof(sku_tlbv) - 92;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tx_power = 2 * phy->hw->conf.power_level;
 	if (!tx_power)
 		tx_power = 127;
@@ -2247,9 +2308,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
 					    false);
 		if (err < 0)
 			goto out;
+<<<<<<< HEAD
 
 		/* read a CR to avoid PSE buffer underflow */
 		mt76_connac_mcu_reg_rr(dev, MT_PSE_BASE);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:
@@ -2772,6 +2836,7 @@ int mt76_connac_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
 		return PTR_ERR(skb);
 
 	ret = mt76_connac_mcu_sta_key_tlv(sta_key_conf, skb, key, cmd);
+<<<<<<< HEAD
 	if (ret) {
 		dev_kfree_skb(skb);
 		return ret;
@@ -2782,6 +2847,14 @@ int mt76_connac_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
 		dev_kfree_skb(skb);
 		return ret;
 	}
+=======
+	if (ret)
+		return ret;
+
+	ret = mt76_connac_mcu_sta_wed_update(dev, skb);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
 }
@@ -3084,7 +3157,11 @@ static u32 mt76_connac2_get_data_mode(struct mt76_dev *dev, u32 info)
 {
 	u32 mode = DL_MODE_NEED_RSP;
 
+<<<<<<< HEAD
 	if ((!is_connac2(dev) && !is_mt7925(dev)) || info == PATCH_SEC_NOT_SUPPORT)
+=======
+	if ((!is_mt7921(dev) && !is_mt7925(dev)) || info == PATCH_SEC_NOT_SUPPORT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return mode;
 
 	switch (FIELD_GET(PATCH_SEC_ENC_TYPE_MASK, info)) {

@@ -1128,8 +1128,12 @@ int sparx5_port_init(struct sparx5 *sparx5,
 		DEV2G5_PCS1G_SD_CFG(port->portno));
 
 	if (conf->portmode == PHY_INTERFACE_MODE_QSGMII ||
+<<<<<<< HEAD
 	    conf->portmode == PHY_INTERFACE_MODE_SGMII ||
 	    conf->portmode == PHY_INTERFACE_MODE_1000BASEX) {
+=======
+	    conf->portmode == PHY_INTERFACE_MODE_SGMII) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = sparx5_serdes_set(sparx5, port, conf);
 		if (err)
 			return err;

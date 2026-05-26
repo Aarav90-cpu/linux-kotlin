@@ -33,6 +33,10 @@
 #include <drm/drm_print.h>
 #include <drm/drm_probe_helper.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_atomic.h"
 #include "intel_backlight.h"
 #include "intel_connector.h"
@@ -1367,7 +1371,11 @@ static void intel_dsi_prepare(struct intel_encoder *encoder,
 	}
 
 	tmp = 0;
+<<<<<<< HEAD
 	if (!intel_dsi->eot_pkt)
+=======
+	if (intel_dsi->eotp_pkt == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tmp |= EOT_DISABLE;
 	if (intel_dsi->clock_stop)
 		tmp |= CLOCKSTOP;

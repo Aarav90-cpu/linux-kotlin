@@ -73,7 +73,11 @@ static int mbt_mb_init(struct super_block *sb)
 	ext4_fsblk_t block;
 	int ret;
 
+<<<<<<< HEAD
 	/* needed by ext4_mb_init->bdev_rot(sb->s_bdev) */
+=======
+	/* needed by ext4_mb_init->bdev_nonrot(sb->s_bdev) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sb->s_bdev = kzalloc_obj(*sb->s_bdev);
 	if (sb->s_bdev == NULL)
 		return -ENOMEM;
@@ -362,6 +366,10 @@ static int mbt_kunit_init(struct kunit *test)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	test->priv = sb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kunit_activate_static_stub(test,
 				   ext4_read_block_bitmap_nowait,
 				   ext4_read_block_bitmap_nowait_stub);
@@ -382,8 +390,11 @@ static int mbt_kunit_init(struct kunit *test)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	test->priv = sb;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -391,9 +402,12 @@ static void mbt_kunit_exit(struct kunit *test)
 {
 	struct super_block *sb = (struct super_block *)test->priv;
 
+<<<<<<< HEAD
 	if (!sb)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mbt_mb_release(sb);
 	mbt_ctx_release(sb);
 	mbt_ext4_free_super_block(sb);

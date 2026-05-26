@@ -539,7 +539,11 @@ void __noreturn __cold nvhe_hyp_panic_handler(u64 esr, u64 spsr,
 
 		/* All hyp bugs, including warnings, are treated as fatal. */
 		if (!is_protected_kvm_enabled() ||
+<<<<<<< HEAD
 		    IS_ENABLED(CONFIG_PKVM_DISABLE_STAGE2_ON_PANIC)) {
+=======
+		    IS_ENABLED(CONFIG_NVHE_EL2_DEBUG)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct bug_entry *bug = find_bug(elr_in_kimg);
 
 			if (bug)

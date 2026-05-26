@@ -19,6 +19,7 @@ struct xencons_interface {
     char out[2048];
     XENCONS_RING_IDX in_cons, in_prod;
     XENCONS_RING_IDX out_cons, out_prod;
+<<<<<<< HEAD
 /*
  * Flag values signaling from backend to frontend whether the console is
  * connected.  i.e. Whether it will be serviced and emptied.
@@ -32,6 +33,8 @@ struct xencons_interface {
  */
 #define XENCONSOLE_CONNECTED    0
     uint8_t connection;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* __XEN_PUBLIC_IO_CONSOLE_H__ */

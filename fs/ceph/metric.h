@@ -25,9 +25,14 @@ enum ceph_metric_type {
 	CLIENT_METRIC_TYPE_STDEV_WRITE_LATENCY,
 	CLIENT_METRIC_TYPE_AVG_METADATA_LATENCY,
 	CLIENT_METRIC_TYPE_STDEV_METADATA_LATENCY,
+<<<<<<< HEAD
 	CLIENT_METRIC_TYPE_SUBVOLUME_METRICS,
 
 	CLIENT_METRIC_TYPE_MAX = CLIENT_METRIC_TYPE_SUBVOLUME_METRICS,
+=======
+
+	CLIENT_METRIC_TYPE_MAX = CLIENT_METRIC_TYPE_STDEV_METADATA_LATENCY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -51,7 +56,10 @@ enum ceph_metric_type {
 	CLIENT_METRIC_TYPE_STDEV_WRITE_LATENCY,	   \
 	CLIENT_METRIC_TYPE_AVG_METADATA_LATENCY,   \
 	CLIENT_METRIC_TYPE_STDEV_METADATA_LATENCY, \
+<<<<<<< HEAD
 	CLIENT_METRIC_TYPE_SUBVOLUME_METRICS,	   \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						   \
 	CLIENT_METRIC_TYPE_MAX,			   \
 }
@@ -141,6 +149,7 @@ struct ceph_write_io_size {
 	__le64 total_size;
 } __packed;
 
+<<<<<<< HEAD
 /**
  * struct ceph_subvolume_metric_entry_wire - On-wire format sent to MDS
  * @subvolume_id: Subvolume identifier
@@ -176,6 +185,8 @@ struct ceph_subvolume_metric_entry {
 	__le64 write_latency_us;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ceph_metric_head {
 	__le32 num;	/* the number of metrics that will be sent */
 } __packed;

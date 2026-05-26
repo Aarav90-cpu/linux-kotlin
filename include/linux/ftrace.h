@@ -31,7 +31,11 @@
 #define ARCH_SUPPORTS_FTRACE_OPS 0
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_TRACER_SNAPSHOT
+=======
+#ifdef CONFIG_TRACING
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void ftrace_boot_snapshot(void);
 #else
 static inline void ftrace_boot_snapshot(void) { }

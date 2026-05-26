@@ -730,7 +730,10 @@ static int rtw89_fw_update_ver(struct rtw89_dev *rtwdev,
 {
 	const struct rtw89_fw_hdr *v0 = (const struct rtw89_fw_hdr *)fw_suit->data;
 	const struct rtw89_fw_hdr_v1 *v1 = (const struct rtw89_fw_hdr_v1 *)fw_suit->data;
+<<<<<<< HEAD
 	struct wiphy *wiphy = rtwdev->hw->wiphy;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (type == RTW89_FW_LOGFMT)
 		return 0;
@@ -756,6 +759,7 @@ static int rtw89_fw_update_ver(struct rtw89_dev *rtwdev,
 		   fw_suit->major_ver, fw_suit->minor_ver, fw_suit->sub_ver,
 		   fw_suit->sub_idex, fw_suit->commitid, fw_suit->cmd_ver, type);
 
+<<<<<<< HEAD
 	if (type == RTW89_FW_NORMAL || type == RTW89_FW_NORMAL_CE ||
 	    type == RTW89_FW_NORMAL_B)
 		snprintf(wiphy->fw_version, sizeof(wiphy->fw_version),
@@ -763,6 +767,8 @@ static int rtw89_fw_update_ver(struct rtw89_dev *rtwdev,
 			 fw_suit->major_ver, fw_suit->minor_ver,
 			 fw_suit->sub_ver, fw_suit->sub_idex);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -931,7 +937,10 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 84, 0, RFK_PRE_NOTIFY_MCC_V1),
 	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 84, 0, ADDR_CAM_V0),
 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 97, 0, SIM_SER_L0L1_BY_HALT_H2C),
+<<<<<<< HEAD
 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 100, 0, SER_POST_RECOVER_DMAC),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void rtw89_fw_iterate_feature_cfg(struct rtw89_fw_info *fw,
@@ -974,20 +983,32 @@ static void rtw89_fw_recognize_features(struct rtw89_dev *rtwdev)
 const struct firmware *
 rtw89_early_fw_feature_recognize(struct device *device,
 				 const struct rtw89_chip_info *chip,
+<<<<<<< HEAD
 				 const struct rtw89_chip_variant *variant,
 				 struct rtw89_fw_info *early_fw,
 				 int *used_fw_format)
 {
 	const struct rtw89_fw_def *fw_def = __rtw89_chip_get_fw_def(chip, variant);
+=======
+				 struct rtw89_fw_info *early_fw,
+				 int *used_fw_format)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct firmware *firmware;
 	char fw_name[64];
 	int fw_format;
 	u32 ver_code;
 	int ret;
 
+<<<<<<< HEAD
 	for (fw_format = fw_def->fw_format_max; fw_format >= 0; fw_format--) {
 		rtw89_fw_get_filename(fw_name, sizeof(fw_name),
 				      fw_def->fw_basename, fw_format);
+=======
+	for (fw_format = chip->fw_format_max; fw_format >= 0; fw_format--) {
+		rtw89_fw_get_filename(fw_name, sizeof(fw_name),
+				      chip->fw_basename, fw_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = request_firmware(&firmware, fw_name, device);
 		if (!ret) {
@@ -1036,6 +1057,7 @@ static int rtw89_fw_validate_ver_required(struct rtw89_dev *rtwdev)
 
 int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
 {
+<<<<<<< HEAD
 	const struct rtw89_fw_def *fw_def = rtw89_chip_get_fw_def(rtwdev);
 	const struct rtw89_chip_info *chip = rtwdev->chip;
 	const struct rtw89_hal *hal = &rtwdev->hal;
@@ -1048,13 +1070,22 @@ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
 		wowlan_fw_type = RTW89_FW_WOWLAN_B;
 	}
 
+=======
+	const struct rtw89_chip_info *chip = rtwdev->chip;
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (chip->try_ce_fw) {
 		ret = __rtw89_fw_recognize(rtwdev, RTW89_FW_NORMAL_CE, true);
 		if (!ret)
 			goto normal_done;
 	}
 
+<<<<<<< HEAD
 	ret = __rtw89_fw_recognize(rtwdev, normal_fw_type, false);
+=======
+	ret = __rtw89_fw_recognize(rtwdev, RTW89_FW_NORMAL, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1064,7 +1095,11 @@ normal_done:
 		return ret;
 
 	/* It still works if wowlan firmware isn't existing. */
+<<<<<<< HEAD
 	__rtw89_fw_recognize(rtwdev, wowlan_fw_type, false);
+=======
+	__rtw89_fw_recognize(rtwdev, RTW89_FW_WOWLAN, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* It still works if log format file isn't existing. */
 	__rtw89_fw_recognize(rtwdev, RTW89_FW_LOGFMT, true);
@@ -1082,7 +1117,10 @@ int rtw89_build_phy_tbl_from_elm(struct rtw89_dev *rtwdev,
 				 const union rtw89_fw_element_arg arg)
 {
 	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+<<<<<<< HEAD
 	const struct rtw89_chip_info *chip = rtwdev->chip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rtw89_hal *hal = &rtwdev->hal;
 	struct rtw89_phy_table *tbl, **pp;
 	struct rtw89_reg2_def *regs;
@@ -1139,9 +1177,13 @@ int rtw89_build_phy_tbl_from_elm(struct rtw89_dev *rtwdev,
 
 	if (radio) {
 		tbl->rf_path = arg.rf_path;
+<<<<<<< HEAD
 		tbl->config = chip->chip_id == RTL8852A ?
 			      rtw89_phy_config_rf_reg :
 			      rtw89_phy_config_rf_reg_v1;
+=======
+		tbl->config = rtw89_phy_config_rf_reg_v1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	*pp = tbl;
@@ -1161,6 +1203,7 @@ int rtw89_fw_recognize_txpwr_from_elm(struct rtw89_dev *rtwdev,
 	const struct __rtw89_fw_txpwr_element *txpwr_elm = &elm->u.txpwr;
 	const unsigned long offset = arg.offset;
 	struct rtw89_efuse *efuse = &rtwdev->efuse;
+<<<<<<< HEAD
 	struct rtw89_hal *hal = &rtwdev->hal;
 	u16 aid = le16_to_cpu(elm->aid);
 	struct rtw89_txpwr_conf *conf;
@@ -1168,6 +1211,10 @@ int rtw89_fw_recognize_txpwr_from_elm(struct rtw89_dev *rtwdev,
 	if (aid && aid != hal->aid)
 		return 1;
 
+=======
+	struct rtw89_txpwr_conf *conf;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rtwdev->rfe_data) {
 		rtwdev->rfe_data = kzalloc_obj(*rtwdev->rfe_data);
 		if (!rtwdev->rfe_data)
@@ -2052,11 +2099,19 @@ void rtw89_load_firmware_work(struct work_struct *work)
 {
 	struct rtw89_dev *rtwdev =
 		container_of(work, struct rtw89_dev, load_firmware_work);
+<<<<<<< HEAD
 	const struct rtw89_fw_def *fw_def = rtw89_chip_get_fw_def(rtwdev);
 	char fw_name[64];
 
 	rtw89_fw_get_filename(fw_name, sizeof(fw_name),
 			      fw_def->fw_basename, rtwdev->fw.fw_format);
+=======
+	const struct rtw89_chip_info *chip = rtwdev->chip;
+	char fw_name[64];
+
+	rtw89_fw_get_filename(fw_name, sizeof(fw_name),
+			      chip->fw_basename, rtwdev->fw.fw_format);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw89_load_firmware_req(rtwdev, &rtwdev->fw.req, fw_name, false);
 }
@@ -6885,6 +6940,7 @@ flex_member:
 	return 0;
 }
 
+<<<<<<< HEAD
 int rtw89_fw_h2c_trx_protect(struct rtw89_dev *rtwdev,
 			     enum rtw89_phy_idx phy_idx, bool enable)
 {
@@ -6972,6 +7028,8 @@ int rtw89_fw_h2c_trx_protect(struct rtw89_dev *rtwdev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw89_fw_h2c_rf_reg(struct rtw89_dev *rtwdev,
 			struct rtw89_fw_h2c_rf_reg_info *info,
 			u16 len, u8 page)
@@ -7385,7 +7443,10 @@ v1:
 	h2c = (struct rtw89_fw_h2c_rfk_pre_info_mcc *)skb->data;
 
 	h2c->aid = cpu_to_le32(hal->aid);
+<<<<<<< HEAD
 	h2c->acv = hal->acv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 done:
 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
@@ -9718,10 +9779,15 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#define H2C_WAKEUP_CTRL_LEN 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
 				 struct rtw89_vif_link *rtwvif_link,
 				 bool enable)
 {
+<<<<<<< HEAD
 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
 	struct rtw89_h2c_wow_wakeup_ctrl *h2c;
@@ -9731,11 +9797,20 @@ int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
 	int ret;
 
 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+=======
+	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
+	struct sk_buff *skb;
+	u8 macid = rtwvif_link->mac_id;
+	int ret;
+
+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_WAKEUP_CTRL_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!skb) {
 		rtw89_err(rtwdev, "failed to alloc skb for wakeup ctrl\n");
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	skb_put(skb, len);
 	h2c = (struct rtw89_h2c_wow_wakeup_ctrl *)skb->data;
 
@@ -9755,12 +9830,28 @@ int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
 					    RTW89_H2C_WOW_WAKEUP_CTRL_W0_DEAUTH_ENABLE);
 
 	h2c->w0 |= le32_encode_bits(macid, RTW89_H2C_WOW_WAKEUP_CTRL_W0_MAC_ID);
+=======
+	skb_put(skb, H2C_WAKEUP_CTRL_LEN);
+
+	if (rtw_wow->pattern_cnt)
+		RTW89_SET_WOW_WAKEUP_CTRL_PATTERN_MATCH_ENABLE(skb->data, enable);
+	if (test_bit(RTW89_WOW_FLAG_EN_MAGIC_PKT, rtw_wow->flags))
+		RTW89_SET_WOW_WAKEUP_CTRL_MAGIC_ENABLE(skb->data, enable);
+	if (test_bit(RTW89_WOW_FLAG_EN_DISCONNECT, rtw_wow->flags))
+		RTW89_SET_WOW_WAKEUP_CTRL_DEAUTH_ENABLE(skb->data, enable);
+
+	RTW89_SET_WOW_WAKEUP_CTRL_MAC_ID(skb->data, macid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
 			      H2C_CAT_MAC,
 			      H2C_CL_MAC_WOW,
 			      H2C_FUNC_WAKEUP_CTRL, 0, 1,
+<<<<<<< HEAD
 			      len);
+=======
+			      H2C_WAKEUP_CTRL_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = rtw89_h2c_tx(rtwdev, skb, false);
 	if (ret) {

@@ -8,6 +8,7 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
 }
 
+<<<<<<< HEAD
 static inline bool netmem_is_pp(netmem_ref netmem)
 {
 	struct page *page;
@@ -20,6 +21,23 @@ static inline bool netmem_is_pp(netmem_ref netmem)
 	 */
 	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
 	return PageNetpp(page);
+=======
+static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+{
+	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+}
+
+static inline void netmem_clear_pp_magic(netmem_ref netmem)
+{
+	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+
+	netmem_to_nmdesc(netmem)->pp_magic = 0;
+}
+
+static inline bool netmem_is_pp(netmem_ref netmem)
+{
+	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)

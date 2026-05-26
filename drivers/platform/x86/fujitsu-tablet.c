@@ -18,7 +18,10 @@
 #include <linux/input.h>
 #include <linux/delay.h>
 #include <linux/dmi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MODULENAME "fujitsu-tablet"
 
@@ -443,16 +446,30 @@ static acpi_status fujitsu_walk_resources(struct acpi_resource *res, void *data)
 	}
 }
 
+<<<<<<< HEAD
 static int acpi_fujitsu_probe(struct platform_device *pdev)
 {
 	struct acpi_device *adev;
 	acpi_status status;
 	int error;
 
+<<<<<<< HEAD
 	adev = ACPI_COMPANION(&pdev->dev);
 	if (!adev)
 		return -ENODEV;
 
+=======
+=======
+static int acpi_fujitsu_add(struct acpi_device *adev)
+{
+	acpi_status status;
+	int error;
+
+	if (!adev)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	status = acpi_walk_resources(adev->handle, METHOD_NAME__CRS,
 			fujitsu_walk_resources, NULL);
 	if (ACPI_FAILURE(status) || !fujitsu.irq || !fujitsu.io_base)
@@ -464,7 +481,11 @@ static int acpi_fujitsu_probe(struct platform_device *pdev)
 	snprintf(fujitsu.phys, sizeof(fujitsu.phys),
 			"%s/input0", acpi_device_hid(adev));
 
+<<<<<<< HEAD
 	error = input_fujitsu_setup(&pdev->dev,
+=======
+	error = input_fujitsu_setup(&adev->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		acpi_device_name(adev), fujitsu.phys);
 	if (error)
 		return error;
@@ -487,7 +508,11 @@ static int acpi_fujitsu_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void acpi_fujitsu_remove(struct platform_device *pdev)
+=======
+static void acpi_fujitsu_remove(struct acpi_device *adev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	free_irq(fujitsu.irq, fujitsu_interrupt);
 	release_region(fujitsu.io_base, fujitsu.io_length);
@@ -504,6 +529,7 @@ static int acpi_fujitsu_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(acpi_fujitsu_pm, NULL, acpi_fujitsu_resume);
 
+<<<<<<< HEAD
 static struct platform_driver acpi_fujitsu_driver = {
 	.probe = acpi_fujitsu_probe,
 	.remove = acpi_fujitsu_remove,
@@ -512,6 +538,17 @@ static struct platform_driver acpi_fujitsu_driver = {
 		.acpi_match_table = fujitsu_ids,
 		.pm = &acpi_fujitsu_pm,
 	},
+=======
+static struct acpi_driver acpi_fujitsu_driver = {
+	.name  = MODULENAME,
+	.class = "hotkey",
+	.ids   = fujitsu_ids,
+	.ops   = {
+		.add    = acpi_fujitsu_add,
+		.remove	= acpi_fujitsu_remove,
+	},
+	.drv.pm = &acpi_fujitsu_pm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init fujitsu_module_init(void)
@@ -520,7 +557,11 @@ static int __init fujitsu_module_init(void)
 
 	dmi_check_system(dmi_ids);
 
+<<<<<<< HEAD
 	error = platform_driver_register(&acpi_fujitsu_driver);
+=======
+	error = acpi_bus_register_driver(&acpi_fujitsu_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (error)
 		return error;
 
@@ -529,7 +570,11 @@ static int __init fujitsu_module_init(void)
 
 static void __exit fujitsu_module_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&acpi_fujitsu_driver);
+=======
+	acpi_bus_unregister_driver(&acpi_fujitsu_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(fujitsu_module_init);

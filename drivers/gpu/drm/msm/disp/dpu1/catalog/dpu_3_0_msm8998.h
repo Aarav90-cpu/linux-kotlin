@@ -305,7 +305,12 @@ const struct dpu_mdss_cfg dpu_msm8998_cfg = {
 	.dsc = msm8998_dsc,
 	.intf_count = ARRAY_SIZE(msm8998_intf),
 	.intf = msm8998_intf,
+<<<<<<< HEAD
 	.vbif = &msm8998_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(msm8998_vbif),
+	.vbif = msm8998_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &msm8998_perf_data,
 };
 

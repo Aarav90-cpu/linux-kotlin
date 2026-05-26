@@ -164,7 +164,11 @@ struct nx842_crypto_header {
 		__be16 ignore;		/* decompressed end bytes to ignore */
 		u8 groups;		/* total groups in this header */
 	);
+<<<<<<< HEAD
 	struct nx842_crypto_header_group group[] __counted_by(groups);
+=======
+	struct nx842_crypto_header_group group[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 static_assert(offsetof(struct nx842_crypto_header, group) == sizeof(struct nx842_crypto_header_hdr),
 	      "struct member likely outside of __struct_group()");

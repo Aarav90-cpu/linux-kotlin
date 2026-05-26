@@ -302,7 +302,11 @@ static irqreturn_t stmfts_irq_handler(int irq, void *dev)
 	struct stmfts_data *sdata = dev;
 	int err;
 
+<<<<<<< HEAD
 	guard(mutex)(&sdata->mutex);
+=======
+	mutex_lock(&sdata->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = stmfts_read_events(sdata);
 	if (unlikely(err))
@@ -311,6 +315,10 @@ static irqreturn_t stmfts_irq_handler(int irq, void *dev)
 	else
 		stmfts_parse_events(sdata);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&sdata->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return IRQ_HANDLED;
 }
 
@@ -346,6 +354,7 @@ static int stmfts_input_open(struct input_dev *dev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &sdata->mutex) {
 		sdata->running = true;
 
@@ -357,6 +366,19 @@ static int stmfts_input_open(struct input_dev *dev)
 					 "failed to enable hover\n");
 		}
 	}
+=======
+	mutex_lock(&sdata->mutex);
+	sdata->running = true;
+
+	if (sdata->hover_enabled) {
+		err = i2c_smbus_write_byte(sdata->client,
+					   STMFTS_SS_HOVER_SENSE_ON);
+		if (err)
+			dev_warn(&sdata->client->dev,
+				 "failed to enable hover\n");
+	}
+	mutex_unlock(&sdata->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdata->use_key) {
 		err = i2c_smbus_write_byte(sdata->client,
@@ -380,6 +402,7 @@ static void stmfts_input_close(struct input_dev *dev)
 		dev_warn(&sdata->client->dev,
 			 "failed to disable touchscreen: %d\n", err);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &sdata->mutex) {
 		sdata->running = false;
 
@@ -391,6 +414,20 @@ static void stmfts_input_close(struct input_dev *dev)
 					 "failed to disable hover: %d\n", err);
 		}
 	}
+=======
+	mutex_lock(&sdata->mutex);
+
+	sdata->running = false;
+
+	if (sdata->hover_enabled) {
+		err = i2c_smbus_write_byte(sdata->client,
+					   STMFTS_SS_HOVER_SENSE_OFF);
+		if (err)
+			dev_warn(&sdata->client->dev,
+				 "failed to disable hover: %d\n", err);
+	}
+	mutex_unlock(&sdata->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sdata->use_key) {
 		err = i2c_smbus_write_byte(sdata->client,
@@ -472,12 +509,17 @@ static ssize_t stmfts_sysfs_hover_enable_write(struct device *dev,
 {
 	struct stmfts_data *sdata = dev_get_drvdata(dev);
 	unsigned long value;
+<<<<<<< HEAD
 	bool hover;
 	int err;
+=======
+	int err = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (kstrtoul(buf, 0, &value))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	hover = !!value;
 
 	guard(mutex)(&sdata->mutex);
@@ -493,6 +535,23 @@ static ssize_t stmfts_sysfs_hover_enable_write(struct device *dev,
 
 		sdata->hover_enabled = hover;
 	}
+=======
+	mutex_lock(&sdata->mutex);
+
+	if (value && sdata->hover_enabled)
+		goto out;
+
+	if (sdata->running)
+		err = i2c_smbus_write_byte(sdata->client,
+					   value ? STMFTS_SS_HOVER_SENSE_ON :
+						   STMFTS_SS_HOVER_SENSE_OFF);
+
+	if (!err)
+		sdata->hover_enabled = !!value;
+
+out:
+	mutex_unlock(&sdata->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return len;
 }

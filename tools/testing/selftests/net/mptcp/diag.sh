@@ -322,6 +322,7 @@ wait_connected()
 	done
 }
 
+<<<<<<< HEAD
 chk_sndbuf()
 {
 	local server_sndbuf client_sndbuf msg
@@ -349,6 +350,8 @@ chk_sndbuf()
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 trap cleanup EXIT
 mptcp_lib_ns_init ns
 
@@ -368,7 +371,10 @@ echo "b" | \
 				127.0.0.1 >/dev/null &
 wait_connected $ns 10000
 chk_msk_nr 2 "after MPC handshake"
+<<<<<<< HEAD
 chk_sndbuf 10000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 chk_last_time_info 10000
 chk_msk_remote_key_nr 2 "....chk remote_key"
 chk_msk_fallback_nr 0 "....chk no fallback"

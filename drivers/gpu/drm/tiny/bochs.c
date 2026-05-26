@@ -761,21 +761,40 @@ static int bochs_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent
 
 	ret = pcim_enable_device(pdev);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_free_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pci_set_drvdata(pdev, dev);
 
 	ret = bochs_load(bochs);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	ret = drm_dev_register(dev, 0);
 	if (ret)
 		return ret;
+=======
+		goto err_free_dev;
+
+	ret = drm_dev_register(dev, 0);
+	if (ret)
+		goto err_free_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_client_setup(dev, NULL);
 
 	return ret;
+<<<<<<< HEAD
+=======
+
+err_free_dev:
+	drm_dev_put(dev);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void bochs_pci_remove(struct pci_dev *pdev)

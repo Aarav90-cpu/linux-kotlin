@@ -28,13 +28,17 @@
 #define __DC_FPU_H__
 
 void dc_assert_fp_enabled(void);
+<<<<<<< HEAD
 bool dc_is_fp_enabled(void);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dc_fpu_begin(const char *function_name, const int line);
 void dc_fpu_end(const char *function_name, const int line);
 
 #ifndef _LINUX_FPU_COMPILATION_UNIT
 #define DC_FP_START()	dc_fpu_begin(__func__, __LINE__)
 #define DC_FP_END()	dc_fpu_end(__func__, __LINE__)
+<<<<<<< HEAD
 #ifdef CONFIG_DRM_AMD_DC_FP
 #define DC_RUN_WITH_PREEMPTION_ENABLED(code) \
 	do { \
@@ -53,5 +57,11 @@ void dc_fpu_end(const char *function_name, const int line);
 #define DC_FP_END()	BUILD_BUG()
 #define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
 #endif // !_LINUX_FPU_COMPILATION_UNIT
+=======
+#else
+#define DC_FP_START()	BUILD_BUG()
+#define DC_FP_END()	BUILD_BUG()
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __DC_FPU_H__ */

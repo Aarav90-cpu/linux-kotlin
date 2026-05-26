@@ -46,7 +46,11 @@ struct hwrng {
 	unsigned long priv;
 	unsigned short quality;
 
+<<<<<<< HEAD
 	/* private: internal. */
+=======
+	/* internal. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head list;
 	struct kref ref;
 	struct work_struct cleanup_work;

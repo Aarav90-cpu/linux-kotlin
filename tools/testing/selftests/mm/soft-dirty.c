@@ -82,9 +82,13 @@ static void test_hugepage(int pagemap_fd, int pagesize)
 	int i, ret;
 
 	if (!thp_is_enabled()) {
+<<<<<<< HEAD
 		ksft_print_msg("Transparent Hugepages not available\n");
 		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
 		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
+=======
+		ksft_test_result_skip("Transparent Hugepages not available\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 

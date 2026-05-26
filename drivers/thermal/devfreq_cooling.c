@@ -472,8 +472,12 @@ of_devfreq_cooling_register_power(struct device_node *np, struct devfreq *df,
 remove_qos_req:
 	dev_pm_qos_remove_request(&dfc->req_max_freq);
 free_table:
+<<<<<<< HEAD
 	if (!dfc->em_pd)
 		kfree(dfc->freq_table);
+=======
+	kfree(dfc->freq_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 free_dfc:
 	kfree(dfc);
 

@@ -49,8 +49,11 @@ void print__rq_params_st(struct display_mode_lib *mode_lib, const struct _vcs_dp
 
 void print__data_rq_sizing_params_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_data_rq_sizing_params_st *rq_sizing)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)rq_sizing;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_DATA_RQ_SIZING_PARAM_ST\n");
 	dml_print("DML_RQ_DLG_CALC:    chunk_bytes           = %0d\n", rq_sizing->chunk_bytes);
@@ -66,8 +69,11 @@ void print__data_rq_sizing_params_st(struct display_mode_lib *mode_lib, const st
 
 void print__data_rq_dlg_params_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_data_rq_dlg_params_st *rq_dlg_param)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)rq_dlg_param;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_DATA_RQ_DLG_PARAM_ST\n");
 	dml_print(
@@ -111,8 +117,11 @@ void print__data_rq_dlg_params_st(struct display_mode_lib *mode_lib, const struc
 
 void print__data_rq_misc_params_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_data_rq_misc_params_st *rq_misc_param)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)rq_misc_param;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_DATA_RQ_MISC_PARAM_ST\n");
 	dml_print(
@@ -130,8 +139,11 @@ void print__data_rq_misc_params_st(struct display_mode_lib *mode_lib, const stru
 
 void print__dlg_sys_params_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_dlg_sys_params_st *dlg_sys_param)
 {
+<<<<<<< HEAD
 	(void)dlg_sys_param;
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_RQ_DLG_PARAM_ST\n");
 	dml_print("DML_RQ_DLG_CALC:    t_mclk_wm_us         = %3.2f\n", dlg_sys_param->t_mclk_wm_us);
@@ -152,8 +164,11 @@ void print__dlg_sys_params_st(struct display_mode_lib *mode_lib, const struct _v
 
 void print__data_rq_regs_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_data_rq_regs_st *rq_regs)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)rq_regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_DATA_RQ_REGS_ST\n");
 	dml_print("DML_RQ_DLG_CALC:    chunk_size              = 0x%0x\n", rq_regs->chunk_size);
@@ -189,8 +204,11 @@ void print__rq_regs_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_
 
 void print__dlg_regs_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_dlg_regs_st *dlg_regs)
 {
+<<<<<<< HEAD
 	(void)dlg_regs;
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_DLG_REGS_ST\n");
 	dml_print(
@@ -328,8 +346,11 @@ void print__dlg_regs_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi
 
 void print__ttu_regs_st(struct display_mode_lib *mode_lib, const struct _vcs_dpi_display_ttu_regs_st *ttu_regs)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)ttu_regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dml_print("DML_RQ_DLG_CALC: =====================================\n");
 	dml_print("DML_RQ_DLG_CALC: DISPLAY_TTU_REGS_ST\n");
 	dml_print(

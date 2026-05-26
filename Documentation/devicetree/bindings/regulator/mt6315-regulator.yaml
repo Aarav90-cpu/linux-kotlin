@@ -25,6 +25,7 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
   pvdd1-supply:
     description: Supply for regulator vbuck1
   pvdd2-supply:
@@ -34,6 +35,8 @@ properties:
   pvdd4-supply:
     description: Supply for regulator vbuck4
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   regulators:
     type: object
     description: List of regulators and its properties
@@ -58,11 +61,16 @@ examples:
     pmic@6 {
       compatible = "mediatek,mt6315-regulator";
       reg = <0x6 0>;
+<<<<<<< HEAD
       pvdd1-supply = <&pp4200_z2>;
       pvdd3-supply = <&pp4200_z2>;
 
       regulators {
 
+=======
+
+      regulators {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         vbuck1 {
           regulator-min-microvolt = <300000>;
           regulator-max-microvolt = <1193750>;

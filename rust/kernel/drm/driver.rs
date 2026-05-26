@@ -5,6 +5,7 @@
 //! C header: [`include/drm/drm_drv.h`](srctree/include/drm/drm_drv.h)
 
 use crate::{
+<<<<<<< HEAD
     bindings,
     device,
     devres,
@@ -13,6 +14,14 @@ use crate::{
     prelude::*,
     sync::aref::ARef, //
 };
+=======
+    bindings, device, devres, drm,
+    error::{to_result, Result},
+    prelude::*,
+    sync::aref::ARef,
+};
+use macros::vtable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Driver use the GEM memory manager. This should be set for all modern drivers.
 pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;

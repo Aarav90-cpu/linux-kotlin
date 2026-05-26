@@ -232,8 +232,12 @@ int mt7925_regd_change(struct mt792x_phy *phy, char *alpha2)
 	    dev->regd_user)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if ((mdev->alpha2[0] && mdev->alpha2[0] != '0') &&
 	    (mdev->alpha2[1] && mdev->alpha2[1] != '0'))
+=======
+	if (mdev->alpha2[0] != '0' && mdev->alpha2[1] != '0')
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/* do not need to update the same country twice */

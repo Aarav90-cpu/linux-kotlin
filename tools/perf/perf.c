@@ -48,7 +48,11 @@ struct cmd_struct {
 	int option;
 };
 
+<<<<<<< HEAD
 static const struct cmd_struct commands[] = {
+=======
+static struct cmd_struct commands[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "archive",	NULL,	0 },
 	{ "buildid-cache", cmd_buildid_cache, 0 },
 	{ "buildid-list", cmd_buildid_list, 0 },
@@ -178,7 +182,11 @@ static int set_debug_file(const char *path)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct option options[] = {
+=======
+struct option options[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OPT_ARGUMENT("help", "help"),
 	OPT_ARGUMENT("version", "version"),
 	OPT_ARGUMENT("exec-path", "exec-path"),
@@ -280,7 +288,11 @@ static int handle_options(const char ***argv, int *argc, int *envchanged)
 			unsigned int i;
 
 			for (i = 0; i < ARRAY_SIZE(commands); i++) {
+<<<<<<< HEAD
 				const struct cmd_struct *p = commands + i;
+=======
+				struct cmd_struct *p = commands+i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				printf("%s ", p->cmd);
 			}
 			putchar('\n');
@@ -289,7 +301,11 @@ static int handle_options(const char ***argv, int *argc, int *envchanged)
 			unsigned int i;
 
 			for (i = 0; i < ARRAY_SIZE(options)-1; i++) {
+<<<<<<< HEAD
 				const struct option *p = options + i;
+=======
+				struct option *p = options+i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				printf("--%s ", p->long_name);
 			}
 			putchar('\n');
@@ -331,7 +347,11 @@ static int handle_options(const char ***argv, int *argc, int *envchanged)
 #define RUN_SETUP	(1<<0)
 #define USE_PAGER	(1<<1)
 
+<<<<<<< HEAD
 static int run_builtin(const struct cmd_struct *p, int argc, const char **argv)
+=======
+static int run_builtin(struct cmd_struct *p, int argc, const char **argv)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int status;
 	struct stat st;
@@ -390,7 +410,11 @@ static void handle_internal_command(int argc, const char **argv)
 	}
 
 	for (i = 0; i < ARRAY_SIZE(commands); i++) {
+<<<<<<< HEAD
 		const struct cmd_struct *p = commands+i;
+=======
+		struct cmd_struct *p = commands+i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (p->fn == NULL)
 			continue;
 		if (strcmp(p->cmd, cmd))

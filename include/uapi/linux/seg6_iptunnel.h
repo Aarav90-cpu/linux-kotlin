@@ -20,7 +20,10 @@
 enum {
 	SEG6_IPTUNNEL_UNSPEC,
 	SEG6_IPTUNNEL_SRH,
+<<<<<<< HEAD
 	SEG6_IPTUNNEL_SRC,	/* struct in6_addr */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__SEG6_IPTUNNEL_MAX,
 };
 #define SEG6_IPTUNNEL_MAX (__SEG6_IPTUNNEL_MAX - 1)

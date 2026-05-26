@@ -12,7 +12,10 @@
 #include <linux/kvm_host.h>
 #include <linux/uaccess.h>
 #include <asm/cpufeature.h>
+<<<<<<< HEAD
 #include <asm/kvm_isa.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_vcpu_vector.h>
 #include <asm/vector.h>
 
@@ -64,13 +67,21 @@ void kvm_riscv_vcpu_guest_vector_restore(struct kvm_cpu_context *cntx,
 void kvm_riscv_vcpu_host_vector_save(struct kvm_cpu_context *cntx)
 {
 	/* No need to check host sstatus as it can be modified outside */
+<<<<<<< HEAD
 	if (!kvm_riscv_isa_check_host(V))
+=======
+	if (riscv_isa_extension_available(NULL, v))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__kvm_riscv_vector_save(cntx);
 }
 
 void kvm_riscv_vcpu_host_vector_restore(struct kvm_cpu_context *cntx)
 {
+<<<<<<< HEAD
 	if (!kvm_riscv_isa_check_host(V))
+=======
+	if (riscv_isa_extension_available(NULL, v))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__kvm_riscv_vector_restore(cntx);
 }
 
@@ -131,7 +142,10 @@ static int kvm_riscv_vcpu_vreg_addr(struct kvm_vcpu *vcpu,
 	} else if (reg_num <= KVM_REG_RISCV_VECTOR_REG(31)) {
 		if (reg_size != vlenb)
 			return -EINVAL;
+<<<<<<< HEAD
 		WARN_ON(!cntx->vector.datap);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*reg_addr = cntx->vector.datap +
 			    (reg_num - KVM_REG_RISCV_VECTOR_REG(0)) * vlenb;
 	} else {

@@ -23,21 +23,33 @@ struct kvm_msr_filter filter_allow = {
 			.nmsrs = 1,
 			/* Test an MSR the kernel knows about. */
 			.base = MSR_IA32_XSS,
+<<<<<<< HEAD
 			.bitmap = (u8 *)&deny_bits,
+=======
+			.bitmap = (uint8_t*)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}, {
 			.flags = KVM_MSR_FILTER_READ |
 				 KVM_MSR_FILTER_WRITE,
 			.nmsrs = 1,
 			/* Test an MSR the kernel doesn't know about. */
 			.base = MSR_IA32_FLUSH_CMD,
+<<<<<<< HEAD
 			.bitmap = (u8 *)&deny_bits,
+=======
+			.bitmap = (uint8_t*)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}, {
 			.flags = KVM_MSR_FILTER_READ |
 				 KVM_MSR_FILTER_WRITE,
 			.nmsrs = 1,
 			/* Test a fabricated MSR that no one knows about. */
 			.base = MSR_NON_EXISTENT,
+<<<<<<< HEAD
 			.bitmap = (u8 *)&deny_bits,
+=======
+			.bitmap = (uint8_t*)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 	},
 };
@@ -49,7 +61,11 @@ struct kvm_msr_filter filter_fs = {
 			.flags = KVM_MSR_FILTER_READ,
 			.nmsrs = 1,
 			.base = MSR_FS_BASE,
+<<<<<<< HEAD
 			.bitmap = (u8 *)&deny_bits,
+=======
+			.bitmap = (uint8_t*)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 	},
 };
@@ -61,12 +77,20 @@ struct kvm_msr_filter filter_gs = {
 			.flags = KVM_MSR_FILTER_READ,
 			.nmsrs = 1,
 			.base = MSR_GS_BASE,
+<<<<<<< HEAD
 			.bitmap = (u8 *)&deny_bits,
+=======
+			.bitmap = (uint8_t*)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 	},
 };
 
+<<<<<<< HEAD
 static u64 msr_non_existent_data;
+=======
+static uint64_t msr_non_existent_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int guest_exception_count;
 static u32 msr_reads, msr_writes;
 
@@ -77,7 +101,11 @@ static u8 bitmap_c0000000[KVM_MSR_FILTER_MAX_BITMAP_SIZE];
 static u8 bitmap_c0000000_read[KVM_MSR_FILTER_MAX_BITMAP_SIZE];
 static u8 bitmap_deadbeef[1] = { 0x1 };
 
+<<<<<<< HEAD
 static void deny_msr(u8 *bitmap, u32 msr)
+=======
+static void deny_msr(uint8_t *bitmap, u32 msr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 idx = msr & (KVM_MSR_FILTER_MAX_BITMAP_SIZE - 1);
 
@@ -142,26 +170,43 @@ struct kvm_msr_filter no_filter_deny = {
  * Note: Force test_rdmsr() to not be inlined to prevent the labels,
  * rdmsr_start and rdmsr_end, from being defined multiple times.
  */
+<<<<<<< HEAD
 static noinline u64 test_rdmsr(u32 msr)
 {
 	u32 a, d;
+=======
+static noinline uint64_t test_rdmsr(uint32_t msr)
+{
+	uint32_t a, d;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guest_exception_count = 0;
 
 	__asm__ __volatile__("rdmsr_start: rdmsr; rdmsr_end:" :
 			"=a"(a), "=d"(d) : "c"(msr) : "memory");
 
+<<<<<<< HEAD
 	return a | ((u64)d << 32);
+=======
+	return a | ((uint64_t) d << 32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * Note: Force test_wrmsr() to not be inlined to prevent the labels,
  * wrmsr_start and wrmsr_end, from being defined multiple times.
  */
+<<<<<<< HEAD
 static noinline void test_wrmsr(u32 msr, u64 value)
 {
 	u32 a = value;
 	u32 d = value >> 32;
+=======
+static noinline void test_wrmsr(uint32_t msr, uint64_t value)
+{
+	uint32_t a = value;
+	uint32_t d = value >> 32;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guest_exception_count = 0;
 
@@ -176,26 +221,43 @@ extern char wrmsr_start, wrmsr_end;
  * Note: Force test_em_rdmsr() to not be inlined to prevent the labels,
  * rdmsr_start and rdmsr_end, from being defined multiple times.
  */
+<<<<<<< HEAD
 static noinline u64 test_em_rdmsr(u32 msr)
 {
 	u32 a, d;
+=======
+static noinline uint64_t test_em_rdmsr(uint32_t msr)
+{
+	uint32_t a, d;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guest_exception_count = 0;
 
 	__asm__ __volatile__(KVM_FEP "em_rdmsr_start: rdmsr; em_rdmsr_end:" :
 			"=a"(a), "=d"(d) : "c"(msr) : "memory");
 
+<<<<<<< HEAD
 	return a | ((u64)d << 32);
+=======
+	return a | ((uint64_t) d << 32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * Note: Force test_em_wrmsr() to not be inlined to prevent the labels,
  * wrmsr_start and wrmsr_end, from being defined multiple times.
  */
+<<<<<<< HEAD
 static noinline void test_em_wrmsr(u32 msr, u64 value)
 {
 	u32 a = value;
 	u32 d = value >> 32;
+=======
+static noinline void test_em_wrmsr(uint32_t msr, uint64_t value)
+{
+	uint32_t a = value;
+	uint32_t d = value >> 32;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	guest_exception_count = 0;
 
@@ -208,7 +270,11 @@ extern char em_wrmsr_start, em_wrmsr_end;
 
 static void guest_code_filter_allow(void)
 {
+<<<<<<< HEAD
 	u64 data;
+=======
+	uint64_t data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Test userspace intercepting rdmsr / wrmsr for MSR_IA32_XSS.
@@ -328,7 +394,11 @@ static void guest_code_filter_deny(void)
 
 static void guest_code_permission_bitmap(void)
 {
+<<<<<<< HEAD
 	u64 data;
+=======
+	uint64_t data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = test_rdmsr(MSR_FS_BASE);
 	GUEST_ASSERT(data == MSR_FS_BASE);
@@ -391,7 +461,11 @@ static void check_for_guest_assert(struct kvm_vcpu *vcpu)
 	}
 }
 
+<<<<<<< HEAD
 static void process_rdmsr(struct kvm_vcpu *vcpu, u32 msr_index)
+=======
+static void process_rdmsr(struct kvm_vcpu *vcpu, uint32_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_run *run = vcpu->run;
 
@@ -423,7 +497,11 @@ static void process_rdmsr(struct kvm_vcpu *vcpu, u32 msr_index)
 	}
 }
 
+<<<<<<< HEAD
 static void process_wrmsr(struct kvm_vcpu *vcpu, u32 msr_index)
+=======
+static void process_wrmsr(struct kvm_vcpu *vcpu, uint32_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_run *run = vcpu->run;
 
@@ -464,7 +542,11 @@ static void process_ucall_done(struct kvm_vcpu *vcpu)
 		    uc.cmd, UCALL_DONE);
 }
 
+<<<<<<< HEAD
 static u64 process_ucall(struct kvm_vcpu *vcpu)
+=======
+static uint64_t process_ucall(struct kvm_vcpu *vcpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ucall uc = {};
 
@@ -489,20 +571,32 @@ static u64 process_ucall(struct kvm_vcpu *vcpu)
 }
 
 static void run_guest_then_process_rdmsr(struct kvm_vcpu *vcpu,
+<<<<<<< HEAD
 					 u32 msr_index)
+=======
+					 uint32_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vcpu_run(vcpu);
 	process_rdmsr(vcpu, msr_index);
 }
 
 static void run_guest_then_process_wrmsr(struct kvm_vcpu *vcpu,
+<<<<<<< HEAD
 					 u32 msr_index)
+=======
+					 uint32_t msr_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vcpu_run(vcpu);
 	process_wrmsr(vcpu, msr_index);
 }
 
+<<<<<<< HEAD
 static u64 run_guest_then_process_ucall(struct kvm_vcpu *vcpu)
+=======
+static uint64_t run_guest_then_process_ucall(struct kvm_vcpu *vcpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vcpu_run(vcpu);
 	return process_ucall(vcpu);
@@ -519,7 +613,11 @@ KVM_ONE_VCPU_TEST_SUITE(user_msr);
 KVM_ONE_VCPU_TEST(user_msr, msr_filter_allow, guest_code_filter_allow)
 {
 	struct kvm_vm *vm = vcpu->vm;
+<<<<<<< HEAD
 	u64 cmd;
+=======
+	uint64_t cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	rc = kvm_check_cap(KVM_CAP_X86_USER_SPACE_MSR);
@@ -732,7 +830,11 @@ static void run_msr_filter_flag_test(struct kvm_vm *vm)
 				.flags = KVM_MSR_FILTER_READ,
 				.nmsrs = 1,
 				.base = 0,
+<<<<<<< HEAD
 				.bitmap = (u8 *)&deny_bits,
+=======
+				.bitmap = (uint8_t *)&deny_bits,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			},
 		},
 	};

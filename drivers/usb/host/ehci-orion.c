@@ -12,6 +12,10 @@
 #include <linux/clk.h>
 #include <linux/platform_data/usb-ehci-orion.h>
 #include <linux/of.h>
+<<<<<<< HEAD
+=======
+#include <linux/phy/phy.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/usb.h>
 #include <linux/usb/hcd.h>
 #include <linux/io.h>
@@ -59,6 +63,10 @@
 
 struct orion_ehci_hcd {
 	struct clk *clk;
+<<<<<<< HEAD
+=======
+	struct phy *phy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct hc_driver __read_mostly ehci_orion_hc_driver;
@@ -274,6 +282,16 @@ static int ehci_orion_drv_probe(struct platform_device *pdev)
 			goto err_put_hcd;
 	}
 
+<<<<<<< HEAD
+=======
+	priv->phy = devm_phy_optional_get(&pdev->dev, "usb");
+	if (IS_ERR(priv->phy)) {
+		err = PTR_ERR(priv->phy);
+		if (err != -ENOSYS)
+			goto err_dis_clk;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * (Re-)program MBUS remapping windows if we are asked to.
 	 */

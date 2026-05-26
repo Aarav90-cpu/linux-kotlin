@@ -12,8 +12,11 @@
 #include "npc.h"
 #include "rvu_npc_fs.h"
 #include "rvu_npc_hash.h"
+<<<<<<< HEAD
 #include "cn20k/reg.h"
 #include "cn20k/npc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * const npc_flow_names[] = {
 	[NPC_DMAC]	= "dmac",
@@ -83,13 +86,18 @@ const char *npc_get_field_name(u8 hdr)
 /* Compute keyword masks and figure out the number of keywords a field
  * spans in the key.
  */
+<<<<<<< HEAD
 static void npc_set_kw_masks(struct rvu *rvu, struct npc_mcam *mcam, u8 type,
+=======
+static void npc_set_kw_masks(struct npc_mcam *mcam, u8 type,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     u8 nr_bits, int start_kwi, int offset, u8 intf)
 {
 	struct npc_key_field *field = &mcam->rx_key_fields[type];
 	u8 bits_in_kw;
 	int max_kwi;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		if (mcam->banks_per_entry == 1)
 			max_kwi = 3; /* NPC_MCAM_KEY_X2 */
@@ -103,6 +111,14 @@ static void npc_set_kw_masks(struct rvu *rvu, struct npc_mcam *mcam, u8 type,
 		else
 			max_kwi = 6; /* NPC_MCAM_KEY_X4 */
 	}
+=======
+	if (mcam->banks_per_entry == 1)
+		max_kwi = 1; /* NPC_MCAM_KEY_X1 */
+	else if (mcam->banks_per_entry == 2)
+		max_kwi = 3; /* NPC_MCAM_KEY_X2 */
+	else
+		max_kwi = 6; /* NPC_MCAM_KEY_X4 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_npc_intf_tx(intf))
 		field = &mcam->tx_key_fields[type];
@@ -164,8 +180,12 @@ static bool npc_is_same(struct npc_key_field *input,
 		     sizeof(struct npc_layer_mdata)) == 0;
 }
 
+<<<<<<< HEAD
 static void npc_set_layer_mdata(struct rvu *rvu,
 				struct npc_mcam *mcam, enum key_fields type,
+=======
+static void npc_set_layer_mdata(struct npc_mcam *mcam, enum key_fields type,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				u64 cfg, u8 lid, u8 lt, u8 intf)
 {
 	struct npc_key_field *input = &mcam->rx_key_fields[type];
@@ -175,17 +195,25 @@ static void npc_set_layer_mdata(struct rvu *rvu,
 
 	input->layer_mdata.hdr = FIELD_GET(NPC_HDR_OFFSET, cfg);
 	input->layer_mdata.key = FIELD_GET(NPC_KEY_OFFSET, cfg);
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		input->layer_mdata.len = FIELD_GET(NPC_CN20K_BYTESM, cfg) + 1;
 	else
 		input->layer_mdata.len = FIELD_GET(NPC_BYTESM, cfg) + 1;
+=======
+	input->layer_mdata.len = FIELD_GET(NPC_BYTESM, cfg) + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	input->layer_mdata.ltype = lt;
 	input->layer_mdata.lid = lid;
 }
 
 static bool npc_check_overlap_fields(struct npc_key_field *input1,
+<<<<<<< HEAD
 				     struct npc_key_field *input2,
 				     int max_kw)
+=======
+				     struct npc_key_field *input2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int kwi;
 
@@ -196,7 +224,11 @@ static bool npc_check_overlap_fields(struct npc_key_field *input1,
 	    input1->layer_mdata.ltype != input2->layer_mdata.ltype)
 		return false;
 
+<<<<<<< HEAD
 	for (kwi = 0; kwi < max_kw; kwi++) {
+=======
+	for (kwi = 0; kwi < NPC_MAX_KWS_IN_KEY; kwi++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (input1->kw_mask[kwi] & input2->kw_mask[kwi])
 			return true;
 	}
@@ -216,7 +248,10 @@ static bool npc_check_overlap(struct rvu *rvu, int blkaddr,
 	struct npc_key_field *dummy, *input;
 	int start_kwi, offset;
 	u8 nr_bits, lid, lt, ld;
+<<<<<<< HEAD
 	int extr, kws;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 cfg;
 
 	dummy = &mcam->rx_key_fields[NPC_UNKNOWN];
@@ -227,11 +262,14 @@ static bool npc_check_overlap(struct rvu *rvu, int blkaddr,
 		input = &mcam->tx_key_fields[type];
 	}
 
+<<<<<<< HEAD
 	kws = NPC_KWS_IN_KEY_SZ_7;
 
 	if (is_cn20k(rvu->pdev))
 		goto skip_cn10k_config;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (lid = start_lid; lid < NPC_MAX_LID; lid++) {
 		for (lt = 0; lt < NPC_MAX_LT; lt++) {
 			for (ld = 0; ld < NPC_MAX_LD; ld++) {
@@ -241,8 +279,13 @@ static bool npc_check_overlap(struct rvu *rvu, int blkaddr,
 				if (!FIELD_GET(NPC_LDATA_EN, cfg))
 					continue;
 				memset(dummy, 0, sizeof(struct npc_key_field));
+<<<<<<< HEAD
 				npc_set_layer_mdata(rvu, mcam, NPC_UNKNOWN,
 						    cfg, lid, lt, intf);
+=======
+				npc_set_layer_mdata(mcam, NPC_UNKNOWN, cfg,
+						    lid, lt, intf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/* exclude input */
 				if (npc_is_same(input, dummy))
 					continue;
@@ -250,6 +293,7 @@ static bool npc_check_overlap(struct rvu *rvu, int blkaddr,
 				offset = (dummy->layer_mdata.key * 8) % 64;
 				nr_bits = dummy->layer_mdata.len * 8;
 				/* form KW masks */
+<<<<<<< HEAD
 				npc_set_kw_masks(rvu, mcam, NPC_UNKNOWN,
 						 nr_bits, start_kwi,
 						 offset, intf);
@@ -257,10 +301,19 @@ static bool npc_check_overlap(struct rvu *rvu, int blkaddr,
 				 * other field bits.
 				 */
 				if (npc_check_overlap_fields(dummy, input, kws))
+=======
+				npc_set_kw_masks(mcam, NPC_UNKNOWN, nr_bits,
+						 start_kwi, offset, intf);
+				/* check any input field bits falls in any
+				 * other field bits.
+				 */
+				if (npc_check_overlap_fields(dummy, input))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					return true;
 			}
 		}
 	}
+<<<<<<< HEAD
 	return false;
 
 skip_cn10k_config:
@@ -293,6 +346,8 @@ skip_cn10k_config:
 				return true;
 		}
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
@@ -306,8 +361,12 @@ static bool npc_check_field(struct rvu *rvu, int blkaddr, enum key_fields type,
 	return true;
 }
 
+<<<<<<< HEAD
 static void npc_scan_exact_result(struct rvu *rvu,
 				  struct npc_mcam *mcam, u8 bit_number,
+=======
+static void npc_scan_exact_result(struct npc_mcam *mcam, u8 bit_number,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  u8 key_nibble, u8 intf)
 {
 	u8 offset = (key_nibble * 4) % 64; /* offset within key word */
@@ -323,6 +382,7 @@ static void npc_scan_exact_result(struct rvu *rvu,
 	default:
 		return;
 	}
+<<<<<<< HEAD
 	npc_set_kw_masks(rvu, mcam, type, nr_bits, kwi, offset, intf);
 }
 
@@ -380,6 +440,12 @@ static void npc_cn20k_scan_parse_result(struct rvu *rvu, struct npc_mcam *mcam,
 
 static void npc_scan_parse_result(struct rvu *rvu,
 				  struct npc_mcam *mcam, u8 bit_number,
+=======
+	npc_set_kw_masks(mcam, type, nr_bits, kwi, offset, intf);
+}
+
+static void npc_scan_parse_result(struct npc_mcam *mcam, u8 bit_number,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  u8 key_nibble, u8 intf)
 {
 	u8 offset = (key_nibble * 4) % 64; /* offset within key word */
@@ -387,12 +453,15 @@ static void npc_scan_parse_result(struct rvu *rvu,
 	u8 nr_bits = 4; /* bits in a nibble */
 	u8 type;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		npc_cn20k_scan_parse_result(rvu, mcam, bit_number,
 					    key_nibble, intf);
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (bit_number) {
 	case 0 ... 2:
 		type = NPC_CHAN;
@@ -435,7 +504,11 @@ static void npc_scan_parse_result(struct rvu *rvu,
 		return;
 	}
 
+<<<<<<< HEAD
 	npc_set_kw_masks(rvu, mcam, type, nr_bits, kwi, offset, intf);
+=======
+	npc_set_kw_masks(mcam, type, nr_bits, kwi, offset, intf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
@@ -456,6 +529,7 @@ static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
 	/* Inner VLAN TCI for double tagged frames */
 	struct npc_key_field *vlan_tag3;
 	u64 *features;
+<<<<<<< HEAD
 	int i, max_kw;
 	u8 start_lid;
 
@@ -463,6 +537,10 @@ static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
 		max_kw = NPC_KWS_IN_KEY_SZ_8;
 	else
 		max_kw = NPC_KWS_IN_KEY_SZ_7;
+=======
+	u8 start_lid;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	key_fields = mcam->rx_key_fields;
 	features = &mcam->rx_features;
@@ -500,7 +578,11 @@ static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
 
 	/* if key profile programmed extracts Ethertype from multiple layers */
 	if (etype_ether->nr_kws && etype_tag1->nr_kws) {
+<<<<<<< HEAD
 		for (i = 0; i < max_kw; i++) {
+=======
+		for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (etype_ether->kw_mask[i] != etype_tag1->kw_mask[i]) {
 				dev_err(rvu->dev, "mkex: Etype pos is different for untagged and tagged pkts.\n");
 				goto vlan_tci;
@@ -509,7 +591,11 @@ static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
 		key_fields[NPC_ETYPE] = *etype_tag1;
 	}
 	if (etype_ether->nr_kws && etype_tag2->nr_kws) {
+<<<<<<< HEAD
 		for (i = 0; i < max_kw; i++) {
+=======
+		for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (etype_ether->kw_mask[i] != etype_tag2->kw_mask[i]) {
 				dev_err(rvu->dev, "mkex: Etype pos is different for untagged and double tagged pkts.\n");
 				goto vlan_tci;
@@ -518,7 +604,11 @@ static void npc_handle_multi_layer_fields(struct rvu *rvu, int blkaddr, u8 intf)
 		key_fields[NPC_ETYPE] = *etype_tag2;
 	}
 	if (etype_tag1->nr_kws && etype_tag2->nr_kws) {
+<<<<<<< HEAD
 		for (i = 0; i < max_kw; i++) {
+=======
+		for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (etype_tag1->kw_mask[i] != etype_tag2->kw_mask[i]) {
 				dev_err(rvu->dev, "mkex: Etype pos is different for tagged and double tagged pkts.\n");
 				goto vlan_tci;
@@ -549,7 +639,11 @@ vlan_tci:
 
 	/* if key profile extracts outer vlan tci from multiple layers */
 	if (vlan_tag1->nr_kws && vlan_tag2->nr_kws) {
+<<<<<<< HEAD
 		for (i = 0; i < max_kw; i++) {
+=======
+		for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (vlan_tag1->kw_mask[i] != vlan_tag2->kw_mask[i]) {
 				dev_err(rvu->dev, "mkex: Out vlan tci pos is different for tagged and double tagged pkts.\n");
 				goto done;
@@ -584,11 +678,15 @@ static void npc_scan_ldata(struct rvu *rvu, int blkaddr, u8 lid,
 	/* starting KW index and starting bit position */
 	int start_kwi, offset;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		nr_bytes = FIELD_GET(NPC_CN20K_BYTESM, cfg) + 1;
 	else
 		nr_bytes = FIELD_GET(NPC_BYTESM, cfg) + 1;
 
+=======
+	nr_bytes = FIELD_GET(NPC_BYTESM, cfg) + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hdr = FIELD_GET(NPC_HDR_OFFSET, cfg);
 	key = FIELD_GET(NPC_KEY_OFFSET, cfg);
 
@@ -611,12 +709,20 @@ do {									       \
 		if ((hstart) >= hdr &&					       \
 		    ((hstart) + (hlen)) <= (hdr + nr_bytes)) {	               \
 			bit_offset = (hdr + nr_bytes - (hstart) - (hlen)) * 8; \
+<<<<<<< HEAD
 			npc_set_layer_mdata(rvu, mcam, (name), cfg, lid, lt,   \
 									intf); \
 			offset += bit_offset;				       \
 			start_kwi += offset / 64;			       \
 			offset %= 64;					       \
 			npc_set_kw_masks(rvu, mcam, (name), (hlen) * 8,	       \
+=======
+			npc_set_layer_mdata(mcam, (name), cfg, lid, lt, intf); \
+			offset += bit_offset;				       \
+			start_kwi += offset / 64;			       \
+			offset %= 64;					       \
+			npc_set_kw_masks(mcam, (name), (hlen) * 8,	       \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 start_kwi, offset, intf);	       \
 		}							       \
 	}								       \
@@ -759,7 +865,10 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 	u8 lid, lt, ld, bitnr;
 	u64 cfg, masked_cfg;
 	u8 key_nibble = 0;
+<<<<<<< HEAD
 	int extr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Scan and note how parse result is going to be in key.
 	 * A bit set in PARSE_NIBBLE_ENA corresponds to a nibble from
@@ -767,6 +876,7 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 	 * will be concatenated in key.
 	 */
 	cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_KEX_CFG(intf));
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		masked_cfg = cfg & NPC_CN20K_PARSE_NIBBLE;
 		for_each_set_bit(bitnr, (unsigned long *)&masked_cfg,
@@ -783,6 +893,12 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 					      key_nibble, intf);
 			key_nibble++;
 		}
+=======
+	masked_cfg = cfg & NPC_PARSE_NIBBLE;
+	for_each_set_bit(bitnr, (unsigned long *)&masked_cfg, 31) {
+		npc_scan_parse_result(mcam, bitnr, key_nibble, intf);
+		key_nibble++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Ignore exact match bits for mcam entries except the first rule
@@ -792,6 +908,7 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 	masked_cfg = cfg & NPC_EXACT_NIBBLE;
 	bitnr = NPC_EXACT_NIBBLE_START;
 	for_each_set_bit_from(bitnr, (unsigned long *)&masked_cfg, NPC_EXACT_NIBBLE_END + 1) {
+<<<<<<< HEAD
 		npc_scan_exact_result(rvu, mcam, bitnr, key_nibble, intf);
 		key_nibble++;
 	}
@@ -799,6 +916,12 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 	if (is_cn20k(rvu->pdev))
 		goto skip_cn10k_config;
 
+=======
+		npc_scan_exact_result(mcam, bitnr, key_nibble, intf);
+		key_nibble++;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Scan and note how layer data is going to be in key */
 	for (lid = 0; lid < NPC_MAX_LID; lid++) {
 		for (lt = 0; lt < NPC_MAX_LT; lt++) {
@@ -815,6 +938,7 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 skip_cn10k_config:
 	for (extr = 0 ; extr < rvu->hw->npc_kex_extr; extr++) {
@@ -828,6 +952,8 @@ skip_cn10k_config:
 		}
 	}
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int npc_scan_verify_kex(struct rvu *rvu, int blkaddr)
@@ -903,6 +1029,7 @@ static int npc_check_unsupported_flows(struct rvu *rvu, u64 features, u8 intf)
  * dont care.
  */
 void npc_update_entry(struct rvu *rvu, enum key_fields type,
+<<<<<<< HEAD
 		      struct mcam_entry_mdata *mdata, u64 val_lo,
 		      u64 val_hi, u64 mask_lo, u64 mask_hi, u8 intf)
 {
@@ -914,6 +1041,17 @@ void npc_update_entry(struct rvu *rvu, enum key_fields type,
 	u64 *val, *mask;
 	int i, max_kw;
 	u8 shift;
+=======
+		      struct mcam_entry *entry, u64 val_lo,
+		      u64 val_hi, u64 mask_lo, u64 mask_hi, u8 intf)
+{
+	struct npc_mcam *mcam = &rvu->hw->mcam;
+	struct mcam_entry dummy = { {0} };
+	struct npc_key_field *field;
+	u64 kw1, kw2, kw3;
+	u8 shift;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	field = &mcam->rx_key_fields[type];
 	if (is_npc_intf_tx(intf))
@@ -922,22 +1060,33 @@ void npc_update_entry(struct rvu *rvu, enum key_fields type,
 	if (!field->nr_kws)
 		return;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		max_kw = NPC_KWS_IN_KEY_SZ_8;
 	else
 		max_kw = NPC_KWS_IN_KEY_SZ_7;
 
 	for (i = 0; i < max_kw; i++) {
+=======
+	for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!field->kw_mask[i])
 			continue;
 		/* place key value in kw[x] */
 		shift = __ffs64(field->kw_mask[i]);
 		/* update entry value */
 		kw1 = (val_lo << shift) & field->kw_mask[i];
+<<<<<<< HEAD
 		kw[i] = kw1;
 		/* update entry mask */
 		kw1 = (mask_lo << shift) & field->kw_mask[i];
 		kw_mask[i] = kw1;
+=======
+		dummy.kw[i] = kw1;
+		/* update entry mask */
+		kw1 = (mask_lo << shift) & field->kw_mask[i];
+		dummy.kw_mask[i] = kw1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (field->nr_kws == 1)
 			break;
@@ -947,12 +1096,20 @@ void npc_update_entry(struct rvu *rvu, enum key_fields type,
 			kw2 = shift ? val_lo >> (64 - shift) : 0;
 			kw2 |= (val_hi << shift);
 			kw2 &= field->kw_mask[i + 1];
+<<<<<<< HEAD
 			kw[i + 1] = kw2;
+=======
+			dummy.kw[i + 1] = kw2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* update entry mask */
 			kw2 = shift ? mask_lo >> (64 - shift) : 0;
 			kw2 |= (mask_hi << shift);
 			kw2 &= field->kw_mask[i + 1];
+<<<<<<< HEAD
 			kw_mask[i + 1] = kw2;
+=======
+			dummy.kw_mask[i + 1] = kw2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 		/* place remaining bits of key value in kw[x + 1], kw[x + 2] */
@@ -963,22 +1120,33 @@ void npc_update_entry(struct rvu *rvu, enum key_fields type,
 			kw2 &= field->kw_mask[i + 1];
 			kw3 = shift ? val_hi >> (64 - shift) : 0;
 			kw3 &= field->kw_mask[i + 2];
+<<<<<<< HEAD
 			kw[i + 1] = kw2;
 			kw[i + 2] = kw3;
+=======
+			dummy.kw[i + 1] = kw2;
+			dummy.kw[i + 2] = kw3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* update entry mask */
 			kw2 = shift ? mask_lo >> (64 - shift) : 0;
 			kw2 |= (mask_hi << shift);
 			kw2 &= field->kw_mask[i + 1];
 			kw3 = shift ? mask_hi >> (64 - shift) : 0;
 			kw3 &= field->kw_mask[i + 2];
+<<<<<<< HEAD
 			kw_mask[i + 1] = kw2;
 			kw_mask[i + 2] = kw3;
+=======
+			dummy.kw_mask[i + 1] = kw2;
+			dummy.kw_mask[i + 2] = kw3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
 	/* dummy is ready with values and masks for given key
 	 * field now clear and update input entry with those
 	 */
+<<<<<<< HEAD
 
 	val = mdata->kw;
 	mask = mdata->kw_mask;
@@ -997,6 +1165,20 @@ void npc_update_entry(struct rvu *rvu, enum key_fields type,
 
 static void npc_update_ipv6_flow(struct rvu *rvu,
 				 struct mcam_entry_mdata *mdata,
+=======
+	for (i = 0; i < NPC_MAX_KWS_IN_KEY; i++) {
+		if (!field->kw_mask[i])
+			continue;
+		entry->kw[i] &= ~field->kw_mask[i];
+		entry->kw_mask[i] &= ~field->kw_mask[i];
+
+		entry->kw[i] |= dummy.kw[i];
+		entry->kw_mask[i] |= dummy.kw_mask[i];
+	}
+}
+
+static void npc_update_ipv6_flow(struct rvu *rvu, struct mcam_entry *entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 u64 features, struct flow_msg *pkt,
 				 struct flow_msg *mask,
 				 struct rvu_npc_mcam_rule *output, u8 intf)
@@ -1022,7 +1204,11 @@ static void npc_update_ipv6_flow(struct rvu *rvu,
 		val_hi = (u64)src_ip[0] << 32 | src_ip[1];
 		val_lo = (u64)src_ip[2] << 32 | src_ip[3];
 
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_SIP_IPV6, mdata, val_lo, val_hi,
+=======
+		npc_update_entry(rvu, NPC_SIP_IPV6, entry, val_lo, val_hi,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 mask_lo, mask_hi, intf);
 		memcpy(opkt->ip6src, pkt->ip6src, sizeof(opkt->ip6src));
 		memcpy(omask->ip6src, mask->ip6src, sizeof(omask->ip6src));
@@ -1036,15 +1222,23 @@ static void npc_update_ipv6_flow(struct rvu *rvu,
 		val_hi = (u64)dst_ip[0] << 32 | dst_ip[1];
 		val_lo = (u64)dst_ip[2] << 32 | dst_ip[3];
 
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_DIP_IPV6, mdata, val_lo, val_hi,
+=======
+		npc_update_entry(rvu, NPC_DIP_IPV6, entry, val_lo, val_hi,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 mask_lo, mask_hi, intf);
 		memcpy(opkt->ip6dst, pkt->ip6dst, sizeof(opkt->ip6dst));
 		memcpy(omask->ip6dst, mask->ip6dst, sizeof(omask->ip6dst));
 	}
 }
 
+<<<<<<< HEAD
 static void npc_update_vlan_features(struct rvu *rvu,
 				     struct mcam_entry_mdata *mdata,
+=======
+static void npc_update_vlan_features(struct rvu *rvu, struct mcam_entry *entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     u64 features, u8 intf)
 {
 	bool ctag = !!(features & BIT_ULL(NPC_VLAN_ETYPE_CTAG));
@@ -1053,12 +1247,17 @@ static void npc_update_vlan_features(struct rvu *rvu,
 
 	/* If only VLAN id is given then always match outer VLAN id */
 	if (vid && !ctag && !stag) {
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_LB, mdata,
+=======
+		npc_update_entry(rvu, NPC_LB, entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 NPC_LT_LB_STAG_QINQ | NPC_LT_LB_CTAG, 0,
 				 NPC_LT_LB_STAG_QINQ & NPC_LT_LB_CTAG, 0, intf);
 		return;
 	}
 	if (ctag)
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_LB, mdata, NPC_LT_LB_CTAG, 0,
 				 ~0ULL, 0, intf);
 	if (stag)
@@ -1071,6 +1270,20 @@ void npc_update_flow(struct rvu *rvu, struct mcam_entry_mdata *mdata,
 		     struct flow_msg *mask,
 		     struct rvu_npc_mcam_rule *output, u8 intf,
 		     int blkaddr)
+=======
+		npc_update_entry(rvu, NPC_LB, entry, NPC_LT_LB_CTAG, 0,
+				 ~0ULL, 0, intf);
+	if (stag)
+		npc_update_entry(rvu, NPC_LB, entry, NPC_LT_LB_STAG_QINQ, 0,
+				 ~0ULL, 0, intf);
+}
+
+static void npc_update_flow(struct rvu *rvu, struct mcam_entry *entry,
+			    u64 features, struct flow_msg *pkt,
+			    struct flow_msg *mask,
+			    struct rvu_npc_mcam_rule *output, u8 intf,
+			    int blkaddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 dmac_mask = ether_addr_to_u64(mask->dmac);
 	u64 smac_mask = ether_addr_to_u64(mask->smac);
@@ -1084,6 +1297,7 @@ void npc_update_flow(struct rvu *rvu, struct mcam_entry_mdata *mdata,
 
 	/* For tcp/udp/sctp LTYPE should be present in entry */
 	if (features & BIT_ULL(NPC_IPPROTO_TCP))
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_LD, mdata, NPC_LT_LD_TCP,
 				 0, ~0ULL, 0, intf);
 	if (features & BIT_ULL(NPC_IPPROTO_UDP))
@@ -1097,26 +1311,57 @@ void npc_update_flow(struct rvu *rvu, struct mcam_entry_mdata *mdata,
 				 0, ~0ULL, 0, intf);
 	if (features & BIT_ULL(NPC_IPPROTO_ICMP6))
 		npc_update_entry(rvu, NPC_LD, mdata, NPC_LT_LD_ICMP6,
+=======
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_TCP,
+				 0, ~0ULL, 0, intf);
+	if (features & BIT_ULL(NPC_IPPROTO_UDP))
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_UDP,
+				 0, ~0ULL, 0, intf);
+	if (features & BIT_ULL(NPC_IPPROTO_SCTP))
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_SCTP,
+				 0, ~0ULL, 0, intf);
+	if (features & BIT_ULL(NPC_IPPROTO_ICMP))
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_ICMP,
+				 0, ~0ULL, 0, intf);
+	if (features & BIT_ULL(NPC_IPPROTO_ICMP6))
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_ICMP6,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 0, ~0ULL, 0, intf);
 
 	/* For AH, LTYPE should be present in entry */
 	if (features & BIT_ULL(NPC_IPPROTO_AH))
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_LD, mdata, NPC_LT_LD_AH,
 				 0, ~0ULL, 0, intf);
 	/* For ESP, LTYPE should be present in entry */
 	if (features & BIT_ULL(NPC_IPPROTO_ESP))
 		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_ESP,
+=======
+		npc_update_entry(rvu, NPC_LD, entry, NPC_LT_LD_AH,
+				 0, ~0ULL, 0, intf);
+	/* For ESP, LTYPE should be present in entry */
+	if (features & BIT_ULL(NPC_IPPROTO_ESP))
+		npc_update_entry(rvu, NPC_LE, entry, NPC_LT_LE_ESP,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 0, ~0ULL, 0, intf);
 
 	if (features & BIT_ULL(NPC_LXMB)) {
 		output->lxmb = is_broadcast_ether_addr(pkt->dmac) ? 2 : 1;
+<<<<<<< HEAD
 		npc_update_entry(rvu, NPC_LXMB, mdata, output->lxmb, 0,
+=======
+		npc_update_entry(rvu, NPC_LXMB, entry, output->lxmb, 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 output->lxmb, 0, intf);
 	}
 #define NPC_WRITE_FLOW(field, member, val_lo, val_hi, mask_lo, mask_hi)	      \
 do {									      \
 	if (features & BIT_ULL((field))) {				      \
+<<<<<<< HEAD
 		npc_update_entry(rvu, (field), mdata, (val_lo), (val_hi),     \
+=======
+		npc_update_entry(rvu, (field), entry, (val_lo), (val_hi),     \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 (mask_lo), (mask_hi), intf);		      \
 		memcpy(&opkt->member, &pkt->member, sizeof(pkt->member));     \
 		memcpy(&omask->member, &mask->member, sizeof(mask->member));  \
@@ -1204,10 +1449,17 @@ do {									      \
 
 	NPC_WRITE_FLOW(NPC_IPFRAG_IPV6, next_header, pkt->next_header, 0,
 		       mask->next_header, 0);
+<<<<<<< HEAD
 	npc_update_ipv6_flow(rvu, mdata, features, pkt, mask, output, intf);
 	npc_update_vlan_features(rvu, mdata, features, intf);
 
 	npc_update_field_hash(rvu, intf, mdata, blkaddr, features,
+=======
+	npc_update_ipv6_flow(rvu, entry, features, pkt, mask, output, intf);
+	npc_update_vlan_features(rvu, entry, features, intf);
+
+	npc_update_field_hash(rvu, intf, entry, blkaddr, features,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      pkt, mask, opkt, omask);
 }
 
@@ -1249,10 +1501,13 @@ static void rvu_mcam_remove_counter_from_rule(struct rvu *rvu, u16 pcifunc,
 {
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 
+<<<<<<< HEAD
 	/* There is no counter allotted for cn20k */
 	if (is_cn20k(rvu->pdev))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 
 	__rvu_mcam_remove_counter_from_rule(rvu, pcifunc, rule);
@@ -1299,6 +1554,7 @@ static int npc_mcast_update_action_index(struct rvu *rvu, struct npc_install_flo
 	return 0;
 }
 
+<<<<<<< HEAD
 void
 npc_populate_mcam_mdata(struct rvu *rvu,
 			struct mcam_entry_mdata *mdata,
@@ -1322,6 +1578,10 @@ npc_populate_mcam_mdata(struct rvu *rvu,
 
 static int npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 			       struct mcam_entry_mdata *mdata,
+=======
+static int npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
+			       struct mcam_entry *entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       struct npc_install_flow_req *req,
 			       u16 target, bool pf_set_vfs_mac)
 {
@@ -1332,7 +1592,11 @@ static int npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 	if (rswitch->mode == DEVLINK_ESWITCH_MODE_SWITCHDEV && pf_set_vfs_mac)
 		req->chan_mask = 0x0; /* Do not care channel */
 
+<<<<<<< HEAD
 	npc_update_entry(rvu, NPC_CHAN, mdata, req->channel, 0, req->chan_mask,
+=======
+	npc_update_entry(rvu, NPC_CHAN, entry, req->channel, 0, req->chan_mask,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 0, NIX_INTF_RX);
 
 	*(u64 *)&action = 0x00;
@@ -1364,12 +1628,20 @@ static int npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 			action.match_id = req->match_id;
 	}
 
+<<<<<<< HEAD
 	*mdata->action = *(u64 *)&action;
+=======
+	entry->action = *(u64 *)&action;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* VTAG0 starts at 0th byte of LID_B.
 	 * VTAG1 starts at 4th byte of LID_B.
 	 */
+<<<<<<< HEAD
 	*mdata->vtag_action = FIELD_PREP(RX_VTAG0_VALID_BIT, req->vtag0_valid) |
+=======
+	entry->vtag_action = FIELD_PREP(RX_VTAG0_VALID_BIT, req->vtag0_valid) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     FIELD_PREP(RX_VTAG0_TYPE_MASK, req->vtag0_type) |
 			     FIELD_PREP(RX_VTAG0_LID_MASK, NPC_LID_LB) |
 			     FIELD_PREP(RX_VTAG0_RELPTR_MASK, 0) |
@@ -1382,7 +1654,11 @@ static int npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 }
 
 static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
+<<<<<<< HEAD
 			       struct mcam_entry_mdata *mdata,
+=======
+			       struct mcam_entry *entry,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       struct npc_install_flow_req *req, u16 target)
 {
 	struct nix_tx_action action;
@@ -1395,7 +1671,11 @@ static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 	if (is_pffunc_af(req->hdr.pcifunc))
 		mask = 0;
 
+<<<<<<< HEAD
 	npc_update_entry(rvu, NPC_PF_FUNC, mdata, (__force u16)htons(target),
+=======
+	npc_update_entry(rvu, NPC_PF_FUNC, entry, (__force u16)htons(target),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 0, mask, 0, NIX_INTF_TX);
 
 	*(u64 *)&action = 0x00;
@@ -1408,12 +1688,20 @@ static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
 
 	action.match_id = req->match_id;
 
+<<<<<<< HEAD
 	*mdata->action = *(u64 *)&action;
+=======
+	entry->action = *(u64 *)&action;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* VTAG0 starts at 0th byte of LID_B.
 	 * VTAG1 starts at 4th byte of LID_B.
 	 */
+<<<<<<< HEAD
 	*mdata->vtag_action = FIELD_PREP(TX_VTAG0_DEF_MASK, req->vtag0_def) |
+=======
+	entry->vtag_action = FIELD_PREP(TX_VTAG0_DEF_MASK, req->vtag0_def) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     FIELD_PREP(TX_VTAG0_OP_MASK, req->vtag0_op) |
 			     FIELD_PREP(TX_VTAG0_LID_MASK, NPC_LID_LA) |
 			     FIELD_PREP(TX_VTAG0_RELPTR_MASK, 20) |
@@ -1432,23 +1720,34 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
 			    bool pf_set_vfs_mac)
 {
 	struct rvu_npc_mcam_rule *def_ucast_rule = pfvf->def_ucast_rule;
+<<<<<<< HEAD
 	struct npc_cn20k_mcam_write_entry_req cn20k_wreq = { 0 };
 	u64 features, installed_features, missing_features = 0;
 	struct npc_mcam_write_entry_req write_req = { 0 };
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 	struct cn20k_mcam_entry *cn20k_entry;
 	struct mcam_entry_mdata mdata = { };
+=======
+	u64 features, installed_features, missing_features = 0;
+	struct npc_mcam_write_entry_req write_req = { 0 };
+	struct npc_mcam *mcam = &rvu->hw->mcam;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rvu_npc_mcam_rule dummy = { 0 };
 	struct rvu_npc_mcam_rule *rule;
 	u16 owner = req->hdr.pcifunc;
 	struct msg_rsp write_rsp;
 	struct mcam_entry *entry;
 	bool new = false;
+<<<<<<< HEAD
 	int entry_index;
+=======
+	u16 entry_index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	installed_features = req->features;
 	features = req->features;
+<<<<<<< HEAD
 	entry_index = req->entry;
 
 	cn20k_entry = &cn20k_wreq.entry_data;
@@ -1466,6 +1765,20 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
 			return err;
 	} else {
 		err = npc_update_tx_entry(rvu, pfvf, &mdata, req, target);
+=======
+	entry = &write_req.entry_data;
+	entry_index = req->entry;
+
+	npc_update_flow(rvu, entry, features, &req->packet, &req->mask, &dummy,
+			req->intf, blkaddr);
+
+	if (is_npc_intf_rx(req->intf)) {
+		err = npc_update_rx_entry(rvu, pfvf, entry, req, target, pf_set_vfs_mac);
+		if (err)
+			return err;
+	} else {
+		err = npc_update_tx_entry(rvu, pfvf, entry, req, target);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}
@@ -1477,6 +1790,7 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
 	if (req->default_rule) {
 		entry_index = npc_get_nixlf_mcam_index(mcam, target, nixlf,
 						       NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 
 		if (entry_index < 0) {
 			dev_err(rvu->dev,
@@ -1485,6 +1799,8 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
 			return -EINVAL;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enable = is_mcam_entry_enabled(rvu, mcam, blkaddr, entry_index);
 	}
 
@@ -1493,7 +1809,11 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
 		missing_features = (def_ucast_rule->features ^ features) &
 					def_ucast_rule->features;
 		if (missing_features)
+<<<<<<< HEAD
 			npc_update_flow(rvu, &mdata, missing_features,
+=======
+			npc_update_flow(rvu, entry, missing_features,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					&def_ucast_rule->packet,
 					&def_ucast_rule->mask,
 					&dummy, req->intf,
@@ -1510,6 +1830,7 @@ find_rule:
 		new = true;
 	}
 
+<<<<<<< HEAD
 	if (!is_cn20k(rvu->pdev)) {
 		write_req.hdr.pcifunc = owner;
 
@@ -1555,11 +1876,41 @@ find_rule:
 	cn20k_wreq.req_kw_type = req->req_kw_type;
 
 update_rule:
+=======
+	/* allocate new counter if rule has no counter */
+	if (!req->default_rule && req->set_cntr && !rule->has_cntr)
+		rvu_mcam_add_counter_to_rule(rvu, owner, rule, rsp);
+
+	/* if user wants to delete an existing counter for a rule then
+	 * free the counter
+	 */
+	if (!req->set_cntr && rule->has_cntr)
+		rvu_mcam_remove_counter_from_rule(rvu, owner, rule);
+
+	write_req.hdr.pcifunc = owner;
+
+	/* AF owns the default rules so change the owner just to relax
+	 * the checks in rvu_mbox_handler_npc_mcam_write_entry
+	 */
+	if (req->default_rule)
+		write_req.hdr.pcifunc = 0;
+
+	write_req.entry = entry_index;
+	write_req.intf = req->intf;
+	write_req.enable_entry = (u8)enable;
+	/* if counter is available then clear and use it */
+	if (req->set_cntr && rule->has_cntr) {
+		rvu_write64(rvu, blkaddr, NPC_AF_MATCH_STATX(rule->cntr), req->cntr_val);
+		write_req.set_cntr = 1;
+		write_req.cntr = rule->cntr;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* update rule */
 	memcpy(&rule->packet, &dummy.packet, sizeof(rule->packet));
 	memcpy(&rule->mask, &dummy.mask, sizeof(rule->mask));
 	rule->entry = entry_index;
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		memcpy(&rule->rx_action, &cn20k_entry->action,
 		       sizeof(struct nix_rx_action));
@@ -1576,10 +1927,18 @@ update_rule:
 		rule->vtag_action = entry->vtag_action;
 	}
 
+=======
+	memcpy(&rule->rx_action, &entry->action, sizeof(struct nix_rx_action));
+	if (is_npc_intf_tx(req->intf))
+		memcpy(&rule->tx_action, &entry->action,
+		       sizeof(struct nix_tx_action));
+	rule->vtag_action = entry->vtag_action;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rule->features = installed_features;
 	rule->default_rule = req->default_rule;
 	rule->owner = owner;
 	rule->enable = enable;
+<<<<<<< HEAD
 
 	if (is_cn20k(rvu->pdev)) {
 		rule->chan_mask = cn20k_wreq.entry_data.kw_mask[0] &
@@ -1595,6 +1954,12 @@ update_rule:
 	rule->chan &= rule->chan_mask;
 	rule->lxmb = dummy.lxmb;
 	rule->hw_prio = req->hw_prio;
+=======
+	rule->chan_mask = write_req.entry_data.kw_mask[0] & NPC_KEX_CHAN_MASK;
+	rule->chan = write_req.entry_data.kw[0] & NPC_KEX_CHAN_MASK;
+	rule->chan &= rule->chan_mask;
+	rule->lxmb = dummy.lxmb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_npc_intf_tx(req->intf))
 		rule->intf = pfvf->nix_tx_intf;
 	else
@@ -1606,6 +1971,7 @@ update_rule:
 		pfvf->def_ucast_rule = rule;
 
 	/* write to mcam entry registers */
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		err = rvu_mbox_handler_npc_cn20k_mcam_write_entry(rvu,
 								  &cn20k_wreq,
@@ -1614,6 +1980,10 @@ update_rule:
 		err = rvu_mbox_handler_npc_mcam_write_entry(rvu, &write_req,
 							    &write_rsp);
 
+=======
+	err = rvu_mbox_handler_npc_mcam_write_entry(rvu, &write_req,
+						    &write_rsp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		rvu_mcam_remove_counter_from_rule(rvu, owner, rule);
 		if (new) {
@@ -1646,6 +2016,7 @@ update_rule:
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 rvu_npc_free_entry_for_flow_install(struct rvu *rvu, u16 pcifunc,
 				    bool free_entry, int mcam_idx)
@@ -1719,6 +2090,8 @@ rvu_npc_alloc_entry_for_flow_install(struct rvu *rvu,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 				      struct npc_install_flow_req *req,
 				      struct npc_install_flow_rsp *rsp)
@@ -1729,9 +2102,13 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 	int blkaddr, nixlf, err;
 	struct rvu_pfvf *pfvf;
 	bool pf_set_vfs_mac = false;
+<<<<<<< HEAD
 	bool allocated = false;
 	bool enable = true;
 	u8 kw_type;
+=======
+	bool enable = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 target;
 
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
@@ -1743,6 +2120,7 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 	if (!is_npc_interface_valid(rvu, req->intf))
 		return NPC_FLOW_INTF_INVALID;
 
+<<<<<<< HEAD
 	err = rvu_npc_alloc_entry_for_flow_install(rvu, req, &req->entry,
 						   &kw_type, &allocated);
 	if (err) {
@@ -1754,6 +2132,8 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 
 	req->entry = npc_cn20k_vidx2idx(req->entry);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If DMAC is not extracted in MKEX, rules installed by AF
 	 * can rely on L2MB bit set by hardware protocol checker for
 	 * broadcast and multicast addresses.
@@ -1767,10 +2147,13 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 			dev_warn(rvu->dev,
 				 "%s: mkex profile does not support ucast flow\n",
 				 __func__);
+<<<<<<< HEAD
 			rvu_npc_free_entry_for_flow_install(rvu,
 							    req->hdr.pcifunc,
 							    allocated,
 							    req->entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return NPC_FLOW_NOT_SUPPORTED;
 		}
 
@@ -1778,10 +2161,13 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 			dev_warn(rvu->dev,
 				 "%s: mkex profile does not support bcast/mcast flow",
 				 __func__);
+<<<<<<< HEAD
 			rvu_npc_free_entry_for_flow_install(rvu,
 							    req->hdr.pcifunc,
 							    allocated,
 							    req->entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return NPC_FLOW_NOT_SUPPORTED;
 		}
 
@@ -1791,11 +2177,16 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
 	}
 
 process_flow:
+<<<<<<< HEAD
 	if (from_vf && req->default_rule) {
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
 		return NPC_FLOW_VF_PERM_DENIED;
 	}
+=======
+	if (from_vf && req->default_rule)
+		return NPC_FLOW_VF_PERM_DENIED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Each PF/VF info is maintained in struct rvu_pfvf.
 	 * rvu_pfvf for the target PF/VF needs to be retrieved
@@ -1823,11 +2214,16 @@ process_flow:
 		req->chan_mask = 0xFFF;
 
 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
+<<<<<<< HEAD
 	if (err) {
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
 		return NPC_FLOW_NOT_SUPPORTED;
 	}
+=======
+	if (err)
+		return NPC_FLOW_NOT_SUPPORTED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pfvf = rvu_get_pfvf(rvu, target);
 
@@ -1846,11 +2242,16 @@ process_flow:
 
 	/* Proceed if NIXLF is attached or not for TX rules */
 	err = nix_get_nixlf(rvu, target, &nixlf, NULL);
+<<<<<<< HEAD
 	if (err && is_npc_intf_rx(req->intf) && !pf_set_vfs_mac) {
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
 		return NPC_FLOW_NO_NIXLF;
 	}
+=======
+	if (err && is_npc_intf_rx(req->intf) && !pf_set_vfs_mac)
+		return NPC_FLOW_NO_NIXLF;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* don't enable rule when nixlf not attached or initialized */
 	if (!(is_nixlf_attached(rvu, target) &&
@@ -1865,31 +2266,42 @@ process_flow:
 		enable = true;
 
 	/* Do not allow requests from uninitialized VFs */
+<<<<<<< HEAD
 	if (from_vf && !enable) {
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
 		return NPC_FLOW_VF_NOT_INIT;
 	}
+=======
+	if (from_vf && !enable)
+		return NPC_FLOW_VF_NOT_INIT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* PF sets VF mac & VF NIXLF is not attached, update the mac addr */
 	if (pf_set_vfs_mac && !enable) {
 		ether_addr_copy(pfvf->default_mac, req->packet.dmac);
 		ether_addr_copy(pfvf->mac_addr, req->packet.dmac);
 		set_bit(PF_SET_VF_MAC, &pfvf->flags);
+<<<<<<< HEAD
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
 	mutex_lock(&rswitch->switch_lock);
 	err = npc_install_flow(rvu, blkaddr, target, nixlf, pfvf,
 			       req, rsp, enable, pf_set_vfs_mac);
+<<<<<<< HEAD
 	if (err)
 		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
 						    allocated, req->entry);
 
 	rsp->kw_type = kw_type;
 	rsp->entry = req->entry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&rswitch->switch_lock);
 
 	return err;
@@ -1926,10 +2338,13 @@ int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
 	struct list_head del_list;
 	int blkaddr;
 
+<<<<<<< HEAD
 	req->entry = npc_cn20k_vidx2idx(req->entry);
 	req->start = npc_cn20k_vidx2idx(req->start);
 	req->end = npc_cn20k_vidx2idx(req->end);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_LIST_HEAD(&del_list);
 
 	mutex_lock(&mcam->lock);
@@ -1972,6 +2387,7 @@ static int npc_update_dmac_value(struct rvu *rvu, int npcblkaddr,
 				 struct rvu_npc_mcam_rule *rule,
 				 struct rvu_pfvf *pfvf)
 {
+<<<<<<< HEAD
 	struct npc_cn20k_mcam_write_entry_req cn20k_wreq = { 0 };
 	struct npc_mcam_write_entry_req write_req = { 0 };
 	struct mcam_entry_mdata mdata = { };
@@ -2017,6 +2433,30 @@ static int npc_update_dmac_value(struct rvu *rvu, int npcblkaddr,
 		err = rvu_mbox_handler_npc_mcam_write_entry(rvu, &write_req,
 							    &rsp);
 	}
+=======
+	struct npc_mcam_write_entry_req write_req = { 0 };
+	struct mcam_entry *entry = &write_req.entry_data;
+	struct npc_mcam *mcam = &rvu->hw->mcam;
+	struct msg_rsp rsp;
+	u8 intf, enable;
+	int err;
+
+	ether_addr_copy(rule->packet.dmac, pfvf->mac_addr);
+
+	npc_read_mcam_entry(rvu, mcam, npcblkaddr, rule->entry,
+			    entry, &intf,  &enable);
+
+	npc_update_entry(rvu, NPC_DMAC, entry,
+			 ether_addr_to_u64(pfvf->mac_addr), 0,
+			 0xffffffffffffull, 0, intf);
+
+	write_req.hdr.pcifunc = rule->owner;
+	write_req.entry = rule->entry;
+	write_req.intf = pfvf->nix_rx_intf;
+
+	mutex_unlock(&mcam->lock);
+	err = rvu_mbox_handler_npc_mcam_write_entry(rvu, &write_req, &rsp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 
 	return err;
@@ -2048,12 +2488,17 @@ void npc_mcam_enable_flows(struct rvu *rvu, u16 target)
 				continue;
 			}
 
+<<<<<<< HEAD
 			if (rule->vfvlan_cfg) {
 				if (npc_update_dmac_value(rvu, blkaddr, rule, pfvf))
 					dev_err(rvu->dev,
 						"Update dmac failed for %u, target=%#x\n",
 						rule->entry, target);
 			}
+=======
+			if (rule->vfvlan_cfg)
+				npc_update_dmac_value(rvu, blkaddr, rule, pfvf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (rule->rx_action.op == NIX_RX_ACTION_DEFAULT) {
 				if (!def_ucast_rule)
@@ -2108,12 +2553,18 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
 			       u64 chan_val, u64 chan_mask, u64 exact_val, u64 exact_mask,
 			       u64 bcast_mcast_val, u64 bcast_mcast_mask)
 {
+<<<<<<< HEAD
 	struct npc_cn20k_mcam_write_entry_req cn20k_req = { 0 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct npc_mcam_alloc_counter_req cntr_req = { 0 };
 	struct npc_mcam_alloc_counter_rsp cntr_rsp = { 0 };
 	struct npc_mcam_write_entry_req req = { 0 };
 	struct npc_mcam *mcam = &rvu->hw->mcam;
+<<<<<<< HEAD
 	struct mcam_entry_mdata mdata = { };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rvu_npc_mcam_rule *rule;
 	struct msg_rsp rsp;
 	bool enabled;
@@ -2157,6 +2608,7 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
 	/* Reserve slot 0 */
 	npc_mcam_rsrcs_reserve(rvu, blkaddr, mcam_idx);
 
+<<<<<<< HEAD
 	if (!is_cn20k(rvu->pdev)) {
 		/* Allocate counter for this single drop on non hit rule */
 		cntr_req.hdr.pcifunc = 0; /* AF request */
@@ -2202,6 +2654,28 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
 		goto enable_entry;
 	}
 
+=======
+	/* Allocate counter for this single drop on non hit rule */
+	cntr_req.hdr.pcifunc = 0; /* AF request */
+	cntr_req.contig = true;
+	cntr_req.count = 1;
+	err = rvu_mbox_handler_npc_mcam_alloc_counter(rvu, &cntr_req, &cntr_rsp);
+	if (err) {
+		dev_err(rvu->dev, "%s: Err to allocate cntr for drop rule (err=%d)\n",
+			__func__, err);
+		return	-EFAULT;
+	}
+	*counter_idx = cntr_rsp.cntr;
+
+	/* Fill in fields for this mcam entry */
+	npc_update_entry(rvu, NPC_EXACT_RESULT, &req.entry_data, exact_val, 0,
+			 exact_mask, 0, NIX_INTF_RX);
+	npc_update_entry(rvu, NPC_CHAN, &req.entry_data, chan_val, 0,
+			 chan_mask, 0, NIX_INTF_RX);
+	npc_update_entry(rvu, NPC_LXMB, &req.entry_data, bcast_mcast_val, 0,
+			 bcast_mcast_mask, 0, NIX_INTF_RX);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	req.intf = NIX_INTF_RX;
 	req.set_cntr = true;
 	req.cntr = cntr_rsp.cntr;
@@ -2209,17 +2683,27 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
 
 	err = rvu_mbox_handler_npc_mcam_write_entry(rvu, &req, &rsp);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(rvu->dev,
 			"%s: Installation of single drop on non hit rule at %d failed\n",
+=======
+		dev_err(rvu->dev, "%s: Installation of single drop on non hit rule at %d failed\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			__func__, mcam_idx);
 		return err;
 	}
 
+<<<<<<< HEAD
 	dev_err(rvu->dev,
 		"%s: Installed single drop on non hit rule at %d, cntr=%d\n",
 		__func__, mcam_idx, req.cntr);
 
 enable_entry:
+=======
+	dev_err(rvu->dev, "%s: Installed single drop on non hit rule at %d, cntr=%d\n",
+		__func__, mcam_idx, req.cntr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* disable entry at Bank 0, index 0 */
 	npc_enable_mcam_entry(rvu, mcam, blkaddr, mcam_idx, false);
 

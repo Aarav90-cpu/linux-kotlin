@@ -21,7 +21,10 @@
 #include <time.h>
 #include "vm_util.h"
 #include "kselftest.h"
+<<<<<<< HEAD
 #include "thp_settings.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 uint64_t pagesize;
 unsigned int pageshift;
@@ -256,6 +259,24 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
 	return status;
 }
 
+<<<<<<< HEAD
+=======
+static void write_file(const char *path, const char *buf, size_t buflen)
+{
+	int fd;
+	ssize_t numwritten;
+
+	fd = open(path, O_WRONLY);
+	if (fd == -1)
+		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+
+	numwritten = write(fd, buf, buflen - 1);
+	close(fd);
+	if (numwritten < 1)
+		ksft_exit_fail_msg("Write failed\n");
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void write_debugfs(const char *fmt, ...)
 {
 	char input[INPUT_MAX];
@@ -758,9 +779,12 @@ int main(int argc, char **argv)
 		ksft_finished();
 	}
 
+<<<<<<< HEAD
 	if (!thp_is_enabled())
 		ksft_exit_skip("Transparent Hugepages not available\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (argc > 1)
 		optional_xfs_path = argv[1];
 

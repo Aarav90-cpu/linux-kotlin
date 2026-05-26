@@ -447,20 +447,29 @@
 };
 
 &qupv3_0 {
+<<<<<<< HEAD
 	firmware-name = "qcom/x1e80100/qupv3fw.elf";
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
 &qupv3_1 {
+<<<<<<< HEAD
 	firmware-name = "qcom/x1e80100/qupv3fw.elf";
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
 &qupv3_2 {
+<<<<<<< HEAD
 	firmware-name = "qcom/x1e80100/qupv3fw.elf";
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -576,10 +585,19 @@
 };
 
 &usb_1_ss0 {
+<<<<<<< HEAD
 	dr_mode = "otg";
 	usb-role-switch;
 
 	status = "okay";
+=======
+	status = "okay";
+};
+
+&usb_1_ss0_dwc3 {
+	dr_mode = "otg";
+	usb-role-switch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &usb_1_ss0_hsphy {
@@ -597,10 +615,19 @@
 };
 
 &usb_1_ss1 {
+<<<<<<< HEAD
 	dr_mode = "otg";
 	usb-role-switch;
 
 	status = "okay";
+=======
+	status = "okay";
+};
+
+&usb_1_ss1_dwc3 {
+	dr_mode = "otg";
+	usb-role-switch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &usb_1_ss1_hsphy {
@@ -618,10 +645,19 @@
 };
 
 &usb_1_ss2 {
+<<<<<<< HEAD
 	dr_mode = "otg";
 	usb-role-switch;
 
 	status = "okay";
+=======
+	status = "okay";
+};
+
+&usb_1_ss2_dwc3 {
+	dr_mode = "otg";
+	usb-role-switch;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &usb_1_ss2_hsphy {
@@ -639,11 +675,21 @@
 };
 
 &usb_2 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_2_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_2_hsphy {
 	vdd-supply = <&vreg_l2e_0p8>;
 	vdda12-supply = <&vreg_l3e_1p2>;

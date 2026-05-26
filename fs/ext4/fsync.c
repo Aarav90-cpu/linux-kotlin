@@ -68,7 +68,11 @@ static int ext4_sync_parent(struct inode *inode)
 		 * through ext4_evict_inode()) and so we are safe to flush
 		 * metadata blocks and the inode.
 		 */
+<<<<<<< HEAD
 		ret = mmb_sync(&EXT4_I(inode)->i_metadata_bhs);
+=======
+		ret = sync_mapping_buffers(inode->i_mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			break;
 		ret = sync_inode_metadata(inode, 1);
@@ -89,8 +93,12 @@ static int ext4_fsync_nojournal(struct file *file, loff_t start, loff_t end,
 	};
 	int ret;
 
+<<<<<<< HEAD
 	ret = mmb_fsync_noflush(file, &EXT4_I(inode)->i_metadata_bhs,
 				start, end, datasync);
+=======
+	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

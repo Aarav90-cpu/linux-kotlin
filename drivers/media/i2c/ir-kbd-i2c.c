@@ -355,7 +355,10 @@ static void ir_work(struct work_struct *work)
 		mutex_unlock(&ir->lock);
 		if (rc == -ENODEV) {
 			rc_unregister_device(ir->rc);
+<<<<<<< HEAD
 			rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ir->rc = NULL;
 			return;
 		}
@@ -973,7 +976,10 @@ static void ir_remove(struct i2c_client *client)
 	i2c_unregister_device(ir->tx_c);
 
 	rc_unregister_device(ir->rc);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct i2c_device_id ir_kbd_id[] = {

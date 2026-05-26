@@ -1755,6 +1755,7 @@ int start_sync_thread(struct netns_ipvs *ipvs, struct ipvs_sync_daemon_cfg *c,
 	if (!ip_vs_use_count_inc())
 		return -ENOPROTOOPT;
 
+<<<<<<< HEAD
 	/* Backup server can be started without services just to sync conns,
 	 * make sure conn_tab is created even if ipvs->enable is 0.
 	 */
@@ -1777,6 +1778,8 @@ int start_sync_thread(struct netns_ipvs *ipvs, struct ipvs_sync_daemon_cfg *c,
 		mutex_unlock(&ipvs->service_mutex);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Do not hold one mutex and then to block on another */
 	for (;;) {
 		rtnl_lock();
@@ -1944,7 +1947,10 @@ out_early:
 	mutex_unlock(&ipvs->sync_mutex);
 	rtnl_unlock();
 
+<<<<<<< HEAD
 out_module:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* decrease the module use count */
 	ip_vs_use_count_dec();
 	return result;

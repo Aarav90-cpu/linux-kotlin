@@ -160,6 +160,7 @@ raspberrypi_clk_variants[RPI_FIRMWARE_NUM_CLK_ID] = {
 	[RPI_FIRMWARE_VEC_CLK_ID] = {
 		.export = true,
 		.minimize = true,
+<<<<<<< HEAD
 
 		/*
 		 * If this clock is disabled during boot, it causes a bus
@@ -167,6 +168,8 @@ raspberrypi_clk_variants[RPI_FIRMWARE_NUM_CLK_ID] = {
 		 * during boot.
 		 */
 		.flags = CLK_IGNORE_UNUSED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[RPI_FIRMWARE_DISP_CLK_ID] = {
 		.export = true,
@@ -296,13 +299,17 @@ static int raspberrypi_fw_dumb_determine_rate(struct clk_hw *hw,
 static int raspberrypi_fw_prepare(struct clk_hw *hw)
 {
 	const struct raspberrypi_clk_data *data = clk_hw_to_data(hw);
+<<<<<<< HEAD
 	struct raspberrypi_clk_variant *variant = data->variant;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct raspberrypi_clk *rpi = data->rpi;
 	u32 state = RPI_FIRMWARE_STATE_ENABLE_BIT;
 	int ret;
 
 	ret = raspberrypi_clock_property(rpi->firmware, data,
 					 RPI_FIRMWARE_SET_CLOCK_STATE, &state);
+<<<<<<< HEAD
 	if (ret) {
 		dev_err_ratelimited(rpi->dev,
 				    "Failed to set clock %s state to on: %d\n",
@@ -321,6 +328,12 @@ static int raspberrypi_fw_prepare(struct clk_hw *hw)
 		clk_hw_get_rate_range(hw, &min_rate, &max_rate);
 		ret = raspberrypi_fw_set_rate(hw, max_rate, 0);
 	}
+=======
+	if (ret)
+		dev_err_ratelimited(rpi->dev,
+				    "Failed to set clock %s state to on: %d\n",
+				    clk_hw_get_name(hw), ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -329,6 +342,7 @@ static void raspberrypi_fw_unprepare(struct clk_hw *hw)
 {
 	const struct raspberrypi_clk_data *data = clk_hw_to_data(hw);
 	struct raspberrypi_clk *rpi = data->rpi;
+<<<<<<< HEAD
 	unsigned long min_rate, max_rate;
 	u32 state = 0;
 	int ret;
@@ -350,6 +364,11 @@ static void raspberrypi_fw_unprepare(struct clk_hw *hw)
 	 */
 	raspberrypi_fw_set_rate(hw, min_rate, 0);
 
+=======
+	u32 state = 0;
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = raspberrypi_clock_property(rpi->firmware, data,
 					 RPI_FIRMWARE_SET_CLOCK_STATE, &state);
 	if (ret)
@@ -427,6 +446,12 @@ static struct clk_hw *raspberrypi_clk_register(struct raspberrypi_clk *rpi,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (variant->maximize)
+		variant->min_rate = max_rate;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (variant->min_rate) {
 		unsigned long rate;
 

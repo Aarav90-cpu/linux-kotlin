@@ -10,4 +10,8 @@
 long file_read_long(const char *path);
 int file_write_long(const char *path, long val);
 
+<<<<<<< HEAD
 #endif // __SCX_TEST_UTIL_H__
+=======
+#endif // __SCX_TEST_H__
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

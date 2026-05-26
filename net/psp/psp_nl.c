@@ -305,6 +305,7 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
 
 	psd = psp_dev_get_for_sock(socket->sk);
 	if (psd) {
+<<<<<<< HEAD
 		/* Extra care needed here, psp_dev_get_for_sock() only gives
 		 * us access to struct psp_dev's memory, which is quite weak.
 		 */
@@ -312,6 +313,10 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
 		if (!psp_dev_is_registered(psd) ||
 		    psp_dev_check_access(psd, genl_info_net(info))) {
 			mutex_unlock(&psd->lock);
+=======
+		err = psp_dev_check_access(psd, genl_info_net(info));
+		if (err) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			psp_dev_put(psd);
 			psd = NULL;
 		}
@@ -324,6 +329,10 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
 
 	id = info->attrs[PSP_A_ASSOC_DEV_ID];
 	if (psd) {
+<<<<<<< HEAD
+=======
+		mutex_lock(&psd->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (id && psd->id != nla_get_u32(id)) {
 			mutex_unlock(&psd->lock);
 			NL_SET_ERR_MSG_ATTR(info->extack, id,

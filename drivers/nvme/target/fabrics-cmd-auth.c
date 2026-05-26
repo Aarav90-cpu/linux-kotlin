@@ -8,6 +8,10 @@
 #include <linux/blkdev.h>
 #include <linux/random.h>
 #include <linux/nvme-auth.h>
+<<<<<<< HEAD
+=======
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/kpp.h>
 #include "nvmet.h"
 
@@ -74,7 +78,12 @@ static u8 nvmet_auth_negotiate(struct nvmet_req *req, void *d)
 	for (i = 0; i < data->auth_protocol[0].dhchap.halen; i++) {
 		u8 host_hmac_id = data->auth_protocol[0].dhchap.idlist[i];
 
+<<<<<<< HEAD
 		if (!fallback_hash_id && nvme_auth_hmac_hash_len(host_hmac_id))
+=======
+		if (!fallback_hash_id &&
+		    crypto_has_shash(nvme_auth_hmac_name(host_hmac_id), 0, 0))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			fallback_hash_id = host_hmac_id;
 		if (ctrl->shash_id != host_hmac_id)
 			continue;
@@ -291,8 +300,12 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
 			pr_debug("%s: ctrl %d qid %d reset negotiation\n",
 				 __func__, ctrl->cntlid, req->sq->qid);
 			if (!req->sq->qid) {
+<<<<<<< HEAD
 				dhchap_status = nvmet_setup_auth(ctrl, req->sq,
 								 true);
+=======
+				dhchap_status = nvmet_setup_auth(ctrl, req->sq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (dhchap_status) {
 					pr_err("ctrl %d qid 0 failed to setup re-authentication\n",
 					       ctrl->cntlid);
@@ -390,7 +403,11 @@ done:
 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
 
+<<<<<<< HEAD
 		mod_delayed_work(system_percpu_wq, &req->sq->auth_expired_work,
+=======
+		mod_delayed_work(system_wq, &req->sq->auth_expired_work,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 auth_expire_secs * HZ);
 		goto complete;
 	}

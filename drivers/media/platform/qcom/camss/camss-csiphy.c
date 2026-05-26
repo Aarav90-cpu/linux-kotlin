@@ -558,6 +558,7 @@ static int csiphy_init_formats(struct v4l2_subdev *sd,
 	return csiphy_set_format(sd, fh ? fh->state : NULL, &format);
 }
 
+<<<<<<< HEAD
 static bool __printf(2, 3)
 csiphy_match_clock_name(const char *clock_name, const char *format, ...)
 {
@@ -568,6 +569,14 @@ csiphy_match_clock_name(const char *clock_name, const char *format, ...)
 	vsnprintf(name, sizeof(name), format, args);
 	va_end(args);
 
+=======
+static bool csiphy_match_clock_name(const char *clock_name, const char *format,
+				    int index)
+{
+	char name[16]; /* csiphyXXX_timer\0 */
+
+	snprintf(name, sizeof(name), format, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return !strcmp(clock_name, name);
 }
 

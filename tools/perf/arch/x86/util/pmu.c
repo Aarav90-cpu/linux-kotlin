@@ -5,8 +5,13 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <linux/stddef.h>
+<<<<<<< HEAD
 #include <linux/string.h>
 #include <linux/perf_event.h>
+=======
+#include <linux/perf_event.h>
+#include <linux/zalloc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <api/fs/fs.h>
 #include <api/io_dir.h>
 #include <internal/cpumap.h>
@@ -71,6 +76,14 @@ static int snc_nodes_per_l3_cache(void)
 	return snc_nodes;
 }
 
+<<<<<<< HEAD
+=======
+static bool starts_with(const char *str, const char *prefix)
+{
+	return !strncmp(prefix, str, strlen(prefix));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int num_chas(void)
 {
 	static bool checked_chas;
@@ -88,7 +101,11 @@ static int num_chas(void)
 
 		while ((dent = io_dir__readdir(&dir)) != NULL) {
 			/* Note, dent->d_type will be DT_LNK and so isn't a useful filter. */
+<<<<<<< HEAD
 			if (strstarts(dent->d_name, "uncore_cha_"))
+=======
+			if (starts_with(dent->d_name, "uncore_cha_"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				num_chas++;
 		}
 		close(fd);
@@ -220,8 +237,12 @@ static void gnr_uncore_cha_imc_adjust_cpumask_for_snc(struct perf_pmu *pmu, bool
 	static struct perf_cpu_map *cha_adjusted[MAX_SNCS];
 	static struct perf_cpu_map *imc_adjusted[MAX_SNCS];
 	struct perf_cpu_map **adjusted = cha ? cha_adjusted : imc_adjusted;
+<<<<<<< HEAD
 	unsigned int idx;
 	int pmu_snc, cpu_adjust;
+=======
+	int idx, pmu_snc, cpu_adjust;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_cpu cpu;
 	bool alloc;
 
@@ -301,9 +322,15 @@ void perf_pmu__arch_init(struct perf_pmu *pmu)
 			else
 				pmu->mem_events = perf_mem_events_intel;
 		} else if (x86__is_intel_graniterapids()) {
+<<<<<<< HEAD
 			if (strstarts(pmu->name, "uncore_cha_"))
 				gnr_uncore_cha_imc_adjust_cpumask_for_snc(pmu, /*cha=*/true);
 			else if (strstarts(pmu->name, "uncore_imc_"))
+=======
+			if (starts_with(pmu->name, "uncore_cha_"))
+				gnr_uncore_cha_imc_adjust_cpumask_for_snc(pmu, /*cha=*/true);
+			else if (starts_with(pmu->name, "uncore_imc_"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				gnr_uncore_cha_imc_adjust_cpumask_for_snc(pmu, /*cha=*/false);
 		}
 	}

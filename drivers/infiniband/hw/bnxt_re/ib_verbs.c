@@ -187,12 +187,18 @@ int bnxt_re_query_device(struct ib_device *ibdev,
 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibdev, ibdev);
 	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
 	struct bnxt_re_query_device_ex_resp resp = {};
+<<<<<<< HEAD
 	int rc = 0;
 
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return rc;
 
+=======
+	size_t outlen = (udata) ? udata->outlen : 0;
+	int rc = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(ib_attr, 0, sizeof(*ib_attr));
 	memcpy(&ib_attr->fw_ver, dev_attr->fw_ver,
 	       min(sizeof(dev_attr->fw_ver),
@@ -257,7 +263,12 @@ int bnxt_re_query_device(struct ib_device *ibdev,
 	ib_attr->max_pkeys = 1;
 	ib_attr->local_ca_ack_delay = BNXT_RE_DEFAULT_ACK_DELAY;
 
+<<<<<<< HEAD
 	if (_is_modify_qp_rate_limit_supported(dev_attr->dev_cap_flags2)) {
+=======
+	if ((offsetofend(typeof(resp), packet_pacing_caps) <= outlen) &&
+	    _is_modify_qp_rate_limit_supported(dev_attr->dev_cap_flags2)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		resp.packet_pacing_caps.qp_rate_limit_min =
 			dev_attr->rate_limit_min;
 		resp.packet_pacing_caps.qp_rate_limit_max =
@@ -265,7 +276,15 @@ int bnxt_re_query_device(struct ib_device *ibdev,
 		resp.packet_pacing_caps.supported_qpts =
 			1 << IB_QPT_RC;
 	}
+<<<<<<< HEAD
 	return ib_respond_udata(udata, resp);
+=======
+	if (outlen)
+		rc = ib_copy_to_udata(udata, &resp,
+				      min(sizeof(resp), outlen));
+
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_re_modify_device(struct ib_device *ibdev,
@@ -642,7 +661,11 @@ fail:
 	return rc;
 }
 
+<<<<<<< HEAD
 struct bnxt_re_user_mmap_entry*
+=======
+static struct bnxt_re_user_mmap_entry*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bnxt_re_mmap_entry_insert(struct bnxt_re_ucontext *uctx, u64 mem_offset,
 			  enum bnxt_re_mmap_flag mmap_flag, u64 *offset)
 {
@@ -690,11 +713,14 @@ int bnxt_re_dealloc_pd(struct ib_pd *ib_pd, struct ib_udata *udata)
 {
 	struct bnxt_re_pd *pd = container_of(ib_pd, struct bnxt_re_pd, ib_pd);
 	struct bnxt_re_dev *rdev = pd->rdev;
+<<<<<<< HEAD
 	int ret;
 
 	ret = ib_is_udata_in_empty(udata);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (udata) {
 		rdma_user_mmap_entry_remove(pd->pd_db_mmap);
@@ -709,7 +735,11 @@ int bnxt_re_dealloc_pd(struct ib_pd *ib_pd, struct ib_udata *udata)
 					   &pd->qplib_pd))
 			atomic_dec(&rdev->stats.res.pd_count);
 	}
+<<<<<<< HEAD
 	return ib_respond_empty_udata(udata);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_re_alloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
@@ -723,10 +753,13 @@ int bnxt_re_alloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
 	u32 active_pds;
 	int rc = 0;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pd->rdev = rdev;
 	if (bnxt_qplib_alloc_pd(&rdev->qplib_res, &pd->qplib_pd)) {
 		ibdev_err(&rdev->ibdev, "Failed to allocate HW PD");
@@ -763,7 +796,11 @@ int bnxt_re_alloc_pd(struct ib_pd *ibpd, struct ib_udata *udata)
 
 		pd->pd_db_mmap = &entry->rdma_entry;
 
+<<<<<<< HEAD
 		rc = ib_respond_udata(udata, resp);
+=======
+		rc = ib_copy_to_udata(udata, &resp, min(sizeof(resp), udata->outlen));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc) {
 			rdma_user_mmap_entry_remove(pd->pd_db_mmap);
 			rc = -EFAULT;
@@ -841,10 +878,13 @@ int bnxt_re_create_ah(struct ib_ah *ib_ah, struct rdma_ah_init_attr *init_attr,
 	u8 nw_type;
 	int rc;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH)) {
 		ibdev_err(&rdev->ibdev, "Failed to alloc AH: GRH not set");
 		return -EINVAL;
@@ -898,7 +938,11 @@ int bnxt_re_create_ah(struct ib_ah *ib_ah, struct rdma_ah_init_attr *init_attr,
 	if (active_ahs > rdev->stats.res.ah_watermark)
 		rdev->stats.res.ah_watermark = active_ahs;
 
+<<<<<<< HEAD
 	return ib_respond_empty_udata(udata);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_re_query_ah(struct ib_ah *ib_ah, struct rdma_ah_attr *ah_attr)
@@ -995,12 +1039,15 @@ static void bnxt_re_del_unique_gid(struct bnxt_re_dev *rdev)
 		dev_err(rdev_to_dev(rdev), "Failed to delete unique GID, rc: %d\n", rc);
 }
 
+<<<<<<< HEAD
 static void bnxt_re_qp_free_umem(struct bnxt_re_qp *qp)
 {
 	ib_umem_release(qp->rumem);
 	ib_umem_release(qp->sumem);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Queue Pairs */
 int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
 {
@@ -1012,10 +1059,13 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
 	unsigned int flags;
 	int rc;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bnxt_re_debug_rem_qpinfo(rdev, qp);
 
 	bnxt_qplib_flush_cqn_wq(&qp->qplib_qp);
@@ -1047,7 +1097,12 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
 	if (qp->qplib_qp.type == CMDQ_CREATE_QP_TYPE_RAW_ETHERTYPE)
 		bnxt_re_del_unique_gid(rdev);
 
+<<<<<<< HEAD
 	bnxt_re_qp_free_umem(qp);
+=======
+	ib_umem_release(qp->rumem);
+	ib_umem_release(qp->sumem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Flush all the entries of notification queue associated with
 	 * given qp.
@@ -1058,7 +1113,11 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_qp, struct ib_udata *udata)
 	if (scq_nq != rcq_nq)
 		bnxt_re_synchronize_nq(rcq_nq);
 
+<<<<<<< HEAD
 	return ib_respond_empty_udata(udata);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u8 __from_ib_qp_type(enum ib_qp_type type)
@@ -1191,7 +1250,10 @@ static int bnxt_re_init_user_qp(struct bnxt_re_dev *rdev, struct bnxt_re_pd *pd,
 	}
 
 	qplib_qp->dpi = &cntx->dpi;
+<<<<<<< HEAD
 	qplib_qp->is_user = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 rqfail:
 	ib_umem_release(qp->sumem);
@@ -1249,6 +1311,7 @@ fail:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int bnxt_re_qp_alloc_init_xrrq(struct bnxt_re_qp *qp)
 {
 	struct bnxt_qplib_res *res = &qp->rdev->qplib_res;
@@ -1357,6 +1420,8 @@ free_sq_hwq:
 	return rc;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct bnxt_re_qp *bnxt_re_create_shadow_qp
 				(struct bnxt_re_pd *pd,
 				 struct bnxt_qplib_res *qp1_res,
@@ -1378,7 +1443,10 @@ static struct bnxt_re_qp *bnxt_re_create_shadow_qp
 	qp->qplib_qp.pd = &pd->qplib_pd;
 	qp->qplib_qp.qp_handle = (u64)(unsigned long)(&qp->qplib_qp);
 	qp->qplib_qp.type = IB_QPT_UD;
+<<<<<<< HEAD
 	qp->qplib_qp.cctx = rdev->chip_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	qp->qplib_qp.max_inline_data = 0;
 	qp->qplib_qp.sig_type = true;
@@ -1411,6 +1479,7 @@ static struct bnxt_re_qp *bnxt_re_create_shadow_qp
 	qp->qplib_qp.rq_hdr_buf_size = BNXT_QPLIB_MAX_GRH_HDR_SIZE_IPV6;
 	qp->qplib_qp.dpi = &rdev->dpi_privileged;
 
+<<<<<<< HEAD
 	rc = bnxt_re_setup_qp_hwqs(qp);
 	if (rc)
 		goto fail;
@@ -1418,6 +1487,11 @@ static struct bnxt_re_qp *bnxt_re_create_shadow_qp
 	rc = bnxt_qplib_create_qp(qp1_res, &qp->qplib_qp);
 	if (rc)
 		goto free_hwq;
+=======
+	rc = bnxt_qplib_create_qp(qp1_res, &qp->qplib_qp);
+	if (rc)
+		goto fail;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_init(&qp->sq_lock);
 	INIT_LIST_HEAD(&qp->list);
@@ -1426,9 +1500,12 @@ static struct bnxt_re_qp *bnxt_re_create_shadow_qp
 	atomic_inc(&rdev->stats.res.qp_count);
 	mutex_unlock(&rdev->qp_lock);
 	return qp;
+<<<<<<< HEAD
 
 free_hwq:
 	bnxt_qplib_free_qp_res(&rdev->qplib_res, &qp->qplib_qp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail:
 	kfree(qp);
 	return NULL;
@@ -1442,6 +1519,10 @@ static int bnxt_re_init_rq_attr(struct bnxt_re_qp *qp,
 	struct bnxt_qplib_qp *qplqp;
 	struct bnxt_re_dev *rdev;
 	struct bnxt_qplib_q *rq;
+<<<<<<< HEAD
+=======
+	int entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rdev = qp->rdev;
 	qplqp = &qp->qplib_qp;
@@ -1464,9 +1545,14 @@ static int bnxt_re_init_rq_attr(struct bnxt_re_qp *qp,
 		/* Allocate 1 more than what's provided so posting max doesn't
 		 * mean empty.
 		 */
+<<<<<<< HEAD
 		rq->max_wqe = bnxt_re_init_depth(init_attr->cap.max_recv_wr + 1,
 						 dev_attr->max_qp_wqes + 1,
 						 uctx);
+=======
+		entries = bnxt_re_init_depth(init_attr->cap.max_recv_wr + 1, uctx);
+		rq->max_wqe = min_t(u32, entries, dev_attr->max_qp_wqes + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->max_sw_wqe = rq->max_wqe;
 		rq->q_full_delta = 0;
 		rq->sg_info.pgsize = PAGE_SIZE;
@@ -1504,6 +1590,10 @@ static int bnxt_re_init_sq_attr(struct bnxt_re_qp *qp,
 	struct bnxt_re_dev *rdev;
 	struct bnxt_qplib_q *sq;
 	int diff = 0;
+<<<<<<< HEAD
+=======
+	int entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	rdev = qp->rdev;
@@ -1512,6 +1602,10 @@ static int bnxt_re_init_sq_attr(struct bnxt_re_qp *qp,
 	dev_attr = rdev->dev_attr;
 
 	sq->max_sge = init_attr->cap.max_send_sge;
+<<<<<<< HEAD
+=======
+	entries = init_attr->cap.max_send_wr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (uctx && qplqp->wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE) {
 		sq->max_wqe = ureq->sq_slots;
 		sq->max_sw_wqe = ureq->sq_slots;
@@ -1527,11 +1621,18 @@ static int bnxt_re_init_sq_attr(struct bnxt_re_qp *qp,
 			return rc;
 
 		/* Allocate 128 + 1 more than what's provided */
+<<<<<<< HEAD
 		if (qplqp->wqe_mode != BNXT_QPLIB_WQE_MODE_VARIABLE)
 			diff = BNXT_QPLIB_RESERVED_QP_WRS;
 		sq->max_wqe = bnxt_re_init_depth(
 			init_attr->cap.max_send_wr + diff + 1,
 			dev_attr->max_qp_wqes + diff + 1, uctx);
+=======
+		diff = (qplqp->wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE) ?
+			0 : BNXT_QPLIB_RESERVED_QP_WRS;
+		entries = bnxt_re_init_depth(entries + diff + 1, uctx);
+		sq->max_wqe = min_t(u32, entries, dev_attr->max_qp_wqes + diff + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (qplqp->wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE)
 			sq->max_sw_wqe = bnxt_qplib_get_depth(sq, qplqp->wqe_mode, true);
 		else
@@ -1558,15 +1659,25 @@ static void bnxt_re_adjust_gsi_sq_attr(struct bnxt_re_qp *qp,
 	struct bnxt_qplib_dev_attr *dev_attr;
 	struct bnxt_qplib_qp *qplqp;
 	struct bnxt_re_dev *rdev;
+<<<<<<< HEAD
+=======
+	int entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rdev = qp->rdev;
 	qplqp = &qp->qplib_qp;
 	dev_attr = rdev->dev_attr;
 
 	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx)) {
+<<<<<<< HEAD
 		qplqp->sq.max_wqe =
 			bnxt_re_init_depth(init_attr->cap.max_send_wr + 1,
 					   dev_attr->max_qp_wqes + 1, uctx);
+=======
+		entries = bnxt_re_init_depth(init_attr->cap.max_send_wr + 1, uctx);
+		qplqp->sq.max_wqe = min_t(u32, entries,
+					  dev_attr->max_qp_wqes + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qplqp->sq.q_full_delta = qplqp->sq.max_wqe -
 			init_attr->cap.max_send_wr;
 		qplqp->sq.max_sge++; /* Need one extra sge to put UD header */
@@ -1597,6 +1708,7 @@ out:
 	return qptype;
 }
 
+<<<<<<< HEAD
 static void bnxt_re_qp_calculate_msn_psn_size(struct bnxt_re_qp *qp)
 {
 	struct bnxt_qplib_qp *qplib_qp = &qp->qplib_qp;
@@ -1630,6 +1742,8 @@ static void bnxt_re_qp_calculate_msn_psn_size(struct bnxt_re_qp *qp)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bnxt_re_init_qp_attr(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
 				struct ib_qp_init_attr *init_attr,
 				struct bnxt_re_ucontext *uctx,
@@ -1652,12 +1766,21 @@ static int bnxt_re_init_qp_attr(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
 	qplqp->max_inline_data = init_attr->cap.max_inline_data;
 	qplqp->sig_type = init_attr->sq_sig_type == IB_SIGNAL_ALL_WR;
 	qptype = bnxt_re_init_qp_type(rdev, init_attr);
+<<<<<<< HEAD
 	if (qptype < 0)
 		return qptype;
 	qplqp->type = (u8)qptype;
 	qplqp->wqe_mode = bnxt_re_is_var_size_supported(rdev, uctx);
 	qplqp->dev_cap_flags = dev_attr->dev_cap_flags;
 	qplqp->cctx = rdev->chip_ctx;
+=======
+	if (qptype < 0) {
+		rc = qptype;
+		goto out;
+	}
+	qplqp->type = (u8)qptype;
+	qplqp->wqe_mode = bnxt_re_is_var_size_supported(rdev, uctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (init_attr->qp_type == IB_QPT_RC) {
 		qplqp->max_rd_atomic = dev_attr->max_qp_rd_atom;
 		qplqp->max_dest_rd_atomic = dev_attr->max_qp_init_rd_atom;
@@ -1687,13 +1810,18 @@ static int bnxt_re_init_qp_attr(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
 	/* Setup RQ/SRQ */
 	rc = bnxt_re_init_rq_attr(qp, init_attr, uctx);
 	if (rc)
+<<<<<<< HEAD
 		return rc;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (init_attr->qp_type == IB_QPT_GSI)
 		bnxt_re_adjust_gsi_rq_attr(qp);
 
 	/* Setup SQ */
 	rc = bnxt_re_init_sq_attr(qp, init_attr, uctx, ureq);
 	if (rc)
+<<<<<<< HEAD
 		return rc;
 	if (init_attr->qp_type == IB_QPT_GSI)
 		bnxt_re_adjust_gsi_sq_attr(qp, init_attr, uctx);
@@ -1713,6 +1841,15 @@ static int bnxt_re_init_qp_attr(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
 	return 0;
 free_umem:
 	bnxt_re_qp_free_umem(qp);
+=======
+		goto out;
+	if (init_attr->qp_type == IB_QPT_GSI)
+		bnxt_re_adjust_gsi_sq_attr(qp, init_attr, uctx);
+
+	if (uctx) /* This will update DPI and qp_handle */
+		rc = bnxt_re_init_user_qp(rdev, pd, qp, uctx, ureq);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 
@@ -1769,7 +1906,10 @@ static int bnxt_re_create_gsi_qp(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
 
 	rdev = qp->rdev;
 	qplqp = &qp->qplib_qp;
+<<<<<<< HEAD
 	qplqp->cctx = rdev->chip_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	qplqp->rq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_RQ_HDR_SIZE_V2;
 	qplqp->sq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_SQ_HDR_SIZE_V2;
@@ -1852,11 +1992,17 @@ int bnxt_re_create_qp(struct ib_qp *ib_qp, struct ib_qp_init_attr *qp_init_attr,
 	qp = container_of(ib_qp, struct bnxt_re_qp, ib_qp);
 
 	uctx = rdma_udata_to_drv_context(udata, struct bnxt_re_ucontext, ib_uctx);
+<<<<<<< HEAD
 	if (udata) {
 		rc = ib_copy_validate_udata_in_cm(udata, ureq, qp_handle, 0);
 		if (rc)
 			return rc;
 	}
+=======
+	if (udata)
+		if (ib_copy_from_udata(&ureq, udata,  min(udata->inlen, sizeof(ureq))))
+			return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = bnxt_re_test_qp_limits(rdev, qp_init_attr, dev_attr);
 	if (!rc) {
@@ -1875,22 +2021,39 @@ int bnxt_re_create_qp(struct ib_qp *ib_qp, struct ib_qp_init_attr *qp_init_attr,
 		if (rc == -ENODEV)
 			goto qp_destroy;
 		if (rc)
+<<<<<<< HEAD
 			goto free_hwq;
+=======
+			goto fail;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		rc = bnxt_qplib_create_qp(&rdev->qplib_res, &qp->qplib_qp);
 		if (rc) {
 			ibdev_err(&rdev->ibdev, "Failed to create HW QP");
+<<<<<<< HEAD
 			goto free_hwq;
 		}
 
+=======
+			goto free_umem;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (udata) {
 			struct bnxt_re_qp_resp resp;
 
 			resp.qpid = qp->qplib_qp.id;
 			resp.rsvd = 0;
+<<<<<<< HEAD
 			rc = ib_respond_udata(udata, resp);
 			if (rc)
 				goto qp_destroy;
+=======
+			rc = ib_copy_to_udata(udata, &resp, sizeof(resp));
+			if (rc) {
+				ibdev_err(&rdev->ibdev, "Failed to copy QP udata");
+				goto qp_destroy;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1931,9 +2094,15 @@ int bnxt_re_create_qp(struct ib_qp *ib_qp, struct ib_qp_init_attr *qp_init_attr,
 	return 0;
 qp_destroy:
 	bnxt_qplib_destroy_qp(&rdev->qplib_res, &qp->qplib_qp);
+<<<<<<< HEAD
 free_hwq:
 	bnxt_qplib_free_qp_res(&rdev->qplib_res, &qp->qplib_qp);
 	bnxt_re_qp_free_umem(qp);
+=======
+free_umem:
+	ib_umem_release(qp->rumem);
+	ib_umem_release(qp->sumem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail:
 	return rc;
 }
@@ -2023,11 +2192,14 @@ int bnxt_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
 					       ib_srq);
 	struct bnxt_re_dev *rdev = srq->rdev;
 	struct bnxt_qplib_srq *qplib_srq = &srq->qplib_srq;
+<<<<<<< HEAD
 	int ret;
 
 	ret = ib_is_udata_in_empty(udata);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rdev->chip_ctx->modes.toggle_bits & BNXT_QPLIB_SRQ_TOGGLE_BIT) {
 		free_page((unsigned long)srq->uctx_srq_page);
@@ -2036,7 +2208,11 @@ int bnxt_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
 	bnxt_qplib_destroy_srq(&rdev->qplib_res, qplib_srq);
 	ib_umem_release(srq->umem);
 	atomic_dec(&rdev->stats.res.srq_count);
+<<<<<<< HEAD
 	return ib_respond_empty_udata(udata);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bnxt_re_init_user_srq(struct bnxt_re_dev *rdev,
@@ -2050,11 +2226,17 @@ static int bnxt_re_init_user_srq(struct bnxt_re_dev *rdev,
 	int bytes = 0;
 	struct bnxt_re_ucontext *cntx = rdma_udata_to_drv_context(
 		udata, struct bnxt_re_ucontext, ib_uctx);
+<<<<<<< HEAD
 	int rc;
 
 	rc = ib_copy_validate_udata_in(udata, ureq, srq_handle);
 	if (rc)
 		return rc;
+=======
+
+	if (ib_copy_from_udata(&ureq, udata, sizeof(ureq)))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bytes = (qplib_srq->max_wqe * qplib_srq->wqe_size);
 	bytes = PAGE_ALIGN(bytes);
@@ -2084,7 +2266,11 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
 	struct bnxt_re_pd *pd;
 	struct ib_pd *ib_pd;
 	u32 active_srqs;
+<<<<<<< HEAD
 	int rc;
+=======
+	int rc, entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ib_pd = ib_srq->pd;
 	pd = container_of(ib_pd, struct bnxt_re_pd, ib_pd);
@@ -2110,9 +2296,16 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
 	/* Allocate 1 more than what's provided so posting max doesn't
 	 * mean empty
 	 */
+<<<<<<< HEAD
 	srq->qplib_srq.max_wqe =
 		bnxt_re_init_depth(srq_init_attr->attr.max_wr + 1,
 				   dev_attr->max_srq_wqes + 1, uctx);
+=======
+	entries = bnxt_re_init_depth(srq_init_attr->attr.max_wr + 1, uctx);
+	if (entries > dev_attr->max_srq_wqes + 1)
+		entries = dev_attr->max_srq_wqes + 1;
+	srq->qplib_srq.max_wqe = entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	srq->qplib_srq.max_sge = srq_init_attr->attr.max_sge;
 	 /* 128 byte wqe size for SRQ . So use max sges */
@@ -2148,8 +2341,14 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
 			}
 			resp.comp_mask |= BNXT_RE_SRQ_TOGGLE_PAGE_SUPPORT;
 		}
+<<<<<<< HEAD
 		rc = ib_respond_udata(udata, resp);
 		if (rc) {
+=======
+		rc = ib_copy_to_udata(udata, &resp, sizeof(resp));
+		if (rc) {
+			ibdev_err(&rdev->ibdev, "SRQ copy to udata failed!");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bnxt_qplib_destroy_srq(&rdev->qplib_res,
 					       &srq->qplib_srq);
 			goto fail;
@@ -2175,11 +2374,14 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
 	struct bnxt_re_srq *srq = container_of(ib_srq, struct bnxt_re_srq,
 					       ib_srq);
 	struct bnxt_re_dev *rdev = srq->rdev;
+<<<<<<< HEAD
 	int ret;
 
 	ret = ib_is_udata_in_empty(udata);
 	if (ret)
 		return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (srq_attr_mask) {
 	case IB_SRQ_MAX_WR:
@@ -2196,7 +2398,11 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
 		/* On success, update the shadow */
 		srq->srq_limit = srq_attr->srq_limit;
 		/* No need to Build and send response back to udata */
+<<<<<<< HEAD
 		return ib_respond_empty_udata(udata);
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ibdev_err(&rdev->ibdev,
 			  "Unsupported srq_attr_mask 0x%x", srq_attr_mask);
@@ -2293,6 +2499,7 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
 	struct bnxt_re_dev *rdev = qp->rdev;
 	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
 	enum ib_qp_state curr_qp_state, new_qp_state;
+<<<<<<< HEAD
 	int rc;
 	unsigned int flags;
 	u8 nw_type;
@@ -2301,6 +2508,12 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
 	if (rc)
 		return rc;
 
+=======
+	int rc, entries;
+	unsigned int flags;
+	u8 nw_type;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (qp_attr_mask & ~(IB_QP_ATTR_STANDARD_BITS | IB_QP_RATE_LIMIT))
 		return -EOPNOTSUPP;
 
@@ -2507,9 +2720,15 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
 				  "Create QP failed - max exceeded");
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 		qp->qplib_qp.sq.max_wqe =
 			bnxt_re_init_depth(qp_attr->cap.max_send_wr,
 					   dev_attr->max_qp_wqes + 1, uctx);
+=======
+		entries = bnxt_re_init_depth(qp_attr->cap.max_send_wr, uctx);
+		qp->qplib_qp.sq.max_wqe = min_t(u32, entries,
+						dev_attr->max_qp_wqes + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qp->qplib_qp.sq.q_full_delta = qp->qplib_qp.sq.max_wqe -
 						qp_attr->cap.max_send_wr;
 		/*
@@ -2520,9 +2739,15 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
 		qp->qplib_qp.sq.q_full_delta -= 1;
 		qp->qplib_qp.sq.max_sge = qp_attr->cap.max_send_sge;
 		if (qp->qplib_qp.rq.max_wqe) {
+<<<<<<< HEAD
 			qp->qplib_qp.rq.max_wqe = bnxt_re_init_depth(
 				qp_attr->cap.max_recv_wr,
 				dev_attr->max_qp_wqes + 1, uctx);
+=======
+			entries = bnxt_re_init_depth(qp_attr->cap.max_recv_wr, uctx);
+			qp->qplib_qp.rq.max_wqe =
+				min_t(u32, entries, dev_attr->max_qp_wqes + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			qp->qplib_qp.rq.max_sw_wqe = qp->qplib_qp.rq.max_wqe;
 			qp->qplib_qp.rq.q_full_delta = qp->qplib_qp.rq.max_wqe -
 						       qp_attr->cap.max_recv_wr;
@@ -2541,12 +2766,18 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
 		ibdev_err(&rdev->ibdev, "Failed to modify HW QP");
 		return rc;
 	}
+<<<<<<< HEAD
 	if (ib_qp->qp_type == IB_QPT_GSI && rdev->gsi_ctx.gsi_sqp) {
 		rc = bnxt_re_modify_shadow_qp(rdev, qp, qp_attr_mask);
 		if (rc)
 			return rc;
 	}
 	return ib_respond_empty_udata(udata);
+=======
+	if (ib_qp->qp_type == IB_QPT_GSI && rdev->gsi_ctx.gsi_sqp)
+		rc = bnxt_re_modify_shadow_qp(rdev, qp, qp_attr_mask);
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_re_query_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
@@ -3321,17 +3552,23 @@ int bnxt_re_destroy_cq(struct ib_cq *ib_cq, struct ib_udata *udata)
 	struct bnxt_qplib_nq *nq;
 	struct bnxt_re_dev *rdev;
 	struct bnxt_re_cq *cq;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cq = container_of(ib_cq, struct bnxt_re_cq, ib_cq);
 	rdev = cq->rdev;
 	nq = cq->qplib_cq.nq;
 	cctx = rdev->chip_ctx;
 
+<<<<<<< HEAD
 	ret = ib_is_udata_in_empty(udata);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cctx->modes.toggle_bits & BNXT_QPLIB_CQ_TOGGLE_BIT) {
 		free_page((unsigned long)cq->uctx_cq_page);
 		hash_del(&cq->hash_entry);
@@ -3339,6 +3576,7 @@ int bnxt_re_destroy_cq(struct ib_cq *ib_cq, struct ib_udata *udata)
 	bnxt_qplib_destroy_cq(&rdev->qplib_res, &cq->qplib_cq);
 
 	bnxt_re_put_nq(rdev, nq);
+<<<<<<< HEAD
 
 	atomic_dec(&rdev->stats.res.cq_count);
 	kfree(cq->cql);
@@ -3367,6 +3605,17 @@ static int bnxt_re_setup_sginfo(struct bnxt_re_dev *rdev,
 
 int bnxt_re_create_user_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 			   struct uverbs_attr_bundle *attrs)
+=======
+	ib_umem_release(cq->umem);
+
+	atomic_dec(&rdev->stats.res.cq_count);
+	kfree(cq->cql);
+	return 0;
+}
+
+int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+		      struct uverbs_attr_bundle *attrs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bnxt_re_cq *cq = container_of(ibcq, struct bnxt_re_cq, ib_cq);
 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibcq->device, ibdev);
@@ -3375,6 +3624,7 @@ int bnxt_re_create_user_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *att
 		rdma_udata_to_drv_context(udata, struct bnxt_re_ucontext, ib_uctx);
 	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
 	struct bnxt_qplib_chip_ctx *cctx;
+<<<<<<< HEAD
 	struct bnxt_re_cq_resp resp = {};
 	struct bnxt_re_cq_req req;
 	int rc;
@@ -3463,12 +3713,17 @@ int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 	struct bnxt_re_dev *rdev = to_bnxt_re_dev(ibcq->device, ibdev);
 	struct bnxt_qplib_dev_attr *dev_attr = rdev->dev_attr;
 	int rc;
+=======
+	int cqe = attr->cqe;
+	int rc, entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 active_cqs;
 
 	if (attr->flags)
 		return -EOPNOTSUPP;
 
 	/* Validate CQ fields */
+<<<<<<< HEAD
 	if (attr->cqe > dev_attr->max_cq_wqes)
 		return -EINVAL;
 
@@ -3484,6 +3739,50 @@ int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 	cq->qplib_cq.sg_info.pgshft = __builtin_ctz(SZ_4K);
 	cq->qplib_cq.dpi = &rdev->dpi_privileged;
 	cq->qplib_cq.max_wqe = cq->max_cql;
+=======
+	if (cqe < 1 || cqe > dev_attr->max_cq_wqes) {
+		ibdev_err(&rdev->ibdev, "Failed to create CQ -max exceeded");
+		return -EINVAL;
+	}
+
+	cq->rdev = rdev;
+	cctx = rdev->chip_ctx;
+	cq->qplib_cq.cq_handle = (u64)(unsigned long)(&cq->qplib_cq);
+
+	entries = bnxt_re_init_depth(cqe + 1, uctx);
+	if (entries > dev_attr->max_cq_wqes + 1)
+		entries = dev_attr->max_cq_wqes + 1;
+
+	cq->qplib_cq.sg_info.pgsize = PAGE_SIZE;
+	cq->qplib_cq.sg_info.pgshft = PAGE_SHIFT;
+	if (udata) {
+		struct bnxt_re_cq_req req;
+		if (ib_copy_from_udata(&req, udata, sizeof(req))) {
+			rc = -EFAULT;
+			goto fail;
+		}
+
+		cq->umem = ib_umem_get(&rdev->ibdev, req.cq_va,
+				       entries * sizeof(struct cq_base),
+				       IB_ACCESS_LOCAL_WRITE);
+		if (IS_ERR(cq->umem)) {
+			rc = PTR_ERR(cq->umem);
+			goto fail;
+		}
+		cq->qplib_cq.sg_info.umem = cq->umem;
+		cq->qplib_cq.dpi = &uctx->dpi;
+	} else {
+		cq->max_cql = min_t(u32, entries, MAX_CQL_PER_POLL);
+		cq->cql = kzalloc_objs(struct bnxt_qplib_cqe, cq->max_cql);
+		if (!cq->cql) {
+			rc = -ENOMEM;
+			goto fail;
+		}
+
+		cq->qplib_cq.dpi = &rdev->dpi_privileged;
+	}
+	cq->qplib_cq.max_wqe = entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cq->qplib_cq.coalescing = &rdev->cq_coalescing;
 	cq->qplib_cq.nq = bnxt_re_get_nq(rdev);
 	cq->qplib_cq.cnq_hw_ring_id = cq->qplib_cq.nq->ring_id;
@@ -3494,15 +3793,55 @@ int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	cq->ib_cq.cqe = cq->max_cql;
 	cq->cq_period = cq->qplib_cq.period;
+=======
+	cq->ib_cq.cqe = entries;
+	cq->cq_period = cq->qplib_cq.period;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	active_cqs = atomic_inc_return(&rdev->stats.res.cq_count);
 	if (active_cqs > rdev->stats.res.cq_watermark)
 		rdev->stats.res.cq_watermark = active_cqs;
 	spin_lock_init(&cq->cq_lock);
 
+<<<<<<< HEAD
 	return 0;
 
+=======
+	if (udata) {
+		struct bnxt_re_cq_resp resp = {};
+
+		if (cctx->modes.toggle_bits & BNXT_QPLIB_CQ_TOGGLE_BIT) {
+			hash_add(rdev->cq_hash, &cq->hash_entry, cq->qplib_cq.id);
+			/* Allocate a page */
+			cq->uctx_cq_page = (void *)get_zeroed_page(GFP_KERNEL);
+			if (!cq->uctx_cq_page) {
+				rc = -ENOMEM;
+				goto c2fail;
+			}
+			resp.comp_mask |= BNXT_RE_CQ_TOGGLE_PAGE_SUPPORT;
+		}
+		resp.cqid = cq->qplib_cq.id;
+		resp.tail = cq->qplib_cq.hwq.cons;
+		resp.phase = cq->qplib_cq.period;
+		resp.rsvd = 0;
+		rc = ib_copy_to_udata(udata, &resp, min(sizeof(resp), udata->outlen));
+		if (rc) {
+			ibdev_err(&rdev->ibdev, "Failed to copy CQ udata");
+			bnxt_qplib_destroy_cq(&rdev->qplib_res, &cq->qplib_cq);
+			goto free_mem;
+		}
+	}
+
+	return 0;
+
+free_mem:
+	free_page((unsigned long)cq->uctx_cq_page);
+c2fail:
+	ib_umem_release(cq->umem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail:
 	kfree(cq->cql);
 	return rc;
@@ -3516,15 +3855,24 @@ static void bnxt_re_resize_cq_complete(struct bnxt_re_cq *cq)
 
 	cq->qplib_cq.max_wqe = cq->resize_cqe;
 	if (cq->resize_umem) {
+<<<<<<< HEAD
 		ib_umem_release(cq->ib_cq.umem);
 		cq->ib_cq.umem = cq->resize_umem;
+=======
+		ib_umem_release(cq->umem);
+		cq->umem = cq->resize_umem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cq->resize_umem = NULL;
 		cq->resize_cqe = 0;
 	}
 }
 
+<<<<<<< HEAD
 int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 		      struct ib_udata *udata)
+=======
+int bnxt_re_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bnxt_qplib_sg_info sg_info = {};
 	struct bnxt_qplib_dpi *orig_dpi = NULL;
@@ -3533,8 +3881,12 @@ int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 	struct bnxt_re_resize_cq_req req;
 	struct bnxt_re_dev *rdev;
 	struct bnxt_re_cq *cq;
+<<<<<<< HEAD
 	int rc;
 	u32 entries;
+=======
+	int rc, entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cq =  container_of(ibcq, struct bnxt_re_cq, ib_cq);
 	rdev = cq->rdev;
@@ -3551,6 +3903,7 @@ int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 	}
 
 	/* Check the requested cq depth out of supported depth */
+<<<<<<< HEAD
 	if (cqe > dev_attr->max_cq_wqes)
 		return -EINVAL;
 
@@ -3561,6 +3914,24 @@ int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 	rc = ib_copy_validate_udata_in(udata, req, cq_va);
 	if (rc)
 		goto fail;
+=======
+	if (cqe < 1 || cqe > dev_attr->max_cq_wqes) {
+		ibdev_err(&rdev->ibdev, "Resize CQ %#x failed - out of range cqe %d",
+			  cq->qplib_cq.id, cqe);
+		return -EINVAL;
+	}
+
+	uctx = rdma_udata_to_drv_context(udata, struct bnxt_re_ucontext, ib_uctx);
+	entries = bnxt_re_init_depth(cqe + 1, uctx);
+	if (entries > dev_attr->max_cq_wqes + 1)
+		entries = dev_attr->max_cq_wqes + 1;
+
+	/* uverbs consumer */
+	if (ib_copy_from_udata(&req, udata, sizeof(req))) {
+		rc = -EFAULT;
+		goto fail;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cq->resize_umem = ib_umem_get(&rdev->ibdev, req.cq_va,
 				      entries * sizeof(struct cq_base),
@@ -3591,7 +3962,11 @@ int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 	cq->ib_cq.cqe = cq->resize_cqe;
 	atomic_inc(&rdev->stats.res.resize_count);
 
+<<<<<<< HEAD
 	return ib_respond_empty_udata(udata);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 fail:
 	if (cq->resize_umem) {
@@ -4113,7 +4488,11 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
 	/* User CQ; the only processing we do is to
 	 * complete any pending CQ resize operation.
 	 */
+<<<<<<< HEAD
 	if (cq->ib_cq.umem) {
+=======
+	if (cq->umem) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cq->resize_umem)
 			bnxt_re_resize_cq_complete(cq);
 		return 0;
@@ -4323,10 +4702,13 @@ int bnxt_re_dereg_mr(struct ib_mr *ib_mr, struct ib_udata *udata)
 	struct bnxt_re_dev *rdev = mr->rdev;
 	int rc;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = bnxt_qplib_free_mrw(&rdev->qplib_res, &mr->qplib_mr);
 	if (rc) {
 		ibdev_err(&rdev->ibdev, "Dereg MR failed: %#x\n", rc);
@@ -4344,9 +4726,13 @@ int bnxt_re_dereg_mr(struct ib_mr *ib_mr, struct ib_udata *udata)
 
 	kfree(mr);
 	atomic_dec(&rdev->stats.res.mr_count);
+<<<<<<< HEAD
 	if (rc)
 		return rc;
 	return ib_respond_empty_udata(udata);
+=======
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bnxt_re_set_page(struct ib_mr *ib_mr, u64 addr)
@@ -4401,7 +4787,11 @@ struct ib_mr *bnxt_re_alloc_mr(struct ib_pd *ib_pd, enum ib_mr_type type,
 	mr->ib_mr.lkey = mr->qplib_mr.lkey;
 	mr->ib_mr.rkey = mr->ib_mr.lkey;
 
+<<<<<<< HEAD
 	mr->pages = kzalloc_objs(u64, max_num_sg);
+=======
+	mr->pages = kcalloc(max_num_sg, sizeof(u64), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!mr->pages) {
 		rc = -ENOMEM;
 		goto fail;
@@ -4437,10 +4827,13 @@ struct ib_mw *bnxt_re_alloc_mw(struct ib_pd *ib_pd, enum ib_mw_type type,
 	u32 active_mws;
 	int rc;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return ERR_PTR(rc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mw = kzalloc_obj(*mw);
 	if (!mw)
 		return ERR_PTR(-ENOMEM);
@@ -4568,11 +4961,14 @@ struct ib_mr *bnxt_re_reg_user_mr(struct ib_pd *ib_pd, u64 start, u64 length,
 	struct bnxt_re_dev *rdev = pd->rdev;
 	struct ib_umem *umem;
 	struct ib_mr *ib_mr;
+<<<<<<< HEAD
 	int ret;
 
 	ret = ib_is_udata_in_empty(udata);
 	if (ret)
 		return ERR_PTR(ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dmah)
 		return ERR_PTR(-EOPNOTSUPP);
@@ -4677,11 +5073,16 @@ int bnxt_re_alloc_ucontext(struct ib_ucontext *ctx, struct ib_udata *udata)
 	if (_is_modify_qp_rate_limit_supported(dev_attr->dev_cap_flags2))
 		resp.comp_mask |= BNXT_RE_UCNTX_CMASK_QP_RATE_LIMIT_ENABLED;
 
+<<<<<<< HEAD
 	if (udata->inlen) {
 		rc = ib_copy_validate_udata_in_cm(
 			udata, ureq, comp_mask,
 			BNXT_RE_COMP_MASK_REQ_UCNTX_POW2_SUPPORT |
 				BNXT_RE_COMP_MASK_REQ_UCNTX_VAR_WQE_SUPPORT);
+=======
+	if (udata->inlen >= sizeof(ureq)) {
+		rc = ib_copy_from_udata(&ureq, udata, min(udata->inlen, sizeof(ureq)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto cfail;
 		if (ureq.comp_mask & BNXT_RE_COMP_MASK_REQ_UCNTX_POW2_SUPPORT) {
@@ -4696,9 +5097,18 @@ int bnxt_re_alloc_ucontext(struct ib_ucontext *ctx, struct ib_udata *udata)
 		}
 	}
 
+<<<<<<< HEAD
 	rc = ib_respond_udata(udata, resp);
 	if (rc)
 		goto cfail;
+=======
+	rc = ib_copy_to_udata(udata, &resp, min(udata->outlen, sizeof(resp)));
+	if (rc) {
+		ibdev_err(ibdev, "Failed to copy user context");
+		rc = -EFAULT;
+		goto cfail;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 cfail:
@@ -4757,10 +5167,13 @@ struct ib_flow *bnxt_re_create_flow(struct ib_qp *ib_qp,
 	struct bnxt_re_flow *flow;
 	int rc;
 
+<<<<<<< HEAD
 	rc = ib_is_udata_in_empty(udata);
 	if (rc)
 		return ERR_PTR(rc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (attr->type != IB_FLOW_ATTR_SNIFFER ||
 	    !rdev->rcfw.roce_mirror)
 		return ERR_PTR(-EOPNOTSUPP);
@@ -4821,6 +5234,35 @@ int bnxt_re_destroy_flow(struct ib_flow *flow_id)
 	return rc;
 }
 
+<<<<<<< HEAD
+=======
+static struct bnxt_re_cq *bnxt_re_search_for_cq(struct bnxt_re_dev *rdev, u32 cq_id)
+{
+	struct bnxt_re_cq *cq = NULL, *tmp_cq;
+
+	hash_for_each_possible(rdev->cq_hash, tmp_cq, hash_entry, cq_id) {
+		if (tmp_cq->qplib_cq.id == cq_id) {
+			cq = tmp_cq;
+			break;
+		}
+	}
+	return cq;
+}
+
+static struct bnxt_re_srq *bnxt_re_search_for_srq(struct bnxt_re_dev *rdev, u32 srq_id)
+{
+	struct bnxt_re_srq *srq = NULL, *tmp_srq;
+
+	hash_for_each_possible(rdev->srq_hash, tmp_srq, hash_entry, srq_id) {
+		if (tmp_srq->qplib_srq.id == srq_id) {
+			srq = tmp_srq;
+			break;
+		}
+	}
+	return srq;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Helper function to mmap the virtual memory from user app */
 int bnxt_re_mmap(struct ib_ucontext *ib_uctx, struct vm_area_struct *vma)
 {
@@ -4923,3 +5365,283 @@ int bnxt_re_process_mad(struct ib_device *ibdev, int mad_flags,
 	ret |= IB_MAD_RESULT_REPLY;
 	return ret;
 }
+<<<<<<< HEAD
+=======
+
+static int UVERBS_HANDLER(BNXT_RE_METHOD_NOTIFY_DRV)(struct uverbs_attr_bundle *attrs)
+{
+	struct bnxt_re_ucontext *uctx;
+
+	uctx = container_of(ib_uverbs_get_ucontext(attrs), struct bnxt_re_ucontext, ib_uctx);
+	bnxt_re_pacing_alert(uctx->rdev);
+	return 0;
+}
+
+static int UVERBS_HANDLER(BNXT_RE_METHOD_ALLOC_PAGE)(struct uverbs_attr_bundle *attrs)
+{
+	struct ib_uobject *uobj = uverbs_attr_get_uobject(attrs, BNXT_RE_ALLOC_PAGE_HANDLE);
+	enum bnxt_re_alloc_page_type alloc_type;
+	struct bnxt_re_user_mmap_entry *entry;
+	enum bnxt_re_mmap_flag mmap_flag;
+	struct bnxt_qplib_chip_ctx *cctx;
+	struct bnxt_re_ucontext *uctx;
+	struct bnxt_re_dev *rdev;
+	u64 mmap_offset;
+	u32 length;
+	u32 dpi;
+	u64 addr;
+	int err;
+
+	uctx = container_of(ib_uverbs_get_ucontext(attrs), struct bnxt_re_ucontext, ib_uctx);
+	if (IS_ERR(uctx))
+		return PTR_ERR(uctx);
+
+	err = uverbs_get_const(&alloc_type, attrs, BNXT_RE_ALLOC_PAGE_TYPE);
+	if (err)
+		return err;
+
+	rdev = uctx->rdev;
+	cctx = rdev->chip_ctx;
+
+	switch (alloc_type) {
+	case BNXT_RE_ALLOC_WC_PAGE:
+		if (cctx->modes.db_push)  {
+			if (bnxt_qplib_alloc_dpi(&rdev->qplib_res, &uctx->wcdpi,
+						 uctx, BNXT_QPLIB_DPI_TYPE_WC))
+				return -ENOMEM;
+			length = PAGE_SIZE;
+			dpi = uctx->wcdpi.dpi;
+			addr = (u64)uctx->wcdpi.umdbr;
+			mmap_flag = BNXT_RE_MMAP_WC_DB;
+		} else {
+			return -EINVAL;
+		}
+
+		break;
+	case BNXT_RE_ALLOC_DBR_BAR_PAGE:
+		length = PAGE_SIZE;
+		addr = (u64)rdev->pacing.dbr_bar_addr;
+		mmap_flag = BNXT_RE_MMAP_DBR_BAR;
+		break;
+
+	case BNXT_RE_ALLOC_DBR_PAGE:
+		length = PAGE_SIZE;
+		addr = (u64)rdev->pacing.dbr_page;
+		mmap_flag = BNXT_RE_MMAP_DBR_PAGE;
+		break;
+
+	default:
+		return -EOPNOTSUPP;
+	}
+
+	entry = bnxt_re_mmap_entry_insert(uctx, addr, mmap_flag, &mmap_offset);
+	if (!entry)
+		return -ENOMEM;
+
+	uobj->object = entry;
+	uverbs_finalize_uobj_create(attrs, BNXT_RE_ALLOC_PAGE_HANDLE);
+	err = uverbs_copy_to(attrs, BNXT_RE_ALLOC_PAGE_MMAP_OFFSET,
+			     &mmap_offset, sizeof(mmap_offset));
+	if (err)
+		return err;
+
+	err = uverbs_copy_to(attrs, BNXT_RE_ALLOC_PAGE_MMAP_LENGTH,
+			     &length, sizeof(length));
+	if (err)
+		return err;
+
+	err = uverbs_copy_to(attrs, BNXT_RE_ALLOC_PAGE_DPI,
+			     &dpi, sizeof(dpi));
+	if (err)
+		return err;
+
+	return 0;
+}
+
+static int alloc_page_obj_cleanup(struct ib_uobject *uobject,
+				  enum rdma_remove_reason why,
+			    struct uverbs_attr_bundle *attrs)
+{
+	struct  bnxt_re_user_mmap_entry *entry = uobject->object;
+	struct bnxt_re_ucontext *uctx = entry->uctx;
+
+	switch (entry->mmap_flag) {
+	case BNXT_RE_MMAP_WC_DB:
+		if (uctx && uctx->wcdpi.dbr) {
+			struct bnxt_re_dev *rdev = uctx->rdev;
+
+			bnxt_qplib_dealloc_dpi(&rdev->qplib_res, &uctx->wcdpi);
+			uctx->wcdpi.dbr = NULL;
+		}
+		break;
+	case BNXT_RE_MMAP_DBR_BAR:
+	case BNXT_RE_MMAP_DBR_PAGE:
+		break;
+	default:
+		goto exit;
+	}
+	rdma_user_mmap_entry_remove(&entry->rdma_entry);
+exit:
+	return 0;
+}
+
+DECLARE_UVERBS_NAMED_METHOD(BNXT_RE_METHOD_ALLOC_PAGE,
+			    UVERBS_ATTR_IDR(BNXT_RE_ALLOC_PAGE_HANDLE,
+					    BNXT_RE_OBJECT_ALLOC_PAGE,
+					    UVERBS_ACCESS_NEW,
+					    UA_MANDATORY),
+			    UVERBS_ATTR_CONST_IN(BNXT_RE_ALLOC_PAGE_TYPE,
+						 enum bnxt_re_alloc_page_type,
+						 UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_ALLOC_PAGE_MMAP_OFFSET,
+						UVERBS_ATTR_TYPE(u64),
+						UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_ALLOC_PAGE_MMAP_LENGTH,
+						UVERBS_ATTR_TYPE(u32),
+						UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_ALLOC_PAGE_DPI,
+						UVERBS_ATTR_TYPE(u32),
+						UA_MANDATORY));
+
+DECLARE_UVERBS_NAMED_METHOD_DESTROY(BNXT_RE_METHOD_DESTROY_PAGE,
+				    UVERBS_ATTR_IDR(BNXT_RE_DESTROY_PAGE_HANDLE,
+						    BNXT_RE_OBJECT_ALLOC_PAGE,
+						    UVERBS_ACCESS_DESTROY,
+						    UA_MANDATORY));
+
+DECLARE_UVERBS_NAMED_OBJECT(BNXT_RE_OBJECT_ALLOC_PAGE,
+			    UVERBS_TYPE_ALLOC_IDR(alloc_page_obj_cleanup),
+			    &UVERBS_METHOD(BNXT_RE_METHOD_ALLOC_PAGE),
+			    &UVERBS_METHOD(BNXT_RE_METHOD_DESTROY_PAGE));
+
+DECLARE_UVERBS_NAMED_METHOD(BNXT_RE_METHOD_NOTIFY_DRV);
+
+DECLARE_UVERBS_GLOBAL_METHODS(BNXT_RE_OBJECT_NOTIFY_DRV,
+			      &UVERBS_METHOD(BNXT_RE_METHOD_NOTIFY_DRV));
+
+/* Toggle MEM */
+static int UVERBS_HANDLER(BNXT_RE_METHOD_GET_TOGGLE_MEM)(struct uverbs_attr_bundle *attrs)
+{
+	struct ib_uobject *uobj = uverbs_attr_get_uobject(attrs, BNXT_RE_TOGGLE_MEM_HANDLE);
+	enum bnxt_re_mmap_flag mmap_flag = BNXT_RE_MMAP_TOGGLE_PAGE;
+	enum bnxt_re_get_toggle_mem_type res_type;
+	struct bnxt_re_user_mmap_entry *entry;
+	struct bnxt_re_ucontext *uctx;
+	struct ib_ucontext *ib_uctx;
+	struct bnxt_re_dev *rdev;
+	struct bnxt_re_srq *srq;
+	u32 length = PAGE_SIZE;
+	struct bnxt_re_cq *cq;
+	u64 mem_offset;
+	u32 offset = 0;
+	u64 addr = 0;
+	u32 res_id;
+	int err;
+
+	ib_uctx = ib_uverbs_get_ucontext(attrs);
+	if (IS_ERR(ib_uctx))
+		return PTR_ERR(ib_uctx);
+
+	err = uverbs_get_const(&res_type, attrs, BNXT_RE_TOGGLE_MEM_TYPE);
+	if (err)
+		return err;
+
+	uctx = container_of(ib_uctx, struct bnxt_re_ucontext, ib_uctx);
+	rdev = uctx->rdev;
+	err = uverbs_copy_from(&res_id, attrs, BNXT_RE_TOGGLE_MEM_RES_ID);
+	if (err)
+		return err;
+
+	switch (res_type) {
+	case BNXT_RE_CQ_TOGGLE_MEM:
+		cq = bnxt_re_search_for_cq(rdev, res_id);
+		if (!cq)
+			return -EINVAL;
+
+		addr = (u64)cq->uctx_cq_page;
+		break;
+	case BNXT_RE_SRQ_TOGGLE_MEM:
+		srq = bnxt_re_search_for_srq(rdev, res_id);
+		if (!srq)
+			return -EINVAL;
+
+		addr = (u64)srq->uctx_srq_page;
+		break;
+
+	default:
+		return -EOPNOTSUPP;
+	}
+
+	entry = bnxt_re_mmap_entry_insert(uctx, addr, mmap_flag, &mem_offset);
+	if (!entry)
+		return -ENOMEM;
+
+	uobj->object = entry;
+	uverbs_finalize_uobj_create(attrs, BNXT_RE_TOGGLE_MEM_HANDLE);
+	err = uverbs_copy_to(attrs, BNXT_RE_TOGGLE_MEM_MMAP_PAGE,
+			     &mem_offset, sizeof(mem_offset));
+	if (err)
+		return err;
+
+	err = uverbs_copy_to(attrs, BNXT_RE_TOGGLE_MEM_MMAP_LENGTH,
+			     &length, sizeof(length));
+	if (err)
+		return err;
+
+	err = uverbs_copy_to(attrs, BNXT_RE_TOGGLE_MEM_MMAP_OFFSET,
+			     &offset, sizeof(offset));
+	if (err)
+		return err;
+
+	return 0;
+}
+
+static int get_toggle_mem_obj_cleanup(struct ib_uobject *uobject,
+				      enum rdma_remove_reason why,
+				      struct uverbs_attr_bundle *attrs)
+{
+	struct  bnxt_re_user_mmap_entry *entry = uobject->object;
+
+	rdma_user_mmap_entry_remove(&entry->rdma_entry);
+	return 0;
+}
+
+DECLARE_UVERBS_NAMED_METHOD(BNXT_RE_METHOD_GET_TOGGLE_MEM,
+			    UVERBS_ATTR_IDR(BNXT_RE_TOGGLE_MEM_HANDLE,
+					    BNXT_RE_OBJECT_GET_TOGGLE_MEM,
+					    UVERBS_ACCESS_NEW,
+					    UA_MANDATORY),
+			    UVERBS_ATTR_CONST_IN(BNXT_RE_TOGGLE_MEM_TYPE,
+						 enum bnxt_re_get_toggle_mem_type,
+						 UA_MANDATORY),
+			    UVERBS_ATTR_PTR_IN(BNXT_RE_TOGGLE_MEM_RES_ID,
+					       UVERBS_ATTR_TYPE(u32),
+					       UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_TOGGLE_MEM_MMAP_PAGE,
+						UVERBS_ATTR_TYPE(u64),
+						UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_TOGGLE_MEM_MMAP_OFFSET,
+						UVERBS_ATTR_TYPE(u32),
+						UA_MANDATORY),
+			    UVERBS_ATTR_PTR_OUT(BNXT_RE_TOGGLE_MEM_MMAP_LENGTH,
+						UVERBS_ATTR_TYPE(u32),
+						UA_MANDATORY));
+
+DECLARE_UVERBS_NAMED_METHOD_DESTROY(BNXT_RE_METHOD_RELEASE_TOGGLE_MEM,
+				    UVERBS_ATTR_IDR(BNXT_RE_RELEASE_TOGGLE_MEM_HANDLE,
+						    BNXT_RE_OBJECT_GET_TOGGLE_MEM,
+						    UVERBS_ACCESS_DESTROY,
+						    UA_MANDATORY));
+
+DECLARE_UVERBS_NAMED_OBJECT(BNXT_RE_OBJECT_GET_TOGGLE_MEM,
+			    UVERBS_TYPE_ALLOC_IDR(get_toggle_mem_obj_cleanup),
+			    &UVERBS_METHOD(BNXT_RE_METHOD_GET_TOGGLE_MEM),
+			    &UVERBS_METHOD(BNXT_RE_METHOD_RELEASE_TOGGLE_MEM));
+
+const struct uapi_definition bnxt_re_uapi_defs[] = {
+	UAPI_DEF_CHAIN_OBJ_TREE_NAMED(BNXT_RE_OBJECT_ALLOC_PAGE),
+	UAPI_DEF_CHAIN_OBJ_TREE_NAMED(BNXT_RE_OBJECT_NOTIFY_DRV),
+	UAPI_DEF_CHAIN_OBJ_TREE_NAMED(BNXT_RE_OBJECT_GET_TOGGLE_MEM),
+	{}
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -390,6 +390,7 @@ static ssize_t queue_nr_zones_show(struct gendisk *disk, char *page)
 	return queue_var_show(disk_nr_zones(disk), page);
 }
 
+<<<<<<< HEAD
 static ssize_t queue_zoned_qd1_writes_show(struct gendisk *disk, char *page)
 {
 	return queue_var_show(!!blk_queue_zoned_qd1_writes(disk->queue),
@@ -420,6 +421,8 @@ static ssize_t queue_zoned_qd1_writes_store(struct gendisk *disk,
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t queue_iostats_passthrough_show(struct gendisk *disk, char *page)
 {
 	return queue_var_show(!!blk_queue_passthrough_stat(disk->queue), page);
@@ -581,6 +584,7 @@ static int queue_wc_store(struct gendisk *disk, const char *page,
 	return 0;
 }
 
+<<<<<<< HEAD
 #define QUEUE_RO_ENTRY(_prefix, _name)				\
 static const struct queue_sysfs_entry _prefix##_entry = {	\
 	.attr	= { .name = _name, .mode = 0444 },		\
@@ -596,12 +600,33 @@ static const struct queue_sysfs_entry _prefix##_entry = {	\
 
 #define QUEUE_LIM_RO_ENTRY(_prefix, _name)			\
 static const struct queue_sysfs_entry _prefix##_entry = {	\
+=======
+#define QUEUE_RO_ENTRY(_prefix, _name)			\
+static struct queue_sysfs_entry _prefix##_entry = {	\
+	.attr	= { .name = _name, .mode = 0444 },	\
+	.show	= _prefix##_show,			\
+};
+
+#define QUEUE_RW_ENTRY(_prefix, _name)			\
+static struct queue_sysfs_entry _prefix##_entry = {	\
+	.attr	= { .name = _name, .mode = 0644 },	\
+	.show	= _prefix##_show,			\
+	.store	= _prefix##_store,			\
+};
+
+#define QUEUE_LIM_RO_ENTRY(_prefix, _name)			\
+static struct queue_sysfs_entry _prefix##_entry = {	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr		= { .name = _name, .mode = 0444 },	\
 	.show_limit	= _prefix##_show,			\
 }
 
 #define QUEUE_LIM_RW_ENTRY(_prefix, _name)			\
+<<<<<<< HEAD
 static const struct queue_sysfs_entry _prefix##_entry = {	\
+=======
+static struct queue_sysfs_entry _prefix##_entry = {	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr		= { .name = _name, .mode = 0644 },	\
 	.show_limit	= _prefix##_show,			\
 	.store_limit	= _prefix##_store,			\
@@ -647,7 +672,10 @@ QUEUE_LIM_RO_ENTRY(queue_max_zone_append_sectors, "zone_append_max_bytes");
 QUEUE_LIM_RO_ENTRY(queue_zone_write_granularity, "zone_write_granularity");
 
 QUEUE_LIM_RO_ENTRY(queue_zoned, "zoned");
+<<<<<<< HEAD
 QUEUE_RW_ENTRY(queue_zoned_qd1_writes, "zoned_qd1_writes");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 QUEUE_RO_ENTRY(queue_nr_zones, "nr_zones");
 QUEUE_LIM_RO_ENTRY(queue_max_open_zones, "max_open_zones");
 QUEUE_LIM_RO_ENTRY(queue_max_active_zones, "max_active_zones");
@@ -665,7 +693,11 @@ QUEUE_LIM_RO_ENTRY(queue_virt_boundary_mask, "virt_boundary_mask");
 QUEUE_LIM_RO_ENTRY(queue_dma_alignment, "dma_alignment");
 
 /* legacy alias for logical_block_size: */
+<<<<<<< HEAD
 static const struct queue_sysfs_entry queue_hw_sector_size_entry = {
+=======
+static struct queue_sysfs_entry queue_hw_sector_size_entry = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr		= {.name = "hw_sector_size", .mode = 0444 },
 	.show_limit	= queue_logical_block_size_show,
 };
@@ -731,7 +763,11 @@ QUEUE_RW_ENTRY(queue_wb_lat, "wbt_lat_usec");
 #endif
 
 /* Common attributes for bio-based and request-based queues. */
+<<<<<<< HEAD
 static const struct attribute *const queue_attrs[] = {
+=======
+static struct attribute *queue_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Attributes which are protected with q->limits_lock.
 	 */
@@ -785,13 +821,20 @@ static const struct attribute *const queue_attrs[] = {
 	&queue_nomerges_entry.attr,
 	&queue_poll_entry.attr,
 	&queue_poll_delay_entry.attr,
+<<<<<<< HEAD
 	&queue_zoned_qd1_writes_entry.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	NULL,
 };
 
 /* Request-based queue attributes that are not relevant for bio-based queues. */
+<<<<<<< HEAD
 static const struct attribute *const blk_mq_queue_attrs[] = {
+=======
+static struct attribute *blk_mq_queue_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Attributes which require some form of locking other than
 	 * q->sysfs_lock.
@@ -811,15 +854,23 @@ static const struct attribute *const blk_mq_queue_attrs[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static umode_t queue_attr_visible(struct kobject *kobj, const struct attribute *attr,
+=======
+static umode_t queue_attr_visible(struct kobject *kobj, struct attribute *attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				int n)
 {
 	struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
 	struct request_queue *q = disk->queue;
 
 	if ((attr == &queue_max_open_zones_entry.attr ||
+<<<<<<< HEAD
 	     attr == &queue_max_active_zones_entry.attr ||
 	     attr == &queue_zoned_qd1_writes_entry.attr) &&
+=======
+	     attr == &queue_max_active_zones_entry.attr) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    !blk_queue_is_zoned(q))
 		return 0;
 
@@ -827,7 +878,11 @@ static umode_t queue_attr_visible(struct kobject *kobj, const struct attribute *
 }
 
 static umode_t blk_mq_queue_attr_visible(struct kobject *kobj,
+<<<<<<< HEAD
 					 const struct attribute *attr, int n)
+=======
+					 struct attribute *attr, int n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct gendisk *disk = container_of(kobj, struct gendisk, queue_kobj);
 	struct request_queue *q = disk->queue;
@@ -841,6 +896,7 @@ static umode_t blk_mq_queue_attr_visible(struct kobject *kobj,
 	return attr->mode;
 }
 
+<<<<<<< HEAD
 static const struct attribute_group queue_attr_group = {
 	.attrs_const = queue_attrs,
 	.is_visible_const = queue_attr_visible,
@@ -852,6 +908,19 @@ static const struct attribute_group blk_mq_queue_attr_group = {
 };
 
 #define to_queue(atr) container_of_const((atr), struct queue_sysfs_entry, attr)
+=======
+static struct attribute_group queue_attr_group = {
+	.attrs = queue_attrs,
+	.is_visible = queue_attr_visible,
+};
+
+static struct attribute_group blk_mq_queue_attr_group = {
+	.attrs = blk_mq_queue_attrs,
+	.is_visible = blk_mq_queue_attr_visible,
+};
+
+#define to_queue(atr) container_of((atr), struct queue_sysfs_entry, attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t
 queue_attr_show(struct kobject *kobj, struct attribute *attr, char *page)
@@ -967,6 +1036,7 @@ int blk_register_queue(struct gendisk *disk)
 		blk_mq_debugfs_register(q);
 	blk_debugfs_unlock(q, memflags);
 
+<<<<<<< HEAD
 	/*
 	 * For blk-mq rotational zoned devices, default to using QD=1
 	 * writes. For non-mq rotational zoned devices, the device driver can
@@ -975,6 +1045,8 @@ int blk_register_queue(struct gendisk *disk)
 	if (queue_is_mq(q) && blk_queue_rot(q) && blk_queue_is_zoned(q))
 		blk_queue_flag_set(QUEUE_FLAG_ZONED_QD1_WRITES, q);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = disk_register_independent_access_ranges(disk);
 	if (ret)
 		goto out_debugfs_remove;

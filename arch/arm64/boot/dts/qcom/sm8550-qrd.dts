@@ -870,8 +870,13 @@
 		compatible = "visionox,vtdr6130";
 		reg = <0>;
 
+<<<<<<< HEAD
 		pinctrl-0 = <&sde_dsi_active>, <&sde_te>;
 		pinctrl-1 = <&sde_dsi_suspend>, <&sde_te>;
+=======
+		pinctrl-0 = <&sde_dsi_active>, <&sde_te_active>;
+		pinctrl-1 = <&sde_dsi_suspend>, <&sde_te_suspend>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pinctrl-names = "default", "sleep";
 
 		vci-supply = <&vreg_l13b_3p0>;
@@ -1179,7 +1184,18 @@
 		bias-pull-down;
 	};
 
+<<<<<<< HEAD
 	sde_te: sde-te-state {
+=======
+	sde_te_active: sde-te-active-state {
+		pins = "gpio86";
+		function = "mdp_vsync";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	sde_te_suspend: sde-te-suspend-state {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pins = "gpio86";
 		function = "mdp_vsync";
 		drive-strength = <2>;

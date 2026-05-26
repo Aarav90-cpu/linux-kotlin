@@ -5,6 +5,7 @@
  */
 #include "stm32mp233.dtsi"
 
+<<<<<<< HEAD
 &ltdc {
 	compatible = "st,stm32mp255-ltdc";
 	clocks = <&clk_flexgen_27_fixed>, <&rcc CK_BUS_LTDC>, <&syscfg>, <&lvds>;
@@ -24,6 +25,9 @@
 		status = "disabled";
 	};
 
+=======
+&rifsc {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vdec: vdec@480d0000 {
 		compatible = "st,stm32mp25-vdec";
 		reg = <0x480d0000 0x3c8>;

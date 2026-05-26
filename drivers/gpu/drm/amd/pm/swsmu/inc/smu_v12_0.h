@@ -35,6 +35,11 @@
 
 int smu_v12_0_check_fw_status(struct smu_context *smu);
 
+<<<<<<< HEAD
+=======
+int smu_v12_0_check_fw_version(struct smu_context *smu);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int smu_v12_0_powergate_sdma(struct smu_context *smu, bool gate);
 
 int smu_v12_0_powergate_vcn(struct smu_context *smu, bool gate);

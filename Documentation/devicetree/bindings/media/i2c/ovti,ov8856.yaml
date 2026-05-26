@@ -18,9 +18,12 @@ description: |-
   through I2C and two-wire SCCB. The sensor output is available via CSI-2
   serial data output (up to 4-lane).
 
+<<<<<<< HEAD
 allOf:
   - $ref: /schemas/media/video-interface-devices.yaml#
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 properties:
   compatible:
     const: ovti,ov8856
@@ -60,9 +63,12 @@ properties:
       This corresponds to the hardware pin XSHUTDOWN which is physically
       active low.
 
+<<<<<<< HEAD
   orientation: true
   rotation: true
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   port:
     $ref: /schemas/graph.yaml#/$defs/port-base
     additionalProperties: false

@@ -14,7 +14,10 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - renesas,r9a08g046-rsci # RZ/G3L
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - renesas,r9a09g047-rsci # RZ/G3E
           - renesas,r9a09g077-rsci # RZ/T2H
 
@@ -146,6 +149,7 @@ allOf:
         - resets
         - reset-names
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -171,6 +175,8 @@ allOf:
         - resets
         - reset-names
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

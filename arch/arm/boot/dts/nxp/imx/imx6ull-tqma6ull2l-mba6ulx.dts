@@ -10,6 +10,10 @@
 #include "mba6ulx.dtsi"
 
 / {
+<<<<<<< HEAD
 	model = "TQ-Systems TQMa6ULL2L SoM on MBa6ULx board";
+=======
+	model = "TQ Systems TQMa6ULL2L SoM on MBa6ULx board";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	compatible = "tq,imx6ull-tqma6ull2l-mba6ulx", "tq,imx6ull-tqma6ull2l", "fsl,imx6ull";
 };

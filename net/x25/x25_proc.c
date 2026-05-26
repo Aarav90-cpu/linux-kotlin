@@ -96,7 +96,11 @@ static int x25_seq_socket_show(struct seq_file *seq, void *v)
 		devname = x25->neighbour->dev->name;
 
 	seq_printf(seq, "%-10s %-10s %-5s %3.3X  %d  %d  %d  %d %3lu %3lu "
+<<<<<<< HEAD
 			"%3lu %3lu %3lu %5d %5d %llu\n",
+=======
+			"%3lu %3lu %3lu %5d %5d %ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   !x25->dest_addr.x25_addr[0] ? "*" : x25->dest_addr.x25_addr,
 		   !x25->source_addr.x25_addr[0] ? "*" : x25->source_addr.x25_addr,
 		   devname, x25->lci & 0x0FFF, x25->state, x25->vs, x25->vr,
@@ -104,7 +108,11 @@ static int x25_seq_socket_show(struct seq_file *seq, void *v)
 		   x25->t21 / HZ, x25->t22 / HZ, x25->t23 / HZ,
 		   sk_wmem_alloc_get(s),
 		   sk_rmem_alloc_get(s),
+<<<<<<< HEAD
 		   s->sk_socket ? SOCK_INODE(s->sk_socket)->i_ino : (u64)0);
+=======
+		   s->sk_socket ? SOCK_INODE(s->sk_socket)->i_ino : 0L);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return 0;
 }

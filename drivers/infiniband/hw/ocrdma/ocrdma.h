@@ -190,8 +190,13 @@ struct ocrdma_mr {
 	struct ib_mr ibmr;
 	struct ib_umem *umem;
 	struct ocrdma_hw_mr hwmr;
+<<<<<<< HEAD
 	u32 npages;
 	u64 pages[];
+=======
+	u64 *pages;
+	u32 npages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ocrdma_stats {

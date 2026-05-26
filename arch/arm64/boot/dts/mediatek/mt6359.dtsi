@@ -205,7 +205,11 @@
 				regulator-max-microvolt = <1700000>;
 			};
 			mt6359_vrfck_1_ldo_reg: ldo_vrfck_1 {
+<<<<<<< HEAD
 				regulator-name = "vrfck_1";
+=======
+				regulator-name = "vrfck";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regulator-min-microvolt = <1240000>;
 				regulator-max-microvolt = <1600000>;
 			};
@@ -227,7 +231,11 @@
 				regulator-max-microvolt = <3300000>;
 			};
 			mt6359_vemc_1_ldo_reg: ldo_vemc_1 {
+<<<<<<< HEAD
 				regulator-name = "vemc_1";
+=======
+				regulator-name = "vemc";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regulator-min-microvolt = <2500000>;
 				regulator-max-microvolt = <3300000>;
 			};

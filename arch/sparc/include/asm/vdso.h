@@ -8,6 +8,11 @@
 struct vdso_image {
 	void *data;
 	unsigned long size;   /* Always a multiple of PAGE_SIZE */
+<<<<<<< HEAD
+=======
+
+	long sym_vvar_start;  /* Negative offset to the vvar area */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_SPARC64

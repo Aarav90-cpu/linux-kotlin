@@ -9,6 +9,7 @@ import subprocess
 import time
 
 
+<<<<<<< HEAD
 class CmdInitFailure(Exception):
     """ Command failed to start. Only raised by bkg(). """
     def __init__(self, msg, cmd_obj):
@@ -20,6 +21,11 @@ class CmdExitFailure(Exception):
     """ Command failed (returned non-zero exit code). """
     def __init__(self, msg, cmd_obj):
         super().__init__(msg + "\n" + repr(cmd_obj))
+=======
+class CmdExitFailure(Exception):
+    def __init__(self, msg, cmd_obj):
+        super().__init__(msg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.cmd = cmd_obj
 
 
@@ -84,6 +90,7 @@ class cmd:
                 msg = fd_read_timeout(rfd, ksft_wait)
                 os.close(rfd)
                 if not msg:
+<<<<<<< HEAD
                     terminate = self.proc.poll() is None
                     self._process_terminate(terminate=terminate, timeout=1)
                     raise CmdInitFailure("Did not receive ready message", self)
@@ -102,12 +109,19 @@ class cmd:
 
         return stdout, stderr
 
+=======
+                    raise Exception("Did not receive ready message")
+        if not background:
+            self.process(terminate=False, fail=fail, timeout=timeout)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def process(self, terminate=True, fail=None, timeout=5):
         if fail is None:
             fail = not terminate
 
         if self.ksft_term_fd:
             os.write(self.ksft_term_fd, b"1")
+<<<<<<< HEAD
 
         stdout, stderr = self._process_terminate(terminate=terminate,
                                                  timeout=timeout)
@@ -115,6 +129,22 @@ class cmd:
             if len(stderr) > 0 and stderr[-1] == "\n":
                 stderr = stderr[:-1]
             raise CmdExitFailure("Command failed", self)
+=======
+        if terminate:
+            self.proc.terminate()
+        stdout, stderr = self.proc.communicate(timeout)
+        self.stdout = stdout.decode("utf-8")
+        self.stderr = stderr.decode("utf-8")
+        self.proc.stdout.close()
+        self.proc.stderr.close()
+        self.ret = self.proc.returncode
+
+        if self.proc.returncode != 0 and fail:
+            if len(stderr) > 0 and stderr[-1] == "\n":
+                stderr = stderr[:-1]
+            raise CmdExitFailure("Command failed: %s\nSTDOUT: %s\nSTDERR: %s" %
+                                 (self.proc.args, stdout, stderr), self)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def __repr__(self):
         def str_fmt(name, s):
@@ -174,11 +204,16 @@ class bkg(cmd):
         return self
 
     def __exit__(self, ex_type, ex_value, ex_tb):
+<<<<<<< HEAD
         terminate = self.terminate
         # Force termination on exception, but only if bkg() didn't already exit
         # since forcing termination silences failures with fail=None
         if self.proc.poll() is None:
             terminate = terminate or (self._exit_wait and ex_type is not None)
+=======
+        # Force termination on exception
+        terminate = self.terminate or (self._exit_wait and ex_type is not None)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return self.process(terminate=terminate, fail=self.check_fail)
 
 
@@ -258,9 +293,14 @@ def bpftrace(expr, json=None, ns=None, host=None, timeout=None):
         cmd_arr += ['-f', 'json', '-q']
     if timeout:
         expr += ' interval:s:' + str(timeout) + ' { exit(); }'
+<<<<<<< HEAD
         timeout += 20
     cmd_arr += ['-e', expr]
     cmd_obj = cmd(cmd_arr, ns=ns, host=host, shell=False, timeout=timeout)
+=======
+    cmd_arr += ['-e', expr]
+    cmd_obj = cmd(cmd_arr, ns=ns, host=host, shell=False)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if json:
         # bpftrace prints objects as lines
         ret = {}
@@ -282,6 +322,7 @@ def rand_port(stype=socket.SOCK_STREAM):
     """
     Get a random unprivileged port.
     """
+<<<<<<< HEAD
     return rand_ports(1, stype)[0]
 
 
@@ -303,6 +344,11 @@ def rand_ports(count, stype=socket.SOCK_STREAM):
             s.close()
 
     return ports
+=======
+    with socket.socket(socket.AF_INET6, stype) as s:
+        s.bind(("", 0))
+        return s.getsockname()[1]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 def wait_port_listen(port, proto="tcp", ns=None, host=None, sleep=0.005, deadline=5):

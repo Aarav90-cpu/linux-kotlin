@@ -34,6 +34,12 @@
 
 extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
 
+<<<<<<< HEAD
+=======
+/* zero page used for uninitialized stuff */
+extern unsigned long *empty_zero_page;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Just any arbitrary offset to the start of the vmalloc VM area: the
  * current 8MB value just means that there will be a 8MB "hole" after the
  * physical memory until the kernel virtual memory starts.  That means that
@@ -71,6 +77,15 @@ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
  * get..
  */
 
+<<<<<<< HEAD
+=======
+/*
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+#define ZERO_PAGE(vaddr) virt_to_page(empty_zero_page)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define pte_clear(mm, addr, xp) pte_set_val(*(xp), (phys_t) 0, __pgprot(_PAGE_NEEDSYNC))
 
 #define pmd_none(x)	(!((unsigned long)pmd_val(x) & ~_PAGE_NEEDSYNC))
@@ -112,12 +127,22 @@ static inline int pte_none(pte_t pte)
  */
 static inline int pte_read(pte_t pte)
 {
+<<<<<<< HEAD
 	return !pte_get_bits(pte, _PAGE_PROTNONE);
 }
 
 static inline int pte_exec(pte_t pte)
 {
 	return !pte_get_bits(pte, _PAGE_PROTNONE);
+=======
+	return((pte_get_bits(pte, _PAGE_USER)) &&
+	       !(pte_get_bits(pte, _PAGE_PROTNONE)));
+}
+
+static inline int pte_exec(pte_t pte){
+	return((pte_get_bits(pte, _PAGE_USER)) &&
+	       !(pte_get_bits(pte, _PAGE_PROTNONE)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline int pte_write(pte_t pte)

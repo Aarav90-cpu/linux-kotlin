@@ -29,9 +29,16 @@ static int kern_map(struct mm_id *mm_idp,
 		    unsigned long virt, unsigned long len, int prot,
 		    int phys_fd, unsigned long long offset)
 {
+<<<<<<< HEAD
 	return os_map_memory((void *)virt, phys_fd, offset, len,
 			     prot & UM_PROT_READ, prot & UM_PROT_WRITE,
 			     prot & UM_PROT_EXEC);
+=======
+	/* TODO: Why is executable needed to be always set in the kernel? */
+	return os_map_memory((void *)virt, phys_fd, offset, len,
+			     prot & UM_PROT_READ, prot & UM_PROT_WRITE,
+			     1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int kern_unmap(struct mm_id *mm_idp,
@@ -164,7 +171,10 @@ int um_tlb_sync(struct mm_struct *mm)
 	unsigned long addr, next;
 	int ret = 0;
 
+<<<<<<< HEAD
 	guard(spinlock_irqsave)(&mm->page_table_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(spinlock_irqsave)(&mm->context.sync_tlb_lock);
 
 	if (mm->context.sync_tlb_range_to == 0)

@@ -13,9 +13,12 @@
 #include <linux/uio.h>
 #include <linux/bvec.h>
 #include <linux/folio_queue.h>
+<<<<<<< HEAD
 #include <linux/scatterlist.h>
 #include <linux/minmax.h>
 #include <linux/mman.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <kunit/test.h>
 
 MODULE_DESCRIPTION("iov_iter testing");
@@ -40,12 +43,20 @@ static const struct kvec_test_range kvec_test_ranges[] = {
 
 static inline u8 pattern(unsigned long x)
 {
+<<<<<<< HEAD
 	return (u8)x + (u8)(x >> 8) + (u8)(x >> 16);
+=======
+	return x & 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void iov_kunit_unmap(void *data)
 {
+<<<<<<< HEAD
 	vfree(data);
+=======
+	vunmap(data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void *__init iov_kunit_create_buffer(struct kunit *test,
@@ -55,15 +66,22 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
 	struct page **pages;
 	unsigned long got;
 	void *buffer;
+<<<<<<< HEAD
 	unsigned int i;
 
 	pages = kzalloc_objs(struct page *, npages, GFP_KERNEL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
+=======
+
+	pages = kunit_kcalloc(test, npages, sizeof(struct page *), GFP_KERNEL);
+        KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*ppages = pages;
 
 	got = alloc_pages_bulk(GFP_KERNEL, npages, pages);
 	if (got != npages) {
 		release_pages(pages, got);
+<<<<<<< HEAD
 		kvfree(pages);
 		KUNIT_ASSERT_EQ(test, got, npages);
 	}
@@ -76,6 +94,12 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
 		release_pages(pages, got);
 		kvfree(pages);
 	}
+=======
+		KUNIT_ASSERT_EQ(test, got, npages);
+	}
+
+	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
 
 	kunit_add_action_or_reset(test, iov_kunit_unmap, buffer);
@@ -381,6 +405,12 @@ static void iov_kunit_destroy_folioq(void *data)
 
 	for (folioq = data; folioq; folioq = next) {
 		next = folioq->next;
+<<<<<<< HEAD
+=======
+		for (int i = 0; i < folioq_nr_slots(folioq); i++)
+			if (folioq_folio(folioq, i))
+				folio_put(folioq_folio(folioq, i));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(folioq);
 	}
 }
@@ -1018,6 +1048,7 @@ stop:
 	KUNIT_SUCCEED(test);
 }
 
+<<<<<<< HEAD
 struct iov_kunit_iter_to_sg_data {
 	struct sg_table *sgt;
 	u8 *buffer, *scratch;
@@ -1214,6 +1245,8 @@ static void __init iov_kunit_iter_to_sg_ubuf(struct kunit *test)
 	iov_kunit_iter_to_sg_check(test, &iter, bufsize, &data);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case __refdata iov_kunit_cases[] = {
 	KUNIT_CASE(iov_kunit_copy_to_kvec),
 	KUNIT_CASE(iov_kunit_copy_from_kvec),
@@ -1227,11 +1260,14 @@ static struct kunit_case __refdata iov_kunit_cases[] = {
 	KUNIT_CASE(iov_kunit_extract_pages_bvec),
 	KUNIT_CASE(iov_kunit_extract_pages_folioq),
 	KUNIT_CASE(iov_kunit_extract_pages_xarray),
+<<<<<<< HEAD
 	KUNIT_CASE(iov_kunit_iter_to_sg_kvec),
 	KUNIT_CASE(iov_kunit_iter_to_sg_bvec),
 	KUNIT_CASE(iov_kunit_iter_to_sg_folioq),
 	KUNIT_CASE(iov_kunit_iter_to_sg_xarray),
 	KUNIT_CASE(iov_kunit_iter_to_sg_ubuf),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

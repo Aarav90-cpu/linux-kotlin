@@ -16,6 +16,7 @@ dtb-$(CONFIG_ARCH_STI) += \
 	stih410-b2260.dtb \
 	stih418-b2199.dtb \
 	stih418-b2264.dtb
+<<<<<<< HEAD
 
 stm32mp13xx-dhcor-dhsbc-overlay-rb-tft32-v2-dtbs := \
 	stm32mp135f-dhcor-dhsbc.dtb \
@@ -101,6 +102,8 @@ stm32mp15xx-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh-dtbs := \
 	stm32mp157c-dhcom-pdk2.dtb \
 	stm32mp15xx-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo \
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dtb-$(CONFIG_ARCH_STM32) += \
 	stm32f429-disco.dtb \
 	stm32f469-disco.dtb \
@@ -115,8 +118,11 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32h750i-art-pi.dtb \
 	stm32mp133c-prihmb.dtb \
 	stm32mp135f-dhcor-dhsbc.dtb \
+<<<<<<< HEAD
 	stm32mp13xx-dhcor-dhsbc-overlay-rb-tft32-v2.dtb \
 	stm32mp13xx-dhcor-dhsbc-overlay-rb-tft32-v2.dtbo \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32mp135f-dk.dtb \
 	stm32mp151a-prtt1a.dtb \
 	stm32mp151a-prtt1c.dtb \
@@ -126,14 +132,18 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp151c-mect1s.dtb \
 	stm32mp151c-plyaqm.dtb \
 	stm32mp153c-dhcom-drc02.dtb \
+<<<<<<< HEAD
 	stm32mp15xx-dhcom-drc02-overlay-wifi-rsi.dtb \
 	stm32mp15xx-dhcom-drc02-overlay-wifi-rsi.dtbo \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32mp153c-dhcor-drc-compact.dtb \
 	stm32mp153c-lxa-fairytux2-gen1.dtb \
 	stm32mp153c-lxa-fairytux2-gen2.dtb \
 	stm32mp153c-lxa-tac-gen3.dtb \
 	stm32mp153c-mecio1r1.dtb \
 	stm32mp157a-avenger96.dtb \
+<<<<<<< HEAD
 	stm32mp15xx-avenger96-overlay-644-100-x6-otm8009a.dtb \
 	stm32mp15xx-avenger96-overlay-644-100-x6-otm8009a.dtbo \
 	stm32mp15xx-avenger96-overlay-644-100-x6-rpi7inch.dtb \
@@ -150,6 +160,8 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp15xx-avenger96-overlay-ov5640-x7.dtbo \
 	stm32mp15xx-avenger96-overlay-spi2-eeprom-x6.dtb \
 	stm32mp15xx-avenger96-overlay-spi2-eeprom-x6.dtbo \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32mp157a-dhcor-avenger96.dtb \
 	stm32mp157a-dk1.dtb \
 	stm32mp157a-dk1-scmi.dtb \
@@ -161,6 +173,7 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp157a-icore-stm32mp1-edimm2.2.dtb \
 	stm32mp157a-stinger96.dtb \
 	stm32mp157c-dhcom-pdk2.dtb \
+<<<<<<< HEAD
 	stm32mp15xx-dhcom-pdk2-overlay-460-200-x11.dtb \
 	stm32mp15xx-dhcom-pdk2-overlay-460-200-x11.dtbo \
 	stm32mp15xx-dhcom-pdk2-overlay-497-200-x12.dtb \
@@ -184,6 +197,9 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp15xx-dhcom-picoitx-overlay-553-100-x2-tst043015cmhx.dtbo \
 	stm32mp15xx-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtb \
 	stm32mp15xx-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo \
+=======
+	stm32mp157c-dhcom-picoitx.dtb \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32mp157c-dk2.dtb \
 	stm32mp157c-dk2-scmi.dtb \
 	stm32mp157c-ed1.dtb \
@@ -196,7 +212,11 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp157c-lxa-tac-gen2.dtb \
 	stm32mp157c-odyssey.dtb \
 	stm32mp157c-osd32mp1-red.dtb \
+<<<<<<< HEAD
 	stm32mp157c-phyboard-sargas-rdk.dtb \
+=======
+	stm32mp157c-phycore-stm32mp1-3.dtb \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stm32mp157c-ultra-fly-sbc.dtb \
 	stm32mp157f-dk2.dtb
 dtb-$(CONFIG_ARCH_U8500) += \

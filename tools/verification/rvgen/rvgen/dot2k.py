@@ -8,10 +8,15 @@
 # For further information, see:
 #   Documentation/trace/rv/da_monitor_synthesis.rst
 
+<<<<<<< HEAD
 from collections import deque
 from .dot2c import Dot2c
 from .generator import Monitor
 from .automata import _EventConstraintKey, _StateConstraintKey, AutomataError
+=======
+from .dot2c import Dot2c
+from .generator import Monitor
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 class dot2k(Monitor, Dot2c):
@@ -21,6 +26,7 @@ class dot2k(Monitor, Dot2c):
         self.monitor_type = MonitorType
         Monitor.__init__(self, extra_params)
         Dot2c.__init__(self, file_path, extra_params.get("model_name"))
+<<<<<<< HEAD
         self.enum_suffix = f"_{self.name}"
         self.enum_suffix = f"_{self.name}"
         self.monitor_class = extra_params["monitor_class"]
@@ -37,6 +43,17 @@ class dot2k(Monitor, Dot2c):
         buff += self._fill_hybrid_definitions()
         for event in self.events:
             buff.append(f"static void handle_{event}(void *data, /* XXX: fill header */)")
+=======
+        self.enum_suffix = "_%s" % self.name
+
+    def fill_monitor_type(self) -> str:
+        return self.monitor_type.upper()
+
+    def fill_tracepoint_handlers_skel(self) -> str:
+        buff = []
+        for event in self.events:
+            buff.append("static void handle_%s(void *data, /* XXX: fill header */)" % event)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             buff.append("{")
             handle = "handle_event"
             if self.is_start_event(event):
@@ -46,6 +63,7 @@ class dot2k(Monitor, Dot2c):
                 buff.append("\t/* XXX: validate that this event is only valid in the initial state */")
                 handle = "handle_start_run_event"
             if self.monitor_type == "per_task":
+<<<<<<< HEAD
                 buff.append("\tstruct task_struct *p = /* XXX: how do I get p? */;")
                 buff.append(f"\tda_{handle}(p, {event}{self.enum_suffix});")
             elif self.monitor_type == "per_obj":
@@ -54,6 +72,12 @@ class dot2k(Monitor, Dot2c):
                 buff.append(f"\tda_{handle}(id, t, {event}{self.enum_suffix});")
             else:
                 buff.append(f"\tda_{handle}({event}{self.enum_suffix});")
+=======
+                buff.append("\tstruct task_struct *p = /* XXX: how do I get p? */;");
+                buff.append("\tda_%s(p, %s%s);" % (handle, event, self.enum_suffix));
+            else:
+                buff.append("\tda_%s(%s%s);" % (handle, event, self.enum_suffix));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             buff.append("}")
             buff.append("")
         return '\n'.join(buff)
@@ -61,25 +85,41 @@ class dot2k(Monitor, Dot2c):
     def fill_tracepoint_attach_probe(self) -> str:
         buff = []
         for event in self.events:
+<<<<<<< HEAD
             buff.append(f"\trv_attach_trace_probe(\"{self.name}\", /* XXX: tracepoint */, handle_{event});")
+=======
+            buff.append("\trv_attach_trace_probe(\"%s\", /* XXX: tracepoint */, handle_%s);" % (self.name, event))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return '\n'.join(buff)
 
     def fill_tracepoint_detach_helper(self) -> str:
         buff = []
         for event in self.events:
+<<<<<<< HEAD
             buff.append(f"\trv_detach_trace_probe(\"{self.name}\", /* XXX: tracepoint */, handle_{event});")
+=======
+            buff.append("\trv_detach_trace_probe(\"%s\", /* XXX: tracepoint */, handle_%s);" % (self.name, event))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return '\n'.join(buff)
 
     def fill_model_h_header(self) -> list[str]:
         buff = []
         buff.append("/* SPDX-License-Identifier: GPL-2.0 */")
         buff.append("/*")
+<<<<<<< HEAD
         buff.append(f" * Automatically generated C representation of {self.name} automaton")
+=======
+        buff.append(" * Automatically generated C representation of %s automaton" % (self.name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff.append(" * For further information about this format, see kernel documentation:")
         buff.append(" *   Documentation/trace/rv/deterministic_automata.rst")
         buff.append(" */")
         buff.append("")
+<<<<<<< HEAD
         buff.append(f"#define MONITOR_NAME {self.name}")
+=======
+        buff.append("#define MONITOR_NAME %s" % (self.name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         buff.append("")
 
         return buff
@@ -88,27 +128,43 @@ class dot2k(Monitor, Dot2c):
         #
         # Adjust the definition names
         #
+<<<<<<< HEAD
         self.enum_states_def = f"states_{self.name}"
         self.enum_events_def = f"events_{self.name}"
         self.enum_envs_def = f"envs_{self.name}"
         self.struct_automaton_def = f"automaton_{self.name}"
         self.var_automaton_def = f"automaton_{self.name}"
+=======
+        self.enum_states_def = "states_%s" % self.name
+        self.enum_events_def = "events_%s" % self.name
+        self.struct_automaton_def = "automaton_%s" % self.name
+        self.var_automaton_def = "automaton_%s" % self.name
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         buff = self.fill_model_h_header()
         buff += self.format_model()
 
         return '\n'.join(buff)
 
+<<<<<<< HEAD
     def _is_id_monitor(self) -> bool:
         return self.monitor_type in ("per_task", "per_obj")
 
     def fill_monitor_class_type(self) -> str:
         if self._is_id_monitor():
+=======
+    def fill_monitor_class_type(self) -> str:
+        if self.monitor_type == "per_task":
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             return "DA_MON_EVENTS_ID"
         return "DA_MON_EVENTS_IMPLICIT"
 
     def fill_monitor_class(self) -> str:
+<<<<<<< HEAD
         if self._is_id_monitor():
+=======
+        if self.monitor_type == "per_task":
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             return "da_monitor_id"
         return "da_monitor"
 
@@ -124,6 +180,7 @@ class dot2k(Monitor, Dot2c):
                 ("char *", "state"),
                 ("char *", "event"),
                 ]
+<<<<<<< HEAD
         tp_args_error_env = tp_args_error + [("char *", "env")]
         tp_args_dict = {
                 "event": tp_args_event,
@@ -148,6 +205,18 @@ class dot2k(Monitor, Dot2c):
         """Stub, not valid for deterministic automata"""
         return []
 
+=======
+        tp_args_id = ("int ", "id")
+        tp_args = tp_args_event if tp_type == "event" else tp_args_error
+        if self.monitor_type == "per_task":
+            tp_args.insert(0, tp_args_id)
+        tp_proto_c = ", ".join([a+b for a,b in tp_args])
+        tp_args_c = ", ".join([b for a,b in tp_args])
+        buff.append("	     TP_PROTO(%s)," % tp_proto_c)
+        buff.append("	     TP_ARGS(%s)" % tp_args_c)
+        return '\n'.join(buff)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def fill_main_c(self) -> str:
         main_c = super().fill_main_c()
 
@@ -158,6 +227,7 @@ class dot2k(Monitor, Dot2c):
         main_c = main_c.replace("%%MIN_TYPE%%", min_type)
         main_c = main_c.replace("%%NR_EVENTS%%", str(nr_events))
         main_c = main_c.replace("%%MONITOR_TYPE%%", monitor_type)
+<<<<<<< HEAD
         main_c = main_c.replace("%%MONITOR_CLASS%%", self.monitor_class)
 
         return main_c
@@ -609,3 +679,7 @@ f"""static bool ha_verify_constraint(struct ha_monitor *ha_mon,
                     "#define HA_TIMER_TYPE HA_TIMER_HRTIMER"
                     ]
         return []
+=======
+
+        return main_c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -4,16 +4,24 @@
  */
 
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
+=======
+#include <linux/init.h>
+#include <linux/kernel.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/reboot.h>
 #include <linux/reboot-mode.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define PREFIX "mode-"
 
@@ -23,6 +31,7 @@ struct mode_info {
 	struct list_head list;
 };
 
+<<<<<<< HEAD
 struct reboot_mode_sysfs_data {
 	struct device *reboot_mode_device;
 	struct list_head head;
@@ -71,6 +80,8 @@ static const struct class reboot_mode_class = {
 	.dev_groups = reboot_mode_groups,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned int get_reboot_mode_magic(struct reboot_mode_driver *reboot,
 					  const char *cmd)
 {
@@ -114,6 +125,7 @@ static int reboot_mode_notify(struct notifier_block *this,
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 static int reboot_mode_create_device(struct reboot_mode_driver *reboot)
 {
 	struct reboot_mode_sysfs_data *priv;
@@ -160,6 +172,8 @@ error:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * reboot_mode_register - register a reboot mode driver
  * @reboot: reboot mode driver
@@ -211,6 +225,7 @@ int reboot_mode_register(struct reboot_mode_driver *reboot)
 	reboot->reboot_notifier.notifier_call = reboot_mode_notify;
 	register_reboot_notifier(&reboot->reboot_notifier);
 
+<<<<<<< HEAD
 	ret = reboot_mode_create_device(reboot);
 	if (ret)
 		goto error;
@@ -219,10 +234,19 @@ int reboot_mode_register(struct reboot_mode_driver *reboot)
 
 error:
 	reboot_mode_unregister(reboot);
+=======
+	return 0;
+
+error:
+	list_for_each_entry(info, &reboot->head, list)
+		kfree_const(info->mode);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(reboot_mode_register);
 
+<<<<<<< HEAD
 static int reboot_mode_match_by_name(struct device *dev, const void *data)
 {
 	const char *name = data;
@@ -254,6 +278,8 @@ static inline void reboot_mode_unregister_device(struct reboot_mode_driver *rebo
 	kfree(priv);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * reboot_mode_unregister - unregister a reboot mode driver
  * @reboot: reboot mode driver
@@ -263,7 +289,10 @@ int reboot_mode_unregister(struct reboot_mode_driver *reboot)
 	struct mode_info *info;
 
 	unregister_reboot_notifier(&reboot->reboot_notifier);
+<<<<<<< HEAD
 	reboot_mode_unregister_device(reboot);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry(info, &reboot->head, list)
 		kfree_const(info->mode);
@@ -331,6 +360,7 @@ void devm_reboot_mode_unregister(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_reboot_mode_unregister);
 
+<<<<<<< HEAD
 static int __init reboot_mode_init(void)
 {
 	return class_register(&reboot_mode_class);
@@ -344,6 +374,8 @@ static void __exit reboot_mode_exit(void)
 subsys_initcall(reboot_mode_init);
 module_exit(reboot_mode_exit);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Andy Yan <andy.yan@rock-chips.com>");
 MODULE_DESCRIPTION("System reboot mode core library");
 MODULE_LICENSE("GPL v2");

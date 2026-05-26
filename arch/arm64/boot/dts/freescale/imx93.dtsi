@@ -43,6 +43,7 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	soc@0 {
 		npu@4a900000 {
@@ -67,6 +68,8 @@
 		#size-cells = <1>;
 		ranges = <0x0 0x0 0x20480000 0x18000>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &aips1 {
@@ -174,6 +177,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &lcdif {
 	port {
 		lcdif_to_ldb: endpoint@1 {
@@ -186,6 +190,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &src {
 	mlmix: power-domain@44461800 {
 		compatible = "fsl,imx93-src-slice";

@@ -651,9 +651,15 @@ static int mei_txe_fw_status(struct mei_device *dev,
 					    &fw_status->status[i]);
 		trace_mei_pci_cfg_read(&dev->dev, "PCI_CFG_HSF_X",
 				       fw_src->status[i],
+<<<<<<< HEAD
 				       fw_status->status[i], ret);
 		if (ret)
 			return pcibios_err_to_errno(ret);
+=======
+				       fw_status->status[i]);
+		if (ret)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

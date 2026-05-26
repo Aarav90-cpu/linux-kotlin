@@ -56,8 +56,14 @@ static int txgbe_set_ringparam(struct net_device *netdev,
 	    new_rx_count == wx->rx_ring_count)
 		return 0;
 
+<<<<<<< HEAD
 	mutex_lock(&wx->reset_lock);
 	set_bit(WX_STATE_RESETTING, wx->state);
+=======
+	err = wx_set_state_reset(wx);
+	if (err)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!netif_running(wx->netdev)) {
 		for (i = 0; i < wx->num_tx_queues; i++)
@@ -87,10 +93,29 @@ static int txgbe_set_ringparam(struct net_device *netdev,
 
 clear_reset:
 	clear_bit(WX_STATE_RESETTING, wx->state);
+<<<<<<< HEAD
 	mutex_unlock(&wx->reset_lock);
 	return err;
 }
 
+=======
+	return err;
+}
+
+static int txgbe_set_channels(struct net_device *dev,
+			      struct ethtool_channels *ch)
+{
+	int err;
+
+	err = wx_set_channels(dev, ch);
+	if (err < 0)
+		return err;
+
+	/* use setup TC to update any traffic class queue mapping */
+	return txgbe_setup_tc(dev, netdev_get_num_tc(dev));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int txgbe_get_ethtool_fdir_entry(struct txgbe *txgbe,
 					struct ethtool_rxnfc *cmd)
 {
@@ -574,7 +599,11 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
 	.get_coalesce		= wx_get_coalesce,
 	.set_coalesce		= wx_set_coalesce,
 	.get_channels		= wx_get_channels,
+<<<<<<< HEAD
 	.set_channels		= wx_set_channels,
+=======
+	.set_channels		= txgbe_set_channels,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_rxnfc		= txgbe_get_rxnfc,
 	.set_rxnfc		= txgbe_set_rxnfc,
 	.get_rx_ring_count	= txgbe_get_rx_ring_count,

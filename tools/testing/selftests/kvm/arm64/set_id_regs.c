@@ -30,12 +30,18 @@ struct reg_ftr_bits {
 	char *name;
 	bool sign;
 	enum ftr_type type;
+<<<<<<< HEAD
 	u8 shift;
 	u64 mask;
+=======
+	uint8_t shift;
+	uint64_t mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * For FTR_EXACT, safe_val is used as the exact safe value.
 	 * For FTR_LOWER_SAFE, safe_val is used as the minimal safe value.
 	 */
+<<<<<<< HEAD
 	s64 safe_val;
 
 	/* Allowed to be changed by the host after run */
@@ -48,6 +54,17 @@ struct test_feature_reg {
 };
 
 #define __REG_FTR_BITS(NAME, SIGNED, TYPE, SHIFT, MASK, SAFE_VAL, MUT)	\
+=======
+	int64_t safe_val;
+};
+
+struct test_feature_reg {
+	uint32_t reg;
+	const struct reg_ftr_bits *ftr_bits;
+};
+
+#define __REG_FTR_BITS(NAME, SIGNED, TYPE, SHIFT, MASK, SAFE_VAL)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{								\
 		.name = #NAME,						\
 		.sign = SIGNED,						\
@@ -55,11 +72,15 @@ struct test_feature_reg {
 		.shift = SHIFT,						\
 		.mask = MASK,						\
 		.safe_val = SAFE_VAL,					\
+<<<<<<< HEAD
 		.mutable = MUT,						\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #define REG_FTR_BITS(type, reg, field, safe_val) \
 	__REG_FTR_BITS(reg##_##field, FTR_UNSIGNED, type, reg##_##field##_SHIFT, \
+<<<<<<< HEAD
 		       reg##_##field##_MASK, safe_val, false)
 
 #define REG_FTR_BITS_MUTABLE(type, reg, field, safe_val) \
@@ -69,6 +90,13 @@ struct test_feature_reg {
 #define S_REG_FTR_BITS(type, reg, field, safe_val) \
 	__REG_FTR_BITS(reg##_##field, FTR_SIGNED, type, reg##_##field##_SHIFT, \
 		       reg##_##field##_MASK, safe_val, false)
+=======
+		       reg##_##field##_MASK, safe_val)
+
+#define S_REG_FTR_BITS(type, reg, field, safe_val) \
+	__REG_FTR_BITS(reg##_##field, FTR_SIGNED, type, reg##_##field##_SHIFT, \
+		       reg##_##field##_MASK, safe_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define REG_FTR_END					\
 	{						\
@@ -132,7 +160,10 @@ static const struct reg_ftr_bits ftr_id_aa64isar2_el1[] = {
 
 static const struct reg_ftr_bits ftr_id_aa64isar3_el1[] = {
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR3_EL1, FPRCVT, 0),
+<<<<<<< HEAD
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR3_EL1, LSUI, 0),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR3_EL1, LSFE, 0),
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ISAR3_EL1, FAMINMAX, 0),
 	REG_FTR_END,
@@ -143,8 +174,12 @@ static const struct reg_ftr_bits ftr_id_aa64pfr0_el1[] = {
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, CSV2, 0),
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, DIT, 0),
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, SEL2, 0),
+<<<<<<< HEAD
 	/* GICv3 support will be forced at run time if available */
 	REG_FTR_BITS_MUTABLE(FTR_EXACT, ID_AA64PFR0_EL1, GIC, 0),
+=======
+	REG_FTR_BITS(FTR_EXACT, ID_AA64PFR0_EL1, GIC, 0),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL3, 1),
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL2, 1),
 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR0_EL1, EL1, 1),
@@ -275,9 +310,15 @@ static void guest_code(void)
 }
 
 /* Return a safe value to a given ftr_bits an ftr value */
+<<<<<<< HEAD
 u64 get_safe_value(const struct reg_ftr_bits *ftr_bits, u64 ftr)
 {
 	u64 ftr_max = ftr_bits->mask >> ftr_bits->shift;
+=======
+uint64_t get_safe_value(const struct reg_ftr_bits *ftr_bits, uint64_t ftr)
+{
+	uint64_t ftr_max = ftr_bits->mask >> ftr_bits->shift;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(ftr_max > 1, "This test doesn't support single bit features");
 
@@ -329,16 +370,26 @@ u64 get_safe_value(const struct reg_ftr_bits *ftr_bits, u64 ftr)
 }
 
 /* Return an invalid value to a given ftr_bits an ftr value */
+<<<<<<< HEAD
 u64 get_invalid_value(const struct reg_ftr_bits *ftr_bits, u64 ftr)
 {
 	u64 ftr_max = ftr_bits->mask >> ftr_bits->shift;
+=======
+uint64_t get_invalid_value(const struct reg_ftr_bits *ftr_bits, uint64_t ftr)
+{
+	uint64_t ftr_max = ftr_bits->mask >> ftr_bits->shift;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(ftr_max > 1, "This test doesn't support single bit features");
 
 	if (ftr_bits->sign == FTR_UNSIGNED) {
 		switch (ftr_bits->type) {
 		case FTR_EXACT:
+<<<<<<< HEAD
 			ftr = max((u64)ftr_bits->safe_val + 1, ftr + 1);
+=======
+			ftr = max((uint64_t)ftr_bits->safe_val + 1, ftr + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case FTR_LOWER_SAFE:
 			ftr++;
@@ -358,7 +409,11 @@ u64 get_invalid_value(const struct reg_ftr_bits *ftr_bits, u64 ftr)
 	} else if (ftr != ftr_max) {
 		switch (ftr_bits->type) {
 		case FTR_EXACT:
+<<<<<<< HEAD
 			ftr = max((u64)ftr_bits->safe_val + 1, ftr + 1);
+=======
+			ftr = max((uint64_t)ftr_bits->safe_val + 1, ftr + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case FTR_LOWER_SAFE:
 			ftr++;
@@ -382,12 +437,21 @@ u64 get_invalid_value(const struct reg_ftr_bits *ftr_bits, u64 ftr)
 	return ftr;
 }
 
+<<<<<<< HEAD
 static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
 				const struct reg_ftr_bits *ftr_bits)
 {
 	u8 shift = ftr_bits->shift;
 	u64 mask = ftr_bits->mask;
 	u64 val, new_val, ftr;
+=======
+static uint64_t test_reg_set_success(struct kvm_vcpu *vcpu, uint64_t reg,
+				     const struct reg_ftr_bits *ftr_bits)
+{
+	uint8_t shift = ftr_bits->shift;
+	uint64_t mask = ftr_bits->mask;
+	uint64_t val, new_val, ftr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	val = vcpu_get_reg(vcpu, reg);
 	ftr = (val & mask) >> shift;
@@ -405,12 +469,21 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
 	return new_val;
 }
 
+<<<<<<< HEAD
 static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
 			      const struct reg_ftr_bits *ftr_bits)
 {
 	u8 shift = ftr_bits->shift;
 	u64 mask = ftr_bits->mask;
 	u64 val, old_val, ftr;
+=======
+static void test_reg_set_fail(struct kvm_vcpu *vcpu, uint64_t reg,
+			      const struct reg_ftr_bits *ftr_bits)
+{
+	uint8_t shift = ftr_bits->shift;
+	uint64_t mask = ftr_bits->mask;
+	uint64_t val, old_val, ftr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int r;
 
 	val = vcpu_get_reg(vcpu, reg);
@@ -431,7 +504,11 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
 	TEST_ASSERT_EQ(val, old_val);
 }
 
+<<<<<<< HEAD
 static u64 test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+=======
+static uint64_t test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define encoding_to_range_idx(encoding)							\
 	KVM_ARM_FEATURE_ID_RANGE_IDX(sys_reg_Op0(encoding), sys_reg_Op1(encoding),	\
@@ -441,7 +518,11 @@ static u64 test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
 
 static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
 {
+<<<<<<< HEAD
 	u64 masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+=======
+	uint64_t masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct reg_mask_range range = {
 		.addr = (__u64)masks,
 	};
@@ -458,8 +539,13 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
 
 	for (int i = 0; i < ARRAY_SIZE(test_regs); i++) {
 		const struct reg_ftr_bits *ftr_bits = test_regs[i].ftr_bits;
+<<<<<<< HEAD
 		u32 reg_id = test_regs[i].reg;
 		u64 reg = KVM_ARM64_SYS_REG(reg_id);
+=======
+		uint32_t reg_id = test_regs[i].reg;
+		uint64_t reg = KVM_ARM64_SYS_REG(reg_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int idx;
 
 		/* Get the index to masks array for the idreg */
@@ -489,11 +575,19 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
 #define MPAM_IDREG_TEST	6
 static void test_user_set_mpam_reg(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
 	struct reg_mask_range range = {
 		.addr = (__u64)masks,
 	};
 	u64 val;
+=======
+	uint64_t masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+	struct reg_mask_range range = {
+		.addr = (__u64)masks,
+	};
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int idx, err;
 
 	/*
@@ -584,6 +678,7 @@ static void test_user_set_mpam_reg(struct kvm_vcpu *vcpu)
 #define MTE_IDREG_TEST 1
 static void test_user_set_mte_reg(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
 	struct reg_mask_range range = {
 		.addr = (__u64)masks,
@@ -591,6 +686,15 @@ static void test_user_set_mte_reg(struct kvm_vcpu *vcpu)
 	u64 val;
 	u64 mte;
 	u64 mte_frac;
+=======
+	uint64_t masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+	struct reg_mask_range range = {
+		.addr = (__u64)masks,
+	};
+	uint64_t val;
+	uint64_t mte;
+	uint64_t mte_frac;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int idx, err;
 
 	val = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ID_AA64PFR1_EL1));
@@ -644,6 +748,7 @@ static void test_user_set_mte_reg(struct kvm_vcpu *vcpu)
 		ksft_test_result_pass("ID_AA64PFR1_EL1.MTE_frac no longer 0xF\n");
 }
 
+<<<<<<< HEAD
 static u64 reset_mutable_bits(u32 id, u64 val)
 {
 	struct test_feature_reg *reg = NULL;
@@ -668,14 +773,19 @@ static u64 reset_mutable_bits(u32 id, u64 val)
 	return val;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_guest_reg_read(struct kvm_vcpu *vcpu)
 {
 	bool done = false;
 	struct ucall uc;
 
 	while (!done) {
+<<<<<<< HEAD
 		u64 val;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vcpu_run(vcpu);
 
 		switch (get_ucall(vcpu, &uc)) {
@@ -683,11 +793,17 @@ static void test_guest_reg_read(struct kvm_vcpu *vcpu)
 			REPORT_GUEST_ASSERT(uc);
 			break;
 		case UCALL_SYNC:
+<<<<<<< HEAD
 			val = test_reg_vals[encoding_to_range_idx(uc.args[2])];
 			val = reset_mutable_bits(uc.args[2], val);
 
 			/* Make sure the written values are seen by guest */
 			TEST_ASSERT_EQ(val, reset_mutable_bits(uc.args[2], uc.args[3]));
+=======
+			/* Make sure the written values are seen by guest */
+			TEST_ASSERT_EQ(test_reg_vals[encoding_to_range_idx(uc.args[2])],
+				       uc.args[3]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case UCALL_DONE:
 			done = true;
@@ -707,7 +823,11 @@ static void test_guest_reg_read(struct kvm_vcpu *vcpu)
 
 static void test_clidr(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 clidr;
+=======
+	uint64_t clidr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int level;
 
 	clidr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_CLIDR_EL1));
@@ -772,6 +892,7 @@ static void test_vcpu_non_ftr_id_regs(struct kvm_vcpu *vcpu)
 	ksft_test_result_pass("%s\n", __func__);
 }
 
+<<<<<<< HEAD
 static void test_assert_id_reg_unchanged(struct kvm_vcpu *vcpu, u32 encoding)
 {
 	size_t idx = encoding_to_range_idx(encoding);
@@ -780,6 +901,15 @@ static void test_assert_id_reg_unchanged(struct kvm_vcpu *vcpu, u32 encoding)
 	observed = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(encoding));
 	TEST_ASSERT_EQ(reset_mutable_bits(encoding, test_reg_vals[idx]),
 		       reset_mutable_bits(encoding, observed));
+=======
+static void test_assert_id_reg_unchanged(struct kvm_vcpu *vcpu, uint32_t encoding)
+{
+	size_t idx = encoding_to_range_idx(encoding);
+	uint64_t observed;
+
+	observed = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(encoding));
+	TEST_ASSERT_EQ(test_reg_vals[idx], observed);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void test_reset_preserves_id_regs(struct kvm_vcpu *vcpu)
@@ -808,7 +938,11 @@ int main(void)
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	bool aarch64_only;
+<<<<<<< HEAD
 	u64 val, el0;
+=======
+	uint64_t val, el0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int test_cnt, i, j;
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES));

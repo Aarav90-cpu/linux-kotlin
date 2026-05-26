@@ -6,7 +6,11 @@
 #ifndef _XE_TTM_VRAM_MGR_TYPES_H_
 #define _XE_TTM_VRAM_MGR_TYPES_H_
 
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
+=======
+#include <drm/drm_buddy.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/ttm/ttm_device.h>
 
 /**
@@ -18,7 +22,11 @@ struct xe_ttm_vram_mgr {
 	/** @manager: Base TTM resource manager */
 	struct ttm_resource_manager manager;
 	/** @mm: DRM buddy allocator which manages the VRAM */
+<<<<<<< HEAD
 	struct gpu_buddy mm;
+=======
+	struct drm_buddy mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @visible_size: Proped size of the CPU visible portion */
 	u64 visible_size;
 	/** @visible_avail: CPU visible portion still unallocated */

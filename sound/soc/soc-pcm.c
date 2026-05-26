@@ -423,8 +423,13 @@ void dpcm_dapm_stream_event(struct snd_soc_pcm_runtime *fe, int dir, int event)
 	snd_soc_dapm_stream_event(fe, dir, event);
 }
 
+<<<<<<< HEAD
 void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
 			    struct snd_pcm_hw_params *params)
+=======
+static void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
+				   struct snd_pcm_hw_params *params)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (params) {
 		dai->symmetric_rate	   = params_rate(params);

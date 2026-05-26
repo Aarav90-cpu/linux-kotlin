@@ -25,6 +25,10 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <linux/list.h>
+<<<<<<< HEAD
+=======
+#include <linux/zalloc.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef REMOTE_UNWIND_LIBUNWIND
 #include <libunwind.h>
 #include <libunwind-ptrace.h>

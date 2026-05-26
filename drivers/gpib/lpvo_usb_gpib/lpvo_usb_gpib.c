@@ -51,10 +51,17 @@ MODULE_DESCRIPTION("GPIB driver for LPVO usb devices");
  *
  */
 
+<<<<<<< HEAD
 static const struct usb_device_id lpvo_table[] = {
 	{ }					   /* Terminating entry */
 };
 MODULE_DEVICE_TABLE(usb, lpvo_table);
+=======
+static const struct usb_device_id skel_table[] = {
+	{ }					   /* Terminating entry */
+};
+MODULE_DEVICE_TABLE(usb, skel_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *   ***  Diagnostics and Debug  ***
@@ -182,11 +189,23 @@ static int usb_minors[MAX_DEV];			   /* usb minors */
 static int assigned_usb_minors;		   /* mask of filled slots */
 static struct mutex minors_lock;     /* operations on usb_minors are to be protected */
 
+<<<<<<< HEAD
 struct lpvo;
 static ssize_t lpvo_do_write(struct lpvo *, const char *, size_t);
 static ssize_t lpvo_do_read(struct lpvo *, char *, size_t);
 static int lpvo_do_open(struct gpib_board *, int);
 static int lpvo_do_release(struct gpib_board *);
+=======
+/*
+ * usb-skeleton prototypes
+ */
+
+struct usb_skel;
+static ssize_t skel_do_write(struct usb_skel *, const char *, size_t);
+static ssize_t skel_do_read(struct usb_skel *, char *, size_t);
+static int skel_do_open(struct gpib_board *, int);
+static int skel_do_release(struct gpib_board *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *  usec_diff : take difference in MICROsec between two 'timespec'
@@ -214,7 +233,11 @@ static inline int usec_diff(struct timespec64 *a, struct timespec64 *b)
 
 static int write_loop(void *dev, char *msg, int leng)
 {
+<<<<<<< HEAD
 	return lpvo_do_write(dev, msg, leng);
+=======
+	return skel_do_write(dev, msg, leng);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -242,7 +265,11 @@ static int send_command(struct gpib_board *board, char *msg, int leng)
 	if (retval < 0)
 		return retval;
 
+<<<<<<< HEAD
 	nchar = lpvo_do_read(GPIB_DEV, buffer, 64);
+=======
+	nchar = skel_do_read(GPIB_DEV, buffer, 64);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nchar < 0) {
 		dev_err(board->gpib_dev, " return from read: %d\n", nchar);
@@ -306,7 +333,11 @@ static int one_char(struct gpib_board *board, struct char_buf *b)
 		return b->inbuf[b->last - b->nchar--];
 	}
 	ktime_get_real_ts64 (&before);
+<<<<<<< HEAD
 	b->nchar = lpvo_do_read(GPIB_DEV, b->inbuf, INBUF_SIZE);
+=======
+	b->nchar = skel_do_read(GPIB_DEV, b->inbuf, INBUF_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	b->last = b->nchar;
 	ktime_get_real_ts64 (&after);
 
@@ -441,12 +472,21 @@ static int usb_gpib_attach(struct gpib_board *board, const struct gpib_board_con
 	if (!board->private_data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	retval = lpvo_do_open(board, usb_minors[j]);
 
 	DIA_LOG(1, "lpvo open: %d\n", retval);
 
 	if (retval) {
 		dev_err(board->gpib_dev, "lpvo open failed.\n");
+=======
+	retval = skel_do_open(board, usb_minors[j]);
+
+	DIA_LOG(1, "Skel open: %d\n", retval);
+
+	if (retval) {
+		dev_err(board->gpib_dev, "skel open failed.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(board->private_data);
 		board->private_data = NULL;
 		return -ENODEV;
@@ -513,8 +553,13 @@ static void usb_gpib_detach(struct gpib_board *board)
 			write_loop(GPIB_DEV, USB_GPIB_OFF, strlen(USB_GPIB_OFF));
 			msleep(100);
 			DIA_LOG(1, "%s", "GPIB off\n");
+<<<<<<< HEAD
 			retval = lpvo_do_release(board);
 			DIA_LOG(1, "lpvo release -> %d\n", retval);
+=======
+			retval = skel_do_release(board);
+			DIA_LOG(1, "skel release -> %d\n", retval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		kfree(board->private_data);
 		board->private_data = NULL;
@@ -768,8 +813,13 @@ static int usb_gpib_read(struct gpib_board *board,
 		if (retval < 0)
 			return retval;
 
+<<<<<<< HEAD
 		retval = lpvo_do_read(GPIB_DEV, inbuf, 1);
 		retval += lpvo_do_read(GPIB_DEV, inbuf + 1, 1);
+=======
+		retval = skel_do_read(GPIB_DEV, inbuf, 1);
+		retval += skel_do_read(GPIB_DEV, inbuf + 1, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ktime_get_real_ts64 (&after);
 
@@ -1193,12 +1243,21 @@ static int write_latency_timer(struct usb_device *udev)
  *  written by Greg Kroah-Hartman and available in the kernel tree.	     *
  *									     *
  *  Functions skel_open() and skel_release() have been rewritten and named   *
+<<<<<<< HEAD
  *  lpvo_do_open() and lpvo_do_release() to process the attach and detach    *
  *  requests coming from gpib_config.					     *
  *									     *
  *  Functions lpvo_read() and lpvo_write() have been split into a	     *
  *  lpvo_do_read() and lpvo_do_write(), that cover the kernel stuff of read  *
  *  and write operations, and the original lpvo_read() and lpvo_write(),     *
+=======
+ *  skel_do_open() and skel_do_release() to process the attach and detach    *
+ *  requests coming from gpib_config.					     *
+ *									     *
+ *  Functions skel_read() and skel_write() have been split into a	     *
+ *  skel_do_read() and skel_do_write(), that cover the kernel stuff of read  *
+ *  and write operations, and the original skel_read() and skel_write(),     *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *  that handle communication with user space and call their _do_ companion. *
  *									     *
  *  Only the _do_ versions are used by the lpvo_usb_gpib driver; other ones  *
@@ -1226,7 +1285,11 @@ static int write_latency_timer(struct usb_device *udev)
 #include <linux/mutex.h>
 
 /* Get a minor range for your devices from the usb maintainer */
+<<<<<<< HEAD
 #define USB_LPVO_MINOR_BASE	   192
+=======
+#define USB_SKEL_MINOR_BASE	   192
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*   private defines   */
 
@@ -1241,7 +1304,11 @@ static int write_latency_timer(struct usb_device *udev)
 #define USER_DEVICE 1		      /* compile for device(s) in user space */
 
 /* Structure to hold all of our device specific stuff */
+<<<<<<< HEAD
 struct lpvo {
+=======
+struct usb_skel {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct usb_device     *udev;		     /* the usb device for this device */
 	struct usb_interface  *interface;	     /* the interface for this device */
 	struct semaphore      limit_sem;	     /* limiting the number of writes in progress */
@@ -1261,6 +1328,7 @@ struct lpvo {
 	wait_queue_head_t     bulk_in_wait;	     /* to wait for an ongoing read */
 };
 
+<<<<<<< HEAD
 #define to_lpvo_dev(d) container_of(d, struct lpvo, kref)
 
 static struct usb_driver lpvo_driver;
@@ -1269,6 +1337,16 @@ static void lpvo_draw_down(struct lpvo *dev);
 static void lpvo_delete(struct kref *kref)
 {
 	struct lpvo *dev = to_lpvo_dev(kref);
+=======
+#define to_skel_dev(d) container_of(d, struct usb_skel, kref)
+
+static struct usb_driver skel_driver;
+static void skel_draw_down(struct usb_skel *dev);
+
+static void skel_delete(struct kref *kref)
+{
+	struct usb_skel *dev = to_skel_dev(kref);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usb_free_urb(dev->bulk_in_urb);
 	usb_put_dev(dev->udev);
@@ -1277,6 +1355,7 @@ static void lpvo_delete(struct kref *kref)
 }
 
 /*
+<<<<<<< HEAD
  * lpvo_do_open() - to be called by usb_gpib_attach
  */
 
@@ -1287,6 +1366,18 @@ static int lpvo_do_open(struct gpib_board *board, int subminor)
 	int retval = 0;
 
 	interface = usb_find_interface(&lpvo_driver, subminor);
+=======
+ * skel_do_open() - to be called by usb_gpib_attach
+ */
+
+static int skel_do_open(struct gpib_board *board, int subminor)
+{
+	struct usb_skel *dev;
+	struct usb_interface *interface;
+	int retval = 0;
+
+	interface = usb_find_interface(&skel_driver, subminor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!interface) {
 		dev_err(board->gpib_dev, "can't find device for minor %d\n", subminor);
 		retval = -ENODEV;
@@ -1314,12 +1405,21 @@ exit:
 }
 
 /*
+<<<<<<< HEAD
  * lpvo_do_release() - to be called by usb_gpib_detach
  */
 
 static int lpvo_do_release(struct gpib_board *board)
 {
 	struct lpvo *dev;
+=======
+ * skel_do_release() - to be called by usb_gpib_detach
+ */
+
+static int skel_do_release(struct gpib_board *board)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev = GPIB_DEV;
 	if (!dev)
@@ -1332,7 +1432,11 @@ static int lpvo_do_release(struct gpib_board *board)
 	mutex_unlock(&dev->io_mutex);
 
 	/* decrement the count on our device */
+<<<<<<< HEAD
 	kref_put(&dev->kref, lpvo_delete);
+=======
+	kref_put(&dev->kref, skel_delete);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1340,9 +1444,15 @@ static int lpvo_do_release(struct gpib_board *board)
  * read functions
  */
 
+<<<<<<< HEAD
 static void lpvo_read_bulk_callback(struct urb *urb)
 {
 	struct lpvo *dev;
+=======
+static void skel_read_bulk_callback(struct urb *urb)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	dev = urb->context;
@@ -1366,7 +1476,11 @@ static void lpvo_read_bulk_callback(struct urb *urb)
 	wake_up_interruptible(&dev->bulk_in_wait);
 }
 
+<<<<<<< HEAD
 static int lpvo_do_read_io(struct lpvo *dev, size_t count)
+=======
+static int skel_do_read_io(struct usb_skel *dev, size_t count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rv;
 
@@ -1377,7 +1491,11 @@ static int lpvo_do_read_io(struct lpvo *dev, size_t count)
 					  dev->bulk_in_endpoint_addr),
 			  dev->bulk_in_buffer,
 			  min(dev->bulk_in_size, count),
+<<<<<<< HEAD
 			  lpvo_read_bulk_callback,
+=======
+			  skel_read_bulk_callback,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  dev);
 	/* tell everybody to leave the URB alone */
 	spin_lock_irq(&dev->err_lock);
@@ -1402,10 +1520,17 @@ static int lpvo_do_read_io(struct lpvo *dev, size_t count)
 }
 
 /*
+<<<<<<< HEAD
  * lpvo_do_read() - read operations from lpvo_usb_gpib
  */
 
 static ssize_t lpvo_do_read(struct lpvo *dev, char *buffer, size_t count)
+=======
+ * skel_do_read() - read operations from lpvo_usb_gpib
+ */
+
+static ssize_t skel_do_read(struct usb_skel *dev, char *buffer, size_t count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rv;
 	bool ongoing_io;
@@ -1483,7 +1608,11 @@ retry:
 			 * it seems that requests for less than dev->bulk_in_size
 			 *  are not accepted
 			 */
+<<<<<<< HEAD
 			rv = lpvo_do_read_io(dev, dev->bulk_in_size);
+=======
+			rv = skel_do_read_io(dev, dev->bulk_in_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (rv < 0)
 				goto exit;
 			else
@@ -1530,10 +1659,17 @@ retry:
 		 * asked for by the lpvo_usb_gpib layer.
 		 */
 //		  if (available < count)
+<<<<<<< HEAD
 //			  lpvo_do_read_io(dev, dev->bulk_in_size);
 	} else {
 		/* no data in the buffer */
 		rv = lpvo_do_read_io(dev, dev->bulk_in_size);
+=======
+//			  skel_do_read_io(dev, dev->bulk_in_size);
+	} else {
+		/* no data in the buffer */
+		rv = skel_do_read_io(dev, dev->bulk_in_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rv < 0)
 			goto exit;
 		else
@@ -1553,9 +1689,15 @@ exit:
  * write functions
  */
 
+<<<<<<< HEAD
 static void lpvo_write_bulk_callback(struct urb *urb)
 {
 	struct lpvo *dev;
+=======
+static void skel_write_bulk_callback(struct urb *urb)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	dev = urb->context;
@@ -1580,10 +1722,17 @@ static void lpvo_write_bulk_callback(struct urb *urb)
 }
 
 /*
+<<<<<<< HEAD
  * lpvo_do_write() - write operations from lpvo_usb_gpib
  */
 
 static ssize_t lpvo_do_write(struct lpvo *dev, const char *buffer, size_t count)
+=======
+ * skel_do_write() - write operations from lpvo_usb_gpib
+ */
+
+static ssize_t skel_do_write(struct usb_skel *dev, const char *buffer, size_t count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int retval = 0;
 	struct urb *urb = NULL;
@@ -1651,7 +1800,11 @@ static ssize_t lpvo_do_write(struct lpvo *dev, const char *buffer, size_t count)
 	/* initialize the urb properly */
 	usb_fill_bulk_urb(urb, dev->udev,
 			  usb_sndbulkpipe(dev->udev, dev->bulk_out_endpoint_addr),
+<<<<<<< HEAD
 			  buf, writesize, lpvo_write_bulk_callback, dev);
+=======
+			  buf, writesize, skel_write_bulk_callback, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
 	usb_anchor_urb(urb, &dev->submitted);
 
@@ -1690,9 +1843,15 @@ exit:
 
 #if USER_DEVICE	 /* conditional compilation of user space device */
 
+<<<<<<< HEAD
 static int lpvo_flush(struct file *file, fl_owner_t id)
 {
 	struct lpvo *dev;
+=======
+static int skel_flush(struct file *file, fl_owner_t id)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int res;
 
 	dev = file->private_data;
@@ -1701,7 +1860,11 @@ static int lpvo_flush(struct file *file, fl_owner_t id)
 
 	/* wait for io to stop */
 	mutex_lock(&dev->io_mutex);
+<<<<<<< HEAD
 	lpvo_draw_down(dev);
+=======
+	skel_draw_down(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* read out errors, leave subsequent opens a clean slate */
 	spin_lock_irq(&dev->err_lock);
@@ -1714,16 +1877,26 @@ static int lpvo_flush(struct file *file, fl_owner_t id)
 	return res;
 }
 
+<<<<<<< HEAD
 static int lpvo_open(struct inode *inode, struct file *file)
 {
 	struct lpvo *dev;
+=======
+static int skel_open(struct inode *inode, struct file *file)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct usb_interface *interface;
 	int subminor;
 	int retval = 0;
 
 	subminor = iminor(inode);
 
+<<<<<<< HEAD
 	interface = usb_find_interface(&lpvo_driver, subminor);
+=======
+	interface = usb_find_interface(&skel_driver, subminor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!interface) {
 		pr_err("can't find device for minor %d\n", subminor);
 		retval = -ENODEV;
@@ -1750,9 +1923,15 @@ exit:
 	return retval;
 }
 
+<<<<<<< HEAD
 static int lpvo_release(struct inode *inode, struct file *file)
 {
 	struct lpvo *dev;
+=======
+static int skel_release(struct inode *inode, struct file *file)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev = file->private_data;
 	if (!dev)
@@ -1765,7 +1944,11 @@ static int lpvo_release(struct inode *inode, struct file *file)
 	mutex_unlock(&dev->io_mutex);
 
 	/* decrement the count on our device */
+<<<<<<< HEAD
 	kref_put(&dev->kref, lpvo_delete);
+=======
+	kref_put(&dev->kref, skel_delete);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1773,10 +1956,17 @@ static int lpvo_release(struct inode *inode, struct file *file)
  * user space access to read function
  */
 
+<<<<<<< HEAD
 static ssize_t lpvo_read(struct file *file, char __user *buffer, size_t count,
 			 loff_t *ppos)
 {
 	struct lpvo *dev;
+=======
+static ssize_t skel_read(struct file *file, char __user *buffer, size_t count,
+			 loff_t *ppos)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *buf;
 	ssize_t rv;
 
@@ -1786,7 +1976,11 @@ static ssize_t lpvo_read(struct file *file, char __user *buffer, size_t count,
 	if (!buf)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	rv = lpvo_do_read(dev, buf, count);
+=======
+	rv = skel_do_read(dev, buf, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rv > 0) {
 		if (copy_to_user(buffer, buf, rv)) {
@@ -1802,10 +1996,17 @@ static ssize_t lpvo_read(struct file *file, char __user *buffer, size_t count,
  * user space access to write function
  */
 
+<<<<<<< HEAD
 static ssize_t lpvo_write(struct file *file, const char __user *user_buffer,
 			  size_t count, loff_t *ppos)
 {
 	struct lpvo *dev;
+=======
+static ssize_t skel_write(struct file *file, const char __user *user_buffer,
+			  size_t count, loff_t *ppos)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *buf;
 	ssize_t rv;
 
@@ -1820,12 +2021,17 @@ static ssize_t lpvo_write(struct file *file, const char __user *user_buffer,
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
 	rv = lpvo_do_write(dev, buf, count);
+=======
+	rv = skel_do_write(dev, buf, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(buf);
 	return rv;
 }
 #endif
 
+<<<<<<< HEAD
 static const struct file_operations lpvo_fops = {
 	.owner =	THIS_MODULE,
 #if USER_DEVICE
@@ -1834,6 +2040,16 @@ static const struct file_operations lpvo_fops = {
 	.open =	   lpvo_open,
 	.release = lpvo_release,
 	.flush =   lpvo_flush,
+=======
+static const struct file_operations skel_fops = {
+	.owner =	THIS_MODULE,
+#if USER_DEVICE
+	.read =	   skel_read,
+	.write =   skel_write,
+	.open =	   skel_open,
+	.release = skel_release,
+	.flush =   skel_flush,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.llseek =  noop_llseek,
 #endif
 };
@@ -1843,6 +2059,7 @@ static const struct file_operations lpvo_fops = {
  * and to have the device registered with the driver core
  */
 #if USER_DEVICE
+<<<<<<< HEAD
 static struct usb_class_driver lpvo_class = {
 	.name =		       "lpvo_raw%d",
 	.fops =		       &lpvo_fops,
@@ -1854,6 +2071,19 @@ static int lpvo_probe(struct usb_interface *interface,
 		      const struct usb_device_id *id)
 {
 	struct lpvo *dev;
+=======
+static struct usb_class_driver skel_class = {
+	.name =		       "lpvo_raw%d",
+	.fops =		       &skel_fops,
+	.minor_base =	     USB_SKEL_MINOR_BASE,
+};
+#endif
+
+static int skel_probe(struct usb_interface *interface,
+		      const struct usb_device_id *id)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct usb_endpoint_descriptor *bulk_in, *bulk_out;
 	int retval;
 	char *device_path;
@@ -1912,7 +2142,11 @@ static int lpvo_probe(struct usb_interface *interface,
 
 #if USER_DEVICE
 	/* we can register the device now, as it is ready */
+<<<<<<< HEAD
 	retval = usb_register_dev(interface, &lpvo_class);
+=======
+	retval = usb_register_dev(interface, &skel_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retval) {
 		/* something prevented us from registering this driver */
 		dev_err(&interface->dev,
@@ -1930,14 +2164,24 @@ static int lpvo_probe(struct usb_interface *interface,
 
 error:
 	/* this frees allocated memory */
+<<<<<<< HEAD
 	kref_put(&dev->kref, lpvo_delete);
+=======
+	kref_put(&dev->kref, skel_delete);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return retval;
 }
 
+<<<<<<< HEAD
 static void lpvo_disconnect(struct usb_interface *interface)
 {
 	struct lpvo *dev;
+=======
+static void skel_disconnect(struct usb_interface *interface)
+{
+	struct usb_skel *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int minor = interface->minor;
 
 	usb_gpib_exit_module(minor);	  /* first, disactivate the lpvo */
@@ -1947,7 +2191,11 @@ static void lpvo_disconnect(struct usb_interface *interface)
 
 #if USER_DEVICE
 	/* give back our minor */
+<<<<<<< HEAD
 	usb_deregister_dev(interface, &lpvo_class);
+=======
+	usb_deregister_dev(interface, &skel_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	/* prevent more I/O from starting */
@@ -1958,10 +2206,17 @@ static void lpvo_disconnect(struct usb_interface *interface)
 	usb_kill_anchored_urbs(&dev->submitted);
 
 	/* decrement our usage count */
+<<<<<<< HEAD
 	kref_put(&dev->kref, lpvo_delete);
 }
 
 static void lpvo_draw_down(struct lpvo *dev)
+=======
+	kref_put(&dev->kref, skel_delete);
+}
+
+static void skel_draw_down(struct usb_skel *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int time;
 
@@ -1971,6 +2226,7 @@ static void lpvo_draw_down(struct lpvo *dev)
 	usb_kill_urb(dev->bulk_in_urb);
 }
 
+<<<<<<< HEAD
 static int lpvo_suspend(struct usb_interface *intf, pm_message_t message)
 {
 	struct lpvo *dev = usb_get_intfdata(intf);
@@ -1982,23 +2238,51 @@ static int lpvo_suspend(struct usb_interface *intf, pm_message_t message)
 }
 
 static int lpvo_resume(struct usb_interface *intf)
+=======
+static int skel_suspend(struct usb_interface *intf, pm_message_t message)
+{
+	struct usb_skel *dev = usb_get_intfdata(intf);
+
+	if (!dev)
+		return 0;
+	skel_draw_down(dev);
+	return 0;
+}
+
+static int skel_resume(struct usb_interface *intf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lpvo_pre_reset(struct usb_interface *intf)
 {
 	struct lpvo *dev = usb_get_intfdata(intf);
 
 	mutex_lock(&dev->io_mutex);
 	lpvo_draw_down(dev);
+=======
+static int skel_pre_reset(struct usb_interface *intf)
+{
+	struct usb_skel *dev = usb_get_intfdata(intf);
+
+	mutex_lock(&dev->io_mutex);
+	skel_draw_down(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lpvo_post_reset(struct usb_interface *intf)
 {
 	struct lpvo *dev = usb_get_intfdata(intf);
+=======
+static int skel_post_reset(struct usb_interface *intf)
+{
+	struct usb_skel *dev = usb_get_intfdata(intf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* we are sure no URBs are active - no locking needed */
 	dev->errors = -EPIPE;
@@ -2007,6 +2291,7 @@ static int lpvo_post_reset(struct usb_interface *intf)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct usb_driver lpvo_driver = {
 	.name =			NAME,
 	.probe =		lpvo_probe,
@@ -2020,3 +2305,18 @@ static struct usb_driver lpvo_driver = {
 };
 
 module_usb_driver(lpvo_driver);
+=======
+static struct usb_driver skel_driver = {
+	.name =			NAME,
+	.probe =		skel_probe,
+	.disconnect =		skel_disconnect,
+	.suspend =		skel_suspend,
+	.resume =		skel_resume,
+	.pre_reset =		skel_pre_reset,
+	.post_reset =		skel_post_reset,
+	.id_table =		skel_table,
+	.supports_autosuspend = 1,
+};
+
+module_usb_driver(skel_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

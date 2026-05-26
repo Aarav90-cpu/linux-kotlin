@@ -27,7 +27,10 @@ int xe_gt_sriov_pf_control_process_restore_data(struct xe_gt *gt, unsigned int v
 int xe_gt_sriov_pf_control_trigger_restore_vf(struct xe_gt *gt, unsigned int vfid);
 int xe_gt_sriov_pf_control_finish_restore_vf(struct xe_gt *gt, unsigned int vfid);
 int xe_gt_sriov_pf_control_stop_vf(struct xe_gt *gt, unsigned int vfid);
+<<<<<<< HEAD
 int xe_gt_sriov_pf_control_prepare_flr(struct xe_gt *gt, unsigned int vfid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_gt_sriov_pf_control_trigger_flr(struct xe_gt *gt, unsigned int vfid);
 int xe_gt_sriov_pf_control_sync_flr(struct xe_gt *gt, unsigned int vfid, bool sync);
 int xe_gt_sriov_pf_control_wait_flr(struct xe_gt *gt, unsigned int vfid);

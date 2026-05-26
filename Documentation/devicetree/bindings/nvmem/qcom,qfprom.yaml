@@ -26,7 +26,10 @@ properties:
           - qcom,ipq8064-qfprom
           - qcom,ipq8074-qfprom
           - qcom,ipq9574-qfprom
+<<<<<<< HEAD
           - qcom,kaanapali-qfprom
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,msm8226-qfprom
           - qcom,msm8916-qfprom
           - qcom,msm8917-qfprom

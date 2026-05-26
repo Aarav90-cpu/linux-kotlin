@@ -20,7 +20,10 @@
 #include <sound/soc.h>
 #include <linux/input.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "../../codecs/rt5682.h"
 #include "../../codecs/rt1019.h"
@@ -38,12 +41,18 @@
 #define NAU8821_FREQ_OUT	12288000
 #define MAX98388_CODEC_DAI	"max98388-aif1"
 
+<<<<<<< HEAD
+=======
+#define TDM_MODE_ENABLE 1
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct dmi_system_id acp_quirk_table[] = {
 	{
 		/* Google skyrim proto-0 */
 		.matches = {
 			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Google_Skyrim"),
 		},
+<<<<<<< HEAD
 		.driver_data = (void *)QUIRK_TDM_MODE_ENABLE,
 	},
 	{
@@ -53,6 +62,9 @@ const struct dmi_system_id acp_quirk_table[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
 		},
 		.driver_data = (void *)QUIRK_REMAP_DMIC_BT,
+=======
+		.driver_data = (void *)TDM_MODE_ENABLE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{}
 };
@@ -1408,7 +1420,10 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
 	struct snd_soc_dai_link *links;
 	struct device *dev = card->dev;
 	struct acp_card_drvdata *drv_data = card->drvdata;
+<<<<<<< HEAD
 	const struct dmi_system_id *dmi_id = dmi_first_match(acp_quirk_table);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i = 0, num_links = 0;
 
 	if (drv_data->hs_cpu_id)
@@ -1580,9 +1595,12 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
 			links[i].codecs = &snd_soc_dummy_dlc;
 			links[i].num_codecs = 1;
 		}
+<<<<<<< HEAD
 
 		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT)
 			links[i].id = DMIC_BE_ID;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		i++;
 	}
 
@@ -1598,11 +1616,14 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
 		links[i].capture_only = 1;
 		links[i].nonatomic = true;
 		links[i].no_pcm = 1;
+<<<<<<< HEAD
 
 		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT) {
 			links[i].id = BT_BE_ID;
 			dev_dbg(dev, "quirk REMAP_DMIC_BT enabled\n");
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	card->dai_link = links;

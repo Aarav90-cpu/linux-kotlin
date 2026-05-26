@@ -143,6 +143,11 @@ allOf:
     else:
       properties:
         spi-cpha: false
+<<<<<<< HEAD
+=======
+      required:
+        - spi-cpol
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unevaluatedProperties: false
 

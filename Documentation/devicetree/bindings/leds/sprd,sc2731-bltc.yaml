@@ -18,12 +18,16 @@ description: |
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - enum:
               - sprd,sc2730-bltc
           - const: sprd,sc2731-bltc
       - const: sprd,sc2731-bltc
+=======
+    const: sprd,sc2731-bltc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

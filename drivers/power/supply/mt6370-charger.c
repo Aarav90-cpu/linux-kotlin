@@ -761,6 +761,16 @@ static int mt6370_chg_init_psy(struct mt6370_priv *priv)
 	return PTR_ERR_OR_ZERO(priv->psy);
 }
 
+<<<<<<< HEAD
+=======
+static void mt6370_chg_destroy_wq(void *data)
+{
+	struct workqueue_struct *wq = data;
+
+	destroy_workqueue(wq);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static irqreturn_t mt6370_attach_i_handler(int irq, void *data)
 {
 	struct mt6370_priv *priv = data;
@@ -886,10 +896,21 @@ static int mt6370_chg_probe(struct platform_device *pdev)
 
 	priv->attach = MT6370_ATTACH_STAT_DETACH;
 
+<<<<<<< HEAD
 	priv->wq = devm_alloc_ordered_workqueue(dev, "%s", 0, dev_name(priv->dev));
 	if (!priv->wq)
 		return -ENOMEM;
 
+=======
+	priv->wq = create_singlethread_workqueue(dev_name(priv->dev));
+	if (!priv->wq)
+		return -ENOMEM;
+
+	ret = devm_add_action_or_reset(dev, mt6370_chg_destroy_wq, priv->wq);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = devm_work_autocancel(dev, &priv->bc12_work, mt6370_chg_bc12_work_func);
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to init bc12 work\n");

@@ -14,7 +14,11 @@ void apic_disable(void)
 
 void xapic_enable(void)
 {
+<<<<<<< HEAD
 	u64 val = rdmsr(MSR_IA32_APICBASE);
+=======
+	uint64_t val = rdmsr(MSR_IA32_APICBASE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Per SDM: to enable xAPIC when in x2APIC must first disable APIC */
 	if (val & MSR_IA32_APICBASE_EXTD) {

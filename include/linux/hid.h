@@ -634,6 +634,7 @@ enum hid_battery_status {
 	HID_BATTERY_REPORTED,		/* Device sent unsolicited battery strength report */
 };
 
+<<<<<<< HEAD
 /**
  * struct hid_battery - represents a single battery power supply
  * @dev: pointer to the parent hid_device
@@ -666,6 +667,8 @@ struct hid_battery {
 	struct list_head list;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct hid_driver;
 struct hid_ll_driver;
 
@@ -702,10 +705,27 @@ struct hid_device {
 #ifdef CONFIG_HID_BATTERY_STRENGTH
 	/*
 	 * Power supply information for HID devices which report
+<<<<<<< HEAD
 	 * battery strength. Each battery is tracked separately in the
 	 * batteries list.
 	 */
 	struct list_head batteries;
+=======
+	 * battery strength. power_supply was successfully registered if
+	 * battery is non-NULL.
+	 */
+	struct power_supply *battery;
+	__s32 battery_capacity;
+	__s32 battery_min;
+	__s32 battery_max;
+	__s32 battery_report_type;
+	__s32 battery_report_id;
+	__s32 battery_charge_status;
+	enum hid_battery_status battery_status;
+	bool battery_avoid_query;
+	bool battery_present;
+	ktime_t battery_ratelimit_time;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	unsigned long status;						/* see STAT flags above */
@@ -721,7 +741,10 @@ struct hid_device {
 	char name[128];							/* Device name */
 	char phys[64];							/* Device physical location */
 	char uniq[64];							/* Device unique identifier (serial #) */
+<<<<<<< HEAD
 	u64 firmware_version;						/* Firmware version */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void *driver_data;
 
@@ -767,6 +790,7 @@ static inline void hid_set_drvdata(struct hid_device *hdev, void *data)
 	dev_set_drvdata(&hdev->dev, data);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HID_BATTERY_STRENGTH
 static inline struct hid_battery *hid_get_battery(struct hid_device *hdev)
 {
@@ -776,6 +800,8 @@ static inline struct hid_battery *hid_get_battery(struct hid_device *hdev)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HID_GLOBAL_STACK_SIZE 4
 #define HID_COLLECTION_STACK_SIZE 4
 

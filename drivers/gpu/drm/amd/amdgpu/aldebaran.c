@@ -179,7 +179,11 @@ aldebaran_mode2_perform_reset(struct amdgpu_reset_control *reset_ctl,
 	list_for_each_entry(tmp_adev, reset_device_list, reset_list) {
 		/* For XGMI run all resets in parallel to speed up the process */
 		if (tmp_adev->gmc.xgmi.num_physical_nodes > 1) {
+<<<<<<< HEAD
 			if (!queue_work(system_dfl_wq,
+=======
+			if (!queue_work(system_unbound_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					&tmp_adev->reset_cntl->reset_work))
 				r = -EALREADY;
 		} else

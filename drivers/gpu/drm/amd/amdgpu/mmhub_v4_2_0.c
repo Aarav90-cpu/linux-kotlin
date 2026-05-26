@@ -72,6 +72,7 @@ static const char *mmhub_client_ids_v4_2_0[][2] = {
 	[23][1] = "VCN1",
 };
 
+<<<<<<< HEAD
 static int mmhub_v4_2_0_get_xgmi_info(struct amdgpu_device *adev)
 {
 	u32 max_num_physical_nodes;
@@ -111,6 +112,8 @@ static int mmhub_v4_2_0_get_xgmi_info(struct amdgpu_device *adev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u64 mmhub_v4_2_0_get_fb_location(struct amdgpu_device *adev)
 {
 	u64 base;
@@ -170,7 +173,11 @@ static void mmhub_v4_2_0_setup_vm_pt_regs(struct amdgpu_device *adev,
 static void mmhub_v4_2_0_mid_init_gart_aperture_regs(struct amdgpu_device *adev,
 						     uint32_t mid_mask)
 {
+<<<<<<< HEAD
 	uint64_t pt_base;
+=======
+	uint64_t pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	if (adev->gmc.pdb0_bo)
@@ -191,10 +198,17 @@ static void mmhub_v4_2_0_mid_init_gart_aperture_regs(struct amdgpu_device *adev,
 
 			WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
 				     regMMVM_CONTEXT0_PAGE_TABLE_END_ADDR_LO32,
+<<<<<<< HEAD
 				     (u32)(adev->gmc.gart_end >> 12));
 			WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
 				     regMMVM_CONTEXT0_PAGE_TABLE_END_ADDR_HI32,
 				     (u32)(adev->gmc.gart_end >> 44));
+=======
+				     (u32)(adev->gmc.fb_end >> 12));
+			WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+				     regMMVM_CONTEXT0_PAGE_TABLE_END_ADDR_HI32,
+				     (u32)(adev->gmc.fb_end >> 44));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
 				     regMMVM_CONTEXT0_PAGE_TABLE_START_ADDR_LO32,
@@ -229,6 +243,7 @@ static void mmhub_v4_2_0_mid_init_system_aperture_regs(struct amdgpu_device *ade
 		return;
 
 	for_each_inst(i, mid_mask) {
+<<<<<<< HEAD
 		if (adev->gmc.pdb0_bo) {
 			/* Disable agp and system aperture
 			 * when vmid0 page table is enabled */
@@ -297,6 +312,43 @@ static void mmhub_v4_2_0_mid_init_system_aperture_regs(struct amdgpu_device *ade
 				     upper_32_bits(max(adev->gmc.fb_end,
 						   adev->gmc.agp_end) >> 18));
 		}
+=======
+		/* Program the AGP BAR */
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BASE_LO32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BASE_HI32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BOT_LO32,
+			     lower_32_bits(adev->gmc.agp_start >> 24));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BOT_HI32,
+			     upper_32_bits(adev->gmc.agp_start >> 24));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_TOP_LO32,
+			     lower_32_bits(adev->gmc.agp_end >> 24));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_TOP_HI32,
+			     upper_32_bits(adev->gmc.agp_end >> 24));
+
+		/* Program the system aperture low logical page number. */
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_LOW_ADDR_LO32,
+			     lower_32_bits(min(adev->gmc.fb_start,
+					       adev->gmc.agp_start) >> 18));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_LOW_ADDR_HI32,
+			     upper_32_bits(min(adev->gmc.fb_start,
+					       adev->gmc.agp_start) >> 18));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_HIGH_ADDR_LO32,
+			     lower_32_bits(max(adev->gmc.fb_end,
+					       adev->gmc.agp_end) >> 18));
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_HIGH_ADDR_HI32,
+			     upper_32_bits(max(adev->gmc.fb_end,
+					       adev->gmc.agp_end) >> 18));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Set default page address. */
 		value = amdgpu_gmc_vram_mc2pa(adev, adev->mem_scratch.gpu_addr);
@@ -324,6 +376,41 @@ static void mmhub_v4_2_0_mid_init_system_aperture_regs(struct amdgpu_device *ade
 		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
 			     regMMVM_L2_PROTECTION_FAULT_CNTL2, tmp);
 	}
+<<<<<<< HEAD
+=======
+
+	/* In the case squeezing vram into GART aperture, we don't use
+	 * FB aperture and AGP aperture. Disable them.
+	 */
+	if (adev->gmc.pdb0_bo) {
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_FB_LOCATION_TOP_LO32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_FB_LOCATION_TOP_HI32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_FB_LOCATION_BASE_LO32, 0xFFFFFFFF);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_FB_LOCATION_BASE_HI32, 1);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_TOP_LO32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_TOP_HI32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BOT_LO32, 0xFFFFFFFF);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_AGP_BOT_HI32, 1);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_LOW_ADDR_LO32,
+			     0xFFFFFFFF);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_LOW_ADDR_HI32,
+			     0x7F);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_HIGH_ADDR_LO32, 0);
+		WREG32_SOC15(MMHUB, GET_INST(MMHUB, i),
+			     regMMMC_VM_SYSTEM_APERTURE_HIGH_ADDR_HI32, 0);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mmhub_v4_2_0_mid_init_tlb_regs(struct amdgpu_device *adev,
@@ -716,7 +803,11 @@ mmhub_v4_2_0_print_l2_protection_fault_status(struct amdgpu_device *adev,
 					      uint32_t status)
 {
 	uint32_t cid, rw;
+<<<<<<< HEAD
 	const char *mmhub_cid;
+=======
+	const char *mmhub_cid = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cid = REG_GET_FIELD(status,
 			    MMVM_L2_PROTECTION_FAULT_STATUS_LO32, CID);
@@ -726,7 +817,19 @@ mmhub_v4_2_0_print_l2_protection_fault_status(struct amdgpu_device *adev,
 	dev_err(adev->dev,
 		"MMVM_L2_PROTECTION_FAULT_STATUS_LO32:0x%08X\n",
 		status);
+<<<<<<< HEAD
 	mmhub_cid = amdgpu_mmhub_client_name(&adev->mmhub, cid, rw);
+=======
+	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
+	case IP_VERSION(4, 2, 0):
+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v4_2_0) ?
+			mmhub_client_ids_v4_2_0[cid][rw] : NULL;
+		break;
+	default:
+		mmhub_cid = NULL;
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
 		mmhub_cid ? mmhub_cid : "unknown", cid);
 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
@@ -817,10 +920,13 @@ static void mmhub_v4_2_0_init(struct amdgpu_device *adev)
 
 	mid_mask = adev->aid_mask;
 	mmhub_v4_2_0_mid_init(adev, mid_mask);
+<<<<<<< HEAD
 
 	amdgpu_mmhub_init_client_info(&adev->mmhub,
 				     mmhub_client_ids_v4_2_0,
 				     ARRAY_SIZE(mmhub_client_ids_v4_2_0));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -920,7 +1026,10 @@ const struct amdgpu_mmhub_funcs mmhub_v4_2_0_funcs = {
 	.set_fault_enable_default = mmhub_v4_2_0_set_fault_enable_default,
 	.set_clockgating = mmhub_v4_2_0_set_clockgating,
 	.get_clockgating = mmhub_v4_2_0_get_clockgating,
+<<<<<<< HEAD
 	.get_xgmi_info = mmhub_v4_2_0_get_xgmi_info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int mmhub_v4_2_0_xcp_resume(void *handle, uint32_t inst_mask)

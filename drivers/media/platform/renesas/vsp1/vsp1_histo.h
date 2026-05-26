@@ -36,6 +36,11 @@ struct vsp1_histogram {
 	struct video_device video;
 	struct media_pad pad;
 
+<<<<<<< HEAD
+=======
+	const u32 *formats;
+	unsigned int num_formats;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t data_size;
 	u32 meta_format;
 

@@ -1190,6 +1190,7 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
 			cval->res = 1;
 		}
 		break;
+<<<<<<< HEAD
 
 	case USB_ID(0x0e6f, 0x024a): /* PDP Riffmaster for PS4 */
 	case USB_ID(0x0e6f, 0x0249): /* PDP Riffmaster for PS5 */
@@ -1200,6 +1201,8 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
 		}
 		break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
 		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
 			usb_audio_info(chip,
@@ -1243,6 +1246,7 @@ static void init_cur_mix_raw(struct usb_mixer_elem_info *cval, int ch, int idx)
 }
 
 /*
+<<<<<<< HEAD
  * Additional checks for sticky mixers
  *
  * Some devices' volume control mixers are sticky, which accept SET_CUR but
@@ -1310,12 +1314,18 @@ static void check_volume_control_res(struct usb_mixer_elem_info *cval,
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * retrieve the minimum and maximum values for the specified control
  */
 static int get_min_max_with_quirks(struct usb_mixer_elem_info *cval,
 				   int default_min, struct snd_kcontrol *kctl)
 {
+<<<<<<< HEAD
 	int i, idx, ret;
+=======
+	int i, idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* for failsafe */
 	cval->min = default_min;
@@ -1341,7 +1351,11 @@ static int get_min_max_with_quirks(struct usb_mixer_elem_info *cval,
 				      "%d:%d: cannot get min/max values for control %d (id %d)\n",
 				   cval->head.id, mixer_ctrl_intf(cval->head.mixer),
 							       cval->control, cval->head.id);
+<<<<<<< HEAD
 			return -EAGAIN;
+=======
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (get_ctl_value(cval, UAC_GET_RES,
 				  (cval->control << 8) | minchn,
@@ -1364,6 +1378,7 @@ static int get_min_max_with_quirks(struct usb_mixer_elem_info *cval,
 		if (cval->res == 0)
 			cval->res = 1;
 
+<<<<<<< HEAD
 		if (cval->min < cval->max) {
 			int saved;
 
@@ -1383,6 +1398,39 @@ static int get_min_max_with_quirks(struct usb_mixer_elem_info *cval,
 		}
 
 no_checks:
+=======
+		/* Additional checks for the proper resolution
+		 *
+		 * Some devices report smaller resolutions than actually
+		 * reacting.  They don't return errors but simply clip
+		 * to the lower aligned value.
+		 */
+		if (cval->min + cval->res < cval->max) {
+			int last_valid_res = cval->res;
+			int saved, test, check;
+			if (get_cur_mix_raw(cval, minchn, &saved) < 0)
+				goto no_res_check;
+			for (;;) {
+				test = saved;
+				if (test < cval->max)
+					test += cval->res;
+				else
+					test -= cval->res;
+				if (test < cval->min || test > cval->max ||
+				    snd_usb_set_cur_mix_value(cval, minchn, 0, test) ||
+				    get_cur_mix_raw(cval, minchn, &check)) {
+					cval->res = last_valid_res;
+					break;
+				}
+				if (test == check)
+					break;
+				cval->res *= 2;
+			}
+			snd_usb_set_cur_mix_value(cval, minchn, 0, saved);
+		}
+
+no_res_check:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cval->initialized = 1;
 	}
 
@@ -1453,7 +1501,10 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
 				  struct snd_ctl_elem_info *uinfo)
 {
 	struct usb_mixer_elem_info *cval = snd_kcontrol_chip(kcontrol);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cval->val_type == USB_MIXER_BOOLEAN ||
 	    cval->val_type == USB_MIXER_INV_BOOLEAN)
@@ -1464,9 +1515,14 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
 	if (cval->val_type != USB_MIXER_BOOLEAN &&
 	    cval->val_type != USB_MIXER_INV_BOOLEAN) {
 		if (!cval->initialized) {
+<<<<<<< HEAD
 			ret = get_min_max_with_quirks(cval, 0, kcontrol);
 			if ((ret >= 0 || ret == -EAGAIN) &&
 			    cval->initialized && cval->dBmin >= cval->dBmax) {
+=======
+			get_min_max_with_quirks(cval, 0, kcontrol);
+			if (cval->initialized && cval->dBmin >= cval->dBmax) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				kcontrol->vd[0].access &= 
 					~(SNDRV_CTL_ELEM_ACCESS_TLV_READ |
 					  SNDRV_CTL_ELEM_ACCESS_TLV_CALLBACK);
@@ -1734,6 +1790,7 @@ static const struct usb_feature_control_info *get_feature_control_info(int contr
 	return NULL;
 }
 
+<<<<<<< HEAD
 static bool check_insane_volume_range(struct usb_mixer_interface *mixer,
 				      struct snd_kcontrol *kctl,
 				      struct usb_mixer_elem_info *cval)
@@ -1800,6 +1857,11 @@ static bool check_insane_volume_range(struct usb_mixer_interface *mixer,
 static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 				const struct usbmix_name_map *imap,
 				u64 ctl_mask, int control,
+=======
+static void __build_feature_ctl(struct usb_mixer_interface *mixer,
+				const struct usbmix_name_map *imap,
+				unsigned int ctl_mask, int control,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				struct usb_audio_term *iterm,
 				struct usb_audio_term *oterm,
 				int unitid, int nameid, int readonly_mask)
@@ -1810,7 +1872,11 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 	struct snd_kcontrol *kctl;
 	struct usb_mixer_elem_info *cval;
 	const struct usbmix_name_map *map;
+<<<<<<< HEAD
 	int ret;
+=======
+	unsigned int range;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (control == UAC_FU_GRAPHIC_EQUALIZER) {
 		/* FIXME: not supported yet */
@@ -1844,7 +1910,11 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 		cval->master_readonly = readonly_mask;
 	} else {
 		int i, c = 0;
+<<<<<<< HEAD
 		for (i = 0; i < MAX_CHANNELS; i++)
+=======
+		for (i = 0; i < 16; i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ctl_mask & BIT(i))
 				c++;
 		cval->channels = c;
@@ -1924,10 +1994,17 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 	}
 
 	/* get min/max values */
+<<<<<<< HEAD
 	ret = get_min_max_with_quirks(cval, 0, kctl);
 
 	/* skip a bogus volume range */
 	if ((ret < 0 && ret != -EAGAIN) || cval->max <= cval->min) {
+=======
+	get_min_max_with_quirks(cval, 0, kctl);
+
+	/* skip a bogus volume range */
+	if (cval->max <= cval->min) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		usb_audio_dbg(mixer->chip,
 			      "[%d] FU [%s] skipped due to invalid volume\n",
 			      cval->head.id, kctl->id.name);
@@ -1948,6 +2025,7 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 
 	snd_usb_mixer_fu_apply_quirk(mixer, cval, unitid, kctl);
 
+<<<<<<< HEAD
 	if (check_insane_volume_range(mixer, kctl, cval)) {
 		usb_audio_warn(mixer->chip, "[%d] FU [%s] ch = %d, val = %d/%d/%d\n",
 			       cval->head.id, kctl->id.name, cval->channels,
@@ -1958,11 +2036,36 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
 			      cval->min, cval->max, cval->res);
 	}
 
+=======
+	range = (cval->max - cval->min) / cval->res;
+	/*
+	 * Are there devices with volume range more than 255? I use a bit more
+	 * to be sure. 384 is a resolution magic number found on Logitech
+	 * devices. It will definitively catch all buggy Logitech devices.
+	 */
+	if (range > 384) {
+		usb_audio_warn(mixer->chip,
+			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+			       range);
+		usb_audio_warn(mixer->chip,
+			       "[%d] FU [%s] ch = %d, val = %d/%d/%d",
+			       cval->head.id, kctl->id.name, cval->channels,
+			       cval->min, cval->max, cval->res);
+	}
+
+	usb_audio_dbg(mixer->chip, "[%d] FU [%s] ch = %d, val = %d/%d/%d\n",
+		      cval->head.id, kctl->id.name, cval->channels,
+		      cval->min, cval->max, cval->res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snd_usb_mixer_add_control(&cval->head, kctl);
 }
 
 static void build_feature_ctl(struct mixer_build *state, void *raw_desc,
+<<<<<<< HEAD
 			      u64 ctl_mask, int control,
+=======
+			      unsigned int ctl_mask, int control,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      struct usb_audio_term *iterm, int unitid,
 			      int readonly_mask)
 {
@@ -1974,7 +2077,11 @@ static void build_feature_ctl(struct mixer_build *state, void *raw_desc,
 }
 
 static void build_feature_ctl_badd(struct usb_mixer_interface *mixer,
+<<<<<<< HEAD
 			      u64 ctl_mask, int control, int unitid,
+=======
+			      unsigned int ctl_mask, int control, int unitid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      const struct usbmix_name_map *badd_map)
 {
 	__build_feature_ctl(mixer, badd_map, ctl_mask, control,
@@ -2150,7 +2257,11 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
 		bmaControls = ftr->bmaControls;
 	}
 
+<<<<<<< HEAD
 	if (channels > MAX_CHANNELS) {
+=======
+	if (channels > 32) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		usb_audio_info(state->chip,
 			       "usbmixer: too many channels (%d) in unit %d\n",
 			       channels, unitid);
@@ -2188,7 +2299,11 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
 	if (state->mixer->protocol == UAC_VERSION_1) {
 		/* check all control types */
 		for (i = 0; i < 10; i++) {
+<<<<<<< HEAD
 			u64 ch_bits = 0;
+=======
+			unsigned int ch_bits = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			int control = audio_feature_info[i].control;
 
 			for (j = 0; j < channels; j++) {
@@ -2214,7 +2329,11 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
 		}
 	} else { /* UAC_VERSION_2/3 */
 		for (i = 0; i < ARRAY_SIZE(audio_feature_info); i++) {
+<<<<<<< HEAD
 			u64 ch_bits = 0;
+=======
+			unsigned int ch_bits = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			unsigned int ch_read_only = 0;
 			int control = audio_feature_info[i].control;
 
@@ -2301,7 +2420,10 @@ static void build_mixer_unit_ctl(struct mixer_build *state,
 	unsigned int i, len;
 	struct snd_kcontrol *kctl;
 	const struct usbmix_name_map *map;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	map = find_map(state->map, unitid, 0);
 	if (check_ignored_ctl(map))
@@ -2324,11 +2446,15 @@ static void build_mixer_unit_ctl(struct mixer_build *state,
 	}
 
 	/* get min/max values */
+<<<<<<< HEAD
 	ret = get_min_max(cval, 0);
 	if (ret < 0 && ret != -EAGAIN) {
 		usb_mixer_elem_info_free(cval);
 		return;
 	}
+=======
+	get_min_max(cval, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kctl = snd_ctl_new1(&usb_feature_unit_ctl, cval);
 	if (!kctl) {
@@ -2674,6 +2800,7 @@ static int build_audio_procunit(struct mixer_build *state, int unitid,
 
 		/* get min/max values */
 		switch (type) {
+<<<<<<< HEAD
 		case USB_XU_CLOCK_RATE:
 			/*
 			 * E-Mu USB 0404/0202/TrackerPre/0204
@@ -2684,6 +2811,8 @@ static int build_audio_procunit(struct mixer_build *state, int unitid,
 			cval->res = 1;
 			cval->initialized = 1;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case UAC_PROCESS_UP_DOWNMIX: {
 			bool mode_sel = false;
 
@@ -2710,6 +2839,7 @@ static int build_audio_procunit(struct mixer_build *state, int unitid,
 				break;
 			}
 
+<<<<<<< HEAD
 			fallthrough;
 		}
 		default:
@@ -2718,6 +2848,24 @@ static int build_audio_procunit(struct mixer_build *state, int unitid,
 				usb_mixer_elem_info_free(cval);
 				return err;
 			}
+=======
+			get_min_max(cval, valinfo->min_value);
+			break;
+		}
+		case USB_XU_CLOCK_RATE:
+			/*
+			 * E-Mu USB 0404/0202/TrackerPre/0204
+			 * samplerate control quirk
+			 */
+			cval->min = 0;
+			cval->max = 5;
+			cval->res = 1;
+			cval->initialized = 1;
+			break;
+		default:
+			get_min_max(cval, valinfo->min_value);
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		err = get_cur_ctl_value(cval, cval->control << 8, &val);
@@ -3534,7 +3682,11 @@ static void snd_usb_mixer_dump_cval(struct snd_info_buffer *buffer,
 		[USB_MIXER_U32] = "U32",
 		[USB_MIXER_BESPOKEN] = "BESPOKEN",
 	};
+<<<<<<< HEAD
 	snd_iprintf(buffer, "    Info: id=%i, control=%i, cmask=0x%llx, "
+=======
+	snd_iprintf(buffer, "    Info: id=%i, control=%i, cmask=0x%x, "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    "channels=%i, type=\"%s\"\n", cval->head.id,
 			    cval->control, cval->cmask, cval->channels,
 			    val_types[cval->val_type]);

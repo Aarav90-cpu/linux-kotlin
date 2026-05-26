@@ -1380,9 +1380,12 @@ static int rkisp1_enum_framesizes(struct file *file, void *fh,
 	};
 	struct rkisp1_capture *cap = video_drvdata(file);
 
+<<<<<<< HEAD
 	if (!rkisp1_find_fmt_cfg(cap, fsize->pixel_format))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fsize->index != 0)
 		return -EINVAL;
 

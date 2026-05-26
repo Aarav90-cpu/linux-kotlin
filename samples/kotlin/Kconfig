@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: GPL-2.0
+
+menuconfig SAMPLES_KOTLIN
+	bool "Kotlin samples"
+	depends on KOTLIN
+	help
+	  You can build sample Kotlin/Native kernel code here.
+
+	  These samples demonstrate how to write Linux kernel modules
+	  in Kotlin/Native, using the Kotlin kernel API to interact
+	  with kernel subsystems.
+
+	  If unsure, say N.
+
+if SAMPLES_KOTLIN
+
+config SAMPLE_KOTLIN_MINIMAL
+	tristate "Minimal"
+	help
+	  This option builds the Kotlin/Native minimal module sample.
+
+	  It demonstrates the basic structure of a Kotlin kernel module:
+	  module declaration via annotations, initialization, and cleanup.
+
+	  To compile this as a module, choose M here:
+	  the module will be called kotlin_minimal.
+
+	  If unsure, say N.
+
+config SAMPLE_KOTLIN_USERSPACE
+	tristate "Kotlin Userspace Init (linux-kotlin kernel)"
+	help
+	  This option builds a pure native Kotlin executable and configures
+	  an initramfs specification for it.
+
+	  When booted with this initramfs, the Linux kernel will start the
+	  Kotlin process as PID 1 (init), running entirely without bash,
+	  glibc, or a JVM!
+
+	  If unsure, say N.
+
+config SAMPLE_KOTLIN_PRINT
+	tristate "Printing macros"
+	help
+	  This option builds the Kotlin/Native printing sample module.
+
+	  It demonstrates the various kernel logging functions available
+	  from Kotlin: pr_info, pr_warn, pr_err, pr_debug, etc.
+
+	  To compile this as a module, choose M here:
+	  the module will be called kotlin_print.
+
+	  If unsure, say N.
+
+config SAMPLE_KOTLIN_PARAMETERS
+	tristate "Module parameters"
+	help
+	  This option builds a Kotlin/Native module that demonstrates
+	  how to declare and use module parameters (the equivalent of
+	  C's module_param() macro).
+
+	  To compile this as a module, choose M here:
+	  the module will be called kotlin_parameters.
+
+	  If unsure, say N.
+
+config SAMPLE_KOTLIN_DRIVER_PLATFORM
+	tristate "Platform Driver"
+	help
+	  This option builds a Kotlin/Native platform driver sample.
+
+	  To compile this as a module, choose M here:
+	  the module will be called kotlin_driver_platform.
+
+	  If unsure, say N.
+
+config SAMPLE_KOTLIN_PCI_DRIVER
+	tristate "PCI driver"
+	depends on PCI
+	help
+	  This option builds a sample Kotlin/Native PCI driver.
+	  It demonstrates probing and registering a PCI device natively
+	  using Kotlin and C-interop.
+
+	  If unsure, say N.
+
+endif # SAMPLES_KOTLIN

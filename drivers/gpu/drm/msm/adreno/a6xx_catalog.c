@@ -1761,6 +1761,7 @@ static const u32 x285_protect_regs[] = {
 
 DECLARE_ADRENO_PROTECT(x285_protect, 15);
 
+<<<<<<< HEAD
 static const struct adreno_reglist_pipe x285_dyn_pwrup_reglist_regs[] = {
 	{ REG_A8XX_GRAS_TSEFE_DBG_ECO_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
 	{ REG_A8XX_GRAS_NC_MODE_CNTL, 0, BIT(PIPE_BV) | BIT(PIPE_BR) },
@@ -1799,6 +1800,8 @@ static const struct adreno_reglist_pipe x285_dyn_pwrup_reglist_regs[] = {
 };
 DECLARE_ADRENO_REGLIST_PIPE_LIST(x285_dyn_pwrup_reglist);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct adreno_reglist_pipe a840_nonctxt_regs[] = {
 	{ REG_A8XX_CP_SMMU_STREAM_ID_LPAC, 0x00000101, BIT(PIPE_NONE) },
 	{ REG_A8XX_GRAS_DBG_ECO_CNTL, 0x00000800, BIT(PIPE_BV) | BIT(PIPE_BR) },
@@ -1929,6 +1932,7 @@ static const struct adreno_reglist a840_gbif[] = {
 	{ },
 };
 
+<<<<<<< HEAD
 static const uint32_t a840_pwrup_reglist_regs[] = {
 	REG_A7XX_SP_HLSQ_TIMEOUT_THRESHOLD_DP,
 	REG_A7XX_SP_READ_SEL,
@@ -2108,6 +2112,8 @@ static const struct adreno_reglist_pipe a840_dyn_pwrup_reglist_regs[] = {
 };
 DECLARE_ADRENO_REGLIST_PIPE_LIST(a840_dyn_pwrup_reglist);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct adreno_info a8xx_gpus[] = {
 	{
 		.chip_ids = ADRENO_CHIP_IDS(0x44070001),
@@ -2119,16 +2125,23 @@ static const struct adreno_info a8xx_gpus[] = {
 		.gmem = 21 * SZ_1M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.quirks = ADRENO_QUIRK_HAS_CACHED_COHERENT |
+<<<<<<< HEAD
 			  ADRENO_QUIRK_HAS_HW_APRIV |
 			  ADRENO_QUIRK_PREEMPTION |
 			  ADRENO_QUIRK_SOFTFUSE,
+=======
+			  ADRENO_QUIRK_HAS_HW_APRIV,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.funcs = &a8xx_gpu_funcs,
 		.a6xx = &(const struct a6xx_info) {
 			.protect = &x285_protect,
 			.nonctxt_reglist = x285_nonctxt_regs,
+<<<<<<< HEAD
 			.pwrup_reglist = &a840_pwrup_reglist,
 			.dyn_pwrup_reglist = &x285_dyn_pwrup_reglist,
 			.ifpc_reglist = &a840_ifpc_reglist,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.gbif_cx = a840_gbif,
 			.max_slices = 4,
 			.gmu_chipid = 0x8010100,
@@ -2144,12 +2157,15 @@ static const struct adreno_info a8xx_gpus[] = {
 				{ /* sentinel */ },
 			},
 		},
+<<<<<<< HEAD
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
 			{ 388, 1 },
 			{ 357, 2 },
 			{ 284, 3 },
 		),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.chip_ids = ADRENO_CHIP_IDS(0x44050a01),
 		.family = ADRENO_8XX_GEN2,
@@ -2161,16 +2177,23 @@ static const struct adreno_info a8xx_gpus[] = {
 		.gmem = 18 * SZ_1M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.quirks = ADRENO_QUIRK_HAS_CACHED_COHERENT |
+<<<<<<< HEAD
 			  ADRENO_QUIRK_HAS_HW_APRIV |
 			  ADRENO_QUIRK_PREEMPTION |
 			  ADRENO_QUIRK_IFPC,
+=======
+			  ADRENO_QUIRK_HAS_HW_APRIV,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.funcs = &a8xx_gpu_funcs,
 		.a6xx = &(const struct a6xx_info) {
 			.protect = &a840_protect,
 			.nonctxt_reglist = a840_nonctxt_regs,
+<<<<<<< HEAD
 			.pwrup_reglist = &a840_pwrup_reglist,
 			.dyn_pwrup_reglist = &a840_dyn_pwrup_reglist,
 			.ifpc_reglist = &a840_ifpc_reglist,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			.gbif_cx = a840_gbif,
 			.max_slices = 3,
 			.gmu_chipid = 0x8020100,
@@ -2187,12 +2210,15 @@ static const struct adreno_info a8xx_gpus[] = {
 			},
 		},
 		.preempt_record_size = 19708 * SZ_1K,
+<<<<<<< HEAD
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
 			{ 273, 1 },
 			{ 252, 2 },
 			{ 221, 3 },
 		),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 };
 

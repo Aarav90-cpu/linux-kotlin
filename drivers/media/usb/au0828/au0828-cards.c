@@ -105,6 +105,7 @@ struct au0828_board au0828_boards[] = {
 		.tuner_addr = 0x60,
 		.i2c_clk_divider = AU0828_I2C_CLK_250KHZ,
 	},
+<<<<<<< HEAD
 	[AU0828_BOARD_HAUPPAUGE_IMPACTVCBE] = {
 		.name	= "Hauppauge Impact VCB-e",
 		.tuner_type = TUNER_ABSENT,
@@ -145,6 +146,8 @@ struct au0828_board au0828_boards[] = {
 			},
 		},
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Tuner callback function for au0828 boards. Currently only needed
@@ -160,8 +163,11 @@ int au0828_tuner_callback(void *priv, int component, int command, int arg)
 	case AU0828_BOARD_HAUPPAUGE_HVR850:
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q:
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q_MXL:
+<<<<<<< HEAD
 	case AU0828_BOARD_HAUPPAUGE_HVR1265:
 	case AU0828_BOARD_HAUPPAUGE_IMPACTVCBE:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case AU0828_BOARD_DVICO_FUSIONHDTV7:
 		if (command == 0) {
 			/* Tuner Reset Command from xc5000 */
@@ -232,8 +238,11 @@ void au0828_card_setup(struct au0828_dev *dev)
 	case AU0828_BOARD_HAUPPAUGE_HVR850:
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q:
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q_MXL:
+<<<<<<< HEAD
 	case AU0828_BOARD_HAUPPAUGE_HVR1265:
 	case AU0828_BOARD_HAUPPAUGE_IMPACTVCBE:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case AU0828_BOARD_HAUPPAUGE_WOODBURY:
 		if (dev->i2c_rc == 0)
 			hauppauge_eeprom(dev, eeprom+0xa0);
@@ -292,8 +301,11 @@ void au0828_gpio_setup(struct au0828_dev *dev)
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q:
 	case AU0828_BOARD_HAUPPAUGE_HVR950Q_MXL:
 	case AU0828_BOARD_HAUPPAUGE_WOODBURY:
+<<<<<<< HEAD
 	case AU0828_BOARD_HAUPPAUGE_HVR1265:
 	case AU0828_BOARD_HAUPPAUGE_IMPACTVCBE:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* GPIO's
 		 * 4 - CS5340
 		 * 5 - AU8522 Demodulator
@@ -386,10 +398,13 @@ struct usb_device_id au0828_usb_id_table[] = {
 		.driver_info = AU0828_BOARD_HAUPPAUGE_HVR950Q },
 	{ USB_DEVICE(0x2040, 0x7270),
 		.driver_info = AU0828_BOARD_HAUPPAUGE_HVR950Q },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x2040, 0x72b0),
 		.driver_info = AU0828_BOARD_HAUPPAUGE_IMPACTVCBE },
 	{ USB_DEVICE(0x2040, 0x72a0),
 		.driver_info = AU0828_BOARD_HAUPPAUGE_HVR1265 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ },
 };
 

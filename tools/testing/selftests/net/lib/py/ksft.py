@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 import fnmatch
 import functools
 import getopt
 import inspect
 import os
+=======
+import functools
+import inspect
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 import signal
 import sys
 import time
@@ -34,6 +39,7 @@ class KsftTerminate(KeyboardInterrupt):
     pass
 
 
+<<<<<<< HEAD
 class _KsftArgs:
     def __init__(self):
         self.list_tests = False
@@ -73,6 +79,8 @@ def _ksft_supports_color():
     return True
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def ksft_pr(*objs, **kwargs):
     """
     Print logs to stdout.
@@ -207,6 +215,7 @@ def ktap_result(ok, cnt=1, case_name="", comment=""):
         res += "." + case_name
     if comment:
         res += " # " + comment
+<<<<<<< HEAD
     if _ksft_supports_color():
         if comment.startswith(("SKIP", "XFAIL")):
             color = "\033[33m"
@@ -215,6 +224,8 @@ def ktap_result(ok, cnt=1, case_name="", comment=""):
         else:
             color = "\033[31m"
         res = color + res + "\033[0m"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     print(res, flush=True)
 
 
@@ -328,6 +339,7 @@ def _ksft_intr(signum, frame):
         ksft_pr(f"Ignoring SIGTERM (cnt: {term_cnt}), already exiting...")
 
 
+<<<<<<< HEAD
 def _ksft_name_matches(name, pattern):
     if '*' in pattern or '?' in pattern or '[' in pattern:
         return fnmatch.fnmatchcase(name, pattern)
@@ -348,6 +360,10 @@ def _ksft_generate_test_cases(cases, globs, case_pfx, args, cli_args):
 
     If -l is given, prints matching test names and exits.
     """
+=======
+def _ksft_generate_test_cases(cases, globs, case_pfx, args):
+    """Generate a flat list of (func, args, name) tuples"""
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     cases = cases or []
     test_cases = []
@@ -377,6 +393,7 @@ def _ksft_generate_test_cases(cases, globs, case_pfx, args, cli_args):
         else:
             test_cases.append((func, args, func.__name__))
 
+<<<<<<< HEAD
     if cli_args.filters:
         test_cases = [tc for tc in test_cases
                       if _ksft_test_enabled(tc[2], cli_args.filters)]
@@ -386,13 +403,19 @@ def _ksft_generate_test_cases(cases, globs, case_pfx, args, cli_args):
             print(name)
         sys.exit(0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     return test_cases
 
 
 def ksft_run(cases=None, globs=None, case_pfx=None, args=()):
+<<<<<<< HEAD
     cli_args = _KsftArgs()
     test_cases = _ksft_generate_test_cases(cases, globs, case_pfx, args,
                                            cli_args)
+=======
+    test_cases = _ksft_generate_test_cases(cases, globs, case_pfx, args)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     global term_cnt
     term_cnt = 0
@@ -400,6 +423,7 @@ def ksft_run(cases=None, globs=None, case_pfx=None, args=()):
 
     totals = {"pass": 0, "fail": 0, "skip": 0, "xfail": 0}
 
+<<<<<<< HEAD
     global KSFT_RESULT
     if KSFT_RESULT is not None:
         raise RuntimeError("ksft_run() can't be called multiple times.")
@@ -407,6 +431,12 @@ def ksft_run(cases=None, globs=None, case_pfx=None, args=()):
     print("TAP version 13", flush=True)
     print("1.." + str(len(test_cases)), flush=True)
 
+=======
+    print("TAP version 13", flush=True)
+    print("1.." + str(len(test_cases)), flush=True)
+
+    global KSFT_RESULT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     cnt = 0
     stop = False
     for func, args, name in test_cases:

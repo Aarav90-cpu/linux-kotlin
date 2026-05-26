@@ -350,7 +350,11 @@ enum {
 #define AUDIT_STATUS_ENABLED			0x0001
 #define AUDIT_STATUS_FAILURE			0x0002
 #define AUDIT_STATUS_PID			0x0004
+<<<<<<< HEAD
 #define AUDIT_STATUS_RATE_LIMIT			0x0008
+=======
+#define AUDIT_STATUS_RATE_LIMIT		0x0008
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AUDIT_STATUS_BACKLOG_LIMIT		0x0010
 #define AUDIT_STATUS_BACKLOG_WAIT_TIME		0x0020
 #define AUDIT_STATUS_LOST			0x0040
@@ -386,8 +390,13 @@ enum {
  * These bits disambiguate different calling conventions that share an
  * ELF machine type, bitness, and endianness
  */
+<<<<<<< HEAD
 #define __AUDIT_ARCH_CONVENTION_MASK		0x30000000
 #define __AUDIT_ARCH_CONVENTION_MIPS64_N32	0x20000000
+=======
+#define __AUDIT_ARCH_CONVENTION_MASK 0x30000000
+#define __AUDIT_ARCH_CONVENTION_MIPS64_N32 0x20000000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* distinguish syscall tables */
 #define __AUDIT_ARCH_64BIT 0x80000000
@@ -508,7 +517,11 @@ struct audit_tty_status {
 	__u32		log_passwd;	/* 1 = enabled, 0 = disabled */
 };
 
+<<<<<<< HEAD
 #define AUDIT_UID_UNSET ((unsigned int)-1)
+=======
+#define AUDIT_UID_UNSET (unsigned int)-1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define AUDIT_SID_UNSET ((unsigned int)-1)
 
 /* audit_rule_data supports filter rules with both integer and string

@@ -129,6 +129,7 @@ Description:
 			-EIO if FW refuses to change the provisioning.
 
 
+<<<<<<< HEAD
 What:		/sys/bus/pci/drivers/xe/.../sriov_admin/.bulk_profile/vram_quota
 What:		/sys/bus/pci/drivers/xe/.../sriov_admin/vf<n>/profile/vram_quota
 Date:		February 2026
@@ -160,6 +161,8 @@ Description:
 			-EIO if FW refuses to change the provisioning.
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 What:		/sys/bus/pci/drivers/xe/.../sriov_admin/vf<n>/stop
 Date:		October 2025
 KernelVersion:	6.19

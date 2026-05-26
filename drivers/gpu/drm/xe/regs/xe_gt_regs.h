@@ -20,7 +20,10 @@
 #define MTL_MIRROR_TARGET_WP1				XE_REG(0xc60)
 #define   MTL_CAGF_MASK					REG_GENMASK(8, 0)
 #define   MTL_CC_MASK					REG_GENMASK(12, 9)
+<<<<<<< HEAD
 #define   MTL_CRST					0xf
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* RPM unit config (Gen8+) */
 #define RPM_CONFIG0					XE_REG(0xd00)
@@ -59,7 +62,11 @@
 #define   MCR_SLICE(slice)			REG_FIELD_PREP(MCR_SLICE_MASK, slice)
 #define   MCR_SUBSLICE_MASK			REG_GENMASK(26, 24)
 #define   MCR_SUBSLICE(subslice)		REG_FIELD_PREP(MCR_SUBSLICE_MASK, subslice)
+<<<<<<< HEAD
 #define   MTL_MCR_GROUPID			REG_GENMASK(12, 8)
+=======
+#define   MTL_MCR_GROUPID			REG_GENMASK(11, 8)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   MTL_MCR_INSTANCEID			REG_GENMASK(3, 0)
 
 #define PS_INVOCATION_COUNT			XE_REG(0x2348)
@@ -101,12 +108,15 @@
 #define VE1_AUX_INV				XE_REG(0x42b8)
 #define   AUX_INV				REG_BIT(0)
 
+<<<<<<< HEAD
 #define GAMSTLB_CTRL				XE_REG_MCR(0x477c)
 #define   DIS_PEND_GPA_LINK			REG_BIT(13)
 
 #define GAMSTLB_CTRL2				XE_REG_MCR(0x4788)
 #define   STLB_SINGLE_BANK_MODE			REG_BIT(11)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XE2_LMEM_CFG				XE_REG(0x48b0)
 
 #define XE2_GAMWALK_CTRL			0x47e4
@@ -114,9 +124,12 @@
 #define XE2_GAMWALK_CTRL_3D			XE_REG_MCR(XE2_GAMWALK_CTRL)
 #define   EN_CMP_1WCOH_GW			REG_BIT(14)
 
+<<<<<<< HEAD
 #define MMIOATSREQLIMIT_GAM_WALK_3D             XE_REG_MCR(0x47f8)
 #define   DIS_ATS_WRONLY_PG                     REG_BIT(18)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XEHP_FLAT_CCS_BASE_ADDR			XE_REG_MCR(0x4910)
 #define XEHP_FLAT_CCS_PTR			REG_GENMASK(31, 8)
 
@@ -135,7 +148,10 @@
 #define   VS_HIT_MAX_VALUE_MASK			REG_GENMASK(25, 20)
 #define   DIS_MESH_PARTIAL_AUTOSTRIP		REG_BIT(16)
 #define   DIS_MESH_AUTOSTRIP			REG_BIT(15)
+<<<<<<< HEAD
 #define   DIS_TE_PATCH_CTRL			REG_BIT(4)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define VFLSKPD					XE_REG_MCR(0x62a8, XE_REG_OPTION_MASKED)
 #define   DIS_PARTIAL_AUTOSTRIP			REG_BIT(9)
@@ -182,11 +198,17 @@
 #define XEHP_COMMON_SLICE_CHICKEN4		XE_REG_MCR(0x7300, XE_REG_OPTION_MASKED)
 #define   SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE	REG_BIT(12)
 #define   DISABLE_TDC_LOAD_BALANCING_CALC	REG_BIT(6)
+<<<<<<< HEAD
 #define   HW_FILTERING				REG_BIT(5)
 
 #define COMMON_SLICE_CHICKEN3				XE_REG(0x7304, XE_REG_OPTION_MASKED)
 #define XEHP_COMMON_SLICE_CHICKEN3			XE_REG_MCR(0x7304, XE_REG_OPTION_MASKED)
 #define   DISABLE_STATE_CACHE_PERF_FIX			REG_BIT(13)
+=======
+
+#define COMMON_SLICE_CHICKEN3				XE_REG(0x7304, XE_REG_OPTION_MASKED)
+#define XEHP_COMMON_SLICE_CHICKEN3			XE_REG_MCR(0x7304, XE_REG_OPTION_MASKED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   DG1_FLOAT_POINT_BLEND_OPT_STRICT_MODE_EN	REG_BIT(12)
 #define   XEHP_DUAL_SIMD8_SEQ_MERGE_DISABLE		REG_BIT(12)
 #define   BLEND_EMB_FIX_DISABLE_IN_RCC			REG_BIT(11)
@@ -268,8 +290,11 @@
 #define XE2_GT_COMPUTE_DSS_2			XE_REG(0x914c)
 #define XE2_GT_GEOMETRY_DSS_1			XE_REG(0x9150)
 #define XE2_GT_GEOMETRY_DSS_2			XE_REG(0x9154)
+<<<<<<< HEAD
 #define XE3P_XPC_GT_GEOMETRY_DSS_3		XE_REG(0x915c)
 #define XE3P_XPC_GT_COMPUTE_DSS_3		XE_REG(0x9160)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SERVICE_COPY_ENABLE			XE_REG(0x9170)
 #define   FUSE_SERVICE_COPY_ENABLE_MASK		REG_GENMASK(7, 0)
@@ -384,7 +409,10 @@
 #define FORCEWAKE_RENDER			XE_REG(0xa278)
 
 #define POWERGATE_DOMAIN_STATUS			XE_REG(0xa2a0)
+<<<<<<< HEAD
 #define   GSC_AWAKE_STATUS			REG_BIT(8)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   MEDIA_SLICE3_AWAKE_STATUS		REG_BIT(4)
 #define   MEDIA_SLICE2_AWAKE_STATUS		REG_BIT(3)
 #define   MEDIA_SLICE1_AWAKE_STATUS		REG_BIT(2)
@@ -438,8 +466,11 @@
 #define   LSN_DIM_Z_WGT(value)			REG_FIELD_PREP(LSN_DIM_Z_WGT_MASK, value)
 
 #define L3SQCREG2				XE_REG_MCR(0xb104)
+<<<<<<< HEAD
 #define   L3_SQ_DISABLE_COAMA_2WAY_COH		REG_BIT(30)
 #define   L3_SQ_DISABLE_COAMA			REG_BIT(22)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   COMPMEMRD256BOVRFETCHEN		REG_BIT(20)
 
 #define L3SQCREG3				XE_REG_MCR(0xb108)
@@ -456,10 +487,13 @@
 
 #define XEHPC_L3CLOS_MASK(i)			XE_REG_MCR(0xb194 + (i) * 8)
 
+<<<<<<< HEAD
 #define L2COMPUTESIDECTRL			XE_REG_MCR(0xb1c0)
 #define   CECTRL				REG_GENMASK(2, 1)
 #define   CECTRL_CENODATA_ALWAYS		REG_FIELD_PREP(CECTRL, 0x0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XE2_GLOBAL_INVAL			XE_REG(0xb404)
 
 #define XE2LPM_L3SQCREG2			XE_REG_MCR(0xb604)
@@ -483,8 +517,11 @@
 #define   FORCE_MISS_FTLB			REG_BIT(3)
 
 #define XEHP_GAMSTLB_CTRL			XE_REG_MCR(0xcf4c)
+<<<<<<< HEAD
 #define   BANK_HASH_MODE			REG_GENMASK(27, 26)
 #define   BANK_HASH_4KB_MODE			REG_FIELD_PREP(BANK_HASH_MODE, 0x3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   CONTROL_BLOCK_CLKGATE_DIS		REG_BIT(12)
 #define   EGRESS_BLOCK_CLKGATE_DIS		REG_BIT(11)
 #define   TAG_BLOCK_CLKGATE_DIS			REG_BIT(7)
@@ -576,17 +613,23 @@
 #define   UGM_FRAGMENT_THRESHOLD_TO_3		REG_BIT(58 - 32)
 #define   DIS_CHAIN_2XSIMD8			REG_BIT(55 - 32)
 #define   XE2_ALLOC_DPA_STARVE_FIX_DIS		REG_BIT(47 - 32)
+<<<<<<< HEAD
 #define   SAMPLER_LD_LSC_DISABLE                REG_BIT(45 - 32)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define   ENABLE_SMP_LD_RENDER_SURFACE_CONTROL	REG_BIT(44 - 32)
 #define   FORCE_SLM_FENCE_SCOPE_TO_TILE		REG_BIT(42 - 32)
 #define   FORCE_UGM_FENCE_SCOPE_TO_TILE		REG_BIT(41 - 32)
 #define   L3_128B_256B_WRT_DIS			REG_BIT(40 - 32)
 #define   MAXREQS_PER_BANK			REG_GENMASK(39 - 32, 37 - 32)
 #define   DISABLE_128B_EVICTION_COMMAND_UDW	REG_BIT(36 - 32)
+<<<<<<< HEAD
 #define   LSCFE_SAME_ADDRESS_ATOMICS_COALESCING_DISABLE	REG_BIT(35 - 32)
 
 #define ROW_CHICKEN5				XE_REG_MCR(0xe7f0, XE_REG_OPTION_MASKED)
 #define   CPSS_AWARE_DIS			REG_BIT(3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SARB_CHICKEN1				XE_REG_MCR(0xe90c)
 #define   COMP_CKN_IN				REG_GENMASK(30, 29)

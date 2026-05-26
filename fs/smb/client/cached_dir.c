@@ -601,7 +601,11 @@ done:
  * Invalidate all cached dirs when a TCON has been reset
  * due to a session loss.
  */
+<<<<<<< HEAD
 void invalidate_all_cached_dirs(struct cifs_tcon *tcon, bool sync)
+=======
+void invalidate_all_cached_dirs(struct cifs_tcon *tcon)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct cached_fids *cfids = tcon->cfids;
 	struct cached_fid *cfid, *q;
@@ -633,8 +637,12 @@ void invalidate_all_cached_dirs(struct cifs_tcon *tcon, bool sync)
 
 	/* run laundromat unconditionally now as there might have been previously queued work */
 	mod_delayed_work(cfid_put_wq, &cfids->laundromat_work, 0);
+<<<<<<< HEAD
 	if (sync)
 		flush_delayed_work(&cfids->laundromat_work);
+=======
+	flush_delayed_work(&cfids->laundromat_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void

@@ -193,7 +193,11 @@ static void gaokun_ucsi_connector_status(struct ucsi_connector *con)
 	gaokun_set_orientation(con, &uec->ports[idx]);
 }
 
+<<<<<<< HEAD
 static const struct ucsi_operations gaokun_ucsi_ops = {
+=======
+const struct ucsi_operations gaokun_ucsi_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.read_version = gaokun_ucsi_read_version,
 	.read_cci = gaokun_ucsi_read_cci,
 	.poll_cci = gaokun_ucsi_read_cci,

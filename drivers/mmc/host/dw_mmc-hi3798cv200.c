@@ -57,9 +57,17 @@ static void dw_mci_hi3798cv200_set_ios(struct dw_mci *host, struct mmc_ios *ios)
 		clk_set_phase(priv->drive_clk, 135);
 }
 
+<<<<<<< HEAD
 static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci *host, u32 opcode)
 {
 	static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+=======
+static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci_slot *slot,
+					     u32 opcode)
+{
+	static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+	struct dw_mci *host = slot->host;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hi3798cv200_priv *priv = host->priv;
 	int raise_point = -1, fall_point = -1;
 	int err, prev_err = -1;
@@ -70,7 +78,11 @@ static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci *host, u32 opcode)
 		clk_set_phase(priv->sample_clk, degrees[i]);
 		mci_writel(host, RINTSTS, ALL_INT_CLR);
 
+<<<<<<< HEAD
 		err = mmc_send_tuning(host->mmc, opcode, NULL);
+=======
+		err = mmc_send_tuning(slot->mmc, opcode, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!err)
 			found = 1;
 

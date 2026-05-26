@@ -6,12 +6,20 @@
 
 #include <asm/kvm_asm.h>
 #include <asm/kvm_hyp.h>
+<<<<<<< HEAD
 #include <asm/kvm_hypevents.h>
 #include <asm/kvm_mmu.h>
 #include <linux/kvm_host.h>
 #include <uapi/linux/psci.h>
 
 #include <nvhe/arm-smccc.h>
+=======
+#include <asm/kvm_mmu.h>
+#include <linux/arm-smccc.h>
+#include <linux/kvm_host.h>
+#include <uapi/linux/psci.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <nvhe/memory.h>
 #include <nvhe/trap_handler.h>
 
@@ -66,7 +74,11 @@ static unsigned long psci_call(unsigned long fn, unsigned long arg0,
 {
 	struct arm_smccc_res res;
 
+<<<<<<< HEAD
 	hyp_smccc_1_1_smc(fn, arg0, arg1, arg2, &res);
+=======
+	arm_smccc_1_1_smc(fn, arg0, arg1, arg2, &res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return res.a0;
 }
 
@@ -201,6 +213,7 @@ static int psci_system_suspend(u64 func_id, struct kvm_cpu_context *host_ctxt)
 			 __hyp_pa(init_params), 0);
 }
 
+<<<<<<< HEAD
 static void __noreturn __kvm_host_psci_cpu_entry(unsigned long pc, unsigned long r0)
 {
 	struct kvm_cpu_context *host_ctxt = host_data_ptr(host_ctxt);
@@ -209,10 +222,30 @@ static void __noreturn __kvm_host_psci_cpu_entry(unsigned long pc, unsigned long
 
 	cpu_reg(host_ctxt, 0) = r0;
 	write_sysreg_el2(pc, SYS_ELR);
+=======
+asmlinkage void __noreturn __kvm_host_psci_cpu_entry(bool is_cpu_on)
+{
+	struct psci_boot_args *boot_args;
+	struct kvm_cpu_context *host_ctxt;
+
+	host_ctxt = host_data_ptr(host_ctxt);
+
+	if (is_cpu_on)
+		boot_args = this_cpu_ptr(&cpu_on_args);
+	else
+		boot_args = this_cpu_ptr(&suspend_args);
+
+	cpu_reg(host_ctxt, 0) = boot_args->r0;
+	write_sysreg_el2(boot_args->pc, SYS_ELR);
+
+	if (is_cpu_on)
+		release_boot_args(boot_args);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	write_sysreg_el1(INIT_SCTLR_EL1_MMU_OFF, SYS_SCTLR);
 	write_sysreg(INIT_PSTATE_EL1, SPSR_EL2);
 
+<<<<<<< HEAD
 	trace_hyp_exit(host_ctxt, HYP_REASON_PSCI);
 	__host_enter(host_ctxt);
 }
@@ -237,6 +270,11 @@ asmlinkage void __noreturn __kvm_host_psci_cpu_resume_entry(void)
 	__kvm_host_psci_cpu_entry(boot_args->pc, boot_args->r0);
 }
 
+=======
+	__host_enter(host_ctxt);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned long psci_0_1_handler(u64 func_id, struct kvm_cpu_context *host_ctxt)
 {
 	if (is_psci_0_1(cpu_off, func_id) || is_psci_0_1(migrate, func_id))

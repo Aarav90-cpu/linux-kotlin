@@ -875,20 +875,28 @@ int arch_decode_hint_reg(u8 sp_reg, int *base)
 	case ORC_REG_UNDEFINED:
 		*base = CFI_UNDEFINED;
 		break;
+<<<<<<< HEAD
 	case ORC_REG_AX:
 		*base = CFI_AX;
 		break;
 	case ORC_REG_DX:
 		*base = CFI_DX;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case ORC_REG_SP:
 		*base = CFI_SP;
 		break;
 	case ORC_REG_BP:
 		*base = CFI_BP;
 		break;
+<<<<<<< HEAD
 	case ORC_REG_DI:
 		*base = CFI_DI;
+=======
+	case ORC_REG_SP_INDIRECT:
+		*base = CFI_SP_INDIRECT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case ORC_REG_R10:
 		*base = CFI_R10;
@@ -896,11 +904,19 @@ int arch_decode_hint_reg(u8 sp_reg, int *base)
 	case ORC_REG_R13:
 		*base = CFI_R13;
 		break;
+<<<<<<< HEAD
 	case ORC_REG_SP_INDIRECT:
 		*base = CFI_SP_INDIRECT;
 		break;
 	case ORC_REG_BP_INDIRECT:
 		*base = CFI_BP_INDIRECT;
+=======
+	case ORC_REG_DI:
+		*base = CFI_DI;
+		break;
+	case ORC_REG_DX:
+		*base = CFI_DX;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -1;

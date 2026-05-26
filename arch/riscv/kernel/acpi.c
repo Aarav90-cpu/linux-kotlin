@@ -69,7 +69,11 @@ static int __init acpi_fadt_sanity_check(void)
 
 	/*
 	 * FADT is required on riscv; retrieve it to check its presence
+<<<<<<< HEAD
 	 * and carry out revision and ACPI HW reduced compliance tests
+=======
+	 * and carry out revision and ACPI HW reduced compliancy tests
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	status = acpi_get_table(ACPI_SIG_FADT, 0, &table);
 	if (ACPI_FAILURE(status)) {
@@ -85,12 +89,21 @@ static int __init acpi_fadt_sanity_check(void)
 	 * The revision in the table header is the FADT's Major revision. The
 	 * FADT also has a minor revision, which is stored in the FADT itself.
 	 *
+<<<<<<< HEAD
 	 * ACPI 6.6 is required for RISC-V as it introduces RISC-V specific
 	 * tables such as RHCT (RISC-V Hart Capabilities Table) and RIMT
 	 * (RISC-V I/O Mapping Table).
 	 */
 	if (table->revision < 6 || (table->revision == 6 && fadt->minor_revision < 6))
 		pr_err(FW_BUG "Unsupported FADT revision %d.%d, should be 6.6+\n",
+=======
+	 * TODO: Currently, we check for 6.5 as the minimum version to check
+	 * for HW_REDUCED flag. However, once RISC-V updates are released in
+	 * the ACPI spec, we need to update this check for exact minor revision
+	 */
+	if (table->revision < 6 || (table->revision == 6 && fadt->minor_revision < 5))
+		pr_err(FW_BUG "Unsupported FADT revision %d.%d, should be 6.5+\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       table->revision, fadt->minor_revision);
 
 	if (!(fadt->flags & ACPI_FADT_HW_REDUCED)) {
@@ -337,6 +350,7 @@ int raw_pci_write(unsigned int domain, unsigned int bus,
 }
 
 #endif	/* CONFIG_PCI */
+<<<<<<< HEAD
 
 int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 {
@@ -353,3 +367,5 @@ int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(acpi_get_cpu_uid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

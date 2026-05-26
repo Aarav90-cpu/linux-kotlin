@@ -87,6 +87,7 @@ static const struct linear_range p1_ldo_ranges[] = {
 	}
 
 #define P1_BUCK_DESC(_n) \
+<<<<<<< HEAD
 	P1_REG_DESC(BUCK, buck, _n, "vin" #_n, 0x47, BUCK_MASK, 255, p1_buck_ranges)
 
 #define P1_ALDO_DESC(_n) \
@@ -97,6 +98,15 @@ static const struct linear_range p1_ldo_ranges[] = {
 
 #define P1_DLDO2_DESC(_n) \
 	P1_REG_DESC(DLDO, dldo, _n, "dldoin2", 0x67, LDO_MASK, 128, p1_ldo_ranges)
+=======
+	P1_REG_DESC(BUCK, buck, _n, "vin", 0x47, BUCK_MASK, 255, p1_buck_ranges)
+
+#define P1_ALDO_DESC(_n) \
+	P1_REG_DESC(ALDO, aldo, _n, "vin", 0x5b, LDO_MASK, 128, p1_ldo_ranges)
+
+#define P1_DLDO_DESC(_n) \
+	P1_REG_DESC(DLDO, dldo, _n, "buck5", 0x67, LDO_MASK, 128, p1_ldo_ranges)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct regulator_desc p1_regulator_desc[] = {
 	P1_BUCK_DESC(1),
@@ -111,6 +121,7 @@ static const struct regulator_desc p1_regulator_desc[] = {
 	P1_ALDO_DESC(3),
 	P1_ALDO_DESC(4),
 
+<<<<<<< HEAD
 	P1_DLDO1_DESC(1),
 	P1_DLDO1_DESC(2),
 	P1_DLDO1_DESC(3),
@@ -118,6 +129,15 @@ static const struct regulator_desc p1_regulator_desc[] = {
 	P1_DLDO2_DESC(5),
 	P1_DLDO2_DESC(6),
 	P1_DLDO2_DESC(7),
+=======
+	P1_DLDO_DESC(1),
+	P1_DLDO_DESC(2),
+	P1_DLDO_DESC(3),
+	P1_DLDO_DESC(4),
+	P1_DLDO_DESC(5),
+	P1_DLDO_DESC(6),
+	P1_DLDO_DESC(7),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int p1_regulator_probe(struct platform_device *pdev)

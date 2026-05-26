@@ -140,7 +140,13 @@ impl GenDiskBuilder {
             devnode: None,
             alternative_gpt_sector: None,
             get_unique_id: None,
+<<<<<<< HEAD
             // TODO: Set to `THIS_MODULE`.
+=======
+            // TODO: Set to THIS_MODULE. Waiting for const_refs_to_static feature to
+            // be merged (unstable in rustc 1.78 which is staged for linux 6.10)
+            // <https://github.com/rust-lang/rust/issues/119618>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             owner: core::ptr::null_mut(),
             pr_ops: core::ptr::null_mut(),
             free_disk: None,

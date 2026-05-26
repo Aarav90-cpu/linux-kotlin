@@ -3,8 +3,13 @@
 
 libphy-y			:= phy.o phy-c45.o phy-core.o phy_device.o \
 				   linkmode.o phy_link_topology.o \
+<<<<<<< HEAD
 				   phy_caps.o mdio_bus_provider.o phy_port.o \
 				   mdio_device.o
+=======
+				   phy_caps.o mdio_bus_provider.o phy_port.o
+mdio-bus-y			+= mdio_bus.o mdio_device.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifdef CONFIG_PHYLIB
 # built-in whenever PHYLIB is built-in or module
@@ -15,7 +20,11 @@ libphy-$(CONFIG_SWPHY)		+= swphy.o
 libphy-$(CONFIG_LED_TRIGGER_PHY)	+= phy_led_triggers.o
 libphy-$(CONFIG_OPEN_ALLIANCE_HELPERS) += open_alliance_helpers.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_PHYLIB)		+= mdio_bus.o
+=======
+obj-$(CONFIG_MDIO_BUS)		+= mdio-bus.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_PHYLINK)		+= phylink.o
 obj-$(CONFIG_PHYLIB)		+= libphy.o
 obj-$(CONFIG_PHYLIB)		+= mdio_devres.o

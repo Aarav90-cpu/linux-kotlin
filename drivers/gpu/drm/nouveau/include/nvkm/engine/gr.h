@@ -3,6 +3,7 @@
 #define __NVKM_GR_H__
 #include <core/engine.h>
 
+<<<<<<< HEAD
 struct nvkm_gr_zcull_info {
 	__u32 width_align_pixels;
 	__u32 height_align_pixels;
@@ -25,6 +26,11 @@ struct nvkm_gr {
 
 	struct nvkm_gr_zcull_info zcull_info;
 	bool has_zcull_info;
+=======
+struct nvkm_gr {
+	const struct nvkm_gr_func *func;
+	struct nvkm_engine engine;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 u64 nvkm_gr_units(struct nvkm_gr *);

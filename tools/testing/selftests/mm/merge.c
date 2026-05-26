@@ -48,6 +48,7 @@ static pid_t do_fork(struct procmap_fd *procmap)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef __NR_mseal
 static int sys_mseal(void *ptr, size_t len, unsigned long flags)
 {
@@ -61,6 +62,8 @@ static int sys_mseal(void *ptr, size_t len, unsigned long flags)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FIXTURE_SETUP(merge)
 {
 	self->page_size = psize();
@@ -1230,6 +1233,7 @@ TEST_F(merge, mremap_correct_placed_faulted)
 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
 }
 
+<<<<<<< HEAD
 TEST_F(merge, merge_vmas_with_mseal)
 {
 	unsigned int page_size = self->page_size;
@@ -1305,6 +1309,8 @@ TEST_F(merge, merge_vmas_with_mseal)
 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 2 * page_size);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
 {
 	struct procmap_fd *procmap = &self->procmap;

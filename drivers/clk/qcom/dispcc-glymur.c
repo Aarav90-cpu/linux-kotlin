@@ -6,7 +6,13 @@
 #include <linux/clk-provider.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+#include <linux/of.h>
+#include <linux/platform_device.h>
+#include <linux/pm_runtime.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/regmap.h>
 
 #include <dt-bindings/clock/qcom,glymur-dispcc.h>
@@ -415,7 +421,11 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
 		.parent_data = disp_cc_parent_data_1,
 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
 		.flags = CLK_SET_RATE_PARENT,
+<<<<<<< HEAD
 		.ops = &clk_rcg2_shared_ops,
+=======
+		.ops = &clk_dp_ops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -745,6 +755,10 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
+=======
+		.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ops = &clk_regmap_div_ops,
 	},
 };
@@ -759,6 +773,10 @@ static struct clk_regmap_div disp_cc_mdss_byte1_div_clk_src = {
 			&disp_cc_mdss_byte1_clk_src.clkr.hw,
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
+=======
+		.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ops = &clk_regmap_div_ops,
 	},
 };
@@ -1921,7 +1939,11 @@ static struct clk_alpha_pll *disp_cc_glymur_plls[] = {
 	&disp_cc_pll1,
 };
 
+<<<<<<< HEAD
 static const u32 disp_cc_glymur_critical_cbcrs[] = {
+=======
+static u32 disp_cc_glymur_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0xe07c, /* DISP_CC_SLEEP_CLK */
 	0xe05c, /* DISP_CC_XO_CLK */
 };
@@ -1934,7 +1956,11 @@ static const struct regmap_config disp_cc_glymur_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data disp_cc_glymur_driver_data = {
+=======
+static struct qcom_cc_driver_data disp_cc_glymur_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = disp_cc_glymur_plls,
 	.num_alpha_plls = ARRAY_SIZE(disp_cc_glymur_plls),
 	.clk_cbcrs = disp_cc_glymur_critical_cbcrs,
@@ -1974,5 +2000,9 @@ static struct platform_driver disp_cc_glymur_driver = {
 
 module_platform_driver(disp_cc_glymur_driver);
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("QTI DISPCC Glymur Driver");
+=======
+MODULE_DESCRIPTION("QTI DISPCC GLYMUR Driver");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

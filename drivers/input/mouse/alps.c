@@ -12,7 +12,10 @@
  * tpconfig utility (by C. Scott Ananian and Bruce Kall).
  */
 
+<<<<<<< HEAD
 #include "linux/workqueue.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/input.h>
 #include <linux/input/mt.h>
@@ -1453,7 +1456,11 @@ err_free_input:
 static void alps_register_bare_ps2_mouse(struct work_struct *work)
 {
 	struct alps_data *priv = container_of(work, struct alps_data,
+<<<<<<< HEAD
 					      dev3_register_work);
+=======
+					      dev3_register_work.work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int error;
 
 	guard(mutex)(&alps_mutex);
@@ -1486,7 +1493,12 @@ static void alps_report_bare_ps2_packet(struct psmouse *psmouse,
 	} else if (unlikely(IS_ERR_OR_NULL(priv->dev3))) {
 		/* Register dev3 mouse if we received PS/2 packet first time */
 		if (!IS_ERR(priv->dev3))
+<<<<<<< HEAD
 			schedule_work(&priv->dev3_register_work);
+=======
+			psmouse_queue_work(psmouse, &priv->dev3_register_work,
+					   0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	} else {
 		dev = priv->dev3;
@@ -2975,7 +2987,11 @@ static void alps_disconnect(struct psmouse *psmouse)
 
 	psmouse_reset(psmouse);
 	timer_shutdown_sync(&priv->timer);
+<<<<<<< HEAD
 	disable_work_sync(&priv->dev3_register_work);
+=======
+	disable_delayed_work_sync(&priv->dev3_register_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (priv->dev2)
 		input_unregister_device(priv->dev2);
 	if (!IS_ERR_OR_NULL(priv->dev3))
@@ -3147,7 +3163,12 @@ int alps_init(struct psmouse *psmouse)
 
 	priv->psmouse = psmouse;
 
+<<<<<<< HEAD
 	INIT_WORK(&priv->dev3_register_work, alps_register_bare_ps2_mouse);
+=======
+	INIT_DELAYED_WORK(&priv->dev3_register_work,
+			  alps_register_bare_ps2_mouse);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	psmouse->protocol_handler = alps_process_byte;
 	psmouse->poll = alps_poll;

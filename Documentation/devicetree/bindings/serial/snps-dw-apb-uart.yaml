@@ -71,7 +71,10 @@ properties:
               - rockchip,rk3568-uart
               - rockchip,rk3576-uart
               - rockchip,rk3588-uart
+<<<<<<< HEAD
               - rockchip,rv1103b-uart
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - rockchip,rv1108-uart
               - rockchip,rv1126-uart
               - sophgo,sg2044-uart

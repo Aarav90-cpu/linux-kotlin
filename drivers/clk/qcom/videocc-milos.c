@@ -345,7 +345,11 @@ static struct clk_alpha_pll *video_cc_milos_plls[] = {
 	&video_cc_pll0,
 };
 
+<<<<<<< HEAD
 static const u32 video_cc_milos_critical_cbcrs[] = {
+=======
+static u32 video_cc_milos_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x80f4, /* VIDEO_CC_AHB_CLK */
 	0x8140, /* VIDEO_CC_SLEEP_CLK */
 	0x8124, /* VIDEO_CC_XO_CLK */
@@ -359,7 +363,11 @@ static const struct regmap_config video_cc_milos_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data video_cc_milos_driver_data = {
+=======
+static struct qcom_cc_driver_data video_cc_milos_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = video_cc_milos_plls,
 	.num_alpha_plls = ARRAY_SIZE(video_cc_milos_plls),
 	.clk_cbcrs = video_cc_milos_critical_cbcrs,

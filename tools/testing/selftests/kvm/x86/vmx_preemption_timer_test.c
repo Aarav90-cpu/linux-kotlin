@@ -152,7 +152,11 @@ void guest_code(struct vmx_pages *vmx_pages)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t vmx_pages_gva = 0;
+=======
+	vm_vaddr_t vmx_pages_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct kvm_regs regs1, regs2;
 	struct kvm_vm *vm;

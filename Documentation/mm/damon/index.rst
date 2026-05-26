@@ -12,7 +12,11 @@ DAMON is a Linux kernel subsystem for efficient :ref:`data access monitoring
  - *light-weight* (for production online usages),
  - *scalable* (in terms of memory size),
  - *tunable* (for flexible usages), and
+<<<<<<< HEAD
  - *automated* (for production operation without manual tunings).
+=======
+ - *autoamted* (for production operation without manual tunings).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 .. toctree::
    :maxdepth: 2

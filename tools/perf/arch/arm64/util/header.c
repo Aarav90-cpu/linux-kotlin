@@ -43,7 +43,11 @@ static int _get_cpuid(char *buf, size_t sz, struct perf_cpu cpu)
 int get_cpuid(char *buf, size_t sz, struct perf_cpu cpu)
 {
 	struct perf_cpu_map *cpus;
+<<<<<<< HEAD
 	unsigned int idx;
+=======
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cpu.cpu != -1)
 		return _get_cpuid(buf, sz, cpu);

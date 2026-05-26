@@ -44,6 +44,10 @@ struct hdc2010_data {
 	struct i2c_client *client;
 	struct mutex lock;
 	u8 measurement_config;
+<<<<<<< HEAD
+=======
+	u8 interrupt_config;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 drdy_config;
 };
 

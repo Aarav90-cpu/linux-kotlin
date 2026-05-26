@@ -3212,8 +3212,11 @@ def render_uapi(family, cw):
     for const in family['definitions']:
         if const.get('header'):
             continue
+<<<<<<< HEAD
         if const.get('scope', 'uapi') != 'uapi':
             continue
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         if const['type'] != 'const':
             cw.writes_defines(defines)
@@ -3341,6 +3344,7 @@ def render_uapi(family, cw):
     cw.p(f'#endif /* {hdr_prot} */')
 
 
+<<<<<<< HEAD
 def render_scoped_consts(family, cw, scope):
     defines = []
     for const in family['definitions']:
@@ -3360,6 +3364,8 @@ def render_scoped_consts(family, cw, scope):
         cw.nl()
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def _render_user_ntf_entry(ri, op):
     if not ri.family.is_classic():
         ri.cw.block_start(line=f"[{op.enum_name}] = ")
@@ -3525,12 +3531,17 @@ def main():
             cw.p('#include "ynl.h"')
         headers = []
     for definition in parsed['definitions'] + parsed['attribute-sets']:
+<<<<<<< HEAD
         if 'header' not in definition:
             continue
         scope = definition.get('scope', 'uapi')
         if scope != 'uapi' and scope != args.mode:
             continue
         headers.append(definition['header'])
+=======
+        if 'header' in definition:
+            headers.append(definition['header'])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if args.mode == 'user':
         headers.append(parsed.uapi_header)
     seen_header = []
@@ -3547,7 +3558,10 @@ def main():
             for one in args.user_header:
                 cw.p(f'#include "{one}"')
         else:
+<<<<<<< HEAD
             render_scoped_consts(parsed, cw, 'user')
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             cw.p('struct ynl_sock;')
             cw.nl()
             render_user_family(parsed, cw, True)
@@ -3555,7 +3569,10 @@ def main():
 
     if args.mode == "kernel":
         if args.header:
+<<<<<<< HEAD
             render_scoped_consts(parsed, cw, 'kernel')
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             for _, struct in sorted(parsed.pure_nested_structs.items()):
                 if struct.request:
                     cw.p('/* Common nested types */')

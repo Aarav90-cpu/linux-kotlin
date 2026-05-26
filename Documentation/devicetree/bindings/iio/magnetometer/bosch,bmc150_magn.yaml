@@ -21,6 +21,7 @@ properties:
     description:
       Note the bmm150_magn is a deprecated compatible as this part contains only
       a magnetometer.
+<<<<<<< HEAD
     oneOf:
       - enum:
           - bosch,bmc150_magn
@@ -30,6 +31,13 @@ properties:
       - items:
           - const: bosch,bmx055-magn
           - const: bosch,bmc150_magn
+=======
+    enum:
+      - bosch,bmc150_magn
+      - bosch,bmc156_magn
+      - bosch,bmm150
+      - bosch,bmm150_magn
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

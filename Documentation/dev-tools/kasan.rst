@@ -75,6 +75,12 @@ Software Tag-Based KASAN supports slab, page_alloc, vmalloc, and stack memory.
 Hardware Tag-Based KASAN supports slab, page_alloc, and non-executable vmalloc
 memory.
 
+<<<<<<< HEAD
+=======
+For slab, both software KASAN modes support SLUB and SLAB allocators, while
+Hardware Tag-Based KASAN only supports SLUB.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Usage
 -----
 

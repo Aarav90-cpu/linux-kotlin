@@ -312,9 +312,12 @@ static int v9fs_init_fs_context(struct fs_context *fc)
 	if (!ctx)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	fc->ops = &v9fs_context_ops;
 	fc->fs_private = ctx;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* initialize core options */
 	ctx->session_opts.afid = ~0;
 	ctx->session_opts.cache = CACHE_NONE;
@@ -348,6 +351,12 @@ static int v9fs_init_fs_context(struct fs_context *fc)
 	ctx->rdma_opts.timeout = P9_RDMA_TIMEOUT;
 	ctx->rdma_opts.privport = false;
 
+<<<<<<< HEAD
+=======
+	fc->ops = &v9fs_context_ops;
+	fc->fs_private = ctx;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 error:
 	fc->need_free = 1;

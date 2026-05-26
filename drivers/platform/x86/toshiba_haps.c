@@ -12,7 +12,10 @@
 #include <linux/init.h>
 #include <linux/types.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Azael Avalos <coproscefalo@gmail.com>");
 MODULE_DESCRIPTION("Toshiba HDD Active Protection Sensor");
@@ -130,10 +133,15 @@ static const struct attribute_group haps_attr_group = {
 /*
  * ACPI stuff
  */
+<<<<<<< HEAD
 static void toshiba_haps_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct acpi_device *device = data;
 
+=======
+static void toshiba_haps_notify(struct acpi_device *device, u32 event)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("Received event: 0x%x\n", event);
 
 	acpi_bus_generate_netlink_event(device->pnp.device_class,
@@ -141,6 +149,7 @@ static void toshiba_haps_notify(acpi_handle handle, u32 event, void *data)
 					event, 0);
 }
 
+<<<<<<< HEAD
 static void toshiba_haps_remove(struct platform_device *pdev)
 {
 	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
@@ -148,12 +157,19 @@ static void toshiba_haps_remove(struct platform_device *pdev)
 	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
 				       toshiba_haps_notify);
 
+=======
+static void toshiba_haps_remove(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sysfs_remove_group(&device->dev.kobj, &haps_attr_group);
 
 	if (toshiba_haps)
 		toshiba_haps = NULL;
+<<<<<<< HEAD
 
 	dev_set_drvdata(&device->dev, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Helper function */
@@ -180,8 +196,17 @@ static int toshiba_haps_available(acpi_handle handle)
 	return 1;
 }
 
+<<<<<<< HEAD
 static int toshiba_haps_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
+=======
+	struct acpi_device *acpi_dev = ACPI_COMPANION(&pdev->dev);
+=======
+static int toshiba_haps_add(struct acpi_device *acpi_dev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct toshiba_haps_dev *haps;
 	struct acpi_device *acpi_dev;
 	int ret;
@@ -198,15 +223,24 @@ static int toshiba_haps_probe(struct platform_device *pdev)
 
 	pr_info("Toshiba HDD Active Protection Sensor device\n");
 
+<<<<<<< HEAD
 	haps = devm_kzalloc(&pdev->dev, sizeof(*haps), GFP_KERNEL);
+=======
+	haps = devm_kzalloc(&acpi_dev->dev, sizeof(*haps), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!haps)
 		return -ENOMEM;
 
 	haps->acpi_dev = acpi_dev;
 	haps->protection_level = 2;
+<<<<<<< HEAD
 
 	dev_set_drvdata(&acpi_dev->dev, haps);
 	platform_set_drvdata(pdev, haps);
+=======
+	acpi_dev->driver_data = haps;
+	dev_set_drvdata(&acpi_dev->dev, haps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Set the protection level, currently at level 2 (Medium) */
 	ret = toshiba_haps_protection_level(acpi_dev->handle, 2);
@@ -217,6 +251,7 @@ static int toshiba_haps_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = acpi_dev_install_notify_handler(acpi_dev, ACPI_DEVICE_NOTIFY,
 					      toshiba_haps_notify, acpi_dev);
 	if (ret)
@@ -229,14 +264,27 @@ static int toshiba_haps_probe(struct platform_device *pdev)
 err:
 	sysfs_remove_group(&acpi_dev->dev.kobj, &haps_attr_group);
 	return ret;
+=======
+	toshiba_haps = haps;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PM_SLEEP
 static int toshiba_haps_suspend(struct device *device)
 {
+<<<<<<< HEAD
 	struct toshiba_haps_dev *haps = dev_get_drvdata(device);
 	int ret;
 
+=======
+	struct toshiba_haps_dev *haps;
+	int ret;
+
+	haps = acpi_driver_data(to_acpi_device(device));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Deactivate the protection on suspend */
 	ret = toshiba_haps_protection_level(haps->acpi_dev->handle, 0);
 
@@ -245,9 +293,17 @@ static int toshiba_haps_suspend(struct device *device)
 
 static int toshiba_haps_resume(struct device *device)
 {
+<<<<<<< HEAD
 	struct toshiba_haps_dev *haps = dev_get_drvdata(device);
 	int ret;
 
+=======
+	struct toshiba_haps_dev *haps;
+	int ret;
+
+	haps = acpi_driver_data(to_acpi_device(device));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the stored protection level */
 	ret = toshiba_haps_protection_level(haps->acpi_dev->handle,
 					    haps->protection_level);
@@ -270,6 +326,7 @@ static const struct acpi_device_id haps_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, haps_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver toshiba_haps_driver = {
 	.probe = toshiba_haps_probe,
 	.remove = toshiba_haps_remove,
@@ -281,3 +338,18 @@ static struct platform_driver toshiba_haps_driver = {
 };
 
 module_platform_driver(toshiba_haps_driver);
+=======
+static struct acpi_driver toshiba_haps_driver = {
+	.name = "Toshiba HAPS",
+	.ids = haps_device_ids,
+	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+	.ops = {
+		.add =		toshiba_haps_add,
+		.remove =	toshiba_haps_remove,
+		.notify =	toshiba_haps_notify,
+	},
+	.drv.pm = &toshiba_haps_pm,
+};
+
+module_acpi_driver(toshiba_haps_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

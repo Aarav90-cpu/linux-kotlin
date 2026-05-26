@@ -31,15 +31,25 @@
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_faccessat(int fd, const char *path, int amode, int flag)
 {
 	return __nolibc_syscall4(__NR_faccessat, fd, path, amode, flag);
+=======
+int sys_faccessat(int fd, const char *path, int amode, int flag)
+{
+	return my_syscall4(__NR_faccessat, fd, path, amode, flag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 int faccessat(int fd, const char *path, int amode, int flag)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_faccessat(fd, path, amode, flag));
+=======
+	return __sysret(sys_faccessat(fd, path, amode, flag));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
@@ -54,7 +64,11 @@ int msleep(unsigned int msecs)
 {
 	struct timeval my_timeval = { msecs / 1000, (msecs % 1000) * 1000 };
 
+<<<<<<< HEAD
 	if (_sys_select(0, NULL, NULL, NULL, &my_timeval) < 0)
+=======
+	if (sys_select(0, NULL, NULL, NULL, &my_timeval) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (my_timeval.tv_sec * 1000) +
 			(my_timeval.tv_usec / 1000) +
 			!!(my_timeval.tv_usec % 1000);
@@ -67,7 +81,11 @@ unsigned int sleep(unsigned int seconds)
 {
 	struct timeval my_timeval = { seconds, 0 };
 
+<<<<<<< HEAD
 	if (_sys_select(0, NULL, NULL, NULL, &my_timeval) < 0)
+=======
+	if (sys_select(0, NULL, NULL, NULL, &my_timeval) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return my_timeval.tv_sec + !!my_timeval.tv_usec;
 	else
 		return 0;
@@ -78,7 +96,11 @@ int usleep(unsigned int usecs)
 {
 	struct timeval my_timeval = { usecs / 1000000, usecs % 1000000 };
 
+<<<<<<< HEAD
 	return _sys_select(0, NULL, NULL, NULL, &my_timeval);
+=======
+	return sys_select(0, NULL, NULL, NULL, &my_timeval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))

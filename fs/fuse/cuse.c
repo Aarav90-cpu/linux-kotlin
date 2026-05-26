@@ -527,7 +527,11 @@ static int cuse_channel_open(struct inode *inode, struct file *file)
 	cc->fc.initialized = 1;
 	rc = cuse_send_init(cc);
 	if (rc) {
+<<<<<<< HEAD
 		fuse_dev_put(fud);
+=======
+		fuse_dev_free(fud);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return rc;
 	}
 	file->private_data = fud;

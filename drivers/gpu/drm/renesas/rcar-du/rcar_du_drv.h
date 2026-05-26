@@ -22,7 +22,10 @@
 
 struct clk;
 struct device;
+<<<<<<< HEAD
 struct device_link;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_bridge;
 struct drm_property;
 struct rcar_du_device;
@@ -89,11 +92,14 @@ struct rcar_du_device_info {
 	unsigned int lvds_clk_mask;
 };
 
+<<<<<<< HEAD
 struct rcar_du_cmm {
 	struct device *dev;
 	struct device_link *link;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RCAR_DU_MAX_CRTCS		4
 #define RCAR_DU_MAX_GROUPS		DIV_ROUND_UP(RCAR_DU_MAX_CRTCS, 2)
 #define RCAR_DU_MAX_VSPS		4
@@ -112,7 +118,11 @@ struct rcar_du_device {
 	unsigned int num_crtcs;
 
 	struct rcar_du_group groups[RCAR_DU_MAX_GROUPS];
+<<<<<<< HEAD
 	struct rcar_du_cmm cmms[RCAR_DU_MAX_CRTCS];
+=======
+	struct platform_device *cmms[RCAR_DU_MAX_CRTCS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rcar_du_vsp vsps[RCAR_DU_MAX_VSPS];
 	struct drm_bridge *lvds[RCAR_DU_MAX_LVDS];
 	struct drm_bridge *dsi[RCAR_DU_MAX_DSI];

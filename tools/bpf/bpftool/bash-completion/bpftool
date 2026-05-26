@@ -501,7 +501,11 @@ _bpftool()
                                 cgroup/post_bind4 cgroup/post_bind6 \
                                 cgroup/sysctl cgroup/getsockopt \
                                 cgroup/setsockopt cgroup/sock_release struct_ops \
+<<<<<<< HEAD
                                 fentry fexit fsession freplace sk_lookup'
+=======
+                                fentry fexit freplace sk_lookup'
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                             COMPREPLY=( $( compgen -W "$BPFTOOL_PROG_LOAD_TYPES" -- "$cur" ) )
                             return 0
                             ;;
@@ -961,6 +965,7 @@ _bpftool()
                         *)
                             # emit extra options
                             case ${words[3]} in
+<<<<<<< HEAD
                                 id)
                                     COMPREPLY=( $( compgen -W "root_id" -- "$cur" ) )
                                     _bpftool_once_attr 'format'
@@ -969,6 +974,12 @@ _bpftool()
                                     COMPREPLY=( $( compgen -W "root_id file" -- "$cur" ) )
                                     _bpftool_once_attr 'format'
                                     ;;
+=======
+                                id|file)
+                                    COMPREPLY=( $( compgen -W "root_id" -- "$cur" ) )
+                                    _bpftool_once_attr 'format'
+                                    ;;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                 map|prog)
                                     if [[ ${words[3]} == "map" ]] && [[ $cword == 6 ]]; then
                                         COMPREPLY+=( $( compgen -W "key value kv all" -- "$cur" ) )

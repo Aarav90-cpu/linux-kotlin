@@ -29,6 +29,7 @@
 
 #include "mpam_internal.h"
 
+<<<<<<< HEAD
 /* Values for the T241 errata workaround */
 #define T241_CHIPS_MAX			4
 #define T241_CHIP_NSLICES		12
@@ -38,6 +39,9 @@
 #define T241_SHADOW_REG_OFF(sidx, pid)	(0x360048 + (sidx) * 0x10000 + (pid) * 8)
 #define SMCCC_SOC_ID_T241		0x036b0241
 static void __iomem *t241_scratch_regs[T241_CHIPS_MAX];
+=======
+DEFINE_STATIC_KEY_FALSE(mpam_enabled); /* This moves to arch code */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * mpam_list_lock protects the SRCU lists when writing. Once the
@@ -84,6 +88,7 @@ static DECLARE_WORK(mpam_broken_work, &mpam_disable);
 static char *mpam_disable_reason;
 
 /*
+<<<<<<< HEAD
  * Whether resctrl has been setup. Used by cpuhp in preference to
  * mpam_is_enabled(). The disable call after an error interrupt makes
  * mpam_is_enabled() false before the cpuhp callbacks are made.
@@ -92,6 +97,8 @@ static char *mpam_disable_reason;
 static bool mpam_resctrl_enabled;
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * An MSC is a physical container for controls and monitors, each identified by
  * their RIS index. These share a base-address, interrupts and some MMIO
  * registers. A vMSC is a virtual container for RIS in an MSC that control or
@@ -164,6 +171,7 @@ static void mpam_free_garbage(void)
 /*
  * Once mpam is enabled, new requestors cannot further reduce the available
  * partid. Assert that the size is fixed, and new requestors will be turned
+<<<<<<< HEAD
  * away. This is needed when walking over structures sized by PARTID.
  *
  * During mpam_disable() these structures are not fixed, but the MSC state
@@ -175,6 +183,13 @@ static void mpam_assert_partid_sizes_fixed(void)
 {
 	if (!mpam_disable_reason)
 		WARN_ON_ONCE(!partid_max_published);
+=======
+ * away.
+ */
+static void mpam_assert_partid_sizes_fixed(void)
+{
+	WARN_ON_ONCE(!partid_max_published);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
@@ -646,6 +661,7 @@ static struct mpam_msc_ris *mpam_get_or_create_ris(struct mpam_msc *msc,
 	return ERR_PTR(-ENOENT);
 }
 
+<<<<<<< HEAD
 static int mpam_enable_quirk_nvidia_t241_1(struct mpam_msc *msc,
 					   const struct mpam_quirk *quirk)
 {
@@ -726,6 +742,8 @@ static void mpam_enable_quirks(struct mpam_msc *msc)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * IHI009A.a has this nugget: "If a monitor does not support automatic behaviour
  * of NRDY, software can use this bit for any purpose" - so hardware might not
@@ -734,9 +752,16 @@ static void mpam_enable_quirks(struct mpam_msc *msc)
  * Try and see what values stick in this bit. If we can write either value,
  * its probably not implemented by hardware.
  */
+<<<<<<< HEAD
 static bool mpam_ris_hw_probe_csu_nrdy(struct mpam_msc_ris *ris)
 {
 	u32 now, mon_sel, ctl_val;
+=======
+static bool _mpam_ris_hw_probe_hw_nrdy(struct mpam_msc_ris *ris, u32 mon_reg)
+{
+	u32 now;
+	u64 mon_sel;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool can_set, can_clear;
 	struct mpam_msc *msc = ris->vmsc->msc;
 
@@ -745,6 +770,7 @@ static bool mpam_ris_hw_probe_csu_nrdy(struct mpam_msc_ris *ris)
 
 	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, 0) |
 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+<<<<<<< HEAD
 	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
 
 	/* Hardware might ignore nrdy if it's not enabled */
@@ -763,12 +789,28 @@ static bool mpam_ris_hw_probe_csu_nrdy(struct mpam_msc_ris *ris)
 	/* Configuration change to try and coax hardware into setting nrdy */
 	mpam_write_monsel_reg(msc, CFG_CSU_FLT, 0x1);
 	now = _mpam_read_monsel_reg(msc, MSMON_CSU);
+=======
+	_mpam_write_monsel_reg(msc, mon_reg, mon_sel);
+
+	_mpam_write_monsel_reg(msc, mon_reg, MSMON___NRDY);
+	now = _mpam_read_monsel_reg(msc, mon_reg);
+	can_set = now & MSMON___NRDY;
+
+	_mpam_write_monsel_reg(msc, mon_reg, 0);
+	now = _mpam_read_monsel_reg(msc, mon_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	can_clear = !(now & MSMON___NRDY);
 	mpam_mon_sel_unlock(msc);
 
 	return (!can_set || !can_clear);
 }
 
+<<<<<<< HEAD
+=======
+#define mpam_ris_hw_probe_hw_nrdy(_ris, _mon_reg)			\
+	_mpam_ris_hw_probe_hw_nrdy(_ris, MSMON_##_mon_reg)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 {
 	int err;
@@ -823,6 +865,7 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 			mpam_set_feature(mpam_feat_mbw_part, props);
 
 		props->bwa_wd = FIELD_GET(MPAMF_MBW_IDR_BWA_WD, mbw_features);
+<<<<<<< HEAD
 
 		/*
 		 * The BWA_WD field can represent 0-63, but the control fields it
@@ -830,6 +873,8 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 		 */
 		props->bwa_wd = min(props->bwa_wd, 16);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MAX, mbw_features))
 			mpam_set_feature(mpam_feat_mbw_max, props);
 
@@ -885,6 +930,7 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 					mpam_set_feature(mpam_feat_msmon_csu_xcl, props);
 
 				/* Is NRDY hardware managed? */
+<<<<<<< HEAD
 				hw_managed = mpam_ris_hw_probe_csu_nrdy(ris);
 
 				/*
@@ -897,6 +943,22 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 		}
 		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
 			bool has_long;
+=======
+				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, CSU);
+				if (hw_managed)
+					mpam_set_feature(mpam_feat_msmon_csu_hw_nrdy, props);
+			}
+
+			/*
+			 * Accept the missing firmware property if NRDY appears
+			 * un-implemented.
+			 */
+			if (err && mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, props))
+				dev_err_once(dev, "Counters are not usable because not-ready timeout was not provided by firmware.");
+		}
+		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
+			bool has_long, hw_managed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			u32 mbwumon_idr = mpam_read_partsel_reg(msc, MBWUMON_IDR);
 
 			props->num_mbwu_mon = FIELD_GET(MPAMF_MBWUMON_IDR_NUM_MON, mbwumon_idr);
@@ -915,6 +977,19 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
 				} else {
 					mpam_set_feature(mpam_feat_msmon_mbwu_31counter, props);
 				}
+<<<<<<< HEAD
+=======
+
+				/* Is NRDY hardware managed? */
+				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
+				if (hw_managed)
+					mpam_set_feature(mpam_feat_msmon_mbwu_hw_nrdy, props);
+
+				/*
+				 * Don't warn about any missing firmware property for
+				 * MBWU NRDY - it doesn't make any sense!
+				 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}
@@ -954,11 +1029,16 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
 	/* Grab an IDR value to find out how many RIS there are */
 	mutex_lock(&msc->part_sel_lock);
 	idr = mpam_msc_read_idr(msc);
+<<<<<<< HEAD
 	msc->iidr = mpam_read_partsel_reg(msc, IIDR);
 	mutex_unlock(&msc->part_sel_lock);
 
 	mpam_enable_quirks(msc);
 
+=======
+	mutex_unlock(&msc->part_sel_lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msc->ris_max = FIELD_GET(MPAMF_IDR_RIS_MAX, idr);
 
 	/* Use these values so partid/pmg always starts with a valid value */
@@ -1009,7 +1089,10 @@ struct mon_read {
 	enum mpam_device_features	type;
 	u64				*val;
 	int				err;
+<<<<<<< HEAD
 	bool				waited_timeout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static bool mpam_ris_has_mbwu_long_counter(struct mpam_msc_ris *ris)
@@ -1159,7 +1242,11 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
 	}
 }
 
+<<<<<<< HEAD
 static u64 __mpam_msmon_overflow_val(enum mpam_device_features type)
+=======
+static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* TODO: implement scaling counters */
 	switch (type) {
@@ -1174,6 +1261,7 @@ static u64 __mpam_msmon_overflow_val(enum mpam_device_features type)
 	}
 }
 
+<<<<<<< HEAD
 static u64 mpam_msmon_overflow_val(enum mpam_device_features type,
 				   struct mpam_msc *msc)
 {
@@ -1186,6 +1274,8 @@ static u64 mpam_msmon_overflow_val(enum mpam_device_features type,
 	return overflow_val;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __ris_msmon_read(void *arg)
 {
 	u64 now;
@@ -1197,6 +1287,10 @@ static void __ris_msmon_read(void *arg)
 	bool reset_on_next_read = false;
 	struct mpam_msc_ris *ris = m->ris;
 	struct msmon_mbwu_state *mbwu_state;
+<<<<<<< HEAD
+=======
+	struct mpam_props *rprops = &ris->props;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mpam_msc *msc = m->ris->vmsc->msc;
 	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
 
@@ -1252,19 +1346,30 @@ static void __ris_msmon_read(void *arg)
 	switch (m->type) {
 	case mpam_feat_msmon_csu:
 		now = mpam_read_monsel_reg(msc, CSU);
+<<<<<<< HEAD
 		nrdy = now & MSMON___NRDY;
 		now = FIELD_GET(MSMON___VALUE, now);
 
 		if (mpam_has_quirk(IGNORE_CSU_NRDY, msc) && m->waited_timeout)
 			nrdy = false;
 
+=======
+		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
+			nrdy = now & MSMON___NRDY;
+		now = FIELD_GET(MSMON___VALUE, now);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case mpam_feat_msmon_mbwu_31counter:
 	case mpam_feat_msmon_mbwu_44counter:
 	case mpam_feat_msmon_mbwu_63counter:
 		if (m->type != mpam_feat_msmon_mbwu_31counter) {
 			now = mpam_msc_read_mbwu_l(msc);
+<<<<<<< HEAD
 			nrdy = now & MSMON___L_NRDY;
+=======
+			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+				nrdy = now & MSMON___L_NRDY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (m->type == mpam_feat_msmon_mbwu_63counter)
 				now = FIELD_GET(MSMON___LWD_VALUE, now);
@@ -1272,6 +1377,7 @@ static void __ris_msmon_read(void *arg)
 				now = FIELD_GET(MSMON___L_VALUE, now);
 		} else {
 			now = mpam_read_monsel_reg(msc, MBWU);
+<<<<<<< HEAD
 			nrdy = now & MSMON___NRDY;
 			now = FIELD_GET(MSMON___VALUE, now);
 		}
@@ -1280,13 +1386,24 @@ static void __ris_msmon_read(void *arg)
 		    m->type != mpam_feat_msmon_mbwu_63counter)
 			now *= 64;
 
+=======
+			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+				nrdy = now & MSMON___NRDY;
+			now = FIELD_GET(MSMON___VALUE, now);
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (nrdy)
 			break;
 
 		mbwu_state = &ris->mbwu_state[ctx->mon];
 
 		if (overflow)
+<<<<<<< HEAD
 			mbwu_state->correction += mpam_msmon_overflow_val(m->type, msc);
+=======
+			mbwu_state->correction += mpam_msmon_overflow_val(m->type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Include bandwidth consumed before the last hardware reset and
@@ -1393,7 +1510,10 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
 			.ctx = ctx,
 			.type = type,
 			.val = val,
+<<<<<<< HEAD
 			.waited_timeout = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 		*val = 0;
 
@@ -1462,6 +1582,7 @@ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
 	__mpam_write_reg(msc, reg, bm);
 }
 
+<<<<<<< HEAD
 static void mpam_apply_t241_erratum(struct mpam_msc_ris *ris, u16 partid)
 {
 	int sidx, i, lcount = 1000;
@@ -1531,6 +1652,8 @@ static u16 mpam_wa_t241_calc_min_from_max(struct mpam_props *props,
 	return val;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Called via IPI. Call while holding an SRCU reference */
 static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 				      struct mpam_config *cfg)
@@ -1557,6 +1680,7 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 		__mpam_intpart_sel(ris->ris_idx, partid, msc);
 	}
 
+<<<<<<< HEAD
 	if (mpam_has_feature(mpam_feat_cpor_part, rprops)) {
 		if (mpam_has_feature(mpam_feat_cpor_part, cfg))
 			mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
@@ -1566,11 +1690,25 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 
 	if (mpam_has_feature(mpam_feat_mbw_part, rprops)) {
 		if (mpam_has_feature(mpam_feat_mbw_part, cfg))
+=======
+	if (mpam_has_feature(mpam_feat_cpor_part, rprops) &&
+	    mpam_has_feature(mpam_feat_cpor_part, cfg)) {
+		if (cfg->reset_cpbm)
+			mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM, rprops->cpbm_wd);
+		else
+			mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
+	}
+
+	if (mpam_has_feature(mpam_feat_mbw_part, rprops) &&
+	    mpam_has_feature(mpam_feat_mbw_part, cfg)) {
+		if (cfg->reset_mbw_pbm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM, rprops->mbw_pbm_bits);
 		else
 			mpam_write_partsel_reg(msc, MBW_PBM, cfg->mbw_pbm);
 	}
 
+<<<<<<< HEAD
 	if (mpam_has_feature(mpam_feat_mbw_min, rprops)) {
 		u16 val = 0;
 
@@ -1592,6 +1730,22 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 	}
 
 	if (mpam_has_feature(mpam_feat_mbw_prop, rprops))
+=======
+	if (mpam_has_feature(mpam_feat_mbw_min, rprops) &&
+	    mpam_has_feature(mpam_feat_mbw_min, cfg))
+		mpam_write_partsel_reg(msc, MBW_MIN, 0);
+
+	if (mpam_has_feature(mpam_feat_mbw_max, rprops) &&
+	    mpam_has_feature(mpam_feat_mbw_max, cfg)) {
+		if (cfg->reset_mbw_max)
+			mpam_write_partsel_reg(msc, MBW_MAX, MPAMCFG_MBW_MAX_MAX);
+		else
+			mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
+	}
+
+	if (mpam_has_feature(mpam_feat_mbw_prop, rprops) &&
+	    mpam_has_feature(mpam_feat_mbw_prop, cfg))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mpam_write_partsel_reg(msc, MBW_PROP, 0);
 
 	if (mpam_has_feature(mpam_feat_cmax_cmax, rprops))
@@ -1619,8 +1773,11 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 		mpam_write_partsel_reg(msc, PRI, pri_val);
 	}
 
+<<<<<<< HEAD
 	mpam_quirk_post_config_change(ris, partid, cfg);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&msc->part_sel_lock);
 }
 
@@ -1693,6 +1850,19 @@ static int mpam_save_mbwu_state(void *arg)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
+{
+	*reset_cfg = (struct mpam_config) {
+		.reset_cpbm = true,
+		.reset_mbw_pbm = true,
+		.reset_mbw_max = true,
+	};
+	bitmap_fill(reset_cfg->features, MPAM_FEATURE_LAST);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Called via smp_call_on_cpu() to prevent migration, while still being
  * pre-emptible. Caller must hold mpam_srcu.
@@ -1700,12 +1870,21 @@ static int mpam_save_mbwu_state(void *arg)
 static int mpam_reset_ris(void *arg)
 {
 	u16 partid, partid_max;
+<<<<<<< HEAD
 	struct mpam_config reset_cfg = {};
+=======
+	struct mpam_config reset_cfg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mpam_msc_ris *ris = arg;
 
 	if (ris->in_reset_state)
 		return 0;
 
+<<<<<<< HEAD
+=======
+	mpam_init_reset_cfg(&reset_cfg);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&partid_max_lock);
 	partid_max = mpam_partid_max;
 	spin_unlock(&partid_max_lock);
@@ -1820,9 +1999,12 @@ static int mpam_cpu_online(unsigned int cpu)
 			mpam_reprogram_msc(msc);
 	}
 
+<<<<<<< HEAD
 	if (mpam_resctrl_enabled)
 		return mpam_resctrl_online_cpu(cpu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1866,9 +2048,12 @@ static int mpam_cpu_offline(unsigned int cpu)
 {
 	struct mpam_msc *msc;
 
+<<<<<<< HEAD
 	if (mpam_resctrl_enabled)
 		mpam_resctrl_offline_cpu(cpu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(srcu)(&mpam_srcu);
 	list_for_each_entry_srcu(msc, &mpam_all_msc, all_msc_list,
 				 srcu_read_lock_held(&mpam_srcu)) {
@@ -2165,7 +2350,10 @@ static bool mpam_has_cmax_wd_feature(struct mpam_props *props)
  * resulting safe value must be compatible with both. When merging values in
  * the tree, all the aliasing resources must be handled first.
  * On mismatch, parent is modified.
+<<<<<<< HEAD
  * Quirks on an MSC will apply to all MSC in that class.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void __props_mismatch(struct mpam_props *parent,
 			     struct mpam_props *child, bool alias)
@@ -2285,7 +2473,10 @@ static void __props_mismatch(struct mpam_props *parent,
  * nobble the class feature, as we can't configure all the resources.
  * e.g. The L3 cache is composed of two resources with 13 and 17 portion
  * bitmaps respectively.
+<<<<<<< HEAD
  * Quirks on an MSC will apply to all MSC in that class.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void
 __class_props_mismatch(struct mpam_class *class, struct mpam_vmsc *vmsc)
@@ -2299,9 +2490,12 @@ __class_props_mismatch(struct mpam_class *class, struct mpam_vmsc *vmsc)
 	dev_dbg(dev, "Merging features for class:0x%lx &= vmsc:0x%lx\n",
 		(long)cprops->features, (long)vprops->features);
 
+<<<<<<< HEAD
 	/* Merge quirks */
 	class->quirks |= vmsc->msc->quirks;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Take the safe value for any common features */
 	__props_mismatch(cprops, vprops, false);
 }
@@ -2366,9 +2560,12 @@ static void mpam_enable_merge_class_features(struct mpam_component *comp)
 
 	list_for_each_entry(vmsc, &comp->vmsc, comp_list)
 		__class_props_mismatch(class, vmsc);
+<<<<<<< HEAD
 
 	if (mpam_has_quirk(T241_FORCE_MBW_MIN_TO_ONE, class))
 		mpam_clear_feature(mpam_feat_mbw_min, &class->props);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2581,9 +2778,12 @@ static void __destroy_component_cfg(struct mpam_component *comp)
 
 	lockdep_assert_held(&mpam_list_lock);
 
+<<<<<<< HEAD
 	if (!comp->cfg)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	add_to_garbage(comp->cfg);
 	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
 		msc = vmsc->msc;
@@ -2725,12 +2925,15 @@ static void mpam_enable_once(void)
 	mutex_unlock(&mpam_list_lock);
 	cpus_read_unlock();
 
+<<<<<<< HEAD
 	if (!err) {
 		err = mpam_resctrl_setup();
 		if (err)
 			pr_err("Failed to initialise resctrl: %d\n", err);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		mpam_disable_reason = "Failed to enable.";
 		schedule_work(&mpam_broken_work);
@@ -2738,7 +2941,10 @@ static void mpam_enable_once(void)
 	}
 
 	static_branch_enable(&mpam_enabled);
+<<<<<<< HEAD
 	mpam_resctrl_enabled = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline,
 				      "mpam:online");
 
@@ -2771,7 +2977,11 @@ static void mpam_reset_component_locked(struct mpam_component *comp)
 	}
 }
 
+<<<<<<< HEAD
 void mpam_reset_class_locked(struct mpam_class *class)
+=======
+static void mpam_reset_class_locked(struct mpam_class *class)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mpam_component *comp;
 
@@ -2798,6 +3008,7 @@ static void mpam_reset_class(struct mpam_class *class)
 void mpam_disable(struct work_struct *ignored)
 {
 	int idx;
+<<<<<<< HEAD
 	bool do_resctrl_exit;
 	struct mpam_class *class;
 	struct mpam_msc *msc, *tmp;
@@ -2805,11 +3016,17 @@ void mpam_disable(struct work_struct *ignored)
 	if (mpam_is_enabled())
 		static_branch_disable(&mpam_enabled);
 
+=======
+	struct mpam_class *class;
+	struct mpam_msc *msc, *tmp;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mpam_cpuhp_state_lock);
 	if (mpam_cpuhp_state) {
 		cpuhp_remove_state(mpam_cpuhp_state);
 		mpam_cpuhp_state = 0;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Removing the cpuhp state called mpam_cpu_offline() and told resctrl
@@ -2821,16 +3038,26 @@ void mpam_disable(struct work_struct *ignored)
 
 	if (do_resctrl_exit)
 		mpam_resctrl_exit();
+=======
+	mutex_unlock(&mpam_cpuhp_state_lock);
+
+	static_branch_disable(&mpam_enabled);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mpam_unregister_irqs();
 
 	idx = srcu_read_lock(&mpam_srcu);
 	list_for_each_entry_srcu(class, &mpam_classes, classes_list,
+<<<<<<< HEAD
 				 srcu_read_lock_held(&mpam_srcu)) {
 		mpam_reset_class(class);
 		if (do_resctrl_exit)
 			mpam_resctrl_teardown_class(class);
 	}
+=======
+				 srcu_read_lock_held(&mpam_srcu))
+		mpam_reset_class(class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	srcu_read_unlock(&mpam_srcu, idx);
 
 	mutex_lock(&mpam_list_lock);
@@ -2921,7 +3148,10 @@ int mpam_apply_config(struct mpam_component *comp, u16 partid,
 					 srcu_read_lock_held(&mpam_srcu)) {
 			arg.ris = ris;
 			mpam_touch_msc(msc, __write_config, &arg);
+<<<<<<< HEAD
 			ris->in_reset_state = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		mutex_unlock(&msc->cfg_lock);
 	}

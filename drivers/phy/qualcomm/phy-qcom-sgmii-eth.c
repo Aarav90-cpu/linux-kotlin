@@ -7,7 +7,10 @@
 #include <linux/ethtool.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/phy.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/phy/phy.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
@@ -29,7 +32,11 @@
 struct qcom_dwmac_sgmii_phy_data {
 	struct regmap *regmap;
 	struct clk *refclk;
+<<<<<<< HEAD
 	phy_interface_t interface;
+=======
+	int speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void qcom_dwmac_sgmii_phy_init_1g(struct regmap *regmap)
@@ -223,6 +230,7 @@ static int qcom_dwmac_sgmii_phy_calibrate(struct phy *phy)
 	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
 	struct device *dev = phy->dev.parent;
 
+<<<<<<< HEAD
 	switch (data->interface) {
 	case PHY_INTERFACE_MODE_SGMII:
 	case PHY_INTERFACE_MODE_1000BASEX:
@@ -235,6 +243,17 @@ static int qcom_dwmac_sgmii_phy_calibrate(struct phy *phy)
 		break;
 	default:
 		return -EINVAL;
+=======
+	switch (data->speed) {
+	case SPEED_10:
+	case SPEED_100:
+	case SPEED_1000:
+		qcom_dwmac_sgmii_phy_init_1g(data->regmap);
+		break;
+	case SPEED_2500:
+		qcom_dwmac_sgmii_phy_init_2p5g(data->regmap);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (qcom_dwmac_sgmii_phy_poll_status(data->regmap,
@@ -271,6 +290,7 @@ static int qcom_dwmac_sgmii_phy_calibrate(struct phy *phy)
 static int qcom_dwmac_sgmii_phy_power_on(struct phy *phy)
 {
 	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
+<<<<<<< HEAD
 	int ret;
 
 	ret = clk_prepare_enable(data->refclk);
@@ -282,6 +302,10 @@ static int qcom_dwmac_sgmii_phy_power_on(struct phy *phy)
 		clk_disable_unprepare(data->refclk);
 
 	return ret;
+=======
+
+	return clk_prepare_enable(data->refclk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int qcom_dwmac_sgmii_phy_power_off(struct phy *phy)
@@ -299,6 +323,7 @@ static int qcom_dwmac_sgmii_phy_power_off(struct phy *phy)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qcom_dwmac_sgmii_phy_validate(struct phy *phy, enum phy_mode mode,
 					 int submode,
 					 union phy_configure_opts *opts)
@@ -329,6 +354,14 @@ static int qcom_dwmac_sgmii_phy_set_mode(struct phy *phy, enum phy_mode mode,
 
 	if (phy->power_count == 0)
 		return 0;
+=======
+static int qcom_dwmac_sgmii_phy_set_speed(struct phy *phy, int speed)
+{
+	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
+
+	if (speed != data->speed)
+		data->speed = speed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return qcom_dwmac_sgmii_phy_calibrate(phy);
 }
@@ -336,8 +369,12 @@ static int qcom_dwmac_sgmii_phy_set_mode(struct phy *phy, enum phy_mode mode,
 static const struct phy_ops qcom_dwmac_sgmii_phy_ops = {
 	.power_on	= qcom_dwmac_sgmii_phy_power_on,
 	.power_off	= qcom_dwmac_sgmii_phy_power_off,
+<<<<<<< HEAD
 	.set_mode	= qcom_dwmac_sgmii_phy_set_mode,
 	.validate	= qcom_dwmac_sgmii_phy_validate,
+=======
+	.set_speed	= qcom_dwmac_sgmii_phy_set_speed,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.calibrate	= qcom_dwmac_sgmii_phy_calibrate,
 	.owner		= THIS_MODULE,
 };
@@ -362,7 +399,11 @@ static int qcom_dwmac_sgmii_phy_probe(struct platform_device *pdev)
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->interface = PHY_INTERFACE_MODE_SGMII;
+=======
+	data->speed = SPEED_10;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	base = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(base))

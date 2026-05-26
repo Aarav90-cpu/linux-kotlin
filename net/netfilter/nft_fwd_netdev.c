@@ -95,15 +95,22 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
 			      struct nft_regs *regs,
 			      const struct nft_pktinfo *pkt)
 {
+<<<<<<< HEAD
 	u8 *nf_dup_skb_recursion = nf_get_nf_dup_skb_recursion();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nft_fwd_neigh *priv = nft_expr_priv(expr);
 	void *addr = &regs->data[priv->sreg_addr];
 	int oif = regs->data[priv->sreg_dev];
 	unsigned int verdict = NF_STOLEN;
 	struct sk_buff *skb = pkt->skb;
+<<<<<<< HEAD
 	int nhoff = skb_network_offset(skb);
 	struct net_device *dev;
 	unsigned int hh_len;
+=======
+	struct net_device *dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int neigh_table;
 
 	switch (priv->nfproto) {
@@ -114,16 +121,23 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
 			verdict = NFT_BREAK;
 			goto out;
 		}
+<<<<<<< HEAD
 		if (skb_ensure_writable(skb, nhoff + sizeof(*iph))) {
+=======
+		if (skb_try_make_writable(skb, sizeof(*iph))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			verdict = NF_DROP;
 			goto out;
 		}
 		iph = ip_hdr(skb);
+<<<<<<< HEAD
 		if (iph->ttl <= 1) {
 			verdict = NF_DROP;
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ip_decrease_ttl(iph);
 		neigh_table = NEIGH_ARP_TABLE;
 		break;
@@ -135,16 +149,23 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
 			verdict = NFT_BREAK;
 			goto out;
 		}
+<<<<<<< HEAD
 		if (skb_ensure_writable(skb, nhoff + sizeof(*ip6h))) {
+=======
+		if (skb_try_make_writable(skb, sizeof(*ip6h))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			verdict = NF_DROP;
 			goto out;
 		}
 		ip6h = ipv6_hdr(skb);
+<<<<<<< HEAD
 		if (ip6h->hop_limit <= 1) {
 			verdict = NF_DROP;
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ip6h->hop_limit--;
 		neigh_table = NEIGH_ND_TABLE;
 		break;
@@ -154,6 +175,7 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (*nf_dup_skb_recursion > NF_RECURSION_LIMIT) {
 		verdict = NF_DROP;
 		goto out;
@@ -179,6 +201,15 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
 	(*nf_dup_skb_recursion)++;
 	neigh_xmit(neigh_table, dev, addr, skb);
 	(*nf_dup_skb_recursion)--;
+=======
+	dev = dev_get_by_index_rcu(nft_net(pkt), oif);
+	if (dev == NULL)
+		return;
+
+	skb->dev = dev;
+	skb_clear_tstamp(skb);
+	neigh_xmit(neigh_table, dev, addr, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	regs->verdict.code = verdict;
 }
@@ -249,6 +280,10 @@ static const struct nft_expr_ops nft_fwd_neigh_netdev_ops = {
 	.init		= nft_fwd_neigh_init,
 	.dump		= nft_fwd_neigh_dump,
 	.validate	= nft_fwd_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops nft_fwd_netdev_ops = {
@@ -258,6 +293,10 @@ static const struct nft_expr_ops nft_fwd_netdev_ops = {
 	.init		= nft_fwd_netdev_init,
 	.dump		= nft_fwd_netdev_dump,
 	.validate	= nft_fwd_validate,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.offload	= nft_fwd_netdev_offload,
 	.offload_action	= nft_fwd_netdev_offload_action,
 };

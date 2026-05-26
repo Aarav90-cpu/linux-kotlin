@@ -618,7 +618,11 @@ cache_replacement_policy
   One of either lru, fifo or random.
 
 freelist_percent
+<<<<<<< HEAD
   Size of the freelist as a percentage of nbuckets. Can be written to
+=======
+  Size of the freelist as a percentage of nbuckets. Can be written to to
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   increase the number of buckets kept on the freelist, which lets you
   artificially reduce the size of the cache at runtime. Mostly for testing
   purposes (i.e. testing how different size caches affect your hit rate).

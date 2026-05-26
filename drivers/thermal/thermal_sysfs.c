@@ -18,7 +18,10 @@
 #include <linux/err.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+<<<<<<< HEAD
 #include <linux/string_choices.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/jiffies.h>
 
 #include "thermal_core.h"
@@ -57,8 +60,15 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
 
 	guard(thermal_zone)(tz);
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%s\n",
 		str_enabled_disabled(tz->mode == THERMAL_DEVICE_ENABLED));
+=======
+	if (tz->mode == THERMAL_DEVICE_ENABLED)
+		return sysfs_emit(buf, "enabled\n");
+
+	return sysfs_emit(buf, "disabled\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t

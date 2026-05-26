@@ -155,7 +155,11 @@ are enough free huge pages to accommodate the reservation.  If there are,
 the global reservation count resv_huge_pages is adjusted something like the
 following::
 
+<<<<<<< HEAD
 	if (resv_needed <= (free_huge_pages - resv_huge_pages)
+=======
+	if (resv_needed <= (resv_huge_pages - free_huge_pages))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		resv_huge_pages += resv_needed;
 
 Note that the global lock hugetlb_lock is held when checking and adjusting

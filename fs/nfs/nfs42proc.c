@@ -401,7 +401,10 @@ static void nfs42_copy_dest_done(struct file *file, loff_t pos, loff_t len,
 					     NFS_INO_INVALID_MTIME |
 					     NFS_INO_INVALID_BLOCKS);
 	spin_unlock(&inode->i_lock);
+<<<<<<< HEAD
 	nfs_update_delegated_mtime(inode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t _nfs42_proc_copy(struct file *src,
@@ -1373,6 +1376,7 @@ out_put_src_lock:
 static int _nfs42_proc_removexattr(struct inode *inode, const char *name)
 {
 	struct nfs_server *server = NFS_SERVER(inode);
+<<<<<<< HEAD
 	__u32 bitmask[NFS_BITMASK_SZ];
 	struct nfs42_removexattrargs args = {
 		.fh = NFS_FH(inode),
@@ -1382,6 +1386,13 @@ static int _nfs42_proc_removexattr(struct inode *inode, const char *name)
 	struct nfs42_removexattrres res = {
 		.server = server,
 	};
+=======
+	struct nfs42_removexattrargs args = {
+		.fh = NFS_FH(inode),
+		.xattr_name = name,
+	};
+	struct nfs42_removexattrres res;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rpc_message msg = {
 		.rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_REMOVEXATTR],
 		.rpc_argp = &args,
@@ -1390,6 +1401,7 @@ static int _nfs42_proc_removexattr(struct inode *inode, const char *name)
 	int ret;
 	unsigned long timestamp = jiffies;
 
+<<<<<<< HEAD
 	res.fattr = nfs_alloc_fattr();
 	if (!res.fattr)
 		return -ENOMEM;
@@ -1406,6 +1418,14 @@ static int _nfs42_proc_removexattr(struct inode *inode, const char *name)
 	}
 
 	kfree(res.fattr);
+=======
+	ret = nfs4_call_sync(server->client, server, &msg, &args.seq_args,
+	    &res.seq_res, 1);
+	trace_nfs4_removexattr(inode, name, ret);
+	if (!ret)
+		nfs4_update_changeattr(inode, &res.cinfo, timestamp, 0);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

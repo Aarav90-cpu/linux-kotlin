@@ -4,7 +4,11 @@
 /*
  * Maple Tree - An RCU-safe adaptive tree for storing ranges
  * Copyright (c) 2018-2022 Oracle
+<<<<<<< HEAD
  * Authors:     Liam R. Howlett <liam@infradead.org>
+=======
+ * Authors:     Liam R. Howlett <Liam.Howlett@Oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *              Matthew Wilcox <willy@infradead.org>
  */
 
@@ -139,7 +143,10 @@ enum maple_type {
 	maple_leaf_64,
 	maple_range_64,
 	maple_arange_64,
+<<<<<<< HEAD
 	maple_copy,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum store_type {
@@ -155,6 +162,7 @@ enum store_type {
 	wr_slot_store,
 };
 
+<<<<<<< HEAD
 struct maple_copy {
 	/*
 	 * min, max, and pivots are values
@@ -195,6 +203,8 @@ struct maple_copy {
 	unsigned char height;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * DOC: Maple tree flags
  *
@@ -340,7 +350,10 @@ struct maple_node {
 		};
 		struct maple_range_64 mr64;
 		struct maple_arange_64 ma64;
+<<<<<<< HEAD
 		struct maple_copy cp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

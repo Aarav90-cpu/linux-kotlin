@@ -78,12 +78,17 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 	int buffer_fd;
 	int ret;
 
+<<<<<<< HEAD
 	if ((!ib_dev->ops.create_cq && !ib_dev->ops.create_user_cq) ||
 	    !ib_dev->ops.destroy_cq)
+=======
+	if ((!ib_dev->ops.create_cq && !ib_dev->ops.create_cq_umem) || !ib_dev->ops.destroy_cq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	ret = uverbs_copy_from(&attr.comp_vector, attrs,
 			       UVERBS_ATTR_CREATE_CQ_COMP_VECTOR);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -93,6 +98,14 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 
 	ret = uverbs_copy_from(&user_handle, attrs,
 			       UVERBS_ATTR_CREATE_CQ_USER_HANDLE);
+=======
+	if (!ret)
+		ret = uverbs_copy_from(&attr.cqe, attrs,
+				       UVERBS_ATTR_CREATE_CQ_CQE);
+	if (!ret)
+		ret = uverbs_copy_from(&user_handle, attrs,
+				       UVERBS_ATTR_CREATE_CQ_USER_HANDLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -134,7 +147,11 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 
 		if (uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_FD) ||
 		    uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_OFFSET) ||
+<<<<<<< HEAD
 		    !ib_dev->ops.create_user_cq) {
+=======
+		    !ib_dev->ops.create_cq_umem) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -EINVAL;
 			goto err_event_file;
 		}
@@ -159,7 +176,11 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 			goto err_event_file;
 
 		if (uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_VA) ||
+<<<<<<< HEAD
 		    !ib_dev->ops.create_user_cq) {
+=======
+		    !ib_dev->ops.create_cq_umem) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -EINVAL;
 			goto err_event_file;
 		}
@@ -172,7 +193,12 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 		}
 		umem = &umem_dmabuf->umem;
 	} else if (uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_OFFSET) ||
+<<<<<<< HEAD
 		   uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_LENGTH)) {
+=======
+		   uverbs_attr_is_valid(attrs, UVERBS_ATTR_CREATE_CQ_BUFFER_LENGTH) ||
+		   !ib_dev->ops.create_cq) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto err_event_file;
 	}
@@ -189,16 +215,20 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 	cq->comp_handler  = ib_uverbs_comp_handler;
 	cq->event_handler = ib_uverbs_cq_event_handler;
 	cq->cq_context    = ev_file ? &ev_file->ev_queue : NULL;
+<<<<<<< HEAD
 	/*
 	 * If UMEM is not provided here, legacy drivers will set it during
 	 * CQ creation based on their internal udata.
 	 */
 	cq->umem = umem;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_set(&cq->usecnt, 0);
 
 	rdma_restrack_new(&cq->res, RDMA_RESTRACK_CQ);
 	rdma_restrack_set_name(&cq->res, NULL);
 
+<<<<<<< HEAD
 	if (ib_dev->ops.create_user_cq)
 		ret = ib_dev->ops.create_user_cq(cq, &attr, attrs);
 	else
@@ -209,6 +239,13 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 	/* Check that driver didn't overrun existing umem */
 	WARN_ON(umem && cq->umem != umem);
 
+=======
+	ret = umem ? ib_dev->ops.create_cq_umem(cq, &attr, umem, attrs) :
+		ib_dev->ops.create_cq(cq, &attr, attrs);
+	if (ret)
+		goto err_free;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	obj->uevent.uobject.object = cq;
 	obj->uevent.uobject.user_handle = user_handle;
 	rdma_restrack_add(&cq->res);
@@ -219,7 +256,11 @@ static int UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE)(
 	return ret;
 
 err_free:
+<<<<<<< HEAD
 	ib_umem_release(cq->umem);
+=======
+	ib_umem_release(umem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rdma_restrack_put(&cq->res);
 	kfree(cq);
 err_event_file:

@@ -71,6 +71,10 @@ obj-$(CONFIG_STACKPROTECTOR)	+= stackprotector.o
 obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
 obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
 obj-$(CONFIG_CERT_STORE)	+= cert_store.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
 obj-$(CONFIG_PERF_EVENTS)	+= perf_cpum_cf.o perf_cpum_sf.o
@@ -79,7 +83,10 @@ obj-$(CONFIG_PERF_EVENTS)	+= perf_pai.o
 
 obj-$(CONFIG_TRACEPOINTS)	+= trace.o
 
+<<<<<<< HEAD
 obj-$(CONFIG_BPF_SYSCALL)	+= bpf.o
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # vdso
 obj-y				+= vdso/

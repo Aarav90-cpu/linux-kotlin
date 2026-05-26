@@ -104,6 +104,10 @@
 #include <net/tcp.h>
 #include <net/psp.h>
 #include <net/udp.h>
+<<<<<<< HEAD
+=======
+#include <net/udplite.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/ping.h>
 #include <linux/skbuff.h>
 #include <net/sock.h>
@@ -857,13 +861,20 @@ EXPORT_SYMBOL_GPL(inet_send_prepare);
 int inet_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 	const struct proto *prot;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(inet_send_prepare(sk)))
 		return -EAGAIN;
 
+<<<<<<< HEAD
 	prot = READ_ONCE(sk->sk_prot);
 	return INDIRECT_CALL_2(prot->sendmsg, tcp_sendmsg, udp_sendmsg,
+=======
+	return INDIRECT_CALL_2(sk->sk_prot->sendmsg, tcp_sendmsg, udp_sendmsg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       sk, msg, size);
 }
 EXPORT_SYMBOL(inet_sendmsg);
@@ -883,18 +894,36 @@ void inet_splice_eof(struct socket *sock)
 }
 EXPORT_SYMBOL_GPL(inet_splice_eof);
 
+<<<<<<< HEAD
+=======
+INDIRECT_CALLABLE_DECLARE(int udp_recvmsg(struct sock *, struct msghdr *,
+					  size_t, int, int *));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int inet_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
 		 int flags)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 	const struct proto *prot;
+=======
+	int addr_len = 0;
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (likely(!(flags & MSG_ERRQUEUE)))
 		sock_rps_record_flow(sk);
 
+<<<<<<< HEAD
 	prot = READ_ONCE(sk->sk_prot);
 	return INDIRECT_CALL_2(prot->recvmsg, tcp_recvmsg, udp_recvmsg,
 			       sk, msg, size, flags);
+=======
+	err = INDIRECT_CALL_2(sk->sk_prot->recvmsg, tcp_recvmsg, udp_recvmsg,
+			      sk, msg, size, flags, &addr_len);
+	if (err >= 0)
+		msg->msg_namelen = addr_len;
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(inet_recvmsg);
 
@@ -1091,7 +1120,10 @@ const struct proto_ops inet_stream_ops = {
 	.compat_ioctl	   = inet_compat_ioctl,
 #endif
 	.set_rcvlowat	   = tcp_set_rcvlowat,
+<<<<<<< HEAD
 	.set_rcvbuf	   = tcp_set_rcvbuf,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL(inet_stream_ops);
 
@@ -1580,15 +1612,26 @@ __be32 inet_current_timestamp(void)
 }
 EXPORT_SYMBOL(inet_current_timestamp);
 
+<<<<<<< HEAD
 int inet_recv_error(struct sock *sk, struct msghdr *msg, int len)
+=======
+int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int family = READ_ONCE(sk->sk_family);
 
 	if (family == AF_INET)
+<<<<<<< HEAD
 		return ip_recv_error(sk, msg, len);
 #if IS_ENABLED(CONFIG_IPV6)
 	if (family == AF_INET6)
 		return pingv6_ops.ipv6_recv_error(sk, msg, len);
+=======
+		return ip_recv_error(sk, msg, len, addr_len);
+#if IS_ENABLED(CONFIG_IPV6)
+	if (family == AF_INET6)
+		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return -EINVAL;
 }
@@ -1734,6 +1777,12 @@ static __net_init int ipv4_mib_init_net(struct net *net)
 	net->mib.udp_statistics = alloc_percpu(struct udp_mib);
 	if (!net->mib.udp_statistics)
 		goto err_udp_mib;
+<<<<<<< HEAD
+=======
+	net->mib.udplite_statistics = alloc_percpu(struct udp_mib);
+	if (!net->mib.udplite_statistics)
+		goto err_udplite_mib;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	net->mib.icmp_statistics = alloc_percpu(struct icmp_mib);
 	if (!net->mib.icmp_statistics)
 		goto err_icmp_mib;
@@ -1747,6 +1796,11 @@ static __net_init int ipv4_mib_init_net(struct net *net)
 err_icmpmsg_mib:
 	free_percpu(net->mib.icmp_statistics);
 err_icmp_mib:
+<<<<<<< HEAD
+=======
+	free_percpu(net->mib.udplite_statistics);
+err_udplite_mib:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_percpu(net->mib.udp_statistics);
 err_udp_mib:
 	free_percpu(net->mib.net_statistics);
@@ -1762,6 +1816,10 @@ static __net_exit void ipv4_mib_exit_net(struct net *net)
 {
 	kfree(net->mib.icmpmsg_statistics);
 	free_percpu(net->mib.icmp_statistics);
+<<<<<<< HEAD
+=======
+	free_percpu(net->mib.udplite_statistics);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_percpu(net->mib.udp_statistics);
 	free_percpu(net->mib.net_statistics);
 	free_percpu(net->mib.ip_statistics);
@@ -1977,6 +2035,12 @@ static int __init inet_init(void)
 	/* Setup UDP memory threshold */
 	udp_init();
 
+<<<<<<< HEAD
+=======
+	/* Add UDP-Lite (RFC 3828) */
+	udplite4_register();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_init();
 
 	ping_init();

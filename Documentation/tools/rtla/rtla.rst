@@ -21,10 +21,13 @@ results.
 
 COMMANDS
 ========
+<<<<<<< HEAD
 **hwnoise**
 
         Detect and quantify hardware-related noise.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 **osnoise**
 
         Gives information about the operating system noise (osnoise).
@@ -43,7 +46,11 @@ For other options, see the man page for the corresponding command.
 
 SEE ALSO
 ========
+<<<<<<< HEAD
 **rtla-hwnoise**\(1), **rtla-osnoise**\(1), **rtla-timerlat**\(1)
+=======
+**rtla-osnoise**\(1), **rtla-timerlat**\(1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AUTHOR
 ======

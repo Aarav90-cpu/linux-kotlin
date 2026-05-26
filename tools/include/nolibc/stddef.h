@@ -18,7 +18,11 @@
 #endif
 
 #ifndef offsetof
+<<<<<<< HEAD
 #define offsetof(TYPE, FIELD) __builtin_offsetof(TYPE, FIELD)
+=======
+#define offsetof(TYPE, FIELD) ((size_t) &((TYPE *)0)->FIELD)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif /* _NOLIBC_STDDEF_H */

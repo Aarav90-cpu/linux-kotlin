@@ -34,8 +34,11 @@ config DRM_ANALOGIX_ANX7625
 	tristate "Analogix Anx7625 MIPI to DP interface support"
 	depends on DRM
 	depends on OF
+<<<<<<< HEAD
 	depends on TYPEC
 	depends on USB_ROLE_SWITCH
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select DRM_DISPLAY_DP_HELPER
 	select DRM_DISPLAY_HDCP_HELPER
 	select DRM_DISPLAY_HELPER

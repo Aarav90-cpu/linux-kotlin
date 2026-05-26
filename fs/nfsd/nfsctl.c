@@ -11,7 +11,11 @@
 #include <linux/fs_context.h>
 
 #include <linux/sunrpc/svcsock.h>
+<<<<<<< HEAD
 #include <linux/lockd/bind.h>
+=======
+#include <linux/lockd/lockd.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sunrpc/addr.h>
 #include <linux/sunrpc/gss_api.h>
 #include <linux/sunrpc/rpc_pipe_fs.h>
@@ -1582,6 +1586,7 @@ out_unlock:
 }
 
 /**
+<<<<<<< HEAD
  * nfsd_nl_fh_key_set - helper to copy fh_key from userspace
  * @attr: nlattr NFSD_A_SERVER_FH_KEY
  * @nn: nfsd_net
@@ -1608,6 +1613,8 @@ static int nfsd_nl_fh_key_set(const struct nlattr *attr, struct nfsd_net *nn)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * nfsd_nl_threads_set_doit - set the number of running threads
  * @skb: reply buffer
  * @info: netlink metadata and command arguments
@@ -1648,8 +1655,12 @@ int nfsd_nl_threads_set_doit(struct sk_buff *skb, struct genl_info *info)
 
 	if (info->attrs[NFSD_A_SERVER_GRACETIME] ||
 	    info->attrs[NFSD_A_SERVER_LEASETIME] ||
+<<<<<<< HEAD
 	    info->attrs[NFSD_A_SERVER_SCOPE] ||
 	    info->attrs[NFSD_A_SERVER_FH_KEY]) {
+=======
+	    info->attrs[NFSD_A_SERVER_SCOPE]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EBUSY;
 		if (nn->nfsd_serv && nn->nfsd_serv->sv_nrthreads)
 			goto out_unlock;
@@ -1678,6 +1689,7 @@ int nfsd_nl_threads_set_doit(struct sk_buff *skb, struct genl_info *info)
 		attr = info->attrs[NFSD_A_SERVER_SCOPE];
 		if (attr)
 			scope = nla_data(attr);
+<<<<<<< HEAD
 
 		attr = info->attrs[NFSD_A_SERVER_FH_KEY];
 		if (attr) {
@@ -1686,6 +1698,8 @@ int nfsd_nl_threads_set_doit(struct sk_buff *skb, struct genl_info *info)
 			if (ret)
 				goto out_unlock;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	attr = info->attrs[NFSD_A_SERVER_MIN_THREADS];
@@ -2203,9 +2217,12 @@ static __net_init int nfsd_net_init(struct net *net)
 	int retval;
 	int i;
 
+<<<<<<< HEAD
 	retval = nfsd_net_cb_init(nn);
 	if (retval)
 		return retval;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	retval = nfsd_export_init(net);
 	if (retval)
 		goto out_export_error;
@@ -2246,7 +2263,10 @@ out_repcache_error:
 out_idmap_error:
 	nfsd_export_shutdown(net);
 out_export_error:
+<<<<<<< HEAD
 	nfsd_net_cb_shutdown(nn);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 }
 
@@ -2276,8 +2296,11 @@ static __net_exit void nfsd_net_exit(struct net *net)
 {
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
 
+<<<<<<< HEAD
 	kfree_sensitive(nn->fh_key);
 	nfsd_net_cb_shutdown(nn);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nfsd_proc_stat_shutdown(net);
 	percpu_counter_destroy_many(nn->counter, NFSD_STATS_COUNTERS_NUM);
 	nfsd_idmap_shutdown(net);

@@ -96,7 +96,11 @@ struct catpt_dev {
 	struct catpt_module_type modules[CATPT_MODULE_COUNT];
 	struct catpt_ssp_device_format devfmt[CATPT_SSP_COUNT];
 	struct list_head stream_list;
+<<<<<<< HEAD
 	struct mutex stream_mutex;
+=======
+	spinlock_t list_lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex clk_mutex;
 
 	struct catpt_dx_context dx_ctx;

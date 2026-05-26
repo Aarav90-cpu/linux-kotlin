@@ -44,10 +44,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &bsec {
 	bootph-all;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usart2 {
 	status = "okay";
 };

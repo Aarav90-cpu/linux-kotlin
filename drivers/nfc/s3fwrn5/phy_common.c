@@ -8,6 +8,10 @@
  * Bongsu Jeon <bongsu.jeon@samsung.com>
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/module.h>
 
@@ -18,7 +22,11 @@ void s3fwrn5_phy_set_wake(void *phy_id, bool wake)
 	struct phy_common *phy = phy_id;
 
 	mutex_lock(&phy->mutex);
+<<<<<<< HEAD
 	gpiod_set_value(phy->gpio_fw_wake, wake);
+=======
+	gpio_set_value(phy->gpio_fw_wake, wake);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (wake)
 		msleep(S3FWRN5_EN_WAIT_TIME);
 	mutex_unlock(&phy->mutex);
@@ -32,6 +40,7 @@ bool s3fwrn5_phy_power_ctrl(struct phy_common *phy, enum s3fwrn5_mode mode)
 
 	phy->mode = mode;
 
+<<<<<<< HEAD
 	gpiod_set_value(phy->gpio_en, 1);
 	gpiod_set_value(phy->gpio_fw_wake, 0);
 	if (mode == S3FWRN5_MODE_FW)
@@ -40,6 +49,16 @@ bool s3fwrn5_phy_power_ctrl(struct phy_common *phy, enum s3fwrn5_mode mode)
 	if (mode != S3FWRN5_MODE_COLD) {
 		msleep(S3FWRN5_EN_WAIT_TIME);
 		gpiod_set_value(phy->gpio_en, 0);
+=======
+	gpio_set_value(phy->gpio_en, 1);
+	gpio_set_value(phy->gpio_fw_wake, 0);
+	if (mode == S3FWRN5_MODE_FW)
+		gpio_set_value(phy->gpio_fw_wake, 1);
+
+	if (mode != S3FWRN5_MODE_COLD) {
+		msleep(S3FWRN5_EN_WAIT_TIME);
+		gpio_set_value(phy->gpio_en, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		msleep(S3FWRN5_EN_WAIT_TIME);
 	}
 

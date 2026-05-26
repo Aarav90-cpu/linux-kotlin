@@ -10,7 +10,10 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
+<<<<<<< HEAD
 #include <dt-bindings/regulator/samsung,s2mpg10-regulator.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/usb/pd.h>
 #include "gs101-pinctrl.h"
 #include "gs101.dtsi"
@@ -29,8 +32,11 @@
 		framebuffer0: framebuffer-0 {
 			compatible = "simple-framebuffer";
 			memory-region = <&cont_splash_mem>;
+<<<<<<< HEAD
 			vci-supply = <&s2mpg10_ldo22m>;
 			vddi-supply = <&s2mpg11_bucka>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* format properties to be added by actual board */
 			status = "disabled";
 		};
@@ -104,7 +110,11 @@
 };
 
 &acpm_ipc {
+<<<<<<< HEAD
 	pmic-1 {
+=======
+	pmic {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "samsung,s2mpg10-pmic";
 		interrupts-extended = <&gpa0 6 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-names = "default";
@@ -112,6 +122,7 @@
 		system-power-controller;
 		wakeup-source;
 
+<<<<<<< HEAD
 		vinl1m-supply = <&s2mpg11_buck3s>;
 		vinl2m-supply = <&s2mpg11_buck3s>;
 		vinl3m-supply = <&s2mpg10_buck8m>;
@@ -128,6 +139,8 @@
 		vinl14m-supply = <&s2mpg11_buckboost>;
 		vinl15m-supply = <&s2mpg11_buckboost>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clocks {
 			compatible = "samsung,s2mpg10-clk";
 			#clock-cells = <1>;
@@ -136,6 +149,7 @@
 		};
 
 		regulators {
+<<<<<<< HEAD
 			buck1m {
 				regulator-name = "vdd_mif";
 				regulator-min-microvolt = <450000>;
@@ -619,6 +633,8 @@
 			};
 
 			/* ldo14s is board specific, ldo15s is unused */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };
@@ -727,6 +743,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	fuel-gauge@36 {
 		compatible = "maxim,max77759-fg";
 		reg = <0x36>;
@@ -738,6 +755,8 @@
 		shunt-resistor-micro-ohms = <5000>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pmic@66 {
 		compatible = "maxim,max77759";
 		reg = <0x66>;
@@ -830,6 +849,7 @@
 		samsung,pin-pud = <GS101_PIN_PULL_NONE>;
 	};
 
+<<<<<<< HEAD
 	sub_pmic_int: sub-pmic-int-pins {
 		samsung,pins = "gpa0-7";
 		samsung,pin-function = <GS101_PIN_FUNC_EINT>;
@@ -843,6 +863,8 @@
 		samsung,pin-drv = <GS101_PIN_DRV_2_5_MA>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	key_power: key-power-pins {
 		samsung,pins = "gpa10-1";
 		samsung,pin-function = <GS101_PIN_FUNC_EINT>;

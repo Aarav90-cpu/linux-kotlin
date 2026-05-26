@@ -15,9 +15,16 @@ use kernel::{
 };
 
 use crate::{
+<<<<<<< HEAD
     falcon::{
         FalconDmaLoadTarget,
         FalconFirmware, //
+=======
+    dma::DmaObject,
+    falcon::{
+        FalconFirmware,
+        FalconLoadTarget, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     },
     gpu,
     num::{
@@ -63,8 +70,12 @@ pub(crate) struct FalconUCodeDescV2 {
     pub(crate) interface_offset: u32,
     /// Base address at which to load the code segment into 'IMEM'.
     pub(crate) imem_phys_base: u32,
+<<<<<<< HEAD
     /// Size in bytes of the code to copy into 'IMEM' (includes both secure and non-secure
     /// segments).
+=======
+    /// Size in bytes of the code to copy into 'IMEM'.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pub(crate) imem_load_size: u32,
     /// Virtual 'IMEM' address (i.e. 'tag') at which the code should start.
     pub(crate) imem_virt_base: u32,
@@ -171,9 +182,15 @@ pub(crate) trait FalconUCodeDescriptor {
         ((hdr & HDR_SIZE_MASK) >> HDR_SIZE_SHIFT).into_safe_cast()
     }
 
+<<<<<<< HEAD
     fn imem_sec_load_params(&self) -> FalconDmaLoadTarget;
     fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget>;
     fn dmem_load_params(&self) -> FalconDmaLoadTarget;
+=======
+    fn imem_sec_load_params(&self) -> FalconLoadTarget;
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
+    fn dmem_load_params(&self) -> FalconLoadTarget;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl FalconUCodeDescriptor for FalconUCodeDescV2 {
@@ -205,6 +222,7 @@ impl FalconUCodeDescriptor for FalconUCodeDescV2 {
         0
     }
 
+<<<<<<< HEAD
     fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
         // `imem_sec_base` is the *virtual* start address of the secure IMEM segment, so subtract
         // `imem_virt_base` to get its physical offset.
@@ -213,10 +231,17 @@ impl FalconUCodeDescriptor for FalconUCodeDescV2 {
         FalconDmaLoadTarget {
             src_start: imem_sec_start,
             dst_start: self.imem_phys_base.saturating_add(imem_sec_start),
+=======
+    fn imem_sec_load_params(&self) -> FalconLoadTarget {
+        FalconLoadTarget {
+            src_start: 0,
+            dst_start: self.imem_sec_base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             len: self.imem_sec_size,
         }
     }
 
+<<<<<<< HEAD
     fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
         Some(FalconDmaLoadTarget {
             // Non-secure code always starts at offset 0.
@@ -230,6 +255,18 @@ impl FalconUCodeDescriptor for FalconUCodeDescV2 {
 
     fn dmem_load_params(&self) -> FalconDmaLoadTarget {
         FalconDmaLoadTarget {
+=======
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+        Some(FalconLoadTarget {
+            src_start: 0,
+            dst_start: self.imem_phys_base,
+            len: self.imem_load_size.checked_sub(self.imem_sec_size)?,
+        })
+    }
+
+    fn dmem_load_params(&self) -> FalconLoadTarget {
+        FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             src_start: self.dmem_offset,
             dst_start: self.dmem_phys_base,
             len: self.dmem_load_size,
@@ -266,23 +303,37 @@ impl FalconUCodeDescriptor for FalconUCodeDescV3 {
         self.signature_versions
     }
 
+<<<<<<< HEAD
     fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
         FalconDmaLoadTarget {
             // IMEM segment always starts at offset 0.
+=======
+    fn imem_sec_load_params(&self) -> FalconLoadTarget {
+        FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             src_start: 0,
             dst_start: self.imem_phys_base,
             len: self.imem_load_size,
         }
     }
 
+<<<<<<< HEAD
     fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
+=======
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // Not used on V3 platforms
         None
     }
 
+<<<<<<< HEAD
     fn dmem_load_params(&self) -> FalconDmaLoadTarget {
         FalconDmaLoadTarget {
             // DMEM segment starts right after the IMEM one.
+=======
+    fn dmem_load_params(&self) -> FalconLoadTarget {
+        FalconLoadTarget {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             src_start: self.imem_load_size,
             dst_start: self.dmem_phys_base,
             len: self.dmem_load_size,
@@ -301,7 +352,11 @@ impl SignedState for Unsigned {}
 struct Signed;
 impl SignedState for Signed {}
 
+<<<<<<< HEAD
 /// Microcode to be loaded into a specific falcon.
+=======
+/// A [`DmaObject`] containing a specific microcode ready to be loaded into a falcon.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ///
 /// This is module-local and meant for sub-modules to use internally.
 ///
@@ -309,15 +364,20 @@ impl SignedState for Signed {}
 /// before it can be loaded (with an exception for development hardware). The
 /// [`Self::patch_signature`] and [`Self::no_patch_signature`] methods are used to transition the
 /// firmware to its [`Signed`] state.
+<<<<<<< HEAD
 // TODO: Consider replacing this with a coherent memory object once `CoherentAllocation` supports
 // temporary CPU-exclusive access to the object without unsafe methods.
 struct FirmwareObject<F: FalconFirmware, S: SignedState>(KVVec<u8>, PhantomData<(F, S)>);
+=======
+struct FirmwareDmaObject<F: FalconFirmware, S: SignedState>(DmaObject, PhantomData<(F, S)>);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Trait for signatures to be patched directly into a given firmware.
 ///
 /// This is module-local and meant for sub-modules to use internally.
 trait FirmwareSignature<F: FalconFirmware>: AsRef<[u8]> {}
 
+<<<<<<< HEAD
 impl<F: FalconFirmware> FirmwareObject<F, Unsigned> {
     /// Patches the firmware at offset `signature_start` with `signature`.
     fn patch_signature<S: FirmwareSignature<F>>(
@@ -338,6 +398,29 @@ impl<F: FalconFirmware> FirmwareObject<F, Unsigned> {
         dst.copy_from_slice(signature_bytes);
 
         Ok(FirmwareObject(self.0, PhantomData))
+=======
+impl<F: FalconFirmware> FirmwareDmaObject<F, Unsigned> {
+    /// Patches the firmware at offset `sig_base_img` with `signature`.
+    fn patch_signature<S: FirmwareSignature<F>>(
+        mut self,
+        signature: &S,
+        sig_base_img: usize,
+    ) -> Result<FirmwareDmaObject<F, Signed>> {
+        let signature_bytes = signature.as_ref();
+        if sig_base_img + signature_bytes.len() > self.0.size() {
+            return Err(EINVAL);
+        }
+
+        // SAFETY: We are the only user of this object, so there cannot be any race.
+        let dst = unsafe { self.0.start_ptr_mut().add(sig_base_img) };
+
+        // SAFETY: `signature` and `dst` are valid, properly aligned, and do not overlap.
+        unsafe {
+            core::ptr::copy_nonoverlapping(signature_bytes.as_ptr(), dst, signature_bytes.len())
+        };
+
+        Ok(FirmwareDmaObject(self.0, PhantomData))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Mark the firmware as signed without patching it.
@@ -345,8 +428,13 @@ impl<F: FalconFirmware> FirmwareObject<F, Unsigned> {
     /// This method is used to explicitly confirm that we do not need to sign the firmware, while
     /// allowing us to continue as if it was. This is typically only needed for development
     /// hardware.
+<<<<<<< HEAD
     fn no_patch_signature(self) -> FirmwareObject<F, Signed> {
         FirmwareObject(self.0, PhantomData)
+=======
+    fn no_patch_signature(self) -> FirmwareDmaObject<F, Signed> {
+        FirmwareDmaObject(self.0, PhantomData)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
@@ -404,9 +492,14 @@ impl<'a> BinFirmware<'a> {
     fn data(&self) -> Option<&[u8]> {
         let fw_start = usize::from_safe_cast(self.hdr.data_offset);
         let fw_size = usize::from_safe_cast(self.hdr.data_size);
+<<<<<<< HEAD
         let fw_end = fw_start.checked_add(fw_size)?;
 
         self.fw.get(fw_start..fw_end)
+=======
+
+        self.fw.get(fw_start..fw_start + fw_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 }
 
@@ -427,6 +520,7 @@ impl<const N: usize> ModInfoBuilder<N> {
         )
     }
 
+<<<<<<< HEAD
     const fn make_entry_chipset(self, chipset: gpu::Chipset) -> Self {
         let name = chipset.name();
 
@@ -445,18 +539,34 @@ impl<const N: usize> ModInfoBuilder<N> {
 
     pub(crate) const fn create(
         module_name: &'static core::ffi::CStr,
+=======
+    const fn make_entry_chipset(self, chipset: &str) -> Self {
+        self.make_entry_file(chipset, "booter_load")
+            .make_entry_file(chipset, "booter_unload")
+            .make_entry_file(chipset, "bootloader")
+            .make_entry_file(chipset, "gsp")
+    }
+
+    pub(crate) const fn create(
+        module_name: &'static kernel::str::CStr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ) -> firmware::ModInfoBuilder<N> {
         let mut this = Self(firmware::ModInfoBuilder::new(module_name));
         let mut i = 0;
 
         while i < gpu::Chipset::ALL.len() {
+<<<<<<< HEAD
             this = this.make_entry_chipset(gpu::Chipset::ALL[i]);
+=======
+            this = this.make_entry_chipset(gpu::Chipset::ALL[i].name());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             i += 1;
         }
 
         this.0
     }
 }
+<<<<<<< HEAD
 
 /// Ad-hoc and temporary module to extract sections from ELF images.
 ///
@@ -535,3 +645,5 @@ mod elf {
         })
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

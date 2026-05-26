@@ -20,8 +20,13 @@
 #include <sound/dmaengine_pcm.h>
 #include <sound/asound.h>
 
+<<<<<<< HEAD
 int tegra_pcm_new(struct snd_soc_component *component,
 		  struct snd_soc_pcm_runtime *rtd);
+=======
+int tegra_pcm_construct(struct snd_soc_component *component,
+			struct snd_soc_pcm_runtime *rtd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int tegra_pcm_open(struct snd_soc_component *component,
 		   struct snd_pcm_substream *substream);
 int tegra_pcm_close(struct snd_soc_component *component,

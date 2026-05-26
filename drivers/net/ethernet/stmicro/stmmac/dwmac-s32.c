@@ -2,7 +2,11 @@
 /*
  * NXP S32G/R GMAC glue layer
  *
+<<<<<<< HEAD
  * Copyright 2019-2026 NXP
+=======
+ * Copyright 2019-2024 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  */
 
@@ -110,6 +114,7 @@ static void s32_gmac_exit(struct device *dev, void *priv)
 	clk_disable_unprepare(gmac->rx_clk);
 }
 
+<<<<<<< HEAD
 static void s32_gmac_setup_multi_irq(struct device *dev,
 				     struct plat_stmmacenet_data *plat,
 				     struct stmmac_resources *res)
@@ -141,6 +146,8 @@ mac_irq_mode:
 	dev_info(dev, "MAC IRQ mode selected\n");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int s32_dwmac_probe(struct platform_device *pdev)
 {
 	struct plat_stmmacenet_data *plat;
@@ -194,11 +201,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
 
 	/* S32CC core feature set */
 	plat->core_type = DWMAC_CORE_GMAC4;
+<<<<<<< HEAD
 	plat->pmt = true;
 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
 
 	s32_gmac_setup_multi_irq(dev, plat, &res);
 
+=======
+	plat->pmt = 1;
+	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->rx_fifo_size = 20480;
 	plat->tx_fifo_size = 20480;
 

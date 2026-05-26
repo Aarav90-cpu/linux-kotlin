@@ -227,13 +227,20 @@
 #define  CLK_ENTER_LP_AFTER_DATA	(0x0 << 8)
 #define  CLK_HS_OR_LP			(0x2 << 8)
 #define  CLK_HS_CONTINUOUS		(0x3 << 8)
+<<<<<<< HEAD
 #define  LP_CLK_DURING_LPM		(1 << 7) /* tgl+ */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define  LINK_CALIBRATION_MASK		(0x3 << 4)
 #define  LINK_CALIBRATION_SHIFT		4
 #define  CALIBRATION_DISABLED		(0x0 << 4)
 #define  CALIBRATION_ENABLED_INITIAL_ONLY	(0x2 << 4)
 #define  CALIBRATION_ENABLED_INITIAL_PERIODIC	(0x3 << 4)
+<<<<<<< HEAD
 #define  BLANKING_PACKET_ENABLE		(1 << 2) /* tgl+ */
+=======
+#define  BLANKING_PACKET_ENABLE		(1 << 2)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define  S3D_ORIENTATION_LANDSCAPE	(1 << 1)
 #define  EOTP_DISABLED			(1 << 0)
 

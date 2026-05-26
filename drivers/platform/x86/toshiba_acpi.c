@@ -44,7 +44,10 @@
 #include <linux/rfkill.h>
 #include <linux/hwmon.h>
 #include <linux/iio/iio.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/toshiba.h>
 #include <acpi/battery.h>
 #include <acpi/video.h>
@@ -224,7 +227,10 @@ struct toshiba_acpi_dev {
 	unsigned int cooling_method_supported:1;
 	unsigned int battery_charge_mode_supported:1;
 	unsigned int sysfs_created:1;
+<<<<<<< HEAD
 	unsigned int notify_handler_installed:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int special_functions;
 
 	bool kbd_event_generated;
@@ -3195,6 +3201,7 @@ static void print_supported_features(struct toshiba_acpi_dev *dev)
 	pr_cont("\n");
 }
 
+<<<<<<< HEAD
 static void toshiba_acpi_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct toshiba_acpi_dev *dev = data;
@@ -3259,16 +3266,24 @@ static void toshiba_acpi_notify(acpi_handle handle, u32 event, void *data)
 static void toshiba_acpi_remove(struct platform_device *pdev)
 {
 	struct toshiba_acpi_dev *dev = platform_get_drvdata(pdev);
+=======
+static void toshiba_acpi_remove(struct acpi_device *acpi_dev)
+{
+	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	misc_deregister(&dev->miscdev);
 
 	remove_toshiba_proc_entries(dev);
 
+<<<<<<< HEAD
 	if (dev->notify_handler_installed)
 		acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 					       ACPI_DEVICE_NOTIFY,
 					       toshiba_acpi_notify);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_HWMON)
 	if (dev->hwmon_device)
 		hwmon_device_unregister(dev->hwmon_device);
@@ -3308,8 +3323,11 @@ static void toshiba_acpi_remove(struct platform_device *pdev)
 	if (toshiba_acpi)
 		toshiba_acpi = NULL;
 
+<<<<<<< HEAD
 	dev_set_drvdata(&dev->acpi_dev->dev, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev);
 }
 
@@ -3372,9 +3390,18 @@ static const struct dmi_system_id toshiba_dmi_quirks[] __initconst = {
 	{ }
 };
 
+<<<<<<< HEAD
 static int toshiba_acpi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *acpi_dev;
+=======
+	struct acpi_device *acpi_dev = ACPI_COMPANION(&pdev->dev);
+=======
+static int toshiba_acpi_add(struct acpi_device *acpi_dev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct toshiba_acpi_dev *dev;
 	const char *hci_method;
 	u32 dummy;
@@ -3412,7 +3439,11 @@ static int toshiba_acpi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, dev);
+=======
+	acpi_dev->driver_data = dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_set_drvdata(&acpi_dev->dev, dev);
 
 	/* Query the BIOS for supported features */
@@ -3443,7 +3474,11 @@ static int toshiba_acpi_probe(struct platform_device *pdev)
 		dev->led_dev.max_brightness = 1;
 		dev->led_dev.brightness_set = toshiba_illumination_set;
 		dev->led_dev.brightness_get = toshiba_illumination_get;
+<<<<<<< HEAD
 		led_classdev_register(&pdev->dev, &dev->led_dev);
+=======
+		led_classdev_register(&acpi_dev->dev, &dev->led_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	toshiba_eco_mode_available(dev);
@@ -3452,7 +3487,11 @@ static int toshiba_acpi_probe(struct platform_device *pdev)
 		dev->eco_led.max_brightness = 1;
 		dev->eco_led.brightness_set = toshiba_eco_mode_set_status;
 		dev->eco_led.brightness_get = toshiba_eco_mode_get_status;
+<<<<<<< HEAD
 		led_classdev_register(&pdev->dev, &dev->eco_led);
+=======
+		led_classdev_register(&dev->acpi_dev->dev, &dev->eco_led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	toshiba_kbd_illum_available(dev);
@@ -3468,7 +3507,11 @@ static int toshiba_acpi_probe(struct platform_device *pdev)
 		dev->kbd_led.max_brightness = 1;
 		dev->kbd_led.brightness_set = toshiba_kbd_backlight_set;
 		dev->kbd_led.brightness_get = toshiba_kbd_backlight_get;
+<<<<<<< HEAD
 		led_classdev_register(&pdev->dev, &dev->kbd_led);
+=======
+		led_classdev_register(&dev->acpi_dev->dev, &dev->kbd_led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = toshiba_touchpad_get(dev, &dummy);
@@ -3476,7 +3519,11 @@ static int toshiba_acpi_probe(struct platform_device *pdev)
 
 	toshiba_accelerometer_available(dev);
 	if (dev->accelerometer_supported) {
+<<<<<<< HEAD
 		dev->indio_dev = iio_device_alloc(&pdev->dev, sizeof(*dev));
+=======
+		dev->indio_dev = iio_device_alloc(&acpi_dev->dev, sizeof(*dev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!dev->indio_dev) {
 			pr_err("Unable to allocate iio device\n");
 			goto iio_error;
@@ -3525,7 +3572,11 @@ iio_error:
 #if IS_ENABLED(CONFIG_HWMON)
 	if (dev->fan_rpm_supported) {
 		dev->hwmon_device = hwmon_device_register_with_info(
+<<<<<<< HEAD
 			&pdev->dev, "toshiba_acpi_sensors", NULL,
+=======
+			&dev->acpi_dev->dev, "toshiba_acpi_sensors", NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			&toshiba_acpi_hwmon_chip_info, NULL);
 		if (IS_ERR(dev->hwmon_device)) {
 			dev->hwmon_device = NULL;
@@ -3552,6 +3603,7 @@ iio_error:
 	}
 	dev->sysfs_created = !ret;
 
+<<<<<<< HEAD
 	ret = acpi_dev_install_notify_handler(acpi_dev, ACPI_DEVICE_NOTIFY,
 					      toshiba_acpi_notify, dev);
 	if (ret)
@@ -3559,6 +3611,8 @@ iio_error:
 
 	dev->notify_handler_installed = 1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	create_toshiba_proc_entries(dev);
 
 	toshiba_acpi = dev;
@@ -3573,6 +3627,7 @@ iio_error:
 	return 0;
 
 error:
+<<<<<<< HEAD
 	toshiba_acpi_remove(pdev);
 	return ret;
 }
@@ -3581,6 +3636,76 @@ error:
 static int toshiba_acpi_suspend(struct device *device)
 {
 	struct toshiba_acpi_dev *dev = dev_get_drvdata(device);
+=======
+	toshiba_acpi_remove(acpi_dev);
+	return ret;
+}
+
+static void toshiba_acpi_notify(struct acpi_device *acpi_dev, u32 event)
+{
+	struct toshiba_acpi_dev *dev = acpi_driver_data(acpi_dev);
+
+	switch (event) {
+	case 0x80: /* Hotkeys and some system events */
+		/*
+		 * Machines with this WMI GUID aren't supported due to bugs in
+		 * their AML.
+		 *
+		 * Return silently to avoid triggering a netlink event.
+		 */
+		if (wmi_has_guid(TOSHIBA_WMI_EVENT_GUID))
+			return;
+		toshiba_acpi_process_hotkeys(dev);
+		break;
+	case 0x81: /* Dock events */
+	case 0x82:
+	case 0x83:
+		pr_info("Dock event received %x\n", event);
+		break;
+	case 0x88: /* Thermal events */
+		pr_info("Thermal event received\n");
+		break;
+	case 0x8f: /* LID closed */
+	case 0x90: /* LID is closed and Dock has been ejected */
+		break;
+	case 0x8c: /* SATA power events */
+	case 0x8b:
+		pr_info("SATA power event received %x\n", event);
+		break;
+	case 0x92: /* Keyboard backlight mode changed */
+		dev->kbd_event_generated = true;
+		/* Update sysfs entries */
+		if (sysfs_update_group(&acpi_dev->dev.kobj,
+				       &toshiba_attr_group))
+			pr_err("Unable to update sysfs entries\n");
+		/* Notify LED subsystem about keyboard backlight change */
+		if (dev->kbd_type == 2 && dev->kbd_mode != SCI_KBD_MODE_AUTO)
+			led_classdev_notify_brightness_hw_changed(&dev->kbd_led,
+					(dev->kbd_mode == SCI_KBD_MODE_ON) ?
+					LED_FULL : LED_OFF);
+		break;
+	case 0x8e: /* Power button pressed */
+		break;
+	case 0x85: /* Unknown */
+	case 0x8d: /* Unknown */
+	case 0x94: /* Unknown */
+	case 0x95: /* Unknown */
+	default:
+		pr_info("Unknown event received %x\n", event);
+		break;
+	}
+
+	acpi_bus_generate_netlink_event(acpi_dev->pnp.device_class,
+					dev_name(&acpi_dev->dev),
+					event, (event == 0x80) ?
+					dev->last_key_event : 0);
+}
+
+#ifdef CONFIG_PM_SLEEP
+static int toshiba_acpi_suspend(struct device *device)
+{
+	struct toshiba_acpi_dev *dev = acpi_driver_data(to_acpi_device(device));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dev->hotkey_dev) {
 		u32 result;
@@ -3595,7 +3720,11 @@ static int toshiba_acpi_suspend(struct device *device)
 
 static int toshiba_acpi_resume(struct device *device)
 {
+<<<<<<< HEAD
 	struct toshiba_acpi_dev *dev = dev_get_drvdata(device);
+=======
+	struct toshiba_acpi_dev *dev = acpi_driver_data(to_acpi_device(device));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dev->hotkey_dev) {
 		if (toshiba_acpi_enable_hotkeys(dev))
@@ -3617,6 +3746,7 @@ static int toshiba_acpi_resume(struct device *device)
 static SIMPLE_DEV_PM_OPS(toshiba_acpi_pm,
 			 toshiba_acpi_suspend, toshiba_acpi_resume);
 
+<<<<<<< HEAD
 static struct platform_driver toshiba_acpi_driver = {
 	.probe = toshiba_acpi_probe,
 	.remove = toshiba_acpi_remove,
@@ -3625,6 +3755,18 @@ static struct platform_driver toshiba_acpi_driver = {
 		.acpi_match_table = toshiba_device_ids,
 		.pm = &toshiba_acpi_pm,
 	},
+=======
+static struct acpi_driver toshiba_acpi_driver = {
+	.name	= "Toshiba ACPI driver",
+	.ids	= toshiba_device_ids,
+	.flags	= ACPI_DRIVER_ALL_NOTIFY_EVENTS,
+	.ops	= {
+		.add		= toshiba_acpi_add,
+		.remove		= toshiba_acpi_remove,
+		.notify		= toshiba_acpi_notify,
+	},
+	.drv.pm	= &toshiba_acpi_pm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void __init toshiba_dmi_init(void)
@@ -3654,7 +3796,11 @@ static int __init toshiba_acpi_init(void)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	ret = platform_driver_register(&toshiba_acpi_driver);
+=======
+	ret = acpi_bus_register_driver(&toshiba_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		pr_err("Failed to register ACPI driver: %d\n", ret);
 		remove_proc_entry(PROC_TOSHIBA, acpi_root_dir);
@@ -3665,7 +3811,11 @@ static int __init toshiba_acpi_init(void)
 
 static void __exit toshiba_acpi_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&toshiba_acpi_driver);
+=======
+	acpi_bus_unregister_driver(&toshiba_acpi_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (toshiba_proc_dir)
 		remove_proc_entry(PROC_TOSHIBA, acpi_root_dir);
 }

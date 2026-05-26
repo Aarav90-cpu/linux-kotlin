@@ -677,6 +677,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
 				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
 		if (ret < 0)
 			goto done;
+<<<<<<< HEAD
+=======
+
+		/* Avoid pushing uninitialized data */
+		scan.chan[3] = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (data_result) {

@@ -35,6 +35,10 @@ int mdp5_ctl_set_encoder_state(struct mdp5_ctl *ctl, struct mdp5_pipeline *p,
 
 int mdp5_ctl_set_cursor(struct mdp5_ctl *ctl, struct mdp5_pipeline *pipeline,
 			int cursor_id, bool enable);
+<<<<<<< HEAD
+=======
+int mdp5_ctl_pair(struct mdp5_ctl *ctlx, struct mdp5_ctl *ctly, bool enable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MAX_PIPE_STAGE		2
 

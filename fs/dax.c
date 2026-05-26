@@ -15,6 +15,10 @@
 #include <linux/memcontrol.h>
 #include <linux/mm.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched.h>
 #include <linux/sched/signal.h>
 #include <linux/uio.h>
@@ -377,6 +381,7 @@ static void dax_folio_make_shared(struct folio *folio)
 	folio->share = 1;
 }
 
+<<<<<<< HEAD
 /**
  * dax_folio_reset_order - Reset a compound DAX folio to order-0 pages
  * @folio: The folio to reset
@@ -430,6 +435,8 @@ int dax_folio_reset_order(struct folio *folio)
 }
 EXPORT_SYMBOL_GPL(dax_folio_reset_order);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned long dax_folio_put(struct folio *folio)
 {
 	unsigned long ref;
@@ -443,6 +450,7 @@ static inline unsigned long dax_folio_put(struct folio *folio)
 	if (ref)
 		return ref;
 
+<<<<<<< HEAD
 	order = dax_folio_reset_order(folio);
 
 	/* Debug check: verify refcounts are zero for all sub-folios */
@@ -450,6 +458,30 @@ static inline unsigned long dax_folio_put(struct folio *folio)
 		struct page *page = folio_page(folio, i);
 
 		WARN_ON_ONCE(folio_ref_count((struct folio *)page));
+=======
+	folio->mapping = NULL;
+	order = folio_order(folio);
+	if (!order)
+		return 0;
+	folio_reset_order(folio);
+
+	for (i = 0; i < (1UL << order); i++) {
+		struct dev_pagemap *pgmap = page_pgmap(&folio->page);
+		struct page *page = folio_page(folio, i);
+		struct folio *new_folio = (struct folio *)page;
+
+		ClearPageHead(page);
+		clear_compound_head(page);
+
+		new_folio->mapping = NULL;
+		/*
+		 * Reset pgmap which was over-written by
+		 * prep_compound_page().
+		 */
+		new_folio->pgmap = pgmap;
+		new_folio->share = 0;
+		WARN_ON_ONCE(folio_ref_count(new_folio));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ref;
@@ -1397,7 +1429,11 @@ static vm_fault_t dax_load_hole(struct xa_state *xas, struct vm_fault *vmf,
 {
 	struct inode *inode = iter->inode;
 	unsigned long vaddr = vmf->address;
+<<<<<<< HEAD
 	unsigned long pfn = zero_pfn(vaddr);
+=======
+	unsigned long pfn = my_zero_pfn(vaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vm_fault_t ret;
 
 	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, DAX_ZERO_PAGE);

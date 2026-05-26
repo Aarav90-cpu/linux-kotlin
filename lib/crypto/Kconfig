@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
+=======
+menu "Crypto library routines"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_HASH_INFO
 	bool
 
@@ -8,8 +13,11 @@ config CRYPTO_LIB_UTILS
 
 config CRYPTO_LIB_AES
 	tristate
+<<<<<<< HEAD
 	# Select dependencies of modes that are part of libaes.
 	select CRYPTO_LIB_UTILS if CRYPTO_LIB_AES_CBC_MACS
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config CRYPTO_LIB_AES_ARCH
 	bool
@@ -28,6 +36,7 @@ config CRYPTO_LIB_AESCFB
 	select CRYPTO_LIB_AES
 	select CRYPTO_LIB_UTILS
 
+<<<<<<< HEAD
 config CRYPTO_LIB_AES_CBC_MACS
 	tristate
 	select CRYPTO_LIB_AES
@@ -40,6 +49,12 @@ config CRYPTO_LIB_AESGCM
 	tristate
 	select CRYPTO_LIB_AES
 	select CRYPTO_LIB_GF128HASH
+=======
+config CRYPTO_LIB_AESGCM
+	tristate
+	select CRYPTO_LIB_AES
+	select CRYPTO_LIB_GF128MUL
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_LIB_UTILS
 
 config CRYPTO_LIB_ARC4
@@ -78,7 +93,11 @@ config CRYPTO_LIB_CHACHA_ARCH
 	bool
 	depends on CRYPTO_LIB_CHACHA && !UML && !KMSAN
 	default y if ARM
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if MIPS && CPU_MIPS32_R2
 	default y if PPC64 && CPU_LITTLE_ENDIAN && VSX
 	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
@@ -108,6 +127,7 @@ config CRYPTO_LIB_CURVE25519_GENERIC
 config CRYPTO_LIB_DES
 	tristate
 
+<<<<<<< HEAD
 config CRYPTO_LIB_GF128HASH
 	tristate
 	help
@@ -125,6 +145,8 @@ config CRYPTO_LIB_GF128HASH_ARCH
 	default y if S390
 	default y if X86_64
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_LIB_MD5
 	tristate
 	help
@@ -134,7 +156,13 @@ config CRYPTO_LIB_MD5
 config CRYPTO_LIB_MD5_ARCH
 	bool
 	depends on CRYPTO_LIB_MD5 && !UML
+<<<<<<< HEAD
 	default y if PPC
+=======
+	default y if MIPS && CPU_CAVIUM_OCTEON
+	default y if PPC
+	default y if SPARC64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config CRYPTO_LIB_MLDSA
 	tristate
@@ -153,7 +181,11 @@ config CRYPTO_LIB_NH_ARCH
 	bool
 	depends on CRYPTO_LIB_NH && !UML && !KMSAN
 	default y if ARM && KERNEL_MODE_NEON
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if X86_64
 
 config CRYPTO_LIB_POLY1305
@@ -166,7 +198,11 @@ config CRYPTO_LIB_POLY1305_ARCH
 	bool
 	depends on CRYPTO_LIB_POLY1305 && !UML && !KMSAN
 	default y if ARM
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if MIPS
 	# The PPC64 code needs to be fixed to work in softirq context.
 	default y if PPC64 && CPU_LITTLE_ENDIAN && VSX && BROKEN
@@ -191,6 +227,21 @@ config CRYPTO_LIB_POLY1305_RSIZE
 	default 9 if ARM || ARM64
 	default 1
 
+<<<<<<< HEAD
+=======
+config CRYPTO_LIB_POLYVAL
+	tristate
+	help
+	  The POLYVAL library functions.  Select this if your module uses any of
+	  the functions from <crypto/polyval.h>.
+
+config CRYPTO_LIB_POLYVAL_ARCH
+	bool
+	depends on CRYPTO_LIB_POLYVAL && !UML
+	default y if ARM64 && KERNEL_MODE_NEON
+	default y if X86_64
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config CRYPTO_LIB_CHACHA20POLY1305
 	tristate
 	select CRYPTO_LIB_CHACHA
@@ -207,7 +258,11 @@ config CRYPTO_LIB_SHA1_ARCH
 	bool
 	depends on CRYPTO_LIB_SHA1 && !UML
 	default y if ARM
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if MIPS && CPU_CAVIUM_OCTEON
 	default y if PPC
 	default y if S390
@@ -263,11 +318,16 @@ config CRYPTO_LIB_SHA3
 config CRYPTO_LIB_SHA3_ARCH
 	bool
 	depends on CRYPTO_LIB_SHA3 && !UML
+<<<<<<< HEAD
 	default y if ARM64
+=======
+	default y if ARM64 && KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y if S390
 
 config CRYPTO_LIB_SM3
 	tristate
+<<<<<<< HEAD
 	help
 	  The SM3 library functions.  Select this if your module uses any of the
 	  functions from <crypto/sm3.h>.
@@ -279,3 +339,9 @@ config CRYPTO_LIB_SM3_ARCH
 	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
 		     RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
 	default y if X86_64
+=======
+
+source "lib/crypto/tests/Kconfig"
+
+endmenu
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

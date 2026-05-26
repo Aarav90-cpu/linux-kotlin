@@ -1638,7 +1638,11 @@ qla2x00_fw_state_show(struct device *dev, struct device_attribute *attr,
 {
 	scsi_qla_host_t *vha = shost_priv(class_to_shost(dev));
 	int rval = QLA_FUNCTION_FAILED;
+<<<<<<< HEAD
 	uint16_t state[16];
+=======
+	uint16_t state[6];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t pstate;
 
 	if (IS_QLAFX00(vha->hw)) {
@@ -2402,6 +2406,7 @@ qla2x00_dport_diagnostics_show(struct device *dev,
 	    vha->dport_data[0], vha->dport_data[1],
 	    vha->dport_data[2], vha->dport_data[3]);
 }
+<<<<<<< HEAD
 
 static ssize_t
 qla2x00_mpi_fw_state_show(struct device *dev, struct device_attribute *attr,
@@ -2459,6 +2464,8 @@ qla2x00_mpi_fw_state_show(struct device *dev, struct device_attribute *attr,
 			 mpi_state);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEVICE_ATTR(dport_diagnostics, 0444,
 	   qla2x00_dport_diagnostics_show, NULL);
 
@@ -2526,8 +2533,11 @@ static DEVICE_ATTR(port_speed, 0644, qla2x00_port_speed_show,
     qla2x00_port_speed_store);
 static DEVICE_ATTR(port_no, 0444, qla2x00_port_no_show, NULL);
 static DEVICE_ATTR(fw_attr, 0444, qla2x00_fw_attr_show, NULL);
+<<<<<<< HEAD
 static DEVICE_ATTR(mpi_fw_state, 0444, qla2x00_mpi_fw_state_show, NULL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct attribute *qla2x00_host_attrs[] = {
 	&dev_attr_driver_version.attr.attr,
@@ -2576,7 +2586,10 @@ static struct attribute *qla2x00_host_attrs[] = {
 	&dev_attr_qlini_mode.attr,
 	&dev_attr_ql2xiniexchg.attr,
 	&dev_attr_ql2xexchoffld.attr,
+<<<<<<< HEAD
 	&dev_attr_mpi_fw_state.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 

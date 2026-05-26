@@ -162,7 +162,10 @@ enum model {
 	MXC_ISI_IMX8ULP,
 	MXC_ISI_IMX91,
 	MXC_ISI_IMX93,
+<<<<<<< HEAD
 	MXC_ISI_IMX95,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mxc_isi_plat_data {

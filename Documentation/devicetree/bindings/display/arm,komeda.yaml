@@ -19,9 +19,13 @@ properties:
   compatible:
     oneOf:
       - items:
+<<<<<<< HEAD
           - enum:
               - arm,mali-d32
               - armchina,linlon-d6
+=======
+          - const: arm,mali-d32
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: arm,mali-d71
       - const: arm,mali-d71
 

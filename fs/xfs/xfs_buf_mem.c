@@ -58,7 +58,11 @@ xmbuf_alloc(
 	struct xfs_buftarg	*btp;
 	int			error;
 
+<<<<<<< HEAD
 	btp = kzalloc_obj(*btp);
+=======
+	btp = kzalloc_flex(*btp, bt_cache, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!btp)
 		return -ENOMEM;
 
@@ -81,6 +85,13 @@ xmbuf_alloc(
 	/* ensure all writes are below EOF to avoid pagecache zeroing */
 	i_size_write(inode, inode->i_sb->s_maxbytes);
 
+<<<<<<< HEAD
+=======
+	error = xfs_buf_cache_init(btp->bt_cache);
+	if (error)
+		goto out_file;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Initialize buffer target */
 	btp->bt_mount = mp;
 	btp->bt_dev = (dev_t)-1U;
@@ -91,13 +102,22 @@ xmbuf_alloc(
 
 	error = xfs_init_buftarg(btp, XMBUF_BLOCKSIZE, descr);
 	if (error)
+<<<<<<< HEAD
 		goto out_file;
+=======
+		goto out_bcache;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_xmbuf_create(btp);
 
 	*btpp = btp;
 	return 0;
 
+<<<<<<< HEAD
+=======
+out_bcache:
+	xfs_buf_cache_destroy(btp->bt_cache);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_file:
 	fput(file);
 out_free_btp:
@@ -116,6 +136,10 @@ xmbuf_free(
 	trace_xmbuf_free(btp);
 
 	xfs_destroy_buftarg(btp);
+<<<<<<< HEAD
+=======
+	xfs_buf_cache_destroy(btp->bt_cache);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fput(btp->bt_file);
 	kfree(btp);
 }

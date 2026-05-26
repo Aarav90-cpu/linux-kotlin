@@ -339,7 +339,11 @@
 #define GENERALIO_ACD_CHANNEL_3				0x3f0c
 #define GENERALIO_ACD_MASK				0x3f14
 
+<<<<<<< HEAD
 static const unsigned long top_clk_regs[] __initconst = {
+=======
+static const unsigned long cmu_top_clk_regs[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PLL_LOCKTIME_PLL_SHARED0,
 	PLL_LOCKTIME_PLL_SHARED1,
 	PLL_LOCKTIME_PLL_SHARED2,
@@ -638,7 +642,11 @@ static const unsigned long top_clk_regs[] __initconst = {
 	GENERALIO_ACD_MASK,
 };
 
+<<<<<<< HEAD
 static const struct samsung_pll_clock top_pll_clks[] __initconst = {
+=======
+static const struct samsung_pll_clock cmu_top_pll_clks[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* CMU_TOP_PURECLKCOMP */
 	PLL(pll_0517x, CLK_FOUT_SHARED0_PLL, "fout_shared0_pll", "oscclk",
 	    PLL_LOCKTIME_PLL_SHARED0, PLL_CON3_PLL_SHARED0,
@@ -952,7 +960,11 @@ PNAME(mout_cmu_cmuref_p)	= { "mout_cmu_top_boost_option1",
  * For gates remove _UID _BLK _IPCLKPORT and _RSTNSYNC
  */
 
+<<<<<<< HEAD
 static const struct samsung_mux_clock top_mux_clks[] __initconst = {
+=======
+static const struct samsung_mux_clock cmu_top_mux_clks[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MUX(CLK_MOUT_PLL_SHARED0, "mout_pll_shared0", mout_pll_shared0_p,
 	    PLL_CON0_PLL_SHARED0, 4, 1),
 	MUX(CLK_MOUT_PLL_SHARED1, "mout_pll_shared1", mout_pll_shared1_p,
@@ -1108,7 +1120,11 @@ static const struct samsung_mux_clock top_mux_clks[] __initconst = {
 	    CLK_CON_MUX_MUX_CMU_CMUREF, 0, 1),
 };
 
+<<<<<<< HEAD
 static const struct samsung_div_clock top_div_clks[] __initconst = {
+=======
+static const struct samsung_div_clock cmu_top_div_clks[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DIV(CLK_DOUT_CMU_BO_BUS, "dout_cmu_bo_bus", "gout_cmu_bo_bus",
 	    CLK_CON_DIV_CLKCMU_BO_BUS, 0, 4),
 	DIV(CLK_DOUT_CMU_BUS0_BUS, "dout_cmu_bus0_bus", "gout_cmu_bus0_bus",
@@ -1253,13 +1269,21 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
 	    "mout_pll_shared3", CLK_CON_DIV_PLL_SHARED3_DIV2, 0, 1),
 };
 
+<<<<<<< HEAD
 static const struct samsung_fixed_factor_clock top_ffactor_clks[] __initconst = {
+=======
+static const struct samsung_fixed_factor_clock cmu_top_ffactor[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	FFACTOR(CLK_DOUT_CMU_HSI0_USBDPDBG, "dout_cmu_hsi0_usbdpdbg",
 		"gout_cmu_hsi0_usbdpdbg", 1, 4, 0),
 	FFACTOR(CLK_DOUT_CMU_OTP, "dout_cmu_otp", "oscclk", 1, 8, 0),
 };
 
+<<<<<<< HEAD
 static const struct samsung_gate_clock top_gate_clks[] __initconst = {
+=======
+static const struct samsung_gate_clock cmu_top_gate_clks[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	GATE(CLK_GOUT_CMU_BUS0_BOOST, "gout_cmu_bus0_boost",
 	     "mout_cmu_boost_option1", CLK_CON_GAT_CLKCMU_BUS0_BOOST, 21, 0, 0),
 	GATE(CLK_GOUT_CMU_BUS1_BOOST, "gout_cmu_bus1_boost",
@@ -1425,6 +1449,7 @@ static const struct samsung_gate_clock top_gate_clks[] __initconst = {
 };
 
 static const struct samsung_cmu_info top_cmu_info __initconst = {
+<<<<<<< HEAD
 	.pll_clks		= top_pll_clks,
 	.nr_pll_clks		= ARRAY_SIZE(top_pll_clks),
 	.mux_clks		= top_mux_clks,
@@ -1438,6 +1463,21 @@ static const struct samsung_cmu_info top_cmu_info __initconst = {
 	.nr_clk_ids		= CLKS_NR_TOP,
 	.clk_regs		= top_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(top_clk_regs),
+=======
+	.pll_clks		= cmu_top_pll_clks,
+	.nr_pll_clks		= ARRAY_SIZE(cmu_top_pll_clks),
+	.mux_clks		= cmu_top_mux_clks,
+	.nr_mux_clks		= ARRAY_SIZE(cmu_top_mux_clks),
+	.div_clks		= cmu_top_div_clks,
+	.nr_div_clks		= ARRAY_SIZE(cmu_top_div_clks),
+	.fixed_factor_clks	= cmu_top_ffactor,
+	.nr_fixed_factor_clks	= ARRAY_SIZE(cmu_top_ffactor),
+	.gate_clks		= cmu_top_gate_clks,
+	.nr_gate_clks		= ARRAY_SIZE(cmu_top_gate_clks),
+	.nr_clk_ids		= CLKS_NR_TOP,
+	.clk_regs		= cmu_top_clk_regs,
+	.nr_clk_regs		= ARRAY_SIZE(cmu_top_clk_regs),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.auto_clock_gate	= true,
 	.gate_dbg_offset	= GS101_GATE_DBG_OFFSET,
 	.option_offset		= CMU_CMU_TOP_CONTROLLER_OPTION,
@@ -2434,15 +2474,26 @@ PNAME(mout_hsi0_usb31drd_p)		= { "fout_usb_pll",
 					    "dout_hsi0_usb31drd",
 					    "fout_usb_pll" };
 
+<<<<<<< HEAD
 static const struct samsung_pll_rate_table hsi0_usb_pll_rates[] __initconst = {
+=======
+static const struct samsung_pll_rate_table cmu_hsi0_usb_pll_rates[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PLL_35XX_RATE(24576000, 19200000, 150, 6, 5),
 	{ /* sentinel */ }
 };
 
+<<<<<<< HEAD
 static const struct samsung_pll_clock hsi0_pll_clks[] __initconst = {
 	PLL(pll_0518x, CLK_FOUT_USB_PLL, "fout_usb_pll", "oscclk",
 	    PLL_LOCKTIME_PLL_USB, PLL_CON3_PLL_USB,
 	    hsi0_usb_pll_rates),
+=======
+static const struct samsung_pll_clock cmu_hsi0_pll_clks[] __initconst = {
+	PLL(pll_0518x, CLK_FOUT_USB_PLL, "fout_usb_pll", "oscclk",
+	    PLL_LOCKTIME_PLL_USB, PLL_CON3_PLL_USB,
+	    cmu_hsi0_usb_pll_rates),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct samsung_mux_clock hsi0_mux_clks[] __initconst = {
@@ -2660,8 +2711,13 @@ static const struct samsung_fixed_rate_clock hsi0_fixed_clks[] __initconst = {
 };
 
 static const struct samsung_cmu_info hsi0_cmu_info __initconst = {
+<<<<<<< HEAD
 	.pll_clks		= hsi0_pll_clks,
 	.nr_pll_clks		= ARRAY_SIZE(hsi0_pll_clks),
+=======
+	.pll_clks		= cmu_hsi0_pll_clks,
+	.nr_pll_clks		= ARRAY_SIZE(cmu_hsi0_pll_clks),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.mux_clks		= hsi0_mux_clks,
 	.nr_mux_clks		= ARRAY_SIZE(hsi0_mux_clks),
 	.div_clks		= hsi0_div_clks,
@@ -2791,7 +2847,11 @@ static const struct samsung_cmu_info hsi0_cmu_info __initconst = {
 #define QCH_CON_UFS_EMBD_QCH_FMP													0x3094
 #define QUEUE_CTRL_REG_BLK_HSI2_CMU_HSI2												0x3c00
 
+<<<<<<< HEAD
 static const unsigned long hsi2_clk_regs[] __initconst = {
+=======
+static const unsigned long cmu_hsi2_clk_regs[] __initconst = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PLL_CON0_MUX_CLKCMU_HSI2_BUS_USER,
 	PLL_CON1_MUX_CLKCMU_HSI2_BUS_USER,
 	PLL_CON0_MUX_CLKCMU_HSI2_MMC_CARD_USER,
@@ -3166,8 +3226,13 @@ static const struct samsung_cmu_info hsi2_cmu_info __initconst = {
 	.gate_clks		= hsi2_gate_clks,
 	.nr_gate_clks		= ARRAY_SIZE(hsi2_gate_clks),
 	.nr_clk_ids		= CLKS_NR_HSI2,
+<<<<<<< HEAD
 	.clk_regs		= hsi2_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(hsi2_clk_regs),
+=======
+	.clk_regs		= cmu_hsi2_clk_regs,
+	.nr_clk_regs		= ARRAY_SIZE(cmu_hsi2_clk_regs),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sysreg_clk_regs	= dcrg_memclk_sysreg,
 	.nr_sysreg_clk_regs	= ARRAY_SIZE(dcrg_memclk_sysreg),
 	.clk_name		= "bus",

@@ -261,5 +261,9 @@ const struct snd_soc_component_driver kirkwood_soc_component = {
 	.hw_params	= kirkwood_dma_hw_params,
 	.prepare	= kirkwood_dma_prepare,
 	.pointer	= kirkwood_dma_pointer,
+<<<<<<< HEAD
 	.pcm_new	= kirkwood_dma_new,
+=======
+	.pcm_construct	= kirkwood_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

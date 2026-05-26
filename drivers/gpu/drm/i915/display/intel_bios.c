@@ -41,7 +41,10 @@
 #include "intel_display_utils.h"
 #include "intel_gmbus.h"
 #include "intel_rom.h"
+<<<<<<< HEAD
 #include "intel_vdsc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define _INTEL_BIOS_PRIVATE
 #include "intel_vbt_defs.h"
@@ -1546,10 +1549,13 @@ parse_edp(struct intel_display *display,
 	if (display->vbt.version >= 251)
 		panel->vbt.edp.dsc_disable =
 			panel_bool(edp->edp_dsc_disable, panel_type);
+<<<<<<< HEAD
 
 	if (display->vbt.version >= 261)
 		panel->vbt.edp.pipe_joiner_enable =
 			panel_bool(edp->pipe_joiner_enable, panel_type);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -3548,13 +3554,20 @@ bool intel_bios_is_dsi_present(struct intel_display *display,
 	return false;
 }
 
+<<<<<<< HEAD
 static bool fill_dsc(struct intel_crtc_state *crtc_state,
+=======
+static void fill_dsc(struct intel_crtc_state *crtc_state,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     struct dsc_compression_parameters_entry *dsc,
 		     int dsc_max_bpc)
 {
 	struct intel_display *display = to_intel_display(crtc_state);
 	struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
+<<<<<<< HEAD
 	int slices_per_line;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int bpc = 8;
 
 	vdsc_cfg->dsc_version_major = dsc->version_major;
@@ -3580,6 +3593,7 @@ static bool fill_dsc(struct intel_crtc_state *crtc_state,
 	 * throughput etc. into account.
 	 *
 	 * Also, per spec DSI supports 1, 2, 3 or 4 horizontal slices.
+<<<<<<< HEAD
 	 *
 	 * FIXME: split only when necessary
 	 */
@@ -3587,12 +3601,20 @@ static bool fill_dsc(struct intel_crtc_state *crtc_state,
 		slices_per_line = 4;
 	} else if (dsc->slices_per_line & BIT(1)) {
 		slices_per_line = 2;
+=======
+	 */
+	if (dsc->slices_per_line & BIT(2)) {
+		crtc_state->dsc.slice_count = 4;
+	} else if (dsc->slices_per_line & BIT(1)) {
+		crtc_state->dsc.slice_count = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/* FIXME */
 		if (!(dsc->slices_per_line & BIT(0)))
 			drm_dbg_kms(display->drm,
 				    "VBT: Unsupported DSC slice count for DSI\n");
 
+<<<<<<< HEAD
 		slices_per_line = 1;
 	}
 
@@ -3607,6 +3629,17 @@ static bool fill_dsc(struct intel_crtc_state *crtc_state,
 			    "VBT: DSC hdisplay %d not divisible by slice count %d\n",
 			    crtc_state->hw.adjusted_mode.crtc_hdisplay,
 			    intel_dsc_line_slice_count(&crtc_state->dsc.slice_config));
+=======
+		crtc_state->dsc.slice_count = 1;
+	}
+
+	if (crtc_state->hw.adjusted_mode.crtc_hdisplay %
+	    crtc_state->dsc.slice_count != 0)
+		drm_dbg_kms(display->drm,
+			    "VBT: DSC hdisplay %d not divisible by slice count %d\n",
+			    crtc_state->hw.adjusted_mode.crtc_hdisplay,
+			    crtc_state->dsc.slice_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The VBT rc_buffer_block_size and rc_buffer_size definitions
@@ -3621,8 +3654,11 @@ static bool fill_dsc(struct intel_crtc_state *crtc_state,
 	vdsc_cfg->block_pred_enable = dsc->block_prediction_enable;
 
 	vdsc_cfg->slice_height = dsc->slice_height;
+<<<<<<< HEAD
 
 	return true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* FIXME: initially DSI specific */
@@ -3643,7 +3679,13 @@ bool intel_bios_get_dsc_params(struct intel_encoder *encoder,
 			if (!devdata->dsc)
 				return false;
 
+<<<<<<< HEAD
 			return fill_dsc(crtc_state, devdata->dsc, dsc_max_bpc);
+=======
+			fill_dsc(crtc_state, devdata->dsc, dsc_max_bpc);
+
+			return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

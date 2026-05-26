@@ -170,7 +170,11 @@ int delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
 	 */
 	t1 = tsk->sched_info.pcount;
 	t2 = tsk->sched_info.run_delay;
+<<<<<<< HEAD
 	t3 = tsk->se.sum_exec_runtime;
+=======
+	t3 = tsk_seruntime(tsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	d->cpu_count += t1;
 

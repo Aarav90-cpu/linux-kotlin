@@ -554,7 +554,11 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
 		return -EINVAL;
 
 	if (!refnode)
+<<<<<<< HEAD
 		return -ENOTCONN;
+=======
+		return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nargs_prop) {
 		error = fwnode_property_read_u32(refnode, nargs_prop, &nargs_prop_val);
@@ -1127,9 +1131,27 @@ void software_node_notify_remove(struct device *dev)
 	}
 }
 
+<<<<<<< HEAD
 void __init software_node_init(void)
 {
 	swnode_kset = kset_create_and_add("software_nodes", NULL, kernel_kobj);
 	if (!swnode_kset)
 		pr_err("failed to register software nodes\n");
 }
+=======
+static int __init software_node_init(void)
+{
+	swnode_kset = kset_create_and_add("software_nodes", NULL, kernel_kobj);
+	if (!swnode_kset)
+		return -ENOMEM;
+	return 0;
+}
+postcore_initcall(software_node_init);
+
+static void __exit software_node_exit(void)
+{
+	ida_destroy(&swnode_root_ids);
+	kset_unregister(swnode_kset);
+}
+__exitcall(software_node_exit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -17,7 +17,10 @@
 #include <linux/seq_file.h>
 #include <linux/memblock.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/string_helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_KEXEC_HANDOVER
 #include <linux/libfdt.h>
@@ -385,6 +388,7 @@ static void __init_memblock memblock_remove_region(struct memblock_type *type, u
  */
 void __init memblock_discard(void)
 {
+<<<<<<< HEAD
 	phys_addr_t size;
 	void *addr;
 
@@ -406,6 +410,28 @@ void __init memblock_discard(void)
 			kfree(addr);
 		else
 			memblock_free(addr, size);
+=======
+	phys_addr_t addr, size;
+
+	if (memblock.reserved.regions != memblock_reserved_init_regions) {
+		addr = __pa(memblock.reserved.regions);
+		size = PAGE_ALIGN(sizeof(struct memblock_region) *
+				  memblock.reserved.max);
+		if (memblock_reserved_in_slab)
+			kfree(memblock.reserved.regions);
+		else
+			memblock_free_late(addr, size);
+	}
+
+	if (memblock.memory.regions != memblock_memory_init_regions) {
+		addr = __pa(memblock.memory.regions);
+		size = PAGE_ALIGN(sizeof(struct memblock_region) *
+				  memblock.memory.max);
+		if (memblock_memory_in_slab)
+			kfree(memblock.memory.regions);
+		else
+			memblock_free_late(addr, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	memblock_memory = NULL;
@@ -895,6 +921,7 @@ int __init_memblock memblock_remove(phys_addr_t base, phys_addr_t size)
 	return memblock_remove_range(&memblock.memory, base, size);
 }
 
+<<<<<<< HEAD
 static unsigned long __free_reserved_area(phys_addr_t start, phys_addr_t end,
 					  int poison)
 {
@@ -962,14 +989,20 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char 
 	return pages;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * memblock_free - free boot memory allocation
  * @ptr: starting address of the  boot memory allocation
  * @size: size of the boot memory block in bytes
  *
  * Free boot memory block previously allocated by memblock_alloc_xx() API.
+<<<<<<< HEAD
  * If called after the buddy allocator is available, the memory is released to
  * the buddy allocator.
+=======
+ * The freeing memory will not be released to the buddy allocator.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void __init_memblock memblock_free(void *ptr, size_t size)
 {
@@ -983,24 +1016,35 @@ void __init_memblock memblock_free(void *ptr, size_t size)
  * @size: size of the boot memory block in bytes
  *
  * Free boot memory block previously allocated by memblock_phys_alloc_xx() API.
+<<<<<<< HEAD
  * If called after the buddy allocator is available, the memory is released to
  * the buddy allocator.
+=======
+ * The freeing memory will not be released to the buddy allocator.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
 {
 	phys_addr_t end = base + size - 1;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
 		     &base, &end, (void *)_RET_IP_);
 
 	kmemleak_free_part_phys(base, size);
+<<<<<<< HEAD
 	ret = memblock_remove_range(&memblock.reserved, base, size);
 
 	if (slab_is_available())
 		__free_reserved_area(base, base + size, -1);
 
 	return ret;
+=======
+	return memblock_remove_range(&memblock.reserved, base, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int __init_memblock __memblock_reserve(phys_addr_t base, phys_addr_t size,
@@ -1050,7 +1094,11 @@ __init void memmap_init_kho_scratch_pages(void)
 	/*
 	 * Initialize struct pages for free scratch memory.
 	 * The struct pages for reserved scratch memory will be set up in
+<<<<<<< HEAD
 	 * memmap_init_reserved_pages()
+=======
+	 * reserve_bootmem_region()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
 			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
@@ -1193,6 +1241,7 @@ int __init_memblock memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t 
 }
 
 /**
+<<<<<<< HEAD
  * memblock_reserved_mark_kern - Mark a reserved memory region with flag
  * MEMBLOCK_RSRV_KERN
  *
@@ -1208,6 +1257,8 @@ int __init_memblock memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t si
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * memblock_mark_kho_scratch - Mark a memory region as MEMBLOCK_KHO_SCRATCH.
  * @base: the base phys addr of the region
  * @size: the size of the region
@@ -1843,6 +1894,35 @@ void *__init __memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
 	return addr;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * memblock_free_late - free pages directly to buddy allocator
+ * @base: phys starting address of the  boot memory block
+ * @size: size of the boot memory block in bytes
+ *
+ * This is only useful when the memblock allocator has already been torn
+ * down, but we are still initializing the system.  Pages are released directly
+ * to the buddy allocator.
+ */
+void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+{
+	phys_addr_t cursor, end;
+
+	end = base + size - 1;
+	memblock_dbg("%s: [%pa-%pa] %pS\n",
+		     __func__, &base, &end, (void *)_RET_IP_);
+	kmemleak_free_part_phys(base, size);
+	cursor = PFN_UP(base);
+	end = PFN_DOWN(base + size);
+
+	for (; cursor < end; cursor++) {
+		memblock_free_pages(cursor, 0);
+		totalram_pages_inc();
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Remaining API functions
  */
@@ -2306,6 +2386,7 @@ static unsigned long __init __free_memory_core(phys_addr_t start,
 	return end_pfn - start_pfn;
 }
 
+<<<<<<< HEAD
 /*
  * Initialised pages do not have PageReserved set. This function is called
  * for each reserved range and marks the pages PageReserved.
@@ -2331,6 +2412,8 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __init memmap_init_reserved_pages(void)
 {
 	struct memblock_region *region;
@@ -2350,7 +2433,11 @@ repeat:
 		end = start + region->size;
 
 		if (memblock_is_nomap(region))
+<<<<<<< HEAD
 			memmap_init_reserved_range(start, end, nid);
+=======
+			reserve_bootmem_region(start, end, nid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		memblock_set_node(start, region->size, &memblock.reserved, nid);
 	}
@@ -2375,7 +2462,11 @@ repeat:
 			if (!numa_valid_node(nid))
 				nid = early_pfn_to_nid(PFN_DOWN(start));
 
+<<<<<<< HEAD
 			memmap_init_reserved_range(start, end, nid);
+=======
+			reserve_bootmem_region(start, end, nid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
@@ -2525,7 +2616,11 @@ int reserve_mem_release_by_name(const char *name)
 		return 0;
 
 	start = phys_to_virt(map->start);
+<<<<<<< HEAD
 	end = start + map->size;
+=======
+	end = start + map->size - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
 	free_reserved_area(start, end, 0, buf);
 	map->size = 0;
@@ -2601,7 +2696,11 @@ static int __init prepare_kho_fdt(void)
 	if (err)
 		goto err_unpreserve_fdt;
 
+<<<<<<< HEAD
 	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt, fdt_totalsize(fdt));
+=======
+	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_unpreserve_fdt;
 
@@ -2646,7 +2745,11 @@ static void *__init reserve_mem_kho_retrieve_fdt(void)
 	if (fdt)
 		return fdt;
 
+<<<<<<< HEAD
 	err = kho_retrieve_subtree(MEMBLOCK_KHO_FDT, &fdt_phys, NULL);
+=======
+	err = kho_retrieve_subtree(MEMBLOCK_KHO_FDT, &fdt_phys);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		if (err != -ENOENT)
 			pr_warn("failed to retrieve FDT '%s' from KHO: %d\n",
@@ -2733,6 +2836,7 @@ static int __init reserve_mem(char *p)
 	int len;
 
 	if (!p)
+<<<<<<< HEAD
 		goto err_param;
 
 	/* Check if there's room for more reserved memory */
@@ -2740,10 +2844,18 @@ static int __init reserve_mem(char *p)
 		pr_err("reserve_mem: no more room for reserved memory\n");
 		return -EBUSY;
 	}
+=======
+		return -EINVAL;
+
+	/* Check if there's room for more reserved memory */
+	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
+		return -EBUSY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	oldp = p;
 	size = memparse(p, &p);
 	if (!size || p == oldp)
+<<<<<<< HEAD
 		goto err_param;
 
 	if (*p != ':')
@@ -2752,6 +2864,16 @@ static int __init reserve_mem(char *p)
 	align = memparse(p+1, &p);
 	if (*p != ':')
 		goto err_param;
+=======
+		return -EINVAL;
+
+	if (*p != ':')
+		return -EINVAL;
+
+	align = memparse(p+1, &p);
+	if (*p != ':')
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * memblock_phys_alloc() doesn't like a zero size align,
@@ -2765,7 +2887,11 @@ static int __init reserve_mem(char *p)
 
 	/* name needs to have length but not too big */
 	if (!len || len >= RESERVE_MEM_NAME_SIZE)
+<<<<<<< HEAD
 		goto err_param;
+=======
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Make sure that name has text */
 	for (p = name; *p; p++) {
@@ -2773,6 +2899,7 @@ static int __init reserve_mem(char *p)
 			break;
 	}
 	if (!*p)
+<<<<<<< HEAD
 		goto err_param;
 
 	/* Make sure the name is not already used */
@@ -2780,6 +2907,13 @@ static int __init reserve_mem(char *p)
 		pr_err("reserve_mem: name \"%s\" was already used\n", name);
 		return -EBUSY;
 	}
+=======
+		return -EINVAL;
+
+	/* Make sure the name is not already used */
+	if (reserve_mem_find_by_name(name, &start, &tmp))
+		return -EBUSY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Pick previous allocations up from KHO if available */
 	if (reserve_mem_kho_revive(name, size, align))
@@ -2787,14 +2921,20 @@ static int __init reserve_mem(char *p)
 
 	/* TODO: Allocation must be outside of scratch region */
 	start = memblock_phys_alloc(size, align);
+<<<<<<< HEAD
 	if (!start) {
 		pr_err("reserve_mem: memblock allocation failed\n");
 		return -ENOMEM;
 	}
+=======
+	if (!start)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reserved_mem_add(start, size, name);
 
 	return 1;
+<<<<<<< HEAD
 err_param:
 	pr_err("reserve_mem: empty or malformed parameter\n");
 	return -EINVAL;
@@ -2803,6 +2943,12 @@ __setup("reserve_mem=", reserve_mem);
 
 #ifdef CONFIG_DEBUG_FS
 #ifdef CONFIG_ARCH_KEEP_MEMBLOCK
+=======
+}
+__setup("reserve_mem=", reserve_mem);
+
+#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_ARCH_KEEP_MEMBLOCK)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char * const flagname[] = {
 	[ilog2(MEMBLOCK_HOTPLUG)] = "HOTPLUG",
 	[ilog2(MEMBLOCK_MIRROR)] = "MIRROR",
@@ -2849,8 +2995,15 @@ static int memblock_debug_show(struct seq_file *m, void *private)
 }
 DEFINE_SHOW_ATTRIBUTE(memblock_debug);
 
+<<<<<<< HEAD
 static inline void memblock_debugfs_expose_arrays(struct dentry *root)
 {
+=======
+static int __init memblock_init_debugfs(void)
+{
+	struct dentry *root = debugfs_create_dir("memblock", NULL);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_create_file("memory", 0444, root,
 			    &memblock.memory, &memblock_debug_fops);
 	debugfs_create_file("reserved", 0444, root,
@@ -2859,6 +3012,7 @@ static inline void memblock_debugfs_expose_arrays(struct dentry *root)
 	debugfs_create_file("physmem", 0444, root, &physmem,
 			    &memblock_debug_fops);
 #endif
+<<<<<<< HEAD
 }
 
 #else
@@ -2901,6 +3055,9 @@ static int __init memblock_init_debugfs(void)
 				    &memblock_reserve_mem_fops);
 
 	memblock_debugfs_expose_arrays(root);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 __initcall(memblock_init_debugfs);

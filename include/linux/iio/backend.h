@@ -85,6 +85,7 @@ enum iio_backend_filter_type {
 };
 
 /**
+<<<<<<< HEAD
  * enum iio_backend_capabilities - Backend capabilities
  * Backend capabilities can be used by frontends to check if a given
  * functionality is supported by the backend. This is useful for frontend
@@ -106,6 +107,8 @@ enum iio_backend_capabilities {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct iio_backend_ops - operations structure for an iio_backend
  * @enable: Enable backend.
  * @disable: Disable backend.
@@ -200,12 +203,18 @@ struct iio_backend_ops {
  * struct iio_backend_info - info structure for an iio_backend
  * @name: Backend name.
  * @ops: Backend operations.
+<<<<<<< HEAD
  * @caps: Backend capabilities. (bitmask of enum iio_backend_capabilities).
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct iio_backend_info {
 	const char *name;
 	const struct iio_backend_ops *ops;
+<<<<<<< HEAD
 	u32 caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
@@ -258,7 +267,10 @@ int iio_backend_read_raw(struct iio_backend *back,
 			 long mask);
 int iio_backend_extend_chan_spec(struct iio_backend *back,
 				 struct iio_chan_spec *chan);
+<<<<<<< HEAD
 bool iio_backend_has_caps(struct iio_backend *back, u32 caps);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void *iio_backend_get_priv(const struct iio_backend *conv);
 struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name);
 struct iio_backend *devm_iio_backend_fwnode_get(struct device *dev,

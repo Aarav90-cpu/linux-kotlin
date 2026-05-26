@@ -89,6 +89,10 @@ static const struct npcm_reset_info npxm8xx_reset_info[] = {
 
 struct npcm_rc_data {
 	struct reset_controller_dev rcdev;
+<<<<<<< HEAD
+=======
+	struct notifier_block restart_nb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct npcm_reset_info *info;
 	struct regmap *gcr_regmap;
 	u32 sw_reset_number;
@@ -99,9 +103,17 @@ struct npcm_rc_data {
 
 #define to_rc_data(p) container_of(p, struct npcm_rc_data, rcdev)
 
+<<<<<<< HEAD
 static int npcm_rc_restart(struct sys_off_data *data)
 {
 	struct npcm_rc_data *rc = data->cb_data;
+=======
+static int npcm_rc_restart(struct notifier_block *nb, unsigned long mode,
+			   void *cmd)
+{
+	struct npcm_rc_data *rc = container_of(nb, struct npcm_rc_data,
+					       restart_nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	writel(NPCM_SWRST << rc->sw_reset_number, rc->base + NPCM_SWRSTR);
 	mdelay(1000);
@@ -469,8 +481,14 @@ static int npcm_rc_probe(struct platform_device *pdev)
 	if (!of_property_read_u32(pdev->dev.of_node, "nuvoton,sw-reset-number",
 				  &rc->sw_reset_number)) {
 		if (rc->sw_reset_number && rc->sw_reset_number < 5) {
+<<<<<<< HEAD
 			ret = devm_register_sys_off_handler(&pdev->dev, SYS_OFF_MODE_RESTART, 192,
 							    npcm_rc_restart, rc);
+=======
+			rc->restart_nb.priority = 192;
+			rc->restart_nb.notifier_call = npcm_rc_restart;
+			ret = register_restart_handler(&rc->restart_nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret) {
 				dev_warn(&pdev->dev, "failed to register restart handler\n");
 				return ret;

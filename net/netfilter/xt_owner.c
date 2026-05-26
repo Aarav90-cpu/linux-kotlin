@@ -63,12 +63,20 @@ static bool
 owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
 {
 	const struct xt_owner_match_info *info = par->matchinfo;
+<<<<<<< HEAD
 	struct sock *sk = skb_to_full_sk(skb);
 	struct net *net = xt_net(par);
 	const struct socket *sock;
 	const struct file *filp;
 
 	if (!sk || !READ_ONCE(sk->sk_socket) || !net_eq(net, sock_net(sk)))
+=======
+	const struct file *filp;
+	struct sock *sk = skb_to_full_sk(skb);
+	struct net *net = xt_net(par);
+
+	if (!sk || !sk->sk_socket || !net_eq(net, sock_net(sk)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (info->match ^ info->invert) == 0;
 	else if (info->match & info->invert & XT_OWNER_SOCKET)
 		/*
@@ -77,6 +85,7 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
 		 */
 		return false;
 
+<<<<<<< HEAD
 	/* The sk pointer remains valid as long as the skb is. The sk_socket and
 	 * file pointer may become NULL if the socket is closed. Both structures
 	 * (including file->cred) are RCU freed which means they can be accessed
@@ -87,15 +96,33 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
 	if (filp == NULL)
 		return ((info->match ^ info->invert) &
 		       (XT_OWNER_UID | XT_OWNER_GID)) == 0;
+=======
+	read_lock_bh(&sk->sk_callback_lock);
+	filp = sk->sk_socket ? sk->sk_socket->file : NULL;
+	if (filp == NULL) {
+		read_unlock_bh(&sk->sk_callback_lock);
+		return ((info->match ^ info->invert) &
+		       (XT_OWNER_UID | XT_OWNER_GID)) == 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (info->match & XT_OWNER_UID) {
 		kuid_t uid_min = make_kuid(net->user_ns, info->uid_min);
 		kuid_t uid_max = make_kuid(net->user_ns, info->uid_max);
+<<<<<<< HEAD
 
 		if ((uid_gte(filp->f_cred->fsuid, uid_min) &&
 		     uid_lte(filp->f_cred->fsuid, uid_max)) ^
 		    !(info->invert & XT_OWNER_UID))
 			return false;
+=======
+		if ((uid_gte(filp->f_cred->fsuid, uid_min) &&
+		     uid_lte(filp->f_cred->fsuid, uid_max)) ^
+		    !(info->invert & XT_OWNER_UID)) {
+			read_unlock_bh(&sk->sk_callback_lock);
+			return false;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (info->match & XT_OWNER_GID) {
@@ -120,6 +147,7 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
 			}
 		}
 
+<<<<<<< HEAD
 		if (match ^ !(info->invert & XT_OWNER_GID))
 			return false;
 	}
@@ -150,16 +178,46 @@ static struct xt_match owner_mt_reg[] __read_mostly = {
 			      (1 << NF_INET_POST_ROUTING),
 		.me         = THIS_MODULE,
 	}
+=======
+		if (match ^ !(info->invert & XT_OWNER_GID)) {
+			read_unlock_bh(&sk->sk_callback_lock);
+			return false;
+		}
+	}
+
+	read_unlock_bh(&sk->sk_callback_lock);
+	return true;
+}
+
+static struct xt_match owner_mt_reg __read_mostly = {
+	.name       = "owner",
+	.revision   = 1,
+	.family     = NFPROTO_UNSPEC,
+	.checkentry = owner_check,
+	.match      = owner_mt,
+	.matchsize  = sizeof(struct xt_owner_match_info),
+	.hooks      = (1 << NF_INET_LOCAL_OUT) |
+	              (1 << NF_INET_POST_ROUTING),
+	.me         = THIS_MODULE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int __init owner_mt_init(void)
 {
+<<<<<<< HEAD
 	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+=======
+	return xt_register_match(&owner_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit owner_mt_exit(void)
 {
+<<<<<<< HEAD
 	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+=======
+	xt_unregister_match(&owner_mt_reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(owner_mt_init);

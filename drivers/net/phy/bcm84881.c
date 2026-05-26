@@ -20,6 +20,7 @@ enum {
 	MDIO_AN_C22 = 0xffe0,
 };
 
+<<<<<<< HEAD
 /* BCM8489x LED controller (BCM84891L datasheet 2.4.1.58). Each pin has
  * CTL bits in 0xA83B (stride 3: 2-bit CTL + 1-bit OE_N) plus MASK_LOW/
  * MASK_EXT source selects. LED4 is firmware-controlled; always RMW.
@@ -47,6 +48,8 @@ static const struct {
 	{ 0xa82f, 0xa8f0 },	/* LED2 */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bcm84881_wait_init(struct phy_device *phydev)
 {
 	int val;
@@ -81,6 +84,7 @@ static int bcm84881_config_init(struct phy_device *phydev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bcm8489x_config_init(struct phy_device *phydev)
 {
 	__set_bit(PHY_INTERFACE_MODE_USXGMII, phydev->possible_interfaces);
@@ -217,6 +221,8 @@ static int bcm8489x_led_hw_control_get(struct phy_device *phydev, u8 index,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bcm84881_probe(struct phy_device *phydev)
 {
 	/* This driver requires PMAPMD and AN blocks */
@@ -364,6 +370,7 @@ static int bcm84881_read_status(struct phy_device *phydev)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/* BCM84891/92 on USXGMII: the host interface mode doesn't change
 	 * with copper speed (USXGMII symbol replication; the MAC receives
 	 * the negotiated copper speed, not 10G, so no rate adaptation).
@@ -373,6 +380,8 @@ static int bcm84881_read_status(struct phy_device *phydev)
 	if (phydev->interface == PHY_INTERFACE_MODE_USXGMII)
 		return genphy_c45_read_mdix(phydev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the host link mode - we set the phy interface mode and
 	 * the speed according to this register so that downshift works.
 	 * We leave the duplex setting as per the resolution from the
@@ -428,6 +437,7 @@ static struct phy_driver bcm84881_drivers[] = {
 		.config_aneg	= bcm84881_config_aneg,
 		.aneg_done	= bcm84881_aneg_done,
 		.read_status	= bcm84881_read_status,
+<<<<<<< HEAD
 	}, {
 		PHY_ID_MATCH_MODEL(0x35905080),
 		.name		= "Broadcom BCM84891",
@@ -456,6 +466,8 @@ static struct phy_driver bcm84881_drivers[] = {
 		.led_hw_is_supported = bcm8489x_led_hw_is_supported,
 		.led_hw_control_set = bcm8489x_led_hw_control_set,
 		.led_hw_control_get = bcm8489x_led_hw_control_get,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -464,11 +476,18 @@ module_phy_driver(bcm84881_drivers);
 /* FIXME: module auto-loading for Clause 45 PHYs seems non-functional */
 static const struct mdio_device_id __maybe_unused bcm84881_tbl[] = {
 	{ 0xae025150, 0xfffffff0 },
+<<<<<<< HEAD
 	{ PHY_ID_MATCH_MODEL(0x35905080) },
 	{ PHY_ID_MATCH_MODEL(0x359050a0) },
 	{ },
 };
 MODULE_AUTHOR("Russell King");
 MODULE_DESCRIPTION("Broadcom BCM84881/BCM84891/BCM84892 PHY driver");
+=======
+	{ },
+};
+MODULE_AUTHOR("Russell King");
+MODULE_DESCRIPTION("Broadcom BCM84881 PHY driver");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DEVICE_TABLE(mdio, bcm84881_tbl);
 MODULE_LICENSE("GPL");

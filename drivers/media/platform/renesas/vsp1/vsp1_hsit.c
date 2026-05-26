@@ -9,7 +9,10 @@
 
 #include <linux/device.h>
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <linux/mutex.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <media/v4l2-subdev.h>
 
@@ -35,11 +38,14 @@ static inline void vsp1_hsit_write(struct vsp1_hsit *hsit,
  * V4L2 Subdevice Operations
  */
 
+<<<<<<< HEAD
 static const unsigned int hsit_codes[] = {
 	MEDIA_BUS_FMT_ARGB8888_1X32,
 	MEDIA_BUS_FMT_AHSV8888_1X32,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hsit_enum_mbus_code(struct v4l2_subdev *subdev,
 			       struct v4l2_subdev_state *sd_state,
 			       struct v4l2_subdev_mbus_code_enum *code)
@@ -62,6 +68,7 @@ static int hsit_enum_frame_size(struct v4l2_subdev *subdev,
 				struct v4l2_subdev_state *sd_state,
 				struct v4l2_subdev_frame_size_enum *fse)
 {
+<<<<<<< HEAD
 	struct vsp1_entity *entity = to_vsp1_entity(subdev);
 	struct vsp1_hsit *hsit = to_hsit(subdev);
 	u32 code;
@@ -106,6 +113,12 @@ static int hsit_enum_frame_size(struct v4l2_subdev *subdev,
 	}
 
 	return 0;
+=======
+	return vsp1_subdev_enum_frame_size(subdev, sd_state, fse,
+					   HSIT_MIN_SIZE,
+					   HSIT_MIN_SIZE, HSIT_MAX_SIZE,
+					   HSIT_MAX_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hsit_set_format(struct v4l2_subdev *subdev,
@@ -221,6 +234,7 @@ struct vsp1_hsit *vsp1_hsit_create(struct vsp1_device *vsp1, bool inverse)
 	else
 		hsit->entity.type = VSP1_ENTITY_HST;
 
+<<<<<<< HEAD
 	hsit->entity.codes = hsit_codes;
 	hsit->entity.num_codes = ARRAY_SIZE(hsit_codes);
 	hsit->entity.min_width = HSIT_MIN_SIZE;
@@ -228,6 +242,8 @@ struct vsp1_hsit *vsp1_hsit_create(struct vsp1_device *vsp1, bool inverse)
 	hsit->entity.max_width = HSIT_MAX_SIZE;
 	hsit->entity.max_height = HSIT_MAX_SIZE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = vsp1_entity_init(vsp1, &hsit->entity, inverse ? "hsi" : "hst",
 			       2, &hsit_ops,
 			       MEDIA_ENT_F_PROC_VIDEO_PIXEL_ENC_CONV);

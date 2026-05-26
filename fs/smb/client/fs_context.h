@@ -102,7 +102,11 @@ enum cifs_param {
 	Opt_forcegid,
 	Opt_noblocksend,
 	Opt_noautotune,
+<<<<<<< HEAD
 	Opt_lease,
+=======
+	Opt_nolease,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	Opt_nosparse,
 	Opt_hard,
 	Opt_soft,

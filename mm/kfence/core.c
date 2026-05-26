@@ -51,7 +51,11 @@
 
 /* === Data ================================================================= */
 
+<<<<<<< HEAD
 bool kfence_enabled __read_mostly;
+=======
+static bool kfence_enabled __read_mostly;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool disabled_by_warn __read_mostly;
 
 unsigned long kfence_sample_interval __read_mostly = CONFIG_KFENCE_SAMPLE_INTERVAL;
@@ -336,7 +340,10 @@ out:
 static check_canary_attributes bool check_canary_byte(u8 *addr)
 {
 	struct kfence_metadata *meta;
+<<<<<<< HEAD
 	enum kfence_fault fault;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	if (likely(*addr == KFENCE_CANARY_PATTERN_U8(addr)))
@@ -346,9 +353,14 @@ static check_canary_attributes bool check_canary_byte(u8 *addr)
 
 	meta = addr_to_metadata((unsigned long)addr);
 	raw_spin_lock_irqsave(&meta->lock, flags);
+<<<<<<< HEAD
 	fault = kfence_report_error((unsigned long)addr, false, NULL, meta, KFENCE_ERROR_CORRUPTION);
 	raw_spin_unlock_irqrestore(&meta->lock, flags);
 	kfence_handle_fault(fault);
+=======
+	kfence_report_error((unsigned long)addr, false, NULL, meta, KFENCE_ERROR_CORRUPTION);
+	raw_spin_unlock_irqrestore(&meta->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
@@ -527,6 +539,7 @@ static void kfence_guarded_free(void *addr, struct kfence_metadata *meta, bool z
 	raw_spin_lock_irqsave(&meta->lock, flags);
 
 	if (!kfence_obj_allocated(meta) || meta->addr != (unsigned long)addr) {
+<<<<<<< HEAD
 		enum kfence_fault fault;
 
 		/* Invalid or double-free, bail out. */
@@ -535,6 +548,13 @@ static void kfence_guarded_free(void *addr, struct kfence_metadata *meta, bool z
 					    KFENCE_ERROR_INVALID_FREE);
 		raw_spin_unlock_irqrestore(&meta->lock, flags);
 		kfence_handle_fault(fault);
+=======
+		/* Invalid or double-free, bail out. */
+		atomic_long_inc(&counters[KFENCE_COUNTER_BUGS]);
+		kfence_report_error((unsigned long)addr, false, NULL, meta,
+				    KFENCE_ERROR_INVALID_FREE);
+		raw_spin_unlock_irqrestore(&meta->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -736,10 +756,17 @@ static bool __init kfence_init_pool_early(void)
 	 * fails for the first page, and therefore expect addr==__kfence_pool in
 	 * most failure cases.
 	 */
+<<<<<<< HEAD
 	memblock_free((void *)addr, KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
 	__kfence_pool = NULL;
 
 	memblock_free(kfence_metadata_init, KFENCE_METADATA_SIZE);
+=======
+	memblock_free_late(__pa(addr), KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
+	__kfence_pool = NULL;
+
+	memblock_free_late(__pa(kfence_metadata_init), KFENCE_METADATA_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfence_metadata_init = NULL;
 
 	return false;
@@ -836,8 +863,12 @@ static void kfence_check_all_canary(void)
 static int kfence_check_canary_callback(struct notifier_block *nb,
 					unsigned long reason, void *arg)
 {
+<<<<<<< HEAD
 	if (READ_ONCE(kfence_enabled))
 		kfence_check_all_canary();
+=======
+	kfence_check_all_canary();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NOTIFY_OK;
 }
 
@@ -1272,7 +1303,10 @@ bool kfence_handle_page_fault(unsigned long addr, bool is_write, struct pt_regs 
 	struct kfence_metadata *to_report = NULL;
 	unsigned long unprotected_page = 0;
 	enum kfence_error_type error_type;
+<<<<<<< HEAD
 	enum kfence_fault fault;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 
 	if (!is_kfence_address((void *)addr))
@@ -1331,6 +1365,7 @@ out:
 	if (to_report) {
 		raw_spin_lock_irqsave(&to_report->lock, flags);
 		to_report->unprotected_page = unprotected_page;
+<<<<<<< HEAD
 		fault = kfence_report_error(addr, is_write, regs, to_report, error_type);
 		raw_spin_unlock_irqrestore(&to_report->lock, flags);
 	} else {
@@ -1340,5 +1375,14 @@ out:
 
 	kfence_handle_fault(fault);
 
+=======
+		kfence_report_error(addr, is_write, regs, to_report, error_type);
+		raw_spin_unlock_irqrestore(&to_report->lock, flags);
+	} else {
+		/* This may be a UAF or OOB access, but we can't be sure. */
+		kfence_report_error(addr, is_write, regs, NULL, KFENCE_ERROR_INVALID);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return kfence_unprotect(addr); /* Unprotect and let access proceed. */
 }

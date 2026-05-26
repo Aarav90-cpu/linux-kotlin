@@ -124,7 +124,10 @@
 #define QDSP6v56_CLAMP_QMC_MEM		BIT(22)
 #define QDSP6SS_XO_CBCR		0x0038
 #define QDSP6SS_ACC_OVERRIDE_VAL		0x20
+<<<<<<< HEAD
 #define QDSP6SS_ACC_OVERRIDE_VAL_9607	0x80800000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define QDSP6v55_BHS_EN_REST_ACK	BIT(0)
 
 /* QDSP6v65 parameters */
@@ -163,7 +166,10 @@ struct rproc_hexagon_res {
 	char **proxy_pd_names;
 	int version;
 	bool need_mem_protection;
+<<<<<<< HEAD
 	bool need_pas_mem_setup;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool has_alt_reset;
 	bool has_mba_logs;
 	bool has_spare_reg;
@@ -242,7 +248,10 @@ struct q6v5 {
 	struct qcom_sysmon *sysmon;
 	struct platform_device *bam_dmux;
 	bool need_mem_protection;
+<<<<<<< HEAD
 	bool need_pas_mem_setup;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool has_alt_reset;
 	bool has_mba_logs;
 	bool has_spare_reg;
@@ -257,6 +266,7 @@ struct q6v5 {
 };
 
 enum {
+<<<<<<< HEAD
 	MSS_MDM9607,
 	MSS_MSM8226,
 	MSS_MSM8909,
@@ -265,6 +275,12 @@ enum {
 	MSS_MSM8926,
 	MSS_MSM8937,
 	MSS_MSM8940,
+=======
+	MSS_MSM8226,
+	MSS_MSM8909,
+	MSS_MSM8916,
+	MSS_MSM8926,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MSS_MSM8953,
 	MSS_MSM8974,
 	MSS_MSM8996,
@@ -752,16 +768,21 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 			return ret;
 		}
 		goto pbl_wait;
+<<<<<<< HEAD
 	} else if (qproc->version == MSS_MDM9607 ||
 		   qproc->version == MSS_MSM8909 ||
 		   qproc->version == MSS_MSM8917 ||
 		   qproc->version == MSS_MSM8937 ||
 		   qproc->version == MSS_MSM8940 ||
+=======
+	} else if (qproc->version == MSS_MSM8909 ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   qproc->version == MSS_MSM8953 ||
 		   qproc->version == MSS_MSM8996 ||
 		   qproc->version == MSS_MSM8998 ||
 		   qproc->version == MSS_SDM660) {
 
+<<<<<<< HEAD
 		/* Override the ACC value if required */
 		if (qproc->version == MSS_MDM9607 ||
 		    qproc->version == MSS_MSM8917 ||
@@ -771,6 +792,11 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 			       qproc->reg_base + QDSP6SS_STRAP_ACC);
 		else if (qproc->version != MSS_MSM8909 &&
 			 qproc->version != MSS_MSM8953)
+=======
+		if (qproc->version != MSS_MSM8909 &&
+		    qproc->version != MSS_MSM8953)
+			/* Override the ACC value if required */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			writel(QDSP6SS_ACC_OVERRIDE_VAL,
 			       qproc->reg_base + QDSP6SS_STRAP_ACC);
 
@@ -816,7 +842,10 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 
 		if (qproc->version != MSS_MSM8909) {
 			int mem_pwr_ctl;
+<<<<<<< HEAD
 			int reverse;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* Deassert QDSP6 compiler memory clamp */
 			val = readl(qproc->reg_base + QDSP6SS_PWR_CTL_REG);
@@ -828,6 +857,7 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 			writel(val, qproc->reg_base + QDSP6SS_PWR_CTL_REG);
 
 			/* Turn on L1, L2, ETB and JU memories 1 at a time */
+<<<<<<< HEAD
 			if (qproc->version == MSS_MSM8940 ||
 			    qproc->version == MSS_MSM8953 ||
 			    qproc->version == MSS_MSM8996) {
@@ -844,10 +874,17 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 				 * "inrush current" issues.
 				 */
 				reverse = 6;
+=======
+			if (qproc->version == MSS_MSM8953 ||
+			    qproc->version == MSS_MSM8996) {
+				mem_pwr_ctl = QDSP6SS_MEM_PWR_CTL;
+				i = 19;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				/* MSS_MSM8998, MSS_SDM660 */
 				mem_pwr_ctl = QDSP6V6SS_MEM_PWR_CTL;
 				i = 28;
+<<<<<<< HEAD
 				reverse = 0;
 			}
 
@@ -859,6 +896,11 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 				udelay(1);
 			}
 			for (i = 0; i < reverse; i++) {
+=======
+			}
+			val = readl(qproc->reg_base + mem_pwr_ctl);
+			for (; i >= 0; i--) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				val |= BIT(i);
 				writel(val, qproc->reg_base + mem_pwr_ctl);
 				/*
@@ -866,7 +908,11 @@ static int q6v5proc_reset(struct q6v5 *qproc)
 				 * wait for 1us for both memory peripheral and data
 				 * array to turn on.
 				 */
+<<<<<<< HEAD
 				val = readl(qproc->reg_base + mem_pwr_ctl);
+=======
+				val |= readl(qproc->reg_base + mem_pwr_ctl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				udelay(1);
 			}
 		} else {
@@ -1479,7 +1525,11 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
 			max_addr = ALIGN(phdr->p_paddr + phdr->p_memsz, SZ_4K);
 	}
 
+<<<<<<< HEAD
 	if (qproc->need_pas_mem_setup) {
+=======
+	if (qproc->version == MSS_MSM8953) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = qcom_scm_pas_mem_setup(MPSS_PAS_ID, qproc->mpss_phys, qproc->mpss_size);
 		if (ret) {
 			dev_err(qproc->dev,
@@ -2262,7 +2312,10 @@ static const struct rproc_hexagon_res sc7180_mss = {
 		NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = true,
 	.has_spare_reg = true,
@@ -2292,7 +2345,10 @@ static const struct rproc_hexagon_res sc7280_mss = {
 		NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = true,
 	.has_spare_reg = false,
@@ -2325,7 +2381,10 @@ static const struct rproc_hexagon_res sdm660_mss = {
 			NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2362,7 +2421,10 @@ static const struct rproc_hexagon_res sdm845_mss = {
 			NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = true,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2395,7 +2457,10 @@ static const struct rproc_hexagon_res msm8998_mss = {
 			NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2435,7 +2500,10 @@ static const struct rproc_hexagon_res msm8996_mss = {
 			NULL
 	},
 	.need_mem_protection = true,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2446,6 +2514,7 @@ static const struct rproc_hexagon_res msm8996_mss = {
 	.version = MSS_MSM8996,
 };
 
+<<<<<<< HEAD
 static const struct rproc_hexagon_res mdm9607_mss = {
 	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
@@ -2481,6 +2550,8 @@ static const struct rproc_hexagon_res mdm9607_mss = {
 	.version = MSS_MDM9607,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct rproc_hexagon_res msm8909_mss = {
 	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
@@ -2506,7 +2577,10 @@ static const struct rproc_hexagon_res msm8909_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2553,7 +2627,10 @@ static const struct rproc_hexagon_res msm8916_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2564,6 +2641,7 @@ static const struct rproc_hexagon_res msm8916_mss = {
 	.version = MSS_MSM8916,
 };
 
+<<<<<<< HEAD
 static const struct rproc_hexagon_res msm8917_mss = {
 	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
@@ -2696,6 +2774,8 @@ static const struct rproc_hexagon_res msm8940_mss = {
 	.version = MSS_MSM8940,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct rproc_hexagon_res msm8953_mss = {
 	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
@@ -2722,7 +2802,10 @@ static const struct rproc_hexagon_res msm8953_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2776,7 +2859,10 @@ static const struct rproc_hexagon_res msm8974_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2815,7 +2901,10 @@ static const struct rproc_hexagon_res msm8226_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2862,7 +2951,10 @@ static const struct rproc_hexagon_res msm8926_mss = {
 		NULL
 	},
 	.need_mem_protection = false,
+<<<<<<< HEAD
 	.need_pas_mem_setup = false,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_alt_reset = false,
 	.has_mba_logs = false,
 	.has_spare_reg = false,
@@ -2874,6 +2966,7 @@ static const struct rproc_hexagon_res msm8926_mss = {
 };
 
 static const struct of_device_id q6v5_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,q6v5-pil", .data = &msm8916_mss },
 	{ .compatible = "qcom,mdm9607-mss-pil", .data = &mdm9607_mss },
 	{ .compatible = "qcom,msm8226-mss-pil", .data = &msm8226_mss },
@@ -2891,6 +2984,21 @@ static const struct of_device_id q6v5_of_match[] = {
 	{ .compatible = "qcom,sc7280-mss-pil", .data = &sc7280_mss },
 	{ .compatible = "qcom,sdm660-mss-pil", .data = &sdm660_mss },
 	{ .compatible = "qcom,sdm845-mss-pil", .data = &sdm845_mss },
+=======
+	{ .compatible = "qcom,q6v5-pil", .data = &msm8916_mss},
+	{ .compatible = "qcom,msm8226-mss-pil", .data = &msm8226_mss},
+	{ .compatible = "qcom,msm8909-mss-pil", .data = &msm8909_mss},
+	{ .compatible = "qcom,msm8916-mss-pil", .data = &msm8916_mss},
+	{ .compatible = "qcom,msm8926-mss-pil", .data = &msm8926_mss},
+	{ .compatible = "qcom,msm8953-mss-pil", .data = &msm8953_mss},
+	{ .compatible = "qcom,msm8974-mss-pil", .data = &msm8974_mss},
+	{ .compatible = "qcom,msm8996-mss-pil", .data = &msm8996_mss},
+	{ .compatible = "qcom,msm8998-mss-pil", .data = &msm8998_mss},
+	{ .compatible = "qcom,sc7180-mss-pil", .data = &sc7180_mss},
+	{ .compatible = "qcom,sc7280-mss-pil", .data = &sc7280_mss},
+	{ .compatible = "qcom,sdm660-mss-pil", .data = &sdm660_mss},
+	{ .compatible = "qcom,sdm845-mss-pil", .data = &sdm845_mss},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ },
 };
 MODULE_DEVICE_TABLE(of, q6v5_of_match);

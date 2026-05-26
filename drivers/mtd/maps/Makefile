@@ -19,6 +19,10 @@ obj-$(CONFIG_MTD_TSUNAMI)	+= tsunami_flash.o
 obj-$(CONFIG_MTD_PXA2XX)	+= pxa2xx-flash.o
 obj-$(CONFIG_MTD_PHYSMAP)	+= physmap.o
 physmap-y			:= physmap-core.o
+<<<<<<< HEAD
+=======
+physmap-$(CONFIG_MTD_PHYSMAP_BT1_ROM) += physmap-bt1-rom.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 physmap-$(CONFIG_MTD_PHYSMAP_VERSATILE) += physmap-versatile.o
 physmap-$(CONFIG_MTD_PHYSMAP_GEMINI) += physmap-gemini.o
 physmap-$(CONFIG_MTD_PHYSMAP_IXP4XX) += physmap-ixp4xx.o

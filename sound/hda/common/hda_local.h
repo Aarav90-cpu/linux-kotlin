@@ -221,7 +221,10 @@ struct hda_multi_out {
 	unsigned int spdif_rates;
 	unsigned int spdif_maxbps;
 	u64 spdif_formats;
+<<<<<<< HEAD
 	struct snd_kcontrol *share_spdif_kctl; /* cached shared SPDIF switch */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int snd_hda_create_spdif_share_sw(struct hda_codec *codec,

@@ -122,7 +122,10 @@ static int flow_offload_fill_route(struct flow_offload *flow,
 
 	flow_tuple->tun = route->tuple[dir].in.tun;
 	flow_tuple->encap_num = route->tuple[dir].in.num_encaps;
+<<<<<<< HEAD
 	flow_tuple->needs_gso_segment = route->tuple[dir].out.needs_gso_segment;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	flow_tuple->tun_num = route->tuple[dir].in.num_tuns;
 
 	switch (route->tuple[dir].xmit_type) {

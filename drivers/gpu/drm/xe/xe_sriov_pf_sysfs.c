@@ -9,7 +9,10 @@
 #include <drm/drm_managed.h>
 
 #include "xe_assert.h"
+<<<<<<< HEAD
 #include "xe_device.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_pci_sriov.h"
 #include "xe_pm.h"
 #include "xe_sriov.h"
@@ -45,8 +48,12 @@ static int emit_choice(char *buf, int choice, const char * const *array, size_t 
  *     ├── .bulk_profile
  *     │   ├── exec_quantum_ms
  *     │   ├── preempt_timeout_us
+<<<<<<< HEAD
  *     │   ├── sched_priority
  *     │   └── vram_quota
+=======
+ *     │   └── sched_priority
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *     ├── pf/
  *     │   ├── ...
  *     │   ├── device -> ../../../BDF
@@ -61,8 +68,12 @@ static int emit_choice(char *buf, int choice, const char * const *array, size_t 
  *     │   └── profile
  *     │       ├── exec_quantum_ms
  *     │       ├── preempt_timeout_us
+<<<<<<< HEAD
  *     │       ├── sched_priority
  *     │       └── vram_quota
+=======
+ *     │       └── sched_priority
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *     ├── vf2/
  *     :
  *     └── vfN/
@@ -135,7 +146,10 @@ static XE_SRIOV_DEV_ATTR_WO(NAME)
 
 DEFINE_SIMPLE_BULK_PROVISIONING_SRIOV_DEV_ATTR_WO(exec_quantum_ms, eq, u32);
 DEFINE_SIMPLE_BULK_PROVISIONING_SRIOV_DEV_ATTR_WO(preempt_timeout_us, pt, u32);
+<<<<<<< HEAD
 DEFINE_SIMPLE_BULK_PROVISIONING_SRIOV_DEV_ATTR_WO(vram_quota, vram, u64);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * const sched_priority_names[] = {
 	[GUC_SCHED_PRIORITY_LOW] = "low",
@@ -185,6 +199,7 @@ static struct attribute *bulk_profile_dev_attrs[] = {
 	&xe_sriov_dev_attr_exec_quantum_ms.attr,
 	&xe_sriov_dev_attr_preempt_timeout_us.attr,
 	&xe_sriov_dev_attr_sched_priority.attr,
+<<<<<<< HEAD
 	&xe_sriov_dev_attr_vram_quota.attr,
 	NULL
 };
@@ -205,6 +220,14 @@ static const struct attribute_group bulk_profile_dev_attr_group = {
 	.name = ".bulk_profile",
 	.attrs = bulk_profile_dev_attrs,
 	.is_visible = profile_dev_attr_is_visible,
+=======
+	NULL
+};
+
+static const struct attribute_group bulk_profile_dev_attr_group = {
+	.name = ".bulk_profile",
+	.attrs = bulk_profile_dev_attrs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct attribute_group *xe_sriov_dev_attr_groups[] = {
@@ -246,7 +269,10 @@ static XE_SRIOV_VF_ATTR(NAME)
 
 DEFINE_SIMPLE_PROVISIONING_SRIOV_VF_ATTR(exec_quantum_ms, eq, u32, "%u\n");
 DEFINE_SIMPLE_PROVISIONING_SRIOV_VF_ATTR(preempt_timeout_us, pt, u32, "%u\n");
+<<<<<<< HEAD
 DEFINE_SIMPLE_PROVISIONING_SRIOV_VF_ATTR(vram_quota, vram, u64, "%llu\n");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t xe_sriov_vf_attr_sched_priority_show(struct xe_device *xe, unsigned int vfid,
 						    char *buf)
@@ -293,7 +319,10 @@ static struct attribute *profile_vf_attrs[] = {
 	&xe_sriov_vf_attr_exec_quantum_ms.attr,
 	&xe_sriov_vf_attr_preempt_timeout_us.attr,
 	&xe_sriov_vf_attr_sched_priority.attr,
+<<<<<<< HEAD
 	&xe_sriov_vf_attr_vram_quota.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -306,6 +335,7 @@ static umode_t profile_vf_attr_is_visible(struct kobject *kobj,
 	    !sched_priority_change_allowed(vkobj->vfid))
 		return attr->mode & 0444;
 
+<<<<<<< HEAD
 	if (attr == &xe_sriov_vf_attr_vram_quota.attr) {
 		if (!IS_DGFX(vkobj->xe) || vkobj->vfid == PFID)
 			return 0;
@@ -313,6 +343,8 @@ static umode_t profile_vf_attr_is_visible(struct kobject *kobj,
 			return attr->mode & 0444;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return attr->mode;
 }
 

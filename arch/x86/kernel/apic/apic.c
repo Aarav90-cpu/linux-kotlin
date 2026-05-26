@@ -332,7 +332,11 @@ static void __setup_APIC_LVTT(unsigned int clocks, int oneshot, int irqen)
  * Since the offsets must be consistent for all cores, we keep track
  * of the LVT offsets in software and reserve the offset for the same
  * vector also to be used on other cores. An offset is freed by
+<<<<<<< HEAD
  * setting the entry to APIC_LVT_MASKED.
+=======
+ * setting the entry to APIC_EILVT_MASKED.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * If the BIOS is right, there should be no conflicts. Otherwise a
  * "[Firmware Bug]: ..." error message is generated. However, if
@@ -344,9 +348,15 @@ static atomic_t eilvt_offsets[APIC_EILVT_NR_MAX];
 
 static inline int eilvt_entry_is_changeable(unsigned int old, unsigned int new)
 {
+<<<<<<< HEAD
 	return (old & APIC_LVT_MASKED)
 		|| (new == APIC_LVT_MASKED)
 		|| ((new & ~APIC_LVT_MASKED) == old);
+=======
+	return (old & APIC_EILVT_MASKED)
+		|| (new == APIC_EILVT_MASKED)
+		|| ((new & ~APIC_EILVT_MASKED) == old);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
@@ -358,13 +368,21 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
 
 	rsvd = atomic_read(&eilvt_offsets[offset]);
 	do {
+<<<<<<< HEAD
 		vector = rsvd & ~APIC_LVT_MASKED;	/* 0: unassigned */
+=======
+		vector = rsvd & ~APIC_EILVT_MASKED;	/* 0: unassigned */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vector && !eilvt_entry_is_changeable(vector, new))
 			/* may not change if vectors are different */
 			return rsvd;
 	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
 
+<<<<<<< HEAD
 	rsvd = new & ~APIC_LVT_MASKED;
+=======
+	rsvd = new & ~APIC_EILVT_MASKED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rsvd && rsvd != vector)
 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
 			offset, rsvd);
@@ -412,12 +430,18 @@ EXPORT_SYMBOL_GPL(setup_APIC_eilvt);
 /*
  * Program the next event, relative to now
  */
+<<<<<<< HEAD
 static int lapic_next_event(unsigned long delta, struct clock_event_device *evt)
+=======
+static int lapic_next_event(unsigned long delta,
+			    struct clock_event_device *evt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	apic_write(APIC_TMICT, delta);
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lapic_next_deadline(unsigned long delta, struct clock_event_device *evt)
 {
 	/*
@@ -427,6 +451,18 @@ static int lapic_next_deadline(unsigned long delta, struct clock_event_device *e
 	u64 tsc = rdtsc();
 
 	native_wrmsrq(MSR_IA32_TSC_DEADLINE, tsc + (((u64) delta) * TSC_DIVISOR));
+=======
+static int lapic_next_deadline(unsigned long delta,
+			       struct clock_event_device *evt)
+{
+	u64 tsc;
+
+	/* This MSR is special and need a special fence: */
+	weak_wrmsr_fence();
+
+	tsc = rdtsc();
+	wrmsrq(MSR_IA32_TSC_DEADLINE, tsc + (((u64) delta) * TSC_DIVISOR));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -450,7 +486,11 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
 	 * the timer _and_ zero the counter registers:
 	 */
 	if (v & APIC_LVT_TIMER_TSCDEADLINE)
+<<<<<<< HEAD
 		native_wrmsrq(MSR_IA32_TSC_DEADLINE, 0);
+=======
+		wrmsrq(MSR_IA32_TSC_DEADLINE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		apic_write(APIC_TMICT, 0);
 
@@ -547,11 +587,14 @@ static __init bool apic_validate_deadline_timer(void)
 
 	if (!boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
 		return false;
+<<<<<<< HEAD
 
 	/* XEN_PV does not support it, but be paranoia about it */
 	if (boot_cpu_has(X86_FEATURE_XENPV))
 		goto clear;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
 		return true;
 
@@ -564,11 +607,17 @@ static __init bool apic_validate_deadline_timer(void)
 	if (boot_cpu_data.microcode >= rev)
 		return true;
 
+<<<<<<< HEAD
 	pr_err(FW_BUG "TSC_DEADLINE disabled due to Errata; "
 	       "please update microcode to version: 0x%x (or later)\n", rev);
 
 clear:
 	setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
+=======
+	setup_clear_cpu_cap(X86_FEATURE_TSC_DEADLINE_TIMER);
+	pr_err(FW_BUG "TSC_DEADLINE disabled due to Errata; "
+	       "please update microcode to version: 0x%x (or later)\n", rev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
@@ -591,6 +640,7 @@ static void setup_APIC_timer(void)
 
 	if (this_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER)) {
 		levt->name = "lapic-deadline";
+<<<<<<< HEAD
 		levt->features &= ~(CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_DUMMY);
 		levt->features |= CLOCK_EVT_FEAT_CLOCKSOURCE_COUPLED;
 		levt->cs_id = CSID_X86_TSC;
@@ -599,6 +649,16 @@ static void setup_APIC_timer(void)
 	} else {
 		clockevents_register_device(levt);
 	}
+=======
+		levt->features &= ~(CLOCK_EVT_FEAT_PERIODIC |
+				    CLOCK_EVT_FEAT_DUMMY);
+		levt->set_next_event = lapic_next_deadline;
+		clockevents_config_and_register(levt,
+						tsc_khz * (1000 / TSC_DIVISOR),
+						0xF, ~0UL);
+	} else
+		clockevents_register_device(levt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	apic_update_vector(smp_processor_id(), LOCAL_TIMER_VECTOR, true);
 }

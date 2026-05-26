@@ -28,7 +28,11 @@ static unsigned int i2c_scan;
 module_param(i2c_scan, int, 0444);
 MODULE_PARM_DESC(i2c_scan,"scan i2c bus at insmod time");
 
+<<<<<<< HEAD
 #define saa7134_i2c_dbg(level, fmt, arg...) do { \
+=======
+#define i2c_dbg(level, fmt, arg...) do { \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (i2c_debug == level) \
 		printk(KERN_DEBUG pr_fmt("i2c: " fmt), ## arg); \
 	} while (0)
@@ -84,20 +88,32 @@ static inline enum i2c_status i2c_get_status(struct saa7134_dev *dev)
 	enum i2c_status status;
 
 	status = saa_readb(SAA7134_I2C_ATTR_STATUS) & 0x0f;
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c stat <= %s\n", str_i2c_status[status]);
+=======
+	i2c_dbg(2, "i2c stat <= %s\n", str_i2c_status[status]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return status;
 }
 
 static inline void i2c_set_status(struct saa7134_dev *dev,
 				  enum i2c_status status)
 {
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c stat => %s\n", str_i2c_status[status]);
+=======
+	i2c_dbg(2, "i2c stat => %s\n", str_i2c_status[status]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	saa_andorb(SAA7134_I2C_ATTR_STATUS,0x0f,status);
 }
 
 static inline void i2c_set_attr(struct saa7134_dev *dev, enum i2c_attr attr)
 {
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c attr => %s\n", str_i2c_attr[attr]);
+=======
+	i2c_dbg(2, "i2c attr => %s\n", str_i2c_attr[attr]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	saa_andorb(SAA7134_I2C_ATTR_STATUS,0xc0,attr << 6);
 }
 
@@ -160,7 +176,11 @@ static int i2c_reset(struct saa7134_dev *dev)
 	enum i2c_status status;
 	int count;
 
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c reset\n");
+=======
+	i2c_dbg(2, "i2c reset\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = i2c_get_status(dev);
 	if (!i2c_is_error(status))
 		return true;
@@ -198,7 +218,11 @@ static inline int i2c_send_byte(struct saa7134_dev *dev,
 //	dword |= 0x40 << 16;  /* 400 kHz */
 	dword |= 0xf0 << 24;
 	saa_writel(SAA7134_I2C_ATTR_STATUS >> 2, dword);
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c data => 0x%x\n", data);
+=======
+	i2c_dbg(2, "i2c data => 0x%x\n", data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!i2c_is_busy_wait(dev))
 		return -EIO;
@@ -220,7 +244,11 @@ static inline int i2c_recv_byte(struct saa7134_dev *dev)
 	if (i2c_is_error(status))
 		return -EIO;
 	data = saa_readb(SAA7134_I2C_DATA);
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "i2c data <= 0x%x\n", data);
+=======
+	i2c_dbg(2, "i2c data <= 0x%x\n", data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return data;
 }
 
@@ -237,12 +265,21 @@ static int saa7134_i2c_xfer(struct i2c_adapter *i2c_adap,
 		if (!i2c_reset(dev))
 			return -EIO;
 
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "start xfer\n");
 	saa7134_i2c_dbg(1, "i2c xfer:");
 	for (i = 0; i < num; i++) {
 		if (!(msgs[i].flags & I2C_M_NOSTART) || 0 == i) {
 			/* send address */
 			saa7134_i2c_dbg(2, "send address\n");
+=======
+	i2c_dbg(2, "start xfer\n");
+	i2c_dbg(1, "i2c xfer:");
+	for (i = 0; i < num; i++) {
+		if (!(msgs[i].flags & I2C_M_NOSTART) || 0 == i) {
+			/* send address */
+			i2c_dbg(2, "send address\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			addr  = msgs[i].addr << 1;
 			if (msgs[i].flags & I2C_M_RD)
 				addr |= 1;
@@ -265,7 +302,11 @@ static int saa7134_i2c_xfer(struct i2c_adapter *i2c_adap,
 		}
 		if (msgs[i].flags & I2C_M_RD) {
 			/* read bytes */
+<<<<<<< HEAD
 			saa7134_i2c_dbg(2, "read bytes\n");
+=======
+			i2c_dbg(2, "read bytes\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			for (byte = 0; byte < msgs[i].len; byte++) {
 				i2c_cont(1, " =");
 				rc = i2c_recv_byte(dev);
@@ -286,7 +327,11 @@ static int saa7134_i2c_xfer(struct i2c_adapter *i2c_adap,
 			}
 		} else {
 			/* write bytes */
+<<<<<<< HEAD
 			saa7134_i2c_dbg(2, "write bytes\n");
+=======
+			i2c_dbg(2, "write bytes\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			for (byte = 0; byte < msgs[i].len; byte++) {
 				data = msgs[i].buf[byte];
 				i2c_cont(1, " %02x", data);
@@ -296,7 +341,11 @@ static int saa7134_i2c_xfer(struct i2c_adapter *i2c_adap,
 			}
 		}
 	}
+<<<<<<< HEAD
 	saa7134_i2c_dbg(2, "xfer done\n");
+=======
+	i2c_dbg(2, "xfer done\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_cont(1, " >");
 	i2c_set_attr(dev,STOP);
 	rc = -EIO;

@@ -468,7 +468,11 @@ static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
 	input_report_key(input, keycode, 0);
 	input_sync(input);
 
+<<<<<<< HEAD
 	acpi_bus_generate_netlink_event(acpi_device_class(device),
+=======
+	acpi_bus_generate_netlink_event(device->pnp.device_class,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					dev_name(&device->dev),
 					event, ++button->pushed);
 }
@@ -531,6 +535,7 @@ static int acpi_lid_input_open(struct input_dev *input)
 
 static int acpi_button_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	acpi_notify_handler handler;
 	struct acpi_device *device;
 	struct acpi_button *button;
@@ -545,6 +550,17 @@ static int acpi_button_probe(struct platform_device *pdev)
 		return -ENODEV;
 
 	hid = acpi_device_hid(device);
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+	acpi_notify_handler handler;
+	struct acpi_button *button;
+	struct input_dev *input;
+	const char *hid = acpi_device_hid(device);
+	acpi_status status;
+	char *name, *class;
+	int error = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!strcmp(hid, ACPI_BUTTON_HID_LID) &&
 	     lid_init_state == ACPI_BUTTON_LID_INIT_DISABLED)
 		return -ENODEV;
@@ -563,26 +579,42 @@ static int acpi_button_probe(struct platform_device *pdev)
 		goto err_free_button;
 	}
 
+<<<<<<< HEAD
+=======
+	name = acpi_device_name(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	class = acpi_device_class(device);
 
 	if (!strcmp(hid, ACPI_BUTTON_HID_POWER) ||
 	    !strcmp(hid, ACPI_BUTTON_HID_POWERF)) {
 		button->type = ACPI_BUTTON_TYPE_POWER;
 		handler = acpi_button_notify;
+<<<<<<< HEAD
 		name = ACPI_BUTTON_DEVICE_NAME_POWER;
+=======
+		strscpy(name, ACPI_BUTTON_DEVICE_NAME_POWER, MAX_ACPI_DEVICE_NAME_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sprintf(class, "%s/%s",
 			ACPI_BUTTON_CLASS, ACPI_BUTTON_SUBCLASS_POWER);
 	} else if (!strcmp(hid, ACPI_BUTTON_HID_SLEEP) ||
 		   !strcmp(hid, ACPI_BUTTON_HID_SLEEPF)) {
 		button->type = ACPI_BUTTON_TYPE_SLEEP;
 		handler = acpi_button_notify;
+<<<<<<< HEAD
 		name = ACPI_BUTTON_DEVICE_NAME_SLEEP;
+=======
+		strscpy(name, ACPI_BUTTON_DEVICE_NAME_SLEEP, MAX_ACPI_DEVICE_NAME_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sprintf(class, "%s/%s",
 			ACPI_BUTTON_CLASS, ACPI_BUTTON_SUBCLASS_SLEEP);
 	} else if (!strcmp(hid, ACPI_BUTTON_HID_LID)) {
 		button->type = ACPI_BUTTON_TYPE_LID;
 		handler = acpi_lid_notify;
+<<<<<<< HEAD
 		name = ACPI_BUTTON_DEVICE_NAME_LID;
+=======
+		strscpy(name, ACPI_BUTTON_DEVICE_NAME_LID, MAX_ACPI_DEVICE_NAME_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sprintf(class, "%s/%s",
 			ACPI_BUTTON_CLASS, ACPI_BUTTON_SUBCLASS_LID);
 		input->open = acpi_lid_input_open;
@@ -702,8 +734,11 @@ static void acpi_button_remove(struct platform_device *pdev)
 	acpi_button_remove_fs(button);
 	input_unregister_device(button->input);
 	kfree(button);
+<<<<<<< HEAD
 
 	memset(acpi_device_class(adev), 0, sizeof(acpi_device_class));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int param_set_lid_init_state(const char *val,

@@ -921,6 +921,10 @@ static int ati_remote_probe(struct usb_interface *interface,
 	input_free_device(input_dev);
  exit_unregister_device:
 	rc_unregister_device(rc_dev);
+<<<<<<< HEAD
+=======
+	rc_dev = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  exit_kill_urbs:
 	usb_kill_urb(ati_remote->irq_urb);
 	usb_kill_urb(ati_remote->out_urb);
@@ -940,19 +944,31 @@ static void ati_remote_disconnect(struct usb_interface *interface)
 	struct ati_remote *ati_remote;
 
 	ati_remote = usb_get_intfdata(interface);
+<<<<<<< HEAD
+=======
+	usb_set_intfdata(interface, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ati_remote) {
 		dev_warn(&interface->dev, "%s - null device?\n", __func__);
 		return;
 	}
 
+<<<<<<< HEAD
 	rc_unregister_device(ati_remote->rdev);
 	usb_set_intfdata(interface, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_kill_urb(ati_remote->irq_urb);
 	usb_kill_urb(ati_remote->out_urb);
 	if (ati_remote->idev)
 		input_unregister_device(ati_remote->idev);
+<<<<<<< HEAD
 	ati_remote_free_buffers(ati_remote);
 	rc_free_device(ati_remote->rdev);
+=======
+	rc_unregister_device(ati_remote->rdev);
+	ati_remote_free_buffers(ati_remote);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ati_remote);
 }
 

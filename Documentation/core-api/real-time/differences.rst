@@ -213,7 +213,11 @@ to suspend until the callback completes, ensuring forward progress without
 risking livelock.
 
 In order to solve the problem at the API level, the sequence locks were extended
+<<<<<<< HEAD
 to allow a proper handover between the spinning reader and the maybe
+=======
+to allow a proper handover between the the spinning reader and the maybe
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 blocked writer.
 
 Sequence locks

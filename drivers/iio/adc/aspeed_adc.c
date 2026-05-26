@@ -75,8 +75,11 @@
 
 #define ASPEED_ADC_INIT_POLLING_TIME	500
 #define ASPEED_ADC_INIT_TIMEOUT		500000
+<<<<<<< HEAD
 /* Battery sensing is typically on the last channel */
 #define ASPEED_ADC_BATTERY_CHANNEL		7
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * When the sampling rate is too high, the ADC may not have enough charging
  * time, resulting in a low voltage value. Thus, the default uses a slow
@@ -123,6 +126,7 @@ struct aspeed_adc_data {
 	struct adc_gain		battery_mode_gain;
 };
 
+<<<<<<< HEAD
 /*
  * Enable multiple consecutive channels starting from channel 0.
  * This creates a bitmask for channels 0 to (num_channels - 1).
@@ -148,6 +152,8 @@ static inline unsigned int aspeed_adc_get_active_channels(const struct aspeed_ad
 	return data->model_data->num_channels;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ASPEED_CHAN(_idx, _data_reg_addr) {			\
 	.type = IIO_VOLTAGE,					\
 	.indexed = 1,						\
@@ -263,10 +269,17 @@ static int aspeed_adc_compensation(struct iio_dev *indio_dev)
 		       ASPEED_ADC_CTRL_CHANNEL_ENABLE(0),
 	       data->base + ASPEED_REG_ENGINE_CONTROL);
 	/*
+<<<<<<< HEAD
 	 * After enable compensating sensing mode need to wait some time for the
 	 * ADC stablize. Experiment result is 1ms.
 	 */
 	fsleep(1000);
+=======
+	 * After enable compensating sensing mode need to wait some time for ADC stable
+	 * Experiment result is 1ms.
+	 */
+	mdelay(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (index = 0; index < 16; index++) {
 		/*
@@ -312,6 +325,7 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
+<<<<<<< HEAD
 		adc_engine_control_reg_val = readl(data->base + ASPEED_REG_ENGINE_CONTROL);
 		/*
 		 * For battery sensing capable controllers, we need to enable
@@ -332,12 +346,18 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
 		}
 
 		if (data->battery_sensing && chan->channel == ASPEED_ADC_BATTERY_CHANNEL) {
+=======
+		if (data->battery_sensing && chan->channel == 7) {
+			adc_engine_control_reg_val =
+				readl(data->base + ASPEED_REG_ENGINE_CONTROL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			writel(adc_engine_control_reg_val |
 				       FIELD_PREP(ASPEED_ADC_CH7_MODE,
 						  ASPEED_ADC_CH7_BAT) |
 				       ASPEED_ADC_BAT_SENSING_ENABLE,
 			       data->base + ASPEED_REG_ENGINE_CONTROL);
 			/*
+<<<<<<< HEAD
 			 * After enable battery sensing mode need to wait some time for ADC stable
 			 * Experiment result is 1ms.
 			 */
@@ -354,6 +374,24 @@ static int aspeed_adc_read_raw(struct iio_dev *indio_dev,
 
 	case IIO_CHAN_INFO_OFFSET:
 		if (data->battery_sensing && chan->channel == ASPEED_ADC_BATTERY_CHANNEL)
+=======
+			 * After enable battery sensing mode need to wait some time for adc stable
+			 * Experiment result is 1ms.
+			 */
+			mdelay(1);
+			*val = readw(data->base + chan->address);
+			*val = (*val * data->battery_mode_gain.mult) /
+			       data->battery_mode_gain.div;
+			/* Restore control register value */
+			writel(adc_engine_control_reg_val,
+			       data->base + ASPEED_REG_ENGINE_CONTROL);
+		} else
+			*val = readw(data->base + chan->address);
+		return IIO_VAL_INT;
+
+	case IIO_CHAN_INFO_OFFSET:
+		if (data->battery_sensing && chan->channel == 7)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*val = (data->cv * data->battery_mode_gain.mult) /
 			       data->battery_mode_gain.div;
 		else
@@ -655,9 +693,13 @@ static int aspeed_adc_probe(struct platform_device *pdev)
 	/* Start all channels in normal mode. */
 	adc_engine_control_reg_val =
 		readl(data->base + ASPEED_REG_ENGINE_CONTROL);
+<<<<<<< HEAD
 	FIELD_MODIFY(ASPEED_ADC_CTRL_CHANNEL, &adc_engine_control_reg_val,
 		     aspeed_adc_channels_mask(aspeed_adc_get_active_channels(data)));
 
+=======
+	adc_engine_control_reg_val |= ASPEED_ADC_CTRL_CHANNEL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	writel(adc_engine_control_reg_val,
 	       data->base + ASPEED_REG_ENGINE_CONTROL);
 

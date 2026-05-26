@@ -14,17 +14,40 @@ asmlinkage void sha256_block_data_order(struct sha256_block_state *state,
 					const u8 *data, size_t nblocks);
 asmlinkage void sha256_block_neon(struct sha256_block_state *state,
 				  const u8 *data, size_t nblocks);
+<<<<<<< HEAD
 asmlinkage void sha256_ce_transform(struct sha256_block_state *state,
 				    const u8 *data, size_t nblocks);
+=======
+asmlinkage size_t __sha256_ce_transform(struct sha256_block_state *state,
+					const u8 *data, size_t nblocks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void sha256_blocks(struct sha256_block_state *state,
 			  const u8 *data, size_t nblocks)
 {
+<<<<<<< HEAD
 	if (static_branch_likely(&have_neon) && likely(may_use_simd())) {
 		scoped_ksimd() {
 			if (static_branch_likely(&have_ce))
 				sha256_ce_transform(state, data, nblocks);
 			else
+=======
+	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
+	    static_branch_likely(&have_neon) && likely(may_use_simd())) {
+		if (static_branch_likely(&have_ce)) {
+			do {
+				size_t rem;
+
+				scoped_ksimd()
+					rem = __sha256_ce_transform(state, data,
+								    nblocks);
+
+				data += (nblocks - rem) * SHA256_BLOCK_SIZE;
+				nblocks = rem;
+			} while (nblocks);
+		} else {
+			scoped_ksimd()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				sha256_block_neon(state, data, nblocks);
 		}
 	} else {
@@ -46,9 +69,20 @@ static bool sha256_finup_2x_arch(const struct __sha256_ctx *ctx,
 				 u8 out1[SHA256_DIGEST_SIZE],
 				 u8 out2[SHA256_DIGEST_SIZE])
 {
+<<<<<<< HEAD
 	/* The assembly requires len >= SHA256_BLOCK_SIZE && len <= INT_MAX. */
 	if (static_branch_likely(&have_ce) && len >= SHA256_BLOCK_SIZE &&
 	    len <= INT_MAX && likely(may_use_simd())) {
+=======
+	/*
+	 * The assembly requires len >= SHA256_BLOCK_SIZE && len <= INT_MAX.
+	 * Further limit len to 65536 to avoid spending too long with preemption
+	 * disabled.  (Of course, in practice len is nearly always 4096 anyway.)
+	 */
+	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
+	    static_branch_likely(&have_ce) && len >= SHA256_BLOCK_SIZE &&
+	    len <= 65536 && likely(may_use_simd())) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		scoped_ksimd()
 			sha256_ce_finup2x(ctx, data1, data2, len, out1, out2);
 		kmsan_unpoison_memory(out1, SHA256_DIGEST_SIZE);
@@ -63,6 +97,10 @@ static bool sha256_finup_2x_is_optimized_arch(void)
 	return static_key_enabled(&have_ce);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_KERNEL_MODE_NEON
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define sha256_mod_init_arch sha256_mod_init_arch
 static void sha256_mod_init_arch(void)
 {
@@ -72,3 +110,7 @@ static void sha256_mod_init_arch(void)
 			static_branch_enable(&have_ce);
 	}
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_KERNEL_MODE_NEON */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

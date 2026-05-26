@@ -76,8 +76,13 @@
 			power-domains = <&cpu_pd0>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <326>;
 			dynamic-power-coefficient = <251>;
+=======
+			capacity-dmips-mhz = <1024>;
+			dynamic-power-coefficient = <100>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_0: l2-cache {
 				compatible = "cache";
@@ -102,8 +107,13 @@
 			power-domains = <&cpu_pd1>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <326>;
 			dynamic-power-coefficient = <251>;
+=======
+			capacity-dmips-mhz = <1024>;
+			dynamic-power-coefficient = <100>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_100: l2-cache {
 				compatible = "cache";
@@ -123,8 +133,13 @@
 			power-domains = <&cpu_pd2>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <326>;
 			dynamic-power-coefficient = <251>;
+=======
+			capacity-dmips-mhz = <1024>;
+			dynamic-power-coefficient = <100>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_200: l2-cache {
 				compatible = "cache";
@@ -144,8 +159,13 @@
 			power-domains = <&cpu_pd3>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <693>;
 			dynamic-power-coefficient = <447>;
+=======
+			capacity-dmips-mhz = <1792>;
+			dynamic-power-coefficient = <270>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_300: l2-cache {
 				compatible = "cache";
@@ -165,8 +185,13 @@
 			power-domains = <&cpu_pd4>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <693>;
 			dynamic-power-coefficient = <447>;
+=======
+			capacity-dmips-mhz = <1792>;
+			dynamic-power-coefficient = <270>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_400: l2-cache {
 				compatible = "cache";
@@ -186,8 +211,13 @@
 			power-domains = <&cpu_pd5>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <693>;
 			dynamic-power-coefficient = <447>;
+=======
+			capacity-dmips-mhz = <1792>;
+			dynamic-power-coefficient = <270>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_500: l2-cache {
 				compatible = "cache";
@@ -207,8 +237,13 @@
 			power-domains = <&cpu_pd6>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <693>;
 			dynamic-power-coefficient = <447>;
+=======
+			capacity-dmips-mhz = <1792>;
+			dynamic-power-coefficient = <270>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_600: l2-cache {
 				compatible = "cache";
@@ -228,8 +263,13 @@
 			power-domains = <&cpu_pd7>;
 			power-domain-names = "psci";
 			qcom,freq-domain = <&cpufreq_hw 2>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <1057>;
+=======
+			capacity-dmips-mhz = <1894>;
+			dynamic-power-coefficient = <588>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#cooling-cells = <2>;
 			l2_700: l2-cache {
 				compatible = "cache";
@@ -1251,6 +1291,7 @@
 				#size-cells = <0>;
 				status = "disabled";
 			};
+<<<<<<< HEAD
 
 			uart15: serial@89c000 {
 				compatible = "qcom,geni-uart";
@@ -1267,6 +1308,8 @@
 				interconnect-names = "qup-core", "qup-config";
 				status = "disabled";
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		i2c_master_hub_0: geniqup@9c0000 {
@@ -2519,56 +2562,80 @@
 					opp-hz = /bits/ 64 <680000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_SVS_L1>;
 					opp-peak-kBps = <16500000>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0x882e5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-615000000 {
 					opp-hz = /bits/ 64 <615000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_SVS_L0>;
 					opp-peak-kBps = <12449218>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xa82f5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-550000000 {
 					opp-hz = /bits/ 64 <550000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_SVS>;
 					opp-peak-kBps = <10687500>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xe0285ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-475000000 {
 					opp-hz = /bits/ 64 <475000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS_L1>;
 					opp-peak-kBps = <6074218>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xe0285ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-401000000 {
 					opp-hz = /bits/ 64 <401000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS>;
 					opp-peak-kBps = <6074218>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xc02a5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-348000000 {
 					opp-hz = /bits/ 64 <348000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS_D0>;
 					opp-peak-kBps = <6074218>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xe02b5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-295000000 {
 					opp-hz = /bits/ 64 <295000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS_D1>;
 					opp-peak-kBps = <6074218>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xe02d5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				opp-220000000 {
 					opp-hz = /bits/ 64 <220000000>;
 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS_D2>;
 					opp-peak-kBps = <2136718>;
+<<<<<<< HEAD
 					qcom,opp-acd-level = <0xc02f5ffd>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 			};
 		};
@@ -2718,8 +2785,11 @@
 			qcom,smem-state-names = "ipa-clock-enabled-valid",
 						"ipa-clock-enabled";
 
+<<<<<<< HEAD
 			sram = <&ipa_modem_tables>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 
@@ -3236,7 +3306,11 @@
 
 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
 				 <&gcc GCC_SDCC2_APPS_CLK>,
+<<<<<<< HEAD
 				 <&bi_tcxo_div2>;
+=======
+				 <&rpmhcc RPMH_CXO_CLK>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clock-names = "iface", "core", "xo";
 			iommus = <&apps_smmu 0x540 0>;
 			qcom,dll-config = <0x0007642c>;
@@ -3253,6 +3327,12 @@
 			max-sd-hs-hz = <37500000>;
 			dma-coherent;
 
+<<<<<<< HEAD
+=======
+			/* Forbid SDR104/SDR50 - broken hw! */
+			sdhci-caps-mask = <0x3 0>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 
 			sdhc2_opp_table: opp-table {
@@ -3343,19 +3423,31 @@
 
 				opp-366000000 {
 					opp-hz = /bits/ 64 <366000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs>,
+=======
+					required-opps = <&rpmhpd_opp_svs_l1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_svs_l1>;
 				};
 
 				opp-444000000 {
 					opp-hz = /bits/ 64 <444000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-533333334 {
 					opp-hz = /bits/ 64 <533333334>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 			};
@@ -5118,6 +5210,7 @@
 				bias-pull-down;
 			};
 
+<<<<<<< HEAD
 			qup_uart15_default: qup-uart15-default-state {
 				/* TX, RX */
 				pins = "gpio74", "gpio75";
@@ -5126,6 +5219,8 @@
 				bias-pull-up;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sdc2_sleep: sdc2-sleep-state {
 				clk-pins {
 					pins = "sdc2_clk";
@@ -5167,6 +5262,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		sram@14680000 {
 			compatible = "qcom,sm8550-imem", "syscon", "simple-mfd";
 			reg = <0 0x14680000 0 0x2c000>;
@@ -5181,6 +5277,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		apps_smmu: iommu@15000000 {
 			compatible = "qcom,sm8550-smmu-500", "qcom,smmu-500", "arm,mmu-500";
 			reg = <0 0x15000000 0 0x100000>;
@@ -5319,7 +5417,11 @@
 
 			gic_its: msi-controller@17140000 {
 				compatible = "arm,gic-v3-its";
+<<<<<<< HEAD
 				reg = <0 0x17140000 0 0x40000>;
+=======
+				reg = <0 0x17140000 0 0x20000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				msi-controller;
 				#msi-cells = <1>;
 			};
@@ -6803,9 +6905,16 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW 0>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW 0>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW 0>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW 0>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW) 0>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW) 0>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW) 0>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW) 0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

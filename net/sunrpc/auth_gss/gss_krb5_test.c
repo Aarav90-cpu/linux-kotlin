@@ -63,11 +63,18 @@ static void kdf_case(struct kunit *test)
 	KUNIT_ASSERT_EQ(test, err, 0);
 
 	/* Assert */
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       derivedkey.data,
 			       derivedkey.len,
 			       "key mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   derivedkey.data, derivedkey.len), 0,
+			    "key mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void checksum_case(struct kunit *test)
@@ -112,11 +119,18 @@ static void checksum_case(struct kunit *test)
 	KUNIT_ASSERT_EQ(test, err, 0);
 
 	/* Assert */
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       checksum.data,
 			       checksum.len,
 			       "checksum mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   checksum.data, checksum.len), 0,
+			    "checksum mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_ahash(tfm);
 }
@@ -316,11 +330,18 @@ static void rfc3961_nfold_case(struct kunit *test)
 		   param->expected_result->len * 8, result);
 
 	/* Assert */
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       result,
 			       param->expected_result->len,
 			       "result mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   result, param->expected_result->len), 0,
+			    "result mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kunit_case rfc3961_test_cases[] = {
@@ -572,6 +593,7 @@ static void rfc3962_encrypt_case(struct kunit *test)
 	KUNIT_EXPECT_EQ_MSG(test,
 			    param->expected_result->len, buf.len,
 			    "ciphertext length mismatch");
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       text,
@@ -582,6 +604,16 @@ static void rfc3962_encrypt_case(struct kunit *test)
 			       iv,
 			       param->next_iv->len,
 			       "IV mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   text, param->expected_result->len), 0,
+			    "ciphertext mismatch");
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->next_iv->data, iv,
+				   param->next_iv->len), 0,
+			    "IV mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_sync_skcipher(cts_tfm);
 	crypto_free_sync_skcipher(cbc_tfm);
@@ -1199,6 +1231,7 @@ static void rfc6803_encrypt_case(struct kunit *test)
 	KUNIT_EXPECT_EQ_MSG(test, param->expected_result->len,
 			    buf.len + checksum.len,
 			    "ciphertext length mismatch");
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       buf.head[0].iov_base,
@@ -1210,6 +1243,17 @@ static void rfc6803_encrypt_case(struct kunit *test)
 			       checksum.data,
 			       checksum.len,
 			       "HMAC mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   buf.head[0].iov_base, buf.len), 0,
+			    "encrypted result mismatch");
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data +
+				   (param->expected_result->len - checksum.len),
+				   checksum.data, checksum.len), 0,
+			    "HMAC mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_ahash(ahash_tfm);
 	crypto_free_sync_skcipher(cts_tfm);
@@ -1694,6 +1738,7 @@ static void rfc8009_encrypt_case(struct kunit *test)
 	KUNIT_EXPECT_EQ_MSG(test,
 			    param->expected_result->len, buf.len,
 			    "ciphertext length mismatch");
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->expected_result->data,
 			       buf.head[0].iov_base,
@@ -1704,6 +1749,17 @@ static void rfc8009_encrypt_case(struct kunit *test)
 			       checksum.data,
 			       checksum.len,
 			       "HMAC mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->expected_result->data,
+				   buf.head[0].iov_base,
+				   param->expected_result->len), 0,
+			    "ciphertext mismatch");
+	KUNIT_EXPECT_EQ_MSG(test, memcmp(param->expected_hmac->data,
+					 checksum.data,
+					 checksum.len), 0,
+			    "HMAC mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_ahash(ahash_tfm);
 	crypto_free_sync_skcipher(cts_tfm);
@@ -1834,11 +1890,18 @@ static void encrypt_selftest_case(struct kunit *test)
 	KUNIT_EXPECT_EQ_MSG(test,
 			    param->plaintext->len, buf.len,
 			    "length mismatch");
+<<<<<<< HEAD
 	KUNIT_EXPECT_MEMEQ_MSG(test,
 			       param->plaintext->data,
 			       buf.head[0].iov_base,
 			       buf.len,
 			       "plaintext mismatch");
+=======
+	KUNIT_EXPECT_EQ_MSG(test,
+			    memcmp(param->plaintext->data,
+				   buf.head[0].iov_base, buf.len), 0,
+			    "plaintext mismatch");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_sync_skcipher(cts_tfm);
 	crypto_free_sync_skcipher(cbc_tfm);

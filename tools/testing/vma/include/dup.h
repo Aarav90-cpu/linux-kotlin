@@ -33,10 +33,14 @@ struct mm_struct {
 	unsigned long exec_vm;	   /* VM_EXEC & ~VM_WRITE & ~VM_STACK */
 	unsigned long stack_vm;	   /* VM_STACK */
 
+<<<<<<< HEAD
 	union {
 		vm_flags_t def_flags;
 		vma_flags_t def_vma_flags;
 	};
+=======
+	unsigned long def_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mm_flags_t flags; /* Must use mm_flags_* helpers to access */
 };
@@ -267,10 +271,15 @@ enum {
 #endif /* CONFIG_ARCH_HAS_PKEYS */
 #if defined(CONFIG_X86_USER_SHADOW_STACK) || defined(CONFIG_ARM64_GCS)
 #define VM_SHADOW_STACK	INIT_VM_FLAG(SHADOW_STACK)
+<<<<<<< HEAD
 #define VMA_STARTGAP_FLAGS mk_vma_flags(VMA_GROWSDOWN_BIT, VMA_SHADOW_STACK_BIT)
 #else
 #define VM_SHADOW_STACK	VM_NONE
 #define VMA_STARTGAP_FLAGS mk_vma_flags(VMA_GROWSDOWN_BIT)
+=======
+#else
+#define VM_SHADOW_STACK	VM_NONE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 #if defined(CONFIG_PPC64)
 #define VM_SAO		INIT_VM_FLAG(SAO)
@@ -316,6 +325,7 @@ enum {
 /* Bits set in the VMA until the stack is in its final location */
 #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
 
+<<<<<<< HEAD
 #define TASK_EXEC_BIT ((current->personality & READ_IMPLIES_EXEC) ? \
 		       VM_EXEC_BIT : VM_READ_BIT)
 
@@ -347,18 +357,47 @@ enum {
 /* VMA basic access permission flags */
 #define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
 #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
+=======
+#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+
+/* Common data flag combinations */
+#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
+				 VM_MAYWRITE | VM_MAYEXEC)
+#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+
+#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
+#define VM_DATA_DEFAULT_FLAGS  VM_DATA_FLAGS_EXEC
+#endif
+
+#ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
+#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+#endif
+
+#define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
+
+#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
+
+/* VMA basic access permission flags */
+#define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Special vmas that are non-mergable, non-mlock()able.
  */
 #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
 
+<<<<<<< HEAD
 #define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
 				       VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT)
 
 #define VMA_REMAP_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,	\
 				     VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DEFAULT_MAP_WINDOW	((1UL << 47) - PAGE_SIZE)
 #define TASK_SIZE_LOW		DEFAULT_MAP_WINDOW
 #define TASK_SIZE_MAX		DEFAULT_MAP_WINDOW
@@ -368,13 +407,21 @@ enum {
 /* This mask represents all the VMA flag bits used by mlock */
 #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
 
+<<<<<<< HEAD
 #define VMA_LOCKED_MASK	mk_vma_flags(VMA_LOCKED_BIT, VMA_LOCKONFAULT_BIT)
+=======
+#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
+
+#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RLIMIT_STACK		3	/* max stack size */
 #define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
 
 #define CAP_IPC_LOCK         14
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEM_SOFT_DIRTY
 #define VMA_STICKY_FLAGS mk_vma_flags(VMA_SOFTDIRTY_BIT, VMA_MAYBE_GUARD_BIT)
 #else
@@ -382,6 +429,11 @@ enum {
 #endif
 
 #define VMA_IGNORE_MERGE_FLAGS VMA_STICKY_FLAGS
+=======
+#define VM_STICKY (VM_SOFTDIRTY | VM_MAYBE_GUARD)
+
+#define VM_IGNORE_MERGE VM_STICKY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
 
@@ -438,6 +490,7 @@ struct vma_iterator {
 
 #define EMPTY_VMA_FLAGS ((vma_flags_t){ })
 
+<<<<<<< HEAD
 #define MAPCOUNT_ELF_CORE_MARGIN	(5)
 #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
 
@@ -448,13 +501,18 @@ static __always_inline bool vma_flags_empty(const vma_flags_t *flags)
 	return bitmap_empty(bitmap, NUM_VMA_FLAG_BITS);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* What action should be taken after an .mmap_prepare call is complete? */
 enum mmap_action_type {
 	MMAP_NOTHING,		/* Mapping is complete, no further action. */
 	MMAP_REMAP_PFN,		/* Remap PFN range. */
 	MMAP_IO_REMAP_PFN,	/* I/O remap PFN range. */
+<<<<<<< HEAD
 	MMAP_SIMPLE_IO_REMAP,	/* I/O remap with guardrails. */
 	MMAP_MAP_KERNEL_PAGES,	/* Map kernel page range from an array. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -463,12 +521,17 @@ enum mmap_action_type {
  */
 struct mmap_action {
 	union {
+<<<<<<< HEAD
+=======
+		/* Remap range. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct {
 			unsigned long start;
 			unsigned long start_pfn;
 			unsigned long size;
 			pgprot_t pgprot;
 		} remap;
+<<<<<<< HEAD
 		struct {
 			phys_addr_t start_phys_addr;
 			unsigned long size;
@@ -479,6 +542,8 @@ struct mmap_action {
 			unsigned long nr_pages;
 			pgoff_t pgoff;
 		} map_kernel;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	enum mmap_action_type type;
 
@@ -526,15 +591,27 @@ enum vma_operation {
  */
 struct vm_area_desc {
 	/* Immutable state. */
+<<<<<<< HEAD
 	struct mm_struct *mm;
 	struct file *file; /* May vary from vm_file in stacked callers. */
+=======
+	const struct mm_struct *const mm;
+	struct file *const file; /* May vary from vm_file in stacked callers. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long start;
 	unsigned long end;
 
 	/* Mutable fields. Populated with initial state. */
 	pgoff_t pgoff;
 	struct file *vm_file;
+<<<<<<< HEAD
 	vma_flags_t vma_flags;
+=======
+	union {
+		vm_flags_t vm_flags;
+		vma_flags_t vma_flags;
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pgprot_t page_prot;
 
 	/* Write-only fields. */
@@ -643,16 +720,21 @@ struct vm_area_struct {
 } __randomize_layout;
 
 struct vm_operations_struct {
+<<<<<<< HEAD
 	/**
 	 * @open: Called when a VMA is remapped, split or forked. Not called
 	 * upon first mapping a VMA.
 	 * Context: User context.  May sleep.  Caller holds mmap_lock.
 	 */
 	void (*open)(struct vm_area_struct *vma);
+=======
+	void (*open)(struct vm_area_struct * area);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @close: Called when the VMA is being removed from the MM.
 	 * Context: User context.  May sleep.  Caller holds mmap_lock.
 	 */
+<<<<<<< HEAD
 	void (*close)(struct vm_area_struct *vma);
 	/**
 	 * @mapped: Called when the VMA is first mapped in the MM. Not called if
@@ -674,6 +756,12 @@ struct vm_operations_struct {
 	/* Called any time before splitting to check if it's allowed */
 	int (*may_split)(struct vm_area_struct *vma, unsigned long addr);
 	int (*mremap)(struct vm_area_struct *vma);
+=======
+	void (*close)(struct vm_area_struct * area);
+	/* Called any time before splitting to check if it's allowed */
+	int (*may_split)(struct vm_area_struct *area, unsigned long addr);
+	int (*mremap)(struct vm_area_struct *area);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Called by mprotect() to make driver-specific permission
 	 * checks before mprotect() is finalised.   The VMA must not
@@ -685,7 +773,11 @@ struct vm_operations_struct {
 	vm_fault_t (*huge_fault)(struct vm_fault *vmf, unsigned int order);
 	vm_fault_t (*map_pages)(struct vm_fault *vmf,
 			pgoff_t start_pgoff, pgoff_t end_pgoff);
+<<<<<<< HEAD
 	unsigned long (*pagesize)(struct vm_area_struct *vma);
+=======
+	unsigned long (*pagesize)(struct vm_area_struct * area);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* notification that a previously read-only page is about to become
 	 * writable, if an error is returned it will cause a SIGBUS */
@@ -805,12 +897,18 @@ static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
  * IMPORTANT: This does not overwrite bytes past the first system word. The
  * caller must account for this.
  */
+<<<<<<< HEAD
 static __always_inline void vma_flags_overwrite_word(vma_flags_t *flags,
 		unsigned long value)
 {
 	unsigned long *bitmap = flags->__vma_flags;
 
 	bitmap[0] = value;
+=======
+static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
+{
+	*ACCESS_PRIVATE(flags, __vma_flags) = value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -819,37 +917,60 @@ static __always_inline void vma_flags_overwrite_word(vma_flags_t *flags,
  * IMPORTANT: This does not overwrite bytes past the first system word. The
  * caller must account for this.
  */
+<<<<<<< HEAD
 static __always_inline void vma_flags_overwrite_word_once(vma_flags_t *flags,
 		unsigned long value)
 {
 	unsigned long *bitmap = flags->__vma_flags;
+=======
+static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
+{
+	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WRITE_ONCE(*bitmap, value);
 }
 
 /* Update the first system word of VMA flags setting bits, non-atomically. */
+<<<<<<< HEAD
 static __always_inline void vma_flags_set_word(vma_flags_t *flags,
 		unsigned long value)
 {
 	unsigned long *bitmap = flags->__vma_flags;
+=======
+static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
+{
+	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*bitmap |= value;
 }
 
 /* Update the first system word of VMA flags clearing bits, non-atomically. */
+<<<<<<< HEAD
 static __always_inline void vma_flags_clear_word(vma_flags_t *flags,
 		unsigned long value)
 {
 	unsigned long *bitmap = flags->__vma_flags;
+=======
+static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
+{
+	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*bitmap &= ~value;
 }
 
+<<<<<<< HEAD
 static __always_inline void vma_flags_clear_all(vma_flags_t *flags)
+=======
+static inline void vma_flags_clear_all(vma_flags_t *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
 }
 
+<<<<<<< HEAD
 /*
  * Helper function which converts a vma_flags_t value to a legacy vm_flags_t
  * value. This is only valid if the input flags value can be expressed in a
@@ -878,6 +999,9 @@ static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
 
 static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
 		vma_flag_t bit)
+=======
+static inline void vma_flag_set(vma_flags_t *flags, vma_flag_t bit)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
 
@@ -904,6 +1028,7 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
 	vm_flags_init(vma, flags);
 }
 
+<<<<<<< HEAD
 static inline void vma_flags_reset_once(struct vm_area_struct *vma,
 					vma_flags_t *flags)
 {
@@ -918,6 +1043,18 @@ static inline void vma_flags_reset_once(struct vm_area_struct *vma,
 
 		bitmap_copy(dst, src, NUM_VMA_FLAG_BITS - BITS_PER_LONG);
 	}
+=======
+static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+				       vm_flags_t flags)
+{
+	vma_assert_write_locked(vma);
+	/*
+	 * The user should only be interested in avoiding reordering of
+	 * assignment to the first word.
+	 */
+	vma_flags_clear_all(&vma->flags);
+	vma_flags_overwrite_word_once(&vma->flags, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void vm_flags_set(struct vm_area_struct *vma,
@@ -934,6 +1071,7 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
 	vma_flags_clear_word(&vma->flags, flags);
 }
 
+<<<<<<< HEAD
 static __always_inline vma_flags_t __mk_vma_flags(vma_flags_t flags,
 		size_t count, const vma_flag_t *bits)
 {
@@ -981,6 +1119,14 @@ static __always_inline vma_flags_t vma_flags_and_mask(const vma_flags_t *flags,
 	vma_flags_and_mask(flags, mk_vma_flags(__VA_ARGS__))
 
 static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
+=======
+static inline vma_flags_t __mk_vma_flags(size_t count, const vma_flag_t *bits);
+
+#define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__), \
+					 (const vma_flag_t []){__VA_ARGS__})
+
+static __always_inline bool vma_flags_test_mask(const vma_flags_t *flags,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vma_flags_t to_test)
 {
 	const unsigned long *bitmap = flags->__vma_flags;
@@ -989,8 +1135,13 @@ static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
 	return bitmap_intersects(bitmap_to_test, bitmap, NUM_VMA_FLAG_BITS);
 }
 
+<<<<<<< HEAD
 #define vma_flags_test_any(flags, ...) \
 	vma_flags_test_any_mask(flags, mk_vma_flags(__VA_ARGS__))
+=======
+#define vma_flags_test(flags, ...) \
+	vma_flags_test_mask(flags, mk_vma_flags(__VA_ARGS__))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __always_inline bool vma_flags_test_all_mask(const vma_flags_t *flags,
 		vma_flags_t to_test)
@@ -1004,6 +1155,7 @@ static __always_inline bool vma_flags_test_all_mask(const vma_flags_t *flags,
 #define vma_flags_test_all(flags, ...) \
 	vma_flags_test_all_mask(flags, mk_vma_flags(__VA_ARGS__))
 
+<<<<<<< HEAD
 static __always_inline bool vma_flags_test_single_mask(const vma_flags_t *flags,
 						vma_flags_t flagmask)
 {
@@ -1012,6 +1164,8 @@ static __always_inline bool vma_flags_test_single_mask(const vma_flags_t *flags,
 	return vma_flags_test_any_mask(flags, flagmask);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline void vma_flags_set_mask(vma_flags_t *flags, vma_flags_t to_set)
 {
 	unsigned long *bitmap = flags->__vma_flags;
@@ -1034,6 +1188,7 @@ static __always_inline void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t
 #define vma_flags_clear(flags, ...) \
 	vma_flags_clear_mask(flags, mk_vma_flags(__VA_ARGS__))
 
+<<<<<<< HEAD
 static __always_inline vma_flags_t vma_flags_diff_pair(const vma_flags_t *flags,
 		const vma_flags_t *flags_other)
 {
@@ -1084,10 +1239,15 @@ static __always_inline bool vma_test_any_mask(const struct vm_area_struct *vma,
 
 static __always_inline bool vma_test_all_mask(const struct vm_area_struct *vma,
 		vma_flags_t flags)
+=======
+static inline bool vma_test_all_flags_mask(const struct vm_area_struct *vma,
+					   vma_flags_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return vma_flags_test_all_mask(&vma->flags, flags);
 }
 
+<<<<<<< HEAD
 #define vma_test_all(vma, ...) \
 	vma_test_all_mask(vma, mk_vma_flags(__VA_ARGS__))
 
@@ -1099,6 +1259,19 @@ vma_test_single_mask(const struct vm_area_struct *vma, vma_flags_t flagmask)
 
 static __always_inline void vma_set_flags_mask(struct vm_area_struct *vma,
 		vma_flags_t flags)
+=======
+#define vma_test_all_flags(vma, ...) \
+	vma_test_all_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
+
+static inline bool is_shared_maywrite_vm_flags(vm_flags_t vm_flags)
+{
+	return (vm_flags & (VM_SHARED | VM_MAYWRITE)) ==
+		(VM_SHARED | VM_MAYWRITE);
+}
+
+static inline void vma_set_flags_mask(struct vm_area_struct *vma,
+				      vma_flags_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vma_flags_set_mask(&vma->flags, flags);
 }
@@ -1106,6 +1279,7 @@ static __always_inline void vma_set_flags_mask(struct vm_area_struct *vma,
 #define vma_set_flags(vma, ...) \
 	vma_set_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
 
+<<<<<<< HEAD
 static __always_inline void vma_clear_flags_mask(struct vm_area_struct *vma,
 		vma_flags_t flags)
 {
@@ -1141,6 +1315,19 @@ static __always_inline bool vma_desc_test_all_mask(const struct vm_area_desc *de
 
 static __always_inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
 		vma_flags_t flags)
+=======
+static inline bool vma_desc_test_flags_mask(const struct vm_area_desc *desc,
+					    vma_flags_t flags)
+{
+	return vma_flags_test_mask(&desc->vma_flags, flags);
+}
+
+#define vma_desc_test_flags(desc, ...) \
+	vma_desc_test_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
+
+static inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+					   vma_flags_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vma_flags_set_mask(&desc->vma_flags, flags);
 }
@@ -1148,8 +1335,13 @@ static __always_inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
 #define vma_desc_set_flags(desc, ...) \
 	vma_desc_set_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
 
+<<<<<<< HEAD
 static __always_inline void vma_desc_clear_flags_mask(struct vm_area_desc *desc,
 		vma_flags_t flags)
+=======
+static inline void vma_desc_clear_flags_mask(struct vm_area_desc *desc,
+					     vma_flags_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vma_flags_clear_mask(&desc->vma_flags, flags);
 }
@@ -1285,6 +1477,7 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
 }
 
 /* Declared in vma.h. */
+<<<<<<< HEAD
 static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
 		struct vm_area_desc *desc);
 
@@ -1309,6 +1502,12 @@ static inline void compat_set_desc_from_vma(struct vm_area_desc *desc,
 }
 
 static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+=======
+static inline void set_vma_from_desc(struct vm_area_struct *vma,
+		struct vm_area_desc *desc);
+
+static inline unsigned long vma_pages(struct vm_area_struct *vma)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
 }
@@ -1318,6 +1517,7 @@ static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
 	return file->f_op->mmap_prepare(desc);
 }
 
+<<<<<<< HEAD
 static inline int __compat_vma_mmap(struct vm_area_desc *desc,
 		struct vm_area_struct *vma)
 {
@@ -1349,6 +1549,42 @@ static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
 	action->hide_from_rmap_until_complete = false;
 
 	return __compat_vma_mmap(&desc, vma);
+=======
+static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	struct vm_area_desc desc = {
+		.mm = vma->vm_mm,
+		.file = file,
+		.start = vma->vm_start,
+		.end = vma->vm_end,
+
+		.pgoff = vma->vm_pgoff,
+		.vm_file = vma->vm_file,
+		.vma_flags = vma->flags,
+		.page_prot = vma->vm_page_prot,
+
+		.action.type = MMAP_NOTHING, /* Default */
+	};
+	int err;
+
+	err = vfs_mmap_prepare(file, &desc);
+	if (err)
+		return err;
+
+	err = mmap_action_prepare(&desc);
+	if (err)
+		return err;
+
+	set_vma_from_desc(vma, &desc);
+	err = mmap_action_complete(vma, &desc.action,
+				   /*is_compat=*/true);
+	if (err) {
+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+
+		do_munmap(current->mm, vma->vm_start, len, NULL);
+	}
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void vma_iter_init(struct vma_iterator *vmi,
@@ -1497,6 +1733,30 @@ static inline bool mlock_future_ok(const struct mm_struct *mm,
 	return locked_pages <= limit_pages;
 }
 
+<<<<<<< HEAD
+=======
+static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
+{
+	/* If MDWE is disabled, we have nothing to deny. */
+	if (mm_flags_test(MMF_HAS_MDWE, current->mm))
+		return false;
+
+	/* If the new VMA is not executable, we have nothing to deny. */
+	if (!(new & VM_EXEC))
+		return false;
+
+	/* Under MDWE we do not accept newly writably executable VMAs... */
+	if (new & VM_WRITE)
+		return true;
+
+	/* ...nor previously non-executable VMAs becoming executable. */
+	if (!(old & VM_EXEC))
+		return true;
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int mapping_map_writable(struct address_space *mapping)
 {
 	return atomic_inc_unless_negative(&mapping->i_mmap_writable) ?
@@ -1533,6 +1793,7 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
 	swap(vma->vm_file, file);
 	fput(file);
 }
+<<<<<<< HEAD
 
 extern int sysctl_max_map_count;
 static inline int get_sysctl_max_map_count(void)
@@ -1550,3 +1811,5 @@ static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
 
 	return vm_get_page_prot(vm_flags);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

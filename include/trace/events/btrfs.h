@@ -771,8 +771,15 @@ TRACE_EVENT(btrfs_sync_file,
 	TP_fast_assign(
 		struct dentry *dentry = file_dentry(file);
 		struct inode *inode = file_inode(file);
+<<<<<<< HEAD
 		struct inode *parent_inode = d_inode(dentry->d_parent);
 
+=======
+		struct dentry *parent = dget_parent(dentry);
+		struct inode *parent_inode = d_inode(parent);
+
+		dput(parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
 		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
@@ -1111,6 +1118,7 @@ TRACE_EVENT(btrfs_cow_block,
 		  __entry->cow_level)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(btrfs_search_slot_restart,
 
 	TP_PROTO(const struct btrfs_root *root, int level,
@@ -1135,6 +1143,8 @@ TRACE_EVENT(btrfs_search_slot_restart,
 		  __entry->level, __get_str(reason))
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TRACE_EVENT(btrfs_space_reservation,
 
 	TP_PROTO(const struct btrfs_fs_info *fs_info, const char *type, u64 val,

@@ -26,7 +26,10 @@ Description:
 		2	  Permit modification of EVM-protected metadata at
 			  runtime. Not supported if HMAC validation and
 			  creation is enabled (deprecated).
+<<<<<<< HEAD
 		3	  Require asymmetric signatures to be version 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		31	  Disable further runtime modification of EVM policy
 		===	  ==================================================
 

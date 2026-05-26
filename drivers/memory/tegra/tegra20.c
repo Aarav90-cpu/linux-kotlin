@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2012-2026 NVIDIA CORPORATION.  All rights reserved.
+=======
+ * Copyright (C) 2012 NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/bitfield.h>
@@ -695,7 +699,11 @@ static irqreturn_t tegra20_mc_handle_irq(int irq, void *data)
 	unsigned int bit;
 
 	/* mask all interrupts to avoid flooding */
+<<<<<<< HEAD
 	status = mc_readl(mc, MC_INTSTATUS) & mc->soc->intmasks[0].mask;
+=======
+	status = mc_readl(mc, MC_INTSTATUS) & mc->soc->intmask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!status)
 		return IRQ_NONE;
 
@@ -713,7 +721,11 @@ static irqreturn_t tegra20_mc_handle_irq(int irq, void *data)
 			value = mc_readl(mc, reg);
 
 			id = value & mc->soc->client_id_mask;
+<<<<<<< HEAD
 			desc = tegra20_mc_error_names[2];
+=======
+			desc = tegra_mc_error_names[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (value & BIT(31))
 				direction = "write";
@@ -724,7 +736,11 @@ static irqreturn_t tegra20_mc_handle_irq(int irq, void *data)
 			value = mc_readl(mc, reg);
 
 			id = (value >> 1) & mc->soc->client_id_mask;
+<<<<<<< HEAD
 			desc = tegra20_mc_error_names[2];
+=======
+			desc = tegra_mc_error_names[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (value & BIT(0))
 				direction = "write";
@@ -736,7 +752,11 @@ static irqreturn_t tegra20_mc_handle_irq(int irq, void *data)
 
 			id = value & mc->soc->client_id_mask;
 			type = (value & BIT(30)) ? 4 : 3;
+<<<<<<< HEAD
 			desc = tegra20_mc_error_names[type];
+=======
+			desc = tegra_mc_error_names[type];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			secure = "secure ";
 
 			if (value & BIT(31))
@@ -761,6 +781,7 @@ static irqreturn_t tegra20_mc_handle_irq(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static const irq_handler_t tegra20_mc_irq_handlers[] = {
 	tegra20_mc_handle_irq
 };
@@ -775,6 +796,11 @@ static const struct tegra_mc_intmask tegra20_mc_intmasks[] = {
 		.mask = MC_INT_SECURITY_VIOLATION | MC_INT_INVALID_GART_PAGE |
 			MC_INT_DECERR_EMEM,
 	},
+=======
+static const struct tegra_mc_ops tegra20_mc_ops = {
+	.probe = tegra20_mc_probe,
+	.handle_irq = tegra20_mc_handle_irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 const struct tegra_mc_soc tegra20_mc_soc = {
@@ -782,15 +808,23 @@ const struct tegra_mc_soc tegra20_mc_soc = {
 	.num_clients = ARRAY_SIZE(tegra20_mc_clients),
 	.num_address_bits = 32,
 	.client_id_mask = 0x3f,
+<<<<<<< HEAD
 	.intmasks = tegra20_mc_intmasks,
 	.num_intmasks = ARRAY_SIZE(tegra20_mc_intmasks),
+=======
+	.intmask = MC_INT_SECURITY_VIOLATION | MC_INT_INVALID_GART_PAGE |
+		   MC_INT_DECERR_EMEM,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.reset_ops = &tegra20_mc_reset_ops,
 	.resets = tegra20_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra20_mc_resets),
 	.icc_ops = &tegra20_mc_icc_ops,
 	.ops = &tegra20_mc_ops,
+<<<<<<< HEAD
 	.regs = &tegra20_mc_regs,
 	.handle_irq = tegra20_mc_irq_handlers,
 	.num_interrupts = ARRAY_SIZE(tegra20_mc_irq_handlers),
 	.mc_err_status_type_mask = (0x7 << 28),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

@@ -757,10 +757,17 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
 		adapter->num_vlan_filters++;
 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
 	} else if (f->state == IAVF_VLAN_REMOVE) {
+<<<<<<< HEAD
 		/* DEL not yet sent to PF, cancel it */
 		f->state = IAVF_VLAN_ACTIVE;
 	} else if (f->state == IAVF_VLAN_REMOVING) {
 		/* DEL already sent to PF, re-add after completion */
+=======
+		/* Re-add the filter since we cannot tell whether the
+		 * pending delete has already been processed by the PF.
+		 * A duplicate add is harmless.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		f->state = IAVF_VLAN_ADD;
 		iavf_schedule_aq_request(adapter,
 					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
@@ -791,19 +798,50 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
 			list_del(&f->list);
 			kfree(f);
 			adapter->num_vlan_filters--;
+<<<<<<< HEAD
 		} else if (f->state != IAVF_VLAN_REMOVING) {
+=======
+		} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			f->state = IAVF_VLAN_REMOVE;
 			iavf_schedule_aq_request(adapter,
 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
 		}
+<<<<<<< HEAD
 		/* If REMOVING, DEL is already sent to PF; completion
 		 * handler will free the filter when PF confirms.
 		 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * iavf_restore_filters
+ * @adapter: board private structure
+ *
+ * Restore existing non MAC filters when VF netdev comes back up
+ **/
+static void iavf_restore_filters(struct iavf_adapter *adapter)
+{
+	struct iavf_vlan_filter *f;
+
+	/* re-add all VLAN filters */
+	spin_lock_bh(&adapter->mac_vlan_list_lock);
+
+	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+		if (f->state == IAVF_VLAN_INACTIVE)
+			f->state = IAVF_VLAN_ADD;
+	}
+
+	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+	adapter->aq_required |= IAVF_FLAG_AQ_ADD_VLAN_FILTER;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * iavf_get_num_vlans_added - get number of VLANs added
@@ -1132,18 +1170,28 @@ bool iavf_promiscuous_mode_changed(struct iavf_adapter *adapter)
 /**
  * iavf_set_rx_mode - NDO callback to set the netdev filters
  * @netdev: network interface device structure
+<<<<<<< HEAD
  * @uc: snapshot of uc address list
  * @mc: snapshot of mc address list
  **/
 static void iavf_set_rx_mode(struct net_device *netdev,
 			     struct netdev_hw_addr_list *uc,
 			     struct netdev_hw_addr_list *mc)
+=======
+ **/
+static void iavf_set_rx_mode(struct net_device *netdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct iavf_adapter *adapter = netdev_priv(netdev);
 
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+<<<<<<< HEAD
 	__hw_addr_sync_dev(uc, netdev, iavf_addr_sync, iavf_addr_unsync);
 	__hw_addr_sync_dev(mc, netdev, iavf_addr_sync, iavf_addr_unsync);
+=======
+	__dev_uc_sync(netdev, iavf_addr_sync, iavf_addr_unsync);
+	__dev_mc_sync(netdev, iavf_addr_sync, iavf_addr_unsync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
 	spin_lock_bh(&adapter->current_netdev_promisc_flags_lock);
@@ -1196,9 +1244,13 @@ static void iavf_configure(struct iavf_adapter *adapter)
 	struct net_device *netdev = adapter->netdev;
 	int i;
 
+<<<<<<< HEAD
 	netif_addr_lock_bh(netdev);
 	iavf_set_rx_mode(netdev, &netdev->uc, &netdev->mc);
 	netif_addr_unlock_bh(netdev);
+=======
+	iavf_set_rx_mode(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iavf_configure_tx(adapter);
 	iavf_configure_rx(adapter);
@@ -1228,12 +1280,22 @@ static void iavf_up_complete(struct iavf_adapter *adapter)
 }
 
 /**
+<<<<<<< HEAD
  * iavf_clear_mac_filters - Remove MAC filters not sent to PF yet and mark
  * others to be removed.
  * @adapter: board private structure
  **/
 static void iavf_clear_mac_filters(struct iavf_adapter *adapter)
 {
+=======
+ * iavf_clear_mac_vlan_filters - Remove mac and vlan filters not sent to PF
+ * yet and mark other to be removed.
+ * @adapter: board private structure
+ **/
+static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
+{
+	struct iavf_vlan_filter *vlf, *vlftmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iavf_mac_filter *f, *ftmp;
 
 	spin_lock_bh(&adapter->mac_vlan_list_lock);
@@ -1252,6 +1314,14 @@ static void iavf_clear_mac_filters(struct iavf_adapter *adapter)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* disable all VLAN filters */
+	list_for_each_entry_safe(vlf, vlftmp, &adapter->vlan_filter_list,
+				 list)
+		vlf->state = IAVF_VLAN_DISABLE;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 }
 
@@ -1347,7 +1417,11 @@ void iavf_down(struct iavf_adapter *adapter)
 	iavf_napi_disable_all(adapter);
 	iavf_irq_disable(adapter);
 
+<<<<<<< HEAD
 	iavf_clear_mac_filters(adapter);
+=======
+	iavf_clear_mac_vlan_filters(adapter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iavf_clear_cloud_filters(adapter);
 	iavf_clear_fdir_filters(adapter);
 	iavf_clear_adv_rss_conf(adapter);
@@ -1364,6 +1438,11 @@ void iavf_down(struct iavf_adapter *adapter)
 		 */
 		if (!list_empty(&adapter->mac_filter_list))
 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_MAC_FILTER;
+<<<<<<< HEAD
+=======
+		if (!list_empty(&adapter->vlan_filter_list))
+			adapter->aq_required |= IAVF_FLAG_AQ_DEL_VLAN_FILTER;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!list_empty(&adapter->cloud_filter_list))
 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_CLOUD_FILTER;
 		if (!list_empty(&adapter->fdir_list_head))
@@ -4468,6 +4547,11 @@ static int iavf_open(struct net_device *netdev)
 	iavf_add_filter(adapter, adapter->hw.mac.addr);
 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
+<<<<<<< HEAD
+=======
+	/* Restore filters that were removed with IFF_DOWN */
+	iavf_restore_filters(adapter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iavf_restore_fdir_filters(adapter);
 
 	iavf_configure(adapter);
@@ -5131,7 +5215,11 @@ static const struct net_device_ops iavf_netdev_ops = {
 	.ndo_open		= iavf_open,
 	.ndo_stop		= iavf_close,
 	.ndo_start_xmit		= iavf_xmit_frame,
+<<<<<<< HEAD
 	.ndo_set_rx_mode_async	= iavf_set_rx_mode,
+=======
+	.ndo_set_rx_mode	= iavf_set_rx_mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_validate_addr	= eth_validate_addr,
 	.ndo_set_mac_address	= iavf_set_mac,
 	.ndo_change_mtu		= iavf_change_mtu,

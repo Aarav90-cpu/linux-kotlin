@@ -203,7 +203,11 @@ struct folio *ufs_get_locked_folio(struct address_space *mapping,
 		folio = read_mapping_folio(mapping, index, NULL);
 
 		if (IS_ERR(folio)) {
+<<<<<<< HEAD
 			printk(KERN_ERR "ufs_change_blocknr: read_mapping_folio error: ino %llu, index: %lu\n",
+=======
+			printk(KERN_ERR "ufs_change_blocknr: read_mapping_folio error: ino %lu, index: %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       mapping->host->i_ino, index);
 			return folio;
 		}

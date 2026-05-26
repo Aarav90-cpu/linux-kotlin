@@ -24,7 +24,10 @@ patternProperties:
       cpu/codec dais.
 
     type: object
+<<<<<<< HEAD
     $ref: tdm-slot.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     properties:
       link-name:
@@ -39,9 +42,19 @@ patternProperties:
             - i2s
             - dsp_b
 
+<<<<<<< HEAD
       dai-tdm-slot-num: true
 
       dai-tdm-slot-width: true
+=======
+      dai-tdm-slot-num:
+        description: see tdm-slot.txt.
+        $ref: /schemas/types.yaml#/definitions/uint32
+
+      dai-tdm-slot-width:
+        description: see tdm-slot.txt.
+        $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
       playback-only:
         description: link is used only for playback

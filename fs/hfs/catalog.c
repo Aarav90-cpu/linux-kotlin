@@ -417,7 +417,11 @@ int hfs_cat_move(u32 cnid, struct inode *src_dir, const struct qstr *src_name,
 	int entry_size, type;
 	int err;
 
+<<<<<<< HEAD
 	hfs_dbg("cnid %u - (ino %llu, name %s) - (ino %llu, name %s)\n",
+=======
+	hfs_dbg("cnid %u - (ino %lu, name %s) - (ino %lu, name %s)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cnid, src_dir->i_ino, src_name->name,
 		dst_dir->i_ino, dst_name->name);
 	sb = src_dir->i_sb;

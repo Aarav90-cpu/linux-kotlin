@@ -446,14 +446,34 @@ static void vme_user_vm_close(struct vm_area_struct *vma)
 	kfree(vma_priv);
 }
 
+<<<<<<< HEAD
 static int vme_user_vm_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
 			      const struct file *file, void **vm_private_data)
 {
 	const unsigned int minor = iminor(file_inode(file));
+=======
+static const struct vm_operations_struct vme_user_vm_ops = {
+	.open = vme_user_vm_open,
+	.close = vme_user_vm_close,
+};
+
+static int vme_user_master_mmap(unsigned int minor, struct vm_area_struct *vma)
+{
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vme_user_vma_priv *vma_priv;
 
 	mutex_lock(&image[minor].mutex);
 
+<<<<<<< HEAD
+=======
+	err = vme_master_mmap(image[minor].resource, vma);
+	if (err) {
+		mutex_unlock(&image[minor].mutex);
+		return err;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vma_priv = kmalloc_obj(*vma_priv);
 	if (!vma_priv) {
 		mutex_unlock(&image[minor].mutex);
@@ -462,6 +482,7 @@ static int vme_user_vm_mapped(unsigned long start, unsigned long end, pgoff_t pg
 
 	vma_priv->minor = minor;
 	refcount_set(&vma_priv->refcnt, 1);
+<<<<<<< HEAD
 	*vm_private_data = vma_priv;
 	image[minor].mmap_count++;
 
@@ -497,6 +518,24 @@ static int vme_user_mmap_prepare(struct vm_area_desc *desc)
 
 	if (type[minor] == MASTER_MINOR)
 		return vme_user_master_mmap_prepare(minor, desc);
+=======
+	vma->vm_ops = &vme_user_vm_ops;
+	vma->vm_private_data = vma_priv;
+
+	image[minor].mmap_count++;
+
+	mutex_unlock(&image[minor].mutex);
+
+	return 0;
+}
+
+static int vme_user_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	unsigned int minor = iminor(file_inode(file));
+
+	if (type[minor] == MASTER_MINOR)
+		return vme_user_master_mmap(minor, vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -ENODEV;
 }
@@ -507,7 +546,11 @@ static const struct file_operations vme_user_fops = {
 	.llseek = vme_user_llseek,
 	.unlocked_ioctl = vme_user_unlocked_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
+<<<<<<< HEAD
 	.mmap_prepare = vme_user_mmap_prepare,
+=======
+	.mmap = vme_user_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int vme_user_match(struct vme_dev *vdev)

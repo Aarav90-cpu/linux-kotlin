@@ -1760,11 +1760,17 @@ static enum dc_status dcn35_validate_bandwidth(struct dc *dc,
 {
 	bool out = false;
 
+<<<<<<< HEAD
 	DC_FP_START();
 	out = dml2_validate(dc, context,
 			context->power_source == DC_POWER_SOURCE_DC ? context->bw_ctx.dml2_dc_power_source : context->bw_ctx.dml2,
 			validate_mode);
 	DC_FP_END();
+=======
+	out = dml2_validate(dc, context,
+			context->power_source == DC_POWER_SOURCE_DC ? context->bw_ctx.dml2_dc_power_source : context->bw_ctx.dml2,
+			validate_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (validate_mode != DC_VALIDATE_MODE_AND_PROGRAMMING)
 		return out ? DC_OK : DC_FAIL_BANDWIDTH_VALIDATE;
@@ -1812,14 +1818,22 @@ static struct resource_funcs dcn36_res_pool_funcs = {
 	.find_first_free_match_stream_enc_for_link = dcn10_find_first_free_match_stream_enc_for_link,
 	.acquire_post_bldn_3dlut = dcn30_acquire_post_bldn_3dlut,
 	.release_post_bldn_3dlut = dcn30_release_post_bldn_3dlut,
+<<<<<<< HEAD
 	.update_bw_bounding_box = dcn35_update_bw_bounding_box,
+=======
+	.update_bw_bounding_box = dcn35_update_bw_bounding_box_fpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
 	.get_panel_config_defaults = dcn35_get_panel_config_defaults,
 	.get_preferred_eng_id_dpia = dcn36_get_preferred_eng_id_dpia,
 	.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe,
 	.update_dc_state_for_encoder_switch = dcn31_update_dc_state_for_encoder_switch,
+<<<<<<< HEAD
 	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
 	.get_default_tiling_info = dcn10_get_default_tiling_info,
+=======
+	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static bool dcn36_resource_construct(
@@ -1863,7 +1877,11 @@ static bool dcn36_resource_construct(
 	/*************************************************
 	 *  Resource + asic cap harcoding                *
 	 *************************************************/
+<<<<<<< HEAD
 	pool->base.underlay_pipe_index = (unsigned int)NO_UNDERLAY_PIPE;
+=======
+	pool->base.underlay_pipe_index = NO_UNDERLAY_PIPE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pool->base.pipe_count = pool->base.res_cap->num_timing_generator;
 	pool->base.mpcc_count = pool->base.res_cap->num_timing_generator;
 	dc->caps.max_downscale_ratio = 600;

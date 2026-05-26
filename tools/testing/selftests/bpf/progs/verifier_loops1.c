@@ -138,7 +138,12 @@ l0_%=:	exit;						\
 SEC("tracepoint")
 __description("bounded recursion")
 __failure
+<<<<<<< HEAD
 __msg("recursive call from")
+=======
+/* verifier limitation in detecting max stack depth */
+__msg("the call stack of 8 frames is too deep !")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void bounded_recursion(void)
 {
 	asm volatile ("					\

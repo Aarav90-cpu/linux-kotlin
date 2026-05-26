@@ -8,6 +8,10 @@ menuconfig PINCTRL_MESON
 	select PINCONF
 	select GENERIC_PINCONF
 	select GPIOLIB
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select REGMAP_MMIO
 
 if PINCTRL_MESON

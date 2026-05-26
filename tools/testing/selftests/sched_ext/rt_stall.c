@@ -119,11 +119,14 @@ static enum scx_test_status setup(void **ctx)
 {
 	struct rt_stall *skel;
 
+<<<<<<< HEAD
 	if (!__COMPAT_struct_has_field("rq", "ext_server")) {
 		fprintf(stderr, "SKIP: ext DL server not supported\n");
 		return SCX_TEST_SKIP;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skel = rt_stall__open();
 	SCX_FAIL_IF(!skel, "Failed to open");
 	SCX_ENUM_INIT(skel);

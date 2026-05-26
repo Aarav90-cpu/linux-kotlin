@@ -88,7 +88,10 @@ union shortname_store {
 
 #define d_lock	d_lockref.lock
 #define d_iname d_shortname.string
+<<<<<<< HEAD
 struct completion_list;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dentry {
 	/* RCU lookup touched fields */
@@ -123,6 +126,7 @@ struct dentry {
 	struct hlist_node d_sib;	/* child of parent list */
 	struct hlist_head d_children;	/* our children */
 	/*
+<<<<<<< HEAD
 	 * the following members can share memory - their uses are
 	 * mutually exclusive.
 	 */
@@ -141,6 +145,15 @@ struct dentry {
 		 */
 		struct completion_list *waiters;
 	};
+=======
+	 * d_alias and d_rcu can share memory
+	 */
+	union {
+		struct hlist_node d_alias;	/* inode alias list */
+		struct hlist_bl_node d_in_lookup_hash;	/* only for in-lookup ones */
+	 	struct rcu_head d_rcu;
+	} d_u;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -276,7 +289,10 @@ extern void d_invalidate(struct dentry *);
 extern struct dentry * d_make_root(struct inode *);
 
 extern void d_mark_tmpfile(struct file *, struct inode *);
+<<<<<<< HEAD
 int d_mark_tmpfile_name(struct file *file, const struct qstr *name);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void d_tmpfile(struct file *, struct inode *);
 
 extern struct dentry *d_find_alias(struct inode *);
@@ -628,8 +644,11 @@ void set_default_d_op(struct super_block *, const struct dentry_operations *);
 struct dentry *d_make_persistent(struct dentry *, struct inode *);
 void d_make_discardable(struct dentry *dentry);
 
+<<<<<<< HEAD
 /* inode->i_lock must be held over that */
 #define for_each_alias(dentry, inode) \
 	hlist_for_each_entry(dentry, &(inode)->i_dentry, d_alias)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* __LINUX_DCACHE_H */

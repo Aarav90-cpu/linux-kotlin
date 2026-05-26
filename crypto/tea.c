@@ -2,7 +2,11 @@
 /* 
  * Cryptographic API.
  *
+<<<<<<< HEAD
  * TEA, XTEA, and XETA crypto algorithms
+=======
+ * TEA, XTEA, and XETA crypto alogrithms
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The TEA and Xtended TEA algorithms were developed by David Wheeler 
  * and Roger Needham at the Computer Laboratory of Cambridge University.

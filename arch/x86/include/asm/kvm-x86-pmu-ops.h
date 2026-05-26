@@ -1,8 +1,14 @@
 /* SPDX-License-Identifier: GPL-2.0 */
+<<<<<<< HEAD
 #if !defined(KVM_X86_PMU_OP) || \
     !defined(KVM_X86_PMU_OP_OPTIONAL)
 #error Missing one or more KVM_X86_PMU_OP #defines
 #else
+=======
+#if !defined(KVM_X86_PMU_OP) || !defined(KVM_X86_PMU_OP_OPTIONAL)
+BUILD_BUG_ON(1)
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * KVM_X86_PMU_OP() and KVM_X86_PMU_OP_OPTIONAL() are used to help generate
@@ -27,7 +33,10 @@ KVM_X86_PMU_OP_OPTIONAL(cleanup)
 KVM_X86_PMU_OP_OPTIONAL(write_global_ctrl)
 KVM_X86_PMU_OP(mediated_load)
 KVM_X86_PMU_OP(mediated_put)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #undef KVM_X86_PMU_OP
 #undef KVM_X86_PMU_OP_OPTIONAL

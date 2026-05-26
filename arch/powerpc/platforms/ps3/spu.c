@@ -26,7 +26,11 @@
 
 /**
  * enum spe_type - Type of spe to create.
+<<<<<<< HEAD
  * @SPE_TYPE_LOGICAL: Standard logical spe.
+=======
+ * @spe_type_logical: Standard logical spe.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * For use with lv1_construct_logical_spe().  The current HV does not support
  * any types other than those listed.
@@ -64,9 +68,15 @@ struct spe_shadow {
 
 /**
  * enum spe_ex_state - Logical spe execution state.
+<<<<<<< HEAD
  * @SPE_EX_STATE_UNEXECUTABLE: Uninitialized.
  * @SPE_EX_STATE_EXECUTABLE: Enabled, not ready.
  * @SPE_EX_STATE_EXECUTED: Ready for use.
+=======
+ * @spe_ex_state_unexecutable: Uninitialized.
+ * @spe_ex_state_executable: Enabled, not ready.
+ * @spe_ex_state_executed: Ready for use.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The execution state (status) of the logical spe as reported in
  * struct spe_shadow:spe_execution_status.
@@ -185,8 +195,11 @@ static void spu_unmap(struct spu *spu)
  *
  * The current HV requires the spu shadow regs to be mapped with the
  * PTE page protection bits set as read-only.
+<<<<<<< HEAD
  *
  * Returns: %0 on success or -errno on error.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 static int __init setup_areas(struct spu *spu)

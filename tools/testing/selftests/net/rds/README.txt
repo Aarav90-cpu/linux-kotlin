@@ -31,11 +31,16 @@ EXAMPLE:
     # Alternatly create a gcov disabled .config
     tools/testing/selftests/net/rds/config.sh
 
+<<<<<<< HEAD
     # Config paths may also be specified with the -c flag
     tools/testing/selftests/net/rds/config.sh -c .config.local
 
     # build the kernel
     vng --build --config .config
+=======
+    # build the kernel
+    vng --build  --config tools/testing/selftests/net/config
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     # launch the tests in a VM
     vng -v --rwdir ./ --run . --user root --cpus 4 -- \

@@ -6,8 +6,11 @@
 #include <linux/kconfig.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct ufs_hba;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SCSI_UFS_FAULT_INJECTION
 void ufs_fault_inject_hba_init(struct ufs_hba *hba);
 bool ufs_trigger_eh(struct ufs_hba *hba);

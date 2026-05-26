@@ -13,9 +13,13 @@ choice
 		bool "EN751221 family"
 		select COMMON_CLK
 		select ECONET_EN751221_INTC
+<<<<<<< HEAD
 		select HAVE_PCI
 		select IRQ_MIPS_CPU
 		select PCI_DRIVERS_GENERIC
+=======
+		select IRQ_MIPS_CPU
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		select SMP
 		select SMP_UP
 		select SYS_SUPPORTS_SMP

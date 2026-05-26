@@ -199,6 +199,9 @@ void dal_hw_gpio_construct(
 void dal_hw_gpio_destruct(
 	struct hw_gpio *pin)
 {
+<<<<<<< HEAD
 	(void)pin;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT(!pin->base.opened);
 }

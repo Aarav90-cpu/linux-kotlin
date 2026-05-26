@@ -40,7 +40,11 @@ struct modsig {
 int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
 		    struct modsig **modsig)
 {
+<<<<<<< HEAD
 	const size_t marker_len = strlen(MODULE_SIGNATURE_MARKER);
+=======
+	const size_t marker_len = strlen(MODULE_SIG_STRING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct module_signature *sig;
 	struct modsig *hdr;
 	size_t sig_len;
@@ -51,7 +55,11 @@ int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
 		return -ENOENT;
 
 	p = buf + buf_len - marker_len;
+<<<<<<< HEAD
 	if (memcmp(p, MODULE_SIGNATURE_MARKER, marker_len))
+=======
+	if (memcmp(p, MODULE_SIG_STRING, marker_len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOENT;
 
 	buf_len -= marker_len;
@@ -105,7 +113,11 @@ void ima_collect_modsig(struct modsig *modsig, const void *buf, loff_t size)
 	 * Provide the file contents (minus the appended sig) so that the PKCS7
 	 * code can calculate the file hash.
 	 */
+<<<<<<< HEAD
 	size -= modsig->raw_pkcs7_len + strlen(MODULE_SIGNATURE_MARKER) +
+=======
+	size -= modsig->raw_pkcs7_len + strlen(MODULE_SIG_STRING) +
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sizeof(struct module_signature);
 	rc = pkcs7_supply_detached_data(modsig->pkcs7_msg, buf, size);
 	if (rc)

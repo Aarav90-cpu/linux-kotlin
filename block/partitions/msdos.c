@@ -263,11 +263,26 @@ static void parse_solaris_x86(struct parsed_partitions *state,
 		put_dev_sector(sect);
 		return;
 	}
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, " %s%d: <solaris:", state->name, origin);
 	if (le32_to_cpu(v->v_version) != 1) {
 		seq_buf_printf(&state->pp_buf,
 			       "  cannot handle version %d vtoc>\n",
 			       le32_to_cpu(v->v_version));
+=======
+	{
+		char tmp[1 + BDEVNAME_SIZE + 10 + 11 + 1];
+
+		snprintf(tmp, sizeof(tmp), " %s%d: <solaris:", state->name, origin);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+	}
+	if (le32_to_cpu(v->v_version) != 1) {
+		char tmp[64];
+
+		snprintf(tmp, sizeof(tmp), "  cannot handle version %d vtoc>\n",
+			 le32_to_cpu(v->v_version));
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		put_dev_sector(sect);
 		return;
 	}
@@ -275,10 +290,19 @@ static void parse_solaris_x86(struct parsed_partitions *state,
 	max_nparts = le16_to_cpu(v->v_nparts) > 8 ? SOLARIS_X86_NUMSLICE : 8;
 	for (i = 0; i < max_nparts && state->next < state->limit; i++) {
 		struct solaris_x86_slice *s = &v->v_slice[i];
+<<<<<<< HEAD
 
 		if (s->s_size == 0)
 			continue;
 		seq_buf_printf(&state->pp_buf, " [s%d]", i);
+=======
+		char tmp[3 + 10 + 1 + 1];
+
+		if (s->s_size == 0)
+			continue;
+		snprintf(tmp, sizeof(tmp), " [s%d]", i);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* solaris partitions are relative to current MS-DOS
 		 * one; must add the offset of the current partition */
 		put_partition(state, state->next++,
@@ -286,7 +310,11 @@ static void parse_solaris_x86(struct parsed_partitions *state,
 				 le32_to_cpu(s->s_size));
 	}
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " >\n");
+=======
+	strlcat(state->pp_buf, " >\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -350,6 +378,10 @@ static void parse_bsd(struct parsed_partitions *state,
 	Sector sect;
 	struct bsd_disklabel *l;
 	struct bsd_partition *p;
+<<<<<<< HEAD
+=======
+	char tmp[64];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	l = read_part_sector(state, offset + 1, &sect);
 	if (!l)
@@ -359,7 +391,12 @@ static void parse_bsd(struct parsed_partitions *state,
 		return;
 	}
 
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, " %s%d: <%s:", state->name, origin, flavour);
+=======
+	snprintf(tmp, sizeof(tmp), " %s%d: <%s:", state->name, origin, flavour);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (le16_to_cpu(l->d_npartitions) < max_partitions)
 		max_partitions = le16_to_cpu(l->d_npartitions);
@@ -380,16 +417,29 @@ static void parse_bsd(struct parsed_partitions *state,
 			/* full parent partition, we have it already */
 			continue;
 		if (offset > bsd_start || offset+size < bsd_start+bsd_size) {
+<<<<<<< HEAD
 			seq_buf_puts(&state->pp_buf, "bad subpartition - ignored\n");
+=======
+			strlcat(state->pp_buf, "bad subpartition - ignored\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 		put_partition(state, state->next++, bsd_start, bsd_size);
 	}
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	if (le16_to_cpu(l->d_npartitions) > max_partitions)
 		seq_buf_printf(&state->pp_buf, " (ignored %d more)",
 			       le16_to_cpu(l->d_npartitions) - max_partitions);
 	seq_buf_puts(&state->pp_buf, " >\n");
+=======
+	if (le16_to_cpu(l->d_npartitions) > max_partitions) {
+		snprintf(tmp, sizeof(tmp), " (ignored %d more)",
+			 le16_to_cpu(l->d_npartitions) - max_partitions);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+	}
+	strlcat(state->pp_buf, " >\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
@@ -483,7 +533,16 @@ static void parse_unixware(struct parsed_partitions *state,
 		put_dev_sector(sect);
 		return;
 	}
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, " %s%d: <unixware:", state->name, origin);
+=======
+	{
+		char tmp[1 + BDEVNAME_SIZE + 10 + 12 + 1];
+
+		snprintf(tmp, sizeof(tmp), " %s%d: <unixware:", state->name, origin);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	p = &l->vtoc.v_slice[1];
 	/* I omit the 0th slice as it is the same as whole disk. */
 	while (p - &l->vtoc.v_slice[0] < UNIXWARE_NUMSLICE) {
@@ -497,7 +556,11 @@ static void parse_unixware(struct parsed_partitions *state,
 		p++;
 	}
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " >\n");
+=======
+	strlcat(state->pp_buf, " >\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -528,7 +591,14 @@ static void parse_minix(struct parsed_partitions *state,
 	 * the normal boot sector. */
 	if (msdos_magic_present(data + 510) &&
 	    p->sys_ind == MINIX_PARTITION) { /* subpartition table present */
+<<<<<<< HEAD
 		seq_buf_printf(&state->pp_buf, " %s%d: <minix:", state->name, origin);
+=======
+		char tmp[1 + BDEVNAME_SIZE + 10 + 9 + 1];
+
+		snprintf(tmp, sizeof(tmp), " %s%d: <minix:", state->name, origin);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < MINIX_NR_SUBPARTITIONS; i++, p++) {
 			if (state->next == state->limit)
 				break;
@@ -537,7 +607,11 @@ static void parse_minix(struct parsed_partitions *state,
 				put_partition(state, state->next++,
 					      start_sect(p), nr_sects(p));
 		}
+<<<<<<< HEAD
 		seq_buf_puts(&state->pp_buf, " >\n");
+=======
+		strlcat(state->pp_buf, " >\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	put_dev_sector(sect);
 #endif /* CONFIG_MINIX_SUBPARTITION */
@@ -581,7 +655,11 @@ int msdos_partition(struct parsed_partitions *state)
 #ifdef CONFIG_AIX_PARTITION
 		return aix_partition(state);
 #else
+<<<<<<< HEAD
 		seq_buf_puts(&state->pp_buf, " [AIX]");
+=======
+		strlcat(state->pp_buf, " [AIX]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 #endif
 	}
@@ -608,7 +686,11 @@ int msdos_partition(struct parsed_partitions *state)
 			fb = (struct fat_boot_sector *) data;
 			if (slot == 1 && fb->reserved && fb->fats
 				&& fat_valid_media(fb->media)) {
+<<<<<<< HEAD
 				seq_buf_puts(&state->pp_buf, "\n");
+=======
+				strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				put_dev_sector(sect);
 				return 1;
 			} else {
@@ -657,9 +739,15 @@ int msdos_partition(struct parsed_partitions *state)
 			n = min(size, max(sector_size, n));
 			put_partition(state, slot, start, n);
 
+<<<<<<< HEAD
 			seq_buf_puts(&state->pp_buf, " <");
 			parse_extended(state, start, size, disksig);
 			seq_buf_puts(&state->pp_buf, " >");
+=======
+			strlcat(state->pp_buf, " <", PAGE_SIZE);
+			parse_extended(state, start, size, disksig);
+			strlcat(state->pp_buf, " >", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 		put_partition(state, slot, start, size);
@@ -667,12 +755,21 @@ int msdos_partition(struct parsed_partitions *state)
 		if (p->sys_ind == LINUX_RAID_PARTITION)
 			state->parts[slot].flags = ADDPART_FLAG_RAID;
 		if (p->sys_ind == DM6_PARTITION)
+<<<<<<< HEAD
 			seq_buf_puts(&state->pp_buf, "[DM]");
 		if (p->sys_ind == EZD_PARTITION)
 			seq_buf_puts(&state->pp_buf, "[EZD]");
 	}
 
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+			strlcat(state->pp_buf, "[DM]", PAGE_SIZE);
+		if (p->sys_ind == EZD_PARTITION)
+			strlcat(state->pp_buf, "[EZD]", PAGE_SIZE);
+	}
+
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* second pass - output for each on a separate line */
 	p = (struct msdos_partition *) (0x1be + data);

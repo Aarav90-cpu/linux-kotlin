@@ -872,7 +872,10 @@ static uint32_t dcn32_get_vco_frequency_from_reg(struct clk_mgr_internal *clk_mg
 static void dcn32_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
 		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
 {
+<<<<<<< HEAD
 	(void)log_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
 	uint32_t dprefclk_did = 0;
 	uint32_t dcfclk_did = 0;
@@ -1060,9 +1063,17 @@ static void dcn32_get_memclk_states_from_smu(struct clk_mgr *clk_mgr_base)
 	if (!clk_mgr->dpm_present)
 		dcn32_patch_dpm_table(clk_mgr_base->bw_params);
 
+<<<<<<< HEAD
 	/* Refresh bounding box */
 	clk_mgr_base->ctx->dc->res_pool->funcs->update_bw_bounding_box(
 			clk_mgr->base.ctx->dc, clk_mgr_base->bw_params);
+=======
+	DC_FP_START();
+	/* Refresh bounding box */
+	clk_mgr_base->ctx->dc->res_pool->funcs->update_bw_bounding_box(
+			clk_mgr->base.ctx->dc, clk_mgr_base->bw_params);
+	DC_FP_END();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool dcn32_are_clock_states_equal(struct dc_clocks *a,
@@ -1146,7 +1157,10 @@ void dcn32_clk_mgr_construct(
 		struct pp_smu_funcs *pp_smu,
 		struct dccg *dccg)
 {
+<<<<<<< HEAD
 	(void)pp_smu;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct clk_log_info log_info = {0};
 
 	clk_mgr->base.ctx = ctx;

@@ -2773,7 +2773,11 @@ static int mt8186_afe_component_probe(struct snd_soc_component *component)
 
 static const struct snd_soc_component_driver mt8186_afe_component = {
 	.name = AFE_PCM_NAME,
+<<<<<<< HEAD
 	.pcm_new = mtk_afe_pcm_new,
+=======
+	.pcm_construct = mtk_afe_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pointer = mtk_afe_pcm_pointer,
 	.probe = mt8186_afe_component_probe,
 };

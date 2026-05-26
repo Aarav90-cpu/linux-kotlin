@@ -12,8 +12,11 @@
 #include <linux/slab.h>
 #include <media/media-device.h>
 #include <media/v4l2-device.h>
+<<<<<<< HEAD
 #include <media/tpg/v4l2-tpg.h>
 #include <media/v4l2-ctrls.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define VIMC_PDEV_NAME "vimc"
 
@@ -29,6 +32,7 @@
 #define VIMC_FRAME_MIN_WIDTH 16
 #define VIMC_FRAME_MIN_HEIGHT 16
 
+<<<<<<< HEAD
 #define VIMC_PIXEL_RATE_FIXED		160000000	/* 160 MHz */
 #define VIMC_HBLANK_FIXED		800
 /* VBLANK - vertical blanking (primary FPS control) */
@@ -38,6 +42,8 @@
 #define VIMC_VBLANK_DEFAULT	        3223           /* 30fps vga */
 #define VIMC_PIXELS_THRESHOLD_30FPS	(1920 * 1080) /* 2073600 pixels */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VIMC_FRAME_INDEX(lin, col, width, bpp) ((lin * width + col) * bpp)
 
 /* Source and sink pad checks */
@@ -170,6 +176,7 @@ struct vimc_ent_config {
 	const struct vimc_ent_type *type;
 };
 
+<<<<<<< HEAD
 enum vimc_sensor_osd_mode {
 	VIMC_SENSOR_OSD_SHOW_ALL = 0,
 	VIMC_SENSOR_OSD_SHOW_COUNTERS = 1,
@@ -200,6 +207,8 @@ struct vimc_sensor_device {
 	} hw;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * vimc_is_source - returns true if the entity has only source pads
  *

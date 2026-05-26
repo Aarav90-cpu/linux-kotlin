@@ -1256,7 +1256,11 @@ int kvm_vm_ioctl_set_pmu_event_filter(struct kvm *kvm, void __user *argp)
 
 	r = -EFAULT;
 	if (copy_from_user(filter->events, user_filter->events,
+<<<<<<< HEAD
 			   flex_array_size(filter, events, filter->nevents)))
+=======
+			   sizeof(filter->events[0]) * filter->nevents))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto cleanup;
 
 	r = prepare_filter_lists(filter);

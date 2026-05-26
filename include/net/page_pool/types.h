@@ -44,8 +44,11 @@
  * use-case.  The NAPI budget is 64 packets.  After a NAPI poll the RX
  * ring is usually refilled and the max consumed elements will be 64,
  * thus a natural max size of objects needed in the cache.
+<<<<<<< HEAD
  * The refill watermark is set to 64 for 4KB pages,
  * and scales to balance its size in bytes across page sizes.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Keeping room for more objects, is due to XDP_DROP use-case.  As
  * XDP_DROP allows the opportunity to recycle objects directly into
@@ -53,6 +56,7 @@
  * cache is already full (or partly full) then the XDP_DROP recycles
  * would have to take a slower code path.
  */
+<<<<<<< HEAD
 #if PAGE_SIZE >= SZ_64K
 #define PP_ALLOC_CACHE_REFILL	4
 #elif PAGE_SIZE >= SZ_16K
@@ -62,6 +66,10 @@
 #endif
 
 #define PP_ALLOC_CACHE_SIZE	(PP_ALLOC_CACHE_REFILL * 2)
+=======
+#define PP_ALLOC_CACHE_SIZE	128
+#define PP_ALLOC_CACHE_REFILL	64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pp_alloc_cache {
 	u32 count;
 	netmem_ref cache[PP_ALLOC_CACHE_SIZE];

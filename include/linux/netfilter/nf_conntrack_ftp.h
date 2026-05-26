@@ -26,6 +26,7 @@ struct nf_ct_ftp_master {
 
 /* For NAT to hook in when we find a packet which describes what other
  * connection we should expect. */
+<<<<<<< HEAD
 typedef unsigned int
 nf_nat_ftp_hook_fn(struct sk_buff *skb,
 		   enum ip_conntrack_info ctinfo,
@@ -36,4 +37,13 @@ nf_nat_ftp_hook_fn(struct sk_buff *skb,
 		   struct nf_conntrack_expect *exp);
 
 extern nf_nat_ftp_hook_fn __rcu *nf_nat_ftp_hook;
+=======
+extern unsigned int (__rcu *nf_nat_ftp_hook)(struct sk_buff *skb,
+				       enum ip_conntrack_info ctinfo,
+				       enum nf_ct_ftp_type type,
+				       unsigned int protoff,
+				       unsigned int matchoff,
+				       unsigned int matchlen,
+				       struct nf_conntrack_expect *exp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _NF_CONNTRACK_FTP_H */

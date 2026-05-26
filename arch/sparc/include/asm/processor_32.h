@@ -91,6 +91,11 @@ unsigned long __get_wchan(struct task_struct *);
 extern struct task_struct *last_task_used_math;
 int do_mathemu(struct pt_regs *regs, struct task_struct *fpt);
 
+<<<<<<< HEAD
+=======
+#define cpu_relax()	barrier()
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern void (*sparc_idle)(void);
 
 #endif

@@ -508,6 +508,7 @@ Description:
 		(RO) The size of extended linear cache, if there is an extended
 		linear cache. Otherwise the attribute will not be visible.
 
+<<<<<<< HEAD
 
 What:		/sys/bus/cxl/devices/regionZ/locked
 Date:		Mar, 2026
@@ -521,6 +522,8 @@ Description:
 		decoder resources.
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 What:		/sys/bus/cxl/devices/regionZ/mode
 Date:		January, 2023
 KernelVersion:	v6.3

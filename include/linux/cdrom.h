@@ -108,7 +108,10 @@ int cdrom_ioctl(struct cdrom_device_info *cdi, struct block_device *bdev,
 extern unsigned int cdrom_check_events(struct cdrom_device_info *cdi,
 				       unsigned int clearing);
 
+<<<<<<< HEAD
 extern void cdrom_probe_write_features(struct cdrom_device_info *cdi);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi);
 extern void unregister_cdrom(struct cdrom_device_info *cdi);
 

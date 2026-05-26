@@ -149,6 +149,7 @@ int _setsockopt(struct bpf_sockopt *ctx)
 	if (sk && sk->family == AF_NETLINK)
 		goto out;
 
+<<<<<<< HEAD
 	if (sk && sk->family == AF_INET && sk->type == SOCK_RAW) {
 		struct bpf_tcp_sock *tp = bpf_tcp_sock(sk);
 
@@ -163,6 +164,8 @@ int _setsockopt(struct bpf_sockopt *ctx)
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Make sure bpf_get_netns_cookie is callable.
 	 */
 	if (bpf_get_netns_cookie(NULL) == 0)
@@ -238,8 +241,11 @@ int _setsockopt(struct bpf_sockopt *ctx)
 		return 0; /* couldn't get sk storage */
 
 	storage->val = optval[0];
+<<<<<<< HEAD
 
 consumed:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx->optlen = -1; /* BPF has consumed this option, don't call kernel
 			   * setsockopt handler.
 			   */

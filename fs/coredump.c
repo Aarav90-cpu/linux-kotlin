@@ -63,9 +63,12 @@
 
 #include <trace/events/sched.h>
 
+<<<<<<< HEAD
 #define CREATE_TRACE_POINTS
 #include <trace/events/coredump.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool dump_vma_snapshot(struct coredump_params *cprm);
 static void free_vma_snapshot(struct coredump_params *cprm);
 
@@ -1093,8 +1096,11 @@ static inline bool coredump_skip(const struct coredump_params *cprm,
 static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
 			size_t **argv, int *argc, const struct linux_binfmt *binfmt)
 {
+<<<<<<< HEAD
 	trace_coredump(cprm->siginfo->si_signo);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!coredump_parse(cn, cprm, argv, argc)) {
 		coredump_report_failure("format_corename failed, aborting core");
 		return;

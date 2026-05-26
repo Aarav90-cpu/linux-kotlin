@@ -19,10 +19,13 @@ description: |
   * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf
   * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-24_ad4632-24.pdf
   * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-16-4632-16.pdf
+<<<<<<< HEAD
   * https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4216.pdf
   * https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4224.pdf
 
 $ref: /schemas/spi/spi-peripheral-props.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 properties:
   compatible:
@@ -33,8 +36,11 @@ properties:
       - adi,ad4630-24
       - adi,ad4632-16
       - adi,ad4632-24
+<<<<<<< HEAD
       - adi,adaq4216
       - adi,adaq4224
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -66,6 +72,7 @@ properties:
     description:
       Internal buffered Reference. Used when ref-supply is not connected.
 
+<<<<<<< HEAD
   vddh-supply:
     description:
       PGIA Positive Power Supply.
@@ -74,6 +81,8 @@ properties:
     description:
       FDA Positive Power Supply.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   cnv-gpios:
     description:
       The Convert Input (CNV). It initiates the sampling conversions.
@@ -84,6 +93,7 @@ properties:
       The Reset Input (/RST). Used for asynchronous device reset.
     maxItems: 1
 
+<<<<<<< HEAD
   pga-gpios:
     description:
       A0 and A1 pins for gain selection. For devices that have PGA configuration
@@ -95,6 +105,8 @@ properties:
     description: PWM signal connected to the CNV pin.
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   interrupts:
     description:
       The BUSY pin is used to signal that the conversions results are available
@@ -132,6 +144,7 @@ allOf:
       properties:
         spi-rx-bus-width:
           maxItems: 1
+<<<<<<< HEAD
   # ADAQ devices require a gain property to indicate how hardware PGA is set
   - if:
       properties:
@@ -148,6 +161,8 @@ allOf:
     else:
       properties:
         pga-gpios: false
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |
@@ -189,6 +204,7 @@ examples:
             reset-gpios = <&gpio0 1 GPIO_ACTIVE_LOW>;
         };
     };
+<<<<<<< HEAD
   - |
     #include <dt-bindings/gpio/gpio.h>
 
@@ -212,3 +228,5 @@ examples:
                         <&gpio0 3 GPIO_ACTIVE_HIGH>;
         };
     };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

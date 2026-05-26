@@ -4,6 +4,7 @@ use core::marker::PhantomData;
 
 use kernel::{
     device,
+<<<<<<< HEAD
     io::{
         poll::read_poll_timeout,
         register::{
@@ -12,6 +13,9 @@ use kernel::{
         },
         Io, //
     },
+=======
+    io::poll::read_poll_timeout,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     prelude::*,
     time::Delta, //
 };
@@ -32,6 +36,7 @@ use crate::{
 use super::FalconHal;
 
 fn select_core_ga102<E: FalconEngine>(bar: &Bar0) -> Result {
+<<<<<<< HEAD
     let bcr_ctrl = bar.read(regs::NV_PRISCV_RISCV_BCR_CTRL::of::<E>());
     if bcr_ctrl.core_select() != PeregrineCoreSelect::Falcon {
         bar.write(
@@ -42,6 +47,17 @@ fn select_core_ga102<E: FalconEngine>(bar: &Bar0) -> Result {
         // TIMEOUT: falcon core should take less than 10ms to report being enabled.
         read_poll_timeout(
             || Ok(bar.read(regs::NV_PRISCV_RISCV_BCR_CTRL::of::<E>())),
+=======
+    let bcr_ctrl = regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, &E::ID);
+    if bcr_ctrl.core_select() != PeregrineCoreSelect::Falcon {
+        regs::NV_PRISCV_RISCV_BCR_CTRL::default()
+            .set_core_select(PeregrineCoreSelect::Falcon)
+            .write(bar, &E::ID);
+
+        // TIMEOUT: falcon core should take less than 10ms to report being enabled.
+        read_poll_timeout(
+            || Ok(regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             |r| r.valid(),
             Delta::ZERO,
             Delta::from_millis(10),
@@ -68,6 +84,7 @@ fn signature_reg_fuse_version_ga102(
 
     // `ucode_idx` is guaranteed to be in the range [0..15], making the `read` calls provable valid
     // at build-time.
+<<<<<<< HEAD
     let reg_fuse_version: u16 = if engine_id_mask & 0x0001 != 0 {
         bar.read(regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::at(ucode_idx))
             .data()
@@ -77,6 +94,14 @@ fn signature_reg_fuse_version_ga102(
     } else if engine_id_mask & 0x0400 != 0 {
         bar.read(regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::at(ucode_idx))
             .data()
+=======
+    let reg_fuse_version = if engine_id_mask & 0x0001 != 0 {
+        regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::read(bar, ucode_idx).data()
+    } else if engine_id_mask & 0x0004 != 0 {
+        regs::NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION::read(bar, ucode_idx).data()
+    } else if engine_id_mask & 0x0400 != 0 {
+        regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::read(bar, ucode_idx).data()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     } else {
         dev_err!(dev, "unexpected engine_id_mask {:#x}\n", engine_id_mask);
         return Err(EINVAL);
@@ -87,6 +112,7 @@ fn signature_reg_fuse_version_ga102(
 }
 
 fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) -> Result {
+<<<<<<< HEAD
     bar.write(
         WithBase::of::<E>().at(0),
         regs::NV_PFALCON2_FALCON_BROM_PARAADDR::zeroed().with_value(params.pkc_data_offset),
@@ -104,6 +130,20 @@ fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) ->
         WithBase::of::<E>(),
         regs::NV_PFALCON2_FALCON_MOD_SEL::zeroed().with_algo(FalconModSelAlgo::Rsa3k),
     );
+=======
+    regs::NV_PFALCON2_FALCON_BROM_PARAADDR::default()
+        .set_value(params.pkc_data_offset)
+        .write(bar, &E::ID, 0);
+    regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::default()
+        .set_value(u32::from(params.engine_id_mask))
+        .write(bar, &E::ID);
+    regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::default()
+        .set_ucode_id(params.ucode_id)
+        .write(bar, &E::ID);
+    regs::NV_PFALCON2_FALCON_MOD_SEL::default()
+        .set_algo(FalconModSelAlgo::Rsa3k)
+        .write(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     Ok(())
 }
@@ -136,14 +176,23 @@ impl<E: FalconEngine> FalconHal<E> for Ga102<E> {
     }
 
     fn is_riscv_active(&self, bar: &Bar0) -> bool {
+<<<<<<< HEAD
         bar.read(regs::NV_PRISCV_RISCV_CPUCTL::of::<E>())
             .active_stat()
+=======
+        let cpuctl = regs::NV_PRISCV_RISCV_CPUCTL::read(bar, &E::ID);
+        cpuctl.active_stat()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
         // TIMEOUT: memory scrubbing should complete in less than 20ms.
         read_poll_timeout(
+<<<<<<< HEAD
             || Ok(bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>())),
+=======
+            || Ok(regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             |r| r.mem_scrubbing_done(),
             Delta::ZERO,
             Delta::from_millis(20),
@@ -152,12 +201,20 @@ impl<E: FalconEngine> FalconHal<E> for Ga102<E> {
     }
 
     fn reset_eng(&self, bar: &Bar0) -> Result {
+<<<<<<< HEAD
         let _ = bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>());
+=======
+        let _ = regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // According to OpenRM's `kflcnPreResetWait_GA102` documentation, HW sometimes does not set
         // RESET_READY so a non-failing timeout is used.
         let _ = read_poll_timeout(
+<<<<<<< HEAD
             || Ok(bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>())),
+=======
+            || Ok(regs::NV_PFALCON_FALCON_HWCFG2::read(bar, &E::ID)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             |r| r.reset_ready(),
             Delta::ZERO,
             Delta::from_micros(150),

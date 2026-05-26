@@ -62,6 +62,7 @@ struct fsl_xcvr {
 	u32 spdif_constr_rates_list[SPDIF_NUM_RATES];
 };
 
+<<<<<<< HEAD
 static const char * const inc_mode[] = {
 	"On enabled and bitcount increment", "On enabled"
 };
@@ -114,6 +115,8 @@ static const struct snd_kcontrol_new fsl_xcvr_timestamp_ctrls[] = {
 				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct fsl_xcvr_pll_conf {
 	u8 mfi;   /* min=0x18, max=0x38 */
 	u32 mfn;  /* signed int, 2's compl., min=0x3FFF0000, max=0x00010000 */
@@ -167,6 +170,7 @@ static int fsl_xcvr_arc_mode_put(struct snd_kcontrol *kcontrol,
 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
 	unsigned int *item = ucontrol->value.enumerated.item;
+<<<<<<< HEAD
 	int val = snd_soc_enum_item_to_val(e, item[0]);
 	int ret;
 
@@ -178,6 +182,12 @@ static int fsl_xcvr_arc_mode_put(struct snd_kcontrol *kcontrol,
 	xcvr->arc_mode = val;
 
 	return ret;
+=======
+
+	xcvr->arc_mode = snd_soc_enum_item_to_val(e, item[0]);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int fsl_xcvr_arc_mode_get(struct snd_kcontrol *kcontrol,
@@ -228,6 +238,7 @@ static int fsl_xcvr_capds_put(struct snd_kcontrol *kcontrol,
 {
 	struct snd_soc_dai *dai = snd_kcontrol_chip(kcontrol);
 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
+<<<<<<< HEAD
 	int changed;
 
 	changed = memcmp(xcvr->cap_ds, ucontrol->value.bytes.data,
@@ -236,6 +247,12 @@ static int fsl_xcvr_capds_put(struct snd_kcontrol *kcontrol,
 	       sizeof(xcvr->cap_ds));
 
 	return changed;
+=======
+
+	memcpy(xcvr->cap_ds, ucontrol->value.bytes.data, FSL_XCVR_CAPDS_SIZE);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct snd_kcontrol_new fsl_xcvr_earc_capds_kctl = {
@@ -281,6 +298,7 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
 	unsigned int *item = ucontrol->value.enumerated.item;
+<<<<<<< HEAD
 	int val = snd_soc_enum_item_to_val(e, item[0]);
 	struct snd_soc_card *card = dai->component->card;
 	struct snd_soc_pcm_runtime *rtd;
@@ -292,6 +310,12 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
 	ret = (xcvr->mode != val);
 
 	xcvr->mode = val;
+=======
+	struct snd_soc_card *card = dai->component->card;
+	struct snd_soc_pcm_runtime *rtd;
+
+	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
@@ -301,7 +325,11 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
 		(xcvr->mode == FSL_XCVR_MODE_SPDIF ? 1 : 0);
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int fsl_xcvr_mode_get(struct snd_kcontrol *kcontrol,
@@ -1044,6 +1072,7 @@ static int fsl_xcvr_tx_cs_put(struct snd_kcontrol *kcontrol,
 {
 	struct snd_soc_dai *dai = snd_kcontrol_chip(kcontrol);
 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
+<<<<<<< HEAD
 	int changed;
 
 	changed = memcmp(xcvr->tx_iec958.status,
@@ -1053,6 +1082,12 @@ static int fsl_xcvr_tx_cs_put(struct snd_kcontrol *kcontrol,
 	       sizeof(xcvr->tx_iec958.status));
 
 	return changed;
+=======
+
+	memcpy(xcvr->tx_iec958.status, ucontrol->value.iec958.status, 24);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct snd_kcontrol_new fsl_xcvr_rx_ctls[] = {
@@ -1145,6 +1180,7 @@ static struct snd_soc_dai_driver fsl_xcvr_dai = {
 	},
 };
 
+<<<<<<< HEAD
 static int fsl_xcvr_component_probe(struct snd_soc_component *component)
 {
 	struct fsl_xcvr *xcvr = snd_soc_component_get_drvdata(component);
@@ -1159,6 +1195,10 @@ static const struct snd_soc_component_driver fsl_xcvr_comp = {
 	.probe			= fsl_xcvr_component_probe,
 	.controls		= fsl_xcvr_timestamp_ctrls,
 	.num_controls		= ARRAY_SIZE(fsl_xcvr_timestamp_ctrls),
+=======
+static const struct snd_soc_component_driver fsl_xcvr_comp = {
+	.name			= "fsl-xcvr-dai",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.legacy_dai_naming	= 1,
 };
 

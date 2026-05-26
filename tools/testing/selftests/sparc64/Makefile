@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 ARCH ?= $(shell uname -m 2>/dev/null || echo not)
 override ARCH := $(shell echo $(ARCH) | sed -e s/x86_64/x86/)
+=======
+uname_M := $(shell uname -m 2>/dev/null || echo not)
+ARCH ?= $(shell echo $(uname_M) | sed -e s/x86_64/x86/)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifneq ($(ARCH),sparc64)
 nothing:

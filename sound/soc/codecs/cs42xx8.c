@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Cirrus Logic CS42448/CS42888 Audio CODEC Digital Audio Interface (DAI) driver
  *
  * Copyright (C) 2014 Freescale Semiconductor, Inc.
  *
  * Author: Nicolin Chen <Guangyu.Chen@freescale.com>
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2. This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/clk.h>
@@ -40,7 +50,10 @@ struct cs42xx8_priv {
 	struct clk *clk;
 
 	bool slave_mode;
+<<<<<<< HEAD
 	bool is_tdm_mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long sysclk;
 	u32 tx_channels;
 	struct gpio_desc *gpiod_reset;
@@ -215,8 +228,11 @@ static int cs42xx8_set_dai_fmt(struct snd_soc_dai *codec_dai,
 	struct cs42xx8_priv *cs42xx8 = snd_soc_component_get_drvdata(component);
 	u32 val;
 
+<<<<<<< HEAD
 	cs42xx8->is_tdm_mode = false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set DAI format */
 	switch (format & SND_SOC_DAIFMT_FORMAT_MASK) {
 	case SND_SOC_DAIFMT_LEFT_J:
@@ -230,7 +246,10 @@ static int cs42xx8_set_dai_fmt(struct snd_soc_dai *codec_dai,
 		break;
 	case SND_SOC_DAIFMT_DSP_A:
 		val = CS42XX8_INTF_DAC_DIF_TDM | CS42XX8_INTF_ADC_DIF_TDM;
+<<<<<<< HEAD
 		cs42xx8->is_tdm_mode = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_err(component->dev, "unsupported dai format\n");
@@ -254,11 +273,14 @@ static int cs42xx8_set_dai_fmt(struct snd_soc_dai *codec_dai,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (cs42xx8->is_tdm_mode && !cs42xx8->slave_mode) {
 		dev_err(component->dev, "TDM mode is supported only in slave mode\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -341,6 +363,7 @@ static int cs42xx8_hw_params(struct snd_pcm_substream *substream,
 
 	cs42xx8->rate[tx] = params_rate(params);
 
+<<<<<<< HEAD
 	if (cs42xx8->is_tdm_mode) {
 		if (cs42xx8->sysclk < 256 * cs42xx8->rate[tx]) {
 			dev_err(component->dev, "Unsupported sysclk in TDM mode\n");
@@ -354,6 +377,8 @@ static int cs42xx8_hw_params(struct snd_pcm_substream *substream,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mask = CS42XX8_FUNCMOD_MFREQ_MASK;
 	val = cs42xx8_ratios[i].mfreq;
 

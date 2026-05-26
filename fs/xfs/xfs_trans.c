@@ -1199,11 +1199,15 @@ xfs_trans_alloc_icreate(
 {
 	struct xfs_trans	*tp;
 	bool			retried = false;
+<<<<<<< HEAD
 	bool			flushed = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			error;
 
 retry:
 	error = xfs_trans_alloc(mp, resv, dblocks, 0, 0, &tp);
+<<<<<<< HEAD
 	if (error == -ENOSPC && !flushed) {
 		/*
 		 * Flush all delalloc blocks to reclaim space from speculative
@@ -1214,6 +1218,8 @@ retry:
 		flushed = true;
 		goto retry;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (error)
 		return error;
 

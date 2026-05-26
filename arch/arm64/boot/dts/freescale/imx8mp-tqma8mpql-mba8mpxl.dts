@@ -336,9 +336,12 @@
 	pinctrl-0 = <&pinctrl_eqos>, <&pinctrl_eqos_phy>;
 	phy-mode = "rgmii-id";
 	phy-handle = <&ethphy3>;
+<<<<<<< HEAD
 	snps,force_thresh_dma_mode;
 	snps,mtl-tx-config = <&mtl_tx_setup>;
 	snps,mtl-rx-config = <&mtl_rx_setup>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	mdio {
@@ -362,6 +365,7 @@
 			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
 		};
 	};
+<<<<<<< HEAD
 
 	mtl_tx_setup: tx-queues-config {
 		snps,tx-queues-to-use = <5>;
@@ -426,6 +430,8 @@
 			snps,map-to-dma-channel = <4>;
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &fec {

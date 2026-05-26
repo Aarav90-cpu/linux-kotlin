@@ -3,8 +3,14 @@
 # IPv6 configuration
 #
 
+<<<<<<< HEAD
 menuconfig IPV6
 	bool "The IPv6 protocol"
+=======
+#   IPv6 as module will cause a CRASH if you try to unload it
+menuconfig IPV6
+	tristate "The IPv6 protocol"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default y
 	select CRYPTO_LIB_SHA1
 	help
@@ -16,6 +22,12 @@ menuconfig IPV6
 	  Documentation/networking/ipv6.rst and read the HOWTO at
 	  <https://www.tldp.org/HOWTO/Linux+IPv6-HOWTO/>
 
+<<<<<<< HEAD
+=======
+	  To compile this protocol support as a module, choose M here: the
+	  module will be called ipv6.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 if IPV6
 
 config IPV6_ROUTER_PREF
@@ -164,7 +176,11 @@ config IPV6_SIT
 	select INET_TUNNEL
 	select NET_IP_TUNNEL
 	select IPV6_NDISC_NODETYPE
+<<<<<<< HEAD
 	default m
+=======
+	default y
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Tunneling means encapsulating data of one protocol type within
 	  another protocol and sending it over a channel that understands the
@@ -172,7 +188,11 @@ config IPV6_SIT
 	  into IPv4 packets. This is useful if you want to connect two IPv6
 	  networks over an IPv4-only path.
 
+<<<<<<< HEAD
 	  Saying M here will produce a module called sit. If unsure, say M.
+=======
+	  Saying M here will produce a module called sit. If unsure, say Y.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config IPV6_SIT_6RD
 	bool "IPv6: IPv6 Rapid Deployment (6RD)"

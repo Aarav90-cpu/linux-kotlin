@@ -9,6 +9,13 @@
 //! using this crate.
 
 #![no_std]
+<<<<<<< HEAD
+=======
+// See <https://github.com/rust-lang/rust-bindgen/issues/1651>.
+#![cfg_attr(test, allow(deref_nullptr))]
+#![cfg_attr(test, allow(unaligned_references))]
+#![cfg_attr(test, allow(unsafe_op_in_unsafe_fn))]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #![allow(
     clippy::all,
     missing_docs,
@@ -19,7 +26,10 @@
     unreachable_pub,
     unsafe_op_in_unsafe_fn
 )]
+<<<<<<< HEAD
 #![feature(cfi_encoding)]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #[allow(dead_code)]
 #[allow(clippy::cast_lossless)]

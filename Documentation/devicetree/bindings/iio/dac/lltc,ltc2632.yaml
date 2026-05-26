@@ -4,12 +4,17 @@
 $id: http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
+<<<<<<< HEAD
 title: Linear Technology LTC263x and LTC2654 Rail-to-Rail DAC
+=======
+title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 maintainers:
   - Michael Hennerich <michael.hennerich@analog.com>
 
 description: |
+<<<<<<< HEAD
   Bindings for the Linear Technology LTC2632/2634/2636/2654 DAC
   Datasheet can be found here:
     https://www.analog.com/media/en/technical-documentation/data-sheets/LTC263[246].pdf
@@ -47,6 +52,32 @@ properties:
           - enum:
               - lltc,ltc2654-h12
           - const: lltc,ltc2634-h12
+=======
+  Bindings for the Linear Technology LTC2632/2634/2636 DAC
+  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC263[246].pdf
+
+properties:
+  compatible:
+    enum:
+      - lltc,ltc2632-l12
+      - lltc,ltc2632-l10
+      - lltc,ltc2632-l8
+      - lltc,ltc2632-h12
+      - lltc,ltc2632-h10
+      - lltc,ltc2632-h8
+      - lltc,ltc2634-l12
+      - lltc,ltc2634-l10
+      - lltc,ltc2634-l8
+      - lltc,ltc2634-h12
+      - lltc,ltc2634-h10
+      - lltc,ltc2634-h8
+      - lltc,ltc2636-l12
+      - lltc,ltc2636-l10
+      - lltc,ltc2636-l8
+      - lltc,ltc2636-h12
+      - lltc,ltc2636-h10
+      - lltc,ltc2636-h8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

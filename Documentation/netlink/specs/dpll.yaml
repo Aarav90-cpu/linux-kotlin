@@ -241,6 +241,7 @@ definitions:
       Value of (DPLL_A_PHASE_OFFSET % DPLL_PHASE_OFFSET_DIVIDER) is a
       fractional part of a measured phase offset value.
   -
+<<<<<<< HEAD
     type: const
     name: pin-measured-frequency-divider
     value: 1000
@@ -255,6 +256,8 @@ definitions:
       DPLL_PIN_MEASURED_FREQUENCY_DIVIDER) is a fractional part of
       a measured frequency value.
   -
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     type: enum
     name: feature-state
     doc: |
@@ -333,6 +336,7 @@ attribute-sets:
         name: phase-offset-avg-factor
         type: u32
         doc: Averaging factor applied to calculation of reported phase offset.
+<<<<<<< HEAD
       -
         name: frequency-monitor
         type: u32
@@ -340,6 +344,8 @@ attribute-sets:
         doc: Current or desired state of the frequency monitor feature.
           If enabled, dpll device shall measure all currently available
           inputs for their actual input frequency.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: pin
     enum-name: dpll_a_pin
@@ -477,6 +483,7 @@ attribute-sets:
           Value is in PPT (parts per trillion, 10^-12).
           Note: This attribute provides higher resolution than the standard
           fractional-frequency-offset (which is in PPM).
+<<<<<<< HEAD
       -
         name: measured-frequency
         type: u64
@@ -488,6 +495,8 @@ attribute-sets:
           Value of (DPLL_A_PIN_MEASURED_FREQUENCY %
           DPLL_PIN_MEASURED_FREQUENCY_DIVIDER) is a fractional part
           of a measured frequency value.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   -
     name: pin-parent-device
@@ -576,7 +585,10 @@ operations:
             - type
             - phase-offset-monitor
             - phase-offset-avg-factor
+<<<<<<< HEAD
             - frequency-monitor
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
       dump:
         reply: *dev-attrs
@@ -596,7 +608,10 @@ operations:
             - mode
             - phase-offset-monitor
             - phase-offset-avg-factor
+<<<<<<< HEAD
             - frequency-monitor
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     -
       name: device-create-ntf
       doc: Notification about device appearing
@@ -677,7 +692,10 @@ operations:
             - esync-frequency-supported
             - esync-pulse
             - reference-sync
+<<<<<<< HEAD
             - measured-frequency
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
       dump:
         request:

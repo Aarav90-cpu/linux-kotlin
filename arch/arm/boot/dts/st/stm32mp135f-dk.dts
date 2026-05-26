@@ -187,6 +187,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &cs_cti_trace {
 	status = "okay";
 };
@@ -211,6 +212,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &dcmipp {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&dcmipp_pins_a>;

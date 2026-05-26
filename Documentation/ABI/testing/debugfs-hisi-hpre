@@ -50,6 +50,7 @@ Description:	Dump debug registers from the QM.
 		Available for PF and VF in host. VF in guest currently only
 		has one debug register.
 
+<<<<<<< HEAD
 What:		/sys/kernel/debug/hisi_hpre/<bdf>/dev_usage
 Date:		Mar 2026
 Contact:	linux-crypto@vger.kernel.org
@@ -57,6 +58,8 @@ Description:	Query the real-time bandwidth usage of device.
 		Returns the bandwidth usage of each channel on the device.
 		The returned number is in percentage.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 What:		/sys/kernel/debug/hisi_hpre/<bdf>/qm/current_q
 Date:		Sep 2019
 Contact:	linux-crypto@vger.kernel.org

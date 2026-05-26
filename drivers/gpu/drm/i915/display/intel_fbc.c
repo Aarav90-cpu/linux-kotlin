@@ -45,6 +45,10 @@
 #include <drm/drm_fourcc.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_vma.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_plane_regs.h"
 #include "intel_de.h"
 #include "intel_display_device.h"
@@ -183,7 +187,11 @@ static unsigned int skl_fbc_min_cfb_stride(struct intel_display *display,
 	 * Wa_16011863758: icl+
 	 * Avoid some hardware segment address miscalculation.
 	 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_16011863758))
+=======
+	if (DISPLAY_VER(display) >= 11)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		stride += 64;
 
 	/*
@@ -949,7 +957,11 @@ static void intel_fbc_program_workarounds(struct intel_fbc *fbc)
 	}
 
 	/* Wa_1409120013:icl,jsl,tgl,dg1 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_1409120013))
+=======
+	if (IS_DISPLAY_VER(display, 11, 12))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, ILK_DPFC_CHICKEN(fbc->id),
 			     0, DPFC_CHICKEN_COMP_DUMMY_PIXEL);
 	/*
@@ -957,7 +969,11 @@ static void intel_fbc_program_workarounds(struct intel_fbc *fbc)
 	 * Fixes: Screen flicker with FBC and Package C state enabled
 	 * Workaround: Forced SLB invalidation before start of new frame.
 	 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_22014263786))
+=======
+	if (intel_display_wa(display, 22014263786))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		intel_de_rmw(display, ILK_DPFC_CHICKEN(fbc->id),
 			     0, DPFC_CHICKEN_FORCE_SLB_INVALIDATION);
 
@@ -979,7 +995,11 @@ static void fbc_sys_cache_update_config(struct intel_display *display, u32 reg,
 	 * Fixes: SoC hardware issue in read caching
 	 * Workaround: disable cache read setting which is enabled by default.
 	 */
+<<<<<<< HEAD
 	if (!intel_display_wa(display, INTEL_DISPLAY_WA_14025769978))
+=======
+	if (!intel_display_wa(display, 14025769978))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Cache read enable is set by default */
 		reg |= FBC_SYS_CACHE_READ_ENABLE;
 
@@ -1462,7 +1482,11 @@ static void intel_fbc_update_state(struct intel_atomic_state *state,
 		    !intel_fbc_has_fences(display));
 
 	if (plane_state->flags & PLANE_HAS_FENCE)
+<<<<<<< HEAD
 		fbc_state->fence_id = intel_parent_vma_fence_id(display, plane_state->ggtt_vma);
+=======
+		fbc_state->fence_id =  i915_vma_fence_id(plane_state->ggtt_vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		fbc_state->fence_id = -1;
 
@@ -1489,7 +1513,11 @@ static bool intel_fbc_is_fence_ok(const struct intel_plane_state *plane_state)
 	 */
 	return DISPLAY_VER(display) >= 9 ||
 		(plane_state->flags & PLANE_HAS_FENCE &&
+<<<<<<< HEAD
 		 intel_parent_vma_fence_id(display, plane_state->ggtt_vma) != -1);
+=======
+		 i915_vma_fence_id(plane_state->ggtt_vma) != -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool intel_fbc_is_cfb_ok(const struct intel_plane_state *plane_state)
@@ -1612,7 +1640,11 @@ static int intel_fbc_check_plane(struct intel_atomic_state *state,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_16023588340)) {
+=======
+	if (intel_display_wa(display, 16023588340)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		plane_state->no_fbc_reason = "Wa_16023588340";
 		return 0;
 	}
@@ -1622,7 +1654,11 @@ static int intel_fbc_check_plane(struct intel_atomic_state *state,
 	 * Fixes: Underrun during media decode
 	 * Workaround: Do not enable FBC
 	 */
+<<<<<<< HEAD
 	if (intel_display_wa(display, INTEL_DISPLAY_WA_15018326506)) {
+=======
+	if (intel_display_wa(display, 15018326506)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		plane_state->no_fbc_reason = "Wa_15018326506";
 		return 0;
 	}

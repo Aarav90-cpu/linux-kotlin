@@ -43,7 +43,11 @@ static void nft_ng_inc_eval(const struct nft_expr *expr,
 }
 
 static const struct nla_policy nft_ng_policy[NFTA_NG_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_NG_DREG]		= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
+=======
+	[NFTA_NG_DREG]		= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_NG_MODULUS]	= { .type = NLA_U32 },
 	[NFTA_NG_TYPE]		= { .type = NLA_U32 },
 	[NFTA_NG_OFFSET]	= { .type = NLA_U32 },
@@ -84,6 +88,19 @@ err:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_ng_inc_reduce(struct nft_regs_track *track,
+				 const struct nft_expr *expr)
+{
+	const struct nft_ng_inc *priv = nft_expr_priv(expr);
+
+	nft_reg_track_cancel(track, priv->dreg, NFT_REG32_SIZE);
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nft_ng_dump(struct sk_buff *skb, enum nft_registers dreg,
 		       u32 modulus, enum nft_ng_types type, u32 offset)
 {
@@ -168,6 +185,19 @@ static int nft_ng_random_dump(struct sk_buff *skb,
 			   priv->offset);
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_ng_random_reduce(struct nft_regs_track *track,
+				 const struct nft_expr *expr)
+{
+	const struct nft_ng_random *priv = nft_expr_priv(expr);
+
+	nft_reg_track_cancel(track, priv->dreg, NFT_REG32_SIZE);
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct nft_expr_type nft_ng_type;
 static const struct nft_expr_ops nft_ng_inc_ops = {
 	.type		= &nft_ng_type,
@@ -176,6 +206,10 @@ static const struct nft_expr_ops nft_ng_inc_ops = {
 	.init		= nft_ng_inc_init,
 	.destroy	= nft_ng_inc_destroy,
 	.dump		= nft_ng_inc_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_ng_inc_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops nft_ng_random_ops = {
@@ -184,6 +218,10 @@ static const struct nft_expr_ops nft_ng_random_ops = {
 	.eval		= nft_ng_random_eval,
 	.init		= nft_ng_random_init,
 	.dump		= nft_ng_random_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_ng_random_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops *

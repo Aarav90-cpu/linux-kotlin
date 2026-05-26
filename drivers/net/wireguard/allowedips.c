@@ -48,6 +48,14 @@ static void push_rcu(struct allowedips_node **stack,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void node_free_rcu(struct rcu_head *rcu)
+{
+	kmem_cache_free(node_cache, container_of(rcu, struct allowedips_node, rcu));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void root_free_rcu(struct rcu_head *rcu)
 {
 	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
@@ -266,13 +274,21 @@ static void remove_node(struct allowedips_node *node, struct mutex *lock)
 	if (free_parent)
 		child = rcu_dereference_protected(parent->bit[!(node->parent_bit_packed & 1)],
 						  lockdep_is_held(lock));
+<<<<<<< HEAD
 	kfree_rcu(node, rcu);
+=======
+	call_rcu(&node->rcu, node_free_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!free_parent)
 		return;
 	if (child)
 		child->parent_bit_packed = parent->parent_bit_packed;
 	*(struct allowedips_node **)(parent->parent_bit_packed & ~3UL) = child;
+<<<<<<< HEAD
 	kfree_rcu(parent, rcu);
+=======
+	call_rcu(&parent->rcu, node_free_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int remove(struct allowedips_node __rcu **trie, u8 bits, const u8 *key,

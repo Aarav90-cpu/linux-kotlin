@@ -354,8 +354,13 @@ static void fuse_invalidate_entry(struct dentry *entry)
 	fuse_invalidate_entry_cache(entry);
 }
 
+<<<<<<< HEAD
 static void fuse_lookup_init(struct fuse_args *args, u64 nodeid,
 			     const struct qstr *name,
+=======
+static void fuse_lookup_init(struct fuse_conn *fc, struct fuse_args *args,
+			     u64 nodeid, const struct qstr *name,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     struct fuse_entry_out *outarg)
 {
 	memset(outarg, 0, sizeof(struct fuse_entry_out));
@@ -421,7 +426,12 @@ static int fuse_dentry_revalidate(struct inode *dir, const struct qstr *name,
 
 		attr_version = fuse_get_attr_version(fm->fc);
 
+<<<<<<< HEAD
 		fuse_lookup_init(&args, get_node_id(dir), name, &outarg);
+=======
+		fuse_lookup_init(fm->fc, &args, get_node_id(dir),
+				 name, &outarg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = fuse_simple_request(fm, &args);
 		/* Zero nodeid is same as -ENOENT */
 		if (!ret && !outarg.nodeid)
@@ -480,11 +490,14 @@ static int fuse_dentry_init(struct dentry *dentry)
 	fd->dentry = dentry;
 	RB_CLEAR_NODE(&fd->node);
 	dentry->d_fsdata = fd;
+<<<<<<< HEAD
 	/*
 	 * Initialising d_time (epoch) to '0' ensures the dentry is invalid
 	 * if compared to fc->epoch, which is initialized to '1'.
 	 */
 	dentry->d_time = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -574,7 +587,11 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
 	attr_version = fuse_get_attr_version(fm->fc);
 	evict_ctr = fuse_get_evict_ctr(fm->fc);
 
+<<<<<<< HEAD
 	fuse_lookup_init(&args, nodeid, name, outarg);
+=======
+	fuse_lookup_init(fm->fc, &args, nodeid, name, outarg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = fuse_simple_request(fm, &args);
 	/* Zero nodeid is same as -ENOENT, but with valid timeout */
 	if (err || !outarg->nodeid)

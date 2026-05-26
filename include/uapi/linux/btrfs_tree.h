@@ -1245,8 +1245,12 @@ struct btrfs_free_space_info {
 	__le32 flags;
 } __attribute__ ((__packed__));
 
+<<<<<<< HEAD
 #define BTRFS_FREE_SPACE_USING_BITMAPS	(1UL << 0)
 #define BTRFS_FREE_SPACE_FLAGS_MASK	(BTRFS_FREE_SPACE_USING_BITMAPS)
+=======
+#define BTRFS_FREE_SPACE_USING_BITMAPS (1ULL << 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define BTRFS_QGROUP_LEVEL_SHIFT		48
 static inline __u16 btrfs_qgroup_level(__u64 qgroupid)

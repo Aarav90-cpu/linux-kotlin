@@ -1951,7 +1951,12 @@ int cmd_timechart(int argc, const char **argv)
 	OPT_CALLBACK('p', "process", NULL, "process",
 		      "process selector. Pass a pid or process name.",
 		       parse_process),
+<<<<<<< HEAD
 	OPT_CALLBACK(0, "symfs", NULL, "directory[,layout]", SYMFS_HELP,
+=======
+	OPT_CALLBACK(0, "symfs", NULL, "directory",
+		     "Look for files with symbols relative to this directory",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     symbol__config_symfs),
 	OPT_INTEGER('n', "proc-num", &tchart.proc_num,
 		    "min. number of tasks to print"),

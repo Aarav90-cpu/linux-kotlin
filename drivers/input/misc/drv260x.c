@@ -7,16 +7,26 @@
  * Copyright:   (C) 2014 Texas Instruments, Inc.
  */
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/delay.h>
 #include <linux/device/devres.h>
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/module.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
+=======
+#include <linux/slab.h>
+#include <linux/delay.h>
+#include <linux/gpio/consumer.h>
+#include <linux/regulator/consumer.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <dt-bindings/input/ti-drv260x.h>
 
@@ -167,12 +177,15 @@
 #define DRV260X_AUTOCAL_TIME_500MS		(2 << 4)
 #define DRV260X_AUTOCAL_TIME_1000MS		(3 << 4)
 
+<<<<<<< HEAD
 /*
  * Timeout for waiting for the GO status bit, in seconds. Should be reasonably
  * large to wait for a auto-calibration cycle completion.
  */
 #define DRV260X_GO_TIMEOUT_S 5
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct drv260x_data -
  * @input_dev: Pointer to the input device
@@ -316,7 +329,10 @@ static int drv260x_init(struct drv260x_data *haptics)
 {
 	int error;
 	unsigned int cal_buf;
+<<<<<<< HEAD
 	unsigned long timeout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error = regmap_write(haptics->regmap,
 			     DRV260X_RATED_VOLT, haptics->rated_voltage);
@@ -406,7 +422,10 @@ static int drv260x_init(struct drv260x_data *haptics)
 		return error;
 	}
 
+<<<<<<< HEAD
 	timeout = jiffies + DRV260X_GO_TIMEOUT_S * HZ;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		usleep_range(15000, 15500);
 		error = regmap_read(haptics->regmap, DRV260X_GO, &cal_buf);
@@ -416,11 +435,14 @@ static int drv260x_init(struct drv260x_data *haptics)
 				error);
 			return error;
 		}
+<<<<<<< HEAD
 		if (time_after(jiffies, timeout)) {
 			dev_err(&haptics->client->dev,
 				"Calibration timeout. The device cannot be used.\n");
 			return -ETIMEDOUT;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (cal_buf == DRV260X_GO_BIT);
 
 	return 0;
@@ -434,6 +456,7 @@ static const struct regmap_config drv260x_regmap_config = {
 	.cache_type = REGCACHE_NONE,
 };
 
+<<<<<<< HEAD
 static void drv260x_power_off(void *data)
 {
 	struct drv260x_data *haptics = data;
@@ -441,6 +464,8 @@ static void drv260x_power_off(void *data)
 	regulator_disable(haptics->regulator);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int drv260x_probe(struct i2c_client *client)
 {
 	struct device *dev = &client->dev;
@@ -506,6 +531,7 @@ static int drv260x_probe(struct i2c_client *client)
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = regulator_enable(haptics->regulator);
 	if (error) {
 		dev_err(dev, "Failed to enable regulator: %d\n", error);
@@ -516,6 +542,8 @@ static int drv260x_probe(struct i2c_client *client)
 	if (error)
 		return error;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	haptics->enable_gpio = devm_gpiod_get_optional(dev, "enable",
 						       GPIOD_OUT_HIGH);
 	if (IS_ERR(haptics->enable_gpio))
@@ -630,14 +658,18 @@ static int drv260x_resume(struct device *dev)
 static DEFINE_SIMPLE_DEV_PM_OPS(drv260x_pm_ops, drv260x_suspend, drv260x_resume);
 
 static const struct i2c_device_id drv260x_id[] = {
+<<<<<<< HEAD
 	{ "drv2604" },
 	{ "drv2604l" },
 	{ "drv2605" },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "drv2605l" },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, drv260x_id);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id drv260x_acpi_match[] = {
 	{ "DRV2604" },
@@ -646,6 +678,8 @@ static const struct acpi_device_id drv260x_acpi_match[] = {
 MODULE_DEVICE_TABLE(acpi, drv260x_acpi_match);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id drv260x_of_match[] = {
 	{ .compatible = "ti,drv2604", },
 	{ .compatible = "ti,drv2604l", },
@@ -659,7 +693,10 @@ static struct i2c_driver drv260x_driver = {
 	.probe		= drv260x_probe,
 	.driver		= {
 		.name	= "drv260x-haptics",
+<<<<<<< HEAD
 		.acpi_match_table = ACPI_PTR(drv260x_acpi_match),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.of_match_table = drv260x_of_match,
 		.pm	= pm_sleep_ptr(&drv260x_pm_ops),
 	},

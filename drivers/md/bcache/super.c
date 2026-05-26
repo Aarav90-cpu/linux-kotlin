@@ -1378,8 +1378,12 @@ static CLOSURE_CALLBACK(cached_dev_free)
 	 * The sb_bio is embedded in struct cached_dev, so we must
 	 * ensure no I/O is in progress.
 	 */
+<<<<<<< HEAD
 	down(&dc->sb_write_mutex);
 	up(&dc->sb_write_mutex);
+=======
+	closure_sync(&dc->sb_write);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dc->sb_disk)
 		folio_put(virt_to_folio(dc->sb_disk));

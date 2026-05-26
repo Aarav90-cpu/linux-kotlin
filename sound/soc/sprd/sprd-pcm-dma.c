@@ -453,7 +453,11 @@ static const struct snd_soc_component_driver sprd_soc_component = {
 	.hw_free	= sprd_pcm_hw_free,
 	.trigger	= sprd_pcm_trigger,
 	.pointer	= sprd_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new	= sprd_pcm_new,
+=======
+	.pcm_construct	= sprd_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.compress_ops	= &sprd_platform_compress_ops,
 };
 

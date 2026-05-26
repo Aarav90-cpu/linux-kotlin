@@ -72,6 +72,24 @@ enum {
 	ST_SUSPENDED	= 4,
 };
 
+<<<<<<< HEAD
+=======
+enum imx8mq_mipi_csi_clk {
+	CSI2_CLK_CORE,
+	CSI2_CLK_ESC,
+	CSI2_CLK_UI,
+	CSI2_NUM_CLKS,
+};
+
+static const char * const imx8mq_mipi_csi_clk_id[CSI2_NUM_CLKS] = {
+	[CSI2_CLK_CORE] = "core",
+	[CSI2_CLK_ESC] = "esc",
+	[CSI2_CLK_UI] = "ui",
+};
+
+#define CSI2_NUM_CLKS	ARRAY_SIZE(imx8mq_mipi_csi_clk_id)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct imx8mq_plat_data {
 	int (*enable)(struct csi_state *state, u32 hs_settle);
 	void (*disable)(struct csi_state *state);
@@ -97,9 +115,13 @@ struct csi_state {
 	struct device *dev;
 	const struct imx8mq_plat_data *pdata;
 	void __iomem *regs;
+<<<<<<< HEAD
 	struct clk_bulk_data *clks;
 	struct clk *esc_clk;
 	u32 num_clks;
+=======
+	struct clk_bulk_data clks[CSI2_NUM_CLKS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct reset_control *rst;
 	struct regulator *mipi_phy_regulator;
 
@@ -339,14 +361,26 @@ static int imx8mq_mipi_csi_sw_reset(struct csi_state *state)
 {
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * these are most likely self-clearing reset bits. to make it
+	 * more clear, the reset-imx7 driver should implement the
+	 * .reset() operation.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = reset_control_assert(state->rst);
 	if (ret < 0) {
 		dev_err(state->dev, "Failed to assert resets: %d\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	/* Explicitly release reset to make sure reset bits are cleared. */
 	return reset_control_deassert(state->rst);
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void imx8mq_mipi_csi_set_params(struct csi_state *state)
@@ -368,6 +402,7 @@ static void imx8mq_mipi_csi_set_params(struct csi_state *state)
 			      CSI2RX_SEND_LEVEL);
 }
 
+<<<<<<< HEAD
 static struct clk *imx8mq_mipi_csi_find_esc_clk(struct csi_state *state)
 {
 	unsigned int i;
@@ -378,6 +413,26 @@ static struct clk *imx8mq_mipi_csi_find_esc_clk(struct csi_state *state)
 	}
 
 	return ERR_PTR(-ENODEV);
+=======
+static int imx8mq_mipi_csi_clk_enable(struct csi_state *state)
+{
+	return clk_bulk_prepare_enable(CSI2_NUM_CLKS, state->clks);
+}
+
+static void imx8mq_mipi_csi_clk_disable(struct csi_state *state)
+{
+	clk_bulk_disable_unprepare(CSI2_NUM_CLKS, state->clks);
+}
+
+static int imx8mq_mipi_csi_clk_get(struct csi_state *state)
+{
+	unsigned int i;
+
+	for (i = 0; i < CSI2_NUM_CLKS; i++)
+		state->clks[i].id = imx8mq_mipi_csi_clk_id[i];
+
+	return devm_clk_bulk_get(state->dev, CSI2_NUM_CLKS, state->clks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state *state,
@@ -432,7 +487,11 @@ static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state *state,
 	 * documentation recommends picking a value away from the boundaries.
 	 * Let's pick the average.
 	 */
+<<<<<<< HEAD
 	esc_clk_rate = clk_get_rate(state->esc_clk);
+=======
+	esc_clk_rate = clk_get_rate(state->clks[CSI2_CLK_ESC].clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!esc_clk_rate) {
 		dev_err(state->dev, "Could not get esc clock rate.\n");
 		return -EINVAL;
@@ -702,6 +761,7 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
 		fwnode_graph_get_endpoint_by_id(dev_fwnode(state->dev), 0, 0,
 						FWNODE_GRAPH_ENDPOINT_NEXT);
 	if (!ep)
+<<<<<<< HEAD
 		return dev_err_probe(state->dev, -ENOTCONN,
 				     "failed to get local endpoint fwnode\n");
 
@@ -714,6 +774,20 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
 		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1)
 			return dev_err_probe(state->dev, -EINVAL,
 					     "data lanes reordering is not supported");
+=======
+		return -ENOTCONN;
+
+	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
+	if (ret)
+		return ret;
+
+	for (i = 0; i < vep.bus.mipi_csi2.num_data_lanes; ++i) {
+		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1) {
+			dev_err(state->dev,
+				"data lanes reordering is not supported");
+			return -EINVAL;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	state->bus = vep.bus.mipi_csi2;
@@ -725,13 +799,18 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
 	asd = v4l2_async_nf_add_fwnode_remote(&state->notifier, ep,
 					      struct v4l2_async_connection);
 	if (IS_ERR(asd))
+<<<<<<< HEAD
 		return dev_err_probe(state->dev, PTR_ERR(asd),
 				     "failed to add fwnode to notifier\n");
+=======
+		return PTR_ERR(asd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	state->notifier.ops = &imx8mq_mipi_csi_notify_ops;
 
 	ret = v4l2_async_nf_register(&state->notifier);
 	if (ret)
+<<<<<<< HEAD
 		return dev_err_probe(state->dev, ret,
 				     "failed to register notifier\n");
 
@@ -741,6 +820,11 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
 				     "failed to register subdev\n");
 
 	return 0;
+=======
+		return ret;
+
+	return v4l2_async_register_subdev(&state->sd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* -----------------------------------------------------------------------------
@@ -756,7 +840,11 @@ static void imx8mq_mipi_csi_pm_suspend(struct device *dev)
 
 	if (state->state & ST_POWERED) {
 		imx8mq_mipi_csi_stop_stream(state);
+<<<<<<< HEAD
 		clk_bulk_disable_unprepare(state->num_clks, state->clks);
+=======
+		imx8mq_mipi_csi_clk_disable(state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		state->state &= ~ST_POWERED;
 	}
 
@@ -774,7 +862,11 @@ static int imx8mq_mipi_csi_pm_resume(struct device *dev)
 
 	if (!(state->state & ST_POWERED)) {
 		state->state |= ST_POWERED;
+<<<<<<< HEAD
 		ret = clk_bulk_prepare_enable(state->num_clks, state->clks);
+=======
+		ret = imx8mq_mipi_csi_clk_enable(state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (state->state & ST_STREAMING) {
 		sd_state = v4l2_subdev_lock_and_get_active_state(sd);
@@ -995,6 +1087,7 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
 	if (IS_ERR(state->regs))
 		return PTR_ERR(state->regs);
 
+<<<<<<< HEAD
 	ret = devm_clk_bulk_get_all(dev, &state->clks);
 	if (ret < 0)
 		return dev_err_probe(dev, ret, "Failed to get clocks\n");
@@ -1005,6 +1098,11 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
 	if (IS_ERR(state->esc_clk))
 		return dev_err_probe(dev, PTR_ERR(state->esc_clk),
 				     "Couldn't find esc clock\n");
+=======
+	ret = imx8mq_mipi_csi_clk_get(state);
+	if (ret < 0)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	platform_set_drvdata(pdev, &state->sd);
 
@@ -1070,7 +1168,10 @@ static void imx8mq_mipi_csi_remove(struct platform_device *pdev)
 static const struct of_device_id imx8mq_mipi_csi_of_match[] = {
 	{ .compatible = "fsl,imx8mq-mipi-csi2", .data = &imx8mq_data },
 	{ .compatible = "fsl,imx8qxp-mipi-csi2", .data = &imx8qxp_data },
+<<<<<<< HEAD
 	{ .compatible = "fsl,imx8ulp-mipi-csi2", .data = &imx8qxp_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, imx8mq_mipi_csi_of_match);

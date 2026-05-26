@@ -19,6 +19,11 @@
 #include "coresight-priv.h"
 #include "coresight-tpdm.h"
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(tpdm_devs, "tpdm");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool tpdm_has_dsb_dataset(struct tpdm_drvdata *drvdata)
 {
 	return (drvdata->datasets & TPDM_PIDR0_DS_DSB);
@@ -481,7 +486,11 @@ static void __tpdm_enable(struct tpdm_drvdata *drvdata)
 
 static int tpdm_enable(struct coresight_device *csdev, struct perf_event *event,
 		       enum cs_mode mode,
+<<<<<<< HEAD
 		       struct coresight_path *path)
+=======
+		       __maybe_unused struct coresight_path *path)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tpdm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
@@ -497,7 +506,10 @@ static int tpdm_enable(struct coresight_device *csdev, struct perf_event *event,
 	}
 
 	__tpdm_enable(drvdata);
+<<<<<<< HEAD
 	drvdata->traceid = path->trace_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drvdata->enable = true;
 	spin_unlock(&drvdata->spinlock);
 
@@ -694,6 +706,7 @@ static struct attribute_group tpdm_attr_grp = {
 	.attrs = tpdm_attrs,
 };
 
+<<<<<<< HEAD
 static ssize_t traceid_show(struct device *dev,
 			    struct device_attribute *attr, char *buf)
 {
@@ -717,6 +730,8 @@ static struct attribute_group traceid_attr_grp = {
 	.attrs = traceid_attrs,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t dsb_mode_show(struct device *dev,
 			     struct device_attribute *attr,
 			     char *buf)
@@ -1391,12 +1406,15 @@ static const struct attribute_group *tpdm_attr_grps[] = {
 	&tpdm_cmb_patt_grp,
 	&tpdm_cmb_msr_grp,
 	&tpdm_mcmb_attr_grp,
+<<<<<<< HEAD
 	&traceid_attr_grp,
 	NULL,
 };
 
 static const struct attribute_group *static_tpdm_attr_grps[] = {
 	&traceid_attr_grp,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 
@@ -1430,7 +1448,10 @@ static int tpdm_probe(struct device *dev, struct resource *res)
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		desc.access = CSDEV_ACCESS_IOMEM(base);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (tpdm_has_dsb_dataset(drvdata))
 			of_property_read_u32(drvdata->dev->of_node,
 					     "qcom,dsb-msrs-num", &drvdata->dsb_msr_num);
@@ -1445,7 +1466,11 @@ static int tpdm_probe(struct device *dev, struct resource *res)
 	}
 
 	/* Set up coresight component description */
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("tpdm", dev);
+=======
+	desc.name = coresight_alloc_device_name(&tpdm_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 	desc.type = CORESIGHT_DEV_TYPE_SOURCE;
@@ -1453,10 +1478,16 @@ static int tpdm_probe(struct device *dev, struct resource *res)
 	desc.ops = &tpdm_cs_ops;
 	desc.pdata = dev->platform_data;
 	desc.dev = dev;
+<<<<<<< HEAD
 	if (res)
 		desc.groups = tpdm_attr_grps;
 	else
 		desc.groups = static_tpdm_attr_grps;
+=======
+	desc.access = CSDEV_ACCESS_IOMEM(base);
+	if (res)
+		desc.groups = tpdm_attr_grps;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drvdata->csdev = coresight_register(&desc);
 	if (IS_ERR(drvdata->csdev))
 		return PTR_ERR(drvdata->csdev);

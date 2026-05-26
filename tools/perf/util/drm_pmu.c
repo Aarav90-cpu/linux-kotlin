@@ -15,7 +15,10 @@
 #include <unistd.h>
 #include <linux/unistd.h>
 #include <linux/kcmp.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/zalloc.h>
 #include <sys/stat.h>
 #include <sys/syscall.h>
@@ -130,6 +133,14 @@ static struct drm_pmu *add_drm_pmu(struct list_head *pmus, char *line, size_t li
 }
 
 
+<<<<<<< HEAD
+=======
+static bool starts_with(const char *str, const char *prefix)
+{
+	return !strncmp(prefix, str, strlen(prefix));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int add_event(struct drm_pmu_event **events, int *num_events,
 		     const char *line, enum drm_pmu_unit unit, const char *desc)
 {
@@ -170,7 +181,11 @@ static int read_drm_pmus_cb(void *args, int fdinfo_dir_fd, const char *fd_name)
 	}
 
 	while (io__getline(&io, &line, &line_len) > 0) {
+<<<<<<< HEAD
 		if (strstarts(line, "drm-driver:")) {
+=======
+		if (starts_with(line, "drm-driver:")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			drm = add_drm_pmu(pmus, line, line_len);
 			if (!drm)
 				break;
@@ -180,59 +195,105 @@ static int read_drm_pmus_cb(void *args, int fdinfo_dir_fd, const char *fd_name)
 		 * Note the string matching below is alphabetical, with more
 		 * specific matches appearing before less specific.
 		 */
+<<<<<<< HEAD
 		if (strstarts(line, "drm-active-")) {
+=======
+		if (starts_with(line, "drm-active-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Total memory active in one or more engines");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-cycles-")) {
+=======
+		if (starts_with(line, "drm-cycles-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_CYCLES,
 				"Busy cycles");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-engine-capacity-")) {
+=======
+		if (starts_with(line, "drm-engine-capacity-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_CAPACITY,
 				"Engine capacity");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-engine-")) {
+=======
+		if (starts_with(line, "drm-engine-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_NS,
 				  "Utilization in ns");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-maxfreq-")) {
+=======
+		if (starts_with(line, "drm-maxfreq-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_HZ,
 				  "Maximum frequency");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-purgeable-")) {
+=======
+		if (starts_with(line, "drm-purgeable-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Size of resident and purgeable memory buffers");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-resident-")) {
+=======
+		if (starts_with(line, "drm-resident-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Size of resident memory buffers");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-shared-")) {
+=======
+		if (starts_with(line, "drm-shared-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Size of shared memory buffers");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-total-cycles-")) {
+=======
+		if (starts_with(line, "drm-total-cycles-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Total busy cycles");
 			continue;
 		}
+<<<<<<< HEAD
 		if (strstarts(line, "drm-total-")) {
+=======
+		if (starts_with(line, "drm-total-")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			add_event(&events, &num_events, line, DRM_PMU_UNIT_BYTES,
 				  "Size of shared and private memory");
 			continue;
 		}
+<<<<<<< HEAD
 		if (verbose > 1 && strstarts(line, "drm-") &&
 		    !strstarts(line, "drm-client-id:") &&
 		    !strstarts(line, "drm-pdev:"))
+=======
+		if (verbose > 1 && starts_with(line, "drm-") &&
+		    !starts_with(line, "drm-client-id:") &&
+		    !starts_with(line, "drm-pdev:"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_debug("Unhandled DRM PMU fdinfo line match '%s'\n", line);
 	}
 	if (drm) {
@@ -257,7 +318,11 @@ bool drm_pmu__have_event(const struct perf_pmu *pmu, const char *name)
 {
 	struct drm_pmu *drm = container_of(pmu, struct drm_pmu, pmu);
 
+<<<<<<< HEAD
 	if (!strstarts(name, "drm-"))
+=======
+	if (!starts_with(name, "drm-"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	for (int i = 0; i < drm->num_events; i++) {

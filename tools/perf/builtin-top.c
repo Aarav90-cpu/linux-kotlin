@@ -56,7 +56,10 @@
 #include "util/debug.h"
 #include "util/ordered-events.h"
 #include "util/pfm.h"
+<<<<<<< HEAD
 #include "dwarf-regs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <assert.h>
 #include <elf.h>
@@ -1388,6 +1391,16 @@ out_join_thread:
 }
 
 static int
+<<<<<<< HEAD
+=======
+callchain_opt(const struct option *opt, const char *arg, int unset)
+{
+	symbol_conf.use_callchain = true;
+	return record_callchain_opt(opt, arg, unset);
+}
+
+static int
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 parse_callchain_opt(const struct option *opt, const char *arg, int unset)
 {
 	struct callchain_param *callchain = opt->value;
@@ -1407,6 +1420,7 @@ parse_callchain_opt(const struct option *opt, const char *arg, int unset)
 	return parse_callchain_top_opt(arg);
 }
 
+<<<<<<< HEAD
 static int
 callchain_opt(const struct option *opt, const char *arg __maybe_unused, int unset)
 {
@@ -1425,6 +1439,8 @@ callchain_opt(const struct option *opt, const char *arg __maybe_unused, int unse
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int perf_top_config(const char *var, const char *value, void *cb __maybe_unused)
 {
 	if (!strcmp(var, "top.call-graph")) {
@@ -1449,10 +1465,18 @@ parse_percent_limit(const struct option *opt, const char *arg,
 	return 0;
 }
 
+<<<<<<< HEAD
 int cmd_top(int argc, const char **argv)
 {
 	static const char top_callchain_help[] = CALLCHAIN_RECORD_HELP CALLCHAIN_REPORT_HELP
 		"\n\t\t\t\tDefault: fp,graph,0.5,caller,function";
+=======
+const char top_callchain_help[] = CALLCHAIN_RECORD_HELP CALLCHAIN_REPORT_HELP
+	"\n\t\t\t\tDefault: fp,graph,0.5,caller,function";
+
+int cmd_top(int argc, const char **argv)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char errbuf[BUFSIZ];
 	struct perf_top top = {
 		.count_filter	     = 5,
@@ -1705,6 +1729,7 @@ int cmd_top(int argc, const char **argv)
 	if (annotate_check_args() < 0)
 		goto out_delete_evlist;
 
+<<<<<<< HEAD
 	status = target__validate(target);
 	if (status) {
 		target__strerror(target, status, errbuf, BUFSIZ);
@@ -1716,6 +1741,10 @@ int cmd_top(int argc, const char **argv)
 
 	if (!top.evlist->core.nr_entries) {
 		struct evlist *def_evlist = evlist__new_default(target, callchain_param.enabled);
+=======
+	if (!top.evlist->core.nr_entries) {
+		struct evlist *def_evlist = evlist__new_default();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!def_evlist)
 			goto out_delete_evlist;
@@ -1808,6 +1837,15 @@ int cmd_top(int argc, const char **argv)
 		goto out_delete_evlist;
 	}
 
+<<<<<<< HEAD
+=======
+	status = target__validate(target);
+	if (status) {
+		target__strerror(target, status, errbuf, BUFSIZ);
+		ui__warning("%s\n", errbuf);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (top.uid_str) {
 		uid_t uid = parse_uid(top.uid_str);
 
@@ -1821,6 +1859,12 @@ int cmd_top(int argc, const char **argv)
 			goto out_delete_evlist;
 	}
 
+<<<<<<< HEAD
+=======
+	if (target__none(target))
+		target->system_wide = true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (evlist__create_maps(top.evlist, target) < 0) {
 		ui__error("Couldn't create thread/CPU maps: %s\n",
 			  errno == ENOENT ? "No such process" : str_error_r(errno, errbuf, sizeof(errbuf)));

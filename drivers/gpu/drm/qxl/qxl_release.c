@@ -62,8 +62,12 @@ static long qxl_fence_wait(struct dma_fence *fence, bool intr,
 	struct qxl_device *qdev;
 	unsigned long cur, end = jiffies + timeout;
 
+<<<<<<< HEAD
 	qdev = container_of(fence->extern_lock, struct qxl_device,
 			    release_lock);
+=======
+	qdev = container_of(fence->lock, struct qxl_device, release_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!wait_event_timeout(qdev->release_event,
 				(dma_fence_is_signaled(fence) ||
@@ -147,7 +151,11 @@ qxl_release_free(struct qxl_device *qdev,
 	idr_remove(&qdev->release_idr, release->id);
 	spin_unlock(&qdev->release_idr_lock);
 
+<<<<<<< HEAD
 	if (dma_fence_was_initialized(&release->base)) {
+=======
+	if (release->base.ops) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON(list_empty(&release->bos));
 		qxl_release_free_list(release);
 

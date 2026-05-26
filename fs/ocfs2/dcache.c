@@ -145,7 +145,11 @@ struct dentry *ocfs2_find_local_alias(struct inode *inode,
 	struct dentry *dentry;
 
 	spin_lock(&inode->i_lock);
+<<<<<<< HEAD
 	for_each_alias(dentry, inode) {
+=======
+	hlist_for_each_entry(dentry, &inode->i_dentry, d_u.d_alias) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock(&dentry->d_lock);
 		if (ocfs2_match_dentry(dentry, parent_blkno, skip_unhashed)) {
 			trace_ocfs2_find_local_alias(dentry->d_name.len,

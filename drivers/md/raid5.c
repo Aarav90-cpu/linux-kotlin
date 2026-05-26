@@ -3916,8 +3916,11 @@ static int fetch_block(struct stripe_head *sh, struct stripe_head_state *s,
 					break;
 			}
 			BUG_ON(other < 0);
+<<<<<<< HEAD
 			if (test_bit(R5_LOCKED, &sh->dev[other].flags))
 				return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_debug("Computing stripe %llu blocks %d,%d\n",
 			       (unsigned long long)sh->sector,
 			       disk_idx, other);
@@ -4596,6 +4599,23 @@ static void handle_stripe_expansion(struct r5conf *conf, struct stripe_head *sh)
 	async_tx_quiesce(&tx);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * handle_stripe - do things to a stripe.
+ *
+ * We lock the stripe by setting STRIPE_ACTIVE and then examine the
+ * state of various bits to see what needs to be done.
+ * Possible results:
+ *    return some read requests which now have data
+ *    return some write requests which are safely on storage
+ *    schedule a read on some buffers
+ *    schedule a write of some buffers
+ *    return confirmation of parity correctness
+ *
+ */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void analyse_stripe(struct stripe_head *sh, struct stripe_head_state *s)
 {
 	struct r5conf *conf = sh->raid_conf;
@@ -4889,6 +4909,7 @@ static void break_stripe_batch_list(struct stripe_head *head_sh,
 		set_bit(STRIPE_HANDLE, &head_sh->state);
 }
 
+<<<<<<< HEAD
 /*
  * handle_stripe - do things to a stripe.
  *
@@ -4901,6 +4922,8 @@ static void break_stripe_batch_list(struct stripe_head *head_sh,
  *    schedule a write of some buffers
  *    return confirmation of parity correctness
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void handle_stripe(struct stripe_head *sh)
 {
 	struct stripe_head_state s;
@@ -6217,12 +6240,16 @@ static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
 
 	mempool_free(ctx, conf->ctx_pool);
 	if (res == STRIPE_WAIT_RESHAPE) {
+<<<<<<< HEAD
 		DECLARE_COMPLETION_ONSTACK(done);
 		WRITE_ONCE(bi->bi_private, &done);
 
 		bio_endio(bi);
 
 		wait_for_completion(&done);
+=======
+		md_free_cloned_bio(bi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	}
 
@@ -7552,7 +7579,11 @@ static struct r5conf *setup_conf(struct mddev *mddev)
 	rdev_for_each(rdev, mddev) {
 		if (test_bit(Journal, &rdev->flags))
 			continue;
+<<<<<<< HEAD
 		if (!bdev_rot(rdev->bdev)) {
+=======
+		if (bdev_nonrot(rdev->bdev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			conf->batch_bio_dispatch = false;
 			break;
 		}
@@ -7791,7 +7822,10 @@ static int raid5_set_limits(struct mddev *mddev)
 	lim.logical_block_size = mddev->logical_block_size;
 	lim.io_min = mddev->chunk_sectors << 9;
 	lim.io_opt = lim.io_min * (conf->raid_disks - conf->max_degraded);
+<<<<<<< HEAD
 	lim.chunk_sectors = lim.io_opt >> 9;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lim.features |= BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE;
 	lim.discard_granularity = stripe;
 	lim.max_write_zeroes_sectors = 0;

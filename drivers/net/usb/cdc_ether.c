@@ -115,7 +115,11 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
 	int				len = intf->cur_altsetting->extralen;
 	struct usb_interface_descriptor	*d;
 	struct cdc_state		*info = (void *) &dev->data;
+<<<<<<< HEAD
 	int				status = -ENODEV;
+=======
+	int				status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int				rndis;
 	bool				android_rndis_quirk = false;
 	struct usb_driver		*driver = driver_of(intf);
@@ -169,6 +173,7 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
 	info->header = header.usb_cdc_header_desc;
 	info->ether = header.usb_cdc_ether_desc;
 	if (!info->u) {
+<<<<<<< HEAD
 		if (rndis) {
 			goto skip;
 		} else {
@@ -176,6 +181,12 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
 			dev_err(&dev->udev->dev, "No union descriptors\n");
 			goto bad_desc;
 		}
+=======
+		if (rndis)
+			goto skip;
+		else /* in that case a quirk is mandatory */
+			goto bad_desc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/* we need a master/control interface (what we're
 	 * probed with) and a slave/data interface; union
@@ -195,20 +206,32 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
 			android_rndis_quirk = true;
 			goto skip;
 		}
+<<<<<<< HEAD
 		dev_err(&intf->dev, "bad CDC descriptors\n");
 		goto bad_desc;
 	}
 	if (info->control != intf) {
+=======
+		goto bad_desc;
+	}
+	if (info->control != intf) {
+		dev_dbg(&intf->dev, "bogus CDC Union\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Ambit USB Cable Modem (and maybe others)
 		 * interchanges master and slave interface.
 		 */
 		if (info->data == intf) {
 			info->data = info->control;
 			info->control = intf;
+<<<<<<< HEAD
 		} else {
 			dev_err(&intf->dev, "bogus CDC Union\n");
 			goto bad_desc;
 		}
+=======
+		} else
+			goto bad_desc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* some devices merge these - skip class check */
@@ -218,7 +241,11 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
 	/* a data interface altsetting does the real i/o */
 	d = &info->data->cur_altsetting->desc;
 	if (d->bInterfaceClass != USB_CLASS_CDC_DATA) {
+<<<<<<< HEAD
 		dev_err(&intf->dev, "slave class %u\n", d->bInterfaceClass);
+=======
+		dev_dbg(&intf->dev, "slave class %u\n", d->bInterfaceClass);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto bad_desc;
 	}
 skip:
@@ -232,7 +259,11 @@ skip:
 	if (rndis && is_rndis(&intf->cur_altsetting->desc) &&
 	    header.usb_cdc_acm_descriptor &&
 	    header.usb_cdc_acm_descriptor->bmCapabilities) {
+<<<<<<< HEAD
 		dev_err(&intf->dev,
+=======
+		dev_dbg(&intf->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"ACM capabilities %02x, not really RNDIS?\n",
 			header.usb_cdc_acm_descriptor->bmCapabilities);
 		goto bad_desc;
@@ -247,14 +278,22 @@ skip:
 
 	if (header.usb_cdc_mdlm_desc &&
 	    memcmp(header.usb_cdc_mdlm_desc->bGUID, mbm_guid, 16)) {
+<<<<<<< HEAD
 		dev_err(&intf->dev, "GUID doesn't match\n");
+=======
+		dev_dbg(&intf->dev, "GUID doesn't match\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto bad_desc;
 	}
 
 	if (header.usb_cdc_mdlm_detail_desc &&
 		header.usb_cdc_mdlm_detail_desc->bLength <
 			(sizeof(struct usb_cdc_mdlm_detail_desc) + 1)) {
+<<<<<<< HEAD
 		dev_err(&intf->dev, "Descriptor too short\n");
+=======
+		dev_dbg(&intf->dev, "Descriptor too short\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto bad_desc;
 	}
 
@@ -272,7 +311,11 @@ skip:
 		info->control = usb_ifnum_to_if(dev->udev, 0);
 		info->data = usb_ifnum_to_if(dev->udev, 1);
 		if (!info->control || !info->data || info->control != intf) {
+<<<<<<< HEAD
 			dev_err(&intf->dev,
+=======
+			dev_dbg(&intf->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				"rndis: master #0/%p slave #1/%p\n",
 				info->control,
 				info->data);
@@ -280,7 +323,11 @@ skip:
 		}
 
 	} else if (!info->header || (!rndis && !info->ether)) {
+<<<<<<< HEAD
 		dev_err(&intf->dev, "missing cdc %s%s%sdescriptor\n",
+=======
+		dev_dbg(&intf->dev, "missing cdc %s%s%sdescriptor\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			info->header ? "" : "header ",
 			info->u ? "" : "union ",
 			info->ether ? "" : "ether ");
@@ -292,6 +339,7 @@ skip:
 	 */
 	if (info->data != info->control) {
 		status = usb_driver_claim_interface(driver, info->data, dev);
+<<<<<<< HEAD
 		if (status < 0) {
 			dev_err(&intf->dev, "Second interface unclaimable\n");
 			goto bad_desc;
@@ -301,6 +349,18 @@ skip:
 	if (status < 0) {
 		dev_dbg(&intf->dev, "Mandatory endpoints missing\n");
 		goto bail_out_and_release;
+=======
+		if (status < 0)
+			return status;
+	}
+	status = usbnet_get_endpoints(dev, info->data);
+	if (status < 0) {
+		/* ensure immediate exit from usbnet_disconnect */
+		usb_set_intfdata(info->data, NULL);
+		if (info->data != info->control)
+			usb_driver_release_interface(driver, info->data);
+		return status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* status endpoint: optional for CDC Ethernet, not RNDIS (or ACM) */
@@ -320,9 +380,16 @@ skip:
 		}
 	}
 	if (rndis && !dev->status) {
+<<<<<<< HEAD
 		dev_err(&intf->dev, "missing RNDIS status endpoint\n");
 		status = -ENODEV;
 		goto bail_out_and_release;
+=======
+		dev_dbg(&intf->dev, "missing RNDIS status endpoint\n");
+		usb_set_intfdata(info->data, NULL);
+		usb_driver_release_interface(driver, info->data);
+		return -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* override ethtool_ops */
@@ -330,12 +397,18 @@ skip:
 
 	return 0;
 
+<<<<<<< HEAD
 bail_out_and_release:
 	usb_set_intfdata(info->data, NULL);
 	if (info->data != info->control)
 		usb_driver_release_interface(driver, info->data);
 bad_desc:
 	return status;
+=======
+bad_desc:
+	dev_info(&dev->udev->dev, "bad CDC descriptors\n");
+	return -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(usbnet_generic_cdc_bind);
 

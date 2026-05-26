@@ -35,7 +35,10 @@ Descriptions of section entries and preferred order
 	   F:	drivers/net/	all files in and below drivers/net
 	   F:	drivers/net/*	all files in drivers/net, but not below
 	   F:	*/net/*		all files in "any top level directory"/net
+<<<<<<< HEAD
 	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	   One pattern per line.  Multiple F: lines acceptable.
 	X: *Excluded* files and directories that are NOT maintained, same
 	   rules as F:. Files exclusions are tested before file matches.
@@ -68,12 +71,15 @@ Maintainers List
           first. When adding to this list, please keep the entries in
           alphabetical order.
 
+<<<<<<< HEAD
 3C509 NETWORK DRIVER
 M:	"Maciej W. Rozycki" <macro@orcam.me.uk>
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/3com/3c509.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 3C59X NETWORK DRIVER
 M:	Steffen Klassert <klassert@kernel.org>
 L:	netdev@vger.kernel.org
@@ -109,6 +115,15 @@ F:	Documentation/networking/6lowpan.rst
 F:	include/net/6lowpan.h
 F:	net/6lowpan/
 
+<<<<<<< HEAD
+=======
+6PACK NETWORK DRIVER FOR AX.25
+M:	Andreas Koensgen <ajk@comnets.uni-bremen.de>
+L:	linux-hams@vger.kernel.org
+S:	Maintained
+F:	drivers/net/hamradio/6pack.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 802.11 (including CFG80211/NL80211)
 M:	Johannes Berg <johannes@sipsolutions.net>
 L:	linux-wireless@vger.kernel.org
@@ -144,7 +159,11 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
 F:	drivers/tty/serial/8250*
 F:	include/linux/serial_8250.h
 
+<<<<<<< HEAD
 8390 NETWORK DRIVERS [NE2000, 3C503, etc.]
+=======
+8390 NETWORK DRIVERS [WD80x3/SMC-ELITE, SMC-ULTRA, NE2000, 3C503, etc.]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	netdev@vger.kernel.org
 S:	Orphan / Obsolete
 F:	drivers/net/ethernet/8390/
@@ -262,6 +281,15 @@ L:	linux-gpio@vger.kernel.org
 S:	Maintained
 F:	drivers/gpio/gpio-pcie-idio-24.c
 
+<<<<<<< HEAD
+=======
+ACENIC DRIVER
+M:	Jes Sorensen <jes@trained-monkey.org>
+L:	linux-acenic@sunsite.dk
+S:	Maintained
+F:	drivers/net/ethernet/alteon/acenic*
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
 M:	Peter Kaestle <peter@piie.net>
 L:	platform-driver-x86@vger.kernel.org
@@ -313,7 +341,11 @@ F:	drivers/firmware/efi/cper*
 
 ACPI COMPONENT ARCHITECTURE (ACPICA)
 M:	"Rafael J. Wysocki" <rafael@kernel.org>
+<<<<<<< HEAD
 M:	Saket Dumbre <saket.dumbre@intel.com>
+=======
+M:	Robert Moore <robert.moore@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-acpi@vger.kernel.org
 L:	acpica-devel@lists.linux.dev
 S:	Supported
@@ -646,11 +678,16 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
 F:	drivers/iio/accel/adxl367*
 
+<<<<<<< HEAD
 ADXL371/ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
 M:	Michael Hennerich <michael.hennerich@analog.com>
 M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
 M:	Nuno Sá <nuno.sa@analog.com>
 M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+=======
+ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+M:	Michael Hennerich <michael.hennerich@analog.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Supported
 W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
@@ -1232,9 +1269,15 @@ F:	drivers/gpu/drm/amd/pm/
 
 AMD PSTATE DRIVER
 M:	Huang Rui <ray.huang@amd.com>
+<<<<<<< HEAD
 M:	Mario Limonciello <mario.limonciello@amd.com>
 R:	Perry Yuan <perry.yuan@amd.com>
 R:	K Prateek Nayak <kprateek.nayak@amd.com>
+=======
+M:	Gautham R. Shenoy <gautham.shenoy@amd.com>
+M:	Mario Limonciello <mario.limonciello@amd.com>
+R:	Perry Yuan <perry.yuan@amd.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-pm@vger.kernel.org
 S:	Supported
 F:	Documentation/admin-guide/pm/amd-pstate.rst
@@ -1591,6 +1634,7 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
 F:	drivers/iio/adc/ad7780.c
 
+<<<<<<< HEAD
 ANALOG DEVICES INC AD8366 DRIVER
 M:	Michael Hennerich <Michael.Hennerich@analog.com>
 M:	Rodrigo Alencar <rodrigo.alencar@analog.com>
@@ -1600,6 +1644,8 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/amplifiers/adi,ad8366.yaml
 F:	drivers/iio/amplifiers/ad8366.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ANALOG DEVICES INC AD9467 DRIVER
 M:	Michael Hennerich <Michael.Hennerich@analog.com>
 M:	Nuno Sa <nuno.sa@analog.com>
@@ -1708,6 +1754,7 @@ S:	Supported
 W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
 
+<<<<<<< HEAD
 ANALOG DEVICES INC ADL8113 DRIVER
 M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
 L:	linux-iio@vger.kernel.org
@@ -1716,6 +1763,8 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml
 F:	drivers/iio/amplifiers/adl8113.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ANALOG DEVICES INC ADM1177 DRIVER
 M:	Michael Hennerich <Michael.Hennerich@analog.com>
 L:	linux-hwmon@vger.kernel.org
@@ -2021,7 +2070,11 @@ F:	Documentation/hwmon/aquacomputer_d5next.rst
 F:	drivers/hwmon/aquacomputer_d5next.c
 
 AQUANTIA ETHERNET DRIVER (atlantic)
+<<<<<<< HEAD
 M:	Sukhdeep Singh <sukhdeeps@marvell.com>
+=======
+M:	Igor Russkikh <irusskikh@marvell.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	netdev@vger.kernel.org
 S:	Maintained
 W:	https://www.marvell.com/
@@ -2030,7 +2083,11 @@ F:	Documentation/networking/device_drivers/ethernet/aquantia/atlantic.rst
 F:	drivers/net/ethernet/aquantia/atlantic/
 
 AQUANTIA ETHERNET DRIVER PTP SUBSYSTEM
+<<<<<<< HEAD
 M:	Sukhdeep Singh <sukhdeeps@marvell.com>
+=======
+M:	Egor Pomozov <epomozov@marvell.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	netdev@vger.kernel.org
 S:	Maintained
 W:	http://www.aquantia.com
@@ -2212,7 +2269,10 @@ L:	dri-devel@lists.freedesktop.org
 S:	Supported
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+<<<<<<< HEAD
 F:	drivers/gpu/drm/ci/xfails/panthor*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/gpu/drm/panthor/
 F:	include/uapi/drm/panthor_drm.h
 
@@ -2567,7 +2627,10 @@ F:	drivers/nvmem/apple-spmi-nvmem.c
 F:	drivers/phy/apple/
 F:	drivers/pinctrl/pinctrl-apple-gpio.c
 F:	drivers/power/reset/macsmc-reboot.c
+<<<<<<< HEAD
 F:	drivers/power/supply/macsmc-power.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/pwm/pwm-apple.c
 F:	drivers/rtc/rtc-macsmc.c
 F:	drivers/soc/apple/*
@@ -2662,9 +2725,13 @@ R:	BST Linux Kernel Upstream Group <bst-upstream@bstai.top>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Supported
 F:	Documentation/devicetree/bindings/arm/bst.yaml
+<<<<<<< HEAD
 F:	Documentation/devicetree/bindings/mmc/bst,c1200-sdhci.yaml
 F:	arch/arm64/boot/dts/bst/
 F:	drivers/mmc/host/sdhci-of-bst.c
+=======
+F:	arch/arm64/boot/dts/bst/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ARM/CALXEDA HIGHBANK ARCHITECTURE
 M:	Andre Przywara <andre.przywara@arm.com>
@@ -2726,9 +2793,14 @@ N:	digicolor
 
 ARM/CORESIGHT FRAMEWORK AND DRIVERS
 M:	Suzuki K Poulose <suzuki.poulose@arm.com>
+<<<<<<< HEAD
 R:	Mike Leach <mike.leach@arm.com>
 R:	James Clark <james.clark@linaro.org>
 R:	Leo Yan <leo.yan@arm.com>
+=======
+R:	Mike Leach <mike.leach@linaro.org>
+R:	James Clark <james.clark@linaro.org>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	coresight@lists.linaro.org (moderated for non-subscribers)
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
@@ -2825,7 +2897,12 @@ S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
 F:	Documentation/devicetree/bindings/firmware/fsl*
 F:	Documentation/devicetree/bindings/firmware/nxp*
+<<<<<<< HEAD
 F:	arch/arm/boot/dts/nxp/
+=======
+F:	arch/arm/boot/dts/nxp/imx/
+F:	arch/arm/boot/dts/nxp/mxs/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	arch/arm64/boot/dts/freescale/
 X:	Documentation/devicetree/bindings/media/i2c/
 X:	arch/arm64/boot/dts/freescale/fsl-*
@@ -2931,6 +3008,10 @@ F:	include/linux/soc/ixp4xx/qmgr.h
 
 ARM/INTEL KEEMBAY ARCHITECTURE
 M:	Paul J. Murphy <paul.j.murphy@intel.com>
+<<<<<<< HEAD
+=======
+M:	Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 F:	Documentation/devicetree/bindings/arm/intel,keembay.yaml
 F:	arch/arm64/boot/dts/intel/keembay-evm.dts
@@ -3011,6 +3092,10 @@ S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gclement/mvebu.git
 F:	Documentation/devicetree/bindings/arm/marvell/
 F:	arch/arm/boot/dts/marvell/armada*
+<<<<<<< HEAD
+=======
+F:	arch/arm/boot/dts/marvell/db-falcon*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	arch/arm/boot/dts/marvell/kirkwood*
 F:	arch/arm/configs/mvebu_*_defconfig
 F:	arch/arm/mach-mvebu/
@@ -3174,6 +3259,10 @@ F:	drivers/clocksource/clksrc-dbx500-prcmu.c
 F:	drivers/dma/ste_dma40*
 F:	drivers/pmdomain/st/ste-ux500-pm-domain.c
 F:	drivers/gpio/gpio-nomadik.c
+<<<<<<< HEAD
+=======
+F:	drivers/hwspinlock/u8500_hsem.c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/i2c/busses/i2c-nomadik.c
 F:	drivers/iio/adc/ab8500-gpadc.c
 F:	drivers/mfd/ab8500*
@@ -4079,7 +4168,11 @@ S:	Maintained
 F:	crypto/rsa*
 
 ASYNCHRONOUS TRANSFERS/TRANSFORMS (IOAT) API
+<<<<<<< HEAD
 R:	Dan Williams <djbw@kernel.org>
+=======
+R:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Odd fixes
 W:	http://sourceforge.net/projects/xscaleiop
 F:	Documentation/crypto/async-tx-api.rst
@@ -4182,16 +4275,26 @@ L:	netdev@vger.kernel.org
 S:	Maintained
 W:	http://linux-atm.sourceforge.net
 F:	drivers/atm/
+<<<<<<< HEAD
 F:	drivers/usb/atm/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	include/linux/atm*
 F:	include/linux/sonet.h
 F:	include/uapi/linux/atm*
 F:	include/uapi/linux/sonet.h
+<<<<<<< HEAD
 F:	net/atm/
 
 ATMEL MACB ETHERNET DRIVER
 M:	Théo Lebrun <theo.lebrun@bootlin.com>
 R:	Conor Dooley <conor.dooley@microchip.com>
+=======
+
+ATMEL MACB ETHERNET DRIVER
+M:	Nicolas Ferre <nicolas.ferre@microchip.com>
+M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 F:	drivers/net/ethernet/cadence/
 
@@ -4307,17 +4410,38 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/leds/backlight/awinic,aw99706.yaml
 F:	drivers/video/backlight/aw99706.c
 
+<<<<<<< HEAD
 AXENTIA ARM DEVICES
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Orphan
+=======
+AX.25 NETWORK LAYER
+L:	linux-hams@vger.kernel.org
+S:	Orphan
+W:	https://linux-ax25.in-berlin.de
+F:	include/net/ax25.h
+F:	include/uapi/linux/ax25.h
+F:	net/ax25/
+
+AXENTIA ARM DEVICES
+M:	Peter Rosin <peda@axentia.se>
+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	arch/arm/boot/dts/microchip/at91-linea.dtsi
 F:	arch/arm/boot/dts/microchip/at91-natte.dtsi
 F:	arch/arm/boot/dts/microchip/at91-nattis-2-natte-2.dts
 F:	arch/arm/boot/dts/microchip/at91-tse850-3.dts
 
 AXENTIA ASOC DRIVERS
+<<<<<<< HEAD
 L:	linux-sound@vger.kernel.org
 S:	Orphan
+=======
+M:	Peter Rosin <peda@axentia.se>
+L:	linux-sound@vger.kernel.org
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/devicetree/bindings/sound/axentia,*
 F:	sound/soc/atmel/tse850-pcm5142.c
 
@@ -4446,6 +4570,16 @@ F:	include/uapi/linux/batadv_packet.h
 F:	include/uapi/linux/batman_adv.h
 F:	net/batman-adv/
 
+<<<<<<< HEAD
+=======
+BAYCOM/HDLCDRV DRIVERS FOR AX.25
+M:	Thomas Sailer <t.sailer@alumni.ethz.ch>
+L:	linux-hams@vger.kernel.org
+S:	Maintained
+W:	http://www.baycom.org/~tom/ham/ham.html
+F:	drivers/net/hamradio/baycom*
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 BCACHE (BLOCK LAYER CACHE)
 M:	Coly Li <colyli@fnnas.com>
 M:	Kent Overstreet <kent.overstreet@linux.dev>
@@ -4819,10 +4953,20 @@ M:	Alexei Starovoitov <ast@kernel.org>
 M:	Daniel Borkmann <daniel@iogearbox.net>
 M:	Andrii Nakryiko <andrii@kernel.org>
 R:	Martin KaFai Lau <martin.lau@linux.dev>
+<<<<<<< HEAD
 M:	Eduard Zingerman <eddyz87@gmail.com>
 M:	Kumar Kartikeya Dwivedi <memxor@gmail.com>
 R:	Song Liu <song@kernel.org>
 R:	Yonghong Song <yonghong.song@linux.dev>
+=======
+R:	Eduard Zingerman <eddyz87@gmail.com>
+R:	Song Liu <song@kernel.org>
+R:	Yonghong Song <yonghong.song@linux.dev>
+R:	John Fastabend <john.fastabend@gmail.com>
+R:	KP Singh <kpsingh@kernel.org>
+R:	Stanislav Fomichev <sdf@fomichev.me>
+R:	Hao Luo <haoluo@google.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Jiri Olsa <jolsa@kernel.org>
 L:	bpf@vger.kernel.org
 S:	Supported
@@ -4909,9 +5053,12 @@ L:	netdev@vger.kernel.org
 S:	Supported
 F:	drivers/net/netkit.c
 F:	include/net/netkit.h
+<<<<<<< HEAD
 F:	tools/testing/selftests/bpf/prog_tests/tc_netkit.c
 F:	tools/testing/selftests/drivers/net/hw/nk_qlease.py
 F:	tools/testing/selftests/net/nk_qlease.py
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 BPF [NETWORKING] (struct_ops, reuseport)
 M:	Martin KaFai Lau <martin.lau@linux.dev>
@@ -5684,6 +5831,18 @@ T:	git git://linuxtv.org/media.git
 F:	Documentation/admin-guide/media/cafe_ccic*
 F:	drivers/media/platform/marvell/
 
+<<<<<<< HEAD
+=======
+CAIF NETWORK LAYER
+L:	netdev@vger.kernel.org
+S:	Orphan
+F:	Documentation/networking/caif/
+F:	drivers/net/caif/
+F:	include/net/caif/
+F:	include/uapi/linux/caif/
+F:	net/caif/
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CAKE QDISC
 M:	Toke Høiland-Jørgensen <toke@toke.dk>
 L:	cake@lists.bufferbloat.net (moderated for non-subscribers)
@@ -5959,6 +6118,7 @@ S:	Maintained
 F:	Documentation/hwmon/powerz.rst
 F:	drivers/hwmon/powerz.c
 
+<<<<<<< HEAD
 CHARLIEPLEX KEYPAD DRIVER
 M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
 S:	Supported
@@ -5966,6 +6126,8 @@ W:	http://www.mosaic-industries.com/embedded-systems/microcontroller-projects/el
 F:	Documentation/devicetree/bindings/input/gpio-charlieplex-keypad.yaml
 F:	drivers/input/keyboard/charlieplex_keypad.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CHECKPATCH
 M:	Andy Whitcroft <apw@canonical.com>
 M:	Joe Perches <joe@perches.com>
@@ -6284,7 +6446,10 @@ M:	Daniel Lezcano <daniel.lezcano@kernel.org>
 M:	Thomas Gleixner <tglx@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Supported
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
 F:	Documentation/devicetree/bindings/timer/
 F:	drivers/clocksource/
@@ -6365,7 +6530,10 @@ F:	include/uapi/linux/comedi.h
 COMMON CLK FRAMEWORK
 M:	Michael Turquette <mturquette@baylibre.com>
 M:	Stephen Boyd <sboyd@kernel.org>
+<<<<<<< HEAD
 R:	Brian Masney <bmasney@redhat.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-clk@vger.kernel.org
 S:	Maintained
 Q:	http://patchwork.kernel.org/project/linux-clk/list/
@@ -6393,7 +6561,11 @@ L:	linux-cifs@vger.kernel.org
 L:	samba-technical@lists.samba.org (moderated for non-subscribers)
 S:	Supported
 W:	https://wiki.samba.org/index.php/LinuxCIFS
+<<<<<<< HEAD
 T:	git https://git.samba.org/sfrench/cifs-2.6.git
+=======
+T:	git git://git.samba.org/sfrench/cifs-2.6.git
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/admin-guide/cifs/
 F:	fs/smb/client/
 F:	fs/smb/common/
@@ -6430,12 +6602,20 @@ F:	include/linux/compiler_attributes.h
 
 COMPUTE EXPRESS LINK (CXL)
 M:	Davidlohr Bueso <dave@stgolabs.net>
+<<<<<<< HEAD
 M:	Jonathan Cameron <jic23@kernel.org>
+=======
+M:	Jonathan Cameron <jonathan.cameron@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Dave Jiang <dave.jiang@intel.com>
 M:	Alison Schofield <alison.schofield@intel.com>
 M:	Vishal Verma <vishal.l.verma@intel.com>
 M:	Ira Weiny <ira.weiny@intel.com>
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-cxl@vger.kernel.org
 S:	Maintained
 F:	Documentation/driver-api/cxl
@@ -6446,7 +6626,11 @@ F:	include/uapi/linux/cxl_mem.h
 F:	tools/testing/cxl/
 
 COMPUTE EXPRESS LINK PMU (CPMU)
+<<<<<<< HEAD
 M:	Jonathan Cameron <jic23@kernel.org>
+=======
+M:	Jonathan Cameron <jonathan.cameron@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-cxl@vger.kernel.org
 S:	Maintained
 F:	Documentation/admin-guide/perf/cxl.rst
@@ -6622,6 +6806,7 @@ M:	Bence Csókás <bence98@sch.bme.hu>
 S:	Maintained
 F:	drivers/i2c/busses/i2c-cp2615.c
 
+<<<<<<< HEAD
 CPU FREQUENCY DRIVERS - CPPC CPUFREQ
 M:	"Rafael J. Wysocki" <rafael@kernel.org>
 M:	Viresh Kumar <viresh.kumar@linaro.org>
@@ -6633,6 +6818,8 @@ L:	linux-pm@vger.kernel.org
 S:	Maintained
 F:	drivers/cpufreq/cppc_cpufreq.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CPU FREQUENCY DRIVERS - VEXPRESS SPC ARM BIG LITTLE
 M:	Viresh Kumar <viresh.kumar@linaro.org>
 M:	Sudeep Holla <sudeep.holla@kernel.org>
@@ -6641,12 +6828,15 @@ S:	Maintained
 W:	http://www.arm.com/products/processors/technologies/biglittleprocessing.php
 F:	drivers/cpufreq/vexpress-spc-cpufreq.c
 
+<<<<<<< HEAD
 CPU FREQUENCY DRIVERS - VIRTUAL MACHINE CPUFREQ
 M:	Saravana Kannan <saravanak@kernel.org>
 L:	linux-pm@vger.kernel.org
 S:	Maintained
 F:	drivers/cpufreq/virtual-cpufreq.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CPU FREQUENCY SCALING FRAMEWORK
 M:	"Rafael J. Wysocki" <rafael@kernel.org>
 M:	Viresh Kumar <viresh.kumar@linaro.org>
@@ -6666,12 +6856,24 @@ F:	kernel/sched/cpufreq*.c
 F:	rust/kernel/cpufreq.rs
 F:	tools/testing/selftests/cpufreq/
 
+<<<<<<< HEAD
+=======
+CPU FREQUENCY DRIVERS - VIRTUAL MACHINE CPUFREQ
+M:	Saravana Kannan <saravanak@kernel.org>
+L:	linux-pm@vger.kernel.org
+S:	Maintained
+F:	drivers/cpufreq/virtual-cpufreq.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CPU HOTPLUG
 M:	Thomas Gleixner <tglx@kernel.org>
 M:	Peter Zijlstra <peterz@infradead.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git smp/core
 F:	include/linux/cpu.h
 F:	include/linux/cpuhotplug.h
@@ -6844,6 +7046,15 @@ L:	linux-crypto@vger.kernel.org
 S:	Maintained
 F:	tools/crypto/tcrypt/tcrypt_speed_compare.py
 
+<<<<<<< HEAD
+=======
+CRYPTOGRAPHIC RANDOM NUMBER GENERATOR
+M:	Neil Horman <nhorman@tuxdriver.com>
+L:	linux-crypto@vger.kernel.org
+S:	Maintained
+F:	crypto/rng.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CS3308 MEDIA DRIVER
 M:	Hans Verkuil <hverkuil@kernel.org>
 L:	linux-media@vger.kernel.org
@@ -7031,6 +7242,23 @@ S:	Maintained
 F:	drivers/rtc/rtc-ds1685.c
 F:	include/linux/rtc/ds1685.h
 
+<<<<<<< HEAD
+=======
+DAMA SLAVE for AX.25
+M:	Joerg Reuter <jreuter@yaina.de>
+L:	linux-hams@vger.kernel.org
+S:	Maintained
+W:	http://yaina.de/jreuter/
+W:	http://www.qsl.net/dl1bke/
+F:	net/ax25/af_ax25.c
+F:	net/ax25/ax25_dev.c
+F:	net/ax25/ax25_ds_*
+F:	net/ax25/ax25_in.c
+F:	net/ax25/ax25_out.c
+F:	net/ax25/ax25_timer.c
+F:	net/ax25/sysctl_net_ax25.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DASHARO ACPI PLATFORM DRIVER
 M:	Michał Kopeć <michal.kopec@3mdeb.com>
 S:	Maintained
@@ -7080,17 +7308,23 @@ DEBUGOBJECTS:
 M:	Thomas Gleixner <tglx@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/debugobjects
 F:	include/linux/debugobjects.h
 F:	lib/debugobjects.c
 
+<<<<<<< HEAD
 DEC LANCE NETWORK DRIVER
 M:	"Maciej W. Rozycki" <macro@orcam.me.uk>
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/amd/declance.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DECSTATION PLATFORM SUPPORT
 M:	"Maciej W. Rozycki" <macro@orcam.me.uk>
 L:	linux-mips@vger.kernel.org
@@ -7295,7 +7529,11 @@ S:	Maintained
 F:	scripts/dev-needs.sh
 
 DEVICE DIRECT ACCESS (DAX)
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Vishal Verma <vishal.l.verma@intel.com>
 M:	Dave Jiang <dave.jiang@intel.com>
 L:	nvdimm@lists.linux.dev
@@ -7303,6 +7541,7 @@ L:	linux-cxl@vger.kernel.org
 S:	Supported
 F:	drivers/dax/
 
+<<<<<<< HEAD
 DEVICE DIRECT ACCESS (DAX) [fsdev_dax]
 M:	John Groves <jgroves@micron.com>
 M:	John Groves <John@Groves.net>
@@ -7311,6 +7550,8 @@ L:	linux-cxl@vger.kernel.org
 S:	Supported
 F:	drivers/dax/fsdev.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEVICE FREQUENCY (DEVFREQ)
 M:	MyungJoo Ham <myungjoo.ham@samsung.com>
 M:	Kyungmin Park <kyungmin.park@samsung.com>
@@ -7547,7 +7788,10 @@ F:	include/linux/*fence.h
 F:	include/linux/dma-buf.h
 F:	include/linux/dma-buf/
 F:	include/linux/dma-resv.h
+<<<<<<< HEAD
 F:	rust/helpers/dma-resv.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 K:	\bdma_(?:buf|fence|resv)\b
 
 DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
@@ -7689,9 +7933,14 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
 L:	linux-doc@vger.kernel.org
 S:	Maintained
 F:	Documentation/sphinx/
+<<<<<<< HEAD
 F:	tools/docs/
 F:	tools/lib/python/*
 F:	tools/unittests/*
+=======
+F:	tools/lib/python/*
+F:	tools/docs/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DOCUMENTATION/ITALIAN
 M:	Federico Vaga <federico.vaga@vaga.pv.it>
@@ -7820,10 +8069,15 @@ F:	include/linux/debugfs.h
 F:	include/linux/device.h
 F:	include/linux/fwnode.h
 F:	include/linux/kobj*
+<<<<<<< HEAD
 F:	include/linux/ksysfs.h
 F:	include/linux/property.h
 F:	include/linux/sysfs.h
 F:	kernel/ksysfs.c
+=======
+F:	include/linux/property.h
+F:	include/linux/sysfs.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	lib/kobj*
 F:	rust/kernel/debugfs.rs
 F:	rust/kernel/debugfs/
@@ -7887,7 +8141,11 @@ F:	drivers/gpu/drm/sun4i/sun8i*
 
 DRM DRIVER FOR APPLE TOUCH BARS
 M:	Aun-Ali Zaidi <admin@kodeit.net>
+<<<<<<< HEAD
 M:	Aditya Garg <gargaditya08@proton.me>
+=======
+M:	Aditya Garg <gargaditya08@live.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	dri-devel@lists.freedesktop.org
 S:	Maintained
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
@@ -8046,9 +8304,14 @@ F:	drivers/gpu/drm/panel/panel-ilitek-ili9805.c
 
 DRM DRIVER FOR ILITEK ILI9806E PANELS
 M:	Michael Walle <mwalle@kernel.org>
+<<<<<<< HEAD
 M:	Dario Binacchi <dario.binacchi@amarulasolutions.com>
 S:	Maintained
 F:	drivers/gpu/drm/panel/panel-ilitek-ili9806e-*
+=======
+S:	Maintained
+F:	drivers/gpu/drm/panel/panel-ilitek-ili9806e.c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DRM DRIVER FOR JADARD JD9365DA-H3 MIPI-DSI LCD PANELS
 M:	Jagan Teki <jagan@edgeble.ai>
@@ -8079,12 +8342,15 @@ F:	Documentation/devicetree/bindings/display/lvds.yaml
 F:	Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
 F:	drivers/gpu/drm/panel/panel-lvds.c
 
+<<<<<<< HEAD
 DRM DRIVER FOR LXD M9189A PANELS
 M:	Michael Tretter <m.tretter@pengutronix.de>
 S:	Maintained
 F:	Documentation/devicetree/bindings/display/panel/lxd,m9189a.yaml
 F:	drivers/gpu/drm/panel/panel-lxd-m9189a.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DRM DRIVER FOR MANTIX MLAF057WE51 PANELS
 M:	Guido Günther <agx@sigxcpu.org>
 R:	Purism Kernel Team <kernel@puri.sm>
@@ -8207,9 +8473,16 @@ F:	include/uapi/drm/nouveau_drm.h
 CORE DRIVER FOR NVIDIA GPUS [RUST]
 M:	Danilo Krummrich <dakr@kernel.org>
 M:	Alexandre Courbot <acourbot@nvidia.com>
+<<<<<<< HEAD
 L:	nova-gpu@lists.linux.dev
 S:	Supported
 W:	https://rust-for-linux.com/nova-gpu-driver
+=======
+L:	nouveau@lists.freedesktop.org
+S:	Supported
+W:	https://rust-for-linux.com/nova-gpu-driver
+Q:	https://patchwork.freedesktop.org/project/nouveau/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 B:	https://gitlab.freedesktop.org/drm/nova/-/issues
 C:	irc://irc.oftc.net/nouveau
 T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git drm-rust-next
@@ -8218,9 +8491,16 @@ F:	drivers/gpu/nova-core/
 
 DRM DRIVER FOR NVIDIA GPUS [RUST]
 M:	Danilo Krummrich <dakr@kernel.org>
+<<<<<<< HEAD
 L:	nova-gpu@lists.linux.dev
 S:	Supported
 W:	https://rust-for-linux.com/nova-gpu-driver
+=======
+L:	nouveau@lists.freedesktop.org
+S:	Supported
+W:	https://rust-for-linux.com/nova-gpu-driver
+Q:	https://patchwork.freedesktop.org/project/nouveau/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 B:	https://gitlab.freedesktop.org/drm/nova/-/issues
 C:	irc://irc.oftc.net/nouveau
 T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git drm-rust-next
@@ -8319,11 +8599,14 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
 F:	drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
 
+<<<<<<< HEAD
 DRM DRIVER FOR SAMSUNG S6E8FC0 PANELS
 M:	Yedaya Katsman <yedaya.ka@gmail.com>
 S:	Maintained
 F:	drivers/gpu/drm/panel/panel-samsung-s6e8fc0-m1906f9.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DRM DRIVER FOR SAMSUNG SOFEF00 DDIC
 M:	David Heidelberg <david@ixit.cz>
 M:	Casey Connolly <casey.connolly@linaro.org>
@@ -8528,10 +8811,14 @@ T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
 F:	drivers/gpu/drm/nova/
 F:	drivers/gpu/drm/tyr/
 F:	drivers/gpu/nova-core/
+<<<<<<< HEAD
 F:	rust/helpers/gpu.c
 F:	rust/kernel/drm/
 F:	rust/kernel/gpu.rs
 F:	rust/kernel/gpu/
+=======
+F:	rust/kernel/drm/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DRM DRIVERS FOR ALLWINNER A10
 M:	Chen-Yu Tsai <wens@kernel.org>
@@ -8635,6 +8922,7 @@ S:	Maintained
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	drivers/gpu/drm/gma500/
 
+<<<<<<< HEAD
 DRM DRIVERS FOR HISILICON HIBMC
 M:	Yongbang Shi <shiyongbang@huawei.com>
 M:	Tian Tao  <tiantao6@hisilicon.com>
@@ -8646,6 +8934,12 @@ F:	drivers/gpu/drm/hisilicon/hibmc
 
 DRM DRIVERS FOR HISILICON KIRIN
 M:	Xinliang Liu <xinliang.liu@linaro.org>
+=======
+DRM DRIVERS FOR HISILICON
+M:	Xinliang Liu <xinliang.liu@linaro.org>
+M:	Tian Tao  <tiantao6@hisilicon.com>
+R:	Xinwei Kong <kong.kongxinwei@hisilicon.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Sumit Semwal <sumit.semwal@linaro.org>
 R:	Yongqin Liu <yongqin.liu@linaro.org>
 R:	John Stultz <jstultz@google.com>
@@ -8653,7 +8947,11 @@ L:	dri-devel@lists.freedesktop.org
 S:	Maintained
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	Documentation/devicetree/bindings/display/hisilicon/
+<<<<<<< HEAD
 F:	drivers/gpu/drm/hisilicon/kirin
+=======
+F:	drivers/gpu/drm/hisilicon/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DRM DRIVERS FOR LIMA
 M:	Qiang Yu <yuq825@gmail.com>
@@ -8690,7 +8988,11 @@ F:	drivers/phy/mediatek/phy-mtk-hdmi*
 F:	drivers/phy/mediatek/phy-mtk-mipi*
 
 DRM DRIVERS FOR NVIDIA TEGRA
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Mikko Perttunen <mperttunen@nvidia.com>
 L:	dri-devel@lists.freedesktop.org
 L:	linux-tegra@vger.kernel.org
@@ -8704,7 +9006,11 @@ F:	include/linux/host1x.h
 F:	include/uapi/drm/tegra_drm.h
 
 DRM DRIVERS FOR PRE-DCP APPLE DISPLAY OUTPUT
+<<<<<<< HEAD
 M:	Sasha Finkelstein <k@chaosmail.tech>
+=======
+M:	Sasha Finkelstein <fnkl.kernel@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Janne Grunau <j@jannau.net>
 L:	dri-devel@lists.freedesktop.org
 L:	asahi@lists.linux.dev
@@ -8833,6 +9139,7 @@ F:	Documentation/devicetree/bindings/display/brcm,bcm2835-*.yaml
 F:	drivers/gpu/drm/vc4/
 F:	include/uapi/drm/vc4_drm.h
 
+<<<<<<< HEAD
 DRM DRIVERS FOR VERISILICON DISPLAY CONTROLLER IP
 M:	Icenowy Zheng <zhengxingda@iscas.ac.cn>
 L:	dri-devel@lists.freedesktop.org
@@ -8841,6 +9148,8 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	Documentation/devicetree/bindings/display/verisilicon,dc.yaml
 F:	drivers/gpu/drm/verisilicon/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DRM DRIVERS FOR VIVANTE GPU IP
 M:	Lucas Stach <l.stach@pengutronix.de>
 R:	Russell King <linux+etnaviv@armlinux.org.uk>
@@ -8953,6 +9262,7 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	drivers/gpu/drm/ttm/
 F:	include/drm/ttm/
 
+<<<<<<< HEAD
 GPU BUDDY ALLOCATOR
 M:	Matthew Auld <matthew.auld@intel.com>
 M:	Arun Pravin <arunpravin.paneerselvam@amd.com>
@@ -8968,6 +9278,18 @@ F:	include/linux/gpu_buddy.h
 F:	rust/helpers/gpu.c
 F:	rust/kernel/gpu.rs
 F:	rust/kernel/gpu/
+=======
+DRM BUDDY ALLOCATOR
+M:	Matthew Auld <matthew.auld@intel.com>
+M:	Arun Pravin <arunpravin.paneerselvam@amd.com>
+R:	Christian Koenig <christian.koenig@amd.com>
+L:	dri-devel@lists.freedesktop.org
+S:	Maintained
+T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
+F:	drivers/gpu/drm/drm_buddy.c
+F:	drivers/gpu/drm/tests/drm_buddy_test.c
+F:	include/drm/drm_buddy.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DRM AUTOMATED TESTING
 M:	Helen Koike <helen.fornazier@gmail.com>
@@ -9152,8 +9474,11 @@ F:	arch/mips/boot/dts/econet/
 F:	arch/mips/econet/
 F:	drivers/clocksource/timer-econet-en751221.c
 F:	drivers/irqchip/irq-econet-en751221.c
+<<<<<<< HEAD
 F:	include/dt-bindings/clock/econet,en751221-scu.h
 F:	include/dt-bindings/reset/econet,en751221-scu.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ECRYPT FILE SYSTEM
 M:	Tyler Hicks <code@tyhicks.com>
@@ -9553,6 +9878,7 @@ T:	git https://github.com/eswincomputing/linux-next.git
 F:	Documentation/devicetree/bindings/riscv/eswin.yaml
 F:	arch/riscv/boot/dts/eswin/
 
+<<<<<<< HEAD
 ESWIN EIC7700 CLOCK DRIVER
 M:	Yifeng Huang <huangyifeng@eswincomputing.com>
 M:	Xuyang Dong <dongxuyang@eswincomputing.com>
@@ -9561,6 +9887,8 @@ F:	Documentation/devicetree/bindings/clock/eswin,eic7700-clock.yaml
 F:	drivers/clk/eswin/
 F:	include/dt-bindings/clock/eswin,eic7700-clock.h
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ET131X NETWORK DRIVER
 M:	Mark Einon <mark.einon@gmail.com>
 S:	Odd Fixes
@@ -9614,6 +9942,10 @@ F:	include/linux/phy_fixed.h
 F:	include/linux/phy_link_topology.h
 F:	include/linux/phylib_stubs.h
 F:	include/linux/platform_data/mdio-bcm-unimac.h
+<<<<<<< HEAD
+=======
+F:	include/linux/platform_data/mdio-gpio.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	include/net/phy/
 F:	include/trace/events/mdio.h
 F:	include/uapi/linux/mdio.h
@@ -9875,7 +10207,11 @@ F:	include/linux/fcntl.h
 F:	include/uapi/linux/fcntl.h
 
 FILESYSTEM DIRECT ACCESS (DAX)
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Matthew Wilcox <willy@infradead.org>
 R:	Jan Kara <jack@suse.cz>
 L:	linux-fsdevel@vger.kernel.org
@@ -10120,6 +10456,7 @@ S:	Maintained
 W:	https://floatingpoint.billm.au/
 F:	arch/x86/math-emu/
 
+<<<<<<< HEAD
 FRAMEBUFFER CONSOLE
 M:	Helge Deller <deller@gmx.de>
 M:	Thomas Zimmermann <tzimmermann@suse.de>
@@ -10143,6 +10480,8 @@ F:	include/linux/fbcon.h
 F:	include/linux/font.h
 F:	lib/fonts/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FRAMEBUFFER CORE
 M:	Simona Vetter <simona@ffwll.ch>
 S:	Odd Fixes
@@ -10330,7 +10669,11 @@ F:	drivers/net/ethernet/freescale/dpaa
 
 FREESCALE QORIQ DPAA FMAN DRIVER
 M:	Madalin Bucur <madalin.bucur@nxp.com>
+<<<<<<< HEAD
 R:	Sean Anderson <sean.anderson@linux.dev>
+=======
+R:	Sean Anderson <sean.anderson@seco.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/net/fsl,fman*.yaml
@@ -10606,7 +10949,10 @@ R:	Davidlohr Bueso <dave@stgolabs.net>
 R:	André Almeida <andrealmeid@igalia.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
 F:	Documentation/locking/*futex*
 F:	include/asm-generic/futex.h
@@ -10620,19 +10966,26 @@ FWCTL SUBSYSTEM
 M:	Dave Jiang <dave.jiang@intel.com>
 M:	Jason Gunthorpe <jgg@nvidia.com>
 M:	Saeed Mahameed <saeedm@nvidia.com>
+<<<<<<< HEAD
 R:	Jonathan Cameron <jic23@kernel.org>
+=======
+R:	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 F:	Documentation/userspace-api/fwctl/
 F:	drivers/fwctl/
 F:	include/linux/fwctl.h
 F:	include/uapi/fwctl/
 
+<<<<<<< HEAD
 FWCTL BNXT DRIVER
 M:	Pavan Chebbi <pavan.chebbi@broadcom.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
 F:	drivers/fwctl/bnxt/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FWCTL MLX5 DRIVER
 M:	Saeed Mahameed <saeedm@nvidia.com>
 R:	Itay Avraham <itayavr@nvidia.com>
@@ -10754,7 +11107,10 @@ M:	Peter Zijlstra <peterz@infradead.org>
 M:	Andy Lutomirski <luto@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/entry
 F:	include/linux/entry-common.h
 F:	include/linux/entry-virt.h
@@ -10870,7 +11226,10 @@ S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/vdso
 F:	include/asm-generic/vdso/vsyscall.h
 F:	include/vdso/
+<<<<<<< HEAD
 F:	kernel/time/namespace_vdso.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	kernel/time/vsyscall.c
 F:	lib/vdso/
 F:	tools/testing/selftests/vDSO/
@@ -10950,7 +11309,10 @@ L:	chrome-platform@lists.linux.dev
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux.git
 F:	drivers/firmware/google/
+<<<<<<< HEAD
 F:	include/linux/coreboot.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 GOOGLE TENSOR SoC SUPPORT
 M:	Peter Griffin <peter.griffin@linaro.org>
@@ -11059,6 +11421,10 @@ F:	drivers/gpio/
 F:	include/dt-bindings/gpio/
 F:	include/linux/gpio.h
 F:	include/linux/gpio/
+<<<<<<< HEAD
+=======
+F:	include/linux/of_gpio.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 K:	(devm_)?gpio_(request|free|direction|get|set)
 K:	GPIOD_FLAGS_BIT_NONEXCLUSIVE
 K:	devm_gpiod_unhinge
@@ -11455,6 +11821,17 @@ F:	drivers/hid/hid-sensor-*
 F:	drivers/iio/*/hid-*
 F:	include/linux/hid-sensor-*
 
+<<<<<<< HEAD
+=======
+HID UNIVERSAL PIDFF DRIVER
+M:	Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+M:	Oleg Makarenko <oleg@makarenk.ooo>
+L:	linux-input@vger.kernel.org
+S:	Maintained
+B:	https://github.com/JacKeTUs/universal-pidff/issues
+F:	drivers/hid/hid-universal-pidff.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 HID VRC-2 CAR CONTROLLER DRIVER
 M:	Marcus Folkesson <marcus.folkesson@gmail.com>
 L:	linux-input@vger.kernel.org
@@ -11521,6 +11898,14 @@ T:	git https://github.com/Rust-for-Linux/linux.git timekeeping-next
 F:	rust/kernel/time.rs
 F:	rust/kernel/time/
 
+<<<<<<< HEAD
+=======
+HIGH-SPEED SCC DRIVER FOR AX.25
+L:	linux-hams@vger.kernel.org
+S:	Orphan
+F:	drivers/net/hamradio/scc.c
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 HIGHPOINT ROCKETRAID 3xxx RAID DRIVER
 M:	HighPoint Linux Team <linux@highpoint-tech.com>
 S:	Supported
@@ -11616,6 +12001,10 @@ F:	drivers/bus/hisi_lpc.c
 
 HISILICON NETWORK SUBSYSTEM 3 DRIVER (HNS3)
 M:	Jian Shen <shenjian15@huawei.com>
+<<<<<<< HEAD
+=======
+M:	Salil Mehta <salil.mehta@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Jijie Shao <shaojijie@huawei.com>
 L:	netdev@vger.kernel.org
 S:	Maintained
@@ -11630,6 +12019,10 @@ F:	drivers/net/ethernet/hisilicon/hibmcge/
 
 HISILICON NETWORK SUBSYSTEM DRIVER
 M:	Jian Shen <shenjian15@huawei.com>
+<<<<<<< HEAD
+=======
+M:	Salil Mehta <salil.mehta@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	netdev@vger.kernel.org
 S:	Maintained
 W:	http://www.hisilicon.com
@@ -12058,7 +12451,11 @@ F:	Documentation/i2c/busses/i2c-nvidia-gpu.rst
 F:	drivers/i2c/busses/i2c-nvidia-gpu.c
 
 I2C MUXES
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-i2c@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/i2c/i2c-arb*
@@ -12108,12 +12505,19 @@ F:	include/uapi/linux/i2c-*.h
 F:	include/uapi/linux/i2c.h
 
 I2C SUBSYSTEM [RUST]
+<<<<<<< HEAD
 M:	Igor Korotin <igor.korotin@linux.dev>
+=======
+M:	Igor Korotin <igor.korotin.linux@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Danilo Krummrich <dakr@kernel.org>
 R:	Daniel Almeida <daniel.almeida@collabora.com>
 L:	rust-for-linux@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 T:	git https://github.com/ikrtn/linux.git rust-i2c-next
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	rust/kernel/i2c.rs
 F:	samples/rust/rust_driver_i2c.rs
 F:	samples/rust/rust_i2c_client.rs
@@ -12354,10 +12758,17 @@ F:	arch/powerpc/crypto/aes_cbc.c
 F:	arch/powerpc/crypto/aes_ctr.c
 F:	arch/powerpc/crypto/aes_xts.c
 F:	arch/powerpc/crypto/aesp8-ppc.*
+<<<<<<< HEAD
 F:	arch/powerpc/crypto/ppc-xlate.pl
 F:	arch/powerpc/crypto/vmx.c
 F:	lib/crypto/powerpc/gf128hash.h
 F:	lib/crypto/powerpc/ghashp8-ppc.pl
+=======
+F:	arch/powerpc/crypto/ghash.c
+F:	arch/powerpc/crypto/ghashp8-ppc.pl
+F:	arch/powerpc/crypto/ppc-xlate.pl
+F:	arch/powerpc/crypto/vmx.c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 IBM ServeRAID RAID DRIVER
 S:	Orphan
@@ -12459,7 +12870,11 @@ F:	drivers/iio/industrialio-backend.c
 F:	include/linux/iio/backend.h
 
 IIO DIGITAL POTENTIOMETER DAC
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	Documentation/ABI/testing/sysfs-bus-iio-dac-dpot-dac
@@ -12467,7 +12882,11 @@ F:	Documentation/devicetree/bindings/iio/dac/dpot-dac.yaml
 F:	drivers/iio/dac/dpot-dac.c
 
 IIO ENVELOPE DETECTOR
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	Documentation/ABI/testing/sysfs-bus-iio-adc-envelope-detector
@@ -12483,7 +12902,11 @@ F:	include/linux/iio/iio-gts-helper.h
 F:	drivers/iio/test/iio-test-gts.c
 
 IIO MULTIPLEXER
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
@@ -12514,7 +12937,11 @@ F:	include/linux/iio/
 F:	tools/iio/
 
 IIO UNIT CONVERTER
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
@@ -12638,7 +13065,10 @@ F:	include/uapi/linux/if_infiniband.h
 F:	include/uapi/rdma/
 F:	samples/bpf/ibumad_kern.c
 F:	samples/bpf/ibumad_user.c
+<<<<<<< HEAD
 F:	tools/testing/selftests/rdma/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 INGENIC JZ4780 NAND DRIVER
 M:	Harvey Hunt <harveyhuntnexus@gmail.com>
@@ -12752,7 +13182,10 @@ R:	Eric Snowberg <eric.snowberg@oracle.com>
 L:	linux-integrity@vger.kernel.org
 S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
+<<<<<<< HEAD
 F:	include/linux/secure_boot.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	security/integrity/
 F:	security/integrity/ima/
 
@@ -12935,6 +13368,7 @@ F:	drivers/gpio/gpio-sodaville.c
 F:	drivers/gpio/gpio-tangier.c
 F:	drivers/gpio/gpio-tangier.h
 
+<<<<<<< HEAD
 INTEL GPIO GPE DRIVER
 M:	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 R:	Mika Westerberg <westeri@kernel.org>
@@ -12942,6 +13376,8 @@ L:	linux-gpio@vger.kernel.org
 S:	Supported
 F:	drivers/gpio/gpio-novalake-events.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 INTEL GVT-g DRIVERS (Intel GPU Virtualization)
 R:	Zhenyu Wang <zhenyuw.linux@gmail.com>
 R:	Zhi Wang <zhi.wang.linux@gmail.com>
@@ -12957,7 +13393,11 @@ F:	drivers/platform/x86/intel/hid.c
 
 INTEL I/OAT DMA DRIVER
 M:	Dave Jiang <dave.jiang@intel.com>
+<<<<<<< HEAD
 R:	Dan Williams <djbw@kernel.org>
+=======
+R:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	dmaengine@vger.kernel.org
 S:	Supported
 Q:	https://patchwork.kernel.org/project/linux-dmaengine/list/
@@ -12966,6 +13406,10 @@ F:	drivers/dma/ioat*
 INTEL IAA CRYPTO DRIVER
 M:	Kristen Accardi <kristen.c.accardi@intel.com>
 M:	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+<<<<<<< HEAD
+=======
+M:	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-crypto@vger.kernel.org
 S:	Supported
 F:	Documentation/driver-api/crypto/iaa/iaa-crypto.rst
@@ -13068,12 +13512,21 @@ F:	drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
 
 INTEL KEEM BAY DRM DRIVER
 M:	Anitha Chrisanthus <anitha.chrisanthus@intel.com>
+<<<<<<< HEAD
+=======
+M:	Edmund Dea <edmund.j.dea@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 F:	Documentation/devicetree/bindings/display/intel,keembay-display.yaml
 F:	drivers/gpu/drm/kmb/
 
 INTEL KEEM BAY OCS AES/SM4 CRYPTO DRIVER
+<<<<<<< HEAD
 S:	Orphan
+=======
+M:	Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/devicetree/bindings/crypto/intel,keembay-ocs-aes.yaml
 F:	drivers/crypto/intel/keembay/Kconfig
 F:	drivers/crypto/intel/keembay/Makefile
@@ -13082,6 +13535,10 @@ F:	drivers/crypto/intel/keembay/ocs-aes.c
 F:	drivers/crypto/intel/keembay/ocs-aes.h
 
 INTEL KEEM BAY OCS ECC CRYPTO DRIVER
+<<<<<<< HEAD
+=======
+M:	Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Prabhjot Khurana <prabhjot.khurana@intel.com>
 M:	Mark Gross <mgross@linux.intel.com>
 S:	Maintained
@@ -13091,6 +13548,10 @@ F:	drivers/crypto/intel/keembay/Makefile
 F:	drivers/crypto/intel/keembay/keembay-ocs-ecc.c
 
 INTEL KEEM BAY OCS HCU CRYPTO DRIVER
+<<<<<<< HEAD
+=======
+M:	Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Declan Murphy <declan.murphy@intel.com>
 S:	Maintained
 F:	Documentation/devicetree/bindings/crypto/intel,keembay-ocs-hcu.yaml
@@ -13412,12 +13873,15 @@ F:	include/linux/interconnect-clk.h
 F:	include/linux/interconnect-provider.h
 F:	include/linux/interconnect.h
 
+<<<<<<< HEAD
 INTERCONNECT KUNIT TESTS
 M:	Kuan-Wei Chiu <visitorckw@gmail.com>
 L:	linux-pm@vger.kernel.org
 S:	Maintained
 F:	drivers/interconnect/icc-kunit.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 INTERRUPT COUNTER DRIVER
 M:	Oleksij Rempel <o.rempel@pengutronix.de>
 R:	Pengutronix Kernel Team <kernel@pengutronix.de>
@@ -13586,7 +14050,10 @@ F:	sound/soc/codecs/sma*
 IRQ DOMAINS (IRQ NUMBER MAPPING LIBRARY)
 M:	Thomas Gleixner <tglx@kernel.org>
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
 F:	Documentation/core-api/irq/irq-domain.rst
 F:	include/linux/irqdomain.h
@@ -13598,7 +14065,10 @@ IRQ SUBSYSTEM
 M:	Thomas Gleixner <tglx@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
 F:	include/linux/group_cpus.h
 F:	include/linux/irq.h
@@ -13612,7 +14082,10 @@ IRQCHIP DRIVERS
 M:	Thomas Gleixner <tglx@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
 F:	Documentation/devicetree/bindings/interrupt-controller/
 F:	drivers/irqchip/
@@ -13675,6 +14148,28 @@ S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/nab/target-pending.git master
 F:	drivers/infiniband/ulp/isert
 
+<<<<<<< HEAD
+=======
+ISDN/CMTP OVER BLUETOOTH
+L:	netdev@vger.kernel.org
+S:	Orphan
+W:	http://www.isdn4linux.de
+F:	Documentation/isdn/
+F:	drivers/isdn/capi/
+F:	include/linux/isdn/
+F:	include/uapi/linux/isdn/
+F:	net/bluetooth/cmtp/
+
+ISDN/mISDN SUBSYSTEM
+L:	netdev@vger.kernel.org
+S:	Orphan
+W:	http://www.isdn4linux.de
+F:	drivers/isdn/Kconfig
+F:	drivers/isdn/Makefile
+F:	drivers/isdn/hardware/
+F:	drivers/isdn/mISDN/
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ISL28022 HARDWARE MONITORING DRIVER
 M:	Carsten Spieß <mail@carsten-spiess.de>
 L:	linux-hwmon@vger.kernel.org
@@ -13865,13 +14360,24 @@ F:	scripts/Makefile.kcsan
 KDUMP
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Baoquan He <bhe@redhat.com>
+<<<<<<< HEAD
 M:	Mike Rapoport <rppt@kernel.org>
 M:	Pasha Tatashin <pasha.tatashin@soleen.com>
 M:	Pratyush Yadav <pratyush@kernel.org>
 R:	Dave Young <ruirui.yang@linux.dev>
 L:	kexec@lists.infradead.org
 S:	Maintained
+<<<<<<< HEAD
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+=======
+=======
+R:	Vivek Goyal <vgoyal@redhat.com>
+R:	Dave Young <dyoung@redhat.com>
+L:	kexec@lists.infradead.org
+S:	Maintained
+W:	http://lse.sourceforge.net/kdump/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 F:	Documentation/admin-guide/kdump/
 F:	fs/proc/vmcore.c
 F:	include/linux/crash_core.h
@@ -14013,7 +14519,11 @@ R:	Sergey Senozhatsky <senozhatsky@chromium.org>
 R:	Tom Talpey <tom@talpey.com>
 L:	linux-cifs@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 T:	git https://git.samba.org/ksmbd.git
+=======
+T:	git git://git.samba.org/ksmbd.git
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/filesystems/smb/ksmbd.rst
 F:	fs/smb/common/
 F:	fs/smb/server/
@@ -14064,7 +14574,10 @@ KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)
 M:	Marc Zyngier <maz@kernel.org>
 M:	Oliver Upton <oupton@kernel.org>
 R:	Joey Gouly <joey.gouly@arm.com>
+<<<<<<< HEAD
 R:	Steffen Eiden <seiden@linux.ibm.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Suzuki K Poulose <suzuki.poulose@arm.com>
 R:	Zenghui Yu <yuzenghui@huawei.com>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
@@ -14184,9 +14697,12 @@ F:	include/linux/kernfs.h
 KEXEC
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Baoquan He <bhe@redhat.com>
+<<<<<<< HEAD
 M:	Mike Rapoport <rppt@kernel.org>
 M:	Pasha Tatashin <pasha.tatashin@soleen.com>
 M:	Pratyush Yadav <pratyush@kernel.org>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	kexec@lists.infradead.org
 W:	http://kernel.org/pub/linux/utils/kernel/kexec/
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
@@ -14195,6 +14711,7 @@ F:	include/uapi/linux/kexec.h
 F:	kernel/kexec*
 
 KEXEC HANDOVER (KHO)
+<<<<<<< HEAD
 M:	Mike Rapoport <rppt@kernel.org>
 M:	Pasha Tatashin <pasha.tatashin@soleen.com>
 M:	Pratyush Yadav <pratyush@kernel.org>
@@ -14203,10 +14720,23 @@ L:	kexec@lists.infradead.org
 L:	linux-mm@kvack.org
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+=======
+M:	Alexander Graf <graf@amazon.com>
+M:	Mike Rapoport <rppt@kernel.org>
+M:	Pasha Tatashin <pasha.tatashin@soleen.com>
+R:	Pratyush Yadav <pratyush@kernel.org>
+L:	kexec@lists.infradead.org
+L:	linux-mm@kvack.org
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/admin-guide/mm/kho.rst
 F:	Documentation/core-api/kho/*
 F:	include/linux/kexec_handover.h
 F:	include/linux/kho/
+<<<<<<< HEAD
+=======
+F:	include/linux/kho/abi/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	kernel/liveupdate/kexec_handover*
 F:	lib/test_kho.c
 F:	tools/testing/selftests/kho/
@@ -14498,6 +15028,7 @@ F:	drivers/net/wan/framer/
 F:	drivers/pinctrl/pinctrl-pef2256.c
 F:	include/linux/framer/
 
+<<<<<<< HEAD
 LATTEPANDA SIGMA EC HARDWARE MONITOR DRIVER
 M:	Mariano Abad <weimaraner@gmail.com>
 L:	linux-hwmon@vger.kernel.org
@@ -14505,6 +15036,8 @@ S:	Maintained
 F:	Documentation/hwmon/lattepanda-sigma-ec.rst
 F:	drivers/hwmon/lattepanda-sigma-ec.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 LASI 53c700 driver for PARISC
 M:	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
 L:	linux-scsi@vger.kernel.org
@@ -14561,6 +15094,7 @@ L:	platform-driver-x86@vger.kernel.org
 S:	Maintained
 F:	drivers/platform/x86/lenovo/wmi-hotkey-utilities.c
 
+<<<<<<< HEAD
 LENOVO HID drivers
 M:	Derek J. Clark <derekjohn.clark@gmail.com>
 M:	Mark Pearson <mpearson-lenovo@squebb.ca>
@@ -14572,6 +15106,8 @@ F:	drivers/hid/hid-lenovo-go-s.c
 F:	drivers/hid/hid-lenovo-go.c
 F:	drivers/hid/hid-lenovo.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 LETSKETCH HID TABLET DRIVER
 M:	Hans de Goede <hansg@kernel.org>
 L:	linux-input@vger.kernel.org
@@ -14670,7 +15206,11 @@ K:	libie
 
 LIBNVDIMM BTT: BLOCK TRANSLATION TABLE
 M:	Vishal Verma <vishal.l.verma@intel.com>
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Dave Jiang <dave.jiang@intel.com>
 L:	nvdimm@lists.linux.dev
 S:	Supported
@@ -14679,7 +15219,11 @@ P:	Documentation/nvdimm/maintainer-entry-profile.rst
 F:	drivers/nvdimm/btt*
 
 LIBNVDIMM PMEM: PERSISTENT MEMORY DRIVER
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Vishal Verma <vishal.l.verma@intel.com>
 M:	Dave Jiang <dave.jiang@intel.com>
 L:	nvdimm@lists.linux.dev
@@ -14697,7 +15241,11 @@ F:	Documentation/devicetree/bindings/pmem/pmem-region.yaml
 F:	drivers/nvdimm/of_pmem.c
 
 LIBNVDIMM: NON-VOLATILE MEMORY DEVICE SUBSYSTEM
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Vishal Verma <vishal.l.verma@intel.com>
 M:	Dave Jiang <dave.jiang@intel.com>
 M:	Ira Weiny <ira.weiny@intel.com>
@@ -14848,6 +15396,10 @@ F:	Documentation/memory-barriers.txt
 F:	tools/memory-model/
 
 LINUX-NEXT TREE
+<<<<<<< HEAD
+=======
+M:	Stephen Rothwell <sfr@canb.auug.org.au>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Mark Brown <broonie@kernel.org>
 L:	linux-next@vger.kernel.org
 S:	Supported
@@ -14905,16 +15457,26 @@ F:	tools/testing/selftests/livepatch/
 LIVE UPDATE
 M:	Pasha Tatashin <pasha.tatashin@soleen.com>
 M:	Mike Rapoport <rppt@kernel.org>
+<<<<<<< HEAD
 M:	Pratyush Yadav <pratyush@kernel.org>
 L:	kexec@lists.infradead.org
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+=======
+R:	Pratyush Yadav <pratyush@kernel.org>
+L:	linux-kernel@vger.kernel.org
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/core-api/liveupdate.rst
 F:	Documentation/mm/memfd_preservation.rst
 F:	Documentation/userspace-api/liveupdate.rst
 F:	include/linux/kho/abi/
 F:	include/linux/liveupdate.h
+<<<<<<< HEAD
+=======
+F:	include/linux/liveupdate/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	include/uapi/linux/liveupdate.h
 F:	kernel/liveupdate/
 F:	lib/tests/liveupdate.c
@@ -14966,6 +15528,7 @@ W:	https://linuxtv.org
 Q:	http://patchwork.linuxtv.org/project/linux-media/list/
 F:	drivers/media/usb/dvb-usb-v2/lmedm04*
 
+<<<<<<< HEAD
 LENOVO YOGA FAN DRIVER
 M:	Sergio Melas <sergiomelas@gmail.com>
 L:	linux-hwmon@vger.kernel.org
@@ -14974,6 +15537,8 @@ W:	https://github.com/sergiomelas
 F:	Documentation/hwmon/yogafan.rst
 F:	drivers/hwmon/yogafan.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 LOADPIN SECURITY MODULE
 M:	Kees Cook <kees@kernel.org>
 S:	Supported
@@ -14997,7 +15562,10 @@ M:	Boqun Feng <boqun@kernel.org> (LOCKDEP & RUST)
 R:	Waiman Long <longman@redhat.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
 F:	Documentation/locking/
 F:	arch/*/include/asm/spinlock*.h
@@ -15057,6 +15625,7 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
 F:	drivers/gpio/gpio-loongson-64bit.c
 
+<<<<<<< HEAD
 LOONGSON-2 DMA DRIVER
 M:	Binbin Zhou <zhoubinbin@loongson.cn>
 L:	dmaengine@vger.kernel.org
@@ -15065,6 +15634,14 @@ F:	Documentation/devicetree/bindings/dma/loongson,ls2k0300-dma.yaml
 F:	Documentation/devicetree/bindings/dma/loongson,ls2x-apbdma.yaml
 F:	drivers/dma/loongson/loongson2-apb-cmc-dma.c
 F:	drivers/dma/loongson/loongson2-apb-dma.c
+=======
+LOONGSON-2 APB DMA DRIVER
+M:	Binbin Zhou <zhoubinbin@loongson.cn>
+L:	dmaengine@vger.kernel.org
+S:	Maintained
+F:	Documentation/devicetree/bindings/dma/loongson,ls2x-apbdma.yaml
+F:	drivers/dma/loongson2-apb-dma.c
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 LOONGSON LS2X I2C DRIVER
 M:	Binbin Zhou <zhoubinbin@loongson.cn>
@@ -15266,7 +15843,11 @@ M:	Andrea Cervesato <andrea.cervesato@suse.com>
 M:	Cyril Hrubis <chrubis@suse.cz>
 M:	Jan Stancek <jstancek@redhat.com>
 M:	Petr Vorel <pvorel@suse.cz>
+<<<<<<< HEAD
 M:	Li Wang <li.wang@linux.dev>
+=======
+M:	Li Wang <liwang@redhat.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Yang Xu <xuyang2018.jy@fujitsu.com>
 M:	Xiao Yang <yangx.jy@fujitsu.com>
 L:	ltp@lists.linux.it (subscribers-only)
@@ -15319,6 +15900,7 @@ S:	Maintained
 W:	http://www.tazenda.demon.co.uk/phil/linux-hp
 F:	arch/m68k/hp300/
 
+<<<<<<< HEAD
 M68K ON MVME147
 M:	Daniel Palmer <daniel@thingy.jp>
 S:	Maintained
@@ -15326,6 +15908,8 @@ F:	arch/m68k/mvme147/
 F:	drivers/net/ethernet/amd/mvme147.c
 F:	drivers/scsi/mvme147.*
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M88DS3103 MEDIA DRIVER
 L:	linux-media@vger.kernel.org
 S:	Orphan
@@ -15413,7 +15997,11 @@ F:	include/net/netns/mctp.h
 F:	net/mctp/
 
 MAPLE TREE
+<<<<<<< HEAD
 M:	Liam R. Howlett <liam@infradead.org>
+=======
+M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Alice Ryhl <aliceryhl@google.com>
 R:	Andrew Ballance <andrewjballance@gmail.com>
 L:	maple-tree@lists.infradead.org
@@ -15733,7 +16321,11 @@ F:	Documentation/devicetree/bindings/media/i2c/maxim,max96717.yaml
 F:	drivers/media/i2c/max96717.c
 
 MAX9860 MONO AUDIO VOICE CODEC DRIVER
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-sound@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/max9860.txt
@@ -15832,12 +16424,15 @@ F:	drivers/mfd/max77759.c
 F:	drivers/nvmem/max77759-nvmem.c
 F:	include/linux/mfd/max77759.h
 
+<<<<<<< HEAD
 MAXIM MAX77759 BATTERY CHARGER DRIVER
 M:	Amit Sunil Dhamne <amitsd@google.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
 F:	drivers/power/supply/max77759_charger.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MAXIM MAX77802 PMIC REGULATOR DEVICE DRIVER
 M:	Javier Martinez Canillas <javier@dowhile0.org>
 L:	linux-kernel@vger.kernel.org
@@ -15948,7 +16543,11 @@ F:	Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
 F:	drivers/net/can/spi/mcp251xfd/
 
 MCP4018 AND MCP4531 MICROCHIP DIGITAL POTENTIOMETER DRIVERS
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	Documentation/ABI/testing/sysfs-bus-iio-potentiometer-mcp4531
@@ -16233,9 +16832,14 @@ MEDIA INPUT INFRASTRUCTURE (V4L/DVB)
 M:	Mauro Carvalho Chehab <mchehab@kernel.org>
 L:	linux-media@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/driver-api/media/maintainer-entry-profile.rst
 W:	https://linuxtv.org
 Q:	https://patchwork.linuxtv.org/project/linux-media/list/
+=======
+W:	https://linuxtv.org
+Q:	http://patchwork.kernel.org/project/linux-media/list/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://linuxtv.org/media.git
 F:	Documentation/admin-guide/media/
 F:	Documentation/devicetree/bindings/media/
@@ -16773,7 +17377,11 @@ MEMORY MANAGEMENT - CORE
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	David Hildenbrand <david@kernel.org>
 R:	Lorenzo Stoakes <ljs@kernel.org>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Vlastimil Babka <vbabka@kernel.org>
 R:	Mike Rapoport <rppt@kernel.org>
 R:	Suren Baghdasaryan <surenb@google.com>
@@ -16782,7 +17390,10 @@ L:	linux-mm@kvack.org
 S:	Maintained
 W:	http://www.linux-mm.org
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+<<<<<<< HEAD
 F:	include/linux/folio_batch.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	include/linux/gfp.h
 F:	include/linux/gfp_types.h
 F:	include/linux/highmem.h
@@ -16799,7 +17410,10 @@ F:	include/linux/pgtable.h
 F:	include/linux/ptdump.h
 F:	include/linux/vmpressure.h
 F:	include/linux/vmstat.h
+<<<<<<< HEAD
 F:	fs/proc/meminfo.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	kernel/fork.c
 F:	mm/Kconfig
 F:	mm/debug.c
@@ -16819,7 +17433,11 @@ F:	mm/sparse.c
 F:	mm/util.c
 F:	mm/vmpressure.c
 F:	mm/vmstat.c
+<<<<<<< HEAD
 N:	include\/linux\/page[-_][a-zA-Z]*
+=======
+N:	include/linux/page[-_]*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MEMORY MANAGEMENT - EXECMEM
 M:	Andrew Morton <akpm@linux-foundation.org>
@@ -16886,12 +17504,17 @@ F:	mm/migrate_device.c
 
 MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
 M:	Andrew Morton <akpm@linux-foundation.org>
+<<<<<<< HEAD
 R:	Kairui Song <kasong@tencent.com>
 R:	Qi Zheng <qi.zheng@linux.dev>
 R:	Shakeel Butt <shakeel.butt@linux.dev>
 R:	Barry Song <baohua@kernel.org>
 R:	Axel Rasmussen <axelrasmussen@google.com>
 R:	Yuanchu Xie <yuanchu@google.com>
+=======
+M:	Axel Rasmussen <axelrasmussen@google.com>
+M:	Yuanchu Xie <yuanchu@google.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Wei Xu <weixugc@google.com>
 L:	linux-mm@kvack.org
 S:	Maintained
@@ -16909,7 +17532,11 @@ MEMORY MANAGEMENT - MISC
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	David Hildenbrand <david@kernel.org>
 R:	Lorenzo Stoakes <ljs@kernel.org>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Vlastimil Babka <vbabka@kernel.org>
 R:	Mike Rapoport <rppt@kernel.org>
 R:	Suren Baghdasaryan <surenb@google.com>
@@ -16976,7 +17603,10 @@ S:	Maintained
 F:	include/linux/compaction.h
 F:	include/linux/gfp.h
 F:	include/linux/page-isolation.h
+<<<<<<< HEAD
 F:	include/linux/pageblock-flags.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	mm/compaction.c
 F:	mm/debug_page_alloc.c
 F:	mm/debug_page_ref.c
@@ -16998,7 +17628,11 @@ M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Johannes Weiner <hannes@cmpxchg.org>
 R:	David Hildenbrand <david@kernel.org>
 R:	Michal Hocko <mhocko@kernel.org>
+<<<<<<< HEAD
 R:	Qi Zheng <qi.zheng@linux.dev>
+=======
+R:	Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Shakeel Butt <shakeel.butt@linux.dev>
 R:	Lorenzo Stoakes <ljs@kernel.org>
 L:	linux-mm@kvack.org
@@ -17011,7 +17645,11 @@ M:	Andrew Morton <akpm@linux-foundation.org>
 M:	David Hildenbrand <david@kernel.org>
 M:	Lorenzo Stoakes <ljs@kernel.org>
 R:	Rik van Riel <riel@surriel.com>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Vlastimil Babka <vbabka@kernel.org>
 R:	Harry Yoo <harry@kernel.org>
 R:	Jann Horn <jannh@google.com>
@@ -17038,7 +17676,10 @@ R:	Kemeng Shi <shikemeng@huaweicloud.com>
 R:	Nhat Pham <nphamcs@gmail.com>
 R:	Baoquan He <bhe@redhat.com>
 R:	Barry Song <baohua@kernel.org>
+<<<<<<< HEAD
 R:	Youngjun Park <youngjun.park@lge.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-mm@kvack.org
 S:	Maintained
 F:	Documentation/mm/swap-table.rst
@@ -17058,7 +17699,11 @@ M:	David Hildenbrand <david@kernel.org>
 M:	Lorenzo Stoakes <ljs@kernel.org>
 R:	Zi Yan <ziy@nvidia.com>
 R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Nico Pache <npache@redhat.com>
 R:	Ryan Roberts <ryan.roberts@arm.com>
 R:	Dev Jain <dev.jain@arm.com>
@@ -17096,7 +17741,11 @@ F:	tools/testing/selftests/mm/uffd-*.[ch]
 MEMORY MANAGEMENT - RUST
 M:	Alice Ryhl <aliceryhl@google.com>
 R:	Lorenzo Stoakes <ljs@kernel.org>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-mm@kvack.org
 L:	rust-for-linux@vger.kernel.org
 S:	Maintained
@@ -17110,7 +17759,11 @@ F:	rust/kernel/page.rs
 
 MEMORY MAPPING
 M:	Andrew Morton <akpm@linux-foundation.org>
+<<<<<<< HEAD
 M:	Liam R. Howlett <liam@infradead.org>
+=======
+M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Lorenzo Stoakes <ljs@kernel.org>
 R:	Vlastimil Babka <vbabka@kernel.org>
 R:	Jann Horn <jannh@google.com>
@@ -17120,8 +17773,11 @@ S:	Maintained
 W:	http://www.linux-mm.org
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 F:	include/trace/events/mmap.h
+<<<<<<< HEAD
 F:	fs/proc/task_mmu.c
 F:	fs/proc/task_nommu.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	mm/interval_tree.c
 F:	mm/mincore.c
 F:	mm/mlock.c
@@ -17142,7 +17798,11 @@ F:	tools/testing/vma/
 MEMORY MAPPING - LOCKING
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Suren Baghdasaryan <surenb@google.com>
+<<<<<<< HEAD
 M:	Liam R. Howlett <liam@infradead.org>
+=======
+M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Lorenzo Stoakes <ljs@kernel.org>
 R:	Vlastimil Babka <vbabka@kernel.org>
 R:	Shakeel Butt <shakeel.butt@linux.dev>
@@ -17157,7 +17817,11 @@ F:	mm/mmap_lock.c
 
 MEMORY MAPPING - MADVISE (MEMORY ADVICE)
 M:	Andrew Morton <akpm@linux-foundation.org>
+<<<<<<< HEAD
 M:	Liam R. Howlett <liam@infradead.org>
+=======
+M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Lorenzo Stoakes <ljs@kernel.org>
 M:	David Hildenbrand <david@kernel.org>
 R:	Vlastimil Babka <vbabka@kernel.org>
@@ -17327,12 +17991,15 @@ S:	Supported
 F:	Documentation/devicetree/bindings/serial/atmel,at91-usart.yaml
 F:	drivers/spi/spi-at91-usart.c
 
+<<<<<<< HEAD
 MICROCHIP ATSHA204A DRIVER
 M:	Thorsten Blum <thorsten.blum@linux.dev>
 L:	linux-crypto@vger.kernel.org
 S:	Maintained
 F:	drivers/crypto/atmel-sha204a.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MICROCHIP AUDIO ASOC DRIVERS
 M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
 M:	Andrei Simion <andrei.simion@microchip.com>
@@ -17352,10 +18019,16 @@ F:	Documentation/devicetree/bindings/media/microchip,csi2dc.yaml
 F:	drivers/media/platform/microchip/microchip-csi2dc.c
 
 MICROCHIP ECC DRIVER
+<<<<<<< HEAD
 M:	Thorsten Blum <thorsten.blum@linux.dev>
 L:	linux-crypto@vger.kernel.org
 S:	Maintained
 F:	drivers/crypto/atmel-ecc.c
+=======
+L:	linux-crypto@vger.kernel.org
+S:	Orphan
+F:	drivers/crypto/atmel-ecc.*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MICROCHIP EIC DRIVER
 M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
@@ -17480,6 +18153,7 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
 F:	drivers/iio/adc/mcp3911.c
 
+<<<<<<< HEAD
 MICROCHIP MCP9982 TEMPERATURE DRIVER
 M:	Victor Duicu <victor.duicu@microchip.com>
 L:	linux-hwmon@vger.kernel.org
@@ -17488,6 +18162,8 @@ F:	Documentation/devicetree/bindings/hwmon/microchip,mcp9982.yaml
 F:	Documentation/hwmon/mcp9982.rst
 F:	drivers/hwmon/mcp9982.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MICROCHIP MMC/SD/SDIO MCI DRIVER
 M:	Aubin Constans <aubin.constans@microchip.com>
 S:	Maintained
@@ -17544,12 +18220,15 @@ L:	linux-serial@vger.kernel.org
 S:	Maintained
 F:	drivers/tty/serial/8250/8250_pci1xxxx.c
 
+<<<<<<< HEAD
 MICROCHIP PIC64-HPSC/HX DRIVERS
 M:	Charles Perry <charles.perry@microchip.com>
 S:	Supported
 F:	Documentation/devicetree/bindings/net/microchip,pic64hpsc-mdio.yaml
 F:	drivers/net/mdio/mdio-pic64hpsc.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MICROCHIP POLARFIRE FPGA DRIVERS
 M:	Conor Dooley <conor.dooley@microchip.com>
 L:	linux-fpga@vger.kernel.org
@@ -17870,7 +18549,10 @@ F:	arch/mips/boot/dts/loongson/loongson1*
 F:	arch/mips/configs/loongson1_defconfig
 F:	arch/mips/loongson32/
 F:	drivers/*/*loongson1*
+<<<<<<< HEAD
 F:	drivers/dma/loongson/loongson1-apb-dma.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/mtd/nand/raw/loongson-nand-controller.c
 F:	drivers/net/ethernet/stmicro/stmmac/dwmac-loongson1.c
 F:	sound/soc/loongson/loongson1_ac97.c
@@ -17952,7 +18634,10 @@ F:	drivers/media/dvb-frontends/mn88473*
 
 MOBILEYE MIPS SOCS
 M:	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+<<<<<<< HEAD
 M:	Benoît Monin <benoit.monin@bootlin.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Gregory CLEMENT <gregory.clement@bootlin.com>
 M:	Théo Lebrun <theo.lebrun@bootlin.com>
 L:	linux-mips@vger.kernel.org
@@ -17960,13 +18645,20 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/mips/mobileye.yaml
 F:	Documentation/devicetree/bindings/soc/mobileye/
 F:	arch/mips/boot/dts/mobileye/
+<<<<<<< HEAD
 F:	arch/mips/configs/eyeq*_defconfig
+=======
+F:	arch/mips/configs/eyeq5_defconfig
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	arch/mips/mobileye/board-epm5.its.S
 F:	drivers/clk/clk-eyeq.c
 F:	drivers/pinctrl/pinctrl-eyeq5.c
 F:	drivers/reset/reset-eyeq.c
 F:	include/dt-bindings/clock/mobileye,eyeq5-clk.h
+<<<<<<< HEAD
 F:	include/dt-bindings/clock/mobileye,eyeq6lplus-clk.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE SUPPORT
 M:	Luis Chamberlain <mcgrof@kernel.org>
@@ -18253,7 +18945,11 @@ F:	include/linux/mmc/
 F:	include/uapi/linux/mmc/
 
 MULTIPLEXER SUBSYSTEM
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Odd Fixes
 F:	Documentation/ABI/testing/sysfs-class-mux*
 F:	Documentation/devicetree/bindings/mux/
@@ -18317,6 +19013,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next
 F:	drivers/mtd/nand/
 F:	include/linux/mtd/*nand*.h
 
+<<<<<<< HEAD
 NAMESPACES:
 M:	Christian Brauner <christian@brauner.io>
 R:	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
@@ -18326,6 +19023,8 @@ F:	rust/kernel/pid_namespace.rs
 F:	kernel/pid_namespace.c
 F:	tools/testing/selftests/pid_namespace/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 NATIONAL INSTRUMENTS SERIAL DRIVER
 M:	Chaitanya Vadrevu <chaitanya.vadrevu@emerson.com>
 L:	linux-serial@vger.kernel.org
@@ -18425,6 +19124,17 @@ F:	net/bridge/br_netfilter*.c
 F:	net/netfilter/
 F:	tools/testing/selftests/net/netfilter/
 
+<<<<<<< HEAD
+=======
+NETROM NETWORK LAYER
+L:	linux-hams@vger.kernel.org
+S:	Orphan
+W:	https://linux-ax25.in-berlin.de
+F:	include/net/netrom.h
+F:	include/uapi/linux/netrom.h
+F:	net/netrom/
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 NETRONIX EMBEDDED CONTROLLER
 M:	Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 S:	Maintained
@@ -18688,6 +19398,7 @@ F:	net/xfrm/
 F:	tools/testing/selftests/net/ipsec.c
 
 NETWORKING [IPv4/IPv6]
+<<<<<<< HEAD
 M:	David Ahern <dsahern@kernel.org>
 M:	Ido Schimmel <idosch@nvidia.com>
 L:	netdev@vger.kernel.org
@@ -18741,6 +19452,21 @@ F:	net/ipv6/reassembly.c
 F:	net/ipv6/route.c
 F:	tools/testing/selftests/net/fib*
 F:	tools/testing/selftests/net/forwarding/
+=======
+M:	"David S. Miller" <davem@davemloft.net>
+M:	David Ahern <dsahern@kernel.org>
+L:	netdev@vger.kernel.org
+S:	Maintained
+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
+F:	arch/x86/net/*
+F:	include/linux/ip.h
+F:	include/linux/ipv6*
+F:	include/net/fib*
+F:	include/net/ip*
+F:	include/net/route.h
+F:	net/ipv4/
+F:	net/ipv6/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 NETWORKING [LABELED] (NetLabel, Labeled IPsec, SECMARK)
 M:	Paul Moore <paul@paul-moore.com>
@@ -18875,11 +19601,26 @@ F:	Documentation/networking/net_failover.rst
 F:	drivers/net/net_failover.c
 F:	include/net/net_failover.h
 
+<<<<<<< HEAD
 NFC SUBSYSTEM
 M:	David Heidelberg <david+nfc@ixit.cz>
 L:	oe-linux-nfc@lists.linux.dev
 S:	Maintained
 T:	git https://codeberg.org/linux-nfc/linux.git
+=======
+NEXTHOP
+M:	David Ahern <dsahern@kernel.org>
+L:	netdev@vger.kernel.org
+S:	Maintained
+F:	include/net/netns/nexthop.h
+F:	include/net/nexthop.h
+F:	include/uapi/linux/nexthop.h
+F:	net/ipv4/nexthop.c
+
+NFC SUBSYSTEM
+L:	netdev@vger.kernel.org
+S:	Orphan
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/devicetree/bindings/net/nfc/
 F:	drivers/nfc/
 F:	include/net/nfc/
@@ -19055,6 +19796,7 @@ W:	https://github.com/davejiang/linux/wiki
 T:	git https://github.com/davejiang/linux.git
 F:	drivers/ntb/hw/intel/
 
+<<<<<<< HEAD
 NTFS FILESYSTEM
 M:	Namjae Jeon <linkinjeon@kernel.org>
 M:	Hyunchul Lee <hyc.lee@gmail.com>
@@ -19064,6 +19806,8 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linkinjeon/ntfs.git
 F:	Documentation/filesystems/ntfs.rst
 F:	fs/ntfs/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 NTFS3 FILESYSTEM
 M:	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 L:	ntfs3@lists.linux.dev
@@ -19117,12 +19861,15 @@ S:	Maintained
 F:	drivers/video/fbdev/nvidia/
 F:	drivers/video/fbdev/riva/
 
+<<<<<<< HEAD
 NVIDIA GHES VENDOR CPER RECORD HANDLER
 M:	Kai-Heng Feng <kaihengf@nvidia.com>
 L:	linux-acpi@vger.kernel.org
 S:	Maintained
 F:	drivers/acpi/apei/ghes-nvidia.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 NVIDIA VRS RTC DRIVER
 M:	Shubhi Garg <shgarg@nvidia.com>
 L:	linux-tegra@vger.kernel.org
@@ -19363,7 +20110,11 @@ F:	include/dt-bindings/display/tda998x.h
 K:	"nxp,tda998x"
 
 NXP TFA9879 DRIVER
+<<<<<<< HEAD
 M:	Peter Rosin <peda@lysator.liu.se>
+=======
+M:	Peter Rosin <peda@axentia.se>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-sound@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/trivial-codec.yaml
@@ -19424,7 +20175,10 @@ OBJTOOL
 M:	Josh Poimboeuf <jpoimboe@kernel.org>
 M:	Peter Zijlstra <peterz@infradead.org>
 S:	Supported
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	include/linux/objtool*.h
 F:	tools/objtool/
 
@@ -19449,8 +20203,13 @@ F:	drivers/net/dsa/ocelot/ocelot_ext.c
 F:	include/linux/mfd/ocelot.h
 
 OCXL (Open Coherent Accelerator Processor Interface OpenCAPI) DRIVER
+<<<<<<< HEAD
 M:	Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 R:	Andrew Donnellan <andrew+kernel@donnellan.id.au>
+=======
+M:	Frederic Barrat <fbarrat@linux.ibm.com>
+M:	Andrew Donnellan <ajd@linux.ibm.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Odd Fixes
 F:	Documentation/userspace-api/accelerators/ocxl.rst
@@ -19702,11 +20461,17 @@ F:	drivers/media/i2c/ov02e10.c
 
 OMNIVISION OV08D10 SENSOR DRIVER
 M:	Jimmy Su <jimmy.su@intel.com>
+<<<<<<< HEAD
 R:	Matthias Fend <matthias.fend@emfend.at>
 L:	linux-media@vger.kernel.org
 S:	Maintained
 T:	git git://linuxtv.org/media.git
 F:	Documentation/devicetree/bindings/media/i2c/ovti,ov08d10.yaml
+=======
+L:	linux-media@vger.kernel.org
+S:	Maintained
+T:	git git://linuxtv.org/media.git
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/media/i2c/ov08d10.c
 
 OMNIVISION OV08X40 SENSOR DRIVER
@@ -19747,6 +20512,7 @@ T:	git git://linuxtv.org/media.git
 F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
 F:	drivers/media/i2c/ov2685.c
 
+<<<<<<< HEAD
 OMNIVISION OV2732 SENSOR DRIVER
 M:	Walter Werner Schneider <contact@schnwalter.eu>
 L:	linux-media@vger.kernel.org
@@ -19754,6 +20520,8 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2732.yaml
 F:	drivers/media/i2c/ov2732.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 OMNIVISION OV2735 SENSOR DRIVER
 M:	Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
 M:	Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
@@ -19974,6 +20742,15 @@ L:	linux-rtc@vger.kernel.org
 S:	Maintained
 F:	drivers/rtc/rtc-optee.c
 
+<<<<<<< HEAD
+=======
+OPA-VNIC DRIVER
+M:	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+L:	linux-rdma@vger.kernel.org
+S:	Supported
+F:	drivers/infiniband/ulp/opa_vnic
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 OPEN ALLIANCE 10BASE-T1S MACPHY SERIAL INTERFACE FRAMEWORK
 M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 L:	netdev@vger.kernel.org
@@ -20166,9 +20943,13 @@ F:	kernel/padata.c
 
 PAGE CACHE
 M:	Matthew Wilcox (Oracle) <willy@infradead.org>
+<<<<<<< HEAD
 R:	Jan Kara <jack@suse.cz>
 L:	linux-fsdevel@vger.kernel.org
 L:	linux-mm@kvack.org
+=======
+L:	linux-fsdevel@vger.kernel.org
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Supported
 T:	git git://git.infradead.org/users/willy/pagecache.git
 F:	Documentation/filesystems/locking.rst
@@ -20331,6 +21112,7 @@ S:	Orphan
 F:	Documentation/devicetree/bindings/pci/altr,pcie-root-port.yaml
 F:	drivers/pci/controller/pcie-altera.c
 
+<<<<<<< HEAD
 PCI DRIVER FOR ANDES QILAI PCIE
 M:	Randolph Lin <randolph@andestech.com>
 L:	linux-pci@vger.kernel.org
@@ -20338,6 +21120,8 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/pci/andestech,qilai-pcie.yaml
 F:	drivers/pci/controller/dwc/pcie-andes-qilai.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 PCI DRIVER FOR APPLIEDMICRO XGENE
 M:	Toan Le <toan@os.amperecomputing.com>
 L:	linux-pci@vger.kernel.org
@@ -20363,6 +21147,7 @@ F:	Documentation/devicetree/bindings/pci/marvell,armada8k-pcie.yaml
 F:	drivers/pci/controller/dwc/pcie-armada8k.c
 
 PCI DRIVER FOR CADENCE PCIE IP
+<<<<<<< HEAD
 R:	Aksh Garg <a-garg7@ti.com>
 L:	linux-pci@vger.kernel.org
 S:	Orphan
@@ -20371,6 +21156,15 @@ F:	drivers/pci/controller/cadence/
 
 PCI DRIVER FOR CIX Sky1
 M:	Hans Zhang <18255117159@163.com>
+=======
+L:	linux-pci@vger.kernel.org
+S:	Orphan
+F:	Documentation/devicetree/bindings/pci/cdns,*
+F:	drivers/pci/controller/cadence/*cadence*
+
+PCI DRIVER FOR CIX Sky1
+M:	Hans Zhang <hans.zhang@cixtech.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-pci@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/pci/cix,sky1-pcie-*.yaml
@@ -20459,7 +21253,11 @@ S:	Maintained
 F:	drivers/pci/controller/*mvebu*
 
 PCI DRIVER FOR NVIDIA TEGRA
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-tegra@vger.kernel.org
 L:	linux-pci@vger.kernel.org
 S:	Supported
@@ -20482,7 +21280,11 @@ F:	drivers/pci/controller/plda/pcie-plda-host.c
 F:	drivers/pci/controller/plda/pcie-plda.h
 
 PCI DRIVER FOR RENESAS R-CAR
+<<<<<<< HEAD
 M:	Marek Vasut <marek.vasut+renesas@mailbox.org>
+=======
+M:	Marek Vasut <marek.vasut+renesas@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 L:	linux-pci@vger.kernel.org
 L:	linux-renesas-soc@vger.kernel.org
@@ -20606,11 +21408,17 @@ C:	irc://irc.oftc.net/linux-pci
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
 F:	Documentation/ABI/testing/debugfs-pcie-ptm
 F:	Documentation/devicetree/bindings/pci/
+<<<<<<< HEAD
 F:	Documentation/trace/events-pci-controller.rst
 F:	drivers/pci/controller/
 F:	drivers/pci/pci-bridge-emul.c
 F:	drivers/pci/pci-bridge-emul.h
 F:	include/trace/events/pci_controller.h
+=======
+F:	drivers/pci/controller/
+F:	drivers/pci/pci-bridge-emul.c
+F:	drivers/pci/pci-bridge-emul.h
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 PCI PEER-TO-PEER DMA (P2PDMA)
 M:	Bjorn Helgaas <bhelgaas@google.com>
@@ -20706,6 +21514,7 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Odd Fixes
 F:	drivers/pci/controller/pci-thunder-*
 
+<<<<<<< HEAD
 PCIE DRIVER FOR ESWIN
 M:	Senchuan Zhang <zhangsenchuan@eswincomputing.com>
 L:	linux-pci@vger.kernel.org
@@ -20713,6 +21522,8 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/pci/eswin,pcie.yaml
 F:	drivers/pci/controller/dwc/pcie-eswin.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 PCIE DRIVER FOR HISILICON
 M:	Zhou Wang <wangzhou1@hisilicon.com>
 L:	linux-pci@vger.kernel.org
@@ -20821,7 +21632,10 @@ M:	Dominik Brodowski <linux@dominikbrodowski.net>
 S:	Odd Fixes
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brodo/linux.git
 F:	Documentation/pcmcia/
+<<<<<<< HEAD
 F:	drivers/net/ethernet/8390/pcnet_cs.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/pcmcia/
 F:	include/pcmcia/
 F:	tools/pcmcia/
@@ -20913,7 +21727,10 @@ L:	linux-perf-users@vger.kernel.org
 L:	linux-kernel@vger.kernel.org
 S:	Supported
 W:	https://perf.wiki.kernel.org/
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git perf/core
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools.git perf-tools
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git perf-tools-next
@@ -20934,7 +21751,11 @@ PERFORMANCE EVENTS TOOLING ARM64
 R:	John Garry <john.g.garry@oracle.com>
 R:	Will Deacon <will@kernel.org>
 R:	James Clark <james.clark@linaro.org>
+<<<<<<< HEAD
 R:	Mike Leach <mike.leach@arm.com>
+=======
+R:	Mike Leach <mike.leach@linaro.org>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Leo Yan <leo.yan@linux.dev>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Supported
@@ -20994,8 +21815,15 @@ M:	Christian Brauner <christian@brauner.io>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
+<<<<<<< HEAD
 F:	samples/pidfd/
 F:	tools/testing/selftests/clone3/
+=======
+F:	rust/kernel/pid_namespace.rs
+F:	samples/pidfd/
+F:	tools/testing/selftests/clone3/
+F:	tools/testing/selftests/pid_namespace/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	tools/testing/selftests/pidfd/
 K:	(?i)pidfd
 K:	(?i)clone3
@@ -21211,12 +22039,15 @@ S:	Maintained
 F:	drivers/pnp/
 F:	include/linux/pnp.h
 
+<<<<<<< HEAD
 PORTUGUESE (BRAZILIAN) TRANSLATION
 M:	Daniel Pereira <danielmaraboo@gmail.com>
 L:	linux-doc@vger.kernel.org
 S:	Maintained
 F:	Documentation/translations/pt_BR/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 PORTWELL EC DRIVER
 M:	Yen-Chi Huang <jesse.huang@portwell.com.tw>
 L:	platform-driver-x86@vger.kernel.org
@@ -21229,7 +22060,10 @@ M:	Frederic Weisbecker <frederic@kernel.org>
 M:	Thomas Gleixner <tglx@kernel.org>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
 F:	fs/timerfd.c
 F:	include/linux/time_namespace.h
@@ -21240,7 +22074,10 @@ F:	include/trace/events/timer*
 F:	kernel/time/itimer.c
 F:	kernel/time/posix-*
 F:	kernel/time/namespace.c
+<<<<<<< HEAD
 F:	kernel/time/namespace_vdso.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 POWER MANAGEMENT CORE
 M:	"Rafael J. Wysocki" <rafael@kernel.org>
@@ -21269,7 +22106,10 @@ PCIE M.2 POWER SEQUENCING
 M:	Manivannan Sadhasivam <mani@kernel.org>
 L:	linux-pci@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 F:	Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/devicetree/bindings/connector/pcie-m2-m-connector.yaml
 F:	drivers/power/sequencing/pwrseq-pcie-m2.c
 
@@ -21323,7 +22163,10 @@ PPP PROTOCOL DRIVERS AND COMPRESSORS
 L:	linux-ppp@vger.kernel.org
 S:	Orphan
 F:	drivers/net/ppp/ppp_*
+<<<<<<< HEAD
 F:	tools/testing/selftests/net/ppp/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 PPS SUPPORT
 M:	Rodolfo Giometti <giometti@enneenne.com>
@@ -21563,7 +22406,10 @@ M:	Uwe Kleine-König <ukleinek@kernel.org>
 L:	linux-pwm@vger.kernel.org
 S:	Maintained
 Q:	https://patchwork.ozlabs.org/project/linux-pwm/list/
+<<<<<<< HEAD
 C:	irc://irc.libera.chat/linux-pwm
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git
 F:	Documentation/devicetree/bindings/pwm/
 F:	Documentation/driver-api/pwm.rst
@@ -21668,12 +22514,15 @@ S:	Maintained
 F:	drivers/firmware/qemu_fw_cfg.c
 F:	include/uapi/linux/qemu_fw_cfg.h
 
+<<<<<<< HEAD
 QEMU VIRT MACHINE SYSTEM CONTROLLER DRIVER
 M:	Kuan-Wei Chiu <visitorckw@gmail.com>
 L:	linux-pm@vger.kernel.org
 S:	Maintained
 F:	drivers/power/reset/qemu-virt-ctrl.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 QLOGIC QL41xxx FCOE DRIVER
 M:	Saurav Kashyap <skashyap@marvell.com>
 M:	Javed Hasan <jhasan@marvell.com>
@@ -22383,13 +23232,19 @@ F:	tools/testing/selftests/net/rds/
 RDT - RESOURCE ALLOCATION
 M:	Tony Luck <tony.luck@intel.com>
 M:	Reinette Chatre <reinette.chatre@intel.com>
+<<<<<<< HEAD
 M:	x86@kernel.org
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Dave Martin <Dave.Martin@arm.com>
 R:	James Morse <james.morse@arm.com>
 R:	Babu Moger <babu.moger@amd.com>
 L:	linux-kernel@vger.kernel.org
 S:	Supported
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/filesystems/resctrl.rst
 F:	arch/x86/include/asm/resctrl.h
 F:	arch/x86/kernel/cpu/resctrl/
@@ -22954,7 +23809,11 @@ N:	riscv
 K:	riscv
 
 RISC-V IOMMU
+<<<<<<< HEAD
 M:	Tomasz Jeznach <tomasz.jeznach@linux.dev>
+=======
+M:	Tomasz Jeznach <tjeznach@rivosinc.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	iommu@lists.linux.dev
 L:	linux-riscv@lists.infradead.org
 S:	Maintained
@@ -22978,7 +23837,11 @@ F:	Documentation/devicetree/bindings/pinctrl/microchip,mpfs-pinctrl-mssio.yaml
 F:	Documentation/devicetree/bindings/pinctrl/microchip,pic64gx-pinctrl-gpio2.yaml
 F:	Documentation/devicetree/bindings/pwm/microchip,corepwm.yaml
 F:	Documentation/devicetree/bindings/riscv/microchip.yaml
+<<<<<<< HEAD
 F:	Documentation/devicetree/bindings/soc/microchip/microchip,mpfs*.yaml
+=======
+F:	Documentation/devicetree/bindings/soc/microchip/microchip,mpfs-sys-controller.yaml
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/devicetree/bindings/spi/microchip,mpfs-spi.yaml
 F:	Documentation/devicetree/bindings/usb/microchip,mpfs-musb.yaml
 F:	arch/riscv/boot/dts/microchip/
@@ -23053,12 +23916,17 @@ M:	Joel Stanley <jms@oss.tenstorrent.com>
 L:	linux-riscv@lists.infradead.org
 S:	Maintained
 T:	git https://github.com/tenstorrent/linux.git
+<<<<<<< HEAD
 F:	Documentation/devicetree/bindings/clock/tenstorrent,atlantis-prcm-rcpu.yaml
 F:	Documentation/devicetree/bindings/riscv/tenstorrent.yaml
 F:	arch/riscv/boot/dts/tenstorrent/
 F:	drivers/clk/tenstorrent/
 F:	drivers/reset/reset-tenstorrent-atlantis.c
 F:	include/dt-bindings/clock/tenstorrent,atlantis-prcm-rcpu.h
+=======
+F:	Documentation/devicetree/bindings/riscv/tenstorrent.yaml
+F:	arch/riscv/boot/dts/tenstorrent/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 RISC-V THEAD SoC SUPPORT
 M:	Drew Fustini <fustini@kernel.org>
@@ -23078,7 +23946,10 @@ F:	Documentation/devicetree/bindings/reset/thead,th1520-reset.yaml
 F:	arch/riscv/boot/dts/thead/
 F:	drivers/clk/thead/clk-th1520-ap.c
 F:	drivers/firmware/thead,th1520-aon.c
+<<<<<<< HEAD
 F:	drivers/gpu/drm/bridge/th1520-dw-hdmi.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/mailbox/mailbox-th1520.c
 F:	drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
 F:	drivers/pinctrl/pinctrl-th1520.c
@@ -23292,6 +24163,17 @@ F:	include/linux/mfd/rohm-bd96802.h
 F:	include/linux/mfd/rohm-generic.h
 F:	include/linux/mfd/rohm-shared.h
 
+<<<<<<< HEAD
+=======
+ROSE NETWORK LAYER
+L:	linux-hams@vger.kernel.org
+S:	Orphan
+W:	https://linux-ax25.in-berlin.de
+F:	include/net/rose.h
+F:	include/uapi/linux/rose.h
+F:	net/rose/
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ROTATION DRIVER FOR ALLWINNER A83T
 M:	Jernej Skrabec <jernej.skrabec@gmail.com>
 L:	linux-media@vger.kernel.org
@@ -23404,7 +24286,10 @@ C:	zulip://rust-for-linux.zulipchat.com
 P:	https://rust-for-linux.com/contributing
 T:	git https://github.com/Rust-for-Linux/linux.git rust-next
 F:	.clippy.toml
+<<<<<<< HEAD
 F:	.rustfmt.toml
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	Documentation/rust/
 F:	include/trace/events/rust_sample.h
 F:	rust/
@@ -23417,7 +24302,11 @@ RUST [ALLOC]
 M:	Danilo Krummrich <dakr@kernel.org>
 R:	Lorenzo Stoakes <ljs@kernel.org>
 R:	Vlastimil Babka <vbabka@kernel.org>
+<<<<<<< HEAD
 R:	Liam R. Howlett <liam@infradead.org>
+=======
+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Uladzislau Rezki <urezki@gmail.com>
 L:	rust-for-linux@vger.kernel.org
 S:	Maintained
@@ -23425,6 +24314,7 @@ T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
 F:	rust/kernel/alloc.rs
 F:	rust/kernel/alloc/
 
+<<<<<<< HEAD
 RUST [INTEROP]
 M:	Joel Fernandes <joelagnelf@nvidia.com>
 M:	Alexandre Courbot <acourbot@nvidia.com>
@@ -23434,6 +24324,8 @@ T:	git https://github.com/Rust-for-Linux/linux.git interop-next
 F:	rust/kernel/interop.rs
 F:	rust/kernel/interop/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 RUST [NUM]
 M:	Alexandre Courbot <acourbot@nvidia.com>
 R:	Yury Norov <yury.norov@gmail.com>
@@ -23569,7 +24461,11 @@ F:	drivers/s390/net/
 
 S390 PCI SUBSYSTEM
 M:	Niklas Schnelle <schnelle@linux.ibm.com>
+<<<<<<< HEAD
 M:	Gerd Bayer <gbayer@linux.ibm.com>
+=======
+M:	Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-s390@vger.kernel.org
 S:	Supported
 F:	Documentation/arch/s390/pci.rst
@@ -23921,10 +24817,15 @@ R:	Steven Rostedt <rostedt@goodmis.org> (SCHED_FIFO/SCHED_RR)
 R:	Ben Segall <bsegall@google.com> (CONFIG_CFS_BANDWIDTH)
 R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
 R:	Valentin Schneider <vschneid@redhat.com> (TOPOLOGY)
+<<<<<<< HEAD
 R:	K Prateek Nayak <kprateek.nayak@amd.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
 P:	Documentation/process/maintainer-tip.rst
+=======
+L:	linux-kernel@vger.kernel.org
+S:	Maintained
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
 F:	include/linux/preempt.h
 F:	include/linux/sched.h
@@ -24362,7 +25263,11 @@ F:	include/media/i2c/rj54n1cb0c.h
 SHRINKER
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Dave Chinner <david@fromorbit.com>
+<<<<<<< HEAD
 R:	Qi Zheng <qi.zheng@linux.dev>
+=======
+R:	Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Roman Gushchin <roman.gushchin@linux.dev>
 R:	Muchun Song <muchun.song@linux.dev>
 L:	linux-mm@kvack.org
@@ -24616,7 +25521,10 @@ F:	Documentation/admin-guide/mm/slab.rst
 F:	Documentation/mm/slab.rst
 F:	include/linux/mempool.h
 F:	include/linux/slab.h
+<<<<<<< HEAD
 F:	lib/tests/slub_kunit.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	mm/failslab.c
 F:	mm/mempool.c
 F:	mm/slab.h
@@ -24651,6 +25559,7 @@ T:	git https://github.com/cschaufler/smack-next.git
 F:	Documentation/admin-guide/LSM/Smack.rst
 F:	security/smack/
 
+<<<<<<< HEAD
 SMBDIRECT (RDMA Stream Transport with Read/Write-Offload, MS-SMBD)
 M:	Steve French <smfrench@gmail.com>
 M:	Steve French <sfrench@samba.org>
@@ -24666,6 +25575,8 @@ F:	fs/smb/smbdirect/
 F:	fs/smb/server/transport_rdma.*
 F:	include/linux/smbdirect.h
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SMC91x ETHERNET DRIVER
 M:	Nicolas Pitre <nico@fluxnic.net>
 S:	Odd Fixes
@@ -24731,8 +25642,13 @@ F:	Documentation/devicetree/bindings/net/socionext,synquacer-netsec.yaml
 F:	drivers/net/ethernet/socionext/netsec.c
 
 SOCIONEXT (SNI) Synquacer SPI DRIVER
+<<<<<<< HEAD
 M:	Masahisa Kojima <kojima.masahisa@socionext.com>
 M:	Jassi Brar <jassisinghbrar@gmail.com>
+=======
+M:	Masahisa Kojima <masahisa.kojima@linaro.org>
+M:	Jassi Brar <jaswinder.singh@linaro.org>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-spi@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/spi/socionext,synquacer-spi.yaml
@@ -24779,10 +25695,17 @@ L:	linux-rdma@vger.kernel.org
 S:	Supported
 F:	drivers/infiniband/sw/rxe/
 F:	include/uapi/rdma/rdma_user_rxe.h
+<<<<<<< HEAD
 F:	tools/testing/selftests/rdma/rxe*
 
 SOFTLOGIC 6x10 MPEG CODEC
 M:	Bluecherry Maintainers <maintainers@bluecherrydvr.com>
+=======
+
+SOFTLOGIC 6x10 MPEG CODEC
+M:	Bluecherry Maintainers <maintainers@bluecherrydvr.com>
+M:	Andrey Utkin <andrey_utkin@fastmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Ismael Luceno <ismael@iodev.co.uk>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -24813,7 +25736,10 @@ SOFTWARE RAID (Multiple Disks) SUPPORT
 M:	Song Liu <song@kernel.org>
 M:	Yu Kuai <yukuai@fnnas.com>
 R:	Li Nan <linan122@huawei.com>
+<<<<<<< HEAD
 R:	Xiao Ni <xiao@kernel.org>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-raid@vger.kernel.org
 S:	Supported
 Q:	https://patchwork.kernel.org/project/linux-raid/list/
@@ -25105,12 +26031,15 @@ W:	https://linuxtv.org
 Q:	http://patchwork.linuxtv.org/project/linux-media/list/
 F:	drivers/media/dvb-frontends/sp2*
 
+<<<<<<< HEAD
 SPACEMIT DWMAC GLUE LAYER
 M:	Inochi Amaoto <inochiama@gmail.com>
 S:	Maintained
 F:	Documentation/devicetree/bindings/net/spacemit,k3-dwmac.yaml
 F:	drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SPACEMIT K1 I2C DRIVER
 M:	Troy Mitchell <troy.mitchell@linux.spacemit.com>
 S:	Maintained
@@ -25284,7 +26213,10 @@ F:	drivers/hwmon/pmbus/stef48h28.c
 ST STM32 FIREWALL
 M:	Gatien Chevallier <gatien.chevallier@foss.st.com>
 S:	Maintained
+<<<<<<< HEAD
 F:	drivers/bus/stm32_dbg_bus.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/bus/stm32_etzpc.c
 F:	drivers/bus/stm32_firewall.c
 F:	drivers/bus/stm32_rifsc.c
@@ -25370,6 +26302,7 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/iio/proximity/st,vl53l0x.yaml
 F:	drivers/iio/proximity/vl53l0x-i2c.c
 
+<<<<<<< HEAD
 ST VL53L1X ToF RANGER(I2C) IIO DRIVER
 M:	Siratul Islam <email@sirat.me>
 L:	linux-iio@vger.kernel.org
@@ -25377,6 +26310,8 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/iio/proximity/st,vl53l0x.yaml
 F:	drivers/iio/proximity/vl53l1x-i2c.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 STABLE BRANCH
 M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 M:	Sasha Levin <sashal@kernel.org>
@@ -25428,7 +26363,11 @@ F:	drivers/staging/
 
 STANDALONE CACHE CONTROLLER DRIVERS
 M:	Conor Dooley <conor@kernel.org>
+<<<<<<< HEAD
 M:	Jonathan Cameron <jic23@kernel.org>
+=======
+M:	Jonathan Cameron <jonathan.cameron@huawei.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 T:	git https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/
 F:	Documentation/devicetree/bindings/cache/
@@ -25441,6 +26380,18 @@ M:	Ion Badulescu <ionut@badula.org>
 S:	Odd Fixes
 F:	drivers/net/ethernet/adaptec/starfire*
 
+<<<<<<< HEAD
+=======
+STARFIVE CAMERA SUBSYSTEM DRIVER
+M:	Jack Zhu <jack.zhu@starfivetech.com>
+M:	Changhuang Liang <changhuang.liang@starfivetech.com>
+L:	linux-media@vger.kernel.org
+S:	Maintained
+F:	Documentation/admin-guide/media/starfive_camss.rst
+F:	Documentation/devicetree/bindings/media/starfive,jh7110-camss.yaml
+F:	drivers/staging/media/starfive/camss
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 STARFIVE CRYPTO DRIVER
 M:	Jia Jie Ho <jiajie.ho@starfivetech.com>
 M:	William Qiu <william.qiu@starfivetech.com>
@@ -25533,11 +26484,18 @@ F:	Documentation/devicetree/bindings/reset/starfive,jh7100-reset.yaml
 F:	drivers/reset/starfive/reset-starfive-jh71*
 F:	include/dt-bindings/reset/starfive?jh71*.h
 
+<<<<<<< HEAD
 STARFIVE USB DRIVERS
 M:	Minda Chen <minda.chen@starfivetech.com>
 S:	Maintained
 F:	Documentation/devicetree/bindings/usb/starfive,jh7110-usb.yaml
 F:	Documentation/devicetree/bindings/usb/starfive,jhb100-dwc3.yaml
+=======
+STARFIVE JH71X0 USB DRIVERS
+M:	Minda Chen <minda.chen@starfivetech.com>
+S:	Maintained
+F:	Documentation/devicetree/bindings/usb/starfive,jh7110-usb.yaml
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	drivers/usb/cdns3/cdns3-starfive.c
 
 STARFIVE JH71XX PMU CONTROLLER DRIVER
@@ -25799,6 +26757,7 @@ S:	Supported
 F:	include/net/switchdev.h
 F:	net/switchdev/
 
+<<<<<<< HEAD
 SWITCHTEC DMA DRIVER
 M:	Kelvin Cao <kelvin.cao@microchip.com>
 M:	Logan Gunthorpe <logang@deltatee.com>
@@ -25806,6 +26765,8 @@ L:	dmaengine@vger.kernel.org
 S:	Maintained
 F:	drivers/dma/switchtec_dma.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SY8106A REGULATOR DRIVER
 M:	Icenowy Zheng <icenowy@aosc.io>
 S:	Maintained
@@ -26234,7 +27195,11 @@ F:	include/linux/tee_drv.h
 F:	include/uapi/linux/tee.h
 
 TEGRA ARCHITECTURE SUPPORT
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Jonathan Hunter <jonathanh@nvidia.com>
 L:	linux-tegra@vger.kernel.org
 S:	Supported
@@ -26266,7 +27231,11 @@ S:	Supported
 F:	drivers/i2c/busses/i2c-tegra.c
 
 TEGRA IOMMU DRIVERS
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 R:	Krishna Reddy <vdumpa@nvidia.com>
 L:	linux-tegra@vger.kernel.org
 S:	Supported
@@ -26287,12 +27256,20 @@ F:	Documentation/devicetree/bindings/mtd/nvidia,tegra20-nand.yaml
 F:	drivers/mtd/nand/raw/tegra_nand.c
 
 TEGRA PWM DRIVER
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Supported
 F:	drivers/pwm/pwm-tegra.c
 
 TEGRA QUAD SPI DRIVER
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Jonathan Hunter <jonathanh@nvidia.com>
 M:	Sowjanya Komatineni <skomatineni@nvidia.com>
 L:	linux-tegra@vger.kernel.org
@@ -26310,7 +27287,11 @@ S:	Supported
 F:	drivers/spi/spi-tegra*
 
 TEGRA VIDEO DRIVER
+<<<<<<< HEAD
 M:	Thierry Reding <thierry.reding@kernel.org>
+=======
+M:	Thierry Reding <thierry.reding@gmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 M:	Jonathan Hunter <jonathanh@nvidia.com>
 M:	Sowjanya Komatineni <skomatineni@nvidia.com>
 M:	Luca Ceresoli <luca.ceresoli@bootlin.com>
@@ -26584,7 +27565,11 @@ F:	drivers/media/i2c/thp7312.c
 F:	include/uapi/linux/thp7312.h
 
 THUNDERBOLT DMA TRAFFIC TEST DRIVER
+<<<<<<< HEAD
 M:	Mika Westerberg <westeri@kernel.org>
+=======
+M:	Isaac Hazan <isaac.hazan@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-usb@vger.kernel.org
 S:	Maintained
 F:	drivers/thunderbolt/dma_test.c
@@ -26895,7 +27880,10 @@ F:	include/linux/timekeeping.h
 F:	include/linux/timex.h
 F:	include/uapi/linux/time.h
 F:	include/uapi/linux/timex.h
+<<<<<<< HEAD
 F:	kernel/time/.kunitconfig
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 F:	kernel/time/alarmtimer.c
 F:	kernel/time/clocksource*
 F:	kernel/time/ntp*
@@ -27013,12 +28001,15 @@ F:	drivers/char/toshiba.c
 F:	include/linux/toshiba.h
 F:	include/uapi/linux/toshiba.h
 
+<<<<<<< HEAD
 TOSHIBA T4KA3 CAMERA SENSOR DRIVER
 M:	Kate Hsuan <hpa@redhat.com>
 L:	linux-media@vger.kernel.org
 S:	Maintained
 F:	drivers/media/i2c/t4ka3.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TOSHIBA TC358743 DRIVER
 M:	Hans Verkuil <hverkuil@kernel.org>
 L:	linux-media@vger.kernel.org
@@ -27150,7 +28141,11 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/trigger-source/*
 
 TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
+<<<<<<< HEAD
 M:	Dan Williams <djbw@kernel.org>
+=======
+M:	Dan Williams <dan.j.williams@intel.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-coco@lists.linux.dev
 S:	Maintained
 F:	Documentation/ABI/testing/configfs-tsm-report
@@ -27239,6 +28234,11 @@ F:	drivers/platform/x86/tuxedo/
 
 TW5864 VIDEO4LINUX DRIVER
 M:	Bluecherry Maintainers <maintainers@bluecherrydvr.com>
+<<<<<<< HEAD
+=======
+M:	Andrey Utkin <andrey.utkin@corp.bluecherry.net>
+M:	Andrey Utkin <andrey_utkin@fastmail.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-media@vger.kernel.org
 S:	Supported
 F:	drivers/media/pci/tw5864/
@@ -27292,7 +28292,11 @@ F:	Documentation/filesystems/ubifs.rst
 F:	fs/ubifs/
 
 UBLK USERSPACE BLOCK DRIVER
+<<<<<<< HEAD
 M:	Ming Lei <tom.leiming@gmail.com>
+=======
+M:	Ming Lei <ming.lei@redhat.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 L:	linux-block@vger.kernel.org
 S:	Maintained
 F:	Documentation/block/ublk.rst
@@ -27558,6 +28562,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git
 F:	Documentation/hid/hiddev.rst
 F:	drivers/hid/usbhid/
 
+<<<<<<< HEAD
 USB HID PID DRIVERS (USB WHEELBASES, JOYSTICKS, RUDDERS, ...)
 M:	Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 M:	Oleg Makarenko <oleg@makarenk.ooo>
@@ -27567,6 +28572,8 @@ B:	https://github.com/JacKeTUs/universal-pidff/issues
 F:	drivers/hid/usbhid/hid-pidff*
 F:	drivers/hid/hid-universal-pidff.c
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 USB INTEL XHCI ROLE MUX DRIVER
 M:	Hans de Goede <hansg@kernel.org>
 L:	linux-usb@vger.kernel.org
@@ -28001,12 +29008,15 @@ L:	kvm@vger.kernel.org
 S:	Maintained
 F:	drivers/vfio/pci/hisilicon/
 
+<<<<<<< HEAD
 VFIO ISM PCI DRIVER
 M:	Julian Ruess <julianr@linux.ibm.com>
 L:	kvm@vger.kernel.org
 S:	Maintained
 F:	drivers/vfio/pci/ism/
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 VFIO MEDIATED DEVICE DRIVERS
 M:	Kirti Wankhede <kwankhede@nvidia.com>
 L:	kvm@vger.kernel.org
@@ -28853,7 +29863,10 @@ M:	x86@kernel.org
 R:	"H. Peter Anvin" <hpa@zytor.com>
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
+<<<<<<< HEAD
 P:	Documentation/process/maintainer-tip.rst
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/core
 F:	Documentation/arch/x86/
 F:	Documentation/devicetree/bindings/x86/
@@ -29202,7 +30215,11 @@ S:	Orphan
 F:	drivers/net/ethernet/xilinx/ll_temac*
 
 XILINX PWM DRIVER
+<<<<<<< HEAD
 M:	Sean Anderson <sean.anderson@linux.dev>
+=======
+M:	Sean Anderson <sean.anderson@seco.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 S:	Maintained
 F:	drivers/pwm/pwm-xilinx.c
 F:	include/clocksource/timer-xilinx.h
@@ -29348,6 +30365,16 @@ F:	lib/decompress_unxz.c
 F:	lib/xz/
 F:	scripts/xz_wrap.sh
 
+<<<<<<< HEAD
+=======
+YAM DRIVER FOR AX.25
+M:	Jean-Paul Roubelat <jpr@f6fbb.org>
+L:	linux-hams@vger.kernel.org
+S:	Maintained
+F:	drivers/net/hamradio/yam*
+F:	include/linux/yam.h
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 YAMA SECURITY MODULE
 M:	Kees Cook <kees@kernel.org>
 S:	Supported
@@ -29369,6 +30396,19 @@ S:	Maintained
 F:	Documentation/input/devices/yealink.rst
 F:	drivers/input/misc/yealink.*
 
+<<<<<<< HEAD
+=======
+Z8530 DRIVER FOR AX.25
+M:	Joerg Reuter <jreuter@yaina.de>
+L:	linux-hams@vger.kernel.org
+S:	Maintained
+W:	http://yaina.de/jreuter/
+W:	http://www.qsl.net/dl1bke/
+F:	Documentation/networking/device_drivers/hamradio/z8530drv.rst
+F:	drivers/net/hamradio/*scc.c
+F:	drivers/net/hamradio/z8530.h
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ZD1211RW WIRELESS DRIVER
 L:	linux-wireless@vger.kernel.org
 S:	Orphan

@@ -1827,7 +1827,11 @@ static int cgx_lmac_exit(struct cgx *cgx)
 			continue;
 		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
 		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
+<<<<<<< HEAD
 		rvu_free_bitmap(&lmac->mac_to_index_bmap);
+=======
+		kfree(lmac->mac_to_index_bmap.bmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rvu_free_bitmap(&lmac->rx_fc_pfvf_bmap);
 		rvu_free_bitmap(&lmac->tx_fc_pfvf_bmap);
 		kfree(lmac->name);

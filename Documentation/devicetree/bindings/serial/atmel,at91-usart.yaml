@@ -24,7 +24,10 @@ properties:
           - const: atmel,at91sam9260-usart
       - items:
           - enum:
+<<<<<<< HEAD
               - microchip,lan9691-usart
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - microchip,sam9x60-usart
               - microchip,sam9x7-usart
               - microchip,sama7d65-usart

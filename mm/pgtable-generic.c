@@ -81,11 +81,18 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
 #endif
 
 #ifndef __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
 {
 	bool young;
 
+=======
+int ptep_clear_flush_young(struct vm_area_struct *vma,
+			   unsigned long address, pte_t *ptep)
+{
+	int young;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	young = ptep_test_and_clear_young(vma, address, ptep);
 	if (young)
 		flush_tlb_page(vma, address);
@@ -124,11 +131,18 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
 #endif
 
 #ifndef __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
 {
 	bool young;
 
+=======
+int pmdp_clear_flush_young(struct vm_area_struct *vma,
+			   unsigned long address, pmd_t *pmdp)
+{
+	int young;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
 	young = pmdp_test_and_clear_young(vma, address, pmdp);
 	if (young)

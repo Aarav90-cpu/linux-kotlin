@@ -7,7 +7,10 @@
 
 #include <drm/intel/i915_drm.h>
 #include <drm/intel/display_parent_interface.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "display/intel_display_rps.h"
 #include "display/vlv_clock.h"

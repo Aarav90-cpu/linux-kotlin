@@ -4,7 +4,10 @@
  */
 
 #include "regs/xe_soc_remapper_regs.h"
+<<<<<<< HEAD
 #include "xe_device.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_mmio.h"
 #include "xe_soc_remapper.h"
 

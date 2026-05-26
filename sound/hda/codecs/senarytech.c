@@ -36,6 +36,7 @@ struct senary_spec {
 	unsigned int gpio_mic_led_mask;
 };
 
+<<<<<<< HEAD
 enum {
 	SENARY_FIXUP_PINCFG_DEFAULT,
 };
@@ -62,6 +63,8 @@ static const struct hda_quirk sn6186_fixups[] = {
 	{}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SND_HDA_INPUT_BEEP
 /* additional beep mixers; private_value will be overwritten */
 static const struct snd_kcontrol_new senary_beep_mixer[] = {
@@ -76,6 +79,10 @@ static int set_beep_amp(struct senary_spec *spec, hda_nid_t nid,
 	unsigned int beep_amp = HDA_COMPOSE_AMP_VAL(nid, 1, idx, dir);
 	int i;
 
+<<<<<<< HEAD
+=======
+	spec->gen.beep_nid = nid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < ARRAY_SIZE(senary_beep_mixer); i++) {
 		knew = snd_hda_gen_add_kctl(&spec->gen, NULL,
 					    &senary_beep_mixer[i]);
@@ -83,8 +90,11 @@ static int set_beep_amp(struct senary_spec *spec, hda_nid_t nid,
 			return -ENOMEM;
 		knew->private_value = beep_amp;
 	}
+<<<<<<< HEAD
 
 	spec->gen.beep_nid = nid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -120,6 +130,7 @@ static void senary_auto_parse_eapd(struct hda_codec *codec)
 	}
 }
 
+<<<<<<< HEAD
 /* Hardware specific initialization verbs */
 static void senary_init_verb(struct hda_codec *codec)
 {
@@ -133,15 +144,24 @@ static void senary_init_verb(struct hda_codec *codec)
 	snd_hda_override_pin_caps(codec, 0x19, 0x2124);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void senary_auto_turn_eapd(struct hda_codec *codec, int num_pins,
 			      const hda_nid_t *pins, bool on)
 {
 	int i;
 
 	for (i = 0; i < num_pins; i++) {
+<<<<<<< HEAD
 		snd_hda_codec_write(codec, pins[i], 0,
 				    AC_VERB_SET_EAPD_BTLENABLE,
 				    on ? 0x02 : 0);
+=======
+		if (snd_hda_query_pin_caps(codec, pins[i]) & AC_PINCAP_EAPD)
+			snd_hda_codec_write(codec, pins[i], 0,
+					    AC_VERB_SET_EAPD_BTLENABLE,
+					    on ? 0x02 : 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -159,8 +179,19 @@ static void senary_init_gpio_led(struct hda_codec *codec)
 	struct senary_spec *spec = codec->spec;
 	unsigned int mask = spec->gpio_mute_led_mask | spec->gpio_mic_led_mask;
 
+<<<<<<< HEAD
 	if (mask)
 		snd_hda_codec_set_gpio(codec, mask, mask, spec->gpio_led, 0);
+=======
+	if (mask) {
+		snd_hda_codec_write(codec, codec->core.afg, 0, AC_VERB_SET_GPIO_MASK,
+				    mask);
+		snd_hda_codec_write(codec, codec->core.afg, 0, AC_VERB_SET_GPIO_DIRECTION,
+				    mask);
+		snd_hda_codec_write(codec, codec->core.afg, 0, AC_VERB_SET_GPIO_DATA,
+				    spec->gpio_led);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int senary_init(struct hda_codec *codec)
@@ -169,7 +200,10 @@ static int senary_init(struct hda_codec *codec)
 
 	snd_hda_gen_init(codec);
 	senary_init_gpio_led(codec);
+<<<<<<< HEAD
 	senary_init_verb(codec);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!spec->dynamic_eapd)
 		senary_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, true);
 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
@@ -215,6 +249,7 @@ static int senary_probe(struct hda_codec *codec, const struct hda_device_id *id)
 	senary_auto_parse_eapd(codec);
 	spec->gen.own_eapd_ctl = 1;
 
+<<<<<<< HEAD
 	/* Setup fixups based on codec vendor ID */
 	switch (codec->core.vendor_id) {
 	case 0x1fa86186:
@@ -239,6 +274,13 @@ static int senary_probe(struct hda_codec *codec, const struct hda_device_id *id)
 	if (!spec->gen.vmaster_mute.hook)
 		spec->gen.vmaster_mute.hook = senary_auto_vmaster_hook;
 
+=======
+	if (!spec->gen.vmaster_mute.hook)
+		spec->gen.vmaster_mute.hook = senary_auto_vmaster_hook;
+
+	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_PRE_PROBE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = snd_hda_parse_pin_defcfg(codec, &spec->gen.autocfg, NULL,
 				       spec->parse_flags);
 	if (err < 0)

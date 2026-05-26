@@ -361,6 +361,7 @@ static int stm32_cryp_it_start(struct stm32_cryp *cryp);
 
 static struct stm32_cryp *stm32_cryp_find_dev(struct stm32_cryp_ctx *ctx)
 {
+<<<<<<< HEAD
 	struct stm32_cryp *cryp;
 
 	spin_lock_bh(&cryp_list.lock);
@@ -368,6 +369,21 @@ static struct stm32_cryp *stm32_cryp_find_dev(struct stm32_cryp_ctx *ctx)
 		ctx->cryp = list_first_entry_or_null(&cryp_list.dev_list,
 						     struct stm32_cryp, list);
 	cryp = ctx->cryp;
+=======
+	struct stm32_cryp *tmp, *cryp = NULL;
+
+	spin_lock_bh(&cryp_list.lock);
+	if (!ctx->cryp) {
+		list_for_each_entry(tmp, &cryp_list.dev_list, list) {
+			cryp = tmp;
+			break;
+		}
+		ctx->cryp = cryp;
+	} else {
+		cryp = ctx->cryp;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&cryp_list.lock);
 
 	return cryp;

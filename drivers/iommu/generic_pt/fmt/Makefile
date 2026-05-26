@@ -5,8 +5,11 @@ iommu_pt_fmt-$(CONFIG_IOMMUFD_TEST) += mock
 
 iommu_pt_fmt-$(CONFIG_IOMMU_PT_VTDSS) += vtdss
 
+<<<<<<< HEAD
 iommu_pt_fmt-$(CONFIG_IOMMU_PT_RISCV64) += riscv64
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 iommu_pt_fmt-$(CONFIG_IOMMU_PT_X86_64) += x86_64
 
 IOMMU_PT_KUNIT_TEST :=

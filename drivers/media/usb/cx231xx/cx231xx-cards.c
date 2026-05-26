@@ -1369,6 +1369,11 @@ void cx231xx_release_resources(struct cx231xx *dev)
 
 	cx231xx_unregister_media_device(dev);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Mark device as unused */
 	clear_bit(dev->devno, &cx231xx_devused);
 }
@@ -1717,7 +1722,11 @@ static int cx231xx_usb_probe(struct usb_interface *interface,
 		}
 	} while (test_and_set_bit(nr, &cx231xx_devused));
 
+<<<<<<< HEAD
 	udev = interface_to_usbdev(interface);
+=======
+	udev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* allocate memory for our device state and initialize it */
 	dev = devm_kzalloc(&udev->dev, sizeof(*dev), GFP_KERNEL);
@@ -1913,6 +1922,10 @@ err_v4l2:
 err_media_init:
 	usb_set_intfdata(interface, NULL);
 err_if:
+<<<<<<< HEAD
+=======
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_bit(nr, &cx231xx_devused);
 	return retval;
 }

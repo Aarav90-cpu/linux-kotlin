@@ -1244,7 +1244,11 @@ const struct ethtool_ops sparx5_ethtool_ops = {
 	.set_pauseparam         = sparx5_set_pauseparam,
 };
 
+<<<<<<< HEAD
 int sparx5_stats_init(struct sparx5 *sparx5)
+=======
+int sparx_stats_init(struct sparx5 *sparx5)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct sparx5_consts *consts = sparx5->data->consts;
 	char queue_name[32];
@@ -1278,6 +1282,7 @@ int sparx5_stats_init(struct sparx5 *sparx5)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 void sparx5_stats_deinit(struct sparx5 *sparx5)
 {
@@ -1285,3 +1290,5 @@ void sparx5_stats_deinit(struct sparx5 *sparx5)
 	destroy_workqueue(sparx5->stats_queue);
 	mutex_destroy(&sparx5->queue_stats_lock);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

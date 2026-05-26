@@ -28,6 +28,12 @@ obj-y				+= dsa/
 obj-$(CONFIG_ATALK)		+= appletalk/
 obj-$(CONFIG_X25)		+= x25/
 obj-$(CONFIG_LAPB)		+= lapb/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_NETROM)		+= netrom/
+obj-$(CONFIG_ROSE)		+= rose/
+obj-$(CONFIG_AX25)		+= ax25/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_CAN)		+= can/
 obj-$(CONFIG_BT)		+= bluetooth/
 obj-$(CONFIG_SUNRPC)		+= sunrpc/
@@ -50,6 +56,10 @@ obj-$(CONFIG_IUCV)		+= iucv/
 obj-$(CONFIG_SMC)		+= smc/
 obj-$(CONFIG_RFKILL)		+= rfkill/
 obj-$(CONFIG_NET_9P)		+= 9p/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_CAIF)		+= caif/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_DCB)		+= dcb/
 obj-$(CONFIG_6LOWPAN)		+= 6lowpan/
 obj-$(CONFIG_IEEE802154)	+= ieee802154/

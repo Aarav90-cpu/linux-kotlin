@@ -202,6 +202,7 @@ neigh/default/gc_thresh3 - INTEGER
 
 	Default: 1024
 
+<<<<<<< HEAD
 neigh/default/gc_interval - INTEGER
 	Specifies how often the garbage collector for neighbor entries
 	should run. This value applies to the entire table, not
@@ -220,6 +221,8 @@ neigh/default/gc_stale_time - INTEGER
 
 	Default: 60 seconds
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 neigh/default/unres_qlen_bytes - INTEGER
 	The maximum number of bytes which may be used by packets
 	queued for each	unresolved address by other network layers.
@@ -1630,6 +1633,7 @@ ip_local_reserved_ports - list of comma separated ranges
 
 	Default: Empty
 
+<<<<<<< HEAD
 ip_local_port_step_width - INTEGER
         Defines the numerical maximum increment between successive port
         allocations within the ephemeral port range when an unavailable port is
@@ -1646,6 +1650,8 @@ ip_local_port_step_width - INTEGER
 
         Default: 0 (disabled)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ip_unprivileged_port_start - INTEGER
 	This is a per-namespace sysctl.  It defines the first
 	unprivileged port in the network namespace.  Privileged ports
@@ -1781,6 +1787,7 @@ icmp_msgs_per_sec - INTEGER
 	controlled by this limit. For security reasons, the precise count
 	of messages per second is randomized.
 
+<<<<<<< HEAD
 	Default: 10000
 
 icmp_msgs_burst - INTEGER
@@ -1789,6 +1796,16 @@ icmp_msgs_burst - INTEGER
 	For security reasons, the precise burst size is randomized.
 
 	Default: 10000
+=======
+	Default: 1000
+
+icmp_msgs_burst - INTEGER
+	icmp_msgs_per_sec controls number of ICMP packets sent per second,
+	while icmp_msgs_burst controls the burst size of these packets.
+	For security reasons, the precise burst size is randomized.
+
+	Default: 50
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 icmp_ratemask - INTEGER
 	Mask made of ICMP types for which rates are being limited.

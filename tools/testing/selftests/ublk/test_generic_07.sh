@@ -23,5 +23,9 @@ if [ "$ERR_CODE" -eq 0 ]; then
 	ERR_CODE=$?
 fi
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "generic"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

@@ -23,7 +23,10 @@ properties:
     oneOf:
       - enum:
           - mediatek,mt2701-disp-ovl
+<<<<<<< HEAD
           - mediatek,mt8167-disp-ovl
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - mediatek,mt8173-disp-ovl
           - mediatek,mt8183-disp-ovl
           - mediatek,mt8192-disp-ovl

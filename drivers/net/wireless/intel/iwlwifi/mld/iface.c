@@ -61,12 +61,16 @@ void iwl_mld_cleanup_vif(void *data, u8 *mac, struct ieee80211_vif *vif)
 static int iwl_mld_send_mac_cmd(struct iwl_mld *mld,
 				struct iwl_mac_config_cmd *cmd)
 {
+<<<<<<< HEAD
 	u16 cmd_id = WIDE_ID(MAC_CONF_GROUP, MAC_CONFIG_CMD);
 	int len = sizeof(*cmd);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	lockdep_assert_wiphy(mld->wiphy);
 
+<<<<<<< HEAD
 	if (iwl_fw_lookup_cmd_ver(mld->fw, cmd_id, 0) < 4) {
 		if (WARN_ON(cmd->mac_type == cpu_to_le32(FW_MAC_TYPE_NAN)))
 			return -EINVAL;
@@ -75,13 +79,22 @@ static int iwl_mld_send_mac_cmd(struct iwl_mld *mld,
 	}
 
 	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, cmd, len);
+=======
+	ret = iwl_mld_send_cmd_pdu(mld,
+				   WIDE_ID(MAC_CONF_GROUP, MAC_CONFIG_CMD),
+				   cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		IWL_ERR(mld, "Failed to send MAC_CONFIG_CMD ret = %d\n", ret);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static int iwl_mld_mac80211_iftype_to_fw(const struct ieee80211_vif *vif)
+=======
+int iwl_mld_mac80211_iftype_to_fw(const struct ieee80211_vif *vif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (vif->type) {
 	case NL80211_IFTYPE_STATION:
@@ -430,7 +443,11 @@ static void iwl_mld_mlo_scan_start_wk(struct wiphy *wiphy,
 	iwl_mld_int_mlo_scan(mld, iwl_mld_vif_to_mac80211(mld_vif));
 }
 
+<<<<<<< HEAD
 static IWL_MLD_ALLOC_FN(vif, vif)
+=======
+IWL_MLD_ALLOC_FN(vif, vif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Constructor function for struct iwl_mld_vif */
 static void
@@ -441,7 +458,10 @@ iwl_mld_init_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
 	lockdep_assert_wiphy(mld->wiphy);
 
 	mld_vif->mld = mld;
+<<<<<<< HEAD
 	mld_vif->fw_id = IWL_MLD_INVALID_FW_ID;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mld_vif->roc_activity = ROC_NUM_ACTIVITIES;
 
 	if (!mld->fw_status.in_hw_restart) {
@@ -489,10 +509,13 @@ void iwl_mld_rm_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
 
 	lockdep_assert_wiphy(mld->wiphy);
 
+<<<<<<< HEAD
 	/* NAN interface type is not known to FW */
 	if (vif->type == NL80211_IFTYPE_NAN)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_REMOVE);
 
 	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld->fw_id_to_vif)))

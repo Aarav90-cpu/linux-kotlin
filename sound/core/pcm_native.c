@@ -618,6 +618,7 @@ static int period_to_usecs(struct snd_pcm_runtime *runtime)
 	return usecs;
 }
 
+<<<<<<< HEAD
 /**
  * snd_pcm_set_state - Set the PCM runtime state with stream lock
  * @substream: PCM substream
@@ -625,11 +626,16 @@ static int period_to_usecs(struct snd_pcm_runtime *runtime)
  */
 void snd_pcm_set_state(struct snd_pcm_substream *substream,
 		       snd_pcm_state_t state)
+=======
+static void snd_pcm_set_state(struct snd_pcm_substream *substream,
+			      snd_pcm_state_t state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	guard(pcm_stream_lock_irq)(substream);
 	if (substream->runtime->state != SNDRV_PCM_STATE_DISCONNECTED)
 		__snd_pcm_set_state(substream->runtime, state);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(snd_pcm_set_state);
 
 /**
@@ -644,6 +650,8 @@ snd_pcm_state_t snd_pcm_get_state(struct snd_pcm_substream *substream)
 	return substream->runtime->state;
 }
 EXPORT_SYMBOL_GPL(snd_pcm_get_state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline void snd_pcm_timer_notify(struct snd_pcm_substream *substream,
 					int event)
@@ -1780,9 +1788,12 @@ static int snd_pcm_suspend(struct snd_pcm_substream *substream)
  * snd_pcm_suspend_all - trigger SUSPEND to all substreams in the given pcm
  * @pcm: the PCM instance
  *
+<<<<<<< HEAD
  * Takes and releases pcm->open_mutex to serialize against
  * concurrent open/close while walking the substreams.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * After this call, all streams are changed to SUSPENDED state.
  *
  * Return: Zero if successful (or @pcm is %NULL), or a negative error code.
@@ -1795,9 +1806,14 @@ int snd_pcm_suspend_all(struct snd_pcm *pcm)
 	if (! pcm)
 		return 0;
 
+<<<<<<< HEAD
 	guard(mutex)(&pcm->open_mutex);
 
 	for_each_pcm_substream(pcm, stream, substream) {
+=======
+	for_each_pcm_substream(pcm, stream, substream) {
+		/* FIXME: the open/close code should lock this as well */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!substream->runtime)
 			continue;
 

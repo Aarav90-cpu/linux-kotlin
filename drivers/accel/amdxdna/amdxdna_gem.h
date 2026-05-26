@@ -6,9 +6,13 @@
 #ifndef _AMDXDNA_GEM_H_
 #define _AMDXDNA_GEM_H_
 
+<<<<<<< HEAD
 #include <drm/drm_gem_shmem_helper.h>
 #include <linux/hmm.h>
 #include <linux/iova.h>
+=======
+#include <linux/hmm.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "amdxdna_pci_drv.h"
 
 struct amdxdna_umap {
@@ -24,6 +28,7 @@ struct amdxdna_umap {
 };
 
 struct amdxdna_mem {
+<<<<<<< HEAD
 	void				*kva;
 	u64				dma_addr;
 	size_t				size;
@@ -34,6 +39,16 @@ struct amdxdna_mem {
 	 * without taking notifier_lock.
 	 */
 	u64				uva;
+=======
+	u64				userptr;
+	void				*kva;
+	u64				dev_addr;
+	size_t				size;
+	struct page			**pages;
+	u32				nr_pages;
+	struct list_head		umap_list;
+	bool				map_invalid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct amdxdna_gem_obj {
@@ -41,21 +56,34 @@ struct amdxdna_gem_obj {
 	struct amdxdna_client		*client;
 	u8				type;
 	bool				pinned;
+<<<<<<< HEAD
 	struct mutex			lock; /* Protects: pinned, mem.kva, open_ref */
 	struct amdxdna_mem		mem;
 	int				open_ref;
 
 	/* Below members are initialized when needed */
+=======
+	struct mutex			lock; /* Protects: pinned */
+	struct amdxdna_mem		mem;
+
+	/* Below members is uninitialized when needed */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_mm			mm; /* For AMDXDNA_BO_DEV_HEAP */
 	struct drm_mm_node		mm_node; /* For AMDXDNA_BO_DEV */
 	u32				assigned_hwctx;
 	struct dma_buf			*dma_buf;
 	struct dma_buf_attachment	*attach;
+<<<<<<< HEAD
 
 	/* True, if BO is managed by XRT, not application */
 	bool				internal;
+<<<<<<< HEAD
 	/* True, if BO is not exportable */
 	bool				private_buffer;
+=======
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 };
 
 #define to_gobj(obj)    (&(obj)->base.base)
@@ -73,6 +101,7 @@ static inline void amdxdna_gem_put_obj(struct amdxdna_gem_obj *abo)
 	drm_gem_object_put(to_gobj(abo));
 }
 
+<<<<<<< HEAD
 void *amdxdna_gem_vmap(struct amdxdna_gem_obj *abo);
 u64 amdxdna_gem_uva(struct amdxdna_gem_obj *abo);
 u64 amdxdna_gem_dev_addr(struct amdxdna_gem_obj *abo);
@@ -85,17 +114,32 @@ static inline u64 amdxdna_dev_bo_offset(struct amdxdna_gem_obj *abo)
 static inline u64 amdxdna_obj_dma_addr(struct amdxdna_gem_obj *abo)
 {
 	return amdxdna_pasid_on(abo->client) ? amdxdna_gem_uva(abo) : abo->mem.dma_addr;
+=======
+static inline u64 amdxdna_dev_bo_offset(struct amdxdna_gem_obj *abo)
+{
+	return abo->mem.dev_addr - abo->client->dev_heap->mem.dev_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void amdxdna_umap_put(struct amdxdna_umap *mapp);
 
 struct drm_gem_object *
+<<<<<<< HEAD
 amdxdna_gem_create_shmem_object_cb(struct drm_device *dev, size_t size);
 struct drm_gem_object *
 amdxdna_gem_prime_import(struct drm_device *dev, struct dma_buf *dma_buf);
 struct amdxdna_gem_obj *
 amdxdna_drm_create_dev_bo(struct drm_device *dev,
 			  struct amdxdna_drm_create_bo *args, struct drm_file *filp);
+=======
+amdxdna_gem_create_object_cb(struct drm_device *dev, size_t size);
+struct drm_gem_object *
+amdxdna_gem_prime_import(struct drm_device *dev, struct dma_buf *dma_buf);
+struct amdxdna_gem_obj *
+amdxdna_drm_alloc_dev_bo(struct drm_device *dev,
+			 struct amdxdna_drm_create_bo *args,
+			 struct drm_file *filp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int amdxdna_gem_pin_nolock(struct amdxdna_gem_obj *abo);
 int amdxdna_gem_pin(struct amdxdna_gem_obj *abo);
@@ -104,6 +148,9 @@ void amdxdna_gem_unpin(struct amdxdna_gem_obj *abo);
 int amdxdna_drm_create_bo_ioctl(struct drm_device *dev, void *data, struct drm_file *filp);
 int amdxdna_drm_get_bo_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp);
 int amdxdna_drm_sync_bo_ioctl(struct drm_device *dev, void *data, struct drm_file *filp);
+<<<<<<< HEAD
 int amdxdna_drm_get_bo_usage(struct drm_device *dev, struct amdxdna_drm_get_array *args);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _AMDXDNA_GEM_H_ */

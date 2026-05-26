@@ -365,6 +365,7 @@ void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
 }
 
 /**
+<<<<<<< HEAD
  * vdo_submit_metadata_vio_wait() - Submit I/O for a metadata vio and wait for completion.
  * @vio: the vio for which to issue I/O
  * @physical: the physical block number to read or write
@@ -392,6 +393,8 @@ int vdo_submit_metadata_vio_wait(struct vio *vio,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * vdo_make_io_submitter() - Create an io_submitter structure.
  * @thread_count: Number of bio-submission threads to set up.
  * @rotation_interval: Interval to use when rotating between bio-submission threads when enqueuing
@@ -410,7 +413,12 @@ int vdo_make_io_submitter(unsigned int thread_count, unsigned int rotation_inter
 	struct io_submitter *io_submitter;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(thread_count, bio_queue_data, "bio submission data",
+=======
+	result = vdo_allocate_extended(struct io_submitter, thread_count,
+				       struct bio_queue_data, "bio submission data",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       &io_submitter);
 	if (result != VDO_SUCCESS)
 		return result;

@@ -726,8 +726,12 @@ static void scan_core_topology(int *map, struct topology *t, int nr_cpus)
 
 static int str_to_bitmap(char *s, cpumask_t *b, int nr_cpus)
 {
+<<<<<<< HEAD
 	unsigned int idx;
 	int ret = 0;
+=======
+	int idx, ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_cpu_map *map;
 	struct perf_cpu cpu;
 

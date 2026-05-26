@@ -71,7 +71,10 @@
 #include <asm/traps.h>
 #include <asm/sev.h>
 #include <asm/tdx.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/posted_intr.h>
 #include <asm/runtime-const.h>
 
@@ -410,6 +413,7 @@ out:
 	cr4_clear_bits(X86_CR4_UMIP);
 }
 
+<<<<<<< HEAD
 static int enable_lass(unsigned int cpu)
 {
 	cr4_set_bits(X86_CR4_LASS);
@@ -433,6 +437,29 @@ static int cpu_finalize_pre_userspace(void)
 	return 0;
 }
 late_initcall(cpu_finalize_pre_userspace);
+=======
+static __always_inline void setup_lass(struct cpuinfo_x86 *c)
+{
+	if (!cpu_feature_enabled(X86_FEATURE_LASS))
+		return;
+
+	/*
+	 * Legacy vsyscall page access causes a #GP when LASS is active.
+	 * Disable LASS because the #GP handler doesn't support vsyscall
+	 * emulation.
+	 *
+	 * Also disable LASS when running under EFI, as some runtime and
+	 * boot services rely on 1:1 mappings in the lower half.
+	 */
+	if (IS_ENABLED(CONFIG_X86_VSYSCALL_EMULATION) ||
+	    IS_ENABLED(CONFIG_EFI)) {
+		setup_clear_cpu_cap(X86_FEATURE_LASS);
+		return;
+	}
+
+	cr4_set_bits(X86_CR4_LASS);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* These bits should not change their value after CPU init is finished. */
 static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
@@ -1762,7 +1789,11 @@ static void __init cpu_parse_early_param(void)
 
 	/* Minimize the gap between FRED is available and available but disabled. */
 	arglen = cmdline_find_option(boot_command_line, "fred", arg, sizeof(arg));
+<<<<<<< HEAD
 	if (arglen == 3 && !strncmp(arg, "off", 3))
+=======
+	if (arglen != 2 || strncmp(arg, "on", 2))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		setup_clear_cpu_cap(X86_FEATURE_FRED);
 
 	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
@@ -2064,6 +2095,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
 	setup_smep(c);
 	setup_smap(c);
 	setup_umip(c);
+<<<<<<< HEAD
+=======
+	setup_lass(c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The vendor-specific functions might have changed features.
@@ -2163,7 +2198,10 @@ static __init void identify_boot_cpu(void)
 	cpu_detect_tlb(&boot_cpu_data);
 	setup_cr_pinning();
 
+<<<<<<< HEAD
 	x86_virt_init();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tsx_init();
 	tdx_init();
 	lkgs_init();

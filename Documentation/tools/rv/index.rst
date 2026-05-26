@@ -16,4 +16,7 @@ Runtime verification (rv) tool
    rv-mon-wip
    rv-mon-wwnr
    rv-mon-sched
+<<<<<<< HEAD
    rv-mon-stall
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

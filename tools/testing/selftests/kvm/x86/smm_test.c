@@ -34,13 +34,21 @@
  * independent subset of asm here.
  * SMI handler always report back fixed stage SMRAM_STAGE.
  */
+<<<<<<< HEAD
 u8 smi_handler[] = {
+=======
+uint8_t smi_handler[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0xb0, SMRAM_STAGE,    /* mov $SMRAM_STAGE, %al */
 	0xe4, SYNC_PORT,      /* in $SYNC_PORT, %al */
 	0x0f, 0xaa,           /* rsm */
 };
 
+<<<<<<< HEAD
 static inline void sync_with_host(u64 phase)
+=======
+static inline void sync_with_host(uint64_t phase)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	asm volatile("in $" XSTR(SYNC_PORT)", %%al \n"
 		     : "+a" (phase));
@@ -65,7 +73,11 @@ static void guest_code(void *arg)
 {
 	#define L2_GUEST_STACK_SIZE 64
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+<<<<<<< HEAD
 	u64 apicbase = rdmsr(MSR_IA32_APICBASE);
+=======
+	uint64_t apicbase = rdmsr(MSR_IA32_APICBASE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct svm_test_data *svm = arg;
 	struct vmx_pages *vmx_pages = arg;
 
@@ -113,7 +125,11 @@ static void guest_code(void *arg)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t nested_gva = 0;
+=======
+	vm_vaddr_t nested_gva = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct kvm_vcpu *vcpu;
 	struct kvm_regs regs;

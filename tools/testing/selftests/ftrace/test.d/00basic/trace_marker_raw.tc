@@ -4,8 +4,11 @@
 # requires: trace_marker_raw
 # flags: instance
 
+<<<<<<< HEAD
 check_awk_strtonum || exit_unresolved
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 is_little_endian() {
 	if lscpu | grep -q 'Little Endian'; then
 		echo 1;

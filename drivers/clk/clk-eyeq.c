@@ -45,7 +45,10 @@
 #include <linux/types.h>
 
 #include <dt-bindings/clock/mobileye,eyeq5-clk.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/mobileye,eyeq6lplus-clk.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* In frac mode, it enables fractional noise canceling DAC. Else, no function. */
 #define PCSR0_DAC_EN			BIT(0)
@@ -110,7 +113,10 @@ struct eqc_match_data {
 
 	const char		*reset_auxdev_name;
 	const char		*pinctrl_auxdev_name;
+<<<<<<< HEAD
 	const char		*eth_phy_auxdev_name;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unsigned int		early_clk_count;
 };
@@ -165,7 +171,11 @@ static void eqc_pll_downshift_factors(unsigned long *mult, unsigned long *div)
 static int eqc_pll_parse_registers(u32 r0, u32 r1, unsigned long *mult,
 				   unsigned long *div, unsigned long *acc)
 {
+<<<<<<< HEAD
 	unsigned long spread;
+=======
+	u32 spread;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (r0 & PCSR0_BYPASS) {
 		*mult = 1;
@@ -179,6 +189,11 @@ static int eqc_pll_parse_registers(u32 r0, u32 r1, unsigned long *mult,
 
 	*mult = FIELD_GET(PCSR0_INTIN, r0);
 	*div = FIELD_GET(PCSR0_REF_DIV, r0);
+<<<<<<< HEAD
+=======
+	if (r0 & PCSR0_FOUTPOSTDIV_EN)
+		*div *= FIELD_GET(PCSR0_POST_DIV1, r0) * FIELD_GET(PCSR0_POST_DIV2, r0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Fractional mode, in 2^20 (0x100000) parts. */
 	if (r0 & PCSR0_DSM_EN) {
@@ -197,6 +212,7 @@ static int eqc_pll_parse_registers(u32 r0, u32 r1, unsigned long *mult,
 	/*
 	 * Spread spectrum.
 	 *
+<<<<<<< HEAD
 	 * Spread is in 1/1024 parts of frequency. Clock accuracy
 	 * is half the spread value expressed in parts per billion.
 	 *
@@ -206,14 +222,30 @@ static int eqc_pll_parse_registers(u32 r0, u32 r1, unsigned long *mult,
 	 */
 	spread = FIELD_GET(PCSR1_SPREAD, r1);
 	*acc = DIV_ROUND_CLOSEST(spread * 1000000000, 1024 * 2);
+=======
+	 * Spread is 1/1000 parts of frequency, accuracy is half of
+	 * that. To get accuracy, convert to ppb (parts per billion).
+	 *
+	 * acc = spread * 1e6 / 2
+	 *   with acc in parts per billion and,
+	 *        spread in parts per thousand.
+	 */
+	spread = FIELD_GET(PCSR1_SPREAD, r1);
+	*acc = spread * 500000;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (r1 & PCSR1_DOWN_SPREAD) {
 		/*
 		 * Downspreading: the central frequency is half a
 		 * spread lower.
 		 */
+<<<<<<< HEAD
 		*mult *= 2048 - spread;
 		*div *= 2048;
+=======
+		*mult *= 2000 - spread;
+		*div *= 2000;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Previous operation might overflow 32 bits. If it
@@ -322,6 +354,7 @@ static void eqc_probe_init_fixed_factors(struct device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static void eqc_auxdev_create_optional(struct device *dev, void __iomem *base,
 				       const char *name)
 {
@@ -334,6 +367,40 @@ static void eqc_auxdev_create_optional(struct device *dev, void __iomem *base,
 			dev_warn(dev, "failed creating auxiliary device %s.%s\n",
 				 KBUILD_MODNAME, name);
 	}
+=======
+static void eqc_auxdev_release(struct device *dev)
+{
+	struct auxiliary_device *adev = to_auxiliary_dev(dev);
+
+	kfree(adev);
+}
+
+static int eqc_auxdev_create(struct device *dev, void __iomem *base,
+			     const char *name, u32 id)
+{
+	struct auxiliary_device *adev;
+	int ret;
+
+	adev = kzalloc_obj(*adev);
+	if (!adev)
+		return -ENOMEM;
+
+	adev->name = name;
+	adev->dev.parent = dev;
+	adev->dev.platform_data = (void __force *)base;
+	adev->dev.release = eqc_auxdev_release;
+	adev->id = id;
+
+	ret = auxiliary_device_init(adev);
+	if (ret)
+		return ret;
+
+	ret = auxiliary_device_add(adev);
+	if (ret)
+		auxiliary_device_uninit(adev);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int eqc_probe(struct platform_device *pdev)
@@ -345,6 +412,10 @@ static int eqc_probe(struct platform_device *pdev)
 	unsigned int i, clk_count;
 	struct resource *res;
 	void __iomem *base;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = device_get_match_data(dev);
 	if (!data)
@@ -358,10 +429,28 @@ static int eqc_probe(struct platform_device *pdev)
 	if (!base)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/* Init optional auxiliary devices. */
 	eqc_auxdev_create_optional(dev, base, data->reset_auxdev_name);
 	eqc_auxdev_create_optional(dev, base, data->pinctrl_auxdev_name);
 	eqc_auxdev_create_optional(dev, base, data->eth_phy_auxdev_name);
+=======
+	/* Init optional reset auxiliary device. */
+	if (data->reset_auxdev_name) {
+		ret = eqc_auxdev_create(dev, base, data->reset_auxdev_name, 0);
+		if (ret)
+			dev_warn(dev, "failed creating auxiliary device %s.%s: %d\n",
+				 KBUILD_MODNAME, data->reset_auxdev_name, ret);
+	}
+
+	/* Init optional pinctrl auxiliary device. */
+	if (data->pinctrl_auxdev_name) {
+		ret = eqc_auxdev_create(dev, base, data->pinctrl_auxdev_name, 0);
+		if (ret)
+			dev_warn(dev, "failed creating auxiliary device %s.%s: %d\n",
+				 KBUILD_MODNAME, data->pinctrl_auxdev_name, ret);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (data->pll_count + data->div_count + data->fixed_factor_count == 0)
 		return 0; /* Zero clocks, we are done. */
@@ -522,7 +611,10 @@ static const struct eqc_match_data eqc_eyeq5_match_data = {
 
 	.reset_auxdev_name = "reset",
 	.pinctrl_auxdev_name = "pinctrl",
+<<<<<<< HEAD
 	.eth_phy_auxdev_name = "phy",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.early_clk_count = ARRAY_SIZE(eqc_eyeq5_early_plls) +
 			   ARRAY_SIZE(eqc_eyeq5_early_fixed_factors),
@@ -542,6 +634,7 @@ static const struct eqc_match_data eqc_eyeq6l_match_data = {
 	.reset_auxdev_name = "reset",
 };
 
+<<<<<<< HEAD
 static const struct eqc_pll eqc_eyeq6lplus_early_plls[] = {
 	{ .index = EQ6LPC_PLL_CPU, .name = "pll-cpu", .reg64 = 0x058 },
 };
@@ -604,6 +697,8 @@ static const struct eqc_match_data eqc_eyeq6lplus_match_data = {
 	ARRAY_SIZE(eqc_eyeq6lplus_early_fixed_factors),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct eqc_match_data eqc_eyeq6h_west_match_data = {
 	.reset_auxdev_name = "reset_west",
 };
@@ -705,7 +800,10 @@ static const struct eqc_match_data eqc_eyeq6h_acc_match_data = {
 static const struct of_device_id eqc_match_table[] = {
 	{ .compatible = "mobileye,eyeq5-olb", .data = &eqc_eyeq5_match_data },
 	{ .compatible = "mobileye,eyeq6l-olb", .data = &eqc_eyeq6l_match_data },
+<<<<<<< HEAD
 	{ .compatible = "mobileye,eyeq6lplus-olb", .data = &eqc_eyeq6lplus_match_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "mobileye,eyeq6h-west-olb", .data = &eqc_eyeq6h_west_match_data },
 	{ .compatible = "mobileye,eyeq6h-east-olb", .data = &eqc_eyeq6h_east_match_data },
 	{ .compatible = "mobileye,eyeq6h-south-olb", .data = &eqc_eyeq6h_south_match_data },
@@ -889,9 +987,12 @@ static void __init eqc_eyeq6h_west_early_init(struct device_node *np)
 }
 CLK_OF_DECLARE_DRIVER(eqc_eyeq6h_west, "mobileye,eyeq6h-west-olb",
 		      eqc_eyeq6h_west_early_init);
+<<<<<<< HEAD
 
 static void __init eqc_eyeq6lplus_early_init(struct device_node *np)
 {
 	eqc_early_init(np, &eqc_eyeq6lplus_early_match_data);
 }
 CLK_OF_DECLARE_DRIVER(eqc_eyeq6lplus, "mobileye,eyeq6lplus-olb", eqc_eyeq6lplus_early_init);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -561,6 +561,13 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
 	if (!trig)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	trig->dev.parent = parent;
+	trig->dev.type = &iio_trig_type;
+	trig->dev.bus = &iio_bus_type;
+	device_initialize(&trig->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_WORK(&trig->reenable_work, iio_reenable_work_fn);
 
 	mutex_init(&trig->pool_lock);
@@ -588,11 +595,14 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
 				  IRQ_NOREQUEST | IRQ_NOAUTOEN, IRQ_NOPROBE);
 	}
 
+<<<<<<< HEAD
 	trig->dev.parent = parent;
 	trig->dev.type = &iio_trig_type;
 	trig->dev.bus = &iio_bus_type;
 	device_initialize(&trig->dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return trig;
 
 free_descs:
@@ -635,9 +645,15 @@ void iio_trigger_free(struct iio_trigger *trig)
 }
 EXPORT_SYMBOL(iio_trigger_free);
 
+<<<<<<< HEAD
 static void devm_iio_trigger_release(void *trig)
 {
 	iio_trigger_free(trig);
+=======
+static void devm_iio_trigger_release(struct device *dev, void *res)
+{
+	iio_trigger_free(*(struct iio_trigger **)res);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -659,20 +675,39 @@ struct iio_trigger *__devm_iio_trigger_alloc(struct device *parent,
 					     struct module *this_mod,
 					     const char *fmt, ...)
 {
+<<<<<<< HEAD
 	struct iio_trigger *trig;
 	va_list vargs;
 	int ret;
+=======
+	struct iio_trigger **ptr, *trig;
+	va_list vargs;
+
+	ptr = devres_alloc(devm_iio_trigger_release, sizeof(*ptr),
+			   GFP_KERNEL);
+	if (!ptr)
+		return NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* use raw alloc_dr for kmalloc caller tracing */
 	va_start(vargs, fmt);
 	trig = viio_trigger_alloc(parent, this_mod, fmt, vargs);
 	va_end(vargs);
+<<<<<<< HEAD
 	if (!trig)
 		return NULL;
 
 	ret = devm_add_action_or_reset(parent, devm_iio_trigger_release, trig);
 	if (ret)
 		return NULL;
+=======
+	if (trig) {
+		*ptr = trig;
+		devres_add(parent, ptr);
+	} else {
+		devres_free(ptr);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return trig;
 }

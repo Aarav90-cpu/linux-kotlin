@@ -332,6 +332,10 @@
 			thermal@e07008c4 {
 				compatible = "st,thermal-spear1340";
 				reg = <0xe07008c4 0x4>;
+<<<<<<< HEAD
+=======
+				thermal_flags = <0x7000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 		};
 	};

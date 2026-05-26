@@ -17,7 +17,10 @@
 #include "timerlat.h"
 #include "timerlat_aa.h"
 #include "timerlat_bpf.h"
+<<<<<<< HEAD
 #include "common.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct timerlat_top_cpu {
 	unsigned long long	irq_count;
@@ -42,6 +45,10 @@ struct timerlat_top_cpu {
 
 struct timerlat_top_data {
 	struct timerlat_top_cpu	*cpu_data;
+<<<<<<< HEAD
+=======
+	int			nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -62,7 +69,11 @@ static void timerlat_free_top_tool(struct osnoise_tool *tool)
 /*
  * timerlat_alloc_histogram - alloc runtime data
  */
+<<<<<<< HEAD
 static struct timerlat_top_data *timerlat_alloc_top(void)
+=======
+static struct timerlat_top_data *timerlat_alloc_top(int nr_cpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct timerlat_top_data *data;
 	int cpu;
@@ -71,6 +82,11 @@ static struct timerlat_top_data *timerlat_alloc_top(void)
 	if (!data)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	data->nr_cpus = nr_cpus;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* one set of histograms per CPU */
 	data->cpu_data = calloc(1, sizeof(*data->cpu_data) * nr_cpus);
 	if (!data->cpu_data)
@@ -188,6 +204,7 @@ static int timerlat_top_bpf_pull_data(struct osnoise_tool *tool)
 {
 	struct timerlat_top_data *data = tool->data;
 	int i, err;
+<<<<<<< HEAD
 	long long value_irq[nr_cpus],
 		  value_thread[nr_cpus],
 		  value_user[nr_cpus];
@@ -198,46 +215,91 @@ static int timerlat_top_bpf_pull_data(struct osnoise_tool *tool)
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+	long long value_irq[data->nr_cpus],
+		  value_thread[data->nr_cpus],
+		  value_user[data->nr_cpus];
+
+	/* Pull summary */
+	err = timerlat_bpf_get_summary_value(SUMMARY_CURRENT,
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->cpu_data[i].cur_irq = value_irq[i];
 		data->cpu_data[i].cur_thread = value_thread[i];
 		data->cpu_data[i].cur_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_COUNT,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->cpu_data[i].irq_count = value_irq[i];
 		data->cpu_data[i].thread_count = value_thread[i];
 		data->cpu_data[i].user_count = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_MIN,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->cpu_data[i].min_irq = value_irq[i];
 		data->cpu_data[i].min_thread = value_thread[i];
 		data->cpu_data[i].min_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_MAX,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->cpu_data[i].max_irq = value_irq[i];
 		data->cpu_data[i].max_thread = value_thread[i];
 		data->cpu_data[i].max_user = value_user[i];
 	}
 
 	err = timerlat_bpf_get_summary_value(SUMMARY_SUM,
+<<<<<<< HEAD
 					     value_irq, value_thread, value_user);
 	if (err)
 		return err;
 	for (i = 0; i < nr_cpus; i++) {
+=======
+					     value_irq, value_thread, value_user,
+					     data->nr_cpus);
+	if (err)
+		return err;
+	for (i = 0; i < data->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->cpu_data[i].sum_irq = value_irq[i];
 		data->cpu_data[i].sum_thread = value_thread[i];
 		data->cpu_data[i].sum_user = value_user[i];
@@ -435,11 +497,21 @@ timerlat_print_stats(struct osnoise_tool *top)
 	struct timerlat_params *params = to_timerlat_params(top->params);
 	struct trace_instance *trace = &top->trace;
 	struct timerlat_top_cpu summary;
+<<<<<<< HEAD
+=======
+	static int nr_cpus = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	if (params->common.aa_only)
 		return;
 
+<<<<<<< HEAD
+=======
+	if (nr_cpus == -1)
+		nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!params->common.quiet)
 		clear_terminal(trace->seq);
 
@@ -447,7 +519,11 @@ timerlat_print_stats(struct osnoise_tool *top)
 
 	timerlat_top_header(params, top);
 
+<<<<<<< HEAD
 	for_each_monitored_cpu(i, &params->common) {
+=======
+	for_each_monitored_cpu(i, nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		timerlat_top_print(top, i);
 		timerlat_top_update_sum(top, i, &summary);
 	}
@@ -507,7 +583,10 @@ static void timerlat_top_usage(void)
 		"	     --on-threshold <action>: define action to be executed at latency threshold, multiple are allowed",
 		"	     --on-end: define action to be executed at measurement end, multiple are allowed",
 		"	     --bpf-action <program>: load and execute BPF program when latency threshold is exceeded",
+<<<<<<< HEAD
 		"	     --stack-format <format>: set the stack format (truncate, skip, full)",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		NULL,
 	};
 
@@ -527,7 +606,13 @@ static struct common_params
 	int c;
 	char *trace_output = NULL;
 
+<<<<<<< HEAD
 	params = calloc_fatal(1, sizeof(*params));
+=======
+	params = calloc(1, sizeof(*params));
+	if (!params)
+		exit(1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	actions_init(&params->common.threshold_actions);
 	actions_init(&params->common.end_actions);
@@ -544,9 +629,12 @@ static struct common_params
 	/* default to BPF mode */
 	params->mode = TRACING_MODE_BPF;
 
+<<<<<<< HEAD
 	/* default to truncate stack format */
 	params->stack_format = STACK_FORMAT_TRUNCATE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (1) {
 		static struct option long_options[] = {
 			{"auto",		required_argument,	0, 'a'},
@@ -573,14 +661,22 @@ static struct common_params
 			{"on-threshold",	required_argument,	0, '9'},
 			{"on-end",		required_argument,	0, '\1'},
 			{"bpf-action",		required_argument,	0, '\2'},
+<<<<<<< HEAD
 			{"stack-format",	required_argument,	0, '\3'},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			{0, 0, 0, 0}
 		};
 
 		if (common_parse_options(argc, argv, &params->common))
 			continue;
 
+<<<<<<< HEAD
 		c = getopt_auto(argc, argv, long_options);
+=======
+		c = getopt_long(argc, argv, "a:hi:knp:qs:t::T:uU0:1:2:345:6:7:",
+				 long_options, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* detect the end of the options. */
 		if (c == -1)
@@ -655,6 +751,7 @@ static struct common_params
 			params->common.user_data = true;
 			break;
 		case '0': /* trigger */
+<<<<<<< HEAD
 			if (params->common.events)
 				trace_event_add_trigger(params->common.events, optarg);
 			else
@@ -665,6 +762,24 @@ static struct common_params
 				trace_event_add_filter(params->common.events, optarg);
 			else
 				fatal("--filter requires a previous -e");
+=======
+			if (params->common.events) {
+				retval = trace_event_add_trigger(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding trigger %s", optarg);
+			} else {
+				fatal("--trigger requires a previous -e");
+			}
+			break;
+		case '1': /* filter */
+			if (params->common.events) {
+				retval = trace_event_add_filter(params->common.events, optarg);
+				if (retval)
+					fatal("Error adding filter %s", optarg);
+			} else {
+				fatal("--filter requires a previous -e");
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case '2': /* dma-latency */
 			params->dma_latency = get_llong_from_str(optarg);
@@ -701,11 +816,14 @@ static struct common_params
 		case '\2':
 			params->bpf_action_program = optarg;
 			break;
+<<<<<<< HEAD
 		case '\3':
 			params->stack_format = parse_stack_format(optarg);
 			if (params->stack_format == -1)
 				fatal("Invalid --stack-format option");
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			fatal("Invalid option");
 		}
@@ -771,12 +889,22 @@ static struct osnoise_tool
 *timerlat_init_top(struct common_params *params)
 {
 	struct osnoise_tool *top;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+
+	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	top = osnoise_init_tool("timerlat_top");
 	if (!top)
 		return NULL;
 
+<<<<<<< HEAD
 	top->data = timerlat_alloc_top();
+=======
+	top->data = timerlat_alloc_top(nr_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!top->data)
 		goto out_err;
 
@@ -796,10 +924,17 @@ out_err:
 static int
 timerlat_top_bpf_main_loop(struct osnoise_tool *tool)
 {
+<<<<<<< HEAD
 	const struct common_params *params = tool->params;
 	int retval, wait_retval;
 
 	if (params->aa_only) {
+=======
+	struct timerlat_params *params = to_timerlat_params(tool->params);
+	int retval, wait_retval;
+
+	if (params->common.aa_only) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Auto-analysis only, just wait for stop tracing */
 		timerlat_bpf_wait(-1);
 		return 0;
@@ -807,8 +942,13 @@ timerlat_top_bpf_main_loop(struct osnoise_tool *tool)
 
 	/* Pull and display data in a loop */
 	while (!stop_tracing) {
+<<<<<<< HEAD
 		wait_retval = timerlat_bpf_wait(params->quiet ? -1 :
 						params->sleep_time);
+=======
+		wait_retval = timerlat_bpf_wait(params->common.quiet ? -1 :
+						params->common.sleep_time);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		retval = timerlat_top_bpf_pull_data(tool);
 		if (retval) {
@@ -816,11 +956,16 @@ timerlat_top_bpf_main_loop(struct osnoise_tool *tool)
 			return retval;
 		}
 
+<<<<<<< HEAD
 		if (!params->quiet)
+=======
+		if (!params->common.quiet)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			timerlat_print_stats(tool);
 
 		if (wait_retval != 0) {
 			/* Stopping requested by tracer */
+<<<<<<< HEAD
 			retval = common_threshold_handler(tool);
 			if (retval)
 				return retval;
@@ -837,6 +982,25 @@ timerlat_top_bpf_main_loop(struct osnoise_tool *tool)
 		/* is there still any user-threads ? */
 		if (params->user_workload) {
 			if (params->user.stopped_running) {
+=======
+			actions_perform(&params->common.threshold_actions);
+
+			if (!params->common.threshold_actions.continue_flag)
+				/* continue flag not set, break */
+				break;
+
+			/* continue action reached, re-enable tracing */
+			if (tool->record)
+				trace_instance_start(&tool->record->trace);
+			if (tool->aa)
+				trace_instance_start(&tool->aa->trace);
+			timerlat_bpf_restart_tracing();
+		}
+
+		/* is there still any user-threads ? */
+		if (params->common.user_workload) {
+			if (params->common.user.stopped_running) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				debug_msg("timerlat user space threads stopped!\n");
 				break;
 			}

@@ -3,6 +3,10 @@
 #define _LINUX_STDDEF_H
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __always_inline
 #define __always_inline __inline__
 #endif
@@ -35,11 +39,14 @@
 		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
 	} ATTRS
 
+<<<<<<< HEAD
 #ifdef __cplusplus
 /* sizeof(struct{}) is 1 in C++, not 0, can't use C version of the macro. */
 #define __DECLARE_FLEX_ARRAY(T, member)	\
 	T member[0]
 #else
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
  *
@@ -56,6 +63,7 @@
 		TYPE NAME[]; \
 	}
 #endif
+<<<<<<< HEAD
 
 #ifndef __counted_by
 #define __counted_by(m)
@@ -76,3 +84,5 @@
 #define __kernel_nonstring
 
 #endif /* _LINUX_STDDEF_H */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

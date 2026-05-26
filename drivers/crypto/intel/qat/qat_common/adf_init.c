@@ -10,7 +10,10 @@
 #include "adf_dbgfs.h"
 #include "adf_heartbeat.h"
 #include "adf_rl.h"
+<<<<<<< HEAD
 #include "adf_sysfs_anti_rb.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "adf_sysfs_ras_counters.h"
 #include "adf_telemetry.h"
 
@@ -180,7 +183,10 @@ static int adf_dev_start(struct adf_accel_dev *accel_dev)
 {
 	struct adf_hw_device_data *hw_data = accel_dev->hw_device;
 	struct service_hndl *service;
+<<<<<<< HEAD
 	u32 caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	set_bit(ADF_STATUS_STARTING, &accel_dev->status);
@@ -254,8 +260,12 @@ static int adf_dev_start(struct adf_accel_dev *accel_dev)
 	}
 	set_bit(ADF_STATUS_CRYPTO_ALGS_REGISTERED, &accel_dev->status);
 
+<<<<<<< HEAD
 	caps = hw_data->accel_capabilities_ext_mask;
 	if (!list_empty(&accel_dev->compression_list) && qat_comp_algs_register(caps)) {
+=======
+	if (!list_empty(&accel_dev->compression_list) && qat_comp_algs_register()) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&GET_DEV(accel_dev),
 			"Failed to register compression algs\n");
 		set_bit(ADF_STATUS_STARTING, &accel_dev->status);
@@ -266,7 +276,10 @@ static int adf_dev_start(struct adf_accel_dev *accel_dev)
 
 	adf_dbgfs_add(accel_dev);
 	adf_sysfs_start_ras(accel_dev);
+<<<<<<< HEAD
 	adf_sysfs_start_arb(accel_dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -296,7 +309,10 @@ static void adf_dev_stop(struct adf_accel_dev *accel_dev)
 	adf_rl_stop(accel_dev);
 	adf_dbgfs_rm(accel_dev);
 	adf_sysfs_stop_ras(accel_dev);
+<<<<<<< HEAD
 	adf_sysfs_stop_arb(accel_dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	clear_bit(ADF_STATUS_STARTING, &accel_dev->status);
 	clear_bit(ADF_STATUS_STARTED, &accel_dev->status);
@@ -310,7 +326,11 @@ static void adf_dev_stop(struct adf_accel_dev *accel_dev)
 
 	if (!list_empty(&accel_dev->compression_list) &&
 	    test_bit(ADF_STATUS_COMP_ALGS_REGISTERED, &accel_dev->status))
+<<<<<<< HEAD
 		qat_comp_algs_unregister(hw_data->accel_capabilities_ext_mask);
+=======
+		qat_comp_algs_unregister();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_bit(ADF_STATUS_COMP_ALGS_REGISTERED, &accel_dev->status);
 
 	list_for_each_entry(service, &service_table, list) {

@@ -10,7 +10,10 @@
 #include <linux/module.h>
 #include <linux/sched.h>
 #include <linux/scatterlist.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/crypto.h>
 #include <crypto/algapi.h>
 #include <crypto/internal/rsa.h>
@@ -258,8 +261,14 @@ static int ccp_register_rsa_alg(struct list_head *head,
 
 	alg = &ccp_alg->alg;
 	*alg = *def->alg_defaults;
+<<<<<<< HEAD
 	strscpy(alg->base.cra_name, def->name);
 	strscpy(alg->base.cra_driver_name, def->driver_name);
+=======
+	snprintf(alg->base.cra_name, CRYPTO_MAX_ALG_NAME, "%s", def->name);
+	snprintf(alg->base.cra_driver_name, CRYPTO_MAX_ALG_NAME, "%s",
+		 def->driver_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = crypto_register_akcipher(alg);
 	if (ret) {
 		pr_err("%s akcipher algorithm registration error (%d)\n",

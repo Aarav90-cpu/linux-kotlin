@@ -159,11 +159,16 @@ static int gre_rcv(struct sk_buff *skb)
 	rcu_read_lock();
 	proto = rcu_dereference(gre_proto[ver]);
 	if (!proto || !proto->handler)
+<<<<<<< HEAD
 		goto drop_nohandler;
+=======
+		goto drop_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = proto->handler(skb);
 	rcu_read_unlock();
 	return ret;
 
+<<<<<<< HEAD
 drop_nohandler:
 	rcu_read_unlock();
 	dev_core_stats_rx_nohandler_inc(skb->dev);
@@ -171,6 +176,11 @@ drop_nohandler:
 	return NET_RX_DROP;
 drop:
 	dev_core_stats_rx_dropped_inc(skb->dev);
+=======
+drop_unlock:
+	rcu_read_unlock();
+drop:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree_skb(skb);
 	return NET_RX_DROP;
 }

@@ -51,6 +51,7 @@ static bool readonly_control(struct sdca_control *control)
 	return control->has_fixed || control->mode == SDCA_ACCESS_MODE_RO;
 }
 
+<<<<<<< HEAD
 static int ge_count_routes(struct sdca_entity *entity)
 {
 	int count = 0;
@@ -70,6 +71,8 @@ static int ge_count_routes(struct sdca_entity *entity)
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * sdca_asoc_count_component - count the various component parts
  * @dev: Pointer to the device against which allocations will be done.
@@ -93,7 +96,10 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 			      int *num_widgets, int *num_routes, int *num_controls,
 			      int *num_dais)
 {
+<<<<<<< HEAD
 	struct sdca_control *control;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, j;
 
 	*num_widgets = function->num_entities - 1;
@@ -103,7 +109,10 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 
 	for (i = 0; i < function->num_entities - 1; i++) {
 		struct sdca_entity *entity = &function->entities[i];
+<<<<<<< HEAD
 		bool skip_primary_routes = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Add supply/DAI widget connections */
 		switch (entity->type) {
@@ -117,6 +126,7 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 		case SDCA_ENTITY_TYPE_PDE:
 			*num_routes += entity->pde.num_managed;
 			break;
+<<<<<<< HEAD
 		case SDCA_ENTITY_TYPE_GE:
 			*num_routes += ge_count_routes(entity);
 			skip_primary_routes = true;
@@ -128,6 +138,8 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 
 			skip_primary_routes = (control->layers == SDCA_ACCESS_LAYER_DEVICE);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			break;
 		}
@@ -136,8 +148,12 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 			(*num_routes)++;
 
 		/* Add primary entity connections from DisCo */
+<<<<<<< HEAD
 		if (!skip_primary_routes)
 			*num_routes += entity->num_sources;
+=======
+		*num_routes += entity->num_sources;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (j = 0; j < entity->num_controls; j++) {
 			if (exported_control(entity, &entity->controls[j]))
@@ -475,6 +491,10 @@ static int entity_parse_su_device(struct device *dev,
 				  struct snd_soc_dapm_route **route)
 {
 	struct sdca_control_range *range;
+<<<<<<< HEAD
+=======
+	int num_routes = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, j;
 
 	if (!entity->group) {
@@ -487,7 +507,11 @@ static int entity_parse_su_device(struct device *dev,
 	if (!range)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	(*widget)->id = snd_soc_dapm_mux_named_ctl;
+=======
+	(*widget)->id = snd_soc_dapm_mux;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(*widget)->kcontrol_news = entity->group->ge.kctl;
 	(*widget)->num_kcontrols = 1;
 	(*widget)++;
@@ -510,6 +534,14 @@ static int entity_parse_su_device(struct device *dev,
 				return -EINVAL;
 			}
 
+<<<<<<< HEAD
+=======
+			if (++num_routes > entity->num_sources) {
+				dev_err(dev, "%s: too many input routes\n", entity->label);
+				return -EINVAL;
+			}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			term = sdca_range_search(range, SDCA_SELECTED_MODE_INDEX,
 						 mode->val, SDCA_SELECTED_MODE_TERM_TYPE);
 			if (!term) {
@@ -805,6 +837,7 @@ int sdca_asoc_populate_dapm(struct device *dev, struct sdca_function_data *funct
 }
 EXPORT_SYMBOL_NS(sdca_asoc_populate_dapm, "SND_SOC_SDCA");
 
+<<<<<<< HEAD
 static int q78_write(struct snd_soc_component *component,
 		     struct soc_mixer_control *mc,
 		     unsigned int reg, const int val)
@@ -871,6 +904,8 @@ int sdca_asoc_q78_get_volsw(struct snd_kcontrol *kcontrol,
 }
 EXPORT_SYMBOL_NS(sdca_asoc_q78_get_volsw, "SND_SOC_SDCA");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int control_limit_kctl(struct device *dev,
 			      struct sdca_entity *entity,
 			      struct sdca_control *control,
@@ -907,6 +942,7 @@ static int control_limit_kctl(struct device *dev,
 	tlv[2] = (min * 100) >> 8;
 	tlv[3] = (max * 100) >> 8;
 
+<<<<<<< HEAD
 	mc->min = min / step;
 	mc->max = max / step;
 	mc->shift = step;
@@ -916,6 +952,18 @@ static int control_limit_kctl(struct device *dev,
 	kctl->access |= SNDRV_CTL_ELEM_ACCESS_TLV_READ;
 	kctl->get = sdca_asoc_q78_get_volsw;
 	kctl->put = sdca_asoc_q78_put_volsw;
+=======
+	step = (step * 100) >> 8;
+
+	mc->min = ((int)tlv[2] / step);
+	mc->max = ((int)tlv[3] / step);
+	mc->shift = step;
+	mc->sign_bit = 15;
+	mc->sdca_q78 = 1;
+
+	kctl->tlv.p = tlv;
+	kctl->access |= SNDRV_CTL_ELEM_ACCESS_TLV_READ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

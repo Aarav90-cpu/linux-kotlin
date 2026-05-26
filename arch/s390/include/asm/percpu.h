@@ -12,6 +12,7 @@
  */
 #define __my_cpu_offset get_lowcore()->percpu_offset
 
+<<<<<<< HEAD
 #define arch_raw_cpu_ptr(_ptr)						\
 ({									\
 	unsigned long lc_percpu, tcp_ptr__;				\
@@ -30,6 +31,8 @@
 	(TYPEOF_UNQUAL(*(_ptr)) __force __kernel *)tcp_ptr__;		\
 })
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We use a compare-and-swap loop since that uses less cpu cycles than
  * disabling and enabling interrupts like the generic variant would do.

@@ -20,15 +20,21 @@
 #include <net/rtnetlink.h>
 #include <net/flow_offload.h>
 #include <linux/xarray.h>
+<<<<<<< HEAD
 #include <net/dropreason-qdisc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct Qdisc_ops;
 struct qdisc_walker;
 struct tcf_walker;
 struct module;
 struct bpf_flow_keys;
+<<<<<<< HEAD
 struct Qdisc;
 struct netdev_queue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct qdisc_rate_table {
 	struct tc_ratespec rate;
@@ -710,8 +716,13 @@ void dev_qdisc_change_real_num_tx(struct net_device *dev,
 void dev_init_scheduler(struct net_device *dev);
 void dev_shutdown(struct net_device *dev);
 void dev_activate(struct net_device *dev);
+<<<<<<< HEAD
 void dev_deactivate(struct net_device *dev, bool reset_needed);
 void dev_deactivate_many(struct list_head *head, bool reset_needed);
+=======
+void dev_deactivate(struct net_device *dev);
+void dev_deactivate_many(struct list_head *head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct Qdisc *dev_graft_qdisc(struct netdev_queue *dev_queue,
 			      struct Qdisc *qdisc);
 void qdisc_reset(struct Qdisc *qdisc);
@@ -1147,16 +1158,24 @@ static inline struct tc_skb_cb *tc_skb_cb(const struct sk_buff *skb)
 	return cb;
 }
 
+<<<<<<< HEAD
 /* TC classifier accessors - use enum skb_drop_reason */
 static inline enum skb_drop_reason
 tcf_get_drop_reason(const struct sk_buff *skb)
 {
 	return (enum skb_drop_reason)tc_skb_cb(skb)->drop_reason;
+=======
+static inline enum skb_drop_reason
+tcf_get_drop_reason(const struct sk_buff *skb)
+{
+	return tc_skb_cb(skb)->drop_reason;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void tcf_set_drop_reason(const struct sk_buff *skb,
 				       enum skb_drop_reason reason)
 {
+<<<<<<< HEAD
 	tc_skb_cb(skb)->drop_reason = (enum qdisc_drop_reason)reason;
 }
 
@@ -1203,6 +1222,31 @@ static inline void qdisc_dequeue_drop(struct Qdisc *q, struct sk_buff *skb,
 		kfree_skb_reason(skb, (enum skb_drop_reason)reason);
 	}
 	rcu_read_unlock();
+=======
+	tc_skb_cb(skb)->drop_reason = reason;
+}
+
+static inline void tcf_kfree_skb_list(struct sk_buff *skb)
+{
+	while (unlikely(skb)) {
+		struct sk_buff *next = skb->next;
+
+		prefetch(next);
+		kfree_skb_reason(skb, tcf_get_drop_reason(skb));
+		skb = next;
+	}
+}
+
+static inline void qdisc_dequeue_drop(struct Qdisc *q, struct sk_buff *skb,
+				      enum skb_drop_reason reason)
+{
+	DEBUG_NET_WARN_ON_ONCE(!(q->flags & TCQ_F_DEQUEUE_DROPS));
+	DEBUG_NET_WARN_ON_ONCE(q->flags & TCQ_F_NOLOCK);
+
+	tcf_set_drop_reason(skb, reason);
+	skb->next = q->to_free;
+	q->to_free = skb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Instead of calling kfree_skb() while root qdisc lock is held,
@@ -1377,9 +1421,15 @@ static inline int qdisc_drop(struct sk_buff *skb, struct Qdisc *sch,
 
 static inline int qdisc_drop_reason(struct sk_buff *skb, struct Qdisc *sch,
 				    struct sk_buff **to_free,
+<<<<<<< HEAD
 				    enum qdisc_drop_reason reason)
 {
 	tcf_set_qdisc_drop_reason(skb, reason);
+=======
+				    enum skb_drop_reason reason)
+{
+	tcf_set_drop_reason(skb, reason);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return qdisc_drop(skb, sch, to_free);
 }
 

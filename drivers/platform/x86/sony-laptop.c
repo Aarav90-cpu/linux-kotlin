@@ -178,7 +178,12 @@ enum sony_nc_rfkill {
 static int sony_rfkill_handle;
 static struct rfkill *sony_rfkill_devices[N_SONY_RFKILL];
 static int sony_rfkill_address[N_SONY_RFKILL] = {0x300, 0x500, 0x700, 0x900};
+<<<<<<< HEAD
 static int sony_nc_rfkill_setup(struct device *dev, unsigned int handle);
+=======
+static int sony_nc_rfkill_setup(struct acpi_device *device,
+		unsigned int handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sony_nc_rfkill_cleanup(void);
 static void sony_nc_rfkill_update(void);
 
@@ -434,7 +439,11 @@ static void sony_laptop_report_input_event(u8 event)
 		dprintk("unknown input event %.2x\n", event);
 }
 
+<<<<<<< HEAD
 static int sony_laptop_setup_input(struct device *parent)
+=======
+static int sony_laptop_setup_input(struct acpi_device *acpi_device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct input_dev *jog_dev;
 	struct input_dev *key_dev;
@@ -467,7 +476,11 @@ static int sony_laptop_setup_input(struct device *parent)
 	key_dev->name = "Sony Vaio Keys";
 	key_dev->id.bustype = BUS_ISA;
 	key_dev->id.vendor = PCI_VENDOR_ID_SONY;
+<<<<<<< HEAD
 	key_dev->dev.parent = parent;
+=======
+	key_dev->dev.parent = &acpi_device->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialize the Input Drivers: special keys */
 	input_set_capability(key_dev, EV_MSC, MSC_SCAN);
@@ -496,7 +509,11 @@ static int sony_laptop_setup_input(struct device *parent)
 	jog_dev->name = "Sony Vaio Jogdial";
 	jog_dev->id.bustype = BUS_ISA;
 	jog_dev->id.vendor = PCI_VENDOR_ID_SONY;
+<<<<<<< HEAD
 	jog_dev->dev.parent = parent;
+=======
+	jog_dev->dev.parent = &acpi_device->dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	input_set_capability(jog_dev, EV_KEY, BTN_MIDDLE);
 	input_set_capability(jog_dev, EV_REL, REL_WHEEL);
@@ -1175,7 +1192,11 @@ enum event_types {
 	KILLSWITCH,
 	GFX_SWITCH
 };
+<<<<<<< HEAD
 static void sony_nc_notify(acpi_handle ah, u32 event, void *data)
+=======
+static void sony_nc_notify(struct acpi_device *device, u32 event)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 real_ev = event;
 	u8 ev_type = 0;
@@ -1286,7 +1307,11 @@ static acpi_status sony_walk_callback(acpi_handle handle, u32 level,
 /*
  * ACPI device
  */
+<<<<<<< HEAD
 static void sony_nc_function_setup(struct device *dev,
+=======
+static void sony_nc_function_setup(struct acpi_device *device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct platform_device *pf_device)
 {
 	unsigned int i, result, bitmask, arg;
@@ -1359,7 +1384,11 @@ static void sony_nc_function_setup(struct device *dev,
 			break;
 		case 0x0124:
 		case 0x0135:
+<<<<<<< HEAD
 			result = sony_nc_rfkill_setup(dev, handle);
+=======
+			result = sony_nc_rfkill_setup(device, handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (result)
 				pr_err("couldn't set up rfkill support (%d)\n",
 						result);
@@ -1599,7 +1628,12 @@ static const struct rfkill_ops sony_rfkill_ops = {
 	.set_block = sony_nc_rfkill_set,
 };
 
+<<<<<<< HEAD
 static int sony_nc_setup_rfkill(struct device *parent, enum sony_nc_rfkill nc_type)
+=======
+static int sony_nc_setup_rfkill(struct acpi_device *device,
+				enum sony_nc_rfkill nc_type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 	struct rfkill *rfk;
@@ -1629,7 +1663,12 @@ static int sony_nc_setup_rfkill(struct device *parent, enum sony_nc_rfkill nc_ty
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	rfk = rfkill_alloc(name, parent, type, &sony_rfkill_ops, (void *)nc_type);
+=======
+	rfk = rfkill_alloc(name, &device->dev, type,
+			   &sony_rfkill_ops, (void *)nc_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rfk)
 		return -ENOMEM;
 
@@ -1689,7 +1728,12 @@ static void sony_nc_rfkill_update(void)
 	}
 }
 
+<<<<<<< HEAD
 static int sony_nc_rfkill_setup(struct device *parent, unsigned int handle)
+=======
+static int sony_nc_rfkill_setup(struct acpi_device *device,
+		unsigned int handle)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 offset;
 	int i;
@@ -1730,18 +1774,32 @@ static int sony_nc_rfkill_setup(struct device *parent, unsigned int handle)
 		dprintk("Radio devices, found 0x%.2x\n", buffer[i]);
 
 		if (buffer[i] == 0 && !sony_rfkill_devices[SONY_WIFI])
+<<<<<<< HEAD
 			sony_nc_setup_rfkill(parent, SONY_WIFI);
 
 		if (buffer[i] == 0x10 && !sony_rfkill_devices[SONY_BLUETOOTH])
 			sony_nc_setup_rfkill(parent, SONY_BLUETOOTH);
+=======
+			sony_nc_setup_rfkill(device, SONY_WIFI);
+
+		if (buffer[i] == 0x10 && !sony_rfkill_devices[SONY_BLUETOOTH])
+			sony_nc_setup_rfkill(device, SONY_BLUETOOTH);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (((0xf0 & buffer[i]) == 0x20 ||
 					(0xf0 & buffer[i]) == 0x50) &&
 				!sony_rfkill_devices[SONY_WWAN])
+<<<<<<< HEAD
 			sony_nc_setup_rfkill(parent, SONY_WWAN);
 
 		if (buffer[i] == 0x30 && !sony_rfkill_devices[SONY_WIMAX])
 			sony_nc_setup_rfkill(parent, SONY_WIMAX);
+=======
+			sony_nc_setup_rfkill(device, SONY_WWAN);
+
+		if (buffer[i] == 0x30 && !sony_rfkill_devices[SONY_WIMAX])
+			sony_nc_setup_rfkill(device, SONY_WIMAX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }
@@ -3145,9 +3203,18 @@ static void sony_nc_backlight_cleanup(void)
 	backlight_device_unregister(sony_bl_props.dev);
 }
 
+<<<<<<< HEAD
 static int sony_nc_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int sony_nc_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	acpi_status status;
 	int result = 0;
 	struct sony_nc_value *item;
@@ -3185,7 +3252,11 @@ static int sony_nc_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	result = sony_laptop_setup_input(&pdev->dev);
+=======
+	result = sony_laptop_setup_input(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result) {
 		pr_err("Unable to create input devices\n");
 		goto outplatform;
@@ -3202,7 +3273,11 @@ static int sony_nc_probe(struct platform_device *pdev)
 		/* retrieve the available handles */
 		result = sony_nc_handles_setup(sony_pf_device);
 		if (!result)
+<<<<<<< HEAD
 			sony_nc_function_setup(&pdev->dev, sony_pf_device);
+=======
+			sony_nc_function_setup(device, sony_pf_device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (acpi_video_get_backlight_type() == acpi_backlight_vendor)
@@ -3245,11 +3320,14 @@ static int sony_nc_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	result = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
 						 sony_nc_notify, NULL);
 	if (result)
 		goto out_sysfs;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_info("SNC setup done.\n");
 	return 0;
 
@@ -3272,6 +3350,7 @@ outwalk:
 	return result;
 }
 
+<<<<<<< HEAD
 static void sony_nc_remove(struct platform_device *pdev)
 {
 	struct sony_nc_value *item;
@@ -3279,6 +3358,12 @@ static void sony_nc_remove(struct platform_device *pdev)
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_DEVICE_NOTIFY, sony_nc_notify);
 
+=======
+static void sony_nc_remove(struct acpi_device *device)
+{
+	struct sony_nc_value *item;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sony_nc_backlight_cleanup();
 
 	sony_nc_acpi_device = NULL;
@@ -3306,6 +3391,7 @@ static const struct acpi_device_id sony_nc_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver sony_nc_driver = {
 	.probe = sony_nc_probe,
 	.remove = sony_nc_remove,
@@ -3314,6 +3400,18 @@ static struct platform_driver sony_nc_driver = {
 		.acpi_match_table = sony_nc_device_ids,
 		.pm = &sony_nc_pm,
 	},
+=======
+static struct acpi_driver sony_nc_driver = {
+	.name = SONY_NC_DRIVER_NAME,
+	.class = SONY_NC_CLASS,
+	.ids = sony_nc_device_ids,
+	.ops = {
+		.add = sony_nc_add,
+		.remove = sony_nc_remove,
+		.notify = sony_nc_notify,
+		},
+	.drv.pm = &sony_nc_pm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*********** SPIC (SNY6001) Device ***********/
@@ -4283,9 +4381,15 @@ end:
 /*
  *  Disable the spic device by calling its _DIS method
  */
+<<<<<<< HEAD
 static int sony_pic_disable(struct device *dev)
 {
 	acpi_status ret = acpi_evaluate_object(ACPI_HANDLE(dev), "_DIS", NULL,
+=======
+static int sony_pic_disable(struct acpi_device *device)
+{
+	acpi_status ret = acpi_evaluate_object(device->handle, "_DIS", NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       NULL);
 
 	if (ACPI_FAILURE(ret) && ret != AE_NOT_FOUND)
@@ -4301,7 +4405,11 @@ static int sony_pic_disable(struct device *dev)
  *
  *  Call _SRS to set current resources
  */
+<<<<<<< HEAD
 static int sony_pic_enable(struct device *dev,
+=======
+static int sony_pic_enable(struct acpi_device *device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct sony_pic_ioport *ioport, struct sony_pic_irq *irq)
 {
 	acpi_status status;
@@ -4383,7 +4491,11 @@ static int sony_pic_enable(struct device *dev,
 
 	/* Attempt to set the resource */
 	dprintk("Evaluating _SRS\n");
+<<<<<<< HEAD
 	status = acpi_set_current_resources(ACPI_HANDLE(dev), &buffer);
+=======
+	status = acpi_set_current_resources(device->handle, &buffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* check for total failure */
 	if (ACPI_FAILURE(status)) {
@@ -4472,12 +4584,20 @@ found:
  *  ACPI driver
  *
  *****************/
+<<<<<<< HEAD
 static void sony_pic_remove(struct platform_device *pdev)
+=======
+static void sony_pic_remove(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sony_pic_ioport *io, *tmp_io;
 	struct sony_pic_irq *irq, *tmp_irq;
 
+<<<<<<< HEAD
 	if (sony_pic_disable(&pdev->dev)) {
+=======
+	if (sony_pic_disable(device)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_err("Couldn't disable device\n");
 		return;
 	}
@@ -4511,12 +4631,20 @@ static void sony_pic_remove(struct platform_device *pdev)
 	dprintk(SONY_PIC_DRIVER_NAME " removed.\n");
 }
 
+<<<<<<< HEAD
 static int sony_pic_probe(struct platform_device *pdev)
 {
 	struct sony_pic_ioport *io, *tmp_io;
 	struct sony_pic_irq *irq, *tmp_irq;
 	struct acpi_device *device;
 	int result;
+=======
+static int sony_pic_add(struct acpi_device *device)
+{
+	int result;
+	struct sony_pic_ioport *io, *tmp_io;
+	struct sony_pic_irq *irq, *tmp_irq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	device = ACPI_COMPANION(&pdev->dev);
 	if (!device)
@@ -4535,7 +4663,11 @@ static int sony_pic_probe(struct platform_device *pdev)
 	}
 
 	/* setup input devices and helper fifo */
+<<<<<<< HEAD
 	result = sony_laptop_setup_input(&pdev->dev);
+=======
+	result = sony_laptop_setup_input(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result) {
 		pr_err("Unable to create input devices\n");
 		goto err_free_resources;
@@ -4605,7 +4737,11 @@ static int sony_pic_probe(struct platform_device *pdev)
 	}
 
 	/* set resource status _SRS */
+<<<<<<< HEAD
 	result = sony_pic_enable(&pdev->dev, spic_dev.cur_ioport, spic_dev.cur_irq);
+=======
+	result = sony_pic_enable(device, spic_dev.cur_ioport, spic_dev.cur_irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result) {
 		pr_err("Couldn't enable device\n");
 		goto err_free_irq;
@@ -4628,7 +4764,11 @@ err_remove_pf:
 	sony_pf_remove();
 
 err_disable_device:
+<<<<<<< HEAD
 	sony_pic_disable(&pdev->dev);
+=======
+	sony_pic_disable(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 err_free_irq:
 	free_irq(spic_dev.cur_irq->irq.interrupts[0], &spic_dev);
@@ -4664,14 +4804,23 @@ err_free_resources:
 #ifdef CONFIG_PM_SLEEP
 static int sony_pic_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	if (sony_pic_disable(dev))
+=======
+	if (sony_pic_disable(to_acpi_device(dev)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENXIO;
 	return 0;
 }
 
 static int sony_pic_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	sony_pic_enable(dev, spic_dev.cur_ioport, spic_dev.cur_irq);
+=======
+	sony_pic_enable(to_acpi_device(dev),
+			spic_dev.cur_ioport, spic_dev.cur_irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 #endif
@@ -4683,6 +4832,7 @@ static const struct acpi_device_id sony_pic_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver sony_pic_driver = {
 	.probe = sony_pic_probe,
 	.remove = sony_pic_remove,
@@ -4691,6 +4841,17 @@ static struct platform_driver sony_pic_driver = {
 		.acpi_match_table = sony_pic_device_ids,
 		.pm = &sony_pic_pm,
 	},
+=======
+static struct acpi_driver sony_pic_driver = {
+	.name = SONY_PIC_DRIVER_NAME,
+	.class = SONY_PIC_CLASS,
+	.ids = sony_pic_device_ids,
+	.ops = {
+		.add = sony_pic_add,
+		.remove = sony_pic_remove,
+		},
+	.drv.pm = &sony_pic_pm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct dmi_system_id sonypi_dmi_table[] __initconst = {
@@ -4716,7 +4877,11 @@ static int __init sony_laptop_init(void)
 	int result;
 
 	if (!no_spic && dmi_check_system(sonypi_dmi_table)) {
+<<<<<<< HEAD
 		result = platform_driver_register(&sony_pic_driver);
+=======
+		result = acpi_bus_register_driver(&sony_pic_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (result) {
 			pr_err("Unable to register SPIC driver\n");
 			goto out;
@@ -4724,7 +4889,11 @@ static int __init sony_laptop_init(void)
 		spic_drv_registered = 1;
 	}
 
+<<<<<<< HEAD
 	result = platform_driver_register(&sony_nc_driver);
+=======
+	result = acpi_bus_register_driver(&sony_nc_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result) {
 		pr_err("Unable to register SNC driver\n");
 		goto out_unregister_pic;
@@ -4734,16 +4903,26 @@ static int __init sony_laptop_init(void)
 
 out_unregister_pic:
 	if (spic_drv_registered)
+<<<<<<< HEAD
 		platform_driver_unregister(&sony_pic_driver);
+=======
+		acpi_bus_unregister_driver(&sony_pic_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return result;
 }
 
 static void __exit sony_laptop_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&sony_nc_driver);
 	if (spic_drv_registered)
 		platform_driver_unregister(&sony_pic_driver);
+=======
+	acpi_bus_unregister_driver(&sony_nc_driver);
+	if (spic_drv_registered)
+		acpi_bus_unregister_driver(&sony_pic_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(sony_laptop_init);

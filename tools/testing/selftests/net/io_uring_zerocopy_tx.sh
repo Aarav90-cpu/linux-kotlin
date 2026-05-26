@@ -77,6 +77,7 @@ esac
 
 # Start of state changes: install cleanup handler
 
+<<<<<<< HEAD
 old_io_uring_disabled=0
 cleanup() {
 	ip netns del "${NS2}"
@@ -84,6 +85,11 @@ cleanup() {
 	if [ "$old_io_uring_disabled" -ne 0 ]; then
 		sysctl -w -q kernel.io_uring_disabled="$old_io_uring_disabled" 2>/dev/null || true
 	fi
+=======
+cleanup() {
+	ip netns del "${NS2}"
+	ip netns del "${NS1}"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 trap cleanup EXIT
@@ -126,10 +132,13 @@ do_test() {
 	wait
 }
 
+<<<<<<< HEAD
 old_io_uring_disabled=$(sysctl -n kernel.io_uring_disabled 2>/dev/null || echo "0")
 if [ "$old_io_uring_disabled" -ne 0 ]; then
 	sysctl -w -q kernel.io_uring_disabled=0
 fi
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 do_test "${EXTRA_ARGS}"
 echo ok

@@ -21,6 +21,7 @@ int bpf_prog(struct __sk_buff *skb)
 	return (*counter & 1);
 }
 
+<<<<<<< HEAD
 /* Maps for OOB test */
 struct {
 	__uint(type, BPF_MAP_TYPE_CGROUP_STORAGE);
@@ -64,4 +65,6 @@ int trigger_oob(struct bpf_sock *sk)
 	return 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

@@ -1445,7 +1445,11 @@ ssize_t btrfs_do_write_iter(struct kiocb *iocb, struct iov_iter *from,
 	 * have opened a file as writable, we have to stop this write operation
 	 * to ensure consistency.
 	 */
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(inode->root->fs_info)))
+=======
+	if (BTRFS_FS_ERROR(inode->root->fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EROFS;
 
 	if (encoded && (iocb->ki_flags & IOCB_NOWAIT))
@@ -3316,8 +3320,13 @@ static bool find_delalloc_subrange(struct btrfs_inode *inode, u64 start, u64 end
 			*delalloc_start_ret = start;
 			delalloc_len = btrfs_count_range_bits(&inode->io_tree,
 							      delalloc_start_ret, end,
+<<<<<<< HEAD
 							      len, EXTENT_DELALLOC,
 							      true, cached_state);
+=======
+							      len, EXTENT_DELALLOC, 1,
+							      cached_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			spin_unlock(&inode->lock);
 		}

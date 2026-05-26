@@ -483,6 +483,7 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
 #endif /* CONFIG_PM */
 
 /*
+<<<<<<< HEAD
  * Eager-request BAR resources, and iomap them.  Soft failures are
  * allowed, and consumers must check the barmap before use in order to
  * give compatible user-visible behaviour with the previous on-demand
@@ -517,6 +518,8 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * The pci-driver core runtime PM routines always save the device state
  * before going into suspended state. If the device is going into low power
  * state with only with runtime PM ops, then no explicit handling is needed
@@ -602,7 +605,10 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
 	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
 		vdev->has_vga = true;
 
+<<<<<<< HEAD
 	vfio_pci_core_map_bars(vdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -683,7 +689,11 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
 
 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
 		bar = i + PCI_STD_RESOURCES;
+<<<<<<< HEAD
 		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+=======
+		if (!vdev->barmap[bar])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		pci_iounmap(pdev, vdev->barmap[bar]);
 		pci_release_selected_regions(pdev, 1 << bar);
@@ -769,10 +779,17 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
 #if IS_ENABLED(CONFIG_EEH)
 	eeh_dev_release(vdev->pdev);
 #endif
+<<<<<<< HEAD
 	vfio_pci_dma_buf_cleanup(vdev);
 
 	vfio_pci_core_disable(vdev);
 
+=======
+	vfio_pci_core_disable(vdev);
+
+	vfio_pci_dma_buf_cleanup(vdev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&vdev->igate);
 	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
 	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
@@ -1705,6 +1722,7 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
 		return VM_FAULT_SIGBUS;
 
+<<<<<<< HEAD
 	if (!order)
 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
 
@@ -1715,6 +1733,23 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
 		return vmf_insert_pfn_pud(vmf, pfn, false);
 
 	return VM_FAULT_FALLBACK;
+=======
+	switch (order) {
+	case 0:
+		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+	case PMD_ORDER:
+		return vmf_insert_pfn_pmd(vmf, pfn, false);
+#endif
+#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+	case PUD_ORDER:
+		return vmf_insert_pfn_pud(vmf, pfn, false);
+		break;
+#endif
+	default:
+		return VM_FAULT_FALLBACK;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
 
@@ -2017,8 +2052,14 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
 	    pdev->is_virtfn && physfn == vdev->pdev) {
 		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
 			 pci_name(pdev));
+<<<<<<< HEAD
 		WARN_ON(device_set_driver_override(&pdev->dev,
 						   vdev->vdev.ops->name));
+=======
+		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+						  vdev->vdev.ops->name);
+		WARN_ON(!pdev->driver_override);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
 		   pdev->is_virtfn && physfn == vdev->pdev) {
 		struct pci_driver *drv = pci_dev_driver(pdev);
@@ -2168,10 +2209,13 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
 	if (WARN_ON(vdev != dev_get_drvdata(dev)))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Drivers must set a name.  Required for sequestering SR-IOV VFs */
 	if (WARN_ON(!vdev->vdev.ops->name))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pdev->hdr_type != PCI_HEADER_TYPE_NORMAL)
 		return -EINVAL;
 

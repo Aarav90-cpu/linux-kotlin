@@ -1817,7 +1817,11 @@ static const struct snd_soc_component_driver fsi_soc_component = {
 	.name		= "fsi",
 	.open		= fsi_pcm_open,
 	.pointer	= fsi_pointer,
+<<<<<<< HEAD
 	.pcm_new	= fsi_pcm_new,
+=======
+	.pcm_construct	= fsi_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*

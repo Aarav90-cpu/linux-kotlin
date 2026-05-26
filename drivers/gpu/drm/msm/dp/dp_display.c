@@ -210,7 +210,10 @@ static const struct of_device_id msm_dp_dt_match[] = {
 	{ .compatible = "qcom,x1e80100-dp", .data = &msm_dp_desc_x1e80100 },
 	{}
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, msm_dp_dt_match);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct msm_dp_display_private *dev_get_dp_display_private(struct device *dev)
 {

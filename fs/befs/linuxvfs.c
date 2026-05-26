@@ -140,20 +140,34 @@ befs_get_block(struct inode *inode, sector_t block,
 	int res;
 	ulong disk_off;
 
+<<<<<<< HEAD
 	befs_debug(sb, "---> befs_get_block() for inode %llu, block %ld",
 		   inode->i_ino, (long)block);
 	if (create) {
 		befs_error(sb, "befs_get_block() was asked to write to "
 			   "block %ld in inode %llu", (long)block,
 			   inode->i_ino);
+=======
+	befs_debug(sb, "---> befs_get_block() for inode %lu, block %ld",
+		   (unsigned long)inode->i_ino, (long)block);
+	if (create) {
+		befs_error(sb, "befs_get_block() was asked to write to "
+			   "block %ld in inode %lu", (long)block,
+			   (unsigned long)inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EPERM;
 	}
 
 	res = befs_fblock2brun(sb, ds, block, &run);
 	if (res != BEFS_OK) {
 		befs_error(sb,
+<<<<<<< HEAD
 			   "<--- %s for inode %llu, block %ld ERROR",
 			   __func__, inode->i_ino,
+=======
+			   "<--- %s for inode %lu, block %ld ERROR",
+			   __func__, (unsigned long)inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   (long)block);
 		return -EFBIG;
 	}
@@ -162,8 +176,13 @@ befs_get_block(struct inode *inode, sector_t block,
 
 	map_bh(bh_result, inode->i_sb, disk_off);
 
+<<<<<<< HEAD
 	befs_debug(sb, "<--- %s for inode %llu, block %ld, disk address %lu",
 		  __func__, inode->i_ino, (long)block,
+=======
+	befs_debug(sb, "<--- %s for inode %lu, block %ld, disk address %lu",
+		  __func__, (unsigned long)inode->i_ino, (long)block,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  (unsigned long)disk_off);
 
 	return 0;
@@ -181,7 +200,11 @@ befs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
 	char *utfname;
 	const char *name = dentry->d_name.name;
 
+<<<<<<< HEAD
 	befs_debug(sb, "---> %s name %pd inode %llu", __func__,
+=======
+	befs_debug(sb, "---> %s name %pd inode %ld", __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   dentry, dir->i_ino);
 
 	/* Convert to UTF-8 */
@@ -224,7 +247,11 @@ befs_readdir(struct file *file, struct dir_context *ctx)
 	size_t keysize;
 	char keybuf[BEFS_NAME_LEN + 1];
 
+<<<<<<< HEAD
 	befs_debug(sb, "---> %s name %pD, inode %llu, ctx->pos %lld",
+=======
+	befs_debug(sb, "---> %s name %pD, inode %ld, ctx->pos %lld",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __func__, file, inode->i_ino, ctx->pos);
 
 	while (1) {
@@ -233,7 +260,11 @@ befs_readdir(struct file *file, struct dir_context *ctx)
 
 		if (result == BEFS_ERR) {
 			befs_debug(sb, "<--- %s ERROR", __func__);
+<<<<<<< HEAD
 			befs_error(sb, "IO error reading %pD (inode %llu)",
+=======
+			befs_error(sb, "IO error reading %pD (inode %lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   file, inode->i_ino);
 			return -EIO;
 
@@ -324,7 +355,11 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
 	bh = sb_bread(sb, inode->i_ino);
 	if (!bh) {
 		befs_error(sb, "unable to read inode block - "
+<<<<<<< HEAD
 			   "inode = %llu", inode->i_ino);
+=======
+			   "inode = %lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unacquire_none;
 	}
 
@@ -333,7 +368,11 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
 	befs_dump_inode(sb, raw_inode);
 
 	if (befs_check_inode(sb, raw_inode, inode->i_ino) != BEFS_OK) {
+<<<<<<< HEAD
 		befs_error(sb, "Bad inode: %llu", inode->i_ino);
+=======
+		befs_error(sb, "Bad inode: %lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unacquire_bh;
 	}
 
@@ -407,7 +446,11 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
 			inode->i_op = &simple_symlink_inode_operations;
 		}
 	} else {
+<<<<<<< HEAD
 		befs_error(sb, "Inode %llu is not a regular file, "
+=======
+		befs_error(sb, "Inode %lu is not a regular file, "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   "directory or symlink. THAT IS WRONG! BeFS has no "
 			   "on disk special files", inode->i_ino);
 		goto unacquire_bh;

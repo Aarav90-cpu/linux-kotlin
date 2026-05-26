@@ -6,14 +6,20 @@
 #include <linux/dma-mapping.h>
 
 #include "hinic3_cmdq.h"
+<<<<<<< HEAD
 #include "hinic3_eqs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "hinic3_hwdev.h"
 #include "hinic3_hwif.h"
 #include "hinic3_mbox.h"
 
 #define CMDQ_BUF_SIZE             2048
 #define CMDQ_WQEBB_SIZE           64
+<<<<<<< HEAD
 #define CMDQ_WQE_HEAD_LEN         32
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CMDQ_CMD_TIMEOUT          5000
 #define CMDQ_ENABLE_WAIT_TIMEOUT  300
@@ -63,10 +69,13 @@
 #define CMDQ_DB_HEAD_SET(val, member)  \
 	FIELD_PREP(CMDQ_DB_HEAD_##member##_MASK, val)
 
+<<<<<<< HEAD
 #define SAVED_DATA_ARM_MASK          BIT(31)
 #define SAVED_DATA_SET(val, member)  \
 	FIELD_PREP(SAVED_DATA_##member##_MASK, val)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CMDQ_CEQE_TYPE_MASK            GENMASK(2, 0)
 #define CMDQ_CEQE_GET(val, member)  \
 	FIELD_GET(CMDQ_CEQE_##member##_MASK, le32_to_cpu(val))
@@ -90,10 +99,13 @@ enum cmdq_data_format {
 	CMDQ_DATA_DIRECT = 1,
 };
 
+<<<<<<< HEAD
 enum cmdq_scmd_type {
 	CMDQ_SET_ARM_CMD = 2,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum cmdq_ctrl_sect_len {
 	CMDQ_CTRL_SECT_LEN        = 1,
 	CMDQ_CTRL_DIRECT_SECT_LEN = 2,
@@ -116,6 +128,7 @@ enum cmdq_cmd_type {
 
 #define CMDQ_WQE_NUM_WQEBBS  1
 
+<<<<<<< HEAD
 static void hinic3_dump_cmdq_wqe_head(struct hinic3_hwdev *hwdev,
 				      struct cmdq_wqe *wqe)
 {
@@ -130,6 +143,8 @@ static void hinic3_dump_cmdq_wqe_head(struct hinic3_hwdev *hwdev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cmdq_wqe *cmdq_read_wqe(struct hinic3_wq *wq, u16 *ci)
 {
 	if (hinic3_wq_get_used(wq) == 0)
@@ -190,11 +205,14 @@ static void cmdq_clear_cmd_buf(struct hinic3_cmdq_cmd_info *cmd_info,
 		hinic3_free_cmd_buf(hwdev, cmd_info->buf_in);
 		cmd_info->buf_in = NULL;
 	}
+<<<<<<< HEAD
 
 	if (cmd_info->buf_out) {
 		hinic3_free_cmd_buf(hwdev, cmd_info->buf_out);
 		cmd_info->buf_out = NULL;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
@@ -218,6 +236,7 @@ static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
 	hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
 }
 
+<<<<<<< HEAD
 static int cmdq_arm_ceq_handler(struct hinic3_cmdq *cmdq,
 				struct cmdq_wqe *wqe, u16 ci)
 {
@@ -232,6 +251,8 @@ static int cmdq_arm_ceq_handler(struct hinic3_cmdq *cmdq,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void cmdq_update_cmd_status(struct hinic3_cmdq *cmdq, u16 prod_idx,
 				   struct cmdq_wqe *wqe)
 {
@@ -295,17 +316,23 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
 		case HINIC3_CMD_TYPE_TIMEOUT:
 			dev_warn(hwdev->dev, "Cmdq timeout, q_id: %u, ci: %u\n",
 				 cmdq_type, ci);
+<<<<<<< HEAD
 			hinic3_dump_cmdq_wqe_head(hwdev, wqe);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			fallthrough;
 		case HINIC3_CMD_TYPE_FAKE_TIMEOUT:
 			cmdq_clear_cmd_buf(cmd_info, hwdev);
 			clear_wqe_complete_bit(cmdq, wqe, ci);
 			break;
+<<<<<<< HEAD
 		case HINIC3_CMD_TYPE_SET_ARM:
 			/* arm_bit was set until here */
 			if (cmdq_arm_ceq_handler(cmdq, wqe, ci))
 				return;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			/* only arm bit is using scmd wqe,
 			 * the other wqe is lcmd
@@ -332,6 +359,7 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
 	}
 }
 
+<<<<<<< HEAD
 static int cmdq_params_valid(const struct hinic3_hwdev *hwdev,
 			     const struct hinic3_cmd_buf *buf_in)
 {
@@ -344,6 +372,8 @@ static int cmdq_params_valid(const struct hinic3_hwdev *hwdev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int wait_cmdqs_enable(struct hinic3_cmdqs *cmdqs)
 {
 	unsigned long end;
@@ -353,8 +383,12 @@ static int wait_cmdqs_enable(struct hinic3_cmdqs *cmdqs)
 		if (cmdqs->status & HINIC3_CMDQ_ENABLE)
 			return 0;
 		usleep_range(1000, 2000);
+<<<<<<< HEAD
 	} while (time_before(jiffies, end) && !cmdqs->disable_flag &&
 		 cmdqs->hwdev->chip_present_flag);
+=======
+	} while (time_before(jiffies, end) && !cmdqs->disable_flag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cmdqs->disable_flag = 1;
 
@@ -418,7 +452,10 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
 				  enum cmdq_bufdesc_len buf_len)
 {
 	struct cmdq_header *hdr = CMDQ_WQE_HEADER(wqe);
+<<<<<<< HEAD
 	__le32 saved_data = hdr->saved_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum cmdq_ctrl_sect_len ctrl_len;
 	struct cmdq_wqe_lcmd *wqe_lcmd;
 	struct cmdq_wqe_scmd *wqe_scmd;
@@ -449,11 +486,14 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
 			    CMDQ_WQE_HDR_SET(3, COMPLETE_SECT_LEN) |
 			    CMDQ_WQE_HDR_SET(ctrl_len, CTRL_LEN) |
 			    CMDQ_WQE_HDR_SET(wrapped, HW_BUSY_BIT));
+<<<<<<< HEAD
 
 	saved_data &= ~cpu_to_le32(SAVED_DATA_ARM_MASK);
 	if (cmd == CMDQ_SET_ARM_CMD && mod == MGMT_MOD_COMM)
 		saved_data |= cpu_to_le32(SAVED_DATA_SET(1, ARM));
 	hdr->saved_data = saved_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void cmdq_set_lcmd_wqe(struct cmdq_wqe *wqe,
@@ -553,6 +593,7 @@ static int wait_cmdq_sync_cmd_completion(struct hinic3_cmdq *cmdq,
 	clear_cmd_info(cmd_info, saved_cmd_info);
 	spin_unlock_bh(&cmdq->cmdq_lock);
 
+<<<<<<< HEAD
 	hinic3_dump_ceq_info(cmdq->hwdev);
 
 	return err;
@@ -562,6 +603,14 @@ static int cmdq_sync_cmd_exec(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
 			      struct hinic3_cmd_buf *buf_in,
 			      struct hinic3_cmd_buf *buf_out,
 			      __le64 *out_param, u8 cmd_type, u8 wqe_cmd)
+=======
+	return err;
+}
+
+static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
+				     struct hinic3_cmd_buf *buf_in,
+				     __le64 *out_param)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hinic3_cmdq_cmd_info *cmd_info, saved_cmd_info;
 	int cmpt_code = CMDQ_SEND_CMPT_CODE;
@@ -591,35 +640,57 @@ static int cmdq_sync_cmd_exec(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
 	cmd_info = &cmdq->cmd_infos[curr_prod_idx];
 	init_completion(&done);
 	refcount_inc(&buf_in->ref_cnt);
+<<<<<<< HEAD
 	if (buf_out)
 		refcount_inc(&buf_out->ref_cnt);
 
 	cmd_info->cmd_type = cmd_type;
+=======
+	cmd_info->cmd_type = HINIC3_CMD_TYPE_DIRECT_RESP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd_info->done = &done;
 	cmd_info->errcode = &errcode;
 	cmd_info->direct_resp = out_param;
 	cmd_info->cmpt_code = &cmpt_code;
 	cmd_info->buf_in = buf_in;
+<<<<<<< HEAD
 	if (buf_out)
 		cmd_info->buf_out = buf_out;
 
 	saved_cmd_info = *cmd_info;
 	cmdq_set_lcmd_wqe(&wqe, wqe_cmd, buf_in, buf_out,
+=======
+	saved_cmd_info = *cmd_info;
+	cmdq_set_lcmd_wqe(&wqe, CMDQ_CMD_DIRECT_RESP, buf_in, NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  wrapped, mod, cmd, curr_prod_idx);
 
 	cmdq_wqe_fill(curr_wqe, &wqe);
 	(cmd_info->cmdq_msg_id)++;
 	curr_msg_id = cmd_info->cmdq_msg_id;
+<<<<<<< HEAD
 	cmdq_set_db(cmdq, cmdq->cmdq_type, next_prod_idx);
+=======
+	cmdq_set_db(cmdq, HINIC3_CMDQ_SYNC, next_prod_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&cmdq->cmdq_lock);
 
 	err = wait_cmdq_sync_cmd_completion(cmdq, cmd_info, &saved_cmd_info,
 					    curr_msg_id, curr_prod_idx,
 					    curr_wqe, CMDQ_CMD_TIMEOUT);
+<<<<<<< HEAD
 	if (err)
 		dev_err(cmdq->hwdev->dev,
 			"Cmdq sync command timeout, mod: %u, cmd: %u, prod idx: 0x%x\n",
 			mod, cmd, curr_prod_idx);
+=======
+	if (err) {
+		dev_err(cmdq->hwdev->dev,
+			"Cmdq sync command timeout, mod: %u, cmd: %u, prod idx: 0x%x\n",
+			mod, cmd, curr_prod_idx);
+		err = -ETIMEDOUT;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cmpt_code == CMDQ_FORCE_STOP_CMPT_CODE) {
 		dev_dbg(cmdq->hwdev->dev,
@@ -632,6 +703,7 @@ static int cmdq_sync_cmd_exec(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
 	return err ? err : errcode;
 }
 
+<<<<<<< HEAD
 static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
 				     struct hinic3_cmd_buf *buf_in,
 				     __le64 *out_param)
@@ -677,12 +749,15 @@ void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
 	hinic3_free_cmd_buf(hwdev, pair->out);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
 			    struct hinic3_cmd_buf *buf_in, __le64 *out_param)
 {
 	struct hinic3_cmdqs *cmdqs;
 	int err;
 
+<<<<<<< HEAD
 	if (!hwdev->chip_present_flag)
 		return -ETIMEDOUT;
 
@@ -692,15 +767,22 @@ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
 		goto err_out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmdqs = hwdev->cmdqs;
 	err = wait_cmdqs_enable(cmdqs);
 	if (err) {
 		dev_err(hwdev->dev, "Cmdq is disabled\n");
+<<<<<<< HEAD
 		goto err_out;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = cmdq_sync_cmd_direct_resp(&cmdqs->cmdq[HINIC3_CMDQ_SYNC],
 					mod, cmd, buf_in, out_param);
+<<<<<<< HEAD
 	if (err)
 		goto err_out;
 
@@ -740,6 +822,9 @@ int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
 	return 0;
 
 err_out:
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -925,8 +1010,12 @@ static int init_cmdqs(struct hinic3_hwdev *hwdev)
 
 static void cmdq_flush_sync_cmd(struct hinic3_cmdq_cmd_info *cmd_info)
 {
+<<<<<<< HEAD
 	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP &&
 	    cmd_info->cmd_type != HINIC3_CMD_TYPE_SGE_RESP)
+=======
+	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	cmd_info->cmd_type = HINIC3_CMD_TYPE_FORCE_STOP;
@@ -953,8 +1042,12 @@ static void hinic3_cmdq_flush_cmd(struct hinic3_cmdq *cmdq)
 	while (cmdq_read_wqe(&cmdq->wq, &ci)) {
 		hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
 		cmd_info = &cmdq->cmd_infos[ci];
+<<<<<<< HEAD
 		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP ||
 		    cmd_info->cmd_type == HINIC3_CMD_TYPE_SGE_RESP)
+=======
+		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cmdq_flush_sync_cmd(cmd_info);
 	}
 	spin_unlock_bh(&cmdq->cmdq_lock);

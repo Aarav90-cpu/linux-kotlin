@@ -727,6 +727,7 @@ static int __find_resource_space(struct resource *root, struct resource *old,
 				 struct resource_constraint *constraint)
 {
 	struct resource *this = root->child;
+<<<<<<< HEAD
 	struct resource full_avail = *new, avail, alloc;
 	resource_alignf alignf = constraint->alignf;
 
@@ -737,10 +738,23 @@ static int __find_resource_space(struct resource *root, struct resource *old,
 	 */
 	if (this && this->start == root->start) {
 		full_avail.start = (this == old) ? old->start : this->end + 1;
+=======
+	struct resource tmp = *new, avail, alloc;
+	resource_alignf alignf = constraint->alignf;
+
+	tmp.start = root->start;
+	/*
+	 * Skip past an allocated resource that starts at 0, since the assignment
+	 * of this->start - 1 to tmp->end below would cause an underflow.
+	 */
+	if (this && this->start == root->start) {
+		tmp.start = (this == old) ? old->start : this->end + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		this = this->sibling;
 	}
 	for(;;) {
 		if (this)
+<<<<<<< HEAD
 			full_avail.end = (this == old) ?  this->end : this->start - 1;
 		else
 			full_avail.end = root->end;
@@ -761,12 +775,37 @@ static int __find_resource_space(struct resource *root, struct resource *old,
 				alloc.start = alignf(constraint->alignf_data,
 						     &avail, &full_avail,
 						     size, constraint->align);
+=======
+			tmp.end = (this == old) ?  this->end : this->start - 1;
+		else
+			tmp.end = root->end;
+
+		if (tmp.end < tmp.start)
+			goto next;
+
+		resource_clip(&tmp, constraint->min, constraint->max);
+		arch_remove_reservations(&tmp);
+
+		/* Check for overflow after ALIGN() */
+		avail.start = ALIGN(tmp.start, constraint->align);
+		avail.end = tmp.end;
+		avail.flags = new->flags & ~IORESOURCE_UNSET;
+		if (avail.start >= tmp.start) {
+			alloc.flags = avail.flags;
+			if (alignf) {
+				alloc.start = alignf(constraint->alignf_data,
+						     &avail, size, constraint->align);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				alloc.start = avail.start;
 			}
 			alloc.end = alloc.start + size - 1;
 			if (alloc.start <= alloc.end &&
+<<<<<<< HEAD
 			    __resource_contains_unbound(&full_avail, &alloc)) {
+=======
+			    resource_contains(&avail, &alloc)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				new->start = alloc.start;
 				new->end = alloc.end;
 				return 0;
@@ -777,7 +816,11 @@ next:		if (!this || this->end == root->end)
 			break;
 
 		if (this != old)
+<<<<<<< HEAD
 			full_avail.start = this->end + 1;
+=======
+			tmp.start = this->end + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		this = this->sibling;
 	}
 	return -EBUSY;

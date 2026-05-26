@@ -402,7 +402,11 @@ void zconf_initscan(const char *name)
 		exit(1);
 	}
 
+<<<<<<< HEAD
 	cur_filename = file_lookup(name, NULL, 0);
+=======
+	cur_filename = file_lookup(name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	yylineno = 1;
 }
 
@@ -443,7 +447,11 @@ void zconf_nextfile(const char *name)
 	}
 
 	yylineno = 1;
+<<<<<<< HEAD
 	cur_filename = file_lookup(name, cur_filename, cur_lineno);
+=======
+	cur_filename = file_lookup(name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void zconf_endfile(void)

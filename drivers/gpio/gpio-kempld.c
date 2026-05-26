@@ -11,13 +11,17 @@
 #include <linux/module.h>
 #include <linux/bitops.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
 #include <linux/interrupt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/gpio/driver.h>
 #include <linux/mfd/kempld.h>
 
 #define KEMPLD_GPIO_MAX_NUM		16
 #define KEMPLD_GPIO_MASK(x)		(BIT((x) % 8))
+<<<<<<< HEAD
 #define KEMPLD_GPIO_DIR			0x40
 #define KEMPLD_GPIO_LVL			0x42
 #define KEMPLD_GPIO_STS			0x44
@@ -30,16 +34,25 @@
 static unsigned int gpio_irq;
 module_param_hw(gpio_irq, uint, irq, 0444);
 MODULE_PARM_DESC(gpio_irq, "Set legacy GPIO IRQ (1-15)");
+=======
+#define KEMPLD_GPIO_DIR_NUM(x)		(0x40 + (x) / 8)
+#define KEMPLD_GPIO_LVL_NUM(x)		(0x42 + (x) / 8)
+#define KEMPLD_GPIO_EVT_LVL_EDGE	0x46
+#define KEMPLD_GPIO_IEN			0x4A
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct kempld_gpio_data {
 	struct gpio_chip		chip;
 	struct kempld_device_data	*pld;
+<<<<<<< HEAD
 	u8				out_lvl_reg;
 
 	struct mutex			irq_lock;
 	u16				ien;
 	u16				evt_low_high;
 	u16				evt_lvl_edge;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -47,25 +60,44 @@ struct kempld_gpio_data {
  * kempld_get_mutex must be called prior to calling this function.
  */
 static void kempld_gpio_bitop(struct kempld_device_data *pld,
+<<<<<<< HEAD
 			      u8 reg, unsigned int bit, bool val)
 {
 	u8 status;
 
 	status = kempld_read8(pld, reg + (bit / 8));
+=======
+			      u8 reg, u8 bit, u8 val)
+{
+	u8 status;
+
+	status = kempld_read8(pld, reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (val)
 		status |= KEMPLD_GPIO_MASK(bit);
 	else
 		status &= ~KEMPLD_GPIO_MASK(bit);
+<<<<<<< HEAD
 	kempld_write8(pld, reg + (bit / 8), status);
 }
 
 static int kempld_gpio_get_bit(struct kempld_device_data *pld,
 			       u8 reg, unsigned int bit)
+=======
+	kempld_write8(pld, reg, status);
+}
+
+static int kempld_gpio_get_bit(struct kempld_device_data *pld, u8 reg, u8 bit)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u8 status;
 
 	kempld_get_mutex(pld);
+<<<<<<< HEAD
 	status = kempld_read8(pld, reg + (bit / 8));
+=======
+	status = kempld_read8(pld, reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kempld_release_mutex(pld);
 
 	return !!(status & KEMPLD_GPIO_MASK(bit));
@@ -76,6 +108,7 @@ static int kempld_gpio_get(struct gpio_chip *chip, unsigned offset)
 	struct kempld_gpio_data *gpio = gpiochip_get_data(chip);
 	struct kempld_device_data *pld = gpio->pld;
 
+<<<<<<< HEAD
 	return !!kempld_gpio_get_bit(pld, KEMPLD_GPIO_LVL, offset);
 }
 
@@ -104,6 +137,9 @@ static int kempld_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	kempld_release_mutex(pld);
 
 	return 0;
+=======
+	return !!kempld_gpio_get_bit(pld, KEMPLD_GPIO_LVL_NUM(offset), offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int kempld_gpio_set(struct gpio_chip *chip, unsigned int offset,
@@ -113,6 +149,7 @@ static int kempld_gpio_set(struct gpio_chip *chip, unsigned int offset,
 	struct kempld_device_data *pld = gpio->pld;
 
 	kempld_get_mutex(pld);
+<<<<<<< HEAD
 	kempld_gpio_bitop(pld, gpio->out_lvl_reg, offset, value);
 	kempld_release_mutex(pld);
 
@@ -145,6 +182,9 @@ static int kempld_gpio_set_multiple(struct gpio_chip *chip,
 		kempld_write8(pld, reg, val);
 	}
 
+=======
+	kempld_gpio_bitop(pld, KEMPLD_GPIO_LVL_NUM(offset), offset, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kempld_release_mutex(pld);
 
 	return 0;
@@ -156,7 +196,11 @@ static int kempld_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
 	struct kempld_device_data *pld = gpio->pld;
 
 	kempld_get_mutex(pld);
+<<<<<<< HEAD
 	kempld_gpio_bitop(pld, KEMPLD_GPIO_DIR, offset, 0);
+=======
+	kempld_gpio_bitop(pld, KEMPLD_GPIO_DIR_NUM(offset), offset, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kempld_release_mutex(pld);
 
 	return 0;
@@ -169,8 +213,13 @@ static int kempld_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
 	struct kempld_device_data *pld = gpio->pld;
 
 	kempld_get_mutex(pld);
+<<<<<<< HEAD
 	kempld_gpio_bitop(pld, gpio->out_lvl_reg, offset, value);
 	kempld_gpio_bitop(pld, KEMPLD_GPIO_DIR, offset, 1);
+=======
+	kempld_gpio_bitop(pld, KEMPLD_GPIO_LVL_NUM(offset), offset, value);
+	kempld_gpio_bitop(pld, KEMPLD_GPIO_DIR_NUM(offset), offset, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kempld_release_mutex(pld);
 
 	return 0;
@@ -181,7 +230,11 @@ static int kempld_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
 	struct kempld_gpio_data *gpio = gpiochip_get_data(chip);
 	struct kempld_device_data *pld = gpio->pld;
 
+<<<<<<< HEAD
 	if (kempld_gpio_get_bit(pld, KEMPLD_GPIO_DIR, offset))
+=======
+	if (kempld_gpio_get_bit(pld, KEMPLD_GPIO_DIR_NUM(offset), offset))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return GPIO_LINE_DIRECTION_OUT;
 
 	return GPIO_LINE_DIRECTION_IN;
@@ -207,6 +260,7 @@ static int kempld_gpio_pincount(struct kempld_device_data *pld)
 	return evt ? __ffs(evt) : 16;
 }
 
+<<<<<<< HEAD
 static void kempld_irq_mask(struct irq_data *data)
 {
 	struct gpio_chip *chip = irq_data_get_irq_chip_data(data);
@@ -381,6 +435,8 @@ static int kempld_gpio_irq_init(struct device *dev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int kempld_gpio_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -400,6 +456,7 @@ static int kempld_gpio_probe(struct platform_device *pdev)
 	if (!gpio)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/* Starting with version 2.8 there is a dedicated register for the
 	 * output state, earlier versions share the register used to read
 	 * the line level.
@@ -409,6 +466,8 @@ static int kempld_gpio_probe(struct platform_device *pdev)
 	else
 		gpio->out_lvl_reg = KEMPLD_GPIO_LVL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio->pld = pld;
 
 	platform_set_drvdata(pdev, gpio);
@@ -426,19 +485,26 @@ static int kempld_gpio_probe(struct platform_device *pdev)
 	chip->direction_output = kempld_gpio_direction_output;
 	chip->get_direction = kempld_gpio_get_direction;
 	chip->get = kempld_gpio_get;
+<<<<<<< HEAD
 	chip->get_multiple = kempld_gpio_get_multiple;
 	chip->set = kempld_gpio_set;
 	chip->set_multiple = kempld_gpio_set_multiple;
+=======
+	chip->set = kempld_gpio_set;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->ngpio = kempld_gpio_pincount(pld);
 	if (chip->ngpio == 0) {
 		dev_err(dev, "No GPIO pins detected\n");
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	ret = kempld_gpio_irq_init(dev, gpio);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = devm_gpiochip_add_data(dev, chip, gpio);
 	if (ret) {
 		dev_err(dev, "Could not register GPIO chip\n");

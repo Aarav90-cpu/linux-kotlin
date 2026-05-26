@@ -88,6 +88,10 @@ static vm_fault_t vvar_vclock_fault(const struct vm_special_mapping *sm,
 				    struct vm_area_struct *vma, struct vm_fault *vmf)
 {
 	switch (vmf->pgoff) {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PARAVIRT_CLOCK
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case VDSO_PAGE_PVCLOCK_OFFSET:
 	{
 		struct pvclock_vsyscall_time_info *pvti =
@@ -99,6 +103,11 @@ static vm_fault_t vvar_vclock_fault(const struct vm_special_mapping *sm,
 					pgprot_decrypted(vma->vm_page_prot));
 		break;
 	}
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_PARAVIRT_CLOCK */
+#ifdef CONFIG_HYPERV_TIMER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case VDSO_PAGE_HVCLOCK_OFFSET:
 	{
 		unsigned long pfn = hv_get_tsc_pfn();
@@ -106,6 +115,10 @@ static vm_fault_t vvar_vclock_fault(const struct vm_special_mapping *sm,
 			return vmf_insert_pfn(vma, vmf->address, pfn);
 		break;
 	}
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_HYPERV_TIMER */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return VM_FAULT_SIGBUS;

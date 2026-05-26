@@ -6,7 +6,11 @@
 
 #define UCALL_EXIT_REASON       KVM_EXIT_IO
 
+<<<<<<< HEAD
 static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+=======
+static inline void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 }
 

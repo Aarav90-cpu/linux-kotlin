@@ -328,7 +328,10 @@ static void hinic3_rx_csum(struct hinic3_rxq *rxq, u32 offload_type,
 	u32 ip_type = RQ_CQE_OFFOLAD_TYPE_GET(offload_type, IP_TYPE);
 	u32 csum_err = RQ_CQE_STATUS_GET(status, CSUM_ERR);
 	struct net_device *netdev = rxq->netdev;
+<<<<<<< HEAD
 	bool l2_tunnel;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(netdev->features & NETIF_F_RXCSUM))
 		return;
@@ -351,12 +354,15 @@ static void hinic3_rx_csum(struct hinic3_rxq *rxq, u32 offload_type,
 	case HINIC3_RX_UDP_PKT:
 	case HINIC3_RX_SCTP_PKT:
 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+<<<<<<< HEAD
 		l2_tunnel = HINIC3_GET_RX_TUNNEL_PKT_FORMAT(offload_type) ==
 			    HINIC3_RX_PKT_FORMAT_VXLAN ? 1 : 0;
 		if (l2_tunnel) {
 			/* If we checked the outer header let the stack know */
 			skb->csum_level = 1;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		skb->ip_summed = CHECKSUM_NONE;
@@ -397,6 +403,7 @@ static int recv_one_pkt(struct hinic3_rxq *rxq, struct hinic3_rq_cqe *rx_cqe,
 	offload_type = le32_to_cpu(rx_cqe->offload_type);
 	hinic3_rx_csum(rxq, offload_type, status, skb);
 
+<<<<<<< HEAD
 	if ((netdev->features & NETIF_F_HW_VLAN_CTAG_RX) &&
 	    RQ_CQE_OFFOLAD_TYPE_GET(offload_type, VLAN_EN)) {
 		u16 vid = RQ_CQE_SGE_GET(vlan_len, VLAN);
@@ -405,6 +412,8 @@ static int recv_one_pkt(struct hinic3_rxq *rxq, struct hinic3_rq_cqe *rx_cqe,
 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	num_lro = RQ_CQE_STATUS_GET(status, NUM_LRO);
 	if (num_lro)
 		hinic3_lro_set_gso_params(skb, num_lro);

@@ -137,6 +137,7 @@ static const struct regmap_config class_dev_regmap_config = {
 	.unlock			= class_regmap_unlock,
 };
 
+<<<<<<< HEAD
 static void class_remove_functions(void *data)
 {
 	struct sdca_class_drv *drv = data;
@@ -144,6 +145,8 @@ static void class_remove_functions(void *data)
 	sdca_dev_unregister_functions(drv->sdw);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void class_boot_work(struct work_struct *work)
 {
 	struct sdca_class_drv *drv = container_of(work,
@@ -164,11 +167,14 @@ static void class_boot_work(struct work_struct *work)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	/* Ensure function drivers are removed before the IRQ is destroyed */
 	ret = devm_add_action_or_reset(drv->dev, class_remove_functions, drv);
 	if (ret)
 		goto err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(drv->dev, "boot work complete\n");
 
 	pm_runtime_mark_last_busy(drv->dev);
@@ -180,6 +186,18 @@ err:
 	pm_runtime_put_sync(drv->dev);
 }
 
+<<<<<<< HEAD
+=======
+static void class_dev_remove(void *data)
+{
+	struct sdca_class_drv *drv = data;
+
+	cancel_work_sync(&drv->boot_work);
+
+	sdca_dev_unregister_functions(drv->sdw);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int class_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *id)
 {
 	struct device *dev = &sdw->dev;
@@ -233,11 +251,19 @@ static int class_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *id
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	ret = devm_add_action_or_reset(dev, class_dev_remove, drv);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	queue_work(system_long_wq, &drv->boot_work);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void class_sdw_remove(struct sdw_slave *sdw)
 {
 	struct device *dev = &sdw->dev;
@@ -246,6 +272,8 @@ static void class_sdw_remove(struct sdw_slave *sdw)
 	cancel_work_sync(&drv->boot_work);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int class_suspend(struct device *dev)
 {
 	struct sdca_class_drv *drv = dev_get_drvdata(dev);
@@ -324,8 +352,11 @@ static const struct dev_pm_ops class_pm_ops = {
 
 static const struct sdw_device_id class_sdw_id[] = {
 	SDW_SLAVE_ENTRY(0x01FA, 0x4245, 0),
+<<<<<<< HEAD
 	SDW_SLAVE_ENTRY(0x01FA, 0x4249, 0),
 	SDW_SLAVE_ENTRY(0x01FA, 0x4747, 0),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(sdw, class_sdw_id);
@@ -337,7 +368,10 @@ static struct sdw_driver class_sdw_driver = {
 	},
 
 	.probe		= class_sdw_probe,
+<<<<<<< HEAD
 	.remove		= class_sdw_remove,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.id_table	= class_sdw_id,
 	.ops		= &class_sdw_ops,
 };

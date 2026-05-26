@@ -17,14 +17,20 @@
 #include <linux/module.h>
 #include <linux/notifier.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/srcu.h>
 #include <linux/workqueue.h>
 
 #define GPIOCHIP_NAME	"gpiochip"
 
+<<<<<<< HEAD
 struct fwnode_handle;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct gpio_device - internal state container for GPIO devices
  * @dev: the GPIO device struct
@@ -110,7 +116,11 @@ extern const char *const gpio_suffixes[];
 		if (con_id)								\
 			snprintf(propname, sizeof(propname), "%s-%s", con_id, __gs);	\
 		else									\
+<<<<<<< HEAD
 			strscpy(propname, __gs);					\
+=======
+			snprintf(propname, sizeof(propname), "%s", __gs);		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		1;									\
 	     });									\
 	     __suffixes++)
@@ -276,7 +286,10 @@ int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
 int gpio_set_debounce_timeout(struct gpio_desc *desc, unsigned int debounce);
 int gpiod_hog(struct gpio_desc *desc, const char *name,
 		unsigned long lflags, enum gpiod_flags dflags);
+<<<<<<< HEAD
 int gpiochip_add_hog(struct gpio_chip *gc, struct fwnode_handle *fwnode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int gpiochip_get_ngpios(struct gpio_chip *gc, struct device *dev);
 struct gpio_desc *gpiochip_get_desc(struct gpio_chip *gc, unsigned int hwnum);
 const char *gpiod_get_label(struct gpio_desc *desc);

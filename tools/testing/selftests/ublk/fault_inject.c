@@ -10,17 +10,23 @@
 
 #include "kublk.h"
 
+<<<<<<< HEAD
 struct fi_opts {
 	long long delay_ns;
 	bool die_during_fetch;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ublk_fault_inject_tgt_init(const struct dev_ctx *ctx,
 				      struct ublk_dev *dev)
 {
 	const struct ublksrv_ctrl_dev_info *info = &dev->dev_info;
 	unsigned long dev_size = 250UL << 30;
+<<<<<<< HEAD
 	struct fi_opts *opts = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctx->auto_zc_fallback) {
 		ublk_err("%s: not support auto_zc_fallback\n", __func__);
@@ -41,6 +47,7 @@ static int ublk_fault_inject_tgt_init(const struct dev_ctx *ctx,
 	};
 	ublk_set_integrity_params(ctx, &dev->tgt.params);
 
+<<<<<<< HEAD
 	opts = calloc(1, sizeof(*opts));
 	if (!opts) {
 		ublk_err("%s: couldn't allocate memory for opts\n", __func__);
@@ -79,14 +86,25 @@ static void ublk_fault_inject_pre_fetch_io(struct ublk_thread *t,
 	}
 }
 
+=======
+	dev->private_data = (void *)(unsigned long)(ctx->fault_inject.delay_us * 1000);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ublk_fault_inject_queue_io(struct ublk_thread *t,
 				      struct ublk_queue *q, int tag)
 {
 	const struct ublksrv_io_desc *iod = ublk_get_iod(q, tag);
 	struct io_uring_sqe *sqe;
+<<<<<<< HEAD
 	struct fi_opts *opts = q->dev->private_data;
 	struct __kernel_timespec ts = {
 		.tv_nsec = opts->delay_ns,
+=======
+	struct __kernel_timespec ts = {
+		.tv_nsec = (long long)q->dev->private_data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	ublk_io_alloc_sqes(t, &sqe, 1);
@@ -118,34 +136,50 @@ static void ublk_fault_inject_cmd_line(struct dev_ctx *ctx, int argc, char *argv
 {
 	static const struct option longopts[] = {
 		{ "delay_us", 	1,	NULL,  0  },
+<<<<<<< HEAD
 		{ "die_during_fetch", 1, NULL, 0  },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ 0, 0, 0, 0 }
 	};
 	int option_idx, opt;
 
 	ctx->fault_inject.delay_us = 0;
+<<<<<<< HEAD
 	ctx->fault_inject.die_during_fetch = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while ((opt = getopt_long(argc, argv, "",
 				  longopts, &option_idx)) != -1) {
 		switch (opt) {
 		case 0:
 			if (!strcmp(longopts[option_idx].name, "delay_us"))
 				ctx->fault_inject.delay_us = strtoll(optarg, NULL, 10);
+<<<<<<< HEAD
 			if (!strcmp(longopts[option_idx].name, "die_during_fetch"))
 				ctx->fault_inject.die_during_fetch = strtoll(optarg, NULL, 10);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
 
 static void ublk_fault_inject_usage(const struct ublk_tgt_ops *ops)
 {
+<<<<<<< HEAD
 	printf("\tfault_inject: [--delay_us us (default 0)] [--die_during_fetch 1]\n");
+=======
+	printf("\tfault_inject: [--delay_us us (default 0)]\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 const struct ublk_tgt_ops fault_inject_tgt_ops = {
 	.name = "fault_inject",
 	.init_tgt = ublk_fault_inject_tgt_init,
+<<<<<<< HEAD
 	.pre_fetch_io = ublk_fault_inject_pre_fetch_io,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.queue_io = ublk_fault_inject_queue_io,
 	.tgt_io_done = ublk_fault_inject_tgt_io_done,
 	.parse_cmd_line = ublk_fault_inject_cmd_line,

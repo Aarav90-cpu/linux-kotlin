@@ -796,7 +796,15 @@ static bool am65_cpts_match_tx_ts(struct am65_cpts *cpts,
 	bool found = false;
 	u32 mtype_seqid;
 
+<<<<<<< HEAD
 	mtype_seqid = event->event1;
+=======
+	mtype_seqid = event->event1 &
+		      (AM65_CPTS_EVENT_1_MESSAGE_TYPE_MASK |
+		       AM65_CPTS_EVENT_1_EVENT_TYPE_MASK |
+		       AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__skb_queue_head_init(&txq_list);
 
 	spin_lock_irqsave(&cpts->txq.lock, flags);
@@ -918,6 +926,10 @@ static u64 am65_cpts_find_rx_ts(struct am65_cpts *cpts, u32 skb_mtype_seqid)
 	struct list_head *this, *next;
 	struct am65_cpts_event *event;
 	unsigned long flags;
+<<<<<<< HEAD
+=======
+	u32 mtype_seqid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 ns = 0;
 
 	spin_lock_irqsave(&cpts->lock, flags);
@@ -929,7 +941,16 @@ static u64 am65_cpts_find_rx_ts(struct am65_cpts *cpts, u32 skb_mtype_seqid)
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (event->event1 == skb_mtype_seqid) {
+=======
+		mtype_seqid = event->event1 &
+			      (AM65_CPTS_EVENT_1_MESSAGE_TYPE_MASK |
+			       AM65_CPTS_EVENT_1_SEQUENCE_ID_MASK |
+			       AM65_CPTS_EVENT_1_EVENT_TYPE_MASK);
+
+		if (mtype_seqid == skb_mtype_seqid) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ns = event->timestamp;
 			list_move(&event->list, &cpts->pool);
 			break;
@@ -940,8 +961,12 @@ static u64 am65_cpts_find_rx_ts(struct am65_cpts *cpts, u32 skb_mtype_seqid)
 	return ns;
 }
 
+<<<<<<< HEAD
 void am65_cpts_rx_timestamp(struct am65_cpts *cpts, unsigned int port_id,
 			    struct sk_buff *skb)
+=======
+void am65_cpts_rx_timestamp(struct am65_cpts *cpts, struct sk_buff *skb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct am65_cpts_skb_cb_data *skb_cb = (struct am65_cpts_skb_cb_data *)skb->cb;
 	struct skb_shared_hwtstamps *ssh;
@@ -957,7 +982,10 @@ void am65_cpts_rx_timestamp(struct am65_cpts *cpts, unsigned int port_id,
 	if (!ret)
 		return; /* if not PTP class packet */
 
+<<<<<<< HEAD
 	skb_cb->skb_mtype_seqid |= port_id << AM65_CPTS_EVENT_1_PORT_NUMBER_SHIFT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_cb->skb_mtype_seqid |= (AM65_CPTS_EV_RX << AM65_CPTS_EVENT_1_EVENT_TYPE_SHIFT);
 
 	dev_dbg(cpts->dev, "%s mtype seqid %08x\n", __func__, skb_cb->skb_mtype_seqid);
@@ -1001,15 +1029,22 @@ EXPORT_SYMBOL_GPL(am65_cpts_tx_timestamp);
 /**
  * am65_cpts_prep_tx_timestamp - check and prepare tx packet for timestamping
  * @cpts: cpts handle
+<<<<<<< HEAD
  * @port_id: The port on which the skb will be sent
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @skb: packet
  *
  * This functions should be called from .xmit().
  * It checks if packet can be timestamped, fills internal cpts data
  * in skb-cb and marks packet as SKBTX_IN_PROGRESS.
  */
+<<<<<<< HEAD
 void am65_cpts_prep_tx_timestamp(struct am65_cpts *cpts, unsigned int port_id,
 				 struct sk_buff *skb)
+=======
+void am65_cpts_prep_tx_timestamp(struct am65_cpts *cpts, struct sk_buff *skb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct am65_cpts_skb_cb_data *skb_cb = (void *)skb->cb;
 	int ret;
@@ -1020,7 +1055,10 @@ void am65_cpts_prep_tx_timestamp(struct am65_cpts *cpts, unsigned int port_id,
 	ret = am65_skb_get_mtype_seqid(skb, &skb_cb->skb_mtype_seqid);
 	if (!ret)
 		return;
+<<<<<<< HEAD
 	skb_cb->skb_mtype_seqid |= port_id << AM65_CPTS_EVENT_1_PORT_NUMBER_SHIFT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_cb->skb_mtype_seqid |= (AM65_CPTS_EV_TX <<
 				   AM65_CPTS_EVENT_1_EVENT_TYPE_SHIFT);
 

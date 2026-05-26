@@ -457,11 +457,18 @@ void dml32_CalculateSwathAndDETConfiguration(
 		bool ViewportSizeSupportPerSurface[],
 		bool *ViewportSizeSupport)
 {
+<<<<<<< HEAD
 	(void)HRatioChroma;
 	unsigned int MaximumSwathHeightY[DC__NUM_DPP__MAX];
 	unsigned int MaximumSwathHeightC[DC__NUM_DPP__MAX];
 	unsigned int RoundedUpMaxSwathSizeBytesY[DC__NUM_DPP__MAX] = { 0 };
 	unsigned int RoundedUpMaxSwathSizeBytesC[DC__NUM_DPP__MAX] = { 0 };
+=======
+	unsigned int MaximumSwathHeightY[DC__NUM_DPP__MAX];
+	unsigned int MaximumSwathHeightC[DC__NUM_DPP__MAX];
+	unsigned int RoundedUpMaxSwathSizeBytesY[DC__NUM_DPP__MAX];
+	unsigned int RoundedUpMaxSwathSizeBytesC[DC__NUM_DPP__MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int RoundedUpSwathSizeBytesY;
 	unsigned int RoundedUpSwathSizeBytesC;
 	double SwathWidthdoubleDPP[DC__NUM_DPP__MAX];
@@ -717,7 +724,10 @@ void dml32_CalculateSwathWidth(
 		unsigned int			swath_width_luma_ub[], // per-pipe
 		unsigned int			swath_width_chroma_ub[]) // per-pipe
 {
+<<<<<<< HEAD
 	(void)BytePerPixY;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int k, j;
 	enum odm_combine_mode MainSurfaceODMMode;
 
@@ -2306,7 +2316,10 @@ unsigned int dml32_CalculateVMAndRowBytes(
 		unsigned int    *DPDE0BytesFrame,
 		unsigned int    *MetaPTEBytesFrame)
 {
+<<<<<<< HEAD
 	(void)SourcePixelFormat;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int MPDEBytesFrame;
 	unsigned int DCCMetaSurfaceBytes;
 	unsigned int ExtraDPDEBytesFrame;
@@ -2748,7 +2761,10 @@ void dml32_CalculateUrgentBurstFactor(
 		double *UrgentBurstFactorChroma,
 		bool   *NotEnoughUrgentLatencyHiding)
 {
+<<<<<<< HEAD
 	(void)VRatioC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double       LinesInDETLuma;
 	double       LinesInDETChroma;
 	unsigned int LinesInCursorBuffer;
@@ -2904,8 +2920,11 @@ double dml32_CalculateWriteBackDelay(
 		unsigned int         WritebackSourceHeight,
 		unsigned int HTotal)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackHRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double CalculateWriteBackDelay;
 	double Line_length;
 	double Output_lines_last_notclamped;
@@ -2983,9 +3002,12 @@ void dml32_UseMinimumDCFCLK(
 		/* Output */
 		double DCFCLKState[][2])
 {
+<<<<<<< HEAD
 	(void)MaxAveragePercentOfIdealSDPPortBWDisplayCanUseInNormalSystemOperation;
 	(void)ReadBandwidthLuma;
 	(void)ReadBandwidthChroma;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i, j, k;
 	unsigned int     dummy1;
 	double dummy2, dummy3;
@@ -2997,7 +3019,11 @@ void dml32_UseMinimumDCFCLK(
 		for  (j = 0; j <= 1; ++j) {
 			double PixelDCFCLKCyclesRequiredInPrefetch[DC__NUM_DPP__MAX];
 			double PrefetchPixelLinesTime[DC__NUM_DPP__MAX];
+<<<<<<< HEAD
 			double DCFCLKRequiredForPeakBandwidthPerSurface[DC__NUM_DPP__MAX] = { 0 };
+=======
+			double DCFCLKRequiredForPeakBandwidthPerSurface[DC__NUM_DPP__MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			double DynamicMetadataVMExtraLatency[DC__NUM_DPP__MAX];
 			double MinimumTWait = 0.0;
 			double DPTEBandwidth;
@@ -3456,8 +3482,11 @@ bool dml32_CalculatePrefetchSchedule(
 		double   *VUpdateWidthPix,
 		double   *VReadyOffsetPix)
 {
+<<<<<<< HEAD
 	(void)SwathWidthY;
 	(void)SwathWidthC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double DPPCLKDelaySubtotalPlusCNVCFormater = v->DPPCLKDelaySubtotal + v->DPPCLKDelayCNVCFormater;
 	bool MyError = false;
 	unsigned int DPPCycles, DISPCLKCycles;
@@ -4156,7 +4185,10 @@ void dml32_CalculateFlipSchedule(
 		double *final_flip_bw,
 		bool *ImmediateFlipSupportedForPipe)
 {
+<<<<<<< HEAD
 	(void)HostVMMinPageSize;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double min_row_time = 0.0;
 	unsigned int HostVMDynamicLevelsTrips;
 	double TimeForFetchingMetaPTEImmediateFlip;
@@ -4299,8 +4331,11 @@ void dml32_CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport(
 		bool *USRRetrainingSupport,
 		double ActiveDRAMClockChangeLatencyMargin[])
 {
+<<<<<<< HEAD
 	(void)DCFCLK;
 	(void)ReturnBW;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i, j, k;
 	unsigned int SurfaceWithMinActiveFCLKChangeMargin = 0;
 	unsigned int DRAMClockChangeSupportNumber = 0;
@@ -4669,8 +4704,11 @@ double dml32_CalculateWriteBackDISPCLK(
 		unsigned int WritebackLineBufferSize,
 		double DISPCLKDPPCLKVCOSpeed)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackVRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double DISPCLK_H, DISPCLK_V, DISPCLK_HB;
 
 	DISPCLK_H = PixelClock * dml_ceil(WritebackHTaps / 8.0, 1) / WritebackHRatio;
@@ -5182,8 +5220,11 @@ void dml32_CalculateVMGroupAndRequestTimes(
 		double      TimePerVMRequestVBlank[],
 		double      TimePerVMRequestFlip[])
 {
+<<<<<<< HEAD
 	(void)dpte_row_width_luma_ub;
 	(void)dpte_row_width_chroma_ub;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int k;
 	unsigned int   num_group_per_lower_vm_stage;
 	unsigned int   num_req_per_lower_vm_stage;
@@ -5339,11 +5380,14 @@ void dml32_CalculateDCCConfiguration(
 		unsigned int        *IndependentBlockLuma,
 		unsigned int        *IndependentBlockChroma)
 {
+<<<<<<< HEAD
 	(void)SurfaceWidthChroma;
 	(void)SurfaceHeightChroma;
 	(void)TilingFormat;
 	(void)BytePerPixelDETY;
 	(void)BytePerPixelDETC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	typedef enum {
 		REQ_256Bytes,
 		REQ_128BytesNonContiguous,

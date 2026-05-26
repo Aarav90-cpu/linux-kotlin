@@ -77,6 +77,11 @@ bool sysctl__nmi_watchdog_enabled(void)
 	return nmi_watchdog;
 }
 
+<<<<<<< HEAD
+=======
+bool test_attr__enabled;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool exclude_GH_default;
 
 bool perf_host  = true;
@@ -545,6 +550,7 @@ int scandirat(int dirfd, const char *dirp,
 	return err;
 }
 #endif
+<<<<<<< HEAD
 
 /* basename version that takes a const input string */
 const char *perf_basename(const char *path)
@@ -553,3 +559,5 @@ const char *perf_basename(const char *path)
 
 	return base ? base + 1 : path;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

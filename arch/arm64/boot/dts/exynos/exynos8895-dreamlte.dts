@@ -103,6 +103,11 @@
 };
 
 &hsi2c_23 {
+<<<<<<< HEAD
+=======
+	#address-cells = <1>;
+	#size-cells = <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	touchscreen@48 {

@@ -354,7 +354,11 @@ struct qlcnic_skb_frag {
 
 /*
  * There will be one qlcnic_buffer per skb packet.    These will be
+<<<<<<< HEAD
  * used to save the dma info for dma_unmap_page()
+=======
+ * used to save the dma info for pci_unmap_page()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct qlcnic_cmd_buffer {
 	struct sk_buff *skb;

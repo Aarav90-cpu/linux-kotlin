@@ -2,7 +2,11 @@
 /*
  * test_maple_tree.c: Test the maple tree API
  * Copyright (c) 2018-2022 Oracle Corporation
+<<<<<<< HEAD
  * Author: Liam R. Howlett <liam@infradead.org>
+=======
+ * Author: Liam R. Howlett <Liam.Howlett@Oracle.com>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Any tests that only require the interface of the tree.
  */
@@ -1024,7 +1028,10 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 	mt_set_non_kernel(10);
 	check_store_range(mt, r[10], r[11], xa_mk_value(r[10]), 0);
 	MT_BUG_ON(mt, !mt_height(mt));
+<<<<<<< HEAD
 	mt_validate(mt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mtree_destroy(mt);
 
 	/* Create tree of 1-200 */
@@ -1032,13 +1039,19 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 	/* Store 45-168 */
 	check_store_range(mt, r[10], r[11], xa_mk_value(r[10]), 0);
 	MT_BUG_ON(mt, !mt_height(mt));
+<<<<<<< HEAD
 	mt_validate(mt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mtree_destroy(mt);
 
 	check_seq(mt, 30, false);
 	check_store_range(mt, 6, 18, xa_mk_value(6), 0);
 	MT_BUG_ON(mt, !mt_height(mt));
+<<<<<<< HEAD
 	mt_validate(mt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mtree_destroy(mt);
 
 	/* Overwrite across multiple levels. */
@@ -1064,7 +1077,10 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 	check_load(mt, r[13] + 1, xa_mk_value(r[13] + 1));
 	check_load(mt, 135, NULL);
 	check_load(mt, 140, NULL);
+<<<<<<< HEAD
 	mt_validate(mt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt_set_non_kernel(0);
 	MT_BUG_ON(mt, !mt_height(mt));
 	mtree_destroy(mt);
@@ -1289,6 +1305,7 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 		MT_BUG_ON(mt, mt_height(mt) >= 4);
 	}
 	/*  Cause a 3 child split all the way up the tree. */
+<<<<<<< HEAD
 	for (i = 5; i < 215; i += 10) {
 		check_store_range(mt, 11450 + i, 11450 + i + 1, NULL, 0);
 		mt_validate(mt);
@@ -1303,6 +1320,16 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 		check_store_range(mt, 11700 + i, 11700 + i + 1, NULL, 0);
 		mt_validate(mt);
 	}
+=======
+	for (i = 5; i < 215; i += 10)
+		check_store_range(mt, 11450 + i, 11450 + i + 1, NULL, 0);
+	for (i = 5; i < 65; i += 10)
+		check_store_range(mt, 11770 + i, 11770 + i + 1, NULL, 0);
+
+	MT_BUG_ON(mt, mt_height(mt) >= 4);
+	for (i = 5; i < 45; i += 10)
+		check_store_range(mt, 11700 + i, 11700 + i + 1, NULL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!MAPLE_32BIT)
 		MT_BUG_ON(mt, mt_height(mt) < 4);
 	mtree_destroy(mt);
@@ -1314,6 +1341,7 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 		val2 = (i+1)*10;
 		check_store_range(mt, val, val2, xa_mk_value(val), 0);
 		MT_BUG_ON(mt, mt_height(mt) >= 4);
+<<<<<<< HEAD
 		mt_validate(mt);
 	}
 	/* Fill parents and leaves before split. */
@@ -1350,6 +1378,19 @@ static noinline void __init check_ranges(struct maple_tree *mt)
 	check_store_range(mt, 8099, 8100, xa_mk_value(1), 0);
 
 	mt_validate(mt);
+=======
+	}
+	/* Fill parents and leaves before split. */
+	for (i = 5; i < 455; i += 10)
+		check_store_range(mt, 7800 + i, 7800 + i + 1, NULL, 0);
+
+	for (i = 1; i < 16; i++)
+		check_store_range(mt, 8185 + i, 8185 + i + 1,
+				  xa_mk_value(8185+i), 0);
+	MT_BUG_ON(mt, mt_height(mt) >= 4);
+	/* triple split across multiple levels. */
+	check_store_range(mt, 8184, 8184, xa_mk_value(8184), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!MAPLE_32BIT)
 		MT_BUG_ON(mt, mt_height(mt) != 4);
 }
@@ -4021,6 +4062,10 @@ static void __exit maple_tree_harvest(void)
 
 module_init(maple_tree_seed);
 module_exit(maple_tree_harvest);
+<<<<<<< HEAD
 MODULE_AUTHOR("Liam R. Howlett <liam@infradead.org>");
+=======
+MODULE_AUTHOR("Liam R. Howlett <Liam.Howlett@Oracle.com>");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("maple tree API test module");
 MODULE_LICENSE("GPL");

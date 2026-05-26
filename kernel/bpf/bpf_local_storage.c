@@ -68,19 +68,37 @@ static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
 
 struct bpf_local_storage_elem *
 bpf_selem_alloc(struct bpf_local_storage_map *smap, void *owner,
+<<<<<<< HEAD
 		void *value, bool swap_uptrs)
+=======
+		void *value, bool swap_uptrs, gfp_t gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_elem *selem;
 
 	if (mem_charge(smap, owner, smap->elem_size))
 		return NULL;
 
+<<<<<<< HEAD
 	selem = bpf_map_kmalloc_nolock(&smap->map, smap->elem_size,
 				       __GFP_ZERO, NUMA_NO_NODE);
+=======
+	if (smap->use_kmalloc_nolock) {
+		selem = bpf_map_kmalloc_nolock(&smap->map, smap->elem_size,
+					       __GFP_ZERO, NUMA_NO_NODE);
+	} else {
+		selem = bpf_map_kzalloc(&smap->map, smap->elem_size,
+					gfp_flags | __GFP_NOWARN);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (selem) {
 		RCU_INIT_POINTER(SDATA(selem)->smap, smap);
 		atomic_set(&selem->state, 0);
+<<<<<<< HEAD
+=======
+		selem->use_kmalloc_nolock = smap->use_kmalloc_nolock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (value) {
 			/* No need to call check_and_init_map_value as memory is zero init */
@@ -96,7 +114,12 @@ bpf_selem_alloc(struct bpf_local_storage_map *smap, void *owner,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void bpf_local_storage_free_trace_rcu(struct rcu_head *rcu)
+=======
+/* rcu tasks trace callback for use_kmalloc_nolock == false */
+static void __bpf_local_storage_free_trace_rcu(struct rcu_head *rcu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage *local_storage;
 
@@ -108,14 +131,55 @@ static void bpf_local_storage_free_trace_rcu(struct rcu_head *rcu)
 	kfree(local_storage);
 }
 
+<<<<<<< HEAD
+=======
+/* Handle use_kmalloc_nolock == false */
+static void __bpf_local_storage_free(struct bpf_local_storage *local_storage,
+				     bool vanilla_rcu)
+{
+	if (vanilla_rcu)
+		kfree_rcu(local_storage, rcu);
+	else
+		call_rcu_tasks_trace(&local_storage->rcu,
+				     __bpf_local_storage_free_trace_rcu);
+}
+
+static void bpf_local_storage_free_rcu(struct rcu_head *rcu)
+{
+	struct bpf_local_storage *local_storage;
+
+	local_storage = container_of(rcu, struct bpf_local_storage, rcu);
+	kfree_nolock(local_storage);
+}
+
+static void bpf_local_storage_free_trace_rcu(struct rcu_head *rcu)
+{
+	/*
+	 * RCU Tasks Trace grace period implies RCU grace period, do
+	 * kfree() directly.
+	 */
+	bpf_local_storage_free_rcu(rcu);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bpf_local_storage_free(struct bpf_local_storage *local_storage,
 				   bool reuse_now)
 {
 	if (!local_storage)
 		return;
 
+<<<<<<< HEAD
 	if (reuse_now) {
 		kfree_rcu(local_storage, rcu);
+=======
+	if (!local_storage->use_kmalloc_nolock) {
+		__bpf_local_storage_free(local_storage, reuse_now);
+		return;
+	}
+
+	if (reuse_now) {
+		call_rcu(&local_storage->rcu, bpf_local_storage_free_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -123,7 +187,46 @@ static void bpf_local_storage_free(struct bpf_local_storage *local_storage,
 			     bpf_local_storage_free_trace_rcu);
 }
 
+<<<<<<< HEAD
 static void bpf_selem_free_trace_rcu(struct rcu_head *rcu)
+=======
+/* rcu callback for use_kmalloc_nolock == false */
+static void __bpf_selem_free_rcu(struct rcu_head *rcu)
+{
+	struct bpf_local_storage_elem *selem;
+	struct bpf_local_storage_map *smap;
+
+	selem = container_of(rcu, struct bpf_local_storage_elem, rcu);
+	/* bpf_selem_unlink_nofail may have already cleared smap and freed fields. */
+	smap = rcu_dereference_check(SDATA(selem)->smap, 1);
+
+	if (smap)
+		bpf_obj_free_fields(smap->map.record, SDATA(selem)->data);
+	kfree(selem);
+}
+
+/* rcu tasks trace callback for use_kmalloc_nolock == false */
+static void __bpf_selem_free_trace_rcu(struct rcu_head *rcu)
+{
+	/*
+	 * RCU Tasks Trace grace period implies RCU grace period, do
+	 * kfree() directly.
+	 */
+	__bpf_selem_free_rcu(rcu);
+}
+
+/* Handle use_kmalloc_nolock == false */
+static void __bpf_selem_free(struct bpf_local_storage_elem *selem,
+			     bool vanilla_rcu)
+{
+	if (vanilla_rcu)
+		call_rcu(&selem->rcu, __bpf_selem_free_rcu);
+	else
+		call_rcu_tasks_trace(&selem->rcu, __bpf_selem_free_trace_rcu);
+}
+
+static void bpf_selem_free_rcu(struct rcu_head *rcu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_elem *selem;
 	struct bpf_local_storage_map *smap;
@@ -134,16 +237,29 @@ static void bpf_selem_free_trace_rcu(struct rcu_head *rcu)
 
 	if (smap)
 		bpf_obj_free_fields(smap->map.record, SDATA(selem)->data);
+<<<<<<< HEAD
+=======
+	kfree_nolock(selem);
+}
+
+static void bpf_selem_free_trace_rcu(struct rcu_head *rcu)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * RCU Tasks Trace grace period implies RCU grace period, do
 	 * kfree() directly.
 	 */
+<<<<<<< HEAD
 	kfree(selem);
+=======
+	bpf_selem_free_rcu(rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void bpf_selem_free(struct bpf_local_storage_elem *selem,
 		    bool reuse_now)
 {
+<<<<<<< HEAD
 	struct bpf_local_storage_map *smap;
 
 	smap = rcu_dereference_check(SDATA(selem)->smap, 1);
@@ -152,6 +268,24 @@ void bpf_selem_free(struct bpf_local_storage_elem *selem,
 		if (smap)
 			bpf_obj_free_fields(smap->map.record, SDATA(selem)->data);
 		kfree_rcu(selem, rcu);
+=======
+	if (!selem->use_kmalloc_nolock) {
+		/*
+		 * No uptr will be unpin even when reuse_now == false since uptr
+		 * is only supported in task local storage, where
+		 * smap->use_kmalloc_nolock == true.
+		 */
+		__bpf_selem_free(selem, reuse_now);
+		return;
+	}
+
+	if (reuse_now) {
+		/*
+		 * While it is okay to call bpf_obj_free_fields() that unpins uptr when
+		 * reuse_now == true, keep it in bpf_selem_free_rcu() for simplicity.
+		 */
+		call_rcu(&selem->rcu, bpf_selem_free_rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -305,9 +439,12 @@ int bpf_selem_unlink(struct bpf_local_storage_elem *selem)
 	unsigned long flags;
 	int err;
 
+<<<<<<< HEAD
 	if (in_nmi())
 		return -EOPNOTSUPP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!selem_linked_to_storage_lockless(selem)))
 		/* selem has already been unlinked from sk */
 		return 0;
@@ -409,6 +546,7 @@ static void bpf_selem_unlink_nofail(struct bpf_local_storage_elem *selem,
 			}
 			raw_res_spin_unlock_irqrestore(&local_storage->lock, flags);
 		}
+<<<<<<< HEAD
 		/*
 		 * Highly unlikely scenario: memory leak
 		 *
@@ -417,6 +555,8 @@ static void bpf_selem_unlink_nofail(struct bpf_local_storage_elem *selem,
 		 * selem, no one will free the local storage.
 		 */
 		WARN_ON_ONCE(err && !in_map_free);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!err || !in_map_free)
 			RCU_INIT_POINTER(selem->local_storage, NULL);
 	}
@@ -475,7 +615,12 @@ static int check_flags(const struct bpf_local_storage_data *old_sdata,
 
 int bpf_local_storage_alloc(void *owner,
 			    struct bpf_local_storage_map *smap,
+<<<<<<< HEAD
 			    struct bpf_local_storage_elem *first_selem)
+=======
+			    struct bpf_local_storage_elem *first_selem,
+			    gfp_t gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage *prev_storage, *storage;
 	struct bpf_local_storage **owner_storage_ptr;
@@ -487,8 +632,17 @@ int bpf_local_storage_alloc(void *owner,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	storage = bpf_map_kmalloc_nolock(&smap->map, sizeof(*storage),
 					 __GFP_ZERO, NUMA_NO_NODE);
+=======
+	if (smap->use_kmalloc_nolock)
+		storage = bpf_map_kmalloc_nolock(&smap->map, sizeof(*storage),
+						 __GFP_ZERO, NUMA_NO_NODE);
+	else
+		storage = bpf_map_kzalloc(&smap->map, sizeof(*storage),
+					  gfp_flags | __GFP_NOWARN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!storage) {
 		err = -ENOMEM;
 		goto uncharge;
@@ -498,6 +652,10 @@ int bpf_local_storage_alloc(void *owner,
 	raw_res_spin_lock_init(&storage->lock);
 	storage->owner = owner;
 	storage->mem_charge = sizeof(*storage);
+<<<<<<< HEAD
+=======
+	storage->use_kmalloc_nolock = smap->use_kmalloc_nolock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	refcount_set(&storage->owner_refcnt, 1);
 
 	bpf_selem_link_storage_nolock(storage, first_selem);
@@ -545,7 +703,11 @@ uncharge:
  */
 struct bpf_local_storage_data *
 bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
+<<<<<<< HEAD
 			 void *value, u64 map_flags, bool swap_uptrs)
+=======
+			 void *value, u64 map_flags, bool swap_uptrs, gfp_t gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_data *old_sdata = NULL;
 	struct bpf_local_storage_elem *alloc_selem, *selem = NULL;
@@ -562,6 +724,12 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
 		     !btf_record_has_field(smap->map.record, BPF_SPIN_LOCK)))
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
+=======
+	if (gfp_flags == GFP_KERNEL && (map_flags & ~BPF_F_LOCK) != BPF_NOEXIST)
+		return ERR_PTR(-EINVAL);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_storage = rcu_dereference_check(*owner_storage(smap, owner),
 					      bpf_rcu_lock_held());
 	if (!local_storage || hlist_empty(&local_storage->list)) {
@@ -570,11 +738,19 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
 		if (err)
 			return ERR_PTR(err);
 
+<<<<<<< HEAD
 		selem = bpf_selem_alloc(smap, owner, value, swap_uptrs);
 		if (!selem)
 			return ERR_PTR(-ENOMEM);
 
 		err = bpf_local_storage_alloc(owner, smap, selem);
+=======
+		selem = bpf_selem_alloc(smap, owner, value, swap_uptrs, gfp_flags);
+		if (!selem)
+			return ERR_PTR(-ENOMEM);
+
+		err = bpf_local_storage_alloc(owner, smap, selem, gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err) {
 			bpf_selem_free(selem, true);
 			mem_uncharge(smap, owner, smap->elem_size);
@@ -604,7 +780,11 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
 	/* A lookup has just been done before and concluded a new selem is
 	 * needed. The chance of an unnecessary alloc is unlikely.
 	 */
+<<<<<<< HEAD
 	alloc_selem = selem = bpf_selem_alloc(smap, owner, value, swap_uptrs);
+=======
+	alloc_selem = selem = bpf_selem_alloc(smap, owner, value, swap_uptrs, gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!alloc_selem)
 		return ERR_PTR(-ENOMEM);
 
@@ -771,7 +951,12 @@ u64 bpf_local_storage_map_mem_usage(const struct bpf_map *map)
 
 struct bpf_map *
 bpf_local_storage_map_alloc(union bpf_attr *attr,
+<<<<<<< HEAD
 			    struct bpf_local_storage_cache *cache)
+=======
+			    struct bpf_local_storage_cache *cache,
+			    bool use_kmalloc_nolock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_map *smap;
 	unsigned int i;
@@ -803,6 +988,15 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
 	smap->elem_size = offsetof(struct bpf_local_storage_elem,
 				   sdata.data[attr->value_size]);
 
+<<<<<<< HEAD
+=======
+	/* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
+	 * preemptible context. Thus, enforce all storages to use
+	 * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
+	 */
+	smap->use_kmalloc_nolock = IS_ENABLED(CONFIG_PREEMPT_RT) ? true : use_kmalloc_nolock;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smap->cache_idx = bpf_local_storage_cache_idx_get(cache);
 	return &smap->map;
 

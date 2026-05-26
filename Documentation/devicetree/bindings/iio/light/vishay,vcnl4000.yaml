@@ -18,6 +18,7 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - capella,cm36672p
@@ -29,10 +30,19 @@ properties:
       - items:
           - const: capella,cm36686
           - const: vishay,vcnl4040
+=======
+    enum:
+      - vishay,vcnl4000
+      - vishay,vcnl4010
+      - vishay,vcnl4020
+      - vishay,vcnl4040
+      - vishay,vcnl4200
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   vdd-supply:
     description: Regulator providing power to the "VDD" pin.
 
@@ -44,6 +54,8 @@ properties:
   vled-supply:
     description: Regulator providing power to the IR anode pin.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     maxItems: 1
 
@@ -65,9 +77,12 @@ examples:
             compatible = "vishay,vcnl4200";
             reg = <0x51>;
             proximity-near-level = <220>;
+<<<<<<< HEAD
             vdd-supply = <&reg_vdd>;
             vio-supply = <&reg_vio>;
             vled-supply = <&reg_vled>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
     };
 ...

@@ -3,6 +3,12 @@
 
 set -ex
 
+<<<<<<< HEAD
+=======
+# Clean up stale rebases that GitLab might not have removed when reusing a checkout dir
+rm -rf .git/rebase-apply
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 . .gitlab-ci/container/container_pre_build.sh
 
 # libssl-dev was uninstalled because it was considered an ephemeral package
@@ -16,7 +22,10 @@ if [[ "$KERNEL_ARCH" = "arm64" ]]; then
     GCC_ARCH="aarch64-linux-gnu"
     DEBIAN_ARCH="arm64"
     DEVICE_TREES="arch/arm64/boot/dts/rockchip/rk3399-gru-kevin.dtb"
+<<<<<<< HEAD
     DEVICE_TREES+=" arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dtb"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     DEVICE_TREES+=" arch/arm64/boot/dts/amlogic/meson-gxl-s805x-libretech-ac.dtb"
     DEVICE_TREES+=" arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dtb"
     DEVICE_TREES+=" arch/arm64/boot/dts/amlogic/meson-gxm-khadas-vim2.dtb"
@@ -59,6 +68,7 @@ export PATH=$NEWPATH:$PATH
 
 git config --global user.email "fdo@example.com"
 git config --global user.name "freedesktop.org CI"
+<<<<<<< HEAD
 
 # cleanup git state on the worker
 rm -rf .git/rebase-merge .git/rebase-apply
@@ -66,17 +76,35 @@ rm -rf .git/rebase-merge .git/rebase-apply
 # Try to merge fixes from target repo
 if [ "$(git ls-remote --exit-code --heads ${UPSTREAM_REPO} ${TARGET_BRANCH}-external-fixes)" ]; then
     git pull --no-rebase ${UPSTREAM_REPO} ${TARGET_BRANCH}-external-fixes
+=======
+git config --global pull.rebase true
+
+# cleanup git state on the worker
+rm -rf .git/rebase-merge
+
+# Try to merge fixes from target repo
+if [ "$(git ls-remote --exit-code --heads ${UPSTREAM_REPO} ${TARGET_BRANCH}-external-fixes)" ]; then
+    git pull ${UPSTREAM_REPO} ${TARGET_BRANCH}-external-fixes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fi
 
 # Try to merge fixes from local repo if this isn't a merge request
 # otherwise try merging the fixes from the merge target
 if [ -z "$CI_MERGE_REQUEST_PROJECT_PATH" ]; then
     if [ "$(git ls-remote --exit-code --heads origin ${TARGET_BRANCH}-external-fixes)" ]; then
+<<<<<<< HEAD
         git pull --no-rebase origin ${TARGET_BRANCH}-external-fixes
     fi
 else
     if [ "$(git ls-remote --exit-code --heads ${CI_MERGE_REQUEST_PROJECT_URL} ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}-external-fixes)" ]; then
         git pull --no-rebase ${CI_MERGE_REQUEST_PROJECT_URL} ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}-external-fixes
+=======
+        git pull origin ${TARGET_BRANCH}-external-fixes
+    fi
+else
+    if [ "$(git ls-remote --exit-code --heads ${CI_MERGE_REQUEST_PROJECT_URL} ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}-external-fixes)" ]; then
+        git pull ${CI_MERGE_REQUEST_PROJECT_URL} ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}-external-fixes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fi
 fi
 

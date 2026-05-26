@@ -15,12 +15,17 @@
 #ifndef NOLIBC_IGNORE_ERRNO
 #define SET_ERRNO(v) do { errno = (v); } while (0)
 int errno __attribute__((weak));
+<<<<<<< HEAD
 char *program_invocation_name __attribute__((weak)) = "";
 char *program_invocation_short_name __attribute__((weak)) = "";
 #else
 #define SET_ERRNO(v) do { } while (0)
 #define program_invocation_name ""
 #define program_invocation_short_name ""
+=======
+#else
+#define SET_ERRNO(v) do { } while (0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 

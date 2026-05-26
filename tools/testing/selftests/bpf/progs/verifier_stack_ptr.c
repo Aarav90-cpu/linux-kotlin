@@ -37,7 +37,11 @@ __naked void ptr_to_stack_store_load(void)
 
 SEC("socket")
 __description("PTR_TO_STACK store/load - bad alignment on off")
+<<<<<<< HEAD
 __failure __msg("misaligned stack access off -8+2 size 8")
+=======
+__failure __msg("misaligned stack access off 0+-8+2 size 8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __failure_unpriv
 __naked void load_bad_alignment_on_off(void)
 {
@@ -53,7 +57,11 @@ __naked void load_bad_alignment_on_off(void)
 
 SEC("socket")
 __description("PTR_TO_STACK store/load - bad alignment on reg")
+<<<<<<< HEAD
 __failure __msg("misaligned stack access off -10+8 size 8")
+=======
+__failure __msg("misaligned stack access off 0+-10+8 size 8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __failure_unpriv
 __naked void load_bad_alignment_on_reg(void)
 {

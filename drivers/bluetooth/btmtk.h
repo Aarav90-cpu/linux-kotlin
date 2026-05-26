@@ -5,10 +5,15 @@
 #define FIRMWARE_MT7663		"mediatek/mt7663pr2h.bin"
 #define FIRMWARE_MT7668		"mediatek/mt7668pr2h.bin"
 #define FIRMWARE_MT7922		"mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin"
+<<<<<<< HEAD
 #define FIRMWARE_MT7902		"mediatek/BT_RAM_CODE_MT7902_1_1_hdr.bin"
 #define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
 #define FIRMWARE_MT7925		"mediatek/mt7925/BT_RAM_CODE_MT7925_1_1_hdr.bin"
 #define FIRMWARE_MT7927		"mediatek/mt7927/BT_RAM_CODE_MT6639_2_1_hdr.bin"
+=======
+#define FIRMWARE_MT7961		"mediatek/BT_RAM_CODE_MT7961_1_2_hdr.bin"
+#define FIRMWARE_MT7925		"mediatek/mt7925/BT_RAM_CODE_MT7925_1_1_hdr.bin"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define HCI_EV_WMT 0xe4
 #define HCI_WMT_MAX_EVENT_SIZE		64
@@ -149,7 +154,10 @@ enum {
 	BTMTK_HW_RESET_ACTIVE,
 	BTMTK_ISOPKT_OVER_INTR,
 	BTMTK_ISOPKT_RUNNING,
+<<<<<<< HEAD
 	BTMTK_FIRMWARE_DL_RETRY,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 typedef int (*btmtk_reset_sync_func_t)(struct hci_dev *, void *);
@@ -190,8 +198,12 @@ typedef int (*wmt_cmd_sync_func_t)(struct hci_dev *,
 int btmtk_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr);
 
 int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
+<<<<<<< HEAD
 			      wmt_cmd_sync_func_t wmt_cmd_sync,
 			      u32 dev_id);
+=======
+			      wmt_cmd_sync_func_t wmt_cmd_sync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int btmtk_setup_firmware(struct hci_dev *hdev, const char *fwname,
 			 wmt_cmd_sync_func_t wmt_cmd_sync);
@@ -230,8 +242,12 @@ static inline int btmtk_set_bdaddr(struct hci_dev *hdev,
 
 static inline int btmtk_setup_firmware_79xx(struct hci_dev *hdev,
 					    const char *fwname,
+<<<<<<< HEAD
 					    wmt_cmd_sync_func_t wmt_cmd_sync,
 					    u32 dev_id)
+=======
+					    wmt_cmd_sync_func_t wmt_cmd_sync)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -EOPNOTSUPP;
 }

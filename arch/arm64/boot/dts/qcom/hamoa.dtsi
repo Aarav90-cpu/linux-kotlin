@@ -75,7 +75,10 @@
 			next-level-cache = <&l2_0>;
 			power-domains = <&cpu_pd0>, <&scmi_dvfs 0>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			l2_0: l2-cache {
 				compatible = "cache";
@@ -92,7 +95,10 @@
 			next-level-cache = <&l2_0>;
 			power-domains = <&cpu_pd1>, <&scmi_dvfs 0>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu2: cpu@200 {
@@ -103,7 +109,10 @@
 			next-level-cache = <&l2_0>;
 			power-domains = <&cpu_pd2>, <&scmi_dvfs 0>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu3: cpu@300 {
@@ -114,7 +123,10 @@
 			next-level-cache = <&l2_0>;
 			power-domains = <&cpu_pd3>, <&scmi_dvfs 0>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu4: cpu@10000 {
@@ -125,7 +137,10 @@
 			next-level-cache = <&l2_1>;
 			power-domains = <&cpu_pd4>, <&scmi_dvfs 1>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			l2_1: l2-cache {
 				compatible = "cache";
@@ -142,7 +157,10 @@
 			next-level-cache = <&l2_1>;
 			power-domains = <&cpu_pd5>, <&scmi_dvfs 1>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu6: cpu@10200 {
@@ -153,7 +171,10 @@
 			next-level-cache = <&l2_1>;
 			power-domains = <&cpu_pd6>, <&scmi_dvfs 1>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu7: cpu@10300 {
@@ -164,7 +185,10 @@
 			next-level-cache = <&l2_1>;
 			power-domains = <&cpu_pd7>, <&scmi_dvfs 1>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu8: cpu@20000 {
@@ -175,7 +199,10 @@
 			next-level-cache = <&l2_2>;
 			power-domains = <&cpu_pd8>, <&scmi_dvfs 2>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			l2_2: l2-cache {
 				compatible = "cache";
@@ -192,7 +219,10 @@
 			next-level-cache = <&l2_2>;
 			power-domains = <&cpu_pd9>, <&scmi_dvfs 2>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu10: cpu@20200 {
@@ -203,7 +233,10 @@
 			next-level-cache = <&l2_2>;
 			power-domains = <&cpu_pd10>, <&scmi_dvfs 2>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu11: cpu@20300 {
@@ -214,7 +247,10 @@
 			next-level-cache = <&l2_2>;
 			power-domains = <&cpu_pd11>, <&scmi_dvfs 2>;
 			power-domain-names = "psci", "perf";
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu-map {
@@ -847,9 +883,15 @@
 				 <0>,
 				 <0>,
 				 <0>,
+<<<<<<< HEAD
 				 <&ufs_mem_phy 0>,
 				 <&ufs_mem_phy 1>,
 				 <&ufs_mem_phy 2>;
+=======
+				 <0>,
+				 <0>,
+				 <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			power-domains = <&rpmhpd RPMHPD_CX>;
 			#clock-cells = <1>;
@@ -3881,6 +3923,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		ufs_mem_phy: phy@1d80000 {
 			compatible = "qcom,x1e80100-qmp-ufs-phy",
 				     "qcom,sm8550-qmp-ufs-phy";
@@ -3997,6 +4040,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cryptobam: dma-controller@1dc4000 {
 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
 			reg = <0x0 0x01dc4000 0x0 0x28000>;
@@ -4842,7 +4887,11 @@
 
 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
 				 <&gcc GCC_SDCC2_APPS_CLK>,
+<<<<<<< HEAD
 				 <&bi_tcxo_div2>;
+=======
+				 <&rpmhcc RPMH_CXO_CLK>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clock-names = "iface", "core", "xo";
 			iommus = <&apps_smmu 0x520 0>;
 			qcom,dll-config = <0x0007642c>;
@@ -4895,7 +4944,11 @@
 
 			clocks = <&gcc GCC_SDCC4_AHB_CLK>,
 				 <&gcc GCC_SDCC4_APPS_CLK>,
+<<<<<<< HEAD
 				 <&bi_tcxo_div2>;
+=======
+				 <&rpmhcc RPMH_CXO_CLK>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clock-names = "iface", "core", "xo";
 			iommus = <&apps_smmu 0x160 0>;
 			qcom,dll-config = <0x0007642c>;
@@ -5036,9 +5089,15 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		usb_1_ss2: usb@a000000 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3";
 			reg = <0 0x0a000000 0 0xfc100>;
+=======
+		usb_1_ss2: usb@a0f8800 {
+			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
+			reg = <0 0x0a0f8800 0 0x400>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			clocks = <&gcc GCC_CFG_NOC_USB3_TERT_AXI_CLK>,
 				 <&gcc GCC_USB30_TERT_MASTER_CLK>,
@@ -5064,6 +5123,7 @@
 			assigned-clock-rates = <19200000>,
 					       <200000000>;
 
+<<<<<<< HEAD
 			interrupts-extended = <&intc GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 370 IRQ_TYPE_LEVEL_HIGH>,
 					      <&pdc 58 IRQ_TYPE_EDGE_BOTH>,
@@ -5071,6 +5131,13 @@
 					      <&pdc 10 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "dwc_usb3",
 					  "pwr_event",
+=======
+			interrupts-extended = <&intc GIC_SPI 370 IRQ_TYPE_LEVEL_HIGH>,
+					      <&pdc 58 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 57 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 10 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "pwr_event",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq",
 					  "ss_phy_irq";
@@ -5089,6 +5156,7 @@
 
 			wakeup-source;
 
+<<<<<<< HEAD
 			iommus = <&apps_smmu 0x14a0 0x0>;
 
 			phys = <&usb_1_ss2_hsphy>,
@@ -5122,14 +5190,69 @@
 
 					usb_1_ss2_dwc3_ss: endpoint {
 						remote-endpoint = <&usb_1_ss2_qmpphy_usb_ss_in>;
+=======
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+
+			status = "disabled";
+
+			usb_1_ss2_dwc3: usb@a000000 {
+				compatible = "snps,dwc3";
+				reg = <0 0x0a000000 0 0xcd00>;
+
+				interrupts = <GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>;
+
+				iommus = <&apps_smmu 0x14a0 0x0>;
+
+				phys = <&usb_1_ss2_hsphy>,
+				       <&usb_1_ss2_qmpphy QMP_USB43DP_USB3_PHY>;
+				phy-names = "usb2-phy",
+				            "usb3-phy";
+
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+				snps,usb3_lpm_capable;
+				snps,dis-u1-entry-quirk;
+				snps,dis-u2-entry-quirk;
+
+				dma-coherent;
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					port@0 {
+						reg = <0>;
+
+						usb_1_ss2_dwc3_hs: endpoint {
+						};
+					};
+
+					port@1 {
+						reg = <1>;
+
+						usb_1_ss2_dwc3_ss: endpoint {
+							remote-endpoint = <&usb_1_ss2_qmpphy_usb_ss_in>;
+						};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 				};
 			};
 		};
 
+<<<<<<< HEAD
 		usb_2: usb@a200000 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3";
 			reg = <0 0x0a200000 0 0xfc100>;
+=======
+		usb_2: usb@a2f8800 {
+			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
+			reg = <0 0x0a2f8800 0 0x400>;
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			clocks = <&gcc GCC_CFG_NOC_USB2_PRIM_AXI_CLK>,
 				 <&gcc GCC_USB20_MASTER_CLK>,
@@ -5154,12 +5277,19 @@
 					  <&gcc GCC_USB20_MASTER_CLK>;
 			assigned-clock-rates = <19200000>, <200000000>;
 
+<<<<<<< HEAD
 			interrupts-extended = <&intc GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
 					      <&pdc 50 IRQ_TYPE_EDGE_BOTH>,
 					      <&pdc 49 IRQ_TYPE_EDGE_BOTH>;
 			interrupt-names = "dwc_usb3",
 					  "pwr_event",
+=======
+			interrupts-extended = <&intc GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
+					      <&pdc 50 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 49 IRQ_TYPE_EDGE_BOTH>;
+			interrupt-names = "pwr_event",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq";
 
@@ -5178,6 +5308,7 @@
 			qcom,select-utmi-as-pipe-clk;
 			wakeup-source;
 
+<<<<<<< HEAD
 			iommus = <&apps_smmu 0x14e0 0x0>;
 			phys = <&usb_2_hsphy>;
 			phy-names = "usb2-phy";
@@ -5191,13 +5322,39 @@
 
 			port {
 				usb_2_dwc3_hs: endpoint {
+=======
+			status = "disabled";
+
+			usb_2_dwc3: usb@a200000 {
+				compatible = "snps,dwc3";
+				reg = <0 0x0a200000 0 0xcd00>;
+				interrupts = <GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>;
+				iommus = <&apps_smmu 0x14e0 0x0>;
+				phys = <&usb_2_hsphy>;
+				phy-names = "usb2-phy";
+				maximum-speed = "high-speed";
+				snps,dis-u1-entry-quirk;
+				snps,dis-u2-entry-quirk;
+
+				dma-coherent;
+
+				port {
+					usb_2_dwc3_hs: endpoint {
+					};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 			};
 		};
 
+<<<<<<< HEAD
 		usb_mp: usb@a400000 {
 			compatible = "qcom,x1e80100-dwc3-mp", "qcom,snps-dwc3";
 			reg = <0 0x0a400000 0 0xfc100>;
+=======
+		usb_mp: usb@a4f8800 {
+			compatible = "qcom,x1e80100-dwc3-mp", "qcom,dwc3";
+			reg = <0 0x0a4f8800 0 0x400>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			clocks = <&gcc GCC_CFG_NOC_USB3_MP_AXI_CLK>,
 				 <&gcc GCC_USB30_MP_MASTER_CLK>,
@@ -5223,8 +5380,12 @@
 			assigned-clock-rates = <19200000>,
 					       <200000000>;
 
+<<<<<<< HEAD
 			interrupts-extended = <&intc GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
+=======
+			interrupts-extended = <&intc GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      <&intc GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
@@ -5234,8 +5395,12 @@
 					      <&pdc 53 IRQ_TYPE_EDGE_BOTH>,
 					      <&pdc 55 IRQ_TYPE_LEVEL_HIGH>,
 					      <&pdc 56 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			interrupt-names = "dwc_usb3",
 					  "pwr_event_1", "pwr_event_2",
+=======
+			interrupt-names = "pwr_event_1", "pwr_event_2",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  "hs_phy_1",	 "hs_phy_2",
 					  "dp_hs_phy_1", "dm_hs_phy_1",
 					  "dp_hs_phy_2", "dm_hs_phy_2",
@@ -5255,6 +5420,7 @@
 
 			wakeup-source;
 
+<<<<<<< HEAD
 			iommus = <&apps_smmu 0x1400 0x0>;
 
 			phys = <&usb_mp_hsphy0>, <&usb_mp_qmpphy0>,
@@ -5277,6 +5443,41 @@
 		usb_1_ss0: usb@a600000 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3";
 			reg = <0 0x0a600000 0 0xfc100>;
+=======
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+
+			status = "disabled";
+
+			usb_mp_dwc3: usb@a400000 {
+				compatible = "snps,dwc3";
+				reg = <0 0x0a400000 0 0xcd00>;
+
+				interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
+
+				iommus = <&apps_smmu 0x1400 0x0>;
+
+				phys = <&usb_mp_hsphy0>, <&usb_mp_qmpphy0>,
+				       <&usb_mp_hsphy1>, <&usb_mp_qmpphy1>;
+				phy-names = "usb2-0", "usb3-0",
+					    "usb2-1", "usb3-1";
+				dr_mode = "host";
+
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+				snps,usb3_lpm_capable;
+				snps,dis-u1-entry-quirk;
+				snps,dis-u2-entry-quirk;
+
+				dma-coherent;
+			};
+		};
+
+		usb_1_ss0: usb@a6f8800 {
+			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
+			reg = <0 0x0a6f8800 0 0x400>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			clocks = <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
 				 <&gcc GCC_USB30_PRIM_MASTER_CLK>,
@@ -5302,6 +5503,7 @@
 			assigned-clock-rates = <19200000>,
 					       <200000000>;
 
+<<<<<<< HEAD
 			interrupts-extended = <&intc GIC_SPI 355 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 371 IRQ_TYPE_LEVEL_HIGH>,
 					      <&pdc 61 IRQ_TYPE_EDGE_BOTH>,
@@ -5309,6 +5511,13 @@
 					      <&pdc 17 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "dwc_usb3",
 					  "pwr_event",
+=======
+			interrupts-extended = <&intc GIC_SPI 371 IRQ_TYPE_LEVEL_HIGH>,
+					      <&pdc 61 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 15 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 17 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "pwr_event",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq",
 					  "ss_phy_irq";
@@ -5320,6 +5529,7 @@
 
 			wakeup-source;
 
+<<<<<<< HEAD
 			iommus = <&apps_smmu 0x1420 0x0>;
 
 			phys = <&usb_1_ss0_hsphy>,
@@ -5353,14 +5563,66 @@
 
 					usb_1_ss0_dwc3_ss: endpoint {
 						remote-endpoint = <&usb_1_ss0_qmpphy_usb_ss_in>;
+=======
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+
+			status = "disabled";
+
+			usb_1_ss0_dwc3: usb@a600000 {
+				compatible = "snps,dwc3";
+				reg = <0 0x0a600000 0 0xcd00>;
+
+				interrupts = <GIC_SPI 355 IRQ_TYPE_LEVEL_HIGH>;
+
+				iommus = <&apps_smmu 0x1420 0x0>;
+
+				phys = <&usb_1_ss0_hsphy>,
+				       <&usb_1_ss0_qmpphy QMP_USB43DP_USB3_PHY>;
+				phy-names = "usb2-phy",
+					    "usb3-phy";
+
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+				snps,usb3_lpm_capable;
+				snps,dis-u1-entry-quirk;
+				snps,dis-u2-entry-quirk;
+
+				dma-coherent;
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					port@0 {
+						reg = <0>;
+
+						usb_1_ss0_dwc3_hs: endpoint {
+						};
+					};
+
+					port@1 {
+						reg = <1>;
+
+						usb_1_ss0_dwc3_ss: endpoint {
+							remote-endpoint = <&usb_1_ss0_qmpphy_usb_ss_in>;
+						};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 				};
 			};
 		};
 
+<<<<<<< HEAD
 		usb_1_ss1: usb@a800000 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3";
 			reg = <0 0x0a800000 0 0xfc100>;
+=======
+		usb_1_ss1: usb@a8f8800 {
+			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
+			reg = <0 0x0a8f8800 0 0x400>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			clocks = <&gcc GCC_CFG_NOC_USB3_SEC_AXI_CLK>,
 				 <&gcc GCC_USB30_SEC_MASTER_CLK>,
@@ -5386,6 +5648,7 @@
 			assigned-clock-rates = <19200000>,
 					       <200000000>;
 
+<<<<<<< HEAD
 			interrupts-extended = <&intc GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>,
 					      <&pdc 60 IRQ_TYPE_EDGE_BOTH>,
@@ -5393,6 +5656,13 @@
 					      <&pdc 47 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "dwc_usb3",
 					  "pwr_event",
+=======
+			interrupts-extended = <&intc GIC_SPI 372 IRQ_TYPE_LEVEL_HIGH>,
+					      <&pdc 60 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
+					      <&pdc 47 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "pwr_event",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq",
 					  "ss_phy_irq";
@@ -5411,6 +5681,7 @@
 
 			wakeup-source;
 
+<<<<<<< HEAD
 			iommus = <&apps_smmu 0x1460 0x0>;
 
 			phys = <&usb_1_ss1_hsphy>,
@@ -5444,6 +5715,52 @@
 
 					usb_1_ss1_dwc3_ss: endpoint {
 						remote-endpoint = <&usb_1_ss1_qmpphy_usb_ss_in>;
+=======
+			#address-cells = <2>;
+			#size-cells = <2>;
+			ranges;
+
+			status = "disabled";
+
+			usb_1_ss1_dwc3: usb@a800000 {
+				compatible = "snps,dwc3";
+				reg = <0 0x0a800000 0 0xcd00>;
+
+				interrupts = <GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>;
+
+				iommus = <&apps_smmu 0x1460 0x0>;
+
+				phys = <&usb_1_ss1_hsphy>,
+				       <&usb_1_ss1_qmpphy QMP_USB43DP_USB3_PHY>;
+				phy-names = "usb2-phy",
+					    "usb3-phy";
+
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+				snps,usb3_lpm_capable;
+				snps,dis-u1-entry-quirk;
+				snps,dis-u2-entry-quirk;
+
+				dma-coherent;
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					port@0 {
+						reg = <0>;
+
+						usb_1_ss1_dwc3_hs: endpoint {
+						};
+					};
+
+					port@1 {
+						reg = <1>;
+
+						usb_1_ss1_dwc3_ss: endpoint {
+							remote-endpoint = <&usb_1_ss1_qmpphy_usb_ss_in>;
+						};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 				};
 			};
@@ -5518,19 +5835,31 @@
 
 				opp-366000000 {
 					opp-hz = /bits/ 64 <366000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs>,
+=======
+					required-opps = <&rpmhpd_opp_svs_l1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_svs_l1>;
 				};
 
 				opp-444000000 {
 					opp-hz = /bits/ 64 <444000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-481000000 {
 					opp-hz = /bits/ 64 <481000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 			};
@@ -5744,8 +6073,13 @@
 				mdss_dp0_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5833,8 +6167,13 @@
 				mdss_dp1_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5921,8 +6260,13 @@
 				mdss_dp2_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6004,8 +6348,13 @@
 				mdss_dp3_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -9316,7 +9665,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_0_top: cpu2-0-top-thermal {
+=======
+		cpu2-0-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 1>;
 
 			trips {
@@ -9328,7 +9681,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_0_btm: cpu2-0-btm-thermal {
+=======
+		cpu2-0-btm-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 2>;
 
 			trips {
@@ -9340,7 +9697,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_1_top: cpu2-1-top-thermal {
+=======
+		cpu2-1-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 3>;
 
 			trips {
@@ -9352,7 +9713,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_1_btm: cpu2-1-btm-thermal {
+=======
+		cpu2-1-btm-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 4>;
 
 			trips {
@@ -9364,7 +9729,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_2_top: cpu2-2-top-thermal {
+=======
+		cpu2-2-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 5>;
 
 			trips {
@@ -9376,7 +9745,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_2_btm: cpu2-2-btm-thermal {
+=======
+		cpu2-2-btm-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 6>;
 
 			trips {
@@ -9388,7 +9761,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_3_top: cpu2-3-top-thermal {
+=======
+		cpu2-3-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 7>;
 
 			trips {
@@ -9400,7 +9777,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpu2_3_btm: cpu2-3-btm-thermal {
+=======
+		cpu2-3-btm-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 8>;
 
 			trips {
@@ -9412,7 +9793,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpuss2_top: cpuss2-top-thermal {
+=======
+		cpuss2-top-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 9>;
 
 			trips {
@@ -9424,7 +9809,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_cpuss2_btm: cpuss2-btm-thermal {
+=======
+		cpuss2-btm-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens2 10>;
 
 			trips {
@@ -9436,7 +9825,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_aoss3: aoss3-thermal {
+=======
+		aoss3-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 0>;
 
 			trips {
@@ -9454,7 +9847,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_nsp0: nsp0-thermal {
+=======
+		nsp0-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 1>;
 
 			trips {
@@ -9472,7 +9869,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_nsp1: nsp1-thermal {
+=======
+		nsp1-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 2>;
 
 			trips {
@@ -9490,7 +9891,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_nsp2: nsp2-thermal {
+=======
+		nsp2-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 3>;
 
 			trips {
@@ -9508,7 +9913,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_nsp3: nsp3-thermal {
+=======
+		nsp3-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 4>;
 
 			trips {
@@ -9526,7 +9935,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_0: gpuss-0-thermal {
+=======
+		gpuss-0-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 5>;
@@ -9553,7 +9966,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_1: gpuss-1-thermal {
+=======
+		gpuss-1-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 6>;
@@ -9580,7 +9997,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_2: gpuss-2-thermal {
+=======
+		gpuss-2-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 7>;
@@ -9607,7 +10028,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_3: gpuss-3-thermal {
+=======
+		gpuss-3-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 8>;
@@ -9634,7 +10059,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_4: gpuss-4-thermal {
+=======
+		gpuss-4-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 9>;
@@ -9661,7 +10090,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_5: gpuss-5-thermal {
+=======
+		gpuss-5-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 10>;
@@ -9688,7 +10121,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_6: gpuss-6-thermal {
+=======
+		gpuss-6-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 11>;
@@ -9715,7 +10152,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_gpuss_7: gpuss-7-thermal {
+=======
+		gpuss-7-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			polling-delay-passive = <200>;
 
 			thermal-sensors = <&tsens3 12>;
@@ -9742,7 +10183,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_camera0: camera0-thermal {
+=======
+		camera0-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 13>;
 
 			trips {
@@ -9760,7 +10205,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		thermal_camera1: camera1-thermal {
+=======
+		camera1-thermal {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			thermal-sensors = <&tsens3 14>;
 
 			trips {

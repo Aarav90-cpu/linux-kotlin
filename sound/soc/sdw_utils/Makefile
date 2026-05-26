@@ -6,7 +6,10 @@ snd-soc-sdw-utils-y := soc_sdw_utils.o soc_sdw_dmic.o soc_sdw_rt_dmic.o \
 		       soc_sdw_bridge_cs35l56.o 			\
 		       soc_sdw_cs42l42.o soc_sdw_cs42l43.o 		\
 		       soc_sdw_cs42l45.o				\
+<<<<<<< HEAD
 		       soc_sdw_cs47l47.o				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       soc_sdw_cs_amp.o					\
 		       soc_sdw_maxim.o \
 		       soc_sdw_ti_amp.o

@@ -17,7 +17,10 @@
 #include <sound/sof/info.h>
 #include <sound/sof/pm.h>
 #include <sound/sof/trace.h>
+<<<<<<< HEAD
 #include <sound/compress_params.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/sound/sof/fw.h>
 #include <sound/sof/ext_manifest.h>
 
@@ -112,7 +115,10 @@ struct sof_compr_stream {
 	u32 sampling_rate;
 	u16 channels;
 	u16 sample_container_bytes;
+<<<<<<< HEAD
 	struct snd_codec codec_params;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t posn_offset;
 };
 

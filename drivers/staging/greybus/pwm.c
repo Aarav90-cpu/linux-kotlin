@@ -215,7 +215,11 @@ static int gb_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
 	/*
 	 * Set period and duty cycle
 	 *
+<<<<<<< HEAD
 	 * PWM provides 64-bit period and duty_cycle, but greybus only accepts
+=======
+	 * PWM privodes 64-bit period and duty_cycle, but greybus only accepts
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * 32-bit, so their values have to be limited to U32_MAX.
 	 */
 	if (period > U32_MAX)

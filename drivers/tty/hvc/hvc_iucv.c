@@ -130,7 +130,11 @@ static struct iucv_handler hvc_iucv_handler = {
  */
 static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
 {
+<<<<<<< HEAD
 	if (num >= hvc_iucv_devices)
+=======
+	if (num > hvc_iucv_devices)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	return hvc_iucv_table[num];
 }

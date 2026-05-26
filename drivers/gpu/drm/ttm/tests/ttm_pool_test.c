@@ -248,7 +248,11 @@ static void ttm_pool_alloc_order_caching_match(struct kunit *test)
 	pool = ttm_pool_pre_populated(test, size, caching);
 
 	pt = &pool->caching[caching].orders[order];
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tt = ttm_tt_kunit_init(test, 0, caching, size);
 	KUNIT_ASSERT_NOT_NULL(test, tt);
@@ -256,7 +260,11 @@ static void ttm_pool_alloc_order_caching_match(struct kunit *test)
 	err = ttm_pool_alloc(pool, tt, &simple_ctx);
 	KUNIT_ASSERT_EQ(test, err, 0);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
+=======
+	KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_pool_free(pool, tt);
 	ttm_tt_fini(tt);
@@ -282,8 +290,13 @@ static void ttm_pool_alloc_caching_mismatch(struct kunit *test)
 	tt = ttm_tt_kunit_init(test, 0, tt_caching, size);
 	KUNIT_ASSERT_NOT_NULL(test, tt);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
 	KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt_tt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
+	KUNIT_ASSERT_TRUE(test, list_empty(&pt_tt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = ttm_pool_alloc(pool, tt, &simple_ctx);
 	KUNIT_ASSERT_EQ(test, err, 0);
@@ -291,8 +304,13 @@ static void ttm_pool_alloc_caching_mismatch(struct kunit *test)
 	ttm_pool_free(pool, tt);
 	ttm_tt_fini(tt);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_tt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_tt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_pool_fini(pool);
 }
@@ -316,8 +334,13 @@ static void ttm_pool_alloc_order_mismatch(struct kunit *test)
 	tt = ttm_tt_kunit_init(test, 0, caching, snd_size);
 	KUNIT_ASSERT_NOT_NULL(test, tt);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
 	KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt_tt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
+	KUNIT_ASSERT_TRUE(test, list_empty(&pt_tt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = ttm_pool_alloc(pool, tt, &simple_ctx);
 	KUNIT_ASSERT_EQ(test, err, 0);
@@ -325,8 +348,13 @@ static void ttm_pool_alloc_order_mismatch(struct kunit *test)
 	ttm_pool_free(pool, tt);
 	ttm_tt_fini(tt);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_tt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt_tt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_pool_fini(pool);
 }
@@ -352,12 +380,20 @@ static void ttm_pool_free_dma_alloc(struct kunit *test)
 	ttm_pool_alloc(pool, tt, &simple_ctx);
 
 	pt = &pool->caching[caching].orders[order];
+<<<<<<< HEAD
 	KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
+=======
+	KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_pool_free(pool, tt);
 	ttm_tt_fini(tt);
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_pool_fini(pool);
 }
@@ -368,6 +404,10 @@ static void ttm_pool_free_no_dma_alloc(struct kunit *test)
 	struct ttm_test_devices *devs = priv->devs;
 	struct ttm_tt *tt;
 	struct ttm_pool *pool;
+<<<<<<< HEAD
+=======
+	struct ttm_pool_type *pt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum ttm_caching caching = ttm_uncached;
 	unsigned int order = 2;
 	size_t size = (1 << order) * PAGE_SIZE;
@@ -381,9 +421,20 @@ static void ttm_pool_free_no_dma_alloc(struct kunit *test)
 	ttm_pool_init(pool, devs->dev, NUMA_NO_NODE, 0);
 	ttm_pool_alloc(pool, tt, &simple_ctx);
 
+<<<<<<< HEAD
 	ttm_pool_free(pool, tt);
 	ttm_tt_fini(tt);
 
+=======
+	pt = &pool->caching[caching].orders[order];
+	KUNIT_ASSERT_TRUE(test, list_is_singular(&pt->pages));
+
+	ttm_pool_free(pool, tt);
+	ttm_tt_fini(tt);
+
+	KUNIT_ASSERT_TRUE(test, list_is_singular(&pt->pages));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ttm_pool_fini(pool);
 }
 
@@ -398,11 +449,19 @@ static void ttm_pool_fini_basic(struct kunit *test)
 	pool = ttm_pool_pre_populated(test, size, caching);
 	pt = &pool->caching[caching].orders[order];
 
+<<<<<<< HEAD
 	KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
 
 	ttm_pool_fini(pool);
 
 	KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
+=======
+	KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
+
+	ttm_pool_fini(pool);
+
+	KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kunit_case ttm_pool_test_cases[] = {

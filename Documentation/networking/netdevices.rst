@@ -289,6 +289,7 @@ ndo_tx_timeout:
 ndo_set_rx_mode:
 	Synchronization: netif_addr_lock spinlock.
 	Context: BHs disabled
+<<<<<<< HEAD
 	Notes: Deprecated in favor of ndo_set_rx_mode_async which runs
 	in process context.
 
@@ -302,6 +303,8 @@ ndo_set_rx_mode_async:
 ndo_change_rx_flags:
 	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
 	lock if the driver implements queue management or shaper API.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ndo_setup_tc:
 	``TC_SETUP_BLOCK`` and ``TC_SETUP_FT`` are running under NFT locks
@@ -342,12 +345,15 @@ by setting ``request_ops_lock`` to true. Code comments and docs refer
 to drivers which have ops called under the instance lock as "ops locked".
 See also the documentation of the ``lock`` member of struct net_device.
 
+<<<<<<< HEAD
 There is also a case of taking two per-netdev locks in sequence when netdev
 queues are leased, that is, the netdev-scope lock is taken for both the
 virtual and the physical device. To prevent deadlocks, the virtual device's
 lock must always be acquired before the physical device's (see
 ``netdev_nl_queue_create_doit``).
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 In the future, there will be an option for individual
 drivers to opt out of using ``rtnl_lock`` and instead perform their control
 operations directly under the netdev instance lock.

@@ -389,7 +389,11 @@ const struct file_operations adfs_dir_operations = {
 	.read		= generic_read_dir,
 	.llseek		= generic_file_llseek,
 	.iterate_shared	= adfs_iterate,
+<<<<<<< HEAD
 	.fsync		= simple_fsync,
+=======
+	.fsync		= generic_file_fsync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int
@@ -454,5 +458,9 @@ adfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
  */
 const struct inode_operations adfs_dir_inode_operations = {
 	.lookup		= adfs_lookup,
+<<<<<<< HEAD
 	.setattr	= adfs_setattr,
+=======
+	.setattr	= adfs_notify_change,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

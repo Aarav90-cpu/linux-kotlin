@@ -452,7 +452,10 @@ struct msm_gem_submit {
 	bool bos_pinned : 1;
 	bool fault_dumped:1;/* Limit devcoredump dumping to one per submit */
 	bool in_rb : 1;     /* "sudo" mode, copy cmds into RB */
+<<<<<<< HEAD
 	bool has_exec : 1;  /* @exec is initialized. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct msm_ringbuffer *ring;
 	unsigned int nr_cmds;
 	unsigned int nr_bos;

@@ -7,6 +7,7 @@ config DRM_SYSFB_HELPER
 	tristate
 	depends on DRM
 
+<<<<<<< HEAD
 config DRM_COREBOOTDRM
 	tristate "Coreboot framebuffer driver"
 	depends on DRM && MMU
@@ -23,6 +24,8 @@ config DRM_COREBOOTDRM
 	  by coreboot firmware before the kernel boots. Scanout buffer, size,
 	  and display format must be provided via coreboot framebuffer device.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DRM_EFIDRM
 	tristate "EFI framebuffer driver"
 	depends on DRM && MMU && EFI && (!SYSFB_SIMPLEFB || COMPILE_TEST)

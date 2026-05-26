@@ -266,7 +266,12 @@
 		#size-cells = <0>;
 
 		ethphy1: ethernet-phy@3 {
+<<<<<<< HEAD
 			compatible = "ethernet-phy-id0022.1640";
+=======
+			compatible = "ethernet-phy-id0022.1640",
+				     "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			reg = <3>;
 			reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;

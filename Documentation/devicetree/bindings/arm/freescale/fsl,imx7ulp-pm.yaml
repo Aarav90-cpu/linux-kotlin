@@ -28,9 +28,12 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
   '#clock-cells':
     const: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   clocks:
     maxItems: 2
 
@@ -42,7 +45,10 @@ properties:
 required:
   - compatible
   - reg
+<<<<<<< HEAD
   - '#clock-cells'
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 additionalProperties: false
 
@@ -51,5 +57,8 @@ examples:
     smc1@40410000 {
         compatible = "fsl,imx7ulp-smc1";
         reg = <0x40410000 0x1000>;
+<<<<<<< HEAD
         #clock-cells = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

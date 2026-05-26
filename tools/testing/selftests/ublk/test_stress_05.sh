@@ -79,5 +79,9 @@ if _have_feature "PER_IO_DAEMON"; then
 fi
 wait
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "stress"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

@@ -20,7 +20,11 @@ gpu_stats_show(struct device *dev, struct device_attribute *attr, char *buf)
 	len += sysfs_emit(buf, "queue\ttimestamp\tjobs\truntime\n");
 
 	for (queue = 0; queue < V3D_MAX_QUEUES; queue++) {
+<<<<<<< HEAD
 		struct v3d_stats *stats = v3d->queue[queue].stats;
+=======
+		struct v3d_stats *stats = &v3d->queue[queue].stats;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u64 active_runtime, jobs_completed;
 
 		v3d_get_stats(stats, timestamp, &active_runtime, &jobs_completed);

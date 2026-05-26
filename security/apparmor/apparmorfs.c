@@ -151,7 +151,11 @@ static int aafs_count;
 
 static int aafs_show_path(struct seq_file *seq, struct dentry *dentry)
 {
+<<<<<<< HEAD
 	seq_printf(seq, "%s:[%llu]", AAFS_NAME, d_inode(dentry)->i_ino);
+=======
+	seq_printf(seq, "%s:[%lu]", AAFS_NAME, d_inode(dentry)->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -351,6 +355,7 @@ static struct dentry *aafs_create(const char *name, umode_t mode,
 
 	dir = d_inode(parent);
 
+<<<<<<< HEAD
 	dentry = simple_start_creating(parent, name);
 	if (IS_ERR(dentry)) {
 		error = PTR_ERR(dentry);
@@ -361,14 +366,42 @@ static struct dentry *aafs_create(const char *name, umode_t mode,
 	simple_done_creating(dentry);
 	if (error)
 		goto fail;
+=======
+	inode_lock(dir);
+	dentry = lookup_noperm(&QSTR(name), parent);
+	if (IS_ERR(dentry)) {
+		error = PTR_ERR(dentry);
+		goto fail_lock;
+	}
+
+	if (d_really_is_positive(dentry)) {
+		error = -EEXIST;
+		goto fail_dentry;
+	}
+
+	error = __aafs_setup_d_inode(dir, dentry, mode, data, link, fops, iops);
+	if (error)
+		goto fail_dentry;
+	inode_unlock(dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (data)
 		aa_get_common_ref(data);
 
 	return dentry;
 
+<<<<<<< HEAD
 fail:
 	simple_release_fs(&aafs_mnt, &aafs_count);
+=======
+fail_dentry:
+	dput(dentry);
+
+fail_lock:
+	inode_unlock(dir);
+	simple_release_fs(&aafs_mnt, &aafs_count);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(error);
 }
 
@@ -2617,7 +2650,12 @@ static int aa_mk_null_file(struct dentry *parent)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	dentry = simple_start_creating(parent, NULL_FILE_NAME);
+=======
+	inode_lock(d_inode(parent));
+	dentry = lookup_noperm(&QSTR(NULL_FILE_NAME), parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(dentry)) {
 		error = PTR_ERR(dentry);
 		goto out;
@@ -2625,7 +2663,11 @@ static int aa_mk_null_file(struct dentry *parent)
 	inode = new_inode(parent->d_inode->i_sb);
 	if (!inode) {
 		error = -ENOMEM;
+<<<<<<< HEAD
 		goto out;
+=======
+		goto out1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	inode->i_ino = get_next_ino();
@@ -2637,12 +2679,26 @@ static int aa_mk_null_file(struct dentry *parent)
 	aa_null.dentry = dget(dentry);
 	aa_null.mnt = mntget(mount);
 
+<<<<<<< HEAD
 out:
 	simple_done_creating(dentry);
+=======
+	error = 0;
+
+out1:
+	dput(dentry);
+out:
+	inode_unlock(d_inode(parent));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	simple_release_fs(&mount, &count);
 	return error;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *policy_get_link(struct dentry *dentry,
 				   struct inode *inode,
 				   struct delayed_call *done)
@@ -2669,7 +2725,11 @@ static int policy_readlink(struct dentry *dentry, char __user *buffer,
 	char name[32];
 	int res;
 
+<<<<<<< HEAD
 	res = snprintf(name, sizeof(name), "%s:[%llu]", AAFS_NAME,
+=======
+	res = snprintf(name, sizeof(name), "%s:[%lu]", AAFS_NAME,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       d_inode(dentry)->i_ino);
 	if (res > 0 && res < sizeof(name))
 		res = readlink_copy(buffer, buflen, name, strlen(name));

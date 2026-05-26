@@ -239,6 +239,7 @@ int hv_call_create_vp(int node, u64 partition_id, u32 vp_index, u32 flags)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(hv_call_create_vp);
+<<<<<<< HEAD
 
 int hv_call_notify_all_processors_started(void)
 {
@@ -286,3 +287,5 @@ bool hv_lp_exists(u32 lp_index)
 
 	return hv_result_success(status);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

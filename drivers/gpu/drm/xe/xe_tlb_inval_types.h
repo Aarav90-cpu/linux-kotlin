@@ -9,8 +9,11 @@
 #include <linux/workqueue.h>
 #include <linux/dma-fence.h>
 
+<<<<<<< HEAD
 #include "xe_device_types.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_suballoc;
 struct xe_tlb_inval;
 
@@ -134,6 +137,7 @@ struct xe_tlb_inval_fence {
 	ktime_t inval_time;
 };
 
+<<<<<<< HEAD
 /**
  * struct xe_tlb_inval_batch - Batch of TLB invalidation fences
  *
@@ -146,4 +150,6 @@ struct xe_tlb_inval_batch {
 	unsigned int num_fences;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

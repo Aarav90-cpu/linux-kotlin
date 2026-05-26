@@ -135,7 +135,11 @@ static int sun7i_gmac_probe(struct platform_device *pdev)
 
 	/* platform data specifying hardware features and callbacks.
 	 * hardware features were copied from Allwinner drivers. */
+<<<<<<< HEAD
 	plat_dat->tx_coe = true;
+=======
+	plat_dat->tx_coe = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat_dat->core_type = DWMAC_CORE_GMAC;
 	plat_dat->bsp_priv = gmac;
 	plat_dat->init = sun7i_gmac_init;

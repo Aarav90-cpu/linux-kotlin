@@ -14,7 +14,10 @@
 #include <linux/in.h>
 #include <linux/etherdevice.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/sock.h>
 #include <net/ip.h>
 #include <net/icmp.h>
@@ -236,10 +239,17 @@ static int l2tp_eth_create(struct net *net, struct l2tp_tunnel *tunnel,
 	int rc;
 
 	if (cfg->ifname) {
+<<<<<<< HEAD
 		strscpy(name, cfg->ifname);
 		name_assign_type = NET_NAME_USER;
 	} else {
 		strscpy(name, L2TP_ETH_DEV_NAME);
+=======
+		strscpy(name, cfg->ifname, IFNAMSIZ);
+		name_assign_type = NET_NAME_USER;
+	} else {
+		strcpy(name, L2TP_ETH_DEV_NAME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		name_assign_type = NET_NAME_ENUM;
 	}
 

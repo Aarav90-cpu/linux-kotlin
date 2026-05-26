@@ -63,6 +63,7 @@ void btrfs_init_dummy_trans(struct btrfs_trans_handle *trans,
 			    struct btrfs_fs_info *fs_info);
 void btrfs_init_dummy_transaction(struct btrfs_transaction *trans, struct btrfs_fs_info *fs_info);
 struct btrfs_device *btrfs_alloc_dummy_device(struct btrfs_fs_info *fs_info);
+<<<<<<< HEAD
 
 #ifdef CONFIG_BLK_DEV_ZONED
 int btrfs_test_zoned(void);
@@ -73,6 +74,8 @@ static inline int btrfs_test_zoned(void)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline int btrfs_run_sanity_tests(void)
 {

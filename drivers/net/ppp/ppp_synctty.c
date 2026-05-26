@@ -483,7 +483,11 @@ static void ppp_sync_process(struct tasklet_struct *t)
 	while ((skb = skb_dequeue(&ap->rqueue)) != NULL) {
 		if (skb->len == 0) {
 			/* zero length buffers indicate error */
+<<<<<<< HEAD
 			ppp_input_error(&ap->chan);
+=======
+			ppp_input_error(&ap->chan, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			kfree_skb(skb);
 		}
 		else

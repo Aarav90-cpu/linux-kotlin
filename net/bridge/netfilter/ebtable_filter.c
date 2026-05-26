@@ -93,22 +93,41 @@ static struct pernet_operations frame_filter_net_ops = {
 
 static int __init ebtable_filter_init(void)
 {
+<<<<<<< HEAD
 	int ret = register_pernet_subsys(&frame_filter_net_ops);
+=======
+	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
 	if (ret)
 		unregister_pernet_subsys(&frame_filter_net_ops);
 
 	return ret;
+=======
+	ret = register_pernet_subsys(&frame_filter_net_ops);
+	if (ret) {
+		ebt_unregister_template(&frame_filter);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit ebtable_filter_fini(void)
 {
+<<<<<<< HEAD
 	ebt_unregister_template(&frame_filter);
 	unregister_pernet_subsys(&frame_filter_net_ops);
+=======
+	unregister_pernet_subsys(&frame_filter_net_ops);
+	ebt_unregister_template(&frame_filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(ebtable_filter_init);

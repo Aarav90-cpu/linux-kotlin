@@ -311,7 +311,11 @@ static int cytherm_probe(struct usb_interface *interface,
 	if (!dev)
 		goto error_mem;
 
+<<<<<<< HEAD
 	dev->udev = udev;
+=======
+	dev->udev = usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usb_set_intfdata(interface, dev);
 
@@ -334,6 +338,11 @@ static void cytherm_disconnect(struct usb_interface *interface)
 	/* first remove the files, then NULL the pointer */
 	usb_set_intfdata(interface, NULL);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(dev->udev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(dev);
 
 	dev_info(&interface->dev, "Cypress thermometer now disconnected\n");

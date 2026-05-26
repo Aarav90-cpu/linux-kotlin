@@ -94,7 +94,11 @@ void msm_hdmi_phy_resource_disable(struct hdmi_phy *phy)
 	pm_runtime_put_sync(dev);
 }
 
+<<<<<<< HEAD
 void msm_hdmi_phy_powerup(struct hdmi_phy *phy, unsigned long pixclock)
+=======
+void msm_hdmi_phy_powerup(struct hdmi_phy *phy, unsigned long int pixclock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!phy || !phy->cfg->powerup)
 		return;
@@ -204,7 +208,10 @@ static const struct of_device_id msm_hdmi_phy_dt_match[] = {
 	  .data = &msm_hdmi_phy_8998_cfg },
 	{}
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, msm_hdmi_phy_dt_match);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct platform_driver msm_hdmi_phy_platform_driver = {
 	.probe      = msm_hdmi_phy_probe,

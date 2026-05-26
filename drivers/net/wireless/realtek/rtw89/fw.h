@@ -2219,6 +2219,7 @@ struct rtw89_h2c_cfg_nlo {
 #define RTW89_H2C_NLO_W0_IGNORE_CIPHER BIT(2)
 #define RTW89_H2C_NLO_W0_MACID GENMASK(31, 24)
 
+<<<<<<< HEAD
 struct rtw89_h2c_wow_wakeup_ctrl {
 	__le32 w0;
 } __packed;
@@ -2234,6 +2235,52 @@ struct rtw89_h2c_wow_wakeup_ctrl {
 #define RTW89_H2C_WOW_WAKEUP_CTRL_W0_MAGIC_MLD_ENABLE BIT(8)
 #define RTW89_H2C_WOW_WAKEUP_CTRL_W0_MAC_ID_EXT GENMASK(23, 16)
 #define RTW89_H2C_WOW_WAKEUP_CTRL_W0_MAC_ID GENMASK(31, 24)
+=======
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_PATTERN_MATCH_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(0));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_MAGIC_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(1));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_HW_UNICAST_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(2));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_FW_UNICAST_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(3));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_DEAUTH_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(4));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_REKEYP_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(5));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_EAP_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(6));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_ALL_DATA_ENABLE(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, BIT(7));
+}
+
+static inline void RTW89_SET_WOW_WAKEUP_CTRL_MAC_ID(void *h2c, u32 val)
+{
+	le32p_replace_bits((__le32 *)h2c, val, GENMASK(31, 24));
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct rtw89_h2c_wow_cam_update {
 	__le32 w0;
@@ -3077,6 +3124,7 @@ struct rtw89_h2c_scanofld_be {
 #define RTW89_H2C_SCANOFLD_BE_W9_SIZE_MACC GENMASK(15, 8)
 #define RTW89_H2C_SCANOFLD_BE_W9_SIZE_OP GENMASK(23, 16)
 
+<<<<<<< HEAD
 struct rtw89_h2c_trx_protect {
 	__le32 c0;
 	__le32 c1;
@@ -3115,6 +3163,8 @@ struct rtw89_h2c_trx_protect {
 #define RTW89_H2C_TRX_PROTECT_W1_CHINFO_EN BIT(0)
 #define RTW89_H2C_TRX_PROTECT_W1_DFS_EN BIT(1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rtw89_h2c_fwips {
 	__le32 w0;
 } __packed;
@@ -4298,6 +4348,7 @@ enum rtw89_fw_element_id {
 	 BIT(RTW89_FW_ELEMENT_ID_TXPWR_TRK) | \
 	 BITS_OF_RTW89_TXPWR_FW_ELEMENTS_NO_6GHZ)
 
+<<<<<<< HEAD
 #define RTW89_BE_GEN_DEF_NEEDED_FW_ELEMENTS_BASE \
 	(BIT(RTW89_FW_ELEMENT_ID_BB_REG) | \
 	 BIT(RTW89_FW_ELEMENT_ID_RADIO_A) | \
@@ -4314,6 +4365,15 @@ enum rtw89_fw_element_id {
 	(RTW89_BE_GEN_DEF_NEEDED_FW_ELEMENTS_BASE | \
 	 BIT(RTW89_FW_ELEMENT_ID_AFE_PWR_SEQ) | \
 	 BIT(RTW89_FW_ELEMENT_ID_TX_COMP))
+=======
+#define RTW89_BE_GEN_DEF_NEEDED_FW_ELEMENTS (BIT(RTW89_FW_ELEMENT_ID_BBMCU0) | \
+					     BIT(RTW89_FW_ELEMENT_ID_BB_REG) | \
+					     BIT(RTW89_FW_ELEMENT_ID_RADIO_A) | \
+					     BIT(RTW89_FW_ELEMENT_ID_RADIO_B) | \
+					     BIT(RTW89_FW_ELEMENT_ID_RF_NCTL) | \
+					     BIT(RTW89_FW_ELEMENT_ID_TXPWR_TRK) | \
+					     BITS_OF_RTW89_TXPWR_FW_ELEMENTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct __rtw89_fw_txpwr_element {
 	u8 rsvd0;
@@ -4616,7 +4676,10 @@ enum rtw89_fw_ofld_h2c_func {
 	H2C_FUNC_OFLD_TP		= 0x20,
 	H2C_FUNC_MAC_MACID_PAUSE_SLEEP	= 0x28,
 	H2C_FUNC_SCANOFLD_BE		= 0x2c,
+<<<<<<< HEAD
 	H2C_FUNC_TRX_PROTECT		= 0x34,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	NUM_OF_RTW89_FW_OFLD_H2C_FUNC,
 };
@@ -4627,7 +4690,10 @@ enum rtw89_fw_ofld_h2c_func {
 #define RTW89_FW_OFLD_WAIT_COND_PKT_OFLD(pkt_id, pkt_op) \
 	RTW89_FW_OFLD_WAIT_COND(RTW89_PKT_OFLD_WAIT_TAG(pkt_id, pkt_op), \
 				H2C_FUNC_PACKET_OFLD)
+<<<<<<< HEAD
 #define RTW89_FW_OFLD_WAIT_COND_TRX_PROTECT RTW89_FW_OFLD_WAIT_COND(0, H2C_FUNC_TRX_PROTECT)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RTW89_SCANOFLD_WAIT_COND_ADD_CH RTW89_FW_OFLD_WAIT_COND(0, H2C_FUNC_ADD_SCANOFLD_CH)
 
@@ -4861,8 +4927,11 @@ struct rtw89_fw_h2c_rfk_pre_info_mcc {
 	struct rtw89_fw_h2c_rfk_pre_info_mcc_v1 base;
 	u8 rsvd[2];
 	__le32 aid;
+<<<<<<< HEAD
 	u8 acv;
 	u8 rsvd2[3];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct rtw89_h2c_rf_tssi {
@@ -5193,7 +5262,10 @@ int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev);
 const struct firmware *
 rtw89_early_fw_feature_recognize(struct device *device,
 				 const struct rtw89_chip_info *chip,
+<<<<<<< HEAD
 				 const struct rtw89_chip_variant *variant,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 struct rtw89_fw_info *early_fw,
 				 int *used_fw_format);
 int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
@@ -5316,8 +5388,11 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
 				 struct rtw89_scan_option *opt,
 				 struct rtw89_vif_link *vif,
 				 bool wowlan);
+<<<<<<< HEAD
 int rtw89_fw_h2c_trx_protect(struct rtw89_dev *rtwdev,
 			     enum rtw89_phy_idx phy_idx, bool enable);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw89_fw_h2c_rf_reg(struct rtw89_dev *rtwdev,
 			struct rtw89_fw_h2c_rf_reg_info *info,
 			u16 len, u8 page);
@@ -5493,6 +5568,7 @@ static inline void rtw89_fw_h2c_init_ba_cam(struct rtw89_dev *rtwdev)
 		rtw89_fw_h2c_init_dynamic_ba_cam_v0_ext(rtwdev);
 }
 
+<<<<<<< HEAD
 static inline void rtw89_fw_h2c_init_trx_protect(struct rtw89_dev *rtwdev)
 {
 	u8 active_bands = rtw89_get_active_phy_bitmap(rtwdev);
@@ -5502,6 +5578,8 @@ static inline void rtw89_fw_h2c_init_trx_protect(struct rtw89_dev *rtwdev)
 		rtw89_fw_h2c_trx_protect(rtwdev, i, active_bands & BIT(i));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int rtw89_chip_h2c_default_cmac_tbl(struct rtw89_dev *rtwdev,
 						  struct rtw89_vif_link *rtwvif_link,
 						  struct rtw89_sta_link *rtwsta_link)

@@ -395,7 +395,11 @@ static blk_status_t sr_init_command(struct scsi_cmnd *SCpnt)
 
 	switch (req_op(rq)) {
 	case REQ_OP_WRITE:
+<<<<<<< HEAD
 		if (get_disk_ro(cd->disk))
+=======
+		if (!cd->writeable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		SCpnt->cmnd[0] = WRITE_10;
 		cd->cdi.media_written = 1;
@@ -681,7 +685,10 @@ static int sr_probe(struct scsi_device *sdev)
 	error = -ENOMEM;
 	if (get_capabilities(cd))
 		goto fail_minor;
+<<<<<<< HEAD
 	cdrom_probe_write_features(&cd->cdi);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sr_vendor_init(cd);
 
 	set_capacity(disk, cd->capacity);
@@ -900,6 +907,17 @@ static int get_capabilities(struct scsi_cd *cd)
 	/*else    I don't think it can close its tray
 		cd->cdi.mask |= CDC_CLOSE_TRAY; */
 
+<<<<<<< HEAD
+=======
+	/*
+	 * if DVD-RAM, MRW-W or CD-RW, we are randomly writable
+	 */
+	if ((cd->cdi.mask & (CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) !=
+			(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) {
+		cd->writeable = 1;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(buffer);
 	return 0;
 }

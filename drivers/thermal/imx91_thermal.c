@@ -17,8 +17,11 @@
 #include <linux/thermal.h>
 #include <linux/units.h>
 
+<<<<<<< HEAD
 #include "thermal_hwmon.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define REG_SET					0x4
 #define REG_CLR					0x8
 #define REG_TOG					0xc
@@ -320,8 +323,11 @@ static int imx91_tmu_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(tmu->tzd),
 				     "failed to register thermal zone sensor\n");
 
+<<<<<<< HEAD
 	devm_thermal_add_hwmon_sysfs(dev, tmu->tzd);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0)
 		return irq;

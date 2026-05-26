@@ -4731,7 +4731,10 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
 {
 	unsigned int data_offset;
 	unsigned int data_len;
+<<<<<<< HEAD
 	unsigned int end_off;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int cur_off;
 	unsigned int cur_page_idx;
 	unsigned int pad_len;
@@ -4847,8 +4850,12 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
 		}
 		rdata->got_bytes = data_len;
 
+<<<<<<< HEAD
 	} else if (!check_add_overflow(data_offset, data_len, &end_off) &&
 		   buf_len >= end_off) {
+=======
+	} else if (buf_len >= data_offset + data_len) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* read response payload is in buf */
 		WARN_ONCE(buffer, "read data can be either in buf or in buffer");
 		copied = copy_to_iter(buf + data_offset, data_len, &rdata->subreq.io_iter);
@@ -4972,6 +4979,7 @@ receive_encrypted_read(struct TCP_Server_Info *server, struct mid_q_entry **mid,
 		goto free_dw;
 	server->total_read += rc;
 
+<<<<<<< HEAD
 	if (le32_to_cpu(tr_hdr->OriginalMessageSize) <
 	    server->vals->read_rsp_size) {
 		cifs_server_dbg(VFS, "OriginalMessageSize %u too small for read response (%zu)\n",
@@ -4980,6 +4988,8 @@ receive_encrypted_read(struct TCP_Server_Info *server, struct mid_q_entry **mid,
 		rc = -EINVAL;
 		goto discard_data;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	len = le32_to_cpu(tr_hdr->OriginalMessageSize) -
 		server->vals->read_rsp_size;
 	dw->len = len;

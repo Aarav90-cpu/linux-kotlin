@@ -36,8 +36,12 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
 	unsigned long new_start = old_start - shift;
 	unsigned long new_end = old_end - shift;
 	VMA_ITERATOR(vmi, mm, new_start);
+<<<<<<< HEAD
 	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
 		  vma->vm_pgoff);
+=======
+	VMG_STATE(vmg, mm, &vmi, new_start, old_end, 0, vma->vm_pgoff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vm_area_struct *next;
 	struct mmu_gather tlb;
 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
@@ -136,7 +140,11 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
 	 * use STACK_TOP because that can depend on attributes which aren't
 	 * configured yet.
 	 */
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
+=======
+	BUILD_BUG_ON(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vma->vm_end = STACK_TOP_MAX;
 	vma->vm_start = vma->vm_end - PAGE_SIZE;
 	if (pgtable_supports_soft_dirty())

@@ -492,6 +492,7 @@ static int tas2770_set_dai_tdm_slot(struct snd_soc_dai *dai,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tas2770_set_dai_tdm_idle(struct snd_soc_dai *dai,
 				    unsigned int tx_mask,
 				    unsigned int rx_mask,
@@ -566,12 +567,17 @@ static int tas2770_set_dai_tdm_idle(struct snd_soc_dai *dai,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct snd_soc_dai_ops tas2770_dai_ops = {
 	.mute_stream = tas2770_mute,
 	.hw_params  = tas2770_hw_params,
 	.set_fmt    = tas2770_set_fmt,
 	.set_tdm_slot = tas2770_set_dai_tdm_slot,
+<<<<<<< HEAD
 	.set_tdm_idle = tas2770_set_dai_tdm_idle,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.no_capture_mute = 1,
 };
 
@@ -624,7 +630,11 @@ static int tas2770_read_die_temp(struct tas2770_priv *tas2770, long *result)
 	/*
 	 * As per datasheet: divide register by 16 and subtract 93 to get
 	 * degrees Celsius. hwmon requires millidegrees. Let's avoid rounding
+<<<<<<< HEAD
 	 * errors by subtracting 93 * 16 and scaling before dividing.
+=======
+	 * errors by subtracting 93 * 16 then multiplying by 1000 / 16.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * NOTE: The ADC registers are initialised to 0 on reset. This means
 	 * that the temperature will read -93 *C until the chip is brought out
@@ -633,6 +643,7 @@ static int tas2770_read_die_temp(struct tas2770_priv *tas2770, long *result)
 	 * value read back from its registers will be the last value sampled
 	 * before entering software shutdown.
 	 */
+<<<<<<< HEAD
 	if (reading == 0)
 		return -ENODATA;
 
@@ -654,6 +665,12 @@ static int tas2770_hwmon_is_fault(struct tas2770_priv *tas2770, long *result)
 	return ret;
 }
 
+=======
+	*result = (reading - (93 * 16)) * (1000 / 16);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static umode_t tas2770_hwmon_is_visible(const void *data,
 					enum hwmon_sensor_types type, u32 attr,
 					int channel)
@@ -663,7 +680,10 @@ static umode_t tas2770_hwmon_is_visible(const void *data,
 
 	switch (attr) {
 	case hwmon_temp_input:
+<<<<<<< HEAD
 	case hwmon_temp_fault:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0444;
 	default:
 		break;
@@ -683,9 +703,12 @@ static int tas2770_hwmon_read(struct device *dev,
 	case hwmon_temp_input:
 		ret = tas2770_read_die_temp(tas2770, val);
 		break;
+<<<<<<< HEAD
 	case hwmon_temp_fault:
 		ret = tas2770_hwmon_is_fault(tas2770, val);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ret = -EOPNOTSUPP;
 		break;
@@ -695,7 +718,11 @@ static int tas2770_hwmon_read(struct device *dev,
 }
 
 static const struct hwmon_channel_info *const tas2770_hwmon_info[] = {
+<<<<<<< HEAD
 	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_FAULT),
+=======
+	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 

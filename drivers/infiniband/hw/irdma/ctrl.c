@@ -3570,6 +3570,7 @@ static int irdma_sc_parse_fpm_query_buf(struct irdma_sc_dev *dev, __le64 *buf,
 		hmc_fpm_misc->loc_mem_pages = (u32)FIELD_GET(IRDMA_QUERY_FPM_LOC_MEM_PAGES, temp);
 		if (!hmc_fpm_misc->loc_mem_pages)
 			return -EINVAL;
+<<<<<<< HEAD
 
 		get_64bit_val(buf, 184, &temp);
 		if (temp) {
@@ -3605,6 +3606,8 @@ static int irdma_sc_parse_fpm_query_buf(struct irdma_sc_dev *dev, __le64 *buf,
 				return -ENOMEM;
 			}
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -4222,8 +4225,11 @@ static int irdma_sc_commit_fpm_val(struct irdma_sc_cqp *cqp, u64 scratch,
 
 	hdr = FIELD_PREP(IRDMA_CQPSQ_BUFSIZE, IRDMA_COMMIT_FPM_BUF_SIZE) |
 	      FIELD_PREP(IRDMA_CQPSQ_OPCODE, IRDMA_CQP_OP_COMMIT_FPM_VAL) |
+<<<<<<< HEAD
 	      FIELD_PREP(IRDMA_CQPSQ_CFPM_FW_SCRATCH_BUF_PRESENT,
 			 cqp->dev->hmc_fpm_misc.fw_scratch_buf0.va != NULL) |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	      FIELD_PREP(IRDMA_CQPSQ_WQEVALID, cqp->polarity);
 
 	dma_wmb(); /* make sure WQE is written before valid bit is set */
@@ -5071,9 +5077,13 @@ static void irdma_set_loc_mem(__le64 *buf)
 
 	for (offset = 0; offset < IRDMA_COMMIT_FPM_BUF_SIZE;
 	     offset += sizeof(__le64)) {
+<<<<<<< HEAD
 		if (offset == IRDMA_PBLE_COMMIT_OFFSET ||
 		    offset == IRDMA_SCRATCH_BUF0_COMMIT_OFFSET ||
 		    offset == IRDMA_SCRATCH_BUF1_COMMIT_OFFSET)
+=======
+		if (offset == IRDMA_PBLE_COMMIT_OFFSET)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		get_64bit_val(buf, offset, &temp);
 		if (temp)
@@ -5129,8 +5139,11 @@ static int irdma_sc_cfg_iw_fpm(struct irdma_sc_dev *dev, u8 hmc_fn_id)
 		      (u64)obj_info[IRDMA_HMC_IW_OOISC].cnt);
 	set_64bit_val(buf, 168,
 		      (u64)obj_info[IRDMA_HMC_IW_OOISCFFL].cnt);
+<<<<<<< HEAD
 	set_64bit_val(buf, 192, dev->hmc_fpm_misc.fw_scratch_buf0.pa);
 	set_64bit_val(buf, 200, dev->hmc_fpm_misc.fw_scratch_buf1.pa);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dev->hw_attrs.uk_attrs.hw_rev >= IRDMA_GEN_3 &&
 	    dev->hmc_fpm_misc.loc_mem_pages)
 		irdma_set_loc_mem(buf);
@@ -6465,7 +6478,10 @@ static inline void irdma_sc_init_hw(struct irdma_sc_dev *dev)
 		icrdma_init_hw(dev);
 		break;
 	case IRDMA_GEN_3:
+<<<<<<< HEAD
 	case IRDMA_GEN_4:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ig3rdma_init_hw(dev);
 		break;
 	}

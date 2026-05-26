@@ -14,7 +14,10 @@
 	https://bugzilla.stlinux.com/
 *******************************************************************************/
 
+<<<<<<< HEAD
 #include <linux/circ_buf.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/clk.h>
 #include <linux/kernel.h>
 #include <linux/interrupt.h>
@@ -264,10 +267,17 @@ static void stmmac_verify_args(void)
 
 static void __stmmac_disable_all_queues(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_queues_cnt = priv->plat->tx_queues_to_use;
 	u8 maxq = max(rx_queues_cnt, tx_queues_cnt);
 	u8 queue;
+=======
+	u32 rx_queues_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_queues_cnt = priv->plat->tx_queues_to_use;
+	u32 maxq = max(rx_queues_cnt, tx_queues_cnt);
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < maxq; queue++) {
 		struct stmmac_channel *ch = &priv->channel[queue];
@@ -291,9 +301,15 @@ static void __stmmac_disable_all_queues(struct stmmac_priv *priv)
  */
 static void stmmac_disable_all_queues(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_cnt = priv->plat->rx_queues_to_use;
 	struct stmmac_rx_queue *rx_q;
 	u8 queue;
+=======
+	u32 rx_queues_cnt = priv->plat->rx_queues_to_use;
+	struct stmmac_rx_queue *rx_q;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* synchronize_rcu() needed for pending XDP buffers to drain */
 	for (queue = 0; queue < rx_queues_cnt; queue++) {
@@ -313,10 +329,17 @@ static void stmmac_disable_all_queues(struct stmmac_priv *priv)
  */
 static void stmmac_enable_all_queues(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_queues_cnt = priv->plat->tx_queues_to_use;
 	u8 maxq = max(rx_queues_cnt, tx_queues_cnt);
 	u8 queue;
+=======
+	u32 rx_queues_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_queues_cnt = priv->plat->tx_queues_to_use;
+	u32 maxq = max(rx_queues_cnt, tx_queues_cnt);
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < maxq; queue++) {
 		struct stmmac_channel *ch = &priv->channel[queue];
@@ -357,6 +380,7 @@ static void print_pkt(unsigned char *buf, int len)
 static inline u32 stmmac_tx_avail(struct stmmac_priv *priv, u32 queue)
 {
 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+<<<<<<< HEAD
 
 	return CIRC_SPACE(tx_q->cur_tx, tx_q->dirty_tx,
 			  priv->dma_conf.dma_tx_size);
@@ -441,6 +465,16 @@ static void stmmac_set_queue_rx_buf_size(struct stmmac_priv *priv,
 		buf_size = priv->dma_conf.dma_buf_sz;
 
 	stmmac_set_dma_bfsize(priv, priv->ioaddr, buf_size, chan);
+=======
+	u32 avail;
+
+	if (tx_q->dirty_tx > tx_q->cur_tx)
+		avail = tx_q->dirty_tx - tx_q->cur_tx - 1;
+	else
+		avail = priv->dma_conf.dma_tx_size - tx_q->cur_tx + tx_q->dirty_tx - 1;
+
+	return avail;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -451,15 +485,31 @@ static void stmmac_set_queue_rx_buf_size(struct stmmac_priv *priv,
 static inline u32 stmmac_rx_dirty(struct stmmac_priv *priv, u32 queue)
 {
 	struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
+<<<<<<< HEAD
 
 	return CIRC_CNT(rx_q->cur_rx, rx_q->dirty_rx,
 			priv->dma_conf.dma_rx_size);
+=======
+	u32 dirty;
+
+	if (rx_q->dirty_rx <= rx_q->cur_rx)
+		dirty = rx_q->cur_rx - rx_q->dirty_rx;
+	else
+		dirty = priv->dma_conf.dma_rx_size - rx_q->dirty_rx + rx_q->cur_rx;
+
+	return dirty;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool stmmac_eee_tx_busy(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* check if all TX queues have the work finished */
 	for (queue = 0; queue < tx_cnt; queue++) {
@@ -990,7 +1040,11 @@ static int stmmac_legacy_serdes_power_up(struct stmmac_priv *priv)
 static void stmmac_mac_flow_ctrl(struct stmmac_priv *priv, u32 duplex,
 				 unsigned int flow_ctrl)
 {
+<<<<<<< HEAD
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
+=======
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	stmmac_flow_ctrl(priv, priv->hw, duplex, flow_ctrl, priv->pause_time,
 			 tx_cnt);
@@ -1027,8 +1081,16 @@ static struct phylink_pcs *stmmac_mac_select_pcs(struct phylink_config *config,
 			return pcs;
 	}
 
+<<<<<<< HEAD
 	if (priv->integrated_pcs &&
 	    test_bit(interface, priv->integrated_pcs->pcs.supported_interfaces))
+=======
+	/* The PCS control register is only relevant for SGMII, TBI and RTBI
+	 * modes. We no longer support TBI or RTBI, so only configure this
+	 * register when operating in SGMII mode with the integrated PCS.
+	 */
+	if (priv->hw->pcs & STMMAC_PCS_SGMII && priv->integrated_pcs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return &priv->integrated_pcs->pcs;
 
 	return NULL;
@@ -1047,8 +1109,12 @@ static int stmmac_mac_finish(struct phylink_config *config, unsigned int mode,
 	struct stmmac_priv *priv = netdev_priv(ndev);
 
 	if (priv->plat->mac_finish)
+<<<<<<< HEAD
 		priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
 				       interface);
+=======
+		priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode, interface);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1143,8 +1209,12 @@ static void stmmac_mac_link_up(struct phylink_config *config,
 	}
 
 	if (priv->plat->fix_mac_speed)
+<<<<<<< HEAD
 		priv->plat->fix_mac_speed(priv->plat->bsp_priv, interface,
 					  speed, mode);
+=======
+		priv->plat->fix_mac_speed(priv->plat->bsp_priv, speed, mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!duplex)
 		ctrl &= ~priv->hw->link.duplex;
@@ -1287,6 +1357,10 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
 
 	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+<<<<<<< HEAD
+=======
+		priv->hw->pcs = STMMAC_PCS_SGMII;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		switch (speed) {
 		case SPEED_10:
@@ -1330,7 +1404,14 @@ static int stmmac_init_phy(struct net_device *dev)
 	    xpcs_get_an_mode(priv->hw->xpcs, mode) == DW_AN_C73)
 		return 0;
 
+<<<<<<< HEAD
 	fwnode = dev_fwnode(priv->device);
+=======
+	fwnode = priv->plat->port_node;
+	if (!fwnode)
+		fwnode = dev_fwnode(priv->device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fwnode)
 		phy_fwnode = fwnode_get_phy_node(fwnode);
 	else
@@ -1386,7 +1467,13 @@ static int stmmac_init_phy(struct net_device *dev)
 
 static int stmmac_phylink_setup(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	struct phylink_config *config;
+=======
+	struct stmmac_mdio_bus_data *mdio_bus_data;
+	struct phylink_config *config;
+	struct fwnode_handle *fwnode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct phylink_pcs *pcs;
 	struct phylink *phylink;
 
@@ -1410,6 +1497,13 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 	priv->tx_lpi_clk_stop = priv->plat->flags &
 				STMMAC_FLAG_EN_TX_LPI_CLOCKGATING;
 
+<<<<<<< HEAD
+=======
+	mdio_bus_data = priv->plat->mdio_bus_data;
+	if (mdio_bus_data)
+		config->default_an_inband = mdio_bus_data->default_an_inband;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Get the PHY interface modes (at the PHY end of the link) that
 	 * are supported by the platform.
 	 */
@@ -1417,8 +1511,11 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 		priv->plat->get_interfaces(priv, priv->plat->bsp_priv,
 					   config->supported_interfaces);
 
+<<<<<<< HEAD
 	config->default_an_inband = priv->plat->default_an_inband;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the platform/firmware specified interface mode if the
 	 * supported interfaces have not already been provided using
 	 * phy_interface as a last resort.
@@ -1438,6 +1535,7 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 				 config->supported_interfaces,
 				 pcs->supported_interfaces);
 
+<<<<<<< HEAD
 	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
 	 * used for stmmac's main interrupts, which leads to interrupt storms.
 	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
@@ -1459,6 +1557,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 			phy_interface_or(config->lpi_interfaces,
 					 config->lpi_interfaces,
 					 pcs->supported_interfaces);
+=======
+	if (priv->dma_cap.eee) {
+		/* Assume all supported interfaces also support LPI */
+		memcpy(config->lpi_interfaces, config->supported_interfaces,
+		       sizeof(config->lpi_interfaces));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* All full duplex speeds above 100Mbps are supported */
 		config->lpi_capabilities = ~(MAC_1000FD - 1) | MAC_100FD;
@@ -1476,8 +1580,16 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 			config->wol_mac_support |= WAKE_MAGIC;
 	}
 
+<<<<<<< HEAD
 	phylink = phylink_create(config, dev_fwnode(priv->device),
 				 priv->plat->phy_interface,
+=======
+	fwnode = priv->plat->port_node;
+	if (!fwnode)
+		fwnode = dev_fwnode(priv->device);
+
+	phylink = phylink_create(config, fwnode, priv->plat->phy_interface,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 &stmmac_phylink_mac_ops);
 	if (IS_ERR(phylink))
 		return PTR_ERR(phylink);
@@ -1489,10 +1601,17 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
 static void stmmac_display_rx_rings(struct stmmac_priv *priv,
 				    struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	unsigned int desc_size;
 	void *head_rx;
 	u8 queue;
+=======
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	unsigned int desc_size;
+	void *head_rx;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Display RX rings */
 	for (queue = 0; queue < rx_cnt; queue++) {
@@ -1500,8 +1619,18 @@ static void stmmac_display_rx_rings(struct stmmac_priv *priv,
 
 		pr_info("\tRX Queue %u rings\n", queue);
 
+<<<<<<< HEAD
 		head_rx = stmmac_get_rx_desc(priv, rx_q, 0);
 		desc_size = stmmac_get_rx_desc_size(priv);
+=======
+		if (priv->extend_desc) {
+			head_rx = (void *)rx_q->dma_erx;
+			desc_size = sizeof(struct dma_extended_desc);
+		} else {
+			head_rx = (void *)rx_q->dma_rx;
+			desc_size = sizeof(struct dma_desc);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Display RX ring */
 		stmmac_display_ring(priv, head_rx, dma_conf->dma_rx_size, true,
@@ -1512,10 +1641,17 @@ static void stmmac_display_rx_rings(struct stmmac_priv *priv,
 static void stmmac_display_tx_rings(struct stmmac_priv *priv,
 				    struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	unsigned int desc_size;
 	void *head_tx;
 	u8 queue;
+=======
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	unsigned int desc_size;
+	void *head_tx;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Display TX rings */
 	for (queue = 0; queue < tx_cnt; queue++) {
@@ -1523,8 +1659,21 @@ static void stmmac_display_tx_rings(struct stmmac_priv *priv,
 
 		pr_info("\tTX Queue %d rings\n", queue);
 
+<<<<<<< HEAD
 		head_tx = stmmac_get_tx_desc(priv, tx_q, 0);
 		desc_size = stmmac_get_tx_desc_size(priv, tx_q);
+=======
+		if (priv->extend_desc) {
+			head_tx = (void *)tx_q->dma_etx;
+			desc_size = sizeof(struct dma_extended_desc);
+		} else if (tx_q->tbs & STMMAC_TBS_AVAIL) {
+			head_tx = (void *)tx_q->dma_entx;
+			desc_size = sizeof(struct dma_edesc);
+		} else {
+			head_tx = (void *)tx_q->dma_tx;
+			desc_size = sizeof(struct dma_desc);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		stmmac_display_ring(priv, head_tx, dma_conf->dma_tx_size, false,
 				    tx_q->dma_tx_phy, desc_size);
@@ -1580,6 +1729,7 @@ static void stmmac_clear_rx_descriptors(struct stmmac_priv *priv,
 					u32 queue)
 {
 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+<<<<<<< HEAD
 	struct dma_desc *desc;
 	int i;
 
@@ -1592,6 +1742,22 @@ static void stmmac_clear_rx_descriptors(struct stmmac_priv *priv,
 				    (i == dma_conf->dma_rx_size - 1),
 				    dma_conf->dma_buf_sz);
 	}
+=======
+	int i;
+
+	/* Clear the RX descriptors */
+	for (i = 0; i < dma_conf->dma_rx_size; i++)
+		if (priv->extend_desc)
+			stmmac_init_rx_desc(priv, &rx_q->dma_erx[i].basic,
+					priv->use_riwt, priv->mode,
+					(i == dma_conf->dma_rx_size - 1),
+					dma_conf->dma_buf_sz);
+		else
+			stmmac_init_rx_desc(priv, &rx_q->dma_rx[i],
+					priv->use_riwt, priv->mode,
+					(i == dma_conf->dma_rx_size - 1),
+					dma_conf->dma_buf_sz);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1614,8 +1780,19 @@ static void stmmac_clear_tx_descriptors(struct stmmac_priv *priv,
 		int last = (i == (dma_conf->dma_tx_size - 1));
 		struct dma_desc *p;
 
+<<<<<<< HEAD
 		p = stmmac_get_tx_desc(priv, tx_q, i);
 		stmmac_init_tx_desc(priv, p, priv->descriptor_mode, last);
+=======
+		if (priv->extend_desc)
+			p = &tx_q->dma_etx[i].basic;
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			p = &tx_q->dma_entx[i].basic;
+		else
+			p = &tx_q->dma_tx[i];
+
+		stmmac_init_tx_desc(priv, p, priv->mode, last);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1629,9 +1806,15 @@ static void stmmac_clear_tx_descriptors(struct stmmac_priv *priv,
 static void stmmac_clear_descriptors(struct stmmac_priv *priv,
 				     struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 rx_queue_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_queue_cnt = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_queue_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_queue_cnt = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Clear the RX descriptors */
 	for (queue = 0; queue < rx_queue_cnt; queue++)
@@ -1789,7 +1972,14 @@ static int stmmac_alloc_rx_buffers(struct stmmac_priv *priv,
 		struct dma_desc *p;
 		int ret;
 
+<<<<<<< HEAD
 		p = stmmac_get_rx_desc(priv, rx_q, i);
+=======
+		if (priv->extend_desc)
+			p = &((rx_q->dma_erx + i)->basic);
+		else
+			p = rx_q->dma_rx + i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = stmmac_init_rx_buffers(priv, dma_conf, p, i, flags,
 					     queue);
@@ -1844,7 +2034,14 @@ static int stmmac_alloc_rx_buffers_zc(struct stmmac_priv *priv,
 		dma_addr_t dma_addr;
 		struct dma_desc *p;
 
+<<<<<<< HEAD
 		p = stmmac_get_rx_desc(priv, rx_q, i);
+=======
+		if (priv->extend_desc)
+			p = (struct dma_desc *)(rx_q->dma_erx + i);
+		else
+			p = rx_q->dma_rx + i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		buf = &rx_q->buf_pool[i];
 
@@ -1883,7 +2080,10 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
 				    u32 queue, gfp_t flags)
 {
 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+<<<<<<< HEAD
 	void *des;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	netif_dbg(priv, probe, priv->dev,
@@ -1902,7 +2102,11 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
 						   NULL));
 		netdev_info(priv->dev,
 			    "Register MEM_TYPE_XSK_BUFF_POOL RxQ-%d\n",
+<<<<<<< HEAD
 			    queue);
+=======
+			    rx_q->queue_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xsk_pool_set_rxq_info(rx_q->xsk_pool, &rx_q->xdp_rxq);
 	} else {
 		WARN_ON(xdp_rxq_info_reg_mem_model(&rx_q->xdp_rxq,
@@ -1910,7 +2114,11 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
 						   rx_q->page_pool));
 		netdev_info(priv->dev,
 			    "Register MEM_TYPE_PAGE_POOL RxQ-%d\n",
+<<<<<<< HEAD
 			    queue);
+=======
+			    rx_q->queue_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (rx_q->xsk_pool) {
@@ -1925,6 +2133,7 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
 	}
 
 	/* Setup the chained descriptor addresses */
+<<<<<<< HEAD
 	if (priv->descriptor_mode == STMMAC_CHAIN_MODE) {
 		if (priv->extend_desc)
 			des = rx_q->dma_erx;
@@ -1933,6 +2142,17 @@ static int __init_dma_rx_desc_rings(struct stmmac_priv *priv,
 
 		stmmac_mode_init(priv, des, rx_q->dma_rx_phy,
 				 dma_conf->dma_rx_size, priv->extend_desc);
+=======
+	if (priv->mode == STMMAC_CHAIN_MODE) {
+		if (priv->extend_desc)
+			stmmac_mode_init(priv, rx_q->dma_erx,
+					 rx_q->dma_rx_phy,
+					 dma_conf->dma_rx_size, 1);
+		else
+			stmmac_mode_init(priv, rx_q->dma_rx,
+					 rx_q->dma_rx_phy,
+					 dma_conf->dma_rx_size, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -1943,7 +2163,11 @@ static int init_dma_rx_desc_rings(struct net_device *dev,
 				  gfp_t flags)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 rx_count = priv->plat->rx_queues_to_use;
+=======
+	u32 rx_count = priv->plat->rx_queues_to_use;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int queue;
 	int ret;
 
@@ -1977,6 +2201,7 @@ err_init_rx_buffers:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void stmmac_set_tx_dma_entry(struct stmmac_tx_queue *tx_q,
 				    unsigned int entry,
 				    enum stmmac_txbuf_type type,
@@ -2005,6 +2230,8 @@ static void stmmac_set_tx_dma_last_segment(struct stmmac_tx_queue *tx_q,
 	tx_q->tx_skbuff_dma[entry].last_segment = true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __init_dma_tx_desc_rings - init the TX descriptor ring (per queue)
  * @priv: driver private structure
@@ -2026,7 +2253,11 @@ static int __init_dma_tx_desc_rings(struct stmmac_priv *priv,
 		  (u32)tx_q->dma_tx_phy);
 
 	/* Setup the chained descriptor addresses */
+<<<<<<< HEAD
 	if (priv->descriptor_mode == STMMAC_CHAIN_MODE) {
+=======
+	if (priv->mode == STMMAC_CHAIN_MODE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (priv->extend_desc)
 			stmmac_mode_init(priv, tx_q->dma_etx,
 					 tx_q->dma_tx_phy,
@@ -2042,10 +2273,26 @@ static int __init_dma_tx_desc_rings(struct stmmac_priv *priv,
 	for (i = 0; i < dma_conf->dma_tx_size; i++) {
 		struct dma_desc *p;
 
+<<<<<<< HEAD
 		p = stmmac_get_tx_desc(priv, tx_q, i);
 		stmmac_clear_desc(priv, p);
 		stmmac_set_tx_skb_dma_entry(tx_q, i, 0, 0, false);
 
+=======
+		if (priv->extend_desc)
+			p = &((tx_q->dma_etx + i)->basic);
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			p = &((tx_q->dma_entx + i)->basic);
+		else
+			p = tx_q->dma_tx + i;
+
+		stmmac_clear_desc(priv, p);
+
+		tx_q->tx_skbuff_dma[i].buf = 0;
+		tx_q->tx_skbuff_dma[i].map_as_page = false;
+		tx_q->tx_skbuff_dma[i].len = 0;
+		tx_q->tx_skbuff_dma[i].last_segment = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tx_q->tx_skbuff[i] = NULL;
 	}
 
@@ -2056,8 +2303,13 @@ static int init_dma_tx_desc_rings(struct net_device *dev,
 				  struct stmmac_dma_conf *dma_conf)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 tx_queue_cnt;
 	u8 queue;
+=======
+	u32 tx_queue_cnt;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tx_queue_cnt = priv->plat->tx_queues_to_use;
 
@@ -2128,8 +2380,13 @@ static void dma_free_tx_skbufs(struct stmmac_priv *priv,
  */
 static void stmmac_free_tx_skbufs(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_queue_cnt = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 tx_queue_cnt = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < tx_queue_cnt; queue++)
 		dma_free_tx_skbufs(priv, &priv->dma_conf, queue);
@@ -2146,8 +2403,11 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
 					 u32 queue)
 {
 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+<<<<<<< HEAD
 	size_t size;
 	void *addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Release the DMA RX socket buffers */
 	if (rx_q->xsk_pool)
@@ -2159,6 +2419,7 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
 	rx_q->xsk_pool = NULL;
 
 	/* Free DMA regions of consistent memory previously allocated */
+<<<<<<< HEAD
 	if (priv->extend_desc)
 		addr = rx_q->dma_erx;
 	else
@@ -2167,6 +2428,16 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
 	size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
 
 	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
+=======
+	if (!priv->extend_desc)
+		dma_free_coherent(priv->device, dma_conf->dma_rx_size *
+				  sizeof(struct dma_desc),
+				  rx_q->dma_rx, rx_q->dma_rx_phy);
+	else
+		dma_free_coherent(priv->device, dma_conf->dma_rx_size *
+				  sizeof(struct dma_extended_desc),
+				  rx_q->dma_erx, rx_q->dma_rx_phy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xdp_rxq_info_is_reg(&rx_q->xdp_rxq))
 		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
@@ -2179,8 +2450,13 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
 static void free_dma_rx_desc_resources(struct stmmac_priv *priv,
 				       struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 rx_count = priv->plat->rx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_count = priv->plat->rx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Free RX queue resources */
 	for (queue = 0; queue < rx_count; queue++)
@@ -2205,6 +2481,7 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
 	dma_free_tx_skbufs(priv, dma_conf, queue);
 
 	if (priv->extend_desc) {
+<<<<<<< HEAD
 		addr = tx_q->dma_etx;
 	} else if (tx_q->tbs & STMMAC_TBS_AVAIL) {
 		addr = tx_q->dma_entx;
@@ -2213,6 +2490,19 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
 	}
 
 	size = stmmac_get_tx_desc_size(priv, tx_q) * dma_conf->dma_tx_size;
+=======
+		size = sizeof(struct dma_extended_desc);
+		addr = tx_q->dma_etx;
+	} else if (tx_q->tbs & STMMAC_TBS_AVAIL) {
+		size = sizeof(struct dma_edesc);
+		addr = tx_q->dma_entx;
+	} else {
+		size = sizeof(struct dma_desc);
+		addr = tx_q->dma_tx;
+	}
+
+	size *= dma_conf->dma_tx_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dma_free_coherent(priv->device, size, addr, tx_q->dma_tx_phy);
 
@@ -2223,8 +2513,13 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
 static void free_dma_tx_desc_resources(struct stmmac_priv *priv,
 				       struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 tx_count = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 tx_count = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Free TX queue resources */
 	for (queue = 0; queue < tx_count; queue++)
@@ -2251,8 +2546,11 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 	struct page_pool_params pp_params = { 0 };
 	unsigned int dma_buf_sz_pad, num_pages;
 	unsigned int napi_id;
+<<<<<<< HEAD
 	size_t size;
 	void *addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	dma_buf_sz_pad = stmmac_rx_offset(priv) + dma_conf->dma_buf_sz +
@@ -2288,6 +2586,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 	if (!rx_q->buf_pool)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
 
 	addr = dma_alloc_coherent(priv->device, size, &rx_q->dma_rx_phy,
@@ -2299,6 +2598,26 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 		rx_q->dma_erx = addr;
 	else
 		rx_q->dma_rx = addr;
+=======
+	if (priv->extend_desc) {
+		rx_q->dma_erx = dma_alloc_coherent(priv->device,
+						   dma_conf->dma_rx_size *
+						   sizeof(struct dma_extended_desc),
+						   &rx_q->dma_rx_phy,
+						   GFP_KERNEL);
+		if (!rx_q->dma_erx)
+			return -ENOMEM;
+
+	} else {
+		rx_q->dma_rx = dma_alloc_coherent(priv->device,
+						  dma_conf->dma_rx_size *
+						  sizeof(struct dma_desc),
+						  &rx_q->dma_rx_phy,
+						  GFP_KERNEL);
+		if (!rx_q->dma_rx)
+			return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (stmmac_xdp_is_enabled(priv) &&
 	    test_bit(queue, priv->af_xdp_zc_qps))
@@ -2306,7 +2625,13 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 	else
 		napi_id = ch->rx_napi.napi_id;
 
+<<<<<<< HEAD
 	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev, queue, napi_id);
+=======
+	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev,
+			       rx_q->queue_index,
+			       napi_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		netdev_err(priv->dev, "Failed to register xdp rxq info\n");
 		return -EINVAL;
@@ -2318,8 +2643,13 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 static int alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
 				       struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 rx_count = priv->plat->rx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_count = priv->plat->rx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	/* RX queues buffers and DMA */
@@ -2367,7 +2697,18 @@ static int __alloc_dma_tx_desc_resources(struct stmmac_priv *priv,
 	if (!tx_q->tx_skbuff)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	size = stmmac_get_tx_desc_size(priv, tx_q) * dma_conf->dma_tx_size;
+=======
+	if (priv->extend_desc)
+		size = sizeof(struct dma_extended_desc);
+	else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+		size = sizeof(struct dma_edesc);
+	else
+		size = sizeof(struct dma_desc);
+
+	size *= dma_conf->dma_tx_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	addr = dma_alloc_coherent(priv->device, size,
 				  &tx_q->dma_tx_phy, GFP_KERNEL);
@@ -2387,8 +2728,13 @@ static int __alloc_dma_tx_desc_resources(struct stmmac_priv *priv,
 static int alloc_dma_tx_desc_resources(struct stmmac_priv *priv,
 				       struct stmmac_dma_conf *dma_conf)
 {
+<<<<<<< HEAD
 	u8 tx_count = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 tx_count = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	/* TX queues buffers and DMA */
@@ -2452,8 +2798,13 @@ static void free_dma_desc_resources(struct stmmac_priv *priv,
  */
 static void stmmac_mac_enable_rx_queues(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_count = priv->plat->rx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+	int queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 mode;
 
 	for (queue = 0; queue < rx_queues_count; queue++) {
@@ -2516,10 +2867,17 @@ static void stmmac_stop_tx_dma(struct stmmac_priv *priv, u32 chan)
 
 static void stmmac_enable_all_dma_irq(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
 	u8 dma_csr_ch = max(rx_channels_count, tx_channels_count);
 	u8 chan;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+	u32 dma_csr_ch = max(rx_channels_count, tx_channels_count);
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (chan = 0; chan < dma_csr_ch; chan++) {
 		struct stmmac_channel *ch = &priv->channel[chan];
@@ -2539,9 +2897,15 @@ static void stmmac_enable_all_dma_irq(struct stmmac_priv *priv)
  */
 static void stmmac_start_all_dma(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
 	u8 chan;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+	u32 chan = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (chan = 0; chan < rx_channels_count; chan++)
 		stmmac_start_rx_dma(priv, chan);
@@ -2558,9 +2922,15 @@ static void stmmac_start_all_dma(struct stmmac_priv *priv)
  */
 static void stmmac_stop_all_dma(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
 	u8 chan;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+	u32 chan = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (chan = 0; chan < rx_channels_count; chan++)
 		stmmac_stop_rx_dma(priv, chan);
@@ -2577,14 +2947,24 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
  */
 static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rxfifosz = priv->plat->rx_fifo_size;
 	int txfifosz = priv->plat->tx_fifo_size;
 	u32 txmode = 0;
 	u32 rxmode = 0;
+<<<<<<< HEAD
 	u8 qmode = 0;
 	u8 chan;
+=======
+	u32 chan = 0;
+	u8 qmode = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rxfifosz == 0)
 		rxfifosz = priv->dma_cap.rx_fifo_size;
@@ -2619,13 +2999,30 @@ static void stmmac_dma_operation_mode(struct stmmac_priv *priv)
 	/* configure all channels */
 	for (chan = 0; chan < rx_channels_count; chan++) {
 		struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[chan];
+<<<<<<< HEAD
+=======
+		u32 buf_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		qmode = priv->plat->rx_queues_cfg[chan].mode_to_use;
 
 		stmmac_dma_rx_mode(priv, priv->ioaddr, rxmode, chan,
 				rxfifosz, qmode);
 
+<<<<<<< HEAD
 		stmmac_set_queue_rx_buf_size(priv, rx_q, chan);
+=======
+		if (rx_q->xsk_pool) {
+			buf_size = xsk_pool_get_rx_frame_size(rx_q->xsk_pool);
+			stmmac_set_dma_bfsize(priv, priv->ioaddr,
+					      buf_size,
+					      chan);
+		} else {
+			stmmac_set_dma_bfsize(priv, priv->ioaddr,
+					      priv->dma_conf.dma_buf_sz,
+					      chan);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (chan = 0; chan < tx_channels_count; chan++) {
@@ -2730,21 +3127,47 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
 			continue;
 		}
 
+<<<<<<< HEAD
 		tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
+=======
+		if (likely(priv->extend_desc))
+			tx_desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			tx_desc = &tx_q->dma_entx[entry].basic;
+		else
+			tx_desc = tx_q->dma_tx + entry;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
 		meta = xsk_buff_get_metadata(pool, xdp_desc.addr);
 		xsk_buff_raw_dma_sync_for_device(pool, dma_addr, xdp_desc.len);
 
+<<<<<<< HEAD
+=======
+		tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_XSK_TX;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* To return XDP buffer to XSK pool, we simple call
 		 * xsk_tx_completed(), so we don't need to fill up
 		 * 'buf' and 'xdpf'.
 		 */
+<<<<<<< HEAD
 		stmmac_set_tx_dma_entry(tx_q, entry, STMMAC_TXBUF_T_XSK_TX,
 					0, xdp_desc.len, false);
 		stmmac_set_tx_dma_last_segment(tx_q, entry);
 
 		tx_q->xdpf[entry] = NULL;
 
+=======
+		tx_q->tx_skbuff_dma[entry].buf = 0;
+		tx_q->xdpf[entry] = NULL;
+
+		tx_q->tx_skbuff_dma[entry].map_as_page = false;
+		tx_q->tx_skbuff_dma[entry].len = xdp_desc.len;
+		tx_q->tx_skbuff_dma[entry].last_segment = true;
+		tx_q->tx_skbuff_dma[entry].is_jumbo = false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		stmmac_set_desc_addr(priv, tx_desc, dma_addr);
 
 		tx_q->tx_count_frames++;
@@ -2770,7 +3193,11 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
 		}
 
 		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
+<<<<<<< HEAD
 				       csum, priv->descriptor_mode, true, true,
+=======
+				       csum, priv->mode, true, true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       xdp_desc.len);
 
 		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
@@ -2857,7 +3284,17 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue,
 			skb = NULL;
 		}
 
+<<<<<<< HEAD
 		p = stmmac_get_tx_desc(priv, tx_q, entry);
+=======
+		if (priv->extend_desc)
+			p = (struct dma_desc *)(tx_q->dma_etx + entry);
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			p = &tx_q->dma_entx[entry].basic;
+		else
+			p = tx_q->dma_tx + entry;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		status = stmmac_tx_status(priv,	&priv->xstats, p, priv->ioaddr);
 		/* Check if the descriptor is owned by the DMA */
 		if (unlikely(status & tx_dma_own))
@@ -2912,9 +3349,12 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue,
 			tx_q->tx_skbuff_dma[entry].map_as_page = false;
 		}
 
+<<<<<<< HEAD
 		/* This looks at tx_q->tx_skbuff_dma[tx_q->dirty_tx].is_jumbo
 		 * and tx_q->tx_skbuff_dma[tx_q->dirty_tx].last_segment
 		 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		stmmac_clean_desc3(priv, tx_q, p);
 
 		tx_q->tx_skbuff_dma[entry].last_segment = false;
@@ -2944,7 +3384,11 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue,
 			}
 		}
 
+<<<<<<< HEAD
 		stmmac_release_tx_desc(priv, p, priv->descriptor_mode);
+=======
+		stmmac_release_tx_desc(priv, p, priv->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
 	}
@@ -3045,8 +3489,13 @@ static void stmmac_set_dma_operation_mode(struct stmmac_priv *priv, u32 txmode,
 {
 	u8 rxqmode = priv->plat->rx_queues_cfg[chan].mode_to_use;
 	u8 txqmode = priv->plat->tx_queues_cfg[chan].mode_to_use;
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rxfifosz = priv->plat->rx_fifo_size;
 	int txfifosz = priv->plat->tx_fifo_size;
 
@@ -3121,12 +3570,21 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
  */
 static void stmmac_dma_interrupt(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_channel_count = priv->plat->tx_queues_to_use;
 	u8 rx_channel_count = priv->plat->rx_queues_to_use;
 	u8 channels_to_check = tx_channel_count > rx_channel_count ?
 			       tx_channel_count : rx_channel_count;
 	int status[MAX_T(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
 	u8 chan;
+=======
+	u32 tx_channel_count = priv->plat->tx_queues_to_use;
+	u32 rx_channel_count = priv->plat->rx_queues_to_use;
+	u32 channels_to_check = tx_channel_count > rx_channel_count ?
+				tx_channel_count : rx_channel_count;
+	u32 chan;
+	int status[MAX_T(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Make sure we never check beyond our status buffer. */
 	if (WARN_ON_ONCE(channels_to_check > ARRAY_SIZE(status)))
@@ -3270,6 +3728,7 @@ static int stmmac_prereset_configure(struct stmmac_priv *priv)
  */
 static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
 	u8 dma_csr_ch = max(rx_channels_count, tx_channels_count);
@@ -3277,6 +3736,23 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 	struct stmmac_tx_queue *tx_q;
 	int ret = 0;
 	u8 chan;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+	u32 dma_csr_ch = max(rx_channels_count, tx_channels_count);
+	struct stmmac_rx_queue *rx_q;
+	struct stmmac_tx_queue *tx_q;
+	u32 chan = 0;
+	int ret = 0;
+
+	if (!priv->plat->dma_cfg || !priv->plat->dma_cfg->pbl) {
+		netdev_err(priv->dev, "Invalid DMA configuration\n");
+		return -EINVAL;
+	}
+
+	if (priv->extend_desc && (priv->mode == STMMAC_RING_MODE))
+		priv->plat->dma_cfg->atds = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = stmmac_prereset_configure(priv);
 	if (ret)
@@ -3307,8 +3783,16 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 		stmmac_init_rx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
 				    rx_q->dma_rx_phy, chan);
 
+<<<<<<< HEAD
 		stmmac_set_queue_rx_tail_ptr(priv, rx_q, chan,
 					     rx_q->buf_alloc_num);
+=======
+		rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+				     (rx_q->buf_alloc_num *
+				      sizeof(struct dma_desc));
+		stmmac_set_rx_tail_ptr(priv, priv->ioaddr,
+				       rx_q->rx_tail_addr, chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* DMA TX Channel Configuration */
@@ -3318,7 +3802,13 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
 		stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
 				    tx_q->dma_tx_phy, chan);
 
+<<<<<<< HEAD
 		stmmac_set_queue_tx_tail_ptr(priv, tx_q, chan, 0);
+=======
+		tx_q->tx_tail_addr = tx_q->dma_tx_phy;
+		stmmac_set_tx_tail_ptr(priv, priv->ioaddr,
+				       tx_q->tx_tail_addr, chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -3334,7 +3824,11 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
 	if (!tx_coal_timer)
 		return;
 
+<<<<<<< HEAD
 	ch = &priv->channel[queue];
+=======
+	ch = &priv->channel[tx_q->queue_index];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
 
 	/* Arm timer only if napi is not already scheduled.
@@ -3387,9 +3881,15 @@ static enum hrtimer_restart stmmac_tx_timer(struct hrtimer *t)
  */
 static void stmmac_init_coalesce(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_channel_count = priv->plat->tx_queues_to_use;
 	u8 rx_channel_count = priv->plat->rx_queues_to_use;
 	u8 chan;
+=======
+	u32 tx_channel_count = priv->plat->tx_queues_to_use;
+	u32 rx_channel_count = priv->plat->rx_queues_to_use;
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (chan = 0; chan < tx_channel_count; chan++) {
 		struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[chan];
@@ -3406,9 +3906,15 @@ static void stmmac_init_coalesce(struct stmmac_priv *priv)
 
 static void stmmac_set_rings_length(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
 	u8 chan;
+=======
+	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* set TX ring length */
 	for (chan = 0; chan < tx_channels_count; chan++)
@@ -3428,9 +3934,15 @@ static void stmmac_set_rings_length(struct stmmac_priv *priv)
  */
 static void stmmac_set_tx_queue_weight(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_queues_count = priv->plat->tx_queues_to_use;
 	u32 weight;
 	u8 queue;
+=======
+	u32 tx_queues_count = priv->plat->tx_queues_to_use;
+	u32 weight;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < tx_queues_count; queue++) {
 		weight = priv->plat->tx_queues_cfg[queue].weight;
@@ -3445,9 +3957,15 @@ static void stmmac_set_tx_queue_weight(struct stmmac_priv *priv)
  */
 static void stmmac_configure_cbs(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_queues_count = priv->plat->tx_queues_to_use;
 	u32 mode_to_use;
 	u8 queue;
+=======
+	u32 tx_queues_count = priv->plat->tx_queues_to_use;
+	u32 mode_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* queue 0 is reserved for legacy traffic */
 	for (queue = 1; queue < tx_queues_count; queue++) {
@@ -3471,8 +3989,13 @@ static void stmmac_configure_cbs(struct stmmac_priv *priv)
  */
 static void stmmac_rx_queue_dma_chan_map(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_count = priv->plat->rx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 chan;
 
 	for (queue = 0; queue < rx_queues_count; queue++) {
@@ -3488,8 +4011,13 @@ static void stmmac_rx_queue_dma_chan_map(struct stmmac_priv *priv)
  */
 static void stmmac_mac_config_rx_queues_prio(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_count = priv->plat->rx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 prio;
 
 	for (queue = 0; queue < rx_queues_count; queue++) {
@@ -3508,8 +4036,13 @@ static void stmmac_mac_config_rx_queues_prio(struct stmmac_priv *priv)
  */
 static void stmmac_mac_config_tx_queues_prio(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 tx_queues_count = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 tx_queues_count = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 prio;
 
 	for (queue = 0; queue < tx_queues_count; queue++) {
@@ -3528,9 +4061,15 @@ static void stmmac_mac_config_tx_queues_prio(struct stmmac_priv *priv)
  */
 static void stmmac_mac_config_rx_queues_routing(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_count = priv->plat->rx_queues_to_use;
 	u8 packet;
 	u8 queue;
+=======
+	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+	u32 queue;
+	u8 packet;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < rx_queues_count; queue++) {
 		/* no specific packet type routing specified for the queue */
@@ -3565,8 +4104,13 @@ static void stmmac_mac_config_rss(struct stmmac_priv *priv)
  */
 static void stmmac_mtl_configuration(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_queues_count = priv->plat->rx_queues_to_use;
 	u8 tx_queues_count = priv->plat->tx_queues_to_use;
+=======
+	u32 rx_queues_count = priv->plat->rx_queues_to_use;
+	u32 tx_queues_count = priv->plat->tx_queues_to_use;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (tx_queues_count > 1)
 		stmmac_set_tx_queue_weight(priv);
@@ -3619,6 +4163,7 @@ static void stmmac_safety_feat_configuration(struct stmmac_priv *priv)
 	}
 }
 
+<<<<<<< HEAD
 /* STM32MP25xx (dwmac v5.3) states "Do not enable time-based scheduling for
  * channels on which the TSO feature is enabled." If we have a skb for a
  * channel which has TBS enabled, fall back to software GSO.
@@ -3630,6 +4175,8 @@ static bool stmmac_tso_channel_permitted(struct stmmac_priv *priv,
 	return !(priv->dma_conf.tx_queue[chan].tbs & STMMAC_TBS_AVAIL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * stmmac_hw_setup - setup mac in a usable state.
  *  @dev : pointer to the device structure.
@@ -3645,10 +4192,17 @@ static bool stmmac_tso_channel_permitted(struct stmmac_priv *priv,
 static int stmmac_hw_setup(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	bool sph_en;
 	u8 chan;
+=======
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	bool sph_en;
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	/* Make sure RX clock is enabled */
@@ -3716,9 +4270,18 @@ static int stmmac_hw_setup(struct net_device *dev)
 	stmmac_set_rings_length(priv);
 
 	/* Enable TSO */
+<<<<<<< HEAD
 	if (priv->dma_cap.tsoen && priv->plat->flags & STMMAC_FLAG_TSO_EN) {
 		for (chan = 0; chan < tx_cnt; chan++) {
 			if (!stmmac_tso_channel_permitted(priv, chan))
+=======
+	if (priv->tso) {
+		for (chan = 0; chan < tx_cnt; chan++) {
+			struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[chan];
+
+			/* TSO and TBS cannot co-exist */
+			if (tx_q->tbs & STMMAC_TBS_AVAIL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 
 			stmmac_enable_tso(priv, priv->ioaddr, 1, chan);
@@ -3761,7 +4324,10 @@ static void stmmac_free_irq(struct net_device *dev,
 			    enum request_irq_err irq_err, int irq_idx)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	struct stmmac_msi *msi = priv->msi;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int j;
 
 	switch (irq_err) {
@@ -3769,16 +4335,24 @@ static void stmmac_free_irq(struct net_device *dev,
 		irq_idx = priv->plat->tx_queues_to_use;
 		fallthrough;
 	case REQ_IRQ_ERR_TX:
+<<<<<<< HEAD
 		for (j = irq_idx - 1; msi && j >= 0; j--) {
 			if (msi->tx_irq[j] > 0) {
 				irq_set_affinity_hint(msi->tx_irq[j], NULL);
 				free_irq(msi->tx_irq[j],
 					 &priv->dma_conf.tx_queue[j]);
+=======
+		for (j = irq_idx - 1; j >= 0; j--) {
+			if (priv->tx_irq[j] > 0) {
+				irq_set_affinity_hint(priv->tx_irq[j], NULL);
+				free_irq(priv->tx_irq[j], &priv->dma_conf.tx_queue[j]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 		irq_idx = priv->plat->rx_queues_to_use;
 		fallthrough;
 	case REQ_IRQ_ERR_RX:
+<<<<<<< HEAD
 		for (j = irq_idx - 1; msi && j >= 0; j--) {
 			if (msi->rx_irq[j] > 0) {
 				irq_set_affinity_hint(msi->rx_irq[j], NULL);
@@ -3793,6 +4367,21 @@ static void stmmac_free_irq(struct net_device *dev,
 	case REQ_IRQ_ERR_SFTY_UE:
 		if (msi && msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq)
 			free_irq(msi->sfty_ce_irq, dev);
+=======
+		for (j = irq_idx - 1; j >= 0; j--) {
+			if (priv->rx_irq[j] > 0) {
+				irq_set_affinity_hint(priv->rx_irq[j], NULL);
+				free_irq(priv->rx_irq[j], &priv->dma_conf.rx_queue[j]);
+			}
+		}
+
+		if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq)
+			free_irq(priv->sfty_ue_irq, dev);
+		fallthrough;
+	case REQ_IRQ_ERR_SFTY_UE:
+		if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq)
+			free_irq(priv->sfty_ce_irq, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fallthrough;
 	case REQ_IRQ_ERR_SFTY_CE:
 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
@@ -3812,6 +4401,7 @@ static void stmmac_free_irq(struct net_device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static int stmmac_msi_init(struct stmmac_priv *priv,
 			   struct stmmac_resources *res)
 {
@@ -3836,6 +4426,11 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
 	struct stmmac_msi *msi = priv->msi;
+=======
+static int stmmac_request_irq_multi_msi(struct net_device *dev)
+{
+	struct stmmac_priv *priv = netdev_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum request_irq_err irq_err;
 	int irq_idx = 0;
 	char *int_name;
@@ -3843,7 +4438,11 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	int i;
 
 	/* For common interrupt */
+<<<<<<< HEAD
 	int_name = msi->int_name_mac;
+=======
+	int_name = priv->int_name_mac;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sprintf(int_name, "%s:%s", dev->name, "mac");
 	ret = request_irq(dev->irq, stmmac_mac_interrupt,
 			  0, int_name, dev);
@@ -3859,7 +4458,11 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	 * is used for WoL
 	 */
 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+<<<<<<< HEAD
 		int_name = msi->int_name_wol;
+=======
+		int_name = priv->int_name_wol;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sprintf(int_name, "%s:%s", dev->name, "wol");
 		ret = request_irq(priv->wol_irq,
 				  stmmac_mac_interrupt,
@@ -3877,7 +4480,11 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	 * Error line in case of another line is used
 	 */
 	if (priv->sfty_irq > 0 && priv->sfty_irq != dev->irq) {
+<<<<<<< HEAD
 		int_name = msi->int_name_sfty;
+=======
+		int_name = priv->int_name_sfty;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sprintf(int_name, "%s:%s", dev->name, "safety");
 		ret = request_irq(priv->sfty_irq, stmmac_safety_interrupt,
 				  0, int_name, dev);
@@ -3893,16 +4500,27 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	/* Request the Safety Feature Correctible Error line in
 	 * case of another line is used
 	 */
+<<<<<<< HEAD
 	if (msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq) {
 		int_name = msi->int_name_sfty_ce;
 		sprintf(int_name, "%s:%s", dev->name, "safety-ce");
 		ret = request_irq(msi->sfty_ce_irq,
+=======
+	if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq) {
+		int_name = priv->int_name_sfty_ce;
+		sprintf(int_name, "%s:%s", dev->name, "safety-ce");
+		ret = request_irq(priv->sfty_ce_irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  stmmac_safety_interrupt,
 				  0, int_name, dev);
 		if (unlikely(ret < 0)) {
 			netdev_err(priv->dev,
 				   "%s: alloc sfty ce MSI %d (error: %d)\n",
+<<<<<<< HEAD
 				   __func__, msi->sfty_ce_irq, ret);
+=======
+				   __func__, priv->sfty_ce_irq, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			irq_err = REQ_IRQ_ERR_SFTY_CE;
 			goto irq_error;
 		}
@@ -3911,16 +4529,27 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	/* Request the Safety Feature Uncorrectible Error line in
 	 * case of another line is used
 	 */
+<<<<<<< HEAD
 	if (msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq) {
 		int_name = msi->int_name_sfty_ue;
 		sprintf(int_name, "%s:%s", dev->name, "safety-ue");
 		ret = request_irq(msi->sfty_ue_irq,
+=======
+	if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq) {
+		int_name = priv->int_name_sfty_ue;
+		sprintf(int_name, "%s:%s", dev->name, "safety-ue");
+		ret = request_irq(priv->sfty_ue_irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  stmmac_safety_interrupt,
 				  0, int_name, dev);
 		if (unlikely(ret < 0)) {
 			netdev_err(priv->dev,
 				   "%s: alloc sfty ue MSI %d (error: %d)\n",
+<<<<<<< HEAD
 				   __func__, msi->sfty_ue_irq, ret);
+=======
+				   __func__, priv->sfty_ue_irq, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			irq_err = REQ_IRQ_ERR_SFTY_UE;
 			goto irq_error;
 		}
@@ -3930,23 +4559,40 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
 		if (i >= MTL_MAX_RX_QUEUES)
 			break;
+<<<<<<< HEAD
 		if (msi->rx_irq[i] == 0)
 			continue;
 
 		int_name = msi->int_name_rx_irq[i];
 		sprintf(int_name, "%s:%s-%d", dev->name, "rx", i);
 		ret = request_irq(msi->rx_irq[i],
+=======
+		if (priv->rx_irq[i] == 0)
+			continue;
+
+		int_name = priv->int_name_rx_irq[i];
+		sprintf(int_name, "%s:%s-%d", dev->name, "rx", i);
+		ret = request_irq(priv->rx_irq[i],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  stmmac_msi_intr_rx,
 				  0, int_name, &priv->dma_conf.rx_queue[i]);
 		if (unlikely(ret < 0)) {
 			netdev_err(priv->dev,
 				   "%s: alloc rx-%d  MSI %d (error: %d)\n",
+<<<<<<< HEAD
 				   __func__, i, msi->rx_irq[i], ret);
+=======
+				   __func__, i, priv->rx_irq[i], ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			irq_err = REQ_IRQ_ERR_RX;
 			irq_idx = i;
 			goto irq_error;
 		}
+<<<<<<< HEAD
 		irq_set_affinity_hint(msi->rx_irq[i],
+=======
+		irq_set_affinity_hint(priv->rx_irq[i],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      cpumask_of(i % num_online_cpus()));
 	}
 
@@ -3954,23 +4600,40 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
 	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
 		if (i >= MTL_MAX_TX_QUEUES)
 			break;
+<<<<<<< HEAD
 		if (msi->tx_irq[i] == 0)
 			continue;
 
 		int_name = msi->int_name_tx_irq[i];
 		sprintf(int_name, "%s:%s-%d", dev->name, "tx", i);
 		ret = request_irq(msi->tx_irq[i],
+=======
+		if (priv->tx_irq[i] == 0)
+			continue;
+
+		int_name = priv->int_name_tx_irq[i];
+		sprintf(int_name, "%s:%s-%d", dev->name, "tx", i);
+		ret = request_irq(priv->tx_irq[i],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  stmmac_msi_intr_tx,
 				  0, int_name, &priv->dma_conf.tx_queue[i]);
 		if (unlikely(ret < 0)) {
 			netdev_err(priv->dev,
 				   "%s: alloc tx-%d  MSI %d (error: %d)\n",
+<<<<<<< HEAD
 				   __func__, i, msi->tx_irq[i], ret);
+=======
+				   __func__, i, priv->tx_irq[i], ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			irq_err = REQ_IRQ_ERR_TX;
 			irq_idx = i;
 			goto irq_error;
 		}
+<<<<<<< HEAD
 		irq_set_affinity_hint(msi->tx_irq[i],
+=======
+		irq_set_affinity_hint(priv->tx_irq[i],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      cpumask_of(i % num_online_cpus()));
 	}
 
@@ -4061,8 +4724,12 @@ static struct stmmac_dma_conf *
 stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
 {
 	struct stmmac_dma_conf *dma_conf;
+<<<<<<< HEAD
 	int bfsize, ret;
 	u8 chan;
+=======
+	int chan, bfsize, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dma_conf = kzalloc_obj(*dma_conf);
 	if (!dma_conf) {
@@ -4137,7 +4804,11 @@ static int __stmmac_open(struct net_device *dev,
 			 struct stmmac_dma_conf *dma_conf)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 chan;
+=======
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
@@ -4236,7 +4907,11 @@ err_dma_resources:
 static void __stmmac_release(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 chan;
+=======
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Stop and disconnect the PHY */
 	phylink_stop(priv->phylink);
@@ -4363,6 +5038,17 @@ static void stmmac_tso_allocator(struct stmmac_priv *priv, dma_addr_t des,
 static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue)
 {
 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+<<<<<<< HEAD
+=======
+	int desc_size;
+
+	if (likely(priv->extend_desc))
+		desc_size = sizeof(struct dma_extended_desc);
+	else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+		desc_size = sizeof(struct dma_edesc);
+	else
+		desc_size = sizeof(struct dma_desc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* The own bit must be the latest setting done when prepare the
 	 * descriptor and then barrier is needed to make sure that
@@ -4370,6 +5056,7 @@ static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue)
 	 */
 	wmb();
 
+<<<<<<< HEAD
 	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, tx_q->cur_tx);
 }
 
@@ -4454,6 +5141,10 @@ static bool stmmac_tso_valid_packet(struct sk_buff *skb)
 
 	return header_len <= 1023 && gso_size >= 64 &&
 	       header_len + gso_size < 16383;
+=======
+	tx_q->tx_tail_addr = tx_q->dma_tx_phy + (tx_q->cur_tx * desc_size);
+	stmmac_set_tx_tail_ptr(priv, priv->ioaddr, tx_q->tx_tail_addr, queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -4506,6 +5197,22 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	u8 proto_hdr_len, hdr;
 	dma_addr_t des;
 
+<<<<<<< HEAD
+=======
+	/* Always insert VLAN tag to SKB payload for TSO frames.
+	 *
+	 * Never insert VLAN tag by HW, since segments split by
+	 * TSO engine will be un-tagged by mistake.
+	 */
+	if (skb_vlan_tag_present(skb)) {
+		skb = __vlan_hwaccel_push_inside(skb);
+		if (unlikely(!skb)) {
+			priv->xstats.tx_dropped++;
+			return NETDEV_TX_OK;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nfrags = skb_shinfo(skb)->nr_frags;
 	queue = skb_get_queue_mapping(skb);
 
@@ -4514,11 +5221,21 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	first_tx = tx_q->cur_tx;
 
 	/* Compute header lengths */
+<<<<<<< HEAD
 	proto_hdr_len = stmmac_tso_header_size(skb);
 	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
 		hdr = sizeof(struct udphdr);
 	else
 		hdr = tcp_hdrlen(skb);
+=======
+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) {
+		proto_hdr_len = skb_transport_offset(skb) + sizeof(struct udphdr);
+		hdr = sizeof(struct udphdr);
+	} else {
+		proto_hdr_len = skb_tcp_all_headers(skb);
+		hdr = tcp_hdrlen(skb);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Desc availability based on threshold should be enough safe */
 	if (unlikely(stmmac_tx_avail(priv, queue) <
@@ -4590,8 +5307,15 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	 * this DMA buffer right after the DMA engine completely finishes the
 	 * full buffer transmission.
 	 */
+<<<<<<< HEAD
 	stmmac_set_tx_skb_dma_entry(tx_q, tx_q->cur_tx, des, skb_headlen(skb),
 				    false);
+=======
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Prepare fragments */
 	for (i = 0; i < nfrags; i++) {
@@ -4606,6 +5330,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 		stmmac_tso_allocator(priv, des, skb_frag_size(frag),
 				     (i == nfrags - 1), queue);
 
+<<<<<<< HEAD
 		stmmac_set_tx_skb_dma_entry(tx_q, tx_q->cur_tx, des,
 					    skb_frag_size(frag), true);
 	}
@@ -4618,6 +5343,22 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	/* Manage tx mitigation */
 	tx_packets = CIRC_CNT(tx_q->cur_tx + 1, first_tx,
 			      priv->dma_conf.dma_tx_size);
+=======
+		tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
+		tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_frag_size(frag);
+		tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = true;
+		tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
+	}
+
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].last_segment = true;
+
+	/* Only the last descriptor gets to point to the skb. */
+	tx_q->tx_skbuff[tx_q->cur_tx] = skb;
+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
+
+	/* Manage tx mitigation */
+	tx_packets = (tx_q->cur_tx + 1) - first_tx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tx_q->tx_count_frames += tx_packets;
 
 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
@@ -4676,8 +5417,13 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
 	/* If we only have one entry used, then the first entry is the last
 	 * segment.
 	 */
+<<<<<<< HEAD
 	is_last_segment = CIRC_CNT(tx_q->cur_tx, first_entry,
 				   priv->dma_conf.dma_tx_size) == 1;
+=======
+	is_last_segment = ((tx_q->cur_tx - first_entry) &
+			   (priv->dma_conf.dma_tx_size - 1)) == 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Complete the first descriptor before granting the DMA */
 	stmmac_prepare_tso_tx_desc(priv, first, 1, proto_hdr_len, 0, 1,
@@ -4756,6 +5502,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 	u32 queue = skb_get_queue_mapping(skb);
 	int nfrags = skb_shinfo(skb)->nr_frags;
 	unsigned int first_entry, tx_packets;
+<<<<<<< HEAD
 	struct stmmac_txq_stats *txq_stats;
 	struct dma_desc *desc, *first_desc;
 	struct stmmac_tx_queue *tx_q;
@@ -4770,6 +5517,33 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 	if (skb_is_gso(skb) &&
 	    skb_shinfo(skb)->gso_type & priv->gso_enabled_types)
 		return stmmac_tso_xmit(skb, dev);
+=======
+	int gso = skb_shinfo(skb)->gso_type;
+	struct stmmac_txq_stats *txq_stats;
+	struct dma_edesc *tbs_desc = NULL;
+	struct dma_desc *desc, *first;
+	struct stmmac_tx_queue *tx_q;
+	int i, csum_insertion = 0;
+	int entry, first_tx;
+	dma_addr_t des;
+	u32 sdu_len;
+
+	tx_q = &priv->dma_conf.tx_queue[queue];
+	txq_stats = &priv->xstats.txq_stats[queue];
+	first_tx = tx_q->cur_tx;
+
+	if (priv->tx_path_in_lpi_mode && priv->eee_sw_timer_en)
+		stmmac_stop_sw_lpi(priv);
+
+	/* Manage oversized TCP frames for GMAC4 device */
+	if (skb_is_gso(skb) && priv->tso) {
+		if (gso & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))
+			return stmmac_tso_xmit(skb, dev);
+		if (priv->plat->core_type == DWMAC_CORE_GMAC4 &&
+		    (gso & SKB_GSO_UDP_L4))
+			return stmmac_tso_xmit(skb, dev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv->est && priv->est->enable &&
 	    priv->est->max_sdu[queue]) {
@@ -4795,9 +5569,12 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 		return NETDEV_TX_BUSY;
 	}
 
+<<<<<<< HEAD
 	tx_q = &priv->dma_conf.tx_queue[queue];
 	first_tx = tx_q->cur_tx;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check if VLAN can be inserted by HW */
 	has_vlan = stmmac_vlan_insert(priv, skb, tx_q);
 
@@ -4805,23 +5582,57 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 	first_entry = entry;
 	WARN_ON(tx_q->tx_skbuff[first_entry]);
 
+<<<<<<< HEAD
 	desc = stmmac_get_tx_desc(priv, tx_q, entry);
 	first_desc = desc;
 
 	if (has_vlan)
 		stmmac_set_desc_vlan(priv, first_desc, STMMAC_VLAN_INSERT);
+=======
+	csum_insertion = (skb->ip_summed == CHECKSUM_PARTIAL);
+	/* DWMAC IPs can be synthesized to support tx coe only for a few tx
+	 * queues. In that case, checksum offloading for those queues that don't
+	 * support tx coe needs to fallback to software checksum calculation.
+	 *
+	 * Packets that won't trigger the COE e.g. most DSA-tagged packets will
+	 * also have to be checksummed in software.
+	 */
+	if (csum_insertion &&
+	    (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
+	     !stmmac_has_ip_ethertype(skb))) {
+		if (unlikely(skb_checksum_help(skb)))
+			goto dma_map_err;
+		csum_insertion = !csum_insertion;
+	}
+
+	if (likely(priv->extend_desc))
+		desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+	else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+		desc = &tx_q->dma_entx[entry].basic;
+	else
+		desc = tx_q->dma_tx + entry;
+
+	first = desc;
+
+	if (has_vlan)
+		stmmac_set_desc_vlan(priv, first, STMMAC_VLAN_INSERT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	enh_desc = priv->plat->enh_desc;
 	/* To program the descriptors according to the size of the frame */
 	if (enh_desc)
 		is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
 
+<<<<<<< HEAD
 	csum_insertion = skb->ip_summed == CHECKSUM_PARTIAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(is_jumbo)) {
 		entry = stmmac_jumbo_frm(priv, tx_q, skb, csum_insertion);
 		if (unlikely(entry < 0) && (entry != -EINVAL))
 			goto dma_map_err;
+<<<<<<< HEAD
 	} else {
 		bool last_segment = (nfrags == 0);
 
@@ -4864,16 +5675,23 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 
 		stmmac_set_desc_tbs(priv, dma_desc_to_edesc(first_desc),
 				    ts.tv_sec, ts.tv_nsec);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (i = 0; i < nfrags; i++) {
 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+<<<<<<< HEAD
 		unsigned int frag_size = skb_frag_size(frag);
+=======
+		int len = skb_frag_size(frag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool last_segment = (i == (nfrags - 1));
 
 		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
 		WARN_ON(tx_q->tx_skbuff[entry]);
 
+<<<<<<< HEAD
 		desc = stmmac_get_tx_desc(priv, tx_q, entry);
 
 		dma_addr = skb_frag_dma_map(priv->device, frag, 0, frag_size,
@@ -4895,13 +5713,48 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	/* Only the last descriptor gets to point to the skb. */
 	tx_q->tx_skbuff[entry] = skb;
+=======
+		if (likely(priv->extend_desc))
+			desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			desc = &tx_q->dma_entx[entry].basic;
+		else
+			desc = tx_q->dma_tx + entry;
+
+		des = skb_frag_dma_map(priv->device, frag, 0, len,
+				       DMA_TO_DEVICE);
+		if (dma_mapping_error(priv->device, des))
+			goto dma_map_err; /* should reuse desc w/o issues */
+
+		tx_q->tx_skbuff_dma[entry].buf = des;
+
+		stmmac_set_desc_addr(priv, desc, des);
+
+		tx_q->tx_skbuff_dma[entry].map_as_page = true;
+		tx_q->tx_skbuff_dma[entry].len = len;
+		tx_q->tx_skbuff_dma[entry].last_segment = last_segment;
+		tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_SKB;
+
+		/* Prepare the descriptor and set the own bit too */
+		stmmac_prepare_tx_desc(priv, desc, 0, len, csum_insertion,
+				priv->mode, 1, last_segment, skb->len);
+	}
+
+	/* Only the last descriptor gets to point to the skb. */
+	tx_q->tx_skbuff[entry] = skb;
+	tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_SKB;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* According to the coalesce parameter the IC bit for the latest
 	 * segment is reset and the timer re-started to clean the tx status.
 	 * This approach takes care about the fragments: desc is the first
 	 * element in case of no SG.
 	 */
+<<<<<<< HEAD
 	tx_packets = CIRC_CNT(entry + 1, first_tx, priv->dma_conf.dma_tx_size);
+=======
+	tx_packets = (entry + 1) - first_tx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tx_q->tx_count_frames += tx_packets;
 
 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
@@ -4917,7 +5770,17 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 		set_ic = false;
 
 	if (set_ic) {
+<<<<<<< HEAD
 		desc = stmmac_get_tx_desc(priv, tx_q, entry);
+=======
+		if (likely(priv->extend_desc))
+			desc = &tx_q->dma_etx[entry].basic;
+		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+			desc = &tx_q->dma_entx[entry].basic;
+		else
+			desc = &tx_q->dma_tx[entry];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tx_q->tx_count_frames = 0;
 		stmmac_set_tx_ic(priv, desc);
 	}
@@ -4934,7 +5797,11 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 		netdev_dbg(priv->dev,
 			   "%s: curr=%d dirty=%d f=%d, e=%d, first=%p, nfrags=%d",
 			   __func__, tx_q->cur_tx, tx_q->dirty_tx, first_entry,
+<<<<<<< HEAD
 			   entry, first_desc, nfrags);
+=======
+			   entry, first, nfrags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		netdev_dbg(priv->dev, ">>> frame to be transmitted: ");
 		print_pkt(skb->data, skb->len);
@@ -4946,17 +5813,68 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
 		netif_tx_stop_queue(netdev_get_tx_queue(priv->dev, queue));
 	}
 
+<<<<<<< HEAD
 	txq_stats = &priv->xstats.txq_stats[queue];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64_stats_update_begin(&txq_stats->q_syncp);
 	u64_stats_add(&txq_stats->q.tx_bytes, skb->len);
 	if (set_ic)
 		u64_stats_inc(&txq_stats->q.tx_set_ic_bit);
 	u64_stats_update_end(&txq_stats->q_syncp);
 
+<<<<<<< HEAD
 	/* Set the OWN bit on the first descriptor now that all descriptors
 	 * for this skb are populated.
 	 */
 	stmmac_set_tx_owner(priv, first_desc);
+=======
+	if (priv->sarc_type)
+		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
+
+	/* Ready to fill the first descriptor and set the OWN bit w/o any
+	 * problems because all the descriptors are actually ready to be
+	 * passed to the DMA engine.
+	 */
+	if (likely(!is_jumbo)) {
+		bool last_segment = (nfrags == 0);
+
+		des = dma_map_single(priv->device, skb->data,
+				     nopaged_len, DMA_TO_DEVICE);
+		if (dma_mapping_error(priv->device, des))
+			goto dma_map_err;
+
+		tx_q->tx_skbuff_dma[first_entry].buf = des;
+		tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
+		tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
+
+		stmmac_set_desc_addr(priv, first, des);
+
+		tx_q->tx_skbuff_dma[first_entry].len = nopaged_len;
+		tx_q->tx_skbuff_dma[first_entry].last_segment = last_segment;
+
+		if (unlikely((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+			     priv->hwts_tx_en)) {
+			/* declare that device is doing timestamping */
+			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+			stmmac_enable_tx_timestamp(priv, first);
+		}
+
+		/* Prepare the first descriptor setting the OWN bit too */
+		stmmac_prepare_tx_desc(priv, first, 1, nopaged_len,
+				csum_insertion, priv->mode, 0, last_segment,
+				skb->len);
+	}
+
+	if (tx_q->tbs & STMMAC_TBS_EN) {
+		struct timespec64 ts = ns_to_timespec64(skb->tstamp);
+
+		tbs_desc = &tx_q->dma_entx[first_entry];
+		stmmac_set_desc_tbs(priv, tbs_desc, ts.tv_sec, ts.tv_nsec);
+	}
+
+	stmmac_set_tx_owner(priv, first);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
 
@@ -4975,6 +5893,7 @@ max_sdu_err:
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 static netdev_features_t stmmac_features_check(struct sk_buff *skb,
 					       struct net_device *dev,
 					       netdev_features_t features)
@@ -5015,6 +5934,8 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
 	return vlan_features_check(skb, features);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
 {
 	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
@@ -5055,7 +5976,14 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
 		struct dma_desc *p;
 		bool use_rx_wd;
 
+<<<<<<< HEAD
 		p = stmmac_get_rx_desc(priv, rx_q, entry);
+=======
+		if (priv->extend_desc)
+			p = (struct dma_desc *)(rx_q->dma_erx + entry);
+		else
+			p = rx_q->dma_rx + entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!buf->page) {
 			buf->page = page_pool_alloc_pages(rx_q->page_pool, gfp);
@@ -5096,7 +6024,13 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
 		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
 	}
 	rx_q->dirty_rx = entry;
+<<<<<<< HEAD
 	stmmac_set_queue_rx_tail_ptr(priv, rx_q, queue, rx_q->dirty_rx);
+=======
+	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+			    (rx_q->dirty_rx * sizeof(struct dma_desc));
+	stmmac_set_rx_tail_ptr(priv, priv->ioaddr, rx_q->rx_tail_addr, queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Wake up Rx DMA from the suspend state if required */
 	stmmac_enable_dma_reception(priv, priv->ioaddr, queue);
 }
@@ -5171,7 +6105,10 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
 	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
 	unsigned int entry = tx_q->cur_tx;
+<<<<<<< HEAD
 	enum stmmac_txbuf_type buf_type;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dma_desc *tx_desc;
 	dma_addr_t dma_addr;
 	bool set_ic;
@@ -5186,14 +6123,28 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
 		return STMMAC_XDP_CONSUMED;
 	}
 
+<<<<<<< HEAD
 	tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
+=======
+	if (likely(priv->extend_desc))
+		tx_desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+	else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+		tx_desc = &tx_q->dma_entx[entry].basic;
+	else
+		tx_desc = tx_q->dma_tx + entry;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dma_map) {
 		dma_addr = dma_map_single(priv->device, xdpf->data,
 					  xdpf->len, DMA_TO_DEVICE);
 		if (dma_mapping_error(priv->device, dma_addr))
 			return STMMAC_XDP_CONSUMED;
 
+<<<<<<< HEAD
 		buf_type = STMMAC_TXBUF_T_XDP_NDO;
+=======
+		tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_XDP_NDO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		struct page *page = virt_to_page(xdpf->data);
 
@@ -5202,19 +6153,34 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
 		dma_sync_single_for_device(priv->device, dma_addr,
 					   xdpf->len, DMA_BIDIRECTIONAL);
 
+<<<<<<< HEAD
 		buf_type = STMMAC_TXBUF_T_XDP_TX;
 	}
 
 	stmmac_set_tx_dma_entry(tx_q, entry, buf_type, dma_addr, xdpf->len,
 				false);
 	stmmac_set_tx_dma_last_segment(tx_q, entry);
+=======
+		tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_XDP_TX;
+	}
+
+	tx_q->tx_skbuff_dma[entry].buf = dma_addr;
+	tx_q->tx_skbuff_dma[entry].map_as_page = false;
+	tx_q->tx_skbuff_dma[entry].len = xdpf->len;
+	tx_q->tx_skbuff_dma[entry].last_segment = true;
+	tx_q->tx_skbuff_dma[entry].is_jumbo = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tx_q->xdpf[entry] = xdpf;
 
 	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
 
 	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
+<<<<<<< HEAD
 			       csum, priv->descriptor_mode, true, true,
+=======
+			       csum, priv->mode, true, true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       xdpf->len);
 
 	tx_q->tx_count_frames++;
@@ -5445,7 +6411,14 @@ static bool stmmac_rx_refill_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
 			}
 		}
 
+<<<<<<< HEAD
 		rx_desc = stmmac_get_rx_desc(priv, rx_q, entry);
+=======
+		if (priv->extend_desc)
+			rx_desc = (struct dma_desc *)(rx_q->dma_erx + entry);
+		else
+			rx_desc = rx_q->dma_rx + entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		dma_addr = xsk_buff_xdp_get_dma(buf->xdp);
 		stmmac_set_desc_addr(priv, rx_desc, dma_addr);
@@ -5470,7 +6443,13 @@ static bool stmmac_rx_refill_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
 
 	if (rx_desc) {
 		rx_q->dirty_rx = entry;
+<<<<<<< HEAD
 		stmmac_set_queue_rx_tail_ptr(priv, rx_q, queue, rx_q->dirty_rx);
+=======
+		rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+				     (rx_q->dirty_rx * sizeof(struct dma_desc));
+		stmmac_set_rx_tail_ptr(priv, priv->ioaddr, rx_q->rx_tail_addr, queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
@@ -5501,10 +6480,23 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
 	int status = 0;
 
 	if (netif_msg_rx_status(priv)) {
+<<<<<<< HEAD
 		void *rx_head = stmmac_get_rx_desc(priv, rx_q, 0);
 
 		netdev_dbg(priv->dev, "%s: descriptor ring:\n", __func__);
 		desc_size = stmmac_get_rx_desc_size(priv);
+=======
+		void *rx_head;
+
+		netdev_dbg(priv->dev, "%s: descriptor ring:\n", __func__);
+		if (priv->extend_desc) {
+			rx_head = (void *)rx_q->dma_erx;
+			desc_size = sizeof(struct dma_extended_desc);
+		} else {
+			rx_head = (void *)rx_q->dma_rx;
+			desc_size = sizeof(struct dma_desc);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		stmmac_display_ring(priv, rx_head, priv->dma_conf.dma_rx_size, true,
 				    rx_q->dma_rx_phy, desc_size);
@@ -5540,7 +6532,14 @@ read_again:
 			dirty = 0;
 		}
 
+<<<<<<< HEAD
 		p = stmmac_get_rx_desc(priv, rx_q, entry);
+=======
+		if (priv->extend_desc)
+			p = (struct dma_desc *)(rx_q->dma_erx + entry);
+		else
+			p = rx_q->dma_rx + entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* read the status of the incoming frame */
 		status = stmmac_rx_status(priv, &priv->xstats, p);
@@ -5556,7 +6555,14 @@ read_again:
 
 		rx_q->cur_rx = next_entry;
 
+<<<<<<< HEAD
 		np = stmmac_get_rx_desc(priv, rx_q, next_entry);
+=======
+		if (priv->extend_desc)
+			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
+		else
+			np = rx_q->dma_rx + next_entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		prefetch(np);
 
@@ -5691,10 +6697,23 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
 
 	if (netif_msg_rx_status(priv)) {
+<<<<<<< HEAD
 		void *rx_head = stmmac_get_rx_desc(priv, rx_q, 0);
 
 		netdev_dbg(priv->dev, "%s: descriptor ring:\n", __func__);
 		desc_size = stmmac_get_rx_desc_size(priv);
+=======
+		void *rx_head;
+
+		netdev_dbg(priv->dev, "%s: descriptor ring:\n", __func__);
+		if (priv->extend_desc) {
+			rx_head = (void *)rx_q->dma_erx;
+			desc_size = sizeof(struct dma_extended_desc);
+		} else {
+			rx_head = (void *)rx_q->dma_rx;
+			desc_size = sizeof(struct dma_desc);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		stmmac_display_ring(priv, rx_head, priv->dma_conf.dma_rx_size, true,
 				    rx_q->dma_rx_phy, desc_size);
@@ -5727,7 +6746,14 @@ read_again:
 		entry = next_entry;
 		buf = &rx_q->buf_pool[entry];
 
+<<<<<<< HEAD
 		p = stmmac_get_rx_desc(priv, rx_q, entry);
+=======
+		if (priv->extend_desc)
+			p = (struct dma_desc *)(rx_q->dma_erx + entry);
+		else
+			p = rx_q->dma_rx + entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* read the status of the incoming frame */
 		status = stmmac_rx_status(priv, &priv->xstats, p);
@@ -5742,7 +6768,14 @@ read_again:
 
 		rx_q->cur_rx = next_entry;
 
+<<<<<<< HEAD
 		np = stmmac_get_rx_desc(priv, rx_q, next_entry);
+=======
+		if (priv->extend_desc)
+			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
+		else
+			np = rx_q->dma_rx + next_entry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		prefetch(np);
 
@@ -6174,6 +7207,17 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
 	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
 		features &= ~NETIF_F_CSUM_MASK;
 
+<<<<<<< HEAD
+=======
+	/* Disable tso if asked by ethtool */
+	if ((priv->plat->flags & STMMAC_FLAG_TSO_EN) && (priv->dma_cap.tsoen)) {
+		if (features & NETIF_F_TSO)
+			priv->tso = true;
+		else
+			priv->tso = false;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return features;
 }
 
@@ -6194,14 +7238,21 @@ static int stmmac_set_features(struct net_device *netdev,
 
 	if (priv->sph_capable) {
 		bool sph_en = (priv->hw->rx_csum > 0) && priv->sph_active;
+<<<<<<< HEAD
 		u8 chan;
+=======
+		u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (chan = 0; chan < priv->plat->rx_queues_to_use; chan++)
 			stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
 	}
 
+<<<<<<< HEAD
 	stmmac_set_gso_types(priv, features & NETIF_F_TSO);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (features & NETIF_F_HW_VLAN_CTAG_RX)
 		priv->hw->hw_vlan_en = true;
 	else
@@ -6216,11 +7267,19 @@ static int stmmac_set_features(struct net_device *netdev,
 
 static void stmmac_common_interrupt(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	u8 queues_count;
 	bool xmac;
 	u8 queue;
+=======
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	u32 queues_count;
+	u32 queue;
+	bool xmac;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xmac = dwmac_is_xmac(priv->plat->core_type);
 	queues_count = (rx_cnt > tx_cnt) ? rx_cnt : tx_cnt;
@@ -6518,9 +7577,15 @@ static int stmmac_rings_status_show(struct seq_file *seq, void *v)
 {
 	struct net_device *dev = seq->private;
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 rx_count = priv->plat->rx_queues_to_use;
 	u8 tx_count = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_count = priv->plat->rx_queues_to_use;
+	u32 tx_count = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((dev->flags & IFF_UP) == 0)
 		return 0;
@@ -6645,9 +7710,15 @@ static int stmmac_dma_cap_show(struct seq_file *seq, void *v)
 		   priv->dma_cap.number_rx_channel);
 	seq_printf(seq, "\tNumber of Additional TX channel: %d\n",
 		   priv->dma_cap.number_tx_channel);
+<<<<<<< HEAD
 	seq_printf(seq, "\tNumber of Additional RX queues: %u\n",
 		   priv->dma_cap.number_rx_queues);
 	seq_printf(seq, "\tNumber of Additional TX queues: %u\n",
+=======
+	seq_printf(seq, "\tNumber of Additional RX queues: %d\n",
+		   priv->dma_cap.number_rx_queues);
+	seq_printf(seq, "\tNumber of Additional TX queues: %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   priv->dma_cap.number_tx_queues);
 	seq_printf(seq, "\tEnhanced descriptors: %s\n",
 		   (priv->dma_cap.enh_desc) ? "Y" : "N");
@@ -7009,6 +8080,10 @@ void stmmac_enable_rx_queue(struct stmmac_priv *priv, u32 queue)
 	struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
 	struct stmmac_channel *ch = &priv->channel[queue];
 	unsigned long flags;
+<<<<<<< HEAD
+=======
+	u32 buf_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = __alloc_dma_rx_desc_resources(priv, &priv->dma_conf, queue);
@@ -7028,11 +8103,31 @@ void stmmac_enable_rx_queue(struct stmmac_priv *priv, u32 queue)
 	stmmac_clear_rx_descriptors(priv, &priv->dma_conf, queue);
 
 	stmmac_init_rx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
+<<<<<<< HEAD
 			    rx_q->dma_rx_phy, queue);
 
 	stmmac_set_queue_rx_tail_ptr(priv, rx_q, queue, rx_q->buf_alloc_num);
 
 	stmmac_set_queue_rx_buf_size(priv, rx_q, queue);
+=======
+			    rx_q->dma_rx_phy, rx_q->queue_index);
+
+	rx_q->rx_tail_addr = rx_q->dma_rx_phy + (rx_q->buf_alloc_num *
+			     sizeof(struct dma_desc));
+	stmmac_set_rx_tail_ptr(priv, priv->ioaddr,
+			       rx_q->rx_tail_addr, rx_q->queue_index);
+
+	if (rx_q->xsk_pool && rx_q->buf_alloc_num) {
+		buf_size = xsk_pool_get_rx_frame_size(rx_q->xsk_pool);
+		stmmac_set_dma_bfsize(priv, priv->ioaddr,
+				      buf_size,
+				      rx_q->queue_index);
+	} else {
+		stmmac_set_dma_bfsize(priv, priv->ioaddr,
+				      priv->dma_conf.dma_buf_sz,
+				      rx_q->queue_index);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	stmmac_start_rx_dma(priv, queue);
 
@@ -7078,12 +8173,23 @@ void stmmac_enable_tx_queue(struct stmmac_priv *priv, u32 queue)
 	stmmac_clear_tx_descriptors(priv, &priv->dma_conf, queue);
 
 	stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
+<<<<<<< HEAD
 			    tx_q->dma_tx_phy, queue);
 
 	if (tx_q->tbs & STMMAC_TBS_AVAIL)
 		stmmac_enable_tbs(priv, priv->ioaddr, 1, queue);
 
 	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, 0);
+=======
+			    tx_q->dma_tx_phy, tx_q->queue_index);
+
+	if (tx_q->tbs & STMMAC_TBS_AVAIL)
+		stmmac_enable_tbs(priv, priv->ioaddr, 1, tx_q->queue_index);
+
+	tx_q->tx_tail_addr = tx_q->dma_tx_phy;
+	stmmac_set_tx_tail_ptr(priv, priv->ioaddr,
+			       tx_q->tx_tail_addr, tx_q->queue_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	stmmac_start_tx_dma(priv, queue);
 
@@ -7095,7 +8201,11 @@ void stmmac_enable_tx_queue(struct stmmac_priv *priv, u32 queue)
 void stmmac_xdp_release(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 chan;
+=======
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Ensure tx function is not running */
 	netif_tx_disable(dev);
@@ -7128,6 +8238,7 @@ void stmmac_xdp_release(struct net_device *dev)
 int stmmac_xdp_open(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	u8 dma_csr_ch = max(rx_cnt, tx_cnt);
@@ -7135,6 +8246,16 @@ int stmmac_xdp_open(struct net_device *dev)
 	struct stmmac_tx_queue *tx_q;
 	bool sph_en;
 	u8 chan;
+=======
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	u32 dma_csr_ch = max(rx_cnt, tx_cnt);
+	struct stmmac_rx_queue *rx_q;
+	struct stmmac_tx_queue *tx_q;
+	u32 buf_size;
+	bool sph_en;
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = alloc_dma_desc_resources(priv, &priv->dma_conf);
@@ -7169,10 +8290,29 @@ int stmmac_xdp_open(struct net_device *dev)
 		stmmac_init_rx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
 				    rx_q->dma_rx_phy, chan);
 
+<<<<<<< HEAD
 		stmmac_set_queue_rx_tail_ptr(priv, rx_q, chan,
 					     rx_q->buf_alloc_num);
 
 		stmmac_set_queue_rx_buf_size(priv, rx_q, chan);
+=======
+		rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+				     (rx_q->buf_alloc_num *
+				      sizeof(struct dma_desc));
+		stmmac_set_rx_tail_ptr(priv, priv->ioaddr,
+				       rx_q->rx_tail_addr, chan);
+
+		if (rx_q->xsk_pool && rx_q->buf_alloc_num) {
+			buf_size = xsk_pool_get_rx_frame_size(rx_q->xsk_pool);
+			stmmac_set_dma_bfsize(priv, priv->ioaddr,
+					      buf_size,
+					      rx_q->queue_index);
+		} else {
+			stmmac_set_dma_bfsize(priv, priv->ioaddr,
+					      priv->dma_conf.dma_buf_sz,
+					      rx_q->queue_index);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
 	}
@@ -7184,7 +8324,13 @@ int stmmac_xdp_open(struct net_device *dev)
 		stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
 				    tx_q->dma_tx_phy, chan);
 
+<<<<<<< HEAD
 		stmmac_set_queue_tx_tail_ptr(priv, tx_q, chan, 0);
+=======
+		tx_q->tx_tail_addr = tx_q->dma_tx_phy;
+		stmmac_set_tx_tail_ptr(priv, priv->ioaddr,
+				       tx_q->tx_tail_addr, chan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		hrtimer_setup(&tx_q->txtimer, stmmac_tx_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	}
@@ -7256,10 +8402,17 @@ int stmmac_xsk_wakeup(struct net_device *dev, u32 queue, u32 flags)
 static void stmmac_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	unsigned int start;
 	u8 q;
+=======
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	unsigned int start;
+	int q;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (q = 0; q < tx_cnt; q++) {
 		struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[q];
@@ -7309,7 +8462,10 @@ static void stmmac_get_stats64(struct net_device *dev, struct rtnl_link_stats64 
 static const struct net_device_ops stmmac_netdev_ops = {
 	.ndo_open = stmmac_open,
 	.ndo_start_xmit = stmmac_xmit,
+<<<<<<< HEAD
 	.ndo_features_check = stmmac_features_check,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_stop = stmmac_release,
 	.ndo_change_mtu = stmmac_change_mtu,
 	.ndo_fix_features = stmmac_fix_features,
@@ -7410,7 +8566,11 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 	/* dwmac-sun8i only work in chain mode */
 	if (priv->plat->flags & STMMAC_FLAG_HAS_SUN8I)
 		chain_mode = 1;
+<<<<<<< HEAD
 	priv->chain_mode = !!chain_mode;
+=======
+	priv->chain_mode = chain_mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialize HW Interface */
 	ret = stmmac_hwif_init(priv);
@@ -7439,7 +8599,11 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 
 		/* TXCOE doesn't work in thresh DMA mode */
 		if (priv->plat->force_thresh_dma_mode)
+<<<<<<< HEAD
 			priv->plat->tx_coe = false;
+=======
+			priv->plat->tx_coe = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			priv->plat->tx_coe = priv->dma_cap.tx_coe;
 
@@ -7471,6 +8635,12 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 		devm_pm_set_wake_irq(priv->device, priv->wol_irq);
 	}
 
+<<<<<<< HEAD
+=======
+	if (priv->dma_cap.tsoen)
+		dev_info(priv->device, "TSO supported\n");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (priv->dma_cap.number_rx_queues &&
 	    priv->plat->rx_queues_to_use > priv->dma_cap.number_rx_queues) {
 		dev_warn(priv->device,
@@ -7512,6 +8682,7 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	/* Set alternate descriptor size (which tells the hardware that
 	 * descriptors are 8 32-bit words) when using extended descriptors
 	 * with ring mode. Only applicable for pre-v4.0 cores. Platform glue
@@ -7520,6 +8691,8 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 	priv->plat->dma_cfg->atds = priv->extend_desc &&
 				    priv->descriptor_mode == STMMAC_RING_MODE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Rx Watchdog is available in the COREs newer than the 3.40.
 	 * In some case, for example on bugged HW this feature
 	 * has to be disable and this can be done by passing the
@@ -7546,7 +8719,11 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
 static void stmmac_napi_add(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 queue, maxq;
+=======
+	u32 queue, maxq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	maxq = max(priv->plat->rx_queues_to_use, priv->plat->tx_queues_to_use);
 
@@ -7575,7 +8752,11 @@ static void stmmac_napi_add(struct net_device *dev)
 static void stmmac_napi_del(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	u8 queue, maxq;
+=======
+	u32 queue, maxq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	maxq = max(priv->plat->rx_queues_to_use, priv->plat->tx_queues_to_use);
 
@@ -7593,7 +8774,11 @@ static void stmmac_napi_del(struct net_device *dev)
 	}
 }
 
+<<<<<<< HEAD
 int stmmac_reinit_queues(struct net_device *dev, u8 rx_cnt, u8 tx_cnt)
+=======
+int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
 	int ret = 0, i;
@@ -7765,8 +8950,11 @@ struct plat_stmmacenet_data *stmmac_plat_dat_alloc(struct device *dev)
 	if (!plat_dat)
 		return NULL;
 
+<<<<<<< HEAD
 	plat_dat->dma_cfg = &plat_dat->__dma_cfg;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the defaults:
 	 * - phy autodetection
 	 * - determine GMII_Address CR field from CSR clock
@@ -7798,6 +8986,7 @@ static int __stmmac_dvr_probe(struct device *device,
 {
 	struct net_device *ndev = NULL;
 	struct stmmac_priv *priv;
+<<<<<<< HEAD
 	int i, ret = 0;
 	u8 rxq;
 
@@ -7805,6 +8994,10 @@ static int __stmmac_dvr_probe(struct device *device,
 		dev_err(device, "invalid DMA configuration\n");
 		return -EINVAL;
 	}
+=======
+	u32 rxq;
+	int i, ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ndev = devm_alloc_etherdev_mqs(device, sizeof(struct stmmac_priv),
 				       MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES);
@@ -7840,12 +9033,21 @@ static int __stmmac_dvr_probe(struct device *device,
 	priv->dev->irq = res->irq;
 	priv->wol_irq = res->wol_irq;
 	priv->sfty_irq = res->sfty_irq;
+<<<<<<< HEAD
 
 	if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN) {
 		ret = stmmac_msi_init(priv, res);
 		if (ret)
 			return ret;
 	}
+=======
+	priv->sfty_ce_irq = res->sfty_ce_irq;
+	priv->sfty_ue_irq = res->sfty_ue_irq;
+	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
+		priv->rx_irq[i] = res->rx_irq[i];
+	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
+		priv->tx_irq[i] = res->tx_irq[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_zero_ether_addr(res->mac))
 		eth_hw_addr_set(priv->dev, res->mac);
@@ -7922,7 +9124,17 @@ static int __stmmac_dvr_probe(struct device *device,
 		ndev->hw_features |= NETIF_F_HW_TC;
 	}
 
+<<<<<<< HEAD
 	stmmac_set_gso_features(ndev);
+=======
+	if ((priv->plat->flags & STMMAC_FLAG_TSO_EN) && (priv->dma_cap.tsoen)) {
+		ndev->hw_features |= NETIF_F_TSO | NETIF_F_TSO6;
+		if (priv->plat->core_type == DWMAC_CORE_GMAC4)
+			ndev->hw_features |= NETIF_F_GSO_UDP_L4;
+		priv->tso = true;
+		dev_info(priv->device, "TSO feature enabled\n");
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv->dma_cap.sphen &&
 	    !(priv->plat->flags & STMMAC_FLAG_SPH_DISABLE)) {
@@ -8176,7 +9388,11 @@ int stmmac_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
+<<<<<<< HEAD
 	u8 chan;
+=======
+	u32 chan;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ndev || !netif_running(ndev))
 		goto suspend_bsp;
@@ -8251,9 +9467,15 @@ static void stmmac_reset_tx_queue(struct stmmac_priv *priv, u32 queue)
  */
 static void stmmac_reset_queues_param(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	u8 rx_cnt = priv->plat->rx_queues_to_use;
 	u8 tx_cnt = priv->plat->tx_queues_to_use;
 	u8 queue;
+=======
+	u32 rx_cnt = priv->plat->rx_queues_to_use;
+	u32 tx_cnt = priv->plat->tx_queues_to_use;
+	u32 queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (queue = 0; queue < rx_cnt; queue++)
 		stmmac_reset_rx_queue(priv, queue);

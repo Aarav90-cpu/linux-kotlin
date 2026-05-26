@@ -120,10 +120,17 @@ static bool codel_should_drop(const struct sk_buff *skb,
 	}
 
 	skb_len = skb_len_func(skb);
+<<<<<<< HEAD
 	WRITE_ONCE(vars->ldelay, now - skb_time_func(skb));
 
 	if (unlikely(skb_len > stats->maxpacket))
 		WRITE_ONCE(stats->maxpacket, skb_len);
+=======
+	vars->ldelay = now - skb_time_func(skb);
+
+	if (unlikely(skb_len > stats->maxpacket))
+		stats->maxpacket = skb_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (codel_time_before(vars->ldelay, params->target) ||
 	    *backlog <= params->mtu) {
@@ -159,7 +166,11 @@ static struct sk_buff *codel_dequeue(void *ctx,
 
 	if (!skb) {
 		vars->first_above_time = 0;
+<<<<<<< HEAD
 		WRITE_ONCE(vars->dropping, false);
+=======
+		vars->dropping = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return skb;
 	}
 	now = codel_get_time();
@@ -168,7 +179,11 @@ static struct sk_buff *codel_dequeue(void *ctx,
 	if (vars->dropping) {
 		if (!drop) {
 			/* sojourn time below target - leave dropping state */
+<<<<<<< HEAD
 			WRITE_ONCE(vars->dropping, false);
+=======
+			vars->dropping = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (codel_time_after_eq(now, vars->drop_next)) {
 			/* It's time for the next drop. Drop the current
 			 * packet and dequeue the next. The dequeue might
@@ -180,6 +195,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
 			 */
 			while (vars->dropping &&
 			       codel_time_after_eq(now, vars->drop_next)) {
+<<<<<<< HEAD
 				/* dont care of possible wrap
 				 * since there is no more divide.
 				 */
@@ -192,6 +208,18 @@ static struct sk_buff *codel_dequeue(void *ctx,
 						codel_control_law(vars->drop_next,
 								  params->interval,
 								  vars->rec_inv_sqrt));
+=======
+				vars->count++; /* dont care of possible wrap
+						* since there is no more divide
+						*/
+				codel_Newton_step(vars);
+				if (params->ecn && INET_ECN_set_ce(skb)) {
+					stats->ecn_mark++;
+					vars->drop_next =
+						codel_control_law(vars->drop_next,
+								  params->interval,
+								  vars->rec_inv_sqrt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					goto end;
 				}
 				stats->drop_len += skb_len_func(skb);
@@ -204,6 +232,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
 						       skb_time_func,
 						       backlog, now)) {
 					/* leave dropping state */
+<<<<<<< HEAD
 					WRITE_ONCE(vars->dropping, false);
 				} else {
 					/* and schedule the next drop */
@@ -211,6 +240,15 @@ static struct sk_buff *codel_dequeue(void *ctx,
 						codel_control_law(vars->drop_next,
 								  params->interval,
 								  vars->rec_inv_sqrt));
+=======
+					vars->dropping = false;
+				} else {
+					/* and schedule the next drop */
+					vars->drop_next =
+						codel_control_law(vars->drop_next,
+								  params->interval,
+								  vars->rec_inv_sqrt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				}
 			}
 		}
@@ -218,7 +256,11 @@ static struct sk_buff *codel_dequeue(void *ctx,
 		u32 delta;
 
 		if (params->ecn && INET_ECN_set_ce(skb)) {
+<<<<<<< HEAD
 			WRITE_ONCE(stats->ecn_mark, stats->ecn_mark + 1);
+=======
+			stats->ecn_mark++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			stats->drop_len += skb_len_func(skb);
 			drop_func(skb, ctx);
@@ -229,7 +271,11 @@ static struct sk_buff *codel_dequeue(void *ctx,
 						 stats, skb_len_func,
 						 skb_time_func, backlog, now);
 		}
+<<<<<<< HEAD
 		WRITE_ONCE(vars->dropping, true);
+=======
+		vars->dropping = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* if min went above target close to when we last went below it
 		 * assume that the drop rate that controlled the queue on the
 		 * last cycle is a good starting point to control it now.
@@ -238,13 +284,18 @@ static struct sk_buff *codel_dequeue(void *ctx,
 		if (delta > 1 &&
 		    codel_time_before(now - vars->drop_next,
 				      16 * params->interval)) {
+<<<<<<< HEAD
 			WRITE_ONCE(vars->count, delta);
+=======
+			vars->count = delta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* we dont care if rec_inv_sqrt approximation
 			 * is not very precise :
 			 * Next Newton steps will correct it quadratically.
 			 */
 			codel_Newton_step(vars);
 		} else {
+<<<<<<< HEAD
 			WRITE_ONCE(vars->count, 1);
 			vars->rec_inv_sqrt = ~0U >> REC_INV_SQRT_SHIFT;
 		}
@@ -252,6 +303,14 @@ static struct sk_buff *codel_dequeue(void *ctx,
 		WRITE_ONCE(vars->drop_next,
 			   codel_control_law(now, params->interval,
 					     vars->rec_inv_sqrt));
+=======
+			vars->count = 1;
+			vars->rec_inv_sqrt = ~0U >> REC_INV_SQRT_SHIFT;
+		}
+		vars->lastcount = vars->count;
+		vars->drop_next = codel_control_law(now, params->interval,
+						    vars->rec_inv_sqrt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 end:
 	if (skb && codel_time_after(vars->ldelay, params->ce_threshold)) {
@@ -265,7 +324,11 @@ end:
 				   params->ce_threshold_selector));
 		}
 		if (set_ce && INET_ECN_set_ce(skb))
+<<<<<<< HEAD
 			WRITE_ONCE(stats->ce_mark, stats->ce_mark + 1);
+=======
+			stats->ce_mark++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return skb;
 }

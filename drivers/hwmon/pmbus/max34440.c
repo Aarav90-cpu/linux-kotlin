@@ -71,6 +71,11 @@ struct max34440_data {
 
 #define to_max34440_data(x)  container_of(x, struct max34440_data, info)
 
+<<<<<<< HEAD
+=======
+static const struct i2c_device_id max34440_id[];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int max34440_read_word_data(struct i2c_client *client, int page,
 				   int phase, int reg)
 {
@@ -626,7 +631,11 @@ static int max34440_probe(struct i2c_client *client)
 			    GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
+<<<<<<< HEAD
 	data->id = (uintptr_t)i2c_get_match_data(client);
+=======
+	data->id = i2c_match_id(max34440_id, client)->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data->info = max34440_info[data->id];
 	data->iout_oc_fault_limit = MAX34440_IOUT_OC_FAULT_LIMIT;
 	data->iout_oc_warn_limit = MAX34440_IOUT_OC_WARN_LIMIT;

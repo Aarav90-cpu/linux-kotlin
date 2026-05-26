@@ -656,8 +656,16 @@ References
 See [white-paper]_, [api-spec]_, [amd-apm]_, [kvm-forum]_, and [snp-fw-abi]_
 for more info.
 
+<<<<<<< HEAD
 .. [white-paper] https://docs.amd.com/v/u/en-US/memory-encryption-white-paper
 .. [api-spec] https://docs.amd.com/v/u/en-US/55766_PUB_3.24_SEV_API
 .. [amd-apm] https://docs.amd.com/v/u/en-US/24593_3.44_APM_Vol2 (section 15.34)
 .. [kvm-forum]  https://www.linux-kvm.org/images/7/74/02x08A-Thomas_Lendacky-AMDs_Virtualizatoin_Memory_Encryption_Technology.pdf
 .. [snp-fw-abi] https://www.amd.com/content/dam/amd/en/documents/developer/56860.pdf
+=======
+.. [white-paper] https://developer.amd.com/wordpress/media/2013/12/AMD_Memory_Encryption_Whitepaper_v7-Public.pdf
+.. [api-spec] https://support.amd.com/TechDocs/55766_SEV-KM_API_Specification.pdf
+.. [amd-apm] https://support.amd.com/TechDocs/24593.pdf (section 15.34)
+.. [kvm-forum]  https://www.linux-kvm.org/images/7/74/02x08A-Thomas_Lendacky-AMDs_Virtualizatoin_Memory_Encryption_Technology.pdf
+.. [snp-fw-abi] https://www.amd.com/system/files/TechDocs/56860.pdf
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

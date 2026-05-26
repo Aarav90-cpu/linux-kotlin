@@ -107,6 +107,7 @@ __naked void ind_check_calling_conv_r7(void)
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 /*
  * ld_{abs,ind} subprog that always sets r0=1 on the success path.
  * bpf_gen_ld_abs() emits a hidden exit with r0=0 when the load helper
@@ -249,4 +250,6 @@ __naked void ld_ind_void_subprog_reject(void)
 	::: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

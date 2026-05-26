@@ -312,9 +312,16 @@ static void stmmac_ethtool_getdrvinfo(struct net_device *dev,
 		strscpy(info->driver, MAC100_ETHTOOL_NAME,
 			sizeof(info->driver));
 
+<<<<<<< HEAD
 	if (priv->plat->provide_bus_info)
 		strscpy(info->bus_info, dev_name(priv->device),
 			sizeof(info->bus_info));
+=======
+	if (priv->plat->pdev) {
+		strscpy(info->bus_info, pci_name(priv->plat->pdev),
+			sizeof(info->bus_info));
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,

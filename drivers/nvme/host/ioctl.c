@@ -120,11 +120,29 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
 	struct nvme_ns *ns = q->queuedata;
 	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
 	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
+<<<<<<< HEAD
 	bool has_metadata = meta_buffer && meta_len;
 	int ret;
 
 	if (has_metadata && !supports_metadata)
 		return -EINVAL;
+=======
+	struct nvme_ctrl *ctrl = nvme_req(req)->ctrl;
+	bool has_metadata = meta_buffer && meta_len;
+	struct bio *bio = NULL;
+	int ret;
+
+	if (!nvme_ctrl_sgl_supported(ctrl))
+		dev_warn_once(ctrl->device, "using unchecked data buffer\n");
+	if (has_metadata) {
+		if (!supports_metadata)
+			return -EINVAL;
+
+		if (!nvme_ctrl_meta_sgl_supported(ctrl))
+			dev_warn_once(ctrl->device,
+				      "using unchecked metadata buffer\n");
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (iter)
 		ret = blk_rq_map_user_iov(q, req, NULL, iter, GFP_KERNEL);
@@ -144,8 +162,13 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
 	return ret;
 
 out_unmap:
+<<<<<<< HEAD
 	if (req->bio)
 		blk_rq_unmap_user(req->bio);
+=======
+	if (bio)
+		blk_rq_unmap_user(bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -776,6 +799,13 @@ int nvme_dev_uring_cmd(struct io_uring_cmd *ioucmd, unsigned int issue_flags)
 	struct nvme_ctrl *ctrl = ioucmd->file->private_data;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/* IOPOLL not supported yet */
+	if (issue_flags & IO_URING_F_IOPOLL)
+		return -EOPNOTSUPP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = nvme_uring_cmd_checks(issue_flags);
 	if (ret)
 		return ret;

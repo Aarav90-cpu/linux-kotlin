@@ -243,12 +243,15 @@ properties:
           - const: microchip,lan9668
           - const: microchip,lan966
 
+<<<<<<< HEAD
       - description: Microchip LAN9696 EV23X71A Evaluation Board
         items:
           - const: microchip,ev23x71a
           - const: microchip,lan9696
           - const: microchip,lan9691
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Kontron KSwitch D10 MMT series
         items:
           - enum:

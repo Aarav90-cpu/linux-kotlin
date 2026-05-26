@@ -602,7 +602,10 @@ get_cg_pool_unlocked(struct dmemcg_state *cg, struct dmem_cgroup_region *region)
 				pool = NULL;
 				continue;
 			}
+<<<<<<< HEAD
 			pool = ERR_PTR(-ENOMEM);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -695,6 +698,99 @@ err:
 }
 EXPORT_SYMBOL_GPL(dmem_cgroup_try_charge);
 
+<<<<<<< HEAD
+=======
+/**
+ * dmem_cgroup_below_min() - Tests whether current usage is within min limit.
+ *
+ * @root: Root of the subtree to calculate protection for, or NULL to calculate global protection.
+ * @test: The pool to test the usage/min limit of.
+ *
+ * Return: true if usage is below min and the cgroup is protected, false otherwise.
+ */
+bool dmem_cgroup_below_min(struct dmem_cgroup_pool_state *root,
+			   struct dmem_cgroup_pool_state *test)
+{
+	if (root == test || !pool_parent(test))
+		return false;
+
+	if (!root) {
+		for (root = test; pool_parent(root); root = pool_parent(root))
+			{}
+	}
+
+	/*
+	 * In mem_cgroup_below_min(), the memcg pendant, this call is missing.
+	 * mem_cgroup_below_min() gets called during traversal of the cgroup tree, where
+	 * protection is already calculated as part of the traversal. dmem cgroup eviction
+	 * does not traverse the cgroup tree, so we need to recalculate effective protection
+	 * here.
+	 */
+	dmem_cgroup_calculate_protection(root, test);
+	return page_counter_read(&test->cnt) <= READ_ONCE(test->cnt.emin);
+}
+EXPORT_SYMBOL_GPL(dmem_cgroup_below_min);
+
+/**
+ * dmem_cgroup_below_low() - Tests whether current usage is within low limit.
+ *
+ * @root: Root of the subtree to calculate protection for, or NULL to calculate global protection.
+ * @test: The pool to test the usage/low limit of.
+ *
+ * Return: true if usage is below low and the cgroup is protected, false otherwise.
+ */
+bool dmem_cgroup_below_low(struct dmem_cgroup_pool_state *root,
+			   struct dmem_cgroup_pool_state *test)
+{
+	if (root == test || !pool_parent(test))
+		return false;
+
+	if (!root) {
+		for (root = test; pool_parent(root); root = pool_parent(root))
+			{}
+	}
+
+	/*
+	 * In mem_cgroup_below_low(), the memcg pendant, this call is missing.
+	 * mem_cgroup_below_low() gets called during traversal of the cgroup tree, where
+	 * protection is already calculated as part of the traversal. dmem cgroup eviction
+	 * does not traverse the cgroup tree, so we need to recalculate effective protection
+	 * here.
+	 */
+	dmem_cgroup_calculate_protection(root, test);
+	return page_counter_read(&test->cnt) <= READ_ONCE(test->cnt.elow);
+}
+EXPORT_SYMBOL_GPL(dmem_cgroup_below_low);
+
+/**
+ * dmem_cgroup_get_common_ancestor(): Find the first common ancestor of two pools.
+ * @a: First pool to find the common ancestor of.
+ * @b: First pool to find the common ancestor of.
+ *
+ * Return: The first pool that is a parent of both @a and @b, or NULL if either @a or @b are NULL,
+ * or if such a pool does not exist. A reference to the returned pool is grabbed and must be
+ * released by the caller when it is done using the pool.
+ */
+struct dmem_cgroup_pool_state *dmem_cgroup_get_common_ancestor(struct dmem_cgroup_pool_state *a,
+							       struct dmem_cgroup_pool_state *b)
+{
+	struct cgroup *ancestor_cgroup;
+	struct cgroup_subsys_state *ancestor_css;
+
+	if (!a || !b)
+		return NULL;
+
+	ancestor_cgroup = cgroup_common_ancestor(a->cs->css.cgroup, b->cs->css.cgroup);
+	if (!ancestor_cgroup)
+		return NULL;
+
+	ancestor_css = cgroup_e_css(ancestor_cgroup, &dmem_cgrp_subsys);
+
+	return get_cg_pool_unlocked(css_to_dmemcs(ancestor_css), a->region);
+}
+EXPORT_SYMBOL_GPL(dmem_cgroup_get_common_ancestor);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dmem_cgroup_region_capacity_show(struct seq_file *sf, void *v)
 {
 	struct dmem_cgroup_region *region;
@@ -708,7 +804,12 @@ static int dmem_cgroup_region_capacity_show(struct seq_file *sf, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dmemcg_parse_limit(char *options, u64 *new_limit)
+=======
+static int dmemcg_parse_limit(char *options, struct dmem_cgroup_region *region,
+			      u64 *new_limit)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	char *end;
 
@@ -762,7 +863,11 @@ static ssize_t dmemcg_limit_write(struct kernfs_open_file *of,
 		if (!region)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		err = dmemcg_parse_limit(options, &new_limit);
+=======
+		err = dmemcg_parse_limit(options, region, &new_limit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err < 0)
 			goto out_put;
 

@@ -13,7 +13,10 @@
 #define _LINUX_HRTIMER_H
 
 #include <linux/hrtimer_defs.h>
+<<<<<<< HEAD
 #include <linux/hrtimer_rearm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/hrtimer_types.h>
 #include <linux/init.h>
 #include <linux/list.h>
@@ -32,6 +35,7 @@
  *				  soft irq context
  * HRTIMER_MODE_HARD		- Timer callback function will be executed in
  *				  hard irq context even on PREEMPT_RT.
+<<<<<<< HEAD
  * HRTIMER_MODE_LAZY_REARM	- Avoid reprogramming if the timer was the
  *				  first expiring timer and is moved into the
  *				  future. Special mode for the HRTICK timer to
@@ -39,6 +43,8 @@
  *				  which is expensive in virtual machines. Risks
  *				  a pointless expiry, but that's better than
  *				  reprogramming on every context switch,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum hrtimer_mode {
 	HRTIMER_MODE_ABS	= 0x00,
@@ -46,7 +52,10 @@ enum hrtimer_mode {
 	HRTIMER_MODE_PINNED	= 0x02,
 	HRTIMER_MODE_SOFT	= 0x04,
 	HRTIMER_MODE_HARD	= 0x08,
+<<<<<<< HEAD
 	HRTIMER_MODE_LAZY_REARM	= 0x10,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	HRTIMER_MODE_ABS_PINNED = HRTIMER_MODE_ABS | HRTIMER_MODE_PINNED,
 	HRTIMER_MODE_REL_PINNED = HRTIMER_MODE_REL | HRTIMER_MODE_PINNED,
@@ -64,6 +73,36 @@ enum hrtimer_mode {
 	HRTIMER_MODE_REL_PINNED_HARD = HRTIMER_MODE_REL_PINNED | HRTIMER_MODE_HARD,
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Values to track state of the timer
+ *
+ * Possible states:
+ *
+ * 0x00		inactive
+ * 0x01		enqueued into rbtree
+ *
+ * The callback state is not part of the timer->state because clearing it would
+ * mean touching the timer after the callback, this makes it impossible to free
+ * the timer from the callback function.
+ *
+ * Therefore we track the callback state in:
+ *
+ *	timer->base->cpu_base->running == timer
+ *
+ * On SMP it is possible to have a "callback function running and enqueued"
+ * status. It happens for example when a posix timer expired and the callback
+ * queued a signal. Between dropping the lock which protects the posix timer
+ * and reacquiring the base lock of the hrtimer, another CPU can deliver the
+ * signal and rearm the timer.
+ *
+ * All state transitions are protected by cpu_base->lock.
+ */
+#define HRTIMER_STATE_INACTIVE	0x00
+#define HRTIMER_STATE_ENQUEUED	0x01
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct hrtimer_sleeper - simple sleeper structure
  * @timer:	embedded timer structure
@@ -116,6 +155,14 @@ static inline ktime_t hrtimer_get_softexpires(const struct hrtimer *timer)
 	return timer->_softexpires;
 }
 
+<<<<<<< HEAD
+=======
+static inline s64 hrtimer_get_expires_ns(const struct hrtimer *timer)
+{
+	return ktime_to_ns(timer->node.expires);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ktime_t hrtimer_cb_get_time(const struct hrtimer *timer);
 
 static inline ktime_t hrtimer_expires_remaining(const struct hrtimer *timer)
@@ -123,12 +170,23 @@ static inline ktime_t hrtimer_expires_remaining(const struct hrtimer *timer)
 	return ktime_sub(timer->node.expires, hrtimer_cb_get_time(timer));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGH_RES_TIMERS
 extern unsigned int hrtimer_resolution;
+=======
+static inline int hrtimer_is_hres_active(struct hrtimer *timer)
+{
+	return IS_ENABLED(CONFIG_HIGH_RES_TIMERS) ?
+		timer->base->cpu_base->hres_active : 0;
+}
+
+#ifdef CONFIG_HIGH_RES_TIMERS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct clock_event_device;
 
 extern void hrtimer_interrupt(struct clock_event_device *dev);
 
+<<<<<<< HEAD
 extern struct static_key_false hrtimer_highres_enabled_key;
 
 static inline bool hrtimer_highres_enabled(void)
@@ -140,6 +198,15 @@ static inline bool hrtimer_highres_enabled(void)
 #define hrtimer_resolution	(unsigned int)LOW_RES_NSEC
 static inline bool hrtimer_highres_enabled(void) { return false; }
 #endif  /* !CONFIG_HIGH_RES_TIMERS */
+=======
+extern unsigned int hrtimer_resolution;
+
+#else
+
+#define hrtimer_resolution	(unsigned int)LOW_RES_NSEC
+
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline ktime_t
 __hrtimer_expires_remaining_adjusted(const struct hrtimer *timer, ktime_t now)
@@ -269,8 +336,13 @@ extern bool hrtimer_active(const struct hrtimer *timer);
  */
 static inline bool hrtimer_is_queued(struct hrtimer *timer)
 {
+<<<<<<< HEAD
 	/* The READ_ONCE pairs with the update functions of timer->is_queued */
 	return READ_ONCE(timer->is_queued);
+=======
+	/* The READ_ONCE pairs with the update functions of timer->state */
+	return !!(READ_ONCE(timer->state) & HRTIMER_STATE_ENQUEUED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

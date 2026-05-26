@@ -411,7 +411,11 @@ int hfs_extend_file(struct inode *inode)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, start %u, len %u\n", inode->i_ino, start, len);
+=======
+	hfs_dbg("ino %lu, start %u, len %u\n", inode->i_ino, start, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (HFS_I(inode)->alloc_blocks == HFS_I(inode)->first_blocks) {
 		if (!HFS_I(inode)->first_blocks) {
 			hfs_dbg("first_extent: start %u, len %u\n",
@@ -482,7 +486,11 @@ void hfs_file_truncate(struct inode *inode)
 	u32 size;
 	int res;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, phys_size %llu -> i_size %llu\n",
+=======
+	hfs_dbg("ino %lu, phys_size %llu -> i_size %llu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, (long long)HFS_I(inode)->phys_size,
 		inode->i_size);
 	if (inode->i_size > HFS_I(inode)->phys_size) {

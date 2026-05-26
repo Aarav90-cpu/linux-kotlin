@@ -176,7 +176,11 @@ static void ttm_device_init_pools(struct kunit *test)
 
 				if (ttm_pool_uses_dma_alloc(pool))
 					KUNIT_ASSERT_FALSE(test,
+<<<<<<< HEAD
 							   list_lru_count(&pt.pages));
+=======
+							   list_empty(&pt.pages));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	}

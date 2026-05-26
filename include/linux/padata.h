@@ -149,23 +149,39 @@ struct padata_mt_job {
 /**
  * struct padata_instance - The overall control structure.
  *
+<<<<<<< HEAD
  * @cpuhp_node: Linkage for CPU hotplug callbacks.
+=======
+ * @cpu_online_node: Linkage for CPU online callback.
+ * @cpu_dead_node: Linkage for CPU offline callback.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @parallel_wq: The workqueue used for parallel work.
  * @serial_wq: The workqueue used for serial work.
  * @pslist: List of padata_shell objects attached to this instance.
  * @cpumask: User supplied cpumasks for parallel and serial works.
+<<<<<<< HEAD
  * @validate_cpumask: Internal cpumask used to validate @cpumask during hotplug.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @kobj: padata instance kernel object.
  * @lock: padata instance lock.
  * @flags: padata flags.
  */
 struct padata_instance {
+<<<<<<< HEAD
 	struct hlist_node		cpuhp_node;
+=======
+	struct hlist_node		cpu_online_node;
+	struct hlist_node		cpu_dead_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct workqueue_struct		*parallel_wq;
 	struct workqueue_struct		*serial_wq;
 	struct list_head		pslist;
 	struct padata_cpumask		cpumask;
+<<<<<<< HEAD
 	cpumask_var_t			validate_cpumask;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kobject                   kobj;
 	struct mutex			 lock;
 	u8				 flags;

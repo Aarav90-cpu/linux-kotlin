@@ -202,7 +202,11 @@ void audit_log_lsm_data(struct audit_buffer *ab,
 		if (inode) {
 			audit_log_format(ab, " dev=");
 			audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 			audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+			audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	}
@@ -215,7 +219,11 @@ void audit_log_lsm_data(struct audit_buffer *ab,
 		if (inode) {
 			audit_log_format(ab, " dev=");
 			audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 			audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+			audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	}
@@ -228,7 +236,11 @@ void audit_log_lsm_data(struct audit_buffer *ab,
 		if (inode) {
 			audit_log_format(ab, " dev=");
 			audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 			audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+			audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		audit_log_format(ab, " ioctlcmd=0x%hx", a->u.op->cmd);
@@ -246,7 +258,11 @@ void audit_log_lsm_data(struct audit_buffer *ab,
 		if (inode) {
 			audit_log_format(ab, " dev=");
 			audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 			audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+			audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	}
@@ -265,7 +281,11 @@ void audit_log_lsm_data(struct audit_buffer *ab,
 		}
 		audit_log_format(ab, " dev=");
 		audit_log_untrustedstring(ab, inode->i_sb->s_id);
+<<<<<<< HEAD
 		audit_log_format(ab, " ino=%llu", inode->i_ino);
+=======
+		audit_log_format(ab, " ino=%lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_read_unlock();
 		break;
 	}

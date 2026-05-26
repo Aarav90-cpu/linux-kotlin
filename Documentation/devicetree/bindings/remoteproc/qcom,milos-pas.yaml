@@ -16,7 +16,10 @@ description:
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - qcom,eliza-adsp-pas
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - qcom,milos-adsp-pas
       - qcom,milos-cdsp-pas
       - qcom,milos-mpss-pas
@@ -70,7 +73,10 @@ allOf:
       properties:
         compatible:
           enum:
+<<<<<<< HEAD
             - qcom,eliza-adsp-pas
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - qcom,milos-adsp-pas
             - qcom,milos-cdsp-pas
     then:
@@ -91,7 +97,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,eliza-adsp-pas
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,milos-adsp-pas
     then:
       properties:

@@ -68,7 +68,10 @@ struct ll_device {
 	struct gpio_desc *enable_gpio;
 	struct clk *ext_clk;
 	bdaddr_t bdaddr;
+<<<<<<< HEAD
 	bool broken_enhanced_setup;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ll_struct {
@@ -659,10 +662,13 @@ static int ll_setup(struct hci_uart *hu)
 			hci_set_quirk(hu->hdev, HCI_QUIRK_INVALID_BDADDR);
 	}
 
+<<<<<<< HEAD
 	if (lldev->broken_enhanced_setup)
 		hci_set_quirk(hu->hdev,
 			      HCI_QUIRK_BROKEN_ENHANCED_SETUP_SYNC_CONN);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Operational speed if any */
 	if (hu->oper_speed)
 		speed = hu->oper_speed;
@@ -717,11 +723,14 @@ static int hci_ti_probe(struct serdev_device *serdev)
 	of_property_read_u32(serdev->dev.of_node, "max-speed", &max_speed);
 	hci_uart_set_speeds(hu, 115200, max_speed);
 
+<<<<<<< HEAD
 	if (of_device_is_compatible(serdev->dev.of_node, "ti,wl1831-st") ||
 	    of_device_is_compatible(serdev->dev.of_node, "ti,wl1835-st") ||
 	    of_device_is_compatible(serdev->dev.of_node, "ti,wl1837-st"))
 		lldev->broken_enhanced_setup = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* optional BD address from nvram */
 	bdaddr_cell = nvmem_cell_get(&serdev->dev, "bd-address");
 	if (IS_ERR(bdaddr_cell)) {

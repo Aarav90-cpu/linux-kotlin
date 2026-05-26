@@ -485,6 +485,7 @@ static void rtw_coex_monitor_bt_ctr(struct rtw_dev *rtwdev)
 		"[BTCoex], Hi-Pri Rx/Tx: %d/%d, Lo-Pri Rx/Tx: %d/%d\n",
 		coex_stat->hi_pri_rx, coex_stat->hi_pri_tx,
 		coex_stat->lo_pri_rx, coex_stat->lo_pri_tx);
+<<<<<<< HEAD
 
 	if (coex_stat->wl_under_lps || coex_stat->wl_under_ips ||
 	    (coex_stat->hi_pri_rx > 60000 && coex_stat->hi_pri_tx == 60000 &&
@@ -492,6 +493,8 @@ static void rtw_coex_monitor_bt_ctr(struct rtw_dev *rtwdev)
 		coex_stat->bt_ctr_ok = false;
 	else
 		coex_stat->bt_ctr_ok = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rtw_coex_monitor_bt_enable(struct rtw_dev *rtwdev)
@@ -1966,18 +1969,27 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
 	struct rtw_coex *coex = &rtwdev->coex;
 	struct rtw_coex_stat *coex_stat = &coex->stat;
 	struct rtw_efuse *efuse = &rtwdev->efuse;
+<<<<<<< HEAD
 	bool is_bt_ctr_hi = false, is_toggle_table = false;
 	u8 table_case, tdma_case;
 	u32 slot_type = 0;
+=======
+	u8 table_case, tdma_case;
+	u32 slot_type = 0;
+	bool bt_multi_link_remain = false, is_toggle_table = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
 	rtw_coex_set_ant_path(rtwdev, false, COEX_SET_ANT_2G);
 	rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
 
+<<<<<<< HEAD
 	if (coex_stat->bt_ctr_ok &&
 	    coex_stat->lo_pri_rx + coex_stat->lo_pri_tx > 360)
 		is_bt_ctr_hi = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (efuse->share_ant) {
 		/* Shared-Ant */
 		if (coex_stat->bt_ble_exist) {
@@ -1991,6 +2003,7 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
 			}
 		} else {
 			/* Legacy HID  */
+<<<<<<< HEAD
 			if (coex_stat->bt_a2dp_active) {
 				table_case = 9;
 				tdma_case = 18;
@@ -2006,16 +2019,39 @@ static void rtw_coex_action_bt_hid(struct rtw_dev *rtwdev)
 					table_case = 12;
 
 				tdma_case = 26;
+=======
+			if (coex_stat->bt_profile_num == 1 &&
+			    (coex_stat->bt_multi_link ||
+			    (coex_stat->lo_pri_rx +
+			     coex_stat->lo_pri_tx > 360) ||
+			     coex_stat->bt_slave ||
+			     bt_multi_link_remain)) {
+				slot_type = TDMA_4SLOT;
+				table_case = 12;
+				tdma_case = 20;
+			} else if (coex_stat->bt_a2dp_active) {
+				table_case = 9;
+				tdma_case = 18;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else if (coex_stat->bt_418_hid_exist &&
 				   coex_stat->wl_gl_busy) {
 				is_toggle_table = true;
 				slot_type = TDMA_4SLOT;
+<<<<<<< HEAD
 				table_case = 32;
 				tdma_case = 27;
 			} else if (coex_stat->bt_ble_hid_exist &&
 				   coex_stat->wl_gl_busy) {
 				table_case = 36;
 				tdma_case = 0;
+=======
+				table_case = 9;
+				tdma_case = 24;
+			} else if (coex_stat->bt_ble_hid_exist &&
+				   coex_stat->wl_gl_busy) {
+				table_case = 32;
+				tdma_case = 9;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				table_case = 9;
 				tdma_case = 9;
@@ -3109,9 +3145,12 @@ void rtw_coex_bt_info_notify(struct rtw_dev *rtwdev, u8 *buf, u8 length)
 	for (i = 0; i < COEX_BTINFO_LENGTH; i++)
 		coex_stat->bt_info_c2h[rsp_source][i] = buf[i];
 
+<<<<<<< HEAD
 	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821A)
 		coex_stat->bt_info_c2h[rsp_source][5] = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* get the same info from bt, skip it */
 	if (coex_stat->bt_info_c2h[rsp_source][1] == coex_stat->bt_info_lb2 &&
 	    coex_stat->bt_info_c2h[rsp_source][2] == coex_stat->bt_info_lb3 &&

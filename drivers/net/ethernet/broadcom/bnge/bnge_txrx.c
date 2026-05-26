@@ -1128,6 +1128,7 @@ static void __bnge_poll_work_done(struct bnge_net *bn, struct bnge_napi *bnapi,
 	}
 }
 
+<<<<<<< HEAD
 static void bnge_async_event_process(struct bnge_net *bn,
 				     struct hwrm_async_event_cmpl *cmpl)
 {
@@ -1151,6 +1152,8 @@ static void bnge_async_event_process(struct bnge_net *bn,
 	__bnge_queue_sp_work(bn);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 bnge_hwrm_update_token(struct bnge_dev *bd, u16 seq_id,
 		       enum bnge_hwrm_wait_state state)
@@ -1169,7 +1172,11 @@ bnge_hwrm_update_token(struct bnge_dev *bd, u16 seq_id,
 	dev_err(bd->dev, "Invalid hwrm seq id %d\n", seq_id);
 }
 
+<<<<<<< HEAD
 static int bnge_hwrm_handler(struct bnge_net *bn, struct tx_cmp *txcmp)
+=======
+static int bnge_hwrm_handler(struct bnge_dev *bd, struct tx_cmp *txcmp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hwrm_cmpl *h_cmpl = (struct hwrm_cmpl *)txcmp;
 	u16 cmpl_type = TX_CMP_TYPE(txcmp), seq_id;
@@ -1177,6 +1184,7 @@ static int bnge_hwrm_handler(struct bnge_net *bn, struct tx_cmp *txcmp)
 	switch (cmpl_type) {
 	case CMPL_BASE_TYPE_HWRM_DONE:
 		seq_id = le16_to_cpu(h_cmpl->sequence_id);
+<<<<<<< HEAD
 		bnge_hwrm_update_token(bn->bd, seq_id, BNGE_HWRM_COMPLETE);
 		break;
 
@@ -1185,6 +1193,12 @@ static int bnge_hwrm_handler(struct bnge_net *bn, struct tx_cmp *txcmp)
 					 (struct hwrm_async_event_cmpl *)txcmp);
 		break;
 
+=======
+		bnge_hwrm_update_token(bd, seq_id, BNGE_HWRM_COMPLETE);
+		break;
+
+	case CMPL_BASE_TYPE_HWRM_ASYNC_EVENT:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}
@@ -1262,7 +1276,11 @@ static int __bnge_poll_work(struct bnge_net *bn, struct bnge_cp_ring_info *cpr,
 		} else if (unlikely(cmp_type == CMPL_BASE_TYPE_HWRM_DONE ||
 				    cmp_type == CMPL_BASE_TYPE_HWRM_FWD_REQ ||
 				    cmp_type == CMPL_BA_TY_HWRM_ASY_EVT)) {
+<<<<<<< HEAD
 			bnge_hwrm_handler(bn, txcmp);
+=======
+			bnge_hwrm_handler(bn->bd, txcmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		raw_cons = NEXT_RAW_CMP(raw_cons);
 
@@ -1382,7 +1400,11 @@ int bnge_napi_poll(struct napi_struct *napi, int budget)
 						      budget - work_done);
 			nqr->has_more_work |= cpr->has_more_work;
 		} else {
+<<<<<<< HEAD
 			bnge_hwrm_handler(bn, (struct tx_cmp *)nqcmp);
+=======
+			bnge_hwrm_handler(bn->bd, (struct tx_cmp *)nqcmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		raw_cons = NEXT_RAW_CMP(raw_cons);
 	}

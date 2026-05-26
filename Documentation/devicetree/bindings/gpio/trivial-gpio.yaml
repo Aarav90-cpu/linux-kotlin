@@ -27,6 +27,10 @@ properties:
           - gateworks,pld-gpio
           - ibm,ppc4xx-gpio
           - loongson,ls1x-gpio
+<<<<<<< HEAD
+=======
+          - maxim,max77620
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - nintendo,hollywood-gpio
           - nxp,pca9570
           - nxp,pca9571
@@ -85,6 +89,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
+=======
+              - maxim,max77620
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - rockchip,rk3328-grf-gpio
               - ti,lp3943-gpio
               - ti,palmas-gpio

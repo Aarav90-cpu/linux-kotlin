@@ -63,10 +63,17 @@ management subsystem maintainer.
 Review cadence
 --------------
 
+<<<<<<< HEAD
 The DAMON maintainer usually work in a flexible way, except early morning in PT
 (Pacific Time).  The response to patches will occasionally be slow.  Do not
 hesitate to send a ping if you have not heard back within a week of sending a
 patch.
+=======
+The DAMON maintainer does the work on the usual work hour (09:00 to 17:00,
+Mon-Fri) in PT (Pacific Time).  The response to patches will occasionally be
+slow.  Do not hesitate to send a ping if you have not heard back within a week
+of sending a patch.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Mailing tool
 ------------

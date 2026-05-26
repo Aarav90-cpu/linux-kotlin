@@ -202,7 +202,10 @@ enum {
  * typedef resource_alignf - Resource alignment callback
  * @data:	Private data used by the callback
  * @res:	Resource candidate range (an empty resource space)
+<<<<<<< HEAD
  * @empty_res:	Empty resource range without alignment applied
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @size:	The minimum size of the empty space
  * @align:	Alignment from the constraints
  *
@@ -213,7 +216,10 @@ enum {
  */
 typedef resource_size_t (*resource_alignf)(void *data,
 					   const struct resource *res,
+<<<<<<< HEAD
 					   const struct resource *empty_res,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   resource_size_t size,
 					   resource_size_t align);
 
@@ -306,6 +312,7 @@ static inline unsigned long resource_ext_type(const struct resource *res)
 {
 	return res->flags & IORESOURCE_EXT_TYPE_BITS;
 }
+<<<<<<< HEAD
 
 /*
  * For checking if @r1 completely contains @r2 for resources that have real
@@ -328,6 +335,16 @@ static inline bool resource_contains(const struct resource *r1, const struct res
 		return false;
 
 	return __resource_contains_unbound(r1, r2);
+=======
+/* True iff r1 completely contains r2 */
+static inline bool resource_contains(const struct resource *r1, const struct resource *r2)
+{
+	if (resource_type(r1) != resource_type(r2))
+		return false;
+	if (r1->flags & IORESOURCE_UNSET || r2->flags & IORESOURCE_UNSET)
+		return false;
+	return r1->start <= r2->start && r1->end >= r2->end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* True if any part of r1 overlaps r2 */

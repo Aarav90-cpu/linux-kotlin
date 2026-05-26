@@ -973,6 +973,7 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
 	}
 }
 
+<<<<<<< HEAD
 void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
 {
 	int base;
@@ -1003,6 +1004,8 @@ void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
 	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mtk_ppe_start(struct mtk_ppe *ppe)
 {
 	u32 val;

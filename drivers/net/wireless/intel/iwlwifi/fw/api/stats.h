@@ -598,6 +598,10 @@ struct iwl_stats_ntfy_per_sta {
 } __packed; /* STATISTICS_NTFY_PER_STA_API_S_VER_1 */
 
 #define IWL_STATS_MAX_PHY_OPERATIONAL 3
+<<<<<<< HEAD
+=======
+#define IWL_STATS_MAX_FW_LINKS	(IWL_FW_MAX_LINK_ID + 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct iwl_system_statistics_notif_oper - statistics notification
@@ -609,7 +613,11 @@ struct iwl_stats_ntfy_per_sta {
  */
 struct iwl_system_statistics_notif_oper {
 	__le32 time_stamp;
+<<<<<<< HEAD
 	struct iwl_stats_ntfy_per_link per_link[IWL_FW_MAX_LINKS];
+=======
+	struct iwl_stats_ntfy_per_link per_link[IWL_STATS_MAX_FW_LINKS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iwl_stats_ntfy_per_phy per_phy[IWL_STATS_MAX_PHY_OPERATIONAL];
 	struct iwl_stats_ntfy_per_sta per_sta[IWL_STATION_COUNT_MAX];
 } __packed; /* STATISTICS_FW_NTFY_OPERATIONAL_API_S_VER_3 */
@@ -623,7 +631,11 @@ struct iwl_system_statistics_notif_oper {
  */
 struct iwl_system_statistics_part1_notif_oper {
 	__le32 time_stamp;
+<<<<<<< HEAD
 	struct iwl_stats_ntfy_part1_per_link per_link[IWL_FW_MAX_LINKS];
+=======
+	struct iwl_stats_ntfy_part1_per_link per_link[IWL_STATS_MAX_FW_LINKS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 per_phy_crc_error_stats[IWL_STATS_MAX_PHY_OPERATIONAL];
 } __packed; /* STATISTICS_FW_NTFY_OPERATIONAL_PART1_API_S_VER_4 */
 

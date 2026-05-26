@@ -8,8 +8,11 @@ MOD_LIVEPATCH1=test_klp_livepatch
 MOD_LIVEPATCH2=test_klp_syscall
 MOD_LIVEPATCH3=test_klp_callbacks_demo
 MOD_REPLACE=test_klp_atomic_replace
+<<<<<<< HEAD
 MOD_TARGET=test_klp_mod_target
 MOD_TARGET_PATCH=test_klp_mod_patch
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 setup_config
 
@@ -198,6 +201,7 @@ livepatch: '$MOD_REPLACE': unpatching complete
 % rmmod $MOD_REPLACE"
 
 
+<<<<<<< HEAD
 # - load a target module that provides /proc/test_klp_mod_target with
 #   original output
 # - load a livepatch that patches the target module's show function
@@ -296,4 +300,6 @@ livepatch: '$MOD_TARGET_PATCH': unpatching complete
 $MOD_TARGET: test_klp_mod_target_exit"
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit 0

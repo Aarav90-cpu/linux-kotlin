@@ -252,9 +252,19 @@ static int xgbe_platform_probe(struct platform_device *pdev)
 		dev_dbg(dev, "sir1_regs  = %p\n", pdata->sir1_regs);
 
 	/* Retrieve the MAC address */
+<<<<<<< HEAD
 	ret = device_get_mac_address(dev, pdata->mac_addr);
 	if (ret) {
 		dev_err(dev, "invalid MAC address property\n");
+=======
+	ret = device_property_read_u8_array(dev, XGBE_MAC_ADDR_PROPERTY,
+					    pdata->mac_addr,
+					    sizeof(pdata->mac_addr));
+	if (ret || !is_valid_ether_addr(pdata->mac_addr)) {
+		dev_err(dev, "invalid %s property\n", XGBE_MAC_ADDR_PROPERTY);
+		if (!ret)
+			ret = -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_io;
 	}
 
@@ -380,7 +390,11 @@ static int xgbe_platform_suspend(struct device *dev)
 	DBGPR("-->xgbe_suspend\n");
 
 	if (netif_running(netdev))
+<<<<<<< HEAD
 		ret = xgbe_powerdown(netdev);
+=======
+		ret = xgbe_powerdown(netdev, XGMAC_DRIVER_CONTEXT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pdata->lpm_ctrl = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_CTRL1);
 	pdata->lpm_ctrl |= MDIO_CTRL1_LPOWER;
@@ -403,7 +417,11 @@ static int xgbe_platform_resume(struct device *dev)
 	XMDIO_WRITE(pdata, MDIO_MMD_PCS, MDIO_CTRL1, pdata->lpm_ctrl);
 
 	if (netif_running(netdev)) {
+<<<<<<< HEAD
 		ret = xgbe_powerup(netdev);
+=======
+		ret = xgbe_powerup(netdev, XGMAC_DRIVER_CONTEXT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Schedule a restart in case the link or phy state changed
 		 * while we were powered down.

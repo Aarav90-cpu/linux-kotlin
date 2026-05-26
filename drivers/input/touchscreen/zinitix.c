@@ -703,11 +703,20 @@ static int zinitix_suspend(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct bt541_ts_data *bt541 = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	guard(mutex)(&bt541->input_dev->mutex);
+=======
+	mutex_lock(&bt541->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(bt541->input_dev))
 		zinitix_stop(bt541);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&bt541->input_dev->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -715,6 +724,7 @@ static int zinitix_resume(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct bt541_ts_data *bt541 = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&bt541->input_dev->mutex);
@@ -726,6 +736,18 @@ static int zinitix_resume(struct device *dev)
 	}
 
 	return 0;
+=======
+	int ret = 0;
+
+	mutex_lock(&bt541->input_dev->mutex);
+
+	if (input_device_enabled(bt541->input_dev))
+		ret = zinitix_start(bt541);
+
+	mutex_unlock(&bt541->input_dev->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(zinitix_pm_ops, zinitix_suspend, zinitix_resume);

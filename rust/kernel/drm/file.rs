@@ -4,6 +4,7 @@
 //!
 //! C header: [`include/drm/drm_file.h`](srctree/include/drm/drm_file.h)
 
+<<<<<<< HEAD
 use crate::{
     bindings,
     drm,
@@ -11,6 +12,11 @@ use crate::{
     types::Opaque, //
 };
 use core::marker::PhantomData;
+=======
+use crate::{bindings, drm, error::Result, prelude::*, types::Opaque};
+use core::marker::PhantomData;
+use core::pin::Pin;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// Trait that must be implemented by DRM drivers to represent a DRM File (a client instance).
 pub trait DriverFile {

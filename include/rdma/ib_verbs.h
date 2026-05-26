@@ -44,7 +44,10 @@
 #include <uapi/rdma/rdma_user_ioctl.h>
 #include <uapi/rdma/ib_user_ioctl_verbs.h>
 #include <linux/pci-tph.h>
+<<<<<<< HEAD
 #include <rdma/frmr_pools.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/dma-buf.h>
 
 #define IB_FW_VERSION_NAME_MAX	ETHTOOL_FWVERS_LEN
@@ -1577,6 +1580,7 @@ struct ib_uobject {
 	const struct uverbs_api_object *uapi_object;
 };
 
+<<<<<<< HEAD
 /**
  * struct ib_udata - Driver request/response data from userspace
  * @inbuf: Pointer to request data from userspace
@@ -1664,6 +1668,8 @@ struct ib_uobject {
  *
  *    return ib_respond_empty_udata(udata);
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ib_udata {
 	const void __user *inbuf;
 	void __user *outbuf;
@@ -1738,7 +1744,10 @@ struct ib_cq {
 	u8 interrupt:1;
 	u8 shared:1;
 	unsigned int comp_vector;
+<<<<<<< HEAD
 	struct ib_umem *umem;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Implementation details of the RDMA core, don't use in drivers:
@@ -1993,11 +2002,14 @@ struct ib_mr {
 	struct ib_dm      *dm;
 	struct ib_sig_attrs *sig_attrs; /* only for IB_MR_TYPE_INTEGRITY MRs */
 	struct ib_dmah *dmah;
+<<<<<<< HEAD
 	struct {
 		struct ib_frmr_pool *pool;
 		struct ib_frmr_key key;
 		u32 handle;
 	} frmr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Implementation details of the RDMA core, don't use in drivers:
 	 */
@@ -2361,6 +2373,10 @@ struct ib_port_data {
 
 /* rdma netdev type - specifies protocol type */
 enum rdma_netdev_t {
+<<<<<<< HEAD
+=======
+	RDMA_NETDEV_OPA_VNIC,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RDMA_NETDEV_IPOIB,
 };
 
@@ -2374,6 +2390,14 @@ struct rdma_netdev {
 	u32		   port_num;
 	int                mtu;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * cleanup function must be specified.
+	 * FIXME: This is only used for OPA_VNIC and that usage should be
+	 * removed too.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void (*free_rdma_netdev)(struct net_device *netdev);
 
 	/* control functions */
@@ -2475,12 +2499,15 @@ struct ib_device_ops {
 	enum rdma_driver_id driver_id;
 	u32 uverbs_abi_ver;
 	unsigned int uverbs_no_driver_id_binding:1;
+<<<<<<< HEAD
 	/*
 	 * Indicates the driver checks every op accepting a udata for the
 	 * correct size on input and always handles the output using the udata
 	 * helpers.
 	 */
 	unsigned int uverbs_robust_udata:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * NOTE: New drivers should not make use of device_group; instead new
@@ -2513,6 +2540,11 @@ struct ib_device_ops {
 	int (*modify_device)(struct ib_device *device, int device_modify_mask,
 			     struct ib_device_modify *device_modify);
 	void (*get_dev_fw_str)(struct ib_device *device, char *str);
+<<<<<<< HEAD
+=======
+	const struct cpumask *(*get_vector_affinity)(struct ib_device *ibdev,
+						     int comp_vector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int (*query_port)(struct ib_device *device, u32 port_num,
 			  struct ib_port_attr *port_attr);
 	int (*query_port_speed)(struct ib_device *device, u32 port_num,
@@ -2629,6 +2661,7 @@ struct ib_device_ops {
 	int (*destroy_qp)(struct ib_qp *qp, struct ib_udata *udata);
 	int (*create_cq)(struct ib_cq *cq, const struct ib_cq_init_attr *attr,
 			 struct uverbs_attr_bundle *attrs);
+<<<<<<< HEAD
 	int (*create_user_cq)(struct ib_cq *cq,
 			      const struct ib_cq_init_attr *attr,
 			      struct uverbs_attr_bundle *attrs);
@@ -2636,6 +2669,15 @@ struct ib_device_ops {
 	int (*destroy_cq)(struct ib_cq *cq, struct ib_udata *udata);
 	int (*resize_user_cq)(struct ib_cq *cq, unsigned int cqe,
 			      struct ib_udata *udata);
+=======
+	int (*create_cq_umem)(struct ib_cq *cq,
+			      const struct ib_cq_init_attr *attr,
+			      struct ib_umem *umem,
+			      struct uverbs_attr_bundle *attrs);
+	int (*modify_cq)(struct ib_cq *cq, u16 cq_count, u16 cq_period);
+	int (*destroy_cq)(struct ib_cq *cq, struct ib_udata *udata);
+	int (*resize_cq)(struct ib_cq *cq, int cqe, struct ib_udata *udata);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * pre_destroy_cq - Prevent a cq from generating any new work
 	 * completions, but not free any kernel resources
@@ -2999,8 +3041,11 @@ struct ib_device {
 	struct list_head subdev_list;
 
 	enum rdma_nl_name_assign_type name_assign_type;
+<<<<<<< HEAD
 
 	struct ib_frmr_pools *frmr_pools;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline void *rdma_zalloc_obj(struct ib_device *dev, size_t size,
@@ -3053,6 +3098,25 @@ struct ib_client {
 	u8 no_kverbs_req:1;
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * IB block DMA iterator
+ *
+ * Iterates the DMA-mapped SGL in contiguous memory blocks aligned
+ * to a HW supported page size.
+ */
+struct ib_block_iter {
+	/* internal states */
+	struct scatterlist *__sg;	/* sg holding the current aligned block */
+	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
+	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
+	unsigned int __sg_nents;	/* number of SG entries */
+	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
+	unsigned int __pg_bit;		/* alignment of current block */
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ib_device *_ib_alloc_device(size_t size, struct net *net);
 #define ib_alloc_device(drv_struct, member)                                    \
 	container_of(_ib_alloc_device(sizeof(struct drv_struct) +              \
@@ -3081,6 +3145,41 @@ void ib_unregister_device_queued(struct ib_device *ib_dev);
 int ib_register_client   (struct ib_client *client);
 void ib_unregister_client(struct ib_client *client);
 
+<<<<<<< HEAD
+=======
+void __rdma_block_iter_start(struct ib_block_iter *biter,
+			     struct scatterlist *sglist,
+			     unsigned int nents,
+			     unsigned long pgsz);
+bool __rdma_block_iter_next(struct ib_block_iter *biter);
+
+/**
+ * rdma_block_iter_dma_address - get the aligned dma address of the current
+ * block held by the block iterator.
+ * @biter: block iterator holding the memory block
+ */
+static inline dma_addr_t
+rdma_block_iter_dma_address(struct ib_block_iter *biter)
+{
+	return biter->__dma_addr & ~(BIT_ULL(biter->__pg_bit) - 1);
+}
+
+/**
+ * rdma_for_each_block - iterate over contiguous memory blocks of the sg list
+ * @sglist: sglist to iterate over
+ * @biter: block iterator holding the memory block
+ * @nents: maximum number of sg entries to iterate over
+ * @pgsz: best HW supported page size to use
+ *
+ * Callers may use rdma_block_iter_dma_address() to get each
+ * blocks aligned DMA address.
+ */
+#define rdma_for_each_block(sglist, biter, nents, pgsz)		\
+	for (__rdma_block_iter_start(biter, sglist, nents,	\
+				     pgsz);			\
+	     __rdma_block_iter_next(biter);)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ib_get_client_data - Get IB client context
  * @device:Device to get context for
@@ -4105,6 +4204,18 @@ struct ib_cq *__ib_create_cq(struct ib_device *device,
 	__ib_create_cq((device), (cmp_hndlr), (evt_hndlr), (cq_ctxt), (cq_attr), KBUILD_MODNAME)
 
 /**
+<<<<<<< HEAD
+=======
+ * ib_resize_cq - Modifies the capacity of the CQ.
+ * @cq: The CQ to resize.
+ * @cqe: The minimum size of the CQ.
+ *
+ * Users can examine the cq structure to determine the actual CQ size.
+ */
+int ib_resize_cq(struct ib_cq *cq, int cqe);
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * rdma_set_cq_moderation - Modifies moderation params of the CQ
  * @cq: The CQ to modify.
  * @cq_count: number of CQEs that will trigger an event
@@ -4912,6 +5023,30 @@ static inline __be16 ib_lid_be16(u32 lid)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * ib_get_vector_affinity - Get the affinity mappings of a given completion
+ *   vector
+ * @device:         the rdma device
+ * @comp_vector:    index of completion vector
+ *
+ * Returns NULL on failure, otherwise a corresponding cpu map of the
+ * completion vector (returns all-cpus map if the device driver doesn't
+ * implement get_vector_affinity).
+ */
+static inline const struct cpumask *
+ib_get_vector_affinity(struct ib_device *device, int comp_vector)
+{
+	if (comp_vector < 0 || comp_vector >= device->num_comp_vectors ||
+	    !device->ops.get_vector_affinity)
+		return NULL;
+
+	return device->ops.get_vector_affinity(device, comp_vector);
+
+}
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * rdma_roce_rescan_device - Rescan all of the network devices in the system
  * and add their gids, as needed, to the relevant RoCE devices.
  *

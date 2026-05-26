@@ -8,6 +8,10 @@
 
 #include <errno.h>
 #include <inttypes.h>
+<<<<<<< HEAD
+=======
+#include <libgen.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdlib.h>
 #include "util.h" // hex_width()
 #include "ui/ui.h"
@@ -1244,7 +1248,11 @@ int hist_entry__annotate_printf(struct hist_entry *he, struct evsel *evsel)
 	if (opts->full_path)
 		d_filename = filename;
 	else
+<<<<<<< HEAD
 		d_filename = perf_basename(filename);
+=======
+		d_filename = basename(filename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (evsel__is_group_event(evsel)) {
 		evsel__group_desc(evsel, buf, sizeof(buf));

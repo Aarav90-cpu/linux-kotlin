@@ -149,7 +149,14 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
 #endif
 
 #ifndef RELOC_HIDE
+<<<<<<< HEAD
 # define RELOC_HIDE(ptr, off) ((typeof(ptr))((unsigned long)(ptr) + (off)))
+=======
+# define RELOC_HIDE(ptr, off)					\
+  ({ unsigned long __ptr;					\
+     __ptr = (unsigned long) (ptr);				\
+    (typeof(ptr)) (__ptr + (off)); })
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #define absolute_pointer(val)	RELOC_HIDE((void *)(val), 0)

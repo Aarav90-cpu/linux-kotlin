@@ -13,7 +13,10 @@
 #include "../arch.h"
 #include "../types.h"
 #include "../sys.h"
+<<<<<<< HEAD
 #include "../sys/sysmacros.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * int statx(int fd, const char *path, int flags, unsigned int mask, struct statx *buf);
@@ -24,10 +27,17 @@
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_statx(int fd, const char *path, int flags, unsigned int mask, struct statx *buf)
 {
 #ifdef __NR_statx
 	return __nolibc_syscall5(__NR_statx, fd, path, flags, mask, buf);
+=======
+int sys_statx(int fd, const char *path, int flags, unsigned int mask, struct statx *buf)
+{
+#ifdef __NR_statx
+	return my_syscall5(__NR_statx, fd, path, flags, mask, buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 	return __nolibc_enosys(__func__, fd, path, flags, mask, buf);
 #endif
@@ -36,7 +46,11 @@ int _sys_statx(int fd, const char *path, int flags, unsigned int mask, struct st
 static __attribute__((unused))
 int statx(int fd, const char *path, int flags, unsigned int mask, struct statx *buf)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_statx(fd, path, flags, mask, buf));
+=======
+	return __sysret(sys_statx(fd, path, flags, mask, buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 
@@ -46,17 +60,33 @@ int fstatat(int fd, const char *path, struct stat *buf, int flag)
 	struct statx statx;
 	long ret;
 
+<<<<<<< HEAD
 	ret = __sysret(_sys_statx(fd, path, flag | AT_NO_AUTOMOUNT, STATX_BASIC_STATS, &statx));
 	if (ret == -1)
 		return ret;
 
 	buf->st_dev          = makedev(statx.stx_dev_major, statx.stx_dev_minor);
+=======
+	ret = __sysret(sys_statx(fd, path, flag | AT_NO_AUTOMOUNT, STATX_BASIC_STATS, &statx));
+	if (ret == -1)
+		return ret;
+
+	buf->st_dev          = ((statx.stx_dev_minor & 0xff)
+			       | (statx.stx_dev_major << 8)
+			       | ((statx.stx_dev_minor & ~0xff) << 12));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	buf->st_ino          = statx.stx_ino;
 	buf->st_mode         = statx.stx_mode;
 	buf->st_nlink        = statx.stx_nlink;
 	buf->st_uid          = statx.stx_uid;
 	buf->st_gid          = statx.stx_gid;
+<<<<<<< HEAD
 	buf->st_rdev         = makedev(statx.stx_rdev_major, statx.stx_rdev_minor);
+=======
+	buf->st_rdev         = ((statx.stx_rdev_minor & 0xff)
+			       | (statx.stx_rdev_major << 8)
+			       | ((statx.stx_rdev_minor & ~0xff) << 12));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	buf->st_size         = statx.stx_size;
 	buf->st_blksize      = statx.stx_blksize;
 	buf->st_blocks       = statx.stx_blocks;

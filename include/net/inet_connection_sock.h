@@ -34,7 +34,11 @@ struct tcp_congestion_ops;
  */
 struct inet_connection_sock_af_ops {
 	int	    (*queue_xmit)(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
+<<<<<<< HEAD
 	u16	    net_header_len;
+=======
+	void	    (*send_check)(struct sock *sk, struct sk_buff *skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int	    (*rebuild_header)(struct sock *sk);
 	void	    (*sk_rx_dst_set)(struct sock *sk, const struct sk_buff *skb);
 	int	    (*conn_request)(struct sock *sk, struct sk_buff *skb);
@@ -45,6 +49,10 @@ struct inet_connection_sock_af_ops {
 				      bool *own_req,
 				      void (*opt_child_init)(struct sock *newsk,
 							     const struct sock *sk));
+<<<<<<< HEAD
+=======
+	u16	    net_header_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int	    (*setsockopt)(struct sock *sk, int level, int optname,
 				  sockptr_t optval, unsigned int optlen);
 	int	    (*getsockopt)(struct sock *sk, int level, int optname,
@@ -138,8 +146,13 @@ struct inet_connection_sock {
 	u32			  icsk_probes_tstamp;
 	u32			  icsk_user_timeout;
 
+<<<<<<< HEAD
 	u64			  icsk_ca_priv[104 / sizeof(u64)];
 #define ICSK_CA_PRIV_SIZE	  sizeof_field(struct inet_connection_sock, icsk_ca_priv)
+=======
+#define ICSK_CA_PRIV_SIZE      (144)
+	u64			  icsk_ca_priv[ICSK_CA_PRIV_SIZE / sizeof(u64)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define ICSK_TIME_RETRANS	1	/* Retransmit timer */

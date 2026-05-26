@@ -30,7 +30,11 @@
  */
 #define __ARCH_WANT_SYS_OLD_SELECT
 
+<<<<<<< HEAD
 #define __nolibc_syscall0(num)                                                \
+=======
+#define my_syscall0(num)                                                      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -44,7 +48,11 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall1(num, arg1)                                          \
+=======
+#define my_syscall1(num, arg1)                                                \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -60,7 +68,11 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall2(num, arg1, arg2)                                    \
+=======
+#define my_syscall2(num, arg1, arg2)                                          \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -77,7 +89,11 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall3(num, arg1, arg2, arg3)                              \
+=======
+#define my_syscall3(num, arg1, arg2, arg3)                                    \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -95,7 +111,11 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall4(num, arg1, arg2, arg3, arg4)                        \
+=======
+#define my_syscall4(num, arg1, arg2, arg3, arg4)                              \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -114,7 +134,11 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall5(num, arg1, arg2, arg3, arg4, arg5)                  \
+=======
+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)                        \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num __asm__ ("eax") = (num);                           \
@@ -134,6 +158,7 @@
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)	      \
 ({								              \
 	long _eax  = (long)(num);				              \
@@ -155,6 +180,29 @@
 		: "memory", "cc"				              \
 	);							              \
 	_eax;							              \
+=======
+#define my_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)	\
+({								\
+	long _eax  = (long)(num);				\
+	long _arg6 = (long)(arg6); /* Always in memory */	\
+	__asm__ volatile (					\
+		"pushl	%[_arg6]\n\t"				\
+		"pushl	%%ebp\n\t"				\
+		"movl	4(%%esp),%%ebp\n\t"			\
+		"int	$0x80\n\t"				\
+		"popl	%%ebp\n\t"				\
+		"addl	$4,%%esp\n\t"				\
+		: "+a"(_eax)		/* %eax */		\
+		: "b"(arg1),		/* %ebx */		\
+		  "c"(arg2),		/* %ecx */		\
+		  "d"(arg3),		/* %edx */		\
+		  "S"(arg4),		/* %esi */		\
+		  "D"(arg5),		/* %edi */		\
+		  [_arg6]"m"(_arg6)	/* memory */		\
+		: "memory", "cc"				\
+	);							\
+	_eax;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 #ifndef NOLIBC_NO_RUNTIME
@@ -200,7 +248,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
  *
  */
 
+<<<<<<< HEAD
 #define __nolibc_syscall0(num)                                                \
+=======
+#define my_syscall0(num)                                                      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -214,7 +266,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall1(num, arg1)                                          \
+=======
+#define my_syscall1(num, arg1)                                                \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -230,7 +286,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall2(num, arg1, arg2)                                    \
+=======
+#define my_syscall2(num, arg1, arg2)                                          \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -247,7 +307,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall3(num, arg1, arg2, arg3)                              \
+=======
+#define my_syscall3(num, arg1, arg2, arg3)                                    \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -265,7 +329,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall4(num, arg1, arg2, arg3, arg4)                        \
+=======
+#define my_syscall4(num, arg1, arg2, arg3, arg4)                              \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -284,7 +352,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall5(num, arg1, arg2, arg3, arg4, arg5)                  \
+=======
+#define my_syscall5(num, arg1, arg2, arg3, arg4, arg5)                        \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \
@@ -304,7 +376,11 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
 	_ret;                                                                 \
 })
 
+<<<<<<< HEAD
 #define __nolibc_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)            \
+=======
+#define my_syscall6(num, arg1, arg2, arg3, arg4, arg5, arg6)                  \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ({                                                                            \
 	long _ret;                                                            \
 	register long _num  __asm__ ("rax") = (num);                          \

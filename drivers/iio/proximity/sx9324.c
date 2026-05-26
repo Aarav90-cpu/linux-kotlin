@@ -821,7 +821,11 @@ static const struct sx_common_reg_default sx9324_default_regs[] = {
 	{ SX9324_REG_ADV_CTRL10, 0x00, "adv_ctrl10" },
 	{ SX9324_REG_ADV_CTRL11, 0x00, "adv_ctrl11" },
 	{ SX9324_REG_ADV_CTRL12, 0x00, "adv_ctrl12" },
+<<<<<<< HEAD
 	/* TODO(gwendal): SAR currently disabled */
+=======
+	/* TODO(gwendal): SAR currenly disabled */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ SX9324_REG_ADV_CTRL13, 0x00, "adv_ctrl13" },
 	{ SX9324_REG_ADV_CTRL14, 0x00, "adv_ctrl14" },
 	{ SX9324_REG_ADV_CTRL15, 0x00, "adv_ctrl15" },

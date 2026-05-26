@@ -80,6 +80,7 @@ static inline unsigned long get_trans_granule(void)
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_4193714
 
 void sme_do_dvmsync(const struct cpumask *mask);
@@ -145,6 +146,8 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
 
 #endif /* CONFIG_ARM64_ERRATUM_4193714 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Level-based TLBI operations.
  *
@@ -162,6 +165,7 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
 
 #define TLBI_TTL_UNKNOWN	INT_MAX
 
+<<<<<<< HEAD
 typedef void (*tlbi_op)(u64 arg);
 
 static __always_inline void vae1is(u64 arg)
@@ -225,6 +229,26 @@ static inline void __tlbi_level(tlbi_op op, u64 addr, u32 level)
 {
 	__tlbi_level_asid(op, addr, level, 0);
 }
+=======
+#define __tlbi_level(op, addr, level) do {				\
+	u64 arg = addr;							\
+									\
+	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) &&	\
+	    level >= 0 && level <= 3) {					\
+		u64 ttl = level & 3;					\
+		ttl |= get_trans_granule() << 2;			\
+		arg &= ~TLBI_TTL_MASK;					\
+		arg |= FIELD_PREP(TLBI_TTL_MASK, ttl);			\
+	}								\
+									\
+	__tlbi(op, arg);						\
+} while(0)
+
+#define __tlbi_user_level(op, arg, level) do {				\
+	if (arm64_kernel_unmapped_at_el0())				\
+		__tlbi_level(op, (arg | USER_ASID_FLAG), level);	\
+} while (0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This macro creates a properly formatted VA operand for the TLB RANGE. The
@@ -251,6 +275,22 @@ static inline void __tlbi_level(tlbi_op op, u64 addr, u32 level)
 #define TLBIR_TTL_MASK		GENMASK_ULL(38, 37)
 #define TLBIR_BADDR_MASK	GENMASK_ULL(36,  0)
 
+<<<<<<< HEAD
+=======
+#define __TLBI_VADDR_RANGE(baddr, asid, scale, num, ttl)		\
+	({								\
+		unsigned long __ta = 0;					\
+		unsigned long __ttl = (ttl >= 1 && ttl <= 3) ? ttl : 0;	\
+		__ta |= FIELD_PREP(TLBIR_BADDR_MASK, baddr);		\
+		__ta |= FIELD_PREP(TLBIR_TTL_MASK, __ttl);		\
+		__ta |= FIELD_PREP(TLBIR_NUM_MASK, num);		\
+		__ta |= FIELD_PREP(TLBIR_SCALE_MASK, scale);		\
+		__ta |= FIELD_PREP(TLBIR_TG_MASK, get_trans_granule());	\
+		__ta |= FIELD_PREP(TLBIR_ASID_MASK, asid);		\
+		__ta;							\
+	})
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* These macros are used by the TLBI RANGE feature. */
 #define __TLBI_RANGE_PAGES(num, scale)	\
 	((unsigned long)((num) + 1) << (5 * (scale) + 1))
@@ -264,7 +304,15 @@ static inline void __tlbi_level(tlbi_op op, u64 addr, u32 level)
  * range.
  */
 #define __TLBI_RANGE_NUM(pages, scale)					\
+<<<<<<< HEAD
 	(((pages) >> (5 * (scale) + 1)) - 1)
+=======
+	({								\
+		int __pages = min((pages),				\
+				  __TLBI_RANGE_PAGES(31, (scale)));	\
+		(__pages >> (5 * (scale) + 1)) - 1;			\
+	})
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __repeat_tlbi_sync(op, arg...)						\
 do {										\
@@ -278,6 +326,7 @@ do {										\
  * Complete broadcast TLB maintenance issued by the host which invalidates
  * stage 1 information in the host's own translation regime.
  */
+<<<<<<< HEAD
 static inline void __tlbi_sync_s1ish(struct mm_struct *mm)
 {
 	dsb(ish);
@@ -293,6 +342,9 @@ static inline void __tlbi_sync_s1ish_batch(struct arch_tlbflush_unmap_batch *bat
 }
 
 static inline void __tlbi_sync_s1ish_kernel(void)
+=======
+static inline void __tlbi_sync_s1ish(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	dsb(ish);
 	__repeat_tlbi_sync(vale1is, 0);
@@ -348,7 +400,14 @@ static inline void __tlbi_sync_s1ish_hyp(void)
  *		unmapping pages from vmalloc/io space.
  *
  *	flush_tlb_page(vma, addr)
+<<<<<<< HEAD
  *		Equivalent to __flush_tlb_page(..., flags=TLBF_NONE)
+=======
+ *		Invalidate a single user mapping for address 'addr' in the
+ *		address space corresponding to 'vma->mm'.  Note that this
+ *		operation only invalidates a single, last-level page-table
+ *		entry and therefore does not affect any walk-caches.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *
  *	Next, we have some undocumented invalidation routines that you probably
@@ -362,6 +421,7 @@ static inline void __tlbi_sync_s1ish_hyp(void)
  *		CPUs, ensuring that any walk-cache entries associated with the
  *		translation are also invalidated.
  *
+<<<<<<< HEAD
  *	__flush_tlb_range(vma, start, end, stride, tlb_level, flags)
  *		Invalidate the virtual-address range '[start, end)' on all
  *		CPUs for the user address space corresponding to 'vma->mm'.
@@ -384,6 +444,32 @@ static inline void __tlbi_sync_s1ish_hyp(void)
  *		any combination of TLBF_NONOTIFY (don't call mmu notifiers),
  *		TLBF_NOSYNC (don't issue trailing dsb) and TLBF_NOBROADCAST
  *		(only perform the invalidation for the local cpu).
+=======
+ *	__flush_tlb_range(vma, start, end, stride, last_level, tlb_level)
+ *		Invalidate the virtual-address range '[start, end)' on all
+ *		CPUs for the user address space corresponding to 'vma->mm'.
+ *		The invalidation operations are issued at a granularity
+ *		determined by 'stride' and only affect any walk-cache entries
+ *		if 'last_level' is equal to false. tlb_level is the level at
+ *		which the invalidation must take place. If the level is wrong,
+ *		no invalidation may take place. In the case where the level
+ *		cannot be easily determined, the value TLBI_TTL_UNKNOWN will
+ *		perform a non-hinted invalidation.
+ *
+ *	local_flush_tlb_page(vma, addr)
+ *		Local variant of flush_tlb_page().  Stale TLB entries may
+ *		remain in remote CPUs.
+ *
+ *	local_flush_tlb_page_nonotify(vma, addr)
+ *		Same as local_flush_tlb_page() except MMU notifier will not be
+ *		called.
+ *
+ *	local_flush_tlb_contpte(vma, addr)
+ *		Invalidate the virtual-address range
+ *		'[addr, addr+CONT_PTE_SIZE)' mapped with contpte on local CPU
+ *		for the user address space corresponding to 'vma->mm'.  Stale
+ *		TLB entries may remain in remote CPUs.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *	Finally, take a look at asm/tlb.h to see how tlb_flush() is implemented
  *	on top of these routines, since that is our interface to the mmu_gather
@@ -401,7 +487,11 @@ static inline void flush_tlb_all(void)
 {
 	dsb(ishst);
 	__tlbi(vmalle1is);
+<<<<<<< HEAD
 	__tlbi_sync_s1ish_kernel();
+=======
+	__tlbi_sync_s1ish();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	isb();
 }
 
@@ -413,10 +503,70 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
 	asid = __TLBI_VADDR(0, ASID(mm));
 	__tlbi(aside1is, asid);
 	__tlbi_user(aside1is, asid);
+<<<<<<< HEAD
 	__tlbi_sync_s1ish(mm);
 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
 }
 
+=======
+	__tlbi_sync_s1ish();
+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+}
+
+static inline void __local_flush_tlb_page_nonotify_nosync(struct mm_struct *mm,
+							  unsigned long uaddr)
+{
+	unsigned long addr;
+
+	dsb(nshst);
+	addr = __TLBI_VADDR(uaddr, ASID(mm));
+	__tlbi(vale1, addr);
+	__tlbi_user(vale1, addr);
+}
+
+static inline void local_flush_tlb_page_nonotify(struct vm_area_struct *vma,
+						 unsigned long uaddr)
+{
+	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+	dsb(nsh);
+}
+
+static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+					unsigned long uaddr)
+{
+	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
+						(uaddr & PAGE_MASK) + PAGE_SIZE);
+	dsb(nsh);
+}
+
+static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+					   unsigned long uaddr)
+{
+	unsigned long addr;
+
+	dsb(ishst);
+	addr = __TLBI_VADDR(uaddr, ASID(mm));
+	__tlbi(vale1is, addr);
+	__tlbi_user(vale1is, addr);
+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
+						(uaddr & PAGE_MASK) + PAGE_SIZE);
+}
+
+static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+					 unsigned long uaddr)
+{
+	return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
+}
+
+static inline void flush_tlb_page(struct vm_area_struct *vma,
+				  unsigned long uaddr)
+{
+	flush_tlb_page_nosync(vma, uaddr);
+	__tlbi_sync_s1ish();
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
 {
 	return true;
@@ -434,7 +584,11 @@ static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
  */
 static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
 {
+<<<<<<< HEAD
 	__tlbi_sync_s1ish_batch(batch);
+=======
+	__tlbi_sync_s1ish();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -446,13 +600,23 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
 /*
  * __flush_tlb_range_op - Perform TLBI operation upon a range
  *
+<<<<<<< HEAD
  * @lop:	TLBI level operation to perform
  * @rop:	TLBI range operation to perform
+=======
+ * @op:	TLBI instruction that operates on a range (has 'r' prefix)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @start:	The start address of the range
  * @pages:	Range as the number of pages from 'start'
  * @stride:	Flush granularity
  * @asid:	The ASID of the task (0 for IPA instructions)
+<<<<<<< HEAD
  * @level:	Translation Table level hint, if known
+=======
+ * @tlb_level:	Translation Table level hint, if known
+ * @tlbi_user:	If 'true', call an additional __tlbi_user()
+ *              (typically for user ASIDs). 'flase' for IPA instructions
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @lpa2:	If 'true', the lpa2 scheme is used as set out below
  *
  * When the CPU does not support TLB range operations, flush the TLB
@@ -475,6 +639,7 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
  *    operations can only span an even number of pages. We save this for last to
  *    ensure 64KB start alignment is maintained for the LPA2 case.
  */
+<<<<<<< HEAD
 static __always_inline void rvae1is(u64 arg)
 {
 	__tlbi(rvae1is, arg);
@@ -601,10 +766,82 @@ static __always_inline void __do_flush_tlb_range(struct vm_area_struct *vma,
 	pages = (end - start) >> PAGE_SHIFT;
 
 	if (__flush_tlb_range_limit_excess(pages, stride)) {
+=======
+#define __flush_tlb_range_op(op, start, pages, stride,			\
+				asid, tlb_level, tlbi_user, lpa2)	\
+do {									\
+	typeof(start) __flush_start = start;				\
+	typeof(pages) __flush_pages = pages;				\
+	int num = 0;							\
+	int scale = 3;							\
+	int shift = lpa2 ? 16 : PAGE_SHIFT;				\
+	unsigned long addr;						\
+									\
+	while (__flush_pages > 0) {					\
+		if (!system_supports_tlb_range() ||			\
+		    __flush_pages == 1 ||				\
+		    (lpa2 && __flush_start != ALIGN(__flush_start, SZ_64K))) {	\
+			addr = __TLBI_VADDR(__flush_start, asid);	\
+			__tlbi_level(op, addr, tlb_level);		\
+			if (tlbi_user)					\
+				__tlbi_user_level(op, addr, tlb_level);	\
+			__flush_start += stride;			\
+			__flush_pages -= stride >> PAGE_SHIFT;		\
+			continue;					\
+		}							\
+									\
+		num = __TLBI_RANGE_NUM(__flush_pages, scale);		\
+		if (num >= 0) {						\
+			addr = __TLBI_VADDR_RANGE(__flush_start >> shift, asid, \
+						scale, num, tlb_level);	\
+			__tlbi(r##op, addr);				\
+			if (tlbi_user)					\
+				__tlbi_user(r##op, addr);		\
+			__flush_start += __TLBI_RANGE_PAGES(num, scale) << PAGE_SHIFT; \
+			__flush_pages -= __TLBI_RANGE_PAGES(num, scale);\
+		}							\
+		scale--;						\
+	}								\
+} while (0)
+
+#define __flush_s2_tlb_range_op(op, start, pages, stride, tlb_level) \
+	__flush_tlb_range_op(op, start, pages, stride, 0, tlb_level, false, kvm_lpa2_is_enabled());
+
+static inline bool __flush_tlb_range_limit_excess(unsigned long start,
+		unsigned long end, unsigned long pages, unsigned long stride)
+{
+	/*
+	 * When the system does not support TLB range based flush
+	 * operation, (MAX_DVM_OPS - 1) pages can be handled. But
+	 * with TLB range based operation, MAX_TLBI_RANGE_PAGES
+	 * pages can be handled.
+	 */
+	if ((!system_supports_tlb_range() &&
+	     (end - start) >= (MAX_DVM_OPS * stride)) ||
+	    pages > MAX_TLBI_RANGE_PAGES)
+		return true;
+
+	return false;
+}
+
+static inline void __flush_tlb_range_nosync(struct mm_struct *mm,
+				     unsigned long start, unsigned long end,
+				     unsigned long stride, bool last_level,
+				     int tlb_level)
+{
+	unsigned long asid, pages;
+
+	start = round_down(start, stride);
+	end = round_up(end, stride);
+	pages = (end - start) >> PAGE_SHIFT;
+
+	if (__flush_tlb_range_limit_excess(start, end, pages, stride)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		flush_tlb_mm(mm);
 		return;
 	}
 
+<<<<<<< HEAD
 	if (!(flags & TLBF_NOBROADCAST))
 		dsb(ishst);
 	else
@@ -640,16 +877,54 @@ static __always_inline void __do_flush_tlb_range(struct vm_area_struct *vma,
 		else
 			dsb(nsh);
 	}
+=======
+	dsb(ishst);
+	asid = ASID(mm);
+
+	if (last_level)
+		__flush_tlb_range_op(vale1is, start, pages, stride, asid,
+				     tlb_level, true, lpa2_is_enabled());
+	else
+		__flush_tlb_range_op(vae1is, start, pages, stride, asid,
+				     tlb_level, true, lpa2_is_enabled());
+
+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void __flush_tlb_range(struct vm_area_struct *vma,
 				     unsigned long start, unsigned long end,
+<<<<<<< HEAD
 				     unsigned long stride, int tlb_level,
 				     tlbf_t flags)
 {
 	start = round_down(start, stride);
 	end = round_up(end, stride);
 	__do_flush_tlb_range(vma, start, end, stride, tlb_level, flags);
+=======
+				     unsigned long stride, bool last_level,
+				     int tlb_level)
+{
+	__flush_tlb_range_nosync(vma->vm_mm, start, end, stride,
+				 last_level, tlb_level);
+	__tlbi_sync_s1ish();
+}
+
+static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
+					   unsigned long addr)
+{
+	unsigned long asid;
+
+	addr = round_down(addr, CONT_PTE_SIZE);
+
+	dsb(nshst);
+	asid = ASID(vma->vm_mm);
+	__flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
+			     3, true, lpa2_is_enabled());
+	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
+						    addr + CONT_PTE_SIZE);
+	dsb(nsh);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void flush_tlb_range(struct vm_area_struct *vma,
@@ -661,6 +936,7 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
 	 * Set the tlb_level to TLBI_TTL_UNKNOWN because we can not get enough
 	 * information here.
 	 */
+<<<<<<< HEAD
 	__flush_tlb_range(vma, start, end, PAGE_SIZE, TLBI_TTL_UNKNOWN, TLBF_NONE);
 }
 
@@ -678,6 +954,9 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
 				  unsigned long uaddr)
 {
 	__flush_tlb_page(vma, uaddr, TLBF_NONE);
+=======
+	__flush_tlb_range(vma, start, end, PAGE_SIZE, false, TLBI_TTL_UNKNOWN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end)
@@ -689,15 +968,25 @@ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end
 	end = round_up(end, stride);
 	pages = (end - start) >> PAGE_SHIFT;
 
+<<<<<<< HEAD
 	if (__flush_tlb_range_limit_excess(pages, stride)) {
+=======
+	if (__flush_tlb_range_limit_excess(start, end, pages, stride)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		flush_tlb_all();
 		return;
 	}
 
 	dsb(ishst);
+<<<<<<< HEAD
 	__flush_s1_tlb_range_op(vaale1is, start, pages, stride, 0,
 				TLBI_TTL_UNKNOWN);
 	__tlbi_sync_s1ish_kernel();
+=======
+	__flush_tlb_range_op(vaale1is, start, pages, stride, 0,
+			     TLBI_TTL_UNKNOWN, false, lpa2_is_enabled());
+	__tlbi_sync_s1ish();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	isb();
 }
 
@@ -711,18 +1000,26 @@ static inline void __flush_tlb_kernel_pgtable(unsigned long kaddr)
 
 	dsb(ishst);
 	__tlbi(vaae1is, addr);
+<<<<<<< HEAD
 	__tlbi_sync_s1ish_kernel();
+=======
+	__tlbi_sync_s1ish();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	isb();
 }
 
 static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
 		struct mm_struct *mm, unsigned long start, unsigned long end)
 {
+<<<<<<< HEAD
 	struct vm_area_struct vma = { .vm_mm = mm, .vm_flags = 0 };
 
 	__flush_tlb_range(&vma, start, end, PAGE_SIZE, 3,
 			  TLBF_NOWALKCACHE | TLBF_NOSYNC);
 	sme_dvmsync_add_pending(batch, mm);
+=======
+	__flush_tlb_range_nosync(mm, start, end, PAGE_SIZE, true, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool __pte_flags_need_flush(ptdesc_t oldval, ptdesc_t newval)
@@ -751,8 +1048,11 @@ static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
 }
 #define huge_pmd_needs_flush huge_pmd_needs_flush
 
+<<<<<<< HEAD
 #undef __tlbi_user
 #undef __TLBI_VADDR
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif

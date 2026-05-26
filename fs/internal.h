@@ -199,7 +199,12 @@ extern struct open_how build_open_how(int flags, umode_t mode);
 extern int build_open_flags(const struct open_how *how, struct open_flags *op);
 struct file *file_close_fd_locked(struct files_struct *files, unsigned fd);
 
+<<<<<<< HEAD
 int do_ftruncate(struct file *file, loff_t length, unsigned int flags);
+=======
+int do_ftruncate(struct file *file, loff_t length, int small);
+int do_sys_ftruncate(unsigned int fd, loff_t length, int small);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int chmod_common(const struct path *path, umode_t mode);
 int do_fchownat(int dfd, const char __user *filename, uid_t user, gid_t group,
 		int flag);

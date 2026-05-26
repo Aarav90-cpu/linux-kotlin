@@ -11,6 +11,7 @@
 #include <linux/pci.h>
 
 #include "struct.h"
+<<<<<<< HEAD
 #include "rvu.h"
 #include "debugfs.h"
 #include "cn20k/npc.h"
@@ -272,6 +273,9 @@ void npc_cn20k_debugfs_deinit(struct rvu *rvu)
 {
 	debugfs_remove_recursive(rvu->rvu_dbg.npc);
 }
+=======
+#include "debugfs.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void print_nix_cn20k_sq_ctx(struct seq_file *m,
 			    struct nix_cn20k_sq_ctx_s *sq_ctx)

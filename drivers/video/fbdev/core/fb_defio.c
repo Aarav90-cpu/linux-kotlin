@@ -24,8 +24,11 @@
 #include <linux/rmap.h>
 #include <linux/pagemap.h>
 
+<<<<<<< HEAD
 struct address_space;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * struct fb_deferred_io_state
  */
@@ -33,6 +36,7 @@ struct address_space;
 struct fb_deferred_io_state {
 	struct kref ref;
 
+<<<<<<< HEAD
 	int open_count; /* number of opened files; protected by fb_info lock */
 	struct address_space *mapping; /* page cache object for fb device */
 
@@ -49,11 +53,22 @@ static struct fb_deferred_io_state *fb_deferred_io_state_alloc(unsigned long len
 	struct fb_deferred_io_state *fbdefio_state;
 	struct fb_deferred_io_pageref *pagerefs;
 	unsigned long npagerefs;
+=======
+	struct mutex lock; /* mutex that protects the pageref list */
+	/* fields protected by lock */
+	struct fb_info *info;
+};
+
+static struct fb_deferred_io_state *fb_deferred_io_state_alloc(void)
+{
+	struct fb_deferred_io_state *fbdefio_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fbdefio_state = kzalloc_obj(*fbdefio_state);
 	if (!fbdefio_state)
 		return NULL;
 
+<<<<<<< HEAD
 	npagerefs = DIV_ROUND_UP(len, PAGE_SIZE);
 
 	/* alloc a page ref for each page of the display memory */
@@ -73,13 +88,23 @@ static struct fb_deferred_io_state *fb_deferred_io_state_alloc(unsigned long len
 err_kfree:
 	kfree(fbdefio_state);
 	return NULL;
+=======
+	kref_init(&fbdefio_state->ref);
+	mutex_init(&fbdefio_state->lock);
+
+	return fbdefio_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void fb_deferred_io_state_release(struct fb_deferred_io_state *fbdefio_state)
 {
+<<<<<<< HEAD
 	WARN_ON(!list_empty(&fbdefio_state->pagereflist));
 	mutex_destroy(&fbdefio_state->lock);
 	kvfree(fbdefio_state->pagerefs);
+=======
+	mutex_destroy(&fbdefio_state->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(fbdefio_state);
 }
@@ -110,7 +135,10 @@ static void fb_deferred_io_vm_open(struct vm_area_struct *vma)
 {
 	struct fb_deferred_io_state *fbdefio_state = vma->vm_private_data;
 
+<<<<<<< HEAD
 	WARN_ON_ONCE(!try_module_get(THIS_MODULE));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fb_deferred_io_state_get(fbdefio_state);
 }
 
@@ -119,7 +147,10 @@ static void fb_deferred_io_vm_close(struct vm_area_struct *vma)
 	struct fb_deferred_io_state *fbdefio_state = vma->vm_private_data;
 
 	fb_deferred_io_state_put(fbdefio_state);
+<<<<<<< HEAD
 	module_put(THIS_MODULE);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct page *fb_deferred_io_get_page(struct fb_info *info, unsigned long offs)
@@ -142,6 +173,7 @@ static struct page *fb_deferred_io_get_page(struct fb_info *info, unsigned long 
 	return page;
 }
 
+<<<<<<< HEAD
 static struct fb_deferred_io_pageref *
 fb_deferred_io_pageref_lookup(struct fb_deferred_io_state *fbdefio_state, unsigned long offset,
 			      struct page *page)
@@ -155,6 +187,20 @@ fb_deferred_io_pageref_lookup(struct fb_deferred_io_state *fbdefio_state, unsign
 
 	/* 1:1 mapping between pageref and page offset */
 	pageref = &fbdefio_state->pagerefs[pgoff];
+=======
+static struct fb_deferred_io_pageref *fb_deferred_io_pageref_lookup(struct fb_info *info,
+								    unsigned long offset,
+								    struct page *page)
+{
+	unsigned long pgoff = offset >> PAGE_SHIFT;
+	struct fb_deferred_io_pageref *pageref;
+
+	if (fb_WARN_ON_ONCE(info, pgoff >= info->npagerefs))
+		return NULL; /* incorrect allocation size */
+
+	/* 1:1 mapping between pageref and page offset */
+	pageref = &info->pagerefs[pgoff];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pageref->page)
 		goto out;
@@ -174,11 +220,18 @@ static struct fb_deferred_io_pageref *fb_deferred_io_pageref_get(struct fb_info 
 								 struct page *page)
 {
 	struct fb_deferred_io *fbdefio = info->fbdefio;
+<<<<<<< HEAD
 	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
 	struct list_head *pos = &fbdefio_state->pagereflist;
 	struct fb_deferred_io_pageref *pageref, *cur;
 
 	pageref = fb_deferred_io_pageref_lookup(fbdefio_state, offset, page);
+=======
+	struct list_head *pos = &fbdefio->pagereflist;
+	struct fb_deferred_io_pageref *pageref, *cur;
+
+	pageref = fb_deferred_io_pageref_lookup(info, offset, page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pageref)
 		return NULL;
 
@@ -199,7 +252,11 @@ static struct fb_deferred_io_pageref *fb_deferred_io_pageref_get(struct fb_info 
 		 * pages. If possible, drivers should try to work with
 		 * unsorted page lists instead.
 		 */
+<<<<<<< HEAD
 		list_for_each_entry(cur, &fbdefio_state->pagereflist, list) {
+=======
+		list_for_each_entry(cur, &fbdefio->pagereflist, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (cur->offset > pageref->offset)
 				break;
 		}
@@ -250,7 +307,11 @@ static vm_fault_t fb_deferred_io_fault(struct vm_fault *vmf)
 	if (!vmf->vma->vm_file)
 		fb_err(info, "no mapping available\n");
 
+<<<<<<< HEAD
 	fb_WARN_ON_ONCE(info, !fbdefio_state->mapping);
+=======
+	BUG_ON(!info->fbdefio->mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&fbdefio_state->lock);
 
@@ -366,9 +427,12 @@ int fb_deferred_io_mmap(struct fb_info *info, struct vm_area_struct *vma)
 {
 	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
 
+<<<<<<< HEAD
 	if (!try_module_get(THIS_MODULE))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vma->vm_ops = &fb_deferred_io_vm_ops;
 	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
 	if (!(info->flags & FBINFO_VIRTFB))
@@ -392,20 +456,35 @@ static void fb_deferred_io_work(struct work_struct *work)
 	/* here we wrprotect the page's mappings, then do all deferred IO. */
 	mutex_lock(&fbdefio_state->lock);
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
 	list_for_each_entry(pageref, &fbdefio_state->pagereflist, list) {
 		struct page *page = pageref->page;
 		pgoff_t pgoff = pageref->offset >> PAGE_SHIFT;
 
 		mapping_wrprotect_range(fbdefio_state->mapping, pgoff,
+=======
+	list_for_each_entry(pageref, &fbdefio->pagereflist, list) {
+		struct page *page = pageref->page;
+		pgoff_t pgoff = pageref->offset >> PAGE_SHIFT;
+
+		mapping_wrprotect_range(fbdefio->mapping, pgoff,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					page_to_pfn(page), 1);
 	}
 #endif
 
 	/* driver's callback with pagereflist */
+<<<<<<< HEAD
 	fbdefio->deferred_io(info, &fbdefio_state->pagereflist);
 
 	/* clear the list */
 	list_for_each_entry_safe(pageref, next, &fbdefio_state->pagereflist, list)
+=======
+	fbdefio->deferred_io(info, &fbdefio->pagereflist);
+
+	/* clear the list */
+	list_for_each_entry_safe(pageref, next, &fbdefio->pagereflist, list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fb_deferred_io_pageref_put(pageref, info);
 
 	mutex_unlock(&fbdefio_state->lock);
@@ -415,24 +494,59 @@ int fb_deferred_io_init(struct fb_info *info)
 {
 	struct fb_deferred_io *fbdefio = info->fbdefio;
 	struct fb_deferred_io_state *fbdefio_state;
+<<<<<<< HEAD
+=======
+	struct fb_deferred_io_pageref *pagerefs;
+	unsigned long npagerefs;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BUG_ON(!fbdefio);
 
 	if (WARN_ON(!info->fix.smem_len))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	fbdefio_state = fb_deferred_io_state_alloc(info->fix.smem_len);
+=======
+	fbdefio_state = fb_deferred_io_state_alloc();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!fbdefio_state)
 		return -ENOMEM;
 	fbdefio_state->info = info;
 
 	INIT_DELAYED_WORK(&info->deferred_work, fb_deferred_io_work);
+<<<<<<< HEAD
 	if (fbdefio->delay == 0) /* set a default of 1 s */
 		fbdefio->delay = HZ;
 
 	info->fbdefio_state = fbdefio_state;
 
 	return 0;
+=======
+	INIT_LIST_HEAD(&fbdefio->pagereflist);
+	if (fbdefio->delay == 0) /* set a default of 1 s */
+		fbdefio->delay = HZ;
+
+	npagerefs = DIV_ROUND_UP(info->fix.smem_len, PAGE_SIZE);
+
+	/* alloc a page ref for each page of the display memory */
+	pagerefs = kvzalloc_objs(*pagerefs, npagerefs);
+	if (!pagerefs) {
+		ret = -ENOMEM;
+		goto err;
+	}
+	info->npagerefs = npagerefs;
+	info->pagerefs = pagerefs;
+
+	info->fbdefio_state = fbdefio_state;
+
+	return 0;
+
+err:
+	fb_deferred_io_state_release(fbdefio_state);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(fb_deferred_io_init);
 
@@ -440,11 +554,19 @@ void fb_deferred_io_open(struct fb_info *info,
 			 struct inode *inode,
 			 struct file *file)
 {
+<<<<<<< HEAD
 	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
 
 	fbdefio_state->mapping = file->f_mapping;
 	file->f_mapping->a_ops = &fb_deferred_io_aops;
 	fbdefio_state->open_count++;
+=======
+	struct fb_deferred_io *fbdefio = info->fbdefio;
+
+	fbdefio->mapping = file->f_mapping;
+	file->f_mapping->a_ops = &fb_deferred_io_aops;
+	fbdefio->open_count++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(fb_deferred_io_open);
 
@@ -455,15 +577,25 @@ static void fb_deferred_io_lastclose(struct fb_info *info)
 
 void fb_deferred_io_release(struct fb_info *info)
 {
+<<<<<<< HEAD
 	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
 
 	if (!--fbdefio_state->open_count)
+=======
+	struct fb_deferred_io *fbdefio = info->fbdefio;
+
+	if (!--fbdefio->open_count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fb_deferred_io_lastclose(info);
 }
 EXPORT_SYMBOL_GPL(fb_deferred_io_release);
 
 void fb_deferred_io_cleanup(struct fb_info *info)
 {
+<<<<<<< HEAD
+=======
+	struct fb_deferred_io *fbdefio = info->fbdefio;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
 
 	fb_deferred_io_lastclose(info);
@@ -475,5 +607,11 @@ void fb_deferred_io_cleanup(struct fb_info *info)
 	mutex_unlock(&fbdefio_state->lock);
 
 	fb_deferred_io_state_put(fbdefio_state);
+<<<<<<< HEAD
+=======
+
+	kvfree(info->pagerefs);
+	fbdefio->mapping = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(fb_deferred_io_cleanup);

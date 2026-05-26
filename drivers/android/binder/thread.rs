@@ -19,7 +19,11 @@ use kernel::{
     sync::poll::{PollCondVar, PollTable},
     sync::{aref::ARef, Arc, SpinLock},
     task::Task,
+<<<<<<< HEAD
     uaccess::{UserPtr, UserSlice, UserSliceReader},
+=======
+    uaccess::UserSlice,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     uapi,
 };
 
@@ -30,7 +34,11 @@ use crate::{
     process::{GetWorkOrRegister, Process},
     ptr_align,
     stats::GLOBAL_STATS,
+<<<<<<< HEAD
     transaction::{Transaction, TransactionInfo},
+=======
+    transaction::Transaction,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverCode, DeliverToRead,
 };
 
@@ -513,9 +521,12 @@ impl Thread {
     /// Attempts to fetch a work item from the thread-local queue. The behaviour if the queue is
     /// empty depends on `wait`: if it is true, the function waits for some work to be queued (or a
     /// signal); otherwise it returns indicating that none is available.
+<<<<<<< HEAD
     // #[export_name] is a temporary workaround so that ps output does not become unreadable from
     // mangled symbol names.
     #[export_name = "rust_binder_waitlcl"]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
         {
             let mut inner = self.inner.lock();
@@ -554,9 +565,12 @@ impl Thread {
     ///
     /// This must only be called when the thread is not participating in a transaction chain. If it
     /// is, the local version (`get_work_local`) should be used instead.
+<<<<<<< HEAD
     // #[export_name] is a temporary workaround so that ps output does not become unreadable from
     // mangled symbol names.
     #[export_name = "rust_binder_wait"]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
         // Try to get work from the thread's work queue, using only a local lock.
         {
@@ -712,7 +726,10 @@ impl Thread {
                     core::mem::offset_of!(uapi::binder_fd_object, __bindgen_anon_1.fd);
 
                 let field_offset = offset + FD_FIELD_OFFSET;
+<<<<<<< HEAD
                 crate::trace::trace_transaction_fd_send(view.alloc.debug_id, fd, field_offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
                 view.alloc.info_add_fd(file, field_offset, false)?;
             }
@@ -952,11 +969,20 @@ impl Thread {
     pub(crate) fn copy_transaction_data(
         &self,
         to_process: Arc<Process>,
+<<<<<<< HEAD
         info: &mut TransactionInfo,
+=======
+        tr: &BinderTransactionDataSg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         debug_id: usize,
         allow_fds: bool,
         txn_security_ctx_offset: Option<&mut usize>,
     ) -> BinderResult<NewAllocation> {
+<<<<<<< HEAD
+=======
+        let trd = &tr.transaction_data;
+        let is_oneway = trd.flags & TF_ONE_WAY != 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let mut secctx = if let Some(offset) = txn_security_ctx_offset {
             let secid = self.process.cred.get_secid();
             let ctx = match security::SecurityCtx::from_secid(secid) {
@@ -971,10 +997,17 @@ impl Thread {
             None
         };
 
+<<<<<<< HEAD
         let data_size = info.data_size;
         let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
         let offsets_size = info.offsets_size;
         let buffers_size = info.buffers_size;
+=======
+        let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
+        let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
+        let offsets_size: usize = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
+        let buffers_size: usize = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let aligned_secctx_size = match secctx.as_ref() {
             Some((_offset, ctx)) => ptr_align(ctx.len()).ok_or(EINVAL)?,
             None => 0,
@@ -997,6 +1030,7 @@ impl Thread {
             size_of::<u64>(),
         );
         let secctx_off = aligned_data_size + offsets_size + buffers_size;
+<<<<<<< HEAD
         let mut alloc = match to_process.buffer_alloc(debug_id, len, info) {
             Ok(alloc) => alloc,
             Err(err) => {
@@ -1010,12 +1044,38 @@ impl Thread {
         };
 
         let mut buffer_reader = UserSlice::new(info.data_ptr, data_size).reader();
+=======
+        let mut alloc =
+            match to_process.buffer_alloc(debug_id, len, is_oneway, self.process.task.pid()) {
+                Ok(alloc) => alloc,
+                Err(err) => {
+                    pr_warn!(
+                        "Failed to allocate buffer. len:{}, is_oneway:{}",
+                        len,
+                        is_oneway
+                    );
+                    return Err(err);
+                }
+            };
+
+        // SAFETY: This accesses a union field, but it's okay because the field's type is valid for
+        // all bit-patterns.
+        let trd_data_ptr = unsafe { &trd.data.ptr };
+        let mut buffer_reader =
+            UserSlice::new(UserPtr::from_addr(trd_data_ptr.buffer as _), data_size).reader();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let mut end_of_previous_object = 0;
         let mut sg_state = None;
 
         // Copy offsets if there are any.
         if offsets_size > 0 {
+<<<<<<< HEAD
             let mut offsets_reader = UserSlice::new(info.offsets_ptr, offsets_size).reader();
+=======
+            let mut offsets_reader =
+                UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
+                    .reader();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             let offsets_start = aligned_data_size;
             let offsets_end = aligned_data_size + offsets_size;
@@ -1190,6 +1250,7 @@ impl Thread {
         }
     }
 
+<<<<<<< HEAD
     // No inlining avoids allocating stack space for `BinderTransactionData` for the entire
     // duration of `transaction()`.
     #[inline(never)]
@@ -1269,13 +1330,43 @@ impl Thread {
     fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
         let node_ref = self.process.get_transaction_node(info.target_handle)?;
         info.to_pid = node_ref.node.owner.task.pid();
+=======
+    fn transaction<T>(self: &Arc<Self>, tr: &BinderTransactionDataSg, inner: T)
+    where
+        T: FnOnce(&Arc<Self>, &BinderTransactionDataSg) -> BinderResult,
+    {
+        if let Err(err) = inner(self, tr) {
+            if err.should_pr_warn() {
+                let mut ee = self.inner.lock().extended_error;
+                ee.command = err.reply;
+                ee.param = err.as_errno();
+                pr_warn!(
+                    "Transaction failed: {:?} my_pid:{}",
+                    err,
+                    self.process.pid_in_current_ns()
+                );
+            }
+
+            self.push_return_work(err.reply);
+        }
+    }
+
+    fn transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+        // SAFETY: Handle's type has no invalid bit patterns.
+        let handle = unsafe { tr.transaction_data.target.handle };
+        let node_ref = self.process.get_transaction_node(handle)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
         // could this happen?
         let top = self.top_of_transaction_stack()?;
         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
         let completion = list_completion.clone_arc();
+<<<<<<< HEAD
         let transaction = Transaction::new(node_ref, top, self, info)?;
+=======
+        let transaction = Transaction::new(node_ref, top, self, tr)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // Check that the transaction stack hasn't changed while the lock was released, then update
         // it with the new transaction.
@@ -1291,7 +1382,11 @@ impl Thread {
             inner.push_work_deferred(list_completion);
         }
 
+<<<<<<< HEAD
         if let Err(e) = transaction.submit(info) {
+=======
+        if let Err(e) = transaction.submit() {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             completion.skip();
             // Define `transaction` first to drop it after `inner`.
             let transaction;
@@ -1304,21 +1399,32 @@ impl Thread {
         }
     }
 
+<<<<<<< HEAD
     fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+=======
+    fn reply_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let orig = self.inner.lock().pop_transaction_to_reply(self)?;
         if !orig.from.is_current_transaction(&orig) {
             return Err(EINVAL.into());
         }
 
+<<<<<<< HEAD
         info.to_tid = orig.from.id;
         info.to_pid = orig.from.process.task.pid();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // We need to complete the transaction even if we cannot complete building the reply.
         let out = (|| -> BinderResult<_> {
             let completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
             let process = orig.from.process.clone();
             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
+<<<<<<< HEAD
             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
+=======
+            let reply = Transaction::new_reply(self, process, tr, allow_fds)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             self.inner.lock().push_work(completion);
             orig.from.deliver_reply(Ok(reply), &orig);
             Ok(())
@@ -1339,12 +1445,25 @@ impl Thread {
         out
     }
 
+<<<<<<< HEAD
     fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
         let node_ref = self.process.get_transaction_node(info.target_handle)?;
         info.to_pid = node_ref.node.owner.task.pid();
         security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
         let transaction = Transaction::new(node_ref, None, self, info)?;
         let code = if self.process.is_oneway_spam_detection_enabled() && info.oneway_spam_suspect {
+=======
+    fn oneway_transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
+        // SAFETY: The `handle` field is valid for all possible byte values, so reading from the
+        // union is okay.
+        let handle = unsafe { tr.transaction_data.target.handle };
+        let node_ref = self.process.get_transaction_node(handle)?;
+        security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
+        let transaction = Transaction::new(node_ref, None, self, tr)?;
+        let code = if self.process.is_oneway_spam_detection_enabled()
+            && transaction.oneway_spam_detected
+        {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             BR_ONEWAY_SPAM_SUSPECT
         } else {
             BR_TRANSACTION_COMPLETE
@@ -1352,7 +1471,11 @@ impl Thread {
         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
         let completion = list_completion.clone_arc();
         self.inner.lock().push_work(list_completion);
+<<<<<<< HEAD
         match transaction.submit(info) {
+=======
+        match transaction.submit() {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             Ok(()) => Ok(()),
             Err(err) => {
                 completion.skip();
@@ -1370,12 +1493,41 @@ impl Thread {
         while reader.len() >= size_of::<u32>() && self.inner.lock().return_work.is_unused() {
             let before = reader.len();
             let cmd = reader.read::<u32>()?;
+<<<<<<< HEAD
             crate::trace::trace_command(cmd);
             GLOBAL_STATS.inc_bc(cmd);
             self.process.stats.inc_bc(cmd);
             match cmd {
                 BC_TRANSACTION | BC_TRANSACTION_SG | BC_REPLY | BC_REPLY_SG => {
                     self.transaction(cmd, &mut reader)?;
+=======
+            GLOBAL_STATS.inc_bc(cmd);
+            self.process.stats.inc_bc(cmd);
+            match cmd {
+                BC_TRANSACTION => {
+                    let tr = reader.read::<BinderTransactionData>()?.with_buffers_size(0);
+                    if tr.transaction_data.flags & TF_ONE_WAY != 0 {
+                        self.transaction(&tr, Self::oneway_transaction_inner);
+                    } else {
+                        self.transaction(&tr, Self::transaction_inner);
+                    }
+                }
+                BC_TRANSACTION_SG => {
+                    let tr = reader.read::<BinderTransactionDataSg>()?;
+                    if tr.transaction_data.flags & TF_ONE_WAY != 0 {
+                        self.transaction(&tr, Self::oneway_transaction_inner);
+                    } else {
+                        self.transaction(&tr, Self::transaction_inner);
+                    }
+                }
+                BC_REPLY => {
+                    let tr = reader.read::<BinderTransactionData>()?.with_buffers_size(0);
+                    self.transaction(&tr, Self::reply_inner)
+                }
+                BC_REPLY_SG => {
+                    let tr = reader.read::<BinderTransactionDataSg>()?;
+                    self.transaction(&tr, Self::reply_inner)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 }
                 BC_FREE_BUFFER => {
                     let buffer = self.process.buffer_get(reader.read()?);
@@ -1439,6 +1591,7 @@ impl Thread {
             UserSlice::new(UserPtr::from_addr(read_start as _), read_len as _).writer(),
             self,
         );
+<<<<<<< HEAD
         let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
             let inner = self.inner.lock();
             (
@@ -1451,6 +1604,13 @@ impl Thread {
 
         crate::trace::trace_wait_for_work(use_proc_queue, has_transaction, thread_todo);
 
+=======
+        let (in_pool, use_proc_queue) = {
+            let inner = self.inner.lock();
+            (inner.is_looper(), inner.should_use_process_work_queue())
+        };
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let getter = if use_proc_queue {
             Self::get_work
         } else {
@@ -1516,7 +1676,10 @@ impl Thread {
         let mut ret = Ok(());
         if req.write_size > 0 {
             ret = self.write(&mut req);
+<<<<<<< HEAD
             crate::trace::trace_write_done(ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             if let Err(err) = ret {
                 pr_warn!(
                     "Write failure {:?} in pid:{}",
@@ -1533,7 +1696,10 @@ impl Thread {
         // Go through the work queue.
         if req.read_size > 0 {
             ret = self.read(&mut req, wait);
+<<<<<<< HEAD
             crate::trace::trace_read_done(ret);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             if ret.is_err() && ret != Err(EINTR) {
                 pr_warn!(
                     "Read failure {:?} in pid:{}",

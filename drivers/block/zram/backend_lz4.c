@@ -14,6 +14,7 @@ struct lz4_ctx {
 
 static void lz4_release_params(struct zcomp_params *params)
 {
+<<<<<<< HEAD
 	LZ4_stream_t *dict_stream = params->drv_data;
 
 	params->drv_data = NULL;
@@ -21,10 +22,13 @@ static void lz4_release_params(struct zcomp_params *params)
 		return;
 
 	kfree(dict_stream);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int lz4_setup_params(struct zcomp_params *params)
 {
+<<<<<<< HEAD
 	LZ4_stream_t *dict_stream;
 	int ret;
 
@@ -46,6 +50,11 @@ static int lz4_setup_params(struct zcomp_params *params)
 	}
 	params->drv_data = dict_stream;
 
+=======
+	if (params->level == ZCOMP_PARAM_NOT_SET)
+		params->level = LZ4_ACCELERATION_DEFAULT;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -104,7 +113,13 @@ static int lz4_compress(struct zcomp_params *params, struct zcomp_ctx *ctx,
 					zctx->mem);
 	} else {
 		/* Cstrm needs to be reset */
+<<<<<<< HEAD
 		memcpy(zctx->cstrm, params->drv_data, sizeof(*zctx->cstrm));
+=======
+		ret = LZ4_loadDict(zctx->cstrm, params->dict, params->dict_sz);
+		if (ret != params->dict_sz)
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = LZ4_compress_fast_continue(zctx->cstrm, req->src,
 						 req->dst, req->src_len,
 						 req->dst_len, params->level);

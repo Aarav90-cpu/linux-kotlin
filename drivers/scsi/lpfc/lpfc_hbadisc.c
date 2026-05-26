@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -425,6 +429,10 @@ lpfc_check_nlp_post_devloss(struct lpfc_vport *vport,
 {
 	if (test_and_clear_bit(NLP_IN_RECOV_POST_DEV_LOSS, &ndlp->save_flags)) {
 		clear_bit(NLP_DROPPED, &ndlp->nlp_flag);
+<<<<<<< HEAD
+=======
+		lpfc_nlp_get(ndlp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpfc_printf_vlog(vport, KERN_INFO, LOG_DISCOVERY | LOG_NODE,
 				 "8438 Devloss timeout reversed on DID x%x "
 				 "refcnt %d ndlp %p flag x%lx "
@@ -3173,11 +3181,15 @@ lpfc_init_vfi_cmpl(struct lpfc_hba *phba, LPFC_MBOXQ_t *mboxq)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (!lpfc_initial_flogi(vport)) {
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_MBOX | LOG_ELS,
 				 "2345 Can't issue initial FLOGI\n");
 		lpfc_vport_set_state(vport, FC_VPORT_FAILED);
 	}
+=======
+	lpfc_initial_flogi(vport);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mempool_free(mboxq, phba->mbox_mem_pool);
 	return;
 }
@@ -3250,6 +3262,7 @@ lpfc_init_vpi_cmpl(struct lpfc_hba *phba, LPFC_MBOXQ_t *mboxq)
 			return;
 	}
 
+<<<<<<< HEAD
 	if (phba->link_flag & LS_NPIV_FAB_SUPPORTED) {
 		if (!lpfc_initial_fdisc(vport)) {
 			lpfc_printf_vlog(vport, KERN_WARNING,
@@ -3258,6 +3271,10 @@ lpfc_init_vpi_cmpl(struct lpfc_hba *phba, LPFC_MBOXQ_t *mboxq)
 			lpfc_vport_set_state(vport, FC_VPORT_FAILED);
 		}
 	}
+=======
+	if (phba->link_flag & LS_NPIV_FAB_SUPPORTED)
+		lpfc_initial_fdisc(vport);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else {
 		lpfc_vport_set_state(vport, FC_VPORT_NO_FABRIC_SUPP);
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
@@ -3817,7 +3834,11 @@ lpfc_mbx_cmpl_read_topology(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
 		if (phba->cmf_active_mode != LPFC_CFG_OFF)
 			lpfc_cmf_signal_init(phba);
 
+<<<<<<< HEAD
 		if (phba->lmt & (LMT_64Gb | LMT_128Gb))
+=======
+		if (phba->lmt & LMT_64Gb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			lpfc_read_lds_params(phba);
 
 	} else if (attn_type == LPFC_ATT_LINK_DOWN ||
@@ -4410,7 +4431,11 @@ out:
 					LOG_INIT | LOG_ELS | LOG_DISCOVERY,
 					"4220 Issue EDC status x%x Data x%x\n",
 					rc, phba->cgn_init_reg_signal);
+<<<<<<< HEAD
 		} else if (phba->lmt & (LMT_64Gb | LMT_128Gb)) {
+=======
+		} else if (phba->lmt & LMT_64Gb) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* may send link fault capability descriptor */
 			lpfc_issue_els_edc(vport, 0);
 		} else {
@@ -5237,11 +5262,20 @@ lpfc_set_unreg_login_mbx_cmpl(struct lpfc_hba *phba, struct lpfc_vport *vport,
 
 /*
  * Free rpi associated with LPFC_NODELIST entry.
+<<<<<<< HEAD
  * This routine is called if the driver initiates a LOGO that completes
  * successfully, and we are waiting to PLOGI back to the remote NPort.
  * In addition, it is called after we receive and unsolicated ELS cmd,
  * send back a rsp, the rsp completes and we are waiting to PLOGI back
  * to the remote NPort.
+=======
+ * This routine is called from lpfc_freenode(), when we are removing
+ * a LPFC_NODELIST entry. It is also called if the driver initiates a
+ * LOGO that completes successfully, and we are waiting to PLOGI back
+ * to the remote NPort. In addition, it is called after we receive
+ * and unsolicated ELS cmd, send back a rsp, the rsp completes and
+ * we are waiting to PLOGI back to the remote NPort.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int
 lpfc_unreg_rpi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
@@ -6607,6 +6641,14 @@ lpfc_nlp_get(struct lpfc_nodelist *ndlp)
 	unsigned long flags;
 
 	if (ndlp) {
+<<<<<<< HEAD
+=======
+		lpfc_debugfs_disc_trc(ndlp->vport, LPFC_DISC_TRC_NODE,
+			"node get:        did:x%x flg:x%lx refcnt:x%x",
+			ndlp->nlp_DID, ndlp->nlp_flag,
+			kref_read(&ndlp->kref));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* The check of ndlp usage to prevent incrementing the
 		 * ndlp reference count that is in the process of being
 		 * released.
@@ -6614,8 +6656,14 @@ lpfc_nlp_get(struct lpfc_nodelist *ndlp)
 		spin_lock_irqsave(&ndlp->lock, flags);
 		if (!kref_get_unless_zero(&ndlp->kref)) {
 			spin_unlock_irqrestore(&ndlp->lock, flags);
+<<<<<<< HEAD
 			pr_info("0276 %s: NDLP x%px has zero reference count. "
 				"Exiting\n", __func__, ndlp);
+=======
+			lpfc_printf_vlog(ndlp->vport, KERN_WARNING, LOG_NODE,
+				"0276 %s: ndlp:x%px refcnt:%d\n",
+				__func__, (void *)ndlp, kref_read(&ndlp->kref));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return NULL;
 		}
 		spin_unlock_irqrestore(&ndlp->lock, flags);

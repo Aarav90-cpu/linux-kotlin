@@ -567,7 +567,10 @@ static int au8522_s_video_routing(struct v4l2_subdev *sd,
 	case AU8522_COMPOSITE_CH1:
 	case AU8522_SVIDEO_CH13:
 	case AU8522_COMPOSITE_CH4_SIF:
+<<<<<<< HEAD
 	case AU8522_COMPOSITE_CH4:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		state->vid_input = input;
 		break;
 	default:

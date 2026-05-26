@@ -66,6 +66,7 @@ struct amdgpu_usermode_queue {
 	struct amdgpu_userq_obj	db_obj;
 	struct amdgpu_userq_obj fw_obj;
 	struct amdgpu_userq_obj wptr_obj;
+<<<<<<< HEAD
 
 	/**
 	 * @fence_drv_lock: Protecting @fence_drv_xa.
@@ -78,12 +79,15 @@ struct amdgpu_usermode_queue {
 	 * References to the external fence drivers returned by wait_ioctl.
 	 * Dropped on the next signaled dma_fence or queue destruction.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xarray		fence_drv_xa;
 	struct amdgpu_userq_fence_driver *fence_drv;
 	struct dma_fence	*last_fence;
 	u32			xcp_id;
 	int			priority;
 	struct dentry		*debugfs_queue;
+<<<<<<< HEAD
 
 	/**
 	 * @hang_detect_work:
@@ -91,6 +95,13 @@ struct amdgpu_usermode_queue {
 	 * Delayed work which runs when userq_fences time out.
 	 */
 	struct delayed_work	hang_detect_work;
+=======
+	struct delayed_work hang_detect_work;
+<<<<<<< HEAD
+=======
+	struct dma_fence *hang_detect_fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct kref		refcount;
 
 	struct list_head	userq_va_list;
@@ -99,8 +110,11 @@ struct amdgpu_usermode_queue {
 struct amdgpu_userq_funcs {
 	int (*mqd_create)(struct amdgpu_usermode_queue *queue,
 			  struct drm_amdgpu_userq_in *args);
+<<<<<<< HEAD
 	int (*mqd_update)(struct amdgpu_usermode_queue *queue,
 			  struct drm_amdgpu_userq_in *args);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void (*mqd_destroy)(struct amdgpu_usermode_queue *uq);
 	int (*unmap)(struct amdgpu_usermode_queue *queue);
 	int (*map)(struct amdgpu_usermode_queue *queue);
@@ -147,8 +161,14 @@ int amdgpu_userq_ioctl(struct drm_device *dev, void *data, struct drm_file *filp
 int amdgpu_userq_mgr_init(struct amdgpu_userq_mgr *userq_mgr, struct drm_file *file_priv,
 			  struct amdgpu_device *adev);
 
+<<<<<<< HEAD
 void amdgpu_userq_mgr_cancel_reset_work(struct amdgpu_device *adev);
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 void amdgpu_userq_mgr_cancel_resume(struct amdgpu_userq_mgr *userq_mgr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_userq_mgr_fini(struct amdgpu_userq_mgr *userq_mgr);
 
 int amdgpu_userq_create_object(struct amdgpu_userq_mgr *uq_mgr,
@@ -158,7 +178,12 @@ int amdgpu_userq_create_object(struct amdgpu_userq_mgr *uq_mgr,
 void amdgpu_userq_destroy_object(struct amdgpu_userq_mgr *uq_mgr,
 				 struct amdgpu_userq_obj *userq_obj);
 
+<<<<<<< HEAD
 void amdgpu_userq_evict(struct amdgpu_userq_mgr *uq_mgr);
+=======
+void amdgpu_userq_evict(struct amdgpu_userq_mgr *uq_mgr,
+			struct amdgpu_eviction_fence *ev_fence);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void amdgpu_userq_ensure_ev_fence(struct amdgpu_userq_mgr *userq_mgr,
 				  struct amdgpu_eviction_fence_mgr *evf_mgr);
@@ -181,12 +206,21 @@ void amdgpu_userq_reset_work(struct work_struct *work);
 void amdgpu_userq_pre_reset(struct amdgpu_device *adev);
 int amdgpu_userq_post_reset(struct amdgpu_device *adev, bool vram_lost);
 void amdgpu_userq_start_hang_detect_work(struct amdgpu_usermode_queue *queue);
+<<<<<<< HEAD
 void amdgpu_userq_process_fence_irq(struct amdgpu_device *adev, u32 doorbell);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int amdgpu_userq_input_va_validate(struct amdgpu_device *adev,
 				   struct amdgpu_usermode_queue *queue,
 				   u64 addr, u64 expected_size);
+<<<<<<< HEAD
 void amdgpu_userq_gem_va_unmap_validate(struct amdgpu_device *adev,
 					struct amdgpu_bo_va_mapping *mapping,
 					uint64_t saddr);
+=======
+int amdgpu_userq_gem_va_unmap_validate(struct amdgpu_device *adev,
+				       struct amdgpu_bo_va_mapping *mapping,
+				       uint64_t saddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

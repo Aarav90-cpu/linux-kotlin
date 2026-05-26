@@ -56,7 +56,11 @@ properties:
   smd-edge: false
 
   firmware-name:
+<<<<<<< HEAD
     maxItems: 1
+=======
+    $ref: /schemas/types.yaml#/definitions/string
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     description: Firmware name for the Hexagon core
 
 required:

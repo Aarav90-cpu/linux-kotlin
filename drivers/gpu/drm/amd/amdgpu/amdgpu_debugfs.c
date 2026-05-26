@@ -39,7 +39,10 @@
 
 #include "amdgpu_reset.h"
 #include "amdgpu_psp_ta.h"
+<<<<<<< HEAD
 #include "amdgpu_userq.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if defined(CONFIG_DEBUG_FS)
 
@@ -618,6 +621,7 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_debugfs_regs_pcie64_read - Read from a 64-bit PCIE register
  *
  * @f: open file handle
@@ -722,6 +726,8 @@ out:
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * amdgpu_debugfs_regs_didt_read - Read from a DIDT register
  *
  * @f: open file handle
@@ -743,7 +749,11 @@ static ssize_t amdgpu_debugfs_regs_didt_read(struct file *f, char __user *buf,
 	if (size & 0x3 || *pos & 0x3)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!adev->reg.didt.rreg)
+=======
+	if (!adev->didt_rreg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
@@ -801,7 +811,11 @@ static ssize_t amdgpu_debugfs_regs_didt_write(struct file *f, const char __user 
 	if (size & 0x3 || *pos & 0x3)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!adev->reg.didt.wreg)
+=======
+	if (!adev->didt_wreg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
@@ -857,7 +871,11 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
 	ssize_t result = 0;
 	int r;
 
+<<<<<<< HEAD
 	if (!adev->reg.smc.rreg)
+=======
+	if (!adev->smc_rreg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	if (size & 0x3 || *pos & 0x3)
@@ -915,7 +933,11 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
 	ssize_t result = 0;
 	int r;
 
+<<<<<<< HEAD
 	if (!adev->reg.smc.wreg)
+=======
+	if (!adev->smc_wreg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	if (size & 0x3 || *pos & 0x3)
@@ -1629,12 +1651,15 @@ static const struct file_operations amdgpu_debugfs_regs_pcie_fops = {
 	.write = amdgpu_debugfs_regs_pcie_write,
 	.llseek = default_llseek
 };
+<<<<<<< HEAD
 static const struct file_operations amdgpu_debugfs_regs_pcie64_fops = {
 	.owner = THIS_MODULE,
 	.read = amdgpu_debugfs_regs_pcie64_read,
 	.write = amdgpu_debugfs_regs_pcie64_write,
 	.llseek = default_llseek
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct file_operations amdgpu_debugfs_regs_smc_fops = {
 	.owner = THIS_MODULE,
 	.read = amdgpu_debugfs_regs_smc_read,
@@ -1697,7 +1722,10 @@ static const struct file_operations *debugfs_regs[] = {
 	&amdgpu_debugfs_gprwave_fops,
 	&amdgpu_debugfs_regs_didt_fops,
 	&amdgpu_debugfs_regs_pcie_fops,
+<<<<<<< HEAD
 	&amdgpu_debugfs_regs_pcie64_fops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&amdgpu_debugfs_regs_smc_fops,
 	&amdgpu_debugfs_gca_config_fops,
 	&amdgpu_debugfs_sensors_fops,
@@ -1715,7 +1743,10 @@ static const char * const debugfs_regs_names[] = {
 	"amdgpu_gprwave",
 	"amdgpu_regs_didt",
 	"amdgpu_regs_pcie",
+<<<<<<< HEAD
 	"amdgpu_regs_pcie64",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	"amdgpu_regs_smc",
 	"amdgpu_gca_config",
 	"amdgpu_sensors",
@@ -2269,6 +2300,7 @@ static const struct file_operations amdgpu_pt_info_fops = {
 	.release = single_release,
 };
 
+<<<<<<< HEAD
 static int amdgpu_mqd_info_read(struct seq_file *m, void *unused)
 {
 	struct amdgpu_usermode_queue *queue = m->private;
@@ -2316,6 +2348,8 @@ void amdgpu_debugfs_userq_init(struct drm_file *file, struct amdgpu_usermode_que
 	debugfs_create_file("mqd_info", 0444, queue->debugfs_queue, queue, &amdgpu_mqd_info_fops);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_debugfs_vm_init(struct drm_file *file)
 {
 	debugfs_create_file("vm_pagetable_info", 0444, file->debugfs_client, file,
@@ -2334,9 +2368,12 @@ int amdgpu_debugfs_regs_init(struct amdgpu_device *adev)
 void amdgpu_debugfs_vm_init(struct drm_file *file)
 {
 }
+<<<<<<< HEAD
 void amdgpu_debugfs_userq_init(struct drm_file *file,
 			       struct amdgpu_usermode_queue *queue,
 			       int qid)
 {
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

@@ -175,6 +175,15 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
 			return migrate_vma_collect_skip(start, end, walk);
 		}
 
+<<<<<<< HEAD
+=======
+		if (softleaf_is_migration(entry)) {
+			softleaf_entry_wait_on_locked(entry, ptl);
+			spin_unlock(ptl);
+			return -EAGAIN;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (softleaf_is_device_private_write(entry))
 			write = MIGRATE_PFN_WRITE;
 	} else {
@@ -908,10 +917,13 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
 	unsigned long flags;
 	int ret = 0;
 
+<<<<<<< HEAD
 	/*
 	 * take a reference, since split_huge_pmd_address() with freeze = true
 	 * drops a reference at the end.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folio_get(folio);
 	split_huge_pmd_address(migrate->vma, addr, true);
 	ret = folio_split_unmapped(folio, 0);

@@ -11,11 +11,15 @@
 #include "xe_pci_test.h"
 
 #define TEST_MAX_VFS	63
+<<<<<<< HEAD
 #define TEST_VRAM	0x7a800000ull	/* random size that works on 32-bit */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void pf_set_admin_mode(struct xe_device *xe, bool enable)
 {
 	/* should match logic of xe_sriov_pf_admin_only() */
+<<<<<<< HEAD
 	xe->sriov.pf.admin_only = enable;
 	KUNIT_EXPECT_EQ(kunit_get_current_test(), enable, xe_sriov_pf_admin_only(xe));
 }
@@ -31,6 +35,12 @@ static void pf_set_usable_vram(struct xe_device *xe, u64 usable)
 	KUNIT_ASSERT_EQ(test, usable, xe_vram_region_usable_size(tile->mem.vram));
 }
 
+=======
+	xe->info.probe_display = !enable;
+	KUNIT_EXPECT_EQ(kunit_get_current_test(), enable, xe_sriov_pf_admin_only(xe));
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const void *num_vfs_gen_param(struct kunit *test, const void *prev, char *desc)
 {
 	unsigned long next = 1 + (unsigned long)prev;
@@ -46,11 +56,17 @@ static int pf_gt_config_test_init(struct kunit *test)
 {
 	struct xe_pci_fake_data fake = {
 		.sriov_mode = XE_SRIOV_MODE_PF,
+<<<<<<< HEAD
 		.platform = XE_BATTLEMAGE, /* any random DGFX platform with SR-IOV */
 		.subplatform = XE_SUBPLATFORM_NONE,
 		.graphics_verx100 = 2001,
 	};
 	struct xe_vram_region *vram;
+=======
+		.platform = XE_TIGERLAKE, /* any random platform with SR-IOV */
+		.subplatform = XE_SUBPLATFORM_NONE,
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_device *xe;
 	struct xe_gt *gt;
 
@@ -64,6 +80,7 @@ static int pf_gt_config_test_init(struct kunit *test)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gt);
 	test->priv = gt;
 
+<<<<<<< HEAD
 	/* pretend it has some VRAM */
 	KUNIT_ASSERT_TRUE(test, IS_DGFX(xe));
 	vram = kunit_kzalloc(test, sizeof(*vram), GFP_KERNEL);
@@ -77,6 +94,8 @@ static int pf_gt_config_test_init(struct kunit *test)
 	KUNIT_ASSERT_GE(test, GRAPHICS_VERx100(xe), 1260);
 	xe->tiles[0].sriov.pf.lmtt.ops = &lmtt_ml_ops;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* pretend it can support up to 63 VFs */
 	xe->sriov.pf.device_total_vfs = TEST_MAX_VFS;
 	xe->sriov.pf.driver_max_vfs = TEST_MAX_VFS;
@@ -216,6 +235,7 @@ static void fair_ggtt(struct kunit *test)
 		KUNIT_ASSERT_EQ(test, SZ_2G, pf_profile_fair_ggtt(gt, num_vfs));
 }
 
+<<<<<<< HEAD
 static const u64 vram_sizes[] = {
 	SZ_4G - SZ_512M,
 	SZ_8G + SZ_4G - SZ_512M,
@@ -280,16 +300,24 @@ static void fair_vram(struct kunit *test)
 	KUNIT_EXPECT_GE(test, TEST_VRAM, num_vfs * pf_profile_fair_lmem(gt, num_vfs));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case pf_gt_config_test_cases[] = {
 	KUNIT_CASE(fair_contexts_1vf),
 	KUNIT_CASE(fair_doorbells_1vf),
 	KUNIT_CASE(fair_ggtt_1vf),
+<<<<<<< HEAD
 	KUNIT_CASE_PARAM(fair_vram_1vf, vram_size_gen_params),
 	KUNIT_CASE_PARAM(fair_vram_1vf_admin_only, vram_size_gen_params),
 	KUNIT_CASE_PARAM(fair_contexts, num_vfs_gen_param),
 	KUNIT_CASE_PARAM(fair_doorbells, num_vfs_gen_param),
 	KUNIT_CASE_PARAM(fair_ggtt, num_vfs_gen_param),
 	KUNIT_CASE_PARAM(fair_vram, num_vfs_gen_param),
+=======
+	KUNIT_CASE_PARAM(fair_contexts, num_vfs_gen_param),
+	KUNIT_CASE_PARAM(fair_doorbells, num_vfs_gen_param),
+	KUNIT_CASE_PARAM(fair_ggtt, num_vfs_gen_param),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

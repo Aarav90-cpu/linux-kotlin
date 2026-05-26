@@ -117,11 +117,20 @@ static inline void sx865x_penrelease(struct sx8654 *ts)
 static void sx865x_penrelease_timer_handler(struct timer_list *t)
 {
 	struct sx8654 *ts = timer_container_of(ts, t, timer);
+<<<<<<< HEAD
 
 	dev_dbg(&ts->client->dev, "penrelease by timer\n");
 
 	guard(spinlock_irqsave)(&ts->lock);
 	sx865x_penrelease(ts);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&ts->lock, flags);
+	sx865x_penrelease(ts);
+	spin_unlock_irqrestore(&ts->lock, flags);
+	dev_dbg(&ts->client->dev, "penrelease by timer\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static irqreturn_t sx8650_irq(int irq, void *handle)
@@ -129,6 +138,10 @@ static irqreturn_t sx8650_irq(int irq, void *handle)
 	struct sx8654 *ts = handle;
 	struct device *dev = &ts->client->dev;
 	int len, i;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 stat;
 	u16 x, y;
 	u16 ch;
@@ -151,7 +164,11 @@ static irqreturn_t sx8650_irq(int irq, void *handle)
 		return IRQ_HANDLED;
 	}
 
+<<<<<<< HEAD
 	guard(spinlock_irqsave)(&ts->lock);
+=======
+	spin_lock_irqsave(&ts->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	x = 0;
 	y = 0;
@@ -182,6 +199,10 @@ static irqreturn_t sx8650_irq(int irq, void *handle)
 	dev_dbg(dev, "point(%4d,%4d)\n", x, y);
 
 	mod_timer(&ts->timer, jiffies + SX8650_PENIRQ_TIMEOUT);
+<<<<<<< HEAD
+=======
+	spin_unlock_irqrestore(&ts->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IRQ_HANDLED;
 }
@@ -391,6 +412,7 @@ static int sx8654_probe(struct i2c_client *client)
 		return error;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Start with the interrupt disabled, it will be enabled in
 	 * sx8654_open().
@@ -398,6 +420,11 @@ static int sx8654_probe(struct i2c_client *client)
 	error = devm_request_threaded_irq(&client->dev, client->irq,
 					  NULL, sx8654->data->irqh,
 					  IRQF_ONESHOT | IRQF_NO_AUTOEN,
+=======
+	error = devm_request_threaded_irq(&client->dev, client->irq,
+					  NULL, sx8654->data->irqh,
+					  IRQF_ONESHOT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  client->name, sx8654);
 	if (error) {
 		dev_err(&client->dev,
@@ -406,6 +433,12 @@ static int sx8654_probe(struct i2c_client *client)
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Disable the IRQ, we'll enable it in sx8654_open() */
+	disable_irq(client->irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = input_register_device(sx8654->input);
 	if (error)
 		return error;

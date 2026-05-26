@@ -18,6 +18,10 @@
 #include <linux/exportfs.h>
 #include <linux/iversion.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
+=======
+#include <linux/buffer_head.h> /* sync_mapping_buffers */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/fs_context.h>
 #include <linux/pseudo_fs.h>
 #include <linux/fsnotify.h>
@@ -1538,13 +1542,18 @@ struct dentry *generic_fh_to_parent(struct super_block *sb, struct fid *fid,
 EXPORT_SYMBOL_GPL(generic_fh_to_parent);
 
 /**
+<<<<<<< HEAD
  * simple_fsync_noflush - generic fsync implementation for simple filesystems
+=======
+ * __generic_file_fsync - generic fsync implementation for simple filesystems
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @file:	file to synchronize
  * @start:	start offset in bytes
  * @end:	end offset in bytes (inclusive)
  * @datasync:	only synchronize essential metadata if true
  *
+<<<<<<< HEAD
  * This function is an fsync handler for simple filesystems. It writes out
  * dirty data, inode (if dirty), but does not issue a cache flush.
  */
@@ -1554,47 +1563,96 @@ int simple_fsync_noflush(struct file *file, loff_t start, loff_t end,
 	struct inode *inode = file->f_mapping->host;
 	int err;
 	int ret = 0;
+=======
+ * This is a generic implementation of the fsync method for simple
+ * filesystems which track all non-inode metadata in the buffers list
+ * hanging off the address_space structure.
+ */
+int __generic_file_fsync(struct file *file, loff_t start, loff_t end,
+				 int datasync)
+{
+	struct inode *inode = file->f_mapping->host;
+	int err;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = file_write_and_wait_range(file, start, end);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	inode_lock(inode);
+	ret = sync_mapping_buffers(inode->i_mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!(inode_state_read_once(inode) & I_DIRTY_ALL))
 		goto out;
 	if (datasync && !(inode_state_read_once(inode) & I_DIRTY_DATASYNC))
 		goto out;
 
+<<<<<<< HEAD
 	ret = sync_inode_metadata(inode, 1);
 out:
+=======
+	err = sync_inode_metadata(inode, 1);
+	if (ret == 0)
+		ret = err;
+
+out:
+	inode_unlock(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* check and advance again to catch errors after syncing out buffers */
 	err = file_check_and_advance_wb_err(file);
 	if (ret == 0)
 		ret = err;
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(simple_fsync_noflush);
 
 /**
  * simple_fsync - fsync implementation for simple filesystems with flush
+=======
+EXPORT_SYMBOL(__generic_file_fsync);
+
+/**
+ * generic_file_fsync - generic fsync implementation for simple filesystems
+ *			with flush
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @file:	file to synchronize
  * @start:	start offset in bytes
  * @end:	end offset in bytes (inclusive)
  * @datasync:	only synchronize essential metadata if true
  *
+<<<<<<< HEAD
  * This function is an fsync handler for simple filesystems. It writes out
  * dirty data, inode (if dirty), and issues a cache flush.
  */
 int simple_fsync(struct file *file, loff_t start, loff_t end, int datasync)
+=======
+ */
+
+int generic_file_fsync(struct file *file, loff_t start, loff_t end,
+		       int datasync)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *inode = file->f_mapping->host;
 	int err;
 
+<<<<<<< HEAD
 	err = simple_fsync_noflush(file, start, end, datasync);
+=======
+	err = __generic_file_fsync(file, start, end, datasync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 	return blkdev_issue_flush(inode->i_sb->s_bdev);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(simple_fsync);
+=======
+EXPORT_SYMBOL(generic_file_fsync);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * generic_check_addressable - Check addressability of file system
@@ -2309,6 +2367,11 @@ EXPORT_SYMBOL(simple_start_creating);
 /* parent must have been held exclusive since simple_start_creating() */
 void simple_done_creating(struct dentry *child)
 {
+<<<<<<< HEAD
 	end_creating(child);
+=======
+	inode_unlock(child->d_parent->d_inode);
+	dput(child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(simple_done_creating);

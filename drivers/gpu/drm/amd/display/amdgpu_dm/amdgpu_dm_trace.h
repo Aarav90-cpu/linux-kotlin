@@ -753,6 +753,7 @@ TRACE_EVENT(amdgpu_dm_brightness,
 	)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(amdgpu_dm_ism_commit,
 	TP_PROTO(
 		int active_vblank_irq_count,
@@ -816,6 +817,8 @@ TRACE_EVENT(amdgpu_dm_ism_event,
 );
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _AMDGPU_DM_TRACE_H_ */
 
 #undef TRACE_INCLUDE_PATH

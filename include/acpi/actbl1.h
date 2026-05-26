@@ -1386,12 +1386,15 @@ enum acpi_einj_command_status {
 #define ACPI_EINJ_CXL_MEM_FATAL             (1<<17)
 #define ACPI_EINJ_VENDOR_DEFINED            (1<<31)
 
+<<<<<<< HEAD
 /* EINJV2 error types from EINJV2_GET_ERROR_TYPE (ACPI 6.6) */
 
 #define ACPI_EINJV2_PROCESSOR               (1)
 #define ACPI_EINJV2_MEMORY                  (1<<1)
 #define ACPI_EINJV2_PCIE                    (1<<2)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*******************************************************************************
  *
  * ERST - Error Record Serialization Table (ACPI 4.0)

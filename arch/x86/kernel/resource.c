@@ -62,7 +62,11 @@ void arch_remove_reservations(struct resource *avail)
 	/*
 	 * Trim out BIOS area (high 2MB) and E820 regions. We do not remove
 	 * the low 1MB unconditionally, as this area is needed for some ISA
+<<<<<<< HEAD
 	 * cards requiring a memory range.
+=======
+	 * cards requiring a memory range, e.g. the i82365 PCMCIA controller.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (avail->flags & IORESOURCE_MEM) {
 		resource_clip(avail, BIOS_ROM_BASE, BIOS_ROM_END);

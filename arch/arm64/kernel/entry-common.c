@@ -21,7 +21,10 @@
 #include <asm/daifflags.h>
 #include <asm/esr.h>
 #include <asm/exception.h>
+<<<<<<< HEAD
 #include <asm/fpsimd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/irq_regs.h>
 #include <asm/kprobes.h>
 #include <asm/mmu.h>
@@ -36,11 +39,19 @@
  * Before this function is called it is not safe to call regular kernel code,
  * instrumentable code, or any code which may trigger an exception.
  */
+<<<<<<< HEAD
 static noinstr irqentry_state_t arm64_enter_from_kernel_mode(struct pt_regs *regs)
 {
 	irqentry_state_t state;
 
 	state = irqentry_enter_from_kernel_mode(regs);
+=======
+static noinstr irqentry_state_t enter_from_kernel_mode(struct pt_regs *regs)
+{
+	irqentry_state_t state;
+
+	state = irqentry_enter(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mte_check_tfsr_entry();
 	mte_disable_tco_entry(current);
 
@@ -52,6 +63,7 @@ static noinstr irqentry_state_t arm64_enter_from_kernel_mode(struct pt_regs *reg
  * After this function returns it is not safe to call regular kernel code,
  * instrumentable code, or any code which may trigger an exception.
  */
+<<<<<<< HEAD
 static void noinstr arm64_exit_to_kernel_mode(struct pt_regs *regs,
 					      irqentry_state_t state)
 {
@@ -60,6 +72,13 @@ static void noinstr arm64_exit_to_kernel_mode(struct pt_regs *regs,
 	local_daif_mask();
 	mte_check_tfsr_exit();
 	irqentry_exit_to_kernel_mode_after_preempt(regs, state);
+=======
+static void noinstr exit_to_kernel_mode(struct pt_regs *regs,
+					irqentry_state_t state)
+{
+	mte_check_tfsr_exit();
+	irqentry_exit(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline void arm64_syscall_enter_from_user_mode(struct pt_regs *regs)
@@ -79,7 +98,10 @@ static __always_inline void arm64_enter_from_user_mode(struct pt_regs *regs)
 	enter_from_user_mode(regs);
 	rseq_note_user_irq_entry();
 	mte_disable_tco_entry(current);
+<<<<<<< HEAD
 	sme_enter_from_user_mode();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline void arm64_syscall_exit_to_user_mode(struct pt_regs *regs)
@@ -102,7 +124,10 @@ static __always_inline void arm64_exit_to_user_mode(struct pt_regs *regs)
 	local_irq_disable();
 	irqentry_exit_to_user_mode_prepare(regs);
 	local_daif_mask();
+<<<<<<< HEAD
 	sme_exit_to_user_mode();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mte_check_tfsr_exit();
 	exit_to_user_mode();
 }
@@ -321,10 +346,18 @@ static void noinstr el1_abort(struct pt_regs *regs, unsigned long esr)
 	unsigned long far = read_sysreg(far_el1);
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_mem_abort(far, esr, regs);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_mem_abort(far, esr, regs);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_pc(struct pt_regs *regs, unsigned long esr)
@@ -332,50 +365,90 @@ static void noinstr el1_pc(struct pt_regs *regs, unsigned long esr)
 	unsigned long far = read_sysreg(far_el1);
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_sp_pc_abort(far, esr, regs);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_sp_pc_abort(far, esr, regs);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_undef(struct pt_regs *regs, unsigned long esr)
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_el1_undef(regs, esr);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_el1_undef(regs, esr);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_bti(struct pt_regs *regs, unsigned long esr)
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_el1_bti(regs, esr);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_el1_bti(regs, esr);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_gcs(struct pt_regs *regs, unsigned long esr)
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_el1_gcs(regs, esr);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_el1_gcs(regs, esr);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_mops(struct pt_regs *regs, unsigned long esr)
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_el1_mops(regs, esr);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_el1_mops(regs, esr);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void noinstr el1_breakpt(struct pt_regs *regs, unsigned long esr)
@@ -437,10 +510,18 @@ static void noinstr el1_fpac(struct pt_regs *regs, unsigned long esr)
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
 	local_daif_inherit(regs);
 	do_el1_fpac(regs, esr);
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	state = enter_from_kernel_mode(regs);
+	local_daif_inherit(regs);
+	do_el1_fpac(regs, esr);
+	local_daif_mask();
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 asmlinkage void noinstr el1h_64_sync_handler(struct pt_regs *regs)
@@ -507,13 +588,21 @@ static __always_inline void __el1_irq(struct pt_regs *regs,
 {
 	irqentry_state_t state;
 
+<<<<<<< HEAD
 	state = arm64_enter_from_kernel_mode(regs);
+=======
+	state = enter_from_kernel_mode(regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	irq_enter_rcu();
 	do_interrupt_handler(regs, handler);
 	irq_exit_rcu();
 
+<<<<<<< HEAD
 	arm64_exit_to_kernel_mode(regs, state);
+=======
+	exit_to_kernel_mode(regs, state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 static void noinstr el1_interrupt(struct pt_regs *regs,
 				  void (*handler)(struct pt_regs *))

@@ -281,14 +281,85 @@ static int analogix_dp_link_start(struct analogix_dp_device *dp)
 	if (retval < 0)
 		return retval;
 
+<<<<<<< HEAD
 	retval = drm_dp_dpcd_write(&dp->aux, DP_TRAINING_LANE0_SET,
 				   dp->link_train.training_lane, lane_count);
+=======
+	for (lane = 0; lane < lane_count; lane++)
+		buf[lane] = DP_TRAIN_PRE_EMPH_LEVEL_0 |
+			    DP_TRAIN_VOLTAGE_SWING_LEVEL_0;
+
+	retval = drm_dp_dpcd_write(&dp->aux, DP_TRAINING_LANE0_SET, buf,
+				   lane_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (retval < 0)
 		return retval;
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned char analogix_dp_get_lane_status(u8 link_status[2], int lane)
+{
+	int shift = (lane & 1) * 4;
+	u8 link_value = link_status[lane >> 1];
+
+	return (link_value >> shift) & 0xf;
+}
+
+static int analogix_dp_clock_recovery_ok(u8 link_status[2], int lane_count)
+{
+	int lane;
+	u8 lane_status;
+
+	for (lane = 0; lane < lane_count; lane++) {
+		lane_status = analogix_dp_get_lane_status(link_status, lane);
+		if ((lane_status & DP_LANE_CR_DONE) == 0)
+			return -EINVAL;
+	}
+	return 0;
+}
+
+static int analogix_dp_channel_eq_ok(u8 link_status[2], u8 link_align,
+				     int lane_count)
+{
+	int lane;
+	u8 lane_status;
+
+	if ((link_align & DP_INTERLANE_ALIGN_DONE) == 0)
+		return -EINVAL;
+
+	for (lane = 0; lane < lane_count; lane++) {
+		lane_status = analogix_dp_get_lane_status(link_status, lane);
+		lane_status &= DP_CHANNEL_EQ_BITS;
+		if (lane_status != DP_CHANNEL_EQ_BITS)
+			return -EINVAL;
+	}
+
+	return 0;
+}
+
+static unsigned char
+analogix_dp_get_adjust_request_voltage(u8 adjust_request[2], int lane)
+{
+	int shift = (lane & 1) * 4;
+	u8 link_value = adjust_request[lane >> 1];
+
+	return (link_value >> shift) & 0x3;
+}
+
+static unsigned char analogix_dp_get_adjust_request_pre_emphasis(
+					u8 adjust_request[2],
+					int lane)
+{
+	int shift = (lane & 1) * 4;
+	u8 link_value = adjust_request[lane >> 1];
+
+	return ((link_value >> shift) & 0xc) >> 2;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void analogix_dp_reduce_link_rate(struct analogix_dp_device *dp)
 {
 	analogix_dp_training_pattern_dis(dp);
@@ -298,15 +369,26 @@ static void analogix_dp_reduce_link_rate(struct analogix_dp_device *dp)
 }
 
 static void analogix_dp_get_adjust_training_lane(struct analogix_dp_device *dp,
+<<<<<<< HEAD
 						 u8 link_status[DP_LINK_STATUS_SIZE])
+=======
+						 u8 adjust_request[2])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int lane, lane_count;
 	u8 voltage_swing, pre_emphasis, training_lane;
 
 	lane_count = dp->link_train.lane_count;
 	for (lane = 0; lane < lane_count; lane++) {
+<<<<<<< HEAD
 		voltage_swing = drm_dp_get_adjust_request_voltage(link_status, lane);
 		pre_emphasis = drm_dp_get_adjust_request_pre_emphasis(link_status, lane);
+=======
+		voltage_swing = analogix_dp_get_adjust_request_voltage(
+						adjust_request, lane);
+		pre_emphasis = analogix_dp_get_adjust_request_pre_emphasis(
+						adjust_request, lane);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		training_lane = DPCD_VOLTAGE_SWING_SET(voltage_swing) |
 				DPCD_PRE_EMPHASIS_SET(pre_emphasis);
 
@@ -323,17 +405,29 @@ static int analogix_dp_process_clock_recovery(struct analogix_dp_device *dp)
 {
 	int lane, lane_count, retval;
 	u8 voltage_swing, pre_emphasis, training_lane;
+<<<<<<< HEAD
 	u8 link_status[DP_LINK_STATUS_SIZE];
+=======
+	u8 link_status[2], adjust_request[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usleep_range(100, 101);
 
 	lane_count = dp->link_train.lane_count;
 
+<<<<<<< HEAD
 	retval = drm_dp_dpcd_read_link_status(&dp->aux, link_status);
 	if (retval < 0)
 		return retval;
 
 	if (drm_dp_clock_recovery_ok(link_status, lane_count)) {
+=======
+	retval = drm_dp_dpcd_read(&dp->aux, DP_LANE0_1_STATUS, link_status, 2);
+	if (retval < 0)
+		return retval;
+
+	if (analogix_dp_clock_recovery_ok(link_status, lane_count) == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* set training pattern 2 for EQ */
 		analogix_dp_set_training_pattern(dp, TRAINING_PTN2);
 
@@ -349,10 +443,22 @@ static int analogix_dp_process_clock_recovery(struct analogix_dp_device *dp)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	for (lane = 0; lane < lane_count; lane++) {
 		training_lane = analogix_dp_get_lane_link_training(dp, lane);
 		voltage_swing = drm_dp_get_adjust_request_voltage(link_status, lane);
 		pre_emphasis = drm_dp_get_adjust_request_pre_emphasis(link_status, lane);
+=======
+	retval = drm_dp_dpcd_read(&dp->aux, DP_ADJUST_REQUEST_LANE0_1,
+				  adjust_request, 2);
+	if (retval < 0)
+		return retval;
+
+	for (lane = 0; lane < lane_count; lane++) {
+		training_lane = analogix_dp_get_lane_link_training(dp, lane);
+		voltage_swing = analogix_dp_get_adjust_request_voltage(adjust_request, lane);
+		pre_emphasis = analogix_dp_get_adjust_request_pre_emphasis(adjust_request, lane);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (DPCD_VOLTAGE_SWING_GET(training_lane) == voltage_swing &&
 		    DPCD_PRE_EMPHASIS_GET(training_lane) == pre_emphasis)
@@ -369,7 +475,11 @@ static int analogix_dp_process_clock_recovery(struct analogix_dp_device *dp)
 		}
 	}
 
+<<<<<<< HEAD
 	analogix_dp_get_adjust_training_lane(dp, link_status);
+=======
+	analogix_dp_get_adjust_training_lane(dp, adjust_request);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	analogix_dp_set_lane_link_training(dp);
 
 	retval = drm_dp_dpcd_write(&dp->aux, DP_TRAINING_LANE0_SET,
@@ -384,24 +494,52 @@ static int analogix_dp_process_equalizer_training(struct analogix_dp_device *dp)
 {
 	int lane_count, retval;
 	u32 reg;
+<<<<<<< HEAD
 	u8 link_status[DP_LINK_STATUS_SIZE];
+=======
+	u8 link_align, link_status[2], adjust_request[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usleep_range(400, 401);
 
 	lane_count = dp->link_train.lane_count;
 
+<<<<<<< HEAD
 	retval = drm_dp_dpcd_read_link_status(&dp->aux, link_status);
 	if (retval < 0)
 		return retval;
 
 	if (!drm_dp_clock_recovery_ok(link_status, lane_count)) {
+=======
+	retval = drm_dp_dpcd_read(&dp->aux, DP_LANE0_1_STATUS, link_status, 2);
+	if (retval < 0)
+		return retval;
+
+	if (analogix_dp_clock_recovery_ok(link_status, lane_count)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		analogix_dp_reduce_link_rate(dp);
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	analogix_dp_get_adjust_training_lane(dp, link_status);
 
 	if (drm_dp_channel_eq_ok(link_status, lane_count)) {
+=======
+	retval = drm_dp_dpcd_read(&dp->aux, DP_ADJUST_REQUEST_LANE0_1,
+				  adjust_request, 2);
+	if (retval < 0)
+		return retval;
+
+	retval = drm_dp_dpcd_readb(&dp->aux, DP_LANE_ALIGN_STATUS_UPDATED,
+				   &link_align);
+	if (retval < 0)
+		return retval;
+
+	analogix_dp_get_adjust_training_lane(dp, adjust_request);
+
+	if (!analogix_dp_channel_eq_ok(link_status, link_align, lane_count)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* traing pattern Set to Normal */
 		retval = analogix_dp_training_pattern_dis(dp);
 		if (retval < 0)
@@ -539,7 +677,11 @@ static int analogix_dp_full_link_train(struct analogix_dp_device *dp,
 static int analogix_dp_fast_link_train(struct analogix_dp_device *dp)
 {
 	int ret;
+<<<<<<< HEAD
 	u8 link_status[DP_LINK_STATUS_SIZE];
+=======
+	u8 link_align, link_status[2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	analogix_dp_set_link_bandwidth(dp, dp->link_train.link_rate);
 	ret = analogix_dp_wait_pll_locked(dp);
@@ -573,20 +715,43 @@ static int analogix_dp_fast_link_train(struct analogix_dp_device *dp)
 	 * speed
 	 */
 	if (verify_fast_training) {
+<<<<<<< HEAD
 		ret = drm_dp_dpcd_read_link_status(&dp->aux, link_status);
+=======
+		ret = drm_dp_dpcd_readb(&dp->aux, DP_LANE_ALIGN_STATUS_UPDATED,
+					&link_align);
+		if (ret < 0) {
+			DRM_DEV_ERROR(dp->dev, "Read align status failed %d\n",
+				      ret);
+			return ret;
+		}
+
+		ret = drm_dp_dpcd_read(&dp->aux, DP_LANE0_1_STATUS, link_status,
+				       2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0) {
 			DRM_DEV_ERROR(dp->dev, "Read link status failed %d\n",
 				      ret);
 			return ret;
 		}
 
+<<<<<<< HEAD
 		if (!drm_dp_clock_recovery_ok(link_status, dp->link_train.lane_count)) {
+=======
+		if (analogix_dp_clock_recovery_ok(link_status,
+						  dp->link_train.lane_count)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			DRM_DEV_ERROR(dp->dev, "Clock recovery failed\n");
 			analogix_dp_reduce_link_rate(dp);
 			return -EIO;
 		}
 
+<<<<<<< HEAD
 		if (!drm_dp_channel_eq_ok(link_status, dp->link_train.lane_count)) {
+=======
+		if (analogix_dp_channel_eq_ok(link_status, link_align,
+					      dp->link_train.lane_count)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			DRM_DEV_ERROR(dp->dev, "Channel EQ failed\n");
 			analogix_dp_reduce_link_rate(dp);
 			return -EIO;
@@ -1086,6 +1251,7 @@ out_dp_init:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void analogix_dp_bridge_mode_set(struct drm_bridge *bridge,
 					const struct drm_display_mode *mode)
 {
@@ -1162,12 +1328,18 @@ static void analogix_dp_bridge_mode_set(struct drm_bridge *bridge,
 		video->interlaced = true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void analogix_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 					     struct drm_atomic_state *old_state)
 {
 	struct analogix_dp_device *dp = to_dp(bridge);
 	struct drm_crtc *crtc;
+<<<<<<< HEAD
 	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
+=======
+	struct drm_crtc_state *old_crtc_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int timeout_loop = 0;
 	int ret;
 
@@ -1175,11 +1347,14 @@ static void analogix_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 	if (!crtc)
 		return;
 
+<<<<<<< HEAD
 	new_crtc_state = drm_atomic_get_new_crtc_state(old_state, crtc);
 	if (!new_crtc_state)
 		return;
 	analogix_dp_bridge_mode_set(bridge, &new_crtc_state->adjusted_mode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old_crtc_state = drm_atomic_get_old_crtc_state(old_state, crtc);
 	/* Not a full enable, just disable PSR and continue */
 	if (old_crtc_state && old_crtc_state->self_refresh_active) {
@@ -1286,6 +1461,86 @@ static void analogix_dp_bridge_atomic_post_disable(struct drm_bridge *bridge,
 		DRM_ERROR("Failed to enable psr (%d)\n", ret);
 }
 
+<<<<<<< HEAD
+=======
+static void analogix_dp_bridge_mode_set(struct drm_bridge *bridge,
+				const struct drm_display_mode *orig_mode,
+				const struct drm_display_mode *mode)
+{
+	struct analogix_dp_device *dp = to_dp(bridge);
+	struct drm_display_info *display_info = &dp->connector.display_info;
+	struct video_info *video = &dp->video_info;
+	struct device_node *dp_node = dp->dev->of_node;
+	int vic;
+
+	/* Input video interlaces & hsync pol & vsync pol */
+	video->interlaced = !!(mode->flags & DRM_MODE_FLAG_INTERLACE);
+	video->v_sync_polarity = !!(mode->flags & DRM_MODE_FLAG_NVSYNC);
+	video->h_sync_polarity = !!(mode->flags & DRM_MODE_FLAG_NHSYNC);
+
+	/* Input video dynamic_range & colorimetry */
+	vic = drm_match_cea_mode(mode);
+	if ((vic == 6) || (vic == 7) || (vic == 21) || (vic == 22) ||
+	    (vic == 2) || (vic == 3) || (vic == 17) || (vic == 18)) {
+		video->dynamic_range = CEA;
+		video->ycbcr_coeff = COLOR_YCBCR601;
+	} else if (vic) {
+		video->dynamic_range = CEA;
+		video->ycbcr_coeff = COLOR_YCBCR709;
+	} else {
+		video->dynamic_range = VESA;
+		video->ycbcr_coeff = COLOR_YCBCR709;
+	}
+
+	/* Input vide bpc and color_formats */
+	switch (display_info->bpc) {
+	case 12:
+		video->color_depth = COLOR_12;
+		break;
+	case 10:
+		video->color_depth = COLOR_10;
+		break;
+	case 8:
+		video->color_depth = COLOR_8;
+		break;
+	case 6:
+		video->color_depth = COLOR_6;
+		break;
+	default:
+		video->color_depth = COLOR_8;
+		break;
+	}
+	if (display_info->color_formats & DRM_COLOR_FORMAT_YCBCR444)
+		video->color_space = COLOR_YCBCR444;
+	else if (display_info->color_formats & DRM_COLOR_FORMAT_YCBCR422)
+		video->color_space = COLOR_YCBCR422;
+	else
+		video->color_space = COLOR_RGB;
+
+	/*
+	 * NOTE: those property parsing code is used for providing backward
+	 * compatibility for samsung platform.
+	 * Due to we used the "of_property_read_u32" interfaces, when this
+	 * property isn't present, the "video_info" can keep the original
+	 * values and wouldn't be modified.
+	 */
+	of_property_read_u32(dp_node, "samsung,color-space",
+			     &video->color_space);
+	of_property_read_u32(dp_node, "samsung,dynamic-range",
+			     &video->dynamic_range);
+	of_property_read_u32(dp_node, "samsung,ycbcr-coeff",
+			     &video->ycbcr_coeff);
+	of_property_read_u32(dp_node, "samsung,color-depth",
+			     &video->color_depth);
+	if (of_property_read_bool(dp_node, "hsync-active-high"))
+		video->h_sync_polarity = true;
+	if (of_property_read_bool(dp_node, "vsync-active-high"))
+		video->v_sync_polarity = true;
+	if (of_property_read_bool(dp_node, "interlaced"))
+		video->interlaced = true;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct drm_bridge_funcs analogix_dp_bridge_funcs = {
 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
@@ -1294,6 +1549,10 @@ static const struct drm_bridge_funcs analogix_dp_bridge_funcs = {
 	.atomic_enable = analogix_dp_bridge_atomic_enable,
 	.atomic_disable = analogix_dp_bridge_atomic_disable,
 	.atomic_post_disable = analogix_dp_bridge_atomic_post_disable,
+<<<<<<< HEAD
+=======
+	.mode_set = analogix_dp_bridge_mode_set,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attach = analogix_dp_bridge_attach,
 };
 

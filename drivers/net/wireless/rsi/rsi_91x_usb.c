@@ -877,8 +877,11 @@ static void rsi_disconnect(struct usb_interface *pfunction)
 	if (!adapter)
 		return;
 
+<<<<<<< HEAD
 	rsi_mac80211_rfkill_exit(adapter);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rsi_mac80211_detach(adapter);
 
 	if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&

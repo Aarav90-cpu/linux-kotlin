@@ -34,7 +34,10 @@
 #include <drm/drm_drv.h>
 #include <drm/drm_print.h>
 #include <drm/intel/display_parent_interface.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_interrupt_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "display/intel_display_irq.h"
 #include "display/intel_hotplug.h"

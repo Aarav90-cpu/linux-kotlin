@@ -477,6 +477,7 @@ int arena_kfuncs_under_bpf_lock(void *ctx)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 #if defined(__BPF_FEATURE_ADDR_SPACE_CAST)
 
@@ -607,4 +608,6 @@ int non_arena_ptr_add_to_arena_ptr(void *ctx)
 
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

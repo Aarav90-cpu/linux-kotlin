@@ -36,7 +36,10 @@
 
 	aliases {
 		serial0 = &uart5;
+<<<<<<< HEAD
 		serial1 = &uart7;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pm8350c_pwm_backlight: backlight {
@@ -195,6 +198,7 @@
 
 		#sound-dai-cells = <1>;
 	};
+<<<<<<< HEAD
 
 	wcn6750-pmu {
 		compatible = "qcom,wcn6750-pmu";
@@ -252,6 +256,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &apps_rsc {
@@ -753,6 +759,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &qup_uart7_cts {
 	/*
 	 * Configure a bias-bus-hold on CTS to lower power
@@ -786,6 +793,8 @@
 	bias-disable;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &qupv3_id_0 {
 	status = "okay";
 };
@@ -1011,6 +1020,7 @@
 	gpio-reserved-ranges = <32 2>, /* ADSP */
 			       <48 4>; /* NFC */
 
+<<<<<<< HEAD
 	bt_en: bt-en-state {
 		pins = "gpio85";
 		function = "gpio";
@@ -1064,6 +1074,8 @@
 		bias-pull-up;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sd_cd: sd-cd-state {
 		pins = "gpio91";
 		function = "gpio";
@@ -1082,6 +1094,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart7 {
 	/delete-property/ interrupts;
 	interrupts-extended = <&intc GIC_SPI 608 IRQ_TYPE_LEVEL_HIGH>,
@@ -1107,6 +1120,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &ufs_mem_hc {
 	reset-gpios = <&tlmm 175 GPIO_ACTIVE_LOW>;
 	vcc-supply = <&vreg_l7b_2p952>;

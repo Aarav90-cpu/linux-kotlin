@@ -10,4 +10,8 @@
 bool mcg_dcn4_build_min_clock_table(struct dml2_mcg_build_min_clock_table_params_in_out *in_out);
 bool mcg_dcn4_unit_test(void);
 
+<<<<<<< HEAD
 #endif
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -211,7 +211,11 @@ void wx_get_pause_stats(struct net_device *netdev,
 
 	hwstats = &wx->stats;
 	stats->tx_pause_frames = hwstats->lxontxc + hwstats->lxofftxc;
+<<<<<<< HEAD
 	stats->rx_pause_frames = hwstats->lxonrxc + hwstats->lxoffrxc;
+=======
+	stats->rx_pause_frames = hwstats->lxonoffrxc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(wx_get_pause_stats);
 
@@ -262,6 +266,7 @@ int wx_set_link_ksettings(struct net_device *netdev,
 }
 EXPORT_SYMBOL(wx_set_link_ksettings);
 
+<<<<<<< HEAD
 void wx_get_wol(struct net_device *netdev,
 		struct ethtool_wolinfo *wol)
 {
@@ -295,6 +300,8 @@ int wx_set_wol(struct net_device *netdev,
 }
 EXPORT_SYMBOL(wx_set_wol);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void wx_get_pauseparam(struct net_device *netdev,
 		       struct ethtool_pauseparam *pause)
 {
@@ -555,7 +562,11 @@ int wx_set_channels(struct net_device *dev,
 
 	wx->ring_feature[RING_F_RSS].limit = count;
 
+<<<<<<< HEAD
 	return wx->setup_tc(dev, netdev_get_num_tc(dev));
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(wx_set_channels);
 

@@ -19,6 +19,7 @@
 #include <linux/gpio/driver.h>
 #include <linux/iio/iio.h>
 #include <linux/minmax.h>
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 #include "hid-ids.h"
 
@@ -28,6 +29,10 @@ module_param(gpio_mode_enforce, bool, 0644);
 MODULE_PARM_DESC(gpio_mode_enforce,
 	 "Enforce GPIO mode for GP0 thru GP3 (default: false, will be used for IIO)");
 
+=======
+#include "hid-ids.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Commands codes in a raw output report */
 enum {
 	MCP2221_I2C_WR_DATA = 0x90,
@@ -128,7 +133,10 @@ struct mcp2221 {
 	u8 *rxbuf;
 	u8 txbuf[64];
 	int rxbuf_idx;
+<<<<<<< HEAD
 	int rxbuf_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int status;
 	u8 cur_i2c_clk_div;
 	struct gpio_chip *gc;
@@ -331,14 +339,20 @@ static int mcp_i2c_smbus_read(struct mcp2221 *mcp,
 		mcp->txbuf[3] = (u8)(msg->addr << 1);
 		total_len = msg->len;
 		mcp->rxbuf = msg->buf;
+<<<<<<< HEAD
 		mcp->rxbuf_size = msg->len;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		mcp->txbuf[1] = smbus_len;
 		mcp->txbuf[2] = 0;
 		mcp->txbuf[3] = (u8)(smbus_addr << 1);
 		total_len = smbus_len;
 		mcp->rxbuf = smbus_buf;
+<<<<<<< HEAD
 		mcp->rxbuf_size = smbus_len;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = mcp_send_data_req_status(mcp, mcp->txbuf, 4);
@@ -546,10 +560,17 @@ static int mcp_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 			if (ret)
 				goto exit;
 
+<<<<<<< HEAD
 			ret = mcp_i2c_smbus_read(mcp, NULL,
 						MCP2221_I2C_RD_RPT_START,
 						addr, data->block[0] + 1,
 						data->block);
+=======
+			mcp->rxbuf_idx = 0;
+			mcp->rxbuf = data->block;
+			mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
+			ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				goto exit;
 		} else {
@@ -565,6 +586,7 @@ static int mcp_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 	case I2C_SMBUS_I2C_BLOCK_DATA:
 		if (read_write == I2C_SMBUS_READ) {
 			ret = mcp_smbus_write(mcp, addr, command, NULL,
+<<<<<<< HEAD
 						0, MCP2221_I2C_WR_NO_STOP, 0);
 			if (ret)
 				goto exit;
@@ -573,6 +595,16 @@ static int mcp_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 						MCP2221_I2C_RD_RPT_START,
 						addr, data->block[0],
 						&data->block[1]);
+=======
+						0, MCP2221_I2C_WR_NO_STOP, 1);
+			if (ret)
+				goto exit;
+
+			mcp->rxbuf_idx = 0;
+			mcp->rxbuf = data->block;
+			mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
+			ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				goto exit;
 		} else {
@@ -660,7 +692,11 @@ static int mcp2221_check_gpio_pinfunc(struct mcp2221 *mcp)
 	int needgpiofix = 0;
 	int ret;
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_IIO) && !gpio_mode_enforce)
+=======
+	if (IS_ENABLED(CONFIG_IIO))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	ret = mcp_gpio_read_sram(mcp);
@@ -922,10 +958,13 @@ static int mcp2221_raw_event(struct hid_device *hdev,
 					mcp->status = -EINVAL;
 					break;
 				}
+<<<<<<< HEAD
 				if (mcp->rxbuf_idx + data[3] > mcp->rxbuf_size) {
 					mcp->status = -EINVAL;
 					break;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				buf = mcp->rxbuf;
 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
@@ -1059,8 +1098,12 @@ static void mcp2221_remove(struct hid_device *hdev)
 #if IS_REACHABLE(CONFIG_IIO)
 	struct mcp2221 *mcp = hid_get_drvdata(hdev);
 
+<<<<<<< HEAD
 	if (!gpio_mode_enforce)
 		cancel_delayed_work_sync(&mcp->init_work);
+=======
+	cancel_delayed_work_sync(&mcp->init_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -1334,10 +1377,15 @@ static int mcp2221_probe(struct hid_device *hdev,
 #endif
 
 #if IS_REACHABLE(CONFIG_IIO)
+<<<<<<< HEAD
 	if (!gpio_mode_enforce) {
 		INIT_DELAYED_WORK(&mcp->init_work, mcp_init_work);
 		schedule_delayed_work(&mcp->init_work, msecs_to_jiffies(100));
 	}
+=======
+	INIT_DELAYED_WORK(&mcp->init_work, mcp_init_work);
+	schedule_delayed_work(&mcp->init_work, msecs_to_jiffies(100));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	return 0;

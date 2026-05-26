@@ -41,6 +41,11 @@ properties:
   panel-timing: true
   port: true
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - port
@@ -49,8 +54,11 @@ required:
   - height-mm
   - panel-timing
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |+
     panel {

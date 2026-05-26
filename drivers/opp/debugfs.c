@@ -130,11 +130,17 @@ void opp_debug_create_one(struct dev_pm_opp *opp, struct opp_table *opp_table)
 {
 	struct dentry *pdentry = opp_table->dentry;
 	struct dentry *d;
+<<<<<<< HEAD
 	char name[36];	/* "opp:"(4) + u64(20) + "-" (1) + u32(10) + NULL(1) */
+=======
+	unsigned long id;
+	char name[25];	/* 20 chars for 64 bit value + 5 (opp:\0) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Get directory name for OPP.
 	 *
+<<<<<<< HEAD
 	 * - Normally rate is unique to each OPP, use it to get unique opp-name,
 	 *   together with performance level if available.
 	 * - For some devices rate isn't available or there are multiple, use
@@ -148,6 +154,18 @@ void opp_debug_create_one(struct dev_pm_opp *opp, struct opp_table *opp_table)
 	} else {
 		snprintf(name, sizeof(name), "opp:%u", _get_opp_count(opp_table));
 	}
+=======
+	 * - Normally rate is unique to each OPP, use it to get unique opp-name.
+	 * - For some devices rate isn't available or there are multiple, use
+	 *   index instead for them.
+	 */
+	if (likely(opp_table->clk_count == 1 && opp->rates[0]))
+		id = opp->rates[0];
+	else
+		id = _get_opp_count(opp_table);
+
+	snprintf(name, sizeof(name), "opp:%lu", id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Create per-opp directory */
 	d = debugfs_create_dir(name, pdentry);

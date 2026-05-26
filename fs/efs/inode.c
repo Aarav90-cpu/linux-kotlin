@@ -132,7 +132,11 @@ struct inode *efs_iget(struct super_block *super, unsigned long ino)
 	for(i = 0; i < EFS_DIRECTEXTENTS; i++) {
 		extent_copy(&(efs_inode->di_u.di_extents[i]), &(in->extents[i]));
 		if (i < in->numextents && in->extents[i].cooked.ex_magic != 0) {
+<<<<<<< HEAD
 			pr_warn("extent %d has bad magic number in inode %llu\n",
+=======
+			pr_warn("extent %d has bad magic number in inode %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				i, inode->i_ino);
 			brelse(bh);
 			goto read_inode_error;
@@ -140,7 +144,11 @@ struct inode *efs_iget(struct super_block *super, unsigned long ino)
 	}
 
 	brelse(bh);
+<<<<<<< HEAD
 	pr_debug("efs_iget(): inode %llu, extents %d, mode %o\n",
+=======
+	pr_debug("efs_iget(): inode %lu, extents %d, mode %o\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 inode->i_ino, in->numextents, inode->i_mode);
 	switch (inode->i_mode & S_IFMT) {
 		case S_IFDIR: 
@@ -171,7 +179,11 @@ struct inode *efs_iget(struct super_block *super, unsigned long ino)
 	return inode;
         
 read_inode_error:
+<<<<<<< HEAD
 	pr_warn("failed to read inode %llu\n", inode->i_ino);
+=======
+	pr_warn("failed to read inode %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iget_failed(inode);
 	return ERR_PTR(-EIO);
 }

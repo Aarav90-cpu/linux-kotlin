@@ -792,6 +792,7 @@ static int stm32_hash_dma_send(struct stm32_hash_dev *hdev)
 
 static struct stm32_hash_dev *stm32_hash_find_dev(struct stm32_hash_ctx *ctx)
 {
+<<<<<<< HEAD
 	struct stm32_hash_dev *hdev;
 
 	spin_lock_bh(&stm32_hash.lock);
@@ -799,6 +800,21 @@ static struct stm32_hash_dev *stm32_hash_find_dev(struct stm32_hash_ctx *ctx)
 		ctx->hdev = list_first_entry_or_null(&stm32_hash.dev_list,
 						     struct stm32_hash_dev, list);
 	hdev = ctx->hdev;
+=======
+	struct stm32_hash_dev *hdev = NULL, *tmp;
+
+	spin_lock_bh(&stm32_hash.lock);
+	if (!ctx->hdev) {
+		list_for_each_entry(tmp, &stm32_hash.dev_list, list) {
+			hdev = tmp;
+			break;
+		}
+		ctx->hdev = hdev;
+	} else {
+		hdev = ctx->hdev;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&stm32_hash.lock);
 
 	return hdev;

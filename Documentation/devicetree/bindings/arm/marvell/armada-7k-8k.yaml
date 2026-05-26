@@ -21,6 +21,7 @@ properties:
           - const: marvell,armada-ap806-dual
           - const: marvell,armada-ap806
 
+<<<<<<< HEAD
       - description:
           Falcon (DB-98CX85x0) Development board COM Express Carrier plus
           Armada 7020 SoC COM Express CPU module
@@ -32,6 +33,8 @@ properties:
           - const: marvell,armada-ap806-dual
           - const: marvell,armada-ap806
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - description: Armada 7040 SoC
         items:
           - enum:

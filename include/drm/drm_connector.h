@@ -402,6 +402,11 @@ enum drm_hdmi_broadcast_rgb {
 
 const char *
 drm_hdmi_connector_get_broadcast_rgb_name(enum drm_hdmi_broadcast_rgb broadcast_rgb);
+<<<<<<< HEAD
+=======
+const char *
+drm_hdmi_connector_get_output_format_name(enum hdmi_colorspace fmt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct drm_monitor_range_info - Panel's Monitor range in EDID for
@@ -555,6 +560,7 @@ enum drm_colorspace {
 };
 
 /**
+<<<<<<< HEAD
  * enum drm_output_color_format - Output Color Format
  *
  * This enum is a consolidated color format list supported by
@@ -583,6 +589,8 @@ const char *
 drm_hdmi_connector_get_output_format_name(enum drm_output_color_format fmt);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enum drm_bus_flags - bus_flags info for &drm_display_info
  *
  * This enum defines signal polarities and clock edge information for signals on
@@ -694,6 +702,7 @@ enum drm_bus_flags {
 };
 
 /**
+<<<<<<< HEAD
  * struct drm_amd_vsdb_info - AMD-specific VSDB information
  *
  * This structure holds information parsed from the AMD Vendor-Specific Data
@@ -727,6 +736,8 @@ struct drm_amd_vsdb_info {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct drm_display_info - runtime data about the connected sink
  *
  * Describes a given display (e.g. CRT or flat panel) and its limitations. For
@@ -758,6 +769,14 @@ struct drm_display_info {
 	 */
 	enum subpixel_order subpixel_order;
 
+<<<<<<< HEAD
+=======
+#define DRM_COLOR_FORMAT_RGB444		(1<<0)
+#define DRM_COLOR_FORMAT_YCBCR444	(1<<1)
+#define DRM_COLOR_FORMAT_YCBCR422	(1<<2)
+#define DRM_COLOR_FORMAT_YCBCR420	(1<<3)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @panel_orientation: Read only connector property for built-in panels,
 	 * indicating the orientation of the panel vs the device's casing.
@@ -768,11 +787,18 @@ struct drm_display_info {
 	int panel_orientation;
 
 	/**
+<<<<<<< HEAD
 	 * @color_formats: HDMI Color formats, selects between RGB and
 	 * YCbCr modes. Uses a bitmask of DRM_OUTPUT_COLOR_FORMAT\_
 	 * defines, which are _not_ the same ones as used to describe
 	 * the pixel format in framebuffers, and also don't match the
 	 * formats in @bus_formats which are shared with v4l.
+=======
+	 * @color_formats: HDMI Color formats, selects between RGB and YCrCb
+	 * modes. Used DRM_COLOR_FORMAT\_ defines, which are _not_ the same ones
+	 * as used to describe the pixel format in framebuffers, and also don't
+	 * match the formats in @bus_formats which are shared with v4l.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	u32 color_formats;
 
@@ -916,11 +942,14 @@ struct drm_display_info {
 	 * Defaults to CEC_PHYS_ADDR_INVALID (0xffff).
 	 */
 	u16 source_physical_address;
+<<<<<<< HEAD
 
 	/**
 	 * @amd_vsdb: AMD-specific VSDB information.
 	 */
 	struct drm_amd_vsdb_info amd_vsdb;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int drm_display_info_set_bus_formats(struct drm_display_info *info,
@@ -1051,7 +1080,11 @@ struct drm_connector_hdmi_state {
 	/**
 	 * @output_format: Pixel format to output in.
 	 */
+<<<<<<< HEAD
 	enum drm_output_color_format output_format;
+=======
+	enum hdmi_colorspace output_format;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * @tmds_char_rate: TMDS Character Rate, in Hz.
@@ -1939,7 +1972,11 @@ struct drm_connector_hdmi {
 	unsigned char product[DRM_CONNECTOR_HDMI_PRODUCT_LEN] __nonstring;
 
 	/**
+<<<<<<< HEAD
 	 * @supported_formats: Bitmask of @drm_output_color_format
+=======
+	 * @supported_formats: Bitmask of @hdmi_colorspace
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * supported by the controller.
 	 */
 	unsigned long supported_formats;
@@ -2553,7 +2590,10 @@ int drm_connector_attach_scaling_mode_property(struct drm_connector *connector,
 					       u32 scaling_mode_mask);
 int drm_connector_attach_vrr_capable_property(
 		struct drm_connector *connector);
+<<<<<<< HEAD
 void drm_connector_attach_panel_type_property(struct drm_connector *connector);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int drm_connector_attach_broadcast_rgb_property(struct drm_connector *connector);
 int drm_connector_attach_colorspace_property(struct drm_connector *connector);
 int drm_connector_attach_hdr_output_metadata_property(struct drm_connector *connector);

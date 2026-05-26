@@ -624,7 +624,11 @@ int intel_guc_crash_process_msg(struct intel_guc *guc, u32 action)
 	else
 		guc_err(guc, "Unknown crash notification: 0x%04X\n", action);
 
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &guc->dead_guc_worker);
+=======
+	queue_work(system_unbound_wq, &guc->dead_guc_worker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -646,7 +650,11 @@ int intel_guc_to_host_process_recv_msg(struct intel_guc *guc,
 		guc_err(guc, "Received early exception notification!\n");
 
 	if (msg & (INTEL_GUC_RECV_MSG_CRASH_DUMP_POSTED | INTEL_GUC_RECV_MSG_EXCEPTION))
+<<<<<<< HEAD
 		queue_work(system_dfl_wq, &guc->dead_guc_worker);
+=======
+		queue_work(system_unbound_wq, &guc->dead_guc_worker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

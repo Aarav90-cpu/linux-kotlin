@@ -494,7 +494,11 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif, u16 aid, u8 *mac_addr,
 	sinfo->assoc_req_ies = ies;
 	sinfo->assoc_req_ies_len = ies_len;
 
+<<<<<<< HEAD
 	cfg80211_new_sta(&vif->wdev, mac_addr, sinfo, GFP_KERNEL);
+=======
+	cfg80211_new_sta(vif->ndev, mac_addr, sinfo, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netif_wake_queue(vif->ndev);
 
@@ -1011,7 +1015,11 @@ void ath6kl_disconnect_event(struct ath6kl_vif *vif, u8 reason, u8 *bssid,
 
 		if (!is_broadcast_ether_addr(bssid)) {
 			/* send event to application */
+<<<<<<< HEAD
 			cfg80211_del_sta(&vif->wdev, bssid, GFP_KERNEL);
+=======
+			cfg80211_del_sta(vif->ndev, bssid, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (memcmp(vif->ndev->dev_addr, bssid, ETH_ALEN) == 0) {

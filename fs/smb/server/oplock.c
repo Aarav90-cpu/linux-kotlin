@@ -30,6 +30,10 @@ static DEFINE_RWLOCK(lease_list_lock);
 static struct oplock_info *alloc_opinfo(struct ksmbd_work *work,
 					u64 id, __u16 Tid)
 {
+<<<<<<< HEAD
+=======
+	struct ksmbd_conn *conn = work->conn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ksmbd_session *sess = work->sess;
 	struct oplock_info *opinfo;
 
@@ -38,7 +42,11 @@ static struct oplock_info *alloc_opinfo(struct ksmbd_work *work,
 		return NULL;
 
 	opinfo->sess = sess;
+<<<<<<< HEAD
 	opinfo->conn = ksmbd_conn_get(work->conn);
+=======
+	opinfo->conn = conn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	opinfo->level = SMB2_OPLOCK_LEVEL_NONE;
 	opinfo->op_state = OPLOCK_STATE_NONE;
 	opinfo->pending_break = 0;
@@ -49,6 +57,10 @@ static struct oplock_info *alloc_opinfo(struct ksmbd_work *work,
 	init_waitqueue_head(&opinfo->oplock_brk);
 	atomic_set(&opinfo->refcount, 1);
 	atomic_set(&opinfo->breaking_cnt, 0);
+<<<<<<< HEAD
+=======
+	atomic_inc(&opinfo->conn->refcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return opinfo;
 }
@@ -130,7 +142,12 @@ static void __free_opinfo(struct oplock_info *opinfo)
 {
 	if (opinfo->is_lease)
 		free_lease(opinfo);
+<<<<<<< HEAD
 	ksmbd_conn_put(opinfo->conn);
+=======
+	if (opinfo->conn && atomic_dec_and_test(&opinfo->conn->refcnt))
+		kfree(opinfo->conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(opinfo);
 }
 

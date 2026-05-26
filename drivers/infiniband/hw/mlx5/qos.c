@@ -45,7 +45,11 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_PP_OBJ_ALLOC)(
 		return -EINVAL;
 
 	dev = to_mdev(c->ibucontext.device);
+<<<<<<< HEAD
 	pp_entry = kzalloc_obj(*pp_entry);
+=======
+	pp_entry = kzalloc(sizeof(*pp_entry), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pp_entry)
 		return -ENOMEM;
 

@@ -327,7 +327,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	flash: flash@1 {
+=======
+	flash: at45db321d@1 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "atmel,at45db321d", "atmel,at45", "atmel,dataflash";

@@ -7,6 +7,12 @@
 //! This module may not be directly used. Please abstract or re-export the needed symbols in the
 //! parent module instead.
 
+<<<<<<< HEAD
+=======
+#![cfg_attr(test, allow(deref_nullptr))]
+#![cfg_attr(test, allow(unaligned_references))]
+#![cfg_attr(test, allow(unsafe_op_in_unsafe_fn))]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #![allow(
     dead_code,
     clippy::all,

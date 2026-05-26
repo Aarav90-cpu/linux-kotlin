@@ -398,7 +398,10 @@ prototypes::
 	bool (*lm_breaker_owns_lease)(struct file_lock *);
         bool (*lm_lock_expirable)(struct file_lock *);
         void (*lm_expire_lock)(void);
+<<<<<<< HEAD
         bool (*lm_breaker_timedout)(struct file_lease *);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 locking rules:
 
@@ -413,7 +416,10 @@ lm_breaker_owns_lease:	yes     	no			no
 lm_lock_expirable	yes		no			no
 lm_expire_lock		no		no			yes
 lm_open_conflict	yes		no			no
+<<<<<<< HEAD
 lm_breaker_timedout     yes             no                      no
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ======================	=============	=================	=========
 
 buffer_head

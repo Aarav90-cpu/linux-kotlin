@@ -179,7 +179,11 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
 			ret = 0;
 		else if (ret != -ENOMEM)
 			cachefiles_io_error(cache,
+<<<<<<< HEAD
 					    "Can't remove xattr from %llu"
+=======
+					    "Can't remove xattr from %lu"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    " (error %d)",
 					    d_backing_inode(dentry)->i_ino, -ret);
 	}

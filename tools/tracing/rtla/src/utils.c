@@ -19,7 +19,11 @@
 #include <stdio.h>
 #include <limits.h>
 
+<<<<<<< HEAD
 #include "common.h"
+=======
+#include "utils.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MAX_MSG_LENGTH	1024
 int config_debug;
@@ -119,11 +123,20 @@ int parse_cpu_set(char *cpu_list, cpu_set_t *set)
 {
 	const char *p;
 	int end_cpu;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int cpu;
 	int i;
 
 	CPU_ZERO(set);
 
+<<<<<<< HEAD
+=======
+	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (p = cpu_list; *p; ) {
 		cpu = atoi(p);
 		if (cpu < 0 || (!cpu && *p != '0') || cpu >= nr_cpus)
@@ -162,6 +175,7 @@ err:
 }
 
 /*
+<<<<<<< HEAD
  * parse_stack_format - parse the stack format
  *
  * Return: the stack format on success, -1 otherwise.
@@ -180,6 +194,8 @@ int parse_stack_format(char *arg)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * parse_duration - parse duration with s/m/h/d suffix converting it to seconds
  */
 long parse_seconds_duration(char *val)
@@ -214,6 +230,7 @@ long parse_seconds_duration(char *val)
 }
 
 /*
+<<<<<<< HEAD
  * match_time_unit - check if str starts with unit followed by end-of-string or ':'
  *
  * This allows the time unit parser to work both in standalone duration strings
@@ -229,6 +246,8 @@ static bool match_time_unit(const char *str, const char *unit)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * parse_ns_duration - parse duration with ns/us/ms/s converting it to nanoseconds
  */
 long parse_ns_duration(char *val)
@@ -239,6 +258,7 @@ long parse_ns_duration(char *val)
 	t = strtol(val, &end, 10);
 
 	if (end) {
+<<<<<<< HEAD
 		if (match_time_unit(end, "ns")) {
 			return t;
 		} else if (match_time_unit(end, "us")) {
@@ -248,6 +268,17 @@ long parse_ns_duration(char *val)
 			t *= 1000 * 1000;
 			return t;
 		} else if (match_time_unit(end, "s")) {
+=======
+		if (!strncmp(end, "ns", 2)) {
+			return t;
+		} else if (!strncmp(end, "us", 2)) {
+			t *= 1000;
+			return t;
+		} else if (!strncmp(end, "ms", 2)) {
+			t *= 1000 * 1000;
+			return t;
+		} else if (!strncmp(end, "s", 1)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			t *= 1000 * 1000 * 1000;
 			return t;
 		}
@@ -324,7 +355,11 @@ static int procfs_is_workload_pid(const char *comm_prefix, struct dirent *proc_e
 		return 0;
 
 	/* check if the string is a pid */
+<<<<<<< HEAD
 	for (t_name = proc_entry->d_name; *t_name; t_name++) {
+=======
+	for (t_name = proc_entry->d_name; t_name; t_name++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!isdigit(*t_name))
 			break;
 	}
@@ -346,7 +381,12 @@ static int procfs_is_workload_pid(const char *comm_prefix, struct dirent *proc_e
 		return 0;
 
 	buffer[MAX_PATH-1] = '\0';
+<<<<<<< HEAD
 	if (!str_has_prefix(buffer, comm_prefix))
+=======
+	retval = strncmp(comm_prefix, buffer, strlen(comm_prefix));
+	if (retval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/* comm already have \n */
@@ -390,23 +430,39 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
 
 		if (strtoi(proc_entry->d_name, &pid)) {
 			err_msg("'%s' is not a valid pid", proc_entry->d_name);
+<<<<<<< HEAD
 			retval = 1;
 			goto out;
+=======
+			goto out_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* procfs_is_workload_pid confirmed it is a pid */
 		retval = __set_sched_attr(pid, attr);
 		if (retval) {
 			err_msg("Error setting sched attributes for pid:%s\n", proc_entry->d_name);
+<<<<<<< HEAD
 			goto out;
+=======
+			goto out_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		debug_msg("Set sched attributes for pid:%s\n", proc_entry->d_name);
 	}
+<<<<<<< HEAD
 
 	retval = 0;
 out:
 	closedir(procfs);
 	return retval;
+=======
+	return 0;
+
+out_err:
+	closedir(procfs);
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define INVALID_VAL	(~0L)
@@ -589,6 +645,10 @@ int save_cpu_idle_disable_state(unsigned int cpu)
 	unsigned int nr_states;
 	unsigned int state;
 	int disabled;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nr_states = cpuidle_state_count(cpu);
 
@@ -596,6 +656,10 @@ int save_cpu_idle_disable_state(unsigned int cpu)
 		return 0;
 
 	if (saved_cpu_idle_disable_state == NULL) {
+<<<<<<< HEAD
+=======
+		nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		saved_cpu_idle_disable_state = calloc(nr_cpus, sizeof(unsigned int *));
 		if (!saved_cpu_idle_disable_state)
 			return -1;
@@ -672,10 +736,19 @@ int restore_cpu_idle_disable_state(unsigned int cpu)
 void free_cpu_idle_disable_states(void)
 {
 	int cpu;
+<<<<<<< HEAD
+=======
+	int nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!saved_cpu_idle_disable_state)
 		return;
 
+<<<<<<< HEAD
+=======
+	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
 		free(saved_cpu_idle_disable_state[cpu]);
 		saved_cpu_idle_disable_state[cpu] = NULL;
@@ -834,7 +907,10 @@ static int open_cgroup_procs(const char *cgroup)
 	char cgroup_procs[MAX_PATH];
 	int retval;
 	int cg_fd;
+<<<<<<< HEAD
 	size_t cg_path_len;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	retval = find_mount("cgroup2", cgroup_path, sizeof(cgroup_path));
 	if (!retval) {
@@ -842,18 +918,29 @@ static int open_cgroup_procs(const char *cgroup)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	cg_path_len = strlen(cgroup_path);
 
 	if (!cgroup) {
 		retval = get_self_cgroup(&cgroup_path[cg_path_len],
 				sizeof(cgroup_path) - cg_path_len);
+=======
+	if (!cgroup) {
+		retval = get_self_cgroup(&cgroup_path[strlen(cgroup_path)],
+				sizeof(cgroup_path) - strlen(cgroup_path));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!retval) {
 			err_msg("Did not find self cgroup\n");
 			return -1;
 		}
 	} else {
+<<<<<<< HEAD
 		snprintf(&cgroup_path[cg_path_len],
 				sizeof(cgroup_path) - cg_path_len, "%s/", cgroup);
+=======
+		snprintf(&cgroup_path[strlen(cgroup_path)],
+				sizeof(cgroup_path) - strlen(cgroup_path), "%s/", cgroup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	snprintf(cgroup_procs, MAX_PATH, "%s/cgroup.procs", cgroup_path);
@@ -1058,6 +1145,7 @@ int strtoi(const char *s, int *res)
 	*res = (int) lres;
 	return 0;
 }
+<<<<<<< HEAD
 
 static inline void fatal_alloc(void)
 {
@@ -1093,3 +1181,5 @@ char *strdup_fatal(const char *s)
 
 	return p;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -228,6 +228,7 @@ config RCU_DYNTICKS_TORTURE
 
 	  This has no value for production and is only for testing.
 
+<<<<<<< HEAD
 config TRIVIAL_PREEMPT_RCU
 	bool "Textbook trivial preemptible RCU in rcutorture"
 	depends on RCU_EXPERT && RCU_TORTURE_TEST
@@ -239,4 +240,6 @@ config TRIVIAL_PREEMPT_RCU
 
 	  This has no value for production and is only for testing.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endmenu # "RCU Debugging"

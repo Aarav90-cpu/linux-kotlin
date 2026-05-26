@@ -74,12 +74,15 @@ static inline int pinconf_set_config(struct pinctrl_dev *pctldev, unsigned int p
 	return -ENOTSUPP;
 }
 
+<<<<<<< HEAD
 static inline int pin_config_get_for_pin(struct pinctrl_dev *pctldev, unsigned int pin,
 			   unsigned long *config)
 {
 	return -ENOTSUPP;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #if defined(CONFIG_PINCONF) && defined(CONFIG_DEBUG_FS)

@@ -1571,11 +1571,21 @@
 };
 
 &usb_1_ss0 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss0_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss0_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss0_hs_in>;
 };
@@ -1601,11 +1611,21 @@
 };
 
 &usb_1_ss1 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss1_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss1_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss1_hs_in>;
 };
@@ -1631,11 +1651,21 @@
 };
 
 &usb_1_ss2 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_1_ss2_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1_ss2_dwc3_hs {
 	remote-endpoint = <&pmic_glink_ss2_hs_in>;
 };

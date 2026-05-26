@@ -303,6 +303,10 @@ static int __init create_opalcore(void)
 	struct device_node *dn;
 	struct opalcore *new;
 	loff_t opalcore_off;
+<<<<<<< HEAD
+=======
+	struct page *page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	Elf64_Phdr *phdr;
 	Elf64_Ehdr *elf;
 	int i, ret;
@@ -327,6 +331,14 @@ static int __init create_opalcore(void)
 		oc_conf->opalcorebuf_sz = 0;
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
+=======
+	count = oc_conf->opalcorebuf_sz / PAGE_SIZE;
+	page = virt_to_page(oc_conf->opalcorebuf);
+	for (i = 0; i < count; i++)
+		mark_page_reserved(page + i);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_debug("opalcorebuf = 0x%llx\n", (u64)oc_conf->opalcorebuf);
 
 	/* Read OPAL related device-tree entries */
@@ -431,7 +443,14 @@ static void opalcore_cleanup(void)
 
 	/* free the buffer used for setting up OPAL core */
 	if (oc_conf->opalcorebuf) {
+<<<<<<< HEAD
 		free_pages_exact(oc_conf->opalcorebuf, oc_conf->opalcorebuf_sz);
+=======
+		void *end = (void *)((u64)oc_conf->opalcorebuf +
+				     oc_conf->opalcorebuf_sz);
+
+		free_reserved_area(oc_conf->opalcorebuf, end, -1, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		oc_conf->opalcorebuf = NULL;
 		oc_conf->opalcorebuf_sz = 0;
 	}

@@ -46,6 +46,7 @@ static const struct regmap_bus regmap_i3c = {
 	.read = regmap_i3c_read,
 };
 
+<<<<<<< HEAD
 struct regmap *__regmap_init_i3c(struct i3c_device *i3c,
 				 const struct regmap_config *config,
 				 struct lock_class_key *lock_key,
@@ -56,6 +57,8 @@ struct regmap *__regmap_init_i3c(struct i3c_device *i3c,
 }
 EXPORT_SYMBOL_GPL(__regmap_init_i3c);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct regmap *__devm_regmap_init_i3c(struct i3c_device *i3c,
 				      const struct regmap_config *config,
 				      struct lock_class_key *lock_key,

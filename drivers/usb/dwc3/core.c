@@ -782,6 +782,7 @@ static int dwc3_hs_phy_setup(struct dwc3 *dwc, int index)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void dwc3_ulpi_setup(struct dwc3 *dwc)
 {
 	int index;
@@ -800,6 +801,8 @@ static void dwc3_ulpi_setup(struct dwc3 *dwc)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * dwc3_phy_setup - Configure USB PHY Interface of DWC3 Core
  * @dwc: Pointer to our controller context structure
@@ -1375,8 +1378,11 @@ int dwc3_core_init(struct dwc3 *dwc)
 		dwc->ulpi_ready = true;
 	}
 
+<<<<<<< HEAD
 	dwc3_ulpi_setup(dwc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dwc->phys_ready) {
 		ret = dwc3_core_get_phy(dwc);
 		if (ret)
@@ -1695,9 +1701,12 @@ static void dwc3_get_software_properties(struct dwc3 *dwc,
 	u16 gsbuscfg0_reqinfo;
 	int ret;
 
+<<<<<<< HEAD
 	if (properties->needs_full_reinit)
 		dwc->needs_full_reinit = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dwc->gsbuscfg0_reqinfo = DWC3_GSBUSCFG0_REQINFO_UNSPECIFIED;
 
 	if (properties->gsbuscfg0_reqinfo !=
@@ -2502,8 +2511,12 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
 		dwc3_core_exit(dwc);
 		break;
 	case DWC3_GCTL_PRTCAP_HOST:
+<<<<<<< HEAD
 		if (!PMSG_IS_AUTO(msg) &&
 		    (!device_may_wakeup(dwc->dev) || dwc->needs_full_reinit)) {
+=======
+		if (!PMSG_IS_AUTO(msg) && !device_may_wakeup(dwc->dev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dwc3_core_exit(dwc);
 			break;
 		}
@@ -2566,8 +2579,12 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
 		dwc3_gadget_resume(dwc);
 		break;
 	case DWC3_GCTL_PRTCAP_HOST:
+<<<<<<< HEAD
 		if (!PMSG_IS_AUTO(msg) &&
 		    (!device_may_wakeup(dwc->dev) || dwc->needs_full_reinit)) {
+=======
+		if (!PMSG_IS_AUTO(msg) && !device_may_wakeup(dwc->dev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = dwc3_core_init_for_resume(dwc);
 			if (ret)
 				return ret;

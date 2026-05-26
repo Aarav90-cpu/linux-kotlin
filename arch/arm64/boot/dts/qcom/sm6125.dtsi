@@ -661,6 +661,7 @@
 				drive-strength = <6>;
 				bias-disable;
 			};
+<<<<<<< HEAD
 
 			qup_uart4_default: qup-uart4-default-state {
 				pins = "gpio16", "gpio17";
@@ -668,6 +669,8 @@
 				drive-strength = <2>;
 				bias-disable;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		gcc: clock-controller@1400000 {
@@ -693,6 +696,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		rng: rng@1b53000 {
 			compatible = "qcom,prng-ee";
 			reg = <0x01b53000 0x1000>;
@@ -700,6 +704,8 @@
 			clock-names = "core";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spmi_bus: spmi@1c40000 {
 			compatible = "qcom,spmi-pmic-arb";
 			reg = <0x01c40000 0x1100>,
@@ -992,6 +998,7 @@
 				#size-cells = <0>;
 				status = "disabled";
 			};
+<<<<<<< HEAD
 
 			uart4: serial@4a90000 {
 				compatible = "qcom,geni-debug-uart";
@@ -1003,6 +1010,8 @@
 				pinctrl-names = "default";
 				status = "disabled";
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		gpi_dma1: dma-controller@4c00000 {
@@ -1263,8 +1272,11 @@
 				      "ahb",
 				      "core";
 
+<<<<<<< HEAD
 			resets = <&dispcc DISP_CC_MDSS_CORE_BCR>;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&dispcc MDSS_GDSC>;
 
 			iommus = <&apps_smmu 0x400 0x0>;
@@ -1464,7 +1476,10 @@
 			power-domains = <&rpmpd RPMPD_VDDCX>;
 
 			#clock-cells = <1>;
+<<<<<<< HEAD
 			#reset-cells = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			#power-domain-cells = <1>;
 		};
 
@@ -1620,10 +1635,17 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 1 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 2 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 3 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 0 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 1 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 2 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 3 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 0 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clock-frequency = <19200000>;
 	};
 };

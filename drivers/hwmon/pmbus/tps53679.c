@@ -253,7 +253,14 @@ static int tps53679_probe(struct i2c_client *client)
 	struct pmbus_driver_info *info;
 	enum chips chip_id;
 
+<<<<<<< HEAD
 	chip_id = (uintptr_t)i2c_get_match_data(client);
+=======
+	if (dev->of_node)
+		chip_id = (uintptr_t)of_device_get_match_data(dev);
+	else
+		chip_id = i2c_match_id(tps53679_id, client)->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	info = devm_kmemdup(dev, &tps53679_info, sizeof(*info), GFP_KERNEL);
 	if (!info)

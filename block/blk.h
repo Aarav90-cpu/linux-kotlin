@@ -55,7 +55,11 @@ bool __blk_freeze_queue_start(struct request_queue *q,
 			      struct task_struct *owner);
 int __bio_queue_enter(struct request_queue *q, struct bio *bio);
 void submit_bio_noacct_nocheck(struct bio *bio, bool split);
+<<<<<<< HEAD
 int bio_submit_or_kill(struct bio *bio, unsigned int flags);
+=======
+void bio_await_chain(struct bio *bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool blk_try_enter_queue(struct request_queue *q, bool pm)
 {
@@ -108,6 +112,14 @@ static inline void blk_wait_io(struct completion *done)
 struct block_device *blkdev_get_no_open(dev_t dev, bool autoload);
 void blkdev_put_no_open(struct block_device *bdev);
 
+<<<<<<< HEAD
+=======
+#define BIO_INLINE_VECS 4
+struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
+		gfp_t gfp_mask);
+void bvec_free(mempool_t *pool, struct bio_vec *bv, unsigned short nr_vecs);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool bvec_try_merge_hw_page(struct request_queue *q, struct bio_vec *bv,
 		struct page *page, unsigned len, unsigned offset);
 
@@ -715,10 +727,15 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
 	      const struct blk_holder_ops *hops, struct file *bdev_file);
 int bdev_permission(dev_t dev, blk_mode_t mode, void *holder);
 
+<<<<<<< HEAD
 void bio_integrity_generate(struct bio *bio);
 blk_status_t bio_integrity_verify(struct bio *bio,
 		struct bvec_iter *saved_iter);
 
+=======
+void blk_integrity_generate(struct bio *bio);
+void blk_integrity_verify_iter(struct bio *bio, struct bvec_iter *saved_iter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void blk_integrity_prepare(struct request *rq);
 void blk_integrity_complete(struct request *rq, unsigned int nr_bytes);
 

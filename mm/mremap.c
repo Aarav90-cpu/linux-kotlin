@@ -244,7 +244,11 @@ static int move_ptes(struct pagetable_move_control *pmc,
 		goto out;
 	}
 	/*
+<<<<<<< HEAD
 	 * Now new_pte is none, so collapse_scan_file() path can not find
+=======
+	 * Now new_pte is none, so hpage_collapse_scan_file() path can not find
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * this by traversing file->f_mapping, so there is no concurrency with
 	 * retract_page_tables(). In addition, we already hold the exclusive
 	 * mmap_lock, so this new_pte page is stable, so there is no need to get
@@ -1028,6 +1032,7 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
 		mm->locked_vm += pages;
 }
 
+<<<<<<< HEAD
 static bool __check_map_count_against_split(struct mm_struct *mm,
 					    bool before_unmaps)
 {
@@ -1097,6 +1102,8 @@ static bool check_map_count_against_split_early(void)
 					       /*before_unmaps=*/true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Perform checks before attempting to write a VMA prior to it being
  * moved.
@@ -1110,11 +1117,18 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
 	vm_flags_t dummy = vma->vm_flags;
 
 	/*
+<<<<<<< HEAD
 	 * We'd prefer to avoid failure later on in do_munmap: we copy a VMA,
 	 * which may not merge, then (if MREMAP_DONTUNMAP is not set) unmap the
 	 * source, which may split, causing a net increase of 2 mappings.
 	 */
 	if (!check_map_count_against_split())
+=======
+	 * We'd prefer to avoid failure later on in do_munmap:
+	 * which may split one vma into three before unmapping.
+	 */
+	if (current->mm->map_count >= sysctl_max_map_count - 3)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	if (vma->vm_ops && vma->vm_ops->may_split) {
@@ -1472,10 +1486,17 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
 
 	/* MREMAP_DONTUNMAP expands by old_len since old_len == new_len */
 	if (vrm->flags & MREMAP_DONTUNMAP) {
+<<<<<<< HEAD
 		vma_flags_t vma_flags = vrm->vma->flags;
 		unsigned long pages = vrm->old_len >> PAGE_SHIFT;
 
 		if (!may_expand_vm(mm, &vma_flags, pages))
+=======
+		vm_flags_t vm_flags = vrm->vma->vm_flags;
+		unsigned long pages = vrm->old_len >> PAGE_SHIFT;
+
+		if (!may_expand_vm(mm, vm_flags, pages))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOMEM;
 	}
 
@@ -1813,7 +1834,11 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
 	if (!mlock_future_ok(mm, vma->vm_flags & VM_LOCKED, vrm->delta))
 		return -EAGAIN;
 
+<<<<<<< HEAD
 	if (!may_expand_vm(mm, &vma->flags, vrm->delta >> PAGE_SHIFT))
+=======
+	if (!may_expand_vm(mm, vma->vm_flags, vrm->delta >> PAGE_SHIFT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	return 0;
@@ -1873,6 +1898,26 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
 	if (vrm_overlaps(vrm))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * move_vma() need us to stay 4 maps below the threshold, otherwise
+	 * it will bail out at the very beginning.
+	 * That is a problem if we have already unmapped the regions here
+	 * (new_addr, and old_addr), because userspace will not know the
+	 * state of the vma's after it gets -ENOMEM.
+	 * So, to avoid such scenario we can pre-compute if the whole
+	 * operation has high chances to success map-wise.
+	 * Worst-scenario case is when both vma's (new_addr and old_addr) get
+	 * split in 3 before unmapping it.
+	 * That means 2 more maps (1 for each) to the ones we already hold.
+	 * Check whether current map count plus 2 still leads us to 4 maps below
+	 * the threshold, otherwise return -ENOMEM here to be more safe.
+	 */
+	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1982,11 +2027,14 @@ static unsigned long do_mremap(struct vma_remap_struct *vrm)
 		return -EINTR;
 	vrm->mmap_locked = true;
 
+<<<<<<< HEAD
 	if (!check_map_count_against_split_early()) {
 		mmap_write_unlock(mm);
 		return -ENOMEM;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (vrm_move_only(vrm)) {
 		res = remap_move(vrm);
 	} else {

@@ -181,7 +181,11 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
  * data structures.
  */
 static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__must_hold(ctx)
+=======
+	__releases(ctx) __acquires_shared(ctx) __no_context_analysis
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #ifdef DEBUG_WW_MUTEXES
 	lockdep_assert_held(ctx);
@@ -199,7 +203,11 @@ static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
  * mutexes have been released with ww_mutex_unlock.
  */
 static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__releases(ctx) __no_context_analysis
+=======
+	__releases_shared(ctx) __no_context_analysis
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 	mutex_release(&ctx->first_lock_dep_map, _THIS_IP_);

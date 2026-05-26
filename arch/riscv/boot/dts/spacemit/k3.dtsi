@@ -4,8 +4,11 @@
  * Copyright (c) 2026 Guodong Xu <guodong@riscstar.com>
  */
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/spacemit,k3-clocks.h>
 #include <dt-bindings/reset/spacemit,k3-resets.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/interrupt-controller/irq.h>
 
 /dts-v1/;
@@ -400,6 +403,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	clocks {
 		vctcxo_1m: clock-1m {
 			compatible = "fixed-clock";
@@ -430,6 +434,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	soc: soc {
 		compatible = "simple-bus";
 		interrupt-parent = <&saplic>;
@@ -438,6 +444,7 @@
 		dma-noncoherent;
 		ranges;
 
+<<<<<<< HEAD
 		eth0: ethernet@cac80000 {
 			compatible = "spacemit,k3-dwmac", "snps,dwmac-5.40a";
 			reg = <0x0 0xcac80000 0x0 0x2000>;
@@ -634,15 +641,21 @@
 			#reset-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		uart0: serial@d4017000 {
 			compatible = "spacemit,k3-uart", "intel,xscale-uart";
 			reg = <0x0 0xd4017000 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART0>,
 				 <&syscon_apbc CLK_APBC_UART0_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART0>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <42 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -652,10 +665,14 @@
 			reg = <0x0 0xd4017100 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART2>,
 				 <&syscon_apbc CLK_APBC_UART2_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART2>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -665,10 +682,14 @@
 			reg = <0x0 0xd4017200 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART3>,
 				 <&syscon_apbc CLK_APBC_UART3_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART3>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <45 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -678,10 +699,14 @@
 			reg = <0x0 0xd4017300 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART4>,
 				 <&syscon_apbc CLK_APBC_UART4_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART4>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <46 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -691,10 +716,14 @@
 			reg = <0x0 0xd4017400 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART5>,
 				 <&syscon_apbc CLK_APBC_UART5_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART5>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <47 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -704,10 +733,14 @@
 			reg = <0x0 0xd4017500 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART6>,
 				 <&syscon_apbc CLK_APBC_UART6_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART6>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <48 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -717,10 +750,14 @@
 			reg = <0x0 0xd4017600 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART7>,
 				 <&syscon_apbc CLK_APBC_UART7_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART7>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <49 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -730,10 +767,14 @@
 			reg = <0x0 0xd4017700 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART8>,
 				 <&syscon_apbc CLK_APBC_UART8_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART8>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <50 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
@@ -743,14 +784,19 @@
 			reg = <0x0 0xd4017800 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART9>,
 				 <&syscon_apbc CLK_APBC_UART9_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART9>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <51 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		i2c6: i2c@d4018800 {
 			compatible = "spacemit,k3-i2c", "spacemit,k1-i2c";
 			reg = <0x0 0xd4018800 0x0 0x38>;
@@ -805,19 +851,26 @@
 			clock-names = "func", "bus";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		uart10: serial@d401f000 {
 			compatible = "spacemit,k3-uart", "intel,xscale-uart";
 			reg = <0x0 0xd401f000 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			clocks = <&syscon_apbc CLK_APBC_UART10>,
 				 <&syscon_apbc CLK_APBC_UART10_BUS>;
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART10>;
+=======
+			clock-frequency = <14700000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupts = <281 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		syscon_mpmu: system-controller@d4050000 {
 			compatible = "spacemit,k3-syscon-mpmu";
 			reg = <0x0 0xd4050000 0x0 0x10000>;
@@ -853,6 +906,8 @@
 			#reset-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		simsic: interrupt-controller@e0400000 {
 			compatible = "spacemit,k3-imsics", "riscv,imsics";
 			reg = <0x0 0xe0400000 0x0 0x200000>;
@@ -892,8 +947,11 @@
 					      <&cpu7_intc 3>, <&cpu7_intc 7>;
 		};
 
+<<<<<<< HEAD
 		/* sec_i2c3: 0xf0614000, not available from Linux */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mimsic: interrupt-controller@f1000000 {
 			compatible = "spacemit,k3-imsics", "riscv,imsics";
 			reg = <0x0 0xf1000000 0x0 0x10000>;

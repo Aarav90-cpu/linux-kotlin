@@ -7,11 +7,19 @@
 //
 
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <asm/cpuid/api.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "avs.h"
 #include "debug.h"
 #include "messages.h"
 
+<<<<<<< HEAD
+=======
+#define CPUID_TSC_LEAF 0x15
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int avs_tgl_dsp_core_power(struct avs_dev *adev, u32 core_mask, bool power)
 {
 	core_mask &= AVS_MAIN_CORE_MASK;
@@ -39,6 +47,7 @@ static int avs_tgl_dsp_core_stall(struct avs_dev *adev, u32 core_mask, bool stal
 	return avs_dsp_core_stall(adev, core_mask, stall);
 }
 
+<<<<<<< HEAD
 /*
  * Succeed if CPUID(0x15) is not available, or if the nominal core crystal clock
  * frequency cannot be enumerated from it.  There is nothing to do in both cases.
@@ -61,15 +70,31 @@ static int avs_tgl_set_xtal_freq(struct avs_dev *adev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int avs_tgl_config_basefw(struct avs_dev *adev)
 {
 	struct pci_dev *pci = adev->base.pci;
 	struct avs_bus_hwid hwid;
 	int ret;
+<<<<<<< HEAD
 
 	ret = avs_tgl_set_xtal_freq(adev);
 	if (ret)
 		return ret;
+=======
+#ifdef CONFIG_X86
+	unsigned int ecx;
+
+#include <asm/cpuid/api.h>
+	ecx = cpuid_ecx(CPUID_TSC_LEAF);
+	if (ecx) {
+		ret = avs_ipc_set_fw_config(adev, 1, AVS_FW_CFG_XTAL_FREQ_HZ, sizeof(ecx), &ecx);
+		if (ret)
+			return AVS_IPC_RET(ret);
+	}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hwid.device = pci->device;
 	hwid.subsystem = pci->subsystem_vendor | (pci->subsystem_device << 16);

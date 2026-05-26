@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* netfilter.c: look after the filters for various protocols.
  * Heavily influenced by the old firewall.c by David Bonn and Alan Cox.
  *
  * Thanks to Rob `CmdrTaco' Malda for not influencing this code in any
  * way.
+<<<<<<< HEAD
+=======
+ *
+ * This code is GPL.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <linux/kernel.h>
 #include <linux/netfilter.h>
@@ -27,6 +35,12 @@
 
 #include "nf_internals.h"
 
+<<<<<<< HEAD
+=======
+const struct nf_ipv6_ops __rcu *nf_ipv6_ops __read_mostly;
+EXPORT_SYMBOL_GPL(nf_ipv6_ops);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_JUMP_LABEL
 struct static_key nf_hooks_needed[NFPROTO_NUMPROTO][NF_MAX_HOOKS];
 EXPORT_SYMBOL(nf_hooks_needed);

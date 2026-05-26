@@ -35,7 +35,10 @@
 #include <asm/trace/irq_vectors.h>
 #include <asm/kexec.h>
 #include <asm/reboot.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *	Some notes on x86 processor bugs affecting SMP operation:
@@ -125,7 +128,11 @@ static int smp_stop_nmi_callback(unsigned int val, struct pt_regs *regs)
 	if (raw_smp_processor_id() == atomic_read(&stopping_cpu))
 		return NMI_HANDLED;
 
+<<<<<<< HEAD
 	x86_virt_emergency_disable_virtualization_cpu();
+=======
+	cpu_emergency_disable_virtualization();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stop_this_cpu(NULL);
 
 	return NMI_HANDLED;
@@ -137,7 +144,11 @@ static int smp_stop_nmi_callback(unsigned int val, struct pt_regs *regs)
 DEFINE_IDTENTRY_SYSVEC(sysvec_reboot)
 {
 	apic_eoi();
+<<<<<<< HEAD
 	x86_virt_emergency_disable_virtualization_cpu();
+=======
+	cpu_emergency_disable_virtualization();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stop_this_cpu(NULL);
 }
 

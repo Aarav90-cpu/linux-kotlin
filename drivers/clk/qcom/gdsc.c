@@ -518,6 +518,7 @@ static int gdsc_add_subdomain_list(struct dev_pm_domain_list *pd_list,
 
 		ret = pm_genpd_add_subdomain(genpd, subdomain);
 		if (ret)
+<<<<<<< HEAD
 			goto remove_added_subdomains;
 	}
 
@@ -532,6 +533,12 @@ remove_added_subdomains:
 	}
 
 	return ret;
+=======
+			return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gdsc_remove_subdomain_list(struct dev_pm_domain_list *pd_list,

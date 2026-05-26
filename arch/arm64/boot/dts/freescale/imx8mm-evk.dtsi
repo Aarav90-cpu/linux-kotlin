@@ -608,6 +608,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart1>;
@@ -621,12 +622,15 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart2 { /* console */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
@@ -636,6 +640,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usbphynop1 {
 	wakeup-source;
 };
@@ -713,7 +719,11 @@
 
 	pinctrl_ir: irgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13	0x4f
+=======
+			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13              0x4f
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
@@ -746,19 +756,29 @@
 
 	pinctrl_pcie0: pcie0grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_I2C4_SCL_PCIE1_CLKREQ_B	0x61
 			MX8MM_IOMUXC_SAI2_RXFS_GPIO4_IO21	0x41
+=======
+			MX8MM_IOMUXC_I2C4_SCL_PCIE1_CLKREQ_B    0x61
+			MX8MM_IOMUXC_SAI2_RXFS_GPIO4_IO21       0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_pcie0_reg: pcie0reggrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5	0x41
+=======
+			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5       0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_pdm: pdmgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK	0xd6
 			MX8MM_IOMUXC_SAI5_RXC_PDM_CLK		0xd6
 			MX8MM_IOMUXC_SAI5_RXFS_SAI5_RX_SYNC	0xd6
@@ -766,6 +786,15 @@
 			MX8MM_IOMUXC_SAI5_RXD1_PDM_DATA1	0xd6
 			MX8MM_IOMUXC_SAI5_RXD2_PDM_DATA2	0xd6
 			MX8MM_IOMUXC_SAI5_RXD3_PDM_DATA3	0xd6
+=======
+			MX8MM_IOMUXC_SAI5_MCLK_SAI5_MCLK        0xd6
+			MX8MM_IOMUXC_SAI5_RXC_PDM_CLK           0xd6
+			MX8MM_IOMUXC_SAI5_RXFS_SAI5_RX_SYNC     0xd6
+			MX8MM_IOMUXC_SAI5_RXD0_PDM_DATA0        0xd6
+			MX8MM_IOMUXC_SAI5_RXD1_PDM_DATA1        0xd6
+			MX8MM_IOMUXC_SAI5_RXD2_PDM_DATA2        0xd6
+			MX8MM_IOMUXC_SAI5_RXD3_PDM_DATA3        0xd6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
@@ -783,19 +812,33 @@
 
 	pinctrl_sai2: sai2grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SAI2_TXC_SAI2_TX_BCLK	0xd6
 			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC	0xd6
 			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0	0xd6
 			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0	0xd6
+=======
+			MX8MM_IOMUXC_SAI2_TXC_SAI2_TX_BCLK      0xd6
+			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC     0xd6
+			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0    0xd6
+			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0    0xd6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
 	pinctrl_sai3: sai3grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC	0xd6
 			MX8MM_IOMUXC_SAI3_TXC_SAI3_TX_BCLK	0xd6
 			MX8MM_IOMUXC_SAI3_MCLK_SAI3_MCLK	0xd6
 			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0	0xd6
+=======
+			MX8MM_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC     0xd6
+			MX8MM_IOMUXC_SAI3_TXC_SAI3_TX_BCLK      0xd6
+			MX8MM_IOMUXC_SAI3_MCLK_SAI3_MCLK        0xd6
+			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0     0xd6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 
@@ -812,6 +855,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart1: uart1grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
@@ -821,6 +865,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x140
@@ -828,6 +874,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart3: uart3grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_ECSPI1_SCLK_UART3_DCE_RX		0x140
@@ -837,6 +884,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_usdhc2_gpio: usdhc2grpgpiogrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15	0x1c4

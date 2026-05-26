@@ -11,7 +11,11 @@
 #include <linux/irqchip/riscv-imsic.h>
 #include <linux/kvm_host.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <asm/kvm_isa.h>
+=======
+#include <linux/cpufeature.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int aia_create(struct kvm_device *dev, u32 type)
 {
@@ -23,7 +27,11 @@ static int aia_create(struct kvm_device *dev, u32 type)
 	if (irqchip_in_kernel(kvm))
 		return -EEXIST;
 
+<<<<<<< HEAD
 	if (kvm_riscv_isa_check_host(SSAIA))
+=======
+	if (!riscv_isa_extension_available(NULL, SSAIA))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	ret = -EBUSY;

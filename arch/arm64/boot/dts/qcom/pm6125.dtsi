@@ -138,6 +138,10 @@
 			reg = <0x6000>, <0x6100>;
 			reg-names = "rtc", "alarm";
 			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
+<<<<<<< HEAD
+=======
+			status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		pm6125_gpios: gpio@c000 {

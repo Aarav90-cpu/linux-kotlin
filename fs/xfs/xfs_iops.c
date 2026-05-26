@@ -901,6 +901,7 @@ out_dqrele:
 
 /*
  * Truncate file.  Must have write permission and not be a directory.
+<<<<<<< HEAD
  */
 int
 xfs_vn_setattr_size(
@@ -913,6 +914,22 @@ xfs_vn_setattr_size(
 	struct xfs_mount	*mp = ip->i_mount;
 	xfs_off_t		oldsize = inode->i_size;
 	xfs_off_t		newsize = iattr->ia_size;
+=======
+ *
+ * Caution: The caller of this function is responsible for calling
+ * setattr_prepare() or otherwise verifying the change is fine.
+ */
+STATIC int
+xfs_setattr_size(
+	struct mnt_idmap	*idmap,
+	struct dentry		*dentry,
+	struct xfs_inode	*ip,
+	struct iattr		*iattr)
+{
+	struct xfs_mount	*mp = ip->i_mount;
+	struct inode		*inode = VFS_I(ip);
+	xfs_off_t		oldsize, newsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xfs_trans	*tp;
 	int			error;
 	uint			lock_flags = 0;
@@ -925,11 +942,16 @@ xfs_vn_setattr_size(
 	ASSERT((iattr->ia_valid & (ATTR_UID|ATTR_GID|ATTR_ATIME|ATTR_ATIME_SET|
 		ATTR_MTIME_SET|ATTR_TIMES_SET)) == 0);
 
+<<<<<<< HEAD
 	trace_xfs_setattr(ip);
 
 	error = xfs_vn_change_ok(idmap, dentry, iattr);
 	if (error)
 		return error;
+=======
+	oldsize = inode->i_size;
+	newsize = iattr->ia_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Short circuit the truncate case for zero length files.
@@ -1110,6 +1132,10 @@ xfs_vn_setattr_size(
 		xfs_inode_clear_eofblocks_tag(ip);
 	}
 
+<<<<<<< HEAD
+=======
+	ASSERT(!(iattr->ia_valid & (ATTR_UID | ATTR_GID)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	setattr_copy(idmap, inode, iattr);
 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
 
@@ -1129,6 +1155,26 @@ out_trans_cancel:
 	goto out_unlock;
 }
 
+<<<<<<< HEAD
+=======
+int
+xfs_vn_setattr_size(
+	struct mnt_idmap	*idmap,
+	struct dentry		*dentry,
+	struct iattr		*iattr)
+{
+	struct xfs_inode	*ip = XFS_I(d_inode(dentry));
+	int error;
+
+	trace_xfs_setattr(ip);
+
+	error = xfs_vn_change_ok(idmap, dentry, iattr);
+	if (error)
+		return error;
+	return xfs_setattr_size(idmap, dentry, ip, iattr);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 STATIC int
 xfs_vn_setattr(
 	struct mnt_idmap	*idmap,

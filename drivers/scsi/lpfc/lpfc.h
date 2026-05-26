@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -552,6 +556,11 @@ struct lpfc_cgn_info {
 	);
 
 	__le32   cgn_info_crc;
+<<<<<<< HEAD
+=======
+#define LPFC_CGN_CRC32_MAGIC_NUMBER	0x1EDC6F41
+#define LPFC_CGN_CRC32_SEED		0xFFFFFFFF
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define LPFC_CGN_INFO_SZ	(sizeof(struct lpfc_cgn_info) -  \
@@ -810,10 +819,16 @@ struct unsol_rcv_ct_ctx {
 #define LPFC_USER_LINK_SPEED_16G	16	/* 16 Gigabaud */
 #define LPFC_USER_LINK_SPEED_32G	32	/* 32 Gigabaud */
 #define LPFC_USER_LINK_SPEED_64G	64	/* 64 Gigabaud */
+<<<<<<< HEAD
 #define LPFC_USER_LINK_SPEED_128G	128	/* 128 Gigabaud */
 #define LPFC_USER_LINK_SPEED_MAX	LPFC_USER_LINK_SPEED_128G
 
 #define LPFC_LINK_SPEED_STRING "0, 1, 2, 4, 8, 10, 16, 32, 64, 128"
+=======
+#define LPFC_USER_LINK_SPEED_MAX	LPFC_USER_LINK_SPEED_64G
+
+#define LPFC_LINK_SPEED_STRING "0, 1, 2, 4, 8, 10, 16, 32, 64"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum nemb_type {
 	nemb_mse = 1,
@@ -1016,6 +1031,10 @@ struct lpfc_hba {
 #define LPFC_SLI3_CRP_ENABLED		0x08
 #define LPFC_SLI3_BG_ENABLED		0x20
 #define LPFC_SLI3_DSS_ENABLED		0x40
+<<<<<<< HEAD
+=======
+#define LPFC_SLI4_PERFH_ENABLED		0x80
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define LPFC_SLI4_PHWQ_ENABLED		0x100
 	uint32_t iocb_cmd_size;
 	uint32_t iocb_rsp_size;
@@ -1188,6 +1207,10 @@ struct lpfc_hba {
 	uint32_t cfg_ras_fwlog_func;
 	uint32_t cfg_enable_bbcr;	/* Enable BB Credit Recovery */
 	uint32_t cfg_enable_dpp;	/* Enable Direct Packet Push */
+<<<<<<< HEAD
+=======
+	uint32_t cfg_enable_pbde;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t cfg_enable_mi;
 	struct nvmet_fc_target_port *targetport;
 	lpfc_vpd_t vpd;		/* vital product data */
@@ -1664,9 +1687,14 @@ lpfc_phba_elsring(struct lpfc_hba *phba)
  * @mask: Pointer to phba's cpumask member.
  * @start: starting cpu index
  *
+<<<<<<< HEAD
  * Returns: next online CPU in @mask on success
  *
  * Note: If no valid cpu found, then nr_cpu_ids is returned.
+=======
+ * Note: If no valid cpu found, then nr_cpu_ids is returned.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  **/
 static __always_inline unsigned int
 lpfc_next_online_cpu(const struct cpumask *mask, unsigned int start)
@@ -1678,9 +1706,14 @@ lpfc_next_online_cpu(const struct cpumask *mask, unsigned int start)
  * lpfc_next_present_cpu - Finds next present CPU after n
  * @n: the cpu prior to search
  *
+<<<<<<< HEAD
  * Returns: next present CPU after CPU @n
  *
  * Note: If no next present cpu, then fallback to first present cpu.
+=======
+ * Note: If no next present cpu, then fallback to first present cpu.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  **/
 static __always_inline unsigned int lpfc_next_present_cpu(int n)
 {
@@ -1690,7 +1723,11 @@ static __always_inline unsigned int lpfc_next_present_cpu(int n)
 /**
  * lpfc_sli4_mod_hba_eq_delay - update EQ delay
  * @phba: Pointer to HBA context object.
+<<<<<<< HEAD
  * @eq: The Event Queue to update.
+=======
+ * @q: The Event Queue to update.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @delay: The delay value (in us) to be written.
  *
  **/
@@ -1752,9 +1789,14 @@ static const char *routine(enum enum_name table_key)			\
  * Pr Tag     1               0              N
  * Pr Tag     1               1              Y
  * Pr Tag     2               *              Y
+<<<<<<< HEAD
  * ---------------------------------------------------
  *
  * Returns: whether VMID is enabled
+=======
+ ---------------------------------------------------
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  **/
 static inline int lpfc_is_vmid_enabled(struct lpfc_hba *phba)
 {

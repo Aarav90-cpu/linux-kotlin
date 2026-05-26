@@ -933,6 +933,7 @@ int comedi_load_firmware(struct comedi_device *dev,
 EXPORT_SYMBOL_GPL(comedi_load_firmware);
 
 /**
+<<<<<<< HEAD
  * __comedi_check_request_region() - Request an I/O region for a legacy driver
  * @dev: COMEDI device.
  * @start: Base address of the I/O region.
@@ -943,14 +944,28 @@ EXPORT_SYMBOL_GPL(comedi_load_firmware);
  *
  * Requests the specified I/O port region which must start at a non-zero
  * address, must fall within specified bounds, and must be correctly aligned.
+=======
+ * __comedi_request_region() - Request an I/O region for a legacy driver
+ * @dev: COMEDI device.
+ * @start: Base address of the I/O region.
+ * @len: Length of the I/O region.
+ *
+ * Requests the specified I/O port region which must start at a non-zero
+ * address.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Returns 0 on success, -EINVAL if @start is 0, or -EIO if the request
  * fails.
  */
+<<<<<<< HEAD
 int __comedi_check_request_region(struct comedi_device *dev,
 				  unsigned long start, unsigned long len,
 				  unsigned long minstart, unsigned long maxend,
 				  unsigned long minalign)
+=======
+int __comedi_request_region(struct comedi_device *dev,
+			    unsigned long start, unsigned long len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!start) {
 		dev_warn(dev->class_dev,
@@ -959,6 +974,7 @@ int __comedi_check_request_region(struct comedi_device *dev,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (start < minstart || start > maxend || maxend - start < len - 1) {
 		dev_warn(dev->class_dev,
 			 "%s: I/O base address or length out of range\n",
@@ -972,6 +988,8 @@ int __comedi_check_request_region(struct comedi_device *dev,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!request_region(start, len, dev->board_name)) {
 		dev_warn(dev->class_dev, "%s: I/O port conflict (%#lx,%lu)\n",
 			 dev->board_name, start, len);
@@ -980,6 +998,7 @@ int __comedi_check_request_region(struct comedi_device *dev,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(__comedi_check_request_region);
 
 /**
@@ -993,6 +1012,18 @@ EXPORT_SYMBOL_GPL(__comedi_check_request_region);
  *
  * Requests the specified I/O port region which must start at a non-zero
  * address, must fall within specified bounds, and must be correctly aligned.
+=======
+EXPORT_SYMBOL_GPL(__comedi_request_region);
+
+/**
+ * comedi_request_region() - Request an I/O region for a legacy driver
+ * @dev: COMEDI device.
+ * @start: Base address of the I/O region.
+ * @len: Length of the I/O region.
+ *
+ * Requests the specified I/O port region which must start at a non-zero
+ * address.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * On success, @dev->iobase is set to the base address of the region and
  * @dev->iolen is set to its length.
@@ -1000,6 +1031,7 @@ EXPORT_SYMBOL_GPL(__comedi_check_request_region);
  * Returns 0 on success, -EINVAL if @start is 0, or -EIO if the request
  * fails.
  */
+<<<<<<< HEAD
 int comedi_check_request_region(struct comedi_device *dev,
 				unsigned long start, unsigned long len,
 				unsigned long minstart, unsigned long maxend,
@@ -1009,6 +1041,14 @@ int comedi_check_request_region(struct comedi_device *dev,
 
 	ret = __comedi_check_request_region(dev, start, len, minstart, maxend,
 					    minalign);
+=======
+int comedi_request_region(struct comedi_device *dev,
+			  unsigned long start, unsigned long len)
+{
+	int ret;
+
+	ret = __comedi_request_region(dev, start, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret == 0) {
 		dev->iobase = start;
 		dev->iolen = len;
@@ -1016,7 +1056,11 @@ int comedi_check_request_region(struct comedi_device *dev,
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(comedi_check_request_region);
+=======
+EXPORT_SYMBOL_GPL(comedi_request_region);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * comedi_legacy_detach() - A generic (*detach) function for legacy drivers

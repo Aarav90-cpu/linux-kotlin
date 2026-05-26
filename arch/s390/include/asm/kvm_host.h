@@ -656,7 +656,10 @@ struct kvm_arch {
 	int user_stsi;
 	int user_instr0;
 	int user_operexec;
+<<<<<<< HEAD
 	int allow_vsie_esamode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct s390_io_adapter *adapters[MAX_S390_IO_ADAPTERS];
 	wait_queue_head_t ipte_wq;
 	int ipte_lock_count;

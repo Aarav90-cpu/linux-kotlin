@@ -495,7 +495,10 @@ static bool CalculateDelayAfterScaler(
 		double *DSTYAfterScaler
 		)
 {
+<<<<<<< HEAD
 	(void)ReturnBW;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int DPPCycles, DISPCLKCycles;
 	double DataFabricLineDeliveryTimeLuma;
 	double DataFabricLineDeliveryTimeChroma;
@@ -593,8 +596,11 @@ static bool CalculatePrefetchSchedule(
 		double *VUpdateWidthPix,
 		double *VReadyOffsetPix)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool MyError = false;
 	double TotalRepeaterDelayTime;
 	double Tdm, LineTime, Tsetup;
@@ -941,7 +947,10 @@ static unsigned int CalculateVMAndRowBytes(
 		unsigned int *dpte_row_height,
 		unsigned int *meta_row_height)
 {
+<<<<<<< HEAD
 	(void)ViewportWidth;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int MetaRequestHeight;
 	unsigned int MetaRequestWidth;
 	unsigned int MetaSurfWidth;
@@ -3030,7 +3039,10 @@ static double CalculateRemoteSurfaceFlipDelay(
 		double *TInitXFill,
 		double *TslvChk)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double TSlvSetup, AvgfillRate, result;
 
 	*SrcActiveDrainRate = VRatio * SwathWidth * Bpp / LineTime;

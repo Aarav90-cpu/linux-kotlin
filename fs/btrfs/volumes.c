@@ -392,7 +392,10 @@ static struct btrfs_fs_devices *alloc_fs_devices(const u8 *fsid)
 	INIT_LIST_HEAD(&fs_devs->alloc_list);
 	INIT_LIST_HEAD(&fs_devs->fs_list);
 	INIT_LIST_HEAD(&fs_devs->seed_list);
+<<<<<<< HEAD
 	spin_lock_init(&fs_devs->per_profile_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (fsid) {
 		memcpy(fs_devs->fsid, fsid, BTRFS_FSID_SIZE);
@@ -695,7 +698,11 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
 			set_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
 	}
 
+<<<<<<< HEAD
 	if (bdev_rot(file_bdev(bdev_file)))
+=======
+	if (!bdev_nonrot(file_bdev(bdev_file)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fs_devices->rotating = true;
 
 	if (bdev_max_discard_sectors(file_bdev(bdev_file)))
@@ -2340,7 +2347,10 @@ int btrfs_rm_device(struct btrfs_fs_info *fs_info,
 		mutex_lock(&fs_info->chunk_mutex);
 		list_del_init(&device->dev_alloc_list);
 		device->fs_devices->rw_devices--;
+<<<<<<< HEAD
 		btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&fs_info->chunk_mutex);
 	}
 
@@ -2452,7 +2462,10 @@ error_undo:
 		list_add(&device->dev_alloc_list,
 			 &fs_devices->alloc_list);
 		device->fs_devices->rw_devices++;
+<<<<<<< HEAD
 		btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&fs_info->chunk_mutex);
 	}
 	return ret;
@@ -2922,7 +2935,11 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
 
 	atomic64_add(device->total_bytes, &fs_info->free_chunk_space);
 
+<<<<<<< HEAD
 	if (bdev_rot(device->bdev))
+=======
+	if (!bdev_nonrot(device->bdev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fs_devices->rotating = true;
 
 	orig_super_total_bytes = btrfs_super_total_bytes(fs_info->super_copy);
@@ -2940,7 +2957,10 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
 	 */
 	btrfs_clear_space_info_full(fs_info);
 
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->chunk_mutex);
 
 	/* Add sysfs device entry */
@@ -2951,7 +2971,10 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
 	if (seeding_dev) {
 		mutex_lock(&fs_info->chunk_mutex);
 		ret = init_first_rw_device(trans);
+<<<<<<< HEAD
 		btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&fs_info->chunk_mutex);
 		if (unlikely(ret)) {
 			btrfs_abort_transaction(trans, ret);
@@ -3034,7 +3057,10 @@ error_sysfs:
 				    orig_super_total_bytes);
 	btrfs_set_super_num_devices(fs_info->super_copy,
 				    orig_super_num_devices);
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->chunk_mutex);
 	mutex_unlock(&fs_info->fs_devices->device_list_mutex);
 error_trans:
@@ -3127,7 +3153,10 @@ int btrfs_grow_device(struct btrfs_trans_handle *trans,
 	if (list_empty(&device->post_commit_list))
 		list_add_tail(&device->post_commit_list,
 			      &trans->transaction->dev_update_list);
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->chunk_mutex);
 
 	btrfs_reserve_chunk_metadata(trans, false);
@@ -3504,7 +3533,10 @@ int btrfs_remove_chunk(struct btrfs_trans_handle *trans, u64 chunk_offset)
 		}
 	}
 
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->chunk_mutex);
 	trans->removing_chunk = false;
 
@@ -3602,7 +3634,11 @@ int btrfs_relocate_chunk(struct btrfs_fs_info *fs_info, u64 chunk_offset, bool v
 		 * If we had a transaction abort, stop all running scrubs.
 		 * See transaction.c:cleanup_transaction() why we do it here.
 		 */
+<<<<<<< HEAD
 		if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+		if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_scrub_cancel(fs_info);
 		return ret;
 	}
@@ -5208,7 +5244,10 @@ int btrfs_shrink_device(struct btrfs_device *device, u64 new_size)
 		atomic64_sub(free_diff, &fs_info->free_chunk_space);
 	}
 
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Once the device's size has been set to the new size, ensure all
 	 * in-memory chunks are synced to disk so that the loop below sees them
@@ -5324,7 +5363,10 @@ again:
 	WARN_ON(diff > old_total);
 	btrfs_set_super_total_bytes(super_copy,
 			round_down(old_total - diff, fs_info->sectorsize));
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(fs_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&fs_info->chunk_mutex);
 
 	btrfs_reserve_chunk_metadata(trans, false);
@@ -5397,6 +5439,7 @@ static int btrfs_cmp_device_info(const void *a, const void *b)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Return 0 if we allocated any virtual(*) chunk, and restore the size to
  * @allocated.
@@ -5559,6 +5602,8 @@ error:
 	spin_unlock(&fs_info->fs_devices->per_profile_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void check_raid56_incompat_flag(struct btrfs_fs_info *info, u64 type)
 {
 	if (!(type & BTRFS_BLOCK_GROUP_RAID56_MASK))
@@ -6036,8 +6081,11 @@ static struct btrfs_block_group *create_chunk(struct btrfs_trans_handle *trans,
 	check_raid56_incompat_flag(info, type);
 	check_raid1c34_incompat_flag(info, type);
 
+<<<<<<< HEAD
 	btrfs_update_per_profile_avail(info);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return block_group;
 }
 
@@ -6075,7 +6123,12 @@ struct btrfs_block_group *btrfs_create_chunk(struct btrfs_trans_handle *trans,
 	ctl.space_info = space_info;
 	init_alloc_chunk_ctl(fs_devices, &ctl);
 
+<<<<<<< HEAD
 	devices_info = kzalloc_objs(*devices_info, fs_devices->rw_devices, GFP_NOFS);
+=======
+	devices_info = kcalloc(fs_devices->rw_devices, sizeof(*devices_info),
+			       GFP_NOFS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!devices_info)
 		return ERR_PTR(-ENOMEM);
 
@@ -8250,6 +8303,7 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
 	struct btrfs_device *device;
 	int stats_cnt;
 	int ret = 0;
+<<<<<<< HEAD
 	bool need_update_dev_stats = false;
 
 	/*
@@ -8280,6 +8334,8 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
 
 	if (!need_update_dev_stats)
 		return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&fs_devices->device_list_mutex);
 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
@@ -8642,6 +8698,7 @@ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info)
 	}
 
 	/* Ensure all chunks have corresponding dev extents */
+<<<<<<< HEAD
 	ret = verify_chunk_dev_extent_mapping(fs_info);
 	if (ret < 0)
 		return ret;
@@ -8650,6 +8707,9 @@ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info)
 	btrfs_update_per_profile_avail(fs_info);
 	mutex_unlock(&fs_info->chunk_mutex);
 	return 0;
+=======
+	return verify_chunk_dev_extent_mapping(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -8667,12 +8727,16 @@ bool btrfs_verify_dev_items(const struct btrfs_fs_info *fs_info)
 
 	mutex_lock(&uuid_mutex);
 	list_for_each_entry(dev, &fs_info->fs_devices->devices, dev_list) {
+<<<<<<< HEAD
 		/*
 		 * Replace target dev item (devid 0) is not inserted into chunk tree.
 		 * So skip the DEV_STATE_ITEM check.
 		 */
 		if (dev->devid != BTRFS_DEV_REPLACE_DEVID &&
 		    !test_bit(BTRFS_DEV_STATE_ITEM_FOUND, &dev->dev_state)) {
+=======
+		if (!test_bit(BTRFS_DEV_STATE_ITEM_FOUND, &dev->dev_state)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_err(fs_info,
 			"devid %llu path %s is registered but not found in chunk tree",
 				  dev->devid, btrfs_dev_name(dev));

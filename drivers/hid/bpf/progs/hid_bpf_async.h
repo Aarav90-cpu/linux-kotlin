@@ -116,6 +116,7 @@ static int hid_bpf_async_find_empty_key(void)
 		if (!elem)
 			return -ENOMEM; /* should never happen */
 
+<<<<<<< HEAD
 		{
 			guard(bpf_spin)(&elem->lock);
 
@@ -124,6 +125,17 @@ static int hid_bpf_async_find_empty_key(void)
 				return i;
 			}
 		}
+=======
+		bpf_spin_lock(&elem->lock);
+
+		if (elem->state == HID_BPF_ASYNC_STATE_UNSET) {
+			elem->state = HID_BPF_ASYNC_STATE_INITIALIZING;
+			bpf_spin_unlock(&elem->lock);
+			return i;
+		}
+
+		bpf_spin_unlock(&elem->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return -EINVAL;
@@ -174,6 +186,7 @@ static int hid_bpf_async_delayed_call(struct hid_bpf_ctx *hctx, u64 milliseconds
 	if (!elem)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	{
 		guard(bpf_spin)(&elem->lock);
 
@@ -187,6 +200,20 @@ static int hid_bpf_async_delayed_call(struct hid_bpf_ctx *hctx, u64 milliseconds
 
 		elem->state = HID_BPF_ASYNC_STATE_STARTING;
 	}
+=======
+	bpf_spin_lock(&elem->lock);
+	/* The wq must be:
+	 * - HID_BPF_ASYNC_STATE_INITIALIZED -> it's been initialized and ready to be called
+	 * - HID_BPF_ASYNC_STATE_RUNNING -> possible re-entry from the wq itself
+	 */
+	if (elem->state != HID_BPF_ASYNC_STATE_INITIALIZED &&
+	    elem->state != HID_BPF_ASYNC_STATE_RUNNING) {
+		bpf_spin_unlock(&elem->lock);
+		return -EINVAL;
+	}
+	elem->state = HID_BPF_ASYNC_STATE_STARTING;
+	bpf_spin_unlock(&elem->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	elem->hid = hctx->hid->id;
 

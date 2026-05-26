@@ -15,7 +15,10 @@ enum ltl_atom {
 	LTL_ABORT_SLEEP,
 	LTL_BLOCK_ON_RT_MUTEX,
 	LTL_CLOCK_NANOSLEEP,
+<<<<<<< HEAD
 	LTL_EPOLL_WAIT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LTL_FUTEX_LOCK_PI,
 	LTL_FUTEX_WAIT,
 	LTL_KERNEL_THREAD,
@@ -41,7 +44,10 @@ static const char *ltl_atom_str(enum ltl_atom atom)
 		"ab_sl",
 		"bl_on_rt_mu",
 		"cl_na",
+<<<<<<< HEAD
 		"ep_wa",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"fu_lo_pi",
 		"fu_wa",
 		"ker_th",
@@ -77,6 +83,7 @@ static_assert(RV_NUM_BA_STATES <= RV_MAX_BA_STATES);
 
 static void ltl_start(struct task_struct *task, struct ltl_monitor *mon)
 {
+<<<<<<< HEAD
 	bool woken_by_nmi = test_bit(LTL_WOKEN_BY_NMI, mon->atoms);
 	bool woken_by_hardirq = test_bit(LTL_WOKEN_BY_HARDIRQ, mon->atoms);
 	bool woken_by_equal_or_higher_prio = test_bit(LTL_WOKEN_BY_EQUAL_OR_HIGHER_PRIO,
@@ -112,6 +119,41 @@ static void ltl_start(struct task_struct *task, struct ltl_monitor *mon)
 	bool val9 = futex_wait || val20;
 	bool val11 = val9 || kernel_thread;
 	bool val2 = !sleep;
+=======
+	bool task_is_migration = test_bit(LTL_TASK_IS_MIGRATION, mon->atoms);
+	bool task_is_rcu = test_bit(LTL_TASK_IS_RCU, mon->atoms);
+	bool val40 = task_is_rcu || task_is_migration;
+	bool futex_lock_pi = test_bit(LTL_FUTEX_LOCK_PI, mon->atoms);
+	bool val41 = futex_lock_pi || val40;
+	bool block_on_rt_mutex = test_bit(LTL_BLOCK_ON_RT_MUTEX, mon->atoms);
+	bool val5 = block_on_rt_mutex || val41;
+	bool kthread_should_stop = test_bit(LTL_KTHREAD_SHOULD_STOP, mon->atoms);
+	bool abort_sleep = test_bit(LTL_ABORT_SLEEP, mon->atoms);
+	bool val32 = abort_sleep || kthread_should_stop;
+	bool woken_by_nmi = test_bit(LTL_WOKEN_BY_NMI, mon->atoms);
+	bool val33 = woken_by_nmi || val32;
+	bool woken_by_hardirq = test_bit(LTL_WOKEN_BY_HARDIRQ, mon->atoms);
+	bool val34 = woken_by_hardirq || val33;
+	bool woken_by_equal_or_higher_prio = test_bit(LTL_WOKEN_BY_EQUAL_OR_HIGHER_PRIO,
+	     mon->atoms);
+	bool val14 = woken_by_equal_or_higher_prio || val34;
+	bool wake = test_bit(LTL_WAKE, mon->atoms);
+	bool val13 = !wake;
+	bool kernel_thread = test_bit(LTL_KERNEL_THREAD, mon->atoms);
+	bool nanosleep_clock_tai = test_bit(LTL_NANOSLEEP_CLOCK_TAI, mon->atoms);
+	bool nanosleep_clock_monotonic = test_bit(LTL_NANOSLEEP_CLOCK_MONOTONIC, mon->atoms);
+	bool val24 = nanosleep_clock_monotonic || nanosleep_clock_tai;
+	bool nanosleep_timer_abstime = test_bit(LTL_NANOSLEEP_TIMER_ABSTIME, mon->atoms);
+	bool val25 = nanosleep_timer_abstime && val24;
+	bool clock_nanosleep = test_bit(LTL_CLOCK_NANOSLEEP, mon->atoms);
+	bool val18 = clock_nanosleep && val25;
+	bool futex_wait = test_bit(LTL_FUTEX_WAIT, mon->atoms);
+	bool val9 = futex_wait || val18;
+	bool val11 = val9 || kernel_thread;
+	bool sleep = test_bit(LTL_SLEEP, mon->atoms);
+	bool val2 = !sleep;
+	bool rt = test_bit(LTL_RT, mon->atoms);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool val1 = !rt;
 	bool val3 = val1 || val2;
 
@@ -128,6 +170,7 @@ static void ltl_start(struct task_struct *task, struct ltl_monitor *mon)
 static void
 ltl_possible_next_states(struct ltl_monitor *mon, unsigned int state, unsigned long *next)
 {
+<<<<<<< HEAD
 	bool woken_by_nmi = test_bit(LTL_WOKEN_BY_NMI, mon->atoms);
 	bool woken_by_hardirq = test_bit(LTL_WOKEN_BY_HARDIRQ, mon->atoms);
 	bool woken_by_equal_or_higher_prio = test_bit(LTL_WOKEN_BY_EQUAL_OR_HIGHER_PRIO,
@@ -163,6 +206,41 @@ ltl_possible_next_states(struct ltl_monitor *mon, unsigned int state, unsigned l
 	bool val9 = futex_wait || val20;
 	bool val11 = val9 || kernel_thread;
 	bool val2 = !sleep;
+=======
+	bool task_is_migration = test_bit(LTL_TASK_IS_MIGRATION, mon->atoms);
+	bool task_is_rcu = test_bit(LTL_TASK_IS_RCU, mon->atoms);
+	bool val40 = task_is_rcu || task_is_migration;
+	bool futex_lock_pi = test_bit(LTL_FUTEX_LOCK_PI, mon->atoms);
+	bool val41 = futex_lock_pi || val40;
+	bool block_on_rt_mutex = test_bit(LTL_BLOCK_ON_RT_MUTEX, mon->atoms);
+	bool val5 = block_on_rt_mutex || val41;
+	bool kthread_should_stop = test_bit(LTL_KTHREAD_SHOULD_STOP, mon->atoms);
+	bool abort_sleep = test_bit(LTL_ABORT_SLEEP, mon->atoms);
+	bool val32 = abort_sleep || kthread_should_stop;
+	bool woken_by_nmi = test_bit(LTL_WOKEN_BY_NMI, mon->atoms);
+	bool val33 = woken_by_nmi || val32;
+	bool woken_by_hardirq = test_bit(LTL_WOKEN_BY_HARDIRQ, mon->atoms);
+	bool val34 = woken_by_hardirq || val33;
+	bool woken_by_equal_or_higher_prio = test_bit(LTL_WOKEN_BY_EQUAL_OR_HIGHER_PRIO,
+	     mon->atoms);
+	bool val14 = woken_by_equal_or_higher_prio || val34;
+	bool wake = test_bit(LTL_WAKE, mon->atoms);
+	bool val13 = !wake;
+	bool kernel_thread = test_bit(LTL_KERNEL_THREAD, mon->atoms);
+	bool nanosleep_clock_tai = test_bit(LTL_NANOSLEEP_CLOCK_TAI, mon->atoms);
+	bool nanosleep_clock_monotonic = test_bit(LTL_NANOSLEEP_CLOCK_MONOTONIC, mon->atoms);
+	bool val24 = nanosleep_clock_monotonic || nanosleep_clock_tai;
+	bool nanosleep_timer_abstime = test_bit(LTL_NANOSLEEP_TIMER_ABSTIME, mon->atoms);
+	bool val25 = nanosleep_timer_abstime && val24;
+	bool clock_nanosleep = test_bit(LTL_CLOCK_NANOSLEEP, mon->atoms);
+	bool val18 = clock_nanosleep && val25;
+	bool futex_wait = test_bit(LTL_FUTEX_WAIT, mon->atoms);
+	bool val9 = futex_wait || val18;
+	bool val11 = val9 || kernel_thread;
+	bool sleep = test_bit(LTL_SLEEP, mon->atoms);
+	bool val2 = !sleep;
+	bool rt = test_bit(LTL_RT, mon->atoms);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool val1 = !rt;
 	bool val3 = val1 || val2;
 

@@ -31,7 +31,11 @@
 #include <linux/debugfs.h>
 #include <linux/highmem.h>
 #include <linux/nmi.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/scatterlist.h>
 #include <linux/string_helpers.h>
 #include <linux/utsname.h>
@@ -824,6 +828,12 @@ static void err_print_gt_global(struct drm_i915_error_state_buf *m,
 		err_printf(m, "FAULT_TLB_DATA: 0x%08x 0x%08x\n",
 			   gt->fault_data1, gt->fault_data0);
 
+<<<<<<< HEAD
+=======
+	if (GRAPHICS_VER(m->i915) == 7)
+		err_printf(m, "ERR_INT: 0x%08x\n", gt->err_int);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_GRAPHICS_VER(m->i915, 8, 11))
 		err_printf(m, "GTT_CACHE_EN: 0x%08x\n", gt->gtt_cache);
 
@@ -1926,6 +1936,12 @@ static void gt_record_global_regs(struct intel_gt_coredump *gt)
 	if (IS_VALLEYVIEW(i915))
 		gt->forcewake = intel_uncore_read_fw(uncore, FORCEWAKE_VLV);
 
+<<<<<<< HEAD
+=======
+	if (GRAPHICS_VER(i915) == 7)
+		gt->err_int = intel_uncore_read(uncore, GEN7_ERR_INT);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (GRAPHICS_VER_FULL(i915) >= IP_VER(12, 55)) {
 		gt->fault_data0 = intel_gt_mcr_read_any((struct intel_gt *)gt->_gt,
 							XEHP_FAULT_TLB_DATA0);

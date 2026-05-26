@@ -173,7 +173,11 @@ int attr_allocate_clusters(struct ntfs_sb_info *sbi, struct runs_tree *run,
 
 		if (err == -ENOSPC && pre) {
 			pre = 0;
+<<<<<<< HEAD
 			if (pre_alloc)
+=======
+			if (*pre_alloc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				*pre_alloc = 0;
 			continue;
 		}
@@ -1152,6 +1156,7 @@ again:
 			if (err)
 				goto out;
 		}
+<<<<<<< HEAD
 
 		if (vcn0 < svcn || evcn1 <= vcn0) {
 			struct ATTRIB *attr2;
@@ -1167,6 +1172,8 @@ again:
 				goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		da = false; /* no delalloc for compressed file. */
 	}
 
@@ -1591,12 +1598,15 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
 			u64 from = vbo[i] & ~(u64)(PAGE_SIZE - 1);
 			u64 to = min(from + PAGE_SIZE, wof_size);
 
+<<<<<<< HEAD
 			if (from >= wof_size) {
 				_ntfs_bad_inode(&ni->vfs_inode);
 				err = -EINVAL;
 				goto out1;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = attr_load_runs_range(ni, ATTR_DATA, WOF_NAME,
 						   ARRAY_SIZE(WOF_NAME), run,
 						   from, to);

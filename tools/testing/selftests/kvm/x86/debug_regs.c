@@ -16,7 +16,11 @@
 #define IRQ_VECTOR 0xAA
 
 /* For testing data access debug BP */
+<<<<<<< HEAD
 u32 guest_value;
+=======
+uint32_t guest_value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern unsigned char sw_bp, hw_bp, write_data, ss_start, bd_start;
 
@@ -86,7 +90,11 @@ int main(void)
 	struct kvm_run *run;
 	struct kvm_vm *vm;
 	struct ucall uc;
+<<<<<<< HEAD
 	u64 cmd;
+=======
+	uint64_t cmd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	/* Instruction lengths starting at ss_start */
 	int ss_size[6] = {

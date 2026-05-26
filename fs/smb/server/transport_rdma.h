@@ -14,17 +14,28 @@
 #ifdef CONFIG_SMB_SERVER_SMBDIRECT
 int ksmbd_rdma_init(void);
 void ksmbd_rdma_stop_listening(void);
+<<<<<<< HEAD
+=======
+void ksmbd_rdma_destroy(void);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool ksmbd_rdma_capable_netdev(struct net_device *netdev);
 void init_smbd_max_io_size(unsigned int sz);
 unsigned int get_smbd_max_read_write_size(struct ksmbd_transport *kt);
 #else
 static inline int ksmbd_rdma_init(void) { return 0; }
 static inline void ksmbd_rdma_stop_listening(void) { }
+<<<<<<< HEAD
+=======
+static inline void ksmbd_rdma_destroy(void) { }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool ksmbd_rdma_capable_netdev(struct net_device *netdev) { return false; }
 static inline void init_smbd_max_io_size(unsigned int sz) { }
 static inline unsigned int get_smbd_max_read_write_size(struct ksmbd_transport *kt) { return 0; }
 #endif
 
+<<<<<<< HEAD
 #include <linux/smbdirect.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __KSMBD_TRANSPORT_RDMA_H__ */

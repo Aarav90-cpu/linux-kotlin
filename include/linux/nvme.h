@@ -513,6 +513,7 @@ struct nvme_id_ns_nvm {
 	__u8	pic;
 	__u8	rsvd9[3];
 	__le32	elbaf[64];
+<<<<<<< HEAD
 	__le32	npdgl;
 	__le32	nprg;
 	__le32	npra;
@@ -523,6 +524,11 @@ struct nvme_id_ns_nvm {
 
 static_assert(sizeof(struct nvme_id_ns_nvm) == 4096);
 
+=======
+	__u8	rsvd268[3828];
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	NVME_ID_NS_NVM_STS_MASK		= 0x7f,
 	NVME_ID_NS_NVM_GUARD_SHIFT	= 7,
@@ -597,11 +603,15 @@ enum {
 enum {
 	NVME_NS_FEAT_THIN	= 1 << 0,
 	NVME_NS_FEAT_ATOMICS	= 1 << 1,
+<<<<<<< HEAD
 	NVME_NS_FEAT_OPTPERF_SHIFT = 4,
 	/* In NVMe version 2.0 and below, OPTPERF is only bit 4 of NSFEAT */
 	NVME_NS_FEAT_OPTPERF_MASK = 0x1,
 	/* Since version 2.1, OPTPERF is bits 4 and 5 of NSFEAT */
 	NVME_NS_FEAT_OPTPERF_MASK_2_1 = 0x3,
+=======
+	NVME_NS_FEAT_IO_OPT	= 1 << 4,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NVME_NS_ATTR_RO		= 1 << 0,
 	NVME_NS_FLBAS_LBA_MASK	= 0xf,
 	NVME_NS_FLBAS_LBA_UMASK	= 0x60,
@@ -1848,11 +1858,14 @@ enum {
 	NVME_AUTH_HASH_INVALID	= 0xff,
 };
 
+<<<<<<< HEAD
 /* Maximum digest size for any NVME_AUTH_HASH_* value */
 enum {
 	NVME_AUTH_MAX_DIGEST_SIZE = 64,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Defined Diffie-Hellman group identifiers for DH-HMAC-CHAP authentication */
 enum {
 	NVME_AUTH_DHGROUP_NULL		= 0x00,
@@ -2348,8 +2361,11 @@ enum nvme_pr_change_ptpl {
 
 #define NVME_PR_IGNORE_KEY (1 << 3)
 
+<<<<<<< HEAD
 /* Section 8.3.4.5.2 of the NVMe 2.1 */
 #define NVME_AUTH_DHCHAP_MAX_HASH_IDS 30
 #define NVME_AUTH_DHCHAP_MAX_DH_IDS 30
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _LINUX_NVME_H */

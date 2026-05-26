@@ -20,6 +20,7 @@
 #include "xe_sriov_pf_sysfs.h"
 #include "xe_sriov_printk.h"
 
+<<<<<<< HEAD
 static bool wanted_admin_only(struct xe_device *xe)
 {
 	return xe_configfs_admin_only_pf(to_pci_dev(xe->drm.dev));
@@ -28,6 +29,13 @@ static bool wanted_admin_only(struct xe_device *xe)
 static unsigned int wanted_max_vfs(struct xe_device *xe)
 {
 	return xe_configfs_get_max_vfs(to_pci_dev(xe->drm.dev));
+=======
+static unsigned int wanted_max_vfs(struct xe_device *xe)
+{
+	if (IS_ENABLED(CONFIG_CONFIGFS_FS))
+		return xe_configfs_get_max_vfs(to_pci_dev(xe->drm.dev));
+	return xe_modparam.max_vfs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pf_reduce_totalvfs(struct xe_device *xe, int limit)
@@ -79,7 +87,10 @@ bool xe_sriov_pf_readiness(struct xe_device *xe)
 
 	pf_reduce_totalvfs(xe, newlimit);
 
+<<<<<<< HEAD
 	xe->sriov.pf.admin_only = wanted_admin_only(xe);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe->sriov.pf.device_total_vfs = totalvfs;
 	xe->sriov.pf.driver_max_vfs = newlimit;
 

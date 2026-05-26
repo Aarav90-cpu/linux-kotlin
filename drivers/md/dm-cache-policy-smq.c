@@ -1589,18 +1589,27 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
 {
 	struct smq_policy *mq = to_smq_policy(p);
 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!e->allocated)
 		return -ENODATA;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&mq->lock, flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// FIXME: what if this block has pending background work?
 	del_queue(mq, e);
 	h_remove(&mq->table, e);
 	free_entry(&mq->cache_alloc, e);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&mq->lock, flags);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

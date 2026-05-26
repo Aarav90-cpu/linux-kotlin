@@ -140,6 +140,15 @@ struct ioatdma_chan {
 	int prev_intr_coalesce;
 };
 
+<<<<<<< HEAD
+=======
+struct ioat_sysfs_entry {
+	struct attribute attr;
+	ssize_t (*show)(struct dma_chan *, char *);
+	ssize_t (*store)(struct dma_chan *, const char *, size_t);
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct ioat_sed_ent - wrapper around super extended hardware descriptor
  * @hw: hardware SED
@@ -189,8 +198,16 @@ struct ioat_ring_ent {
 	struct ioat_sed_ent *sed;
 };
 
+<<<<<<< HEAD
 extern int ioat_pending_level;
 extern const struct kobj_type ioat_ktype;
+=======
+extern const struct sysfs_ops ioat_sysfs_ops;
+extern struct ioat_sysfs_entry ioat_version_attr;
+extern struct ioat_sysfs_entry ioat_cap_attr;
+extern int ioat_pending_level;
+extern struct kobj_type ioat_ktype;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern struct kmem_cache *ioat_cache;
 extern struct kmem_cache *ioat_sed_cache;
 
@@ -393,7 +410,11 @@ void ioat_issue_pending(struct dma_chan *chan);
 /* IOAT Init functions */
 bool is_bwd_ioat(struct pci_dev *pdev);
 struct dca_provider *ioat_dca_init(struct pci_dev *pdev, void __iomem *iobase);
+<<<<<<< HEAD
 void ioat_kobject_add(struct ioatdma_device *ioat_dma, const struct kobj_type *type);
+=======
+void ioat_kobject_add(struct ioatdma_device *ioat_dma, struct kobj_type *type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ioat_kobject_del(struct ioatdma_device *ioat_dma);
 int ioat_dma_setup_interrupts(struct ioatdma_device *ioat_dma);
 void ioat_stop(struct ioatdma_chan *ioat_chan);

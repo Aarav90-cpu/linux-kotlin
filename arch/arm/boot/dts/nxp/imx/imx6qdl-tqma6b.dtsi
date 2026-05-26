@@ -13,7 +13,10 @@
 	scl-gpios = <&gpio1 5 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	sda-gpios = <&gpio1 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	clock-frequency = <100000>;
+<<<<<<< HEAD
 	bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	pmic: pmic@8 {
@@ -21,13 +24,21 @@
 		reg = <0x08>;
 	};
 
+<<<<<<< HEAD
 	lm75_48: temperature-sensor@48 {
+=======
+	temperature-sensor@48 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "national,lm75a";
 		reg = <0x48>;
 		vs-supply = <&sw4_reg>;
 	};
 
+<<<<<<< HEAD
 	m24c64_50: eeprom@50 {
+=======
+	eeprom@50 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "st,24c64", "atmel,24c64";
 		reg = <0x50>;
 		pagesize = <32>;
@@ -41,7 +52,10 @@
 			MX6QDL_PAD_GPIO_5__I2C3_SCL 0x4001b899
 			MX6QDL_PAD_GPIO_6__I2C3_SDA 0x4001b899
 		>;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pinctrl_i2c3_recovery: i2c3recoverygrp {

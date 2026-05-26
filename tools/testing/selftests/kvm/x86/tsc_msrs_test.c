@@ -95,7 +95,11 @@ int main(void)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ksft_print_header();
 	ksft_set_plan(5);

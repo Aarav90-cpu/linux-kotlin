@@ -63,6 +63,7 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,eliza-mtp
           - const: qcom,eliza
 
@@ -78,6 +79,8 @@ properties:
 
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - fairphone,fp6
           - const: qcom,milos
 
@@ -186,7 +189,10 @@ properties:
               - qcom,msm8916-mtp
               - samsung,a3u-eur
               - samsung,a5u-eur
+<<<<<<< HEAD
               - samsung,coreprimeltevzw
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - samsung,e5
               - samsung,e7
               - samsung,fortuna3g
@@ -202,7 +208,10 @@ properties:
               - samsung,serranove
               - thwc,uf896
               - thwc,ufi001c
+<<<<<<< HEAD
               - wiko,chuppito
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - wingtech,wt86518
               - wingtech,wt86528
               - wingtech,wt88047
@@ -212,8 +221,11 @@ properties:
       - items:
           - enum:
               - xiaomi,riva
+<<<<<<< HEAD
               - xiaomi,rolex
               - xiaomi,tiare
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,msm8917
 
       - items:
@@ -263,6 +275,7 @@ properties:
           - const: qcom,apq8096
 
       - items:
+<<<<<<< HEAD
           - const: arrow,apq8096sg-db820c
           - const: arrow,apq8096-db820c
           - const: qcom,apq8096-sbc
@@ -270,6 +283,8 @@ properties:
           - const: qcom,apq8096
 
       - items:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - enum:
               - oneplus,oneplus3
               - oneplus,oneplus3t
@@ -325,11 +340,14 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,ipq5210-rdp504
           - const: qcom,ipq5210
 
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,ipq5332-ap-mi01.2
               - qcom,ipq5332-ap-mi01.3
               - qcom,ipq5332-ap-mi01.6
@@ -357,10 +375,15 @@ properties:
       - items:
           - enum:
               - qcom,ipq9574-ap-al02-c2
+<<<<<<< HEAD
               - qcom,ipq9574-ap-al02-c2-emmc
               - qcom,ipq9574-ap-al02-c6
               - qcom,ipq9574-ap-al02-c7
               - qcom,ipq9574-ap-al02-c7-emmc
+=======
+              - qcom,ipq9574-ap-al02-c6
+              - qcom,ipq9574-ap-al02-c7
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,ipq9574-ap-al02-c8
               - qcom,ipq9574-ap-al02-c9
           - const: qcom,ipq9574
@@ -393,7 +416,10 @@ properties:
               - qcom,qcs6490-rb3gen2
               - radxa,dragon-q6a
               - shift,otter
+<<<<<<< HEAD
               - thundercomm,minipc-g1iot
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - thundercomm,rubikpi3
           - const: qcom,qcm6490
 
@@ -419,7 +445,10 @@ properties:
       - items:
           - enum:
               - acer,aspire1
+<<<<<<< HEAD
               - ecs,liva-qc710
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sc7180-idp
           - const: qcom,sc7180
 
@@ -881,12 +910,15 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - google,bonito-tianma
           - const: google,bonito
           - const: qcom,sdm670
 
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sdx55-mtp
               - qcom,sdx55-telit-fn980-tlb
               - qcom,sdx55-t55
@@ -917,7 +949,10 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - arduino,monza
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,monaco-evk
               - qcom,qcs8300-ride
           - const: qcom,qcs8300
@@ -925,7 +960,10 @@ properties:
       - items:
           - enum:
               - qcom,qcs615-ride
+<<<<<<< HEAD
               - qcom,talos-evk
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,qcs615
           - const: qcom,sm6150
 
@@ -1009,7 +1047,10 @@ properties:
               - sony,pdx201
               - xiaomi,ginkgo
               - xiaomi,laurel-sprout
+<<<<<<< HEAD
               - xiaomi,willow
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,sm6125
 
       - items:
@@ -1101,7 +1142,10 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - ayaneo,pocket-s2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8650-hdk
               - qcom,sm8650-mtp
               - qcom,sm8650-qrd
@@ -1149,7 +1193,10 @@ properties:
               - dell,xps13-9345
               - hp,elitebook-ultra-g1q
               - hp,omnibook-x14
+<<<<<<< HEAD
               - lenovo,ideacentre-mini-01q8x10
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - lenovo,yoga-slim7x
               - microsoft,romulus13
               - microsoft,romulus15
@@ -1170,12 +1217,15 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,purwa-iot-evk
           - const: qcom,purwa-iot-som
           - const: qcom,x1p42100
 
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - asus,zenbook-a14-ux3407qa-lcd
               - asus,zenbook-a14-ux3407qa-oled
           - const: asus,zenbook-a14-ux3407qa
@@ -1183,7 +1233,10 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - asus,vivobook-s15-x1p4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - hp,omnibook-x14-fe1
               - lenovo,thinkbook-16
               - qcom,x1p42100-crd

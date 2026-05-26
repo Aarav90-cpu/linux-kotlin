@@ -899,8 +899,13 @@ dmar_validate_one_drhd(struct acpi_dmar_header *entry, void *arg)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	cap = readq(addr + DMAR_CAP_REG);
 	ecap = readq(addr + DMAR_ECAP_REG);
+=======
+	cap = dmar_readq(addr + DMAR_CAP_REG);
+	ecap = dmar_readq(addr + DMAR_ECAP_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (arg)
 		iounmap(addr);
@@ -982,8 +987,13 @@ static int map_iommu(struct intel_iommu *iommu, struct dmar_drhd_unit *drhd)
 		goto release;
 	}
 
+<<<<<<< HEAD
 	iommu->cap = readq(iommu->reg + DMAR_CAP_REG);
 	iommu->ecap = readq(iommu->reg + DMAR_ECAP_REG);
+=======
+	iommu->cap = dmar_readq(iommu->reg + DMAR_CAP_REG);
+	iommu->ecap = dmar_readq(iommu->reg + DMAR_ECAP_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (iommu->cap == (uint64_t)-1 && iommu->ecap == (uint64_t)-1) {
 		err = -EINVAL;
@@ -1017,8 +1027,13 @@ static int map_iommu(struct intel_iommu *iommu, struct dmar_drhd_unit *drhd)
 		int i;
 
 		for (i = 0; i < DMA_MAX_NUM_ECMDCAP; i++) {
+<<<<<<< HEAD
 			iommu->ecmdcap[i] = readq(iommu->reg + DMAR_ECCAP_REG +
 						  i * DMA_ECMD_REG_STEP);
+=======
+			iommu->ecmdcap[i] = dmar_readq(iommu->reg + DMAR_ECCAP_REG +
+						       i * DMA_ECMD_REG_STEP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1239,8 +1254,13 @@ static const char *qi_type_string(u8 type)
 
 static void qi_dump_fault(struct intel_iommu *iommu, u32 fault)
 {
+<<<<<<< HEAD
 	unsigned int head = readl(iommu->reg + DMAR_IQH_REG);
 	u64 iqe_err = readq(iommu->reg + DMAR_IQER_REG);
+=======
+	unsigned int head = dmar_readl(iommu->reg + DMAR_IQH_REG);
+	u64 iqe_err = dmar_readq(iommu->reg + DMAR_IQER_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct qi_desc *desc = iommu->qi->desc + head;
 
 	if (fault & DMA_FSTS_IQE)
@@ -1321,7 +1341,11 @@ static int qi_check_fault(struct intel_iommu *iommu, int index, int wait_index)
 		 * SID field is valid only when the ITE field is Set in FSTS_REG
 		 * see Intel VT-d spec r4.1, section 11.4.9.9
 		 */
+<<<<<<< HEAD
 		iqe_err = readq(iommu->reg + DMAR_IQER_REG);
+=======
+		iqe_err = dmar_readq(iommu->reg + DMAR_IQER_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ite_sid = DMAR_IQER_REG_ITESID(iqe_err);
 
 		writel(DMA_FSTS_ITE, iommu->reg + DMAR_FSTS_REG);
@@ -1550,12 +1574,32 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 
+<<<<<<< HEAD
 /* PASID-selective IOTLB invalidation */
 void qi_flush_piotlb_all(struct intel_iommu *iommu, u16 did, u32 pasid)
 {
 	struct qi_desc desc = {};
 
 	qi_desc_piotlb_all(did, pasid, &desc);
+=======
+/* PASID-based IOTLB invalidation */
+void qi_flush_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid, u64 addr,
+		     unsigned long npages, bool ih)
+{
+	struct qi_desc desc = {.qw2 = 0, .qw3 = 0};
+
+	/*
+	 * npages == -1 means a PASID-selective invalidation, otherwise,
+	 * a positive value for Page-selective-within-PASID invalidation.
+	 * 0 is not a valid input.
+	 */
+	if (WARN_ON(!npages)) {
+		pr_err("Invalid input npages = %ld\n", npages);
+		return;
+	}
+
+	qi_desc_piotlb(did, pasid, addr, npages, ih, &desc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qi_submit_sync(iommu, &desc, 1, 0);
 }
 
@@ -1650,7 +1694,11 @@ static void __dmar_enable_qi(struct intel_iommu *iommu)
 	/* write zero to the tail reg */
 	writel(0, iommu->reg + DMAR_IQT_REG);
 
+<<<<<<< HEAD
 	writeq(val, iommu->reg + DMAR_IQA_REG);
+=======
+	dmar_writeq(iommu->reg + DMAR_IQA_REG, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iommu->gcmd |= DMA_GCMD_QIE;
 	writel(iommu->gcmd, iommu->reg + DMAR_GCMD_REG);
@@ -1969,8 +2017,13 @@ irqreturn_t dmar_fault(int irq, void *dev_id)
 			source_id = dma_frcd_source_id(data);
 
 			pasid_present = dma_frcd_pasid_present(data);
+<<<<<<< HEAD
 			guest_addr = readq(iommu->reg + reg +
 					   fault_index * PRIMARY_FAULT_REG_LEN);
+=======
+			guest_addr = dmar_readq(iommu->reg + reg +
+					fault_index * PRIMARY_FAULT_REG_LEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			guest_addr = dma_frcd_page_addr(guest_addr);
 		}
 

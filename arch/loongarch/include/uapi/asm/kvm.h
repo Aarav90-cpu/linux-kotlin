@@ -155,8 +155,11 @@ struct kvm_iocsr_entry {
 #define KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL	        0x40000006
 #define KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT	        0
 
+<<<<<<< HEAD
 #define KVM_DEV_LOONGARCH_DMSINTC_GRP_CTRL		0x40000007
 #define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_BASE		0x0
 #define KVM_DEV_LOONGARCH_DMSINTC_MSG_ADDR_SIZE		0x1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __UAPI_ASM_LOONGARCH_KVM_H */

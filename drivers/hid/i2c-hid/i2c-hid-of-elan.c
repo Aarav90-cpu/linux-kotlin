@@ -195,6 +195,7 @@ static const struct elan_i2c_hid_chip_data ilitek_ili2901_chip_data = {
 	.main_supply_name = "vcc33",
 };
 
+<<<<<<< HEAD
 static const struct elan_i2c_hid_chip_data parade_tc3408_chip_data = {
 	.post_power_delay_ms = 10,
 	.post_gpio_reset_on_delay_ms = 300,
@@ -202,13 +203,18 @@ static const struct elan_i2c_hid_chip_data parade_tc3408_chip_data = {
 	.main_supply_name = "vcc33",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id elan_i2c_hid_of_match[] = {
 	{ .compatible = "elan,ekth6915", .data = &elan_ekth6915_chip_data },
 	{ .compatible = "elan,ekth6a12nay", .data = &elan_ekth6a12nay_chip_data },
 	{ .compatible = "focaltech,ft8112", .data = &focaltech_ft8112_chip_data },
 	{ .compatible = "ilitek,ili9882t", .data = &ilitek_ili9882t_chip_data },
 	{ .compatible = "ilitek,ili2901", .data = &ilitek_ili2901_chip_data },
+<<<<<<< HEAD
 	{ .compatible = "parade,tc3408", .data = &parade_tc3408_chip_data },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, elan_i2c_hid_of_match);

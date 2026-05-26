@@ -1121,7 +1121,11 @@ static int omapfb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
 	return 0;
 
 error:
+<<<<<<< HEAD
 	omapfb_put_mem_region(rg);
+=======
+	omapfb_put_mem_region(ofbi->region);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return r;
 }

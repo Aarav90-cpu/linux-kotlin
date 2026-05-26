@@ -160,8 +160,11 @@ static const u8 opaluid[][OPAL_UID_LENGTH] = {
 		{ 0x00, 0x00, 0x08, 0x01, 0x00, 0x00, 0x00, 0x00 },
 	[OPAL_DATASTORE] =
 		{ 0x00, 0x00, 0x10, 0x01, 0x00, 0x00, 0x00, 0x00 },
+<<<<<<< HEAD
 	[OPAL_LOCKING_TABLE] =
 		{ 0x00, 0x00, 0x08, 0x02, 0x00, 0x00, 0x00, 0x00 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* C_PIN_TABLE object ID's */
 	[OPAL_C_PIN_MSID] =
@@ -220,8 +223,11 @@ static const u8 opalmethod[][OPAL_METHOD_LENGTH] = {
 		{ 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x06, 0x01 },
 	[OPAL_ERASE] =
 		{ 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x08, 0x03 },
+<<<<<<< HEAD
 	[OPAL_REACTIVATE] =
 		{ 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x08, 0x01 },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int end_opal_session_error(struct opal_dev *dev);
@@ -1518,7 +1524,11 @@ static inline int enable_global_lr(struct opal_dev *dev, u8 *uid,
 	return err;
 }
 
+<<<<<<< HEAD
 static int setup_enable_range(struct opal_dev *dev, void *data)
+=======
+static int setup_locking_range(struct opal_dev *dev, void *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u8 uid[OPAL_UID_LENGTH];
 	struct opal_user_lr_setup *setup = data;
@@ -1532,6 +1542,7 @@ static int setup_enable_range(struct opal_dev *dev, void *data)
 
 	if (lr == 0)
 		err = enable_global_lr(dev, uid, setup);
+<<<<<<< HEAD
 	else
 		err = generic_lr_enable_disable(dev, uid, !!setup->RLE, !!setup->WLE, 0, 0);
 	if (err) {
@@ -1573,6 +1584,40 @@ static int setup_locking_range_start_length(struct opal_dev *dev, void *data)
 
 	if (err) {
 		pr_debug("Error building Setup Locking RangeStartLength command.\n");
+=======
+	else {
+		err = cmd_start(dev, uid, opalmethod[OPAL_SET]);
+
+		add_token_u8(&err, dev, OPAL_STARTNAME);
+		add_token_u8(&err, dev, OPAL_VALUES);
+		add_token_u8(&err, dev, OPAL_STARTLIST);
+
+		add_token_u8(&err, dev, OPAL_STARTNAME);
+		add_token_u8(&err, dev, OPAL_RANGESTART);
+		add_token_u64(&err, dev, setup->range_start);
+		add_token_u8(&err, dev, OPAL_ENDNAME);
+
+		add_token_u8(&err, dev, OPAL_STARTNAME);
+		add_token_u8(&err, dev, OPAL_RANGELENGTH);
+		add_token_u64(&err, dev, setup->range_length);
+		add_token_u8(&err, dev, OPAL_ENDNAME);
+
+		add_token_u8(&err, dev, OPAL_STARTNAME);
+		add_token_u8(&err, dev, OPAL_READLOCKENABLED);
+		add_token_u64(&err, dev, !!setup->RLE);
+		add_token_u8(&err, dev, OPAL_ENDNAME);
+
+		add_token_u8(&err, dev, OPAL_STARTNAME);
+		add_token_u8(&err, dev, OPAL_WRITELOCKENABLED);
+		add_token_u64(&err, dev, !!setup->WLE);
+		add_token_u8(&err, dev, OPAL_ENDNAME);
+
+		add_token_u8(&err, dev, OPAL_ENDLIST);
+		add_token_u8(&err, dev, OPAL_ENDNAME);
+	}
+	if (err) {
+		pr_debug("Error building Setup Locking range command.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 
@@ -1581,7 +1626,11 @@ static int setup_locking_range_start_length(struct opal_dev *dev, void *data)
 
 static int response_get_column(const struct parsed_resp *resp,
 			       int *iter,
+<<<<<<< HEAD
 			       u64 column,
+=======
+			       u8 column,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       u64 *value)
 {
 	const struct opal_resp_tok *tok;
@@ -1599,7 +1648,11 @@ static int response_get_column(const struct parsed_resp *resp,
 	n++;
 
 	if (response_get_u64(resp, n) != column) {
+<<<<<<< HEAD
 		pr_debug("Token %d does not match expected column %llu.\n",
+=======
+		pr_debug("Token %d does not match expected column %u.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 n, column);
 		return OPAL_INVAL_PARAM;
 	}
@@ -1757,12 +1810,15 @@ static int start_anybodyASP_opal_session(struct opal_dev *dev, void *data)
 					  OPAL_ADMINSP_UID, NULL, 0);
 }
 
+<<<<<<< HEAD
 static int start_anybodyLSP_opal_session(struct opal_dev *dev, void *data)
 {
 	return start_generic_opal_session(dev, OPAL_ANYBODY_UID,
 					  OPAL_LOCKINGSP_UID, NULL, 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int start_SIDASP_opal_session(struct opal_dev *dev, void *data)
 {
 	int ret;
@@ -2304,6 +2360,7 @@ static int activate_lsp(struct opal_dev *dev, void *data)
 	return finalize_and_send(dev, parse_and_check_status);
 }
 
+<<<<<<< HEAD
 static int reactivate_lsp(struct opal_dev *dev, void *data)
 {
 	struct opal_lr_react *opal_react = data;
@@ -2372,6 +2429,8 @@ static int reactivate_lsp(struct opal_dev *dev, void *data)
 	return finalize_and_send(dev, parse_and_check_status);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Determine if we're in the Manufactured Inactive or Active state */
 static int get_lsp_lifecycle(struct opal_dev *dev, void *data)
 {
@@ -3042,6 +3101,7 @@ static int opal_activate_lsp(struct opal_dev *dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int opal_reactivate_lsp(struct opal_dev *dev,
 			       struct opal_lr_react *opal_lr_react)
 {
@@ -3068,11 +3128,14 @@ static int opal_reactivate_lsp(struct opal_dev *dev,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int opal_setup_locking_range(struct opal_dev *dev,
 				    struct opal_user_lr_setup *opal_lrs)
 {
 	const struct opal_step lr_steps[] = {
 		{ start_auth_opal_session, &opal_lrs->session },
+<<<<<<< HEAD
 		{ setup_locking_range_start_length, opal_lrs },
 		{ setup_enable_range, opal_lrs },
 		{ end_opal_session, }
@@ -3128,6 +3191,9 @@ static int opal_enable_disable_range(struct opal_dev *dev,
 	const struct opal_step lr_steps[] = {
 		{ start_auth_opal_session, &opal_lrs->session },
 		{ setup_enable_range, opal_lrs },
+=======
+		{ setup_locking_range, opal_lrs },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ end_opal_session, }
 	};
 	int ret;
@@ -3395,6 +3461,7 @@ static int opal_get_geometry(struct opal_dev *dev, void __user *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int get_sum_ranges(struct opal_dev *dev, void *data)
 {
 	const char *lr_uid;
@@ -3589,6 +3656,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
 {
 	void *p;
@@ -3674,6 +3743,7 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
 	case IOC_OPAL_SET_SID_PW:
 		ret = opal_set_new_sid_pw(dev, p);
 		break;
+<<<<<<< HEAD
 	case IOC_OPAL_REACTIVATE_LSP:
 		ret = opal_reactivate_lsp(dev, p);
 		break;
@@ -3689,6 +3759,8 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
 	case IOC_OPAL_STACK_RESET:
 		ret = opal_stack_reset(dev);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	default:
 		break;

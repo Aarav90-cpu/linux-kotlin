@@ -5,7 +5,10 @@ RT_FRIENDLY_SLEEP = (RT_VALID_SLEEP_REASON or KERNEL_THREAD)
 
 RT_VALID_SLEEP_REASON = FUTEX_WAIT
                      or RT_FRIENDLY_NANOSLEEP
+<<<<<<< HEAD
                      or EPOLL_WAIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 RT_FRIENDLY_NANOSLEEP = CLOCK_NANOSLEEP
                     and NANOSLEEP_TIMER_ABSTIME

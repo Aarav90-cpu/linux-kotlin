@@ -509,7 +509,11 @@ struct slab_depot {
 	struct slab_summary_entry *summary_entries;
 
 	/* The block allocators for this depot */
+<<<<<<< HEAD
 	struct block_allocator allocators[] __counted_by(zone_count);
+=======
+	struct block_allocator allocators[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct reference_updater;

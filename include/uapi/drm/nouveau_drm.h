@@ -432,6 +432,7 @@ struct drm_nouveau_exec {
 	__u64 push_ptr;
 };
 
+<<<<<<< HEAD
 struct drm_nouveau_get_zcull_info {
 	/**
 	 * @width_align_pixels: required alignment for region widths, in pixels
@@ -495,6 +496,8 @@ struct drm_nouveau_get_zcull_info {
 	__u32 ctxsw_align;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DRM_NOUVEAU_GETPARAM           0x00
 #define DRM_NOUVEAU_SETPARAM           0x01 /* deprecated */
 #define DRM_NOUVEAU_CHANNEL_ALLOC      0x02
@@ -508,7 +511,10 @@ struct drm_nouveau_get_zcull_info {
 #define DRM_NOUVEAU_VM_INIT            0x10
 #define DRM_NOUVEAU_VM_BIND            0x11
 #define DRM_NOUVEAU_EXEC               0x12
+<<<<<<< HEAD
 #define DRM_NOUVEAU_GET_ZCULL_INFO     0x13
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DRM_NOUVEAU_GEM_NEW            0x40
 #define DRM_NOUVEAU_GEM_PUSHBUF        0x41
 #define DRM_NOUVEAU_GEM_CPU_PREP       0x42
@@ -577,8 +583,11 @@ struct drm_nouveau_svm_bind {
 #define DRM_IOCTL_NOUVEAU_VM_INIT            DRM_IOWR(DRM_COMMAND_BASE + DRM_NOUVEAU_VM_INIT, struct drm_nouveau_vm_init)
 #define DRM_IOCTL_NOUVEAU_VM_BIND            DRM_IOWR(DRM_COMMAND_BASE + DRM_NOUVEAU_VM_BIND, struct drm_nouveau_vm_bind)
 #define DRM_IOCTL_NOUVEAU_EXEC               DRM_IOWR(DRM_COMMAND_BASE + DRM_NOUVEAU_EXEC, struct drm_nouveau_exec)
+<<<<<<< HEAD
 
 #define DRM_IOCTL_NOUVEAU_GET_ZCULL_INFO     DRM_IOR (DRM_COMMAND_BASE + DRM_NOUVEAU_GET_ZCULL_INFO, struct drm_nouveau_get_zcull_info)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(__cplusplus)
 }
 #endif

@@ -40,7 +40,10 @@ DECLARE_PER_CPU(struct rseq_stats, rseq_stats);
 #endif /* !CONFIG_RSEQ_STATS */
 
 #ifdef CONFIG_RSEQ
+<<<<<<< HEAD
 #include <linux/hrtimer_rearm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/jump_label.h>
 #include <linux/rseq.h>
 #include <linux/sched/signal.h>
@@ -111,6 +114,7 @@ static __always_inline void rseq_slice_clear_grant(struct task_struct *t)
 	t->rseq.slice.state.granted = false;
 }
 
+<<<<<<< HEAD
 /*
  * Open coded, so it can be invoked within a user access region.
  *
@@ -126,6 +130,9 @@ do {									\
 } while (0)
 
 static __always_inline bool __rseq_grant_slice_extension(bool work_pending)
+=======
+static __always_inline bool rseq_grant_slice_extension(bool work_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct task_struct *curr = current;
 	struct rseq_slice_ctrl usr_ctrl;
@@ -230,6 +237,7 @@ efault:
 	return false;
 }
 
+<<<<<<< HEAD
 static __always_inline bool rseq_grant_slice_extension(unsigned long ti_work, unsigned long mask)
 {
 	if (unlikely(__rseq_grant_slice_extension(ti_work & mask))) {
@@ -239,15 +247,25 @@ static __always_inline bool rseq_grant_slice_extension(unsigned long ti_work, un
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else /* CONFIG_RSEQ_SLICE_EXTENSION */
 static __always_inline bool rseq_slice_extension_enabled(void) { return false; }
 static __always_inline bool rseq_arm_slice_extension_timer(void) { return false; }
 static __always_inline void rseq_slice_clear_grant(struct task_struct *t) { }
+<<<<<<< HEAD
 static __always_inline bool rseq_grant_slice_extension(unsigned long ti_work, unsigned long mask) { return false; }
 #define rseq_slice_clear_user(rseq, efault) do { } while (0)
 #endif /* !CONFIG_RSEQ_SLICE_EXTENSION */
 
 bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs, unsigned long csaddr);
+=======
+static __always_inline bool rseq_grant_slice_extension(bool work_pending) { return false; }
+#endif /* !CONFIG_RSEQ_SLICE_EXTENSION */
+
+bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs, unsigned long csaddr);
+bool rseq_debug_validate_ids(struct task_struct *t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __always_inline void rseq_note_user_irq_entry(void)
 {
@@ -367,6 +385,46 @@ efault:
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * On debug kernels validate that user space did not mess with it if the
+ * debug branch is enabled.
+ */
+bool rseq_debug_validate_ids(struct task_struct *t)
+{
+	struct rseq __user *rseq = t->rseq.usrptr;
+	u32 cpu_id, uval, node_id;
+
+	/*
+	 * On the first exit after registering the rseq region CPU ID is
+	 * RSEQ_CPU_ID_UNINITIALIZED and node_id in user space is 0!
+	 */
+	node_id = t->rseq.ids.cpu_id != RSEQ_CPU_ID_UNINITIALIZED ?
+		  cpu_to_node(t->rseq.ids.cpu_id) : 0;
+
+	scoped_user_read_access(rseq, efault) {
+		unsafe_get_user(cpu_id, &rseq->cpu_id_start, efault);
+		if (cpu_id != t->rseq.ids.cpu_id)
+			goto die;
+		unsafe_get_user(uval, &rseq->cpu_id, efault);
+		if (uval != cpu_id)
+			goto die;
+		unsafe_get_user(uval, &rseq->node_id, efault);
+		if (uval != node_id)
+			goto die;
+		unsafe_get_user(uval, &rseq->mm_cid, efault);
+		if (uval != t->rseq.ids.mm_cid)
+			goto die;
+	}
+	return true;
+die:
+	t->rseq.event.fatal = true;
+efault:
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* RSEQ_BUILD_SLOW_PATH */
 
 /*
@@ -476,6 +534,7 @@ efault:
  * faults in task context are fatal too.
  */
 static rseq_inline
+<<<<<<< HEAD
 bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids, u64 *csaddr)
 {
 	struct rseq __user *rseq = t->rseq.usrptr;
@@ -502,17 +561,42 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids, u64 *c
 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id_start, efault);
 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id, efault);
 		unsafe_put_user(ids->node_id, &rseq->node_id, efault);
+=======
+bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids,
+			     u32 node_id, u64 *csaddr)
+{
+	struct rseq __user *rseq = t->rseq.usrptr;
+
+	if (static_branch_unlikely(&rseq_debug_enabled)) {
+		if (!rseq_debug_validate_ids(t))
+			return false;
+	}
+
+	scoped_user_rw_access(rseq, efault) {
+		unsafe_put_user(ids->cpu_id, &rseq->cpu_id_start, efault);
+		unsafe_put_user(ids->cpu_id, &rseq->cpu_id, efault);
+		unsafe_put_user(node_id, &rseq->node_id, efault);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsafe_put_user(ids->mm_cid, &rseq->mm_cid, efault);
 		if (csaddr)
 			unsafe_get_user(*csaddr, &rseq->rseq_cs, efault);
 
+<<<<<<< HEAD
 		/* RSEQ ABI V2 only operations */
 		if (rseq_v2(t))
 			rseq_slice_clear_user(rseq, efault);
+=======
+		/* Open coded, so it's in the same user access region */
+		if (rseq_slice_extension_enabled()) {
+			/* Unconditionally clear it, no point in conditionals */
+			unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rseq_slice_clear_grant(t);
 	/* Cache the new values */
+<<<<<<< HEAD
 	t->rseq.ids = *ids;
 	rseq_stat_inc(rseq_stats.ids);
 	rseq_trace_update(t, ids);
@@ -520,6 +604,12 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids, u64 *c
 
 die:
 	t->rseq.event.fatal = true;
+=======
+	t->rseq.ids.cpu_cid = ids->cpu_cid;
+	rseq_stat_inc(rseq_stats.ids);
+	rseq_trace_update(t, ids);
+	return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	return false;
 }
@@ -529,11 +619,19 @@ efault:
  * is in a critical section.
  */
 static rseq_inline bool rseq_update_usr(struct task_struct *t, struct pt_regs *regs,
+<<<<<<< HEAD
 					struct rseq_ids *ids)
 {
 	u64 csaddr;
 
 	if (!rseq_set_ids_get_csaddr(t, ids, &csaddr))
+=======
+					struct rseq_ids *ids, u32 node_id)
+{
+	u64 csaddr;
+
+	if (!rseq_set_ids_get_csaddr(t, ids, node_id, &csaddr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/*
@@ -602,6 +700,7 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
 	 * interrupts disabled
 	 */
 	guard(pagefault)();
+<<<<<<< HEAD
 	/*
 	 * This optimization is only valid when the task registered for the
 	 * optimized RSEQ_ABI_V2 variant. Some legacy users rely on the original
@@ -610,6 +709,8 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
 	 * have both sched_switch and ids_changed set, which is compatible with
 	 * the historical TIF_NOTIFY_RESUME behaviour.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (likely(!t->rseq.event.ids_changed)) {
 		struct rseq __user *rseq = t->rseq.usrptr;
 		/*
@@ -621,9 +722,17 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
 		scoped_user_rw_access(rseq, efault) {
 			unsafe_get_user(csaddr, &rseq->rseq_cs, efault);
 
+<<<<<<< HEAD
 			/* RSEQ ABI V2 only operations */
 			if (rseq_v2(t))
 				rseq_slice_clear_user(rseq, efault);
+=======
+			/* Open coded, so it's in the same user access region */
+			if (rseq_slice_extension_enabled()) {
+				/* Unconditionally clear it, no point in conditionals */
+				unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		rseq_slice_clear_grant(t);
@@ -636,12 +745,21 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
 	}
 
 	struct rseq_ids ids = {
+<<<<<<< HEAD
 		.cpu_id	 = task_cpu(t),
 		.mm_cid	 = task_mm_cid(t),
 		.node_id = cpu_to_node(ids.cpu_id),
 	};
 
 	return rseq_update_usr(t, regs, &ids);
+=======
+		.cpu_id = task_cpu(t),
+		.mm_cid = task_mm_cid(t),
+	};
+	u32 node_id = cpu_to_node(ids.cpu_id);
+
+	return rseq_update_usr(t, regs, &ids, node_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	return false;
 }
@@ -728,7 +846,14 @@ static __always_inline void rseq_syscall_exit_to_user_mode(void)
 
 	/* Needed to remove the store for the !lockdep case */
 	if (IS_ENABLED(CONFIG_LOCKDEP)) {
+<<<<<<< HEAD
 		WARN_ON_ONCE(ev->sched_switch);
+=======
+#ifndef CONFIG_SCHED_ALT
+/* WA for sched/alt: [Sync] 9a723ed7facf sched/mmcid: Provide new scheduler CID mechanism */
+		WARN_ON_ONCE(ev->sched_switch);
+#endif /* !CONFIG_SCHED_ALT */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ev->events = 0;
 	}
 }
@@ -765,7 +890,11 @@ static inline bool rseq_exit_to_user_mode_restart(struct pt_regs *regs, unsigned
 static inline void rseq_syscall_exit_to_user_mode(void) { }
 static inline void rseq_irqentry_exit_to_user_mode(void) { }
 static inline void rseq_debug_syscall_return(struct pt_regs *regs) { }
+<<<<<<< HEAD
 static inline bool rseq_grant_slice_extension(unsigned long ti_work, unsigned long mask) { return false; }
+=======
+static inline bool rseq_grant_slice_extension(bool work_pending) { return false; }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_RSEQ */
 
 #endif /* _LINUX_RSEQ_ENTRY_H */

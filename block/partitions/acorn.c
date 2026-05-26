@@ -40,7 +40,13 @@ adfs_partition(struct parsed_partitions *state, char *name, char *data,
 		   (le32_to_cpu(dr->disc_size) >> 9);
 
 	if (name) {
+<<<<<<< HEAD
 		seq_buf_printf(&state->pp_buf, " [%s]", name);
+=======
+		strlcat(state->pp_buf, " [", PAGE_SIZE);
+		strlcat(state->pp_buf, name, PAGE_SIZE);
+		strlcat(state->pp_buf, "]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	put_partition(state, slot, first_sector, nr_sects);
 	return dr;
@@ -76,14 +82,22 @@ static int riscix_partition(struct parsed_partitions *state,
 	if (!rr)
 		return -1;
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " [RISCiX]");
+=======
+	strlcat(state->pp_buf, " [RISCiX]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 	if (rr->magic == RISCIX_MAGIC) {
 		unsigned long size = nr_sects > 2 ? 2 : nr_sects;
 		int part;
 
+<<<<<<< HEAD
 		seq_buf_puts(&state->pp_buf, " <");
+=======
+		strlcat(state->pp_buf, " <", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		put_partition(state, slot++, first_sect, size);
 		for (part = 0; part < 8; part++) {
@@ -92,11 +106,21 @@ static int riscix_partition(struct parsed_partitions *state,
 				put_partition(state, slot++,
 					le32_to_cpu(rr->part[part].start),
 					le32_to_cpu(rr->part[part].length));
+<<<<<<< HEAD
 				seq_buf_printf(&state->pp_buf, "(%s)", rr->part[part].name);
 			}
 		}
 
 		seq_buf_puts(&state->pp_buf, " >\n");
+=======
+				strlcat(state->pp_buf, "(", PAGE_SIZE);
+				strlcat(state->pp_buf, rr->part[part].name, PAGE_SIZE);
+				strlcat(state->pp_buf, ")", PAGE_SIZE);
+			}
+		}
+
+		strlcat(state->pp_buf, " >\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		put_partition(state, slot++, first_sect, nr_sects);
 	}
@@ -126,7 +150,11 @@ static int linux_partition(struct parsed_partitions *state,
 	struct linux_part *linuxp;
 	unsigned long size = nr_sects > 2 ? 2 : nr_sects;
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " [Linux]");
+=======
+	strlcat(state->pp_buf, " [Linux]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	put_partition(state, slot++, first_sect, size);
 
@@ -134,7 +162,11 @@ static int linux_partition(struct parsed_partitions *state,
 	if (!linuxp)
 		return -1;
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " <");
+=======
+	strlcat(state->pp_buf, " <", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (linuxp->magic == cpu_to_le32(LINUX_NATIVE_MAGIC) ||
 	       linuxp->magic == cpu_to_le32(LINUX_SWAP_MAGIC)) {
 		if (slot == state->limit)
@@ -144,7 +176,11 @@ static int linux_partition(struct parsed_partitions *state,
 				 le32_to_cpu(linuxp->nr_sects));
 		linuxp ++;
 	}
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " >");
+=======
+	strlcat(state->pp_buf, " >", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	put_dev_sector(sect);
 	return slot;
@@ -289,7 +325,11 @@ int adfspart_check_ADFS(struct parsed_partitions *state)
 			break;
 		}
 	}
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 #endif
@@ -362,7 +402,11 @@ int adfspart_check_ICS(struct parsed_partitions *state)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " [ICS]");
+=======
+	strlcat(state->pp_buf, " [ICS]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (slot = 1, p = (const struct ics_part *)data; p->size; p++) {
 		u32 start = le32_to_cpu(p->start);
@@ -396,7 +440,11 @@ int adfspart_check_ICS(struct parsed_partitions *state)
 	}
 
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 #endif
@@ -456,7 +504,11 @@ int adfspart_check_POWERTEC(struct parsed_partitions *state)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " [POWERTEC]");
+=======
+	strlcat(state->pp_buf, " [POWERTEC]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0, p = (const struct ptec_part *)data; i < 12; i++, p++) {
 		u32 start = le32_to_cpu(p->start);
@@ -467,7 +519,11 @@ int adfspart_check_POWERTEC(struct parsed_partitions *state)
 	}
 
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 #endif
@@ -538,7 +594,11 @@ int adfspart_check_EESOX(struct parsed_partitions *state)
 
 		size = get_capacity(state->disk);
 		put_partition(state, slot++, start, size - start);
+<<<<<<< HEAD
 		seq_buf_puts(&state->pp_buf, "\n");
+=======
+		strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return i ? 1 : 0;

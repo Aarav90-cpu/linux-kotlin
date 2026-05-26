@@ -6,7 +6,10 @@
  *   Author(s): Michael A. Halcrow <mhalcrow@us.ibm.com>
  *		Tyler Hicks <code@tyhicks.com>
  */
+<<<<<<< HEAD
 #include <linux/overflow.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/user_namespace.h>
@@ -233,7 +236,11 @@ int ecryptfs_process_response(struct ecryptfs_daemon *daemon,
 		       msg_ctx->counter, seq);
 		goto unlock;
 	}
+<<<<<<< HEAD
 	msg_size = struct_size(msg, data, msg->data_len);
+=======
+	msg_size = (sizeof(*msg) + msg->data_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msg_ctx->msg = kmemdup(msg, msg_size, GFP_KERNEL);
 	if (!msg_ctx->msg) {
 		rc = -ENOMEM;

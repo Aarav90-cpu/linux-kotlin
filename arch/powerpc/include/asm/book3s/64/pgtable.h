@@ -107,8 +107,13 @@
  * in here, on radix we expect them to be zero.
  */
 #define _HPAGE_CHG_MASK (PTE_RPN_MASK | _PAGE_HPTEFLAGS | _PAGE_DIRTY | \
+<<<<<<< HEAD
 			 _PAGE_ACCESSED | H_PAGE_THP_HUGE | _PAGE_SPECIAL | \
 			 _PAGE_PTE | _PAGE_SOFT_DIRTY)
+=======
+			 _PAGE_ACCESSED | H_PAGE_THP_HUGE | _PAGE_PTE | \
+			 _PAGE_SOFT_DIRTY)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * user access blocked by key
  */
@@ -349,13 +354,22 @@ static inline unsigned long pte_update(struct mm_struct *mm, unsigned long addr,
  * For radix: H_PAGE_HASHPTE should be zero. Hence we can use the same
  * function for both hash and radix.
  */
+<<<<<<< HEAD
 static inline bool __ptep_test_and_clear_young(struct mm_struct *mm,
 		unsigned long addr, pte_t *ptep)
+=======
+static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+					      unsigned long addr, pte_t *ptep)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long old;
 
 	if ((pte_raw(*ptep) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
 	return (old & _PAGE_ACCESSED) != 0;
 }
@@ -549,7 +563,11 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
 	return arch_pte_access_permitted(pte_val(pte), write, 0);
 }
 
+<<<<<<< HEAD
 static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
+=======
+static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return pte_present(pte) && pte_user(pte);
 }
@@ -925,9 +943,15 @@ static inline bool pud_access_permitted(pud_t pud, bool write)
 }
 
 #define pud_user_accessible_page pud_user_accessible_page
+<<<<<<< HEAD
 static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long addr, pud_t pud)
 {
 	return pud_leaf(pud) && pte_user_accessible_page(mm, addr, pud_pte(pud));
+=======
+static inline bool pud_user_accessible_page(pud_t pud, unsigned long addr)
+{
+	return pud_leaf(pud) && pte_user_accessible_page(pud_pte(pud), addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define __p4d_raw(x)	((p4d_t) { __pgd_raw(x) })
@@ -1096,9 +1120,15 @@ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
 }
 
 #define pmd_user_accessible_page pmd_user_accessible_page
+<<<<<<< HEAD
 static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsigned long addr, pmd_t pmd)
 {
 	return pmd_leaf(pmd) && pte_user_accessible_page(mm, addr, pmd_pte(pmd));
+=======
+static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long addr)
+{
+	return pmd_leaf(pmd) && pte_user_accessible_page(pmd_pte(pmd), addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -1161,24 +1191,42 @@ pud_hugepage_update(struct mm_struct *mm, unsigned long addr, pud_t *pudp,
  * For radix we should always find H_PAGE_HASHPTE zero. Hence
  * the below will work for radix too
  */
+<<<<<<< HEAD
 static inline bool __pmdp_test_and_clear_young(struct mm_struct *mm,
 		unsigned long addr, pmd_t *pmdp)
+=======
+static inline int __pmdp_test_and_clear_young(struct mm_struct *mm,
+					      unsigned long addr, pmd_t *pmdp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long old;
 
 	if ((pmd_raw(*pmdp) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old = pmd_hugepage_update(mm, addr, pmdp, _PAGE_ACCESSED, 0);
 	return ((old & _PAGE_ACCESSED) != 0);
 }
 
+<<<<<<< HEAD
 static inline bool __pudp_test_and_clear_young(struct mm_struct *mm,
 		unsigned long addr, pud_t *pudp)
+=======
+static inline int __pudp_test_and_clear_young(struct mm_struct *mm,
+					      unsigned long addr, pud_t *pudp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long old;
 
 	if ((pud_raw(*pudp) & cpu_to_be64(_PAGE_ACCESSED | H_PAGE_HASHPTE)) == 0)
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old = pud_hugepage_update(mm, addr, pudp, _PAGE_ACCESSED, 0);
 	return ((old & _PAGE_ACCESSED) != 0);
 }
@@ -1289,6 +1337,7 @@ static inline pud_t pud_mkhuge(pud_t pud)
 	return pud;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
 static inline bool pmd_special(pmd_t pmd)
 {
@@ -1312,6 +1361,8 @@ static inline pud_t pud_mkspecial(pud_t pud)
 	return pte_pud(pte_mkspecial(pud_pte(pud)));
 }
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
 extern int pmdp_set_access_flags(struct vm_area_struct *vma,
@@ -1323,11 +1374,19 @@ extern int pudp_set_access_flags(struct vm_area_struct *vma,
 				 pud_t entry, int dirty);
 
 #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp);
 #define __HAVE_ARCH_PUDP_TEST_AND_CLEAR_YOUNG
 bool pudp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pud_t *pudp);
+=======
+extern int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+				     unsigned long address, pmd_t *pmdp);
+#define __HAVE_ARCH_PUDP_TEST_AND_CLEAR_YOUNG
+extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
+				     unsigned long address, pud_t *pudp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 #define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
@@ -1336,6 +1395,7 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
 {
 	pmd_t old_pmd;
 
+<<<<<<< HEAD
 	/*
 	 * Non-present PMDs can be migration entries or device-private THP
 	 * entries. This can happen at 2 places:
@@ -1350,13 +1410,18 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (radix_enabled()) {
 		old_pmd = radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
 	} else {
 		old_pmd = hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
 	}
 
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	page_table_check_pmd_clear(mm, addr, old_pmd);
 
 	return old_pmd;
@@ -1438,6 +1503,10 @@ static inline bool arch_needs_pgtable_deposit(void)
 		return false;
 	return true;
 }
+<<<<<<< HEAD
+=======
+extern void serialize_against_pte_lookup(struct mm_struct *mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 

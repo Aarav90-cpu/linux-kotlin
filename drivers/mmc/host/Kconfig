@@ -429,6 +429,7 @@ config MMC_SDHCI_BCM_KONA
 
 	  If you have a controller with this interface, say Y or M here.
 
+<<<<<<< HEAD
 config MMC_SDHCI_BST
 	tristate "SDHCI support for Black Sesame Technologies BST C1200 controller"
 	depends on ARCH_BST || COMPILE_TEST
@@ -443,6 +444,8 @@ config MMC_SDHCI_BST
 	  If you have a controller with this interface, say Y or M here.
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config MMC_SDHCI_F_SDH30
 	tristate "SDHCI support for Fujitsu Semiconductor F_SDH30"
 	depends on MMC_SDHCI_PLTFM
@@ -1058,7 +1061,11 @@ config MMC_MTK
 
 config MMC_SDHCI_MICROCHIP_PIC32
 	tristate "Microchip PIC32MZDA SDHCI support"
+<<<<<<< HEAD
 	depends on MMC_SDHCI && MMC_SDHCI_PLTFM && (PIC32MZDA || COMPILE_TEST)
+=======
+	depends on MMC_SDHCI && PIC32MZDA && MMC_SDHCI_PLTFM
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This selects the Secure Digital Host Controller Interface (SDHCI)
 	  for PIC32MZDA platform.

@@ -61,7 +61,11 @@ typedef struct {
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_select(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *timeout)
+=======
+int sys_select(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *timeout)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #if defined(__NR_pselect6_time64)
 	struct __kernel_timespec t;
@@ -70,8 +74,12 @@ int _sys_select(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timev
 		t.tv_sec  = timeout->tv_sec;
 		t.tv_nsec = (uint32_t)timeout->tv_usec * 1000;
 	}
+<<<<<<< HEAD
 	return __nolibc_syscall6(__NR_pselect6_time64, nfds, rfds, wfds, efds,
 				 timeout ? &t : NULL, NULL);
+=======
+	return my_syscall6(__NR_pselect6_time64, nfds, rfds, wfds, efds, timeout ? &t : NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 	struct __kernel_old_timespec t;
 
@@ -79,15 +87,23 @@ int _sys_select(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timev
 		t.tv_sec  = timeout->tv_sec;
 		t.tv_nsec = (uint32_t)timeout->tv_usec * 1000;
 	}
+<<<<<<< HEAD
 	return __nolibc_syscall6(__NR_pselect6, nfds, rfds, wfds, efds,
 				 timeout ? &t : NULL, NULL);
+=======
+	return my_syscall6(__NR_pselect6, nfds, rfds, wfds, efds, timeout ? &t : NULL, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
 static __attribute__((unused))
 int select(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *timeout)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_select(nfds, rfds, wfds, efds, timeout));
+=======
+	return __sysret(sys_select(nfds, rfds, wfds, efds, timeout));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 

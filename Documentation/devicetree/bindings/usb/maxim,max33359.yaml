@@ -32,9 +32,12 @@ properties:
     description:
       Properties for usb c connector.
 
+<<<<<<< HEAD
   vbus-supply:
     description: Regulator to control sourcing Vbus.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -56,7 +59,10 @@ examples:
             reg = <0x25>;
             interrupt-parent = <&gpa8>;
             interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
             vbus-supply = <&chgin_otg_reg>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             connector {
                 compatible = "usb-c-connector";
@@ -79,10 +85,13 @@ examples:
                                        PDO_FIXED(9000, 2000, 0)>;
                 sink-bc12-completion-time-ms = <500>;
                 pd-revision = /bits/ 8 <0x03 0x01 0x01 0x08>;
+<<<<<<< HEAD
                 sink-load-step = <150>;
                 sink-load-characteristics = /bits/ 16 <SINK_LOAD_CHAR(0, 1, 1, 2)>;
                 sink-compliance = /bits/ 8 <(COMPLIANCE_LPS | COMPLIANCE_PS1)>;
                 charging-adapter-pdp-milliwatt = <18000>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             };
         };
     };

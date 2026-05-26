@@ -142,7 +142,10 @@ static struct kfd_event *lookup_event_by_id(struct kfd_process *p, uint32_t id)
  * @p:     Pointer to struct kfd_process
  * @id:    ID to look up
  * @bits:  Number of valid bits in @id
+<<<<<<< HEAD
  * @signal_mailbox_updated: flag indicates if FW updates signal mailbox entry
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Finds the first signaled event with a matching partial ID. If no
  * matching signaled event is found, returns NULL. In that case the
@@ -156,8 +159,12 @@ static struct kfd_event *lookup_event_by_id(struct kfd_process *p, uint32_t id)
  * driver.
  */
 static struct kfd_event *lookup_signaled_event_by_partial_id(
+<<<<<<< HEAD
 	struct kfd_process *p, uint32_t id, uint32_t bits,
 	bool signal_mailbox_updated)
+=======
+	struct kfd_process *p, uint32_t id, uint32_t bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kfd_event *ev;
 
@@ -168,8 +175,12 @@ static struct kfd_event *lookup_signaled_event_by_partial_id(
 	 * and we only need a single lookup.
 	 */
 	if (bits > 31 || (1U << bits) >= KFD_SIGNAL_EVENT_LIMIT) {
+<<<<<<< HEAD
 		if (signal_mailbox_updated &&
 		    page_slots(p->signal_page)[id] == UNSIGNALED_EVENT_SLOT)
+=======
+		if (page_slots(p->signal_page)[id] == UNSIGNALED_EVENT_SLOT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return NULL;
 
 		return idr_find(&p->event_idr, id);
@@ -727,7 +738,11 @@ static void set_event_from_interrupt(struct kfd_process *p,
 }
 
 void kfd_signal_event_interrupt(u32 pasid, uint32_t partial_id,
+<<<<<<< HEAD
 				uint32_t valid_id_bits, bool signal_mailbox_updated)
+=======
+				uint32_t valid_id_bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kfd_event *ev = NULL;
 
@@ -745,8 +760,12 @@ void kfd_signal_event_interrupt(u32 pasid, uint32_t partial_id,
 
 	if (valid_id_bits)
 		ev = lookup_signaled_event_by_partial_id(p, partial_id,
+<<<<<<< HEAD
 							 valid_id_bits,
 							 signal_mailbox_updated);
+=======
+							 valid_id_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ev) {
 		set_event_from_interrupt(p, ev);
 	} else if (p->signal_page) {

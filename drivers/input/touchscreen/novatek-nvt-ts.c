@@ -170,10 +170,17 @@ static int nvt_ts_suspend(struct device *dev)
 {
 	struct nvt_ts_data *data = i2c_get_clientdata(to_i2c_client(dev));
 
+<<<<<<< HEAD
 	guard(mutex)(&data->input->mutex);
 
 	if (input_device_enabled(data->input))
 		nvt_ts_stop(data->input);
+=======
+	mutex_lock(&data->input->mutex);
+	if (input_device_enabled(data->input))
+		nvt_ts_stop(data->input);
+	mutex_unlock(&data->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -182,10 +189,17 @@ static int nvt_ts_resume(struct device *dev)
 {
 	struct nvt_ts_data *data = i2c_get_clientdata(to_i2c_client(dev));
 
+<<<<<<< HEAD
 	guard(mutex)(&data->input->mutex);
 
 	if (input_device_enabled(data->input))
 		nvt_ts_start(data->input);
+=======
+	mutex_lock(&data->input->mutex);
+	if (input_device_enabled(data->input))
+		nvt_ts_start(data->input);
+	mutex_unlock(&data->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

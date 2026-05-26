@@ -99,7 +99,11 @@ static SPINAND_OP_VARIANTS(update_cache_variants,
 
 #define SPINAND_WINBOND_WRITE_VCR_8D_8D_8D(reg, buf)			\
 	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x81, 8),			\
+<<<<<<< HEAD
 		   SPI_MEM_DTR_OP_ADDR(4, reg << 8, 8),			\
+=======
+		   SPI_MEM_DTR_OP_ADDR(4, reg, 8),			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   SPI_MEM_OP_NO_DUMMY,					\
 		   SPI_MEM_DTR_OP_DATA_OUT(2, buf, 8))
 
@@ -337,6 +341,7 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
 	if (iface != SSDR)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	/*
 	 * SDR dual and quad I/O operations over 104MHz require the HS bit to
 	 * enable a few more dummy cycles.
@@ -350,6 +355,18 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
 		hs = false;
 	else
 		hs = true;
+=======
+	op = spinand->op_templates->read_cache;
+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
+		hs = false;
+	else if (op->cmd.buswidth == 1 && op->addr.buswidth == 1 &&
+		 op->dummy.buswidth == 1 && op->data.buswidth == 1)
+		hs = false;
+	else if (!op->max_freq)
+		hs = true;
+	else
+		hs = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
 	if (ret)
@@ -518,7 +535,11 @@ static const struct spinand_info winbond_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
 					      &write_cache_octal_variants,
 					      &update_cache_octal_variants),
+<<<<<<< HEAD
 		     SPINAND_ODTR_PACKED_PAGE_READ,
+=======
+		     0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
@@ -529,7 +550,11 @@ static const struct spinand_info winbond_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
 					      &write_cache_octal_variants,
 					      &update_cache_octal_variants),
+<<<<<<< HEAD
 		     SPINAND_ODTR_PACKED_PAGE_READ,
+=======
+		     0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),

@@ -17,7 +17,10 @@
 #include "clk-regmap-divider.h"
 #include "common.h"
 #include "gdsc.h"
+<<<<<<< HEAD
 #include "reset.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum {
 	P_BI_TCXO,
@@ -637,11 +640,14 @@ static struct gdsc mdss_gdsc = {
 	.flags = HW_CTRL,
 };
 
+<<<<<<< HEAD
 static const struct qcom_reset_map disp_cc_sc7180_resets[] = {
 	[DISP_CC_MDSS_CORE_BCR] = { 0x2000 },
 	[DISP_CC_MDSS_RSCC_BCR] = { 0x4000 },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct gdsc *disp_cc_sc7180_gdscs[] = {
 	[MDSS_GDSC] = &mdss_gdsc,
 };
@@ -693,8 +699,11 @@ static const struct qcom_cc_desc disp_cc_sc7180_desc = {
 	.config = &disp_cc_sc7180_regmap_config,
 	.clks = disp_cc_sc7180_clocks,
 	.num_clks = ARRAY_SIZE(disp_cc_sc7180_clocks),
+<<<<<<< HEAD
 	.resets = disp_cc_sc7180_resets,
 	.num_resets = ARRAY_SIZE(disp_cc_sc7180_resets),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.gdscs = disp_cc_sc7180_gdscs,
 	.num_gdscs = ARRAY_SIZE(disp_cc_sc7180_gdscs),
 };

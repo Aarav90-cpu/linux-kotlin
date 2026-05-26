@@ -361,7 +361,11 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
 	}
 
 	hdr->size = cpu_to_le32(len);
+<<<<<<< HEAD
 	hdr->confirm_rx = cpu_to_le32(!!confirm_rx);
+=======
+	hdr->confirm_rx = !!confirm_rx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = skb_put_padto(skb, ALIGN(len, 4) + sizeof(*hdr));
 
@@ -462,7 +466,11 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
 		cb->type = le32_to_cpu(v1->type);
 		cb->src_node = le32_to_cpu(v1->src_node_id);
 		cb->src_port = le32_to_cpu(v1->src_port_id);
+<<<<<<< HEAD
 		cb->confirm_rx = !!le32_to_cpu(v1->confirm_rx);
+=======
+		cb->confirm_rx = !!v1->confirm_rx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cb->dst_node = le32_to_cpu(v1->dst_node_id);
 		cb->dst_port = le32_to_cpu(v1->dst_port_id);
 

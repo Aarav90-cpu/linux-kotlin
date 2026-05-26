@@ -87,11 +87,14 @@ int cache_line_size(void);
 
 #define dma_get_cache_alignment	cache_line_size
 
+<<<<<<< HEAD
 static inline void arch_sync_dma_flush(void)
 {
 	dsb(sy);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Compress a u64 MPIDR value into 32 bits. */
 static inline u64 arch_compact_of_hwid(u64 id)
 {

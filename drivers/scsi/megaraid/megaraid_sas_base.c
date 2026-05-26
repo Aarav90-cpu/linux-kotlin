@@ -6365,6 +6365,7 @@ static int megasas_init_fw(struct megasas_instance *instance)
 
 	megasas_setup_jbod_map(instance);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &instance->reset_mutex) {
 		if (megasas_get_device_list(instance) != SUCCESS) {
 			dev_err(&instance->pdev->dev,
@@ -6372,6 +6373,13 @@ static int megasas_init_fw(struct megasas_instance *instance)
 				__func__);
 			goto fail_get_ld_pd_list;
 		}
+=======
+	if (megasas_get_device_list(instance) != SUCCESS) {
+		dev_err(&instance->pdev->dev,
+			"%s: megasas_get_device_list failed\n",
+			__func__);
+		goto fail_get_ld_pd_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* stream detection initialization */
@@ -6470,8 +6478,12 @@ static int megasas_init_fw(struct megasas_instance *instance)
 	}
 
 	if (instance->snapdump_wait_time) {
+<<<<<<< HEAD
 		scoped_guard(mutex, &instance->reset_mutex)
 			megasas_get_snapdump_properties(instance);
+=======
+		megasas_get_snapdump_properties(instance);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_info(&instance->pdev->dev, "Snap dump wait time\t: %d\n",
 			 instance->snapdump_wait_time);
 	}

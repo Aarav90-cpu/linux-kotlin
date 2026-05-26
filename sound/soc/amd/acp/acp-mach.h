@@ -26,10 +26,13 @@
 
 #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
 
+<<<<<<< HEAD
 /* List of DMI quirks - check acp-mach-common.c for usage. */
 #define QUIRK_TDM_MODE_ENABLE 1
 #define QUIRK_REMAP_DMIC_BT 2
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum be_id {
 	HEADSET_BE_ID = 0,
 	AMP_BE_ID,

@@ -44,6 +44,7 @@
 #include <net/xfrm.h>
 #include <net/inet_ecn.h>
 #include <net/dst_metadata.h>
+<<<<<<< HEAD
 #include <net/inet6_hashtables.h>
 
 static void tcp_v6_early_demux(struct sk_buff *skb)
@@ -84,6 +85,8 @@ static void tcp_v6_early_demux(struct sk_buff *skb)
 		}
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void ip6_rcv_finish_core(struct net *net, struct sock *sk,
 				struct sk_buff *skb)
@@ -403,7 +406,10 @@ INDIRECT_CALLABLE_DECLARE(int tcp_v6_rcv(struct sk_buff *));
 void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
 			      bool have_final)
 {
+<<<<<<< HEAD
 	int exthdr_cnt = IP6CB(skb)->flags & IP6SKB_HOPBYHOP ? 1 : 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct inet6_protocol *ipprot;
 	struct inet6_dev *idev;
 	unsigned int nhoff;
@@ -488,10 +494,13 @@ resubmit_final:
 				nexthdr = ret;
 				goto resubmit_final;
 			} else {
+<<<<<<< HEAD
 				if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT)) {
 					SKB_DR_SET(reason, IPV6_TOO_MANY_EXTHDRS);
 					goto discard;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto resubmit;
 			}
 		} else if (ret == 0) {

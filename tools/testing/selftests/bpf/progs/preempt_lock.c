@@ -177,7 +177,11 @@ global_subprog_calling_sleepable_global(int i)
 }
 
 SEC("?syscall")
+<<<<<<< HEAD
 __failure __msg("sleepable global function")
+=======
+__failure __msg("global functions that may sleep are not allowed in non-sleepable context")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int preempt_global_sleepable_helper_subprog(struct __sk_buff *ctx)
 {
 	preempt_disable();
@@ -188,7 +192,11 @@ int preempt_global_sleepable_helper_subprog(struct __sk_buff *ctx)
 }
 
 SEC("?syscall")
+<<<<<<< HEAD
 __failure __msg("sleepable global function")
+=======
+__failure __msg("global functions that may sleep are not allowed in non-sleepable context")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int preempt_global_sleepable_kfunc_subprog(struct __sk_buff *ctx)
 {
 	preempt_disable();
@@ -199,7 +207,11 @@ int preempt_global_sleepable_kfunc_subprog(struct __sk_buff *ctx)
 }
 
 SEC("?syscall")
+<<<<<<< HEAD
 __failure __msg("sleepable global function")
+=======
+__failure __msg("global functions that may sleep are not allowed in non-sleepable context")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int preempt_global_sleepable_subprog_indirect(struct __sk_buff *ctx)
 {
 	preempt_disable();

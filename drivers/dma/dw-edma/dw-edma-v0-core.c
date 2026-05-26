@@ -509,6 +509,7 @@ static void dw_edma_v0_core_debugfs_on(struct dw_edma *dw)
 	dw_edma_v0_debugfs_on(dw);
 }
 
+<<<<<<< HEAD
 static void dw_edma_v0_core_ack_emulated_irq(struct dw_edma *dw)
 {
 	/*
@@ -528,6 +529,8 @@ static resource_size_t dw_edma_v0_core_db_offset(struct dw_edma *dw)
 	return offsetof(struct dw_edma_v0_regs, rd_int_status);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct dw_edma_core_ops dw_edma_v0_core = {
 	.off = dw_edma_v0_core_off,
 	.ch_count = dw_edma_v0_core_ch_count,
@@ -536,8 +539,11 @@ static const struct dw_edma_core_ops dw_edma_v0_core = {
 	.start = dw_edma_v0_core_start,
 	.ch_config = dw_edma_v0_core_ch_config,
 	.debugfs_on = dw_edma_v0_core_debugfs_on,
+<<<<<<< HEAD
 	.ack_emulated_irq = dw_edma_v0_core_ack_emulated_irq,
 	.db_offset = dw_edma_v0_core_db_offset,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void dw_edma_v0_core_register(struct dw_edma *dw)

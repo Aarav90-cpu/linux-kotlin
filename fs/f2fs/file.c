@@ -17,6 +17,10 @@
 #include <linux/compat.h>
 #include <linux/uaccess.h>
 #include <linux/mount.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/uio.h>
 #include <linux/uuid.h>
 #include <linux/file.h>
@@ -81,6 +85,7 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
 	int err = 0;
 	vm_fault_t ret;
 
+<<<<<<< HEAD
 	/*
 	 * We only support large folio on the read case.
 	 * Don't make any dirty pages.
@@ -92,6 +97,10 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
 				mapping_large_folio_support(inode->i_mapping));
 		return VM_FAULT_SIGBUS;
 	}
+=======
+	if (unlikely(IS_IMMUTABLE(inode)))
+		return VM_FAULT_SIGBUS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
 		err = -EIO;
@@ -1925,7 +1934,11 @@ next_alloc:
 				f2fs_up_write(&sbi->pin_sem);
 				err = -ENOSPC;
 				f2fs_warn_ratelimited(sbi,
+<<<<<<< HEAD
 					"ino:%llu, start:%lu, end:%lu, need to trigger GC to "
+=======
+					"ino:%lu, start:%lu, end:%lu, need to trigger GC to "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					"reclaim enough free segment when checkpoint is enabled",
 					inode->i_ino, pg_start, pg_end);
 				goto out_err;
@@ -2315,7 +2328,11 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
 	 * f2fs_is_atomic_file.
 	 */
 	if (get_dirty_pages(inode))
+<<<<<<< HEAD
 		f2fs_warn(sbi, "Unexpected flush for atomic writes: ino=%llu, npages=%u",
+=======
+		f2fs_warn(sbi, "Unexpected flush for atomic writes: ino=%lu, npages=%u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  inode->i_ino, get_dirty_pages(inode));
 	ret = filemap_write_and_wait_range(inode->i_mapping, 0, LLONG_MAX);
 	if (ret)
@@ -3051,10 +3068,15 @@ out:
 	clear_inode_flag(inode, FI_OPU_WRITE);
 unlock_out:
 	inode_unlock(inode);
+<<<<<<< HEAD
 	if (!err) {
 		range->len = (u64)total << PAGE_SHIFT;
 		stat_inc_defrag_blk_count(sbi, total);
 	}
+=======
+	if (!err)
+		range->len = (u64)total << PAGE_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -3504,7 +3526,11 @@ int f2fs_pin_file_control(struct inode *inode, bool inc)
 		return -EINVAL;
 
 	if (fi->i_gc_failures >= sbi->gc_pin_file_threshold) {
+<<<<<<< HEAD
 		f2fs_warn(sbi, "%s: Enable GC = ino %llx after %x GC trials",
+=======
+		f2fs_warn(sbi, "%s: Enable GC = ino %lx after %x GC trials",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  __func__, inode->i_ino, fi->i_gc_failures);
 		clear_inode_flag(inode, FI_PIN_FILE);
 		return -EAGAIN;
@@ -3689,7 +3715,11 @@ static int f2fs_ioc_enable_verity(struct file *filp, unsigned long arg)
 
 	if (!f2fs_sb_has_verity(F2FS_I_SB(inode))) {
 		f2fs_warn(F2FS_I_SB(inode),
+<<<<<<< HEAD
 			  "Can't enable fs-verity on inode %llu: the verity feature is not enabled on this filesystem",
+=======
+			  "Can't enable fs-verity on inode %lu: the verity feature is not enabled on this filesystem",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  inode->i_ino);
 		return -EOPNOTSUPP;
 	}
@@ -3960,7 +3990,11 @@ out:
 	} else if (released_blocks &&
 			atomic_read(&fi->i_compr_blocks)) {
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+<<<<<<< HEAD
 		f2fs_warn(sbi, "%s: partial blocks were released i_ino=%llx "
+=======
+		f2fs_warn(sbi, "%s: partial blocks were released i_ino=%lx "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"iblocks=%llu, released=%u, compr_blocks=%u, "
 			"run fsck to fix.",
 			__func__, inode->i_ino, inode->i_blocks,
@@ -4143,7 +4177,11 @@ unlock_inode:
 	} else if (reserved_blocks &&
 			atomic_read(&fi->i_compr_blocks)) {
 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+<<<<<<< HEAD
 		f2fs_warn(sbi, "%s: partial blocks were reserved i_ino=%llx "
+=======
+		f2fs_warn(sbi, "%s: partial blocks were reserved i_ino=%lx "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"iblocks=%llu, reserved=%u, compr_blocks=%u, "
 			"run fsck to fix.",
 			__func__, inode->i_ino, inode->i_blocks,
@@ -4172,9 +4210,13 @@ static int f2fs_secure_erase(struct block_device *bdev, struct inode *inode,
 
 	if (!ret && (flags & F2FS_TRIM_FILE_ZEROOUT)) {
 		if (IS_ENCRYPTED(inode))
+<<<<<<< HEAD
 			ret = fscrypt_zeroout_range(inode,
 					(loff_t)off << inode->i_blkbits, sector,
 					(u64)len << inode->i_blkbits);
+=======
+			ret = fscrypt_zeroout_range(inode, off, block, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			ret = blkdev_issue_zeroout(bdev, sector, nr_sects,
 					GFP_NOFS, 0);

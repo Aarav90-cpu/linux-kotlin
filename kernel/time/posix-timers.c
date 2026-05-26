@@ -1092,7 +1092,11 @@ void exit_itimers(struct task_struct *tsk)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * There should be no timers on the ignored list. posix_timer_delete() has
+=======
+	 * There should be no timers on the ignored list. itimer_delete() has
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * mopped them up.
 	 */
 	if (!WARN_ON_ONCE(!hlist_empty(&tsk->signal->ignored_posix_timers)))

@@ -23,7 +23,10 @@
 #include <linux/page-flags.h>
 #include <linux/local_lock.h>
 #include <linux/zswap.h>
+<<<<<<< HEAD
 #include <linux/sizes.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/page.h>
 
 /* Free memory management - zoned buddy allocator.  */
@@ -62,6 +65,7 @@
  */
 #define PAGE_ALLOC_COSTLY_ORDER 3
 
+<<<<<<< HEAD
 #if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
 /*
  * We don't expect any folios that exceed buddy sizes (and consequently
@@ -115,6 +119,8 @@
 #define __NR_VMEMMAP_TAILS (MAX_FOLIO_ORDER - VMEMMAP_TAIL_MIN_ORDER + 1)
 #define NR_VMEMMAP_TAILS (__NR_VMEMMAP_TAILS > 0 ? __NR_VMEMMAP_TAILS : 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum migratetype {
 	MIGRATE_UNMOVABLE,
 	MIGRATE_MOVABLE,
@@ -274,7 +280,10 @@ enum node_stat_item {
 	NR_KERNEL_MISC_RECLAIMABLE,	/* reclaimable non-slab kernel pages */
 	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
 	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
+<<<<<<< HEAD
 	NR_VMALLOC,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NR_KERNEL_STACK_KB,	/* measured in KiB */
 #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
 	NR_KERNEL_SCS_KB,	/* measured in KiB */
@@ -310,6 +319,7 @@ enum node_stat_item {
 	PGDEMOTE_DIRECT,
 	PGDEMOTE_KHUGEPAGED,
 	PGDEMOTE_PROACTIVE,
+<<<<<<< HEAD
 	PGSTEAL_KSWAPD,
 	PGSTEAL_DIRECT,
 	PGSTEAL_KHUGEPAGED,
@@ -323,13 +333,18 @@ enum node_stat_item {
 	PGSCAN_ANON,
 	PGSCAN_FILE,
 	PGREFILL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_HUGETLB_PAGE
 	NR_HUGETLB,
 #endif
 	NR_BALLOON_PAGES,
 	NR_KERNEL_FILE_PAGES,
+<<<<<<< HEAD
 	NR_GPU_ACTIVE,	/* Pages assigned to GPU objects */
 	NR_GPU_RECLAIM,	/* Pages in shrinkable GPU pools */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NR_VM_NODE_STAT_ITEMS
 };
 
@@ -686,7 +701,11 @@ struct lru_gen_memcg {
 
 void lru_gen_init_pgdat(struct pglist_data *pgdat);
 void lru_gen_init_lruvec(struct lruvec *lruvec);
+<<<<<<< HEAD
 bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr);
+=======
+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void lru_gen_init_memcg(struct mem_cgroup *memcg);
 void lru_gen_exit_memcg(struct mem_cgroup *memcg);
@@ -694,9 +713,12 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg);
 void lru_gen_offline_memcg(struct mem_cgroup *memcg);
 void lru_gen_release_memcg(struct mem_cgroup *memcg);
 void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
+<<<<<<< HEAD
 void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
 bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
 void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #else /* !CONFIG_LRU_GEN */
 
@@ -708,8 +730,12 @@ static inline void lru_gen_init_lruvec(struct lruvec *lruvec)
 {
 }
 
+<<<<<<< HEAD
 static inline bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw,
 		unsigned int nr)
+=======
+static inline bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return false;
 }
@@ -738,6 +764,7 @@ static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
 {
 }
 
+<<<<<<< HEAD
 static inline void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
 {
 }
@@ -752,6 +779,8 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
 {
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_LRU_GEN */
 
 struct lruvec {
@@ -1145,9 +1174,12 @@ struct zone {
 	/* Zone statistics */
 	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
 	atomic_long_t		vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
+<<<<<<< HEAD
 #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
 	struct page *vmemmap_tails[NR_VMEMMAP_TAILS];
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } ____cacheline_internodealigned_in_smp;
 
 enum pgdat_flags {
@@ -2001,13 +2033,22 @@ struct mem_section_usage {
 	unsigned long pageblock_flags[0];
 };
 
+<<<<<<< HEAD
+=======
+void subsection_map_init(unsigned long pfn, unsigned long nr_pages);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct page;
 struct page_ext;
 struct mem_section {
 	/*
 	 * This is, logically, a pointer to an array of struct
 	 * pages.  However, it is stored with some other magic.
+<<<<<<< HEAD
 	 * (see sparse_init_one_section())
+=======
+	 * (see sparse.c::sparse_init_one_section())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * Additionally during early boot we encode node id of
 	 * the location of the section here to guide allocation.
@@ -2070,6 +2111,7 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
 extern size_t mem_section_usage_size(void);
 
 /*
+<<<<<<< HEAD
  * We use the lower bits of the mem_map pointer to store a little bit of
  * information. The pointer is calculated as mem_map - section_nr_to_pfn().
  * The result is aligned to the minimum alignment of the two values:
@@ -2080,6 +2122,23 @@ extern size_t mem_section_usage_size(void);
  * We always expect a single section to cover full pages. Therefore,
  * we can safely assume that PFN_SECTION_SHIFT is large enough to
  * accommodate SECTION_MAP_LAST_BIT. We use BUILD_BUG_ON() to ensure this.
+=======
+ * We use the lower bits of the mem_map pointer to store
+ * a little bit of information.  The pointer is calculated
+ * as mem_map - section_nr_to_pfn(pnum).  The result is
+ * aligned to the minimum alignment of the two values:
+ *   1. All mem_map arrays are page-aligned.
+ *   2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT
+ *      lowest bits.  PFN_SECTION_SHIFT is arch-specific
+ *      (equal SECTION_SIZE_BITS - PAGE_SHIFT), and the
+ *      worst combination is powerpc with 256k pages,
+ *      which results in PFN_SECTION_SHIFT equal 6.
+ * To sum it up, at least 6 bits are available on all architectures.
+ * However, we can exceed 6 bits on some other architectures except
+ * powerpc (e.g. 15 bits are available on x86_64, 13 bits are available
+ * with the worst case of 64K pages on arm64) if we make sure the
+ * exceeded bit is not applicable to powerpc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum {
 	SECTION_MARKED_PRESENT_BIT,
@@ -2384,9 +2443,17 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
 #endif
 
 #else
+<<<<<<< HEAD
 #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
 #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
 #define pfn_in_present_section pfn_valid
+=======
+#define sparse_index_init(_sec, _nid)  do {} while (0)
+#define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+#define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
+#define pfn_in_present_section pfn_valid
+#define subsection_map_init(_pfn, _nr_pages) do {} while (0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_SPARSEMEM */
 
 /*

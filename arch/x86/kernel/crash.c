@@ -42,7 +42,10 @@
 #include <asm/crash.h>
 #include <asm/cmdline.h>
 #include <asm/sev.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Used while preparing memory map entries for second kernel */
 struct crash_memmap_data {
@@ -112,7 +115,11 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
 
 	crash_smp_send_stop();
 
+<<<<<<< HEAD
 	x86_virt_emergency_disable_virtualization_cpu();
+=======
+	cpu_emergency_disable_virtualization();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Disable Intel PT to stop its logging

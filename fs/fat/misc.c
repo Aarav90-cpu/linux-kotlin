@@ -297,8 +297,11 @@ struct timespec64 fat_truncate_atime(const struct msdos_sb_info *sbi,
 
 	return (struct timespec64){ seconds, 0 };
 }
+<<<<<<< HEAD
 /* Export fat_truncate_atime() for the fat_test KUnit tests. */
 EXPORT_SYMBOL_GPL(fat_truncate_atime);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Update the in-inode atime and/or mtime after truncating the timestamp to the

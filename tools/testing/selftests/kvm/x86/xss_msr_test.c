@@ -17,7 +17,11 @@ int main(int argc, char *argv[])
 	bool xss_in_msr_list;
 	struct kvm_vm *vm;
 	struct kvm_vcpu *vcpu;
+<<<<<<< HEAD
 	u64 xss_val;
+=======
+	uint64_t xss_val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, r;
 
 	/* Create VM */

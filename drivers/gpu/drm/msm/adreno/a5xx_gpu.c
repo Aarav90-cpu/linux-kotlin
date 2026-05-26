@@ -1435,9 +1435,17 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
 	return 0;
 }
 
+<<<<<<< HEAD
 static u64 a5xx_get_timestamp(struct msm_gpu *gpu)
 {
 	return gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO);
+=======
+static int a5xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
+{
+	*value = gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct a5xx_crashdumper {
@@ -1730,7 +1738,10 @@ static struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
 	struct adreno_gpu *adreno_gpu;
 	struct msm_gpu *gpu;
 	unsigned int nr_rings;
+<<<<<<< HEAD
 	u32 speedbin;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	a5xx_gpu = kzalloc_obj(*a5xx_gpu);
@@ -1757,11 +1768,14 @@ static struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
 		return ERR_PTR(ret);
 	}
 
+<<<<<<< HEAD
 	/* Set the speedbin value that is passed to userspace */
 	if (adreno_read_speedbin(&pdev->dev, &speedbin) || !speedbin)
 		speedbin = 0xffff;
 	adreno_gpu->speedbin = (uint16_t) (0xffff & speedbin);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msm_mmu_set_fault_handler(to_msm_vm(gpu->vm)->mmu, gpu,
 				  a5xx_fault_handler);
 

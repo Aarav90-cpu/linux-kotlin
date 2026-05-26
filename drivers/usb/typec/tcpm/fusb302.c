@@ -5,7 +5,10 @@
  * Fairchild FUSB302 Type-C Chip Driver
  */
 
+<<<<<<< HEAD
 #include <drm/bridge/aux-bridge.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/errno.h>
@@ -1690,7 +1693,10 @@ static int fusb302_probe(struct i2c_client *client)
 {
 	struct fusb302_chip *chip;
 	struct i2c_adapter *adapter = client->adapter;
+<<<<<<< HEAD
 	struct auxiliary_device *bridge_dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev = &client->dev;
 	const char *name;
 	int ret = 0;
@@ -1749,6 +1755,7 @@ static int fusb302_probe(struct i2c_client *client)
 		goto destroy_workqueue;
 	}
 
+<<<<<<< HEAD
 	bridge_dev = devm_drm_dp_hpd_bridge_alloc(chip->dev, to_of_node(chip->tcpc_dev.fwnode));
 	if (IS_ERR(bridge_dev)) {
 		ret = PTR_ERR(bridge_dev);
@@ -1756,6 +1763,8 @@ static int fusb302_probe(struct i2c_client *client)
 		goto destroy_workqueue;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->tcpm_port = tcpm_register_port(&client->dev, &chip->tcpc_dev);
 	if (IS_ERR(chip->tcpm_port)) {
 		fwnode_handle_put(chip->tcpc_dev.fwnode);
@@ -1774,10 +1783,13 @@ static int fusb302_probe(struct i2c_client *client)
 	enable_irq_wake(chip->gpio_int_n_irq);
 	i2c_set_clientdata(client, chip);
 
+<<<<<<< HEAD
 	ret = devm_drm_dp_hpd_bridge_add(chip->dev, bridge_dev);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 
 tcpm_unregister_port:

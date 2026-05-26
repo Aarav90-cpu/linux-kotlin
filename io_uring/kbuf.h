@@ -27,6 +27,10 @@ struct io_buffer_list {
 	__u16 bgid;
 
 	/* below is for ring provided buffers */
+<<<<<<< HEAD
+=======
+	__u16 nr_entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__u16 head;
 	__u16 mask;
 

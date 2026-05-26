@@ -362,6 +362,7 @@ static int ieee80211_check_concurrent_iface(struct ieee80211_sub_if_data *sdata,
 				return -EBUSY;
 
 			/*
+<<<<<<< HEAD
 			 * A NAN DATA interface is correlated to the NAN
 			 * (management) one
 			 */
@@ -373,6 +374,8 @@ static int ieee80211_check_concurrent_iface(struct ieee80211_sub_if_data *sdata,
 			}
 
 			/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 * Allow only a single IBSS interface to be up at any
 			 * time. This is restricted because beacon distribution
 			 * cannot work properly if both are in the same IBSS.
@@ -409,6 +412,16 @@ static int ieee80211_check_concurrent_iface(struct ieee80211_sub_if_data *sdata,
 							nsdata->vif.type))
 				return -ENOTUNIQ;
 
+<<<<<<< HEAD
+=======
+			/* No support for VLAN with MLO yet */
+			if (iftype == NL80211_IFTYPE_AP_VLAN &&
+			    sdata->wdev.use_4addr &&
+			    nsdata->vif.type == NL80211_IFTYPE_AP &&
+			    nsdata->vif.valid_links)
+				return -EOPNOTSUPP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * can only add VLANs to enabled APs
 			 */
@@ -479,7 +492,10 @@ static int ieee80211_open(struct net_device *dev)
 static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_down)
 {
 	struct ieee80211_local *local = sdata->local;
+<<<<<<< HEAD
 	struct ieee80211_sub_if_data *iter;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	struct sk_buff_head freeq;
 	struct sk_buff *skb, *tmp;
@@ -528,6 +544,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
 	 * (because if we remove a STA after ops->remove_interface()
 	 * the driver will have removed the vif info already!)
 	 *
+<<<<<<< HEAD
 	 * For AP_VLANs, NAN and NAN_DATA stations may exist since there's
 	 * nothing else that would have removed them, but in other modes there
 	 * shouldn't be any stations.
@@ -536,6 +553,14 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
 	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
 		     sdata->vif.type != NL80211_IFTYPE_NAN &&
 		     sdata->vif.type != NL80211_IFTYPE_NAN_DATA && flushed > 0);
+=======
+	 * For AP_VLANs stations may exist since there's nothing else that
+	 * would have removed them, but in other modes there shouldn't
+	 * be any stations.
+	 */
+	flushed = sta_info_flush(sdata, -1);
+	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_AP_VLAN && flushed > 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* don't count this interface for allmulti while it is down */
 	if (sdata->flags & IEEE80211_SDATA_ALLMULTI)
@@ -628,6 +653,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
 		}
 		break;
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 		/* Check if any open NAN_DATA interfaces */
 		list_for_each_entry(iter, &local->interfaces, list) {
 			WARN_ON(iter->vif.type == NL80211_IFTYPE_NAN_DATA &&
@@ -652,6 +678,19 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
 	case NL80211_IFTYPE_NAN_DATA:
 		RCU_INIT_POINTER(sdata->u.nan_data.nmi, NULL);
 		fallthrough;
+=======
+		/* clean all the functions */
+		spin_lock_bh(&sdata->u.nan.func_lock);
+
+		idr_for_each_entry(&sdata->u.nan.function_inst_ids, func, i) {
+			idr_remove(&sdata->u.nan.function_inst_ids, i);
+			cfg80211_free_nan_func(func);
+		}
+		idr_destroy(&sdata->u.nan.function_inst_ids);
+
+		spin_unlock_bh(&sdata->u.nan.func_lock);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
 		/*
@@ -702,10 +741,13 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
 	if (sdata->vif.txq)
 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
 
+<<<<<<< HEAD
 	if (sdata->vif.txq_mgmt)
 		ieee80211_txq_purge(sdata->local,
 				    to_txq_info(sdata->vif.txq_mgmt));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdata->bss = NULL;
 
 	if (local->open_count == 0)
@@ -902,6 +944,7 @@ static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
 
 	ieee80211_vif_clear_links(sdata);
 	ieee80211_link_stop(&sdata->deflink);
+<<<<<<< HEAD
 
 	if (sdata->vif.type == NL80211_IFTYPE_NAN) {
 		struct ieee80211_nan_sched_cfg *nan_sched =
@@ -910,6 +953,8 @@ static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
 		for (int i = 0; i < ARRAY_SIZE(nan_sched->channels); i++)
 			WARN_ON(nan_sched->channels[i].chanreq.oper.chan);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ieee80211_uninit(struct net_device *dev)
@@ -1254,14 +1299,22 @@ int ieee80211_add_virtual_monitor(struct ieee80211_local *local,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	set_bit(SDATA_STATE_RUNNING, &sdata->state);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ieee80211_check_queues(sdata, NL80211_IFTYPE_MONITOR);
 	if (ret) {
 		kfree(sdata);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	set_bit(SDATA_STATE_RUNNING, &sdata->state);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&local->iflist_mtx);
 	rcu_assign_pointer(local->monitor_sdata, sdata);
 	mutex_unlock(&local->iflist_mtx);
@@ -1274,7 +1327,10 @@ int ieee80211_add_virtual_monitor(struct ieee80211_local *local,
 		mutex_unlock(&local->iflist_mtx);
 		synchronize_net();
 		drv_remove_interface(local, sdata);
+<<<<<<< HEAD
 		clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(sdata);
 		return ret;
 	}
@@ -1393,6 +1449,11 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 		break;
 		}
 	case NL80211_IFTYPE_AP:
+<<<<<<< HEAD
+=======
+		sdata->bss = &sdata->u.ap;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NL80211_IFTYPE_MESH_POINT:
 	case NL80211_IFTYPE_STATION:
 	case NL80211_IFTYPE_MONITOR:
@@ -1402,10 +1463,13 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 	case NL80211_IFTYPE_NAN:
 		/* no special treatment */
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
 		if (WARN_ON(!rcu_access_pointer(sdata->u.nan_data.nmi)))
 			return -ENOLINK;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NL80211_IFTYPE_UNSPECIFIED:
 	case NUM_NL80211_IFTYPES:
 	case NL80211_IFTYPE_P2P_CLIENT:
@@ -1421,6 +1485,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 		local->reconfig_failure = false;
 
 		res = drv_start(local);
+<<<<<<< HEAD
 		if (res) {
 			/*
 			 * no need to worry about AP_VLAN/NAN_DATA cleanup since
@@ -1428,6 +1493,10 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 			 */
 			return res;
 		}
+=======
+		if (res)
+			goto err_del_bss;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ieee80211_led_radio(local, true);
 		ieee80211_mod_tpt_led_trig(local,
 					   IEEE80211_TPT_LEDTRIG_FL_RADIO, 0);
@@ -1498,9 +1567,12 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 		netif_carrier_on(dev);
 		list_add_tail_rcu(&sdata->u.mntr.list, &local->mon_list);
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_AP:
 		sdata->bss = &sdata->u.ap;
 		fallthrough;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		if (coming_up) {
 			ieee80211_del_virtual_monitor(local);
@@ -1543,7 +1615,10 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
 		case NL80211_IFTYPE_AP:
 		case NL80211_IFTYPE_MESH_POINT:
 		case NL80211_IFTYPE_OCB:
+<<<<<<< HEAD
 		case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			netif_carrier_off(dev);
 			break;
 		case NL80211_IFTYPE_P2P_DEVICE:
@@ -1590,12 +1665,21 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
  err_stop:
 	if (!local->open_count)
 		drv_stop(local, false);
+<<<<<<< HEAD
 	if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
 		RCU_INIT_POINTER(sdata->u.nan_data.nmi, NULL);
 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
 		list_del(&sdata->u.vlan.list);
 	/* Might not be initialized yet, but it is harmless */
 	sdata->bss = NULL;
+=======
+ err_del_bss:
+	sdata->bss = NULL;
+	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+		list_del(&sdata->u.vlan.list);
+	/* might already be clear but that doesn't matter */
+	clear_bit(SDATA_STATE_RUNNING, &sdata->state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return res;
 }
 
@@ -1623,19 +1707,30 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 
 		sta = sta_info_get_bss(sdata, mgmt->sa);
 		if (sta) {
+<<<<<<< HEAD
 			switch (mgmt->u.action.action_code) {
 			case WLAN_ACTION_ADDBA_REQ:
 			case WLAN_ACTION_NDP_ADDBA_REQ:
+=======
+			switch (mgmt->u.action.u.addba_req.action_code) {
+			case WLAN_ACTION_ADDBA_REQ:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ieee80211_process_addba_request(local, sta,
 								mgmt, len);
 				break;
 			case WLAN_ACTION_ADDBA_RESP:
+<<<<<<< HEAD
 			case WLAN_ACTION_NDP_ADDBA_RESP:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ieee80211_process_addba_resp(local, sta,
 							     mgmt, len);
 				break;
 			case WLAN_ACTION_DELBA:
+<<<<<<< HEAD
 			case WLAN_ACTION_NDP_DELBA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ieee80211_process_delba(sdata, sta,
 							mgmt, len);
 				break;
@@ -1646,9 +1741,15 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 		}
 	} else if (ieee80211_is_action(mgmt->frame_control) &&
 		   mgmt->u.action.category == WLAN_CATEGORY_HT) {
+<<<<<<< HEAD
 		switch (mgmt->u.action.action_code) {
 		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
 			u8 chanwidth = mgmt->u.action.ht_notify_cw.chanwidth;
+=======
+		switch (mgmt->u.action.u.ht_smps.action) {
+		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
+			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct ieee80211_rx_status *status;
 			struct link_sta_info *link_sta;
 			struct sta_info *sta;
@@ -1675,7 +1776,11 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 		}
 	} else if (ieee80211_is_action(mgmt->frame_control) &&
 		   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
+<<<<<<< HEAD
 		switch (mgmt->u.action.action_code) {
+=======
+		switch (mgmt->u.action.u.vht_group_notif.action_code) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case WLAN_VHT_ACTION_OPMODE_NOTIF: {
 			struct ieee80211_rx_status *status;
 			enum nl80211_band band;
@@ -1684,7 +1789,11 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 
 			status = IEEE80211_SKB_RXCB(skb);
 			band = status->band;
+<<<<<<< HEAD
 			opmode = mgmt->u.action.vht_opmode_notif.operating_mode;
+=======
+			opmode = mgmt->u.action.u.vht_opmode_notif.operating_mode;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			sta = sta_info_get_bss(sdata, mgmt->sa);
 
@@ -1705,7 +1814,11 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 		}
 	} else if (ieee80211_is_action(mgmt->frame_control) &&
 		   mgmt->u.action.category == WLAN_CATEGORY_S1G) {
+<<<<<<< HEAD
 		switch (mgmt->u.action.action_code) {
+=======
+		switch (mgmt->u.action.u.s1g.action_code) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case WLAN_S1G_TWT_TEARDOWN:
 		case WLAN_S1G_TWT_SETUP:
 			ieee80211_s1g_rx_twt_action(sdata, skb);
@@ -1716,7 +1829,11 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 	} else if (ieee80211_is_action(mgmt->frame_control) &&
 		   mgmt->u.action.category == WLAN_CATEGORY_PROTECTED_EHT) {
 		if (sdata->vif.type == NL80211_IFTYPE_AP) {
+<<<<<<< HEAD
 			switch (mgmt->u.action.action_code) {
+=======
+			switch (mgmt->u.action.u.eml_omn.action_code) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			case WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF:
 				ieee80211_rx_eml_op_mode_notif(sdata, skb);
 				break;
@@ -1724,7 +1841,11 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
 				break;
 			}
 		} else if (sdata->vif.type == NL80211_IFTYPE_STATION) {
+<<<<<<< HEAD
 			switch (mgmt->u.action.action_code) {
+=======
+			switch (mgmt->u.action.u.ttlm_req.action_code) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			case WLAN_PROTECTED_EHT_ACTION_TTLM_REQ:
 				ieee80211_process_neg_ttlm_req(sdata, mgmt,
 							       skb->len);
@@ -1812,7 +1933,11 @@ static void ieee80211_iface_process_status(struct ieee80211_sub_if_data *sdata,
 
 	if (ieee80211_is_action(mgmt->frame_control) &&
 	    mgmt->u.action.category == WLAN_CATEGORY_S1G) {
+<<<<<<< HEAD
 		switch (mgmt->u.action.action_code) {
+=======
+		switch (mgmt->u.action.u.s1g.action_code) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case WLAN_S1G_TWT_TEARDOWN:
 		case WLAN_S1G_TWT_SETUP:
 			ieee80211_s1g_status_twt_action(sdata, skb);
@@ -1976,19 +2101,27 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
 				      MONITOR_FLAG_OTHER_BSS;
 		break;
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 		if (!(sdata->local->hw.wiphy->nan_capa.flags &
 		      WIPHY_NAN_FLAGS_USERSPACE_DE)) {
 			idr_init(&sdata->u.nan.de.function_inst_ids);
 			spin_lock_init(&sdata->u.nan.de.func_lock);
 		}
+=======
+		idr_init(&sdata->u.nan.function_inst_ids);
+		spin_lock_init(&sdata->u.nan.func_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sdata->vif.bss_conf.bssid = sdata->vif.addr;
 		break;
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_P2P_DEVICE:
 		sdata->vif.bss_conf.bssid = sdata->vif.addr;
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NL80211_IFTYPE_UNSPECIFIED:
 	case NL80211_IFTYPE_WDS:
 	case NUM_NL80211_IFTYPES:
@@ -2264,6 +2397,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
 	lockdep_assert_wiphy(local->hw.wiphy);
 
 	if (type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN) {
+<<<<<<< HEAD
 		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
 				 sizeof(void *));
 		struct wireless_dev *wdev;
@@ -2274,6 +2408,12 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
 				   local->hw.txq_data_size;
 
 		sdata = kzalloc(size + txq_size, GFP_KERNEL);
+=======
+		struct wireless_dev *wdev;
+
+		sdata = kzalloc(sizeof(*sdata) + local->hw.vif_data_size,
+				GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!sdata)
 			return -ENOMEM;
 		wdev = &sdata->wdev;
@@ -2283,6 +2423,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
 		ieee80211_assign_perm_addr(local, wdev->address, type);
 		memcpy(sdata->vif.addr, wdev->address, ETH_ALEN);
 		ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
+<<<<<<< HEAD
 
 		/*
 		 * Add a management TXQ for NAN devices which includes frames
@@ -2293,6 +2434,8 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
 			ieee80211_txq_init(sdata, NULL, txqi,
 					   IEEE80211_NUM_TIDS);
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
 				 sizeof(void *));
@@ -2443,10 +2586,13 @@ void ieee80211_if_remove(struct ieee80211_sub_if_data *sdata)
 	if (sdata->vif.txq)
 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
 
+<<<<<<< HEAD
 	if (sdata->vif.txq_mgmt)
 		ieee80211_txq_purge(sdata->local,
 				    to_txq_info(sdata->vif.txq_mgmt));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	synchronize_rcu();
 
 	cfg80211_unregister_wdev(&sdata->wdev);

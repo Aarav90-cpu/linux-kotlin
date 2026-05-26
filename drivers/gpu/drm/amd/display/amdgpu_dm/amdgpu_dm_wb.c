@@ -106,9 +106,17 @@ static int amdgpu_dm_wb_prepare_job(struct drm_writeback_connector *wb_connector
 		return r;
 	}
 
+<<<<<<< HEAD
 	r = dma_resv_reserve_fences(rbo->tbo.base.resv, TTM_NUM_MOVE_FENCES);
 	if (r)
 		goto error_unlock;
+=======
+	r = dma_resv_reserve_fences(rbo->tbo.base.resv, 1);
+	if (r) {
+		drm_err(adev_to_drm(adev), "reserving fence slot failed (%d)\n", r);
+		goto error_unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	domain = amdgpu_display_supported_domains(adev, rbo->flags);
 

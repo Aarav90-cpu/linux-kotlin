@@ -10,7 +10,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include <sys/inotify.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <arpa/inet.h>
@@ -1281,11 +1284,16 @@ static int tcp_server(const char *cgroup, void *arg)
 	saddr.sin6_port = htons(srv_args->port);
 
 	sk = socket(AF_INET6, SOCK_STREAM, 0);
+<<<<<<< HEAD
 	if (sk < 0) {
 		/* Pass back errno to the ctl_fd */
 		write(ctl_fd, &errno, sizeof(errno));
 		return ret;
 	}
+=======
+	if (sk < 0)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
 		goto cleanup;
@@ -1416,12 +1424,15 @@ static int test_memcg_sock(const char *root)
 			goto cleanup;
 		close(args.ctl[0]);
 
+<<<<<<< HEAD
 		/* Skip if address family not supported by protocol */
 		if (err == EAFNOSUPPORT) {
 			ret = KSFT_SKIP;
 			goto cleanup;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!err)
 			break;
 		if (err != EADDRINUSE)
@@ -1653,6 +1664,7 @@ cleanup:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int read_event(int inotify_fd, int expected_event, int expected_wd)
 {
 	struct inotify_event event;
@@ -1762,6 +1774,8 @@ cleanup:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define T(x) { x, #x }
 struct memcg_test {
 	int (*fn)(const char *root);
@@ -1781,8 +1795,11 @@ struct memcg_test {
 	T(test_memcg_oom_group_leaf_events),
 	T(test_memcg_oom_group_parent_events),
 	T(test_memcg_oom_group_score_events),
+<<<<<<< HEAD
 	T(test_memcg_inotify_delete_file),
 	T(test_memcg_inotify_delete_dir),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #undef T
 

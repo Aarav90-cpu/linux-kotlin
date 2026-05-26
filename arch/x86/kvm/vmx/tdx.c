@@ -6,7 +6,10 @@
 #include <linux/misc_cgroup.h>
 #include <linux/mmu_context.h>
 #include <asm/tdx.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "capabilities.h"
 #include "mmu.h"
 #include "x86_ops.h"
@@ -59,6 +62,11 @@ module_param_named(tdx, enable_tdx, bool, 0444);
 #define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
 #define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
 
+<<<<<<< HEAD
+=======
+static enum cpuhp_state tdx_cpuhp_state;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct tdx_sys_info *tdx_sysinfo;
 
 void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
@@ -74,7 +82,11 @@ void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
 	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
 }
 
+<<<<<<< HEAD
 #define KVM_SUPPORTED_TDX_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
+=======
+#define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
 {
@@ -88,7 +100,11 @@ static __always_inline struct vcpu_tdx *to_tdx(struct kvm_vcpu *vcpu)
 
 static u64 tdx_get_supported_attrs(const struct tdx_sys_info_td_conf *td_conf)
 {
+<<<<<<< HEAD
 	u64 val = KVM_SUPPORTED_TDX_TD_ATTRS;
+=======
+	u64 val = KVM_SUPPORTED_TD_ATTRS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((val & td_conf->attributes_fixed1) != td_conf->attributes_fixed1)
 		return 0;
@@ -217,6 +233,11 @@ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
  */
 static DEFINE_MUTEX(tdx_lock);
 
+<<<<<<< HEAD
+=======
+static atomic_t nr_configured_hkid;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool tdx_operand_busy(u64 err)
 {
 	return (err & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_BUSY;
@@ -264,6 +285,10 @@ static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
 {
 	tdx_guest_keyid_free(kvm_tdx->hkid);
 	kvm_tdx->hkid = -1;
+<<<<<<< HEAD
+=======
+	atomic_dec(&nr_configured_hkid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
 	put_misc_cg(kvm_tdx->misc_cg);
 	kvm_tdx->misc_cg = NULL;
@@ -1463,11 +1488,25 @@ static int tdx_emulate_mmio(struct kvm_vcpu *vcpu)
 
 	/* Request the device emulation to userspace device model. */
 	vcpu->mmio_is_write = write;
+<<<<<<< HEAD
 
 	__kvm_prepare_emulated_mmio_exit(vcpu, gpa, size, &val, write);
 
 	if (!write) {
 		vcpu->arch.complete_userspace_io = tdx_complete_mmio_read;
+=======
+	if (!write)
+		vcpu->arch.complete_userspace_io = tdx_complete_mmio_read;
+
+	vcpu->run->mmio.phys_addr = gpa;
+	vcpu->run->mmio.len = size;
+	vcpu->run->mmio.is_write = write;
+	vcpu->run->exit_reason = KVM_EXIT_MMIO;
+
+	if (write) {
+		memcpy(vcpu->run->mmio.data, &val, size);
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vcpu->mmio_fragments[0].gpa = gpa;
 		vcpu->mmio_fragments[0].len = size;
 		trace_kvm_mmio(KVM_TRACE_MMIO_READ_UNSATISFIED, size, gpa, NULL);
@@ -1984,7 +2023,11 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
 	 * TDX_SEAMCALL_VMFAILINVALID.
 	 */
 	if (unlikely((vp_enter_ret & TDX_SW_ERROR) == TDX_SW_ERROR)) {
+<<<<<<< HEAD
 		KVM_BUG_ON(!virt_rebooting, vcpu->kvm);
+=======
+		KVM_BUG_ON(!kvm_rebooting, vcpu->kvm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unhandled_exit;
 	}
 
@@ -2387,6 +2430,11 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
 
 	ret = -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	atomic_inc(&nr_configured_hkid);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tdr_page = alloc_page(GFP_KERNEL);
 	if (!tdr_page)
 		goto free_hkid;
@@ -3278,6 +3326,7 @@ int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
 	return PG_LEVEL_4K;
 }
 
+<<<<<<< HEAD
 void tdx_hardware_unsetup(void)
 {
 	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
@@ -3287,6 +3336,108 @@ static int __init __tdx_hardware_setup(void)
 {
 	const struct tdx_sys_info_td_conf *td_conf;
 	int i;
+=======
+static int tdx_online_cpu(unsigned int cpu)
+{
+	unsigned long flags;
+	int r;
+
+	/* Sanity check CPU is already in post-VMXON */
+	WARN_ON_ONCE(!(cr4_read_shadow() & X86_CR4_VMXE));
+
+	local_irq_save(flags);
+	r = tdx_cpu_enable();
+	local_irq_restore(flags);
+
+	return r;
+}
+
+static int tdx_offline_cpu(unsigned int cpu)
+{
+	int i;
+
+	/* No TD is running.  Allow any cpu to be offline. */
+	if (!atomic_read(&nr_configured_hkid))
+		return 0;
+
+	/*
+	 * In order to reclaim TDX HKID, (i.e. when deleting guest TD), need to
+	 * call TDH.PHYMEM.PAGE.WBINVD on all packages to program all memory
+	 * controller with pconfig.  If we have active TDX HKID, refuse to
+	 * offline the last online cpu.
+	 */
+	for_each_online_cpu(i) {
+		/*
+		 * Found another online cpu on the same package.
+		 * Allow to offline.
+		 */
+		if (i != cpu && topology_physical_package_id(i) ==
+				topology_physical_package_id(cpu))
+			return 0;
+	}
+
+	/*
+	 * This is the last cpu of this package.  Don't offline it.
+	 *
+	 * Because it's hard for human operator to understand the
+	 * reason, warn it.
+	 */
+#define MSG_ALLPKG_ONLINE \
+	"TDX requires all packages to have an online CPU. Delete all TDs in order to offline all CPUs of a package.\n"
+	pr_warn_ratelimited(MSG_ALLPKG_ONLINE);
+	return -EBUSY;
+}
+
+static void __do_tdx_cleanup(void)
+{
+	/*
+	 * Once TDX module is initialized, it cannot be disabled and
+	 * re-initialized again w/o runtime update (which isn't
+	 * supported by kernel).  Only need to remove the cpuhp here.
+	 * The TDX host core code tracks TDX status and can handle
+	 * 'multiple enabling' scenario.
+	 */
+	WARN_ON_ONCE(!tdx_cpuhp_state);
+	cpuhp_remove_state_nocalls_cpuslocked(tdx_cpuhp_state);
+	tdx_cpuhp_state = 0;
+}
+
+static void __tdx_cleanup(void)
+{
+	cpus_read_lock();
+	__do_tdx_cleanup();
+	cpus_read_unlock();
+}
+
+static int __init __do_tdx_bringup(void)
+{
+	int r;
+
+	/*
+	 * TDX-specific cpuhp callback to call tdx_cpu_enable() on all
+	 * online CPUs before calling tdx_enable(), and on any new
+	 * going-online CPU to make sure it is ready for TDX guest.
+	 */
+	r = cpuhp_setup_state_cpuslocked(CPUHP_AP_ONLINE_DYN,
+					 "kvm/cpu/tdx:online",
+					 tdx_online_cpu, tdx_offline_cpu);
+	if (r < 0)
+		return r;
+
+	tdx_cpuhp_state = r;
+
+	r = tdx_enable();
+	if (r)
+		__do_tdx_cleanup();
+
+	return r;
+}
+
+static int __init __tdx_bringup(void)
+{
+	const struct tdx_sys_info_td_conf *td_conf;
+	int r, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++) {
 		/*
@@ -3302,18 +3453,48 @@ static int __init __tdx_hardware_setup(void)
 		}
 	}
 
+<<<<<<< HEAD
 	/* Get TDX global information for later use */
 	tdx_sysinfo = tdx_get_sysinfo();
 	if (!tdx_sysinfo)
 		return -ENODEV;
+=======
+	/*
+	 * Enabling TDX requires enabling hardware virtualization first,
+	 * as making SEAMCALLs requires CPU being in post-VMXON state.
+	 */
+	r = kvm_enable_virtualization();
+	if (r)
+		return r;
+
+	cpus_read_lock();
+	r = __do_tdx_bringup();
+	cpus_read_unlock();
+
+	if (r)
+		goto tdx_bringup_err;
+
+	r = -EINVAL;
+	/* Get TDX global information for later use */
+	tdx_sysinfo = tdx_get_sysinfo();
+	if (WARN_ON_ONCE(!tdx_sysinfo))
+		goto get_sysinfo_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Check TDX module and KVM capabilities */
 	if (!tdx_get_supported_attrs(&tdx_sysinfo->td_conf) ||
 	    !tdx_get_supported_xfam(&tdx_sysinfo->td_conf))
+<<<<<<< HEAD
 		return -EINVAL;
 
 	if (!(tdx_sysinfo->features.tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM))
 		return -EINVAL;
+=======
+		goto get_sysinfo_err;
+
+	if (!(tdx_sysinfo->features.tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM))
+		goto get_sysinfo_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * TDX has its own limit of maximum vCPUs it can support for all
@@ -3348,6 +3529,7 @@ static int __init __tdx_hardware_setup(void)
 	if (td_conf->max_vcpus_per_td < num_present_cpus()) {
 		pr_err("Disable TDX: MAX_VCPU_PER_TD (%u) smaller than number of logical CPUs (%u).\n",
 				td_conf->max_vcpus_per_td, num_present_cpus());
+<<<<<<< HEAD
 		return -EINVAL;
 	}
 
@@ -3358,6 +3540,37 @@ static int __init __tdx_hardware_setup(void)
 }
 
 int __init tdx_hardware_setup(void)
+=======
+		goto get_sysinfo_err;
+	}
+
+	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
+		goto get_sysinfo_err;
+
+	/*
+	 * Leave hardware virtualization enabled after TDX is enabled
+	 * successfully.  TDX CPU hotplug depends on this.
+	 */
+	return 0;
+
+get_sysinfo_err:
+	__tdx_cleanup();
+tdx_bringup_err:
+	kvm_disable_virtualization();
+	return r;
+}
+
+void tdx_cleanup(void)
+{
+	if (enable_tdx) {
+		misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
+		__tdx_cleanup();
+		kvm_disable_virtualization();
+	}
+}
+
+int __init tdx_bringup(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int r, i;
 
@@ -3388,12 +3601,49 @@ int __init tdx_hardware_setup(void)
 		goto success_disable_tdx;
 	}
 
+<<<<<<< HEAD
 	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
 		pr_err("TDX not supported by the host platform\n");
 		goto success_disable_tdx;
 	}
 
 	r = __tdx_hardware_setup();
+=======
+	if (!cpu_feature_enabled(X86_FEATURE_MOVDIR64B)) {
+		pr_err("tdx: MOVDIR64B is required for TDX\n");
+		goto success_disable_tdx;
+	}
+
+	if (!cpu_feature_enabled(X86_FEATURE_SELFSNOOP)) {
+		pr_err("Self-snoop is required for TDX\n");
+		goto success_disable_tdx;
+	}
+
+	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
+		pr_err("tdx: no TDX private KeyIDs available\n");
+		goto success_disable_tdx;
+	}
+
+	if (!enable_virt_at_load) {
+		pr_err("tdx: tdx requires kvm.enable_virt_at_load=1\n");
+		goto success_disable_tdx;
+	}
+
+	/*
+	 * Ideally KVM should probe whether TDX module has been loaded
+	 * first and then try to bring it up.  But TDX needs to use SEAMCALL
+	 * to probe whether the module is loaded (there is no CPUID or MSR
+	 * for that), and making SEAMCALL requires enabling virtualization
+	 * first, just like the rest steps of bringing up TDX module.
+	 *
+	 * So, for simplicity do everything in __tdx_bringup(); the first
+	 * SEAMCALL will return -ENODEV when the module is not loaded.  The
+	 * only complication is having to make sure that initialization
+	 * SEAMCALLs don't return TDX_SEAMCALL_VMFAILINVALID in other
+	 * cases.
+	 */
+	r = __tdx_bringup();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (r) {
 		/*
 		 * Disable TDX only but don't fail to load module if the TDX
@@ -3408,11 +3658,32 @@ int __init tdx_hardware_setup(void)
 		if (r == -ENODEV)
 			goto success_disable_tdx;
 
+<<<<<<< HEAD
 		return r;
 	}
 
 	KVM_SANITY_CHECK_VM_STRUCT_SIZE(kvm_tdx);
 
+=======
+		enable_tdx = 0;
+	}
+
+	return r;
+
+success_disable_tdx:
+	enable_tdx = 0;
+	return 0;
+}
+
+void __init tdx_hardware_setup(void)
+{
+	KVM_SANITY_CHECK_VM_STRUCT_SIZE(kvm_tdx);
+
+	/*
+	 * Note, if the TDX module can't be loaded, KVM TDX support will be
+	 * disabled but KVM will continue loading (see tdx_bringup()).
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
 
 	vt_x86_ops.link_external_spt = tdx_sept_link_private_spt;
@@ -3420,9 +3691,12 @@ int __init tdx_hardware_setup(void)
 	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
 	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
 	vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
+<<<<<<< HEAD
 	return 0;
 
 success_disable_tdx:
 	enable_tdx = 0;
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

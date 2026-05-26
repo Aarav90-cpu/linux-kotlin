@@ -732,9 +732,12 @@ static irqreturn_t pf9453_irq_handler(int irq, void *data)
 		return IRQ_NONE;
 	}
 
+<<<<<<< HEAD
 	if (!status)
 		return IRQ_NONE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (status & IRQ_RSTB)
 		dev_warn(pf9453->dev, "IRQ_RSTB interrupt.\n");
 
@@ -812,7 +815,11 @@ static int pf9453_i2c_probe(struct i2c_client *i2c)
 	}
 
 	ret = devm_request_threaded_irq(pf9453->dev, pf9453->irq, NULL, pf9453_irq_handler,
+<<<<<<< HEAD
 					(IRQF_ONESHOT | IRQF_SHARED),
+=======
+					IRQF_ONESHOT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					"pf9453-irq", pf9453);
 	if (ret)
 		return dev_err_probe(pf9453->dev, ret, "Failed to request IRQ: %d\n", pf9453->irq);

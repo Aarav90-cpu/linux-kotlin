@@ -27,7 +27,11 @@ l0_%=:	r0 = 0;						\
 
 SEC("xdp")
 __description("meta access, test2")
+<<<<<<< HEAD
 __failure __msg("R0 min value is negative")
+=======
+__failure __msg("invalid access to packet, off=-8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void meta_access_test2(void)
 {
 	asm volatile ("					\

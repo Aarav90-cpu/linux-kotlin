@@ -317,7 +317,10 @@ static void dce_mi_program_display_marks(
 	struct dce_watermarks urgent,
 	uint32_t total_dest_line_time_ns)
 {
+<<<<<<< HEAD
 	(void)stutter_enter;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_mem_input *dce_mi = TO_DCE_MEM_INPUT(mi);
 	uint32_t stutter_en = mi->ctx->dc->debug.disable_stutter ? 0 : 1;
 
@@ -371,7 +374,10 @@ static void dce112_mi_program_display_marks(struct mem_input *mi,
 	struct dce_watermarks urgent,
 	uint32_t total_dest_line_time_ns)
 {
+<<<<<<< HEAD
 	(void)stutter_entry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_mem_input *dce_mi = TO_DCE_MEM_INPUT(mi);
 	uint32_t stutter_en = mi->ctx->dc->debug.disable_stutter ? 0 : 1;
 
@@ -658,8 +664,11 @@ static void dce_mi_program_surface_config(
 	struct dc_plane_dcc_param *dcc,
 	bool horizontal_mirror)
 {
+<<<<<<< HEAD
 	(void)dcc;
 	(void)horizontal_mirror;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce_mem_input *dce_mi = TO_DCE_MEM_INPUT(mi);
 	REG_UPDATE(GRPH_ENABLE, GRPH_ENABLE, 1);
 

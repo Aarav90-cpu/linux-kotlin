@@ -912,8 +912,13 @@ static int max11410_self_calibrate(struct max11410_state *st)
 
 static int max11410_probe(struct spi_device *spi)
 {
+<<<<<<< HEAD
 	static const char * const vrefp_regs[] = { "vref0p", "vref1p", "vref2p" };
 	static const char * const vrefn_regs[] = { "vref0n", "vref1n", "vref2n" };
+=======
+	const char *vrefp_regs[] = { "vref0p", "vref1p", "vref2p" };
+	const char *vrefn_regs[] = { "vref0n", "vref1n", "vref2n" };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev = &spi->dev;
 	struct max11410_state *st;
 	struct iio_dev *indio_dev;

@@ -53,7 +53,10 @@
 #include <drm/drm_panic.h>
 #include <drm/drm_print.h>
 #include <drm/drm_privacy_screen_machine.h>
+<<<<<<< HEAD
 #include <drm/drm_ras_genl_family.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "drm_crtc_internal.h"
 #include "drm_internal.h"
@@ -587,7 +590,11 @@ int drm_dev_wedged_event(struct drm_device *dev, unsigned long method,
 		snprintf(event_string, sizeof(event_string), "%s", "WEDGED=unknown");
 
 	drm_info(dev, "device wedged, %s\n", method == DRM_WEDGE_RECOVERY_NONE ?
+<<<<<<< HEAD
 		 "but no recovery needed" : "needs recovery");
+=======
+		 "but recovered through reset" : "needs recovery");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (info && (info->comm[0] != '\0') && (info->pid >= 0)) {
 		snprintf(pid_string, sizeof(pid_string), "PID=%u", info->pid);
@@ -1226,7 +1233,10 @@ static const struct file_operations drm_stub_fops = {
 
 static void drm_core_exit(void)
 {
+<<<<<<< HEAD
 	drm_ras_genl_family_unregister();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_privacy_screen_lookup_exit();
 	drm_panic_exit();
 	accel_core_exit();
@@ -1265,10 +1275,13 @@ static int __init drm_core_init(void)
 
 	drm_privacy_screen_lookup_init();
 
+<<<<<<< HEAD
 	ret = drm_ras_genl_family_register();
 	if (ret < 0)
 		goto error;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_core_init_complete = true;
 
 	DRM_DEBUG("Initialized\n");

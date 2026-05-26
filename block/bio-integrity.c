@@ -7,7 +7,10 @@
  */
 
 #include <linux/blk-integrity.h>
+<<<<<<< HEAD
 #include <linux/t10-pi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "blk.h"
 
 struct bio_integrity_alloc {
@@ -17,6 +20,7 @@ struct bio_integrity_alloc {
 
 static mempool_t integrity_buf_pool;
 
+<<<<<<< HEAD
 static bool bi_offload_capable(struct blk_integrity *bi)
 {
 	return bi->metadata_size == bi->pi_tuple_size;
@@ -64,6 +68,8 @@ unsigned int __bio_integrity_action(struct bio *bio)
 }
 EXPORT_SYMBOL_GPL(__bio_integrity_action);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bio_integrity_alloc_buf(struct bio *bio, bool zero_buffer)
 {
 	struct blk_integrity *bi = blk_get_integrity(bio->bi_bdev->bd_disk);
@@ -101,6 +107,7 @@ void bio_integrity_free_buf(struct bio_integrity_payload *bip)
 		kfree(bvec_virt(bv));
 }
 
+<<<<<<< HEAD
 void bio_integrity_setup_default(struct bio *bio)
 {
 	struct blk_integrity *bi = blk_get_integrity(bio->bi_bdev->bd_disk);
@@ -117,6 +124,8 @@ void bio_integrity_setup_default(struct bio *bio)
 		bip->bip_flags |= BIP_CHECK_REFTAG;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * bio_integrity_free - Free bio integrity payload
  * @bio:	bio containing bip to be freed
@@ -308,6 +317,10 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
 	}
 
 	bip->bip_flags |= BIP_COPY_USER;
+<<<<<<< HEAD
+=======
+	bip->bip_vcnt = nr_vecs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 free_bip:
 	bio_integrity_free(bio);
@@ -402,6 +415,7 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
 	if (unlikely(ret < 0))
 		goto free_bvec;
 
+<<<<<<< HEAD
 	/*
 	 * Handle partial pinning. This can happen when pin_user_pages_fast()
 	 * returns fewer pages than requested.
@@ -420,6 +434,8 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
 		goto free_bvec;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nr_bvecs = bvec_from_pages(bvec, pages, nr_vecs, bytes, offset,
 				   &is_p2p);
 	if (pages != stack_pages)

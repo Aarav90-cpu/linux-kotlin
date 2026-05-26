@@ -134,6 +134,10 @@ __noinline __weak int subprog_user_anon_mem(user_struct_t *t)
 
 SEC("?tracepoint")
 __failure __log_level(2)
+<<<<<<< HEAD
+=======
+__msg("invalid bpf_context access")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("Caller passes invalid args into func#1 ('subprog_user_anon_mem')")
 int anon_user_mem_invalid(void *ctx)
 {
@@ -357,6 +361,7 @@ int arg_tag_ctx_syscall(void *ctx)
 	return tracing_subprog_void(ctx) + tracing_subprog_u64(ctx) + tp_whatever(ctx);
 }
 
+<<<<<<< HEAD
 __weak int syscall_array_bpf_for(void *ctx __arg_ctx)
 {
 	int *arr = ctx;
@@ -451,6 +456,8 @@ int arg_tag_ctx_syscall_var_off_bad(void *ctx)
 	return subprog_ctx_tag(p);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __weak int subprog_dynptr(struct bpf_dynptr *dptr)
 {
 	long *d, t, buf[1] = {};
@@ -481,6 +488,7 @@ int arg_tag_dynptr(struct xdp_md *ctx)
 	return subprog_dynptr(&dptr);
 }
 
+<<<<<<< HEAD
 __weak
 void foo(void)
 {
@@ -500,4 +508,6 @@ int return_from_void_global(struct __sk_buff *skb)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

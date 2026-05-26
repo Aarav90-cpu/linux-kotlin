@@ -91,7 +91,10 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,adreno-gmu-615.0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,adreno-gmu-618.0
               - qcom,adreno-gmu-630.2
     then:

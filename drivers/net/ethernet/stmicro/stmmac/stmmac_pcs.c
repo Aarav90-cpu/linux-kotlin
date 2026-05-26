@@ -16,6 +16,7 @@
 #define GMAC_ANE_LPA	0x0c	/* ANE link partener ability */
 #define GMAC_TBI	0x14	/* TBI extend status */
 
+<<<<<<< HEAD
 /*
  * RGSMII status bitfield definitions.
  */
@@ -47,6 +48,8 @@ static unsigned int dwmac_integrated_pcs_inband_caps(struct phylink_pcs *pcs,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
 {
 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
@@ -67,6 +70,7 @@ static void dwmac_integrated_pcs_get_state(struct phylink_pcs *pcs,
 					   unsigned int neg_mode,
 					   struct phylink_link_state *state)
 {
+<<<<<<< HEAD
 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
 	u32 status, lpa, rgsmii;
 
@@ -126,6 +130,9 @@ static int dwmac_integrated_pcs_config_aneg(struct stmmac_pcs *spcs,
 	writel(adv, spcs->base + GMAC_ANE_ADV);
 
 	return changed;
+=======
+	state->link = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
@@ -135,6 +142,7 @@ static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
 				       bool permit_pause_to_mac)
 {
 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
+<<<<<<< HEAD
 	bool changed = false, ane = true;
 
 	/* Only configure the advertisement and allow AN in BASE-X mode if
@@ -170,11 +178,23 @@ static void dwmac_integrated_pcs_an_restart(struct phylink_pcs *pcs)
 
 static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
 	.pcs_inband_caps = dwmac_integrated_pcs_inband_caps,
+=======
+
+	dwmac_ctrl_ane(spcs->base, 0, 1, spcs->priv->hw->reverse_sgmii_enable);
+
+	return 0;
+}
+
+static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pcs_enable = dwmac_integrated_pcs_enable,
 	.pcs_disable = dwmac_integrated_pcs_disable,
 	.pcs_get_state = dwmac_integrated_pcs_get_state,
 	.pcs_config = dwmac_integrated_pcs_config,
+<<<<<<< HEAD
 	.pcs_an_restart = dwmac_integrated_pcs_an_restart,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
@@ -202,6 +222,7 @@ void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
 int stmmac_integrated_pcs_get_phy_intf_sel(struct phylink_pcs *pcs,
 					   phy_interface_t interface)
 {
+<<<<<<< HEAD
 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
 
 	if (interface == PHY_INTERFACE_MODE_SGMII)
@@ -219,6 +240,16 @@ int stmmac_integrated_pcs_get_phy_intf_sel(struct phylink_pcs *pcs,
 
 int stmmac_integrated_pcs_init(struct stmmac_priv *priv,
 			       const struct stmmac_pcs_info *pcs_info)
+=======
+	if (interface == PHY_INTERFACE_MODE_SGMII)
+		return PHY_INTF_SEL_SGMII;
+
+	return -EINVAL;
+}
+
+int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset,
+			       u32 int_mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct stmmac_pcs *spcs;
 
@@ -227,6 +258,7 @@ int stmmac_integrated_pcs_init(struct stmmac_priv *priv,
 		return -ENOMEM;
 
 	spcs->priv = priv;
+<<<<<<< HEAD
 	spcs->base = priv->ioaddr + pcs_info->pcs_offset;
 	spcs->rgsmii = priv->ioaddr + pcs_info->rgsmii_offset;
 	spcs->rgsmii_status_mask = pcs_info->rgsmii_status_mask;
@@ -247,6 +279,13 @@ int stmmac_integrated_pcs_init(struct stmmac_priv *priv,
 	if (priv->plat->flags & STMMAC_FLAG_SERDES_SUPPORTS_2500M)
 		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
 			  spcs->pcs.supported_interfaces);
+=======
+	spcs->base = priv->ioaddr + offset;
+	spcs->int_mask = int_mask;
+	spcs->pcs.ops = &dwmac_integrated_pcs_ops;
+
+	__set_bit(PHY_INTERFACE_MODE_SGMII, spcs->pcs.supported_interfaces);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv->integrated_pcs = spcs;
 

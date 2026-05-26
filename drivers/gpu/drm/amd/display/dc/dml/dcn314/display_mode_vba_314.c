@@ -891,11 +891,14 @@ static bool CalculatePrefetchSchedule(
 		double *VUpdateWidthPix,
 		double *VReadyOffsetPix)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)HostVMMinPageSize;
 	(void)SwathWidthY;
 	(void)SwathWidthC;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool MyError = false;
 	unsigned int DPPCycles, DISPCLKCycles;
 	double DSTTotalPixelsAfterScaler;
@@ -1513,10 +1516,13 @@ static void CalculateDCCConfiguration(
 		unsigned int *IndependentBlockLuma,
 		unsigned int *IndependentBlockChroma)
 {
+<<<<<<< HEAD
 	(void)SurfaceWidthChroma;
 	(void)SurfaceHeightChroma;
 	(void)BytePerPixelDETY;
 	(void)BytePerPixelDETC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int yuv420;
 	int horz_div_l;
 	int horz_div_c;
@@ -1849,7 +1855,10 @@ static unsigned int CalculateVMAndRowBytes(
 		int *DPDE0BytesFrame,
 		int *MetaPTEBytesFrame)
 {
+<<<<<<< HEAD
 	(void)SourcePixelFormat;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vba_vars_st *v = &mode_lib->vba;
 	unsigned int MPDEBytesFrame;
 	unsigned int DCCMetaSurfaceBytes;
@@ -3481,8 +3490,11 @@ double dml314_CalculateWriteBackDISPCLK(
 		unsigned int HTotal,
 		unsigned int WritebackLineBufferSize)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackVRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double DISPCLK_H, DISPCLK_V, DISPCLK_HB;
 
 	DISPCLK_H = PixelClock * dml_ceil(WritebackHTaps / 8.0, 1) / WritebackHRatio;
@@ -3501,8 +3513,11 @@ static double CalculateWriteBackDelay(
 		int WritebackSourceHeight,
 		unsigned int HTotal)
 {
+<<<<<<< HEAD
 	(void)WritebackPixelFormat;
 	(void)WritebackHRatio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double CalculateWriteBackDelay;
 	double Line_length;
 	double Output_lines_last_notclamped;
@@ -5674,9 +5689,12 @@ static void CalculateWatermarksAndDRAMSpeedChangeSupport(
 		double *Z8StutterExitWatermark,
 		double *Z8StutterEnterPlusExitWatermark)
 {
+<<<<<<< HEAD
 	(void)DCFCLK;
 	(void)ReturnBW;
 	(void)DETBufferSizeC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vba_vars_st *v = &mode_lib->vba;
 	double EffectiveLBLatencyHidingY;
 	double EffectiveLBLatencyHidingC;
@@ -5942,7 +5960,10 @@ static void CalculateUrgentBurstFactor(
 		double *UrgentBurstFactorChroma,
 		bool *NotEnoughUrgentLatencyHiding)
 {
+<<<<<<< HEAD
 	(void)VRatioC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double LinesInDETLuma;
 	double LinesInDETChroma;
 	unsigned int LinesInCursorBuffer;
@@ -6326,8 +6347,11 @@ static void CalculateVMGroupAndRequestTimes(
 		double TimePerVMRequestVBlank[],
 		double TimePerVMRequestFlip[])
 {
+<<<<<<< HEAD
 	(void)dpte_row_width_luma_ub;
 	(void)dpte_row_width_chroma_ub;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int num_group_per_lower_vm_stage;
 	int num_req_per_lower_vm_stage;
 	int k;
@@ -6465,8 +6489,11 @@ static void CalculateStutterEfficiency(
 		int *Z8NumberOfStutterBurstsPerFrame,
 		double *StutterPeriod)
 {
+<<<<<<< HEAD
 	(void)ConfigReturnBufferSizeInKByte;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vba_vars_st *v = &mode_lib->vba;
 
 	double DETBufferingTimeY;
@@ -6765,7 +6792,10 @@ static void CalculateSwathAndDETConfiguration(
 		bool ViewportSizeSupportPerPlane[],
 		bool *ViewportSizeSupport)
 {
+<<<<<<< HEAD
 	(void)HRatioChroma;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int MaximumSwathHeightY[DC__NUM_DPP__MAX];
 	int MaximumSwathHeightC[DC__NUM_DPP__MAX];
 	int MinimumSwathHeightY;
@@ -6937,7 +6967,10 @@ static void CalculateSwathWidth(
 		int swath_width_luma_ub[],
 		int swath_width_chroma_ub[])
 {
+<<<<<<< HEAD
 	(void)BytePerPixY;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum odm_combine_mode MainPlaneODMCombine;
 	int j, k;
 

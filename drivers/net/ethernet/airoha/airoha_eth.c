@@ -76,7 +76,11 @@ static void airoha_set_macaddr(struct airoha_gdm_port *port, const u8 *addr)
 	struct airoha_eth *eth = port->qdma->eth;
 	u32 val, reg;
 
+<<<<<<< HEAD
 	reg = airoha_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
+=======
+	reg = airhoa_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   : REG_FE_WAN_MAC_H;
 	val = (addr[0] << 16) | (addr[1] << 8) | addr[2];
 	airoha_fe_wr(eth, reg, val);
@@ -107,7 +111,23 @@ static int airoha_set_vip_for_gdm_port(struct airoha_gdm_port *port,
 	struct airoha_eth *eth = port->qdma->eth;
 	u32 vip_port;
 
+<<<<<<< HEAD
 	vip_port = eth->soc->ops.get_vip_port(port, port->nbq);
+=======
+	switch (port->id) {
+	case AIROHA_GDM3_IDX:
+		/* FIXME: handle XSI_PCIE1_PORT */
+		vip_port = XSI_PCIE0_VIP_PORT_MASK;
+		break;
+	case AIROHA_GDM4_IDX:
+		/* FIXME: handle XSI_USB_PORT */
+		vip_port = XSI_ETH_VIP_PORT_MASK;
+		break;
+	default:
+		return 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (enable) {
 		airoha_fe_set(eth, REG_FE_VIP_PORT_EN, vip_port);
 		airoha_fe_set(eth, REG_FE_IFC_PORT_EN, vip_port);
@@ -281,6 +301,7 @@ static void airoha_fe_pse_ports_init(struct airoha_eth *eth)
 		[FE_PSE_PORT_GDM4] = 2,
 		[FE_PSE_PORT_CDM5] = 2,
 	};
+<<<<<<< HEAD
 	int q;
 
 	if (airoha_ppe_is_enabled(eth, 1)) {
@@ -293,6 +314,18 @@ static void airoha_fe_pse_ports_init(struct airoha_eth *eth)
 		airoha_fe_rmw(eth, REG_FE_PSE_BUF_SET, PSE_ALLRSV_MASK,
 			      FIELD_PREP(PSE_ALLRSV_MASK, all_rsv));
 	}
+=======
+	u32 all_rsv;
+	int q;
+
+	all_rsv = airoha_fe_get_pse_all_rsv(eth);
+	if (airoha_ppe_is_enabled(eth, 1)) {
+		/* hw misses PPE2 oq rsv */
+		all_rsv += PSE_RSV_PAGES *
+			   pse_port_num_queues[FE_PSE_PORT_PPE2];
+	}
+	airoha_fe_set(eth, REG_FE_PSE_BUF_SET, all_rsv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* CMD1 */
 	for (q = 0; q < pse_port_num_queues[FE_PSE_PORT_CDM1]; q++)
@@ -448,8 +481,14 @@ static int airoha_fe_init(struct airoha_eth *eth)
 		      FIELD_PREP(PSE_IQ_RES2_P5_MASK, 0x40) |
 		      FIELD_PREP(PSE_IQ_RES2_P4_MASK, 0x34));
 
+<<<<<<< HEAD
 	/* enable FE copy engine for KA/DPI */
 	airoha_fe_wr(eth, REG_FE_PCE_CFG, PCE_DPI_EN_MASK | PCE_KA_EN_MASK);
+=======
+	/* enable FE copy engine for MC/KA/DPI */
+	airoha_fe_wr(eth, REG_FE_PCE_CFG,
+		     PCE_DPI_EN_MASK | PCE_KA_EN_MASK | PCE_MC_EN_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* set vip queue selection to ring 1 */
 	airoha_fe_rmw(eth, REG_CDM_FWD_CFG(1), CDM_VIP_QSEL_MASK,
 		      FIELD_PREP(CDM_VIP_QSEL_MASK, 0x4));
@@ -561,12 +600,20 @@ static int airoha_qdma_fill_rx_queue(struct airoha_queue *q)
 		WRITE_ONCE(desc->msg1, 0);
 		WRITE_ONCE(desc->msg2, 0);
 		WRITE_ONCE(desc->msg3, 0);
+<<<<<<< HEAD
 	}
 
 	if (nframes)
 		airoha_qdma_rmw(qdma, REG_RX_CPU_IDX(qid),
 				RX_RING_CPU_IDX_MASK,
 				FIELD_PREP(RX_RING_CPU_IDX_MASK, q->head));
+=======
+
+		airoha_qdma_rmw(qdma, REG_RX_CPU_IDX(qid),
+				RX_RING_CPU_IDX_MASK,
+				FIELD_PREP(RX_RING_CPU_IDX_MASK, q->head));
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nframes;
 }
@@ -574,7 +621,11 @@ static int airoha_qdma_fill_rx_queue(struct airoha_queue *q)
 static int airoha_qdma_get_gdm_port(struct airoha_eth *eth,
 				    struct airoha_qdma_desc *desc)
 {
+<<<<<<< HEAD
 	u32 port, sport, msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
+=======
+	u32 port, sport, msg1 = le32_to_cpu(desc->msg1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sport = FIELD_GET(QDMA_ETH_RXMSG_SPORT_MASK, msg1);
 	switch (sport) {
@@ -602,6 +653,7 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
 	while (done < budget) {
 		struct airoha_queue_entry *e = &q->entry[q->tail];
 		struct airoha_qdma_desc *desc = &q->desc[q->tail];
+<<<<<<< HEAD
 		u32 hash, reason, msg1, desc_ctrl;
 		struct airoha_gdm_port *port;
 		int data_len, len, p;
@@ -613,13 +665,27 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
 
 		dma_rmb();
 
+=======
+		u32 hash, reason, msg1 = le32_to_cpu(desc->msg1);
+		struct page *page = virt_to_head_page(e->buf);
+		u32 desc_ctrl = le32_to_cpu(desc->ctrl);
+		struct airoha_gdm_port *port;
+		int data_len, len, p;
+
+		if (!(desc_ctrl & QDMA_DESC_DONE_MASK))
+			break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		q->tail = (q->tail + 1) % q->ndesc;
 		q->queued--;
 
 		dma_sync_single_for_cpu(eth->dev, e->dma_addr,
 					SKB_WITH_OVERHEAD(q->buf_size), dir);
 
+<<<<<<< HEAD
 		page = virt_to_head_page(e->buf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		len = FIELD_GET(QDMA_DESC_LEN_MASK, desc_ctrl);
 		data_len = q->skb ? q->buf_size
 				  : SKB_WITH_OVERHEAD(q->buf_size);
@@ -663,8 +729,13 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
 			 * DMA descriptor. Report DSA tag to the DSA stack
 			 * via skb dst info.
 			 */
+<<<<<<< HEAD
 			u32 msg0 = le32_to_cpu(READ_ONCE(desc->msg0));
 			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG, msg0);
+=======
+			u32 sptag = FIELD_GET(QDMA_ETH_RXMSG_SPTAG,
+					      le32_to_cpu(desc->msg0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (sptag < ARRAY_SIZE(port->dsa_meta) &&
 			    port->dsa_meta[sptag])
@@ -672,7 +743,10 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
 						  &port->dsa_meta[sptag]->dst);
 		}
 
+<<<<<<< HEAD
 		msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hash = FIELD_GET(AIROHA_RXD4_FOE_ENTRY, msg1);
 		if (hash != AIROHA_RXD4_FOE_ENTRY)
 			skb_set_hash(q->skb, jhash_1word(hash, 0),
@@ -745,18 +819,28 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
 	dma_addr_t dma_addr;
 
 	q->buf_size = PAGE_SIZE / 2;
+<<<<<<< HEAD
 	q->qdma = qdma;
 
 	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
+=======
+	q->ndesc = ndesc;
+	q->qdma = qdma;
+
+	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				GFP_KERNEL);
 	if (!q->entry)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	q->desc = dmam_alloc_coherent(eth->dev, ndesc * sizeof(*q->desc),
 				      &dma_addr, GFP_KERNEL);
 	if (!q->desc)
 		return -ENOMEM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->page_pool = page_pool_create(&pp_params);
 	if (IS_ERR(q->page_pool)) {
 		int err = PTR_ERR(q->page_pool);
@@ -765,7 +849,15 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
 		return err;
 	}
 
+<<<<<<< HEAD
 	q->ndesc = ndesc;
+=======
+	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
+				      &dma_addr, GFP_KERNEL);
+	if (!q->desc)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
 
 	airoha_qdma_wr(qdma, REG_RX_RING_BASE(qid), dma_addr);
@@ -813,11 +905,14 @@ static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
 	}
 
 	q->head = q->tail;
+<<<<<<< HEAD
 	/* Set RX_DMA_IDX to RX_CPU_IDX to notify the hw the QDMA RX ring is
 	 * empty.
 	 */
 	airoha_qdma_rmw(qdma, REG_RX_CPU_IDX(qid), RX_RING_CPU_IDX_MASK,
 			FIELD_PREP(RX_RING_CPU_IDX_MASK, q->head));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
 			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
 }
@@ -843,6 +938,7 @@ static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
 {
 	struct airoha_qdma *qdma = q->qdma;
@@ -869,6 +965,8 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
 	q->txq_stopped = false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
 {
 	struct airoha_tx_irq_queue *irq_q;
@@ -940,6 +1038,7 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
 		q->queued--;
 
 		if (skb) {
+<<<<<<< HEAD
 			struct netdev_queue *txq;
 
 			txq = skb_get_tx_queue(skb->dev, skb);
@@ -959,6 +1058,19 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
 			airoha_qdma_wake_netdev_txqs(q);
 		}
 
+=======
+			u16 queue = skb_get_queue_mapping(skb);
+			struct netdev_queue *txq;
+
+			txq = netdev_get_tx_queue(skb->dev, queue);
+			netdev_tx_completed_queue(txq, 1, skb->len);
+			if (netif_tx_queue_stopped(txq) &&
+			    q->ndesc - q->queued >= q->free_thr)
+				netif_tx_wake_queue(txq);
+
+			dev_kfree_skb_any(skb);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 		spin_unlock_bh(&q->lock);
 	}
@@ -988,27 +1100,46 @@ static int airoha_qdma_init_tx_queue(struct airoha_queue *q,
 	dma_addr_t dma_addr;
 
 	spin_lock_init(&q->lock);
+<<<<<<< HEAD
+=======
+	q->ndesc = size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->qdma = qdma;
 	q->free_thr = 1 + MAX_SKB_FRAGS;
 	INIT_LIST_HEAD(&q->tx_list);
 
+<<<<<<< HEAD
 	q->entry = devm_kzalloc(eth->dev, size * sizeof(*q->entry),
+=======
+	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				GFP_KERNEL);
 	if (!q->entry)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	q->desc = dmam_alloc_coherent(eth->dev, size * sizeof(*q->desc),
+=======
+	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      &dma_addr, GFP_KERNEL);
 	if (!q->desc)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	for (i = 0; i < size; i++) {
+=======
+	for (i = 0; i < q->ndesc; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u32 val = FIELD_PREP(QDMA_DESC_DONE_MASK, 1);
 
 		list_add_tail(&q->entry[i].list, &q->tx_list);
 		WRITE_ONCE(q->desc[i].ctrl, cpu_to_le32(val));
 	}
+<<<<<<< HEAD
 	q->ndesc = size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* xmit ring drop default setting */
 	airoha_qdma_set(qdma, REG_TX_RING_BLOCKING(qid),
@@ -1030,6 +1161,11 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
 	struct airoha_eth *eth = qdma->eth;
 	dma_addr_t dma_addr;
 
+<<<<<<< HEAD
+=======
+	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
+			  airoha_qdma_tx_napi_poll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	irq_q->q = dmam_alloc_coherent(eth->dev, size * sizeof(u32),
 				       &dma_addr, GFP_KERNEL);
 	if (!irq_q->q)
@@ -1039,9 +1175,12 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
 	irq_q->size = size;
 	irq_q->qdma = qdma;
 
+<<<<<<< HEAD
 	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
 			  airoha_qdma_tx_napi_poll);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	airoha_qdma_wr(qdma, REG_TX_IRQ_BASE(id), dma_addr);
 	airoha_qdma_rmw(qdma, REG_TX_IRQ_CFG(id), TX_IRQ_DEPTH_MASK,
 			FIELD_PREP(TX_IRQ_DEPTH_MASK, size));
@@ -1074,15 +1213,23 @@ static int airoha_qdma_init_tx(struct airoha_qdma *qdma)
 
 static void airoha_qdma_cleanup_tx_queue(struct airoha_queue *q)
 {
+<<<<<<< HEAD
 	struct airoha_qdma *qdma = q->qdma;
 	struct airoha_eth *eth = qdma->eth;
 	int i, qid = q - &qdma->q_tx[0];
 	u16 index = 0;
+=======
+	struct airoha_eth *eth = q->qdma->eth;
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_bh(&q->lock);
 	for (i = 0; i < q->ndesc; i++) {
 		struct airoha_queue_entry *e = &q->entry[i];
+<<<<<<< HEAD
 		struct airoha_qdma_desc *desc = &q->desc[i];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!e->dma_addr)
 			continue;
@@ -1093,6 +1240,7 @@ static void airoha_qdma_cleanup_tx_queue(struct airoha_queue *q)
 		e->dma_addr = 0;
 		e->skb = NULL;
 		list_add_tail(&e->list, &q->tx_list);
+<<<<<<< HEAD
 
 		/* Reset DMA descriptor */
 		WRITE_ONCE(desc->ctrl, 0);
@@ -1120,6 +1268,10 @@ static void airoha_qdma_cleanup_tx_queue(struct airoha_queue *q)
 	airoha_qdma_rmw(qdma, REG_TX_DMA_IDX(qid), TX_RING_DMA_IDX_MASK,
 			FIELD_PREP(TX_RING_DMA_IDX_MASK, index));
 
+=======
+		q->queued--;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&q->lock);
 }
 
@@ -1445,6 +1597,7 @@ static int airoha_qdma_init(struct platform_device *pdev,
 	return airoha_qdma_hw_init(qdma);
 }
 
+<<<<<<< HEAD
 static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
 {
 	int i;
@@ -1476,6 +1629,8 @@ static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int airoha_hw_init(struct platform_device *pdev,
 			  struct airoha_eth *eth)
 {
@@ -1503,16 +1658,25 @@ static int airoha_hw_init(struct platform_device *pdev,
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
 		if (err)
+<<<<<<< HEAD
 			goto error;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = airoha_ppe_init(eth);
 	if (err)
+<<<<<<< HEAD
 		goto error;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
 
 	return 0;
+<<<<<<< HEAD
 error:
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
 		airoha_qdma_cleanup(&eth->qdma[i]);
@@ -1527,6 +1691,33 @@ static void airoha_hw_cleanup(struct airoha_eth *eth)
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
 		airoha_qdma_cleanup(&eth->qdma[i]);
 	airoha_ppe_deinit(eth);
+=======
+}
+
+static void airoha_hw_cleanup(struct airoha_qdma *qdma)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
+		if (!qdma->q_rx[i].ndesc)
+			continue;
+
+		netif_napi_del(&qdma->q_rx[i].napi);
+		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
+		if (qdma->q_rx[i].page_pool)
+			page_pool_destroy(qdma->q_rx[i].page_pool);
+	}
+
+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
+		netif_napi_del(&qdma->q_tx_irq[i].napi);
+
+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+		if (!qdma->q_tx[i].ndesc)
+			continue;
+
+		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
@@ -1708,7 +1899,10 @@ static int airoha_dev_open(struct net_device *dev)
 	int err, len = ETH_HLEN + dev->mtu + ETH_FCS_LEN;
 	struct airoha_gdm_port *port = netdev_priv(dev);
 	struct airoha_qdma *qdma = port->qdma;
+<<<<<<< HEAD
 	u32 pse_port = FE_PSE_PORT_PPE1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netif_tx_start_all_queues(dev);
 	err = airoha_set_vip_for_gdm_port(port, true);
@@ -1732,6 +1926,7 @@ static int airoha_dev_open(struct net_device *dev)
 			GLOBAL_CFG_RX_DMA_EN_MASK);
 	atomic_inc(&qdma->users);
 
+<<<<<<< HEAD
 	if (port->id == AIROHA_GDM2_IDX &&
 	    airoha_ppe_is_enabled(qdma->eth, 1)) {
 		/* For PPE2 always use secondary cpu port. */
@@ -1740,6 +1935,8 @@ static int airoha_dev_open(struct net_device *dev)
 	airoha_set_gdm_port_fwd_cfg(qdma->eth, REG_GDM_FWD_CFG(port->id),
 				    pse_port);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1747,6 +1944,7 @@ static int airoha_dev_stop(struct net_device *dev)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
 	struct airoha_qdma *qdma = port->qdma;
+<<<<<<< HEAD
 	int i;
 
 	netif_tx_disable(dev);
@@ -1756,6 +1954,17 @@ static int airoha_dev_stop(struct net_device *dev)
 
 	airoha_set_gdm_port_fwd_cfg(qdma->eth, REG_GDM_FWD_CFG(port->id),
 				    FE_PSE_PORT_DROP);
+=======
+	int i, err;
+
+	netif_tx_disable(dev);
+	err = airoha_set_vip_for_gdm_port(port, false);
+	if (err)
+		return err;
+
+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++)
+		netdev_tx_reset_subqueue(dev, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (atomic_dec_and_test(&qdma->users)) {
 		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
@@ -1787,11 +1996,19 @@ static int airoha_dev_set_macaddr(struct net_device *dev, void *p)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
 {
 	struct airoha_eth *eth = port->qdma->eth;
 	u32 val, pse_port, chan;
 	int i, src_port;
+=======
+static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+{
+	struct airoha_eth *eth = port->qdma->eth;
+	u32 val, pse_port, chan, nbq;
+	int src_port;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(AIROHA_GDM2_IDX),
 				    FE_PSE_PORT_DROP);
@@ -1822,7 +2039,13 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
 	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(AIROHA_GDM2_IDX));
 	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(AIROHA_GDM2_IDX));
 
+<<<<<<< HEAD
 	src_port = eth->soc->ops.get_src_port_id(port, port->nbq);
+=======
+	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
+	nbq = port->id == AIROHA_GDM3_IDX && airoha_is_7581(eth) ? 4 : 0;
+	src_port = eth->soc->ops.get_src_port_id(port, nbq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (src_port < 0)
 		return src_port;
 
@@ -1833,6 +2056,7 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
 	airoha_fe_rmw(eth,
 		      REG_SP_DFT_CPORT(src_port >> fls(SP_CPORT_DFT_MASK)),
 		      SP_CPORT_MASK(val),
+<<<<<<< HEAD
 		      __field_prep(SP_CPORT_MASK(val), FE_PSE_PORT_CDM2));
 
 	for (i = 0; i < eth->soc->num_ppe; i++)
@@ -1844,6 +2068,14 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
 		airoha_fe_rmw(eth, REG_SRC_PORT_FC_MAP6, mask,
 			      __field_prep(mask, AIROHA_GDM2_IDX));
 	}
+=======
+		      FE_PSE_PORT_CDM2 << __ffs(SP_CPORT_MASK(val)));
+
+	if (port->id != AIROHA_GDM3_IDX && airoha_is_7581(eth))
+		airoha_fe_rmw(eth, REG_SRC_PORT_FC_MAP6,
+			      FC_ID_OF_SRC_PORT24_MASK,
+			      FIELD_PREP(FC_ID_OF_SRC_PORT24_MASK, 2));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1851,12 +2083,20 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
 static int airoha_dev_init(struct net_device *dev)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
+<<<<<<< HEAD
 	struct airoha_eth *eth = port->eth;
 	int i;
 
 	/* QDMA0 is used for lan ports while QDMA1 is used for WAN ports */
 	port->qdma = &eth->qdma[!airoha_is_lan_gdm_port(port)];
 	port->dev->irq = port->qdma->irq_banks[0].irq;
+=======
+	struct airoha_qdma *qdma = port->qdma;
+	struct airoha_eth *eth = qdma->eth;
+	u32 pse_port, fe_cpu_port;
+	u8 ppe_id;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	airoha_set_macaddr(port, dev->dev_addr);
 
 	switch (port->id) {
@@ -1866,6 +2106,7 @@ static int airoha_dev_init(struct net_device *dev)
 		if (!eth->ports[1]) {
 			int err;
 
+<<<<<<< HEAD
 			err = airoha_set_gdm2_loopback(port);
 			if (err)
 				return err;
@@ -1878,6 +2119,36 @@ static int airoha_dev_init(struct net_device *dev)
 	for (i = 0; i < eth->soc->num_ppe; i++)
 		airoha_ppe_set_cpu_port(port, i,
 					airoha_get_fe_port(port));
+=======
+			err = airhoha_set_gdm2_loopback(port);
+			if (err)
+				return err;
+		}
+		fallthrough;
+	case AIROHA_GDM2_IDX:
+		if (airoha_ppe_is_enabled(eth, 1)) {
+			/* For PPE2 always use secondary cpu port. */
+			fe_cpu_port = FE_PSE_PORT_CDM2;
+			pse_port = FE_PSE_PORT_PPE2;
+			break;
+		}
+		fallthrough;
+	default: {
+		u8 qdma_id = qdma - &eth->qdma[0];
+
+		/* For PPE1 select cpu port according to the running QDMA. */
+		fe_cpu_port = qdma_id ? FE_PSE_PORT_CDM2 : FE_PSE_PORT_CDM1;
+		pse_port = FE_PSE_PORT_PPE1;
+		break;
+	}
+	}
+
+	airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(port->id), pse_port);
+	ppe_id = pse_port == FE_PSE_PORT_PPE2 ? 1 : 0;
+	airoha_fe_rmw(eth, REG_PPE_DFT_CPORT0(ppe_id),
+		      DFT_CPORT_MASK(port->id),
+		      fe_cpu_port << __ffs(DFT_CPORT_MASK(port->id)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1980,7 +2251,11 @@ static u32 airoha_get_dsa_tag(struct sk_buff *skb, struct net_device *dev)
 #endif
 }
 
+<<<<<<< HEAD
 int airoha_get_fe_port(struct airoha_gdm_port *port)
+=======
+static int airoha_get_fe_port(struct airoha_gdm_port *port)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct airoha_qdma *qdma = port->qdma;
 	struct airoha_eth *eth = qdma->eth;
@@ -2006,12 +2281,21 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 	struct netdev_queue *txq;
 	struct airoha_queue *q;
 	LIST_HEAD(tx_list);
+<<<<<<< HEAD
 	int i = 0, qid;
 	void *data;
 	u16 index;
 	u8 fport;
 
 	qid = airoha_qdma_get_txq(qdma, skb_get_queue_mapping(skb));
+=======
+	void *data;
+	int i, qid;
+	u16 index;
+	u8 fport;
+
+	qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tag = airoha_get_dsa_tag(skb, dev);
 
 	msg0 = FIELD_PREP(QDMA_ETH_TXMSG_CHAN_MASK,
@@ -2048,13 +2332,20 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 
 	spin_lock_bh(&q->lock);
 
+<<<<<<< HEAD
 	txq = skb_get_tx_queue(dev, skb);
+=======
+	txq = netdev_get_tx_queue(dev, qid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nr_frags = 1 + skb_shinfo(skb)->nr_frags;
 
 	if (q->queued + nr_frags >= q->ndesc) {
 		/* not enough space in the queue */
 		netif_tx_stop_queue(txq);
+<<<<<<< HEAD
 		q->txq_stopped = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock_bh(&q->lock);
 		return NETDEV_TX_BUSY;
 	}
@@ -2066,7 +2357,11 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 			     list);
 	index = e - q->entry;
 
+<<<<<<< HEAD
 	while (true) {
+=======
+	for (i = 0; i < nr_frags; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct airoha_qdma_desc *desc = &q->desc[index];
 		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
 		dma_addr_t addr;
@@ -2078,7 +2373,11 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 			goto error_unmap;
 
 		list_move_tail(&e->list, &tx_list);
+<<<<<<< HEAD
 		e->skb = i == nr_frags - 1 ? skb : NULL;
+=======
+		e->skb = i ? NULL : skb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		e->dma_addr = addr;
 		e->dma_len = len;
 
@@ -2097,9 +2396,12 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 		WRITE_ONCE(desc->msg1, cpu_to_le32(msg1));
 		WRITE_ONCE(desc->msg2, cpu_to_le32(0xffff));
 
+<<<<<<< HEAD
 		if (++i == nr_frags)
 			break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data = skb_frag_address(frag);
 		len = skb_frag_size(frag);
 	}
@@ -2107,27 +2409,47 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
 
 	skb_tx_timestamp(skb);
 	netdev_tx_sent_queue(txq, skb->len);
+<<<<<<< HEAD
 	if (q->ndesc - q->queued < q->free_thr) {
 		netif_tx_stop_queue(txq);
 		q->txq_stopped = true;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
 		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
 				TX_RING_CPU_IDX_MASK,
 				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
 
+<<<<<<< HEAD
+=======
+	if (q->ndesc - q->queued < q->free_thr)
+		netif_tx_stop_queue(txq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&q->lock);
 
 	return NETDEV_TX_OK;
 
 error_unmap:
+<<<<<<< HEAD
 	list_for_each_entry(e, &tx_list, list) {
 		dma_unmap_single(dev->dev.parent, e->dma_addr, e->dma_len,
 				 DMA_TO_DEVICE);
 		e->dma_addr = 0;
 	}
 	list_splice(&tx_list, &q->tx_list);
+=======
+	while (!list_empty(&tx_list)) {
+		e = list_first_entry(&tx_list, struct airoha_queue_entry,
+				     list);
+		dma_unmap_single(dev->dev.parent, e->dma_addr, e->dma_len,
+				 DMA_TO_DEVICE);
+		e->dma_addr = 0;
+		list_move_tail(&e->list, &q->tx_list);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_unlock_bh(&q->lock);
 error:
@@ -2207,11 +2529,18 @@ airoha_ethtool_get_rmon_stats(struct net_device *dev,
 	} while (u64_stats_fetch_retry(&port->stats.syncp, start));
 }
 
+<<<<<<< HEAD
 static int airoha_qdma_set_chan_tx_sched(struct net_device *dev,
 					 int channel, enum tx_sched_mode mode,
 					 const u16 *weights, u8 n_weights)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+static int airoha_qdma_set_chan_tx_sched(struct airoha_gdm_port *port,
+					 int channel, enum tx_sched_mode mode,
+					 const u16 *weights, u8 n_weights)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	for (i = 0; i < AIROHA_NUM_TX_RING; i++)
@@ -2238,11 +2567,16 @@ static int airoha_qdma_set_chan_tx_sched(struct net_device *dev,
 
 	airoha_qdma_rmw(port->qdma, REG_CHAN_QOS_MODE(channel >> 3),
 			CHAN_QOS_MODE_MASK(channel),
+<<<<<<< HEAD
 			__field_prep(CHAN_QOS_MODE_MASK(channel), mode));
+=======
+			mode << __ffs(CHAN_QOS_MODE_MASK(channel)));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_qdma_set_tx_prio_sched(struct net_device *dev, int channel)
 {
 	static const u16 w[AIROHA_NUM_QOS_QUEUES] = {};
@@ -2252,6 +2586,19 @@ static int airoha_qdma_set_tx_prio_sched(struct net_device *dev, int channel)
 }
 
 static int airoha_qdma_set_tx_ets_sched(struct net_device *dev, int channel,
+=======
+static int airoha_qdma_set_tx_prio_sched(struct airoha_gdm_port *port,
+					 int channel)
+{
+	static const u16 w[AIROHA_NUM_QOS_QUEUES] = {};
+
+	return airoha_qdma_set_chan_tx_sched(port, channel, TC_SCH_SP, w,
+					     ARRAY_SIZE(w));
+}
+
+static int airoha_qdma_set_tx_ets_sched(struct airoha_gdm_port *port,
+					int channel,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					struct tc_ets_qopt_offload *opt)
 {
 	struct tc_ets_qopt_offload_replace_params *p = &opt->replace_params;
@@ -2292,6 +2639,7 @@ static int airoha_qdma_set_tx_ets_sched(struct net_device *dev, int channel,
 	else if (nstrict < AIROHA_NUM_QOS_QUEUES - 1)
 		mode = nstrict + 1;
 
+<<<<<<< HEAD
 	return airoha_qdma_set_chan_tx_sched(dev, channel, mode, w,
 					     ARRAY_SIZE(w));
 }
@@ -2300,13 +2648,26 @@ static int airoha_qdma_get_tx_ets_stats(struct net_device *dev, int channel,
 					struct tc_ets_qopt_offload *opt)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+	return airoha_qdma_set_chan_tx_sched(port, channel, mode, w,
+					     ARRAY_SIZE(w));
+}
+
+static int airoha_qdma_get_tx_ets_stats(struct airoha_gdm_port *port,
+					int channel,
+					struct tc_ets_qopt_offload *opt)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 cpu_tx_packets = airoha_qdma_rr(port->qdma,
 					    REG_CNTR_VAL(channel << 1));
 	u64 fwd_tx_packets = airoha_qdma_rr(port->qdma,
 					    REG_CNTR_VAL((channel << 1) + 1));
 	u64 tx_packets = (cpu_tx_packets - port->cpu_tx_packets) +
 			 (fwd_tx_packets - port->fwd_tx_packets);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	_bstats_update(opt->stats.bstats, 0, tx_packets);
 
 	port->cpu_tx_packets = cpu_tx_packets;
@@ -2315,7 +2676,11 @@ static int airoha_qdma_get_tx_ets_stats(struct net_device *dev, int channel,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_tc_setup_qdisc_ets(struct net_device *dev,
+=======
+static int airoha_tc_setup_qdisc_ets(struct airoha_gdm_port *port,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     struct tc_ets_qopt_offload *opt)
 {
 	int channel;
@@ -2328,12 +2693,21 @@ static int airoha_tc_setup_qdisc_ets(struct net_device *dev,
 
 	switch (opt->command) {
 	case TC_ETS_REPLACE:
+<<<<<<< HEAD
 		return airoha_qdma_set_tx_ets_sched(dev, channel, opt);
 	case TC_ETS_DESTROY:
 		/* PRIO is default qdisc scheduler */
 		return airoha_qdma_set_tx_prio_sched(dev, channel);
 	case TC_ETS_STATS:
 		return airoha_qdma_get_tx_ets_stats(dev, channel, opt);
+=======
+		return airoha_qdma_set_tx_ets_sched(port, channel, opt);
+	case TC_ETS_DESTROY:
+		/* PRIO is default qdisc scheduler */
+		return airoha_qdma_set_tx_prio_sched(port, channel);
+	case TC_ETS_STATS:
+		return airoha_qdma_get_tx_ets_stats(port, channel, opt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -2561,11 +2935,18 @@ static int airoha_qdma_set_trtcm_token_bucket(struct airoha_qdma *qdma,
 					   mode, val);
 }
 
+<<<<<<< HEAD
 static int airoha_qdma_set_tx_rate_limit(struct net_device *dev,
 					 int channel, u32 rate,
 					 u32 bucket_size)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+static int airoha_qdma_set_tx_rate_limit(struct airoha_gdm_port *port,
+					 int channel, u32 rate,
+					 u32 bucket_size)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, err;
 
 	for (i = 0; i <= TRTCM_PEAK_MODE; i++) {
@@ -2585,20 +2966,34 @@ static int airoha_qdma_set_tx_rate_limit(struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_tc_htb_alloc_leaf_queue(struct net_device *dev,
+=======
+static int airoha_tc_htb_alloc_leaf_queue(struct airoha_gdm_port *port,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  struct tc_htb_qopt_offload *opt)
 {
 	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
 	u32 rate = div_u64(opt->rate, 1000) << 3; /* kbps */
+<<<<<<< HEAD
 	int err, num_tx_queues = dev->real_num_tx_queues;
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+	struct net_device *dev = port->dev;
+	int num_tx_queues = dev->real_num_tx_queues;
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (opt->parent_classid != TC_HTB_CLASSID_ROOT) {
 		NL_SET_ERR_MSG_MOD(opt->extack, "invalid parent classid");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	err = airoha_qdma_set_tx_rate_limit(dev, channel, rate, opt->quantum);
+=======
+	err = airoha_qdma_set_tx_rate_limit(port, channel, rate, opt->quantum);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		NL_SET_ERR_MSG_MOD(opt->extack,
 				   "failed configuring htb offload");
@@ -2610,7 +3005,11 @@ static int airoha_tc_htb_alloc_leaf_queue(struct net_device *dev,
 
 	err = netif_set_real_num_tx_queues(dev, num_tx_queues + 1);
 	if (err) {
+<<<<<<< HEAD
 		airoha_qdma_set_tx_rate_limit(dev, channel, 0, opt->quantum);
+=======
+		airoha_qdma_set_tx_rate_limit(port, channel, 0, opt->quantum);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		NL_SET_ERR_MSG_MOD(opt->extack,
 				   "failed setting real_num_tx_queues");
 		return err;
@@ -2756,7 +3155,11 @@ static int airoha_dev_setup_tc_block_cb(enum tc_setup_type type,
 	}
 }
 
+<<<<<<< HEAD
 static int airoha_dev_setup_tc_block(struct net_device *dev,
+=======
+static int airoha_dev_setup_tc_block(struct airoha_gdm_port *port,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     struct flow_block_offload *f)
 {
 	flow_setup_cb_t *cb = airoha_dev_setup_tc_block_cb;
@@ -2769,12 +3172,20 @@ static int airoha_dev_setup_tc_block(struct net_device *dev,
 	f->driver_block_list = &block_cb_list;
 	switch (f->command) {
 	case FLOW_BLOCK_BIND:
+<<<<<<< HEAD
 		block_cb = flow_block_cb_lookup(f->block, cb, dev);
+=======
+		block_cb = flow_block_cb_lookup(f->block, cb, port->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (block_cb) {
 			flow_block_cb_incref(block_cb);
 			return 0;
 		}
+<<<<<<< HEAD
 		block_cb = flow_block_cb_alloc(cb, dev, dev, NULL);
+=======
+		block_cb = flow_block_cb_alloc(cb, port->dev, port->dev, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(block_cb))
 			return PTR_ERR(block_cb);
 
@@ -2783,7 +3194,11 @@ static int airoha_dev_setup_tc_block(struct net_device *dev,
 		list_add_tail(&block_cb->driver_list, &block_cb_list);
 		return 0;
 	case FLOW_BLOCK_UNBIND:
+<<<<<<< HEAD
 		block_cb = flow_block_cb_lookup(f->block, cb, dev);
+=======
+		block_cb = flow_block_cb_lookup(f->block, cb, port->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!block_cb)
 			return -ENOENT;
 
@@ -2797,6 +3212,7 @@ static int airoha_dev_setup_tc_block(struct net_device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static void airoha_tc_remove_htb_queue(struct net_device *dev, int queue)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
@@ -2811,17 +3227,37 @@ static int airoha_tc_htb_delete_leaf_queue(struct net_device *dev,
 {
 	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+static void airoha_tc_remove_htb_queue(struct airoha_gdm_port *port, int queue)
+{
+	struct net_device *dev = port->dev;
+
+	netif_set_real_num_tx_queues(dev, dev->real_num_tx_queues - 1);
+	airoha_qdma_set_tx_rate_limit(port, queue + 1, 0, 0);
+	clear_bit(queue, port->qos_sq_bmap);
+}
+
+static int airoha_tc_htb_delete_leaf_queue(struct airoha_gdm_port *port,
+					   struct tc_htb_qopt_offload *opt)
+{
+	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!test_bit(channel, port->qos_sq_bmap)) {
 		NL_SET_ERR_MSG_MOD(opt->extack, "invalid queue id");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	airoha_tc_remove_htb_queue(dev, channel);
+=======
+	airoha_tc_remove_htb_queue(port, channel);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_tc_htb_destroy(struct net_device *dev)
 {
 	struct airoha_gdm_port *port = netdev_priv(dev);
@@ -2829,15 +3265,30 @@ static int airoha_tc_htb_destroy(struct net_device *dev)
 
 	for_each_set_bit(q, port->qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS)
 		airoha_tc_remove_htb_queue(dev, q);
+=======
+static int airoha_tc_htb_destroy(struct airoha_gdm_port *port)
+{
+	int q;
+
+	for_each_set_bit(q, port->qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS)
+		airoha_tc_remove_htb_queue(port, q);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_tc_get_htb_get_leaf_queue(struct net_device *dev,
 					    struct tc_htb_qopt_offload *opt)
 {
 	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
 	struct airoha_gdm_port *port = netdev_priv(dev);
+=======
+static int airoha_tc_get_htb_get_leaf_queue(struct airoha_gdm_port *port,
+					    struct tc_htb_qopt_offload *opt)
+{
+	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!test_bit(channel, port->qos_sq_bmap)) {
 		NL_SET_ERR_MSG_MOD(opt->extack, "invalid queue id");
@@ -2849,13 +3300,18 @@ static int airoha_tc_get_htb_get_leaf_queue(struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int airoha_tc_setup_qdisc_htb(struct net_device *dev,
+=======
+static int airoha_tc_setup_qdisc_htb(struct airoha_gdm_port *port,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     struct tc_htb_qopt_offload *opt)
 {
 	switch (opt->command) {
 	case TC_HTB_CREATE:
 		break;
 	case TC_HTB_DESTROY:
+<<<<<<< HEAD
 		return airoha_tc_htb_destroy(dev);
 	case TC_HTB_NODE_MODIFY:
 	case TC_HTB_LEAF_ALLOC_QUEUE:
@@ -2866,6 +3322,18 @@ static int airoha_tc_setup_qdisc_htb(struct net_device *dev,
 		return airoha_tc_htb_delete_leaf_queue(dev, opt);
 	case TC_HTB_LEAF_QUERY_QUEUE:
 		return airoha_tc_get_htb_get_leaf_queue(dev, opt);
+=======
+		return airoha_tc_htb_destroy(port);
+	case TC_HTB_NODE_MODIFY:
+	case TC_HTB_LEAF_ALLOC_QUEUE:
+		return airoha_tc_htb_alloc_leaf_queue(port, opt);
+	case TC_HTB_LEAF_DEL:
+	case TC_HTB_LEAF_DEL_LAST:
+	case TC_HTB_LEAF_DEL_LAST_FORCE:
+		return airoha_tc_htb_delete_leaf_queue(port, opt);
+	case TC_HTB_LEAF_QUERY_QUEUE:
+		return airoha_tc_get_htb_get_leaf_queue(port, opt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -2876,6 +3344,7 @@ static int airoha_tc_setup_qdisc_htb(struct net_device *dev,
 static int airoha_dev_tc_setup(struct net_device *dev, enum tc_setup_type type,
 			       void *type_data)
 {
+<<<<<<< HEAD
 	switch (type) {
 	case TC_SETUP_QDISC_ETS:
 		return airoha_tc_setup_qdisc_ets(dev, type_data);
@@ -2884,6 +3353,18 @@ static int airoha_dev_tc_setup(struct net_device *dev, enum tc_setup_type type,
 	case TC_SETUP_BLOCK:
 	case TC_SETUP_FT:
 		return airoha_dev_setup_tc_block(dev, type_data);
+=======
+	struct airoha_gdm_port *port = netdev_priv(dev);
+
+	switch (type) {
+	case TC_SETUP_QDISC_ETS:
+		return airoha_tc_setup_qdisc_ets(port, type_data);
+	case TC_SETUP_QDISC_HTB:
+		return airoha_tc_setup_qdisc_htb(port, type_data);
+	case TC_SETUP_BLOCK:
+	case TC_SETUP_FT:
+		return airoha_dev_setup_tc_block(port, type_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -2954,10 +3435,18 @@ bool airoha_is_valid_gdm_port(struct airoha_eth *eth,
 }
 
 static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+<<<<<<< HEAD
 				 struct device_node *np)
 {
 	const __be32 *id_ptr = of_get_property(np, "reg", NULL);
 	struct airoha_gdm_port *port;
+=======
+				 struct device_node *np, int index)
+{
+	const __be32 *id_ptr = of_get_property(np, "reg", NULL);
+	struct airoha_gdm_port *port;
+	struct airoha_qdma *qdma;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct net_device *dev;
 	int err, p;
 	u32 id;
@@ -2988,6 +3477,10 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
+=======
+	qdma = &eth->qdma[index % AIROHA_MAX_NUM_QDMA];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->netdev_ops = &airoha_netdev_ops;
 	dev->ethtool_ops = &airoha_ethtool_ops;
 	dev->max_mtu = AIROHA_MAX_MTU;
@@ -2999,6 +3492,10 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
 	dev->features |= dev->hw_features;
 	dev->vlan_features = dev->hw_features;
 	dev->dev.of_node = np;
+<<<<<<< HEAD
+=======
+	dev->irq = qdma->irq_banks[0].irq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SET_NETDEV_DEV(dev, eth->dev);
 
 	/* reserve hw queues for HTB offloading */
@@ -3019,11 +3516,17 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
 	port = netdev_priv(dev);
 	u64_stats_init(&port->stats.syncp);
 	spin_lock_init(&port->stats.lock);
+<<<<<<< HEAD
 	port->eth = eth;
 	port->dev = dev;
 	port->id = id;
 	/* XXX: Read nbq from DTS */
 	port->nbq = id == AIROHA_GDM3_IDX && airoha_is_7581(eth) ? 4 : 0;
+=======
+	port->qdma = qdma;
+	port->dev = dev;
+	port->id = id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth->ports[p] = port;
 
 	return airoha_metadata_dst_alloc(port);
@@ -3118,11 +3621,19 @@ static int airoha_probe(struct platform_device *pdev)
 
 	err = airoha_hw_init(pdev, eth);
 	if (err)
+<<<<<<< HEAD
 		goto error_netdev_free;
+=======
+		goto error_hw_cleanup;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
 		airoha_qdma_start_napi(&eth->qdma[i]);
 
+<<<<<<< HEAD
+=======
+	i = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_child_of_node(pdev->dev.of_node, np) {
 		if (!of_device_is_compatible(np, "airoha,eth-mac"))
 			continue;
@@ -3130,7 +3641,11 @@ static int airoha_probe(struct platform_device *pdev)
 		if (!of_device_is_available(np))
 			continue;
 
+<<<<<<< HEAD
 		err = airoha_alloc_gdm_port(eth, np);
+=======
+		err = airoha_alloc_gdm_port(eth, np, i++);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err) {
 			of_node_put(np);
 			goto error_napi_stop;
@@ -3146,6 +3661,13 @@ static int airoha_probe(struct platform_device *pdev)
 error_napi_stop:
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
 		airoha_qdma_stop_napi(&eth->qdma[i]);
+<<<<<<< HEAD
+=======
+	airoha_ppe_deinit(eth);
+error_hw_cleanup:
+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+		airoha_hw_cleanup(&eth->qdma[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
 		struct airoha_gdm_port *port = eth->ports[i];
@@ -3157,8 +3679,11 @@ error_napi_stop:
 			unregister_netdev(port->dev);
 		airoha_metadata_dst_free(port);
 	}
+<<<<<<< HEAD
 	airoha_hw_cleanup(eth);
 error_netdev_free:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_netdev(eth->napi_dev);
 	platform_set_drvdata(pdev, NULL);
 
@@ -3170,8 +3695,15 @@ static void airoha_remove(struct platform_device *pdev)
 	struct airoha_eth *eth = platform_get_drvdata(pdev);
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
 		airoha_qdma_stop_napi(&eth->qdma[i]);
+=======
+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
+		airoha_qdma_stop_napi(&eth->qdma[i]);
+		airoha_hw_cleanup(&eth->qdma[i]);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
 		struct airoha_gdm_port *port = eth->ports[i];
@@ -3182,9 +3714,15 @@ static void airoha_remove(struct platform_device *pdev)
 		unregister_netdev(port->dev);
 		airoha_metadata_dst_free(port);
 	}
+<<<<<<< HEAD
 	airoha_hw_cleanup(eth);
 
 	free_netdev(eth->napi_dev);
+=======
+	free_netdev(eth->napi_dev);
+
+	airoha_ppe_deinit(eth);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_set_drvdata(pdev, NULL);
 }
 
@@ -3220,6 +3758,7 @@ static int airoha_en7581_get_src_port_id(struct airoha_gdm_port *port, int nbq)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static u32 airoha_en7581_get_vip_port(struct airoha_gdm_port *port, int nbq)
 {
 	switch (port->id) {
@@ -3242,6 +3781,8 @@ static u32 airoha_en7581_get_vip_port(struct airoha_gdm_port *port, int nbq)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char * const an7583_xsi_rsts_names[] = {
 	"xsi-mac",
 	"hsi0-mac",
@@ -3271,6 +3812,7 @@ static int airoha_an7583_get_src_port_id(struct airoha_gdm_port *port, int nbq)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static u32 airoha_an7583_get_vip_port(struct airoha_gdm_port *port, int nbq)
 {
 	switch (port->id) {
@@ -3291,6 +3833,8 @@ static u32 airoha_an7583_get_vip_port(struct airoha_gdm_port *port, int nbq)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct airoha_eth_soc_data en7581_soc_data = {
 	.version = 0x7581,
 	.xsi_rsts_names = en7581_xsi_rsts_names,
@@ -3298,7 +3842,10 @@ static const struct airoha_eth_soc_data en7581_soc_data = {
 	.num_ppe = 2,
 	.ops = {
 		.get_src_port_id = airoha_en7581_get_src_port_id,
+<<<<<<< HEAD
 		.get_vip_port = airoha_en7581_get_vip_port,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -3309,7 +3856,10 @@ static const struct airoha_eth_soc_data an7583_soc_data = {
 	.num_ppe = 1,
 	.ops = {
 		.get_src_port_id = airoha_an7583_get_src_port_id,
+<<<<<<< HEAD
 		.get_vip_port = airoha_an7583_get_vip_port,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

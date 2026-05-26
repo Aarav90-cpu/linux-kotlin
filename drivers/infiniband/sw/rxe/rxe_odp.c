@@ -545,7 +545,11 @@ static int rxe_ib_advise_mr_prefetch(struct ib_pd *ibpd,
 		work->frags[i].mr = mr;
 	}
 
+<<<<<<< HEAD
 	queue_work(rxe_wq, &work->work);
+=======
+	queue_work(system_unbound_wq, &work->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 

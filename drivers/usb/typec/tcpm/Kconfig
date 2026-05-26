@@ -58,8 +58,11 @@ config TYPEC_FUSB302
 	tristate "Fairchild FUSB302 Type-C chip driver"
 	depends on I2C
 	depends on EXTCON || !EXTCON
+<<<<<<< HEAD
 	depends on DRM || DRM=n
 	select DRM_AUX_HPD_BRIDGE if DRM_BRIDGE && OF
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  The Fairchild FUSB302 Type-C chip driver that works with
 	  Type-C Port Controller Manager to provide USB PD and USB

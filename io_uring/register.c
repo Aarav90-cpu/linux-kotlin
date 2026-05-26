@@ -192,9 +192,15 @@ static __cold int io_register_restrictions(struct io_ring_ctx *ctx,
 		return ret;
 	}
 	if (ctx->restrictions.op_registered)
+<<<<<<< HEAD
 		ctx->int_flags |= IO_RING_F_OP_RESTRICTED;
 	if (ctx->restrictions.reg_registered)
 		ctx->int_flags |= IO_RING_F_REG_RESTRICTED;
+=======
+		ctx->op_restricted = 1;
+	if (ctx->restrictions.reg_registered)
+		ctx->reg_restricted = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -392,7 +398,11 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
 	for (i = 0; i < ARRAY_SIZE(new_count); i++)
 		if (new_count[i])
 			ctx->iowq_limits[i] = new_count[i];
+<<<<<<< HEAD
 	ctx->int_flags |= IO_RING_F_IOWQ_LIMITS_SET;
+=======
+	ctx->iowq_limits_set = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (tctx && tctx->io_wq) {
 		ret = io_wq_max_workers(tctx->io_wq, new_count);
@@ -753,7 +763,11 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 	if (ctx->submitter_task && ctx->submitter_task != current)
 		return -EEXIST;
 
+<<<<<<< HEAD
 	if ((ctx->int_flags & IO_RING_F_REG_RESTRICTED) && !(ctx->flags & IORING_SETUP_R_DISABLED)) {
+=======
+	if (ctx->reg_restricted && !(ctx->flags & IORING_SETUP_R_DISABLED)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		opcode = array_index_nospec(opcode, IORING_REGISTER_LAST);
 		if (!test_bit(opcode, ctx->restrictions.register_op))
 			return -EACCES;
@@ -928,7 +942,11 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 		ret = -EINVAL;
 		if (!arg || nr_args != 1)
 			break;
+<<<<<<< HEAD
 		ret = io_register_zcrx(ctx, arg);
+=======
+		ret = io_register_zcrx_ifq(ctx, arg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case IORING_REGISTER_RESIZE_RINGS:
 		ret = -EINVAL;
@@ -966,6 +984,43 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Given an 'fd' value, return the ctx associated with if. If 'registered' is
+ * true, then the registered index is used. Otherwise, the normal fd table.
+ * Caller must call fput() on the returned file, unless it's an ERR_PTR.
+ */
+struct file *io_uring_register_get_file(unsigned int fd, bool registered)
+{
+	struct file *file;
+
+	if (registered) {
+		/*
+		 * Ring fd has been registered via IORING_REGISTER_RING_FDS, we
+		 * need only dereference our task private array to find it.
+		 */
+		struct io_uring_task *tctx = current->io_uring;
+
+		if (unlikely(!tctx || fd >= IO_RINGFD_REG_MAX))
+			return ERR_PTR(-EINVAL);
+		fd = array_index_nospec(fd, IO_RINGFD_REG_MAX);
+		file = tctx->registered_rings[fd];
+		if (file)
+			get_file(file);
+	} else {
+		file = fget(fd);
+	}
+
+	if (unlikely(!file))
+		return ERR_PTR(-EBADF);
+	if (io_is_uring_fops(file))
+		return file;
+	fput(file);
+	return ERR_PTR(-EOPNOTSUPP);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int io_uring_register_send_msg_ring(void __user *arg, unsigned int nr_args)
 {
 	struct io_uring_sqe sqe;
@@ -1020,7 +1075,11 @@ SYSCALL_DEFINE4(io_uring_register, unsigned int, fd, unsigned int, opcode,
 	if (fd == -1)
 		return io_uring_register_blind(opcode, arg, nr_args);
 
+<<<<<<< HEAD
 	file = io_uring_ctx_get_file(fd, use_registered_ring);
+=======
+	file = io_uring_register_get_file(fd, use_registered_ring);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(file))
 		return PTR_ERR(file);
 	ctx = file->private_data;
@@ -1032,7 +1091,11 @@ SYSCALL_DEFINE4(io_uring_register, unsigned int, fd, unsigned int, opcode,
 				ctx->buf_table.nr, ret);
 	mutex_unlock(&ctx->uring_lock);
 
+<<<<<<< HEAD
 	if (!use_registered_ring)
 		fput(file);
+=======
+	fput(file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }

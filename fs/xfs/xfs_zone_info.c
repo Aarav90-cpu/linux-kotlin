@@ -30,12 +30,20 @@ xfs_show_open_zone(
 	struct seq_file		*m,
 	struct xfs_open_zone	*oz)
 {
+<<<<<<< HEAD
 	seq_printf(m, "\t  zone %d, wp %u, written %u, used %u, hint %s %s\n",
 		rtg_rgno(oz->oz_rtg),
 		oz->oz_allocated, oz->oz_written,
 		rtg_rmap(oz->oz_rtg)->i_used_blocks,
 		xfs_write_hint_to_str(oz->oz_write_hint),
 		oz->oz_is_gc ? "(GC)" : "");
+=======
+	seq_printf(m, "\t  zone %d, wp %u, written %u, used %u, hint %s\n",
+		rtg_rgno(oz->oz_rtg),
+		oz->oz_allocated, oz->oz_written,
+		rtg_rmap(oz->oz_rtg)->i_used_blocks,
+		xfs_write_hint_to_str(oz->oz_write_hint));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -59,8 +67,14 @@ xfs_show_full_zone_used_distribution(
 	spin_unlock(&zi->zi_used_buckets_lock);
 
 	full = mp->m_sb.sb_rgcount;
+<<<<<<< HEAD
 	full -= zi->zi_nr_open_zones;
 	full -= zi->zi_nr_open_gc_zones;
+=======
+	if (zi->zi_open_gc_zone)
+		full--;
+	full -= zi->zi_nr_open_zones;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	full -= atomic_read(&zi->zi_nr_free_zones);
 	full -= reclaimable;
 
@@ -90,6 +104,7 @@ xfs_zoned_show_stats(
 	seq_printf(m, "\tRT GC required: %d\n",
 		xfs_zoned_need_gc(mp));
 
+<<<<<<< HEAD
 	seq_printf(m, "\ttotal number of zones: %u\n",
 		mp->m_sb.sb_rgcount);
 	seq_printf(m, "\tfree zones: %d\n", atomic_read(&zi->zi_nr_free_zones));
@@ -104,6 +119,17 @@ xfs_zoned_show_stats(
 	seq_puts(m, "\topen zones:\n");
 	list_for_each_entry(oz, &zi->zi_open_zones, oz_entry)
 		xfs_show_open_zone(m, oz);
+=======
+	seq_printf(m, "\tfree zones: %d\n", atomic_read(&zi->zi_nr_free_zones));
+	seq_puts(m, "\topen zones:\n");
+	spin_lock(&zi->zi_open_zones_lock);
+	list_for_each_entry(oz, &zi->zi_open_zones, oz_entry)
+		xfs_show_open_zone(m, oz);
+	if (zi->zi_open_gc_zone) {
+		seq_puts(m, "\topen gc zone:\n");
+		xfs_show_open_zone(m, zi->zi_open_gc_zone);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock(&zi->zi_open_zones_lock);
 	seq_puts(m, "\tused blocks distribution (fully written zones):\n");
 	xfs_show_full_zone_used_distribution(m, mp);

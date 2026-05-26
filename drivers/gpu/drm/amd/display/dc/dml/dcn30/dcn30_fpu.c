@@ -571,7 +571,10 @@ void dcn30_fpu_update_bw_bounding_box(struct dc *dc,
 	unsigned int *dcfclk_mhz,
 	unsigned int *dram_speed_mts)
 {
+<<<<<<< HEAD
 	(void)bw_params;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i;
 
 	dc_assert_fp_enabled();
@@ -721,7 +724,10 @@ void dcn3_fpu_build_wm_range_table(struct clk_mgr *base)
 
 void patch_dcn30_soc_bounding_box(struct dc *dc, struct _vcs_dpi_soc_bounding_box_st *dcn3_0_ip)
 {
+<<<<<<< HEAD
 	(void)dcn3_0_ip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dc_assert_fp_enabled();
 
 	if (dc->ctx->dc_bios->funcs->get_soc_bb_info) {

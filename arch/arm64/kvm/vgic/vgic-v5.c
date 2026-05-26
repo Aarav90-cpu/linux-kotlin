@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-only
+<<<<<<< HEAD
 /*
  * Copyright (C) 2025, 2026 Arm Ltd.
  */
@@ -6,10 +7,15 @@
 #include <kvm/arm_vgic.h>
 
 #include <linux/bitops.h>
+=======
+
+#include <kvm/arm_vgic.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/irqchip/arm-vgic-info.h>
 
 #include "vgic.h"
 
+<<<<<<< HEAD
 static struct vgic_v5_ppi_caps ppi_caps;
 
 /*
@@ -47,6 +53,26 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
 	int ret;
 
 	kvm_vgic_global_state.type = VGIC_V5;
+=======
+/*
+ * Probe for a vGICv5 compatible interrupt controller, returning 0 on success.
+ * Currently only supports GICv3-based VMs on a GICv5 host, and hence only
+ * registers a VGIC_V3 device.
+ */
+int vgic_v5_probe(const struct gic_kvm_info *info)
+{
+	u64 ich_vtr_el2;
+	int ret;
+
+	if (!cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY))
+		return -ENODEV;
+
+	kvm_vgic_global_state.type = VGIC_V5;
+	kvm_vgic_global_state.has_gcie_v3_compat = true;
+
+	/* We only support v3 compat mode - use vGICv3 limits */
+	kvm_vgic_global_state.max_gic_vcpus = VGIC_V3_MAX_CPUS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_vgic_global_state.vcpu_base = 0;
 	kvm_vgic_global_state.vctrl_base = NULL;
@@ -54,6 +80,7 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
 	kvm_vgic_global_state.has_gicv4 = false;
 	kvm_vgic_global_state.has_gicv4_1 = false;
 
+<<<<<<< HEAD
 	/*
 	 * GICv5 is currently not supported in Protected mode. Skip the
 	 * registration of GICv5 completely to make sure no guests can create a
@@ -86,6 +113,8 @@ skip_v5:
 	}
 
 	kvm_vgic_global_state.has_gcie_v3_compat = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ich_vtr_el2 =  kvm_call_hyp_ret(__vgic_v3_get_gic_config);
 	kvm_vgic_global_state.ich_vtr_el2 = (u32)ich_vtr_el2;
 
@@ -101,10 +130,13 @@ skip_v5:
 		return ret;
 	}
 
+<<<<<<< HEAD
 	/* We potentially limit the max VCPUs further than we need to here */
 	kvm_vgic_global_state.max_gic_vcpus = min(VGIC_V3_MAX_CPUS,
 						  VGIC_V5_MAX_CPUS);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static_branch_enable(&kvm_vgic_global_state.gicv3_cpuif);
 	kvm_info("GCIE legacy system register CPU interface\n");
 
@@ -112,6 +144,7 @@ skip_v5:
 
 	return 0;
 }
+<<<<<<< HEAD
 
 void vgic_v5_reset(struct kvm_vcpu *vcpu)
 {
@@ -533,3 +566,5 @@ void vgic_v5_save_state(struct kvm_vcpu *vcpu)
 	__vgic_v5_save_ppi_state(cpu_if);
 	dsb(sy);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

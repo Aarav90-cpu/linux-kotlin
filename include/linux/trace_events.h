@@ -22,16 +22,24 @@ union bpf_attr;
 
 const char *trace_print_flags_seq(struct trace_seq *p, const char *delim,
 				  unsigned long flags,
+<<<<<<< HEAD
 				  const struct trace_print_flags *flag_array,
 				  size_t flag_array_size);
 
 const char *trace_print_symbols_seq(struct trace_seq *p, unsigned long val,
 				    const struct trace_print_flags *symbol_array,
 				    size_t symbol_array_size);
+=======
+				  const struct trace_print_flags *flag_array);
+
+const char *trace_print_symbols_seq(struct trace_seq *p, unsigned long val,
+				    const struct trace_print_flags *symbol_array);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if BITS_PER_LONG == 32
 const char *trace_print_flags_seq_u64(struct trace_seq *p, const char *delim,
 		      unsigned long long flags,
+<<<<<<< HEAD
 		      const struct trace_print_flags_u64 *flag_array,
 		      size_t flag_array_size);
 
@@ -39,6 +47,14 @@ const char *trace_print_symbols_seq_u64(struct trace_seq *p,
 					unsigned long long val,
 					const struct trace_print_flags_u64 *symbol_array,
 					size_t symbol_array_size);
+=======
+		      const struct trace_print_flags_u64 *flag_array);
+
+const char *trace_print_symbols_seq_u64(struct trace_seq *p,
+					unsigned long long val,
+					const struct trace_print_flags_u64
+								 *symbol_array);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 struct trace_iterator;

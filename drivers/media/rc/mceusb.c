@@ -1729,7 +1729,11 @@ static int mceusb_dev_probe(struct usb_interface *intf,
 		goto urb_in_alloc_fail;
 
 	ir->usbintf = intf;
+<<<<<<< HEAD
 	ir->usbdev = dev;
+=======
+	ir->usbdev = usb_get_dev(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ir->dev = &intf->dev;
 	ir->len_in = maxp;
 	ir->flags.microsoft_gen1 = is_microsoft_gen1;
@@ -1817,6 +1821,10 @@ static int mceusb_dev_probe(struct usb_interface *intf,
 	/* Error-handling path */
 rc_dev_fail:
 	cancel_work_sync(&ir->kevent);
+<<<<<<< HEAD
+=======
+	usb_put_dev(ir->usbdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_kill_urb(ir->urb_in);
 	usb_free_urb(ir->urb_in);
 urb_in_alloc_fail:
@@ -1848,7 +1856,11 @@ static void mceusb_dev_disconnect(struct usb_interface *intf)
 	usb_kill_urb(ir->urb_in);
 	usb_free_urb(ir->urb_in);
 	usb_free_coherent(dev, ir->len_in, ir->buf_in, ir->dma_in);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+	usb_put_dev(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(ir);
 }

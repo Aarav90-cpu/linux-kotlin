@@ -251,10 +251,17 @@ static int gred_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 
 	q->stats.pdrop++;
 drop:
+<<<<<<< HEAD
 	return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
 
 congestion_drop:
 	qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_CONGESTED);
+=======
+	return qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
+
+congestion_drop:
+	qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_CONGESTED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NET_XMIT_CN;
 }
 

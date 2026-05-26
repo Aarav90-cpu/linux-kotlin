@@ -25,7 +25,11 @@ static __always_inline unsigned long rdfsbase(void)
 {
 	unsigned long fsbase;
 
+<<<<<<< HEAD
 	asm volatile("rdfsbase %0" : "=r" (fsbase));
+=======
+	asm volatile("rdfsbase %0" : "=r" (fsbase) :: "memory");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return fsbase;
 }
@@ -34,7 +38,11 @@ static __always_inline unsigned long rdgsbase(void)
 {
 	unsigned long gsbase;
 
+<<<<<<< HEAD
 	asm volatile("rdgsbase %0" : "=r" (gsbase));
+=======
+	asm volatile("rdgsbase %0" : "=r" (gsbase) :: "memory");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return gsbase;
 }

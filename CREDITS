@@ -71,6 +71,14 @@ D: dosfs, LILO, some fd features, ATM, various other hacks here and there
 S: Buenos Aires
 S: Argentina
 
+<<<<<<< HEAD
+=======
+NTFS FILESYSTEM
+N: Anton Altaparmakov
+E: anton@tuxera.com
+D: NTFS filesystem
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 N: Tim Alpaerts
 E: tim_alpaerts@toyota-motor-europe.com
 D: 802.2 class II logical link control layer,
@@ -80,8 +88,13 @@ S: B-2610 Wilrijk-Antwerpen
 S: Belgium
 
 N: Anton Altaparmakov
+<<<<<<< HEAD
 E: anton@tuxera.com
 W: http://www.tuxera.com/
+=======
+E: aia21@cantab.net
+W: http://www-stu.christs.cam.ac.uk/~aia21/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 D: Author of new NTFS driver, various other kernel hacks.
 S: Christ's College
 S: Cambridge CB2 3BU
@@ -1451,6 +1464,7 @@ N: Andy Gospodarek
 E: andy@greyhouse.net
 D: Maintenance and contributions to the network interface bonding driver.
 
+<<<<<<< HEAD
 N: Vivek Goyal
 E: vgoyal@redhat.com
 D: KDUMP, KEXEC, and VIRTIO FILE SYSTEM
@@ -1459,6 +1473,8 @@ N: Alexander Graf
 E: graf@amazon.com
 D: Kexec Handover (KHO)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 N: Wolfgang Grandegger
 E: wg@grandegger.com
 D: Controller Area Network (device drivers)
@@ -3595,6 +3611,7 @@ E: wsalamon@tislabs.com
 E: wsalamon@nai.com
 D: portions of the Linux Security Module (LSM) framework and security modules
 
+<<<<<<< HEAD
 N: Salil Mehta
 E: salil.mehta@opnsrc.net
 D: Co-authored Huawei/HiSilicon Kunpeng 920 SoC HNS3 PF and VF 100G
@@ -3605,6 +3622,8 @@ D: Maintained Huawei/HiSilicon HNS and HNS3 10G/100G Ethernet drivers
 D: for Kunpeng 916 family, 920 family of SoCs
 S: Cambridge, Cambridgeshire, United Kingdom
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 N: Robert Sanders
 E: gt8134b@prism.gatech.edu
 D: Dosemu
@@ -3652,11 +3671,14 @@ S: Dag Hammerskjolds v. 3E
 S: S-226 64 LUND
 S: Sweden
 
+<<<<<<< HEAD
 N: Tilman Schmidt
 E: tilman@imap.cc
 D: Siemens Gigaset ISDN driver author and maintainer
 D: ISDN CAPI subsystem contributions
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 N: Henning P. Schmiedehausen
 E: hps@tanstaafl.de
 D: added PCI support to the serial driver
@@ -4578,5 +4600,13 @@ D: MD driver
 D: EISA/sysfs subsystem
 S: France
 
+<<<<<<< HEAD
 # Don't add your name here unless you really are last alphabetically.
 # (This file is supposed to be kept in alphabetical order by last name.)
+=======
+# Don't add your name here, unless you really _are_ after Marc
+# alphabetically. Leonard used to be very proud of being the
+# last entry, and he'll get positively pissed if he can't even
+# be second-to-last.  (and this file really _is_ supposed to be
+# in alphabetic order)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

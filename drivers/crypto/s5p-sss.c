@@ -2131,7 +2131,11 @@ static struct skcipher_alg algs[] = {
 static int s5p_aes_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	int i, err;
+=======
+	int i, j, err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct samsung_aes_variant *variant;
 	struct s5p_aes_dev *pdata;
 	struct resource *res;
@@ -2237,11 +2241,16 @@ static int s5p_aes_probe(struct platform_device *pdev)
 
 	for (i = 0; i < ARRAY_SIZE(algs); i++) {
 		err = crypto_register_skcipher(&algs[i]);
+<<<<<<< HEAD
 		if (err) {
 			dev_err(dev, "can't register '%s': %d\n",
 				algs[i].base.cra_name, err);
 			goto err_algs;
 		}
+=======
+		if (err)
+			goto err_algs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (pdata->use_hash) {
@@ -2268,12 +2277,28 @@ static int s5p_aes_probe(struct platform_device *pdev)
 	return 0;
 
 err_hash:
+<<<<<<< HEAD
 	crypto_unregister_ahashes(algs_sha1_md5_sha256, hash_i);
+=======
+	for (j = hash_i - 1; j >= 0; j--)
+		crypto_unregister_ahash(&algs_sha1_md5_sha256[j]);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tasklet_kill(&pdata->hash_tasklet);
 	res->end -= 0x300;
 
 err_algs:
+<<<<<<< HEAD
 	crypto_unregister_skciphers(algs, i);
+=======
+	if (i < ARRAY_SIZE(algs))
+		dev_err(dev, "can't register '%s': %d\n", algs[i].base.cra_name,
+			err);
+
+	for (j = 0; j < i; j++)
+		crypto_unregister_skcipher(&algs[j]);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tasklet_kill(&pdata->tasklet);
 
 err_irq:
@@ -2289,6 +2314,7 @@ err_clk:
 static void s5p_aes_remove(struct platform_device *pdev)
 {
 	struct s5p_aes_dev *pdata = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 
 	crypto_unregister_skciphers(algs, ARRAY_SIZE(algs));
 
@@ -2296,6 +2322,17 @@ static void s5p_aes_remove(struct platform_device *pdev)
 	if (pdata->use_hash) {
 		crypto_unregister_ahashes(algs_sha1_md5_sha256,
 					  ARRAY_SIZE(algs_sha1_md5_sha256));
+=======
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(algs); i++)
+		crypto_unregister_skcipher(&algs[i]);
+
+	tasklet_kill(&pdata->tasklet);
+	if (pdata->use_hash) {
+		for (i = ARRAY_SIZE(algs_sha1_md5_sha256) - 1; i >= 0; i--)
+			crypto_unregister_ahash(&algs_sha1_md5_sha256[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pdata->res->end -= 0x300;
 		tasklet_kill(&pdata->hash_tasklet);

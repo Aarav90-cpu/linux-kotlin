@@ -45,6 +45,7 @@ static int create_srq_user(struct ib_pd *pd, struct mlx5_ib_srq *srq,
 			   struct ib_udata *udata, int buf_size)
 {
 	struct mlx5_ib_dev *dev = to_mdev(pd->device);
+<<<<<<< HEAD
 	struct mlx5_ib_create_srq ucmd;
 	struct mlx5_ib_ucontext *ucontext = rdma_udata_to_drv_context(
 		udata, struct mlx5_ib_ucontext, ibucontext);
@@ -54,10 +55,33 @@ static int create_srq_user(struct ib_pd *pd, struct mlx5_ib_srq *srq,
 	err = ib_copy_validate_udata_in(udata, ucmd, flags);
 	if (err)
 		return err;
+=======
+	struct mlx5_ib_create_srq ucmd = {};
+	struct mlx5_ib_ucontext *ucontext = rdma_udata_to_drv_context(
+		udata, struct mlx5_ib_ucontext, ibucontext);
+	size_t ucmdlen;
+	int err;
+	u32 uidx = MLX5_IB_DEFAULT_UIDX;
+
+	ucmdlen = min(udata->inlen, sizeof(ucmd));
+
+	if (ib_copy_from_udata(&ucmd, udata, ucmdlen)) {
+		mlx5_ib_dbg(dev, "failed copy udata\n");
+		return -EFAULT;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ucmd.reserved0 || ucmd.reserved1)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd)))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (in->type != IB_SRQT_BASIC) {
 		err = get_srq_user_index(ucontext, &ucmd, udata->inlen, &uidx);
 		if (err)

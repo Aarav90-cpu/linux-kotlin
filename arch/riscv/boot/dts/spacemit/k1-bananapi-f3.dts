@@ -33,7 +33,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	pcie_vcc_3v3: regulator-pcie-vcc3v3 {
+=======
+	pcie_vcc_3v3: pcie-vcc3v3 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "PCIE_VCC3V3";
 		regulator-min-microvolt = <3300000>;
@@ -41,7 +45,11 @@
 		regulator-always-on;
 	};
 
+<<<<<<< HEAD
 	reg_dc_in: regulator-dc-in-12v {
+=======
+	reg_dc_in: dc-in-12v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "dc_in_12v";
 		regulator-min-microvolt = <12000000>;
@@ -50,7 +58,11 @@
 		regulator-always-on;
 	};
 
+<<<<<<< HEAD
 	reg_vcc_4v: regulator-vcc-4v {
+=======
+	reg_vcc_4v: vcc-4v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_4v";
 		regulator-min-microvolt = <4000000>;
@@ -60,7 +72,11 @@
 		vin-supply = <&reg_dc_in>;
 	};
 
+<<<<<<< HEAD
 	regulator-usb3-vbus-5v {
+=======
+	usb3-vbus-5v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "USB30_VBUS";
 		regulator-min-microvolt = <5000000>;
@@ -70,7 +86,11 @@
 		enable-active-high;
 	};
 
+<<<<<<< HEAD
 	usb3_hub_5v: regulator-usb3-hub-5v {
+=======
+	usb3_hub_5v: usb3-hub-5v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "USB30_HUB";
 		regulator-min-microvolt = <5000000>;
@@ -81,6 +101,11 @@
 };
 
 &combo_phy {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie0_3_cfg>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -188,6 +213,7 @@
 		compatible = "spacemit,p1";
 		reg = <0x41>;
 		interrupts = <64>;
+<<<<<<< HEAD
 		vin1-supply = <&reg_vcc_4v>;
 		vin2-supply = <&reg_vcc_4v>;
 		vin3-supply = <&reg_vcc_4v>;
@@ -197,6 +223,9 @@
 		aldoin-supply = <&reg_vcc_4v>;
 		dldoin1-supply = <&buck5>;
 		dldoin2-supply = <&buck5>;
+=======
+		vin-supply = <&reg_vcc_4v>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		regulators {
 			buck1 {
@@ -227,7 +256,11 @@
 				regulator-always-on;
 			};
 
+<<<<<<< HEAD
 			buck5: buck5 {
+=======
+			buck5 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <3450000>;
 				regulator-ramp-delay = <5000>;
@@ -311,7 +344,10 @@
 
 &pcie1_port {
 	phys = <&pcie1_phy>;
+<<<<<<< HEAD
 	vpcie3v3-supply = <&pcie_vcc_3v3>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pcie1 {
@@ -327,7 +363,10 @@
 
 &pcie2_port {
 	phys = <&pcie2_phy>;
+<<<<<<< HEAD
 	vpcie3v3-supply = <&pcie_vcc_3v3>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pcie2 {

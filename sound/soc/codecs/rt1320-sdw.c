@@ -1013,6 +1013,7 @@ static void rt1320_set_advancemode(struct rt1320_sdw_priv *rt1320)
 	struct device *dev = &rt1320->sdw_slave->dev;
 	struct rt1320_datafixpoint r0_data[2];
 	unsigned short l_advancegain, r_advancegain;
+<<<<<<< HEAD
 	FwPara_Get_HwSwGain audDriverDataHwSwGain = {0};
 	unsigned int HwAdvGain = 0;
 	int ret;
@@ -1041,6 +1042,15 @@ static void rt1320_set_advancemode(struct rt1320_sdw_priv *rt1320)
 		l_advancegain = r0_data[0].advancegain;
 		r_advancegain = r0_data[1].advancegain;
 	}
+=======
+	int ret;
+
+	/* Get advance gain/r0 */
+	rt1320_fw_param_protocol(rt1320, RT1320_GET_PARAM, 6, &r0_data[0], sizeof(struct rt1320_datafixpoint));
+	rt1320_fw_param_protocol(rt1320, RT1320_GET_PARAM, 7, &r0_data[1], sizeof(struct rt1320_datafixpoint));
+	l_advancegain = r0_data[0].advancegain;
+	r_advancegain = r0_data[1].advancegain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(dev, "%s, LR advanceGain=0x%x 0x%x\n", __func__, l_advancegain, r_advancegain);
 
 	/* set R0 and enable protection by SetParameter id 6, 7 */
@@ -1498,7 +1508,10 @@ static int rt1320_rae_load(struct rt1320_sdw_priv *rt1320)
 		}
 		if (!retry && !(value & 0x40)) {
 			dev_err(dev, "%s: RAE is not ready to load\n", __func__);
+<<<<<<< HEAD
 			release_firmware(rae_fw);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ETIMEDOUT;
 		}
 
@@ -2508,6 +2521,7 @@ static int rt1320_rae_update_put(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rt1320_brown_out_put(struct snd_kcontrol *kcontrol,
 				 struct snd_ctl_elem_value *ucontrol)
 {
@@ -2547,6 +2561,8 @@ static int rt1320_brown_out_get(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rt1320_r0_temperature_get(struct snd_kcontrol *kcontrol,
 				     struct snd_ctl_elem_value *ucontrol)
 {
@@ -2606,8 +2622,11 @@ static const struct snd_kcontrol_new rt1320_snd_controls[] = {
 		rt1320_r0_temperature_get, rt1320_r0_temperature_put),
 	SOC_SINGLE_EXT("RAE Update", SND_SOC_NOPM, 0, 1, 0,
 		rt1320_rae_update_get, rt1320_rae_update_put),
+<<<<<<< HEAD
 	SOC_SINGLE_EXT("Brown Out Switch", SND_SOC_NOPM, 0, 1, 0,
 		rt1320_brown_out_get, rt1320_brown_out_put),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct snd_kcontrol_new rt1320_spk_l_dac =
@@ -2967,7 +2986,10 @@ static int rt1320_sdw_init(struct device *dev, struct regmap *regmap,
 	rt1320->fu_dapm_mute = true;
 	rt1320->fu_mixer_mute[0] = rt1320->fu_mixer_mute[1] =
 		rt1320->fu_mixer_mute[2] = rt1320->fu_mixer_mute[3] = true;
+<<<<<<< HEAD
 	rt1320->brown_out = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	INIT_WORK(&rt1320->load_dspfw_work, rt1320_load_dspfw_work);
 

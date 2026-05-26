@@ -376,6 +376,7 @@ static int io_send_setup(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 		kmsg->msg.msg_namelen = addr_len;
 	}
 	if (sr->flags & IORING_RECVSEND_FIXED_BUF) {
+<<<<<<< HEAD
 		if (!(sr->flags & IORING_SEND_VECTORIZED)) {
 			req->flags |= REQ_F_IMPORT_BUFFER;
 			return 0;
@@ -383,6 +384,12 @@ static int io_send_setup(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 
 		kmsg->msg.msg_iter.nr_segs = sr->len;
 		return io_prep_reg_iovec(req, &kmsg->vec, sr->buf, sr->len);
+=======
+		if (sr->flags & IORING_SEND_VECTORIZED)
+			return -EINVAL;
+		req->flags |= REQ_F_IMPORT_BUFFER;
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (req->flags & REQ_F_BUFFER_SELECT)
 		return 0;
@@ -400,7 +407,10 @@ static int io_sendmsg_setup(struct io_kiocb *req, const struct io_uring_sqe *sqe
 	struct user_msghdr msg;
 	int ret;
 
+<<<<<<< HEAD
 	sr->flags |= IORING_SEND_VECTORIZED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sr->umsg = u64_to_user_ptr(READ_ONCE(sqe->addr));
 	ret = io_msg_copy_hdr(req, kmsg, &msg, ITER_SOURCE, NULL);
 	if (unlikely(ret))
@@ -1338,12 +1348,19 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 	struct io_ring_ctx *ctx = req->ctx;
 	struct io_async_msghdr *iomsg;
 	struct io_kiocb *notif;
+<<<<<<< HEAD
 	u64 user_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	zc->done_io = 0;
 
+<<<<<<< HEAD
 	if (unlikely(READ_ONCE(sqe->__pad2[0])))
+=======
+	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	/* we don't support IOSQE_CQE_SKIP_SUCCESS just yet */
 	if (req->flags & REQ_F_CQE_SKIP)
@@ -1352,11 +1369,15 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 	notif = zc->notif = io_alloc_notif(ctx);
 	if (!notif)
 		return -ENOMEM;
+<<<<<<< HEAD
 	user_data = READ_ONCE(sqe->addr3);
 	if (!user_data)
 		user_data = req->cqe.user_data;
 
 	notif->cqe.user_data = user_data;
+=======
+	notif->cqe.user_data = req->cqe.user_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	notif->cqe.res = 0;
 	notif->cqe.flags = IORING_CQE_F_NOTIF;
 	req->flags |= REQ_F_NEED_CLEANUP | REQ_F_POLL_NO_LAZY;
@@ -1380,7 +1401,11 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 	if (zc->msg_flags & MSG_DONTWAIT)
 		req->flags |= REQ_F_NOWAIT;
 
+<<<<<<< HEAD
 	if (io_is_compat(ctx))
+=======
+	if (io_is_compat(req->ctx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		zc->msg_flags |= MSG_CMSG_COMPAT;
 
 	iomsg = io_msg_alloc_async(req);
@@ -1455,6 +1480,7 @@ static int io_sg_from_iter(struct sk_buff *skb,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int io_send_zc_import(struct io_kiocb *req,
 			     struct io_async_msghdr *kmsg,
 			     unsigned int issue_flags)
@@ -1488,6 +1514,24 @@ static int io_send_zc_import(struct io_kiocb *req,
 int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
 {
 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+=======
+static int io_send_zc_import(struct io_kiocb *req, unsigned int issue_flags)
+{
+	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+	struct io_async_msghdr *kmsg = req->async_data;
+
+	WARN_ON_ONCE(!(sr->flags & IORING_RECVSEND_FIXED_BUF));
+
+	sr->notif->buf_index = req->buf_index;
+	return io_import_reg_buf(sr->notif, &kmsg->msg.msg_iter,
+				(u64)(uintptr_t)sr->buf, sr->len,
+				ITER_SOURCE, issue_flags);
+}
+
+int io_send_zc(struct io_kiocb *req, unsigned int issue_flags)
+{
+	struct io_sr_msg *zc = io_kiocb_to_cmd(req, struct io_sr_msg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct io_async_msghdr *kmsg = req->async_data;
 	struct socket *sock;
 	unsigned msg_flags;
@@ -1498,21 +1542,37 @@ int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
 		return -ENOTSOCK;
 	if (!test_bit(SOCK_SUPPORT_ZC, &sock->flags))
 		return -EOPNOTSUPP;
+<<<<<<< HEAD
 	if (!(req->flags & REQ_F_POLLED) &&
 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
 		return -EAGAIN;
 
 	if (req->flags & REQ_F_IMPORT_BUFFER) {
 		ret = io_send_zc_import(req, kmsg, issue_flags);
+=======
+
+	if (!(req->flags & REQ_F_POLLED) &&
+	    (zc->flags & IORING_RECVSEND_POLL_FIRST))
+		return -EAGAIN;
+
+	if (req->flags & REQ_F_IMPORT_BUFFER) {
+		req->flags &= ~REQ_F_IMPORT_BUFFER;
+		ret = io_send_zc_import(req, issue_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(ret))
 			return ret;
 	}
 
+<<<<<<< HEAD
 	msg_flags = sr->msg_flags;
+=======
+	msg_flags = zc->msg_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (issue_flags & IO_URING_F_NONBLOCK)
 		msg_flags |= MSG_DONTWAIT;
 	if (msg_flags & MSG_WAITALL)
 		min_ret = iov_iter_count(&kmsg->msg.msg_iter);
+<<<<<<< HEAD
 
 	kmsg->msg.msg_ubuf = &io_notif_to_data(sr->notif)->uarg;
 
@@ -1524,12 +1584,95 @@ int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
 		kmsg->msg.msg_control_user = sr->msg_control;
 		ret = __sys_sendmsg_sock(sock, &kmsg->msg, msg_flags);
 	}
+=======
+	msg_flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
+
+	kmsg->msg.msg_flags = msg_flags;
+	kmsg->msg.msg_ubuf = &io_notif_to_data(zc->notif)->uarg;
+	ret = sock_sendmsg(sock, &kmsg->msg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(ret < min_ret)) {
 		if (ret == -EAGAIN && (issue_flags & IO_URING_F_NONBLOCK))
 			return -EAGAIN;
 
+<<<<<<< HEAD
 		if (ret > 0 && io_net_retry(sock, sr->msg_flags)) {
+=======
+		if (ret > 0 && io_net_retry(sock, kmsg->msg.msg_flags)) {
+			zc->done_io += ret;
+			return -EAGAIN;
+		}
+		if (ret == -ERESTARTSYS)
+			ret = -EINTR;
+		req_set_fail(req);
+	}
+
+	if (ret >= 0)
+		ret += zc->done_io;
+	else if (zc->done_io)
+		ret = zc->done_io;
+
+	/*
+	 * If we're in io-wq we can't rely on tw ordering guarantees, defer
+	 * flushing notif to io_send_zc_cleanup()
+	 */
+	if (!(issue_flags & IO_URING_F_UNLOCKED)) {
+		io_notif_flush(zc->notif);
+		zc->notif = NULL;
+		io_req_msg_cleanup(req, 0);
+	}
+	io_req_set_res(req, ret, IORING_CQE_F_MORE);
+	return IOU_COMPLETE;
+}
+
+int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
+{
+	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+	struct io_async_msghdr *kmsg = req->async_data;
+	struct socket *sock;
+	unsigned flags;
+	int ret, min_ret = 0;
+
+	if (req->flags & REQ_F_IMPORT_BUFFER) {
+		unsigned uvec_segs = kmsg->msg.msg_iter.nr_segs;
+		int ret;
+
+		sr->notif->buf_index = req->buf_index;
+		ret = io_import_reg_vec(ITER_SOURCE, &kmsg->msg.msg_iter,
+					sr->notif, &kmsg->vec, uvec_segs,
+					issue_flags);
+		if (unlikely(ret))
+			return ret;
+		req->flags &= ~REQ_F_IMPORT_BUFFER;
+	}
+
+	sock = sock_from_file(req->file);
+	if (unlikely(!sock))
+		return -ENOTSOCK;
+	if (!test_bit(SOCK_SUPPORT_ZC, &sock->flags))
+		return -EOPNOTSUPP;
+
+	if (!(req->flags & REQ_F_POLLED) &&
+	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
+		return -EAGAIN;
+
+	flags = sr->msg_flags;
+	if (issue_flags & IO_URING_F_NONBLOCK)
+		flags |= MSG_DONTWAIT;
+	if (flags & MSG_WAITALL)
+		min_ret = iov_iter_count(&kmsg->msg.msg_iter);
+
+	kmsg->msg.msg_control_user = sr->msg_control;
+	kmsg->msg.msg_ubuf = &io_notif_to_data(sr->notif)->uarg;
+	ret = __sys_sendmsg_sock(sock, &kmsg->msg, flags);
+
+	if (unlikely(ret < min_ret)) {
+		if (ret == -EAGAIN && (issue_flags & IO_URING_F_NONBLOCK))
+			return -EAGAIN;
+
+		if (ret > 0 && io_net_retry(sock, flags)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sr->done_io += ret;
 			return -EAGAIN;
 		}

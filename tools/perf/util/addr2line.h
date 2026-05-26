@@ -8,6 +8,11 @@ struct dso;
 struct inline_node;
 struct symbol;
 
+<<<<<<< HEAD
+=======
+extern int addr2line_timeout_ms;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int cmd__addr2line(const char *dso_name, u64 addr,
 		   char **file, unsigned int *line_nr,
 		   struct dso *dso,

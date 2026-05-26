@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2015-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2015 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -174,12 +178,15 @@ struct program_mcache_id_and_split_coordinate {
 	struct dml2_hubp_pipe_mcache_regs *mcache_regs;
 };
 
+<<<<<<< HEAD
 struct control_cm_hist_params {
 	struct dpp *dpp;
 	struct cm_hist_control cm_hist_control;
 	enum dc_color_space color_space;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct program_cursor_update_now_params {
 	struct dc *dc;
 	struct pipe_ctx *pipe_ctx;
@@ -761,7 +768,10 @@ union block_sequence_params {
 	struct dmub_hw_control_lock_fast_params dmub_hw_control_lock_fast_params;
 	struct program_surface_config_params program_surface_config_params;
 	struct program_mcache_id_and_split_coordinate program_mcache_id_and_split_coordinate;
+<<<<<<< HEAD
 	struct control_cm_hist_params control_cm_hist_params;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct program_cursor_update_now_params program_cursor_update_now_params;
 	struct hubp_wait_pipe_read_start_params hubp_wait_pipe_read_start_params;
 	struct apply_update_flags_for_phantom_params apply_update_flags_for_phantom_params;
@@ -886,7 +896,10 @@ enum block_sequence_func {
 	DMUB_HW_CONTROL_LOCK_FAST,
 	HUBP_PROGRAM_SURFACE_CONFIG,
 	HUBP_PROGRAM_MCACHE_ID,
+<<<<<<< HEAD
 	DPP_PROGRAM_CM_HIST,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PROGRAM_CURSOR_UPDATE_NOW,
 	HUBP_WAIT_PIPE_READ_START,
 	HWS_APPLY_UPDATE_FLAGS_FOR_PHANTOM,
@@ -1197,8 +1210,11 @@ struct hw_sequencer_funcs {
 	void (*disable_link_output)(struct dc_link *link,
 			const struct link_resource *link_res,
 			enum signal_type signal);
+<<<<<<< HEAD
 	bool (*dac_load_detect)(struct dc_link *link);
 	void (*prepare_ddc)(struct dc_link *link);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void (*get_dcc_en_bits)(struct dc *dc, int *dcc_en_bits);
 
@@ -1365,10 +1381,13 @@ void get_dcc_visual_confirm_color(
 	struct pipe_ctx *pipe_ctx,
 	struct tg_color *color);
 
+<<<<<<< HEAD
 void get_refresh_rate_confirm_color(
 		struct pipe_ctx *pipe_ctx,
 		struct tg_color *color);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void set_p_state_switch_method(
 		struct dc *dc,
 		struct dc_state *context,
@@ -1427,8 +1446,11 @@ void hwss_program_surface_config(union block_sequence_params *params);
 
 void hwss_program_mcache_id_and_split_coordinate(union block_sequence_params *params);
 
+<<<<<<< HEAD
 void hwss_program_cm_hist(union block_sequence_params *params);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void hwss_set_odm_combine(union block_sequence_params *params);
 
 void hwss_set_odm_bypass(union block_sequence_params *params);
@@ -1779,11 +1801,14 @@ void hwss_add_opp_program_bit_depth_reduction(struct block_sequence_state *seq_s
 		bool use_default_params,
 		struct pipe_ctx *pipe_ctx);
 
+<<<<<<< HEAD
 void hwss_add_dpp_program_cm_hist(struct block_sequence_state *seq_state,
 		struct dpp *dpp,
 		struct cm_hist_control cm_hist_control,
 		enum dc_color_space color_space);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void hwss_add_dc_ip_request_cntl(struct block_sequence_state *seq_state,
 		struct dc *dc,
 		bool enable);

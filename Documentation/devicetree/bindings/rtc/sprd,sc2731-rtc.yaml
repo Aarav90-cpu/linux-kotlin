@@ -13,12 +13,16 @@ maintainers:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - enum:
               - sprd,sc2730-rtc
           - const: sprd,sc2731-rtc
       - const: sprd,sc2731-rtc
+=======
+    const: sprd,sc2731-rtc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

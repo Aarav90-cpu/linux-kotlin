@@ -181,6 +181,7 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
 	return 1;
 }
 
+<<<<<<< HEAD
 /* Parse optional port number after IP address.
  * Returns false on malformed input, true otherwise.
  * If port is non-NULL, stores parsed port in network byte order.
@@ -232,6 +233,8 @@ static bool sip_parse_port(const char *dptr, const char **endp,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* skip ip address. returns its length. */
 static int epaddr_len(const struct nf_conn *ct, const char *dptr,
 		      const char *limit, int *shift)
@@ -244,8 +247,16 @@ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (!sip_parse_port(dptr, &dptr, limit, NULL))
 		return 0;
+=======
+	/* Port number */
+	if (*dptr == ':') {
+		dptr++;
+		dptr += digits_len(ct, dptr, limit, shift);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return dptr - aux;
 }
 
@@ -276,6 +287,7 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
 	return epaddr_len(ct, dptr, limit, shift);
 }
 
+<<<<<<< HEAD
 /* simple_strtoul stops after first non-number character.
  * But as we're not dealing with c-strings, we can't rely on
  * hitting \r,\n,\0 etc. before moving past end of buffer.
@@ -321,6 +333,8 @@ err:
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Parse a SIP request line of the form:
  *
  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
@@ -334,6 +348,10 @@ int ct_sip_parse_request(const struct nf_conn *ct,
 {
 	const char *start = dptr, *limit = dptr + datalen, *end;
 	unsigned int mlen;
+<<<<<<< HEAD
+=======
+	unsigned int p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int shift = 0;
 
 	/* Skip method and following whitespace */
@@ -359,8 +377,19 @@ int ct_sip_parse_request(const struct nf_conn *ct,
 
 	if (!sip_parse_addr(ct, dptr, &end, addr, limit, true))
 		return -1;
+<<<<<<< HEAD
 	if (!sip_parse_port(end, &end, limit, port))
 		return -1;
+=======
+	if (end < limit && *end == ':') {
+		end++;
+		p = simple_strtoul(end, (char **)&end, 10);
+		if (p < 1024 || p > 65535)
+			return -1;
+		*port = htons(p);
+	} else
+		*port = htons(SIP_PORT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (end == dptr)
 		return 0;
@@ -595,6 +624,10 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
 			    union nf_inet_addr *addr, __be16 *port)
 {
 	const char *c, *limit = dptr + datalen;
+<<<<<<< HEAD
+=======
+	unsigned int p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = ct_sip_walk_headers(ct, dptr, dataoff ? *dataoff : 0, datalen,
@@ -605,8 +638,19 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
 
 	if (!sip_parse_addr(ct, dptr + *matchoff, &c, addr, limit, true))
 		return -1;
+<<<<<<< HEAD
 	if (!sip_parse_port(c, &c, limit, port))
 		return -1;
+=======
+	if (*c == ':') {
+		c++;
+		p = simple_strtoul(c, (char **)&c, 10);
+		if (p < 1024 || p > 65535)
+			return -1;
+		*port = htons(p);
+	} else
+		*port = htons(SIP_PORT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dataoff)
 		*dataoff = c - dptr;
@@ -688,7 +732,11 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
 		return 0;
 
 	start += strlen(name);
+<<<<<<< HEAD
 	*val = sip_strtouint(start, limit - start, (char **)&end);
+=======
+	*val = simple_strtoul(start, &end, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (start == end)
 		return -1;
 	if (matchoff && matchlen) {
@@ -948,8 +996,14 @@ static int set_expected_rtp_rtcp(struct sk_buff *skb, unsigned int protoff,
 		saddr = &ct->tuplehash[!dir].tuple.src.u3;
 	} else if (sip_external_media) {
 		struct net_device *dev = skb_dst(skb)->dev;
+<<<<<<< HEAD
 		struct dst_entry *dst = NULL;
 		struct flowi fl;
+=======
+		struct net *net = dev_net(dev);
+		struct flowi fl;
+		struct dst_entry *dst = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		memset(&fl, 0, sizeof(fl));
 
@@ -1143,8 +1197,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
 
 	mediaoff = sdpoff;
 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
+<<<<<<< HEAD
 		char *end;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ct_sip_get_sdp_header(ct, *dptr, mediaoff, *datalen,
 					  SDP_HDR_MEDIA, SDP_HDR_UNSPEC,
 					  &mediaoff, &medialen) <= 0)
@@ -1160,8 +1217,13 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
 		mediaoff += t->len;
 		medialen -= t->len;
 
+<<<<<<< HEAD
 		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
 		if (port == 0 || *dptr + mediaoff == end)
+=======
+		port = simple_strtoul(*dptr + mediaoff, NULL, 10);
+		if (port == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		if (port < 1024 || port > 65535) {
 			nf_ct_helper_log(skb, ct, "wrong port %u", port);
@@ -1335,7 +1397,11 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
 	 */
 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
 			      &matchoff, &matchlen) > 0)
+<<<<<<< HEAD
 		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
+=======
+		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
 				      SIP_HDR_CONTACT, NULL,
@@ -1366,10 +1432,13 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
 		goto store_cseq;
 	}
 
+<<<<<<< HEAD
 	helper = rcu_dereference(nfct_help(ct)->helper);
 	if (!helper)
 		return NF_DROP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exp = nf_ct_expect_alloc(ct);
 	if (!exp) {
 		nf_ct_helper_log(skb, ct, "cannot alloc expectation");
@@ -1380,10 +1449,21 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
 	if (sip_direct_signalling)
 		saddr = &ct->tuplehash[!dir].tuple.src.u3;
 
+<<<<<<< HEAD
 	nf_ct_expect_init(exp, SIP_EXPECT_SIGNALLING, nf_ct_l3num(ct),
 			  saddr, &daddr, proto, NULL, &port);
 	exp->timeout.expires = sip_timeout * HZ;
 	rcu_assign_pointer(exp->assign_helper, helper);
+=======
+	helper = rcu_dereference(nfct_help(ct)->helper);
+	if (!helper)
+		return NF_DROP;
+
+	nf_ct_expect_init(exp, SIP_EXPECT_SIGNALLING, nf_ct_l3num(ct),
+			  saddr, &daddr, proto, NULL, &port);
+	exp->timeout.expires = sip_timeout * HZ;
+	rcu_assign_pointer(exp->helper, helper);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exp->flags = NF_CT_EXPECT_PERMANENT | NF_CT_EXPECT_INACTIVE;
 
 	hooks = rcu_dereference(nf_nat_sip_hooks);
@@ -1439,7 +1519,11 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
 
 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
 			      &matchoff, &matchlen) > 0)
+<<<<<<< HEAD
 		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
+=======
+		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (1) {
 		unsigned int c_expires = expires;
@@ -1499,12 +1583,19 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
 	unsigned int matchoff, matchlen, matchend;
 	unsigned int code, cseq, i;
+<<<<<<< HEAD
 	char *end;
 
 	if (*datalen < strlen("SIP/2.0 200"))
 		return NF_ACCEPT;
 	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
 			     *datalen - strlen("SIP/2.0 "), NULL);
+=======
+
+	if (*datalen < strlen("SIP/2.0 200"))
+		return NF_ACCEPT;
+	code = simple_strtoul(*dptr + strlen("SIP/2.0 "), NULL, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!code) {
 		nf_ct_helper_log(skb, ct, "cannot get code");
 		return NF_DROP;
@@ -1515,8 +1606,13 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
 		return NF_DROP;
 	}
+<<<<<<< HEAD
 	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
 	if (*dptr + matchoff == end) {
+=======
+	cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+	if (!cseq && *(*dptr + matchoff) != '0') {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nf_ct_helper_log(skb, ct, "cannot get cseq");
 		return NF_DROP;
 	}
@@ -1565,7 +1661,10 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
 
 	for (i = 0; i < ARRAY_SIZE(sip_handlers); i++) {
 		const struct sip_handler *handler;
+<<<<<<< HEAD
 		char *end;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		handler = &sip_handlers[i];
 		if (handler->request == NULL)
@@ -1582,8 +1681,13 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
 			return NF_DROP;
 		}
+<<<<<<< HEAD
 		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
 		if (*dptr + matchoff == end) {
+=======
+		cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+		if (!cseq && *(*dptr + matchoff) != '0') {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			nf_ct_helper_log(skb, ct, "cannot get cseq");
 			return NF_DROP;
 		}
@@ -1659,7 +1763,11 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
 				      &matchoff, &matchlen) <= 0)
 			break;
 
+<<<<<<< HEAD
 		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
+=======
+		clen = simple_strtoul(dptr + matchoff, (char **)&end, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dptr + matchoff == end)
 			break;
 

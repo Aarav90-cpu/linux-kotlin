@@ -56,8 +56,12 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
  * - pending work-to-be-done flags come first and must be assigned to be
  *   within bits 0 to 7 to fit in and immediate operand.
  *
+<<<<<<< HEAD
  * (Historically TIF_SYSCALL_TRACE was known to be 0 via blbs, but we may
  *  also test multiple bits via masks now.)
+=======
+ * TIF_SYSCALL_TRACE is known to be 0 via blbs.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
 #define TIF_NOTIFY_RESUME	1	/* callback before returning to user */
@@ -65,7 +69,10 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
 #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
 #define TIF_SYSCALL_AUDIT	4	/* syscall audit active */
 #define TIF_NOTIFY_SIGNAL	5	/* signal notifications exist */
+<<<<<<< HEAD
 #define TIF_SECCOMP		6	/* seccomp syscall filtering active */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TIF_DIE_IF_KERNEL	9	/* dik recursion lock */
 #define TIF_MEMDIE		13	/* is terminating due to OOM killer */
 #define TIF_POLLING_NRFLAG	14	/* idle is polling for TIF_NEED_RESCHED */
@@ -76,6 +83,7 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
 #define _TIF_NOTIFY_RESUME	(1<<TIF_NOTIFY_RESUME)
 #define _TIF_SYSCALL_AUDIT	(1<<TIF_SYSCALL_AUDIT)
 #define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
+<<<<<<< HEAD
 #define _TIF_SECCOMP		(1<<TIF_SECCOMP)
 #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
 
@@ -90,6 +98,10 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
 # define _TIF_SYSCALL_WORK	(_TIF_SYSCALL_TRACE | _TIF_SECCOMP)
 #endif
 
+=======
+#define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Work to do on interrupt/exception return.  */
 #define _TIF_WORK_MASK		(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
 				 _TIF_NOTIFY_RESUME | _TIF_NOTIFY_SIGNAL)

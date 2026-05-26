@@ -38,8 +38,11 @@ static inline char *v3d_queue_to_string(enum v3d_queue queue)
 }
 
 struct v3d_stats {
+<<<<<<< HEAD
 	struct kref refcount;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 start_ns;
 	u64 enabled_ns;
 	u64 jobs_completed;
@@ -48,6 +51,7 @@ struct v3d_stats {
 	 * This seqcount is used to protect the access to the GPU stats
 	 * variables. It must be used as, while we are reading the stats,
 	 * IRQs can happen and the stats can be updated.
+<<<<<<< HEAD
 	 *
 	 * However, we use the raw seqcount helpers to interact with this lock
 	 * to avoid false positives from lockdep, which is unable to detect that
@@ -57,6 +61,10 @@ struct v3d_stats {
 	seqcount_t lock;
 
 	atomic_t reset_counter;
+=======
+	 */
+	seqcount_t lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct v3d_queue_state {
@@ -66,11 +74,20 @@ struct v3d_queue_state {
 	u64 emit_seqno;
 
 	/* Stores the GPU stats for this queue in the global context. */
+<<<<<<< HEAD
 	struct v3d_stats *stats;
+=======
+	struct v3d_stats stats;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Currently active job for this queue */
 	struct v3d_job *active_job;
 	spinlock_t queue_lock;
+<<<<<<< HEAD
+=======
+	/* Protect dma fence for signalling job completion */
+	spinlock_t fence_lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Performance monitor object. The perform lifetime is controlled by userspace
@@ -203,8 +220,15 @@ struct v3d_dev {
 	 */
 	struct v3d_perfmon *global_perfmon;
 
+<<<<<<< HEAD
 	/* Global reset counter incremented on each GPU reset. */
 	atomic_t reset_counter;
+=======
+	/* Global reset counter. The counter must be incremented when
+	 * a GPU reset happens. It must be protected by @reset_lock.
+	 */
+	unsigned int reset_counter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct v3d_dev *
@@ -225,12 +249,29 @@ v3d_has_csd(struct v3d_dev *v3d)
 struct v3d_file_priv {
 	struct v3d_dev *v3d;
 
+<<<<<<< HEAD
 	struct xarray perfmons;
+=======
+	struct {
+		struct idr idr;
+		struct mutex lock;
+	} perfmon;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct drm_sched_entity sched_entity[V3D_MAX_QUEUES];
 
 	/* Stores the GPU stats for a specific queue for this fd. */
+<<<<<<< HEAD
 	struct v3d_stats *stats[V3D_MAX_QUEUES];
+=======
+	struct v3d_stats stats[V3D_MAX_QUEUES];
+
+	/* Per-fd reset counter, must be incremented when a job submitted
+	 * by this fd causes a GPU reset. It must be protected by
+	 * &struct v3d_dev->reset_lock.
+	 */
+	unsigned int reset_counter;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct v3d_bo {
@@ -318,10 +359,13 @@ struct v3d_job {
 	 */
 	struct v3d_file_priv *file_priv;
 
+<<<<<<< HEAD
 	/* Pointers to this job's per-fd and global queue stats. */
 	struct v3d_stats *client_stats;
 	struct v3d_stats *global_stats;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Callback for the freeing of the job on refcount going to 0. */
 	void (*free)(struct kref *ref);
 };
@@ -601,6 +645,7 @@ void v3d_timestamp_query_info_free(struct v3d_timestamp_query_info *query_info,
 				   unsigned int count);
 void v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
 				     unsigned int count);
+<<<<<<< HEAD
 struct v3d_stats *v3d_stats_alloc(void);
 void v3d_stats_release(struct kref *refcount);
 void v3d_job_update_stats(struct v3d_job *job);
@@ -618,6 +663,12 @@ static inline void v3d_stats_put(struct v3d_stats *stats)
 	kref_put(&stats->refcount, v3d_stats_release);
 }
 
+=======
+void v3d_job_update_stats(struct v3d_job *job, enum v3d_queue q);
+int v3d_sched_init(struct v3d_dev *v3d);
+void v3d_sched_fini(struct v3d_dev *v3d);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* v3d_perfmon.c */
 void v3d_perfmon_init(struct v3d_dev *v3d);
 void v3d_perfmon_get(struct v3d_perfmon *perfmon);

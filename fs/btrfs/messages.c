@@ -37,7 +37,11 @@ static void btrfs_state_to_string(const struct btrfs_fs_info *info, char *buf)
 	memcpy(curr, STATE_STRING_PREFACE, sizeof(STATE_STRING_PREFACE));
 	curr += sizeof(STATE_STRING_PREFACE) - 1;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(info))) {
+=======
+	if (BTRFS_FS_ERROR(info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*curr++ = 'E';
 		states_printed = true;
 	}

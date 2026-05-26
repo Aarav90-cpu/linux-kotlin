@@ -27,11 +27,15 @@ static int x1e80100_snd_init(struct snd_soc_pcm_runtime *rtd)
 {
 	struct x1e80100_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+<<<<<<< HEAD
 	struct snd_soc_card *card = rtd->card;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_soc_jack *dp_jack = NULL;
 	int dp_pcm_id = 0;
 
 	switch (cpu_dai->id) {
+<<<<<<< HEAD
 	case WSA_CODEC_DMA_RX_0:
 	case WSA_CODEC_DMA_RX_1:
 		/*
@@ -50,6 +54,8 @@ static int x1e80100_snd_init(struct snd_soc_pcm_runtime *rtd)
 		snd_soc_limit_volume(card, "WooferRight PA Volume", 6);
 		snd_soc_limit_volume(card, "TweeterRight PA Volume", 6);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case DISPLAY_PORT_RX_0:
 		dp_pcm_id = 0;
 		dp_jack = &data->dp_jack[dp_pcm_id];

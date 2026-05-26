@@ -14,7 +14,10 @@
 #include <linux/fs.h>
 #include <linux/cacheinfo.h>
 #include "dax-private.h"
+<<<<<<< HEAD
 #include "bus.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct dax_device - anchor object for dax services
@@ -112,10 +115,13 @@ struct dax_device *fs_dax_get_by_bdev(struct block_device *bdev, u64 *start_off,
 }
 EXPORT_SYMBOL_GPL(fs_dax_get_by_bdev);
 
+<<<<<<< HEAD
 #endif /* CONFIG_BLOCK && CONFIG_FS_DAX */
 
 #if IS_ENABLED(CONFIG_FS_DAX)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void fs_put_dax(struct dax_device *dax_dev, void *holder)
 {
 	if (dax_dev && holder &&
@@ -124,6 +130,7 @@ void fs_put_dax(struct dax_device *dax_dev, void *holder)
 	put_dax(dax_dev);
 }
 EXPORT_SYMBOL_GPL(fs_put_dax);
+<<<<<<< HEAD
 
 /**
  * fs_dax_get() - get ownership of a devdax via holder/holder_ops
@@ -184,6 +191,9 @@ int fs_dax_get(struct dax_device *dax_dev, void *holder,
 }
 EXPORT_SYMBOL_GPL(fs_dax_get);
 #endif /* CONFIG_FS_DAX */
+=======
+#endif /* CONFIG_BLOCK && CONFIG_FS_DAX */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum dax_device_flags {
 	/* !alive + rcu grace period == no new operations / mappings */
@@ -221,9 +231,12 @@ long dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff, long nr_pages,
 	if (!dax_alive(dax_dev))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	if (!dax_dev->ops)
 		return -EOPNOTSUPP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nr_pages < 0)
 		return -EINVAL;
 
@@ -274,10 +287,13 @@ int dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
 
 	if (!dax_alive(dax_dev))
 		return -ENXIO;
+<<<<<<< HEAD
 
 	if (!dax_dev->ops)
 		return -EOPNOTSUPP;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * There are no callers that want to zero more than one page as of now.
 	 * Once users are there, this check can be removed after the
@@ -294,7 +310,11 @@ EXPORT_SYMBOL_GPL(dax_zero_page_range);
 size_t dax_recovery_write(struct dax_device *dax_dev, pgoff_t pgoff,
 		void *addr, size_t bytes, struct iov_iter *iter)
 {
+<<<<<<< HEAD
 	if (!dax_dev->ops || !dax_dev->ops->recovery_write)
+=======
+	if (!dax_dev->ops->recovery_write)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	return dax_dev->ops->recovery_write(dax_dev, pgoff, addr, bytes, iter);
 }
@@ -378,6 +398,7 @@ void set_dax_nomc(struct dax_device *dax_dev)
 }
 EXPORT_SYMBOL_GPL(set_dax_nomc);
 
+<<<<<<< HEAD
 /**
  * dax_set_ops - set the dax_operations for a dax_device
  * @dax_dev: the dax_device to configure
@@ -407,6 +428,8 @@ int dax_set_ops(struct dax_device *dax_dev, const struct dax_operations *ops)
 }
 EXPORT_SYMBOL_GPL(dax_set_ops);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool dax_alive(struct dax_device *dax_dev)
 {
 	lockdep_assert_held(&dax_srcu);
@@ -521,7 +544,11 @@ static int dax_set(struct inode *inode, void *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct dax_device *dax_dev_get(dev_t devt)
+=======
+static struct dax_device *dax_dev_get(dev_t devt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dax_device *dax_dev;
 	struct inode *inode;
@@ -544,7 +571,10 @@ struct dax_device *dax_dev_get(dev_t devt)
 
 	return dax_dev;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(dax_dev_get);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dax_device *alloc_dax(void *private, const struct dax_operations *ops)
 {

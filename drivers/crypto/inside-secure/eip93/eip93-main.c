@@ -3,7 +3,11 @@
  * Copyright (C) 2019 - 2021
  *
  * Richard van Schagen <vschagen@icloud.com>
+<<<<<<< HEAD
  * Christian Marangi <ansuelsmth@gmail.com>
+=======
+ * Christian Marangi <ansuelsmth@gmail.com
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/atomic.h>
@@ -36,6 +40,7 @@ static struct eip93_alg_template *eip93_algs[] = {
 	&eip93_alg_cbc_aes,
 	&eip93_alg_ctr_aes,
 	&eip93_alg_rfc3686_aes,
+<<<<<<< HEAD
 	&eip93_alg_md5,
 	&eip93_alg_sha1,
 	&eip93_alg_sha224,
@@ -44,6 +49,8 @@ static struct eip93_alg_template *eip93_algs[] = {
 	&eip93_alg_hmac_sha1,
 	&eip93_alg_hmac_sha224,
 	&eip93_alg_hmac_sha256,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&eip93_alg_authenc_hmac_md5_cbc_des,
 	&eip93_alg_authenc_hmac_sha1_cbc_des,
 	&eip93_alg_authenc_hmac_sha224_cbc_des,
@@ -60,6 +67,17 @@ static struct eip93_alg_template *eip93_algs[] = {
 	&eip93_alg_authenc_hmac_sha1_rfc3686_aes,
 	&eip93_alg_authenc_hmac_sha224_rfc3686_aes,
 	&eip93_alg_authenc_hmac_sha256_rfc3686_aes,
+<<<<<<< HEAD
+=======
+	&eip93_alg_md5,
+	&eip93_alg_sha1,
+	&eip93_alg_sha224,
+	&eip93_alg_sha256,
+	&eip93_alg_hmac_md5,
+	&eip93_alg_hmac_sha1,
+	&eip93_alg_hmac_sha224,
+	&eip93_alg_hmac_sha256,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 inline void eip93_irq_disable(struct eip93_device *eip93, u32 mask)

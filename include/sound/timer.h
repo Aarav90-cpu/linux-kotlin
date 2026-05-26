@@ -102,7 +102,10 @@ struct snd_timer_instance {
 	unsigned int slave_id;
 	struct list_head open_list;
 	struct list_head active_list;
+<<<<<<< HEAD
 	struct list_head master_list;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head ack_list;
 	struct list_head slave_list_head;
 	struct list_head slave_active_head;

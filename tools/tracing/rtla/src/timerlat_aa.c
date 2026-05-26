@@ -102,8 +102,13 @@ struct timerlat_aa_data {
  * The analysis context and system wide view
  */
 struct timerlat_aa_context {
+<<<<<<< HEAD
 	int dump_tasks;
 	enum stack_format stack_format;
+=======
+	int nr_cpus;
+	int dump_tasks;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* per CPU data */
 	struct timerlat_aa_data *taa_data;
@@ -417,8 +422,13 @@ static int timerlat_aa_softirq_handler(struct trace_seq *s, struct tep_record *r
 	taa_data->thread_softirq_sum += duration;
 
 	trace_seq_printf(taa_data->softirqs_seq, "  %24s:%-3llu %.*s %9.2f us\n",
+<<<<<<< HEAD
 			 vector < ARRAY_SIZE(softirq_name) ? softirq_name[vector] : "UNKNOWN",
 			 vector, 24, spaces,
+=======
+			 softirq_name[vector], vector,
+			 24, spaces,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 ns_to_usf(duration));
 	return 0;
 }
@@ -481,16 +491,23 @@ static int timerlat_aa_stack_handler(struct trace_seq *s, struct tep_record *rec
 {
 	struct timerlat_aa_context *taa_ctx = timerlat_aa_get_ctx();
 	struct timerlat_aa_data *taa_data = timerlat_aa_get_data(taa_ctx, record->cpu);
+<<<<<<< HEAD
 	enum stack_format stack_format = taa_ctx->stack_format;
 	unsigned long *caller;
 	const char *function;
 	int val;
 	unsigned long long i;
+=======
+	unsigned long *caller;
+	const char *function;
+	int val, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_seq_reset(taa_data->stack_seq);
 
 	trace_seq_printf(taa_data->stack_seq, "    Blocking thread stack trace\n");
 	caller = tep_get_field_raw(s, event, "caller", record, &val, 1);
+<<<<<<< HEAD
 
 	if (caller) {
 		unsigned long long size;
@@ -518,6 +535,17 @@ static int timerlat_aa_stack_handler(struct trace_seq *s, struct tep_record *rec
 		}
 	}
 
+=======
+	if (caller) {
+		for (i = 0; ; i++) {
+			function = tep_find_function(taa_ctx->tool->trace.tep, caller[i]);
+			if (!function)
+				break;
+			trace_seq_printf(taa_data->stack_seq, " %.*s -> %s\n",
+					 14, spaces, function);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -758,7 +786,11 @@ void timerlat_auto_analysis(int irq_thresh, int thread_thresh)
 	irq_thresh = irq_thresh * 1000;
 	thread_thresh = thread_thresh * 1000;
 
+<<<<<<< HEAD
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
+=======
+	for (cpu = 0; cpu < taa_ctx->nr_cpus; cpu++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		taa_data = timerlat_aa_get_data(taa_ctx, cpu);
 
 		if (irq_thresh && taa_data->tlat_irq_latency >= irq_thresh) {
@@ -786,7 +818,11 @@ void timerlat_auto_analysis(int irq_thresh, int thread_thresh)
 
 	printf("\n");
 	printf("Printing CPU tasks:\n");
+<<<<<<< HEAD
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
+=======
+	for (cpu = 0; cpu < taa_ctx->nr_cpus; cpu++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		taa_data = timerlat_aa_get_data(taa_ctx, cpu);
 		tep = taa_ctx->tool->trace.tep;
 
@@ -812,7 +848,11 @@ static void timerlat_aa_destroy_seqs(struct timerlat_aa_context *taa_ctx)
 	if (!taa_ctx->taa_data)
 		return;
 
+<<<<<<< HEAD
 	for (i = 0; i < nr_cpus; i++) {
+=======
+	for (i = 0; i < taa_ctx->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		taa_data = timerlat_aa_get_data(taa_ctx, i);
 
 		if (taa_data->prev_irqs_seq) {
@@ -862,7 +902,11 @@ static int timerlat_aa_init_seqs(struct timerlat_aa_context *taa_ctx)
 	struct timerlat_aa_data *taa_data;
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < nr_cpus; i++) {
+=======
+	for (i = 0; i < taa_ctx->nr_cpus; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		taa_data = timerlat_aa_get_data(taa_ctx, i);
 
@@ -1040,8 +1084,14 @@ out_ctx:
  *
  * Returns 0 on success, -1 otherwise.
  */
+<<<<<<< HEAD
 int timerlat_aa_init(struct osnoise_tool *tool, int dump_tasks, enum stack_format stack_format)
 {
+=======
+int timerlat_aa_init(struct osnoise_tool *tool, int dump_tasks)
+{
+	int nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timerlat_aa_context *taa_ctx;
 	int retval;
 
@@ -1051,9 +1101,15 @@ int timerlat_aa_init(struct osnoise_tool *tool, int dump_tasks, enum stack_forma
 
 	__timerlat_aa_ctx = taa_ctx;
 
+<<<<<<< HEAD
 	taa_ctx->tool = tool;
 	taa_ctx->dump_tasks = dump_tasks;
 	taa_ctx->stack_format = stack_format;
+=======
+	taa_ctx->nr_cpus = nr_cpus;
+	taa_ctx->tool = tool;
+	taa_ctx->dump_tasks = dump_tasks;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	taa_ctx->taa_data = calloc(nr_cpus, sizeof(*taa_ctx->taa_data));
 	if (!taa_ctx->taa_data)

@@ -16,10 +16,17 @@
 #include <linux/sunrpc/addr.h>
 #include <linux/sunrpc/xprtsock.h>
 #include <linux/sunrpc/svc.h>
+<<<<<<< HEAD
 
 #include <linux/unaligned.h>
 
 #include "lockd.h"
+=======
+#include <linux/lockd/lockd.h>
+
+#include <linux/unaligned.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "netns.h"
 
 #define NLMDBG_FACILITY		NLMDBG_MONITOR

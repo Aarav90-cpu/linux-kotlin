@@ -24,7 +24,10 @@
 #include <linux/pci.h>
 #include <linux/acpi.h>
 #include <linux/atomic.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <acpi/video.h>
 
 static struct backlight_device *apple_backlight_device;
@@ -135,7 +138,11 @@ static const struct hw_data nvidia_chipset_data = {
 	.set_brightness = nvidia_chipset_set_brightness,
 };
 
+<<<<<<< HEAD
 static int apple_bl_probe(struct platform_device *pdev)
+=======
+static int apple_bl_add(struct acpi_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct backlight_properties props;
 	struct pci_dev *host;
@@ -194,7 +201,11 @@ static int apple_bl_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void apple_bl_remove(struct platform_device *pdev)
+=======
+static void apple_bl_remove(struct acpi_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	backlight_device_unregister(apple_backlight_device);
 
@@ -207,12 +218,21 @@ static const struct acpi_device_id apple_bl_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver apple_bl_driver = {
 	.probe = apple_bl_probe,
 	.remove = apple_bl_remove,
 	.driver = {
 		.name = "Apple backlight",
 		.acpi_match_table = apple_bl_ids,
+=======
+static struct acpi_driver apple_bl_driver = {
+	.name = "Apple backlight",
+	.ids = apple_bl_ids,
+	.ops = {
+		.add = apple_bl_add,
+		.remove = apple_bl_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -225,12 +245,20 @@ static int __init apple_bl_init(void)
 	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	return platform_driver_register(&apple_bl_driver);
+=======
+	return acpi_bus_register_driver(&apple_bl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit apple_bl_exit(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&apple_bl_driver);
+=======
+	acpi_bus_unregister_driver(&apple_bl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(apple_bl_init);

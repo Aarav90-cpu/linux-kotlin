@@ -26,8 +26,11 @@ static const struct pci_device_id mt7921_pci_device_table[] = {
 		.driver_data = (kernel_ulong_t)MT7922_FIRMWARE_WM },
 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7920),
 		.driver_data = (kernel_ulong_t)MT7920_FIRMWARE_WM },
+<<<<<<< HEAD
 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7902),
 		.driver_data = (kernel_ulong_t)MT7902_FIRMWARE_WM },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ },
 };
 
@@ -169,6 +172,7 @@ static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
 
 static int mt7921_dma_init(struct mt792x_dev *dev)
 {
+<<<<<<< HEAD
 	struct mt7921_dma_layout layout = {
 		/* General case: MT7921 / MT7922 /MT7920 */
 		.mcu_wm_txq            = MT7921_TXQ_MCU_WM,
@@ -192,6 +196,10 @@ static int mt7921_dma_init(struct mt792x_dev *dev)
 		layout.has_mcu_wa           = false;
 	}
 
+=======
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt76_dma_attach(&dev->mt76);
 
 	ret = mt792x_dma_disable(dev, true);
@@ -208,7 +216,11 @@ static int mt7921_dma_init(struct mt792x_dev *dev)
 	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, 0x4);
 
 	/* command to WM */
+<<<<<<< HEAD
 	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_WM, layout.mcu_wm_txq,
+=======
+	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_WM, MT7921_TXQ_MCU_WM,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  MT7921_TX_MCU_RING_SIZE, MT_TX_RING_BASE);
 	if (ret)
 		return ret;
@@ -222,11 +234,16 @@ static int mt7921_dma_init(struct mt792x_dev *dev)
 	/* event from WM before firmware download */
 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
 			       MT7921_RXQ_MCU_WM,
+<<<<<<< HEAD
 			       layout.mcu_rxdone_ring_size,
+=======
+			       MT7921_RX_MCU_RING_SIZE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (layout.has_mcu_wa) {
 		/* Change mcu queue after firmware download */
 		ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
@@ -236,6 +253,15 @@ static int mt7921_dma_init(struct mt792x_dev *dev)
 		if (ret)
 			return ret;
 	}
+=======
+	/* Change mcu queue after firmware download */
+	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
+			       MT7921_RXQ_MCU_WM,
+			       MT7921_RX_MCU_WA_RING_SIZE,
+			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* rx data */
 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
@@ -301,7 +327,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
 	struct mt76_bus_ops *bus_ops;
 	struct mt792x_dev *dev;
 	struct mt76_dev *mdev;
+<<<<<<< HEAD
 	void __iomem *regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 cmd, chipid;
 	u8 features;
 	int ret;
@@ -310,6 +339,13 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
 	if (!(cmd & PCI_COMMAND_MEMORY)) {
 		cmd |= PCI_COMMAND_MEMORY;
@@ -343,14 +379,18 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
 
 	pci_set_drvdata(pdev, mdev);
 
+<<<<<<< HEAD
 	regs =  pcim_iomap_region(pdev, 0, pci_name(pdev));
 	if (IS_ERR(regs))
 		return PTR_ERR(regs);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev = container_of(mdev, struct mt792x_dev, mt76);
 	dev->fw_features = features;
 	dev->hif_ops = &mt7921_pcie_ops;
 	dev->irq_map = &irq_map;
+<<<<<<< HEAD
 	mt76_mmio_init(&dev->mt76, regs);
 
 	if (id->device == 0x7902) {
@@ -366,6 +406,9 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
 		dev->irq_map = map;
 	}
 
+=======
+	mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tasklet_init(&mdev->irq_tasklet, mt792x_irq_tasklet, (unsigned long)dev);
 
 	dev->phy.dev = dev;
@@ -619,8 +662,11 @@ MODULE_FIRMWARE(MT7921_FIRMWARE_WM);
 MODULE_FIRMWARE(MT7921_ROM_PATCH);
 MODULE_FIRMWARE(MT7922_FIRMWARE_WM);
 MODULE_FIRMWARE(MT7922_ROM_PATCH);
+<<<<<<< HEAD
 MODULE_FIRMWARE(MT7902_FIRMWARE_WM);
 MODULE_FIRMWARE(MT7902_ROM_PATCH);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Sean Wang <sean.wang@mediatek.com>");
 MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
 MODULE_DESCRIPTION("MediaTek MT7921E (PCIe) wireless driver");

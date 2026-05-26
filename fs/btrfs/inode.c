@@ -74,6 +74,10 @@
 #include "delayed-inode.h"
 
 #define COW_FILE_RANGE_KEEP_LOCKED	(1UL << 0)
+<<<<<<< HEAD
+=======
+#define COW_FILE_RANGE_NO_INLINE	(1UL << 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct btrfs_iget_args {
 	u64 ino;
@@ -423,7 +427,11 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 		folio_put(folio);
 	}
 
+<<<<<<< HEAD
 	return btrfs_mark_ordered_io_finished(inode, offset, bytes, false);
+=======
+	return btrfs_mark_ordered_io_finished(inode, NULL, offset, bytes, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int btrfs_dirty_inode(struct btrfs_inode *inode);
@@ -621,10 +629,13 @@ static bool can_cow_file_range_inline(struct btrfs_inode *inode,
  *
  * If being used directly, you must have already checked we're allowed to cow
  * the range by getting true from can_cow_file_range_inline().
+<<<<<<< HEAD
  *
  * Return 0 if the inlined extent is created successfully.
  * Return <0 for critical error, and should be considered as an writeback error.
  * Return >0 if can not create an inlined extent (mostly due to lack of meta space).
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static noinline int __cow_file_range_inline(struct btrfs_inode *inode,
 					    u64 size, size_t compressed_size,
@@ -706,6 +717,58 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static noinline int cow_file_range_inline(struct btrfs_inode *inode,
+					  struct folio *locked_folio,
+					  u64 offset, u64 end,
+					  size_t compressed_size,
+					  int compress_type,
+					  struct folio *compressed_folio,
+					  bool update_i_size)
+{
+	struct extent_state *cached = NULL;
+	unsigned long clear_flags = EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+		EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING | EXTENT_LOCKED;
+	u64 size = min_t(u64, i_size_read(&inode->vfs_inode), end + 1);
+	int ret;
+
+	if (!can_cow_file_range_inline(inode, offset, size, compressed_size))
+		return 1;
+
+	btrfs_lock_extent(&inode->io_tree, offset, end, &cached);
+	ret = __cow_file_range_inline(inode, size, compressed_size,
+				      compress_type, compressed_folio,
+				      update_i_size);
+	if (ret > 0) {
+		btrfs_unlock_extent(&inode->io_tree, offset, end, &cached);
+		return ret;
+	}
+
+	/*
+	 * In the successful case (ret == 0 here), cow_file_range will return 1.
+	 *
+	 * Quite a bit further up the callstack in extent_writepage(), ret == 1
+	 * is treated as a short circuited success and does not unlock the folio,
+	 * so we must do it here.
+	 *
+	 * In the failure case, the locked_folio does get unlocked by
+	 * btrfs_folio_end_all_writers, which asserts that it is still locked
+	 * at that point, so we must *not* unlock it here.
+	 *
+	 * The other two callsites in compress_file_range do not have a
+	 * locked_folio, so they are not relevant to this logic.
+	 */
+	if (ret == 0)
+		locked_folio = NULL;
+
+	extent_clear_unlock_delalloc(inode, offset, end, locked_folio, &cached,
+				     clear_flags, PAGE_UNLOCK |
+				     PAGE_START_WRITEBACK | PAGE_END_WRITEBACK);
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct async_extent {
 	u64 start;
 	u64 ram_size;
@@ -751,7 +814,11 @@ static int add_async_extent(struct async_chunk *cow, u64 start, u64 ram_size,
  * options, defragmentation, properties or heuristics.
  */
 static inline int inode_need_compress(struct btrfs_inode *inode, u64 start,
+<<<<<<< HEAD
 				      u64 end, bool check_inline)
+=======
+				      u64 end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
 
@@ -765,10 +832,15 @@ static inline int inode_need_compress(struct btrfs_inode *inode, u64 start,
 	 * do not even bother try compression, as there will be no space saving
 	 * and will always fallback to regular write later.
 	 */
+<<<<<<< HEAD
 	if (end + 1 - start <= fs_info->sectorsize &&
 	    (!check_inline || (start > 0 || end + 1 < inode->disk_i_size)))
 		return 0;
 
+=======
+	if (start != 0 && end + 1 - start <= fs_info->sectorsize)
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Defrag ioctl takes precedence over mount options and properties. */
 	if (inode->defrag_compress == BTRFS_DEFRAG_DONT_COMPRESS)
 		return 0;
@@ -846,20 +918,40 @@ static struct folio *compressed_bio_last_folio(struct compressed_bio *cb)
 	return page_folio(phys_to_page(paddr));
 }
 
+<<<<<<< HEAD
+=======
+static void zero_last_folio(struct compressed_bio *cb)
+{
+	struct bio *bio = &cb->bbio.bio;
+	struct folio *last_folio = compressed_bio_last_folio(cb);
+	const u32 bio_size = bio->bi_iter.bi_size;
+	const u32 foffset = offset_in_folio(last_folio, bio_size);
+
+	folio_zero_range(last_folio, foffset, folio_size(last_folio) - foffset);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void round_up_last_block(struct compressed_bio *cb, u32 blocksize)
 {
 	struct bio *bio = &cb->bbio.bio;
 	struct folio *last_folio = compressed_bio_last_folio(cb);
 	const u32 bio_size = bio->bi_iter.bi_size;
 	const u32 foffset = offset_in_folio(last_folio, bio_size);
+<<<<<<< HEAD
 	const u32 padding_len = round_up(foffset, blocksize) - foffset;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool ret;
 
 	if (IS_ALIGNED(bio_size, blocksize))
 		return;
 
+<<<<<<< HEAD
 	folio_zero_range(last_folio, foffset, padding_len);
 	ret = bio_add_folio(bio, last_folio, padding_len, foffset);
+=======
+	ret = bio_add_folio(bio, last_folio, round_up(foffset, blocksize) - foffset, foffset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* The remaining part should be merged thus never fail. */
 	ASSERT(ret);
 }
@@ -883,7 +975,13 @@ static void compress_file_range(struct btrfs_work *work)
 		container_of(work, struct async_chunk, work);
 	struct btrfs_inode *inode = async_chunk->inode;
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+<<<<<<< HEAD
 	struct compressed_bio *cb = NULL;
+=======
+	struct address_space *mapping = inode->vfs_inode.i_mapping;
+	struct compressed_bio *cb = NULL;
+	const u32 min_folio_size = btrfs_min_folio_size(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 blocksize = fs_info->sectorsize;
 	u64 start = async_chunk->start;
 	u64 end = async_chunk->end;
@@ -893,6 +991,10 @@ static void compress_file_range(struct btrfs_work *work)
 	int ret = 0;
 	unsigned long total_compressed = 0;
 	unsigned long total_in = 0;
+<<<<<<< HEAD
+=======
+	unsigned int loff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int compress_type = fs_info->compress_type;
 	int compress_level = fs_info->compress_level;
 
@@ -954,7 +1056,11 @@ again:
 	 * been flagged as NOCOMPRESS.  This flag can change at any time if we
 	 * discover bad compression ratios.
 	 */
+<<<<<<< HEAD
 	if (!inode_need_compress(inode, start, end, false))
+=======
+	if (!inode_need_compress(inode, start, end))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto cleanup_and_bail_uncompressed;
 
 	if (0 < inode->defrag_compress && inode->defrag_compress < BTRFS_NR_COMPRESS_TYPES) {
@@ -976,12 +1082,57 @@ again:
 	total_in = cur_len;
 
 	/*
+<<<<<<< HEAD
 	 * We aren't doing an inline extent. Round the compressed size up to a
 	 * block size boundary so the allocator does sane things.
 	 */
 	round_up_last_block(cb, blocksize);
 	total_compressed = cb->bbio.bio.bi_iter.bi_size;
 	ASSERT(IS_ALIGNED(total_compressed, blocksize));
+=======
+	 * Zero the tail end of the last folio, as we might be sending it down
+	 * to disk.
+	 */
+	loff = (total_compressed & (min_folio_size - 1));
+	if (loff)
+		zero_last_folio(cb);
+
+	/*
+	 * Try to create an inline extent.
+	 *
+	 * If we didn't compress the entire range, try to create an uncompressed
+	 * inline extent, else a compressed one.
+	 *
+	 * Check cow_file_range() for why we don't even try to create inline
+	 * extent for the subpage case.
+	 */
+	if (total_in < actual_end)
+		ret = cow_file_range_inline(inode, NULL, start, end, 0,
+					    BTRFS_COMPRESS_NONE, NULL, false);
+	else
+		ret = cow_file_range_inline(inode, NULL, start, end, total_compressed,
+					    compress_type,
+					    bio_first_folio_all(&cb->bbio.bio), false);
+	if (ret <= 0) {
+		cleanup_compressed_bio(cb);
+		if (ret < 0)
+			mapping_set_error(mapping, -EIO);
+		return;
+	}
+	/*
+	 * If a single block at file offset 0 cannot be inlined, fall back to
+	 * regular writes without marking the file incompressible.
+	 */
+	if (start == 0 && end <= blocksize)
+		goto cleanup_and_bail_uncompressed;
+
+	/*
+	 * We aren't doing an inline extent. Round the compressed size up to a
+	 * block size boundary so the allocator does sane things.
+	 */
+	total_compressed = ALIGN(total_compressed, blocksize);
+	round_up_last_block(cb, blocksize);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * One last check to make sure the compression is really a win, compare
@@ -1153,7 +1304,11 @@ out_free_reserve:
 				     NULL, &cached,
 				     EXTENT_LOCKED | EXTENT_DELALLOC |
 				     EXTENT_DELALLOC_NEW |
+<<<<<<< HEAD
 				     EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV,
+=======
+				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
 				     PAGE_END_WRITEBACK);
 	if (async_extent->cb)
@@ -1352,6 +1507,14 @@ free_reserved:
  *
  * When this function fails, it unlocks all folios except @locked_folio.
  *
+<<<<<<< HEAD
+=======
+ * When this function successfully creates an inline extent, it returns 1 and
+ * unlocks all folios including locked_folio and starts I/O on them.
+ * (In reality inline extents are limited to a single block, so locked_folio is
+ * the only folio handled anyway).
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * When this function succeed and creates a normal extent, the folio locking
  * status depends on the passed in flags:
  *
@@ -1395,6 +1558,28 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
 	ASSERT(num_bytes <= btrfs_super_total_bytes(fs_info->super_copy));
 
 	inode_should_defrag(inode, start, end, num_bytes, SZ_64K);
+<<<<<<< HEAD
+=======
+
+	if (!(flags & COW_FILE_RANGE_NO_INLINE)) {
+		/* lets try to make an inline extent */
+		ret = cow_file_range_inline(inode, locked_folio, start, end, 0,
+					    BTRFS_COMPRESS_NONE, NULL, false);
+		if (ret <= 0) {
+			/*
+			 * We succeeded, return 1 so the caller knows we're done
+			 * with this page and already handled the IO.
+			 *
+			 * If there was an error then cow_file_range_inline() has
+			 * already done the cleanup.
+			 */
+			if (ret == 0)
+				ret = 1;
+			goto done;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	alloc_hint = btrfs_get_extent_allocation_hint(inode, start, num_bytes);
 
 	/*
@@ -1472,6 +1657,10 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
 	}
 	extent_clear_unlock_delalloc(inode, orig_start, end, locked_folio, &cached,
 				     EXTENT_LOCKED | EXTENT_DELALLOC, page_ops);
+<<<<<<< HEAD
+=======
+done:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (done_offset)
 		*done_offset = end;
 	return ret;
@@ -1591,7 +1780,11 @@ static bool run_delalloc_compressed(struct btrfs_inode *inode,
 	struct async_cow *ctx;
 	struct async_chunk *async_chunk;
 	unsigned long nr_pages;
+<<<<<<< HEAD
 	u64 num_chunks = DIV_ROUND_UP(end - start, BTRFS_COMPRESSION_CHUNK_SIZE);
+=======
+	u64 num_chunks = DIV_ROUND_UP(end - start, SZ_512K);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 	unsigned nofs_flag;
 	const blk_opf_t write_flags = wbc_to_write_flags(wbc);
@@ -1608,7 +1801,11 @@ static bool run_delalloc_compressed(struct btrfs_inode *inode,
 	atomic_set(&ctx->num_chunks, num_chunks);
 
 	for (i = 0; i < num_chunks; i++) {
+<<<<<<< HEAD
 		u64 cur_end = min(end, start + BTRFS_COMPRESSION_CHUNK_SIZE - 1);
+=======
+		u64 cur_end = min(end, start + SZ_512K - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * igrab is called higher up in the call chain, take only the
@@ -1743,7 +1940,11 @@ static int fallback_to_cow(struct btrfs_inode *inode,
 	 */
 	btrfs_lock_extent(io_tree, start, end, &cached_state);
 	count = btrfs_count_range_bits(io_tree, &range_start, end, range_bytes,
+<<<<<<< HEAD
 				       EXTENT_NORESERVE, false, NULL);
+=======
+				       EXTENT_NORESERVE, 0, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (count > 0 || is_space_ino || is_reloc_ino) {
 		u64 bytes = count;
 		struct btrfs_fs_info *fs_info = inode->root->fs_info;
@@ -1774,7 +1975,11 @@ static int fallback_to_cow(struct btrfs_inode *inode,
 	 * a locked folio, which can race with writeback.
 	 */
 	ret = cow_file_range(inode, locked_folio, start, end, NULL,
+<<<<<<< HEAD
 			     COW_FILE_RANGE_KEEP_LOCKED);
+=======
+			     COW_FILE_RANGE_NO_INLINE | COW_FILE_RANGE_KEEP_LOCKED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT(ret != 1);
 	return ret;
 }
@@ -1826,11 +2031,14 @@ static int can_nocow_file_extent(struct btrfs_path *path,
 	int ret = 0;
 	bool nowait = path->nowait;
 
+<<<<<<< HEAD
 	/* If there are pending snapshots for this root, we must do COW. */
 	if (args->writeback_path && !is_freespace_inode &&
 	    atomic_read(&root->snapshot_force_cow))
 		goto out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
 	extent_type = btrfs_file_extent_type(leaf, fi);
 
@@ -1892,6 +2100,14 @@ static int can_nocow_file_extent(struct btrfs_path *path,
 		path = NULL;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If there are pending snapshots for this root, we must COW. */
+	if (args->writeback_path && !is_freespace_inode &&
+	    atomic_read(&root->snapshot_force_cow))
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	args->file_extent.num_bytes = min(args->end + 1, extent_end) - args->start;
 	args->file_extent.offset += args->start - key->offset;
 	io_start = args->file_extent.disk_bytenr + args->file_extent.offset;
@@ -2326,6 +2542,7 @@ static bool should_nocow(struct btrfs_inode *inode, u64 start, u64 end)
 }
 
 /*
+<<<<<<< HEAD
  * Return 0 if an inlined extent is created successfully.
  * Return <0 if critical error happened.
  * Return >0 if an inline extent can not be created.
@@ -2411,6 +2628,8 @@ static int run_delalloc_inline(struct btrfs_inode *inode, struct folio *locked_f
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Function to process delayed allocation (create CoW) for ranges which are
  * being touched for the first time.
  */
@@ -2426,6 +2645,7 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
 	ASSERT(!(end <= folio_pos(locked_folio) ||
 		 start >= folio_next_pos(locked_folio)));
 
+<<<<<<< HEAD
 	if (start == 0 && end + 1 <= inode->root->fs_info->sectorsize &&
 	    end + 1 >= inode->disk_i_size) {
 		int ret;
@@ -2441,11 +2661,17 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
 		 */
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (should_nocow(inode, start, end))
 		return run_delalloc_nocow(inode, locked_folio, start, end);
 
 	if (btrfs_inode_can_compress(inode) &&
+<<<<<<< HEAD
 	    inode_need_compress(inode, start, end, false) &&
+=======
+	    inode_need_compress(inode, start, end) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    run_delalloc_compressed(inode, locked_folio, start, end, wbc))
 		return 1;
 
@@ -2735,6 +2961,7 @@ void btrfs_clear_delalloc_extent(struct btrfs_inode *inode,
 }
 
 /*
+<<<<<<< HEAD
  * Given an ordered extent and insert all its checksums into the csum tree.
  *
  * This happens at IO completion time based on sums calculated at bio
@@ -2742,12 +2969,23 @@ void btrfs_clear_delalloc_extent(struct btrfs_inode *inode,
  */
 static int add_pending_csums(struct btrfs_trans_handle *trans,
 			     struct btrfs_ordered_extent *oe)
+=======
+ * given a list of ordered sums record them in the inode.  This happens
+ * at IO completion time based on sums calculated at bio submission time.
+ */
+static int add_pending_csums(struct btrfs_trans_handle *trans,
+			     struct list_head *list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_ordered_sum *sum;
 	struct btrfs_root *csum_root = NULL;
 	int ret;
 
+<<<<<<< HEAD
 	list_for_each_entry(sum, &oe->csum_list, list) {
+=======
+	list_for_each_entry(sum, list, list) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!csum_root) {
 			csum_root = btrfs_csum_root(trans->fs_info,
 						    sum->logical);
@@ -2759,7 +2997,11 @@ static int add_pending_csums(struct btrfs_trans_handle *trans,
 			}
 		}
 		trans->adding_csums = true;
+<<<<<<< HEAD
 		ret = btrfs_insert_data_csums(trans, csum_root, sum);
+=======
+		ret = btrfs_csum_file_blocks(trans, csum_root, sum);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		trans->adding_csums = false;
 		if (ret)
 			return ret;
@@ -2948,9 +3190,13 @@ out_page:
 		 * to reflect the errors and clean the page.
 		 */
 		mapping_set_error(folio->mapping, ret);
+<<<<<<< HEAD
 		btrfs_folio_clear_ordered(fs_info, folio, page_start,
 					  folio_size(folio));
 		btrfs_mark_ordered_io_finished(inode, page_start,
+=======
+		btrfs_mark_ordered_io_finished(inode, folio, page_start,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       folio_size(folio), !ret);
 		folio_clear_dirty_for_io(folio);
 	}
@@ -3197,7 +3443,11 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 	bool freespace_inode;
 	bool truncated = false;
 	bool clear_reserved_extent = true;
+<<<<<<< HEAD
 	unsigned int clear_bits = 0;
+=======
+	unsigned int clear_bits = EXTENT_DEFRAG;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	start = ordered_extent->file_offset;
 	end = start + ordered_extent->num_bytes - 1;
@@ -3208,9 +3458,12 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 	    !test_bit(BTRFS_ORDERED_ENCODED, &ordered_extent->flags))
 		clear_bits |= EXTENT_DELALLOC_NEW;
 
+<<<<<<< HEAD
 	if (!test_bit(BTRFS_ORDERED_NOCOW, &ordered_extent->flags))
 		clear_bits |= EXTENT_DEFRAG;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	freespace_inode = btrfs_is_free_space_inode(inode);
 	if (!freespace_inode)
 		btrfs_lockdep_acquire(fs_info, btrfs_ordered_extent);
@@ -3268,8 +3521,13 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 
 	if (test_bit(BTRFS_ORDERED_NOCOW, &ordered_extent->flags)) {
 		/* Logic error */
+<<<<<<< HEAD
 		ASSERT(list_empty(&ordered_extent->csum_list));
 		if (unlikely(!list_empty(&ordered_extent->csum_list))) {
+=======
+		ASSERT(list_empty(&ordered_extent->list));
+		if (unlikely(!list_empty(&ordered_extent->list))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -EINVAL;
 			btrfs_abort_transaction(trans, ret);
 			goto out;
@@ -3318,7 +3576,11 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = add_pending_csums(trans, ordered_extent);
+=======
+	ret = add_pending_csums(trans, &ordered_extent->list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto out;
@@ -3342,9 +3604,14 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 		goto out;
 	}
 out:
+<<<<<<< HEAD
 	if (clear_bits)
 		btrfs_clear_extent_bit(&inode->io_tree, start, end, clear_bits,
 				       &cached_state);
+=======
+	btrfs_clear_extent_bit(&inode->io_tree, start, end, clear_bits,
+			       &cached_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (trans)
 		btrfs_end_transaction(trans);
@@ -3425,7 +3692,11 @@ out:
 	 * This needs to be done to make sure anybody waiting knows we are done
 	 * updating everything for this ordered extent.
 	 */
+<<<<<<< HEAD
 	btrfs_remove_ordered_extent(ordered_extent);
+=======
+	btrfs_remove_ordered_extent(inode, ordered_extent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* once for us */
 	btrfs_put_ordered_extent(ordered_extent);
@@ -4695,7 +4966,11 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
 	dir_id = btrfs_super_root_dir(fs_info->super_copy);
 	di = btrfs_lookup_dir_item(NULL, fs_info->tree_root, path,
 				   dir_id, &name, 0);
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(di)) {
+=======
+	if (di && !IS_ERR(di)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_dir_item_key_to_cpu(path->nodes[0], di, &key);
 		if (key.objectid == btrfs_root_id(root)) {
 			ret = -EPERM;
@@ -5448,7 +5723,11 @@ static int btrfs_setsize(struct inode *inode, struct iattr *attr)
 		 * zero. Make sure any new writes to the file get on disk
 		 * on close.
 		 */
+<<<<<<< HEAD
 		if (newsize == 0 && oldsize != 0)
+=======
+		if (newsize == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			set_bit(BTRFS_INODE_FLUSH_ON_CLOSE,
 				&BTRFS_I(inode)->runtime_flags);
 
@@ -6859,7 +7138,11 @@ int btrfs_create_new_inode(struct btrfs_trans_handle *trans,
 		}
 	} else {
 		ret = btrfs_add_link(trans, BTRFS_I(dir), BTRFS_I(inode), name,
+<<<<<<< HEAD
 				     false, BTRFS_I(inode)->dir_index);
+=======
+				     0, BTRFS_I(inode)->dir_index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(ret)) {
 			btrfs_abort_transaction(trans, ret);
 			goto discard;
@@ -7075,7 +7358,11 @@ static int btrfs_link(struct dentry *old_dentry, struct inode *dir,
 	inode_set_ctime_current(inode);
 
 	ret = btrfs_add_link(trans, BTRFS_I(dir), BTRFS_I(inode),
+<<<<<<< HEAD
 			     &fname.disk_name, true, index);
+=======
+			     &fname.disk_name, 1, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto fail;
 
@@ -8173,7 +8460,11 @@ void btrfs_destroy_inode(struct inode *vfs_inode)
 			if (!freespace_inode)
 				btrfs_lockdep_acquire(root->fs_info, btrfs_ordered_extent);
 
+<<<<<<< HEAD
 			btrfs_remove_ordered_extent(ordered);
+=======
+			btrfs_remove_ordered_extent(inode, ordered);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_put_ordered_extent(ordered);
 			btrfs_put_ordered_extent(ordered);
 		}
@@ -8495,14 +8786,22 @@ static int btrfs_rename_exchange(struct inode *old_dir,
 	}
 
 	ret = btrfs_add_link(trans, BTRFS_I(new_dir), BTRFS_I(old_inode),
+<<<<<<< HEAD
 			     new_name, false, old_idx);
+=======
+			     new_name, 0, old_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto out_fail;
 	}
 
 	ret = btrfs_add_link(trans, BTRFS_I(old_dir), BTRFS_I(new_inode),
+<<<<<<< HEAD
 			     old_name, false, new_idx);
+=======
+			     old_name, 0, new_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto out_fail;
@@ -8793,7 +9092,11 @@ static int btrfs_rename(struct mnt_idmap *idmap,
 	}
 
 	ret = btrfs_add_link(trans, BTRFS_I(new_dir), BTRFS_I(old_inode),
+<<<<<<< HEAD
 			     &new_fname.disk_name, false, index);
+=======
+			     &new_fname.disk_name, 0, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(ret)) {
 		btrfs_abort_transaction(trans, ret);
 		goto out_fail;
@@ -8978,7 +9281,11 @@ int btrfs_start_delalloc_snapshot(struct btrfs_root *root, bool in_reclaim_conte
 {
 	struct btrfs_fs_info *fs_info = root->fs_info;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+	if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EROFS;
 	return start_delalloc_inodes(root, NULL, true, in_reclaim_context);
 }
@@ -8991,7 +9298,11 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
 	LIST_HEAD(splice);
 	int ret;
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+	if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EROFS;
 
 	mutex_lock(&fs_info->delalloc_root_mutex);
@@ -9299,13 +9610,17 @@ next:
 		if (!(mode & FALLOC_FL_KEEP_SIZE) &&
 		    (actual_len > inode->i_size) &&
 		    (cur_offset > inode->i_size)) {
+<<<<<<< HEAD
 			u64 range_start;
 			u64 range_end;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (cur_offset > actual_len)
 				i_size = actual_len;
 			else
 				i_size = cur_offset;
+<<<<<<< HEAD
 
 			/*
 			 * Make sure the file_extent_tree covers the entire
@@ -9331,6 +9646,8 @@ next:
 				break;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			i_size_write(inode, i_size);
 			btrfs_inode_safe_disk_i_size_write(BTRFS_I(inode), 0);
 		}
@@ -10014,7 +10331,11 @@ ssize_t btrfs_do_encoded_write(struct kiocb *iocb, struct iov_iter *from,
 		size_t bytes = min(min_folio_size, iov_iter_count(from));
 		char *kaddr;
 
+<<<<<<< HEAD
 		folio = btrfs_alloc_compr_folio(fs_info, GFP_NOFS);
+=======
+		folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!folio) {
 			ret = -ENOMEM;
 			goto out_cb;

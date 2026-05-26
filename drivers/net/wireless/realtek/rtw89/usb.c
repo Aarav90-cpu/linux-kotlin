@@ -161,6 +161,7 @@ static u32
 rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
 					    u8 txch)
 {
+<<<<<<< HEAD
 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
 	int inflight;
 
@@ -172,13 +173,22 @@ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
 		return 0;
 
 	return RTW89_USB_MAX_TX_URBS_PER_CH - inflight;
+=======
+	if (txch == RTW89_TXCH_CH12)
+		return 1;
+
+	return 42; /* TODO some kind of calculation? */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rtw89_usb_write_port_complete(struct urb *urb)
 {
 	struct rtw89_usb_tx_ctrl_block *txcb = urb->context;
 	struct rtw89_dev *rtwdev = txcb->rtwdev;
+<<<<<<< HEAD
 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_tx_info *info;
 	struct rtw89_txwd_body *txdesc;
 	struct sk_buff *skb;
@@ -237,8 +247,11 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
 		break;
 	}
 
+<<<<<<< HEAD
 	atomic_dec(&rtwusb->tx_inflight[txcb->txch]);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(txcb);
 }
 
@@ -316,6 +329,7 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
 
 		skb_queue_tail(&txcb->tx_ack_queue, skb);
 
+<<<<<<< HEAD
 		atomic_inc(&rtwusb->tx_inflight[txch]);
 
 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
@@ -323,6 +337,11 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
 		if (ret) {
 			atomic_dec(&rtwusb->tx_inflight[txch]);
 
+=======
+		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+					   txcb);
+		if (ret) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret != -ENODEV)
 				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
 					  txch, ret);
@@ -422,6 +441,7 @@ static int rtw89_usb_ops_tx_write(struct rtw89_dev *rtwdev,
 static void rtw89_usb_rx_handler(struct work_struct *work)
 {
 	struct rtw89_usb *rtwusb = container_of(work, struct rtw89_usb, rx_work);
+<<<<<<< HEAD
 	const struct rtw89_usb_info *info = rtwusb->info;
 	struct rtw89_dev *rtwdev = rtwusb->rtwdev;
 	struct rtw89_rx_desc_info desc_info;
@@ -430,6 +450,13 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
 	struct sk_buff *skb;
 	u32 pkt_offset;
 	u8 *pkt_ptr;
+=======
+	struct rtw89_dev *rtwdev = rtwusb->rtwdev;
+	struct rtw89_rx_desc_info desc_info;
+	struct sk_buff *rx_skb;
+	struct sk_buff *skb;
+	u32 pkt_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int limit;
 
 	for (limit = 0; limit < 200; limit++) {
@@ -442,6 +469,7 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
 			goto free_or_reuse;
 		}
 
+<<<<<<< HEAD
 		pkt_ptr = rx_skb->data;
 		remaining = rx_skb->len;
 
@@ -474,6 +502,25 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
 			pkt_ptr += aligned_offset;
 			remaining -= aligned_offset;
 		} while (remaining > 0);
+=======
+		memset(&desc_info, 0, sizeof(desc_info));
+		rtw89_chip_query_rxdesc(rtwdev, &desc_info, rx_skb->data, 0);
+
+		skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
+		if (!skb) {
+			rtw89_debug(rtwdev, RTW89_DBG_HCI,
+				    "failed to allocate RX skb of size %u\n",
+				    desc_info.pkt_size);
+			goto free_or_reuse;
+		}
+
+		pkt_offset = desc_info.offset + desc_info.rxd_len;
+
+		skb_put_data(skb, rx_skb->data + pkt_offset,
+			     desc_info.pkt_size);
+
+		rtw89_core_rx(rtwdev, &desc_info, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 free_or_reuse:
 		if (skb_queue_len(&rtwusb->rx_free_queue) >= RTW89_USB_RX_SKB_NUM)
@@ -698,10 +745,15 @@ static void rtw89_usb_init_tx(struct rtw89_dev *rtwdev)
 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++) {
 		skb_queue_head_init(&rtwusb->tx_queue[i]);
 		atomic_set(&rtwusb->tx_inflight[i], 0);
 	}
+=======
+	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
+		skb_queue_head_init(&rtwusb->tx_queue[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rtw89_usb_deinit_tx(struct rtw89_dev *rtwdev)
@@ -779,6 +831,7 @@ static int rtw89_usb_ops_mac_pre_deinit(struct rtw89_dev *rtwdev)
 	return 0; /* Nothing to do. */
 }
 
+<<<<<<< HEAD
 static void rtw89_usb_rx_agg_cfg_v1(struct rtw89_dev *rtwdev)
 {
 	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
@@ -817,6 +870,8 @@ static void rtw89_usb_rx_agg_cfg(struct rtw89_dev *rtwdev)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
 {
 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
@@ -845,8 +900,11 @@ static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
 		rtw89_write8(rtwdev, info->usb_endpoint_2 + 1, NUMP);
 	}
 
+<<<<<<< HEAD
 	rtw89_usb_rx_agg_cfg(rtwdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1009,7 +1067,11 @@ static int rtw89_usb_intf_init(struct rtw89_dev *rtwdev,
 	if (!rtwusb->vendor_req_buf)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	rtwusb->udev = interface_to_usbdev(intf);
+=======
+	rtwusb->udev = usb_get_dev(interface_to_usbdev(intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usb_set_intfdata(intf, rtwdev->hw);
 
@@ -1023,6 +1085,10 @@ static void rtw89_usb_intf_deinit(struct rtw89_dev *rtwdev,
 {
 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
 
+<<<<<<< HEAD
+=======
+	usb_put_dev(rtwusb->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(rtwusb->vendor_req_buf);
 	usb_set_intfdata(intf, NULL);
 }

@@ -527,8 +527,12 @@ static int do_msdos_rename(struct inode *old_dir, unsigned char *old_name,
 
 	if (update_dotdot) {
 		fat_set_start(dotdot_de, MSDOS_I(new_dir)->i_logstart);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(dotdot_bh,
 				      &MSDOS_I(old_inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(dotdot_bh, old_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_DIRSYNC(new_dir)) {
 			err = sync_dirty_buffer(dotdot_bh);
 			if (err)
@@ -567,8 +571,12 @@ error_dotdot:
 
 	if (update_dotdot) {
 		fat_set_start(dotdot_de, MSDOS_I(old_dir)->i_logstart);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(dotdot_bh,
 				      &MSDOS_I(old_inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(dotdot_bh, old_inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		corrupt |= sync_dirty_buffer(dotdot_bh);
 	}
 error_inode:

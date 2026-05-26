@@ -2391,8 +2391,13 @@ static void nix_smq_flush_enadis_xoff(struct rvu *rvu, int blkaddr,
 			continue;
 		/* skip if PF_FUNC doesn't match */
 		if ((TXSCH_MAP_FUNC(txsch->pfvf_map[tl2]) & ~RVU_PFVF_FUNC_MASK) !=
+<<<<<<< HEAD
 		    (TXSCH_MAP_FUNC(txsch->pfvf_map[tl2_schq]) &
 				    ~RVU_PFVF_FUNC_MASK))
+=======
+		    (TXSCH_MAP_FUNC(txsch->pfvf_map[tl2_schq] &
+				    ~RVU_PFVF_FUNC_MASK)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		/* enable/disable XOFF */
 		regoff = NIX_AF_TL2X_SW_XOFF(tl2);
@@ -3577,9 +3582,12 @@ static int nix_update_mce_rule(struct rvu *rvu, u16 pcifunc,
 	mcam_index = npc_get_nixlf_mcam_index(mcam,
 					      pcifunc & ~RVU_PFVF_FUNC_MASK,
 					      nixlf, type);
+<<<<<<< HEAD
 	if (mcam_index < 0)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = nix_update_mce_list(rvu, pcifunc, mce_list,
 				  mce_idx, mcam_index, add);
 	return err;
@@ -5292,6 +5300,10 @@ int rvu_mbox_handler_nix_lf_stop_rx(struct rvu *rvu, struct msg_req *req,
 	/* Disable the interface if it is in any multicast list */
 	nix_mcast_update_mce_entry(rvu, pcifunc, 0);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pfvf = rvu_get_pfvf(rvu, pcifunc);
 	clear_bit(NIXLF_INITIALIZED, &pfvf->flags);
 

@@ -18,6 +18,10 @@
 #include <crypto/utils.h>
 
 #include "ieee80211_i.h"
+<<<<<<< HEAD
+=======
+#include "michael.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "tkip.h"
 #include "aes_ccm.h"
 #include "aes_cmac.h"
@@ -314,8 +318,12 @@ ieee80211_crypto_tkip_decrypt(struct ieee80211_rx_data *rx)
  * Calculate AAD for CCMP/GCMP, returning qos_tid since we
  * need that in CCMP also for b_0.
  */
+<<<<<<< HEAD
 static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad, bool spp_amsdu,
 			bool aad_nonce_computed)
+=======
+static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad, bool spp_amsdu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ieee80211_hdr *hdr = (void *)skb->data;
 	__le16 mask_fc;
@@ -358,8 +366,12 @@ static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad, bool spp_amsdu,
 	 * FC | A1 | A2 | A3 | SC | [A4] | [QC] */
 	put_unaligned_be16(len_a, &aad[0]);
 	put_unaligned(mask_fc, (__le16 *)&aad[2]);
+<<<<<<< HEAD
 	if (!aad_nonce_computed)
 		memcpy(&aad[4], &hdr->addrs, 3 * ETH_ALEN);
+=======
+	memcpy(&aad[4], &hdr->addrs, 3 * ETH_ALEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Mask Seq#, leave Frag# */
 	aad[22] = *((u8 *) &hdr->seq_ctrl) & 0x0f;
@@ -378,10 +390,17 @@ static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad, bool spp_amsdu,
 }
 
 static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad,
+<<<<<<< HEAD
 				bool spp_amsdu, bool aad_nonce_computed)
 {
 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
 	u8 qos_tid = ccmp_gcmp_aad(skb, aad, spp_amsdu, aad_nonce_computed);
+=======
+				bool spp_amsdu)
+{
+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+	u8 qos_tid = ccmp_gcmp_aad(skb, aad, spp_amsdu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* In CCM, the initial vectors (IV) used for CTR mode encryption and CBC
 	 * mode authentication are not allowed to collide, yet both are derived
@@ -396,8 +415,12 @@ static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad,
 	 * Nonce Flags: Priority (b0..b3) | Management (b4) | Reserved (b5..b7)
 	 */
 	b_0[1] = qos_tid | (ieee80211_is_mgmt(hdr->frame_control) << 4);
+<<<<<<< HEAD
 	if (!aad_nonce_computed)
 		memcpy(&b_0[2], hdr->addr2, ETH_ALEN);
+=======
+	memcpy(&b_0[2], hdr->addr2, ETH_ALEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(&b_0[8], pn, IEEE80211_CCMP_PN_LEN);
 }
 
@@ -490,8 +513,12 @@ static int ccmp_encrypt_skb(struct ieee80211_tx_data *tx, struct sk_buff *skb,
 
 	pos += IEEE80211_CCMP_HDR_LEN;
 	ccmp_special_blocks(skb, pn, b_0, aad,
+<<<<<<< HEAD
 			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU,
 			    false);
+=======
+			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ieee80211_aes_ccm_encrypt(key->u.ccmp.tfm, b_0, aad, pos, len,
 					 skb_put(skb, mic_len));
 }
@@ -569,6 +596,7 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
 		if (!(status->flag & RX_FLAG_DECRYPTED)) {
 			u8 aad[2 * AES_BLOCK_SIZE];
 			u8 b_0[AES_BLOCK_SIZE];
+<<<<<<< HEAD
 			bool aad_nonce_computed = false;
 
 			if (is_unicast_ether_addr(hdr->addr1) &&
@@ -585,6 +613,11 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
 			ccmp_special_blocks(skb, pn, b_0, aad,
 					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU,
 					    aad_nonce_computed);
+=======
+			/* hardware didn't decrypt/verify MIC */
+			ccmp_special_blocks(skb, pn, b_0, aad,
+					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (ieee80211_aes_ccm_decrypt(
 				    key->u.ccmp.tfm, b_0, aad,
@@ -609,6 +642,7 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
 }
 
 static void gcmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *j_0, u8 *aad,
+<<<<<<< HEAD
 				bool spp_amsdu, bool aad_nonce_computed)
 {
 	struct ieee80211_hdr *hdr = (void *)skb->data;
@@ -618,6 +652,16 @@ static void gcmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *j_0, u8 *aad,
 	memcpy(&j_0[ETH_ALEN], pn, IEEE80211_GCMP_PN_LEN);
 
 	ccmp_gcmp_aad(skb, aad, spp_amsdu, aad_nonce_computed);
+=======
+				bool spp_amsdu)
+{
+	struct ieee80211_hdr *hdr = (void *)skb->data;
+
+	memcpy(j_0, hdr->addr2, ETH_ALEN);
+	memcpy(&j_0[ETH_ALEN], pn, IEEE80211_GCMP_PN_LEN);
+
+	ccmp_gcmp_aad(skb, aad, spp_amsdu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void gcmp_pn2hdr(u8 *hdr, const u8 *pn, int key_id)
@@ -707,8 +751,12 @@ static int gcmp_encrypt_skb(struct ieee80211_tx_data *tx, struct sk_buff *skb)
 
 	pos += IEEE80211_GCMP_HDR_LEN;
 	gcmp_special_blocks(skb, pn, j_0, aad,
+<<<<<<< HEAD
 			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU,
 			    false);
+=======
+			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ieee80211_aes_gcm_encrypt(key->u.gcmp.tfm, j_0, aad, pos, len,
 					 skb_put(skb, IEEE80211_GCMP_MIC_LEN));
 }
@@ -781,6 +829,7 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
 		if (!(status->flag & RX_FLAG_DECRYPTED)) {
 			u8 aad[2 * AES_BLOCK_SIZE];
 			u8 j_0[AES_BLOCK_SIZE];
+<<<<<<< HEAD
 			bool aad_nonce_computed = false;
 
 			if (is_unicast_ether_addr(hdr->addr1) &&
@@ -796,6 +845,11 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
 			gcmp_special_blocks(skb, pn, j_0, aad,
 					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU,
 					    aad_nonce_computed);
+=======
+			/* hardware didn't decrypt/verify MIC */
+			gcmp_special_blocks(skb, pn, j_0, aad,
+					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (ieee80211_aes_gcm_decrypt(
 				    key->u.gcmp.tfm, j_0, aad,
@@ -902,8 +956,16 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx,
 
 	bip_aad(skb, aad);
 
+<<<<<<< HEAD
 	ieee80211_aes_cmac(&key->u.aes_cmac.key, aad, skb->data + 24,
 			   skb->len - 24, mmie->mic, mic_len);
+=======
+	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+			       skb->data + 24, skb->len - 24,
+			       mmie->mic, mic_len))
+		return TX_DROP;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return TX_CONTINUE;
 }
 
@@ -945,8 +1007,15 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx,
 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
 		/* hardware didn't decrypt/verify MIC */
 		bip_aad(skb, aad);
+<<<<<<< HEAD
 		ieee80211_aes_cmac(&key->u.aes_cmac.key, aad, skb->data + 24,
 				   skb->len - 24, mic, mic_len);
+=======
+		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
+				       skb->data + 24, skb->len - 24,
+				       mic, mic_len))
+			return RX_DROP_U_DECRYPT_FAIL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (crypto_memneq(mic, mmie->mic, mic_len)) {
 			key->u.aes_cmac.icverrors++;
 			return RX_DROP_U_MIC_FAIL;

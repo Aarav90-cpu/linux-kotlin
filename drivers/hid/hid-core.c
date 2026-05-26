@@ -927,6 +927,10 @@ static int hid_scan_main(struct hid_parser *parser, struct hid_item *item)
  */
 static int hid_scan_report(struct hid_device *hid)
 {
+<<<<<<< HEAD
+=======
+	struct hid_parser *parser;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hid_item item;
 	const __u8 *start = hid->dev_rdesc;
 	const __u8 *end = start + hid->dev_rsize;
@@ -938,7 +942,11 @@ static int hid_scan_report(struct hid_device *hid)
 		hid_parser_reserved
 	};
 
+<<<<<<< HEAD
 	struct hid_parser *parser __free(kvfree) = vzalloc(sizeof(*parser));
+=======
+	parser = vzalloc(sizeof(struct hid_parser));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!parser)
 		return -ENOMEM;
 
@@ -989,6 +997,10 @@ static int hid_scan_report(struct hid_device *hid)
 	}
 
 	kfree(parser->collection_stack);
+<<<<<<< HEAD
+=======
+	vfree(parser);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1245,6 +1257,7 @@ void hid_setup_resolution_multiplier(struct hid_device *hid)
 }
 EXPORT_SYMBOL_GPL(hid_setup_resolution_multiplier);
 
+<<<<<<< HEAD
 static int hid_parse_collections(struct hid_device *device)
 {
 	struct hid_item item;
@@ -1329,6 +1342,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * hid_open_report - open a driver-specific device report
  *
@@ -1343,9 +1358,27 @@ out:
  */
 int hid_open_report(struct hid_device *device)
 {
+<<<<<<< HEAD
 	unsigned int size;
 	const u8 *start;
 	int error;
+=======
+	struct hid_parser *parser;
+	struct hid_item item;
+	unsigned int size;
+	const __u8 *start;
+	const __u8 *end;
+	const __u8 *next;
+	int ret;
+	int i;
+	static int (*dispatch_type[])(struct hid_parser *parser,
+				      struct hid_item *item) = {
+		hid_parser_main,
+		hid_parser_global,
+		hid_parser_local,
+		hid_parser_reserved
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(device->status & HID_STAT_PARSED))
 		return -EBUSY;
@@ -1361,9 +1394,15 @@ int hid_open_report(struct hid_device *device)
 		 * on a copy of our report descriptor so it can
 		 * change it.
 		 */
+<<<<<<< HEAD
 		u8 *buf __free(kfree) = kmemdup(start, size, GFP_KERNEL);
 
 		if (!buf)
+=======
+		__u8 *buf = kmemdup(start, size, GFP_KERNEL);
+
+		if (buf == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOMEM;
 
 		start = device->driver->report_fixup(device, buf, &size);
@@ -1374,13 +1413,19 @@ int hid_open_report(struct hid_device *device)
 		 * needs to be cleaned up or not at the end.
 		 */
 		start = kmemdup(start, size, GFP_KERNEL);
+<<<<<<< HEAD
 		if (!start)
+=======
+		kfree(buf);
+		if (start == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOMEM;
 	}
 
 	device->rdesc = start;
 	device->rsize = size;
 
+<<<<<<< HEAD
 	error = hid_parse_collections(device);
 	if (error) {
 		hid_close_report(device);
@@ -1388,6 +1433,76 @@ int hid_open_report(struct hid_device *device)
 	}
 
 	return 0;
+=======
+	parser = vzalloc(sizeof(struct hid_parser));
+	if (!parser) {
+		ret = -ENOMEM;
+		goto alloc_err;
+	}
+
+	parser->device = device;
+
+	end = start + size;
+
+	device->collection = kzalloc_objs(struct hid_collection,
+					  HID_DEFAULT_NUM_COLLECTIONS);
+	if (!device->collection) {
+		ret = -ENOMEM;
+		goto err;
+	}
+	device->collection_size = HID_DEFAULT_NUM_COLLECTIONS;
+	for (i = 0; i < HID_DEFAULT_NUM_COLLECTIONS; i++)
+		device->collection[i].parent_idx = -1;
+
+	ret = -EINVAL;
+	while ((next = fetch_item(start, end, &item)) != NULL) {
+		start = next;
+
+		if (item.format != HID_ITEM_FORMAT_SHORT) {
+			hid_err(device, "unexpected long global item\n");
+			goto err;
+		}
+
+		if (dispatch_type[item.type](parser, &item)) {
+			hid_err(device, "item %u %u %u %u parsing failed\n",
+				item.format, (unsigned)item.size,
+				(unsigned)item.type, (unsigned)item.tag);
+			goto err;
+		}
+
+		if (start == end) {
+			if (parser->collection_stack_ptr) {
+				hid_err(device, "unbalanced collection at end of report description\n");
+				goto err;
+			}
+			if (parser->local.delimiter_depth) {
+				hid_err(device, "unbalanced delimiter at end of report description\n");
+				goto err;
+			}
+
+			/*
+			 * fetch initial values in case the device's
+			 * default multiplier isn't the recommended 1
+			 */
+			hid_setup_resolution_multiplier(device);
+
+			kfree(parser->collection_stack);
+			vfree(parser);
+			device->status |= HID_STAT_PARSED;
+
+			return 0;
+		}
+	}
+
+	hid_err(device, "item fetching failed at offset %u/%u\n",
+		size - (unsigned int)(end - start), size);
+err:
+	kfree(parser->collection_stack);
+alloc_err:
+	vfree(parser);
+	hid_close_report(device);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(hid_open_report);
 
@@ -2000,11 +2115,19 @@ static struct hid_report *hid_get_report(struct hid_report_enum *report_enum,
 int __hid_request(struct hid_device *hid, struct hid_report *report,
 		enum hid_class_request reqtype)
 {
+<<<<<<< HEAD
 	u8 *data_buf;
 	int ret;
 	u32 len;
 
 	u8 *buf __free(kfree) = hid_alloc_report_buf(report, GFP_KERNEL);
+=======
+	char *buf, *data_buf;
+	int ret;
+	u32 len;
+
+	buf = hid_alloc_report_buf(report, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!buf)
 		return -ENOMEM;
 
@@ -2023,13 +2146,25 @@ int __hid_request(struct hid_device *hid, struct hid_report *report,
 	ret = hid_hw_raw_request(hid, report->id, buf, len, report->type, reqtype);
 	if (ret < 0) {
 		dbg_hid("unable to complete request: %d\n", ret);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (reqtype == HID_REQ_GET_REPORT)
 		hid_input_report(hid, report->type, buf, ret, 0);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	ret = 0;
+
+out:
+	kfree(buf);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(__hid_request);
 
@@ -2934,11 +3069,14 @@ static int hid_uevent(const struct device *dev, struct kobj_uevent_env *env)
 	if (add_uevent_var(env, "MODALIAS=hid:b%04Xg%04Xv%08Xp%08X",
 			   hdev->bus, hdev->group, hdev->vendor, hdev->product))
 		return -ENOMEM;
+<<<<<<< HEAD
 	if (hdev->firmware_version) {
 		if (add_uevent_var(env, "HID_FIRMWARE_VERSION=0x%04llX",
 				   hdev->firmware_version))
 			return -ENOMEM;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3042,10 +3180,13 @@ struct hid_device *hid_allocate_device(void)
 	mutex_init(&hdev->ll_open_lock);
 	kref_init(&hdev->ref);
 
+<<<<<<< HEAD
 #ifdef CONFIG_HID_BATTERY_STRENGTH
 	INIT_LIST_HEAD(&hdev->batteries);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hid_bpf_device_init(hdev);
 	if (ret)
 		goto out_err;

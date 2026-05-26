@@ -665,7 +665,11 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
 		for (i = 0; i < dtab->n_buckets; i++) {
 			head = dev_map_index_hash(dtab, i);
 			hlist_for_each_entry_rcu(dst, head, index_hlist,
+<<<<<<< HEAD
 						rcu_read_lock_bh_held()) {
+=======
+						 lockdep_is_held(&dtab->index_lock)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (!is_valid_dst(dst, xdpf))
 					continue;
 
@@ -747,6 +751,10 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
 	int excluded_devices[1+MAX_NEST_DEV];
 	struct hlist_head *head;
+<<<<<<< HEAD
+=======
+	struct hlist_node *next;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int num_excluded = 0;
 	unsigned int i;
 	int err;
@@ -786,7 +794,11 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
 		for (i = 0; i < dtab->n_buckets; i++) {
 			head = dev_map_index_hash(dtab, i);
+<<<<<<< HEAD
 			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
+=======
+			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if (is_ifindex_excluded(excluded_devices, num_excluded,
 							dst->dev->ifindex))
 					continue;

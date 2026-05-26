@@ -28,6 +28,7 @@
 #define RAS_MP1_MSG_QueryValidMcaCeCount  0x3A
 #define RAS_MP1_MSG_McaBankCeDumpDW       0x3B
 
+<<<<<<< HEAD
 static const enum smu_message_type pmfw_eeprom_msgs[] = {
 	[RAS_SMU_GetRASTableVersion] = SMU_MSG_GetRASTableVersion,
 	[RAS_SMU_GetBadPageCount] = SMU_MSG_GetBadPageCount,
@@ -38,6 +39,8 @@ static const enum smu_message_type pmfw_eeprom_msgs[] = {
 	[RAS_SMU_GetBadPageMcaAddr] = SMU_MSG_GetBadPageMcaAddr,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mp1_v13_0_get_valid_bank_count(struct ras_core_context *ras_core,
 					  u32 msg, u32 *count)
 {
@@ -97,6 +100,7 @@ static int mp1_v13_0_dump_valid_bank(struct ras_core_context *ras_core,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mp1_v13_0_eeprom_send_msg(struct ras_core_context *ras_core,
 				enum ras_fw_eeprom_cmd index, uint32_t param, uint32_t *read_arg)
 {
@@ -136,5 +140,10 @@ const struct ras_mp1_sys_func amdgpu_ras_mp1_sys_func_v13_0 = {
 	.mp1_dump_valid_bank = mp1_v13_0_dump_valid_bank,
 	.mp1_send_eeprom_msg = mp1_v13_0_eeprom_send_msg,
 	.mp1_get_ras_enabled_mask = mp1_v13_0_get_ras_enabled_mask,
+=======
+const struct ras_mp1_sys_func amdgpu_ras_mp1_sys_func_v13_0 = {
+	.mp1_get_valid_bank_count = mp1_v13_0_get_valid_bank_count,
+	.mp1_dump_valid_bank = mp1_v13_0_dump_valid_bank,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 

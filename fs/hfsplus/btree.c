@@ -129,6 +129,7 @@ u32 hfsplus_calc_btree_clump_size(u32 block_size, u32 node_size,
 	return clump_size;
 }
 
+<<<<<<< HEAD
 /* Context for iterating b-tree map pages
  * @page_idx: The index of the page within the b-node's page array
  * @off: The byte offset within the mapped page
@@ -264,13 +265,18 @@ static const char *hfs_btree_name(u32 cnid)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Get a reference to a B*Tree and do some initial checks */
 struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
 {
 	struct hfs_btree *tree;
 	struct hfs_btree_header_rec *head;
 	struct address_space *mapping;
+<<<<<<< HEAD
 	struct hfs_bnode *node;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct inode *inode;
 	struct page *page;
 	unsigned int size;
@@ -378,6 +384,7 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
 
 	kunmap_local(head);
 	put_page(page);
+<<<<<<< HEAD
 
 	node = hfs_bnode_find(tree, HFSPLUS_TREE_HEAD);
 	if (IS_ERR(node))
@@ -392,6 +399,8 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
 
 	hfs_bnode_put(node);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return tree;
 
  fail_page:
@@ -501,8 +510,11 @@ int hfs_bmap_reserve(struct hfs_btree *tree, u32 rsvd_nodes)
 	u32 count;
 	int res;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&tree->tree_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rsvd_nodes <= 0)
 		return 0;
 
@@ -526,6 +538,7 @@ int hfs_bmap_reserve(struct hfs_btree *tree, u32 rsvd_nodes)
 struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 {
 	struct hfs_bnode *node, *next_node;
+<<<<<<< HEAD
 	struct hfs_bmap_ctx ctx;
 	struct page *page;
 	u32 nidx, idx;
@@ -534,6 +547,16 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 
 	lockdep_assert_held(&tree->tree_lock);
 
+=======
+	struct page **pagep;
+	u32 nidx, idx;
+	unsigned off;
+	u16 off16;
+	u16 len;
+	u8 *data, byte, m;
+	int i, res;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	res = hfs_bmap_reserve(tree, 1);
 	if (res)
 		return ERR_PTR(res);
@@ -542,6 +565,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 	node = hfs_bnode_find(tree, nidx);
 	if (IS_ERR(node))
 		return node;
+<<<<<<< HEAD
 
 	page = hfs_bmap_get_map_page(node, &ctx, 0);
 	if (IS_ERR(page)) {
@@ -556,15 +580,42 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 	for (;;) {
 		while (ctx.len) {
 			byte = data[ctx.off];
+=======
+	len = hfs_brec_lenoff(node, 2, &off16);
+	off = off16;
+
+	if (!is_bnode_offset_valid(node, off)) {
+		hfs_bnode_put(node);
+		return ERR_PTR(-EIO);
+	}
+	len = check_and_correct_requested_length(node, off, len);
+
+	off += node->page_offset;
+	pagep = node->page + (off >> PAGE_SHIFT);
+	data = kmap_local_page(*pagep);
+	off &= ~PAGE_MASK;
+	idx = 0;
+
+	for (;;) {
+		while (len) {
+			byte = data[off];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (byte != 0xff) {
 				for (m = 0x80, i = 0; i < 8; m >>= 1, i++) {
 					if (!(byte & m)) {
 						idx += i;
+<<<<<<< HEAD
 						data[ctx.off] |= m;
 						set_page_dirty(page);
 						kunmap_local(data);
 						tree->free_nodes--;
 						hfs_btree_write(tree);
+=======
+						data[off] |= m;
+						set_page_dirty(*pagep);
+						kunmap_local(data);
+						tree->free_nodes--;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mark_inode_dirty(tree->inode);
 						hfs_bnode_put(node);
 						return hfs_bnode_create(tree,
@@ -572,6 +623,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 					}
 				}
 			}
+<<<<<<< HEAD
 			if (++ctx.off >= PAGE_SIZE) {
 				kunmap_local(data);
 				page = node->page[++ctx.page_idx];
@@ -580,13 +632,25 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 			}
 			idx += 8;
 			ctx.len--;
+=======
+			if (++off >= PAGE_SIZE) {
+				kunmap_local(data);
+				data = kmap_local_page(*++pagep);
+				off = 0;
+			}
+			idx += 8;
+			len--;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		kunmap_local(data);
 		nidx = node->next;
 		if (!nidx) {
 			hfs_dbg("create new bmap node\n");
 			next_node = hfs_bmap_new_bmap(node, idx);
+<<<<<<< HEAD
 			hfs_btree_write(tree);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else
 			next_node = hfs_bnode_find(tree, nidx);
 		hfs_bnode_put(node);
@@ -594,6 +658,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 			return next_node;
 		node = next_node;
 
+<<<<<<< HEAD
 		page = hfs_bmap_get_map_page(node, &ctx, 0);
 		if (IS_ERR(page)) {
 			res = PTR_ERR(page);
@@ -601,20 +666,38 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
 			return ERR_PTR(res);
 		}
 		data = kmap_local_page(page);
+=======
+		len = hfs_brec_lenoff(node, 0, &off16);
+		off = off16;
+		off += node->page_offset;
+		pagep = node->page + (off >> PAGE_SHIFT);
+		data = kmap_local_page(*pagep);
+		off &= ~PAGE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 void hfs_bmap_free(struct hfs_bnode *node)
 {
 	struct hfs_btree *tree;
+<<<<<<< HEAD
 	u16 off, len;
 	u32 nidx;
 	int res;
+=======
+	struct page *page;
+	u16 off, len;
+	u32 nidx;
+	u8 *data, byte, m;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hfs_dbg("node %u\n", node->this);
 	BUG_ON(!node->this);
 	tree = node->tree;
+<<<<<<< HEAD
 	lockdep_assert_held(&tree->tree_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nidx = node->this;
 	node = hfs_bnode_find(tree, 0);
 	if (IS_ERR(node))
@@ -647,6 +730,7 @@ void hfs_bmap_free(struct hfs_bnode *node)
 		}
 		len = hfs_brec_lenoff(node, 0, &off);
 	}
+<<<<<<< HEAD
 
 	res = hfs_bmap_clear_bit(node, nidx);
 	if (res == -EINVAL) {
@@ -662,4 +746,26 @@ void hfs_bmap_free(struct hfs_bnode *node)
 	}
 
 	hfs_bnode_put(node);
+=======
+	off += node->page_offset + nidx / 8;
+	page = node->page[off >> PAGE_SHIFT];
+	data = kmap_local_page(page);
+	off &= ~PAGE_MASK;
+	m = 1 << (~nidx & 7);
+	byte = data[off];
+	if (!(byte & m)) {
+		pr_crit("trying to free free bnode "
+				"%u(%d)\n",
+			node->this, node->type);
+		kunmap_local(data);
+		hfs_bnode_put(node);
+		return;
+	}
+	data[off] = byte & ~m;
+	set_page_dirty(page);
+	kunmap_local(data);
+	hfs_bnode_put(node);
+	tree->free_nodes++;
+	mark_inode_dirty(tree->inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

@@ -291,6 +291,23 @@ void flexcop_device_exit(struct flexcop_device *fc)
 }
 EXPORT_SYMBOL(flexcop_device_exit);
 
+<<<<<<< HEAD
+=======
+static int flexcop_module_init(void)
+{
+	info(DRIVER_NAME " loaded successfully");
+	return 0;
+}
+
+static void flexcop_module_cleanup(void)
+{
+	info(DRIVER_NAME " unloaded successfully");
+}
+
+module_init(flexcop_module_init);
+module_exit(flexcop_module_cleanup);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_NAME);
 MODULE_LICENSE("GPL");

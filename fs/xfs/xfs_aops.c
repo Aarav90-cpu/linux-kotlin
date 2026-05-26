@@ -22,7 +22,10 @@
 #include "xfs_icache.h"
 #include "xfs_zone_alloc.h"
 #include "xfs_rtgroup.h"
+<<<<<<< HEAD
 #include <linux/bio-integrity.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct xfs_writepage_ctx {
 	struct iomap_writepage_ctx ctx;
@@ -662,8 +665,11 @@ xfs_zoned_writeback_submit(
 		bio_endio(&ioend->io_bio);
 		return error;
 	}
+<<<<<<< HEAD
 	if (wpc->iomap.flags & IOMAP_F_INTEGRITY)
 		fs_bio_integrity_generate(&ioend->io_bio);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xfs_zone_alloc_and_submit(ioend, &XFS_ZWPC(wpc)->open_zone);
 	return 0;
 }
@@ -744,6 +750,7 @@ xfs_vm_bmap(
 	return iomap_bmap(mapping, block, &xfs_read_iomap_ops);
 }
 
+<<<<<<< HEAD
 static void
 xfs_bio_submit_read(
 	const struct iomap_iter		*iter,
@@ -783,6 +790,14 @@ xfs_vm_read_folio(
 
 	ctx.ops = xfs_get_iomap_read_ops(folio->mapping);
 	iomap_read_folio(&xfs_read_iomap_ops, &ctx, NULL);
+=======
+STATIC int
+xfs_vm_read_folio(
+	struct file		*unused,
+	struct folio		*folio)
+{
+	iomap_bio_read_folio(folio, &xfs_read_iomap_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -790,10 +805,14 @@ STATIC void
 xfs_vm_readahead(
 	struct readahead_control	*rac)
 {
+<<<<<<< HEAD
 	struct iomap_read_folio_ctx	ctx = { .rac = rac };
 
 	ctx.ops = xfs_get_iomap_read_ops(rac->mapping),
 	iomap_readahead(&xfs_read_iomap_ops, &ctx, NULL);
+=======
+	iomap_bio_readahead(rac, &xfs_read_iomap_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int

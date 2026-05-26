@@ -8,10 +8,17 @@
 
 #include "arch_timer.h"
 
+<<<<<<< HEAD
 static inline void __delay(u64 cycles)
 {
 	enum arch_timer timer = VIRTUAL;
 	u64 start = timer_get_cntct(timer);
+=======
+static inline void __delay(uint64_t cycles)
+{
+	enum arch_timer timer = VIRTUAL;
+	uint64_t start = timer_get_cntct(timer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while ((timer_get_cntct(timer) - start) < cycles)
 		cpu_relax();

@@ -735,10 +735,15 @@ static struct kvm_s2_mmu *get_s2_mmu_nested(struct kvm_vcpu *vcpu)
 	kvm->arch.nested_mmus_next = (i + 1) % kvm->arch.nested_mmus_size;
 
 	/* Make sure we don't forget to do the laundry */
+<<<<<<< HEAD
 	if (kvm_s2_mmu_valid(s2_mmu)) {
 		kvm_nested_s2_ptdump_remove_debugfs(s2_mmu);
 		s2_mmu->pending_unmap = true;
 	}
+=======
+	if (kvm_s2_mmu_valid(s2_mmu))
+		s2_mmu->pending_unmap = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The virtual VMID (modulo CnP) will be used as a key when matching
@@ -752,8 +757,11 @@ static struct kvm_s2_mmu *get_s2_mmu_nested(struct kvm_vcpu *vcpu)
 	s2_mmu->tlb_vtcr = vcpu_read_sys_reg(vcpu, VTCR_EL2);
 	s2_mmu->nested_stage2_enabled = vcpu_read_sys_reg(vcpu, HCR_EL2) & HCR_VM;
 
+<<<<<<< HEAD
 	kvm_nested_s2_ptdump_create_debugfs(s2_mmu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	atomic_inc(&s2_mmu->refcnt);
 
@@ -1562,11 +1570,14 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
 			 ID_AA64PFR1_EL1_MTE);
 		break;
 
+<<<<<<< HEAD
 	case SYS_ID_AA64PFR2_EL1:
 		/* GICv5 is not yet supported for NV */
 		val &= ~ID_AA64PFR2_EL1_GCIE;
 		break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SYS_ID_AA64MMFR0_EL1:
 		/* Hide ExS, Secure Memory */
 		val &= ~(ID_AA64MMFR0_EL1_EXS		|

@@ -25,8 +25,11 @@ __rust_helper void rust_helper_dev_set_drvdata(struct device *dev, void *data)
 {
 	dev_set_drvdata(dev, data);
 }
+<<<<<<< HEAD
 
 __rust_helper const char *rust_helper_dev_name(const struct device *dev)
 {
 	return dev_name(dev);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

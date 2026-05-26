@@ -73,7 +73,10 @@ static const struct snd_kcontrol_new rt700_controls[] = {
 
 struct asoc_sdw_codec_info codec_info_list[] = {
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x0102,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x0000, /* TAS2783A */
 		.name_prefix = "tas2783",
 		.dais = {
@@ -93,7 +96,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x700,
 		.name_prefix = "rt700",
 		.dais = {
@@ -112,7 +118,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x711,
 		.name_prefix = "rt711",
 		.version_id = 3,
@@ -134,7 +143,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x711,
 		.name_prefix = "rt711",
 		.version_id = 2,
@@ -156,7 +168,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x712,
 		.name_prefix = "rt712",
 		.version_id = 3,
@@ -201,7 +216,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 3,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x1712,
 		.name_prefix = "rt712-dmic",
 		.version_id = 3,
@@ -217,7 +235,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x713,
 		.name_prefix = "rt713",
 		.version_id = 3,
@@ -246,7 +267,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 2,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x1713,
 		.name_prefix = "rt713-dmic",
 		.version_id = 3,
@@ -262,7 +286,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x1308,
 		.name_prefix = "rt1308",
 		.acpi_id = "10EC1308",
@@ -286,7 +313,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.ops = &soc_sdw_rt1308_i2s_ops,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x1316,
 		.name_prefix = "rt1316",
 		.dais = {
@@ -308,7 +338,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x1318,
 		.name_prefix = "rt1318",
 		.dais = {
@@ -330,10 +363,15 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
 		.part_id = 0x1320,
 		.name_prefix = "rt1320",
 		.is_amp = true,
+=======
+		.part_id = 0x1320,
+		.name_prefix = "rt1320",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.dais = {
 			{
 				.direction = {true, false},
@@ -349,6 +387,7 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 				.widgets = generic_spk_widgets,
 				.num_widgets = ARRAY_SIZE(generic_spk_widgets),
 			},
+<<<<<<< HEAD
 			{
 				.direction = {false, true},
 				.dai_name = "rt1320-aif2",
@@ -367,6 +406,14 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.part_id = 0x1321,
 		.name_prefix = "rt1320",
 		.is_amp = true,
+=======
+		},
+		.dai_num = 1,
+	},
+	{
+		.part_id = 0x1321,
+		.name_prefix = "rt1320",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.dais = {
 			{
 				.direction = {true, false},
@@ -382,6 +429,7 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 				.widgets = generic_spk_widgets,
 				.num_widgets = ARRAY_SIZE(generic_spk_widgets),
 			},
+<<<<<<< HEAD
 			{
 				.direction = {false, true},
 				.dai_name = "rt1320-aif2",
@@ -397,6 +445,12 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 	},
 	{
 		.vendor_id = 0x025d,
+=======
+		},
+		.dai_num = 1,
+	},
+	{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x714,
 		.name_prefix = "rt714",
 		.version_id = 3,
@@ -413,7 +467,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x715,
 		.name_prefix = "rt715",
 		.version_id = 3,
@@ -430,7 +487,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x714,
 		.name_prefix = "rt714",
 		.version_id = 2,
@@ -447,7 +507,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x715,
 		.name_prefix = "rt715",
 		.version_id = 2,
@@ -464,7 +527,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x721,
 		.name_prefix = "rt721",
 		.version_id = 3,
@@ -510,7 +576,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 3,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x722,
 		.name_prefix = "rt722",
 		.version_id = 3,
@@ -558,7 +627,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 3,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x019f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x8373,
 		.name_prefix = "Left",
 		.dais = {
@@ -579,7 +651,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x019f,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x8363,
 		.name_prefix = "Left",
 		.dais = {
@@ -600,7 +675,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x025d,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x5682,
 		.name_prefix = "rt5682",
 		.dais = {
@@ -619,7 +697,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x3556,
 		.name_prefix = "AMP",
 		.dais = {
@@ -647,7 +728,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 2,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x3557,
 		.name_prefix = "AMP",
 		.dais = {
@@ -675,7 +759,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 2,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x3563,
 		.name_prefix = "AMP",
 		.dais = {
@@ -703,7 +790,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 2,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x4242,
 		.name_prefix = "cs42l42",
 		.dais = {
@@ -722,7 +812,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x4243,
 		.name_prefix = "cs42l43",
 		.count_sidecar = asoc_sdw_bridge_cs35l56_count_sidecar,
@@ -762,7 +855,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 			{
 				.direction = {true, false},
 				.codec_name = "cs42l43-codec",
+<<<<<<< HEAD
 				.component_name = "cs42l43-spk",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				.dai_name = "cs42l43-dp6",
 				.dai_type = SOC_SDW_DAI_TYPE_AMP,
 				.dailink = {SOC_SDW_AMP_OUT_DAI_ID, SOC_SDW_UNUSED_DAI_ID},
@@ -778,6 +874,7 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 4,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
 		.part_id = 0x2A3B,
 		.name_prefix = "cs42l43",
@@ -834,12 +931,18 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 	},
 	{
 		.vendor_id = 0x01fa,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x4245,
 		.name_prefix = "cs42l45",
 		.dais = {
 			{
 				.direction = {true, false},
+<<<<<<< HEAD
 				.codec_name = "snd_soc_sdca.UAJ",
+=======
+				.codec_name = "snd_soc_sdca.UAJ.1",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				.dai_name = "IT 41",
 				.dai_type = SOC_SDW_DAI_TYPE_JACK,
 				.dailink = {SOC_SDW_JACK_OUT_DAI_ID, SOC_SDW_UNUSED_DAI_ID},
@@ -847,7 +950,11 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 			},
 			{
 				.direction = {false, true},
+<<<<<<< HEAD
 				.codec_name = "snd_soc_sdca.SmartMic",
+=======
+				.codec_name = "snd_soc_sdca.SmartMic.0",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				.dai_name = "OT 113",
 				.dai_type = SOC_SDW_DAI_TYPE_MIC,
 				.dailink = {SOC_SDW_UNUSED_DAI_ID, SOC_SDW_DMIC_DAI_ID},
@@ -855,7 +962,11 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 			},
 			{
 				.direction = {false, true},
+<<<<<<< HEAD
 				.codec_name = "snd_soc_sdca.UAJ",
+=======
+				.codec_name = "snd_soc_sdca.UAJ.1",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				.dai_name = "OT 36",
 				.dai_type = SOC_SDW_DAI_TYPE_JACK,
 				.dailink = {SOC_SDW_UNUSED_DAI_ID, SOC_SDW_JACK_IN_DAI_ID},
@@ -864,12 +975,17 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 3,
 		.auxs = {
 			{
+<<<<<<< HEAD
 				.codec_name = "snd_soc_sdca.HID",
+=======
+				.codec_name = "snd_soc_sdca.HID.2",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			},
 		},
 		.aux_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x01fa,
 		.part_id = 0x4249,
 		.name_prefix = "cs42l45", /* Use same user-space as cs42l45 */
@@ -945,6 +1061,8 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 	},
 	{
 		.vendor_id = 0x0105,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0xaaaa, /* generic codec mockup */
 		.name_prefix = "sdw_mockup_mmulti-function",
 		.version_id = 0,
@@ -971,7 +1089,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 3,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x0105,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0xaa55, /* headset codec mockup */
 		.name_prefix = "sdw_mockup_headset0",
 		.version_id = 0,
@@ -986,7 +1107,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x0105,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x55aa, /* amplifier mockup */
 		.name_prefix = "sdw_mockup_amp1",
 		.version_id = 0,
@@ -1001,7 +1125,10 @@ struct asoc_sdw_codec_info codec_info_list[] = {
 		.dai_num = 1,
 	},
 	{
+<<<<<<< HEAD
 		.vendor_id = 0x0105,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.part_id = 0x5555,
 		.name_prefix = "sdw_mockup_mic0",
 		.version_id = 0,
@@ -1026,10 +1153,16 @@ EXPORT_SYMBOL_NS(asoc_sdw_get_codec_info_list_count, "SND_SOC_SDW_UTILS");
 
 struct asoc_sdw_codec_info *asoc_sdw_find_codec_info_part(const u64 adr)
 {
+<<<<<<< HEAD
 	unsigned int vendor_id, part_id, sdw_version;
 	int i;
 
 	vendor_id = SDW_MFG_ID(adr);
+=======
+	unsigned int part_id, sdw_version;
+	int i;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	part_id = SDW_PART_ID(adr);
 	sdw_version = SDW_VERSION(adr);
 	for (i = 0; i < ARRAY_SIZE(codec_info_list); i++)
@@ -1038,7 +1171,10 @@ struct asoc_sdw_codec_info *asoc_sdw_find_codec_info_part(const u64 adr)
 		 * version_id is not specified in the codec info.
 		 */
 		if (part_id == codec_info_list[i].part_id &&
+<<<<<<< HEAD
 		    vendor_id == codec_info_list[i].vendor_id &&
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (!codec_info_list[i].version_id ||
 		     sdw_version == codec_info_list[i].version_id))
 			return &codec_info_list[i];
@@ -1053,7 +1189,10 @@ static struct asoc_sdw_codec_info *asoc_sdw_find_codec_info_sdw_id(const struct 
 
 	for (i = 0; i < ARRAY_SIZE(codec_info_list); i++)
 		if (id->part_id == codec_info_list[i].part_id &&
+<<<<<<< HEAD
 		    id->mfg_id == codec_info_list[i].vendor_id &&
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (!codec_info_list[i].version_id ||
 		     id->sdw_version == codec_info_list[i].version_id))
 			return &codec_info_list[i];
@@ -1109,7 +1248,10 @@ static int asoc_sdw_find_codec_info_dai_index(const struct asoc_sdw_codec_info *
 int asoc_sdw_rtd_init(struct snd_soc_pcm_runtime *rtd)
 {
 	struct snd_soc_card *card = rtd->card;
+<<<<<<< HEAD
 	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_soc_dapm_context *dapm = snd_soc_card_to_dapm(card);
 	struct asoc_sdw_codec_info *codec_info;
 	struct snd_soc_dai *dai;
@@ -1159,8 +1301,13 @@ int asoc_sdw_rtd_init(struct snd_soc_pcm_runtime *rtd)
 			ret = snd_soc_add_card_controls(card, codec_info->dais[dai_index].controls,
 							codec_info->dais[dai_index].num_controls);
 			if (ret) {
+<<<<<<< HEAD
 				dev_err(card->dev, "%#x-%#x controls addition failed: %d\n",
 					codec_info->vendor_id, codec_info->part_id, ret);
+=======
+				dev_err(card->dev, "%#x controls addition failed: %d\n",
+					codec_info->part_id, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return ret;
 			}
 		}
@@ -1169,8 +1316,13 @@ int asoc_sdw_rtd_init(struct snd_soc_pcm_runtime *rtd)
 							codec_info->dais[dai_index].widgets,
 							codec_info->dais[dai_index].num_widgets);
 			if (ret) {
+<<<<<<< HEAD
 				dev_err(card->dev, "%#x-%#x widgets addition failed: %d\n",
 					codec_info->vendor_id, codec_info->part_id, ret);
+=======
+				dev_err(card->dev, "%#x widgets addition failed: %d\n",
+					codec_info->part_id, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return ret;
 			}
 		}
@@ -1185,6 +1337,7 @@ skip_add_controls_widgets:
 		/* Generate the spk component string for card->components string */
 		if (codec_info->dais[dai_index].dai_type == SOC_SDW_DAI_TYPE_AMP &&
 		    codec_info->dais[dai_index].component_name) {
+<<<<<<< HEAD
 			const char *component;
 
 			/*
@@ -1200,14 +1353,28 @@ skip_add_controls_widgets:
 			if (!spk_components)
 				spk_components =
 					devm_kasprintf(card->dev, GFP_KERNEL, "%s", component);
+=======
+			if (strlen (spk_components) == 0)
+				spk_components =
+					devm_kasprintf(card->dev, GFP_KERNEL, "%s",
+						       codec_info->dais[dai_index].component_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			else
 				/* Append component name to spk_components */
 				spk_components =
 					devm_kasprintf(card->dev, GFP_KERNEL,
+<<<<<<< HEAD
 						       "%s+%s", spk_components, component);
+<<<<<<< HEAD
 
 			if (!spk_components)
 				return -ENOMEM;
+=======
+=======
+						       "%s+%s", spk_components,
+						       codec_info->dais[dai_index].component_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		}
 
 		codec_info->dais[dai_index].rtd_init_done = true;
@@ -1419,6 +1586,7 @@ const char *asoc_sdw_get_codec_name(struct device *dev,
 				    const struct snd_soc_acpi_link_adr *adr_link,
 				    int adr_index)
 {
+<<<<<<< HEAD
 	if (dai_info->codec_name) {
 		struct snd_soc_component *component;
 
@@ -1431,6 +1599,10 @@ const char *asoc_sdw_get_codec_name(struct device *dev,
 			return devm_kstrdup(dev, dai_info->codec_name, GFP_KERNEL);
 		}
 	}
+=======
+	if (dai_info->codec_name)
+		return devm_kstrdup(dev, dai_info->codec_name, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return _asoc_sdw_get_codec_name(dev, adr_link, adr_index);
 }
@@ -1614,7 +1786,10 @@ int asoc_sdw_get_dai_type(u32 type)
 	switch (type) {
 	case SDCA_FUNCTION_TYPE_SMART_AMP:
 	case SDCA_FUNCTION_TYPE_SIMPLE_AMP:
+<<<<<<< HEAD
 	case SDCA_FUNCTION_TYPE_COMPANION_AMP:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return SOC_SDW_DAI_TYPE_AMP;
 	case SDCA_FUNCTION_TYPE_SMART_MIC:
 	case SDCA_FUNCTION_TYPE_SIMPLE_MIC:
@@ -1743,6 +1918,7 @@ int asoc_sdw_parse_sdw_endpoints(struct snd_soc_card *card,
 				return -EINVAL;
 
 			for (j = 0; j < codec_info->aux_num; j++) {
+<<<<<<< HEAD
 				struct snd_soc_component *component;
 
 				component = snd_soc_lookup_component_by_name(codec_info->auxs[j].codec_name);
@@ -1754,6 +1930,9 @@ int asoc_sdw_parse_sdw_endpoints(struct snd_soc_card *card,
 				} else {
 					soc_aux->dlc.name = codec_info->auxs[j].codec_name;
 				}
+=======
+				soc_aux->dlc.name = codec_info->auxs[j].codec_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				soc_aux++;
 			}
 

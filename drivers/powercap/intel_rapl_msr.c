@@ -21,18 +21,25 @@
 #include <linux/intel_rapl.h>
 #include <linux/processor.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/units.h>
 #include <linux/bits.h>
 
 #include <asm/cpu_device_id.h>
 #include <asm/intel-family.h>
 #include <asm/iosf_mbi.h>
+=======
+
+#include <asm/cpu_device_id.h>
+#include <asm/intel-family.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/msr.h>
 
 /* Local defines */
 #define MSR_PLATFORM_POWER_LIMIT	0x0000065C
 #define MSR_VR_CURRENT_CONFIG		0x00000601
 
+<<<<<<< HEAD
 #define ENERGY_UNIT_SCALE		1000	/* scale from driver unit to powercap unit */
 
 #define POWER_UNIT_OFFSET		0x00
@@ -88,6 +95,8 @@
 #define IOSF_CPU_POWER_BUDGET_CTL_BYT	0x02
 #define IOSF_CPU_POWER_BUDGET_CTL_TNG	0xDF
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* private data for RAPL MSR Interface */
 static struct rapl_if_priv *rapl_msr_priv;
 
@@ -216,6 +225,7 @@ static int rapl_msr_write_raw(int cpu, struct reg_action *ra)
 	return ra->err;
 }
 
+<<<<<<< HEAD
 static int rapl_check_unit_atom(struct rapl_domain *rd)
 {
 	struct reg_action ra;
@@ -488,6 +498,38 @@ MODULE_DEVICE_TABLE(x86cpu, rapl_ids);
 
 static int rapl_msr_probe(struct platform_device *pdev)
 {
+=======
+/* List of verified CPUs. */
+static const struct x86_cpu_id pl4_support_ids[] = {
+	X86_MATCH_VFM(INTEL_ICELAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_TIGERLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_ALDERLAKE, NULL),
+	X86_MATCH_VFM(INTEL_ALDERLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, NULL),
+	X86_MATCH_VFM(INTEL_RAPTORLAKE, NULL),
+	X86_MATCH_VFM(INTEL_RAPTORLAKE_P, NULL),
+	X86_MATCH_VFM(INTEL_METEORLAKE, NULL),
+	X86_MATCH_VFM(INTEL_METEORLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_ARROWLAKE_U, NULL),
+	X86_MATCH_VFM(INTEL_ARROWLAKE_H, NULL),
+	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
+	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
+	{}
+};
+
+/* List of MSR-based RAPL PMU support CPUs */
+static const struct x86_cpu_id pmu_support_ids[] = {
+	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
+	{}
+};
+
+static int rapl_msr_probe(struct platform_device *pdev)
+{
+	const struct x86_cpu_id *id = x86_match_cpu(pl4_support_ids);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	switch (boot_cpu_data.x86_vendor) {
@@ -504,6 +546,7 @@ static int rapl_msr_probe(struct platform_device *pdev)
 	}
 	rapl_msr_priv->read_raw = rapl_msr_read_raw;
 	rapl_msr_priv->write_raw = rapl_msr_write_raw;
+<<<<<<< HEAD
 	rapl_msr_priv->defaults = (const struct rapl_defaults *)pdev->dev.platform_data;
 	rapl_msr_priv->rpi = rpi_msr;
 
@@ -517,6 +560,19 @@ static int rapl_msr_probe(struct platform_device *pdev)
 	if (rapl_msr_priv->defaults->msr_pmu_support) {
 		rapl_msr_pmu = true;
 		pr_info("MSR-based RAPL PMU support enabled (updated)\n");
+=======
+
+	if (id) {
+		rapl_msr_priv->limits[RAPL_DOMAIN_PACKAGE] |= BIT(POWER_LIMIT4);
+		rapl_msr_priv->regs[RAPL_DOMAIN_PACKAGE][RAPL_DOMAIN_REG_PL4].msr =
+			MSR_VR_CURRENT_CONFIG;
+		pr_info("PL4 support detected.\n");
+	}
+
+	if (x86_match_cpu(pmu_support_ids)) {
+		rapl_msr_pmu = true;
+		pr_info("MSR-based RAPL PMU support enabled\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rapl_msr_priv->control_type = powercap_register_control_type(NULL, "intel-rapl", NULL);
@@ -560,6 +616,7 @@ static struct platform_driver intel_rapl_msr_driver = {
 	},
 };
 
+<<<<<<< HEAD
 static struct platform_device *rapl_msr_platdev;
 
 static int intel_rapl_msr_init(void)
@@ -595,8 +652,14 @@ static void intel_rapl_msr_exit(void)
 	platform_driver_unregister(&intel_rapl_msr_driver);
 }
 module_exit(intel_rapl_msr_exit);
+=======
+module_platform_driver(intel_rapl_msr_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_DESCRIPTION("Driver for Intel RAPL (Running Average Power Limit) control via MSR interface");
 MODULE_AUTHOR("Zhang Rui <rui.zhang@intel.com>");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("INTEL_RAPL");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

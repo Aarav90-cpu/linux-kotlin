@@ -29,7 +29,11 @@ for _ in $(seq 100); do
 done
 
 if ! kill -0 "$btrace_pid" 2>/dev/null; then
+<<<<<<< HEAD
 	_cleanup_test
+=======
+	_cleanup_test "null"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exit "$UBLK_SKIP_CODE"
 fi
 
@@ -51,5 +55,9 @@ if grep -q "^out_of_order:" "$UBLK_TMP"; then
 	grep "^out_of_order:" "$UBLK_TMP"
 	ERR_CODE=255
 fi
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "null"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

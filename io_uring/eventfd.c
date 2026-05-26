@@ -43,7 +43,10 @@ static void io_eventfd_do_signal(struct rcu_head *rcu)
 {
 	struct io_ev_fd *ev_fd = container_of(rcu, struct io_ev_fd, rcu);
 
+<<<<<<< HEAD
 	atomic_andnot(BIT(IO_EVENTFD_OP_SIGNAL_BIT), &ev_fd->ops);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eventfd_signal_mask(ev_fd->cq_ev_fd, EPOLL_URING_WAKE);
 	io_eventfd_put(ev_fd);
 }
@@ -149,7 +152,11 @@ int io_eventfd_register(struct io_ring_ctx *ctx, void __user *arg,
 	spin_unlock(&ctx->completion_lock);
 
 	ev_fd->eventfd_async = eventfd_async;
+<<<<<<< HEAD
 	ctx->int_flags |= IO_RING_F_HAS_EVFD;
+=======
+	ctx->has_evfd = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	refcount_set(&ev_fd->refs, 1);
 	atomic_set(&ev_fd->ops, 0);
 	rcu_assign_pointer(ctx->io_ev_fd, ev_fd);
@@ -163,7 +170,11 @@ int io_eventfd_unregister(struct io_ring_ctx *ctx)
 	ev_fd = rcu_dereference_protected(ctx->io_ev_fd,
 					lockdep_is_held(&ctx->uring_lock));
 	if (ev_fd) {
+<<<<<<< HEAD
 		ctx->int_flags &= ~IO_RING_F_HAS_EVFD;
+=======
+		ctx->has_evfd = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rcu_assign_pointer(ctx->io_ev_fd, NULL);
 		io_eventfd_put(ev_fd);
 		return 0;

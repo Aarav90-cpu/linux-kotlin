@@ -17,6 +17,10 @@
 struct amdxdna_ubuf_priv {
 	struct page **pages;
 	u64 nr_pages;
+<<<<<<< HEAD
+=======
+	enum amdxdna_ubuf_flag flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mm_struct *mm;
 };
 
@@ -36,9 +40,17 @@ static struct sg_table *amdxdna_ubuf_map(struct dma_buf_attachment *attach,
 	if (ret)
 		goto err_free_sg;
 
+<<<<<<< HEAD
 	ret = dma_map_sgtable(attach->dev, sg, direction, 0);
 	if (ret)
 		goto err_free_table;
+=======
+	if (ubuf->flags & AMDXDNA_UBUF_FLAG_MAP_DMA) {
+		ret = dma_map_sgtable(attach->dev, sg, direction, 0);
+		if (ret)
+			goto err_free_table;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return sg;
 
@@ -53,7 +65,15 @@ static void amdxdna_ubuf_unmap(struct dma_buf_attachment *attach,
 			       struct sg_table *sg,
 			       enum dma_data_direction direction)
 {
+<<<<<<< HEAD
 	dma_unmap_sgtable(attach->dev, sg, direction, 0);
+=======
+	struct amdxdna_ubuf_priv *ubuf = attach->dmabuf->priv;
+
+	if (ubuf->flags & AMDXDNA_UBUF_FLAG_MAP_DMA)
+		dma_unmap_sgtable(attach->dev, sg, direction, 0);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sg_free_table(sg);
 	kfree(sg);
 }
@@ -76,6 +96,10 @@ static const struct dma_buf_ops amdxdna_ubuf_dmabuf_ops = {
 };
 
 struct dma_buf *amdxdna_get_ubuf(struct drm_device *dev,
+<<<<<<< HEAD
+=======
+				 enum amdxdna_ubuf_flag flags,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 u32 num_entries, void __user *va_entries)
 {
 	struct amdxdna_dev *xdna = to_xdna_dev(dev);
@@ -94,6 +118,10 @@ struct dma_buf *amdxdna_get_ubuf(struct drm_device *dev,
 	if (!ubuf)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
+=======
+	ubuf->flags = flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ubuf->mm = current->mm;
 	mmgrab(ubuf->mm);
 

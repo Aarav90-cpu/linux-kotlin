@@ -606,7 +606,11 @@ int afs_getattr(struct mnt_idmap *idmap, const struct path *path,
 	struct key *key;
 	int ret, seq;
 
+<<<<<<< HEAD
 	_enter("{ ino=%llu v=%u }", inode->i_ino, inode->i_generation);
+=======
+	_enter("{ ino=%lu v=%u }", inode->i_ino, inode->i_generation);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vnode->volume &&
 	    !(query_flags & AT_STATX_DONT_SYNC) &&

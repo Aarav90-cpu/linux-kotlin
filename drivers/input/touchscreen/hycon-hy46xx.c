@@ -181,6 +181,7 @@ static ssize_t hycon_hy46xx_setting_show(struct device *dev,
 	struct hycon_hy46xx_attribute *attr =
 			container_of(dattr, struct hycon_hy46xx_attribute, dattr);
 	u8 *field = (u8 *)tsdata + attr->field_offset;
+<<<<<<< HEAD
 	int error = 0;
 	int val;
 
@@ -192,6 +193,20 @@ static ssize_t hycon_hy46xx_setting_show(struct device *dev,
 			"Failed to fetch attribute %s, error %d\n",
 			dattr->attr.name, error);
 		return error;
+=======
+	size_t count = 0;
+	int error = 0;
+	int val;
+
+	mutex_lock(&tsdata->mutex);
+
+	error = regmap_read(tsdata->regmap, attr->address, &val);
+	if (error < 0) {
+		dev_err(&tsdata->client->dev,
+			"Failed to fetch attribute %s, error %d\n",
+			dattr->attr.name, error);
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (val != *field) {
@@ -201,7 +216,15 @@ static ssize_t hycon_hy46xx_setting_show(struct device *dev,
 		*field = val;
 	}
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%d\n", val);
+=======
+	count = sysfs_emit(buf, "%d\n", val);
+
+out:
+	mutex_unlock(&tsdata->mutex);
+	return error ?: count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t hycon_hy46xx_setting_store(struct device *dev,
@@ -216,6 +239,7 @@ static ssize_t hycon_hy46xx_setting_store(struct device *dev,
 	unsigned int val;
 	int error;
 
+<<<<<<< HEAD
 	guard(mutex)(&tsdata->mutex);
 
 	error = kstrtouint(buf, 0, &val);
@@ -235,6 +259,31 @@ static ssize_t hycon_hy46xx_setting_store(struct device *dev,
 	*field = val;
 
 	return count;
+=======
+	mutex_lock(&tsdata->mutex);
+
+	error = kstrtouint(buf, 0, &val);
+	if (error)
+		goto out;
+
+	if (val < attr->limit_low || val > attr->limit_high) {
+		error = -ERANGE;
+		goto out;
+	}
+
+	error = regmap_write(tsdata->regmap, attr->address, val);
+	if (error < 0) {
+		dev_err(&tsdata->client->dev,
+			"Failed to update attribute %s, error: %d\n",
+			dattr->attr.name, error);
+		goto out;
+	}
+	*field = val;
+
+out:
+	mutex_unlock(&tsdata->mutex);
+	return error ?: count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static HYCON_ATTR_U8(threshold, 0644, HY46XX_THRESHOLD, 0, 255);

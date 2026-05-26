@@ -323,6 +323,21 @@ int agp_try_unsupported_boot;
 EXPORT_SYMBOL(agp_off);
 EXPORT_SYMBOL(agp_try_unsupported_boot);
 
+<<<<<<< HEAD
+=======
+static int __init agp_init(void)
+{
+	if (!agp_off)
+		printk(KERN_INFO "Linux agpgart interface v%d.%d\n",
+			AGPGART_VERSION_MAJOR, AGPGART_VERSION_MINOR);
+	return 0;
+}
+
+static void __exit agp_exit(void)
+{
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef MODULE
 static __init int agp_setup(char *s)
 {
@@ -339,3 +354,10 @@ MODULE_AUTHOR("Dave Jones, Jeff Hartmann");
 MODULE_DESCRIPTION("AGP GART driver");
 MODULE_LICENSE("GPL and additional rights");
 MODULE_ALIAS_MISCDEV(AGPGART_MINOR);
+<<<<<<< HEAD
+=======
+
+module_init(agp_init);
+module_exit(agp_exit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

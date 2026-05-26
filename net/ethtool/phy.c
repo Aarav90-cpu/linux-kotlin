@@ -3,14 +3,23 @@
  * Copyright 2023 Bootlin
  *
  */
+<<<<<<< HEAD
+=======
+#include "common.h"
+#include "netlink.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/phy.h>
 #include <linux/phy_link_topology.h>
 #include <linux/sfp.h>
 #include <net/netdev_lock.h>
 
+<<<<<<< HEAD
 #include "common.h"
 #include "netlink.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct phy_req_info {
 	struct ethnl_req_info base;
 };
@@ -76,7 +85,10 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
 	struct nlattr **tb = info->attrs;
 	struct phy_device_node *pdn;
 	struct phy_device *phydev;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* RTNL is held by the caller */
 	phydev = ethnl_req_get_phydev(req_info, tb, ETHTOOL_A_PHY_HEADER,
@@ -89,6 +101,7 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
 		return -EOPNOTSUPP;
 
 	rep_data->phyindex = phydev->phyindex;
+<<<<<<< HEAD
 
 	rep_data->name = kstrdup(dev_name(&phydev->mdio.dev), GFP_KERNEL);
 	if (!rep_data->name)
@@ -102,6 +115,10 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
 		}
 	}
 
+=======
+	rep_data->name = kstrdup(dev_name(&phydev->mdio.dev), GFP_KERNEL);
+	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rep_data->upstream_type = pdn->upstream_type;
 
 	if (pdn->upstream_type == PHY_UPSTREAM_PHY) {
@@ -109,6 +126,7 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
 		rep_data->upstream_index = upstream->phyindex;
 	}
 
+<<<<<<< HEAD
 	if (pdn->parent_sfp_bus) {
 		rep_data->upstream_sfp_name = kstrdup(sfp_get_name(pdn->parent_sfp_bus),
 						      GFP_KERNEL);
@@ -136,6 +154,17 @@ err_free_drvname:
 err_free_name:
 	kfree(rep_data->name);
 	return ret;
+=======
+	if (pdn->parent_sfp_bus)
+		rep_data->upstream_sfp_name = kstrdup(sfp_get_name(pdn->parent_sfp_bus),
+						      GFP_KERNEL);
+
+	if (phydev->sfp_bus)
+		rep_data->downstream_sfp_name = kstrdup(sfp_get_name(phydev->sfp_bus),
+							GFP_KERNEL);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int phy_fill_reply(struct sk_buff *skb,

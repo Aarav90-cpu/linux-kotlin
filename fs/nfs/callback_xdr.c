@@ -96,7 +96,12 @@ static __be32 decode_fh(struct xdr_stream *xdr, struct nfs_fh *fh)
 	p = xdr_inline_decode(xdr, fh->size);
 	if (unlikely(p == NULL))
 		return htonl(NFS4ERR_RESOURCE);
+<<<<<<< HEAD
 	memcpy_and_pad(fh->data, sizeof(fh->data), p, fh->size, 0);
+=======
+	memcpy(&fh->data[0], p, fh->size);
+	memset(&fh->data[fh->size], 0, sizeof(fh->data) - fh->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

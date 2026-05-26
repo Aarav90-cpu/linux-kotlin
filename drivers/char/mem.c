@@ -520,7 +520,11 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
 #ifndef CONFIG_MMU
 	return -ENOSYS;
 #endif
+<<<<<<< HEAD
 	if (vma_desc_test(desc, VMA_SHARED_BIT))
+=======
+	if (vma_desc_test_flags(desc, VMA_SHARED_BIT))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return shmem_zero_setup_desc(desc);
 
 	desc->action.success_hook = mmap_zero_private_success;

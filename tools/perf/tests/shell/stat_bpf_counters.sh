@@ -41,6 +41,7 @@ check_counts()
 test_bpf_counters()
 {
 	printf "Testing --bpf-counters "
+<<<<<<< HEAD
 	base_instructions=$(perf stat --no-big-num -e instructions -- $workload 2>&1 | \
 				awk -v i=0 -v c=0 '/instructions/ { \
 					if ($1 != "<not") { i++; c += $1 } \
@@ -49,6 +50,10 @@ test_bpf_counters()
 				awk -v i=0 -v c=0 '/instructions/ { \
 					if ($1 != "<not") { i++; c += $1 } \
 				} END { if (i > 0) printf "%.0f", c; else print "<not" }')
+=======
+	base_instructions=$(perf stat --no-big-num -e instructions -- $workload 2>&1 | awk '/instructions/ {print $1}')
+	bpf_instructions=$(perf stat --no-big-num --bpf-counters -e instructions -- $workload  2>&1 | awk '/instructions/ {print $1}')
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	check_counts $base_instructions $bpf_instructions
 	compare_number $base_instructions $bpf_instructions
 	echo "[Success]"
@@ -58,6 +63,7 @@ test_bpf_modifier()
 {
 	printf "Testing bpf event modifier "
 	stat_output=$(perf stat --no-big-num -e instructions/name=base_instructions/,instructions/name=bpf_instructions/b -- $workload 2>&1)
+<<<<<<< HEAD
 	base_instructions=$(echo "$stat_output"| \
 				awk -v i=0 -v c=0 '/base_instructions/ { \
 					if ($1 != "<not") { i++; c += $1 } \
@@ -66,6 +72,10 @@ test_bpf_modifier()
 				awk -v i=0 -v c=0 '/bpf_instructions/ { \
 					if ($1 != "<not") { i++; c += $1 } \
 				} END { if (i > 0) printf "%.0f", c; else print "<not" }')
+=======
+	base_instructions=$(echo "$stat_output"| awk '/base_instructions/ {print $1}')
+	bpf_instructions=$(echo "$stat_output"| awk '/bpf_instructions/ {print $1}')
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	check_counts $base_instructions $bpf_instructions
 	compare_number $base_instructions $bpf_instructions
 	echo "[Success]"

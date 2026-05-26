@@ -3443,6 +3443,7 @@ int tty_register_driver(struct tty_driver *driver)
 	if (error < 0)
 		goto err;
 
+<<<<<<< HEAD
 	/*
 	 * Drivers that do not define driver_name are potentially in-memory devices
 	 * like vty, which generally do not require special workqueue settings.
@@ -3464,6 +3465,12 @@ int tty_register_driver(struct tty_driver *driver)
 		error = tty_cdev_add(driver, dev, 0, driver->num);
 		if (error)
 			goto err_destroy_wq;
+=======
+	if (driver->flags & TTY_DRIVER_DYNAMIC_ALLOC) {
+		error = tty_cdev_add(driver, dev, 0, driver->num);
+		if (error)
+			goto err_unreg_char;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	scoped_guard(mutex, &tty_mutex)
@@ -3489,10 +3496,13 @@ err_unreg_devs:
 	scoped_guard(mutex, &tty_mutex)
 		list_del(&driver->tty_drivers);
 
+<<<<<<< HEAD
 err_destroy_wq:
 	if (driver->flip_wq)
 		destroy_workqueue(driver->flip_wq);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_unreg_char:
 	unregister_chrdev_region(dev, driver->num);
 err:
@@ -3512,8 +3522,11 @@ void tty_unregister_driver(struct tty_driver *driver)
 				driver->num);
 	scoped_guard(mutex, &tty_mutex)
 		list_del(&driver->tty_drivers);
+<<<<<<< HEAD
 	if (driver->flip_wq)
 		destroy_workqueue(driver->flip_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(tty_unregister_driver);
 

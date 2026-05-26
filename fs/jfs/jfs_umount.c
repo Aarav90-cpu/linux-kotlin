@@ -20,7 +20,10 @@
 #include "jfs_superblock.h"
 #include "jfs_dmap.h"
 #include "jfs_imap.h"
+<<<<<<< HEAD
 #include "jfs_logmgr.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "jfs_metapage.h"
 #include "jfs_debug.h"
 
@@ -59,12 +62,15 @@ int jfs_umount(struct super_block *sb)
 		jfs_flush_journal(log, 2);
 
 	/*
+<<<<<<< HEAD
 	 * Hold log lock so write_special_inodes (lmLogSync) cannot see
 	 * this sbi with a NULL inode pointer while iterating log->sb_list.
 	 */
 	if (log)
 		LOG_LOCK(log);
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * close fileset inode allocation map (aka fileset inode)
 	 */
 	diUnmount(ipimap, 0);
@@ -102,9 +108,12 @@ int jfs_umount(struct super_block *sb)
 	 */
 	filemap_write_and_wait(sbi->direct_inode->i_mapping);
 
+<<<<<<< HEAD
 	if (log)
 		LOG_UNLOCK(log);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * ensure all file system file pages are propagated to their
 	 * home blocks on disk (and their in-memory buffer pages are

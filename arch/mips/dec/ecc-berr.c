@@ -5,13 +5,20 @@
  *	5000/240 (KN03), 5000/260 (KN05) and DECsystem 5900 (KN03),
  *	5900/260 (KN05) systems.
  *
+<<<<<<< HEAD
  *	Copyright (c) 2003, 2005, 2026  Maciej W. Rozycki
+=======
+ *	Copyright (c) 2003, 2005  Maciej W. Rozycki
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched.h>
 #include <linux/types.h>
 
@@ -52,10 +59,13 @@ static int dec_ecc_be_backend(struct pt_regs *regs, int is_fixup, int invoker)
 	static const char overstr[] = "overrun";
 	static const char eccstr[] = "ECC error";
 
+<<<<<<< HEAD
 	static DEFINE_RATELIMIT_STATE(rs,
 				      DEFAULT_RATELIMIT_INTERVAL,
 				      DEFAULT_RATELIMIT_BURST);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *kind, *agent, *cycle, *event;
 	const char *status = "", *xbit = "", *fmt = "";
 	unsigned long address;
@@ -75,7 +85,11 @@ static int dec_ecc_be_backend(struct pt_regs *regs, int is_fixup, int invoker)
 
 	if (!(erraddr & KN0X_EAR_VALID)) {
 		/* No idea what happened. */
+<<<<<<< HEAD
 		pr_alert_ratelimited("Unidentified bus error %s\n", kind);
+=======
+		printk(KERN_ALERT "Unidentified bus error %s\n", kind);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return action;
 	}
 
@@ -185,6 +199,7 @@ static int dec_ecc_be_backend(struct pt_regs *regs, int is_fixup, int invoker)
 		}
 	}
 
+<<<<<<< HEAD
 	if (action != MIPS_BE_FIXUP && __ratelimit(&rs)) {
 		printk(KERN_ALERT "Bus error %s: %s %s %s at %#010lx\n",
 			kind, agent, cycle, event, address);
@@ -192,6 +207,14 @@ static int dec_ecc_be_backend(struct pt_regs *regs, int is_fixup, int invoker)
 		if (erraddr & KN0X_EAR_ECCERR)
 			printk(fmt, "  ECC syndrome ", syn, status, xbit, i);
 	}
+=======
+	if (action != MIPS_BE_FIXUP)
+		printk(KERN_ALERT "Bus error %s: %s %s %s at %#010lx\n",
+			kind, agent, cycle, event, address);
+
+	if (action != MIPS_BE_FIXUP && erraddr & KN0X_EAR_ECCERR)
+		printk(fmt, "  ECC syndrome ", syn, status, xbit, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return action;
 }

@@ -32,7 +32,10 @@
 #define CPTS_N_ETX_TS 4
 
 int (*cpsw_slave_index)(struct cpsw_common *cpsw, struct cpsw_priv *priv);
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_slave_index);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_intr_enable(struct cpsw_common *cpsw)
 {
@@ -41,7 +44,10 @@ void cpsw_intr_enable(struct cpsw_common *cpsw)
 
 	cpdma_ctlr_int_ctrl(cpsw->dma, true);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_intr_enable);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_intr_disable(struct cpsw_common *cpsw)
 {
@@ -50,7 +56,10 @@ void cpsw_intr_disable(struct cpsw_common *cpsw)
 
 	cpdma_ctlr_int_ctrl(cpsw->dma, false);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_intr_disable);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_tx_handler(void *token, int len, int status)
 {
@@ -85,7 +94,10 @@ void cpsw_tx_handler(void *token, int len, int status)
 	ndev->stats.tx_packets++;
 	ndev->stats.tx_bytes += len;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_tx_handler);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 irqreturn_t cpsw_tx_interrupt(int irq, void *dev_id)
 {
@@ -102,7 +114,10 @@ irqreturn_t cpsw_tx_interrupt(int irq, void *dev_id)
 	napi_schedule(&cpsw->napi_tx);
 	return IRQ_HANDLED;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_tx_interrupt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 irqreturn_t cpsw_rx_interrupt(int irq, void *dev_id)
 {
@@ -119,7 +134,10 @@ irqreturn_t cpsw_rx_interrupt(int irq, void *dev_id)
 	napi_schedule(&cpsw->napi_rx);
 	return IRQ_HANDLED;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_rx_interrupt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 irqreturn_t cpsw_misc_interrupt(int irq, void *dev_id)
 {
@@ -132,7 +150,10 @@ irqreturn_t cpsw_misc_interrupt(int irq, void *dev_id)
 
 	return IRQ_HANDLED;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_misc_interrupt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_tx_mq_poll(struct napi_struct *napi_tx, int budget)
 {
@@ -165,7 +186,10 @@ int cpsw_tx_mq_poll(struct napi_struct *napi_tx, int budget)
 
 	return num_tx;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_tx_mq_poll);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_tx_poll(struct napi_struct *napi_tx, int budget)
 {
@@ -184,7 +208,10 @@ int cpsw_tx_poll(struct napi_struct *napi_tx, int budget)
 
 	return num_tx;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_tx_poll);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget)
 {
@@ -217,7 +244,10 @@ int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget)
 
 	return num_rx;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_rx_mq_poll);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_rx_poll(struct napi_struct *napi_rx, int budget)
 {
@@ -236,7 +266,10 @@ int cpsw_rx_poll(struct napi_struct *napi_rx, int budget)
 
 	return num_rx;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_rx_poll);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_rx_vlan_encap(struct sk_buff *skb)
 {
@@ -279,16 +312,24 @@ void cpsw_rx_vlan_encap(struct sk_buff *skb)
 		skb_pull(skb, VLAN_HLEN);
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_rx_vlan_encap);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_set_slave_mac(struct cpsw_slave *slave, struct cpsw_priv *priv)
 {
 	slave_write(slave, mac_hi(priv->mac_addr), SA_HI);
 	slave_write(slave, mac_lo(priv->mac_addr), SA_LO);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_set_slave_mac);
 
 void cpsw_soft_reset(const char *module, void __iomem *reg)
+=======
+
+void soft_reset(const char *module, void __iomem *reg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long timeout = jiffies + HZ;
 
@@ -299,7 +340,10 @@ void cpsw_soft_reset(const char *module, void __iomem *reg)
 
 	WARN(readl_relaxed(reg) & 1, "failed to soft-reset %s\n", module);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_soft_reset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_ndo_tx_timeout(struct net_device *ndev, unsigned int txqueue)
 {
@@ -319,7 +363,10 @@ void cpsw_ndo_tx_timeout(struct net_device *ndev, unsigned int txqueue)
 	netif_trans_update(ndev);
 	netif_tx_wake_all_queues(ndev);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_ndo_tx_timeout);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int cpsw_get_common_speed(struct cpsw_common *cpsw)
 {
@@ -358,7 +405,10 @@ int cpsw_need_resplit(struct cpsw_common *cpsw)
 
 	return 1;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_need_resplit);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_split_res(struct cpsw_common *cpsw)
 {
@@ -444,7 +494,10 @@ void cpsw_split_res(struct cpsw_common *cpsw)
 	if (budget)
 		cpsw->rxv[0].budget += budget;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_split_res);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_init_common(struct cpsw_common *cpsw, void __iomem *ss_regs,
 		     int ale_ageout, phys_addr_t desc_mem_phys,
@@ -565,7 +618,10 @@ int cpsw_init_common(struct cpsw_common *cpsw, void __iomem *ss_regs,
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_init_common);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if IS_ENABLED(CONFIG_TI_CPTS)
 
@@ -696,7 +752,10 @@ int cpsw_hwtstamp_set(struct net_device *dev,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_hwtstamp_set);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_hwtstamp_get(struct net_device *dev,
 		      struct kernel_hwtstamp_config *cfg)
@@ -714,14 +773,20 @@ int cpsw_hwtstamp_get(struct net_device *dev,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_hwtstamp_get);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 int cpsw_hwtstamp_get(struct net_device *dev,
 		      struct kernel_hwtstamp_config *cfg)
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_hwtstamp_set);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_hwtstamp_set(struct net_device *dev,
 		      struct kernel_hwtstamp_config *cfg,
@@ -729,7 +794,10 @@ int cpsw_hwtstamp_set(struct net_device *dev,
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_hwtstamp_get);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /*CONFIG_TI_CPTS*/
 
 int cpsw_ndo_set_tx_maxrate(struct net_device *ndev, int queue, u32 rate)
@@ -780,7 +848,10 @@ int cpsw_ndo_set_tx_maxrate(struct net_device *ndev, int queue, u32 rate)
 	cpsw_split_res(cpsw);
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_ndo_set_tx_maxrate);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int cpsw_tc_to_fifo(int tc, int num_tc)
 {
@@ -805,7 +876,10 @@ bool cpsw_shp_is_off(struct cpsw_priv *priv)
 
 	return !val;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_shp_is_off);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void cpsw_fifo_shp_on(struct cpsw_priv *priv, int fifo, int on)
 {
@@ -1067,7 +1141,10 @@ int cpsw_ndo_setup_tc(struct net_device *ndev, enum tc_setup_type type,
 		return -EOPNOTSUPP;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_ndo_setup_tc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_cbs_resume(struct cpsw_slave *slave, struct cpsw_priv *priv)
 {
@@ -1081,7 +1158,10 @@ void cpsw_cbs_resume(struct cpsw_slave *slave, struct cpsw_priv *priv)
 		cpsw_set_fifo_rlimit(priv, fifo, bw);
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_cbs_resume);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_mqprio_resume(struct cpsw_slave *slave, struct cpsw_priv *priv)
 {
@@ -1104,7 +1184,10 @@ void cpsw_mqprio_resume(struct cpsw_slave *slave, struct cpsw_priv *priv)
 
 	slave_write(slave, tx_prio_map, tx_prio_rg);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_mqprio_resume);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_fill_rx_channels(struct cpsw_priv *priv)
 {
@@ -1150,7 +1233,10 @@ int cpsw_fill_rx_channels(struct cpsw_priv *priv)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_fill_rx_channels);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct page_pool *cpsw_create_page_pool(struct cpsw_common *cpsw,
 					       int size)
@@ -1236,7 +1322,10 @@ void cpsw_destroy_xdp_rxqs(struct cpsw_common *cpsw)
 		cpsw->page_pool[ch] = NULL;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_destroy_xdp_rxqs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_create_xdp_rxqs(struct cpsw_common *cpsw)
 {
@@ -1269,7 +1358,10 @@ err_cleanup:
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_create_xdp_rxqs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int cpsw_xdp_prog_setup(struct cpsw_priv *priv, struct netdev_bpf *bpf)
 {
@@ -1297,7 +1389,10 @@ int cpsw_ndo_bpf(struct net_device *ndev, struct netdev_bpf *bpf)
 		return -EINVAL;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_ndo_bpf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_xdp_tx_frame(struct cpsw_priv *priv, struct xdp_frame *xdpf,
 		      struct page *page, int port)
@@ -1331,7 +1426,10 @@ int cpsw_xdp_tx_frame(struct cpsw_priv *priv, struct xdp_frame *xdpf,
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_xdp_tx_frame);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_run_xdp(struct cpsw_priv *priv, int ch, struct xdp_buff *xdp,
 		 struct page *page, int port, int *len)
@@ -1394,7 +1492,10 @@ drop:
 	page_pool_recycle_direct(cpsw->page_pool[ch], page);
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_run_xdp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int cpsw_qos_clsflower_add_policer(struct cpsw_priv *priv,
 					  struct netlink_ext_ack *extack,
@@ -1597,7 +1698,10 @@ void cpsw_qos_clsflower_resume(struct cpsw_priv *priv)
 		cpsw_ale_rx_ratelimit_mc(priv->cpsw->ale, port_id,
 					 priv->ale_mc_ratelimit.rate_packet_ps);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_qos_clsflower_resume);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("TI CPSW Ethernet Switch Driver");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

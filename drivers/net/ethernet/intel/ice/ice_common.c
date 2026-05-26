@@ -1126,6 +1126,11 @@ int ice_init_hw(struct ice_hw *hw)
 	if (status)
 		goto err_unroll_fltr_mgmt_struct;
 
+<<<<<<< HEAD
+=======
+	ice_init_dev_hw(hw->back);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&hw->tnl_lock);
 	ice_init_chk_recipe_reuse_support(hw);
 

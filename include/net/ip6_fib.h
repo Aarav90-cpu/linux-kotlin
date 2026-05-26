@@ -486,12 +486,16 @@ void rt6_get_prefsrc(const struct rt6_info *rt, struct in6_addr *addr)
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
 		 struct fib6_config *cfg, gfp_t gfp_flags,
 		 struct netlink_ext_ack *extack);
 void fib6_nh_release(struct fib6_nh *fib6_nh);
 void fib6_nh_release_dsts(struct fib6_nh *fib6_nh);
+<<<<<<< HEAD
 #else
 static inline int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
 			       struct fib6_config *cfg, gfp_t gfp_flags,
@@ -510,6 +514,8 @@ static inline void fib6_nh_release_dsts(struct fib6_nh *fib6_nh)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int call_fib6_entry_notifiers(struct net *net,
 			      enum fib_event_type event_type,
@@ -521,6 +527,7 @@ int call_fib6_multipath_entry_notifiers(struct net *net,
 					unsigned int nsiblings,
 					struct netlink_ext_ack *extack);
 int call_fib6_entry_notifiers_replace(struct net *net, struct fib6_info *rt);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 void fib6_rt_update(struct net *net, struct fib6_info *rt,
 		    struct nl_info *info);
@@ -530,6 +537,10 @@ static inline void fib6_rt_update(struct net *net, struct fib6_info *rt,
 {
 }
 #endif
+=======
+void fib6_rt_update(struct net *net, struct fib6_info *rt,
+		    struct nl_info *info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
 		     unsigned int flags);
 
@@ -614,6 +625,7 @@ int fib6_tables_dump(struct net *net, struct notifier_block *nb,
 		     struct netlink_ext_ack *extack);
 
 void fib6_update_sernum(struct net *net, struct fib6_info *rt);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 void fib6_update_sernum_upto_root(struct net *net, struct fib6_info *rt);
 #else
@@ -621,6 +633,10 @@ static inline void fib6_update_sernum_upto_root(struct net *net, struct fib6_inf
 {
 }
 #endif
+=======
+void fib6_update_sernum_upto_root(struct net *net, struct fib6_info *rt);
+void fib6_update_sernum_stub(struct net *net, struct fib6_info *f6i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void fib6_metric_set(struct fib6_info *f6i, int metric, u32 val);
 static inline bool fib6_metric_locked(struct fib6_info *f6i, int metric)
@@ -630,7 +646,11 @@ static inline bool fib6_metric_locked(struct fib6_info *f6i, int metric)
 void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
 			    bool offload, bool trap, bool offload_failed);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6) && defined(CONFIG_BPF_SYSCALL)
+=======
+#if IS_BUILTIN(CONFIG_IPV6) && defined(CONFIG_BPF_SYSCALL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bpf_iter__ipv6_route {
 	__bpf_md_ptr(struct bpf_iter_meta *, meta);
 	__bpf_md_ptr(struct fib6_info *, rt);

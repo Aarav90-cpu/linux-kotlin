@@ -325,7 +325,11 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
 	struct ieee80211_vif *vif = &sdata->vif;
 	struct fq *fq = &local->fq;
 	struct ps_data *ps = NULL;
+<<<<<<< HEAD
 	struct txq_info *txqi = NULL;
+=======
+	struct txq_info *txqi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sta_info *sta;
 	int i;
 
@@ -344,26 +348,42 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
 
 		for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
 			struct ieee80211_txq *txq = sta->sta.txq[i];
+<<<<<<< HEAD
 			struct txq_info *sta_txqi;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (!txq)
 				continue;
 
+<<<<<<< HEAD
 			sta_txqi = to_txq_info(txq);
+=======
+			txqi = to_txq_info(txq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (ac != txq->ac)
 				continue;
 
 			if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY,
+<<<<<<< HEAD
 						&sta_txqi->flags))
 				continue;
 
 			spin_unlock(&fq->lock);
 			drv_wake_tx_queue(local, sta_txqi);
+=======
+						&txqi->flags))
+				continue;
+
+			spin_unlock(&fq->lock);
+			drv_wake_tx_queue(local, txqi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_lock(&fq->lock);
 		}
 	}
 
+<<<<<<< HEAD
 	if (vif->txq) {
 		txqi = to_txq_info(vif->txq);
 
@@ -387,6 +407,20 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
 	if (txqi)
 		drv_wake_tx_queue(local, txqi);
 
+=======
+	if (!vif->txq)
+		goto out;
+
+	txqi = to_txq_info(vif->txq);
+
+	if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ||
+	    (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
+		goto out;
+
+	spin_unlock(&fq->lock);
+
+	drv_wake_tx_queue(local, txqi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_bh_enable();
 	return;
 out:
@@ -1744,12 +1778,24 @@ static void ieee80211_reconfig_stations(struct ieee80211_sub_if_data *sdata)
 	}
 }
 
+<<<<<<< HEAD
 static int
 ieee80211_reconfig_nan_offload_de(struct ieee80211_sub_if_data *sdata)
+=======
+static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct cfg80211_nan_func *func, **funcs;
 	int res, id, i = 0;
 
+<<<<<<< HEAD
+=======
+	res = drv_start_nan(sdata->local, sdata,
+			    &sdata->u.nan.conf);
+	if (WARN_ON(res))
+		return res;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	funcs = kzalloc_objs(*funcs, sdata->local->hw.max_nan_de_entries + 1);
 	if (!funcs)
 		return -ENOMEM;
@@ -1758,12 +1804,21 @@ ieee80211_reconfig_nan_offload_de(struct ieee80211_sub_if_data *sdata)
 	 * This is a little bit ugly. We need to call a potentially sleeping
 	 * callback for each NAN function, so we can't hold the spinlock.
 	 */
+<<<<<<< HEAD
 	spin_lock_bh(&sdata->u.nan.de.func_lock);
 
 	idr_for_each_entry(&sdata->u.nan.de.function_inst_ids, func, id)
 		funcs[i++] = func;
 
 	spin_unlock_bh(&sdata->u.nan.de.func_lock);
+=======
+	spin_lock_bh(&sdata->u.nan.func_lock);
+
+	idr_for_each_entry(&sdata->u.nan.function_inst_ids, func, id)
+		funcs[i++] = func;
+
+	spin_unlock_bh(&sdata->u.nan.func_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; funcs[i]; i++) {
 		res = drv_add_nan_func(sdata->local, sdata, funcs[i]);
@@ -1775,6 +1830,7 @@ ieee80211_reconfig_nan_offload_de(struct ieee80211_sub_if_data *sdata)
 	}
 
 	kfree(funcs);
+<<<<<<< HEAD
 	return res;
 }
 
@@ -1846,6 +1902,8 @@ static int ieee80211_reconfig_nan(struct ieee80211_sub_if_data *sdata)
 				return res;
 		}
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2000,9 +2058,12 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
 		    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
 			continue;
+<<<<<<< HEAD
 		/* These vifs can't be added before NAN was started */
 		if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
 			continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
 		    ieee80211_sdata_running(sdata)) {
 			res = drv_add_interface(local, sdata);
@@ -2020,8 +2081,11 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 			if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
 			    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
 				continue;
+<<<<<<< HEAD
 			if (sdata->vif.type == NL80211_IFTYPE_NAN_DATA)
 				continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
 			    ieee80211_sdata_running(sdata))
 				drv_remove_interface(local, sdata);
@@ -2105,10 +2169,13 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 		case NL80211_IFTYPE_AP_VLAN:
 		case NL80211_IFTYPE_MONITOR:
 			break;
+<<<<<<< HEAD
 		case NL80211_IFTYPE_NAN:
 		case NL80211_IFTYPE_NAN_DATA:
 			/* NAN stations are handled later */
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case NL80211_IFTYPE_ADHOC:
 			if (sdata->vif.cfg.ibss_joined)
 				WARN_ON(drv_join_ibss(local, sdata));
@@ -2206,7 +2273,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 				return res;
 			}
 			break;
+<<<<<<< HEAD
 		case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case NL80211_IFTYPE_AP_VLAN:
 		case NL80211_IFTYPE_MONITOR:
 		case NL80211_IFTYPE_P2P_DEVICE:
@@ -3499,7 +3569,24 @@ u8 ieee80211_mcs_to_chains(const struct ieee80211_mcs_info *mcs)
 	return 1;
 }
 
+<<<<<<< HEAD
 u64 ieee80211_calculate_rx_timestamp(struct ieee80211_hw *hw,
+=======
+/**
+ * ieee80211_calculate_rx_timestamp - calculate timestamp in frame
+ * @local: mac80211 hw info struct
+ * @status: RX status
+ * @mpdu_len: total MPDU length (including FCS)
+ * @mpdu_offset: offset into MPDU to calculate timestamp at
+ *
+ * This function calculates the RX timestamp at the given MPDU offset, taking
+ * into account what the RX timestamp was. An offset of 0 will just normalize
+ * the timestamp to TSF at beginning of MPDU reception.
+ *
+ * Returns: the calculated timestamp
+ */
+u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     struct ieee80211_rx_status *status,
 				     unsigned int mpdu_len,
 				     unsigned int mpdu_offset)
@@ -3618,7 +3705,11 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_hw *hw,
 	case RX_ENC_LEGACY: {
 		struct ieee80211_supported_band *sband;
 
+<<<<<<< HEAD
 		sband = hw->wiphy->bands[status->band];
+=======
+		sband = local->hw.wiphy->bands[status->band];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ri.legacy = sband->bitrates[status->rate_idx].bitrate;
 
 		if (mactime_plcp_start) {
@@ -3650,7 +3741,10 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_hw *hw,
 
 	return ts;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ieee80211_calculate_rx_timestamp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Cancel CAC for the interfaces under the specified @local. If @ctx is
  * also provided, only the interfaces using that ctx will be canceled.
@@ -3843,11 +3937,19 @@ again:
 int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,
 			      struct cfg80211_csa_settings *csa_settings)
 {
+<<<<<<< HEAD
 	int hdr_len = IEEE80211_MIN_ACTION_SIZE(chan_switch);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sk_buff *skb;
 	struct ieee80211_mgmt *mgmt;
 	struct ieee80211_local *local = sdata->local;
 	int freq;
+<<<<<<< HEAD
+=======
+	int hdr_len = offsetofend(struct ieee80211_mgmt,
+				  u.action.u.chan_switch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *pos;
 
 	if (sdata->vif.type != NL80211_IFTYPE_ADHOC &&
@@ -3876,7 +3978,11 @@ int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,
 		memcpy(mgmt->bssid, ifibss->bssid, ETH_ALEN);
 	}
 	mgmt->u.action.category = WLAN_CATEGORY_SPECTRUM_MGMT;
+<<<<<<< HEAD
 	mgmt->u.action.action_code = WLAN_ACTION_SPCT_CHL_SWITCH;
+=======
+	mgmt->u.action.u.chan_switch.action_code = WLAN_ACTION_SPCT_CHL_SWITCH;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pos = skb_put(skb, 5);
 	*pos++ = WLAN_EID_CHANNEL_SWITCH;			/* EID */
 	*pos++ = 3;						/* IE length */

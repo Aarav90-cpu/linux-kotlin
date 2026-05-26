@@ -14,7 +14,11 @@ int vdo_make_funnel_queue(struct funnel_queue **queue_ptr)
 	int result;
 	struct funnel_queue *queue;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "funnel queue", &queue);
+=======
+	result = vdo_allocate(1, struct funnel_queue, "funnel queue", &queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

@@ -47,7 +47,11 @@ bool kernel_page_present(struct page *page);
 
 #endif /* __ASSEMBLER__ */
 
+<<<<<<< HEAD
 #if defined(CONFIG_STRICT_KERNEL_RWX)
+=======
+#if defined(CONFIG_STRICT_KERNEL_RWX) || defined(CONFIG_XIP_KERNEL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_64BIT
 #define SECTION_ALIGN (1 << 21)
 #else

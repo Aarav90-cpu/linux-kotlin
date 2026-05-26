@@ -62,7 +62,11 @@ static inline void __uaccess_ttbr0_disable(void)
 
 	local_irq_save(flags);
 	ttbr = read_sysreg(ttbr1_el1);
+<<<<<<< HEAD
 	ttbr &= ~TTBRx_EL1_ASID_MASK;
+=======
+	ttbr &= ~TTBR_ASID_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* reserved_pg_dir placed before swapper_pg_dir */
 	write_sysreg(ttbr - RESERVED_SWAPPER_OFFSET, ttbr0_el1);
 	/* Set reserved ASID */
@@ -85,8 +89,13 @@ static inline void __uaccess_ttbr0_enable(void)
 
 	/* Restore active ASID */
 	ttbr1 = read_sysreg(ttbr1_el1);
+<<<<<<< HEAD
 	ttbr1 &= ~TTBRx_EL1_ASID_MASK;		/* safety measure */
 	ttbr1 |= ttbr0 & TTBRx_EL1_ASID_MASK;
+=======
+	ttbr1 &= ~TTBR_ASID_MASK;		/* safety measure */
+	ttbr1 |= ttbr0 & TTBR_ASID_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	write_sysreg(ttbr1, ttbr1_el1);
 
 	/* Restore user page table */

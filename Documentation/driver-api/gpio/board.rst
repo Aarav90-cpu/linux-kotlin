@@ -108,8 +108,14 @@ macro, which ties a software node representing the GPIO controller with
 consumer device. It allows consumers to use regular gpiolib APIs, such as
 gpiod_get(), gpiod_get_optional().
 
+<<<<<<< HEAD
 The software node representing a GPIO controller must be attached to the
 GPIO controller device - either as the primary or the secondary firmware node.
+=======
+The software node representing a GPIO controller need not be attached to the
+GPIO controller device. The only requirement is that the node must be
+registered and its name must match the GPIO controller's label.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 For example, here is how to describe a single GPIO-connected LED. This is an
 alternative to using platform_data on legacy systems.
@@ -121,7 +127,12 @@ alternative to using platform_data on legacy systems.
 	#include <linux/gpio/property.h>
 
 	/*
+<<<<<<< HEAD
 	 * 1. Define a node for the GPIO controller.
+=======
+	 * 1. Define a node for the GPIO controller. Its .name must match the
+	 *    controller's label.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	static const struct software_node gpio_controller_node = {
 		.name = "gpio-foo",
@@ -151,6 +162,7 @@ alternative to using platform_data on legacy systems.
 	};
 	software_node_register_node_group(swnodes);
 
+<<<<<<< HEAD
 	/*
 	 * 5. Attach the GPIO controller's software node to the device and
 	 *    register it.
@@ -166,6 +178,8 @@ alternative to using platform_data on legacy systems.
 		platform_device_register_full(&pdev_info);
 	 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// Then register a platform_device for "leds-gpio" and associate
 	// it with &led_device_swnode via .fwnode.
 
@@ -252,6 +266,25 @@ mapping and is thus transparent to GPIO consumers.
 A set of functions such as gpiod_set_value() is available to work with
 the new descriptor-oriented interface.
 
+<<<<<<< HEAD
+=======
+Boards using platform data can also hog GPIO lines by defining GPIO hog tables.
+
+.. code-block:: c
+
+        struct gpiod_hog gpio_hog_table[] = {
+                GPIO_HOG("gpio.0", 10, "foo", GPIO_ACTIVE_LOW, GPIOD_OUT_HIGH),
+                { }
+        };
+
+And the table can be added to the board code as follows::
+
+        gpiod_add_hogs(gpio_hog_table);
+
+The line will be hogged as soon as the gpiochip is created or - in case the
+chip was created earlier - when the hog table is registered.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Arrays of pins
 --------------
 In addition to requesting pins belonging to a function one by one, a device may

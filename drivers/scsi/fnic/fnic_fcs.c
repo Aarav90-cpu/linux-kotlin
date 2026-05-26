@@ -291,7 +291,11 @@ void fnic_handle_frame(struct work_struct *work)
 		if (fnic->stop_rx_link_events) {
 			list_del(&cur_frame->links);
 			spin_unlock_irqrestore(&fnic->fnic_lock, fnic->lock_flags);
+<<<<<<< HEAD
 			mempool_free(cur_frame->fp, fnic->frame_recv_pool);
+=======
+			kfree(cur_frame->fp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mempool_free(cur_frame, fnic->frame_elem_pool);
 			return;
 		}
@@ -317,7 +321,11 @@ void fnic_handle_frame(struct work_struct *work)
 		fnic_fdls_recv_frame(&fnic->iport, cur_frame->fp,
 							 cur_frame->frame_len, fchdr_offset);
 
+<<<<<<< HEAD
 		mempool_free(cur_frame->fp, fnic->frame_recv_pool);
+=======
+		kfree(cur_frame->fp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mempool_free(cur_frame, fnic->frame_elem_pool);
 	}
 	spin_unlock_irqrestore(&fnic->fnic_lock, fnic->lock_flags);
@@ -337,8 +345,13 @@ void fnic_handle_fip_frame(struct work_struct *work)
 		if (fnic->stop_rx_link_events) {
 			list_del(&cur_frame->links);
 			spin_unlock_irqrestore(&fnic->fnic_lock, fnic->lock_flags);
+<<<<<<< HEAD
 			mempool_free(cur_frame->fp, fnic->frame_recv_pool);
 			mempool_free(cur_frame, fnic->frame_elem_pool);
+=======
+			kfree(cur_frame->fp);
+			kfree(cur_frame);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 		}
 
@@ -355,8 +368,13 @@ void fnic_handle_fip_frame(struct work_struct *work)
 		list_del(&cur_frame->links);
 
 		if (fdls_fip_recv_frame(fnic, cur_frame->fp)) {
+<<<<<<< HEAD
 			mempool_free(cur_frame->fp, fnic->frame_recv_pool);
 			mempool_free(cur_frame, fnic->frame_elem_pool);
+=======
+			kfree(cur_frame->fp);
+			kfree(cur_frame);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	spin_unlock_irqrestore(&fnic->fnic_lock, fnic->lock_flags);
@@ -375,10 +393,17 @@ static inline int fnic_import_rq_eth_pkt(struct fnic *fnic, void *fp)
 
 	eh = (struct ethhdr *) fp;
 	if ((eh->h_proto == cpu_to_be16(ETH_P_FIP)) && (fnic->iport.usefip)) {
+<<<<<<< HEAD
 		fip_fr_elem = mempool_alloc(fnic->frame_elem_pool, GFP_ATOMIC);
 		if (!fip_fr_elem)
 			return 0;
 		memset(fip_fr_elem, 0, sizeof(struct fnic_frame_list));
+=======
+		fip_fr_elem = (struct fnic_frame_list *)
+			kzalloc_obj(struct fnic_frame_list, GFP_ATOMIC);
+		if (!fip_fr_elem)
+			return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fip_fr_elem->fp = fp;
 		spin_lock_irqsave(&fnic->fnic_lock, flags);
 		list_add_tail(&fip_fr_elem->links, &fnic->fip_frame_queue);
@@ -519,13 +544,21 @@ static void fnic_rq_cmpl_frame_recv(struct vnic_rq *rq, struct cq_desc
 
 	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
 
+<<<<<<< HEAD
 	frame_elem = mempool_alloc(fnic->frame_elem_pool, GFP_ATOMIC);
+=======
+	frame_elem = mempool_alloc(fnic->frame_elem_pool,
+					GFP_ATOMIC | __GFP_ZERO);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!frame_elem) {
 		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
 				 "Failed to allocate memory for frame elem");
 		goto drop;
 	}
+<<<<<<< HEAD
 	memset(frame_elem, 0, sizeof(struct fnic_frame_list));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	frame_elem->fp = fp;
 	frame_elem->rx_ethhdr_stripped = ethhdr_stripped;
 	frame_elem->frame_len = bytes_written;
@@ -538,7 +571,11 @@ static void fnic_rq_cmpl_frame_recv(struct vnic_rq *rq, struct cq_desc
 	return;
 
 drop:
+<<<<<<< HEAD
 	mempool_free(fp, fnic->frame_recv_pool);
+=======
+	kfree(fp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int fnic_rq_cmpl_handler_cont(struct vnic_dev *vdev,
@@ -591,7 +628,11 @@ int fnic_alloc_rq_frame(struct vnic_rq *rq)
 	int ret;
 
 	len = FNIC_FRAME_HT_ROOM;
+<<<<<<< HEAD
 	buf = mempool_alloc(fnic->frame_recv_pool, GFP_ATOMIC);
+=======
+	buf = kmalloc(len, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!buf) {
 		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
 					 "Unable to allocate RQ buffer of size: %d\n", len);
@@ -609,7 +650,11 @@ int fnic_alloc_rq_frame(struct vnic_rq *rq)
 	fnic_queue_rq_desc(rq, buf, pa, len);
 	return 0;
 free_buf:
+<<<<<<< HEAD
 	mempool_free(buf, fnic->frame_recv_pool);
+=======
+	kfree(buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -621,7 +666,11 @@ void fnic_free_rq_buf(struct vnic_rq *rq, struct vnic_rq_buf *buf)
 	dma_unmap_single(&fnic->pdev->dev, buf->dma_addr, buf->len,
 			 DMA_FROM_DEVICE);
 
+<<<<<<< HEAD
 	mempool_free(rq_buf, fnic->frame_recv_pool);
+=======
+	kfree(rq_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	buf->os_buf = NULL;
 }
 
@@ -704,13 +753,21 @@ fdls_send_fcoe_frame(struct fnic *fnic, void *frame, int frame_size,
 	 */
 	if ((fnic->state != FNIC_IN_FC_MODE)
 		&& (fnic->state != FNIC_IN_ETH_MODE)) {
+<<<<<<< HEAD
 		frame_elem = mempool_alloc(fnic->frame_elem_pool, GFP_ATOMIC);
+=======
+		frame_elem = mempool_alloc(fnic->frame_elem_pool,
+						GFP_ATOMIC | __GFP_ZERO);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!frame_elem) {
 			FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
 				 "Failed to allocate memory for frame elem");
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 		memset(frame_elem, 0, sizeof(struct fnic_frame_list));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		FNIC_FCS_DBG(KERN_DEBUG, fnic->host, fnic->fnic_num,
 			"Queueing FC frame: sid/did/type/oxid = 0x%x/0x%x/0x%x/0x%x\n",
@@ -836,6 +893,7 @@ fnic_fdls_register_portid(struct fnic_iport_s *iport, u32 port_id,
 	return 0;
 }
 
+<<<<<<< HEAD
 void fnic_free_txq(struct fnic *fnic)
 {
 	struct fnic_frame_list *cur_frame, *next;
@@ -864,6 +922,16 @@ void fnic_free_rxq(struct fnic *fnic)
 			mempool_free(cur_frame->fp, fnic->frame_recv_pool);
 			mempool_free(cur_frame, fnic->frame_elem_pool);
 		}
+=======
+void fnic_free_txq(struct list_head *head)
+{
+	struct fnic_frame_list *cur_frame, *next;
+
+	list_for_each_entry_safe(cur_frame, next, head, links) {
+		list_del(&cur_frame->links);
+		kfree(cur_frame->fp);
+		kfree(cur_frame);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -918,7 +986,11 @@ void fnic_free_wq_buf(struct vnic_wq *wq, struct vnic_wq_buf *buf)
 	dma_unmap_single(&fnic->pdev->dev, buf->dma_addr, buf->len,
 			 DMA_TO_DEVICE);
 
+<<<<<<< HEAD
 	mempool_free(buf->os_buf, fnic->frame_pool);
+=======
+	kfree(buf->os_buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	buf->os_buf = NULL;
 }
 
@@ -1128,6 +1200,7 @@ void fnic_reset_work_handler(struct work_struct *work)
 	spin_unlock_irqrestore(&reset_fnic_list_lock,
 						   reset_fnic_list_lock_flags);
 }
+<<<<<<< HEAD
 
 void fnic_fcpio_reset(struct fnic *fnic)
 {
@@ -1178,3 +1251,5 @@ void fnic_fcpio_reset(struct fnic *fnic)
 	}
 	fnic->fw_reset_done = NULL;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

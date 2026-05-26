@@ -530,6 +530,7 @@
 		cdns,tchsh-ns = <60>;
 		cdns,tslch-ns = <60>;
 		cdns,read-delay = <2>;
+<<<<<<< HEAD
 
 		partitions {
 			compatible = "fixed-partitions";
@@ -572,6 +573,8 @@
 				bootph-all;
 			};
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

@@ -18,10 +18,13 @@ properties:
     oneOf:
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,qcs8300-qmp-ufs-phy
           - const: qcom,sa8775p-qmp-ufs-phy
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,qcs615-qmp-ufs-phy
           - const: qcom,sm6115-qmp-ufs-phy
       - items:
@@ -30,8 +33,13 @@ properties:
           - const: qcom,sm8550-qmp-ufs-phy
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,eliza-qmp-ufs-phy
           - const: qcom,sm8650-qmp-ufs-phy
+=======
+              - qcom,qcs8300-qmp-ufs-phy
+          - const: qcom,sa8775p-qmp-ufs-phy
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - items:
           - enum:
               - qcom,kaanapali-qmp-ufs-phy

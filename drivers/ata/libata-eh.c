@@ -560,13 +560,17 @@ void ata_scsi_error(struct Scsi_Host *host)
 {
 	struct ata_port *ap = ata_shost_to_port(host);
 	unsigned long flags;
+<<<<<<< HEAD
 	int nr_timedout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LIST_HEAD(eh_work_q);
 
 	spin_lock_irqsave(host->host_lock, flags);
 	list_splice_init(&host->eh_cmd_q, &eh_work_q);
 	spin_unlock_irqrestore(host->host_lock, flags);
 
+<<<<<<< HEAD
 	/*
 	 * First check what errors we got with ata_scsi_cmd_error_handler().
 	 * If we had no command timeouts and EH is not scheduled for this port,
@@ -581,6 +585,17 @@ void ata_scsi_error(struct Scsi_Host *host)
 		scsi_eh_flush_done_q(&ap->eh_done_q);
 
 	WARN_ON(!list_empty(&eh_work_q));
+=======
+	ata_scsi_cmd_error_handler(host, ap, &eh_work_q);
+
+	/* If we timed raced normal completion and there is nothing to
+	   recover nr_timedout == 0 why exactly are we doing error recovery ? */
+	ata_scsi_port_error_handler(host, ap);
+
+	/* finish or retry handled scmd's and clean up */
+	WARN_ON(!list_empty(&eh_work_q));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -592,11 +607,17 @@ void ata_scsi_error(struct Scsi_Host *host)
  * process the given list of commands and return those finished to the
  * ap->eh_done_q.  This function is the first part of the libata error
  * handler which processes a given list of failed commands.
+<<<<<<< HEAD
  *
  * Return the number of commands that timed out.
  */
 int ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
 			       struct list_head *eh_work_q)
+=======
+ */
+void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
+				struct list_head *eh_work_q)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 	unsigned long flags;
@@ -703,8 +724,11 @@ int ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
 	ap->eh_tries = ATA_EH_MAX_TRIES;
 
 	spin_unlock_irqrestore(ap->lock, flags);
+<<<<<<< HEAD
 
 	return nr_timedout;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(ata_scsi_cmd_error_handler);
 
@@ -3181,7 +3205,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
 	    sata_scr_read(link, SCR_STATUS, &sstatus))
 		rc = -ERESTART;
 
+<<<<<<< HEAD
 	if (try >= max_tries || rc == -ENODEV) {
+=======
+	if (try >= max_tries) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Thaw host port even if reset failed, so that the port
 		 * can be retried on the next phy event.  This risks

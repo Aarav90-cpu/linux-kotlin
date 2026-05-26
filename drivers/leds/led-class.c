@@ -273,7 +273,11 @@ static struct led_classdev *of_led_get(struct device_node *np, int index,
 	if (!led_node)
 		return ERR_PTR(-ENOENT);
 
+<<<<<<< HEAD
 	led_dev = class_find_device_by_fwnode(&leds_class, of_fwnode_handle(led_node));
+=======
+	led_dev = class_find_device_by_of_node(&leds_class, led_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	of_node_put(led_node);
 
 	return led_module_get(led_dev);
@@ -421,9 +425,12 @@ EXPORT_SYMBOL_GPL(led_add_lookup);
  */
 void led_remove_lookup(struct led_lookup_data *led_lookup)
 {
+<<<<<<< HEAD
 	if (!led_lookup)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&leds_lookup_lock);
 	list_del(&led_lookup->list);
 	mutex_unlock(&leds_lookup_lock);

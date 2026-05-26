@@ -299,6 +299,10 @@ struct ibm_struct;
 
 struct tp_acpi_drv_struct {
 	const struct acpi_device_id *hid;
+<<<<<<< HEAD
+=======
+	struct acpi_driver *driver;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	void (*notify) (struct ibm_struct *, u32);
 	acpi_handle *handle;
@@ -321,6 +325,10 @@ struct ibm_struct {
 	struct tp_acpi_drv_struct *acpi;
 
 	struct {
+<<<<<<< HEAD
+=======
+		u8 acpi_driver_registered:1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u8 acpi_notify_installed:1;
 		u8 proc_created:1;
 		u8 init_called:1;
@@ -372,7 +380,11 @@ static struct {
 	u32 hotkey_poll_active:1;
 	u32 has_adaptive_kbd:1;
 	u32 kbd_lang:1;
+<<<<<<< HEAD
 	u32 trackpoint_doubletap_enable:1;
+=======
+	u32 trackpoint_doubletap:1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct quirk_entry *quirks;
 } tp_features;
 
@@ -830,9 +842,15 @@ static int __init setup_acpi_notify(struct ibm_struct *ibm)
 	vdbg_printk(TPACPI_DBG_INIT,
 		"setting up ACPI notify for %s\n", ibm->name);
 
+<<<<<<< HEAD
 	ibm->acpi->device = acpi_get_acpi_dev(*ibm->acpi->handle);
 	if (!ibm->acpi->device) {
 		pr_err("acpi_get_acpi_dev(%s) failed\n", ibm->name);
+=======
+	ibm->acpi->device = acpi_fetch_acpi_dev(*ibm->acpi->handle);
+	if (!ibm->acpi->device) {
+		pr_err("acpi_fetch_acpi_dev(%s) failed\n", ibm->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -857,6 +875,47 @@ static int __init setup_acpi_notify(struct ibm_struct *ibm)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int __init tpacpi_device_add(struct acpi_device *device)
+{
+	return 0;
+}
+
+static int __init register_tpacpi_subdriver(struct ibm_struct *ibm)
+{
+	int rc;
+
+	dbg_printk(TPACPI_DBG_INIT,
+		"registering %s as an ACPI driver\n", ibm->name);
+
+	BUG_ON(!ibm->acpi);
+
+	ibm->acpi->driver = kzalloc_obj(struct acpi_driver);
+	if (!ibm->acpi->driver) {
+		pr_err("failed to allocate memory for ibm->acpi->driver\n");
+		return -ENOMEM;
+	}
+
+	sprintf(ibm->acpi->driver->name, "%s_%s", TPACPI_NAME, ibm->name);
+	ibm->acpi->driver->ids = ibm->acpi->hid;
+
+	ibm->acpi->driver->ops.add = &tpacpi_device_add;
+
+	rc = acpi_bus_register_driver(ibm->acpi->driver);
+	if (rc < 0) {
+		pr_err("acpi_bus_register_driver(%s) failed: %d\n",
+		       ibm->name, rc);
+		kfree(ibm->acpi->driver);
+		ibm->acpi->driver = NULL;
+	} else if (!rc)
+		ibm->flags.acpi_driver_registered = 1;
+
+	return rc;
+}
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /****************************************************************************
  ****************************************************************************
  *
@@ -1275,7 +1334,11 @@ static ssize_t tpacpi_rfk_sysfs_enable_store(const enum tpacpi_rfk_id id,
 static int tpacpi_rfk_procfs_read(const enum tpacpi_rfk_id id, struct seq_file *m)
 {
 	if (id >= TPACPI_RFK_SW_MAX)
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else {
 		int status;
 
@@ -1290,7 +1353,11 @@ static int tpacpi_rfk_procfs_read(const enum tpacpi_rfk_id id, struct seq_file *
 		}
 
 		seq_printf(m, "status:\t\t%s\n", str_enabled_disabled(status == TPACPI_RFK_RADIO_ON));
+<<<<<<< HEAD
 		seq_puts(m, "commands:\tenable, disable\n");
+=======
+		seq_printf(m, "commands:\tenable, disable\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -2979,6 +3046,7 @@ static const struct attribute_group adaptive_kbd_attr_group = {
 	.attrs = adaptive_kbd_attributes,
 };
 
+<<<<<<< HEAD
 /* sysfs doubletap enable --------------------------------------------- */
 static ssize_t doubletap_enable_show(struct device *dev,
 				     struct device_attribute *attr,
@@ -3004,6 +3072,8 @@ static ssize_t doubletap_enable_store(struct device *dev,
 
 static DEVICE_ATTR_RW(doubletap_enable);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* --------------------------------------------------------------------- */
 
 static struct attribute *hotkey_attributes[] = {
@@ -3018,7 +3088,10 @@ static struct attribute *hotkey_attributes[] = {
 	&dev_attr_hotkey_recommended_mask.attr,
 	&dev_attr_hotkey_tablet_mode.attr,
 	&dev_attr_hotkey_radio_sw.attr,
+<<<<<<< HEAD
 	&dev_attr_doubletap_enable.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_THINKPAD_ACPI_HOTKEY_POLL
 	&dev_attr_hotkey_source_mask.attr,
 	&dev_attr_hotkey_poll_freq.attr,
@@ -3544,8 +3617,13 @@ static int __init hotkey_init(struct ibm_init_struct *iibm)
 
 	hotkey_poll_setup_safe(true);
 
+<<<<<<< HEAD
 	/* Enable TrackPoint doubletap event reporting by default. */
 	tp_features.trackpoint_doubletap_enable = 1;
+=======
+	/* Enable doubletap by default */
+	tp_features.trackpoint_doubletap = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3850,9 +3928,15 @@ static bool hotkey_notify_8xxx(const u32 hkey, bool *send_acpi_ev)
 {
 	switch (hkey) {
 	case TP_HKEY_EV_TRACK_DOUBLETAP:
+<<<<<<< HEAD
 		/* Only send event if doubletap is enabled */
 		if (!tp_features.trackpoint_doubletap_enable)
 			*send_acpi_ev = false;
+=======
+		if (tp_features.trackpoint_doubletap)
+			tpacpi_input_send_key(hkey, send_acpi_ev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	default:
 		return false;
@@ -4003,7 +4087,11 @@ static int hotkey_read(struct seq_file *m)
 	int res, status;
 
 	if (!tp_features.hotkey) {
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -4019,10 +4107,17 @@ static int hotkey_read(struct seq_file *m)
 	seq_printf(m, "status:\t\t%s\n", str_enabled_disabled(status & BIT(0)));
 	if (hotkey_all_mask) {
 		seq_printf(m, "mask:\t\t0x%08x\n", hotkey_user_mask);
+<<<<<<< HEAD
 		seq_puts(m, "commands:\tenable, disable, reset, <mask>\n");
 	} else {
 		seq_puts(m, "mask:\t\tnot supported\n");
 		seq_puts(m, "commands:\tenable, disable, reset\n");
+=======
+		seq_printf(m, "commands:\tenable, disable, reset, <mask>\n");
+	} else {
+		seq_printf(m, "mask:\t\tnot supported\n");
+		seq_printf(m, "commands:\tenable, disable, reset\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -4919,7 +5014,11 @@ static int video_read(struct seq_file *m)
 	int status, autosw;
 
 	if (video_supported == TPACPI_VIDEO_NONE) {
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -4935,18 +5034,31 @@ static int video_read(struct seq_file *m)
 	if (autosw < 0)
 		return autosw;
 
+<<<<<<< HEAD
 	seq_puts(m, "status:\t\tsupported\n");
+=======
+	seq_printf(m, "status:\t\tsupported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	seq_printf(m, "lcd:\t\t%s\n", str_enabled_disabled(status & BIT(0)));
 	seq_printf(m, "crt:\t\t%s\n", str_enabled_disabled(status & BIT(1)));
 	if (video_supported == TPACPI_VIDEO_NEW)
 		seq_printf(m, "dvi:\t\t%s\n", str_enabled_disabled(status & BIT(3)));
 	seq_printf(m, "auto:\t\t%s\n", str_enabled_disabled(autosw & BIT(0)));
+<<<<<<< HEAD
 	seq_puts(m, "commands:\tlcd_enable, lcd_disable\n");
 	seq_puts(m, "commands:\tcrt_enable, crt_disable\n");
 	if (video_supported == TPACPI_VIDEO_NEW)
 		seq_puts(m, "commands:\tdvi_enable, dvi_disable\n");
 	seq_puts(m, "commands:\tauto_enable, auto_disable\n");
 	seq_puts(m, "commands:\tvideo_switch, expand_toggle\n");
+=======
+	seq_printf(m, "commands:\tlcd_enable, lcd_disable\n");
+	seq_printf(m, "commands:\tcrt_enable, crt_disable\n");
+	if (video_supported == TPACPI_VIDEO_NEW)
+		seq_printf(m, "commands:\tdvi_enable, dvi_disable\n");
+	seq_printf(m, "commands:\tauto_enable, auto_disable\n");
+	seq_printf(m, "commands:\tvideo_switch, expand_toggle\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -5190,14 +5302,22 @@ static int kbdlight_read(struct seq_file *m)
 	int level;
 
 	if (!tp_features.kbdlight) {
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		level = kbdlight_get_level();
 		if (level < 0)
 			seq_printf(m, "status:\t\terror %d\n", level);
 		else
 			seq_printf(m, "status:\t\t%d\n", level);
+<<<<<<< HEAD
 		seq_puts(m, "commands:\t0, 1, 2\n");
+=======
+		seq_printf(m, "commands:\t0, 1, 2\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -5364,16 +5484,27 @@ static int light_read(struct seq_file *m)
 	int status;
 
 	if (!tp_features.light) {
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
 	} else if (!tp_features.light_status) {
 		seq_puts(m, "status:\t\tunknown\n");
 		seq_puts(m, "commands:\ton, off\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+	} else if (!tp_features.light_status) {
+		seq_printf(m, "status:\t\tunknown\n");
+		seq_printf(m, "commands:\ton, off\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		status = light_get_status();
 		if (status < 0)
 			return status;
 		seq_printf(m, "status:\t\t%s\n", str_on_off(status & BIT(0)));
+<<<<<<< HEAD
 		seq_puts(m, "commands:\ton, off\n");
+=======
+		seq_printf(m, "commands:\ton, off\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -5463,10 +5594,17 @@ static int cmos_read(struct seq_file *m)
 	/* cmos not supported on 570, 600e/x, 770e, 770x, A21e, A2xm/p,
 	   R30, R31, T20-22, X20-21 */
 	if (!cmos_handle)
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
 	else {
 		seq_puts(m, "status:\t\tsupported\n");
 		seq_puts(m, "commands:\t<cmd> (<cmd> is 0-21)\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+	else {
+		seq_printf(m, "status:\t\tsupported\n");
+		seq_printf(m, "commands:\t<cmd> (<cmd> is 0-21)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -5832,10 +5970,17 @@ static int __init led_init(struct ibm_init_struct *iibm)
 static int led_read(struct seq_file *m)
 {
 	if (!led_supported) {
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
 		return 0;
 	}
 	seq_puts(m, "status:\t\tsupported\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+		return 0;
+	}
+	seq_printf(m, "status:\t\tsupported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (led_supported == TPACPI_LED_570) {
 		/* 570 */
@@ -5848,7 +5993,11 @@ static int led_read(struct seq_file *m)
 		}
 	}
 
+<<<<<<< HEAD
 	seq_puts(m, "commands:\t<led> on, <led> off, <led> blink (<led> is 0-15)\n");
+=======
+	seq_printf(m, "commands:\t<led> on, <led> off, <led> blink (<led> is 0-15)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -5932,10 +6081,17 @@ static int __init beep_init(struct ibm_init_struct *iibm)
 static int beep_read(struct seq_file *m)
 {
 	if (!beep_handle)
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
 	else {
 		seq_puts(m, "status:\t\tsupported\n");
 		seq_puts(m, "commands:\t<cmd> (<cmd> is 0-17)\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+	else {
+		seq_printf(m, "status:\t\tsupported\n");
+		seq_printf(m, "commands:\t<cmd> (<cmd> is 0-17)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -6384,14 +6540,22 @@ static int thermal_read(struct seq_file *m)
 	if (unlikely(n < 0))
 		return n;
 
+<<<<<<< HEAD
 	seq_puts(m, "temperatures:\t");
+=======
+	seq_printf(m, "temperatures:\t");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (n > 0) {
 		for (i = 0; i < (n - 1); i++)
 			seq_printf(m, "%d ", t.temp[i] / 1000);
 		seq_printf(m, "%d\n", t.temp[i] / 1000);
 	} else
+<<<<<<< HEAD
 		seq_puts(m, "not supported\n");
+=======
+		seq_printf(m, "not supported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -6904,10 +7068,17 @@ static int brightness_read(struct seq_file *m)
 
 	level = brightness_get(NULL);
 	if (level < 0) {
+<<<<<<< HEAD
 		seq_puts(m, "level:\t\tunreadable\n");
 	} else {
 		seq_printf(m, "level:\t\t%d\n", level);
 		seq_puts(m, "commands:\tup, down\n");
+=======
+		seq_printf(m, "level:\t\tunreadable\n");
+	} else {
+		seq_printf(m, "level:\t\t%d\n", level);
+		seq_printf(m, "commands:\tup, down\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_printf(m, "commands:\tlevel <level> (<level> is 0-%d)\n",
 			       bright_maxlvl);
 	}
@@ -7623,10 +7794,17 @@ static int volume_read(struct seq_file *m)
 	u8 status;
 
 	if (volume_get_status(&status) < 0) {
+<<<<<<< HEAD
 		seq_puts(m, "level:\t\tunreadable\n");
 	} else {
 		if (tp_features.mixer_no_level_control)
 			seq_puts(m, "level:\t\tunsupported\n");
+=======
+		seq_printf(m, "level:\t\tunreadable\n");
+	} else {
+		if (tp_features.mixer_no_level_control)
+			seq_printf(m, "level:\t\tunsupported\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			seq_printf(m, "level:\t\t%d\n",
 					status & TP_EC_AUDIO_LVL_MSK);
@@ -7634,9 +7812,15 @@ static int volume_read(struct seq_file *m)
 		seq_printf(m, "mute:\t\t%s\n", str_on_off(status & BIT(TP_EC_AUDIO_MUTESW)));
 
 		if (volume_control_allowed) {
+<<<<<<< HEAD
 			seq_puts(m, "commands:\tunmute, mute\n");
 			if (!tp_features.mixer_no_level_control) {
 				seq_puts(m, "commands:\tup, down\n");
+=======
+			seq_printf(m, "commands:\tunmute, mute\n");
+			if (!tp_features.mixer_no_level_control) {
+				seq_printf(m, "commands:\tup, down\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				seq_printf(m, "commands:\tlevel <level> (<level> is 0-%d)\n",
 					      TP_EC_VOLUME_MAX);
 			}
@@ -9142,9 +9326,15 @@ static int fan_read(struct seq_file *m)
 		} else if (fan_status_access_mode == TPACPI_FAN_RD_TPEC) {
 			if (status & TP_EC_FAN_FULLSPEED)
 				/* Disengaged mode takes precedence */
+<<<<<<< HEAD
 				seq_puts(m, "level:\t\tdisengaged\n");
 			else if (status & TP_EC_FAN_AUTO)
 				seq_puts(m, "level:\t\tauto\n");
+=======
+				seq_printf(m, "level:\t\tdisengaged\n");
+			else if (status & TP_EC_FAN_AUTO)
+				seq_printf(m, "level:\t\tauto\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			else
 				seq_printf(m, "level:\t\t%d\n", status);
 		}
@@ -9152,6 +9342,7 @@ static int fan_read(struct seq_file *m)
 
 	case TPACPI_FAN_NONE:
 	default:
+<<<<<<< HEAD
 		seq_puts(m, "status:\t\tnot supported\n");
 	}
 
@@ -9165,6 +9356,21 @@ static int fan_read(struct seq_file *m)
 
 		default:
 			seq_puts(m, " (<level> is 0-7, auto, disengaged, full-speed)\n");
+=======
+		seq_printf(m, "status:\t\tnot supported\n");
+	}
+
+	if (fan_control_commands & TPACPI_FAN_CMD_LEVEL) {
+		seq_printf(m, "commands:\tlevel <level>");
+
+		switch (fan_control_access_mode) {
+		case TPACPI_FAN_WR_ACPI_SFAN:
+			seq_printf(m, " (<level> is 0-7)\n");
+			break;
+
+		default:
+			seq_printf(m, " (<level> is 0-7, auto, disengaged, full-speed)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
@@ -9174,7 +9380,11 @@ static int fan_read(struct seq_file *m)
 			       "commands:\twatchdog <timeout> (<timeout> is 0 (off), 1-120 (seconds))\n");
 
 	if (fan_control_commands & TPACPI_FAN_CMD_SPEED)
+<<<<<<< HEAD
 		seq_puts(m, "commands:\tspeed <speed> (<speed> is 0-65535)\n");
+=======
+		seq_printf(m, "commands:\tspeed <speed> (<speed> is 0-65535)\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -9235,6 +9445,12 @@ static int fan_write_cmd_speed(const char *cmd, int *rc)
 {
 	int speed;
 
+<<<<<<< HEAD
+=======
+	/* TODO:
+	 * Support speed <low> <medium> <high> ? */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sscanf(cmd, "speed %d", &speed) != 1)
 		return 0;
 
@@ -11471,9 +11687,13 @@ static bool tpacpi_driver_event(const unsigned int hkey_event)
 		mutex_unlock(&tpacpi_inputdev_send_mutex);
 		return true;
 	case TP_HKEY_EV_DOUBLETAP_TOGGLE:
+<<<<<<< HEAD
 		/* Toggle kernel-level doubletap event filtering */
 		tp_features.trackpoint_doubletap_enable =
 			!tp_features.trackpoint_doubletap_enable;
+=======
+		tp_features.trackpoint_doubletap = !tp_features.trackpoint_doubletap;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	case TP_HKEY_EV_PROFILE_TOGGLE:
 	case TP_HKEY_EV_PROFILE_TOGGLE2:
@@ -11517,8 +11737,11 @@ static void ibm_exit(struct ibm_struct *ibm)
 		acpi_remove_notify_handler(*ibm->acpi->handle,
 					   ibm->acpi->type,
 					   dispatch_acpi_notify);
+<<<<<<< HEAD
 		ibm->acpi->device->driver_data = NULL;
 		acpi_dev_put(ibm->acpi->device);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ibm->flags.acpi_notify_installed = 0;
 	}
 
@@ -11529,6 +11752,19 @@ static void ibm_exit(struct ibm_struct *ibm)
 		ibm->flags.proc_created = 0;
 	}
 
+<<<<<<< HEAD
+=======
+	if (ibm->flags.acpi_driver_registered) {
+		dbg_printk(TPACPI_DBG_EXIT,
+			"%s: acpi_bus_unregister_driver\n", ibm->name);
+		BUG_ON(!ibm->acpi);
+		acpi_bus_unregister_driver(ibm->acpi->driver);
+		kfree(ibm->acpi->driver);
+		ibm->acpi->driver = NULL;
+		ibm->flags.acpi_driver_registered = 0;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ibm->flags.init_called && ibm->exit) {
 		ibm->exit();
 		ibm->flags.init_called = 0;
@@ -11564,6 +11800,15 @@ static int __init ibm_init(struct ibm_init_struct *iibm)
 	}
 
 	if (ibm->acpi) {
+<<<<<<< HEAD
+=======
+		if (ibm->acpi->hid) {
+			ret = register_tpacpi_subdriver(ibm);
+			if (ret)
+				goto err_out;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ibm->acpi->notify) {
 			ret = setup_acpi_notify(ibm);
 			if (ret == -ENODEV) {

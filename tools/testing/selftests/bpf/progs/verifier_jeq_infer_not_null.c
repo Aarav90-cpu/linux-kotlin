@@ -210,6 +210,7 @@ l0_%=:	/* return 0; */					\
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 /* Verified that we can detect the pointer as non_null when comparing with
  * register with value 0. JEQ test case.
  */
@@ -264,4 +265,6 @@ __naked void jne_reg_reg_null_check(void)
         : __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

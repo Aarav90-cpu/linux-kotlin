@@ -29,6 +29,7 @@
 #define INTEL_DVSEC_TABLE_OFFSET(x)	((x) & GENMASK(31, 3))
 #define TABLE_OFFSET_SHIFT		3
 
+<<<<<<< HEAD
 struct device;
 struct pci_dev;
 struct resource;
@@ -38,6 +39,11 @@ enum intel_vsec_disc_source {
 	INTEL_VSEC_DISC_ACPI,	/* ACPI */
 };
 
+=======
+struct pci_dev;
+struct resource;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum intel_vsec_id {
 	VSEC_ID_TELEMETRY	= 2,
 	VSEC_ID_WATCHER		= 3,
@@ -88,14 +94,22 @@ enum intel_vsec_quirks {
  * struct pmt_callbacks - Callback infrastructure for PMT devices
  * @read_telem: when specified, called by client driver to access PMT
  * data (instead of direct copy).
+<<<<<<< HEAD
  * * dev:   device reference for the callback's use
+=======
+ * * pdev:  PCI device reference for the callback's use
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * * guid:  ID of data to acccss
  * * data:  buffer for the data to be copied
  * * off:   offset into the requested buffer
  * * count: size of buffer
  */
 struct pmt_callbacks {
+<<<<<<< HEAD
 	int (*read_telem)(struct device *dev, u32 guid, u64 *data, loff_t off, u32 count);
+=======
+	int (*read_telem)(struct pci_dev *pdev, u32 guid, u64 *data, loff_t off, u32 count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct vsec_feature_dependency {
@@ -108,10 +122,13 @@ struct vsec_feature_dependency {
  * @parent:    parent device in the auxbus chain
  * @headers:   list of headers to define the PMT client devices to create
  * @deps:      array of feature dependencies
+<<<<<<< HEAD
  * @acpi_disc: ACPI discovery tables, each entry is two QWORDs
  *             in little-endian format as defined by the PMT ACPI spec.
  *             Valid only when @provider == INTEL_VSEC_DISC_ACPI.
  * @src:       source of discovery table data
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @priv_data: private data, usable by parent devices, currently a callback
  * @caps:      bitmask of PMT capabilities for the given headers
  * @quirks:    bitmask of VSEC device quirks
@@ -122,8 +139,11 @@ struct intel_vsec_platform_info {
 	struct device *parent;
 	struct intel_vsec_header **headers;
 	const struct vsec_feature_dependency *deps;
+<<<<<<< HEAD
 	u32 (*acpi_disc)[4];
 	enum intel_vsec_disc_source src;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *priv_data;
 	unsigned long caps;
 	unsigned long quirks;
@@ -134,6 +154,7 @@ struct intel_vsec_platform_info {
 /**
  * struct intel_vsec_device - Auxbus specific device information
  * @auxdev:        auxbus device struct for auxbus access
+<<<<<<< HEAD
  * @dev:           struct device associated with the device
  * @resource:      PCI discovery resources (BAR windows), one per discovery
  *                 instance. Valid only when @src == INTEL_VSEC_DISC_PCI
@@ -141,6 +162,10 @@ struct intel_vsec_platform_info {
  *                 in little-endian format as defined by the PMT ACPI spec.
  *                 Valid only when @src == INTEL_VSEC_DISC_ACPI.
  * @src:           source of discovery table data
+=======
+ * @pcidev:        pci device associated with the device
+ * @resource:      any resources shared by the parent
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ida:           id reference
  * @num_resources: number of resources
  * @id:            xarray id
@@ -152,10 +177,15 @@ struct intel_vsec_platform_info {
  */
 struct intel_vsec_device {
 	struct auxiliary_device auxdev;
+<<<<<<< HEAD
 	struct device *dev;
 	struct resource *resource;
 	u32 (*acpi_disc)[4];
 	enum intel_vsec_disc_source src;
+=======
+	struct pci_dev *pcidev;
+	struct resource *resource;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ida *ida;
 	int num_resources;
 	int id; /* xa */
@@ -203,7 +233,11 @@ struct pmt_feature_group {
 	struct telemetry_region	regions[];
 };
 
+<<<<<<< HEAD
 int intel_vsec_add_aux(struct device *parent,
+=======
+int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       struct intel_vsec_device *intel_vsec_dev,
 		       const char *name);
 
@@ -218,14 +252,24 @@ static inline struct intel_vsec_device *auxdev_to_ivdev(struct auxiliary_device 
 }
 
 #if IS_ENABLED(CONFIG_INTEL_VSEC)
+<<<<<<< HEAD
 int intel_vsec_register(struct device *dev,
 			const struct intel_vsec_platform_info *info);
+=======
+int intel_vsec_register(struct pci_dev *pdev,
+			 struct intel_vsec_platform_info *info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int intel_vsec_set_mapping(struct oobmsm_plat_info *plat_info,
 			   struct intel_vsec_device *vsec_dev);
 struct oobmsm_plat_info *intel_vsec_get_mapping(struct pci_dev *pdev);
 #else
+<<<<<<< HEAD
 static inline int intel_vsec_register(struct device *dev,
 				      const struct intel_vsec_platform_info *info)
+=======
+static inline int intel_vsec_register(struct pci_dev *pdev,
+				       struct intel_vsec_platform_info *info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -ENODEV;
 }

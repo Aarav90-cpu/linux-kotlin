@@ -6,6 +6,7 @@
 /dts-v1/;
 
 #include "imx943.dtsi"
+<<<<<<< HEAD
 #include <dt-bindings/usb/pd.h>
 #include <dt-bindings/pwm/pwm.h>
 
@@ -14,6 +15,8 @@
 #define BRD_SM_CTRL_PCIE1_WAKE		0x8002  /*!< PCAL6416A-5 */
 #define BRD_SM_CTRL_PCIE2_WAKE		0x8003  /*!< PCAL6416A-6 */
 #define BRD_SM_CTRL_BUTTON		0x8004  /*!< PCAL6416A-7 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	compatible = "fsl,imx943-evk", "fsl,imx94";
@@ -28,9 +31,13 @@
 		i2c5 = &lpi2c6;
 		mmc0 = &usdhc1;
 		mmc1 = &usdhc2;
+<<<<<<< HEAD
 		mmc2 = &usdhc3;
 		serial0 = &lpuart1;
 		serial5 = &lpuart6;
+=======
+		serial0 = &lpuart1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	bt_sco_codec: bt-sco-codec {
@@ -63,6 +70,7 @@
 		#sound-dai-cells = <0>;
 	};
 
+<<<<<<< HEAD
 	reg_m2_pwr: regulator-m2-pwr {
 		compatible = "regulator-fixed";
 		regulator-name = "M.2-power";
@@ -89,6 +97,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_usdhc2_vmmc: regulator-usdhc2 {
 		compatible = "regulator-fixed";
 		off-on-delay-us = <12000>;
@@ -176,11 +186,14 @@
 		model = "wm8962-audio";
 	};
 
+<<<<<<< HEAD
 	usdhc3_pwrseq: usdhc3_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&pcal6416_i2c3_u46 4 GPIO_ACTIVE_LOW>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memory@80000000 {
 		reg = <0x0 0x80000000 0x0 0x80000000>;
 		device_type = "memory";
@@ -238,6 +251,7 @@
 		gpio-controller;
 	};
 
+<<<<<<< HEAD
 	ptn5110: tcpc@50 {
 		compatible = "nxp,ptn5110", "tcpci";
 		reg = <0x50>;
@@ -280,6 +294,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pca9548_i2c3: i2c-mux@77 {
 		compatible = "nxp,pca9548";
 		reg = <0x77>;
@@ -336,6 +352,7 @@
 				SPKVDD1-supply = <&reg_audio_pwr>;
 				SPKVDD2-supply = <&reg_audio_pwr>;
 			};
+<<<<<<< HEAD
 
 			fan_controller: pwm@2f {
 				compatible = "microchip,emc2301", "microchip,emc2305";
@@ -358,6 +375,8 @@
 				interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
 				status = "disabled";
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		i2c@5 {
@@ -542,6 +561,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &lpuart6 {
 	/* BT */
 	pinctrl-0 = <&pinctrl_uart6>;
@@ -553,6 +573,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &micfil {
 	assigned-clocks = <&scmi_clk IMX94_CLK_AUDIOPLL1_VCO>,
 			  <&scmi_clk IMX94_CLK_AUDIOPLL2_VCO>,
@@ -752,12 +774,15 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_typec: typecgrp {
 		fsl,pins = <
 			IMX94_PAD_GPIO_IO44__GPIO3_IO12		0x30e
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_uart1: uart1grp {
 		fsl,pins = <
 			IMX94_PAD_UART1_TXD__LPUART1_TX		0x31e
@@ -765,6 +790,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart6: uart6grp {
 		fsl,pins = <
 			IMX94_PAD_GPIO_IO04__LPUART6_TX		0x31e
@@ -774,6 +800,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
 		fsl,pins = <
 			IMX94_PAD_SD1_CLK__USDHC1_CLK		0x158e
@@ -870,6 +898,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_usdhc3: usdhc3grp {
 		fsl,pins = <
 			IMX94_PAD_GPIO_IO48__USDHC3_CLK		0x158e
@@ -882,6 +911,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_xspi1: xspi1grp {
 		fsl,pins = <
 			IMX94_PAD_XSPI1_SCLK__XSPI1_A_SCLK	0x3fe
@@ -899,6 +930,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &scmi_misc {
 	nxp,ctrl-ids = <BRD_SM_CTRL_SD3_WAKE		1
 			BRD_SM_CTRL_PCIE1_WAKE		1
@@ -1031,6 +1063,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usdhc1 {
 	pinctrl-0 = <&pinctrl_usdhc1>;
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
@@ -1056,6 +1090,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usdhc3 {
 	/*
 	 * Only enable SDIO2.0 mode as the corresponding GPIO pads are 3.3V, the
@@ -1073,6 +1108,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &wdog3 {
 	fsl,ext-reset-output;
 	status = "okay";

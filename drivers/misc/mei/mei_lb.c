@@ -59,17 +59,23 @@
  * 5. Status is returned back to the host via MEI.
  */
 
+<<<<<<< HEAD
 /* Late Binding version 1 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define INTEL_LB_CMD	0x12
 #define INTEL_LB_RSP	(INTEL_LB_CMD | 0x80)
 
 #define INTEL_LB_SEND_TIMEOUT_MSEC 3000
 #define INTEL_LB_RECV_TIMEOUT_MSEC 3000
 
+<<<<<<< HEAD
 #define MEI_GUID_MKHI UUID_LE(0xe2c2afa2, 0x3817, 0x4d19, \
 			      0x9d, 0x95, 0x6, 0xb1, 0x6b, 0x58, 0x8a, 0x5d)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct mei_lb_req - Late Binding request structure
  * @header: MKHI message header (see struct mkhi_msg_hdr)
@@ -102,6 +108,7 @@ struct mei_lb_rsp {
 	__le32 status;
 } __packed;
 
+<<<<<<< HEAD
 /* Late Binding version 2 */
 
 #define MEI_LB2_CMD 0x01
@@ -170,6 +177,10 @@ struct mei_lb2_rsp {
 
 static bool mei_lb_check_response_v1(const struct device *dev, ssize_t bytes,
 				     struct mei_lb_rsp *rsp)
+=======
+static bool mei_lb_check_response(const struct device *dev, ssize_t bytes,
+				  struct mei_lb_rsp *rsp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Received message size may be smaller than the full message size when
@@ -205,15 +216,33 @@ static bool mei_lb_check_response_v1(const struct device *dev, ssize_t bytes,
 	return true;
 }
 
+<<<<<<< HEAD
 static int mei_lb_push_payload_v1(struct device *dev, struct mei_cl_device *cldev,
 				  u32 type, u32 flags, const void *payload, size_t payload_size)
 {
+=======
+static int mei_lb_push_payload(struct device *dev, u32 type, u32 flags,
+			       const void *payload, size_t payload_size)
+{
+	struct mei_cl_device *cldev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mei_lb_req *req = NULL;
 	struct mei_lb_rsp rsp;
 	size_t req_size;
 	ssize_t bytes;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	cldev = to_mei_cl_device(dev);
+
+	ret = mei_cldev_enable(cldev);
+	if (ret) {
+		dev_dbg(dev, "Failed to enable firmware client. %d\n", ret);
+		return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	req_size = struct_size(req, payload, payload_size);
 	if (req_size > mei_cldev_mtu(cldev)) {
 		dev_err(dev, "Payload is too big: %zu\n", payload_size);
@@ -252,7 +281,11 @@ static int mei_lb_push_payload_v1(struct device *dev, struct mei_cl_device *clde
 		ret = bytes;
 		goto end;
 	}
+<<<<<<< HEAD
 	if (!mei_lb_check_response_v1(dev, bytes, &rsp)) {
+=======
+	if (!mei_lb_check_response(dev, bytes, &rsp)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(dev, "Bad response from the firmware. header: %02x %02x %02x %02x\n",
 			rsp.header.group_id, rsp.header.command,
 			rsp.header.reserved, rsp.header.result);
@@ -263,6 +296,7 @@ static int mei_lb_push_payload_v1(struct device *dev, struct mei_cl_device *clde
 	dev_dbg(dev, "status = %u\n", le32_to_cpu(rsp.status));
 	ret = (int)le32_to_cpu(rsp.status);
 end:
+<<<<<<< HEAD
 	kfree(req);
 	return ret;
 }
@@ -384,6 +418,10 @@ static int mei_lb_push_payload(struct device *dev, u32 type, u32 flags,
 		ret = mei_lb_push_payload_v1(dev, cldev, type, flags, payload, payload_size);
 
 	mei_cldev_disable(cldev);
+=======
+	mei_cldev_disable(cldev);
+	kfree(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -410,6 +448,7 @@ static int mei_lb_component_match(struct device *dev, int subcomponent,
 				  void *data)
 {
 	/*
+<<<<<<< HEAD
 	 * This function checks if requester is Intel vendor,
 	 * determines if MEI is standalone PCI device or the auxiliary one
 	 * and checks the following:
@@ -420,6 +459,13 @@ static int mei_lb_component_match(struct device *dev, int subcomponent,
 	 */
 	struct device *base = data;
 	struct device *basep = dev;
+=======
+	 * This function checks if requester is Intel %PCI_CLASS_DISPLAY_VGA or
+	 * %PCI_CLASS_DISPLAY_OTHER device, and checks if the requester is the
+	 * grand parent of mei_if i.e. late bind MEI device
+	 */
+	struct device *base = data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pci_dev *pdev;
 
 	if (!dev)
@@ -433,10 +479,18 @@ static int mei_lb_component_match(struct device *dev, int subcomponent,
 	if (pdev->vendor != PCI_VENDOR_ID_INTEL)
 		return 0;
 
+<<<<<<< HEAD
+=======
+	if (pdev->class != (PCI_CLASS_DISPLAY_VGA << 8) &&
+	    pdev->class != (PCI_CLASS_DISPLAY_OTHER << 8))
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (subcomponent != INTEL_COMPONENT_LB)
 		return 0;
 
 	base = base->parent;
+<<<<<<< HEAD
 	if (!base) /* MEI device */
 		return 0;
 
@@ -457,6 +511,14 @@ static int mei_lb_component_match(struct device *dev, int subcomponent,
 	}
 
 	return !!base && !!basep && base == basep;
+=======
+	if (!base) /* mei device */
+		return 0;
+
+	base = base->parent; /* pci device */
+
+	return !!base && dev == base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mei_lb_probe(struct mei_cl_device *cldev,
@@ -484,9 +546,17 @@ static void mei_lb_remove(struct mei_cl_device *cldev)
 	component_master_del(&cldev->dev, &mei_lb_component_master_ops);
 }
 
+<<<<<<< HEAD
 static const struct mei_cl_device_id mei_lb_tbl[] = {
 	{ .uuid = MEI_GUID_MKHI, .version = 1 },
 	{ .uuid = MEI_GUID_LB, .version = MEI_CL_VERSION_ANY },
+=======
+#define MEI_GUID_MKHI UUID_LE(0xe2c2afa2, 0x3817, 0x4d19, \
+			      0x9d, 0x95, 0x6, 0xb1, 0x6b, 0x58, 0x8a, 0x5d)
+
+static const struct mei_cl_device_id mei_lb_tbl[] = {
+	{ .uuid = MEI_GUID_MKHI, .version = MEI_CL_VERSION_ANY },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(mei, mei_lb_tbl);

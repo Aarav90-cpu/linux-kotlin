@@ -31,6 +31,10 @@
  * itself. If the GA is zero, driver will use uncovered sensor default values
  * format: decimal value * APDS_PARAM_SCALE except df which is plain integer.
  */
+<<<<<<< HEAD
+=======
+#define APDS_PARAM_SCALE 4096
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct apds990x_chip_factors {
 	int ga;
 	int cf1;
@@ -39,12 +43,19 @@ struct apds990x_chip_factors {
 	int irf2;
 	int df;
 };
+<<<<<<< HEAD
 #define APDS_PARAM_SCALE 4096
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct apds990x_platform_data - platform data for apsd990x.c driver
  * @cf: chip factor data
+<<<<<<< HEAD
  * @pdrive: IR-led driving current
+=======
+ * @pddrive: IR-led driving current
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ppcount: number of IR pulses used for proximity estimation
  * @setup_resources: interrupt line setup call back function
  * @release_resources: interrupt line release call back function

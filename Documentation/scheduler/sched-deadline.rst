@@ -628,6 +628,7 @@ Deadline Task Scheduling
   * the new scheduling related syscalls that manipulate it, i.e.,
     sched_setattr() and sched_getattr() are implemented.
 
+<<<<<<< HEAD
  The leftover runtime and absolute deadline of a SCHED_DEADLINE task can be
  read using the sched_getattr() syscall, setting the last syscall parameter
  flags to the SCHED_GETATTR_FLAG_DL_DYNAMIC=1 value. This updates the
@@ -643,6 +644,12 @@ Deadline Task Scheduling
  but: this is highly inefficient; the returned runtime left is not updated as
  done by sched_getattr(); the deadline is provided in kernel rq_clock time
  reference, that is not directly usable from user-space.
+=======
+ For debugging purposes, the leftover runtime and absolute deadline of a
+ SCHED_DEADLINE task can be retrieved through /proc/<pid>/sched (entries
+ dl.runtime and dl.deadline, both values in ns). A programmatic way to
+ retrieve these values from production code is under discussion.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 4.3 Default behavior
@@ -711,8 +718,12 @@ Deadline Task Scheduling
 5.2 Using cgroup v2 cpuset controller
 -------------------------------------
 
+<<<<<<< HEAD
  Assuming the cgroup v2 root is mounted at ``/sys/fs/cgroup``, an example of a
  simple configuration (pin a -deadline task to CPU0) follows::
+=======
+ Assuming the cgroup v2 root is mounted at ``/sys/fs/cgroup``.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
    cd /sys/fs/cgroup
    echo '+cpuset' > cgroup.subtree_control

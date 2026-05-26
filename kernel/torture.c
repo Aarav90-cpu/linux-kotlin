@@ -93,7 +93,11 @@ int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, const enum hrtimer_mode
 {
 	ktime_t hto = baset_ns;
 
+<<<<<<< HEAD
 	if (trsp && fuzzt_ns)
+=======
+	if (trsp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hto += torture_random(trsp) % fuzzt_ns;
 	set_current_state(TASK_IDLE);
 	return schedule_hrtimeout(&hto, mode);

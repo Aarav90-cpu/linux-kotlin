@@ -8,13 +8,19 @@
 
 static bool dummy_map_mode_to_soc_dpm(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out)
 {
+<<<<<<< HEAD
 	(void)in_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
 static bool dummy_map_watermarks(struct dml2_dpmm_map_watermarks_params_in_out *in_out)
 {
+<<<<<<< HEAD
 	(void)in_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -33,7 +39,10 @@ bool dml2_dpmm_create(enum dml2_project_id project_id, struct dml2_dpmm_instance
 		out->map_watermarks = &dummy_map_watermarks;
 		result = true;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn40:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_dcn4x_stage2:
 		out->map_mode_to_soc_dpm = &dpmm_dcn3_map_mode_to_soc_dpm;
 		out->map_watermarks = &dummy_map_watermarks;
@@ -44,11 +53,14 @@ bool dml2_dpmm_create(enum dml2_project_id project_id, struct dml2_dpmm_instance
 		out->map_watermarks = &dpmm_dcn4_map_watermarks;
 		result = true;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn42:
 		out->map_mode_to_soc_dpm = &dpmm_dcn4_map_mode_to_soc_dpm;
 		out->map_watermarks = &dpmm_dcn42_map_watermarks;
 		result = true;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_invalid:
 	default:
 		break;

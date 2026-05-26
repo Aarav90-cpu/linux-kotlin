@@ -76,6 +76,14 @@ static int enh_desc_get_tx_status(struct stmmac_extra_stats *x,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int enh_desc_get_tx_len(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des1) & ETDES1_BUFFER1_SIZE_MASK);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int enh_desc_coe_rdes0(int ipc_err, int type, int payload_err)
 {
 	int ret = good_frame;
@@ -245,7 +253,11 @@ static int enh_desc_get_rx_status(struct stmmac_extra_stats *x,
 }
 
 static void enh_desc_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
+<<<<<<< HEAD
 				  u8 descriptor_mode, int end, int bfsize)
+=======
+				  int mode, int end, int bfsize)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int bfsize1;
 
@@ -254,7 +266,11 @@ static void enh_desc_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
 	bfsize1 = min(bfsize, BUF_SIZE_8KiB);
 	p->des1 |= cpu_to_le32(bfsize1 & ERDES1_BUFFER1_SIZE_MASK);
 
+<<<<<<< HEAD
 	if (descriptor_mode == STMMAC_CHAIN_MODE)
+=======
+	if (mode == STMMAC_CHAIN_MODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ehn_desc_rx_set_on_chain(p);
 	else
 		ehn_desc_rx_set_on_ring(p, end, bfsize);
@@ -263,16 +279,31 @@ static void enh_desc_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
 		p->des1 |= cpu_to_le32(ERDES1_DISABLE_IC);
 }
 
+<<<<<<< HEAD
 static void enh_desc_init_tx_desc(struct dma_desc *p, u8 descriptor_mode,
 				  int end)
 {
 	p->des0 &= cpu_to_le32(~ETDES0_OWN);
 	if (descriptor_mode == STMMAC_CHAIN_MODE)
+=======
+static void enh_desc_init_tx_desc(struct dma_desc *p, int mode, int end)
+{
+	p->des0 &= cpu_to_le32(~ETDES0_OWN);
+	if (mode == STMMAC_CHAIN_MODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enh_desc_end_tx_desc_on_chain(p);
 	else
 		enh_desc_end_tx_desc_on_ring(p, end);
 }
 
+<<<<<<< HEAD
+=======
+static int enh_desc_get_tx_owner(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des0) & ETDES0_OWN) >> 31;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void enh_desc_set_tx_owner(struct dma_desc *p)
 {
 	p->des0 |= cpu_to_le32(ETDES0_OWN);
@@ -283,18 +314,32 @@ static void enh_desc_set_rx_owner(struct dma_desc *p, int disable_rx_ic)
 	p->des0 |= cpu_to_le32(RDES0_OWN);
 }
 
+<<<<<<< HEAD
 static void enh_desc_release_tx_desc(struct dma_desc *p, u8 descriptor_mode)
+=======
+static int enh_desc_get_tx_ls(struct dma_desc *p)
+{
+	return (le32_to_cpu(p->des0) & ETDES0_LAST_SEGMENT) >> 29;
+}
+
+static void enh_desc_release_tx_desc(struct dma_desc *p, int mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ter = (le32_to_cpu(p->des0) & ETDES0_END_RING) >> 21;
 
 	memset(p, 0, offsetof(struct dma_desc, des2));
+<<<<<<< HEAD
 	if (descriptor_mode == STMMAC_CHAIN_MODE)
+=======
+	if (mode == STMMAC_CHAIN_MODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enh_desc_end_tx_desc_on_chain(p);
 	else
 		enh_desc_end_tx_desc_on_ring(p, ter);
 }
 
 static void enh_desc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
+<<<<<<< HEAD
 				     bool csum_flag, u8 descriptor_mode,
 				     bool tx_own,  bool ls,
 				     unsigned int tot_pkt_len)
@@ -302,6 +347,14 @@ static void enh_desc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
 	u32 tdes0 = le32_to_cpu(p->des0);
 
 	if (descriptor_mode == STMMAC_CHAIN_MODE)
+=======
+				     bool csum_flag, int mode, bool tx_own,
+				     bool ls, unsigned int tot_pkt_len)
+{
+	u32 tdes0 = le32_to_cpu(p->des0);
+
+	if (mode == STMMAC_CHAIN_MODE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enh_set_tx_desc_len_on_chain(p, len);
 	else
 		enh_set_tx_desc_len_on_ring(p, len);
@@ -432,11 +485,22 @@ static void enh_desc_clear(struct dma_desc *p)
 const struct stmmac_desc_ops enh_desc_ops = {
 	.tx_status = enh_desc_get_tx_status,
 	.rx_status = enh_desc_get_rx_status,
+<<<<<<< HEAD
 	.init_rx_desc = enh_desc_init_rx_desc,
 	.init_tx_desc = enh_desc_init_tx_desc,
 	.release_tx_desc = enh_desc_release_tx_desc,
 	.prepare_tx_desc = enh_desc_prepare_tx_desc,
 	.set_tx_ic = enh_desc_set_tx_ic,
+=======
+	.get_tx_len = enh_desc_get_tx_len,
+	.init_rx_desc = enh_desc_init_rx_desc,
+	.init_tx_desc = enh_desc_init_tx_desc,
+	.get_tx_owner = enh_desc_get_tx_owner,
+	.release_tx_desc = enh_desc_release_tx_desc,
+	.prepare_tx_desc = enh_desc_prepare_tx_desc,
+	.set_tx_ic = enh_desc_set_tx_ic,
+	.get_tx_ls = enh_desc_get_tx_ls,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.set_tx_owner = enh_desc_set_tx_owner,
 	.set_rx_owner = enh_desc_set_rx_owner,
 	.get_rx_frame_len = enh_desc_get_rx_frame_len,

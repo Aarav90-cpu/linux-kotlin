@@ -9,7 +9,11 @@
 #include <linux/types.h>
 #include <linux/mm_types.h>
 #include <linux/blkdev.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct address_space;
 struct fiemap_extent_info;
@@ -65,8 +69,11 @@ struct vm_fault;
  *
  * IOMAP_F_ATOMIC_BIO indicates that (write) I/O will be issued as an atomic
  * bio, i.e. set REQ_ATOMIC.
+<<<<<<< HEAD
  *
  * IOMAP_F_INTEGRITY indicates that the filesystems handles integrity metadata.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #define IOMAP_F_NEW		(1U << 0)
 #define IOMAP_F_DIRTY		(1U << 1)
@@ -81,11 +88,14 @@ struct vm_fault;
 #define IOMAP_F_BOUNDARY	(1U << 6)
 #define IOMAP_F_ANON_WRITE	(1U << 7)
 #define IOMAP_F_ATOMIC_BIO	(1U << 8)
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_DEV_INTEGRITY
 #define IOMAP_F_INTEGRITY	(1U << 9)
 #else
 #define IOMAP_F_INTEGRITY	0
 #endif /* CONFIG_BLK_DEV_INTEGRITY */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Flag reserved for file system specific usage
@@ -500,7 +510,10 @@ struct iomap_read_folio_ctx {
 	struct folio		*cur_folio;
 	struct readahead_control *rac;
 	void			*read_ctx;
+<<<<<<< HEAD
 	loff_t			read_ctx_file_offset;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct iomap_read_ops {
@@ -520,6 +533,7 @@ struct iomap_read_ops {
 	 *
 	 * This is optional.
 	 */
+<<<<<<< HEAD
 	void (*submit_read)(const struct iomap_iter *iter,
 			struct iomap_read_folio_ctx *ctx);
 
@@ -528,6 +542,9 @@ struct iomap_read_ops {
 	 * can be allocated from the provided bio_set.
 	 */
 	struct bio_set *bio_set;
+=======
+	void (*submit_read)(struct iomap_read_folio_ctx *ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -613,9 +630,12 @@ int iomap_swapfile_activate(struct swap_info_struct *sis,
 extern struct bio_set iomap_ioend_bioset;
 
 #ifdef CONFIG_BLOCK
+<<<<<<< HEAD
 int iomap_bio_read_folio_range(const struct iomap_iter *iter,
 		struct iomap_read_folio_ctx *ctx, size_t plen);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct iomap_read_ops iomap_bio_read_ops;
 
 static inline void iomap_bio_read_folio(struct folio *folio,

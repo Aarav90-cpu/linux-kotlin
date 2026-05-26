@@ -21,15 +21,25 @@
  */
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_waitid(int which, pid_t pid, siginfo_t *infop, int options, struct rusage *rusage)
 {
 	return __nolibc_syscall5(__NR_waitid, which, pid, infop, options, rusage);
+=======
+int sys_waitid(int which, pid_t pid, siginfo_t *infop, int options, struct rusage *rusage)
+{
+	return my_syscall5(__NR_waitid, which, pid, infop, options, rusage);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 int waitid(int which, pid_t pid, siginfo_t *infop, int options)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_waitid(which, pid, infop, options, NULL));
+=======
+	return __sysret(sys_waitid(which, pid, infop, options, NULL));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 

@@ -405,6 +405,7 @@ ath12k_wifi7_dp_mon_hal_rx_parse_user_info(const struct hal_receive_user_info *r
 	}
 }
 
+<<<<<<< HEAD
 static __always_inline u8
 ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(u8 rate)
 {
@@ -441,6 +442,8 @@ ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(u8 rate)
 	return ath12k_rate;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
 				  struct hal_rx_mon_ppdu_info *ppdu_info)
@@ -451,6 +454,7 @@ ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
 	rate = u32_get_bits(info0, HAL_RX_LSIG_B_INFO_INFO0_RATE);
 	switch (rate) {
 	case 1:
+<<<<<<< HEAD
 		rate = HAL_RX_LEGACY_RATE_LP_1_MBPS;
 		break;
 	case 2:
@@ -477,6 +481,27 @@ ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
 	}
 
 	ppdu_info->rate = ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(rate);
+=======
+		rate = HAL_RX_LEGACY_RATE_1_MBPS;
+		break;
+	case 2:
+	case 5:
+		rate = HAL_RX_LEGACY_RATE_2_MBPS;
+		break;
+	case 3:
+	case 6:
+		rate = HAL_RX_LEGACY_RATE_5_5_MBPS;
+		break;
+	case 4:
+	case 7:
+		rate = HAL_RX_LEGACY_RATE_11_MBPS;
+		break;
+	default:
+		rate = HAL_RX_LEGACY_RATE_INVALID;
+	}
+
+	ppdu_info->rate = rate;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ppdu_info->cck_flag = 1;
 }
 
@@ -490,6 +515,7 @@ ath12k_wifi7_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
 	rate = u32_get_bits(info0, HAL_RX_LSIG_A_INFO_INFO0_RATE);
 	switch (rate) {
 	case 8:
+<<<<<<< HEAD
 		rate = HAL_RX_LEGACY_RATE_OFDM_48_MBPS;
 		break;
 	case 9:
@@ -516,6 +542,33 @@ ath12k_wifi7_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
 	default:
 		rate = HAL_RX_LEGACY_RATE_OFDM_INVALID;
 		break;
+=======
+		rate = HAL_RX_LEGACY_RATE_48_MBPS;
+		break;
+	case 9:
+		rate = HAL_RX_LEGACY_RATE_24_MBPS;
+		break;
+	case 10:
+		rate = HAL_RX_LEGACY_RATE_12_MBPS;
+		break;
+	case 11:
+		rate = HAL_RX_LEGACY_RATE_6_MBPS;
+		break;
+	case 12:
+		rate = HAL_RX_LEGACY_RATE_54_MBPS;
+		break;
+	case 13:
+		rate = HAL_RX_LEGACY_RATE_36_MBPS;
+		break;
+	case 14:
+		rate = HAL_RX_LEGACY_RATE_18_MBPS;
+		break;
+	case 15:
+		rate = HAL_RX_LEGACY_RATE_9_MBPS;
+		break;
+	default:
+		rate = HAL_RX_LEGACY_RATE_INVALID;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ppdu_info->rate = rate;

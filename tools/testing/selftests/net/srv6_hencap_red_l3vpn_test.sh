@@ -193,8 +193,11 @@ ret=${ksft_skip}
 nsuccess=0
 nfail=0
 
+<<<<<<< HEAD
 HAS_TUNSRC=false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 log_test()
 {
 	local rc="$1"
@@ -347,6 +350,7 @@ setup_rt_networking()
 		ip -netns "${nsname}" addr \
 			add "${net_prefix}::${rt}/64" dev "${devname}" nodad
 
+<<<<<<< HEAD
 		# A dedicated ::dead:<rt> address (with preferred_lft 0, i.e.,
 		# deprecated) is added when there is support for tunsrc. Because
 		# it is deprecated, the kernel should never auto-select it as
@@ -358,6 +362,8 @@ setup_rt_networking()
 				dev "${devname}" nodad preferred_lft 0
 		fi
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ip -netns "${nsname}" link set "${devname}" up
 	done
 
@@ -433,7 +439,10 @@ setup_rt_local_sids()
 #       to the destination host)
 #  $5 - encap mode (full or red)
 #  $6 - traffic type (IPv6 or IPv4)
+<<<<<<< HEAD
 #  $7 - force tunsrc (true or false)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __setup_rt_policy()
 {
 	local dst="$1"
@@ -442,6 +451,7 @@ __setup_rt_policy()
 	local dec_rt="$4"
 	local mode="$5"
 	local traffic="$6"
+<<<<<<< HEAD
 	local with_tunsrc="$7"
 	local nsname
 	local policy=''
@@ -482,6 +492,12 @@ __setup_rt_policy()
 		fi
 	fi
 
+=======
+	local nsname
+	local policy=''
+	local n
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eval nsname=\${$(get_rtname "${encap_rt}")}
 
 	for n in ${end_rts}; do
@@ -494,7 +510,11 @@ __setup_rt_policy()
 	if [ "${traffic}" -eq 6 ]; then
 		ip -netns "${nsname}" -6 route \
 			add "${IPv6_HS_NETWORK}::${dst}" vrf "${VRF_DEVNAME}" \
+<<<<<<< HEAD
 			encap seg6 mode "${mode}" ${tunsrc} segs "${policy}" \
+=======
+			encap seg6 mode "${mode}" segs "${policy}" \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev "${VRF_DEVNAME}"
 
 		ip -netns "${nsname}" -6 neigh \
@@ -505,7 +525,11 @@ __setup_rt_policy()
 		# received, otherwise the proxy arp does not work.
 		ip -netns "${nsname}" -4 route \
 			add "${IPv4_HS_NETWORK}.${dst}" vrf "${VRF_DEVNAME}" \
+<<<<<<< HEAD
 			encap seg6 mode "${mode}" ${tunsrc} segs "${policy}" \
+=======
+			encap seg6 mode "${mode}" segs "${policy}" \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev "${VRF_DEVNAME}"
 	fi
 }
@@ -513,13 +537,21 @@ __setup_rt_policy()
 # see __setup_rt_policy
 setup_rt_policy_ipv6()
 {
+<<<<<<< HEAD
 	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 6 "$6"
+=======
+	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #see __setup_rt_policy
 setup_rt_policy_ipv4()
 {
+<<<<<<< HEAD
 	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 4 "$6"
+=======
+	__setup_rt_policy "$1" "$2" "$3" "$4" "$5" 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 setup_hs()
@@ -617,41 +649,68 @@ setup()
 	# the network path between hs-1 and hs-2 traverses several routers
 	# depending on the direction of traffic.
 	#
+<<<<<<< HEAD
 	# Direction hs-1 -> hs-2 (H.Encaps.Red + tunsrc)
+=======
+	# Direction hs-1 -> hs-2 (H.Encaps.Red)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	#  - rt-3,rt-4 (SRv6 End behaviors)
 	#  - rt-2 (SRv6 End.DT46 behavior)
 	#
 	# Direction hs-2 -> hs-1 (H.Encaps.Red)
 	#  - rt-1 (SRv6 End.DT46 behavior)
+<<<<<<< HEAD
 	setup_rt_policy_ipv6 2 1 "3 4" 2 encap.red true
 	setup_rt_policy_ipv6 1 2 "" 1 encap.red false
+=======
+	setup_rt_policy_ipv6 2 1 "3 4" 2 encap.red
+	setup_rt_policy_ipv6 1 2 "" 1 encap.red
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	# create an IPv4 VPN between hosts hs-1 and hs-2
 	# the network path between hs-1 and hs-2 traverses several routers
 	# depending on the direction of traffic.
 	#
+<<<<<<< HEAD
 	# Direction hs-1 -> hs-2 (H.Encaps.Red + tunsrc)
+=======
+	# Direction hs-1 -> hs-2 (H.Encaps.Red)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	# - rt-2 (SRv6 End.DT46 behavior)
 	#
 	# Direction hs-2 -> hs-1 (H.Encaps.Red)
 	#  - rt-4,rt-3 (SRv6 End behaviors)
 	#  - rt-1 (SRv6 End.DT46 behavior)
+<<<<<<< HEAD
 	setup_rt_policy_ipv4 2 1 "" 2 encap.red true
 	setup_rt_policy_ipv4 1 2 "4 3" 1 encap.red false
+=======
+	setup_rt_policy_ipv4 2 1 "" 2 encap.red
+	setup_rt_policy_ipv4 1 2 "4 3" 1 encap.red
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	# create an IPv6 VPN between hosts hs-3 and hs-4
 	# the network path between hs-3 and hs-4 traverses several routers
 	# depending on the direction of traffic.
 	#
+<<<<<<< HEAD
 	# Direction hs-3 -> hs-4 (H.Encaps.Red + tunsrc)
+=======
+	# Direction hs-3 -> hs-4 (H.Encaps.Red)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	# - rt-2 (SRv6 End Behavior)
 	# - rt-4 (SRv6 End.DT46 behavior)
 	#
 	# Direction hs-4 -> hs-3 (H.Encaps.Red)
 	#  - rt-1 (SRv6 End behavior)
 	#  - rt-3 (SRv6 End.DT46 behavior)
+<<<<<<< HEAD
 	setup_rt_policy_ipv6 4 3 "2" 4 encap.red true
 	setup_rt_policy_ipv6 3 4 "1" 3 encap.red false
+=======
+	setup_rt_policy_ipv6 4 3 "2" 4 encap.red
+	setup_rt_policy_ipv6 3 4 "1" 3 encap.red
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	# testing environment was set up successfully
 	SETUP_ERR=0
@@ -859,6 +918,7 @@ test_vrf_or_ksft_skip()
 	fi
 }
 
+<<<<<<< HEAD
 # Before enabling tunsrc tests, make sure tunsrc and ip6tables are supported.
 check_tunsrc_support()
 {
@@ -891,6 +951,8 @@ check_tunsrc_support()
 	HAS_TUNSRC=true
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 if [ "$(id -u)" -ne 0 ]; then
 	echo "SKIP: Need root privileges"
 	exit "${ksft_skip}"
@@ -908,7 +970,10 @@ test_vrf_or_ksft_skip
 set -e
 trap cleanup EXIT
 
+<<<<<<< HEAD
 check_tunsrc_support
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 setup
 set +e
 

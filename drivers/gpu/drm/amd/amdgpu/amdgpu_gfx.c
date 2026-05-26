@@ -503,6 +503,7 @@ void amdgpu_gfx_mqd_sw_fini(struct amdgpu_device *adev, int xcc_id)
 			      &ring->mqd_ptr);
 }
 
+<<<<<<< HEAD
 void amdgpu_gfx_mqd_symmetrically_map_cu_mask(struct amdgpu_device *adev, const uint32_t *cu_mask,
 					      uint32_t cu_mask_count, uint32_t *se_mask)
 {
@@ -552,6 +553,8 @@ void amdgpu_gfx_mqd_symmetrically_map_cu_mask(struct amdgpu_device *adev, const 
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_gfx_disable_kcq(struct amdgpu_device *adev, int xcc_id)
 {
 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[xcc_id];
@@ -1580,6 +1583,7 @@ static ssize_t amdgpu_gfx_set_compute_partition(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t compute_partition_mem_alloc_mode_show(struct device *dev,
 						struct device_attribute *addr,
 						char *buf)
@@ -1610,6 +1614,8 @@ static ssize_t compute_partition_mem_alloc_mode_store(struct device *dev,
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *xcp_desc[] = {
 	[AMDGPU_SPX_PARTITION_MODE] = "SPX",
 	[AMDGPU_DPX_PARTITION_MODE] = "DPX",
@@ -1965,10 +1971,13 @@ static DEVICE_ATTR(gfx_reset_mask, 0444,
 static DEVICE_ATTR(compute_reset_mask, 0444,
 		   amdgpu_gfx_get_compute_reset_mask, NULL);
 
+<<<<<<< HEAD
 static DEVICE_ATTR(compute_partition_mem_alloc_mode, 0644,
 		   compute_partition_mem_alloc_mode_show,
 		   compute_partition_mem_alloc_mode_store);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int amdgpu_gfx_sysfs_xcp_init(struct amdgpu_device *adev)
 {
 	struct amdgpu_xcp_mgr *xcp_mgr = adev->xcp_mgr;
@@ -1989,11 +1998,14 @@ static int amdgpu_gfx_sysfs_xcp_init(struct amdgpu_device *adev)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = device_create_file(adev->dev,
 			       &dev_attr_compute_partition_mem_alloc_mode);
 	if (r)
 		return r;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (xcp_switch_supported)
 		r = device_create_file(adev->dev,
 				       &dev_attr_available_compute_partition);
@@ -2013,8 +2025,11 @@ static void amdgpu_gfx_sysfs_xcp_fini(struct amdgpu_device *adev)
 		(xcp_mgr->funcs && xcp_mgr->funcs->switch_partition_mode);
 	device_remove_file(adev->dev, &dev_attr_current_compute_partition);
 
+<<<<<<< HEAD
 	device_remove_file(adev->dev, &dev_attr_compute_partition_mem_alloc_mode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (xcp_switch_supported)
 		device_remove_file(adev->dev,
 				   &dev_attr_available_compute_partition);

@@ -4,7 +4,11 @@
  */
 
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/sizes.h>

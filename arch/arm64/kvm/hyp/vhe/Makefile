@@ -10,4 +10,8 @@ CFLAGS_switch.o += -Wno-override-init
 
 obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o
 obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
+<<<<<<< HEAD
 	 ../fpsimd.o ../hyp-entry.o ../exception.o ../vgic-v5-sr.o
+=======
+	 ../fpsimd.o ../hyp-entry.o ../exception.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

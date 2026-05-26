@@ -39,6 +39,13 @@ static ulong mask = GPIO_DEFAULT_MASK;
 module_param_named(mask, mask, ulong, 0444);
 MODULE_PARM_DESC(mask, "GPIO channel mask.");
 
+<<<<<<< HEAD
+=======
+/*
+ * FIXME: convert this singleton driver to use the state container
+ * design pattern, see Documentation/driver-api/driver-model/design-patterns.rst
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct cs5535_gpio_chip {
 	struct gpio_chip chip;
 	resource_size_t base;
@@ -281,14 +288,38 @@ static const char * const cs5535_gpio_names[] = {
 	"GPIO28", NULL, NULL, NULL,
 };
 
+<<<<<<< HEAD
 static int cs5535_gpio_probe(struct platform_device *pdev)
 {
 	struct cs5535_gpio_chip *priv;
 	struct gpio_chip *gc;
+=======
+static struct cs5535_gpio_chip cs5535_gpio_chip = {
+	.chip = {
+		.owner = THIS_MODULE,
+		.label = DRV_NAME,
+
+		.base = 0,
+		.ngpio = 32,
+		.names = cs5535_gpio_names,
+		.request = chip_gpio_request,
+
+		.get = chip_gpio_get,
+		.set = chip_gpio_set,
+
+		.direction_input = chip_direction_input,
+		.direction_output = chip_direction_output,
+	},
+};
+
+static int cs5535_gpio_probe(struct platform_device *pdev)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct resource *res;
 	int err = -EIO;
 	ulong mask_orig = mask;
 
+<<<<<<< HEAD
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
@@ -304,6 +335,8 @@ static int cs5535_gpio_probe(struct platform_device *pdev)
 	gc->direction_input = chip_direction_input;
 	gc->direction_output = chip_direction_output;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* There are two ways to get the GPIO base address; one is by
 	 * fetching it from MSR_LBAR_GPIO, the other is by reading the
 	 * PCI BAR info.  The latter method is easier (especially across
@@ -324,9 +357,15 @@ static int cs5535_gpio_probe(struct platform_device *pdev)
 	}
 
 	/* set up the driver-specific struct */
+<<<<<<< HEAD
 	priv->base = res->start;
 	priv->pdev = pdev;
 	spin_lock_init(&priv->lock);
+=======
+	cs5535_gpio_chip.base = res->start;
+	cs5535_gpio_chip.pdev = pdev;
+	spin_lock_init(&cs5535_gpio_chip.lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_info(&pdev->dev, "reserved resource region %pR\n", res);
 
@@ -342,7 +381,12 @@ static int cs5535_gpio_probe(struct platform_device *pdev)
 				mask_orig, mask);
 
 	/* finally, register with the generic GPIO API */
+<<<<<<< HEAD
 	return devm_gpiochip_add_data(&pdev->dev, gc, priv);
+=======
+	return devm_gpiochip_add_data(&pdev->dev, &cs5535_gpio_chip.chip,
+				      &cs5535_gpio_chip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct platform_driver cs5535_gpio_driver = {

@@ -10,11 +10,18 @@
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
 #include <linux/fwnode.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+<<<<<<< HEAD
+=======
+#include <linux/of_gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pinctrl/pinctrl.h>
 #include <linux/slab.h>
 #include <linux/string.h>
@@ -446,6 +453,35 @@ out:
 	return desc;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * of_get_named_gpio() - Get a GPIO number to use with GPIO API
+ * @np:		device node to get GPIO from
+ * @propname:	Name of property containing gpio specifier(s)
+ * @index:	index of the GPIO
+ *
+ * **DEPRECATED** This function is deprecated and must not be used in new code.
+ *
+ * Returns:
+ * GPIO number to use with Linux generic GPIO API, or one of the errno
+ * value on the error condition.
+ */
+int of_get_named_gpio(const struct device_node *np, const char *propname,
+		      int index)
+{
+	struct gpio_desc *desc;
+
+	desc = of_get_named_gpiod_flags(np, propname, index, NULL);
+
+	if (IS_ERR(desc))
+		return PTR_ERR(desc);
+	else
+		return desc_to_gpio(desc);
+}
+EXPORT_SYMBOL_GPL(of_get_named_gpio);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Converts gpio_lookup_flags into bitmask of GPIO_* values */
 static unsigned long of_convert_gpio_flags(enum of_gpio_flags flags)
 {
@@ -516,10 +552,13 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
 #endif
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NFC_S3FWRN5_I2C)
 		{ "en",		"s3fwrn5,en-gpios",	"samsung,s3fwrn5-i2c" },
 		{ "wake",	"s3fwrn5,fw-gpios",	"samsung,s3fwrn5-i2c" },
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_PCI_LANTIQ)
 		/* MIPS Lantiq PCI */
 		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
@@ -713,6 +752,7 @@ struct gpio_desc *of_find_gpio(struct device_node *np, const char *con_id,
 	return desc;
 }
 
+<<<<<<< HEAD
 int of_gpiochip_get_lflags(struct gpio_chip *chip,
 			   struct fwnode_reference_args *gpiospec,
 			   unsigned long *lflags)
@@ -733,6 +773,141 @@ int of_gpiochip_get_lflags(struct gpio_chip *chip,
 
 	*lflags = of_convert_gpio_flags(xlate_flags);
 
+=======
+/**
+ * of_parse_own_gpio() - Get a GPIO hog descriptor, names and flags for GPIO API
+ * @np:		device node to get GPIO from
+ * @chip:	GPIO chip whose hog is parsed
+ * @idx:	Index of the GPIO to parse
+ * @name:	GPIO line name
+ * @lflags:	bitmask of gpio_lookup_flags GPIO_* values - returned from
+ *		of_find_gpio() or of_parse_own_gpio()
+ * @dflags:	gpiod_flags - optional GPIO initialization flags
+ *
+ * Returns:
+ * GPIO descriptor to use with Linux GPIO API, or one of the errno
+ * value on the error condition.
+ */
+static struct gpio_desc *of_parse_own_gpio(struct device_node *np,
+					   struct gpio_chip *chip,
+					   unsigned int idx, const char **name,
+					   unsigned long *lflags,
+					   enum gpiod_flags *dflags)
+{
+	struct device_node *chip_np;
+	enum of_gpio_flags xlate_flags;
+	struct of_phandle_args gpiospec;
+	struct gpio_desc *desc;
+	unsigned int i;
+	u32 tmp;
+	int ret;
+
+	chip_np = dev_of_node(&chip->gpiodev->dev);
+	if (!chip_np)
+		return ERR_PTR(-EINVAL);
+
+	xlate_flags = 0;
+	*lflags = GPIO_LOOKUP_FLAGS_DEFAULT;
+	*dflags = GPIOD_ASIS;
+
+	ret = of_property_read_u32(chip_np, "#gpio-cells", &tmp);
+	if (ret)
+		return ERR_PTR(ret);
+
+	gpiospec.np = chip_np;
+	gpiospec.args_count = tmp;
+
+	for (i = 0; i < tmp; i++) {
+		ret = of_property_read_u32_index(np, "gpios", idx * tmp + i,
+						 &gpiospec.args[i]);
+		if (ret)
+			return ERR_PTR(ret);
+	}
+
+	desc = of_xlate_and_get_gpiod_flags(chip, &gpiospec, &xlate_flags);
+	if (IS_ERR(desc))
+		return desc;
+
+	*lflags = of_convert_gpio_flags(xlate_flags);
+
+	if (of_property_read_bool(np, "input"))
+		*dflags |= GPIOD_IN;
+	else if (of_property_read_bool(np, "output-low"))
+		*dflags |= GPIOD_OUT_LOW;
+	else if (of_property_read_bool(np, "output-high"))
+		*dflags |= GPIOD_OUT_HIGH;
+	else {
+		pr_warn("GPIO line %d (%pOFn): no hogging state specified, bailing out\n",
+			desc_to_gpio(desc), np);
+		return ERR_PTR(-EINVAL);
+	}
+
+	if (name && of_property_read_string(np, "line-name", name))
+		*name = np->name;
+
+	return desc;
+}
+
+/**
+ * of_gpiochip_add_hog - Add all hogs in a hog device node
+ * @chip:	gpio chip to act on
+ * @hog:	device node describing the hogs
+ *
+ * Returns:
+ * 0 on success, or negative errno on failure.
+ */
+static int of_gpiochip_add_hog(struct gpio_chip *chip, struct device_node *hog)
+{
+	enum gpiod_flags dflags;
+	struct gpio_desc *desc;
+	unsigned long lflags;
+	const char *name;
+	unsigned int i;
+	int ret;
+
+	for (i = 0;; i++) {
+		desc = of_parse_own_gpio(hog, chip, i, &name, &lflags, &dflags);
+		if (IS_ERR(desc))
+			break;
+
+		ret = gpiod_hog(desc, name, lflags, dflags);
+		if (ret < 0)
+			return ret;
+
+#ifdef CONFIG_OF_DYNAMIC
+		WRITE_ONCE(desc->hog, hog);
+#endif
+	}
+
+	return 0;
+}
+
+/**
+ * of_gpiochip_scan_gpios - Scan gpio-controller for gpio definitions
+ * @chip:	gpio chip to act on
+ *
+ * This is only used by of_gpiochip_add to request/set GPIO initial
+ * configuration.
+ *
+ * Returns:
+ * 0 on success, or negative errno on failure.
+ */
+static int of_gpiochip_scan_gpios(struct gpio_chip *chip)
+{
+	int ret;
+
+	for_each_available_child_of_node_scoped(dev_of_node(&chip->gpiodev->dev), np) {
+		if (!of_property_read_bool(np, "gpio-hog"))
+			continue;
+
+		ret = of_gpiochip_add_hog(chip, np);
+		if (ret < 0)
+			return ret;
+
+		of_node_set_flag(np, OF_POPULATED);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -787,7 +962,11 @@ static int of_gpio_notify(struct notifier_block *nb, unsigned long action,
 		if (!gdev)
 			return NOTIFY_DONE;	/* not for us */
 
+<<<<<<< HEAD
 		ret = gpiochip_add_hog(gpio_device_get_chip(gdev), of_fwnode_handle(rd->dn));
+=======
+		ret = of_gpiochip_add_hog(gpio_device_get_chip(gdev), rd->dn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0) {
 			pr_err("%s: failed to add hogs for %pOF\n", __func__,
 			       rd->dn);
@@ -1066,10 +1245,16 @@ int of_gpiochip_add(struct gpio_chip *chip)
 
 	of_node_get(np);
 
+<<<<<<< HEAD
 	for_each_available_child_of_node_scoped(np, child) {
 		if (of_property_read_bool(child, "gpio-hog"))
 			of_node_set_flag(child, OF_POPULATED);
 	}
+=======
+	ret = of_gpiochip_scan_gpios(chip);
+	if (ret)
+		of_node_put(np);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

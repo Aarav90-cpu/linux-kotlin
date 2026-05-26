@@ -26,8 +26,11 @@
 
 #include <uapi/linux/if_macsec.h>
 
+<<<<<<< HEAD
 static struct workqueue_struct *macsec_wq;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* SecTAG length = macsec_eth_header without the optional SCI */
 #define MACSEC_TAG_LEN 6
 
@@ -176,10 +179,16 @@ static void macsec_rxsc_put(struct macsec_rx_sc *sc)
 		call_rcu(&sc->rcu_head, free_rx_sc_rcu);
 }
 
+<<<<<<< HEAD
 static void free_rxsa_work(struct work_struct *work)
 {
 	struct macsec_rx_sa *sa =
 		container_of(to_rcu_work(work), struct macsec_rx_sa, destroy_work);
+=======
+static void free_rxsa(struct rcu_head *head)
+{
+	struct macsec_rx_sa *sa = container_of(head, struct macsec_rx_sa, rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_aead(sa->key.tfm);
 	free_percpu(sa->stats);
@@ -189,7 +198,11 @@ static void free_rxsa_work(struct work_struct *work)
 static void macsec_rxsa_put(struct macsec_rx_sa *sa)
 {
 	if (refcount_dec_and_test(&sa->refcnt))
+<<<<<<< HEAD
 		queue_rcu_work(macsec_wq, &sa->destroy_work);
+=======
+		call_rcu(&sa->rcu, free_rxsa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct macsec_tx_sa *macsec_txsa_get(struct macsec_tx_sa __rcu *ptr)
@@ -205,10 +218,16 @@ static struct macsec_tx_sa *macsec_txsa_get(struct macsec_tx_sa __rcu *ptr)
 	return sa;
 }
 
+<<<<<<< HEAD
 static void free_txsa_work(struct work_struct *work)
 {
 	struct macsec_tx_sa *sa =
 		container_of(to_rcu_work(work), struct macsec_tx_sa, destroy_work);
+=======
+static void free_txsa(struct rcu_head *head)
+{
+	struct macsec_tx_sa *sa = container_of(head, struct macsec_tx_sa, rcu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	crypto_free_aead(sa->key.tfm);
 	free_percpu(sa->stats);
@@ -218,7 +237,11 @@ static void free_txsa_work(struct work_struct *work)
 static void macsec_txsa_put(struct macsec_tx_sa *sa)
 {
 	if (refcount_dec_and_test(&sa->refcnt))
+<<<<<<< HEAD
 		queue_rcu_work(macsec_wq, &sa->destroy_work);
+=======
+		call_rcu(&sa->rcu, free_txsa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct macsec_cb *macsec_skb_cb(struct sk_buff *skb)
@@ -1411,7 +1434,10 @@ static int init_rx_sa(struct macsec_rx_sa *rx_sa, char *sak, int key_len,
 	rx_sa->next_pn = 1;
 	refcount_set(&rx_sa->refcnt, 1);
 	spin_lock_init(&rx_sa->lock);
+<<<<<<< HEAD
 	INIT_RCU_WORK(&rx_sa->destroy_work, free_rxsa_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1511,7 +1537,10 @@ static int init_tx_sa(struct macsec_tx_sa *tx_sa, char *sak, int key_len,
 	tx_sa->active = false;
 	refcount_set(&tx_sa->refcnt, 1);
 	spin_lock_init(&tx_sa->lock);
+<<<<<<< HEAD
 	INIT_RCU_WORK(&tx_sa->destroy_work, free_txsa_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2590,9 +2619,13 @@ static void macsec_inherit_tso_max(struct net_device *dev)
 		netif_inherit_tso_max(dev, macsec->real_dev);
 }
 
+<<<<<<< HEAD
 static int macsec_update_offload(struct net_device *dev,
 				 enum macsec_offload offload,
 				 struct netlink_ext_ack *extack)
+=======
+static int macsec_update_offload(struct net_device *dev, enum macsec_offload offload)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	enum macsec_offload prev_offload;
 	const struct macsec_ops *ops;
@@ -2624,6 +2657,7 @@ static int macsec_update_offload(struct net_device *dev,
 	if (!ops)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	ctx.secy = &macsec->secy;
 	ret = offload == MACSEC_OFFLOAD_OFF ? macsec_offload(ops->mdo_del_secy, &ctx)
 					    : macsec_offload(ops->mdo_add_secy, &ctx);
@@ -2653,6 +2687,16 @@ static int macsec_update_offload(struct net_device *dev,
 			vlan_drop_rx_ctag_filter_info(dev);
 			goto rollback_offload;
 		}
+=======
+	macsec->offload = offload;
+
+	ctx.secy = &macsec->secy;
+	ret = offload == MACSEC_OFFLOAD_OFF ? macsec_offload(ops->mdo_del_secy, &ctx)
+					    : macsec_offload(ops->mdo_add_secy, &ctx);
+	if (ret) {
+		macsec->offload = prev_offload;
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	macsec_set_head_tail_room(dev);
@@ -2662,12 +2706,15 @@ static int macsec_update_offload(struct net_device *dev,
 
 	netdev_update_features(dev);
 
+<<<<<<< HEAD
 	return 0;
 
 rollback_offload:
 	macsec->offload = prev_offload;
 	macsec_offload(ops->mdo_del_secy, &ctx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -2708,7 +2755,11 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
 	offload = nla_get_u8(tb_offload[MACSEC_OFFLOAD_ATTR_TYPE]);
 
 	if (macsec->offload != offload)
+<<<<<<< HEAD
 		ret = macsec_update_offload(dev, offload, info->extack);
+=======
+		ret = macsec_update_offload(dev, offload);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	rtnl_unlock();
 	return ret;
@@ -3521,8 +3572,12 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
 }
 
 #define MACSEC_FEATURES \
+<<<<<<< HEAD
 	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST | \
 	 NETIF_F_HW_VLAN_STAG_FILTER | NETIF_F_HW_VLAN_CTAG_FILTER)
+=======
+	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MACSEC_OFFLOAD_FEATURES \
 	(MACSEC_FEATURES | NETIF_F_GSO_SOFTWARE | NETIF_F_SOFT_FEATURES | \
@@ -3743,6 +3798,7 @@ restore_old_addr:
 	return err;
 }
 
+<<<<<<< HEAD
 static int macsec_vlan_rx_add_vid(struct net_device *dev,
 				  __be16 proto, u16 vid)
 {
@@ -3766,6 +3822,8 @@ static int macsec_vlan_rx_kill_vid(struct net_device *dev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int macsec_change_mtu(struct net_device *dev, int new_mtu)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
@@ -3807,8 +3865,11 @@ static const struct net_device_ops macsec_netdev_ops = {
 	.ndo_set_rx_mode	= macsec_dev_set_rx_mode,
 	.ndo_change_rx_flags	= macsec_dev_change_rx_flags,
 	.ndo_set_mac_address	= macsec_set_mac_address,
+<<<<<<< HEAD
 	.ndo_vlan_rx_add_vid	= macsec_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= macsec_vlan_rx_kill_vid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_start_xmit		= macsec_start_xmit,
 	.ndo_get_stats64	= macsec_get_stats64,
 	.ndo_get_iflink		= macsec_get_iflink,
@@ -3973,7 +4034,11 @@ static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
 		offload = nla_get_u8(data[IFLA_MACSEC_OFFLOAD]);
 		if (macsec->offload != offload) {
 			macsec_offload_state_change = true;
+<<<<<<< HEAD
 			ret = macsec_update_offload(dev, offload, extack);
+=======
+			ret = macsec_update_offload(dev, offload);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				goto cleanup;
 		}
@@ -4511,6 +4576,7 @@ static int __init macsec_init(void)
 {
 	int err;
 
+<<<<<<< HEAD
 	macsec_wq = alloc_workqueue("macsec", WQ_UNBOUND, 0);
 	if (!macsec_wq)
 		return -ENOMEM;
@@ -4540,6 +4606,27 @@ err_destroy_wq:
 	 */
 	rcu_barrier();
 	destroy_workqueue(macsec_wq);
+=======
+	pr_info("MACsec IEEE 802.1AE\n");
+	err = register_netdevice_notifier(&macsec_notifier);
+	if (err)
+		return err;
+
+	err = rtnl_link_register(&macsec_link_ops);
+	if (err)
+		goto notifier;
+
+	err = genl_register_family(&macsec_fam);
+	if (err)
+		goto rtnl;
+
+	return 0;
+
+rtnl:
+	rtnl_link_unregister(&macsec_link_ops);
+notifier:
+	unregister_netdevice_notifier(&macsec_notifier);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -4549,7 +4636,10 @@ static void __exit macsec_exit(void)
 	rtnl_link_unregister(&macsec_link_ops);
 	unregister_netdevice_notifier(&macsec_notifier);
 	rcu_barrier();
+<<<<<<< HEAD
 	destroy_workqueue(macsec_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(macsec_init);

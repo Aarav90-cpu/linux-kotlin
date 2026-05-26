@@ -92,7 +92,11 @@ static const char *ext4_get_link(struct dentry *dentry, struct inode *inode,
 
 	if (!dentry) {
 		bh = ext4_getblk(NULL, inode, 0, EXT4_GET_BLOCKS_CACHED_NOWAIT);
+<<<<<<< HEAD
 		if (IS_ERR_OR_NULL(bh))
+=======
+		if (IS_ERR(bh) || !bh)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ERR_PTR(-ECHILD);
 		if (!ext4_buffer_uptodate(bh)) {
 			brelse(bh);

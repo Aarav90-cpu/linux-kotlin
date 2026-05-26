@@ -107,7 +107,11 @@ static bool is_object_pointer(const enum landlock_key_type key_type)
 
 static struct landlock_rule *
 create_rule(const struct landlock_id id,
+<<<<<<< HEAD
 	    const struct landlock_layer (*layers)[], const u32 num_layers,
+=======
+	    const struct landlock_layer (*const layers)[], const u32 num_layers,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    const struct landlock_layer *const new_layer)
 {
 	struct landlock_rule *new_rule;
@@ -201,12 +205,19 @@ static void build_check_ruleset(void)
  * When merging a ruleset in a domain, or copying a domain, @layers will be
  * added to @ruleset as new constraints, similarly to a boolean AND between
  * access rights.
+<<<<<<< HEAD
  *
  * Return: 0 on success, -errno on failure.
  */
 static int insert_rule(struct landlock_ruleset *const ruleset,
 		       const struct landlock_id id,
 		       const struct landlock_layer (*layers)[],
+=======
+ */
+static int insert_rule(struct landlock_ruleset *const ruleset,
+		       const struct landlock_id id,
+		       const struct landlock_layer (*const layers)[],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       const size_t num_layers)
 {
 	struct rb_node **walker_node;
@@ -532,8 +543,13 @@ void landlock_put_ruleset_deferred(struct landlock_ruleset *const ruleset)
  * The current task is requesting to be restricted.  The subjective credentials
  * must not be in an overridden state. cf. landlock_init_hierarchy_log().
  *
+<<<<<<< HEAD
  * Return: A new domain merging @parent and @ruleset on success, or ERR_PTR()
  * on failure.  If @parent is NULL, the new domain duplicates @ruleset.
+=======
+ * Returns the intersection of @parent and @ruleset, or returns @parent if
+ * @ruleset is empty, or returns a duplicate of @ruleset if @parent is empty.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct landlock_ruleset *
 landlock_merge_ruleset(struct landlock_ruleset *const parent,
@@ -624,7 +640,11 @@ landlock_find_rule(const struct landlock_ruleset *const ruleset,
  * @rule: A rule that grants a set of access rights for each layer
  * @masks: A matrix of unfulfilled access rights for each layer
  *
+<<<<<<< HEAD
  * Return: True if the request is allowed (i.e. the access rights granted all
+=======
+ * Returns true if the request is allowed (i.e. the access rights granted all
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * remaining unfulfilled access rights and masks has no leftover set bits).
  */
 bool landlock_unmask_layers(const struct landlock_rule *const rule,
@@ -674,7 +694,11 @@ get_access_mask_t(const struct landlock_ruleset *const ruleset,
  * @masks: Layer access masks to populate.
  * @key_type: The key type to switch between access masks of different types.
  *
+<<<<<<< HEAD
  * Return: An access mask where each access right bit is set which is handled
+=======
+ * Returns: An access mask where each access right bit is set which is handled
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * in any of the active layers in @domain.
  */
 access_mask_t

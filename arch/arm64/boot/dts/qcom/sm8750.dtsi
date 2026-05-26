@@ -3,9 +3,13 @@
  * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/qcom,dsi-phy-28nm.h>
 #include <dt-bindings/clock/qcom,rpmh.h>
 #include <dt-bindings/clock/qcom,sm8750-dispcc.h>
+=======
+#include <dt-bindings/clock/qcom,rpmh.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/clock/qcom,sm8750-gcc.h>
 #include <dt-bindings/clock/qcom,sm8750-tcsr.h>
 #include <dt-bindings/clock/qcom,sm8750-videocc.h>
@@ -22,7 +26,10 @@
 #include <dt-bindings/soc/qcom,gpr.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
 #include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+<<<<<<< HEAD
 #include <dt-bindings/thermal/thermal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	interrupt-parent = <&intc>;
@@ -2790,7 +2797,10 @@
 					reg = <2>;
 
 					usb_dp_qmpphy_dp_in: endpoint {
+<<<<<<< HEAD
 						remote-endpoint = <&mdss_dp0_out>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 				};
 			};
@@ -2949,19 +2959,31 @@
 
 				opp-240000000 {
 					opp-hz = /bits/ 64 <240000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs>,
+=======
+					required-opps = <&rpmhpd_opp_low_svs_d1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_low_svs_d1>;
 				};
 
 				opp-338000000 {
 					opp-hz = /bits/ 64 <338000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs>,
+=======
+					required-opps = <&rpmhpd_opp_low_svs>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_low_svs>;
 				};
 
 				opp-420000000 {
 					opp-hz = /bits/ 64 <420000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_svs>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_svs>;
 				};
 
@@ -2973,19 +2995,31 @@
 
 				opp-533333334 {
 					opp-hz = /bits/ 64 <533333334>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-570000000 {
 					opp-hz = /bits/ 64 <570000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_nom_l1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom_l1>;
 				};
 
 				opp-630000000 {
 					opp-hz = /bits/ 64 <630000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 			};
@@ -3005,6 +3039,7 @@
 			#power-domain-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		mdss: display-subsystem@ae00000 {
 			compatible = "qcom,sm8750-mdss";
 			reg = <0x0 0x0ae00000 0x0 0x1000>;
@@ -3436,6 +3471,8 @@
 			#power-domain-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pdc: interrupt-controller@b220000 {
 			compatible = "qcom,sm8750-pdc", "qcom,pdc";
 			reg = <0x0 0x0b220000 0x0 0x10000>, <0x0 0x164400f0 0x0 0x64>;
@@ -3448,6 +3485,7 @@
 			interrupt-controller;
 		};
 
+<<<<<<< HEAD
 		tsens0: thermal-sensor@c228000 {
 			compatible = "qcom,sm8750-tsens", "qcom,tsens-v2";
 			reg = <0x0 0x0c228000 0x0 0x1000>,
@@ -3496,6 +3534,8 @@
 			#thermal-sensor-cells = <1>;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		aoss_qmp: power-management@c300000 {
 			compatible = "qcom,sm8750-aoss-qmp", "qcom,aoss-qmp";
 			reg = <0x0 0x0c300000 0x0 0x400>;
@@ -5141,7 +5181,11 @@
 
 			gic_its: msi-controller@16040000 {
 				compatible = "arm,gic-v3-its";
+<<<<<<< HEAD
 				reg = <0x0 0x16040000 0x0 0x40000>;
+=======
+				reg = <0x0 0x16040000 0x0 0x20000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				msi-controller;
 				#msi-cells = <1>;
@@ -5942,6 +5986,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	thermal-zones {
 		aoss0-thermal {
 			thermal-sensors = <&tsens0 0>;
@@ -6790,6 +6835,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timer {
 		compatible = "arm,armv8-timer";
 

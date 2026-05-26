@@ -10,10 +10,13 @@
 /dts-v1/;
 /plugin/;
 
+<<<<<<< HEAD
 &gpu_zap_shader {
 	status = "disabled";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &iris {
 	status = "disabled";
 };

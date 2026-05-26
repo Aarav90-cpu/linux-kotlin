@@ -85,12 +85,20 @@ struct flag_table {
 /*
  * RSM instance allocation
  *   0 - User Fecn Handling
+<<<<<<< HEAD
  *   1 - Deprecated
+=======
+ *   1 - Vnic
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   2 - AIP
  *   3 - Verbs
  */
 #define RSM_INS_FECN              0
+<<<<<<< HEAD
 #define RSM_INS_DEPRECATED        1
+=======
+#define RSM_INS_VNIC              1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RSM_INS_AIP               2
 #define RSM_INS_VERBS             3
 
@@ -152,6 +160,18 @@ struct flag_table {
 #define DETH_AIP_SQPN_SELECT_OFFSET \
 	DETH_AIP_SQPN_OFFSET(DETH_AIP_SQPN_BIT_OFFSET)
 
+<<<<<<< HEAD
+=======
+/* RSM fields for Vnic */
+/* L2_TYPE: QW 0, OFFSET 61 - for match */
+#define L2_TYPE_QW             0ull
+#define L2_TYPE_BIT_OFFSET     61ull
+#define L2_TYPE_OFFSET(off)    ((L2_TYPE_QW << QW_SHIFT) | (off))
+#define L2_TYPE_MATCH_OFFSET   L2_TYPE_OFFSET(L2_TYPE_BIT_OFFSET)
+#define L2_TYPE_MASK           3ull
+#define L2_16B_VALUE           2ull
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* L4_TYPE QW 1, OFFSET 0 - for match */
 #define L4_TYPE_QW              1ull
 #define L4_TYPE_BIT_OFFSET      0ull
@@ -6835,9 +6855,15 @@ static void rxe_kernel_unfreeze(struct hfi1_devdata *dd)
 	for (i = 0; i < dd->num_rcv_contexts; i++) {
 		rcd = hfi1_rcd_get_by_index(dd, i);
 
+<<<<<<< HEAD
 		/* Ensure all non-user contexts are enabled */
 		if (!rcd ||
 		    (i >= dd->first_dyn_alloc_ctxt)) {
+=======
+		/* Ensure all non-user contexts(including vnic) are enabled */
+		if (!rcd ||
+		    (i >= dd->first_dyn_alloc_ctxt && !rcd->is_vnic)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hfi1_rcd_put(rcd);
 			continue;
 		}
@@ -8458,7 +8484,11 @@ int hfi1_netdev_rx_napi(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
+<<<<<<< HEAD
 /* Receive packet napi handler for netdevs AIP  */
+=======
+/* Receive packet napi handler for netdevs VNIC and AIP  */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 irqreturn_t receive_context_interrupt_napi(int irq, void *data)
 {
 	struct hfi1_ctxtdata *rcd = data;
@@ -14497,7 +14527,11 @@ static bool hfi1_netdev_update_rmt(struct hfi1_devdata *dd)
 	int ctxt_count = hfi1_netdev_ctxt_count(dd);
 
 	/* We already have contexts mapped in RMT */
+<<<<<<< HEAD
 	if (has_rsm_rule(dd, RSM_INS_AIP)) {
+=======
+	if (has_rsm_rule(dd, RSM_INS_VNIC) || has_rsm_rule(dd, RSM_INS_AIP)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dd_dev_info(dd, "Contexts are already mapped in RMT\n");
 		return true;
 	}
@@ -14578,6 +14612,40 @@ void hfi1_init_aip_rsm(struct hfi1_devdata *dd)
 	}
 }
 
+<<<<<<< HEAD
+=======
+/* Initialize RSM for VNIC */
+void hfi1_init_vnic_rsm(struct hfi1_devdata *dd)
+{
+	int rmt_start = hfi1_netdev_get_free_rmt_idx(dd);
+	struct rsm_rule_data rrd = {
+		/* Add rule for vnic */
+		.offset = rmt_start,
+		.pkt_type = 4,
+		/* Match 16B packets */
+		.field1_off = L2_TYPE_MATCH_OFFSET,
+		.mask1 = L2_TYPE_MASK,
+		.value1 = L2_16B_VALUE,
+		/* Match ETH L4 packets */
+		.field2_off = L4_TYPE_MATCH_OFFSET,
+		.mask2 = L4_16B_TYPE_MASK,
+		.value2 = L4_16B_ETH_VALUE,
+		/* Calc context from veswid and entropy */
+		.index1_off = L4_16B_HDR_VESWID_OFFSET,
+		.index1_width = ilog2(NUM_NETDEV_MAP_ENTRIES),
+		.index2_off = L2_16B_ENTROPY_OFFSET,
+		.index2_width = ilog2(NUM_NETDEV_MAP_ENTRIES)
+	};
+
+	hfi1_enable_rsm_rule(dd, RSM_INS_VNIC, &rrd);
+}
+
+void hfi1_deinit_vnic_rsm(struct hfi1_devdata *dd)
+{
+	clear_rsm_rule(dd, RSM_INS_VNIC);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void hfi1_deinit_aip_rsm(struct hfi1_devdata *dd)
 {
 	/* only actually clear the rule if it's the last user asking to do so */
@@ -15155,7 +15223,11 @@ int hfi1_init_dd(struct hfi1_devdata *dd)
 		 (dd->revision >> CCE_REVISION_SW_SHIFT)
 		    & CCE_REVISION_SW_MASK);
 
+<<<<<<< HEAD
 	/* alloc AIP rx data */
+=======
+	/* alloc VNIC/AIP rx data */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = hfi1_alloc_rx(dd);
 	if (ret)
 		goto bail_cleanup;

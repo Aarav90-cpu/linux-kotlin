@@ -9,7 +9,11 @@
 #include "mt7988a-bananapi-bpi-r4-pro.dtsi"
 
 / {
+<<<<<<< HEAD
 	model = "Bananapi BPI-R4 Pro 4E";
+=======
+	model = "Bananapi BPI-R4";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	compatible = "bananapi,bpi-r4-pro-4e",
 		     "bananapi,bpi-r4-pro",
 		     "mediatek,mt7988a";

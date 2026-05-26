@@ -100,6 +100,7 @@ spinand_fill_page_read_op(struct spinand_device *spinand, u64 addr)
 	return op;
 }
 
+<<<<<<< HEAD
 static struct spi_mem_op
 spinand_fill_page_read_packed_op(struct spinand_device *spinand, u64 addr)
 {
@@ -111,6 +112,8 @@ spinand_fill_page_read_packed_op(struct spinand_device *spinand, u64 addr)
 	return op;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct spi_mem_op
 spinand_fill_prog_exec_op(struct spinand_device *spinand, u64 addr)
 {
@@ -464,10 +467,14 @@ static int spinand_load_page_op(struct spinand_device *spinand,
 {
 	struct nand_device *nand = spinand_to_nand(spinand);
 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
+<<<<<<< HEAD
 	bool packed = spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ;
 	struct spi_mem_op op = packed ?
 		SPINAND_OP(spinand, page_read_packed, row) :
 		SPINAND_OP(spinand, page_read, row);
+=======
+	struct spi_mem_op op = SPINAND_OP(spinand, page_read, row);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return spi_mem_exec_op(spinand->spimem, &op);
 }
@@ -1503,6 +1510,7 @@ static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->blk_erase))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ)
 		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(0);
 	else
@@ -1510,6 +1518,11 @@ static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read)) {
 		return -EOPNOTSUPP;
 	}
+=======
+	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read))
+		return -EOPNOTSUPP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_8D_8D_0_OP(0);
 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->prog_exec))

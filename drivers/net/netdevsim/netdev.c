@@ -185,9 +185,13 @@ out_drop_cnt:
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 static void nsim_set_rx_mode(struct net_device *dev,
 			     struct netdev_hw_addr_list *uc,
 			     struct netdev_hw_addr_list *mc)
+=======
+static void nsim_set_rx_mode(struct net_device *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 }
 
@@ -204,6 +208,15 @@ static int nsim_change_mtu(struct net_device *dev, int new_mtu)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int
+nsim_setup_tc_block_cb(enum tc_setup_type type, void *type_data, void *cb_priv)
+{
+	return nsim_bpf_setup_tc_block_cb(type, type_data, cb_priv);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nsim_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
 {
 	struct netdevsim *ns = netdev_priv(dev);
@@ -334,6 +347,54 @@ static int nsim_set_vf_link_state(struct net_device *dev, int vf, int state)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void nsim_taprio_stats(struct tc_taprio_qopt_stats *stats)
+{
+	stats->window_drops = 0;
+	stats->tx_overruns = 0;
+}
+
+static int nsim_setup_tc_taprio(struct net_device *dev,
+				struct tc_taprio_qopt_offload *offload)
+{
+	int err = 0;
+
+	switch (offload->cmd) {
+	case TAPRIO_CMD_REPLACE:
+	case TAPRIO_CMD_DESTROY:
+		break;
+	case TAPRIO_CMD_STATS:
+		nsim_taprio_stats(&offload->stats);
+		break;
+	default:
+		err = -EOPNOTSUPP;
+	}
+
+	return err;
+}
+
+static LIST_HEAD(nsim_block_cb_list);
+
+static int
+nsim_setup_tc(struct net_device *dev, enum tc_setup_type type, void *type_data)
+{
+	struct netdevsim *ns = netdev_priv(dev);
+
+	switch (type) {
+	case TC_SETUP_QDISC_TAPRIO:
+		return nsim_setup_tc_taprio(dev, type_data);
+	case TC_SETUP_BLOCK:
+		return flow_block_cb_setup_simple(type_data,
+						  &nsim_block_cb_list,
+						  nsim_setup_tc_block_cb,
+						  ns, ns, true);
+	default:
+		return -EOPNOTSUPP;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 nsim_set_features(struct net_device *dev, netdev_features_t features)
 {
@@ -556,6 +617,7 @@ static int nsim_stop(struct net_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nsim_vlan_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
 {
 	struct netdevsim *ns = netdev_priv(dev);
@@ -586,6 +648,8 @@ static int nsim_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nsim_shaper_set(struct net_shaper_binding *binding,
 			   const struct net_shaper *shaper,
 			   struct netlink_ext_ack *extack)
@@ -625,7 +689,11 @@ static const struct net_shaper_ops nsim_shaper_ops = {
 
 static const struct net_device_ops nsim_netdev_ops = {
 	.ndo_start_xmit		= nsim_start_xmit,
+<<<<<<< HEAD
 	.ndo_set_rx_mode_async	= nsim_set_rx_mode,
+=======
+	.ndo_set_rx_mode	= nsim_set_rx_mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_set_mac_address	= eth_mac_addr,
 	.ndo_validate_addr	= eth_validate_addr,
 	.ndo_change_mtu		= nsim_change_mtu,
@@ -643,21 +711,31 @@ static const struct net_device_ops nsim_netdev_ops = {
 	.ndo_bpf		= nsim_bpf,
 	.ndo_open		= nsim_open,
 	.ndo_stop		= nsim_stop,
+<<<<<<< HEAD
 	.ndo_vlan_rx_add_vid	= nsim_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= nsim_vlan_rx_kill_vid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.net_shaper_ops		= &nsim_shaper_ops,
 };
 
 static const struct net_device_ops nsim_vf_netdev_ops = {
 	.ndo_start_xmit		= nsim_start_xmit,
+<<<<<<< HEAD
 	.ndo_set_rx_mode_async	= nsim_set_rx_mode,
+=======
+	.ndo_set_rx_mode	= nsim_set_rx_mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_set_mac_address	= eth_mac_addr,
 	.ndo_validate_addr	= eth_validate_addr,
 	.ndo_change_mtu		= nsim_change_mtu,
 	.ndo_setup_tc		= nsim_setup_tc,
 	.ndo_set_features	= nsim_set_features,
+<<<<<<< HEAD
 	.ndo_vlan_rx_add_vid	= nsim_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= nsim_vlan_rx_kill_vid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* We don't have true per-queue stats, yet, so do some random fakery here.
@@ -955,6 +1033,7 @@ static const struct file_operations nsim_pp_hold_fops = {
 	.owner = THIS_MODULE,
 };
 
+<<<<<<< HEAD
 static int nsim_vlan_show(struct seq_file *s, void *data)
 {
 	struct netdevsim *ns = s->private;
@@ -969,6 +1048,8 @@ static int nsim_vlan_show(struct seq_file *s, void *data)
 }
 DEFINE_SHOW_ATTRIBUTE(nsim_vlan);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void nsim_setup(struct net_device *dev)
 {
 	ether_setup(dev);
@@ -981,18 +1062,26 @@ static void nsim_setup(struct net_device *dev)
 			 NETIF_F_FRAGLIST |
 			 NETIF_F_HW_CSUM |
 			 NETIF_F_LRO |
+<<<<<<< HEAD
 			 NETIF_F_TSO |
 			 NETIF_F_HW_VLAN_CTAG_FILTER |
 			 NETIF_F_HW_VLAN_STAG_FILTER;
+=======
+			 NETIF_F_TSO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->hw_features |= NETIF_F_HW_TC |
 			    NETIF_F_SG |
 			    NETIF_F_FRAGLIST |
 			    NETIF_F_HW_CSUM |
 			    NETIF_F_LRO |
 			    NETIF_F_TSO |
+<<<<<<< HEAD
 			    NETIF_F_LOOPBACK |
 			    NETIF_F_HW_VLAN_CTAG_FILTER |
 			    NETIF_F_HW_VLAN_STAG_FILTER;
+=======
+			    NETIF_F_LOOPBACK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
 	dev->max_mtu = ETH_MAX_MTU;
 	dev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_HW_OFFLOAD;
@@ -1159,8 +1248,11 @@ struct netdevsim *nsim_create(struct nsim_dev *nsim_dev,
 	ns->qr_dfs = debugfs_create_file("queue_reset", 0200,
 					 nsim_dev_port->ddir, ns,
 					 &nsim_qreset_fops);
+<<<<<<< HEAD
 	ns->vlan_dfs = debugfs_create_file("vlan", 0400, nsim_dev_port->ddir,
 					   ns, &nsim_vlan_fops);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ns;
 
 err_free_netdev:
@@ -1172,9 +1264,13 @@ void nsim_destroy(struct netdevsim *ns)
 {
 	struct net_device *dev = ns->netdev;
 	struct netdevsim *peer;
+<<<<<<< HEAD
 	u16 vid;
 
 	debugfs_remove(ns->vlan_dfs);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_remove(ns->qr_dfs);
 	debugfs_remove(ns->pp_dfs);
 
@@ -1182,8 +1278,12 @@ void nsim_destroy(struct netdevsim *ns)
 		unregister_netdevice_notifier_dev_net(ns->netdev, &ns->nb,
 						      &ns->nn);
 
+<<<<<<< HEAD
 	if (nsim_dev_port_is_pf(ns->nsim_dev_port))
 		nsim_psp_uninit(ns);
+=======
+	nsim_psp_uninit(ns);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rtnl_lock();
 	peer = rtnl_dereference(ns->peer);
@@ -1201,11 +1301,14 @@ void nsim_destroy(struct netdevsim *ns)
 	if (nsim_dev_port_is_pf(ns->nsim_dev_port))
 		nsim_exit_netdevsim(ns);
 
+<<<<<<< HEAD
 	for_each_set_bit(vid, ns->vlan.ctag, VLAN_N_VID)
 		WARN_ON_ONCE(1);
 	for_each_set_bit(vid, ns->vlan.stag, VLAN_N_VID)
 		WARN_ON_ONCE(1);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Put this intentionally late to exercise the orphaning path */
 	if (ns->page) {
 		page_pool_put_full_page(pp_page_to_nmdesc(ns->page)->pp,

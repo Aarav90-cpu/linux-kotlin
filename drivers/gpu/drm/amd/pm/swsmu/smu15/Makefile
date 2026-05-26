@@ -23,7 +23,11 @@
 # Makefile for the 'smu manager' sub-component of powerplay.
 # It provides the smu management services for the driver.
 
+<<<<<<< HEAD
 SMU15_MGR = smu_v15_0.o smu_v15_0_0_ppt.o smu_v15_0_8_ppt.o
+=======
+SMU15_MGR = smu_v15_0.o smu_v15_0_0_ppt.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 AMD_SWSMU_SMU15MGR = $(addprefix $(AMD_SWSMU_PATH)/smu15/,$(SMU15_MGR))
 

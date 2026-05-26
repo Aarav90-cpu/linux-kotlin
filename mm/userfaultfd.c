@@ -14,11 +14,16 @@
 #include <linux/userfaultfd_k.h>
 #include <linux/mmu_notifier.h>
 #include <linux/hugetlb.h>
+<<<<<<< HEAD
+=======
+#include <linux/shmem_fs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/tlbflush.h>
 #include <asm/tlb.h>
 #include "internal.h"
 #include "swap.h"
 
+<<<<<<< HEAD
 struct mfill_state {
 	struct userfaultfd_ctx *ctx;
 	unsigned long src_start;
@@ -69,6 +74,8 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static __always_inline
 bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
 {
@@ -192,6 +199,7 @@ static void uffd_mfill_unlock(struct vm_area_struct *vma)
 }
 #endif
 
+<<<<<<< HEAD
 static void mfill_put_vma(struct mfill_state *state)
 {
 	if (!state->vma)
@@ -314,6 +322,8 @@ static int mfill_establish_pmd(struct mfill_state *state)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Check if dst_addr is outside of file's size. Must be called with ptl held. */
 static bool mfill_file_over_size(struct vm_area_struct *dst_vma,
 				 unsigned long dst_addr)
@@ -336,10 +346,17 @@ static bool mfill_file_over_size(struct vm_area_struct *dst_vma,
  * This function handles both MCOPY_ATOMIC_NORMAL and _CONTINUE for both shmem
  * and anon, and for both shared and private VMAs.
  */
+<<<<<<< HEAD
 static int mfill_atomic_install_pte(pmd_t *dst_pmd,
 				    struct vm_area_struct *dst_vma,
 				    unsigned long dst_addr, struct page *page,
 				    uffd_flags_t flags)
+=======
+int mfill_atomic_install_pte(pmd_t *dst_pmd,
+			     struct vm_area_struct *dst_vma,
+			     unsigned long dst_addr, struct page *page,
+			     bool newly_allocated, uffd_flags_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct mm_struct *dst_mm = dst_vma->vm_mm;
@@ -383,6 +400,12 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
 		goto out_unlock;
 
 	if (page_in_cache) {
+<<<<<<< HEAD
+=======
+		/* Usually, cache pages are already added to LRU */
+		if (newly_allocated)
+			folio_add_lru(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		folio_add_file_rmap_pte(folio, page, dst_vma);
 	} else {
 		folio_add_new_anon_rmap(folio, dst_vma, dst_addr, RMAP_EXCLUSIVE);
@@ -397,9 +420,12 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
 
 	set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
 
+<<<<<<< HEAD
 	if (page_in_cache)
 		folio_unlock(folio);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* No need to invalidate - it was non-present before */
 	update_mmu_cache(dst_vma, dst_addr, dst_pte);
 	ret = 0;
@@ -409,6 +435,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
 {
 	void *kaddr;
@@ -513,6 +540,60 @@ static int __mfill_atomic_pte(struct mfill_state *state,
 		clear_user_highpage(&folio->page, state->dst_addr);
 	} else {
 		VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
+=======
+static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
+				 struct vm_area_struct *dst_vma,
+				 unsigned long dst_addr,
+				 unsigned long src_addr,
+				 uffd_flags_t flags,
+				 struct folio **foliop)
+{
+	void *kaddr;
+	int ret;
+	struct folio *folio;
+
+	if (!*foliop) {
+		ret = -ENOMEM;
+		folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, dst_vma,
+					dst_addr);
+		if (!folio)
+			goto out;
+
+		kaddr = kmap_local_folio(folio, 0);
+		/*
+		 * The read mmap_lock is held here.  Despite the
+		 * mmap_lock being read recursive a deadlock is still
+		 * possible if a writer has taken a lock.  For example:
+		 *
+		 * process A thread 1 takes read lock on own mmap_lock
+		 * process A thread 2 calls mmap, blocks taking write lock
+		 * process B thread 1 takes page fault, read lock on own mmap lock
+		 * process B thread 2 calls mmap, blocks taking write lock
+		 * process A thread 1 blocks taking read lock on process B
+		 * process B thread 1 blocks taking read lock on process A
+		 *
+		 * Disable page faults to prevent potential deadlock
+		 * and retry the copy outside the mmap_lock.
+		 */
+		pagefault_disable();
+		ret = copy_from_user(kaddr, (const void __user *) src_addr,
+				     PAGE_SIZE);
+		pagefault_enable();
+		kunmap_local(kaddr);
+
+		/* fallback to copy_from_user outside mmap_lock */
+		if (unlikely(ret)) {
+			ret = -ENOENT;
+			*foliop = folio;
+			/* don't free the page */
+			goto out;
+		}
+
+		flush_dcache_folio(folio);
+	} else {
+		folio = *foliop;
+		*foliop = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -522,6 +603,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
 	 */
 	__folio_mark_uptodate(folio);
 
+<<<<<<< HEAD
 	if (ops->filemap_add) {
 		ret = ops->filemap_add(folio, state->vma, state->dst_addr);
 		if (ret)
@@ -539,10 +621,56 @@ err_filemap_remove:
 	if (ops->filemap_remove)
 		ops->filemap_remove(folio, state->vma);
 err_folio_put:
+=======
+	ret = -ENOMEM;
+	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+		goto out_release;
+
+	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+				       &folio->page, true, flags);
+	if (ret)
+		goto out_release;
+out:
+	return ret;
+out_release:
+	folio_put(folio);
+	goto out;
+}
+
+static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
+					 struct vm_area_struct *dst_vma,
+					 unsigned long dst_addr)
+{
+	struct folio *folio;
+	int ret = -ENOMEM;
+
+	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
+	if (!folio)
+		return ret;
+
+	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+		goto out_put;
+
+	/*
+	 * The memory barrier inside __folio_mark_uptodate makes sure that
+	 * zeroing out the folio become visible before mapping the page
+	 * using set_pte_at(). See do_anonymous_page().
+	 */
+	__folio_mark_uptodate(folio);
+
+	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+				       &folio->page, true, 0);
+	if (ret)
+		goto out_put;
+
+	return 0;
+out_put:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folio_put(folio);
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mfill_atomic_pte_copy(struct mfill_state *state)
 {
 	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
@@ -574,15 +702,28 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
 	struct vm_area_struct *dst_vma = state->vma;
 	unsigned long dst_addr = state->dst_addr;
 	pmd_t *dst_pmd = state->pmd;
+=======
+static int mfill_atomic_pte_zeropage(pmd_t *dst_pmd,
+				     struct vm_area_struct *dst_vma,
+				     unsigned long dst_addr)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pte_t _dst_pte, *dst_pte;
 	spinlock_t *ptl;
 	int ret;
 
+<<<<<<< HEAD
 	if (mm_forbids_zeropage(dst_vma->vm_mm) ||
 	    (dst_vma->vm_flags & VM_SHARED))
 		return mfill_atomic_pte_zeroed_folio(state);
 
 	_dst_pte = pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
+=======
+	if (mm_forbids_zeropage(dst_vma->vm_mm))
+		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
+
+	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 dst_vma->vm_page_prot));
 	ret = -EAGAIN;
 	dst_pte = pte_offset_map_lock(dst_vma->vm_mm, dst_pmd, dst_addr, &ptl);
@@ -606,6 +747,7 @@ out:
 }
 
 /* Handles UFFDIO_CONTINUE for all shmem VMAs (shared or private). */
+<<<<<<< HEAD
 static int mfill_atomic_pte_continue(struct mfill_state *state)
 {
 	struct vm_area_struct *dst_vma = state->vma;
@@ -615,10 +757,20 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
 	struct inode *inode = file_inode(dst_vma->vm_file);
 	uffd_flags_t flags = state->flags;
 	pmd_t *dst_pmd = state->pmd;
+=======
+static int mfill_atomic_pte_continue(pmd_t *dst_pmd,
+				     struct vm_area_struct *dst_vma,
+				     unsigned long dst_addr,
+				     uffd_flags_t flags)
+{
+	struct inode *inode = file_inode(dst_vma->vm_file);
+	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio *folio;
 	struct page *page;
 	int ret;
 
+<<<<<<< HEAD
 	if (!ops) {
 		VM_WARN_ONCE(1, "UFFDIO_CONTINUE for unsupported VMA");
 		return -EOPNOTSUPP;
@@ -628,6 +780,18 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
 	/* Our caller expects us to return -EFAULT if we failed to find folio */
 	if (IS_ERR_OR_NULL(folio))
 		return -EFAULT;
+=======
+	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
+	/* Our caller expects us to return -EFAULT if we failed to find folio */
+	if (ret == -ENOENT)
+		ret = -EFAULT;
+	if (ret)
+		goto out;
+	if (!folio) {
+		ret = -EFAULT;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	page = folio_file_page(folio, pgoff);
 	if (PageHWPoison(page)) {
@@ -636,6 +800,7 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
 	}
 
 	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+<<<<<<< HEAD
 				       page, flags);
 	if (ret)
 		goto out_release;
@@ -658,6 +823,32 @@ static int mfill_atomic_pte_poison(struct mfill_state *state)
 	pte_t _dst_pte, *dst_pte;
 	spinlock_t *ptl;
 	int ret;
+=======
+				       page, false, flags);
+	if (ret)
+		goto out_release;
+
+	folio_unlock(folio);
+	ret = 0;
+out:
+	return ret;
+out_release:
+	folio_unlock(folio);
+	folio_put(folio);
+	goto out;
+}
+
+/* Handles UFFDIO_POISON for all non-hugetlb VMAs. */
+static int mfill_atomic_pte_poison(pmd_t *dst_pmd,
+				   struct vm_area_struct *dst_vma,
+				   unsigned long dst_addr,
+				   uffd_flags_t flags)
+{
+	int ret;
+	struct mm_struct *dst_mm = dst_vma->vm_mm;
+	pte_t _dst_pte, *dst_pte;
+	spinlock_t *ptl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
 	ret = -EAGAIN;
@@ -686,6 +877,30 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static pmd_t *mm_alloc_pmd(struct mm_struct *mm, unsigned long address)
+{
+	pgd_t *pgd;
+	p4d_t *p4d;
+	pud_t *pud;
+
+	pgd = pgd_offset(mm, address);
+	p4d = p4d_alloc(mm, pgd, address);
+	if (!p4d)
+		return NULL;
+	pud = pud_alloc(mm, p4d, address);
+	if (!pud)
+		return NULL;
+	/*
+	 * Note that we didn't run this because the pmd was
+	 * missing, the *pmd may be already established and in
+	 * turn it may also be a trans_huge_pmd.
+	 */
+	return pmd_alloc(mm, pud, address);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_HUGETLB_PAGE
 /*
  * mfill_atomic processing for HUGETLB vmas.  Note that this routine is
@@ -860,6 +1075,7 @@ extern ssize_t mfill_atomic_hugetlb(struct userfaultfd_ctx *ctx,
 				    uffd_flags_t flags);
 #endif /* CONFIG_HUGETLB_PAGE */
 
+<<<<<<< HEAD
 static __always_inline ssize_t mfill_atomic_pte(struct mfill_state *state)
 {
 	uffd_flags_t flags = state->flags;
@@ -875,6 +1091,50 @@ static __always_inline ssize_t mfill_atomic_pte(struct mfill_state *state)
 
 	VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
 	return -EOPNOTSUPP;
+=======
+static __always_inline ssize_t mfill_atomic_pte(pmd_t *dst_pmd,
+						struct vm_area_struct *dst_vma,
+						unsigned long dst_addr,
+						unsigned long src_addr,
+						uffd_flags_t flags,
+						struct folio **foliop)
+{
+	ssize_t err;
+
+	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE)) {
+		return mfill_atomic_pte_continue(dst_pmd, dst_vma,
+						 dst_addr, flags);
+	} else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_POISON)) {
+		return mfill_atomic_pte_poison(dst_pmd, dst_vma,
+					       dst_addr, flags);
+	}
+
+	/*
+	 * The normal page fault path for a shmem will invoke the
+	 * fault, fill the hole in the file and COW it right away. The
+	 * result generates plain anonymous memory. So when we are
+	 * asked to fill an hole in a MAP_PRIVATE shmem mapping, we'll
+	 * generate anonymous memory directly without actually filling
+	 * the hole. For the MAP_PRIVATE case the robustness check
+	 * only happens in the pagetable (to verify it's still none)
+	 * and not in the radix tree.
+	 */
+	if (!(dst_vma->vm_flags & VM_SHARED)) {
+		if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY))
+			err = mfill_atomic_pte_copy(dst_pmd, dst_vma,
+						    dst_addr, src_addr,
+						    flags, foliop);
+		else
+			err = mfill_atomic_pte_zeropage(dst_pmd,
+						 dst_vma, dst_addr);
+	} else {
+		err = shmem_mfill_atomic_pte(dst_pmd, dst_vma,
+					     dst_addr, src_addr,
+					     flags, foliop);
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
@@ -883,6 +1143,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 					    unsigned long len,
 					    uffd_flags_t flags)
 {
+<<<<<<< HEAD
 	struct mfill_state state = (struct mfill_state){
 		.ctx = ctx,
 		.dst_start = dst_start,
@@ -894,6 +1155,15 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 	};
 	long copied = 0;
 	ssize_t err;
+=======
+	struct mm_struct *dst_mm = ctx->mm;
+	struct vm_area_struct *dst_vma;
+	ssize_t err;
+	pmd_t *dst_pmd;
+	unsigned long src_addr, dst_addr;
+	long copied;
+	struct folio *folio;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Sanitize the command parameters:
@@ -905,13 +1175,57 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 	VM_WARN_ON_ONCE(src_start + len <= src_start);
 	VM_WARN_ON_ONCE(dst_start + len <= dst_start);
 
+<<<<<<< HEAD
 	err = mfill_get_vma(&state);
 	if (err)
 		goto out;
+=======
+	src_addr = src_start;
+	dst_addr = dst_start;
+	copied = 0;
+	folio = NULL;
+retry:
+	/*
+	 * Make sure the vma is not shared, that the dst range is
+	 * both valid and fully within a single existing vma.
+	 */
+	dst_vma = uffd_mfill_lock(dst_mm, dst_start, len);
+	if (IS_ERR(dst_vma)) {
+		err = PTR_ERR(dst_vma);
+		goto out;
+	}
+
+	/*
+	 * If memory mappings are changing because of non-cooperative
+	 * operation (e.g. mremap) running in parallel, bail out and
+	 * request the user to retry later
+	 */
+	down_read(&ctx->map_changing_lock);
+	err = -EAGAIN;
+	if (atomic_read(&ctx->mmap_changing))
+		goto out_unlock;
+
+	err = -EINVAL;
+	/*
+	 * shmem_zero_setup is invoked in mmap for MAP_ANONYMOUS|MAP_SHARED but
+	 * it will overwrite vm_ops, so vma_is_anonymous must return false.
+	 */
+	if (WARN_ON_ONCE(vma_is_anonymous(dst_vma) &&
+	    dst_vma->vm_flags & VM_SHARED))
+		goto out_unlock;
+
+	/*
+	 * validate 'mode' now that we know the dst_vma: don't allow
+	 * a wrprotect copy if the userfaultfd didn't register as WP.
+	 */
+	if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If this is a HUGETLB vma, pass off to appropriate routine
 	 */
+<<<<<<< HEAD
 	if (is_vm_hugetlb_page(state.vma))
 		return  mfill_atomic_hugetlb(ctx, state.vma, dst_start,
 					     src_start, len, flags);
@@ -923,17 +1237,92 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 		if (err)
 			break;
 
+=======
+	if (is_vm_hugetlb_page(dst_vma))
+		return  mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+					     src_start, len, flags);
+
+	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+		goto out_unlock;
+	if (!vma_is_shmem(dst_vma) &&
+	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+		goto out_unlock;
+
+	while (src_addr < src_start + len) {
+		pmd_t dst_pmdval;
+
+		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+
+		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
+		if (unlikely(!dst_pmd)) {
+			err = -ENOMEM;
+			break;
+		}
+
+		dst_pmdval = pmdp_get_lockless(dst_pmd);
+		if (unlikely(pmd_none(dst_pmdval)) &&
+		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
+			err = -ENOMEM;
+			break;
+		}
+		dst_pmdval = pmdp_get_lockless(dst_pmd);
+		/*
+		 * If the dst_pmd is THP don't override it and just be strict.
+		 * (This includes the case where the PMD used to be THP and
+		 * changed back to none after __pte_alloc().)
+		 */
+		if (unlikely(!pmd_present(dst_pmdval) ||
+				pmd_trans_huge(dst_pmdval))) {
+			err = -EEXIST;
+			break;
+		}
+		if (unlikely(pmd_bad(dst_pmdval))) {
+			err = -EFAULT;
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * For shmem mappings, khugepaged is allowed to remove page
 		 * tables under us; pte_offset_map_lock() will deal with that.
 		 */
 
+<<<<<<< HEAD
 		err = mfill_atomic_pte(&state);
 		cond_resched();
 
 		if (!err) {
 			state.dst_addr += PAGE_SIZE;
 			state.src_addr += PAGE_SIZE;
+=======
+		err = mfill_atomic_pte(dst_pmd, dst_vma, dst_addr,
+				       src_addr, flags, &folio);
+		cond_resched();
+
+		if (unlikely(err == -ENOENT)) {
+			void *kaddr;
+
+			up_read(&ctx->map_changing_lock);
+			uffd_mfill_unlock(dst_vma);
+			VM_WARN_ON_ONCE(!folio);
+
+			kaddr = kmap_local_folio(folio, 0);
+			err = copy_from_user(kaddr,
+					     (const void __user *) src_addr,
+					     PAGE_SIZE);
+			kunmap_local(kaddr);
+			if (unlikely(err)) {
+				err = -EFAULT;
+				goto out;
+			}
+			flush_dcache_folio(folio);
+			goto retry;
+		} else
+			VM_WARN_ON_ONCE(folio);
+
+		if (!err) {
+			dst_addr += PAGE_SIZE;
+			src_addr += PAGE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			copied += PAGE_SIZE;
 
 			if (fatal_signal_pending(current))
@@ -943,8 +1332,17 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
 			break;
 	}
 
+<<<<<<< HEAD
 	mfill_put_vma(&state);
 out:
+=======
+out_unlock:
+	up_read(&ctx->map_changing_lock);
+	uffd_mfill_unlock(dst_vma);
+out:
+	if (folio)
+		folio_put(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VM_WARN_ON_ONCE(copied < 0);
 	VM_WARN_ON_ONCE(err > 0);
 	VM_WARN_ON_ONCE(!copied && !err);
@@ -1315,7 +1713,11 @@ static int move_zeropage_pte(struct mm_struct *mm,
 		return -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	zero_pte = pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
+=======
+	zero_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 dst_vma->vm_page_prot));
 	ptep_clear_flush(src_vma, src_addr, src_pte);
 	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
@@ -2024,6 +2426,7 @@ out:
 	return moved ? moved : err;
 }
 
+<<<<<<< HEAD
 bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
 		       bool wp_async)
 {
@@ -2056,6 +2459,8 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
 	return ops->can_userfault(vma, vm_flags);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
 				     vm_flags_t vm_flags)
 {
@@ -2094,9 +2499,12 @@ struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
 {
 	struct vm_area_struct *ret;
 	bool give_up_on_oom = false;
+<<<<<<< HEAD
 	vma_flags_t new_vma_flags = vma->flags;
 
 	vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If we are modifying only and not splitting, just give up on the merge
@@ -2110,8 +2518,13 @@ struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
 		uffd_wp_range(vma, start, end - start, false);
 
 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
+<<<<<<< HEAD
 				    &new_vma_flags, NULL_VM_UFFD_CTX,
 				    give_up_on_oom);
+=======
+				    vma->vm_flags & ~__VM_UFFD_FLAGS,
+				    NULL_VM_UFFD_CTX, give_up_on_oom);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * In the vma_merge() successful mprotect-like case 8:
@@ -2131,11 +2544,18 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
 			       unsigned long start, unsigned long end,
 			       bool wp_async)
 {
+<<<<<<< HEAD
 	vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
 	VMA_ITERATOR(vmi, ctx->mm, start);
 	struct vm_area_struct *prev = vma_prev(&vmi);
 	unsigned long vma_end;
 	vma_flags_t new_vma_flags;
+=======
+	VMA_ITERATOR(vmi, ctx->mm, start);
+	struct vm_area_struct *prev = vma_prev(&vmi);
+	unsigned long vma_end;
+	vm_flags_t new_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vma->vm_start < start)
 		prev = vma;
@@ -2146,26 +2566,40 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
 		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
 		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx &&
 				vma->vm_userfaultfd_ctx.ctx != ctx);
+<<<<<<< HEAD
 		VM_WARN_ON_ONCE(!vma_test(vma, VMA_MAYWRITE_BIT));
+=======
+		VM_WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Nothing to do: this vma is already registered into this
 		 * userfaultfd and with the right tracking mode too.
 		 */
 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+<<<<<<< HEAD
 		    vma_test_all_mask(vma, vma_flags))
+=======
+		    (vma->vm_flags & vm_flags) == vm_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto skip;
 
 		if (vma->vm_start > start)
 			start = vma->vm_start;
 		vma_end = min(end, vma->vm_end);
 
+<<<<<<< HEAD
 		new_vma_flags = vma->flags;
 		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
 		vma_flags_set_mask(&new_vma_flags, vma_flags);
 
 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
 					    &new_vma_flags,
+=======
+		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
+		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
+					    new_flags,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    (struct vm_userfaultfd_ctx){ctx},
 					    /* give_up_on_oom = */false);
 		if (IS_ERR(vma))

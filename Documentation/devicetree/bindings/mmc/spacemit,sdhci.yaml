@@ -14,9 +14,13 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     enum:
       - spacemit,k1-sdhci
       - spacemit,k3-sdhci
+=======
+    const: spacemit,k1-sdhci
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -34,6 +38,7 @@ properties:
       - const: core
       - const: io
 
+<<<<<<< HEAD
   resets:
     items:
       - description: axi reset, connect to AXI bus, shared by all controllers
@@ -44,6 +49,8 @@ properties:
       - const: axi
       - const: sdh
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

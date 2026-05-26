@@ -9,7 +9,11 @@
  * based on gzip-1.0.3 
  *
  * Nicolas Pitre <nico@fluxnic.net>, 1999/04/14 :
+<<<<<<< HEAD
  *   Little mods for all variables to reside either into rodata or bss segments
+=======
+ *   Little mods for all variable to reside either into rodata or bss segments
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   by marking constant variables with 'const' and initializing all the others
  *   at run-time only.  This allows for the kernel uncompressor to run
  *   directly from Flash or ROM memory on embedded systems.
@@ -286,7 +290,11 @@ static void free(void *where)
    the longer codes.  The time it costs to decode the longer codes is
    then traded against the time it takes to make longer tables.
 
+<<<<<<< HEAD
    The results of this trade are in the variables lbits and dbits
+=======
+   This results of this trade are in the variables lbits and dbits
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    below.  lbits is the number of bits the first level table for literal/
    length codes can decode in one step, and dbits is the same thing for
    the distance codes.  Subsequent tables are also less than or equal to
@@ -811,8 +819,11 @@ DEBG("<fix");
 
   /* decompress until an end-of-block code */
   if (inflate_codes(tl, td, bl, bd)) {
+<<<<<<< HEAD
     huft_free(tl);
     huft_free(td);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     free(l);
     return 1;
   }
@@ -1009,10 +1020,17 @@ DEBG("dyn5d ");
 DEBG("dyn6 ");
 
   /* decompress until an end-of-block code */
+<<<<<<< HEAD
   if (inflate_codes(tl, td, bl, bd))
     ret = 1;
   else
     ret = 0;
+=======
+  if (inflate_codes(tl, td, bl, bd)) {
+    ret = 1;
+    goto out;
+  }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DEBG("dyn7 ");
 
@@ -1021,6 +1039,10 @@ DEBG("dyn7 ");
   huft_free(td);
 
   DEBG(">");
+<<<<<<< HEAD
+=======
+  ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
   free(ll);
   return ret;

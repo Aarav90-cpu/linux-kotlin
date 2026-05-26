@@ -106,6 +106,10 @@ static int qdf2xxx_pinctrl_probe(struct platform_device *pdev)
 		groups[gpio].io_reg = 0x04 + 0x10000 * gpio;
 		groups[gpio].intr_cfg_reg = 0x08 + 0x10000 * gpio;
 		groups[gpio].intr_status_reg = 0x0c + 0x10000 * gpio;
+<<<<<<< HEAD
+=======
+		groups[gpio].intr_target_reg = 0x08 + 0x10000 * gpio;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		groups[gpio].mux_bit = 2;
 		groups[gpio].pull_bit = 0;

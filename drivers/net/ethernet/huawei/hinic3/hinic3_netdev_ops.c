@@ -415,6 +415,7 @@ static void hinic3_vport_down(struct net_device *netdev)
 	netif_carrier_off(netdev);
 	netif_tx_disable(netdev);
 
+<<<<<<< HEAD
 	if (nic_dev->hwdev->chip_present_flag) {
 		hinic3_maybe_set_port_state(netdev, false);
 
@@ -426,6 +427,15 @@ static void hinic3_vport_down(struct net_device *netdev)
 		msleep(100);
 		hinic3_flush_qps_res(nic_dev->hwdev);
 	}
+=======
+	glb_func_id = hinic3_global_func_id(nic_dev->hwdev);
+	hinic3_set_vport_enable(nic_dev->hwdev, glb_func_id, false);
+
+	hinic3_flush_txqs(netdev);
+	/* wait to guarantee that no packets will be sent to host */
+	msleep(100);
+	hinic3_flush_qps_res(nic_dev->hwdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hinic3_open(struct net_device *netdev)

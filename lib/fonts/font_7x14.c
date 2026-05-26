@@ -4,7 +4,11 @@
 /* by Jurriaan Kalkman 05-2005        */
 /**************************************/
 
+<<<<<<< HEAD
 #include "font.h"
+=======
+#include <linux/font.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FONTDATAMAX 3584
 

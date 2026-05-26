@@ -7,12 +7,18 @@
 use crate::{
     alloc::{Allocator, Flags},
     bindings,
+<<<<<<< HEAD
     dma::Coherent,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     error::Result,
     ffi::{c_char, c_void},
     fs::file,
     prelude::*,
+<<<<<<< HEAD
     ptr::KnownSize,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     transmute::{AsBytes, FromBytes},
 };
 use core::mem::{size_of, MaybeUninit};
@@ -21,7 +27,11 @@ use core::mem::{size_of, MaybeUninit};
 ///
 /// This is the Rust equivalent to C pointers tagged with `__user`.
 #[repr(transparent)]
+<<<<<<< HEAD
 #[derive(Copy, Clone, Zeroable)]
+=======
+#[derive(Copy, Clone)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pub struct UserPtr(*mut c_void);
 
 impl UserPtr {
@@ -461,6 +471,7 @@ impl UserSliceWriter {
         self.length == 0
     }
 
+<<<<<<< HEAD
     /// Low-level write from a raw pointer.
     ///
     /// # Safety
@@ -482,12 +493,15 @@ impl UserSliceWriter {
         Ok(())
     }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// Writes raw data to this user pointer from a kernel buffer.
     ///
     /// Fails with [`EFAULT`] if the write happens on a bad address, or if the write goes out of
     /// bounds of this [`UserSliceWriter`]. This call may modify the associated userspace slice even
     /// if it returns an error.
     pub fn write_slice(&mut self, data: &[u8]) -> Result {
+<<<<<<< HEAD
         // SAFETY: `data` is a valid slice, so `data.as_ptr()` is valid for
         // reading `data.len()` bytes.
         unsafe { self.write_raw(data.as_ptr(), data.len()) }
@@ -550,6 +564,22 @@ impl UserSliceWriter {
         //
         // SAFETY: `src_ptr` points into the allocation and is valid for `count` bytes (see above).
         unsafe { self.write_raw(src_ptr, count) }
+=======
+        let len = data.len();
+        let data_ptr = data.as_ptr().cast::<c_void>();
+        if len > self.length {
+            return Err(EFAULT);
+        }
+        // SAFETY: `data_ptr` points into an immutable slice of length `len`, so we may read
+        // that many bytes from it.
+        let res = unsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), data_ptr, len) };
+        if res != 0 {
+            return Err(EFAULT);
+        }
+        self.ptr = self.ptr.wrapping_byte_add(len);
+        self.length -= len;
+        Ok(())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Writes raw data to this user pointer from a kernel buffer partially.

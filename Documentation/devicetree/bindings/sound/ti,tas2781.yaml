@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+<<<<<<< HEAD
 # Copyright (C) 2022 - 2026 Texas Instruments Incorporated
+=======
+# Copyright (C) 2022 - 2025 Texas Instruments Incorporated
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 %YAML 1.2
 ---
 $id: http://devicetree.org/schemas/sound/ti,tas2781.yaml#
@@ -107,9 +111,12 @@ properties:
 
       ti,tas5830: 65-W Stereo, Digital Input, High Efficiency Closed-Loop
       Class-D Amplifier with Class-H Algorithm
+<<<<<<< HEAD
 
       ti,tas5832: 81-W Stereo, Digital Input, High Efficiency Closed-Loop
       Class-D Amplifier with Class-H Algorithm
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     oneOf:
       - items:
           - enum:
@@ -131,7 +138,10 @@ properties:
               - ti,tas5827
               - ti,tas5828
               - ti,tas5830
+<<<<<<< HEAD
               - ti,tas5832
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: ti,tas2781
       - enum:
           - ti,tas2781
@@ -268,7 +278,10 @@ allOf:
               - ti,tas5827
               - ti,tas5828
               - ti,tas5830
+<<<<<<< HEAD
               - ti,tas5832
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         reg:

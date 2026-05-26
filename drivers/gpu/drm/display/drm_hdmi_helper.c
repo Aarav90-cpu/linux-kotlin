@@ -210,8 +210,12 @@ EXPORT_SYMBOL(drm_hdmi_avi_infoframe_content_type);
  */
 unsigned long long
 drm_hdmi_compute_mode_clock(const struct drm_display_mode *mode,
+<<<<<<< HEAD
 			    unsigned int bpc,
 			    enum drm_output_color_format fmt)
+=======
+			    unsigned int bpc, enum hdmi_colorspace fmt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long long clock = mode->clock * 1000ULL;
 	unsigned int vic = drm_match_cea_mode(mode);
@@ -223,7 +227,11 @@ drm_hdmi_compute_mode_clock(const struct drm_display_mode *mode,
 	if (vic == 1 && bpc != 8)
 		return 0;
 
+<<<<<<< HEAD
 	if (fmt == DRM_OUTPUT_COLOR_FORMAT_YCBCR422) {
+=======
+	if (fmt == HDMI_COLORSPACE_YUV422) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * HDMI 1.0 Spec, section 6.5 - Pixel Encoding states that
 		 * YUV422 sends 24 bits over three channels, with Cb and Cr
@@ -249,7 +257,11 @@ drm_hdmi_compute_mode_clock(const struct drm_display_mode *mode,
 	 * specifies that YUV420 encoding is carried at a TMDS Character Rate
 	 * equal to half the pixel clock rate.
 	 */
+<<<<<<< HEAD
 	if (fmt == DRM_OUTPUT_COLOR_FORMAT_YCBCR420)
+=======
+	if (fmt == HDMI_COLORSPACE_YUV420)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clock = clock / 2;
 
 	if (mode->flags & DRM_MODE_FLAG_DBLCLK)

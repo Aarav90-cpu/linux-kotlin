@@ -1928,6 +1928,12 @@ void msm_dp_ctrl_phy_init(struct msm_dp_ctrl *msm_dp_ctrl)
 
 	msm_dp_ctrl_phy_reset(ctrl);
 	phy_init(phy);
+<<<<<<< HEAD
+=======
+
+	drm_dbg_dp(ctrl->drm_dev, "phy=%p init=%d power_on=%d\n",
+			phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void msm_dp_ctrl_phy_exit(struct msm_dp_ctrl *msm_dp_ctrl)
@@ -1940,6 +1946,11 @@ void msm_dp_ctrl_phy_exit(struct msm_dp_ctrl *msm_dp_ctrl)
 
 	msm_dp_ctrl_phy_reset(ctrl);
 	phy_exit(phy);
+<<<<<<< HEAD
+=======
+	drm_dbg_dp(ctrl->drm_dev, "phy=%p init=%d power_on=%d\n",
+			phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int msm_dp_ctrl_reinitialize_mainlink(struct msm_dp_ctrl_private *ctrl)
@@ -1991,6 +2002,11 @@ static int msm_dp_ctrl_deinitialize_mainlink(struct msm_dp_ctrl_private *ctrl)
 	phy_exit(phy);
 	phy_init(phy);
 
+<<<<<<< HEAD
+=======
+	drm_dbg_dp(ctrl->drm_dev, "phy=%p init=%d power_on=%d\n",
+			phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2581,6 +2597,12 @@ void msm_dp_ctrl_off_link_stream(struct msm_dp_ctrl *msm_dp_ctrl)
 	/* aux channel down, reinit phy */
 	phy_exit(phy);
 	phy_init(phy);
+<<<<<<< HEAD
+=======
+
+	drm_dbg_dp(ctrl->drm_dev, "phy=%p init=%d power_on=%d\n",
+			phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void msm_dp_ctrl_off_link(struct msm_dp_ctrl *msm_dp_ctrl)
@@ -2596,7 +2618,17 @@ void msm_dp_ctrl_off_link(struct msm_dp_ctrl *msm_dp_ctrl)
 	dev_pm_opp_set_rate(ctrl->dev, 0);
 	msm_dp_ctrl_link_clk_disable(&ctrl->msm_dp_ctrl);
 
+<<<<<<< HEAD
 	phy_power_off(phy);
+=======
+	DRM_DEBUG_DP("Before, phy=%p init_count=%d power_on=%d\n",
+		phy, phy->init_count, phy->power_count);
+
+	phy_power_off(phy);
+
+	DRM_DEBUG_DP("After, phy=%p init_count=%d power_on=%d\n",
+		phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void msm_dp_ctrl_off(struct msm_dp_ctrl *msm_dp_ctrl)
@@ -2622,6 +2654,11 @@ void msm_dp_ctrl_off(struct msm_dp_ctrl *msm_dp_ctrl)
 	msm_dp_ctrl_link_clk_disable(&ctrl->msm_dp_ctrl);
 
 	phy_power_off(phy);
+<<<<<<< HEAD
+=======
+	drm_dbg_dp(ctrl->drm_dev, "phy=%p init=%d power_on=%d\n",
+			phy, phy->init_count, phy->power_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 irqreturn_t msm_dp_ctrl_isr(struct msm_dp_ctrl *msm_dp_ctrl)

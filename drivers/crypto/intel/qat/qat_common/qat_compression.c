@@ -46,6 +46,7 @@ static int qat_compression_free_instances(struct adf_accel_dev *accel_dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct qat_compression_instance *qat_compression_get_instance_node(int node, int alg)
 {
 	struct qat_compression_instance *inst = NULL;
@@ -54,6 +55,14 @@ struct qat_compression_instance *qat_compression_get_instance_node(int node, int
 	unsigned long best = ~0;
 	struct list_head *itr;
 	u32 caps, mask;
+=======
+struct qat_compression_instance *qat_compression_get_instance_node(int node)
+{
+	struct qat_compression_instance *inst = NULL;
+	struct adf_accel_dev *accel_dev = NULL;
+	unsigned long best = ~0;
+	struct list_head *itr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each(itr, adf_devmgr_get_head()) {
 		struct adf_accel_dev *tmp_dev;
@@ -63,6 +72,7 @@ struct qat_compression_instance *qat_compression_get_instance_node(int node, int
 		tmp_dev = list_entry(itr, struct adf_accel_dev, list);
 		tmp_dev_node = dev_to_node(&GET_DEV(tmp_dev));
 
+<<<<<<< HEAD
 		if (alg == QAT_ZSTD || alg == QAT_LZ4S) {
 			hw_data = tmp_dev->hw_device;
 			caps = hw_data->accel_capabilities_ext_mask;
@@ -72,6 +82,8 @@ struct qat_compression_instance *qat_compression_get_instance_node(int node, int
 				continue;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if ((node == tmp_dev_node || tmp_dev_node < 0) &&
 		    adf_dev_started(tmp_dev) && !list_empty(&tmp_dev->compression_list)) {
 			ctr = atomic_read(&tmp_dev->ref_count);
@@ -89,6 +101,7 @@ struct qat_compression_instance *qat_compression_get_instance_node(int node, int
 			struct adf_accel_dev *tmp_dev;
 
 			tmp_dev = list_entry(itr, struct adf_accel_dev, list);
+<<<<<<< HEAD
 
 			if (alg == QAT_ZSTD || alg == QAT_LZ4S) {
 				hw_data = tmp_dev->hw_device;
@@ -99,6 +112,8 @@ struct qat_compression_instance *qat_compression_get_instance_node(int node, int
 					continue;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (adf_dev_started(tmp_dev) &&
 			    !list_empty(&tmp_dev->compression_list)) {
 				accel_dev = tmp_dev;

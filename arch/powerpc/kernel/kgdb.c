@@ -101,6 +101,10 @@ static int computeSignal(unsigned int tt)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	kgdb_skipexception - Bail out of KGDB when we've been triggered.
  *	@exception: Exception vector number
  *	@regs: Current &struct pt_regs.
@@ -108,8 +112,11 @@ static int computeSignal(unsigned int tt)
  *	On some architectures we need to skip a breakpoint exception when
  *	it occurs after a breakpoint has been removed.
  *
+<<<<<<< HEAD
  *	Return: return %1 if the breakpoint for this address has been removed,
  *		otherwise return %0
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int kgdb_skipexception(int exception, struct pt_regs *regs)
 {

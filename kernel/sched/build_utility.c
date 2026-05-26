@@ -56,6 +56,13 @@
 
 #include "clock.c"
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SCHED_ALT
+# include "alt_topology.c"
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CGROUP_CPUACCT
 # include "cpuacct.c"
 #endif
@@ -68,7 +75,11 @@
 # include "cpufreq_schedutil.c"
 #endif
 
+<<<<<<< HEAD
 #include "debug.c"
+=======
+# include "debug.c"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SCHEDSTATS
 # include "stats.c"
@@ -81,7 +92,13 @@
 #include "wait.c"
 
 #include "cpupri.c"
+<<<<<<< HEAD
 #include "stop_task.c"
+=======
+#ifndef CONFIG_SCHED_ALT
+# include "stop_task.c"
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "topology.c"
 

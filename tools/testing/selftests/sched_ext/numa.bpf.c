@@ -68,7 +68,11 @@ void BPF_STRUCT_OPS(numa_dispatch, s32 cpu, struct task_struct *prev)
 {
 	int node = __COMPAT_scx_bpf_cpu_node(cpu);
 
+<<<<<<< HEAD
 	scx_bpf_dsq_move_to_local(node, 0);
+=======
+	scx_bpf_dsq_move_to_local(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 s32 BPF_STRUCT_OPS_SLEEPABLE(numa_init)

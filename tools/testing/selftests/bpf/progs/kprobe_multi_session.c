@@ -76,6 +76,7 @@ int test_kprobe(struct pt_regs *ctx)
 {
 	return session_check(ctx);
 }
+<<<<<<< HEAD
 
 /*
  * Exact function name (no wildcards) - exercises the fast syms[] path
@@ -86,3 +87,5 @@ int test_kprobe_syms(struct pt_regs *ctx)
 {
 	return session_check(ctx);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

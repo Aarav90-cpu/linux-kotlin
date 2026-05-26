@@ -141,7 +141,11 @@ struct vfio_info_cap_header {
  *
  * Retrieve information about the group.  Fills in provided
  * struct vfio_group_info.  Caller sets argsz.
+<<<<<<< HEAD
  * Return: 0 on success, -errno on failure.
+=======
+ * Return: 0 on succes, -errno on failure.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Availability: Always
  */
 struct vfio_group_status {
@@ -1266,6 +1270,7 @@ enum vfio_device_mig_state {
  * The initial_bytes field indicates the amount of initial precopy
  * data available from the device. This field should have a non-zero initial
  * value and decrease as migration data is read from the device.
+<<<<<<< HEAD
  * The presence of the VFIO_PRECOPY_INFO_REINIT output flag indicates
  * that new initial data is present on the stream.
  * The new initial data may result, for example, from device reconfiguration
@@ -1279,6 +1284,8 @@ enum vfio_device_mig_state {
  * VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2. Without this opt-in, the flags field
  * of struct vfio_precopy_info is reserved for bug-compatibility reasons.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * It is recommended to leave PRE_COPY for STOP_COPY only after this field
  * reaches zero. Leaving PRE_COPY earlier might make things slower.
  *
@@ -1314,7 +1321,10 @@ enum vfio_device_mig_state {
 struct vfio_precopy_info {
 	__u32 argsz;
 	__u32 flags;
+<<<<<<< HEAD
 #define VFIO_PRECOPY_INFO_REINIT (1 << 0) /* output - new initial data is present */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__aligned_u64 initial_bytes;
 	__aligned_u64 dirty_bytes;
 };
@@ -1524,6 +1534,7 @@ struct vfio_device_feature_dma_buf {
 	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
 };
 
+<<<<<<< HEAD
 /*
  * Enables the migration precopy_info_v2 behaviour.
  *
@@ -1534,6 +1545,8 @@ struct vfio_device_feature_dma_buf {
  */
 #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* -------- API for Type1 VFIO IOMMU -------- */
 
 /**

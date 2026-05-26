@@ -8,6 +8,7 @@ config INTERCONNECT_QCOM
 config INTERCONNECT_QCOM_BCM_VOTER
 	tristate
 
+<<<<<<< HEAD
 config INTERCONNECT_QCOM_ELIZA
        tristate "Qualcomm Eliza interconnect driver"
        depends on INTERCONNECT_QCOM_RPMH_POSSIBLE
@@ -19,6 +20,10 @@ config INTERCONNECT_QCOM_ELIZA
 
 config INTERCONNECT_QCOM_GLYMUR
        tristate "Qualcomm Glymur interconnect driver"
+=======
+config INTERCONNECT_QCOM_GLYMUR
+       tristate "Qualcomm GLYMUR interconnect driver"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
        depends on INTERCONNECT_QCOM_RPMH_POSSIBLE
        select INTERCONNECT_QCOM_RPMH
        select INTERCONNECT_QCOM_BCM_VOTER
@@ -27,7 +32,11 @@ config INTERCONNECT_QCOM_GLYMUR
          platforms.
 
 config INTERCONNECT_QCOM_KAANAPALI
+<<<<<<< HEAD
 	tristate "Qualcomm Kaanapali interconnect driver"
+=======
+	tristate "Qualcomm KAANAPALI interconnect driver"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on INTERCONNECT_QCOM_RPMH_POSSIBLE
 	select INTERCONNECT_QCOM_RPMH
 	select INTERCONNECT_QCOM_BCM_VOTER

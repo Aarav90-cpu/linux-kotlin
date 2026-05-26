@@ -54,7 +54,10 @@
 #include "bpf-event.h"
 #include "bpf-utils.h"
 #include "clockid.h"
+<<<<<<< HEAD
 #include "cacheline.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/ctype.h>
 #include <internal/lib.h>
@@ -63,6 +66,7 @@
 #include <event-parse.h>
 #endif
 
+<<<<<<< HEAD
 #define MAX_BPF_DATA_LEN	(256 * 1024 * 1024)
 #define MAX_BPF_PROGS		131072
 #define MAX_CACHE_ENTRIES	32768
@@ -72,6 +76,8 @@
 #define MAX_PMU_MAPPINGS	4096
 #define MAX_SCHED_DOMAINS	64
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * magic2 = "PERFILE2"
  * must be a numerical value to let the endianness
@@ -316,12 +322,19 @@ static int do_read_bitmap(struct feat_fd *ff, unsigned long **pset, u64 *psize)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int write_tracing_data(struct feat_fd *ff,
 			      struct evlist *evlist __maybe_unused)
+=======
+#ifdef HAVE_LIBTRACEEVENT
+static int write_tracing_data(struct feat_fd *ff,
+			      struct evlist *evlist)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (WARN(ff->buf, "Error: calling %s in pipe-mode.\n", __func__))
 		return -1;
 
+<<<<<<< HEAD
 #ifdef HAVE_LIBTRACEEVENT
 	return read_tracing_data(ff->fd, &evlist->core.entries);
 #else
@@ -329,6 +342,11 @@ static int write_tracing_data(struct feat_fd *ff,
 	return -1;
 #endif
 }
+=======
+	return read_tracing_data(ff->fd, &evlist->core.entries);
+}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int write_build_id(struct feat_fd *ff,
 			  struct evlist *evlist __maybe_unused)
@@ -1039,10 +1057,17 @@ static int write_dir_format(struct feat_fd *ff,
 	return do_write(ff, &data->dir.version, sizeof(data->dir.version));
 }
 
+<<<<<<< HEAD
 static int write_bpf_prog_info(struct feat_fd *ff  __maybe_unused,
 			       struct evlist *evlist __maybe_unused)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+#ifdef HAVE_LIBBPF_SUPPORT
+static int write_bpf_prog_info(struct feat_fd *ff,
+			       struct evlist *evlist __maybe_unused)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env *env = &ff->ph->env;
 	struct rb_root *root;
 	struct rb_node *next;
@@ -1080,6 +1105,7 @@ static int write_bpf_prog_info(struct feat_fd *ff  __maybe_unused,
 out:
 	up_read(&env->bpf_progs.lock);
 	return ret;
+<<<<<<< HEAD
 #else
 	pr_err("ERROR: Trying to write bpf_prog_info without libbpf support.\n");
 	return -1;
@@ -1090,6 +1116,13 @@ static int write_bpf_btf(struct feat_fd *ff __maybe_unused,
 			 struct evlist *evlist __maybe_unused)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+}
+
+static int write_bpf_btf(struct feat_fd *ff,
+			 struct evlist *evlist __maybe_unused)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env *env = &ff->ph->env;
 	struct rb_root *root;
 	struct rb_node *next;
@@ -1118,11 +1151,16 @@ static int write_bpf_btf(struct feat_fd *ff __maybe_unused,
 out:
 	up_read(&env->bpf_progs.lock);
 	return ret;
+<<<<<<< HEAD
 #else
 	pr_err("ERROR: Trying to write btf data without libbpf support.\n");
 	return -1;
 #endif // HAVE_LIBBPF_SUPPORT
 }
+=======
+}
+#endif // HAVE_LIBBPF_SUPPORT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int cpu_cache_level__sort(const void *a, const void *b)
 {
@@ -1325,6 +1363,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int write_cln_size(struct feat_fd *ff,
 		       struct evlist *evlist __maybe_unused)
 {
@@ -1338,6 +1377,8 @@ static int write_cln_size(struct feat_fd *ff,
 	return do_write(ff, &cln_size, sizeof(cln_size));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int write_stat(struct feat_fd *ff __maybe_unused,
 		      struct evlist *evlist __maybe_unused)
 {
@@ -2014,9 +2055,15 @@ static void print_dir_format(struct feat_fd *ff, FILE *fp)
 	fprintf(fp, "# directory data version : %"PRIu64"\n", data->dir.version);
 }
 
+<<<<<<< HEAD
 static void print_bpf_prog_info(struct feat_fd *ff __maybe_unused, FILE *fp)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+#ifdef HAVE_LIBBPF_SUPPORT
+static void print_bpf_prog_info(struct feat_fd *ff, FILE *fp)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env *env = &ff->ph->env;
 	struct rb_root *root;
 	struct rb_node *next;
@@ -2027,7 +2074,11 @@ static void print_bpf_prog_info(struct feat_fd *ff __maybe_unused, FILE *fp)
 	next = rb_first(root);
 
 	if (!next)
+<<<<<<< HEAD
 		fprintf(fp, "# bpf_prog_info empty\n");
+=======
+		printf("# bpf_prog_info empty\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (next) {
 		struct bpf_prog_info_node *node;
@@ -2040,6 +2091,7 @@ static void print_bpf_prog_info(struct feat_fd *ff __maybe_unused, FILE *fp)
 	}
 
 	up_read(&env->bpf_progs.lock);
+<<<<<<< HEAD
 #else
 	fprintf(fp, "# bpf_prog_info missing, no libbpf support\n");
 #endif // HAVE_LIBBPF_SUPPORT
@@ -2048,6 +2100,12 @@ static void print_bpf_prog_info(struct feat_fd *ff __maybe_unused, FILE *fp)
 static void print_bpf_btf(struct feat_fd *ff __maybe_unused, FILE *fp)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+}
+
+static void print_bpf_btf(struct feat_fd *ff, FILE *fp)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env *env = &ff->ph->env;
 	struct rb_root *root;
 	struct rb_node *next;
@@ -2069,10 +2127,15 @@ static void print_bpf_btf(struct feat_fd *ff __maybe_unused, FILE *fp)
 	}
 
 	up_read(&env->bpf_progs.lock);
+<<<<<<< HEAD
 #else
 	fprintf(fp, "# bpf btf data missing, no libbpf support\n");
 #endif // HAVE_LIBBPF_SUPPORT
 }
+=======
+}
+#endif // HAVE_LIBBPF_SUPPORT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void free_event_desc(struct evsel *events)
 {
@@ -2301,11 +2364,14 @@ static void print_cache(struct feat_fd *ff, FILE *fp __maybe_unused)
 	}
 }
 
+<<<<<<< HEAD
 static void print_cln_size(struct feat_fd *ff, FILE *fp)
 {
 	fprintf(fp, "# cacheline size: %u\n", ff->ph->env.cln_size);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void print_compressed(struct feat_fd *ff, FILE *fp)
 {
 	fprintf(fp, "# compressed : %s, level = %d, ratio = %d\n",
@@ -2590,11 +2656,14 @@ static int perf_header__read_build_ids_abi_quirk(struct perf_header *header,
 			perf_event_header__bswap(&old_bev.header);
 
 		len = old_bev.header.size - sizeof(old_bev);
+<<<<<<< HEAD
 		if (len < 0 || len >= PATH_MAX) {
 			pr_warning("invalid build_id filename length %zd\n", len);
 			return -1;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (readn(input, filename, len) != len)
 			return -1;
 
@@ -2637,11 +2706,14 @@ static int perf_header__read_build_ids(struct perf_header *header,
 			perf_event_header__bswap(&bev.header);
 
 		len = bev.header.size - sizeof(bev);
+<<<<<<< HEAD
 		if (len < 0 || len >= PATH_MAX) {
 			pr_warning("invalid build_id filename length %zd\n", len);
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (readn(input, filename, len) != len)
 			goto out;
 		/*
@@ -2699,6 +2771,7 @@ static int process_e_machine(struct feat_fd *ff, void *data __maybe_unused)
 	return do_read_u32(ff, &ff->ph->env.e_flags);
 }
 
+<<<<<<< HEAD
 static int process_tracing_data(struct feat_fd *ff __maybe_unused, void *data __maybe_unused)
 {
 #ifdef HAVE_LIBTRACEEVENT
@@ -2710,6 +2783,16 @@ static int process_tracing_data(struct feat_fd *ff __maybe_unused, void *data __
 	return -1;
 #endif
 }
+=======
+#ifdef HAVE_LIBTRACEEVENT
+static int process_tracing_data(struct feat_fd *ff, void *data)
+{
+	ssize_t ret = trace_report(ff->fd, data, false);
+
+	return ret < 0 ? -1 : 0;
+}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int process_build_id(struct feat_fd *ff, void *data __maybe_unused)
 {
@@ -2731,6 +2814,7 @@ static int process_nrcpus(struct feat_fd *ff, void *data __maybe_unused)
 	ret = do_read_u32(ff, &nr_cpus_online);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 
 	if (nr_cpus_online > nr_cpus_avail) {
 		pr_err("Invalid HEADER_NRCPUS: nr_cpus_online (%u) > nr_cpus_avail (%u)\n",
@@ -2738,6 +2822,8 @@ static int process_nrcpus(struct feat_fd *ff, void *data __maybe_unused)
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->nr_cpus_avail = (int)nr_cpus_avail;
 	env->nr_cpus_online = (int)nr_cpus_online;
 	return 0;
@@ -2811,12 +2897,15 @@ process_event_desc(struct feat_fd *ff, void *data __maybe_unused)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Some arbitrary max for the number of command line arguments,
  * Wildcards can expand and end up with tons of command line args.
  */
 #define MAX_CMDLINE_NR 1048576
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int process_cmdline(struct feat_fd *ff, void *data __maybe_unused)
 {
 	struct perf_env *env = &ff->ph->env;
@@ -2826,16 +2915,23 @@ static int process_cmdline(struct feat_fd *ff, void *data __maybe_unused)
 	if (do_read_u32(ff, &nr))
 		return -1;
 
+<<<<<<< HEAD
 	if (nr > MAX_CMDLINE_NR)
 		return -1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->nr_cmdline = nr;
 
 	cmdline = zalloc(ff->size + nr + 1);
 	if (!cmdline)
 		return -1;
 
+<<<<<<< HEAD
 	argv = calloc(nr + 1, sizeof(char *));
+=======
+	argv = zalloc(sizeof(char *) * (nr + 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!argv)
 		goto error;
 
@@ -2868,11 +2964,14 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 	int cpu_nr = env->nr_cpus_avail;
 	u64 size = 0;
 
+<<<<<<< HEAD
 	if (cpu_nr == 0) {
 		pr_err("Invalid HEADER_CPU_TOPOLOGY: missing HEADER_NRCPUS\n");
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->cpu = calloc(cpu_nr, sizeof(*env->cpu));
 	if (!env->cpu)
 		return -1;
@@ -2880,12 +2979,15 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 	if (do_read_u32(ff, &nr))
 		goto free_cpu;
 
+<<<<<<< HEAD
 	if (nr > (u32)cpu_nr) {
 		pr_err("Invalid HEADER_CPU_TOPOLOGY: nr_sibling_cores (%u) > nr_cpus_avail (%d)\n",
 		       nr, cpu_nr);
 		goto free_cpu;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->nr_sibling_cores = nr;
 	size += sizeof(u32);
 	if (strbuf_init(&sb, 128) < 0)
@@ -2905,6 +3007,7 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 	env->sibling_cores = strbuf_detach(&sb, NULL);
 
 	if (do_read_u32(ff, &nr))
+<<<<<<< HEAD
 		goto free_cpu;
 
 	if (nr > (u32)cpu_nr) {
@@ -2912,6 +3015,9 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 		       nr, cpu_nr);
 		goto free_cpu;
 	}
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	env->nr_sibling_threads = nr;
 	size += sizeof(u32);
@@ -2960,6 +3066,7 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 		return 0;
 
 	if (do_read_u32(ff, &nr))
+<<<<<<< HEAD
 		goto free_cpu;
 
 	if (nr > (u32)cpu_nr) {
@@ -2967,6 +3074,9 @@ static int process_cpu_topology(struct feat_fd *ff, void *data __maybe_unused)
 		       nr, cpu_nr);
 		goto free_cpu;
 	}
+=======
+		return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	env->nr_sibling_dies = nr;
 	size += sizeof(u32);
@@ -3012,6 +3122,7 @@ static int process_numa_topology(struct feat_fd *ff, void *data __maybe_unused)
 	if (do_read_u32(ff, &nr))
 		return -1;
 
+<<<<<<< HEAD
 	if (nr > MAX_NUMA_NODES) {
 		pr_err("Invalid HEADER_NUMA_TOPOLOGY: nr_nodes (%u) > %u\n",
 		       nr, MAX_NUMA_NODES);
@@ -3025,6 +3136,9 @@ static int process_numa_topology(struct feat_fd *ff, void *data __maybe_unused)
 	}
 
 	nodes = calloc(nr, sizeof(*nodes));
+=======
+	nodes = zalloc(sizeof(*nodes) * nr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nodes)
 		return -ENOMEM;
 
@@ -3075,6 +3189,7 @@ static int process_pmu_mappings(struct feat_fd *ff, void *data __maybe_unused)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (pmu_num > MAX_PMU_MAPPINGS) {
 		pr_err("Invalid HEADER_PMU_MAPPINGS: pmu_num (%u) > %u\n",
 		       pmu_num, MAX_PMU_MAPPINGS);
@@ -3087,6 +3202,8 @@ static int process_pmu_mappings(struct feat_fd *ff, void *data __maybe_unused)
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->nr_pmu_mappings = pmu_num;
 	if (strbuf_init(&sb, 128) < 0)
 		return -1;
@@ -3137,11 +3254,16 @@ static int process_group_desc(struct feat_fd *ff, void *data __maybe_unused)
 	if (do_read_u32(ff, &nr_groups))
 		return -1;
 
+<<<<<<< HEAD
+=======
+	env->nr_groups = nr_groups;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nr_groups) {
 		pr_debug("group desc not available\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (nr_groups > MAX_GROUP_DESC) {
 		pr_err("Invalid HEADER_GROUP_DESC: nr_groups (%u) > %u\n",
 		       nr_groups, MAX_GROUP_DESC);
@@ -3156,6 +3278,8 @@ static int process_group_desc(struct feat_fd *ff, void *data __maybe_unused)
 
 	env->nr_groups = nr_groups;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	desc = calloc(nr_groups, sizeof(*desc));
 	if (!desc)
 		return -1;
@@ -3247,6 +3371,7 @@ static int process_cache(struct feat_fd *ff, void *data __maybe_unused)
 	if (do_read_u32(ff, &cnt))
 		return -1;
 
+<<<<<<< HEAD
 	if (cnt > MAX_CACHE_ENTRIES) {
 		pr_err("Invalid HEADER_CACHE: cnt (%u) > %u\n",
 		       cnt, MAX_CACHE_ENTRIES);
@@ -3260,6 +3385,9 @@ static int process_cache(struct feat_fd *ff, void *data __maybe_unused)
 	}
 
 	caches = calloc(cnt, sizeof(*caches));
+=======
+	caches = zalloc(sizeof(*caches) * cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!caches)
 		return -1;
 
@@ -3300,6 +3428,7 @@ out_free_caches:
 	return -1;
 }
 
+<<<<<<< HEAD
 static int process_cln_size(struct feat_fd *ff, void *data __maybe_unused)
 {
 	struct perf_env *env = &ff->ph->env;
@@ -3310,6 +3439,8 @@ static int process_cln_size(struct feat_fd *ff, void *data __maybe_unused)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int process_sample_time(struct feat_fd *ff, void *data __maybe_unused)
 {
 	struct perf_session *session;
@@ -3351,6 +3482,7 @@ static int process_mem_topology(struct feat_fd *ff,
 	if (do_read_u64(ff, &nr))
 		return -1;
 
+<<<<<<< HEAD
 	if (nr > MAX_NUMA_NODES) {
 		pr_err("Invalid HEADER_MEM_TOPOLOGY: nr_nodes (%llu) > %u\n",
 		       (unsigned long long)nr, MAX_NUMA_NODES);
@@ -3364,6 +3496,9 @@ static int process_mem_topology(struct feat_fd *ff,
 	}
 
 	nodes = calloc(nr, sizeof(*nodes));
+=======
+	nodes = zalloc(sizeof(*nodes) * nr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nodes)
 		return -1;
 
@@ -3453,6 +3588,7 @@ static int process_hybrid_topology(struct feat_fd *ff,
 	if (do_read_u32(ff, &nr))
 		return -1;
 
+<<<<<<< HEAD
 	if (nr > MAX_PMU_MAPPINGS) {
 		pr_err("Invalid HEADER_HYBRID_TOPOLOGY: nr_nodes (%u) > %u\n",
 		       nr, MAX_PMU_MAPPINGS);
@@ -3466,6 +3602,9 @@ static int process_hybrid_topology(struct feat_fd *ff,
 	}
 
 	nodes = calloc(nr, sizeof(*nodes));
+=======
+	nodes = zalloc(sizeof(*nodes) * nr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!nodes)
 		return -ENOMEM;
 
@@ -3510,9 +3649,15 @@ static int process_dir_format(struct feat_fd *ff,
 	return do_read_u64(ff, &data->dir.version);
 }
 
+<<<<<<< HEAD
 static int process_bpf_prog_info(struct feat_fd *ff __maybe_unused, void *data __maybe_unused)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+#ifdef HAVE_LIBBPF_SUPPORT
+static int process_bpf_prog_info(struct feat_fd *ff, void *data __maybe_unused)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bpf_prog_info_node *info_node;
 	struct perf_env *env = &ff->ph->env;
 	struct perf_bpil *info_linear;
@@ -3527,6 +3672,7 @@ static int process_bpf_prog_info(struct feat_fd *ff __maybe_unused, void *data _
 	if (do_read_u32(ff, &count))
 		return -1;
 
+<<<<<<< HEAD
 	if (count > MAX_BPF_PROGS) {
 		pr_err("Invalid HEADER_BPF_PROG_INFO: count (%u) > %u\n",
 		       count, MAX_BPF_PROGS);
@@ -3539,6 +3685,8 @@ static int process_bpf_prog_info(struct feat_fd *ff __maybe_unused, void *data _
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&env->bpf_progs.lock);
 
 	for (i = 0; i < count; ++i) {
@@ -3556,12 +3704,15 @@ static int process_bpf_prog_info(struct feat_fd *ff __maybe_unused, void *data _
 			goto out;
 		}
 
+<<<<<<< HEAD
 		if (data_len > MAX_BPF_DATA_LEN) {
 			pr_warning("Invalid HEADER_BPF_PROG_INFO: data_len (%u) too large\n",
 				   data_len);
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		info_linear = malloc(sizeof(struct perf_bpil) +
 				     data_len);
 		if (!info_linear)
@@ -3600,6 +3751,7 @@ out:
 	free(info_node);
 	up_write(&env->bpf_progs.lock);
 	return err;
+<<<<<<< HEAD
 #else
 	pr_err("ERROR: Trying to read bpf_prog_info without libbpf support.\n");
 	return -1;
@@ -3609,6 +3761,12 @@ out:
 static int process_bpf_btf(struct feat_fd *ff  __maybe_unused, void *data __maybe_unused)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
+=======
+}
+
+static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_env *env = &ff->ph->env;
 	struct btf_node *node = NULL;
 	u32 count, i;
@@ -3622,6 +3780,7 @@ static int process_bpf_btf(struct feat_fd *ff  __maybe_unused, void *data __mayb
 	if (do_read_u32(ff, &count))
 		return -1;
 
+<<<<<<< HEAD
 	if (count > MAX_BPF_PROGS) {
 		pr_err("bpf btf count %u too large (max %u)\n", count, MAX_BPF_PROGS);
 		return -1;
@@ -3633,6 +3792,8 @@ static int process_bpf_btf(struct feat_fd *ff  __maybe_unused, void *data __mayb
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&env->bpf_progs.lock);
 
 	for (i = 0; i < count; ++i) {
@@ -3643,12 +3804,15 @@ static int process_bpf_btf(struct feat_fd *ff  __maybe_unused, void *data __mayb
 		if (do_read_u32(ff, &data_size))
 			goto out;
 
+<<<<<<< HEAD
 		if (data_size > MAX_BPF_DATA_LEN) {
 			pr_err("bpf btf data size %u too large (max %u)\n",
 			       data_size, MAX_BPF_DATA_LEN);
 			goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		node = malloc(sizeof(struct btf_node) + data_size);
 		if (!node)
 			goto out;
@@ -3669,11 +3833,16 @@ out:
 	up_write(&env->bpf_progs.lock);
 	free(node);
 	return err;
+<<<<<<< HEAD
 #else
 	pr_err("ERROR: Trying to read btf data without libbpf support.\n");
 	return -1;
 #endif // HAVE_LIBBPF_SUPPORT
 }
+=======
+}
+#endif // HAVE_LIBBPF_SUPPORT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int process_compressed(struct feat_fd *ff,
 			      void *data __maybe_unused)
@@ -3715,6 +3884,7 @@ static int __process_pmu_caps(struct feat_fd *ff, int *nr_caps,
 	if (!nr_pmu_caps)
 		return 0;
 
+<<<<<<< HEAD
 	if (nr_pmu_caps > MAX_PMU_CAPS) {
 		pr_err("Invalid pmu caps: nr_pmu_caps (%u) > %u\n",
 		       nr_pmu_caps, MAX_PMU_CAPS);
@@ -3722,6 +3892,9 @@ static int __process_pmu_caps(struct feat_fd *ff, int *nr_caps,
 	}
 
 	*caps = calloc(nr_pmu_caps, sizeof(char *));
+=======
+	*caps = zalloc(sizeof(char *) * nr_pmu_caps);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*caps)
 		return -1;
 
@@ -3798,6 +3971,7 @@ static int process_pmu_caps(struct feat_fd *ff, void *data __maybe_unused)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (nr_pmu > MAX_PMU_MAPPINGS) {
 		pr_err("Invalid HEADER_PMU_CAPS: nr_pmu (%u) > %u\n",
 		       nr_pmu, MAX_PMU_MAPPINGS);
@@ -3811,6 +3985,9 @@ static int process_pmu_caps(struct feat_fd *ff, void *data __maybe_unused)
 	}
 
 	pmu_caps = calloc(nr_pmu, sizeof(*pmu_caps));
+=======
+	pmu_caps = zalloc(sizeof(*pmu_caps) * nr_pmu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pmu_caps)
 		return -ENOMEM;
 
@@ -3863,6 +4040,7 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 	nra = env->nr_cpus_avail;
 	nr = env->nr_cpus_online;
 
+<<<<<<< HEAD
 	if (nra == 0 || nr == 0) {
 		pr_err("Invalid HEADER_CPU_DOMAIN_INFO: missing HEADER_NRCPUS\n");
 		return -1;
@@ -3875,6 +4053,9 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 	}
 
 	cd_map = calloc(nra, sizeof(*cd_map));
+=======
+	cd_map = zalloc(sizeof(*cd_map) * nra);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!cd_map)
 		return -1;
 
@@ -3890,6 +4071,7 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/*
 	 * Sanity check: real systems have at most ~10 sched domain levels
 	 * (SMT, CLS, MC, PKG + NUMA hops). Reject obviously bogus values
@@ -3902,12 +4084,15 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 		return -1;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	env->max_sched_domains = max_sched_domains;
 
 	for (i = 0; i < nr; i++) {
 		if (do_read_u32(ff, &cpu))
 			return -1;
 
+<<<<<<< HEAD
 		if (cpu >= nra) {
 			pr_err("Invalid HEADER_CPU_DOMAIN_INFO: cpu %d >= nr_cpus_avail (%d)\n", cpu, nra);
 			return -1;
@@ -3918,6 +4103,8 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 			return -1;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cd_map[cpu] = zalloc(sizeof(*cd_map[cpu]));
 		if (!cd_map[cpu])
 			return -1;
@@ -3927,6 +4114,7 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 		if (do_read_u32(ff, &nr_domains))
 			return -1;
 
+<<<<<<< HEAD
 		if (nr_domains > max_sched_domains) {
 			pr_err("Invalid HEADER_CPU_DOMAIN_INFO: nr_domains %u > max_sched_domains (%u)\n",
 			       nr_domains, max_sched_domains);
@@ -3936,6 +4124,11 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 		cd_map[cpu]->nr_domains = nr_domains;
 
 		cd_map[cpu]->domains = calloc(max_sched_domains, sizeof(*d_info));
+=======
+		cd_map[cpu]->nr_domains = nr_domains;
+
+		cd_map[cpu]->domains = zalloc(sizeof(*d_info) * max_sched_domains);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!cd_map[cpu]->domains)
 			return -1;
 
@@ -3943,16 +4136,20 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 			if (do_read_u32(ff, &domain))
 				return -1;
 
+<<<<<<< HEAD
 			if (domain >= max_sched_domains) {
 				pr_err("Invalid HEADER_CPU_DOMAIN_INFO: domain %d >= max_sched_domains (%d)\n",
 				       domain, max_sched_domains);
 				return -1;
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			d_info = zalloc(sizeof(*d_info));
 			if (!d_info)
 				return -1;
 
+<<<<<<< HEAD
 			if (cd_map[cpu]->domains[domain]) {
 				pr_err("Invalid HEADER_CPU_DOMAIN_INFO: duplicate domain %u for cpu %u\n",
 				       domain, cpu);
@@ -3960,6 +4157,9 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 				return -1;
 			}
 
+=======
+			assert(cd_map[cpu]->domains[domain] == NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cd_map[cpu]->domains[domain] = d_info;
 			d_info->domain = domain;
 
@@ -4018,7 +4218,13 @@ static int process_cpu_domain_info(struct feat_fd *ff, void *data __maybe_unused
 const struct perf_header_feature_ops feat_ops[HEADER_LAST_FEATURE];
 
 const struct perf_header_feature_ops feat_ops[HEADER_LAST_FEATURE] = {
+<<<<<<< HEAD
 	FEAT_OPN(TRACING_DATA,	tracing_data,	false),
+=======
+#ifdef HAVE_LIBTRACEEVENT
+	FEAT_OPN(TRACING_DATA,	tracing_data,	false),
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	FEAT_OPN(BUILD_ID,	build_id,	false),
 	FEAT_OPR(HOSTNAME,	hostname,	false),
 	FEAT_OPR(OSRELEASE,	osrelease,	false),
@@ -4042,8 +4248,15 @@ const struct perf_header_feature_ops feat_ops[HEADER_LAST_FEATURE] = {
 	FEAT_OPR(MEM_TOPOLOGY,	mem_topology,	true),
 	FEAT_OPR(CLOCKID,	clockid,	false),
 	FEAT_OPN(DIR_FORMAT,	dir_format,	false),
+<<<<<<< HEAD
 	FEAT_OPR(BPF_PROG_INFO, bpf_prog_info,  false),
 	FEAT_OPR(BPF_BTF,       bpf_btf,        false),
+=======
+#ifdef HAVE_LIBBPF_SUPPORT
+	FEAT_OPR(BPF_PROG_INFO, bpf_prog_info,  false),
+	FEAT_OPR(BPF_BTF,       bpf_btf,        false),
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	FEAT_OPR(COMPRESSED,	compressed,	false),
 	FEAT_OPR(CPU_PMU_CAPS,	cpu_pmu_caps,	false),
 	FEAT_OPR(CLOCK_DATA,	clock_data,	false),
@@ -4051,7 +4264,10 @@ const struct perf_header_feature_ops feat_ops[HEADER_LAST_FEATURE] = {
 	FEAT_OPR(PMU_CAPS,	pmu_caps,	false),
 	FEAT_OPR(CPU_DOMAIN_INFO,	cpu_domain_info,	true),
 	FEAT_OPR(E_MACHINE,	e_machine,	false),
+<<<<<<< HEAD
 	FEAT_OPR(CLN_SIZE,	cln_size,	false),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct header_print_data {
@@ -4059,6 +4275,7 @@ struct header_print_data {
 	bool full; /* extended list of headers */
 };
 
+<<<<<<< HEAD
 const char *header_feat__name(unsigned int id)
 {
 	if (id < HEADER_LAST_FEATURE)
@@ -4066,6 +4283,8 @@ const char *header_feat__name(unsigned int id)
 	return "INVALID";
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int perf_file_section__fprintf_info(struct perf_file_section *section,
 					   struct perf_header *ph,
 					   int feat, int fd, void *data)
@@ -4074,11 +4293,19 @@ static int perf_file_section__fprintf_info(struct perf_file_section *section,
 	struct feat_fd ff;
 
 	if (lseek(fd, section->offset, SEEK_SET) == (off_t)-1) {
+<<<<<<< HEAD
 		pr_debug("Failed to lseek to %" PRIu64 " offset for feature %s (%d), continuing...\n",
 			 section->offset, header_feat__name(feat), feat);
 		return 0;
 	}
 	if (feat >= ph->last_feat) {
+=======
+		pr_debug("Failed to lseek to %" PRIu64 " offset for feature "
+				"%d, continuing...\n", section->offset, feat);
+		return 0;
+	}
+	if (feat >= HEADER_LAST_FEATURE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_warning("unknown feature %d\n", feat);
 		return 0;
 	}
@@ -4130,7 +4357,11 @@ int perf_header__fprintf_info(struct perf_session *session, FILE *fp, bool full)
 		return 0;
 
 	fprintf(fp, "# missing features: ");
+<<<<<<< HEAD
 	for_each_clear_bit(bit, header->adds_features, header->last_feat) {
+=======
+	for_each_clear_bit(bit, header->adds_features, HEADER_LAST_FEATURE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (bit)
 			fprintf(fp, "%s ", feat_ops[bit].name);
 	}
@@ -4460,7 +4691,11 @@ int perf_header__process_sections(struct perf_header *header, int fd,
 	if (err < 0)
 		goto out_free;
 
+<<<<<<< HEAD
 	for_each_set_bit(feat, header->adds_features, header->last_feat) {
+=======
+	for_each_set_bit(feat, header->adds_features, HEADER_LAST_FEATURE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = process(sec++, header, feat, fd, data);
 		if (err < 0)
 			goto out_free;
@@ -4675,7 +4910,10 @@ int perf_file_header__read(struct perf_file_header *header,
 	ph->data_offset  = header->data.offset;
 	ph->data_size	 = header->data.size;
 	ph->feat_offset  = header->data.offset + header->data.size;
+<<<<<<< HEAD
 	ph->last_feat	 = HEADER_LAST_FEATURE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4691,8 +4929,13 @@ static int perf_file_section__process(struct perf_file_section *section,
 	};
 
 	if (lseek(fd, section->offset, SEEK_SET) == (off_t)-1) {
+<<<<<<< HEAD
 		pr_debug("Failed to lseek to %" PRIu64 " offset for feature %s (%d), continuing...\n",
 			 section->offset, header_feat__name(feat), feat);
+=======
+		pr_debug("Failed to lseek to %" PRIu64 " offset for feature "
+			  "%d, continuing...\n", section->offset, feat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -4725,8 +4968,11 @@ static int perf_file_header__read_pipe(struct perf_pipe_file_header *header,
 	if (ph->needs_swap)
 		header->size = bswap_64(header->size);
 
+<<<<<<< HEAD
 	/* The last feature is written out as a 0 sized event and will update this value. */
 	ph->last_feat = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -4959,23 +5205,35 @@ out_delete_evlist:
 	return -ENOMEM;
 }
 
+<<<<<<< HEAD
 int perf_event__process_feature(const struct perf_tool *tool __maybe_unused,
 				struct perf_session *session,
+=======
+int perf_event__process_feature(struct perf_session *session,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				union perf_event *event)
 {
 	struct feat_fd ff = { .fd = 0 };
 	struct perf_record_header_feature *fe = (struct perf_record_header_feature *)event;
+<<<<<<< HEAD
 	struct perf_header *header = &session->header;
 	int type = fe->header.type;
 	int feat = (int)fe->feat_id;
 	int ret = 0;
 	bool print = dump_trace;
 	bool last_feature_mark = false;
+=======
+	int type = fe->header.type;
+	u64 feat = fe->feat_id;
+	int ret = 0;
+	bool print = dump_trace;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (type < 0 || type >= PERF_RECORD_HEADER_MAX) {
 		pr_warning("invalid record type %d in pipe-mode\n", type);
 		return 0;
 	}
+<<<<<<< HEAD
 	if (feat == HEADER_RESERVED) {
 		pr_warning("invalid reserved record type in pipe-mode\n");
 		return -1;
@@ -5021,6 +5279,19 @@ int perf_event__process_feature(const struct perf_tool *tool __maybe_unused,
 		// Processing failed, ignore when this is the last feature mark.
 		if (!last_feature_mark)
 			ret = -1;
+=======
+	if (feat == HEADER_RESERVED || feat >= HEADER_LAST_FEATURE) {
+		pr_warning("invalid record type %d in pipe-mode\n", type);
+		return -1;
+	}
+
+	ff.buf  = (void *)fe->data;
+	ff.size = event->header.size - sizeof(*fe);
+	ff.ph = &session->header;
+
+	if (feat_ops[feat].process && feat_ops[feat].process(&ff, NULL)) {
+		ret = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 

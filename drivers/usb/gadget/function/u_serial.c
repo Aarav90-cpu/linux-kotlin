@@ -1086,7 +1086,11 @@ static int gs_console_init(struct gs_port *port)
 	if (!cons)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	strscpy(cons->console.name, "ttyGS");
+=======
+	strcpy(cons->console.name, "ttyGS");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cons->console.write = gs_console_write;
 	cons->console.device = gs_console_device;
 	cons->console.flags = CON_PRINTBUFFER;

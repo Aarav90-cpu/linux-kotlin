@@ -55,7 +55,11 @@ static int da9055_gpio_get(struct gpio_chip *gc, unsigned offset)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	return !!(ret & (1 << offset));
+=======
+	return ret & (1 << offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 }
 

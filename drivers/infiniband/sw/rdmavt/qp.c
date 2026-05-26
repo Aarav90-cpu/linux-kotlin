@@ -2705,7 +2705,11 @@ int rvt_qp_iter_next(struct rvt_qp_iter *iter)
 				struct rvt_ibport *rvp;
 				int pidx;
 
+<<<<<<< HEAD
 				pidx = n / 2; /* QP0 and QP1 */
+=======
+				pidx = n % rdi->ibdev.phys_port_cnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				rvp = rdi->ports[pidx];
 				qp = rcu_dereference(rvp->qp[n & 1]);
 			} else {

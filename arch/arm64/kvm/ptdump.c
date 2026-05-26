@@ -10,13 +10,17 @@
 #include <linux/kvm_host.h>
 #include <linux/seq_file.h>
 
+<<<<<<< HEAD
 #include <asm/cpufeature.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_mmu.h>
 #include <asm/kvm_pgtable.h>
 #include <asm/ptdump.h>
 
 #define MARKERS_LEN		2
 #define KVM_PGTABLE_MAX_LEVELS	(KVM_PGTABLE_LAST_LEVEL + 1)
+<<<<<<< HEAD
 #define S2FNAMESZ		sizeof("0x0123456789abcdef-0x0123456789abcdef-s2-disabled")
 
 struct kvm_ptdump_guest_state {
@@ -24,6 +28,15 @@ struct kvm_ptdump_guest_state {
 	struct ptdump_pg_state	parser_state;
 	struct addr_marker	ipa_marker[MARKERS_LEN];
 	struct ptdump_pg_level	level[KVM_PGTABLE_MAX_LEVELS];
+=======
+
+struct kvm_ptdump_guest_state {
+	struct kvm		*kvm;
+	struct ptdump_pg_state	parser_state;
+	struct addr_marker	ipa_marker[MARKERS_LEN];
+	struct ptdump_pg_level	level[KVM_PGTABLE_MAX_LEVELS];
+	struct ptdump_range	range[MARKERS_LEN];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ptdump_prot_bits stage2_pte_bits[] = {
@@ -113,9 +126,16 @@ static int kvm_ptdump_build_levels(struct ptdump_pg_level *level, u32 start_lvl)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct kvm_ptdump_guest_state *kvm_ptdump_parser_create(struct kvm_s2_mmu *mmu)
 {
 	struct kvm_ptdump_guest_state *st;
+=======
+static struct kvm_ptdump_guest_state *kvm_ptdump_parser_create(struct kvm *kvm)
+{
+	struct kvm_ptdump_guest_state *st;
+	struct kvm_s2_mmu *mmu = &kvm->arch.mmu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_pgtable *pgtable = mmu->pgt;
 	int ret;
 
@@ -131,8 +151,22 @@ static struct kvm_ptdump_guest_state *kvm_ptdump_parser_create(struct kvm_s2_mmu
 
 	st->ipa_marker[0].name		= "Guest IPA";
 	st->ipa_marker[1].start_address = BIT(pgtable->ia_bits);
+<<<<<<< HEAD
 
 	st->mmu				= mmu;
+=======
+	st->range[0].end		= BIT(pgtable->ia_bits);
+
+	st->kvm				= kvm;
+	st->parser_state = (struct ptdump_pg_state) {
+		.marker		= &st->ipa_marker[0],
+		.level		= -1,
+		.pg_level	= &st->level[0],
+		.ptdump.range	= &st->range[0],
+		.start_address	= 0,
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return st;
 }
 
@@ -140,6 +174,7 @@ static int kvm_ptdump_guest_show(struct seq_file *m, void *unused)
 {
 	int ret;
 	struct kvm_ptdump_guest_state *st = m->private;
+<<<<<<< HEAD
 	struct kvm_s2_mmu *mmu = st->mmu;
 	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
 	struct kvm_pgtable_walker walker = (struct kvm_pgtable_walker) {
@@ -154,6 +189,18 @@ static int kvm_ptdump_guest_show(struct seq_file *m, void *unused)
 		.pg_level	= &st->level[0],
 		.seq		= m,
 	};
+=======
+	struct kvm *kvm = st->kvm;
+	struct kvm_s2_mmu *mmu = &kvm->arch.mmu;
+	struct ptdump_pg_state *parser_state = &st->parser_state;
+	struct kvm_pgtable_walker walker = (struct kvm_pgtable_walker) {
+		.cb	= kvm_ptdump_visitor,
+		.arg	= parser_state,
+		.flags	= KVM_PGTABLE_WALK_LEAF,
+	};
+
+	parser_state->seq = m;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	write_lock(&kvm->mmu_lock);
 	ret = kvm_pgtable_walk(mmu->pgt, 0, BIT(mmu->pgt->ia_bits), &walker);
@@ -164,15 +211,23 @@ static int kvm_ptdump_guest_show(struct seq_file *m, void *unused)
 
 static int kvm_ptdump_guest_open(struct inode *m, struct file *file)
 {
+<<<<<<< HEAD
 	struct kvm_s2_mmu *mmu = m->i_private;
 	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+=======
+	struct kvm *kvm = m->i_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_ptdump_guest_state *st;
 	int ret;
 
 	if (!kvm_get_kvm_safe(kvm))
 		return -ENOENT;
 
+<<<<<<< HEAD
 	st = kvm_ptdump_parser_create(mmu);
+=======
+	st = kvm_ptdump_parser_create(kvm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(st)) {
 		ret = PTR_ERR(st);
 		goto err_with_kvm_ref;
@@ -190,7 +245,11 @@ err_with_kvm_ref:
 
 static int kvm_ptdump_guest_close(struct inode *m, struct file *file)
 {
+<<<<<<< HEAD
 	struct kvm *kvm = kvm_s2_mmu_to_kvm(m->i_private);
+=======
+	struct kvm *kvm = m->i_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *st = ((struct seq_file *)file->private_data)->private;
 
 	kfree(st);
@@ -225,15 +284,23 @@ static int kvm_pgtable_levels_show(struct seq_file *m, void *unused)
 static int kvm_pgtable_debugfs_open(struct inode *m, struct file *file,
 				    int (*show)(struct seq_file *, void *))
 {
+<<<<<<< HEAD
 	struct kvm_s2_mmu *mmu = m->i_private;
 	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+=======
+	struct kvm *kvm = m->i_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_pgtable *pgtable;
 	int ret;
 
 	if (!kvm_get_kvm_safe(kvm))
 		return -ENOENT;
 
+<<<<<<< HEAD
 	pgtable = mmu->pgt;
+=======
+	pgtable = kvm->arch.mmu.pgt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = single_open(file, show, pgtable);
 	if (ret < 0)
@@ -253,7 +320,11 @@ static int kvm_pgtable_levels_open(struct inode *m, struct file *file)
 
 static int kvm_pgtable_debugfs_close(struct inode *m, struct file *file)
 {
+<<<<<<< HEAD
 	struct kvm *kvm = kvm_s2_mmu_to_kvm(m->i_private);
+=======
+	struct kvm *kvm = m->i_private;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_put_kvm(kvm);
 	return single_release(m, file);
@@ -273,6 +344,7 @@ static const struct file_operations kvm_pgtable_levels_fops = {
 	.release	= kvm_pgtable_debugfs_close,
 };
 
+<<<<<<< HEAD
 void kvm_nested_s2_ptdump_create_debugfs(struct kvm_s2_mmu *mmu)
 {
 	struct dentry *dent;
@@ -305,4 +377,14 @@ void kvm_s2_ptdump_create_debugfs(struct kvm *kvm)
 			    &kvm->arch.mmu, &kvm_pgtable_levels_fops);
 	if (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT))
 		kvm->arch.debugfs_nv_dentry = debugfs_create_dir("nested", kvm->debugfs_dentry);
+=======
+void kvm_s2_ptdump_create_debugfs(struct kvm *kvm)
+{
+	debugfs_create_file("stage2_page_tables", 0400, kvm->debugfs_dentry,
+			    kvm, &kvm_ptdump_guest_fops);
+	debugfs_create_file("ipa_range", 0400, kvm->debugfs_dentry, kvm,
+			    &kvm_pgtable_range_fops);
+	debugfs_create_file("stage2_levels", 0400, kvm->debugfs_dentry,
+			    kvm, &kvm_pgtable_levels_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

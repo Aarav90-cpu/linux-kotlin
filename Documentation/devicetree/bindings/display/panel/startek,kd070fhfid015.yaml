@@ -16,6 +16,11 @@ properties:
   compatible:
     const: startek,kd070fhfid015
 
+<<<<<<< HEAD
+=======
+  enable-gpios: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   iovcc-supply:
     description: Reference to the regulator powering the panel IO pins.
 
@@ -23,11 +28,22 @@ properties:
     maxItems: 1
     description: DSI virtual channel
 
+<<<<<<< HEAD
   enable-gpios: true
   port: true
   power-supply: true
   reset-gpios: true
 
+=======
+  reset-gpios: true
+
+  port: true
+
+  power-supply: true
+
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - enable-gpios
@@ -37,8 +53,11 @@ required:
   - port
   - power-supply
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     #include <dt-bindings/gpio/gpio.h>

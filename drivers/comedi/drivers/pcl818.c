@@ -981,10 +981,13 @@ static int pcl818_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	const struct pcl818_board *board = dev->board_ptr;
 	struct pcl818_private *devpriv;
 	struct comedi_subdevice *s;
+<<<<<<< HEAD
 	unsigned int io_base = it->options[0];
 	bool fifo_is_supported = board->has_fifo && !(io_base & 0x10);
 	bool fifo_is_wanted = board->has_fifo && it->options[2] == -1;
 	unsigned int io_len = fifo_is_supported ? 0x20 : 0x10;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int osc_base;
 	int ret;
 
@@ -992,6 +995,7 @@ static int pcl818_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	if (!devpriv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, io_base, io_len,
 					  0, 0x3ff, io_len);
 	if (ret)
@@ -1014,6 +1018,13 @@ static int pcl818_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 		}
 	}
 
+=======
+	ret = comedi_request_region(dev, it->options[0],
+				    board->has_fifo ? 0x20 : 0x10);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* we can use IRQ 2-7 for async command support */
 	if (it->options[1] >= 2 && it->options[1] <= 7) {
 		ret = request_irq(it->options[1], pcl818_interrupt, 0,
@@ -1023,7 +1034,11 @@ static int pcl818_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	}
 
 	/* should we use the FIFO? */
+<<<<<<< HEAD
 	if (dev->irq && fifo_is_supported && fifo_is_wanted)
+=======
+	if (dev->irq && board->has_fifo && it->options[2] == -1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		devpriv->usefifo = 1;
 
 	/* we need an IRQ to do DMA on channel 3 or 1 */

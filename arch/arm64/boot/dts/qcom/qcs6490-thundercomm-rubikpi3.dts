@@ -755,10 +755,17 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
+<<<<<<< HEAD
 			port@1 {
 				reg = <1>;
 
 				lt9611_b: endpoint {
+=======
+			port@0 {
+				reg = <0>;
+
+				lt9611_a: endpoint {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					remote-endpoint = <&mdss_dsi0_out>;
 				};
 			};
@@ -801,7 +808,11 @@
 };
 
 &mdss_dsi0_out {
+<<<<<<< HEAD
 	remote-endpoint = <&lt9611_b>;
+=======
+	remote-endpoint = <&lt9611_a>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data-lanes = <0 1 2 3>;
 };
 

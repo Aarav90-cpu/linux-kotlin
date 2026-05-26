@@ -47,8 +47,12 @@ struct vmw_event_fence_action {
 static struct vmw_fence_manager *
 fman_from_fence(struct vmw_fence_obj *fence)
 {
+<<<<<<< HEAD
 	return container_of(fence->base.extern_lock, struct vmw_fence_manager,
 			    lock);
+=======
+	return container_of(fence->base.lock, struct vmw_fence_manager, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void vmw_fence_obj_destroy(struct dma_fence *f)

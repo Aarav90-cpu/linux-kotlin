@@ -62,8 +62,11 @@ MODULE_LICENSE("GPL");
 MODULE_ALIAS_RTNL_LINK("ip6tnl");
 MODULE_ALIAS_NETDEV("ip6tnl0");
 
+<<<<<<< HEAD
 #define IP6_TUNNEL_MAX_DEST_TLVS    8
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IP6_TUNNEL_HASH_SIZE_SHIFT  5
 #define IP6_TUNNEL_HASH_SIZE (1 << IP6_TUNNEL_HASH_SIZE_SHIFT)
 
@@ -98,6 +101,12 @@ static inline int ip6_tnl_mpls_supported(void)
 	return IS_ENABLED(CONFIG_MPLS);
 }
 
+<<<<<<< HEAD
+=======
+#define for_each_ip6_tunnel_rcu(start) \
+	for (t = rcu_dereference(start); t; t = rcu_dereference(t->next))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ip6_tnl_lookup - fetch tunnel matching the end-point addresses
  *   @net: network namespace
@@ -120,7 +129,11 @@ ip6_tnl_lookup(struct net *net, int link,
 	struct ip6_tnl_net *ip6n = net_generic(net, ip6_tnl_net_id);
 	struct in6_addr any;
 
+<<<<<<< HEAD
 	for_each_ip_tunnel_rcu(t, ip6n->tnls_r_l[hash]) {
+=======
+	for_each_ip6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ipv6_addr_equal(local, &t->parms.laddr) ||
 		    !ipv6_addr_equal(remote, &t->parms.raddr) ||
 		    !(t->dev->flags & IFF_UP))
@@ -134,7 +147,11 @@ ip6_tnl_lookup(struct net *net, int link,
 
 	memset(&any, 0, sizeof(any));
 	hash = HASH(&any, local);
+<<<<<<< HEAD
 	for_each_ip_tunnel_rcu(t, ip6n->tnls_r_l[hash]) {
+=======
+	for_each_ip6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ipv6_addr_equal(local, &t->parms.laddr) ||
 		    !ipv6_addr_any(&t->parms.raddr) ||
 		    !(t->dev->flags & IFF_UP))
@@ -147,7 +164,11 @@ ip6_tnl_lookup(struct net *net, int link,
 	}
 
 	hash = HASH(remote, &any);
+<<<<<<< HEAD
 	for_each_ip_tunnel_rcu(t, ip6n->tnls_r_l[hash]) {
+=======
+	for_each_ip6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ipv6_addr_equal(remote, &t->parms.raddr) ||
 		    !ipv6_addr_any(&t->parms.laddr) ||
 		    !(t->dev->flags & IFF_UP))
@@ -399,15 +420,21 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
 	unsigned int nhoff = raw - skb->data;
 	unsigned int off = nhoff + sizeof(*ipv6h);
 	u8 nexthdr = ipv6h->nexthdr;
+<<<<<<< HEAD
 	int exthdr_cnt = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
 		struct ipv6_opt_hdr *hdr;
 		u16 optlen;
 
+<<<<<<< HEAD
 		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
 			break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!pskb_may_pull(skb, off + sizeof(*hdr)))
 			break;
 
@@ -431,15 +458,21 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
 				break;
 		}
 		if (nexthdr == NEXTHDR_DEST) {
+<<<<<<< HEAD
 			int tlv_cnt = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			u16 i = 2;
 
 			while (1) {
 				struct ipv6_tlv_tnl_enc_lim *tel;
 
+<<<<<<< HEAD
 				if (unlikely(tlv_cnt++ >= IP6_TUNNEL_MAX_DEST_TLVS))
 					break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/* No more room for encapsulation limit */
 				if (i + sizeof(*tel) > optlen)
 					break;

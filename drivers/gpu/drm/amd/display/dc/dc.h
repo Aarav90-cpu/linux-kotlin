@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-2023 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -63,7 +67,11 @@ struct dcn_dsc_reg_state;
 struct dcn_optc_reg_state;
 struct dcn_dccg_reg_state;
 
+<<<<<<< HEAD
 #define DC_VER "3.2.378"
+=======
+#define DC_VER "3.2.369"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * MAX_SURFACES - representative of the upper bound of surfaces that can be piped to a single CRTC
@@ -520,7 +528,11 @@ struct dc_config {
 	union allow_lttpr_non_transparent_mode allow_lttpr_non_transparent_mode;
 	bool multi_mon_pp_mclk_switch;
 	bool disable_dmcu;
+<<<<<<< HEAD
 	bool allow_4to1MPC;
+=======
+	bool enable_4to1MPC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool enable_windowed_mpo_odm;
 	bool forceHBR2CP2520; // Used for switching between test patterns TPS4 and CP2520
 	uint32_t allow_edp_hotplug_detection;
@@ -562,7 +574,10 @@ struct dc_config {
 	bool frame_update_cmd_version2;
 	struct spl_sharpness_range dcn_sharpness_range;
 	struct spl_sharpness_range dcn_override_sharpness_range;
+<<<<<<< HEAD
 	bool no_native422_support;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum visual_confirm {
@@ -582,7 +597,10 @@ enum visual_confirm {
 	VISUAL_CONFIRM_HW_CURSOR = 20,
 	VISUAL_CONFIRM_VABC = 21,
 	VISUAL_CONFIRM_DCC = 22,
+<<<<<<< HEAD
 	VISUAL_CONFIRM_BOOSTED_REFRESH_RATE = 23,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VISUAL_CONFIRM_EXPLICIT = 0x80000000,
 };
 
@@ -735,8 +753,11 @@ struct dc_clocks {
 	struct {
 		uint8_t base_efficiency; //LP1
 		uint8_t low_power_efficiency; //LP2
+<<<<<<< HEAD
 		uint8_t z8_stutter_efficiency;
 		int z8_stutter_period;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} stutter_efficiency;
 };
 
@@ -987,6 +1008,10 @@ struct link_service;
  * causing an issue or not.
  */
 struct dc_debug_options {
+<<<<<<< HEAD
+=======
+	bool native422_support;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool disable_dsc;
 	enum visual_confirm visual_confirm;
 	int visual_confirm_rect_height;
@@ -1061,11 +1086,17 @@ struct dc_debug_options {
 	bool hdmi20_disable;
 	bool skip_detection_link_training;
 	uint32_t edid_read_retry_times;
+<<<<<<< HEAD
 
 	uint8_t force_odm_combine; //bit vector based on otg inst
 	uint8_t seamless_boot_odm_combine;
 	uint8_t force_odm_combine_4to1; //bit vector based on otg inst
 
+=======
+	unsigned int force_odm_combine; //bit vector based on otg inst
+	unsigned int seamless_boot_odm_combine;
+	unsigned int force_odm_combine_4to1; //bit vector based on otg inst
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int minimum_z8_residency_time;
 	int minimum_z10_residency_time;
 	bool disable_z9_mpc;
@@ -1216,8 +1247,11 @@ struct dc_debug_options {
 	unsigned int num_fast_flips_to_steady_state_override;
 	bool enable_dmu_recovery;
 	unsigned int force_vmin_threshold;
+<<<<<<< HEAD
 	bool enable_otg_frame_sync_pwa;
 	unsigned int min_deep_sleep_dcfclk_khz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 
@@ -1407,11 +1441,16 @@ struct lut_mem_mapping {
 struct dc_rmcm_3dlut {
 	bool isInUse;
 	const struct dc_stream_state *stream;
+<<<<<<< HEAD
+=======
+	uint8_t protection_bits;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dc_3dlut {
 	struct kref refcount;
 	struct tetrahedral_params lut_3d;
+<<<<<<< HEAD
 	union dc_3dlut_state state;
 };
 
@@ -1451,6 +1490,11 @@ struct dc_plane_cm {
 	union dc_plane_cm_flags flags;
 };
 
+=======
+	struct fixed31_32 hdr_multiplier;
+	union dc_3dlut_state state;
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * This structure is filled in by dc_surface_get_status and contains
  * the last requested address and the currently active address so the called
@@ -1461,7 +1505,10 @@ struct dc_plane_status {
 	struct dc_plane_address current_address;
 	bool is_flip_pending;
 	bool is_right_eye;
+<<<<<<< HEAD
 	struct cm_hist cm_hist;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 union surface_update_flags {
@@ -1498,7 +1545,10 @@ union surface_update_flags {
 		uint32_t mcm_transfer_function_enable_change:1; /* disable or enable MCM transfer func */
 		uint32_t full_update:1;
 		uint32_t sdr_white_level_nits:1;
+<<<<<<< HEAD
 		uint32_t cm_hist_change:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} bits;
 
 	uint32_t raw;
@@ -1528,6 +1578,7 @@ struct dc_plane_state {
 	struct fixed31_32 hdr_mult;
 	struct colorspace_transform gamut_remap_matrix;
 
+<<<<<<< HEAD
 	enum dc_color_space color_space;
 
 	bool lut_bank_a;
@@ -1540,6 +1591,16 @@ struct dc_plane_state {
 	struct dc_cm2_func_luts mcm_luts;
 	enum mpcc_movable_cm_location mcm_location;
 	struct dc_plane_cm cm;
+=======
+	// TODO: No longer used, remove
+	struct dc_hdr_static_metadata hdr_static_ctx;
+
+	enum dc_color_space color_space;
+
+	struct dc_3dlut lut3d_func;
+	struct dc_transfer_func in_shaper_func;
+	struct dc_transfer_func blend_tf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct dc_transfer_func *gamcor_tf;
 	enum surface_pixel_format format;
@@ -1576,13 +1637,24 @@ struct dc_plane_state {
 
 	bool is_statically_allocated;
 	enum chroma_cositing cositing;
+<<<<<<< HEAD
+=======
+	enum dc_cm2_shaper_3dlut_setting mcm_shaper_3dlut_setting;
+	bool mcm_lut1d_enable;
+	struct dc_cm2_func_luts mcm_luts;
+	bool lut_bank_a;
+	enum mpcc_movable_cm_location mcm_location;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_csc_transform cursor_csc_color_matrix;
 	bool adaptive_sharpness_en;
 	int adaptive_sharpness_policy;
 	int sharpness_level;
 	enum linear_light_scaling linear_light_scaling;
 	unsigned int sdr_white_level_nits;
+<<<<<<< HEAD
 	struct cm_hist_control cm_hist_control;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct spl_sharpness_range sharpness_range;
 	enum sharpness_range_source sharpness_source;
 };
@@ -1682,7 +1754,11 @@ struct dc_scratch_space {
 	struct dc_link_training_overrides preferred_training_settings;
 	struct dp_audio_test_data audio_test_data;
 
+<<<<<<< HEAD
 	enum gpio_ddc_line ddc_hw_inst;
+=======
+	uint8_t ddc_hw_inst;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	uint8_t hpd_src;
 
@@ -1726,10 +1802,13 @@ struct dc_scratch_space {
 	struct panel_cntl *panel_cntl;
 	struct link_encoder *link_enc;
 	struct graphics_object_id link_id;
+<<<<<<< HEAD
 
 	/* External encoder eg. NUTMEG or TRAVIS used on CIK APUs. */
 	struct graphics_object_id ext_enc_id;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Endpoint type distinguishes display endpoints which do not have entries
 	 * in the BIOS connector table from those that do. Helps when tracking link
 	 * encoder to display endpoint assignments.
@@ -1891,9 +1970,12 @@ struct dc_fast_update {
 	struct dc_transfer_func *out_transfer_func;
 	struct dc_csc_transform *output_csc_transform;
 	const struct dc_csc_transform *cursor_csc_color_matrix;
+<<<<<<< HEAD
 #if defined(CONFIG_DRM_AMD_DC_DCN4_2)
 	struct cm_hist_control *cm_hist_control;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dc_surface_update {
@@ -1923,11 +2005,17 @@ struct dc_surface_update {
 	 * change cm2_params.cm2_luts: Fast update
 	 */
 	const struct dc_cm2_parameters *cm2_params;
+<<<<<<< HEAD
 	const struct dc_plane_cm *cm;
 	const struct dc_csc_transform *cursor_csc_color_matrix;
 	unsigned int sdr_white_level_nits;
 	struct dc_bias_and_scale bias_and_scale;
 	struct cm_hist_control *cm_hist_control;
+=======
+	const struct dc_csc_transform *cursor_csc_color_matrix;
+	unsigned int sdr_white_level_nits;
+	struct dc_bias_and_scale bias_and_scale;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dc_underflow_debug_data {
@@ -1968,6 +2056,7 @@ struct dc_3dlut *dc_create_3dlut_func(void);
 void dc_3dlut_func_release(struct dc_3dlut *lut);
 void dc_3dlut_func_retain(struct dc_3dlut *lut);
 
+<<<<<<< HEAD
 struct dc_plane_cm *dc_plane_cm_create(void);
 void dc_plane_cm_release(struct dc_plane_cm *cm);
 void dc_plane_cm_retain(struct dc_plane_cm *cm);
@@ -1984,6 +2073,11 @@ void dc_post_update_surfaces_to_stream(
  */
 void dc_get_default_tiling_info(const struct dc *dc, struct dc_tiling_info *tiling_info);
 
+=======
+void dc_post_update_surfaces_to_stream(
+		struct dc *dc);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct dc_validation_set - Struct to store surface/stream associations for validation
  */
@@ -2082,7 +2176,11 @@ bool dc_get_edp_link_panel_inst(const struct dc *dc,
 /* Return an array of link pointers to edp links. */
 void dc_get_edp_links(const struct dc *dc,
 		struct dc_link **edp_links,
+<<<<<<< HEAD
 		unsigned int *edp_num);
+=======
+		int *edp_num);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void dc_set_edp_power(const struct dc *dc, struct dc_link *edp_link,
 				 bool powerOn);
@@ -2727,7 +2825,10 @@ struct dc_sink {
 	struct stereo_3d_features features_3d[TIMING_3D_FORMAT_MAX];
 	bool converter_disable_audio;
 
+<<<<<<< HEAD
 	struct mccs_caps mccs_caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct scdc_caps scdc_caps;
 	struct dc_sink_dsc_caps dsc_caps;
 	struct dc_sink_fec_caps fec_caps;

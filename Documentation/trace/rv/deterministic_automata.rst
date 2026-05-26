@@ -11,7 +11,11 @@ where:
 - *E* is the finite set of events;
 - x\ :subscript:`0` is the initial state;
 - X\ :subscript:`m` (subset of *X*) is the set of marked (or final) states.
+<<<<<<< HEAD
 - *f* : *X* x *E* -> *X* is the transition function. It defines the state
+=======
+- *f* : *X* x *E* -> *X* $ is the transition function. It defines the state
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   transition in the occurrence of an event from *E* in the state *X*. In the
   special case of deterministic automata, the occurrence of the event in *E*
   in a state in *X* has a deterministic next state from *X*.

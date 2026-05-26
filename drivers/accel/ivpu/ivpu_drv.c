@@ -67,6 +67,7 @@ bool ivpu_force_snoop;
 module_param_named(force_snoop, ivpu_force_snoop, bool, 0444);
 MODULE_PARM_DESC(force_snoop, "Force snooping for NPU host memory access");
 
+<<<<<<< HEAD
 static struct ivpu_user_limits *ivpu_user_limits_alloc(struct ivpu_device *vdev, uid_t uid)
 {
 	struct ivpu_user_limits *limits;
@@ -134,6 +135,8 @@ static void ivpu_user_limits_put(struct ivpu_device *vdev, struct ivpu_user_limi
 	kref_put(&limits->ref, ivpu_user_limits_release);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ivpu_file_priv *ivpu_file_priv_get(struct ivpu_file_priv *file_priv)
 {
 	struct ivpu_device *vdev = file_priv->vdev;
@@ -177,7 +180,10 @@ static void file_priv_release(struct kref *ref)
 	mutex_unlock(&vdev->context_list_lock);
 	pm_runtime_put_autosuspend(vdev->drm.dev);
 
+<<<<<<< HEAD
 	ivpu_user_limits_put(vdev, file_priv->user_limits);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_destroy(&file_priv->ms_lock);
 	mutex_destroy(&file_priv->lock);
 	kfree(file_priv);
@@ -237,7 +243,11 @@ static int ivpu_get_param_ioctl(struct drm_device *dev, void *data, struct drm_f
 		args->value = ivpu_hw_dpu_max_freq_get(vdev);
 		break;
 	case DRM_IVPU_PARAM_NUM_CONTEXTS:
+<<<<<<< HEAD
 		args->value = file_priv->user_limits->max_ctx_count;
+=======
+		args->value = ivpu_get_context_count(vdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DRM_IVPU_PARAM_CONTEXT_BASE_ADDRESS:
 		args->value = vdev->hw->ranges.user.start;
@@ -299,13 +309,17 @@ static int ivpu_open(struct drm_device *dev, struct drm_file *file)
 {
 	struct ivpu_device *vdev = to_ivpu_device(dev);
 	struct ivpu_file_priv *file_priv;
+<<<<<<< HEAD
 	struct ivpu_user_limits *limits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 ctx_id;
 	int idx, ret;
 
 	if (!drm_dev_enter(dev, &idx))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	limits = ivpu_user_limits_get(vdev);
 	if (IS_ERR(limits)) {
 		ret = PTR_ERR(limits);
@@ -316,13 +330,22 @@ static int ivpu_open(struct drm_device *dev, struct drm_file *file)
 	if (!file_priv) {
 		ret = -ENOMEM;
 		goto err_user_limits_put;
+=======
+	file_priv = kzalloc_obj(*file_priv);
+	if (!file_priv) {
+		ret = -ENOMEM;
+		goto err_dev_exit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	INIT_LIST_HEAD(&file_priv->ms_instance_list);
 
 	file_priv->vdev = vdev;
 	file_priv->bound = true;
+<<<<<<< HEAD
 	file_priv->user_limits = limits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kref_init(&file_priv->ref);
 	mutex_init(&file_priv->lock);
 	mutex_init(&file_priv->ms_lock);
@@ -360,8 +383,11 @@ err_unlock:
 	mutex_destroy(&file_priv->ms_lock);
 	mutex_destroy(&file_priv->lock);
 	kfree(file_priv);
+<<<<<<< HEAD
 err_user_limits_put:
 	ivpu_user_limits_put(vdev, limits);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_dev_exit:
 	drm_dev_exit(idx);
 	return ret;
@@ -421,7 +447,12 @@ static int ivpu_wait_for_ready(struct ivpu_device *vdev)
 	ivpu_ipc_consumer_del(vdev, &cons);
 
 	if (!ret && ipc_hdr.data_addr != IVPU_IPC_BOOT_MSG_DATA_ADDR) {
+<<<<<<< HEAD
 		ivpu_err(vdev, "Invalid NPU ready message: 0x%x\n", ipc_hdr.data_addr);
+=======
+		ivpu_err(vdev, "Invalid NPU ready message: 0x%x\n",
+			 ipc_hdr.data_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 
@@ -530,7 +561,11 @@ int ivpu_shutdown(struct ivpu_device *vdev)
 }
 
 static const struct file_operations ivpu_fops = {
+<<<<<<< HEAD
 	.owner = THIS_MODULE,
+=======
+	.owner		= THIS_MODULE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DRM_ACCEL_FOPS,
 #ifdef CONFIG_PROC_FS
 	.show_fdinfo = drm_show_fdinfo,
@@ -686,12 +721,18 @@ static int ivpu_dev_init(struct ivpu_device *vdev)
 	vdev->context_xa_limit.max = IVPU_USER_CONTEXT_MAX_SSID;
 	atomic64_set(&vdev->unique_id_counter, 0);
 	atomic_set(&vdev->job_timeout_counter, 0);
+<<<<<<< HEAD
 	atomic_set(&vdev->faults_detected, 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xa_init_flags(&vdev->context_xa, XA_FLAGS_ALLOC | XA_FLAGS_LOCK_IRQ);
 	xa_init_flags(&vdev->submitted_jobs_xa, XA_FLAGS_ALLOC1);
 	xa_init_flags(&vdev->db_xa, XA_FLAGS_ALLOC1);
 	INIT_LIST_HEAD(&vdev->bo_list);
+<<<<<<< HEAD
 	hash_init(vdev->user_limits);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vdev->db_limit.min = IVPU_MIN_DB;
 	vdev->db_limit.max = IVPU_MAX_DB;
@@ -700,10 +741,13 @@ static int ivpu_dev_init(struct ivpu_device *vdev)
 	if (ret)
 		goto err_xa_destroy;
 
+<<<<<<< HEAD
 	ret = drmm_mutex_init(&vdev->drm, &vdev->user_limits_lock);
 	if (ret)
 		goto err_xa_destroy;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = drmm_mutex_init(&vdev->drm, &vdev->submitted_jobs_lock);
 	if (ret)
 		goto err_xa_destroy;
@@ -821,7 +865,11 @@ static struct pci_device_id ivpu_pci_ids[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_PTL_P) },
 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_WCL) },
 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_NVL) },
+<<<<<<< HEAD
 	{}
+=======
+	{ }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 MODULE_DEVICE_TABLE(pci, ivpu_pci_ids);
 

@@ -36,7 +36,10 @@
 
 enum reg0i15_op {
 	break_op	= 0x54,
+<<<<<<< HEAD
 	dbar_op		= 0x70e4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum reg0i26_op {
@@ -195,10 +198,13 @@ enum reg3_op {
 	fstxs_op	= 0x7070,
 	fstxd_op	= 0x7078,
 	scq_op		= 0x70ae,
+<<<<<<< HEAD
 	amswapb_op	= 0x70b8,
 	amswaph_op	= 0x70b9,
 	amaddb_op	= 0x70ba,
 	amaddh_op	= 0x70bb,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amswapw_op	= 0x70c0,
 	amswapd_op	= 0x70c1,
 	amaddw_op	= 0x70c2,
@@ -548,7 +554,10 @@ static inline void emit_##NAME(union loongarch_instruction *insn,	\
 }
 
 DEF_EMIT_REG0I15_FORMAT(break, break_op)
+<<<<<<< HEAD
 DEF_EMIT_REG0I15_FORMAT(dbar, dbar_op)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* like emit_break(imm) but returns a constant expression */
 #define __emit_break(imm)	((u32)((imm) | (break_op << 15)))
@@ -769,8 +778,11 @@ DEF_EMIT_REG3_FORMAT(stxb, stxb_op)
 DEF_EMIT_REG3_FORMAT(stxh, stxh_op)
 DEF_EMIT_REG3_FORMAT(stxw, stxw_op)
 DEF_EMIT_REG3_FORMAT(stxd, stxd_op)
+<<<<<<< HEAD
 DEF_EMIT_REG3_FORMAT(amaddb, amaddb_op)
 DEF_EMIT_REG3_FORMAT(amaddh, amaddh_op)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEF_EMIT_REG3_FORMAT(amaddw, amaddw_op)
 DEF_EMIT_REG3_FORMAT(amaddd, amaddd_op)
 DEF_EMIT_REG3_FORMAT(amandw, amandw_op)
@@ -779,8 +791,11 @@ DEF_EMIT_REG3_FORMAT(amorw, amorw_op)
 DEF_EMIT_REG3_FORMAT(amord, amord_op)
 DEF_EMIT_REG3_FORMAT(amxorw, amxorw_op)
 DEF_EMIT_REG3_FORMAT(amxord, amxord_op)
+<<<<<<< HEAD
 DEF_EMIT_REG3_FORMAT(amswapb, amswapb_op)
 DEF_EMIT_REG3_FORMAT(amswaph, amswaph_op)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEF_EMIT_REG3_FORMAT(amswapw, amswapw_op)
 DEF_EMIT_REG3_FORMAT(amswapd, amswapd_op)
 

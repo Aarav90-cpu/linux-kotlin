@@ -131,6 +131,7 @@ int enic_dev_set_ig_vlan_rewrite_mode(struct enic *enic)
 
 int enic_dev_enable(struct enic *enic)
 {
+<<<<<<< HEAD
 	int err = 0;
 
 	spin_lock_bh(&enic->devcmd_lock);
@@ -138,6 +139,12 @@ int enic_dev_enable(struct enic *enic)
 		err = vnic_dev_enable_wait(enic->vdev);
 	if (!err)
 		enic->enable_count++;
+=======
+	int err;
+
+	spin_lock_bh(&enic->devcmd_lock);
+	err = vnic_dev_enable_wait(enic->vdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&enic->devcmd_lock);
 
 	return err;
@@ -145,6 +152,7 @@ int enic_dev_enable(struct enic *enic)
 
 int enic_dev_disable(struct enic *enic)
 {
+<<<<<<< HEAD
 	int err = 0;
 
 	spin_lock_bh(&enic->devcmd_lock);
@@ -155,6 +163,12 @@ int enic_dev_disable(struct enic *enic)
 	enic->enable_count--;
 	if (enic->enable_count == 0)
 		err = vnic_dev_disable(enic->vdev);
+=======
+	int err;
+
+	spin_lock_bh(&enic->devcmd_lock);
+	err = vnic_dev_disable(enic->vdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_bh(&enic->devcmd_lock);
 
 	return err;

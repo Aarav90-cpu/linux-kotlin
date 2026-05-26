@@ -2,7 +2,10 @@
 /*
  * Copyright (C) 2015 Microchip Technology
  */
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/mii.h>
@@ -26,7 +29,10 @@ struct lan88xx_priv {
 	int	chip_id;
 	int	chip_rev;
 	__u32	wolopts;
+<<<<<<< HEAD
 	u8	downshift_cnt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int lan88xx_read_page(struct phy_device *phydev)
@@ -195,6 +201,7 @@ static void lan88xx_config_TR_regs(struct phy_device *phydev)
 		phydev_warn(phydev, "Failed to Set Register[0x1686]\n");
 }
 
+<<<<<<< HEAD
 static int lan88xx_get_downshift(struct phy_device *phydev, u8 *data)
 {
 	int val;
@@ -262,6 +269,8 @@ static int lan88xx_set_tunable(struct phy_device *phydev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int lan88xx_probe(struct phy_device *phydev)
 {
 	struct device *dev = &phydev->mdio.dev;
@@ -274,7 +283,10 @@ static int lan88xx_probe(struct phy_device *phydev)
 		return -ENOMEM;
 
 	priv->wolopts = 0;
+<<<<<<< HEAD
 	priv->downshift_cnt = 2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	len = of_property_read_variable_u32_array(dev->of_node,
 						  "microchip,led-modes",
@@ -354,8 +366,12 @@ static void lan88xx_set_mdix(struct phy_device *phydev)
 
 static int lan88xx_config_init(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	struct lan88xx_priv *priv = phydev->priv;
 	int val, err;
+=======
+	int val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*Zerodetect delay enable */
 	val = phy_read_mmd(phydev, MDIO_MMD_PCS,
@@ -368,10 +384,13 @@ static int lan88xx_config_init(struct phy_device *phydev)
 	/* Config DSP registers */
 	lan88xx_config_TR_regs(phydev);
 
+<<<<<<< HEAD
 	err = lan88xx_set_downshift(phydev, priv->downshift_cnt);
 	if (err < 0)
 		return err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -574,8 +593,11 @@ static struct phy_driver microchip_phy_driver[] = {
 	.set_wol	= lan88xx_set_wol,
 	.read_page	= lan88xx_read_page,
 	.write_page	= lan88xx_write_page,
+<<<<<<< HEAD
 	.get_tunable	= lan88xx_get_tunable,
 	.set_tunable	= lan88xx_set_tunable,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 },
 {
 	PHY_ID_MATCH_MODEL(PHY_ID_LAN937X_TX),

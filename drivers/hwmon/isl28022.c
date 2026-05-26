@@ -338,6 +338,7 @@ DEFINE_SHOW_ATTRIBUTE(shunt_voltage);
  */
 static int isl28022_read_properties(struct device *dev, struct isl28022_data *data)
 {
+<<<<<<< HEAD
 	const char *propname;
 	u32 val;
 	int err;
@@ -360,6 +361,23 @@ static int isl28022_read_properties(struct device *dev, struct isl28022_data *da
 	} else {
 		val = 320000;
 	}
+=======
+	u32 val;
+	int err;
+
+	err = device_property_read_u32(dev, "shunt-resistor-micro-ohms", &val);
+	if (err == -EINVAL)
+		val = 10000;
+	else if (err < 0)
+		return err;
+	data->shunt = val;
+
+	err = device_property_read_u32(dev, "renesas,shunt-range-microvolt", &val);
+	if (err == -EINVAL)
+		val = 320000;
+	else if (err < 0)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (val) {
 	case 40000:
@@ -383,6 +401,7 @@ static int isl28022_read_properties(struct device *dev, struct isl28022_data *da
 			goto shunt_invalid;
 		break;
 	default:
+<<<<<<< HEAD
 		return dev_err_probe(dev, -EINVAL, "%s invalid value %u\n", propname, val);
 	}
 
@@ -396,6 +415,22 @@ static int isl28022_read_properties(struct device *dev, struct isl28022_data *da
 	}
 	if (val > 128 || hweight32(val) != 1)
 		return dev_err_probe(dev, -EINVAL, "%s invalid value %u\n", propname, val);
+=======
+		return dev_err_probe(dev, -EINVAL,
+				     "renesas,shunt-range-microvolt invalid value %d\n",
+				     val);
+	}
+
+	err = device_property_read_u32(dev, "renesas,average-samples", &val);
+	if (err == -EINVAL)
+		val = 1;
+	else if (err < 0)
+		return err;
+	if (val > 128 || hweight32(val) != 1)
+		return dev_err_probe(dev, -EINVAL,
+				     "renesas,average-samples invalid value %d\n",
+				     val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->average = val;
 

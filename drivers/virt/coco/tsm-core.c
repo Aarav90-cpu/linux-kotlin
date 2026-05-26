@@ -9,11 +9,15 @@
 #include <linux/cleanup.h>
 #include <linux/pci-tsm.h>
 
+<<<<<<< HEAD
 static void tsm_release(struct device *);
 static const struct class tsm_class = {
 	.name		= "tsm",
 	.dev_release	= tsm_release
 };
+=======
+static struct class *tsm_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEFINE_IDA(tsm_ida);
 
 static int match_id(struct device *dev, const void *data)
@@ -26,7 +30,11 @@ static int match_id(struct device *dev, const void *data)
 
 struct tsm_dev *find_tsm_dev(int id)
 {
+<<<<<<< HEAD
 	struct device *dev = class_find_device(&tsm_class, NULL, &id, match_id);
+=======
+	struct device *dev = class_find_device(tsm_class, NULL, &id, match_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!dev)
 		return NULL;
@@ -50,7 +58,11 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
 	tsm_dev->id = id;
 	dev = &tsm_dev->dev;
 	dev->parent = parent;
+<<<<<<< HEAD
 	dev->class = &tsm_class;
+=======
+	dev->class = tsm_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	device_initialize(dev);
 
 	return no_free_ptr(tsm_dev);
@@ -118,13 +130,26 @@ static void tsm_release(struct device *dev)
 
 static int __init tsm_init(void)
 {
+<<<<<<< HEAD
 	return class_register(&tsm_class);
+=======
+	tsm_class = class_create("tsm");
+	if (IS_ERR(tsm_class))
+		return PTR_ERR(tsm_class);
+
+	tsm_class->dev_release = tsm_release;
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 module_init(tsm_init)
 
 static void __exit tsm_exit(void)
 {
+<<<<<<< HEAD
 	class_unregister(&tsm_class);
+=======
+	class_destroy(tsm_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 module_exit(tsm_exit)
 

@@ -7,11 +7,19 @@
 
 #define UCALL_EXIT_REASON       KVM_EXIT_RISCV_SBI
 
+<<<<<<< HEAD
 static inline void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
 {
 }
 
 static inline void ucall_arch_do_ucall(gva_t uc)
+=======
+static inline void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
+{
+}
+
+static inline void ucall_arch_do_ucall(vm_vaddr_t uc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sbi_ecall(KVM_RISCV_SELFTESTS_SBI_EXT,
 		  KVM_RISCV_SELFTESTS_SBI_UCALL,

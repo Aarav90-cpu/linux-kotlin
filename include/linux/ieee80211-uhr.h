@@ -12,8 +12,13 @@
 
 #define IEEE80211_UHR_OPER_PARAMS_DPS_ENA		0x0001
 #define IEEE80211_UHR_OPER_PARAMS_NPCA_ENA		0x0002
+<<<<<<< HEAD
 #define IEEE80211_UHR_OPER_PARAMS_PEDCA_ENA		0x0004
 #define IEEE80211_UHR_OPER_PARAMS_DBE_ENA		0x0008
+=======
+#define IEEE80211_UHR_OPER_PARAMS_DBE_ENA		0x0004
+#define IEEE80211_UHR_OPER_PARAMS_PEDCA_ENA		0x0008
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct ieee80211_uhr_operation {
 	__le16 params;
@@ -29,6 +34,7 @@ struct ieee80211_uhr_operation {
 #define IEEE80211_UHR_NPCA_PARAMS_MOPLEN		0x00400000
 #define IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES	0x00800000
 
+<<<<<<< HEAD
 /**
  * struct ieee80211_uhr_npca_info - npca operation information
  *
@@ -71,11 +77,14 @@ struct ieee80211_uhr_operation {
  *		present when the value of the NPCA Disabled Subchannel Bitmap
  *		Field Present field is equal to 1, and not present, otherwise
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ieee80211_uhr_npca_info {
 	__le32 params;
 	__le16 dis_subch_bmap[];
 } __packed;
 
+<<<<<<< HEAD
 #define IEEE80211_UHR_DPS_PADDING_DELAY			0x0000003F
 #define IEEE80211_UHR_DPS_TRANSITION_DELAY		0x00003F00
 #define IEEE80211_UHR_DPS_ICF_REQUIRED			0x00010000
@@ -239,6 +248,8 @@ struct ieee80211_uhr_p_edca_info {
 	__le16 params;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
 					      bool beacon)
 {
@@ -252,6 +263,7 @@ static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
 	if (beacon)
 		return true;
 
+<<<<<<< HEAD
 	/* DPS Operation Parameters (fixed 4 bytes) */
 	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_DPS_ENA)) {
 		needed += sizeof(struct ieee80211_uhr_dps_info);
@@ -298,6 +310,21 @@ static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
 			if (len < needed)
 				return false;
 		}
+=======
+	/* FIXME: DPS, DBE, P-EDCA (consider order, also relative to NPCA) */
+
+	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)) {
+		const struct ieee80211_uhr_npca_info *npca =
+			(const void *)oper->variable;
+
+		needed += sizeof(*npca);
+
+		if (len < needed)
+			return false;
+
+		if (npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES))
+			needed += sizeof(npca->dis_subch_bmap[0]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return len >= needed;
@@ -310,6 +337,7 @@ static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
 static inline const struct ieee80211_uhr_npca_info *
 ieee80211_uhr_npca_info(const struct ieee80211_uhr_operation *oper)
 {
+<<<<<<< HEAD
 	const u8 *pos = oper->variable;
 
 	if (!(oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)))
@@ -319,6 +347,14 @@ ieee80211_uhr_npca_info(const struct ieee80211_uhr_operation *oper)
 		pos += sizeof(struct ieee80211_uhr_dps_info);
 
 	return (const void *)pos;
+=======
+	if (!(oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)))
+		return NULL;
+
+	/* FIXME: DPS */
+
+	return (const void *)oper->variable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline const __le16 *
@@ -372,6 +408,7 @@ ieee80211_uhr_npca_dis_subch_bitmap(const struct ieee80211_uhr_operation *oper)
 #define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES	0x08
 #define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES	0x10
 
+<<<<<<< HEAD
 /**
  * enum ieee80211_uhr_dbe_max_supported_bw - DBE Maximum Supported Bandwidth
  *
@@ -390,6 +427,8 @@ enum ieee80211_uhr_dbe_max_supported_bw {
 	IEEE80211_UHR_DBE_MAX_BW_320 = 4,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ieee80211_uhr_cap_mac {
 	u8 mac_cap[5];
 } __packed;

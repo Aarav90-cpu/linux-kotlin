@@ -980,6 +980,7 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
 		goto bail;
 	}
 
+<<<<<<< HEAD
 	if (qr->qr_numregions > O2NM_MAX_REGIONS) {
 		mlog(ML_ERROR, "Domain %s: Joining node %d has invalid "
 		     "number of heartbeat regions %u\n",
@@ -988,6 +989,8 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
 		goto bail;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	r = remote;
 	for (i = 0; i < qr->qr_numregions; ++i) {
 		mlog(0, "Region %.*s\n", O2HB_MAX_REGION_NAME_LEN, r);
@@ -1002,7 +1005,11 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
 	for (i = 0; i < localnr; ++i) {
 		foundit = 0;
 		r = remote;
+<<<<<<< HEAD
 		for (j = 0; j < qr->qr_numregions; ++j) {
+=======
+		for (j = 0; j <= qr->qr_numregions; ++j) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!memcmp(l, r, O2HB_MAX_REGION_NAME_LEN)) {
 				foundit = 1;
 				break;

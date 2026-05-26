@@ -159,7 +159,11 @@ static int nft_connlimit_obj_dump(struct sk_buff *skb,
 
 static const struct nla_policy nft_connlimit_policy[NFTA_CONNLIMIT_MAX + 1] = {
 	[NFTA_CONNLIMIT_COUNT]	= { .type = NLA_U32 },
+<<<<<<< HEAD
 	[NFTA_CONNLIMIT_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NFT_CONNLIMIT_F_INV),
+=======
+	[NFTA_CONNLIMIT_FLAGS]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_object_type nft_connlimit_obj_type;
@@ -258,6 +262,10 @@ static const struct nft_expr_ops nft_connlimit_ops = {
 	.destroy_clone	= nft_connlimit_destroy_clone,
 	.dump		= nft_connlimit_dump,
 	.gc		= nft_connlimit_gc,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_connlimit_type __read_mostly = {

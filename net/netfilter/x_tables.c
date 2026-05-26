@@ -55,9 +55,12 @@ static struct list_head xt_templates[NFPROTO_NUMPROTO];
 
 struct xt_pernet {
 	struct list_head tables[NFPROTO_NUMPROTO];
+<<<<<<< HEAD
 
 	/* stash area used during netns exit */
 	struct list_head dead_tables[NFPROTO_NUMPROTO];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct compat_delta {
@@ -480,9 +483,17 @@ int xt_check_proc_name(const char *name, unsigned int size)
 }
 EXPORT_SYMBOL(xt_check_proc_name);
 
+<<<<<<< HEAD
 static int xt_check_match_common(struct xt_mtchk_param *par,
 				 unsigned int size, u16 proto, bool inv_proto)
 {
+=======
+int xt_check_match(struct xt_mtchk_param *par,
+		   unsigned int size, u16 proto, bool inv_proto)
+{
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (XT_ALIGN(par->match->matchsize) != size &&
 	    par->match->matchsize != -1) {
 		/*
@@ -531,6 +542,7 @@ static int xt_check_match_common(struct xt_mtchk_param *par,
 				    par->match->proto);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -539,6 +551,8 @@ static int xt_checkentry_match(struct xt_mtchk_param *par)
 {
 	int ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (par->match->checkentry != NULL) {
 		ret = par->match->checkentry(par);
 		if (ret < 0)
@@ -547,6 +561,7 @@ static int xt_checkentry_match(struct xt_mtchk_param *par)
 			/* Flag up potential errors. */
 			return -EIO;
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -575,6 +590,10 @@ int xt_check_match(struct xt_mtchk_param *par,
 
 	return xt_checkentry_match(par);
 }
+=======
+	return 0;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(xt_check_match);
 
 /** xt_check_entry_match - check that matches end before start of target
@@ -854,6 +873,7 @@ EXPORT_SYMBOL_GPL(xt_compat_match_to_user);
 
 /* non-compat version may have padding after verdict */
 struct compat_xt_standard_target {
+<<<<<<< HEAD
 	/* Must be last as it ends in a flexible-array member. */
 	TRAILING_OVERLAP(struct compat_xt_entry_target, t, data,
 		compat_uint_t verdict;
@@ -865,6 +885,15 @@ struct compat_xt_error_target {
 	TRAILING_OVERLAP(struct compat_xt_entry_target, t, data,
 		char errorname[XT_FUNCTION_MAXNAMELEN];
 	);
+=======
+	struct compat_xt_entry_target t;
+	compat_uint_t verdict;
+};
+
+struct compat_xt_error_target {
+	struct compat_xt_entry_target t;
+	char errorname[XT_FUNCTION_MAXNAMELEN];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int xt_compat_check_entry_offsets(const void *base, const char *elems,
@@ -1047,9 +1076,17 @@ bool xt_find_jump_offset(const unsigned int *offsets,
 }
 EXPORT_SYMBOL(xt_find_jump_offset);
 
+<<<<<<< HEAD
 static int xt_check_target_common(struct xt_tgchk_param *par,
 				  unsigned int size, u16 proto, bool inv_proto)
 {
+=======
+int xt_check_target(struct xt_tgchk_param *par,
+		    unsigned int size, u16 proto, bool inv_proto)
+{
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (XT_ALIGN(par->target->targetsize) != size) {
 		pr_err_ratelimited("%s_tables: %s.%u target: invalid size %u (kernel) != (user) %u\n",
 				   xt_prefix[par->family], par->target->name,
@@ -1094,6 +1131,7 @@ static int xt_check_target_common(struct xt_tgchk_param *par,
 				    par->target->proto);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -1111,6 +1149,8 @@ static int xt_checkentry_target(struct xt_tgchk_param *par)
 {
 	int ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (par->target->checkentry != NULL) {
 		ret = par->target->checkentry(par);
 		if (ret < 0)
@@ -1121,6 +1161,7 @@ static int xt_checkentry_target(struct xt_tgchk_param *par)
 	}
 	return 0;
 }
+<<<<<<< HEAD
 
 int xt_check_target(struct xt_tgchk_param *par,
 		    unsigned int size, u16 proto, bool inv_proto)
@@ -1137,6 +1178,8 @@ int xt_check_target(struct xt_tgchk_param *par,
 
 	return xt_checkentry_target(par);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(xt_check_target);
 
 /**
@@ -1475,9 +1518,17 @@ struct xt_counters *xt_counters_alloc(unsigned int counters)
 }
 EXPORT_SYMBOL(xt_counters_alloc);
 
+<<<<<<< HEAD
 static struct xt_table_info *
 do_replace_table(struct xt_table *table, unsigned int num_counters,
 		 struct xt_table_info *newinfo, int *error)
+=======
+struct xt_table_info *
+xt_replace_table(struct xt_table *table,
+	      unsigned int num_counters,
+	      struct xt_table_info *newinfo,
+	      int *error)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xt_table_info *private;
 	unsigned int cpu;
@@ -1532,6 +1583,7 @@ do_replace_table(struct xt_table *table, unsigned int num_counters,
 		}
 	}
 
+<<<<<<< HEAD
 	return private;
 }
 
@@ -1548,17 +1600,27 @@ xt_replace_table(struct xt_table *table, unsigned int num_counters,
 				AUDIT_XT_OP_REPLACE,
 				GFP_KERNEL);
 
+=======
+	audit_log_nfcfg(table->name, table->af, private->number,
+			!private->number ? AUDIT_XT_OP_REGISTER :
+					   AUDIT_XT_OP_REPLACE,
+			GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return private;
 }
 EXPORT_SYMBOL_GPL(xt_replace_table);
 
 struct xt_table *xt_register_table(struct net *net,
 				   const struct xt_table *input_table,
+<<<<<<< HEAD
 				   const struct nf_hook_ops *template_ops,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   struct xt_table_info *bootstrap,
 				   struct xt_table_info *newinfo)
 {
 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
+<<<<<<< HEAD
 	struct xt_table *t, *table = NULL;
 	struct nf_hook_ops *ops = NULL;
 	struct xt_table_info *private;
@@ -1580,6 +1642,18 @@ struct xt_table *xt_register_table(struct net *net,
 	table = kmemdup(input_table, sizeof(struct xt_table), GFP_KERNEL);
 	if (!table)
 		goto out;
+=======
+	struct xt_table_info *private;
+	struct xt_table *t, *table;
+	int ret;
+
+	/* Don't add one object to multiple lists. */
+	table = kmemdup(input_table, sizeof(struct xt_table), GFP_KERNEL);
+	if (!table) {
+		ret = -ENOMEM;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&xt[table->af].mutex);
 	/* Don't autoload: we'd eat our tail... */
@@ -1593,7 +1667,11 @@ struct xt_table *xt_register_table(struct net *net,
 	/* Simplifies replace_table code. */
 	table->private = bootstrap;
 
+<<<<<<< HEAD
 	if (!do_replace_table(table, 0, newinfo, &ret))
+=======
+	if (!xt_replace_table(table, 0, newinfo, &ret))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unlock;
 
 	private = table->private;
@@ -1602,6 +1680,7 @@ struct xt_table *xt_register_table(struct net *net,
 	/* save number of initial entries */
 	private->initial_entries = private->number;
 
+<<<<<<< HEAD
 	if (ops) {
 		int i;
 
@@ -1624,19 +1703,27 @@ struct xt_table *xt_register_table(struct net *net,
 	audit_log_nfcfg(table->name, table->af, private->number,
 			AUDIT_XT_OP_REGISTER, GFP_KERNEL);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_add(&table->list, &xt_net->tables[table->af]);
 	mutex_unlock(&xt[table->af].mutex);
 	return table;
 
 unlock:
 	mutex_unlock(&xt[table->af].mutex);
+<<<<<<< HEAD
 out:
 	kfree(table);
 	kfree(ops);
+=======
+	kfree(table);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ERR_PTR(ret);
 }
 EXPORT_SYMBOL_GPL(xt_register_table);
 
+<<<<<<< HEAD
 /**
  * xt_unregister_table_pre_exit - pre-shutdown unregister of a table
  * @net: network namespace
@@ -1718,6 +1805,24 @@ struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *na
 	return NULL;
 }
 EXPORT_SYMBOL_GPL(xt_unregister_table_exit);
+=======
+void *xt_unregister_table(struct xt_table *table)
+{
+	struct xt_table_info *private;
+
+	mutex_lock(&xt[table->af].mutex);
+	private = table->private;
+	list_del(&table->list);
+	mutex_unlock(&xt[table->af].mutex);
+	audit_log_nfcfg(table->name, table->af, private->number,
+			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
+	kfree(table->ops);
+	kfree(table);
+
+	return private;
+}
+EXPORT_SYMBOL_GPL(xt_unregister_table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifdef CONFIG_PROC_FS
@@ -2164,10 +2269,15 @@ static int __net_init xt_net_init(struct net *net)
 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
 		INIT_LIST_HEAD(&xt_net->tables[i]);
 		INIT_LIST_HEAD(&xt_net->dead_tables[i]);
 	}
+=======
+	for (i = 0; i < NFPROTO_NUMPROTO; i++)
+		INIT_LIST_HEAD(&xt_net->tables[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2176,10 +2286,15 @@ static void __net_exit xt_net_exit(struct net *net)
 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
 		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
 		WARN_ON_ONCE(!list_empty(&xt_net->dead_tables[i]));
 	}
+=======
+	for (i = 0; i < NFPROTO_NUMPROTO; i++)
+		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct pernet_operations xt_net_ops = {

@@ -15,7 +15,11 @@
 	"pop %[flags]\n\t"
 
 #define flags_constraint(flags_val) [flags]"=r"(flags_val)
+<<<<<<< HEAD
 #define bt_constraint(__bt_val) [bt_val]"rm"((u32)__bt_val)
+=======
+#define bt_constraint(__bt_val) [bt_val]"rm"((uint32_t)__bt_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define guest_execute_fastop_1(FEP, insn, __val, __flags)				\
 ({											\
@@ -28,17 +32,28 @@
 #define guest_test_fastop_1(insn, type_t, __val)					\
 ({											\
 	type_t val = __val, ex_val = __val, input = __val;				\
+<<<<<<< HEAD
 	u64 flags, ex_flags;								\
+=======
+	uint64_t flags, ex_flags;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	guest_execute_fastop_1("", insn, ex_val, ex_flags);				\
 	guest_execute_fastop_1(KVM_FEP, insn, val, flags);				\
 											\
 	__GUEST_ASSERT(val == ex_val,							\
 		       "Wanted 0x%lx for '%s 0x%lx', got 0x%lx",			\
+<<<<<<< HEAD
 		       (u64)ex_val, insn, (u64)input, (u64)val);			\
 	__GUEST_ASSERT(flags == ex_flags,						\
 			"Wanted flags 0x%lx for '%s 0x%lx', got 0x%lx",			\
 			ex_flags, insn, (u64)input, flags);				\
+=======
+		       (uint64_t)ex_val, insn, (uint64_t)input, (uint64_t)val);		\
+	__GUEST_ASSERT(flags == ex_flags,						\
+			"Wanted flags 0x%lx for '%s 0x%lx', got 0x%lx",			\
+			ex_flags, insn, (uint64_t)input, flags);			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 #define guest_execute_fastop_2(FEP, insn, __input, __output, __flags)			\
@@ -52,18 +67,30 @@
 #define guest_test_fastop_2(insn, type_t, __val1, __val2)				\
 ({											\
 	type_t input = __val1, input2 = __val2, output = __val2, ex_output = __val2;	\
+<<<<<<< HEAD
 	u64 flags, ex_flags;								\
+=======
+	uint64_t flags, ex_flags;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	guest_execute_fastop_2("", insn, input, ex_output, ex_flags);			\
 	guest_execute_fastop_2(KVM_FEP, insn, input, output, flags);			\
 											\
 	__GUEST_ASSERT(output == ex_output,						\
 		       "Wanted 0x%lx for '%s 0x%lx 0x%lx', got 0x%lx",			\
+<<<<<<< HEAD
 		       (u64)ex_output, insn, (u64)input,				\
 		       (u64)input2, (u64)output);					\
 	__GUEST_ASSERT(flags == ex_flags,						\
 			"Wanted flags 0x%lx for '%s 0x%lx, 0x%lx', got 0x%lx",		\
 			ex_flags, insn, (u64)input, (u64)input2, flags);		\
+=======
+		       (uint64_t)ex_output, insn, (uint64_t)input,			\
+		       (uint64_t)input2, (uint64_t)output);				\
+	__GUEST_ASSERT(flags == ex_flags,						\
+			"Wanted flags 0x%lx for '%s 0x%lx, 0x%lx', got 0x%lx",		\
+			ex_flags, insn, (uint64_t)input, (uint64_t)input2, flags);	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 #define guest_execute_fastop_cl(FEP, insn, __shift, __output, __flags)			\
@@ -77,25 +104,43 @@
 #define guest_test_fastop_cl(insn, type_t, __val1, __val2)				\
 ({											\
 	type_t output = __val2, ex_output = __val2, input = __val2;			\
+<<<<<<< HEAD
 	u8 shift = __val1;								\
 	u64 flags, ex_flags;								\
+=======
+	uint8_t shift = __val1;								\
+	uint64_t flags, ex_flags;							\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	guest_execute_fastop_cl("", insn, shift, ex_output, ex_flags);			\
 	guest_execute_fastop_cl(KVM_FEP, insn, shift, output, flags);			\
 											\
 	__GUEST_ASSERT(output == ex_output,						\
 		       "Wanted 0x%lx for '%s 0x%x, 0x%lx', got 0x%lx",			\
+<<<<<<< HEAD
 		       (u64)ex_output, insn, shift, (u64)input,				\
 		       (u64)output);							\
 	__GUEST_ASSERT(flags == ex_flags,						\
 			"Wanted flags 0x%lx for '%s 0x%x, 0x%lx', got 0x%lx",		\
 			ex_flags, insn, shift, (u64)input, flags);			\
+=======
+		       (uint64_t)ex_output, insn, shift, (uint64_t)input,		\
+		       (uint64_t)output);						\
+	__GUEST_ASSERT(flags == ex_flags,						\
+			"Wanted flags 0x%lx for '%s 0x%x, 0x%lx', got 0x%lx",		\
+			ex_flags, insn, shift, (uint64_t)input, flags);			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 })
 
 #define guest_execute_fastop_div(__KVM_ASM_SAFE, insn, __a, __d, __rm, __flags)		\
 ({											\
+<<<<<<< HEAD
 	u64 ign_error_code;								\
 	u8 vector;									\
+=======
+	uint64_t ign_error_code;							\
+	uint8_t vector;									\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	__asm__ __volatile__(fastop(__KVM_ASM_SAFE(insn " %[denom]"))			\
 			     : "+a"(__a), "+d"(__d), flags_constraint(__flags),		\
@@ -109,8 +154,13 @@
 ({											\
 	type_t _a = __val1, _d = __val1, rm = __val2;					\
 	type_t a = _a, d = _d, ex_a = _a, ex_d = _d;					\
+<<<<<<< HEAD
 	u64 flags, ex_flags;								\
 	u8 v, ex_v;									\
+=======
+	uint64_t flags, ex_flags;							\
+	uint8_t v, ex_v;								\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 	ex_v = guest_execute_fastop_div(KVM_ASM_SAFE, insn, ex_a, ex_d, rm, ex_flags);	\
 	v = guest_execute_fastop_div(KVM_ASM_SAFE_FEP, insn, a, d, rm, flags);		\
@@ -118,6 +168,7 @@
 	GUEST_ASSERT_EQ(v, ex_v);							\
 	__GUEST_ASSERT(v == ex_v,							\
 		       "Wanted vector 0x%x for '%s 0x%lx:0x%lx/0x%lx', got 0x%x",	\
+<<<<<<< HEAD
 		       ex_v, insn, (u64)_a, (u64)_d, (u64)rm, v);			\
 	__GUEST_ASSERT(a == ex_a && d == ex_d,						\
 		       "Wanted 0x%lx:0x%lx for '%s 0x%lx:0x%lx/0x%lx', got 0x%lx:0x%lx",\
@@ -129,6 +180,19 @@
 })
 
 static const u64 vals[] = {
+=======
+		       ex_v, insn, (uint64_t)_a, (uint64_t)_d, (uint64_t)rm, v);	\
+	__GUEST_ASSERT(a == ex_a && d == ex_d,						\
+		       "Wanted 0x%lx:0x%lx for '%s 0x%lx:0x%lx/0x%lx', got 0x%lx:0x%lx",\
+		       (uint64_t)ex_a, (uint64_t)ex_d, insn, (uint64_t)_a,		\
+		       (uint64_t)_d, (uint64_t)rm, (uint64_t)a, (uint64_t)d);		\
+	__GUEST_ASSERT(v || ex_v || (flags == ex_flags),				\
+			"Wanted flags 0x%lx for '%s  0x%lx:0x%lx/0x%lx', got 0x%lx",	\
+			ex_flags, insn, (uint64_t)_a, (uint64_t)_d, (uint64_t)rm, flags);\
+})
+
+static const uint64_t vals[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0,
 	1,
 	2,
@@ -185,10 +249,17 @@ if (sizeof(type_t) != 1) {							\
 
 static void guest_code(void)
 {
+<<<<<<< HEAD
 	guest_test_fastops(u8, "b");
 	guest_test_fastops(u16, "w");
 	guest_test_fastops(u32, "l");
 	guest_test_fastops(u64, "q");
+=======
+	guest_test_fastops(uint8_t, "b");
+	guest_test_fastops(uint16_t, "w");
+	guest_test_fastops(uint32_t, "l");
+	guest_test_fastops(uint64_t, "q");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_DONE();
 }

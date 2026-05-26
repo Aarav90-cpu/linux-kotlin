@@ -97,6 +97,7 @@ RM ?= rm -f
 
 FEATURE_USER = .bpftool
 
+<<<<<<< HEAD
 # Skip optional dependencies: LLVM (JIT disasm), libbfd (fallback
 # disasm), libcrypto (program signing).
 SKIP_LLVM ?=
@@ -106,6 +107,8 @@ ifneq ($(SKIP_CRYPTO),1)
   CRYPTO_LIBS := -lcrypto
 endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FEATURE_TESTS := clang-bpf-co-re
 FEATURE_TESTS += llvm
 FEATURE_TESTS += libcap
@@ -139,8 +142,13 @@ include $(FEATURES_DUMP)
 endif
 endif
 
+<<<<<<< HEAD
 LIBS = $(LIBBPF) -lelf $(CRYPTO_LIBS) -lz
 LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf $(CRYPTO_LIBS) -lz
+=======
+LIBS = $(LIBBPF) -lelf -lcrypto -lz
+LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lcrypto -lz
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifeq ($(feature-libelf-zstd),1)
 LIBS += -lzstd
@@ -159,12 +167,16 @@ all: $(OUTPUT)bpftool
 SRCS := $(wildcard *.c)
 
 ifeq ($(feature-llvm),1)
+<<<<<<< HEAD
 ifneq ($(SKIP_LLVM),1)
 HAS_LLVM := 1
 endif
 endif
 
 ifeq ($(HAS_LLVM),1)
+=======
+  # If LLVM is available, use it for JIT disassembly
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   CFLAGS  += -DHAVE_LLVM_SUPPORT
   LLVM_CONFIG_LIB_COMPONENTS := mcdisassembler all-targets
   # llvm-config always adds -D_GNU_SOURCE, however, it may already be in CFLAGS
@@ -179,7 +191,10 @@ ifeq ($(HAS_LLVM),1)
   endif
   LDFLAGS += $(shell $(LLVM_CONFIG) --ldflags)
 else
+<<<<<<< HEAD
   ifneq ($(SKIP_LIBBFD),1)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   # Fall back on libbfd
   ifeq ($(feature-libbfd),1)
     LIBS += -lbfd -ldl -lopcodes
@@ -201,13 +216,17 @@ else
       CFLAGS += -DDISASM_INIT_STYLED
     endif
   endif
+<<<<<<< HEAD
   endif # SKIP_LIBBFD
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 ifeq ($(filter -DHAVE_LLVM_SUPPORT -DHAVE_LIBBFD_SUPPORT,$(CFLAGS)),)
   # No support for JIT disassembly
   SRCS := $(filter-out jit_disasm.c,$(SRCS))
 endif
 
+<<<<<<< HEAD
 ifeq ($(SKIP_CRYPTO),1)
   CFLAGS += -DBPFTOOL_WITHOUT_CRYPTO
   HOST_CFLAGS += -DBPFTOOL_WITHOUT_CRYPTO
@@ -217,6 +236,11 @@ endif
 BPFTOOL_BOOTSTRAP := $(BOOTSTRAP_OUTPUT)bpftool
 
 BOOTSTRAP_OBJS = $(addprefix $(BOOTSTRAP_OUTPUT),main.o common.o json_writer.o gen.o btf.o $(if $(CRYPTO_LIBS),sign.o))
+=======
+BPFTOOL_BOOTSTRAP := $(BOOTSTRAP_OUTPUT)bpftool
+
+BOOTSTRAP_OBJS = $(addprefix $(BOOTSTRAP_OUTPUT),main.o common.o json_writer.o gen.o btf.o sign.o)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 $(BOOTSTRAP_OBJS): $(LIBBPF_BOOTSTRAP)
 
 OBJS = $(patsubst %.c,$(OUTPUT)%.o,$(SRCS)) $(OUTPUT)disasm.o

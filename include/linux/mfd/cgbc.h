@@ -26,8 +26,13 @@ struct cgbc_version {
  * @io_cmd:		Pointer to the command IO memory
  * @session:		Session id returned by the Board Controller
  * @dev:		Pointer to kernel device structure
+<<<<<<< HEAD
  * @version:		Board Controller version structure
  * @lock:		Board Controller mutex
+=======
+ * @cgbc_version:	Board Controller version structure
+ * @mutex:		Board Controller mutex
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct cgbc_device_data {
 	void __iomem		*io_session;

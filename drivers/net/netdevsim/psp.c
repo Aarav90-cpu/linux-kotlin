@@ -19,7 +19,10 @@ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
 	    struct netdevsim *peer_ns, struct skb_ext **psp_ext)
 {
 	enum skb_drop_reason rc = 0;
+<<<<<<< HEAD
 	struct psp_dev *peer_psd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct psp_assoc *pas;
 	struct net *net;
 	void **ptr;
@@ -49,8 +52,12 @@ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
 	}
 
 	/* Now pretend we just received this frame */
+<<<<<<< HEAD
 	peer_psd = rcu_dereference(peer_ns->psp.dev);
 	if (peer_psd && peer_psd->config.versions & (1 << pas->version)) {
+=======
+	if (peer_ns->psp.dev->config.versions & (1 << pas->version)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool strip_icv = false;
 		u8 generation;
 
@@ -63,7 +70,12 @@ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
 
 		skb_ext_reset(skb);
 		skb->mac_len = ETH_HLEN;
+<<<<<<< HEAD
 		if (psp_dev_rcv(skb, peer_psd->id, generation, strip_icv)) {
+=======
+		if (psp_dev_rcv(skb, peer_ns->psp.dev->id, generation,
+				strip_icv)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rc = SKB_DROP_REASON_PSP_OUTPUT;
 			goto out_unlock;
 		}
@@ -210,6 +222,7 @@ static struct psp_dev_caps nsim_psp_caps = {
 	.assoc_drv_spc = sizeof(void *),
 };
 
+<<<<<<< HEAD
 static void __nsim_psp_uninit(struct netdevsim *ns, bool teardown)
 {
 	struct psp_dev *psd;
@@ -230,6 +243,13 @@ void nsim_psp_uninit(struct netdevsim *ns)
 	debugfs_remove(ns->psp.rereg);
 	mutex_destroy(&ns->psp.rereg_lock);
 	__nsim_psp_uninit(ns, true);
+=======
+void nsim_psp_uninit(struct netdevsim *ns)
+{
+	if (!IS_ERR(ns->psp.dev))
+		psp_dev_unregister(ns->psp.dev);
+	WARN_ON(ns->psp.assoc_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t
@@ -237,6 +257,7 @@ nsim_psp_rereg_write(struct file *file, const char __user *data, size_t count,
 		     loff_t *ppos)
 {
 	struct netdevsim *ns = file->private_data;
+<<<<<<< HEAD
 	struct psp_dev *psd;
 	ssize_t ret;
 
@@ -254,6 +275,16 @@ nsim_psp_rereg_write(struct file *file, const char __user *data, size_t count,
 out:
 	mutex_unlock(&ns->psp.rereg_lock);
 	return ret;
+=======
+	int err;
+
+	nsim_psp_uninit(ns);
+
+	ns->psp.dev = psp_dev_create(ns->netdev, &nsim_psp_ops,
+				     &nsim_psp_caps, ns);
+	err = PTR_ERR_OR_ZERO(ns->psp.dev);
+	return err ?: count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct file_operations nsim_psp_rereg_fops = {
@@ -266,6 +297,7 @@ static const struct file_operations nsim_psp_rereg_fops = {
 int nsim_psp_init(struct netdevsim *ns)
 {
 	struct dentry *ddir = ns->nsim_dev_port->ddir;
+<<<<<<< HEAD
 	struct psp_dev *psd;
 
 	psd = psp_dev_create(ns->netdev, &nsim_psp_ops, &nsim_psp_caps, ns);
@@ -277,5 +309,16 @@ int nsim_psp_init(struct netdevsim *ns)
 	mutex_init(&ns->psp.rereg_lock);
 	ns->psp.rereg = debugfs_create_file("psp_rereg", 0200, ddir, ns,
 					    &nsim_psp_rereg_fops);
+=======
+	int err;
+
+	ns->psp.dev = psp_dev_create(ns->netdev, &nsim_psp_ops,
+				     &nsim_psp_caps, ns);
+	err = PTR_ERR_OR_ZERO(ns->psp.dev);
+	if (err)
+		return err;
+
+	debugfs_create_file("psp_rereg", 0200, ddir, ns, &nsim_psp_rereg_fops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }

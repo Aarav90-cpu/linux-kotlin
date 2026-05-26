@@ -363,6 +363,7 @@ static inline int dquot_active(struct dquot *dquot)
 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
 }
 
+<<<<<<< HEAD
 static struct dquot *__dqgrab(struct dquot *dquot)
 {
 	lockdep_assert_held(&dq_list_lock);
@@ -388,6 +389,8 @@ struct dquot *dqgrab(struct dquot *dquot)
 }
 EXPORT_SYMBOL_GPL(dqgrab);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int dquot_dirty(struct dquot *dquot)
 {
 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
@@ -666,14 +669,24 @@ int dquot_scan_active(struct super_block *sb,
 			continue;
 		if (dquot->dq_sb != sb)
 			continue;
+<<<<<<< HEAD
 		__dqgrab(dquot);
+=======
+		/* Now we have active dquot so we can just increase use count */
+		atomic_inc(&dquot->dq_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(&dq_list_lock);
 		dqput(old_dquot);
 		old_dquot = dquot;
 		/*
 		 * ->release_dquot() can be racing with us. Our reference
+<<<<<<< HEAD
 		 * protects us from dquot_release() proceeding so just wait for
 		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
+=======
+		 * protects us from new calls to it so just wait for any
+		 * outstanding call and recheck the DQ_ACTIVE_B after that.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		wait_on_dquot(dquot);
 		if (dquot_active(dquot)) {
@@ -741,7 +754,11 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
 			/* Now we have active dquot from which someone is
  			 * holding reference so we can safely just increase
 			 * use count */
+<<<<<<< HEAD
 			__dqgrab(dquot);
+=======
+			dqgrab(dquot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_unlock(&dq_list_lock);
 			err = dquot_write_dquot(dquot);
 			if (err && !ret)
@@ -987,7 +1004,13 @@ we_slept:
 		spin_unlock(&dq_list_lock);
 		dqstats_inc(DQST_LOOKUPS);
 	} else {
+<<<<<<< HEAD
 		__dqgrab(dquot);
+=======
+		if (!atomic_read(&dquot->dq_count))
+			remove_free_dquot(dquot);
+		atomic_inc(&dquot->dq_count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(&dq_list_lock);
 		dqstats_inc(DQST_CACHE_HITS);
 		dqstats_inc(DQST_LOOKUPS);

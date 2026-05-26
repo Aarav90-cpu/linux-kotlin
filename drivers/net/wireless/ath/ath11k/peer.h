@@ -29,6 +29,10 @@ struct ath11k_peer {
 	/* Info used in MMIC verification of
 	 * RX fragments
 	 */
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm_mmic;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 mcast_keyidx;
 	u8 ucast_keyidx;
 	u16 sec_type;

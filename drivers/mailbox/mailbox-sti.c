@@ -21,6 +21,11 @@
 #include <linux/property.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define STI_MBOX_INST_MAX	4      /* RAM saving: Max supported instances */
 #define STI_MBOX_CHAN_MAX	20     /* RAM saving: Max supported channels  */
 

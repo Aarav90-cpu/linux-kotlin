@@ -160,12 +160,21 @@ struct st_sensor_int_drdy {
 
 /**
  * struct st_sensor_data_ready_irq - ST sensor device data-ready interrupt
+<<<<<<< HEAD
  * @int1: data-ready configuration register for INT1 pin.
  * @int2: data-ready configuration register for INT2 pin.
  * @addr_ihl: address to enable/disable active low on the INT lines.
  * @mask_ihl: mask to enable/disable active low on the INT lines.
  * @stat_drdy: status register of DRDY (data ready) interrupt.
  * @ig1: represents the Interrupt Generator 1 of sensors.
+=======
+ * struct int1 - data-ready configuration register for INT1 pin.
+ * struct int2 - data-ready configuration register for INT2 pin.
+ * @addr_ihl: address to enable/disable active low on the INT lines.
+ * @mask_ihl: mask to enable/disable active low on the INT lines.
+ * struct stat_drdy - status register of DRDY (data ready) interrupt.
+ * struct ig1 - represents the Interrupt Generator 1 of sensors.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @en_addr: address of the enable ig1 register.
  * @en_mask: mask to write the on/off value for enable.
  */
@@ -190,7 +199,10 @@ struct st_sensor_data_ready_irq {
  * @wai_addr: The address of WhoAmI register.
  * @sensors_supported: List of supported sensors by struct itself.
  * @ch: IIO channels for the sensor.
+<<<<<<< HEAD
  * @num_ch: Number of IIO channels in @ch
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @odr: Output data rate register and ODR list available.
  * @pw: Power register of the sensor.
  * @enable_axis: Enable one or more axis of the sensor.
@@ -229,7 +241,11 @@ struct st_sensor_settings {
  * @regmap: Pointer to specific sensor regmap configuration.
  * @enabled: Status of the sensor (false->off, true->on).
  * @odr: Output data rate of the sensor [Hz].
+<<<<<<< HEAD
  * @num_data_channels: Number of data channels used in buffer.
+=======
+ * num_data_channels: Number of data channels used in buffer.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @drdy_int_pin: Redirect DRDY on pin 1 (1) or pin 2 (2).
  * @int_pin_open_drain: Set the interrupt/DRDY to open drain.
  * @irq: the IRQ number.

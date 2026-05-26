@@ -5,13 +5,20 @@
 
 use kernel::{
     device,
+<<<<<<< HEAD
     dma::Coherent,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     firmware::Firmware,
     prelude::*,
     transmute::FromBytes, //
 };
 
 use crate::{
+<<<<<<< HEAD
+=======
+    dma::DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     firmware::BinFirmware,
     num::FromSafeCast, //
 };
@@ -45,11 +52,18 @@ impl RmRiscvUCodeDesc {
     /// Fails if the header pointed at by `bin_fw` is not within the bounds of the firmware image.
     fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
         let offset = usize::from_safe_cast(bin_fw.hdr.header_offset);
+<<<<<<< HEAD
         let end = offset.checked_add(size_of::<Self>()).ok_or(EINVAL)?;
 
         bin_fw
             .fw
             .get(offset..end)
+=======
+
+        bin_fw
+            .fw
+            .get(offset..offset + size_of::<Self>())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             .and_then(Self::from_bytes_copy)
             .ok_or(EINVAL)
     }
@@ -66,7 +80,11 @@ pub(crate) struct RiscvFirmware {
     /// Application version.
     pub(crate) app_version: u32,
     /// Device-mapped firmware image.
+<<<<<<< HEAD
     pub(crate) ucode: Coherent<[u8]>,
+=======
+    pub(crate) ucode: DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl RiscvFirmware {
@@ -79,9 +97,14 @@ impl RiscvFirmware {
         let ucode = {
             let start = usize::from_safe_cast(bin_fw.hdr.data_offset);
             let len = usize::from_safe_cast(bin_fw.hdr.data_size);
+<<<<<<< HEAD
             let end = start.checked_add(len).ok_or(EINVAL)?;
 
             Coherent::from_slice(dev, fw.data().get(start..end).ok_or(EINVAL)?, GFP_KERNEL)?
+=======
+
+            DmaObject::from_data(dev, fw.data().get(start..start + len).ok_or(EINVAL)?)?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         Ok(Self {

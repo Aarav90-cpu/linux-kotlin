@@ -1,5 +1,6 @@
 .. SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 SIGINT BEHAVIOR
 ===============
 
@@ -21,6 +22,8 @@ Also note that when using the timerlat tool in BPF mode, samples are processed
 in-kernel; RTLA only copies them out to display them to the user. A second
 SIGINT does not affect in-kernel sample aggregation.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXIT STATUS
 ===========
 

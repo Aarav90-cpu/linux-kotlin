@@ -29,7 +29,10 @@
 #include <linux/mmzone.h>
 #include <linux/llist.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/list_lru.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/ttm/ttm_caching.h>
 
 struct device;
@@ -46,7 +49,12 @@ struct ttm_tt;
  * @order: the allocation order our pages have
  * @caching: the caching type our pages have
  * @shrinker_list: our place on the global shrinker list
+<<<<<<< HEAD
  * @pages: the lru_list of pages in the pool
+=======
+ * @lock: protection of the page list
+ * @pages: the list of pages in the pool
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ttm_pool_type {
 	struct ttm_pool *pool;
@@ -55,7 +63,12 @@ struct ttm_pool_type {
 
 	struct list_head shrinker_list;
 
+<<<<<<< HEAD
 	struct list_lru pages;
+=======
+	spinlock_t lock;
+	struct list_head pages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

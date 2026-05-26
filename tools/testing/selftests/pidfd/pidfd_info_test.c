@@ -724,7 +724,10 @@ TEST(supported_mask_field)
 	ASSERT_TRUE(!!(info.supported_mask & PIDFD_INFO_COREDUMP));
 	ASSERT_TRUE(!!(info.supported_mask & PIDFD_INFO_SUPPORTED_MASK));
 	ASSERT_TRUE(!!(info.supported_mask & PIDFD_INFO_COREDUMP_SIGNAL));
+<<<<<<< HEAD
 	ASSERT_TRUE(!!(info.supported_mask & PIDFD_INFO_COREDUMP_CODE));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Clean up */
 	sys_pidfd_send_signal(pidfd, SIGKILL, NULL, 0);

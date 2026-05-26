@@ -171,6 +171,7 @@ static void test_numa_allocation(int fd, size_t total_size)
 	kvm_munmap(mem, total_size);
 }
 
+<<<<<<< HEAD
 static void test_collapse(int fd, u64 flags)
 {
 	const size_t pmd_size = get_trans_hugepagesz();
@@ -229,6 +230,8 @@ static void test_collapse(int fd, u64 flags)
 	kvm_munmap(reserved_addr, pmd_size * 2);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
 {
 	const char val = 0xaa;
@@ -346,7 +349,11 @@ static void test_invalid_punch_hole(int fd, size_t total_size)
 }
 
 static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
+<<<<<<< HEAD
 						  u64 guest_memfd_flags)
+=======
+						  uint64_t guest_memfd_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t size;
 	int fd;
@@ -389,8 +396,13 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
 
 static void test_guest_memfd_flags(struct kvm_vm *vm)
 {
+<<<<<<< HEAD
 	u64 valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
 	u64 flag;
+=======
+	uint64_t valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
+	uint64_t flag;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int fd;
 
 	for (flag = BIT(0); flag; flag <<= 1) {
@@ -408,6 +420,7 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
 	}
 }
 
+<<<<<<< HEAD
 #define __gmem_test(__test, __vm, __flags, __gmem_size)			\
 do {									\
 	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
@@ -420,6 +433,17 @@ do {									\
 	__gmem_test(__test, __vm, __flags, page_size * 4)
 
 static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
+=======
+#define gmem_test(__test, __vm, __flags)				\
+do {									\
+	int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);	\
+									\
+	test_##__test(fd, page_size * 4);				\
+	close(fd);							\
+} while (0)
+
+static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	test_create_guest_memfd_multiple(vm);
 	test_create_guest_memfd_invalid_sizes(vm, flags);
@@ -428,12 +452,18 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
 
 	if (flags & GUEST_MEMFD_FLAG_MMAP) {
 		if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
+<<<<<<< HEAD
 			size_t pmd_size = get_trans_hugepagesz();
 
 			gmem_test(mmap_supported, vm, flags);
 			gmem_test(fault_overflow, vm, flags);
 			gmem_test(numa_allocation, vm, flags);
 			__gmem_test(collapse, vm, flags, pmd_size);
+=======
+			gmem_test(mmap_supported, vm, flags);
+			gmem_test(fault_overflow, vm, flags);
+			gmem_test(numa_allocation, vm, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			gmem_test(fault_private, vm, flags);
 		}
@@ -452,7 +482,11 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
 static void test_guest_memfd(unsigned long vm_type)
 {
 	struct kvm_vm *vm = vm_create_barebones_type(vm_type);
+<<<<<<< HEAD
 	u64 flags;
+=======
+	uint64_t flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	test_guest_memfd_flags(vm);
 
@@ -470,7 +504,11 @@ static void test_guest_memfd(unsigned long vm_type)
 	kvm_vm_free(vm);
 }
 
+<<<<<<< HEAD
 static void guest_code(u8 *mem, u64 size)
+=======
+static void guest_code(uint8_t *mem, uint64_t size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t i;
 
@@ -489,12 +527,20 @@ static void test_guest_memfd_guest(void)
 	 * the guest's code, stack, and page tables, and low memory contains
 	 * the PCI hole and other MMIO regions that need to be avoided.
 	 */
+<<<<<<< HEAD
 	const gpa_t gpa = SZ_4G;
+=======
+	const uint64_t gpa = SZ_4G;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const int slot = 1;
 
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
+<<<<<<< HEAD
 	u8 *mem;
+=======
+	uint8_t *mem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t size;
 	int fd, i;
 
@@ -510,12 +556,16 @@ static void test_guest_memfd_guest(void)
 		    "Default VM type should support INIT_SHARED, supported flags = 0x%x",
 		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
 
+<<<<<<< HEAD
 	/*
 	 * Use the max of the host or guest page size for all operations, as
 	 * KVM requires guest_memfd files and memslots to be sized to multiples
 	 * of the host page size.
 	 */
 	size = max_t(size_t, vm->page_size, page_size);
+=======
+	size = vm->page_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP |
 					     GUEST_MEMFD_FLAG_INIT_SHARED);
 	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
@@ -524,7 +574,11 @@ static void test_guest_memfd_guest(void)
 	memset(mem, 0xaa, size);
 	kvm_munmap(mem, size);
 
+<<<<<<< HEAD
 	virt_map(vm, gpa, gpa, size / vm->page_size);
+=======
+	virt_pg_map(vm, gpa, gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vcpu_args_set(vcpu, 2, gpa, size);
 	vcpu_run(vcpu);
 

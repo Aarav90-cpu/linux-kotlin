@@ -14,6 +14,10 @@
 #include <linux/cpufeature.h>
 #include <linux/crypto.h>
 #include <asm/cputable.h>
+<<<<<<< HEAD
+=======
+#include <crypto/internal/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/internal/skcipher.h>
 
 #include "aesp8-ppc.h"
@@ -22,10 +26,21 @@ static int __init p8_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = crypto_register_skcipher(&p8_aes_cbc_alg);
 	if (ret)
 		goto err;
 
+=======
+	ret = crypto_register_shash(&p8_ghash_alg);
+	if (ret)
+		goto err;
+
+	ret = crypto_register_skcipher(&p8_aes_cbc_alg);
+	if (ret)
+		goto err_unregister_ghash;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = crypto_register_skcipher(&p8_aes_ctr_alg);
 	if (ret)
 		goto err_unregister_aes_cbc;
@@ -40,6 +55,11 @@ err_unregister_aes_ctr:
 	crypto_unregister_skcipher(&p8_aes_ctr_alg);
 err_unregister_aes_cbc:
 	crypto_unregister_skcipher(&p8_aes_cbc_alg);
+<<<<<<< HEAD
+=======
+err_unregister_ghash:
+	crypto_unregister_shash(&p8_ghash_alg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err:
 	return ret;
 }
@@ -49,6 +69,10 @@ static void __exit p8_exit(void)
 	crypto_unregister_skcipher(&p8_aes_xts_alg);
 	crypto_unregister_skcipher(&p8_aes_ctr_alg);
 	crypto_unregister_skcipher(&p8_aes_cbc_alg);
+<<<<<<< HEAD
+=======
+	crypto_unregister_shash(&p8_ghash_alg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_cpu_feature_match(PPC_MODULE_FEATURE_VEC_CRYPTO, p8_init);

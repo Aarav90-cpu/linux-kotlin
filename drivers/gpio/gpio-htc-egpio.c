@@ -46,8 +46,13 @@ struct egpio_info {
 	uint              chained_irq;
 
 	/* egpio info */
+<<<<<<< HEAD
 	int               nchips;
 	struct egpio_chip chip[] __counted_by(nchips);
+=======
+	struct egpio_chip *chip;
+	int               nchips;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline void egpio_writew(u16 value, struct egpio_info *ei, int reg)
@@ -270,12 +275,19 @@ static int __init egpio_probe(struct platform_device *pdev)
 	int               i;
 
 	/* Initialize ei data structure. */
+<<<<<<< HEAD
 	ei = devm_kzalloc(&pdev->dev, struct_size(ei, chip, pdata->num_chips), GFP_KERNEL);
 	if (!ei)
 		return -ENOMEM;
 
 	ei->nchips = pdata->num_chips;
 
+=======
+	ei = devm_kzalloc(&pdev->dev, sizeof(*ei), GFP_KERNEL);
+	if (!ei)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&ei->lock);
 
 	/* Find chained irq */
@@ -304,6 +316,16 @@ static int __init egpio_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ei);
 
+<<<<<<< HEAD
+=======
+	ei->nchips = pdata->num_chips;
+	ei->chip = devm_kcalloc(&pdev->dev,
+				ei->nchips, sizeof(struct egpio_chip),
+				GFP_KERNEL);
+	if (!ei->chip)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < ei->nchips; i++) {
 		ei->chip[i].reg_start = pdata->chip[i].reg_start;
 		ei->chip[i].cached_values = pdata->chip[i].initial_values;

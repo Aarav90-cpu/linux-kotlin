@@ -5,7 +5,10 @@
  * Copyright 2011 Analog Devices Inc.
  */
 
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/device.h>
@@ -195,7 +198,12 @@ static int ad5933_set_freq(struct ad5933_state *st,
 		u8 d8[4];
 	} dat;
 
+<<<<<<< HEAD
 	freqreg = div64_ul(BIT_ULL(27) * freq, st->mclk_hz / 4);
+=======
+	freqreg = (u64)freq * (u64)(1 << 27);
+	do_div(freqreg, st->mclk_hz / 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (reg) {
 	case AD5933_REG_FREQ_START:
@@ -285,7 +293,11 @@ static ssize_t ad5933_show_frequency(struct device *dev,
 	freqreg = (u64)freqreg * (u64)(st->mclk_hz / 4);
 	do_div(freqreg, BIT(27));
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%llu\n", freqreg);
+=======
+	return sprintf(buf, "%d\n", (int)freqreg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t ad5933_store_frequency(struct device *dev,
@@ -338,6 +350,7 @@ static ssize_t ad5933_show(struct device *dev,
 	mutex_lock(&st->lock);
 	switch ((u32)this_attr->address) {
 	case AD5933_OUT_RANGE:
+<<<<<<< HEAD
 		len = sysfs_emit(buf, "%u\n",
 				 st->range_avail[(st->ctrl_hb >> 1) & 0x3]);
 		break;
@@ -359,6 +372,29 @@ static ssize_t ad5933_show(struct device *dev,
 		break;
 	case AD5933_FREQ_POINTS:
 		len = sysfs_emit(buf, "%d\n", st->freq_points);
+=======
+		len = sprintf(buf, "%u\n",
+			      st->range_avail[(st->ctrl_hb >> 1) & 0x3]);
+		break;
+	case AD5933_OUT_RANGE_AVAIL:
+		len = sprintf(buf, "%u %u %u %u\n", st->range_avail[0],
+			      st->range_avail[3], st->range_avail[2],
+			      st->range_avail[1]);
+		break;
+	case AD5933_OUT_SETTLING_CYCLES:
+		len = sprintf(buf, "%d\n", st->settling_cycles);
+		break;
+	case AD5933_IN_PGA_GAIN:
+		len = sprintf(buf, "%s\n",
+			      (st->ctrl_hb & AD5933_CTRL_PGA_GAIN_1) ?
+			      "1" : "0.2");
+		break;
+	case AD5933_IN_PGA_GAIN_AVAIL:
+		len = sprintf(buf, "1 0.2\n");
+		break;
+	case AD5933_FREQ_POINTS:
+		len = sprintf(buf, "%d\n", st->freq_points);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		ret = -EINVAL;

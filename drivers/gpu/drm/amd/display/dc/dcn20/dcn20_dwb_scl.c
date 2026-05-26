@@ -746,7 +746,11 @@ bool dwb_program_horz_scalar(struct dcn20_dwbc *dwbc20,
 		src_width, dest_width);
 
 	if (dc_fixpt_floor(tmp_h_ratio_luma) == 8)
+<<<<<<< HEAD
 		h_ratio_luma = (uint32_t)-1;
+=======
+		h_ratio_luma = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		h_ratio_luma = dc_fixpt_u3d19(tmp_h_ratio_luma) << 5;
 
@@ -824,7 +828,11 @@ bool dwb_program_vert_scalar(struct dcn20_dwbc *dwbc20,
 		src_height, dest_height);
 
 	if (dc_fixpt_floor(tmp_v_ratio_luma) == 8)
+<<<<<<< HEAD
 		v_ratio_luma = (uint32_t)-1;
+=======
+		v_ratio_luma = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		v_ratio_luma = dc_fixpt_u3d19(tmp_v_ratio_luma) << 5;
 

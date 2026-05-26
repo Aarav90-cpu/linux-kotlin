@@ -138,7 +138,10 @@ config TRACE_MMIO_ACCESS
 
 source "lib/crc/Kconfig"
 source "lib/crypto/Kconfig"
+<<<<<<< HEAD
 source "lib/raid/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config XXHASH
 	tristate
@@ -626,6 +629,12 @@ config PLDMFW
 config ASN1_ENCODER
        tristate
 
+<<<<<<< HEAD
+=======
+config POLYNOMIAL
+       tristate
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config FIRMWARE_TABLE
 	bool
 

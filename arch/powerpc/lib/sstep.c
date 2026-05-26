@@ -329,17 +329,33 @@ Efault:
 static nokprobe_inline int
 read_mem_aligned(unsigned long *dest, unsigned long ea, int nb, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	void __user *uea = (void __user *)ea;
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_kernel_addr(ea))
 		return __read_mem_aligned(dest, ea, nb, regs);
 
+<<<<<<< HEAD
 	scoped_user_read_access_size(uea, nb, efault)
 		return __read_mem_aligned(dest, (unsigned long)uea, nb, regs);
 
 efault:
 	regs->dar = ea;
 	return -EFAULT;
+=======
+	if (user_read_access_begin((void __user *)ea, nb)) {
+		err = __read_mem_aligned(dest, ea, nb, regs);
+		user_read_access_end();
+	} else {
+		err = -EFAULT;
+		regs->dar = ea;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -382,17 +398,33 @@ Efault:
 
 static nokprobe_inline int copy_mem_in(u8 *dest, unsigned long ea, int nb, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	void __user *uea = (void __user *)ea;
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_kernel_addr(ea))
 		return __copy_mem_in(dest, ea, nb, regs);
 
+<<<<<<< HEAD
 	scoped_user_read_access_size(uea, nb, efault)
 		return __copy_mem_in(dest, (unsigned long)uea, nb, regs);
 
 efault:
 	regs->dar = ea;
 	return -EFAULT;
+=======
+	if (user_read_access_begin((void __user *)ea, nb)) {
+		err = __copy_mem_in(dest, ea, nb, regs);
+		user_read_access_end();
+	} else {
+		err = -EFAULT;
+		regs->dar = ea;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static nokprobe_inline int read_mem_unaligned(unsigned long *dest,
@@ -459,17 +491,33 @@ Efault:
 static nokprobe_inline int
 write_mem_aligned(unsigned long val, unsigned long ea, int nb, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	void __user *uea = (void __user *)ea;
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_kernel_addr(ea))
 		return __write_mem_aligned(val, ea, nb, regs);
 
+<<<<<<< HEAD
 	scoped_user_write_access_size(uea, nb, efault)
 		return __write_mem_aligned(val, (unsigned long)uea, nb, regs);
 
 efault:
 	regs->dar = ea;
 	return -EFAULT;
+=======
+	if (user_write_access_begin((void __user *)ea, nb)) {
+		err = __write_mem_aligned(val, ea, nb, regs);
+		user_write_access_end();
+	} else {
+		err = -EFAULT;
+		regs->dar = ea;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -512,17 +560,33 @@ Efault:
 
 static nokprobe_inline int copy_mem_out(u8 *dest, unsigned long ea, int nb, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	void __user *uea = (void __user *)ea;
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_kernel_addr(ea))
 		return __copy_mem_out(dest, ea, nb, regs);
 
+<<<<<<< HEAD
 	scoped_user_write_access_size(uea, nb, efault)
 		return __copy_mem_out(dest, (unsigned long)uea, nb, regs);
 
 efault:
 	regs->dar = ea;
 	return -EFAULT;
+=======
+	if (user_write_access_begin((void __user *)ea, nb)) {
+		err = __copy_mem_out(dest, ea, nb, regs);
+		user_write_access_end();
+	} else {
+		err = -EFAULT;
+		regs->dar = ea;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static nokprobe_inline int write_mem_unaligned(unsigned long val,
@@ -1053,7 +1117,10 @@ Efault:
 
 int emulate_dcbz(unsigned long ea, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	void __user *uea = (void __user *)ea;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 	unsigned long size = l1_dcache_bytes();
 
@@ -1062,20 +1129,36 @@ int emulate_dcbz(unsigned long ea, struct pt_regs *regs)
 	if (!address_ok(regs, ea, size))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if (is_kernel_addr(ea))
 		err = __emulate_dcbz(ea);
 	else
 		scoped_user_write_access_size(uea, size, efault)
 			err = __emulate_dcbz((unsigned long)uea);
+=======
+	if (is_kernel_addr(ea)) {
+		err = __emulate_dcbz(ea);
+	} else if (user_write_access_begin((void __user *)ea, size)) {
+		err = __emulate_dcbz(ea);
+		user_write_access_end();
+	} else {
+		err = -EFAULT;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (err)
 		regs->dar = ea;
 
+<<<<<<< HEAD
 	return err;
 
 efault:
 	regs->dar = ea;
 	return -EFAULT;
+=======
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 NOKPROBE_SYMBOL(emulate_dcbz);
 

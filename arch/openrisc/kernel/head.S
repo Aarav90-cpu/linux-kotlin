@@ -1563,6 +1563,12 @@ _string_nl:
  */
 	.section .data,"aw"
 	.align	8192
+<<<<<<< HEAD
+=======
+	.global  empty_zero_page
+empty_zero_page:
+	.space  8192
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.global  swapper_pg_dir
 swapper_pg_dir:

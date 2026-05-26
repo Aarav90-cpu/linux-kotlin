@@ -66,15 +66,21 @@
 #define PCI_DEVICE_ID_CISCO_VIC_ENET         0x0043  /* ethernet vnic */
 #define PCI_DEVICE_ID_CISCO_VIC_ENET_DYN     0x0044  /* enet dynamic vnic */
 #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF      0x0071  /* enet SRIOV VF */
+<<<<<<< HEAD
 #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
 #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC 0x00cf /* enet USNIC VF */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Supported devices */
 static const struct pci_device_id enic_id_table[] = {
 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET) },
 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_DYN) },
 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF) },
+<<<<<<< HEAD
 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ 0, }	/* end of table */
 };
 
@@ -310,8 +316,12 @@ int enic_sriov_enabled(struct enic *enic)
 
 static int enic_is_sriov_vf(struct enic *enic)
 {
+<<<<<<< HEAD
 	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF ||
 	       enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2;
+=======
+	return enic->pdev->device == PCI_DEVICE_ID_CISCO_VIC_ENET_VF;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int enic_is_valid_vf(struct enic *enic, int vf)
@@ -1750,11 +1760,15 @@ static int enic_open(struct net_device *netdev)
 	if (vnic_dev_get_intr_mode(enic->vdev) == VNIC_DEV_INTR_MODE_MSIX)
 		for (i = 0; i < enic->wq_count; i++)
 			napi_enable(&enic->napi[enic_cq_wq(enic, i)]);
+<<<<<<< HEAD
 	err = enic_dev_enable(enic);
 	if (err) {
 		netdev_err(netdev, "Failed to enable device: %d\n", err);
 		goto err_out_dev_enable;
 	}
+=======
+	enic_dev_enable(enic);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < enic->intr_count; i++)
 		vnic_intr_unmask(&enic->intr[i]);
@@ -1764,6 +1778,7 @@ static int enic_open(struct net_device *netdev)
 
 	return 0;
 
+<<<<<<< HEAD
 err_out_dev_enable:
 	for (i = 0; i < enic->rq_count; i++)
 		napi_disable(&enic->napi[i]);
@@ -1775,6 +1790,8 @@ err_out_dev_enable:
 		enic_dev_del_station_addr(enic);
 	for (i = 0; i < enic->wq_count; i++)
 		vnic_wq_disable(&enic->wq[i].vwq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_out_free_rq:
 	for (i = 0; i < enic->rq_count; i++) {
 		ret = vnic_rq_disable(&enic->rq[i].vrq);
@@ -2637,6 +2654,7 @@ static void enic_iounmap(struct enic *enic)
 			iounmap(enic->bar[i].vaddr);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PCI_IOV
 static void enic_sriov_detect_vf_type(struct enic *enic)
 {
@@ -2672,6 +2690,8 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
 	struct device *dev = &pdev->dev;
@@ -2785,7 +2805,10 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 			num_pps = enic->num_vfs;
 		}
 	}
+<<<<<<< HEAD
 	enic_sriov_detect_vf_type(enic);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 	/* Allocate structure for port profiles */

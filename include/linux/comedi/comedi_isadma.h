@@ -48,11 +48,18 @@ struct comedi_isadma_desc {
  */
 struct comedi_isadma {
 	struct device *dev;
+<<<<<<< HEAD
+=======
+	struct comedi_isadma_desc *desc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int n_desc;
 	int cur_dma;
 	unsigned int chan;
 	unsigned int chan2;
+<<<<<<< HEAD
 	struct comedi_isadma_desc desc[] __counted_by(n_desc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if IS_ENABLED(CONFIG_ISA_DMA_API)

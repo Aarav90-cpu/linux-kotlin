@@ -415,7 +415,11 @@ struct __kernel_timespec;
 struct old_timespec32;
 
 struct scm_timestamping_internal {
+<<<<<<< HEAD
 	ktime_t ts[3];
+=======
+	struct timespec64 ts[3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern void put_cmsg_scm_timestamping64(struct msghdr *msg, struct scm_timestamping_internal *tss);

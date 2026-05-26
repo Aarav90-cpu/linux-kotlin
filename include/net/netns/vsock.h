@@ -20,7 +20,10 @@ struct netns_vsock {
 
 	/* 0 = unlocked, 1 = locked to global, 2 = locked to local */
 	int child_ns_mode_locked;
+<<<<<<< HEAD
 
 	int g2h_fallback;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #endif /* __NET_NET_NAMESPACE_VSOCK_H */

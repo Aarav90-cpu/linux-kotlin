@@ -598,8 +598,11 @@ static int pcistub_seize(struct pci_dev *dev,
 	return err;
 }
 
+<<<<<<< HEAD
 static struct pci_driver xen_pcibk_pci_driver;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Called when 'bind'. This means we must _NOT_ call pci_reset_function or
  * other functions that take the sysfs lock. */
 static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
@@ -611,8 +614,13 @@ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
 
 	match = pcistub_match(dev);
 
+<<<<<<< HEAD
 	if (device_match_driver_override(&dev->dev,
 					 &xen_pcibk_pci_driver.driver) > 0 ||
+=======
+	if ((dev->driver_override &&
+	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    match) {
 
 		if (dev->hdr_type != PCI_HEADER_TYPE_NORMAL

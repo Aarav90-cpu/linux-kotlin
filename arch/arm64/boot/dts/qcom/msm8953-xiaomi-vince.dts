@@ -169,7 +169,11 @@
 
 &pmi8950_wled {
 	qcom,current-limit-microamp = <20000>;
+<<<<<<< HEAD
 	qcom,ovp-millivolt = <29500>;
+=======
+	qcom,ovp-millivolt = <29600>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qcom,num-strings = <2>;
 	qcom,external-pfet;
 	qcom,cabc;

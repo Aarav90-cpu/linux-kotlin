@@ -695,9 +695,12 @@ static bool CalculatePrefetchSchedule(
 		double *VUpdateWidthPix,
 		double *VReadyOffsetPix)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
 	(void)XFCEnabled;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool MyError = false;
 	unsigned int DPPCycles, DISPCLKCycles;
 	double DSTTotalPixelsAfterScaler, TotalRepeaterDelayTime;
@@ -1293,8 +1296,11 @@ static unsigned int CalculateVMAndRowBytes(
 		unsigned int *DPDE0BytesFrame,
 		unsigned int *MetaPTEBytesFrame)
 {
+<<<<<<< HEAD
 	(void)SourcePixelFormat;
 	(void)ViewportWidth;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int MPDEBytesFrame;
 	unsigned int DCCMetaSurfaceBytes;
 	unsigned int MacroTileSizeBytes;
@@ -3045,7 +3051,10 @@ static double CalculateRemoteSurfaceFlipDelay(
 		double *TInitXFill,
 		double *TslvChk)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double TSlvSetup, AvgfillRate, result;
 
 	*SrcActiveDrainRate = VRatio * SwathWidth * Bpp / LineTime;
@@ -3193,7 +3202,10 @@ static void CalculateFlipSchedule(
 		double *final_flip_bw,
 		bool *ImmediateFlipSupportedForPipe)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double min_row_time = 0.0;
 	unsigned int HostVMDynamicLevels;
 	double TimeForFetchingMetaPTEImmediateFlip;
@@ -5301,6 +5313,7 @@ static void CalculateWatermarksAndDRAMSpeedChangeSupport(
 		double *StutterEnterPlusExitWatermark,
 		double *MinActiveDRAMClockChangeLatencySupported)
 {
+<<<<<<< HEAD
 	(void)DPPCLK;
 	(void)SwathWidthSingleDPPY;
 	(void)DCFCLK;
@@ -5310,6 +5323,8 @@ static void CalculateWatermarksAndDRAMSpeedChangeSupport(
 	(void)dpte_group_bytes;
 	(void)MetaChunkSize;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double EffectiveLBLatencyHidingY;
 	double EffectiveLBLatencyHidingC;
 	double DPPOutputBufferLinesY;
@@ -5320,7 +5335,11 @@ static void CalculateWatermarksAndDRAMSpeedChangeSupport(
 	double LinesInDETC;
 	unsigned int LinesInDETYRoundedDownToSwath[DC__NUM_DPP__MAX];
 	unsigned int LinesInDETCRoundedDownToSwath;
+<<<<<<< HEAD
 	double FullDETBufferingTimeY[DC__NUM_DPP__MAX] = { 0 };
+=======
+	double FullDETBufferingTimeY[DC__NUM_DPP__MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double FullDETBufferingTimeC;
 	double ActiveDRAMClockChangeLatencyMarginY;
 	double ActiveDRAMClockChangeLatencyMarginC;
@@ -5901,9 +5920,12 @@ static void CalculateMetaAndPTETimes(
 		double TimePerVMRequestVBlank[],
 		double TimePerVMRequestFlip[])
 {
+<<<<<<< HEAD
 	(void)VRatioPrefetchY;
 	(void)VRatioPrefetchC;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int meta_chunk_width;
 	unsigned int min_meta_chunk_width;
 	unsigned int meta_chunk_per_row_int;

@@ -22,6 +22,7 @@ properties:
               - phytec,phy3250
           - const: nxp,lpc3250
 
+<<<<<<< HEAD
       - items:
           - enum:
               - ea,lpc4357-developers-kit
@@ -44,5 +45,7 @@ properties:
               - myir,myd-lpc4357
           - const: nxp,lpc4357
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: true
 ...

@@ -958,7 +958,11 @@ static int nxp_xspi_do_op(struct nxp_xspi *xspi, const struct spi_mem_op *op)
 		writel(reg, base + XSPI_RBCT);
 	}
 
+<<<<<<< HEAD
 	reinit_completion(&xspi->c);
+=======
+	init_completion(&xspi->c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Config the data address */
 	writel(op->addr.val + xspi->memmap_phy, base + XSPI_SFP_TG_SFAR);
@@ -1273,7 +1277,10 @@ static int nxp_xspi_probe(struct platform_device *pdev)
 
 	nxp_xspi_default_setup(xspi);
 
+<<<<<<< HEAD
 	init_completion(&xspi->c);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = devm_request_irq(dev, irq,
 			nxp_xspi_irq_handler, 0, pdev->name, xspi);
 	if (ret)

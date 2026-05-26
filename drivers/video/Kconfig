@@ -37,7 +37,10 @@ source "drivers/char/agp/Kconfig"
 
 source "drivers/gpu/vga/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gpu/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 source "drivers/gpu/host1x/Kconfig"
 source "drivers/gpu/ipu-v3/Kconfig"
 source "drivers/gpu/nova-core/Kconfig"

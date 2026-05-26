@@ -20,9 +20,15 @@
 
 #define KVM_UTIL_MIN_PFN	2
 
+<<<<<<< HEAD
 u32 guest_random_seed;
 struct guest_random_state guest_rng;
 static u32 last_guest_seed;
+=======
+uint32_t guest_random_seed;
+struct guest_random_state guest_rng;
+static uint32_t last_guest_seed;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static size_t vcpu_mmap_sz(void);
 
@@ -165,7 +171,11 @@ unsigned int kvm_check_cap(long cap)
 	return (unsigned int)ret;
 }
 
+<<<<<<< HEAD
 void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
+=======
+void vm_enable_dirty_ring(struct kvm_vm *vm, uint32_t ring_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
 		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
@@ -189,7 +199,11 @@ static void vm_open(struct kvm_vm *vm)
 		vm->stats.fd = -1;
 }
 
+<<<<<<< HEAD
 const char *vm_guest_mode_string(u32 i)
+=======
+const char *vm_guest_mode_string(uint32_t i)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	static const char * const strings[] = {
 		[VM_MODE_P52V48_4K]	= "PA-bits:52,  VA-bits:48,  4K pages",
@@ -267,7 +281,11 @@ _Static_assert(sizeof(vm_guest_mode_params)/sizeof(struct vm_guest_mode_params) 
  * based on the MSB of the VA. On architectures with this behavior
  * the VA region spans [0, 2^(va_bits - 1)), [-(2^(va_bits - 1), -1].
  */
+<<<<<<< HEAD
 __weak void vm_populate_gva_bitmap(struct kvm_vm *vm)
+=======
+__weak void vm_vaddr_populate_bitmap(struct kvm_vm *vm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sparsebit_set_num(vm->vpages_valid,
 		0, (1ULL << (vm->va_bits - 1)) >> vm->page_shift);
@@ -385,7 +403,11 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
 
 	/* Limit to VA-bit canonical virtual addresses. */
 	vm->vpages_valid = sparsebit_alloc();
+<<<<<<< HEAD
 	vm_populate_gva_bitmap(vm);
+=======
+	vm_vaddr_populate_bitmap(vm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Limit physical addresses to PA-bits. */
 	vm->max_gfn = vm_compute_max_gfn(vm);
@@ -396,12 +418,21 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
 	return vm;
 }
 
+<<<<<<< HEAD
 static u64 vm_nr_pages_required(enum vm_guest_mode mode,
 				u32 nr_runnable_vcpus,
 				u64 extra_mem_pages)
 {
 	u64 page_size = vm_guest_mode_params[mode].page_size;
 	u64 nr_pages;
+=======
+static uint64_t vm_nr_pages_required(enum vm_guest_mode mode,
+				     uint32_t nr_runnable_vcpus,
+				     uint64_t extra_mem_pages)
+{
+	uint64_t page_size = vm_guest_mode_params[mode].page_size;
+	uint64_t nr_pages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(nr_runnable_vcpus,
 		    "Use vm_create_barebones() for VMs that _never_ have vCPUs");
@@ -435,7 +466,11 @@ static u64 vm_nr_pages_required(enum vm_guest_mode mode,
 	return vm_adjust_num_guest_pages(mode, nr_pages);
 }
 
+<<<<<<< HEAD
 void kvm_set_files_rlimit(u32 nr_vcpus)
+=======
+void kvm_set_files_rlimit(uint32_t nr_vcpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Each vCPU will open two file descriptors: the vCPU itself and the
@@ -476,10 +511,17 @@ static bool is_guest_memfd_required(struct vm_shape shape)
 #endif
 }
 
+<<<<<<< HEAD
 struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
 			   u64 nr_extra_pages)
 {
 	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+=======
+struct kvm_vm *__vm_create(struct vm_shape shape, uint32_t nr_runnable_vcpus,
+			   uint64_t nr_extra_pages)
+{
+	uint64_t nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						 nr_extra_pages);
 	struct userspace_mem_region *slot0;
 	struct kvm_vm *vm;
@@ -546,8 +588,13 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
  * extra_mem_pages is only used to calculate the maximum page table size,
  * no real memory allocation for non-slot0 memory in this function.
  */
+<<<<<<< HEAD
 struct kvm_vm *__vm_create_with_vcpus(struct vm_shape shape, u32 nr_vcpus,
 				      u64 extra_mem_pages,
+=======
+struct kvm_vm *__vm_create_with_vcpus(struct vm_shape shape, uint32_t nr_vcpus,
+				      uint64_t extra_mem_pages,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      void *guest_code, struct kvm_vcpu *vcpus[])
 {
 	struct kvm_vm *vm;
@@ -566,7 +613,11 @@ struct kvm_vm *__vm_create_with_vcpus(struct vm_shape shape, u32 nr_vcpus,
 
 struct kvm_vm *__vm_create_shape_with_one_vcpu(struct vm_shape shape,
 					       struct kvm_vcpu **vcpu,
+<<<<<<< HEAD
 					       u64 extra_mem_pages,
+=======
+					       uint64_t extra_mem_pages,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       void *guest_code)
 {
 	struct kvm_vcpu *vcpus[1];
@@ -614,7 +665,11 @@ void kvm_vm_restart(struct kvm_vm *vmp)
 }
 
 __weak struct kvm_vcpu *vm_arch_vcpu_recreate(struct kvm_vm *vm,
+<<<<<<< HEAD
 					      u32 vcpu_id)
+=======
+					      uint32_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return __vm_vcpu_add(vm, vcpu_id);
 }
@@ -636,9 +691,15 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
 	return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
 }
 
+<<<<<<< HEAD
 static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
 {
 	u32 pcpu = atoi_non_negative("CPU number", cpu_str);
+=======
+static uint32_t parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
+{
+	uint32_t pcpu = atoi_non_negative("CPU number", cpu_str);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(CPU_ISSET(pcpu, allowed_mask),
 		    "Not allowed to run on pCPU '%d', check cgroups?", pcpu);
@@ -662,7 +723,11 @@ void kvm_print_vcpu_pinning_help(void)
 	       "     (default: no pinning)\n", name, name);
 }
 
+<<<<<<< HEAD
 void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
+=======
+void kvm_parse_vcpu_pinning(const char *pcpus_string, uint32_t vcpu_to_pcpu[],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    int nr_vcpus)
 {
 	cpu_set_t allowed_mask;
@@ -715,15 +780,24 @@ void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
  * region exists.
  */
 static struct userspace_mem_region *
+<<<<<<< HEAD
 userspace_mem_region_find(struct kvm_vm *vm, u64 start, u64 end)
+=======
+userspace_mem_region_find(struct kvm_vm *vm, uint64_t start, uint64_t end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *node;
 
 	for (node = vm->regions.gpa_tree.rb_node; node; ) {
 		struct userspace_mem_region *region =
 			container_of(node, struct userspace_mem_region, gpa_node);
+<<<<<<< HEAD
 		u64 existing_start = region->region.guest_phys_addr;
 		u64 existing_end = region->region.guest_phys_addr
+=======
+		uint64_t existing_start = region->region.guest_phys_addr;
+		uint64_t existing_end = region->region.guest_phys_addr
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			+ region->region.memory_size - 1;
 		if (start <= existing_end && end >= existing_start)
 			return region;
@@ -918,8 +992,13 @@ static void vm_userspace_mem_region_hva_insert(struct rb_root *hva_tree,
 }
 
 
+<<<<<<< HEAD
 int __vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
 				gpa_t gpa, u64 size, void *hva)
+=======
+int __vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+				uint64_t gpa, uint64_t size, void *hva)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_userspace_memory_region region = {
 		.slot = slot,
@@ -932,8 +1011,13 @@ int __vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
 	return ioctl(vm->fd, KVM_SET_USER_MEMORY_REGION, &region);
 }
 
+<<<<<<< HEAD
 void vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
 			       gpa_t gpa, u64 size, void *hva)
+=======
+void vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+			       uint64_t gpa, uint64_t size, void *hva)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = __vm_set_user_memory_region(vm, slot, flags, gpa, size, hva);
 
@@ -945,9 +1029,15 @@ void vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
 	__TEST_REQUIRE(kvm_has_cap(KVM_CAP_USER_MEMORY2),	\
 		       "KVM selftests now require KVM_SET_USER_MEMORY_REGION2 (introduced in v6.8)")
 
+<<<<<<< HEAD
 int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
 				 gpa_t gpa, u64 size, void *hva,
 				 u32 guest_memfd, u64 guest_memfd_offset)
+=======
+int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+				 uint64_t gpa, uint64_t size, void *hva,
+				 uint32_t guest_memfd, uint64_t guest_memfd_offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_userspace_memory_region2 region = {
 		.slot = slot,
@@ -964,9 +1054,15 @@ int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
 	return ioctl(vm->fd, KVM_SET_USER_MEMORY_REGION2, &region);
 }
 
+<<<<<<< HEAD
 void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
 				gpa_t gpa, u64 size, void *hva,
 				u32 guest_memfd, u64 guest_memfd_offset)
+=======
+void vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+				uint64_t gpa, uint64_t size, void *hva,
+				uint32_t guest_memfd, uint64_t guest_memfd_offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = __vm_set_user_memory_region2(vm, slot, flags, gpa, size, hva,
 					       guest_memfd, guest_memfd_offset);
@@ -978,14 +1074,23 @@ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
 
 /* FIXME: This thing needs to be ripped apart and rewritten. */
 void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+<<<<<<< HEAD
 		gpa_t gpa, u32 slot, u64 npages, u32 flags,
 		int guest_memfd, u64 guest_memfd_offset)
+=======
+		uint64_t gpa, uint32_t slot, uint64_t npages, uint32_t flags,
+		int guest_memfd, uint64_t guest_memfd_offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct userspace_mem_region *region;
 	size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
 	size_t mem_size = npages * vm->page_size;
+<<<<<<< HEAD
 	size_t alignment = 1;
+=======
+	size_t alignment;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
 
@@ -1016,8 +1121,13 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 			"  requested gpa: 0x%lx npages: 0x%lx page_size: 0x%x\n"
 			"  existing gpa: 0x%lx size: 0x%lx",
 			gpa, npages, vm->page_size,
+<<<<<<< HEAD
 			(u64)region->region.guest_phys_addr,
 			(u64)region->region.memory_size);
+=======
+			(uint64_t) region->region.guest_phys_addr,
+			(uint64_t) region->region.memory_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Confirm no region with the requested slot already exists. */
 	hash_for_each_possible(vm->regions.slot_hash, region, slot_node,
@@ -1027,11 +1137,19 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 
 		TEST_FAIL("A mem region with the requested slot "
 			"already exists.\n"
+<<<<<<< HEAD
 			"  requested slot: %u gpa: 0x%lx npages: 0x%lx\n"
 			"  existing slot: %u gpa: 0x%lx size: 0x%lx",
 			slot, gpa, npages, region->region.slot,
 			(u64)region->region.guest_phys_addr,
 			(u64)region->region.memory_size);
+=======
+			"  requested slot: %u paddr: 0x%lx npages: 0x%lx\n"
+			"  existing slot: %u paddr: 0x%lx size: 0x%lx",
+			slot, gpa, npages, region->region.slot,
+			(uint64_t) region->region.guest_phys_addr,
+			(uint64_t) region->region.memory_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Allocate and initialize new mem region structure. */
@@ -1039,6 +1157,16 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 	TEST_ASSERT(region != NULL, "Insufficient Memory");
 	region->mmap_size = mem_size;
 
+<<<<<<< HEAD
+=======
+#ifdef __s390x__
+	/* On s390x, the host address must be aligned to 1M (due to PGSTEs) */
+	alignment = 0x100000;
+#else
+	alignment = 1;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * When using THP mmap is not guaranteed to returned a hugepage aligned
 	 * address so we have to pad the mmap. Padding is not needed for HugeTLB
@@ -1085,7 +1213,11 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 
 	if (flags & KVM_MEM_GUEST_MEMFD) {
 		if (guest_memfd < 0) {
+<<<<<<< HEAD
 			u32 guest_memfd_flags = 0;
+=======
+			uint32_t guest_memfd_flags = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			TEST_ASSERT(!guest_memfd_offset,
 				    "Offset must be zero when creating new guest_memfd");
 			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
@@ -1141,7 +1273,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 
 void vm_userspace_mem_region_add(struct kvm_vm *vm,
 				 enum vm_mem_backing_src_type src_type,
+<<<<<<< HEAD
 				 gpa_t gpa, u32 slot, u64 npages, u32 flags)
+=======
+				 uint64_t gpa, uint32_t slot, uint64_t npages,
+				 uint32_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	vm_mem_add(vm, src_type, gpa, slot, npages, flags, -1, 0);
 }
@@ -1162,7 +1299,11 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
  *   memory slot ID).
  */
 struct userspace_mem_region *
+<<<<<<< HEAD
 memslot2region(struct kvm_vm *vm, u32 memslot)
+=======
+memslot2region(struct kvm_vm *vm, uint32_t memslot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region;
 
@@ -1193,7 +1334,11 @@ memslot2region(struct kvm_vm *vm, u32 memslot)
  * Sets the flags of the memory region specified by the value of slot,
  * to the values given by flags.
  */
+<<<<<<< HEAD
 void vm_mem_region_set_flags(struct kvm_vm *vm, u32 slot, u32 flags)
+=======
+void vm_mem_region_set_flags(struct kvm_vm *vm, uint32_t slot, uint32_t flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct userspace_mem_region *region;
@@ -1209,7 +1354,11 @@ void vm_mem_region_set_flags(struct kvm_vm *vm, u32 slot, u32 flags)
 		ret, errno, slot, flags);
 }
 
+<<<<<<< HEAD
 void vm_mem_region_reload(struct kvm_vm *vm, u32 slot)
+=======
+void vm_mem_region_reload(struct kvm_vm *vm, uint32_t slot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region = memslot2region(vm, slot);
 	struct kvm_userspace_memory_region2 tmp = region->region;
@@ -1233,7 +1382,11 @@ void vm_mem_region_reload(struct kvm_vm *vm, u32 slot)
  *
  * Change the gpa of a memory region.
  */
+<<<<<<< HEAD
 void vm_mem_region_move(struct kvm_vm *vm, u32 slot, u64 new_gpa)
+=======
+void vm_mem_region_move(struct kvm_vm *vm, uint32_t slot, uint64_t new_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region;
 	int ret;
@@ -1262,7 +1415,11 @@ void vm_mem_region_move(struct kvm_vm *vm, u32 slot, u64 new_gpa)
  *
  * Delete a memory region.
  */
+<<<<<<< HEAD
 void vm_mem_region_delete(struct kvm_vm *vm, u32 slot)
+=======
+void vm_mem_region_delete(struct kvm_vm *vm, uint32_t slot)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region = memslot2region(vm, slot);
 
@@ -1272,18 +1429,31 @@ void vm_mem_region_delete(struct kvm_vm *vm, u32 slot)
 	__vm_mem_region_delete(vm, region);
 }
 
+<<<<<<< HEAD
 void vm_guest_mem_fallocate(struct kvm_vm *vm, u64 base, u64 size,
+=======
+void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t base, uint64_t size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    bool punch_hole)
 {
 	const int mode = FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC_FL_PUNCH_HOLE : 0);
 	struct userspace_mem_region *region;
+<<<<<<< HEAD
 	u64 end = base + size;
 	gpa_t gpa, len;
+=======
+	uint64_t end = base + size;
+	uint64_t gpa, len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	off_t fd_offset;
 	int ret;
 
 	for (gpa = base; gpa < end; gpa += len) {
+<<<<<<< HEAD
 		u64 offset;
+=======
+		uint64_t offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		region = userspace_mem_region_find(vm, gpa, gpa);
 		TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
@@ -1291,7 +1461,11 @@ void vm_guest_mem_fallocate(struct kvm_vm *vm, u64 base, u64 size,
 
 		offset = gpa - region->region.guest_phys_addr;
 		fd_offset = region->region.guest_memfd_offset + offset;
+<<<<<<< HEAD
 		len = min_t(u64, end - gpa, region->region.memory_size - offset);
+=======
+		len = min_t(uint64_t, end - gpa, region->region.memory_size - offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = fallocate(region->region.guest_memfd, mode, fd_offset, len);
 		TEST_ASSERT(!ret, "fallocate() failed to %s at %lx (len = %lu), fd = %d, mode = %x, offset = %lx",
@@ -1316,7 +1490,11 @@ static size_t vcpu_mmap_sz(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 static bool vcpu_exists(struct kvm_vm *vm, u32 vcpu_id)
+=======
+static bool vcpu_exists(struct kvm_vm *vm, uint32_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 
@@ -1332,7 +1510,11 @@ static bool vcpu_exists(struct kvm_vm *vm, u32 vcpu_id)
  * Adds a virtual CPU to the VM specified by vm with the ID given by vcpu_id.
  * No additional vCPU setup is done.  Returns the vCPU.
  */
+<<<<<<< HEAD
 struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+=======
+struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 
@@ -1366,6 +1548,7 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 }
 
 /*
+<<<<<<< HEAD
  * Within the VM specified by @vm, locates the lowest starting guest virtual
  * address >= @min_gva, that has at least @sz unallocated bytes.  A
  * TEST_ASSERT failure occurs for invalid input or no area of at least
@@ -1378,6 +1561,35 @@ gva_t vm_unused_gva_gap(struct kvm_vm *vm, size_t sz, gva_t min_gva)
 	/* Determine lowest permitted virtual page index. */
 	u64 pgidx_start = (min_gva + vm->page_size - 1) >> vm->page_shift;
 	if ((pgidx_start * vm->page_size) < min_gva)
+=======
+ * VM Virtual Address Unused Gap
+ *
+ * Input Args:
+ *   vm - Virtual Machine
+ *   sz - Size (bytes)
+ *   vaddr_min - Minimum Virtual Address
+ *
+ * Output Args: None
+ *
+ * Return:
+ *   Lowest virtual address at or above vaddr_min, with at least
+ *   sz unused bytes.  TEST_ASSERT failure if no area of at least
+ *   size sz is available.
+ *
+ * Within the VM specified by vm, locates the lowest starting virtual
+ * address >= vaddr_min, that has at least sz unallocated bytes.  A
+ * TEST_ASSERT failure occurs for invalid input or no area of at least
+ * sz unallocated bytes >= vaddr_min is available.
+ */
+vm_vaddr_t vm_vaddr_unused_gap(struct kvm_vm *vm, size_t sz,
+			       vm_vaddr_t vaddr_min)
+{
+	uint64_t pages = (sz + vm->page_size - 1) >> vm->page_shift;
+
+	/* Determine lowest permitted virtual page index. */
+	uint64_t pgidx_start = (vaddr_min + vm->page_size - 1) >> vm->page_shift;
+	if ((pgidx_start * vm->page_size) < vaddr_min)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto no_va_found;
 
 	/* Loop over section with enough valid virtual page indexes. */
@@ -1414,7 +1626,11 @@ gva_t vm_unused_gva_gap(struct kvm_vm *vm, size_t sz, gva_t min_gva)
 	} while (pgidx_start != 0);
 
 no_va_found:
+<<<<<<< HEAD
 	TEST_FAIL("No gva of specified pages available, pages: 0x%lx", pages);
+=======
+	TEST_FAIL("No vaddr of specified pages available, pages: 0x%lx", pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* NOT REACHED */
 	return -1;
@@ -1436,6 +1652,7 @@ va_found:
 	return pgidx_start * vm->page_size;
 }
 
+<<<<<<< HEAD
 static gva_t ____vm_alloc(struct kvm_vm *vm, size_t sz, gva_t min_gva,
 			  enum kvm_mem_region_type type, bool protected)
 {
@@ -1445,11 +1662,25 @@ static gva_t ____vm_alloc(struct kvm_vm *vm, size_t sz, gva_t min_gva,
 	gpa_t gpa = __vm_phy_pages_alloc(vm, pages,
 					   KVM_UTIL_MIN_PFN * vm->page_size,
 					   vm->memslots[type], protected);
+=======
+static vm_vaddr_t ____vm_vaddr_alloc(struct kvm_vm *vm, size_t sz,
+				     vm_vaddr_t vaddr_min,
+				     enum kvm_mem_region_type type,
+				     bool protected)
+{
+	uint64_t pages = (sz >> vm->page_shift) + ((sz % vm->page_size) != 0);
+
+	virt_pgd_alloc(vm);
+	vm_paddr_t paddr = __vm_phy_pages_alloc(vm, pages,
+						KVM_UTIL_MIN_PFN * vm->page_size,
+						vm->memslots[type], protected);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Find an unused range of virtual page addresses of at least
 	 * pages in length.
 	 */
+<<<<<<< HEAD
 	gva_t gva_start = vm_unused_gva_gap(vm, sz, min_gva);
 
 	/* Map the virtual pages. */
@@ -1509,10 +1740,124 @@ gva_t vm_alloc_page(struct kvm_vm *vm)
  * starting at @gva to the page range starting at @gpa.
  */
 void virt_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa, unsigned int npages)
+=======
+	vm_vaddr_t vaddr_start = vm_vaddr_unused_gap(vm, sz, vaddr_min);
+
+	/* Map the virtual pages. */
+	for (vm_vaddr_t vaddr = vaddr_start; pages > 0;
+		pages--, vaddr += vm->page_size, paddr += vm->page_size) {
+
+		virt_pg_map(vm, vaddr, paddr);
+	}
+
+	return vaddr_start;
+}
+
+vm_vaddr_t __vm_vaddr_alloc(struct kvm_vm *vm, size_t sz, vm_vaddr_t vaddr_min,
+			    enum kvm_mem_region_type type)
+{
+	return ____vm_vaddr_alloc(vm, sz, vaddr_min, type,
+				  vm_arch_has_protected_memory(vm));
+}
+
+vm_vaddr_t vm_vaddr_alloc_shared(struct kvm_vm *vm, size_t sz,
+				 vm_vaddr_t vaddr_min,
+				 enum kvm_mem_region_type type)
+{
+	return ____vm_vaddr_alloc(vm, sz, vaddr_min, type, false);
+}
+
+/*
+ * VM Virtual Address Allocate
+ *
+ * Input Args:
+ *   vm - Virtual Machine
+ *   sz - Size in bytes
+ *   vaddr_min - Minimum starting virtual address
+ *
+ * Output Args: None
+ *
+ * Return:
+ *   Starting guest virtual address
+ *
+ * Allocates at least sz bytes within the virtual address space of the vm
+ * given by vm.  The allocated bytes are mapped to a virtual address >=
+ * the address given by vaddr_min.  Note that each allocation uses a
+ * a unique set of pages, with the minimum real allocation being at least
+ * a page. The allocated physical space comes from the TEST_DATA memory region.
+ */
+vm_vaddr_t vm_vaddr_alloc(struct kvm_vm *vm, size_t sz, vm_vaddr_t vaddr_min)
+{
+	return __vm_vaddr_alloc(vm, sz, vaddr_min, MEM_REGION_TEST_DATA);
+}
+
+/*
+ * VM Virtual Address Allocate Pages
+ *
+ * Input Args:
+ *   vm - Virtual Machine
+ *
+ * Output Args: None
+ *
+ * Return:
+ *   Starting guest virtual address
+ *
+ * Allocates at least N system pages worth of bytes within the virtual address
+ * space of the vm.
+ */
+vm_vaddr_t vm_vaddr_alloc_pages(struct kvm_vm *vm, int nr_pages)
+{
+	return vm_vaddr_alloc(vm, nr_pages * getpagesize(), KVM_UTIL_MIN_VADDR);
+}
+
+vm_vaddr_t __vm_vaddr_alloc_page(struct kvm_vm *vm, enum kvm_mem_region_type type)
+{
+	return __vm_vaddr_alloc(vm, getpagesize(), KVM_UTIL_MIN_VADDR, type);
+}
+
+/*
+ * VM Virtual Address Allocate Page
+ *
+ * Input Args:
+ *   vm - Virtual Machine
+ *
+ * Output Args: None
+ *
+ * Return:
+ *   Starting guest virtual address
+ *
+ * Allocates at least one system page worth of bytes within the virtual address
+ * space of the vm.
+ */
+vm_vaddr_t vm_vaddr_alloc_page(struct kvm_vm *vm)
+{
+	return vm_vaddr_alloc_pages(vm, 1);
+}
+
+/*
+ * Map a range of VM virtual address to the VM's physical address
+ *
+ * Input Args:
+ *   vm - Virtual Machine
+ *   vaddr - Virtuall address to map
+ *   paddr - VM Physical Address
+ *   npages - The number of pages to map
+ *
+ * Output Args: None
+ *
+ * Return: None
+ *
+ * Within the VM given by @vm, creates a virtual translation for
+ * @npages starting at @vaddr to the page range starting at @paddr.
+ */
+void virt_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
+	      unsigned int npages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t page_size = vm->page_size;
 	size_t size = npages * page_size;
 
+<<<<<<< HEAD
 	TEST_ASSERT(gva + size > gva, "Vaddr overflow");
 	TEST_ASSERT(gpa + size > gpa, "Paddr overflow");
 
@@ -1521,6 +1866,16 @@ void virt_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa, unsigned int npages)
 
 		gva += page_size;
 		gpa += page_size;
+=======
+	TEST_ASSERT(vaddr + size > vaddr, "Vaddr overflow");
+	TEST_ASSERT(paddr + size > paddr, "Paddr overflow");
+
+	while (npages--) {
+		virt_pg_map(vm, vaddr, paddr);
+
+		vaddr += page_size;
+		paddr += page_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1541,7 +1896,11 @@ void virt_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa, unsigned int npages)
  * address providing the memory to the vm physical address is returned.
  * A TEST_ASSERT failure occurs if no region containing gpa exists.
  */
+<<<<<<< HEAD
 void *addr_gpa2hva(struct kvm_vm *vm, gpa_t gpa)
+=======
+void *addr_gpa2hva(struct kvm_vm *vm, vm_paddr_t gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region;
 
@@ -1574,7 +1933,11 @@ void *addr_gpa2hva(struct kvm_vm *vm, gpa_t gpa)
  * VM physical address is returned. A TEST_ASSERT failure occurs if no
  * region containing hva exists.
  */
+<<<<<<< HEAD
 gpa_t addr_hva2gpa(struct kvm_vm *vm, void *hva)
+=======
+vm_paddr_t addr_hva2gpa(struct kvm_vm *vm, void *hva)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *node;
 
@@ -1585,7 +1948,11 @@ gpa_t addr_hva2gpa(struct kvm_vm *vm, void *hva)
 		if (hva >= region->host_mem) {
 			if (hva <= (region->host_mem
 				+ region->region.memory_size - 1))
+<<<<<<< HEAD
 				return (gpa_t)((uintptr_t)
+=======
+				return (vm_paddr_t)((uintptr_t)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					region->region.guest_phys_addr
 					+ (hva - (uintptr_t)region->host_mem));
 
@@ -1617,7 +1984,11 @@ gpa_t addr_hva2gpa(struct kvm_vm *vm, void *hva)
  * memory without mapping said memory in the guest's address space. And, for
  * userfaultfd-based demand paging, to do so without triggering userfaults.
  */
+<<<<<<< HEAD
 void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa)
+=======
+void *addr_gpa2alias(struct kvm_vm *vm, vm_paddr_t gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region;
 	uintptr_t offset;
@@ -1711,8 +2082,13 @@ struct kvm_reg_list *vcpu_get_reg_list(struct kvm_vcpu *vcpu)
 
 void *vcpu_map_dirty_ring(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u32 page_size = getpagesize();
 	u32 size = vcpu->vm->dirty_ring_size;
+=======
+	uint32_t page_size = getpagesize();
+	uint32_t size = vcpu->vm->dirty_ring_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_ASSERT(size > 0, "Should enable dirty ring first");
 
@@ -1741,7 +2117,11 @@ void *vcpu_map_dirty_ring(struct kvm_vcpu *vcpu)
  * Device Ioctl
  */
 
+<<<<<<< HEAD
 int __kvm_has_device_attr(int dev_fd, u32 group, u64 attr)
+=======
+int __kvm_has_device_attr(int dev_fd, uint32_t group, uint64_t attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_device_attr attribute = {
 		.group = group,
@@ -1752,7 +2132,11 @@ int __kvm_has_device_attr(int dev_fd, u32 group, u64 attr)
 	return ioctl(dev_fd, KVM_HAS_DEVICE_ATTR, &attribute);
 }
 
+<<<<<<< HEAD
 int __kvm_test_create_device(struct kvm_vm *vm, u64 type)
+=======
+int __kvm_test_create_device(struct kvm_vm *vm, uint64_t type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_create_device create_dev = {
 		.type = type,
@@ -1762,7 +2146,11 @@ int __kvm_test_create_device(struct kvm_vm *vm, u64 type)
 	return __vm_ioctl(vm, KVM_CREATE_DEVICE, &create_dev);
 }
 
+<<<<<<< HEAD
 int __kvm_create_device(struct kvm_vm *vm, u64 type)
+=======
+int __kvm_create_device(struct kvm_vm *vm, uint64_t type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_create_device create_dev = {
 		.type = type,
@@ -1776,7 +2164,11 @@ int __kvm_create_device(struct kvm_vm *vm, u64 type)
 	return err ? : create_dev.fd;
 }
 
+<<<<<<< HEAD
 int __kvm_device_attr_get(int dev_fd, u32 group, u64 attr, void *val)
+=======
+int __kvm_device_attr_get(int dev_fd, uint32_t group, uint64_t attr, void *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_device_attr kvmattr = {
 		.group = group,
@@ -1788,7 +2180,11 @@ int __kvm_device_attr_get(int dev_fd, u32 group, u64 attr, void *val)
 	return __kvm_ioctl(dev_fd, KVM_GET_DEVICE_ATTR, &kvmattr);
 }
 
+<<<<<<< HEAD
 int __kvm_device_attr_set(int dev_fd, u32 group, u64 attr, void *val)
+=======
+int __kvm_device_attr_set(int dev_fd, uint32_t group, uint64_t attr, void *val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_device_attr kvmattr = {
 		.group = group,
@@ -1804,7 +2200,11 @@ int __kvm_device_attr_set(int dev_fd, u32 group, u64 attr, void *val)
  * IRQ related functions.
  */
 
+<<<<<<< HEAD
 int _kvm_irq_line(struct kvm_vm *vm, u32 irq, int level)
+=======
+int _kvm_irq_line(struct kvm_vm *vm, uint32_t irq, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_irq_level irq_level = {
 		.irq    = irq,
@@ -1814,7 +2214,11 @@ int _kvm_irq_line(struct kvm_vm *vm, u32 irq, int level)
 	return __vm_ioctl(vm, KVM_IRQ_LINE, &irq_level);
 }
 
+<<<<<<< HEAD
 void kvm_irq_line(struct kvm_vm *vm, u32 irq, int level)
+=======
+void kvm_irq_line(struct kvm_vm *vm, uint32_t irq, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = _kvm_irq_line(vm, irq, level);
 
@@ -1836,7 +2240,11 @@ struct kvm_irq_routing *kvm_gsi_routing_create(void)
 }
 
 void kvm_gsi_routing_irqchip_add(struct kvm_irq_routing *routing,
+<<<<<<< HEAD
 		u32 gsi, u32 pin)
+=======
+		uint32_t gsi, uint32_t pin)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -1886,7 +2294,11 @@ void kvm_gsi_routing_write(struct kvm_vm *vm, struct kvm_irq_routing *routing)
  * Dumps the current state of the VM given by vm, to the FILE stream
  * given by stream.
  */
+<<<<<<< HEAD
 void vm_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
+=======
+void vm_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ctr;
 	struct userspace_mem_region *region;
@@ -1899,8 +2311,13 @@ void vm_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
 		fprintf(stream, "%*sguest_phys: 0x%lx size: 0x%lx "
 			"host_virt: %p\n", indent + 2, "",
+<<<<<<< HEAD
 			(u64)region->region.guest_phys_addr,
 			(u64)region->region.memory_size,
+=======
+			(uint64_t) region->region.guest_phys_addr,
+			(uint64_t) region->region.memory_size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			region->host_mem);
 		fprintf(stream, "%*sunused_phy_pages: ", indent + 2, "");
 		sparsebit_dump(stream, region->unused_phy_pages, 0);
@@ -2007,7 +2424,11 @@ const char *exit_reason_str(unsigned int exit_reason)
  * Input Args:
  *   vm - Virtual Machine
  *   num - number of pages
+<<<<<<< HEAD
  *   min_gpa - Physical address minimum
+=======
+ *   paddr_min - Physical address minimum
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   memslot - Memory region to allocate page from
  *   protected - True if the pages will be used as protected/private memory
  *
@@ -2017,6 +2438,7 @@ const char *exit_reason_str(unsigned int exit_reason)
  *   Starting physical address
  *
  * Within the VM specified by vm, locates a range of available physical
+<<<<<<< HEAD
  * pages at or above min_gpa. If found, the pages are marked as in use
  * and their base address is returned. A TEST_ASSERT failure occurs if
  * not enough pages are available at or above min_gpa.
@@ -2024,22 +2446,42 @@ const char *exit_reason_str(unsigned int exit_reason)
 gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
 			   gpa_t min_gpa, u32 memslot,
 			   bool protected)
+=======
+ * pages at or above paddr_min. If found, the pages are marked as in use
+ * and their base address is returned. A TEST_ASSERT failure occurs if
+ * not enough pages are available at or above paddr_min.
+ */
+vm_paddr_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
+				vm_paddr_t paddr_min, uint32_t memslot,
+				bool protected)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct userspace_mem_region *region;
 	sparsebit_idx_t pg, base;
 
 	TEST_ASSERT(num > 0, "Must allocate at least one page");
 
+<<<<<<< HEAD
 	TEST_ASSERT((min_gpa % vm->page_size) == 0, "Min physical address "
 		"not divisible by page size.\n"
 		"  min_gpa: 0x%lx page_size: 0x%x",
 		min_gpa, vm->page_size);
+=======
+	TEST_ASSERT((paddr_min % vm->page_size) == 0, "Min physical address "
+		"not divisible by page size.\n"
+		"  paddr_min: 0x%lx page_size: 0x%x",
+		paddr_min, vm->page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	region = memslot2region(vm, memslot);
 	TEST_ASSERT(!protected || region->protected_phy_pages,
 		    "Region doesn't support protected memory");
 
+<<<<<<< HEAD
 	base = pg = min_gpa >> vm->page_shift;
+=======
+	base = pg = paddr_min >> vm->page_shift;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		for (; pg < base + num; ++pg) {
 			if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
@@ -2051,8 +2493,13 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
 
 	if (pg == 0) {
 		fprintf(stderr, "No guest physical page available, "
+<<<<<<< HEAD
 			"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
 			min_gpa, vm->page_size, memslot);
+=======
+			"paddr_min: 0x%lx page_size: 0x%x memslot: %u\n",
+			paddr_min, vm->page_size, memslot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fputs("---- vm dump ----\n", stderr);
 		vm_dump(stderr, vm, 2);
 		abort();
@@ -2067,12 +2514,22 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
 	return base * vm->page_size;
 }
 
+<<<<<<< HEAD
 gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa, u32 memslot)
 {
 	return vm_phy_pages_alloc(vm, 1, min_gpa, memslot);
 }
 
 gpa_t vm_alloc_page_table(struct kvm_vm *vm)
+=======
+vm_paddr_t vm_phy_page_alloc(struct kvm_vm *vm, vm_paddr_t paddr_min,
+			     uint32_t memslot)
+{
+	return vm_phy_pages_alloc(vm, 1, paddr_min, memslot);
+}
+
+vm_paddr_t vm_alloc_page_table(struct kvm_vm *vm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return vm_phy_page_alloc(vm, KVM_GUEST_PAGE_TABLE_MIN_PADDR,
 				 vm->memslots[MEM_REGION_PT]);
@@ -2090,7 +2547,11 @@ gpa_t vm_alloc_page_table(struct kvm_vm *vm)
  * Return:
  *   Equivalent host virtual address
  */
+<<<<<<< HEAD
 void *addr_gva2hva(struct kvm_vm *vm, gva_t gva)
+=======
+void *addr_gva2hva(struct kvm_vm *vm, vm_vaddr_t gva)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return addr_gpa2hva(vm, addr_gva2gpa(vm, gva));
 }
@@ -2188,7 +2649,11 @@ struct kvm_stats_desc *read_stats_descriptors(int stats_fd,
  * Read the data values of a specified stat from the binary stats interface.
  */
 void read_stat_data(int stats_fd, struct kvm_stats_header *header,
+<<<<<<< HEAD
 		    struct kvm_stats_desc *desc, u64 *data,
+=======
+		    struct kvm_stats_desc *desc, uint64_t *data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    size_t max_elements)
 {
 	size_t nr_elements = min_t(ssize_t, desc->size, max_elements);
@@ -2209,7 +2674,11 @@ void read_stat_data(int stats_fd, struct kvm_stats_header *header,
 }
 
 void kvm_get_stat(struct kvm_binary_stats *stats, const char *name,
+<<<<<<< HEAD
 		  u64 *data, size_t max_elements)
+=======
+		  uint64_t *data, size_t max_elements)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_stats_desc *desc;
 	size_t size_desc;
@@ -2286,7 +2755,11 @@ void __attribute((constructor)) kvm_selftest_init(void)
 	kvm_selftest_arch_init();
 }
 
+<<<<<<< HEAD
 bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t gpa)
+=======
+bool vm_is_gpa_protected(struct kvm_vm *vm, vm_paddr_t paddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sparsebit_idx_t pg = 0;
 	struct userspace_mem_region *region;
@@ -2294,10 +2767,17 @@ bool vm_is_gpa_protected(struct kvm_vm *vm, gpa_t gpa)
 	if (!vm_arch_has_protected_memory(vm))
 		return false;
 
+<<<<<<< HEAD
 	region = userspace_mem_region_find(vm, gpa, gpa);
 	TEST_ASSERT(region, "No vm physical memory at 0x%lx", gpa);
 
 	pg = gpa >> vm->page_shift;
+=======
+	region = userspace_mem_region_find(vm, paddr, paddr);
+	TEST_ASSERT(region, "No vm physical memory at 0x%lx", paddr);
+
+	pg = paddr >> vm->page_shift;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return sparsebit_is_set(region->protected_phy_pages, pg);
 }
 

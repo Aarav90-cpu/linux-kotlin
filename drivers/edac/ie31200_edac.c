@@ -706,7 +706,11 @@ static struct res_config skl_cfg = {
 	.reg_mad_dimm_width_mask[1]	= GENMASK(25, 24),
 };
 
+<<<<<<< HEAD
 static struct res_config rpl_s_cfg = {
+=======
+struct res_config rpl_s_cfg = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.mtype				= MEM_DDR5,
 	.cmci				= true,
 	.imc_num			= 2,

@@ -125,7 +125,10 @@ DECLARE_PCI_FIXUP_FINAL(PCI_ANY_ID, PCI_ANY_ID, pcibios_fixup_final);
 
 resource_size_t
 pcibios_align_resource(void *data, const struct resource *res,
+<<<<<<< HEAD
 		       const struct resource *empty_res,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       resource_size_t size, resource_size_t align)
 {
 	struct pci_dev *dev = data;

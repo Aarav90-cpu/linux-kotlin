@@ -23,7 +23,10 @@ static inline u64 tcr_el2_ps_to_tcr_el1_ips(u64 tcr_el2)
 static inline u64 translate_tcr_el2_to_tcr_el1(u64 tcr)
 {
 	return TCR_EPD1_MASK |				/* disable TTBR1_EL1 */
+<<<<<<< HEAD
 	       ((tcr & TCR_EL2_DS) ? TCR_DS : 0) |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       ((tcr & TCR_EL2_TBI) ? TCR_TBI0 : 0) |
 	       tcr_el2_ps_to_tcr_el1_ips(tcr) |
 	       (tcr & TCR_EL2_TG0_MASK) |

@@ -19,7 +19,10 @@ properties:
           - microchip,sam9x60-trng
       - items:
           - enum:
+<<<<<<< HEAD
               - microchip,lan9691-trng
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - microchip,sama7g5-trng
           - const: atmel,at91sam9g45-trng
       - items:

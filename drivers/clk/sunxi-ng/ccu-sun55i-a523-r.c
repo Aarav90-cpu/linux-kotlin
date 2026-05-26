@@ -83,6 +83,7 @@ static SUNXI_CCU_MUX_DATA_WITH_GATE(r_pwmctrl_clk, "r-pwmctrl",
 static SUNXI_CCU_GATE_HW(bus_r_pwmctrl_clk, "bus-r-pwmctrl",
 			 &r_apb0_clk.common.hw, 0x13c, BIT(0), 0);
 
+<<<<<<< HEAD
 static const struct clk_parent_data r_spi_parents[] = {
 	{ .fw_name = "hosc" },
 	{ .fw_name = "pll-periph" },
@@ -99,6 +100,11 @@ static SUNXI_CCU_DUALDIV_MUX_GATE(r_spi_clk, "r-spi", r_spi_parents, 0x150,
 static SUNXI_CCU_GATE_HW(bus_r_spi_clk, "bus-r-spi",
 			 &r_ahb_clk.common.hw, 0x15c, BIT(0), 0);
 
+=======
+/* SPI clock is /M/N (same as new MMC?) */
+static SUNXI_CCU_GATE_HW(bus_r_spi_clk, "bus-r-spi",
+			 &r_ahb_clk.common.hw, 0x15c, BIT(0), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static SUNXI_CCU_GATE_HW(bus_r_spinlock_clk, "bus-r-spinlock",
 			 &r_ahb_clk.common.hw, 0x16c, BIT(0), 0);
 static SUNXI_CCU_GATE_HW(bus_r_msgbox_clk, "bus-r-msgbox",
@@ -151,7 +157,10 @@ static struct ccu_common *sun55i_a523_r_ccu_clks[] = {
 	&bus_r_twd_clk.common,
 	&r_pwmctrl_clk.common,
 	&bus_r_pwmctrl_clk.common,
+<<<<<<< HEAD
 	&r_spi_clk.common,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&bus_r_spi_clk.common,
 	&bus_r_spinlock_clk.common,
 	&bus_r_msgbox_clk.common,
@@ -183,7 +192,10 @@ static struct clk_hw_onecell_data sun55i_a523_r_hw_clks = {
 		[CLK_BUS_R_TWD]		= &bus_r_twd_clk.common.hw,
 		[CLK_R_PWMCTRL]		= &r_pwmctrl_clk.common.hw,
 		[CLK_BUS_R_PWMCTRL]	= &bus_r_pwmctrl_clk.common.hw,
+<<<<<<< HEAD
 		[CLK_R_SPI]		= &r_spi_clk.common.hw,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		[CLK_BUS_R_SPI]		= &bus_r_spi_clk.common.hw,
 		[CLK_BUS_R_SPINLOCK]	= &bus_r_spinlock_clk.common.hw,
 		[CLK_BUS_R_MSGBOX]	= &bus_r_msgbox_clk.common.hw,

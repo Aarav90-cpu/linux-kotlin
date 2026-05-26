@@ -15,8 +15,12 @@ void io_napi_free(struct io_ring_ctx *ctx);
 int io_register_napi(struct io_ring_ctx *ctx, void __user *arg);
 int io_unregister_napi(struct io_ring_ctx *ctx, void __user *arg);
 
+<<<<<<< HEAD
 int __io_napi_add_id(struct io_ring_ctx *ctx, unsigned int napi_id,
 		     unsigned int mode);
+=======
+int __io_napi_add_id(struct io_ring_ctx *ctx, unsigned int napi_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __io_napi_busy_loop(struct io_ring_ctx *ctx, struct io_wait_queue *iowq);
 int io_napi_sqpoll_busy_poll(struct io_ring_ctx *ctx);
@@ -44,14 +48,23 @@ static inline void io_napi_add(struct io_kiocb *req)
 {
 	struct io_ring_ctx *ctx = req->ctx;
 	struct socket *sock;
+<<<<<<< HEAD
 	unsigned int mode = IO_URING_NAPI_TRACKING_DYNAMIC;
 
 	if (READ_ONCE(ctx->napi_track_mode) != mode)
+=======
+
+	if (READ_ONCE(ctx->napi_track_mode) != IO_URING_NAPI_TRACKING_DYNAMIC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	sock = sock_from_file(req->file);
 	if (sock && sock->sk)
+<<<<<<< HEAD
 		__io_napi_add_id(ctx, READ_ONCE(sock->sk->sk_napi_id), mode);
+=======
+		__io_napi_add_id(ctx, READ_ONCE(sock->sk->sk_napi_id));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else

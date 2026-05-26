@@ -154,6 +154,7 @@ u8 xe_mmio_read8(struct xe_mmio *mmio, struct xe_reg reg)
 	return val;
 }
 
+<<<<<<< HEAD
 void xe_mmio_write8(struct xe_mmio *mmio, struct xe_reg reg, u8 val)
 {
 	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
@@ -163,6 +164,8 @@ void xe_mmio_write8(struct xe_mmio *mmio, struct xe_reg reg, u8 val)
 	writeb(val, mmio->regs + addr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u16 xe_mmio_read16(struct xe_mmio *mmio, struct xe_reg reg)
 {
 	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);

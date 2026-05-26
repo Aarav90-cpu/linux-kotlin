@@ -58,9 +58,14 @@ struct camelot_pcm {
 	struct snd_pcm_substream *rx_ss;
 	unsigned long rx_period_size;
 	unsigned int  rx_period;
+<<<<<<< HEAD
 };
 
 static struct camelot_pcm cam_pcm_data[2] = {
+=======
+
+} cam_pcm_data[2] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.mmio	=	0xFE3C0040,
 		.txid	=	DMABRGIRQ_A0TXF,
@@ -311,7 +316,11 @@ static const struct snd_soc_component_driver sh7760_soc_component = {
 	.prepare	= camelot_prepare,
 	.trigger	= camelot_trigger,
 	.pointer	= camelot_pos,
+<<<<<<< HEAD
 	.pcm_new	= camelot_pcm_new,
+=======
+	.pcm_construct	= camelot_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int sh7760_soc_platform_probe(struct platform_device *pdev)

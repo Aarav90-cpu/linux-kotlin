@@ -18,7 +18,11 @@ dev_id=$(_add_ublk_dev -t loop -q 2 --auto_zc "${UBLK_BACKFILES[0]}")
 _check_add_dev $TID $?
 
 if ! _mkfs_mount_test /dev/ublkb"${dev_id}"; then
+<<<<<<< HEAD
 	_cleanup_test
+=======
+	_cleanup_test "generic"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	_show_result $TID 255
 fi
 
@@ -27,5 +31,9 @@ _check_add_dev $TID $?
 _mkfs_mount_test /dev/ublkb"${dev_id}"
 ERR_CODE=$?
 
+<<<<<<< HEAD
 _cleanup_test
+=======
+_cleanup_test "generic"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 _show_result $TID $ERR_CODE

@@ -42,7 +42,11 @@ int iwlmld_kunit_test_init(struct kunit *test)
 	iwl_construct_mld(mld, trans, cfg, fw, hw, NULL);
 
 	fw->ucode_capa.num_stations = IWL_STATION_COUNT_MAX;
+<<<<<<< HEAD
 	fw->ucode_capa.num_links = IWL_FW_MAX_LINKS;
+=======
+	fw->ucode_capa.num_links = IWL_FW_MAX_LINK_ID + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mld->fwrt.trans = trans;
 	mld->fwrt.fw = fw;
@@ -68,7 +72,11 @@ int iwlmld_kunit_test_init(struct kunit *test)
 	return 0;
 }
 
+<<<<<<< HEAD
 static IWL_MLD_ALLOC_FN(link, bss_conf)
+=======
+IWL_MLD_ALLOC_FN(link, bss_conf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void iwlmld_kunit_init_link(struct ieee80211_vif *vif,
 				   struct ieee80211_bss_conf *link,
@@ -94,7 +102,11 @@ static void iwlmld_kunit_init_link(struct ieee80211_vif *vif,
 	rcu_assign_pointer(vif->link_conf[link_id], link);
 }
 
+<<<<<<< HEAD
 static IWL_MLD_ALLOC_FN(vif, vif)
+=======
+IWL_MLD_ALLOC_FN(vif, vif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Helper function to add and initialize a VIF for KUnit tests */
 struct ieee80211_vif *iwlmld_kunit_add_vif(bool mlo, enum nl80211_iftype type)
@@ -199,7 +211,11 @@ void iwlmld_kunit_assign_chanctx_to_link(struct ieee80211_vif *vif,
 		vif->active_links |= BIT(link->link_id);
 }
 
+<<<<<<< HEAD
 static IWL_MLD_ALLOC_FN(link_sta, link_sta)
+=======
+IWL_MLD_ALLOC_FN(link_sta, link_sta)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void iwlmld_kunit_add_link_sta(struct ieee80211_sta *sta,
 				      struct ieee80211_link_sta *link_sta,

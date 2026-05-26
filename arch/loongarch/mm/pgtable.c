@@ -5,7 +5,10 @@
 #include <linux/init.h>
 #include <linux/export.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <asm/fixmap.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/pgalloc.h>
 #include <asm/pgtable.h>
 #include <asm/tlbflush.h>
@@ -145,6 +148,7 @@ void set_pmd_at(struct mm_struct *mm, unsigned long addr,
 
 void __init pagetable_init(void)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 	unsigned long vaddr;
 	pgd_t *pgd;
@@ -154,6 +158,8 @@ void __init pagetable_init(void)
 	pte_t *pte;
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Initialize the entire pgd.  */
 	pgd_init(swapper_pg_dir);
 	pgd_init(invalid_pg_dir);
@@ -163,6 +169,7 @@ void __init pagetable_init(void)
 #ifndef __PAGETABLE_PMD_FOLDED
 	pmd_init(invalid_pmd_table);
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_HIGHMEM
 	/* Permanent kmaps */
@@ -180,4 +187,6 @@ void __init pagetable_init(void)
 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
 	fixrange_init(vaddr & PMD_MASK, vaddr + FIXADDR_SIZE, swapper_pg_dir);
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

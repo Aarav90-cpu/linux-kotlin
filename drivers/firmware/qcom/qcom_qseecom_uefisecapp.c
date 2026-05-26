@@ -699,6 +699,7 @@ static DEFINE_MUTEX(__qcuefi_lock);
 
 static int qcuefi_set_reference(struct qcuefi_client *qcuefi)
 {
+<<<<<<< HEAD
 	guard(mutex)(&__qcuefi_lock);
 
 	if (qcuefi && __qcuefi)
@@ -706,11 +707,26 @@ static int qcuefi_set_reference(struct qcuefi_client *qcuefi)
 
 	__qcuefi = qcuefi;
 
+=======
+	mutex_lock(&__qcuefi_lock);
+
+	if (qcuefi && __qcuefi) {
+		mutex_unlock(&__qcuefi_lock);
+		return -EEXIST;
+	}
+
+	__qcuefi = qcuefi;
+
+	mutex_unlock(&__qcuefi_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static struct qcuefi_client *qcuefi_acquire(void)
+<<<<<<< HEAD
 	__acquires(__qcuefi_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	mutex_lock(&__qcuefi_lock);
 	if (!__qcuefi) {
@@ -721,7 +737,10 @@ static struct qcuefi_client *qcuefi_acquire(void)
 }
 
 static void qcuefi_release(void)
+<<<<<<< HEAD
 	__releases(__qcuefi_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	mutex_unlock(&__qcuefi_lock);
 }

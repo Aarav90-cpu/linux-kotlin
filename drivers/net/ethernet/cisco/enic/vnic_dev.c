@@ -77,9 +77,12 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
 		u32 count = ioread32(&r->count);
 		u32 len;
 
+<<<<<<< HEAD
 		vdev_dbg(vdev, "res type %u bar %u offset 0x%x count %u\n",
 			 type, bar_num, bar_offset, count);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r++;
 
 		if (bar_num >= num_bars)
@@ -93,9 +96,12 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
 		case RES_TYPE_RQ:
 		case RES_TYPE_CQ:
 		case RES_TYPE_INTR_CTRL:
+<<<<<<< HEAD
 		case RES_TYPE_ADMIN_WQ:
 		case RES_TYPE_ADMIN_RQ:
 		case RES_TYPE_ADMIN_CQ:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* each count is stride bytes long */
 			len = count * VNIC_RES_STRIDE;
 			if (len + bar_offset > bar[bar_num].len) {
@@ -108,7 +114,10 @@ static int vnic_dev_discover_res(struct vnic_dev *vdev,
 		case RES_TYPE_INTR_PBA_LEGACY:
 		case RES_TYPE_DEVCMD:
 		case RES_TYPE_DEVCMD2:
+<<<<<<< HEAD
 		case RES_TYPE_SRIOV_INTR:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			len = count;
 			break;
 		default:
@@ -142,9 +151,12 @@ void __iomem *vnic_dev_get_res(struct vnic_dev *vdev, enum vnic_res_type type,
 	case RES_TYPE_RQ:
 	case RES_TYPE_CQ:
 	case RES_TYPE_INTR_CTRL:
+<<<<<<< HEAD
 	case RES_TYPE_ADMIN_WQ:
 	case RES_TYPE_ADMIN_RQ:
 	case RES_TYPE_ADMIN_CQ:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return (char __iomem *)vdev->res[type].vaddr +
 			index * VNIC_RES_STRIDE;
 	default:

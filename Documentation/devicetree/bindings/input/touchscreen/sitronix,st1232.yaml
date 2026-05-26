@@ -32,9 +32,12 @@ properties:
     description: A phandle to the reset GPIO
     maxItems: 1
 
+<<<<<<< HEAD
   wakeup-source:
     type: boolean
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -54,7 +57,10 @@ examples:
                     reg = <0x55>;
                     interrupts = <2 0>;
                     gpios = <&gpio1 166 0>;
+<<<<<<< HEAD
                     wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
                     touch-overlay {
                             segment-0 {

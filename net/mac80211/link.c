@@ -14,6 +14,7 @@
 
 static void ieee80211_update_apvlan_links(struct ieee80211_sub_if_data *sdata)
 {
+<<<<<<< HEAD
 	unsigned long rem = ~sdata->vif.valid_links &
 				    GENMASK(IEEE80211_MLD_MAX_NUM_LINKS - 1, 0);
 	struct ieee80211_local *local = sdata->local;
@@ -22,10 +23,18 @@ static void ieee80211_update_apvlan_links(struct ieee80211_sub_if_data *sdata)
 	struct ieee80211_sub_if_data *vlan;
 	struct ieee80211_link_data *link;
 	struct sta_info *sta;
+=======
+	struct ieee80211_sub_if_data *vlan;
+	struct ieee80211_link_data *link;
+	u16 ap_bss_links = sdata->vif.valid_links;
+	u16 new_links, vlan_links;
+	unsigned long add;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
 		int link_id;
 
+<<<<<<< HEAD
 		if (vlan->wdev.use_4addr) {
 			sta = wiphy_dereference(wiphy,
 						vlan->u.vlan.sta);
@@ -47,6 +56,20 @@ static void ieee80211_update_apvlan_links(struct ieee80211_sub_if_data *sdata)
 			eth_zero_addr(vlan->wdev.links[link_id].addr);
 		}
 
+=======
+		/* No support for 4addr with MLO yet */
+		if (vlan->wdev.use_4addr)
+			return;
+
+		vlan_links = vlan->vif.valid_links;
+
+		new_links = ap_bss_links;
+
+		add = new_links & ~vlan_links;
+		if (!add)
+			continue;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ieee80211_vif_set_links(vlan, add, 0);
 
 		for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
@@ -108,6 +131,7 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
 
 		ap_bss = container_of(sdata->bss,
 				      struct ieee80211_sub_if_data, u.ap);
+<<<<<<< HEAD
 
 		if (deflink)
 			ap_bss_conf = &ap_bss->vif.bss_conf;
@@ -115,6 +139,10 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
 			ap_bss_conf = sdata_dereference(ap_bss->vif.link_conf[link_id],
 							ap_bss);
 
+=======
+		ap_bss_conf = sdata_dereference(ap_bss->vif.link_conf[link_id],
+						ap_bss);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memcpy(link_conf, ap_bss_conf, sizeof(*link_conf));
 	}
 

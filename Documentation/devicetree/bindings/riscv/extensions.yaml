@@ -262,6 +262,7 @@ properties:
             ratified in RISC-V Profiles Version 1.0, with commit b1d806605f87
             ("Updated to ratified state.")
 
+<<<<<<< HEAD
         - const: supm
           description: |
             The standard Supm extension for pointer masking support in user
@@ -279,6 +280,8 @@ properties:
             U-mode software where the next-higher-privilege-mode supports
             Smnpm or Ssnpm and enables it for U-mode.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         - const: svade
           description: |
             The standard Svade supervisor-level extension for SW-managed PTE A/D
@@ -924,6 +927,7 @@ properties:
         then:
           contains:
             const: b
+<<<<<<< HEAD
       # Supm depends on Smnpm or Ssnpm
       - if:
           contains:
@@ -934,6 +938,8 @@ properties:
                 const: smnpm
             - contains:
                 const: ssnpm
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       # Za64rs and Ziccrse depend on Zalrsc or A
       - if:
           contains:

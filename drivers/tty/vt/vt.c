@@ -231,6 +231,7 @@ enum {
 };
 
 /*
+<<<<<<< HEAD
  * struct vc_font
  */
 
@@ -265,6 +266,8 @@ unsigned int vc_font_size(const struct vc_font *font)
 EXPORT_SYMBOL_GPL(vc_font_size);
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * /sys/class/tty/tty0/
  *
  * the attribute 'active' contains the name of the current vc
@@ -1680,7 +1683,13 @@ static void rgb_background(struct vc_data *vc, const struct rgb *c)
 
 /*
  * ITU T.416 Higher colour modes. They break the usual properties of SGR codes
+<<<<<<< HEAD
  * and thus need to be detected and ignored by hand.
+=======
+ * and thus need to be detected and ignored by hand. That standard also
+ * wants : rather than ; as separators but sequences containing : are currently
+ * completely ignored by the parser.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Subcommands 3 (CMY) and 4 (CMYK) are so insane there's no point in
  * supporting them.
@@ -1737,7 +1746,10 @@ enum {
 	CSI_m_BG_COLOR_END		= 47,
 	CSI_m_BG_COLOR			= 48,
 	CSI_m_DEFAULT_BG_COLOR		= 49,
+<<<<<<< HEAD
 	CSI_m_UNDERLINE_COLOR		= 58,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	CSI_m_BRIGHT_FG_COLOR_BEG	= 90,
 	CSI_m_BRIGHT_FG_COLOR_END	= 97,
 	CSI_m_BRIGHT_FG_COLOR_OFF	= CSI_m_BRIGHT_FG_COLOR_BEG - CSI_m_FG_COLOR_BEG,
@@ -2217,7 +2229,10 @@ static void restore_cur(struct vc_data *vc)
  * @ESesc:		ESC parsed
  * @ESsquare:		CSI parsed -- modifiers/parameters/ctrl chars expected
  * @ESgetpars:		CSI parsed -- parameters/ctrl chars expected
+<<<<<<< HEAD
  * @ESgetsubpars:	CSI m parsed -- subparameters expected
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @ESfunckey:		CSI [ parsed
  * @EShash:		ESC # parsed
  * @ESsetG0:		ESC ( parsed
@@ -2238,7 +2253,10 @@ enum vc_ctl_state {
 	ESesc,
 	ESsquare,
 	ESgetpars,
+<<<<<<< HEAD
 	ESgetsubpars,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ESfunckey,
 	EShash,
 	ESsetG0,
@@ -2760,6 +2778,7 @@ static void do_con_trol(struct tty_struct *tty, struct vc_data *vc, u8 c)
 		fallthrough;
 	case ESgetpars: /* ESC [ aka CSI, parameters expected */
 		switch (c) {
+<<<<<<< HEAD
 		case ':': /* ITU-T T.416 color subparameters */
 			if (vc->vc_par[vc->vc_npar] == CSI_m_FG_COLOR ||
 			    vc->vc_par[vc->vc_npar] == CSI_m_BG_COLOR ||
@@ -2801,6 +2820,8 @@ static void do_con_trol(struct tty_struct *tty, struct vc_data *vc, u8 c)
 	case ESgetsubpars: /* ESC [ 38/48/58, subparameters expected */
 		switch (c) {
 		case ':':
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case ';':
 			if (vc->vc_npar < NPAR - 1) {
 				vc->vc_npar++;

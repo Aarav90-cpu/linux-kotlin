@@ -67,7 +67,11 @@ static void l1_guest_code(void *data)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t guest_gva;
+=======
+	vm_vaddr_t guest_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 

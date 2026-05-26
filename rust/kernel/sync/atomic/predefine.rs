@@ -4,7 +4,10 @@
 
 use crate::static_assert;
 use core::mem::{align_of, size_of};
+<<<<<<< HEAD
 use ffi::c_void;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 // Ensure size and alignment requirements are checked.
 static_assert!(size_of::<bool>() == size_of::<i8>());
@@ -29,6 +32,7 @@ unsafe impl super::AtomicType for i16 {
     type Repr = i16;
 }
 
+<<<<<<< HEAD
 // SAFETY:
 //
 // - `*mut T` has the same size and alignment with `*const c_void`, and is round-trip
@@ -49,6 +53,8 @@ unsafe impl<T: Sized> super::AtomicType for *const T {
     type Repr = *const c_void;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // SAFETY: `i32` has the same size and alignment with itself, and is round-trip transmutable to
 // itself.
 unsafe impl super::AtomicType for i32 {
@@ -178,6 +184,7 @@ mod tests {
 
             assert_eq!(v, x.load(Relaxed));
         });
+<<<<<<< HEAD
 
         for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
             let x = Atomic::new(v);
@@ -186,6 +193,8 @@ mod tests {
             // SAFETY: `ptr` is a valid pointer and no concurrent access.
             assert_eq!(v, unsafe { atomic_load(ptr, Relaxed) });
         });
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     #[test]
@@ -196,6 +205,7 @@ mod tests {
             x.store(v, Release);
             assert_eq!(v, x.load(Acquire));
         });
+<<<<<<< HEAD
 
         for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
             let x = Atomic::new(0);
@@ -207,6 +217,8 @@ mod tests {
             // SAFETY: `ptr` is a valid pointer and no concurrent access.
             assert_eq!(v, unsafe { atomic_load(ptr, Acquire) });
         });
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     #[test]
@@ -220,6 +232,7 @@ mod tests {
             assert_eq!(old, x.xchg(new, Full));
             assert_eq!(new, x.load(Relaxed));
         });
+<<<<<<< HEAD
 
         for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
             let x = Atomic::new(v);
@@ -232,6 +245,8 @@ mod tests {
             assert_eq!(old, unsafe { xchg(ptr, new, Full) });
             assert_eq!(new, x.load(Relaxed));
         });
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     #[test]
@@ -247,6 +262,7 @@ mod tests {
             assert_eq!(Ok(old), x.cmpxchg(old, new, Relaxed));
             assert_eq!(new, x.load(Relaxed));
         });
+<<<<<<< HEAD
 
         for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
             let x = Atomic::new(v);
@@ -262,6 +278,8 @@ mod tests {
             assert_eq!(Ok(old), unsafe { cmpxchg(ptr, old, new, Relaxed) });
             assert_eq!(new, x.load(Relaxed));
         });
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     #[test]
@@ -293,6 +311,7 @@ mod tests {
         assert_eq!(false, x.load(Relaxed));
         assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
     }
+<<<<<<< HEAD
 
     #[test]
     fn atomic_ptr_tests() {
@@ -335,4 +354,6 @@ mod tests {
         assert_eq!(Ok(true), flag.cmpxchg(true, false, Full));
         assert_eq!(false, flag.load(Relaxed));
     }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

@@ -2053,6 +2053,7 @@ static const struct encoding_to_trap_config encoding_to_fgt[] __initconst = {
 	SR_FGT(SYS_AMEVCNTR0_EL0(2),	HAFGRTR, AMEVCNTR02_EL0, 1),
 	SR_FGT(SYS_AMEVCNTR0_EL0(1),	HAFGRTR, AMEVCNTR01_EL0, 1),
 	SR_FGT(SYS_AMEVCNTR0_EL0(0),	HAFGRTR, AMEVCNTR00_EL0, 1),
+<<<<<<< HEAD
 
 	/*
 	 * ICH_HFGRTR_EL2 & ICH_HFGWTR_EL2
@@ -2107,6 +2108,8 @@ static const struct encoding_to_trap_config encoding_to_fgt[] __initconst = {
 	SR_FGT(GICV5_OP_GIC_CDDI,	ICH_HFGITR, GICCDDI, 0),
 	SR_FGT(GICV5_OP_GICR_CDIA,	ICH_HFGITR, GICRCDIA, 0),
 	SR_FGT(GICV5_OP_GICR_CDNMIA,	ICH_HFGITR, GICRCDNMIA, 0),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -2181,9 +2184,12 @@ FGT_MASKS(hfgwtr2_masks, HFGWTR2_EL2);
 FGT_MASKS(hfgitr2_masks, HFGITR2_EL2);
 FGT_MASKS(hdfgrtr2_masks, HDFGRTR2_EL2);
 FGT_MASKS(hdfgwtr2_masks, HDFGWTR2_EL2);
+<<<<<<< HEAD
 FGT_MASKS(ich_hfgrtr_masks, ICH_HFGRTR_EL2);
 FGT_MASKS(ich_hfgwtr_masks, ICH_HFGWTR_EL2);
 FGT_MASKS(ich_hfgitr_masks, ICH_HFGITR_EL2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static __init bool aggregate_fgt(union trap_config tc)
 {
@@ -2219,6 +2225,7 @@ static __init bool aggregate_fgt(union trap_config tc)
 		rmasks = &hfgitr2_masks;
 		wmasks = NULL;
 		break;
+<<<<<<< HEAD
 	case ICH_HFGRTR_GROUP:
 		rmasks = &ich_hfgrtr_masks;
 		wmasks = &ich_hfgwtr_masks;
@@ -2227,6 +2234,8 @@ static __init bool aggregate_fgt(union trap_config tc)
 		rmasks = &ich_hfgitr_masks;
 		wmasks = NULL;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rresx = rmasks->res0 | rmasks->res1;
@@ -2297,9 +2306,12 @@ static __init int check_all_fgt_masks(int ret)
 		&hfgitr2_masks,
 		&hdfgrtr2_masks,
 		&hdfgwtr2_masks,
+<<<<<<< HEAD
 		&ich_hfgrtr_masks,
 		&ich_hfgwtr_masks,
 		&ich_hfgitr_masks,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	int err = 0;
 

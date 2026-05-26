@@ -79,9 +79,14 @@ struct cpufreq_policy {
 					 * called, but you're in IRQ context */
 
 	struct freq_constraints	constraints;
+<<<<<<< HEAD
 	struct freq_qos_request	min_freq_req;
 	struct freq_qos_request	max_freq_req;
 	struct freq_qos_request boost_freq_req;
+=======
+	struct freq_qos_request	*min_freq_req;
+	struct freq_qos_request	*max_freq_req;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct cpufreq_frequency_table	*freq_table;
 	enum cpufreq_table_sorting freq_table_sorted;
@@ -233,7 +238,11 @@ static inline bool policy_is_inactive(struct cpufreq_policy *policy)
 
 static inline bool policy_is_shared(struct cpufreq_policy *policy)
 {
+<<<<<<< HEAD
 	return cpumask_nth(1, policy->cpus) < nr_cpumask_bits;
+=======
+	return cpumask_weight(policy->cpus) > 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_CPU_FREQ
@@ -373,7 +382,11 @@ struct cpufreq_driver {
 	 * conditions) scale invariance can be disabled, which causes the
 	 * schedutil governor to fall back to the latter.
 	 */
+<<<<<<< HEAD
 	void		(*adjust_perf)(struct cpufreq_policy *policy,
+=======
+	void		(*adjust_perf)(unsigned int cpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       unsigned long min_perf,
 				       unsigned long target_perf,
 				       unsigned long capacity);
@@ -618,7 +631,11 @@ struct cpufreq_governor {
 /* Pass a target to the cpufreq driver */
 unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
 					unsigned int target_freq);
+<<<<<<< HEAD
 void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
+=======
+void cpufreq_driver_adjust_perf(unsigned int cpu,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				unsigned long min_perf,
 				unsigned long target_perf,
 				unsigned long capacity);

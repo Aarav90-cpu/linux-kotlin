@@ -5,13 +5,19 @@
  * Copyright 2024 Google LLC.
  */
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/container_of.h>
 #include <linux/dev_printk.h>
 #include <linux/jiffies.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/of.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_data/cros_ec_commands.h>
 #include <linux/platform_data/cros_usbpd_notify.h>
 #include <linux/platform_data/cros_ec_proto.h>
@@ -259,6 +265,10 @@ static void cros_ucsi_destroy(struct cros_ucsi_data *udata)
 static int cros_ucsi_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	struct cros_ec_dev *ec_data = dev_get_drvdata(dev->parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cros_ucsi_data *udata;
 	int ret;
 
@@ -266,6 +276,7 @@ static int cros_ucsi_probe(struct platform_device *pdev)
 	if (!udata)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/* ACPI and OF FW nodes for cros_ec_ucsi are children of the ChromeOS EC. If the
 	 * cros_ec_ucsi device has an ACPI or OF FW node, its parent is the ChromeOS EC device.
 	 * Platforms without a FW node for cros_ec_ucsi may add it as a subdevice of cros_ec_dev.
@@ -276,6 +287,11 @@ static int cros_ucsi_probe(struct platform_device *pdev)
 	else
 		udata->ec = ((struct cros_ec_dev *)dev_get_drvdata(dev->parent))->ec_dev;
 
+=======
+	udata->dev = dev;
+
+	udata->ec = ec_data->ec_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!udata->ec)
 		return dev_err_probe(dev, -ENODEV, "couldn't find parent EC device\n");
 
@@ -356,6 +372,7 @@ static const struct platform_device_id cros_ucsi_id[] = {
 };
 MODULE_DEVICE_TABLE(platform, cros_ucsi_id);
 
+<<<<<<< HEAD
 static const struct acpi_device_id cros_ec_ucsi_acpi_device_ids[] = {
 	{ "GOOG0021", 0 },
 	{ }
@@ -368,12 +385,17 @@ static const struct of_device_id cros_ucsi_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, cros_ucsi_of_match);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct platform_driver cros_ucsi_driver = {
 	.driver = {
 		.name = KBUILD_MODNAME,
 		.pm = &cros_ucsi_pm_ops,
+<<<<<<< HEAD
 		.acpi_match_table = cros_ec_ucsi_acpi_device_ids,
 		.of_match_table = cros_ucsi_of_match,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	.id_table = cros_ucsi_id,
 	.probe = cros_ucsi_probe,

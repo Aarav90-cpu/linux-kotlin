@@ -132,8 +132,13 @@ DEFINE_EVENT(cache_tag_log, cache_tag_unassign,
 
 DECLARE_EVENT_CLASS(cache_tag_flush,
 	TP_PROTO(struct cache_tag *tag, unsigned long start, unsigned long end,
+<<<<<<< HEAD
 		 unsigned long addr, unsigned long mask),
 	TP_ARGS(tag, start, end, addr, mask),
+=======
+		 unsigned long addr, unsigned long pages, unsigned long mask),
+	TP_ARGS(tag, start, end, addr, pages, mask),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TP_STRUCT__entry(
 		__string(iommu, tag->iommu->name)
 		__string(dev, dev_name(tag->dev))
@@ -143,6 +148,10 @@ DECLARE_EVENT_CLASS(cache_tag_flush,
 		__field(unsigned long, start)
 		__field(unsigned long, end)
 		__field(unsigned long, addr)
+<<<<<<< HEAD
+=======
+		__field(unsigned long, pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(unsigned long, mask)
 	),
 	TP_fast_assign(
@@ -154,9 +163,16 @@ DECLARE_EVENT_CLASS(cache_tag_flush,
 		__entry->start = start;
 		__entry->end = end;
 		__entry->addr = addr;
+<<<<<<< HEAD
 		__entry->mask = mask;
 	),
 	TP_printk("%s %s[%d] type %s did %d [0x%lx-0x%lx] addr 0x%lx mask 0x%lx",
+=======
+		__entry->pages = pages;
+		__entry->mask = mask;
+	),
+	TP_printk("%s %s[%d] type %s did %d [0x%lx-0x%lx] addr 0x%lx pages 0x%lx mask 0x%lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __get_str(iommu), __get_str(dev), __entry->pasid,
 		  __print_symbolic(__entry->type,
 			{ CACHE_TAG_IOTLB,		"iotlb" },
@@ -164,20 +180,34 @@ DECLARE_EVENT_CLASS(cache_tag_flush,
 			{ CACHE_TAG_NESTING_IOTLB,	"nesting_iotlb" },
 			{ CACHE_TAG_NESTING_DEVTLB,	"nesting_devtlb" }),
 		__entry->domain_id, __entry->start, __entry->end,
+<<<<<<< HEAD
 		__entry->addr, __entry->mask
+=======
+		__entry->addr, __entry->pages, __entry->mask
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	)
 );
 
 DEFINE_EVENT(cache_tag_flush, cache_tag_flush_range,
 	TP_PROTO(struct cache_tag *tag, unsigned long start, unsigned long end,
+<<<<<<< HEAD
 		 unsigned long addr, unsigned long mask),
 	TP_ARGS(tag, start, end, addr, mask)
+=======
+		 unsigned long addr, unsigned long pages, unsigned long mask),
+	TP_ARGS(tag, start, end, addr, pages, mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(cache_tag_flush, cache_tag_flush_range_np,
 	TP_PROTO(struct cache_tag *tag, unsigned long start, unsigned long end,
+<<<<<<< HEAD
 		 unsigned long addr, unsigned long mask),
 	TP_ARGS(tag, start, end, addr, mask)
+=======
+		 unsigned long addr, unsigned long pages, unsigned long mask),
+	TP_ARGS(tag, start, end, addr, pages, mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 #endif /* _TRACE_INTEL_IOMMU_H */
 

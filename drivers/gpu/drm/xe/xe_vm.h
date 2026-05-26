@@ -12,12 +12,15 @@
 #include "xe_map.h"
 #include "xe_vm_types.h"
 
+<<<<<<< HEAD
 /**
  * MAX_FAULTS_SAVED_PER_VM - Maximum number of faults each vm can store before future
  * faults are discarded to prevent memory overuse
  */
 #define MAX_FAULTS_SAVED_PER_VM	50
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct drm_device;
 struct drm_printer;
 struct drm_file;
@@ -28,7 +31,10 @@ struct dma_fence;
 
 struct xe_exec_queue;
 struct xe_file;
+<<<<<<< HEAD
 struct xe_pagefault;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_sync_entry;
 struct xe_svm_range;
 struct drm_exec;
@@ -210,9 +216,12 @@ int xe_vm_destroy_ioctl(struct drm_device *dev, void *data,
 int xe_vm_bind_ioctl(struct drm_device *dev, void *data,
 		     struct drm_file *file);
 int xe_vm_query_vmas_attrs_ioctl(struct drm_device *dev, void *data, struct drm_file *file);
+<<<<<<< HEAD
 int xe_vm_get_property_ioctl(struct drm_device *dev, void *data,
 			     struct drm_file *file);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void xe_vm_close_and_put(struct xe_vm *vm);
 
 static inline bool xe_vm_in_fault_mode(struct xe_vm *vm)
@@ -230,6 +239,7 @@ static inline bool xe_vm_in_preempt_fence_mode(struct xe_vm *vm)
 	return xe_vm_in_lr_mode(vm) && !xe_vm_in_fault_mode(vm);
 }
 
+<<<<<<< HEAD
 static inline bool xe_vm_allow_vm_eviction(struct xe_vm *vm)
 {
 	return !xe_vm_in_lr_mode(vm) ||
@@ -237,6 +247,8 @@ static inline bool xe_vm_allow_vm_eviction(struct xe_vm *vm)
 		 !(vm->flags & XE_VM_FLAG_NO_VM_OVERCOMMIT));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xe_vm_add_compute_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q);
 void xe_vm_remove_compute_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q);
 
@@ -250,9 +262,16 @@ struct dma_fence *xe_vm_range_rebind(struct xe_vm *vm,
 struct dma_fence *xe_vm_range_unbind(struct xe_vm *vm,
 				     struct xe_svm_range *range);
 
+<<<<<<< HEAD
 int xe_vm_invalidate_vma(struct xe_vma *vma);
 
 int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch);
+=======
+int xe_vm_range_tilemask_tlb_inval(struct xe_vm *vm, u64 start,
+				   u64 end, u8 tile_mask);
+
+int xe_vm_invalidate_vma(struct xe_vma *vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int xe_vm_validate_protected(struct xe_vm *vm);
 
@@ -303,9 +322,12 @@ static inline struct dma_resv *xe_vm_resv(struct xe_vm *vm)
 
 void xe_vm_kill(struct xe_vm *vm, bool unlocked);
 
+<<<<<<< HEAD
 void xe_vm_add_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q);
 void xe_vm_remove_exec_queue(struct xe_vm *vm, struct xe_exec_queue *q);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_vm_assert_held(vm) - Assert that the vm's reservation object is held.
  * @vm: The vm
@@ -328,8 +350,11 @@ void xe_vm_snapshot_capture_delayed(struct xe_vm_snapshot *snap);
 void xe_vm_snapshot_print(struct xe_vm_snapshot *snap, struct drm_printer *p);
 void xe_vm_snapshot_free(struct xe_vm_snapshot *snap);
 
+<<<<<<< HEAD
 void xe_vm_add_fault_entry_pf(struct xe_vm *vm, struct xe_pagefault *pf);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_vm_set_validating() - Register this task as currently making bos resident
  * @allow_res_evict: Allow eviction of buffer objects bound to @vm when

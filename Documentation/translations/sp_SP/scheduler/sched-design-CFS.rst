@@ -198,9 +198,15 @@ Esta es la lista parcial de llamadas:
 
  - yield_task(...)
 
+<<<<<<< HEAD
    Esta función cede la CPU desplazando la posición de la tarea actualmente
    en ejecución hacia atrás en la cola de ejecución, para que otras tareas
    ejecutables sean planificadas primero.
+=======
+   Esta función es básicamente desencolar, seguido por encolar, a menos que
+   sysctl compat_yield esté activado; en ese caso, sitúa la entidad a gestionar
+   en la parte más hacia la derecha del árbol rojo-negro.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
  - check_preempt_curr(...)
 

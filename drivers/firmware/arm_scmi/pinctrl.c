@@ -578,8 +578,11 @@ static int scmi_pinctrl_request_free(const struct scmi_protocol_handle *ph,
 	tx->flags = cpu_to_le32(type);
 
 	ret = ph->xops->do_xfer(ph, t);
+<<<<<<< HEAD
 	if (ret == -EOPNOTSUPP)
 		ret = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ph->xops->xfer_put(ph, t);
 
 	return ret;

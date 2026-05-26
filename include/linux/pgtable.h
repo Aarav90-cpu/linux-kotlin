@@ -491,6 +491,7 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
 #endif
 
 #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+<<<<<<< HEAD
 static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep)
 {
@@ -502,11 +503,25 @@ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 	else
 		set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
 	return young;
+=======
+static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long address,
+					    pte_t *ptep)
+{
+	pte_t pte = ptep_get(ptep);
+	int r = 1;
+	if (!pte_young(pte))
+		r = 0;
+	else
+		set_pte_at(vma->vm_mm, address, ptep, pte_mkold(pte));
+	return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
 #ifndef __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
+<<<<<<< HEAD
 static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
 {
@@ -525,29 +540,68 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
 {
 	BUILD_BUG();
 	return false;
+=======
+static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long address,
+					    pmd_t *pmdp)
+{
+	pmd_t pmd = *pmdp;
+	int r = 1;
+	if (!pmd_young(pmd))
+		r = 0;
+	else
+		set_pmd_at(vma->vm_mm, address, pmdp, pmd_mkold(pmd));
+	return r;
+}
+#else
+static inline int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+					    unsigned long address,
+					    pmd_t *pmdp)
+{
+	BUILD_BUG();
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
 #endif
 
 #ifndef __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+<<<<<<< HEAD
 bool ptep_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pte_t *ptep);
+=======
+int ptep_clear_flush_young(struct vm_area_struct *vma,
+			   unsigned long address, pte_t *ptep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifndef __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+<<<<<<< HEAD
 bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp);
+=======
+extern int pmdp_clear_flush_young(struct vm_area_struct *vma,
+				  unsigned long address, pmd_t *pmdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 /*
  * Despite relevant to THP only, this API is called from generic rmap code
  * under PageTransHuge(), hence needs a dummy implementation for !THP
  */
+<<<<<<< HEAD
 static inline bool pmdp_clear_flush_young(struct vm_area_struct *vma,
 		unsigned long address, pmd_t *pmdp)
 {
 	BUILD_BUG();
 	return false;
+=======
+static inline int pmdp_clear_flush_young(struct vm_area_struct *vma,
+					 unsigned long address, pmd_t *pmdp)
+{
+	BUILD_BUG();
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 #endif
@@ -1085,10 +1139,17 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
  * Context: The caller holds the page table lock.  The PTEs map consecutive
  * pages that belong to the same folio.  The PTEs are all in the same PMD.
  */
+<<<<<<< HEAD
 static inline bool clear_flush_young_ptes(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep, unsigned int nr)
 {
 	bool young = false;
+=======
+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+		unsigned long addr, pte_t *ptep, unsigned int nr)
+{
+	int young = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (;;) {
 		young |= ptep_clear_flush_young(vma, addr, ptep);
@@ -1102,6 +1163,7 @@ static inline bool clear_flush_young_ptes(struct vm_area_struct *vma,
 }
 #endif
 
+<<<<<<< HEAD
 #ifndef test_and_clear_young_ptes
 /**
  * test_and_clear_young_ptes - Mark PTEs that map consecutive pages of the same
@@ -1139,6 +1201,8 @@ static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * On some architectures hardware does not set page access bit when accessing
  * memory page, it is responsibility of software setting this bit. It brings
@@ -1953,6 +2017,7 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
 	pfnmap_setup_cachemode(pfn, PAGE_SIZE, prot);
 }
 
+<<<<<<< HEAD
 /*
  * ZERO_PAGE() is global shared page(s) that is always zero. It is used for
  * zero-mapped memory areas, CoW etc.
@@ -1977,10 +2042,23 @@ static inline int is_zero_pfn(unsigned long pfn)
 }
 
 #define zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
+=======
+#ifdef CONFIG_MMU
+#ifdef __HAVE_COLOR_ZERO_PAGE
+static inline int is_zero_pfn(unsigned long pfn)
+{
+	extern unsigned long zero_pfn;
+	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
+	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
+}
+
+#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #else
 static inline int is_zero_pfn(unsigned long pfn)
 {
+<<<<<<< HEAD
 	extern unsigned long zero_page_pfn;
 
 	return pfn == zero_page_pfn;
@@ -2003,6 +2081,29 @@ static inline struct page *_zero_page(unsigned long addr)
 #define ZERO_PAGE(vaddr) _zero_page(vaddr)
 
 #endif /* __HAVE_COLOR_ZERO_PAGE */
+=======
+	extern unsigned long zero_pfn;
+	return pfn == zero_pfn;
+}
+
+static inline unsigned long my_zero_pfn(unsigned long addr)
+{
+	extern unsigned long zero_pfn;
+	return zero_pfn;
+}
+#endif
+#else
+static inline int is_zero_pfn(unsigned long pfn)
+{
+	return 0;
+}
+
+static inline unsigned long my_zero_pfn(unsigned long addr)
+{
+	return 0;
+}
+#endif /* CONFIG_MMU */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_MMU
 
@@ -2040,7 +2141,11 @@ static inline int pud_trans_unstable(pud_t *pud)
 {
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+<<<<<<< HEAD
 	pud_t pudval = pudp_get(pud);
+=======
+	pud_t pudval = READ_ONCE(*pud);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pud_none(pudval) || pud_trans_huge(pudval))
 		return 1;

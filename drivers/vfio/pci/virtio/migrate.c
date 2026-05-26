@@ -142,8 +142,14 @@ end:
 
 static void virtiovf_put_data_buffer(struct virtiovf_data_buffer *buf)
 {
+<<<<<<< HEAD
 	guard(mutex)(&buf->migf->list_lock);
 	list_add_tail(&buf->buf_elm, &buf->migf->avail_list);
+=======
+	mutex_lock(&buf->migf->list_lock);
+	list_add_tail(&buf->buf_elm, &buf->migf->avail_list);
+	mutex_unlock(&buf->migf->list_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -224,9 +230,16 @@ static void virtiovf_clean_migf_resources(struct virtiovf_migration_file *migf)
 
 static void virtiovf_disable_fd(struct virtiovf_migration_file *migf)
 {
+<<<<<<< HEAD
 	guard(mutex)(&migf->lock);
 	migf->state = VIRTIOVF_MIGF_STATE_ERROR;
 	migf->filp->f_pos = 0;
+=======
+	mutex_lock(&migf->lock);
+	migf->state = VIRTIOVF_MIGF_STATE_ERROR;
+	migf->filp->f_pos = 0;
+	mutex_unlock(&migf->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void virtiovf_disable_fds(struct virtiovf_pci_core_device *virtvdev)
@@ -304,6 +317,7 @@ virtiovf_get_data_buff_from_pos(struct virtiovf_migration_file *migf,
 				loff_t pos, bool *end_of_data)
 {
 	struct virtiovf_data_buffer *buf;
+<<<<<<< HEAD
 
 	*end_of_data = false;
 	guard(mutex)(&migf->list_lock);
@@ -311,20 +325,43 @@ virtiovf_get_data_buff_from_pos(struct virtiovf_migration_file *migf,
 	if (list_empty(&migf->buf_list)) {
 		*end_of_data = true;
 		return NULL;
+=======
+	bool found = false;
+
+	*end_of_data = false;
+	mutex_lock(&migf->list_lock);
+	if (list_empty(&migf->buf_list)) {
+		*end_of_data = true;
+		goto end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	buf = list_first_entry(&migf->buf_list, struct virtiovf_data_buffer,
 			       buf_elm);
 	if (pos >= buf->start_pos &&
+<<<<<<< HEAD
 	    pos < buf->start_pos + buf->length)
 		return buf;
+=======
+	    pos < buf->start_pos + buf->length) {
+		found = true;
+		goto end;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * As we use a stream based FD we may expect having the data always
 	 * on first chunk
 	 */
 	migf->state = VIRTIOVF_MIGF_STATE_ERROR;
+<<<<<<< HEAD
 	return NULL;
+=======
+
+end:
+	mutex_unlock(&migf->list_lock);
+	return found ? buf : NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t virtiovf_buf_read(struct virtiovf_data_buffer *vhca_buf,
@@ -363,9 +400,16 @@ static ssize_t virtiovf_buf_read(struct virtiovf_data_buffer *vhca_buf,
 	}
 
 	if (*pos >= vhca_buf->start_pos + vhca_buf->length) {
+<<<<<<< HEAD
 		guard(mutex)(&vhca_buf->migf->list_lock);
 		list_del_init(&vhca_buf->buf_elm);
 		list_add_tail(&vhca_buf->buf_elm, &vhca_buf->migf->avail_list);
+=======
+		mutex_lock(&vhca_buf->migf->list_lock);
+		list_del_init(&vhca_buf->buf_elm);
+		list_add_tail(&vhca_buf->buf_elm, &vhca_buf->migf->avail_list);
+		mutex_unlock(&vhca_buf->migf->list_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return done;
@@ -384,10 +428,18 @@ static ssize_t virtiovf_save_read(struct file *filp, char __user *buf, size_t le
 		return -ESPIPE;
 	pos = &filp->f_pos;
 
+<<<<<<< HEAD
 	guard(mutex)(&migf->lock);
 
 	if (migf->state == VIRTIOVF_MIGF_STATE_ERROR)
 		return -ENODEV;
+=======
+	mutex_lock(&migf->lock);
+	if (migf->state == VIRTIOVF_MIGF_STATE_ERROR) {
+		done = -ENODEV;
+		goto out_unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (len) {
 		ssize_t count;
@@ -396,6 +448,7 @@ static ssize_t virtiovf_save_read(struct file *filp, char __user *buf, size_t le
 		if (first_loop_call) {
 			first_loop_call = false;
 			/* Temporary end of file as part of PRE_COPY */
+<<<<<<< HEAD
 			if (end_of_data && migf->state == VIRTIOVF_MIGF_STATE_PRECOPY)
 				return -ENOMSG;
 			if (end_of_data && migf->state != VIRTIOVF_MIGF_STATE_COMPLETE)
@@ -414,6 +467,36 @@ static ssize_t virtiovf_save_read(struct file *filp, char __user *buf, size_t le
 		done += count;
 	}
 
+=======
+			if (end_of_data && migf->state == VIRTIOVF_MIGF_STATE_PRECOPY) {
+				done = -ENOMSG;
+				goto out_unlock;
+			}
+			if (end_of_data && migf->state != VIRTIOVF_MIGF_STATE_COMPLETE) {
+				done = -EINVAL;
+				goto out_unlock;
+			}
+		}
+
+		if (end_of_data)
+			goto out_unlock;
+
+		if (!vhca_buf) {
+			done = -EINVAL;
+			goto out_unlock;
+		}
+
+		count = virtiovf_buf_read(vhca_buf, &buf, &len, pos);
+		if (count < 0) {
+			done = count;
+			goto out_unlock;
+		}
+		done += count;
+	}
+
+out_unlock:
+	mutex_unlock(&migf->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return done;
 }
 
@@ -425,6 +508,7 @@ static long virtiovf_precopy_ioctl(struct file *filp, unsigned int cmd,
 	struct vfio_precopy_info info = {};
 	loff_t *pos = &filp->f_pos;
 	bool end_of_data = false;
+<<<<<<< HEAD
 	u32 ctx_size = 0;
 	int ret;
 
@@ -432,6 +516,21 @@ static long virtiovf_precopy_ioctl(struct file *filp, unsigned int cmd,
 				       &info);
 	if (ret)
 		return ret;
+=======
+	unsigned long minsz;
+	u32 ctx_size = 0;
+	int ret;
+
+	if (cmd != VFIO_MIG_GET_PRECOPY_INFO)
+		return -ENOTTY;
+
+	minsz = offsetofend(struct vfio_precopy_info, dirty_bytes);
+	if (copy_from_user(&info, (void __user *)arg, minsz))
+		return -EFAULT;
+
+	if (info.argsz < minsz)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&virtvdev->state_mutex);
 	if (virtvdev->mig_state != VFIO_DEVICE_STATE_PRE_COPY &&
@@ -490,8 +589,12 @@ static long virtiovf_precopy_ioctl(struct file *filp, unsigned int cmd,
 
 done:
 	virtiovf_state_mutex_unlock(virtvdev);
+<<<<<<< HEAD
 	if (copy_to_user((void __user *)arg, &info,
 			 offsetofend(struct vfio_precopy_info, dirty_bytes)))
+=======
+	if (copy_to_user((void __user *)arg, &info, minsz))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 	return 0;
 
@@ -531,10 +634,16 @@ virtiovf_add_buf_header(struct virtiovf_data_buffer *header_buf,
 	header_buf->length = sizeof(header);
 	header_buf->start_pos = header_buf->migf->max_pos;
 	migf->max_pos += header_buf->length;
+<<<<<<< HEAD
 
 	scoped_guard(mutex, &migf->list_lock)
 		list_add_tail(&header_buf->buf_elm, &migf->buf_list);
 
+=======
+	mutex_lock(&migf->list_lock);
+	list_add_tail(&header_buf->buf_elm, &migf->buf_list);
+	mutex_unlock(&migf->list_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -599,10 +708,16 @@ virtiovf_read_device_context_chunk(struct virtiovf_migration_file *migf,
 
 	buf->start_pos = buf->migf->max_pos;
 	migf->max_pos += buf->length;
+<<<<<<< HEAD
 
 	scoped_guard(mutex, &migf->list_lock)
 		list_add_tail(&buf->buf_elm, &migf->buf_list);
 
+=======
+	mutex_lock(&migf->list_lock);
+	list_add_tail(&buf->buf_elm, &migf->buf_list);
+	mutex_unlock(&migf->list_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 out_header:

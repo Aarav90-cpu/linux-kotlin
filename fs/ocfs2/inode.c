@@ -1196,7 +1196,11 @@ static void ocfs2_clear_inode(struct inode *inode)
 				inode->i_nlink);
 
 	mlog_bug_on_msg(osb == NULL,
+<<<<<<< HEAD
 			"Inode=%llu\n", inode->i_ino);
+=======
+			"Inode=%lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dquot_drop(inode);
 

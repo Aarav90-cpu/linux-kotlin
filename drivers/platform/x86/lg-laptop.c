@@ -271,6 +271,14 @@ static void wmi_input_setup(void)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void acpi_notify(struct acpi_device *device, u32 event)
+{
+	acpi_handle_debug(device->handle, "notify: %d\n", event);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t fan_mode_store(struct device *dev,
 			      struct device_attribute *attr,
 			      const char *buffer, size_t count)
@@ -759,8 +767,17 @@ static void lg_laptop_remove_address_space_handler(void *data)
 					  &lg_laptop_address_space_handler);
 }
 
+<<<<<<< HEAD
 static int acpi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int acpi_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct platform_device_info pdev_info = {
 		.name = PLATFORM_NAME,
 		.id = PLATFORM_DEVID_NONE,
@@ -782,11 +799,19 @@ static int acpi_probe(struct platform_device *pdev)
 
 	status = acpi_install_address_space_handler(device->handle, LG_ADDRESS_SPACE_ID,
 						    &lg_laptop_address_space_handler,
+<<<<<<< HEAD
 						    NULL, &pdev->dev);
 	if (ACPI_FAILURE(status))
 		return -ENODEV;
 
 	ret = devm_add_action_or_reset(&pdev->dev, lg_laptop_remove_address_space_handler,
+=======
+						    NULL, &device->dev);
+	if (ACPI_FAILURE(status))
+		return -ENODEV;
+
+	ret = devm_add_action_or_reset(&device->dev, lg_laptop_remove_address_space_handler,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       device);
 	if (ret < 0)
 		return ret;
@@ -880,7 +905,11 @@ out_platform_registered:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void acpi_remove(struct platform_device *pdev)
+=======
+static void acpi_remove(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sysfs_remove_group(&pf_device->dev.kobj, &dev_attribute_group);
 
@@ -900,6 +929,7 @@ static const struct acpi_device_id device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver acpi_driver = {
 	.probe = acpi_probe,
 	.remove = acpi_remove,
@@ -910,3 +940,36 @@ static struct platform_driver acpi_driver = {
 };
 
 module_platform_driver(acpi_driver);
+=======
+static struct acpi_driver acpi_driver = {
+	.name = "LG Gram Laptop Support",
+	.class = "lg-laptop",
+	.ids = device_ids,
+	.ops = {
+		.add = acpi_add,
+		.remove = acpi_remove,
+		.notify = acpi_notify,
+		},
+};
+
+static int __init acpi_init(void)
+{
+	int result;
+
+	result = acpi_bus_register_driver(&acpi_driver);
+	if (result < 0) {
+		pr_debug("Error registering driver\n");
+		return -ENODEV;
+	}
+
+	return 0;
+}
+
+static void __exit acpi_exit(void)
+{
+	acpi_bus_unregister_driver(&acpi_driver);
+}
+
+module_init(acpi_init);
+module_exit(acpi_exit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -396,7 +396,10 @@ struct ethnl_request_ops {
 	u8			set_ntf_cmd;
 
 	int (*parse_request)(struct ethnl_req_info *req_info,
+<<<<<<< HEAD
 			     const struct genl_info *info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     struct nlattr **tb,
 			     struct netlink_ext_ack *extack);
 	int (*prepare_data)(const struct ethnl_req_info *req_info,

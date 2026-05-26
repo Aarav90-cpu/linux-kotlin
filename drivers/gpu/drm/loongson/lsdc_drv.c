@@ -13,7 +13,10 @@
 #include <drm/drm_drv.h>
 #include <drm/drm_fbdev_ttm.h>
 #include <drm/drm_gem_framebuffer_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_ttm_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_ioctl.h>
 #include <drm/drm_modeset_helper.h>
 #include <drm/drm_print.h>
@@ -46,7 +49,11 @@ static const struct drm_driver lsdc_drm_driver = {
 
 	.debugfs_init = lsdc_debugfs_init,
 	.dumb_create = lsdc_dumb_create,
+<<<<<<< HEAD
 	.dumb_map_offset = drm_gem_ttm_dumb_map_offset,
+=======
+	.dumb_map_offset = lsdc_dumb_map_offset,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.gem_prime_import_sg_table = lsdc_prime_import_sg_table,
 	DRM_FBDEV_TTM_DRIVER_OPS,
 };
@@ -293,7 +300,11 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	vga_client_register(pdev, lsdc_vga_set_decode);
 
+<<<<<<< HEAD
 	drmm_kms_helper_poll_init(ddev);
+=======
+	drm_kms_helper_poll_init(ddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (loongson_vblank) {
 		ret = drm_vblank_init(ddev, descp->num_of_crtc);

@@ -71,11 +71,14 @@ enum amdgpu_gfx_partition {
 	AMDGPU_AUTO_COMPUTE_PARTITION_MODE = -2,
 };
 
+<<<<<<< HEAD
 enum amdgpu_gfx_partition_mem_alloc_mode {
 	AMDGPU_PARTITION_MEM_CAPPING_EVEN = 0,
 	AMDGPU_PARTITION_MEM_ALLOC_ALL  = 1,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NUM_XCC(x) hweight16(x)
 
 enum amdgpu_gfx_ras_mem_id_type {
@@ -468,7 +471,10 @@ struct amdgpu_gfx {
 	struct amdgpu_irq_src		cp_ecc_error_irq;
 	struct amdgpu_irq_src		sq_irq;
 	struct amdgpu_irq_src		rlc_gc_fed_irq;
+<<<<<<< HEAD
 	struct amdgpu_irq_src		rlc_poison_irq;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sq_work			sq_work;
 
 	/* gfx status */
@@ -589,8 +595,11 @@ int amdgpu_gfx_kiq_init(struct amdgpu_device *adev,
 int amdgpu_gfx_mqd_sw_init(struct amdgpu_device *adev,
 			   unsigned mqd_size, int xcc_id);
 void amdgpu_gfx_mqd_sw_fini(struct amdgpu_device *adev, int xcc_id);
+<<<<<<< HEAD
 void amdgpu_gfx_mqd_symmetrically_map_cu_mask(struct amdgpu_device *adev, const uint32_t *cu_mask,
 					      uint32_t cu_mask_count, uint32_t *se_mask);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_gfx_disable_kcq(struct amdgpu_device *adev, int xcc_id);
 int amdgpu_gfx_enable_kcq(struct amdgpu_device *adev, int xcc_id);
 int amdgpu_gfx_disable_kgq(struct amdgpu_device *adev, int xcc_id);
@@ -682,6 +691,7 @@ static inline const char *amdgpu_gfx_compute_mode_desc(int mode)
 	}
 }
 
+<<<<<<< HEAD
 static inline const char *amdgpu_gfx_compute_mem_alloc_mode_desc(int mode)
 {
 	switch (mode) {
@@ -694,4 +704,6 @@ static inline const char *amdgpu_gfx_compute_mem_alloc_mode_desc(int mode)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

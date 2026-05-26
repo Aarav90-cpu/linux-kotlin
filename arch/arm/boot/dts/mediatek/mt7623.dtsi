@@ -328,7 +328,11 @@
 
 	efuse: efuse@10206000 {
 		compatible = "mediatek,mt7623-efuse",
+<<<<<<< HEAD
 			     "mediatek,efuse";
+=======
+			     "mediatek,mt8173-efuse";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0 0x10206000 0 0x1000>;
 		#address-cells = <1>;
 		#size-cells = <1>;

@@ -16,11 +16,18 @@ use crate::{
     error::*,
     of,
     prelude::*,
+<<<<<<< HEAD
     sync::aref::{
         ARef,
         AlwaysRefCounted, //
     },
     types::Opaque, //
+=======
+    types::{
+        AlwaysRefCounted,
+        Opaque, //
+    }, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 use core::{
@@ -32,6 +39,11 @@ use core::{
     }, //
 };
 
+<<<<<<< HEAD
+=======
+use kernel::types::ARef;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// An I2C device id table.
 #[repr(transparent)]
 #[derive(Clone, Copy)]
@@ -415,7 +427,11 @@ kernel::impl_device_context_deref!(unsafe { I2cAdapter });
 kernel::impl_device_context_into_aref!(I2cAdapter);
 
 // SAFETY: Instances of `I2cAdapter` are always reference-counted.
+<<<<<<< HEAD
 unsafe impl AlwaysRefCounted for I2cAdapter {
+=======
+unsafe impl crate::types::AlwaysRefCounted for I2cAdapter {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn inc_ref(&self) {
         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
         unsafe { bindings::i2c_get_adapter(self.index()) };

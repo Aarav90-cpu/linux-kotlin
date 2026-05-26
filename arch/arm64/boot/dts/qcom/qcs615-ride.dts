@@ -91,6 +91,19 @@
 		regulator-always-on;
 	};
 
+<<<<<<< HEAD
+=======
+	vreg_12p0: regulator-vreg-12p0 {
+		compatible = "regulator-fixed";
+		regulator-name = "VREG_12P0";
+
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+	};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vreg_1p0: regulator-vreg-1p0 {
 		compatible = "regulator-fixed";
 		regulator-name = "VREG_1P0";
@@ -111,6 +124,11 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <1800000>;
 		regulator-max-microvolt = <1800000>;
+<<<<<<< HEAD
+=======
+
+		vin-supply = <&vreg_5p0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	vreg_3p0: regulator-vreg-3p0 {
@@ -121,6 +139,23 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <3000000>;
 		regulator-max-microvolt = <3000000>;
+<<<<<<< HEAD
+=======
+
+		vin-supply = <&vreg_12p0>;
+	};
+
+	vreg_5p0: regulator-vreg-5p0 {
+		compatible = "regulator-fixed";
+		regulator-name = "VREG_5P0";
+
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+
+		vin-supply = <&vreg_12p0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	wcn6855-pmu {
@@ -346,6 +381,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &gpu {
 	status = "okay";
 };
@@ -354,6 +390,8 @@
 	firmware-name = "qcom/qcs615/a612_zap.mbn";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c2 {
 	clock-frequency = <400000>;
 	status = "okay";
@@ -637,12 +675,23 @@
 };
 
 &usb_1 {
+<<<<<<< HEAD
 	dr_mode = "peripheral";
 
 	status = "okay";
 };
 
 &usb_2_hsphy {
+=======
+	status = "okay";
+};
+
+&usb_1_dwc3 {
+	dr_mode = "peripheral";
+};
+
+&usb_hsphy_2 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vdd-supply = <&vreg_l5a>;
 	vdda-pll-supply = <&vreg_l12a>;
 	vdda-phy-dpdm-supply = <&vreg_l13a>;
@@ -651,11 +700,21 @@
 };
 
 &usb_2 {
+<<<<<<< HEAD
 	dr_mode = "host";
 
 	status = "okay";
 };
 
+=======
+	status = "okay";
+};
+
+&usb_2_dwc3 {
+	dr_mode = "host";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &ufs_mem_hc {
 	reset-gpios = <&tlmm 123 GPIO_ACTIVE_LOW>;
 	vcc-supply = <&vreg_l17a>;

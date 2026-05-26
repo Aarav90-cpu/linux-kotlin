@@ -26,7 +26,10 @@ Documentation/userspace-api/media/index.rst
     :numbered:
 
     maintainer-entry-profile
+<<<<<<< HEAD
     media-committers
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     v4l2-core
     dtv-core

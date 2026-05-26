@@ -132,7 +132,11 @@ pub(crate) struct ShrinkablePageRange {
     pid: Pid,
     /// The mm for the relevant process.
     mm: ARef<Mm>,
+<<<<<<< HEAD
     /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
+=======
+    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #[pin]
     mm_lock: Mutex<()>,
     /// Spinlock protecting changes to pages.
@@ -683,15 +687,24 @@ unsafe extern "C" fn rust_shrink_scan(
     unsafe {
         bindings::list_lru_walk(
             list_lru,
+<<<<<<< HEAD
             Some(rust_shrink_free_page),
+=======
+            Some(bindings::rust_shrink_free_page_wrap),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             ptr::null_mut(),
             nr_to_scan,
         )
     }
 }
 
+<<<<<<< HEAD
 const LRU_SKIP: bindings::lru_status = bindings::lru_status::LRU_SKIP;
 const LRU_REMOVED_ENTRY: bindings::lru_status = bindings::lru_status::LRU_REMOVED_RETRY;
+=======
+const LRU_SKIP: bindings::lru_status = bindings::lru_status_LRU_SKIP;
+const LRU_REMOVED_ENTRY: bindings::lru_status = bindings::lru_status_LRU_REMOVED_RETRY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// # Safety
 /// Called by the shrinker.
@@ -764,7 +777,11 @@ unsafe extern "C" fn rust_shrink_free_page(
     if let Some(unchecked_vma) = mmap_read.vma_lookup(vma_addr) {
         if let Some(vma) = check_vma(unchecked_vma, range_ptr) {
             let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+<<<<<<< HEAD
             vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+=======
+            vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         }
     }
 

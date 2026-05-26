@@ -1155,6 +1155,7 @@ ice_dpll_input_state_get(const struct dpll_pin *pin, void *pin_priv,
 }
 
 /**
+<<<<<<< HEAD
  * ice_dpll_sw_pin_notify_peer - notify the paired SW pin after a state change
  * @d: pointer to dplls struct
  * @changed: the SW pin that was explicitly changed (already notified by dpll core)
@@ -1181,6 +1182,8 @@ static void ice_dpll_sw_pin_notify_peer(struct ice_dplls *d,
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_dpll_sma_direction_set - set direction of SMA pin
  * @p: pointer to a pin
  * @direction: requested direction of the pin
@@ -1197,8 +1200,11 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
 				      enum dpll_pin_direction direction,
 				      struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
 	struct ice_dplls *d = &p->pf->dplls;
 	struct ice_dpll_pin *peer;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 data;
 	int ret;
 
@@ -1217,9 +1223,14 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
 	case ICE_DPLL_PIN_SW_2_IDX:
 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
 			data &= ~ICE_SMA2_DIR_EN;
+<<<<<<< HEAD
 			data |= ICE_SMA2_UFL2_RX_DIS;
 		} else {
 			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
+=======
+		} else {
+			data &= ~ICE_SMA2_TX_EN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data |= ICE_SMA2_DIR_EN;
 		}
 		break;
@@ -1231,6 +1242,7 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
 		ret = ice_dpll_pin_state_update(p->pf, p,
 						ICE_DPLL_PIN_TYPE_SOFTWARE,
 						extack);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -1259,6 +1271,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
 			ret = ice_dpll_pin_state_update(p->pf, target,
 							type, extack);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1310,6 +1324,7 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 			data &= ~ICE_SMA1_MASK;
 			enable = true;
 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+<<<<<<< HEAD
 			/* Skip if U.FL1 is not active, setting TX_EN
 			 * while DIR_EN is set would also deactivate
 			 * the paired SMA1 output.
@@ -1318,6 +1333,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 				ret = 0;
 				goto unlock;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data |= ICE_SMA1_TX_EN;
 			enable = false;
 		} else {
@@ -1332,6 +1349,7 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 			data &= ~ICE_SMA2_UFL2_RX_DIS;
 			enable = true;
 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+<<<<<<< HEAD
 			/* Skip if U.FL2 is not active, setting
 			 * UFL2_RX_DIS could also disable the paired
 			 * SMA2 input.
@@ -1341,6 +1359,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 				ret = 0;
 				goto unlock;
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data |= ICE_SMA2_UFL2_RX_DIS;
 			enable = false;
 		} else {
@@ -1370,8 +1390,11 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 
 unlock:
 	mutex_unlock(&pf->dplls.lock);
+<<<<<<< HEAD
 	if (!ret)
 		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1490,8 +1513,11 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
 
 unlock:
 	mutex_unlock(&pf->dplls.lock);
+<<<<<<< HEAD
 	if (!ret)
 		ice_dpll_sw_pin_notify_peer(&pf->dplls, sma);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1687,8 +1713,11 @@ ice_dpll_pin_sma_direction_set(const struct dpll_pin *pin, void *pin_priv,
 	mutex_lock(&pf->dplls.lock);
 	ret = ice_dpll_sma_direction_set(p, direction, extack);
 	mutex_unlock(&pf->dplls.lock);
+<<<<<<< HEAD
 	if (!ret)
 		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1995,10 +2024,14 @@ ice_dpll_phase_offset_get(const struct dpll_pin *pin, void *pin_priv,
 				       d->active_input == p->input->pin))
 		*phase_offset = d->phase_offset * ICE_DPLL_PHASE_OFFSET_FACTOR;
 	else if (d->phase_offset_monitor_period)
+<<<<<<< HEAD
 		*phase_offset = (p->input &&
 				 p->direction == DPLL_PIN_DIRECTION_INPUT ?
 				 p->input->phase_offset :
 				 p->phase_offset) * ICE_DPLL_PHASE_OFFSET_FACTOR;
+=======
+		*phase_offset = p->phase_offset * ICE_DPLL_PHASE_OFFSET_FACTOR;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		*phase_offset = 0;
 	mutex_unlock(&pf->dplls.lock);
@@ -2523,8 +2556,11 @@ ice_dpll_rclk_state_on_pin_set(const struct dpll_pin *pin, void *pin_priv,
 	if (hw_idx < 0)
 		goto unlock;
 	hw_idx -= pf->dplls.base_rclk_idx;
+<<<<<<< HEAD
 	if (hw_idx >= ICE_DPLL_RCLK_NUM_MAX)
 		goto unlock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((enable && p->state[hw_idx] == DPLL_PIN_STATE_CONNECTED) ||
 	    (!enable && p->state[hw_idx] == DPLL_PIN_STATE_DISCONNECTED)) {
@@ -2588,9 +2624,12 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
 	hw_idx = ice_dpll_pin_get_parent_idx(p, parent_pin);
 	if (hw_idx < 0)
 		goto unlock;
+<<<<<<< HEAD
 	hw_idx -= pf->dplls.base_rclk_idx;
 	if (hw_idx >= ICE_DPLL_RCLK_NUM_MAX)
 		goto unlock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ice_dpll_pin_state_update(pf, p, ICE_DPLL_PIN_TYPE_RCLK_INPUT,
 					extack);
@@ -2698,6 +2737,7 @@ static u64 ice_generate_clock_id(struct ice_pf *pf)
 }
 
 /**
+<<<<<<< HEAD
  * ice_dpll_pin_ntf - notify pin change including any SW pin wrappers
  * @dplls: pointer to dplls struct
  * @pin: the dpll_pin that changed
@@ -2719,6 +2759,8 @@ static void ice_dpll_pin_ntf(struct ice_dplls *dplls, struct dpll_pin *pin)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ice_dpll_notify_changes - notify dpll subsystem about changes
  * @d: pointer do dpll
  *
@@ -2726,7 +2768,10 @@ static void ice_dpll_pin_ntf(struct ice_dplls *dplls, struct dpll_pin *pin)
  */
 static void ice_dpll_notify_changes(struct ice_dpll *d)
 {
+<<<<<<< HEAD
 	struct ice_dplls *dplls = &d->pf->dplls;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool pin_notified = false;
 
 	if (d->prev_dpll_state != d->dpll_state) {
@@ -2735,17 +2780,28 @@ static void ice_dpll_notify_changes(struct ice_dpll *d)
 	}
 	if (d->prev_input != d->active_input) {
 		if (d->prev_input)
+<<<<<<< HEAD
 			ice_dpll_pin_ntf(dplls, d->prev_input);
 		d->prev_input = d->active_input;
 		if (d->active_input) {
 			ice_dpll_pin_ntf(dplls, d->active_input);
+=======
+			dpll_pin_change_ntf(d->prev_input);
+		d->prev_input = d->active_input;
+		if (d->active_input) {
+			dpll_pin_change_ntf(d->active_input);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pin_notified = true;
 		}
 	}
 	if (d->prev_phase_offset != d->phase_offset) {
 		d->prev_phase_offset = d->phase_offset;
 		if (!pin_notified && d->active_input)
+<<<<<<< HEAD
 			ice_dpll_pin_ntf(dplls, d->active_input);
+=======
+			dpll_pin_change_ntf(d->active_input);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2774,7 +2830,10 @@ static bool ice_dpll_is_pps_phase_monitor(struct ice_pf *pf)
 
 /**
  * ice_dpll_pins_notify_mask - notify dpll subsystem about bulk pin changes
+<<<<<<< HEAD
  * @dplls: pointer to dplls struct
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @pins: array of ice_dpll_pin pointers registered within dpll subsystem
  * @pin_num: number of pins
  * @phase_offset_ntf_mask: bitmask of pin indexes to notify
@@ -2784,6 +2843,7 @@ static bool ice_dpll_is_pps_phase_monitor(struct ice_pf *pf)
  *
  * Context: Must be called while pf->dplls.lock is released.
  */
+<<<<<<< HEAD
 static void ice_dpll_pins_notify_mask(struct ice_dplls *dplls,
 				      struct ice_dpll_pin *pins,
 				      u8 pin_num,
@@ -2792,6 +2852,17 @@ static void ice_dpll_pins_notify_mask(struct ice_dplls *dplls,
 	for (int i = 0; i < pin_num; i++)
 		if (phase_offset_ntf_mask & BIT(i))
 			ice_dpll_pin_ntf(dplls, pins[i].pin);
+=======
+static void ice_dpll_pins_notify_mask(struct ice_dpll_pin *pins,
+				      u8 pin_num,
+				      u32 phase_offset_ntf_mask)
+{
+	int i = 0;
+
+	for (i = 0; i < pin_num; i++)
+		if (phase_offset_ntf_mask & (1 << i))
+			dpll_pin_change_ntf(pins[i].pin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2967,7 +3038,11 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
 	ice_dpll_notify_changes(de);
 	ice_dpll_notify_changes(dp);
 	if (phase_offset_ntf)
+<<<<<<< HEAD
 		ice_dpll_pins_notify_mask(d, d->inputs, d->num_inputs,
+=======
+		ice_dpll_pins_notify_mask(d->inputs, d->num_inputs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  phase_offset_ntf);
 
 resched:
@@ -4124,7 +4199,10 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
 	struct ice_dpll_pin *pin;
 	u32 phase_adj_max, caps;
 	int i, ret;
+<<<<<<< HEAD
 	u8 data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pf->hw.device_id == ICE_DEV_ID_E810C_QSFP)
 		input_idx_offset = ICE_E810_RCLK_PINS_NUM;
@@ -4184,6 +4262,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
 		}
 		ice_dpll_phase_range_set(&pin->prop.phase_range, phase_adj_max);
 	}
+<<<<<<< HEAD
 
 	/* Initialize the SMA control register to a known-good default state.
 	 * Without this write the PCA9575 GPIO expander retains its power-on
@@ -4200,6 +4279,8 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ice_dpll_pin_state_update(pf, pin, ICE_DPLL_PIN_TYPE_SOFTWARE,
 					NULL);
 	if (ret)

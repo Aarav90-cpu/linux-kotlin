@@ -8,12 +8,16 @@ title: Qualcomm Global Clock & Reset Controller on Milos
 
 maintainers:
   - Luca Weiss <luca.weiss@fairphone.com>
+<<<<<<< HEAD
   - Taniya Das <taniya.das@oss.qualcomm.com>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 description: |
   Qualcomm global clock control module provides the clocks, resets and power
   domains on Milos.
 
+<<<<<<< HEAD
   See also:
    - include/dt-bindings/clock/qcom,eliza-gcc.h
    - include/dt-bindings/clock/qcom,milos-gcc.h
@@ -23,6 +27,13 @@ properties:
     enum:
       - qcom,eliza-gcc
       - qcom,milos-gcc
+=======
+  See also: include/dt-bindings/clock/qcom,milos-gcc.h
+
+properties:
+  compatible:
+    const: qcom,milos-gcc
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   clocks:
     items:
@@ -35,6 +46,7 @@ properties:
       - description: UFS Phy Tx symbol 0 clock source
       - description: USB3 Phy wrapper pipe clock source
 
+<<<<<<< HEAD
   power-domains:
     items:
       - description: CX domain
@@ -43,6 +55,11 @@ required:
   - compatible
   - clocks
   - power-domains
+=======
+required:
+  - compatible
+  - clocks
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - '#power-domain-cells'
 
 allOf:
@@ -53,7 +70,10 @@ unevaluatedProperties: false
 examples:
   - |
     #include <dt-bindings/clock/qcom,rpmh.h>
+<<<<<<< HEAD
     #include <dt-bindings/power/qcom,rpmhpd.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     clock-controller@100000 {
         compatible = "qcom,milos-gcc";
         reg = <0x00100000 0x1f4200>;
@@ -65,7 +85,10 @@ examples:
                  <&ufs_mem_phy 1>,
                  <&ufs_mem_phy 2>,
                  <&usb_1_qmpphy>;
+<<<<<<< HEAD
         power-domains = <&rpmhpd RPMHPD_CX>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         #clock-cells = <1>;
         #reset-cells = <1>;
         #power-domain-cells = <1>;

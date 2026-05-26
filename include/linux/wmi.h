@@ -18,12 +18,22 @@
  * struct wmi_device - WMI device structure
  * @dev: Device associated with this WMI device
  * @setable: True for devices implementing the Set Control Method
+<<<<<<< HEAD
+=======
+ * @driver_override: Driver name to force a match; do not set directly,
+ *		     because core frees it; use driver_set_override() to
+ *		     set or clear it.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * This represents WMI devices discovered by the WMI driver core.
  */
 struct wmi_device {
 	struct device dev;
 	bool setable;
+<<<<<<< HEAD
+=======
+	const char *driver_override;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -64,6 +74,7 @@ ssize_t wmi_string_from_utf8s(struct wmi_string *str, size_t max_chars, const u8
 			      size_t src_length);
 
 int wmidev_invoke_method(struct wmi_device *wdev, u8 instance, u32 method_id,
+<<<<<<< HEAD
 			 const struct wmi_buffer *in, struct wmi_buffer *out, size_t min_size);
 
 int wmidev_invoke_procedure(struct wmi_device *wdev, u8 instance, u32 method_id,
@@ -71,6 +82,11 @@ int wmidev_invoke_procedure(struct wmi_device *wdev, u8 instance, u32 method_id,
 
 int wmidev_query_block(struct wmi_device *wdev, u8 instance, struct wmi_buffer *out,
 		       size_t min_size);
+=======
+			 const struct wmi_buffer *in, struct wmi_buffer *out);
+
+int wmidev_query_block(struct wmi_device *wdev, u8 instance, struct wmi_buffer *out);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int wmidev_set_block(struct wmi_device *wdev, u8 instance, const struct wmi_buffer *in);
 
@@ -87,7 +103,11 @@ u8 wmidev_instance_count(struct wmi_device *wdev);
  * struct wmi_driver - WMI driver structure
  * @driver: Driver model structure
  * @id_table: List of WMI GUIDs supported by this driver
+<<<<<<< HEAD
  * @min_event_size: Minimum event payload size supported by this driver
+=======
+ * @no_notify_data: Driver supports WMI events which provide no event data
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @no_singleton: Driver can be instantiated multiple times
  * @probe: Callback for device binding
  * @remove: Callback for device unbinding
@@ -97,14 +117,21 @@ u8 wmidev_instance_count(struct wmi_device *wdev);
  *
  * This represents WMI drivers which handle WMI devices. The data inside the buffer
  * passed to the @notify_new callback is guaranteed to be aligned on a 8-byte boundary.
+<<<<<<< HEAD
  * The minimum supported size for said buffer can be specified using @min_event_size.
  * WMI drivers that still use the deprecated @notify callback can still set @min_event_size
  * to 0 in order to signal that they support WMI events which provide no event data.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct wmi_driver {
 	struct device_driver driver;
 	const struct wmi_device_id *id_table;
+<<<<<<< HEAD
 	size_t min_event_size;
+=======
+	bool no_notify_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool no_singleton;
 
 	int (*probe)(struct wmi_device *wdev, const void *context);

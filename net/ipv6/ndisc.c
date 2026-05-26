@@ -576,7 +576,10 @@ void ndisc_send_na(struct net_device *dev, const struct in6_addr *daddr,
 
 	ndisc_send_skb(skb, daddr, src_addr);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ndisc_send_na);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void ndisc_send_unsol_na(struct net_device *dev)
 {

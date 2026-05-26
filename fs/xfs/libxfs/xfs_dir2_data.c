@@ -382,7 +382,10 @@ xfs_dir3_data_write_verify(
 	struct xfs_mount	*mp = bp->b_mount;
 	struct xfs_buf_log_item	*bip = bp->b_log_item;
 	struct xfs_dir3_blk_hdr	*hdr3 = bp->b_addr;
+<<<<<<< HEAD
 	struct xfs_dir3_data_hdr *datahdr3 = bp->b_addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xfs_failaddr_t		fa;
 
 	fa = xfs_dir3_data_verify(bp);
@@ -397,11 +400,14 @@ xfs_dir3_data_write_verify(
 	if (bip)
 		hdr3->lsn = cpu_to_be64(bip->bli_item.li_lsn);
 
+<<<<<<< HEAD
 	/*
 	 * Zero padding that may be stale from old kernels.
 	 */
 	datahdr3->pad = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xfs_buf_update_cksum(bp, XFS_DIR3_DATA_CRC_OFF);
 }
 
@@ -734,6 +740,10 @@ xfs_dir3_data_init(
 	struct xfs_dir2_data_unused	*dup;
 	struct xfs_dir2_data_free 	*bf;
 	int				error;
+<<<<<<< HEAD
+=======
+	int				i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Get the buffer set up for the block.
@@ -746,6 +756,7 @@ xfs_dir3_data_init(
 	xfs_trans_buf_set_type(tp, bp, XFS_BLFT_DIR_DATA_BUF);
 
 	/*
+<<<<<<< HEAD
 	 * Initialize the whole directory header region to zero
 	 * so that all padding, bestfree entries, and any
 	 * future header fields are clean.
@@ -756,6 +767,15 @@ xfs_dir3_data_init(
 	if (xfs_has_crc(mp)) {
 		struct xfs_dir3_blk_hdr *hdr3 = bp->b_addr;
 
+=======
+	 * Initialize the header.
+	 */
+	hdr = bp->b_addr;
+	if (xfs_has_crc(mp)) {
+		struct xfs_dir3_blk_hdr *hdr3 = bp->b_addr;
+
+		memset(hdr3, 0, sizeof(*hdr3));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hdr3->magic = cpu_to_be32(XFS_DIR3_DATA_MAGIC);
 		hdr3->blkno = cpu_to_be64(xfs_buf_daddr(bp));
 		hdr3->owner = cpu_to_be64(args->owner);
@@ -767,6 +787,13 @@ xfs_dir3_data_init(
 	bf = xfs_dir2_data_bestfree_p(mp, hdr);
 	bf[0].offset = cpu_to_be16(geo->data_entry_offset);
 	bf[0].length = cpu_to_be16(geo->blksize - geo->data_entry_offset);
+<<<<<<< HEAD
+=======
+	for (i = 1; i < XFS_DIR2_DATA_FD_COUNT; i++) {
+		bf[i].length = 0;
+		bf[i].offset = 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Set up an unused entry for the block's body.

@@ -2340,7 +2340,10 @@ static struct wmi_driver ideapad_wmi_driver = {
 		.name = "ideapad_wmi",
 	},
 	.id_table = ideapad_wmi_ids,
+<<<<<<< HEAD
 	.min_event_size = sizeof(u32),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.probe = ideapad_wmi_probe,
 	.notify = ideapad_wmi_notify,
 };

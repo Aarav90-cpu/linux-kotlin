@@ -263,7 +263,10 @@ static int __init loop_init(void)
 static void __exit loop_exit(void)
 {
 	rc_unregister_device(loopdev.dev);
+<<<<<<< HEAD
 	rc_free_device(loopdev.dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(loop_init);

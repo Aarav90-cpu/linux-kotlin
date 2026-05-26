@@ -11,8 +11,13 @@
 #include <linux/writeback.h>
 #include <linux/uio.h>
 #include <linux/xattr.h>
+<<<<<<< HEAD
 #include <crypto/aead.h>
 #include <crypto/aes-cbc-macs.h>
+=======
+#include <crypto/hash.h>
+#include <crypto/aead.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/md5.h>
 #include <crypto/sha2.h>
 #include <crypto/utils.h>
@@ -490,6 +495,7 @@ void ksmbd_sign_smb2_pdu(struct ksmbd_conn *conn, char *key, struct kvec *iov,
  * @sig:	signature value generated for client request packet
  *
  */
+<<<<<<< HEAD
 void ksmbd_sign_smb3_pdu(struct ksmbd_conn *conn, char *key, struct kvec *iov,
 			 int n_vec, char *sig)
 {
@@ -505,6 +511,48 @@ void ksmbd_sign_smb3_pdu(struct ksmbd_conn *conn, char *key, struct kvec *iov,
 	for (i = 0; i < n_vec; i++)
 		aes_cmac_update(&cmac_ctx, iov[i].iov_base, iov[i].iov_len);
 	aes_cmac_final(&cmac_ctx, sig);
+=======
+int ksmbd_sign_smb3_pdu(struct ksmbd_conn *conn, char *key, struct kvec *iov,
+			int n_vec, char *sig)
+{
+	struct ksmbd_crypto_ctx *ctx;
+	int rc, i;
+
+	ctx = ksmbd_crypto_ctx_find_cmacaes();
+	if (!ctx) {
+		ksmbd_debug(AUTH, "could not crypto alloc cmac\n");
+		return -ENOMEM;
+	}
+
+	rc = crypto_shash_setkey(CRYPTO_CMACAES_TFM(ctx),
+				 key,
+				 SMB2_CMACAES_SIZE);
+	if (rc)
+		goto out;
+
+	rc = crypto_shash_init(CRYPTO_CMACAES(ctx));
+	if (rc) {
+		ksmbd_debug(AUTH, "cmaces init error %d\n", rc);
+		goto out;
+	}
+
+	for (i = 0; i < n_vec; i++) {
+		rc = crypto_shash_update(CRYPTO_CMACAES(ctx),
+					 iov[i].iov_base,
+					 iov[i].iov_len);
+		if (rc) {
+			ksmbd_debug(AUTH, "cmaces update error %d\n", rc);
+			goto out;
+		}
+	}
+
+	rc = crypto_shash_final(CRYPTO_CMACAES(ctx), sig);
+	if (rc)
+		ksmbd_debug(AUTH, "cmaces generation error %d\n", rc);
+out:
+	ksmbd_release_crypto_ctx(ctx);
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct derivation {
@@ -802,7 +850,10 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
 	struct smb2_transform_hdr *tr_hdr = smb_get_msg(iov[0].iov_base);
 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
 	int rc;
+<<<<<<< HEAD
 	DECLARE_CRYPTO_WAIT(wait);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct scatterlist *sg;
 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
@@ -889,12 +940,21 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
 
 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
 	aead_request_set_ad(req, assoc_data_len);
+<<<<<<< HEAD
 	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
 				  CRYPTO_TFM_REQ_MAY_SLEEP,
 				  crypto_req_done, &wait);
 
 	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
 			     crypto_aead_decrypt(req), &wait);
+=======
+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
+
+	if (enc)
+		rc = crypto_aead_encrypt(req);
+	else
+		rc = crypto_aead_decrypt(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		goto free_iv;
 

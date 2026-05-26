@@ -154,11 +154,19 @@ static u32 cik_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.pcie.lock, flags);
 	WREG32(mmPCIE_INDEX, reg);
 	(void)RREG32(mmPCIE_INDEX);
 	r = RREG32(mmPCIE_DATA);
 	spin_unlock_irqrestore(&adev->reg.pcie.lock, flags);
+=======
+	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
+	WREG32(mmPCIE_INDEX, reg);
+	(void)RREG32(mmPCIE_INDEX);
+	r = RREG32(mmPCIE_DATA);
+	spin_unlock_irqrestore(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -166,12 +174,20 @@ static void cik_pcie_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.pcie.lock, flags);
+=======
+	spin_lock_irqsave(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WREG32(mmPCIE_INDEX, reg);
 	(void)RREG32(mmPCIE_INDEX);
 	WREG32(mmPCIE_DATA, v);
 	(void)RREG32(mmPCIE_DATA);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&adev->reg.pcie.lock, flags);
+=======
+	spin_unlock_irqrestore(&adev->pcie_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 cik_smc_rreg(struct amdgpu_device *adev, u32 reg)
@@ -179,10 +195,17 @@ static u32 cik_smc_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32(mmSMC_IND_INDEX_0, (reg));
 	r = RREG32(mmSMC_IND_DATA_0);
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32(mmSMC_IND_INDEX_0, (reg));
+	r = RREG32(mmSMC_IND_DATA_0);
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -190,10 +213,17 @@ static void cik_smc_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
 	WREG32(mmSMC_IND_INDEX_0, (reg));
 	WREG32(mmSMC_IND_DATA_0, (v));
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+	WREG32(mmSMC_IND_INDEX_0, (reg));
+	WREG32(mmSMC_IND_DATA_0, (v));
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 cik_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
@@ -201,10 +231,17 @@ static u32 cik_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
 	r = RREG32(mmUVD_CTX_DATA);
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
+	r = RREG32(mmUVD_CTX_DATA);
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -212,10 +249,17 @@ static void cik_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.uvd_ctx.lock, flags);
 	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
 	WREG32(mmUVD_CTX_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.uvd_ctx.lock, flags);
+=======
+	spin_lock_irqsave(&adev->uvd_ctx_idx_lock, flags);
+	WREG32(mmUVD_CTX_INDEX, ((reg) & 0x1ff));
+	WREG32(mmUVD_CTX_DATA, (v));
+	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 cik_didt_rreg(struct amdgpu_device *adev, u32 reg)
@@ -223,10 +267,17 @@ static u32 cik_didt_rreg(struct amdgpu_device *adev, u32 reg)
 	unsigned long flags;
 	u32 r;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(mmDIDT_IND_INDEX, (reg));
 	r = RREG32(mmDIDT_IND_DATA);
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(mmDIDT_IND_INDEX, (reg));
+	r = RREG32(mmDIDT_IND_DATA);
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -234,10 +285,17 @@ static void cik_didt_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(mmDIDT_IND_INDEX, (reg));
 	WREG32(mmDIDT_IND_DATA, (v));
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(mmDIDT_IND_INDEX, (reg));
+	WREG32(mmDIDT_IND_DATA, (v));
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const u32 bonaire_golden_spm_registers[] =
@@ -1027,7 +1085,11 @@ static bool cik_read_bios_from_rom(struct amdgpu_device *adev,
 	dw_ptr = (u32 *)bios;
 	length_dw = ALIGN(length_bytes, 4) / 4;
 	/* take the smc lock since we are using the smc index */
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.smc.lock, flags);
+=======
+	spin_lock_irqsave(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* set rom index to 0 */
 	WREG32(mmSMC_IND_INDEX_0, ixROM_INDEX);
 	WREG32(mmSMC_IND_DATA_0, 0);
@@ -1035,7 +1097,11 @@ static bool cik_read_bios_from_rom(struct amdgpu_device *adev,
 	WREG32(mmSMC_IND_INDEX_0, ixROM_DATA);
 	for (i = 0; i < length_dw; i++)
 		dw_ptr[i] = RREG32(mmSMC_IND_DATA_0);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&adev->reg.smc.lock, flags);
+=======
+	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -1984,6 +2050,7 @@ static int cik_common_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
 
+<<<<<<< HEAD
 	adev->reg.smc.rreg = cik_smc_rreg;
 	adev->reg.smc.wreg = cik_smc_wreg;
 	adev->reg.pcie.rreg = &cik_pcie_rreg;
@@ -1992,6 +2059,16 @@ static int cik_common_early_init(struct amdgpu_ip_block *ip_block)
 	adev->reg.uvd_ctx.wreg = &cik_uvd_ctx_wreg;
 	adev->reg.didt.rreg = &cik_didt_rreg;
 	adev->reg.didt.wreg = &cik_didt_wreg;
+=======
+	adev->smc_rreg = &cik_smc_rreg;
+	adev->smc_wreg = &cik_smc_wreg;
+	adev->pcie_rreg = &cik_pcie_rreg;
+	adev->pcie_wreg = &cik_pcie_wreg;
+	adev->uvd_ctx_rreg = &cik_uvd_ctx_rreg;
+	adev->uvd_ctx_wreg = &cik_uvd_ctx_wreg;
+	adev->didt_rreg = &cik_didt_rreg;
+	adev->didt_wreg = &cik_didt_wreg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adev->asic_funcs = &cik_asic_funcs;
 

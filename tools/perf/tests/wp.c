@@ -22,11 +22,19 @@ do {                                            \
 
 #ifdef __i386__
 /* Only breakpoint length less-than 8 has hardware support on i386. */
+<<<<<<< HEAD
 static volatile u32 data1;
 #else
 static volatile u64 data1;
 #endif
 static volatile u8 data2[3];
+=======
+volatile u32 data1;
+#else
+volatile u64 data1;
+#endif
+volatile u8 data2[3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifndef __s390x__
 static int wp_read(int fd, long long *count, int size)

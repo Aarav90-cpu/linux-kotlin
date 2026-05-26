@@ -6,10 +6,17 @@
 #include <net/devlink.h>
 #include <net/netdev_lock.h>
 
+<<<<<<< HEAD
 #include "bitset.h"
 #include "common.h"
 #include "module_fw.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+#include "bitset.h"
+#include "module_fw.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct module_req_info {
 	struct ethnl_req_info base;

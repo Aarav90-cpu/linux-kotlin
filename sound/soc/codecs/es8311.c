@@ -761,7 +761,10 @@ static int es8311_set_bias_level(struct snd_soc_component *component,
 {
 	struct es8311_priv *es8311 = snd_soc_component_get_drvdata(component);
 	struct snd_soc_dapm_context *dapm = snd_soc_component_to_dapm(component);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (level) {
 	case SND_SOC_BIAS_ON:
@@ -770,13 +773,18 @@ static int es8311_set_bias_level(struct snd_soc_component *component,
 		break;
 	case SND_SOC_BIAS_STANDBY:
 		if (snd_soc_dapm_get_bias_level(dapm) == SND_SOC_BIAS_OFF) {
+<<<<<<< HEAD
 			ret = clk_prepare_enable(es8311->mclk);
+=======
+			int ret = clk_prepare_enable(es8311->mclk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret) {
 				dev_err(component->dev,
 					"unable to prepare mclk\n");
 				return ret;
 			}
 
+<<<<<<< HEAD
 			ret = snd_soc_component_update_bits(
 				      component, ES8311_SYS3,
 				      ES8311_SYS3_PDN_VMIDSEL_MASK,
@@ -785,6 +793,12 @@ static int es8311_set_bias_level(struct snd_soc_component *component,
 				clk_disable_unprepare(es8311->mclk);
 				return ret;
 			}
+=======
+			snd_soc_component_update_bits(
+				component, ES8311_SYS3,
+				ES8311_SYS3_PDN_VMIDSEL_MASK,
+				ES8311_SYS3_PDN_VMIDSEL_STARTUP_NORMAL_SPEED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		break;
@@ -867,18 +881,25 @@ static int es8311_suspend(struct snd_soc_component *component)
 static int es8311_resume(struct snd_soc_component *component)
 {
 	struct es8311_priv *es8311;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	es8311 = snd_soc_component_get_drvdata(component);
 
 	es8311_reset(component, false);
 
 	regcache_cache_only(es8311->regmap, false);
+<<<<<<< HEAD
 	ret = regcache_sync(es8311->regmap);
 	if (ret) {
 		dev_err(component->dev, "unable to sync regcache\n");
 		return ret;
 	}
+=======
+	regcache_sync(es8311->regmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -28,14 +28,23 @@ properties:
   reg:
     maxItems: 1
 
+<<<<<<< HEAD
+=======
+  reset-gpios: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   vdd-supply:
     description: regulator that supplies the vdd voltage
   vddi-supply:
     description: regulator that supplies the vddi voltage
+<<<<<<< HEAD
 
   backlight: true
   port: true
   reset-gpios: true
+=======
+  backlight: true
+  port: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible

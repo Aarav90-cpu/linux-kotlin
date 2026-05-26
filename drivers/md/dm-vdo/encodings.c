@@ -12,10 +12,22 @@
 #include "permassert.h"
 
 #include "constants.h"
+<<<<<<< HEAD
 #include "indexer.h"
 #include "status-codes.h"
 #include "types.h"
 
+=======
+#include "status-codes.h"
+#include "types.h"
+
+/** The maximum logical space is 4 petabytes, which is 1 terablock. */
+static const block_count_t MAXIMUM_VDO_LOGICAL_BLOCKS = 1024ULL * 1024 * 1024 * 1024;
+
+/** The maximum physical space is 256 terabytes, which is 64 gigablocks. */
+static const block_count_t MAXIMUM_VDO_PHYSICAL_BLOCKS = 1024ULL * 1024 * 1024 * 64;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct geometry_block {
 	char magic_number[VDO_GEOMETRY_MAGIC_NUMBER_SIZE];
 	struct packed_header header;
@@ -288,6 +300,7 @@ static void decode_volume_geometry(u8 *buffer, size_t *offset,
 }
 
 /**
+<<<<<<< HEAD
  * vdo_encode_volume_geometry() - Encode the on-disk representation of a volume geometry into a buffer.
  * @buffer: A buffer to store the encoding.
  * @geometry: The geometry to encode.
@@ -344,6 +357,8 @@ int vdo_encode_volume_geometry(u8 *buffer, const struct volume_geometry *geometr
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * vdo_parse_geometry_block() - Decode and validate an encoded geometry block.
  * @block: The encoded geometry block.
  * @geometry: The structure to receive the decoded fields.
@@ -849,7 +864,11 @@ static int allocate_partition(struct layout *layout, u8 id,
 	struct partition *partition;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, __func__, &partition);
+=======
+	result = vdo_allocate(1, struct partition, __func__, &partition);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1270,9 +1289,15 @@ int vdo_validate_config(const struct vdo_config *config,
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = VDO_ASSERT(config->slab_size <= MAX_VDO_SLAB_BLOCKS,
 			    "slab size must be a power of two less than or equal to %d",
 			    MAX_VDO_SLAB_BLOCKS);
+=======
+	result = VDO_ASSERT(config->slab_size <= (1 << MAX_VDO_SLAB_BITS),
+			    "slab size must be less than or equal to 2^%d",
+			    MAX_VDO_SLAB_BITS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1537,6 +1562,7 @@ int vdo_decode_super_block(u8 *buffer)
 
 	return ((checksum != saved_checksum) ? VDO_CHECKSUM_MISMATCH : VDO_SUCCESS);
 }
+<<<<<<< HEAD
 
 /**
  * vdo_initialize_component_states() - Initialize the components so they can be written out.
@@ -1687,3 +1713,5 @@ int vdo_initialize_volume_geometry(nonce_t nonce, uuid_t *uuid,
 
 	return VDO_SUCCESS;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

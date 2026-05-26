@@ -6,6 +6,7 @@
 #ifndef __DTS_IMX8MM_PINFUNC_H
 #define __DTS_IMX8MM_PINFUNC_H
 
+<<<<<<< HEAD
 /* Drive Strength */
 #define MX8MM_DSE_X1		0x0
 #define MX8MM_DSE_X2		0x4
@@ -39,6 +40,8 @@
 #define MX8MM_I2C_DEFAULT (MX8MM_DSE_X6 | MX8MM_PULL_UP | MX8MM_HYS_SCHMITT | \
 			   MX8MM_PULL_ENABLE | MX8MM_SION)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The pin function ID is a tuple of
  * <mux_reg conf_reg input_reg mux_mode input_val>

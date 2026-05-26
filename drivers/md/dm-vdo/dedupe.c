@@ -296,7 +296,11 @@ struct hash_zones {
 	/* The number of zones */
 	zone_count_t zone_count;
 	/* The hash zones themselves */
+<<<<<<< HEAD
 	struct hash_zone zones[] __counted_by(zone_count);
+=======
+	struct hash_zone zones[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* These are in milliseconds. */
@@ -2364,7 +2368,12 @@ static int __must_check initialize_zone(struct vdo *vdo, struct hash_zones *zone
 	vdo_set_completion_callback(&zone->completion, timeout_index_operations_callback,
 				    zone->thread_id);
 	INIT_LIST_HEAD(&zone->lock_pool);
+<<<<<<< HEAD
 	result = vdo_allocate(LOCK_POOL_CAPACITY, "hash_lock array", &zone->lock_array);
+=======
+	result = vdo_allocate(LOCK_POOL_CAPACITY, struct hash_lock, "hash_lock array",
+			      &zone->lock_array);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -2417,7 +2426,12 @@ int vdo_make_hash_zones(struct vdo *vdo, struct hash_zones **zones_ptr)
 	if (zone_count == 0)
 		return VDO_SUCCESS;
 
+<<<<<<< HEAD
 	result = vdo_allocate_extended(zone_count, zones, __func__, &zones);
+=======
+	result = vdo_allocate_extended(struct hash_zones, zone_count, struct hash_zone,
+				       __func__, &zones);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

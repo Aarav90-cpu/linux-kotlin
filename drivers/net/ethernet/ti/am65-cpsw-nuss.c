@@ -1352,7 +1352,11 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
 	am65_cpsw_nuss_set_offload_fwd_mark(skb, ndev_priv->offload_fwd_mark);
 	skb_put(skb, pkt_len);
 	if (port->rx_ts_filter)
+<<<<<<< HEAD
 		am65_cpts_rx_timestamp(common->cpts, port_id, skb);
+=======
+		am65_cpts_rx_timestamp(common->cpts, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_mark_for_recycle(skb);
 	skb->protocol = eth_type_trans(skb, ndev);
 	am65_cpsw_nuss_rx_csum(skb, csum_info);
@@ -1607,7 +1611,11 @@ static netdev_tx_t am65_cpsw_nuss_ndo_slave_xmit(struct sk_buff *skb,
 
 	/* SKB TX timestamp */
 	if (port->tx_ts_enabled)
+<<<<<<< HEAD
 		am65_cpts_prep_tx_timestamp(common->cpts, port->port_id, skb);
+=======
+		am65_cpts_prep_tx_timestamp(common->cpts, skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	q_idx = skb_get_queue_mapping(skb);
 	dev_dbg(dev, "%s skb_queue:%d\n", __func__, q_idx);
@@ -3468,6 +3476,7 @@ static const struct am65_cpsw_pdata am64x_cpswxg_pdata = {
 	.fdqring_mode = K3_RINGACC_RING_MODE_RING,
 };
 
+<<<<<<< HEAD
 static const struct am65_cpsw_pdata j722s_cpswxg_pdata = {
 	.quirks = AM64_CPSW_QUIRK_DMA_RX_TDOWN_IRQ,
 	.ale_dev_id = "am64-cpswxg",
@@ -3475,6 +3484,8 @@ static const struct am65_cpsw_pdata j722s_cpswxg_pdata = {
 	.extra_modes = BIT(PHY_INTERFACE_MODE_SGMII),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct am65_cpsw_pdata j7200_cpswxg_pdata = {
 	.quirks = 0,
 	.ale_dev_id = "am64-cpswxg",
@@ -3502,7 +3513,10 @@ static const struct of_device_id am65_cpsw_nuss_of_mtable[] = {
 	{ .compatible = "ti,am654-cpsw-nuss", .data = &am65x_sr1_0},
 	{ .compatible = "ti,j721e-cpsw-nuss", .data = &j721e_pdata},
 	{ .compatible = "ti,am642-cpsw-nuss", .data = &am64x_cpswxg_pdata},
+<<<<<<< HEAD
 	{ .compatible = "ti,j722s-cpsw-nuss", .data = &j722s_cpswxg_pdata},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "ti,j7200-cpswxg-nuss", .data = &j7200_cpswxg_pdata},
 	{ .compatible = "ti,j721e-cpswxg-nuss", .data = &j721e_cpswxg_pdata},
 	{ .compatible = "ti,j784s4-cpswxg-nuss", .data = &j784s4_cpswxg_pdata},

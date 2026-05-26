@@ -15,6 +15,11 @@
 #include <linux/module.h>
 #include <asm/pgtable.h>
 
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(empty_zero_page);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned int __sync_fetch_and_and_4(volatile void *p, unsigned int v)
 {
 	BUG();

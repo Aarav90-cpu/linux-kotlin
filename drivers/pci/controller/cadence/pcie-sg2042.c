@@ -48,8 +48,11 @@ static int sg2042_pcie_probe(struct platform_device *pdev)
 	bridge->child_ops = &sg2042_pcie_child_ops;
 
 	rc = pci_host_bridge_priv(bridge);
+<<<<<<< HEAD
 	rc->quirk_broken_aspm_l0s = 1;
 	rc->quirk_broken_aspm_l1 = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie = &rc->pcie;
 	pcie->dev = dev;
 

@@ -172,6 +172,16 @@ unsigned long __find_nth_and_bit(const unsigned long *addr1, const unsigned long
 }
 EXPORT_SYMBOL(__find_nth_and_bit);
 
+<<<<<<< HEAD
+=======
+unsigned long __find_nth_andnot_bit(const unsigned long *addr1, const unsigned long *addr2,
+				 unsigned long size, unsigned long n)
+{
+	return FIND_NTH_BIT(addr1[idx] & ~addr2[idx], size, n);
+}
+EXPORT_SYMBOL(__find_nth_andnot_bit);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned long __find_nth_and_andnot_bit(const unsigned long *addr1,
 					const unsigned long *addr2,
 					const unsigned long *addr3,

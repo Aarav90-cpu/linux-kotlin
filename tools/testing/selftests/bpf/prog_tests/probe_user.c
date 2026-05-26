@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <test_progs.h>
 
+<<<<<<< HEAD
 void test_probe_user(void)
+=======
+/* TODO: corrupts other tests uses connect() */
+void serial_test_probe_user(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	static const char *const prog_names[] = {
 		"handle_sys_connect",
@@ -19,11 +24,14 @@ void test_probe_user(void)
 	struct bpf_program *kprobe_progs[prog_count];
 	struct bpf_object *obj;
 	static const int zero = 0;
+<<<<<<< HEAD
 	struct test_pro_bss {
 		struct sockaddr_in old;
 		__u32 test_pid;
 	};
 	struct test_pro_bss results = {};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t i;
 
 	obj = bpf_object__open_file(obj_file, &opts);
@@ -38,6 +46,7 @@ void test_probe_user(void)
 			goto cleanup;
 	}
 
+<<<<<<< HEAD
 	{
 		struct bpf_map *bss_map;
 		struct test_pro_bss bss_init = {};
@@ -55,6 +64,8 @@ void test_probe_user(void)
 			goto cleanup;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = bpf_object__load(obj);
 	if (CHECK(err, "obj_load", "err %d\n", err))
 		goto cleanup;
@@ -83,13 +94,20 @@ void test_probe_user(void)
 	connect(sock_fd, &curr, sizeof(curr));
 	close(sock_fd);
 
+<<<<<<< HEAD
 	err = bpf_map_lookup_elem(results_map_fd, &zero, &results);
+=======
+	err = bpf_map_lookup_elem(results_map_fd, &zero, &tmp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (CHECK(err, "get_kprobe_res",
 		  "failed to get kprobe res: %d\n", err))
 		goto cleanup;
 
+<<<<<<< HEAD
 	memcpy(&tmp, &results.old, sizeof(tmp));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	in = (struct sockaddr_in *)&tmp;
 	if (CHECK(memcmp(&tmp, &orig, sizeof(orig)), "check_kprobe_res",
 		  "wrong kprobe res from probe read: %s:%u\n",

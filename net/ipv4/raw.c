@@ -300,8 +300,12 @@ static int raw_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	/* Charge it to the socket. */
 
 	ipv4_pktinfo_prepare(sk, skb, true);
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(sk, skb);
 	if (reason) {
+=======
+	if (sock_queue_rcv_skb_reason(sk, skb, &reason) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sk_skb_reason_drop(sk, skb, reason);
 		return NET_RX_DROP;
 	}
@@ -740,7 +744,11 @@ out:
  */
 
 static int raw_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+<<<<<<< HEAD
 		       int flags)
+=======
+		       int flags, int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inet_sock *inet = inet_sk(sk);
 	size_t copied = 0;
@@ -752,7 +760,11 @@ static int raw_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 		goto out;
 
 	if (flags & MSG_ERRQUEUE) {
+<<<<<<< HEAD
 		err = ip_recv_error(sk, msg, len);
+=======
+		err = ip_recv_error(sk, msg, len, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
@@ -778,7 +790,11 @@ static int raw_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
 		sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 		sin->sin_port = 0;
 		memset(&sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 		msg->msg_namelen = sizeof(*sin);
+=======
+		*addr_len = sizeof(*sin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (inet_cmsg_flags(inet))
 		ip_cmsg_recv(msg, skb);
@@ -1042,7 +1058,11 @@ static void raw_sock_seq_show(struct seq_file *seq, struct sock *sp, int i)
 	      srcp  = inet->inet_num;
 
 	seq_printf(seq, "%4d: %08X:%04X %08X:%04X"
+<<<<<<< HEAD
 		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u\n",
+=======
+		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		i, src, srcp, dest, destp, sp->sk_state,
 		sk_wmem_alloc_get(sp),
 		sk_rmem_alloc_get(sp),

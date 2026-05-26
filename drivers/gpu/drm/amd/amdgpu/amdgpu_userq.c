@@ -97,6 +97,12 @@ static void amdgpu_userq_mgr_reset_work(struct work_struct *work)
 	bool gpu_reset = false;
 	int i, r;
 
+<<<<<<< HEAD
+=======
+	/* Warning if current process mutex is not held */
+	WARN_ON(!mutex_is_locked(&uq_mgr->userq_mutex));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(adev->debug_disable_gpu_ring_reset)) {
 		dev_err(adev->dev, "userq reset disabled by debug mask\n");
 		return;
@@ -115,11 +121,17 @@ static void amdgpu_userq_mgr_reset_work(struct work_struct *work)
 	 */
 	for (i = 0; i < num_queue_types; i++) {
 		int ring_type = queue_types[i];
+<<<<<<< HEAD
 		const struct amdgpu_userq_funcs *funcs =
 			adev->userq_funcs[ring_type];
 
 		if (!amdgpu_userq_is_reset_type_supported(adev, ring_type,
 							  AMDGPU_RESET_TYPE_PER_QUEUE))
+=======
+		const struct amdgpu_userq_funcs *funcs = adev->userq_funcs[ring_type];
+
+		if (!amdgpu_userq_is_reset_type_supported(adev, ring_type, AMDGPU_RESET_TYPE_PER_QUEUE))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 
 		if (atomic_read(&uq_mgr->userq_count[ring_type]) > 0 &&
@@ -149,26 +161,62 @@ static void amdgpu_userq_mgr_reset_work(struct work_struct *work)
 
 static void amdgpu_userq_hang_detect_work(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct amdgpu_usermode_queue *queue =
 		container_of(work, struct amdgpu_usermode_queue,
 			     hang_detect_work.work);
 
+<<<<<<< HEAD
 	/*
 	 * Don't schedule the work here! Scheduling or queue work from one reset
 	 * handler to another is illegal if you don't take extra precautions!
 	 */
 	amdgpu_userq_mgr_reset_work(&queue->userq_mgr->reset_work);
+=======
+	amdgpu_userq_detect_and_reset_queues(queue->userq_mgr);
+=======
+	struct amdgpu_usermode_queue *queue = container_of(work,
+							  struct amdgpu_usermode_queue,
+							  hang_detect_work.work);
+	struct dma_fence *fence;
+	struct amdgpu_userq_mgr *uq_mgr;
+
+	if (!queue || !queue->userq_mgr)
+		return;
+
+	uq_mgr = queue->userq_mgr;
+	fence = READ_ONCE(queue->hang_detect_fence);
+	/* Fence already signaled – no action needed */
+	if (!fence || dma_fence_is_signaled(fence))
+		return;
+
+	mutex_lock(&uq_mgr->userq_mutex);
+	amdgpu_userq_detect_and_reset_queues(uq_mgr);
+	mutex_unlock(&uq_mgr->userq_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 }
 
 /*
  * Start hang detection for a user queue fence. A delayed work will be scheduled
+<<<<<<< HEAD
  * to reset the queues when the fence doesn't signal in time.
  */
+=======
+ * to check if the fence is still pending after the timeout period.
+*/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_userq_start_hang_detect_work(struct amdgpu_usermode_queue *queue)
 {
 	struct amdgpu_device *adev;
 	unsigned long timeout_ms;
 
+<<<<<<< HEAD
+=======
+	if (!queue || !queue->userq_mgr || !queue->userq_mgr->adev)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adev = queue->userq_mgr->adev;
 	/* Determine timeout based on queue type */
 	switch (queue->queue_type) {
@@ -186,10 +234,21 @@ void amdgpu_userq_start_hang_detect_work(struct amdgpu_usermode_queue *queue)
 		break;
 	}
 
+<<<<<<< HEAD
 	queue_delayed_work(adev->reset_domain->wq, &queue->hang_detect_work,
 			   msecs_to_jiffies(timeout_ms));
+=======
+<<<<<<< HEAD
+=======
+	/* Store the fence to monitor and schedule hang detection */
+	WRITE_ONCE(queue->hang_detect_fence, queue->last_fence);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	schedule_delayed_work(&queue->hang_detect_work,
+		     msecs_to_jiffies(timeout_ms));
+>>>>>>> 7fb39c93c52e (Sync)
 }
 
+<<<<<<< HEAD
 void amdgpu_userq_process_fence_irq(struct amdgpu_device *adev, u32 doorbell)
 {
 	struct xarray *xa = &adev->userq_doorbell_xa;
@@ -213,6 +272,12 @@ void amdgpu_userq_process_fence_irq(struct amdgpu_device *adev, u32 doorbell)
 			amdgpu_userq_start_hang_detect_work(queue);
 	}
 	xa_unlock_irqrestore(xa, flags);
+=======
+static void amdgpu_userq_init_hang_detect_work(struct amdgpu_usermode_queue *queue)
+{
+	INIT_DELAYED_WORK(&queue->hang_detect_work, amdgpu_userq_hang_detect_work);
+	queue->hang_detect_fence = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amdgpu_userq_buffer_va_list_add(struct amdgpu_usermode_queue *queue,
@@ -243,12 +308,22 @@ int amdgpu_userq_input_va_validate(struct amdgpu_device *adev,
 	u64 size;
 	int r = 0;
 
+<<<<<<< HEAD
 	/* Caller must hold vm->root.bo reservation */
 	dma_resv_assert_held(queue->vm->root.bo->tbo.base.resv);
 
 	user_addr = (addr & AMDGPU_GMC_HOLE_MASK) >> AMDGPU_GPU_PAGE_SHIFT;
 	size = expected_size >> AMDGPU_GPU_PAGE_SHIFT;
 
+=======
+	user_addr = (addr & AMDGPU_GMC_HOLE_MASK) >> AMDGPU_GPU_PAGE_SHIFT;
+	size = expected_size >> AMDGPU_GPU_PAGE_SHIFT;
+
+	r = amdgpu_bo_reserve(vm->root.bo, false);
+	if (r)
+		return r;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	va_map = amdgpu_vm_bo_lookup_mapping(vm, user_addr);
 	if (!va_map) {
 		r = -EINVAL;
@@ -258,11 +333,19 @@ int amdgpu_userq_input_va_validate(struct amdgpu_device *adev,
 	if (user_addr >= va_map->start  &&
 	    va_map->last - user_addr + 1 >= size) {
 		amdgpu_userq_buffer_va_list_add(queue, va_map, user_addr);
+<<<<<<< HEAD
+=======
+		amdgpu_bo_unreserve(vm->root.bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
 	r = -EINVAL;
 out_err:
+<<<<<<< HEAD
+=======
+	amdgpu_bo_unreserve(vm->root.bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -271,13 +354,22 @@ static bool amdgpu_userq_buffer_va_mapped(struct amdgpu_vm *vm, u64 addr)
 	struct amdgpu_bo_va_mapping *mapping;
 	bool r;
 
+<<<<<<< HEAD
 	dma_resv_assert_held(vm->root.bo->tbo.base.resv);
+=======
+	if (amdgpu_bo_reserve(vm->root.bo, false))
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mapping = amdgpu_vm_bo_lookup_mapping(vm, addr);
 	if (!IS_ERR_OR_NULL(mapping) && mapping->bo_va->userq_va_mapped)
 		r = true;
 	else
 		r = false;
+<<<<<<< HEAD
+=======
+	amdgpu_bo_unreserve(vm->root.bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return r;
 }
@@ -305,18 +397,49 @@ static void amdgpu_userq_buffer_vas_list_cleanup(struct amdgpu_device *adev,
 {
 	struct amdgpu_userq_va_cursor *va_cursor, *tmp;
 	struct amdgpu_bo_va_mapping *mapping;
+<<<<<<< HEAD
 
 	/* Caller must hold vm->root.bo reservation */
 	dma_resv_assert_held(queue->vm->root.bo->tbo.base.resv);
+=======
+	int r;
+
+	r = amdgpu_bo_reserve(queue->vm->root.bo, false);
+	if (r)
+		return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_for_each_entry_safe(va_cursor, tmp, &queue->userq_va_list, list) {
 		mapping = amdgpu_vm_bo_lookup_mapping(queue->vm, va_cursor->gpu_addr);
+<<<<<<< HEAD
 		if (mapping)
 			dev_dbg(adev->dev, "delete the userq:%p va:%llx\n",
 				queue, va_cursor->gpu_addr);
 		list_del(&va_cursor->list);
 		kfree(va_cursor);
 	}
+=======
+		if (!mapping) {
+<<<<<<< HEAD
+			return -EINVAL;
+=======
+			r = -EINVAL;
+			goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+		}
+		dev_dbg(adev->dev, "delete the userq:%p va:%llx\n",
+			queue, va_cursor->gpu_addr);
+		amdgpu_userq_buffer_va_list_del(mapping, va_cursor);
+	}
+<<<<<<< HEAD
+
+	return 0;
+=======
+err:
+	amdgpu_bo_unreserve(queue->vm->root.bo);
+	return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 }
 
 static int amdgpu_userq_preempt_helper(struct amdgpu_usermode_queue *queue)
@@ -325,18 +448,35 @@ static int amdgpu_userq_preempt_helper(struct amdgpu_usermode_queue *queue)
 	struct amdgpu_device *adev = uq_mgr->adev;
 	const struct amdgpu_userq_funcs *userq_funcs =
 		adev->userq_funcs[queue->queue_type];
+<<<<<<< HEAD
 	int r;
+=======
+	bool found_hung_queue = false;
+	int r = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (queue->state == AMDGPU_USERQ_STATE_MAPPED) {
 		r = userq_funcs->preempt(queue);
 		if (r) {
 			queue->state = AMDGPU_USERQ_STATE_HUNG;
+<<<<<<< HEAD
 			return r;
+=======
+			found_hung_queue = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			queue->state = AMDGPU_USERQ_STATE_PREEMPTED;
 		}
 	}
+<<<<<<< HEAD
 	return 0;
+=======
+
+	if (found_hung_queue)
+		amdgpu_userq_detect_and_reset_queues(uq_mgr);
+
+	return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amdgpu_userq_restore_helper(struct amdgpu_usermode_queue *queue)
@@ -365,6 +505,7 @@ static int amdgpu_userq_unmap_helper(struct amdgpu_usermode_queue *queue)
 	struct amdgpu_device *adev = uq_mgr->adev;
 	const struct amdgpu_userq_funcs *userq_funcs =
 		adev->userq_funcs[queue->queue_type];
+<<<<<<< HEAD
 	int r;
 
 	if ((queue->state == AMDGPU_USERQ_STATE_MAPPED) ||
@@ -374,12 +515,30 @@ static int amdgpu_userq_unmap_helper(struct amdgpu_usermode_queue *queue)
 		if (r) {
 			queue->state = AMDGPU_USERQ_STATE_HUNG;
 			return r;
+=======
+	bool found_hung_queue = false;
+	int r = 0;
+
+	if ((queue->state == AMDGPU_USERQ_STATE_MAPPED) ||
+		(queue->state == AMDGPU_USERQ_STATE_PREEMPTED)) {
+		r = userq_funcs->unmap(queue);
+		if (r) {
+			queue->state = AMDGPU_USERQ_STATE_HUNG;
+			found_hung_queue = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			queue->state = AMDGPU_USERQ_STATE_UNMAPPED;
 		}
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	if (found_hung_queue)
+		amdgpu_userq_detect_and_reset_queues(uq_mgr);
+
+	return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int amdgpu_userq_map_helper(struct amdgpu_usermode_queue *queue)
@@ -388,18 +547,27 @@ static int amdgpu_userq_map_helper(struct amdgpu_usermode_queue *queue)
 	struct amdgpu_device *adev = uq_mgr->adev;
 	const struct amdgpu_userq_funcs *userq_funcs =
 		adev->userq_funcs[queue->queue_type];
+<<<<<<< HEAD
 	int r;
+=======
+	int r = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (queue->state == AMDGPU_USERQ_STATE_UNMAPPED) {
 		r = userq_funcs->map(queue);
 		if (r) {
 			queue->state = AMDGPU_USERQ_STATE_HUNG;
+<<<<<<< HEAD
 			return r;
+=======
+			amdgpu_userq_detect_and_reset_queues(uq_mgr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			queue->state = AMDGPU_USERQ_STATE_MAPPED;
 		}
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -411,6 +579,28 @@ static void amdgpu_userq_wait_for_last_fence(struct amdgpu_usermode_queue *queue
 		return;
 
 	dma_fence_wait(f, false);
+=======
+	return r;
+}
+
+static int amdgpu_userq_wait_for_last_fence(struct amdgpu_usermode_queue *queue)
+{
+	struct amdgpu_userq_mgr *uq_mgr = queue->userq_mgr;
+	struct dma_fence *f = queue->last_fence;
+	int ret = 0;
+
+	if (f && !dma_fence_is_signaled(f)) {
+		ret = dma_fence_wait_timeout(f, true, MAX_SCHEDULE_TIMEOUT);
+		if (ret <= 0) {
+			drm_file_err(uq_mgr->file, "Timed out waiting for fence=%llu:%llu\n",
+				     f->context, f->seqno);
+			queue->state = AMDGPU_USERQ_STATE_HUNG;
+			return -ETIME;
+		}
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue)
@@ -422,6 +612,7 @@ static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue)
 	/* Wait for mode-1 reset to complete */
 	down_read(&adev->reset_domain->sem);
 
+<<<<<<< HEAD
 	uq_funcs->mqd_destroy(queue);
 	/* Use interrupt-safe locking since IRQ handlers may access these XArrays */
 	xa_erase_irq(&adev->userq_doorbell_xa, queue->doorbell_index);
@@ -429,10 +620,22 @@ static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue)
 	queue->fence_drv = NULL;
 	queue->userq_mgr = NULL;
 	list_del(&queue->userq_va_list);
+=======
+	/* Drop the userq reference. */
+	amdgpu_userq_buffer_vas_list_cleanup(adev, queue);
+	uq_funcs->mqd_destroy(queue);
+	amdgpu_userq_fence_driver_free(queue);
+	/* Use interrupt-safe locking since IRQ handlers may access these XArrays */
+	xa_erase_irq(&adev->userq_doorbell_xa, queue->doorbell_index);
+	queue->userq_mgr = NULL;
+	list_del(&queue->userq_va_list);
+	kfree(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	up_read(&adev->reset_domain->sem);
 }
 
+<<<<<<< HEAD
 /**
  * amdgpu_userq_ensure_ev_fence - ensure a valid, unsignaled eviction fence exists
  * @uq_mgr: the usermode queue manager for this process
@@ -442,20 +645,33 @@ static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue)
  * usermode queue before any queue operations proceed. If it is signalled, then
  * rearm a new eviction fence.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void
 amdgpu_userq_ensure_ev_fence(struct amdgpu_userq_mgr *uq_mgr,
 			     struct amdgpu_eviction_fence_mgr *evf_mgr)
 {
+<<<<<<< HEAD
 	struct dma_fence *ev_fence;
+=======
+	struct amdgpu_eviction_fence *ev_fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 retry:
 	/* Flush any pending resume work to create ev_fence */
 	flush_delayed_work(&uq_mgr->resume_work);
 
 	mutex_lock(&uq_mgr->userq_mutex);
+<<<<<<< HEAD
 	ev_fence = amdgpu_evf_mgr_get_fence(evf_mgr);
 	if (dma_fence_is_signaled(ev_fence)) {
 		dma_fence_put(ev_fence);
+=======
+	spin_lock(&evf_mgr->ev_fence_lock);
+	ev_fence = evf_mgr->ev_fence;
+	spin_unlock(&evf_mgr->ev_fence_lock);
+	if (!ev_fence || dma_fence_is_signaled(&ev_fence->base)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&uq_mgr->userq_mutex);
 		/*
 		 * Looks like there was no pending resume work,
@@ -464,7 +680,10 @@ retry:
 		schedule_delayed_work(&uq_mgr->resume_work, 0);
 		goto retry;
 	}
+<<<<<<< HEAD
 	dma_fence_put(ev_fence);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_userq_create_object(struct amdgpu_userq_mgr *uq_mgr,
@@ -608,6 +827,7 @@ static int
 amdgpu_userq_destroy(struct amdgpu_userq_mgr *uq_mgr, struct amdgpu_usermode_queue *queue)
 {
 	struct amdgpu_device *adev = uq_mgr->adev;
+<<<<<<< HEAD
 	struct amdgpu_fpriv *fpriv = uq_mgr_to_fpriv(uq_mgr);
 	struct amdgpu_vm *vm = &fpriv->vm;
 
@@ -648,6 +868,46 @@ amdgpu_userq_destroy(struct amdgpu_userq_mgr *uq_mgr, struct amdgpu_usermode_que
 	amdgpu_bo_unref(&queue->wptr_obj.obj);
 	kfree(queue);
 
+=======
+	int r = 0;
+
+	cancel_delayed_work_sync(&uq_mgr->resume_work);
+	mutex_lock(&uq_mgr->userq_mutex);
+	amdgpu_userq_wait_for_last_fence(queue);
+	/* Cancel any pending hang detection work and cleanup */
+	if (queue->hang_detect_fence) {
+		cancel_delayed_work_sync(&queue->hang_detect_work);
+		queue->hang_detect_fence = NULL;
+	}
+	r = amdgpu_bo_reserve(queue->db_obj.obj, true);
+	if (!r) {
+		amdgpu_bo_unpin(queue->db_obj.obj);
+		amdgpu_bo_unreserve(queue->db_obj.obj);
+	}
+	amdgpu_bo_unref(&queue->db_obj.obj);
+
+	r = amdgpu_bo_reserve(queue->wptr_obj.obj, true);
+	if (!r) {
+		amdgpu_bo_unpin(queue->wptr_obj.obj);
+		amdgpu_bo_unreserve(queue->wptr_obj.obj);
+	}
+	amdgpu_bo_unref(&queue->wptr_obj.obj);
+
+	atomic_dec(&uq_mgr->userq_count[queue->queue_type]);
+#if defined(CONFIG_DEBUG_FS)
+	debugfs_remove_recursive(queue->debugfs_queue);
+#endif
+	amdgpu_userq_detect_and_reset_queues(uq_mgr);
+	r = amdgpu_userq_unmap_helper(queue);
+	/*TODO: It requires a reset for userq hw unmap error*/
+	if (unlikely(r != AMDGPU_USERQ_STATE_UNMAPPED)) {
+		drm_warn(adev_to_drm(uq_mgr->adev), "trying to destroy a HW mapping userq\n");
+		queue->state = AMDGPU_USERQ_STATE_HUNG;
+	}
+	amdgpu_userq_cleanup(queue);
+	mutex_unlock(&uq_mgr->userq_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
 
 	return r;
@@ -699,6 +959,49 @@ static int amdgpu_userq_priority_permit(struct drm_file *filp,
 	return -EACCES;
 }
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_DEBUG_FS)
+static int amdgpu_mqd_info_read(struct seq_file *m, void *unused)
+{
+	struct amdgpu_usermode_queue *queue = m->private;
+	struct amdgpu_bo *bo;
+	int r;
+
+	if (!queue || !queue->mqd.obj)
+		return -EINVAL;
+
+	bo = amdgpu_bo_ref(queue->mqd.obj);
+	r = amdgpu_bo_reserve(bo, true);
+	if (r) {
+		amdgpu_bo_unref(&bo);
+		return -EINVAL;
+	}
+
+	seq_printf(m, "queue_type: %d\n", queue->queue_type);
+	seq_printf(m, "mqd_gpu_address: 0x%llx\n", amdgpu_bo_gpu_offset(queue->mqd.obj));
+
+	amdgpu_bo_unreserve(bo);
+	amdgpu_bo_unref(&bo);
+
+	return 0;
+}
+
+static int amdgpu_mqd_info_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, amdgpu_mqd_info_read, inode->i_private);
+}
+
+static const struct file_operations amdgpu_mqd_info_fops = {
+	.owner = THIS_MODULE,
+	.open = amdgpu_mqd_info_open,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = single_release,
+};
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 {
@@ -708,6 +1011,15 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 	const struct amdgpu_userq_funcs *uq_funcs;
 	struct amdgpu_usermode_queue *queue;
 	struct amdgpu_db_info db_info;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	char *queue_name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	bool skip_map_queue;
+	u32 qid;
+>>>>>>> 7fb39c93c52e (Sync)
 	uint64_t index;
 	int priority;
 	u32 qid;
@@ -720,22 +1032,49 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = pm_runtime_resume_and_get(adev_to_drm(adev)->dev);
 	if (r < 0) {
 		drm_file_err(uq_mgr->file, "pm_runtime_resume_and_get() failed for userqueue create\n");
 		return r;
 	}
 
+=======
+	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+	if (r < 0) {
+		drm_file_err(uq_mgr->file, "pm_runtime_get_sync() failed for userqueue create\n");
+		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+		return r;
+	}
+
+	/*
+	 * There could be a situation that we are creating a new queue while
+	 * the other queues under this UQ_mgr are suspended. So if there is any
+	 * resume work pending, wait for it to get done.
+	 *
+	 * This will also make sure we have a valid eviction fence ready to be used.
+	 */
+	amdgpu_userq_ensure_ev_fence(&fpriv->userq_mgr, &fpriv->evf_mgr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uq_funcs = adev->userq_funcs[args->in.ip_type];
 	if (!uq_funcs) {
 		r = -EINVAL;
+<<<<<<< HEAD
 		goto err_pm_runtime;
+=======
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	queue = kzalloc_obj(struct amdgpu_usermode_queue);
 	if (!queue) {
 		r = -ENOMEM;
+<<<<<<< HEAD
 		goto err_pm_runtime;
+=======
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	kref_init(&queue->refcount);
@@ -745,8 +1084,12 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 	queue->vm = &fpriv->vm;
 	queue->priority = priority;
 	queue->userq_mgr = uq_mgr;
+<<<<<<< HEAD
 	INIT_DELAYED_WORK(&queue->hang_detect_work,
 			  amdgpu_userq_hang_detect_work);
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 
 	mutex_init(&queue->fence_drv_lock);
 	xa_init_flags(&queue->fence_drv_xa, XA_FLAGS_ALLOC);
@@ -754,6 +1097,7 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 	if (r)
 		goto free_queue;
 
+<<<<<<< HEAD
 	/* Make sure the queue can actually run with those virtual addresses. */
 	r = amdgpu_bo_reserve(fpriv->vm.root.bo, false);
 	if (r)
@@ -765,11 +1109,25 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 					   AMDGPU_GPU_PAGE_SIZE) ||
 	    amdgpu_userq_input_va_validate(adev, queue, args->in.wptr_va,
 					   AMDGPU_GPU_PAGE_SIZE)) {
+=======
+=======
+	/* Validate the userq virtual address.*/
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	if (amdgpu_userq_input_va_validate(adev, queue, args->in.queue_va, args->in.queue_size) ||
+	    amdgpu_userq_input_va_validate(adev, queue, args->in.rptr_va, AMDGPU_GPU_PAGE_SIZE) ||
+	    amdgpu_userq_input_va_validate(adev, queue, args->in.wptr_va, AMDGPU_GPU_PAGE_SIZE)) {
+>>>>>>> 7fb39c93c52e (Sync)
 		r = -EINVAL;
+<<<<<<< HEAD
 		amdgpu_bo_unreserve(fpriv->vm.root.bo);
 		goto clean_mapping;
 	}
 	amdgpu_bo_unreserve(fpriv->vm.root.bo);
+=======
+		kfree(queue);
+		goto unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Convert relative doorbell offset into absolute doorbell index */
 	db_info.queue_type = queue->queue_type;
@@ -779,15 +1137,45 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 	index = amdgpu_userq_get_doorbell_index(uq_mgr, &db_info, filp);
 	if (index == (uint64_t)-EINVAL) {
 		drm_file_err(uq_mgr->file, "Failed to get doorbell for queue\n");
+<<<<<<< HEAD
 		r = -EINVAL;
 		goto clean_mapping;
 	}
 
 	queue->doorbell_index = index;
+<<<<<<< HEAD
 	r = uq_funcs->mqd_create(queue, &args->in);
 	if (r) {
 		drm_file_err(uq_mgr->file, "Failed to create Queue\n");
 		goto clean_mapping;
+=======
+	mutex_init(&queue->fence_drv_lock);
+	xa_init_flags(&queue->fence_drv_xa, XA_FLAGS_ALLOC);
+	r = amdgpu_userq_fence_driver_alloc(adev, &queue->fence_drv);
+	if (r) {
+		drm_file_err(uq_mgr->file, "Failed to alloc fence driver\n");
+		goto clean_mapping;
+=======
+		kfree(queue);
+		r = -EINVAL;
+		goto unlock;
+	}
+
+	queue->doorbell_index = index;
+	xa_init_flags(&queue->fence_drv_xa, XA_FLAGS_ALLOC);
+	r = amdgpu_userq_fence_driver_alloc(adev, queue);
+	if (r) {
+		drm_file_err(uq_mgr->file, "Failed to alloc fence driver\n");
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+	}
+
+	r = uq_funcs->mqd_create(queue, &args->in);
+	if (r) {
+		drm_file_err(uq_mgr->file, "Failed to create Queue\n");
+<<<<<<< HEAD
+		goto clean_fence_driver;
+>>>>>>> 7fb39c93c52e (Sync)
 	}
 
 	/* Update VM owner at userq submit-time for page-fault attribution. */
@@ -799,6 +1187,37 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 		goto clean_mqd;
 
 	amdgpu_userq_ensure_ev_fence(&fpriv->userq_mgr, &fpriv->evf_mgr);
+=======
+		amdgpu_userq_fence_driver_free(queue);
+		kfree(queue);
+		goto unlock;
+	}
+
+	/* drop this refcount during queue destroy */
+	kref_init(&queue->refcount);
+
+	/* Wait for mode-1 reset to complete */
+	down_read(&adev->reset_domain->sem);
+	r = xa_err(xa_store_irq(&adev->userq_doorbell_xa, index, queue, GFP_KERNEL));
+	if (r) {
+		kfree(queue);
+		up_read(&adev->reset_domain->sem);
+		goto unlock;
+	}
+
+	r = xa_alloc(&uq_mgr->userq_xa, &qid, queue,
+		     XA_LIMIT(1, AMDGPU_MAX_USERQ_COUNT), GFP_KERNEL);
+	if (r) {
+		drm_file_err(uq_mgr->file, "Failed to allocate a queue id\n");
+		amdgpu_userq_fence_driver_free(queue);
+		uq_funcs->mqd_destroy(queue);
+		kfree(queue);
+		r = -ENOMEM;
+		up_read(&adev->reset_domain->sem);
+		goto unlock;
+	}
+	up_read(&adev->reset_domain->sem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* don't map the queue if scheduling is halted */
 	if (!adev->userq_halt_for_enforce_isolation ||
@@ -807,8 +1226,13 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
 		r = amdgpu_userq_map_helper(queue);
 		if (r) {
 			drm_file_err(uq_mgr->file, "Failed to map Queue\n");
+<<<<<<< HEAD
 			mutex_unlock(&uq_mgr->userq_mutex);
 			goto clean_doorbell;
+=======
+<<<<<<< HEAD
+			goto clean_mqd;
+>>>>>>> 7fb39c93c52e (Sync)
 		}
 	}
 
@@ -846,6 +1270,36 @@ free_queue:
 	kfree(queue);
 err_pm_runtime:
 	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+=======
+			xa_erase(&uq_mgr->userq_xa, qid);
+			amdgpu_userq_fence_driver_free(queue);
+			uq_funcs->mqd_destroy(queue);
+			kfree(queue);
+			goto unlock;
+		}
+	}
+
+	queue_name = kasprintf(GFP_KERNEL, "queue-%d", qid);
+	if (!queue_name) {
+		r = -ENOMEM;
+		goto unlock;
+	}
+
+#if defined(CONFIG_DEBUG_FS)
+	/* Queue dentry per client to hold MQD information   */
+	queue->debugfs_queue = debugfs_create_dir(queue_name, filp->debugfs_client);
+	debugfs_create_file("mqd_info", 0444, queue->debugfs_queue, queue, &amdgpu_mqd_info_fops);
+#endif
+	amdgpu_userq_init_hang_detect_work(queue);
+	kfree(queue_name);
+
+	args->out.queue_id = qid;
+	atomic_inc(&uq_mgr->userq_count[queue->queue_type]);
+
+unlock:
+	mutex_unlock(&uq_mgr->userq_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -975,12 +1429,16 @@ int amdgpu_userq_ioctl(struct drm_device *dev, void *data,
 static int
 amdgpu_userq_restore_all(struct amdgpu_userq_mgr *uq_mgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_fpriv *fpriv = uq_mgr_to_fpriv(uq_mgr);
 	struct amdgpu_vm *vm = &fpriv->vm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct amdgpu_usermode_queue *queue;
 	unsigned long queue_id;
 	int ret = 0, r;
 
+<<<<<<< HEAD
 
 	if (amdgpu_bo_reserve(vm->root.bo, false))
 		return false;
@@ -988,11 +1446,22 @@ amdgpu_userq_restore_all(struct amdgpu_userq_mgr *uq_mgr)
 	mutex_lock(&uq_mgr->userq_mutex);
 	/* Resume all the queues for this process */
 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
+=======
+	/* Resume all the queues for this process */
+	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
+		queue = amdgpu_userq_get(uq_mgr, queue_id);
+		if (!queue)
+			continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!amdgpu_userq_buffer_vas_mapped(queue)) {
 			drm_file_err(uq_mgr->file,
 				     "trying restore queue without va mapping\n");
 			queue->state = AMDGPU_USERQ_STATE_INVALID_VA;
+<<<<<<< HEAD
+=======
+			amdgpu_userq_put(queue);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 
@@ -1000,6 +1469,7 @@ amdgpu_userq_restore_all(struct amdgpu_userq_mgr *uq_mgr)
 		if (r)
 			ret = r;
 
+<<<<<<< HEAD
 	}
 	mutex_unlock(&uq_mgr->userq_mutex);
 	amdgpu_bo_unreserve(vm->root.bo);
@@ -1007,6 +1477,13 @@ amdgpu_userq_restore_all(struct amdgpu_userq_mgr *uq_mgr)
 	if (ret)
 		drm_file_err(uq_mgr->file,
 			     "Failed to map all the queues, restore failed ret=%d\n", ret);
+=======
+		amdgpu_userq_put(queue);
+	}
+
+	if (ret)
+		drm_file_err(uq_mgr->file, "Failed to map all the queues\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1163,7 +1640,11 @@ retry_lock:
 			bo = range->bo;
 			ret = amdgpu_ttm_tt_get_user_pages(bo, range);
 			if (ret)
+<<<<<<< HEAD
 				goto free_ranges;
+=======
+				goto unlock_all;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		invalidated = true;
@@ -1184,13 +1665,20 @@ retry_lock:
 		dma_fence_wait(bo_va->last_pt_update, false);
 	dma_fence_wait(vm->last_update, false);
 
+<<<<<<< HEAD
 	ret = amdgpu_evf_mgr_rearm(&fpriv->evf_mgr, &exec);
+=======
+	ret = amdgpu_eviction_fence_replace_fence(&fpriv->evf_mgr, &exec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		drm_file_err(uq_mgr->file, "Failed to replace eviction fence\n");
 
 unlock_all:
 	drm_exec_fini(&exec);
+<<<<<<< HEAD
 free_ranges:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xa_for_each(&xa, tmp_key, range) {
 		if (!range)
 			continue;
@@ -1205,6 +1693,7 @@ static void amdgpu_userq_restore_worker(struct work_struct *work)
 {
 	struct amdgpu_userq_mgr *uq_mgr = work_to_uq_mgr(work, resume_work.work);
 	struct amdgpu_fpriv *fpriv = uq_mgr_to_fpriv(uq_mgr);
+<<<<<<< HEAD
 	struct dma_fence *ev_fence;
 	int ret;
 
@@ -1222,6 +1711,28 @@ static void amdgpu_userq_restore_worker(struct work_struct *work)
 
 put_fence:
 	dma_fence_put(ev_fence);
+=======
+	int ret;
+
+	flush_delayed_work(&fpriv->evf_mgr.suspend_work);
+
+	mutex_lock(&uq_mgr->userq_mutex);
+
+	ret = amdgpu_userq_vm_validate(uq_mgr);
+	if (ret) {
+		drm_file_err(uq_mgr->file, "Failed to validate BOs to restore\n");
+		goto unlock;
+	}
+
+	ret = amdgpu_userq_restore_all(uq_mgr);
+	if (ret) {
+		drm_file_err(uq_mgr->file, "Failed to restore all queues\n");
+		goto unlock;
+	}
+
+unlock:
+	mutex_unlock(&uq_mgr->userq_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -1231,6 +1742,7 @@ amdgpu_userq_evict_all(struct amdgpu_userq_mgr *uq_mgr)
 	unsigned long queue_id;
 	int ret = 0, r;
 
+<<<<<<< HEAD
 	/* Try to unmap all the queues in this process ctx */
 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
 		r = amdgpu_userq_preempt_helper(queue);
@@ -1245,14 +1757,55 @@ amdgpu_userq_evict_all(struct amdgpu_userq_mgr *uq_mgr)
 					     &uq_mgr->reset_work);
 		flush_work(&uq_mgr->reset_work);
 	}
+=======
+	amdgpu_userq_detect_and_reset_queues(uq_mgr);
+	/* Try to unmap all the queues in this process ctx */
+	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
+		queue = amdgpu_userq_get(uq_mgr, queue_id);
+		if (!queue)
+			continue;
+		r = amdgpu_userq_preempt_helper(queue);
+		if (r)
+			ret = r;
+		amdgpu_userq_put(queue);
+	}
+
+	if (ret)
+		drm_file_err(uq_mgr->file, "Couldn't unmap all the queues\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+void amdgpu_userq_reset_work(struct work_struct *work)
+{
+	struct amdgpu_device *adev = container_of(work, struct amdgpu_device,
+						  userq_reset_work);
+	struct amdgpu_reset_context reset_context;
+
+	memset(&reset_context, 0, sizeof(reset_context));
+
+	reset_context.method = AMD_RESET_METHOD_NONE;
+	reset_context.reset_req_dev = adev;
+	reset_context.src = AMDGPU_RESET_SRC_USERQ;
+	set_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
+	/*set_bit(AMDGPU_SKIP_COREDUMP, &reset_context.flags);*/
+
+	amdgpu_device_gpu_recover(adev, NULL, &reset_context);
+}
+
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 static void
+=======
+static int
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 amdgpu_userq_wait_for_signal(struct amdgpu_userq_mgr *uq_mgr)
 {
 	struct amdgpu_usermode_queue *queue;
 	unsigned long queue_id;
+<<<<<<< HEAD
 
 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
 		struct dma_fence *f = queue->last_fence;
@@ -1270,6 +1823,62 @@ amdgpu_userq_evict(struct amdgpu_userq_mgr *uq_mgr)
 	/* Wait for any pending userqueue fence work to finish */
 	amdgpu_userq_wait_for_signal(uq_mgr);
 	amdgpu_userq_evict_all(uq_mgr);
+=======
+	int ret;
+
+	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
+		queue = amdgpu_userq_get(uq_mgr, queue_id);
+		if (!queue)
+			continue;
+
+		struct dma_fence *f = queue->last_fence;
+
+		if (!f || dma_fence_is_signaled(f)) {
+			amdgpu_userq_put(queue);
+			continue;
+		}
+		ret = dma_fence_wait_timeout(f, true, msecs_to_jiffies(100));
+		if (ret <= 0) {
+			drm_file_err(uq_mgr->file, "Timed out waiting for fence=%llu:%llu\n",
+				     f->context, f->seqno);
+			amdgpu_userq_put(queue);
+			return -ETIMEDOUT;
+		}
+		amdgpu_userq_put(queue);
+	}
+
+	return 0;
+}
+
+void
+amdgpu_userq_evict(struct amdgpu_userq_mgr *uq_mgr,
+		   struct amdgpu_eviction_fence *ev_fence)
+{
+	struct amdgpu_fpriv *fpriv = uq_mgr_to_fpriv(uq_mgr);
+	struct amdgpu_eviction_fence_mgr *evf_mgr = &fpriv->evf_mgr;
+	struct amdgpu_device *adev = uq_mgr->adev;
+	int ret;
+
+	/* Wait for any pending userqueue fence work to finish */
+	ret = amdgpu_userq_wait_for_signal(uq_mgr);
+	if (ret)
+		dev_err(adev->dev, "Not evicting userqueue, timeout waiting for work\n");
+
+	ret = amdgpu_userq_evict_all(uq_mgr);
+	if (ret)
+		dev_err(adev->dev, "Failed to evict userqueue\n");
+
+	/* Signal current eviction fence */
+	amdgpu_eviction_fence_signal(evf_mgr, ev_fence);
+
+	if (evf_mgr->fd_closing) {
+		cancel_delayed_work_sync(&uq_mgr->resume_work);
+		return;
+	}
+
+	/* Schedule a resume work */
+	schedule_delayed_work(&uq_mgr->resume_work, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_userq_mgr_init(struct amdgpu_userq_mgr *userq_mgr, struct drm_file *file_priv,
@@ -1285,6 +1894,7 @@ int amdgpu_userq_mgr_init(struct amdgpu_userq_mgr *userq_mgr, struct drm_file *f
 	return 0;
 }
 
+<<<<<<< HEAD
 void amdgpu_userq_mgr_cancel_reset_work(struct amdgpu_device *adev)
 {
 	struct xarray *xa = &adev->userq_doorbell_xa;
@@ -1299,11 +1909,16 @@ void amdgpu_userq_mgr_cancel_reset_work(struct amdgpu_device *adev)
 	xa_unlock_irqrestore(xa, flags);
 }
 
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb39c93c52e (Sync)
 void amdgpu_userq_mgr_cancel_resume(struct amdgpu_userq_mgr *userq_mgr)
 {
 	cancel_delayed_work_sync(&userq_mgr->resume_work);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_userq_mgr_fini(struct amdgpu_userq_mgr *userq_mgr)
 {
 	struct amdgpu_usermode_queue *queue;
@@ -1350,6 +1965,10 @@ int amdgpu_userq_suspend(struct amdgpu_device *adev)
 		uqm = queue->userq_mgr;
 		cancel_delayed_work_sync(&uqm->resume_work);
 		guard(mutex)(&uqm->userq_mutex);
+<<<<<<< HEAD
+=======
+		amdgpu_userq_detect_and_reset_queues(uqm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (adev->in_s0ix)
 			r = amdgpu_userq_preempt_helper(queue);
 		else
@@ -1408,6 +2027,10 @@ int amdgpu_userq_stop_sched_for_enforce_isolation(struct amdgpu_device *adev,
 		if (((queue->queue_type == AMDGPU_HW_IP_GFX) ||
 		     (queue->queue_type == AMDGPU_HW_IP_COMPUTE)) &&
 		    (queue->xcp_id == idx)) {
+<<<<<<< HEAD
+=======
+			amdgpu_userq_detect_and_reset_queues(uqm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			r = amdgpu_userq_preempt_helper(queue);
 			if (r)
 				ret = r;
@@ -1433,6 +2056,7 @@ int amdgpu_userq_start_sched_for_enforce_isolation(struct amdgpu_device *adev,
 
 	if (!adev->userq_halt_for_enforce_isolation)
 		dev_warn(adev->dev, "userq scheduling already started!\n");
+<<<<<<< HEAD
 
 	adev->userq_halt_for_enforce_isolation = false;
 
@@ -1446,22 +2070,48 @@ int amdgpu_userq_start_sched_for_enforce_isolation(struct amdgpu_device *adev,
 			if (r)
 				ret = r;
 		}
+=======
+	adev->userq_halt_for_enforce_isolation = false;
+	xa_for_each(&adev->userq_doorbell_xa, queue_id, queue) {
+		uqm = queue->userq_mgr;
+		mutex_lock(&uqm->userq_mutex);
+			if (((queue->queue_type == AMDGPU_HW_IP_GFX) ||
+			     (queue->queue_type == AMDGPU_HW_IP_COMPUTE)) &&
+			    (queue->xcp_id == idx)) {
+			r = amdgpu_userq_restore_helper(queue);
+			if (r)
+				ret = r;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&uqm->userq_mutex);
 	}
 
 	return ret;
 }
 
+<<<<<<< HEAD
 void amdgpu_userq_gem_va_unmap_validate(struct amdgpu_device *adev,
 					struct amdgpu_bo_va_mapping *mapping,
 					uint64_t saddr)
+=======
+int amdgpu_userq_gem_va_unmap_validate(struct amdgpu_device *adev,
+				       struct amdgpu_bo_va_mapping *mapping,
+				       uint64_t saddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 ip_mask = amdgpu_userq_get_supported_ip_mask(adev);
 	struct amdgpu_bo_va *bo_va = mapping->bo_va;
 	struct dma_resv *resv = bo_va->base.bo->tbo.base.resv;
+<<<<<<< HEAD
 
 	if (!ip_mask)
 		return;
+=======
+	int ret = 0;
+
+	if (!ip_mask)
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_warn_once(adev->dev, "now unmapping a vital queue va:%llx\n", saddr);
 	/**
@@ -1472,14 +2122,26 @@ void amdgpu_userq_gem_va_unmap_validate(struct amdgpu_device *adev,
 	 * unmap is only for one kind of userq VAs, so at this point suppose
 	 * the eviction fence is always unsignaled.
 	 */
+<<<<<<< HEAD
 	dma_resv_wait_timeout(resv, DMA_RESV_USAGE_BOOKKEEP,
 			      false, MAX_SCHEDULE_TIMEOUT);
+=======
+	if (!dma_resv_test_signaled(resv, DMA_RESV_USAGE_BOOKKEEP)) {
+		ret = dma_resv_wait_timeout(resv, DMA_RESV_USAGE_BOOKKEEP, true,
+					    MAX_SCHEDULE_TIMEOUT);
+		if (ret <= 0)
+			return -EBUSY;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void amdgpu_userq_pre_reset(struct amdgpu_device *adev)
 {
 	const struct amdgpu_userq_funcs *userq_funcs;
 	struct amdgpu_usermode_queue *queue;
+<<<<<<< HEAD
 	unsigned long queue_id;
 
 	/* TODO: We probably need a new lock for the queue state */
@@ -1495,6 +2157,25 @@ void amdgpu_userq_pre_reset(struct amdgpu_device *adev)
 		 */
 		queue->state = AMDGPU_USERQ_STATE_HUNG;
 		amdgpu_userq_fence_driver_force_completion(queue);
+=======
+	struct amdgpu_userq_mgr *uqm;
+	unsigned long queue_id;
+
+	xa_for_each(&adev->userq_doorbell_xa, queue_id, queue) {
+		uqm = queue->userq_mgr;
+		cancel_delayed_work_sync(&uqm->resume_work);
+		if (queue->state == AMDGPU_USERQ_STATE_MAPPED) {
+			amdgpu_userq_wait_for_last_fence(queue);
+			userq_funcs = adev->userq_funcs[queue->queue_type];
+			userq_funcs->unmap(queue);
+			/* just mark all queues as hung at this point.
+			 * if unmap succeeds, we could map again
+			 * in amdgpu_userq_post_reset() if vram is not lost
+			 */
+			queue->state = AMDGPU_USERQ_STATE_HUNG;
+			amdgpu_userq_fence_driver_force_completion(queue);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

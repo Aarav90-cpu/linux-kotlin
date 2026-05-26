@@ -8,7 +8,10 @@
 #include <asm/barrier.h>
 #include <asm/unistd.h>
 #include <uapi/linux/time.h>
+<<<<<<< HEAD
 #include <vdso/time32.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define VDSO_HAS_CLOCK_GETRES		1
 

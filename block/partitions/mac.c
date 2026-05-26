@@ -86,7 +86,11 @@ int mac_partition(struct parsed_partitions *state)
 	if (blocks_in_map >= state->limit)
 		blocks_in_map = state->limit - 1;
 
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, " [mac]");
+=======
+	strlcat(state->pp_buf, " [mac]", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (slot = 1; slot <= blocks_in_map; ++slot) {
 		int pos = slot * secsize;
 		put_dev_sector(sect);
@@ -152,6 +156,10 @@ int mac_partition(struct parsed_partitions *state)
 #endif
 
 	put_dev_sector(sect);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }

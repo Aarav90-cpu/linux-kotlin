@@ -62,6 +62,7 @@
 /* Vitesse Extended Page Access Register */
 #define MII_VSC82X4_EXT_PAGE_ACCESS	0x1f
 
+<<<<<<< HEAD
 /* Vitesse VSC8662 extended control register */
 #define VSC8662_EXT_CON1		0x17
 #define VSC8662_EXT_CON_MAC_AN		BIT(13)
@@ -69,6 +70,8 @@
 #define VSC8662_MAC_AN			0x1b
 #define VSC8662_MAC_AN_BYPASS		BIT(13)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Vitesse VSC73XX Extended Control Register */
 #define MII_VSC73XX_PHY_CTRL_EXT3		0x14
 
@@ -147,6 +150,7 @@ static int vsc824x_config_init(struct phy_device *phydev)
 	return err;
 }
 
+<<<<<<< HEAD
 static unsigned int vsc8662_inband_caps(struct phy_device *phydev,
 					phy_interface_t interface)
 {
@@ -179,6 +183,8 @@ static int vsc8662_config_inband(struct phy_device *phydev, unsigned int modes)
 	return genphy_soft_reset(phydev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VSC73XX_EXT_PAGE_ACCESS 0x1f
 
 static int vsc73xx_read_page(struct phy_device *phydev)
@@ -688,8 +694,11 @@ static struct phy_driver vsc82xx_driver[] = {
 	.phy_id_mask    = 0x000ffff0,
 	/* PHY_GBIT_FEATURES */
 	.config_init    = &vsc824x_config_init,
+<<<<<<< HEAD
 	.inband_caps	= vsc8662_inband_caps,
 	.config_inband	= vsc8662_config_inband,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.config_aneg    = &vsc82x4_config_aneg,
 	.config_intr    = &vsc82xx_config_intr,
 	.handle_interrupt = &vsc82xx_handle_interrupt,

@@ -5,7 +5,10 @@
 
 #include "hinic3_common.h"
 #include "hinic3_csr.h"
+<<<<<<< HEAD
 #include "hinic3_eqs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "hinic3_hwdev.h"
 #include "hinic3_hwif.h"
 #include "hinic3_mbox.h"
@@ -51,9 +54,15 @@
 #define MBOX_WB_STATUS_NOT_FINISHED      0x00
 
 #define MBOX_STATUS_FINISHED(wb)  \
+<<<<<<< HEAD
 	((FIELD_GET(MBOX_WB_STATUS_MASK, (wb))) != MBOX_WB_STATUS_NOT_FINISHED)
 #define MBOX_STATUS_SUCCESS(wb)  \
 	((FIELD_GET(MBOX_WB_STATUS_MASK, (wb))) ==  \
+=======
+	((FIELD_PREP(MBOX_WB_STATUS_MASK, (wb))) != MBOX_WB_STATUS_NOT_FINISHED)
+#define MBOX_STATUS_SUCCESS(wb)  \
+	((FIELD_PREP(MBOX_WB_STATUS_MASK, (wb))) ==  \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MBOX_WB_STATUS_FINISHED_SUCCESS)
 #define MBOX_STATUS_ERRCODE(wb)  \
 	((wb) & MBOX_WB_ERROR_CODE_MASK)
@@ -396,7 +405,10 @@ static int hinic3_mbox_pre_init(struct hinic3_hwdev *hwdev,
 {
 	mbox->hwdev = hwdev;
 	mutex_init(&mbox->mbox_send_lock);
+<<<<<<< HEAD
 	mutex_init(&mbox->mbox_seg_send_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_init(&mbox->mbox_lock);
 
 	mbox->workq = create_singlethread_workqueue(HINIC3_MBOX_WQ_NAME);
@@ -462,8 +474,12 @@ void hinic3_free_mbox(struct hinic3_hwdev *hwdev)
 
 	destroy_workqueue(mbox->workq);
 	free_mbox_wb_status(mbox);
+<<<<<<< HEAD
 	if (HINIC3_IS_VF(hwdev))
 		hinic3_uninit_func_mbox_msg_channel(hwdev);
+=======
+	hinic3_uninit_func_mbox_msg_channel(hwdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uninit_mgmt_msg_channel(mbox);
 	kfree(mbox);
 }
@@ -619,6 +635,7 @@ static void write_mbox_msg_attr(struct hinic3_mbox *mbox,
 			      mbox_ctrl);
 }
 
+<<<<<<< HEAD
 static void hinic3_dump_mbox_reg(struct hinic3_hwdev *hwdev)
 {
 	u32 val;
@@ -631,6 +648,8 @@ static void hinic3_dump_mbox_reg(struct hinic3_hwdev *hwdev)
 	dev_err(hwdev->dev, "Mailbox interrupt offset: 0x%x\n", val);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u16 get_mbox_status(const struct hinic3_send_mbox *mbox)
 {
 	__be64 *wb_status = mbox->wb_vaddr;
@@ -648,9 +667,12 @@ static enum hinic3_wait_return check_mbox_wb_status(void *priv_data)
 	struct hinic3_mbox *mbox = priv_data;
 	u16 wb_status;
 
+<<<<<<< HEAD
 	if (!mbox->hwdev->chip_present_flag)
 		return HINIC3_WAIT_PROCESS_ERR;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wb_status = get_mbox_status(&mbox->send_mbox);
 
 	return MBOX_STATUS_FINISHED(wb_status) ?
@@ -688,7 +710,10 @@ static int send_mbox_seg(struct hinic3_mbox *mbox, __le64 header,
 	if (err) {
 		dev_err(hwdev->dev, "Send mailbox segment timeout, wb status: 0x%x\n",
 			wb_status);
+<<<<<<< HEAD
 		hinic3_dump_mbox_reg(hwdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 
@@ -725,8 +750,11 @@ static int send_mbox_msg(struct hinic3_mbox *mbox, u8 mod, u16 cmd,
 	else
 		rsp_aeq_id = 0;
 
+<<<<<<< HEAD
 	mutex_lock(&mbox->mbox_seg_send_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dst_func == MBOX_MGMT_FUNC_ID &&
 	    !(hwdev->features[0] & MBOX_COMM_F_MBOX_SEGMENT)) {
 		err = mbox_prepare_dma_msg(mbox, ack_type, &dma_msg,
@@ -780,8 +808,11 @@ static int send_mbox_msg(struct hinic3_mbox *mbox, u8 mod, u16 cmd,
 	}
 
 err_send:
+<<<<<<< HEAD
 	mutex_unlock(&mbox->mbox_seg_send_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -797,9 +828,12 @@ static enum hinic3_wait_return check_mbox_msg_finish(void *priv_data)
 {
 	struct hinic3_mbox *mbox = priv_data;
 
+<<<<<<< HEAD
 	if (!mbox->hwdev->chip_present_flag)
 		return HINIC3_WAIT_PROCESS_ERR;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return (mbox->event_flag == MBOX_EVENT_SUCCESS) ?
 		HINIC3_WAIT_PROCESS_CPL : HINIC3_WAIT_PROCESS_WAITING;
 }
@@ -831,9 +865,12 @@ int hinic3_send_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
 	u32 msg_len;
 	int err;
 
+<<<<<<< HEAD
 	if (!hwdev->chip_present_flag)
 		return -EPERM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* expect response message */
 	msg_desc = get_mbox_msg_desc(mbox, MBOX_MSG_RESP, MBOX_MGMT_FUNC_ID);
 	mutex_lock(&mbox->mbox_send_lock);
@@ -854,7 +891,10 @@ int hinic3_send_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
 	if (wait_mbox_msg_completion(mbox, msg_params->timeout_ms)) {
 		dev_err(hwdev->dev,
 			"Send mbox msg timeout, msg_id: %u\n", msg_info.msg_id);
+<<<<<<< HEAD
 		hinic3_dump_aeq_info(mbox->hwdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -ETIMEDOUT;
 		goto err_send;
 	}
@@ -912,9 +952,12 @@ int hinic3_send_mbox_to_mgmt_no_ack(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
 	struct mbox_msg_info msg_info = {};
 	int err;
 
+<<<<<<< HEAD
 	if (!hwdev->chip_present_flag)
 		return -EPERM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mbox->mbox_send_lock);
 	err = send_mbox_msg(mbox, mod, cmd, msg_params->buf_in,
 			    msg_params->in_size, MBOX_MGMT_FUNC_ID,

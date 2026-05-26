@@ -190,6 +190,7 @@ int br_switchdev_port_vlan_add(struct net_device *dev, u16 vid, u16 flags,
 	return switchdev_port_obj_add(dev, &v.obj, extack);
 }
 
+<<<<<<< HEAD
 int br_switchdev_port_vlan_no_foreign_add(struct net_device *dev, u16 vid, u16 flags,
 					  bool changed, struct netlink_ext_ack *extack)
 {
@@ -205,6 +206,8 @@ int br_switchdev_port_vlan_no_foreign_add(struct net_device *dev, u16 vid, u16 f
 	return switchdev_port_obj_add(dev, &v.obj, extack);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int br_switchdev_port_vlan_del(struct net_device *dev, u16 vid)
 {
 	struct switchdev_obj_port_vlan v = {

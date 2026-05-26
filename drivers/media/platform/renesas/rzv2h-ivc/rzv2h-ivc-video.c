@@ -143,11 +143,21 @@ void rzv2h_ivc_buffer_done(struct rzv2h_ivc *ivc)
 	vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_DONE);
 }
 
+<<<<<<< HEAD
 void rzv2h_ivc_transfer_buffer(struct rzv2h_ivc *ivc)
 {
 	struct rzv2h_ivc_buf *buf;
 
 	lockdep_assert_held(&ivc->spinlock);
+=======
+static void rzv2h_ivc_transfer_buffer(struct work_struct *work)
+{
+	struct rzv2h_ivc *ivc = container_of(work, struct rzv2h_ivc,
+					     buffers.work);
+	struct rzv2h_ivc_buf *buf;
+
+	guard(spinlock_irqsave)(&ivc->spinlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ivc->vvalid_ifp)
 		return;
@@ -202,7 +212,11 @@ static void rzv2h_ivc_buf_queue(struct vb2_buffer *vb)
 
 	scoped_guard(spinlock_irq, &ivc->spinlock) {
 		if (vb2_is_streaming(vb->vb2_queue))
+<<<<<<< HEAD
 			rzv2h_ivc_transfer_buffer(ivc);
+=======
+			queue_work(ivc->buffers.async_wq, &ivc->buffers.work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -280,9 +294,13 @@ static int rzv2h_ivc_start_streaming(struct vb2_queue *q, unsigned int count)
 
 	rzv2h_ivc_format_configure(ivc);
 
+<<<<<<< HEAD
 	scoped_guard(spinlock_irq, &ivc->spinlock) {
 		rzv2h_ivc_transfer_buffer(ivc);
 	}
+=======
+	queue_work(ivc->buffers.async_wq, &ivc->buffers.work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 
@@ -449,6 +467,14 @@ int rzv2h_ivc_init_vdev(struct rzv2h_ivc *ivc, struct v4l2_device *v4l2_dev)
 
 	spin_lock_init(&ivc->buffers.lock);
 	INIT_LIST_HEAD(&ivc->buffers.queue);
+<<<<<<< HEAD
+=======
+	INIT_WORK(&ivc->buffers.work, rzv2h_ivc_transfer_buffer);
+
+	ivc->buffers.async_wq = alloc_workqueue("rzv2h-ivc", 0, 0);
+	if (!ivc->buffers.async_wq)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialise vb2 queue */
 	vb2q = &ivc->vdev.vb2q;
@@ -466,7 +492,11 @@ int rzv2h_ivc_init_vdev(struct rzv2h_ivc *ivc, struct v4l2_device *v4l2_dev)
 	ret = vb2_queue_init(vb2q);
 	if (ret) {
 		dev_err(ivc->dev, "vb2 queue init failed\n");
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_destroy_workqueue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Initialise Video Device */
@@ -515,6 +545,11 @@ err_cleanup_vdev_entity:
 	media_entity_cleanup(&vdev->entity);
 err_release_vb2q:
 	vb2_queue_release(vb2q);
+<<<<<<< HEAD
+=======
+err_destroy_workqueue:
+	destroy_workqueue(ivc->buffers.async_wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

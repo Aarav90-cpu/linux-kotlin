@@ -16,8 +16,11 @@ description: |
   children nodes of the NAND controller. This representation should be
   enforced even for simple controllers supporting only one chip.
 
+<<<<<<< HEAD
 select: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 properties:
   $nodename:
     pattern: "^nand-controller(@.*)?"

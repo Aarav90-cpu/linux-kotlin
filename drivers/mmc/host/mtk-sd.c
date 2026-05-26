@@ -203,10 +203,16 @@
 #define SDC_CFG_DTOC            GENMASK(31, 24)	/* RW */
 
 /* SDC_STS mask */
+<<<<<<< HEAD
 #define SDC_STS_SDCBUSY			BIT(0)  /* RW */
 #define SDC_STS_CMDBUSY			BIT(1)  /* RW */
 #define SDC_STS_SPM_RESOURCE_RELEASE	BIT(3)  /* RW */
 #define SDC_STS_SWR_COMPL		BIT(31) /* RW */
+=======
+#define SDC_STS_SDCBUSY         BIT(0)	/* RW */
+#define SDC_STS_CMDBUSY         BIT(1)	/* RW */
+#define SDC_STS_SWR_COMPL       BIT(31)	/* RW */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* SDC_ADV_CFG0 mask */
 #define SDC_DAT1_IRQ_TRIGGER	BIT(19)	/* RW */
@@ -449,7 +455,10 @@ struct mtk_mmc_compatible {
 	bool use_internal_cd;
 	bool support_new_tx;
 	bool support_new_rx;
+<<<<<<< HEAD
 	bool support_spm_res_release;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct msdc_tune_para {
@@ -675,6 +684,7 @@ static const struct mtk_mmc_compatible mt8516_compat = {
 	.stop_dly_sel = 3,
 };
 
+<<<<<<< HEAD
 static const struct mtk_mmc_compatible mt8189_compat = {
 	.clk_div_bits = 12,
 	.recheck_sdio_irq = false,
@@ -694,6 +704,8 @@ static const struct mtk_mmc_compatible mt8189_compat = {
 	.support_spm_res_release = true,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct mtk_mmc_compatible mt8196_compat = {
 	.clk_div_bits = 12,
 	.recheck_sdio_irq = false,
@@ -724,7 +736,10 @@ static const struct of_device_id msdc_of_ids[] = {
 	{ .compatible = "mediatek,mt8135-mmc", .data = &mt8135_compat},
 	{ .compatible = "mediatek,mt8173-mmc", .data = &mt8173_compat},
 	{ .compatible = "mediatek,mt8183-mmc", .data = &mt8183_compat},
+<<<<<<< HEAD
 	{ .compatible = "mediatek,mt8189-mmc", .data = &mt8189_compat},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "mediatek,mt8196-mmc", .data = &mt8196_compat},
 	{ .compatible = "mediatek,mt8516-mmc", .data = &mt8516_compat},
 
@@ -3318,10 +3333,13 @@ static int msdc_runtime_suspend(struct device *dev)
 
 		__msdc_enable_sdio_irq(host, 0);
 	}
+<<<<<<< HEAD
 
 	if (host->dev_comp->support_spm_res_release)
 		sdr_set_bits(host->base + SDC_STS, SDC_STS_SPM_RESOURCE_RELEASE);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msdc_gate_clock(host);
 	return 0;
 }

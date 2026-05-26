@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * Copyright (C) 2025-2026, NVIDIA CORPORATION.  All rights reserved.
+=======
+ * Copyright (C) 2025, NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <dt-bindings/memory/nvidia,tegra264.h>
@@ -188,6 +192,7 @@ static const struct tegra_mc_client tegra264_mc_clients[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const char *const tegra264_hub_error_names[32] = {
 	[0] = "coalescer error",
 	[1] = "SMMU BYPASS ALLOW error",
@@ -223,6 +228,8 @@ static const int mc_hubc_aperture_number[5] = {
 	7, 8, 9, 10, 11
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * tegra264_mc_icc_set() - Pass MC client info to the BPMP-FW
  * @src: ICC node for Memory Controller's (MC) Client
@@ -318,6 +325,7 @@ static int tegra264_mc_icc_get_init_bw(struct icc_node *node, u32 *avg, u32 *pea
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mcf_log_fault(struct tegra_mc *mc, u32 channel, unsigned long mcf_ch_intstatus)
 {
 	unsigned int bit;
@@ -624,6 +632,8 @@ static const irq_handler_t tegra264_mc_irq_handlers[8] = {
 	handle_sbs_irq, handle_channel_irq
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct tegra_mc_icc_ops tegra264_mc_icc_ops = {
 	.xlate = tegra_mc_icc_xlate,
 	.aggregate = tegra264_mc_icc_aggregate,
@@ -631,6 +641,7 @@ static const struct tegra_mc_icc_ops tegra264_mc_icc_ops = {
 	.set = tegra264_mc_icc_set,
 };
 
+<<<<<<< HEAD
 static const struct tegra_mc_regs tegra264_mc_regs = {
 	.cfg_channel_enable = 0x8870,
 	.err_status = 0xbc00,
@@ -697,14 +708,23 @@ static const struct tegra_mc_intmask tegra264_mc_intmasks[] = {
 	}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct tegra_mc_soc tegra264_mc_soc = {
 	.num_clients = ARRAY_SIZE(tegra264_mc_clients),
 	.clients = tegra264_mc_clients,
 	.num_address_bits = 40,
 	.num_channels = 16,
 	.client_id_mask = 0x1ff,
+<<<<<<< HEAD
 	.intmasks = tegra264_mc_intmasks,
 	.num_intmasks = ARRAY_SIZE(tegra264_mc_intmasks),
+=======
+	.intmask = MC_INT_DECERR_ROUTE_SANITY |
+		   MC_INT_DECERR_GENERALIZED_CARVEOUT | MC_INT_DECERR_MTS |
+		   MC_INT_SECERR_SEC | MC_INT_DECERR_VPR |
+		   MC_INT_SECURITY_VIOLATION | MC_INT_DECERR_EMEM,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.has_addr_hi_reg = true,
 	.ops = &tegra186_mc_ops,
 	.icc_ops = &tegra264_mc_icc_ops,
@@ -715,9 +735,12 @@ const struct tegra_mc_soc tegra264_mc_soc = {
 	 * supported.
 	 */
 	.num_carveouts = 32,
+<<<<<<< HEAD
 	.mc_addr_hi_mask = 0xff,
 	.mc_err_status_type_mask = (0x3 << 28),
 	.regs = &tegra264_mc_regs,
 	.handle_irq = tegra264_mc_irq_handlers,
 	.num_interrupts = ARRAY_SIZE(tegra264_mc_irq_handlers),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

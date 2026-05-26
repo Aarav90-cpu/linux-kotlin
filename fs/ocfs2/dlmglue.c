@@ -3971,6 +3971,10 @@ static int ocfs2_data_convert_worker(struct ocfs2_lock_res *lockres,
 		mlog(ML_ERROR, "Could not sync inode %llu for downconvert!",
 		     (unsigned long long)OCFS2_I(inode)->ip_blkno);
 	}
+<<<<<<< HEAD
+=======
+	sync_mapping_buffers(mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (blocking == DLM_LOCK_EX) {
 		truncate_inode_pages(mapping, 0);
 	} else {

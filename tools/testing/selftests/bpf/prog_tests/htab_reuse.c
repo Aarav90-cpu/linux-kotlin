@@ -59,7 +59,11 @@ static void *htab_update_fn(void *arg)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void test_htab_reuse_basic(void)
+=======
+void test_htab_reuse(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int i, wr_nr = 1, rd_nr = 4;
 	pthread_t tids[wr_nr + rd_nr];
@@ -99,6 +103,7 @@ reap:
 	}
 	htab_reuse__destroy(skel);
 }
+<<<<<<< HEAD
 
 /*
  * Writes consistency test for BPF_F_LOCK update
@@ -266,3 +271,5 @@ void test_htab_reuse(void)
 	if (test__start_subtest("consistency"))
 		test_htab_reuse_consistency();
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

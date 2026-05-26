@@ -298,7 +298,11 @@ static void tgl_get_interfaces(struct stmmac_priv *priv, void *bsp_priv,
 
 	if (FIELD_GET(SERDES_LINK_MODE_MASK, data) == SERDES_LINK_MODE_2G5) {
 		dev_info(priv->device, "Link Speed Mode: 2.5Gbps\n");
+<<<<<<< HEAD
 		priv->plat->default_an_inband = false;
+=======
+		priv->plat->mdio_bus_data->default_an_inband = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		interface = PHY_INTERFACE_MODE_2500BASEX;
 	} else {
 		interface = PHY_INTERFACE_MODE_SGMII;
@@ -566,7 +570,11 @@ static void common_default_data(struct plat_stmmacenet_data *plat)
 	/* clk_csr_i = 20-35MHz & MDC = clk_csr_i/16 */
 	plat->clk_csr = STMMAC_CSR_20_35M;
 	plat->core_type = DWMAC_CORE_GMAC;
+<<<<<<< HEAD
 	plat->force_sf_dma_mode = true;
+=======
+	plat->force_sf_dma_mode = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	plat->mdio_bus_data->needs_reset = true;
 }
@@ -589,7 +597,11 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	plat->provide_bus_info = true;
+=======
+	plat->pdev = pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->phy_addr = -1;
 	plat->clk_csr = STMMAC_CSR_250_300M;
 	plat->core_type = DWMAC_CORE_GMAC4;
@@ -636,6 +648,11 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
 
 	plat->dma_cfg->pbl = 32;
 	plat->dma_cfg->pblx8 = true;
+<<<<<<< HEAD
+=======
+	plat->dma_cfg->fixed_burst = 0;
+	plat->dma_cfg->mixed_burst = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->dma_cfg->aal = 0;
 	plat->dma_cfg->dche = true;
 
@@ -699,8 +716,13 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
 	/* Intel mgbe SGMII interface uses pcs-xcps */
 	if (plat->phy_interface == PHY_INTERFACE_MODE_SGMII ||
 	    plat->phy_interface == PHY_INTERFACE_MODE_1000BASEX) {
+<<<<<<< HEAD
 		plat->mdio_bus_data->pcs_mask = BIT_U32(INTEL_MGBE_XPCS_ADDR);
 		plat->default_an_inband = true;
+=======
+		plat->mdio_bus_data->pcs_mask = BIT(INTEL_MGBE_XPCS_ADDR);
+		plat->mdio_bus_data->default_an_inband = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		plat->select_pcs = intel_mgbe_select_pcs;
 	}
 
@@ -1104,7 +1126,11 @@ static int quark_default_data(struct pci_dev *pdev,
 
 	plat->dma_cfg->pbl = 16;
 	plat->dma_cfg->pblx8 = true;
+<<<<<<< HEAD
 	plat->dma_cfg->fixed_burst = true;
+=======
+	plat->dma_cfg->fixed_burst = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* AXI (TODO) */
 
 	return 0;
@@ -1251,6 +1277,14 @@ static int intel_eth_pci_probe(struct pci_dev *pdev,
 	if (!plat->mdio_bus_data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	plat->dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*plat->dma_cfg),
+				     GFP_KERNEL);
+	if (!plat->dma_cfg)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	plat->safety_feat_cfg = devm_kzalloc(&pdev->dev,
 					     sizeof(*plat->safety_feat_cfg),
 					     GFP_KERNEL);

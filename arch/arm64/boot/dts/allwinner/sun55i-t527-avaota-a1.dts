@@ -6,7 +6,10 @@
 #include "sun55i-a523.dtsi"
 
 #include <dt-bindings/gpio/gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/leds/common.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	model = "Avaota A1";
@@ -100,6 +103,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &ledc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&ledc_ph_pin>;
@@ -140,6 +144,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mdio0 {
 	ext_rgmii0_phy: ethernet-phy@1 {
 		compatible = "ethernet-phy-ieee802.3-c22";
@@ -403,6 +409,7 @@
 	assigned-clock-rates = <32768>;
 };
 
+<<<<<<< HEAD
 &spi0  {
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi0_pj_pins>, <&spi0_cs0_pj_pin>,
@@ -418,6 +425,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pb_pins>;

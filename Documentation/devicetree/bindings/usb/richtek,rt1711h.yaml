@@ -18,6 +18,7 @@ description: |
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - richtek,rt1711h
@@ -33,6 +34,13 @@ properties:
     description:
       RT1711H support PD20, ET7304 and RT1715 support PD30 except Fast Role Swap.
       HUSB311 is a rebrand of RT1711H which is pin and register compatible.
+=======
+    enum:
+      - richtek,rt1711h
+      - richtek,rt1715
+    description:
+      RT1711H support PD20, RT1715 support PD30 except Fast Role Swap.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

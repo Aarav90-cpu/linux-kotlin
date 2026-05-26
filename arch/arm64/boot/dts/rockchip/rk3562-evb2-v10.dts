@@ -13,7 +13,11 @@
 #include "rk3562.dtsi"
 
 / {
+<<<<<<< HEAD
 	model = "Rockchip RK3562 EVB2 V10 Board";
+=======
+	model = "Rockchip RK3562 EVB V20 Board";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	compatible = "rockchip,rk3562-evb2-v10", "rockchip,rk3562";
 
 	chosen: chosen {

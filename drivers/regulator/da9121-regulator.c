@@ -400,6 +400,7 @@ static int da9121_of_parse_cb(struct device_node *np,
 						GPIOD_OUT_HIGH |
 						GPIOD_FLAGS_BIT_NONEXCLUSIVE,
 						"da9121-enable");
+<<<<<<< HEAD
 	if (!IS_ERR(ena_gpiod)) {
 		if (of_property_read_bool(chip->dev->of_node, "dlg,no-gpio-control")) {
 			gpiod_put(ena_gpiod);
@@ -408,6 +409,10 @@ static int da9121_of_parse_cb(struct device_node *np,
 		}
 		config->ena_gpiod = ena_gpiod;
 	}
+=======
+	if (!IS_ERR(ena_gpiod))
+		config->ena_gpiod = ena_gpiod;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (variant_parameters[chip->variant_id].num_bucks == 2) {
 		uint32_t ripple_cancel;
@@ -870,6 +875,7 @@ static const struct regmap_access_table da9121_volatile_table = {
 	.n_yes_ranges = ARRAY_SIZE(da9121_volatile_ranges),
 };
 
+<<<<<<< HEAD
 /*
  * When GPIO functions DVC/RELOAD/EN are not used, the registers in the range
  * DA9121_REG_BUCK_BUCK1_0 to DA9121_REG_BUCK_BUCK1_6 need not be volatile
@@ -885,6 +891,8 @@ static const struct regmap_access_table da9121_volatile_table_no_gpio_ctrl = {
 	.n_yes_ranges = ARRAY_SIZE(da9121_volatile_ranges_no_gpio_ctrl),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* DA9121 regmap config for 1 channel variants */
 static const struct regmap_config da9121_1ch_regmap_config = {
 	.reg_bits = 8,
@@ -1015,18 +1023,24 @@ static int da9121_assign_chip_model(struct i2c_client *i2c,
 			struct da9121 *chip)
 {
 	const struct regmap_config *regmap;
+<<<<<<< HEAD
 	struct regmap_config regmap_config_1ch = da9121_1ch_regmap_config;
 	struct regmap_config regmap_config_2ch = da9121_2ch_regmap_config;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	chip->dev = &i2c->dev;
 
+<<<<<<< HEAD
 	if (of_property_read_bool(i2c->dev.of_node, "dlg,no-gpio-control")) {
 		regmap_config_1ch.volatile_table = &da9121_volatile_table_no_gpio_ctrl;
 		regmap_config_2ch.volatile_table = &da9121_volatile_table_no_gpio_ctrl;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Use configured subtype to select the regulator descriptor index and
 	 * register map, common to both consumer and automotive grade variants
 	 */
@@ -1034,20 +1048,33 @@ static int da9121_assign_chip_model(struct i2c_client *i2c,
 	case DA9121_SUBTYPE_DA9121:
 	case DA9121_SUBTYPE_DA9130:
 		chip->variant_id = DA9121_TYPE_DA9121_DA9130;
+<<<<<<< HEAD
 		regmap = &regmap_config_1ch;
 		break;
 	case DA9121_SUBTYPE_DA9217:
 		chip->variant_id = DA9121_TYPE_DA9217;
 		regmap = &regmap_config_1ch;
+=======
+		regmap = &da9121_1ch_regmap_config;
+		break;
+	case DA9121_SUBTYPE_DA9217:
+		chip->variant_id = DA9121_TYPE_DA9217;
+		regmap = &da9121_1ch_regmap_config;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DA9121_SUBTYPE_DA9122:
 	case DA9121_SUBTYPE_DA9131:
 		chip->variant_id = DA9121_TYPE_DA9122_DA9131;
+<<<<<<< HEAD
 		regmap = &regmap_config_2ch;
+=======
+		regmap = &da9121_2ch_regmap_config;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case DA9121_SUBTYPE_DA9220:
 	case DA9121_SUBTYPE_DA9132:
 		chip->variant_id = DA9121_TYPE_DA9220_DA9132;
+<<<<<<< HEAD
 		regmap = &regmap_config_2ch;
 		break;
 	case DA9121_SUBTYPE_DA9141:
@@ -1057,6 +1084,17 @@ static int da9121_assign_chip_model(struct i2c_client *i2c,
 	case DA9121_SUBTYPE_DA9142:
 		chip->variant_id = DA9121_TYPE_DA9142;
 		regmap = &regmap_config_2ch;
+=======
+		regmap = &da9121_2ch_regmap_config;
+		break;
+	case DA9121_SUBTYPE_DA9141:
+		chip->variant_id = DA9121_TYPE_DA9141;
+		regmap = &da9121_1ch_regmap_config;
+		break;
+	case DA9121_SUBTYPE_DA9142:
+		chip->variant_id = DA9121_TYPE_DA9142;
+		regmap = &da9121_2ch_regmap_config;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EINVAL;

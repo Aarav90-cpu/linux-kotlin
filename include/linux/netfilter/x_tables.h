@@ -146,9 +146,12 @@ struct xt_match {
 	/* Called when user tries to insert an entry of this type. */
 	int (*checkentry)(const struct xt_mtchk_param *);
 
+<<<<<<< HEAD
 	/* Called to validate hooks based on the match configuration. */
 	int (*check_hooks)(const struct xt_mtchk_param *);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_mtdtor_param *);
 #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
@@ -190,9 +193,12 @@ struct xt_target {
 	/* Should return 0 on success or an error code otherwise (-Exxxx). */
 	int (*checkentry)(const struct xt_tgchk_param *);
 
+<<<<<<< HEAD
 	/* Called to validate hooks based on the target configuration. */
 	int (*check_hooks)(const struct xt_tgchk_param *);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_tgdtor_param *);
 #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
@@ -285,10 +291,15 @@ bool xt_find_jump_offset(const unsigned int *offsets,
 
 int xt_check_proc_name(const char *name, unsigned int size);
 
+<<<<<<< HEAD
 int xt_check_hooks_match(struct xt_mtchk_param *par);
 int xt_check_match(struct xt_mtchk_param *, unsigned int size, u16 proto,
 		   bool inv_proto);
 int xt_check_hooks_target(struct xt_tgchk_param *par);
+=======
+int xt_check_match(struct xt_mtchk_param *, unsigned int size, u16 proto,
+		   bool inv_proto);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xt_check_target(struct xt_tgchk_param *, unsigned int size, u16 proto,
 		    bool inv_proto);
 
@@ -305,11 +316,17 @@ struct xt_counters *xt_counters_alloc(unsigned int counters);
 
 struct xt_table *xt_register_table(struct net *net,
 				   const struct xt_table *table,
+<<<<<<< HEAD
 				   const struct nf_hook_ops *template_ops,
 				   struct xt_table_info *bootstrap,
 				   struct xt_table_info *newinfo);
 void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name);
 struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name);
+=======
+				   struct xt_table_info *bootstrap,
+				   struct xt_table_info *newinfo);
+void *xt_unregister_table(struct xt_table *table);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct xt_table_info *xt_replace_table(struct xt_table *table,
 				       unsigned int num_counters,

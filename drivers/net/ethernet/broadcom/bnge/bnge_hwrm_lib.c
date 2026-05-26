@@ -14,6 +14,7 @@
 #include "bnge_hwrm_lib.h"
 #include "bnge_rmem.h"
 #include "bnge_resc.h"
+<<<<<<< HEAD
 #include "bnge_netdev.h"
 
 static const u16 bnge_async_events_arr[] = {
@@ -22,6 +23,8 @@ static const u16 bnge_async_events_arr[] = {
 	ASYNC_EVENT_CMPL_EVENT_ID_LINK_SPEED_CFG_CHANGE,
 	ASYNC_EVENT_CMPL_EVENT_ID_PORT_PHY_CFG_CHANGE,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int bnge_hwrm_ver_get(struct bnge_dev *bd)
 {
@@ -174,12 +177,19 @@ int bnge_hwrm_fw_set_time(struct bnge_dev *bd)
 
 int bnge_hwrm_func_drv_rgtr(struct bnge_dev *bd)
 {
+<<<<<<< HEAD
 	DECLARE_BITMAP(async_events_bmap, 256);
 	struct hwrm_func_drv_rgtr_output *resp;
 	struct hwrm_func_drv_rgtr_input *req;
 	u32 events[8];
 	u32 flags;
 	int rc, i;
+=======
+	struct hwrm_func_drv_rgtr_output *resp;
+	struct hwrm_func_drv_rgtr_input *req;
+	u32 flags;
+	int rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = bnge_hwrm_req_init(bd, req, HWRM_FUNC_DRV_RGTR);
 	if (rc)
@@ -200,6 +210,7 @@ int bnge_hwrm_func_drv_rgtr(struct bnge_dev *bd)
 	req->ver_min = cpu_to_le16(DRV_VER_MIN);
 	req->ver_upd = cpu_to_le16(DRV_VER_UPD);
 
+<<<<<<< HEAD
 	memset(async_events_bmap, 0, sizeof(async_events_bmap));
 	for (i = 0; i < ARRAY_SIZE(bnge_async_events_arr); i++)
 		__set_bit(bnge_async_events_arr[i], async_events_bmap);
@@ -208,6 +219,8 @@ int bnge_hwrm_func_drv_rgtr(struct bnge_dev *bd)
 	for (i = 0; i < ARRAY_SIZE(req->async_event_fwd); i++)
 		req->async_event_fwd[i] |= cpu_to_le32(events[i]);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	resp = bnge_hwrm_req_hold(bd, req);
 	rc = bnge_hwrm_req_send(bd, req);
 	if (!rc) {
@@ -595,7 +608,11 @@ int bnge_hwrm_func_qcaps(struct bnge_dev *bd)
 	struct hwrm_func_qcaps_output *resp;
 	struct hwrm_func_qcaps_input *req;
 	struct bnge_pf_info *pf = &bd->pf;
+<<<<<<< HEAD
 	u32 flags, flags_ext;
+=======
+	u32 flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	rc = bnge_hwrm_req_init(bd, req, HWRM_FUNC_QCAPS);
@@ -613,12 +630,15 @@ int bnge_hwrm_func_qcaps(struct bnge_dev *bd)
 		bd->flags |= BNGE_EN_ROCE_V1;
 	if (flags & FUNC_QCAPS_RESP_FLAGS_ROCE_V2_SUPPORTED)
 		bd->flags |= BNGE_EN_ROCE_V2;
+<<<<<<< HEAD
 	if (flags & FUNC_QCAPS_RESP_FLAGS_EXT_STATS_SUPPORTED)
 		bd->fw_cap |= BNGE_FW_CAP_EXT_STATS_SUPPORTED;
 
 	flags_ext = le32_to_cpu(resp->flags_ext);
 	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_EXT_HW_STATS_SUPPORTED)
 		bd->fw_cap |= BNGE_FW_CAP_EXT_HW_STATS_SUPPORTED;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pf->fw_fid = le16_to_cpu(resp->fid);
 	pf->port_id = le16_to_cpu(resp->port_id);
@@ -1005,6 +1025,7 @@ void bnge_hwrm_vnic_ctx_free_one(struct bnge_dev *bd,
 	vnic->fw_rss_cos_lb_ctx[ctx_idx] = INVALID_HW_RING_ID;
 }
 
+<<<<<<< HEAD
 static bool bnge_phy_qcaps_no_speed(struct hwrm_port_phy_qcaps_output *resp)
 {
 	return !resp->supported_speeds2_auto_mode &&
@@ -1219,6 +1240,8 @@ int bnge_hwrm_shutdown_link(struct bnge_dev *bd)
 	return rc;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bnge_hwrm_stat_ctx_free(struct bnge_net *bn)
 {
 	struct hwrm_stat_ctx_free_input *req;
@@ -1486,6 +1509,7 @@ int bnge_hwrm_vnic_set_tpa(struct bnge_dev *bd, struct bnge_vnic_info *vnic,
 
 	return bnge_hwrm_req_send(bd, req);
 }
+<<<<<<< HEAD
 
 int bnge_hwrm_func_qstat_ext(struct bnge_dev *bd, struct bnge_stats_mem *stats)
 {
@@ -1628,3 +1652,5 @@ int bnge_hwrm_port_qstats(struct bnge_dev *bd, u8 flags)
 
 	return bnge_hwrm_req_send(bd, req);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

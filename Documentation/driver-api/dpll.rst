@@ -250,6 +250,7 @@ in the ``DPLL_A_PIN_PHASE_OFFSET`` attribute.
   ``DPLL_A_PHASE_OFFSET_MONITOR`` attr state of a feature
   =============================== ========================
 
+<<<<<<< HEAD
 Frequency monitor
 =================
 
@@ -268,6 +269,8 @@ as the divider.
   ``DPLL_A_FREQUENCY_MONITOR``    attr state of a feature
   =============================== ========================
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Embedded SYNC
 =============
 
@@ -429,8 +432,11 @@ according to attribute purpose.
       ``DPLL_A_PIN_STATE``             attr state of pin on the parent
                                        pin
     ``DPLL_A_PIN_CAPABILITIES``        attr bitmask of pin capabilities
+<<<<<<< HEAD
     ``DPLL_A_PIN_MEASURED_FREQUENCY``  attr measured frequency of
                                        an input pin in mHz
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   ==================================== ==================================
 
   ==================================== =================================

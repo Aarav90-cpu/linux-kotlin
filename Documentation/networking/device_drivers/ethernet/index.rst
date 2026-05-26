@@ -10,7 +10,14 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+<<<<<<< HEAD
    3com/3c509
+=======
+<<<<<<< HEAD
+=======
+   3com/3c509
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
    3com/vortex
    amazon/ena
    altera/altera_tse
@@ -52,6 +59,10 @@ Contents:
    pensando/ionic
    pensando/ionic_rdma
    qualcomm/ppe/ppe
+<<<<<<< HEAD
+=======
+   smsc/smc9
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    stmicro/stmmac
    ti/cpsw
    ti/cpsw_switchdev

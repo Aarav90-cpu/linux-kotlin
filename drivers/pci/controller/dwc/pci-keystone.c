@@ -933,6 +933,7 @@ static const struct pci_epc_features ks_pcie_am654_epc_features = {
 	DWC_EPC_COMMON_FEATURES,
 	.msi_capable = true,
 	.msix_capable = true,
+<<<<<<< HEAD
 	/*
 	 * TODO: This driver is the only DWC glue driver that had BAR_RESERVED
 	 * BARs, but did not call dw_pcie_ep_reset_bar() for the reserved BARs.
@@ -945,6 +946,8 @@ static const struct pci_epc_features ks_pcie_am654_epc_features = {
 	 * what is behind these reserved BARs, see the definition of struct
 	 * pci_epc_bar_rsvd_region.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.bar[BAR_0] = { .type = BAR_RESERVED, },
 	.bar[BAR_1] = { .type = BAR_RESERVED, },
 	.bar[BAR_2] = { .type = BAR_RESIZABLE, },

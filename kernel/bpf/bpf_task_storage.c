@@ -118,7 +118,11 @@ static long bpf_pid_task_storage_update_elem(struct bpf_map *map, void *key,
 
 	sdata = bpf_local_storage_update(
 		task, (struct bpf_local_storage_map *)map, value, map_flags,
+<<<<<<< HEAD
 		true);
+=======
+		true, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = PTR_ERR_OR_ZERO(sdata);
 out:
@@ -165,8 +169,14 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 BPF_CALL_4(bpf_task_storage_get, struct bpf_map *, map, struct task_struct *,
 	   task, void *, value, u64, flags)
+=======
+/* *gfp_flags* is a hidden argument provided by the verifier */
+BPF_CALL_5(bpf_task_storage_get, struct bpf_map *, map, struct task_struct *,
+	   task, void *, value, u64, flags, gfp_t, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_data *sdata;
 
@@ -183,7 +193,11 @@ BPF_CALL_4(bpf_task_storage_get, struct bpf_map *, map, struct task_struct *,
 	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE)) {
 		sdata = bpf_local_storage_update(
 			task, (struct bpf_local_storage_map *)map, value,
+<<<<<<< HEAD
 			BPF_NOEXIST, false);
+=======
+			BPF_NOEXIST, false, gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return IS_ERR(sdata) ? (unsigned long)NULL : (unsigned long)sdata->data;
 	}
 
@@ -211,7 +225,11 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
 
 static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
 {
+<<<<<<< HEAD
 	return bpf_local_storage_map_alloc(attr, &task_cache);
+=======
+	return bpf_local_storage_map_alloc(attr, &task_cache, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void task_storage_map_free(struct bpf_map *map)

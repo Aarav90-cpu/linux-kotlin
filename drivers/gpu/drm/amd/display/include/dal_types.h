@@ -65,7 +65,10 @@ enum dce_version {
 	DCN_VERSION_3_51,
 	DCN_VERSION_3_6,
 	DCN_VERSION_4_01,
+<<<<<<< HEAD
 	DCN_VERSION_4_2,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DCN_VERSION_MAX
 };
 

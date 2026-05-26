@@ -12,7 +12,11 @@ release 1.0
 28 February 2002
 
 Current maintainer (corrections to):
+<<<<<<< HEAD
   Maciej W. Rozycki <macro@orcam.me.uk>
+=======
+  David Ruggiero <jdr@farfalle.com>
+>>>>>>> 7fb39c93c52e (Sync)
 
 Introduction
 ============

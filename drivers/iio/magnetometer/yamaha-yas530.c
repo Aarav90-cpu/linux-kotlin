@@ -1223,7 +1223,11 @@ static int yas530_measure_offsets(struct yas5xx *yas5xx)
 	 * as the values for [x, y1, y2]. The value is +/-31
 	 * but the effect on the raw values is much larger.
 	 * The effect of the offset is to bring the measure
+<<<<<<< HEAD
 	 * roughly to the center.
+=======
+	 * rougly to the center.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	ox = 0;
 	oy1 = 0;

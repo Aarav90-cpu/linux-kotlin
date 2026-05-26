@@ -159,6 +159,7 @@ definitions:
         name: entry
   -
     type: enum
+<<<<<<< HEAD
     name: resource-scope
     entries:
       -
@@ -167,6 +168,8 @@ definitions:
         name: port
   -
     type: enum
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     name: reload-action
     entries:
       -
@@ -875,6 +878,7 @@ attribute-sets:
         type: flag
         doc: Request restoring parameter to its default value.
         value: 183
+<<<<<<< HEAD
       -
         name: index
         type: uint
@@ -891,6 +895,8 @@ attribute-sets:
           resource-dump response. Bit 0 (dev) selects device-level
           resources; bit 1 (port) selects port-level resources.
           When absent all classes are returned.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: dl-dev-stats
     subset-of: devlink
@@ -1330,13 +1336,19 @@ operations:
           attributes: &dev-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         reply: &get-reply
           value: 3
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - reload-failed
             - dev-stats
       dump:
@@ -1355,7 +1367,10 @@ operations:
           attributes: &port-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
         reply:
           value: 7
@@ -1380,7 +1395,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - port-type
             - port-function
@@ -1398,7 +1416,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - port-flavour
             - port-pci-pf-number
@@ -1433,7 +1454,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - port-split-count
 
@@ -1462,7 +1486,10 @@ operations:
           attributes: &sb-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - sb-index
         reply: &sb-get-reply
           value: 13
@@ -1485,7 +1512,10 @@ operations:
           attributes: &sb-pool-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - sb-index
             - sb-pool-index
         reply: &sb-pool-get-reply
@@ -1509,7 +1539,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - sb-index
             - sb-pool-index
             - sb-pool-threshold-type
@@ -1528,7 +1561,10 @@ operations:
           attributes: &sb-port-pool-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - sb-index
             - sb-pool-index
@@ -1553,7 +1589,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - sb-index
             - sb-pool-index
@@ -1572,7 +1611,10 @@ operations:
           attributes: &sb-tc-pool-bind-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - sb-index
             - sb-pool-type
@@ -1598,7 +1640,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - sb-index
             - sb-pool-index
@@ -1620,7 +1665,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - sb-index
 
     -
@@ -1636,7 +1684,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - sb-index
 
     -
@@ -1655,7 +1706,10 @@ operations:
           attributes: &eswitch-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - eswitch-mode
             - eswitch-inline-mode
             - eswitch-encap-mode
@@ -1684,14 +1738,20 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-table-name
         reply:
           value: 31
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-tables
 
     -
@@ -1706,13 +1766,19 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-table-name
         reply:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-entries
 
     -
@@ -1727,12 +1793,18 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         reply:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-headers
 
     -
@@ -1748,7 +1820,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - dpipe-table-name
             - dpipe-table-counters-enabled
 
@@ -1765,7 +1840,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - resource-id
             - resource-size
 
@@ -1775,19 +1853,28 @@ operations:
       attribute-set: devlink
       dont-validate: [strict]
       do:
+<<<<<<< HEAD
         pre: devlink-nl-pre-doit-port-optional
+=======
+        pre: devlink-nl-pre-doit
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         post: devlink-nl-post-doit
         request:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
             - port-index
         reply: &resource-dump-reply
+=======
+        reply:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           value: 36
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
             - port-index
             - resource-list
@@ -1799,6 +1886,9 @@ operations:
             - index
             - resource-scope-mask
         reply: *resource-dump-reply
+=======
+            - resource-list
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     -
       name: reload
@@ -1813,7 +1903,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - reload-action
             - reload-limits
             - netns-pid
@@ -1823,7 +1916,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - reload-actions-performed
 
     -
@@ -1838,7 +1934,10 @@ operations:
           attributes: &param-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - param-name
         reply: &param-get-reply
           attributes: *param-id-attrs
@@ -1860,7 +1959,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - param-name
             - param-type
             # param-value-data is missing here as the type is variable
@@ -1880,7 +1982,10 @@ operations:
           attributes: &region-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - region-name
         reply: &region-get-reply
@@ -1905,7 +2010,10 @@ operations:
           attributes: &region-snapshot-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - region-name
             - region-snapshot-id
@@ -1936,7 +2044,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - region-name
             - region-snapshot-id
@@ -1948,7 +2059,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - region-name
 
@@ -1998,7 +2112,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - info-driver-name
             - info-serial-number
             - info-version-fixed
@@ -2020,7 +2137,10 @@ operations:
           attributes: &health-reporter-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - health-reporter-name
         reply: &health-reporter-get-reply
@@ -2043,7 +2163,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - health-reporter-name
             - health-reporter-graceful-period
@@ -2114,7 +2237,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - flash-update-file-name
             - flash-update-component
             - flash-update-overwrite-mask
@@ -2132,7 +2258,10 @@ operations:
           attributes: &trap-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-name
         reply: &trap-get-reply
           value: 63
@@ -2155,7 +2284,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-name
             - trap-action
 
@@ -2172,7 +2304,10 @@ operations:
           attributes: &trap-group-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-group-name
         reply: &trap-group-get-reply
           value: 67
@@ -2195,7 +2330,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-group-name
             - trap-action
             - trap-policer-id
@@ -2213,7 +2351,10 @@ operations:
           attributes: &trap-policer-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-policer-id
         reply: &trap-policer-get-reply
           value: 71
@@ -2236,7 +2377,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - trap-policer-id
             - trap-policer-rate
             - trap-policer-burst
@@ -2267,7 +2411,10 @@ operations:
           attributes: &rate-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index
             - rate-node-name
         reply: &rate-get-reply
@@ -2291,7 +2438,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - rate-node-name
             - rate-tx-share
             - rate-tx-max
@@ -2313,7 +2463,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - rate-node-name
             - rate-tx-share
             - rate-tx-max
@@ -2335,7 +2488,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - rate-node-name
 
     -
@@ -2351,7 +2507,10 @@ operations:
           attributes: &linecard-id-attrs
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - linecard-index
         reply: &linecard-get-reply
           value: 80
@@ -2374,7 +2533,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - linecard-index
             - linecard-type
 
@@ -2408,7 +2570,10 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - selftests
 
     -
@@ -2420,5 +2585,8 @@ operations:
           attributes:
             - bus-name
             - dev-name
+<<<<<<< HEAD
             - index
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             - port-index

@@ -28,15 +28,25 @@ struct utsname {
 };
 
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_uname(struct utsname *buf)
 {
 	return __nolibc_syscall1(__NR_uname, buf);
+=======
+int sys_uname(struct utsname *buf)
+{
+	return my_syscall1(__NR_uname, buf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
 int uname(struct utsname *buf)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_uname(buf));
+=======
+	return __sysret(sys_uname(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_SYS_UTSNAME_H */

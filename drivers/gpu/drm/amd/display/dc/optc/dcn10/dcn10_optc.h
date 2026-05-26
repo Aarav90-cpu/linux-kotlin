@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-15 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -218,7 +222,11 @@
 	uint32_t OTG_CRC_SIG_BLUE_CONTROL_MASK; \
 	uint32_t OTG_CRC_SIG_RED_GREEN_MASK; \
 	uint32_t OTG_DLPC_CONTROL; \
+<<<<<<< HEAD
 	uint32_t OTG_DRR_CONTOL2; \
+=======
+	uint32_t OTG_DRR_CONTROL2; \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t OTG_DRR_TIMING_INT_STATUS; \
 	uint32_t OTG_GLOBAL_CONTROL3; \
 	uint32_t OTG_GLOBAL_SYNC_STATUS; \
@@ -253,6 +261,7 @@
 	uint32_t OTG_CRC1_DATA_B32
 
 
+<<<<<<< HEAD
 #define OPTC_REG_VARIABLE_LIST_DCN42 \
 	uint32_t OTG_PWA_FRAME_SYNC_CONTROL; \
 	uint32_t OTG_CRC0_DATA_R; \
@@ -267,6 +276,10 @@
 struct dcn_optc_registers {
 	OPTC_REG_VARIABLE_LIST_DCN;
 	OPTC_REG_VARIABLE_LIST_DCN42;
+=======
+struct dcn_optc_registers {
+	OPTC_REG_VARIABLE_LIST_DCN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define TG_COMMON_MASK_SH_LIST_DCN(mask_sh)\
@@ -676,10 +689,13 @@ struct dcn_optc_registers {
 	type OTG_V_COUNT_STOP_TIMER;
 
 #define TG_REG_FIELD_LIST_DCN3_6(type) \
+<<<<<<< HEAD
 	type OPTC_RSMU_UNDERFLOW_CLEAR;\
 	type OPTC_RSMU_UNDERFLOW_OCCURRED_STATUS;\
 	type OPTC_RSMU_UNDERFLOW_INT_EN;\
 	type OPTC_RSMU_UNDERFLOW_INT_STATUS;\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	type OTG_CRC_POLY_SEL; \
 	type CRC0_R_CR32; \
 	type CRC0_G_Y32; \
@@ -695,10 +711,13 @@ struct dcn_optc_registers {
 	type OTG_UNBLANK;\
 	type OTG_PSTATE_ALLOW_WIDTH_MIN;
 
+<<<<<<< HEAD
 #define TG_REG_FIELD_LIST_DCN42(type) \
 	type OTG_PWA_FRAME_SYNC_EN;\
 	type OTG_PWA_FRAME_SYNC_VCOUNT_MODE;\
 	type OTG_PWA_FRAME_SYNC_LINE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dcn_optc_shift {
 	TG_REG_FIELD_LIST(uint8_t)
@@ -707,7 +726,10 @@ struct dcn_optc_shift {
 	TG_REG_FIELD_LIST_DCN3_5(uint8_t)
 	TG_REG_FIELD_LIST_DCN3_6(uint8_t)
 	TG_REG_FIELD_LIST_DCN401(uint8_t)
+<<<<<<< HEAD
 		TG_REG_FIELD_LIST_DCN42(uint8_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn_optc_mask {
@@ -717,7 +739,10 @@ struct dcn_optc_mask {
 	TG_REG_FIELD_LIST_DCN3_5(uint32_t)
 	TG_REG_FIELD_LIST_DCN3_6(uint32_t)
 	TG_REG_FIELD_LIST_DCN401(uint32_t)
+<<<<<<< HEAD
 	TG_REG_FIELD_LIST_DCN42(uint32_t)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void dcn10_timing_generator_init(struct optc *optc);

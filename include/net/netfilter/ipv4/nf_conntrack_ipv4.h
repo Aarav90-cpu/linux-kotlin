@@ -16,6 +16,12 @@ extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_icmp;
 #ifdef CONFIG_NF_CT_PROTO_SCTP
 extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_sctp;
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NF_CT_PROTO_UDPLITE
+extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_udplite;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NF_CT_PROTO_GRE
 extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_gre;
 #endif

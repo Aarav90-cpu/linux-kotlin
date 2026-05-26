@@ -15,14 +15,18 @@
 		ethernet0 = &eth0;
 		ethernet1 = &eth1;
 		serial0 = &uart0;
+<<<<<<< HEAD
 		i2c2 = &i2c2;
 		i2c8 = &i2c8;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
 		stdout-path = "serial0";
 	};
 
+<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 
@@ -51,6 +55,9 @@
 	};
 
 	reg_dc_in: regulator-dc-in-12v {
+=======
+	reg_dc_in: dc-in-12v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "dc_in_12v";
 		regulator-min-microvolt = <12000000>;
@@ -59,7 +66,11 @@
 		regulator-always-on;
 	};
 
+<<<<<<< HEAD
 	reg_vcc_4v: regulator-vcc-4v {
+=======
+	reg_vcc_4v: vcc-4v {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "regulator-fixed";
 		regulator-name = "vcc_4v";
 		regulator-min-microvolt = <4000000>;
@@ -68,6 +79,7 @@
 		regulator-always-on;
 		vin-supply = <&reg_dc_in>;
 	};
+<<<<<<< HEAD
 
 	reg_vcc_5v: regulator-vcc-5v {
 		compatible = "regulator-fixed";
@@ -103,6 +115,8 @@
 
 &combo_phy {
 	status = "okay";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &eth0 {
@@ -155,6 +169,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &i2c2 {
 	pinctrl-0 = <&i2c2_0_cfg>;
 	pinctrl-names = "default";
@@ -177,6 +192,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c8 {
 	pinctrl-0 = <&i2c8_cfg>;
 	pinctrl-names = "default";
@@ -186,6 +203,7 @@
 		compatible = "spacemit,p1";
 		reg = <0x41>;
 		interrupts = <64>;
+<<<<<<< HEAD
 		vin1-supply = <&reg_vcc_4v>;
 		vin2-supply = <&reg_vcc_4v>;
 		vin3-supply = <&reg_vcc_4v>;
@@ -195,6 +213,9 @@
 		aldoin-supply = <&reg_vcc_4v>;
 		dldoin1-supply = <&buck5>;
 		dldoin2-supply = <&buck5>;
+=======
+		vin-supply = <&reg_vcc_4v>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		regulators {
 			buck1 {
@@ -218,14 +239,22 @@
 				regulator-always-on;
 			};
 
+<<<<<<< HEAD
 			buck4_3v3: buck4 {
+=======
+			buck4 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <3300000>;
 				regulator-ramp-delay = <5000>;
 				regulator-always-on;
 			};
 
+<<<<<<< HEAD
 			buck5: buck5 {
+=======
+			buck5 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regulator-min-microvolt = <500000>;
 				regulator-max-microvolt = <3450000>;
 				regulator-ramp-delay = <5000>;
@@ -301,6 +330,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &pcie1_phy {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie1_3_cfg>;
@@ -374,11 +404,14 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_2_cfg>;
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &usbphy2 {
 	status = "okay";
@@ -406,3 +439,5 @@
 		reset-gpios = <&gpio K1_GPIO(124) GPIO_ACTIVE_LOW>;
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

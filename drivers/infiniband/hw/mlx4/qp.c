@@ -709,7 +709,12 @@ static int _mlx4_ib_create_qp_rss(struct ib_pd *pd, struct mlx4_ib_qp *qp,
 				  struct ib_qp_init_attr *init_attr,
 				  struct ib_udata *udata)
 {
+<<<<<<< HEAD
 	struct mlx4_ib_create_qp_rss ucmd;
+=======
+	struct mlx4_ib_create_qp_rss ucmd = {};
+	size_t required_cmd_sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	if (!udata) {
@@ -720,18 +725,44 @@ static int _mlx4_ib_create_qp_rss(struct ib_pd *pd, struct mlx4_ib_qp *qp,
 	if (udata->outlen)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	err = ib_copy_validate_udata_in_cm(udata, ucmd, reserved1, 0);
 	if (err) {
 		pr_debug("copy failed\n");
 		return err;
+=======
+	required_cmd_sz = offsetof(typeof(ucmd), reserved1) +
+					sizeof(ucmd.reserved1);
+	if (udata->inlen < required_cmd_sz) {
+		pr_debug("invalid inlen\n");
+		return -EINVAL;
+	}
+
+	if (ib_copy_from_udata(&ucmd, udata, min(sizeof(ucmd), udata->inlen))) {
+		pr_debug("copy failed\n");
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (memchr_inv(ucmd.reserved, 0, sizeof(ucmd.reserved)))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (ucmd.reserved1)
 		return -EOPNOTSUPP;
 
+=======
+	if (ucmd.comp_mask || ucmd.reserved1)
+		return -EOPNOTSUPP;
+
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd))) {
+		pr_debug("inlen is not supported\n");
+		return -EOPNOTSUPP;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (init_attr->qp_type != IB_QPT_RAW_PACKET) {
 		pr_debug("RSS QP with unsupported QP type %d\n",
 			 init_attr->qp_type);
@@ -854,6 +885,10 @@ static int create_rq(struct ib_pd *pd, struct ib_qp_init_attr *init_attr,
 	unsigned long flags;
 	int range_size;
 	struct mlx4_ib_create_wq wq;
+<<<<<<< HEAD
+=======
+	size_t copy_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int shift;
 	int n;
 
@@ -866,11 +901,23 @@ static int create_rq(struct ib_pd *pd, struct ib_qp_init_attr *init_attr,
 
 	qp->state = IB_QPS_RESET;
 
+<<<<<<< HEAD
 	err = ib_copy_validate_udata_in_cm(udata, wq, comp_mask, 0);
 	if (err)
 		goto err;
 
 	if (wq.reserved[0] || wq.reserved[1] || wq.reserved[2]) {
+=======
+	copy_len = min(sizeof(struct mlx4_ib_create_wq), udata->inlen);
+
+	if (ib_copy_from_udata(&wq, udata, copy_len)) {
+		err = -EFAULT;
+		goto err;
+	}
+
+	if (wq.comp_mask || wq.reserved[0] || wq.reserved[1] ||
+	    wq.reserved[2]) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_debug("user command isn't supported\n");
 		err = -EOPNOTSUPP;
 		goto err;
@@ -1048,12 +1095,25 @@ static int create_qp_common(struct ib_pd *pd, struct ib_qp_init_attr *init_attr,
 
 	if (udata) {
 		struct mlx4_ib_create_qp ucmd;
+<<<<<<< HEAD
 		int shift;
 		int n;
 
 		err = ib_copy_validate_udata_in(udata, ucmd, sq_no_prefetch);
 		if (err)
 			goto err;
+=======
+		size_t copy_len;
+		int shift;
+		int n;
+
+		copy_len = sizeof(struct mlx4_ib_create_qp);
+
+		if (ib_copy_from_udata(&ucmd, udata, copy_len)) {
+			err = -EFAULT;
+			goto err;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		qp->inl_recv_sz = ucmd.inl_recv_sz;
 
@@ -4107,11 +4167,33 @@ struct ib_wq *mlx4_ib_create_wq(struct ib_pd *pd,
 	struct mlx4_dev *dev = to_mdev(pd->device)->dev;
 	struct ib_qp_init_attr ib_qp_init_attr = {};
 	struct mlx4_ib_qp *qp;
+<<<<<<< HEAD
 	int err;
+=======
+	struct mlx4_ib_create_wq ucmd;
+	int err, required_cmd_sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!udata)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
+=======
+	required_cmd_sz = offsetof(typeof(ucmd), comp_mask) +
+			  sizeof(ucmd.comp_mask);
+	if (udata->inlen < required_cmd_sz) {
+		pr_debug("invalid inlen\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd))) {
+		pr_debug("inlen is not supported\n");
+		return ERR_PTR(-EOPNOTSUPP);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (udata->outlen)
 		return ERR_PTR(-EOPNOTSUPP);
 
@@ -4230,6 +4312,7 @@ int mlx4_ib_modify_wq(struct ib_wq *ibwq, struct ib_wq_attr *wq_attr,
 		      u32 wq_attr_mask, struct ib_udata *udata)
 {
 	struct mlx4_ib_qp *qp = to_mqp((struct ib_qp *)ibwq);
+<<<<<<< HEAD
 	struct mlx4_ib_modify_wq ucmd;
 	enum ib_wq_state cur_state, new_state;
 	int err;
@@ -4239,6 +4322,27 @@ int mlx4_ib_modify_wq(struct ib_wq *ibwq, struct ib_wq_attr *wq_attr,
 		return err;
 
 	if (ucmd.reserved)
+=======
+	struct mlx4_ib_modify_wq ucmd = {};
+	size_t required_cmd_sz;
+	enum ib_wq_state cur_state, new_state;
+	int err = 0;
+
+	required_cmd_sz = offsetof(typeof(ucmd), reserved) +
+				   sizeof(ucmd.reserved);
+	if (udata->inlen < required_cmd_sz)
+		return -EINVAL;
+
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd)))
+		return -EOPNOTSUPP;
+
+	if (ib_copy_from_udata(&ucmd, udata, min(sizeof(ucmd), udata->inlen)))
+		return -EFAULT;
+
+	if (ucmd.comp_mask || ucmd.reserved)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	if (wq_attr_mask & IB_WQ_FLAGS)

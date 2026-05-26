@@ -480,6 +480,7 @@ bool hci_setup_sync(struct hci_conn *conn, __u16 handle)
 	return hci_setup_sync_conn(conn, handle);
 }
 
+<<<<<<< HEAD
 struct le_conn_update_data {
 	struct hci_conn *conn;
 	u16	min;
@@ -531,10 +532,20 @@ static int le_conn_update_sync(struct hci_dev *hdev, void *data)
 	/* Update stored connection parameters after the controller has
 	 * confirmed the update via the LE Connection Update Complete event.
 	 */
+=======
+u8 hci_le_conn_update(struct hci_conn *conn, u16 min, u16 max, u16 latency,
+		      u16 to_multiplier)
+{
+	struct hci_dev *hdev = conn->hdev;
+	struct hci_conn_params *params;
+	struct hci_cp_le_conn_update cp;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hci_dev_lock(hdev);
 
 	params = hci_conn_params_lookup(hdev, &conn->dst, conn->dst_type);
 	if (params) {
+<<<<<<< HEAD
 		params->conn_min_interval = d->min;
 		params->conn_max_interval = d->max;
 		params->conn_latency = d->latency;
@@ -542,10 +553,17 @@ static int le_conn_update_sync(struct hci_dev *hdev, void *data)
 		store_hint = 0x01;
 	} else {
 		store_hint = 0x00;
+=======
+		params->conn_min_interval = min;
+		params->conn_max_interval = max;
+		params->conn_latency = latency;
+		params->supervision_timeout = to_multiplier;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	hci_dev_unlock(hdev);
 
+<<<<<<< HEAD
 	mgmt_new_conn_param(hdev, &conn->dst, conn->dst_type, store_hint,
 			    d->min, d->max, d->latency, d->to_multiplier);
 
@@ -581,6 +599,23 @@ void hci_le_conn_update(struct hci_conn *conn, u16 min, u16 max, u16 latency,
 		hci_conn_put(conn);
 		kfree(d);
 	}
+=======
+	memset(&cp, 0, sizeof(cp));
+	cp.handle		= cpu_to_le16(conn->handle);
+	cp.conn_interval_min	= cpu_to_le16(min);
+	cp.conn_interval_max	= cpu_to_le16(max);
+	cp.conn_latency		= cpu_to_le16(latency);
+	cp.supervision_timeout	= cpu_to_le16(to_multiplier);
+	cp.min_ce_len		= cpu_to_le16(0x0000);
+	cp.max_ce_len		= cpu_to_le16(0x0000);
+
+	hci_send_cmd(hdev, HCI_OP_LE_CONN_UPDATE, sizeof(cp), &cp);
+
+	if (params)
+		return 0x01;
+
+	return 0x00;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void hci_le_start_enc(struct hci_conn *conn, __le16 ediv, __le64 rand,
@@ -3167,7 +3202,10 @@ static int abort_conn_sync(struct hci_dev *hdev, void *data)
 int hci_abort_conn(struct hci_conn *conn, u8 reason)
 {
 	struct hci_dev *hdev = conn->hdev;
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If abort_reason has already been set it means the connection is
 	 * already being aborted so don't attempt to overwrite it.
@@ -3204,8 +3242,12 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
 	 * as a result to MGMT_OP_DISCONNECT/MGMT_OP_UNPAIR which does
 	 * already queue its callback on cmd_sync_work.
 	 */
+<<<<<<< HEAD
 	err = hci_cmd_sync_run_once(hdev, abort_conn_sync, conn, NULL);
 	return (err == -EEXIST) ? 0 : err;
+=======
+	return hci_cmd_sync_run_once(hdev, abort_conn_sync, conn, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void hci_setup_tx_timestamp(struct sk_buff *skb, size_t key_offset,

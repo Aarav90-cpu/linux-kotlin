@@ -20,6 +20,10 @@ config PIC32MZDA
 	select LIBFDT
 	select USE_OF
 	select PINCTRL
+<<<<<<< HEAD
+=======
+	select PIC32_EVIC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for the Microchip PIC32MZDA microcontroller.
 

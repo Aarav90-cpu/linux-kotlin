@@ -8,8 +8,11 @@ obj-m += test_klp_atomic_replace.o \
 	test_klp_callbacks_mod.o \
 	test_klp_kprobe.o \
 	test_klp_livepatch.o \
+<<<<<<< HEAD
 	test_klp_mod_patch.o \
 	test_klp_mod_target.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	test_klp_shadow_vars.o \
 	test_klp_state.o \
 	test_klp_state2.o \

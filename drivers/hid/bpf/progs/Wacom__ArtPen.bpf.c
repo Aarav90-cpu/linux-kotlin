@@ -148,7 +148,11 @@ int probe(struct hid_bpf_probe_args *ctx)
 {
 	struct hid_bpf_ctx *hid_ctx;
 	__u16 pid;
+<<<<<<< HEAD
 	size_t i;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* get a struct hid_device to access the actual pid of the device */
 	hid_ctx = hid_bpf_allocate_context(ctx->hid);

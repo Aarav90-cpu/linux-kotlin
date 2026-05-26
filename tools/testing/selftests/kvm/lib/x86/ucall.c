@@ -6,9 +6,15 @@
  */
 #include "kvm_util.h"
 
+<<<<<<< HEAD
 #define UCALL_PIO_PORT ((u16)0x1000)
 
 void ucall_arch_do_ucall(gva_t uc)
+=======
+#define UCALL_PIO_PORT ((uint16_t)0x1000)
+
+void ucall_arch_do_ucall(vm_vaddr_t uc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * FIXME: Revert this hack (the entire commit that added it) once nVMX

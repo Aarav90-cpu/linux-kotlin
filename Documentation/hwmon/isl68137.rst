@@ -394,6 +394,7 @@ Supported chips:
 
       Provided by Renesas upon request and NDA
 
+<<<<<<< HEAD
   * Renesas RAA228942
 
     Prefix: 'raa228942'
@@ -414,6 +415,8 @@ Supported chips:
 
       Provided by Renesas upon request and NDA
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   * Renesas RAA229001
 
     Prefix: 'raa229001'

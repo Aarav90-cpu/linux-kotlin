@@ -145,7 +145,10 @@ static int snd_gusclassic_probe(struct device *dev, unsigned int n)
 	error = snd_gusclassic_create(card, dev, n, &gus);
 	if (error < 0)
 		return error;
+<<<<<<< HEAD
 	card->private_data = gus;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error = snd_gusclassic_detect(gus);
 	if (error < 0)
@@ -194,6 +197,7 @@ static int snd_gusclassic_probe(struct device *dev, unsigned int n)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_gusclassic_suspend(struct device *dev, unsigned int n,
 				  pm_message_t state)
@@ -217,6 +221,13 @@ static struct isa_driver snd_gusclassic_driver = {
 #ifdef CONFIG_PM
 	.suspend	= snd_gusclassic_suspend,
 	.resume		= snd_gusclassic_resume,
+=======
+static struct isa_driver snd_gusclassic_driver = {
+	.match		= snd_gusclassic_match,
+	.probe		= snd_gusclassic_probe,
+#if 0	/* FIXME */
+	.suspend	= snd_gusclassic_suspend,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	.driver		= {
 		.name	= DEV_NAME

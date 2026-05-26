@@ -14,7 +14,10 @@
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 #include <linux/spi/spi.h>
+<<<<<<< HEAD
 #include <linux/units.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/iio/iio.h>
 
@@ -35,7 +38,11 @@ struct max5522_state {
 	struct regmap *regmap;
 	const struct max5522_chip_info *chip_info;
 	unsigned short dac_cache[2];
+<<<<<<< HEAD
 	int vref_mV;
+=======
+	struct regulator *vrefin_reg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define MAX5522_CHANNEL(chan) {	\
@@ -80,13 +87,24 @@ static int max5522_read_raw(struct iio_dev *indio_dev,
 			    int *val, int *val2, long info)
 {
 	struct max5522_state *state = iio_priv(indio_dev);
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (info) {
 	case IIO_CHAN_INFO_RAW:
 		*val = state->dac_cache[chan->channel];
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_SCALE:
+<<<<<<< HEAD
 		*val = state->vref_mV;
+=======
+		ret = regulator_get_voltage(state->vrefin_reg);
+		if (ret < 0)
+			return -EINVAL;
+		*val = ret / 1000;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*val2 = 10;
 		return IIO_VAL_FRACTIONAL_LOG2;
 	default:
@@ -144,11 +162,24 @@ static int max5522_spi_probe(struct spi_device *spi)
 	if (!state->chip_info)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vrefin");
 	if (ret < 0)
 		return dev_err_probe(&spi->dev, ret,
 				     "Failed to get vrefin regulator\n");
 	state->vref_mV = ret / (MICRO / MILLI);
+=======
+	state->vrefin_reg = devm_regulator_get(&spi->dev, "vrefin");
+	if (IS_ERR(state->vrefin_reg))
+		return dev_err_probe(&spi->dev, PTR_ERR(state->vrefin_reg),
+				     "Vrefin regulator not specified\n");
+
+	ret = regulator_enable(state->vrefin_reg);
+	if (ret) {
+		return dev_err_probe(&spi->dev, ret,
+				     "Failed to enable vref regulators\n");
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	state->regmap = devm_regmap_init_spi(spi, &max5522_regmap_config);
 

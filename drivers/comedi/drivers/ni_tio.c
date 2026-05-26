@@ -1825,6 +1825,20 @@ void ni_gpct_device_destroy(struct ni_gpct_device *counter_dev)
 }
 EXPORT_SYMBOL_GPL(ni_gpct_device_destroy);
 
+<<<<<<< HEAD
+=======
+static int __init ni_tio_init_module(void)
+{
+	return 0;
+}
+module_init(ni_tio_init_module);
+
+static void __exit ni_tio_cleanup_module(void)
+{
+}
+module_exit(ni_tio_cleanup_module);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Comedi <comedi@comedi.org>");
 MODULE_DESCRIPTION("Comedi support for NI general-purpose counters");
 MODULE_LICENSE("GPL");

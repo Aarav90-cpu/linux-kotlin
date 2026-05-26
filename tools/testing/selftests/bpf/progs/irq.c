@@ -490,7 +490,11 @@ int irq_non_sleepable_global_subprog(void *ctx)
 }
 
 SEC("?syscall")
+<<<<<<< HEAD
 __failure __msg("sleepable global function")
+=======
+__failure __msg("global functions that may sleep are not allowed in non-sleepable context")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int irq_sleepable_helper_global_subprog(void *ctx)
 {
 	unsigned long flags;
@@ -502,7 +506,11 @@ int irq_sleepable_helper_global_subprog(void *ctx)
 }
 
 SEC("?syscall")
+<<<<<<< HEAD
 __failure __msg("sleepable global function")
+=======
+__failure __msg("global functions that may sleep are not allowed in non-sleepable context")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int irq_sleepable_global_subprog_indirect(void *ctx)
 {
 	unsigned long flags;

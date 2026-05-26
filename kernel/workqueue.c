@@ -41,7 +41,10 @@
 #include <linux/mempolicy.h>
 #include <linux/freezer.h>
 #include <linux/debug_locks.h>
+<<<<<<< HEAD
 #include <linux/device/devres.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/lockdep.h>
 #include <linux/idr.h>
 #include <linux/jhash.h>
@@ -131,6 +134,7 @@ enum wq_internal_consts {
 	WORKER_ID_LEN		= 10 + WQ_NAME_LEN, /* "kworker/R-" + WQ_NAME_LEN */
 };
 
+<<<<<<< HEAD
 /* Layout of shards within one LLC pod */
 struct llc_shard_layout {
 	int nr_large_shards;	/* number of large shards (cores_per_shard + 1) */
@@ -139,6 +143,8 @@ struct llc_shard_layout {
 	/* nr_default shards = (nr_shards - nr_large_shards) */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We don't want to trap softirq for too long. See MAX_SOFTIRQ_TIME and
  * MAX_SOFTIRQ_RESTART in kernel/softirq.c. These are macros because
@@ -413,12 +419,19 @@ struct work_offq_data {
 	u32			flags;
 };
 
+<<<<<<< HEAD
 static const char * const wq_affn_names[WQ_AFFN_NR_TYPES] = {
+=======
+static const char *wq_affn_names[WQ_AFFN_NR_TYPES] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[WQ_AFFN_DFL]		= "default",
 	[WQ_AFFN_CPU]		= "cpu",
 	[WQ_AFFN_SMT]		= "smt",
 	[WQ_AFFN_CACHE]		= "cache",
+<<<<<<< HEAD
 	[WQ_AFFN_CACHE_SHARD]	= "cache_shard",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[WQ_AFFN_NUMA]		= "numa",
 	[WQ_AFFN_SYSTEM]	= "system",
 };
@@ -441,16 +454,23 @@ module_param_named(cpu_intensive_warning_thresh, wq_cpu_intensive_warning_thresh
 static bool wq_power_efficient = IS_ENABLED(CONFIG_WQ_POWER_EFFICIENT_DEFAULT);
 module_param_named(power_efficient, wq_power_efficient, bool, 0444);
 
+<<<<<<< HEAD
 static unsigned int wq_cache_shard_size = 8;
 module_param_named(cache_shard_size, wq_cache_shard_size, uint, 0444);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool wq_online;			/* can kworkers be created yet? */
 static bool wq_topo_initialized __read_mostly = false;
 
 static struct kmem_cache *pwq_cache;
 
 static struct wq_pod_type wq_pod_types[WQ_AFFN_NR_TYPES];
+<<<<<<< HEAD
 static enum wq_affn_scope wq_affn_dfl = WQ_AFFN_CACHE_SHARD;
+=======
+static enum wq_affn_scope wq_affn_dfl = WQ_AFFN_CACHE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* buf for wq_update_unbound_pod_attrs(), protected by CPU hotplug exclusion */
 static struct workqueue_attrs *unbound_wq_update_pwq_attrs_buf;
@@ -543,8 +563,11 @@ struct workqueue_struct *system_bh_wq;
 EXPORT_SYMBOL_GPL(system_bh_wq);
 struct workqueue_struct *system_bh_highpri_wq;
 EXPORT_SYMBOL_GPL(system_bh_highpri_wq);
+<<<<<<< HEAD
 struct workqueue_struct *system_dfl_long_wq __ro_after_init;
 EXPORT_SYMBOL_GPL(system_dfl_long_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int worker_thread(void *__worker);
 static void workqueue_sysfs_unregister(struct workqueue_struct *wq);
@@ -1281,6 +1304,10 @@ static bool kick_pool(struct worker_pool *pool)
 
 	p = worker->task;
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SMP
 	/*
 	 * Idle @worker is about to execute @work and waking up provides an
@@ -1310,6 +1337,11 @@ static bool kick_pool(struct worker_pool *pool)
 		}
 	}
 #endif
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SCHED_ALT */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wake_up_process(p);
 	return true;
 }
@@ -1438,7 +1470,15 @@ void wq_worker_running(struct task_struct *task)
 	 * CPU intensive auto-detection cares about how long a work item hogged
 	 * CPU without sleeping. Reset the starting timestamp on wakeup.
 	 */
+<<<<<<< HEAD
 	worker->current_at = worker->task->se.sum_exec_runtime;
+=======
+#ifdef CONFIG_SCHED_ALT
+	worker->current_at = worker->task->sched_time;
+#else
+	worker->current_at = worker->task->se.sum_exec_runtime;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WRITE_ONCE(worker->sleeping, 0);
 }
@@ -1523,7 +1563,15 @@ void wq_worker_tick(struct task_struct *task)
 	 * We probably want to make this prettier in the future.
 	 */
 	if ((worker->flags & WORKER_NOT_RUNNING) || READ_ONCE(worker->sleeping) ||
+<<<<<<< HEAD
 	    worker->task->se.sum_exec_runtime - worker->current_at <
+=======
+#ifdef CONFIG_SCHED_ALT
+	    worker->task->sched_time - worker->current_at <
+#else
+	    worker->task->se.sum_exec_runtime - worker->current_at <
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    wq_cpu_intensive_thresh_us * NSEC_PER_USEC)
 		return;
 
@@ -2296,6 +2344,7 @@ static void __queue_work(int cpu, struct workqueue_struct *wq,
 	if (unlikely(wq->flags & (__WQ_DESTROYING | __WQ_DRAINING) &&
 		     WARN_ONCE(!is_chained_work(wq), "workqueue: cannot queue %ps on wq %s\n",
 			       work->func, wq->name))) {
+<<<<<<< HEAD
 		struct work_offq_data offqd;
 
 		/*
@@ -2308,6 +2357,8 @@ static void __queue_work(int cpu, struct workqueue_struct *wq,
 		work_offqd_unpack(&offqd, *work_data_bits(work));
 		set_work_pool_and_clear_pending(work, offqd.pool_id,
 						work_offqd_pack_flags(&offqd));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 	rcu_read_lock();
@@ -2546,6 +2597,10 @@ static void __queue_delayed_work(int cpu, struct workqueue_struct *wq,
 	struct timer_list *timer = &dwork->timer;
 	struct work_struct *work = &dwork->work;
 
+<<<<<<< HEAD
+=======
+	WARN_ON_ONCE(!wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON_ONCE(timer->function != delayed_work_timer_fn);
 	WARN_ON_ONCE(timer_pending(timer));
 	WARN_ON_ONCE(!list_empty(&work->entry));
@@ -3241,7 +3296,15 @@ __acquires(&pool->lock)
 	worker->current_func = work->func;
 	worker->current_pwq = pwq;
 	if (worker->task)
+<<<<<<< HEAD
 		worker->current_at = worker->task->se.sum_exec_runtime;
+=======
+#ifdef CONFIG_SCHED_ALT
+		worker->current_at = worker->task->sched_time;
+#else
+		worker->current_at = worker->task->se.sum_exec_runtime;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	worker->current_start = jiffies;
 	work_data = *work_data_bits(work);
 	worker->current_color = get_work_color(work_data);
@@ -5654,15 +5717,20 @@ static int alloc_and_link_pwqs(struct workqueue_struct *wq)
 		ret = apply_workqueue_attrs_locked(wq, unbound_std_wq_attrs[highpri]);
 	}
 
+<<<<<<< HEAD
 	if (ret)
 		goto enomem;
 	return 0;
+=======
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enomem:
 	if (wq->cpu_pwq) {
 		for_each_possible_cpu(cpu) {
 			struct pool_workqueue *pwq = *per_cpu_ptr(wq->cpu_pwq, cpu);
 
+<<<<<<< HEAD
 			if (pwq) {
 				/*
 				 * Unlink pwq from wq->pwqs since link_pwq()
@@ -5673,6 +5741,10 @@ enomem:
 					list_del_rcu(&pwq->pwqs_node);
 				kmem_cache_free(pwq_cache, pwq);
 			}
+=======
+			if (pwq)
+				kmem_cache_free(pwq_cache, pwq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		free_percpu(wq->cpu_pwq);
 		wq->cpu_pwq = NULL;
@@ -5920,6 +5992,7 @@ err_destroy:
 	return NULL;
 }
 
+<<<<<<< HEAD
 __printf(1, 0)
 static struct workqueue_struct *alloc_workqueue_va(const char *fmt,
 						   unsigned int flags,
@@ -5935,6 +6008,8 @@ static struct workqueue_struct *alloc_workqueue_va(const char *fmt,
 	return wq;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __printf(1, 4)
 struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
 						unsigned int flags,
@@ -5944,6 +6019,7 @@ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
 	va_list args;
 
 	va_start(args, max_active);
+<<<<<<< HEAD
 	wq = alloc_workqueue_va(fmt, flags, max_active, args);
 	va_end(args);
 
@@ -5966,10 +6042,14 @@ devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
 
 	va_start(args, max_active);
 	wq = alloc_workqueue_va(fmt, flags, max_active, args);
+=======
+	wq = __alloc_workqueue(fmt, flags, max_active, args);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	va_end(args);
 	if (!wq)
 		return NULL;
 
+<<<<<<< HEAD
 	ret = devm_add_action_or_reset(dev, devm_workqueue_release, wq);
 	if (ret)
 		return NULL;
@@ -5977,6 +6057,13 @@ devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
 	return wq;
 }
 EXPORT_SYMBOL_GPL(devm_alloc_workqueue_noprof);
+=======
+	wq_init_lockdep(wq);
+
+	return wq;
+}
+EXPORT_SYMBOL_GPL(alloc_workqueue_noprof);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_LOCKDEP
 __printf(1, 5)
@@ -7133,7 +7220,11 @@ int workqueue_unbound_housekeeping_update(const struct cpumask *hk)
 	/*
 	 * If the operation fails, it will fall back to
 	 * wq_requested_unbound_cpumask which is initially set to
+<<<<<<< HEAD
 	 * HK_TYPE_DOMAIN house keeping mask and rewritten
+=======
+	 * (HK_TYPE_WQ ∩ HK_TYPE_DOMAIN) house keeping mask and rewritten
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * by any subsequent write to workqueue/cpumask sysfs file.
 	 */
 	if (!cpumask_and(cpumask, wq_requested_unbound_cpumask, hk))
@@ -7152,7 +7243,17 @@ int workqueue_unbound_housekeeping_update(const struct cpumask *hk)
 
 static int parse_affn_scope(const char *val)
 {
+<<<<<<< HEAD
 	return sysfs_match_string(wq_affn_names, val);
+=======
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(wq_affn_names); i++) {
+		if (!strncasecmp(val, wq_affn_names[i], strlen(wq_affn_names[i])))
+			return i;
+	}
+	return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int wq_affn_dfl_set(const char *val, const struct kernel_param *kp)
@@ -7259,6 +7360,7 @@ static struct attribute *wq_sysfs_attrs[] = {
 	&dev_attr_max_active.attr,
 	NULL,
 };
+<<<<<<< HEAD
 
 static umode_t wq_sysfs_is_visible(struct kobject *kobj, struct attribute *a, int n)
 {
@@ -7279,6 +7381,9 @@ static const struct attribute_group wq_sysfs_group = {
 	.attrs = wq_sysfs_attrs,
 };
 __ATTRIBUTE_GROUPS(wq_sysfs);
+=======
+ATTRIBUTE_GROUPS(wq_sysfs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t wq_nice_show(struct device *dev, struct device_attribute *attr,
 			    char *buf)
@@ -7581,6 +7686,16 @@ int workqueue_sysfs_register(struct workqueue_struct *wq)
 	struct wq_device *wq_dev;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Adjusting max_active breaks ordering guarantee.  Disallow exposing
+	 * ordered workqueues.
+	 */
+	if (WARN_ON(wq->flags & __WQ_ORDERED))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wq->wq_dev = wq_dev = kzalloc_obj(*wq_dev);
 	if (!wq_dev)
 		return -ENOMEM;
@@ -7957,8 +8072,13 @@ void __init workqueue_init_early(void)
 {
 	struct wq_pod_type *pt = &wq_pod_types[WQ_AFFN_SYSTEM];
 	int std_nice[NR_STD_WORKER_POOLS] = { 0, HIGHPRI_NICE_LEVEL };
+<<<<<<< HEAD
 	void (*irq_work_fns[NR_STD_WORKER_POOLS])(struct irq_work *) =
 		{ bh_pool_kick_normal, bh_pool_kick_highpri };
+=======
+	void (*irq_work_fns[2])(struct irq_work *) = { bh_pool_kick_normal,
+						       bh_pool_kick_highpri };
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, cpu;
 
 	BUILD_BUG_ON(__alignof__(struct pool_workqueue) < __alignof__(long long));
@@ -7970,6 +8090,10 @@ void __init workqueue_init_early(void)
 
 	cpumask_copy(wq_online_cpumask, cpu_online_mask);
 	cpumask_copy(wq_unbound_cpumask, cpu_possible_mask);
+<<<<<<< HEAD
+=======
+	restrict_unbound_cpumask("HK_TYPE_WQ", housekeeping_cpumask(HK_TYPE_WQ));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	restrict_unbound_cpumask("HK_TYPE_DOMAIN", housekeeping_cpumask(HK_TYPE_DOMAIN));
 	if (!cpumask_empty(&wq_cmdline_cpumask))
 		restrict_unbound_cpumask("workqueue.unbound_cpus", &wq_cmdline_cpumask);
@@ -8053,12 +8177,19 @@ void __init workqueue_init_early(void)
 	system_bh_wq = alloc_workqueue("events_bh", WQ_BH | WQ_PERCPU, 0);
 	system_bh_highpri_wq = alloc_workqueue("events_bh_highpri",
 					       WQ_BH | WQ_HIGHPRI | WQ_PERCPU, 0);
+<<<<<<< HEAD
 	system_dfl_long_wq = alloc_workqueue("events_dfl_long", WQ_UNBOUND, WQ_MAX_ACTIVE);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BUG_ON(!system_wq || !system_percpu_wq|| !system_highpri_wq || !system_long_wq ||
 	       !system_unbound_wq || !system_freezable_wq || !system_dfl_wq ||
 	       !system_power_efficient_wq ||
 	       !system_freezable_power_efficient_wq ||
+<<<<<<< HEAD
 	       !system_bh_wq || !system_bh_highpri_wq || !system_dfl_long_wq);
+=======
+	       !system_bh_wq || !system_bh_highpri_wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __init wq_cpu_intensive_thresh_init(void)
@@ -8224,6 +8355,7 @@ static bool __init cpus_share_numa(int cpu0, int cpu1)
 	return cpu_to_node(cpu0) == cpu_to_node(cpu1);
 }
 
+<<<<<<< HEAD
 /* Maps each CPU to its shard index within the LLC pod it belongs to */
 static int cpu_shard_id[NR_CPUS] __initdata;
 
@@ -8404,6 +8536,8 @@ static bool __init cpus_share_cache_shard(int cpu0, int cpu1)
 	return cpu_shard_id[cpu0] == cpu_shard_id[cpu1];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * workqueue_init_topology - initialize CPU pods for unbound workqueues
  *
@@ -8419,8 +8553,11 @@ void __init workqueue_init_topology(void)
 	init_pod_type(&wq_pod_types[WQ_AFFN_CPU], cpus_dont_share);
 	init_pod_type(&wq_pod_types[WQ_AFFN_SMT], cpus_share_smt);
 	init_pod_type(&wq_pod_types[WQ_AFFN_CACHE], cpus_share_cache);
+<<<<<<< HEAD
 	precompute_cache_shard_ids();
 	init_pod_type(&wq_pod_types[WQ_AFFN_CACHE_SHARD], cpus_share_cache_shard);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_pod_type(&wq_pod_types[WQ_AFFN_NUMA], cpus_share_numa);
 
 	wq_topo_initialized = true;

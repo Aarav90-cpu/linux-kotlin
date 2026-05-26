@@ -10,7 +10,10 @@
 #include <drm/drm_managed.h>
 #include <drm/drm_print.h>
 #include <drm/gpu_scheduler.h>
+<<<<<<< HEAD
 #include <linux/amd-pmf-io.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/cleanup.h>
 #include <linux/errno.h>
 #include <linux/firmware.h>
@@ -792,6 +795,7 @@ static int aie2_get_clock_metadata(struct amdxdna_client *client,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int aie2_get_sensors(struct amdxdna_client *client,
 			    struct amdxdna_drm_get_info *args)
 {
@@ -841,15 +845,21 @@ out:
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int aie2_hwctx_status_cb(struct amdxdna_hwctx *hwctx, void *arg)
 {
 	struct amdxdna_drm_hwctx_entry *tmp __free(kfree) = NULL;
 	struct amdxdna_drm_get_array *array_args = arg;
 	struct amdxdna_drm_hwctx_entry __user *buf;
+<<<<<<< HEAD
 	struct app_health_report report;
 	struct amdxdna_dev_hdl *ndev;
 	u32 size;
 	int ret;
+=======
+	u32 size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!array_args->num_element)
 		return -EINVAL;
@@ -865,7 +875,10 @@ static int aie2_hwctx_status_cb(struct amdxdna_hwctx *hwctx, void *arg)
 	tmp->command_submissions = hwctx->priv->seq;
 	tmp->command_completions = hwctx->priv->completed;
 	tmp->pasid = hwctx->client->pasid;
+<<<<<<< HEAD
 	tmp->heap_usage = hwctx->client->heap_usage;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tmp->priority = hwctx->qos.priority;
 	tmp->gops = hwctx->qos.gops;
 	tmp->fps = hwctx->qos.fps;
@@ -873,6 +886,7 @@ static int aie2_hwctx_status_cb(struct amdxdna_hwctx *hwctx, void *arg)
 	tmp->latency = hwctx->qos.latency;
 	tmp->frame_exec_time = hwctx->qos.frame_exec_time;
 	tmp->state = AMDXDNA_HWCTX_STATE_ACTIVE;
+<<<<<<< HEAD
 	ndev = hwctx->client->xdna->dev_handle;
 	ret = aie2_query_app_health(ndev, hwctx->fw_ctx_id, &report);
 	if (!ret) {
@@ -884,6 +898,8 @@ static int aie2_hwctx_status_cb(struct amdxdna_hwctx *hwctx, void *arg)
 		tmp->fatal_error_exception_pc = report.fatal_info.exception_pc;
 		tmp->fatal_error_app_module = report.fatal_info.app_module;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf = u64_to_user_ptr(array_args->buffer);
 	size = min(sizeof(*tmp), array_args->element_size);
@@ -1059,9 +1075,12 @@ static int aie2_get_info(struct amdxdna_client *client, struct amdxdna_drm_get_i
 	case DRM_AMDXDNA_QUERY_CLOCK_METADATA:
 		ret = aie2_get_clock_metadata(client, args);
 		break;
+<<<<<<< HEAD
 	case DRM_AMDXDNA_QUERY_SENSORS:
 		ret = aie2_get_sensors(client, args);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case DRM_AMDXDNA_QUERY_HW_CONTEXTS:
 		ret = aie2_get_hwctx_status(client, args);
 		break;
@@ -1149,9 +1168,12 @@ static int aie2_get_array(struct amdxdna_client *client,
 	case DRM_AMDXDNA_HW_LAST_ASYNC_ERR:
 		ret = aie2_get_array_async_error(xdna->dev_handle, args);
 		break;
+<<<<<<< HEAD
 	case DRM_AMDXDNA_BO_USAGE:
 		ret = amdxdna_drm_get_bo_usage(&xdna->ddev, args);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		XDNA_ERR(xdna, "Not supported request parameter %u", args->param);
 		ret = -EOPNOTSUPP;

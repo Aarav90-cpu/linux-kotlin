@@ -127,6 +127,10 @@ struct erdma_devattr {
 	unsigned char peer_addr[ETH_ALEN];
 	unsigned long cap_flags;
 
+<<<<<<< HEAD
+=======
+	int numa_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum erdma_cc_alg cc;
 	u32 irq_num;
 

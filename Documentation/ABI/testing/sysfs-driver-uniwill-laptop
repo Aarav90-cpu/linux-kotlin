@@ -51,6 +51,7 @@ Description:
 
 		Reading this file returns the current status of the breathing animation
 		functionality.
+<<<<<<< HEAD
 
 What:		/sys/bus/platform/devices/INOU0000:XX/ctgp_offset
 Date:		January 2026
@@ -78,3 +79,5 @@ Description:
 
 		Reading this file returns the profile names with the currently active one in
 		brackets.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

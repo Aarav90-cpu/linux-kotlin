@@ -65,7 +65,10 @@ static const struct determine_chan_mode_case {
 		.ht_capa_mask = {
 			.mcs.rx_mask[0] = 0xf7,
 		},
+<<<<<<< HEAD
 		.strict = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.desc = "Masking out a RX rate in VHT capabilities",
 		.conn_mode = IEEE80211_CONN_MODE_EHT,

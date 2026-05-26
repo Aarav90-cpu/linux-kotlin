@@ -107,6 +107,10 @@ bool inet_rcv_saddr_equal(const struct sock *sk, const struct sock *sk2,
 				    ipv6_only_sock(sk2), match_wildcard,
 				    match_wildcard);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(inet_rcv_saddr_equal);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool inet_rcv_saddr_any(const struct sock *sk)
 {
@@ -709,6 +713,10 @@ out_err:
 	arg->err = error;
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(inet_csk_accept);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Using different timers for retransmit, delayed acks and probes
@@ -1020,6 +1028,10 @@ void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req
 	inet_csk_reqsk_queue_drop(sk, req);
 	reqsk_put(req);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(inet_csk_reqsk_queue_drop_and_put);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void reqsk_timer_handler(struct timer_list *t)
 {
@@ -1108,7 +1120,11 @@ static void reqsk_timer_handler(struct timer_list *t)
 
 		if (!inet_ehash_insert(req_to_sk(nreq), req_to_sk(oreq), NULL)) {
 			/* delete timer */
+<<<<<<< HEAD
 			__inet_csk_reqsk_queue_drop(sk_listener, nreq, false);
+=======
+			__inet_csk_reqsk_queue_drop(sk_listener, nreq, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto no_ownership;
 		}
 
@@ -1134,7 +1150,11 @@ no_ownership:
 	}
 
 drop:
+<<<<<<< HEAD
 	__inet_csk_reqsk_queue_drop(oreq->rsk_listener, oreq, true);
+=======
+	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reqsk_put(oreq);
 }
 
@@ -1523,6 +1543,10 @@ skip_child_forget:
 	}
 	WARN_ON_ONCE(sk->sk_ack_backlog);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(inet_csk_listen_stop);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct dst_entry *inet_csk_rebuild_route(struct sock *sk, struct flowi *fl)
 {

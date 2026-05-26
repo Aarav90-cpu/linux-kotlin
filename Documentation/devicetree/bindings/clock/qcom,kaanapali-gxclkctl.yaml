@@ -20,9 +20,13 @@ description: |
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - qcom,glymur-gxclkctl
       - qcom,kaanapali-gxclkctl
       - qcom,sm8750-gxclkctl
+=======
+      - qcom,kaanapali-gxclkctl
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   power-domains:
     description:

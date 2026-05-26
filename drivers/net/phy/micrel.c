@@ -4548,6 +4548,7 @@ static int lan8814_config_init(struct phy_device *phydev)
 	struct kszphy_priv *lan8814 = phydev->priv;
 	int ret;
 
+<<<<<<< HEAD
 	if (phy_package_init_once(phydev))
 		/* Reset the PHY */
 		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
@@ -4555,6 +4556,8 @@ static int lan8814_config_init(struct phy_device *phydev)
 				       LAN8814_QSGMII_SOFT_RESET_BIT,
 				       LAN8814_QSGMII_SOFT_RESET_BIT);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Based on the interface type select how the advertise ability is
 	 * encoded, to set as SGMII or as USGMII.
 	 */
@@ -4662,7 +4665,17 @@ static int lan8814_probe(struct phy_device *phydev)
 	priv->is_ptp_available = err == LAN8814_REV_LAN8814 ||
 				 err == LAN8814_REV_LAN8818;
 
+<<<<<<< HEAD
 	if (phy_package_probe_once(phydev)) {
+=======
+	if (phy_package_init_once(phydev)) {
+		/* Reset the PHY */
+		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
+				       LAN8814_QSGMII_SOFT_RESET,
+				       LAN8814_QSGMII_SOFT_RESET_BIT,
+				       LAN8814_QSGMII_SOFT_RESET_BIT);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = lan8814_release_coma_mode(phydev);
 		if (err)
 			return err;
@@ -6524,6 +6537,7 @@ static void lan8842_get_phy_stats(struct phy_device *phydev,
 	stats->tx_errors = priv->phy_stats.tx_errors;
 }
 
+<<<<<<< HEAD
 #define LAN9645X_CTRL_REG			0x1f
 #define LAN9645X_CTRL_REG_SW_SOFT_RST		BIT(1)
 
@@ -6660,6 +6674,8 @@ static irqreturn_t lan9645x_handle_interrupt(struct phy_device *phydev)
 	return IRQ_NONE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct phy_driver ksphy_driver[] = {
 {
 	PHY_ID_MATCH_MODEL(PHY_ID_KS8737),
@@ -6899,6 +6915,7 @@ static struct phy_driver ksphy_driver[] = {
 	.cable_test_start	= lan8814_cable_test_start,
 	.cable_test_get_status	= ksz886x_cable_test_get_status,
 }, {
+<<<<<<< HEAD
 	PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X),
 	.name		= "Microchip LAN9645X Gigabit PHY",
 	.config_init	= lan9645x_config_init,
@@ -6914,6 +6931,8 @@ static struct phy_driver ksphy_driver[] = {
 	.get_phy_stats	= lan8842_get_phy_stats,
 	.update_stats	= lan8842_update_stats,
 }, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PHY_ID_MATCH_MODEL(PHY_ID_KSZ9131),
 	.name		= "Microchip KSZ9131 Gigabit PHY",
 	/* PHY_GBIT_FEATURES */
@@ -7011,7 +7030,10 @@ static const struct mdio_device_id __maybe_unused micrel_tbl[] = {
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8804) },
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8841) },
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8842) },
+<<<<<<< HEAD
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 

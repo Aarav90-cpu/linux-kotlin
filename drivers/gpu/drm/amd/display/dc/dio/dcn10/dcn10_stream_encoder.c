@@ -249,7 +249,10 @@ void enc1_stream_encoder_dp_set_stream_attribute(
 	bool use_vsc_sdp_for_colorimetry,
 	uint32_t enable_sdp_splitting)
 {
+<<<<<<< HEAD
 	(void)enable_sdp_splitting;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t h_active_start;
 	uint32_t v_active_start;
 	uint32_t misc0 = 0;
@@ -784,7 +787,10 @@ void enc1_stream_encoder_send_immediate_sdp_message(
 	const uint8_t *custom_sdp_message,
 	unsigned int sdp_message_size)
 {
+<<<<<<< HEAD
 	(void)sdp_message_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
 	uint32_t value = 0;
 

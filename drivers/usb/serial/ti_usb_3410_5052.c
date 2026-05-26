@@ -1600,6 +1600,7 @@ static int ti_download_firmware(struct ti_device *tdev)
 		if (le16_to_cpu(dev->descriptor.idVendor) == MTS_VENDOR_ID) {
 			switch (le16_to_cpu(dev->descriptor.idProduct)) {
 			case MTS_CDMA_PRODUCT_ID:
+<<<<<<< HEAD
 				strscpy(buf, "mts_cdma.fw");
 				break;
 			case MTS_GSM_PRODUCT_ID:
@@ -1616,13 +1617,37 @@ static int ti_download_firmware(struct ti_device *tdev)
 				break;
 			case MTS_MT9234ZBAOLD_PRODUCT_ID:
 				strscpy(buf, "mts_mt9234zba.fw");
+=======
+				strcpy(buf, "mts_cdma.fw");
+				break;
+			case MTS_GSM_PRODUCT_ID:
+				strcpy(buf, "mts_gsm.fw");
+				break;
+			case MTS_EDGE_PRODUCT_ID:
+				strcpy(buf, "mts_edge.fw");
+				break;
+			case MTS_MT9234MU_PRODUCT_ID:
+				strcpy(buf, "mts_mt9234mu.fw");
+				break;
+			case MTS_MT9234ZBA_PRODUCT_ID:
+				strcpy(buf, "mts_mt9234zba.fw");
+				break;
+			case MTS_MT9234ZBAOLD_PRODUCT_ID:
+				strcpy(buf, "mts_mt9234zba.fw");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;			}
 		}
 		if (buf[0] == '\0') {
 			if (tdev->td_is_3410)
+<<<<<<< HEAD
 				strscpy(buf, "ti_3410.fw");
 			else
 				strscpy(buf, "ti_5052.fw");
+=======
+				strcpy(buf, "ti_3410.fw");
+			else
+				strcpy(buf, "ti_5052.fw");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		status = request_firmware(&fw_p, buf, &dev->dev);
 	}

@@ -16,14 +16,20 @@
 #include <linux/security.h>
 #include <linux/signal.h>
 #include <linux/audit.h>
+<<<<<<< HEAD
 #include <linux/seccomp.h>
 #include <asm/syscall.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/uaccess.h>
 #include <asm/fpu.h>
 
 #include "proto.h"
+<<<<<<< HEAD
 #include <linux/uio.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DEBUG	DBG_MEM
 #undef DEBUG
@@ -315,6 +321,7 @@ long arch_ptrace(struct task_struct *child, long request,
 		DBG(DBG_MEM, ("poke $%lu<-%#lx\n", addr, data));
 		ret = put_reg(child, addr, data);
 		break;
+<<<<<<< HEAD
 	case PTRACE_GETREGSET:
 	case PTRACE_SETREGSET: {
 		struct iovec __user *uiov = (struct iovec __user *)data;
@@ -363,6 +370,8 @@ long arch_ptrace(struct task_struct *child, long request,
 		break;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		ret = ptrace_request(child, request, addr, data);
 		break;
@@ -372,6 +381,7 @@ long arch_ptrace(struct task_struct *child, long request,
 
 asmlinkage unsigned long syscall_trace_enter(void)
 {
+<<<<<<< HEAD
 	struct pt_regs *regs = current_pt_regs();
 
 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
@@ -403,6 +413,17 @@ asmlinkage unsigned long syscall_trace_enter(void)
 
 
 
+=======
+	unsigned long ret = 0;
+	struct pt_regs *regs = current_pt_regs();
+	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+	    ptrace_report_syscall_entry(current_pt_regs()))
+		ret = -1UL;
+	audit_syscall_entry(regs->r0, regs->r16, regs->r17, regs->r18, regs->r19);
+	return ret ?: current_pt_regs()->r0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 asmlinkage void
 syscall_trace_leave(void)
 {

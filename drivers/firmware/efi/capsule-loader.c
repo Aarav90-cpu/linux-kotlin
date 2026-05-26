@@ -67,7 +67,11 @@ int __efi_capsule_setup_info(struct capsule_info *cap_info)
 	cap_info->pages = temp_page;
 
 	temp_page = krealloc(cap_info->phys,
+<<<<<<< HEAD
 			     pages_needed * sizeof(phys_addr_t),
+=======
+			     pages_needed * sizeof(phys_addr_t *),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     GFP_KERNEL | __GFP_ZERO);
 	if (!temp_page)
 		return -ENOMEM;

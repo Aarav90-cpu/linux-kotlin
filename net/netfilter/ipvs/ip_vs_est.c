@@ -68,11 +68,14 @@
     and the limit of estimators per kthread
   - est_add_ktid: ktid where to add new ests, can point to empty slot where
     we should add kt data
+<<<<<<< HEAD
   - data protected by service_mutex: est_temp_list, est_add_ktid,
     est_kt_count(R/W), est_kt_arr(R/W), est_genid_done, kd->needed(R/W)
   - data protected by est_mutex: est_genid, est_max_threads, sysctl_est_cpulist,
     est_cpulist_valid, sysctl_est_nice, est_stopped, sysctl_run_estimation,
     est_kt_count(R), est_kt_arr(R), kd->needed(R), kd->task (id > 0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 static struct lock_class_key __ipvs_est_key;
@@ -232,17 +235,27 @@ static int ip_vs_estimation_kthread(void *data)
 }
 
 /* Schedule stop/start for kthread tasks */
+<<<<<<< HEAD
 void ip_vs_est_reload_start(struct netns_ipvs *ipvs, bool restart)
 {
 	lockdep_assert_held(&ipvs->est_mutex);
 
+=======
+void ip_vs_est_reload_start(struct netns_ipvs *ipvs)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ignore reloads before first service is added */
 	if (!READ_ONCE(ipvs->enable))
 		return;
 	ip_vs_est_stopped_recalc(ipvs);
+<<<<<<< HEAD
 	/* Bump the kthread configuration genid if stopping is requested */
 	if (restart)
 		atomic_inc(&ipvs->est_genid);
+=======
+	/* Bump the kthread configuration genid */
+	atomic_inc(&ipvs->est_genid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	queue_delayed_work(system_long_wq, &ipvs->est_reload_work, 0);
 }
 
@@ -312,6 +325,7 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
 	void *arr = NULL;
 	int i;
 
+<<<<<<< HEAD
 	mutex_lock(&ipvs->est_mutex);
 
 	/* Allow kt 0 data to be created before the services are added
@@ -322,6 +336,13 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
 		ret = -EINVAL;
 		goto out;
 	}
+=======
+	if ((unsigned long)ipvs->est_kt_count >= ipvs->est_max_threads &&
+	    READ_ONCE(ipvs->enable) && ipvs->est_max_threads)
+		return -EINVAL;
+
+	mutex_lock(&ipvs->est_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < id; i++) {
 		if (!ipvs->est_kt_arr[i])
@@ -346,7 +367,10 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
 	kd->est_timer = jiffies;
 	kd->id = id;
 	ip_vs_est_set_params(ipvs, kd);
+<<<<<<< HEAD
 	kd->needed = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Pre-allocate stats used in calc phase */
 	if (!id && !kd->calc_stats) {
@@ -355,8 +379,17 @@ static int ip_vs_est_add_kthread(struct netns_ipvs *ipvs)
 			goto out;
 	}
 
+<<<<<<< HEAD
 	/* Request kthread to be started */
 	ip_vs_est_reload_start(ipvs, false);
+=======
+	/* Start kthread tasks only when services are present */
+	if (READ_ONCE(ipvs->enable) && !ip_vs_est_stopped(ipvs)) {
+		ret = ip_vs_est_kthread_start(ipvs, kd);
+		if (ret < 0)
+			goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (arr)
 		ipvs->est_kt_count++;
@@ -492,11 +525,20 @@ out:
 /* Start estimation for stats */
 int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
 {
+<<<<<<< HEAD
 	struct ip_vs_est_kt_data *kd = ipvs->est_kt_count > 0 ?
 				       ipvs->est_kt_arr[0] : NULL;
 	struct ip_vs_estimator *est = &stats->est;
 	int ret;
 
+=======
+	struct ip_vs_estimator *est = &stats->est;
+	int ret;
+
+	if (!ipvs->est_max_threads && READ_ONCE(ipvs->enable))
+		ipvs->est_max_threads = ip_vs_est_max_threads(ipvs);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	est->ktid = -1;
 	est->ktrow = IPVS_EST_NTICKS - 1;	/* Initial delay */
 
@@ -505,6 +547,7 @@ int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
 	 * will not allocate much memory, just for kt 0.
 	 */
 	ret = 0;
+<<<<<<< HEAD
 	if (!kd) {
 		ret = ip_vs_est_add_kthread(ipvs);
 	} else if (!kd->needed) {
@@ -514,6 +557,10 @@ int ip_vs_start_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
 		ip_vs_est_reload_start(ipvs, true);
 		mutex_unlock(&ipvs->est_mutex);
 	}
+=======
+	if (!ipvs->est_kt_count || !ipvs->est_kt_arr[0])
+		ret = ip_vs_est_add_kthread(ipvs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret >= 0)
 		hlist_add_head(&est->list, &ipvs->est_temp_list);
 	else
@@ -594,6 +641,7 @@ void ip_vs_stop_estimator(struct netns_ipvs *ipvs, struct ip_vs_stats *stats)
 	}
 
 end_kt0:
+<<<<<<< HEAD
 	/* kt 0 task is stopped after all other kt slots and chains are empty */
 	if (ipvs->est_kt_count == 1 && hlist_empty(&ipvs->est_temp_list)) {
 		kd = ipvs->est_kt_arr[0];
@@ -602,6 +650,18 @@ end_kt0:
 			/* Keep the kt0 data but request kthread_stop */
 			kd->needed = 0;
 			ip_vs_est_reload_start(ipvs, true);
+=======
+	/* kt 0 is freed after all other kthreads and chains are empty */
+	if (ipvs->est_kt_count == 1 && hlist_empty(&ipvs->est_temp_list)) {
+		kd = ipvs->est_kt_arr[0];
+		if (!kd || !kd->est_count) {
+			mutex_lock(&ipvs->est_mutex);
+			if (kd) {
+				ip_vs_est_kthread_destroy(kd);
+				ipvs->est_kt_arr[0] = NULL;
+			}
+			ipvs->est_kt_count--;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mutex_unlock(&ipvs->est_mutex);
 			ipvs->est_add_ktid = 0;
 		}
@@ -616,7 +676,11 @@ static void ip_vs_est_drain_temp_list(struct netns_ipvs *ipvs)
 	while (1) {
 		int max = 16;
 
+<<<<<<< HEAD
 		mutex_lock(&ipvs->service_mutex);
+=======
+		mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		while (max-- > 0) {
 			est = hlist_entry_safe(ipvs->est_temp_list.first,
@@ -636,12 +700,20 @@ static void ip_vs_est_drain_temp_list(struct netns_ipvs *ipvs)
 			}
 			goto unlock;
 		}
+<<<<<<< HEAD
 		mutex_unlock(&ipvs->service_mutex);
+=======
+		mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cond_resched();
 	}
 
 unlock:
+<<<<<<< HEAD
 	mutex_unlock(&ipvs->service_mutex);
+=======
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Calculate limits for all kthreads */
@@ -661,9 +733,15 @@ static int ip_vs_est_calc_limits(struct netns_ipvs *ipvs, int *chain_max)
 	u64 val;
 
 	INIT_HLIST_HEAD(&chain);
+<<<<<<< HEAD
 	mutex_lock(&ipvs->est_mutex);
 	kd = ipvs->est_kt_arr[0];
 	mutex_unlock(&ipvs->est_mutex);
+=======
+	mutex_lock(&__ip_vs_mutex);
+	kd = ipvs->est_kt_arr[0];
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s = kd ? kd->calc_stats : NULL;
 	if (!s)
 		goto out;
@@ -762,16 +840,26 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
 	if (!ip_vs_est_calc_limits(ipvs, &chain_max))
 		return;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&__ip_vs_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Stop all other tasks, so that we can immediately move the
 	 * estimators to est_temp_list without RCU grace period
 	 */
 	mutex_lock(&ipvs->est_mutex);
 	for (id = 1; id < ipvs->est_kt_count; id++) {
 		/* netns clean up started, abort */
+<<<<<<< HEAD
 		if (kthread_should_stop() || !READ_ONCE(ipvs->enable)) {
 			mutex_unlock(&ipvs->est_mutex);
 			return;
 		}
+=======
+		if (!READ_ONCE(ipvs->enable))
+			goto unlock2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kd = ipvs->est_kt_arr[id];
 		if (!kd)
 			continue;
@@ -779,11 +867,17 @@ static void ip_vs_est_calc_phase(struct netns_ipvs *ipvs)
 	}
 	mutex_unlock(&ipvs->est_mutex);
 
+<<<<<<< HEAD
 	mutex_lock(&ipvs->service_mutex);
 
 	/* Move all estimators to est_temp_list but carefully,
 	 * all estimators and kthread data can be released while
 	 * we reschedule.
+=======
+	/* Move all estimators to est_temp_list but carefully,
+	 * all estimators and kthread data can be released while
+	 * we reschedule. Even for kthread 0.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	step = 0;
 
@@ -831,9 +925,15 @@ walk_chain:
 		/* Give chance estimators to be added (to est_temp_list)
 		 * and deleted (releasing kthread contexts)
 		 */
+<<<<<<< HEAD
 		mutex_unlock(&ipvs->service_mutex);
 		cond_resched();
 		mutex_lock(&ipvs->service_mutex);
+=======
+		mutex_unlock(&__ip_vs_mutex);
+		cond_resched();
+		mutex_lock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Current kt released ? */
 		if (id >= ipvs->est_kt_count)
@@ -865,7 +965,13 @@ walk_chain:
 	ip_vs_stop_estimator(ipvs, stats);
 	/* Tasks are stopped, move without RCU grace period */
 	est->ktid = -1;
+<<<<<<< HEAD
 	est->ktrow = delay;
+=======
+	est->ktrow = row - kd->est_row;
+	if (est->ktrow < 0)
+		est->ktrow += IPVS_EST_NTICKS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hlist_add_head(&est->list, &ipvs->est_temp_list);
 	/* kd freed ? */
 	if (last)
@@ -903,10 +1009,18 @@ end_dequeue:
 	if (genid == atomic_read(&ipvs->est_genid))
 		ipvs->est_calc_phase = 0;
 
+<<<<<<< HEAD
 	mutex_unlock(&ipvs->est_mutex);
 
 unlock:
 	mutex_unlock(&ipvs->service_mutex);
+=======
+unlock2:
+	mutex_unlock(&ipvs->est_mutex);
+
+unlock:
+	mutex_unlock(&__ip_vs_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void ip_vs_zero_estimator(struct ip_vs_stats *stats)

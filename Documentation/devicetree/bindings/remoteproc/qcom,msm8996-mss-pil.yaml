@@ -126,6 +126,10 @@ properties:
       - description: Metadata reserved region
 
   firmware-name:
+<<<<<<< HEAD
+=======
+    $ref: /schemas/types.yaml#/definitions/string-array
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: Name of MBA firmware
       - description: Name of modem firmware

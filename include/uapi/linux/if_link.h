@@ -744,11 +744,14 @@ enum in6_addr_gen_mode {
  * @IFLA_BR_FDB_MAX_LEARNED
  *   Set the number of max dynamically learned FDB entries for the current
  *   bridge.
+<<<<<<< HEAD
  *
  * @IFLA_BR_STP_MODE
  *   Set the STP mode for the bridge, which controls how the bridge
  *   selects between userspace and kernel STP. The valid values are
  *   documented below in the ``BR_STP_MODE_*`` constants.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum {
 	IFLA_BR_UNSPEC,
@@ -801,12 +804,16 @@ enum {
 	IFLA_BR_MCAST_QUERIER_STATE,
 	IFLA_BR_FDB_N_LEARNED,
 	IFLA_BR_FDB_MAX_LEARNED,
+<<<<<<< HEAD
 	IFLA_BR_STP_MODE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__IFLA_BR_MAX,
 };
 
 #define IFLA_BR_MAX	(__IFLA_BR_MAX - 1)
 
+<<<<<<< HEAD
 /**
  * DOC: Bridge STP mode values
  *
@@ -840,6 +847,8 @@ enum br_stp_mode {
 
 #define BR_STP_MODE_MAX (__BR_STP_MODE_MAX - 1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ifla_bridge_id {
 	__u8	prio[2];
 	__u8	addr[6]; /* ETH_ALEN */
@@ -1335,11 +1344,14 @@ enum netkit_mode {
 	NETKIT_L3,
 };
 
+<<<<<<< HEAD
 enum netkit_pairing {
 	NETKIT_DEVICE_PAIR,
 	NETKIT_DEVICE_SINGLE,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* NETKIT_SCRUB_NONE leaves clearing skb->{mark,priority} up to
  * the BPF program if attached. This also means the latter can
  * consume the two fields if they were populated earlier.
@@ -1364,7 +1376,10 @@ enum {
 	IFLA_NETKIT_PEER_SCRUB,
 	IFLA_NETKIT_HEADROOM,
 	IFLA_NETKIT_TAILROOM,
+<<<<<<< HEAD
 	IFLA_NETKIT_PAIRING,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__IFLA_NETKIT_MAX,
 };
 #define IFLA_NETKIT_MAX	(__IFLA_NETKIT_MAX - 1)
@@ -1613,8 +1628,11 @@ enum {
 	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
 	IFLA_BOND_SLAVE_PRIO,
 	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
+<<<<<<< HEAD
 	IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
 	IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__IFLA_BOND_SLAVE_MAX,
 };
 

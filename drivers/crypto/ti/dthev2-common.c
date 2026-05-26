@@ -48,6 +48,7 @@ struct dthe_data *dthe_get_dev(struct dthe_tfm_ctx *ctx)
 	return dev_data;
 }
 
+<<<<<<< HEAD
 struct scatterlist *dthe_copy_sg(struct scatterlist *dst,
 				 struct scatterlist *src,
 				 int buflen)
@@ -67,6 +68,8 @@ struct scatterlist *dthe_copy_sg(struct scatterlist *dst,
 	return to_sg;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dthe_dma_init(struct dthe_data *dev_data)
 {
 	int ret;

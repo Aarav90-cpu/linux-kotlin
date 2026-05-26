@@ -21,7 +21,10 @@
 #include <net/ip.h>
 #include <net/ipv6.h>
 #include <net/ip6_fib.h>
+<<<<<<< HEAD
 #include <net/ip6_route.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/checksum.h>
 #include <net/dsfield.h>
 #include <net/mpls.h>
@@ -811,7 +814,11 @@ static void ovs_fragment(struct net *net, struct vport *vport,
 		skb_dst_set_noref(skb, &ovs_rt.dst);
 		IP6CB(skb)->frag_max_size = mru;
 
+<<<<<<< HEAD
 		ip6_fragment(net, skb->sk, skb, ovs_vport_output);
+=======
+		ipv6_stub->ipv6_fragment(net, skb->sk, skb, ovs_vport_output);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		refdst_drop(orig_dst);
 	} else {
 		WARN_ONCE(1, "Failed fragment ->%s: eth=%04x, MRU=%d, MTU=%d.",

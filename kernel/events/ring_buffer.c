@@ -340,8 +340,11 @@ ring_buffer_init(struct perf_buffer *rb, long watermark, int flags)
 		rb->paused = 1;
 
 	mutex_init(&rb->aux_mutex);
+<<<<<<< HEAD
 	rb->mmap_user = get_current_user();
 	refcount_set(&rb->mmap_count, 1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)

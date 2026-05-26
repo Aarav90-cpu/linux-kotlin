@@ -60,8 +60,11 @@ static bool is_initialized(void)
  * @ksize_min: Minimal required size to be copied.
  * @src: User space pointer or NULL.
  * @usize: (Alleged) size of the data pointed to by @src.
+<<<<<<< HEAD
  *
  * Return: 0 on success, -errno on failure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static __always_inline int
 copy_min_struct_from_user(void *const dst, const size_t ksize,
@@ -166,7 +169,11 @@ static const struct file_operations ruleset_fops = {
  * If the change involves a fix that requires userspace awareness, also update
  * the errata documentation in Documentation/userspace-api/landlock.rst .
  */
+<<<<<<< HEAD
 const int landlock_abi_version = 9;
+=======
+const int landlock_abi_version = 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * sys_landlock_create_ruleset - Create a new ruleset
@@ -180,11 +187,17 @@ const int landlock_abi_version = 9;
  *         - %LANDLOCK_CREATE_RULESET_VERSION
  *         - %LANDLOCK_CREATE_RULESET_ERRATA
  *
+<<<<<<< HEAD
  * This system call enables to create a new Landlock ruleset.
+=======
+ * This system call enables to create a new Landlock ruleset, and returns the
+ * related file descriptor on success.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * If %LANDLOCK_CREATE_RULESET_VERSION or %LANDLOCK_CREATE_RULESET_ERRATA is
  * set, then @attr must be NULL and @size must be 0.
  *
+<<<<<<< HEAD
  * Return: The ruleset file descriptor on success, the Landlock ABI version if
  * %LANDLOCK_CREATE_RULESET_VERSION is set, the errata value if
  * %LANDLOCK_CREATE_RULESET_ERRATA is set, or -errno on failure.  Possible
@@ -193,6 +206,12 @@ const int landlock_abi_version = 9;
  * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
  * - %EINVAL: unknown @flags, or unknown access, or unknown scope, or too small
  *   @size;
+=======
+ * Possible returned errors are:
+ *
+ * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
+ * - %EINVAL: unknown @flags, or unknown access, or unknown scope, or too small @size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * - %E2BIG: @attr or @size inconsistencies;
  * - %EFAULT: @attr or @size inconsistencies;
  * - %ENOMSG: empty &landlock_ruleset_attr.handled_access_fs.
@@ -403,7 +422,11 @@ static int add_rule_net_port(struct landlock_ruleset *ruleset,
  * This system call enables to define a new rule and add it to an existing
  * ruleset.
  *
+<<<<<<< HEAD
  * Return: 0 on success, or -errno on failure.  Possible returned errors are:
+=======
+ * Possible returned errors are:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
  * - %EAFNOSUPPORT: @rule_type is %LANDLOCK_RULE_NET_PORT but TCP/IP is not
@@ -469,7 +492,11 @@ SYSCALL_DEFINE4(landlock_add_rule, const int, ruleset_fd,
  * namespace or is running with no_new_privs.  This avoids scenarios where
  * unprivileged tasks can affect the behavior of privileged children.
  *
+<<<<<<< HEAD
  * Return: 0 on success, or -errno on failure.  Possible returned errors are:
+=======
+ * Possible returned errors are:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
  * - %EINVAL: @flags contains an unknown bit.

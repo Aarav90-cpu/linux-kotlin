@@ -204,7 +204,11 @@ struct iwl_nvm_get_info_phy {
 } __packed; /* REGULATORY_NVM_GET_INFO_PHY_SKU_SECTION_S_VER_1 */
 
 #define IWL_NUM_CHANNELS_V1	51
+<<<<<<< HEAD
 #define IWL_NUM_CHANNELS_V2	110
+=======
+#define IWL_NUM_CHANNELS	110
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct iwl_nvm_get_info_regulatory_v1 - regulatory information
@@ -227,7 +231,11 @@ struct iwl_nvm_get_info_regulatory_v1 {
 struct iwl_nvm_get_info_regulatory {
 	__le32 lar_enabled;
 	__le32 n_channels;
+<<<<<<< HEAD
 	__le32 channel_profile[IWL_NUM_CHANNELS_V2];
+=======
+	__le32 channel_profile[IWL_NUM_CHANNELS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed; /* REGULATORY_NVM_GET_INFO_REGULATORY_S_VER_2 */
 
 /**
@@ -701,15 +709,24 @@ struct iwl_pnvm_init_complete_ntfy {
 #define UATS_TABLE_COL_SIZE	13
 
 /**
+<<<<<<< HEAD
  * struct iwl_mcc_allowed_ap_type_cmd_v1 - struct for MCC_ALLOWED_AP_TYPE_CMD
  * @mcc_to_ap_type_map: mapping an MCC to 6 GHz AP type support (UATS)
  * @reserved: reserved
  */
 struct iwl_mcc_allowed_ap_type_cmd_v1 {
+=======
+ * struct iwl_mcc_allowed_ap_type_cmd - struct for MCC_ALLOWED_AP_TYPE_CMD
+ * @mcc_to_ap_type_map: mapping an MCC to 6 GHz AP type support (UATS)
+ * @reserved: reserved
+ */
+struct iwl_mcc_allowed_ap_type_cmd {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 mcc_to_ap_type_map[UATS_TABLE_ROW_SIZE][UATS_TABLE_COL_SIZE];
 	__le16 reserved;
 } __packed; /* MCC_ALLOWED_AP_TYPE_CMD_API_S_VER_1 */
 
+<<<<<<< HEAD
 /**
  * struct iwl_mcc_allowed_ap_type_cmd - struct for MCC_ALLOWED_AP_TYPE_CMD
  * @mcc_to_ap_type_map: mapping an MCC to 6 GHz AP type support (UATS)
@@ -720,4 +737,6 @@ struct iwl_mcc_allowed_ap_type_cmd {
 	u8 mcc_to_ap_type_unii9_map[UATS_TABLE_ROW_SIZE][UATS_TABLE_COL_SIZE];
 } __packed; /* MCC_ALLOWED_AP_TYPE_CMD_API_S_VER_2 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __iwl_fw_api_nvm_reg_h__ */

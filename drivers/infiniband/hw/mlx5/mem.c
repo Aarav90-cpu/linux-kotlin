@@ -31,7 +31,10 @@
  */
 
 #include <rdma/ib_umem_odp.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mlx5_ib.h"
 
 /*

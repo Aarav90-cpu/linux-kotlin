@@ -13,7 +13,11 @@
 
 struct ttm_device;
 struct ttm_resource_manager;
+<<<<<<< HEAD
 struct gpu_buddy;
+=======
+struct drm_buddy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct i915_ttm_buddy_resource
@@ -33,7 +37,11 @@ struct i915_ttm_buddy_resource {
 	struct list_head blocks;
 	unsigned long flags;
 	unsigned long used_visible_size;
+<<<<<<< HEAD
 	struct gpu_buddy *mm;
+=======
+	struct drm_buddy *mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

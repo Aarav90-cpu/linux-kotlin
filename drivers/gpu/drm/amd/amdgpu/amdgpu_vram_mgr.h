@@ -24,11 +24,19 @@
 #ifndef __AMDGPU_VRAM_MGR_H__
 #define __AMDGPU_VRAM_MGR_H__
 
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
 
 struct amdgpu_vram_mgr {
 	struct ttm_resource_manager manager;
 	struct gpu_buddy mm;
+=======
+#include <drm/drm_buddy.h>
+
+struct amdgpu_vram_mgr {
+	struct ttm_resource_manager manager;
+	struct drm_buddy mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* protects access to buffer objects */
 	struct mutex lock;
 	struct list_head reservations_pending;
@@ -57,6 +65,7 @@ struct amdgpu_vram_mgr_resource {
 	struct amdgpu_vres_task task;
 };
 
+<<<<<<< HEAD
 static inline u64 amdgpu_vram_mgr_block_start(struct gpu_buddy_block *block)
 {
 	return gpu_buddy_block_offset(block);
@@ -70,6 +79,21 @@ static inline u64 amdgpu_vram_mgr_block_size(struct gpu_buddy_block *block)
 static inline bool amdgpu_vram_mgr_is_cleared(struct gpu_buddy_block *block)
 {
 	return gpu_buddy_block_is_clear(block);
+=======
+static inline u64 amdgpu_vram_mgr_block_start(struct drm_buddy_block *block)
+{
+	return drm_buddy_block_offset(block);
+}
+
+static inline u64 amdgpu_vram_mgr_block_size(struct drm_buddy_block *block)
+{
+	return (u64)PAGE_SIZE << drm_buddy_block_order(block);
+}
+
+static inline bool amdgpu_vram_mgr_is_cleared(struct drm_buddy_block *block)
+{
+	return drm_buddy_block_is_clear(block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct amdgpu_vram_mgr_resource *
@@ -82,8 +106,13 @@ static inline void amdgpu_vram_mgr_set_cleared(struct ttm_resource *res)
 {
 	struct amdgpu_vram_mgr_resource *ares = to_amdgpu_vram_mgr_resource(res);
 
+<<<<<<< HEAD
 	WARN_ON(ares->flags & GPU_BUDDY_CLEARED);
 	ares->flags |= GPU_BUDDY_CLEARED;
+=======
+	WARN_ON(ares->flags & DRM_BUDDY_CLEARED);
+	ares->flags |= DRM_BUDDY_CLEARED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_vram_mgr_query_address_block_info(struct amdgpu_vram_mgr *mgr,

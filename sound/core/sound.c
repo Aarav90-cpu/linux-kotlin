@@ -216,6 +216,7 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
 	case SNDRV_DEVICE_TYPE_RAWMIDI:
 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
+<<<<<<< HEAD
 		if (snd_BUG_ON(!card))
 			return -EINVAL;
 		minor = SNDRV_MINOR(card->number, type + dev);
@@ -226,6 +227,11 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
 		if (dev < 0 ||
 		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
 			return -EINVAL;
+=======
+	case SNDRV_DEVICE_TYPE_COMPRESS:
+		if (snd_BUG_ON(!card))
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		minor = SNDRV_MINOR(card->number, type + dev);
 		break;
 	default:

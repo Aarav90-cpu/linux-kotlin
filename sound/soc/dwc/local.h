@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (ST) 2012 Rajeev Kumar (rajeevkumar.linux@gmail.com)
+=======
+/*
+ * Copyright (ST) 2012 Rajeev Kumar (rajeevkumar.linux@gmail.com)
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2. This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #ifndef __DESIGNWARE_LOCAL_H

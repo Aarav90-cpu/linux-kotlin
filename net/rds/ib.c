@@ -401,8 +401,13 @@ static void rds6_ib_ic_info(struct socket *sock, unsigned int len,
  * allowed to influence which paths have priority.  We could call userspace
  * asserting this policy "routing".
  */
+<<<<<<< HEAD
 static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
 				 __u32 scope_id)
+=======
+static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+			      __u32 scope_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 	struct rdma_cm_id *cm_id;
@@ -487,6 +492,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
 			      __u32 scope_id)
 {
@@ -507,6 +513,8 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
 	return rds_ib_laddr_check_cm(net, addr, scope_id);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rds_ib_unregister_client(void)
 {
 	ib_unregister_client(&rds_ib_client);

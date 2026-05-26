@@ -14,8 +14,11 @@
 
 #include <drm/drm_gpusvm.h>
 
+<<<<<<< HEAD
 #include "xe_tlb_inval_types.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct xe_vm;
 struct xe_vma;
 struct xe_userptr_vma;
@@ -58,6 +61,7 @@ struct xe_userptr {
 	 * @notifier: MMU notifier for user pointer (invalidation call back)
 	 */
 	struct mmu_interval_notifier notifier;
+<<<<<<< HEAD
 	/**
 	 * @finish: MMU notifier finish structure for two-pass invalidation.
 	 * Embedded here to avoid allocation in the notifier callback.
@@ -86,6 +90,9 @@ struct xe_userptr {
 	 * Protected using the same locking as @finish.
 	 */
 	bool tlb_inval_submitted;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * @initial_bind: user pointer has been bound at least once.
 	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.

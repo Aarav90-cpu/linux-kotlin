@@ -336,12 +336,18 @@ static const struct fs_parameter_spec f2fs_param_specs[] = {
 	fsparam_flag("usrquota", Opt_usrquota),
 	fsparam_flag("grpquota", Opt_grpquota),
 	fsparam_flag("prjquota", Opt_prjquota),
+<<<<<<< HEAD
 	fsparam_string("usrjquota", Opt_usrjquota),
 	fsparam_flag("usrjquota", Opt_usrjquota),
 	fsparam_string("grpjquota", Opt_grpjquota),
 	fsparam_flag("grpjquota", Opt_grpjquota),
 	fsparam_string("prjjquota", Opt_prjjquota),
 	fsparam_flag("prjjquota", Opt_prjjquota),
+=======
+	fsparam_string_empty("usrjquota", Opt_usrjquota),
+	fsparam_string_empty("grpjquota", Opt_grpjquota),
+	fsparam_string_empty("prjjquota", Opt_prjjquota),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fsparam_flag("nat_bits", Opt_nat_bits),
 	fsparam_enum("jqfmt", Opt_jqfmt, f2fs_param_jqfmt),
 	fsparam_enum("alloc_mode", Opt_alloc, f2fs_param_alloc_mode),
@@ -982,26 +988,47 @@ static int f2fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
 		ctx_set_opt(ctx, F2FS_MOUNT_PRJQUOTA);
 		break;
 	case Opt_usrjquota:
+<<<<<<< HEAD
 		if (param->type == fs_value_is_string && *param->string)
 			ret = f2fs_note_qf_name(fc, USRQUOTA, param);
 		else
 			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
+=======
+		if (!*param->string)
+			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
+		else
+			ret = f2fs_note_qf_name(fc, USRQUOTA, param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 		break;
 	case Opt_grpjquota:
+<<<<<<< HEAD
 		if (param->type == fs_value_is_string && *param->string)
 			ret = f2fs_note_qf_name(fc, GRPQUOTA, param);
 		else
 			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
+=======
+		if (!*param->string)
+			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
+		else
+			ret = f2fs_note_qf_name(fc, GRPQUOTA, param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 		break;
 	case Opt_prjjquota:
+<<<<<<< HEAD
 		if (param->type == fs_value_is_string && *param->string)
 			ret = f2fs_note_qf_name(fc, PRJQUOTA, param);
 		else
 			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
+=======
+		if (!*param->string)
+			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
+		else
+			ret = f2fs_note_qf_name(fc, PRJQUOTA, param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 		break;
@@ -1518,7 +1545,10 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
 			F2FS_OPTION(sbi).root_reserved_blocks);
 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
+<<<<<<< HEAD
 		ctx->spec_mask &= ~F2FS_SPEC_reserve_root;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (test_opt(sbi, RESERVE_NODE) &&
 			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
@@ -1527,7 +1557,10 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
 			F2FS_OPTION(sbi).root_reserved_nodes);
 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
+<<<<<<< HEAD
 		ctx->spec_mask &= ~F2FS_SPEC_reserve_node;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = f2fs_check_test_dummy_encryption(fc, sb);
@@ -2093,12 +2126,15 @@ static void f2fs_put_super(struct super_block *sb)
 #if IS_ENABLED(CONFIG_UNICODE)
 	utf8_unload(sb->s_encoding);
 #endif
+<<<<<<< HEAD
 	sync_blockdev(sb->s_bdev);
 	invalidate_bdev(sb->s_bdev);
 	for (i = 1; i < sbi->s_ndevs; i++) {
 		sync_blockdev(FDEV(i).bdev);
 		invalidate_bdev(FDEV(i).bdev);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int f2fs_sync_fs(struct super_block *sb, int sync)
@@ -4666,8 +4702,12 @@ static bool system_going_down(void)
 		|| system_state == SYSTEM_RESTART;
 }
 
+<<<<<<< HEAD
 static void f2fs_handle_critical_error(struct f2fs_sb_info *sbi,
 						unsigned char reason)
+=======
+void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct super_block *sb = sbi->sb;
 	bool shutdown = reason == STOP_CP_REASON_SHUTDOWN;
@@ -4724,6 +4764,7 @@ static void f2fs_handle_critical_error(struct f2fs_sb_info *sbi,
 	 */
 }
 
+<<<<<<< HEAD
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io,
 						unsigned char reason)
 {
@@ -4734,6 +4775,8 @@ void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io,
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void f2fs_record_error_work(struct work_struct *work)
 {
 	struct f2fs_sb_info *sbi = container_of(work,

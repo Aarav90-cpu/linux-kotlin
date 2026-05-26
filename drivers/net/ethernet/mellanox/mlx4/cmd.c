@@ -1782,7 +1782,10 @@ static int mlx4_master_process_vhcr(struct mlx4_dev *dev, int slave,
 	}
 
 	if (err) {
+<<<<<<< HEAD
 		vhcr_cmd->status = mlx4_errno_to_status(err);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!(dev->persist->state & MLX4_DEVICE_STATE_INTERNAL_ERROR)) {
 			if (vhcr->op == MLX4_CMD_ALLOC_RES &&
 			    (vhcr->in_modifier & 0xff) == RES_COUNTER &&
@@ -1792,8 +1795,14 @@ static int mlx4_master_process_vhcr(struct mlx4_dev *dev, int slave,
 					 slave, err);
 			else
 				mlx4_warn(dev, "vhcr command:0x%x slave:%d failed with error:%d, status %d\n",
+<<<<<<< HEAD
 					  vhcr->op, slave, err, vhcr_cmd->status);
 		}
+=======
+					  vhcr->op, slave, vhcr->errno, err);
+		}
+		vhcr_cmd->status = mlx4_errno_to_status(err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_status;
 	}
 

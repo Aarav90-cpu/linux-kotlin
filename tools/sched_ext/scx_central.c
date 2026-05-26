@@ -5,6 +5,10 @@
  * Copyright (c) 2022 David Vernet <dvernet@meta.com>
  */
 #define _GNU_SOURCE
+<<<<<<< HEAD
+=======
+#include <sched.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdio.h>
 #include <unistd.h>
 #include <inttypes.h>
@@ -20,7 +24,11 @@ const char help_fmt[] =
 "\n"
 "See the top-level comment in .bpf.c for more details.\n"
 "\n"
+<<<<<<< HEAD
 "Usage: %s [-s SLICE_US] [-c CPU] [-v]\n"
+=======
+"Usage: %s [-s SLICE_US] [-c CPU]\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 "\n"
 "  -s SLICE_US   Override slice duration\n"
 "  -c CPU        Override the central CPU (default: 0)\n"
@@ -48,6 +56,11 @@ int main(int argc, char **argv)
 	struct bpf_link *link;
 	__u64 seq = 0, ecode;
 	__s32 opt;
+<<<<<<< HEAD
+=======
+	cpu_set_t *cpuset;
+	size_t cpuset_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	libbpf_set_print(libbpf_print_fn);
 	signal(SIGINT, sigint_handler);
@@ -93,6 +106,30 @@ restart:
 
 	SCX_OPS_LOAD(skel, central_ops, scx_central, uei);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Affinitize the loading thread to the central CPU, as:
+	 * - That's where the BPF timer is first invoked in the BPF program.
+	 * - We probably don't want this user space component to take up a core
+	 *   from a task that would benefit from avoiding preemption on one of
+	 *   the tickless cores.
+	 *
+	 * Until BPF supports pinning the timer, it's not guaranteed that it
+	 * will always be invoked on the central CPU. In practice, this
+	 * suffices the majority of the time.
+	 */
+	cpuset = CPU_ALLOC(skel->rodata->nr_cpu_ids);
+	SCX_BUG_ON(!cpuset, "Failed to allocate cpuset");
+	cpuset_size = CPU_ALLOC_SIZE(skel->rodata->nr_cpu_ids);
+	CPU_ZERO_S(cpuset_size, cpuset);
+	CPU_SET_S(skel->rodata->central_cpu, cpuset_size, cpuset);
+	SCX_BUG_ON(sched_setaffinity(0, cpuset_size, cpuset),
+		   "Failed to affinitize to central CPU %d (max %d)",
+		   skel->rodata->central_cpu, skel->rodata->nr_cpu_ids - 1);
+	CPU_FREE(cpuset);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	link = SCX_OPS_ATTACH(skel, central_ops, scx_central);
 
 	if (!skel->data->timer_pinned)

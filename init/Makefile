@@ -34,7 +34,11 @@ build-timestamp = $(or $(KBUILD_BUILD_TIMESTAMP), $(build-timestamp-auto))
 
 # Maximum length of UTS_VERSION is 64 chars
 filechk_uts_version = \
+<<<<<<< HEAD
 	utsver=$$(echo '$(pound)'"$(build-version)" $(smp-flag-y) $(preempt-flag-y) "$(build-timestamp)" | cut -b -64); \
+=======
+	utsver=$$(echo '$(pound)'"$(build-version)" ZEN $(smp-flag-y) $(preempt-flag-y) "$(build-timestamp)" | cut -b -64); \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	echo '$(pound)'define UTS_VERSION \""$${utsver}"\"
 
 #

@@ -551,7 +551,10 @@ void dce110_opp_set_regamma_mode_v(
 	struct transform *xfm,
 	enum opp_regamma mode)
 {
+<<<<<<< HEAD
 	(void)xfm;
 	(void)mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	// TODO: need to implement the function
 }

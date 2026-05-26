@@ -164,10 +164,16 @@ done:
 }
 
 static int
+<<<<<<< HEAD
 r570_gr_get_ctxbufs_and_zcull_info(struct r535_gr *gr)
 {
 	NV2080_CTRL_INTERNAL_STATIC_GR_GET_CONTEXT_BUFFERS_INFO_PARAMS *info;
 	NV2080_CTRL_GR_GET_ZCULL_INFO_PARAMS *zcull_info;
+=======
+r570_gr_get_ctxbufs_info(struct r535_gr *gr)
+{
+	NV2080_CTRL_INTERNAL_STATIC_GR_GET_CONTEXT_BUFFERS_INFO_PARAMS *info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nvkm_subdev *subdev = &gr->base.engine.subdev;
 	struct nvkm_gsp *gsp = subdev->device->gsp;
 
@@ -180,6 +186,7 @@ r570_gr_get_ctxbufs_and_zcull_info(struct r535_gr *gr)
 	for (int i = 0; i < ARRAY_SIZE(info->engineContextBuffersInfo[0].engine); i++)
 		r535_gr_get_ctxbuf_info(gr, i, &info->engineContextBuffersInfo[0].engine[i]);
 
+<<<<<<< HEAD
 	NV2080_CTRL_INTERNAL_ENGINE_CONTEXT_BUFFER_INFO zcull = info->engineContextBuffersInfo[0]
 		.engine[NV0080_CTRL_FIFO_GET_ENGINE_CONTEXT_PROPERTIES_ENGINE_ID_GRAPHICS_ZCULL];
 	gr->base.zcull_info.ctxsw_size = zcull.size;
@@ -210,12 +217,19 @@ r570_gr_get_ctxbufs_and_zcull_info(struct r535_gr *gr)
 
 	gr->base.has_zcull_info = true;
 
+=======
+	nvkm_gsp_rm_ctrl_done(&gsp->internal.device.subdevice, info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 const struct nvkm_rm_api_gr
 r570_gr = {
+<<<<<<< HEAD
 	.get_ctxbufs_and_zcull_info = r570_gr_get_ctxbufs_and_zcull_info,
+=======
+	.get_ctxbufs_info = r570_gr_get_ctxbufs_info,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.scrubber.init = r570_gr_scrubber_init,
 	.scrubber.fini = r570_gr_scrubber_fini,
 };

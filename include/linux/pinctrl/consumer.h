@@ -35,8 +35,11 @@ int pinctrl_gpio_direction_output(struct gpio_chip *gc,
 				  unsigned int offset);
 int pinctrl_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
 				unsigned long config);
+<<<<<<< HEAD
 int pinctrl_gpio_get_config(struct gpio_chip *gc, unsigned int offset,
 			    unsigned long *config);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct pinctrl * __must_check pinctrl_get(struct device *dev);
 void pinctrl_put(struct pinctrl *p);
@@ -104,6 +107,7 @@ pinctrl_gpio_direction_output(struct gpio_chip *gc, unsigned int offset)
 }
 
 static inline int
+<<<<<<< HEAD
 pinctrl_gpio_get_config(struct gpio_chip *gc, unsigned int offset,
 			unsigned long *config)
 {
@@ -111,6 +115,8 @@ pinctrl_gpio_get_config(struct gpio_chip *gc, unsigned int offset,
 }
 
 static inline int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 pinctrl_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
 			    unsigned long config)
 {

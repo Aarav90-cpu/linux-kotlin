@@ -499,6 +499,15 @@ void __init paging_init(void)
 	early_memtest(min_addr, max_addr);
 
 	/*
+<<<<<<< HEAD
+=======
+	 * initialize the bad page table and bad page to point
+	 * to a couple of allocated pages
+	 */
+	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Set up SFC/DFC registers
 	 */
 	set_fc(USER_DATA);

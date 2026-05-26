@@ -250,14 +250,22 @@ void test_vmx_nested_state(struct kvm_vcpu *vcpu)
 
 static void vcpu_efer_enable_svm(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 old_efer = vcpu_get_msr(vcpu, MSR_EFER);
+=======
+	uint64_t old_efer = vcpu_get_msr(vcpu, MSR_EFER);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu_set_msr(vcpu, MSR_EFER, old_efer | EFER_SVME);
 }
 
 static void vcpu_efer_disable_svm(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	u64 old_efer = vcpu_get_msr(vcpu, MSR_EFER);
+=======
+	uint64_t old_efer = vcpu_get_msr(vcpu, MSR_EFER);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu_set_msr(vcpu, MSR_EFER, old_efer & ~EFER_SVME);
 }

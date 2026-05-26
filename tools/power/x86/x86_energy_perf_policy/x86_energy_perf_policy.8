@@ -15,8 +15,11 @@ x86_energy_perf_policy \- Manage Energy vs. Performance Policy
 .br
 .RB "other: (\-\-force | \-\-hwp-enable | \-\-turbo-enable)  value)"
 .br
+<<<<<<< HEAD
 .RB "soc-slider: --soc-slider-balance # | --soc-slider-offset # | --platform-profile <name>"
 .br
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .RB "value: # | default | performance | balance-performance | balance-power | power"
 .SH DESCRIPTION
 \fBx86_energy_perf_policy\fP
@@ -156,6 +159,7 @@ level on this processor, specified in multiples of 100 MHz.
 in the sliding window that HWP uses to maintain average frequency.
 This parameter is meaningful only when the "desired" field above is non-zero.
 Default is 0, allowing the HW to choose.
+<<<<<<< HEAD
 .SH SOC SLIDER OPTIONS
 .PP
 Note that the Platform Profile Name must be "SoC Slider", and the
@@ -176,6 +180,8 @@ The value 0 prohibits the SoC from autonomously changing the slider.
 \fB--platform-profile <name>"\fP set the platform profile to <name>.
 Available choices are in platform-profile-0/choices.  The Soc Slider
 driver currently supports "low-power", "balanced", and "performance".
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .SH OTHER OPTIONS
 .PP
 \fB-f, --force\fP writes the specified values without bounds checking.
@@ -230,10 +236,13 @@ runs only as root.
 EPB: /sys/devices/system/cpu/cpu*/power/energy_perf_bias
 EPP: /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference
 MSR: /dev/cpu/*/msr
+<<<<<<< HEAD
 Platform Profile Name: /sys/class/platform-profile/platform-profile-0/name
 Platform Profile: /sys/class/platform-profile/platform-profile-0/profile
 SOC Slider Balanced: /sys/module/processor_thermal_soc_slider/parameters/slider_balance
 SOC Slider Balanced Offset: /sys/module/processor_thermal_soc_slider/parameters/slider_offset
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .fi
 .SH "SEE ALSO"
 .nf

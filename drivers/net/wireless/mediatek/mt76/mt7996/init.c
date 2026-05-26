@@ -34,6 +34,7 @@ static const struct ieee80211_iface_combination if_comb_global = {
 			       BIT(NL80211_CHAN_WIDTH_40) |
 			       BIT(NL80211_CHAN_WIDTH_80) |
 			       BIT(NL80211_CHAN_WIDTH_160),
+<<<<<<< HEAD
 	.beacon_int_min_gcd = 100,
 };
 
@@ -48,6 +49,8 @@ static const struct ieee80211_iface_combination if_comb_global_7992 = {
 			       BIT(NL80211_CHAN_WIDTH_80) |
 			       BIT(NL80211_CHAN_WIDTH_160),
 	.beacon_int_min_gcd = 100,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ieee80211_iface_limit if_limits[] = {
@@ -99,7 +102,10 @@ static const struct wiphy_iftype_ext_capab iftypes_ext_capa[] = {
 		.extended_capabilities_mask = if_types_ext_capa_ap,
 		.extended_capabilities_len = sizeof(if_types_ext_capa_ap),
 		.mld_capa_and_ops =
+<<<<<<< HEAD
 			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND, 1) |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS,
 					 MT7996_MAX_RADIOS - 1),
 	},
@@ -500,8 +506,12 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
 	hw->vif_data_size = sizeof(struct mt7996_vif);
 	hw->chanctx_data_size = sizeof(struct mt76_chanctx);
 
+<<<<<<< HEAD
 	wiphy->iface_combinations = is_mt7996(&dev->mt76) ? &if_comb_global :
 							    &if_comb_global_7992;
+=======
+	wiphy->iface_combinations = &if_comb_global;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wiphy->n_iface_combinations = 1;
 
 	wiphy->radio = dev->radios;
@@ -537,10 +547,15 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+<<<<<<< HEAD
 	ieee80211_hw_set(hw, CHANCTX_STA_CSA);
 
 	hw->max_tx_fragments = 4;
 	wiphy->txq_memory_limit = 32 << 20; /* 32 MiB */
+=======
+
+	hw->max_tx_fragments = 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* init led callbacks */
 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
@@ -610,7 +625,11 @@ static void mt7996_mac_init_basic_rates(struct mt7996_dev *dev)
 void mt7996_mac_init(struct mt7996_dev *dev)
 {
 #define HIF_TXD_V2_1	0x21
+<<<<<<< HEAD
 	int i, rx_path_type;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mt76_clear(dev, MT_MDP_DCR2, MT_MDP_DCR2_RX_TRANS_SHORT);
 
@@ -624,6 +643,7 @@ void mt7996_mac_init(struct mt7996_dev *dev)
 	}
 
 	/* rro module init */
+<<<<<<< HEAD
 	if (dev->hif2) {
 		if (mt76_npu_device_active(&dev->mt76))
 			rx_path_type = is_mt7996(&dev->mt76) ? 6 : 8;
@@ -634,6 +654,13 @@ void mt7996_mac_init(struct mt7996_dev *dev)
 	} else {
 		mt7996_mcu_set_rro(dev, UNI_RRO_SET_PLATFORM_TYPE, 0);
 	}
+=======
+	if (dev->hif2)
+		mt7996_mcu_set_rro(dev, UNI_RRO_SET_PLATFORM_TYPE,
+				   is_mt7996(&dev->mt76) ? 2 : 7);
+	else
+		mt7996_mcu_set_rro(dev, UNI_RRO_SET_PLATFORM_TYPE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mt7996_has_hwrro(dev)) {
 		u16 timeout;
@@ -691,9 +718,14 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
 		return 0;
 
 	if (dev->hif2 &&
+<<<<<<< HEAD
 	    ((is_mt7992(&dev->mt76) && band == MT_BAND1) ||
 	     (is_mt7996(&dev->mt76) && band == MT_BAND2 &&
 	      !mt76_npu_device_active(&dev->mt76)))) {
+=======
+	    ((is_mt7996(&dev->mt76) && band == MT_BAND2) ||
+	     (is_mt7992(&dev->mt76) && band == MT_BAND1))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
 		wed = &dev->mt76.mmio.wed_hif2;
 	}
@@ -733,6 +765,7 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
 	/* init wiphy according to mphy and phy */
 	mt7996_init_wiphy_band(mphy->hw, phy);
 
+<<<<<<< HEAD
 	if (is_mt7996(&dev->mt76) &&
 	    ((band == MT_BAND1 && !dev->hif2) ||
 	     (band == MT_BAND2 && mt76_npu_device_active(&dev->mt76)))) {
@@ -746,6 +779,16 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
 			   ? MT7996_NPU_TX_RING_SIZE / 2 : MT7996_TX_RING_SIZE;
 
 		ret = mt7996_init_tx_queues(mphy->priv, MT_TXQ_ID(band), size,
+=======
+	if (is_mt7996(&dev->mt76) && !dev->hif2 && band == MT_BAND1) {
+		int i;
+
+		for (i = 0; i <= MT_TXQ_PSD; i++)
+			mphy->q_tx[i] = dev->mt76.phys[MT_BAND0]->q_tx[0];
+	} else {
+		ret = mt7996_init_tx_queues(mphy->priv, MT_TXQ_ID(band),
+					    MT7996_TX_RING_SIZE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    MT_TXQ_RING_BASE(band) + hif1_ofs,
 					    wed);
 		if (ret)
@@ -785,13 +828,17 @@ static void mt7996_init_work(struct work_struct *work)
 	mt7996_mcu_set_eeprom(dev);
 	mt7996_mac_init(dev);
 	mt7996_txbf_init(dev);
+<<<<<<< HEAD
 
 	if (!is_mt7990(&dev->mt76))
 		mt7996_mcu_set_dup_wtbl(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void mt7996_wfsys_reset(struct mt7996_dev *dev)
 {
+<<<<<<< HEAD
 	if (!is_mt7990(&dev->mt76)) {
 		mt76_set(dev, MT_WF_SUBSYS_RST, 0x1);
 		msleep(20);
@@ -820,6 +867,13 @@ void mt7996_wfsys_reset(struct mt7996_dev *dev)
 		return;
 
 	dev_err(dev->mt76.dev, "wfsys reset fail\n");
+=======
+	mt76_set(dev, MT_WF_SUBSYS_RST, 0x1);
+	msleep(20);
+
+	mt76_clear(dev, MT_WF_SUBSYS_RST, 0x1);
+	msleep(20);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mt7996_rro_hw_init_v3(struct mt7996_dev *dev)
@@ -897,7 +951,12 @@ void mt7996_rro_hw_init(struct mt7996_dev *dev)
 			}
 		} else {
 			/* set emul 3.0 function */
+<<<<<<< HEAD
 			mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+=======
+			mt76_wr(dev, MT_RRO_3_0_EMU_CONF,
+				MT_RRO_3_0_EMU_CONF_EN_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			mt76_wr(dev, MT_RRO_ADDR_ARRAY_BASE0,
 				dev->wed_rro.addr_elem[0].phy_addr);
@@ -989,12 +1048,15 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
 			addr++;
 		}
 
+<<<<<<< HEAD
 		if (is_mt7996(&dev->mt76) &&
 		    mt76_npu_device_active(&dev->mt76))
 			mt76_npu_send_txrx_addr(&dev->mt76, 0, i,
 					dev->wed_rro.addr_elem[i].phy_addr,
 					0, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NET_MEDIATEK_SOC_WED
 		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
 		    mtk_wed_get_rx_capa(&dev->mt76.mmio.wed)) {
@@ -1055,10 +1117,13 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
 		addr++;
 	}
 
+<<<<<<< HEAD
 	if (is_mt7996(&dev->mt76) && mt76_npu_device_active(&dev->mt76))
 		mt76_npu_send_txrx_addr(&dev->mt76, 1, 0,
 					dev->wed_rro.session.phy_addr, 0, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mt7996_rro_hw_init(dev);
 
 	return mt7996_dma_rro_init(dev);
@@ -1145,12 +1210,17 @@ static void mt7996_wed_rro_work(struct work_struct *work)
 				     list);
 		list_del_init(&e->list);
 
+<<<<<<< HEAD
 		if (mt76_npu_device_active(&dev->mt76)) {
 			if (is_mt7996(&dev->mt76))
 				mt76_npu_send_txrx_addr(&dev->mt76, 3, e->id,
 							0, 0, 0);
 			goto reset_session;
 		}
+=======
+		if (mt76_npu_device_active(&dev->mt76))
+			goto reset_session;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (i = 0; i < MT7996_RRO_WINDOW_MAX_LEN; i++) {
 			void *ptr = dev->wed_rro.session.ptr;
@@ -1197,7 +1267,11 @@ static int mt7996_variant_type_init(struct mt7996_dev *dev)
 		else if (u32_get_bits(val, MT_PAD_GPIO_ADIE_COMB_7992))
 			var_type = MT7992_VAR_TYPE_44;
 		else
+<<<<<<< HEAD
 			var_type = MT7992_VAR_TYPE_24;
+=======
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MT7990_DEVICE_ID:
 		var_type = MT7990_VAR_TYPE_23;
@@ -1231,8 +1305,12 @@ static int mt7996_variant_fem_init(struct mt7996_dev *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf),
 				    EEPROM_MODE_EFUSE);
+=======
+	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret && ret != -EINVAL)
 		return ret;
 
@@ -1765,8 +1843,11 @@ int mt7996_register_device(struct mt7996_dev *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	mt7996_dma_rro_start(dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
 				   ARRAY_SIZE(mt76_rates));
 	if (ret)
@@ -1797,7 +1878,10 @@ error:
 
 void mt7996_unregister_device(struct mt7996_dev *dev)
 {
+<<<<<<< HEAD
 	cancel_work_sync(&dev->dump_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cancel_work_sync(&dev->wed_rro.work);
 	mt7996_unregister_phy(mt7996_phy3(dev));
 	mt7996_unregister_phy(mt7996_phy2(dev));

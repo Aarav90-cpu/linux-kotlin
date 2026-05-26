@@ -92,6 +92,10 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 	struct drm_wedge_task_info *info = NULL;
 	struct amdgpu_task_info *ti = NULL;
 	struct amdgpu_device *adev = ring->adev;
+<<<<<<< HEAD
+=======
+	enum drm_gpu_sched_stat status = DRM_GPU_SCHED_STAT_RESET;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int idx, r;
 
 	if (!drm_dev_enter(adev_to_drm(adev), &idx)) {
@@ -146,6 +150,11 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 				ring->sched.name);
 			drm_dev_wedged_event(adev_to_drm(adev),
 					     DRM_WEDGE_RECOVERY_NONE, info);
+<<<<<<< HEAD
+=======
+			/* This is needed to add the job back to the pending list */
+			status = DRM_GPU_SCHED_STAT_NO_HANG;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto exit;
 		}
 		dev_err(adev->dev, "Ring %s reset failed\n", ring->sched.name);
@@ -181,8 +190,12 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 exit:
 	amdgpu_vm_put_task_info(ti);
 	drm_dev_exit(idx);
+<<<<<<< HEAD
 	/* This is needed to add the job back to the pending list */
 	return DRM_GPU_SCHED_STAT_NO_HANG;
+=======
+	return status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_job_alloc(struct amdgpu_device *adev, struct amdgpu_vm *vm,
@@ -287,10 +300,16 @@ void amdgpu_job_free_resources(struct amdgpu_job *job)
 	unsigned i;
 
 	/* Check if any fences were initialized */
+<<<<<<< HEAD
 	if (job->base.s_fence &&
 	    dma_fence_was_initialized(&job->base.s_fence->finished))
 		f = &job->base.s_fence->finished;
 	else if (dma_fence_was_initialized(&job->hw_fence->base))
+=======
+	if (job->base.s_fence && job->base.s_fence->finished.ops)
+		f = &job->base.s_fence->finished;
+	else if (job->hw_fence && job->hw_fence->base.ops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		f = &job->hw_fence->base;
 	else
 		f = NULL;
@@ -307,11 +326,19 @@ static void amdgpu_job_free_cb(struct drm_sched_job *s_job)
 
 	amdgpu_sync_free(&job->explicit_sync);
 
+<<<<<<< HEAD
 	if (dma_fence_was_initialized(&job->hw_fence->base))
 		dma_fence_put(&job->hw_fence->base);
 	else
 		kfree(job->hw_fence);
 	if (dma_fence_was_initialized(&job->hw_vm_fence->base))
+=======
+	if (job->hw_fence->base.ops)
+		dma_fence_put(&job->hw_fence->base);
+	else
+		kfree(job->hw_fence);
+	if (job->hw_vm_fence->base.ops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dma_fence_put(&job->hw_vm_fence->base);
 	else
 		kfree(job->hw_vm_fence);
@@ -345,11 +372,19 @@ void amdgpu_job_free(struct amdgpu_job *job)
 	if (job->gang_submit != &job->base.s_fence->scheduled)
 		dma_fence_put(job->gang_submit);
 
+<<<<<<< HEAD
 	if (dma_fence_was_initialized(&job->hw_fence->base))
 		dma_fence_put(&job->hw_fence->base);
 	else
 		kfree(job->hw_fence);
 	if (dma_fence_was_initialized(&job->hw_vm_fence->base))
+=======
+	if (job->hw_fence->base.ops)
+		dma_fence_put(&job->hw_fence->base);
+	else
+		kfree(job->hw_fence);
+	if (job->hw_vm_fence->base.ops)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dma_fence_put(&job->hw_vm_fence->base);
 	else
 		kfree(job->hw_vm_fence);

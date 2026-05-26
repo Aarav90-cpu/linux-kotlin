@@ -5,7 +5,10 @@
 #include <linux/kernel.h>
 #include <linux/sched/signal.h>
 #include <linux/io_uring.h>
+<<<<<<< HEAD
 #include <linux/time_namespace.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <trace/events/io_uring.h>
 
@@ -230,10 +233,14 @@ int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
 
 	if (ext_arg->ts_set) {
 		iowq.timeout = timespec64_to_ktime(ext_arg->ts);
+<<<<<<< HEAD
 		if (flags & IORING_ENTER_ABS_TIMER)
 			iowq.timeout = timens_ktime_to_host(ctx->clockid,
 							    iowq.timeout);
 		else
+=======
+		if (!(flags & IORING_ENTER_ABS_TIMER))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			iowq.timeout = ktime_add(iowq.timeout, start_time);
 	}
 

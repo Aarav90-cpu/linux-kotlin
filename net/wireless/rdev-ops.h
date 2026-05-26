@@ -2,7 +2,11 @@
 /*
  * Portions of this file
  * Copyright(c) 2016-2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018, 2021-2026 Intel Corporation
+=======
+ * Copyright (C) 2018, 2021-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #ifndef __CFG80211_RDEV_OPS
 #define __CFG80211_RDEV_OPS
@@ -77,35 +81,56 @@ rdev_change_virtual_intf(struct cfg80211_registered_device *rdev,
 }
 
 static inline int rdev_add_key(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			       struct wireless_dev *wdev, int link_id,
+=======
+			       struct net_device *netdev, int link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       u8 key_index, bool pairwise, const u8 *mac_addr,
 			       struct key_params *params)
 {
 	int ret;
+<<<<<<< HEAD
 	trace_rdev_add_key(&rdev->wiphy, wdev, link_id, key_index, pairwise,
 			   mac_addr, params->mode);
 	ret = rdev->ops->add_key(&rdev->wiphy, wdev, link_id, key_index,
+=======
+	trace_rdev_add_key(&rdev->wiphy, netdev, link_id, key_index, pairwise,
+			   mac_addr, params->mode);
+	ret = rdev->ops->add_key(&rdev->wiphy, netdev, link_id, key_index,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  pairwise, mac_addr, params);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline int
+<<<<<<< HEAD
 rdev_get_key(struct cfg80211_registered_device *rdev, struct wireless_dev *wdev,
+=======
+rdev_get_key(struct cfg80211_registered_device *rdev, struct net_device *netdev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     int link_id, u8 key_index, bool pairwise, const u8 *mac_addr,
 	     void *cookie,
 	     void (*callback)(void *cookie, struct key_params*))
 {
 	int ret;
+<<<<<<< HEAD
 	trace_rdev_get_key(&rdev->wiphy, wdev, link_id, key_index, pairwise,
 			   mac_addr);
 	ret = rdev->ops->get_key(&rdev->wiphy, wdev, link_id, key_index,
+=======
+	trace_rdev_get_key(&rdev->wiphy, netdev, link_id, key_index, pairwise,
+			   mac_addr);
+	ret = rdev->ops->get_key(&rdev->wiphy, netdev, link_id, key_index,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  pairwise, mac_addr, cookie, callback);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline int rdev_del_key(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			       struct wireless_dev *wdev, int link_id,
 			       u8 key_index, bool pairwise, const u8 *mac_addr)
 {
@@ -113,6 +138,15 @@ static inline int rdev_del_key(struct cfg80211_registered_device *rdev,
 	trace_rdev_del_key(&rdev->wiphy, wdev, link_id, key_index, pairwise,
 			   mac_addr);
 	ret = rdev->ops->del_key(&rdev->wiphy, wdev, link_id, key_index,
+=======
+			       struct net_device *netdev, int link_id,
+			       u8 key_index, bool pairwise, const u8 *mac_addr)
+{
+	int ret;
+	trace_rdev_del_key(&rdev->wiphy, netdev, link_id, key_index, pairwise,
+			   mac_addr);
+	ret = rdev->ops->del_key(&rdev->wiphy, netdev, link_id, key_index,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  pairwise, mac_addr);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
@@ -134,12 +168,21 @@ rdev_set_default_key(struct cfg80211_registered_device *rdev,
 
 static inline int
 rdev_set_default_mgmt_key(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			  struct wireless_dev *wdev, int link_id, u8 key_index)
 {
 	int ret;
 	trace_rdev_set_default_mgmt_key(&rdev->wiphy, wdev, link_id,
 					key_index);
 	ret = rdev->ops->set_default_mgmt_key(&rdev->wiphy, wdev, link_id,
+=======
+			  struct net_device *netdev, int link_id, u8 key_index)
+{
+	int ret;
+	trace_rdev_set_default_mgmt_key(&rdev->wiphy, netdev, link_id,
+					key_index);
+	ret = rdev->ops->set_default_mgmt_key(&rdev->wiphy, netdev, link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       key_index);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
@@ -147,14 +190,24 @@ rdev_set_default_mgmt_key(struct cfg80211_registered_device *rdev,
 
 static inline int
 rdev_set_default_beacon_key(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			    struct wireless_dev *wdev, int link_id,
+=======
+			    struct net_device *netdev, int link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    u8 key_index)
 {
 	int ret;
 
+<<<<<<< HEAD
 	trace_rdev_set_default_beacon_key(&rdev->wiphy, wdev, link_id,
 					  key_index);
 	ret = rdev->ops->set_default_beacon_key(&rdev->wiphy, wdev, link_id,
+=======
+	trace_rdev_set_default_beacon_key(&rdev->wiphy, netdev, link_id,
+					  key_index);
+	ret = rdev->ops->set_default_beacon_key(&rdev->wiphy, netdev, link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						 key_index);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
@@ -193,56 +246,101 @@ static inline int rdev_stop_ap(struct cfg80211_registered_device *rdev,
 }
 
 static inline int rdev_add_station(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				   struct wireless_dev *wdev, u8 *mac,
 				   struct station_parameters *params)
 {
 	int ret;
 	trace_rdev_add_station(&rdev->wiphy, wdev, mac, params);
 	ret = rdev->ops->add_station(&rdev->wiphy, wdev, mac, params);
+=======
+				   struct net_device *dev, u8 *mac,
+				   struct station_parameters *params)
+{
+	int ret;
+	trace_rdev_add_station(&rdev->wiphy, dev, mac, params);
+	ret = rdev->ops->add_station(&rdev->wiphy, dev, mac, params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline int rdev_del_station(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				   struct wireless_dev *wdev,
 				   struct station_del_parameters *params)
 {
 	int ret;
 	trace_rdev_del_station(&rdev->wiphy, wdev, params);
 	ret = rdev->ops->del_station(&rdev->wiphy, wdev, params);
+=======
+				   struct net_device *dev,
+				   struct station_del_parameters *params)
+{
+	int ret;
+	trace_rdev_del_station(&rdev->wiphy, dev, params);
+	ret = rdev->ops->del_station(&rdev->wiphy, dev, params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline int rdev_change_station(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				      struct wireless_dev *wdev, u8 *mac,
 				      struct station_parameters *params)
 {
 	int ret;
 	trace_rdev_change_station(&rdev->wiphy, wdev, mac, params);
 	ret = rdev->ops->change_station(&rdev->wiphy, wdev, mac, params);
+=======
+				      struct net_device *dev, u8 *mac,
+				      struct station_parameters *params)
+{
+	int ret;
+	trace_rdev_change_station(&rdev->wiphy, dev, mac, params);
+	ret = rdev->ops->change_station(&rdev->wiphy, dev, mac, params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline int rdev_get_station(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				   struct wireless_dev *wdev, const u8 *mac,
 				   struct station_info *sinfo)
 {
 	int ret;
 	trace_rdev_get_station(&rdev->wiphy, wdev, mac);
 	ret = rdev->ops->get_station(&rdev->wiphy, wdev, mac, sinfo);
+=======
+				   struct net_device *dev, const u8 *mac,
+				   struct station_info *sinfo)
+{
+	int ret;
+	trace_rdev_get_station(&rdev->wiphy, dev, mac);
+	ret = rdev->ops->get_station(&rdev->wiphy, dev, mac, sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_rdev_return_int_station_info(&rdev->wiphy, ret, sinfo);
 	return ret;
 }
 
 static inline int rdev_dump_station(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				    struct wireless_dev *wdev, int idx, u8 *mac,
 				    struct station_info *sinfo)
 {
 	int ret;
 	trace_rdev_dump_station(&rdev->wiphy, wdev, idx, mac);
 	ret = rdev->ops->dump_station(&rdev->wiphy, wdev, idx, mac, sinfo);
+=======
+				    struct net_device *dev, int idx, u8 *mac,
+				    struct station_info *sinfo)
+{
+	int ret;
+	trace_rdev_dump_station(&rdev->wiphy, dev, idx, mac);
+	ret = rdev->ops->dump_station(&rdev->wiphy, dev, idx, mac, sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	trace_rdev_return_int_station_info(&rdev->wiphy, ret, sinfo);
 	return ret;
 }
@@ -1060,6 +1158,7 @@ rdev_nan_change_conf(struct cfg80211_registered_device *rdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline int
 rdev_nan_set_local_sched(struct cfg80211_registered_device *rdev,
 			 struct wireless_dev *wdev,
@@ -1092,6 +1191,8 @@ rdev_nan_set_peer_sched(struct cfg80211_registered_device *rdev,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int rdev_set_mac_acl(struct cfg80211_registered_device *rdev,
 				   struct net_device *dev,
 				   struct cfg80211_acl_data *params)

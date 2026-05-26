@@ -26,11 +26,18 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
 {
 	struct seq_file *m = filp->private_data;
 	struct amd_iommu *iommu = m->private;
+<<<<<<< HEAD
 	int ret, dbg_mmio_offset = iommu->dbg_mmio_offset = -1;
+=======
+	int ret;
+
+	iommu->dbg_mmio_offset = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cnt > OFS_IN_SZ)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = kstrtos32_from_user(ubuf, cnt, 0, &dbg_mmio_offset);
 	if (ret)
 		return ret;
@@ -40,6 +47,17 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
 		return -EINVAL;
 
 	iommu->dbg_mmio_offset = dbg_mmio_offset;
+=======
+	ret = kstrtou32_from_user(ubuf, cnt, 0, &iommu->dbg_mmio_offset);
+	if (ret)
+		return ret;
+
+	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64)) {
+		iommu->dbg_mmio_offset = -1;
+		return  -EINVAL;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return cnt;
 }
 
@@ -47,16 +65,26 @@ static int iommu_mmio_show(struct seq_file *m, void *unused)
 {
 	struct amd_iommu *iommu = m->private;
 	u64 value;
+<<<<<<< HEAD
 	int dbg_mmio_offset = iommu->dbg_mmio_offset;
 
 	if (dbg_mmio_offset < 0 || dbg_mmio_offset >
 			iommu->mmio_phys_end - sizeof(u64)) {
+=======
+
+	if (iommu->dbg_mmio_offset < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_puts(m, "Please provide mmio register's offset\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	value = readq(iommu->mmio_base + dbg_mmio_offset);
 	seq_printf(m, "Offset:0x%x Value:0x%016llx\n", dbg_mmio_offset, value);
+=======
+	value = readq(iommu->mmio_base + iommu->dbg_mmio_offset);
+	seq_printf(m, "Offset:0x%x Value:0x%016llx\n", iommu->dbg_mmio_offset, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -67,20 +95,38 @@ static ssize_t iommu_capability_write(struct file *filp, const char __user *ubuf
 {
 	struct seq_file *m = filp->private_data;
 	struct amd_iommu *iommu = m->private;
+<<<<<<< HEAD
 	int ret, dbg_cap_offset = iommu->dbg_cap_offset = -1;
+=======
+	int ret;
+
+	iommu->dbg_cap_offset = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cnt > OFS_IN_SZ)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = kstrtos32_from_user(ubuf, cnt, 0, &dbg_cap_offset);
+=======
+	ret = kstrtou32_from_user(ubuf, cnt, 0, &iommu->dbg_cap_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
 	/* Capability register at offset 0x14 is the last IOMMU capability register. */
+<<<<<<< HEAD
 	if (dbg_cap_offset < 0 || dbg_cap_offset > 0x14)
 		return -EINVAL;
 
 	iommu->dbg_cap_offset = dbg_cap_offset;
+=======
+	if (iommu->dbg_cap_offset > 0x14) {
+		iommu->dbg_cap_offset = -1;
+		return -EINVAL;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return cnt;
 }
 
@@ -88,13 +134,20 @@ static int iommu_capability_show(struct seq_file *m, void *unused)
 {
 	struct amd_iommu *iommu = m->private;
 	u32 value;
+<<<<<<< HEAD
 	int err, dbg_cap_offset = iommu->dbg_cap_offset;
 
 	if (dbg_cap_offset < 0 || dbg_cap_offset > 0x14) {
+=======
+	int err;
+
+	if (iommu->dbg_cap_offset < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_puts(m, "Please provide capability register's offset in the range [0x00 - 0x14]\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	err = pci_read_config_dword(iommu->dev, iommu->cap_ptr + dbg_cap_offset, &value);
 	if (err) {
 		seq_printf(m, "Not able to read capability register at 0x%x\n",
@@ -103,6 +156,16 @@ static int iommu_capability_show(struct seq_file *m, void *unused)
 	}
 
 	seq_printf(m, "Offset:0x%x Value:0x%08x\n", dbg_cap_offset, value);
+=======
+	err = pci_read_config_dword(iommu->dev, iommu->cap_ptr + iommu->dbg_cap_offset, &value);
+	if (err) {
+		seq_printf(m, "Not able to read capability register at 0x%x\n",
+			   iommu->dbg_cap_offset);
+		return 0;
+	}
+
+	seq_printf(m, "Offset:0x%x Value:0x%08x\n", iommu->dbg_cap_offset, value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -194,11 +257,18 @@ static ssize_t devid_write(struct file *filp, const char __user *ubuf,
 static int devid_show(struct seq_file *m, void *unused)
 {
 	u16 devid;
+<<<<<<< HEAD
 	int sbdf_shadow = sbdf;
 
 	if (sbdf_shadow >= 0) {
 		devid = PCI_SBDF_TO_DEVID(sbdf_shadow);
 		seq_printf(m, "%04x:%02x:%02x.%x\n", PCI_SBDF_TO_SEGID(sbdf_shadow),
+=======
+
+	if (sbdf >= 0) {
+		devid = PCI_SBDF_TO_DEVID(sbdf);
+		seq_printf(m, "%04x:%02x:%02x.%x\n", PCI_SBDF_TO_SEGID(sbdf),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   PCI_BUS_NUM(devid), PCI_SLOT(devid), PCI_FUNC(devid));
 	} else
 		seq_puts(m, "No or Invalid input provided\n");
@@ -235,6 +305,7 @@ static int iommu_devtbl_show(struct seq_file *m, void *unused)
 {
 	struct amd_iommu_pci_seg *pci_seg;
 	u16 seg, devid;
+<<<<<<< HEAD
 	int sbdf_shadow = sbdf;
 
 	if (sbdf_shadow < 0) {
@@ -243,6 +314,15 @@ static int iommu_devtbl_show(struct seq_file *m, void *unused)
 	}
 	seg = PCI_SBDF_TO_SEGID(sbdf_shadow);
 	devid = PCI_SBDF_TO_DEVID(sbdf_shadow);
+=======
+
+	if (sbdf < 0) {
+		seq_puts(m, "Enter a valid device ID to 'devid' file\n");
+		return 0;
+	}
+	seg = PCI_SBDF_TO_SEGID(sbdf);
+	devid = PCI_SBDF_TO_DEVID(sbdf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_pci_segment(pci_seg) {
 		if (pci_seg->id != seg)
@@ -335,20 +415,32 @@ static int iommu_irqtbl_show(struct seq_file *m, void *unused)
 {
 	struct amd_iommu_pci_seg *pci_seg;
 	u16 devid, seg;
+<<<<<<< HEAD
 	int sbdf_shadow = sbdf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!irq_remapping_enabled) {
 		seq_puts(m, "Interrupt remapping is disabled\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (sbdf_shadow < 0) {
+=======
+	if (sbdf < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		seq_puts(m, "Enter a valid device ID to 'devid' file\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	seg = PCI_SBDF_TO_SEGID(sbdf_shadow);
 	devid = PCI_SBDF_TO_DEVID(sbdf_shadow);
+=======
+	seg = PCI_SBDF_TO_SEGID(sbdf);
+	devid = PCI_SBDF_TO_DEVID(sbdf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_pci_segment(pci_seg) {
 		if (pci_seg->id != seg)

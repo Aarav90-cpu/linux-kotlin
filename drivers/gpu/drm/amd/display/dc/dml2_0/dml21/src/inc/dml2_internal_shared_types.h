@@ -410,7 +410,10 @@ struct dml2_core_mode_support_in_out {
 	} legacy;
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dml2_core_mode_programming_in_out {
 	/*
 	* Inputs
@@ -502,7 +505,10 @@ struct dml2_core_instance {
 	bool (*populate_informative)(struct dml2_core_populate_informative_in_out *in_out);
 	bool (*calculate_mcache_allocation)(struct dml2_calculate_mcache_allocation_in_out *in_out);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct {
 		struct dml2_core_internal_display_mode_lib mode_lib;
 	} clean_me_up;
@@ -755,7 +761,10 @@ struct dml2_pmo_instance {
 	bool (*test_for_stutter)(struct dml2_pmo_test_for_stutter_in_out *in_out);
 	bool (*optimize_for_stutter)(struct dml2_pmo_optimize_for_stutter_in_out *in_out);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dml2_pmo_init_data init_data;
 	struct dml2_pmo_scratch scratch;
 };

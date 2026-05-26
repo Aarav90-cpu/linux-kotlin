@@ -31,6 +31,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the total number of BTCLEARS.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xe8",
@@ -41,6 +42,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles the uncore cannot take further requests",
         "Counter": "0,1,2,3,4,5,6,7,8,9",
         "CounterMask": "1",

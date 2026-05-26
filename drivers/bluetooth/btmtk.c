@@ -112,11 +112,15 @@ static void btmtk_coredump_notify(struct hci_dev *hdev, int state)
 void btmtk_fw_get_filename(char *buf, size_t size, u32 dev_id, u32 fw_ver,
 			   u32 fw_flavor)
 {
+<<<<<<< HEAD
 	if (dev_id == 0x6639)
 		snprintf(buf, size,
 			 "mediatek/mt7927/BT_RAM_CODE_MT%04x_2_%x_hdr.bin",
 			 dev_id & 0xffff, (fw_ver & 0xff) + 1);
 	else if (dev_id == 0x7925)
+=======
+	if (dev_id == 0x7925)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		snprintf(buf, size,
 			 "mediatek/mt%04x/BT_RAM_CODE_MT%04x_1_%x_hdr.bin",
 			 dev_id & 0xffff, dev_id & 0xffff, (fw_ver & 0xff) + 1);
@@ -132,8 +136,12 @@ void btmtk_fw_get_filename(char *buf, size_t size, u32 dev_id, u32 fw_ver,
 EXPORT_SYMBOL_GPL(btmtk_fw_get_filename);
 
 int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
+<<<<<<< HEAD
 			      wmt_cmd_sync_func_t wmt_cmd_sync,
 			      u32 dev_id)
+=======
+			      wmt_cmd_sync_func_t wmt_cmd_sync)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btmtk_hci_wmt_params wmt_params;
 	struct btmtk_patch_header *hdr;
@@ -171,6 +179,7 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 		section_offset = le32_to_cpu(sectionmap->secoffset);
 		dl_size = le32_to_cpu(sectionmap->bin_info_spec.dlsize);
 
+<<<<<<< HEAD
 		/* MT6639: only download sections where dlmode byte0 == 0x01,
 		 * matching the Windows driver behavior which skips WiFi/other
 		 * sections that would cause the chip to hang.
@@ -179,6 +188,8 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 		    (le32_to_cpu(sectionmap->bin_info_spec.dlmodecrctype) & 0xff) != 0x01)
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dl_size > 0) {
 			retry = 20;
 			while (retry > 0) {
@@ -218,6 +229,7 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 				}
 			}
 
+<<<<<<< HEAD
 			/* If retry exhausted goto err_release_fw */
 			if (retry == 0) {
 				err = -EIO;
@@ -226,6 +238,11 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 
 			fw_ptr += section_offset;
 			wmt_params.op = BTMTK_WMT_PATCH_DWNLD;
+=======
+			fw_ptr += section_offset;
+			wmt_params.op = BTMTK_WMT_PATCH_DWNLD;
+			wmt_params.status = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			while (dl_size > 0) {
 				dlen = min_t(int, 250, dl_size);
@@ -243,6 +260,7 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 				wmt_params.data = fw_ptr;
 
 				err = wmt_cmd_sync(hdev, &wmt_params);
+<<<<<<< HEAD
 				/* Status BTMTK_WMT_PATCH_PROGRESS indicates firmware is
 				 * in process of being downloaded, which is not expected to
 				 * occur here.
@@ -251,6 +269,9 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 					err = -EIO;
 					goto err_release_fw;
 				} else if (err < 0) {
+=======
+				if (err < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					bt_dev_err(hdev, "Failed to send wmt patch dwnld (%d)",
 						   err);
 					goto err_release_fw;
@@ -467,6 +488,7 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
 EXPORT_SYMBOL_GPL(btmtk_process_coredump);
 
 #if IS_ENABLED(CONFIG_BT_HCIBTUSB_MTK)
+<<<<<<< HEAD
 /* Known MT6639 (MT7927) Bluetooth USB devices.
  * Used to scope the zero-CHIPID workaround to real MT6639 hardware,
  * since some boards return 0x0000 from the MMIO chip ID register.
@@ -483,6 +505,8 @@ static const struct {
 	{ 0x13d3, 0x3588 },	/* ASUS ROG STRIX X870E-E */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void btmtk_usb_wmt_recv(struct urb *urb)
 {
 	struct hci_dev *hdev = urb->context;
@@ -721,8 +745,18 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
 	case BTMTK_WMT_FUNC_CTRL:
 		if (!skb_pull_data(data->evt_skb,
 				   sizeof(wmt_evt_funcc->status))) {
+<<<<<<< HEAD
 			status = BTMTK_WMT_ON_UNDONE;
 			break;
+=======
+<<<<<<< HEAD
+			err = -EINVAL;
+			goto err_free_skb;
+=======
+			status = BTMTK_WMT_ON_UNDONE;
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		}
 
 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
@@ -894,7 +928,11 @@ int btmtk_usb_subsys_reset(struct hci_dev *hdev, u32 dev_id)
 		if (err < 0)
 			return err;
 		msleep(100);
+<<<<<<< HEAD
 	} else if (dev_id == 0x7925 || dev_id == 0x6639) {
+=======
+	} else if (dev_id == 0x7925) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = btmtk_usb_uhw_reg_read(hdev, MTK_BT_RESET_REG_CONNV3, &val);
 		if (err < 0)
 			return err;
@@ -980,7 +1018,11 @@ int btmtk_usb_subsys_reset(struct hci_dev *hdev, u32 dev_id)
 	}
 
 	err = btmtk_usb_id_get(hdev, 0x70010200, &val);
+<<<<<<< HEAD
 	if (err < 0 || (!val && dev_id != 0x6639))
+=======
+	if (err < 0 || !val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bt_dev_err(hdev, "Can't get device id, subsys reset fail.");
 
 	return err;
@@ -1037,22 +1079,56 @@ static int __set_mtk_intr_interface(struct hci_dev *hdev)
 {
 	struct btmtk_data *btmtk_data = hci_get_priv(hdev);
 	struct usb_interface *intf = btmtk_data->isopkt_intf;
+<<<<<<< HEAD
 	int err;
+=======
+	int i, err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!btmtk_data->isopkt_intf)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	err = usb_set_interface(btmtk_data->udev, MTK_ISO_IFNUM,
 			       (intf->num_altsetting > 1) ? 1 : 0);
+=======
+	err = usb_set_interface(btmtk_data->udev, MTK_ISO_IFNUM, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err < 0) {
 		bt_dev_err(hdev, "setting interface failed (%d)", -err);
 		return err;
 	}
 
+<<<<<<< HEAD
 	err = usb_find_common_endpoints(intf->cur_altsetting, NULL, NULL,
 					&btmtk_data->isopkt_rx_ep,
 					&btmtk_data->isopkt_tx_ep);
 	if (err) {
+=======
+	btmtk_data->isopkt_tx_ep = NULL;
+	btmtk_data->isopkt_rx_ep = NULL;
+
+	for (i = 0; i < intf->cur_altsetting->desc.bNumEndpoints; i++) {
+		struct usb_endpoint_descriptor *ep_desc;
+
+		ep_desc = &intf->cur_altsetting->endpoint[i].desc;
+
+		if (!btmtk_data->isopkt_tx_ep &&
+		    usb_endpoint_is_int_out(ep_desc)) {
+			btmtk_data->isopkt_tx_ep = ep_desc;
+			continue;
+		}
+
+		if (!btmtk_data->isopkt_rx_ep &&
+		    usb_endpoint_is_int_in(ep_desc)) {
+			btmtk_data->isopkt_rx_ep = ep_desc;
+			continue;
+		}
+	}
+
+	if (!btmtk_data->isopkt_tx_ep ||
+	    !btmtk_data->isopkt_rx_ep) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bt_dev_err(hdev, "invalid interrupt descriptors");
 		return -ENODEV;
 	}
@@ -1346,6 +1422,7 @@ int btmtk_usb_setup(struct hci_dev *hdev)
 		fw_flavor = (fw_flavor & 0x00000080) >> 7;
 	}
 
+<<<<<<< HEAD
 	if (!dev_id) {
 		u16 vid = le16_to_cpu(btmtk_data->udev->descriptor.idVendor);
 		u16 pid = le16_to_cpu(btmtk_data->udev->descriptor.idProduct);
@@ -1364,6 +1441,8 @@ int btmtk_usb_setup(struct hci_dev *hdev)
 				    vid, pid);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btmtk_data->dev_id = dev_id;
 
 	err = btmtk_register_coredump(hdev, btmtk_data->drv_name, fw_version);
@@ -1380,18 +1459,26 @@ int btmtk_usb_setup(struct hci_dev *hdev)
 	case 0x7922:
 	case 0x7925:
 	case 0x7961:
+<<<<<<< HEAD
 	case 0x7902:
 	case 0x6639:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btmtk_fw_get_filename(fw_bin_name, sizeof(fw_bin_name), dev_id,
 				      fw_version, fw_flavor);
 
 		err = btmtk_setup_firmware_79xx(hdev, fw_bin_name,
+<<<<<<< HEAD
 						btmtk_usb_hci_wmt_sync,
 						dev_id);
 		if (err < 0) {
 			/* retry once if setup firmware error */
 			if (!test_and_set_bit(BTMTK_FIRMWARE_DL_RETRY, &btmtk_data->flags))
 				btmtk_reset_sync(hdev);
+=======
+						btmtk_usb_hci_wmt_sync);
+		if (err < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bt_dev_err(hdev, "Failed to set up firmware (%d)", err);
 			return err;
 		}
@@ -1419,9 +1506,12 @@ int btmtk_usb_setup(struct hci_dev *hdev)
 		hci_set_msft_opcode(hdev, 0xFD30);
 		hci_set_aosp_capable(hdev);
 
+<<<<<<< HEAD
 		/* Clear BTMTK_FIRMWARE_DL_RETRY if setup successfully */
 		test_and_clear_bit(BTMTK_FIRMWARE_DL_RETRY, &btmtk_data->flags);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Set up ISO interface after protocol enabled */
 		if (test_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags)) {
 			if (!btmtk_usb_isointf_init(hdev))
@@ -1560,4 +1650,7 @@ MODULE_FIRMWARE(FIRMWARE_MT7668);
 MODULE_FIRMWARE(FIRMWARE_MT7922);
 MODULE_FIRMWARE(FIRMWARE_MT7961);
 MODULE_FIRMWARE(FIRMWARE_MT7925);
+<<<<<<< HEAD
 MODULE_FIRMWARE(FIRMWARE_MT7927);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

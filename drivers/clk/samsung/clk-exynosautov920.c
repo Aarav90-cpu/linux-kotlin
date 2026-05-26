@@ -30,7 +30,10 @@
 #define CLKS_NR_M2M                     (CLK_DOUT_M2M_NOCP + 1)
 #define CLKS_NR_MFC                     (CLK_DOUT_MFC_NOCP + 1)
 #define CLKS_NR_MFD                     (CLK_DOUT_MFD_NOCP + 1)
+<<<<<<< HEAD
 #define CLKS_NR_G3D			(CLK_MOUT_G3D_NOCP_USER + 1)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* ---- CMU_TOP ------------------------------------------------------------ */
 
@@ -1943,6 +1946,7 @@ static const struct samsung_cmu_info mfd_cmu_info __initconst = {
 	.clk_name               = "noc",
 };
 
+<<<<<<< HEAD
 /* ---- CMU_G3D --------------------------------------------------------- */
 
 /* Register Offset definitions for CMU_G3D (0x1a000000) */
@@ -1991,6 +1995,8 @@ static const struct samsung_cmu_info g3d_cmu_info __initconst = {
 	.clk_name               = "noc",
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init exynosautov920_cmu_probe(struct platform_device *pdev)
 {
 	const struct samsung_cmu_info *info;
@@ -2030,9 +2036,12 @@ static const struct of_device_id exynosautov920_cmu_of_match[] = {
 	}, {
 		.compatible = "samsung,exynosautov920-cmu-mfd",
 		.data = &mfd_cmu_info,
+<<<<<<< HEAD
 	}, {
 		.compatible = "samsung,exynosautov920-cmu-g3d",
 		.data = &g3d_cmu_info,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{ }
 };

@@ -16,16 +16,28 @@
 DECLARE_RC_STRUCT(perf_cpu_map) {
 	refcount_t	refcnt;
 	/** Length of the map array. */
+<<<<<<< HEAD
 	unsigned int	nr;
+=======
+	int		nr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** The CPU values. */
 	struct perf_cpu	map[];
 };
 
+<<<<<<< HEAD
 struct perf_cpu_map *perf_cpu_map__alloc(unsigned int nr_cpus);
 int perf_cpu_map__idx(const struct perf_cpu_map *cpus, struct perf_cpu cpu);
 bool perf_cpu_map__is_subset(const struct perf_cpu_map *a, const struct perf_cpu_map *b);
 
 void perf_cpu_map__set_nr(struct perf_cpu_map *map, unsigned int nr_cpus);
+=======
+struct perf_cpu_map *perf_cpu_map__alloc(int nr_cpus);
+int perf_cpu_map__idx(const struct perf_cpu_map *cpus, struct perf_cpu cpu);
+bool perf_cpu_map__is_subset(const struct perf_cpu_map *a, const struct perf_cpu_map *b);
+
+void perf_cpu_map__set_nr(struct perf_cpu_map *map, int nr_cpus);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline refcount_t *perf_cpu_map__refcnt(struct perf_cpu_map *map)
 {

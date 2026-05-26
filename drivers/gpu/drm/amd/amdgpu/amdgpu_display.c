@@ -1738,6 +1738,24 @@ bool amdgpu_crtc_get_scanout_position(struct drm_crtc *crtc,
 						  stime, etime, mode);
 }
 
+<<<<<<< HEAD
+=======
+static bool
+amdgpu_display_robj_is_fb(struct amdgpu_device *adev, struct amdgpu_bo *robj)
+{
+	struct drm_device *dev = adev_to_drm(adev);
+	struct drm_fb_helper *fb_helper = dev->fb_helper;
+
+	if (!fb_helper || !fb_helper->buffer)
+		return false;
+
+	if (gem_to_amdgpu_bo(fb_helper->buffer->gem) != robj)
+		return false;
+
+	return true;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_display_suspend_helper(struct amdgpu_device *adev)
 {
 	struct drm_device *dev = adev_to_drm(adev);
@@ -1760,6 +1778,10 @@ int amdgpu_display_suspend_helper(struct amdgpu_device *adev)
 	list_for_each_entry(crtc, &dev->mode_config.crtc_list, head) {
 		struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
 		struct drm_framebuffer *fb = crtc->primary->fb;
+<<<<<<< HEAD
+=======
+		struct amdgpu_bo *robj;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (amdgpu_crtc->cursor_bo && !adev->enable_virtual_display) {
 			struct amdgpu_bo *aobj = gem_to_amdgpu_bo(amdgpu_crtc->cursor_bo);
@@ -1774,9 +1796,14 @@ int amdgpu_display_suspend_helper(struct amdgpu_device *adev)
 		if (!fb || !fb->obj[0])
 			continue;
 
+<<<<<<< HEAD
 		if (!drm_fb_helper_gem_is_fb(dev->fb_helper, fb->obj[0])) {
 			struct amdgpu_bo *robj = gem_to_amdgpu_bo(fb->obj[0]);
 
+=======
+		robj = gem_to_amdgpu_bo(fb->obj[0]);
+		if (!amdgpu_display_robj_is_fb(adev, robj)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			r = amdgpu_bo_reserve(robj, true);
 			if (r == 0) {
 				amdgpu_bo_unpin(robj);

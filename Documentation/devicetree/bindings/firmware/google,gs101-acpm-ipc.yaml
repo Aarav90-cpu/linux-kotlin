@@ -37,7 +37,10 @@ properties:
     maxItems: 1
 
   pmic:
+<<<<<<< HEAD
     deprecated: true
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     description: Child node describing the main PMIC.
     type: object
     additionalProperties: true
@@ -46,6 +49,7 @@ properties:
       compatible:
         const: samsung,s2mpg10-pmic
 
+<<<<<<< HEAD
   pmic-1:
     description: Child node describing the main PMIC.
     type: object
@@ -64,6 +68,8 @@ properties:
       compatible:
         const: samsung,s2mpg11-pmic
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   shmem:
     description:
       List of phandle pointing to the shared memory (SHM) area. The memory
@@ -81,9 +87,13 @@ additionalProperties: false
 
 examples:
   - |
+<<<<<<< HEAD
     #include <dt-bindings/gpio/gpio.h>
     #include <dt-bindings/interrupt-controller/irq.h>
     #include <dt-bindings/regulator/samsung,s2mpg10-regulator.h>
+=======
+    #include <dt-bindings/interrupt-controller/irq.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     power-management {
         compatible = "google,gs101-acpm-ipc";
@@ -91,12 +101,19 @@ examples:
         mboxes = <&ap2apm_mailbox>;
         shmem = <&apm_sram>;
 
+<<<<<<< HEAD
         pmic-1 {
             compatible = "samsung,s2mpg10-pmic";
             interrupts-extended = <&gpa0 6 IRQ_TYPE_LEVEL_LOW>;
 
             vinl3m-supply = <&buck8m>;
 
+=======
+        pmic {
+            compatible = "samsung,s2mpg10-pmic";
+            interrupts-extended = <&gpa0 6 IRQ_TYPE_LEVEL_LOW>;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             regulators {
                 ldo1m {
                     regulator-name = "vdd_ldo1";
@@ -105,6 +122,7 @@ examples:
                     regulator-always-on;
                 };
 
+<<<<<<< HEAD
                 ldo20m {
                     regulator-name = "vdd_dmics";
                     regulator-min-microvolt = <700000>;
@@ -112,6 +130,9 @@ examples:
                     regulator-always-on;
                     samsung,ext-control = <S2MPG10_EXTCTRL_LDO20M_EN2>;
                 };
+=======
+                // ...
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
                 buck8m {
                     regulator-name = "vdd_mif";
@@ -122,6 +143,7 @@ examples:
                 };
             };
         };
+<<<<<<< HEAD
 
         pmic-2 {
             compatible = "samsung,s2mpg11-pmic";
@@ -139,4 +161,6 @@ examples:
                 };
             };
         };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

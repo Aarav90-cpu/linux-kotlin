@@ -29,12 +29,18 @@
 #include <linux/hrtimer_types.h>
 
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_device.h>
 #include <drm/drm_drv.h>
 #include <drm/drm_file.h>
 #include <drm/drm_gem.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_shmem_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_ioctl.h>
 #include <kunit/test.h>
 #include <linux/auxiliary_bus.h>
@@ -53,7 +59,10 @@
 #include <linux/device/faux.h>
 #include <linux/dma-direction.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/dma-resv.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/errname.h>
 #include <linux/ethtool.h>
 #include <linux/fdtable.h>
@@ -64,7 +73,10 @@
 #include <linux/interrupt.h>
 #include <linux/io-pgtable.h>
 #include <linux/ioport.h>
+<<<<<<< HEAD
 #include <linux/iosys-map.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/jiffies.h>
 #include <linux/jump_label.h>
 #include <linux/mdio.h>
@@ -150,6 +162,7 @@ const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP = VM_MIXEDMAP;
 const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE = VM_HUGEPAGE;
 const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_GPU_BUDDY)
 const unsigned long RUST_CONST_HELPER_GPU_BUDDY_RANGE_ALLOCATION = GPU_BUDDY_RANGE_ALLOCATION;
 const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TOPDOWN_ALLOCATION = GPU_BUDDY_TOPDOWN_ALLOCATION;
@@ -163,4 +176,10 @@ const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TRIM_DISABLE = GPU_BUDDY_TRIM_DI
 #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
 #include "../../drivers/android/binder/rust_binder.h"
 #include "../../drivers/android/binder/rust_binder_events.h"
+=======
+#if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
+#include "../../drivers/android/binder/rust_binder.h"
+#include "../../drivers/android/binder/rust_binder_events.h"
+#include "../../drivers/android/binder/page_range_helper.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

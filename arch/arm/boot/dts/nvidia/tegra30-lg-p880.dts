@@ -116,6 +116,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	spi@7000dc00 {
 		dsi@2 {
 			/*
@@ -139,6 +140,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memory-controller@7000f000 {
 		emc-timings-0 {
 			/* SAMSUNG 1GB K4P8G304EB FGC1 533MHz */

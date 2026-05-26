@@ -1020,15 +1020,22 @@ err_sclk:
 static int fimc_runtime_resume(struct device *dev)
 {
 	struct fimc_dev *fimc =	dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dbg("fimc%d: state: 0x%lx", fimc->id, fimc->state);
 
 	/* Enable clocks and perform basic initialization */
+<<<<<<< HEAD
 	ret = clk_enable(fimc->clock[CLK_GATE]);
 	if (ret)
 		return ret;
 
+=======
+	clk_enable(fimc->clock[CLK_GATE]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fimc_hw_reset(fimc);
 
 	/* Resume the capture or mem-to-mem device */

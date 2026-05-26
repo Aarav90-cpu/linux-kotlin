@@ -351,7 +351,11 @@ static int erofs_ioctl_get_volume_label(struct inode *inode, void __user *arg)
 		ret = clear_user(arg, 1);
 	else
 		ret = copy_to_user(arg, sbi->volume_name,
+<<<<<<< HEAD
 				   strlen(sbi->volume_name) + 1);
+=======
+				   strlen(sbi->volume_name));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret ? -EFAULT : 0;
 }
 

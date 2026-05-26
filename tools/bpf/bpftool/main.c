@@ -132,11 +132,14 @@ static int do_version(int argc, char **argv)
 #else
 	const bool has_skeletons = true;
 #endif
+<<<<<<< HEAD
 #ifdef BPFTOOL_WITHOUT_CRYPTO
 	const bool has_crypto = false;
 #else
 	const bool has_crypto = true;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool bootstrap = false;
 	int i;
 
@@ -168,7 +171,10 @@ static int do_version(int argc, char **argv)
 		jsonw_start_object(json_wtr);	/* features */
 		jsonw_bool_field(json_wtr, "libbfd", has_libbfd);
 		jsonw_bool_field(json_wtr, "llvm", has_llvm);
+<<<<<<< HEAD
 		jsonw_bool_field(json_wtr, "crypto", has_crypto);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		jsonw_bool_field(json_wtr, "skeletons", has_skeletons);
 		jsonw_bool_field(json_wtr, "bootstrap", bootstrap);
 		jsonw_end_object(json_wtr);	/* features */
@@ -187,7 +193,10 @@ static int do_version(int argc, char **argv)
 		printf("features:");
 		print_feature("libbfd", has_libbfd, &nb_features);
 		print_feature("llvm", has_llvm, &nb_features);
+<<<<<<< HEAD
 		print_feature("crypto", has_crypto, &nb_features);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		print_feature("skeletons", has_skeletons, &nb_features);
 		print_feature("bootstrap", bootstrap, &nb_features);
 		printf("\n");

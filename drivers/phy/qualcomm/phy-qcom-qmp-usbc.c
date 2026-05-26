@@ -1679,7 +1679,11 @@ static int qmp_usbc_register_clocks(struct qmp_usbc *qmp, struct device_node *np
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (qmp->dp_serdes) {
+=======
+	if (qmp->dp_serdes != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = phy_dp_clks_register(qmp, np);
 		if (ret)
 			return ret;
@@ -1833,7 +1837,11 @@ static int qmp_usbc_parse_dt(struct qmp_usbc *qmp)
 	if (IS_ERR(base))
 		return PTR_ERR(base);
 
+<<<<<<< HEAD
 	if (offs->dp_serdes) {
+=======
+	if (offs->dp_serdes != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qmp->dp_serdes = base + offs->dp_serdes;
 		qmp->dp_tx = base + offs->dp_txa;
 		qmp->dp_tx2 = base + offs->dp_txb;
@@ -1982,7 +1990,11 @@ static int qmp_usbc_probe(struct platform_device *pdev)
 
 	phy_set_drvdata(qmp->usb_phy, qmp);
 
+<<<<<<< HEAD
 	if (qmp->dp_serdes) {
+=======
+	if (qmp->dp_serdes != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qmp->dp_phy = devm_phy_create(dev, np, &qmp_usbc_dp_phy_ops);
 		if (IS_ERR(qmp->dp_phy)) {
 			ret = PTR_ERR(qmp->dp_phy);

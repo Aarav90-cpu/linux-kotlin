@@ -228,7 +228,10 @@ static int spacemit_gpio_add_bank(struct spacemit_gpio *sg,
 	gc->label		= dev_name(dev);
 	gc->request		= gpiochip_generic_request;
 	gc->free		= gpiochip_generic_free;
+<<<<<<< HEAD
 	gc->set_config		= gpiochip_generic_config;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gc->ngpio		= SPACEMIT_NR_GPIOS_PER_BANK;
 	gc->base		= -1;
 	gc->of_gpio_n_cells	= 3;

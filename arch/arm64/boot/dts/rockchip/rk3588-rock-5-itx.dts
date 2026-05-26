@@ -367,6 +367,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &hdmi_receiver_cma {
 	status = "okay";
 };
@@ -379,6 +380,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &hdptxphy1 {
 	status = "okay";
 };

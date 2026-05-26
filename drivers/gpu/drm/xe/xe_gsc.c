@@ -166,7 +166,11 @@ static int query_compatibility_version(struct xe_gsc *gsc)
 				     &rd_offset);
 	if (err) {
 		xe_gt_err(gt, "HuC: invalid GSC reply for version query (err=%d)\n", err);
+<<<<<<< HEAD
 		goto out_bo;
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	compat->major = version_query_rd(xe, &bo->vmap, rd_offset, proj_major);

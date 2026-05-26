@@ -924,7 +924,10 @@ static void da7219_aad_handle_gnd_switch_time(struct snd_soc_component *componen
  * Suspend/Resume
  */
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void da7219_aad_suspend(struct snd_soc_component *component)
 {
 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
@@ -982,7 +985,11 @@ void da7219_aad_resume(struct snd_soc_component *component)
 
 	enable_irq(da7219_aad->irq);
 }
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Init/Exit

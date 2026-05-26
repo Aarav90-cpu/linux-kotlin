@@ -1124,8 +1124,12 @@ static inline void io_wq_remove_pending(struct io_wq *wq,
 	if (io_wq_is_hashed(work) && work == wq->hash_tail[hash]) {
 		if (prev)
 			prev_work = container_of(prev, struct io_wq_work, list);
+<<<<<<< HEAD
 		if (prev_work && io_wq_is_hashed(prev_work) &&
 		    io_get_work_hash(prev_work) == hash)
+=======
+		if (prev_work && io_get_work_hash(prev_work) == hash)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			wq->hash_tail[hash] = prev_work;
 		else
 			wq->hash_tail[hash] = NULL;

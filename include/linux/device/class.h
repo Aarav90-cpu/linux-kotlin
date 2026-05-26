@@ -50,8 +50,13 @@ struct fwnode_handle;
 struct class {
 	const char		*name;
 
+<<<<<<< HEAD
 	const struct attribute_group	*const *class_groups;
 	const struct attribute_group	*const *dev_groups;
+=======
+	const struct attribute_group	**class_groups;
+	const struct attribute_group	**dev_groups;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	int (*dev_uevent)(const struct device *dev, struct kobj_uevent_env *env);
 	char *(*devnode)(const struct device *dev, umode_t *mode);

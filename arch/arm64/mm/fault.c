@@ -43,7 +43,10 @@
 #include <asm/system_misc.h>
 #include <asm/tlbflush.h>
 #include <asm/traps.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct fault_info {
 	int	(*fn)(unsigned long far, unsigned long esr,
@@ -205,6 +208,7 @@ static void show_pte(unsigned long addr)
  *
  * Returns whether or not the PTE actually changed.
  */
+<<<<<<< HEAD
 int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
 				  unsigned long address, pte_t *ptep,
 				  pte_t entry, int dirty, unsigned long pgsize)
@@ -212,6 +216,14 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
 	pteval_t old_pteval, pteval;
 	pte_t pte = __ptep_get(ptep);
 	int level;
+=======
+int __ptep_set_access_flags(struct vm_area_struct *vma,
+			    unsigned long address, pte_t *ptep,
+			    pte_t entry, int dirty)
+{
+	pteval_t old_pteval, pteval;
+	pte_t pte = __ptep_get(ptep);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pte_same(pte, entry))
 		return 0;
@@ -240,6 +252,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
 	 * may still cause page faults and be invalidated via
 	 * flush_tlb_fix_spurious_fault().
 	 */
+<<<<<<< HEAD
 	if (dirty) {
 		switch (pgsize) {
 		case PAGE_SIZE:
@@ -261,6 +274,10 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
 		__flush_tlb_range(vma, address, address + pgsize, pgsize, level,
 				  TLBF_NOWALKCACHE | TLBF_NOBROADCAST);
 	}
+=======
+	if (dirty)
+		local_flush_tlb_page(vma, address);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -290,6 +307,7 @@ static inline bool is_el1_permission_fault(unsigned long addr, unsigned long esr
 	return false;
 }
 
+<<<<<<< HEAD
 static bool is_pkvm_stage2_abort(unsigned int esr)
 {
 	/*
@@ -299,6 +317,8 @@ static bool is_pkvm_stage2_abort(unsigned int esr)
 	return is_pkvm_initialized() && (esr & ESR_ELx_S1PTW);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool __kprobes is_spurious_el1_translation_fault(unsigned long addr,
 							unsigned long esr,
 							struct pt_regs *regs)
@@ -319,6 +339,7 @@ static bool __kprobes is_spurious_el1_translation_fault(unsigned long addr,
 	 * If we now have a valid translation, treat the translation fault as
 	 * spurious.
 	 */
+<<<<<<< HEAD
 	if (!(par & SYS_PAR_EL1_F)) {
 		if (is_pkvm_stage2_abort(esr)) {
 			par &= SYS_PAR_EL1_PA;
@@ -327,6 +348,10 @@ static bool __kprobes is_spurious_el1_translation_fault(unsigned long addr,
 
 		return true;
 	}
+=======
+	if (!(par & SYS_PAR_EL1_F))
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If we got a different type of fault from the AT instruction,
@@ -412,11 +437,17 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
 	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
 		return;
 
+<<<<<<< HEAD
 	if (is_spurious_el1_translation_fault(addr, esr, regs)) {
 		WARN_RATELIMIT(!is_pkvm_stage2_abort(esr),
 			"Ignoring spurious kernel translation fault at virtual address %016lx\n", addr);
 		return;
 	}
+=======
+	if (WARN_RATELIMIT(is_spurious_el1_translation_fault(addr, esr, regs),
+	    "Ignoring spurious kernel translation fault at virtual address %016lx\n", addr))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_el1_mte_sync_tag_check_fault(esr)) {
 		do_tag_recovery(addr, esr, regs);
@@ -433,8 +464,11 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
 			msg = "read from unreadable memory";
 	} else if (addr < PAGE_SIZE) {
 		msg = "NULL pointer dereference";
+<<<<<<< HEAD
 	} else if (is_pkvm_stage2_abort(esr)) {
 		msg = "access to hypervisor-protected memory";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		if (esr_fsc_is_translation_fault(esr) &&
 		    kfence_handle_page_fault(addr, esr & ESR_ELx_WNR, regs))
@@ -661,6 +695,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 					 addr, esr, regs);
 	}
 
+<<<<<<< HEAD
 	if (is_pkvm_stage2_abort(esr)) {
 		if (!user_mode(regs))
 			goto no_context;
@@ -668,6 +703,8 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
 
 	if (!(mm_flags & FAULT_FLAG_USER))

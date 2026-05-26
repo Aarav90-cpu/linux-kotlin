@@ -13,7 +13,11 @@
 #include <linux/namei.h>
 #include "internal.h"
 
+<<<<<<< HEAD
 static const struct constant_table bool_names[] = {
+=======
+const struct constant_table bool_names[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "0",		false },
 	{ "1",		true },
 	{ "false",	false },
@@ -22,6 +26,10 @@ static const struct constant_table bool_names[] = {
 	{ "yes",	true },
 	{ },
 };
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(bool_names);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct constant_table *
 __lookup_constant(const struct constant_table *tbl, const char *name)
@@ -277,6 +285,18 @@ int fs_param_is_string(struct p_log *log, const struct fs_parameter_spec *p,
 }
 EXPORT_SYMBOL(fs_param_is_string);
 
+<<<<<<< HEAD
+=======
+int fs_param_is_blob(struct p_log *log, const struct fs_parameter_spec *p,
+		     struct fs_parameter *param, struct fs_parse_result *result)
+{
+	if (param->type != fs_value_is_blob)
+		return fs_param_bad_value(log, param);
+	return 0;
+}
+EXPORT_SYMBOL(fs_param_is_blob);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int fs_param_is_fd(struct p_log *log, const struct fs_parameter_spec *p,
 		  struct fs_parameter *param, struct fs_parse_result *result)
 {
@@ -361,6 +381,16 @@ int fs_param_is_blockdev(struct p_log *log, const struct fs_parameter_spec *p,
 }
 EXPORT_SYMBOL(fs_param_is_blockdev);
 
+<<<<<<< HEAD
+=======
+int fs_param_is_path(struct p_log *log, const struct fs_parameter_spec *p,
+		     struct fs_parameter *param, struct fs_parse_result *result)
+{
+	return 0;
+}
+EXPORT_SYMBOL(fs_param_is_path);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_VALIDATE_FS_PARSER
 /**
  * fs_validate_description - Validate a parameter specification array

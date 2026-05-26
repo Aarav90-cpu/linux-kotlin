@@ -258,7 +258,11 @@ static void test_range2_rand16(struct kunit *const test)
  *
  * @number_of_ids: Number of IDs to hold.  Must be greater than one.
  *
+<<<<<<< HEAD
  * Return: The first ID in the range.
+=======
+ * Returns: The first ID in the range.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 u64 landlock_get_id_range(size_t number_of_ids)
 {

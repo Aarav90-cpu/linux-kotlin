@@ -1065,7 +1065,10 @@ static bool is_kf_implicit_arg(const struct btf *btf, const struct btf_param *p)
 {
 	static const char *const kf_implicit_arg_types[] = {
 		"bpf_prog_aux",
+<<<<<<< HEAD
 		"btf_struct_meta",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	const struct btf_type *t;
 	const char *name;

@@ -714,13 +714,20 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
 {
 	psw_t *gpsw = &vcpu->arch.sie_block->gpsw;
 	psw32_t new_psw;
+<<<<<<< HEAD
 	u64 addr, iaddr;
+=======
+	u64 addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 	u8 ar;
 
 	vcpu->stat.instruction_lpsw++;
 
+<<<<<<< HEAD
 	iaddr = gpsw->addr - kvm_s390_get_ilen(vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gpsw->mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -738,20 +745,30 @@ int kvm_s390_handle_lpsw(struct kvm_vcpu *vcpu)
 	gpsw->addr = new_psw.addr & ~PSW32_ADDR_AMODE;
 	if (!is_valid_psw(gpsw))
 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+<<<<<<< HEAD
 	vcpu->arch.sie_block->gbea = iaddr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static int handle_lpswe(struct kvm_vcpu *vcpu)
 {
 	psw_t new_psw;
+<<<<<<< HEAD
 	u64 addr, iaddr;
+=======
+	u64 addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 	u8 ar;
 
 	vcpu->stat.instruction_lpswe++;
 
+<<<<<<< HEAD
 	iaddr = vcpu->arch.sie_block->gpsw.addr - kvm_s390_get_ilen(vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
 		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
 
@@ -764,7 +781,10 @@ static int handle_lpswe(struct kvm_vcpu *vcpu)
 	vcpu->arch.sie_block->gpsw = new_psw;
 	if (!is_valid_psw(&vcpu->arch.sie_block->gpsw))
 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+<<<<<<< HEAD
 	vcpu->arch.sie_block->gbea = iaddr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

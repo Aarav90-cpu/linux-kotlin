@@ -49,13 +49,26 @@
 
 #include "idle.c"
 
+<<<<<<< HEAD
 #include "rt.c"
 #include "cpudeadline.c"
+=======
+#ifndef CONFIG_SCHED_ALT
+# include "rt.c"
+# include "cpudeadline.c"
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "pelt.c"
 
 #include "cputime.c"
+<<<<<<< HEAD
 #include "deadline.c"
+=======
+#ifndef CONFIG_SCHED_ALT
+#include "deadline.c"
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_SCHED_CLASS_EXT
 # include "ext_internal.h"

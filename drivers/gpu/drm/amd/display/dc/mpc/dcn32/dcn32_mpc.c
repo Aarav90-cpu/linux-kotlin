@@ -884,7 +884,10 @@ void mpc32_set_3dlut_mode(
 		bool is_lut_size17x17x17,
 		uint32_t mpcc_id)
 {
+<<<<<<< HEAD
 	(void)is_color_channel_12bits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t lut_mode;
 	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
 

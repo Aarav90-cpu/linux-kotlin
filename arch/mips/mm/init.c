@@ -56,7 +56,14 @@ unsigned long empty_zero_page, zero_page_mask;
 EXPORT_SYMBOL_GPL(empty_zero_page);
 EXPORT_SYMBOL(zero_page_mask);
 
+<<<<<<< HEAD
 void __init arch_setup_zero_pages(void)
+=======
+/*
+ * Not static inline because used by IP27 special magic initialization code
+ */
+static void __init setup_zero_pages(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int order;
 
@@ -447,6 +454,10 @@ void __init arch_mm_preinit(void)
 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
 
 	maar_init();
+<<<<<<< HEAD
+=======
+	setup_zero_pages();	/* Setup zeroed pages.  */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	highmem_init();
 
 #ifdef CONFIG_64BIT
@@ -457,6 +468,14 @@ void __init arch_mm_preinit(void)
 				0x80000000 - 4, KCORE_TEXT);
 #endif
 }
+<<<<<<< HEAD
+=======
+#else  /* CONFIG_NUMA */
+void __init arch_mm_preinit(void)
+{
+	setup_zero_pages();	/* This comes from node 0 */
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_NUMA */
 
 void free_init_pages(const char *what, unsigned long begin, unsigned long end)

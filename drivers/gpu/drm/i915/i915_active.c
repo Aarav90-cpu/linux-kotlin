@@ -193,7 +193,11 @@ active_retire(struct i915_active *ref)
 		return;
 
 	if (ref->flags & I915_ACTIVE_RETIRE_SLEEPS) {
+<<<<<<< HEAD
 		queue_work(system_dfl_wq, &ref->work);
+=======
+		queue_work(system_unbound_wq, &ref->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -1045,10 +1049,16 @@ __i915_active_fence_set(struct i915_active_fence *active,
 	 * nesting rules for the fence->lock; the inner lock is always the
 	 * older lock.
 	 */
+<<<<<<< HEAD
 	dma_fence_lock_irqsave(fence, flags);
 	if (prev)
 		spin_lock_nested(dma_fence_spinlock(prev),
 				 SINGLE_DEPTH_NESTING);
+=======
+	spin_lock_irqsave(fence->lock, flags);
+	if (prev)
+		spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * A does the cmpxchg first, and so it sees C or NULL, as before, or
@@ -1062,18 +1072,31 @@ __i915_active_fence_set(struct i915_active_fence *active,
 	 */
 	while (cmpxchg(__active_fence_slot(active), prev, fence) != prev) {
 		if (prev) {
+<<<<<<< HEAD
 			spin_unlock(dma_fence_spinlock(prev));
 			dma_fence_put(prev);
 		}
 		dma_fence_unlock_irqrestore(fence, flags);
+=======
+			spin_unlock(prev->lock);
+			dma_fence_put(prev);
+		}
+		spin_unlock_irqrestore(fence->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		prev = i915_active_fence_get(active);
 		GEM_BUG_ON(prev == fence);
 
+<<<<<<< HEAD
 		dma_fence_lock_irqsave(fence, flags);
 		if (prev)
 			spin_lock_nested(dma_fence_spinlock(prev),
 					 SINGLE_DEPTH_NESTING);
+=======
+		spin_lock_irqsave(fence->lock, flags);
+		if (prev)
+			spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1090,11 +1113,18 @@ __i915_active_fence_set(struct i915_active_fence *active,
 	 */
 	if (prev) {
 		__list_del_entry(&active->cb.node);
+<<<<<<< HEAD
 		/* serialise with prev->cb_list */
 		spin_unlock(dma_fence_spinlock(prev));
 	}
 	list_add_tail(&active->cb.node, &fence->cb_list);
 	dma_fence_unlock_irqrestore(fence, flags);
+=======
+		spin_unlock(prev->lock); /* serialise with prev->cb_list */
+	}
+	list_add_tail(&active->cb.node, &fence->cb_list);
+	spin_unlock_irqrestore(fence->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return prev;
 }

@@ -22,8 +22,11 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 #include <linux/reset.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
 #include <trace/events/pci_controller.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "../../pci.h"
 #include "pcie-designware.h"
@@ -75,6 +78,7 @@
 #define  PCIE_CLIENT_CDM_RASDES_TBA_L1_1	BIT(4)
 #define  PCIE_CLIENT_CDM_RASDES_TBA_L1_2	BIT(5)
 
+<<<<<<< HEAD
 /* Debug FIFO information */
 #define PCIE_CLIENT_DBG_FIFO_MODE_CON	0x310
 #define  PCIE_CLIENT_DBG_EN		0xffff0007
@@ -89,6 +93,8 @@
 #define  PCIE_DBG_FIFO_L1SUB_MASK	GENMASK(10, 8)
 #define PCIE_DBG_LTSSM_HISTORY_CNT	64
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Hot Reset Control Register */
 #define PCIE_CLIENT_HOT_RESET_CTRL	0x180
 #define  PCIE_LTSSM_APP_DLY2_EN		BIT(1)
@@ -114,7 +120,10 @@ struct rockchip_pcie {
 	struct irq_domain *irq_domain;
 	const struct rockchip_pcie_of_data *data;
 	bool supports_clkreq;
+<<<<<<< HEAD
 	struct delayed_work trace_work;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct rockchip_pcie_of_data {
@@ -225,6 +234,7 @@ static enum dw_pcie_ltssm rockchip_pcie_get_ltssm(struct dw_pcie *pci)
 	return rockchip_pcie_get_ltssm_reg(rockchip) & PCIE_LTSSM_STATUS_MASK;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_TRACING
 static void rockchip_pcie_ltssm_trace_work(struct work_struct *work)
 {
@@ -315,6 +325,8 @@ static void rockchip_pcie_ltssm_trace(struct rockchip_pcie *rockchip,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rockchip_pcie_enable_ltssm(struct rockchip_pcie *rockchip)
 {
 	rockchip_pcie_writel_apb(rockchip, PCIE_CLIENT_ENABLE_LTSSM,
@@ -398,9 +410,12 @@ static int rockchip_pcie_start_link(struct dw_pcie *pci)
 	 * 100us as we don't know how long should the device need to reset.
 	 */
 	msleep(PCIE_T_PVPERL_MS);
+<<<<<<< HEAD
 
 	rockchip_pcie_ltssm_trace(rockchip, true);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpiod_set_value_cansleep(rockchip->rst_gpio, 1);
 
 	return 0;
@@ -411,7 +426,10 @@ static void rockchip_pcie_stop_link(struct dw_pcie *pci)
 	struct rockchip_pcie *rockchip = to_rockchip_pcie(pci);
 
 	rockchip_pcie_disable_ltssm(rockchip);
+<<<<<<< HEAD
 	rockchip_pcie_ltssm_trace(rockchip, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
@@ -472,9 +490,19 @@ static void rockchip_pcie_ep_hide_broken_ats_cap_rk3588(struct dw_pcie_ep *ep)
 static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
 {
 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+<<<<<<< HEAD
 
 	rockchip_pcie_enable_l0s(pci);
 	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
+=======
+	enum pci_barno bar;
+
+	rockchip_pcie_enable_l0s(pci);
+	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
+
+	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
+		dw_pcie_ep_reset_bar(pci, bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int rockchip_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
@@ -510,6 +538,7 @@ static const struct pci_epc_features rockchip_pcie_epc_features_rk3568 = {
 	.bar[BAR_5] = { .type = BAR_RESIZABLE, },
 };
 
+<<<<<<< HEAD
 static const struct pci_epc_bar_rsvd_region rk3588_bar4_rsvd[] = {
 	{
 		/* DMA_CAP (BAR4: DMA Port Logic Structure) */
@@ -523,6 +552,14 @@ static const struct pci_epc_bar_rsvd_region rk3588_bar4_rsvd[] = {
  * BAR4 on rk3588 exposes the ATU Port Logic Structure to the host regardless of
  * iATU settings for BAR4. This means that BAR4 cannot be used by an EPF driver,
  * so mark it as RESERVED.
+=======
+/*
+ * BAR4 on rk3588 exposes the ATU Port Logic Structure to the host regardless of
+ * iATU settings for BAR4. This means that BAR4 cannot be used by an EPF driver,
+ * so mark it as RESERVED. (rockchip_pcie_ep_init() will disable all BARs by
+ * default.) If the host could write to BAR4, the iATU settings (for all other
+ * BARs) would be overwritten, resulting in (all other BARs) no longer working.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static const struct pci_epc_features rockchip_pcie_epc_features_rk3588 = {
 	DWC_EPC_COMMON_FEATURES,
@@ -534,11 +571,15 @@ static const struct pci_epc_features rockchip_pcie_epc_features_rk3588 = {
 	.bar[BAR_1] = { .type = BAR_RESIZABLE, },
 	.bar[BAR_2] = { .type = BAR_RESIZABLE, },
 	.bar[BAR_3] = { .type = BAR_RESIZABLE, },
+<<<<<<< HEAD
 	.bar[BAR_4] = {
 		.type = BAR_RESERVED,
 		.nr_rsvd_regions = ARRAY_SIZE(rk3588_bar4_rsvd),
 		.rsvd_regions = rk3588_bar4_rsvd,
 	},
+=======
+	.bar[BAR_4] = { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.bar[BAR_5] = { .type = BAR_RESIZABLE, },
 };
 

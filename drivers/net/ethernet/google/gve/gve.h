@@ -79,6 +79,11 @@
 
 #define GVE_DEFAULT_HEADER_BUFFER_SIZE 128
 
+<<<<<<< HEAD
+=======
+#define DQO_QPL_DEFAULT_TX_PAGES 512
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Maximum TSO size supported on DQO */
 #define GVE_DQO_TX_MAX	0x3FFFF
 
@@ -709,7 +714,10 @@ struct gve_ptype_lut {
 /* Parameters for allocating resources for tx queues */
 struct gve_tx_alloc_rings_cfg {
 	struct gve_tx_queue_config *qcfg;
+<<<<<<< HEAD
 	u16 pages_per_qpl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u16 num_xdp_rings;
 
@@ -725,7 +733,10 @@ struct gve_rx_alloc_rings_cfg {
 	/* tx config is also needed to determine QPL ids */
 	struct gve_rx_queue_config *qcfg_rx;
 	struct gve_tx_queue_config *qcfg_tx;
+<<<<<<< HEAD
 	u16 pages_per_qpl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u16 ring_size;
 	u16 packet_buffer_size;
@@ -816,8 +827,12 @@ struct gve_priv {
 	u16 min_rx_desc_cnt;
 	bool modify_ring_size_enabled;
 	bool default_min_ring_size;
+<<<<<<< HEAD
 	u16 tx_pages_per_qpl;
 	u16 rx_pages_per_qpl;
+=======
+	u16 tx_pages_per_qpl; /* Suggested number of pages per qpl for TX queues by NIC */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 max_registered_pages;
 	u64 num_registered_pages; /* num pages registered with NIC */
 	struct bpf_prog *xdp_prog; /* XDP BPF program */
@@ -1151,6 +1166,17 @@ static inline u32 gve_rx_start_qpl_id(const struct gve_tx_queue_config *tx_cfg)
 	return gve_get_rx_qpl_id(tx_cfg, 0);
 }
 
+<<<<<<< HEAD
+=======
+static inline u32 gve_get_rx_pages_per_qpl_dqo(u32 rx_desc_cnt)
+{
+	/* For DQO, page count should be more than ring size for
+	 * out-of-order completions. Set it to two times of ring size.
+	 */
+	return 2 * rx_desc_cnt;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Returns the correct dma direction for tx and rx qpls */
 static inline enum dma_data_direction gve_qpl_dma_dir(struct gve_priv *priv,
 						      int id)
@@ -1301,9 +1327,12 @@ int gve_reset(struct gve_priv *priv, bool attempt_teardown);
 void gve_get_curr_alloc_cfgs(struct gve_priv *priv,
 			     struct gve_tx_alloc_rings_cfg *tx_alloc_cfg,
 			     struct gve_rx_alloc_rings_cfg *rx_alloc_cfg);
+<<<<<<< HEAD
 void gve_update_num_qpl_pages(struct gve_priv *priv,
 			      struct gve_rx_alloc_rings_cfg *rx_alloc_cfg,
 			      struct gve_tx_alloc_rings_cfg *tx_alloc_cfg);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int gve_adjust_config(struct gve_priv *priv,
 		      struct gve_tx_alloc_rings_cfg *tx_alloc_cfg,
 		      struct gve_rx_alloc_rings_cfg *rx_alloc_cfg);

@@ -62,11 +62,16 @@
 			pll-supply = <&vdd_1v8_vio>;
 			vdd-supply = <&vdd_3v3_sys>;
 
+<<<<<<< HEAD
 			port {
 				hdmi_out: endpoint {
 					remote-endpoint = <&hdmi_connector_in>;
 				};
 			};
+=======
+			nvidia,hpd-gpio = <&gpio TEGRA_GPIO(N, 7) GPIO_ACTIVE_HIGH>;
+			nvidia,ddc-i2c-bus = <&hdmi_ddc>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 
@@ -2177,6 +2182,7 @@
 		clock-output-names = "pmic-oscillator";
 	};
 
+<<<<<<< HEAD
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		type = "d";
@@ -2191,6 +2197,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpus {
 		cpu0: cpu@0 {
 			cpu-supply = <&vdd_cpu>;

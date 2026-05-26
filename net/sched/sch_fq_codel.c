@@ -117,7 +117,11 @@ static inline struct sk_buff *dequeue_head(struct fq_codel_flow *flow)
 {
 	struct sk_buff *skb = flow->head;
 
+<<<<<<< HEAD
 	WRITE_ONCE(flow->head, skb->next);
+=======
+	flow->head = skb->next;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb_mark_not_on_list(skb);
 	return skb;
 }
@@ -127,7 +131,11 @@ static inline void flow_queue_add(struct fq_codel_flow *flow,
 				  struct sk_buff *skb)
 {
 	if (flow->head == NULL)
+<<<<<<< HEAD
 		WRITE_ONCE(flow->head, skb);
+=======
+		flow->head = skb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		flow->tail->next = skb;
 	flow->tail = skb;
@@ -168,13 +176,22 @@ static unsigned int fq_codel_drop(struct Qdisc *sch, unsigned int max_packets,
 		skb = dequeue_head(flow);
 		len += qdisc_pkt_len(skb);
 		mem += get_codel_cb(skb)->mem_usage;
+<<<<<<< HEAD
 		tcf_set_qdisc_drop_reason(skb, QDISC_DROP_OVERLIMIT);
+=======
+		tcf_set_drop_reason(skb, SKB_DROP_REASON_QDISC_OVERLIMIT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__qdisc_drop(skb, to_free);
 	} while (++i < max_packets && len < threshold);
 
 	/* Tell codel to increase its signal strength also */
+<<<<<<< HEAD
 	WRITE_ONCE(flow->cvars.count, flow->cvars.count + i);
 	WRITE_ONCE(q->backlogs[idx], q->backlogs[idx] - len);
+=======
+	flow->cvars.count += i;
+	q->backlogs[idx] -= len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->memory_usage -= mem;
 	sch->qstats.drops += i;
 	sch->qstats.backlog -= len;
@@ -204,13 +221,21 @@ static int fq_codel_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 	codel_set_enqueue_time(skb);
 	flow = &q->flows[idx];
 	flow_queue_add(flow, skb);
+<<<<<<< HEAD
 	WRITE_ONCE(q->backlogs[idx], q->backlogs[idx] + qdisc_pkt_len(skb));
+=======
+	q->backlogs[idx] += qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qdisc_qstats_backlog_inc(sch, skb);
 
 	if (list_empty(&flow->flowchain)) {
 		list_add_tail(&flow->flowchain, &q->new_flows);
 		q->new_flow_count++;
+<<<<<<< HEAD
 		WRITE_ONCE(flow->deficit, q->quantum);
+=======
+		flow->deficit = q->quantum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	get_codel_cb(skb)->mem_usage = skb->truesize;
 	q->memory_usage += get_codel_cb(skb)->mem_usage;
@@ -263,8 +288,12 @@ static struct sk_buff *dequeue_func(struct codel_vars *vars, void *ctx)
 	flow = container_of(vars, struct fq_codel_flow, cvars);
 	if (flow->head) {
 		skb = dequeue_head(flow);
+<<<<<<< HEAD
 		WRITE_ONCE(q->backlogs[flow - q->flows],
 			   q->backlogs[flow - q->flows] - qdisc_pkt_len(skb));
+=======
+		q->backlogs[flow - q->flows] -= qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		q->memory_usage -= get_codel_cb(skb)->mem_usage;
 		sch->q.qlen--;
 		sch->qstats.backlog -= qdisc_pkt_len(skb);
@@ -276,7 +305,11 @@ static void drop_func(struct sk_buff *skb, void *ctx)
 {
 	struct Qdisc *sch = ctx;
 
+<<<<<<< HEAD
 	qdisc_dequeue_drop(sch, skb, QDISC_DROP_CONGESTED);
+=======
+	qdisc_dequeue_drop(sch, skb, SKB_DROP_REASON_QDISC_CONGESTED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qdisc_qstats_drop(sch);
 }
 
@@ -297,7 +330,11 @@ begin:
 	flow = list_first_entry(head, struct fq_codel_flow, flowchain);
 
 	if (flow->deficit <= 0) {
+<<<<<<< HEAD
 		WRITE_ONCE(flow->deficit, flow->deficit + q->quantum);
+=======
+		flow->deficit += q->quantum;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_move_tail(&flow->flowchain, &q->old_flows);
 		goto begin;
 	}
@@ -315,7 +352,11 @@ begin:
 		goto begin;
 	}
 	qdisc_bstats_update(sch, skb);
+<<<<<<< HEAD
 	WRITE_ONCE(flow->deficit, flow->deficit - qdisc_pkt_len(skb));
+=======
+	flow->deficit -= qdisc_pkt_len(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (q->cstats.drop_count) {
 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
@@ -329,7 +370,11 @@ begin:
 static void fq_codel_flow_purge(struct fq_codel_flow *flow)
 {
 	rtnl_kfree_skbs(flow->head, flow->tail);
+<<<<<<< HEAD
 	WRITE_ONCE(flow->head, NULL);
+=======
+	flow->head = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void fq_codel_reset(struct Qdisc *sch)
@@ -586,8 +631,11 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 	};
 	struct list_head *pos;
 
+<<<<<<< HEAD
 	sch_tree_lock(sch);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
@@ -596,6 +644,10 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 	st.qdisc_stats.memory_usage  = q->memory_usage;
 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
 
+<<<<<<< HEAD
+=======
+	sch_tree_lock(sch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each(pos, &q->new_flows)
 		st.qdisc_stats.new_flows_len++;
 
@@ -657,6 +709,7 @@ static int fq_codel_dump_class_stats(struct Qdisc *sch, unsigned long cl,
 
 		memset(&xstats, 0, sizeof(xstats));
 		xstats.type = TCA_FQ_CODEL_XSTATS_CLASS;
+<<<<<<< HEAD
 		xstats.class_stats.deficit = READ_ONCE(flow->deficit);
 		xstats.class_stats.ldelay =
 			codel_time_to_us(READ_ONCE(flow->cvars.ldelay));
@@ -665,13 +718,27 @@ static int fq_codel_dump_class_stats(struct Qdisc *sch, unsigned long cl,
 		xstats.class_stats.dropping = READ_ONCE(flow->cvars.dropping);
 		if (xstats.class_stats.dropping) {
 			codel_tdiff_t delta = READ_ONCE(flow->cvars.drop_next) -
+=======
+		xstats.class_stats.deficit = flow->deficit;
+		xstats.class_stats.ldelay =
+			codel_time_to_us(flow->cvars.ldelay);
+		xstats.class_stats.count = flow->cvars.count;
+		xstats.class_stats.lastcount = flow->cvars.lastcount;
+		xstats.class_stats.dropping = flow->cvars.dropping;
+		if (flow->cvars.dropping) {
+			codel_tdiff_t delta = flow->cvars.drop_next -
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      codel_get_time();
 
 			xstats.class_stats.drop_next = (delta >= 0) ?
 				codel_time_to_us(delta) :
 				-codel_time_to_us(-delta);
 		}
+<<<<<<< HEAD
 		if (READ_ONCE(flow->head)) {
+=======
+		if (flow->head) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sch_tree_lock(sch);
 			skb = flow->head;
 			while (skb) {
@@ -680,7 +747,11 @@ static int fq_codel_dump_class_stats(struct Qdisc *sch, unsigned long cl,
 			}
 			sch_tree_unlock(sch);
 		}
+<<<<<<< HEAD
 		qs.backlog = READ_ONCE(q->backlogs[idx]);
+=======
+		qs.backlog = q->backlogs[idx];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		qs.drops = 0;
 	}
 	if (gnet_stats_copy_queue(d, NULL, &qs, qs.qlen) < 0)

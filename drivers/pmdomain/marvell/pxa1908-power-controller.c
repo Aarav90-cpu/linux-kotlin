@@ -24,15 +24,22 @@
 #define APMU_DEBUG		0x88
 #define DSI_PHY_DVM_MASK	BIT(31)
 
+<<<<<<< HEAD
 #define APMU_AUDIO_CLK		0x80
 #define AUDIO_ULCX_ENABLE	0x0d
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define POWER_ON_LATENCY_US	300
 #define POWER_OFF_LATENCY_US	20
 #define POWER_POLL_TIMEOUT_US	(25 * USEC_PER_MSEC)
 #define POWER_POLL_SLEEP_US	6
 
+<<<<<<< HEAD
 #define NR_DOMAINS	6
+=======
+#define NR_DOMAINS	5
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define to_pxa1908_pd(_genpd) container_of(_genpd, struct pxa1908_pd, genpd)
 
@@ -62,6 +69,7 @@ static inline bool pxa1908_pd_is_on(struct pxa1908_pd *pd)
 {
 	struct pxa1908_pd_ctrl *ctrl = pd->ctrl;
 
+<<<<<<< HEAD
 	switch (pd->data.id) {
 	case PXA1908_POWER_DOMAIN_AUDIO:
 		return regmap_test_bits(ctrl->base, APMU_AUDIO_CLK, AUDIO_ULCX_ENABLE);
@@ -70,6 +78,11 @@ static inline bool pxa1908_pd_is_on(struct pxa1908_pd *pd)
 	default:
 		return regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state);
 	}
+=======
+	return pd->data.id != PXA1908_POWER_DOMAIN_DSI
+		? regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state)
+		: regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pxa1908_pd_power_on(struct generic_pm_domain *genpd)
@@ -131,6 +144,7 @@ static inline int pxa1908_dsi_power_off(struct generic_pm_domain *genpd)
 	return regmap_clear_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
 }
 
+<<<<<<< HEAD
 static inline int pxa1908_audio_power_on(struct generic_pm_domain *genpd)
 {
 	struct pxa1908_pd *pd = to_pxa1908_pd(genpd);
@@ -147,6 +161,8 @@ static inline int pxa1908_audio_power_off(struct generic_pm_domain *genpd)
 	return regmap_clear_bits(ctrl->base, APMU_AUDIO_CLK, AUDIO_ULCX_ENABLE);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DOMAIN(_id, _name, ctrl, mode, state) \
 	[_id] = { \
 		.data = { \
@@ -183,6 +199,7 @@ static struct pxa1908_pd domains[NR_DOMAINS] = {
 			.keep_on = true,
 		},
 	},
+<<<<<<< HEAD
 	[PXA1908_POWER_DOMAIN_AUDIO] = {
 		.genpd = {
 			.name = "audio",
@@ -190,6 +207,8 @@ static struct pxa1908_pd domains[NR_DOMAINS] = {
 			.power_off = pxa1908_audio_power_off,
 		},
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void pxa1908_pd_remove(struct auxiliary_device *auxdev)

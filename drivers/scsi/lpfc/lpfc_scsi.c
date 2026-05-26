@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -1938,7 +1942,11 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 	uint32_t dma_len;
 	uint32_t dma_offset = 0;
 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
+<<<<<<< HEAD
 	int j, k;
+=======
+	int j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool lsp_just_set = false;
 
 	status  = lpfc_sc_to_bg_opcodes(phba, sc, &txop, &rxop);
@@ -2001,16 +2009,25 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 	/* assumption: caller has already run dma_map_sg on command data */
 	sgde = scsi_sglist(sc);
 	j = 3;
+<<<<<<< HEAD
 	k = 5;
 	if (unlikely(!phba->cfg_xpsgl))
 		k = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < datasegcnt; i++) {
 		/* clear it */
 		sgl->word2 = 0;
 
+<<<<<<< HEAD
 		/* do we need to expand the segment? */
 		if (!lsp_just_set && (datasegcnt != (i + k)) &&
 		    !((j + k) % phba->border_sge_num)) {
+=======
+		/* do we need to expand the segment */
+		if (!lsp_just_set && !((j + 1) % phba->border_sge_num) &&
+		    ((datasegcnt - 1) != i)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* set LSP type */
 			bf_set(lpfc_sli4_sge_type, sgl, LPFC_SGE_TYPE_LSP);
 
@@ -2029,7 +2046,11 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 			bf_set(lpfc_sli4_sge_type, sgl, LPFC_SGE_TYPE_DATA);
 		}
 
+<<<<<<< HEAD
 		if (bf_get(lpfc_sli4_sge_type, sgl) != LPFC_SGE_TYPE_LSP) {
+=======
+		if (!(bf_get(lpfc_sli4_sge_type, sgl) & LPFC_SGE_TYPE_LSP)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if ((datasegcnt - 1) == i)
 				bf_set(lpfc_sli4_sge_last, sgl, 1);
 			physaddr = sg_dma_address(sgde);
@@ -2046,6 +2067,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 
 			sgl++;
 			num_sge++;
+<<<<<<< HEAD
 			j++;
 			lsp_just_set = false;
 		} else {
@@ -2063,6 +2085,22 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 			lsp_just_set = true;
 			k = 1;
 		}
+=======
+			lsp_just_set = false;
+
+		} else {
+			sgl->word2 = cpu_to_le32(sgl->word2);
+			sgl->sge_len = cpu_to_le32(phba->cfg_sg_dma_buf_size);
+
+			sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
+			i = i - 1;
+
+			lsp_just_set = true;
+		}
+
+		j++;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:
@@ -2115,7 +2153,10 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 	struct scatterlist *sgde = NULL; /* s/g data entry */
 	struct scatterlist *sgpe = NULL; /* s/g prot entry */
 	struct sli4_sge_diseed *diseed = NULL;
+<<<<<<< HEAD
 	struct sli4_sge_le *lsp_sgl = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_addr_t dataphysaddr, protphysaddr;
 	unsigned short curr_prot = 0;
 	unsigned int split_offset;
@@ -2132,8 +2173,13 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 	uint32_t rc;
 #endif
 	uint32_t checking = 1;
+<<<<<<< HEAD
 	uint32_t dma_offset = 0, num_sge = 0, lsp_len;
 	int j = 2, k = 4;
+=======
+	uint32_t dma_offset = 0, num_sge = 0;
+	int j = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
 
 	sgpe = scsi_prot_sglist(sc);
@@ -2164,8 +2210,11 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 	}
 #endif
 
+<<<<<<< HEAD
 	if (unlikely(!phba->cfg_xpsgl))
 		k = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	split_offset = 0;
 	do {
 		/* Check to see if we ran out of space */
@@ -2173,10 +2222,17 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 		    !(phba->cfg_xpsgl))
 			return num_sge + 3;
 
+<<<<<<< HEAD
 		/* DISEED and DIF have to be together  */
 		if (!((j + k + 1) % phba->border_sge_num) ||
 		    !((j + k + 2) % phba->border_sge_num) ||
 		    !((j + k + 3) % phba->border_sge_num)) {
+=======
+		/* DISEED and DIF have to be together */
+		if (!((j + 1) % phba->border_sge_num) ||
+		    !((j + 2) % phba->border_sge_num) ||
+		    !((j + 3) % phba->border_sge_num)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sgl->word2 = 0;
 
 			/* set LSP type */
@@ -2195,6 +2251,7 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 
 			sgl->word2 = cpu_to_le32(sgl->word2);
 			sgl->sge_len = cpu_to_le32(phba->cfg_sg_dma_buf_size);
+<<<<<<< HEAD
 			if (lsp_sgl) {
 				j++;
 				if (j % phba->border_sge_num) {
@@ -2207,6 +2264,11 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 			sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
 			j = 0;
 			k = 0;
+=======
+
+			sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
+			j = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* setup DISEED with what we have */
@@ -2309,7 +2371,11 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 				return 0;
 			}
 
+<<<<<<< HEAD
 			if (!((j + k + 1) % phba->border_sge_num)) {
+=======
+			if (!((j + 1) % phba->border_sge_num)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				sgl->word2 = 0;
 
 				/* set LSP type */
@@ -2331,11 +2397,16 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 				sgl->word2 = cpu_to_le32(sgl->word2);
 				sgl->sge_len = cpu_to_le32(
 						     phba->cfg_sg_dma_buf_size);
+<<<<<<< HEAD
 				lsp_sgl = (struct sli4_sge_le *)sgl;
 
 				sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
 				j = 0;
 				k = 0;
+=======
+
+				sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				dataphysaddr = sg_dma_address(sgde) +
 								   split_offset;
@@ -2383,9 +2454,17 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 
 				/* Move to the next s/g segment if possible */
 				sgde = sg_next(sgde);
+<<<<<<< HEAD
 				sgl++;
 				j++;
 			}
+=======
+
+				sgl++;
+			}
+
+			j++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (protgroup_offset) {
@@ -2400,6 +2479,7 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 			sgl--;
 			bf_set(lpfc_sli4_sge_last, sgl, 1);
 			alldone = 1;
+<<<<<<< HEAD
 
 			/* Reset length in previous LSP where necessary */
 			if (lsp_sgl) {
@@ -2408,6 +2488,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 					lsp_sgl->sge_len = cpu_to_le32(lsp_len);
 				}
 			}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (curr_prot < protcnt) {
 			/* advance to next prot buffer */
 			sgpe = sg_next(sgpe);
@@ -2419,6 +2501,10 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
 			lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
 					"9085 BLKGRD: bug in %s\n", __func__);
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} while (!alldone);
 
 out:
@@ -3076,13 +3162,22 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 	struct scatterlist *sgel = NULL;
 	struct fcp_cmnd *fcp_cmnd = lpfc_cmd->fcp_cmnd;
 	struct sli4_sge *sgl = (struct sli4_sge *)lpfc_cmd->dma_sgl;
+<<<<<<< HEAD
+=======
+	struct sli4_sge *first_data_sgl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct lpfc_iocbq *pwqeq = &lpfc_cmd->cur_iocbq;
 	struct lpfc_vport *vport = phba->pport;
 	union lpfc_wqe128 *wqe = &pwqeq->wqe;
 	dma_addr_t physaddr;
 	uint32_t dma_len;
 	uint32_t dma_offset = 0;
+<<<<<<< HEAD
 	int nseg, i, j, k;
+=======
+	int nseg, i, j;
+	struct ulp_bde64 *bde;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool lsp_just_set = false;
 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
 
@@ -3109,6 +3204,10 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 		bf_set(lpfc_sli4_sge_last, sgl, 0);
 		sgl->word2 = cpu_to_le32(sgl->word2);
 		sgl += 1;
+<<<<<<< HEAD
+=======
+		first_data_sgl = sgl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpfc_cmd->seg_cnt = nseg;
 		if (!phba->cfg_xpsgl &&
 		    lpfc_cmd->seg_cnt > phba->cfg_sg_seg_cnt) {
@@ -3137,9 +3236,12 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 		/* for tracking segment boundaries */
 		sgel = scsi_sglist(scsi_cmnd);
 		j = 2;
+<<<<<<< HEAD
 		k = 5;
 		if (unlikely(!phba->cfg_xpsgl))
 			k = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < nseg; i++) {
 			sgl->word2 = 0;
 			if (nseg == 1) {
@@ -3150,8 +3252,14 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 				bf_set(lpfc_sli4_sge_last, sgl, 0);
 
 				/* do we need to expand the segment */
+<<<<<<< HEAD
 				if (!lsp_just_set && (nseg != (i + k)) &&
 				    !((j + k) % phba->border_sge_num)) {
+=======
+				if (!lsp_just_set &&
+				    !((j + 1) % phba->border_sge_num) &&
+				    ((nseg - 1) != i)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					/* set LSP type */
 					bf_set(lpfc_sli4_sge_type, sgl,
 					       LPFC_SGE_TYPE_LSP);
@@ -3175,8 +3283,13 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 				}
 			}
 
+<<<<<<< HEAD
 			if (bf_get(lpfc_sli4_sge_type, sgl) !=
 			    LPFC_SGE_TYPE_LSP) {
+=======
+			if (!(bf_get(lpfc_sli4_sge_type, sgl) &
+				     LPFC_SGE_TYPE_LSP)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				if ((nseg - 1) == i)
 					bf_set(lpfc_sli4_sge_last, sgl, 1);
 
@@ -3196,6 +3309,7 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 
 				sgl++;
 				lsp_just_set = false;
+<<<<<<< HEAD
 				j++;
 			} else {
 				sgl->word2 = cpu_to_le32(sgl->word2);
@@ -3207,13 +3321,51 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 				else
 					sgl->sge_len =
 						cpu_to_le32(phba->cfg_sg_dma_buf_size);
+=======
+
+			} else {
+				sgl->word2 = cpu_to_le32(sgl->word2);
+				sgl->sge_len = cpu_to_le32(
+						     phba->cfg_sg_dma_buf_size);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				sgl = (struct sli4_sge *)sgl_xtra->dma_sgl;
 				i = i - 1;
 
 				lsp_just_set = true;
+<<<<<<< HEAD
 				j += k;
 				k = 1;
 			}
+=======
+			}
+
+			j++;
+		}
+
+		/* PBDE support for first data SGE only.
+		 * For FCoE, we key off Performance Hints.
+		 * For FC, we key off lpfc_enable_pbde.
+		 */
+		if (nseg == 1 &&
+		    ((phba->sli3_options & LPFC_SLI4_PERFH_ENABLED) ||
+		     phba->cfg_enable_pbde)) {
+			/* Words 13-15 */
+			bde = (struct ulp_bde64 *)
+				&wqe->words[13];
+			bde->addrLow = first_data_sgl->addr_lo;
+			bde->addrHigh = first_data_sgl->addr_hi;
+			bde->tus.f.bdeSize =
+					le32_to_cpu(first_data_sgl->sge_len);
+			bde->tus.f.bdeFlags = BUFF_TYPE_BDE_64;
+			bde->tus.w = cpu_to_le32(bde->tus.w);
+
+			/* Word 11 - set PBDE bit */
+			bf_set(wqe_pbde, &wqe->generic.wqe_com, 1);
+		} else {
+			memset(&wqe->words[13], 0, (sizeof(uint32_t) * 3));
+			/* Word 11 - PBDE bit disabled by default template */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		sgl += 1;
@@ -3221,6 +3373,16 @@ lpfc_scsi_prep_dma_buf_s4(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
 		sgl->word2 = le32_to_cpu(sgl->word2);
 		bf_set(lpfc_sli4_sge_last, sgl, 1);
 		sgl->word2 = cpu_to_le32(sgl->word2);
+<<<<<<< HEAD
+=======
+
+		if ((phba->sli3_options & LPFC_SLI4_PERFH_ENABLED) ||
+		    phba->cfg_enable_pbde) {
+			bde = (struct ulp_bde64 *)
+				&wqe->words[13];
+			memset(bde, 0, (sizeof(uint32_t) * 3));
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -4664,7 +4826,11 @@ static int lpfc_scsi_prep_cmnd_buf_s3(struct lpfc_vport *vport,
 	else
 		piocbq->iocb.ulpFCP2Rcvy = 0;
 
+<<<<<<< HEAD
 	piocbq->iocb.ulpClass = (pnode->nlp_fcp_info & NLP_FCP_CLASS_MASK);
+=======
+	piocbq->iocb.ulpClass = (pnode->nlp_fcp_info & 0x0f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	piocbq->io_buf  = lpfc_cmd;
 	if (!piocbq->cmd_cmpl)
 		piocbq->cmd_cmpl = lpfc_scsi_cmd_iocb_cmpl;
@@ -4776,7 +4942,11 @@ static int lpfc_scsi_prep_cmnd_buf_s4(struct lpfc_vport *vport,
 		bf_set(wqe_erp, &wqe->generic.wqe_com, 1);
 
 	bf_set(wqe_class, &wqe->generic.wqe_com,
+<<<<<<< HEAD
 	       (pnode->nlp_fcp_info & NLP_FCP_CLASS_MASK));
+=======
+	       (pnode->nlp_fcp_info & 0x0f));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	 /* Word 8 */
 	wqe->generic.wqe_com.abort_tag = pwqeq->iotag;
@@ -4876,7 +5046,11 @@ lpfc_scsi_prep_task_mgmt_cmd_s3(struct lpfc_vport *vport,
 	piocb->ulpCommand = CMD_FCP_ICMND64_CR;
 	piocb->ulpContext = ndlp->nlp_rpi;
 	piocb->ulpFCP2Rcvy = (ndlp->nlp_fcp_info & NLP_FCP_2_DEVICE) ? 1 : 0;
+<<<<<<< HEAD
 	piocb->ulpClass = (ndlp->nlp_fcp_info & NLP_FCP_CLASS_MASK);
+=======
+	piocb->ulpClass = (ndlp->nlp_fcp_info & 0x0f);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	piocb->ulpPU = 0;
 	piocb->un.fcpi.fcpi_parm = 0;
 
@@ -4944,7 +5118,11 @@ lpfc_scsi_prep_task_mgmt_cmd_s4(struct lpfc_vport *vport,
 	bf_set(wqe_erp, &wqe->fcp_icmd.wqe_com,
 	       ((ndlp->nlp_fcp_info & NLP_FCP_2_DEVICE) ? 1 : 0));
 	bf_set(wqe_class, &wqe->fcp_icmd.wqe_com,
+<<<<<<< HEAD
 	       (ndlp->nlp_fcp_info & NLP_FCP_CLASS_MASK));
+=======
+	       (ndlp->nlp_fcp_info & 0x0f));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* ulpTimeout is only one byte */
 	if (lpfc_cmd->timeout > 0xff) {

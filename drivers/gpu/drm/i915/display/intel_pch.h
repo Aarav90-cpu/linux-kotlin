@@ -52,6 +52,9 @@ enum intel_pch {
 #define HAS_PCH_SPLIT(display)			(INTEL_PCH_TYPE(display) != PCH_NONE)
 
 void intel_pch_detect(struct intel_display *display);
+<<<<<<< HEAD
 void intel_pch_init_clock_gating(struct intel_display *display);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __INTEL_PCH__ */

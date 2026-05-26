@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <test_progs.h>
 #include "get_func_args_test.skel.h"
+<<<<<<< HEAD
 #include "get_func_args_fsession_test.skel.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void test_get_func_args_test(void)
 {
@@ -42,10 +45,15 @@ void test_get_func_args_test(void)
 	ASSERT_EQ(skel->bss->test4_result, 1, "test4_result");
 	ASSERT_EQ(skel->bss->test5_result, 1, "test5_result");
 	ASSERT_EQ(skel->bss->test6_result, 1, "test6_result");
+<<<<<<< HEAD
+=======
+	ASSERT_EQ(skel->bss->test7_result, 1, "test7_result");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 cleanup:
 	get_func_args_test__destroy(skel);
 }
+<<<<<<< HEAD
 
 void test_get_func_args_fsession_test(void)
 {
@@ -69,3 +77,5 @@ void test_get_func_args_fsession_test(void)
 cleanup:
 	get_func_args_fsession_test__destroy(skel);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -11,8 +11,11 @@ use core::mem::{
 };
 use core::num::NonZero;
 
+<<<<<<< HEAD
 use crate::const_assert;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Type representing an alignment, which is always a power of two.
 ///
 /// It is used to validate that a given value is a valid alignment, and to perform masking and
@@ -46,10 +49,19 @@ impl Alignment {
     /// ```
     #[inline(always)]
     pub const fn new<const ALIGN: usize>() -> Self {
+<<<<<<< HEAD
         const_assert!(
             ALIGN.is_power_of_two(),
             "Provided alignment is not a power of two."
         );
+=======
+        const {
+            assert!(
+                ALIGN.is_power_of_two(),
+                "Provided alignment is not a power of two."
+            );
+        }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // INVARIANT: `align` is a power of two.
         // SAFETY: `align` is a power of two, and thus non-zero.
@@ -87,6 +99,10 @@ impl Alignment {
     /// This is equivalent to [`align_of`], but with the return value provided as an [`Alignment`].
     #[inline(always)]
     pub const fn of<T>() -> Self {
+<<<<<<< HEAD
+=======
+        #![allow(clippy::incompatible_msrv)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // This cannot panic since alignments are always powers of two.
         //
         // We unfortunately cannot use `new` as it would require the `generic_const_exprs` feature.
@@ -252,6 +268,7 @@ impl<T> KnownSize for [T] {
         p.len() * size_of::<T>()
     }
 }
+<<<<<<< HEAD
 
 /// Aligns `value` up to `align`.
 ///
@@ -281,3 +298,5 @@ pub const fn const_align_up(value: usize, align: Alignment) -> Option<usize> {
         None => None,
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

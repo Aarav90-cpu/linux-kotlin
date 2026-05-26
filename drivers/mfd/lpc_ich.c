@@ -45,7 +45,10 @@
 #include <linux/acpi.h>
 #include <linux/pci.h>
 #include <linux/pinctrl/pinctrl.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mfd/core.h>
 #include <linux/mfd/lpc_ich.h>
 #include <linux/platform_data/itco_wdt.h>
@@ -126,17 +129,23 @@ static struct mfd_cell lpc_ich_wdt_cell = {
 	.ignore_resource_conflicts = true,
 };
 
+<<<<<<< HEAD
 const struct software_node lpc_ich_gpio_swnode = {
 	.name = "gpio_ich",
 };
 EXPORT_SYMBOL_NS(lpc_ich_gpio_swnode, "LPC_ICH");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct mfd_cell lpc_ich_gpio_cell = {
 	.name = "gpio_ich",
 	.num_resources = ARRAY_SIZE(gpio_ich_res),
 	.resources = gpio_ich_res,
 	.ignore_resource_conflicts = true,
+<<<<<<< HEAD
 	.swnode = &lpc_ich_gpio_swnode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define INTEL_GPIO_RESOURCE_SIZE	0x1000

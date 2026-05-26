@@ -159,9 +159,12 @@ enum offs_rev {
 #define MT_MDP_BASE				0x820cc000
 #define MT_MDP(ofs)				(MT_MDP_BASE + (ofs))
 
+<<<<<<< HEAD
 #define MT_MDP_DCR0				MT_MDP(0x800)
 #define MT_MDP_DCR0_RX_HDR_TRANS_EN		BIT(19)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MT_MDP_DCR2				MT_MDP(0x8e8)
 #define MT_MDP_DCR2_RX_TRANS_SHORT		BIT(2)
 
@@ -736,6 +739,7 @@ enum offs_rev {
 #define MT_HW_REV				0x70010204
 #define MT_HW_REV1				0x8a00
 
+<<<<<<< HEAD
 #define MT_WF_L05_RST				0x70028550
 #define MT_WF_L05_RST_WF_RST_MASK		GENMASK(4, 0)
 
@@ -745,6 +749,9 @@ enum offs_rev {
 #define MT_WF_SUBSYS_RST_BYPASS_WFDMA_SLP_PROT	BIT(6)
 #define MT_WF_SUBSYS_RST_BYPASS_WFDMA2_SLP_PROT	BIT(16)
 #define MT_WF_SUBSYS_RST_WHOLE_PATH_RST_REVERT_CYCLE	GENMASK(15, 8)
+=======
+#define MT_WF_SUBSYS_RST			0x70028600
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* PCIE MAC */
 #define MT_PCIE_MAC_BASE			0x74030000

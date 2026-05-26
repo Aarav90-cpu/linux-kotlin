@@ -27,6 +27,17 @@ definitions:
     description: dai-link uses bit clock inversion
     $ref: /schemas/types.yaml#/definitions/flag
 
+<<<<<<< HEAD
+=======
+  dai-tdm-slot-num:
+    description: see tdm-slot.txt.
+    $ref: /schemas/types.yaml#/definitions/uint32
+
+  dai-tdm-slot-width:
+    description: see tdm-slot.txt.
+    $ref: /schemas/types.yaml#/definitions/uint32
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   system-clock-frequency:
     description: |
       If a clock is specified and a multiplication factor is given with
@@ -107,8 +118,11 @@ definitions:
 
   dai:
     type: object
+<<<<<<< HEAD
     $ref: tdm-slot.yaml#
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     properties:
       sound-dai:
         maxItems: 1
@@ -127,6 +141,13 @@ definitions:
       bitclock-master:
         $ref: /schemas/types.yaml#/definitions/flag
 
+<<<<<<< HEAD
+=======
+      dai-tdm-slot-num:
+        $ref: "#/definitions/dai-tdm-slot-num"
+      dai-tdm-slot-width:
+        $ref: "#/definitions/dai-tdm-slot-width"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       clocks:
         maxItems: 1
       system-clock-frequency:

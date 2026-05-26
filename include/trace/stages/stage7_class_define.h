@@ -26,6 +26,7 @@
 #undef __print_hex_dump
 #undef __get_buf
 
+<<<<<<< HEAD
 #undef __event_in_hardirq
 #undef __event_in_softirq
 #undef __event_in_irq
@@ -45,6 +46,8 @@
 #define __event_in_softirq()	(REC->common_flags & 0x10)
 #define __event_in_irq()	(REC->common_flags & 0x18)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The below is not executed in the kernel. It is only what is
  * displayed in the print format for userspace to parse.

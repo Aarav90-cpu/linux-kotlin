@@ -27,7 +27,10 @@
 
 #include <drm/drm_gem.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/display_parent_interface.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "display/intel_fb.h"
 #include "display/intel_frontbuffer.h"
@@ -2333,6 +2336,7 @@ int __init i915_vma_module_init(void)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int i915_vma_fence_id(const struct i915_vma *vma)
 {
@@ -2342,3 +2346,5 @@ static int i915_vma_fence_id(const struct i915_vma *vma)
 const struct intel_display_vma_interface i915_display_vma_interface = {
 	.fence_id = i915_vma_fence_id,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

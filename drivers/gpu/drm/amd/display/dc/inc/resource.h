@@ -60,7 +60,10 @@ struct resource_caps {
 	int num_hpo_dp_stream_encoder;
 	int num_hpo_dp_link_encoder;
 	int num_mpc_3dlut;
+<<<<<<< HEAD
 	int num_rmcm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct resource_straps {

@@ -392,7 +392,11 @@ static void compute_syndromes(struct bch_control *bch, uint32_t *ecc,
 			for (j = 0; j < 2*t; j += 2)
 				syn[j] ^= a_pow(bch, (j+1)*(i+s));
 
+<<<<<<< HEAD
 			poly ^= (1u << i);
+=======
+			poly ^= (1 << i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} while (s > 0);
 
@@ -612,7 +616,11 @@ static int find_poly_deg2_roots(struct bch_control *bch, struct gf_poly *poly,
 		while (v) {
 			i = deg(v);
 			r ^= bch->xi_tab[i];
+<<<<<<< HEAD
 			v ^= (1u << i);
+=======
+			v ^= (1 << i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* verify root */
 		if ((gf_sqr(bch, r)^r) == u) {
@@ -1116,7 +1124,11 @@ static void build_mod8_tables(struct bch_control *bch, const uint32_t *g)
 		for (b = 0; b < 4; b++) {
 			/* we want to compute (p(X).X^(8*b+deg(g))) mod g(X) */
 			tab = bch->mod8_tab + (b*256+i)*l;
+<<<<<<< HEAD
 			data = (unsigned int)i << (8*b);
+=======
+			data = i << (8*b);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			while (data) {
 				d = deg(data);
 				/* subtract X^d.g(X) from p(X).X^(8*b+deg(g)) */

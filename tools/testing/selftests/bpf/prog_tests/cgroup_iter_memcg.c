@@ -107,10 +107,17 @@ static void test_shmem(struct bpf_link *link, struct memcg_query *memcg_query)
 
 	/*
 	 * Increase memcg shmem usage by creating and writing
+<<<<<<< HEAD
 	 * to a memfd backed by shmem/tmpfs.
 	 */
 	fd = memfd_create("tmp_shmem", 0);
 	if (!ASSERT_OK_FD(fd, "memfd_create"))
+=======
+	 * to a shmem object.
+	 */
+	fd = shm_open("/tmp_shmem", O_CREAT | O_RDWR, 0644);
+	if (!ASSERT_OK_FD(fd, "shm_open"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (!ASSERT_OK(fallocate(fd, 0, 0, len), "fallocate"))
@@ -123,6 +130,36 @@ static void test_shmem(struct bpf_link *link, struct memcg_query *memcg_query)
 
 cleanup:
 	close(fd);
+<<<<<<< HEAD
+=======
+	shm_unlink("/tmp_shmem");
+}
+
+#define NR_PIPES 64
+static void test_kmem(struct bpf_link *link, struct memcg_query *memcg_query)
+{
+	int fds[NR_PIPES][2], i;
+
+	/*
+	 * Increase kmem value by creating pipes which will allocate some
+	 * kernel buffers.
+	 */
+	for (i = 0; i < NR_PIPES; i++) {
+		if (!ASSERT_OK(pipe(fds[i]), "pipe"))
+			goto cleanup;
+	}
+
+	if (!ASSERT_OK(read_stats(link), "read stats"))
+		goto cleanup;
+
+	ASSERT_GT(memcg_query->memcg_kmem, 0, "kmem value");
+
+cleanup:
+	for (i = i - 1; i >= 0; i--) {
+		close(fds[i][0]);
+		close(fds[i][1]);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void test_pgfault(struct bpf_link *link, struct memcg_query *memcg_query)
@@ -182,6 +219,11 @@ void test_cgroup_iter_memcg(void)
 		test_shmem(link, &skel->data_query->memcg_query);
 	if (test__start_subtest("cgroup_iter_memcg__file"))
 		test_file(link, &skel->data_query->memcg_query);
+<<<<<<< HEAD
+=======
+	if (test__start_subtest("cgroup_iter_memcg__kmem"))
+		test_kmem(link, &skel->data_query->memcg_query);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (test__start_subtest("cgroup_iter_memcg__pgfault"))
 		test_pgfault(link, &skel->data_query->memcg_query);
 

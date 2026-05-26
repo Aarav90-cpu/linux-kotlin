@@ -1023,12 +1023,15 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
 			return;			\
 	} while (0)
 
+<<<<<<< HEAD
 #define WRITE_LOCK_OR_GOTO(cmd, label)		\
 	do {					\
 		if (!cmd_write_lock((cmd)))	\
 			goto label;		\
 	} while (0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define WRITE_UNLOCK(cmd) \
 	up_write(&(cmd)->root_lock)
 
@@ -1720,6 +1723,20 @@ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *
 	return r;
 }
 
+<<<<<<< HEAD
+=======
+int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result)
+{
+	int r;
+
+	READ_LOCK(cmd);
+	r = blocks_are_unmapped_or_clean(cmd, 0, cmd->cache_blocks, result);
+	READ_UNLOCK(cmd);
+
+	return r;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd)
 {
 	WRITE_LOCK_VOID(cmd);
@@ -1786,8 +1803,16 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
 					 CACHE_MAX_CONCURRENT_LOCKS);
 
+<<<<<<< HEAD
 	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
 	WRITE_LOCK_OR_GOTO(cmd, out);
+=======
+	WRITE_LOCK(cmd);
+	if (cmd->fail_io) {
+		WRITE_UNLOCK(cmd);
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__destroy_persistent_data_objects(cmd, false);
 	old_bm = cmd->bm;
@@ -1816,6 +1841,7 @@ out:
 
 	return r;
 }
+<<<<<<< HEAD
 
 int dm_cache_metadata_clean_when_opened(struct dm_cache_metadata *cmd, bool *result)
 {
@@ -1825,3 +1851,5 @@ int dm_cache_metadata_clean_when_opened(struct dm_cache_metadata *cmd, bool *res
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

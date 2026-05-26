@@ -734,14 +734,34 @@ static ssize_t driver_override_show(struct device *dev,
 				    struct device_attribute *attr,
 				    char *buf)
 {
+<<<<<<< HEAD
 	guard(spinlock)(&dev->driver_override.lock);
 	return sysfs_emit(buf, "%s\n", dev->driver_override.name ?: "");
+=======
+	struct ap_queue *aq = to_ap_queue(dev);
+	struct ap_device *ap_dev = &aq->ap_dev;
+	int rc;
+
+	device_lock(dev);
+	if (ap_dev->driver_override)
+		rc = sysfs_emit(buf, "%s\n", ap_dev->driver_override);
+	else
+		rc = sysfs_emit(buf, "\n");
+	device_unlock(dev);
+
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t driver_override_store(struct device *dev,
 				     struct device_attribute *attr,
 				     const char *buf, size_t count)
 {
+<<<<<<< HEAD
+=======
+	struct ap_queue *aq = to_ap_queue(dev);
+	struct ap_device *ap_dev = &aq->ap_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc = -EINVAL;
 	bool old_value;
 
@@ -752,6 +772,7 @@ static ssize_t driver_override_store(struct device *dev,
 	if (ap_apmask_aqmask_in_use)
 		goto out;
 
+<<<<<<< HEAD
 	old_value = device_has_driver_override(dev);
 	rc = __device_set_driver_override(dev, buf, count);
 	if (rc)
@@ -759,6 +780,15 @@ static ssize_t driver_override_store(struct device *dev,
 	if (old_value && !device_has_driver_override(dev))
 		--ap_driver_override_ctr;
 	else if (!old_value && device_has_driver_override(dev))
+=======
+	old_value = ap_dev->driver_override ? true : false;
+	rc = driver_set_override(dev, &ap_dev->driver_override, buf, count);
+	if (rc)
+		goto out;
+	if (old_value && !ap_dev->driver_override)
+		--ap_driver_override_ctr;
+	else if (!old_value && ap_dev->driver_override)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		++ap_driver_override_ctr;
 
 	rc = count;

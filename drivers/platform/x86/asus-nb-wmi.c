@@ -546,6 +546,7 @@ static const struct dmi_system_id asus_quirks[] = {
 	},
 	{
 		.callback = dmi_matched,
+<<<<<<< HEAD
 		.ident = "ASUS Zenbook Duo UX8407AA",
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
@@ -555,6 +556,8 @@ static const struct dmi_system_id asus_quirks[] = {
 	},
 	{
 		.callback = dmi_matched,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ident = "ASUS ROG Z13",
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),

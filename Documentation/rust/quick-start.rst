@@ -57,8 +57,13 @@ of the box, e.g.::
 Gentoo Linux
 ************
 
+<<<<<<< HEAD
 Gentoo Linux provides recent Rust releases and thus it should generally work out
 of the box, e.g.::
+=======
+Gentoo Linux (and especially the testing branch) provides recent Rust releases
+and thus it should generally work out of the box, e.g.::
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	USE='rust-src rustfmt clippy' emerge dev-lang/rust dev-util/bindgen
 
@@ -68,8 +73,13 @@ of the box, e.g.::
 Nix
 ***
 
+<<<<<<< HEAD
 Nix provides recent Rust releases and thus it should generally work out of the
 box, e.g.::
+=======
+Nix (unstable channel) provides recent Rust releases and thus it should
+generally work out of the box, e.g.::
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	{ pkgs ? import <nixpkgs> {} }:
 	pkgs.mkShell {
@@ -84,13 +94,24 @@ openSUSE
 openSUSE Slowroll and openSUSE Tumbleweed provide recent Rust releases and thus
 they should generally work out of the box, e.g.::
 
+<<<<<<< HEAD
 	zypper install rust rust-src rust-bindgen clang
+=======
+	zypper install rust rust1.79-src rust-bindgen clang
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 Ubuntu
 ******
 
+<<<<<<< HEAD
 Ubuntu 25.10 and 26.04 LTS provide recent Rust releases and thus they should
+=======
+25.04
+~~~~~
+
+The latest Ubuntu releases provide recent Rust releases and thus they should
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 generally work out of the box, e.g.::
 
 	apt install rustc rust-src bindgen rustfmt rust-clippy
@@ -109,14 +130,22 @@ Though Ubuntu 24.04 LTS and older versions still provide recent Rust
 releases, they require some additional configuration to be set, using
 the versioned packages, e.g.::
 
+<<<<<<< HEAD
 	apt install rustc-1.85 rust-1.85-src bindgen-0.71 rustfmt-1.85 \
 		rust-1.85-clippy
 	ln -s /usr/lib/rust-1.85/bin/rustfmt /usr/bin/rustfmt-1.85
 	ln -s /usr/lib/rust-1.85/bin/clippy-driver /usr/bin/clippy-driver-1.85
+=======
+	apt install rustc-1.80 rust-1.80-src bindgen-0.65 rustfmt-1.80 \
+		rust-1.80-clippy
+	ln -s /usr/lib/rust-1.80/bin/rustfmt /usr/bin/rustfmt-1.80
+	ln -s /usr/lib/rust-1.80/bin/clippy-driver /usr/bin/clippy-driver-1.80
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 None of these packages set their tools as defaults; therefore they should be
 specified explicitly, e.g.::
 
+<<<<<<< HEAD
 	make LLVM=1 RUSTC=rustc-1.85 RUSTDOC=rustdoc-1.85 RUSTFMT=rustfmt-1.85 \
 		CLIPPY_DRIVER=clippy-driver-1.85 BINDGEN=bindgen-0.71
 
@@ -136,6 +165,27 @@ For convenience, ``RUST_LIB_SRC`` can be exported to the global environment.
 
 In addition, ``bindgen-0.71`` is available in newer releases (24.04 LTS),
 but it may not be available in older ones (20.04 LTS and 22.04 LTS),
+=======
+	make LLVM=1 RUSTC=rustc-1.80 RUSTDOC=rustdoc-1.80 RUSTFMT=rustfmt-1.80 \
+		CLIPPY_DRIVER=clippy-driver-1.80 BINDGEN=bindgen-0.65
+
+Alternatively, modify the ``PATH`` variable to place the Rust 1.80 binaries
+first and set ``bindgen`` as the default, e.g.::
+
+	PATH=/usr/lib/rust-1.80/bin:$PATH
+	update-alternatives --install /usr/bin/bindgen bindgen \
+		/usr/bin/bindgen-0.65 100
+	update-alternatives --set bindgen /usr/bin/bindgen-0.65
+
+``RUST_LIB_SRC`` needs to be set when using the versioned packages, e.g.::
+
+	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.80 --version | cut -d' ' -f2)/library
+
+For convenience, ``RUST_LIB_SRC`` can be exported to the global environment.
+
+In addition, ``bindgen-0.65`` is available in newer releases (24.04 LTS and
+24.10), but it may not be available in older ones (20.04 LTS and 22.04 LTS),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 thus ``bindgen`` may need to be built manually (please see below).
 
 
@@ -352,3 +402,15 @@ Hacking
 To dive deeper, take a look at the source code of the samples
 at ``samples/rust/``, the Rust support code under ``rust/`` and
 the ``Rust hacking`` menu under ``Kernel hacking``.
+<<<<<<< HEAD
+=======
+
+If GDB/Binutils is used and Rust symbols are not getting demangled, the reason
+is the toolchain does not support Rust's new v0 mangling scheme yet.
+There are a few ways out:
+
+- Install a newer release (GDB >= 10.2, Binutils >= 2.36).
+
+- Some versions of GDB (e.g. vanilla GDB 10.1) are able to use
+  the pre-demangled names embedded in the debug info (``CONFIG_DEBUG_INFO``).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

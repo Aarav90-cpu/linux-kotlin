@@ -28,7 +28,10 @@
 #include <linux/log2.h>
 #include <linux/acpi.h>
 #include <linux/suspend.h>
+<<<<<<< HEAD
 #include <linux/syscore_ops.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/idr.h>
 #include <linux/kvm_types.h>
 #include <asm/page.h>
@@ -40,7 +43,10 @@
 #include <asm/cpu_device_id.h>
 #include <asm/processor.h>
 #include <asm/mce.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "tdx.h"
 
 static u32 tdx_global_keyid __ro_after_init;
@@ -53,11 +59,21 @@ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
 
 static struct tdmr_info_list tdx_tdmr_list;
 
+<<<<<<< HEAD
 /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
 static LIST_HEAD(tdx_memlist);
 
 static struct tdx_sys_info tdx_sysinfo __ro_after_init;
 static bool tdx_module_initialized __ro_after_init;
+=======
+static enum tdx_module_status_t tdx_module_status;
+static DEFINE_MUTEX(tdx_module_lock);
+
+/* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
+static LIST_HEAD(tdx_memlist);
+
+static struct tdx_sys_info tdx_sysinfo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
 
@@ -106,7 +122,12 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
 
 /*
  * Do the module global initialization once and return its result.
+<<<<<<< HEAD
  * It can be done on any cpu, and from task or IRQ context.
+=======
+ * It can be done on any cpu.  It's always called with interrupts
+ * disabled.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int try_init_module_global(void)
 {
@@ -115,6 +136,11 @@ static int try_init_module_global(void)
 	static bool sysinit_done;
 	static int sysinit_ret;
 
+<<<<<<< HEAD
+=======
+	lockdep_assert_irqs_disabled();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_lock(&sysinit_lock);
 
 	if (sysinit_done)
@@ -139,15 +165,37 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * Enable VMXON and then do one-time TDX module per-cpu initialization SEAMCALL
  * (and TDX module global initialization SEAMCALL if not done) on local cpu to
  * make this cpu be ready to run any other SEAMCALLs.
  */
 static int tdx_cpu_enable(void)
+=======
+ * tdx_cpu_enable - Enable TDX on local cpu
+ *
+ * Do one-time TDX module per-cpu initialization SEAMCALL (and TDX module
+ * global initialization SEAMCALL if not done) on local cpu to make this
+ * cpu be ready to run any other SEAMCALLs.
+ *
+ * Always call this function via IPI function calls.
+ *
+ * Return 0 on success, otherwise errors.
+ */
+int tdx_cpu_enable(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_module_args args = {};
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
+		return -ENODEV;
+
+	lockdep_assert_irqs_disabled();
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (__this_cpu_read(tdx_lp_initialized))
 		return 0;
 
@@ -168,6 +216,7 @@ static int tdx_cpu_enable(void)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int tdx_online_cpu(unsigned int cpu)
 {
@@ -254,15 +303,23 @@ static const struct syscore_ops tdx_syscore_ops = {
 static struct syscore tdx_syscore = {
 	.ops = &tdx_syscore_ops,
 };
+=======
+EXPORT_SYMBOL_FOR_KVM(tdx_cpu_enable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Add a memory region as a TDX memory block.  The caller must make sure
  * all memory regions are added in address ascending order and don't
  * overlap.
  */
+<<<<<<< HEAD
 static __init int add_tdx_memblock(struct list_head *tmb_list,
 				   unsigned long start_pfn,
 				   unsigned long end_pfn, int nid)
+=======
+static int add_tdx_memblock(struct list_head *tmb_list, unsigned long start_pfn,
+			    unsigned long end_pfn, int nid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_memblock *tmb;
 
@@ -280,7 +337,11 @@ static __init int add_tdx_memblock(struct list_head *tmb_list,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __init void free_tdx_memlist(struct list_head *tmb_list)
+=======
+static void free_tdx_memlist(struct list_head *tmb_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* @tmb_list is protected by mem_hotplug_lock */
 	while (!list_empty(tmb_list)) {
@@ -298,7 +359,11 @@ static __init void free_tdx_memlist(struct list_head *tmb_list)
  * ranges off in a secondary structure because memblock is modified
  * in memory hotplug while TDX memory regions are fixed.
  */
+<<<<<<< HEAD
 static __init int build_tdx_memlist(struct list_head *tmb_list)
+=======
+static int build_tdx_memlist(struct list_head *tmb_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long start_pfn, end_pfn;
 	int i, nid, ret;
@@ -330,7 +395,11 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int read_sys_metadata_field(u64 field_id, u64 *data)
+=======
+static int read_sys_metadata_field(u64 field_id, u64 *data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_module_args args = {};
 	int ret;
@@ -352,7 +421,11 @@ static __init int read_sys_metadata_field(u64 field_id, u64 *data)
 
 #include "tdx_global_metadata.c"
 
+<<<<<<< HEAD
 static __init int check_features(struct tdx_sys_info *sysinfo)
+=======
+static int check_features(struct tdx_sys_info *sysinfo)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 tdx_features0 = sysinfo->features.tdx_features0;
 
@@ -365,7 +438,11 @@ static __init int check_features(struct tdx_sys_info *sysinfo)
 }
 
 /* Calculate the actual TDMR size */
+<<<<<<< HEAD
 static __init int tdmr_size_single(u16 max_reserved_per_tdmr)
+=======
+static int tdmr_size_single(u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int tdmr_sz;
 
@@ -379,8 +456,13 @@ static __init int tdmr_size_single(u16 max_reserved_per_tdmr)
 	return ALIGN(tdmr_sz, TDMR_INFO_ALIGNMENT);
 }
 
+<<<<<<< HEAD
 static __init int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
 				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
+=======
+static int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
+			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t tdmr_sz, tdmr_array_sz;
 	void *tdmr_array;
@@ -411,7 +493,11 @@ static __init int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __init void free_tdmr_list(struct tdmr_info_list *tdmr_list)
+=======
+static void free_tdmr_list(struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	free_pages_exact(tdmr_list->tdmrs,
 			tdmr_list->max_tdmrs * tdmr_list->tdmr_sz);
@@ -440,8 +526,13 @@ static inline u64 tdmr_end(struct tdmr_info *tdmr)
  * preallocated @tdmr_list, following all the special alignment
  * and size rules for TDMR.
  */
+<<<<<<< HEAD
 static __init int fill_out_tdmrs(struct list_head *tmb_list,
 				 struct tdmr_info_list *tdmr_list)
+=======
+static int fill_out_tdmrs(struct list_head *tmb_list,
+			  struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_memblock *tmb;
 	int tdmr_idx = 0;
@@ -517,8 +608,13 @@ static __init int fill_out_tdmrs(struct list_head *tmb_list,
  * Calculate PAMT size given a TDMR and a page size.  The returned
  * PAMT size is always aligned up to 4K page boundary.
  */
+<<<<<<< HEAD
 static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
 					     u16 pamt_entry_size)
+=======
+static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+				      u16 pamt_entry_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long pamt_sz, nr_pamt_entries;
 
@@ -549,7 +645,11 @@ static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
  * PAMT.  This node will have some memory covered by the TDMR.  The
  * relative amount of memory covered is not considered.
  */
+<<<<<<< HEAD
 static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_list)
+=======
+static int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_memblock *tmb;
 
@@ -578,9 +678,15 @@ static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_lis
  * Allocate PAMTs from the local NUMA node of some memory in @tmb_list
  * within @tdmr, and set up PAMTs for @tdmr.
  */
+<<<<<<< HEAD
 static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
 				   struct list_head *tmb_list,
 				   u16 pamt_entry_size[])
+=======
+static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+			    struct list_head *tmb_list,
+			    u16 pamt_entry_size[])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long pamt_base[TDX_PS_NR];
 	unsigned long pamt_size[TDX_PS_NR];
@@ -650,7 +756,11 @@ static void tdmr_get_pamt(struct tdmr_info *tdmr, unsigned long *pamt_base,
 	*pamt_size = pamt_sz;
 }
 
+<<<<<<< HEAD
 static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
+=======
+static void tdmr_do_pamt_func(struct tdmr_info *tdmr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		void (*pamt_func)(unsigned long base, unsigned long size))
 {
 	unsigned long pamt_base, pamt_size;
@@ -667,17 +777,29 @@ static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
 	pamt_func(pamt_base, pamt_size);
 }
 
+<<<<<<< HEAD
 static __init void free_pamt(unsigned long pamt_base, unsigned long pamt_size)
+=======
+static void free_pamt(unsigned long pamt_base, unsigned long pamt_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	free_contig_range(pamt_base >> PAGE_SHIFT, pamt_size >> PAGE_SHIFT);
 }
 
+<<<<<<< HEAD
 static __init void tdmr_free_pamt(struct tdmr_info *tdmr)
+=======
+static void tdmr_free_pamt(struct tdmr_info *tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	tdmr_do_pamt_func(tdmr, free_pamt);
 }
 
+<<<<<<< HEAD
 static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
+=======
+static void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -686,9 +808,15 @@ static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
 }
 
 /* Allocate and set up PAMTs for all TDMRs */
+<<<<<<< HEAD
 static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
 					struct list_head *tmb_list,
 					u16 pamt_entry_size[])
+=======
+static int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
+				 struct list_head *tmb_list,
+				 u16 pamt_entry_size[])
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i, ret = 0;
 
@@ -737,13 +865,21 @@ void tdx_quirk_reset_page(struct page *page)
 }
 EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_page);
 
+<<<<<<< HEAD
 static __init void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
 
+=======
+static void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	tdmr_do_pamt_func(tdmr, tdx_quirk_reset_paddr);
 }
 
+<<<<<<< HEAD
 static __init void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
+=======
+static void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -751,7 +887,11 @@ static __init void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
 		tdmr_quirk_reset_pamt(tdmr_entry(tdmr_list, i));
 }
 
+<<<<<<< HEAD
 static __init unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list)
+=======
+static unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long pamt_size = 0;
 	int i;
@@ -766,8 +906,13 @@ static __init unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list
 	return pamt_size / 1024;
 }
 
+<<<<<<< HEAD
 static __init int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx,
 				     u64 addr, u64 size, u16 max_reserved_per_tdmr)
+=======
+static int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx, u64 addr,
+			      u64 size, u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdmr_reserved_area *rsvd_areas = tdmr->reserved_areas;
 	int idx = *p_idx;
@@ -800,10 +945,17 @@ static __init int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx,
  * those holes fall within @tdmr, set up a TDMR reserved area to cover
  * the hole.
  */
+<<<<<<< HEAD
 static __init int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
 					   struct tdmr_info *tdmr,
 					   int *rsvd_idx,
 					   u16 max_reserved_per_tdmr)
+=======
+static int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
+				    struct tdmr_info *tdmr,
+				    int *rsvd_idx,
+				    u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_memblock *tmb;
 	u64 prev_end;
@@ -864,10 +1016,17 @@ static __init int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
  * overlaps with @tdmr, set up a TDMR reserved area to cover the
  * overlapping part.
  */
+<<<<<<< HEAD
 static __init int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
 					   struct tdmr_info *tdmr,
 					   int *rsvd_idx,
 					   u16 max_reserved_per_tdmr)
+=======
+static int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
+				    struct tdmr_info *tdmr,
+				    int *rsvd_idx,
+				    u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i, ret;
 
@@ -902,7 +1061,11 @@ static __init int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
 }
 
 /* Compare function called by sort() for TDMR reserved areas */
+<<<<<<< HEAD
 static __init int rsvd_area_cmp_func(const void *a, const void *b)
+=======
+static int rsvd_area_cmp_func(const void *a, const void *b)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdmr_reserved_area *r1 = (struct tdmr_reserved_area *)a;
 	struct tdmr_reserved_area *r2 = (struct tdmr_reserved_area *)b;
@@ -921,10 +1084,17 @@ static __init int rsvd_area_cmp_func(const void *a, const void *b)
  * Populate reserved areas for the given @tdmr, including memory holes
  * (via @tmb_list) and PAMTs (via @tdmr_list).
  */
+<<<<<<< HEAD
 static __init int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
 					   struct list_head *tmb_list,
 					   struct tdmr_info_list *tdmr_list,
 					   u16 max_reserved_per_tdmr)
+=======
+static int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
+				    struct list_head *tmb_list,
+				    struct tdmr_info_list *tdmr_list,
+				    u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret, rsvd_idx = 0;
 
@@ -949,9 +1119,15 @@ static __init int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
  * Populate reserved areas for all TDMRs in @tdmr_list, including memory
  * holes (via @tmb_list) and PAMTs.
  */
+<<<<<<< HEAD
 static __init int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
 						struct list_head *tmb_list,
 						u16 max_reserved_per_tdmr)
+=======
+static int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
+					 struct list_head *tmb_list,
+					 u16 max_reserved_per_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -972,9 +1148,15 @@ static __init int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list
  * to cover all TDX memory regions in @tmb_list based on the TDX module
  * TDMR global information in @sysinfo_tdmr.
  */
+<<<<<<< HEAD
 static __init int construct_tdmrs(struct list_head *tmb_list,
 				  struct tdmr_info_list *tdmr_list,
 				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
+=======
+static int construct_tdmrs(struct list_head *tmb_list,
+			   struct tdmr_info_list *tdmr_list,
+			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 pamt_entry_size[TDX_PS_NR] = {
 		sysinfo_tdmr->pamt_4k_entry_size,
@@ -1006,8 +1188,12 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
 				    u64 global_keyid)
+=======
+static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_module_args args = {};
 	u64 *tdmr_pa_array;
@@ -1042,7 +1228,11 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int do_global_key_config(void *unused)
+=======
+static int do_global_key_config(void *unused)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tdx_module_args args = {};
 
@@ -1060,7 +1250,11 @@ static __init int do_global_key_config(void *unused)
  * KVM) can ensure success by ensuring sufficient CPUs are online and
  * can run SEAMCALLs.
  */
+<<<<<<< HEAD
 static __init int config_global_keyid(void)
+=======
+static int config_global_keyid(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	cpumask_var_t packages;
 	int cpu, ret = -EINVAL;
@@ -1100,7 +1294,11 @@ static __init int config_global_keyid(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __init int init_tdmr(struct tdmr_info *tdmr)
+=======
+static int init_tdmr(struct tdmr_info *tdmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 next;
 
@@ -1131,7 +1329,11 @@ static __init int init_tdmr(struct tdmr_info *tdmr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+=======
+static int init_tdmrs(struct tdmr_info_list *tdmr_list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -1150,7 +1352,11 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __init int init_tdx_module(void)
+=======
+static int init_tdx_module(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
@@ -1231,6 +1437,7 @@ err_free_tdxmem:
 	goto out_put_tdxmem;
 }
 
+<<<<<<< HEAD
 static __init int tdx_enable(void)
 {
 	enum cpuhp_state state;
@@ -1275,6 +1482,69 @@ static __init int tdx_enable(void)
 	return 0;
 }
 subsys_initcall(tdx_enable);
+=======
+static int __tdx_enable(void)
+{
+	int ret;
+
+	ret = init_tdx_module();
+	if (ret) {
+		pr_err("module initialization failed (%d)\n", ret);
+		tdx_module_status = TDX_MODULE_ERROR;
+		return ret;
+	}
+
+	pr_info("module initialized\n");
+	tdx_module_status = TDX_MODULE_INITIALIZED;
+
+	return 0;
+}
+
+/**
+ * tdx_enable - Enable TDX module to make it ready to run TDX guests
+ *
+ * This function assumes the caller has: 1) held read lock of CPU hotplug
+ * lock to prevent any new cpu from becoming online; 2) done both VMXON
+ * and tdx_cpu_enable() on all online cpus.
+ *
+ * This function requires there's at least one online cpu for each CPU
+ * package to succeed.
+ *
+ * This function can be called in parallel by multiple callers.
+ *
+ * Return 0 if TDX is enabled successfully, otherwise error.
+ */
+int tdx_enable(void)
+{
+	int ret;
+
+	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
+		return -ENODEV;
+
+	lockdep_assert_cpus_held();
+
+	mutex_lock(&tdx_module_lock);
+
+	switch (tdx_module_status) {
+	case TDX_MODULE_UNINITIALIZED:
+		ret = __tdx_enable();
+		break;
+	case TDX_MODULE_INITIALIZED:
+		/* Already initialized, great, tell the caller. */
+		ret = 0;
+		break;
+	default:
+		/* Failed to initialize in the previous attempts */
+		ret = -EINVAL;
+		break;
+	}
+
+	mutex_unlock(&tdx_module_lock);
+
+	return ret;
+}
+EXPORT_SYMBOL_FOR_KVM(tdx_enable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static bool is_pamt_page(unsigned long phys)
 {
@@ -1525,10 +1795,22 @@ void __init tdx_init(void)
 
 const struct tdx_sys_info *tdx_get_sysinfo(void)
 {
+<<<<<<< HEAD
 	if (!tdx_module_initialized)
 		return NULL;
 
 	return (const struct tdx_sys_info *)&tdx_sysinfo;
+=======
+	const struct tdx_sys_info *p = NULL;
+
+	/* Make sure all fields in @tdx_sysinfo have been populated */
+	mutex_lock(&tdx_module_lock);
+	if (tdx_module_status == TDX_MODULE_INITIALIZED)
+		p = (const struct tdx_sys_info *)&tdx_sysinfo;
+	mutex_unlock(&tdx_module_lock);
+
+	return p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
 

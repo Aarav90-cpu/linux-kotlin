@@ -247,15 +247,23 @@ static int sof_compr_set_params(struct snd_soc_component *component,
 	ret = snd_sof_set_stream_data_offset(sdev, &spcm->stream[cstream->direction],
 					     ipc_params_reply.posn_offset);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(component->dev, "Invalid stream data offset for Compr %u\n",
 			le32_to_cpu(spcm->pcm.pcm_id));
+=======
+		dev_err(component->dev, "Invalid stream data offset for Compr %d\n",
+			spcm->pcm.pcm_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
 	sstream->sampling_rate = params->codec.sample_rate;
 	sstream->channels = params->codec.ch_out;
 	sstream->sample_container_bytes = pcm->params.sample_container_bytes;
+<<<<<<< HEAD
 	sstream->codec_params = params->codec;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spcm->prepared[cstream->direction] = true;
 
@@ -268,10 +276,16 @@ out:
 static int sof_compr_get_params(struct snd_soc_component *component,
 				struct snd_compr_stream *cstream, struct snd_codec *params)
 {
+<<<<<<< HEAD
 	struct sof_compr_stream *sstream = cstream->runtime->private_data;
 
 	*params = sstream->codec_params;
 
+=======
+	/* TODO: we don't query the supported codecs for now, if the
+	 * application asks for an unsupported codec the set_params() will fail.
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

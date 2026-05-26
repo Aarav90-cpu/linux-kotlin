@@ -73,7 +73,11 @@ static struct platform_driver dw_mci_bluefield_pltfm_driver = {
 		.name		= "dwmmc_bluefield",
 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
 		.of_match_table	= dw_mci_bluefield_match,
+<<<<<<< HEAD
 		.pm		= pm_ptr(&dw_mci_pmops),
+=======
+		.pm		= &dw_mci_pltfm_pmops,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

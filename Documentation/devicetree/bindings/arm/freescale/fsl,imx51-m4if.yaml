@@ -15,7 +15,10 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - fsl,imx25-aips
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - fsl,imx51-m4if
           - fsl,imx51-tigerp
           - fsl,imx51-aipstz

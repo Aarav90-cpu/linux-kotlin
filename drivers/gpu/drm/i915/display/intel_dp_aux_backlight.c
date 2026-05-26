@@ -368,6 +368,7 @@ static const char *dpcd_vs_pwm_str(bool aux)
 	return aux ? "DPCD" : "PWM";
 }
 
+<<<<<<< HEAD
 static const char *backlight_unit_str(struct intel_panel *panel)
 {
 	if (panel->backlight.edp.vesa.info.luminance_set)
@@ -378,6 +379,8 @@ static const char *backlight_unit_str(struct intel_panel *panel)
 		return "PWM";
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 intel_dp_aux_write_panel_luminance_override(struct intel_connector *connector)
 {
@@ -469,7 +472,11 @@ static u32 intel_dp_aux_vesa_get_backlight(struct intel_connector *connector, en
 		return val / 1000;
 	}
 
+<<<<<<< HEAD
 	return panel->backlight.level;
+=======
+	return connector->panel.backlight.level;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -496,8 +503,12 @@ intel_dp_aux_vesa_enable_backlight(const struct intel_crtc_state *crtc_state,
 	struct intel_panel *panel = &connector->panel;
 	struct intel_dp *intel_dp = enc_to_intel_dp(connector->encoder);
 
+<<<<<<< HEAD
 	if (!(panel->backlight.edp.vesa.info.aux_enable ||
 	      panel->backlight.edp.vesa.info.luminance_set)) {
+=======
+	if (!panel->backlight.edp.vesa.info.aux_enable) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u32 pwm_level;
 
 		if (!panel->backlight.edp.vesa.info.aux_set)
@@ -521,8 +532,12 @@ static void intel_dp_aux_vesa_disable_backlight(const struct drm_connector_state
 
 	drm_edp_backlight_disable(&intel_dp->aux, &panel->backlight.edp.vesa.info);
 
+<<<<<<< HEAD
 	if (!(panel->backlight.edp.vesa.info.aux_enable ||
 	      panel->backlight.edp.vesa.info.luminance_set))
+=======
+	if (!panel->backlight.edp.vesa.info.aux_enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		panel->backlight.pwm_funcs->disable(old_conn_state,
 						    intel_backlight_invert_pwm_level(connector, 0));
 }
@@ -549,6 +564,7 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 	drm_dbg_kms(display->drm,
 		    "[CONNECTOR:%d:%s] AUX VESA backlight enable is controlled through %s\n",
 		    connector->base.base.id, connector->base.name,
+<<<<<<< HEAD
 		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_enable ||
 				    panel->backlight.edp.vesa.info.luminance_set));
 	drm_dbg_kms(display->drm,
@@ -557,6 +573,13 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_set ||
 				    panel->backlight.edp.vesa.info.luminance_set),
 		    backlight_unit_str(panel));
+=======
+		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_enable));
+	drm_dbg_kms(display->drm,
+		    "[CONNECTOR:%d:%s] AUX VESA backlight level is controlled through %s\n",
+		    connector->base.base.id, connector->base.name,
+		    dpcd_vs_pwm_str(panel->backlight.edp.vesa.info.aux_set));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!panel->backlight.edp.vesa.info.aux_set ||
 	    !panel->backlight.edp.vesa.info.aux_enable) {
@@ -579,6 +602,12 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 		}
 		panel->backlight.level = intel_dp_aux_vesa_get_backlight(connector, 0);
 		panel->backlight.enabled = panel->backlight.level != 0;
+<<<<<<< HEAD
+=======
+		drm_dbg_kms(display->drm,
+			    "[CONNECTOR:%d:%s] AUX VESA Nits backlight level is controlled through DPCD\n",
+			    connector->base.base.id, connector->base.name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (panel->backlight.edp.vesa.info.aux_set) {
 		panel->backlight.max = panel->backlight.edp.vesa.info.max;
 		panel->backlight.min = 0;
@@ -610,6 +639,7 @@ static int intel_dp_aux_vesa_setup_backlight(struct intel_connector *connector, 
 }
 
 static bool
+<<<<<<< HEAD
 check_if_vesa_backlight_possible(struct intel_dp *intel_dp)
 {
 	int ret;
@@ -643,6 +673,8 @@ check_if_vesa_backlight_possible(struct intel_dp *intel_dp)
 }
 
 static bool
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 intel_dp_aux_supports_vesa_backlight(struct intel_connector *connector)
 {
 	struct intel_display *display = to_intel_display(connector);
@@ -658,14 +690,21 @@ intel_dp_aux_supports_vesa_backlight(struct intel_connector *connector)
 		return true;
 	}
 
+<<<<<<< HEAD
 	if (drm_edp_backlight_supported(intel_dp->edp_dpcd) &&
 	    check_if_vesa_backlight_possible(intel_dp)) {
+=======
+	if (drm_edp_backlight_supported(intel_dp->edp_dpcd)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg_kms(display->drm,
 			    "[CONNECTOR:%d:%s] AUX Backlight Control Supported!\n",
 			    connector->base.base.id, connector->base.name);
 		return true;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 
@@ -691,10 +730,16 @@ int intel_dp_aux_init_backlight_funcs(struct intel_connector *connector)
 	struct intel_dp *intel_dp = intel_attached_dp(connector);
 	struct drm_device *dev = connector->base.dev;
 	struct intel_panel *panel = &connector->panel;
+<<<<<<< HEAD
 	bool try_intel_interface = false;
 
 	/*
 	 * Check the VBT and user's module parameters to figure out which
+=======
+	bool try_intel_interface = false, try_vesa_interface = false;
+
+	/* Check the VBT and user's module parameters to figure out which
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * interfaces to probe
 	 */
 	switch (display->params.enable_dpcd_backlight) {
@@ -703,6 +748,10 @@ int intel_dp_aux_init_backlight_funcs(struct intel_connector *connector)
 	case INTEL_DP_AUX_BACKLIGHT_AUTO:
 		switch (panel->vbt.backlight.type) {
 		case INTEL_BACKLIGHT_VESA_EDP_AUX_INTERFACE:
+<<<<<<< HEAD
+=======
+			try_vesa_interface = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case INTEL_BACKLIGHT_DISPLAY_DDI:
 			try_intel_interface = true;
@@ -715,12 +764,26 @@ int intel_dp_aux_init_backlight_funcs(struct intel_connector *connector)
 		if (panel->vbt.backlight.type != INTEL_BACKLIGHT_VESA_EDP_AUX_INTERFACE)
 			try_intel_interface = true;
 
+<<<<<<< HEAD
+=======
+		try_vesa_interface = true;
+		break;
+	case INTEL_DP_AUX_BACKLIGHT_FORCE_VESA:
+		try_vesa_interface = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case INTEL_DP_AUX_BACKLIGHT_FORCE_INTEL:
 		try_intel_interface = true;
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	/* For eDP 1.5 and above we are supposed to use VESA interface for brightness control */
+	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
+		try_vesa_interface = true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Since Intel has their own backlight control interface, the majority of machines out there
 	 * using DPCD backlight controls with Intel GPUs will be using this interface as opposed to
@@ -733,19 +796,29 @@ int intel_dp_aux_init_backlight_funcs(struct intel_connector *connector)
 	 * panel with Intel's OUI - which is also required for us to be able to detect Intel's
 	 * backlight interface at all. This means that the only sensible way for us to detect both
 	 * interfaces is to probe for Intel's first, and VESA's second.
+<<<<<<< HEAD
 	 *
 	 * Also there is a chance some VBTs may advertise false Intel backlight support even if the
 	 * TCON DPCD says otherwise. This means we keep VESA interface as fallback in that case.
 	 */
 	if (try_intel_interface && intel_dp->edp_dpcd[0] <= DP_EDP_14b &&
 	    intel_dp_aux_supports_hdr_backlight(connector)) {
+=======
+	 */
+	if (try_intel_interface && intel_dp_aux_supports_hdr_backlight(connector) &&
+	    intel_dp->edp_dpcd[0] <= DP_EDP_14b) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Using Intel proprietary eDP backlight controls\n",
 			    connector->base.base.id, connector->base.name);
 		panel->backlight.funcs = &intel_dp_hdr_bl_funcs;
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (intel_dp_aux_supports_vesa_backlight(connector)) {
+=======
+	if (try_vesa_interface && intel_dp_aux_supports_vesa_backlight(connector)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Using VESA eDP backlight controls\n",
 			    connector->base.base.id, connector->base.name);
 		panel->backlight.funcs = &intel_dp_vesa_bl_funcs;

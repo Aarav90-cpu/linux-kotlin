@@ -101,7 +101,11 @@ PPC32_SYSCALL_DEFINE4(ppc_ftruncate64,
 		       unsigned int, fd, u32, reg4,
 		       unsigned long, len1, unsigned long, len2)
 {
+<<<<<<< HEAD
 	return ksys_ftruncate(fd, merge_64(len1, len2), FTRUNCATE_LFS);
+=======
+	return ksys_ftruncate(fd, merge_64(len1, len2));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 PPC32_SYSCALL_DEFINE6(ppc32_fadvise64,

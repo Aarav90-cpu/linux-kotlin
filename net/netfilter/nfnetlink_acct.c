@@ -373,7 +373,11 @@ static const struct nla_policy nfnl_acct_policy[NFACCT_MAX+1] = {
 	[NFACCT_NAME] = { .type = NLA_NUL_STRING, .len = NFACCT_NAME_MAX-1 },
 	[NFACCT_BYTES] = { .type = NLA_U64 },
 	[NFACCT_PKTS] = { .type = NLA_U64 },
+<<<<<<< HEAD
 	[NFACCT_FLAGS] = NLA_POLICY_MASK(NLA_BE32, NFACCT_F_QUOTA),
+=======
+	[NFACCT_FLAGS] = { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFACCT_QUOTA] = { .type = NLA_U64 },
 	[NFACCT_FILTER] = {.type = NLA_NESTED },
 };

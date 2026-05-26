@@ -2044,7 +2044,10 @@ static int gsi_ring_setup(struct gsi *gsi)
 		count = reg_decode(reg, NUM_EV_PER_EE, val);
 	} else {
 		reg = gsi_reg(gsi, HW_PARAM_4);
+<<<<<<< HEAD
 		val = ioread32(gsi->virt + reg_offset(reg));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		count = reg_decode(reg, EV_PER_EE, val);
 	}
 	if (!count) {

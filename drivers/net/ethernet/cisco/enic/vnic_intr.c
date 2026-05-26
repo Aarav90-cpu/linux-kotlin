@@ -19,13 +19,22 @@ void vnic_intr_free(struct vnic_intr *intr)
 	intr->ctrl = NULL;
 }
 
+<<<<<<< HEAD
 int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
 			      unsigned int index, unsigned int res_type)
+=======
+int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
+	unsigned int index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	intr->index = index;
 	intr->vdev = vdev;
 
+<<<<<<< HEAD
 	intr->ctrl = vnic_dev_get_res(vdev, res_type, index);
+=======
+	intr->ctrl = vnic_dev_get_res(vdev, RES_TYPE_INTR_CTRL, index);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!intr->ctrl) {
 		vdev_err(vdev, "Failed to hook INTR[%d].ctrl resource\n",
 			 index);
@@ -35,12 +44,15 @@ int vnic_intr_alloc_with_type(struct vnic_dev *vdev, struct vnic_intr *intr,
 	return 0;
 }
 
+<<<<<<< HEAD
 int vnic_intr_alloc(struct vnic_dev *vdev, struct vnic_intr *intr,
 		    unsigned int index)
 {
 	return vnic_intr_alloc_with_type(vdev, intr, index, RES_TYPE_INTR_CTRL);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vnic_intr_init(struct vnic_intr *intr, u32 coalescing_timer,
 	unsigned int coalescing_type, unsigned int mask_on_assertion)
 {

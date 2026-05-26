@@ -455,7 +455,10 @@ if html_theme == "alabaster":
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_logo = "images/logo.svg"
+<<<<<<< HEAD
 html_favicon = "images/logo.svg"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "TheLinuxKerneldoc"

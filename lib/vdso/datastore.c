@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include <linux/gfp.h>
 #include <linux/init.h>
+=======
+#include <linux/linkage.h>
+#include <linux/mmap_lock.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mm.h>
 #include <linux/time_namespace.h>
 #include <linux/types.h>
 #include <linux/vdso_datastore.h>
 #include <vdso/datapage.h>
 
+<<<<<<< HEAD
 static u8 vdso_initdata[VDSO_NR_PAGES * PAGE_SIZE] __aligned(PAGE_SIZE) __initdata = {};
 
 #ifdef CONFIG_GENERIC_GETTIMEOFDAY
@@ -68,17 +74,59 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 	struct page *page, *timens_page;
 
 	timens_page = find_timens_vvar_page(vma);
+=======
+/*
+ * The vDSO data page.
+ */
+#ifdef CONFIG_GENERIC_GETTIMEOFDAY
+static union {
+	struct vdso_time_data	data;
+	u8			page[PAGE_SIZE];
+} vdso_time_data_store __page_aligned_data;
+struct vdso_time_data *vdso_k_time_data = &vdso_time_data_store.data;
+static_assert(sizeof(vdso_time_data_store) == PAGE_SIZE);
+#endif /* CONFIG_GENERIC_GETTIMEOFDAY */
+
+#ifdef CONFIG_VDSO_GETRANDOM
+static union {
+	struct vdso_rng_data	data;
+	u8			page[PAGE_SIZE];
+} vdso_rng_data_store __page_aligned_data;
+struct vdso_rng_data *vdso_k_rng_data = &vdso_rng_data_store.data;
+static_assert(sizeof(vdso_rng_data_store) == PAGE_SIZE);
+#endif /* CONFIG_VDSO_GETRANDOM */
+
+#ifdef CONFIG_ARCH_HAS_VDSO_ARCH_DATA
+static union {
+	struct vdso_arch_data	data;
+	u8			page[VDSO_ARCH_DATA_SIZE];
+} vdso_arch_data_store __page_aligned_data;
+struct vdso_arch_data *vdso_k_arch_data = &vdso_arch_data_store.data;
+#endif /* CONFIG_ARCH_HAS_VDSO_ARCH_DATA */
+
+static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+			     struct vm_area_struct *vma, struct vm_fault *vmf)
+{
+	struct page *timens_page = find_timens_vvar_page(vma);
+	unsigned long addr, pfn;
+	vm_fault_t err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (vmf->pgoff) {
 	case VDSO_TIME_PAGE_OFFSET:
 		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
 			return VM_FAULT_SIGBUS;
+<<<<<<< HEAD
 		page = virt_to_page(vdso_k_time_data);
+=======
+		pfn = __phys_to_pfn(__pa_symbol(vdso_k_time_data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (timens_page) {
 			/*
 			 * Fault in VVAR page too, since it will be accessed
 			 * to get clock data anyway.
 			 */
+<<<<<<< HEAD
 			unsigned long addr;
 			vm_fault_t err;
 
@@ -87,6 +135,13 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 			if (unlikely(err & VM_FAULT_ERROR))
 				return err;
 			page = timens_page;
+=======
+			addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
+			err = vmf_insert_pfn(vma, addr, pfn);
+			if (unlikely(err & VM_FAULT_ERROR))
+				return err;
+			pfn = page_to_pfn(timens_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	case VDSO_TIMENS_PAGE_OFFSET:
@@ -99,25 +154,42 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 		 */
 		if (!IS_ENABLED(CONFIG_TIME_NS) || !timens_page)
 			return VM_FAULT_SIGBUS;
+<<<<<<< HEAD
 		page = virt_to_page(vdso_k_time_data);
+=======
+		pfn = __phys_to_pfn(__pa_symbol(vdso_k_time_data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case VDSO_RNG_PAGE_OFFSET:
 		if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
 			return VM_FAULT_SIGBUS;
+<<<<<<< HEAD
 		page = virt_to_page(vdso_k_rng_data);
+=======
+		pfn = __phys_to_pfn(__pa_symbol(vdso_k_rng_data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case VDSO_ARCH_PAGES_START ... VDSO_ARCH_PAGES_END:
 		if (!IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
 			return VM_FAULT_SIGBUS;
+<<<<<<< HEAD
 		page = virt_to_page(vdso_k_arch_data) + vmf->pgoff - VDSO_ARCH_PAGES_START;
+=======
+		pfn = __phys_to_pfn(__pa_symbol(vdso_k_arch_data)) +
+			vmf->pgoff - VDSO_ARCH_PAGES_START;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return VM_FAULT_SIGBUS;
 	}
 
+<<<<<<< HEAD
 	get_page(page);
 	vmf->page = page;
 	return 0;
+=======
+	return vmf_insert_pfn(vma, vmf->address, pfn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 const struct vm_special_mapping vdso_vvar_mapping = {
@@ -129,6 +201,37 @@ struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned 
 {
 	return _install_special_mapping(mm, addr, VDSO_NR_PAGES * PAGE_SIZE,
 					VM_READ | VM_MAYREAD | VM_IO | VM_DONTDUMP |
+<<<<<<< HEAD
 					VM_MIXEDMAP | VM_SEALED_SYSMAP,
 					&vdso_vvar_mapping);
 }
+=======
+					VM_PFNMAP | VM_SEALED_SYSMAP,
+					&vdso_vvar_mapping);
+}
+
+#ifdef CONFIG_TIME_NS
+/*
+ * The vvar page layout depends on whether a task belongs to the root or
+ * non-root time namespace. Whenever a task changes its namespace, the VVAR
+ * page tables are cleared and then they will be re-faulted with a
+ * corresponding layout.
+ * See also the comment near timens_setup_vdso_clock_data() for details.
+ */
+int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+{
+	struct mm_struct *mm = task->mm;
+	struct vm_area_struct *vma;
+	VMA_ITERATOR(vmi, mm, 0);
+
+	mmap_read_lock(mm);
+	for_each_vma(vmi, vma) {
+		if (vma_is_special_mapping(vma, &vdso_vvar_mapping))
+			zap_vma_pages(vma);
+	}
+	mmap_read_unlock(mm);
+
+	return 0;
+}
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

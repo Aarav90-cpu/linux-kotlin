@@ -9,8 +9,11 @@
 
 #ifndef __ASSEMBLER__
 
+<<<<<<< HEAD
 #include <vdso/clocksource.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/alternative.h>
 #include <asm/arch_timer.h>
 #include <asm/barrier.h>

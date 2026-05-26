@@ -14,6 +14,10 @@
 
 #include <linux/cma.h>
 #include <linux/dma-buf.h>
+<<<<<<< HEAD
+=======
+#include <linux/dma-buf/heaps/cma.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/dma-heap.h>
 #include <linux/dma-map-ops.h>
 #include <linux/err.h>
@@ -29,6 +33,22 @@
 
 #define DEFAULT_CMA_NAME "default_cma_region"
 
+<<<<<<< HEAD
+=======
+static struct cma *dma_areas[MAX_CMA_AREAS] __initdata;
+static unsigned int dma_areas_num __initdata;
+
+int __init dma_heap_cma_register_heap(struct cma *cma)
+{
+	if (dma_areas_num >= ARRAY_SIZE(dma_areas))
+		return -EINVAL;
+
+	dma_areas[dma_areas_num++] = cma;
+
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct cma_heap {
 	struct dma_heap *heap;
 	struct cma *cma;
@@ -315,7 +335,14 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
 		struct page *page = cma_pages;
 
 		while (nr_clear_pages > 0) {
+<<<<<<< HEAD
 			clear_highpage(page);
+=======
+			void *vaddr = kmap_local_page(page);
+
+			clear_page(vaddr);
+			kunmap_local(vaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Avoid wasting time zeroing memory if the process
 			 * has been killed by SIGKILL.
@@ -326,7 +353,11 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
 			nr_clear_pages--;
 		}
 	} else {
+<<<<<<< HEAD
 		clear_pages(page_address(cma_pages), pagecount);
+=======
+		memset(page_address(cma_pages), 0, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	buffer->pages = kmalloc_objs(*buffer->pages, pagecount);
@@ -397,7 +428,10 @@ static int __init __add_cma_heap(struct cma *cma, const char *name)
 static int __init add_cma_heaps(void)
 {
 	struct cma *default_cma = dev_get_cma_area(NULL);
+<<<<<<< HEAD
 	struct cma *cma;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i;
 	int ret;
 
@@ -407,7 +441,13 @@ static int __init add_cma_heaps(void)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; (cma = dma_contiguous_get_area_by_idx(i)) != NULL; i++) {
+=======
+	for (i = 0; i < dma_areas_num; i++) {
+		struct cma *cma = dma_areas[i];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = __add_cma_heap(cma, cma_get_name(cma));
 		if (ret) {
 			pr_warn("Failed to add CMA heap %s", cma_get_name(cma));

@@ -2933,7 +2933,11 @@ int iwl_fw_dbg_collect_desc(struct iwl_fw_runtime *fwrt,
 	IWL_WARN(fwrt, "Collecting data: trigger %d fired.\n",
 		 le32_to_cpu(desc->trig_desc.type));
 
+<<<<<<< HEAD
 	queue_delayed_work(system_dfl_wq, &wk_data->wk,
+=======
+	queue_delayed_work(system_unbound_wq, &wk_data->wk,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   usecs_to_jiffies(delay));
 
 	return 0;
@@ -3236,7 +3240,11 @@ int iwl_fw_dbg_ini_collect(struct iwl_fw_runtime *fwrt,
 	if (sync)
 		iwl_fw_dbg_collect_sync(fwrt, idx);
 	else
+<<<<<<< HEAD
 		queue_delayed_work(system_dfl_wq,
+=======
+		queue_delayed_work(system_unbound_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   &fwrt->dump.wks[idx].wk,
 				   usecs_to_jiffies(delay));
 

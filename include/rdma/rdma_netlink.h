@@ -5,7 +5,10 @@
 
 #include <linux/netlink.h>
 #include <uapi/rdma/rdma_netlink.h>
+<<<<<<< HEAD
 #include <rdma/ib_verbs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct ib_device;
 
@@ -127,7 +130,10 @@ struct rdma_link_ops {
 	struct list_head list;
 	const char *type;
 	int (*newlink)(const char *ibdev_name, struct net_device *ndev);
+<<<<<<< HEAD
 	int (*dellink)(struct ib_device *dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void rdma_link_register(struct rdma_link_ops *ops);

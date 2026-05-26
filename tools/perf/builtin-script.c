@@ -166,7 +166,11 @@ struct perf_script {
 	int			range_num;
 };
 
+<<<<<<< HEAD
 static struct output_option {
+=======
+struct output_option {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *str;
 	enum perf_output_field field;
 } all_output_options[] = {
@@ -1271,11 +1275,19 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 
 	if (PRINT_FIELD(BRCNTR)) {
 		struct evsel *pos = evsel__leader(evsel);
+<<<<<<< HEAD
 		unsigned int i = 0, j, num, mask, width, numprinted = 0;
 
 		perf_env__find_br_cntr_info(evsel__env(evsel), NULL, &width);
 		mask = (1L << width) - 1;
 		printed += fprintf(fp, "\t# br_cntr: ");
+=======
+		unsigned int i = 0, j, num, mask, width;
+
+		perf_env__find_br_cntr_info(evsel__env(evsel), NULL, &width);
+		mask = (1L << width) - 1;
+		printed += fprintf(fp, "br_cntr: ");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		evlist__for_each_entry_from(evsel->evlist, pos) {
 			if (!(pos->core.attr.branch_sample_type & PERF_SAMPLE_BRANCH_COUNTERS))
 				continue;
@@ -1283,13 +1295,17 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 				break;
 
 			num = (br_cntr >> (i++ * width)) & mask;
+<<<<<<< HEAD
 			numprinted += num;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!verbose) {
 				for (j = 0; j < num; j++)
 					printed += fprintf(fp, "%s", pos->abbr_name);
 			} else
 				printed += fprintf(fp, "%s %d ", pos->name, num);
 		}
+<<<<<<< HEAD
 		if (numprinted == 0 && !verbose)
 			printed += fprintf(fp, "-");
 		printed += fprintf(fp, " ");
@@ -1297,6 +1313,12 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 
 	printed += fprintf(fp, "%s%s%s%s%s",
 			      !PRINT_FIELD(BRCNTR) ? "#" : "",
+=======
+		printed += fprintf(fp, "\t");
+	}
+
+	printed += fprintf(fp, "#%s%s%s%s",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      en->flags.predicted ? " PRED" : "",
 			      en->flags.mispred ? " MISPRED" : "",
 			      en->flags.in_tx ? " INTX" : "",
@@ -2572,6 +2594,10 @@ static struct scripting_ops	*scripting_ops;
 static void __process_stat(struct evsel *counter, u64 tstamp)
 {
 	int nthreads = perf_thread_map__nr(counter->core.threads);
+<<<<<<< HEAD
+=======
+	int idx, thread;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct perf_cpu cpu;
 	static int header_printed;
 
@@ -2581,9 +2607,13 @@ static void __process_stat(struct evsel *counter, u64 tstamp)
 		header_printed = 1;
 	}
 
+<<<<<<< HEAD
 	for (int thread = 0; thread < nthreads; thread++) {
 		unsigned int idx;
 
+=======
+	for (thread = 0; thread < nthreads; thread++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		perf_cpu_map__for_each_cpu(cpu, idx, evsel__cpus(counter)) {
 			struct perf_counts_values *counts;
 
@@ -2910,12 +2940,17 @@ static int print_event_with_time(const struct perf_tool *tool,
 		thread = machine__findnew_thread(machine, pid, tid);
 
 	if (evsel) {
+<<<<<<< HEAD
 		struct evsel *saved_evsel = sample->evsel;
 
 		sample->evsel = evsel;
 		perf_sample__fprintf_start(script, sample, thread, evsel,
 					   event->header.type, stdout);
 		sample->evsel = saved_evsel;
+=======
+		perf_sample__fprintf_start(script, sample, thread, evsel,
+					   event->header.type, stdout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	perf_event__fprintf(event, machine, stdout);
@@ -3823,7 +3858,11 @@ out:
 
 static int have_cmd(int argc, const char **argv)
 {
+<<<<<<< HEAD
 	char **__argv = calloc(argc, sizeof(const char *));
+=======
+	char **__argv = malloc(sizeof(const char *) * argc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!__argv) {
 		pr_err("malloc failed\n");
@@ -3948,6 +3987,18 @@ int process_cpu_map_event(const struct perf_tool *tool,
 	return set_maps(script);
 }
 
+<<<<<<< HEAD
+=======
+static int process_feature_event(const struct perf_tool *tool __maybe_unused,
+				 struct perf_session *session,
+				 union perf_event *event)
+{
+	if (event->feat.feat_id < HEADER_LAST_FEATURE)
+		return perf_event__process_feature(session, event);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int perf_script__process_auxtrace_info(const struct perf_tool *tool,
 					      struct perf_session *session,
 					      union perf_event *event)
@@ -4074,7 +4125,12 @@ int cmd_script(int argc, const char **argv)
 		   "file", "kallsyms pathname"),
 	OPT_BOOLEAN('G', "hide-call-graph", &no_callchain,
 		    "When printing symbols do not display call chain"),
+<<<<<<< HEAD
 	OPT_CALLBACK(0, "symfs", NULL, "directory[,layout]", SYMFS_HELP,
+=======
+	OPT_CALLBACK(0, "symfs", NULL, "directory",
+		     "Look for files with symbols relative to this directory",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     symbol__config_symfs),
 	OPT_CALLBACK('F', "fields", NULL, "str",
 		     "comma separated output fields prepend with 'type:'. "
@@ -4312,7 +4368,11 @@ int cmd_script(int argc, const char **argv)
 				}
 			}
 
+<<<<<<< HEAD
 			__argv = calloc(argc + 6, sizeof(const char *));
+=======
+			__argv = malloc((argc + 6) * sizeof(const char *));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!__argv) {
 				pr_err("malloc failed\n");
 				err = -ENOMEM;
@@ -4338,7 +4398,11 @@ int cmd_script(int argc, const char **argv)
 		dup2(live_pipe[0], 0);
 		close(live_pipe[1]);
 
+<<<<<<< HEAD
 		__argv = calloc(argc + 4, sizeof(const char *));
+=======
+		__argv = malloc((argc + 4) * sizeof(const char *));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!__argv) {
 			pr_err("malloc failed\n");
 			err = -ENOMEM;
@@ -4376,7 +4440,11 @@ script_found:
 			}
 		}
 
+<<<<<<< HEAD
 		__argv = calloc(argc + 2, sizeof(const char *));
+=======
+		__argv = malloc((argc + 2) * sizeof(const char *));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!__argv) {
 			pr_err("malloc failed\n");
 			err = -ENOMEM;
@@ -4422,7 +4490,11 @@ script_found:
 #ifdef HAVE_LIBTRACEEVENT
 	script.tool.tracing_data	 = perf_event__process_tracing_data;
 #endif
+<<<<<<< HEAD
 	script.tool.feature		 = perf_event__process_feature;
+=======
+	script.tool.feature		 = process_feature_event;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	script.tool.build_id		 = perf_event__process_build_id;
 	script.tool.id_index		 = perf_event__process_id_index;
 	script.tool.auxtrace_info	 = perf_script__process_auxtrace_info;

@@ -1166,6 +1166,7 @@ static int nfs_set_super(struct super_block *s, struct fs_context *fc)
 static int nfs_compare_super_address(struct nfs_server *server1,
 				     struct nfs_server *server2)
 {
+<<<<<<< HEAD
 	struct rpc_xprt *xprt1, *xprt2;
 	struct sockaddr *sap1, *sap2;
 
@@ -1178,6 +1179,14 @@ static int nfs_compare_super_address(struct nfs_server *server1,
 		goto out_unlock;
 
 	rcu_read_unlock();
+=======
+	struct sockaddr *sap1, *sap2;
+	struct rpc_xprt *xprt1 = server1->client->cl_xprt;
+	struct rpc_xprt *xprt2 = server2->client->cl_xprt;
+
+	if (!net_eq(xprt1->xprt_net, xprt2->xprt_net))
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sap1 = (struct sockaddr *)&server1->nfs_client->cl_addr;
 	sap2 = (struct sockaddr *)&server2->nfs_client->cl_addr;
@@ -1209,10 +1218,13 @@ static int nfs_compare_super_address(struct nfs_server *server1,
 	}
 
 	return 1;
+<<<<<<< HEAD
 
 out_unlock:
 	rcu_read_unlock();
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int nfs_compare_userns(const struct nfs_server *old,

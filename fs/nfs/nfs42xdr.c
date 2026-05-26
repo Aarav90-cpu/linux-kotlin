@@ -263,6 +263,7 @@
 #define NFS4_enc_removexattr_sz		(compound_encode_hdr_maxsz + \
 					 encode_sequence_maxsz + \
 					 encode_putfh_maxsz + \
+<<<<<<< HEAD
 					 encode_removexattr_maxsz + \
 					 encode_getattr_maxsz)
 #define NFS4_dec_removexattr_sz		(compound_decode_hdr_maxsz + \
@@ -270,6 +271,13 @@
 					 decode_putfh_maxsz + \
 					 decode_removexattr_maxsz + \
 					 decode_getattr_maxsz)
+=======
+					 encode_removexattr_maxsz)
+#define NFS4_dec_removexattr_sz		(compound_decode_hdr_maxsz + \
+					 decode_sequence_maxsz + \
+					 decode_putfh_maxsz + \
+					 decode_removexattr_maxsz)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * These values specify the maximum amount of data that is not
@@ -871,7 +879,10 @@ static void nfs4_xdr_enc_removexattr(struct rpc_rqst *req,
 	encode_sequence(xdr, &args->seq_args, &hdr);
 	encode_putfh(xdr, args->fh, &hdr);
 	encode_removexattr(xdr, args->xattr_name, &hdr);
+<<<<<<< HEAD
 	encode_getfattr(xdr, args->bitmask, &hdr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	encode_nops(&hdr);
 }
 
@@ -1821,9 +1832,12 @@ static int nfs4_xdr_dec_removexattr(struct rpc_rqst *req,
 		goto out;
 
 	status = decode_removexattr(xdr, &res->cinfo);
+<<<<<<< HEAD
 	if (status)
 		goto out;
 	status = decode_getfattr(xdr, res->fattr, res->server);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return status;
 }

@@ -26,10 +26,14 @@
  */
 
 static int pps_major;
+<<<<<<< HEAD
 static const struct class pps_class = {
 	.name		= "pps",
 	.dev_groups	= pps_groups
 };
+=======
+static struct class *pps_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static DEFINE_MUTEX(pps_idr_lock);
 static DEFINE_IDR(pps_idr);
@@ -382,7 +386,11 @@ int pps_register_cdev(struct pps_device *pps)
 	}
 	pps->id = err;
 
+<<<<<<< HEAD
 	pps->dev.class = &pps_class;
+=======
+	pps->dev.class = pps_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pps->dev.parent = pps->info.dev;
 	pps->dev.devt = MKDEV(pps_major, pps->id);
 	dev_set_drvdata(&pps->dev, pps);
@@ -411,7 +419,11 @@ void pps_unregister_cdev(struct pps_device *pps)
 {
 	pr_debug("unregistering pps%d\n", pps->id);
 	pps->lookup_cookie = NULL;
+<<<<<<< HEAD
 	device_destroy(&pps_class, pps->dev.devt);
+=======
+	device_destroy(pps_class, pps->dev.devt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Now we can release the ID for re-use */
 	mutex_lock(&pps_idr_lock);
@@ -463,12 +475,17 @@ EXPORT_SYMBOL(pps_lookup_dev);
 
 static void __exit pps_exit(void)
 {
+<<<<<<< HEAD
 	class_unregister(&pps_class);
+=======
+	class_destroy(pps_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__unregister_chrdev(pps_major, 0, PPS_MAX_SOURCES, "pps");
 }
 
 static int __init pps_init(void)
 {
+<<<<<<< HEAD
 	int err;
 
 	err = class_register(&pps_class);
@@ -476,6 +493,14 @@ static int __init pps_init(void)
 		pr_err("failed to register class\n");
 		return err;
 	}
+=======
+	pps_class = class_create("pps");
+	if (IS_ERR(pps_class)) {
+		pr_err("failed to allocate class\n");
+		return PTR_ERR(pps_class);
+	}
+	pps_class->dev_groups = pps_groups;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pps_major = __register_chrdev(0, 0, PPS_MAX_SOURCES, "pps",
 				      &pps_cdev_fops);
@@ -491,7 +516,11 @@ static int __init pps_init(void)
 	return 0;
 
 remove_class:
+<<<<<<< HEAD
 	class_unregister(&pps_class);
+=======
+	class_destroy(pps_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return pps_major;
 }
 

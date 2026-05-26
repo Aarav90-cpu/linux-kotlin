@@ -397,6 +397,7 @@ static void fuse_uring_teardown_entries(struct fuse_ring_queue *queue)
 				     FRRS_AVAILABLE);
 }
 
+<<<<<<< HEAD
 static void fuse_uring_teardown_all_queues(struct fuse_ring *ring)
 {
 	int qid;
@@ -411,6 +412,8 @@ static void fuse_uring_teardown_all_queues(struct fuse_ring *ring)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Log state debug info
  */
@@ -445,10 +448,26 @@ static void fuse_uring_log_ent_state(struct fuse_ring *ring)
 
 static void fuse_uring_async_stop_queues(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct fuse_ring *ring =
 		container_of(work, struct fuse_ring, async_teardown_work.work);
 
 	fuse_uring_teardown_all_queues(ring);
+=======
+	int qid;
+	struct fuse_ring *ring =
+		container_of(work, struct fuse_ring, async_teardown_work.work);
+
+	/* XXX code dup */
+	for (qid = 0; qid < ring->nr_queues; qid++) {
+		struct fuse_ring_queue *queue = READ_ONCE(ring->queues[qid]);
+
+		if (!queue)
+			continue;
+
+		fuse_uring_teardown_entries(queue);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Some ring entries might be in the middle of IO operations,
@@ -474,7 +493,20 @@ static void fuse_uring_async_stop_queues(struct work_struct *work)
  */
 void fuse_uring_stop_queues(struct fuse_ring *ring)
 {
+<<<<<<< HEAD
 	fuse_uring_teardown_all_queues(ring);
+=======
+	int qid;
+
+	for (qid = 0; qid < ring->nr_queues; qid++) {
+		struct fuse_ring_queue *queue = READ_ONCE(ring->queues[qid]);
+
+		if (!queue)
+			continue;
+
+		fuse_uring_teardown_entries(queue);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (atomic_read(&ring->queue_refs) > 0) {
 		ring->teardown_time = jiffies;

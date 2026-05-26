@@ -35,17 +35,27 @@ static const struct acpi_device_id wl_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static int wireless_input_setup(struct device *dev)
 {
 	struct wl_button *button = dev_get_drvdata(dev);
+=======
+static int wireless_input_setup(struct acpi_device *device)
+{
+	struct wl_button *button = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	button->input_dev = input_allocate_device();
 	if (!button->input_dev)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	snprintf(button->phys, sizeof(button->phys), "%s/input0",
 		 acpi_device_hid(ACPI_COMPANION(dev)));
+=======
+	snprintf(button->phys, sizeof(button->phys), "%s/input0", acpi_device_hid(device));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	button->input_dev->name = "Wireless hotkeys";
 	button->input_dev->phys = button->phys;
@@ -64,17 +74,29 @@ err_free_dev:
 	return err;
 }
 
+<<<<<<< HEAD
 static void wireless_input_destroy(struct device *dev)
 {
 	struct wl_button *button = dev_get_drvdata(dev);
+=======
+static void wireless_input_destroy(struct acpi_device *device)
+{
+	struct wl_button *button = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	input_unregister_device(button->input_dev);
 	kfree(button);
 }
 
+<<<<<<< HEAD
 static void wl_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct wl_button *button = data;
+=======
+static void wl_notify(struct acpi_device *acpi_dev, u32 event)
+{
+	struct wl_button *button = acpi_driver_data(acpi_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (event != 0x80) {
 		pr_info("Received unknown event (0x%x)\n", event);
@@ -87,7 +109,11 @@ static void wl_notify(acpi_handle handle, u32 event, void *data)
 	input_sync(button->input_dev);
 }
 
+<<<<<<< HEAD
 static int wl_probe(struct platform_device *pdev)
+=======
+static int wl_add(struct acpi_device *device)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct acpi_device *adev;
 	struct wl_button *button;
@@ -101,6 +127,7 @@ static int wl_probe(struct platform_device *pdev)
 	if (!button)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, button);
 
 	err = wireless_input_setup(&pdev->dev);
@@ -114,11 +141,20 @@ static int wl_probe(struct platform_device *pdev)
 	if (err) {
 		pr_err("Failed to install ACPI notify handler\n");
 		wireless_input_destroy(&pdev->dev);
+=======
+	device->driver_data = button;
+
+	err = wireless_input_setup(device);
+	if (err) {
+		pr_err("Failed to setup wireless hotkeys\n");
+		kfree(button);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static void wl_remove(struct platform_device *pdev)
 {
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
@@ -136,3 +172,21 @@ static struct platform_driver wl_driver = {
 };
 
 module_platform_driver(wl_driver);
+=======
+static void wl_remove(struct acpi_device *device)
+{
+	wireless_input_destroy(device);
+}
+
+static struct acpi_driver wl_driver = {
+	.name	= "wireless-hotkey",
+	.ids	= wl_ids,
+	.ops	= {
+		.add	= wl_add,
+		.remove	= wl_remove,
+		.notify	= wl_notify,
+	},
+};
+
+module_acpi_driver(wl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

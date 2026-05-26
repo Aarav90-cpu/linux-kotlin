@@ -97,7 +97,11 @@ struct em28xx_dvb {
 	struct semaphore      pll_mutex;
 	bool			dont_attach_fe1;
 	int			lna_gpio;
+<<<<<<< HEAD
 	struct i2c_client	*i2c_client_demod[2];
+=======
+	struct i2c_client	*i2c_client_demod;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct i2c_client	*i2c_client_tuner;
 	struct i2c_client	*i2c_client_sec;
 };
@@ -296,6 +300,7 @@ static int em28xx_dvb_bus_ctrl(struct dvb_frontend *fe, int acquire)
 		return em28xx_set_mode(dev, EM28XX_SUSPEND);
 }
 
+<<<<<<< HEAD
 static int em28xx_set_analog_freq(struct em28xx *dev, u32 freq)
 {
 	const struct dvb_tuner_ops *dops = &dev->dvb->fe[0]->ops.tuner_ops;
@@ -311,6 +316,8 @@ static int em28xx_set_analog_freq(struct em28xx *dev, u32 freq)
 	}
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* ------------------------------------------------------------------ */
 
 static struct lgdt330x_config em2880_lgdt3303_dev = {
@@ -854,6 +861,7 @@ static void px_bcud_init(struct em28xx *dev)
 	};
 	em28xx_write_reg(dev, EM28XX_R06_I2C_CLK, 0x46);
 	/* sleeping ISDB-T */
+<<<<<<< HEAD
 	dev->dvb->i2c_client_demod[0]->addr = 0x14;
 	for (i = 0; i < ARRAY_SIZE(regs1); i++)
 		i2c_master_send(dev->dvb->i2c_client_demod[0],
@@ -862,6 +870,16 @@ static void px_bcud_init(struct em28xx *dev)
 	dev->dvb->i2c_client_demod[0]->addr = 0x15;
 	for (i = 0; i < ARRAY_SIZE(regs2); i++)
 		i2c_master_send(dev->dvb->i2c_client_demod[0], regs2[i].r,
+=======
+	dev->dvb->i2c_client_demod->addr = 0x14;
+	for (i = 0; i < ARRAY_SIZE(regs1); i++)
+		i2c_master_send(dev->dvb->i2c_client_demod,
+				regs1[i].r, regs1[i].len);
+	/* sleeping ISDB-S */
+	dev->dvb->i2c_client_demod->addr = 0x15;
+	for (i = 0; i < ARRAY_SIZE(regs2); i++)
+		i2c_master_send(dev->dvb->i2c_client_demod, regs2[i].r,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				regs2[i].len);
 	for (i = 0; i < ARRAY_SIZE(gpio); i++) {
 		em28xx_write_reg_bits(dev, gpio[i].reg, gpio[i].val,
@@ -1155,6 +1173,7 @@ static int em28174_dvb_init_pctv_460e(struct em28xx *dev)
 	tda10071_pdata.pll_multiplier = 20;
 	tda10071_pdata.tuner_i2c_addr = 0x14;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("tda10071", "tda10071_cx24118",
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 0x55, &tda10071_pdata);
@@ -1162,6 +1181,15 @@ static int em28174_dvb_init_pctv_460e(struct em28xx *dev)
 		return -ENODEV;
 
 	dvb->fe[0] = tda10071_pdata.get_dvb_frontend(dvb->i2c_client_demod[0]);
+=======
+	dvb->i2c_client_demod = dvb_module_probe("tda10071", "tda10071_cx24118",
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x55, &tda10071_pdata);
+	if (!dvb->i2c_client_demod)
+		return -ENODEV;
+
+	dvb->fe[0] = tda10071_pdata.get_dvb_frontend(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* attach SEC */
 	a8293_pdata.dvb_frontend = dvb->fe[0];
@@ -1170,7 +1198,11 @@ static int em28174_dvb_init_pctv_460e(struct em28xx *dev)
 					       &dev->i2c_adap[dev->def_i2c_bus],
 					       0x08, &a8293_pdata);
 	if (!dvb->i2c_client_sec) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1193,6 +1225,7 @@ static int em28178_dvb_init_pctv_461e(struct em28xx *dev)
 	m88ds3103_pdata.ts_clk_pol = 1;
 	m88ds3103_pdata.agc = 0x99;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("m88ds3103", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 0x68, &m88ds3103_pdata);
@@ -1201,6 +1234,16 @@ static int em28178_dvb_init_pctv_461e(struct em28xx *dev)
 
 	dvb->fe[0] = m88ds3103_pdata.get_dvb_frontend(dvb->i2c_client_demod[0]);
 	i2c_adapter = m88ds3103_pdata.get_i2c_adapter(dvb->i2c_client_demod[0]);
+=======
+	dvb->i2c_client_demod = dvb_module_probe("m88ds3103", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x68, &m88ds3103_pdata);
+	if (!dvb->i2c_client_demod)
+		return -ENODEV;
+
+	dvb->fe[0] = m88ds3103_pdata.get_dvb_frontend(dvb->i2c_client_demod);
+	i2c_adapter = m88ds3103_pdata.get_i2c_adapter(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* attach tuner */
 	ts2020_config.fe = dvb->fe[0];
@@ -1209,7 +1252,11 @@ static int em28178_dvb_init_pctv_461e(struct em28xx *dev)
 						 i2c_adapter,
 						 0x60, &ts2020_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1230,14 +1277,22 @@ static int em28178_dvb_init_pctv_461e(struct em28xx *dev)
 					       0x08, &a8293_pdata);
 	if (!dvb->i2c_client_sec) {
 		dvb_module_release(dvb->i2c_client_tuner);
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int em28178_dvb_init_pctv_461e_vX(struct em28xx *dev, int version)
+=======
+static int em28178_dvb_init_pctv_461e_v2(struct em28xx *dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct em28xx_dvb *dvb = dev->dvb;
 	struct i2c_adapter *i2c_adapter;
@@ -1254,6 +1309,7 @@ static int em28178_dvb_init_pctv_461e_vX(struct em28xx *dev, int version)
 	m88ds3103_pdata.agc = 0x99;
 	m88ds3103_pdata.agc_inv = 0;
 	m88ds3103_pdata.spec_inv = 0;
+<<<<<<< HEAD
 
 	if (version == 2) {
 		dvb->i2c_client_demod[0] = dvb_module_probe("m88ds3103", "m88ds3103b",
@@ -1273,6 +1329,17 @@ static int em28178_dvb_init_pctv_461e_vX(struct em28xx *dev, int version)
 
 	dvb->fe[0] = m88ds3103_pdata.get_dvb_frontend(dvb->i2c_client_demod[0]);
 	i2c_adapter = m88ds3103_pdata.get_i2c_adapter(dvb->i2c_client_demod[0]);
+=======
+	dvb->i2c_client_demod = dvb_module_probe("m88ds3103", "m88ds3103b",
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x6a, &m88ds3103_pdata);
+
+	if (!dvb->i2c_client_demod)
+		return -ENODEV;
+
+	dvb->fe[0] = m88ds3103_pdata.get_dvb_frontend(dvb->i2c_client_demod);
+	i2c_adapter = m88ds3103_pdata.get_i2c_adapter(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* attach tuner */
 	ts2020_config.fe = dvb->fe[0];
@@ -1280,7 +1347,11 @@ static int em28178_dvb_init_pctv_461e_vX(struct em28xx *dev, int version)
 						 i2c_adapter,
 						 0x60, &ts2020_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1295,7 +1366,11 @@ static int em28178_dvb_init_pctv_461e_vX(struct em28xx *dev, int version)
 					       0x08, &a8293_pdata);
 	if (!dvb->i2c_client_sec) {
 		dvb_module_release(dvb->i2c_client_tuner);
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1315,10 +1390,17 @@ static int em28178_dvb_init_pctv_292e(struct em28xx *dev)
 	si2168_config.ts_mode = SI2168_TS_PARALLEL;
 	si2168_config.spectral_inversion = true;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("si2168", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 0x64, &si2168_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("si2168", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x64, &si2168_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* attach tuner */
@@ -1331,7 +1413,11 @@ static int em28178_dvb_init_pctv_292e(struct em28xx *dev)
 						 adapter,
 						 0x60, &si2157_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 	dvb->fe[0]->ops.set_lna = em28xx_pctv_292e_set_lna;
@@ -1351,10 +1437,17 @@ static int em28178_dvb_init_terratec_t2_stick_hd(struct em28xx *dev)
 	si2168_config.fe = &dvb->fe[0];
 	si2168_config.ts_mode = SI2168_TS_PARALLEL;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("si2168", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 0x64, &si2168_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("si2168", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x64, &si2168_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* attach tuner */
@@ -1368,7 +1461,11 @@ static int em28178_dvb_init_terratec_t2_stick_hd(struct em28xx *dev)
 						 adapter,
 						 0x60, &si2157_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1382,10 +1479,17 @@ static int em28178_dvb_init_plex_px_bcud(struct em28xx *dev)
 	struct qm1d1c0042_config qm1d1c0042_config = {};
 
 	/* attach demod */
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("tc90522", "tc90522sat",
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 0x15, &tc90522_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("tc90522", "tc90522sat",
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 0x15, &tc90522_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* attach tuner */
@@ -1396,7 +1500,11 @@ static int em28178_dvb_init_plex_px_bcud(struct em28xx *dev)
 						 tc90522_config.tuner_i2c,
 						 0x61, &qm1d1c0042_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1421,10 +1529,17 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_dvb(struct em28xx *dev)
 	si2168_config.spectral_inversion = true;
 	addr = (dev->ts == PRIMARY_TS) ? 0x64 : 0x67;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("si2168", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 addr, &si2168_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("si2168", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 addr, &si2168_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* attach tuner */
@@ -1440,7 +1555,11 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_dvb(struct em28xx *dev)
 						 adapter,
 						 addr, &si2157_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1461,10 +1580,17 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 	lgdt3306a_config.i2c_adapter = &adapter;
 	addr = (dev->ts == PRIMARY_TS) ? 0x59 : 0x0e;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("lgdt3306a", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 addr, &lgdt3306a_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("lgdt3306a", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 addr, &lgdt3306a_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	/* attach tuner */
@@ -1480,7 +1606,11 @@ static int em28174_dvb_init_hauppauge_wintv_dualhd_01595(struct em28xx *dev)
 						 adapter,
 						 addr, &si2157_config);
 	if (!dvb->i2c_client_tuner) {
+<<<<<<< HEAD
 		dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+		dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -1498,15 +1628,23 @@ static int em2874_dvb_init_hauppauge_usb_quadhd(struct em28xx *dev)
 	mxl692_config.fe = &dvb->fe[0];
 	addr = (dev->ts == PRIMARY_TS) ? 0x60 : 0x63;
 
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = dvb_module_probe("mxl692", NULL,
 						 &dev->i2c_adap[dev->def_i2c_bus],
 						 addr, &mxl692_config);
 	if (!dvb->i2c_client_demod[0])
+=======
+	dvb->i2c_client_demod = dvb_module_probe("mxl692", NULL,
+						 &dev->i2c_adap[dev->def_i2c_bus],
+						 addr, &mxl692_config);
+	if (!dvb->i2c_client_demod)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int em2828X_dvb_init_hauppauge_wintv_935_v2(struct em28xx *dev)
 {
 	struct em28xx_dvb *dvb = dev->dvb;
@@ -1695,6 +1833,8 @@ static int em2828X_dvb_init_hauppauge_wintv_975_v2(struct em28xx *dev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int em28xx_dvb_init(struct em28xx *dev)
 {
 	int result = 0, dvb_alt = 0;
@@ -1720,8 +1860,11 @@ static int em28xx_dvb_init(struct em28xx *dev)
 	dev->dvb = dvb;
 	dvb->fe[0] = NULL;
 	dvb->fe[1] = NULL;
+<<<<<<< HEAD
 	dvb->i2c_client_demod[0] = NULL;
 	dvb->i2c_client_demod[1] = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* pre-allocate DVB usb transfer buffers */
 	if (dev->dvb_xfer_bulk) {
@@ -2154,12 +2297,16 @@ static int em28xx_dvb_init(struct em28xx *dev)
 			goto out_free;
 		break;
 	case EM28178_BOARD_PCTV_461E_V2:
+<<<<<<< HEAD
 		result = em28178_dvb_init_pctv_461e_vX(dev, 2);
 		if (result)
 			goto out_free;
 		break;
 	case EM28178_BOARD_PCTV_461E_V3:
 		result = em28178_dvb_init_pctv_461e_vX(dev, 3);
+=======
+		result = em28178_dvb_init_pctv_461e_v2(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (result)
 			goto out_free;
 		break;
@@ -2193,6 +2340,7 @@ static int em28xx_dvb_init(struct em28xx *dev)
 		if (result)
 			goto out_free;
 		break;
+<<<<<<< HEAD
 	case EM2828X_BOARD_HAUPPAUGE_935_V2:
 		result = em2828X_dvb_init_hauppauge_wintv_935_v2(dev);
 		if (result)
@@ -2208,6 +2356,8 @@ static int em28xx_dvb_init(struct em28xx *dev)
 		if (result)
 			goto out_free;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		dev_err(&dev->intf->dev,
 			"The frontend of your DVB/ATSC card isn't supported yet\n");
@@ -2303,8 +2453,12 @@ static int em28xx_dvb_fini(struct em28xx *dev)
 	/* release I2C module bindings */
 	dvb_module_release(dvb->i2c_client_sec);
 	dvb_module_release(dvb->i2c_client_tuner);
+<<<<<<< HEAD
 	dvb_module_release(dvb->i2c_client_demod[1]);
 	dvb_module_release(dvb->i2c_client_demod[0]);
+=======
+	dvb_module_release(dvb->i2c_client_demod);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(dvb);
 	dev->dvb = NULL;

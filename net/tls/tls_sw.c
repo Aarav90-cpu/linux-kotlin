@@ -789,6 +789,7 @@ static int tls_push_record(struct sock *sk, int flags,
 	i = msg_pl->sg.end;
 	sk_msg_iter_var_prev(i);
 
+<<<<<<< HEAD
 	/* msg_pl->sg.data is a ring; data[MAX+1] is reserved for the wrap
 	 * link (frags won't use it). 'i' is now the last filled entry:
 	 *
@@ -806,16 +807,32 @@ static int tls_push_record(struct sock *sk, int flags,
 		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
 			 msg_pl->sg.data);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rec->content_type = record_type;
 	if (prot->version == TLS_1_3_VERSION) {
 		/* Add content type to end of message.  No padding added */
 		sg_set_buf(&rec->sg_content_type, &rec->content_type, 1);
 		sg_mark_end(&rec->sg_content_type);
+<<<<<<< HEAD
 		sg_chain(msg_pl->sg.data, i + 2, &rec->sg_content_type);
+=======
+		sg_chain(msg_pl->sg.data, msg_pl->sg.end + 1,
+			 &rec->sg_content_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		sg_mark_end(sk_msg_elem(msg_pl, i));
 	}
 
+<<<<<<< HEAD
+=======
+	if (msg_pl->sg.end < msg_pl->sg.start) {
+		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
+			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
+			 msg_pl->sg.data);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i = msg_pl->sg.start;
 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
 
@@ -2060,7 +2077,12 @@ static void tls_rx_reader_unlock(struct sock *sk, struct tls_sw_context_rx *ctx)
 int tls_sw_recvmsg(struct sock *sk,
 		   struct msghdr *msg,
 		   size_t len,
+<<<<<<< HEAD
 		   int flags)
+=======
+		   int flags,
+		   int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tls_context *tls_ctx = tls_get_ctx(sk);
 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
@@ -2335,9 +2357,15 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
 	if (copied < 0)
 		goto splice_requeue;
 
+<<<<<<< HEAD
 	if (copied < rxm->full_len) {
 		rxm->offset += copied;
 		rxm->full_len -= copied;
+=======
+	if (chunk < rxm->full_len) {
+		rxm->offset += len;
+		rxm->full_len -= len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto splice_requeue;
 	}
 
@@ -2642,12 +2670,17 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
 void tls_sw_free_resources_rx(struct sock *sk)
 {
 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+<<<<<<< HEAD
 	struct tls_sw_context_rx *ctx;
 
 	ctx = tls_sw_ctx_rx(tls_ctx);
 
 	tls_sw_release_resources_rx(sk);
 	__tls_strp_done(&ctx->strp);
+=======
+
+	tls_sw_release_resources_rx(sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tls_sw_free_ctx_rx(tls_ctx);
 }
 

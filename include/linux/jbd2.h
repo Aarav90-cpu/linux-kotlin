@@ -429,6 +429,7 @@ struct jbd2_inode {
 	unsigned long i_flags;
 
 	/**
+<<<<<<< HEAD
 	 * @i_dirty_start_page:
 	 *
 	 * Dirty range start in PAGE_SIZE units.
@@ -469,6 +470,24 @@ static inline bool jbd2_jinode_get_dirty_range(const struct jbd2_inode *jinode,
 	return true;
 }
 
+=======
+	 * @i_dirty_start:
+	 *
+	 * Offset in bytes where the dirty range for this inode starts.
+	 * [j_list_lock]
+	 */
+	loff_t i_dirty_start;
+
+	/**
+	 * @i_dirty_end:
+	 *
+	 * Inclusive offset in bytes where the dirty range for this inode
+	 * ends. [j_list_lock]
+	 */
+	loff_t i_dirty_end;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct jbd2_revoke_table_s;
 
 /**

@@ -159,6 +159,7 @@ If setting it from the kernel command line, it is recommended to also
 disable tracing with the "traceoff" flag, and enable tracing after boot up.
 Otherwise the trace from the most recent boot will be mixed with the trace
 from the previous boot, and may make it confusing to read.
+<<<<<<< HEAD
 
 Using a backup instance for keeping previous boot data
 ------------------------------------------------------
@@ -178,3 +179,5 @@ instance without stopping the trace.
 Note that this "backup" instance is readonly, and will be removed automatically
 if you clear the trace data or read out all trace data from the "trace_pipe"
 or the "trace_pipe_raw" files.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

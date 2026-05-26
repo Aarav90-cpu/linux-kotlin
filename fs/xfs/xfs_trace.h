@@ -394,7 +394,10 @@ DEFINE_ZONE_EVENT(xfs_zone_full);
 DEFINE_ZONE_EVENT(xfs_zone_opened);
 DEFINE_ZONE_EVENT(xfs_zone_reset);
 DEFINE_ZONE_EVENT(xfs_zone_gc_target_opened);
+<<<<<<< HEAD
 DEFINE_ZONE_EVENT(xfs_zone_gc_target_stolen);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_EVENT(xfs_zone_free_blocks,
 	TP_PROTO(struct xfs_rtgroup *rtg, xfs_rgblock_t rgbno,
@@ -462,7 +465,10 @@ DEFINE_EVENT(xfs_zone_alloc_class, name,			\
 DEFINE_ZONE_ALLOC_EVENT(xfs_zone_record_blocks);
 DEFINE_ZONE_ALLOC_EVENT(xfs_zone_skip_blocks);
 DEFINE_ZONE_ALLOC_EVENT(xfs_zone_alloc_blocks);
+<<<<<<< HEAD
 DEFINE_ZONE_ALLOC_EVENT(xfs_zone_spurious_open);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_EVENT(xfs_zone_gc_select_victim,
 	TP_PROTO(struct xfs_rtgroup *rtg, unsigned int bucket),
@@ -742,7 +748,11 @@ DECLARE_EVENT_CLASS(xfs_buf_class,
 		__entry->dev = bp->b_target->bt_dev;
 		__entry->bno = xfs_buf_daddr(bp);
 		__entry->nblks = bp->b_length;
+<<<<<<< HEAD
 		__entry->hold = bp->b_lockref.count;
+=======
+		__entry->hold = bp->b_hold;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->pincount = atomic_read(&bp->b_pin_count);
 		__entry->lockval = bp->b_sema.count;
 		__entry->flags = bp->b_flags;
@@ -816,7 +826,11 @@ DECLARE_EVENT_CLASS(xfs_buf_flags_class,
 		__entry->bno = xfs_buf_daddr(bp);
 		__entry->length = bp->b_length;
 		__entry->flags = flags;
+<<<<<<< HEAD
 		__entry->hold = bp->b_lockref.count;
+=======
+		__entry->hold = bp->b_hold;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->pincount = atomic_read(&bp->b_pin_count);
 		__entry->lockval = bp->b_sema.count;
 		__entry->caller_ip = caller_ip;
@@ -860,7 +874,11 @@ TRACE_EVENT(xfs_buf_ioerror,
 		__entry->dev = bp->b_target->bt_dev;
 		__entry->bno = xfs_buf_daddr(bp);
 		__entry->length = bp->b_length;
+<<<<<<< HEAD
 		__entry->hold = bp->b_lockref.count;
+=======
+		__entry->hold = bp->b_hold;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->pincount = atomic_read(&bp->b_pin_count);
 		__entry->lockval = bp->b_sema.count;
 		__entry->error = error;
@@ -904,7 +922,11 @@ DECLARE_EVENT_CLASS(xfs_buf_item_class,
 		__entry->buf_bno = xfs_buf_daddr(bip->bli_buf);
 		__entry->buf_len = bip->bli_buf->b_length;
 		__entry->buf_flags = bip->bli_buf->b_flags;
+<<<<<<< HEAD
 		__entry->buf_hold = bip->bli_buf->b_lockref.count;
+=======
+		__entry->buf_hold = bip->bli_buf->b_hold;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->buf_pincount = atomic_read(&bip->bli_buf->b_pin_count);
 		__entry->buf_lockval = bip->bli_buf->b_sema.count;
 		__entry->li_flags = bip->bli_item.li_flags;
@@ -5208,7 +5230,11 @@ DECLARE_EVENT_CLASS(xfbtree_buf_class,
 		__entry->xfino = file_inode(xfbt->target->bt_file)->i_ino;
 		__entry->bno = xfs_buf_daddr(bp);
 		__entry->nblks = bp->b_length;
+<<<<<<< HEAD
 		__entry->hold = bp->b_lockref.count;
+=======
+		__entry->hold = bp->b_hold;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->pincount = atomic_read(&bp->b_pin_count);
 		__entry->lockval = bp->b_sema.count;
 		__entry->flags = bp->b_flags;

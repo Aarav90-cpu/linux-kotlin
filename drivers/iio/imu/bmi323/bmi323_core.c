@@ -156,6 +156,10 @@ struct bmi323_data {
 	struct iio_mount_matrix orientation;
 	enum bmi323_irq_pin irq_pin;
 	struct iio_trigger *trig;
+<<<<<<< HEAD
+=======
+	bool drdy_trigger_enabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum bmi323_state state;
 	s64 fifo_tstamp, old_fifo_tstamp;
 	u32 odrns[BMI323_SENSORS_CNT];

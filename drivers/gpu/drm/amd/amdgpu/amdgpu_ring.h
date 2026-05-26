@@ -121,6 +121,10 @@ struct amdgpu_fence_driver {
 	/* sync_seq is protected by ring emission lock */
 	uint32_t			sync_seq;
 	atomic_t			last_seq;
+<<<<<<< HEAD
+=======
+	u64				signalled_wptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool				initialized;
 	struct amdgpu_irq_src		*irq_src;
 	unsigned			irq_type;
@@ -145,6 +149,7 @@ struct amdgpu_fence {
 	struct amdgpu_ring		*ring;
 	ktime_t				start_timestamp;
 
+<<<<<<< HEAD
 	/* location and size of the IB */
 	u64				ib_wptr;
 	unsigned int			ib_dw_size;
@@ -154,14 +159,30 @@ struct amdgpu_fence {
 	u64				context;
 	/* idx for ring backups */
 	unsigned int			backup_idx;
+=======
+	/* wptr for the total submission for resets */
+	u64				wptr;
+	/* fence context for resets */
+	u64				context;
+	/* has this fence been reemitted */
+	unsigned int			reemitted;
+	/* wptr for the fence for the submission */
+	u64				fence_wptr_start;
+	u64				fence_wptr_end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 extern const struct drm_sched_backend_ops amdgpu_sched_ops;
 
 void amdgpu_fence_driver_set_error(struct amdgpu_ring *ring, int error);
 void amdgpu_fence_driver_force_completion(struct amdgpu_ring *ring);
+<<<<<<< HEAD
 void amdgpu_ring_set_fence_errors_and_reemit(struct amdgpu_ring *ring,
 					     struct amdgpu_fence *guilty_fence);
+=======
+void amdgpu_fence_driver_update_timedout_fence_state(struct amdgpu_fence *af);
+void amdgpu_fence_save_wptr(struct amdgpu_fence *af);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int amdgpu_fence_driver_init_ring(struct amdgpu_ring *ring);
 int amdgpu_fence_driver_start_ring(struct amdgpu_ring *ring,
@@ -171,8 +192,13 @@ void amdgpu_fence_driver_hw_init(struct amdgpu_device *adev);
 void amdgpu_fence_driver_hw_fini(struct amdgpu_device *adev);
 int amdgpu_fence_driver_sw_init(struct amdgpu_device *adev);
 void amdgpu_fence_driver_sw_fini(struct amdgpu_device *adev);
+<<<<<<< HEAD
 void amdgpu_fence_emit(struct amdgpu_ring *ring, struct amdgpu_fence *af,
 		       unsigned int flags);
+=======
+int amdgpu_fence_emit(struct amdgpu_ring *ring, struct amdgpu_fence *af,
+		      unsigned int flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_fence_emit_polling(struct amdgpu_ring *ring, uint32_t *s,
 			      uint32_t timeout);
 bool amdgpu_fence_process(struct amdgpu_ring *ring);
@@ -312,7 +338,10 @@ struct amdgpu_ring {
 	/* backups for resets */
 	uint32_t		*ring_backup;
 	unsigned int		ring_backup_entries_to_copy;
+<<<<<<< HEAD
 	bool			reemit;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned		rptr_offs;
 	u64			rptr_gpu_addr;
 	u32			*rptr_cpu_addr;
@@ -522,6 +551,7 @@ static inline void amdgpu_ring_write_multiple(struct amdgpu_ring *ring,
 	ring->count_dw -= count_dw;
 }
 
+<<<<<<< HEAD
 static inline unsigned int amdgpu_ring_get_dw_distance(struct amdgpu_ring *ring,
 						       u64 start_wptr, u64 end_wptr)
 {
@@ -533,6 +563,8 @@ static inline unsigned int amdgpu_ring_get_dw_distance(struct amdgpu_ring *ring,
 	return end - start;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * amdgpu_ring_patch_cond_exec - patch dw count of conditional execute
  * @ring: amdgpu_ring structure
@@ -543,13 +575,25 @@ static inline unsigned int amdgpu_ring_get_dw_distance(struct amdgpu_ring *ring,
 static inline void amdgpu_ring_patch_cond_exec(struct amdgpu_ring *ring,
 					       unsigned int offset)
 {
+<<<<<<< HEAD
+=======
+	unsigned cur;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ring->funcs->init_cond_exec)
 		return;
 
 	WARN_ON(offset > ring->buf_mask);
 	WARN_ON(ring->ring[offset] != 0);
 
+<<<<<<< HEAD
 	ring->ring[offset] = amdgpu_ring_get_dw_distance(ring, offset, ring->wptr - 1);
+=======
+	cur = (ring->wptr - 1) & ring->buf_mask;
+	if (cur < offset)
+		cur += ring->ring_size >> 2;
+	ring->ring[offset] = cur - offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_ring_test_helper(struct amdgpu_ring *ring);

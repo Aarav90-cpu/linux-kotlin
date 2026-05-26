@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include <drm/drm_gem.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_shmem_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_vma_manager.h>
 
 #ifdef CONFIG_DRM
@@ -22,6 +25,7 @@ rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node *node)
 	return drm_vma_node_offset_addr(node);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DRM_GEM_SHMEM_HELPER
 __rust_helper void
 rust_helper_drm_gem_shmem_object_free(struct drm_gem_object *obj)
@@ -76,3 +80,6 @@ rust_helper_drm_gem_shmem_object_mmap(struct drm_gem_object *obj, struct vm_area
 
 #endif /* CONFIG_DRM_GEM_SHMEM_HELPER */
 #endif /* CONFIG_DRM */
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

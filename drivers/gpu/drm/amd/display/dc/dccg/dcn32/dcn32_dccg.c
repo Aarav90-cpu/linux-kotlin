@@ -265,7 +265,10 @@ static void dccg32_get_dccg_ref_freq(struct dccg *dccg,
 		unsigned int xtalin_freq_inKhz,
 		unsigned int *dccg_ref_freq_inKhz)
 {
+<<<<<<< HEAD
 	(void)dccg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Assume refclk is sourced from xtalin
 	 * expect 100MHz

@@ -337,7 +337,11 @@ static int ipvlan_rcv_frame(struct ipvl_addr *addr, struct sk_buff **pskb,
 	 */
 	if (local) {
 		if (unlikely(!(dev->flags & IFF_UP))) {
+<<<<<<< HEAD
 			kfree_skb_reason(skb, SKB_DROP_REASON_DEV_READY);
+=======
+			kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 		}
 
@@ -596,7 +600,11 @@ static void ipvlan_multicast_enqueue(struct ipvl_port *port,
 	} else {
 		spin_unlock(&port->backlog.lock);
 		dev_core_stats_rx_dropped_inc(skb->dev);
+<<<<<<< HEAD
 		kfree_skb_reason(skb, SKB_DROP_REASON_IPVLAN_MULTICAST_BACKLOG);
+=======
+		kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -744,12 +752,19 @@ out:
 static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
 						 struct ipvl_port *port)
 {
+<<<<<<< HEAD
 	struct sk_buff *nskb, *skb = *pskb;
 	struct ethhdr *eth = eth_hdr(skb);
+=======
+	struct sk_buff *skb = *pskb;
+	struct ethhdr *eth = eth_hdr(skb);
+	rx_handler_result_t ret = RX_HANDLER_PASS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
 		return RX_HANDLER_PASS;
 
+<<<<<<< HEAD
 	/* Perform like l3 mode for non-multicast packet */
 	if (likely(!is_multicast_ether_addr(eth->h_dest)))
 		return ipvlan_handle_mode_l3(pskb, port);
@@ -776,6 +791,29 @@ static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
 	}
 
 	return RX_HANDLER_PASS;
+=======
+	if (is_multicast_ether_addr(eth->h_dest)) {
+		if (ipvlan_external_frame(skb, port)) {
+			struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
+
+			/* External frames are queued for device local
+			 * distribution, but a copy is given to master
+			 * straight away to avoid sending duplicates later
+			 * when work-queue processes this frame. This is
+			 * achieved by returning RX_HANDLER_PASS.
+			 */
+			if (nskb) {
+				ipvlan_skb_crossing_ns(nskb, NULL);
+				ipvlan_multicast_enqueue(port, nskb, false);
+			}
+		}
+	} else {
+		/* Perform like l3 mode for non-multicast packet */
+		ret = ipvlan_handle_mode_l3(pskb, port);
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 rx_handler_result_t ipvlan_handle_frame(struct sk_buff **pskb)

@@ -363,6 +363,10 @@ static void bcm_send_to_user(struct bcm_op *op, struct bcm_msg_head *head,
 	struct sockaddr_can *addr;
 	struct sock *sk = op->sk;
 	unsigned int datalen = head->nframes * op->cfsiz;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int *pflags;
 	enum skb_drop_reason reason;
 
@@ -419,8 +423,13 @@ static void bcm_send_to_user(struct bcm_op *op, struct bcm_msg_head *head,
 	addr->can_family  = AF_CAN;
 	addr->can_ifindex = op->rx_ifindex;
 
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(sk, skb);
 	if (reason) {
+=======
+	err = sock_queue_rcv_skb_reason(sk, skb, &reason);
+	if (err < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct bcm_sock *bo = bcm_sk(sk);
 
 		sk_skb_reason_drop(sk, skb, reason);
@@ -1712,7 +1721,11 @@ static int bcm_connect(struct socket *sock, struct sockaddr_unsized *uaddr, int 
 #if IS_ENABLED(CONFIG_PROC_FS)
 	if (net->can.bcmproc_dir) {
 		/* unique socket address as filename */
+<<<<<<< HEAD
 		sprintf(bo->procname, "%llu", sock_i_ino(sk));
+=======
+		sprintf(bo->procname, "%lu", sock_i_ino(sk));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bo->bcm_proc_read = proc_create_net_single(bo->procname, 0644,
 						     net->can.bcmproc_dir,
 						     bcm_proc_show, sk);

@@ -94,7 +94,11 @@ struct wcnss_download_nv_req {
 	u16 seq;
 	u16 last;
 	u32 frag_size;
+<<<<<<< HEAD
 	u8 fragment[] __counted_by(frag_size);
+=======
+	u8 fragment[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 /**
@@ -201,12 +205,23 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
 {
 	const struct firmware *fw;
 	struct device *dev = wcnss->dev;
+<<<<<<< HEAD
 	struct wcnss_download_nv_req *req;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *nvbin = NVBIN_FILE;
 	const void *data;
 	ssize_t left;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	struct wcnss_download_nv_req *req __free(kfree) = kzalloc(sizeof(*req) + NV_FRAGMENT_SIZE,
+								  GFP_KERNEL);
+	if (!req)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = of_property_read_string(dev->of_node, "firmware-name", &nvbin);
 	if (ret < 0 && ret != -EINVAL)
 		return ret;
@@ -220,6 +235,7 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
 	data = fw->data;
 	left = fw->size;
 
+<<<<<<< HEAD
 	req = kzalloc_flex(*req, fragment, NV_FRAGMENT_SIZE);
 	if (!req)
 		return -ENOMEM;
@@ -229,6 +245,13 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
 	req->hdr.len = struct_size(req, fragment, NV_FRAGMENT_SIZE);
 
 	req->last = 0;
+=======
+	req->hdr.type = WCNSS_DOWNLOAD_NV_REQ;
+	req->hdr.len = sizeof(*req) + NV_FRAGMENT_SIZE;
+
+	req->last = 0;
+	req->frag_size = NV_FRAGMENT_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	req->seq = 0;
 	do {
@@ -264,7 +287,10 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
 
 release_fw:
 	release_firmware(fw);
+<<<<<<< HEAD
 	kfree(req);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }

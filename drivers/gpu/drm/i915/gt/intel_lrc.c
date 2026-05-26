@@ -846,6 +846,7 @@ static void init_common_regs(u32 * const regs,
 	u32 ctl;
 	int loc;
 
+<<<<<<< HEAD
 	ctl = REG_MASKED_FIELD_ENABLE(CTX_CTRL_INHIBIT_SYN_CTX_SWITCH);
 	ctl |= REG_MASKED_FIELD_DISABLE(CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT);
 	if (inhibit)
@@ -856,6 +857,18 @@ static void init_common_regs(u32 * const regs,
 	/* Wa_14019159160 - Case 2.*/
 	if (ctx_needs_runalone(ce))
 		ctl |= REG_MASKED_FIELD_ENABLE(GEN12_CTX_CTRL_RUNALONE_MODE);
+=======
+	ctl = _MASKED_BIT_ENABLE(CTX_CTRL_INHIBIT_SYN_CTX_SWITCH);
+	ctl |= _MASKED_BIT_DISABLE(CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT);
+	if (inhibit)
+		ctl |= CTX_CTRL_ENGINE_CTX_RESTORE_INHIBIT;
+	if (GRAPHICS_VER(engine->i915) < 11)
+		ctl |= _MASKED_BIT_DISABLE(CTX_CTRL_ENGINE_CTX_SAVE_INHIBIT |
+					   CTX_CTRL_RS_CTX_ENABLE);
+	/* Wa_14019159160 - Case 2.*/
+	if (ctx_needs_runalone(ce))
+		ctl |= _MASKED_BIT_ENABLE(GEN12_CTX_CTRL_RUNALONE_MODE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	regs[CTX_CONTEXT_CONTROL] = ctl;
 
 	regs[CTX_TIMESTAMP] = ce->stats.runtime.last;
@@ -1344,7 +1357,11 @@ gen12_invalidate_state_cache(u32 *cs)
 {
 	*cs++ = MI_LOAD_REGISTER_IMM(1);
 	*cs++ = i915_mmio_reg_offset(GEN12_CS_DEBUG_MODE2);
+<<<<<<< HEAD
 	*cs++ = REG_MASKED_FIELD_ENABLE(INSTRUCTION_STATE_CACHE_INVALIDATE);
+=======
+	*cs++ = _MASKED_BIT_ENABLE(INSTRUCTION_STATE_CACHE_INVALIDATE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return cs;
 }
 
@@ -1736,19 +1753,34 @@ static u32 *gen9_init_indirectctx_bb(struct intel_engine_cs *engine, u32 *batch)
 		/* WaDisableGatherAtSetShaderCommonSlice:skl,bxt,kbl,glk */
 		{
 			COMMON_SLICE_CHICKEN2,
+<<<<<<< HEAD
 			REG_MASKED_FIELD_DISABLE(GEN9_DISABLE_GATHER_AT_SET_SHADER_COMMON_SLICE),
+=======
+			__MASKED_FIELD(GEN9_DISABLE_GATHER_AT_SET_SHADER_COMMON_SLICE,
+				       0),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 
 		/* BSpec: 11391 */
 		{
 			FF_SLICE_CHICKEN,
+<<<<<<< HEAD
 			REG_MASKED_FIELD_ENABLE(FF_SLICE_CHICKEN_CL_PROVOKING_VERTEX_FIX),
+=======
+			__MASKED_FIELD(FF_SLICE_CHICKEN_CL_PROVOKING_VERTEX_FIX,
+				       FF_SLICE_CHICKEN_CL_PROVOKING_VERTEX_FIX),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		},
 
 		/* BSpec: 11299 */
 		{
 			_3D_CHICKEN3,
+<<<<<<< HEAD
 			REG_MASKED_FIELD_ENABLE(_3D_CHICKEN_SF_PROVOKING_VERTEX_FIX),
+=======
+			__MASKED_FIELD(_3D_CHICKEN_SF_PROVOKING_VERTEX_FIX,
+				       _3D_CHICKEN_SF_PROVOKING_VERTEX_FIX),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	};
 

@@ -69,8 +69,11 @@ struct dev_dax_range {
  * data while the device is activated in the driver.
  * @region: parent region
  * @dax_dev: core dax functionality
+<<<<<<< HEAD
  * @virt_addr: kva from memremap; used by fsdev_dax
  * @cached_size: size of daxdev cached by fsdev_dax
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @align: alignment of this instance
  * @target_node: effective numa node if dev_dax memory range is onlined
  * @dyn_id: is this a dynamic or statically created instance
@@ -85,8 +88,11 @@ struct dev_dax_range {
 struct dev_dax {
 	struct dax_region *region;
 	struct dax_device *dax_dev;
+<<<<<<< HEAD
 	void *virt_addr;
 	u64 cached_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int align;
 	int target_node;
 	bool dyn_id;

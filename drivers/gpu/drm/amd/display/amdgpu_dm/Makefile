@@ -40,8 +40,12 @@ AMDGPUDM = \
 	amdgpu_dm_replay.o \
 	amdgpu_dm_quirks.o \
 	amdgpu_dm_wb.o \
+<<<<<<< HEAD
 	amdgpu_dm_colorop.o \
 	amdgpu_dm_ism.o
+=======
+	amdgpu_dm_colorop.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 ifdef CONFIG_DRM_AMD_DC_FP
 AMDGPUDM += dc_fpu.o

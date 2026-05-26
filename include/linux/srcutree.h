@@ -260,7 +260,11 @@ static inline struct srcu_ctr __percpu *__srcu_ctr_to_ptr(struct srcu_struct *ss
  * srcu_read_unlock_fast().
  *
  * Note that both this_cpu_inc() and atomic_long_inc() are RCU read-side
+<<<<<<< HEAD
  * critical sections either because they disable interrupts, because
+=======
+ * critical sections either because they disables interrupts, because
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * they are a single instruction, or because they are read-modify-write
  * atomic operations, depending on the whims of the architecture.
  * This matters because the SRCU-fast grace-period mechanism uses either

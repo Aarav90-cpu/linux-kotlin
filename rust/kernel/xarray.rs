@@ -172,7 +172,10 @@ pub struct StoreError<T> {
 }
 
 impl<T> From<StoreError<T>> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(value: StoreError<T>) -> Self {
         value.error
     }

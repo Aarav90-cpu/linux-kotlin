@@ -109,6 +109,7 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
 	return err;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_new_region(unsigned long start, unsigned long end)
 {
@@ -120,6 +121,8 @@ static void damon_verify_new_region(unsigned long start, unsigned long end)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Construct a damon_region struct
  *
@@ -129,7 +132,10 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
 {
 	struct damon_region *region;
 
+<<<<<<< HEAD
 	damon_verify_new_region(start, end);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	region = kmem_cache_alloc(damon_region_cache, GFP_KERNEL);
 	if (!region)
 		return NULL;
@@ -152,6 +158,7 @@ void damon_add_region(struct damon_region *r, struct damon_target *t)
 	t->nr_regions++;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_del_region(struct damon_target *t)
 {
@@ -167,6 +174,10 @@ static void damon_del_region(struct damon_region *r, struct damon_target *t)
 {
 	damon_verify_del_region(t);
 
+=======
+static void damon_del_region(struct damon_region *r, struct damon_target *t)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_del(&r->list);
 	t->nr_regions--;
 }
@@ -387,11 +398,14 @@ void damos_destroy_quota_goal(struct damos_quota_goal *g)
 	damos_free_quota_goal(g);
 }
 
+<<<<<<< HEAD
 static bool damos_quota_goals_empty(struct damos_quota *q)
 {
 	return list_empty(&q->goals);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* initialize fields of @quota that normally API users wouldn't set */
 static struct damos_quota *damos_quota_init(struct damos_quota *quota)
 {
@@ -550,6 +564,7 @@ void damon_destroy_target(struct damon_target *t, struct damon_ctx *ctx)
 	damon_free_target(t);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_nr_regions(struct damon_target *t)
 {
@@ -571,6 +586,10 @@ unsigned int damon_nr_regions(struct damon_target *t)
 {
 	damon_verify_nr_regions(t);
 
+=======
+unsigned int damon_nr_regions(struct damon_target *t)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return t->nr_regions;
 }
 
@@ -670,7 +689,11 @@ static unsigned int damon_accesses_bp_to_nr_accesses(
 static unsigned int damon_nr_accesses_to_accesses_bp(
 		unsigned int nr_accesses, struct damon_attrs *attrs)
 {
+<<<<<<< HEAD
 	return mult_frac(nr_accesses, 10000, damon_max_nr_accesses(attrs));
+=======
+	return nr_accesses * 10000 / damon_max_nr_accesses(attrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
@@ -756,6 +779,7 @@ static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
  * @ctx:		monitoring context
  * @attrs:		monitoring attributes
  *
+<<<<<<< HEAD
  * This function updates monitoring results and next monitoring/damos operation
  * schedules.  Because those are periodically updated by kdamond, this should
  * be called from a safe contexts.  Such contexts include damon_ctx setup time
@@ -766,6 +790,10 @@ static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
  * also indirectly call this function via damon_call() -> damon_commit() for
  * online parameters updates.  Finally, kdamond_fn() itself use this for
  * applying auto-tuned monitoring intervals.
+=======
+ * This function should be called while the kdamond is not running, an access
+ * check results aggregation is not ongoing (e.g., from damon_call().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Every time interval is in micro-seconds.
  *
@@ -917,7 +945,10 @@ static int damos_commit_quota(struct damos_quota *dst, struct damos_quota *src)
 	err = damos_commit_quota_goals(dst, src);
 	if (err)
 		return err;
+<<<<<<< HEAD
 	dst->goal_tuner = src->goal_tuner;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dst->weight_sz = src->weight_sz;
 	dst->weight_nr_accesses = src->weight_nr_accesses;
 	dst->weight_age = src->weight_age;
@@ -1060,6 +1091,7 @@ static void damos_set_filters_default_reject(struct damos *s)
 		damos_filters_default_reject(&s->ops_filters);
 }
 
+<<<<<<< HEAD
 /*
  * damos_commit_dests() - Copy migration destinations from @src to @dst.
  * @dst:	Destination structure to update.
@@ -1077,6 +1109,8 @@ static void damos_set_filters_default_reject(struct damos *s)
  *
  * Return: 0 on success, -ENOMEM on allocation failure.
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int damos_commit_dests(struct damos_migrate_dests *dst,
 		struct damos_migrate_dests *src)
 {
@@ -1391,6 +1425,7 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
 	return sz;
 }
 
+<<<<<<< HEAD
 static void damon_split_region_at(struct damon_target *t,
 				  struct damon_region *r, unsigned long sz_r);
 
@@ -1425,6 +1460,8 @@ static unsigned long damon_apply_min_nr_regions(struct damon_ctx *ctx)
 	return max_region_sz;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int kdamond_fn(void *data);
 
 /*
@@ -1682,6 +1719,7 @@ static void damon_warn_fix_nr_accesses_corruption(struct damon_region *r)
 	r->nr_accesses_bp = r->nr_accesses * 10000;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_reset_aggregated(struct damon_region *r,
 		struct damon_ctx *c)
@@ -1699,6 +1737,8 @@ static void damon_verify_reset_aggregated(struct damon_region *r,
 #endif
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Reset the aggregated monitoring results ('nr_accesses' of each region).
  */
@@ -1715,7 +1755,10 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
 			damon_warn_fix_nr_accesses_corruption(r);
 			r->last_nr_accesses = r->nr_accesses;
 			r->nr_accesses = 0;
+<<<<<<< HEAD
 			damon_verify_reset_aggregated(r, c);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		ti++;
 	}
@@ -1738,7 +1781,11 @@ static unsigned long damon_get_intervals_score(struct damon_ctx *c)
 	}
 	target_access_events = max_access_events * goal_bp / 10000;
 	target_access_events = target_access_events ? : 1;
+<<<<<<< HEAD
 	return mult_frac(access_events, 10000, target_access_events);
+=======
+	return access_events * 10000 / target_access_events;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned long damon_feed_loop_next_input(unsigned long last_input,
@@ -1782,6 +1829,12 @@ static void kdamond_tune_intervals(struct damon_ctx *c)
 	damon_set_attrs(c, &new_attrs);
 }
 
+<<<<<<< HEAD
+=======
+static void damon_split_region_at(struct damon_target *t,
+				  struct damon_region *r, unsigned long sz_r);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool __damos_valid_target(struct damon_region *r, struct damos *s)
 {
 	unsigned long sz;
@@ -1796,6 +1849,7 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
 		r->age <= s->pattern.max_age_region;
 }
 
+<<<<<<< HEAD
 /*
  * damos_quota_is_set() - Return if the given quota is actually set.
  * @quota:	The quota to check.
@@ -1817,6 +1871,17 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
 		return ret;
 
 	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
+=======
+static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
+		struct damon_region *r, struct damos *s)
+{
+	bool ret = __damos_valid_target(r, s);
+
+	if (!ret || !s->quota.esz || !c->ops.get_scheme_score)
+		return ret;
+
+	return c->ops.get_scheme_score(c, t, r, s) >= s->quota.min_score;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1836,6 +1901,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
  * This function checks if a given region should be skipped or not for the
  * reason.  If only the starting part of the region has previously charged,
  * this function splits the region into two so that the second one covers the
+<<<<<<< HEAD
  * area that not charged in the previous charge widnow, and return true.  The
  * caller can see the second one on the next iteration of the region walk.
  * Note that this means the caller should use damon_for_each_region() instead
@@ -1848,6 +1914,19 @@ static bool damos_skip_charged_region(struct damon_target *t,
 		struct damon_region *r, struct damos *s,
 		unsigned long min_region_sz)
 {
+=======
+ * area that not charged in the previous charge widnow and saves the second
+ * region in *rp and returns false, so that the caller can apply DAMON action
+ * to the second one.
+ *
+ * Return: true if the region should be entirely skipped, false otherwise.
+ */
+static bool damos_skip_charged_region(struct damon_target *t,
+		struct damon_region **rp, struct damos *s,
+		unsigned long min_region_sz)
+{
+	struct damon_region *r = *rp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct damos_quota *quota = &s->quota;
 	unsigned long sz_to_skip;
 
@@ -1874,7 +1953,12 @@ static bool damos_skip_charged_region(struct damon_target *t,
 				sz_to_skip = min_region_sz;
 			}
 			damon_split_region_at(t, r, sz_to_skip);
+<<<<<<< HEAD
 			return true;
+=======
+			r = damon_next_region(r);
+			*rp = r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		quota->charge_target_from = NULL;
 		quota->charge_addr_from = 0;
@@ -2083,8 +2167,12 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
 	}
 
 	if (c->ops.apply_scheme) {
+<<<<<<< HEAD
 		if (damos_quota_is_set(quota) &&
 				quota->charged_sz + sz > quota->esz) {
+=======
+		if (quota->esz && quota->charged_sz + sz > quota->esz) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
 					c->min_region_sz);
 			if (!sz)
@@ -2103,8 +2191,12 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
 		quota->total_charged_ns += timespec64_to_ns(&end) -
 			timespec64_to_ns(&begin);
 		quota->charged_sz += sz;
+<<<<<<< HEAD
 		if (damos_quota_is_set(quota) &&
 				quota->charged_sz >= quota->esz) {
+=======
+		if (quota->esz && quota->charged_sz >= quota->esz) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			quota->charge_target_from = t;
 			quota->charge_addr_from = r->ar.end + 1;
 		}
@@ -2125,25 +2217,40 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
 	damon_for_each_scheme(s, c) {
 		struct damos_quota *quota = &s->quota;
 
+<<<<<<< HEAD
 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+=======
+		if (c->passed_sample_intervals < s->next_apply_sis)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (!s->wmarks.activated)
 			continue;
 
 		/* Check the quota */
+<<<<<<< HEAD
 		if (damos_quota_is_set(quota) &&
 				quota->charged_sz >= quota->esz)
 			continue;
 
 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+=======
+		if (quota->esz && quota->charged_sz >= quota->esz)
+			continue;
+
+		if (damos_skip_charged_region(t, &r, s, c->min_region_sz))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (s->max_nr_snapshots &&
 				s->max_nr_snapshots <= s->stat.nr_snapshots)
 			continue;
 
+<<<<<<< HEAD
 		if (damos_valid_target(c, r, s))
+=======
+		if (damos_valid_target(c, t, r, s))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			damos_apply_scheme(c, t, r, s);
 
 		if (damon_is_last_region(r, t))
@@ -2245,7 +2352,11 @@ static __kernel_ulong_t damos_get_node_mem_bp(
 		numerator = i.totalram - i.freeram;
 	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
 		numerator = i.freeram;
+<<<<<<< HEAD
 	return mult_frac(numerator, 10000, i.totalram);
+=======
+	return numerator * 10000 / i.totalram;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static unsigned long damos_get_node_memcg_used_bp(
@@ -2285,7 +2396,11 @@ static unsigned long damos_get_node_memcg_used_bp(
 		numerator = used_pages;
 	else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
 		numerator = i.totalram - used_pages;
+<<<<<<< HEAD
 	return mult_frac(numerator, 10000, i.totalram);
+=======
+	return numerator * 10000 / i.totalram;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else
 static __kernel_ulong_t damos_get_node_mem_bp(
@@ -2315,8 +2430,13 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
 		global_node_page_state(NR_LRU_BASE + LRU_INACTIVE_FILE);
 	total = active + inactive;
 	if (active_ratio)
+<<<<<<< HEAD
 		return mult_frac(active, 10000, total);
 	return mult_frac(inactive, 10000, total);
+=======
+		return active * 10000 / total;
+	return inactive * 10000 / total;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
@@ -2359,13 +2479,19 @@ static unsigned long damos_quota_score(struct damos_quota *quota)
 	damos_for_each_quota_goal(goal, quota) {
 		damos_set_quota_goal_current_value(goal);
 		highest_score = max(highest_score,
+<<<<<<< HEAD
 				mult_frac(goal->current_value, 10000,
 					goal->target_value));
+=======
+				goal->current_value * 10000 /
+				goal->target_value);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return highest_score;
 }
 
+<<<<<<< HEAD
 static void damos_goal_tune_esz_bp_consist(struct damos_quota *quota)
 {
 	unsigned long score = damos_quota_score(quota);
@@ -2386,6 +2512,8 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
 		quota->esz_bp = ULONG_MAX;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
  */
@@ -2401,17 +2529,30 @@ static void damos_set_effective_quota(struct damos_quota *quota,
 	}
 
 	if (!list_empty(&quota->goals)) {
+<<<<<<< HEAD
 		if (quota->goal_tuner == DAMOS_QUOTA_GOAL_TUNER_CONSIST)
 			damos_goal_tune_esz_bp_consist(quota);
 		else if (quota->goal_tuner == DAMOS_QUOTA_GOAL_TUNER_TEMPORAL)
 			damos_goal_tune_esz_bp_temporal(quota);
+=======
+		unsigned long score = damos_quota_score(quota);
+
+		quota->esz_bp = damon_feed_loop_next_input(
+				max(quota->esz_bp, 10000UL),
+				score);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		esz = quota->esz_bp / 10000;
 	}
 
 	if (quota->ms) {
 		if (quota->total_charged_ns)
+<<<<<<< HEAD
 			throughput = mult_frac(quota->total_charged_sz,
 					1000000, quota->total_charged_ns);
+=======
+			throughput = mult_frac(quota->total_charged_sz, 1000000,
+							quota->total_charged_ns);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			throughput = PAGE_SIZE * 1024;
 		esz = min(throughput * quota->ms, esz);
@@ -2459,8 +2600,12 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
 	if (!time_in_range_open(jiffies, quota->charged_from,
 				quota->charged_from +
 				msecs_to_jiffies(quota->reset_interval))) {
+<<<<<<< HEAD
 		if (damos_quota_is_set(quota) &&
 				quota->charged_sz >= quota->esz)
+=======
+		if (quota->esz && quota->charged_sz >= quota->esz)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			s->stat.qt_exceeds++;
 		quota->total_charged_sz += quota->charged_sz;
 		quota->charged_from = jiffies;
@@ -2483,9 +2628,13 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
 		damon_for_each_region(r, t) {
 			if (!__damos_valid_target(r, s))
 				continue;
+<<<<<<< HEAD
 			if (damos_core_filter_out(c, t, r, s))
 				continue;
 			score = c->ops.get_scheme_score(c, r, s);
+=======
+			score = c->ops.get_scheme_score(c, t, r, s);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			c->regions_score_histogram[score] +=
 				damon_sz_region(r);
 			if (score > max_score)
@@ -2515,18 +2664,33 @@ static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
 			break;
 		sidx++;
 	}
+<<<<<<< HEAD
 	trace_call__damos_stat_after_apply_interval(cidx, sidx, &s->stat);
+=======
+	trace_damos_stat_after_apply_interval(cidx, sidx, &s->stat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void kdamond_apply_schemes(struct damon_ctx *c)
 {
 	struct damon_target *t;
+<<<<<<< HEAD
 	struct damon_region *r;
 	struct damos *s;
 	bool has_schemes_to_apply = false;
 
 	damon_for_each_scheme(s, c) {
 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+=======
+	struct damon_region *r, *next_r;
+	struct damos *s;
+	unsigned long sample_interval = c->attrs.sample_interval ?
+		c->attrs.sample_interval : 1;
+	bool has_schemes_to_apply = false;
+
+	damon_for_each_scheme(s, c) {
+		if (c->passed_sample_intervals < s->next_apply_sis)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (!s->wmarks.activated)
@@ -2545,21 +2709,35 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
 		if (c->ops.target_valid && c->ops.target_valid(t) == false)
 			continue;
 
+<<<<<<< HEAD
 		damon_for_each_region(r, t)
+=======
+		damon_for_each_region_safe(r, next_r, t)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			damon_do_apply_schemes(c, t, r);
 	}
 
 	damon_for_each_scheme(s, c) {
+<<<<<<< HEAD
 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
 			continue;
 		damos_walk_complete(c, s);
 		damos_set_next_apply_sis(s, c);
+=======
+		if (c->passed_sample_intervals < s->next_apply_sis)
+			continue;
+		damos_walk_complete(c, s);
+		s->next_apply_sis = c->passed_sample_intervals +
+			(s->apply_interval_us ? s->apply_interval_us :
+			 c->attrs.aggr_interval) / sample_interval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		s->last_applied = NULL;
 		damos_trace_stat(c, s);
 	}
 	mutex_unlock(&c->walk_control_lock);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_merge_two_regions(
 		struct damon_region *l, struct damon_region *r)
@@ -2575,6 +2753,8 @@ static void damon_verify_merge_two_regions(
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Merge two adjacent regions into one region
  */
@@ -2588,6 +2768,7 @@ static void damon_merge_two_regions(struct damon_target *t,
 	l->nr_accesses_bp = l->nr_accesses * 10000;
 	l->age = (l->age * sz_l + r->age * sz_r) / (sz_l + sz_r);
 	l->ar.end = r->ar.end;
+<<<<<<< HEAD
 	damon_verify_merge_two_regions(l, r);
 	damon_destroy_region(r, t);
 }
@@ -2606,6 +2787,11 @@ static void damon_verify_merge_regions_of(struct damon_region *r)
 #endif
 
 
+=======
+	damon_destroy_region(r, t);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Merge adjacent regions having similar access frequencies
  *
@@ -2619,7 +2805,10 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
 	struct damon_region *r, *prev = NULL, *next;
 
 	damon_for_each_region_safe(r, next, t) {
+<<<<<<< HEAD
 		damon_verify_merge_regions_of(r);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (abs(r->nr_accesses - r->last_nr_accesses) > thres)
 			r->age = 0;
 		else if ((r->nr_accesses == 0) != (r->last_nr_accesses == 0))
@@ -2673,6 +2862,7 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
 			threshold / 2 < max_thres);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DAMON_DEBUG_SANITY
 static void damon_verify_split_region_at(struct damon_region *r,
 		unsigned long sz_r)
@@ -2688,6 +2878,8 @@ static void damon_verify_split_region_at(struct damon_region *r,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Split a region in two
  *
@@ -2699,7 +2891,10 @@ static void damon_split_region_at(struct damon_target *t,
 {
 	struct damon_region *new;
 
+<<<<<<< HEAD
 	damon_verify_split_region_at(r, sz_r);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
 	if (!new)
 		return;
@@ -2931,6 +3126,10 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
 {
 	unsigned long sample_interval = ctx->attrs.sample_interval ?
 		ctx->attrs.sample_interval : 1;
+<<<<<<< HEAD
+=======
+	unsigned long apply_interval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct damos *scheme;
 
 	ctx->passed_sample_intervals = 0;
@@ -2941,7 +3140,13 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
 		ctx->attrs.intervals_goal.aggrs;
 
 	damon_for_each_scheme(scheme, ctx) {
+<<<<<<< HEAD
 		damos_set_next_apply_sis(scheme, ctx);
+=======
+		apply_interval = scheme->apply_interval_us ?
+			scheme->apply_interval_us : ctx->attrs.aggr_interval;
+		scheme->next_apply_sis = apply_interval / sample_interval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		damos_set_filters_default_reject(scheme);
 	}
 }
@@ -2973,7 +3178,11 @@ static int kdamond_fn(void *data)
 	if (!ctx->regions_score_histogram)
 		goto done;
 
+<<<<<<< HEAD
 	sz_limit = damon_apply_min_nr_regions(ctx);
+=======
+	sz_limit = damon_region_sz_limit(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	while (!kdamond_need_stop(ctx)) {
 		/*
@@ -2998,6 +3207,7 @@ static int kdamond_fn(void *data)
 		if (ctx->ops.check_accesses)
 			max_nr_accesses = ctx->ops.check_accesses(ctx);
 
+<<<<<<< HEAD
 		if (time_after_eq(ctx->passed_sample_intervals,
 					next_aggregation_sis)) {
 			kdamond_merge_regions(ctx,
@@ -3006,6 +3216,12 @@ static int kdamond_fn(void *data)
 			/* online updates might be made */
 			sz_limit = damon_apply_min_nr_regions(ctx);
 		}
+=======
+		if (ctx->passed_sample_intervals >= next_aggregation_sis)
+			kdamond_merge_regions(ctx,
+					max_nr_accesses / 10,
+					sz_limit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * do kdamond_call() and kdamond_apply_schemes() after
@@ -3021,12 +3237,19 @@ static int kdamond_fn(void *data)
 
 		sample_interval = ctx->attrs.sample_interval ?
 			ctx->attrs.sample_interval : 1;
+<<<<<<< HEAD
 		if (time_after_eq(ctx->passed_sample_intervals,
 					next_aggregation_sis)) {
 			if (ctx->attrs.intervals_goal.aggrs &&
 					time_after_eq(
 						ctx->passed_sample_intervals,
 						ctx->next_intervals_tune_sis)) {
+=======
+		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
+			if (ctx->attrs.intervals_goal.aggrs &&
+					ctx->passed_sample_intervals >=
+					ctx->next_intervals_tune_sis) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * ctx->next_aggregation_sis might be updated
 				 * from kdamond_call().  In the case,
@@ -3060,13 +3283,21 @@ static int kdamond_fn(void *data)
 			kdamond_split_regions(ctx);
 		}
 
+<<<<<<< HEAD
 		if (time_after_eq(ctx->passed_sample_intervals,
 					next_ops_update_sis)) {
+=======
+		if (ctx->passed_sample_intervals >= next_ops_update_sis) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ctx->next_ops_update_sis = next_ops_update_sis +
 				ctx->attrs.ops_update_interval /
 				sample_interval;
 			if (ctx->ops.update)
 				ctx->ops.update(ctx);
+<<<<<<< HEAD
+=======
+			sz_limit = damon_region_sz_limit(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 done:
@@ -3098,15 +3329,22 @@ done:
 
 static int walk_system_ram(struct resource *res, void *arg)
 {
+<<<<<<< HEAD
 	struct resource *a = arg;
 
 	if (resource_size(a) < resource_size(res)) {
+=======
+	struct damon_addr_range *a = arg;
+
+	if (a->end - a->start < resource_size(res)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		a->start = res->start;
 		a->end = res->end;
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned long damon_res_to_core_addr(resource_size_t ra,
 		unsigned long addr_unit)
 {
@@ -3120,11 +3358,14 @@ static unsigned long damon_res_to_core_addr(resource_size_t ra,
 	return ra / addr_unit;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Find biggest 'System RAM' resource and store its start and end address in
  * @start and @end, respectively.  If no System RAM is found, returns false.
  */
 static bool damon_find_biggest_system_ram(unsigned long *start,
+<<<<<<< HEAD
 		unsigned long *end, unsigned long addr_unit)
 
 {
@@ -3135,6 +3376,19 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
 	*end = damon_res_to_core_addr(res.end + 1, addr_unit);
 	if (*end <= *start)
 		return false;
+=======
+						unsigned long *end)
+
+{
+	struct damon_addr_range arg = {};
+
+	walk_system_ram_res(0, ULONG_MAX, &arg, walk_system_ram);
+	if (arg.end <= arg.start)
+		return false;
+
+	*start = arg.start;
+	*end = arg.end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -3144,7 +3398,10 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
  * @t:		The monitoring target to set the region.
  * @start:	The pointer to the start address of the region.
  * @end:	The pointer to the end address of the region.
+<<<<<<< HEAD
  * @addr_unit:	The address unit for the damon_ctx of @t.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @min_region_sz:	Minimum region size.
  *
  * This function sets the region of @t as requested by @start and @end.  If the
@@ -3157,7 +3414,11 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
  */
 int damon_set_region_biggest_system_ram_default(struct damon_target *t,
 			unsigned long *start, unsigned long *end,
+<<<<<<< HEAD
 			unsigned long addr_unit, unsigned long min_region_sz)
+=======
+			unsigned long min_region_sz)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct damon_addr_range addr_range;
 
@@ -3165,7 +3426,11 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
 		return -EINVAL;
 
 	if (!*start && !*end &&
+<<<<<<< HEAD
 			!damon_find_biggest_system_ram(start, end, addr_unit))
+=======
+		!damon_find_biggest_system_ram(start, end))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	addr_range.start = *start;

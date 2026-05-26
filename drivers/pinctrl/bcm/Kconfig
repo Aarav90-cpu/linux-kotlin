@@ -120,7 +120,11 @@ source "drivers/pinctrl/bcm/Kconfig.stb"
 
 config PINCTRL_IPROC_GPIO
 	bool "Broadcom iProc GPIO (with PINCONF) driver"
+<<<<<<< HEAD
 	depends on ARCH_BCM_IPROC || COMPILE_TEST
+=======
+	depends on OF_GPIO && (ARCH_BCM_IPROC || COMPILE_TEST)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select GPIOLIB_IRQCHIP
 	select PINCONF
 	select GENERIC_PINCONF
@@ -185,7 +189,11 @@ config PINCTRL_NS
 
 config PINCTRL_NSP_GPIO
 	bool "Broadcom NSP GPIO (with PINCONF) driver"
+<<<<<<< HEAD
 	depends on ARCH_BCM_NSP || COMPILE_TEST
+=======
+	depends on OF_GPIO && (ARCH_BCM_NSP || COMPILE_TEST)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select GPIOLIB_IRQCHIP
 	select PINCONF
 	select GENERIC_PINCONF

@@ -6,7 +6,10 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include "hinic3_hwif.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "hinic3_hw_intf.h"
 #include "hinic3_mgmt_interface.h"
 
@@ -36,6 +39,7 @@ struct hinic3_sq_attr {
 	u64 ci_dma_base;
 };
 
+<<<<<<< HEAD
 enum mag_cmd_port_an {
 	PORT_CFG_AN_ON  = 1,
 };
@@ -79,6 +83,8 @@ struct mag_cmd_get_port_info {
 	u8                   rsvd2[8];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MAG_CMD_PORT_DISABLE    0x0
 #define MAG_CMD_TX_ENABLE       0x1
 #define MAG_CMD_RX_ENABLE       0x2
@@ -96,6 +102,7 @@ struct mag_cmd_set_port_enable {
 	u8                   rsvd1[3];
 };
 
+<<<<<<< HEAD
 /* xsfp wire type, refers to cmis protocol definition */
 enum mag_wire_type {
 	MAG_CMD_WIRE_TYPE_UNKNOWN   = 0x0,
@@ -129,6 +136,8 @@ struct mag_cmd_get_xsfp_present {
 	u8                   rsvd[2];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum link_err_type {
 	LINK_ERR_MODULE_UNRECOGENIZED,
 	LINK_ERR_NUM,
@@ -146,6 +155,7 @@ struct hinic3_port_module_event {
 	enum link_err_type          err_type;
 };
 
+<<<<<<< HEAD
 struct hinic3_nic_port_info {
 	u8  port_type;
 	u8  autoneg_cap;
@@ -174,6 +184,8 @@ struct hinic3_nic_cfg {
 	struct hinic3_nic_port_info    port_info;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hinic3_get_nic_feature_from_hw(struct hinic3_nic_dev *nic_dev);
 int hinic3_set_nic_feature_to_hw(struct hinic3_nic_dev *nic_dev);
 bool hinic3_test_support(struct hinic3_nic_dev *nic_dev,
@@ -205,14 +217,20 @@ int hinic3_set_rx_mode(struct hinic3_hwdev *hwdev, u32 rx_mode);
 int hinic3_sync_dcb_state(struct hinic3_hwdev *hwdev, u8 op_code, u8 state);
 int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable);
 int hinic3_get_link_status(struct hinic3_hwdev *hwdev, bool *link_status_up);
+<<<<<<< HEAD
 int hinic3_get_port_info(struct hinic3_hwdev *hwdev,
 			 struct hinic3_nic_port_info *port_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int hinic3_set_vport_enable(struct hinic3_hwdev *hwdev, u16 func_id,
 			    bool enable);
 int hinic3_add_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id);
 int hinic3_del_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id);
 
+<<<<<<< HEAD
 int hinic3_get_pause_info(struct hinic3_nic_dev *nic_dev,
 			  struct hinic3_nic_pause_config *nic_pause);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

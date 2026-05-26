@@ -897,8 +897,11 @@ the new default in GnuPG v2). To set it, add (or modify) the
 
     trust-model tofu+pgp
 
+<<<<<<< HEAD
 .. _kernel_org_trust_repository:
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Using the kernel.org web of trust repository
 --------------------------------------------
 

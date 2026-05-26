@@ -154,16 +154,25 @@ static void hv_uio_rescind(struct vmbus_channel *channel)
  * The ring buffer is allocated as contiguous memory by vmbus_open
  */
 static int
+<<<<<<< HEAD
 hv_uio_ring_mmap_prepare(struct vmbus_channel *channel, struct vm_area_desc *desc)
+=======
+hv_uio_ring_mmap(struct vmbus_channel *channel, struct vm_area_struct *vma)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	void *ring_buffer = page_address(channel->ringbuffer_page);
 
 	if (channel->state != CHANNEL_OPENED_STATE)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	mmap_action_simple_ioremap(desc, virt_to_phys(ring_buffer),
 			channel->ringbuffer_pagecount << PAGE_SHIFT);
 	return 0;
+=======
+	return vm_iomap_memory(vma, virt_to_phys(ring_buffer),
+			       channel->ringbuffer_pagecount << PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Callback from VMBUS subsystem when new channel created. */
@@ -184,7 +193,11 @@ hv_uio_new_channel(struct vmbus_channel *new_sc)
 	}
 
 	set_channel_read_mode(new_sc, HV_CALL_ISR);
+<<<<<<< HEAD
 	ret = hv_create_ring_sysfs(new_sc, hv_uio_ring_mmap_prepare);
+=======
+	ret = hv_create_ring_sysfs(new_sc, hv_uio_ring_mmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		dev_err(device, "sysfs create ring bin file failed; %d\n", ret);
 		vmbus_close(new_sc);
@@ -367,7 +380,11 @@ hv_uio_probe(struct hv_device *dev,
 	 * or decoupled from uio_hv_generic probe. Userspace programs can make use of inotify
 	 * APIs to make sure that ring is created.
 	 */
+<<<<<<< HEAD
 	hv_create_ring_sysfs(channel, hv_uio_ring_mmap_prepare);
+=======
+	hv_create_ring_sysfs(channel, hv_uio_ring_mmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hv_set_drvdata(dev, pdata);
 

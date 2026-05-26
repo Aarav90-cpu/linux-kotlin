@@ -3,8 +3,11 @@
 #ifndef _ICP_QAT_HW_20_COMP_H_
 #define _ICP_QAT_HW_20_COMP_H_
 
+<<<<<<< HEAD
 #include <linux/swab.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "icp_qat_hw_20_comp_defs.h"
 #include "icp_qat_fw.h"
 
@@ -56,7 +59,11 @@ ICP_QAT_FW_COMP_20_BUILD_CONFIG_LOWER(struct icp_qat_hw_comp_20_config_csr_lower
 	QAT_FIELD_SET(val32, csr.abd, ICP_QAT_HW_COMP_20_CONFIG_CSR_ABD_BITPOS,
 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_ABD_MASK);
 
+<<<<<<< HEAD
 	return swab32(val32);
+=======
+	return __builtin_bswap32(val32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct icp_qat_hw_comp_20_config_csr_upper {
@@ -108,7 +115,11 @@ ICP_QAT_FW_COMP_20_BUILD_CONFIG_UPPER(struct icp_qat_hw_comp_20_config_csr_upper
 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_NICE_PARAM_BITPOS,
 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_NICE_PARAM_MASK);
 
+<<<<<<< HEAD
 	return swab32(val32);
+=======
+	return __builtin_bswap32(val32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct icp_qat_hw_decomp_20_config_csr_lower {
@@ -140,7 +151,11 @@ ICP_QAT_FW_DECOMP_20_BUILD_CONFIG_LOWER(struct icp_qat_hw_decomp_20_config_csr_l
 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_LZ4_BLOCK_CHECKSUM_PRESENT_BITPOS,
 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_LZ4_BLOCK_CHECKSUM_PRESENT_MASK);
 
+<<<<<<< HEAD
 	return swab32(val32);
+=======
+	return __builtin_bswap32(val32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct icp_qat_hw_decomp_20_config_csr_upper {
@@ -160,7 +175,11 @@ ICP_QAT_FW_DECOMP_20_BUILD_CONFIG_UPPER(struct icp_qat_hw_decomp_20_config_csr_u
 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_MINI_CAM_CONTROL_BITPOS,
 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_MINI_CAM_CONTROL_MASK);
 
+<<<<<<< HEAD
 	return swab32(val32);
+=======
+	return __builtin_bswap32(val32);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif

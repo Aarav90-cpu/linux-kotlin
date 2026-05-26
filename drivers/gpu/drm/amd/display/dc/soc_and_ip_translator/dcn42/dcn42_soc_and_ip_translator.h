@@ -12,6 +12,9 @@
 #include "soc_and_ip_translator.h"
 
 void dcn42_construct_soc_and_ip_translator(struct soc_and_ip_translator *soc_and_ip_translator);
+<<<<<<< HEAD
 void dcn42_get_soc_bb(struct dml2_soc_bb *soc_bb, const struct dc *dc, const struct dml2_configuration_options *config);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _DCN42_SOC_AND_IP_TRANSLATOR_H_ */

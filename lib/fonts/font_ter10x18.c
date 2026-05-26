@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 
 #include <linux/module.h>
 
 #include "font.h"
 
+=======
+#include <linux/font.h>
+#include <linux/module.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FONTDATAMAX 9216
 
 static const struct font_data fontdata_ter10x18 = {

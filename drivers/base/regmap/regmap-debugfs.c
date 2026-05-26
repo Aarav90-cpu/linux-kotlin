@@ -12,7 +12,10 @@
 #include <linux/uaccess.h>
 #include <linux/device.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "internal.h"
 
@@ -21,7 +24,11 @@ struct regmap_debugfs_node {
 	struct list_head link;
 };
 
+<<<<<<< HEAD
 static DEFINE_IDA(dummy_ida);
+=======
+static unsigned int dummy_index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct dentry *regmap_debugfs_root;
 static LIST_HEAD(regmap_debugfs_early_list);
 static DEFINE_MUTEX(regmap_debugfs_early_lock);
@@ -540,7 +547,10 @@ void regmap_debugfs_init(struct regmap *map)
 	struct regmap_range_node *range_node;
 	const char *devname = "dummy";
 	const char *name = map->name;
+<<<<<<< HEAD
 	int id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Userspace can initiate reads from the hardware over debugfs.
@@ -569,7 +579,10 @@ void regmap_debugfs_init(struct regmap *map)
 
 	INIT_LIST_HEAD(&map->debugfs_off_cache);
 	mutex_init(&map->cache_lock);
+<<<<<<< HEAD
 	map->debugfs_dummy_id = -1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (map->dev)
 		devname = dev_name(map->dev);
@@ -588,6 +601,7 @@ void regmap_debugfs_init(struct regmap *map)
 
 	if (!strcmp(name, "dummy")) {
 		kfree(map->debugfs_name);
+<<<<<<< HEAD
 		id = ida_alloc(&dummy_ida, GFP_KERNEL);
 		if (id < 0)
 			return;
@@ -598,6 +612,14 @@ void regmap_debugfs_init(struct regmap *map)
 		}
 		map->debugfs_dummy_id = id;
 		name = map->debugfs_name;
+=======
+		map->debugfs_name = kasprintf(GFP_KERNEL, "dummy%d",
+						dummy_index);
+		if (!map->debugfs_name)
+			return;
+		name = map->debugfs_name;
+		dummy_index++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	map->debugfs = debugfs_create_dir(name, regmap_debugfs_root);
@@ -667,10 +689,13 @@ void regmap_debugfs_exit(struct regmap *map)
 		mutex_lock(&map->cache_lock);
 		regmap_debugfs_free_dump_cache(map);
 		mutex_unlock(&map->cache_lock);
+<<<<<<< HEAD
 		if (map->debugfs_dummy_id >= 0) {
 			ida_free(&dummy_ida, map->debugfs_dummy_id);
 			map->debugfs_dummy_id = -1;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree(map->debugfs_name);
 		map->debugfs_name = NULL;
 	} else {

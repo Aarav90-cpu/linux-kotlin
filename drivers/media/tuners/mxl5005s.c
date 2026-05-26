@@ -1174,12 +1174,16 @@ static u16 MXL5005_ControlInit(struct dvb_frontend *fe)
 	state->Init_Ctrl[39].bit[0] = 3;
 	state->Init_Ctrl[39].val[0] = 1;
 
+<<<<<<< HEAD
 	return 0;
 }
 
 static u16 MXL5005_ControlInitCH(struct dvb_frontend *fe)
 {
 	struct mxl5005s_state *state = fe->tuner_priv;
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	state->CH_Ctrl_Num = CHCTRL_NUM ;
 
 	state->CH_Ctrl[0].Ctrl_Num = DN_POLY ;
@@ -1668,7 +1672,10 @@ static void InitTunerControls(struct dvb_frontend *fe)
 {
 	MXL5005_RegisterInit(fe);
 	MXL5005_ControlInit(fe);
+<<<<<<< HEAD
 	MXL5005_ControlInitCH(fe);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef _MXL_INTERNAL
 	MXL5005_MXLControlInit(fe);
 #endif

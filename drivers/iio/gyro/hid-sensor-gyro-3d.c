@@ -42,7 +42,11 @@ static const u32 gyro_3d_addresses[GYRO_3D_CHANNEL_MAX] = {
 	HID_USAGE_SENSOR_ANGL_VELOCITY_Z_AXIS
 };
 
+<<<<<<< HEAD
 static const u32 gyro_3d_sensitivity_addresses[] = {
+=======
+static const u32 gryo_3d_sensitivity_addresses[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HID_USAGE_SENSOR_DATA_ANGL_VELOCITY,
 };
 
@@ -297,8 +301,13 @@ static int hid_gyro_3d_probe(struct platform_device *pdev)
 	ret = hid_sensor_parse_common_attributes(hsdev,
 						HID_USAGE_SENSOR_GYRO_3D,
 						&gyro_state->common_attributes,
+<<<<<<< HEAD
 						gyro_3d_sensitivity_addresses,
 						ARRAY_SIZE(gyro_3d_sensitivity_addresses));
+=======
+						gryo_3d_sensitivity_addresses,
+						ARRAY_SIZE(gryo_3d_sensitivity_addresses));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		dev_err(&pdev->dev, "failed to setup common attributes\n");
 		return ret;

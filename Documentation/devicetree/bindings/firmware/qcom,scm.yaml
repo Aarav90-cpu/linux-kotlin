@@ -23,18 +23,27 @@ properties:
       - enum:
           - qcom,scm-apq8064
           - qcom,scm-apq8084
+<<<<<<< HEAD
           - qcom,scm-eliza
           - qcom,scm-glymur
           - qcom,scm-ipq4019
           - qcom,scm-ipq5018
           - qcom,scm-ipq5210
+=======
+          - qcom,scm-glymur
+          - qcom,scm-ipq4019
+          - qcom,scm-ipq5018
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,scm-ipq5332
           - qcom,scm-ipq5424
           - qcom,scm-ipq6018
           - qcom,scm-ipq806x
           - qcom,scm-ipq8074
           - qcom,scm-ipq9574
+<<<<<<< HEAD
           - qcom,scm-ipq9650
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,scm-kaanapali
           - qcom,scm-mdm9607
           - qcom,scm-milos
@@ -207,7 +216,10 @@ allOf:
           compatible:
             contains:
               enum:
+<<<<<<< HEAD
                 - qcom,scm-eliza
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 - qcom,scm-kaanapali
                 - qcom,scm-milos
                 - qcom,scm-sm8450

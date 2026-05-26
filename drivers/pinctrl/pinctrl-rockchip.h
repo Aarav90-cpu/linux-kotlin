@@ -185,7 +185,10 @@
 
 enum rockchip_pinctrl_type {
 	PX30,
+<<<<<<< HEAD
 	RV1103B,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RV1108,
 	RV1126,
 	RK2928,

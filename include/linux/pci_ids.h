@@ -2586,8 +2586,11 @@
 
 #define PCI_VENDOR_ID_AZWAVE		0x1a3b
 
+<<<<<<< HEAD
 #define PCI_VENDOR_ID_GOOGLE		0x1ae0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PCI_VENDOR_ID_REDHAT_QUMRANET    0x1af4
 #define PCI_SUBVENDOR_ID_REDHAT_QUMRANET 0x1af4
 #define PCI_SUBDEVICE_ID_QEMU            0x1100

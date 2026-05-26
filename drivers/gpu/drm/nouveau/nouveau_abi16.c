@@ -334,6 +334,7 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
 }
 
 int
+<<<<<<< HEAD
 nouveau_abi16_ioctl_get_zcull_info(ABI16_IOCTL_ARGS)
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
@@ -363,6 +364,8 @@ nouveau_abi16_ioctl_get_zcull_info(ABI16_IOCTL_ARGS)
 }
 
 int
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 {
 	struct drm_nouveau_channel_alloc *init = data;

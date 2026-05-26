@@ -32,9 +32,15 @@
 
 #include <linux/module.h>
 #include <linux/moduleparam.h>
+<<<<<<< HEAD
 #include <linux/atomic.h>
 #include <rdma/ib_user_verbs.h>
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+#include <linux/atomic.h>
+#include <rdma/ib_user_verbs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "iw_cxgb4.h"
 

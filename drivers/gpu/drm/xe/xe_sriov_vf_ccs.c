@@ -14,9 +14,15 @@
 #include "xe_guc.h"
 #include "xe_guc_submit.h"
 #include "xe_lrc.h"
+<<<<<<< HEAD
 #include "xe_mem_pool.h"
 #include "xe_migrate.h"
 #include "xe_pm.h"
+=======
+#include "xe_migrate.h"
+#include "xe_pm.h"
+#include "xe_sa.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_sriov_printk.h"
 #include "xe_sriov_vf.h"
 #include "xe_sriov_vf_ccs.h"
@@ -141,16 +147,24 @@ static u64 get_ccs_bb_pool_size(struct xe_device *xe)
 
 static int alloc_bb_pool(struct xe_tile *tile, struct xe_sriov_vf_ccs_ctx *ctx)
 {
+<<<<<<< HEAD
 	struct xe_mem_pool *pool;
 	struct xe_device *xe = tile_to_xe(tile);
 	u32 *pool_cpu_addr, *last_dw_addr;
 	u64 bb_pool_size;
 	int err;
+=======
+	struct xe_device *xe = tile_to_xe(tile);
+	struct xe_sa_manager *sa_manager;
+	u64 bb_pool_size;
+	int offset, err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bb_pool_size = get_ccs_bb_pool_size(xe);
 	xe_sriov_info(xe, "Allocating %s CCS BB pool size = %lldMB\n",
 		      ctx->ctx_id ? "Restore" : "Save", bb_pool_size / SZ_1M);
 
+<<<<<<< HEAD
 	pool = xe_mem_pool_init(tile, bb_pool_size, sizeof(u32),
 				XE_MEM_POOL_BO_FLAG_INIT_SHADOW_COPY);
 	if (IS_ERR(pool)) {
@@ -176,12 +190,40 @@ static int alloc_bb_pool(struct xe_tile *tile, struct xe_sriov_vf_ccs_ctx *ctx)
 	xe_mem_pool_sync(pool);
 
 	ctx->mem.ccs_bb_pool = pool;
+=======
+	sa_manager = __xe_sa_bo_manager_init(tile, bb_pool_size, SZ_4K, SZ_16,
+					     XE_SA_BO_MANAGER_FLAG_SHADOW);
+
+	if (IS_ERR(sa_manager)) {
+		xe_sriov_err(xe, "Suballocator init failed with error: %pe\n",
+			     sa_manager);
+		err = PTR_ERR(sa_manager);
+		return err;
+	}
+
+	offset = 0;
+	xe_map_memset(xe, &sa_manager->bo->vmap, offset, MI_NOOP,
+		      bb_pool_size);
+	xe_map_memset(xe, &sa_manager->shadow->vmap, offset, MI_NOOP,
+		      bb_pool_size);
+
+	offset = bb_pool_size - sizeof(u32);
+	xe_map_wr(xe, &sa_manager->bo->vmap, offset, u32, MI_BATCH_BUFFER_END);
+	xe_map_wr(xe, &sa_manager->shadow->vmap, offset, u32, MI_BATCH_BUFFER_END);
+
+	ctx->mem.ccs_bb_pool = sa_manager;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static void ccs_rw_update_ring(struct xe_sriov_vf_ccs_ctx *ctx)
 {
+<<<<<<< HEAD
 	u64 addr = xe_mem_pool_gpu_addr(ctx->mem.ccs_bb_pool);
+=======
+	u64 addr = xe_sa_manager_gpu_addr(ctx->mem.ccs_bb_pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_lrc *lrc = xe_exec_queue_lrc(ctx->mig_q);
 	u32 dw[10], i = 0;
 
@@ -392,7 +434,11 @@ err_ret:
 #define XE_SRIOV_VF_CCS_RW_BB_ADDR_OFFSET	(2 * sizeof(u32))
 void xe_sriov_vf_ccs_rw_update_bb_addr(struct xe_sriov_vf_ccs_ctx *ctx)
 {
+<<<<<<< HEAD
 	u64 addr = xe_mem_pool_gpu_addr(ctx->mem.ccs_bb_pool);
+=======
+	u64 addr = xe_sa_manager_gpu_addr(ctx->mem.ccs_bb_pool);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_lrc *lrc = xe_exec_queue_lrc(ctx->mig_q);
 	struct xe_device *xe = gt_to_xe(ctx->mig_q->gt);
 
@@ -416,8 +462,13 @@ int xe_sriov_vf_ccs_attach_bo(struct xe_bo *bo)
 	struct xe_device *xe = xe_bo_device(bo);
 	enum xe_sriov_vf_ccs_rw_ctxs ctx_id;
 	struct xe_sriov_vf_ccs_ctx *ctx;
+<<<<<<< HEAD
 	struct xe_mem_pool_node *bb;
 	struct xe_tile *tile;
+=======
+	struct xe_tile *tile;
+	struct xe_bb *bb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = 0;
 
 	xe_assert(xe, IS_VF_CCS_READY(xe));
@@ -449,7 +500,11 @@ int xe_sriov_vf_ccs_detach_bo(struct xe_bo *bo)
 {
 	struct xe_device *xe = xe_bo_device(bo);
 	enum xe_sriov_vf_ccs_rw_ctxs ctx_id;
+<<<<<<< HEAD
 	struct xe_mem_pool_node *bb;
+=======
+	struct xe_bb *bb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_assert(xe, IS_VF_CCS_READY(xe));
 
@@ -475,8 +530,13 @@ int xe_sriov_vf_ccs_detach_bo(struct xe_bo *bo)
  */
 void xe_sriov_vf_ccs_print(struct xe_device *xe, struct drm_printer *p)
 {
+<<<<<<< HEAD
 	enum xe_sriov_vf_ccs_rw_ctxs ctx_id;
 	struct xe_mem_pool *bb_pool;
+=======
+	struct xe_sa_manager *bb_pool;
+	enum xe_sriov_vf_ccs_rw_ctxs ctx_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!IS_VF_CCS_READY(xe))
 		return;
@@ -489,7 +549,11 @@ void xe_sriov_vf_ccs_print(struct xe_device *xe, struct drm_printer *p)
 
 		drm_printf(p, "ccs %s bb suballoc info\n", ctx_id ? "write" : "read");
 		drm_printf(p, "-------------------------\n");
+<<<<<<< HEAD
 		xe_mem_pool_dump(bb_pool, p);
+=======
+		drm_suballoc_dump_debug_info(&bb_pool->base, p, xe_sa_manager_gpu_addr(bb_pool));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		drm_puts(p, "\n");
 	}
 }

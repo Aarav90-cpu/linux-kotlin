@@ -3,11 +3,60 @@
  * Copyright Altera Corporation (C) 2015. All rights reserved.
  */
 
+<<<<<<< HEAD
 #include "socfpga_stratix10_socdk.dtsi"
+=======
+#include "socfpga_stratix10.dtsi"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 / {
 	model = "SoCFPGA Stratix 10 SoCDK";
 	compatible = "altr,socfpga-stratix10-socdk", "altr,socfpga-stratix10";
+<<<<<<< HEAD
+=======
+
+	aliases {
+		serial0 = &uart0;
+		ethernet0 = &gmac0;
+		ethernet1 = &gmac1;
+		ethernet2 = &gmac2;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led-hps0 {
+			label = "hps_led0";
+			gpios = <&portb 20 GPIO_ACTIVE_HIGH>;
+		};
+
+		led-hps1 {
+			label = "hps_led1";
+			gpios = <&portb 19 GPIO_ACTIVE_HIGH>;
+		};
+
+		led-hps2 {
+			label = "hps_led2";
+			gpios = <&portb 21 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		/* We expect the bootloader to fill in the reg */
+		reg = <0 0x80000000 0 0>;
+	};
+
+	ref_033v: regulator-v-ref {
+		compatible = "regulator-fixed";
+		regulator-name = "0.33V";
+		regulator-min-microvolt = <330000>;
+		regulator-max-microvolt = <330000>;
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &pinctrl0 {
@@ -26,6 +75,13 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&gpio1 {
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &gmac0 {
 	status = "okay";
 	phy-mode = "rgmii";
@@ -37,7 +93,11 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 		compatible = "snps,dwmac-mdio";
+<<<<<<< HEAD
 		phy0: ethernet-phy@4 {
+=======
+		phy0: ethernet-phy@0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			reg = <4>;
 
 			txd0-skew-ps = <0>; /* -420ps */
@@ -65,6 +125,26 @@
 	clk-phase-sd-hs = <0>, <135>;
 };
 
+<<<<<<< HEAD
+=======
+&osc1 {
+	clock-frequency = <25000000>;
+};
+
+&uart0 {
+	status = "okay";
+};
+
+&usb0 {
+	status = "okay";
+	disable-over-current;
+};
+
+&watchdog0 {
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c1 {
 	status = "okay";
 	clock-frequency = <100000>;

@@ -11,6 +11,10 @@
 
 #include <linux/bpf.h>
 #include <linux/filter.h>
+<<<<<<< HEAD
+=======
+#include <asm/cacheflush.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* verify runtime detection extension status */
 #define rv_ext_enabled(ext) \
@@ -104,6 +108,14 @@ static inline void bpf_fill_ill_insns(void *area, unsigned int size)
 	memset(area, 0, size);
 }
 
+<<<<<<< HEAD
+=======
+static inline void bpf_flush_icache(void *start, void *end)
+{
+	flush_icache_range((unsigned long)start, (unsigned long)end);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Emit a 4-byte riscv instruction. */
 static inline void emit(const u32 insn, struct rv_jit_context *ctx)
 {

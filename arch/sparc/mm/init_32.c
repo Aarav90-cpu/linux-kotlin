@@ -246,6 +246,13 @@ void __init arch_mm_preinit(void)
 		prom_halt();
 	}
 
+<<<<<<< HEAD
+=======
+
+	/* Saves us work later. */
+	memset((void *)empty_zero_page, 0, PAGE_SIZE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i = last_valid_pfn >> ((20 - PAGE_SHIFT) + 5);
 	i += 1;
 	sparc_valid_addr_bitmap = (unsigned long *)

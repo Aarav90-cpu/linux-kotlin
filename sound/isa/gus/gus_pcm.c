@@ -471,8 +471,12 @@ static int snd_gf1_pcm_playback_trigger(struct snd_pcm_substream *substream,
 
 	if (cmd == SNDRV_PCM_TRIGGER_START) {
 		snd_gf1_pcm_trigger_up(substream);
+<<<<<<< HEAD
 	} else if (cmd == SNDRV_PCM_TRIGGER_STOP ||
 		   cmd == SNDRV_PCM_TRIGGER_SUSPEND) {
+=======
+	} else if (cmd == SNDRV_PCM_TRIGGER_STOP) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		scoped_guard(spinlock, &pcmp->lock) {
 			pcmp->flags &= ~SNDRV_GF1_PCM_PFLG_ACTIVE;
 		}
@@ -559,8 +563,12 @@ static int snd_gf1_pcm_capture_trigger(struct snd_pcm_substream *substream,
 	
 	if (cmd == SNDRV_PCM_TRIGGER_START) {
 		val = gus->gf1.pcm_rcntrl_reg;
+<<<<<<< HEAD
 	} else if (cmd == SNDRV_PCM_TRIGGER_STOP ||
 		   cmd == SNDRV_PCM_TRIGGER_SUSPEND) {
+=======
+	} else if (cmd == SNDRV_PCM_TRIGGER_STOP) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		val = 0;
 	} else {
 		return -EINVAL;
@@ -858,3 +866,7 @@ int snd_gf1_pcm_new(struct snd_gus_card *gus, int pcm_dev, int control_index)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

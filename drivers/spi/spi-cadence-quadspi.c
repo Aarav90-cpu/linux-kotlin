@@ -1544,6 +1544,13 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
 		if (op->data.nbytes && op->data.buswidth != 8)
 			return false;
 
+<<<<<<< HEAD
+=======
+		/* A single opcode is supported, it will be repeated */
+		if ((op->cmd.opcode >> 8) != (op->cmd.opcode & 0xFF))
+			return false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cqspi->is_rzn1)
 			return false;
 	} else if (!all_false) {

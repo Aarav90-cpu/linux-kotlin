@@ -538,6 +538,7 @@ static void sur40_process_video(struct sur40_state *sur40)
 		return;
 
 	/* get a new buffer from the list */
+<<<<<<< HEAD
 	scoped_guard(spinlock, &sur40->qlock) {
 		if (list_empty(&sur40->buf_list)) {
 			dev_dbg(sur40->dev, "buffer queue empty\n");
@@ -547,6 +548,17 @@ static void sur40_process_video(struct sur40_state *sur40)
 					   struct sur40_buffer, list);
 		list_del(&new_buf->list);
 	}
+=======
+	spin_lock(&sur40->qlock);
+	if (list_empty(&sur40->buf_list)) {
+		dev_dbg(sur40->dev, "buffer queue empty\n");
+		spin_unlock(&sur40->qlock);
+		return;
+	}
+	new_buf = list_entry(sur40->buf_list.next, struct sur40_buffer, list);
+	list_del(&new_buf->list);
+	spin_unlock(&sur40->qlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(sur40->dev, "buffer acquired\n");
 
@@ -888,8 +900,14 @@ static void sur40_buffer_queue(struct vb2_buffer *vb)
 	struct sur40_state *sur40 = vb2_get_drv_priv(vb->vb2_queue);
 	struct sur40_buffer *buf = (struct sur40_buffer *)vb;
 
+<<<<<<< HEAD
 	guard(spinlock)(&sur40->qlock);
 	list_add_tail(&buf->list, &sur40->buf_list);
+=======
+	spin_lock(&sur40->qlock);
+	list_add_tail(&buf->list, &sur40->buf_list);
+	spin_unlock(&sur40->qlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void return_all_buffers(struct sur40_state *sur40,
@@ -897,12 +915,20 @@ static void return_all_buffers(struct sur40_state *sur40,
 {
 	struct sur40_buffer *buf, *node;
 
+<<<<<<< HEAD
 	guard(spinlock)(&sur40->qlock);
 
+=======
+	spin_lock(&sur40->qlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry_safe(buf, node, &sur40->buf_list, list) {
 		vb2_buffer_done(&buf->vb.vb2_buf, state);
 		list_del(&buf->list);
 	}
+<<<<<<< HEAD
+=======
+	spin_unlock(&sur40->qlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

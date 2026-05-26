@@ -621,7 +621,11 @@ static inline int qla_mapq_alloc_qp_cpu_map(struct qla_hw_data *ha)
 	scsi_qla_host_t *vha = pci_get_drvdata(ha->pdev);
 
 	if (!ha->qp_cpu_map) {
+<<<<<<< HEAD
 		ha->qp_cpu_map = kzalloc_objs(struct qla_qpair *, nr_cpu_ids);
+=======
+		ha->qp_cpu_map = kzalloc_objs(struct qla_qpair *, NR_CPUS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ha->qp_cpu_map) {
 			ql_log(ql_log_fatal, vha, 0x0180,
 			       "Unable to allocate memory for qp_cpu_map ptrs.\n");

@@ -257,7 +257,11 @@ static int coda_fill_super(struct super_block *sb, struct fs_context *fc)
 		goto error;
 	} 
 
+<<<<<<< HEAD
 	pr_info("%s: rootinode is %llu dev %s\n",
+=======
+	pr_info("%s: rootinode is %ld dev %s\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__func__, root->i_ino, root->i_sb->s_id);
 	sb->s_root = d_make_root(root);
 	if (!sb->s_root) {

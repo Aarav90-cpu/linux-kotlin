@@ -312,7 +312,11 @@ static int sevseg_probe(struct usb_interface *interface,
 	if (!mydev)
 		goto error_mem;
 
+<<<<<<< HEAD
 	mydev->udev = udev;
+=======
+	mydev->udev = usb_get_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mydev->intf = interface;
 	usb_set_intfdata(interface, mydev);
 
@@ -338,6 +342,10 @@ static void sevseg_disconnect(struct usb_interface *interface)
 
 	mydev = usb_get_intfdata(interface);
 	usb_set_intfdata(interface, NULL);
+<<<<<<< HEAD
+=======
+	usb_put_dev(mydev->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(mydev);
 	dev_info(&interface->dev, "USB 7 Segment now disconnected\n");
 }

@@ -56,8 +56,12 @@ static void atomics_sigill(void)
 
 static void cmpbr_sigill(void)
 {
+<<<<<<< HEAD
 	asm volatile(".inst 0x74C00040\n" /* CBEQ w0, w0, +8 */
 		     "udf #0" : : : "cc"); /* UDF #0 */
+=======
+	/* Not implemented, too complicated and unreliable anyway */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void crc32_sigill(void)

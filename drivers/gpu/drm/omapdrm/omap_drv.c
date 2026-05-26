@@ -275,6 +275,7 @@ static void omap_global_destroy_state(struct drm_private_obj *obj,
 	kfree(omap_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 omap_global_atomic_create_state(struct drm_private_obj *obj)
 {
@@ -291,6 +292,9 @@ omap_global_atomic_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs omap_global_state_funcs = {
 	.atomic_create_state = omap_global_atomic_create_state,
+=======
+static const struct drm_private_state_funcs omap_global_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = omap_global_duplicate_state,
 	.atomic_destroy_state = omap_global_destroy_state,
 };
@@ -298,8 +302,18 @@ static const struct drm_private_state_funcs omap_global_state_funcs = {
 static int omap_global_obj_init(struct drm_device *dev)
 {
 	struct omap_drm_private *priv = dev->dev_private;
+<<<<<<< HEAD
 
 	drm_atomic_private_obj_init(dev, &priv->glob_obj,
+=======
+	struct omap_global_state *state;
+
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(dev, &priv->glob_obj, &state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &omap_global_state_funcs);
 	return 0;
 }

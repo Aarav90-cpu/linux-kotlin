@@ -15,7 +15,10 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - qcom,eliza-dpu
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,glymur-dpu
           - qcom,kaanapali-dpu
           - qcom,sa8775p-dpu

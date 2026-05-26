@@ -60,10 +60,15 @@ static int efi_pstore_open(struct pstore_info *psi)
 		return err;
 
 	psi->data = kzalloc(record_size, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!psi->data) {
 		efivar_unlock();
 		return -ENOMEM;
 	}
+=======
+	if (!psi->data)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -23,7 +23,11 @@
 #define TCP_REORDERING (12)
 
 extern void cubictcp_init(struct sock *sk) __ksym;
+<<<<<<< HEAD
 extern void cubictcp_cwnd_event_tx_start(struct sock *sk) __ksym;
+=======
+extern void cubictcp_cwnd_event(struct sock *sk, enum tcp_ca_event event) __ksym;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern __u32 cubictcp_recalc_ssthresh(struct sock *sk) __ksym;
 extern void cubictcp_state(struct sock *sk, __u8 new_state) __ksym;
 extern __u32 tcp_reno_undo_cwnd(struct sock *sk) __ksym;
@@ -108,9 +112,15 @@ void BPF_PROG(bpf_cubic_init, struct sock *sk)
 }
 
 SEC("struct_ops")
+<<<<<<< HEAD
 void BPF_PROG(bpf_cubic_cwnd_event_tx_start, struct sock *sk)
 {
 	cubictcp_cwnd_event_tx_start(sk);
+=======
+void BPF_PROG(bpf_cubic_cwnd_event, struct sock *sk, enum tcp_ca_event event)
+{
+	cubictcp_cwnd_event(sk, event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 SEC("struct_ops")
@@ -172,7 +182,11 @@ struct tcp_congestion_ops cc_cubic = {
 	.cong_control	= (void *)bpf_cubic_cong_control,
 	.set_state	= (void *)bpf_cubic_state,
 	.undo_cwnd	= (void *)bpf_cubic_undo_cwnd,
+<<<<<<< HEAD
 	.cwnd_event_tx_start	= (void *)bpf_cubic_cwnd_event_tx_start,
+=======
+	.cwnd_event	= (void *)bpf_cubic_cwnd_event,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pkts_acked     = (void *)bpf_cubic_acked,
 	.name		= "bpf_cc_cubic",
 };

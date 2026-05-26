@@ -3925,7 +3925,10 @@ static const struct target_core_fabric_ops srpt_template = {
 	.tfc_wwn_attrs			= srpt_wwn_attrs,
 	.tfc_tpg_attrib_attrs		= srpt_tpg_attrib_attrs,
 
+<<<<<<< HEAD
 	.default_compl_type		= TARGET_QUEUE_COMPL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_submit_type		= TARGET_DIRECT_SUBMIT,
 	.direct_submit_supp		= 1,
 };

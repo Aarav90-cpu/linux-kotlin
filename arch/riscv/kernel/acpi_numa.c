@@ -37,6 +37,7 @@ static int __init acpi_numa_get_nid(unsigned int cpu)
 
 static inline int get_cpu_for_acpi_id(u32 uid)
 {
+<<<<<<< HEAD
 	u32 cpu_uid;
 	int ret;
 
@@ -45,6 +46,13 @@ static inline int get_cpu_for_acpi_id(u32 uid)
 		if (ret == 0 && uid == cpu_uid)
 			return cpu;
 	}
+=======
+	int cpu;
+
+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+		if (uid == get_acpi_id_for_cpu(cpu))
+			return cpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -EINVAL;
 }

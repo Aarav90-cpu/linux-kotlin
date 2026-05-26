@@ -70,6 +70,7 @@ struct bundle_priv {
 	u64 internal_buffer[32];
 };
 
+<<<<<<< HEAD
 uverbs_api_ioctl_handler_fn uverbs_get_handler_fn(struct ib_udata *udata)
 {
 	struct uverbs_attr_bundle *bundle =
@@ -83,6 +84,8 @@ uverbs_api_ioctl_handler_fn uverbs_get_handler_fn(struct ib_udata *udata)
 				&bundle->ufile->device->disassociate_srcu);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Each method has an absolute minimum amount of memory it needs to allocate,
  * precompute that amount and determine if the onstack memory can be used or
@@ -860,6 +863,7 @@ void uverbs_finalize_uobj_create(const struct uverbs_attr_bundle *bundle,
 		  pbundle->uobj_hw_obj_valid);
 }
 EXPORT_SYMBOL(uverbs_finalize_uobj_create);
+<<<<<<< HEAD
 
 int _ib_copy_validate_udata_in(struct ib_udata *udata, void *req,
 			       size_t kernel_size, size_t minimum_size)
@@ -934,3 +938,5 @@ err_fault:
 	return -EFAULT;
 }
 EXPORT_SYMBOL(_ib_respond_udata);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

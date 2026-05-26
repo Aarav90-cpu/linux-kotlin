@@ -267,10 +267,13 @@ static struct mbox_info *zynqmp_r5_setup_mbox(struct device *cdev)
 	struct mbox_client *mbox_cl;
 	struct mbox_info *ipi;
 
+<<<<<<< HEAD
 	if (!of_property_present(dev_of_node(cdev), "mboxes") ||
 	    !of_property_present(dev_of_node(cdev), "mbox-names"))
 		return NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ipi = kzalloc_obj(*ipi);
 	if (!ipi)
 		return NULL;
@@ -1011,7 +1014,11 @@ static int zynqmp_r5_get_sram_banks(struct zynqmp_r5_core *r5_core)
 		}
 
 		/* Get SRAM device address */
+<<<<<<< HEAD
 		ret = of_property_read_reg(sram_np, 0, &abs_addr, &size);
+=======
+		ret = of_property_read_reg(sram_np, i, &abs_addr, &size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			dev_err(dev, "failed to get reg property\n");
 			goto fail_sram_get;
@@ -1490,8 +1497,11 @@ static void zynqmp_r5_remoteproc_shutdown(struct platform_device *pdev)
 			dev_err(cluster->dev, "failed to %s rproc %d\n",
 				rproc_state_str, rproc->index);
 		}
+<<<<<<< HEAD
 
 		zynqmp_r5_free_mbox(r5_core->ipi);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

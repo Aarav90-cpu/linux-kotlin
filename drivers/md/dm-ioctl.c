@@ -64,11 +64,15 @@ struct vers_iter {
 static struct rb_root name_rb_tree = RB_ROOT;
 static struct rb_root uuid_rb_tree = RB_ROOT;
 
+<<<<<<< HEAD
 #define DM_REMOVE_KEEP_OPEN_DEVICES	1
 #define DM_REMOVE_MARK_DEFERRED		2
 #define DM_REMOVE_ONLY_DEFERRED		4
 #define DM_REMOVE_INTERRUPTIBLE		8
 static int dm_hash_remove_all(unsigned flags);
+=======
+static void dm_hash_remove_all(bool keep_open_devices, bool mark_deferred, bool only_deferred);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Guards access to both hash tables.
@@ -82,7 +86,11 @@ static DEFINE_MUTEX(dm_hash_cells_mutex);
 
 static void dm_hash_exit(void)
 {
+<<<<<<< HEAD
 	dm_hash_remove_all(0);
+=======
+	dm_hash_remove_all(false, false, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -337,7 +345,11 @@ static struct dm_table *__hash_remove(struct hash_cell *hc)
 	return table;
 }
 
+<<<<<<< HEAD
 static int dm_hash_remove_all(unsigned flags)
+=======
+static void dm_hash_remove_all(bool keep_open_devices, bool mark_deferred, bool only_deferred)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int dev_skipped;
 	struct rb_node *n;
@@ -351,17 +363,25 @@ retry:
 	down_write(&_hash_lock);
 
 	for (n = rb_first(&name_rb_tree); n; n = rb_next(n)) {
+<<<<<<< HEAD
 		if (flags & DM_REMOVE_INTERRUPTIBLE && fatal_signal_pending(current)) {
 			up_write(&_hash_lock);
 			return -EINTR;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hc = container_of(n, struct hash_cell, name_node);
 		md = hc->md;
 		dm_get(md);
 
+<<<<<<< HEAD
 		if (flags & DM_REMOVE_KEEP_OPEN_DEVICES &&
 		    dm_lock_for_deletion(md, !!(flags & DM_REMOVE_MARK_DEFERRED), !!(flags & DM_REMOVE_ONLY_DEFERRED))) {
+=======
+		if (keep_open_devices &&
+		    dm_lock_for_deletion(md, mark_deferred, only_deferred)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dm_put(md);
 			dev_skipped++;
 			continue;
@@ -377,7 +397,11 @@ retry:
 		}
 		dm_ima_measure_on_device_remove(md, true);
 		dm_put(md);
+<<<<<<< HEAD
 		if (likely(flags & DM_REMOVE_KEEP_OPEN_DEVICES))
+=======
+		if (likely(keep_open_devices))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dm_destroy(md);
 		else
 			dm_destroy_immediate(md);
@@ -393,10 +417,15 @@ retry:
 
 	up_write(&_hash_lock);
 
+<<<<<<< HEAD
 	if (dev_skipped && !(flags & DM_REMOVE_ONLY_DEFERRED))
 		DMWARN("remove_all left %d open device(s)", dev_skipped);
 
 	return 0;
+=======
+	if (dev_skipped && !only_deferred)
+		DMWARN("remove_all left %d open device(s)", dev_skipped);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -524,7 +553,11 @@ static struct mapped_device *dm_hash_rename(struct dm_ioctl *param,
 
 void dm_deferred_remove(void)
 {
+<<<<<<< HEAD
 	dm_hash_remove_all(DM_REMOVE_KEEP_OPEN_DEVICES | DM_REMOVE_ONLY_DEFERRED);
+=======
+	dm_hash_remove_all(true, false, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -540,6 +573,7 @@ typedef int (*ioctl_fn)(struct file *filp, struct dm_ioctl *param, size_t param_
 
 static int remove_all(struct file *filp, struct dm_ioctl *param, size_t param_size)
 {
+<<<<<<< HEAD
 	int r;
 	int flags = DM_REMOVE_KEEP_OPEN_DEVICES | DM_REMOVE_INTERRUPTIBLE;
 	if (param->flags & DM_DEFERRED_REMOVE)
@@ -547,6 +581,11 @@ static int remove_all(struct file *filp, struct dm_ioctl *param, size_t param_si
 	r = dm_hash_remove_all(flags);
 	param->data_size = 0;
 	return r;
+=======
+	dm_hash_remove_all(true, !!(param->flags & DM_DEFERRED_REMOVE), false);
+	param->data_size = 0;
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

@@ -78,6 +78,7 @@
 #define RVU_MBOX_VF_INT_ENA_W1C			(0x38)
 
 #define RVU_MBOX_VF_VFAF_TRIGX(a)		(0x2000 | (a) << 3)
+<<<<<<< HEAD
 
 #define NIX_GINT_INT                           (0x200)
 #define NIX_GINT_INT_W1S                       (0x208)
@@ -143,4 +144,6 @@
 	offset = (0xb000000ull | (a) << 4 | (b) << 20);		\
 	offset; })
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* RVU_MBOX_REG_H */

@@ -35,11 +35,17 @@ MODULE_FIRMWARE("amdnpu/17f0_11/npu_7.sbin");
  * 0.4: Support getting resource information
  * 0.5: Support getting telemetry data
  * 0.6: Support preemption
+<<<<<<< HEAD
  * 0.7: Support getting power and utilization data
  * 0.8: Support BO usage query
  */
 #define AMDXDNA_DRIVER_MAJOR		0
 #define AMDXDNA_DRIVER_MINOR		8
+=======
+ */
+#define AMDXDNA_DRIVER_MAJOR		0
+#define AMDXDNA_DRIVER_MINOR		6
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Bind the driver base on (vendor_id, device_id) pair and later use the
@@ -74,6 +80,7 @@ static int amdxdna_drm_open(struct drm_device *ddev, struct drm_file *filp)
 
 	client->pid = pid_nr(rcu_access_pointer(filp->pid));
 	client->xdna = xdna;
+<<<<<<< HEAD
 	client->pasid = IOMMU_PASID_INVALID;
 
 	if (!amdxdna_iova_on(xdna)) {
@@ -89,6 +96,20 @@ static int amdxdna_drm_open(struct drm_device *ddev, struct drm_file *filp)
 			ret = -ENODEV;
 			goto unbind_sva;
 		}
+=======
+
+	client->sva = iommu_sva_bind_device(xdna->ddev.dev, current->mm);
+	if (IS_ERR(client->sva)) {
+		ret = PTR_ERR(client->sva);
+		XDNA_ERR(xdna, "SVA bind device failed, ret %d", ret);
+		goto failed;
+	}
+	client->pasid = iommu_sva_get_pasid(client->sva);
+	if (client->pasid == IOMMU_PASID_INVALID) {
+		XDNA_ERR(xdna, "SVA get pasid failed");
+		ret = -ENODEV;
+		goto unbind_sva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	client->mm = current->mm;
 	mmgrab(client->mm);
@@ -107,8 +128,12 @@ static int amdxdna_drm_open(struct drm_device *ddev, struct drm_file *filp)
 	return 0;
 
 unbind_sva:
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(client->sva))
 		iommu_sva_unbind_device(client->sva);
+=======
+	iommu_sva_unbind_device(client->sva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 failed:
 	kfree(client);
 
@@ -121,14 +146,22 @@ static void amdxdna_client_cleanup(struct amdxdna_client *client)
 	amdxdna_hwctx_remove_all(client);
 	xa_destroy(&client->hwctx_xa);
 	cleanup_srcu_struct(&client->hwctx_srcu);
+<<<<<<< HEAD
+=======
+	mutex_destroy(&client->mm_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (client->dev_heap)
 		drm_gem_object_put(to_gobj(client->dev_heap));
 
+<<<<<<< HEAD
 	mutex_destroy(&client->mm_lock);
 
 	if (!IS_ERR_OR_NULL(client->sva))
 		iommu_sva_unbind_device(client->sva);
+=======
+	iommu_sva_unbind_device(client->sva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mmdrop(client->mm);
 
 	kfree(client);
@@ -247,7 +280,11 @@ const struct drm_driver amdxdna_drm_drv = {
 	.ioctls = amdxdna_drm_ioctls,
 	.num_ioctls = ARRAY_SIZE(amdxdna_drm_ioctls),
 
+<<<<<<< HEAD
 	.gem_create_object = amdxdna_gem_create_shmem_object_cb,
+=======
+	.gem_create_object = amdxdna_gem_create_object_cb,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.gem_prime_import = amdxdna_gem_prime_import,
 };
 
@@ -289,6 +326,7 @@ static int amdxdna_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		fs_reclaim_release(GFP_KERNEL);
 	}
 
+<<<<<<< HEAD
 	ret = amdxdna_iommu_init(xdna);
 	if (ret)
 		return ret;
@@ -298,6 +336,11 @@ static int amdxdna_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		ret = -ENOMEM;
 		goto iommu_fini;
 	}
+=======
+	xdna->notifier_wq = alloc_ordered_workqueue("notifier_wq", WQ_MEM_RECLAIM);
+	if (!xdna->notifier_wq)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&xdna->dev_lock);
 	ret = xdna->dev_info->ops->init(xdna);
@@ -329,8 +372,11 @@ failed_dev_fini:
 	mutex_unlock(&xdna->dev_lock);
 destroy_notifier_wq:
 	destroy_workqueue(xdna->notifier_wq);
+<<<<<<< HEAD
 iommu_fini:
 	amdxdna_iommu_fini(xdna);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -356,8 +402,11 @@ static void amdxdna_remove(struct pci_dev *pdev)
 
 	xdna->dev_info->ops->fini(xdna);
 	mutex_unlock(&xdna->dev_lock);
+<<<<<<< HEAD
 
 	amdxdna_iommu_fini(xdna);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct dev_pm_ops amdxdna_pm_ops = {
@@ -376,6 +425,9 @@ static struct pci_driver amdxdna_pci_driver = {
 module_pci_driver(amdxdna_pci_driver);
 
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
 MODULE_IMPORT_NS("AMD_PMF");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("XRT Team <runtimeca39d@amd.com>");
 MODULE_DESCRIPTION("amdxdna driver");

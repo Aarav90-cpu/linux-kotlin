@@ -129,7 +129,10 @@ struct devlink_rate {
 struct devlink_port {
 	struct list_head list;
 	struct list_head region_list;
+<<<<<<< HEAD
 	struct list_head resource_list;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct devlink *devlink;
 	const struct devlink_port_ops *ops;
 	unsigned int index;
@@ -1612,9 +1615,12 @@ struct devlink_ops {
 void *devlink_priv(struct devlink *devlink);
 struct devlink *priv_to_devlink(void *priv);
 struct device *devlink_to_dev(const struct devlink *devlink);
+<<<<<<< HEAD
 const char *devlink_bus_name(const struct devlink *devlink);
 const char *devlink_dev_name(const struct devlink *devlink);
 const char *devlink_dev_driver_name(const struct devlink *devlink);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Devlink instance explicit locking */
 void devl_lock(struct devlink *devlink);
@@ -1648,6 +1654,7 @@ void devlink_register(struct devlink *devlink);
 void devlink_unregister(struct devlink *devlink);
 void devlink_free(struct devlink *devlink);
 
+<<<<<<< HEAD
 struct devlink *devlink_shd_get(const char *id,
 				const struct devlink_ops *ops,
 				size_t priv_size,
@@ -1655,6 +1662,8 @@ struct devlink *devlink_shd_get(const char *id,
 void devlink_shd_put(struct devlink *devlink);
 void *devlink_shd_get_priv(struct devlink *devlink);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct devlink_port_ops - Port operations
  * @port_split: Callback used to split the port into multiple ones.
@@ -1886,12 +1895,17 @@ int devl_resource_register(struct devlink *devlink,
 			   u64 resource_size,
 			   u64 resource_id,
 			   u64 parent_resource_id,
+<<<<<<< HEAD
 			   const struct devlink_resource_size_params *params);
+=======
+			   const struct devlink_resource_size_params *size_params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void devl_resources_unregister(struct devlink *devlink);
 void devlink_resources_unregister(struct devlink *devlink);
 int devl_resource_size_get(struct devlink *devlink,
 			   u64 resource_id,
 			   u64 *p_resource_size);
+<<<<<<< HEAD
 int
 devl_port_resource_register(struct devlink_port *devlink_port,
 			    const char *resource_name,
@@ -1899,6 +1913,8 @@ devl_port_resource_register(struct devlink_port *devlink_port,
 			    u64 parent_resource_id,
 			    const struct devlink_resource_size_params *params);
 void devl_port_resources_unregister(struct devlink_port *devlink_port);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int devl_dpipe_table_resource_set(struct devlink *devlink,
 				  const char *table_name, u64 resource_id,
 				  u64 resource_units);

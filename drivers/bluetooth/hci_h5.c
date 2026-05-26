@@ -587,9 +587,12 @@ static int h5_recv(struct hci_uart *hu, const void *data, int count)
 	struct h5 *h5 = hu->priv;
 	const unsigned char *ptr = data;
 
+<<<<<<< HEAD
 	if (!h5)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BT_DBG("%s pending %zu count %d", hu->hdev->name, h5->rx_pending,
 	       count);
 

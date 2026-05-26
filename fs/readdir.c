@@ -22,8 +22,11 @@
 #include <linux/compat.h>
 #include <linux/uaccess.h>
 
+<<<<<<< HEAD
 #define dirent_size(dirent, len) offsetof(typeof(*(dirent)), d_name[len])
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Some filesystems were never converted to '->iterate_shared()'
  * and their directory iterators want the inode lock held for
@@ -200,6 +203,7 @@ static bool fillonedir(struct dir_context *ctx, const char *name, int namlen,
 	}
 	buf->result++;
 	dirent = buf->dirent;
+<<<<<<< HEAD
 	scoped_user_write_access_size(dirent, dirent_size(dirent, namlen + 1), efault) {
 		unsafe_put_user(d_ino, &dirent->d_ino, efault);
 		unsafe_put_user(offset, &dirent->d_offset, efault);
@@ -207,6 +211,20 @@ static bool fillonedir(struct dir_context *ctx, const char *name, int namlen,
 		unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault);
 	}
 	return true;
+=======
+	if (!user_write_access_begin(dirent,
+			(unsigned long)(dirent->d_name + namlen + 1) -
+				(unsigned long)dirent))
+		goto efault;
+	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+	unsafe_put_user(offset, &dirent->d_offset, efault_end);
+	unsafe_put_user(namlen, &dirent->d_namlen, efault_end);
+	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+	user_write_access_end();
+	return true;
+efault_end:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	buf->result = -EFAULT;
 	return false;
@@ -260,7 +278,12 @@ static bool filldir(struct dir_context *ctx, const char *name, int namlen,
 	struct getdents_callback *buf =
 		container_of(ctx, struct getdents_callback, ctx);
 	unsigned long d_ino;
+<<<<<<< HEAD
 	int reclen = ALIGN(dirent_size(dirent, namlen + 2), sizeof(long));
+=======
+	int reclen = ALIGN(offsetof(struct linux_dirent, d_name) + namlen + 2,
+		sizeof(long));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int prev_reclen;
 	unsigned int flags = d_type;
 
@@ -283,6 +306,7 @@ static bool filldir(struct dir_context *ctx, const char *name, int namlen,
 		return false;
 	dirent = buf->current_dir;
 	prev = (void __user *) dirent - prev_reclen;
+<<<<<<< HEAD
 	scoped_user_write_access_size(prev, reclen + prev_reclen, efault) {
 		/* This might be 'dirent->d_off', but if so it will get overwritten */
 		unsafe_put_user(offset, &prev->d_off, efault);
@@ -291,11 +315,28 @@ static bool filldir(struct dir_context *ctx, const char *name, int namlen,
 		unsafe_put_user(d_type, (char __user *)dirent + reclen - 1, efault);
 		unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault);
 	}
+=======
+	if (!user_write_access_begin(prev, reclen + prev_reclen))
+		goto efault;
+
+	/* This might be 'dirent->d_off', but if so it will get overwritten */
+	unsafe_put_user(offset, &prev->d_off, efault_end);
+	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+	unsafe_put_user(d_type, (char __user *) dirent + reclen - 1, efault_end);
+	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf->current_dir = (void __user *)dirent + reclen;
 	buf->prev_reclen = reclen;
 	ctx->count -= reclen;
 	return true;
+<<<<<<< HEAD
+=======
+efault_end:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	buf->error = -EFAULT;
 	return false;
@@ -344,7 +385,12 @@ static bool filldir64(struct dir_context *ctx, const char *name, int namlen,
 	struct linux_dirent64 __user *dirent, *prev;
 	struct getdents_callback64 *buf =
 		container_of(ctx, struct getdents_callback64, ctx);
+<<<<<<< HEAD
 	int reclen = ALIGN(dirent_size(dirent, namlen + 1), sizeof(u64));
+=======
+	int reclen = ALIGN(offsetof(struct linux_dirent64, d_name) + namlen + 1,
+		sizeof(u64));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int prev_reclen;
 	unsigned int flags = d_type;
 
@@ -362,6 +408,7 @@ static bool filldir64(struct dir_context *ctx, const char *name, int namlen,
 		return false;
 	dirent = buf->current_dir;
 	prev = (void __user *)dirent - prev_reclen;
+<<<<<<< HEAD
 	scoped_user_write_access_size(prev, reclen + prev_reclen, efault) {
 		/* This might be 'dirent->d_off', but if so it will get overwritten */
 		unsafe_put_user(offset, &prev->d_off, efault);
@@ -370,12 +417,29 @@ static bool filldir64(struct dir_context *ctx, const char *name, int namlen,
 		unsafe_put_user(d_type, &dirent->d_type, efault);
 		unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault);
 	}
+=======
+	if (!user_write_access_begin(prev, reclen + prev_reclen))
+		goto efault;
+
+	/* This might be 'dirent->d_off', but if so it will get overwritten */
+	unsafe_put_user(offset, &prev->d_off, efault_end);
+	unsafe_put_user(ino, &dirent->d_ino, efault_end);
+	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+	unsafe_put_user(d_type, &dirent->d_type, efault_end);
+	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf->prev_reclen = reclen;
 	buf->current_dir = (void __user *)dirent + reclen;
 	ctx->count -= reclen;
 	return true;
 
+<<<<<<< HEAD
+=======
+efault_end:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	buf->error = -EFAULT;
 	return false;
@@ -447,6 +511,7 @@ static bool compat_fillonedir(struct dir_context *ctx, const char *name,
 	}
 	buf->result++;
 	dirent = buf->dirent;
+<<<<<<< HEAD
 	scoped_user_write_access_size(dirent, dirent_size(dirent, namlen + 1), efault) {
 		unsafe_put_user(d_ino, &dirent->d_ino, efault);
 		unsafe_put_user(offset, &dirent->d_offset, efault);
@@ -454,6 +519,20 @@ static bool compat_fillonedir(struct dir_context *ctx, const char *name,
 		unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault);
 	}
 	return true;
+=======
+	if (!user_write_access_begin(dirent,
+			(unsigned long)(dirent->d_name + namlen + 1) -
+				(unsigned long)dirent))
+		goto efault;
+	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+	unsafe_put_user(offset, &dirent->d_offset, efault_end);
+	unsafe_put_user(namlen, &dirent->d_namlen, efault_end);
+	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+	user_write_access_end();
+	return true;
+efault_end:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	buf->result = -EFAULT;
 	return false;
@@ -501,7 +580,12 @@ static bool compat_filldir(struct dir_context *ctx, const char *name, int namlen
 	struct compat_getdents_callback *buf =
 		container_of(ctx, struct compat_getdents_callback, ctx);
 	compat_ulong_t d_ino;
+<<<<<<< HEAD
 	int reclen = ALIGN(dirent_size(dirent, namlen + 2), sizeof(compat_long_t));
+=======
+	int reclen = ALIGN(offsetof(struct compat_linux_dirent, d_name) +
+		namlen + 2, sizeof(compat_long_t));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int prev_reclen;
 	unsigned int flags = d_type;
 
@@ -524,6 +608,7 @@ static bool compat_filldir(struct dir_context *ctx, const char *name, int namlen
 		return false;
 	dirent = buf->current_dir;
 	prev = (void __user *) dirent - prev_reclen;
+<<<<<<< HEAD
 	scoped_user_write_access_size(prev, reclen + prev_reclen, efault) {
 		unsafe_put_user(offset, &prev->d_off, efault);
 		unsafe_put_user(d_ino, &dirent->d_ino, efault);
@@ -531,11 +616,27 @@ static bool compat_filldir(struct dir_context *ctx, const char *name, int namlen
 		unsafe_put_user(d_type, (char __user *)dirent + reclen - 1, efault);
 		unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault);
 	}
+=======
+	if (!user_write_access_begin(prev, reclen + prev_reclen))
+		goto efault;
+
+	unsafe_put_user(offset, &prev->d_off, efault_end);
+	unsafe_put_user(d_ino, &dirent->d_ino, efault_end);
+	unsafe_put_user(reclen, &dirent->d_reclen, efault_end);
+	unsafe_put_user(d_type, (char __user *) dirent + reclen - 1, efault_end);
+	unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf->prev_reclen = reclen;
 	buf->current_dir = (void __user *)dirent + reclen;
 	ctx->count -= reclen;
 	return true;
+<<<<<<< HEAD
+=======
+efault_end:
+	user_write_access_end();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 efault:
 	buf->error = -EFAULT;
 	return false;

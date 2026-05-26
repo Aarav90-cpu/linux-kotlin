@@ -285,16 +285,28 @@ enum vmcs_field {
 };
 
 struct vmx_msr_entry {
+<<<<<<< HEAD
 	u32 index;
 	u32 reserved;
 	u64 value;
+=======
+	uint32_t index;
+	uint32_t reserved;
+	uint64_t value;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __attribute__ ((aligned(16)));
 
 #include "evmcs.h"
 
+<<<<<<< HEAD
 static inline int vmxon(u64 phys)
 {
 	u8 ret;
+=======
+static inline int vmxon(uint64_t phys)
+{
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__asm__ __volatile__ ("vmxon %[pa]; setna %[ret]"
 		: [ret]"=rm"(ret)
@@ -309,9 +321,15 @@ static inline void vmxoff(void)
 	__asm__ __volatile__("vmxoff");
 }
 
+<<<<<<< HEAD
 static inline int vmclear(u64 vmcs_pa)
 {
 	u8 ret;
+=======
+static inline int vmclear(uint64_t vmcs_pa)
+{
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__asm__ __volatile__ ("vmclear %[pa]; setna %[ret]"
 		: [ret]"=rm"(ret)
@@ -321,9 +339,15 @@ static inline int vmclear(u64 vmcs_pa)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline int vmptrld(u64 vmcs_pa)
 {
 	u8 ret;
+=======
+static inline int vmptrld(uint64_t vmcs_pa)
+{
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable_evmcs)
 		return -1;
@@ -336,10 +360,17 @@ static inline int vmptrld(u64 vmcs_pa)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline int vmptrst(u64 *value)
 {
 	u64 tmp;
 	u8 ret;
+=======
+static inline int vmptrst(uint64_t *value)
+{
+	uint64_t tmp;
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable_evmcs)
 		return evmcs_vmptrst(value);
@@ -356,9 +387,15 @@ static inline int vmptrst(u64 *value)
  * A wrapper around vmptrst that ignores errors and returns zero if the
  * vmptrst instruction fails.
  */
+<<<<<<< HEAD
 static inline u64 vmptrstz(void)
 {
 	u64 value = 0;
+=======
+static inline uint64_t vmptrstz(void)
+{
+	uint64_t value = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmptrst(&value);
 	return value;
 }
@@ -391,8 +428,13 @@ static inline int vmlaunch(void)
 			     "pop %%rcx;"
 			     "pop %%rbp;"
 			     : [ret]"=&a"(ret)
+<<<<<<< HEAD
 			     : [host_rsp]"r"((u64)HOST_RSP),
 			       [host_rip]"r"((u64)HOST_RIP)
+=======
+			     : [host_rsp]"r"((uint64_t)HOST_RSP),
+			       [host_rip]"r"((uint64_t)HOST_RIP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     : "memory", "cc", "rbx", "r8", "r9", "r10",
 			       "r11", "r12", "r13", "r14", "r15");
 	return ret;
@@ -426,8 +468,13 @@ static inline int vmresume(void)
 			     "pop %%rcx;"
 			     "pop %%rbp;"
 			     : [ret]"=&a"(ret)
+<<<<<<< HEAD
 			     : [host_rsp]"r"((u64)HOST_RSP),
 			       [host_rip]"r"((u64)HOST_RIP)
+=======
+			     : [host_rsp]"r"((uint64_t)HOST_RSP),
+			       [host_rip]"r"((uint64_t)HOST_RIP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     : "memory", "cc", "rbx", "r8", "r9", "r10",
 			       "r11", "r12", "r13", "r14", "r15");
 	return ret;
@@ -447,10 +494,17 @@ static inline void vmcall(void)
 			       "r10", "r11", "r12", "r13", "r14", "r15");
 }
 
+<<<<<<< HEAD
 static inline int vmread(u64 encoding, u64 *value)
 {
 	u64 tmp;
 	u8 ret;
+=======
+static inline int vmread(uint64_t encoding, uint64_t *value)
+{
+	uint64_t tmp;
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable_evmcs)
 		return evmcs_vmread(encoding, value);
@@ -468,16 +522,28 @@ static inline int vmread(u64 encoding, u64 *value)
  * A wrapper around vmread that ignores errors and returns zero if the
  * vmread instruction fails.
  */
+<<<<<<< HEAD
 static inline u64 vmreadz(u64 encoding)
 {
 	u64 value = 0;
+=======
+static inline uint64_t vmreadz(uint64_t encoding)
+{
+	uint64_t value = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmread(encoding, &value);
 	return value;
 }
 
+<<<<<<< HEAD
 static inline int vmwrite(u64 encoding, u64 value)
 {
 	u8 ret;
+=======
+static inline int vmwrite(uint64_t encoding, uint64_t value)
+{
+	uint8_t ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable_evmcs)
 		return evmcs_vmwrite(encoding, value);
@@ -490,13 +556,18 @@ static inline int vmwrite(u64 encoding, u64 value)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline u32 vmcs_revision(void)
+=======
+static inline uint32_t vmcs_revision(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rdmsr(MSR_IA32_VMX_BASIC);
 }
 
 struct vmx_pages {
 	void *vmxon_hva;
+<<<<<<< HEAD
 	u64 vmxon_gpa;
 	void *vmxon;
 
@@ -525,6 +596,36 @@ struct vmx_pages {
 	void *apic_access;
 
 	u64 eptp_gpa;
+=======
+	uint64_t vmxon_gpa;
+	void *vmxon;
+
+	void *vmcs_hva;
+	uint64_t vmcs_gpa;
+	void *vmcs;
+
+	void *msr_hva;
+	uint64_t msr_gpa;
+	void *msr;
+
+	void *shadow_vmcs_hva;
+	uint64_t shadow_vmcs_gpa;
+	void *shadow_vmcs;
+
+	void *vmread_hva;
+	uint64_t vmread_gpa;
+	void *vmread;
+
+	void *vmwrite_hva;
+	uint64_t vmwrite_gpa;
+	void *vmwrite;
+
+	void *apic_access_hva;
+	uint64_t apic_access_gpa;
+	void *apic_access;
+
+	uint64_t eptp_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 union vmx_basic {
@@ -550,7 +651,11 @@ union vmx_ctrl_msr {
 	};
 };
 
+<<<<<<< HEAD
 struct vmx_pages *vcpu_alloc_vmx(struct kvm_vm *vm, gva_t *p_vmx_gva);
+=======
+struct vmx_pages *vcpu_alloc_vmx(struct kvm_vm *vm, vm_vaddr_t *p_vmx_gva);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool prepare_for_vmx_operation(struct vmx_pages *vmx);
 void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp);
 bool load_vmcs(struct vmx_pages *vmx);

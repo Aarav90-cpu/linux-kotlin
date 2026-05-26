@@ -17,8 +17,13 @@
 #include <drm/display/drm_hdcp_helper.h>
 #include <drm/drm_print.h>
 #include <drm/intel/i915_component.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
+=======
+
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_connector.h"
 #include "intel_de.h"
 #include "intel_display_jiffies.h"
@@ -33,6 +38,10 @@
 #include "intel_hdcp_regs.h"
 #include "intel_hdcp_shim.h"
 #include "intel_parent.h"
+<<<<<<< HEAD
+=======
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_step.h"
 
 #define USE_HDCP_GSC(__display)		(DISPLAY_VER(__display) >= 14)
@@ -75,6 +84,10 @@ static int intel_conn_to_vcpi(struct intel_atomic_state *state,
 	struct drm_dp_mst_topology_mgr *mgr;
 	struct drm_dp_mst_atomic_payload *payload;
 	struct drm_dp_mst_topology_state *mst_state;
+<<<<<<< HEAD
+=======
+	int vcpi = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* For HDMI this is forced to be 0x0. For DP SST also this is 0x0. */
 	if (!connector->mst.port)
@@ -85,9 +98,21 @@ static int intel_conn_to_vcpi(struct intel_atomic_state *state,
 	mst_state = to_drm_dp_mst_topology_state(mgr->base.state);
 	payload = drm_atomic_get_mst_payload_state(mst_state, connector->mst.port);
 	if (drm_WARN_ON(mgr->dev, !payload))
+<<<<<<< HEAD
 		return 0;
 
 	return payload->vcpi;
+=======
+		goto out;
+
+	vcpi = payload->vcpi;
+	if (drm_WARN_ON(mgr->dev, vcpi < 0)) {
+		vcpi = 0;
+		goto out;
+	}
+out:
+	return vcpi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -390,7 +415,11 @@ static int intel_hdcp_load_keys(struct intel_display *display)
 	 * Mailbox interface.
 	 */
 	if (DISPLAY_VER(display) == 9 && !display->platform.broxton) {
+<<<<<<< HEAD
 		ret = intel_parent_pcode_write(display, SKL_PCODE_LOAD_HDCP_KEYS, 1);
+=======
+		ret = intel_pcode_write(display->drm, SKL_PCODE_LOAD_HDCP_KEYS, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			drm_err(display->drm,
 				"Failed to initiate HDCP key load (%d)\n",
@@ -2231,7 +2260,11 @@ static void intel_hdcp_check_work(struct work_struct *work)
 	if (drm_connector_is_unregistered(&connector->base))
 		return;
 
+<<<<<<< HEAD
 	if (!hdcp->force_hdcp14 && !intel_hdcp2_check_link(connector))
+=======
+	if (!intel_hdcp2_check_link(connector))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		queue_delayed_work(display->wq.unordered, &hdcp->check_work,
 				   DRM_HDCP2_CHECK_PERIOD_MS);
 	else if (!intel_hdcp_check_link(connector))

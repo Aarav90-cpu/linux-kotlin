@@ -91,6 +91,7 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
 {
 	struct sock *sk = sk_vsock(vsk);
@@ -103,6 +104,8 @@ static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
 	return found;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
 			    struct vhost_virtqueue *vq)
@@ -436,7 +439,10 @@ static struct virtio_transport vhost_transport = {
 		.module                   = THIS_MODULE,
 
 		.get_local_cid            = vhost_transport_get_local_cid,
+<<<<<<< HEAD
 		.has_remote_cid           = vhost_transport_has_remote_cid,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		.init                     = virtio_transport_do_socket_init,
 		.destruct                 = virtio_transport_destruct,

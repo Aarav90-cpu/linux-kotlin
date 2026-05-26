@@ -47,6 +47,7 @@ enum stmmac_txbuf_type {
 };
 
 struct stmmac_tx_info {
+<<<<<<< HEAD
 	struct xsk_tx_metadata_compl xsk_meta;
 	dma_addr_t buf;
 	unsigned len;
@@ -54,6 +55,15 @@ struct stmmac_tx_info {
 	bool map_as_page;
 	bool last_segment;
 	bool is_jumbo;
+=======
+	dma_addr_t buf;
+	bool map_as_page;
+	unsigned len;
+	bool last_segment;
+	bool is_jumbo;
+	enum stmmac_txbuf_type buf_type;
+	struct xsk_tx_metadata_compl xsk_meta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define STMMAC_TBS_AVAIL	BIT(0)
@@ -79,6 +89,10 @@ struct stmmac_tx_queue {
 	unsigned int cur_tx;
 	unsigned int dirty_tx;
 	dma_addr_t dma_tx_phy;
+<<<<<<< HEAD
+=======
+	dma_addr_t tx_tail_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 mss;
 };
 
@@ -130,6 +144,10 @@ struct stmmac_rx_queue {
 	unsigned int buf_alloc_num;
 	unsigned int napi_skb_frag_size;
 	dma_addr_t dma_rx_phy;
+<<<<<<< HEAD
+=======
+	u32 rx_tail_addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int state_saved;
 	struct {
 		struct sk_buff *skb;
@@ -179,6 +197,10 @@ struct stmmac_tc_entry {
 
 #define STMMAC_PPS_MAX		4
 struct stmmac_pps_cfg {
+<<<<<<< HEAD
+=======
+	bool available;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct timespec64 start;
 	struct timespec64 period;
 };
@@ -241,6 +263,7 @@ struct stmmac_est {
 	u32 max_sdu[MTL_MAX_TX_QUEUES];
 };
 
+<<<<<<< HEAD
 struct stmmac_msi {
 	int sfty_ce_irq;
 	int sfty_ue_irq;
@@ -258,6 +281,8 @@ struct stmmac_msi {
 	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct stmmac_priv {
 	/* Frequently used values are kept adjacent for cache effect */
 	u32 tx_coal_frames[MTL_MAX_TX_QUEUES];
@@ -265,9 +290,14 @@ struct stmmac_priv {
 	u32 rx_coal_frames[MTL_MAX_RX_QUEUES];
 
 	int hwts_tx_en;
+<<<<<<< HEAD
 	/* skb_shinfo(skb)->gso_type types that we handle */
 	unsigned int gso_enabled_types;
 	bool tx_path_in_lpi_mode;
+=======
+	bool tx_path_in_lpi_mode;
+	bool tso;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool sph_active;
 	bool sph_capable;
 	u32 sarc_type;
@@ -317,6 +347,7 @@ struct stmmac_priv {
 	bool eee_active;
 	bool eee_sw_timer_en;
 	bool legacy_serdes_is_powered;
+<<<<<<< HEAD
 	/* descriptor format:
 	 *  when clear: struct dma_desc or for tx TBS struct dma_edesc
 	 *  when set, struct dma_extended_desc
@@ -328,6 +359,11 @@ struct stmmac_priv {
 	 * see STMMAC_CHAIN_MODE or STMMAC_RING_MODE
 	 */
 	u8 descriptor_mode;
+=======
+	unsigned int mode;
+	unsigned int chain_mode;
+	int extend_desc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kernel_hwtstamp_config tstamp_config;
 	struct ptp_clock *ptp_clock;
 	struct ptp_clock_info ptp_clock_ops;
@@ -348,7 +384,23 @@ struct stmmac_priv {
 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
 	unsigned int num_double_vlans;
 	int sfty_irq;
+<<<<<<< HEAD
 	struct stmmac_msi *msi;
+=======
+	int sfty_ce_irq;
+	int sfty_ue_irq;
+	int rx_irq[MTL_MAX_RX_QUEUES];
+	int tx_irq[MTL_MAX_TX_QUEUES];
+	/*irq name */
+	char int_name_mac[IFNAMSIZ + 9];
+	char int_name_wol[IFNAMSIZ + 9];
+	char int_name_lpi[IFNAMSIZ + 9];
+	char int_name_sfty[IFNAMSIZ + 10];
+	char int_name_sfty_ce[IFNAMSIZ + 10];
+	char int_name_sfty_ue[IFNAMSIZ + 10];
+	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
+	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_DEBUG_FS
 	struct dentry *dbgfs_dir;
@@ -414,7 +466,11 @@ void stmmac_dvr_remove(struct device *dev);
 int stmmac_dvr_probe(struct device *device,
 		     struct plat_stmmacenet_data *plat_dat,
 		     struct stmmac_resources *res);
+<<<<<<< HEAD
 int stmmac_reinit_queues(struct net_device *dev, u8 rx_cnt, u8 tx_cnt);
+=======
+int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int stmmac_reinit_ringparam(struct net_device *dev, u32 rx_size, u32 tx_size);
 int stmmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
 			   phy_interface_t interface, int speed);

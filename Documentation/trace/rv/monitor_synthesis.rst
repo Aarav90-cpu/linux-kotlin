@@ -18,8 +18,13 @@ functions that glue the monitor to the system reference model, and the
 trace output as a reaction to event parsing and exceptions, as depicted
 below::
 
+<<<<<<< HEAD
  Linux   +---- RV Monitor ----------------------------------+ Formal
   Realm  |                                                  |  Realm
+=======
+ Linux  +----- RV Monitor ----------------------------------+ Formal
+  Realm |                                                   |  Realm
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   +-------------------+     +----------------+     +-----------------+
   |   Linux kernel    |     |     Monitor    |     |     Reference   |
   |     Tracing       |  -> |   Instance(s)  | <-  |       Model     |
@@ -45,7 +50,10 @@ creating monitors. The header files are:
 
   * rv/da_monitor.h for deterministic automaton monitor.
   * rv/ltl_monitor.h for linear temporal logic monitor.
+<<<<<<< HEAD
   * rv/ha_monitor.h for hybrid automaton monitor.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 rvgen
 -----
@@ -253,6 +261,7 @@ the task, the monitor may need some time to start validating tasks which have
 been running before the monitor is enabled. Therefore, it is recommended to
 start the tasks of interest after enabling the monitor.
 
+<<<<<<< HEAD
 rv/ha_monitor.h
 +++++++++++++++
 
@@ -365,6 +374,8 @@ but higher overhead. The timer wheel (``HA_TIMER_WHEEL``) is a good alternative
 for monitors with several instances (e.g. per-task) that achieves lower
 overhead with increased latency, yet without compromising precision.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Final remarks
 -------------
 

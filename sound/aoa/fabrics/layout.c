@@ -55,7 +55,11 @@ struct codec_connection {
 
 struct codec_connect_info {
 	char *name;
+<<<<<<< HEAD
 	const struct codec_connection *connections;
+=======
+	struct codec_connection *connections;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define LAYOUT_FLAG_COMBO_LINEOUT_SPDIF	(1<<0)
@@ -116,7 +120,11 @@ MODULE_ALIAS("aoa-device-id-35");
 MODULE_ALIAS("aoa-device-id-44");
 
 /* onyx with all but microphone connected */
+<<<<<<< HEAD
 static const struct codec_connection onyx_connections_nomic[] = {
+=======
+static struct codec_connection onyx_connections_nomic[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
 		.codec_bit = 0,
@@ -133,7 +141,11 @@ static const struct codec_connection onyx_connections_nomic[] = {
 };
 
 /* onyx on machines without headphone */
+<<<<<<< HEAD
 static const struct codec_connection onyx_connections_noheadphones[] = {
+=======
+static struct codec_connection onyx_connections_noheadphones[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_LINEOUT |
 			     CC_LINEOUT_LABELLED_HEADPHONE,
@@ -157,7 +169,11 @@ static const struct codec_connection onyx_connections_noheadphones[] = {
 };
 
 /* onyx on machines with real line-out */
+<<<<<<< HEAD
 static const struct codec_connection onyx_connections_reallineout[] = {
+=======
+static struct codec_connection onyx_connections_reallineout[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_LINEOUT | CC_HEADPHONE,
 		.codec_bit = 0,
@@ -174,7 +190,11 @@ static const struct codec_connection onyx_connections_reallineout[] = {
 };
 
 /* tas on machines without line out */
+<<<<<<< HEAD
 static const struct codec_connection tas_connections_nolineout[] = {
+=======
+static struct codec_connection tas_connections_nolineout[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE,
 		.codec_bit = 0,
@@ -191,7 +211,11 @@ static const struct codec_connection tas_connections_nolineout[] = {
 };
 
 /* tas on machines with neither line out nor line in */
+<<<<<<< HEAD
 static const struct codec_connection tas_connections_noline[] = {
+=======
+static struct codec_connection tas_connections_noline[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE,
 		.codec_bit = 0,
@@ -204,7 +228,11 @@ static const struct codec_connection tas_connections_noline[] = {
 };
 
 /* tas on machines without microphone */
+<<<<<<< HEAD
 static const struct codec_connection tas_connections_nomic[] = {
+=======
+static struct codec_connection tas_connections_nomic[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
 		.codec_bit = 0,
@@ -217,7 +245,11 @@ static const struct codec_connection tas_connections_nomic[] = {
 };
 
 /* tas on machines with everything connected */
+<<<<<<< HEAD
 static const struct codec_connection tas_connections_all[] = {
+=======
+static struct codec_connection tas_connections_all[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
 		.codec_bit = 0,
@@ -233,7 +265,11 @@ static const struct codec_connection tas_connections_all[] = {
 	{} /* terminate array by .connected == 0 */
 };
 
+<<<<<<< HEAD
 static const struct codec_connection toonie_connections[] = {
+=======
+static struct codec_connection toonie_connections[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_SPEAKERS | CC_HEADPHONE,
 		.codec_bit = 0,
@@ -241,7 +277,11 @@ static const struct codec_connection toonie_connections[] = {
 	{} /* terminate array by .connected == 0 */
 };
 
+<<<<<<< HEAD
 static const struct codec_connection topaz_input[] = {
+=======
+static struct codec_connection topaz_input[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_DIGITALIN,
 		.codec_bit = 0,
@@ -249,7 +289,11 @@ static const struct codec_connection topaz_input[] = {
 	{} /* terminate array by .connected == 0 */
 };
 
+<<<<<<< HEAD
 static const struct codec_connection topaz_output[] = {
+=======
+static struct codec_connection topaz_output[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_DIGITALOUT,
 		.codec_bit = 1,
@@ -257,7 +301,11 @@ static const struct codec_connection topaz_output[] = {
 	{} /* terminate array by .connected == 0 */
 };
 
+<<<<<<< HEAD
 static const struct codec_connection topaz_inout[] = {
+=======
+static struct codec_connection topaz_inout[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{
 		.connected = CC_DIGITALIN,
 		.codec_bit = 0,
@@ -772,7 +820,11 @@ static int check_codec(struct aoa_codec *codec,
 {
 	const u32 *ref;
 	char propname[32];
+<<<<<<< HEAD
 	const struct codec_connection *cc;
+=======
+	struct codec_connection *cc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* if the codec has a 'codec' node, we require a reference */
 	if (of_node_name_eq(codec->node, "codec")) {
@@ -895,7 +947,11 @@ static void layout_notify(void *data)
 
 static void layout_attached_codec(struct aoa_codec *codec)
 {
+<<<<<<< HEAD
 	const struct codec_connection *cc;
+=======
+	struct codec_connection *cc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct snd_kcontrol *ctl;
 	int headphones, lineout;
 	struct layout_dev *ldev = layout_device;

@@ -11,8 +11,11 @@
 #ifndef BNXT_H
 #define BNXT_H
 
+<<<<<<< HEAD
 #include <net/tso.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DRV_MODULE_NAME		"bnxt_en"
 
 /* DO NOT CHANGE DRV_VER_* defines
@@ -26,12 +29,19 @@
 #include <linux/interrupt.h>
 #include <linux/rhashtable.h>
 #include <linux/crash_dump.h>
+<<<<<<< HEAD
+=======
+#include <linux/auxiliary_bus.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/devlink.h>
 #include <net/dst_metadata.h>
 #include <net/xdp.h>
 #include <linux/dim.h>
 #include <linux/io-64-nonatomic-lo-hi.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_TEE_BNXT_FW
 #include <linux/firmware/broadcom/tee_bnxt_fw.h>
 #endif
@@ -234,7 +244,10 @@ struct rx_cmp {
 	 #define RX_CMP_FLAGS_ITYPE_UDP				 (3 << 12)
 	 #define RX_CMP_FLAGS_ITYPE_FCOE			 (4 << 12)
 	 #define RX_CMP_FLAGS_ITYPE_ROCE			 (5 << 12)
+<<<<<<< HEAD
 	 #define RX_CMP_FLAGS_ITYPE_ICMP			 (7 << 12)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 #define RX_CMP_FLAGS_ITYPE_PTP_WO_TS			 (8 << 12)
 	 #define RX_CMP_FLAGS_ITYPE_PTP_W_TS			 (9 << 12)
 	#define RX_CMP_LEN					(0xffff << 16)
@@ -314,7 +327,10 @@ struct rx_cmp_ext {
 	#define RX_CMP_FLAGS2_T_IP_CS_CALC			(0x1 << 2)
 	#define RX_CMP_FLAGS2_T_L4_CS_CALC			(0x1 << 3)
 	#define RX_CMP_FLAGS2_META_FORMAT_VLAN			(0x1 << 4)
+<<<<<<< HEAD
 	#define RX_CMP_FLAGS2_IP_TYPE				(0x1 << 8)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 rx_cmp_meta_data;
 	#define RX_CMP_FLAGS2_METADATA_TCI_MASK			0xffff
 	#define RX_CMP_FLAGS2_METADATA_VID_MASK			0xfff
@@ -894,19 +910,27 @@ struct bnxt_sw_tx_bd {
 	struct page		*page;
 	u8			is_ts_pkt;
 	u8			is_push;
+<<<<<<< HEAD
 	u8			is_sw_gso;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8			action;
 	unsigned short		nr_frags;
 	union {
 		u16			rx_prod;
 		u16			txts_prod;
 	};
+<<<<<<< HEAD
 	struct tso_dma_map_completion_state sw_gso_cstate;
 };
 
 #define BNXT_SW_GSO_MID		1
 #define BNXT_SW_GSO_LAST	2
 
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bnxt_sw_rx_bd {
 	void			*data;
 	u8			*data_ptr;
@@ -1003,12 +1027,15 @@ struct bnxt_tx_ring_info {
 	dma_addr_t		tx_push_mapping;
 	__le64			data_mapping;
 
+<<<<<<< HEAD
 	void			*tx_inline_buf;
 	dma_addr_t		tx_inline_dma;
 	unsigned int		tx_inline_size;
 	u16			tx_inline_prod;
 	u16			tx_inline_cons;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BNXT_DEV_STATE_CLOSING	0x1
 	u32			dev_state;
 
@@ -1162,7 +1189,11 @@ struct bnxt_sw_stats {
 	struct bnxt_cmn_sw_stats cmn;
 };
 
+<<<<<<< HEAD
 struct bnxt_total_ring_drv_stats {
+=======
+struct bnxt_total_ring_err_stats {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64			rx_total_l4_csum_errors;
 	u64			rx_total_resets;
 	u64			rx_total_buf_errors;
@@ -2100,6 +2131,15 @@ struct bnxt_fw_health {
 #define BNXT_FW_IF_RETRY		10
 #define BNXT_FW_SLOT_RESET_RETRY	4
 
+<<<<<<< HEAD
+=======
+struct bnxt_aux_priv {
+	struct auxiliary_device aux_dev;
+	struct bnxt_en_dev *edev;
+	int id;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum board_idx {
 	BCM57301,
 	BCM57302,
@@ -2359,8 +2399,13 @@ struct bnxt {
 #define BNXT_CHIP_P5_AND_MINUS(bp)		\
 	(BNXT_CHIP_P3(bp) || BNXT_CHIP_P4(bp) || BNXT_CHIP_P5(bp))
 
+<<<<<<< HEAD
 	struct bnxt_aux_priv	*aux_priv[__BNXT_AUXDEV_MAX];
 	struct bnxt_en_dev	*edev[__BNXT_AUXDEV_MAX];
+=======
+	struct bnxt_aux_priv	*aux_priv;
+	struct bnxt_en_dev	*edev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct bnxt_napi	**bnapi;
 
@@ -2581,7 +2626,11 @@ struct bnxt {
 	u8			pri2cos_idx[8];
 	u8			pri2cos_valid;
 
+<<<<<<< HEAD
 	struct bnxt_total_ring_drv_stats ring_drv_stats_prev;
+=======
+	struct bnxt_total_ring_err_stats ring_err_stats_prev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u16			hwrm_max_req_len;
 	u16			hwrm_max_ext_req_len;
@@ -2772,6 +2821,7 @@ struct bnxt {
 	struct bnxt_ctx_pg_info	*fw_crash_mem;
 	u32			fw_crash_len;
 	struct bnxt_bs_trace_info bs_trace[BNXT_TRACE_MAX];
+<<<<<<< HEAD
 	int			auxdev_id;
 	/* synchronize validity checks of available aux devices */
 	struct mutex		auxdev_lock;
@@ -2779,6 +2829,8 @@ struct bnxt {
 #define	BNXT_ADEV_STATE_NONE	0
 #define	BNXT_ADEV_STATE_INIT	1
 #define	BNXT_ADEV_STATE_ADD	2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define BNXT_NUM_RX_RING_STATS			8
@@ -2850,6 +2902,7 @@ static inline u32 bnxt_tx_avail(struct bnxt *bp,
 	return bp->tx_ring_size - (used & bp->tx_ring_mask);
 }
 
+<<<<<<< HEAD
 static inline struct tx_bd_ext *
 bnxt_init_ext_bd(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
 		 u16 prod, __le32 lflags, u32 vlan_tag_flags,
@@ -2868,6 +2921,8 @@ bnxt_init_ext_bd(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
 	return txbd1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void bnxt_writeq(struct bnxt *bp, u64 val,
 			       volatile void __iomem *addr)
 {
@@ -2934,6 +2989,7 @@ static inline bool bnxt_sriov_cfg(struct bnxt *bp)
 #endif
 }
 
+<<<<<<< HEAD
 static inline enum pkt_hash_types bnxt_rss_ext_op(struct bnxt *bp,
 						  const struct rx_cmp *rxcmp)
 {
@@ -2951,6 +3007,8 @@ static inline enum pkt_hash_types bnxt_rss_ext_op(struct bnxt *bp,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const u16 bnxt_bstore_to_trace[];
 extern const u16 bnxt_lhint_arr[];
 
@@ -3001,7 +3059,10 @@ unsigned int bnxt_get_avail_cp_rings_for_en(struct bnxt *bp);
 int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init);
 void bnxt_tx_disable(struct bnxt *bp);
 void bnxt_tx_enable(struct bnxt *bp);
+<<<<<<< HEAD
 u16 bnxt_xmit_get_cfa_action(struct sk_buff *skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bnxt_sched_reset_txr(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
 			  u16 curr);
 void bnxt_report_link(struct bnxt *bp);
@@ -3026,8 +3087,13 @@ int bnxt_half_open_nic(struct bnxt *bp);
 void bnxt_half_close_nic(struct bnxt *bp);
 void bnxt_reenable_sriov(struct bnxt *bp);
 void bnxt_close_nic(struct bnxt *, bool, bool);
+<<<<<<< HEAD
 void bnxt_get_ring_drv_stats(struct bnxt *bp,
 			     struct bnxt_total_ring_drv_stats *stats);
+=======
+void bnxt_get_ring_err_stats(struct bnxt *bp,
+			     struct bnxt_total_ring_err_stats *stats);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool bnxt_rfs_capable(struct bnxt *bp, bool new_rss_ctx);
 int bnxt_dbg_hwrm_rd_reg(struct bnxt *bp, u32 reg_off, u16 num_words,
 			 u32 *reg_buf);

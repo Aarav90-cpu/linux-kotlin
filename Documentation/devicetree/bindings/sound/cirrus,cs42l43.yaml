@@ -16,8 +16,11 @@ description: |
   DAC for headphone output, two integrated Class D amplifiers for
   loudspeakers, and two ADCs for wired headset microphone input or
   stereo line input. PDM inputs are provided for digital microphones.
+<<<<<<< HEAD
   CS42L43B variant adds dedicated PDM interface, SoundWire Clock Gearing
   support and more decimators to ISRCs.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 allOf:
   - $ref: dai-common.yaml#
@@ -26,7 +29,10 @@ properties:
   compatible:
     enum:
       - cirrus,cs42l43
+<<<<<<< HEAD
       - cirrus,cs42l43b
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

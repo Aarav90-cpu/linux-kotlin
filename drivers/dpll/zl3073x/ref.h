@@ -5,7 +5,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/math64.h>
+<<<<<<< HEAD
 #include <linux/stddef.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #include "regs.h"
@@ -14,12 +17,17 @@ struct zl3073x_dev;
 
 /**
  * struct zl3073x_ref - input reference state
+<<<<<<< HEAD
+=======
+ * @ffo: current fractional frequency offset
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @phase_comp: phase compensation
  * @esync_n_div: divisor for embedded sync or n-divided signal formats
  * @freq_base: frequency base
  * @freq_mult: frequnecy multiplier
  * @freq_ratio_m: FEC mode multiplier
  * @freq_ratio_n: FEC mode divisor
+<<<<<<< HEAD
  * @sync_ctrl: reference sync control
  * @config: reference config
  * @ffo: current fractional frequency offset
@@ -44,6 +52,23 @@ struct zl3073x_ref {
 		u32	meas_freq;
 		u8	mon_status;
 	);
+=======
+ * @config: reference config
+ * @sync_ctrl: reference sync control
+ * @mon_status: reference monitor status
+ */
+struct zl3073x_ref {
+	s64	ffo;
+	u64	phase_comp;
+	u32	esync_n_div;
+	u16	freq_base;
+	u16	freq_mult;
+	u16	freq_ratio_m;
+	u16	freq_ratio_n;
+	u8	config;
+	u8	sync_ctrl;
+	u8	mon_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index);
@@ -54,8 +79,11 @@ const struct zl3073x_ref *zl3073x_ref_state_get(struct zl3073x_dev *zldev,
 int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
 			  const struct zl3073x_ref *ref);
 
+<<<<<<< HEAD
 int zl3073x_ref_state_update(struct zl3073x_dev *zldev, u8 index);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int zl3073x_ref_freq_factorize(u32 freq, u16 *base, u16 *mult);
 
 /**
@@ -71,6 +99,7 @@ zl3073x_ref_ffo_get(const struct zl3073x_ref *ref)
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_ref_meas_freq_get - get measured input frequency
  * @ref: pointer to ref state
  *
@@ -83,6 +112,8 @@ zl3073x_ref_meas_freq_get(const struct zl3073x_ref *ref)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_ref_freq_get - get given input reference frequency
  * @ref: pointer to ref state
  *
@@ -121,6 +152,7 @@ zl3073x_ref_freq_set(struct zl3073x_ref *ref, u32 freq)
 }
 
 /**
+<<<<<<< HEAD
  * zl3073x_ref_sync_mode_get - get sync control mode
  * @ref: pointer to ref state
  *
@@ -167,6 +199,8 @@ zl3073x_ref_sync_pair_set(struct zl3073x_ref *ref, u8 pair)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * zl3073x_ref_is_diff - check if the given input reference is differential
  * @ref: pointer to ref state
  *

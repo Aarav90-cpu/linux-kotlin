@@ -1603,6 +1603,7 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 
 		switch (fwspec->param[0]) {
 		case 0:			/* SPI */
+<<<<<<< HEAD
 			if (fwspec->param[1] > 987)
 				pr_warn_once("SPI %u out of range (use ESPI?)\n", fwspec->param[1]);
 			*hwirq = fwspec->param[1] + 32;
@@ -1620,6 +1621,17 @@ static int gic_irq_domain_translate(struct irq_domain *d,
 		case 3:			/* EPPI */
 			if (fwspec->param[1] > 63)
 				pr_warn_once("EPPI %u out of range\n", fwspec->param[1]);
+=======
+			*hwirq = fwspec->param[1] + 32;
+			break;
+		case 1:			/* PPI */
+			*hwirq = fwspec->param[1] + 16;
+			break;
+		case 2:			/* ESPI */
+			*hwirq = fwspec->param[1] + ESPI_BASE_INTID;
+			break;
+		case 3:			/* EPPI */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*hwirq = fwspec->param[1] + EPPI_BASE_INTID;
 			break;
 		case GIC_IRQ_TYPE_LPI:	/* LPI */
@@ -2260,7 +2272,11 @@ static int __init gic_of_init(struct device_node *node, struct device_node *pare
 
 out_unmap_rdist:
 	for (i = 0; i < nr_redist_regions; i++)
+<<<<<<< HEAD
 		if (!IS_ERR_OR_NULL(rdist_regs[i].redist_base))
+=======
+		if (rdist_regs[i].redist_base && !IS_ERR(rdist_regs[i].redist_base))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			iounmap(rdist_regs[i].redist_base);
 	kfree(rdist_regs);
 out_unmap_dist:

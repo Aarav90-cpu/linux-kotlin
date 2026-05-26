@@ -3,8 +3,13 @@
  * Copyright © 2025 Intel Corporation
  */
 
+<<<<<<< HEAD
 #ifndef _XE_LATE_BIND_FW_TYPES_H_
 #define _XE_LATE_BIND_FW_TYPES_H_
+=======
+#ifndef _XE_LATE_BIND_TYPES_H_
+#define _XE_LATE_BIND_TYPES_H_
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/iosys-map.h>
 #include <linux/mutex.h>

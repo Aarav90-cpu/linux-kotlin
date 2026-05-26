@@ -73,6 +73,7 @@ config DEVTMPFS_SAFE
 	  with the PROT_EXEC flag. This can break, for example, non-KMS
 	  video drivers.
 
+<<<<<<< HEAD
 config DRIVER_DEFERRED_PROBE_TIMEOUT
 	int "Default value for deferred_probe_timeout"
 	default 0 if !MODULES
@@ -82,6 +83,8 @@ config DRIVER_DEFERRED_PROBE_TIMEOUT
 	  See Documentation/admin-guide/kernel-parameters.txt for a description
 	  of the deferred_probe_timeout kernel parameter.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config STANDALONE
 	bool "Select only drivers that don't need compile-time external firmware"
 	default y

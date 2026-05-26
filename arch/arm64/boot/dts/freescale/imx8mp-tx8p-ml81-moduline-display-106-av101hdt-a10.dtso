@@ -77,7 +77,10 @@
 		compatible = "usb-c-connector";
 		data-role = "host";
 		pd-disable;
+<<<<<<< HEAD
 		typec-power-opmode = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vbus-supply = <&reg_vbus>;
 
 		port {

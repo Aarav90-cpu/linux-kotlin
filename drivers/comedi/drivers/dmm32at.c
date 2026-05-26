@@ -572,6 +572,7 @@ static int dmm32at_attach(struct comedi_device *dev,
 			  struct comedi_devconfig *it)
 {
 	struct comedi_subdevice *s;
+<<<<<<< HEAD
 	unsigned int iobase = it->options[0];
 	int ret;
 
@@ -593,6 +594,13 @@ static int dmm32at_attach(struct comedi_device *dev,
 			iobase);
 		return -EINVAL;
 	}
+=======
+	int ret;
+
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = dmm32at_reset(dev);
 	if (ret) {

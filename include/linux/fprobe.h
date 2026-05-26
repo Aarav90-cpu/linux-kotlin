@@ -94,7 +94,10 @@ int register_fprobe(struct fprobe *fp, const char *filter, const char *notfilter
 int register_fprobe_ips(struct fprobe *fp, unsigned long *addrs, int num);
 int register_fprobe_syms(struct fprobe *fp, const char **syms, int num);
 int unregister_fprobe(struct fprobe *fp);
+<<<<<<< HEAD
 int unregister_fprobe_async(struct fprobe *fp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool fprobe_is_registered(struct fprobe *fp);
 int fprobe_count_ips_from_filter(const char *filter, const char *notfilter);
 #else
@@ -114,10 +117,13 @@ static inline int unregister_fprobe(struct fprobe *fp)
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 static inline int unregister_fprobe_async(struct fprobe *fp)
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool fprobe_is_registered(struct fprobe *fp)
 {
 	return false;

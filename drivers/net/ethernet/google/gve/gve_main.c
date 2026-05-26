@@ -11,7 +11,10 @@
 #include <linux/filter.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
+<<<<<<< HEAD
 #include <linux/math64.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/sched.h>
@@ -967,7 +970,10 @@ static void gve_tx_get_curr_alloc_cfg(struct gve_priv *priv,
 	cfg->qcfg = &priv->tx_cfg;
 	cfg->raw_addressing = !gve_is_qpl(priv);
 	cfg->ring_size = priv->tx_desc_cnt;
+<<<<<<< HEAD
 	cfg->pages_per_qpl = priv->tx_pages_per_qpl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg->num_xdp_rings = cfg->qcfg->num_xdp_queues;
 	cfg->tx = priv->tx;
 }
@@ -999,6 +1005,7 @@ static void gve_tx_start_rings(struct gve_priv *priv, int num_rings)
 	}
 }
 
+<<<<<<< HEAD
 void gve_update_num_qpl_pages(struct gve_priv *priv,
 			      struct gve_rx_alloc_rings_cfg *rx_alloc_cfg,
 			      struct gve_tx_alloc_rings_cfg *tx_alloc_cfg)
@@ -1033,14 +1040,19 @@ void gve_update_num_qpl_pages(struct gve_priv *priv,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int gve_queues_mem_alloc(struct gve_priv *priv,
 				struct gve_tx_alloc_rings_cfg *tx_alloc_cfg,
 				struct gve_rx_alloc_rings_cfg *rx_alloc_cfg)
 {
 	int err;
 
+<<<<<<< HEAD
 	gve_update_num_qpl_pages(priv, rx_alloc_cfg, tx_alloc_cfg);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gve_is_gqi(priv))
 		err = gve_tx_alloc_rings_gqi(priv, tx_alloc_cfg);
 	else
@@ -1331,7 +1343,10 @@ static void gve_rx_get_curr_alloc_cfg(struct gve_priv *priv,
 	cfg->raw_addressing = !gve_is_qpl(priv);
 	cfg->enable_header_split = priv->header_split_enabled;
 	cfg->ring_size = priv->rx_desc_cnt;
+<<<<<<< HEAD
 	cfg->pages_per_qpl = priv->rx_pages_per_qpl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg->packet_buffer_size = priv->rx_cfg.packet_buffer_size;
 	cfg->rx = priv->rx;
 	cfg->xdp = !!cfg->qcfg_tx->num_xdp_queues;
@@ -1411,8 +1426,11 @@ static int gve_queues_start(struct gve_priv *priv,
 	priv->rx_cfg = *rx_alloc_cfg->qcfg_rx;
 	priv->tx_desc_cnt = tx_alloc_cfg->ring_size;
 	priv->rx_desc_cnt = rx_alloc_cfg->ring_size;
+<<<<<<< HEAD
 	priv->tx_pages_per_qpl = tx_alloc_cfg->pages_per_qpl;
 	priv->rx_pages_per_qpl = rx_alloc_cfg->pages_per_qpl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gve_tx_start_rings(priv, gve_num_tx_queues(priv));
 	gve_rx_start_rings(priv, rx_alloc_cfg->qcfg_rx->num_queues);
@@ -1758,9 +1776,15 @@ static int gve_verify_xdp_configuration(struct net_device *dev,
 	struct gve_priv *priv = netdev_priv(dev);
 	u16 max_xdp_mtu;
 
+<<<<<<< HEAD
 	if (dev->features & NETIF_F_GRO_HW) {
 		NL_SET_ERR_MSG_MOD(extack,
 				   "XDP is not supported when HW-GRO is on.");
+=======
+	if (dev->features & NETIF_F_LRO) {
+		NL_SET_ERR_MSG_MOD(extack,
+				   "XDP is not supported when LRO is on.");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 	}
 
@@ -2177,6 +2201,7 @@ static int gve_set_features(struct net_device *netdev,
 
 	gve_get_curr_alloc_cfgs(priv, &tx_alloc_cfg, &rx_alloc_cfg);
 
+<<<<<<< HEAD
 	if ((netdev->features & NETIF_F_GRO_HW) !=
 	    (features & NETIF_F_GRO_HW)) {
 		netdev->features ^= NETIF_F_GRO_HW;
@@ -2184,6 +2209,14 @@ static int gve_set_features(struct net_device *netdev,
 			netdev_warn(netdev,
 				    "HW-GRO is not supported when XDP is on.");
 			err = -EOPNOTSUPP;
+=======
+	if ((netdev->features & NETIF_F_LRO) != (features & NETIF_F_LRO)) {
+		netdev->features ^= NETIF_F_LRO;
+		if (priv->xdp_prog && (netdev->features & NETIF_F_LRO)) {
+			netdev_warn(netdev,
+				    "XDP is not supported when LRO is on.\n");
+			err =  -EOPNOTSUPP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto revert_features;
 		}
 		if (netif_running(netdev)) {

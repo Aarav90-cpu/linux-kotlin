@@ -107,6 +107,14 @@ int nf_conntrack_udp_packet(struct nf_conn *ct,
 			    unsigned int dataoff,
 			    enum ip_conntrack_info ctinfo,
 			    const struct nf_hook_state *state);
+<<<<<<< HEAD
+=======
+int nf_conntrack_udplite_packet(struct nf_conn *ct,
+				struct sk_buff *skb,
+				unsigned int dataoff,
+				enum ip_conntrack_info ctinfo,
+				const struct nf_hook_state *state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int nf_conntrack_tcp_packet(struct nf_conn *ct,
 			    struct sk_buff *skb,
 			    unsigned int dataoff,
@@ -134,6 +142,11 @@ void nf_conntrack_icmpv6_init_net(struct net *net);
 /* Existing built-in generic protocol */
 extern const struct nf_conntrack_l4proto nf_conntrack_l4proto_generic;
 
+<<<<<<< HEAD
+=======
+#define MAX_NF_CT_PROTO IPPROTO_UDPLITE
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct nf_conntrack_l4proto *nf_ct_l4proto_find(u8 l4proto);
 
 /* Generic netlink helpers */

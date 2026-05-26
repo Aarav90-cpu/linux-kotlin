@@ -25,7 +25,10 @@
 	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
 	EM( SCAN_PAGE_LOCK,		"page_locked")			\
 	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
+<<<<<<< HEAD
 	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
 	EM( SCAN_ANY_PROCESS,		"no_process_for_page")		\
 	EM( SCAN_VMA_NULL,		"vma_null")			\
@@ -238,6 +241,7 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
 		__print_symbolic(__entry->result, SCAN_STATUS))
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(mm_khugepaged_scan,
 
 	TP_PROTO(struct mm_struct *mm, unsigned int progress,
@@ -263,5 +267,7 @@ TRACE_EVENT(mm_khugepaged_scan,
 		__entry->full_scan_finished)
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __HUGE_MEMORY_H */
 #include <trace/define_trace.h>

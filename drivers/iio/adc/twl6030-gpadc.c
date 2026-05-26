@@ -416,7 +416,11 @@ static u8 twl6032_channel_to_reg(int channel)
 {
 	/*
 	 * for any prior chosen channel, when the conversion is ready
+<<<<<<< HEAD
 	 * the result is available in GPCH0_LSB, GPCH0_MSB.
+=======
+	 * the result is avalable in GPCH0_LSB, GPCH0_MSB.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 
 	return TWL6032_GPADC_GPCH0_LSB;

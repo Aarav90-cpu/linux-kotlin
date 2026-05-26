@@ -3305,6 +3305,7 @@ static int disallow_edp_enter_psr_set(void *data, u64 val)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* check if kernel disallow eDP enter replay state
  * cat /sys/kernel/debug/dri/0/eDP-X/disallow_edp_enter_replay
  * 0: allow edp enter replay; 1: disallow
@@ -3351,6 +3352,8 @@ static int disallow_edp_enter_replay_set(void *data, u64 val)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dmub_trace_mask_set(void *data, u64 val)
 {
 	struct amdgpu_device *adev = data;
@@ -3479,10 +3482,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(disallow_edp_enter_psr_fops,
 			disallow_edp_enter_psr_get,
 			disallow_edp_enter_psr_set, "%llu\n");
 
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(disallow_edp_enter_replay_fops,
 			disallow_edp_enter_replay_get,
 			disallow_edp_enter_replay_set, "%llu\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEFINE_DEBUGFS_ATTRIBUTE(ips_residency_cntl_fops, ips_residency_cntl_get,
 			   ips_residency_cntl_set, "%llu\n");
 DEFINE_SHOW_ATTRIBUTE(current_backlight);
@@ -3685,8 +3691,11 @@ void connector_debugfs_init(struct amdgpu_dm_connector *connector)
 					&allow_edp_hotplug_detection_fops);
 		debugfs_create_file("disallow_edp_enter_psr", 0644, dir, connector,
 					&disallow_edp_enter_psr_fops);
+<<<<<<< HEAD
 		debugfs_create_file("disallow_edp_enter_replay", 0644, dir, connector,
 					&disallow_edp_enter_replay_fops);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (i = 0; i < ARRAY_SIZE(connector_debugfs_entries); i++) {

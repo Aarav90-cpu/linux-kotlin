@@ -648,19 +648,31 @@ static void gfs2_before_commit(struct gfs2_sbd *sdp, unsigned int limit,
 	unsigned n;
 	__be64 *ptr;
 
+<<<<<<< HEAD
 	spin_lock(&sdp->sd_log_lock);
+=======
+	gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_sort(NULL, blist, blocknr_cmp);
 	bd1 = bd2 = list_prepare_entry(bd1, blist, bd_list);
 	while(total) {
 		num = total;
 		if (total > limit)
 			num = limit;
+<<<<<<< HEAD
 		spin_unlock(&sdp->sd_log_lock);
+=======
+		gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page = gfs2_get_log_desc(sdp,
 					 is_databuf ? GFS2_LOG_DESC_JDATA :
 					 GFS2_LOG_DESC_METADATA, num + 1, num);
 		ld = page_address(page);
+<<<<<<< HEAD
 		spin_lock(&sdp->sd_log_lock);
+=======
+		gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ptr = (__be64 *)(ld + 1);
 
 		n = 0;
@@ -674,14 +686,24 @@ static void gfs2_before_commit(struct gfs2_sbd *sdp, unsigned int limit,
 				break;
 		}
 
+<<<<<<< HEAD
 		spin_unlock(&sdp->sd_log_lock);
 		gfs2_log_write_page(sdp, page);
 		spin_lock(&sdp->sd_log_lock);
+=======
+		gfs2_log_unlock(sdp);
+		gfs2_log_write_page(sdp, page);
+		gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		n = 0;
 		list_for_each_entry_continue(bd2, blist, bd_list) {
 			get_bh(bd2->bd_bh);
+<<<<<<< HEAD
 			spin_unlock(&sdp->sd_log_lock);
+=======
+			gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			lock_buffer(bd2->bd_bh);
 
 			if (buffer_escaped(bd2->bd_bh)) {
@@ -698,7 +720,11 @@ static void gfs2_before_commit(struct gfs2_sbd *sdp, unsigned int limit,
 			} else {
 				gfs2_log_write_bh(sdp, bd2->bd_bh);
 			}
+<<<<<<< HEAD
 			spin_lock(&sdp->sd_log_lock);
+=======
+			gfs2_log_lock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (++n >= num)
 				break;
 		}
@@ -706,7 +732,11 @@ static void gfs2_before_commit(struct gfs2_sbd *sdp, unsigned int limit,
 		BUG_ON(total < num);
 		total -= num;
 	}
+<<<<<<< HEAD
 	spin_unlock(&sdp->sd_log_lock);
+=======
+	gfs2_log_unlock(sdp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void buf_lo_before_commit(struct gfs2_sbd *sdp, struct gfs2_trans *tr)

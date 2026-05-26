@@ -138,11 +138,17 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
 {
 	struct pci_dynid *dynid;
 	const struct pci_device_id *found_id = NULL, *ids;
+<<<<<<< HEAD
 	int ret;
 
 	/* When driver_override is set, only bind to the matching driver */
 	ret = device_match_driver_override(&dev->dev, &drv->driver);
 	if (ret == 0)
+=======
+
+	/* When driver_override is set, only bind to the matching driver */
+	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	/* Look at the dynamic ids first, before the static ones */
@@ -166,7 +172,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
 		 * matching.
 		 */
 		if (found_id->override_only) {
+<<<<<<< HEAD
 			if (ret > 0)
+=======
+			if (dev->driver_override)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return found_id;
 		} else {
 			return found_id;
@@ -174,16 +184,23 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
 	}
 
 	/* driver_override will always match, send a dummy id */
+<<<<<<< HEAD
 	if (ret > 0)
+=======
+	if (dev->driver_override)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return &pci_device_id_any;
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void _pci_free_device(struct device *dev)
 {
 	kfree(to_pci_dev(dev));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * new_id_store - sysfs frontend to pci_add_dynid()
  * @driver: target device driver
@@ -219,6 +236,7 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
 		pdev->subsystem_vendor = subvendor;
 		pdev->subsystem_device = subdevice;
 		pdev->class = class;
+<<<<<<< HEAD
 		pdev->dev.release = _pci_free_device;
 
 		device_initialize(&pdev->dev);
@@ -226,6 +244,13 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
 			retval = -EEXIST;
 
 		put_device(&pdev->dev);
+=======
+
+		if (pci_match_device(pdrv, pdev))
+			retval = -EEXIST;
+
+		kfree(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (retval)
 			return retval;
@@ -461,7 +486,11 @@ static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
 static inline bool pci_device_can_probe(struct pci_dev *pdev)
 {
 	return (!pdev->is_virtfn || pdev->physfn->sriov->drivers_autoprobe ||
+<<<<<<< HEAD
 		device_has_driver_override(&pdev->dev));
+=======
+		pdev->driver_override);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else
 static inline bool pci_device_can_probe(struct pci_dev *pdev)
@@ -1731,7 +1760,10 @@ static const struct cpumask *pci_device_irq_get_affinity(struct device *dev,
 
 const struct bus_type pci_bus_type = {
 	.name		= "pci",
+<<<<<<< HEAD
 	.driver_override = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.match		= pci_bus_match,
 	.uevent		= pci_uevent,
 	.probe		= pci_device_probe,

@@ -152,7 +152,12 @@ struct sdhci_arasan_clk_ops {
  * @sdcardclk:		Pointer to normal 'struct clock' for sdcardclk_hw.
  * @sampleclk_hw:	Struct for the clock we might provide to a PHY.
  * @sampleclk:		Pointer to normal 'struct clock' for sampleclk_hw.
+<<<<<<< HEAD
  * @phase_map:		Struct for mmc_clk_phase_map provided.
+=======
+ * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
+ * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @set_clk_delays:	Function pointer for setting Clock Delays
  * @clk_of_data:	Platform specific runtime clock data storage pointer
  */
@@ -161,7 +166,12 @@ struct sdhci_arasan_clk_data {
 	struct clk      *sdcardclk;
 	struct clk_hw	sampleclk_hw;
 	struct clk      *sampleclk;
+<<<<<<< HEAD
 	struct mmc_clk_phase_map phase_map;
+=======
+	int		clk_phase_in[MMC_TIMING_MMC_HS400 + 1];
+	int		clk_phase_out[MMC_TIMING_MMC_HS400 + 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void		(*set_clk_delays)(struct sdhci_host *host);
 	void		*clk_of_data;
 };
@@ -1247,9 +1257,42 @@ static void sdhci_arasan_set_clk_delays(struct sdhci_host *host)
 	struct sdhci_arasan_clk_data *clk_data = &sdhci_arasan->clk_data;
 
 	clk_set_phase(clk_data->sampleclk,
+<<<<<<< HEAD
 		      clk_data->phase_map.phase[host->timing].in_deg);
 	clk_set_phase(clk_data->sdcardclk,
 		      clk_data->phase_map.phase[host->timing].out_deg);
+=======
+		      clk_data->clk_phase_in[host->timing]);
+	clk_set_phase(clk_data->sdcardclk,
+		      clk_data->clk_phase_out[host->timing]);
+}
+
+static void arasan_dt_read_clk_phase(struct device *dev,
+				     struct sdhci_arasan_clk_data *clk_data,
+				     unsigned int timing, const char *prop)
+{
+	struct device_node *np = dev->of_node;
+
+	u32 clk_phase[2] = {0};
+	int ret;
+
+	/*
+	 * Read Tap Delay values from DT, if the DT does not contain the
+	 * Tap Values then use the pre-defined values.
+	 */
+	ret = of_property_read_variable_u32_array(np, prop, &clk_phase[0],
+						  2, 0);
+	if (ret < 0) {
+		dev_dbg(dev, "Using predefined clock phase for %s = %d %d\n",
+			prop, clk_data->clk_phase_in[timing],
+			clk_data->clk_phase_out[timing]);
+		return;
+	}
+
+	/* The values read are Input and Output Clock Delays in order */
+	clk_data->clk_phase_in[timing] = clk_phase[0];
+	clk_data->clk_phase_out[timing] = clk_phase[1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1286,8 +1329,13 @@ static void arasan_dt_parse_clk_phases(struct device *dev,
 		}
 
 		for (i = 0; i <= MMC_TIMING_MMC_HS400; i++) {
+<<<<<<< HEAD
 			clk_data->phase_map.phase[i].in_deg = zynqmp_iclk_phase[i];
 			clk_data->phase_map.phase[i].out_deg = zynqmp_oclk_phase[i];
+=======
+			clk_data->clk_phase_in[i] = zynqmp_iclk_phase[i];
+			clk_data->clk_phase_out[i] = zynqmp_oclk_phase[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1298,8 +1346,13 @@ static void arasan_dt_parse_clk_phases(struct device *dev,
 			VERSAL_OCLK_PHASE;
 
 		for (i = 0; i <= MMC_TIMING_MMC_HS400; i++) {
+<<<<<<< HEAD
 			clk_data->phase_map.phase[i].in_deg = versal_iclk_phase[i];
 			clk_data->phase_map.phase[i].out_deg = versal_oclk_phase[i];
+=======
+			clk_data->clk_phase_in[i] = versal_iclk_phase[i];
+			clk_data->clk_phase_out[i] = versal_oclk_phase[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	if (of_device_is_compatible(dev->of_node, "xlnx,versal-net-emmc")) {
@@ -1309,12 +1362,41 @@ static void arasan_dt_parse_clk_phases(struct device *dev,
 			VERSAL_NET_EMMC_OCLK_PHASE;
 
 		for (i = 0; i <= MMC_TIMING_MMC_HS400; i++) {
+<<<<<<< HEAD
 			clk_data->phase_map.phase[i].in_deg = versal_net_iclk_phase[i];
 			clk_data->phase_map.phase[i].out_deg = versal_net_oclk_phase[i];
 		}
 	}
 
 	mmc_of_parse_clk_phase(dev, &clk_data->phase_map);
+=======
+			clk_data->clk_phase_in[i] = versal_net_iclk_phase[i];
+			clk_data->clk_phase_out[i] = versal_net_oclk_phase[i];
+		}
+	}
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
+				 "clk-phase-legacy");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
+				 "clk-phase-mmc-hs");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_SD_HS,
+				 "clk-phase-sd-hs");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR12,
+				 "clk-phase-uhs-sdr12");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR25,
+				 "clk-phase-uhs-sdr25");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR50,
+				 "clk-phase-uhs-sdr50");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR104,
+				 "clk-phase-uhs-sdr104");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_DDR50,
+				 "clk-phase-uhs-ddr50");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_DDR52,
+				 "clk-phase-mmc-ddr52");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS200,
+				 "clk-phase-mmc-hs200");
+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS400,
+				 "clk-phase-mmc-hs400");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct sdhci_pltfm_data sdhci_arasan_pdata = {
@@ -1463,6 +1545,7 @@ static struct sdhci_arasan_of_data intel_keembay_sdio_data = {
 	.clk_ops = &arasan_clk_ops,
 };
 
+<<<<<<< HEAD
 static const struct sdhci_pltfm_data sdhci_arasan_axiado_pdata = {
 	.ops = &sdhci_arasan_ops,
 	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
@@ -1474,6 +1557,8 @@ static struct sdhci_arasan_of_data sdhci_arasan_axiado_data = {
 	.clk_ops = &arasan_clk_ops,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id sdhci_arasan_of_match[] = {
 	/* SoC-specific compatible strings w/ soc_ctl_map */
 	{
@@ -1500,10 +1585,13 @@ static const struct of_device_id sdhci_arasan_of_match[] = {
 		.compatible = "intel,keembay-sdhci-5.1-sdio",
 		.data = &intel_keembay_sdio_data,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "axiado,ax3000-sdhci-5.1-emmc",
 		.data = &sdhci_arasan_axiado_data,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Generic compatible below here */
 	{
 		.compatible = "arasan,sdhci-8.9a",

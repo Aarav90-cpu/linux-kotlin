@@ -1,7 +1,10 @@
 .. SPDX-License-Identifier: GPL-2.0-or-later
 
+<<<<<<< HEAD
 .. _sha3:
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ==========================
 SHA-3 Algorithm Collection
 ==========================

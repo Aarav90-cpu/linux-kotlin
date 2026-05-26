@@ -234,8 +234,13 @@ static u32 stmmac_mdio_format_addr(struct stmmac_priv *priv,
 {
 	const struct mii_regs *mii_regs = &priv->hw->mii;
 
+<<<<<<< HEAD
 	return field_prep(mii_regs->addr_mask, pa) |
 	       field_prep(mii_regs->reg_mask, gr) |
+=======
+	return ((pa << mii_regs->addr_shift) & mii_regs->addr_mask) |
+	       ((gr << mii_regs->reg_shift) & mii_regs->reg_mask) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       priv->gmii_address_bus_config |
 	       MII_ADDR_GBUSY;
 }
@@ -430,7 +435,11 @@ int stmmac_pcs_setup(struct net_device *ndev)
 	struct dw_xpcs *xpcs = NULL;
 	int addr, ret;
 
+<<<<<<< HEAD
 	devnode = dev_fwnode(priv->device);
+=======
+	devnode = priv->plat->port_node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv->plat->pcs_init) {
 		ret = priv->plat->pcs_init(priv);
@@ -473,6 +482,7 @@ void stmmac_pcs_clean(struct net_device *ndev)
 	priv->hw->xpcs = NULL;
 }
 
+<<<<<<< HEAD
 struct stmmac_clk_rate {
 	unsigned long rate;
 	u8 cr;
@@ -520,6 +530,8 @@ static const struct stmmac_clk_rate stmmac_xgmac_csr_to_mdc[] = {
 	{ 0, 0 },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * stmmac_clk_csr_set - dynamically set the MDC clock
  * @priv: driver private structure
@@ -535,10 +547,15 @@ static const struct stmmac_clk_rate stmmac_xgmac_csr_to_mdc[] = {
  */
 static u32 stmmac_clk_csr_set(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	const struct stmmac_clk_rate *rates;
 	unsigned long clk_rate;
 	u32 value = ~0;
 	int i;
+=======
+	unsigned long clk_rate;
+	u32 value = ~0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
 
@@ -549,6 +566,7 @@ static u32 stmmac_clk_csr_set(struct stmmac_priv *priv)
 	 * the frequency of clk_csr_i. So we do not change the default
 	 * divider.
 	 */
+<<<<<<< HEAD
 	rates = stmmac_std_csr_to_mdc;
 	if (priv->plat->flags & STMMAC_FLAG_HAS_SUN8I)
 		rates = stmmac_sun8i_csr_to_mdc;
@@ -560,6 +578,50 @@ static u32 stmmac_clk_csr_set(struct stmmac_priv *priv)
 			break;
 	if (rates[i].cr != (u8)~0)
 		value = rates[i].cr;
+=======
+	if (clk_rate < CSR_F_35M)
+		value = STMMAC_CSR_20_35M;
+	else if (clk_rate < CSR_F_60M)
+		value = STMMAC_CSR_35_60M;
+	else if (clk_rate < CSR_F_100M)
+		value = STMMAC_CSR_60_100M;
+	else if (clk_rate < CSR_F_150M)
+		value = STMMAC_CSR_100_150M;
+	else if (clk_rate < CSR_F_250M)
+		value = STMMAC_CSR_150_250M;
+	else if (clk_rate <= CSR_F_300M)
+		value = STMMAC_CSR_250_300M;
+	else if (clk_rate < CSR_F_500M)
+		value = STMMAC_CSR_300_500M;
+	else if (clk_rate < CSR_F_800M)
+		value = STMMAC_CSR_500_800M;
+
+	if (priv->plat->flags & STMMAC_FLAG_HAS_SUN8I) {
+		if (clk_rate > 160000000)
+			value = 0x03;
+		else if (clk_rate > 80000000)
+			value = 0x02;
+		else if (clk_rate > 40000000)
+			value = 0x01;
+		else
+			value = 0;
+	}
+
+	if (priv->plat->core_type == DWMAC_CORE_XGMAC) {
+		if (clk_rate > 400000000)
+			value = 0x5;
+		else if (clk_rate > 350000000)
+			value = 0x4;
+		else if (clk_rate > 300000000)
+			value = 0x3;
+		else if (clk_rate > 250000000)
+			value = 0x2;
+		else if (clk_rate > 150000000)
+			value = 0x1;
+		else
+			value = 0x0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return value;
 }
@@ -577,7 +639,11 @@ static void stmmac_mdio_bus_config(struct stmmac_priv *priv)
 	else
 		value = stmmac_clk_csr_set(priv);
 
+<<<<<<< HEAD
 	value <<= __ffs(priv->hw->mii.clk_csr_mask);
+=======
+	value <<= priv->hw->mii.clk_csr_shift;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (value & ~priv->hw->mii.clk_csr_mask)
 		dev_warn(priv->device,
@@ -667,7 +733,14 @@ int stmmac_mdio_register(struct net_device *ndev)
 		stmmac_xgmac2_mdio_read_c45(new_bus, 0, 0, 0);
 
 	/* If fixed-link is set, skip PHY scanning */
+<<<<<<< HEAD
 	fwnode = dev_fwnode(priv->device);
+=======
+	fwnode = priv->plat->port_node;
+	if (!fwnode)
+		fwnode = dev_fwnode(priv->device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fwnode) {
 		fixed_node = fwnode_get_named_child_node(fwnode, "fixed-link");
 		if (fixed_node) {

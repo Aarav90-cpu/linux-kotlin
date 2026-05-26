@@ -666,6 +666,7 @@ static ssize_t stm_char_write(struct file *file, const char __user *buf,
 	return count;
 }
 
+<<<<<<< HEAD
 static int stm_mmap_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
 			   const struct file *file, void **vm_private_data)
 {
@@ -676,6 +677,8 @@ static int stm_mmap_mapped(unsigned long start, unsigned long end, pgoff_t pgoff
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void stm_mmap_open(struct vm_area_struct *vma)
 {
 	struct stm_file *stmf = vma->vm_file->private_data;
@@ -694,14 +697,22 @@ static void stm_mmap_close(struct vm_area_struct *vma)
 }
 
 static const struct vm_operations_struct stm_mmap_vmops = {
+<<<<<<< HEAD
 	.mapped = stm_mmap_mapped,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open	= stm_mmap_open,
 	.close	= stm_mmap_close,
 };
 
+<<<<<<< HEAD
 static int stm_char_mmap_prepare(struct vm_area_desc *desc)
 {
 	struct file *file = desc->file;
+=======
+static int stm_char_mmap(struct file *file, struct vm_area_struct *vma)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct stm_file *stmf = file->private_data;
 	struct stm_device *stm = stmf->stm;
 	unsigned long size, phys;
@@ -709,10 +720,17 @@ static int stm_char_mmap_prepare(struct vm_area_desc *desc)
 	if (!stm->data->mmio_addr)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (desc->pgoff)
 		return -EINVAL;
 
 	size = vma_desc_size(desc);
+=======
+	if (vma->vm_pgoff)
+		return -EINVAL;
+
+	size = vma->vm_end - vma->vm_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (stmf->output.nr_chans * stm->data->sw_mmiosz != size)
 		return -EINVAL;
@@ -724,12 +742,22 @@ static int stm_char_mmap_prepare(struct vm_area_desc *desc)
 	if (!phys)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	desc->page_prot = pgprot_noncached(desc->page_prot);
 	vma_desc_set_flags(desc, VMA_IO_BIT, VMA_DONTEXPAND_BIT,
 			   VMA_DONTDUMP_BIT);
 	desc->vm_ops = &stm_mmap_vmops;
 
 	mmap_action_simple_ioremap(desc, phys, size);
+=======
+	pm_runtime_get_sync(&stm->dev);
+
+	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+	vm_flags_set(vma, VM_IO | VM_DONTEXPAND | VM_DONTDUMP);
+	vma->vm_ops = &stm_mmap_vmops;
+	vm_iomap_memory(vma, phys, size);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -847,7 +875,11 @@ static const struct file_operations stm_fops = {
 	.open		= stm_char_open,
 	.release	= stm_char_release,
 	.write		= stm_char_write,
+<<<<<<< HEAD
 	.mmap_prepare	= stm_char_mmap_prepare,
+=======
+	.mmap		= stm_char_mmap,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.unlocked_ioctl	= stm_char_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
 };

@@ -38,8 +38,11 @@ extern unsigned int		nlm_debug;
 do {									\
 	ifdebug(fac)							\
 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
+<<<<<<< HEAD
 	else								\
 		no_printk(fmt, ##__VA_ARGS__);				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } while (0)
 
 # define dfprintk_rcu(fac, fmt, ...)					\
@@ -48,6 +51,7 @@ do {									\
 		rcu_read_lock();					\
 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
 		rcu_read_unlock();					\
+<<<<<<< HEAD
 	} else {							\
 		no_printk(fmt, ##__VA_ARGS__);				\
 	}								\
@@ -57,6 +61,17 @@ do {									\
 # define ifdebug(fac)		if (0)
 # define dfprintk(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
 # define dfprintk_rcu(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
+=======
+	}								\
+} while (0)
+
+# define RPC_IFDEBUG(x)		x
+#else
+# define ifdebug(fac)		if (0)
+# define dfprintk(fac, fmt, ...)	do {} while (0)
+# define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
+# define RPC_IFDEBUG(x)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /*

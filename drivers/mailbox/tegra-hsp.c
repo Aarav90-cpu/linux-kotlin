@@ -16,6 +16,11 @@
 
 #include <dt-bindings/mailbox/tegra186-hsp.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HSP_INT_IE(x)		(0x100 + ((x) * 4))
 #define HSP_INT_IV		0x300
 #define HSP_INT_IR		0x304
@@ -495,7 +500,11 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
 			mbox_chan_txdone(chan, 0);
 
 			/* Wait until channel is empty */
+<<<<<<< HEAD
 			if (chan->active_req != MBOX_NO_MSG)
+=======
+			if (chan->active_req != NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 
 			return 0;
@@ -514,7 +523,11 @@ static int tegra_hsp_mailbox_startup(struct mbox_chan *chan)
 	struct tegra_hsp *hsp = mb->channel.hsp;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	chan->txdone_method = MBOX_TXDONE_BY_IRQ;
+=======
+	chan->txdone_method = TXDONE_BY_IRQ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Shared mailboxes start out as consumers by default. FULL and EMPTY

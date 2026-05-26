@@ -52,6 +52,7 @@ PATCH_TMP_DIR="$TMP_DIR/tmp"
 
 KLP_DIFF_LOG="$DIFF_DIR/diff.log"
 
+<<<<<<< HEAD
 # Terminal output colors
 read -r COLOR_RESET COLOR_BOLD COLOR_ERROR COLOR_WARN <<< ""
 if [[ -t 1 && -t 2 ]]; then
@@ -83,6 +84,22 @@ warn() {
 
 die() {
 	echo -e "${COLOR_ERROR}error${COLOR_RESET}: $SCRIPT: $*" >&2
+=======
+grep0() {
+	command grep "$@" || true
+}
+
+status() {
+	echo "$*"
+}
+
+warn() {
+	echo "error: $SCRIPT: $*" >&2
+}
+
+die() {
+	warn "$@"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	exit 1
 }
 
@@ -112,14 +129,22 @@ restore_files() {
 
 cleanup() {
 	set +o nounset
+<<<<<<< HEAD
 	revert_patches
+=======
+	revert_patches "--recount"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	restore_files
 	[[ "$KEEP_TMP" -eq 0 ]] && rm -rf "$TMP_DIR"
 	return 0
 }
 
 trap_err() {
+<<<<<<< HEAD
 	die "line ${BASH_LINENO[0]}: '$BASH_COMMAND'"
+=======
+	warn "line ${BASH_LINENO[0]}: '$BASH_COMMAND'"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 trap cleanup  EXIT INT TERM HUP
@@ -229,7 +254,11 @@ process_args() {
 		esac
 	done
 
+<<<<<<< HEAD
 	if [[ $# -eq 0 ]] && (( SHORT_CIRCUIT <= 2 )); then
+=======
+	if [[ $# -eq 0 ]]; then
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		usage
 		exit 1
 	fi
@@ -299,7 +328,11 @@ set_module_name() {
 }
 
 # Hardcode the value printed by the localversion script to prevent patch
+<<<<<<< HEAD
 # application from appending it with '+' due to a dirty working tree.
+=======
+# application from appending it with '+' due to a dirty git working tree.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 set_kernelversion() {
 	local file="$SRC/scripts/setlocalversion"
 	local kernelrelease
@@ -312,6 +345,7 @@ set_kernelversion() {
 	sed -i "2i echo $kernelrelease; exit 0" scripts/setlocalversion
 }
 
+<<<<<<< HEAD
 get_patch_input_files() {
 	local patch="$1"
 
@@ -339,6 +373,32 @@ get_patch_files() {
 		| sort -u
 }
 
+=======
+get_patch_files() {
+	local patch="$1"
+
+	grep0 -E '^(--- |\+\+\+ )' "$patch"			\
+		| gawk '{print $2}'				\
+		| sed 's|^[^/]*/||'				\
+		| sort -u
+}
+
+# Make sure git re-stats the changed files
+git_refresh() {
+	local patch="$1"
+	local files=()
+
+	[[ ! -e "$SRC/.git" ]] && return
+
+	get_patch_files "$patch" | mapfile -t files
+
+	(
+		cd "$SRC"
+		git update-index -q --refresh -- "${files[@]}"
+	)
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 check_unsupported_patches() {
 	local patch
 
@@ -350,7 +410,11 @@ check_unsupported_patches() {
 		for file in "${files[@]}"; do
 			case "$file" in
 				lib/*|*.S)
+<<<<<<< HEAD
 					die "${patch}: unsupported patch to $file"
+=======
+					die "unsupported patch to $file"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					;;
 			esac
 		done
@@ -361,6 +425,7 @@ apply_patch() {
 	local patch="$1"
 	shift
 	local extra_args=("$@")
+<<<<<<< HEAD
 	local drift_regex="with fuzz|offset [0-9]+ line"
 	local output
 	local status
@@ -377,14 +442,42 @@ apply_patch() {
 	fi
 
 	patch -d "$SRC" -p1 --no-backup-if-mismatch -r /dev/null "${extra_args[@]}" --silent < "$patch"
+=======
+
+	[[ ! -f "$patch" ]] && die "$patch doesn't exist"
+
+	(
+		cd "$SRC"
+
+		# The sed strips the version signature from 'git format-patch',
+		# otherwise 'git apply --recount' warns.
+		sed -n '/^-- /q;p' "$patch" |
+			git apply "${extra_args[@]}"
+	)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	APPLIED_PATCHES+=("$patch")
 }
 
 revert_patch() {
 	local patch="$1"
+<<<<<<< HEAD
 	local tmp=()
 
 	patch -d "$SRC" -p1 -R --silent --no-backup-if-mismatch -r /dev/null < "$patch"
+=======
+	shift
+	local extra_args=("$@")
+	local tmp=()
+
+	(
+		cd "$SRC"
+
+		sed -n '/^-- /q;p' "$patch" |
+			git apply --reverse "${extra_args[@]}"
+	)
+	git_refresh "$patch"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for p in "${APPLIED_PATCHES[@]}"; do
 		[[ "$p" == "$patch" ]] && continue
@@ -395,19 +488,34 @@ revert_patch() {
 }
 
 apply_patches() {
+<<<<<<< HEAD
 	local extra_args=("$@")
 	local patch
 
 	for patch in "${PATCHES[@]}"; do
 		apply_patch "$patch" "${extra_args[@]}"
+=======
+	local patch
+
+	for patch in "${PATCHES[@]}"; do
+		apply_patch "$patch"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	done
 }
 
 revert_patches() {
+<<<<<<< HEAD
 	local patches=("${APPLIED_PATCHES[@]}")
 
 	for (( i=${#patches[@]}-1 ; i>=0 ; i-- )) ; do
 		revert_patch "${patches[$i]}"
+=======
+	local extra_args=("$@")
+	local patches=("${APPLIED_PATCHES[@]}")
+
+	for (( i=${#patches[@]}-1 ; i>=0 ; i-- )) ; do
+		revert_patch "${patches[$i]}" "${extra_args[@]}"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	done
 
 	APPLIED_PATCHES=()
@@ -431,7 +539,10 @@ do_init() {
 	APPLIED_PATCHES=()
 
 	[[ -x "$FIX_PATCH_LINES" ]] || die "can't find fix-patch-lines"
+<<<<<<< HEAD
 	command -v recountdiff &>/dev/null || die "recountdiff not found (install patchutils)"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	validate_config
 	set_module_name
@@ -442,14 +553,19 @@ do_init() {
 refresh_patch() {
 	local patch="$1"
 	local tmpdir="$PATCH_TMP_DIR"
+<<<<<<< HEAD
 	local input_files=()
 	local output_files=()
+=======
+	local files=()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rm -rf "$tmpdir"
 	mkdir -p "$tmpdir/a"
 	mkdir -p "$tmpdir/b"
 
 	# Get all source files affected by the patch
+<<<<<<< HEAD
 	get_patch_input_files "$patch" | mapfile -t input_files
 	get_patch_output_files "$patch" | mapfile -t output_files
 
@@ -463,6 +579,20 @@ refresh_patch() {
 
 	# Diff 'a' and 'b' to make a clean patch
 	( cd "$tmpdir" && diff -Nupr a b > "$patch" ) || true
+=======
+	get_patch_files "$patch" | mapfile -t files
+
+	# Copy orig source files to 'a'
+	( cd "$SRC" && echo "${files[@]}" | xargs cp --parents --target-directory="$tmpdir/a" )
+
+	# Copy patched source files to 'b'
+	apply_patch "$patch" --recount
+	( cd "$SRC" && echo "${files[@]}" | xargs cp --parents --target-directory="$tmpdir/b" )
+	revert_patch "$patch" --recount
+
+	# Diff 'a' and 'b' to make a clean patch
+	( cd "$tmpdir" && git diff --no-index --no-prefix a b > "$patch" ) || true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 # Copy the patches to a temporary directory, fix their lines so as not to
@@ -485,7 +615,12 @@ fix_patches() {
 
 		cp -f "$old_patch" "$tmp_patch"
 		refresh_patch "$tmp_patch"
+<<<<<<< HEAD
 		"$FIX_PATCH_LINES" "$tmp_patch" | recountdiff > "$new_patch"
+=======
+		"$FIX_PATCH_LINES" "$tmp_patch" > "$new_patch"
+		refresh_patch "$new_patch"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		PATCHES[i]="$new_patch"
 
@@ -509,7 +644,10 @@ clean_kernel() {
 }
 
 build_kernel() {
+<<<<<<< HEAD
 	local build="$1"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local log="$TMP_DIR/build.log"
 	local objtool_args=()
 	local cmd=()
@@ -547,7 +685,11 @@ build_kernel() {
 		"${cmd[@]}"							\
 			1> >(tee -a "$log")					\
 			2> >(tee -a "$log" | grep0 -v "modpost.*undefined!" >&2)
+<<<<<<< HEAD
 	) || die "$build kernel build failed"
+=======
+	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 find_objects() {
@@ -574,6 +716,10 @@ copy_orig_objects() {
 	for _file in "${files[@]}"; do
 		local rel_file="${_file/.ko/.o}"
 		local file="$OBJ/$rel_file"
+<<<<<<< HEAD
+=======
+		local file_dir="$(dirname "$file")"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		local orig_file="$ORIG_DIR/$rel_file"
 		local orig_dir="$(dirname "$orig_file")"
 
@@ -814,6 +960,7 @@ build_patch_module() {
 process_args "$@"
 do_init
 
+<<<<<<< HEAD
 if (( SHORT_CIRCUIT <= 2 )); then
 	status "Validating patch(es)"
 	validate_patches
@@ -823,6 +970,14 @@ if (( SHORT_CIRCUIT <= 1 )); then
 	status "Building original kernel"
 	clean_kernel
 	build_kernel "original"
+=======
+if (( SHORT_CIRCUIT <= 1 )); then
+	status "Validating patch(es)"
+	validate_patches
+	status "Building original kernel"
+	clean_kernel
+	build_kernel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status "Copying original object files"
 	copy_orig_objects
 fi
@@ -830,9 +985,15 @@ fi
 if (( SHORT_CIRCUIT <= 2 )); then
 	status "Fixing patch(es)"
 	fix_patches
+<<<<<<< HEAD
 	apply_patches "--silent"
 	status "Building patched kernel"
 	build_kernel "patched"
+=======
+	apply_patches
+	status "Building patched kernel"
+	build_kernel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	revert_patches
 	status "Copying patched object files"
 	copy_patched_objects

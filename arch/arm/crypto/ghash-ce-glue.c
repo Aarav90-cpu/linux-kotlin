@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
+<<<<<<< HEAD
  * AES-GCM using ARMv8 Crypto Extensions
+=======
+ * Accelerated GHASH implementation with ARMv8 vmull.p64 instructions.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Copyright (C) 2015 - 2018 Linaro Ltd.
  * Copyright (C) 2023 Google LLC.
@@ -14,6 +18,10 @@
 #include <crypto/gf128mul.h>
 #include <crypto/ghash.h>
 #include <crypto/internal/aead.h>
+<<<<<<< HEAD
+=======
+#include <crypto/internal/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/internal/skcipher.h>
 #include <crypto/scatterwalk.h>
 #include <linux/cpufeature.h>
@@ -24,14 +32,29 @@
 #include <linux/string.h>
 #include <linux/unaligned.h>
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("AES-GCM using ARMv8 Crypto Extensions");
 MODULE_AUTHOR("Ard Biesheuvel <ardb@kernel.org>");
 MODULE_LICENSE("GPL");
+=======
+MODULE_DESCRIPTION("GHASH hash function using ARMv8 Crypto Extensions");
+MODULE_AUTHOR("Ard Biesheuvel <ardb@kernel.org>");
+MODULE_LICENSE("GPL");
+MODULE_ALIAS_CRYPTO("ghash");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_ALIAS_CRYPTO("gcm(aes)");
 MODULE_ALIAS_CRYPTO("rfc4106(gcm(aes))");
 
 #define RFC4106_NONCE_SIZE	4
 
+<<<<<<< HEAD
+=======
+struct ghash_key {
+	be128	k;
+	u64	h[][2];
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct gcm_key {
 	u64	h[4][2];
 	u32	rk[AES_MAX_KEYLENGTH_U32];
@@ -39,8 +62,89 @@ struct gcm_key {
 	u8	nonce[];	// for RFC4106 nonce
 };
 
+<<<<<<< HEAD
 asmlinkage void pmull_ghash_update_p64(int blocks, u64 dg[], const char *src,
 				       u64 const h[4][2], const char *head);
+=======
+struct arm_ghash_desc_ctx {
+	u64 digest[GHASH_DIGEST_SIZE/sizeof(u64)];
+};
+
+asmlinkage void pmull_ghash_update_p64(int blocks, u64 dg[], const char *src,
+				       u64 const h[][2], const char *head);
+
+asmlinkage void pmull_ghash_update_p8(int blocks, u64 dg[], const char *src,
+				      u64 const h[][2], const char *head);
+
+static __ro_after_init DEFINE_STATIC_KEY_FALSE(use_p64);
+
+static int ghash_init(struct shash_desc *desc)
+{
+	struct arm_ghash_desc_ctx *ctx = shash_desc_ctx(desc);
+
+	*ctx = (struct arm_ghash_desc_ctx){};
+	return 0;
+}
+
+static void ghash_do_update(int blocks, u64 dg[], const char *src,
+			    struct ghash_key *key, const char *head)
+{
+	kernel_neon_begin();
+	if (static_branch_likely(&use_p64))
+		pmull_ghash_update_p64(blocks, dg, src, key->h, head);
+	else
+		pmull_ghash_update_p8(blocks, dg, src, key->h, head);
+	kernel_neon_end();
+}
+
+static int ghash_update(struct shash_desc *desc, const u8 *src,
+			unsigned int len)
+{
+	struct ghash_key *key = crypto_shash_ctx(desc->tfm);
+	struct arm_ghash_desc_ctx *ctx = shash_desc_ctx(desc);
+	int blocks;
+
+	blocks = len / GHASH_BLOCK_SIZE;
+	ghash_do_update(blocks, ctx->digest, src, key, NULL);
+	return len - blocks * GHASH_BLOCK_SIZE;
+}
+
+static int ghash_export(struct shash_desc *desc, void *out)
+{
+	struct arm_ghash_desc_ctx *ctx = shash_desc_ctx(desc);
+	u8 *dst = out;
+
+	put_unaligned_be64(ctx->digest[1], dst);
+	put_unaligned_be64(ctx->digest[0], dst + 8);
+	return 0;
+}
+
+static int ghash_import(struct shash_desc *desc, const void *in)
+{
+	struct arm_ghash_desc_ctx *ctx = shash_desc_ctx(desc);
+	const u8 *src = in;
+
+	ctx->digest[1] = get_unaligned_be64(src);
+	ctx->digest[0] = get_unaligned_be64(src + 8);
+	return 0;
+}
+
+static int ghash_finup(struct shash_desc *desc, const u8 *src,
+		       unsigned int len, u8 *dst)
+{
+	struct ghash_key *key = crypto_shash_ctx(desc->tfm);
+	struct arm_ghash_desc_ctx *ctx = shash_desc_ctx(desc);
+
+	if (len) {
+		u8 buf[GHASH_BLOCK_SIZE] = {};
+
+		memcpy(buf, src, len);
+		ghash_do_update(1, ctx->digest, buf, key, NULL);
+		memzero_explicit(buf, sizeof(buf));
+	}
+	return ghash_export(desc, dst);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void ghash_reflect(u64 h[], const be128 *k)
 {
@@ -53,6 +157,56 @@ static void ghash_reflect(u64 h[], const be128 *k)
 		h[1] ^= 0xc200000000000000UL;
 }
 
+<<<<<<< HEAD
+=======
+static int ghash_setkey(struct crypto_shash *tfm,
+			const u8 *inkey, unsigned int keylen)
+{
+	struct ghash_key *key = crypto_shash_ctx(tfm);
+
+	if (keylen != GHASH_BLOCK_SIZE)
+		return -EINVAL;
+
+	/* needed for the fallback */
+	memcpy(&key->k, inkey, GHASH_BLOCK_SIZE);
+	ghash_reflect(key->h[0], &key->k);
+
+	if (static_branch_likely(&use_p64)) {
+		be128 h = key->k;
+
+		gf128mul_lle(&h, &key->k);
+		ghash_reflect(key->h[1], &h);
+
+		gf128mul_lle(&h, &key->k);
+		ghash_reflect(key->h[2], &h);
+
+		gf128mul_lle(&h, &key->k);
+		ghash_reflect(key->h[3], &h);
+	}
+	return 0;
+}
+
+static struct shash_alg ghash_alg = {
+	.digestsize		= GHASH_DIGEST_SIZE,
+	.init			= ghash_init,
+	.update			= ghash_update,
+	.finup			= ghash_finup,
+	.setkey			= ghash_setkey,
+	.export			= ghash_export,
+	.import			= ghash_import,
+	.descsize		= sizeof(struct arm_ghash_desc_ctx),
+	.statesize		= sizeof(struct ghash_desc_ctx),
+
+	.base.cra_name		= "ghash",
+	.base.cra_driver_name	= "ghash-ce",
+	.base.cra_priority	= 300,
+	.base.cra_flags		= CRYPTO_AHASH_ALG_BLOCK_ONLY,
+	.base.cra_blocksize	= GHASH_BLOCK_SIZE,
+	.base.cra_ctxsize	= sizeof(struct ghash_key) + sizeof(u64[2]),
+	.base.cra_module	= THIS_MODULE,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void pmull_gcm_encrypt(int blocks, u64 dg[], const char *src,
 		       struct gcm_key const *k, char *dst,
 		       const char *iv, int rounds, u32 counter);
@@ -431,15 +585,50 @@ static struct aead_alg gcm_aes_algs[] = {{
 
 static int __init ghash_ce_mod_init(void)
 {
+<<<<<<< HEAD
 	if (!(elf_hwcap & HWCAP_NEON) || !(elf_hwcap2 & HWCAP2_PMULL))
 		return -ENODEV;
 
 	return crypto_register_aeads(gcm_aes_algs, ARRAY_SIZE(gcm_aes_algs));
+=======
+	int err;
+
+	if (!(elf_hwcap & HWCAP_NEON))
+		return -ENODEV;
+
+	if (elf_hwcap2 & HWCAP2_PMULL) {
+		err = crypto_register_aeads(gcm_aes_algs,
+					    ARRAY_SIZE(gcm_aes_algs));
+		if (err)
+			return err;
+		ghash_alg.base.cra_ctxsize += 3 * sizeof(u64[2]);
+		static_branch_enable(&use_p64);
+	}
+
+	err = crypto_register_shash(&ghash_alg);
+	if (err)
+		goto err_aead;
+
+	return 0;
+
+err_aead:
+	if (elf_hwcap2 & HWCAP2_PMULL)
+		crypto_unregister_aeads(gcm_aes_algs,
+					ARRAY_SIZE(gcm_aes_algs));
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __exit ghash_ce_mod_exit(void)
 {
+<<<<<<< HEAD
 	crypto_unregister_aeads(gcm_aes_algs, ARRAY_SIZE(gcm_aes_algs));
+=======
+	crypto_unregister_shash(&ghash_alg);
+	if (elf_hwcap2 & HWCAP2_PMULL)
+		crypto_unregister_aeads(gcm_aes_algs,
+					ARRAY_SIZE(gcm_aes_algs));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(ghash_ce_mod_init);

@@ -165,10 +165,15 @@ static void gf2k_read(struct gf2k *gf2k, unsigned char *data)
 
 	t = GB(40,4,0);
 
+<<<<<<< HEAD
 	if (t < ARRAY_SIZE(gf2k_hat_to_axis))
 		for (i = 0; i < gf2k_hats[gf2k->id]; i++)
 			input_report_abs(dev, ABS_HAT0X + i,
 					 gf2k_hat_to_axis[t][i]);
+=======
+	for (i = 0; i < gf2k_hats[gf2k->id]; i++)
+		input_report_abs(dev, ABS_HAT0X + i, gf2k_hat_to_axis[t][i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	t = GB(44,2,0) | GB(32,8,2) | GB(78,2,10);
 

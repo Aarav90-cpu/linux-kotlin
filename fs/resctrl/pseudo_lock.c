@@ -1044,7 +1044,11 @@ static int pseudo_lock_dev_mmap_prepare(struct vm_area_desc *desc)
 	 * Ensure changes are carried directly to the memory being mapped,
 	 * do not allow copy-on-write mapping.
 	 */
+<<<<<<< HEAD
 	if (!vma_desc_test(desc, VMA_SHARED_BIT)) {
+=======
+	if (!vma_desc_test_flags(desc, VMA_SHARED_BIT)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_unlock(&rdtgroup_mutex);
 		return -EINVAL;
 	}

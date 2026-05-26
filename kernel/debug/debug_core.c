@@ -704,7 +704,11 @@ return_normal:
 	if (ks->send_ready)
 		atomic_set(ks->send_ready, 1);
 
+<<<<<<< HEAD
 	/* Signal the other CPUs to enter the debug trap handler */
+=======
+	/* Signal the other CPUs to enter kgdb_wait() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if ((!kgdb_single_step) && kgdb_do_roundup)
 		kgdb_roundup_cpus();
 #endif

@@ -96,8 +96,13 @@ static int hpfs_readdir(struct file *file, struct dir_context *ctx)
 		}
 		if (!fnode_is_dir(fno)) {
 			e = 1;
+<<<<<<< HEAD
 			hpfs_error(inode->i_sb, "not a directory, fnode %08llx",
 					inode->i_ino);
+=======
+			hpfs_error(inode->i_sb, "not a directory, fnode %08lx",
+					(unsigned long)inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (hpfs_inode->i_dno != le32_to_cpu(fno->u.external[0].disk_secno)) {
 			e = 1;

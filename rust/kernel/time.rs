@@ -60,6 +60,7 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
 /// cases the user of the clock has to decide which clock is best suited for the
 /// purpose. In most scenarios clock [`Monotonic`] is the best choice as it
 /// provides a accurate monotonic notion of time (leap second smearing ignored).
+<<<<<<< HEAD
 ///
 /// # Safety
 ///
@@ -67,6 +68,9 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
 /// `0..=KTIME_MAX` (i.e., greater than or equal to 0 and less than or equal to
 /// `KTIME_MAX`, where `KTIME_MAX` equals `i64::MAX`).
 pub unsafe trait ClockSource {
+=======
+pub trait ClockSource {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// The kernel clock ID associated with this clock source.
     ///
     /// This constant corresponds to the C side `clockid_t` value.
@@ -74,7 +78,11 @@ pub unsafe trait ClockSource {
 
     /// Get the current time from the clock source.
     ///
+<<<<<<< HEAD
     /// The function must return a value in the range `0..=KTIME_MAX`.
+=======
+    /// The function must return a value in the range from 0 to `KTIME_MAX`.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn ktime_get() -> bindings::ktime_t;
 }
 
@@ -91,9 +99,13 @@ pub unsafe trait ClockSource {
 /// count time that the system is suspended.
 pub struct Monotonic;
 
+<<<<<<< HEAD
 // SAFETY: The kernel's `ktime_get()` is guaranteed to return a value
 // in `0..=KTIME_MAX`.
 unsafe impl ClockSource for Monotonic {
+=======
+impl ClockSource for Monotonic {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     const ID: bindings::clockid_t = bindings::CLOCK_MONOTONIC as bindings::clockid_t;
 
     fn ktime_get() -> bindings::ktime_t {
@@ -118,9 +130,13 @@ unsafe impl ClockSource for Monotonic {
 /// the clock will experience discontinuity around leap second adjustment.
 pub struct RealTime;
 
+<<<<<<< HEAD
 // SAFETY: The kernel's `ktime_get_real()` is guaranteed to return a value
 // in `0..=KTIME_MAX`.
 unsafe impl ClockSource for RealTime {
+=======
+impl ClockSource for RealTime {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     const ID: bindings::clockid_t = bindings::CLOCK_REALTIME as bindings::clockid_t;
 
     fn ktime_get() -> bindings::ktime_t {
@@ -138,9 +154,13 @@ unsafe impl ClockSource for RealTime {
 /// discontinuities if the time is changed using settimeofday(2) or similar.
 pub struct BootTime;
 
+<<<<<<< HEAD
 // SAFETY: The kernel's `ktime_get_boottime()` is guaranteed to return a value
 // in `0..=KTIME_MAX`.
 unsafe impl ClockSource for BootTime {
+=======
+impl ClockSource for BootTime {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     const ID: bindings::clockid_t = bindings::CLOCK_BOOTTIME as bindings::clockid_t;
 
     fn ktime_get() -> bindings::ktime_t {
@@ -162,9 +182,13 @@ unsafe impl ClockSource for BootTime {
 /// The acronym TAI refers to International Atomic Time.
 pub struct Tai;
 
+<<<<<<< HEAD
 // SAFETY: The kernel's `ktime_get_clocktai()` is guaranteed to return a value
 // in `0..=KTIME_MAX`.
 unsafe impl ClockSource for Tai {
+=======
+impl ClockSource for Tai {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     const ID: bindings::clockid_t = bindings::CLOCK_TAI as bindings::clockid_t;
 
     fn ktime_get() -> bindings::ktime_t {
@@ -377,12 +401,15 @@ impl Delta {
     /// A span of time equal to zero.
     pub const ZERO: Self = Self { nanos: 0 };
 
+<<<<<<< HEAD
     /// Create a new [`Delta`] from a number of nanoseconds.
     #[inline]
     pub const fn from_nanos(nanos: i64) -> Self {
         Self { nanos }
     }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// Create a new [`Delta`] from a number of microseconds.
     ///
     /// The `micros` can range from -9_223_372_036_854_775 to 9_223_372_036_854_775.

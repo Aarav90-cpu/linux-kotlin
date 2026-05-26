@@ -222,7 +222,11 @@ void io_req_local_work_add(struct io_kiocb *req, unsigned flags)
 
 	if (!head) {
 		io_ctx_mark_taskrun(ctx);
+<<<<<<< HEAD
 		if (data_race(ctx->int_flags) & IO_RING_F_HAS_EVFD)
+=======
+		if (ctx->has_evfd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			io_eventfd_signal(ctx, false);
 	}
 

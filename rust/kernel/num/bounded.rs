@@ -255,7 +255,13 @@ macro_rules! impl_const_new {
             /// ```
             pub const fn new<const VALUE: $type>() -> Self {
                 // Statically assert that `VALUE` fits within the set number of bits.
+<<<<<<< HEAD
                 const_assert!(fits_within!(VALUE, $type, N));
+=======
+                const {
+                    assert!(fits_within!(VALUE, $type, N));
+                }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
                 // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
                 // `N` bits.
@@ -285,10 +291,19 @@ where
     /// The caller must ensure that `value` can be represented within `N` bits.
     const unsafe fn __new(value: T) -> Self {
         // Enforce the type invariants.
+<<<<<<< HEAD
         // `N` cannot be zero.
         const_assert!(N != 0);
         // The backing type is at least as large as `N` bits.
         const_assert!(N <= T::BITS);
+=======
+        const {
+            // `N` cannot be zero.
+            assert!(N != 0);
+            // The backing type is at least as large as `N` bits.
+            assert!(N <= T::BITS);
+        }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // INVARIANT: The caller ensures `value` fits within `N` bits.
         Self(value)
@@ -375,9 +390,12 @@ where
 
     /// Returns the wrapped value as the backing type.
     ///
+<<<<<<< HEAD
     /// This is similar to the [`Deref`] implementation, but doesn't enforce the size invariant of
     /// the [`Bounded`], which might produce slightly less optimal code.
     ///
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     /// # Examples
     ///
     /// ```
@@ -386,8 +404,13 @@ where
     /// let v = Bounded::<u32, 4>::new::<7>();
     /// assert_eq!(v.get(), 7u32);
     /// ```
+<<<<<<< HEAD
     pub const fn get(self) -> T {
         self.0
+=======
+    pub fn get(self) -> T {
+        *self.deref()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     /// Increases the number of bits usable for `self`.
@@ -405,10 +428,19 @@ where
     /// assert_eq!(larger_v, v);
     /// ```
     pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+<<<<<<< HEAD
         const_assert!(
             M >= N,
             "Requested number of bits is less than the current representation."
         );
+=======
+        const {
+            assert!(
+                M >= N,
+                "Requested number of bits is less than the current representation."
+            );
+        }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         // SAFETY: The value did fit within `N` bits, so it will all the more fit within
         // the larger `M` bits.
@@ -470,6 +502,7 @@ where
         // `N` bits, and with the same signedness.
         unsafe { Bounded::__new(value) }
     }
+<<<<<<< HEAD
 
     /// Right-shifts `self` by `SHIFT` and returns the result as a `Bounded<_, RES>`, where `RES >=
     /// N - SHIFT`.
@@ -512,6 +545,8 @@ where
         // represent the shifted value by as much, and just asserted that `RES >= N + SHIFT`.
         unsafe { Bounded::__new(self.0 << SHIFT) }
     }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl<T, const N: u32> Deref for Bounded<T, N>
@@ -1098,6 +1133,7 @@ where
         unsafe { Self::__new(T::from(value)) }
     }
 }
+<<<<<<< HEAD
 
 impl<T> Bounded<T, 1>
 where
@@ -1119,3 +1155,5 @@ where
         self.into()
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

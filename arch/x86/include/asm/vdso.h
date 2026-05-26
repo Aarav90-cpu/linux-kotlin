@@ -18,6 +18,10 @@ struct vdso_image {
 	unsigned long extable_base, extable_len;
 	const void *extable;
 
+<<<<<<< HEAD
+=======
+	long sym_VDSO32_NOTE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long sym___kernel_sigreturn;
 	long sym___kernel_rt_sigreturn;
 	long sym___kernel_vsyscall;

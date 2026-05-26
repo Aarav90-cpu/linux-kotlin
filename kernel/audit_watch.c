@@ -37,7 +37,11 @@ struct audit_watch {
 	refcount_t		count;	/* reference count */
 	dev_t			dev;	/* associated superblock device */
 	char			*path;	/* insertion path */
+<<<<<<< HEAD
 	u64			ino;	/* associated inode number */
+=======
+	unsigned long		ino;	/* associated inode number */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct audit_parent	*parent; /* associated parent */
 	struct list_head	wlist;	/* entry in parent->watches list */
 	struct list_head	rules;	/* anchor for krule->rlist */
@@ -125,7 +129,11 @@ char *audit_watch_path(struct audit_watch *watch)
 	return watch->path;
 }
 
+<<<<<<< HEAD
 int audit_watch_compare(struct audit_watch *watch, u64 ino, dev_t dev)
+=======
+int audit_watch_compare(struct audit_watch *watch, unsigned long ino, dev_t dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return (watch->ino != AUDIT_INO_UNSET) &&
 		(watch->ino == ino) &&
@@ -244,7 +252,11 @@ static void audit_watch_log_rule_change(struct audit_krule *r, struct audit_watc
 /* Update inode info in audit rules based on filesystem event. */
 static void audit_update_watch(struct audit_parent *parent,
 			       const struct qstr *dname, dev_t dev,
+<<<<<<< HEAD
 			       u64 ino, unsigned invalidating)
+=======
+			       unsigned long ino, unsigned invalidating)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct audit_watch *owatch, *nwatch, *nextw;
 	struct audit_krule *r, *nextr;
@@ -285,7 +297,11 @@ static void audit_update_watch(struct audit_parent *parent,
 				list_del(&oentry->rule.list);
 				audit_panic("error updating watch, removing");
 			} else {
+<<<<<<< HEAD
 				int h = audit_hash_ino(ino);
+=======
+				int h = audit_hash_ino((u32)ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				/*
 				 * nentry->rule.watch == oentry->rule.watch so
@@ -439,7 +455,11 @@ int audit_add_watch(struct audit_krule *krule, struct list_head **list)
 
 	audit_add_to_parent(krule, parent);
 
+<<<<<<< HEAD
 	h = audit_hash_ino(watch->ino);
+=======
+	h = audit_hash_ino((u32)watch->ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*list = &audit_inode_hash[h];
 error:
 	path_put(&parent_path);
@@ -527,7 +547,11 @@ int audit_dupe_exe(struct audit_krule *new, struct audit_krule *old)
 int audit_exe_compare(struct task_struct *tsk, struct audit_fsnotify_mark *mark)
 {
 	struct file *exe_file;
+<<<<<<< HEAD
 	u64 ino;
+=======
+	unsigned long ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_t dev;
 
 	/* only do exe filtering if we are recording @current events/records */

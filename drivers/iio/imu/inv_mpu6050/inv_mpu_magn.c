@@ -125,7 +125,11 @@ static int inv_magn_init(struct inv_mpu6050_state *st)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Sensitivity adjustment and scale to Gauss
+=======
+	 * Sensitivity adjustement and scale to Gauss
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * Hadj = H * (((ASA - 128) * 0.5 / 128) + 1)
 	 * Factor simplification:

@@ -156,7 +156,11 @@ static loff_t zisofs_uncompress_block(struct inode *inode, loff_t block_start,
 				else {
 					printk(KERN_DEBUG
 					       "zisofs: zisofs_inflate returned"
+<<<<<<< HEAD
 					       " %d, inode = %llu,"
+=======
+					       " %d, inode = %lu,"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					       " page idx = %d, bh idx = %d,"
 					       " avail_in = %ld,"
 					       " avail_out = %ld\n",

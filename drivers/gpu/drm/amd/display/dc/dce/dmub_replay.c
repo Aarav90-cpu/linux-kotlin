@@ -216,7 +216,10 @@ static void dmub_replay_set_coasting_vtotal(struct dmub_replay *dmub,
 		uint8_t panel_inst,
 		uint16_t frame_skip_number)
 {
+<<<<<<< HEAD
 	(void)panel_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union dmub_rb_cmd cmd;
 	struct dc_context *dc = dmub->ctx;
 	struct dmub_rb_cmd_replay_set_coasting_vtotal *pCmd = NULL;

@@ -7,6 +7,7 @@
 #include <linux/printk.h>
 #include <asm/tdx.h>
 
+<<<<<<< HEAD
 #define DEF_TDX_TD_ATTR_NAME(_name) [TDX_TD_ATTR_##_name##_BIT] = __stringify(_name)
 
 static __initdata const char *tdx_attributes[] = {
@@ -22,6 +23,23 @@ static __initdata const char *tdx_attributes[] = {
 	DEF_TDX_TD_ATTR_NAME(KL),
 	DEF_TDX_TD_ATTR_NAME(TPA),
 	DEF_TDX_TD_ATTR_NAME(PERFMON),
+=======
+#define DEF_TDX_ATTR_NAME(_name) [TDX_ATTR_##_name##_BIT] = __stringify(_name)
+
+static __initdata const char *tdx_attributes[] = {
+	DEF_TDX_ATTR_NAME(DEBUG),
+	DEF_TDX_ATTR_NAME(HGS_PLUS_PROF),
+	DEF_TDX_ATTR_NAME(PERF_PROF),
+	DEF_TDX_ATTR_NAME(PMT_PROF),
+	DEF_TDX_ATTR_NAME(ICSSD),
+	DEF_TDX_ATTR_NAME(LASS),
+	DEF_TDX_ATTR_NAME(SEPT_VE_DISABLE),
+	DEF_TDX_ATTR_NAME(MIGRTABLE),
+	DEF_TDX_ATTR_NAME(PKS),
+	DEF_TDX_ATTR_NAME(KL),
+	DEF_TDX_ATTR_NAME(TPA),
+	DEF_TDX_ATTR_NAME(PERFMON),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DEF_TD_CTLS_NAME(_name) [TD_CTLS_##_name##_BIT] = __stringify(_name)

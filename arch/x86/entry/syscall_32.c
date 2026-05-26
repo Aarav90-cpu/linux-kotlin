@@ -247,6 +247,10 @@ __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
 {
 	int nr = syscall_32_enter(regs);
 
+<<<<<<< HEAD
+=======
+	add_random_kstack_offset();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Subtlety here: if ptrace pokes something larger than 2^31-1 into
 	 * orig_ax, the int return value truncates it. This matches
@@ -255,7 +259,10 @@ __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
 	nr = syscall_enter_from_user_mode(regs, nr);
 	instrumentation_begin();
 
+<<<<<<< HEAD
 	add_random_kstack_offset();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do_syscall_32_irqs_on(regs, nr);
 
 	instrumentation_end();
@@ -268,6 +275,10 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
 	int nr = syscall_32_enter(regs);
 	int res;
 
+<<<<<<< HEAD
+=======
+	add_random_kstack_offset();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * This cannot use syscall_enter_from_user_mode() as it has to
 	 * fetch EBP before invoking any of the syscall entry work
@@ -276,7 +287,10 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
 	enter_from_user_mode(regs);
 
 	instrumentation_begin();
+<<<<<<< HEAD
 	add_random_kstack_offset();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_irq_enable();
 	/* Fetch EBP from where the vDSO stashed it. */
 	if (IS_ENABLED(CONFIG_X86_64)) {

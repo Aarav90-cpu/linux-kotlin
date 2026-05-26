@@ -8,7 +8,10 @@ powervr-y := \
 	pvr_device.o \
 	pvr_device_info.o \
 	pvr_drv.o \
+<<<<<<< HEAD
 	pvr_dump.o \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pvr_free_list.o \
 	pvr_fw.o \
 	pvr_fw_meta.o \

@@ -20,10 +20,17 @@
  *           const void *data);
  */
 static __attribute__((unused))
+<<<<<<< HEAD
 int _sys_mount(const char *src, const char *tgt, const char *fst,
 	       unsigned long flags, const void *data)
 {
 	return __nolibc_syscall5(__NR_mount, src, tgt, fst, flags, data);
+=======
+int sys_mount(const char *src, const char *tgt, const char *fst,
+	      unsigned long flags, const void *data)
+{
+	return my_syscall5(__NR_mount, src, tgt, fst, flags, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static __attribute__((unused))
@@ -31,7 +38,11 @@ int mount(const char *src, const char *tgt,
 	  const char *fst, unsigned long flags,
 	  const void *data)
 {
+<<<<<<< HEAD
 	return __sysret(_sys_mount(src, tgt, fst, flags, data));
+=======
+	return __sysret(sys_mount(src, tgt, fst, flags, data));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* _NOLIBC_SYS_MOUNT_H */

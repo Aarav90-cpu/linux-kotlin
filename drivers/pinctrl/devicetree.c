@@ -175,7 +175,11 @@ static int dt_to_map_one_config(struct pinctrl *p,
 		 * return.
 		 */
 		dev_info(p->dev,
+<<<<<<< HEAD
 			 "there are no valid maps for state %s\n", statename);
+=======
+			 "there is not valid maps for state %s\n", statename);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 

@@ -426,11 +426,24 @@ static int fhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb,
 	}
 
 	/* allocate the private part of the URB */
+<<<<<<< HEAD
 	urb_priv = kzalloc_flex(*urb_priv, tds, size, mem_flags);
 	if (!urb_priv)
 		return -ENOMEM;
 
 	urb_priv->num_of_tds = size;
+=======
+	urb_priv = kzalloc_obj(*urb_priv, mem_flags);
+	if (!urb_priv)
+		return -ENOMEM;
+
+	/* allocate the private part of the URB */
+	urb_priv->tds = kzalloc_objs(*urb_priv->tds, size, mem_flags);
+	if (!urb_priv->tds) {
+		kfree(urb_priv);
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_irqsave(&fhci->lock, flags);
 
@@ -439,6 +452,11 @@ static int fhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb,
 		goto err;
 
 	/* fill the private part of the URB */
+<<<<<<< HEAD
+=======
+	urb_priv->num_of_tds = size;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	urb->status = -EINPROGRESS;
 	urb->actual_length = 0;
 	urb->error_count = 0;
@@ -446,8 +464,15 @@ static int fhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb,
 
 	fhci_queue_urb(fhci, urb);
 err:
+<<<<<<< HEAD
 	if (ret)
 		kfree(urb_priv);
+=======
+	if (ret) {
+		kfree(urb_priv->tds);
+		kfree(urb_priv);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irqrestore(&fhci->lock, flags);
 	return ret;
 }

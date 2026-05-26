@@ -220,7 +220,11 @@ static void ledtrig_tty_work(struct work_struct *work)
 			goto out;
 
 		tty = tty_kopen_shared(devno);
+<<<<<<< HEAD
 		if (IS_ERR_OR_NULL(tty))
+=======
+		if (IS_ERR(tty) || !tty)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* What to do? retry or abort */
 			goto out;
 

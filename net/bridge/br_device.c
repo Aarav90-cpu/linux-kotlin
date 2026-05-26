@@ -518,7 +518,10 @@ void br_dev_setup(struct net_device *dev)
 	ether_addr_copy(br->group_addr, eth_stp_addr);
 
 	br->stp_enabled = BR_NO_STP;
+<<<<<<< HEAD
 	br->stp_mode = BR_STP_MODE_AUTO;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	br->group_fwd_mask = BR_GROUPFWD_DEFAULT;
 	br->group_fwd_mask_required = BR_GROUPFWD_DEFAULT;
 

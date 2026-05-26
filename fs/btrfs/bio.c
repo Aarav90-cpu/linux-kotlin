@@ -4,7 +4,10 @@
  * Copyright (C) 2022 Christoph Hellwig.
  */
 
+<<<<<<< HEAD
 #include <linux/blk_types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bio.h>
 #include "bio.h"
 #include "ctree.h"
@@ -351,6 +354,7 @@ static void btrfs_check_read_bio(struct btrfs_bio *bbio, struct btrfs_device *de
 
 static void btrfs_log_dev_io_error(const struct bio *bio, struct btrfs_device *dev)
 {
+<<<<<<< HEAD
 	blk_status_t sts = bio->bi_status;
 
 	if (!dev || !dev->bdev)
@@ -363,6 +367,13 @@ static void btrfs_log_dev_io_error(const struct bio *bio, struct btrfs_device *d
 			      btrfs_dev_name(dev), sts);
 		return;
 	}
+=======
+	if (!dev || !dev->bdev)
+		return;
+	if (bio->bi_status != BLK_STS_IOERR && bio->bi_status != BLK_STS_TARGET)
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (btrfs_op(bio) == BTRFS_MAP_WRITE)
 		btrfs_dev_stat_inc_and_print(dev, BTRFS_DEV_STAT_WRITE_ERRS);
 	else if (!(bio->bi_opf & REQ_RAHEAD))

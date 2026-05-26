@@ -7,6 +7,7 @@
  * Sorted alphabetically.
  */
 
+<<<<<<< HEAD
 #include <linux/compiler_types.h>
 
 #ifdef __BINDGEN__
@@ -37,6 +38,9 @@
 //   option.
 #define __rust_helper __always_inline
 #endif
+=======
+#define __rust_helper
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "atomic.c"
 #include "atomic_ext.c"
@@ -57,16 +61,25 @@
 #include "cred.c"
 #include "device.c"
 #include "dma.c"
+<<<<<<< HEAD
 #include "dma-resv.c"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "drm.c"
 #include "err.c"
 #include "irq.c"
 #include "fs.c"
+<<<<<<< HEAD
 #include "gpu.c"
 #include "io.c"
 #include "jump_label.c"
 #include "kunit.c"
 #include "list.c"
+=======
+#include "io.c"
+#include "jump_label.c"
+#include "kunit.c"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "maple_tree.c"
 #include "mm.c"
 #include "mutex.c"

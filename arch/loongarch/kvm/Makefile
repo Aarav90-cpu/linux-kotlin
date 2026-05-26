@@ -18,7 +18,10 @@ kvm-y += tlb.o
 kvm-y += vcpu.o
 kvm-y += vm.o
 kvm-y += intc/ipi.o
+<<<<<<< HEAD
 kvm-y += intc/dmsintc.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kvm-y += intc/eiointc.o
 kvm-y += intc/pch_pic.o
 kvm-y += irqfd.o

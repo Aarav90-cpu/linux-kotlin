@@ -31,7 +31,10 @@
 union dc_plane_status_update_flags {
 	struct {
 		uint32_t address : 1;
+<<<<<<< HEAD
 		uint32_t histogram : 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} bits;
 	uint32_t raw;
 };

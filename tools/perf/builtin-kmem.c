@@ -82,7 +82,11 @@ static unsigned long nr_allocs, nr_cross_allocs;
 
 /* filters for controlling start and stop of time of analysis */
 static struct perf_time_interval ptime;
+<<<<<<< HEAD
 static const char *time_str;
+=======
+const char *time_str;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int insert_alloc_stat(unsigned long call_site, unsigned long ptr,
 			     int bytes_req, int bytes_alloc, int cpu)

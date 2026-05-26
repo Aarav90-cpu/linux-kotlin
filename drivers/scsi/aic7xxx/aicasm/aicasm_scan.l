@@ -389,7 +389,11 @@ nop			{ return T_NOP; }
 				char c;
 
 				yptr = yytext;
+<<<<<<< HEAD
 				while ((c = *yptr++)) {
+=======
+				while (c = *yptr++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					/*
 					 * Strip carriage returns.
 					 */

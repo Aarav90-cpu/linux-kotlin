@@ -4172,7 +4172,11 @@ static struct gdsc usb30_sec_gdsc = {
 	.pd = {
 		.name = "usb30_sec_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4190,7 +4194,11 @@ static struct gdsc usb30_prim_gdsc = {
 	.pd = {
 		.name = "usb30_prim_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4199,7 +4207,11 @@ static struct gdsc pcie_0_gdsc = {
 	.pd = {
 		.name = "pcie_0_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4226,7 +4238,11 @@ static struct gdsc pcie_1_gdsc = {
 	.pd = {
 		.name = "pcie_1_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4235,7 +4251,11 @@ static struct gdsc pcie_2_gdsc = {
 	.pd = {
 		.name = "pcie_2_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4253,7 +4273,11 @@ static struct gdsc pcie_3_gdsc = {
 	.pd = {
 		.name = "pcie_3_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.flags = POLL_CFG_GDSCR,
 };
 
@@ -4262,6 +4286,7 @@ static struct gdsc usb30_mp_gdsc = {
 	.pd = {
 		.name = "usb30_mp_gdsc",
 	},
+<<<<<<< HEAD
 	.pwrsts = PWRSTS_RET_ON,
 	.flags = POLL_CFG_GDSCR,
 };
@@ -4311,6 +4336,12 @@ static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
 	.flags = VOTABLE,
 };
 
+=======
+	.pwrsts = PWRSTS_OFF_ON,
+	.flags = POLL_CFG_GDSCR,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct clk_regmap *gcc_sc8180x_clocks[] = {
 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
@@ -4605,7 +4636,11 @@ static const struct qcom_reset_map gcc_sc8180x_resets[] = {
 	[GCC_VIDEO_AXI1_CLK_BCR] = { .reg = 0xb028, .bit = 2, .udelay = 150 },
 };
 
+<<<<<<< HEAD
 static const struct clk_rcg_dfs_data gcc_sc8180x_dfs_clocks[] = {
+=======
+static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s0_clk_src),
 	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s1_clk_src),
 	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s2_clk_src),
@@ -4640,6 +4675,7 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
+<<<<<<< HEAD
 	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
 	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
 	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
@@ -4658,6 +4694,8 @@ static const u32 gcc_sc8180x_critical_cbcrs[] = {
 	0x48190, /* GCC_CPUSS_DVM_BUS_CLK */
 	0x4d004, /* GCC_NPU_CFG_AHB_CLK */
 	0x71004, /* GCC_GPU_CFG_AHB_CLK */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regmap_config gcc_sc8180x_regmap_config = {
@@ -4668,6 +4706,7 @@ static const struct regmap_config gcc_sc8180x_regmap_config = {
 	.fast_io	= true,
 };
 
+<<<<<<< HEAD
 static void clk_sc8180x_regs_configure(struct device *dev, struct regmap *regmap)
 {
 	/* Disable the GPLL0 active input to NPU and GPU via MISC registers */
@@ -4683,6 +4722,8 @@ static const struct qcom_cc_driver_data gcc_sc8180x_driver_data = {
 	.clk_regs_configure = clk_sc8180x_regs_configure,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct qcom_cc_desc gcc_sc8180x_desc = {
 	.config = &gcc_sc8180x_regmap_config,
 	.clks = gcc_sc8180x_clocks,
@@ -4691,8 +4732,11 @@ static const struct qcom_cc_desc gcc_sc8180x_desc = {
 	.num_resets = ARRAY_SIZE(gcc_sc8180x_resets),
 	.gdscs = gcc_sc8180x_gdscs,
 	.num_gdscs = ARRAY_SIZE(gcc_sc8180x_gdscs),
+<<<<<<< HEAD
 	.use_rpm = true,
 	.driver_data = &gcc_sc8180x_driver_data,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct of_device_id gcc_sc8180x_match_table[] = {
@@ -4703,7 +4747,39 @@ MODULE_DEVICE_TABLE(of, gcc_sc8180x_match_table);
 
 static int gcc_sc8180x_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	return qcom_cc_probe(pdev, &gcc_sc8180x_desc);
+=======
+	struct regmap *regmap;
+	int ret;
+
+	regmap = qcom_cc_map(pdev, &gcc_sc8180x_desc);
+	if (IS_ERR(regmap))
+		return PTR_ERR(regmap);
+
+	/* Keep some clocks always-on */
+	qcom_branch_set_clk_en(regmap, 0xb004); /* GCC_VIDEO_AHB_CLK */
+	qcom_branch_set_clk_en(regmap, 0xb008); /* GCC_CAMERA_AHB_CLK */
+	qcom_branch_set_clk_en(regmap, 0xb00c); /* GCC_DISP_AHB_CLK */
+	qcom_branch_set_clk_en(regmap, 0xb040); /* GCC_VIDEO_XO_CLK */
+	qcom_branch_set_clk_en(regmap, 0xb044); /* GCC_CAMERA_XO_CLK */
+	qcom_branch_set_clk_en(regmap, 0xb048); /* GCC_DISP_XO_CLK */
+	qcom_branch_set_clk_en(regmap, 0x48004); /* GCC_CPUSS_GNOC_CLK */
+	qcom_branch_set_clk_en(regmap, 0x48190); /* GCC_CPUSS_DVM_BUS_CLK */
+	qcom_branch_set_clk_en(regmap, 0x4d004); /* GCC_NPU_CFG_AHB_CLK */
+	qcom_branch_set_clk_en(regmap, 0x71004); /* GCC_GPU_CFG_AHB_CLK */
+
+	/* Disable the GPLL0 active input to NPU and GPU via MISC registers */
+	regmap_update_bits(regmap, 0x4d110, 0x3, 0x3);
+	regmap_update_bits(regmap, 0x71028, 0x3, 0x3);
+
+	ret = qcom_cc_register_rcg_dfs(regmap, gcc_dfs_clocks,
+					ARRAY_SIZE(gcc_dfs_clocks));
+	if (ret)
+		return ret;
+
+	return qcom_cc_really_probe(&pdev->dev, &gcc_sc8180x_desc, regmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct platform_driver gcc_sc8180x_driver = {

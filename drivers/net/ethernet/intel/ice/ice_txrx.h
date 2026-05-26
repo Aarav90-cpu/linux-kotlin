@@ -212,6 +212,7 @@ enum ice_rx_dtype {
 	ICE_RX_DTYPE_SPLIT_ALWAYS	= 2,
 };
 
+<<<<<<< HEAD
 enum ice_tx_ring_flags {
 	ICE_TX_RING_FLAGS_XDP,
 	ICE_TX_RING_FLAGS_VLAN_L2TAG1,
@@ -220,6 +221,8 @@ enum ice_tx_ring_flags {
 	ICE_TX_RING_FLAGS_NBITS,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ice_pkt_ctx {
 	u64 cached_phctime;
 	__be16 vlan_proto;
@@ -360,7 +363,15 @@ struct ice_tx_ring {
 	u16 count;			/* Number of descriptors */
 	u16 q_index;			/* Queue number of ring */
 
+<<<<<<< HEAD
 	DECLARE_BITMAP(flags, ICE_TX_RING_FLAGS_NBITS);
+=======
+	u8 flags;
+#define ICE_TX_FLAGS_RING_XDP		BIT(0)
+#define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
+#define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
+#define ICE_TX_FLAGS_TXTIME		BIT(3)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct xsk_buff_pool *xsk_pool;
 
@@ -402,7 +413,11 @@ static inline bool ice_ring_ch_enabled(struct ice_tx_ring *ring)
 
 static inline bool ice_ring_is_xdp(struct ice_tx_ring *ring)
 {
+<<<<<<< HEAD
 	return test_bit(ICE_TX_RING_FLAGS_XDP, ring->flags);
+=======
+	return !!(ring->flags & ICE_TX_FLAGS_RING_XDP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 enum ice_container_type {

@@ -21,14 +21,24 @@ config SECURITY_DMESG_RESTRICT
 
 choice
 	prompt "Allow /proc/pid/mem access override"
+<<<<<<< HEAD
 	default PROC_MEM_FORCE_PTRACE
+=======
+	default PROC_MEM_ALWAYS_FORCE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Traditionally /proc/pid/mem allows users to override memory
 	  permissions for users like ptrace, assuming they have ptrace
 	  capability.
 
 	  This allows people to limit that - either never override, or
+<<<<<<< HEAD
 	  require actual active ptrace attachment (default).
+=======
+	  require actual active ptrace attachment.
+
+	  Defaults to the traditional behavior (for now)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config PROC_MEM_ALWAYS_FORCE
 	bool "Traditional /proc/pid/mem behavior"

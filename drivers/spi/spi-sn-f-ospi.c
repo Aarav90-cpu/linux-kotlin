@@ -625,7 +625,11 @@ static int f_ospi_probe(struct platform_device *pdev)
 	of_property_read_u32(dev->of_node, "num-cs", &num_cs);
 	if (num_cs > OSPI_NUM_CS) {
 		dev_err(dev, "num-cs too large: %d\n", num_cs);
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	ctlr->num_chipselect = num_cs;
 

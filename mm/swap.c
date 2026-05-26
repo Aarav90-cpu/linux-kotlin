@@ -20,7 +20,11 @@
 #include <linux/swap.h>
 #include <linux/mman.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/init.h>
 #include <linux/export.h>
 #include <linux/mm_inline.h>
@@ -91,7 +95,11 @@ static void page_cache_release(struct folio *folio)
 
 	__page_cache_release(folio, &lruvec, &flags);
 	if (lruvec)
+<<<<<<< HEAD
 		lruvec_unlock_irqrestore(lruvec, flags);
+=======
+		unlock_page_lruvec_irqrestore(lruvec, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __folio_put(struct folio *folio)
@@ -175,7 +183,11 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
 	}
 
 	if (lruvec)
+<<<<<<< HEAD
 		lruvec_unlock_irqrestore(lruvec, flags);
+=======
+		unlock_page_lruvec_irqrestore(lruvec, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folios_put(fbatch);
 }
 
@@ -240,7 +252,10 @@ void folio_rotate_reclaimable(struct folio *folio)
 void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
 		unsigned int nr_io, unsigned int nr_rotated)
 		__releases(lruvec->lru_lock)
+<<<<<<< HEAD
 		__releases(rcu)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long cost;
 
@@ -254,7 +269,10 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
 	cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated;
 	if (!cost) {
 		spin_unlock_irq(&lruvec->lru_lock);
+<<<<<<< HEAD
 		rcu_read_unlock();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -287,10 +305,15 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
 
 		spin_unlock_irq(&lruvec->lru_lock);
 		lruvec = parent_lruvec(lruvec);
+<<<<<<< HEAD
 		if (!lruvec) {
 			rcu_read_unlock();
 			break;
 		}
+=======
+		if (!lruvec)
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irq(&lruvec->lru_lock);
 	}
 }
@@ -353,7 +376,11 @@ void folio_activate(struct folio *folio)
 
 	lruvec = folio_lruvec_lock_irq(folio);
 	lru_activate(lruvec, folio);
+<<<<<<< HEAD
 	lruvec_unlock_irq(lruvec);
+=======
+	unlock_page_lruvec_irq(lruvec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	folio_set_lru(folio);
 }
 #endif
@@ -416,20 +443,32 @@ static void lru_gen_inc_refs(struct folio *folio)
 
 static bool lru_gen_clear_refs(struct folio *folio)
 {
+<<<<<<< HEAD
 	int gen = folio_lru_gen(folio);
 	int type = folio_is_file_lru(folio);
 	unsigned long seq;
+=======
+	struct lru_gen_folio *lrugen;
+	int gen = folio_lru_gen(folio);
+	int type = folio_is_file_lru(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (gen < 0)
 		return true;
 
 	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS | BIT(PG_workingset), 0);
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
 	rcu_read_unlock();
 	/* whether can do without shuffling under the LRU lock */
 	return gen == lru_gen_from_seq(seq);
+=======
+	lrugen = &folio_lruvec(folio)->lrugen;
+	/* whether can do without shuffling under the LRU lock */
+	return gen == lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else /* !CONFIG_LRU_GEN */
@@ -969,7 +1008,11 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 
 		if (folio_is_zone_device(folio)) {
 			if (lruvec) {
+<<<<<<< HEAD
 				lruvec_unlock_irqrestore(lruvec, flags);
+=======
+				unlock_page_lruvec_irqrestore(lruvec, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				lruvec = NULL;
 			}
 			if (folio_ref_sub_and_test(folio, nr_refs))
@@ -983,7 +1026,11 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 		/* hugetlb has its own memcg */
 		if (folio_test_hugetlb(folio)) {
 			if (lruvec) {
+<<<<<<< HEAD
 				lruvec_unlock_irqrestore(lruvec, flags);
+=======
+				unlock_page_lruvec_irqrestore(lruvec, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				lruvec = NULL;
 			}
 			free_huge_folio(folio);
@@ -997,7 +1044,11 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 		j++;
 	}
 	if (lruvec)
+<<<<<<< HEAD
 		lruvec_unlock_irqrestore(lruvec, flags);
+=======
+		unlock_page_lruvec_irqrestore(lruvec, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!j) {
 		folio_batch_reinit(folios);
 		return;
@@ -1024,7 +1075,11 @@ EXPORT_SYMBOL(folios_put_refs);
 void release_pages(release_pages_arg arg, int nr)
 {
 	struct folio_batch fbatch;
+<<<<<<< HEAD
 	int refs[FOLIO_BATCH_SIZE];
+=======
+	int refs[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct encoded_page **encoded = arg.encoded_pages;
 	int i;
 
@@ -1090,6 +1145,7 @@ void folio_batch_remove_exceptionals(struct folio_batch *fbatch)
 	fbatch->nr = j;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEMCG
 static void lruvec_reparent_lru(struct lruvec *child_lruvec,
 				struct lruvec *parent_lruvec,
@@ -1123,6 +1179,8 @@ void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ctl_table swap_sysctl_table[] = {
 	{
 		.procname	= "page-cluster",
@@ -1140,6 +1198,13 @@ static const struct ctl_table swap_sysctl_table[] = {
  */
 void __init swap_setup(void)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ZEN_INTERACTIVE
+	/* Only swap-in pages requested, avoid readahead */
+	page_cluster = 0;
+#else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long megs = PAGES_TO_MB(totalram_pages());
 
 	/* Use a smaller cluster for small-memory machines */
@@ -1151,6 +1216,10 @@ void __init swap_setup(void)
 	 * Right now other parts of the system means that we
 	 * _really_ don't want to cluster much more
 	 */
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	register_sysctl_init("vm", swap_sysctl_table);
 }

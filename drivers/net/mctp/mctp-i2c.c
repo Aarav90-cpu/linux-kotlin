@@ -496,6 +496,11 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
 	u8 *pecp;
 	int rc;
 
+<<<<<<< HEAD
+=======
+	fs = mctp_i2c_get_tx_flow_state(midev, skb);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hdr = (void *)skb_mac_header(skb);
 	/* Sanity check that packet contents matches skb length,
 	 * and can't exceed MCTP_I2C_BUFSZ
@@ -507,8 +512,11 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
 		return;
 	}
 
+<<<<<<< HEAD
 	fs = mctp_i2c_get_tx_flow_state(midev, skb);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (skb_tailroom(skb) >= 1) {
 		/* Linear case with space, we can just append the PEC */
 		skb_put(skb, 1);

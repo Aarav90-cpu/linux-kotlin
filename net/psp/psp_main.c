@@ -202,7 +202,11 @@ static void psp_write_headers(struct net *net, struct sk_buff *skb, __be32 spi,
 		 * reciprocal divide.
 		 */
 		hash ^= hash << 16;
+<<<<<<< HEAD
 		uh->source = htons(reciprocal_scale(hash, max - min + 1) + min);
+=======
+		uh->source = htons((((u64)hash * (max - min)) >> 32) + min);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		uh->source = udp_flow_src_port(net, skb, 0, 0, false);
 	}

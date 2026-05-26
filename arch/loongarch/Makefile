@@ -25,7 +25,10 @@ endif
 #
 # Select the object file format to substitute into the linker script.
 #
+<<<<<<< HEAD
 32bit-tool-archpref	= loongarch32
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 64bit-tool-archpref	= loongarch64
 32bit-bfd		= elf32-loongarch
 64bit-bfd		= elf64-loongarch
@@ -52,6 +55,7 @@ KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
 CC_FLAGS_FTRACE := -fpatchable-function-entry=2
 endif
 
+<<<<<<< HEAD
 ifdef CONFIG_32BIT
 tool-archpref		= $(32bit-tool-archpref)
 UTS_MACHINE		:= loongarch32
@@ -60,6 +64,11 @@ else
 tool-archpref		= $(64bit-tool-archpref)
 UTS_MACHINE		:= loongarch64
 cflags-y		+= $(call cc-option,-m64)
+=======
+ifdef CONFIG_64BIT
+tool-archpref		= $(64bit-tool-archpref)
+UTS_MACHINE		:= loongarch64
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 
 ifneq ($(SUBARCH),$(ARCH))
@@ -68,6 +77,7 @@ ifneq ($(SUBARCH),$(ARCH))
   endif
 endif
 
+<<<<<<< HEAD
 ifdef CONFIG_32BIT
 ifdef CONFIG_32BIT_STANDARD
 ld-emul			= $(32bit-emul)
@@ -81,6 +91,11 @@ endif
 ifdef CONFIG_64BIT
 ld-emul			= $(64bit-emul)
 cflags-y		+= -march=loongarch64 -mabi=lp64s -mcmodel=normal
+=======
+ifdef CONFIG_64BIT
+ld-emul			= $(64bit-emul)
+cflags-y		+= -mabi=lp64s -mcmodel=normal
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 
 cflags-y			+= -pipe $(CC_FLAGS_NO_FPU)
@@ -156,12 +171,16 @@ ifndef CONFIG_KASAN
 cflags-y += -fno-builtin-memcpy -fno-builtin-memmove -fno-builtin-memset
 endif
 
+<<<<<<< HEAD
 ifdef CONFIG_32BIT
 load-y		= 0xa0200000
 else
 load-y		= 0x9000000000200000
 endif
 
+=======
+load-y		= 0x9000000000200000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y)
 
 drivers-$(CONFIG_PCI)		+= arch/loongarch/pci/

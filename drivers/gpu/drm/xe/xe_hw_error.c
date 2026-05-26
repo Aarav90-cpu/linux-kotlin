@@ -3,7 +3,10 @@
  * Copyright © 2025 Intel Corporation
  */
 
+<<<<<<< HEAD
 #include <linux/bitmap.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/fault-inject.h>
 
 #include "regs/xe_gsc_regs.h"
@@ -11,11 +14,15 @@
 #include "regs/xe_irq_regs.h"
 
 #include "xe_device.h"
+<<<<<<< HEAD
 #include "xe_drm_ras.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_hw_error.h"
 #include "xe_mmio.h"
 #include "xe_survivability_mode.h"
 
+<<<<<<< HEAD
 #define GT_HW_ERROR_MAX_ERR_BITS		16
 #define HEC_UNCORR_FW_ERR_BITS			4
 #define XE_RAS_REG_SIZE				32
@@ -28,6 +35,18 @@
 extern struct fault_attr inject_csc_hw_error;
 
 static const char * const error_severity[] = DRM_XE_RAS_ERROR_SEVERITY_NAMES;
+=======
+#define  HEC_UNCORR_FW_ERR_BITS 4
+extern struct fault_attr inject_csc_hw_error;
+
+/* Error categories reported by hardware */
+enum hardware_error {
+	HARDWARE_ERROR_CORRECTABLE = 0,
+	HARDWARE_ERROR_NONFATAL = 1,
+	HARDWARE_ERROR_FATAL = 2,
+	HARDWARE_ERROR_MAX,
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char * const hec_uncorrected_fw_errors[] = {
 	"Fatal",
@@ -36,6 +55,7 @@ static const char * const hec_uncorrected_fw_errors[] = {
 	"Data Corruption"
 };
 
+<<<<<<< HEAD
 static const unsigned long xe_hw_error_map[] = {
 	[XE_GT_ERROR]	= DRM_XE_RAS_ERR_COMP_CORE_COMPUTE,
 	[XE_SOC_ERROR]	= DRM_XE_RAS_ERR_COMP_SOC_INTERNAL,
@@ -160,6 +180,22 @@ static_assert(ARRAY_SIZE(pvc_master_local_nonfatal_err_reg) == XE_RAS_REG_SIZE);
 						 pvc_master_local_fatal_err_reg : \
 						 pvc_master_local_nonfatal_err_reg)
 
+=======
+static const char *hw_error_to_str(const enum hardware_error hw_err)
+{
+	switch (hw_err) {
+	case HARDWARE_ERROR_CORRECTABLE:
+		return "CORRECTABLE";
+	case HARDWARE_ERROR_NONFATAL:
+		return "NONFATAL";
+	case HARDWARE_ERROR_FATAL:
+		return "FATAL";
+	default:
+		return "UNKNOWN";
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool fault_inject_csc_hw_error(void)
 {
 	return IS_ENABLED(CONFIG_DEBUG_FS) && should_fail(&inject_csc_hw_error, 1);
@@ -178,8 +214,12 @@ static void csc_hw_error_work(struct work_struct *work)
 
 static void csc_hw_error_handler(struct xe_tile *tile, const enum hardware_error hw_err)
 {
+<<<<<<< HEAD
 	const enum drm_xe_ras_error_severity severity = hw_err_to_severity(hw_err);
 	const char *severity_str = error_severity[severity];
+=======
+	const char *hw_err_str = hw_error_to_str(hw_err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_device *xe = tile_to_xe(tile);
 	struct xe_mmio *mmio = &tile->mmio;
 	u32 base, err_bit, err_src;
@@ -192,8 +232,13 @@ static void csc_hw_error_handler(struct xe_tile *tile, const enum hardware_error
 	lockdep_assert_held(&xe->irq.lock);
 	err_src = xe_mmio_read32(mmio, HEC_UNCORR_ERR_STATUS(base));
 	if (!err_src) {
+<<<<<<< HEAD
 		drm_err_ratelimited(&xe->drm, HW_ERR "Tile%d reported %s HEC_ERR_STATUS register blank\n",
 				    tile->id, severity_str);
+=======
+		drm_err_ratelimited(&xe->drm, HW_ERR "Tile%d reported HEC_ERR_STATUS_%s blank\n",
+				    tile->id, hw_err_str);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -201,8 +246,13 @@ static void csc_hw_error_handler(struct xe_tile *tile, const enum hardware_error
 		fw_err = xe_mmio_read32(mmio, HEC_UNCORR_FW_ERR_DW0(base));
 		for_each_set_bit(err_bit, &fw_err, HEC_UNCORR_FW_ERR_BITS) {
 			drm_err_ratelimited(&xe->drm, HW_ERR
+<<<<<<< HEAD
 					    "HEC FW %s %s reported, bit[%d] is set\n",
 					     hec_uncorrected_fw_errors[err_bit], severity_str,
+=======
+					    "%s: HEC Uncorrected FW %s error reported, bit[%d] is set\n",
+					     hw_err_str, hec_uncorrected_fw_errors[err_bit],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					     err_bit);
 
 			schedule_work(&tile->csc_hw_error_work);
@@ -212,6 +262,7 @@ static void csc_hw_error_handler(struct xe_tile *tile, const enum hardware_error
 	xe_mmio_write32(mmio, HEC_UNCORR_ERR_STATUS(base), err_src);
 }
 
+<<<<<<< HEAD
 static void log_hw_error(struct xe_tile *tile, const char *name,
 			 const enum drm_xe_ras_error_severity severity)
 {
@@ -431,11 +482,22 @@ static void hw_error_source_handler(struct xe_tile *tile, const enum hardware_er
 	u32 err_bit;
 
 	if (!IS_DGFX(xe))
+=======
+static void hw_error_source_handler(struct xe_tile *tile, const enum hardware_error hw_err)
+{
+	const char *hw_err_str = hw_error_to_str(hw_err);
+	struct xe_device *xe = tile_to_xe(tile);
+	unsigned long flags;
+	u32 err_src;
+
+	if (xe->info.platform != XE_BATTLEMAGE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	spin_lock_irqsave(&xe->irq.lock, flags);
 	err_src = xe_mmio_read32(&tile->mmio, DEV_ERR_STAT_REG(hw_err));
 	if (!err_src) {
+<<<<<<< HEAD
 		drm_err_ratelimited(&xe->drm, HW_ERR "Tile%d reported %s DEV_ERR_STAT register blank!\n",
 				    tile->id, severity_str);
 		goto unlock;
@@ -491,6 +553,18 @@ static void hw_error_source_handler(struct xe_tile *tile, const enum hardware_er
 
 clear_reg:
 	xe_mmio_write32(&tile->mmio, DEV_ERR_STAT_REG(hw_err), err_src);
+=======
+		drm_err_ratelimited(&xe->drm, HW_ERR "Tile%d reported DEV_ERR_STAT_%s blank!\n",
+				    tile->id, hw_err_str);
+		goto unlock;
+	}
+
+	if (err_src & XE_CSC_ERROR)
+		csc_hw_error_handler(tile, hw_err);
+
+	xe_mmio_write32(&tile->mmio, DEV_ERR_STAT_REG(hw_err), err_src);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	spin_unlock_irqrestore(&xe->irq.lock, flags);
 }
@@ -512,6 +586,7 @@ void xe_hw_error_irq_handler(struct xe_tile *tile, const u32 master_ctl)
 	if (fault_inject_csc_hw_error())
 		schedule_work(&tile->csc_hw_error_work);
 
+<<<<<<< HEAD
 	for (hw_err = 0; hw_err < HARDWARE_ERROR_MAX; hw_err++) {
 		if (master_ctl & ERROR_IRQ(hw_err))
 			hw_error_source_handler(tile, hw_err);
@@ -524,6 +599,11 @@ static int hw_error_info_init(struct xe_device *xe)
 		return 0;
 
 	return xe_drm_ras_init(xe);
+=======
+	for (hw_err = 0; hw_err < HARDWARE_ERROR_MAX; hw_err++)
+		if (master_ctl & ERROR_IRQ(hw_err))
+			hw_error_source_handler(tile, hw_err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -552,16 +632,22 @@ static void process_hw_errors(struct xe_device *xe)
 void xe_hw_error_init(struct xe_device *xe)
 {
 	struct xe_tile *tile = xe_device_get_root_tile(xe);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!IS_DGFX(xe) || IS_SRIOV_VF(xe))
 		return;
 
 	INIT_WORK(&tile->csc_hw_error_work, csc_hw_error_work);
 
+<<<<<<< HEAD
 	ret = hw_error_info_init(xe);
 	if (ret)
 		drm_err(&xe->drm, "Failed to initialize XE DRM RAS (%pe)\n", ERR_PTR(ret));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	process_hw_errors(xe);
 }

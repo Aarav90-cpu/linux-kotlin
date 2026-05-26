@@ -2278,7 +2278,10 @@ static const struct target_core_fabric_ops sbp_ops = {
 	.tfc_tpg_base_attrs		= sbp_tpg_base_attrs,
 	.tfc_tpg_attrib_attrs		= sbp_tpg_attrib_attrs,
 
+<<<<<<< HEAD
 	.default_compl_type		= TARGET_QUEUE_COMPL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_submit_type		= TARGET_DIRECT_SUBMIT,
 	.direct_submit_supp		= 1,
 };

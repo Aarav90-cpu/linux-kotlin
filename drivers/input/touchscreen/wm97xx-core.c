@@ -126,7 +126,11 @@ int wm97xx_read_aux_adc(struct wm97xx *wm, u16 adcsel)
 	int timeout = 0;
 
 	/* get codec */
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
+=======
+	mutex_lock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* When the touchscreen is not in use, we may have to power up
 	 * the AUX ADC before we can use sample the AUX inputs->
@@ -160,6 +164,10 @@ int wm97xx_read_aux_adc(struct wm97xx *wm, u16 adcsel)
 		wm->codec->dig_enable(wm, false);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return (rc == RC_VALID ? auxval & 0xfff : -EBUSY);
 }
 EXPORT_SYMBOL_GPL(wm97xx_read_aux_adc);
@@ -175,11 +183,26 @@ EXPORT_SYMBOL_GPL(wm97xx_read_aux_adc);
 enum wm97xx_gpio_status wm97xx_get_gpio(struct wm97xx *wm, u32 gpio)
 {
 	u16 status;
+<<<<<<< HEAD
 
 	guard(mutex)(&wm->codec_mutex);
 
 	status = wm97xx_reg_read(wm, AC97_GPIO_STATUS);
 	return (status & gpio) ? WM97XX_GPIO_HIGH : WM97XX_GPIO_LOW;
+=======
+	enum wm97xx_gpio_status ret;
+
+	mutex_lock(&wm->codec_mutex);
+	status = wm97xx_reg_read(wm, AC97_GPIO_STATUS);
+
+	if (status & gpio)
+		ret = WM97XX_GPIO_HIGH;
+	else
+		ret = WM97XX_GPIO_LOW;
+
+	mutex_unlock(&wm->codec_mutex);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(wm97xx_get_gpio);
 
@@ -197,8 +220,12 @@ void wm97xx_set_gpio(struct wm97xx *wm, u32 gpio,
 {
 	u16 reg;
 
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
 
+=======
+	mutex_lock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg = wm97xx_reg_read(wm, AC97_GPIO_STATUS);
 
 	if (status == WM97XX_GPIO_HIGH)
@@ -210,6 +237,10 @@ void wm97xx_set_gpio(struct wm97xx *wm, u32 gpio,
 		wm97xx_reg_write(wm, AC97_GPIO_STATUS, reg << 1);
 	else
 		wm97xx_reg_write(wm, AC97_GPIO_STATUS, reg);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(wm97xx_set_gpio);
 
@@ -223,8 +254,12 @@ void wm97xx_config_gpio(struct wm97xx *wm, u32 gpio, enum wm97xx_gpio_dir dir,
 {
 	u16 reg;
 
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
 
+=======
+	mutex_lock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg = wm97xx_reg_read(wm, AC97_GPIO_POLARITY);
 
 	if (pol == WM97XX_GPIO_POL_HIGH)
@@ -257,6 +292,10 @@ void wm97xx_config_gpio(struct wm97xx *wm, u32 gpio, enum wm97xx_gpio_dir dir,
 		reg &= ~gpio;
 
 	wm97xx_reg_write(wm, AC97_GPIO_CFG, reg);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(wm97xx_config_gpio);
 
@@ -295,9 +334,13 @@ static irqreturn_t wm97xx_pen_interrupt(int irq, void *dev_id)
 			wm->pen_is_down = 0;
 	} else {
 		u16 status, pol;
+<<<<<<< HEAD
 
 		guard(mutex)(&wm->codec_mutex);
 
+=======
+		mutex_lock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		status = wm97xx_reg_read(wm, AC97_GPIO_STATUS);
 		pol = wm97xx_reg_read(wm, AC97_GPIO_POLARITY);
 
@@ -317,6 +360,10 @@ static irqreturn_t wm97xx_pen_interrupt(int irq, void *dev_id)
 		else
 			wm97xx_reg_write(wm, AC97_GPIO_STATUS, status &
 						~WM97XX_GPIO_13);
+<<<<<<< HEAD
+=======
+		mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* If the system is not using continuous mode or it provides a
@@ -375,7 +422,11 @@ static int wm97xx_read_samples(struct wm97xx *wm)
 	struct wm97xx_data data;
 	int rc;
 
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
+=======
+	mutex_lock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (wm->mach_ops && wm->mach_ops->acc_enabled)
 		rc = wm->mach_ops->acc_pen_down(wm);
@@ -415,7 +466,12 @@ static int wm97xx_read_samples(struct wm97xx *wm)
 		    abs_y[0] > (data.y & 0xfff) ||
 		    abs_y[1] < (data.y & 0xfff)) {
 			dev_dbg(wm->dev, "Measurement out of range, dropping it\n");
+<<<<<<< HEAD
 			return RC_AGAIN;
+=======
+			rc = RC_AGAIN;
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		input_report_abs(wm->input_dev, ABS_X, data.x & 0xfff);
@@ -431,6 +487,11 @@ static int wm97xx_read_samples(struct wm97xx *wm)
 		wm->ts_reader_interval = wm->ts_reader_min_interval;
 	}
 
+<<<<<<< HEAD
+=======
+out:
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 
@@ -763,8 +824,12 @@ static int wm97xx_suspend(struct device *dev)
 	else
 		suspend_mode = 0;
 
+<<<<<<< HEAD
 	guard(mutex)(&wm->input_dev->mutex);
 
+=======
+	mutex_lock(&wm->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (input_device_enabled(wm->input_dev))
 		cancel_delayed_work_sync(&wm->ts_reader);
 
@@ -782,6 +847,10 @@ static int wm97xx_suspend(struct device *dev)
 		reg = wm97xx_reg_read(wm, AC97_EXTENDED_MID) | 0x8000;
 		wm97xx_reg_write(wm, AC97_EXTENDED_MID, reg);
 	}
+<<<<<<< HEAD
+=======
+	mutex_unlock(&wm->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -790,8 +859,12 @@ static int wm97xx_resume(struct device *dev)
 {
 	struct wm97xx *wm = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&wm->input_dev->mutex);
 
+=======
+	mutex_lock(&wm->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* restore digitiser and gpios */
 	if (wm->id == WM9713_ID2) {
 		wm97xx_reg_write(wm, AC97_WM9713_DIG1, wm->dig[0]);
@@ -818,6 +891,10 @@ static int wm97xx_resume(struct device *dev)
 		queue_delayed_work(wm->ts_workq, &wm->ts_reader,
 				   wm->ts_reader_interval);
 	}
+<<<<<<< HEAD
+=======
+	mutex_unlock(&wm->input_dev->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -830,12 +907,22 @@ static DEFINE_SIMPLE_DEV_PM_OPS(wm97xx_pm_ops, wm97xx_suspend, wm97xx_resume);
 int wm97xx_register_mach_ops(struct wm97xx *wm,
 			     struct wm97xx_mach_ops *mach_ops)
 {
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
 
 	if (wm->mach_ops)
 		return -EINVAL;
 
 	wm->mach_ops = mach_ops;
+=======
+	mutex_lock(&wm->codec_mutex);
+	if (wm->mach_ops) {
+		mutex_unlock(&wm->codec_mutex);
+		return -EINVAL;
+	}
+	wm->mach_ops = mach_ops;
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -843,9 +930,15 @@ EXPORT_SYMBOL_GPL(wm97xx_register_mach_ops);
 
 void wm97xx_unregister_mach_ops(struct wm97xx *wm)
 {
+<<<<<<< HEAD
 	guard(mutex)(&wm->codec_mutex);
 
 	wm->mach_ops = NULL;
+=======
+	mutex_lock(&wm->codec_mutex);
+	wm->mach_ops = NULL;
+	mutex_unlock(&wm->codec_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(wm97xx_unregister_mach_ops);
 

@@ -426,7 +426,11 @@ int __init ima_free_kexec_buffer(void)
 	if (!ima_kexec_buffer_size)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	memblock_phys_free(ima_kexec_buffer_phys,
+=======
+	memblock_free_late(ima_kexec_buffer_phys,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   ima_kexec_buffer_size);
 
 	ima_kexec_buffer_phys = 0;

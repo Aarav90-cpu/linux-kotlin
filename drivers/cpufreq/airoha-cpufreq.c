@@ -115,10 +115,22 @@ MODULE_DEVICE_TABLE(of, airoha_cpufreq_match_list);
 
 static int __init airoha_cpufreq_init(void)
 {
+<<<<<<< HEAD
 	const struct of_device_id *match;
 	int ret;
 
 	match = of_machine_get_match(airoha_cpufreq_match_list);
+=======
+	struct device_node *np = of_find_node_by_path("/");
+	const struct of_device_id *match;
+	int ret;
+
+	if (!np)
+		return -ENODEV;
+
+	match = of_match_node(airoha_cpufreq_match_list, np);
+	of_node_put(np);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!match)
 		return -ENODEV;
 

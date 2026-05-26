@@ -56,7 +56,15 @@ static inline int mmc_host_can_access_boot(struct mmc_host *host)
 
 static inline int mmc_host_can_uhs(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	return host->caps & MMC_CAP_UHS;
+=======
+	return host->caps &
+		(MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 |
+		 MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR104 |
+		 MMC_CAP_UHS_DDR50) &&
+	       host->caps & MMC_CAP_4_BIT_DATA;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool mmc_card_hs200(struct mmc_card *card)

@@ -17,7 +17,11 @@
 #include <linux/export.h>
 #include <linux/pagemap.h>
 #include <linux/highmem.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/task_io_accounting_ops.h>
 #include <linux/shmem_fs.h>
 #include <linux/rmap.h>
@@ -369,7 +373,11 @@ void truncate_inode_pages_range(struct address_space *mapping,
 	pgoff_t		start;		/* inclusive */
 	pgoff_t		end;		/* exclusive */
 	struct folio_batch fbatch;
+<<<<<<< HEAD
 	pgoff_t		indices[FOLIO_BATCH_SIZE];
+=======
+	pgoff_t		indices[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pgoff_t		index;
 	int		i;
 	struct folio	*folio;
@@ -534,7 +542,11 @@ EXPORT_SYMBOL(truncate_inode_pages_final);
 unsigned long mapping_try_invalidate(struct address_space *mapping,
 		pgoff_t start, pgoff_t end, unsigned long *nr_failed)
 {
+<<<<<<< HEAD
 	pgoff_t indices[FOLIO_BATCH_SIZE];
+=======
+	pgoff_t indices[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio_batch fbatch;
 	pgoff_t index = start;
 	unsigned long ret;
@@ -676,7 +688,11 @@ failed:
 int invalidate_inode_pages2_range(struct address_space *mapping,
 				  pgoff_t start, pgoff_t end)
 {
+<<<<<<< HEAD
 	pgoff_t indices[FOLIO_BATCH_SIZE];
+=======
+	pgoff_t indices[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio_batch fbatch;
 	pgoff_t index;
 	int i;

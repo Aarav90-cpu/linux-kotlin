@@ -606,11 +606,16 @@ static const struct vm_operations_struct drm_vm_ops = {
 static int qaic_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct *vma)
 {
 	struct qaic_bo *bo = to_qaic_bo(obj);
+<<<<<<< HEAD
 	unsigned long remap_start;
 	unsigned long offset = 0;
 	unsigned long remap_end;
 	struct scatterlist *sg;
 	unsigned long length;
+=======
+	unsigned long offset = 0;
+	struct scatterlist *sg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (drm_gem_is_imported(obj))
@@ -618,6 +623,7 @@ static int qaic_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struc
 
 	for (sg = bo->sgt->sgl; sg; sg = sg_next(sg)) {
 		if (sg_page(sg)) {
+<<<<<<< HEAD
 			/* if sg is too large for the VMA, so truncate it to fit */
 			if (check_add_overflow(vma->vm_start, offset, &remap_start))
 				return -EINVAL;
@@ -639,6 +645,13 @@ static int qaic_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struc
 			if (ret)
 				goto out;
 			offset += length;
+=======
+			ret = remap_pfn_range(vma, vma->vm_start + offset, page_to_pfn(sg_page(sg)),
+					      sg->length, vma->vm_page_prot);
+			if (ret)
+				goto out;
+			offset += sg->length;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

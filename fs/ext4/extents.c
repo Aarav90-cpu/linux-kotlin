@@ -4571,30 +4571,51 @@ retry_remove_space:
 	return err;
 }
 
+<<<<<<< HEAD
 static int ext4_alloc_file_blocks(struct file *file, loff_t offset, loff_t len,
 				  loff_t new_size, int flags)
+=======
+static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
+				  ext4_lblk_t len, loff_t new_size,
+				  int flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *inode = file_inode(file);
 	handle_t *handle;
 	int ret = 0, ret2 = 0, ret3 = 0;
 	int retries = 0;
 	int depth = 0;
+<<<<<<< HEAD
 	ext4_lblk_t len_lblk;
 	struct ext4_map_blocks map;
 	unsigned int credits;
 	loff_t epos = 0, old_size = i_size_read(inode);
+=======
+	struct ext4_map_blocks map;
+	unsigned int credits;
+	loff_t epos, old_size = i_size_read(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int blkbits = inode->i_blkbits;
 	bool alloc_zero = false;
 
 	BUG_ON(!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS));
+<<<<<<< HEAD
 	map.m_lblk = offset >> blkbits;
 	map.m_len = len_lblk = EXT4_MAX_BLOCKS(len, offset, blkbits);
+=======
+	map.m_lblk = offset;
+	map.m_len = len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Don't normalize the request if it can fit in one extent so
 	 * that it doesn't get unnecessarily split into multiple
 	 * extents.
 	 */
+<<<<<<< HEAD
 	if (len_lblk <= EXT_UNWRITTEN_MAX_LEN)
+=======
+	if (len <= EXT_UNWRITTEN_MAX_LEN)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		flags |= EXT4_GET_BLOCKS_NO_NORMALIZE;
 
 	/*
@@ -4611,6 +4632,7 @@ static int ext4_alloc_file_blocks(struct file *file, loff_t offset, loff_t len,
 	/*
 	 * credits to insert 1 extent into extent tree
 	 */
+<<<<<<< HEAD
 	credits = ext4_chunk_trans_blocks(inode, len_lblk);
 	depth = ext_depth(inode);
 
@@ -4623,11 +4645,22 @@ static int ext4_alloc_file_blocks(struct file *file, loff_t offset, loff_t len,
 
 retry:
 	while (len_lblk) {
+=======
+	credits = ext4_chunk_trans_blocks(inode, len);
+	depth = ext_depth(inode);
+
+retry:
+	while (len) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Recalculate credits when extent tree depth changes.
 		 */
 		if (depth != ext_depth(inode)) {
+<<<<<<< HEAD
 			credits = ext4_chunk_trans_blocks(inode, len_lblk);
+=======
+			credits = ext4_chunk_trans_blocks(inode, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			depth = ext_depth(inode);
 		}
 
@@ -4639,7 +4672,11 @@ retry:
 		}
 		ret = ext4_map_blocks(handle, inode, &map, flags);
 		if (ret <= 0) {
+<<<<<<< HEAD
 			ext4_debug("inode #%llu: block %u: len %u: "
+=======
+			ext4_debug("inode #%lu: block %u: len %u: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   "ext4_ext_map_blocks returned %d",
 				   inode->i_ino, map.m_lblk,
 				   map.m_len, ret);
@@ -4647,15 +4684,19 @@ retry:
 			ext4_journal_stop(handle);
 			break;
 		}
+<<<<<<< HEAD
 		ext4_update_inode_fsync_trans(handle, inode, 1);
 		ret = ext4_journal_stop(handle);
 		if (unlikely(ret))
 			break;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * allow a full retry cycle for any remaining allocations
 		 */
 		retries = 0;
+<<<<<<< HEAD
 
 		if (alloc_zero &&
 		    (map.m_flags & (EXT4_MAP_MAPPED | EXT4_MAP_UNWRITTEN))) {
@@ -4701,6 +4742,48 @@ retry:
 		pagecache_isize_extended(inode, old_size, epos);
 
 	return ret ? ret : ret2;
+=======
+		epos = EXT4_LBLK_TO_B(inode, map.m_lblk + ret);
+		inode_set_ctime_current(inode);
+		if (new_size) {
+			if (epos > new_size)
+				epos = new_size;
+			if (ext4_update_inode_size(inode, epos) & 0x1)
+				inode_set_mtime_to_ts(inode,
+						      inode_get_ctime(inode));
+			if (epos > old_size) {
+				pagecache_isize_extended(inode, old_size, epos);
+				ext4_zero_partial_blocks(handle, inode,
+						     old_size, epos - old_size);
+			}
+		}
+		ret2 = ext4_mark_inode_dirty(handle, inode);
+		ext4_update_inode_fsync_trans(handle, inode, 1);
+		ret3 = ext4_journal_stop(handle);
+		ret2 = ret3 ? ret3 : ret2;
+		if (unlikely(ret2))
+			break;
+
+		if (alloc_zero &&
+		    (map.m_flags & (EXT4_MAP_MAPPED | EXT4_MAP_UNWRITTEN))) {
+			ret2 = ext4_issue_zeroout(inode, map.m_lblk, map.m_pblk,
+						  map.m_len);
+			if (likely(!ret2))
+				ret2 = ext4_convert_unwritten_extents(NULL,
+					inode, (loff_t)map.m_lblk << blkbits,
+					(loff_t)map.m_len << blkbits);
+			if (ret2)
+				break;
+		}
+
+		map.m_lblk += ret;
+		map.m_len = len = len - ret;
+	}
+	if (ret == -ENOSPC && ext4_should_retry_alloc(inode->i_sb, &retries))
+		goto retry;
+
+	return ret > 0 ? ret2 : ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len);
@@ -4712,11 +4795,20 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 {
 	struct inode *inode = file_inode(file);
 	handle_t *handle = NULL;
+<<<<<<< HEAD
 	loff_t align_start, align_end, new_size = 0;
 	loff_t end = offset + len;
 	unsigned int blocksize = i_blocksize(inode);
 	bool partial_zeroed = false;
 	int ret, flags;
+=======
+	loff_t new_size = 0;
+	loff_t end = offset + len;
+	ext4_lblk_t start_lblk, end_lblk;
+	unsigned int blocksize = i_blocksize(inode);
+	unsigned int blkbits = inode->i_blkbits;
+	int ret, flags, credits;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	trace_ext4_zero_range(inode, offset, len, mode);
 	WARN_ON_ONCE(!inode_is_locked(inode));
@@ -4736,8 +4828,16 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 	flags = EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT;
 	/* Preallocate the range including the unaligned edges */
 	if (!IS_ALIGNED(offset | end, blocksize)) {
+<<<<<<< HEAD
 		ret = ext4_alloc_file_blocks(file, offset, len, new_size,
 					     flags);
+=======
+		ext4_lblk_t alloc_lblk = offset >> blkbits;
+		ext4_lblk_t len_lblk = EXT4_MAX_BLOCKS(len, offset, blkbits);
+
+		ret = ext4_alloc_file_blocks(file, alloc_lblk, len_lblk,
+					     new_size, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -4752,17 +4852,30 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 		return ret;
 
 	/* Zero range excluding the unaligned edges */
+<<<<<<< HEAD
 	align_start = round_up(offset, blocksize);
 	align_end = round_down(end, blocksize);
 	if (align_end > align_start) {
+=======
+	start_lblk = EXT4_B_TO_LBLK(inode, offset);
+	end_lblk = end >> blkbits;
+	if (end_lblk > start_lblk) {
+		ext4_lblk_t zero_blks = end_lblk - start_lblk;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (mode & FALLOC_FL_WRITE_ZEROES)
 			flags = EXT4_GET_BLOCKS_CREATE_ZERO | EXT4_EX_NOCACHE;
 		else
 			flags |= (EXT4_GET_BLOCKS_CONVERT_UNWRITTEN |
 				  EXT4_EX_NOCACHE);
+<<<<<<< HEAD
 		ret = ext4_alloc_file_blocks(file, align_start,
 					     align_end - align_start, new_size,
 					     flags);
+=======
+		ret = ext4_alloc_file_blocks(file, start_lblk, zero_blks,
+					     new_size, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -4770,6 +4883,7 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 	if (IS_ALIGNED(offset | end, blocksize))
 		return ret;
 
+<<<<<<< HEAD
 	/* Zero out partial block at the edges of the range */
 	ret = ext4_zero_partial_blocks(inode, offset, len, &partial_zeroed);
 	if (ret)
@@ -4782,12 +4896,30 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 	}
 
 	handle = ext4_journal_start(inode, EXT4_HT_MISC, 1);
+=======
+	/*
+	 * In worst case we have to writeout two nonadjacent unwritten
+	 * blocks and update the inode
+	 */
+	credits = (2 * ext4_ext_index_trans_blocks(inode, 2)) + 1;
+	if (ext4_should_journal_data(inode))
+		credits += 2;
+	handle = ext4_journal_start(inode, EXT4_HT_MISC, credits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(handle)) {
 		ret = PTR_ERR(handle);
 		ext4_std_error(inode->i_sb, ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Zero out partial block at the edges of the range */
+	ret = ext4_zero_partial_blocks(handle, inode, offset, len);
+	if (ret)
+		goto out_handle;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (new_size)
 		ext4_update_inode_size(inode, new_size);
 	ret = ext4_mark_inode_dirty(handle, inode);
@@ -4795,7 +4927,11 @@ static long ext4_zero_range(struct file *file, loff_t offset,
 		goto out_handle;
 
 	ext4_update_inode_fsync_trans(handle, inode, 1);
+<<<<<<< HEAD
 	if ((file->f_flags & O_SYNC) || IS_SYNC(inode))
+=======
+	if (file->f_flags & O_SYNC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ext4_handle_sync(handle);
 
 out_handle:
@@ -4809,11 +4945,21 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
 	struct inode *inode = file_inode(file);
 	loff_t end = offset + len;
 	loff_t new_size = 0;
+<<<<<<< HEAD
+=======
+	ext4_lblk_t start_lblk, len_lblk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	trace_ext4_fallocate_enter(inode, offset, len, mode);
 	WARN_ON_ONCE(!inode_is_locked(inode));
 
+<<<<<<< HEAD
+=======
+	start_lblk = offset >> inode->i_blkbits;
+	len_lblk = EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* We only support preallocation for extent-based files only. */
 	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
 		ret = -EOPNOTSUPP;
@@ -4828,19 +4974,31 @@ static long ext4_do_fallocate(struct file *file, loff_t offset,
 			goto out;
 	}
 
+<<<<<<< HEAD
 	ret = ext4_alloc_file_blocks(file, offset, len, new_size,
+=======
+	ret = ext4_alloc_file_blocks(file, start_lblk, len_lblk, new_size,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT);
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	if (((file->f_flags & O_SYNC) || IS_SYNC(inode)) &&
 	    EXT4_SB(inode->i_sb)->s_journal) {
+=======
+	if (file->f_flags & O_SYNC && EXT4_SB(inode->i_sb)->s_journal) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = ext4_fc_commit(EXT4_SB(inode->i_sb)->s_journal,
 					EXT4_I(inode)->i_sync_tid);
 	}
 out:
+<<<<<<< HEAD
 	trace_ext4_fallocate_exit(inode, offset,
 			EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits), ret);
+=======
+	trace_ext4_fallocate_exit(inode, offset, len_lblk, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -4993,7 +5151,11 @@ int ext4_convert_unwritten_extents_atomic(handle_t *handle, struct inode *inode,
 		ret = ext4_map_blocks(handle, inode, &map, flags);
 		if (ret != max_blocks)
 			ext4_msg(inode->i_sb, KERN_INFO,
+<<<<<<< HEAD
 				     "inode #%llu: block %u: len %u: "
+=======
+				     "inode #%lu: block %u: len %u: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     "split block mapping found for atomic write, "
 				     "ret = %d",
 				     inode->i_ino, map.m_lblk,
@@ -5012,7 +5174,11 @@ int ext4_convert_unwritten_extents_atomic(handle_t *handle, struct inode *inode,
 
 	if (ret <= 0 || ret2)
 		ext4_warning(inode->i_sb,
+<<<<<<< HEAD
 			     "inode #%llu: block %u: len %u: "
+=======
+			     "inode #%lu: block %u: len %u: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     "returned %d or %d",
 			     inode->i_ino, map.m_lblk,
 			     map.m_len, ret, ret2);
@@ -5069,7 +5235,11 @@ int ext4_convert_unwritten_extents(handle_t *handle, struct inode *inode,
 				      EXT4_EX_NOCACHE);
 		if (ret <= 0)
 			ext4_warning(inode->i_sb,
+<<<<<<< HEAD
 				     "inode #%llu: block %u: len %u: "
+=======
+				     "inode #%lu: block %u: len %u: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     "ext4_ext_map_blocks returned %d",
 				     inode->i_ino, map.m_lblk,
 				     map.m_len, ret);
@@ -5607,7 +5777,11 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
 		goto out_handle;
 
 	ext4_update_inode_fsync_trans(handle, inode, 1);
+<<<<<<< HEAD
 	if ((file->f_flags & O_SYNC) || IS_SYNC(inode))
+=======
+	if (IS_SYNC(inode))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ext4_handle_sync(handle);
 
 out_handle:
@@ -5731,7 +5905,11 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
 		goto out_handle;
 
 	ext4_update_inode_fsync_trans(handle, inode, 1);
+<<<<<<< HEAD
 	if ((file->f_flags & O_SYNC) || IS_SYNC(inode))
+=======
+	if (IS_SYNC(inode))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ext4_handle_sync(handle);
 
 out_handle:

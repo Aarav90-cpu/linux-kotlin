@@ -726,7 +726,10 @@ mt76_alloc_device(struct device *pdev, unsigned int size,
 	INIT_LIST_HEAD(&dev->rxwi_cache);
 	dev->token_size = dev->drv->token_size;
 	INIT_DELAYED_WORK(&dev->scan_work, mt76_scan_work);
+<<<<<<< HEAD
 	spin_lock_init(&dev->scan_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++)
 		skb_queue_head_init(&dev->rx_skb[i]);
@@ -971,9 +974,12 @@ bool mt76_has_tx_pending(struct mt76_phy *phy)
 			return true;
 	}
 
+<<<<<<< HEAD
 	if (atomic_read(&phy->mgmt_tx_pending))
 		return true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return false;
 }
 EXPORT_SYMBOL_GPL(mt76_has_tx_pending);
@@ -1034,10 +1040,16 @@ int __mt76_set_channel(struct mt76_phy *phy, struct cfg80211_chan_def *chandef,
 	int timeout = HZ / 5;
 	int ret;
 
+<<<<<<< HEAD
 	mt76_worker_disable(&dev->tx_worker);
 	mt76_txq_schedule_pending(phy);
 
 	set_bit(MT76_RESET, &phy->state);
+=======
+	set_bit(MT76_RESET, &phy->state);
+
+	mt76_worker_disable(&dev->tx_worker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wait_event_timeout(dev->tx_wait, !mt76_has_tx_pending(phy), timeout);
 	mt76_update_survey(phy);
 
@@ -1721,6 +1733,7 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
 
 	idr_destroy(&wcid->pktid);
 
+<<<<<<< HEAD
 	/* Remove from sta_poll_list to prevent list corruption after reset.
 	 * Without this, mt76_reset_device() reinitializes sta_poll_list but
 	 * leaves wcid->poll_list with stale pointers, causing list corruption
@@ -1731,6 +1744,8 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
 		list_del_init(&wcid->poll_list);
 	spin_unlock_bh(&dev->sta_poll_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock_bh(&phy->tx_lock);
 
 	if (!list_empty(&wcid->tx_list))
@@ -2136,6 +2151,7 @@ u16 mt76_select_links(struct ieee80211_vif *vif, int max_active_links)
 	return sel_links;
 }
 EXPORT_SYMBOL_GPL(mt76_select_links);
+<<<<<<< HEAD
 
 struct mt76_offchannel_cb_data {
 	struct mt76_phy *phy;
@@ -2347,3 +2363,5 @@ void mt76_beacon_mon_check(struct mt76_phy *phy)
 		mt76_beacon_mon_iter, phy);
 }
 EXPORT_SYMBOL_GPL(mt76_beacon_mon_check);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

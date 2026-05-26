@@ -82,6 +82,10 @@ STACKLEAK_ERASING OK: the rest of the thread stack is properly erased
 CFI_FORWARD_PROTO
 CFI_BACKWARD call trace:|ok: control flow unchanged
 FORTIFY_STRSCPY detected buffer overflow
+<<<<<<< HEAD
+=======
+FORTIFY_STR_OBJECT detected buffer overflow
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FORTIFY_STR_MEMBER detected buffer overflow
 FORTIFY_MEM_OBJECT detected buffer overflow
 FORTIFY_MEM_MEMBER detected field-spanning write

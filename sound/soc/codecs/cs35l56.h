@@ -42,7 +42,10 @@ struct cs35l56_private {
 	bool sdw_irq_no_unmask;
 	bool soft_resetting;
 	bool sdw_attached;
+<<<<<<< HEAD
 	bool sdw_in_clock_stop_1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct completion init_completion;
 
 	int speaker_id;
@@ -54,8 +57,11 @@ struct cs35l56_private {
 	bool sysclk_set;
 	u8 sdw_link_num;
 	u8 sdw_unique_id;
+<<<<<<< HEAD
 
 	u8 ambient_ctl_value;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct cs35l56_private *cs35l56_private_from_base(struct cs35l56_base *cs35l56_base)
@@ -81,7 +87,10 @@ void cs35l56_remove(struct cs35l56_private *cs35l56);
 int cs35l56_set_fw_suffix(struct cs35l56_private *cs35l56);
 int cs35l56_set_fw_name(struct snd_soc_component *component);
 int cs35l56_process_xu_properties(struct cs35l56_private *cs35l56);
+<<<<<<< HEAD
 int cs35l56_get_firmware_uid(struct cs35l56_private *cs35l56);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #endif /* ifndef CS35L56_H */

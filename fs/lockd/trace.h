@@ -8,8 +8,12 @@
 #include <linux/tracepoint.h>
 #include <linux/crc32.h>
 #include <linux/nfs.h>
+<<<<<<< HEAD
 
 #include "lockd.h"
+=======
+#include <linux/lockd/lockd.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_LOCKD_V4
 #define NLM_STATUS_LIST					\

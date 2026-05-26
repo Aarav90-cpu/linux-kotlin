@@ -311,6 +311,13 @@ attribute-sets:
         type: unused
         value: 0
       -
+<<<<<<< HEAD
+=======
+        name: unspec
+        type: unused
+        value: 0
+      -
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         name: string
         type: nest
         multi-attr: true
@@ -857,12 +864,15 @@ attribute-sets:
         name: tx-profile
         type: nest
         nested-attributes: profile
+<<<<<<< HEAD
       -
         name: rx-cqe-frames
         type: u32
       -
         name: rx-cqe-nsecs
         type: u32
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   -
     name: pause-stat
@@ -881,6 +891,7 @@ attribute-sets:
       -
         name: rx-frames
         type: u64
+<<<<<<< HEAD
       -
         name: tx-pause-storm-events
         type: u64
@@ -894,6 +905,8 @@ attribute-sets:
             conditions; it indicates catastrophic failure like an OS
             crash. The rate of incrementing is implementation specific.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   -
     name: pause
     attr-cnt-name: __ethtool-a-pause-cnt
@@ -2259,8 +2272,11 @@ operations:
             - tx-aggr-time-usecs
             - rx-profile
             - tx-profile
+<<<<<<< HEAD
             - rx-cqe-frames
             - rx-cqe-nsecs
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       dump: *coalesce-get-op
     -
       name: coalesce-set

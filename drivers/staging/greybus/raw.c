@@ -21,10 +21,16 @@ struct gb_raw {
 	struct list_head list;
 	int list_data;
 	struct mutex list_lock;
+<<<<<<< HEAD
 	struct rw_semaphore disconnect_lock;
 	bool disconnected;
 	struct cdev cdev;
 	struct device dev;
+=======
+	dev_t dev;
+	struct cdev cdev;
+	struct device *device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct raw_data {
@@ -149,6 +155,7 @@ static int gb_raw_send(struct gb_raw *raw, u32 len, const char __user *data)
 	return retval;
 }
 
+<<<<<<< HEAD
 static void raw_dev_release(struct device *dev)
 {
 	struct gb_raw *raw = container_of(dev, struct gb_raw, dev);
@@ -158,6 +165,8 @@ static void raw_dev_release(struct device *dev)
 	kfree(raw);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int gb_raw_probe(struct gb_bundle *bundle,
 			const struct greybus_bundle_id *id)
 {
@@ -174,6 +183,7 @@ static int gb_raw_probe(struct gb_bundle *bundle,
 	if (cport_desc->protocol_id != GREYBUS_PROTOCOL_RAW)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	minor = ida_alloc(&minors, GFP_KERNEL);
 	if (minor < 0)
 		return minor;
@@ -192,25 +202,48 @@ static int gb_raw_probe(struct gb_bundle *bundle,
 	retval = dev_set_name(&raw->dev, "gb!raw%d", minor);
 	if (retval)
 		goto error_put_device;
+=======
+	raw = kzalloc_obj(*raw);
+	if (!raw)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	connection = gb_connection_create(bundle, le16_to_cpu(cport_desc->id),
 					  gb_raw_request_handler);
 	if (IS_ERR(connection)) {
 		retval = PTR_ERR(connection);
+<<<<<<< HEAD
 		goto error_put_device;
+=======
+		goto error_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	INIT_LIST_HEAD(&raw->list);
 	mutex_init(&raw->list_lock);
+<<<<<<< HEAD
 	init_rwsem(&raw->disconnect_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	raw->connection = connection;
 	greybus_set_drvdata(bundle, raw);
 
+<<<<<<< HEAD
+=======
+	minor = ida_alloc(&minors, GFP_KERNEL);
+	if (minor < 0) {
+		retval = minor;
+		goto error_connection_destroy;
+	}
+
+	raw->dev = MKDEV(raw_major, minor);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cdev_init(&raw->cdev, &raw_fops);
 
 	retval = gb_connection_enable(connection);
 	if (retval)
+<<<<<<< HEAD
 		goto error_connection_destroy;
 
 	retval = cdev_device_add(&raw->cdev, &raw->dev);
@@ -227,6 +260,37 @@ error_connection_destroy:
 
 error_put_device:
 	put_device(&raw->dev);
+=======
+		goto error_remove_ida;
+
+	retval = cdev_add(&raw->cdev, raw->dev, 1);
+	if (retval)
+		goto error_connection_disable;
+
+	raw->device = device_create(&raw_class, &connection->bundle->dev,
+				    raw->dev, raw, "gb!raw%d", minor);
+	if (IS_ERR(raw->device)) {
+		retval = PTR_ERR(raw->device);
+		goto error_del_cdev;
+	}
+
+	return 0;
+
+error_del_cdev:
+	cdev_del(&raw->cdev);
+
+error_connection_disable:
+	gb_connection_disable(connection);
+
+error_remove_ida:
+	ida_free(&minors, minor);
+
+error_connection_destroy:
+	gb_connection_destroy(connection);
+
+error_free:
+	kfree(raw);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 }
 
@@ -237,6 +301,7 @@ static void gb_raw_disconnect(struct gb_bundle *bundle)
 	struct raw_data *raw_data;
 	struct raw_data *temp;
 
+<<<<<<< HEAD
 	cdev_device_del(&raw->cdev, &raw->dev);
 
 	down_write(&raw->disconnect_lock);
@@ -244,6 +309,13 @@ static void gb_raw_disconnect(struct gb_bundle *bundle)
 	up_write(&raw->disconnect_lock);
 
 	gb_connection_disable(connection);
+=======
+	// FIXME - handle removing a connection when the char device node is open.
+	device_destroy(&raw_class, raw->dev);
+	cdev_del(&raw->cdev);
+	gb_connection_disable(connection);
+	ida_free(&minors, MINOR(raw->dev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gb_connection_destroy(connection);
 
 	mutex_lock(&raw->list_lock);
@@ -252,7 +324,12 @@ static void gb_raw_disconnect(struct gb_bundle *bundle)
 		kfree(raw_data);
 	}
 	mutex_unlock(&raw->list_lock);
+<<<<<<< HEAD
 	put_device(&raw->dev);
+=======
+
+	kfree(raw);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -285,6 +362,7 @@ static ssize_t raw_write(struct file *file, const char __user *buf,
 	if (count > MAX_PACKET_SIZE)
 		return -E2BIG;
 
+<<<<<<< HEAD
 	down_read(&raw->disconnect_lock);
 
 	if (raw->disconnected) {
@@ -301,6 +379,13 @@ exit:
 	up_read(&raw->disconnect_lock);
 
 	return retval;
+=======
+	retval = gb_raw_send(raw, count, buf);
+	if (retval)
+		return retval;
+
+	return count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t raw_read(struct file *file, char __user *buf, size_t count,

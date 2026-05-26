@@ -43,7 +43,11 @@ struct workqueue_struct *rds_ib_mr_wq;
 
 static void rds_ib_odp_mr_worker(struct work_struct *work);
 
+<<<<<<< HEAD
 struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
+=======
+static struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rds_ib_device *rds_ibdev;
 	struct rds_ib_ipaddr *i_ipaddr;

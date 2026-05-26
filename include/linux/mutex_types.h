@@ -44,7 +44,11 @@ context_lock_struct(mutex) {
 #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
 	struct optimistic_spin_queue osq; /* Spinner MCS lock */
 #endif
+<<<<<<< HEAD
 	struct mutex_waiter	*first_waiter __guarded_by(&wait_lock);
+=======
+	struct list_head	wait_list;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DEBUG_MUTEXES
 	void			*magic;
 #endif

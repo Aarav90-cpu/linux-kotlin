@@ -2378,8 +2378,13 @@ static void mt8189_afe_pcm_free(struct snd_soc_component *component,
 static const struct snd_soc_component_driver mt8189_afe_component = {
 	.name = AFE_PCM_NAME,
 	.probe = mt8189_afe_component_probe,
+<<<<<<< HEAD
 	.pcm_new = mtk_afe_pcm_new,
 	.pcm_free = mt8189_afe_pcm_free,
+=======
+	.pcm_construct = mtk_afe_pcm_new,
+	.pcm_destruct = mt8189_afe_pcm_free,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.open = mt8189_afe_pcm_open,
 	.pointer = mtk_afe_pcm_pointer,
 };

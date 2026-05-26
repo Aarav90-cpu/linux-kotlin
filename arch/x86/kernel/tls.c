@@ -117,7 +117,11 @@ int do_set_thread_area(struct task_struct *p, int idx,
 		       int can_allocate)
 {
 	struct user_desc info;
+<<<<<<< HEAD
 	unsigned short modified_sel;
+=======
+	unsigned short __maybe_unused sel, modified_sel;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (copy_from_user(&info, u_info, sizeof(info)))
 		return -EFAULT;
@@ -153,8 +157,11 @@ int do_set_thread_area(struct task_struct *p, int idx,
 	modified_sel = (idx << 3) | 3;
 
 	if (p == current) {
+<<<<<<< HEAD
 		unsigned short sel;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_X86_64
 		savesegment(ds, sel);
 		if (sel == modified_sel)

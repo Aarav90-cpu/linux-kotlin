@@ -181,6 +181,7 @@ struct ib_umem_dmabuf *ib_umem_dmabuf_get(struct ib_device *device,
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_get);
 
+<<<<<<< HEAD
 static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
 	.allow_peer2peer = true,
 };
@@ -216,13 +217,40 @@ ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
 				   unsigned long offset,
 				   size_t size, int fd, int access,
 				   const struct dma_buf_attach_ops *ops)
+=======
+static void
+ib_umem_dmabuf_unsupported_move_notify(struct dma_buf_attachment *attach)
+{
+	struct ib_umem_dmabuf *umem_dmabuf = attach->importer_priv;
+
+	ibdev_warn_ratelimited(umem_dmabuf->umem.ibdev,
+			       "Invalidate callback should not be called when memory is pinned\n");
+}
+
+static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
+	.allow_peer2peer = true,
+	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
+};
+
+struct ib_umem_dmabuf *
+ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
+					  struct device *dma_device,
+					  unsigned long offset, size_t size,
+					  int fd, int access)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ib_umem_dmabuf *umem_dmabuf;
 	int err;
 
+<<<<<<< HEAD
 	umem_dmabuf =
 		ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
 						   size, fd, access, ops);
+=======
+	umem_dmabuf = ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
+							 size, fd, access,
+							 &ib_umem_dmabuf_attach_pinned_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(umem_dmabuf))
 		return umem_dmabuf;
 
@@ -235,6 +263,10 @@ ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
 	err = ib_umem_dmabuf_map_pages(umem_dmabuf);
 	if (err)
 		goto err_release;
+<<<<<<< HEAD
+=======
+	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return umem_dmabuf;
 
@@ -243,6 +275,7 @@ err_release:
 	ib_umem_release(&umem_dmabuf->umem);
 	return ERR_PTR(err);
 }
+<<<<<<< HEAD
 
 struct ib_umem_dmabuf *
 ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
@@ -314,6 +347,10 @@ void ib_umem_dmabuf_set_revoke_locked(struct ib_umem_dmabuf *umem_dmabuf,
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_set_revoke_locked);
 
+=======
+EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned_with_dma_device);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
 						 unsigned long offset,
 						 size_t size, int fd,
@@ -324,6 +361,7 @@ struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned);
 
+<<<<<<< HEAD
 void ib_umem_dmabuf_revoke_lock(struct ib_umem_dmabuf *umem_dmabuf)
 {
 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
@@ -340,12 +378,26 @@ void ib_umem_dmabuf_revoke_unlock(struct ib_umem_dmabuf *umem_dmabuf)
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_revoke_unlock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf)
 {
 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
 
 	dma_resv_lock(dmabuf->resv, NULL);
+<<<<<<< HEAD
 	ib_umem_dmabuf_revoke_locked(umem_dmabuf->attach);
+=======
+	if (umem_dmabuf->revoked)
+		goto end;
+	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
+	if (umem_dmabuf->pinned) {
+		dma_buf_unpin(umem_dmabuf->attach);
+		umem_dmabuf->pinned = 0;
+	}
+	umem_dmabuf->revoked = 1;
+end:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_resv_unlock(dmabuf->resv);
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_revoke);

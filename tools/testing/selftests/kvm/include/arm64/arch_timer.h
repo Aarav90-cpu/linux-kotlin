@@ -18,6 +18,7 @@ enum arch_timer {
 #define CTL_ISTATUS	(1 << 2)
 
 #define msec_to_cycles(msec)	\
+<<<<<<< HEAD
 	(timer_get_cntfrq() * (u64)(msec) / 1000)
 
 #define usec_to_cycles(usec)	\
@@ -27,11 +28,26 @@ enum arch_timer {
 	((u64)(cycles) * 1000000 / timer_get_cntfrq())
 
 static inline u32 timer_get_cntfrq(void)
+=======
+	(timer_get_cntfrq() * (uint64_t)(msec) / 1000)
+
+#define usec_to_cycles(usec)	\
+	(timer_get_cntfrq() * (uint64_t)(usec) / 1000000)
+
+#define cycles_to_usec(cycles) \
+	((uint64_t)(cycles) * 1000000 / timer_get_cntfrq())
+
+static inline uint32_t timer_get_cntfrq(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return read_sysreg(cntfrq_el0);
 }
 
+<<<<<<< HEAD
 static inline u64 timer_get_cntct(enum arch_timer timer)
+=======
+static inline uint64_t timer_get_cntct(enum arch_timer timer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	isb();
 
@@ -48,7 +64,11 @@ static inline u64 timer_get_cntct(enum arch_timer timer)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void timer_set_cval(enum arch_timer timer, u64 cval)
+=======
+static inline void timer_set_cval(enum arch_timer timer, uint64_t cval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -64,7 +84,11 @@ static inline void timer_set_cval(enum arch_timer timer, u64 cval)
 	isb();
 }
 
+<<<<<<< HEAD
 static inline u64 timer_get_cval(enum arch_timer timer)
+=======
+static inline uint64_t timer_get_cval(enum arch_timer timer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -79,7 +103,11 @@ static inline u64 timer_get_cval(enum arch_timer timer)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void timer_set_tval(enum arch_timer timer, s32 tval)
+=======
+static inline void timer_set_tval(enum arch_timer timer, int32_t tval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -95,7 +123,11 @@ static inline void timer_set_tval(enum arch_timer timer, s32 tval)
 	isb();
 }
 
+<<<<<<< HEAD
 static inline s32 timer_get_tval(enum arch_timer timer)
+=======
+static inline int32_t timer_get_tval(enum arch_timer timer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	isb();
 	switch (timer) {
@@ -111,7 +143,11 @@ static inline s32 timer_get_tval(enum arch_timer timer)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void timer_set_ctl(enum arch_timer timer, u32 ctl)
+=======
+static inline void timer_set_ctl(enum arch_timer timer, uint32_t ctl)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -127,7 +163,11 @@ static inline void timer_set_ctl(enum arch_timer timer, u32 ctl)
 	isb();
 }
 
+<<<<<<< HEAD
 static inline u32 timer_get_ctl(enum arch_timer timer)
+=======
+static inline uint32_t timer_get_ctl(enum arch_timer timer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -142,15 +182,26 @@ static inline u32 timer_get_ctl(enum arch_timer timer)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void timer_set_next_cval_ms(enum arch_timer timer, u32 msec)
 {
 	u64 now_ct = timer_get_cntct(timer);
 	u64 next_ct = now_ct + msec_to_cycles(msec);
+=======
+static inline void timer_set_next_cval_ms(enum arch_timer timer, uint32_t msec)
+{
+	uint64_t now_ct = timer_get_cntct(timer);
+	uint64_t next_ct = now_ct + msec_to_cycles(msec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	timer_set_cval(timer, next_ct);
 }
 
+<<<<<<< HEAD
 static inline void timer_set_next_tval_ms(enum arch_timer timer, u32 msec)
+=======
+static inline void timer_set_next_tval_ms(enum arch_timer timer, uint32_t msec)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	timer_set_tval(timer, msec_to_cycles(msec));
 }

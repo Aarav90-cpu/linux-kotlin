@@ -1209,6 +1209,7 @@ ipv6_fcnal_runtime()
 	run_cmd "$IP ro replace 2001:db8:101::1/128 nhid 124"
 	log_test $? 0 "IPv6 route using a group after replacing v4 gateways"
 
+<<<<<<< HEAD
 	# Replacing an IPv6 nexthop with an IPv4 nexthop should update has_v4
 	# for all groups using it, preventing IPv6 routes from referencing the
 	# group after the replace.
@@ -1231,6 +1232,8 @@ ipv6_fcnal_runtime()
 	run_cmd "ip netns exec $me ping -6 2001:db8:101::1 -c1 -w$PING_TIMEOUT"
 	log_test $? 2 "Ping unreachable after rejected route"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	$IP nexthop flush >/dev/null 2>&1
 
 	#

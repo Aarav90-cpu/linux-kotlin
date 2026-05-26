@@ -297,7 +297,11 @@ static void zonefs_handle_io_error(struct inode *inode, struct blk_zone *zone,
 	 */
 	if (isize != data_size)
 		zonefs_warn(sb,
+<<<<<<< HEAD
 			    "inode %llu: invalid size %lld (should be %lld)\n",
+=======
+			    "inode %lu: invalid size %lld (should be %lld)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    inode->i_ino, isize, data_size);
 
 	/*
@@ -308,7 +312,11 @@ static void zonefs_handle_io_error(struct inode *inode, struct blk_zone *zone,
 	 */
 	if ((z->z_flags & ZONEFS_ZONE_OFFLINE) ||
 	    (sbi->s_mount_opts & ZONEFS_MNTOPT_ERRORS_ZOL)) {
+<<<<<<< HEAD
 		zonefs_warn(sb, "inode %llu: read/write access disabled\n",
+=======
+		zonefs_warn(sb, "inode %lu: read/write access disabled\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    inode->i_ino);
 		if (!(z->z_flags & ZONEFS_ZONE_OFFLINE))
 			z->z_flags |= ZONEFS_ZONE_OFFLINE;
@@ -316,7 +324,11 @@ static void zonefs_handle_io_error(struct inode *inode, struct blk_zone *zone,
 		data_size = 0;
 	} else if ((z->z_flags & ZONEFS_ZONE_READONLY) ||
 		   (sbi->s_mount_opts & ZONEFS_MNTOPT_ERRORS_ZRO)) {
+<<<<<<< HEAD
 		zonefs_warn(sb, "inode %llu: write access disabled\n",
+=======
+		zonefs_warn(sb, "inode %lu: write access disabled\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    inode->i_ino);
 		if (!(z->z_flags & ZONEFS_ZONE_READONLY))
 			z->z_flags |= ZONEFS_ZONE_READONLY;
@@ -402,7 +414,11 @@ void __zonefs_io_error(struct inode *inode, bool write)
 	memalloc_noio_restore(noio_flag);
 
 	if (ret != 1) {
+<<<<<<< HEAD
 		zonefs_err(sb, "Get inode %llu zone information failed %d\n",
+=======
+		zonefs_err(sb, "Get inode %lu zone information failed %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   inode->i_ino, ret);
 		zonefs_warn(sb, "remounting filesystem read-only\n");
 		sb->s_flags |= SB_RDONLY;

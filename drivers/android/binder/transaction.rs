@@ -8,7 +8,11 @@ use kernel::{
     seq_print,
     sync::atomic::{ordering::Relaxed, Atomic},
     sync::{Arc, SpinLock},
+<<<<<<< HEAD
     task::{Kuid, Pid},
+=======
+    task::Kuid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     time::{Instant, Monotonic},
     types::ScopeGuard,
 };
@@ -24,6 +28,7 @@ use crate::{
     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverToRead,
 };
 
+<<<<<<< HEAD
 #[derive(Zeroable)]
 pub(crate) struct TransactionInfo {
     pub(crate) from_pid: Pid,
@@ -51,6 +56,8 @@ impl TransactionInfo {
     }
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 use core::mem::offset_of;
 use kernel::bindings::rb_transaction_layout;
 pub(crate) const TRANSACTION_LAYOUT: rb_transaction_layout = rb_transaction_layout {
@@ -79,6 +86,10 @@ pub(crate) struct Transaction {
     data_address: usize,
     sender_euid: Kuid,
     txn_security_ctx_off: Option<usize>,
+<<<<<<< HEAD
+=======
+    pub(crate) oneway_spam_detected: bool,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     start_time: Instant<Monotonic>,
 }
 
@@ -91,16 +102,27 @@ impl Transaction {
         node_ref: NodeRef,
         from_parent: Option<DArc<Transaction>>,
         from: &Arc<Thread>,
+<<<<<<< HEAD
         info: &mut TransactionInfo,
     ) -> BinderResult<DLArc<Self>> {
         let debug_id = super::next_debug_id();
+=======
+        tr: &BinderTransactionDataSg,
+    ) -> BinderResult<DLArc<Self>> {
+        let debug_id = super::next_debug_id();
+        let trd = &tr.transaction_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
         let to = node_ref.node.owner.clone();
         let mut alloc = match from.copy_transaction_data(
             to.clone(),
+<<<<<<< HEAD
             info,
+=======
+            tr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             debug_id,
             allow_fds,
             txn_security_ctx_off.as_mut(),
@@ -113,14 +135,23 @@ impl Transaction {
                 return Err(err);
             }
         };
+<<<<<<< HEAD
         if info.is_oneway() {
+=======
+        let oneway_spam_detected = alloc.oneway_spam_detected;
+        if trd.flags & TF_ONE_WAY != 0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             if from_parent.is_some() {
                 pr_warn!("Oneway transaction should not be in a transaction stack.");
                 return Err(EINVAL.into());
             }
             alloc.set_info_oneway_node(node_ref.node.clone());
         }
+<<<<<<< HEAD
         if info.flags & TF_CLEAR_BUF != 0 {
+=======
+        if trd.flags & TF_CLEAR_BUF != 0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             alloc.set_info_clear_on_drop();
         }
         let target_node = node_ref.node.clone();
@@ -131,6 +162,7 @@ impl Transaction {
             debug_id,
             target_node: Some(target_node),
             from_parent,
+<<<<<<< HEAD
             sender_euid: Kuid::current_euid(),
             from: from.clone(),
             to,
@@ -138,10 +170,23 @@ impl Transaction {
             flags: info.flags,
             data_size: info.data_size,
             offsets_size: info.offsets_size,
+=======
+            sender_euid: from.process.task.euid(),
+            from: from.clone(),
+            to,
+            code: trd.code,
+            flags: trd.flags,
+            data_size: trd.data_size as _,
+            offsets_size: trd.offsets_size as _,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             data_address,
             allocation <- kernel::new_spinlock!(Some(alloc.success()), "Transaction::new"),
             is_outstanding: Atomic::new(false),
             txn_security_ctx_off,
+<<<<<<< HEAD
+=======
+            oneway_spam_detected,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             start_time: Instant::now(),
         }))?)
     }
@@ -149,6 +194,7 @@ impl Transaction {
     pub(crate) fn new_reply(
         from: &Arc<Thread>,
         to: Arc<Process>,
+<<<<<<< HEAD
         info: &mut TransactionInfo,
         allow_fds: bool,
     ) -> BinderResult<DLArc<Self>> {
@@ -162,12 +208,30 @@ impl Transaction {
                 }
             };
         if info.flags & TF_CLEAR_BUF != 0 {
+=======
+        tr: &BinderTransactionDataSg,
+        allow_fds: bool,
+    ) -> BinderResult<DLArc<Self>> {
+        let debug_id = super::next_debug_id();
+        let trd = &tr.transaction_data;
+        let mut alloc = match from.copy_transaction_data(to.clone(), tr, debug_id, allow_fds, None)
+        {
+            Ok(alloc) => alloc,
+            Err(err) => {
+                pr_warn!("Failure in copy_transaction_data: {:?}", err);
+                return Err(err);
+            }
+        };
+        let oneway_spam_detected = alloc.oneway_spam_detected;
+        if trd.flags & TF_CLEAR_BUF != 0 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             alloc.set_info_clear_on_drop();
         }
         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
             debug_id,
             target_node: None,
             from_parent: None,
+<<<<<<< HEAD
             sender_euid: Kuid::current_euid(),
             from: from.clone(),
             to,
@@ -175,10 +239,23 @@ impl Transaction {
             flags: info.flags,
             data_size: info.data_size,
             offsets_size: info.offsets_size,
+=======
+            sender_euid: from.process.task.euid(),
+            from: from.clone(),
+            to,
+            code: trd.code,
+            flags: trd.flags,
+            data_size: trd.data_size as _,
+            offsets_size: trd.offsets_size as _,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             data_address: alloc.ptr,
             allocation <- kernel::new_spinlock!(Some(alloc.success()), "Transaction::new"),
             is_outstanding: Atomic::new(false),
             txn_security_ctx_off: None,
+<<<<<<< HEAD
+=======
+            oneway_spam_detected,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             start_time: Instant::now(),
         }))?)
     }
@@ -268,7 +345,11 @@ impl Transaction {
     /// stack, otherwise uses the destination process.
     ///
     /// Not used for replies.
+<<<<<<< HEAD
     pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderResult {
+=======
+    pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // Defined before `process_inner` so that the destructor runs after releasing the lock.
         let mut _t_outdated;
 
@@ -318,7 +399,10 @@ impl Transaction {
         }
 
         let res = if let Some(thread) = self.find_target_thread() {
+<<<<<<< HEAD
             info.to_tid = thread.id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             crate::trace::trace_transaction(false, &self, Some(&thread.task));
             match thread.push_work(self) {
                 PushWorkRes::Ok => Ok(()),
@@ -451,8 +535,11 @@ impl DeliverToRead for Transaction {
 
         self.drop_outstanding_txn();
 
+<<<<<<< HEAD
         crate::trace::trace_transaction_received(&self);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // When this is not a reply and not a oneway transaction, update `current_transaction`. If
         // it's a reply, `current_transaction` has already been updated appropriately.
         if self.target_node.is_some() && tr_sec.transaction_data.flags & TF_ONE_WAY == 0 {

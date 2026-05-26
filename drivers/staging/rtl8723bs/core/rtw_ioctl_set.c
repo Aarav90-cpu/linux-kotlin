@@ -11,10 +11,19 @@ u8 rtw_validate_bssid(u8 *bssid)
 {
 	u8 ret = true;
 
+<<<<<<< HEAD
 	if (is_zero_ether_addr(bssid) ||
 	    is_broadcast_ether_addr(bssid) ||
 	    is_multicast_ether_addr(bssid))
 		ret = false;
+=======
+	if (is_zero_mac_addr(bssid)
+		|| is_broadcast_mac_addr(bssid)
+		|| is_multicast_mac_addr(bssid)
+	) {
+		ret = false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -59,7 +68,13 @@ u8 rtw_do_join(struct adapter *padapter)
 		/* when set_ssid/set_bssid for rtw_do_join(), but scanning queue is empty */
 		/* we try to issue sitesurvey firstly */
 
+<<<<<<< HEAD
 		if (!pmlmepriv->link_detect_info.busy_traffic || rtw_to_roam(padapter) > 0) {
+=======
+		if (pmlmepriv->LinkDetectInfo.bBusyTraffic == false
+			|| rtw_to_roam(padapter) > 0
+		) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*  submit site_survey_cmd */
 			ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
 			if (ret != _SUCCESS)
@@ -109,8 +124,14 @@ u8 rtw_do_join(struct adapter *padapter)
 
 				/* when set_ssid/set_bssid for rtw_do_join(), but there are no desired bss in scanning queue */
 				/* we try to issue sitesurvey firstly */
+<<<<<<< HEAD
 				if (!pmlmepriv->link_detect_info.busy_traffic ||
 				    rtw_to_roam(padapter) > 0) {
+=======
+				if (pmlmepriv->LinkDetectInfo.bBusyTraffic == false
+					|| rtw_to_roam(padapter) > 0
+				) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					ret = rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
 					if (ret != _SUCCESS)
 						pmlmepriv->to_join = false;
@@ -374,8 +395,13 @@ u8 rtw_set_802_11_bssid_list_scan(struct adapter *padapter, struct ndis_802_11_s
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING) ||
 	    pmlmepriv->link_detect_info.busy_traffic) {
+=======
+	if ((check_fwstate(pmlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true) ||
+		(pmlmepriv->LinkDetectInfo.bBusyTraffic == true)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*  Scan or linking is in progress, do nothing. */
 		res = true;
 

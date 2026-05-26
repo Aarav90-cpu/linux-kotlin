@@ -5,6 +5,7 @@
 //! C header: [`include/drm/drm_gem.h`](srctree/include/drm/drm_gem.h)
 
 use crate::{
+<<<<<<< HEAD
     bindings,
     drm::{
         self,
@@ -65,6 +66,17 @@ macro_rules! impl_aref_for_gem_obj {
 }
 #[cfg_attr(not(CONFIG_RUST_DRM_GEM_SHMEM_HELPER), allow(unused))]
 pub(crate) use impl_aref_for_gem_obj;
+=======
+    alloc::flags::*,
+    bindings, drm,
+    drm::driver::{AllocImpl, AllocOps},
+    error::{to_result, Result},
+    prelude::*,
+    sync::aref::{ARef, AlwaysRefCounted},
+    types::Opaque,
+};
+use core::{ops::Deref, ptr::NonNull};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /// A type alias for retrieving a [`Driver`]s [`DriverFile`] implementation from its
 /// [`DriverObject`] implementation.
@@ -78,6 +90,7 @@ pub trait DriverObject: Sync + Send + Sized {
     /// Parent `Driver` for this object.
     type Driver: drm::Driver;
 
+<<<<<<< HEAD
     /// The data type to use for passing arguments to [`DriverObject::new`].
     type Args;
 
@@ -87,6 +100,10 @@ pub trait DriverObject: Sync + Send + Sized {
         size: usize,
         args: Self::Args,
     ) -> impl PinInit<Self, Error>;
+=======
+    /// Create a new driver data object for a GEM object of a given size.
+    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     /// Open a new handle to an existing object, associated with a File.
     fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) -> Result {
@@ -220,6 +237,7 @@ pub trait BaseObject: IntoGEMObject {
 
 impl<T: IntoGEMObject> BaseObject for T {}
 
+<<<<<<< HEAD
 /// Crate-private base operations shared by all GEM object classes.
 #[cfg_attr(not(CONFIG_RUST_DRM_GEM_SHMEM_HELPER), expect(unused))]
 pub(crate) trait BaseObjectPrivate: IntoGEMObject {
@@ -232,6 +250,8 @@ pub(crate) trait BaseObjectPrivate: IntoGEMObject {
 
 impl<T: IntoGEMObject> BaseObjectPrivate for T {}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// A base GEM object.
 ///
 /// # Invariants
@@ -265,11 +285,19 @@ impl<T: DriverObject> Object<T> {
     };
 
     /// Create a new GEM object.
+<<<<<<< HEAD
     pub fn new(dev: &drm::Device<T::Driver>, size: usize, args: T::Args) -> Result<ARef<Self>> {
         let obj: Pin<KBox<Self>> = KBox::pin_init(
             try_pin_init!(Self {
                 obj: Opaque::new(bindings::drm_gem_object::default()),
                 data <- T::new(dev, size, args),
+=======
+    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
+        let obj: Pin<KBox<Self>> = KBox::pin_init(
+            try_pin_init!(Self {
+                obj: Opaque::new(bindings::drm_gem_object::default()),
+                data <- T::new(dev, size),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             }),
             GFP_KERNEL,
         )?;
@@ -331,7 +359,25 @@ impl<T: DriverObject> Object<T> {
     }
 }
 
+<<<<<<< HEAD
 impl_aref_for_gem_obj!(impl<T> for Object<T> where T: DriverObject);
+=======
+// SAFETY: Instances of `Object<T>` are always reference-counted.
+unsafe impl<T: DriverObject> crate::sync::aref::AlwaysRefCounted for Object<T> {
+    fn inc_ref(&self) {
+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+    }
+
+    unsafe fn dec_ref(obj: NonNull<Self>) {
+        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
+        let obj = unsafe { obj.as_ref() };
+
+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
+    }
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 impl<T: DriverObject> super::private::Sealed for Object<T> {}
 

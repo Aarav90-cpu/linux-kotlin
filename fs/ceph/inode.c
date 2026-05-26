@@ -638,7 +638,10 @@ struct inode *ceph_alloc_inode(struct super_block *sb)
 
 	ci->i_max_bytes = 0;
 	ci->i_max_files = 0;
+<<<<<<< HEAD
 	ci->i_subvolume_id = CEPH_SUBVOLUME_ID_NONE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(&ci->i_dir_layout, 0, sizeof(ci->i_dir_layout));
 	memset(&ci->i_cached_layout, 0, sizeof(ci->i_cached_layout));
@@ -743,8 +746,11 @@ void ceph_evict_inode(struct inode *inode)
 
 	percpu_counter_dec(&mdsc->metric.total_inodes);
 
+<<<<<<< HEAD
 	ci->i_subvolume_id = CEPH_SUBVOLUME_ID_NONE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netfs_wait_for_outstanding_io(inode);
 	truncate_inode_pages_final(&inode->i_data);
 	if (inode_state_read_once(inode) & I_PINNING_NETFS_WB)
@@ -876,6 +882,7 @@ int ceph_fill_file_size(struct inode *inode, int issued,
 	return queue_trunc;
 }
 
+<<<<<<< HEAD
 /*
  * Set the subvolume ID for an inode.
  *
@@ -910,6 +917,8 @@ void ceph_inode_set_subvolume(struct inode *inode, u64 subvolume_id)
 	WRITE_ONCE(ci->i_subvolume_id, subvolume_id);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ceph_fill_file_time(struct inode *inode, int issued,
 			 u64 time_warp_seq, struct timespec64 *ctime,
 			 struct timespec64 *mtime, struct timespec64 *atime)
@@ -1113,7 +1122,10 @@ int ceph_fill_inode(struct inode *inode, struct page *locked_page,
 	new_issued = ~issued & info_caps;
 
 	__ceph_update_quota(ci, iinfo->max_bytes, iinfo->max_files);
+<<<<<<< HEAD
 	ceph_inode_set_subvolume(inode, iinfo->subvolume_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_FS_ENCRYPTION
 	if (iinfo->fscrypt_auth_len &&
@@ -1621,8 +1633,11 @@ int ceph_fill_trace(struct super_block *sb, struct ceph_mds_request *req)
 			goto done;
 		}
 		if (parent_dir) {
+<<<<<<< HEAD
 			ceph_inode_set_subvolume(parent_dir,
 						 rinfo->diri.subvolume_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			err = ceph_fill_inode(parent_dir, NULL, &rinfo->diri,
 					      rinfo->dirfrag, session, -1,
 					      &req->r_caps_reservation);
@@ -1711,7 +1726,10 @@ retry_lookup:
 		BUG_ON(!req->r_target_inode);
 
 		in = req->r_target_inode;
+<<<<<<< HEAD
 		ceph_inode_set_subvolume(in, rinfo->targeti.subvolume_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = ceph_fill_inode(in, req->r_locked_page, &rinfo->targeti,
 				NULL, session,
 				(!test_bit(CEPH_MDS_R_ABORTED, &req->r_req_flags) &&

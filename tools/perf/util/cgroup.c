@@ -417,6 +417,10 @@ static bool has_pattern_string(const char *str)
 int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgroup)
 {
 	struct evlist *orig_list, *tmp_list;
+<<<<<<< HEAD
+=======
+	struct evsel *pos, *evsel, *leader;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rblist orig_metric_events;
 	struct cgroup *cgrp = NULL;
 	struct cgroup_name *cn;
@@ -451,7 +455,10 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
 		goto out_err;
 
 	list_for_each_entry(cn, &cgroup_list, list) {
+<<<<<<< HEAD
 		struct evsel *pos;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		char *name;
 
 		if (!cn->used)
@@ -467,6 +474,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
 		if (cgrp == NULL)
 			continue;
 
+<<<<<<< HEAD
 		/* copy the list and set to the new cgroup. */
 		evlist__for_each_entry(orig_list, pos) {
 			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
@@ -498,6 +506,23 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
 		evlist__for_each_entry(orig_list, pos)
 			pos->priv = NULL;
 
+=======
+		leader = NULL;
+		evlist__for_each_entry(orig_list, pos) {
+			evsel = evsel__clone(/*dest=*/NULL, pos);
+			if (evsel == NULL)
+				goto out_err;
+
+			cgroup__put(evsel->cgrp);
+			evsel->cgrp = cgroup__get(cgrp);
+
+			if (evsel__is_group_leader(pos))
+				leader = evsel;
+			evsel__set_leader(evsel, leader);
+
+			evlist__add(tmp_list, evsel);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* cgroup__new() has a refcount, release it here */
 		cgroup__put(cgrp);
 		nr_cgroups++;

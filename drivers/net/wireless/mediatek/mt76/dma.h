@@ -174,9 +174,13 @@ void mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
 static inline void
 mt76_dma_reset_tx_queue(struct mt76_dev *dev, struct mt76_queue *q)
 {
+<<<<<<< HEAD
 	bool reset_idx = q && !mt76_queue_is_npu_tx(q);
 
 	dev->queue_ops->reset_q(dev, q, reset_idx);
+=======
+	dev->queue_ops->reset_q(dev, q, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mtk_wed_device_active(&dev->mmio.wed))
 		mt76_wed_dma_setup(dev, q, true);
 }

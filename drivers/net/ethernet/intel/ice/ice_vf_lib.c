@@ -804,12 +804,16 @@ void ice_reset_all_vfs(struct ice_pf *pf)
 			ice_vf_ctrl_invalidate_vsi(vf);
 
 		ice_vf_pre_vsi_rebuild(vf);
+<<<<<<< HEAD
 		if (ice_vf_rebuild_vsi(vf)) {
 			dev_err(dev, "VF %u VSI rebuild failed, leaving VF disabled\n",
 				vf->vf_id);
 			mutex_unlock(&vf->cfg_lock);
 			continue;
 		}
+=======
+		ice_vf_rebuild_vsi(vf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ice_vf_post_vsi_rebuild(vf);
 
 		ice_eswitch_attach_vf(pf, vf);
@@ -1215,8 +1219,13 @@ bool ice_is_vf_trusted(struct ice_vf *vf)
  */
 bool ice_vf_has_no_qs_ena(struct ice_vf *vf)
 {
+<<<<<<< HEAD
 	return bitmap_empty(vf->rxq_ena, ICE_MAX_RSS_QS_PER_VF) &&
 		bitmap_empty(vf->txq_ena, ICE_MAX_RSS_QS_PER_VF);
+=======
+	return (!bitmap_weight(vf->rxq_ena, ICE_MAX_RSS_QS_PER_VF) &&
+		!bitmap_weight(vf->txq_ena, ICE_MAX_RSS_QS_PER_VF));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

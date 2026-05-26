@@ -39,7 +39,11 @@ int xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p);
 int xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p);
 int xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p);
 
+<<<<<<< HEAD
 int xe_gt_sriov_vf_wait_valid_ggtt(struct xe_gt *gt);
 int xe_vf_migration_fixups_complete_count(struct xe_gt *gt);
+=======
+void xe_gt_sriov_vf_wait_valid_ggtt(struct xe_gt *gt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

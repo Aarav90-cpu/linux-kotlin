@@ -18,7 +18,11 @@ const char help_fmt[] =
 "It's required for the testcases to be serial, as only a single host-wide sched_ext\n"
 "scheduler may be loaded at any given time."
 "\n"
+<<<<<<< HEAD
 "Usage: %s [-t TEST] [-s] [-l] [-q]\n"
+=======
+"Usage: %s [-t TEST] [-h]\n"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 "\n"
 "  -t TEST       Only run tests whose name includes this string\n"
 "  -s            Include print output for skipped tests\n"
@@ -133,8 +137,11 @@ static bool test_valid(const struct scx_test *test)
 int main(int argc, char **argv)
 {
 	const char *filter = NULL;
+<<<<<<< HEAD
 	const char *failed_tests[MAX_SCX_TESTS];
 	const char *skipped_tests[MAX_SCX_TESTS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned testnum = 0, i;
 	unsigned passed = 0, skipped = 0, failed = 0;
 	int opt;
@@ -164,6 +171,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+<<<<<<< HEAD
 	if (optind < argc) {
 		fprintf(stderr, "Unexpected argument '%s'. Use -t to filter tests.\n",
 			argv[optind]);
@@ -184,6 +192,8 @@ int main(int argc, char **argv)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < __scx_num_tests; i++) {
 		enum scx_test_status status;
 		struct scx_test *test = &__scx_tests[i];
@@ -220,10 +230,17 @@ int main(int argc, char **argv)
 			passed++;
 			break;
 		case SCX_TEST_SKIP:
+<<<<<<< HEAD
 			skipped_tests[skipped++] = test->name;
 			break;
 		case SCX_TEST_FAIL:
 			failed_tests[failed++] = test->name;
+=======
+			skipped++;
+			break;
+		case SCX_TEST_FAIL:
+			failed++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
@@ -232,6 +249,7 @@ int main(int argc, char **argv)
 	printf("PASSED:  %u\n", passed);
 	printf("SKIPPED: %u\n", skipped);
 	printf("FAILED:  %u\n", failed);
+<<<<<<< HEAD
 	if (skipped > 0) {
 		printf("\nSkipped tests:\n");
 		for (i = 0; i < skipped; i++)
@@ -244,6 +262,10 @@ int main(int argc, char **argv)
 	}
 
 	return failed > 0 ? 1 : 0;
+=======
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void scx_test_register(struct scx_test *test)

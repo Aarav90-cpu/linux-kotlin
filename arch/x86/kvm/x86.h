@@ -188,6 +188,7 @@ static inline bool kvm_can_set_cpuid_and_feature_msrs(struct kvm_vcpu *vcpu)
 	return vcpu->arch.last_vmentry_cpu == -1 && !is_guest_mode(vcpu);
 }
 
+<<<<<<< HEAD
 /*
  * WARN if a nested VM-Enter is pending completion, and userspace hasn't gained
  * control since the nested VM-Enter was initiated (in which case, userspace
@@ -198,6 +199,8 @@ static inline void kvm_warn_on_nested_run_pending(struct kvm_vcpu *vcpu)
 	WARN_ON_ONCE(vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void kvm_set_mp_state(struct kvm_vcpu *vcpu, int mp_state)
 {
 	vcpu->arch.mp_state = mp_state;
@@ -722,12 +725,20 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
 	__reserved_bits;                                \
 })
 
+<<<<<<< HEAD
 int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
 		    unsigned int bytes, void *data);
+=======
+int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+			  void *dst);
+int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+			 void *dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kvm_sev_es_string_io(struct kvm_vcpu *vcpu, unsigned int size,
 			 unsigned int port, void *data,  unsigned int count,
 			 int in);
 
+<<<<<<< HEAD
 static inline void __kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
 						    gpa_t gpa, unsigned int len,
 						    const void *data,
@@ -754,6 +765,8 @@ static inline void kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
 					 frag->data, vcpu->mmio_is_write);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool user_exit_on_hypercall(struct kvm *kvm, unsigned long hc_nr)
 {
 	return kvm->arch.hypercall_exit_enabled & BIT(hc_nr);

@@ -144,11 +144,19 @@ struct fujitsu_laptop {
 	bool charge_control_supported;
 };
 
+<<<<<<< HEAD
 static struct device *fext;
 
 /* Fujitsu ACPI interface function */
 
 static int call_fext_func(struct device *dev,
+=======
+static struct acpi_device *fext;
+
+/* Fujitsu ACPI interface function */
+
+static int call_fext_func(struct acpi_device *device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  int func, int op, int feature, int state)
 {
 	union acpi_object params[4] = {
@@ -158,6 +166,7 @@ static int call_fext_func(struct device *dev,
 		{ .integer.type = ACPI_TYPE_INTEGER, .integer.value = state }
 	};
 	struct acpi_object_list arg_list = { 4, params };
+<<<<<<< HEAD
 	acpi_handle handle = ACPI_HANDLE(dev);
 	unsigned long long value;
 	acpi_status status;
@@ -169,6 +178,20 @@ static int call_fext_func(struct device *dev,
 	}
 
 	acpi_handle_debug(handle, "FUNC 0x%x (args 0x%x, 0x%x, 0x%x) returned 0x%x\n",
+=======
+	unsigned long long value;
+	acpi_status status;
+
+	status = acpi_evaluate_integer(device->handle, "FUNC", &arg_list,
+				       &value);
+	if (ACPI_FAILURE(status)) {
+		acpi_handle_err(device->handle, "Failed to evaluate FUNC\n");
+		return -ENODEV;
+	}
+
+	acpi_handle_debug(device->handle,
+			  "FUNC 0x%x (args 0x%x, 0x%x, 0x%x) returned 0x%x\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  func, op, feature, state, (int)value);
 	return value;
 }
@@ -250,9 +273,15 @@ static struct acpi_battery_hook battery_hook = {
  * These functions are intended to be called from acpi_fujitsu_laptop_add and
  * acpi_fujitsu_laptop_remove.
  */
+<<<<<<< HEAD
 static int fujitsu_battery_charge_control_add(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static int fujitsu_battery_charge_control_add(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int s006_cc_return;
 
 	priv->charge_control_supported = false;
@@ -273,9 +302,15 @@ static int fujitsu_battery_charge_control_add(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void fujitsu_battery_charge_control_remove(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static void fujitsu_battery_charge_control_remove(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv->charge_control_supported)
 		battery_hook_unregister(&battery_hook);
@@ -283,16 +318,26 @@ static void fujitsu_battery_charge_control_remove(struct device *dev)
 
 /* Hardware access for LCD brightness control */
 
+<<<<<<< HEAD
 static int set_lcd_level(struct device *dev, int level)
 {
 	struct fujitsu_bl *priv = dev_get_drvdata(dev);
 	acpi_handle handle = ACPI_HANDLE(dev);
+=======
+static int set_lcd_level(struct acpi_device *device, int level)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status status;
 	char *method;
 
 	switch (use_alt_lcd_levels) {
 	case -1:
+<<<<<<< HEAD
 		if (acpi_has_method(handle, "SBL2"))
+=======
+		if (acpi_has_method(device->handle, "SBL2"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			method = "SBL2";
 		else
 			method = "SBLL";
@@ -305,14 +350,26 @@ static int set_lcd_level(struct device *dev, int level)
 		break;
 	}
 
+<<<<<<< HEAD
 	acpi_handle_debug(handle, "set lcd level via %s [%d]\n", method, level);
+=======
+	acpi_handle_debug(device->handle, "set lcd level via %s [%d]\n", method,
+			  level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (level < 0 || level >= priv->max_brightness)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	status = acpi_execute_simple_method(handle, method, level);
 	if (ACPI_FAILURE(status)) {
 		acpi_handle_err(handle, "Failed to evaluate %s\n", method);
+=======
+	status = acpi_execute_simple_method(device->handle, method, level);
+	if (ACPI_FAILURE(status)) {
+		acpi_handle_err(device->handle, "Failed to evaluate %s\n",
+				method);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -321,6 +378,7 @@ static int set_lcd_level(struct device *dev, int level)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int get_lcd_level(struct device *dev)
 {
 	struct fujitsu_bl *priv = dev_get_drvdata(dev);
@@ -331,6 +389,17 @@ static int get_lcd_level(struct device *dev)
 	acpi_handle_debug(handle, "get lcd level via GBLL\n");
 
 	status = acpi_evaluate_integer(handle, "GBLL", NULL, &state);
+=======
+static int get_lcd_level(struct acpi_device *device)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+	unsigned long long state = 0;
+	acpi_status status = AE_OK;
+
+	acpi_handle_debug(device->handle, "get lcd level via GBLL\n");
+
+	status = acpi_evaluate_integer(device->handle, "GBLL", NULL, &state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ACPI_FAILURE(status))
 		return 0;
 
@@ -339,6 +408,7 @@ static int get_lcd_level(struct device *dev)
 	return priv->brightness_level;
 }
 
+<<<<<<< HEAD
 static int get_max_brightness(struct device *dev)
 {
 	struct fujitsu_bl *priv = dev_get_drvdata(dev);
@@ -349,6 +419,17 @@ static int get_max_brightness(struct device *dev)
 	acpi_handle_debug(handle, "get max lcd level via RBLL\n");
 
 	status = acpi_evaluate_integer(handle, "RBLL", NULL, &state);
+=======
+static int get_max_brightness(struct acpi_device *device)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+	unsigned long long state = 0;
+	acpi_status status = AE_OK;
+
+	acpi_handle_debug(device->handle, "get max lcd level via RBLL\n");
+
+	status = acpi_evaluate_integer(device->handle, "RBLL", NULL, &state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ACPI_FAILURE(status))
 		return -1;
 
@@ -361,13 +442,24 @@ static int get_max_brightness(struct device *dev)
 
 static int bl_get_brightness(struct backlight_device *b)
 {
+<<<<<<< HEAD
 	struct device *dev = bl_get_data(b);
 
 	return b->props.power == BACKLIGHT_POWER_OFF ? 0 : get_lcd_level(dev);
+=======
+	struct acpi_device *device = bl_get_data(b);
+
+	return b->props.power == BACKLIGHT_POWER_OFF ? 0 : get_lcd_level(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bl_update_status(struct backlight_device *b)
 {
+<<<<<<< HEAD
+=======
+	struct acpi_device *device = bl_get_data(b);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fext) {
 		if (b->props.power == BACKLIGHT_POWER_OFF)
 			call_fext_func(fext, FUNC_BACKLIGHT, 0x1,
@@ -377,7 +469,11 @@ static int bl_update_status(struct backlight_device *b)
 				       BACKLIGHT_PARAM_POWER, BACKLIGHT_ON);
 	}
 
+<<<<<<< HEAD
 	return set_lcd_level(bl_get_data(b), b->props.brightness);
+=======
+	return set_lcd_level(device, b->props.brightness);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct backlight_ops fujitsu_bl_ops = {
@@ -453,6 +549,7 @@ static const struct key_entry keymap_backlight[] = {
 	{ KE_END, 0 }
 };
 
+<<<<<<< HEAD
 static int acpi_fujitsu_bl_input_setup(struct device *dev)
 {
 	struct fujitsu_bl *priv = dev_get_drvdata(dev);
@@ -460,6 +557,14 @@ static int acpi_fujitsu_bl_input_setup(struct device *dev)
 	int ret;
 
 	priv->input = devm_input_allocate_device(dev);
+=======
+static int acpi_fujitsu_bl_input_setup(struct acpi_device *device)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+	int ret;
+
+	priv->input = devm_input_allocate_device(&device->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!priv->input)
 		return -ENOMEM;
 
@@ -478,9 +583,15 @@ static int acpi_fujitsu_bl_input_setup(struct device *dev)
 	return input_register_device(priv->input);
 }
 
+<<<<<<< HEAD
 static int fujitsu_backlight_register(struct device *dev)
 {
 	struct fujitsu_bl *priv = dev_get_drvdata(dev);
+=======
+static int fujitsu_backlight_register(struct acpi_device *device)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct backlight_properties props = {
 		.brightness = priv->brightness_level,
 		.max_brightness = priv->max_brightness - 1,
@@ -488,8 +599,14 @@ static int fujitsu_backlight_register(struct device *dev)
 	};
 	struct backlight_device *bd;
 
+<<<<<<< HEAD
 	bd = devm_backlight_device_register(dev, "fujitsu-laptop",
 					    dev, dev, &fujitsu_bl_ops, &props);
+=======
+	bd = devm_backlight_device_register(&device->dev, "fujitsu-laptop",
+					    &device->dev, device,
+					    &fujitsu_bl_ops, &props);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(bd))
 		return PTR_ERR(bd);
 
@@ -498,6 +615,7 @@ static int fujitsu_backlight_register(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Brightness notify */
 
 static void acpi_fujitsu_bl_notify(acpi_handle handle, u32 event, void *data)
@@ -530,7 +648,15 @@ static void acpi_fujitsu_bl_notify(acpi_handle handle, u32 event, void *data)
 
 static int acpi_fujitsu_bl_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+=======
+static int acpi_fujitsu_bl_add(struct acpi_device *device)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	struct fujitsu_bl *priv;
 	int ret;
 
@@ -541,19 +667,28 @@ static int acpi_fujitsu_bl_probe(struct platform_device *pdev)
 	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+=======
+	priv = devm_kzalloc(&device->dev, sizeof(*priv), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!priv)
 		return -ENOMEM;
 
 	fujitsu_bl = priv;
 	strscpy(acpi_device_name(device), ACPI_FUJITSU_BL_DEVICE_NAME);
 	strscpy(acpi_device_class(device), ACPI_FUJITSU_CLASS);
+<<<<<<< HEAD
 
 	platform_set_drvdata(pdev, priv);
+=======
+	device->driver_data = priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_info("ACPI: %s [%s]\n",
 		acpi_device_name(device), acpi_device_bid(device));
 
+<<<<<<< HEAD
 	if (get_max_brightness(&pdev->dev) <= 0)
 		priv->max_brightness = FUJITSU_LCD_N_LEVELS;
 	get_lcd_level(&pdev->dev);
@@ -574,6 +709,47 @@ static void acpi_fujitsu_bl_remove(struct platform_device *pdev)
 {
 	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
 				       ACPI_DEVICE_NOTIFY, acpi_fujitsu_bl_notify);
+=======
+	if (get_max_brightness(device) <= 0)
+		priv->max_brightness = FUJITSU_LCD_N_LEVELS;
+	get_lcd_level(device);
+
+	ret = acpi_fujitsu_bl_input_setup(device);
+	if (ret)
+		return ret;
+
+	return fujitsu_backlight_register(device);
+}
+
+/* Brightness notify */
+
+static void acpi_fujitsu_bl_notify(struct acpi_device *device, u32 event)
+{
+	struct fujitsu_bl *priv = acpi_driver_data(device);
+	int oldb, newb;
+
+	if (event != ACPI_FUJITSU_NOTIFY_CODE) {
+		acpi_handle_info(device->handle, "unsupported event [0x%x]\n",
+				 event);
+		sparse_keymap_report_event(priv->input, -1, 1, true);
+		return;
+	}
+
+	oldb = priv->brightness_level;
+	get_lcd_level(device);
+	newb = priv->brightness_level;
+
+	acpi_handle_debug(device->handle,
+			  "brightness button event [%i -> %i]\n", oldb, newb);
+
+	if (oldb == newb)
+		return;
+
+	if (!disable_brightness_adjust)
+		set_lcd_level(device, newb);
+
+	sparse_keymap_report_event(priv->input, oldb < newb, 1, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* ACPI device for hotkey handling */
@@ -668,6 +844,7 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static int acpi_fujitsu_laptop_input_setup(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
@@ -675,6 +852,14 @@ static int acpi_fujitsu_laptop_input_setup(struct device *dev)
 	int ret;
 
 	priv->input = devm_input_allocate_device(dev);
+=======
+static int acpi_fujitsu_laptop_input_setup(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+	int ret;
+
+	priv->input = devm_input_allocate_device(&device->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!priv->input)
 		return -ENOMEM;
 
@@ -693,9 +878,15 @@ static int acpi_fujitsu_laptop_input_setup(struct device *dev)
 	return input_register_device(priv->input);
 }
 
+<<<<<<< HEAD
 static int fujitsu_laptop_platform_add(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static int fujitsu_laptop_platform_add(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	priv->pf_device = platform_device_alloc("fujitsu-laptop", PLATFORM_DEVID_NONE);
@@ -723,9 +914,15 @@ err_put_platform_device:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void fujitsu_laptop_platform_remove(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static void fujitsu_laptop_platform_remove(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sysfs_remove_group(&priv->pf_device->dev.kobj,
 			   &fujitsu_pf_attribute_group);
@@ -735,7 +932,11 @@ static void fujitsu_laptop_platform_remove(struct device *dev)
 static int logolamp_set(struct led_classdev *cdev,
 			enum led_brightness brightness)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int poweron = FUNC_LED_ON, always = FUNC_LED_ON;
 	int ret;
 
@@ -745,15 +946,24 @@ static int logolamp_set(struct led_classdev *cdev,
 	if (brightness < LED_FULL)
 		always = FUNC_LED_OFF;
 
+<<<<<<< HEAD
 	ret = call_fext_func(parent, FUNC_LEDS, 0x1, LOGOLAMP_POWERON, poweron);
 	if (ret < 0)
 		return ret;
 
 	return call_fext_func(parent, FUNC_LEDS, 0x1, LOGOLAMP_ALWAYS, always);
+=======
+	ret = call_fext_func(device, FUNC_LEDS, 0x1, LOGOLAMP_POWERON, poweron);
+	if (ret < 0)
+		return ret;
+
+	return call_fext_func(device, FUNC_LEDS, 0x1, LOGOLAMP_ALWAYS, always);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static enum led_brightness logolamp_get(struct led_classdev *cdev)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 	int ret;
 
@@ -762,6 +972,16 @@ static enum led_brightness logolamp_get(struct led_classdev *cdev)
 		return LED_FULL;
 
 	ret = call_fext_func(parent, FUNC_LEDS, 0x2, LOGOLAMP_POWERON, 0x0);
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+	int ret;
+
+	ret = call_fext_func(device, FUNC_LEDS, 0x2, LOGOLAMP_ALWAYS, 0x0);
+	if (ret == FUNC_LED_ON)
+		return LED_FULL;
+
+	ret = call_fext_func(device, FUNC_LEDS, 0x2, LOGOLAMP_POWERON, 0x0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret == FUNC_LED_ON)
 		return LED_HALF;
 
@@ -771,6 +991,7 @@ static enum led_brightness logolamp_get(struct led_classdev *cdev)
 static int kblamps_set(struct led_classdev *cdev,
 		       enum led_brightness brightness)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 
 	if (brightness >= LED_FULL)
@@ -778,14 +999,30 @@ static int kblamps_set(struct led_classdev *cdev,
 				      FUNC_LED_ON);
 	else
 		return call_fext_func(parent, FUNC_LEDS, 0x1, KEYBOARD_LAMPS,
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+
+	if (brightness >= LED_FULL)
+		return call_fext_func(device, FUNC_LEDS, 0x1, KEYBOARD_LAMPS,
+				      FUNC_LED_ON);
+	else
+		return call_fext_func(device, FUNC_LEDS, 0x1, KEYBOARD_LAMPS,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      FUNC_LED_OFF);
 }
 
 static enum led_brightness kblamps_get(struct led_classdev *cdev)
 {
+<<<<<<< HEAD
 	enum led_brightness brightness = LED_OFF;
 
 	if (call_fext_func(cdev->dev->parent,
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+	enum led_brightness brightness = LED_OFF;
+
+	if (call_fext_func(device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   FUNC_LEDS, 0x2, KEYBOARD_LAMPS, 0x0) == FUNC_LED_ON)
 		brightness = LED_FULL;
 
@@ -795,6 +1032,7 @@ static enum led_brightness kblamps_get(struct led_classdev *cdev)
 static int radio_led_set(struct led_classdev *cdev,
 			 enum led_brightness brightness)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 
 	if (brightness >= LED_FULL)
@@ -802,15 +1040,31 @@ static int radio_led_set(struct led_classdev *cdev,
 				      RADIO_LED_ON);
 	else
 		return call_fext_func(parent, FUNC_FLAGS, 0x5, RADIO_LED_ON,
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+
+	if (brightness >= LED_FULL)
+		return call_fext_func(device, FUNC_FLAGS, 0x5, RADIO_LED_ON,
+				      RADIO_LED_ON);
+	else
+		return call_fext_func(device, FUNC_FLAGS, 0x5, RADIO_LED_ON,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      0x0);
 }
 
 static enum led_brightness radio_led_get(struct led_classdev *cdev)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 	enum led_brightness brightness = LED_OFF;
 
 	if (call_fext_func(parent, FUNC_FLAGS, 0x4, 0x0, 0x0) & RADIO_LED_ON)
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+	enum led_brightness brightness = LED_OFF;
+
+	if (call_fext_func(device, FUNC_FLAGS, 0x4, 0x0, 0x0) & RADIO_LED_ON)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		brightness = LED_FULL;
 
 	return brightness;
@@ -819,6 +1073,7 @@ static enum led_brightness radio_led_get(struct led_classdev *cdev)
 static int eco_led_set(struct led_classdev *cdev,
 		       enum led_brightness brightness)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 	int curr;
 
@@ -828,20 +1083,39 @@ static int eco_led_set(struct led_classdev *cdev,
 				      curr | ECO_LED_ON);
 	else
 		return call_fext_func(parent, FUNC_LEDS, 0x1, ECO_LED,
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+	int curr;
+
+	curr = call_fext_func(device, FUNC_LEDS, 0x2, ECO_LED, 0x0);
+	if (brightness >= LED_FULL)
+		return call_fext_func(device, FUNC_LEDS, 0x1, ECO_LED,
+				      curr | ECO_LED_ON);
+	else
+		return call_fext_func(device, FUNC_LEDS, 0x1, ECO_LED,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      curr & ~ECO_LED_ON);
 }
 
 static enum led_brightness eco_led_get(struct led_classdev *cdev)
 {
+<<<<<<< HEAD
 	struct device *parent = cdev->dev->parent;
 	enum led_brightness brightness = LED_OFF;
 
 	if (call_fext_func(parent, FUNC_LEDS, 0x2, ECO_LED, 0x0) & ECO_LED_ON)
+=======
+	struct acpi_device *device = to_acpi_device(cdev->dev->parent);
+	enum led_brightness brightness = LED_OFF;
+
+	if (call_fext_func(device, FUNC_LEDS, 0x2, ECO_LED, 0x0) & ECO_LED_ON)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		brightness = LED_FULL;
 
 	return brightness;
 }
 
+<<<<<<< HEAD
 static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
@@ -850,27 +1124,53 @@ static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 
 	if (call_fext_func(dev, FUNC_LEDS, 0x0, 0x0, 0x0) & LOGOLAMP_POWERON) {
 		led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+=======
+static int acpi_fujitsu_laptop_leds_register(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+	struct led_classdev *led;
+	int ret;
+
+	if (call_fext_func(device,
+			   FUNC_LEDS, 0x0, 0x0, 0x0) & LOGOLAMP_POWERON) {
+		led = devm_kzalloc(&device->dev, sizeof(*led), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!led)
 			return -ENOMEM;
 
 		led->name = "fujitsu::logolamp";
 		led->brightness_set_blocking = logolamp_set;
 		led->brightness_get = logolamp_get;
+<<<<<<< HEAD
 		ret = devm_led_classdev_register(dev, led);
+=======
+		ret = devm_led_classdev_register(&device->dev, led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	if ((call_fext_func(dev, FUNC_LEDS, 0x0, 0x0, 0x0) & KEYBOARD_LAMPS) &&
 	    (call_fext_func(dev, FUNC_BUTTONS, 0x0, 0x0, 0x0) == 0x0)) {
 		led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+=======
+	if ((call_fext_func(device,
+			    FUNC_LEDS, 0x0, 0x0, 0x0) & KEYBOARD_LAMPS) &&
+	    (call_fext_func(device, FUNC_BUTTONS, 0x0, 0x0, 0x0) == 0x0)) {
+		led = devm_kzalloc(&device->dev, sizeof(*led), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!led)
 			return -ENOMEM;
 
 		led->name = "fujitsu::kblamps";
 		led->brightness_set_blocking = kblamps_set;
 		led->brightness_get = kblamps_get;
+<<<<<<< HEAD
 		ret = devm_led_classdev_register(dev, led);
+=======
+		ret = devm_led_classdev_register(&device->dev, led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -885,7 +1185,11 @@ static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 	 * whether given model has a radio toggle button.
 	 */
 	if (priv->flags_supported & BIT(17)) {
+<<<<<<< HEAD
 		led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+=======
+		led = devm_kzalloc(&device->dev, sizeof(*led), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!led)
 			return -ENOMEM;
 
@@ -893,7 +1197,11 @@ static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 		led->brightness_set_blocking = radio_led_set;
 		led->brightness_get = radio_led_get;
 		led->default_trigger = "rfkill-any";
+<<<<<<< HEAD
 		ret = devm_led_classdev_register(dev, led);
+=======
+		ret = devm_led_classdev_register(&device->dev, led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -903,16 +1211,27 @@ static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 	 * bit 14 seems to indicate presence of said led as well.
 	 * Confirm by testing the status.
 	 */
+<<<<<<< HEAD
 	if ((call_fext_func(dev, FUNC_LEDS, 0x0, 0x0, 0x0) & BIT(14)) &&
 	    (call_fext_func(dev, FUNC_LEDS, 0x2, ECO_LED, 0x0) != UNSUPPORTED_CMD)) {
 		led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+=======
+	if ((call_fext_func(device, FUNC_LEDS, 0x0, 0x0, 0x0) & BIT(14)) &&
+	    (call_fext_func(device,
+			    FUNC_LEDS, 0x2, ECO_LED, 0x0) != UNSUPPORTED_CMD)) {
+		led = devm_kzalloc(&device->dev, sizeof(*led), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!led)
 			return -ENOMEM;
 
 		led->name = "fujitsu::eco_led";
 		led->brightness_set_blocking = eco_led_set;
 		led->brightness_get = eco_led_get;
+<<<<<<< HEAD
 		ret = devm_led_classdev_register(dev, led);
+=======
+		ret = devm_led_classdev_register(&device->dev, led);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 	}
@@ -920,9 +1239,108 @@ static int acpi_fujitsu_laptop_leds_register(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void acpi_fujitsu_laptop_press(struct device *dev, int scancode)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static int acpi_fujitsu_laptop_add(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv;
+	int ret, i = 0;
+
+	priv = devm_kzalloc(&device->dev, sizeof(*priv), GFP_KERNEL);
+	if (!priv)
+		return -ENOMEM;
+
+	WARN_ONCE(fext, "More than one FUJ02E3 ACPI device was found.  Driver may not work as intended.");
+	fext = device;
+
+	strscpy(acpi_device_name(device), ACPI_FUJITSU_LAPTOP_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_FUJITSU_CLASS);
+	device->driver_data = priv;
+
+	/* kfifo */
+	spin_lock_init(&priv->fifo_lock);
+	ret = kfifo_alloc(&priv->fifo, RINGBUFFERSIZE * sizeof(int),
+			  GFP_KERNEL);
+	if (ret)
+		return ret;
+
+	pr_info("ACPI: %s [%s]\n",
+		acpi_device_name(device), acpi_device_bid(device));
+
+	while (call_fext_func(device, FUNC_BUTTONS, 0x1, 0x0, 0x0) != 0 &&
+	       i++ < MAX_HOTKEY_RINGBUFFER_SIZE)
+		; /* No action, result is discarded */
+	acpi_handle_debug(device->handle, "Discarded %i ringbuffer entries\n",
+			  i);
+
+	priv->flags_supported = call_fext_func(device, FUNC_FLAGS, 0x0, 0x0,
+					       0x0);
+
+	/* Make sure our bitmask of supported functions is cleared if the
+	   RFKILL function block is not implemented, like on the S7020. */
+	if (priv->flags_supported == UNSUPPORTED_CMD)
+		priv->flags_supported = 0;
+
+	if (priv->flags_supported)
+		priv->flags_state = call_fext_func(device, FUNC_FLAGS, 0x4, 0x0,
+						   0x0);
+
+	/* Suspect this is a keymap of the application panel, print it */
+	acpi_handle_info(device->handle, "BTNI: [0x%x]\n",
+			 call_fext_func(device, FUNC_BUTTONS, 0x0, 0x0, 0x0));
+
+	/* Sync backlight power status */
+	if (fujitsu_bl && fujitsu_bl->bl_device &&
+	    acpi_video_get_backlight_type() == acpi_backlight_vendor) {
+		if (call_fext_func(fext, FUNC_BACKLIGHT, 0x2,
+				   BACKLIGHT_PARAM_POWER, 0x0) == BACKLIGHT_OFF)
+			fujitsu_bl->bl_device->props.power = BACKLIGHT_POWER_OFF;
+		else
+			fujitsu_bl->bl_device->props.power = BACKLIGHT_POWER_ON;
+	}
+
+	ret = acpi_fujitsu_laptop_input_setup(device);
+	if (ret)
+		goto err_free_fifo;
+
+	ret = acpi_fujitsu_laptop_leds_register(device);
+	if (ret)
+		goto err_free_fifo;
+
+	ret = fujitsu_laptop_platform_add(device);
+	if (ret)
+		goto err_free_fifo;
+
+	ret = fujitsu_battery_charge_control_add(device);
+	if (ret < 0)
+		pr_warn("Unable to register battery charge control: %d\n", ret);
+
+	return 0;
+
+err_free_fifo:
+	kfifo_free(&priv->fifo);
+
+	return ret;
+}
+
+static void acpi_fujitsu_laptop_remove(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+
+	fujitsu_battery_charge_control_remove(device);
+
+	fujitsu_laptop_platform_remove(device);
+
+	kfifo_free(&priv->fifo);
+}
+
+static void acpi_fujitsu_laptop_press(struct acpi_device *device, int scancode)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = kfifo_in_locked(&priv->fifo, (unsigned char *)&scancode,
@@ -937,9 +1355,15 @@ static void acpi_fujitsu_laptop_press(struct device *dev, int scancode)
 		scancode);
 }
 
+<<<<<<< HEAD
 static void acpi_fujitsu_laptop_release(struct device *dev)
 {
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static void acpi_fujitsu_laptop_release(struct acpi_device *device)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int scancode, ret;
 
 	while (true) {
@@ -953,21 +1377,33 @@ static void acpi_fujitsu_laptop_release(struct device *dev)
 	}
 }
 
+<<<<<<< HEAD
 static void acpi_fujitsu_laptop_notify(acpi_handle handle, u32 event, void *data)
 {
 	struct device *dev = data;
 	struct fujitsu_laptop *priv = dev_get_drvdata(dev);
+=======
+static void acpi_fujitsu_laptop_notify(struct acpi_device *device, u32 event)
+{
+	struct fujitsu_laptop *priv = acpi_driver_data(device);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags;
 	int scancode, i = 0;
 	unsigned int irb;
 
 	if (event != ACPI_FUJITSU_NOTIFY_CODE) {
+<<<<<<< HEAD
 		acpi_handle_info(handle, "Unsupported event [0x%x]\n", event);
+=======
+		acpi_handle_info(device->handle, "Unsupported event [0x%x]\n",
+				 event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sparse_keymap_report_event(priv->input, -1, 1, true);
 		return;
 	}
 
 	if (priv->flags_supported)
+<<<<<<< HEAD
 		priv->flags_state = call_fext_func(dev, FUNC_FLAGS, 0x4, 0x0, 0x0);
 
 	while ((irb = call_fext_func(dev, FUNC_BUTTONS, 0x1, 0x0, 0x0)) != 0 &&
@@ -979,6 +1415,22 @@ static void acpi_fujitsu_laptop_notify(acpi_handle handle, u32 event, void *data
 			acpi_fujitsu_laptop_release(dev);
 		else
 			acpi_handle_info(handle, "Unknown GIRB result [%x]\n", irb);
+=======
+		priv->flags_state = call_fext_func(device, FUNC_FLAGS, 0x4, 0x0,
+						   0x0);
+
+	while ((irb = call_fext_func(device,
+				     FUNC_BUTTONS, 0x1, 0x0, 0x0)) != 0 &&
+	       i++ < MAX_HOTKEY_RINGBUFFER_SIZE) {
+		scancode = irb & 0x4ff;
+		if (sparse_keymap_entry_from_scancode(priv->input, scancode))
+			acpi_fujitsu_laptop_press(device, scancode);
+		else if (scancode == 0)
+			acpi_fujitsu_laptop_release(device);
+		else
+			acpi_handle_info(device->handle,
+					 "Unknown GIRB result [%x]\n", irb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -988,13 +1440,18 @@ static void acpi_fujitsu_laptop_notify(acpi_handle handle, u32 event, void *data
 	 * status flags queried using FUNC_FLAGS.
 	 */
 	if (priv->flags_supported & (FLAG_SOFTKEYS)) {
+<<<<<<< HEAD
 		flags = call_fext_func(dev, FUNC_FLAGS, 0x1, 0x0, 0x0);
+=======
+		flags = call_fext_func(device, FUNC_FLAGS, 0x1, 0x0, 0x0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		flags &= (FLAG_SOFTKEYS);
 		for_each_set_bit(i, &flags, BITS_PER_LONG)
 			sparse_keymap_report_event(priv->input, BIT(i), 1, true);
 	}
 }
 
+<<<<<<< HEAD
 static int acpi_fujitsu_laptop_probe(struct platform_device *pdev)
 {
 	struct fujitsu_laptop *priv;
@@ -1103,6 +1560,8 @@ static void acpi_fujitsu_laptop_remove(struct platform_device *pdev)
 	kfifo_free(&priv->fifo);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Initialization */
 
 static const struct acpi_device_id fujitsu_bl_device_ids[] = {
@@ -1110,6 +1569,7 @@ static const struct acpi_device_id fujitsu_bl_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver acpi_fujitsu_bl_driver = {
 	.probe = acpi_fujitsu_bl_probe,
 	.remove = acpi_fujitsu_bl_remove,
@@ -1117,6 +1577,16 @@ static struct platform_driver acpi_fujitsu_bl_driver = {
 		.name = ACPI_FUJITSU_BL_DRIVER_NAME,
 		.acpi_match_table = fujitsu_bl_device_ids,
 	},
+=======
+static struct acpi_driver acpi_fujitsu_bl_driver = {
+	.name = ACPI_FUJITSU_BL_DRIVER_NAME,
+	.class = ACPI_FUJITSU_CLASS,
+	.ids = fujitsu_bl_device_ids,
+	.ops = {
+		.add = acpi_fujitsu_bl_add,
+		.notify = acpi_fujitsu_bl_notify,
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct acpi_device_id fujitsu_laptop_device_ids[] = {
@@ -1124,6 +1594,7 @@ static const struct acpi_device_id fujitsu_laptop_device_ids[] = {
 	{"", 0},
 };
 
+<<<<<<< HEAD
 static struct platform_driver acpi_fujitsu_laptop_driver = {
 	.probe = acpi_fujitsu_laptop_probe,
 	.remove = acpi_fujitsu_laptop_remove,
@@ -1131,6 +1602,17 @@ static struct platform_driver acpi_fujitsu_laptop_driver = {
 		.name = ACPI_FUJITSU_LAPTOP_DRIVER_NAME,
 		.acpi_match_table = fujitsu_laptop_device_ids,
 	},
+=======
+static struct acpi_driver acpi_fujitsu_laptop_driver = {
+	.name = ACPI_FUJITSU_LAPTOP_DRIVER_NAME,
+	.class = ACPI_FUJITSU_CLASS,
+	.ids = fujitsu_laptop_device_ids,
+	.ops = {
+		.add = acpi_fujitsu_laptop_add,
+		.remove = acpi_fujitsu_laptop_remove,
+		.notify = acpi_fujitsu_laptop_notify,
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct acpi_device_id fujitsu_ids[] __used = {
@@ -1144,7 +1626,11 @@ static int __init fujitsu_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = platform_driver_register(&acpi_fujitsu_bl_driver);
+=======
+	ret = acpi_bus_register_driver(&acpi_fujitsu_bl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1156,7 +1642,11 @@ static int __init fujitsu_init(void)
 
 	/* Register laptop driver */
 
+<<<<<<< HEAD
 	ret = platform_driver_register(&acpi_fujitsu_laptop_driver);
+=======
+	ret = acpi_bus_register_driver(&acpi_fujitsu_laptop_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_unregister_platform_driver;
 
@@ -1167,18 +1657,30 @@ static int __init fujitsu_init(void)
 err_unregister_platform_driver:
 	platform_driver_unregister(&fujitsu_pf_driver);
 err_unregister_acpi:
+<<<<<<< HEAD
 	platform_driver_unregister(&acpi_fujitsu_bl_driver);
+=======
+	acpi_bus_unregister_driver(&acpi_fujitsu_bl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
 
 static void __exit fujitsu_cleanup(void)
 {
+<<<<<<< HEAD
 	platform_driver_unregister(&acpi_fujitsu_laptop_driver);
 
 	platform_driver_unregister(&fujitsu_pf_driver);
 
 	platform_driver_unregister(&acpi_fujitsu_bl_driver);
+=======
+	acpi_bus_unregister_driver(&acpi_fujitsu_laptop_driver);
+
+	platform_driver_unregister(&fujitsu_pf_driver);
+
+	acpi_bus_unregister_driver(&acpi_fujitsu_bl_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_info("driver unloaded\n");
 }

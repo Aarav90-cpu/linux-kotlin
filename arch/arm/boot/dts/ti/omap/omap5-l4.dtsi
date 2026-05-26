@@ -472,7 +472,11 @@
 				#phy-cells = <0>;
 			};
 
+<<<<<<< HEAD
 			usb3_phy: usb3-phy@4400 {
+=======
+			usb3_phy: usb3phy@4400 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				compatible = "ti,omap-usb3";
 				reg = <0x4400 0x80>,
 				<0x4800 0x64>,

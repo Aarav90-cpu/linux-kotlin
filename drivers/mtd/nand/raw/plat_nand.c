@@ -6,7 +6,10 @@
  */
 
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
@@ -18,7 +21,10 @@ struct plat_nand_data {
 	struct nand_controller	controller;
 	struct nand_chip	chip;
 	void __iomem		*io_base;
+<<<<<<< HEAD
 	struct gpio_desc	*ready_gpio;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int plat_nand_attach_chip(struct nand_chip *chip)
@@ -34,6 +40,7 @@ static const struct nand_controller_ops plat_nand_ops = {
 	.attach_chip = plat_nand_attach_chip,
 };
 
+<<<<<<< HEAD
 /* Resources and device for NAND */
 static int plat_nand_gpio_dev_ready(struct nand_chip *chip)
 {
@@ -42,6 +49,8 @@ static int plat_nand_gpio_dev_ready(struct nand_chip *chip)
 	return gpiod_get_value(data->ready_gpio);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Probe for the NAND device.
  */
@@ -51,7 +60,10 @@ static int plat_nand_probe(struct platform_device *pdev)
 	struct plat_nand_data *data;
 	struct mtd_info *mtd;
 	const char **part_types;
+<<<<<<< HEAD
 	struct nand_chip *chip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = 0;
 
 	if (!pdata) {
@@ -70,6 +82,7 @@ static int plat_nand_probe(struct platform_device *pdev)
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->ready_gpio = devm_gpiod_get_optional(&pdev->dev, "ready",
 						   GPIOD_IN);
 	if (IS_ERR(data->ready_gpio))
@@ -81,6 +94,11 @@ static int plat_nand_probe(struct platform_device *pdev)
 	data->chip.controller = &data->controller;
 	chip = &data->chip;
 	nand_set_controller_data(chip, data);
+=======
+	data->controller.ops = &plat_nand_ops;
+	nand_controller_init(&data->controller);
+	data->chip.controller = &data->controller;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->io_base = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(data->io_base))
@@ -93,10 +111,14 @@ static int plat_nand_probe(struct platform_device *pdev)
 	data->chip.legacy.IO_ADDR_R = data->io_base;
 	data->chip.legacy.IO_ADDR_W = data->io_base;
 	data->chip.legacy.cmd_ctrl = pdata->ctrl.cmd_ctrl;
+<<<<<<< HEAD
 	if (data->ready_gpio)
 		data->chip.legacy.dev_ready = plat_nand_gpio_dev_ready;
 	else
 		data->chip.legacy.dev_ready = pdata->ctrl.dev_ready;
+=======
+	data->chip.legacy.dev_ready = pdata->ctrl.dev_ready;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data->chip.legacy.select_chip = pdata->ctrl.select_chip;
 	data->chip.legacy.write_buf = pdata->ctrl.write_buf;
 	data->chip.legacy.read_buf = pdata->ctrl.read_buf;

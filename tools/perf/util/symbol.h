@@ -9,12 +9,18 @@
 #include <linux/list.h>
 #include <linux/rbtree.h>
 #include <stdio.h>
+<<<<<<< HEAD
 #include <errno.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "addr_location.h"
 #include "path.h"
 #include "symbol_conf.h"
 #include "spark.h"
+<<<<<<< HEAD
 #include "util.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef HAVE_LIBELF_SUPPORT
 #include <libelf.h>
@@ -98,9 +104,12 @@ struct intlist;
 
 static inline int __symbol__join_symfs(char *bf, size_t size, const char *path)
 {
+<<<<<<< HEAD
 	if (symbol_conf.symfs_layout_flat)
 		return path__join(bf, size, symbol_conf.symfs, perf_basename(path));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return path__join(bf, size, symbol_conf.symfs, path);
 }
 
@@ -174,11 +183,14 @@ size_t symbol__fprintf_symname(const struct symbol *sym, FILE *fp);
 size_t symbol__fprintf(struct symbol *sym, FILE *fp);
 bool symbol__restricted_filename(const char *filename,
 				 const char *restricted_filename);
+<<<<<<< HEAD
 
 #define SYMFS_HELP "setup root directory which contains debug files:\n" \
 	"\t\t\t\t" "directory:\tLook for files with symbols relative to this directory.\n" \
 	"\t\t\t\t" "layout:   \tLayout of files, 'hierarchy' matches full path (default), 'flat' only matches base name.\n"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int symbol__config_symfs(const struct option *opt __maybe_unused,
 			 const char *dir, int unset __maybe_unused);
 
@@ -227,6 +239,10 @@ int setup_intlist(struct intlist **list, const char *list_str,
 		  const char *list_name);
 
 #ifdef HAVE_LIBELF_SUPPORT
+<<<<<<< HEAD
+=======
+bool elf__needs_adjust_symbols(GElf_Ehdr ehdr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void arch__sym_update(struct symbol *s, GElf_Sym *sym);
 #endif
 

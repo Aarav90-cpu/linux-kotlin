@@ -15,6 +15,7 @@
 	#size-cells = <1>;
 	interrupt-parent = <&gic>;
 
+<<<<<<< HEAD
 	/*
 	 * The CPUs clock is based on the 'ref' clock (output of OPPDIV divisor)
 	 * with x1, x2 or x4 ratio between the CPUs clock frequency and this
@@ -48,6 +49,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -57,7 +60,10 @@
 			compatible = "arm,cortex-a7";
 			reg = <0>;
 			clocks = <&sysctrl R9A06G032_CLK_A7MP>;
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu_opp_table>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		cpu@1 {
@@ -67,7 +73,10 @@
 			clocks = <&sysctrl R9A06G032_CLK_A7MP>;
 			enable-method = "renesas,r9a06g032-smp";
 			cpu-release-addr = <0 0x4000c204>;
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu_opp_table>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 
@@ -101,6 +110,7 @@
 		#size-cells = <1>;
 		ranges;
 
+<<<<<<< HEAD
 		qspi0: spi@40005000 {
 			compatible = "renesas,r9a06g032-qspi", "renesas,rzn1-qspi";
 			reg = <0x40005000 0x1000>, <0x10000000 0x10000000>;
@@ -113,6 +123,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rtc0: rtc@40006000 {
 			compatible = "renesas,r9a06g032-rtc", "renesas,rzn1-rtc";
 			reg = <0x40006000 0x1000>;
@@ -554,7 +566,10 @@
 			compatible = "arm,gic-400", "arm,cortex-a7-gic";
 			interrupt-controller;
 			#interrupt-cells = <3>;
+<<<<<<< HEAD
 			#address-cells = <0>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			reg = <0x44101000 0x1000>, /* Distributer */
 			      <0x44102000 0x2000>, /* CPU interface */
 			      <0x44104000 0x2000>, /* Virt interface control */

@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 use kernel::{
     io::Io,
     prelude::*, //
 };
+=======
+use kernel::prelude::*;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 use crate::{
     driver::Bar0,
@@ -12,7 +16,11 @@ use crate::{
 };
 
 fn vidmem_size_ga102(bar: &Bar0) -> u64 {
+<<<<<<< HEAD
     bar.read(regs::NV_USABLE_FB_SIZE_IN_MB).usable_fb_size()
+=======
+    regs::NV_USABLE_FB_SIZE_IN_MB::read(bar).usable_fb_size()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct Ga102;

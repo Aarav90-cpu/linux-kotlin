@@ -23,7 +23,10 @@
 #include "client.h"
 #include "hw-me-regs.h"
 #include "hw-me.h"
+<<<<<<< HEAD
 #include "mei-trace.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* mei_pci_tbl - PCI Device ID Table */
 static const struct pci_device_id mei_me_pci_tbl[] = {
@@ -147,6 +150,7 @@ static inline void mei_me_set_pm_domain(struct mei_device *dev) {}
 static inline void mei_me_unset_pm_domain(struct mei_device *dev) {}
 #endif /* CONFIG_PM */
 
+<<<<<<< HEAD
 static int mei_me_read_fws(const struct mei_device *dev, int where, const char *name, u32 *val)
 {
 	struct pci_dev *pdev = to_pci_dev(dev->parent);
@@ -155,6 +159,13 @@ static int mei_me_read_fws(const struct mei_device *dev, int where, const char *
 	ret = pci_read_config_dword(pdev, where, val);
 	trace_mei_pci_cfg_read(&dev->dev, name, where, *val, ret);
 	return pcibios_err_to_errno(ret);
+=======
+static int mei_me_read_fws(const struct mei_device *dev, int where, u32 *val)
+{
+	struct pci_dev *pdev = to_pci_dev(dev->parent);
+
+	return pci_read_config_dword(pdev, where, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

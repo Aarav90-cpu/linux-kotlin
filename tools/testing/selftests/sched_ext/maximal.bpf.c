@@ -30,7 +30,11 @@ void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
 
 void BPF_STRUCT_OPS(maximal_dispatch, s32 cpu, struct task_struct *prev)
 {
+<<<<<<< HEAD
 	scx_bpf_dsq_move_to_local(DSQ_ID, 0);
+=======
+	scx_bpf_dsq_move_to_local(DSQ_ID);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void BPF_STRUCT_OPS(maximal_runnable, struct task_struct *p, u64 enq_flags)
@@ -67,12 +71,22 @@ void BPF_STRUCT_OPS(maximal_set_cpumask, struct task_struct *p,
 void BPF_STRUCT_OPS(maximal_update_idle, s32 cpu, bool idle)
 {}
 
+<<<<<<< HEAD
 SEC("tp_btf/sched_switch")
 int BPF_PROG(maximal_sched_switch, bool preempt, struct task_struct *prev,
 	     struct task_struct *next, unsigned int prev_state)
 {
 	return 0;
 }
+=======
+void BPF_STRUCT_OPS(maximal_cpu_acquire, s32 cpu,
+		    struct scx_cpu_acquire_args *args)
+{}
+
+void BPF_STRUCT_OPS(maximal_cpu_release, s32 cpu,
+		    struct scx_cpu_release_args *args)
+{}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void BPF_STRUCT_OPS(maximal_cpu_online, s32 cpu)
 {}
@@ -149,6 +163,11 @@ struct sched_ext_ops maximal_ops = {
 	.set_weight		= (void *) maximal_set_weight,
 	.set_cpumask		= (void *) maximal_set_cpumask,
 	.update_idle		= (void *) maximal_update_idle,
+<<<<<<< HEAD
+=======
+	.cpu_acquire		= (void *) maximal_cpu_acquire,
+	.cpu_release		= (void *) maximal_cpu_release,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.cpu_online		= (void *) maximal_cpu_online,
 	.cpu_offline		= (void *) maximal_cpu_offline,
 	.init_task		= (void *) maximal_init_task,

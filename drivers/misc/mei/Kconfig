@@ -59,6 +59,7 @@ config INTEL_MEI_GSC
 	  tasks such as graphics card firmware update and security
 	  tasks.
 
+<<<<<<< HEAD
 config INTEL_MEI_CSC
 	tristate "Intel MEI CSC embedded device"
 	depends on INTEL_MEI_ME
@@ -70,6 +71,8 @@ config INTEL_MEI_CSC
 	  tasks such as graphics card firmware update and security
 	  tasks.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config INTEL_MEI_VSC_HW
 	tristate "Intel visual sensing controller device transport driver"
 	depends on ACPI && SPI

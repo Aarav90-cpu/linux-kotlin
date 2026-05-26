@@ -9,7 +9,10 @@
 #include "mt7601u.h"
 
 #define MT7601U_FIRMWARE	"mt7601u.bin"
+<<<<<<< HEAD
 #define MT7601U_FIRMWARE_PATHS	ARRAY_SIZE(mt7601u_fw_paths)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MT_VEND_REQ_MAX_RETRY	10
 #define MT_VEND_REQ_TOUT_MS	300

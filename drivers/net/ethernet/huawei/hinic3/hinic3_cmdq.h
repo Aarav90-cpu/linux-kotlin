@@ -85,9 +85,13 @@ enum hinic3_cmdq_status {
 
 enum hinic3_cmdq_cmd_type {
 	HINIC3_CMD_TYPE_NONE,
+<<<<<<< HEAD
 	HINIC3_CMD_TYPE_SET_ARM,
 	HINIC3_CMD_TYPE_DIRECT_RESP,
 	HINIC3_CMD_TYPE_SGE_RESP,
+=======
+	HINIC3_CMD_TYPE_DIRECT_RESP,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HINIC3_CMD_TYPE_FAKE_TIMEOUT,
 	HINIC3_CMD_TYPE_TIMEOUT,
 	HINIC3_CMD_TYPE_FORCE_STOP,
@@ -100,11 +104,14 @@ struct hinic3_cmd_buf {
 	refcount_t ref_cnt;
 };
 
+<<<<<<< HEAD
 struct hinic3_cmd_buf_pair {
 	struct hinic3_cmd_buf *in;
 	struct hinic3_cmd_buf *out;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct hinic3_cmdq_cmd_info {
 	enum hinic3_cmdq_cmd_type cmd_type;
 	struct completion         *done;
@@ -114,7 +121,10 @@ struct hinic3_cmdq_cmd_info {
 	__le64                    *direct_resp;
 	u64                       cmdq_msg_id;
 	struct hinic3_cmd_buf     *buf_in;
+<<<<<<< HEAD
 	struct hinic3_cmd_buf     *buf_out;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct hinic3_cmdq {
@@ -154,6 +164,7 @@ void hinic3_free_cmd_buf(struct hinic3_hwdev *hwdev,
 			 struct hinic3_cmd_buf *cmd_buf);
 void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data);
 
+<<<<<<< HEAD
 int hinic3_cmd_buf_pair_init(struct hinic3_hwdev *hwdev,
 			     struct hinic3_cmd_buf_pair *pair);
 void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
@@ -163,6 +174,10 @@ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
 int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
 			    struct hinic3_cmd_buf *buf_in,
 			    struct hinic3_cmd_buf *buf_out, __le64 *out_param);
+=======
+int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+			    struct hinic3_cmd_buf *buf_in, __le64 *out_param);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void hinic3_cmdq_flush_sync_cmd(struct hinic3_hwdev *hwdev);
 int hinic3_reinit_cmdq_ctxts(struct hinic3_hwdev *hwdev);

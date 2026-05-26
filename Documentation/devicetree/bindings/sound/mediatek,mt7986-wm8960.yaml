@@ -36,14 +36,22 @@ properties:
     required:
       - sound-dai
 
+<<<<<<< HEAD
+=======
+unevaluatedProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - audio-routing
   - platform
   - codec
 
+<<<<<<< HEAD
 unevaluatedProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     sound {

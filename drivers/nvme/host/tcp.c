@@ -1438,13 +1438,18 @@ static void nvme_tcp_free_queue(struct nvme_ctrl *nctrl, int qid)
 {
 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
+<<<<<<< HEAD
 	unsigned int noio_flag;
+=======
+	unsigned int noreclaim_flag;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!test_and_clear_bit(NVME_TCP_Q_ALLOCATED, &queue->flags))
 		return;
 
 	page_frag_cache_drain(&queue->pf_cache);
 
+<<<<<<< HEAD
 	/**
 	 * Prevent memory reclaim from triggering block I/O during socket
 	 * teardown. The socket release path fput -> tcp_close ->
@@ -1464,6 +1469,13 @@ static void nvme_tcp_free_queue(struct nvme_ctrl *nctrl, int qid)
 	__fput_sync(queue->sock->file);
 	queue->sock = NULL;
 	memalloc_noio_restore(noio_flag);
+=======
+	noreclaim_flag = memalloc_noreclaim_save();
+	/* ->sock will be released by fput() */
+	fput(queue->sock->file);
+	queue->sock = NULL;
+	memalloc_noreclaim_restore(noreclaim_flag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(queue->pdu);
 	mutex_destroy(&queue->send_mutex);
@@ -1915,8 +1927,13 @@ err_init_connect:
 err_rcv_pdu:
 	kfree(queue->pdu);
 err_sock:
+<<<<<<< HEAD
 	/* Use sync variant - see nvme_tcp_free_queue() for explanation */
 	__fput_sync(queue->sock->file);
+=======
+	/* ->sock will be released by fput() */
+	fput(queue->sock->file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	queue->sock = NULL;
 err_destroy_mutex:
 	mutex_destroy(&queue->send_mutex);
@@ -3085,4 +3102,7 @@ module_exit(nvme_tcp_cleanup_module);
 
 MODULE_DESCRIPTION("NVMe host TCP transport driver");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
 MODULE_ALIAS("nvme-tcp");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

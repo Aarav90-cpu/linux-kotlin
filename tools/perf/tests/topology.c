@@ -9,7 +9,10 @@
 #include "evlist.h"
 #include "debug.h"
 #include "pmus.h"
+<<<<<<< HEAD
 #include "target.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/err.h>
 
 #define TEMPL "/tmp/perf-test-XXXXXX"
@@ -38,12 +41,19 @@ static int session_write_header(char *path)
 		.path = path,
 		.mode = PERF_DATA_MODE_WRITE,
 	};
+<<<<<<< HEAD
 	struct target target = {};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	session = perf_session__new(&data, NULL);
 	TEST_ASSERT_VAL("can't get session", !IS_ERR(session));
 
+<<<<<<< HEAD
 	session->evlist = evlist__new_default(&target, /*sample_callchains=*/false);
+=======
+	session->evlist = evlist__new_default();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TEST_ASSERT_VAL("can't get evlist", session->evlist);
 	session->evlist->session = session;
 
@@ -54,8 +64,12 @@ static int session_write_header(char *path)
 	session->header.data_size += DATA_SIZE;
 
 	TEST_ASSERT_VAL("failed to write header",
+<<<<<<< HEAD
 			!perf_session__write_header(session, session->evlist,
 						    perf_data__fd(&data), true));
+=======
+			!perf_session__write_header(session, session->evlist, data.file.fd, true));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	evlist__delete(session->evlist);
 	perf_session__delete(session);
@@ -70,7 +84,11 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
 		.path = path,
 		.mode = PERF_DATA_MODE_READ,
 	};
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct aggr_cpu_id id;
 	struct perf_cpu cpu;
 	struct perf_env *env;
@@ -117,7 +135,11 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
 
 	TEST_ASSERT_VAL("Session header CPU map not set", env->cpu);
 
+<<<<<<< HEAD
 	for (i = 0; i < (unsigned int)env->nr_cpus_avail; i++) {
+=======
+	for (i = 0; i < env->nr_cpus_avail; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu.cpu = i;
 		if (!perf_cpu_map__has(map, cpu))
 			continue;

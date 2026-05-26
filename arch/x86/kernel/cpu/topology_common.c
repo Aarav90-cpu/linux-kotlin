@@ -157,8 +157,13 @@ static void parse_topology(struct topo_scan *tscan, bool early)
 
 	switch (c->x86_vendor) {
 	case X86_VENDOR_AMD:
+<<<<<<< HEAD
 	case X86_VENDOR_HYGON:
 		cpu_parse_topology_amd(tscan);
+=======
+		if (IS_ENABLED(CONFIG_CPU_SUP_AMD))
+			cpu_parse_topology_amd(tscan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case X86_VENDOR_CENTAUR:
 	case X86_VENDOR_ZHAOXIN:
@@ -170,6 +175,13 @@ static void parse_topology(struct topo_scan *tscan, bool early)
 		if (c->cpuid_level >= 0x1a)
 			c->topo.cpu_type = cpuid_eax(0x1a);
 		break;
+<<<<<<< HEAD
+=======
+	case X86_VENDOR_HYGON:
+		if (IS_ENABLED(CONFIG_CPU_SUP_HYGON))
+			cpu_parse_topology_amd(tscan);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

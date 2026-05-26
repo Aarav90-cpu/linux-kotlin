@@ -371,7 +371,10 @@ static void sunxi_ir_remove(struct platform_device *pdev)
 	struct sunxi_ir *ir = platform_get_drvdata(pdev);
 
 	rc_unregister_device(ir->rc);
+<<<<<<< HEAD
 	rc_free_device(ir->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sunxi_ir_hw_exit(&pdev->dev);
 }
 

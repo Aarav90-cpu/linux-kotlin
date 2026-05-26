@@ -1993,6 +1993,7 @@ int test_dynptr_reg_type(void *ctx)
 	global_call_bpf_dynptr((const struct bpf_dynptr *)current);
 	return 0;
 }
+<<<<<<< HEAD
 
 /* Overwriting a referenced dynptr is allowed if a clone still holds the ref */
 SEC("?raw_tp")
@@ -2108,3 +2109,5 @@ int dynptr_overwrite_ref_clone_slice_valid(void *ctx)
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

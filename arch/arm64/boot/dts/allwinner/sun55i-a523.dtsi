@@ -153,6 +153,7 @@
 				bias-disable;
 			};
 
+<<<<<<< HEAD
 			/omit-if-no-ref/
 			ledc_ph_pin: ledc-ph-pin {
 				pins = "PH19";
@@ -160,6 +161,8 @@
 				allwinner,pinmux = <5>;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mmc0_pins: mmc0-pins {
 				pins = "PF0" ,"PF1", "PF2", "PF3", "PF4", "PF5";
 				allwinner,pinmux = <2>;
@@ -229,6 +232,7 @@
 			};
 
 			/omit-if-no-ref/
+<<<<<<< HEAD
 			spi0_pj_pins: spi0-pj-pins {
 				pins = "PJ21", "PJ22", "PJ23";
 				function = "spi0";
@@ -236,6 +240,8 @@
 			};
 
 			/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spi0_cs0_pc_pin: spi0-cs0-pc-pin {
 				pins = "PC3";
 				function = "spi0";
@@ -243,6 +249,7 @@
 			};
 
 			/omit-if-no-ref/
+<<<<<<< HEAD
 			spi0_cs0_pj_pin: spi0-cs0-pj-pin {
 				pins = "PJ20";
 				function = "spi0";
@@ -250,6 +257,8 @@
 			};
 
 			/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spi0_cs1_pc_pin: spi0-cs1-pc-pin {
 				pins = "PC7";
 				function = "spi0";
@@ -257,6 +266,7 @@
 			};
 
 			/omit-if-no-ref/
+<<<<<<< HEAD
 			spi0_cs1_pj_pin: spi0-cs1-pj-pin {
 				pins = "PJ24";
 				function = "spi0";
@@ -264,6 +274,8 @@
 			};
 
 			/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spi0_hold_pc_pin: spi0-hold-pc-pin {
 				/* conflicts with eMMC D7 */
 				pins = "PC16";
@@ -272,6 +284,7 @@
 			};
 
 			/omit-if-no-ref/
+<<<<<<< HEAD
 			spi0_hold_pj_pin: spi0-hold-pj-pin {
 				pins = "PJ26";
 				function = "spi0";
@@ -279,6 +292,8 @@
 			};
 
 			/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spi0_wp_pc_pin: spi0-wp-pc-pin {
 				/* conflicts with eMMC D2 */
 				pins = "PC15";
@@ -286,6 +301,7 @@
 				allwinner,pinmux = <4>;
 			};
 
+<<<<<<< HEAD
 			/omit-if-no-ref/
 			spi0_wp_pj_pin: spi0-wp-pj-pin {
 				pins = "PJ25";
@@ -293,6 +309,8 @@
 				allwinner,pinmux = <5>;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			uart0_pb_pins: uart0-pb-pins {
 				pins = "PB9", "PB10";
 				allwinner,pinmux = <2>;
@@ -325,6 +343,7 @@
 			#reset-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		ledc: led-controller@2008000 {
 			compatible = "allwinner,sun55i-a523-ledc",
 				     "allwinner,sun50i-a100-ledc";
@@ -340,6 +359,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wdt: watchdog@2050000 {
 			compatible = "allwinner,sun55i-a523-wdt";
 			reg = <0x2050000 0x20>;

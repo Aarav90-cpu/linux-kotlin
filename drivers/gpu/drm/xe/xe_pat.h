@@ -28,9 +28,14 @@ struct xe_pat_table_entry {
 	/**
 	 * @coh_mode: The GPU coherency mode that @value maps to.
 	 */
+<<<<<<< HEAD
 #define XE_COH_NONE		1
 #define XE_COH_1WAY		2
 #define XE_COH_2WAY		3
+=======
+#define XE_COH_NONE          1
+#define XE_COH_AT_LEAST_1WAY 2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 coh_mode;
 
 	/**

@@ -85,7 +85,11 @@ struct kfd_event {
 #define KFD_EVENT_TYPE_MEMORY 8
 
 extern void kfd_signal_event_interrupt(u32 pasid, uint32_t partial_id,
+<<<<<<< HEAD
 				       uint32_t valid_id_bits,
 				       bool signal_mailbox_updated);
+=======
+				       uint32_t valid_id_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

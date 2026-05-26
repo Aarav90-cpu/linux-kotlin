@@ -202,7 +202,11 @@ static s32 xmit_xmitframes(struct adapter *padapter, struct xmit_priv *pxmitpriv
 
 		if (
 			(check_pending_xmitbuf(pxmitpriv)) &&
+<<<<<<< HEAD
 			(padapter->mlmepriv.link_detect_info.higher_busy_tx_traffic)
+=======
+			(padapter->mlmepriv.LinkDetectInfo.bHigherBusyTxTraffic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		) {
 			if ((phwxmit->accnt > 0) && (phwxmit->accnt < 5)) {
 				err = -2;
@@ -240,7 +244,10 @@ static s32 xmit_xmitframes(struct adapter *padapter, struct xmit_priv *pxmitpriv
 						if (pxmitbuf->len > 0 &&
 						    pxmitbuf->priv_data) {
 							struct xmit_frame *pframe;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							pframe = (struct xmit_frame *)pxmitbuf->priv_data;
 							pframe->agg_num = k;
 							pxmitbuf->agg_num = k;
@@ -325,7 +332,10 @@ static s32 xmit_xmitframes(struct adapter *padapter, struct xmit_priv *pxmitpriv
 		if (pxmitbuf) {
 			if (pxmitbuf->len > 0) {
 				struct xmit_frame *pframe;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pframe = (struct xmit_frame *)pxmitbuf->priv_data;
 				pframe->agg_num = k;
 				pxmitbuf->agg_num = k;
@@ -484,7 +494,11 @@ s32 rtl8723bs_hal_xmit(
 		(pxmitframe->attrib.ether_type != 0x888e) &&
 		(pxmitframe->attrib.dhcp_pkt != 1)
 	) {
+<<<<<<< HEAD
 		if (padapter->mlmepriv.link_detect_info.busy_traffic)
+=======
+		if (padapter->mlmepriv.LinkDetectInfo.bBusyTraffic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rtw_issue_addbareq_cmd(padapter, pxmitframe);
 	}
 

@@ -390,8 +390,12 @@ int __ext4_handle_dirty_metadata(const char *where, unsigned int line,
 		}
 	} else {
 		if (inode)
+<<<<<<< HEAD
 			mmb_mark_buffer_dirty(bh,
 					      &EXT4_I(inode)->i_metadata_bhs);
+=======
+			mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			mark_buffer_dirty(bh);
 		if (inode && inode_needs_sync(inode)) {

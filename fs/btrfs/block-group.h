@@ -350,7 +350,10 @@ int btrfs_remove_block_group(struct btrfs_trans_handle *trans,
 			     struct btrfs_chunk_map *map);
 void btrfs_delete_unused_bgs(struct btrfs_fs_info *fs_info);
 void btrfs_mark_bg_unused(struct btrfs_block_group *bg);
+<<<<<<< HEAD
 void btrfs_reclaim_block_groups(struct btrfs_fs_info *fs_info, unsigned int limit);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void btrfs_reclaim_bgs_work(struct work_struct *work);
 void btrfs_reclaim_bgs(struct btrfs_fs_info *fs_info);
 void btrfs_mark_bg_to_reclaim(struct btrfs_block_group *bg);

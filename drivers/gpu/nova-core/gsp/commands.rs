@@ -11,6 +11,10 @@ use kernel::{
     device,
     pci,
     prelude::*,
+<<<<<<< HEAD
+=======
+    time::Delta,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     transmute::{
         AsBytes,
         FromBytes, //
@@ -23,8 +27,12 @@ use crate::{
         cmdq::{
             Cmdq,
             CommandToGsp,
+<<<<<<< HEAD
             MessageFromGsp,
             NoReply, //
+=======
+            MessageFromGsp, //
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         },
         fw::{
             commands::*,
@@ -49,7 +57,10 @@ impl<'a> SetSystemInfo<'a> {
 impl<'a> CommandToGsp for SetSystemInfo<'a> {
     const FUNCTION: MsgFunction = MsgFunction::GspSetSystemInfo;
     type Command = GspSetSystemInfo;
+<<<<<<< HEAD
     type Reply = NoReply;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     type InitError = Error;
 
     fn init(&self) -> impl Init<Self::Command, Self::InitError> {
@@ -101,7 +112,10 @@ impl SetRegistry {
 impl CommandToGsp for SetRegistry {
     const FUNCTION: MsgFunction = MsgFunction::SetRegistry;
     type Command = PackedRegistryTable;
+<<<<<<< HEAD
     type Reply = NoReply;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     type InitError = Infallible;
 
     fn init(&self) -> impl Init<Self::Command, Self::InitError> {
@@ -165,9 +179,15 @@ impl MessageFromGsp for GspInitDone {
 }
 
 /// Waits for GSP initialization to complete.
+<<<<<<< HEAD
 pub(crate) fn wait_gsp_init_done(cmdq: &Cmdq) -> Result {
     loop {
         match cmdq.receive_msg::<GspInitDone>(Cmdq::RECEIVE_TIMEOUT) {
+=======
+pub(crate) fn wait_gsp_init_done(cmdq: &mut Cmdq) -> Result {
+    loop {
+        match cmdq.receive_msg::<GspInitDone>(Delta::from_secs(10)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             Ok(_) => break Ok(()),
             Err(ERANGE) => continue,
             Err(e) => break Err(e),
@@ -181,7 +201,10 @@ struct GetGspStaticInfo;
 impl CommandToGsp for GetGspStaticInfo {
     const FUNCTION: MsgFunction = MsgFunction::GetGspStaticInfo;
     type Command = GspStaticConfigInfo;
+<<<<<<< HEAD
     type Reply = GetGspStaticInfoReply;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     type InitError = Infallible;
 
     fn init(&self) -> impl Init<Self::Command, Self::InitError> {
@@ -234,6 +257,19 @@ impl GetGspStaticInfoReply {
 }
 
 /// Send the [`GetGspInfo`] command and awaits for its reply.
+<<<<<<< HEAD
 pub(crate) fn get_gsp_info(cmdq: &Cmdq, bar: &Bar0) -> Result<GetGspStaticInfoReply> {
     cmdq.send_command(bar, GetGspStaticInfo)
+=======
+pub(crate) fn get_gsp_info(cmdq: &mut Cmdq, bar: &Bar0) -> Result<GetGspStaticInfoReply> {
+    cmdq.send_command(bar, GetGspStaticInfo)?;
+
+    loop {
+        match cmdq.receive_msg::<GetGspStaticInfoReply>(Delta::from_secs(5)) {
+            Ok(info) => return Ok(info),
+            Err(ERANGE) => continue,
+            Err(e) => return Err(e),
+        }
+    }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

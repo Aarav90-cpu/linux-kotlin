@@ -14,6 +14,7 @@ properties:
     description: Enable autorepeat when key is pressed and held down.
     type: boolean
 
+<<<<<<< HEAD
   debounce-delay-ms:
     description:
       Debounce delay in milliseconds. This is the time during which the key
@@ -22,6 +23,8 @@ properties:
     maximum: 999
     default: 0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   linux,keycodes:
     description:
       Specifies an array of numeric keycode values to be used for reporting
@@ -66,6 +69,7 @@ properties:
       reset automatically. Device with key pressed reset feature can specify
       this property.
 
+<<<<<<< HEAD
   settling-time-us:
     description:
       Delay, in microseconds, when activating an output line/col/row before
@@ -74,6 +78,8 @@ properties:
       ramp-up/down times.
     default: 0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 dependencies:
   linux,input-type: [ "linux,code" ]
 

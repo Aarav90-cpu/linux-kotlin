@@ -314,6 +314,7 @@ destroy:
 		xa_cmpxchg_irq(&table->dct_xa, dct->mqp.qpn, XA_ZERO_ENTRY, dct, 0);
 		return err;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * A race can occur where a concurrent create gets the same dctn
@@ -322,6 +323,9 @@ destroy:
 	 * the entry as it now belongs to the new DCT.
 	 */
 	xa_cmpxchg_irq(&table->dct_xa, dct->mqp.qpn, XA_ZERO_ENTRY, NULL, 0);
+=======
+	xa_erase_irq(&table->dct_xa, dct->mqp.qpn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

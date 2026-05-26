@@ -226,7 +226,11 @@ static void catpt_dev_init(struct catpt_dev *cdev, struct device *dev,
 	cdev->spec = spec;
 	init_completion(&cdev->fw_ready);
 	INIT_LIST_HEAD(&cdev->stream_list);
+<<<<<<< HEAD
 	mutex_init(&cdev->stream_mutex);
+=======
+	spin_lock_init(&cdev->list_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&cdev->clk_mutex);
 
 	/*

@@ -1034,6 +1034,11 @@ static int gmc_v7_0_sw_init(struct amdgpu_ip_block *ip_block)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
+=======
+	amdgpu_gmc_get_vbios_allocations(adev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Memory manager */
 	r = amdgpu_bo_init(adev);
 	if (r)

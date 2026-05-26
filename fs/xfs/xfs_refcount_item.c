@@ -266,7 +266,11 @@ xfs_refcount_update_diff_items(
 	struct xfs_refcount_intent	*ra = ci_entry(a);
 	struct xfs_refcount_intent	*rb = ci_entry(b);
 
+<<<<<<< HEAD
 	return cmp_int(ra->ri_group->xg_gno, rb->ri_group->xg_gno);
+=======
+	return ra->ri_group->xg_gno - rb->ri_group->xg_gno;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Log refcount updates in the intent item. */

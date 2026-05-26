@@ -218,6 +218,7 @@ TRACE_EVENT(hrtimer_setup,
  * hrtimer_start - called when the hrtimer is started
  * @hrtimer:	pointer to struct hrtimer
  * @mode:	the hrtimers mode
+<<<<<<< HEAD
  * @was_armed:	Was armed when hrtimer_start*() was invoked
  */
 TRACE_EVENT(hrtimer_start,
@@ -225,6 +226,14 @@ TRACE_EVENT(hrtimer_start,
 	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
 
 	TP_ARGS(hrtimer, mode, was_armed),
+=======
+ */
+TRACE_EVENT(hrtimer_start,
+
+	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
+
+	TP_ARGS(hrtimer, mode),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_STRUCT__entry(
 		__field( void *,	hrtimer		)
@@ -232,7 +241,10 @@ TRACE_EVENT(hrtimer_start,
 		__field( s64,		expires		)
 		__field( s64,		softexpires	)
 		__field( enum hrtimer_mode,	mode	)
+<<<<<<< HEAD
 		__field( bool,		was_armed	)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
@@ -241,6 +253,7 @@ TRACE_EVENT(hrtimer_start,
 		__entry->expires	= hrtimer_get_expires(hrtimer);
 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
 		__entry->mode		= mode;
+<<<<<<< HEAD
 		__entry->was_armed	= was_armed;
 	),
 
@@ -249,18 +262,36 @@ TRACE_EVENT(hrtimer_start,
 		  (unsigned long long) __entry->expires,
 		  (unsigned long long) __entry->softexpires,
 		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
+=======
+	),
+
+	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
+		  "mode=%s", __entry->hrtimer, __entry->function,
+		  (unsigned long long) __entry->expires,
+		  (unsigned long long) __entry->softexpires,
+		  decode_hrtimer_mode(__entry->mode))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 /**
  * hrtimer_expire_entry - called immediately before the hrtimer callback
  * @hrtimer:	pointer to struct hrtimer
+<<<<<<< HEAD
  * @now:	variable which contains current time of the timers base.
+=======
+ * @now:	pointer to variable which contains current time of the
+ *		timers base.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Allows to determine the timer latency.
  */
 TRACE_EVENT(hrtimer_expire_entry,
 
+<<<<<<< HEAD
 	TP_PROTO(struct hrtimer *hrtimer, ktime_t now),
+=======
+	TP_PROTO(struct hrtimer *hrtimer, ktime_t *now),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_ARGS(hrtimer, now),
 
@@ -272,7 +303,11 @@ TRACE_EVENT(hrtimer_expire_entry,
 
 	TP_fast_assign(
 		__entry->hrtimer	= hrtimer;
+<<<<<<< HEAD
 		__entry->now		= now;
+=======
+		__entry->now		= *now;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->function	= ACCESS_PRIVATE(hrtimer, function);
 	),
 
@@ -324,6 +359,7 @@ DEFINE_EVENT(hrtimer_class, hrtimer_cancel,
 );
 
 /**
+<<<<<<< HEAD
  * hrtimer_rearm - Invoked when the clockevent device is rearmed
  * @next_event:	The next expiry time (CLOCK_MONOTONIC)
  */
@@ -348,6 +384,8 @@ TRACE_EVENT(hrtimer_rearm,
 );
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * itimer_state - called when itimer is started or canceled
  * @which:	name of the interval timer
  * @value:	the itimers value, itimer is canceled if value->it_value is

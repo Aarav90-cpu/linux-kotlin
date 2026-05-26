@@ -10,7 +10,10 @@
 #include <linux/clk-provider.h>
 #include <linux/container_of.h>
 #include <linux/iopoll.h>
+<<<<<<< HEAD
 #include <linux/nvmem-provider.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mailbox_client.h>
 #include <linux/module.h>
 #include <linux/of.h>
@@ -873,6 +876,7 @@ static int mtk_mfg_init_clk_provider(struct mtk_mfg *mfg)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mtk_mfg_read_nvmem(void *priv, unsigned int offset, void *val, size_t bytes)
 {
 	struct mtk_mfg *mfg = priv;
@@ -927,6 +931,8 @@ static int mtk_mfg_init_nvmem_provider(struct mtk_mfg *mfg)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mtk_mfg_probe(struct platform_device *pdev)
 {
 	struct mtk_mfg *mfg;
@@ -1039,10 +1045,13 @@ static int mtk_mfg_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_power_off;
 
+<<<<<<< HEAD
 	ret = mtk_mfg_init_nvmem_provider(mfg);
 	if (ret)
 		goto err_power_off;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = of_genpd_add_provider_simple(dev->of_node, &mfg->pd);
 	if (ret) {
 		dev_err_probe(dev, ret, "Failed to add pmdomain provider\n");

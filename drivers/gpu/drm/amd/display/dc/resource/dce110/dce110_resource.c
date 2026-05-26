@@ -667,7 +667,10 @@ static struct link_encoder *dce110_link_encoder_create(
 	struct dc_context *ctx,
 	const struct encoder_init_data *enc_init_data)
 {
+<<<<<<< HEAD
 	(void)ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dce110_link_encoder *enc110 =
 		kzalloc_obj(struct dce110_link_encoder);
 	int link_regs_id;
@@ -972,7 +975,10 @@ static enum dc_status dce110_validate_bandwidth(
 	struct dc_state *context,
 	enum dc_validate_mode validate_mode)
 {
+<<<<<<< HEAD
 	(void)validate_mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool result = false;
 
 	DC_LOG_BANDWIDTH_CALCS(
@@ -1045,7 +1051,10 @@ static enum dc_status dce110_validate_bandwidth(
 static enum dc_status dce110_validate_plane(const struct dc_plane_state *plane_state,
 					    struct dc_caps *caps)
 {
+<<<<<<< HEAD
 	(void)caps;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (((plane_state->dst_rect.width * 2) < plane_state->src_rect.width) ||
 	    ((plane_state->dst_rect.height * 2) < plane_state->src_rect.height))
 		return DC_FAIL_SURFACE_VALIDATE;
@@ -1102,7 +1111,10 @@ static enum dc_status dce110_validate_global(
 		struct dc *dc,
 		struct dc_state *context)
 {
+<<<<<<< HEAD
 	(void)dc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dce110_validate_surface_sets(context))
 		return DC_FAIL_SURFACE_VALIDATE;
 
@@ -1134,7 +1146,10 @@ static struct pipe_ctx *dce110_acquire_underlay(
 		const struct resource_pool *pool,
 		const struct pipe_ctx *opp_head_pipe)
 {
+<<<<<<< HEAD
 	(void)cur_ctx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_stream_state *stream = opp_head_pipe->stream;
 	struct dc *dc = stream->ctx->dc;
 	struct dce_hwseq *hws = dc->hwseq;
@@ -1359,7 +1374,10 @@ static bool dce110_resource_construct(
 	struct dce110_resource_pool *pool,
 	struct hw_asic_id asic_id)
 {
+<<<<<<< HEAD
 	(void)asic_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int i;
 	struct dc_context *ctx = dc->ctx;
 	struct dc_bios *bp;

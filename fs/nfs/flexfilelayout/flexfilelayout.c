@@ -1631,7 +1631,11 @@ ff_layout_set_layoutcommit(struct inode *inode,
 		return;
 
 	pnfs_set_layoutcommit(inode, lseg, end_offset);
+<<<<<<< HEAD
 	dprintk("%s inode %llu pls_end_pos %llu\n", __func__, inode->i_ino,
+=======
+	dprintk("%s inode %lu pls_end_pos %llu\n", __func__, inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		(unsigned long long) NFS_I(inode)->layout->plh_lwb);
 }
 
@@ -2136,7 +2140,11 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
 	u32 dss_id;
 	bool ds_fatal_error = false;
 
+<<<<<<< HEAD
 	dprintk("--> %s ino %llu pgbase %u req %zu@%llu\n",
+=======
+	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__func__, hdr->inode->i_ino,
 		hdr->args.pgbase, (size_t)hdr->args.count, offset);
 
@@ -2245,7 +2253,11 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
 
 	vers = nfs4_ff_layout_ds_version(mirror, dss_id);
 
+<<<<<<< HEAD
 	dprintk("%s ino %llu sync %d req %zu@%llu DS: %s cl_count %d vers %d\n",
+=======
+	dprintk("%s ino %lu sync %d req %zu@%llu DS: %s cl_count %d vers %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__func__, hdr->inode->i_ino, sync, (size_t) hdr->args.count,
 		offset, ds->ds_remotestr, refcount_read(&ds->ds_clp->cl_count),
 		vers);
@@ -2336,7 +2348,11 @@ static int ff_layout_initiate_commit(struct nfs_commit_data *data, int how)
 
 	vers = nfs4_ff_layout_ds_version(mirror, dss_id);
 
+<<<<<<< HEAD
 	dprintk("%s ino %llu, how %d cl_count %d vers %d\n", __func__,
+=======
+	dprintk("%s ino %lu, how %d cl_count %d vers %d\n", __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->inode->i_ino, how, refcount_read(&ds->ds_clp->cl_count),
 		vers);
 	data->commit_done_cb = ff_layout_commit_done_cb;

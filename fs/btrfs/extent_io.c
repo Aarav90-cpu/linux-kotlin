@@ -11,10 +11,16 @@
 #include <linux/blkdev.h>
 #include <linux/swap.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
 #include <linux/prefetch.h>
 #include <linux/fsverity.h>
 #include <linux/lockdep.h>
+=======
+#include <linux/pagevec.h>
+#include <linux/prefetch.h>
+#include <linux/fsverity.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "extent_io.h"
 #include "extent-io-tree.h"
 #include "extent_map.h"
@@ -521,7 +527,11 @@ static void end_bbio_data_write(struct btrfs_bio *bbio)
 	struct bio *bio = &bbio->bio;
 	int error = blk_status_to_errno(bio->bi_status);
 	struct folio_iter fi;
+<<<<<<< HEAD
 	u32 bio_size = 0;
+=======
+	const u32 sectorsize = fs_info->sectorsize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ASSERT(!bio_flagged(bio, BIO_CLONED));
 	bio_for_each_folio_all(fi, bio) {
@@ -529,6 +539,7 @@ static void end_bbio_data_write(struct btrfs_bio *bbio)
 		u64 start = folio_pos(folio) + fi.offset;
 		u32 len = fi.length;
 
+<<<<<<< HEAD
 		bio_size += len;
 		ASSERT(btrfs_folio_test_ordered(fs_info, folio, start, len));
 		btrfs_folio_clear_ordered(fs_info, folio, start, len);
@@ -539,6 +550,25 @@ static void end_bbio_data_write(struct btrfs_bio *bbio)
 		mapping_set_error(bbio->inode->vfs_inode.i_mapping, error);
 
 	btrfs_finish_ordered_extent(bbio->ordered, bbio->file_offset, bio_size, !error);
+=======
+		/* Our read/write should always be sector aligned. */
+		if (!IS_ALIGNED(fi.offset, sectorsize))
+			btrfs_err(fs_info,
+		"partial page write in btrfs with offset %zu and length %zu",
+				  fi.offset, fi.length);
+		else if (!IS_ALIGNED(fi.length, sectorsize))
+			btrfs_info(fs_info,
+		"incomplete page write with offset %zu and length %zu",
+				   fi.offset, fi.length);
+
+		btrfs_finish_ordered_extent(bbio->ordered, folio, start, len,
+					    !error);
+		if (error)
+			mapping_set_error(folio->mapping, error);
+		btrfs_folio_clear_writeback(fs_info, folio, start, len);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bio_put(bio);
 }
 
@@ -1581,8 +1611,12 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
 			u64 start = page_start + (start_bit << fs_info->sectorsize_bits);
 			u32 len = (end_bit - start_bit) << fs_info->sectorsize_bits;
 
+<<<<<<< HEAD
 			btrfs_folio_clear_ordered(fs_info, folio, start, len);
 			btrfs_mark_ordered_io_finished(inode, start, len, false);
+=======
+			btrfs_mark_ordered_io_finished(inode, folio, start, len, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		return ret;
 	}
@@ -1658,7 +1692,10 @@ static int submit_one_sector(struct btrfs_inode *inode,
 		 * ordered extent.
 		 */
 		btrfs_folio_clear_dirty(fs_info, folio, filepos, sectorsize);
+<<<<<<< HEAD
 		btrfs_folio_clear_ordered(fs_info, folio, filepos, sectorsize);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_folio_set_writeback(fs_info, folio, filepos, sectorsize);
 		btrfs_folio_clear_writeback(fs_info, folio, filepos, sectorsize);
 
@@ -1666,8 +1703,13 @@ static int submit_one_sector(struct btrfs_inode *inode,
 		 * Since there is no bio submitted to finish the ordered
 		 * extent, we have to manually finish this sector.
 		 */
+<<<<<<< HEAD
 		btrfs_mark_ordered_io_finished(inode, filepos, fs_info->sectorsize,
 					       false);
+=======
+		btrfs_mark_ordered_io_finished(inode, folio, filepos,
+					       fs_info->sectorsize, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return PTR_ERR(em);
 	}
 
@@ -1779,8 +1821,13 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
 			spin_unlock(&inode->ordered_tree_lock);
 			btrfs_put_ordered_extent(ordered);
 
+<<<<<<< HEAD
 			btrfs_folio_clear_ordered(fs_info, folio, cur, fs_info->sectorsize);
 			btrfs_mark_ordered_io_finished(inode, cur, fs_info->sectorsize, true);
+=======
+			btrfs_mark_ordered_io_finished(inode, folio, cur,
+						       fs_info->sectorsize, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * This range is beyond i_size, thus we don't need to
 			 * bother writing back.
@@ -1945,9 +1992,13 @@ static noinline_for_stack bool lock_extent_buffer_for_io(struct extent_buffer *e
 	 * of time.
 	 */
 	spin_lock(&eb->refs_lock);
+<<<<<<< HEAD
 	if ((wbc->sync_mode == WB_SYNC_ALL ||
 	     atomic_read(&eb->writeback_inhibitors) == 0) &&
 	    test_and_clear_bit(EXTENT_BUFFER_DIRTY, &eb->bflags)) {
+=======
+	if (test_and_clear_bit(EXTENT_BUFFER_DIRTY, &eb->bflags)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		XA_STATE(xas, &fs_info->buffer_tree, eb->start >> fs_info->nodesize_bits);
 		unsigned long flags;
 
@@ -2093,13 +2144,21 @@ static void buffer_tree_tag_for_writeback(struct btrfs_fs_info *fs_info,
 struct eb_batch {
 	unsigned int nr;
 	unsigned int cur;
+<<<<<<< HEAD
 	struct extent_buffer *ebs[FOLIO_BATCH_SIZE];
+=======
+	struct extent_buffer *ebs[PAGEVEC_SIZE];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline bool eb_batch_add(struct eb_batch *batch, struct extent_buffer *eb)
 {
 	batch->ebs[batch->nr++] = eb;
+<<<<<<< HEAD
 	return (batch->nr < FOLIO_BATCH_SIZE);
+=======
+	return (batch->nr < PAGEVEC_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void eb_batch_init(struct eb_batch *batch)
@@ -2394,6 +2453,7 @@ retry:
 		index = 0;
 		goto retry;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Only btrfs_check_meta_write_pointer() can update @ret,
@@ -2401,6 +2461,41 @@ retry:
 	 */
 	ASSERT(ret <= 0);
 	if (unlikely(!ret && BTRFS_FS_ERROR(fs_info)))
+=======
+	/*
+	 * If something went wrong, don't allow any metadata write bio to be
+	 * submitted.
+	 *
+	 * This would prevent use-after-free if we had dirty pages not
+	 * cleaned up, which can still happen by fuzzed images.
+	 *
+	 * - Bad extent tree
+	 *   Allowing existing tree block to be allocated for other trees.
+	 *
+	 * - Log tree operations
+	 *   Exiting tree blocks get allocated to log tree, bumps its
+	 *   generation, then get cleaned in tree re-balance.
+	 *   Such tree block will not be written back, since it's clean,
+	 *   thus no WRITTEN flag set.
+	 *   And after log writes back, this tree block is not traced by
+	 *   any dirty extent_io_tree.
+	 *
+	 * - Offending tree block gets re-dirtied from its original owner
+	 *   Since it has bumped generation, no WRITTEN flag, it can be
+	 *   reused without COWing. This tree block will not be traced
+	 *   by btrfs_transaction::dirty_pages.
+	 *
+	 *   Now such dirty tree block will not be cleaned by any dirty
+	 *   extent io tree. Thus we don't want to submit such wild eb
+	 *   if the fs already has error.
+	 *
+	 * We can get ret > 0 from submit_extent_folio() indicating how many ebs
+	 * were submitted. Reset it to 0 to avoid false alerts for the caller.
+	 */
+	if (ret > 0)
+		ret = 0;
+	if (!ret && BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EROFS;
 
 	if (ctx.zoned_bg)
@@ -2631,7 +2726,12 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
 		if (IS_ERR(folio)) {
 			cur_end = min(round_down(cur, PAGE_SIZE) + PAGE_SIZE - 1, end);
 			cur_len = cur_end + 1 - cur;
+<<<<<<< HEAD
 			btrfs_mark_ordered_io_finished(BTRFS_I(inode), cur, cur_len, false);
+=======
+			btrfs_mark_ordered_io_finished(BTRFS_I(inode), NULL,
+						       cur, cur_len, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mapping_set_error(mapping, PTR_ERR(folio));
 			cur = cur_end;
 			continue;
@@ -2982,6 +3082,7 @@ static inline void btrfs_release_extent_buffer(struct extent_buffer *eb)
 	kmem_cache_free(extent_buffer_cache, eb);
 }
 
+<<<<<<< HEAD
 /*
  * Inhibit writeback on buffer during transaction.
  *
@@ -3040,6 +3141,8 @@ void btrfs_uninhibit_all_eb_writeback(struct btrfs_trans_handle *trans)
 	xa_destroy(&trans->writeback_inhibited_ebs);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct extent_buffer *__alloc_extent_buffer(struct btrfs_fs_info *fs_info,
 						   u64 start)
 {
@@ -3050,7 +3153,10 @@ static struct extent_buffer *__alloc_extent_buffer(struct btrfs_fs_info *fs_info
 	eb->len = fs_info->nodesize;
 	eb->fs_info = fs_info;
 	init_rwsem(&eb->lock);
+<<<<<<< HEAD
 	atomic_set(&eb->writeback_inhibitors, 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	btrfs_leak_debug_add_eb(eb);
 
@@ -3901,6 +4007,7 @@ int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
 	struct btrfs_fs_info *fs_info = eb->fs_info;
 	struct btrfs_bio *bbio;
 
+<<<<<<< HEAD
 	if (extent_buffer_uptodate(eb)) {
 		int ret;
 
@@ -3912,6 +4019,10 @@ int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
 		}
 		return 0;
 	}
+=======
+	if (test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * We could have had EXTENT_BUFFER_UPTODATE cleared by the write
@@ -3931,6 +4042,7 @@ int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
 	 * started and finished reading the same eb.  In this case, UPTODATE
 	 * will now be set, and we shouldn't read it in again.
 	 */
+<<<<<<< HEAD
 	if (unlikely(extent_buffer_uptodate(eb))) {
 		int ret;
 
@@ -3941,6 +4053,10 @@ int read_extent_buffer_pages_nowait(struct extent_buffer *eb, int mirror_num,
 				ret = -EIO;
 			return ret;
 		}
+=======
+	if (unlikely(test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))) {
+		clear_extent_buffer_reading(eb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -3976,7 +4092,11 @@ int read_extent_buffer_pages(struct extent_buffer *eb, int mirror_num,
 		return ret;
 
 	wait_on_bit_io(&eb->bflags, EXTENT_BUFFER_READING, TASK_UNINTERRUPTIBLE);
+<<<<<<< HEAD
 	if (unlikely(!extent_buffer_uptodate(eb)))
+=======
+	if (unlikely(!test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	return 0;
 }
@@ -4018,7 +4138,11 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
 	size_t cur;
 	size_t offset;
 	char *dst = (char *)dstv;
+<<<<<<< HEAD
 	unsigned long i;
+=======
+	unsigned long i = get_eb_folio_index(eb, start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (check_eb_range(eb, start, len)) {
 		/*
@@ -4035,7 +4159,11 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
 	}
 
 	offset = get_eb_offset_in_folio(eb, start);
+<<<<<<< HEAD
 	i = get_eb_folio_index(eb, start);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (len > 0) {
 		char *kaddr;
 
@@ -4058,11 +4186,19 @@ int read_extent_buffer_to_user_nofault(const struct extent_buffer *eb,
 	size_t cur;
 	size_t offset;
 	char __user *dst = (char __user *)dstv;
+<<<<<<< HEAD
 	unsigned long i;
 	int ret = 0;
 
 	if (check_eb_range(eb, start, len))
 		return -EINVAL;
+=======
+	unsigned long i = get_eb_folio_index(eb, start);
+	int ret = 0;
+
+	WARN_ON(start > eb->len);
+	WARN_ON(start + len > eb->start + eb->len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (eb->addr) {
 		if (copy_to_user_nofault(dstv, eb->addr + start, len))
@@ -4071,7 +4207,11 @@ int read_extent_buffer_to_user_nofault(const struct extent_buffer *eb,
 	}
 
 	offset = get_eb_offset_in_folio(eb, start);
+<<<<<<< HEAD
 	i = get_eb_folio_index(eb, start);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (len > 0) {
 		char *kaddr;
 
@@ -4099,7 +4239,11 @@ int memcmp_extent_buffer(const struct extent_buffer *eb, const void *ptrv,
 	size_t offset;
 	char *kaddr;
 	char *ptr = (char *)ptrv;
+<<<<<<< HEAD
 	unsigned long i;
+=======
+	unsigned long i = get_eb_folio_index(eb, start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (check_eb_range(eb, start, len))
@@ -4109,7 +4253,11 @@ int memcmp_extent_buffer(const struct extent_buffer *eb, const void *ptrv,
 		return memcmp(ptrv, eb->addr + start, len);
 
 	offset = get_eb_offset_in_folio(eb, start);
+<<<<<<< HEAD
 	i = get_eb_folio_index(eb, start);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (len > 0) {
 		cur = min(len, unit_size - offset);
 		kaddr = folio_address(eb->folios[i]);
@@ -4169,7 +4317,11 @@ static void __write_extent_buffer(const struct extent_buffer *eb,
 	size_t offset;
 	char *kaddr;
 	const char *src = (const char *)srcv;
+<<<<<<< HEAD
 	unsigned long i;
+=======
+	unsigned long i = get_eb_folio_index(eb, start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* For unmapped (dummy) ebs, no need to check their uptodate status. */
 	const bool check_uptodate = !test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags);
 
@@ -4185,7 +4337,11 @@ static void __write_extent_buffer(const struct extent_buffer *eb,
 	}
 
 	offset = get_eb_offset_in_folio(eb, start);
+<<<<<<< HEAD
 	i = get_eb_folio_index(eb, start);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (len > 0) {
 		if (check_uptodate)
 			assert_eb_folio_uptodate(eb, i);
@@ -4271,7 +4427,11 @@ void copy_extent_buffer(const struct extent_buffer *dst,
 	size_t cur;
 	size_t offset;
 	char *kaddr;
+<<<<<<< HEAD
 	unsigned long i;
+=======
+	unsigned long i = get_eb_folio_index(dst, dst_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (check_eb_range(dst, dst_offset, len) ||
 	    check_eb_range(src, src_offset, len))
@@ -4281,7 +4441,10 @@ void copy_extent_buffer(const struct extent_buffer *dst,
 
 	offset = get_eb_offset_in_folio(dst, dst_offset);
 
+<<<<<<< HEAD
 	i = get_eb_folio_index(dst, dst_offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (len > 0) {
 		assert_eb_folio_uptodate(dst, i);
 
@@ -4641,8 +4804,12 @@ int try_release_extent_buffer(struct folio *folio)
  * to read the block we will not block on anything.
  */
 void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
+<<<<<<< HEAD
 				u64 bytenr, u64 owner_root, u64 gen, int level,
 				const struct btrfs_key *first_key)
+=======
+				u64 bytenr, u64 owner_root, u64 gen, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_tree_parent_check check = {
 		.level = level,
@@ -4651,16 +4818,23 @@ void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
 	struct extent_buffer *eb;
 	int ret;
 
+<<<<<<< HEAD
 	if (first_key) {
 		memcpy(&check.first_key, first_key, sizeof(struct btrfs_key));
 		check.has_first_key = true;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eb = btrfs_find_create_tree_block(fs_info, bytenr, owner_root, level);
 	if (IS_ERR(eb))
 		return;
 
+<<<<<<< HEAD
 	if (btrfs_buffer_uptodate(eb, gen, NULL)) {
+=======
+	if (btrfs_buffer_uptodate(eb, gen, true)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		free_extent_buffer(eb);
 		return;
 	}
@@ -4683,13 +4857,20 @@ void btrfs_readahead_tree_block(struct btrfs_fs_info *fs_info,
  */
 void btrfs_readahead_node_child(struct extent_buffer *node, int slot)
 {
+<<<<<<< HEAD
 	struct btrfs_key node_key;
 
 	btrfs_node_key_to_cpu(node, &node_key, slot);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btrfs_readahead_tree_block(node->fs_info,
 				   btrfs_node_blockptr(node, slot),
 				   btrfs_header_owner(node),
 				   btrfs_node_ptr_generation(node, slot),
+<<<<<<< HEAD
 				   btrfs_header_level(node) - 1,
 				   &node_key);
+=======
+				   btrfs_header_level(node) - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

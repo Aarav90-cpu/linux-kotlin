@@ -17,6 +17,10 @@ Contents:
    diagnostic/index
    dsa/index
    devlink/index
+<<<<<<< HEAD
+=======
+   caif/index
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    ethtool-netlink
    ieee802154
    iso15765-2
@@ -40,9 +44,17 @@ Contents:
    tls-handshake
    nfc
    6lowpan
+<<<<<<< HEAD
    arcnet-hardware
    arcnet
    atm
+=======
+   6pack
+   arcnet-hardware
+   arcnet
+   atm
+   ax25
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    bonding
    cdc_mbim
    dctcp

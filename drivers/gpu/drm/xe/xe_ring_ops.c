@@ -48,6 +48,7 @@ static u32 preparser_disable(bool state)
 	return MI_ARB_CHECK | BIT(8) | state;
 }
 
+<<<<<<< HEAD
 static u32 *
 __emit_aux_table_inv(u32 *cmd, const struct xe_reg reg, u32 adj_offset)
 {
@@ -90,6 +91,17 @@ static int emit_aux_table_inv(struct xe_hw_engine *hwe, u32 *dw, int i)
 		return emit(gt, dw + i) - dw;
 	else
 		return i;
+=======
+static int emit_aux_table_inv(struct xe_gt *gt, struct xe_reg reg,
+			      u32 *dw, int i)
+{
+	dw[i++] = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1) | MI_LRI_MMIO_REMAP_EN;
+	dw[i++] = reg.addr + gt->mmio.adj_offset;
+	dw[i++] = AUX_INV;
+	dw[i++] = MI_NOOP;
+
+	return i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int emit_user_interrupt(u32 *dw, int i)
@@ -289,6 +301,7 @@ static int emit_copy_timestamp(struct xe_device *xe, struct xe_lrc *lrc,
 	return i;
 }
 
+<<<<<<< HEAD
 static int emit_fake_watchdog(struct xe_lrc *lrc, u32 *dw, int i)
 {
 	/*
@@ -315,6 +328,8 @@ static int emit_fake_watchdog(struct xe_lrc *lrc, u32 *dw, int i)
 	return i;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* for engines that don't require any special HW handling (no EUs, no aux inval, etc) */
 static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc,
 				    u64 batch_addr, u32 *head, u32 seqno)
@@ -325,9 +340,12 @@ static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc
 
 	*head = lrc->ring.tail;
 
+<<<<<<< HEAD
 	if (job->ring_ops_force_reset)
 		i = emit_fake_watchdog(lrc, dw, i);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i = emit_copy_timestamp(gt_to_xe(gt), lrc, dw, i);
 
 	if (job->ring_ops_flush_tlb) {
@@ -367,9 +385,15 @@ static bool has_aux_ccs(struct xe_device *xe)
 	 * PVC is a special case that has no compression of either type
 	 * (FlatCCS or AuxCCS).  Also, AuxCCS is no longer used from Xe2
 	 * onward, so any future platforms with no FlatCCS will not have
+<<<<<<< HEAD
 	 * AuxCCS, and we explicitly do not want to support it on MTL.
 	 */
 	if (GRAPHICS_VERx100(xe) >= 1270 || xe->info.platform == XE_PVC)
+=======
+	 * AuxCCS either.
+	 */
+	if (GRAPHICS_VER(xe) >= 20 || xe->info.platform == XE_PVC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return !xe->info.has_flat_ccs;
@@ -382,18 +406,34 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
 	u32 ppgtt_flag = get_ppgtt_flag(job);
 	struct xe_gt *gt = job->q->gt;
 	struct xe_device *xe = gt_to_xe(gt);
+<<<<<<< HEAD
 
 	*head = lrc->ring.tail;
 
 	if (job->ring_ops_force_reset)
 		i = emit_fake_watchdog(lrc, dw, i);
 
+=======
+	bool decode = job->q->class == XE_ENGINE_CLASS_VIDEO_DECODE;
+
+	*head = lrc->ring.tail;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i = emit_copy_timestamp(xe, lrc, dw, i);
 
 	dw[i++] = preparser_disable(true);
 
 	/* hsdes: 1809175790 */
+<<<<<<< HEAD
 	i = emit_aux_table_inv(job->q->hwe, dw, i);
+=======
+	if (has_aux_ccs(xe)) {
+		if (decode)
+			i = emit_aux_table_inv(gt, VD0_AUX_INV, dw, i);
+		else
+			i = emit_aux_table_inv(gt, VE0_AUX_INV, dw, i);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (job->ring_ops_flush_tlb)
 		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
@@ -440,6 +480,7 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
 
 	*head = lrc->ring.tail;
 
+<<<<<<< HEAD
 	if (job->ring_ops_force_reset)
 		i = emit_fake_watchdog(lrc, dw, i);
 
@@ -452,6 +493,10 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
 	if (has_aux_ccs(xe))
 		i = emit_render_cache_flush(job, dw, i);
 
+=======
+	i = emit_copy_timestamp(xe, lrc, dw, i);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dw[i++] = preparser_disable(true);
 	if (lacks_render)
 		mask_flags = PIPE_CONTROL_3D_ARCH_FLAGS;
@@ -462,7 +507,12 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
 	i = emit_pipe_invalidate(job->q, mask_flags, job->ring_ops_flush_tlb, dw, i);
 
 	/* hsdes: 1809175790 */
+<<<<<<< HEAD
 	i = emit_aux_table_inv(job->q->hwe, dw, i);
+=======
+	if (has_aux_ccs(xe))
+		i = emit_aux_table_inv(gt, CCS_AUX_INV, dw, i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dw[i++] = preparser_disable(false);
 
@@ -501,8 +551,11 @@ static void emit_migration_job_gen12(struct xe_sched_job *job,
 
 	*head = lrc->ring.tail;
 
+<<<<<<< HEAD
 	xe_gt_assert(gt, !job->ring_ops_force_reset);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i = emit_copy_timestamp(xe, lrc, dw, i);
 
 	i = emit_store_imm_ggtt(saddr, seqno, dw, i);
@@ -589,11 +642,15 @@ static const struct xe_ring_ops ring_ops_gen12_copy = {
 	.emit_job = emit_job_gen12_copy,
 };
 
+<<<<<<< HEAD
 static const struct xe_ring_ops ring_ops_gen12_video_decode = {
 	.emit_job = emit_job_gen12_video,
 };
 
 static const struct xe_ring_ops ring_ops_gen12_video_enhance = {
+=======
+static const struct xe_ring_ops ring_ops_gen12_video = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.emit_job = emit_job_gen12_video,
 };
 
@@ -601,6 +658,7 @@ static const struct xe_ring_ops ring_ops_gen12_render_compute = {
 	.emit_job = emit_job_gen12_render_compute,
 };
 
+<<<<<<< HEAD
 static const struct xe_ring_ops auxccs_ring_ops_gen12_video_decode = {
 	.emit_job = emit_job_gen12_video,
 	.emit_aux_table_inv = emit_aux_table_inv_video_decode,
@@ -621,12 +679,18 @@ xe_ring_ops_get(struct xe_gt *gt, enum xe_engine_class class)
 {
 	struct xe_device *xe = gt_to_xe(gt);
 
+=======
+const struct xe_ring_ops *
+xe_ring_ops_get(struct xe_gt *gt, enum xe_engine_class class)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (class) {
 	case XE_ENGINE_CLASS_OTHER:
 		return &ring_ops_gen12_gsc;
 	case XE_ENGINE_CLASS_COPY:
 		return &ring_ops_gen12_copy;
 	case XE_ENGINE_CLASS_VIDEO_DECODE:
+<<<<<<< HEAD
 		if (has_aux_ccs(xe))
 			return &auxccs_ring_ops_gen12_video_decode;
 		else
@@ -642,6 +706,13 @@ xe_ring_ops_get(struct xe_gt *gt, enum xe_engine_class class)
 			return &auxccs_ring_ops_gen12_render_compute;
 		else
 			return &ring_ops_gen12_render_compute;
+=======
+	case XE_ENGINE_CLASS_VIDEO_ENHANCE:
+		return &ring_ops_gen12_video;
+	case XE_ENGINE_CLASS_RENDER:
+	case XE_ENGINE_CLASS_COMPUTE:
+		return &ring_ops_gen12_render_compute;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return NULL;
 	}

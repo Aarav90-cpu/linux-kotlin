@@ -34,7 +34,11 @@ static void hyp_prepare_backtrace(unsigned long fp, unsigned long pc)
 	stacktrace_info->pc = pc;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PKVM_STACKTRACE
+=======
+#ifdef CONFIG_PROTECTED_NVHE_STACKTRACE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/stacktrace/nvhe.h>
 
 DEFINE_PER_CPU(unsigned long [NVHE_STACKTRACE_SIZE/sizeof(long)], pkvm_stacktrace);
@@ -134,11 +138,19 @@ static void pkvm_save_backtrace(unsigned long fp, unsigned long pc)
 
 	unwind(&state, pkvm_save_backtrace_entry, &idx);
 }
+<<<<<<< HEAD
 #else /* !CONFIG_PKVM_STACKTRACE */
 static void pkvm_save_backtrace(unsigned long fp, unsigned long pc)
 {
 }
 #endif /* CONFIG_PKVM_STACKTRACE */
+=======
+#else /* !CONFIG_PROTECTED_NVHE_STACKTRACE */
+static void pkvm_save_backtrace(unsigned long fp, unsigned long pc)
+{
+}
+#endif /* CONFIG_PROTECTED_NVHE_STACKTRACE */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * kvm_nvhe_prepare_backtrace - prepare to dump the nVHE backtrace

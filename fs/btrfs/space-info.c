@@ -129,6 +129,7 @@
  *     churn a lot and we can avoid making some extent tree modifications if we
  *     are able to delay for as long as possible.
  *
+<<<<<<< HEAD
  *   RECLAIM_ZONES
  *     This state only works for the zoned mode. In zoned mode, we cannot reuse
  *     regions that have once been allocated and then been freed until we reset
@@ -138,6 +139,8 @@
  *     block-groups get deleted and the transaction is committed. This frees up
  *     space to use for new allocations.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *   RESET_ZONES
  *     This state works only for the zoned mode. On the zoned mode, we cannot
  *     reuse once allocated then freed region until we reset the zone, due to
@@ -212,8 +215,11 @@ void btrfs_clear_space_info_full(struct btrfs_fs_info *info)
 
 #define BTRFS_UNALLOC_BLOCK_GROUP_TARGET			(10ULL)
 
+<<<<<<< HEAD
 #define BTRFS_ZONED_SYNC_RECLAIM_BATCH				(5)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Calculate chunk size depending on volume type (regular or zoned).
  */
@@ -412,10 +418,17 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
 	up_write(&space_info->groups_sem);
 }
 
+<<<<<<< HEAD
 struct btrfs_space_info *btrfs_find_space_info(const struct btrfs_fs_info *info,
 					       u64 flags)
 {
 	const struct list_head *head = &info->space_info;
+=======
+struct btrfs_space_info *btrfs_find_space_info(struct btrfs_fs_info *info,
+					       u64 flags)
+{
+	struct list_head *head = &info->space_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct btrfs_space_info *found;
 
 	flags &= BTRFS_BLOCK_GROUP_TYPE_MASK;
@@ -427,7 +440,11 @@ struct btrfs_space_info *btrfs_find_space_info(const struct btrfs_fs_info *info,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static u64 calc_effective_data_chunk_size(const struct btrfs_fs_info *fs_info)
+=======
+static u64 calc_effective_data_chunk_size(struct btrfs_fs_info *fs_info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_space_info *data_sinfo;
 	u64 data_chunk_size;
@@ -453,7 +470,10 @@ static u64 calc_available_free_space(const struct btrfs_space_info *space_info,
 				     enum btrfs_reserve_flush_enum flush)
 {
 	struct btrfs_fs_info *fs_info = space_info->fs_info;
+<<<<<<< HEAD
 	bool has_per_profile;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 profile;
 	u64 avail;
 	u64 data_chunk_size;
@@ -464,6 +484,7 @@ static u64 calc_available_free_space(const struct btrfs_space_info *space_info,
 	else
 		profile = btrfs_metadata_alloc_profile(fs_info);
 
+<<<<<<< HEAD
 	has_per_profile = btrfs_get_per_profile_avail(fs_info, profile, &avail);
 	if (!has_per_profile) {
 		avail = atomic64_read(&fs_info->free_chunk_space);
@@ -479,6 +500,21 @@ static u64 calc_available_free_space(const struct btrfs_space_info *space_info,
 		if (avail == 0)
 			return 0;
 	}
+=======
+	avail = atomic64_read(&fs_info->free_chunk_space);
+
+	/*
+	 * If we have dup, raid1 or raid10 then only half of the free
+	 * space is actually usable.  For raid56, the space info used
+	 * doesn't include the parity drive, so we don't have to
+	 * change the math
+	 */
+	factor = btrfs_bg_type_to_factor(profile);
+	avail = div_u64(avail, factor);
+	if (avail == 0)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data_chunk_size = calc_effective_data_chunk_size(fs_info);
 
 	/*
@@ -501,10 +537,17 @@ static u64 calc_available_free_space(const struct btrfs_space_info *space_info,
 	/*
 	 * If we aren't flushing all things, let us overcommit up to
 	 * 1/2th of the space. If we can flush, don't let us overcommit
+<<<<<<< HEAD
 	 * too much, let it overcommit up to 1/64th of the space.
 	 */
 	if (flush == BTRFS_RESERVE_FLUSH_ALL || flush == BTRFS_RESERVE_FLUSH_ALL_STEAL)
 		avail >>= 6;
+=======
+	 * too much, let it overcommit up to 1/8 of the space.
+	 */
+	if (flush == BTRFS_RESERVE_FLUSH_ALL)
+		avail >>= 3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		avail >>= 1;
 
@@ -914,6 +957,7 @@ static void flush_space(struct btrfs_space_info *space_info, u64 num_bytes,
 		if (ret > 0 || ret == -ENOSPC)
 			ret = 0;
 		break;
+<<<<<<< HEAD
 	case RECLAIM_ZONES:
 		if (btrfs_is_zoned(fs_info)) {
 			btrfs_reclaim_sweep(fs_info);
@@ -926,6 +970,8 @@ static void flush_space(struct btrfs_space_info *space_info, u64 num_bytes,
 			ret = 0;
 		}
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case RUN_DELAYED_IPUTS:
 		/*
 		 * If we have pending delayed iputs then we could free up a
@@ -1424,7 +1470,10 @@ static const enum btrfs_flush_state data_flush_states[] = {
 	FLUSH_DELALLOC_FULL,
 	RUN_DELAYED_IPUTS,
 	COMMIT_TRANS,
+<<<<<<< HEAD
 	RECLAIM_ZONES,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RESET_ZONES,
 	ALLOC_CHUNK_FORCE,
 };

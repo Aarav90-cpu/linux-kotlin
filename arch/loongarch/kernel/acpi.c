@@ -385,6 +385,7 @@ int acpi_unmap_cpu(int cpu)
 EXPORT_SYMBOL(acpi_unmap_cpu);
 
 #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+<<<<<<< HEAD
 
 int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 {
@@ -394,3 +395,5 @@ int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(acpi_get_cpu_uid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

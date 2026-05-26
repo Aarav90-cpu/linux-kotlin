@@ -10,8 +10,11 @@
 
 #include "fw_dnld.h"
 
+<<<<<<< HEAD
 struct gpio_desc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Define private flags: */
 #define NFCMRVL_NCI_RUNNING			1
 #define NFCMRVL_PHY_ERROR			2
@@ -56,7 +59,11 @@ struct nfcmrvl_platform_data {
 	 */
 
 	/* GPIO that is wired to RESET_N signal */
+<<<<<<< HEAD
 	struct gpio_desc *reset_gpio;
+=======
+	int reset_n_io;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Tell if transport is muxed in HCI one */
 	bool hci_muxed;
 

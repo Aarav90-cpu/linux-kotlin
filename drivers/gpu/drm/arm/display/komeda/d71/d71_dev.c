@@ -628,7 +628,10 @@ d71_identify(u32 __iomem *reg_base, struct komeda_chip_info *chip)
 	switch (product_id) {
 	case MALIDP_D71_PRODUCT_ID:
 	case MALIDP_D32_PRODUCT_ID:
+<<<<<<< HEAD
 	case LINLONDP_D6_PRODUCT_ID:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		funcs = &d71_chip_funcs;
 		break;
 	default:

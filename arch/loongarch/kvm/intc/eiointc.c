@@ -16,7 +16,11 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
 		ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
 		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
 			ipnum = count_trailing_zeros(ipnum);
+<<<<<<< HEAD
 			ipnum = ipnum < 4 ? ipnum : 0;
+=======
+			ipnum = (ipnum >= 0 && ipnum < 4) ? ipnum : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		cpuid = ((u8 *)s->coremap)[irq];
@@ -41,7 +45,11 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
 	ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
 	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
 		ipnum = count_trailing_zeros(ipnum);
+<<<<<<< HEAD
 		ipnum = ipnum < 4 ? ipnum : 0;
+=======
+		ipnum = (ipnum >= 0 && ipnum < 4) ? ipnum : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	cpu = s->sw_coremap[irq];

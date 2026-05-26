@@ -89,12 +89,15 @@ struct xe_sa_manager *__xe_sa_bo_manager_init(struct xe_tile *tile, u32 size,
 		if (ret)
 			return ERR_PTR(ret);
 
+<<<<<<< HEAD
 		if (IS_ENABLED(CONFIG_PROVE_LOCKING)) {
 			fs_reclaim_acquire(GFP_KERNEL);
 			might_lock(&sa_manager->swap_guard);
 			fs_reclaim_release(GFP_KERNEL);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		shadow = xe_managed_bo_create_pin_map(xe, tile, size,
 						      XE_BO_FLAG_VRAM_IF_DGFX(tile) |
 						      XE_BO_FLAG_GGTT |
@@ -182,6 +185,7 @@ struct drm_suballoc *__xe_sa_bo_new(struct xe_sa_manager *sa_manager, u32 size, 
 }
 
 /**
+<<<<<<< HEAD
  * xe_sa_bo_alloc() - Allocate uninitialized suballoc object.
  * @gfp: gfp flags used for memory allocation.
  *
@@ -212,6 +216,8 @@ int xe_sa_bo_init(struct xe_sa_manager *sa_manager, struct drm_suballoc *sa, siz
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_sa_bo_flush_write() - Copy the data from the sub-allocation to the GPU memory.
  * @sa_bo: the &drm_suballoc to flush
  */

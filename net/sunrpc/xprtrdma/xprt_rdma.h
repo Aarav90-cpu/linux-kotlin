@@ -96,7 +96,10 @@ struct rpcrdma_ep {
 	struct rpcrdma_notification	re_rn;
 	int			re_receive_count;
 	unsigned int		re_max_requests; /* depends on device */
+<<<<<<< HEAD
 	unsigned int		re_recv_batch;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		re_inline_send;	/* negotiated */
 	unsigned int		re_inline_recv;	/* negotiated */
 
@@ -284,12 +287,17 @@ struct rpcrdma_mr {
  * registered or invalidated. Must handle a Reply chunk:
  */
 enum {
+<<<<<<< HEAD
 	RPCRDMA_MAX_IOV_SEGS	= 3,	/* head, page-boundary, tail */
+=======
+	RPCRDMA_MAX_IOV_SEGS	= 3,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RPCRDMA_MAX_DATA_SEGS	= ((1 * 1024 * 1024) / PAGE_SIZE) + 1,
 	RPCRDMA_MAX_SEGS	= RPCRDMA_MAX_DATA_SEGS +
 				  RPCRDMA_MAX_IOV_SEGS,
 };
 
+<<<<<<< HEAD
 /**
  * struct rpcrdma_xdr_cursor - tracks position within an xdr_buf
  *     for iterative MR registration
@@ -314,6 +322,15 @@ struct rpcrdma_xdr_cursor {
 #define XC_PAGES_DONE	BIT(1)
 #define XC_TAIL_DONE	BIT(2)
 
+=======
+/* Arguments for DMA mapping and registration */
+struct rpcrdma_mr_seg {
+	u32		mr_len;		/* length of segment */
+	struct page	*mr_page;	/* underlying struct page */
+	u64		mr_offset;	/* IN: page offset, OUT: iova */
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* The Send SGE array is provisioned to send a maximum size
  * inline request:
  * - RPC-over-RDMA header
@@ -348,6 +365,10 @@ struct rpcrdma_req {
 
 	struct list_head	rl_free_mrs;
 	struct list_head	rl_registered;
+<<<<<<< HEAD
+=======
+	struct rpcrdma_mr_seg	rl_segments[RPCRDMA_MAX_SEGS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct rpcrdma_req *
@@ -467,8 +488,13 @@ rpcrdma_portstr(const struct rpcrdma_xprt *r_xprt)
 }
 
 /* Setting this to 0 ensures interoperability with early servers.
+<<<<<<< HEAD
  * Setting this to 1 enhances unaligned read/write performance.
  * Default is 0, see sysctl entry and rpc_rdma.c */
+=======
+ * Setting this to 1 enhances certain unaligned read/write performance.
+ * Default is 0, see sysctl entry and rpc_rdma.c rpcrdma_convert_iovs() */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int xprt_rdma_pad_optimize;
 
 /* This setting controls the hunt for a supported memory
@@ -552,10 +578,17 @@ void frwr_reset(struct rpcrdma_req *req);
 int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device);
 int frwr_mr_init(struct rpcrdma_xprt *r_xprt, struct rpcrdma_mr *mr);
 void frwr_mr_release(struct rpcrdma_mr *mr);
+<<<<<<< HEAD
 int frwr_map(struct rpcrdma_xprt *r_xprt,
 	     struct rpcrdma_xdr_cursor *cur,
 	     bool writing, __be32 xid,
 	     struct rpcrdma_mr *mr);
+=======
+struct rpcrdma_mr_seg *frwr_map(struct rpcrdma_xprt *r_xprt,
+				struct rpcrdma_mr_seg *seg,
+				int nsegs, bool writing, __be32 xid,
+				struct rpcrdma_mr *mr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int frwr_send(struct rpcrdma_xprt *r_xprt, struct rpcrdma_req *req);
 void frwr_reminv(struct rpcrdma_rep *rep, struct list_head *mrs);
 void frwr_unmap_sync(struct rpcrdma_xprt *r_xprt, struct rpcrdma_req *req);

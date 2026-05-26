@@ -46,7 +46,10 @@
 
 enum ib_uverbs_core_support {
 	IB_UVERBS_CORE_SUPPORT_OPTIONAL_MR_ACCESS = 1 << 0,
+<<<<<<< HEAD
 	IB_UVERBS_CORE_SUPPORT_ROBUST_UDATA = 1 << 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum ib_uverbs_access_flags {

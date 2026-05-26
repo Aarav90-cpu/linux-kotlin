@@ -36,8 +36,13 @@ __do_compat_cache_op(unsigned long start, unsigned long end)
 			 * The workaround requires an inner-shareable tlbi.
 			 * We pick the reserved-ASID to minimise the impact.
 			 */
+<<<<<<< HEAD
 			__tlbi(aside1is, 0UL);
 			__tlbi_sync_s1ish(current->mm);
+=======
+			__tlbi(aside1is, __TLBI_VADDR(0, 0));
+			__tlbi_sync_s1ish();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		ret = caches_clean_inval_user_pou(start, start + chunk);

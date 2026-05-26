@@ -40,6 +40,11 @@
 #define AU1000_GPIO2_INTENABLE	0x10
 #define AU1000_GPIO2_ENABLE	0x14
 
+<<<<<<< HEAD
+=======
+struct gpio;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int au1000_gpio1_to_irq(int gpio)
 {
 	return MAKE_IRQ(1, gpio - ALCHEMY_GPIO1_BASE);

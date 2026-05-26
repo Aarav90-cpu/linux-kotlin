@@ -48,7 +48,10 @@ const struct sof_intel_dsp_desc nvl_chip_info = {
 	.power_down_dsp = mtl_power_down_dsp,
 	.disable_interrupts = lnl_dsp_disable_interrupts,
 	.hw_ip_version = SOF_INTEL_ACE_4_0,
+<<<<<<< HEAD
 	.platform = "nvl",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 const struct sof_intel_dsp_desc nvl_s_chip_info = {
@@ -73,7 +76,10 @@ const struct sof_intel_dsp_desc nvl_s_chip_info = {
 	.power_down_dsp = mtl_power_down_dsp,
 	.disable_interrupts = lnl_dsp_disable_interrupts,
 	.hw_ip_version = SOF_INTEL_ACE_4_0,
+<<<<<<< HEAD
 	.platform = "nvl",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 MODULE_IMPORT_NS("SND_SOC_SOF_INTEL_MTL");

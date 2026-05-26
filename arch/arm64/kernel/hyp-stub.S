@@ -103,6 +103,10 @@ SYM_CODE_START_LOCAL(__finalise_el2)
 	// Engage the VHE magic!
 	mov_q	x0, HCR_HOST_VHE_FLAGS
 	msr_hcr_el2 x0
+<<<<<<< HEAD
+=======
+	isb
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// Use the EL1 allocated stack, per-cpu offset
 	mrs	x0, sp_el1

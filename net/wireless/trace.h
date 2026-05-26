@@ -2,7 +2,11 @@
 /*
  * Portions of this file
  * Copyright(c) 2016-2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018, 2020-2026 Intel Corporation
+=======
+ * Copyright (C) 2018, 2020-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM cfg80211
@@ -546,12 +550,21 @@ TRACE_EVENT(rdev_change_virtual_intf,
 );
 
 DECLARE_EVENT_CLASS(key_handle,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 		 u8 key_index, bool pairwise, const u8 *mac_addr),
 	TP_ARGS(wiphy, wdev, link_id, key_index, pairwise, mac_addr),
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index, bool pairwise, const u8 *mac_addr),
+	TP_ARGS(wiphy, netdev, link_id, key_index, pairwise, mac_addr),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(mac_addr)
 		__field(int, link_id)
 		__field(u8, key_index)
@@ -559,20 +572,31 @@ DECLARE_EVENT_CLASS(key_handle,
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
+=======
+		NETDEV_ASSIGN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ASSIGN(mac_addr, mac_addr);
 		__entry->link_id = link_id;
 		__entry->key_index = key_index;
 		__entry->pairwise = pairwise;
 	),
+<<<<<<< HEAD
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", link_id: %d, "
 		  "key_index: %u, pairwise: %s, mac addr: %pM",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->link_id,
+=======
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d, "
+		  "key_index: %u, pairwise: %s, mac addr: %pM",
+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __entry->key_index, BOOL_TO_STR(__entry->pairwise),
 		  __entry->mac_addr)
 );
 
 DEFINE_EVENT(key_handle, rdev_get_key,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 		 u8 key_index, bool pairwise, const u8 *mac_addr),
 	TP_ARGS(wiphy, wdev, link_id, key_index, pairwise, mac_addr)
@@ -591,6 +615,26 @@ TRACE_EVENT(rdev_add_key,
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index, bool pairwise, const u8 *mac_addr),
+	TP_ARGS(wiphy, netdev, link_id, key_index, pairwise, mac_addr)
+);
+
+DEFINE_EVENT(key_handle, rdev_del_key,
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index, bool pairwise, const u8 *mac_addr),
+	TP_ARGS(wiphy, netdev, link_id, key_index, pairwise, mac_addr)
+);
+
+TRACE_EVENT(rdev_add_key,
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index, bool pairwise, const u8 *mac_addr, u8 mode),
+	TP_ARGS(wiphy, netdev, link_id, key_index, pairwise, mac_addr, mode),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(mac_addr)
 		__field(int, link_id)
 		__field(u8, key_index)
@@ -599,17 +643,28 @@ TRACE_EVENT(rdev_add_key,
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
+=======
+		NETDEV_ASSIGN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ASSIGN(mac_addr, mac_addr);
 		__entry->link_id = link_id;
 		__entry->key_index = key_index;
 		__entry->pairwise = pairwise;
 		__entry->mode = mode;
 	),
+<<<<<<< HEAD
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", link_id: %d, "
 		  "key_index: %u, mode: %u, pairwise: %s, "
 		  "mac addr: %pM",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->link_id,
+=======
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d, "
+		  "key_index: %u, mode: %u, pairwise: %s, "
+		  "mac addr: %pM",
+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __entry->key_index, __entry->mode,
 		  BOOL_TO_STR(__entry->pairwise), __entry->mac_addr)
 );
@@ -642,17 +697,27 @@ TRACE_EVENT(rdev_set_default_key,
 );
 
 TRACE_EVENT(rdev_set_default_mgmt_key,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 		 u8 key_index),
 	TP_ARGS(wiphy, wdev, link_id, key_index),
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index),
+	TP_ARGS(wiphy, netdev, link_id, key_index),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(int, link_id)
 		__field(u8, key_index)
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
 		__entry->link_id = link_id;
 		__entry->key_index = key_index;
@@ -669,11 +734,30 @@ TRACE_EVENT(rdev_set_default_beacon_key,
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+		NETDEV_ASSIGN;
+		__entry->link_id = link_id;
+		__entry->key_index = key_index;
+	),
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d, "
+		  "key index: %u", WIPHY_PR_ARG, NETDEV_PR_ARG,
+		  __entry->link_id, __entry->key_index)
+);
+
+TRACE_EVENT(rdev_set_default_beacon_key,
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+		 u8 key_index),
+	TP_ARGS(wiphy, netdev, link_id, key_index),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(int, link_id)
 		__field(u8, key_index)
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
 		__entry->link_id = link_id;
 		__entry->key_index = key_index;
@@ -681,6 +765,15 @@ TRACE_EVENT(rdev_set_default_beacon_key,
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", link_id: %d, key index: %u",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->link_id,
 		  __entry->key_index)
+=======
+		NETDEV_ASSIGN;
+		__entry->link_id = link_id;
+		__entry->key_index = key_index;
+	),
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d, "
+		  "key index: %u", WIPHY_PR_ARG, NETDEV_PR_ARG,
+		  __entry->link_id, __entry->key_index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 TRACE_EVENT(rdev_start_ap,
@@ -856,12 +949,21 @@ TRACE_EVENT(rdev_end_cac,
 );
 
 DECLARE_EVENT_CLASS(station_add_change,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 *mac,
 		 struct station_parameters *params),
 	TP_ARGS(wiphy, wdev, mac, params),
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 *mac,
+		 struct station_parameters *params),
+	TP_ARGS(wiphy, netdev, mac, params),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(sta_mac)
 		__field(u32, sta_flags_mask)
 		__field(u32, sta_flags_set)
@@ -888,7 +990,11 @@ DECLARE_EVENT_CLASS(station_add_change,
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
+=======
+		NETDEV_ASSIGN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ASSIGN(sta_mac, mac);
 		__entry->sta_flags_mask = params->sta_flags_mask;
 		__entry->sta_flags_set = params->sta_flags_set;
@@ -936,11 +1042,19 @@ DECLARE_EVENT_CLASS(station_add_change,
 		__entry->opmode_notif_used =
 			params->link_sta_params.opmode_notif_used;
 	),
+<<<<<<< HEAD
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", station mac: %pM"
 		  ", station flags mask: 0x%x, station flags set: 0x%x, "
 		  "station modify mask: 0x%x, listen interval: %d, aid: %u, "
 		  "plink action: %u, plink state: %u, uapsd queues: %u, vlan:%s",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->sta_mac,
+=======
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", station mac: %pM"
+		  ", station flags mask: 0x%x, station flags set: 0x%x, "
+		  "station modify mask: 0x%x, listen interval: %d, aid: %u, "
+		  "plink action: %u, plink state: %u, uapsd queues: %u, vlan:%s",
+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->sta_mac,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __entry->sta_flags_mask, __entry->sta_flags_set,
 		  __entry->sta_modify_mask, __entry->listen_interval,
 		  __entry->aid, __entry->plink_action, __entry->plink_state,
@@ -948,6 +1062,7 @@ DECLARE_EVENT_CLASS(station_add_change,
 );
 
 DEFINE_EVENT(station_add_change, rdev_add_station,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 *mac,
 		 struct station_parameters *params),
 	TP_ARGS(wiphy, wdev, mac, params)
@@ -957,6 +1072,17 @@ DEFINE_EVENT(station_add_change, rdev_change_station,
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 *mac,
 		 struct station_parameters *params),
 	TP_ARGS(wiphy, wdev, mac, params)
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 *mac,
+		 struct station_parameters *params),
+	TP_ARGS(wiphy, netdev, mac, params)
+);
+
+DEFINE_EVENT(station_add_change, rdev_change_station,
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 *mac,
+		 struct station_parameters *params),
+	TP_ARGS(wiphy, netdev, mac, params)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DECLARE_EVENT_CLASS(wiphy_netdev_mac_evt,
@@ -977,12 +1103,21 @@ DECLARE_EVENT_CLASS(wiphy_netdev_mac_evt,
 );
 
 DECLARE_EVENT_CLASS(station_del,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
 		 struct station_del_parameters *params),
 	TP_ARGS(wiphy, wdev, params),
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
+		 struct station_del_parameters *params),
+	TP_ARGS(wiphy, netdev, params),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(sta_mac)
 		__field(u8, subtype)
 		__field(u16, reason_code)
@@ -990,20 +1125,31 @@ DECLARE_EVENT_CLASS(station_del,
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
+=======
+		NETDEV_ASSIGN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ASSIGN(sta_mac, params->mac);
 		__entry->subtype = params->subtype;
 		__entry->reason_code = params->reason_code;
 		__entry->link_id = params->link_id;
 	),
+<<<<<<< HEAD
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", station mac: %pM"
 		  ", subtype: %u, reason_code: %u, link_id: %d",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->sta_mac,
+=======
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", station mac: %pM"
+		  ", subtype: %u, reason_code: %u, link_id: %d",
+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->sta_mac,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __entry->subtype, __entry->reason_code,
 		  __entry->link_id)
 );
 
 DEFINE_EVENT(station_del, rdev_del_station,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
 		 struct station_del_parameters *params),
 	TP_ARGS(wiphy, wdev, params)
@@ -1029,6 +1175,16 @@ DECLARE_EVENT_CLASS(wiphy_wdev_mac_evt,
 DEFINE_EVENT(wiphy_wdev_mac_evt, rdev_get_station,
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, const u8 *mac),
 	TP_ARGS(wiphy, wdev, mac)
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
+		 struct station_del_parameters *params),
+	TP_ARGS(wiphy, netdev, params)
+);
+
+DEFINE_EVENT(wiphy_netdev_mac_evt, rdev_get_station,
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, const u8 *mac),
+	TP_ARGS(wiphy, netdev, mac)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(wiphy_netdev_mac_evt, rdev_del_mpath,
@@ -1037,23 +1193,41 @@ DEFINE_EVENT(wiphy_netdev_mac_evt, rdev_del_mpath,
 );
 
 TRACE_EVENT(rdev_dump_station,
+<<<<<<< HEAD
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, int _idx,
 		 u8 *mac),
 	TP_ARGS(wiphy, wdev, _idx, mac),
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
+		 u8 *mac),
+	TP_ARGS(wiphy, netdev, _idx, mac),
+	TP_STRUCT__entry(
+		WIPHY_ENTRY
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(sta_mac)
 		__field(int, idx)
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
+<<<<<<< HEAD
 		WDEV_ASSIGN;
 		MAC_ASSIGN(sta_mac, mac);
 		__entry->idx = _idx;
 	),
 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", station mac: %pM, idx: %d",
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->sta_mac,
+=======
+		NETDEV_ASSIGN;
+		MAC_ASSIGN(sta_mac, mac);
+		__entry->idx = _idx;
+	),
+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", station mac: %pM, idx: %d",
+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->sta_mac,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  __entry->idx)
 );
 
@@ -2410,6 +2584,7 @@ TRACE_EVENT(rdev_del_nan_func,
 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->cookie)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(rdev_nan_set_local_sched,
 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
 		 struct cfg80211_nan_local_sched *sched),
@@ -2459,6 +2634,8 @@ TRACE_EVENT(rdev_nan_set_peer_sched,
 	)
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TRACE_EVENT(rdev_set_mac_acl,
 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
 		 struct cfg80211_acl_data *params),
@@ -3219,6 +3396,7 @@ DECLARE_EVENT_CLASS(cfg80211_netdev_mac_evt,
 		  NETDEV_PR_ARG, __entry->macaddr)
 );
 
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(cfg80211_wdev_mac_evt,
 	TP_PROTO(struct wireless_dev *wdev, const u8 *macaddr),
 	TP_ARGS(wdev, macaddr),
@@ -3234,6 +3412,8 @@ DECLARE_EVENT_CLASS(cfg80211_wdev_mac_evt,
 		  WDEV_PR_ARG, __entry->macaddr)
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEFINE_EVENT(cfg80211_netdev_mac_evt, cfg80211_notify_new_peer_candidate,
 	TP_PROTO(struct net_device *netdev, const u8 *macaddr),
 	TP_ARGS(netdev, macaddr)
@@ -3423,15 +3603,24 @@ TRACE_EVENT(cfg80211_tx_mgmt_expired,
 );
 
 TRACE_EVENT(cfg80211_new_sta,
+<<<<<<< HEAD
 	TP_PROTO(struct wireless_dev *wdev, const u8 *mac_addr,
 		 struct station_info *sinfo),
 	TP_ARGS(wdev, mac_addr, sinfo),
 	TP_STRUCT__entry(
 		WDEV_ENTRY
+=======
+	TP_PROTO(struct net_device *netdev, const u8 *mac_addr,
+		 struct station_info *sinfo),
+	TP_ARGS(netdev, mac_addr, sinfo),
+	TP_STRUCT__entry(
+		NETDEV_ENTRY
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAC_ENTRY(mac_addr)
 		SINFO_ENTRY
 	),
 	TP_fast_assign(
+<<<<<<< HEAD
 		WDEV_ASSIGN;
 		MAC_ASSIGN(mac_addr, mac_addr);
 		SINFO_ASSIGN;
@@ -3443,6 +3632,19 @@ TRACE_EVENT(cfg80211_new_sta,
 DEFINE_EVENT(cfg80211_wdev_mac_evt, cfg80211_del_sta,
 	TP_PROTO(struct wireless_dev *wdev, const u8 *macaddr),
 	TP_ARGS(wdev, macaddr)
+=======
+		NETDEV_ASSIGN;
+		MAC_ASSIGN(mac_addr, mac_addr);
+		SINFO_ASSIGN;
+	),
+	TP_printk(NETDEV_PR_FMT ", %pM",
+		  NETDEV_PR_ARG, __entry->mac_addr)
+);
+
+DEFINE_EVENT(cfg80211_netdev_mac_evt, cfg80211_del_sta,
+	TP_PROTO(struct net_device *netdev, const u8 *macaddr),
+	TP_ARGS(netdev, macaddr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 TRACE_EVENT(cfg80211_rx_mgmt,
@@ -4306,6 +4508,7 @@ TRACE_EVENT(cfg80211_nan_cluster_joined,
 		  WDEV_PR_ARG, __entry->cluster_id,
 		  __entry->new_cluster ? " [new]" : "")
 );
+<<<<<<< HEAD
 
 TRACE_EVENT(cfg80211_incumbent_signal_notify,
 	TP_PROTO(struct wiphy *wiphy,
@@ -4381,6 +4584,8 @@ TRACE_EVENT(cfg80211_nan_channel_evac,
 	TP_printk(WDEV_PR_FMT ", " WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
 		  WDEV_PR_ARG, WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
 );
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
 
 #undef TRACE_INCLUDE_PATH

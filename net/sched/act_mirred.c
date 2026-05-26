@@ -354,7 +354,11 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
 			goto assign_prev;
 
 		tcf_mirred_to_dev(skb, m, dev_prev,
+<<<<<<< HEAD
 				  dev_is_mac_header_xmit(dev_prev),
+=======
+				  dev_is_mac_header_xmit(dev),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  mirred_eaction, retval);
 assign_prev:
 		dev_prev = dev;

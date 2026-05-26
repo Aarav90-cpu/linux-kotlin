@@ -138,6 +138,7 @@ enum hpd_pin {
 	HPD_NUM_PINS
 };
 
+<<<<<<< HEAD
 enum aux_ch {
 	AUX_CH_NONE = -1,
 
@@ -164,6 +165,8 @@ enum aux_ch {
 	AUX_CH_E_XELPD,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum intel_color_block {
 	INTEL_PLANE_CB_PRE_CSC_LUT,
 	INTEL_PLANE_CB_CSC,

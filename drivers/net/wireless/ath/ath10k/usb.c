@@ -1016,6 +1016,10 @@ static int ath10k_usb_probe(struct usb_interface *interface,
 
 	netif_napi_add(ar->napi_dev, &ar->napi, ath10k_usb_napi_poll);
 
+<<<<<<< HEAD
+=======
+	usb_get_dev(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vendor_id = le16_to_cpu(dev->descriptor.idVendor);
 	product_id = le16_to_cpu(dev->descriptor.idProduct);
 
@@ -1054,10 +1058,19 @@ err_usb_destroy:
 err:
 	ath10k_core_destroy(ar);
 
+<<<<<<< HEAD
 	return ret;
 }
 
 static void ath10k_usb_disconnect(struct usb_interface *interface)
+=======
+	usb_put_dev(dev);
+
+	return ret;
+}
+
+static void ath10k_usb_remove(struct usb_interface *interface)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ath10k_usb *ar_usb;
 
@@ -1068,6 +1081,10 @@ static void ath10k_usb_disconnect(struct usb_interface *interface)
 	ath10k_core_unregister(ar_usb->ar);
 	netif_napi_del(&ar_usb->ar->napi);
 	ath10k_usb_destroy(ar_usb->ar);
+<<<<<<< HEAD
+=======
+	usb_put_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ath10k_core_destroy(ar_usb->ar);
 }
 
@@ -1113,7 +1130,11 @@ static struct usb_driver ath10k_usb_driver = {
 	.probe = ath10k_usb_probe,
 	.suspend = ath10k_usb_pm_suspend,
 	.resume = ath10k_usb_pm_resume,
+<<<<<<< HEAD
 	.disconnect = ath10k_usb_disconnect,
+=======
+	.disconnect = ath10k_usb_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.id_table = ath10k_usb_ids,
 	.supports_autosuspend = true,
 	.disable_hub_initiated_lpm = 1,

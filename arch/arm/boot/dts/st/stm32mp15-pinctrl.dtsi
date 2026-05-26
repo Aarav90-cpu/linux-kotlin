@@ -232,6 +232,7 @@
 	};
 
 	/omit-if-no-ref/
+<<<<<<< HEAD
 	dcmi_pins_d: dcmi-3 {
 		pins {
 			pinmux = <STM32_PINMUX('H', 8,  AF13)>,/* DCMI_HSYNC */
@@ -271,6 +272,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ethernet0_rgmii_pins_a: rgmii-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
@@ -433,7 +436,10 @@
 	ethernet0_rgmii_pins_d: rgmii-3 {
 		pins1 {
 			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
+<<<<<<< HEAD
 				 <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 <STM32_PINMUX('G', 13, AF11)>,	/* ETH_RGMII_TXD0 */
 				 <STM32_PINMUX('G', 14, AF11)>,	/* ETH_RGMII_TXD1 */
 				 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
@@ -1384,6 +1390,7 @@
 	};
 
 	/omit-if-no-ref/
+<<<<<<< HEAD
 	ltdc_pins_f: ltdc-5 {
 		pins {
 			pinmux = <STM32_PINMUX('G', 7,  AF14)>, /* LCD_CLK */
@@ -1443,6 +1450,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mco1_pins_a: mco1-0 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 13, AF2)>; /* MCO1 */
@@ -1783,6 +1792,7 @@
 	};
 
 	/omit-if-no-ref/
+<<<<<<< HEAD
 	pwm5_pins_c: pwm5-2 {
 		pins {
 			pinmux = <STM32_PINMUX('I', 0, AF2)>; /* TIM5_CH4 */
@@ -1800,6 +1810,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm8_pins_a: pwm8-0 {
 		pins {
 			pinmux = <STM32_PINMUX('I', 2, AF3)>; /* TIM8_CH4 */
@@ -2025,6 +2037,7 @@
 	};
 
 	/omit-if-no-ref/
+<<<<<<< HEAD
 	sai2a_pins_d: sai2a-3 {
 		pins {
 			pinmux = <STM32_PINMUX('I', 6, AF10)>; /* SAI2_SD_A */
@@ -2040,6 +2053,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sai2b_pins_a: sai2b-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('E', 12, AF10)>, /* SAI2_SCK_B */
@@ -3027,6 +3042,7 @@
 	};
 
 	/omit-if-no-ref/
+<<<<<<< HEAD
 	uart4_pins_f: uart4-5 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
@@ -3060,6 +3076,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uart5_pins_a: uart5-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 13, AF14)>; /* UART5_TX */

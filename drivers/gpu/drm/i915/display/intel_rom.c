@@ -7,9 +7,16 @@
 
 #include <drm/drm_device.h>
 
+<<<<<<< HEAD
 #include "intel_rom.h"
 #include "intel_uncore.h"
 #include "intel_oprom_regs.h"
+=======
+#include "i915_reg.h"
+
+#include "intel_rom.h"
+#include "intel_uncore.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct intel_rom {
 	/* for PCI ROM */

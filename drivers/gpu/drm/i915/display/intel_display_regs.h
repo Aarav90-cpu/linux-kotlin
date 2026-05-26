@@ -6,9 +6,12 @@
 
 #include "intel_display_reg_defs.h"
 
+<<<<<<< HEAD
 #define GU_CNTL_PROTECTED		_MMIO(0x10100C)
 #define   DEPRESENT			REG_BIT(9)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define _GEN7_PIPEA_DE_LOAD_SL	0x70068
 #define _GEN7_PIPEB_DE_LOAD_SL	0x71068
 #define GEN7_PIPE_DE_LOAD_SL(pipe) _MMIO_PIPE(pipe, _GEN7_PIPEA_DE_LOAD_SL, _GEN7_PIPEB_DE_LOAD_SL)
@@ -82,6 +85,7 @@
 #define   DERRMR_PIPEC_VBLANK		(1 << 21)
 #define   DERRMR_PIPEC_HBLANK		(1 << 22)
 
+<<<<<<< HEAD
 #define GEN7_ERR_INT	_MMIO(0x44040)
 #define   ERR_INT_POISON		(1 << 31)
 #define   ERR_INT_INVALID_GTT_PTE	(1 << 29)
@@ -105,6 +109,8 @@
 #define   ERR_INT_FIFO_UNDERRUN_A	(1 << 0)
 #define   ERR_INT_FIFO_UNDERRUN(pipe)	(1 << ((pipe) * 3))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define VLV_IRQ_REGS		I915_IRQ_REGS(VLV_IMR, \
 					      VLV_IER, \
 					      VLV_IIR)
@@ -186,6 +192,7 @@
 
 #define   DPLL_FPA01_P1_POST_DIV_MASK_I830	0x001f0000
 
+<<<<<<< HEAD
 #define DSPCLK_GATE_D			_MMIO(0x6200)
 #define VLV_DSPCLK_GATE_D		_MMIO(VLV_DISPLAY_BASE + 0x6200)
 # define DPUNIT_B_CLOCK_GATE_DISABLE		(1 << 30) /* 965 */
@@ -227,6 +234,8 @@
 # define ZVUNIT_CLOCK_GATE_DISABLE		(1 << 0) /* 830 */
 # define OVLUNIT_CLOCK_GATE_DISABLE		(1 << 0) /* 845,865 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Additional CHV pll/phy registers */
 #define DPIO_PHY_STATUS			_MMIO(VLV_DISPLAY_BASE + 0x6240)
 #define   DPLL_PORTD_READY_MASK		(0xf)
@@ -348,7 +357,10 @@
 #define  FW_CSPWRDWNEN		(1 << 15)
 
 #define MI_ARB_VLV		_MMIO(VLV_DISPLAY_BASE + 0x6504)
+<<<<<<< HEAD
 #define   MI_ARB_DISPLAY_TRICKLE_FEED_DISABLE_VLV	(1 << 2)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CZCLK_CDCLK_FREQ_RATIO	_MMIO(VLV_DISPLAY_BASE + 0x6508)
 #define   CDCLK_FREQ_SHIFT	4
@@ -379,6 +391,7 @@
 #define OGAMC1			_MMIO(0x30020)
 #define OGAMC0			_MMIO(0x30024)
 
+<<<<<<< HEAD
 #define GEN8_CHICKEN_DCPR_1			_MMIO(0x46430)
 #define   _LATENCY_REPORTING_REMOVED_PIPE_D	REG_BIT(31)
 #define   SKL_SELECT_ALTERNATE_DC_EXIT		REG_BIT(30)
@@ -419,6 +432,8 @@
 #define   TGL_VRH_GATING_DIS		REG_BIT(31)
 #define   DPT_GATING_DIS		REG_BIT(22)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GEN9_CLKGATE_DIS_4		_MMIO(0x4653C)
 #define   BXT_GMBUS_GATING_DIS		(1 << 14)
 #define   DG2_DPFC_GATING_DIS		REG_BIT(31)
@@ -1111,6 +1126,7 @@
 #define SWF3(dev_priv, i)	_MMIO(DISPLAY_MMIO_BASE(dev_priv) + 0x72414 + (i) * 4)
 #define SWF_ILK(i)	_MMIO(0x4F000 + (i) * 4)
 
+<<<<<<< HEAD
 #define DEISR   _MMIO(0x44000)
 #define DEIMR   _MMIO(0x44004)
 #define DEIIR   _MMIO(0x44008)
@@ -1120,6 +1136,8 @@
 					      DEIER, \
 					      DEIIR)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DIGITAL_PORT_HOTPLUG_CNTRL	_MMIO(0x44030)
 #define  DIGITAL_PORTA_HOTPLUG_ENABLE		(1 << 4)
 #define  DIGITAL_PORTA_PULSE_DURATION_2ms	(0 << 2) /* pre-HSW */
@@ -1450,6 +1468,7 @@
 						      GEN8_DE_PORT_IER, \
 						      GEN8_DE_PORT_IIR)
 
+<<<<<<< HEAD
 /* interrupts */
 #define DE_MASTER_IRQ_CONTROL   (1 << 31)
 #define DE_SPRITEB_FLIP_DONE    (1 << 29)
@@ -1488,6 +1507,8 @@
 #define RM_TIMEOUT_REG_CAPTURE	_MMIO(0x420E0)
 #define  MMIO_TIMEOUT_US(us)	((us) << 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define GEN8_DE_MISC_ISR _MMIO(0x44460)
 #define GEN8_DE_MISC_IMR _MMIO(0x44464)
 #define GEN8_DE_MISC_IIR _MMIO(0x44468)
@@ -1621,6 +1642,7 @@
 #define   CHICKEN_FBC_STRIDE_MASK	REG_GENMASK(12, 0)
 #define   CHICKEN_FBC_STRIDE(x)		REG_FIELD_PREP(CHICKEN_FBC_STRIDE_MASK, (x))
 
+<<<<<<< HEAD
 #define _CHICKEN_PIPESL_1_A	0x420b0
 #define _CHICKEN_PIPESL_1_B	0x420b4
 #define CHICKEN_PIPESL_1(pipe)	_MMIO_PIPE(pipe, _CHICKEN_PIPESL_1_A, _CHICKEN_PIPESL_1_B)
@@ -1644,6 +1666,8 @@
 #define   SKL_PLANE1_STRETCH_MAX_X1	REG_FIELD_PREP(SKL_PLANE1_STRETCH_MAX_MASK, 3)
 #define   BDW_UNMASK_VBL_TO_REGS_IN_SRD	REG_BIT(0) /* bdw */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define _CHICKEN_TRANS_A	0x420c0
 #define _CHICKEN_TRANS_B	0x420c4
 #define _CHICKEN_TRANS_C	0x420c8
@@ -1730,11 +1754,14 @@
 #define   GLK_DFSM_DISPLAY_DSC_DISABLE	(1 << 7)
 #define   XE2LPD_DFSM_DBUF_OVERLAP_DISABLE	(1 << 3)
 
+<<<<<<< HEAD
 #define GMD_ID_DISPLAY				_MMIO(0x510a0)
 #define   GMD_ID_DISPLAY_ARCH_MASK		REG_GENMASK(31, 22)
 #define   GMD_ID_DISPLAY_RELEASE_MASK		REG_GENMASK(21, 14)
 #define   GMD_ID_DISPLAY_STEP			REG_GENMASK(5, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define XE2LPD_DE_CAP			_MMIO(0x41100)
 #define   XE2LPD_DE_CAP_3DLUT_MASK	REG_GENMASK(31, 30)
 #define   XE2LPD_DE_CAP_DSC_MASK	REG_GENMASK(29, 28)
@@ -1868,6 +1895,7 @@
 					 SDE_TC_HOTPLUG_ICP(HPD_PORT_TC2) | \
 					 SDE_TC_HOTPLUG_ICP(HPD_PORT_TC1))
 
+<<<<<<< HEAD
 /* PCH */
 
 #define SDEISR  _MMIO(0xc4000)
@@ -1875,6 +1903,8 @@
 #define SDEIIR  _MMIO(0xc4008)
 #define SDEIER  _MMIO(0xc400c)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SDE_IRQ_REGS			I915_IRQ_REGS(SDEIMR, \
 						      SDEIER, \
 						      SDEIIR)
@@ -2211,6 +2241,7 @@
 #define  TRANS_BPC_6			REG_FIELD_PREP(TRANS_BPC_MASK, 2)
 #define  TRANS_BPC_12			REG_FIELD_PREP(TRANS_BPC_MASK, 3)
 
+<<<<<<< HEAD
 /* Icelake PPS_DATA and _ECC DIP Registers.
  * These are available for transcoders B,C and eDP.
  * Adding the _A so as to reuse the _MMIO_TRANS2
@@ -2233,6 +2264,8 @@
 #define   TRANS_CHICKEN2_DISABLE_DEEP_COLOR_COUNTER	REG_BIT(26)
 #define   TRANS_CHICKEN2_DISABLE_DEEP_COLOR_MODESWITCH	REG_BIT(25)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define PCH_DP_B		_MMIO(0xe4100)
 #define PCH_DP_C		_MMIO(0xe4200)
 #define PCH_DP_D		_MMIO(0xe4300)
@@ -2423,6 +2456,7 @@
 #define   HSW_PWR_WELL_FORCE_ON			(1 << 19)
 #define HSW_PWR_WELL_CTL6			_MMIO(0x45414)
 
+<<<<<<< HEAD
 /* clock gating DSS DSC disable register */
 #define CLKGATE_DIS_DSSDSC			_MMIO(0x46548)
 #define   DSS_PIPE_D_GATING_DISABLED		REG_BIT(31)
@@ -2430,6 +2464,8 @@
 #define   DSS_PIPE_B_GATING_DISABLED		REG_BIT(27)
 #define   DSS_PIPE_A_GATING_DISABLED		REG_BIT(25)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* SKL Fuse Status */
 enum skl_power_gate {
 	SKL_PG0,
@@ -3073,6 +3109,7 @@ enum skl_power_gate {
 #define  SFUSE_STRAP_DDIC_DETECTED	(1 << 1)
 #define  SFUSE_STRAP_DDID_DETECTED	(1 << 0)
 
+<<<<<<< HEAD
 #define SOUTH_CHICKEN1		_MMIO(0xc2000)
 #define  FDIA_PHASE_SYNC_SHIFT_OVR	19
 #define  FDIA_PHASE_SYNC_SHIFT_EN	18
@@ -3109,6 +3146,8 @@ enum skl_power_gate {
 #define  CNP_PWM_CGE_GATING_DISABLE (1 << 13)
 #define  PCH_LP_PARTITION_LEVEL_DISABLE  (1 << 12)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Gen4+ Timestamp and Pipe Frame time stamp registers */
 #define GEN4_TIMESTAMP		_MMIO(0x2358)
 #define ILK_TIMESTAMP_HI	_MMIO(0x70070)
@@ -3195,12 +3234,15 @@ enum skl_power_gate {
 #define MTL_PIPE_CLKGATE_DIS2(pipe)		_MMIO_PIPE(pipe, _MTL_PIPE_CLKGATE_DIS2_A, _MTL_PIPE_CLKGATE_DIS2_B)
 #define   MTL_DPFC_GATING_DIS			REG_BIT(6)
 
+<<<<<<< HEAD
 #define MTL_MEM_SS_INFO_GLOBAL			_MMIO(0x45700)
 #define   XE3P_ECC_IMPACTING_DE			REG_BIT(12)
 #define   MTL_N_OF_ENABLED_QGV_POINTS_MASK	REG_GENMASK(11, 8)
 #define   MTL_N_OF_POPULATED_CH_MASK		REG_GENMASK(7, 4)
 #define   MTL_DDR_TYPE_MASK			REG_GENMASK(3, 0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MTL_MEM_SS_INFO_QGV_POINT_OFFSET	0x45710
 #define MTL_MEM_SS_INFO_QGV_POINT_LOW(point)	_MMIO(MTL_MEM_SS_INFO_QGV_POINT_OFFSET + (point) * 8)
 #define   MTL_TRCD_MASK			REG_GENMASK(31, 24)
@@ -3211,11 +3253,15 @@ enum skl_power_gate {
 #define   MTL_TRAS_MASK			REG_GENMASK(16, 8)
 #define   MTL_TRDPRE_MASK		REG_GENMASK(7, 0)
 
+<<<<<<< HEAD
 #define FW_BLC		_MMIO(0x20d8)
 #define FW_BLC2		_MMIO(0x20dc)
 #define FW_BLC_SELF	_MMIO(0x20e0) /* 915+ only */
 #define   FW_BLC_SELF_EN_MASK      REG_BIT(31)
 #define   FW_BLC_SELF_FIFO_MASK    REG_BIT(16) /* 945 only */
 #define   FW_BLC_SELF_EN           REG_BIT(15) /* 945 only */
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __INTEL_DISPLAY_REGS_H__ */

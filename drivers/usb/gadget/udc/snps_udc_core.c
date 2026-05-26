@@ -3151,7 +3151,11 @@ int udc_probe(struct udc *dev)
 			 tmp, dev->phys_addr, dev->chiprev,
 			 (dev->chiprev == UDC_HSA0_REV) ?
 			 "A0" : "B1");
+<<<<<<< HEAD
 		strscpy(tmp, UDC_DRIVER_VERSION_STRING);
+=======
+		strcpy(tmp, UDC_DRIVER_VERSION_STRING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dev->chiprev == UDC_HSA0_REV) {
 			dev_err(dev->dev, "chip revision is A0; too old\n");
 			retval = -ENODEV;

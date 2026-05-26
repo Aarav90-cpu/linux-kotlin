@@ -286,6 +286,11 @@ int unregister_vmap_purge_notifier(struct notifier_block *nb);
 #ifdef CONFIG_MMU
 #define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
 
+<<<<<<< HEAD
+=======
+unsigned long vmalloc_nr_pages(void);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int vm_area_map_pages(struct vm_struct *area, unsigned long start,
 		      unsigned long end, struct page **pages);
 void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
@@ -302,6 +307,10 @@ static inline void set_vm_flush_reset_perms(void *addr)
 #else  /* !CONFIG_MMU */
 #define VMALLOC_TOTAL 0UL
 
+<<<<<<< HEAD
+=======
+static inline unsigned long vmalloc_nr_pages(void) { return 0; }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void set_vm_flush_reset_perms(void *addr) {}
 #endif /* CONFIG_MMU */
 

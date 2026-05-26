@@ -63,7 +63,11 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
 		return 0;
 
 	for (i = sp->len - 1; i >= 0; i--) {
+<<<<<<< HEAD
 		pos = strict ? sp->len - i - 1 : 0;
+=======
+		pos = strict ? i - sp->len + 1 : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pos >= info->len)
 			return 0;
 		e = &info->pol[pos];
@@ -126,10 +130,20 @@ policy_mt(const struct sk_buff *skb, struct xt_action_param *par)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int policy_mt_check_hooks(const struct xt_mtchk_param *par)
 {
 	const struct xt_policy_info *info = par->matchinfo;
 	const char *errmsg;
+=======
+static int policy_mt_check(const struct xt_mtchk_param *par)
+{
+	const struct xt_policy_info *info = par->matchinfo;
+	const char *errmsg = "neither incoming nor outgoing policy selected";
+
+	if (!(info->flags & (XT_POLICY_MATCH_IN|XT_POLICY_MATCH_OUT)))
+		goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (par->hook_mask & ((1 << NF_INET_PRE_ROUTING) |
 	    (1 << NF_INET_LOCAL_IN)) && info->flags & XT_POLICY_MATCH_OUT) {
@@ -141,6 +155,7 @@ static int policy_mt_check_hooks(const struct xt_mtchk_param *par)
 		errmsg = "input policy not valid in POSTROUTING and OUTPUT";
 		goto err;
 	}
+<<<<<<< HEAD
 
 	return 0;
 err:
@@ -156,6 +171,8 @@ static int policy_mt_check(const struct xt_mtchk_param *par)
 	if (!(info->flags & (XT_POLICY_MATCH_IN|XT_POLICY_MATCH_OUT)))
 		goto err;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (info->len > XT_POLICY_MAX_ELEM) {
 		errmsg = "too many policy elements";
 		goto err;
@@ -170,7 +187,10 @@ static struct xt_match policy_mt_reg[] __read_mostly = {
 	{
 		.name		= "policy",
 		.family		= NFPROTO_IPV4,
+<<<<<<< HEAD
 		.check_hooks	= policy_mt_check_hooks,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry 	= policy_mt_check,
 		.match		= policy_mt,
 		.matchsize	= sizeof(struct xt_policy_info),
@@ -179,7 +199,10 @@ static struct xt_match policy_mt_reg[] __read_mostly = {
 	{
 		.name		= "policy",
 		.family		= NFPROTO_IPV6,
+<<<<<<< HEAD
 		.check_hooks	= policy_mt_check_hooks,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= policy_mt_check,
 		.match		= policy_mt,
 		.matchsize	= sizeof(struct xt_policy_info),

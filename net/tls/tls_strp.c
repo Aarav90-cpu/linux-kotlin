@@ -624,12 +624,15 @@ void tls_strp_done(struct tls_strparser *strp)
 	WARN_ON(!strp->stopped);
 
 	cancel_work_sync(&strp->work);
+<<<<<<< HEAD
 	__tls_strp_done(strp);
 }
 
 /* For setup error paths where the strparser was initialized but never armed. */
 void __tls_strp_done(struct tls_strparser *strp)
 {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tls_strp_anchor_free(strp);
 }
 

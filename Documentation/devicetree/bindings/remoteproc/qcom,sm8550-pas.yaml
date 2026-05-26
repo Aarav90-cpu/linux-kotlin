@@ -28,6 +28,7 @@ properties:
           - qcom,x1e80100-adsp-pas
           - qcom,x1e80100-cdsp-pas
       - items:
+<<<<<<< HEAD
           - enum:
               - qcom,glymur-adsp-pas
               - qcom,kaanapali-adsp-pas
@@ -39,6 +40,11 @@ properties:
               - qcom,kaanapali-cdsp-pas
           - const: qcom,sm8550-cdsp-pas
       - items:
+=======
+          - const: qcom,sm8750-adsp-pas
+          - const: qcom,sm8550-adsp-pas
+      - items:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,sm8750-cdsp-pas
           - const: qcom,sm8650-cdsp-pas
 
@@ -60,6 +66,10 @@ properties:
   smd-edge: false
 
   firmware-name:
+<<<<<<< HEAD
+=======
+    $ref: /schemas/types.yaml#/definitions/string-array
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: Firmware name of the Hexagon core
       - description: Firmware name of the Hexagon Devicetree
@@ -102,10 +112,13 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - qcom,glymur-adsp-pas
               - qcom,glymur-cdsp-pas
               - qcom,kaanapali-adsp-pas
               - qcom,kaanapali-cdsp-pas
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8750-adsp-pas
     then:
       properties:

@@ -1414,7 +1414,12 @@ xfs_refcount_finish_one(
 	if (rcur == NULL) {
 		struct xfs_perag	*pag = to_perag(ri->ri_group);
 
+<<<<<<< HEAD
 		error = xfs_alloc_read_agf(pag, tp, 0, &agbp);
+=======
+		error = xfs_alloc_read_agf(pag, tp,
+				XFS_ALLOC_FLAG_FREEING, &agbp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (error)
 			return error;
 

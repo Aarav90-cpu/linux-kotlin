@@ -246,6 +246,10 @@
 			regulator-min-microvolt = <1000000>;
 			regulator-max-microvolt = <1000000>;
 			regulator-name = "vdd10_lcd";
+<<<<<<< HEAD
+=======
+			regulator-suspend-mem-disabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		vcc18_lcd: LDO_REG8 {
@@ -254,6 +258,10 @@
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			regulator-name = "vcc18_lcd";
+<<<<<<< HEAD
+=======
+			regulator-suspend-mem-disabled;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };

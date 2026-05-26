@@ -449,7 +449,11 @@ static int gfs2_write_inode(struct inode *inode, struct writeback_control *wbc)
 		gfs2_log_flush(GFS2_SB(inode), ip->i_gl,
 			       GFS2_LOG_HEAD_FLUSH_NORMAL |
 			       GFS2_LFC_WRITE_INODE);
+<<<<<<< HEAD
 	if (bdi_wb_dirty_exceeded(bdi))
+=======
+	if (bdi->wb.dirty_exceeded)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gfs2_ail1_flush(sdp, wbc);
 	else
 		filemap_fdatawrite(metamapping);
@@ -596,9 +600,12 @@ restart:
 	}
 	spin_unlock(&sdp->sd_jindex_spin);
 
+<<<<<<< HEAD
 	/* Wait for withdraw to complete */
 	flush_work(&sdp->sd_withdraw_work);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!sb_rdonly(sb))
 		gfs2_make_fs_ro(sdp);
 	else {
@@ -608,6 +615,11 @@ restart:
 		gfs2_quota_cleanup(sdp);
 	}
 
+<<<<<<< HEAD
+=======
+	flush_work(&sdp->sd_withdraw_work);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*  At this point, we're through modifying the disk  */
 
 	/*  Release stuff  */
@@ -1242,9 +1254,12 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
 	struct gfs2_sbd *sdp = sb->s_fs_info;
 	int ret;
 
+<<<<<<< HEAD
 	if (inode->i_nlink)
 		return EVICT_SHOULD_SKIP_DELETE;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
 	    test_bit(GLF_DEFER_DELETE, &ip->i_iopen_gh.gh_gl->gl_flags))
 		return EVICT_SHOULD_DEFER_DELETE;
@@ -1283,6 +1298,7 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
 /**
  * evict_unlinked_inode - delete the pieces of an unlinked evicted inode
  * @inode: The inode to evict
+<<<<<<< HEAD
  * @gh: The glock holder structure
  */
 static int evict_unlinked_inode(struct inode *inode, struct gfs2_holder *gh)
@@ -1295,6 +1311,14 @@ static int evict_unlinked_inode(struct inode *inode, struct gfs2_holder *gh)
 	BUG_ON(!gfs2_holder_initialized(gh) ||
 	       test_bit(GLF_INSTANTIATE_NEEDED, &gl->gl_flags));
 
+=======
+ */
+static int evict_unlinked_inode(struct inode *inode)
+{
+	struct gfs2_inode *ip = GFS2_I(inode);
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (S_ISDIR(inode->i_mode) &&
 	    (ip->i_diskflags & GFS2_DIF_EXHASH)) {
 		ret = gfs2_dir_exhash_dealloc(ip);
@@ -1327,13 +1351,19 @@ static int evict_unlinked_inode(struct inode *inode, struct gfs2_holder *gh)
 	 */
 
 	ret = gfs2_dinode_dealloc(ip);
+<<<<<<< HEAD
 	if (!ret)
 		gfs2_inode_remember_delete(gl, ip->i_no_formal_ino);
+=======
+	if (!ret && ip->i_gl)
+		gfs2_inode_remember_delete(ip->i_gl, ip->i_no_formal_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int gfs2_truncate_inode_pages(struct inode *inode)
 {
 	struct gfs2_inode *ip = GFS2_I(inode);
@@ -1386,10 +1416,18 @@ static void gfs2_truncate_inode_pages_final(struct inode *inode)
  * @gh: The glock holder structure
  */
 static int evict_linked_inode(struct inode *inode, struct gfs2_holder *gh)
+=======
+/*
+ * evict_linked_inode - evict an inode whose dinode has not been unlinked
+ * @inode: The inode to evict
+ */
+static int evict_linked_inode(struct inode *inode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct super_block *sb = inode->i_sb;
 	struct gfs2_sbd *sdp = sb->s_fs_info;
 	struct gfs2_inode *ip = GFS2_I(inode);
+<<<<<<< HEAD
 	struct gfs2_glock *gl = ip->i_gl;
 	struct address_space *metamapping = gfs2_glock2aspace(gl);
 	int ret;
@@ -1408,16 +1446,39 @@ static int evict_linked_inode(struct inode *inode, struct gfs2_holder *gh)
 	gfs2_log_flush(sdp, gl, GFS2_LOG_HEAD_FLUSH_NORMAL |
 		       GFS2_LFC_EVICT_INODE);
 	if (test_bit(GLF_DIRTY, &gl->gl_flags)) {
+=======
+	struct address_space *metamapping;
+	int ret;
+
+	gfs2_log_flush(sdp, ip->i_gl, GFS2_LOG_HEAD_FLUSH_NORMAL |
+		       GFS2_LFC_EVICT_INODE);
+	metamapping = gfs2_glock2aspace(ip->i_gl);
+	if (test_bit(GLF_DIRTY, &ip->i_gl->gl_flags)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		filemap_fdatawrite(metamapping);
 		filemap_fdatawait(metamapping);
 	}
 	write_inode_now(inode, 1);
+<<<<<<< HEAD
 	gfs2_ail_flush(gl, 0);
 
 clean:
 	ret = gfs2_truncate_inode_pages(inode);
 	truncate_inode_pages(metamapping, 0);
 	return ret;
+=======
+	gfs2_ail_flush(ip->i_gl, 0);
+
+	ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
+	if (ret)
+		return ret;
+
+	/* Needs to be done before glock release & also in a transaction */
+	truncate_inode_pages(&inode->i_data, 0);
+	truncate_inode_pages(metamapping, 0);
+	gfs2_trans_end(sdp);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1451,7 +1512,11 @@ static void gfs2_evict_inode(struct inode *inode)
 	int ret;
 
 	gfs2_holder_mark_uninitialized(&gh);
+<<<<<<< HEAD
 	if (sb_rdonly(sb) || !ip->i_no_addr || !ip->i_gl)
+=======
+	if (inode->i_nlink || sb_rdonly(sb) || !ip->i_no_addr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 
 	/*
@@ -1476,19 +1541,33 @@ static void gfs2_evict_inode(struct inode *inode)
 		behavior = EVICT_SHOULD_SKIP_DELETE;
 	}
 	if (behavior == EVICT_SHOULD_DELETE)
+<<<<<<< HEAD
 		ret = evict_unlinked_inode(inode, &gh);
 	else
 		ret = evict_linked_inode(inode, &gh);
+=======
+		ret = evict_unlinked_inode(inode);
+	else
+		ret = evict_linked_inode(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (gfs2_rs_active(&ip->i_res))
 		gfs2_rs_deltree(&ip->i_res);
 
+<<<<<<< HEAD
 	if (ret && !gfs2_withdrawn(sdp) && ret != -EROFS)
+=======
+	if (ret && ret != GLR_TRYFAILED && ret != -EROFS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fs_warn(sdp, "gfs2_evict_inode: %d\n", ret);
 out:
 	if (gfs2_holder_initialized(&gh))
 		gfs2_glock_dq_uninit(&gh);
+<<<<<<< HEAD
 	gfs2_truncate_inode_pages_final(inode);
+=======
+	truncate_inode_pages_final(&inode->i_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ip->i_qadata)
 		gfs2_assert_warn(sdp, ip->i_qadata->qa_ref == 0);
 	gfs2_rs_deltree(&ip->i_res);

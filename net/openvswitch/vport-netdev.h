@@ -13,7 +13,11 @@
 
 struct vport *ovs_netdev_get_vport(struct net_device *dev);
 
+<<<<<<< HEAD
 struct vport *ovs_netdev_link(struct vport *vport, bool tunnel);
+=======
+struct vport *ovs_netdev_link(struct vport *vport, const char *name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ovs_netdev_detach_dev(struct vport *);
 
 int __init ovs_netdev_init(void);

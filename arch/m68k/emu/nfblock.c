@@ -132,8 +132,12 @@ static int __init nfhd_init_one(int id, u32 blocks, u32 bsize)
 	dev->disk->minors = 16;
 	dev->disk->fops = &nfhd_ops;
 	dev->disk->private_data = dev;
+<<<<<<< HEAD
 	snprintf(dev->disk->disk_name, sizeof(dev->disk->disk_name), "nfhd%u",
 		 dev_id);
+=======
+	sprintf(dev->disk->disk_name, "nfhd%u", dev_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	set_capacity(dev->disk, (sector_t)blocks * (bsize / 512));
 	err = add_disk(dev->disk);
 	if (err)

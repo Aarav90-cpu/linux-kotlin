@@ -1359,6 +1359,7 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
 		fwnode_graph_get_endpoint_by_id(dev_fwnode(csis->dev), 0, 0,
 						FWNODE_GRAPH_ENDPOINT_NEXT);
 	if (!ep)
+<<<<<<< HEAD
 		return dev_err_probe(csis->dev, -ENOTCONN,
 				     "failed to get local endpoint\n");
 
@@ -1371,6 +1372,20 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
 		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1)
 			return dev_err_probe(csis->dev, -EINVAL,
 					     "data lanes reordering is not supported\n");
+=======
+		return -ENOTCONN;
+
+	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
+	if (ret)
+		return ret;
+
+	for (i = 0; i < vep.bus.mipi_csi2.num_data_lanes; ++i) {
+		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1) {
+			dev_err(csis->dev,
+				"data lanes reordering is not supported");
+			return -EINVAL;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	csis->bus = vep.bus.mipi_csi2;
@@ -1382,13 +1397,18 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
 	asd = v4l2_async_nf_add_fwnode_remote(&csis->notifier, ep,
 					      struct v4l2_async_connection);
 	if (IS_ERR(asd))
+<<<<<<< HEAD
 		return dev_err_probe(csis->dev, PTR_ERR(asd),
 				     "failed to add remote fwnode to notifier\n");
+=======
+		return PTR_ERR(asd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	csis->notifier.ops = &mipi_csis_notify_ops;
 
 	ret = v4l2_async_nf_register(&csis->notifier);
 	if (ret)
+<<<<<<< HEAD
 		return dev_err_probe(csis->dev, ret,
 				     "failed to register notifier\n");
 
@@ -1398,6 +1418,11 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
 				     "failed to register subdev\n");
 
 	return 0;
+=======
+		return ret;
+
+	return v4l2_async_register_subdev(&csis->sd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* -----------------------------------------------------------------------------
@@ -1556,8 +1581,15 @@ static int mipi_csis_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, &csis->sd);
 
 	ret = mipi_csis_async_register(csis);
+<<<<<<< HEAD
 	if (ret < 0)
 		goto err_cleanup;
+=======
+	if (ret < 0) {
+		dev_err(dev, "async register failed: %d\n", ret);
+		goto err_cleanup;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Initialize debugfs. */
 	mipi_csis_debugfs_init(csis);

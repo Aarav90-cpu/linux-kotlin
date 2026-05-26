@@ -76,7 +76,11 @@ struct audit_names {
 	int			name_len;	/* number of chars to log */
 	bool			hidden;		/* don't log this record */
 
+<<<<<<< HEAD
 	u64			ino;
+=======
+	unsigned long		ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_t			dev;
 	umode_t			mode;
 	kuid_t			uid;
@@ -225,9 +229,15 @@ extern int auditd_test_task(struct task_struct *task);
 #define AUDIT_INODE_BUCKETS	32
 extern struct list_head audit_inode_hash[AUDIT_INODE_BUCKETS];
 
+<<<<<<< HEAD
 static inline int audit_hash_ino(u64 ino)
 {
 	return ((u32)ino & (AUDIT_INODE_BUCKETS-1));
+=======
+static inline int audit_hash_ino(u32 ino)
+{
+	return (ino & (AUDIT_INODE_BUCKETS-1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Indicates that audit should log the full pathname. */
@@ -277,15 +287,25 @@ extern int audit_to_watch(struct audit_krule *krule, char *path, int len,
 extern int audit_add_watch(struct audit_krule *krule, struct list_head **list);
 extern void audit_remove_watch_rule(struct audit_krule *krule);
 extern char *audit_watch_path(struct audit_watch *watch);
+<<<<<<< HEAD
 extern int audit_watch_compare(struct audit_watch *watch, u64 ino, dev_t dev);
+=======
+extern int audit_watch_compare(struct audit_watch *watch, unsigned long ino,
+			       dev_t dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern struct audit_fsnotify_mark *audit_alloc_mark(struct audit_krule *krule,
 						    char *pathname, int len);
 extern char *audit_mark_path(struct audit_fsnotify_mark *mark);
 extern void audit_remove_mark(struct audit_fsnotify_mark *audit_mark);
 extern void audit_remove_mark_rule(struct audit_krule *krule);
+<<<<<<< HEAD
 extern int audit_mark_compare(struct audit_fsnotify_mark *mark, u64 ino,
 			      dev_t dev);
+=======
+extern int audit_mark_compare(struct audit_fsnotify_mark *mark,
+			      unsigned long ino, dev_t dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int audit_dupe_exe(struct audit_krule *new, struct audit_krule *old);
 extern int audit_exe_compare(struct task_struct *tsk,
 			     struct audit_fsnotify_mark *mark);

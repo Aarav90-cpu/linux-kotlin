@@ -48,7 +48,11 @@ int debug_ordered_events;
 static int redirect_to_stderr;
 int debug_data_convert;
 static FILE *_debug_file;
+<<<<<<< HEAD
 static bool debug_display_time;
+=======
+bool debug_display_time;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int debug_type_profile;
 
 FILE *debug_file(void)

@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 #include <unistd.h>
 #include <sys/socket.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <test_progs.h>
 #include "cgroup_helpers.h"
 #include "network_helpers.h"
@@ -88,11 +91,14 @@ void test_cgroup_storage(void)
 	err = SYS_NOFAIL(PING_CMD);
 	ASSERT_OK(err, "sixth ping");
 
+<<<<<<< HEAD
 	err = bpf_map__get_next_key(skel->maps.cgroup_storage, &key, &key,
 				    sizeof(key));
 	ASSERT_ERR(err, "bpf_map__get_next_key should fail");
 	ASSERT_EQ(errno, ENOENT, "no second key");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 cleanup_progs:
 	cgroup_storage__destroy(skel);
 cleanup_network:
@@ -101,6 +107,7 @@ cleanup_cgroup:
 	close(cgroup_fd);
 	cleanup_cgroup_environment();
 }
+<<<<<<< HEAD
 
 void test_cgroup_storage_oob(void)
 {
@@ -141,3 +148,5 @@ cleanup_cgroup:
 	close(cgroup_fd);
 	cleanup_cgroup_environment();
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

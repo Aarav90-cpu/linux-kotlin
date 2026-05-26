@@ -5,10 +5,16 @@
 /*                                            */
 /**********************************************/
 
+<<<<<<< HEAD
 #include <linux/module.h>
 
 #include "font.h"
 
+=======
+#include <linux/font.h>
+#include <linux/module.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FONTDATAMAX 4096
 
 static const struct font_data fontdata_8x16 = {

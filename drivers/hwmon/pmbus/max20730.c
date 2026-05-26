@@ -715,7 +715,14 @@ static int max20730_probe(struct i2c_client *client)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	chip_id = (uintptr_t)i2c_get_match_data(client);
+=======
+	if (client->dev.of_node)
+		chip_id = (uintptr_t)of_device_get_match_data(dev);
+	else
+		chip_id = i2c_match_id(max20730_id, client)->driver_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
 	if (!data)

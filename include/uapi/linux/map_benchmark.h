@@ -17,12 +17,15 @@
 #define DMA_MAP_TO_DEVICE       1
 #define DMA_MAP_FROM_DEVICE     2
 
+<<<<<<< HEAD
 enum {
 	DMA_MAP_BENCH_SINGLE_MODE,
 	DMA_MAP_BENCH_SG_MODE,
 	DMA_MAP_BENCH_MODE_MAX
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct map_benchmark {
 	__u64 avg_map_100ns; /* average map latency in 100ns */
 	__u64 map_stddev; /* standard deviation of map latency */
@@ -34,11 +37,16 @@ struct map_benchmark {
 	__u32 dma_bits; /* DMA addressing capability */
 	__u32 dma_dir; /* DMA data direction */
 	__u32 dma_trans_ns; /* time for DMA transmission in ns */
+<<<<<<< HEAD
 	__u32 granule;  /* - SINGLE_MODE: number of pages mapped/unmapped per operation
 			 * - SG_MODE: number of scatterlist entries (each maps one page)
 			 */
 	__u8 map_mode;  /* the mode of dma map */
 	__u8 expansion[75]; /* For future use */
+=======
+	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
+	__u8 expansion[76]; /* For future use */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* _UAPI_DMA_BENCHMARK_H */

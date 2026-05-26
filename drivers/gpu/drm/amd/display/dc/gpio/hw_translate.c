@@ -53,7 +53,10 @@
 #include "dcn315/hw_translate_dcn315.h"
 #include "dcn32/hw_translate_dcn32.h"
 #include "dcn401/hw_translate_dcn401.h"
+<<<<<<< HEAD
 #include "dcn42/hw_translate_dcn42.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This unit
@@ -64,7 +67,10 @@ bool dal_hw_translate_init(
 	enum dce_version dce_version,
 	enum dce_environment dce_environment)
 {
+<<<<<<< HEAD
 	(void)dce_environment;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (dce_version) {
 #if defined(CONFIG_DRM_AMD_DC_SI)
 	case DCE_VERSION_6_0:
@@ -121,9 +127,12 @@ bool dal_hw_translate_init(
 	case DCN_VERSION_4_01:
 		dal_hw_translate_dcn401_init(translate);
 		return true;
+<<<<<<< HEAD
 	case DCN_VERSION_4_2:
 		dal_hw_translate_dcn42_init(translate);
 		return true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		BREAK_TO_DEBUGGER();
 		return false;

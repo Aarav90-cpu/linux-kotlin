@@ -2652,11 +2652,15 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 		}
 	}
 },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* disabled */
 
 {
 	/*
+<<<<<<< HEAD
 	 * The AudioBox USB advertises S24_3LE as the only supported format
 	 * for both playback and capture. It does not support S16_LE despite
 	 * being a USB full-speed device.
@@ -2706,6 +2710,8 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 
 {
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Bower's & Wilkins PX headphones only support the 48 kHz sample rate
 	 * even though it advertises more. The capture interface doesn't work
 	 * even on windows.
@@ -3950,6 +3956,7 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 QUIRK_RME_DIGIFACE(0x3f8c),
 QUIRK_RME_DIGIFACE(0x3fa0),
 
+<<<<<<< HEAD
 #define QUIRK_AF16RIG(channel_count_, alt_setting_,			\
 	              low_rate_, high_rate_, pack_size_,		\
 		      clock_, interface_, endpoint_)			\
@@ -4015,5 +4022,7 @@ QUIRK_RME_DIGIFACE(0x3fa0),
 #undef QUIRK_AF16RIG_CLOCK
 #undef QUIRK_AF16RIG
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #undef USB_DEVICE_VENDOR_SPEC
 #undef USB_AUDIO_DEVICE

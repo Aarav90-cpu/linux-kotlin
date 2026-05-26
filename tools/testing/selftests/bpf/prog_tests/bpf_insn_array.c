@@ -3,7 +3,11 @@
 #include <bpf/bpf.h>
 #include <test_progs.h>
 
+<<<<<<< HEAD
 #if defined(__x86_64__) || defined(__powerpc__) || defined(__aarch64__)
+=======
+#ifdef __x86_64__
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int map_create(__u32 map_type, __u32 max_entries)
 {
 	const char *map_name = "insn_array";

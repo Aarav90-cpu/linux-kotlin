@@ -14,6 +14,13 @@ lsdc_prime_import_sg_table(struct drm_device *ddev,
 			   struct dma_buf_attachment *attach,
 			   struct sg_table *sg);
 
+<<<<<<< HEAD
+=======
+int lsdc_dumb_map_offset(struct drm_file *file,
+			 struct drm_device *dev,
+			 u32 handle,
+			 uint64_t *offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int lsdc_dumb_create(struct drm_file *file,
 		     struct drm_device *ddev,

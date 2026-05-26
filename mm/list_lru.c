@@ -179,7 +179,10 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
 	unlock_list_lru(l, false);
 	return false;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(list_lru_add);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
 {

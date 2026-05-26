@@ -154,6 +154,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	main_i2c4: i2c@fe80000 {
 		compatible = "ti,am64-i2c", "ti,omap4-i2c";
 		reg = <0x00 0x0fe80000 0x00 0x100>;
@@ -167,6 +168,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ti_csi2rx1: ticsi2rx@30122000 {
 		compatible = "ti,j721e-csi2rx-shim";
 		reg = <0x00 0x30122000 0x00 0x1000>;

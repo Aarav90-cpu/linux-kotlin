@@ -31,6 +31,7 @@ static void virtual_stream_encoder_dp_set_stream_attribute(
 	struct dc_crtc_timing *crtc_timing,
 	enum dc_color_space output_color_space,
 	bool use_vsc_sdp_for_colorimetry,
+<<<<<<< HEAD
 	uint32_t enable_sdp_splitting) {
 		(void)enc;
 		(void)crtc_timing;
@@ -38,21 +39,29 @@ static void virtual_stream_encoder_dp_set_stream_attribute(
 		(void)use_vsc_sdp_for_colorimetry;
 		(void)enable_sdp_splitting;
 	}
+=======
+	uint32_t enable_sdp_splitting) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_stream_encoder_hdmi_set_stream_attribute(
 	struct stream_encoder *enc,
 	struct dc_crtc_timing *crtc_timing,
 	int actual_pix_clk_khz,
+<<<<<<< HEAD
 	bool enable_audio) {
 		(void)enc;
 		(void)crtc_timing;
 		(void)actual_pix_clk_khz;
 		(void)enable_audio;
 	}
+=======
+	bool enable_audio) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_stream_encoder_dvi_set_stream_attribute(
 	struct stream_encoder *enc,
 	struct dc_crtc_timing *crtc_timing,
+<<<<<<< HEAD
 	bool is_dual_link) {
 		(void)enc;
 		(void)crtc_timing;
@@ -101,10 +110,40 @@ static void virtual_stream_encoder_dp_blank(
 		(void)link;
 		(void)enc;
 	}
+=======
+	bool is_dual_link) {}
+
+static void virtual_stream_encoder_set_throttled_vcp_size(
+	struct stream_encoder *enc,
+	struct fixed31_32 avg_time_slots_per_mtp)
+{}
+
+static void virtual_stream_encoder_update_hdmi_info_packets(
+	struct stream_encoder *enc,
+	const struct encoder_info_frame *info_frame) {}
+
+static void virtual_stream_encoder_stop_hdmi_info_packets(
+	struct stream_encoder *enc) {}
+
+static void virtual_stream_encoder_set_avmute(
+	struct stream_encoder *enc,
+	bool enable) {}
+static void virtual_stream_encoder_update_dp_info_packets(
+	struct stream_encoder *enc,
+	const struct encoder_info_frame *info_frame) {}
+
+static void virtual_stream_encoder_stop_dp_info_packets(
+	struct stream_encoder *enc) {}
+
+static void virtual_stream_encoder_dp_blank(
+	struct dc_link *link,
+	struct stream_encoder *enc) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_stream_encoder_dp_unblank(
 	struct dc_link *link,
 	struct stream_encoder *enc,
+<<<<<<< HEAD
 	const struct encoder_unblank_param *param) {
 		(void)enc;
 		(void)link;
@@ -152,6 +191,40 @@ static void virtual_stream_encoder_set_dsc_pps_info_packet(
 	(void)dsc_packed_pps;
 	(void)immediate_update;
 }
+=======
+	const struct encoder_unblank_param *param) {}
+
+static void virtual_audio_mute_control(
+	struct stream_encoder *enc,
+	bool mute) {}
+
+static void virtual_stream_encoder_reset_hdmi_stream_attribute(
+		struct stream_encoder *enc)
+{}
+
+static void virtual_enc_dp_set_odm_combine(
+	struct stream_encoder *enc,
+	bool odm_combine)
+{}
+
+static void virtual_dig_connect_to_otg(
+		struct stream_encoder *enc,
+		int tg_inst)
+{}
+
+static void virtual_setup_stereo_sync(
+			struct stream_encoder *enc,
+			int tg_inst,
+			bool enable)
+{}
+
+static void virtual_stream_encoder_set_dsc_pps_info_packet(
+		struct stream_encoder *enc,
+		bool enable,
+		uint8_t *dsc_packed_pps,
+		bool immediate_update)
+{}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct stream_encoder_funcs virtual_str_enc_funcs = {
 	.dp_set_odm_combine =

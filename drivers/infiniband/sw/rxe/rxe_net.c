@@ -17,11 +17,16 @@
 #include "rxe.h"
 #include "rxe_net.h"
 #include "rxe_loc.h"
+<<<<<<< HEAD
 #include "rxe_ns.h"
 
 #ifndef SK_REF_FOR_TUNNEL
 #define SK_REF_FOR_TUNNEL	2
 #endif
+=======
+
+static struct rxe_recv_sockets recv_sockets;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 /*
@@ -104,20 +109,33 @@ static inline void rxe_reclassify_recv_socket(struct socket *sock)
 }
 
 static struct dst_entry *rxe_find_route4(struct rxe_qp *qp,
+<<<<<<< HEAD
 					 struct net *net,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 struct net_device *ndev,
 					 struct in_addr *saddr,
 					 struct in_addr *daddr)
 {
 	struct rtable *rt;
+<<<<<<< HEAD
 	struct flowi4 fl = {};
 
+=======
+	struct flowi4 fl = { { 0 } };
+
+	memset(&fl, 0, sizeof(fl));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fl.flowi4_oif = ndev->ifindex;
 	memcpy(&fl.saddr, saddr, sizeof(*saddr));
 	memcpy(&fl.daddr, daddr, sizeof(*daddr));
 	fl.flowi4_proto = IPPROTO_UDP;
 
+<<<<<<< HEAD
 	rt = ip_route_output_key(net, &fl);
+=======
+	rt = ip_route_output_key(&init_net, &fl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(rt)) {
 		rxe_dbg_qp(qp, "no route to %pI4\n", &daddr->s_addr);
 		return NULL;
@@ -128,20 +146,35 @@ static struct dst_entry *rxe_find_route4(struct rxe_qp *qp,
 
 #if IS_ENABLED(CONFIG_IPV6)
 static struct dst_entry *rxe_find_route6(struct rxe_qp *qp,
+<<<<<<< HEAD
 					 struct net *net,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 struct net_device *ndev,
 					 struct in6_addr *saddr,
 					 struct in6_addr *daddr)
 {
 	struct dst_entry *ndst;
+<<<<<<< HEAD
 	struct flowi6 fl6 = {};
 
+=======
+	struct flowi6 fl6 = { { 0 } };
+
+	memset(&fl6, 0, sizeof(fl6));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fl6.flowi6_oif = ndev->ifindex;
 	memcpy(&fl6.saddr, saddr, sizeof(*saddr));
 	memcpy(&fl6.daddr, daddr, sizeof(*daddr));
 	fl6.flowi6_proto = IPPROTO_UDP;
 
+<<<<<<< HEAD
 	ndst = ip6_dst_lookup_flow(net, rxe_ns_pernet_sk6(net), &fl6, NULL);
+=======
+	ndst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(recv_sockets.sk6->sk),
+					       recv_sockets.sk6->sk, &fl6,
+					       NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(ndst)) {
 		rxe_dbg_qp(qp, "no route to %pI6\n", daddr);
 		return NULL;
@@ -161,7 +194,10 @@ put:
 #else
 
 static struct dst_entry *rxe_find_route6(struct rxe_qp *qp,
+<<<<<<< HEAD
 					 struct net *net,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 struct net_device *ndev,
 					 struct in6_addr *saddr,
 					 struct in6_addr *daddr)
@@ -176,7 +212,10 @@ static struct dst_entry *rxe_find_route(struct net_device *ndev,
 					struct rxe_av *av)
 {
 	struct dst_entry *dst = NULL;
+<<<<<<< HEAD
 	struct net *net;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (qp_type(qp) == IB_QPT_RC)
 		dst = sk_dst_get(qp->sk->sk);
@@ -185,22 +224,33 @@ static struct dst_entry *rxe_find_route(struct net_device *ndev,
 		if (dst)
 			dst_release(dst);
 
+<<<<<<< HEAD
 		net = dev_net(ndev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (av->network_type == RXE_NETWORK_TYPE_IPV4) {
 			struct in_addr *saddr;
 			struct in_addr *daddr;
 
 			saddr = &av->sgid_addr._sockaddr_in.sin_addr;
 			daddr = &av->dgid_addr._sockaddr_in.sin_addr;
+<<<<<<< HEAD
 			dst = rxe_find_route4(qp, net, ndev, saddr, daddr);
+=======
+			dst = rxe_find_route4(qp, ndev, saddr, daddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (av->network_type == RXE_NETWORK_TYPE_IPV6) {
 			struct in6_addr *saddr6;
 			struct in6_addr *daddr6;
 
 			saddr6 = &av->sgid_addr._sockaddr_in6.sin6_addr;
 			daddr6 = &av->dgid_addr._sockaddr_in6.sin6_addr;
+<<<<<<< HEAD
 			dst = rxe_find_route6(qp, net, ndev, saddr6, daddr6);
+=======
+			dst = rxe_find_route6(qp, ndev, saddr6, daddr6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IPV6)
 			if (dst)
 				qp->dst_cookie =
@@ -629,6 +679,7 @@ int rxe_net_add(const char *ibdev_name, struct net_device *ndev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void rxe_sock_put(struct sock *sk,
 					void (*set_sk)(struct net *, struct sock *),
 					struct net *net)
@@ -666,6 +717,8 @@ void rxe_net_del(struct ib_device *dev)
 	dev_put(ndev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rxe_port_event(struct rxe_dev *rxe,
 			   enum ib_event_type event)
 {
@@ -722,7 +775,10 @@ static int rxe_notify(struct notifier_block *not_blk,
 	switch (event) {
 	case NETDEV_UNREGISTER:
 		ib_unregister_device_queued(&rxe->ib_dev);
+<<<<<<< HEAD
 		rxe_net_del(&rxe->ib_dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NETDEV_CHANGEMTU:
 		rxe_dbg_dev(rxe, "%s changed mtu to %d\n", ndev->name, ndev->mtu);
@@ -752,6 +808,7 @@ static struct notifier_block rxe_net_notifier = {
 	.notifier_call = rxe_notify,
 };
 
+<<<<<<< HEAD
 static int rxe_net_ipv4_init(struct net *net)
 {
 	struct sock *sk;
@@ -769,10 +826,22 @@ static int rxe_net_ipv4_init(struct net *net)
 		return -1;
 	}
 	rxe_ns_pernet_set_sk4(net, sock->sk);
+=======
+static int rxe_net_ipv4_init(void)
+{
+	recv_sockets.sk4 = rxe_setup_udp_tunnel(&init_net,
+				htons(ROCE_V2_UDP_DPORT), false);
+	if (IS_ERR(recv_sockets.sk4)) {
+		recv_sockets.sk4 = NULL;
+		pr_err("Failed to create IPv4 UDP tunnel\n");
+		return -1;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rxe_net_ipv6_init(struct net *net)
 {
 #if IS_ENABLED(CONFIG_IPV6)
@@ -787,10 +856,21 @@ static int rxe_net_ipv6_init(struct net *net)
 
 	sock = rxe_setup_udp_tunnel(net, htons(ROCE_V2_UDP_DPORT), true);
 	if (PTR_ERR(sock) == -EAFNOSUPPORT) {
+=======
+static int rxe_net_ipv6_init(void)
+{
+#if IS_ENABLED(CONFIG_IPV6)
+
+	recv_sockets.sk6 = rxe_setup_udp_tunnel(&init_net,
+						htons(ROCE_V2_UDP_DPORT), true);
+	if (PTR_ERR(recv_sockets.sk6) == -EAFNOSUPPORT) {
+		recv_sockets.sk6 = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pr_warn("IPv6 is not supported, can not create a UDPv6 socket\n");
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (IS_ERR(sock)) {
 		pr_err("Failed to create IPv6 UDP tunnel\n");
 		return -1;
@@ -798,10 +878,18 @@ static int rxe_net_ipv6_init(struct net *net)
 
 	rxe_ns_pernet_set_sk6(net, sock->sk);
 
+=======
+	if (IS_ERR(recv_sockets.sk6)) {
+		recv_sockets.sk6 = NULL;
+		pr_err("Failed to create IPv6 UDP tunnel\n");
+		return -1;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return 0;
 }
 
+<<<<<<< HEAD
 int rxe_register_notifier(void)
 {
 	int err;
@@ -844,5 +932,34 @@ err_out:
 	if (sk)
 		rxe_sock_put(sk, rxe_ns_pernet_set_sk4, net);
 
+=======
+void rxe_net_exit(void)
+{
+	rxe_release_udp_tunnel(recv_sockets.sk6);
+	rxe_release_udp_tunnel(recv_sockets.sk4);
+	unregister_netdevice_notifier(&rxe_net_notifier);
+}
+
+int rxe_net_init(void)
+{
+	int err;
+
+	recv_sockets.sk6 = NULL;
+
+	err = rxe_net_ipv4_init();
+	if (err)
+		return err;
+	err = rxe_net_ipv6_init();
+	if (err)
+		goto err_out;
+	err = register_netdevice_notifier(&rxe_net_notifier);
+	if (err) {
+		pr_err("Failed to register netdev notifier\n");
+		goto err_out;
+	}
+	return 0;
+err_out:
+	rxe_net_exit();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }

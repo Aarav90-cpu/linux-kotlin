@@ -21,7 +21,10 @@
 			color = <LED_COLOR_ID_GREEN>;
 			default-state = "off";
 			function = LED_FUNCTION_STATUS;
+<<<<<<< HEAD
 			function-enumerator = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpios = <&lsio_gpio5 27 GPIO_ACTIVE_HIGH>;
 		};
 
@@ -30,7 +33,10 @@
 			color = <LED_COLOR_ID_RED>;
 			default-state = "off";
 			function = LED_FUNCTION_STATUS;
+<<<<<<< HEAD
 			function-enumerator = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpios = <&lsio_gpio5 29 GPIO_ACTIVE_HIGH>;
 		};
 
@@ -39,7 +45,10 @@
 			color = <LED_COLOR_ID_GREEN>;
 			default-state = "off";
 			function = LED_FUNCTION_STATUS;
+<<<<<<< HEAD
 			function-enumerator = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpios = <&lsio_gpio5 20 GPIO_ACTIVE_HIGH>;
 		};
 
@@ -48,7 +57,10 @@
 			color = <LED_COLOR_ID_RED>;
 			default-state = "off";
 			function = LED_FUNCTION_STATUS;
+<<<<<<< HEAD
 			function-enumerator = <2>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpios = <&lsio_gpio5 21 GPIO_ACTIVE_HIGH>;
 		};
 	};
@@ -98,6 +110,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&amix {
+	status = "okay";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &asrc0 {
 	status = "okay";
 };
@@ -123,6 +142,11 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+/* TODO: GPU */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Apalis I2C1 */
 &i2c2 {
 	status = "okay";

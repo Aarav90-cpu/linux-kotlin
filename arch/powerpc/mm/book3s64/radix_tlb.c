@@ -19,6 +19,11 @@
 #include <asm/cputhreads.h>
 #include <asm/plpar_wrappers.h>
 
+<<<<<<< HEAD
+=======
+#include "internal.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * tlbiel instruction for radix, set invalidation
  * i.e., r=1 and is=01 or is=10 or is=11
@@ -185,7 +190,11 @@ static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
 }
 
+<<<<<<< HEAD
 static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long lpid,
+=======
+static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    unsigned long ap, unsigned long ric)
 {
 	unsigned long rb,rs,prs,r;
@@ -249,17 +258,29 @@ static inline void fixup_tlbie_pid(unsigned long pid)
 	}
 }
 
+<<<<<<< HEAD
 static inline void fixup_tlbie_va_lpid(unsigned long va, unsigned long lpid,
+=======
+static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long lpid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       unsigned long ap)
 {
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
 		asm volatile("ptesync": : :"memory");
+<<<<<<< HEAD
 		__tlbie_va_lpid(va, 0, ap, RIC_FLUSH_TLB);
+=======
+		__tlbie_lpid_va(va, 0, ap, RIC_FLUSH_TLB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 		asm volatile("ptesync": : :"memory");
+<<<<<<< HEAD
 		__tlbie_va_lpid(va, lpid, ap, RIC_FLUSH_TLB);
+=======
+		__tlbie_lpid_va(va, lpid, ap, RIC_FLUSH_TLB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -278,7 +299,11 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
 
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 		asm volatile("ptesync": : :"memory");
+<<<<<<< HEAD
 		__tlbie_va_lpid(va, lpid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
+=======
+		__tlbie_lpid_va(va, lpid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -529,14 +554,23 @@ static void do_tlbiel_va_range(void *info)
 				    t->psize, t->also_pwc);
 }
 
+<<<<<<< HEAD
 static __always_inline void _tlbie_va_lpid(unsigned long va, unsigned long lpid,
+=======
+static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      unsigned long psize, unsigned long ric)
 {
 	unsigned long ap = mmu_get_ap(psize);
 
 	asm volatile("ptesync": : :"memory");
+<<<<<<< HEAD
 	__tlbie_va_lpid(va, lpid, ap, ric);
 	fixup_tlbie_va_lpid(va, lpid, ap);
+=======
+	__tlbie_lpid_va(va, lpid, ap, ric);
+	fixup_tlbie_lpid_va(va, lpid, ap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
 }
 
@@ -658,7 +692,11 @@ static bool mm_needs_flush_escalation(struct mm_struct *mm)
  * If always_flush is true, then flush even if this CPU can't be removed
  * from mm_cpumask.
  */
+<<<<<<< HEAD
 static void exit_lazy_flush_tlb(struct mm_struct *mm)
+=======
+void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long pid = mm->context.id;
 	int cpu = smp_processor_id();
@@ -701,17 +739,30 @@ static void exit_lazy_flush_tlb(struct mm_struct *mm)
 	if (cpumask_test_cpu(cpu, mm_cpumask(mm))) {
 		dec_mm_active_cpus(mm);
 		cpumask_clear_cpu(cpu, mm_cpumask(mm));
+<<<<<<< HEAD
 	}
 
 out:
 	_tlbiel_pid(pid, RIC_FLUSH_ALL);
+=======
+		always_flush = true;
+	}
+
+out:
+	if (always_flush)
+		_tlbiel_pid(pid, RIC_FLUSH_ALL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_SMP
 static void do_exit_flush_lazy_tlb(void *arg)
 {
 	struct mm_struct *mm = arg;
+<<<<<<< HEAD
 	exit_lazy_flush_tlb(mm);
+=======
+	exit_lazy_flush_tlb(mm, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void exit_flush_lazy_tlbs(struct mm_struct *mm)
@@ -773,7 +824,11 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
 			 * to trim.
 			 */
 			if (tick_and_test_trim_clock()) {
+<<<<<<< HEAD
 				exit_lazy_flush_tlb(mm);
+=======
+				exit_lazy_flush_tlb(mm, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return FLUSH_TYPE_NONE;
 			}
 		}
@@ -819,7 +874,11 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
 		if (current->mm == mm)
 			return FLUSH_TYPE_LOCAL;
 		if (cpumask_test_cpu(cpu, mm_cpumask(mm)))
+<<<<<<< HEAD
 			exit_lazy_flush_tlb(mm);
+=======
+			exit_lazy_flush_tlb(mm, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return FLUSH_TYPE_NONE;
 	}
 
@@ -885,7 +944,12 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
 	} else if (type == FLUSH_TYPE_GLOBAL) {
 		if (!mmu_has_feature(MMU_FTR_GTSE)) {
 			unsigned long tgt = H_RPTI_TARGET_CMMU;
+<<<<<<< HEAD
 			unsigned long type = H_RPTI_TYPE_ALL;
+=======
+			unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+					     H_RPTI_TYPE_PRT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (atomic_read(&mm->context.copros) > 0)
 				tgt |= H_RPTI_TARGET_NMMU;
@@ -981,7 +1045,12 @@ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
 {
 	if (!mmu_has_feature(MMU_FTR_GTSE)) {
 		unsigned long tgt = H_RPTI_TARGET_CMMU | H_RPTI_TARGET_NMMU;
+<<<<<<< HEAD
 		unsigned long type = H_RPTI_TYPE_ALL;
+=======
+		unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+				     H_RPTI_TYPE_PRT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pseries_rpt_invalidate(0, tgt, type, H_RPTI_PAGE_ALL,
 				       start, end);
@@ -1145,7 +1214,11 @@ void radix__flush_tlb_lpid_page(unsigned int lpid,
 {
 	int psize = radix_get_mmu_psize(page_size);
 
+<<<<<<< HEAD
 	_tlbie_va_lpid(addr, lpid, psize, RIC_FLUSH_TLB);
+=======
+	_tlbie_lpid_va(addr, lpid, psize, RIC_FLUSH_TLB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(radix__flush_tlb_lpid_page);
 
@@ -1335,7 +1408,12 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
 			unsigned long tgt, type, pg_sizes;
 
 			tgt = H_RPTI_TARGET_CMMU;
+<<<<<<< HEAD
 			type = H_RPTI_TYPE_ALL;
+=======
+			type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+			       H_RPTI_TYPE_PRT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pg_sizes = psize_to_rpti_pgsize(mmu_virtual_psize);
 
 			if (atomic_read(&mm->context.copros) > 0)
@@ -1408,7 +1486,11 @@ static __always_inline void __tlbie_pid_lpid(unsigned long pid,
 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
 }
 
+<<<<<<< HEAD
 static __always_inline void __tlbie_va_pid_lpid(unsigned long va, unsigned long pid,
+=======
+static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long pid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    unsigned long lpid,
 					    unsigned long ap, unsigned long ric)
 {
@@ -1440,7 +1522,11 @@ static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
 
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 		asm volatile("ptesync" : : : "memory");
+<<<<<<< HEAD
 		__tlbie_va_pid_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+=======
+		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				RIC_FLUSH_TLB);
 	}
 }
@@ -1471,7 +1557,11 @@ static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
 	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
 }
 
+<<<<<<< HEAD
 static inline void fixup_tlbie_va_range_pid_lpid(unsigned long va,
+=======
+static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					     unsigned long pid,
 					     unsigned long lpid,
 					     unsigned long ap)
@@ -1483,11 +1573,19 @@ static inline void fixup_tlbie_va_range_pid_lpid(unsigned long va,
 
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 		asm volatile("ptesync" : : : "memory");
+<<<<<<< HEAD
 		__tlbie_va_pid_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
 	}
 }
 
 static inline void __tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+=======
+		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+	}
+}
+
+static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 unsigned long pid, unsigned long lpid,
 					 unsigned long page_size,
 					 unsigned long psize)
@@ -1496,12 +1594,21 @@ static inline void __tlbie_va_range_pid_lpid(unsigned long start, unsigned long 
 	unsigned long ap = mmu_get_ap(psize);
 
 	for (addr = start; addr < end; addr += page_size)
+<<<<<<< HEAD
 		__tlbie_va_pid_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
 
 	fixup_tlbie_va_range_pid_lpid(addr - page_size, pid, lpid, ap);
 }
 
 static inline void _tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+=======
+		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+
+	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
+}
+
+static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					unsigned long pid, unsigned long lpid,
 					unsigned long page_size,
 					unsigned long psize, bool also_pwc)
@@ -1509,7 +1616,11 @@ static inline void _tlbie_va_range_pid_lpid(unsigned long start, unsigned long e
 	asm volatile("ptesync" : : : "memory");
 	if (also_pwc)
 		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+<<<<<<< HEAD
 	__tlbie_va_range_pid_lpid(start, end, pid, lpid, page_size, psize);
+=======
+	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
 }
 
@@ -1560,7 +1671,11 @@ void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
 			_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
 			return;
 		}
+<<<<<<< HEAD
 		_tlbie_va_range_pid_lpid(start, end, pid, lpid,
+=======
+		_tlbie_va_range_lpid(start, end, pid, lpid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     (1UL << def->shift), psize, false);
 	}
 }

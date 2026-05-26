@@ -261,6 +261,10 @@ static int erdma_probe_dev(struct pci_dev *pdev)
 
 	pci_set_drvdata(pdev, dev);
 	dev->pdev = pdev;
+<<<<<<< HEAD
+=======
+	dev->attrs.numa_node = dev_to_node(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bars = pci_select_bars(pdev, IORESOURCE_MEM);
 	err = pci_request_selected_regions(pdev, bars, DRV_MODULE_NAME);

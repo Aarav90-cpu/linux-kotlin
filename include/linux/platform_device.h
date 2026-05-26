@@ -113,6 +113,7 @@ extern int platform_get_irq_byname_optional(struct platform_device *dev,
 					    const char *name);
 extern int platform_add_devices(struct platform_device **, int);
 
+<<<<<<< HEAD
 /**
  * struct platform_device_info - set of parameters for creating a platform device
  * @parent: parent device for the new platform device.
@@ -165,6 +166,24 @@ struct platform_device_info {
 
 	const struct software_node *swnode;
 	const struct property_entry *properties;
+=======
+struct platform_device_info {
+		struct device *parent;
+		struct fwnode_handle *fwnode;
+		bool of_node_reused;
+
+		const char *name;
+		int id;
+
+		const struct resource *res;
+		unsigned int num_res;
+
+		const void *data;
+		size_t size_data;
+		u64 dma_mask;
+
+		const struct property_entry *properties;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 extern struct platform_device *platform_device_register_full(
 		const struct platform_device_info *pdevinfo);

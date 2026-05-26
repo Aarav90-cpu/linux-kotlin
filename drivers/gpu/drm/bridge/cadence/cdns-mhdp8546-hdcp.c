@@ -394,7 +394,11 @@ static int _cdns_mhdp_hdcp_disable(struct cdns_mhdp_device *mhdp)
 	int ret;
 
 	dev_dbg(mhdp->dev, "[%s:%d] HDCP is being disabled...\n",
+<<<<<<< HEAD
 		mhdp->connector->name, mhdp->connector->base.id);
+=======
+		mhdp->connector.name, mhdp->connector.base.id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = cdns_mhdp_hdcp_set_config(mhdp, 0, false);
 
@@ -436,10 +440,13 @@ static int cdns_mhdp_hdcp_check_link(struct cdns_mhdp_device *mhdp)
 	int ret = 0;
 
 	mutex_lock(&mhdp->hdcp.mutex);
+<<<<<<< HEAD
 
 	if (!mhdp->connector)
 		goto out;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mhdp->hdcp.value == DRM_MODE_CONTENT_PROTECTION_UNDESIRED)
 		goto out;
 
@@ -449,7 +456,11 @@ static int cdns_mhdp_hdcp_check_link(struct cdns_mhdp_device *mhdp)
 
 	dev_err(mhdp->dev,
 		"[%s:%d] HDCP link failed, retrying authentication\n",
+<<<<<<< HEAD
 		mhdp->connector->name, mhdp->connector->base.id);
+=======
+		mhdp->connector.name, mhdp->connector.base.id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = _cdns_mhdp_hdcp_disable(mhdp);
 	if (ret) {
@@ -491,6 +502,7 @@ static void cdns_mhdp_hdcp_prop_work(struct work_struct *work)
 	struct cdns_mhdp_device *mhdp = container_of(hdcp,
 						     struct cdns_mhdp_device,
 						     hdcp);
+<<<<<<< HEAD
 	struct drm_device *dev = NULL;
 	struct drm_connector_state *state;
 
@@ -504,6 +516,15 @@ static void cdns_mhdp_hdcp_prop_work(struct work_struct *work)
 	mutex_lock(&mhdp->hdcp.mutex);
 	if (mhdp->hdcp.value != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
 		state = mhdp->connector->state;
+=======
+	struct drm_device *dev = mhdp->connector.dev;
+	struct drm_connector_state *state;
+
+	drm_modeset_lock(&dev->mode_config.connection_mutex, NULL);
+	mutex_lock(&mhdp->hdcp.mutex);
+	if (mhdp->hdcp.value != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
+		state = mhdp->connector.state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		state->content_protection = mhdp->hdcp.value;
 	}
 	mutex_unlock(&mhdp->hdcp.mutex);

@@ -87,7 +87,10 @@
 #include "sdma_v7_1.h"
 #include "lsdma_v6_0.h"
 #include "lsdma_v7_0.h"
+<<<<<<< HEAD
 #include "lsdma_v7_1.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "vcn_v2_0.h"
 #include "jpeg_v2_0.h"
 #include "vcn_v3_0.h"
@@ -112,10 +115,15 @@
 #include "smuio_v15_0_8.h"
 #include "vcn_v5_0_0.h"
 #include "vcn_v5_0_1.h"
+<<<<<<< HEAD
 #include "vcn_v5_0_2.h"
 #include "jpeg_v5_0_0.h"
 #include "jpeg_v5_0_1.h"
 #include "jpeg_v5_0_2.h"
+=======
+#include "jpeg_v5_0_0.h"
+#include "jpeg_v5_0_1.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "jpeg_v5_3_0.h"
 
 #include "amdgpu_ras_mgr.h"
@@ -135,7 +143,10 @@ MODULE_FIRMWARE("amdgpu/picasso_ip_discovery.bin");
 MODULE_FIRMWARE("amdgpu/arcturus_ip_discovery.bin");
 MODULE_FIRMWARE("amdgpu/aldebaran_ip_discovery.bin");
 
+<<<<<<< HEAD
 /* Note: These registers are consistent across all the SOCs */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define mmIP_DISCOVERY_VERSION  0x16A00
 #define mmRCC_CONFIG_MEMSIZE	0xde3
 #define mmMP0_SMN_C2PMSG_33	0x16061
@@ -143,10 +154,13 @@ MODULE_FIRMWARE("amdgpu/aldebaran_ip_discovery.bin");
 #define mmMM_INDEX_HI		0x6
 #define mmMM_DATA		0x1
 
+<<<<<<< HEAD
 #define mmDRIVER_SCRATCH_0	0x94
 #define mmDRIVER_SCRATCH_1	0x95
 #define mmDRIVER_SCRATCH_2	0x96
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *hw_id_names[HW_ID_MAX] = {
 	[MP1_HWID]		= "MP1",
 	[MP2_HWID]		= "MP2",
@@ -261,12 +275,48 @@ static int hw_id_map[MAX_HWIP] = {
 	[ATU_HWIP]	= ATU_HWID,
 };
 
+<<<<<<< HEAD
 static int amdgpu_discovery_get_tmr_info(struct amdgpu_device *adev,
 					 bool *is_tmr_in_sysmem)
 {
 	u64 vram_size, tmr_offset, tmr_size;
 	u32 msg, tmr_offset_lo, tmr_offset_hi;
 	int i, ret;
+=======
+static int amdgpu_discovery_read_binary_from_sysmem(struct amdgpu_device *adev, uint8_t *binary)
+{
+	u64 tmr_offset, tmr_size, pos;
+	void *discv_regn;
+	int ret;
+
+	ret = amdgpu_acpi_get_tmr_info(adev, &tmr_offset, &tmr_size);
+	if (ret)
+		return ret;
+
+	pos = tmr_offset + tmr_size - DISCOVERY_TMR_OFFSET;
+
+	/* This region is read-only and reserved from system use */
+	discv_regn = memremap(pos, adev->discovery.size, MEMREMAP_WC);
+	if (discv_regn) {
+		memcpy(binary, discv_regn, adev->discovery.size);
+		memunmap(discv_regn);
+		return 0;
+	}
+
+	return -ENOENT;
+}
+
+#define IP_DISCOVERY_V2		2
+#define IP_DISCOVERY_V4		4
+
+static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
+						 uint8_t *binary)
+{
+	bool sz_valid = true;
+	uint64_t vram_size;
+	int i, ret = 0;
+	u32 msg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!amdgpu_sriov_vf(adev)) {
 		/* It can take up to two second for IFWI init to complete on some dGPUs,
@@ -286,6 +336,7 @@ static int amdgpu_discovery_get_tmr_info(struct amdgpu_device *adev,
 	}
 
 	vram_size = RREG32(mmRCC_CONFIG_MEMSIZE);
+<<<<<<< HEAD
 	if (vram_size == U32_MAX)
 		return -ENXIO;
 	else if (!vram_size)
@@ -370,18 +421,61 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
 			amdgpu_device_vram_access(adev, adev->discovery.offset,
 						  (uint32_t *)binary,
 						  adev->discovery.size, false);
+=======
+	if (!vram_size || vram_size == U32_MAX)
+		sz_valid = false;
+	else
+		vram_size <<= 20;
+
+	/*
+	 * If in VRAM, discovery TMR is marked for reservation. If it is in system mem,
+	 * then it is not required to be reserved.
+	 */
+	if (sz_valid) {
+		if (amdgpu_sriov_vf(adev) && adev->virt.is_dynamic_crit_regn_enabled) {
+			/* For SRIOV VFs with dynamic critical region enabled,
+			 * we will get the IPD binary via below call.
+			 * If dynamic critical is disabled, fall through to normal seq.
+			 */
+			if (amdgpu_virt_get_dynamic_data_info(adev,
+						AMD_SRIOV_MSG_IPD_TABLE_ID, binary,
+						&adev->discovery.size)) {
+				dev_err(adev->dev,
+						"failed to read discovery info from dynamic critical region.");
+				ret = -EINVAL;
+				goto exit;
+			}
+		} else {
+			uint64_t pos = vram_size - DISCOVERY_TMR_OFFSET;
+
+			amdgpu_device_vram_access(adev, pos, (uint32_t *)binary,
+					adev->discovery.size, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			adev->discovery.reserve_tmr = true;
 		}
 	} else {
 		ret = amdgpu_discovery_read_binary_from_sysmem(adev, binary);
 	}
 
+<<<<<<< HEAD
+=======
+	if (ret)
+		dev_err(adev->dev,
+			"failed to read discovery info from memory, vram size read: %llx",
+			vram_size);
+exit:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
 static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev,
+<<<<<<< HEAD
 						  uint8_t *binary,
 						  const char *fw_name)
+=======
+							uint8_t *binary,
+							const char *fw_name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct firmware *fw;
 	int r;
@@ -463,12 +557,23 @@ static void amdgpu_discovery_harvest_config_quirk(struct amdgpu_device *adev)
 }
 
 static int amdgpu_discovery_verify_npsinfo(struct amdgpu_device *adev,
+<<<<<<< HEAD
 					   struct table_info *info)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
 	uint16_t checksum;
 	uint16_t offset;
 
+=======
+					   struct binary_header *bhdr)
+{
+	uint8_t *discovery_bin = adev->discovery.bin;
+	struct table_info *info;
+	uint16_t checksum;
+	uint16_t offset;
+
+	info = &bhdr->table_list[NPS_INFO];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	offset = le16_to_cpu(info->offset);
 	checksum = le16_to_cpu(info->checksum);
 
@@ -521,6 +626,7 @@ static const char *amdgpu_discovery_get_fw_name(struct amdgpu_device *adev)
 	}
 }
 
+<<<<<<< HEAD
 static int amdgpu_discovery_get_table_info(struct amdgpu_device *adev,
 					   struct table_info **info,
 					   uint16_t table_id)
@@ -633,12 +739,18 @@ static int amdgpu_discovery_table_check(struct amdgpu_device *adev,
 
 static int amdgpu_discovery_init(struct amdgpu_device *adev)
 {
+=======
+static int amdgpu_discovery_init(struct amdgpu_device *adev)
+{
+	struct table_info *info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct binary_header *bhdr;
 	uint8_t *discovery_bin;
 	const char *fw_name;
 	uint16_t offset;
 	uint16_t size;
 	uint16_t checksum;
+<<<<<<< HEAD
 	uint16_t table_id;
 	bool is_tmr_in_sysmem;
 	int r;
@@ -646,6 +758,16 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
 	r = amdgpu_discovery_get_tmr_info(adev, &is_tmr_in_sysmem);
 	if (r)
 		return r;
+=======
+	int r;
+
+	adev->discovery.bin = kzalloc(DISCOVERY_TMR_SIZE, GFP_KERNEL);
+	if (!adev->discovery.bin)
+		return -ENOMEM;
+	adev->discovery.size = DISCOVERY_TMR_SIZE;
+	adev->discovery.debugfs_blob.data = adev->discovery.bin;
+	adev->discovery.debugfs_blob.size = adev->discovery.size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	discovery_bin = adev->discovery.bin;
 	/* Read from file if it is the preferred option */
@@ -658,8 +780,12 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
 			goto out;
 	} else {
 		drm_dbg(&adev->ddev, "use ip discovery information from memory");
+<<<<<<< HEAD
 		r = amdgpu_discovery_read_binary_from_mem(adev, discovery_bin,
 							  is_tmr_in_sysmem);
+=======
+		r = amdgpu_discovery_read_binary_from_mem(adev, discovery_bin);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (r)
 			goto out;
 	}
@@ -686,10 +812,125 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	for (table_id = 0; table_id <= MALL_INFO; table_id++) {
 		r = amdgpu_discovery_table_check(adev, discovery_bin, table_id);
 		if (r)
 			goto out;
+=======
+	info = &bhdr->table_list[IP_DISCOVERY];
+	offset = le16_to_cpu(info->offset);
+	checksum = le16_to_cpu(info->checksum);
+
+	if (offset) {
+		struct ip_discovery_header *ihdr =
+			(struct ip_discovery_header *)(discovery_bin + offset);
+		if (le32_to_cpu(ihdr->signature) != DISCOVERY_TABLE_SIGNATURE) {
+			dev_err(adev->dev, "invalid ip discovery data table signature\n");
+			r = -EINVAL;
+			goto out;
+		}
+
+		if (!amdgpu_discovery_verify_checksum(adev, discovery_bin + offset,
+						      le16_to_cpu(ihdr->size),
+						      checksum)) {
+			dev_err(adev->dev, "invalid ip discovery data table checksum\n");
+			r = -EINVAL;
+			goto out;
+		}
+	}
+
+	info = &bhdr->table_list[GC];
+	offset = le16_to_cpu(info->offset);
+	checksum = le16_to_cpu(info->checksum);
+
+	if (offset) {
+		struct gpu_info_header *ghdr =
+			(struct gpu_info_header *)(discovery_bin + offset);
+
+		if (le32_to_cpu(ghdr->table_id) != GC_TABLE_ID) {
+			dev_err(adev->dev, "invalid ip discovery gc table id\n");
+			r = -EINVAL;
+			goto out;
+		}
+
+		if (!amdgpu_discovery_verify_checksum(adev, discovery_bin + offset,
+						      le32_to_cpu(ghdr->size),
+						      checksum)) {
+			dev_err(adev->dev, "invalid gc data table checksum\n");
+			r = -EINVAL;
+			goto out;
+		}
+	}
+
+	info = &bhdr->table_list[HARVEST_INFO];
+	offset = le16_to_cpu(info->offset);
+	checksum = le16_to_cpu(info->checksum);
+
+	if (offset) {
+		struct harvest_info_header *hhdr =
+			(struct harvest_info_header *)(discovery_bin + offset);
+
+		if (le32_to_cpu(hhdr->signature) != HARVEST_TABLE_SIGNATURE) {
+			dev_err(adev->dev, "invalid ip discovery harvest table signature\n");
+			r = -EINVAL;
+			goto out;
+		}
+
+		if (!amdgpu_discovery_verify_checksum(adev,
+			    discovery_bin + offset,
+			    sizeof(struct harvest_table), checksum)) {
+			dev_err(adev->dev, "invalid harvest data table checksum\n");
+			r = -EINVAL;
+			goto out;
+		}
+	}
+
+	info = &bhdr->table_list[VCN_INFO];
+	offset = le16_to_cpu(info->offset);
+	checksum = le16_to_cpu(info->checksum);
+
+	if (offset) {
+		struct vcn_info_header *vhdr =
+			(struct vcn_info_header *)(discovery_bin + offset);
+
+		if (le32_to_cpu(vhdr->table_id) != VCN_INFO_TABLE_ID) {
+			dev_err(adev->dev, "invalid ip discovery vcn table id\n");
+			r = -EINVAL;
+			goto out;
+		}
+
+		if (!amdgpu_discovery_verify_checksum(adev,
+			    discovery_bin + offset,
+			    le32_to_cpu(vhdr->size_bytes), checksum)) {
+			dev_err(adev->dev, "invalid vcn data table checksum\n");
+			r = -EINVAL;
+			goto out;
+		}
+	}
+
+	info = &bhdr->table_list[MALL_INFO];
+	offset = le16_to_cpu(info->offset);
+	checksum = le16_to_cpu(info->checksum);
+
+	if (0 && offset) {
+		struct mall_info_header *mhdr =
+			(struct mall_info_header *)(discovery_bin + offset);
+
+		if (le32_to_cpu(mhdr->table_id) != MALL_INFO_TABLE_ID) {
+			dev_err(adev->dev, "invalid ip discovery mall table id\n");
+			r = -EINVAL;
+			goto out;
+		}
+
+		if (!amdgpu_discovery_verify_checksum(adev,
+			    discovery_bin + offset,
+			    le32_to_cpu(mhdr->size_bytes), checksum)) {
+			dev_err(adev->dev, "invalid mall data table checksum\n");
+			r = -EINVAL;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -801,6 +1042,7 @@ static void amdgpu_discovery_read_from_harvest_table(struct amdgpu_device *adev,
 						     uint32_t *umc_harvest_count)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
+<<<<<<< HEAD
 	struct table_info *info;
 	struct harvest_table *harvest_info;
 	u16 offset;
@@ -810,6 +1052,16 @@ static void amdgpu_discovery_read_from_harvest_table(struct amdgpu_device *adev,
 	if (amdgpu_discovery_get_table_info(adev, &info, HARVEST_INFO))
 		return;
 	offset = le16_to_cpu(info->offset);
+=======
+	struct binary_header *bhdr;
+	struct harvest_table *harvest_info;
+	u16 offset;
+	int i;
+	uint32_t umc_harvest_config = 0;
+
+	bhdr = (struct binary_header *)discovery_bin;
+	offset = le16_to_cpu(bhdr->table_list[HARVEST_INFO].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!offset) {
 		dev_err(adev->dev, "invalid harvest table offset\n");
@@ -862,7 +1114,11 @@ static void amdgpu_discovery_read_from_harvest_table(struct amdgpu_device *adev,
 		}
 	}
 
+<<<<<<< HEAD
 	adev->umc.active_mask = ((1ULL << adev->umc.node_inst_num) - 1ULL) &
+=======
+	adev->umc.active_mask = ((1 << adev->umc.node_inst_num) - 1) &
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				~umc_harvest_config;
 }
 
@@ -1227,8 +1483,18 @@ static int amdgpu_discovery_sysfs_ips(struct amdgpu_device *adev,
 					ip_hw_instance->num_instance);
 			ip_hw_instance->num_base_addresses = ip->num_base_address;
 
+<<<<<<< HEAD
 			for (kk = 0; kk < ip_hw_instance->num_base_addresses; kk++)
 				ip_hw_instance->base_addr[kk] = ip->base_address[kk];
+=======
+			for (kk = 0; kk < ip_hw_instance->num_base_addresses; kk++) {
+				if (reg_base_64)
+					ip_hw_instance->base_addr[kk] =
+						lower_32_bits(le64_to_cpu(ip->base_address_64[kk])) & 0x3FFFFFFF;
+				else
+					ip_hw_instance->base_addr[kk] = ip->base_address[kk];
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			kobject_init(&ip_hw_instance->kobj, &ip_hw_instance_ktype);
 			ip_hw_instance->kobj.kset = &ip_hw_id->hw_id_kset;
@@ -1251,7 +1517,11 @@ static int amdgpu_discovery_sysfs_recurse(struct amdgpu_device *adev)
 {
 	struct ip_discovery_top *ip_top = adev->discovery.ip_top;
 	uint8_t *discovery_bin = adev->discovery.bin;
+<<<<<<< HEAD
 	struct table_info *info;
+=======
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ip_discovery_header *ihdr;
 	struct die_header *dhdr;
 	struct kset *die_kset = &ip_top->die_kset;
@@ -1259,12 +1529,19 @@ static int amdgpu_discovery_sysfs_recurse(struct amdgpu_device *adev)
 	size_t ip_offset;
 	int ii, res;
 
+<<<<<<< HEAD
 	res = amdgpu_discovery_get_table_info(adev, &info, IP_DISCOVERY);
 	if (res)
 		return res;
 	ihdr = (struct ip_discovery_header
 			*)(discovery_bin +
 			   le16_to_cpu(info->offset));
+=======
+	bhdr = (struct binary_header *)discovery_bin;
+	ihdr = (struct ip_discovery_header
+			*)(discovery_bin +
+			   le16_to_cpu(bhdr->table_list[IP_DISCOVERY].offset));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	num_dies = le16_to_cpu(ihdr->num_dies);
 
 	DRM_DEBUG("number of dies: %d\n", num_dies);
@@ -1395,9 +1672,12 @@ static void amdgpu_discovery_sysfs_fini(struct amdgpu_device *adev)
 	struct list_head *el, *tmp;
 	struct kset *die_kset;
 
+<<<<<<< HEAD
 	if (!ip_top)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	die_kset = &ip_top->die_kset;
 	spin_lock(&die_kset->list_lock);
 	list_for_each_prev_safe(el, tmp, &die_kset->list) {
@@ -1411,6 +1691,7 @@ static void amdgpu_discovery_sysfs_fini(struct amdgpu_device *adev)
 	kobject_put(&ip_top->kobj);
 }
 
+<<<<<<< HEAD
 /* devcoredump support */
 void amdgpu_discovery_dump(struct amdgpu_device *adev, struct drm_printer *p)
 {
@@ -1457,12 +1738,18 @@ void amdgpu_discovery_dump(struct amdgpu_device *adev, struct drm_printer *p)
 }
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* ================================================== */
 
 static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
 {
 	uint8_t num_base_address, subrev, variant;
+<<<<<<< HEAD
 	struct table_info *info;
+=======
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ip_discovery_header *ihdr;
 	struct die_header *dhdr;
 	uint8_t *discovery_bin;
@@ -1487,12 +1774,19 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
 	adev->sdma.sdma_mask = 0;
 	adev->vcn.inst_mask = 0;
 	adev->jpeg.inst_mask = 0;
+<<<<<<< HEAD
 	r = amdgpu_discovery_get_table_info(adev, &info, IP_DISCOVERY);
 	if (r)
 		return r;
 	ihdr = (struct ip_discovery_header
 			*)(discovery_bin +
 			   le16_to_cpu(info->offset));
+=======
+	bhdr = (struct binary_header *)discovery_bin;
+	ihdr = (struct ip_discovery_header
+			*)(discovery_bin +
+			   le16_to_cpu(bhdr->table_list[IP_DISCOVERY].offset));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	num_dies = le16_to_cpu(ihdr->num_dies);
 
 	DRM_DEBUG("number of dies: %d\n", num_dies);
@@ -1665,6 +1959,7 @@ static void amdgpu_discovery_harvest_ip(struct amdgpu_device *adev)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
 	struct ip_discovery_header *ihdr;
+<<<<<<< HEAD
 	struct table_info *info;
 	int vcn_harvest_count = 0;
 	int umc_harvest_count = 0;
@@ -1674,6 +1969,16 @@ static void amdgpu_discovery_harvest_ip(struct amdgpu_device *adev)
 		return;
 	ihdr = (struct ip_discovery_header *)(discovery_bin +
 					      le16_to_cpu(info->offset));
+=======
+	struct binary_header *bhdr;
+	int vcn_harvest_count = 0;
+	int umc_harvest_count = 0;
+	uint16_t offset, ihdr_ver;
+
+	bhdr = (struct binary_header *)discovery_bin;
+	offset = le16_to_cpu(bhdr->table_list[IP_DISCOVERY].offset);
+	ihdr = (struct ip_discovery_header *)(discovery_bin + offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ihdr_ver = le16_to_cpu(ihdr->version);
 	/*
 	 * Harvest table does not fit Navi1x and legacy GPUs,
@@ -1721,7 +2026,11 @@ union gc_info {
 static int amdgpu_discovery_get_gfx_info(struct amdgpu_device *adev)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
+<<<<<<< HEAD
 	struct table_info *info;
+=======
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union gc_info *gc_info;
 	u16 offset;
 
@@ -1730,9 +2039,14 @@ static int amdgpu_discovery_get_gfx_info(struct amdgpu_device *adev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (amdgpu_discovery_get_table_info(adev, &info, GC))
 		return -EINVAL;
 	offset = le16_to_cpu(info->offset);
+=======
+	bhdr = (struct binary_header *)discovery_bin;
+	offset = le16_to_cpu(bhdr->table_list[GC].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!offset)
 		return 0;
@@ -1831,7 +2145,11 @@ union mall_info {
 static int amdgpu_discovery_get_mall_info(struct amdgpu_device *adev)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
+<<<<<<< HEAD
 	struct table_info *info;
+=======
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union mall_info *mall_info;
 	u32 u, mall_size_per_umc, m_s_present, half_use;
 	u64 mall_size;
@@ -1842,9 +2160,14 @@ static int amdgpu_discovery_get_mall_info(struct amdgpu_device *adev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (amdgpu_discovery_get_table_info(adev, &info, MALL_INFO))
 		return -EINVAL;
 	offset = le16_to_cpu(info->offset);
+=======
+	bhdr = (struct binary_header *)discovery_bin;
+	offset = le16_to_cpu(bhdr->table_list[MALL_INFO].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!offset)
 		return 0;
@@ -1889,7 +2212,11 @@ union vcn_info {
 static int amdgpu_discovery_get_vcn_info(struct amdgpu_device *adev)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
+<<<<<<< HEAD
 	struct table_info *info;
+=======
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union vcn_info *vcn_info;
 	u16 offset;
 	int v;
@@ -1909,9 +2236,14 @@ static int amdgpu_discovery_get_vcn_info(struct amdgpu_device *adev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (amdgpu_discovery_get_table_info(adev, &info, VCN_INFO))
 		return -EINVAL;
 	offset = le16_to_cpu(info->offset);
+=======
+	bhdr = (struct binary_header *)discovery_bin;
+	offset = le16_to_cpu(bhdr->table_list[VCN_INFO].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!offset)
 		return 0;
@@ -1948,13 +2280,17 @@ static int amdgpu_discovery_refresh_nps_info(struct amdgpu_device *adev,
 	uint64_t vram_size, pos, offset;
 	struct nps_info_header *nhdr;
 	struct binary_header bhdr;
+<<<<<<< HEAD
 	struct binary_header_v2 bhdrv2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint16_t checksum;
 
 	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
 	pos = vram_size - DISCOVERY_TMR_OFFSET;
 	amdgpu_device_vram_access(adev, pos, &bhdr, sizeof(bhdr), false);
 
+<<<<<<< HEAD
 	switch (bhdr.version_major) {
 	case 2:
 		amdgpu_device_vram_access(adev, pos, &bhdrv2, sizeof(bhdrv2), false);
@@ -1968,6 +2304,10 @@ static int amdgpu_discovery_refresh_nps_info(struct amdgpu_device *adev,
 	default:
 		return -EINVAL;
 	}
+=======
+	offset = le16_to_cpu(bhdr.table_list[NPS_INFO].offset);
+	checksum = le16_to_cpu(bhdr.table_list[NPS_INFO].checksum);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	amdgpu_device_vram_access(adev, (pos + offset), nps_data,
 				  sizeof(*nps_data), false);
@@ -1985,11 +2325,20 @@ static int amdgpu_discovery_refresh_nps_info(struct amdgpu_device *adev,
 
 int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
 				  uint32_t *nps_type,
+<<<<<<< HEAD
 				  struct amdgpu_gmc_memrange *ranges,
 				  int *range_cnt, bool refresh)
 {
 	uint8_t *discovery_bin = adev->discovery.bin;
 	struct table_info *info;
+=======
+				  struct amdgpu_gmc_memrange **ranges,
+				  int *range_cnt, bool refresh)
+{
+	uint8_t *discovery_bin = adev->discovery.bin;
+	struct amdgpu_gmc_memrange *mem_ranges;
+	struct binary_header *bhdr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	union nps_info *nps_info;
 	union nps_info nps_data;
 	u16 offset;
@@ -2010,15 +2359,24 @@ int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
 		if (amdgpu_discovery_get_table_info(adev, &info, NPS_INFO))
 			return -EINVAL;
 		offset = le16_to_cpu(info->offset);
+=======
+		bhdr = (struct binary_header *)discovery_bin;
+		offset = le16_to_cpu(bhdr->table_list[NPS_INFO].offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!offset)
 			return -ENOENT;
 
 		/* If verification fails, return as if NPS table doesn't exist */
+<<<<<<< HEAD
 		if (amdgpu_discovery_verify_npsinfo(adev, info))
+=======
+		if (amdgpu_discovery_verify_npsinfo(adev, bhdr))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOENT;
 
 		nps_info = (union nps_info *)(discovery_bin + offset);
@@ -2026,6 +2384,7 @@ int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
 
 	switch (le16_to_cpu(nps_info->v1.header.version_major)) {
 	case 1:
+<<<<<<< HEAD
 		*nps_type = nps_info->v1.nps_type;
 		if (*range_cnt < nps_info->v1.count) {
 			dev_dbg(adev->dev,
@@ -2042,6 +2401,22 @@ int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
 			ranges[i].nid_mask = -1;
 			ranges[i].flags = 0;
 		}
+=======
+		mem_ranges = kvzalloc_objs(*mem_ranges, nps_info->v1.count);
+		if (!mem_ranges)
+			return -ENOMEM;
+		*nps_type = nps_info->v1.nps_type;
+		*range_cnt = nps_info->v1.count;
+		for (i = 0; i < *range_cnt; i++) {
+			mem_ranges[i].base_address =
+				nps_info->v1.instance_info[i].base_address;
+			mem_ranges[i].limit_address =
+				nps_info->v1.instance_info[i].limit_address;
+			mem_ranges[i].nid_mask = -1;
+			mem_ranges[i].flags = 0;
+		}
+		*ranges = mem_ranges;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		dev_err(adev->dev, "Unhandled NPS info table %d.%d\n",
@@ -2343,7 +2718,10 @@ static int amdgpu_discovery_set_smu_ip_blocks(struct amdgpu_device *adev)
 		amdgpu_device_ip_block_add(adev, &smu_v14_0_ip_block);
 		break;
 	case IP_VERSION(15, 0, 0):
+<<<<<<< HEAD
 	case IP_VERSION(15, 0, 8):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_device_ip_block_add(adev, &smu_v15_0_ip_block);
 		break;
 	default:
@@ -2397,7 +2775,10 @@ static int amdgpu_discovery_set_display_ip_blocks(struct amdgpu_device *adev)
 		case IP_VERSION(3, 5, 1):
 		case IP_VERSION(3, 6, 0):
 		case IP_VERSION(4, 1, 0):
+<<<<<<< HEAD
 		case IP_VERSION(4, 2, 0):
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* TODO: Fix IP version. DC code expects version 4.0.1 */
 			if (adev->ip_versions[DCE_HWIP][0] == IP_VERSION(4, 1, 0))
 				adev->ip_versions[DCE_HWIP][0] = IP_VERSION(4, 0, 1);
@@ -2661,10 +3042,13 @@ static int amdgpu_discovery_set_mm_ip_blocks(struct amdgpu_device *adev)
 			amdgpu_device_ip_block_add(adev, &vcn_v5_0_1_ip_block);
 			amdgpu_device_ip_block_add(adev, &jpeg_v5_0_1_ip_block);
 			break;
+<<<<<<< HEAD
 		case IP_VERSION(5, 0, 2):
 			amdgpu_device_ip_block_add(adev, &vcn_v5_0_2_ip_block);
 			amdgpu_device_ip_block_add(adev, &jpeg_v5_0_2_ip_block);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			dev_err(adev->dev,
 				"Failed to add vcn/jpeg ip block(UVD_HWIP:0x%x)\n",
@@ -3090,9 +3474,17 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	case IP_VERSION(11, 5, 1):
 	case IP_VERSION(11, 5, 2):
 	case IP_VERSION(11, 5, 3):
+<<<<<<< HEAD
 	case IP_VERSION(11, 5, 4):
 		adev->family = AMDGPU_FAMILY_GC_11_5_0;
 		break;
+=======
+		adev->family = AMDGPU_FAMILY_GC_11_5_0;
+		break;
+	case IP_VERSION(11, 5, 4):
+		adev->family = AMDGPU_FAMILY_GC_11_5_4;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IP_VERSION(12, 0, 0):
 	case IP_VERSION(12, 0, 1):
 	case IP_VERSION(12, 1, 0):
@@ -3327,9 +3719,12 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	case IP_VERSION(7, 0, 1):
 		adev->lsdma.funcs = &lsdma_v7_0_funcs;
 		break;
+<<<<<<< HEAD
 	case IP_VERSION(7, 1, 0):
 		adev->lsdma.funcs = &lsdma_v7_1_funcs;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		break;
 	}

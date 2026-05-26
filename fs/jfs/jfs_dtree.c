@@ -115,7 +115,14 @@ struct dtsplit {
 do {									\
 	BT_GETPAGE(IP, BN, MP, dtpage_t, SIZE, P, RC, i_dtroot);	\
 	if (!(RC)) {							\
+<<<<<<< HEAD
 		if ((BN) && !check_dtpage(P)) {				\
+=======
+		if (((P)->header.nextindex >				\
+		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			BT_PUTPAGE(MP);					\
 			jfs_error((IP)->i_sb,				\
 				  "DT_GETPAGE: dtree page corrupt\n");	\
@@ -4294,6 +4301,7 @@ int dtModify(tid_t tid, struct inode *ip,
 
 	return 0;
 }
+<<<<<<< HEAD
 
 bool check_dtroot(dtroot_t *p)
 {
@@ -4481,3 +4489,5 @@ bool check_dtpage(dtpage_t *p)
 
 	return true;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

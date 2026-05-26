@@ -298,6 +298,7 @@ SYM_FUNC_START(__svm_vcpu_run)
 	RESTORE_GUEST_SPEC_CTRL_BODY
 	RESTORE_HOST_SPEC_CTRL_BODY (%_ASM_SP)
 
+<<<<<<< HEAD
 10:	cmpb $0, _ASM_RIP(virt_rebooting)
 	jne 2b
 	ud2
@@ -308,6 +309,18 @@ SYM_FUNC_START(__svm_vcpu_run)
 	jne 6b
 	ud2
 70:	cmpb $0, _ASM_RIP(virt_rebooting)
+=======
+10:	cmpb $0, _ASM_RIP(kvm_rebooting)
+	jne 2b
+	ud2
+30:	cmpb $0, _ASM_RIP(kvm_rebooting)
+	jne 4b
+	ud2
+50:	cmpb $0, _ASM_RIP(kvm_rebooting)
+	jne 6b
+	ud2
+70:	cmpb $0, _ASM_RIP(kvm_rebooting)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jne 8b
 	ud2
 
@@ -394,7 +407,11 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
 	RESTORE_GUEST_SPEC_CTRL_BODY
 	RESTORE_HOST_SPEC_CTRL_BODY %sil
 
+<<<<<<< HEAD
 3:	cmpb $0, virt_rebooting(%rip)
+=======
+3:	cmpb $0, kvm_rebooting(%rip)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jne 2b
 	ud2
 

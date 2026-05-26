@@ -520,7 +520,11 @@ static int starfive_sha512_init_tfm(struct crypto_ahash *hash)
 
 static int starfive_sm3_init_tfm(struct crypto_ahash *hash)
 {
+<<<<<<< HEAD
 	return starfive_hash_init_tfm(hash, "sm3-lib",
+=======
+	return starfive_hash_init_tfm(hash, "sm3-generic",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      STARFIVE_HASH_SM3, 0);
 }
 
@@ -550,7 +554,11 @@ static int starfive_hmac_sha512_init_tfm(struct crypto_ahash *hash)
 
 static int starfive_hmac_sm3_init_tfm(struct crypto_ahash *hash)
 {
+<<<<<<< HEAD
 	return starfive_hash_init_tfm(hash, "hmac(sm3-lib)",
+=======
+	return starfive_hash_init_tfm(hash, "hmac(sm3-generic)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      STARFIVE_HASH_SM3, 1);
 }
 
@@ -795,7 +803,11 @@ static struct ahash_engine_alg algs_sha2_sm3[] = {
 	.base.exit_tfm = starfive_hash_exit_tfm,
 	.base.halg = {
 		.digestsize = SM3_DIGEST_SIZE,
+<<<<<<< HEAD
 		.statesize  = sizeof(struct sm3_ctx),
+=======
+		.statesize  = sizeof(struct sm3_state),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.base = {
 			.cra_name		= "sm3",
 			.cra_driver_name	= "sm3-starfive",
@@ -824,7 +836,11 @@ static struct ahash_engine_alg algs_sha2_sm3[] = {
 	.base.setkey	  = starfive_hash_setkey,
 	.base.halg = {
 		.digestsize = SM3_DIGEST_SIZE,
+<<<<<<< HEAD
 		.statesize  = sizeof(struct sm3_ctx),
+=======
+		.statesize  = sizeof(struct sm3_state),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.base = {
 			.cra_name		= "hmac(sm3)",
 			.cra_driver_name	= "sm3-hmac-starfive",

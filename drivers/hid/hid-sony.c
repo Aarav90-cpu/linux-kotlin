@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
+<<<<<<< HEAD
  *  HID driver for Sony / PS2 / PS3 BD / PS4 / PS5 devices.
+=======
+ *  HID driver for Sony / PS2 / PS3 / PS4 BD devices.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *  Copyright (c) 1999 Andreas Gal
  *  Copyright (c) 2000-2005 Vojtech Pavlik <vojtech@suse.cz>
@@ -12,10 +16,16 @@
  *  Copyright (c) 2014-2016 Frank Praznik <frank.praznik@gmail.com>
  *  Copyright (c) 2018 Todd Kelner
  *  Copyright (c) 2020-2021 Pascal Giard <pascal.giard@etsmtl.ca>
+<<<<<<< HEAD
  *  Copyright (c) 2020-2026 Sanjay Govind <sanjay.govind9@gmail.com>
  *  Copyright (c) 2021 Daniel Nguyen <daniel.nguyen.1@ens.etsmtl.ca>
  *  Copyright (c) 2026 Rosalie Wanders <rosalie@mailbox.org>
  *  Copyright (c) 2026 Brenton Simpson <appsforartists@google.com>
+=======
+ *  Copyright (c) 2020 Sanjay Govind <sanjay.govind9@gmail.com>
+ *  Copyright (c) 2021 Daniel Nguyen <daniel.nguyen.1@ens.etsmtl.ca>
+ *  Copyright (c) 2026 Rosalie Wanders <rosalie@mailbox.org>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 /*
@@ -60,6 +70,7 @@
 #define NSG_MR5U_REMOTE_BT        BIT(11)
 #define NSG_MR7U_REMOTE_BT        BIT(12)
 #define SHANWAN_GAMEPAD           BIT(13)
+<<<<<<< HEAD
 #define INSTRUMENT                BIT(14)
 #define GH_GUITAR_TILT            BIT(15)
 #define GHL_GUITAR_PS3WIIU        BIT(16)
@@ -69,6 +80,14 @@
 #define RB4_GUITAR_PS5            BIT(20)
 #define RB3_PRO_INSTRUMENT        BIT(21)
 #define DJH_TURNTABLE             BIT(22)
+=======
+#define GH_GUITAR_CONTROLLER      BIT(14)
+#define GHL_GUITAR_PS3WIIU        BIT(15)
+#define GHL_GUITAR_PS4            BIT(16)
+#define RB4_GUITAR_PS4_USB        BIT(17)
+#define RB4_GUITAR_PS4_BT         BIT(18)
+#define RB4_GUITAR_PS5            BIT(19)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SIXAXIS_CONTROLLER (SIXAXIS_CONTROLLER_USB | SIXAXIS_CONTROLLER_BT)
 #define MOTION_CONTROLLER (MOTION_CONTROLLER_USB | MOTION_CONTROLLER_BT)
@@ -76,8 +95,12 @@
 				NAVIGATION_CONTROLLER_BT)
 #define SONY_LED_SUPPORT (SIXAXIS_CONTROLLER | BUZZ_CONTROLLER |\
 				MOTION_CONTROLLER | NAVIGATION_CONTROLLER)
+<<<<<<< HEAD
 #define SONY_BATTERY_SUPPORT (SIXAXIS_CONTROLLER | MOTION_CONTROLLER_BT | NAVIGATION_CONTROLLER |\
 				RB4_GUITAR_PS5)
+=======
+#define SONY_BATTERY_SUPPORT (SIXAXIS_CONTROLLER | MOTION_CONTROLLER_BT | NAVIGATION_CONTROLLER)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SONY_FF_SUPPORT (SIXAXIS_CONTROLLER | MOTION_CONTROLLER)
 #define SONY_BT_DEVICE (SIXAXIS_CONTROLLER_BT | MOTION_CONTROLLER_BT | NAVIGATION_CONTROLLER_BT)
 #define NSG_MRXU_REMOTE (NSG_MR5U_REMOTE_BT | NSG_MR7U_REMOTE_BT)
@@ -92,10 +115,13 @@
 #define GHL_GUITAR_POKE_INTERVAL 8 /* In seconds */
 #define GUITAR_TILT_USAGE 44
 
+<<<<<<< HEAD
 #define TURNTABLE_EFFECTS_KNOB_USAGE 44
 #define TURNTABLE_PLATTER_BUTTONS_USAGE 45
 #define TURNTABLE_CROSS_FADER_USAGE 46
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Magic data taken from GHLtarUtility:
  * https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs
  * Note: The Wii U and PS3 dongles happen to share the same!
@@ -436,6 +462,7 @@ static const unsigned int rb4_absmap[] = {
 	[0x31] = ABS_Y,
 };
 
+<<<<<<< HEAD
 static const unsigned int ps3_turntable_absmap[] = {
 	[0x32] = ABS_X,
 	[0x35] = ABS_Y,
@@ -455,6 +482,22 @@ static const unsigned int instrument_keymap[] = {
 	[0xb] = BTN_THUMBL,
 	[0xc] = BTN_THUMBR,
 	[0xd] = BTN_MODE,
+=======
+static const unsigned int rb4_keymap[] = {
+	[0x1] = BTN_WEST, /* Square */
+	[0x2] = BTN_SOUTH, /* Cross */
+	[0x3] = BTN_EAST, /* Circle */
+	[0x4] = BTN_NORTH, /* Triangle */
+	[0x5] = BTN_TL, /* L1 */
+	[0x6] = BTN_TR, /* R1 */
+	[0x7] = BTN_TL2, /* L2 */
+	[0x8] = BTN_TR2, /* R2 */
+	[0x9] = BTN_SELECT, /* Share */
+	[0xa] = BTN_START, /* Options */
+	[0xb] = BTN_THUMBL, /* L3 */
+	[0xc] = BTN_THUMBR, /* R3 */
+	[0xd] = BTN_MODE, /* PS */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static enum power_supply_property sony_battery_props[] = {
@@ -471,7 +514,10 @@ struct sixaxis_led {
 	u8 duty_off; /* % of duty_length the led is off (0xff means 100%) */
 	u8 duty_on;  /* % of duty_length the led is on (0xff mean 100%) */
 } __packed;
+<<<<<<< HEAD
 static_assert(sizeof(struct sixaxis_led) == 5);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct sixaxis_rumble {
 	u8 padding;
@@ -480,7 +526,10 @@ struct sixaxis_rumble {
 	u8 left_duration;    /* Left motor duration (0xff means forever) */
 	u8 left_motor_force; /* left (large) motor, supports force values from 0 to 255 */
 } __packed;
+<<<<<<< HEAD
 static_assert(sizeof(struct sixaxis_rumble) == 5);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct sixaxis_output_report {
 	u8 report_id;
@@ -490,13 +539,19 @@ struct sixaxis_output_report {
 	struct sixaxis_led led[4];    /* LEDx at (4 - x) */
 	struct sixaxis_led _reserved; /* LED5, not actually soldered */
 } __packed;
+<<<<<<< HEAD
 static_assert(sizeof(struct sixaxis_output_report) == 36);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 union sixaxis_output_report_01 {
 	struct sixaxis_output_report data;
 	u8 buf[36];
 };
+<<<<<<< HEAD
 static_assert(sizeof(union sixaxis_output_report_01) == 36);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct motion_output_report_02 {
 	u8 type, zero;
@@ -504,12 +559,18 @@ struct motion_output_report_02 {
 	u8 zero2;
 	u8 rumble;
 };
+<<<<<<< HEAD
 static_assert(sizeof(struct motion_output_report_02) == 7);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SIXAXIS_REPORT_0xF2_SIZE 17
 #define SIXAXIS_REPORT_0xF5_SIZE 8
 #define MOTION_REPORT_0x02_SIZE 49
+<<<<<<< HEAD
 #define PRO_INSTRUMENT_0x00_SIZE 8
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SENSOR_SUFFIX " Motion Sensors"
 #define TOUCHPAD_SUFFIX " Touchpad"
@@ -535,7 +596,11 @@ struct sony_sc {
 	struct led_classdev *leds[MAX_LEDS];
 	unsigned long quirks;
 	struct work_struct state_worker;
+<<<<<<< HEAD
 	void (*send_output_report)(struct sony_sc *sc);
+=======
+	void (*send_output_report)(struct sony_sc *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct power_supply *battery;
 	struct power_supply_desc battery_desc;
 	int device_id;
@@ -559,9 +624,12 @@ struct sony_sc {
 	/* GH Live */
 	struct urb *ghl_urb;
 	struct timer_list ghl_poke_timer;
+<<<<<<< HEAD
 
 	/* Rock Band 3 Pro Instruments */
 	unsigned long rb3_pro_poke_jiffies;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void sony_set_leds(struct sony_sc *sc);
@@ -612,11 +680,19 @@ static int ghl_init_urb(struct sony_sc *sc, struct usb_device *usbdev,
 	pipe = usb_sndctrlpipe(usbdev, 0);
 
 	cr = devm_kzalloc(&sc->hdev->dev, sizeof(*cr), GFP_ATOMIC);
+<<<<<<< HEAD
 	if (!cr)
 		return -ENOMEM;
 
 	databuf = devm_kzalloc(&sc->hdev->dev, poke_size, GFP_ATOMIC);
 	if (!databuf)
+=======
+	if (cr == NULL)
+		return -ENOMEM;
+
+	databuf = devm_kzalloc(&sc->hdev->dev, poke_size, GFP_ATOMIC);
+	if (databuf == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	cr->bRequestType =
@@ -633,6 +709,7 @@ static int ghl_init_urb(struct sony_sc *sc, struct usb_device *usbdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 
 
 /*
@@ -715,6 +792,8 @@ static int instrument_mapping(struct hid_device *hdev, struct hid_input *hi,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int gh_guitar_mapping(struct hid_device *hdev, struct hid_input *hi,
 			  struct hid_field *field, struct hid_usage *usage,
 			  unsigned long **bit, int *max)
@@ -734,7 +813,20 @@ static int rb4_guitar_mapping(struct hid_device *hdev, struct hid_input *hi,
 			  struct hid_field *field, struct hid_usage *usage,
 			  unsigned long **bit, int *max)
 {
+<<<<<<< HEAD
 	if ((usage->hid & HID_USAGE_PAGE) == HID_UP_GENDESK) {
+=======
+	if ((usage->hid & HID_USAGE_PAGE) == HID_UP_BUTTON) {
+		unsigned int key = usage->hid & HID_USAGE;
+
+		if (key >= ARRAY_SIZE(rb4_keymap))
+			return 0;
+
+		key = rb4_keymap[key];
+		hid_map_usage_clear(hi, usage, bit, max, EV_KEY, key);
+		return 1;
+	} else if ((usage->hid & HID_USAGE_PAGE) == HID_UP_GENDESK) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsigned int abs = usage->hid & HID_USAGE;
 
 		/* Let the HID parser deal with the HAT. */
@@ -951,7 +1043,10 @@ static void sixaxis_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	static const u8 sixaxis_battery_capacity[] = { 0, 1, 25, 50, 75, 100 };
 	unsigned long flags;
 	int offset;
+<<<<<<< HEAD
 	u8 index;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 battery_capacity;
 	int battery_status;
 
@@ -967,7 +1062,11 @@ static void sixaxis_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		battery_capacity = 100;
 		battery_status = (rd[offset] & 0x01) ? POWER_SUPPLY_STATUS_FULL : POWER_SUPPLY_STATUS_CHARGING;
 	} else {
+<<<<<<< HEAD
 		index = rd[offset] <= 5 ? rd[offset] : 5;
+=======
+		u8 index = rd[offset] <= 5 ? rd[offset] : 5;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		battery_capacity = sixaxis_battery_capacity[index];
 		battery_status = POWER_SUPPLY_STATUS_DISCHARGING;
 	}
@@ -1005,7 +1104,11 @@ static void nsg_mrxu_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	 *   the touch-related data starts at offset 2.
 	 * For the first byte, bit 0 is set when touchpad button is pressed.
 	 * Bit 2 is set when a touch is active and the drag (Fn) key is pressed.
+<<<<<<< HEAD
 	 * This drag key is mapped to BTN_LEFT.  It is operational only when a
+=======
+	 * This drag key is mapped to BTN_LEFT.  It is operational only when a 
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *   touch point is active.
 	 * Bit 4 is set when only the first touch point is active.
 	 * Bit 6 is set when only the second touch point is active.
@@ -1088,12 +1191,15 @@ static void rb4_ps4_guitar_parse_report(struct sony_sc *sc, u8 *rd, int size)
 
 static void rb4_ps5_guitar_parse_report(struct sony_sc *sc, u8 *rd, int size)
 {
+<<<<<<< HEAD
 	u8 charging_status;
 	u8 battery_data;
 	u8 battery_capacity;
 	u8 battery_status;
 	unsigned long flags;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Rock Band 4 PS5 guitars have whammy and
 	 * tilt functionality, they're located at
@@ -1106,6 +1212,7 @@ static void rb4_ps5_guitar_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	input_report_abs(sc->input_dev, ABS_Z, rd[41]);
 	input_report_abs(sc->input_dev, ABS_RZ, rd[42]);
 
+<<<<<<< HEAD
 	/*
 	 * Rock Band 4 PS5 guitars also report the
 	 * battery status and level at byte 30.
@@ -1137,6 +1244,8 @@ static void rb4_ps5_guitar_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	sc->battery_status = battery_status;
 	spin_unlock_irqrestore(&sc->lock, flags);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	input_sync(sc->input_dev);
 }
 
@@ -1169,9 +1278,16 @@ static int sony_raw_event(struct hid_device *hdev, struct hid_report *report,
 		sixaxis_parse_report(sc, rd, size);
 	} else if ((sc->quirks & MOTION_CONTROLLER_BT) && rd[0] == 0x01 && size == 49) {
 		sixaxis_parse_report(sc, rd, size);
+<<<<<<< HEAD
 	} else if ((sc->quirks & NAVIGATION_CONTROLLER) && rd[0] == 0x01 && size == 49) {
 		sixaxis_parse_report(sc, rd, size);
 	} else if ((sc->quirks & NSG_MRXU_REMOTE) && rd[0] == 0x02 && size >= 12) {
+=======
+	} else if ((sc->quirks & NAVIGATION_CONTROLLER) && rd[0] == 0x01 &&
+			size == 49) {
+		sixaxis_parse_report(sc, rd, size);
+	} else if ((sc->quirks & NSG_MRXU_REMOTE) && rd[0] == 0x02) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nsg_mrxu_parse_report(sc, rd, size);
 		return 1;
 	} else if ((sc->quirks & RB4_GUITAR_PS4_USB) && rd[0] == 0x01 && size == 64) {
@@ -1185,6 +1301,7 @@ static int sony_raw_event(struct hid_device *hdev, struct hid_report *report,
 		return 1;
 	}
 
+<<<<<<< HEAD
 	/* Rock Band 3 PS3 Pro instruments set rd[24] to 0xE0 when they're
 	 * sending full reports, and 0x02 when only sending navigation.
 	 */
@@ -1196,6 +1313,8 @@ static int sony_raw_event(struct hid_device *hdev, struct hid_report *report,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sc->defer_initialization) {
 		sc->defer_initialization = 0;
 		sony_schedule_work(sc, SONY_WORKER_STATE);
@@ -1209,7 +1328,10 @@ static int sony_mapping(struct hid_device *hdev, struct hid_input *hi,
 			unsigned long **bit, int *max)
 {
 	struct sony_sc *sc = hid_get_drvdata(hdev);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sc->quirks & BUZZ_CONTROLLER) {
 		unsigned int key = usage->hid & HID_USAGE;
@@ -1243,6 +1365,7 @@ static int sony_mapping(struct hid_device *hdev, struct hid_input *hi,
 	if (sc->quirks & SIXAXIS_CONTROLLER)
 		return sixaxis_mapping(hdev, hi, field, usage, bit, max);
 
+<<<<<<< HEAD
 	/* INSTRUMENT quirk is used as a base mapping for instruments */
 	if (sc->quirks & INSTRUMENT) {
 		ret = instrument_mapping(hdev, hi, field, usage, bit, max);
@@ -1256,6 +1379,11 @@ static int sony_mapping(struct hid_device *hdev, struct hid_input *hi,
 	if (sc->quirks & DJH_TURNTABLE)
 		return djh_turntable_mapping(hdev, hi, field, usage, bit, max);
 
+=======
+	if (sc->quirks & GH_GUITAR_CONTROLLER)
+		return gh_guitar_mapping(hdev, hi, field, usage, bit, max);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sc->quirks & (RB4_GUITAR_PS4_USB | RB4_GUITAR_PS4_BT))
 		return rb4_guitar_mapping(hdev, hi, field, usage, bit, max);
 
@@ -1308,6 +1436,7 @@ static int sony_register_touchpad(struct sony_sc *sc, int touch_count,
 	input_set_abs_params(sc->touchpad, ABS_MT_POSITION_Y, 0, h, 0, 0);
 
 	if (touch_major > 0) {
+<<<<<<< HEAD
 		input_set_abs_params(sc->touchpad, ABS_MT_TOUCH_MAJOR,
 			0, touch_major, 0, 0);
 		if (touch_minor > 0)
@@ -1320,6 +1449,21 @@ static int sony_register_touchpad(struct sony_sc *sc, int touch_count,
 
 	if (sc->quirks & NSG_MRXU_REMOTE)
 		__set_bit(EV_REL, sc->touchpad->evbit);
+=======
+		input_set_abs_params(sc->touchpad, ABS_MT_TOUCH_MAJOR, 
+			0, touch_major, 0, 0);
+		if (touch_minor > 0)
+			input_set_abs_params(sc->touchpad, ABS_MT_TOUCH_MINOR, 
+				0, touch_minor, 0, 0);
+		if (orientation > 0)
+			input_set_abs_params(sc->touchpad, ABS_MT_ORIENTATION, 
+				0, orientation, 0, 0);
+	}
+
+	if (sc->quirks & NSG_MRXU_REMOTE) {
+		__set_bit(EV_REL, sc->touchpad->evbit);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = input_mt_init_slots(sc->touchpad, touch_count, INPUT_MT_POINTER);
 	if (ret < 0)
@@ -1474,7 +1618,11 @@ static void sixaxis_set_leds_from_id(struct sony_sc *sc)
 
 	int id = sc->device_id;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(ARRAY_SIZE(sixaxis_leds[0]) > MAX_LEDS);
+=======
+	BUILD_BUG_ON(MAX_LEDS < ARRAY_SIZE(sixaxis_leds[0]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (id < 0)
 		return;
@@ -1492,7 +1640,11 @@ static void buzz_set_leds(struct sony_sc *sc)
 		struct hid_report, list);
 	s32 *value = report->field[0]->value;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(4 > MAX_LEDS);
+=======
+	BUILD_BUG_ON(MAX_LEDS < 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	value[0] = 0x00;
 	value[1] = sc->led_state[0] ? 0xff : 0x00;
@@ -1639,6 +1791,12 @@ static int sony_leds_init(struct sony_sc *sc)
 	u8 max_brightness[MAX_LEDS] = { [0 ... (MAX_LEDS - 1)] = 1 };
 	u8 use_hw_blink[MAX_LEDS] = { 0 };
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON(!(sc->quirks & SONY_LED_SUPPORT)))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sc->quirks & BUZZ_CONTROLLER) {
 		sc->led_count = 4;
 		use_color_names = 0;
@@ -1686,12 +1844,24 @@ static int sony_leds_init(struct sony_sc *sc)
 			name_sz = strlen(dev_name(&hdev->dev)) + strlen(color_name_str[n]) + 2;
 
 		led = devm_kzalloc(&hdev->dev, sizeof(struct led_classdev) + name_sz, GFP_KERNEL);
+<<<<<<< HEAD
 		if (!led)
 			return -ENOMEM;
 
 		name = (void *)(&led[1]);
 		if (use_color_names)
 			snprintf(name, name_sz, name_fmt, dev_name(&hdev->dev), color_name_str[n]);
+=======
+		if (!led) {
+			hid_err(hdev, "Couldn't allocate memory for LED %d\n", n);
+			return -ENOMEM;
+		}
+
+		name = (void *)(&led[1]);
+		if (use_color_names)
+			snprintf(name, name_sz, name_fmt, dev_name(&hdev->dev),
+			color_name_str[n]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			snprintf(name, name_sz, name_fmt, dev_name(&hdev->dev), n + 1);
 		led->name = name;
@@ -2208,6 +2378,7 @@ static int sony_input_configured(struct hid_device *hdev,
 		}
 
 		sony_init_output_report(sc, sixaxis_send_output_report);
+<<<<<<< HEAD
 	} else if (sc->quirks & RB3_PRO_INSTRUMENT) {
 		/*
 		 * Rock Band 3 PS3 Pro Instruments also do not handle HID Output
@@ -2221,6 +2392,8 @@ static int sony_input_configured(struct hid_device *hdev,
 		 */
 		hdev->quirks |= HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP;
 		hdev->quirks |= HID_QUIRK_SKIP_OUTPUT_REPORT_ID;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (sc->quirks & SIXAXIS_CONTROLLER_USB) {
 		/*
 		 * The Sony Sixaxis does not handle HID Output Reports on the
@@ -2337,8 +2510,15 @@ static int sony_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		quirks |= SHANWAN_GAMEPAD;
 
 	sc = devm_kzalloc(&hdev->dev, sizeof(*sc), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!sc)
 		return -ENOMEM;
+=======
+	if (sc == NULL) {
+		hid_err(hdev, "can't alloc sony descriptor\n");
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_init(&sc->lock);
 
@@ -2386,9 +2566,12 @@ static int sony_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	if (sc->quirks & RB3_PRO_INSTRUMENT)
 		sc->rb3_pro_poke_jiffies = 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sc->quirks & (GHL_GUITAR_PS3WIIU | GHL_GUITAR_PS4)) {
 		if (!hid_is_usb(hdev)) {
 			ret = -EINVAL;
@@ -2452,10 +2635,18 @@ static void sony_remove(struct hid_device *hdev)
 static int sony_suspend(struct hid_device *hdev, pm_message_t message)
 {
 #ifdef CONFIG_SONY_FF
+<<<<<<< HEAD
 	struct sony_sc *sc = hid_get_drvdata(hdev);
 
 	/* On suspend stop any running force-feedback events */
 	if (sc->quirks & SONY_FF_SUPPORT) {
+=======
+
+	/* On suspend stop any running force-feedback events */
+	if (SONY_FF_SUPPORT) {
+		struct sony_sc *sc = hid_get_drvdata(hdev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sc->left = sc->right = 0;
 		sony_send_output_report(sc);
 	}
@@ -2525,6 +2716,7 @@ static const struct hid_device_id sony_devices[] = {
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_SMK, USB_DEVICE_ID_SMK_NSG_MR7U_REMOTE),
 		.driver_data = NSG_MR7U_REMOTE_BT },
 	/* Guitar Hero Live PS3 and Wii U guitar dongles */
+<<<<<<< HEAD
 	{ HID_USB_DEVICE(USB_VENDOR_ID_SONY_RHYTHM, USB_DEVICE_ID_SONY_PS3WIIU_GHLIVE),
 		.driver_data = GHL_GUITAR_PS3WIIU | GH_GUITAR_TILT | INSTRUMENT },
 	/* Guitar Hero PC Guitar Dongle */
@@ -2601,6 +2793,37 @@ static const struct hid_device_id sony_devices[] = {
 		.driver_data = RB4_GUITAR_PS5 | INSTRUMENT },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CRKD, USB_DEVICE_ID_CRKD_PS5_GIBSON_SG_DONGLE),
 		.driver_data = RB4_GUITAR_PS5 | INSTRUMENT },
+=======
+	{ HID_USB_DEVICE(USB_VENDOR_ID_SONY_RHYTHM, USB_DEVICE_ID_SONY_PS3WIIU_GHLIVE_DONGLE),
+		.driver_data = GHL_GUITAR_PS3WIIU | GH_GUITAR_CONTROLLER },
+	/* Guitar Hero PC Guitar Dongle */
+	{ HID_USB_DEVICE(USB_VENDOR_ID_REDOCTANE, USB_DEVICE_ID_REDOCTANE_GUITAR_DONGLE),
+		.driver_data = GH_GUITAR_CONTROLLER },
+	/* Guitar Hero PS3 World Tour Guitar Dongle */
+	{ HID_USB_DEVICE(USB_VENDOR_ID_SONY_RHYTHM, USB_DEVICE_ID_SONY_PS3_GUITAR_DONGLE),
+		.driver_data = GH_GUITAR_CONTROLLER },
+	/* Guitar Hero Live PS4 guitar dongles */
+	{ HID_USB_DEVICE(USB_VENDOR_ID_REDOCTANE, USB_DEVICE_ID_REDOCTANE_PS4_GHLIVE_DONGLE),
+		.driver_data = GHL_GUITAR_PS4 | GH_GUITAR_CONTROLLER },
+	/* Rock Band 4 PS4 guitars */
+	{ HID_USB_DEVICE(USB_VENDOR_ID_PDP, USB_DEVICE_ID_PDP_PS4_RIFFMASTER),
+		.driver_data = RB4_GUITAR_PS4_USB },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_CRKD, USB_DEVICE_ID_CRKD_PS4_GIBSON_SG),
+		.driver_data = RB4_GUITAR_PS4_USB },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_CRKD, USB_DEVICE_ID_CRKD_PS4_GIBSON_SG_DONGLE),
+		.driver_data = RB4_GUITAR_PS4_USB },
+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_PDP, USB_DEVICE_ID_PDP_PS4_JAGUAR),
+		.driver_data = RB4_GUITAR_PS4_BT },
+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MADCATZ, USB_DEVICE_ID_MADCATZ_PS4_STRATOCASTER),
+		.driver_data = RB4_GUITAR_PS4_BT },
+	/* Rock Band 4 PS5 guitars */
+	{ HID_USB_DEVICE(USB_VENDOR_ID_PDP, USB_DEVICE_ID_PDP_PS5_RIFFMASTER),
+		.driver_data = RB4_GUITAR_PS5 },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_CRKD, USB_DEVICE_ID_CRKD_PS5_GIBSON_SG),
+		.driver_data = RB4_GUITAR_PS5 },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_CRKD, USB_DEVICE_ID_CRKD_PS5_GIBSON_SG_DONGLE),
+		.driver_data = RB4_GUITAR_PS5 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(hid, sony_devices);
@@ -2636,5 +2859,9 @@ static void __exit sony_exit(void)
 module_init(sony_init);
 module_exit(sony_exit);
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("HID driver for Sony / PS2 / PS3 BD / PS4 / PS5 devices");
+=======
+MODULE_DESCRIPTION("HID driver for Sony / PS2 / PS3 / PS4 BD devices");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

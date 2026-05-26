@@ -133,7 +133,10 @@ static void iwl_dealloc_ucode(struct iwl_drv *drv)
 	kfree(drv->fw.dbg.mem_tlv);
 	kfree(drv->fw.iml);
 	kfree(drv->fw.ucode_capa.cmd_versions);
+<<<<<<< HEAD
 	kfree(drv->fw.ucode_capa.cmd_bios_tables);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(drv->fw.phy_integration_ver);
 	kfree(drv->trans->dbg.pc_data);
 	drv->trans->dbg.pc_data = NULL;
@@ -1315,7 +1318,11 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
 			if (tlv_len != sizeof(u32))
 				goto invalid_tlv_len;
 			if (le32_to_cpup((const __le32 *)tlv_data) >
+<<<<<<< HEAD
 			    IWL_FW_MAX_LINKS) {
+=======
+			    IWL_FW_MAX_LINK_ID + 1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				IWL_ERR(drv,
 					"%d is an invalid number of links\n",
 					le32_to_cpup((const __le32 *)tlv_data));
@@ -1427,6 +1434,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
 				return -ENOMEM;
 			drv->fw.pnvm_size = tlv_len;
 			break;
+<<<<<<< HEAD
 		case IWL_UCODE_TLV_CMD_BIOS_TABLE:
 			if (tlv_len % sizeof(struct iwl_fw_cmd_bios_table)) {
 				IWL_ERR(drv,
@@ -1447,6 +1455,8 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
 			capa->n_cmd_bios_tables =
 				tlv_len / sizeof(struct iwl_fw_cmd_bios_table);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			IWL_DEBUG_INFO(drv, "unknown TLV: %d\n", tlv_type);
 			break;

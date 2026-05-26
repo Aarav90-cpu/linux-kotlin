@@ -30,7 +30,11 @@ static int imx9_soc_probe(struct platform_device *pdev)
 	if (!attr)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = soc_attr_read_machine(attr);
+=======
+	err = of_property_read_string(of_root, "model", &attr->machine);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return dev_err_probe(dev, err, "%s: missing model property\n", __func__);
 
@@ -89,7 +93,11 @@ static int __init imx9_soc_init(void)
 	struct platform_device *pdev;
 
 	/* No match means it is not an i.MX 9 series SoC, do nothing. */
+<<<<<<< HEAD
 	if (!of_machine_device_match(imx9_soc_match))
+=======
+	if (!of_match_node(imx9_soc_match, of_root))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	ret = platform_driver_register(&imx9_soc_driver);

@@ -70,9 +70,15 @@ int virtio_crypto_ctrl_vq_request(struct virtio_crypto *vcrypto, struct scatterl
 	return 0;
 }
 
+<<<<<<< HEAD
 static void virtcrypto_done_work(struct work_struct *work)
 {
 	struct data_queue *data_vq = from_work(data_vq, work, done_work);
+=======
+static void virtcrypto_done_task(unsigned long data)
+{
+	struct data_queue *data_vq = (struct data_queue *)data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct virtqueue *vq = data_vq->vq;
 	struct virtio_crypto_request *vc_req;
 	unsigned long flags;
@@ -96,7 +102,11 @@ static void virtcrypto_dataq_callback(struct virtqueue *vq)
 	struct virtio_crypto *vcrypto = vq->vdev->priv;
 	struct data_queue *dq = &vcrypto->data_vq[vq->index];
 
+<<<<<<< HEAD
 	queue_work(system_bh_wq, &dq->done_work);
+=======
+	tasklet_schedule(&dq->done_task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int virtcrypto_find_vqs(struct virtio_crypto *vi)
@@ -150,7 +160,12 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
 			ret = -ENOMEM;
 			goto err_engine;
 		}
+<<<<<<< HEAD
 		INIT_WORK(&vi->data_vq[i].done_work, virtcrypto_done_work);
+=======
+		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
+				(unsigned long)&vi->data_vq[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	kfree(vqs_info);
@@ -500,7 +515,11 @@ static void virtcrypto_remove(struct virtio_device *vdev)
 	if (virtcrypto_dev_started(vcrypto))
 		virtcrypto_dev_stop(vcrypto);
 	for (i = 0; i < vcrypto->max_data_queues; i++)
+<<<<<<< HEAD
 		cancel_work_sync(&vcrypto->data_vq[i].done_work);
+=======
+		tasklet_kill(&vcrypto->data_vq[i].done_task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	virtio_reset_device(vdev);
 	virtcrypto_free_unused_reqs(vcrypto);
 	virtcrypto_clear_crypto_engines(vcrypto);

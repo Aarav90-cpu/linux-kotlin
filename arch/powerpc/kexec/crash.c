@@ -27,7 +27,10 @@
 #include <asm/debug.h>
 #include <asm/interrupt.h>
 #include <asm/kexec_ranges.h>
+<<<<<<< HEAD
 #include <asm/crashdump-ppc64.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * The primary CPU waits a while for all secondary CPUs to enter. This is to
@@ -400,6 +403,7 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
 		ppc_md.kexec_cpu_down(1, 0);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CRASH_DUMP
 /**
  * sync_backup_region_phdr - synchronize backup region offset between
@@ -462,6 +466,9 @@ int machine_kexec_post_load(struct kimage *image)
 	return 0;
 }
 
+=======
+#ifdef CONFIG_CRASH_HOTPLUG
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #undef pr_fmt
 #define pr_fmt(fmt) "crash hp: " fmt
 
@@ -536,8 +543,11 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
 		goto out;
 	}
 
+<<<<<<< HEAD
 	sync_backup_region_phdr(image, (Elf64_Ehdr *) elfbuf, false);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ptr = __va(mem);
 	if (ptr) {
 		/* Temporarily invalidate the crash image while it is replaced */

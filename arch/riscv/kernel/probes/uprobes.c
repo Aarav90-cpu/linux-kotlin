@@ -111,7 +111,11 @@ void arch_uprobe_abort_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
 
 	current->thread.bad_cause = utask->autask.saved_cause;
 	/*
+<<<<<<< HEAD
 	 * Task has received a fatal signal, so reset back to probed
+=======
+	 * Task has received a fatal signal, so reset back to probbed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * address.
 	 */
 	instruction_pointer_set(regs, utask->vaddr);

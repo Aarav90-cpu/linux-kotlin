@@ -125,6 +125,10 @@ struct tegra_gpio_soc {
 struct tegra_gpio {
 	struct gpio_chip gpio;
 	unsigned int num_irq;
+<<<<<<< HEAD
+=======
+	unsigned int *irq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	const struct tegra_gpio_soc *soc;
 	unsigned int num_irqs_per_bank;
@@ -132,8 +136,11 @@ struct tegra_gpio {
 
 	void __iomem *secure;
 	void __iomem *base;
+<<<<<<< HEAD
 
 	unsigned int irq[] __counted_by(num_irq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct tegra_gpio_port *
@@ -858,6 +865,7 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 	struct device_node *np;
 	struct resource *res;
 	char **names;
+<<<<<<< HEAD
 	int node, err;
 
 	err = platform_irq_count(pdev);
@@ -870,6 +878,14 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 
 	gpio->num_irq = err;
 
+=======
+	int err;
+
+	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+	if (!gpio)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpio->soc = device_get_match_data(&pdev->dev);
 	gpio->gpio.label = gpio->soc->name;
 	gpio->gpio.parent = &pdev->dev;
@@ -896,10 +912,27 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 	if (IS_ERR(gpio->base))
 		return PTR_ERR(gpio->base);
 
+<<<<<<< HEAD
+=======
+	err = platform_irq_count(pdev);
+	if (err < 0)
+		return err;
+
+	gpio->num_irq = err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = tegra186_gpio_irqs_per_bank(gpio);
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
+=======
+	gpio->irq = devm_kcalloc(&pdev->dev, gpio->num_irq, sizeof(*gpio->irq),
+				 GFP_KERNEL);
+	if (!gpio->irq)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < gpio->num_irq; i++) {
 		err = platform_get_irq(pdev, i);
 		if (err < 0)
@@ -933,13 +966,17 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 	if (!names)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	node = dev_to_node(&pdev->dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0, offset = 0; i < gpio->soc->num_ports; i++) {
 		const struct tegra_gpio_port *port = &gpio->soc->ports[i];
 		char *name;
 
 		for (j = 0; j < port->pins; j++) {
+<<<<<<< HEAD
 			if (node >= 0)
 				name = devm_kasprintf(gpio->gpio.parent, GFP_KERNEL,
 						      "%d-%sP%s.%02x", node,
@@ -949,6 +986,13 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
 				name = devm_kasprintf(gpio->gpio.parent, GFP_KERNEL,
 						      "%sP%s.%02x",
 						      gpio->soc->prefix ?: "",
+=======
+			if (gpio->soc->prefix)
+				name = devm_kasprintf(gpio->gpio.parent, GFP_KERNEL, "%s-P%s.%02x",
+						      gpio->soc->prefix, port->name, j);
+			else
+				name = devm_kasprintf(gpio->gpio.parent, GFP_KERNEL, "P%s.%02x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						      port->name, j);
 			if (!name)
 				return -ENOMEM;
@@ -1375,9 +1419,12 @@ static const struct tegra_gpio_soc tegra256_main_soc = {
 	.has_vm_support = true,
 };
 
+<<<<<<< HEAD
 /* Macro to define GPIO name prefix with separator */
 #define TEGRA_GPIO_PREFIX(_x)	_x "-"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TEGRA410_COMPUTE_GPIO_PORT(_name, _bank, _port, _pins)	\
 	TEGRA_GPIO_PORT(TEGRA410_COMPUTE, _name, _bank, _port, _pins)
 
@@ -1393,7 +1440,11 @@ static const struct tegra_gpio_soc tegra410_compute_soc = {
 	.num_ports = ARRAY_SIZE(tegra410_compute_ports),
 	.ports = tegra410_compute_ports,
 	.name = "tegra410-gpio-compute",
+<<<<<<< HEAD
 	.prefix = TEGRA_GPIO_PREFIX("COMPUTE"),
+=======
+	.prefix = "COMPUTE",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_irqs_per_bank = 8,
 	.instance = 0,
 };
@@ -1423,7 +1474,11 @@ static const struct tegra_gpio_soc tegra410_system_soc = {
 	.num_ports = ARRAY_SIZE(tegra410_system_ports),
 	.ports = tegra410_system_ports,
 	.name = "tegra410-gpio-system",
+<<<<<<< HEAD
 	.prefix = TEGRA_GPIO_PREFIX("SYSTEM"),
+=======
+	.prefix = "SYSTEM",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_irqs_per_bank = 8,
 	.instance = 0,
 };

@@ -13,7 +13,10 @@
 #include <drm/drm_managed.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
 #include "xe_assert.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_device.h"
 #include "xe_device_types.h"
 #include "xe_force_wake.h"
@@ -21,7 +24,10 @@
 #include "xe_gt_printk.h"
 #include "xe_gt_types.h"
 #include "xe_hw_engine_types.h"
+<<<<<<< HEAD
 #include "xe_lrc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_mmio.h"
 #include "xe_rtp_types.h"
 
@@ -173,11 +179,16 @@ void xe_reg_sr_apply_mmio(struct xe_reg_sr *sr, struct xe_gt *gt)
 	if (xa_empty(&sr->xa))
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * We don't process non-LRC reg_sr lists in VF, so they should have
 	 * been empty in the check above.
 	 */
 	xe_gt_assert(gt, !IS_SRIOV_VF(gt_to_xe(gt)));
+=======
+	if (IS_SRIOV_VF(gt_to_xe(gt)))
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	xe_gt_dbg(gt, "Applying %s save-restore MMIOs\n", sr->name);
 
@@ -211,6 +222,7 @@ void xe_reg_sr_dump(struct xe_reg_sr *sr, struct drm_printer *p)
 			   str_yes_no(entry->reg.masked),
 			   str_yes_no(entry->reg.mcr));
 }
+<<<<<<< HEAD
 
 static u32 readback_reg(struct xe_gt *gt, struct xe_reg reg)
 {
@@ -274,3 +286,5 @@ void xe_reg_sr_lrc_check(struct xe_reg_sr *sr,
 				   offset, mask, entry->set_bits, val & mask);
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

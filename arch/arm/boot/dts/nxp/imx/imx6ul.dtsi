@@ -115,7 +115,10 @@
 		#clock-cells = <0>;
 		clock-frequency = <24000000>;
 		clock-output-names = "osc";
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	ipp_di0: clock-di0 {
@@ -144,7 +147,10 @@
 		compatible = "simple-bus";
 		interrupt-parent = <&gpc>;
 		ranges;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ocram: sram@900000 {
 			compatible = "mmio-sram";
@@ -204,7 +210,10 @@
 			#size-cells = <1>;
 			reg = <0x02000000 0x100000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			spba-bus@2000000 {
 				compatible = "fsl,spba-bus", "simple-bus";
@@ -212,7 +221,10 @@
 				#size-cells = <1>;
 				reg = <0x02000000 0x40000>;
 				ranges;
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				ecspi1: spi@2008000 {
 					#address-cells = <1>;
@@ -584,7 +596,10 @@
 				#clock-cells = <1>;
 				clocks = <&ckil>, <&osc>, <&ipp_di0>, <&ipp_di1>;
 				clock-names = "ckil", "osc", "ipp_di0", "ipp_di1";
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 
 			anatop: anatop@20c8000 {
@@ -750,7 +765,10 @@
 			iomuxc: pinctrl@20e0000 {
 				compatible = "fsl,imx6ul-iomuxc";
 				reg = <0x020e0000 0x4000>;
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 
 			gpr: iomuxc-gpr@20e4000 {
@@ -832,7 +850,10 @@
 			#size-cells = <1>;
 			reg = <0x02100000 0x100000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			crypto: crypto@2140000 {
 				compatible = "fsl,imx6ul-caam", "fsl,sec-v4.0";

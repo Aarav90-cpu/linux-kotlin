@@ -70,6 +70,7 @@ properties:
               - microchip,sama7d65-gem   # Microchip SAMA7D65 gigabit ethernet interface
           - const: microchip,sama7g5-gem # Microchip SAMA7G5 gigabit ethernet interface
 
+<<<<<<< HEAD
       - items:
           - const: microchip,pic64hpsc-gem # Microchip PIC64-HPSC
           - const: cdns,gem
@@ -78,6 +79,8 @@ properties:
           - const: microchip,pic64hpsc-gem # Microchip PIC64-HPSC
           - const: cdns,gem
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     minItems: 1
     items:
@@ -130,6 +133,7 @@ properties:
 
   cdns,refclk-ext:
     type: boolean
+<<<<<<< HEAD
     deprecated: true
     description: |
      This selects if the REFCLK for RMII is provided by an external source.
@@ -147,6 +151,12 @@ properties:
     description:
       Select whether or not the refclk for RGMII or RMII is provided by an
       internal or external source. The default is device specific.
+=======
+    description:
+      This selects if the REFCLK for RMII is provided by an external source.
+      For RGMII mode this selects if the 125MHz REF clock is provided by an external
+      source.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   cdns,rx-watermark:
     $ref: /schemas/types.yaml#/definitions/uint32
@@ -158,12 +168,15 @@ properties:
       that need to be filled, before the forwarding process is activated.
       Width of the SRAM is platform dependent, and can be 4, 8 or 16 bytes.
 
+<<<<<<< HEAD
   cdns,timer-adjust:
     type: boolean
     description:
       Set when the hardware is operating in timer-adjust mode, where the timer
       is controlled by the gem_tsu_inc_ctrl and gem_tsu_ms inputs.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   '#address-cells':
     const: 1
 
@@ -213,6 +226,7 @@ allOf:
       properties:
         reg:
           maxItems: 1
+<<<<<<< HEAD
   - if:
       not:
         properties:
@@ -222,6 +236,8 @@ allOf:
     then:
       properties:
         cdns,timer-adjust: false
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   - if:
       properties:
@@ -232,6 +248,7 @@ allOf:
       required:
         - phys
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -280,6 +297,8 @@ allOf:
         cdns,refclk-source:
           default: internal
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unevaluatedProperties: false
 
 examples:

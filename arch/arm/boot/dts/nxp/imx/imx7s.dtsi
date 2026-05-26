@@ -209,7 +209,10 @@
 		compatible = "simple-bus";
 		interrupt-parent = <&gpc>;
 		ranges;
+<<<<<<< HEAD
 		bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ocram: sram@900000 {
 			compatible = "mmio-sram";
@@ -372,7 +375,10 @@
 			#size-cells = <1>;
 			reg = <0x30000000 0x400000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			gpio1: gpio@30200000 {
 				compatible = "fsl,imx7d-gpio", "fsl,imx35-gpio";
@@ -545,7 +551,10 @@
 			iomuxc: pinctrl@30330000 {
 				compatible = "fsl,imx7d-iomuxc";
 				reg = <0x30330000 0x10000>;
+<<<<<<< HEAD
 				bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 
 			gpr: iomuxc-gpr@30340000 {
@@ -715,7 +724,10 @@
 			#size-cells = <1>;
 			reg = <0x30400000 0x400000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			adc1: adc@30610000 {
 				compatible = "fsl,imx7d-adc";
@@ -906,7 +918,10 @@
 			#size-cells = <1>;
 			reg = <0x30800000 0x400000>;
 			ranges;
+<<<<<<< HEAD
 			bootph-pre-ram;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			spba-bus@30800000 {
 				compatible = "fsl,spba-bus", "simple-bus";

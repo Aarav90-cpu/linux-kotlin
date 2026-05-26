@@ -28,6 +28,11 @@ properties:
     $ref: /schemas/types.yaml#/definitions/phandle
     description: The phandle of the WM8960 audio codec.
 
+<<<<<<< HEAD
+=======
+unevaluatedProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - mediatek,platform
@@ -36,8 +41,11 @@ required:
   - pinctrl-names
   - pinctrl-0
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     sound {

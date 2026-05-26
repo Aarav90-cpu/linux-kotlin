@@ -887,7 +887,10 @@ nfsd(void *vrqstp)
 	struct svc_xprt *perm_sock = list_entry(rqstp->rq_server->sv_permsocks.next, typeof(struct svc_xprt), xpt_list);
 	struct net *net = perm_sock->xpt_net;
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+<<<<<<< HEAD
 	struct nfsd_thread_local_info ntli = { };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool have_mutex = false;
 
 	/* At this point, the thread shares current->fs
@@ -902,10 +905,13 @@ nfsd(void *vrqstp)
 
 	set_freezable();
 
+<<<<<<< HEAD
 	/* use dynamic allocation if ntli should ever become large */
 	static_assert(sizeof(struct nfsd_thread_local_info) < 256);
 	rqstp->rq_private = &ntli;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The main request loop
 	 */
@@ -972,7 +978,10 @@ nfsd(void *vrqstp)
  */
 int nfsd_dispatch(struct svc_rqst *rqstp)
 {
+<<<<<<< HEAD
 	struct nfsd_thread_local_info *ntli = rqstp->rq_private;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct svc_procedure *proc = rqstp->rq_procinfo;
 	__be32 *statp = rqstp->rq_accept_statp;
 	struct nfsd_cacherep *rp;
@@ -983,7 +992,11 @@ int nfsd_dispatch(struct svc_rqst *rqstp)
 	 * Give the xdr decoder a chance to change this if it wants
 	 * (necessary in the NFSv4.0 compound case)
 	 */
+<<<<<<< HEAD
 	ntli->ntli_cachetype = proc->pc_cachetype;
+=======
+	rqstp->rq_cachetype = proc->pc_cachetype;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * ->pc_decode advances the argument stream past the NFS
@@ -1028,7 +1041,11 @@ int nfsd_dispatch(struct svc_rqst *rqstp)
 	 */
 	smp_store_release(&rqstp->rq_status_counter, rqstp->rq_status_counter + 1);
 
+<<<<<<< HEAD
 	nfsd_cache_update(rqstp, rp, ntli->ntli_cachetype, nfs_reply);
+=======
+	nfsd_cache_update(rqstp, rp, rqstp->rq_cachetype, nfs_reply);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_cached_reply:
 	return 1;
 

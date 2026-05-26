@@ -282,9 +282,12 @@ const char *parse_fs_dst(struct trace_seq *p,
 	case MLX5_FLOW_DESTINATION_TYPE_NONE:
 		trace_seq_printf(p, "none\n");
 		break;
+<<<<<<< HEAD
 	case MLX5_FLOW_DESTINATION_TYPE_VHCA_RX:
 		trace_seq_printf(p, "rx_vhca_id=%u\n", dst->vhca.id);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	trace_seq_putc(p, 0);

@@ -217,6 +217,10 @@ config GE_IMP3A
 config SGY_CTS1000
 	tristate "Servergy CTS-1000 support"
 	select GPIOLIB
+<<<<<<< HEAD
+=======
+	select OF_GPIO
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on CORENET_GENERIC
 	help
 	  Enable this to support functionality in Servergy's CTS-1000 systems.

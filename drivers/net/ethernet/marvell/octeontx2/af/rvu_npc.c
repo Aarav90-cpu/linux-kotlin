@@ -16,9 +16,12 @@
 #include "cgx.h"
 #include "npc_profile.h"
 #include "rvu_npc_hash.h"
+<<<<<<< HEAD
 #include "cn20k/npc.h"
 #include "rvu_npc.h"
 #include "cn20k/reg.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RSVD_MCAM_ENTRIES_PER_PF	3 /* Broadcast, Promisc and AllMulticast */
 #define RSVD_MCAM_ENTRIES_PER_NIXLF	1 /* Ucast for LFs */
@@ -152,6 +155,7 @@ int npc_get_nixlf_mcam_index(struct npc_mcam *mcam,
 {
 	struct rvu_hwinfo *hw = container_of(mcam, struct rvu_hwinfo, mcam);
 	struct rvu *rvu = hw->rvu;
+<<<<<<< HEAD
 	u16 bcast, mcast, promisc, ucast;
 	int index;
 	int rc;
@@ -200,6 +204,12 @@ int npc_get_nixlf_mcam_index(struct npc_mcam *mcam,
 
 	/* Check if this is for a PF */
 	pf = rvu_get_pf(rvu->pdev, pcifunc);
+=======
+	int pf = rvu_get_pf(rvu->pdev, pcifunc);
+	int index;
+
+	/* Check if this is for a PF */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pf && !(pcifunc & RVU_PFVF_FUNC_MASK)) {
 		/* Reserved entries exclude PF0 */
 		pf--;
@@ -220,12 +230,16 @@ int npc_get_nixlf_mcam_index(struct npc_mcam *mcam,
 
 int npc_get_bank(struct npc_mcam *mcam, int index)
 {
+<<<<<<< HEAD
 	struct rvu_hwinfo *hw = container_of(mcam, struct rvu_hwinfo, mcam);
 	int bank = index / mcam->banksize;
 	struct rvu *rvu = hw->rvu;
 
 	if (is_cn20k(rvu->pdev))
 		return bank;
+=======
+	int bank = index / mcam->banksize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 0,1 & 2,3 banks are combined for this keysize */
 	if (mcam->keysize == NPC_MCAM_KEY_X2)
@@ -241,6 +255,7 @@ bool is_mcam_entry_enabled(struct rvu *rvu, struct npc_mcam *mcam,
 	u64 cfg;
 
 	index &= (mcam->banksize - 1);
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		cfg = rvu_read64(rvu, blkaddr,
 				 NPC_AF_CN20K_MCAMEX_BANKX_CFG_EXT(index,
@@ -249,6 +264,9 @@ bool is_mcam_entry_enabled(struct rvu *rvu, struct npc_mcam *mcam,
 		cfg = rvu_read64(rvu, blkaddr,
 				 NPC_AF_MCAMEX_BANKX_CFG(index, bank));
 
+=======
+	cfg = rvu_read64(rvu, blkaddr, NPC_AF_MCAMEX_BANKX_CFG(index, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return (cfg & 1);
 }
 
@@ -258,6 +276,7 @@ void npc_enable_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 	int bank = npc_get_bank(mcam, index);
 	int actbank = bank;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		if (npc_cn20k_enable_mcam_entry(rvu, blkaddr, index, enable))
 			dev_err(rvu->dev, "Error to %s mcam %u entry\n",
@@ -265,6 +284,8 @@ void npc_enable_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	index &= (mcam->banksize - 1);
 	for (; bank < (actbank + mcam->banks_per_entry); bank++) {
 		rvu_write64(rvu, blkaddr,
@@ -279,6 +300,7 @@ static void npc_clear_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 	int bank = npc_get_bank(mcam, index);
 	int actbank = bank;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		if (npc_cn20k_clear_mcam_entry(rvu, blkaddr, index))
 			dev_err(rvu->dev, "%s Failed to clear mcam %u\n",
@@ -286,6 +308,8 @@ static void npc_clear_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	index &= (mcam->banksize - 1);
 	for (; bank < (actbank + mcam->banks_per_entry); bank++) {
 		rvu_write64(rvu, blkaddr,
@@ -440,7 +464,10 @@ static u64 npc_get_default_entry_action(struct rvu *rvu, struct npc_mcam *mcam,
 					int blkaddr, u16 pf_func)
 {
 	int bank, nixlf, index;
+<<<<<<< HEAD
 	u64 reg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* get ucast entry rule entry index */
 	if (nix_get_nixlf(rvu, pf_func, &nixlf, NULL)) {
@@ -452,6 +479,7 @@ static u64 npc_get_default_entry_action(struct rvu *rvu, struct npc_mcam *mcam,
 
 	index = npc_get_nixlf_mcam_index(mcam, pf_func, nixlf,
 					 NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 
 	if (index < 0) {
 		dev_err(rvu->dev,
@@ -470,6 +498,13 @@ static u64 npc_get_default_entry_action(struct rvu *rvu, struct npc_mcam *mcam,
 		reg = NPC_AF_MCAMEX_BANKX_ACTION(index, bank);
 
 	return rvu_read64(rvu, blkaddr, reg);
+=======
+	bank = npc_get_bank(mcam, index);
+	index &= (mcam->banksize - 1);
+
+	return rvu_read64(rvu, blkaddr,
+			  NPC_AF_MCAMEX_BANKX_ACTION(index, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void npc_fixup_vf_rule(struct rvu *rvu, struct npc_mcam *mcam,
@@ -626,17 +661,25 @@ void npc_read_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 			  NPC_AF_MCAMEX_BANKX_CFG(src, sbank)) & 1;
 }
 
+<<<<<<< HEAD
 static int npc_copy_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 			       int blkaddr, u16 src, u16 dest)
+=======
+static void npc_copy_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
+				int blkaddr, u16 src, u16 dest)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int dbank = npc_get_bank(mcam, dest);
 	int sbank = npc_get_bank(mcam, src);
 	u64 cfg, sreg, dreg;
 	int bank, i;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		return npc_cn20k_copy_mcam_entry(rvu, blkaddr, src, dest);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	src &= (mcam->banksize - 1);
 	dest &= (mcam->banksize - 1);
 
@@ -667,13 +710,17 @@ static int npc_copy_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
 			 NPC_AF_MCAMEX_BANKX_CFG(src, sbank));
 	rvu_write64(rvu, blkaddr,
 		    NPC_AF_MCAMEX_BANKX_CFG(dest, dbank), cfg);
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 u64 npc_get_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
 			int blkaddr, int index)
 {
 	int bank = npc_get_bank(mcam, index);
+<<<<<<< HEAD
 	u64 reg;
 
 	index &= (mcam->banksize - 1);
@@ -683,12 +730,19 @@ u64 npc_get_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
 	else
 		reg = NPC_AF_MCAMEX_BANKX_ACTION(index, bank);
 	return rvu_read64(rvu, blkaddr, reg);
+=======
+
+	index &= (mcam->banksize - 1);
+	return rvu_read64(rvu, blkaddr,
+			  NPC_AF_MCAMEX_BANKX_ACTION(index, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void npc_set_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
 			 int blkaddr, int index, u64 cfg)
 {
 	int bank = npc_get_bank(mcam, index);
+<<<<<<< HEAD
 	u64 reg;
 
 	index &= (mcam->banksize - 1);
@@ -699,6 +753,12 @@ void npc_set_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
 		reg = NPC_AF_MCAMEX_BANKX_ACTION(index, bank);
 
 	return rvu_write64(rvu, blkaddr, reg, cfg);
+=======
+
+	index &= (mcam->banksize - 1);
+	return rvu_write64(rvu, blkaddr,
+			   NPC_AF_MCAMEX_BANKX_ACTION(index, bank), cfg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
@@ -727,12 +787,15 @@ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					 nixlf, NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get ucast entry for pcifunc=%#x\n",
 			__func__, pcifunc);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Don't change the action if entry is already enabled
 	 * Otherwise RSS action may get overwritten.
@@ -759,9 +822,12 @@ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
 	req.match_id = action.match_id;
 	req.flow_key_alg = action.flow_key_alg;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		req.hw_prio = pfvf->hw_prio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
 }
 
@@ -788,14 +854,18 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					 nixlf, NIXLF_PROMISC_ENTRY);
 
+<<<<<<< HEAD
 	/* In cn20k, default indexes are installed only for CGX mapped
 	 * and lbk interfaces
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_cgx_vf(rvu, pcifunc))
 		index = npc_get_nixlf_mcam_index(mcam,
 						 pcifunc & ~RVU_PFVF_FUNC_MASK,
 						 nixlf, NIXLF_PROMISC_ENTRY);
 
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get promisc entry for pcifunc=%#x\n",
@@ -820,6 +890,13 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
 		return;
 	}
 
+=======
+	/* If the corresponding PF's ucast action is RSS,
+	 * use the same action for promisc also
+	 */
+	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
+					     nixlf, NIXLF_UCAST_ENTRY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_mcam_entry_enabled(rvu, mcam, blkaddr, ucast_idx))
 		*(u64 *)&action = npc_get_mcam_action(rvu, mcam,
 						      blkaddr, ucast_idx);
@@ -872,9 +949,12 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
 	req.match_id = action.match_id;
 	req.flow_key_alg = flow_key_alg;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		req.hw_prio = pfvf->hw_prio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
 }
 
@@ -893,6 +973,7 @@ void rvu_npc_enable_promisc_entry(struct rvu *rvu, u16 pcifunc,
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					 nixlf, NIXLF_PROMISC_ENTRY);
+<<<<<<< HEAD
 
 	if (index < 0) {
 		dev_err(rvu->dev,
@@ -901,6 +982,8 @@ void rvu_npc_enable_promisc_entry(struct rvu *rvu, u16 pcifunc,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	npc_enable_mcam_entry(rvu, mcam, blkaddr, index, enable);
 }
 
@@ -941,12 +1024,15 @@ void rvu_npc_install_bcast_match_entry(struct rvu *rvu, u16 pcifunc,
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					 nixlf, NIXLF_BCAST_ENTRY);
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get bcast entry for pcifunc=%#x\n",
 			__func__, pcifunc);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hw->cap.nix_rx_multicast) {
 		/* Early silicon doesn't support pkt replication,
@@ -969,9 +1055,12 @@ void rvu_npc_install_bcast_match_entry(struct rvu *rvu, u16 pcifunc,
 	req.hdr.pcifunc = 0; /* AF is requester */
 	req.vf = pcifunc;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		req.hw_prio = pfvf->hw_prio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
 }
 
@@ -1011,18 +1100,22 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					 nixlf, NIXLF_ALLMULTI_ENTRY);
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get mcast entry for pcifunc=%#x\n",
 			__func__, pcifunc);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If the corresponding PF's ucast action is RSS,
 	 * use the same action for multicast entry also
 	 */
 	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					     nixlf, NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 	if (ucast_idx < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get ucast entry for pcifunc=%#x\n",
@@ -1030,6 +1123,8 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_mcam_entry_enabled(rvu, mcam, blkaddr, ucast_idx))
 		*(u64 *)&action = npc_get_mcam_action(rvu, mcam,
 							blkaddr, ucast_idx);
@@ -1073,9 +1168,12 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
 	req.match_id = action.match_id;
 	req.flow_key_alg = flow_key_alg;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		req.hw_prio = pfvf->hw_prio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
 }
 
@@ -1094,6 +1192,7 @@ void rvu_npc_enable_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc, nixlf,
 					 NIXLF_ALLMULTI_ENTRY);
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get mcast entry for pcifunc=%#x\n",
@@ -1101,6 +1200,8 @@ void rvu_npc_enable_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	npc_enable_mcam_entry(rvu, mcam, blkaddr, index, enable);
 }
 
@@ -1116,6 +1217,7 @@ static void npc_update_vf_flow_entry(struct rvu *rvu, struct npc_mcam *mcam,
 
 	mutex_lock(&mcam->lock);
 	for (index = 0; index < mcam->bmap_entries; index++) {
+<<<<<<< HEAD
 		if (mcam->entry2target_pffunc[index] != pcifunc)
 			continue;
 		update = true;
@@ -1152,6 +1254,35 @@ static void npc_update_vf_flow_entry(struct rvu *rvu, struct npc_mcam *mcam,
 		if (enable)
 			npc_enable_mcam_entry(rvu, mcam, blkaddr,
 					      actindex, true);
+=======
+		if (mcam->entry2target_pffunc[index] == pcifunc) {
+			update = true;
+			/* update not needed for the rules added via ntuple filters */
+			list_for_each_entry(rule, &mcam->mcam_rules, list) {
+				if (rule->entry == index)
+					update = false;
+			}
+			if (!update)
+				continue;
+			bank = npc_get_bank(mcam, index);
+			actindex = index;
+			entry = index & (mcam->banksize - 1);
+
+			/* read vf flow entry enable status */
+			enable = is_mcam_entry_enabled(rvu, mcam, blkaddr,
+						       actindex);
+			/* disable before mcam entry update */
+			npc_enable_mcam_entry(rvu, mcam, blkaddr, actindex,
+					      false);
+			/* update 'action' */
+			rvu_write64(rvu, blkaddr,
+				    NPC_AF_MCAMEX_BANKX_ACTION(entry, bank),
+				    rx_action);
+			if (enable)
+				npc_enable_mcam_entry(rvu, mcam, blkaddr,
+						      actindex, true);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	mutex_unlock(&mcam->lock);
 }
@@ -1164,7 +1295,10 @@ static void npc_update_rx_action_with_alg_idx(struct rvu *rvu, struct nix_rx_act
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 	struct rvu_hwinfo *hw = rvu->hw;
 	int bank, op_rss;
+<<<<<<< HEAD
 	u64 reg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_mcam_entry_enabled(rvu, mcam, blkaddr, mcam_index))
 		return;
@@ -1174,6 +1308,7 @@ static void npc_update_rx_action_with_alg_idx(struct rvu *rvu, struct nix_rx_act
 	bank = npc_get_bank(mcam, mcam_index);
 	mcam_index &= (mcam->banksize - 1);
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		reg = NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(mcam_index,
 							    bank, 0);
@@ -1187,6 +1322,17 @@ static void npc_update_rx_action_with_alg_idx(struct rvu *rvu, struct nix_rx_act
 		action.flow_key_alg = alg_idx;
 	}
 	rvu_write64(rvu, blkaddr, reg, *(u64 *)&action);
+=======
+	/* If Rx action is MCAST update only RSS algorithm index */
+	if (!op_rss) {
+		*(u64 *)&action = rvu_read64(rvu, blkaddr,
+				NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank));
+
+		action.flow_key_alg = alg_idx;
+	}
+	rvu_write64(rvu, blkaddr,
+		    NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank), *(u64 *)&action);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
@@ -1196,7 +1342,10 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
 	struct nix_rx_action action;
 	int blkaddr, index, bank;
 	struct rvu_pfvf *pfvf;
+<<<<<<< HEAD
 	u64 reg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
@@ -1213,22 +1362,32 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
 		index = mcam_index;
 	}
 
+<<<<<<< HEAD
 	if (index < 0 || index >= mcam->total_entries) {
 		dev_err(rvu->dev,
 			"%s: Invalid mcam index, pcifunc=%#x\n",
 			__func__, pcifunc);
 		return;
 	}
+=======
+	if (index >= mcam->total_entries)
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bank = npc_get_bank(mcam, index);
 	index &= (mcam->banksize - 1);
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		reg = NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(index, bank, 0);
 	else
 		reg = NPC_AF_MCAMEX_BANKX_ACTION(index, bank);
 
 	*(u64 *)&action = rvu_read64(rvu, blkaddr, reg);
+=======
+	*(u64 *)&action = rvu_read64(rvu, blkaddr,
+				     NPC_AF_MCAMEX_BANKX_ACTION(index, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ignore if no action was set earlier */
 	if (!*(u64 *)&action)
 		return;
@@ -1238,11 +1397,16 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
 	action.index = group;
 	action.flow_key_alg = alg_idx;
 
+<<<<<<< HEAD
 	rvu_write64(rvu, blkaddr, reg, *(u64 *)&action);
 	/* update the VF flow rule action with the VF default entry action */
 	if (mcam_index < 0)
 		npc_update_vf_flow_entry(rvu, mcam, blkaddr, pcifunc,
 					 *(u64 *)&action);
+=======
+	rvu_write64(rvu, blkaddr,
+		    NPC_AF_MCAMEX_BANKX_ACTION(index, bank), *(u64 *)&action);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* update the action change in default rule */
 	pfvf = rvu_get_pfvf(rvu, pcifunc);
@@ -1262,18 +1426,28 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
 		/* If PF's promiscuous  entry is enabled,
 		 * Set RSS action for that entry as well
 		 */
+<<<<<<< HEAD
 		if (index >= 0)
 			npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
 							  blkaddr, alg_idx);
+=======
+		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
+						  blkaddr, alg_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 						 nixlf, NIXLF_ALLMULTI_ENTRY);
 		/* If PF's allmulti  entry is enabled,
 		 * Set RSS action for that entry as well
 		 */
+<<<<<<< HEAD
 		if (index >= 0)
 			npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
 							  blkaddr, alg_idx);
+=======
+		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
+						  blkaddr, alg_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1286,22 +1460,28 @@ void npc_enadis_default_mce_entry(struct rvu *rvu, u16 pcifunc,
 	int index, blkaddr, mce_idx;
 	struct rvu_pfvf *pfvf;
 
+<<<<<<< HEAD
 	/* multicast pkt replication is not enabled for AF's VFs & SDP links */
 	if (is_lbk_vf(rvu, pcifunc) || is_sdp_pfvf(rvu, pcifunc))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return;
 
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc & ~RVU_PFVF_FUNC_MASK,
 					 nixlf, type);
+<<<<<<< HEAD
 	if (index < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get entry for pcifunc=%#x, type=%u\n",
 			__func__, pcifunc, type);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* disable MCAM entry when packet replication is not supported by hw */
 	if (!hw->cap.nix_rx_multicast && !is_vf(pcifunc)) {
@@ -1330,10 +1510,13 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 	int index, blkaddr;
 
+<<<<<<< HEAD
 	/* only CGX or LBK interfaces have default entries */
 	if (is_cn20k(rvu->pdev) && !npc_is_cgx_or_lbk(rvu, pcifunc))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return;
@@ -1343,12 +1526,15 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
 				     pfvf->nix_rx_intf)) {
 		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
 						 nixlf, NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 		if (index < 0) {
 			dev_err(rvu->dev,
 				"%s: Error to get ucast entry for pcifunc=%#x\n",
 				__func__, pcifunc);
 			return;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		npc_enable_mcam_entry(rvu, mcam, blkaddr, index, enable);
 	}
 
@@ -1562,8 +1748,13 @@ static void npc_program_mkex_profile(struct rvu *rvu, int blkaddr,
 	npc_program_mkex_hash(rvu, blkaddr);
 }
 
+<<<<<<< HEAD
 int npc_fwdb_prfl_img_map(struct rvu *rvu, void __iomem **prfl_img_addr,
 			  u64 *size)
+=======
+static int npc_fwdb_prfl_img_map(struct rvu *rvu, void __iomem **prfl_img_addr,
+				 u64 *size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 prfl_addr, prfl_sz;
 
@@ -1619,7 +1810,11 @@ static void npc_load_mkex_profile(struct rvu *rvu, int blkaddr,
 			 */
 			if (!is_rvu_96xx_B0(rvu) ||
 			    mcam_kex->keyx_cfg[NIX_INTF_RX] == mcam_kex->keyx_cfg[NIX_INTF_TX])
+<<<<<<< HEAD
 				rvu->kpu.mcam_kex_prfl.mkex = mcam_kex;
+=======
+				rvu->kpu.mkex = mcam_kex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto program_mkex;
 		}
 
@@ -1629,17 +1824,29 @@ static void npc_load_mkex_profile(struct rvu *rvu, int blkaddr,
 	dev_warn(dev, "Failed to load requested profile: %s\n", mkex_profile);
 
 program_mkex:
+<<<<<<< HEAD
 	dev_info(rvu->dev, "Using %s mkex profile\n",
 		 rvu->kpu.mcam_kex_prfl.mkex->name);
 	/* Program selected mkex profile */
 	npc_program_mkex_profile(rvu, blkaddr, rvu->kpu.mcam_kex_prfl.mkex);
+=======
+	dev_info(rvu->dev, "Using %s mkex profile\n", rvu->kpu.mkex->name);
+	/* Program selected mkex profile */
+	npc_program_mkex_profile(rvu, blkaddr, rvu->kpu.mkex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mkex_prfl_addr)
 		iounmap(mkex_prfl_addr);
 }
 
+<<<<<<< HEAD
 void npc_config_kpuaction(struct rvu *rvu, int blkaddr,
 			  const struct npc_kpu_profile_action *kpuaction,
 			  int kpu, int entry, bool pkind)
+=======
+static void npc_config_kpuaction(struct rvu *rvu, int blkaddr,
+				 const struct npc_kpu_profile_action *kpuaction,
+				 int kpu, int entry, bool pkind)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct npc_kpu_action0 action0 = {0};
 	struct npc_kpu_action1 action1 = {0};
@@ -1702,7 +1909,11 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
 		    NPC_AF_KPUX_ENTRYX_CAMX(kpu, entry, 1), *(u64 *)&cam1);
 }
 
+<<<<<<< HEAD
 u64 npc_enable_mask(int count)
+=======
+static inline u64 enable_mask(int count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return (((count) < 64) ? ~(BIT_ULL(count) - 1) : (0x00ULL));
 }
@@ -1735,7 +1946,11 @@ static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
 
 	/* Enable all programmed entries */
 	num_entries = min_t(int, profile->action_entries, profile->cam_entries);
+<<<<<<< HEAD
 	entry_mask = npc_enable_mask(num_entries);
+=======
+	entry_mask = enable_mask(num_entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Disable first KPU_MAX_CST_ENT entries for built-in profile */
 	if (!rvu->kpu.custom)
 		entry_mask |= GENMASK_ULL(KPU_MAX_CST_ENT - 1, 0);
@@ -1744,15 +1959,23 @@ static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
 	if (num_entries > 64) {
 		rvu_write64(rvu, blkaddr,
 			    NPC_AF_KPUX_ENTRY_DISX(kpu, 1),
+<<<<<<< HEAD
 			    npc_enable_mask(num_entries - 64));
+=======
+			    enable_mask(num_entries - 64));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Enable this KPU */
 	rvu_write64(rvu, blkaddr, NPC_AF_KPUX_CFG(kpu), 0x01);
 }
 
+<<<<<<< HEAD
 static void npc_prepare_default_kpu(struct rvu *rvu,
 				    struct npc_kpu_profile_adapter *profile)
+=======
+static int npc_prepare_default_kpu(struct npc_kpu_profile_adapter *profile)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	profile->custom = 0;
 	profile->name = def_pfl_name;
@@ -1762,6 +1985,7 @@ static void npc_prepare_default_kpu(struct rvu *rvu,
 	profile->kpu = npc_kpu_profiles;
 	profile->kpus = ARRAY_SIZE(npc_kpu_profiles);
 	profile->lt_def = &npc_lt_defaults;
+<<<<<<< HEAD
 	profile->mkex_hash = &npc_mkex_hash_default;
 
 	if (!is_cn20k(rvu->pdev)) {
@@ -1776,24 +2000,38 @@ static void npc_prepare_default_kpu(struct rvu *rvu,
 	ikpu_action_entries[NPC_RX_CPT_HDR_PKIND].right = 0x1;
 
 	npc_cn20k_update_action_entries_n_flags(rvu, profile);
+=======
+	profile->mkex = &npc_mkex_default;
+	profile->mkex_hash = &npc_mkex_hash_default;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int npc_apply_custom_kpu(struct rvu *rvu,
 				struct npc_kpu_profile_adapter *profile)
 {
 	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
+<<<<<<< HEAD
 	struct npc_kpu_profile_action *action;
 	struct npc_kpu_profile_fwdata *fw;
+=======
+	struct npc_kpu_profile_fwdata *fw = rvu->kpu_fwdata;
+	struct npc_kpu_profile_action *action;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct npc_kpu_profile_cam *cam;
 	struct npc_kpu_fwdata *fw_kpu;
 	int entries;
 	u16 kpu, entry;
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		return npc_cn20k_apply_custom_kpu(rvu, profile);
 
 	fw = rvu->kpu_fwdata;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rvu->kpu_fwdata_sz < hdr_sz) {
 		dev_warn(rvu->dev, "Invalid KPU profile size\n");
 		return -EINVAL;
@@ -1834,7 +2072,11 @@ static int npc_apply_custom_kpu(struct rvu *rvu,
 	profile->custom = 1;
 	profile->name = fw->name;
 	profile->version = le64_to_cpu(fw->version);
+<<<<<<< HEAD
 	profile->mcam_kex_prfl.mkex = &fw->mkex;
+=======
+	profile->mkex = &fw->mkex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	profile->lt_def = &fw->lt_def;
 
 	for (kpu = 0; kpu < fw->kpus; kpu++) {
@@ -1948,7 +2190,11 @@ done:
 	return ret;
 }
 
+<<<<<<< HEAD
 void npc_load_kpu_profile(struct rvu *rvu)
+=======
+static void npc_load_kpu_profile(struct rvu *rvu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
 	const char *kpu_profile = rvu->kpu_pfl_name;
@@ -1959,7 +2205,11 @@ void npc_load_kpu_profile(struct rvu *rvu)
 	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
 		goto revert_to_default;
 	/* First prepare default KPU, then we'll customize top entries. */
+<<<<<<< HEAD
 	npc_prepare_default_kpu(rvu, profile);
+=======
+	npc_prepare_default_kpu(profile);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Order of preceedence for load loading NPC profile (high to low)
 	 * Firmware binary in filesystem.
@@ -2022,7 +2272,11 @@ program_kpu:
 	return;
 
 revert_to_default:
+<<<<<<< HEAD
 	npc_prepare_default_kpu(rvu, profile);
+=======
+	npc_prepare_default_kpu(profile);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
@@ -2083,6 +2337,7 @@ int npc_mcam_rsrcs_init(struct rvu *rvu, int blkaddr)
 	int cntr;
 	u64 cfg;
 
+<<<<<<< HEAD
 	cfg = (rvu_read64(rvu, blkaddr,
 			  NPC_AF_INTFX_KEX_CFG(0)) >> 32) & 0x07;
 	mcam->keysize = cfg;
@@ -2133,6 +2388,41 @@ int npc_mcam_rsrcs_init(struct rvu *rvu, int blkaddr)
 		mcam->nixlf_offset = mcam->bmap_entries;
 		mcam->pf_offset = mcam->nixlf_offset + nixlf_count;
 	}
+=======
+	/* Actual number of MCAM entries vary by entry size */
+	cfg = (rvu_read64(rvu, blkaddr,
+			  NPC_AF_INTFX_KEX_CFG(0)) >> 32) & 0x07;
+	mcam->total_entries = (mcam->banks / BIT_ULL(cfg)) * mcam->banksize;
+	mcam->keysize = cfg;
+
+	/* Number of banks combined per MCAM entry */
+	if (cfg == NPC_MCAM_KEY_X4)
+		mcam->banks_per_entry = 4;
+	else if (cfg == NPC_MCAM_KEY_X2)
+		mcam->banks_per_entry = 2;
+	else
+		mcam->banks_per_entry = 1;
+
+	/* Reserve one MCAM entry for each of the NIX LF to
+	 * guarantee space to install default matching DMAC rule.
+	 * Also reserve 2 MCAM entries for each PF for default
+	 * channel based matching or 'bcast & promisc' matching to
+	 * support BCAST and PROMISC modes of operation for PFs.
+	 * PF0 is excluded.
+	 */
+	rsvd = (nixlf_count * RSVD_MCAM_ENTRIES_PER_NIXLF) +
+		((rvu->hw->total_pfs - 1) * RSVD_MCAM_ENTRIES_PER_PF);
+	if (mcam->total_entries <= rsvd) {
+		dev_warn(rvu->dev,
+			 "Insufficient NPC MCAM size %d for pkt I/O, exiting\n",
+			 mcam->total_entries);
+		return -ENOMEM;
+	}
+
+	mcam->bmap_entries = mcam->total_entries - rsvd;
+	mcam->nixlf_offset = mcam->bmap_entries;
+	mcam->pf_offset = mcam->nixlf_offset + nixlf_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate bitmaps for managing MCAM entries */
 	mcam->bmap = bitmap_zalloc(mcam->bmap_entries, GFP_KERNEL);
@@ -2156,6 +2446,7 @@ int npc_mcam_rsrcs_init(struct rvu *rvu, int blkaddr)
 	 * allocations and another 1/8th at the top for high priority
 	 * allocations.
 	 */
+<<<<<<< HEAD
 	if (!is_cn20k(rvu->pdev)) {
 		mcam->lprio_count = mcam->bmap_entries / 8;
 		if (mcam->lprio_count > BITS_PER_LONG)
@@ -2165,6 +2456,15 @@ int npc_mcam_rsrcs_init(struct rvu *rvu, int blkaddr)
 		mcam->hprio_count = mcam->lprio_count;
 		mcam->hprio_end = mcam->hprio_count;
 	}
+=======
+	mcam->lprio_count = mcam->bmap_entries / 8;
+	if (mcam->lprio_count > BITS_PER_LONG)
+		mcam->lprio_count = round_down(mcam->lprio_count,
+					       BITS_PER_LONG);
+	mcam->lprio_start = mcam->bmap_entries - mcam->lprio_count;
+	mcam->hprio_count = mcam->lprio_count;
+	mcam->hprio_end = mcam->hprio_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Allocate bitmap for managing MCAM counters and memory
 	 * for saving counter to RVU PFFUNC allocation mapping.
@@ -2244,6 +2544,7 @@ static void rvu_npc_hw_init(struct rvu *rvu, int blkaddr)
 	hw->npc_pkinds = (npc_const1 >> 12) & 0xFFULL;
 	hw->npc_kpu_entries = npc_const1 & 0xFFFULL;
 	hw->npc_kpus = (npc_const >> 8) & 0x1FULL;
+<<<<<<< HEAD
 	/* For Cn20k silicon, check if enhanced parser
 	 * is present, then set the NUM_KPMS = NUM_KPUS / 2 and
 	 * number of LDATA extractors per KEX.
@@ -2257,6 +2558,8 @@ static void rvu_npc_hw_init(struct rvu *rvu, int blkaddr)
 		hw->npc_kex_extr = (npc_const1 >> 36) & 0x3FULL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hw->npc_intfs = npc_const & 0xFULL;
 	hw->npc_counters = (npc_const >> 48) & 0xFFFFULL;
 
@@ -2287,6 +2590,7 @@ static void rvu_npc_hw_init(struct rvu *rvu, int blkaddr)
 
 static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
 {
+<<<<<<< HEAD
 	struct npc_mcam_kex_extr *mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
 	struct npc_mcam_kex *mkex = rvu->kpu.mcam_kex_prfl.mkex;
 	struct npc_mcam *mcam = &rvu->hw->mcam;
@@ -2310,13 +2614,34 @@ static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
 	rx_kex = keyx_cfg[NIX_INTF_RX];
 	tx_kex = keyx_cfg[NIX_INTF_TX];
 
+=======
+	struct npc_mcam_kex *mkex = rvu->kpu.mkex;
+	struct npc_mcam *mcam = &rvu->hw->mcam;
+	struct rvu_hwinfo *hw = rvu->hw;
+	u64 nibble_ena, rx_kex, tx_kex;
+	u8 intf;
+
+	/* Reserve last counter for MCAM RX miss action which is set to
+	 * drop packet. This way we will know how many pkts didn't match
+	 * any MCAM entry.
+	 */
+	mcam->counters.max--;
+	mcam->rx_miss_act_cntr = mcam->counters.max;
+
+	rx_kex = mkex->keyx_cfg[NIX_INTF_RX];
+	tx_kex = mkex->keyx_cfg[NIX_INTF_TX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nibble_ena = FIELD_GET(NPC_PARSE_NIBBLE, rx_kex);
 
 	nibble_ena = rvu_npc_get_tx_nibble_cfg(rvu, nibble_ena);
 	if (nibble_ena) {
 		tx_kex &= ~NPC_PARSE_NIBBLE;
 		tx_kex |= FIELD_PREP(NPC_PARSE_NIBBLE, nibble_ena);
+<<<<<<< HEAD
 		keyx_cfg[NIX_INTF_TX] = tx_kex;
+=======
+		mkex->keyx_cfg[NIX_INTF_TX] = tx_kex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Configure RX interfaces */
@@ -2328,19 +2653,27 @@ static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
 		rvu_write64(rvu, blkaddr, NPC_AF_INTFX_KEX_CFG(intf),
 			    rx_kex);
 
+<<<<<<< HEAD
 		if (is_cn20k(rvu->pdev))
 			reg = NPC_AF_INTFX_MISS_ACTX(intf, 0);
 		else
 			reg = NPC_AF_INTFX_MISS_ACT(intf);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* If MCAM lookup doesn't result in a match, drop the received
 		 * packet. And map this action to a counter to count dropped
 		 * packets.
 		 */
+<<<<<<< HEAD
 		rvu_write64(rvu, blkaddr, reg, NIX_RX_ACTIONOP_DROP);
 
 		if (is_cn20k(rvu->pdev))
 			continue;
+=======
+		rvu_write64(rvu, blkaddr,
+			    NPC_AF_INTFX_MISS_ACT(intf), NIX_RX_ACTIONOP_DROP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* NPC_AF_INTFX_MISS_STAT_ACT[14:12] - counter[11:9]
 		 * NPC_AF_INTFX_MISS_STAT_ACT[8:0] - counter[8:0]
@@ -2360,6 +2693,7 @@ static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
 		rvu_write64(rvu, blkaddr, NPC_AF_INTFX_KEX_CFG(intf),
 			    tx_kex);
 
+<<<<<<< HEAD
 		if (is_cn20k(rvu->pdev))
 			reg = NPC_AF_INTFX_MISS_ACTX(intf, 0);
 		else
@@ -2369,6 +2703,14 @@ static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
 		 * transmit the packet on NIX LF SQ's default channel.
 		 */
 		rvu_write64(rvu, blkaddr, reg, NIX_TX_ACTIONOP_UCAST_DEFAULT);
+=======
+		/* Set TX miss action to UCAST_DEFAULT i.e
+		 * transmit the packet on NIX LF SQ's default channel.
+		 */
+		rvu_write64(rvu, blkaddr,
+			    NPC_AF_INTFX_MISS_ACT(intf),
+			    NIX_TX_ACTIONOP_UCAST_DEFAULT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2409,10 +2751,14 @@ int rvu_npc_init(struct rvu *rvu)
 		return -ENOMEM;
 
 	/* Configure KPU profile */
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		npc_cn20k_parser_profile_init(rvu, blkaddr);
 	else
 		npc_parser_profile_init(rvu, blkaddr);
+=======
+	npc_parser_profile_init(rvu, blkaddr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Config Outer L2, IPv4's NPC layer info */
 	rvu_write64(rvu, blkaddr, NPC_AF_PCK_DEF_OL2,
@@ -2443,10 +2789,14 @@ int rvu_npc_init(struct rvu *rvu)
 
 	npc_config_secret_key(rvu, blkaddr);
 	/* Configure MKEX profile */
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		npc_cn20k_load_mkex_profile(rvu, blkaddr, rvu->mkex_pfl_name);
 	else
 		npc_load_mkex_profile(rvu, blkaddr, rvu->mkex_pfl_name);
+=======
+	npc_load_mkex_profile(rvu, blkaddr, rvu->mkex_pfl_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = npc_mcam_rsrcs_init(rvu, blkaddr);
 	if (err)
@@ -2456,6 +2806,7 @@ int rvu_npc_init(struct rvu *rvu)
 	if (err) {
 		dev_err(rvu->dev,
 			"Incorrect mkex profile loaded using default mkex\n");
+<<<<<<< HEAD
 		if (is_cn20k(rvu->pdev))
 			npc_cn20k_load_mkex_profile(rvu, blkaddr, def_pfl_name);
 		else
@@ -2465,6 +2816,11 @@ int rvu_npc_init(struct rvu *rvu)
 	if (is_cn20k(rvu->pdev))
 		return npc_cn20k_init(rvu);
 
+=======
+		npc_load_mkex_profile(rvu, blkaddr, def_pfl_name);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2480,9 +2836,12 @@ void rvu_npc_freemem(struct rvu *rvu)
 	else
 		kfree(rvu->kpu_fwdata);
 	mutex_destroy(&mcam->lock);
+<<<<<<< HEAD
 
 	if (is_cn20k(rvu->pdev))
 		npc_cn20k_deinit(rvu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rvu_npc_get_mcam_entry_alloc_info(struct rvu *rvu, u16 pcifunc,
@@ -2523,8 +2882,13 @@ void rvu_npc_get_mcam_counter_alloc_info(struct rvu *rvu, u16 pcifunc,
 	}
 }
 
+<<<<<<< HEAD
 int npc_mcam_verify_entry(struct npc_mcam *mcam,
 			  u16 pcifunc, int entry)
+=======
+static int npc_mcam_verify_entry(struct npc_mcam *mcam,
+				 u16 pcifunc, int entry)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* verify AF installed entries */
 	if (is_pffunc_af(pcifunc))
@@ -2566,10 +2930,13 @@ static void npc_map_mcam_entry_and_cntr(struct rvu *rvu, struct npc_mcam *mcam,
 	/* Set mapping and increment counter's refcnt */
 	mcam->entry2cntr_map[entry] = cntr;
 	mcam->cntr_refcnt[cntr]++;
+<<<<<<< HEAD
 
 	if (is_cn20k(rvu->pdev))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Enable stats */
 	rvu_write64(rvu, blkaddr,
 		    NPC_AF_MCAMEX_BANKX_STAT_ACT(index, bank),
@@ -2586,10 +2953,13 @@ static void npc_unmap_mcam_entry_and_cntr(struct rvu *rvu,
 	/* Remove mapping and reduce counter's refcnt */
 	mcam->entry2cntr_map[entry] = NPC_MCAM_INVALID_MAP;
 	mcam->cntr_refcnt[cntr]--;
+<<<<<<< HEAD
 
 	if (is_cn20k(rvu->pdev))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Disable stats */
 	rvu_write64(rvu, blkaddr,
 		    NPC_AF_MCAMEX_BANKX_STAT_ACT(index, bank), 0x00);
@@ -2599,7 +2969,11 @@ static void npc_unmap_mcam_entry_and_cntr(struct rvu *rvu,
  * reverse bitmap too. Should be called with
  * 'mcam->lock' held.
  */
+<<<<<<< HEAD
 void npc_mcam_set_bit(struct npc_mcam *mcam, u16 index)
+=======
+static void npc_mcam_set_bit(struct npc_mcam *mcam, u16 index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 entry, rentry;
 
@@ -2615,7 +2989,11 @@ void npc_mcam_set_bit(struct npc_mcam *mcam, u16 index)
  * reverse bitmap too. Should be called with
  * 'mcam->lock' held.
  */
+<<<<<<< HEAD
 void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index)
+=======
+static void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 entry, rentry;
 
@@ -2630,6 +3008,7 @@ void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index)
 static void npc_mcam_free_all_entries(struct rvu *rvu, struct npc_mcam *mcam,
 				      int blkaddr, u16 pcifunc)
 {
+<<<<<<< HEAD
 	u16 dft_idxs[NPC_DFT_RULE_MAX_ID] = {[0 ... NPC_DFT_RULE_MAX_ID - 1] = USHRT_MAX};
 	bool cn20k_dft_rl;
 	u16 index, cntr;
@@ -2682,6 +3061,27 @@ static void npc_mcam_free_all_entries(struct rvu *rvu, struct npc_mcam *mcam,
 			dev_err(rvu->dev,
 				"Failed to free mcam idx=%u pcifunc=%#x\n",
 				index, pcifunc);
+=======
+	u16 index, cntr;
+
+	/* Scan all MCAM entries and free the ones mapped to 'pcifunc' */
+	for (index = 0; index < mcam->bmap_entries; index++) {
+		if (mcam->entry2pfvf_map[index] == pcifunc) {
+			mcam->entry2pfvf_map[index] = NPC_MCAM_INVALID_MAP;
+			/* Free the entry in bitmap */
+			npc_mcam_clear_bit(mcam, index);
+			/* Disable the entry */
+			npc_enable_mcam_entry(rvu, mcam, blkaddr, index, false);
+
+			/* Update entry2counter mapping */
+			cntr = mcam->entry2cntr_map[index];
+			if (cntr != NPC_MCAM_INVALID_MAP)
+				npc_unmap_mcam_entry_and_cntr(rvu, mcam,
+							      blkaddr, index,
+							      cntr);
+			mcam->entry2target_pffunc[index] = 0x0;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2770,7 +3170,11 @@ npc_get_mcam_search_range_priority(struct npc_mcam *mcam,
 {
 	u16 fcnt;
 
+<<<<<<< HEAD
 	if (req->ref_prio == NPC_MCAM_HIGHER_PRIO)
+=======
+	if (req->priority == NPC_MCAM_HIGHER_PRIO)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto hprio;
 
 	/* For a low priority entry allocation
@@ -2827,14 +3231,20 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
 				  struct npc_mcam_alloc_entry_req *req,
 				  struct npc_mcam_alloc_entry_rsp *rsp)
 {
+<<<<<<< HEAD
 	struct rvu_hwinfo *hw = container_of(mcam, struct rvu_hwinfo, mcam);
 	u16 entry_list[NPC_MAX_NONCONTIG_ENTRIES];
 	u16 fcnt, hp_fcnt, lp_fcnt;
 	struct rvu *rvu = hw->rvu;
+=======
+	u16 entry_list[NPC_MAX_NONCONTIG_ENTRIES];
+	u16 fcnt, hp_fcnt, lp_fcnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u16 start, end, index;
 	int entry, next_start;
 	bool reverse = false;
 	unsigned long *bmap;
+<<<<<<< HEAD
 	int ret, limit = 0;
 	u16 max_contig;
 
@@ -2901,6 +3311,10 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
 	return 0;
 
 not_cn20k:
+=======
+	u16 max_contig;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 
 	/* Check if there are any free entries */
@@ -2936,7 +3350,11 @@ not_cn20k:
 		goto lprio_alloc;
 
 	/* Get the search range for priority allocation request */
+<<<<<<< HEAD
 	if (req->ref_prio) {
+=======
+	if (req->priority) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		npc_get_mcam_search_range_priority(mcam, req,
 						   &start, &end, &reverse);
 		goto alloc;
@@ -2977,11 +3395,19 @@ lprio_alloc:
 		 * and not in mid zone.
 		 */
 		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
+<<<<<<< HEAD
 		    req->ref_prio == NPC_MCAM_HIGHER_PRIO)
 			end = req->ref_entry;
 
 		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
 		    req->ref_prio == NPC_MCAM_LOWER_PRIO)
+=======
+		    req->priority == NPC_MCAM_HIGHER_PRIO)
+			end = req->ref_entry;
+
+		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
+		    req->priority == NPC_MCAM_LOWER_PRIO)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			start = req->ref_entry;
 	}
 
@@ -3030,7 +3456,11 @@ alloc:
 	/* If allocating requested no of entries is unsucessful,
 	 * expand the search range to full bitmap length and retry.
 	 */
+<<<<<<< HEAD
 	if (!req->ref_prio && rsp->count < req->count &&
+=======
+	if (!req->priority && (rsp->count < req->count) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    ((end - start) != mcam->bmap_entries)) {
 		reverse = true;
 		start = 0;
@@ -3041,14 +3471,23 @@ alloc:
 	/* For priority entry allocation requests, if allocation is
 	 * failed then expand search to max possible range and retry.
 	 */
+<<<<<<< HEAD
 	if (req->ref_prio && rsp->count < req->count) {
 		if (req->ref_prio == NPC_MCAM_LOWER_PRIO &&
+=======
+	if (req->priority && rsp->count < req->count) {
+		if (req->priority == NPC_MCAM_LOWER_PRIO &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (start != (req->ref_entry + 1))) {
 			start = req->ref_entry + 1;
 			end = mcam->bmap_entries;
 			reverse = false;
 			goto alloc;
+<<<<<<< HEAD
 		} else if ((req->ref_prio == NPC_MCAM_HIGHER_PRIO) &&
+=======
+		} else if ((req->priority == NPC_MCAM_HIGHER_PRIO) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   ((end - start) != req->ref_entry)) {
 			start = 0;
 			end = req->ref_entry;
@@ -3102,10 +3541,13 @@ int npc_config_cntr_default_entries(struct rvu *rvu, bool enable)
 	struct rvu_npc_mcam_rule *rule;
 	int blkaddr;
 
+<<<<<<< HEAD
 	/* Counter is set for each rule by default */
 	if (is_cn20k(rvu->pdev))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return -EINVAL;
@@ -3166,9 +3608,15 @@ int rvu_mbox_handler_npc_mcam_alloc_entry(struct rvu *rvu,
 	/* ref_entry can't be '0' if requested priority is high.
 	 * Can't be last entry if requested priority is low.
 	 */
+<<<<<<< HEAD
 	if ((!req->ref_entry && req->ref_prio == NPC_MCAM_HIGHER_PRIO) ||
 	    (req->ref_entry == mcam->bmap_entries &&
 	     req->ref_prio == NPC_MCAM_LOWER_PRIO))
+=======
+	if ((!req->ref_entry && req->priority == NPC_MCAM_HIGHER_PRIO) ||
+	    ((req->ref_entry == mcam->bmap_entries) &&
+	     req->priority == NPC_MCAM_LOWER_PRIO))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NPC_MCAM_INVALID_REQ;
 
 	/* Since list of allocated indices needs to be sent to requester,
@@ -3197,8 +3645,11 @@ int rvu_mbox_handler_npc_mcam_free_entry(struct rvu *rvu,
 	int blkaddr, rc = 0;
 	u16 cntr;
 
+<<<<<<< HEAD
 	req->entry = npc_cn20k_vidx2idx(req->entry);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
@@ -3227,6 +3678,7 @@ int rvu_mbox_handler_npc_mcam_free_entry(struct rvu *rvu,
 		npc_unmap_mcam_entry_and_cntr(rvu, mcam, blkaddr,
 					      req->entry, cntr);
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		rc = npc_cn20k_idx_free(rvu, &req->entry, 1);
 		if (rc)
@@ -3235,6 +3687,8 @@ int rvu_mbox_handler_npc_mcam_free_entry(struct rvu *rvu,
 				req->entry);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	goto exit;
 
 free_all:
@@ -3288,6 +3742,7 @@ int rvu_mbox_handler_npc_mcam_write_entry(struct rvu *rvu,
 	if (rc)
 		goto exit;
 
+<<<<<<< HEAD
 	if (!is_cn20k(rvu->pdev)) {
 		/* Verify counter in SoCs other than cn20k */
 		if (req->set_cntr &&
@@ -3295,6 +3750,12 @@ int rvu_mbox_handler_npc_mcam_write_entry(struct rvu *rvu,
 			rc = NPC_MCAM_INVALID_REQ;
 			goto exit;
 		}
+=======
+	if (req->set_cntr &&
+	    npc_mcam_verify_counter(mcam, pcifunc, req->cntr)) {
+		rc = NPC_MCAM_INVALID_REQ;
+		goto exit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!is_npc_interface_valid(rvu, req->intf)) {
@@ -3332,8 +3793,11 @@ int rvu_mbox_handler_npc_mcam_ena_entry(struct rvu *rvu,
 	u16 pcifunc = req->hdr.pcifunc;
 	int blkaddr, rc;
 
+<<<<<<< HEAD
 	req->entry = npc_cn20k_vidx2idx(req->entry);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
@@ -3357,8 +3821,11 @@ int rvu_mbox_handler_npc_mcam_dis_entry(struct rvu *rvu,
 	u16 pcifunc = req->hdr.pcifunc;
 	int blkaddr, rc;
 
+<<<<<<< HEAD
 	req->entry = npc_cn20k_vidx2idx(req->entry);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
@@ -3393,8 +3860,13 @@ int rvu_mbox_handler_npc_mcam_shift_entry(struct rvu *rvu,
 
 	mutex_lock(&mcam->lock);
 	for (index = 0; index < req->shift_count; index++) {
+<<<<<<< HEAD
 		old_entry = npc_cn20k_vidx2idx(req->curr_entry[index]);
 		new_entry = npc_cn20k_vidx2idx(req->new_entry[index]);
+=======
+		old_entry = req->curr_entry[index];
+		new_entry = req->new_entry[index];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Check if both old and new entries are valid and
 		 * does belong to this PFFUNC or not.
@@ -3417,10 +3889,14 @@ int rvu_mbox_handler_npc_mcam_shift_entry(struct rvu *rvu,
 		npc_enable_mcam_entry(rvu, mcam, blkaddr, new_entry, false);
 
 		/* Copy rule from old entry to new entry */
+<<<<<<< HEAD
 		if (npc_copy_mcam_entry(rvu, mcam, blkaddr, old_entry, new_entry)) {
 			rc = NPC_MCAM_INVALID_REQ;
 			break;
 		}
+=======
+		npc_copy_mcam_entry(rvu, mcam, blkaddr, old_entry, new_entry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Copy counter mapping, if any */
 		cntr = mcam->entry2cntr_map[old_entry];
@@ -3438,8 +3914,12 @@ int rvu_mbox_handler_npc_mcam_shift_entry(struct rvu *rvu,
 
 	/* If shift has failed then report the failed index */
 	if (index != req->shift_count) {
+<<<<<<< HEAD
 		if (!rc)
 			rc = NPC_MCAM_PERM_DENIED;
+=======
+		rc = NPC_MCAM_PERM_DENIED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rsp->failed_entry_idx = index;
 	}
 
@@ -3470,6 +3950,10 @@ static int __npc_mcam_alloc_counter(struct rvu *rvu,
 	if (!req->contig && req->count > NPC_MAX_NONCONTIG_COUNTERS)
 		return NPC_MCAM_INVALID_REQ;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check if unused counters are available or not */
 	if (!rvu_rsrc_free_count(&mcam->counters)) {
 		return NPC_MCAM_ALLOC_FAILED;
@@ -3514,10 +3998,13 @@ int rvu_mbox_handler_npc_mcam_alloc_counter(struct rvu *rvu,
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 	int err;
 
+<<<<<<< HEAD
 	/* Counter is not supported for CN20K */
 	if (is_cn20k(rvu->pdev))
 		return NPC_MCAM_INVALID_REQ;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 
 	err = __npc_mcam_alloc_counter(rvu, req, rsp);
@@ -3572,10 +4059,13 @@ int rvu_mbox_handler_npc_mcam_free_counter(struct rvu *rvu,
 	struct npc_mcam *mcam = &rvu->hw->mcam;
 	int err;
 
+<<<<<<< HEAD
 	/* Counter is not supported for CN20K */
 	if (is_cn20k(rvu->pdev))
 		return NPC_MCAM_INVALID_REQ;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 
 	err = __npc_mcam_free_counter(rvu, req, rsp);
@@ -3634,10 +4124,13 @@ int rvu_mbox_handler_npc_mcam_unmap_counter(struct rvu *rvu,
 	u16 index, entry = 0;
 	int blkaddr, rc;
 
+<<<<<<< HEAD
 	/* Counter is not supported for CN20K */
 	if (is_cn20k(rvu->pdev))
 		return NPC_MCAM_INVALID_REQ;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
@@ -3682,12 +4175,17 @@ int rvu_mbox_handler_npc_mcam_clear_counter(struct rvu *rvu,
 		struct npc_mcam_oper_counter_req *req, struct msg_rsp *rsp)
 {
 	struct npc_mcam *mcam = &rvu->hw->mcam;
+<<<<<<< HEAD
 	int blkaddr, err, index, bank;
+=======
+	int blkaddr, err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
 
+<<<<<<< HEAD
 	/* For cn20k, npc mcam index is passed as cntr, as each
 	 * mcam entry has corresponding counter.
 	 */
@@ -3699,6 +4197,8 @@ int rvu_mbox_handler_npc_mcam_clear_counter(struct rvu *rvu,
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 	err = npc_mcam_verify_counter(mcam, req->hdr.pcifunc, req->cntr);
 	mutex_unlock(&mcam->lock);
@@ -3715,13 +4215,18 @@ int rvu_mbox_handler_npc_mcam_counter_stats(struct rvu *rvu,
 			struct npc_mcam_oper_counter_rsp *rsp)
 {
 	struct npc_mcam *mcam = &rvu->hw->mcam;
+<<<<<<< HEAD
 	int blkaddr, err, index, bank;
 	u64 regval;
+=======
+	int blkaddr, err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
 
+<<<<<<< HEAD
 	/* In CN20K, mcam index is passed cntr. Each cn20k mcam entry
 	 * has its own counter. No need to verify the counter index.
 	 */
@@ -3735,6 +4240,8 @@ int rvu_mbox_handler_npc_mcam_counter_stats(struct rvu *rvu,
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&mcam->lock);
 	err = npc_mcam_verify_counter(mcam, req->hdr.pcifunc, req->cntr);
 	mutex_unlock(&mcam->lock);
@@ -3772,7 +4279,11 @@ int rvu_mbox_handler_npc_mcam_alloc_and_write_entry(struct rvu *rvu,
 	/* Try to allocate a MCAM entry */
 	entry_req.hdr.pcifunc = req->hdr.pcifunc;
 	entry_req.contig = true;
+<<<<<<< HEAD
 	entry_req.ref_prio = req->ref_prio;
+=======
+	entry_req.priority = req->priority;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	entry_req.ref_entry = req->ref_entry;
 	entry_req.count = 1;
 
@@ -4006,12 +4517,15 @@ int rvu_mbox_handler_npc_read_base_steer_rule(struct rvu *rvu,
 	/* Read the default ucast entry if there is no pkt steering rule */
 	index = npc_get_nixlf_mcam_index(mcam, pcifunc, nixlf,
 					 NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 	if (index < 0) {
 		mutex_unlock(&mcam->lock);
 		rc = NIX_AF_ERR_AF_LF_INVALID;
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 read_entry:
 	/* Read the mcam entry */
 	npc_read_mcam_entry(rvu, mcam, blkaddr, index, &rsp->entry, &intf,
@@ -4035,11 +4549,16 @@ int rvu_mbox_handler_npc_mcam_entry_stats(struct rvu *rvu,
 	if (blkaddr < 0)
 		return NPC_MCAM_INVALID_REQ;
 
+<<<<<<< HEAD
 	req->entry = npc_cn20k_vidx2idx(req->entry);
+=======
+	mutex_lock(&mcam->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	index = req->entry & (mcam->banksize - 1);
 	bank = npc_get_bank(mcam, req->entry);
 
+<<<<<<< HEAD
 	mutex_lock(&mcam->lock);
 
 	if (is_cn20k(rvu->pdev)) {
@@ -4055,6 +4574,10 @@ int rvu_mbox_handler_npc_mcam_entry_stats(struct rvu *rvu,
 	/* read MCAM entry STAT_ACT register */
 	regval = rvu_read64(rvu, blkaddr, NPC_AF_MCAMEX_BANKX_STAT_ACT(index,
 								       bank));
+=======
+	/* read MCAM entry STAT_ACT register */
+	regval = rvu_read64(rvu, blkaddr, NPC_AF_MCAMEX_BANKX_STAT_ACT(index, bank));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!(regval & rvu->hw->npc_stat_ena)) {
 		rsp->stat_ena = 0;
@@ -4085,12 +4608,15 @@ void rvu_npc_clear_ucast_entry(struct rvu *rvu, int pcifunc, int nixlf)
 
 	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
 					     nixlf, NIXLF_UCAST_ENTRY);
+<<<<<<< HEAD
 	if (ucast_idx < 0) {
 		dev_err(rvu->dev,
 			"%s: Error to get ucast entry for pcifunc=%#x\n",
 			__func__, pcifunc);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	npc_enable_mcam_entry(rvu, mcam, blkaddr, ucast_idx, false);
 

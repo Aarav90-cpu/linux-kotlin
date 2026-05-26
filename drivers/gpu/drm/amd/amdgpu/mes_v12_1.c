@@ -31,8 +31,11 @@
 #include "gc/gc_11_0_0_default.h"
 #include "v12_structs.h"
 #include "mes_v12_api_def.h"
+<<<<<<< HEAD
 #include "gfx_v12_1_pkt.h"
 #include "sdma_v7_1_0_pkt_open.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_FIRMWARE("amdgpu/gc_12_1_0_mes.bin");
 MODULE_FIRMWARE("amdgpu/gc_12_1_0_mes1.bin");
@@ -43,7 +46,10 @@ static int mes_v12_1_xcc_hw_init(struct amdgpu_ip_block *ip_block, int xcc_id);
 static int mes_v12_1_hw_fini(struct amdgpu_ip_block *ip_block);
 static int mes_v12_1_kiq_hw_init(struct amdgpu_device *adev, uint32_t xcc_id);
 static int mes_v12_1_kiq_hw_fini(struct amdgpu_device *adev, uint32_t xcc_id);
+<<<<<<< HEAD
 static int mes_v12_1_self_test(struct amdgpu_device *adev, int xcc_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MES_EOP_SIZE   2048
 
@@ -494,12 +500,25 @@ static int mes_v12_1_query_sched_status(struct amdgpu_mes *mes,
 }
 static uint32_t mes_v12_1_get_xcc_from_reg(uint32_t reg_offset)
 {
+<<<<<<< HEAD
 	return ((reg_offset >> 16) & 0x7);
 }
 
 static void mes_v12_1_get_rrmt(uint32_t reg, uint32_t xcc_id,
 			       struct RRMT_OPTION *rrmt_opt,
 			       uint32_t *out_reg)
+=======
+	/* Check xcc reg offset range */
+	uint32_t xcc = (reg_offset & XCC_MID_MASK) ? 4 : 0;
+	/* Each XCC has two register ranges.
+	 * These are represented in reg_offset[17:16]
+	 */
+	return ((reg_offset >> 16) & 0x3) + xcc;
+}
+
+static void mes_v12_1_get_rrmt(uint32_t reg, uint32_t xcc_id,
+				 struct RRMT_OPTION *rrmt_opt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	uint32_t normalized_reg = soc_v1_0_normalize_xcc_reg_offset(reg);
 
@@ -508,12 +527,17 @@ static void mes_v12_1_get_rrmt(uint32_t reg, uint32_t xcc_id,
 		rrmt_opt->mode = (xcc_id == rrmt_opt->xcd_die_id) ?
 			 MES_RRMT_MODE_LOCAL_XCD : MES_RRMT_MODE_REMOTE_XCD;
 	} else {
+<<<<<<< HEAD
 		rrmt_opt->mode = MES_RRMT_MODE_REMOTE_MID;
 		if (soc_v1_0_mid1_reg_range(reg))
 			rrmt_opt->mid_die_id = 1;
 	}
 
 	*out_reg = soc_v1_0_normalize_reg_offset(reg);
+=======
+		rrmt_opt->mode = MES_RRMT_MODE_LOCAL_REMOTE_AID;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mes_v12_1_misc_op(struct amdgpu_mes *mes,
@@ -537,6 +561,7 @@ static int mes_v12_1_misc_op(struct amdgpu_mes *mes,
 	switch (input->op) {
 	case MES_MISC_OP_READ_REG:
 		misc_pkt.opcode = MESAPI_MISC__READ_REG;
+<<<<<<< HEAD
 		misc_pkt.read_reg.buffer_addr = input->read_reg.buffer_addr;
 		mes_v12_1_get_rrmt(input->read_reg.reg_offset,
 				   GET_INST(GC, input->xcc_id),
@@ -550,23 +575,59 @@ static int mes_v12_1_misc_op(struct amdgpu_mes *mes,
 				   GET_INST(GC, input->xcc_id),
 				   &misc_pkt.write_reg.rrmt_opt,
 				   &misc_pkt.write_reg.reg_offset);
+=======
+		misc_pkt.read_reg.reg_offset = input->read_reg.reg_offset;
+		misc_pkt.read_reg.buffer_addr = input->read_reg.buffer_addr;
+		mes_v12_1_get_rrmt(input->read_reg.reg_offset,
+				   GET_INST(GC, input->xcc_id),
+				   &misc_pkt.read_reg.rrmt_opt);
+		if (misc_pkt.read_reg.rrmt_opt.mode != MES_RRMT_MODE_REMOTE_MID) {
+			misc_pkt.read_reg.reg_offset =
+				soc_v1_0_normalize_xcc_reg_offset(misc_pkt.read_reg.reg_offset);
+		}
+		break;
+	case MES_MISC_OP_WRITE_REG:
+		misc_pkt.opcode = MESAPI_MISC__WRITE_REG;
+		misc_pkt.write_reg.reg_offset = input->write_reg.reg_offset;
+		misc_pkt.write_reg.reg_value = input->write_reg.reg_value;
+		mes_v12_1_get_rrmt(input->write_reg.reg_offset,
+				   GET_INST(GC, input->xcc_id),
+				   &misc_pkt.write_reg.rrmt_opt);
+		if (misc_pkt.write_reg.rrmt_opt.mode != MES_RRMT_MODE_REMOTE_MID) {
+			misc_pkt.write_reg.reg_offset =
+				soc_v1_0_normalize_xcc_reg_offset(misc_pkt.write_reg.reg_offset);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MES_MISC_OP_WRM_REG_WAIT:
 		misc_pkt.opcode = MESAPI_MISC__WAIT_REG_MEM;
 		misc_pkt.wait_reg_mem.op = WRM_OPERATION__WAIT_REG_MEM;
 		misc_pkt.wait_reg_mem.reference = input->wrm_reg.ref;
 		misc_pkt.wait_reg_mem.mask = input->wrm_reg.mask;
+<<<<<<< HEAD
 		misc_pkt.wait_reg_mem.reg_offset2 = 0;
 		mes_v12_1_get_rrmt(input->wrm_reg.reg0,
 				   GET_INST(GC, input->xcc_id),
 				   &misc_pkt.wait_reg_mem.rrmt_opt1,
 				   &misc_pkt.wait_reg_mem.reg_offset1);
+=======
+		misc_pkt.wait_reg_mem.reg_offset1 = input->wrm_reg.reg0;
+		misc_pkt.wait_reg_mem.reg_offset2 = 0;
+		mes_v12_1_get_rrmt(input->wrm_reg.reg0,
+				   GET_INST(GC, input->xcc_id),
+				   &misc_pkt.wait_reg_mem.rrmt_opt1);
+		if (misc_pkt.wait_reg_mem.rrmt_opt1.mode != MES_RRMT_MODE_REMOTE_MID) {
+			misc_pkt.wait_reg_mem.reg_offset1 =
+				soc_v1_0_normalize_xcc_reg_offset(misc_pkt.wait_reg_mem.reg_offset1);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MES_MISC_OP_WRM_REG_WR_WAIT:
 		misc_pkt.opcode = MESAPI_MISC__WAIT_REG_MEM;
 		misc_pkt.wait_reg_mem.op = WRM_OPERATION__WR_WAIT_WR_REG;
 		misc_pkt.wait_reg_mem.reference = input->wrm_reg.ref;
 		misc_pkt.wait_reg_mem.mask = input->wrm_reg.mask;
+<<<<<<< HEAD
 		mes_v12_1_get_rrmt(input->wrm_reg.reg0,
 				   GET_INST(GC, input->xcc_id),
 				   &misc_pkt.wait_reg_mem.rrmt_opt1,
@@ -575,6 +636,25 @@ static int mes_v12_1_misc_op(struct amdgpu_mes *mes,
 				   GET_INST(GC, input->xcc_id),
 				   &misc_pkt.wait_reg_mem.rrmt_opt2,
 				   &misc_pkt.wait_reg_mem.reg_offset2);
+=======
+		misc_pkt.wait_reg_mem.reg_offset1 = input->wrm_reg.reg0;
+		misc_pkt.wait_reg_mem.reg_offset2 = input->wrm_reg.reg1;
+		mes_v12_1_get_rrmt(input->wrm_reg.reg0,
+				   GET_INST(GC, input->xcc_id),
+				   &misc_pkt.wait_reg_mem.rrmt_opt1);
+		mes_v12_1_get_rrmt(input->wrm_reg.reg1,
+				   GET_INST(GC, input->xcc_id),
+				   &misc_pkt.wait_reg_mem.rrmt_opt2);
+
+		if (misc_pkt.wait_reg_mem.rrmt_opt1.mode != MES_RRMT_MODE_REMOTE_MID) {
+			misc_pkt.wait_reg_mem.reg_offset1 =
+				soc_v1_0_normalize_xcc_reg_offset(misc_pkt.wait_reg_mem.reg_offset1);
+		}
+		if (misc_pkt.wait_reg_mem.rrmt_opt2.mode != MES_RRMT_MODE_REMOTE_MID) {
+			misc_pkt.wait_reg_mem.reg_offset2 =
+				soc_v1_0_normalize_xcc_reg_offset(misc_pkt.wait_reg_mem.reg_offset2);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MES_MISC_OP_SET_SHADER_DEBUGGER:
 		pipe = AMDGPU_MES_SCHED_PIPE;
@@ -1593,6 +1673,10 @@ static int mes_v12_1_sw_fini(struct amdgpu_ip_block *ip_block)
 			amdgpu_bo_free_kernel(&adev->mes.eop_gpu_obj[inst],
 					      &adev->mes.eop_gpu_addr[inst],
 					      NULL);
+<<<<<<< HEAD
+=======
+			amdgpu_ucode_release(&adev->mes.fw[inst]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (adev->enable_uni_mes || pipe == AMDGPU_MES_SCHED_PIPE) {
 				amdgpu_bo_free_kernel(&adev->mes.ring[inst].mqd_obj,
@@ -1603,9 +1687,12 @@ static int mes_v12_1_sw_fini(struct amdgpu_ip_block *ip_block)
 		}
 	}
 
+<<<<<<< HEAD
 	for (pipe = 0; pipe < AMDGPU_MAX_MES_PIPES; pipe++)
 		amdgpu_ucode_release(&adev->mes.fw[pipe]);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (xcc_id = 0; xcc_id < num_xcc; xcc_id++) {
 		if (!adev->enable_uni_mes) {
 			amdgpu_bo_free_kernel(&adev->gfx.kiq[xcc_id].ring.mqd_obj,
@@ -1931,6 +2018,7 @@ static int mes_v12_1_early_init(struct amdgpu_ip_block *ip_block)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mes_v12_1_late_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -1956,6 +2044,12 @@ static const struct amd_ip_funcs mes_v12_1_ip_funcs = {
 	.name = "mes_v12_1",
 	.early_init = mes_v12_1_early_init,
 	.late_init = mes_v12_1_late_init,
+=======
+static const struct amd_ip_funcs mes_v12_1_ip_funcs = {
+	.name = "mes_v12_1",
+	.early_init = mes_v12_1_early_init,
+	.late_init = NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sw_init = mes_v12_1_sw_init,
 	.sw_fini = mes_v12_1_sw_fini,
 	.hw_init = mes_v12_1_hw_init,
@@ -1971,6 +2065,7 @@ const struct amdgpu_ip_block_version mes_v12_1_ip_block = {
 	.rev = 0,
 	.funcs = &mes_v12_1_ip_funcs,
 };
+<<<<<<< HEAD
 
 static int mes_v12_1_alloc_test_buf(struct amdgpu_device *adev,
 				    struct amdgpu_bo **bo, uint64_t *addr,
@@ -2280,3 +2375,5 @@ err2:
 	return r;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

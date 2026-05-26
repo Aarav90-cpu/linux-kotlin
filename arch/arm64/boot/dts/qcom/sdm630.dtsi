@@ -1013,6 +1013,7 @@
 					drive-strength = <2>;
 				};
 			};
+<<<<<<< HEAD
 
 			spi7_default: spi7-default-state {
 				pins = "gpio24", "gpio25", "gpio26", "gpio27";
@@ -1027,6 +1028,8 @@
 				drive-strength = <6>;
 				bias-disable;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		remoteproc_mss: remoteproc@4080000 {
@@ -1964,6 +1967,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		blsp_spi7: spi@c1b7000 {
 			compatible = "qcom,spi-qup-v2.2.1";
 			reg = <0x0c1b7000 0x600>;
@@ -1984,6 +1988,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		blsp_i2c8: i2c@c1b8000 {
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x0c1b8000 0x600>;
@@ -2789,10 +2795,17 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 1 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 2 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 3 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 0 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 1 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 2 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 3 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 0 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

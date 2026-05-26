@@ -165,7 +165,10 @@ void dccg31_set_dpstreamclk(
 		int otg_inst,
 		int dp_hpo_inst)
 {
+<<<<<<< HEAD
 	(void)dp_hpo_inst;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (src == REFCLK)
 		dccg31_disable_dpstreamclk(dccg, otg_inst);
 	else
@@ -645,7 +648,10 @@ void dccg31_get_dccg_ref_freq(struct dccg *dccg,
 		unsigned int xtalin_freq_inKhz,
 		unsigned int *dccg_ref_freq_inKhz)
 {
+<<<<<<< HEAD
 	(void)dccg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Assume refclk is sourced from xtalin
 	 * expect 24MHz

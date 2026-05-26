@@ -547,10 +547,17 @@ void __init swiotlb_exit(void)
 		free_pages(tbl_vaddr, get_order(tbl_size));
 		free_pages((unsigned long)mem->slots, get_order(slots_size));
 	} else {
+<<<<<<< HEAD
 		memblock_free(mem->areas,
 			array_size(sizeof(*mem->areas), mem->nareas));
 		memblock_phys_free(mem->start, tbl_size);
 		memblock_free(mem->slots, slots_size);
+=======
+		memblock_free_late(__pa(mem->areas),
+			array_size(sizeof(*mem->areas), mem->nareas));
+		memblock_free_late(mem->start, tbl_size);
+		memblock_free_late(__pa(mem->slots), slots_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	memset(mem, 0, sizeof(*mem));
@@ -868,9 +875,12 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
 	if (orig_addr == INVALID_PHYS_ADDR)
 		return;
 
+<<<<<<< HEAD
 	if (dir == DMA_FROM_DEVICE && !dev_is_dma_coherent(dev))
 		arch_sync_dma_flush();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * It's valid for tlb_offset to be negative. This can happen when the
 	 * "offset" returned by swiotlb_align_offset() is non-zero, and the
@@ -1615,10 +1625,15 @@ dma_addr_t swiotlb_map(struct device *dev, phys_addr_t paddr, size_t size,
 		return DMA_MAPPING_ERROR;
 	}
 
+<<<<<<< HEAD
 	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
 		arch_sync_dma_for_device(swiotlb_addr, size, dir);
 		arch_sync_dma_flush();
 	}
+=======
+	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+		arch_sync_dma_for_device(swiotlb_addr, size, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return dma_addr;
 }
 
@@ -1877,20 +1892,37 @@ static void rmem_swiotlb_device_release(struct reserved_mem *rmem,
 	dev->dma_io_tlb_mem = &io_tlb_default_mem;
 }
 
+<<<<<<< HEAD
 static int __init rmem_swiotlb_setup(unsigned long node,
 				     struct reserved_mem *rmem)
 {
+=======
+static const struct reserved_mem_ops rmem_swiotlb_ops = {
+	.device_init = rmem_swiotlb_device_init,
+	.device_release = rmem_swiotlb_device_release,
+};
+
+static int __init rmem_swiotlb_setup(struct reserved_mem *rmem)
+{
+	unsigned long node = rmem->fdt_node;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (of_get_flat_dt_prop(node, "reusable", NULL) ||
 	    of_get_flat_dt_prop(node, "linux,cma-default", NULL) ||
 	    of_get_flat_dt_prop(node, "linux,dma-default", NULL) ||
 	    of_get_flat_dt_prop(node, "no-map", NULL))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	rmem->ops = &rmem_swiotlb_ops;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_info("Reserved memory: created restricted DMA pool at %pa, size %ld MiB\n",
 		&rmem->base, (unsigned long)rmem->size / SZ_1M);
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct reserved_mem_ops rmem_swiotlb_ops = {
 	.node_init = rmem_swiotlb_setup,
 	.device_init = rmem_swiotlb_device_init,
@@ -1898,4 +1930,7 @@ static const struct reserved_mem_ops rmem_swiotlb_ops = {
 };
 
 RESERVEDMEM_OF_DECLARE(dma, "restricted-dma-pool", &rmem_swiotlb_ops);
+=======
+RESERVEDMEM_OF_DECLARE(dma, "restricted-dma-pool", rmem_swiotlb_setup);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_DMA_RESTRICTED_POOL */

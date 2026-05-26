@@ -873,6 +873,7 @@ enum rtw89_phy_idx {
 	RTW89_PHY_NUM,
 };
 
+<<<<<<< HEAD
 enum rtw89_fbtc_bt_index {
 	BTC_BT_1ST = 0x0,
 	BTC_BT_2ND = 0x1,
@@ -881,6 +882,8 @@ enum rtw89_fbtc_bt_index {
 	BTC_ALL_BT_EZL = 0x3 /* BT0+BT1+Ext-ZB(or Thread, or LTE) */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define __RTW89_MLD_MAX_LINK_NUM 2
 #define RTW89_MLD_NON_STA_LINK_NUM 1
 
@@ -1134,7 +1137,10 @@ struct rtw89_rx_desc_info {
 	bool addr_cam_valid;
 	u8 addr_cam_id;
 	u8 sec_cam_id;
+<<<<<<< HEAD
 	u8 sec_type;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 mac_id;
 	u16 offset;
 	u16 rxd_len;
@@ -2205,6 +2211,7 @@ struct rtw89_btc_bt_info {
 	u32 rsvd: 17;
 };
 
+<<<<<<< HEAD
 struct rtw89_btc_rf_trx_para_v9 {
 	u32 wl_tx_power[RTW89_PHY_NUM]; /* absolute Tx power (dBm), 1's complement -5->0x85 */
 	u32 wl_rx_gain[RTW89_PHY_NUM]; /* rx gain table index (TBD.) */
@@ -2214,6 +2221,8 @@ struct rtw89_btc_rf_trx_para_v9 {
 	u32 zb_rx_gain[BTC_ALL_BT]; /* 15.4 constrain level */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rtw89_btc_cx {
 	struct rtw89_btc_wl_info wl;
 	struct rtw89_btc_bt_info bt;
@@ -3579,8 +3588,11 @@ struct rtw89_efuse {
 	u8 rfe_type;
 	char country_code[2];
 	u8 adc_td;
+<<<<<<< HEAD
 	u8 bt_setting_2;
 	u8 bt_setting_3;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct rtw89_phy_rate_pattern {
@@ -4172,6 +4184,7 @@ struct rtw89_reg_imr {
 	u32 set;
 };
 
+<<<<<<< HEAD
 #define RTW89_MODULE_FWNAME_PLACEHOLDER_0 0,
 #define __RTW89_GEN_MODULE_FWNAME_FMT(placeholder_or_ignored, strfmt) \
 	__take_second_arg(placeholder_or_ignored, strfmt)
@@ -4187,6 +4200,8 @@ struct rtw89_fw_def {
 	u16 fw_b_aid;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rtw89_phy_table {
 	const struct rtw89_reg2_def *regs;
 	u32 n_regs;
@@ -4529,7 +4544,12 @@ struct rtw89_chip_info {
 	const struct rtw89_chip_ops *ops;
 	const struct rtw89_mac_gen_def *mac_def;
 	const struct rtw89_phy_gen_def *phy_def;
+<<<<<<< HEAD
 	struct rtw89_fw_def fw_def;
+=======
+	const char *fw_basename;
+	u8 fw_format_max;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool try_ce_fw;
 	u8 bbmcu_nr;
 	u32 needed_fw_elms;
@@ -4563,7 +4583,11 @@ struct rtw89_chip_info {
 	bool support_noise;
 	bool ul_tb_waveform_ctrl;
 	bool ul_tb_pwr_diff;
+<<<<<<< HEAD
 	bool rx_freq_from_ie;
+=======
+	bool rx_freq_frome_ie;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool hw_sec_hdr;
 	bool hw_mgmt_tx_encrypt;
 	bool hw_tkip_crypto;
@@ -4626,10 +4650,13 @@ struct rtw89_chip_info {
 	const struct rtw89_btc_rf_trx_para *rf_para_ulink;
 	u8 rf_para_dlink_num;
 	const struct rtw89_btc_rf_trx_para *rf_para_dlink;
+<<<<<<< HEAD
 	const struct rtw89_btc_rf_trx_para_v9 *rf_para_ulink_v9;
 	const struct rtw89_btc_rf_trx_para_v9 *rf_para_dlink_v9;
 	u8 rf_para_ulink_num_v9;
 	u8 rf_para_dlink_num_v9;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 ps_mode_supported;
 	u8 low_power_hci_modes;
 
@@ -4671,7 +4698,10 @@ struct rtw89_chip_info {
 struct rtw89_chip_variant {
 	bool no_mcs_12_13: 1;
 	u32 fw_min_ver_code;
+<<<<<<< HEAD
 	const struct rtw89_fw_def *fw_def_override;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 union rtw89_bus_info {
@@ -4763,8 +4793,11 @@ enum rtw89_fw_type {
 	RTW89_FW_NORMAL = 1,
 	RTW89_FW_WOWLAN = 3,
 	RTW89_FW_NORMAL_CE = 5,
+<<<<<<< HEAD
 	RTW89_FW_NORMAL_B = 14,
 	RTW89_FW_WOWLAN_B = 15,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	RTW89_FW_BBMCU0 = 64,
 	RTW89_FW_BBMCU1 = 65,
 	RTW89_FW_LOGFMT = 255,
@@ -4820,7 +4853,10 @@ enum rtw89_fw_feature {
 	RTW89_FW_FEATURE_SER_L1_BY_EVENT,
 	RTW89_FW_FEATURE_SIM_SER_L0L1_BY_HALT_H2C,
 	RTW89_FW_FEATURE_LPS_ML_INFO_V1,
+<<<<<<< HEAD
 	RTW89_FW_FEATURE_SER_POST_RECOVER_DMAC,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	NUM_OF_RTW89_FW_FEATURES,
 };
@@ -5194,6 +5230,10 @@ struct rtw89_hal {
 	bool no_eht;
 
 	atomic_t roc_chanctx_idx;
+<<<<<<< HEAD
+=======
+	u8 roc_link_index;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	DECLARE_BITMAP(changes, NUM_OF_RTW89_CHANCTX_CHANGES);
 	DECLARE_BITMAP(entity_map, NUM_OF_RTW89_CHANCTX);
@@ -5616,11 +5656,17 @@ struct rtw89_tssi_info {
 struct rtw89_power_trim_info {
 	bool pg_thermal_trim;
 	bool pg_pa_bias_trim;
+<<<<<<< HEAD
 	bool pg_vco_trim;
 	u8 thermal_trim[RF_PATH_MAX];
 	u8 pa_bias_trim[RF_PATH_MAX];
 	u8 pad_bias_trim[RF_PATH_MAX];
 	u8 vco_trim[RF_PATH_MAX];
+=======
+	u8 thermal_trim[RF_PATH_MAX];
+	u8 pa_bias_trim[RF_PATH_MAX];
+	u8 pad_bias_trim[RF_PATH_MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum rtw89_regd_func {
@@ -5779,18 +5825,24 @@ enum rtw89_ser_rcvy_step {
 	RTW89_NUM_OF_SER_FLAGS
 };
 
+<<<<<<< HEAD
 struct rtw89_ser_count {
 	unsigned int l1;
 	unsigned int l2;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rtw89_ser {
 	u8 state;
 	u8 alarm_event;
 	bool prehandle_l1;
 
+<<<<<<< HEAD
 	struct rtw89_ser_count sw_cnt;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct work_struct ser_hdl_work;
 	struct delayed_work ser_alarm_work;
 	const struct state_ent *st_tbl;
@@ -5951,11 +6003,16 @@ struct rtw89_phy_efuse_gain {
 	bool offset_valid;
 	bool comp_valid;
 	s8 offset[RF_PATH_MAX][RTW89_GAIN_OFFSET_NR]; /* S(8, 0) */
+<<<<<<< HEAD
 	s8 offset2[RF_PATH_MAX][RTW89_GAIN_OFFSET_NR]; /* S(8, 0) */
 	s8 offset_base[RTW89_PHY_NUM]; /* S(8, 4) */
 	s8 rssi_base[RTW89_PHY_NUM]; /* S(8, 4) */
 	s8 ref_gain_base[RTW89_PHY_NUM]; /* S(8, 2) */
 	s8 cck_rpl_base[RTW89_PHY_NUM]; /* S(8, 0) */
+=======
+	s8 offset_base[RTW89_PHY_NUM]; /* S(8, 4) */
+	s8 rssi_base[RTW89_PHY_NUM]; /* S(8, 4) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s8 comp[RF_PATH_MAX][RTW89_SUBBAND_NR]; /* S(8, 0) */
 };
 
@@ -6182,12 +6239,15 @@ struct rtw89_beacon_track_info {
 	u32 tbtt_diff_th;
 };
 
+<<<<<<< HEAD
 struct rtw89_tid_stats {
 	s64 last_pn;
 	u16 last_sn;
 	bool started;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rtw89_dev {
 	struct ieee80211_hw *hw;
 	struct device *dev;
@@ -6217,6 +6277,11 @@ struct rtw89_dev {
 	refcount_t refcount_ap_info;
 
 	struct list_head rtwvifs_list;
+<<<<<<< HEAD
+=======
+	/* used to protect rf read write */
+	struct mutex rf_mutex;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct workqueue_struct *txq_wq;
 	struct work_struct txq_work;
 	struct delayed_work txq_reinvoke_work;
@@ -6394,7 +6459,10 @@ struct rtw89_sta {
 	struct sk_buff_head roc_queue;
 
 	struct rtw89_ampdu_params ampdu_params[IEEE80211_NUM_TIDS];
+<<<<<<< HEAD
 	struct rtw89_tid_stats tid_rx_stats[IEEE80211_NUM_TIDS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DECLARE_BITMAP(ampdu_map, IEEE80211_NUM_TIDS);
 
 	DECLARE_BITMAP(pairwise_sec_cam_map, RTW89_MAX_SEC_CAM_NUM);
@@ -6842,18 +6910,34 @@ static inline u32
 rtw89_read_rf(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path,
 	      u32 addr, u32 mask)
 {
+<<<<<<< HEAD
 	lockdep_assert_wiphy(rtwdev->hw->wiphy);
 
 	return rtwdev->chip->ops->read_rf(rtwdev, rf_path, addr, mask);
+=======
+	u32 val;
+
+	mutex_lock(&rtwdev->rf_mutex);
+	val = rtwdev->chip->ops->read_rf(rtwdev, rf_path, addr, mask);
+	mutex_unlock(&rtwdev->rf_mutex);
+
+	return val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void
 rtw89_write_rf(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path,
 	       u32 addr, u32 mask, u32 data)
 {
+<<<<<<< HEAD
 	lockdep_assert_wiphy(rtwdev->hw->wiphy);
 
 	rtwdev->chip->ops->write_rf(rtwdev, rf_path, addr, mask, data);
+=======
+	mutex_lock(&rtwdev->rf_mutex);
+	rtwdev->chip->ops->write_rf(rtwdev, rf_path, addr, mask, data);
+	mutex_unlock(&rtwdev->rf_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline u32 rtw89_read32_pci_cfg(struct rtw89_dev *rtwdev, u32 addr)
@@ -7433,6 +7517,7 @@ void rtw89_chip_calc_rx_gain_normal(struct rtw89_dev *rtwdev,
 		chip->ops->calc_rx_gain_normal(rtwdev, chan, path, phy_idx, calc);
 }
 
+<<<<<<< HEAD
 static inline const struct rtw89_fw_def *
 __rtw89_chip_get_fw_def(const struct rtw89_chip_info *chip,
 			const struct rtw89_chip_variant *variant)
@@ -7449,6 +7534,8 @@ const struct rtw89_fw_def *rtw89_chip_get_fw_def(struct rtw89_dev *rtwdev)
 	return __rtw89_chip_get_fw_def(rtwdev->chip, rtwdev->variant);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void rtw89_load_txpwr_table(struct rtw89_dev *rtwdev,
 					  const struct rtw89_txpwr_table *tbl)
 {
@@ -7611,7 +7698,10 @@ static inline struct rtw89_fw_suit *rtw89_fw_suit_get(struct rtw89_dev *rtwdev,
 
 	switch (type) {
 	case RTW89_FW_WOWLAN:
+<<<<<<< HEAD
 	case RTW89_FW_WOWLAN_B:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return &fw_info->wowlan;
 	case RTW89_FW_LOGFMT:
 		return &fw_info->log.suit;
@@ -7805,9 +7895,12 @@ int rtw89_core_sta_link_remove(struct rtw89_dev *rtwdev,
 void rtw89_core_set_tid_config(struct rtw89_dev *rtwdev,
 			       struct ieee80211_sta *sta,
 			       struct cfg80211_tid_config *tid_config);
+<<<<<<< HEAD
 void rtw89_core_tid_rx_stats_ctrl(struct rtw89_dev *rtwdev, struct rtw89_sta *rtwsta,
 				  struct ieee80211_ampdu_params *params, bool enable);
 void rtw89_core_tid_rx_stats_reset(struct rtw89_dev *rtwdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void rtw89_core_rfkill_poll(struct rtw89_dev *rtwdev, bool force);
 void rtw89_check_quirks(struct rtw89_dev *rtwdev, const struct dmi_system_id *quirks);
 int rtw89_core_init(struct rtw89_dev *rtwdev);
@@ -7894,8 +7987,11 @@ void rtw89_core_update_p2p_ps(struct rtw89_dev *rtwdev,
 void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg event);
 int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
 			   unsigned int link_id);
+<<<<<<< HEAD
 void rtw89_core_dm_disable_cfg(struct rtw89_dev *rtwdev, u32 new);
 void rtw89_core_dm_disable_set(struct rtw89_dev *rtwdev, enum rtw89_dm_type type);
 void rtw89_core_dm_disable_clr(struct rtw89_dev *rtwdev, enum rtw89_dm_type type);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif

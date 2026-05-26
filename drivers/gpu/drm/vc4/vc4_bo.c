@@ -556,7 +556,11 @@ static void vc4_free_object(struct drm_gem_object *gem_bo)
 	mutex_lock(&vc4->bo_lock);
 	/* If the object references someone else's memory, we can't cache it.
 	 */
+<<<<<<< HEAD
 	if (drm_gem_is_imported(gem_bo)) {
+=======
+	if (gem_bo->import_attach) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vc4_bo_destroy(bo);
 		goto out;
 	}

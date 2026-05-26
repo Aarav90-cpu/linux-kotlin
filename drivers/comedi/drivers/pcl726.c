@@ -91,8 +91,12 @@ static const struct comedi_lrange *const rangelist_728[] = {
 
 struct pcl726_board {
 	const char *name;
+<<<<<<< HEAD
 	unsigned int io_len;
 	unsigned int min_io_start;
+=======
+	unsigned long io_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int irq_mask;
 	const struct comedi_lrange *const *ao_ranges;
 	int ao_num_ranges;
@@ -105,7 +109,10 @@ static const struct pcl726_board pcl726_boards[] = {
 	{
 		.name		= "pcl726",
 		.io_len		= 0x10,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ao_ranges	= &rangelist_726[0],
 		.ao_num_ranges	= ARRAY_SIZE(rangelist_726),
 		.ao_nchan	= 6,
@@ -113,7 +120,10 @@ static const struct pcl726_board pcl726_boards[] = {
 	}, {
 		.name		= "pcl727",
 		.io_len		= 0x20,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ao_ranges	= &rangelist_727[0],
 		.ao_num_ranges	= ARRAY_SIZE(rangelist_727),
 		.ao_nchan	= 12,
@@ -122,14 +132,20 @@ static const struct pcl726_board pcl726_boards[] = {
 	}, {
 		.name		= "pcl728",
 		.io_len		= 0x08,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ao_num_ranges	= ARRAY_SIZE(rangelist_728),
 		.ao_ranges	= &rangelist_728[0],
 		.ao_nchan	= 2,
 	}, {
 		.name		= "acl6126",
 		.io_len		= 0x10,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_mask	= 0x96e8,
 		.ao_num_ranges	= ARRAY_SIZE(rangelist_726),
 		.ao_ranges	= &rangelist_726[0],
@@ -138,7 +154,10 @@ static const struct pcl726_board pcl726_boards[] = {
 	}, {
 		.name		= "acl6128",
 		.io_len		= 0x08,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ao_num_ranges	= ARRAY_SIZE(rangelist_728),
 		.ao_ranges	= &rangelist_728[0],
 		.ao_nchan	= 2,
@@ -322,9 +341,13 @@ static int pcl726_attach(struct comedi_device *dev,
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], board->io_len,
 					  board->min_io_start, 0x3ff,
 					  board->io_len);
+=======
+	ret = comedi_request_region(dev, it->options[0], board->io_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

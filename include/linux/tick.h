@@ -177,7 +177,11 @@ extern cpumask_var_t tick_nohz_full_mask;
 #ifdef CONFIG_NO_HZ_FULL
 extern bool tick_nohz_full_running;
 
+<<<<<<< HEAD
 static inline bool tick_nohz_full_enabled(void)
+=======
+static __always_inline bool tick_nohz_full_enabled(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!context_tracking_enabled())
 		return false;
@@ -301,7 +305,11 @@ static inline void __tick_nohz_task_switch(void) { }
 static inline void tick_nohz_full_setup(cpumask_var_t cpumask) { }
 #endif
 
+<<<<<<< HEAD
 static inline void tick_nohz_task_switch(void)
+=======
+static __always_inline void tick_nohz_task_switch(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (tick_nohz_full_enabled())
 		__tick_nohz_task_switch();

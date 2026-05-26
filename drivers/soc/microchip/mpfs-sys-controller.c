@@ -36,11 +36,14 @@ struct mpfs_sys_controller {
 	struct kref consumers;
 };
 
+<<<<<<< HEAD
 struct mpfs_syscon_config {
 	unsigned int nb_subdevs;
 	struct platform_device *subdevs;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mpfs_blocking_transaction(struct mpfs_sys_controller *sys_controller, struct mpfs_mss_msg *msg)
 {
 	unsigned long timeout = msecs_to_jiffies(MPFS_SYS_CTRL_TIMEOUT_MS);
@@ -115,11 +118,32 @@ struct mtd_info *mpfs_sys_controller_get_flash(struct mpfs_sys_controller *mpfs_
 }
 EXPORT_SYMBOL(mpfs_sys_controller_get_flash);
 
+<<<<<<< HEAD
+=======
+static struct platform_device subdevs[] = {
+	{
+		.name		= "mpfs-rng",
+		.id		= -1,
+	},
+	{
+		.name		= "mpfs-generic-service",
+		.id		= -1,
+	},
+	{
+		.name		= "mpfs-auto-update",
+		.id		= -1,
+	},
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mpfs_sys_controller_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct mpfs_sys_controller *sys_controller;
+<<<<<<< HEAD
 	struct mpfs_syscon_config *of_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device_node *np;
 	int i, ret;
 
@@ -156,6 +180,7 @@ no_flash:
 
 	platform_set_drvdata(pdev, sys_controller);
 
+<<<<<<< HEAD
 	of_data = (struct mpfs_syscon_config *) device_get_match_data(dev);
 	if (!of_data) {
 		dev_err(dev, "Error getting match data\n");
@@ -167,6 +192,13 @@ no_flash:
 		if (platform_device_register(&of_data->subdevs[i]))
 			dev_warn(dev, "Error registering sub device %s\n",
 				 of_data->subdevs[i].name);
+=======
+
+	for (i = 0; i < ARRAY_SIZE(subdevs); i++) {
+		subdevs[i].dev.parent = dev;
+		if (platform_device_register(&subdevs[i]))
+			dev_warn(dev, "Error registering sub device %s\n", subdevs[i].name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	dev_info(&pdev->dev, "Registered MPFS system controller\n");
@@ -185,6 +217,7 @@ static void mpfs_sys_controller_remove(struct platform_device *pdev)
 	mpfs_sys_controller_put(sys_controller);
 }
 
+<<<<<<< HEAD
 static struct platform_device mpfs_subdevs[] = {
 	{
 		.name		= "mpfs-rng",
@@ -224,6 +257,10 @@ static const struct mpfs_syscon_config pic64gx_config = {
 static const struct of_device_id mpfs_sys_controller_of_match[] = {
 	{.compatible = "microchip,mpfs-sys-controller", .data = &mpfs_config},
 	{.compatible = "microchip,pic64gx-sys-controller", .data = &pic64gx_config},
+=======
+static const struct of_device_id mpfs_sys_controller_of_match[] = {
+	{.compatible = "microchip,mpfs-sys-controller", },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 MODULE_DEVICE_TABLE(of, mpfs_sys_controller_of_match);

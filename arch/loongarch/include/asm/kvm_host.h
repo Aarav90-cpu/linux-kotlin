@@ -20,7 +20,10 @@
 #include <asm/inst.h>
 #include <asm/kvm_mmu.h>
 #include <asm/kvm_ipi.h>
+<<<<<<< HEAD
 #include <asm/kvm_dmsintc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_eiointc.h>
 #include <asm/kvm_pch_pic.h>
 #include <asm/loongarch.h>
@@ -133,7 +136,10 @@ struct kvm_arch {
 	s64 time_offset;
 	struct kvm_context __percpu *vmcs;
 	struct loongarch_ipi *ipi;
+<<<<<<< HEAD
 	struct loongarch_dmsintc *dmsintc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct loongarch_eiointc *eiointc;
 	struct loongarch_pch_pic *pch_pic;
 };
@@ -248,7 +254,10 @@ struct kvm_vcpu_arch {
 	struct kvm_mp_state mp_state;
 	/* ipi state */
 	struct ipi_state ipi_state;
+<<<<<<< HEAD
 	struct dmsintc_state dmsintc_state;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* cpucfg */
 	u32 cpucfg[KVM_MAX_CPUCFG_REGS];
 

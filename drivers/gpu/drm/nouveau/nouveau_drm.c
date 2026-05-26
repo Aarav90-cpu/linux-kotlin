@@ -156,6 +156,7 @@ nouveau_name(struct drm_device *dev)
 static inline bool
 nouveau_cli_work_ready(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 	bool ret = true;
 
@@ -163,6 +164,14 @@ nouveau_cli_work_ready(struct dma_fence *fence)
 	if (!dma_fence_is_signaled_locked(fence))
 		ret = false;
 	dma_fence_unlock_irqrestore(fence, flags);
+=======
+	bool ret = true;
+
+	spin_lock_irq(fence->lock);
+	if (!dma_fence_is_signaled_locked(fence))
+		ret = false;
+	spin_unlock_irq(fence->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret == true)
 		dma_fence_put(fence);
@@ -1080,6 +1089,7 @@ nouveau_pmops_resume(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void
 nouveau_drm_shutdown(struct pci_dev *pdev)
 {
@@ -1111,6 +1121,8 @@ nouveau_drm_shutdown(struct pci_dev *pdev)
 	usleep_range(200, 400);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 nouveau_pmops_freeze(struct device *dev)
 {
@@ -1304,7 +1316,10 @@ nouveau_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(NOUVEAU_GROBJ_ALLOC, nouveau_abi16_ioctl_grobj_alloc, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(NOUVEAU_NOTIFIEROBJ_ALLOC, nouveau_abi16_ioctl_notifierobj_alloc, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(NOUVEAU_GPUOBJ_FREE, nouveau_abi16_ioctl_gpuobj_free, DRM_RENDER_ALLOW),
+<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(NOUVEAU_GET_ZCULL_INFO, nouveau_abi16_ioctl_get_zcull_info, DRM_RENDER_ALLOW),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DRM_IOCTL_DEF_DRV(NOUVEAU_SVM_INIT, nouveau_svmm_init, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(NOUVEAU_SVM_BIND, nouveau_svmm_bind, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(NOUVEAU_GEM_NEW, nouveau_gem_ioctl_new, DRM_RENDER_ALLOW),
@@ -1441,7 +1456,10 @@ nouveau_drm_pci_driver = {
 	.id_table = nouveau_drm_pci_table,
 	.probe = nouveau_drm_probe,
 	.remove = nouveau_drm_remove,
+<<<<<<< HEAD
 	.shutdown = nouveau_drm_shutdown,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver.pm = &nouveau_pm_ops,
 };
 

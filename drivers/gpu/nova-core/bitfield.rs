@@ -314,11 +314,20 @@ macro_rules! bitfield {
         /// Returns a value for the bitfield where all fields are set to their default value.
         impl ::core::default::Default for $name {
             fn default() -> Self {
+<<<<<<< HEAD
                 let value = Self(Default::default());
 
                 ::kernel::macros::paste!(
                 $(
                 let value = value.[<set_ $field>](Default::default());
+=======
+                #[allow(unused_mut)]
+                let mut value = Self(Default::default());
+
+                ::kernel::macros::paste!(
+                $(
+                value.[<set_ $field>](Default::default());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 )*
                 );
 

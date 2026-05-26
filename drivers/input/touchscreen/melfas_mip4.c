@@ -881,6 +881,11 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 				const u8 *data, int length, u16 buf_addr)
 {
 	u8 cmd[6];
+<<<<<<< HEAD
+=======
+	u8 *data_buf;
+	u16 buf_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int error;
 
@@ -893,8 +898,12 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	u8 *data_buf __free(kfree) = kmalloc(2 + MIP4_BL_PACKET_SIZE,
 					     GFP_KERNEL);
+=======
+	data_buf = kmalloc(2 + MIP4_BL_PACKET_SIZE, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!data_buf)
 		return -ENOMEM;
 
@@ -907,7 +916,11 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 		error = ret < 0 ? ret : -EIO;
 		dev_err(&ts->client->dev,
 			"Failed to send write page address: %d\n", error);
+<<<<<<< HEAD
 		return error;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Size */
@@ -919,11 +932,19 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 		error = ret < 0 ? ret : -EIO;
 		dev_err(&ts->client->dev,
 			"Failed to send write page size: %d\n", error);
+<<<<<<< HEAD
 		return error;
 	}
 
 	/* Data */
 	for (int buf_offset = 0;
+=======
+		goto out;
+	}
+
+	/* Data */
+	for (buf_offset = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     buf_offset < length;
 	     buf_offset += MIP4_BL_PACKET_SIZE) {
 		dev_dbg(&ts->client->dev,
@@ -938,7 +959,11 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 			dev_err(&ts->client->dev,
 				"Failed to read chunk at %#04x (size %d): %d\n",
 				buf_offset, MIP4_BL_PACKET_SIZE, error);
+<<<<<<< HEAD
 			return error;
+=======
+			goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -951,21 +976,49 @@ static int mip4_bl_program_page(struct mip4_ts *ts, int offset,
 		error = ret < 0 ? ret : -EIO;
 		dev_err(&ts->client->dev,
 			"Failed to send 'write' command: %d\n", error);
+<<<<<<< HEAD
 		return error;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Status */
 	error = mip4_bl_read_status(ts);
+<<<<<<< HEAD
 	if (error)
 		return error;
 
 	return 0;
+=======
+
+out:
+	kfree(data_buf);
+	return error ? error : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mip4_bl_verify_page(struct mip4_ts *ts, int offset,
 			       const u8 *data, int length, int buf_addr)
 {
 	u8 cmd[8];
+<<<<<<< HEAD
+=======
+	u8 *read_buf;
+	int buf_offset;
+	struct i2c_msg msg[] = {
+		{
+			.addr = ts->client->addr,
+			.flags = 0,
+			.buf = cmd,
+			.len = 2,
+		}, {
+			.addr = ts->client->addr,
+			.flags = I2C_M_RD,
+			.len = MIP4_BL_PACKET_SIZE,
+		},
+	};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int error;
 
@@ -1014,6 +1067,7 @@ static int mip4_bl_verify_page(struct mip4_ts *ts, int offset,
 		return error;
 
 	/* Read */
+<<<<<<< HEAD
 	u8 *read_buf __free(kfree) = kmalloc(MIP4_BL_PACKET_SIZE, GFP_KERNEL);
 	if (!read_buf)
 		return -ENOMEM;
@@ -1033,6 +1087,13 @@ static int mip4_bl_verify_page(struct mip4_ts *ts, int offset,
 	};
 
 	for (int buf_offset = 0;
+=======
+	msg[1].buf = read_buf = kmalloc(MIP4_BL_PACKET_SIZE, GFP_KERNEL);
+	if (!read_buf)
+		return -ENOMEM;
+
+	for (buf_offset = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     buf_offset < length;
 	     buf_offset += MIP4_BL_PACKET_SIZE) {
 		dev_dbg(&ts->client->dev,
@@ -1045,7 +1106,11 @@ static int mip4_bl_verify_page(struct mip4_ts *ts, int offset,
 			dev_err(&ts->client->dev,
 				"Failed to read chunk at %#04x (size %d): %d\n",
 				buf_offset, MIP4_BL_PACKET_SIZE, error);
+<<<<<<< HEAD
 			return error;
+=======
+			break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (memcmp(&data[buf_offset], read_buf, MIP4_BL_PACKET_SIZE)) {
@@ -1063,11 +1128,21 @@ static int mip4_bl_verify_page(struct mip4_ts *ts, int offset,
 				       DUMP_PREFIX_OFFSET, 16, 1,
 				       read_buf, MIP4_BL_PAGE_SIZE, false);
 #endif
+<<<<<<< HEAD
 			return -EINVAL;
 		}
 	}
 
 	return 0;
+=======
+			error = -EINVAL;
+			break;
+		}
+	}
+
+	kfree(read_buf);
+	return error ? error : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1287,9 +1362,15 @@ static ssize_t mip4_sysfs_fw_update(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mip4_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int error;
 
 	const struct firmware *fw __free(firmware) = NULL;
+=======
+	const struct firmware *fw;
+	int error;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = request_firmware(&fw, ts->fw_name, dev);
 	if (error) {
 		dev_err(&ts->client->dev,
@@ -1303,9 +1384,20 @@ static ssize_t mip4_sysfs_fw_update(struct device *dev,
 	 * userspace opening and closing the device and also suspend/resume
 	 * transitions.
 	 */
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
 
 	error = mip4_execute_fw_update(ts, fw);
+=======
+	mutex_lock(&ts->input->mutex);
+
+	error = mip4_execute_fw_update(ts, fw);
+
+	mutex_unlock(&ts->input->mutex);
+
+	release_firmware(fw);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (error) {
 		dev_err(&ts->client->dev,
 			"Firmware update failed: %d\n", error);
@@ -1323,6 +1415,7 @@ static ssize_t mip4_sysfs_read_fw_version(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mip4_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	/* Take lock to prevent racing with firmware update */
 	guard(mutex)(&ts->input->mutex);
@@ -1330,6 +1423,20 @@ static ssize_t mip4_sysfs_read_fw_version(struct device *dev,
 	return sysfs_emit(buf, "%04X %04X %04X %04X\n",
 			  ts->fw_version.boot, ts->fw_version.core,
 			  ts->fw_version.app, ts->fw_version.param);
+=======
+	size_t count;
+
+	/* Take lock to prevent racing with firmware update */
+	mutex_lock(&ts->input->mutex);
+
+	count = sysfs_emit(buf, "%04X %04X %04X %04X\n",
+			   ts->fw_version.boot, ts->fw_version.core,
+			   ts->fw_version.app, ts->fw_version.param);
+
+	mutex_unlock(&ts->input->mutex);
+
+	return count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR(fw_version, S_IRUGO, mip4_sysfs_read_fw_version, NULL);
@@ -1340,16 +1447,32 @@ static ssize_t mip4_sysfs_read_hw_version(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mip4_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	/* Take lock to prevent racing with firmware update */
 	guard(mutex)(&ts->input->mutex);
+=======
+	size_t count;
+
+	/* Take lock to prevent racing with firmware update */
+	mutex_lock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * product_name shows the name or version of the hardware
 	 * paired with current firmware in the chip.
 	 */
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%.*s\n",
 			  (int)sizeof(ts->product_name), ts->product_name);
+=======
+	count = sysfs_emit(buf, "%.*s\n",
+			   (int)sizeof(ts->product_name), ts->product_name);
+
+	mutex_unlock(&ts->input->mutex);
+
+	return count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR(hw_version, S_IRUGO, mip4_sysfs_read_hw_version, NULL);
@@ -1360,10 +1483,22 @@ static ssize_t mip4_sysfs_read_product_id(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mip4_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	guard(mutex)(&ts->input->mutex);
 
 	return sysfs_emit(buf, "%04X\n", ts->product_id);
+=======
+	size_t count;
+
+	mutex_lock(&ts->input->mutex);
+
+	count = sysfs_emit(buf, "%04X\n", ts->product_id);
+
+	mutex_unlock(&ts->input->mutex);
+
+	return count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR(product_id, S_IRUGO, mip4_sysfs_read_product_id, NULL);
@@ -1374,10 +1509,23 @@ static ssize_t mip4_sysfs_read_ic_name(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mip4_ts *ts = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	guard(mutex)(&ts->input->mutex);
 
 	return sysfs_emit(buf, "%.*s\n", (int)sizeof(ts->ic_name), ts->ic_name);
+=======
+	size_t count;
+
+	mutex_lock(&ts->input->mutex);
+
+	count = sysfs_emit(buf, "%.*s\n",
+			   (int)sizeof(ts->ic_name), ts->ic_name);
+
+	mutex_unlock(&ts->input->mutex);
+
+	return count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR(ic_name, S_IRUGO, mip4_sysfs_read_ic_name, NULL);
@@ -1491,13 +1639,22 @@ static int mip4_suspend(struct device *dev)
 	struct mip4_ts *ts = i2c_get_clientdata(client);
 	struct input_dev *input = ts->input;
 
+<<<<<<< HEAD
 	guard(mutex)(&input->mutex);
+=======
+	mutex_lock(&input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (device_may_wakeup(dev))
 		ts->wake_irq_enabled = enable_irq_wake(client->irq) == 0;
 	else if (input_device_enabled(input))
 		mip4_disable(ts);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1507,13 +1664,22 @@ static int mip4_resume(struct device *dev)
 	struct mip4_ts *ts = i2c_get_clientdata(client);
 	struct input_dev *input = ts->input;
 
+<<<<<<< HEAD
 	guard(mutex)(&input->mutex);
+=======
+	mutex_lock(&input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ts->wake_irq_enabled)
 		disable_irq_wake(client->irq);
 	else if (input_device_enabled(input))
 		mip4_enable(ts);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

@@ -13,7 +13,10 @@
 #include <linux/of.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/reset.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/spinlock.h>
 
 #include "sdhci-pltfm.h"
@@ -520,8 +523,12 @@ static struct platform_driver aspeed_sdhci_driver = {
 static int aspeed_sdc_probe(struct platform_device *pdev)
 
 {
+<<<<<<< HEAD
 	struct reset_control *reset;
 	struct device_node *parent;
+=======
+	struct device_node *parent, *child;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct aspeed_sdc *sdc;
 	int ret;
 
@@ -531,10 +538,13 @@ static int aspeed_sdc_probe(struct platform_device *pdev)
 
 	spin_lock_init(&sdc->lock);
 
+<<<<<<< HEAD
 	reset = devm_reset_control_get_optional_exclusive_deasserted(&pdev->dev, NULL);
 	if (IS_ERR(reset))
 		return dev_err_probe(&pdev->dev, PTR_ERR(reset), "unable to acquire reset\n");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdc->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(sdc->clk))
 		return PTR_ERR(sdc->clk);
@@ -554,11 +564,19 @@ static int aspeed_sdc_probe(struct platform_device *pdev)
 	dev_set_drvdata(&pdev->dev, sdc);
 
 	parent = pdev->dev.of_node;
+<<<<<<< HEAD
 	for_each_available_child_of_node_scoped(parent, child) {
+=======
+	for_each_available_child_of_node(parent, child) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct platform_device *cpdev;
 
 		cpdev = of_platform_device_create(child, NULL, &pdev->dev);
 		if (!cpdev) {
+<<<<<<< HEAD
+=======
+			of_node_put(child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -ENODEV;
 			goto err_clk;
 		}

@@ -66,9 +66,17 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
 			 unsigned long start_address) __noreturn;
 void kexec_copy_flush(struct kimage *image);
 
+<<<<<<< HEAD
 
 #if defined(CONFIG_KEXEC_FILE) || defined(CONFIG_CRASH_DUMP)
 #define ARCH_HAS_KIMAGE_ARCH
+=======
+#ifdef CONFIG_KEXEC_FILE
+extern const struct kexec_file_ops kexec_elf64_ops;
+
+#define ARCH_HAS_KIMAGE_ARCH
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct kimage_arch {
 	struct crash_mem *exclude_ranges;
 
@@ -76,10 +84,13 @@ struct kimage_arch {
 	void *backup_buf;
 	void *fdt;
 };
+<<<<<<< HEAD
 #endif
 
 #ifdef CONFIG_KEXEC_FILE
 extern const struct kexec_file_ops kexec_elf64_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
 			  unsigned long cmdline_len);
@@ -147,10 +158,13 @@ int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags);
 
 unsigned int arch_crash_get_elfcorehdr_size(void);
 #define crash_get_elfcorehdr_size arch_crash_get_elfcorehdr_size
+<<<<<<< HEAD
 
 int machine_kexec_post_load(struct kimage *image);
 #define machine_kexec_post_load machine_kexec_post_load
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CONFIG_CRASH_HOTPLUG */
 
 extern int crashing_cpu;
@@ -165,8 +179,11 @@ extern void default_machine_crash_shutdown(struct pt_regs *regs);
 extern void crash_kexec_prepare(void);
 extern void crash_kexec_secondary(struct pt_regs *regs);
 
+<<<<<<< HEAD
 extern void sync_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr,
 				    bool phdr_to_kimage);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool kdump_in_progress(void)
 {
 	return crashing_cpu >= 0;

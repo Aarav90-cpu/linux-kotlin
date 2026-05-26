@@ -1298,8 +1298,12 @@ static bool ima_validate_rule(struct ima_rule_entry *entry)
 				     IMA_GID | IMA_EGID |
 				     IMA_FGROUP | IMA_DIGSIG_REQUIRED |
 				     IMA_PERMIT_DIRECTIO | IMA_VALIDATE_ALGOS |
+<<<<<<< HEAD
 				     IMA_CHECK_BLACKLIST | IMA_VERITY_REQUIRED |
 				     IMA_SIGV3_REQUIRED))
+=======
+				     IMA_CHECK_BLACKLIST | IMA_VERITY_REQUIRED))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 
 		break;
@@ -1834,7 +1838,13 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
 			break;
 		case Opt_digest_type:
 			ima_log_string(ab, "digest_type", args[0].from);
+<<<<<<< HEAD
 			if ((strcmp(args[0].from, "verity")) == 0)
+=======
+			if (entry->flags & IMA_DIGSIG_REQUIRED)
+				result = -EINVAL;
+			else if ((strcmp(args[0].from, "verity")) == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				entry->flags |= IMA_VERITY_REQUIRED;
 			else
 				result = -EINVAL;
@@ -1848,6 +1858,7 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
 				else
 					entry->flags |= IMA_DIGSIG_REQUIRED | IMA_CHECK_BLACKLIST;
 			} else if (strcmp(args[0].from, "sigv3") == 0) {
+<<<<<<< HEAD
 				entry->flags |= IMA_SIGV3_REQUIRED |
 					IMA_DIGSIG_REQUIRED |
 					IMA_CHECK_BLACKLIST;
@@ -1855,6 +1866,16 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
 				 strcmp(args[0].from, "imasig|modsig") == 0) {
 				if ((entry->flags & IMA_VERITY_REQUIRED) ||
 				    (entry->flags & IMA_SIGV3_REQUIRED))
+=======
+				/* Only fsverity supports sigv3 for now */
+				if (entry->flags & IMA_VERITY_REQUIRED)
+					entry->flags |= IMA_DIGSIG_REQUIRED | IMA_CHECK_BLACKLIST;
+				else
+					result = -EINVAL;
+			} else if (IS_ENABLED(CONFIG_IMA_APPRAISE_MODSIG) &&
+				 strcmp(args[0].from, "imasig|modsig") == 0) {
+				if (entry->flags & IMA_VERITY_REQUIRED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					result = -EINVAL;
 				else
 					entry->flags |= IMA_DIGSIG_REQUIRED |
@@ -1939,7 +1960,11 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
 
 	/* d-ngv2 template field recommended for unsigned fs-verity digests */
 	if (!result && entry->action == MEASURE &&
+<<<<<<< HEAD
 	    (entry->flags & IMA_VERITY_REQUIRED)) {
+=======
+	    entry->flags & IMA_VERITY_REQUIRED) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		template_desc = entry->template ? entry->template :
 						  ima_template_desc_current();
 		check_template_field(template_desc, "d-ngv2",
@@ -2307,7 +2332,11 @@ int ima_policy_show(struct seq_file *m, void *v)
 	if (entry->template)
 		seq_printf(m, "template=%s ", entry->template->name);
 	if (entry->flags & IMA_DIGSIG_REQUIRED) {
+<<<<<<< HEAD
 		if (entry->flags & IMA_SIGV3_REQUIRED)
+=======
+		if (entry->flags & IMA_VERITY_REQUIRED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			seq_puts(m, "appraise_type=sigv3 ");
 		else if (entry->flags & IMA_MODSIG_ALLOWED)
 			seq_puts(m, "appraise_type=imasig|modsig ");

@@ -11,6 +11,11 @@ use core::{
 };
 use pin_init::{PinInit, Wrapper, Zeroable};
 
+<<<<<<< HEAD
+=======
+pub use crate::sync::aref::{ARef, AlwaysRefCounted};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Used to transfer ownership to and from foreign (non-Rust) languages.
 ///
 /// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and

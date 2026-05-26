@@ -3340,6 +3340,11 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
 
 	memcpy(conn->dev_class, ev->dev_class, 3);
 
+<<<<<<< HEAD
+=======
+	hci_dev_unlock(hdev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ev->link_type == ACL_LINK ||
 	    (!(flags & HCI_PROTO_DEFER) && !lmp_esco_capable(hdev))) {
 		struct hci_cp_accept_conn_req cp;
@@ -3373,6 +3378,10 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
 		hci_connect_cfm(conn, 0);
 	}
 
+<<<<<<< HEAD
+=======
+	return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	hci_dev_unlock(hdev);
 }
@@ -7191,7 +7200,11 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
 	clear_bit(HCI_CONN_CREATE_BIG_SYNC, &conn->flags);
 
 	conn->num_bis = 0;
+<<<<<<< HEAD
 	memset(conn->bis, 0, sizeof(conn->bis));
+=======
+	memset(conn->bis, 0, sizeof(conn->num_bis));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ev->num_bis; i++) {
 		u16 handle = le16_to_cpu(ev->bis[i]);

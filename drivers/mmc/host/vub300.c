@@ -2107,19 +2107,31 @@ static int vub300_probe(struct usb_interface *interface,
 	command_out_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (!command_out_urb) {
 		retval = -ENOMEM;
+<<<<<<< HEAD
 		goto err_put_udev;
+=======
+		goto error0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	command_res_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (!command_res_urb) {
 		retval = -ENOMEM;
+<<<<<<< HEAD
 		goto err_free_out_urb;
+=======
+		goto error1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/* this also allocates memory for our VUB300 mmc host device */
 	mmc = mmc_alloc_host(sizeof(*vub300), &udev->dev);
 	if (!mmc) {
 		retval = -ENOMEM;
 		dev_err(&udev->dev, "not enough memory for the mmc_host\n");
+<<<<<<< HEAD
 		goto err_free_res_urb;
+=======
+		goto error4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/* MMC core transfer sizes tunable parameters */
 	mmc->caps = 0;
@@ -2336,11 +2348,18 @@ static int vub300_probe(struct usb_interface *interface,
 			 interface_to_InterfaceNumber(interface));
 	retval = mmc_add_host(mmc);
 	if (retval)
+<<<<<<< HEAD
 		goto err_delete_timer;
 
 	return 0;
 
 err_delete_timer:
+=======
+		goto error6;
+
+	return 0;
+error6:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	timer_delete_sync(&vub300->inactivity_timer);
 err_free_host:
 	mmc_free_host(mmc);
@@ -2348,6 +2367,7 @@ err_free_host:
 	 * and hence also frees vub300
 	 * which is contained at the end of struct mmc
 	 */
+<<<<<<< HEAD
 err_free_res_urb:
 	usb_free_urb(command_res_urb);
 err_free_out_urb:
@@ -2355,6 +2375,14 @@ err_free_out_urb:
 err_put_udev:
 	usb_put_dev(udev);
 
+=======
+error4:
+	usb_free_urb(command_res_urb);
+error1:
+	usb_free_urb(command_out_urb);
+error0:
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return retval;
 }
 
@@ -2429,6 +2457,7 @@ static int __init vub300_init(void)
 
 	pr_info("VUB300 Driver rom wait states = %02X irqpoll timeout = %04X",
 		firmware_rom_wait_states, 0x0FFFF & firmware_irqpoll_timeout);
+<<<<<<< HEAD
 
 	cmndworkqueue = create_singlethread_workqueue("kvub300c");
 	if (!cmndworkqueue)
@@ -2459,6 +2488,39 @@ err_destroy_pollwq:
 err_destroy_cmdwq:
 	destroy_workqueue(cmndworkqueue);
 
+=======
+	cmndworkqueue = create_singlethread_workqueue("kvub300c");
+	if (!cmndworkqueue) {
+		pr_err("not enough memory for the REQUEST workqueue");
+		result = -ENOMEM;
+		goto out1;
+	}
+	pollworkqueue = create_singlethread_workqueue("kvub300p");
+	if (!pollworkqueue) {
+		pr_err("not enough memory for the IRQPOLL workqueue");
+		result = -ENOMEM;
+		goto out2;
+	}
+	deadworkqueue = create_singlethread_workqueue("kvub300d");
+	if (!deadworkqueue) {
+		pr_err("not enough memory for the EXPIRED workqueue");
+		result = -ENOMEM;
+		goto out3;
+	}
+	result = usb_register(&vub300_driver);
+	if (result) {
+		pr_err("usb_register failed. Error number %d", result);
+		goto out4;
+	}
+	return 0;
+out4:
+	destroy_workqueue(deadworkqueue);
+out3:
+	destroy_workqueue(pollworkqueue);
+out2:
+	destroy_workqueue(cmndworkqueue);
+out1:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return result;
 }
 

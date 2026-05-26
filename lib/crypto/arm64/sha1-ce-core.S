@@ -62,10 +62,17 @@
 	.endm
 
 	/*
+<<<<<<< HEAD
 	 * void sha1_ce_transform(struct sha1_block_state *state,
 	 *			  const u8 *data, size_t nblocks);
 	 */
 SYM_FUNC_START(sha1_ce_transform)
+=======
+	 * size_t __sha1_ce_transform(struct sha1_block_state *state,
+	 *			      const u8 *data, size_t nblocks);
+	 */
+SYM_FUNC_START(__sha1_ce_transform)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* load round constants */
 	loadrc		k0.4s, 0x5a827999, w6
 	loadrc		k1.4s, 0x6ed9eba1, w6
@@ -80,10 +87,17 @@ SYM_FUNC_START(sha1_ce_transform)
 0:	ld1		{v8.4s-v11.4s}, [x1], #64
 	sub		x2, x2, #1
 
+<<<<<<< HEAD
 	rev32		v8.16b, v8.16b
 	rev32		v9.16b, v9.16b
 	rev32		v10.16b, v10.16b
 	rev32		v11.16b, v11.16b
+=======
+CPU_LE(	rev32		v8.16b, v8.16b		)
+CPU_LE(	rev32		v9.16b, v9.16b		)
+CPU_LE(	rev32		v10.16b, v10.16b	)
+CPU_LE(	rev32		v11.16b, v11.16b	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	add		t0.4s, v8.4s, k0.4s
 	mov		dg0v.16b, dgav.16b
@@ -116,11 +130,25 @@ SYM_FUNC_START(sha1_ce_transform)
 	add		dgbv.2s, dgbv.2s, dg1v.2s
 	add		dgav.4s, dgav.4s, dg0v.4s
 
+<<<<<<< HEAD
+=======
+	/* return early if voluntary preemption is needed */
+	cond_yield	1f, x5, x6
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* handled all input blocks? */
 	cbnz		x2, 0b
 
 	/* store new state */
+<<<<<<< HEAD
 	st1		{dgav.4s}, [x0]
 	str		dgb, [x0, #16]
 	ret
 SYM_FUNC_END(sha1_ce_transform)
+=======
+1:	st1		{dgav.4s}, [x0]
+	str		dgb, [x0, #16]
+	mov		x0, x2
+	ret
+SYM_FUNC_END(__sha1_ce_transform)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

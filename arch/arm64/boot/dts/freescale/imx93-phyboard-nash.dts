@@ -144,11 +144,16 @@
 /* I2C2 */
 &lpi2c2 {
 	clock-frequency = <400000>;
+<<<<<<< HEAD
 	pinctrl-names = "default", "gpio";
 	pinctrl-0 = <&pinctrl_lpi2c2>;
 	pinctrl-1 = <&pinctrl_lpi2c2_gpio>;
 	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_lpi2c2>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 
 	/* RTC */
@@ -280,6 +285,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_lpi2c2_gpio: lpi2c2gpiogrp {
 		fsl,pins = <
 			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x31e
@@ -287,6 +293,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl_lpspi6: lpspi6grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO00__GPIO2_IO00		0x386

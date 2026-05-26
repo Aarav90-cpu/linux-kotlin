@@ -134,6 +134,10 @@ struct ppp {
 	int		debug;		/* debug flags 70 */
 	struct slcompress *vj;		/* state for VJ header compression */
 	enum NPmode	npmode[NUM_NP];	/* what to do with each net proto 78 */
+<<<<<<< HEAD
+=======
+	struct sk_buff	*xmit_pending;	/* a packet ready to go out 88 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct compressor *xcomp;	/* transmit packet compressor 8c */
 	void		*xc_state;	/* its internal state 90 */
 	struct compressor *rcomp;	/* receive decompressor 94 */
@@ -263,8 +267,13 @@ struct ppp_net {
 static int ppp_unattached_ioctl(struct net *net, struct ppp_file *pf,
 			struct file *file, unsigned int cmd, unsigned long arg);
 static void ppp_xmit_process(struct ppp *ppp, struct sk_buff *skb);
+<<<<<<< HEAD
 static int ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb);
 static int ppp_push(struct ppp *ppp, struct sk_buff *skb);
+=======
+static void ppp_send_frame(struct ppp *ppp, struct sk_buff *skb);
+static void ppp_push(struct ppp *ppp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ppp_channel_push(struct channel *pch);
 static void ppp_receive_frame(struct ppp *ppp, struct sk_buff *skb,
 			      struct channel *pch);
@@ -286,12 +295,20 @@ static struct compressor *find_compressor(int type);
 static void ppp_get_stats(struct ppp *ppp, struct ppp_stats *st);
 static int ppp_create_interface(struct net *net, struct file *file, int *unit);
 static void init_ppp_file(struct ppp_file *pf, int kind);
+<<<<<<< HEAD
 static void ppp_release_interface(struct ppp *ppp);
+=======
+static void ppp_destroy_interface(struct ppp *ppp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct ppp *ppp_find_unit(struct ppp_net *pn, int unit);
 static struct channel *ppp_find_channel(struct ppp_net *pn, int unit);
 static int ppp_connect_channel(struct channel *pch, int unit);
 static int ppp_disconnect_channel(struct channel *pch);
+<<<<<<< HEAD
 static void ppp_release_channel(struct channel *pch);
+=======
+static void ppp_destroy_channel(struct channel *pch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int unit_get(struct idr *p, void *ptr, int min);
 static int unit_set(struct idr *p, void *ptr, int n);
 static void unit_put(struct idr *p, int n);
@@ -407,18 +424,35 @@ static int ppp_release(struct inode *unused, struct file *file)
 
 	if (pf) {
 		file->private_data = NULL;
+<<<<<<< HEAD
 		switch (pf->kind) {
 		case INTERFACE:
+=======
+		if (pf->kind == INTERFACE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ppp = PF_TO_PPP(pf);
 			rtnl_lock();
 			if (file == ppp->owner)
 				unregister_netdevice(ppp->dev);
 			rtnl_unlock();
+<<<<<<< HEAD
 			ppp_release_interface(ppp);
 			break;
 		case CHANNEL:
 			ppp_release_channel(PF_TO_CHANNEL(pf));
 			break;
+=======
+		}
+		if (refcount_dec_and_test(&pf->refcnt)) {
+			switch (pf->kind) {
+			case INTERFACE:
+				ppp_destroy_interface(PF_TO_PPP(pf));
+				break;
+			case CHANNEL:
+				ppp_destroy_channel(PF_TO_CHANNEL(pf));
+				break;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	return 0;
@@ -671,7 +705,12 @@ err_unset:
 	synchronize_rcu();
 
 	if (pchb)
+<<<<<<< HEAD
 		ppp_release_channel(pchb);
+=======
+		if (refcount_dec_and_test(&pchb->file.refcnt))
+			ppp_destroy_channel(pchb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return -EALREADY;
 }
@@ -703,9 +742,17 @@ static int ppp_unbridge_channels(struct channel *pch)
 	synchronize_rcu();
 
 	if (pchbb == pch)
+<<<<<<< HEAD
 		ppp_release_channel(pch);
 
 	ppp_release_channel(pchb);
+=======
+		if (refcount_dec_and_test(&pch->file.refcnt))
+			ppp_destroy_channel(pch);
+
+	if (refcount_dec_and_test(&pchb->file.refcnt))
+		ppp_destroy_channel(pchb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -779,7 +826,12 @@ static long ppp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 				break;
 			err = ppp_bridge_channels(pch, pchb);
 			/* Drop earlier refcount now bridge establishment is complete */
+<<<<<<< HEAD
 			ppp_release_channel(pchb);
+=======
+			if (refcount_dec_and_test(&pchb->file.refcnt))
+				ppp_destroy_channel(pchb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		case PPPIOCUNBRIDGECHAN:
@@ -1048,9 +1100,12 @@ static int ppp_unattached_ioctl(struct net *net, struct ppp_file *pf,
 	struct ppp_net *pn;
 	int __user *p = (int __user *)arg;
 
+<<<<<<< HEAD
 	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
 		return -EPERM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (cmd) {
 	case PPPIOCNEWUNIT:
 		/* Create a new ppp unit */
@@ -1579,7 +1634,12 @@ static void ppp_dev_priv_destructor(struct net_device *dev)
 	struct ppp *ppp;
 
 	ppp = netdev_priv(dev);
+<<<<<<< HEAD
 	ppp_release_interface(ppp);
+=======
+	if (refcount_dec_and_test(&ppp->file.refcnt))
+		ppp_destroy_interface(ppp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
@@ -1596,7 +1656,14 @@ static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
 	if (!pch)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	chan = pch->chan;
+=======
+	chan = READ_ONCE(pch->chan);
+	if (!chan)
+		return -ENODEV;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!chan->ops->fill_forward_path)
 		return -EOPNOTSUPP;
 
@@ -1641,6 +1708,7 @@ static void ppp_setup(struct net_device *dev)
  */
 
 /* Called to do any work queued up on the transmit side that can now be done */
+<<<<<<< HEAD
 static void ppp_xmit_flush(struct ppp *ppp)
 {
 	struct sk_buff *skb;
@@ -1679,6 +1747,28 @@ static void __ppp_xmit_process(struct ppp *ppp, struct sk_buff *skb)
 	skb_queue_tail(&ppp->file.xq, skb);
 	ppp_xmit_flush(ppp);
 out:
+=======
+static void __ppp_xmit_process(struct ppp *ppp, struct sk_buff *skb)
+{
+	ppp_xmit_lock(ppp);
+	if (!ppp->closing) {
+		ppp_push(ppp);
+
+		if (skb)
+			skb_queue_tail(&ppp->file.xq, skb);
+		while (!ppp->xmit_pending &&
+		       (skb = skb_dequeue(&ppp->file.xq)))
+			ppp_send_frame(ppp, skb);
+		/* If there's no work left to do, tell the core net
+		   code that we can accept some more. */
+		if (!ppp->xmit_pending && !skb_peek(&ppp->file.xq))
+			netif_wake_queue(ppp->dev);
+		else
+			netif_stop_queue(ppp->dev);
+	} else {
+		kfree_skb(skb);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ppp_xmit_unlock(ppp);
 }
 
@@ -1765,6 +1855,7 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
 }
 
 /*
+<<<<<<< HEAD
  * Compress and prepare to send a frame.
  * The caller should have locked the xmit path.
  * Returns 1 if the skb was consumed, 0 if it can be passed to ppp_push().
@@ -1774,6 +1865,15 @@ static int
 ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
 {
 	struct sk_buff *skb = *pskb;
+=======
+ * Compress and send a frame.
+ * The caller should have locked the xmit path,
+ * and xmit_pending should be 0.
+ */
+static void
+ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int proto = PPP_PROTO(skb);
 	struct sk_buff *new_skb;
 	int len;
@@ -1794,7 +1894,11 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
 					      "PPP: outbound frame "
 					      "not passed\n");
 			kfree_skb(skb);
+<<<<<<< HEAD
 			return 1;
+=======
+			return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* if this packet passes the active filter, record the time */
 		if (!(ppp->active_filter &&
@@ -1842,7 +1946,10 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
 			}
 			consume_skb(skb);
 			skb = new_skb;
+<<<<<<< HEAD
 			*pskb = skb;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cp = skb_put(skb, len + 2);
 			cp[0] = 0;
 			cp[1] = proto;
@@ -1869,7 +1976,10 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
 		if (!new_skb)
 			goto drop;
 		skb = new_skb;
+<<<<<<< HEAD
 		*pskb = skb;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1881,14 +1991,24 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
 			goto drop;
 		skb_queue_tail(&ppp->file.rq, skb);
 		wake_up_interruptible(&ppp->file.rwait);
+<<<<<<< HEAD
 		return 1;
 	}
 
 	return 0;
+=======
+		return;
+	}
+
+	ppp->xmit_pending = skb;
+	ppp_push(ppp);
+	return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
  drop:
 	kfree_skb(skb);
 	++ppp->dev->stats.tx_errors;
+<<<<<<< HEAD
 	return 1;
 }
 
@@ -1902,23 +2022,50 @@ ppp_push(struct ppp *ppp, struct sk_buff *skb)
 {
 	struct list_head *list;
 	struct channel *pch;
+=======
+}
+
+/*
+ * Try to send the frame in xmit_pending.
+ * The caller should have the xmit path locked.
+ */
+static void
+ppp_push(struct ppp *ppp)
+{
+	struct list_head *list;
+	struct channel *pch;
+	struct sk_buff *skb = ppp->xmit_pending;
+
+	if (!skb)
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list = &ppp->channels;
 	if (list_empty(list)) {
 		/* nowhere to send the packet, just drop it */
+<<<<<<< HEAD
 		kfree_skb(skb);
 		return 1;
+=======
+		ppp->xmit_pending = NULL;
+		kfree_skb(skb);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if ((ppp->flags & SC_MULTILINK) == 0) {
 		struct ppp_channel *chan;
+<<<<<<< HEAD
 		int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* not doing multilink: send it down the first channel */
 		list = list->next;
 		pch = list_entry(list, struct channel, clist);
 
 		spin_lock(&pch->downl);
 		chan = pch->chan;
+<<<<<<< HEAD
 		if (unlikely(!chan->direct_xmit && skb_linearize(skb))) {
 			/* channel requires a linear skb but linearization
 			 * failed
@@ -1933,17 +2080,42 @@ ppp_push(struct ppp *ppp, struct sk_buff *skb)
 out:
 		spin_unlock(&pch->downl);
 		return ret;
+=======
+		if (unlikely(!chan || (!chan->direct_xmit && skb_linearize(skb)))) {
+			/* channel got unregistered, or it requires a linear
+			 * skb but linearization failed
+			 */
+			kfree_skb(skb);
+			ppp->xmit_pending = NULL;
+			goto out;
+		}
+
+		if (chan->ops->start_xmit(chan, skb))
+			ppp->xmit_pending = NULL;
+
+out:
+		spin_unlock(&pch->downl);
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #ifdef CONFIG_PPP_MULTILINK
 	/* Multilink: fragment the packet over as many links
 	   as can take the packet at the moment. */
 	if (!ppp_mp_explode(ppp, skb))
+<<<<<<< HEAD
 		return 0;
 #endif /* CONFIG_PPP_MULTILINK */
 
 	kfree_skb(skb);
 	return 1;
+=======
+		return;
+#endif /* CONFIG_PPP_MULTILINK */
+
+	ppp->xmit_pending = NULL;
+	kfree_skb(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PPP_MULTILINK
@@ -1982,6 +2154,7 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
 	hdrlen = (ppp->flags & SC_MP_XSHORTSEQ)? MPHDRLEN_SSN: MPHDRLEN;
 	i = 0;
 	list_for_each_entry(pch, &ppp->channels, clist) {
+<<<<<<< HEAD
 		pch->avail = 1;
 		navail++;
 		pch->speed = pch->chan->speed;
@@ -1999,6 +2172,30 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
 		if (!pch->had_frag && i < ppp->nxchan)
 			ppp->nxchan = i;
 
+=======
+		if (pch->chan) {
+			pch->avail = 1;
+			navail++;
+			pch->speed = pch->chan->speed;
+		} else {
+			pch->avail = 0;
+		}
+		if (pch->avail) {
+			if (skb_queue_empty(&pch->file.xq) ||
+				!pch->had_frag) {
+					if (pch->speed == 0)
+						nzero++;
+					else
+						totspeed += pch->speed;
+
+					pch->avail = 2;
+					++nfree;
+					++totfree;
+				}
+			if (!pch->had_frag && i < ppp->nxchan)
+				ppp->nxchan = i;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		++i;
 	}
 	/*
@@ -2007,7 +2204,11 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
 	 * performance if we have a lot of channels.
 	 */
 	if (nfree == 0 || nfree < navail / 2)
+<<<<<<< HEAD
 		return 0; /* can't take now, leave it in transmit queue */
+=======
+		return 0; /* can't take now, leave it in xmit_pending */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Do protocol field compression */
 	if (skb_linearize(skb))
@@ -2057,7 +2258,29 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
 			pch->avail = 1;
 		}
 
+<<<<<<< HEAD
 		spin_lock(&pch->downl);
+=======
+		/* check the channel's mtu and whether it is still attached. */
+		spin_lock(&pch->downl);
+		if (pch->chan == NULL) {
+			/* can't use this channel, it's being deregistered */
+			if (pch->speed == 0)
+				nzero--;
+			else
+				totspeed -= pch->speed;
+
+			spin_unlock(&pch->downl);
+			pch->avail = 0;
+			totlen = len;
+			totfree--;
+			nfree--;
+			if (--navail == 0)
+				break;
+			continue;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		*if the channel speed is not set divide
 		*the packet evenly among the free channels;
@@ -2183,12 +2406,17 @@ static void __ppp_channel_push(struct channel *pch, struct ppp *ppp)
 	spin_unlock(&pch->downl);
 	/* see if there is anything from the attached unit to be sent */
 	if (skb_queue_empty(&pch->file.xq)) {
+<<<<<<< HEAD
 		if (ppp) {
 			ppp_xmit_lock(ppp);
 			if (!ppp->closing)
 				ppp_xmit_flush(ppp);
 			ppp_xmit_unlock(ppp);
 		}
+=======
+		if (ppp)
+			__ppp_xmit_process(ppp, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -2245,7 +2473,11 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
  */
 static void __ppp_decompress_proto(struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	if (ppp_skb_is_compressed_proto(skb))
+=======
+	if (skb->data[0] & 0x01)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*(u8 *)skb_push(skb, 1) = 0x00;
 }
 
@@ -2351,10 +2583,19 @@ done:
 	rcu_read_unlock_bh();
 }
 
+<<<<<<< HEAD
 void
 ppp_input_error(struct ppp_channel *chan)
 {
 	struct channel *pch = chan->ppp;
+=======
+/* Put a 0-length skb in the receive queue as an error indication */
+void
+ppp_input_error(struct ppp_channel *chan, int code)
+{
+	struct channel *pch = chan->ppp;
+	struct sk_buff *skb;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ppp *ppp;
 
 	if (!pch)
@@ -2363,9 +2604,18 @@ ppp_input_error(struct ppp_channel *chan)
 	rcu_read_lock_bh();
 	ppp = rcu_dereference_bh(pch->ppp);
 	if (ppp) {
+<<<<<<< HEAD
 		ppp_recv_lock(ppp);
 		ppp_receive_error(ppp);
 		ppp_recv_unlock(ppp);
+=======
+		skb = alloc_skb(0, GFP_ATOMIC);
+		if (skb) {
+			skb->len = 0;		/* probably unnecessary */
+			skb->cb[0] = code;
+			ppp_do_recv(ppp, skb, pch);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	rcu_read_unlock_bh();
 }
@@ -2377,6 +2627,7 @@ ppp_input_error(struct ppp_channel *chan)
 static void
 ppp_receive_frame(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
 {
+<<<<<<< HEAD
 	skb_checksum_complete_unset(skb);
 #ifdef CONFIG_PPP_MULTILINK
 	/* XXX do channel-level decompression here */
@@ -2385,6 +2636,22 @@ ppp_receive_frame(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
 	else
 #endif /* CONFIG_PPP_MULTILINK */
 		ppp_receive_nonmp_frame(ppp, skb);
+=======
+	/* note: a 0-length skb is used as an error indication */
+	if (skb->len > 0) {
+		skb_checksum_complete_unset(skb);
+#ifdef CONFIG_PPP_MULTILINK
+		/* XXX do channel-level decompression here */
+		if (PPP_PROTO(skb) == PPP_MP)
+			ppp_receive_mp_frame(ppp, skb, pch);
+		else
+#endif /* CONFIG_PPP_MULTILINK */
+			ppp_receive_nonmp_frame(ppp, skb);
+	} else {
+		kfree_skb(skb);
+		ppp_receive_error(ppp);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -2963,7 +3230,10 @@ int ppp_unit_number(struct ppp_channel *chan)
 
 /*
  * Return the PPP device interface name of a channel.
+<<<<<<< HEAD
  * Caller must hold RCU read lock.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 char *ppp_dev_name(struct ppp_channel *chan)
 {
@@ -2972,9 +3242,17 @@ char *ppp_dev_name(struct ppp_channel *chan)
 	struct ppp *ppp;
 
 	if (pch) {
+<<<<<<< HEAD
 		ppp = rcu_dereference(pch->ppp);
 		if (ppp && ppp->dev)
 			name = ppp->dev->name;
+=======
+		rcu_read_lock();
+		ppp = rcu_dereference(pch->ppp);
+		if (ppp && ppp->dev)
+			name = ppp->dev->name;
+		rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return name;
 }
@@ -2999,12 +3277,21 @@ ppp_unregister_channel(struct ppp_channel *chan)
 	 * This ensures that we have returned from any calls into
 	 * the channel's start_xmit or ioctl routine before we proceed.
 	 */
+<<<<<<< HEAD
 	ppp_disconnect_channel(pch);
 	down_write(&pch->chan_sem);
 	spin_lock_bh(&pch->downl);
 	pch->chan = NULL;
 	spin_unlock_bh(&pch->downl);
 	up_write(&pch->chan_sem);
+=======
+	down_write(&pch->chan_sem);
+	spin_lock_bh(&pch->downl);
+	WRITE_ONCE(pch->chan, NULL);
+	spin_unlock_bh(&pch->downl);
+	up_write(&pch->chan_sem);
+	ppp_disconnect_channel(pch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pn = ppp_pernet(pch->chan_net);
 	spin_lock_bh(&pn->all_channels_lock);
@@ -3016,7 +3303,12 @@ ppp_unregister_channel(struct ppp_channel *chan)
 	pch->file.dead = 1;
 	wake_up_interruptible(&pch->file.rwait);
 
+<<<<<<< HEAD
 	ppp_release_channel(pch);
+=======
+	if (refcount_dec_and_test(&pch->file.refcnt))
+		ppp_destroy_channel(pch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -3397,6 +3689,7 @@ init_ppp_file(struct ppp_file *pf, int kind)
 }
 
 /*
+<<<<<<< HEAD
  * Drop a reference to a ppp unit and free its memory if the refcount reaches
  * zero.
  */
@@ -3405,6 +3698,14 @@ static void ppp_release_interface(struct ppp *ppp)
 	if (!refcount_dec_and_test(&ppp->file.refcnt))
 		return;
 
+=======
+ * Free the memory used by a ppp unit.  This is only called once
+ * there are no channels connected to the unit and no file structs
+ * that reference the unit.
+ */
+static void ppp_destroy_interface(struct ppp *ppp)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_dec(&ppp_unit_count);
 
 	if (!ppp->file.dead || ppp->n_channels) {
@@ -3437,6 +3738,10 @@ static void ppp_release_interface(struct ppp *ppp)
 	}
 #endif /* CONFIG_PPP_FILTER */
 
+<<<<<<< HEAD
+=======
+	kfree_skb(ppp->xmit_pending);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_percpu(ppp->xmit_recursion);
 
 	free_netdev(ppp->dev);
@@ -3556,13 +3861,19 @@ ppp_disconnect_channel(struct channel *pch)
 			wake_up_interruptible(&ppp->file.rwait);
 		ppp_unlock(ppp);
 		synchronize_net();
+<<<<<<< HEAD
 		ppp_release_interface(ppp);
+=======
+		if (refcount_dec_and_test(&ppp->file.refcnt))
+			ppp_destroy_interface(ppp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = 0;
 	}
 	return err;
 }
 
 /*
+<<<<<<< HEAD
  * Drop a reference to a ppp channel and free its memory if the refcount reaches
  * zero.
  */
@@ -3571,6 +3882,12 @@ static void ppp_release_channel(struct channel *pch)
 	if (!refcount_dec_and_test(&pch->file.refcnt))
 		return;
 
+=======
+ * Free up the resources used by a ppp channel.
+ */
+static void ppp_destroy_channel(struct channel *pch)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_net_track(pch->chan_net, &pch->ns_tracker);
 	pch->chan_net = NULL;
 

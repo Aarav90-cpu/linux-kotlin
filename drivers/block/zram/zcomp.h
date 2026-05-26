@@ -80,7 +80,11 @@ struct zcomp {
 int zcomp_cpu_up_prepare(unsigned int cpu, struct hlist_node *node);
 int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node);
 ssize_t zcomp_available_show(const char *comp, char *buf, ssize_t at);
+<<<<<<< HEAD
 const char *zcomp_lookup_backend_name(const char *comp);
+=======
+bool zcomp_available_algorithm(const char *comp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
 void zcomp_destroy(struct zcomp *comp);

@@ -309,7 +309,13 @@
 			reg = <0x0 0x54500000 0x0 0x00040000>;
 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&tegra_car TEGRA210_CLK_TSECB>;
+<<<<<<< HEAD
 			resets = <&tegra_car 206>;
+=======
+			clock-names = "tsec";
+			resets = <&tegra_car 206>;
+			reset-names = "tsec";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 		};
 

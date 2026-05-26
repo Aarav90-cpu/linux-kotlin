@@ -185,8 +185,13 @@ static int rtw89_dump_physical_efuse_map_dav(struct rtw89_dev *rtwdev, u8 *map,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
 					   u32 dump_addr, u32 dump_size, bool dav)
+=======
+static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
+					 u32 dump_addr, u32 dump_size, bool dav)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
@@ -208,6 +213,7 @@ static int __rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
 					 u32 dump_addr, u32 dump_size, bool dav)
 {
@@ -227,6 +233,8 @@ static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, u8 *map,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define invalid_efuse_header(hdr1, hdr2) \
 	((hdr1) == 0xff || (hdr2) == 0xff)
 #define invalid_efuse_content(word_en, i) \

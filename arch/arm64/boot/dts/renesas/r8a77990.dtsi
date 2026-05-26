@@ -1912,6 +1912,7 @@
 			iommu-map = <0 &ipmmu_hc 0 1>;
 			iommu-map-mask = <0>;
 			status = "disabled";
+<<<<<<< HEAD
 
 			/* PCIe bridge, Root Port */
 			pciec0_rp: pci@0,0 {
@@ -1922,6 +1923,8 @@
 				device_type = "pci";
 				ranges;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		vspb0: vsp@fe960000 {
@@ -2190,6 +2193,7 @@
 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>;
 		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys";
 	};
+<<<<<<< HEAD
 
 	/* External USB clock - to be overridden by boards that provide it */
 	usb3s0_clk: usb3s0-clk {
@@ -2207,4 +2211,6 @@
 		#phy-cells = <0>;
 		status = "disabled";
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

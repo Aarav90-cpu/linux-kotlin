@@ -216,12 +216,26 @@ done:
 	p->data_len += len;
 	p->truesize += delta_truesize;
 	p->len += len;
+<<<<<<< HEAD
 	skb_shinfo(p)->flags |= skbinfo->flags & SKBFL_SHARED_FRAG;
+=======
+<<<<<<< HEAD
+=======
+	skb_shinfo(p)->flags |= skbinfo->flags & SKBFL_SHARED_FRAG;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	if (lp != p) {
 		lp->data_len += len;
 		lp->truesize += delta_truesize;
 		lp->len += len;
+<<<<<<< HEAD
 		skb_shinfo(lp)->flags |= skbinfo->flags & SKBFL_SHARED_FRAG;
+=======
+<<<<<<< HEAD
+=======
+		skb_shinfo(lp)->flags |= skbinfo->flags & SKBFL_SHARED_FRAG;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	}
 	NAPI_GRO_CB(skb)->same_flow = 1;
 	return 0;
@@ -249,8 +263,16 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
 	p->truesize += skb->truesize;
 	p->len += skb->len;
 
+<<<<<<< HEAD
 	skb_shinfo(p)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
 
+=======
+<<<<<<< HEAD
+=======
+	skb_shinfo(p)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 	NAPI_GRO_CB(skb)->same_flow = 1;
 
 	return 0;

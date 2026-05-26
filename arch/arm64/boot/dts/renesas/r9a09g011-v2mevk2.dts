@@ -100,7 +100,12 @@
 	status = "okay";
 
 	phy0: ethernet-phy@0 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id001c.c916";
+=======
+		compatible = "ethernet-phy-id001c.c916",
+			     "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0>;
 	};
 };

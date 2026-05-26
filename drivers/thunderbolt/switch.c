@@ -347,7 +347,11 @@ static int nvm_write(void *priv, unsigned int offset, void *val, size_t bytes)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tb_switch_nvm_init(struct tb_switch *sw)
+=======
+static int tb_switch_nvm_add(struct tb_switch *sw)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tb_nvm *nvm;
 	int ret;
@@ -365,6 +369,7 @@ static int tb_switch_nvm_init(struct tb_switch *sw)
 	if (ret)
 		goto err_nvm;
 
+<<<<<<< HEAD
 	sw->nvm = nvm;
 	return 0;
 
@@ -385,6 +390,8 @@ static int tb_switch_nvm_add(struct tb_switch *sw)
 	if (!nvm)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If the switch is in safe-mode the only accessible portion of
 	 * the NVM is the non-active one where userspace is expected to
@@ -403,12 +410,21 @@ static int tb_switch_nvm_add(struct tb_switch *sw)
 			goto err_nvm;
 	}
 
+<<<<<<< HEAD
+=======
+	sw->nvm = nvm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_nvm:
 	tb_sw_dbg(sw, "NVM upgrade disabled\n");
 	sw->no_nvm_upgrade = true;
+<<<<<<< HEAD
 	tb_nvm_free(nvm);
+=======
+	if (!IS_ERR(nvm))
+		tb_nvm_free(nvm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -3329,10 +3345,13 @@ int tb_switch_add(struct tb_switch *sw)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = tb_switch_nvm_init(sw);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!sw->safe_mode) {
 		tb_switch_credits_init(sw);
 

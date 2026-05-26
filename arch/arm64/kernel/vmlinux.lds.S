@@ -13,6 +13,7 @@
 	*(__kvm_ex_table)					\
 	__stop___kvm_ex_table = .;
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVHE_EL2_TRACING
 #define HYPERVISOR_EVENT_IDS 					\
 	. = ALIGN(PAGE_SIZE);					\
@@ -23,13 +24,18 @@
 #define HYPERVISOR_EVENT_IDS
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define HYPERVISOR_RODATA_SECTIONS				\
 	HYP_SECTION_NAME(.rodata) : {				\
 		. = ALIGN(PAGE_SIZE);				\
 		__hyp_rodata_start = .;				\
 		*(HYP_SECTION_NAME(.data..ro_after_init))	\
 		*(HYP_SECTION_NAME(.rodata))			\
+<<<<<<< HEAD
 		HYPERVISOR_EVENT_IDS				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		. = ALIGN(PAGE_SIZE);				\
 		__hyp_rodata_end = .;				\
 	}
@@ -319,6 +325,7 @@ SECTIONS
 
 	HYPERVISOR_DATA_SECTION
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVHE_EL2_TRACING
 	.data.hyp_events : {
 		__hyp_events_start = .;
@@ -326,6 +333,8 @@ SECTIONS
 		__hyp_events_end = .;
 	}
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Data written with the MMU off but read with the MMU on requires
 	 * cache lines to be invalidated, discarding up to a Cache Writeback

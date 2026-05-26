@@ -314,9 +314,12 @@ static void hdlc_transmit(struct work_struct *work)
  * @payloads: array of payload buffers
  * @count: number of payloads
  *
+<<<<<<< HEAD
  * Every data byte may need HDLC escaping (doubling its size).
  * Frame layout: flag(1) + address(1-2) + control(1-2) + payload + CRC(2-4) + flag(1).
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Returns the maximum number of bytes needed in the circular buffer.
  */
 static size_t hdlc_encoded_length(const struct hdlc_payload payloads[],
@@ -351,10 +354,15 @@ static size_t hdlc_encoded_length(const struct hdlc_payload payloads[],
  * available, then verifies space under the lock and writes the entire
  * frame atomically.  Either a complete frame is enqueued or nothing is
  * written, avoiding both sleeping in atomic context and partial frames.
+<<<<<<< HEAD
  *
  * Returns 0 on success, -EAGAIN if the buffer remains full after retries.
  */
 static int hdlc_tx_frames(struct gb_beagleplay *bg, u8 address, u8 control,
+=======
+ */
+static void hdlc_tx_frames(struct gb_beagleplay *bg, u8 address, u8 control,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   const struct hdlc_payload payloads[], size_t count)
 {
 	size_t needed = hdlc_encoded_length(payloads, count);
@@ -377,24 +385,42 @@ static int hdlc_tx_frames(struct gb_beagleplay *bg, u8 address, u8 control,
 	}
 
 	if (retries < 0) {
+<<<<<<< HEAD
 		dev_warn_ratelimited(&bg->sd->dev, "Tx circ buf full, dropping frame\n");
 		return -EAGAIN;
+=======
+		dev_warn_ratelimited(&bg->sd->dev,
+				     "Tx circ buf full, dropping frame\n");
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock(&bg->tx_producer_lock);
 
 	/*
+<<<<<<< HEAD
 	 * Re-check space under the lock to close the TOCTOU window.
 	 * This should be rare since tx_producer_lock serialises all
 	 * producers and the consumer only frees space.  If it fires,
 	 * the caller is expected to handle -EAGAIN (retry or report).
+=======
+	 * Re-check under the lock.  Should not fail since
+	 * tx_producer_lock serialises all producers and the
+	 * consumer only frees space, but guard against it.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	head = bg->tx_circ_buf.head;
 	tail = READ_ONCE(bg->tx_circ_buf.tail);
 	if (unlikely(CIRC_SPACE(head, tail, TX_CIRC_BUF_SIZE) < needed)) {
 		spin_unlock(&bg->tx_producer_lock);
+<<<<<<< HEAD
 		dev_warn_ratelimited(&bg->sd->dev, "Tx circ buf space lost, dropping frame\n");
 		return -EAGAIN;
+=======
+		dev_warn_ratelimited(&bg->sd->dev,
+				     "Tx circ buf space lost, dropping frame\n");
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	hdlc_append_tx_frame(bg);
@@ -410,16 +436,23 @@ static int hdlc_tx_frames(struct gb_beagleplay *bg, u8 address, u8 control,
 	spin_unlock(&bg->tx_producer_lock);
 
 	schedule_work(&bg->tx_work);
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hdlc_tx_s_frame_ack(struct gb_beagleplay *bg)
 {
+<<<<<<< HEAD
 	int ret;
 
 	ret = hdlc_tx_frames(bg, bg->rx_buffer[0], (bg->rx_buffer[1] >> 1) & 0x7, NULL, 0);
 	if (ret)
 		dev_warn_ratelimited(&bg->sd->dev, "Failed to send HDLC ACK: %d\n", ret);
+=======
+	hdlc_tx_frames(bg, bg->rx_buffer[0], (bg->rx_buffer[1] >> 1) & 0x7, NULL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hdlc_rx_frame(struct gb_beagleplay *bg)
@@ -618,12 +651,15 @@ static size_t cc1352_bootloader_rx(struct gb_beagleplay *bg, const u8 *data,
 	size_t off = 0;
 
 	if (count > sizeof(bg->rx_buffer) - bg->rx_buffer_len) {
+<<<<<<< HEAD
 		dev_err_ratelimited(&bg->sd->dev, "Bootloader RX buffer overflow");
 		bg->rx_buffer_len = 0;
 		return count;
 	}
 
 	if (count > sizeof(bg->rx_buffer) - bg->rx_buffer_len) {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_warn(&bg->sd->dev,
 			 "dropping oversized bootloader receive chunk");
 		bg->rx_buffer_len = 0;
@@ -690,7 +726,10 @@ static int gb_message_send(struct gb_host_device *hd, u16 cport, struct gb_messa
 	struct gb_beagleplay *bg = dev_get_drvdata(&hd->dev);
 	struct hdlc_payload payloads[3];
 	__le16 cport_id = cpu_to_le16(cport);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&hd->dev, "Sending greybus message with Operation %u, Type: %X on Cport %u",
 		msg->header->operation_id, msg->header->type, cport);
@@ -705,10 +744,14 @@ static int gb_message_send(struct gb_host_device *hd, u16 cport, struct gb_messa
 	payloads[2].buf = msg->payload;
 	payloads[2].len = msg->payload_size;
 
+<<<<<<< HEAD
 	ret = hdlc_tx_frames(bg, ADDRESS_GREYBUS, 0x03, payloads, 3);
 	if (ret)
 		return ret;
 
+=======
+	hdlc_tx_frames(bg, ADDRESS_GREYBUS, 0x03, payloads, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	greybus_message_sent(bg->gb_hd, msg, 0);
 
 	return 0;
@@ -721,20 +764,35 @@ static void gb_message_cancel(struct gb_message *message)
 static struct gb_hd_driver gb_hdlc_driver = { .message_send = gb_message_send,
 					      .message_cancel = gb_message_cancel };
 
+<<<<<<< HEAD
 static int gb_beagleplay_start_svc(struct gb_beagleplay *bg)
+=======
+static void gb_beagleplay_start_svc(struct gb_beagleplay *bg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const u8 command = CONTROL_SVC_START;
 	const struct hdlc_payload payload = { .len = 1, .buf = (void *)&command };
 
+<<<<<<< HEAD
 	return hdlc_tx_frames(bg, ADDRESS_CONTROL, 0x03, &payload, 1);
 }
 
 static int gb_beagleplay_stop_svc(struct gb_beagleplay *bg)
+=======
+	hdlc_tx_frames(bg, ADDRESS_CONTROL, 0x03, &payload, 1);
+}
+
+static void gb_beagleplay_stop_svc(struct gb_beagleplay *bg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const u8 command = CONTROL_SVC_STOP;
 	const struct hdlc_payload payload = { .len = 1, .buf = (void *)&command };
 
+<<<<<<< HEAD
 	return hdlc_tx_frames(bg, ADDRESS_CONTROL, 0x03, &payload, 1);
+=======
+	hdlc_tx_frames(bg, ADDRESS_CONTROL, 0x03, &payload, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int cc1352_bootloader_wait_for_ack(struct gb_beagleplay *bg)
@@ -972,9 +1030,13 @@ static enum fw_upload_err cc1352_prepare(struct fw_upload *fw_upload,
 	gb_greybus_deinit(bg);
 	msleep(5 * MSEC_PER_SEC);
 
+<<<<<<< HEAD
 	/* Best effort — device is entering bootloader mode regardless. */
 	if (gb_beagleplay_stop_svc(bg))
 		dev_warn(&bg->sd->dev, "Failed to send SVC stop before flashing\n");
+=======
+	gb_beagleplay_stop_svc(bg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msleep(200);
 	flush_work(&bg->tx_work);
 
@@ -1016,9 +1078,13 @@ static enum fw_upload_err cc1352_prepare(struct fw_upload *fw_upload,
 		if (gb_greybus_init(bg) < 0)
 			return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
 					     "Failed to initialize greybus");
+<<<<<<< HEAD
 		if (gb_beagleplay_start_svc(bg))
 			return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
 					     "Failed to restart SVC after skip");
+=======
+		gb_beagleplay_start_svc(bg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return FW_UPLOAD_ERR_FW_INVALID;
 	}
 
@@ -1099,9 +1165,13 @@ static enum fw_upload_err cc1352_poll_complete(struct fw_upload *fw_upload)
 		return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
 				     "Failed to initialize greybus");
 
+<<<<<<< HEAD
 	if (gb_beagleplay_start_svc(bg) < 0)
 		return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
 				     "Failed to start SVC");
+=======
+	gb_beagleplay_start_svc(bg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return FW_UPLOAD_ERR_NONE;
 }
@@ -1212,6 +1282,7 @@ static int gb_beagleplay_probe(struct serdev_device *serdev)
 	if (ret)
 		goto free_fw;
 
+<<<<<<< HEAD
 	ret = gb_beagleplay_start_svc(bg);
 	if (ret)
 		goto free_greybus;
@@ -1220,6 +1291,12 @@ static int gb_beagleplay_probe(struct serdev_device *serdev)
 
 free_greybus:
 	gb_greybus_deinit(bg);
+=======
+	gb_beagleplay_start_svc(bg);
+
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 free_fw:
 	gb_fw_deinit(bg);
 free_hdlc:
@@ -1235,7 +1312,10 @@ static void gb_beagleplay_remove(struct serdev_device *serdev)
 
 	gb_fw_deinit(bg);
 	gb_greybus_deinit(bg);
+<<<<<<< HEAD
 	/* Best effort — device is being removed. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gb_beagleplay_stop_svc(bg);
 	hdlc_deinit(bg);
 	gb_serdev_deinit(bg);

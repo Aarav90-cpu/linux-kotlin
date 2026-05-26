@@ -1114,8 +1114,12 @@ static struct resource_funcs dcn201_res_pool_funcs = {
 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
 	.set_mcif_arb_params = dcn20_set_mcif_arb_params,
 	.find_first_free_match_stream_enc_for_link = dcn10_find_first_free_match_stream_enc_for_link,
+<<<<<<< HEAD
 	.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe,
 	.get_default_tiling_info = dcn10_get_default_tiling_info
+=======
+	.get_vstartup_for_pipe = dcn10_get_vstartup_for_pipe
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static bool dcn201_resource_construct(

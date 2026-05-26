@@ -18,7 +18,10 @@
 
 #include <linux/cpuset.h>
 #include <linux/sched/clock.h>
+<<<<<<< HEAD
 #include <linux/sched/deadline.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/sched/types.h>
 #include "sched.h"
 #include "pelt.h"
@@ -58,6 +61,20 @@ static int __init sched_dl_sysctl_init(void)
 late_initcall(sched_dl_sysctl_init);
 #endif /* CONFIG_SYSCTL */
 
+<<<<<<< HEAD
+=======
+static bool dl_server(struct sched_dl_entity *dl_se)
+{
+	return dl_se->dl_server;
+}
+
+static inline struct task_struct *dl_task_of(struct sched_dl_entity *dl_se)
+{
+	BUG_ON(dl_server(dl_se));
+	return container_of(dl_se, struct task_struct, dl);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct rq *rq_of_dl_rq(struct dl_rq *dl_rq)
 {
 	return container_of(dl_rq, struct rq, dl);
@@ -105,6 +122,7 @@ static inline bool is_dl_boosted(struct sched_dl_entity *dl_se)
 }
 #endif /* !CONFIG_RT_MUTEXES */
 
+<<<<<<< HEAD
 static inline u8 dl_get_type(struct sched_dl_entity *dl_se, struct rq *rq)
 {
 	if (!dl_server(dl_se))
@@ -118,6 +136,8 @@ static inline u8 dl_get_type(struct sched_dl_entity *dl_se, struct rq *rq)
 	return DL_OTHER;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct dl_bw *dl_bw_of(int i)
 {
 	RCU_LOCKDEP_WARN(!rcu_read_lock_sched_held(),
@@ -736,7 +756,10 @@ static inline void replenish_dl_new_period(struct sched_dl_entity *dl_se,
 		dl_se->dl_throttled = 1;
 		dl_se->dl_defer_armed = 1;
 	}
+<<<<<<< HEAD
 	trace_sched_dl_replenish_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -852,8 +875,11 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
 	if (dl_se->dl_throttled)
 		dl_se->dl_throttled = 0;
 
+<<<<<<< HEAD
 	trace_sched_dl_replenish_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If this is the replenishment of a deferred reservation,
 	 * clear the flag and return.
@@ -981,6 +1007,25 @@ update_dl_revised_wakeup(struct sched_dl_entity *dl_se, struct rq *rq)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Regarding the deadline, a task with implicit deadline has a relative
+ * deadline == relative period. A task with constrained deadline has a
+ * relative deadline <= relative period.
+ *
+ * We support constrained deadline tasks. However, there are some restrictions
+ * applied only for tasks which do not have an implicit deadline. See
+ * update_dl_entity() to know more about such restrictions.
+ *
+ * The dl_is_implicit() returns true if the task has an implicit deadline.
+ */
+static inline bool dl_is_implicit(struct sched_dl_entity *dl_se)
+{
+	return dl_se->dl_deadline == dl_se->dl_period;
+}
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * When a deadline entity is placed in the runqueue, its runtime and deadline
  * might need to be updated. This is done by a CBS wake up rule. There are two
  * different rules: 1) the original CBS; and 2) the Revisited CBS.
@@ -1087,7 +1132,11 @@ static int start_dl_timer(struct sched_dl_entity *dl_se)
 		act = ns_to_ktime(dl_next_period(dl_se));
 	}
 
+<<<<<<< HEAD
 	now = ktime_get();
+=======
+	now = hrtimer_cb_get_time(timer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	delta = ktime_to_ns(now) - rq_clock(rq);
 	act = ktime_add_ns(act, delta);
 
@@ -1335,7 +1384,10 @@ static inline void dl_check_constrained_dl(struct sched_dl_entity *dl_se)
 	    dl_time_before(rq_clock(rq), dl_next_period(dl_se))) {
 		if (unlikely(is_dl_boosted(dl_se) || !start_dl_timer(dl_se)))
 			return;
+<<<<<<< HEAD
 		trace_sched_dl_throttle_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dl_se->dl_throttled = 1;
 		if (dl_se->runtime > 0)
 			dl_se->runtime = 0;
@@ -1499,7 +1551,10 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64 
 
 throttle:
 	if (dl_runtime_exceeded(dl_se) || dl_se->dl_yielded) {
+<<<<<<< HEAD
 		trace_sched_dl_throttle_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dl_se->dl_throttled = 1;
 
 		/* If requested, inform the user about runtime overruns. */
@@ -1524,8 +1579,11 @@ throttle:
 
 		if (!is_leftmost(dl_se, &rq->dl))
 			resched_curr(rq);
+<<<<<<< HEAD
 	} else {
 		trace_sched_dl_update_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1804,7 +1862,10 @@ void dl_server_start(struct sched_dl_entity *dl_se)
 	if (WARN_ON_ONCE(!cpu_online(cpu_of(rq))))
 		return;
 
+<<<<<<< HEAD
 	trace_sched_dl_server_start_tp(dl_se, cpu_of(rq), dl_get_type(dl_se, rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dl_se->dl_server_active = 1;
 	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
 	if (!dl_task(dl_se->rq->curr) || dl_entity_preempt(dl_se, &rq->curr->dl))
@@ -1816,8 +1877,11 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
 	if (!dl_server(dl_se) || !dl_server_active(dl_se))
 		return;
 
+<<<<<<< HEAD
 	trace_sched_dl_server_stop_tp(dl_se, cpu_of(dl_se->rq),
 				      dl_get_type(dl_se, dl_se->rq));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dequeue_dl_entity(dl_se, DEQUEUE_SLEEP);
 	hrtimer_try_to_cancel(&dl_se->dl_timer);
 	dl_se->dl_defer_armed = 0;
@@ -2139,14 +2203,20 @@ update_stats_dequeue_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se,
 			int flags)
 {
 	struct task_struct *p = dl_task_of(dl_se);
+<<<<<<< HEAD
 	struct rq *rq = rq_of_dl_rq(dl_rq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!schedstat_enabled())
 		return;
 
+<<<<<<< HEAD
 	if (p != rq->curr)
 		update_stats_wait_end_dl(dl_rq, dl_se);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((flags & DEQUEUE_SLEEP)) {
 		unsigned int state;
 
@@ -2802,12 +2872,17 @@ static int find_later_rq(struct task_struct *task)
 
 static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
 {
+<<<<<<< HEAD
 	struct task_struct *i, *p = NULL;
 	struct rb_node *next_node;
+=======
+	struct task_struct *p;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!has_pushable_dl_tasks(rq))
 		return NULL;
 
+<<<<<<< HEAD
 	next_node = rb_first_cached(&rq->dl.pushable_dl_tasks_root);
 	while (next_node) {
 		i = __node_2_pdl(next_node);
@@ -2822,6 +2897,9 @@ static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
 
 	if (!p)
 		return NULL;
+=======
+	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WARN_ON_ONCE(rq->cpu != task_cpu(p));
 	WARN_ON_ONCE(task_current(rq, p));
@@ -3107,18 +3185,30 @@ static void task_woken_dl(struct rq *rq, struct task_struct *p)
 static void set_cpus_allowed_dl(struct task_struct *p,
 				struct affinity_context *ctx)
 {
+<<<<<<< HEAD
+=======
+	struct root_domain *src_rd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rq *rq;
 
 	WARN_ON_ONCE(!dl_task(p));
 
 	rq = task_rq(p);
+<<<<<<< HEAD
+=======
+	src_rd = rq->rd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Migrating a SCHED_DEADLINE task between exclusive
 	 * cpusets (different root_domains) entails a bandwidth
 	 * update. We already made space for us in the destination
 	 * domain (see cpuset_can_attach()).
 	 */
+<<<<<<< HEAD
 	if (dl_task_needs_bw_move(p, ctx->new_mask)) {
+=======
+	if (!cpumask_intersects(src_rd->span, ctx->new_mask)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct dl_bw *src_dl_b;
 
 		src_dl_b = dl_bw_of(cpu_of(rq));
@@ -3135,6 +3225,7 @@ static void set_cpus_allowed_dl(struct task_struct *p,
 	set_cpus_allowed_common(p, ctx);
 }
 
+<<<<<<< HEAD
 bool dl_task_needs_bw_move(struct task_struct *p,
 			   const struct cpumask *new_mask)
 {
@@ -3144,6 +3235,8 @@ bool dl_task_needs_bw_move(struct task_struct *p,
 	return !cpumask_intersects(task_rq(p)->rd->span, new_mask);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Assumes rq->lock is held */
 static void rq_online_dl(struct rq *rq)
 {
@@ -3635,6 +3728,7 @@ void __setparam_dl(struct task_struct *p, const struct sched_attr *attr)
 	dl_se->dl_density = to_ratio(dl_se->dl_deadline, dl_se->dl_runtime);
 }
 
+<<<<<<< HEAD
 void __getparam_dl(struct task_struct *p, struct sched_attr *attr, unsigned int flags)
 {
 	struct sched_dl_entity *dl_se = &p->dl;
@@ -3655,6 +3749,15 @@ void __getparam_dl(struct task_struct *p, struct sched_attr *attr, unsigned int 
 		attr->sched_runtime = dl_se->dl_runtime;
 		attr->sched_deadline = dl_se->dl_deadline;
 	}
+=======
+void __getparam_dl(struct task_struct *p, struct sched_attr *attr)
+{
+	struct sched_dl_entity *dl_se = &p->dl;
+
+	attr->sched_priority = p->rt_priority;
+	attr->sched_runtime = dl_se->dl_runtime;
+	attr->sched_deadline = dl_se->dl_deadline;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	attr->sched_period = dl_se->dl_period;
 	attr->sched_flags &= ~SCHED_DL_FLAGS;
 	attr->sched_flags |= dl_se->flags;

@@ -331,7 +331,10 @@ enum pcl812_boardtype {
 struct pcl812_board {
 	const char *name;
 	enum pcl812_boardtype board_type;
+<<<<<<< HEAD
 	unsigned short min_io_start;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int n_aichan;
 	int n_aochan;
 	unsigned int ai_ns_min;
@@ -347,7 +350,10 @@ static const struct pcl812_board boardtypes[] = {
 	{
 		.name		= "pcl812",
 		.board_type	= BOARD_PCL812,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,
 		.n_aochan	= 2,
 		.ai_ns_min	= 33000,
@@ -357,7 +363,10 @@ static const struct pcl812_board boardtypes[] = {
 		.has_dio	= 1,
 	}, {
 		.name		= "pcl812pg",
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.board_type	= BOARD_PCL812PG,
 		.n_aichan	= 16,
 		.n_aochan	= 2,
@@ -369,7 +378,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "acl8112pg",
 		.board_type	= BOARD_PCL812PG,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -380,7 +392,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "acl8112dg",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -392,7 +407,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "acl8112hg",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -404,7 +422,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a821pgl",
 		.board_type	= BOARD_A821,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 1,
 		.ai_ns_min	= 10000,
@@ -414,7 +435,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a821pglnda",
 		.board_type	= BOARD_A821,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.ai_ns_min	= 10000,
 		.rangelist_ai	= &range_pcl813b_ai,
@@ -422,7 +446,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a821pgh",
 		.board_type	= BOARD_A821,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 1,
 		.ai_ns_min	= 10000,
@@ -432,7 +459,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a822pgl",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -443,7 +473,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a822pgh",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -454,7 +487,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a823pgl",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 8000,
@@ -465,7 +501,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a823pgh",
 		.board_type	= BOARD_ACL8112,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 8000,
@@ -476,31 +515,46 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "pcl813",
 		.board_type	= BOARD_PCL813,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 32,
 		.rangelist_ai	= &range_pcl813b_ai,
 	}, {
 		.name		= "pcl813b",
 		.board_type	= BOARD_PCL813B,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 32,
 		.rangelist_ai	= &range_pcl813b_ai,
 	}, {
 		.name		= "acl8113",
 		.board_type	= BOARD_ACL8113,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 32,
 		.rangelist_ai	= &range_acl8113_1_ai,
 	}, {
 		.name		= "iso813",
 		.board_type	= BOARD_ISO813,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 32,
 		.rangelist_ai	= &range_iso813_1_ai,
 	}, {
 		.name		= "acl8216",
 		.board_type	= BOARD_ACL8216,
+<<<<<<< HEAD
 		.min_io_start	= 0x200,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -513,7 +567,10 @@ static const struct pcl812_board boardtypes[] = {
 	}, {
 		.name		= "a826pg",
 		.board_type	= BOARD_ACL8216,
+<<<<<<< HEAD
 		.min_io_start	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.n_aichan	= 16,	/* 8 differential */
 		.n_aochan	= 2,
 		.ai_ns_min	= 10000,
@@ -1157,8 +1214,12 @@ static int pcl812_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	if (!devpriv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x10,
 					  board->min_io_start, 0x3ff, 16);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

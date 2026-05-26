@@ -118,8 +118,12 @@ int devm_tegra_core_dev_init_opp_table(struct device *dev,
 		hw_version = BIT(tegra_sku_info.soc_process_id);
 		config.supported_hw = &hw_version;
 		config.supported_hw_count = 1;
+<<<<<<< HEAD
 	} else if (of_machine_is_compatible("nvidia,tegra30") ||
 		   of_machine_is_compatible("nvidia,tegra114")) {
+=======
+	} else if (of_machine_is_compatible("nvidia,tegra30")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hw_version = BIT(tegra_sku_info.soc_speedo_id);
 		config.supported_hw = &hw_version;
 		config.supported_hw_count = 1;
@@ -132,7 +136,11 @@ int devm_tegra_core_dev_init_opp_table(struct device *dev,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Tegra124+ doesn't support OPP yet, return early for pre-Tegra124
+=======
+	 * Tegra114+ doesn't support OPP yet, return early for non tegra20/30
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * case.
 	 */
 	if (!config.supported_hw)

@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright (c) 2023 Meta Platforms, Inc. and affiliates. */
 #define _GNU_SOURCE
+<<<<<<< HEAD
 #include <bpf/btf.h>
+=======
+#include <test_progs.h>
+#include <bpf/btf.h>
+#include "cap_helpers.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <fcntl.h>
 #include <sched.h>
 #include <signal.h>
@@ -13,6 +19,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/un.h>
+<<<<<<< HEAD
 
 #include "bpf_util.h"
 #include "cap_helpers.h"
@@ -24,6 +31,11 @@
 #include "priv_prog.skel.h"
 #include "dummy_st_ops_success.skel.h"
 #include "token_kallsyms.skel.h"
+=======
+#include "priv_map.skel.h"
+#include "priv_prog.skel.h"
+#include "dummy_st_ops_success.skel.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "token_lsm.skel.h"
 #include "priv_freplace_prog.skel.h"
 
@@ -1051,6 +1063,7 @@ err_out:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static bool kallsyms_has_bpf_func(struct ksyms *ksyms, const char *func_name)
 {
 	char name[256];
@@ -1103,6 +1116,8 @@ cleanup:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define bit(n) (1ULL << (n))
 
 static int userns_bpf_token_info(int mnt_fd, struct token_lsm *lsm_skel)
@@ -1140,7 +1155,11 @@ cleanup:
 	return err;
 }
 
+<<<<<<< HEAD
 void serial_test_token(void)
+=======
+void test_token(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (test__start_subtest("map_token")) {
 		struct bpffs_opts opts = {
@@ -1252,6 +1271,7 @@ void serial_test_token(void)
 
 		subtest_userns(&opts, userns_bpf_token_info);
 	}
+<<<<<<< HEAD
 	if (test__start_subtest("obj_priv_prog_kallsyms")) {
 		char perf_paranoid_orig[32] = {};
 		char kptr_restrict_orig[32] = {};
@@ -1274,4 +1294,6 @@ cleanup:
 		if (kptr_restrict_orig[0])
 			sysctl_set_or_fail("/proc/sys/kernel/kptr_restrict", NULL, kptr_restrict_orig);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

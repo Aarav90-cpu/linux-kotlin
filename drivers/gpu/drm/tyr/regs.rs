@@ -7,6 +7,7 @@
 // does.
 #![allow(dead_code)]
 
+<<<<<<< HEAD
 use kernel::{
     bits::bit_u32,
     device::{
@@ -17,6 +18,14 @@ use kernel::{
     io::Io,
     prelude::*, //
 };
+=======
+use kernel::bits::bit_u32;
+use kernel::device::Bound;
+use kernel::device::Device;
+use kernel::devres::Devres;
+use kernel::io::Io;
+use kernel::prelude::*;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 use crate::driver::IoMem;
 

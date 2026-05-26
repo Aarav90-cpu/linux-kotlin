@@ -679,9 +679,15 @@ static ssize_t pattern_read(struct file *file, char __user *u_buff, size_t len, 
 		return 0;
 
 	if (copy_to_user(u_buff, patt_buf->buf + *off, to_read))
+<<<<<<< HEAD
 		return -EFAULT;
 
 	*off += to_read;
+=======
+		to_read = 0;
+	else
+		*off += to_read;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return to_read;
 }
@@ -756,8 +762,15 @@ static int __init mod_init(void)
 	if (err)
 		goto err_free_patterns;
 	err = platform_device_register(&pcmtst_pdev);
+<<<<<<< HEAD
 	if (err)
 		goto err_clear_debug;
+=======
+	if (err) {
+		platform_device_put(&pcmtst_pdev);
+		goto err_clear_debug;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = platform_driver_register(&pcmtst_pdrv);
 	if (err) {
 		platform_device_unregister(&pcmtst_pdev);

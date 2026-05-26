@@ -4080,6 +4080,7 @@ static const struct alg_test_desc alg_test_descs[] = {
 			.aead = __VECS(aegis128_tv_template)
 		}
 	}, {
+<<<<<<< HEAD
 		.alg = "authenc(hmac(md5),cbc(aes))",
 		.generic_driver = "authenc(hmac-md5-lib,cbc(aes-lib))",
 		.test = alg_test_aead,
@@ -4094,6 +4095,8 @@ static const struct alg_test_desc alg_test_descs[] = {
 			.aead = __VECS(hmac_md5_des_cbc_tv_temp)
 		}
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.alg = "authenc(hmac(md5),cbc(des3_ede))",
 		.generic_driver = "authenc(hmac-md5-lib,cbc(des3_ede-generic))",
 		.test = alg_test_aead,
@@ -4108,6 +4111,7 @@ static const struct alg_test_desc alg_test_descs[] = {
 			.aead = __VECS(hmac_md5_ecb_cipher_null_tv_template)
 		}
 	}, {
+<<<<<<< HEAD
 		.alg = "authenc(hmac(md5),rfc3686(ctr(aes)))",
 		.generic_driver = "authenc(hmac-md5-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
@@ -4115,6 +4119,8 @@ static const struct alg_test_desc alg_test_descs[] = {
 			.aead = __VECS(hmac_md5_aes_ctr_rfc3686_tv_temp)
 		}
 	}, {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.alg = "authenc(hmac(sha1),cbc(aes))",
 		.generic_driver = "authenc(hmac-sha1-lib,cbc(aes-lib))",
 		.test = alg_test_aead,
@@ -4149,17 +4155,25 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "authenc(hmac(sha1),rfc3686(ctr(aes)))",
+<<<<<<< HEAD
 		.generic_driver = "authenc(hmac-sha1-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
 			.aead = __VECS(hmac_sha1_aes_ctr_rfc3686_tv_temp)
 		}
+=======
+		.test = alg_test_null,
+		.fips_allowed = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.alg = "authenc(hmac(sha224),cbc(aes))",
 		.generic_driver = "authenc(hmac-sha224-lib,cbc(aes-lib))",
 		.test = alg_test_aead,
+<<<<<<< HEAD
 		.fips_allowed = 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.suite = {
 			.aead = __VECS(hmac_sha224_aes_cbc_tv_temp)
 		}
@@ -4179,12 +4193,17 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "authenc(hmac(sha224),rfc3686(ctr(aes)))",
+<<<<<<< HEAD
 		.generic_driver = "authenc(hmac-sha224-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
 			.aead = __VECS(hmac_sha224_aes_ctr_rfc3686_tv_temp)
 		}
+=======
+		.test = alg_test_null,
+		.fips_allowed = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.alg = "authenc(hmac(sha256),cbc(aes))",
 		.generic_driver = "authenc(hmac-sha256-lib,cbc(aes-lib))",
@@ -4220,17 +4239,25 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "authenc(hmac(sha256),rfc3686(ctr(aes)))",
+<<<<<<< HEAD
 		.generic_driver = "authenc(hmac-sha256-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
 			.aead = __VECS(hmac_sha256_aes_ctr_rfc3686_tv_temp)
 		}
+=======
+		.test = alg_test_null,
+		.fips_allowed = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.alg = "authenc(hmac(sha384),cbc(aes))",
 		.generic_driver = "authenc(hmac-sha384-lib,cbc(aes-lib))",
 		.test = alg_test_aead,
+<<<<<<< HEAD
 		.fips_allowed = 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.suite = {
 			.aead = __VECS(hmac_sha384_aes_cbc_tv_temp)
 		}
@@ -4261,12 +4288,17 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "authenc(hmac(sha384),rfc3686(ctr(aes)))",
+<<<<<<< HEAD
 		.generic_driver = "authenc(hmac-sha384-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
 			.aead = __VECS(hmac_sha384_aes_ctr_rfc3686_tv_temp)
 		}
+=======
+		.test = alg_test_null,
+		.fips_allowed = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.alg = "authenc(hmac(sha512),cbc(aes))",
 		.generic_driver = "authenc(hmac-sha512-lib,cbc(aes-lib))",
@@ -4295,12 +4327,17 @@ static const struct alg_test_desc alg_test_descs[] = {
 		.fips_allowed = 1,
 	}, {
 		.alg = "authenc(hmac(sha512),rfc3686(ctr(aes)))",
+<<<<<<< HEAD
 		.generic_driver = "authenc(hmac-sha512-lib,rfc3686(ctr(aes-lib)))",
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
 			.aead = __VECS(hmac_sha512_aes_ctr_rfc3686_tv_temp)
 		}
+=======
+		.test = alg_test_null,
+		.fips_allowed = 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.alg = "blake2b-160",
 		.generic_driver = "blake2b-160-lib",
@@ -4431,7 +4468,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 	}, {
 #endif
 		.alg = "cbcmac(aes)",
+<<<<<<< HEAD
 		.generic_driver = "cbcmac-aes-lib",
+=======
+		.generic_driver = "cbcmac(aes-lib)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_hash,
 		.suite = {
 			.hash = __VECS(aes_cbcmac_tv_template)
@@ -4444,7 +4485,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "ccm(aes)",
+<<<<<<< HEAD
 		.generic_driver = "ccm_base(ctr(aes-lib),cbcmac-aes-lib)",
+=======
+		.generic_driver = "ccm_base(ctr(aes-lib),cbcmac(aes-lib))",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
@@ -4472,7 +4517,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		},
 	}, {
 		.alg = "cmac(aes)",
+<<<<<<< HEAD
 		.generic_driver = "cmac-aes-lib",
+=======
+		.generic_driver = "cmac(aes-lib)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.fips_allowed = 1,
 		.test = alg_test_hash,
 		.suite = {
@@ -5008,7 +5057,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 	}, {
 #endif /* CONFIG_CRYPTO_DH_RFC7919_GROUPS */
 		.alg = "gcm(aes)",
+<<<<<<< HEAD
 		.generic_driver = "gcm_base(ctr(aes-lib),ghash-lib)",
+=======
+		.generic_driver = "gcm_base(ctr(aes-lib),ghash-generic)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
@@ -5016,19 +5069,36 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "gcm(aria)",
+<<<<<<< HEAD
 		.generic_driver = "gcm_base(ctr(aria-generic),ghash-lib)",
+=======
+		.generic_driver = "gcm_base(ctr(aria-generic),ghash-generic)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.suite = {
 			.aead = __VECS(aria_gcm_tv_template)
 		}
 	}, {
 		.alg = "gcm(sm4)",
+<<<<<<< HEAD
 		.generic_driver = "gcm_base(ctr(sm4-generic),ghash-lib)",
+=======
+		.generic_driver = "gcm_base(ctr(sm4-generic),ghash-generic)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.suite = {
 			.aead = __VECS(sm4_gcm_tv_template)
 		}
 	}, {
+<<<<<<< HEAD
+=======
+		.alg = "ghash",
+		.test = alg_test_hash,
+		.suite = {
+			.hash = __VECS(ghash_tv_template)
+		}
+	}, {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.alg = "hctr2(aes)",
 		.generic_driver = "hctr2_base(xctr(aes-lib),polyval-lib)",
 		.test = alg_test_skcipher,
@@ -5122,7 +5192,10 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "hmac(sm3)",
+<<<<<<< HEAD
 		.generic_driver = "hmac(sm3-lib)",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_hash,
 		.suite = {
 			.hash = __VECS(hmac_sm3_tv_template)
@@ -5236,6 +5309,15 @@ static const struct alg_test_desc alg_test_descs[] = {
 			.hash = __VECS(md5_tv_template)
 		}
 	}, {
+<<<<<<< HEAD
+=======
+		.alg = "michael_mic",
+		.test = alg_test_hash,
+		.suite = {
+			.hash = __VECS(michael_mic_tv_template)
+		}
+	}, {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.alg = "p1363(ecdsa-nist-p192)",
 		.test = alg_test_null,
 	}, {
@@ -5346,7 +5428,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "rfc4106(gcm(aes))",
+<<<<<<< HEAD
 		.generic_driver = "rfc4106(gcm_base(ctr(aes-lib),ghash-lib))",
+=======
+		.generic_driver = "rfc4106(gcm_base(ctr(aes-lib),ghash-generic))",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
@@ -5358,7 +5444,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "rfc4309(ccm(aes))",
+<<<<<<< HEAD
 		.generic_driver = "rfc4309(ccm_base(ctr(aes-lib),cbcmac-aes-lib))",
+=======
+		.generic_driver = "rfc4309(ccm_base(ctr(aes-lib),cbcmac(aes-lib)))",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.fips_allowed = 1,
 		.suite = {
@@ -5370,7 +5460,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "rfc4543(gcm(aes))",
+<<<<<<< HEAD
 		.generic_driver = "rfc4543(gcm_base(ctr(aes-lib),ghash-lib))",
+=======
+		.generic_driver = "rfc4543(gcm_base(ctr(aes-lib),ghash-generic))",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_aead,
 		.suite = {
 			.aead = {
@@ -5484,7 +5578,10 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "sm3",
+<<<<<<< HEAD
 		.generic_driver = "sm3-lib",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_hash,
 		.suite = {
 			.hash = __VECS(sm3_tv_template)
@@ -5548,7 +5645,11 @@ static const struct alg_test_desc alg_test_descs[] = {
 		}
 	}, {
 		.alg = "xcbc(aes)",
+<<<<<<< HEAD
 		.generic_driver = "xcbc-aes-lib",
+=======
+		.generic_driver = "xcbc(aes-lib)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.test = alg_test_hash,
 		.suite = {
 			.hash = __VECS(aes_xcbc128_tv_template)

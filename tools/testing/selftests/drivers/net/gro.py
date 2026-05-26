@@ -11,7 +11,10 @@ coalescing behavior.
 Test cases:
   - data_same: Same size data packets coalesce
   - data_lrg_sml: Large packet followed by smaller one coalesces
+<<<<<<< HEAD
   - data_lrg_1byte: Large packet followed by 1B one coalesces (Ethernet padding)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - data_sml_lrg: Small packet followed by larger one doesn't coalesce
   - ack: Pure ACK packets do not coalesce
   - flags_psh: Packets with PSH flag don't coalesce
@@ -36,6 +39,7 @@ Test cases:
   - large_rem: Large packet remainder handling
 """
 
+<<<<<<< HEAD
 import glob
 import os
 import re
@@ -48,6 +52,13 @@ from lib.py import ksft_variants, KsftNamedVariant
 
 # gro.c uses hardcoded DPORT=8000
 GRO_DPORT = 8000
+=======
+import os
+from lib.py import ksft_run, ksft_exit, ksft_pr
+from lib.py import NetDrvEpEnv, KsftXfailEx
+from lib.py import bkg, cmd, defer, ethtool, ip
+from lib.py import ksft_variants
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 def _resolve_dmac(cfg, ipver):
@@ -121,6 +132,7 @@ def _set_ethtool_feat(dev, current, feats, host=None):
         ksft_pr(eth_cmd)
 
 
+<<<<<<< HEAD
 def _get_queue_stats(cfg, queue_id):
     """Get stats for a specific Rx queue."""
     cfg.wait_hw_stats_settle()
@@ -213,11 +225,17 @@ def _run_gro_bin(cfg, test_name, protocol=None, num_flows=None,
     return rx_proc
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def _setup(cfg, mode, test_name):
     """ Setup hardware loopback mode for GRO testing. """
 
     if not hasattr(cfg, "bin_remote"):
+<<<<<<< HEAD
         cfg.bin_local = cfg.net_lib_dir / "gro"
+=======
+        cfg.bin_local = cfg.test_dir / "gro"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
 
     if not hasattr(cfg, "feat"):
@@ -290,8 +308,12 @@ def _gro_variants():
 
     # Tests that work for all protocols
     common_tests = [
+<<<<<<< HEAD
         "data_same", "data_lrg_sml", "data_sml_lrg", "data_lrg_1byte",
         "data_burst",
+=======
+        "data_same", "data_lrg_sml", "data_sml_lrg",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "ack",
         "flags_psh", "flags_syn", "flags_rst", "flags_urg", "flags_cwr",
         "tcp_csum", "tcp_seq", "tcp_ts", "tcp_opt",
@@ -301,7 +323,10 @@ def _gro_variants():
 
     # Tests specific to IPv4
     ipv4_tests = [
+<<<<<<< HEAD
         "ip_csum",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "ip_ttl", "ip_opt", "ip_frag4",
         "ip_id_df1_inc", "ip_id_df1_fixed",
         "ip_id_df0_inc", "ip_id_df0_fixed",
@@ -314,7 +339,11 @@ def _gro_variants():
     ]
 
     for mode in ["sw", "hw", "lro"]:
+<<<<<<< HEAD
         for protocol in ["ipv4", "ipv6", "ipip", "ip6ip6"]:
+=======
+        for protocol in ["ipv4", "ipv6", "ipip"]:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             for test_name in common_tests:
                 yield mode, protocol, test_name
 
@@ -335,14 +364,39 @@ def test(cfg, mode, protocol, test_name):
 
     _setup(cfg, mode, test_name)
 
+<<<<<<< HEAD
+=======
+    base_cmd_args = [
+        f"--{protocol}",
+        f"--dmac {_resolve_dmac(cfg, ipver)}",
+        f"--smac {cfg.remote_dev['address']}",
+        f"--daddr {cfg.addr_v[ipver]}",
+        f"--saddr {cfg.remote_addr_v[ipver]}",
+        f"--test {test_name}",
+        "--verbose"
+    ]
+    base_args = " ".join(base_cmd_args)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     # Each test is run 6 times to deflake, because given the receive timing,
     # not all packets that should coalesce will be considered in the same flow
     # on every try.
     max_retries = 6
     for attempt in range(max_retries):
+<<<<<<< HEAD
         fail_now = attempt >= max_retries - 1
         rx_proc = _run_gro_bin(cfg, test_name, protocol=protocol,
                                verbose=True, fail=fail_now)
+=======
+        rx_cmd = f"{cfg.bin_local} {base_args} --rx --iface {cfg.ifname}"
+        tx_cmd = f"{cfg.bin_remote} {base_args} --iface {cfg.remote_ifname}"
+
+        fail_now = attempt >= max_retries - 1
+
+        with bkg(rx_cmd, ksft_ready=True, exit_wait=True,
+                 fail=fail_now) as rx_proc:
+            cmd(tx_cmd, host=cfg.remote)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         if rx_proc.ret == 0:
             return
@@ -356,6 +410,7 @@ def test(cfg, mode, protocol, test_name):
         ksft_pr(f"Attempt {attempt + 1}/{max_retries} failed, retrying...")
 
 
+<<<<<<< HEAD
 def _capacity_variants():
     """Generate variants for capacity test: mode x queue setup."""
     setups = [
@@ -432,13 +487,19 @@ def test_gro_capacity(cfg, mode, setup_func):
         num_flows *= 2
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def main() -> None:
     """ Ksft boiler plate main """
 
     with NetDrvEpEnv(__file__) as cfg:
+<<<<<<< HEAD
         cfg.ethnl = EthtoolFamily()
         cfg.netnl = NetdevFamily()
         ksft_run(cases=[test, test_gro_capacity], args=(cfg,))
+=======
+        ksft_run(cases=[test], args=(cfg,))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ksft_exit()
 
 

@@ -68,7 +68,11 @@ static int stm32_pwm_round_waveform_tohw(struct pwm_chip *chip,
 	struct stm32_pwm *priv = to_stm32_pwm_dev(chip);
 	unsigned int ch = pwm->hwpwm;
 	unsigned long rate;
+<<<<<<< HEAD
 	u64 duty_ticks, offset_ticks;
+=======
+	u64 ccr, duty;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (wf->period_length_ns == 0) {
@@ -164,6 +168,7 @@ static int stm32_pwm_round_waveform_tohw(struct pwm_chip *chip,
 		wfhw->arr = min_t(u64, arr, priv->max_arr) - 1;
 	}
 
+<<<<<<< HEAD
 	duty_ticks = mul_u64_u64_div_u64(wf->duty_length_ns, rate,
 					 (u64)NSEC_PER_SEC * (wfhw->psc + 1));
 	duty_ticks = min_t(u64, duty_ticks, wfhw->arr + 1);
@@ -174,15 +179,33 @@ static int stm32_pwm_round_waveform_tohw(struct pwm_chip *chip,
 
 	if (duty_ticks && offset_ticks &&
 	    duty_ticks + offset_ticks >= wfhw->arr + 1) {
+=======
+	duty = mul_u64_u64_div_u64(wf->duty_length_ns, rate,
+				   (u64)NSEC_PER_SEC * (wfhw->psc + 1));
+	duty = min_t(u64, duty, wfhw->arr + 1);
+
+	if (wf->duty_length_ns && wf->duty_offset_ns &&
+	    wf->duty_length_ns + wf->duty_offset_ns >= wf->period_length_ns) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wfhw->ccer |= TIM_CCER_CCxP(ch + 1);
 		if (priv->have_complementary_output)
 			wfhw->ccer |= TIM_CCER_CCxNP(ch + 1);
 
+<<<<<<< HEAD
 		wfhw->ccr = wfhw->arr + 1 - duty_ticks;
 	} else {
 		wfhw->ccr = duty_ticks;
 	}
 
+=======
+		ccr = wfhw->arr + 1 - duty;
+	} else {
+		ccr = duty;
+	}
+
+	wfhw->ccr = min_t(u64, ccr, wfhw->arr + 1);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	dev_dbg(&chip->dev, "pwm#%u: %lld/%lld [+%lld] @%lu -> CCER: %08x, PSC: %08x, ARR: %08x, CCR: %08x\n",
 		pwm->hwpwm, wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,

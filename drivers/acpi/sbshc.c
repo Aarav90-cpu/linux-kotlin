@@ -18,6 +18,12 @@
 #include "sbshc.h"
 #include "internal.h"
 
+<<<<<<< HEAD
+=======
+#define ACPI_SMB_HC_CLASS	"smbus_host_ctl"
+#define ACPI_SMB_HC_DEVICE_NAME	"ACPI SMBus HC"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct acpi_smb_hc {
 	struct acpi_ec *ec;
 	struct mutex lock;
@@ -237,21 +243,34 @@ static int smbus_alarm(void *context)
 
 static int acpi_smbus_hc_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int status;
 	unsigned long long val;
 	struct acpi_smb_hc *hc;
 
+<<<<<<< HEAD
 	device = ACPI_COMPANION(&pdev->dev);
 	if (!device)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = acpi_evaluate_integer(device->handle, "_EC", NULL, &val);
 	if (ACPI_FAILURE(status)) {
 		pr_err("error obtaining _EC.\n");
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	strscpy(acpi_device_name(device), ACPI_SMB_HC_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_SMB_HC_CLASS);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hc = kzalloc_obj(struct acpi_smb_hc);
 	if (!hc)
 		return -ENOMEM;

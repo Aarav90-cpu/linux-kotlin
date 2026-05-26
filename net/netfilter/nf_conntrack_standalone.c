@@ -61,6 +61,10 @@ print_tuple(struct seq_file *s, const struct nf_conntrack_tuple *tuple,
 			   ntohs(tuple->src.u.tcp.port),
 			   ntohs(tuple->dst.u.tcp.port));
 		break;
+<<<<<<< HEAD
+=======
+	case IPPROTO_UDPLITE:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IPPROTO_UDP:
 		seq_printf(s, "sport=%hu dport=%hu ",
 			   ntohs(tuple->src.u.udp.port),
@@ -276,6 +280,10 @@ static const char* l4proto_name(u16 proto)
 	case IPPROTO_UDP: return "udp";
 	case IPPROTO_GRE: return "gre";
 	case IPPROTO_SCTP: return "sctp";
+<<<<<<< HEAD
+=======
+	case IPPROTO_UDPLITE: return "udplite";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case IPPROTO_ICMPV6: return "icmpv6";
 	}
 

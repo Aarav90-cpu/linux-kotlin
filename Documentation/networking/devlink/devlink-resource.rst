@@ -74,6 +74,7 @@ attribute, which represents the pending change in size. For example:
 
 Note that changes in resource size may require a device reload to properly
 take effect.
+<<<<<<< HEAD
 
 Port-level Resources and Full Dump
 ==================================
@@ -144,3 +145,5 @@ To dump only port-level resources across all devices:
       name max_SFs size 128 unit entry dpipe_tables none
 
 Note that port-level resources are read-only.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

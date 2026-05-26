@@ -96,7 +96,11 @@ For short bitmaps of (reasonably) fixed length, standard ``NLA_BITFIELD32``
 type is used. For arbitrary length bitmaps, ethtool netlink uses a nested
 attribute with contents of one of two forms: compact (two binary bitmaps
 representing bit values and mask of affected bits) and bit-by-bit (list of
+<<<<<<< HEAD
 bits identified by index or name).
+=======
+bits identified by either index or name).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Verbose (bit-by-bit) bitsets allow sending symbolic names for bits together
 with their values which saves a round trip (when the bitset is passed in a
@@ -156,6 +160,7 @@ Bit-by-bit form: nested (bitset) attribute contents:
  | | | ``ETHTOOL_A_BITSET_BIT_VALUE`` | flag   | present if bit is set       |
  +-+-+--------------------------------+--------+-----------------------------+
 
+<<<<<<< HEAD
 For bit-by-bit form, ``ETHTOOL_A_BITSET_SIZE`` is optional, and
 ``ETHTOOL_A_BITSET_BITS`` is mandatory. ``ETHTOOL_A_BITSET_BITS`` nest can
 only contain ``ETHTOOL_A_BITSET_BITS_BIT`` attributes but there can be an
@@ -166,6 +171,14 @@ name. When used in requests, listed bits are set to 0 or 1 according to
 A request fails if index exceeds kernel bit length or if name is not
 recognized. If both name and index are set, the request will fail if they
 point to different bits.
+=======
+Bit size is optional for bit-by-bit form. ``ETHTOOL_A_BITSET_BITS`` nest can
+only contain ``ETHTOOL_A_BITSET_BITS_BIT`` attributes but there can be an
+arbitrary number of them.  A bit may be identified by its index or by its
+name. When used in requests, listed bits are set to 0 or 1 according to
+``ETHTOOL_A_BITSET_BIT_VALUE``, the rest is preserved. A request fails if
+index exceeds kernel bit length or if name is not recognized.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 When ``ETHTOOL_A_BITSET_NOMASK`` flag is present, bitset is interpreted as
 a simple bitmap. ``ETHTOOL_A_BITSET_BIT_VALUE`` attributes are not used in
@@ -1076,8 +1089,11 @@ Kernel response contents:
   ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
   ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
   ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
+<<<<<<< HEAD
   ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
   ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   ===========================================  ======  =======================
 
 Attributes are only included in reply if their value is not zero or the
@@ -1111,6 +1127,7 @@ well with frequent small-sized URBs transmissions.
 to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
 <https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
 
+<<<<<<< HEAD
 Rx CQE coalescing allows multiple received packets to be coalesced into a
 single Completion Queue Entry (CQE) or descriptor writeback.
 ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES`` describes the maximum number of
@@ -1118,6 +1135,8 @@ frames that can be coalesced into a CQE or writeback.
 ``ETHTOOL_A_COALESCE_RX_CQE_NSECS`` describes max time in nanoseconds after
 the first packet arrival in a coalesced CQE or writeback to be sent.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 COALESCE_SET
 ============
 
@@ -1156,8 +1175,11 @@ Request contents:
   ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
   ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
   ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
+<<<<<<< HEAD
   ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
   ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   ===========================================  ======  =======================
 
 Request is rejected if it attributes declared as unsupported by driver (i.e.

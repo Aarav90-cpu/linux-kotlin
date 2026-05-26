@@ -10,7 +10,10 @@
 #include <linux/clk-provider.h>
 #include <linux/module.h>
 #include <linux/of_address.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sound/soc.h>
 
 #include "fsl_utils.h"
@@ -198,6 +201,7 @@ void fsl_asoc_constrain_rates(struct snd_pcm_hw_constraint_list *target_constr,
 }
 EXPORT_SYMBOL(fsl_asoc_constrain_rates);
 
+<<<<<<< HEAD
 /*
  * Below functions are used by mixer interface to avoid accessing registers
  * which are volatile at pm runtime suspend state (cache_only is enabled).
@@ -328,6 +332,8 @@ int fsl_asoc_put_volsw(struct snd_kcontrol *kcontrol,
 }
 EXPORT_SYMBOL_GPL(fsl_asoc_put_volsw);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_AUTHOR("Timur Tabi <timur@freescale.com>");
 MODULE_DESCRIPTION("Freescale ASoC utility code");
 MODULE_LICENSE("GPL v2");

@@ -354,7 +354,11 @@ static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV4,
 		.revision	= 1,
 		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+<<<<<<< HEAD
 		.usersize	= offsetof(struct xt_ct_target_info_v1, ct),
+=======
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= xt_ct_tg_check_v1,
 		.destroy	= xt_ct_tg_destroy_v1,
 		.target		= xt_ct_target_v1,
@@ -366,7 +370,11 @@ static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV4,
 		.revision	= 2,
 		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+<<<<<<< HEAD
 		.usersize	= offsetof(struct xt_ct_target_info_v1, ct),
+=======
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= xt_ct_tg_check_v2,
 		.destroy	= xt_ct_tg_destroy_v1,
 		.target		= xt_ct_target_v1,
@@ -398,7 +406,11 @@ static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV6,
 		.revision	= 1,
 		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+<<<<<<< HEAD
 		.usersize	= offsetof(struct xt_ct_target_info_v1, ct),
+=======
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= xt_ct_tg_check_v1,
 		.destroy	= xt_ct_tg_destroy_v1,
 		.target		= xt_ct_target_v1,
@@ -410,7 +422,11 @@ static struct xt_target xt_ct_tg_reg[] __read_mostly = {
 		.family		= NFPROTO_IPV6,
 		.revision	= 2,
 		.targetsize	= sizeof(struct xt_ct_target_info_v1),
+<<<<<<< HEAD
 		.usersize	= offsetof(struct xt_ct_target_info_v1, ct),
+=======
+		.usersize	= offsetof(struct xt_ct_target_info, ct),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.checkentry	= xt_ct_tg_check_v2,
 		.destroy	= xt_ct_tg_destroy_v1,
 		.target		= xt_ct_target_v1,

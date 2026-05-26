@@ -163,7 +163,11 @@ void mdp_vpu_unregister(struct mdp_dev *mdp)
 }
 
 static int mdp_vpu_sendmsg(struct mdp_vpu_dev *vpu, enum scp_ipi_id id,
+<<<<<<< HEAD
 			   const void *buf, unsigned int len)
+=======
+			   void *buf, unsigned int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mdp_dev *mdp = vpu_to_mdp(vpu);
 	unsigned int t = MDP_VPU_MESSAGE_TIMEOUT;

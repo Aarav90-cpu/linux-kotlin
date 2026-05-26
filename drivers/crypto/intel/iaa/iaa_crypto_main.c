@@ -906,8 +906,13 @@ static void rebalance_wq_table(void)
 		return;
 	}
 
+<<<<<<< HEAD
 	cpu = 0;
 	for_each_node_with_cpus(node) {
+=======
+	for_each_node_with_cpus(node) {
+		cpu = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		node_cpus = cpumask_of_node(node);
 
 		for_each_cpu(node_cpu, node_cpus) {

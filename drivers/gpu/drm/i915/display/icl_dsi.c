@@ -34,6 +34,10 @@
 #include <drm/drm_print.h>
 #include <drm/drm_probe_helper.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "icl_dsi.h"
 #include "icl_dsi_regs.h"
 #include "intel_atomic.h"
@@ -711,7 +715,11 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
 		dsi_trans = dsi_port_to_transcoder(port);
 		tmp = intel_de_read(display, DSI_TRANS_FUNC_CONF(dsi_trans));
 
+<<<<<<< HEAD
 		if (intel_dsi->eot_pkt)
+=======
+		if (intel_dsi->eotp_pkt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tmp &= ~EOTP_DISABLED;
 		else
 			tmp |= EOTP_DISABLED;
@@ -729,12 +737,15 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
 		else
 			tmp |= CLK_HS_CONTINUOUS;
 
+<<<<<<< HEAD
 		if (DISPLAY_VER(display) >= 12 &&
 		    intel_dsi->lp_clock_during_lpm)
 			tmp |= LP_CLK_DURING_LPM;
 		else
 			tmp &= ~LP_CLK_DURING_LPM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* configure buffer threshold limit to minimum */
 		tmp &= ~PIX_BUF_THRESHOLD_MASK;
 		tmp |= PIX_BUF_THRESHOLD_1_4;
@@ -771,11 +782,18 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
 			}
 		}
 
+<<<<<<< HEAD
 		if (DISPLAY_VER(display) >= 12 &&
 		    is_vid_mode(intel_dsi) && intel_dsi->blanking_pkt)
 			tmp |= BLANKING_PACKET_ENABLE;
 		else
 			tmp &= ~BLANKING_PACKET_ENABLE;
+=======
+		if (DISPLAY_VER(display) >= 12) {
+			if (is_vid_mode(intel_dsi))
+				tmp |= BLANKING_PACKET_ENABLE;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* program DSI operation mode */
 		if (is_vid_mode(intel_dsi)) {
@@ -1630,6 +1648,15 @@ static int gen11_dsi_dsc_compute_config(struct intel_encoder *encoder,
 	if (crtc_state->pipe_bpp < 8 * 3)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/* FIXME: split only when necessary */
+	if (crtc_state->dsc.slice_count > 1)
+		crtc_state->dsc.num_streams = 2;
+	else
+		crtc_state->dsc.num_streams = 1;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* FIXME: initialize from VBT */
 	vdsc_cfg->rc_model_size = DSC_RC_MODEL_SIZE_CONST;
 

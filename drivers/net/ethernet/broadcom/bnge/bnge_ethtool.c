@@ -11,6 +11,7 @@
 
 #include "bnge.h"
 #include "bnge_ethtool.h"
+<<<<<<< HEAD
 #include "bnge_hwrm_lib.h"
 
 static int bnge_nway_reset(struct net_device *dev)
@@ -299,6 +300,8 @@ static u32 bnge_get_num_stats(struct bnge_net *bn)
 
 	return num_stats;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void bnge_get_drvinfo(struct net_device *dev,
 			     struct ethtool_drvinfo *info)
@@ -311,6 +314,7 @@ static void bnge_get_drvinfo(struct net_device *dev,
 	strscpy(info->bus_info, pci_name(bd->pdev), sizeof(info->bus_info));
 }
 
+<<<<<<< HEAD
 static int bnge_get_sset_count(struct net_device *dev, int sset)
 {
 	struct bnge_net *bn = netdev_priv(dev);
@@ -757,6 +761,10 @@ static const struct ethtool_ops bnge_ethtool_ops = {
 	.get_eth_ctrl_stats	= bnge_get_eth_ctrl_stats,
 	.get_pause_stats	= bnge_get_pause_stats,
 	.get_rmon_stats		= bnge_get_rmon_stats,
+=======
+static const struct ethtool_ops bnge_ethtool_ops = {
+	.get_drvinfo		= bnge_get_drvinfo,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void bnge_set_ethtool_ops(struct net_device *dev)

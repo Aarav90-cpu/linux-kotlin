@@ -677,7 +677,11 @@ struct qcom_sysmon *qcom_add_sysmon_subdev(struct rproc *rproc,
 		return ERR_PTR(ret);
 	}
 
+<<<<<<< HEAD
 	qmi_add_lookup(&sysmon->qmi, QMI_SERVICE_ID_SSCTL, 0, 0);
+=======
+	qmi_add_lookup(&sysmon->qmi, 43, 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sysmon->subdev.prepare = sysmon_prepare;
 	sysmon->subdev.start = sysmon_start;

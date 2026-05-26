@@ -1509,6 +1509,7 @@ static int __must_check initialize_page_cache(struct page_cache *cache,
 	if (result != VDO_SUCCESS)
 		return result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(VOLUME_CACHE_MAX_QUEUED_READS, "volume read queue",
 			      &cache->read_queue);
 	if (result != VDO_SUCCESS)
@@ -1524,6 +1525,25 @@ static int __must_check initialize_page_cache(struct page_cache *cache,
 		return result;
 
 	result = vdo_allocate(cache->cache_slots, "page cache cache", &cache->cache);
+=======
+	result = vdo_allocate(VOLUME_CACHE_MAX_QUEUED_READS, struct queued_read,
+			      "volume read queue", &cache->read_queue);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(cache->zone_count, struct search_pending_counter,
+			      "Volume Cache Zones", &cache->search_pending_counters);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(cache->indexable_pages, u16, "page cache index",
+			      &cache->index);
+	if (result != VDO_SUCCESS)
+		return result;
+
+	result = vdo_allocate(cache->cache_slots, struct cached_page, "page cache cache",
+			      &cache->cache);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1546,7 +1566,11 @@ int uds_make_volume(const struct uds_configuration *config, struct index_layout 
 	unsigned int reserved_buffers;
 	int result;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "volume", &volume);
+=======
+	result = vdo_allocate(1, struct volume, "volume", &volume);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -1583,7 +1607,12 @@ int uds_make_volume(const struct uds_configuration *config, struct index_layout 
 		return result;
 	}
 
+<<<<<<< HEAD
 	result = vdo_allocate(geometry->records_per_page, "record pointers",
+=======
+	result = vdo_allocate(geometry->records_per_page,
+			      const struct uds_volume_record *, "record pointers",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &volume->record_pointers);
 	if (result != VDO_SUCCESS) {
 		uds_free_volume(volume);
@@ -1623,7 +1652,12 @@ int uds_make_volume(const struct uds_configuration *config, struct index_layout 
 	uds_init_cond(&volume->read_threads_read_done_cond);
 	uds_init_cond(&volume->read_threads_cond);
 
+<<<<<<< HEAD
 	result = vdo_allocate(config->read_threads, "reader threads", &volume->reader_threads);
+=======
+	result = vdo_allocate(config->read_threads, struct thread *, "reader threads",
+			      &volume->reader_threads);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS) {
 		uds_free_volume(volume);
 		return result;

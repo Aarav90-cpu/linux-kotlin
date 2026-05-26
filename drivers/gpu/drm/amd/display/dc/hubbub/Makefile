@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 # Copyright 2022-2026 Advanced Micro Devices, Inc.
+=======
+# Copyright 2022 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -101,6 +105,7 @@ AMD_DAL_HUBBUB_DCN401 = $(addprefix $(AMDDALPATH)/dc/hubbub/dcn401/,$(HUBBUB_DCN
 AMD_DISPLAY_FILES += $(AMD_DAL_HUBBUB_DCN401)
 
 ###############################################################################
+<<<<<<< HEAD
 # DCN42
 ###############################################################################
 HUBBUB_DCN42 = dcn42_hubbub.o
@@ -109,4 +114,6 @@ AMD_DAL_HUBBUB_DCN42 = $(addprefix $(AMDDALPATH)/dc/hubbub/dcn42/,$(HUBBUB_DCN42
 
 AMD_DISPLAY_FILES += $(AMD_DAL_HUBBUB_DCN42)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif

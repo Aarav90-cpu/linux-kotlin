@@ -23,6 +23,7 @@ config LTL_MON_EVENTS_ID
 config RV_LTL_MONITOR
 	bool
 
+<<<<<<< HEAD
 config RV_HA_MONITOR
 	bool
 
@@ -36,6 +37,8 @@ config HA_MON_EVENTS_ID
 	select RV_HA_MONITOR
 	bool
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 menuconfig RV
 	bool "Runtime Verification"
 	select TRACING
@@ -78,11 +81,14 @@ source "kernel/trace/rv/monitors/pagefault/Kconfig"
 source "kernel/trace/rv/monitors/sleep/Kconfig"
 # Add new rtapp monitors here
 
+<<<<<<< HEAD
 source "kernel/trace/rv/monitors/stall/Kconfig"
 source "kernel/trace/rv/monitors/deadline/Kconfig"
 source "kernel/trace/rv/monitors/nomiss/Kconfig"
 # Add new deadline monitors here
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # Add new monitors here
 
 config RV_REACTORS

@@ -76,7 +76,11 @@ static const struct genl_split_ops psp_nl_ops[] = {
 		.post_doit	= psp_device_unlock,
 		.policy		= psp_dev_set_nl_policy,
 		.maxattr	= PSP_A_DEV_PSP_VERSIONS_ENA,
+<<<<<<< HEAD
 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+=======
+		.flags		= GENL_CMD_CAP_DO,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd		= PSP_CMD_KEY_ROTATE,
@@ -85,7 +89,11 @@ static const struct genl_split_ops psp_nl_ops[] = {
 		.post_doit	= psp_device_unlock,
 		.policy		= psp_key_rotate_nl_policy,
 		.maxattr	= PSP_A_DEV_ID,
+<<<<<<< HEAD
 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+=======
+		.flags		= GENL_CMD_CAP_DO,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd		= PSP_CMD_RX_ASSOC,

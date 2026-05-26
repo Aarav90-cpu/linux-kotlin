@@ -118,6 +118,11 @@ uint32_t mdp5_smp_calculate(struct mdp5_smp *smp,
 		u32 width, bool hdecim)
 {
 	const struct drm_format_info *info = drm_format_info(format->pixel_format);
+<<<<<<< HEAD
+=======
+	struct mdp5_kms *mdp5_kms = get_kms(smp);
+	int rev = mdp5_cfg_get_hw_rev(mdp5_kms->cfg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, hsub, nplanes, nlines;
 	uint32_t blkcfg = 0;
 
@@ -131,7 +136,11 @@ uint32_t mdp5_smp_calculate(struct mdp5_smp *smp,
 	 * U and V components (splits them from Y if necessary) and packs
 	 * them together, writes to SMP using a single client.
 	 */
+<<<<<<< HEAD
 	if (format->chroma_sample > CHROMA_FULL) {
+=======
+	if ((rev > 0) && (format->chroma_sample > CHROMA_FULL)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nplanes = 2;
 
 		/* if decimation is enabled, HW decimates less on the
@@ -149,6 +158,13 @@ uint32_t mdp5_smp_calculate(struct mdp5_smp *smp,
 
 		n = DIV_ROUND_UP(fetch_stride * nlines, smp->blk_size);
 
+<<<<<<< HEAD
+=======
+		/* for hw rev v1.00 */
+		if (rev == 0)
+			n = roundup_pow_of_two(n);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		blkcfg |= (n << (8 * i));
 	}
 

@@ -29,24 +29,35 @@ properties:
     const: 1
 
   clocks:
+<<<<<<< HEAD
     minItems: 5
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - description: 24m osc
       - description: 32k osc
       - description: ckih1 clock input
       - description: anaclk1 clock input
       - description: anaclk2 clock input
+<<<<<<< HEAD
       - description: clock input from enet ref pad
 
   clock-names:
     minItems: 5
+=======
+
+  clock-names:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     items:
       - const: osc
       - const: ckil
       - const: ckih1
       - const: anaclk1
       - const: anaclk2
+<<<<<<< HEAD
       - const: enet_ref_pad
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   fsl,pmic-stby-poweroff:
     $ref: /schemas/types.yaml#/definitions/flag

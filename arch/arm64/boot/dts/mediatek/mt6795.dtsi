@@ -371,7 +371,11 @@
 				     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>;
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pio 0 0 197>;
+=======
+			gpio-ranges = <&pio 0 0 196>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			interrupt-controller;
 			#interrupt-cells = <2>;
 		};

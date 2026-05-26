@@ -37,6 +37,12 @@ properties:
   vddio-supply:
     description: regulator that supplies the I/O voltage
 
+<<<<<<< HEAD
+=======
+  rotation: true
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

@@ -19,8 +19,13 @@
  * timer frequency.
  */
 static const struct {
+<<<<<<< HEAD
 	const u32 tdcr;
 	const u32 divide_count;
+=======
+	const uint32_t tdcr;
+	const uint32_t divide_count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } tdcrs[] = {
 	{0x0, 2},
 	{0x1, 4},
@@ -42,12 +47,20 @@ static void apic_enable(void)
 		xapic_enable();
 }
 
+<<<<<<< HEAD
 static u32 apic_read_reg(unsigned int reg)
+=======
+static uint32_t apic_read_reg(unsigned int reg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return is_x2apic ? x2apic_read_reg(reg) : xapic_read_reg(reg);
 }
 
+<<<<<<< HEAD
 static void apic_write_reg(unsigned int reg, u32 val)
+=======
+static void apic_write_reg(unsigned int reg, uint32_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (is_x2apic)
 		x2apic_write_reg(reg, val);
@@ -55,12 +68,21 @@ static void apic_write_reg(unsigned int reg, u32 val)
 		xapic_write_reg(reg, val);
 }
 
+<<<<<<< HEAD
 static void apic_guest_code(u64 apic_hz, u64 delay_ms)
 {
 	u64 tsc_hz = guest_tsc_khz * 1000;
 	const u32 tmict = ~0u;
 	u64 tsc0, tsc1, freq;
 	u32 tmcct;
+=======
+static void apic_guest_code(uint64_t apic_hz, uint64_t delay_ms)
+{
+	uint64_t tsc_hz = guest_tsc_khz * 1000;
+	const uint32_t tmict = ~0u;
+	uint64_t tsc0, tsc1, freq;
+	uint32_t tmcct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	apic_enable();
@@ -121,7 +143,11 @@ static void test_apic_bus_clock(struct kvm_vcpu *vcpu)
 	}
 }
 
+<<<<<<< HEAD
 static void run_apic_bus_clock_test(u64 apic_hz, u64 delay_ms,
+=======
+static void run_apic_bus_clock_test(uint64_t apic_hz, uint64_t delay_ms,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    bool x2apic)
 {
 	struct kvm_vcpu *vcpu;
@@ -168,8 +194,13 @@ int main(int argc, char *argv[])
 	 * Arbitrarilty default to 25MHz for the APIC bus frequency, which is
 	 * different enough from the default 1GHz to be interesting.
 	 */
+<<<<<<< HEAD
 	u64 apic_hz = 25 * 1000 * 1000;
 	u64 delay_ms = 100;
+=======
+	uint64_t apic_hz = 25 * 1000 * 1000;
+	uint64_t delay_ms = 100;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int opt;
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_X86_APIC_BUS_CYCLES_NS));

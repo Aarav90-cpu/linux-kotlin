@@ -19,10 +19,18 @@
 =============  ================  ==============================================
 架构           支持水平           限制因素
 =============  ================  ==============================================
+<<<<<<< HEAD
 ``arm``        Maintained        仅 ARMv7 小端序。
 ``arm64``      Maintained        仅小端序。
 ``loongarch``  Maintained        \-
 ``riscv``      Maintained        仅 ``riscv64``，且仅限 LLVM/Clang。
 ``um``         Maintained        \-
 ``x86``        Maintained        仅 ``x86_64``。
+=======
+``arm64``      Maintained        只有小端序
+``loongarch``  Maintained        \-
+``riscv``      Maintained        只有 ``riscv64``
+``um``         Maintained        只有 ``x86_64``
+``x86``        Maintained        只有 ``x86_64``
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 =============  ================  ==============================================

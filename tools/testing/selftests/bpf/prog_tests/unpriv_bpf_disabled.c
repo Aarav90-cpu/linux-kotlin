@@ -8,7 +8,10 @@
 
 #include "cap_helpers.h"
 #include "bpf_util.h"
+<<<<<<< HEAD
 #include "sysctl_helpers.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Using CAP_LAST_CAP is risky here, since it can get pulled in from
  * an old /usr/include/linux/capability.h and be < CAP_BPF; as a result
@@ -37,6 +40,29 @@ static void process_perfbuf(void *ctx, int cpu, void *data, __u32 len)
 		got_perfbuf_val = *(__u32 *)data;
 }
 
+<<<<<<< HEAD
+=======
+static int sysctl_set(const char *sysctl_path, char *old_val, const char *new_val)
+{
+	int ret = 0;
+	FILE *fp;
+
+	fp = fopen(sysctl_path, "r+");
+	if (!fp)
+		return -errno;
+	if (old_val && fscanf(fp, "%s", old_val) <= 0) {
+		ret = -ENOENT;
+	} else if (!old_val || strcmp(old_val, new_val) != 0) {
+		fseek(fp, 0, SEEK_SET);
+		if (fprintf(fp, "%s", new_val) < 0)
+			ret = -errno;
+	}
+	fclose(fp);
+
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_unpriv_bpf_disabled_positive(struct test_unpriv_bpf_disabled *skel,
 					      __u32 prog_id, int prog_fd, int perf_fd,
 					      char **map_paths, int *map_fds)

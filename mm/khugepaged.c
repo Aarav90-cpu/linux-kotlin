@@ -46,7 +46,10 @@ enum scan_result {
 	SCAN_PAGE_LRU,
 	SCAN_PAGE_LOCK,
 	SCAN_PAGE_ANON,
+<<<<<<< HEAD
 	SCAN_PAGE_LAZYFREE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SCAN_PAGE_COMPOUND,
 	SCAN_ANY_PROCESS,
 	SCAN_VMA_NULL,
@@ -69,10 +72,14 @@ enum scan_result {
 static struct task_struct *khugepaged_thread __read_mostly;
 static DEFINE_MUTEX(khugepaged_mutex);
 
+<<<<<<< HEAD
 /*
  * default scan 8*HPAGE_PMD_NR ptes, pte_mapped_hugepage, pmd_mapped,
  * no_pte_table or vmas every 10 second.
  */
+=======
+/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned int khugepaged_pages_to_scan __read_mostly;
 static unsigned int khugepaged_pages_collapsed;
 static unsigned int khugepaged_full_scans;
@@ -89,7 +96,10 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
  *
  * Note that these are only respected if collapse was initiated by khugepaged.
  */
+<<<<<<< HEAD
 #define KHUGEPAGED_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned int khugepaged_max_ptes_none __read_mostly;
 static unsigned int khugepaged_max_ptes_swap __read_mostly;
 static unsigned int khugepaged_max_ptes_shared __read_mostly;
@@ -105,9 +115,12 @@ struct collapse_control {
 	/* Num pages scanned per node */
 	u32 node_load[MAX_NUMNODES];
 
+<<<<<<< HEAD
 	/* Num pages scanned (see khugepaged_pages_to_scan) */
 	unsigned int progress;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* nodemask for allocation fallback */
 	nodemask_t alloc_nmask;
 };
@@ -260,7 +273,11 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
 	unsigned long max_ptes_none;
 
 	err = kstrtoul(buf, 10, &max_ptes_none);
+<<<<<<< HEAD
 	if (err || max_ptes_none > KHUGEPAGED_MAX_PTES_LIMIT)
+=======
+	if (err || max_ptes_none > HPAGE_PMD_NR - 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	khugepaged_max_ptes_none = max_ptes_none;
@@ -285,7 +302,11 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
 	unsigned long max_ptes_swap;
 
 	err  = kstrtoul(buf, 10, &max_ptes_swap);
+<<<<<<< HEAD
 	if (err || max_ptes_swap > KHUGEPAGED_MAX_PTES_LIMIT)
+=======
+	if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	khugepaged_max_ptes_swap = max_ptes_swap;
@@ -311,7 +332,11 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
 	unsigned long max_ptes_shared;
 
 	err  = kstrtoul(buf, 10, &max_ptes_shared);
+<<<<<<< HEAD
 	if (err || max_ptes_shared > KHUGEPAGED_MAX_PTES_LIMIT)
+=======
+	if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	khugepaged_max_ptes_shared = max_ptes_shared;
@@ -383,7 +408,11 @@ int __init khugepaged_init(void)
 		return -ENOMEM;
 
 	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
+<<<<<<< HEAD
 	khugepaged_max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
+=======
+	khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
 	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
 
@@ -395,14 +424,24 @@ void __init khugepaged_destroy(void)
 	kmem_cache_destroy(mm_slot_cache);
 }
 
+<<<<<<< HEAD
 static inline int collapse_test_exit(struct mm_struct *mm)
+=======
+static inline int hpage_collapse_test_exit(struct mm_struct *mm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return atomic_read(&mm->mm_users) == 0;
 }
 
+<<<<<<< HEAD
 static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
 {
 	return collapse_test_exit(mm) ||
+=======
+static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
+{
+	return hpage_collapse_test_exit(mm) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
 }
 
@@ -436,7 +475,11 @@ void __khugepaged_enter(struct mm_struct *mm)
 	int wakeup;
 
 	/* __khugepaged_exit() must not run from under us */
+<<<<<<< HEAD
 	VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+=======
+	VM_BUG_ON_MM(hpage_collapse_test_exit(mm), mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
 		return;
 
@@ -490,7 +533,11 @@ void __khugepaged_exit(struct mm_struct *mm)
 	} else if (slot) {
 		/*
 		 * This is required to serialize against
+<<<<<<< HEAD
 		 * collapse_test_exit() (which is guaranteed to run
+=======
+		 * hpage_collapse_test_exit() (which is guaranteed to run
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * under mmap sem read mode). Stop here (after we return all
 		 * pagetables will be destroyed) until khugepaged has finished
 		 * working on the pagetables under the mmap_lock.
@@ -579,6 +626,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
 		folio = page_folio(page);
 		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
 
+<<<<<<< HEAD
 		/*
 		 * If the vma has the VM_DROPPABLE flag, the collapse will
 		 * preserve the lazyfree property without needing to skip.
@@ -590,6 +638,9 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
 		}
 
 		/* See collapse_scan_pmd(). */
+=======
+		/* See hpage_collapse_scan_pmd(). */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (folio_maybe_mapped_shared(folio)) {
 			++shared;
 			if (cc->is_khugepaged &&
@@ -840,7 +891,11 @@ static struct collapse_control khugepaged_collapse_control = {
 	.is_khugepaged = true,
 };
 
+<<<<<<< HEAD
 static bool collapse_scan_abort(int nid, struct collapse_control *cc)
+=======
+static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -875,7 +930,11 @@ static inline gfp_t alloc_hugepage_khugepaged_gfpmask(void)
 }
 
 #ifdef CONFIG_NUMA
+<<<<<<< HEAD
 static int collapse_find_target_node(struct collapse_control *cc)
+=======
+static int hpage_collapse_find_target_node(struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int nid, target_node = 0, max_value = 0;
 
@@ -894,7 +953,11 @@ static int collapse_find_target_node(struct collapse_control *cc)
 	return target_node;
 }
 #else
+<<<<<<< HEAD
 static int collapse_find_target_node(struct collapse_control *cc)
+=======
+static int hpage_collapse_find_target_node(struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
@@ -913,7 +976,11 @@ static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned l
 	enum tva_type type = cc->is_khugepaged ? TVA_KHUGEPAGED :
 				 TVA_FORCED_COLLAPSE;
 
+<<<<<<< HEAD
 	if (unlikely(collapse_test_exit_or_disable(mm)))
+=======
+	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return SCAN_ANY_PROCESS;
 
 	*vmap = vma = find_vma(mm, address);
@@ -984,7 +1051,11 @@ static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
 
 /*
  * Bring missing pages in from swap, to complete THP collapse.
+<<<<<<< HEAD
  * Only done if khugepaged_scan_pmd believes it is worthwhile.
+=======
+ * Only done if hpage_collapse_scan_pmd believes it is worthwhile.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Called and returns without pte mapped or spinlocks held.
  * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
@@ -1070,7 +1141,11 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
 {
 	gfp_t gfp = (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpmask() :
 		     GFP_TRANSHUGE);
+<<<<<<< HEAD
 	int node = collapse_find_target_node(cc);
+=======
+	int node = hpage_collapse_find_target_node(cc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio *folio;
 
 	folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, &cc->alloc_nmask);
@@ -1248,9 +1323,15 @@ out_nolock:
 	return result;
 }
 
+<<<<<<< HEAD
 static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
 		struct vm_area_struct *vma, unsigned long start_addr,
 		bool *lock_dropped, struct collapse_control *cc)
+=======
+static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+		struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pmd_t *pmd;
 	pte_t *pte, *_pte;
@@ -1265,24 +1346,35 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
 
 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+<<<<<<< HEAD
 	if (result != SCAN_SUCCEED) {
 		cc->progress++;
 		goto out;
 	}
+=======
+	if (result != SCAN_SUCCEED)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(cc->node_load, 0, sizeof(cc->node_load));
 	nodes_clear(cc->alloc_nmask);
 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
 	if (!pte) {
+<<<<<<< HEAD
 		cc->progress++;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		result = SCAN_NO_PTE_TABLE;
 		goto out;
 	}
 
 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
 	     _pte++, addr += PAGE_SIZE) {
+<<<<<<< HEAD
 		cc->progress++;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pte_t pteval = ptep_get(_pte);
 		if (pte_none_or_zero(pteval)) {
 			++none_or_zero;
@@ -1337,6 +1429,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
 		}
 		folio = page_folio(page);
 
+<<<<<<< HEAD
 		/*
 		 * If the vma has the VM_DROPPABLE flag, the collapse will
 		 * preserve the lazyfree property without needing to skip.
@@ -1347,6 +1440,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
 			goto out_unmap;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!folio_test_anon(folio)) {
 			result = SCAN_PAGE_ANON;
 			goto out_unmap;
@@ -1373,7 +1468,11 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
 		 * hit record.
 		 */
 		node = folio_nid(folio);
+<<<<<<< HEAD
 		if (collapse_scan_abort(node, cc)) {
+=======
+		if (hpage_collapse_scan_abort(node, cc)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			result = SCAN_SCAN_ABORT;
 			goto out_unmap;
 		}
@@ -1425,7 +1524,11 @@ out_unmap:
 		result = collapse_huge_page(mm, start_addr, referenced,
 					    unmapped, cc);
 		/* collapse_huge_page will return with the mmap_lock released */
+<<<<<<< HEAD
 		*lock_dropped = true;
+=======
+		*mmap_locked = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 out:
 	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
@@ -1439,7 +1542,11 @@ static void collect_mm_slot(struct mm_slot *slot)
 
 	lockdep_assert_held(&khugepaged_mm_lock);
 
+<<<<<<< HEAD
 	if (collapse_test_exit(mm)) {
+=======
+	if (hpage_collapse_test_exit(mm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* free mm_slot */
 		hash_del(&slot->hash);
 		list_del(&slot->mm_node);
@@ -1541,7 +1648,11 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
 	if (IS_ERR(folio))
 		return SCAN_PAGE_NULL;
 
+<<<<<<< HEAD
 	if (!is_pmd_order(folio_order(folio))) {
+=======
+	if (folio_order(folio) != HPAGE_PMD_ORDER) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		result = SCAN_PAGE_COMPOUND;
 		goto drop_folio;
 	}
@@ -1794,7 +1905,11 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
 		if (find_pmd_or_thp_or_none(mm, addr, &pmd) != SCAN_SUCCEED)
 			continue;
 
+<<<<<<< HEAD
 		if (collapse_test_exit(mm))
+=======
+		if (hpage_collapse_test_exit(mm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (!file_backed_vma_is_retractable(vma))
@@ -2024,7 +2139,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
 		 * we locked the first folio, then a THP might be there already.
 		 * This will be discovered on the first iteration.
 		 */
+<<<<<<< HEAD
 		if (is_pmd_order(folio_order(folio))) {
+=======
+		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+		    folio->index == start) {
+			/* Maybe PMD-mapped */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			result = SCAN_PTE_MAPPED_HUGEPAGE;
 			goto out_unlock;
 		}
@@ -2310,9 +2431,14 @@ out:
 	return result;
 }
 
+<<<<<<< HEAD
 static enum scan_result collapse_scan_file(struct mm_struct *mm,
 		unsigned long addr, struct file *file, pgoff_t start,
 		struct collapse_control *cc)
+=======
+static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+		struct file *file, pgoff_t start, struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct folio *folio = NULL;
 	struct address_space *mapping = file->f_mapping;
@@ -2352,18 +2478,34 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (is_pmd_order(folio_order(folio))) {
 			result = SCAN_PTE_MAPPED_HUGEPAGE;
 			/*
 			 * PMD-sized THP implies that we can only try
 			 * retracting the PTE table.
+=======
+		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+		    folio->index == start) {
+			/* Maybe PMD-mapped */
+			result = SCAN_PTE_MAPPED_HUGEPAGE;
+			/*
+			 * For SCAN_PTE_MAPPED_HUGEPAGE, further processing
+			 * by the caller won't touch the page cache, and so
+			 * it's safe to skip LRU and refcount checks before
+			 * returning.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 */
 			folio_put(folio);
 			break;
 		}
 
 		node = folio_nid(folio);
+<<<<<<< HEAD
 		if (collapse_scan_abort(node, cc)) {
+=======
+		if (hpage_collapse_scan_abort(node, cc)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			result = SCAN_SCAN_ABORT;
 			folio_put(folio);
 			break;
@@ -2398,10 +2540,13 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
 		}
 	}
 	rcu_read_unlock();
+<<<<<<< HEAD
 	if (result == SCAN_PTE_MAPPED_HUGEPAGE)
 		cc->progress++;
 	else
 		cc->progress += HPAGE_PMD_NR;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (result == SCAN_SUCCEED) {
 		if (cc->is_khugepaged &&
@@ -2417,6 +2562,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
 	return result;
 }
 
+<<<<<<< HEAD
 /*
  * Try to collapse a single PMD starting at a PMD aligned addr, and return
  * the results.
@@ -2480,6 +2626,10 @@ end:
 
 static void collapse_scan_mm_slot(unsigned int progress_max,
 		enum scan_result *result, struct collapse_control *cc)
+=======
+static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result *result,
+					    struct collapse_control *cc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(&khugepaged_mm_lock)
 	__acquires(&khugepaged_mm_lock)
 {
@@ -2487,8 +2637,14 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 	struct mm_slot *slot;
 	struct mm_struct *mm;
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	unsigned int progress_prev = cc->progress;
 
+=======
+	int progress = 0;
+
+	VM_BUG_ON(!pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockdep_assert_held(&khugepaged_mm_lock);
 	*result = SCAN_FAIL;
 
@@ -2511,8 +2667,13 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 	if (unlikely(!mmap_read_trylock(mm)))
 		goto breakouterloop_mmap_lock;
 
+<<<<<<< HEAD
 	cc->progress++;
 	if (unlikely(collapse_test_exit_or_disable(mm)))
+=======
+	progress++;
+	if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto breakouterloop;
 
 	vma_iter_init(&vmi, mm, khugepaged_scan.address);
@@ -2520,18 +2681,31 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 		unsigned long hstart, hend;
 
 		cond_resched();
+<<<<<<< HEAD
 		if (unlikely(collapse_test_exit_or_disable(mm))) {
 			cc->progress++;
 			break;
 		}
 		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
 			cc->progress++;
+=======
+		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+			progress++;
+			break;
+		}
+		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
+			progress++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
 		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
 		if (khugepaged_scan.address > hend) {
+<<<<<<< HEAD
 			cc->progress++;
+=======
+			progress++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 		if (khugepaged_scan.address < hstart)
@@ -2539,6 +2713,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 		VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
 
 		while (khugepaged_scan.address < hend) {
+<<<<<<< HEAD
 			bool lock_dropped = false;
 
 			cond_resched();
@@ -2554,6 +2729,49 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 			/* move to next address */
 			khugepaged_scan.address += HPAGE_PMD_SIZE;
 			if (lock_dropped)
+=======
+			bool mmap_locked = true;
+
+			cond_resched();
+			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+				goto breakouterloop;
+
+			VM_BUG_ON(khugepaged_scan.address < hstart ||
+				  khugepaged_scan.address + HPAGE_PMD_SIZE >
+				  hend);
+			if (!vma_is_anonymous(vma)) {
+				struct file *file = get_file(vma->vm_file);
+				pgoff_t pgoff = linear_page_index(vma,
+						khugepaged_scan.address);
+
+				mmap_read_unlock(mm);
+				mmap_locked = false;
+				*result = hpage_collapse_scan_file(mm,
+					khugepaged_scan.address, file, pgoff, cc);
+				fput(file);
+				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+					mmap_read_lock(mm);
+					if (hpage_collapse_test_exit_or_disable(mm))
+						goto breakouterloop;
+					*result = try_collapse_pte_mapped_thp(mm,
+						khugepaged_scan.address, false);
+					if (*result == SCAN_PMD_MAPPED)
+						*result = SCAN_SUCCEED;
+					mmap_read_unlock(mm);
+				}
+			} else {
+				*result = hpage_collapse_scan_pmd(mm, vma,
+					khugepaged_scan.address, &mmap_locked, cc);
+			}
+
+			if (*result == SCAN_SUCCEED)
+				++khugepaged_pages_collapsed;
+
+			/* move to next address */
+			khugepaged_scan.address += HPAGE_PMD_SIZE;
+			progress += HPAGE_PMD_NR;
+			if (!mmap_locked)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * We released mmap_lock so break loop.  Note
 				 * that we drop mmap_lock before all hugepage
@@ -2562,7 +2780,11 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
 				 * correct result back to caller.
 				 */
 				goto breakouterloop_mmap_lock;
+<<<<<<< HEAD
 			if (cc->progress >= progress_max)
+=======
+			if (progress >= pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto breakouterloop;
 		}
 	}
@@ -2574,9 +2796,15 @@ breakouterloop_mmap_lock:
 	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
 	/*
 	 * Release the current mm_slot if this mm is about to die, or
+<<<<<<< HEAD
 	 * if we scanned all vmas of this mm, or THP got disabled.
 	 */
 	if (collapse_test_exit_or_disable(mm) || !vma) {
+=======
+	 * if we scanned all vmas of this mm.
+	 */
+	if (hpage_collapse_test_exit(mm) || !vma) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Make sure that if mm_users is reaching zero while
 		 * khugepaged runs here, khugepaged_exit will find
@@ -2593,8 +2821,12 @@ breakouterloop_mmap_lock:
 		collect_mm_slot(slot);
 	}
 
+<<<<<<< HEAD
 	trace_mm_khugepaged_scan(mm, cc->progress - progress_prev,
 				 khugepaged_scan.mm_slot == NULL);
+=======
+	return progress;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int khugepaged_has_work(void)
@@ -2610,14 +2842,22 @@ static int khugepaged_wait_event(void)
 
 static void khugepaged_do_scan(struct collapse_control *cc)
 {
+<<<<<<< HEAD
 	const unsigned int progress_max = READ_ONCE(khugepaged_pages_to_scan);
 	unsigned int pass_through_head = 0;
+=======
+	unsigned int progress = 0, pass_through_head = 0;
+	unsigned int pages = READ_ONCE(khugepaged_pages_to_scan);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool wait = true;
 	enum scan_result result = SCAN_SUCCEED;
 
 	lru_add_drain_all();
 
+<<<<<<< HEAD
 	cc->progress = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (true) {
 		cond_resched();
 
@@ -2629,12 +2869,22 @@ static void khugepaged_do_scan(struct collapse_control *cc)
 			pass_through_head++;
 		if (khugepaged_has_work() &&
 		    pass_through_head < 2)
+<<<<<<< HEAD
 			collapse_scan_mm_slot(progress_max, &result, cc);
 		else
 			cc->progress = progress_max;
 		spin_unlock(&khugepaged_mm_lock);
 
 		if (cc->progress >= progress_max)
+=======
+			progress += khugepaged_scan_mm_slot(pages - progress,
+							    &result, cc);
+		else
+			progress = pages;
+		spin_unlock(&khugepaged_mm_lock);
+
+		if (progress >= pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 
 		if (result == SCAN_ALLOC_HUGE_PAGE_FAIL) {
@@ -2697,7 +2947,11 @@ static int khugepaged(void *none)
 	return 0;
 }
 
+<<<<<<< HEAD
 void set_recommended_min_free_kbytes(void)
+=======
+static void set_recommended_min_free_kbytes(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct zone *zone;
 	int nr_zones = 0;
@@ -2738,8 +2992,13 @@ void set_recommended_min_free_kbytes(void)
 
 	if (recommended_min > min_free_kbytes) {
 		if (user_min_free_kbytes >= 0)
+<<<<<<< HEAD
 			pr_info_ratelimited("raising min_free_kbytes from %d to %lu to help transparent hugepage allocations\n",
 					    min_free_kbytes, recommended_min);
+=======
+			pr_info("raising min_free_kbytes from %d to %lu to help transparent hugepage allocations\n",
+				min_free_kbytes, recommended_min);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		min_free_kbytes = recommended_min;
 	}
@@ -2828,7 +3087,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 	unsigned long hstart, hend, addr;
 	enum scan_result last_fail = SCAN_FAIL;
 	int thps = 0;
+<<<<<<< HEAD
 	bool mmap_unlocked = false;
+=======
+	bool mmap_locked = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	BUG_ON(vma->vm_start > start);
 	BUG_ON(vma->vm_end < end);
@@ -2840,7 +3103,10 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 	if (!cc)
 		return -ENOMEM;
 	cc->is_khugepaged = false;
+<<<<<<< HEAD
 	cc->progress = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mmgrab(mm);
 	lru_add_drain_all();
@@ -2850,12 +3116,22 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 
 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
 		enum scan_result result = SCAN_FAIL;
+<<<<<<< HEAD
 
 		if (mmap_unlocked) {
 			cond_resched();
 			mmap_read_lock(mm);
 			mmap_unlocked = false;
 			*lock_dropped = true;
+=======
+		bool triggered_wb = false;
+
+retry:
+		if (!mmap_locked) {
+			cond_resched();
+			mmap_read_lock(mm);
+			mmap_locked = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			result = hugepage_vma_revalidate(mm, addr, false, &vma,
 							 cc);
 			if (result  != SCAN_SUCCEED) {
@@ -2865,14 +3141,56 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 
 			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
 		}
+<<<<<<< HEAD
 
 		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
 
+=======
+		mmap_assert_locked(mm);
+		if (!vma_is_anonymous(vma)) {
+			struct file *file = get_file(vma->vm_file);
+			pgoff_t pgoff = linear_page_index(vma, addr);
+
+			mmap_read_unlock(mm);
+			mmap_locked = false;
+			*lock_dropped = true;
+			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+							  cc);
+
+			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+			    mapping_can_writeback(file->f_mapping)) {
+				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+
+				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+				triggered_wb = true;
+				fput(file);
+				goto retry;
+			}
+			fput(file);
+		} else {
+			result = hpage_collapse_scan_pmd(mm, vma, addr,
+							 &mmap_locked, cc);
+		}
+		if (!mmap_locked)
+			*lock_dropped = true;
+
+handle_result:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		switch (result) {
 		case SCAN_SUCCEED:
 		case SCAN_PMD_MAPPED:
 			++thps;
 			break;
+<<<<<<< HEAD
+=======
+		case SCAN_PTE_MAPPED_HUGEPAGE:
+			BUG_ON(mmap_locked);
+			mmap_read_lock(mm);
+			result = try_collapse_pte_mapped_thp(mm, addr, true);
+			mmap_read_unlock(mm);
+			goto handle_result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Whitelisted set of results where continuing OK */
 		case SCAN_NO_PTE_TABLE:
 		case SCAN_PTE_NON_PRESENT:
@@ -2895,10 +3213,15 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 
 out_maybelock:
 	/* Caller expects us to hold mmap_lock on return */
+<<<<<<< HEAD
 	if (mmap_unlocked) {
 		*lock_dropped = true;
 		mmap_read_lock(mm);
 	}
+=======
+	if (!mmap_locked)
+		mmap_read_lock(mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_nolock:
 	mmap_assert_locked(mm);
 	mmdrop(mm);

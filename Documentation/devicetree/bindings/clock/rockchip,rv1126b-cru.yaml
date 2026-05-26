@@ -17,7 +17,10 @@ description:
 properties:
   compatible:
     enum:
+<<<<<<< HEAD
       - rockchip,rv1103b-cru
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - rockchip,rv1126b-cru
 
   reg:

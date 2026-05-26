@@ -6,7 +6,10 @@
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
 
 &pinctrl {
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_mdio_pins_a: eth1-mdio-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('F', 0, AF10)>; /* ETH_MDC */
@@ -22,7 +25,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_mdio_sleep_pins_a: eth1-mdio-sleep-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('F', 0, ANALOG)>, /* ETH_MDC */
@@ -30,7 +36,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_rgmii_pins_a: eth1-rgmii-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('A', 15, AF10)>, /* ETH_RGMII_TXD0 */
@@ -65,7 +74,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_rgmii_sleep_pins_a: eth1-rgmii-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 15, ANALOG)>, /* ETH_RGMII_TXD0 */
@@ -84,7 +96,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_rgmii_pins_b: eth1-rgmii-1 {
 		pins1 {
 			pinmux = <STM32_PINMUX('A', 15, AF10)>, /* ETH_RGMII_TXD0 */
@@ -119,7 +134,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth1_rgmii_sleep_pins_b: eth1-rgmii-sleep-1 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 15, ANALOG)>, /* ETH_RGMII_TXD0 */
@@ -140,7 +158,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth2_rgmii_pins_a: eth2-rgmii-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('C', 7, AF10)>, /* ETH_RGMII_TXD0 */
@@ -182,7 +203,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eth2_rgmii_sleep_pins_a: eth2-rgmii-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('C', 7, ANALOG)>, /* ETH_RGMII_TXD0 */
@@ -203,7 +227,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c2_pins_a: i2c2-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 5, AF9)>, /* I2C2_SCL */
@@ -214,7 +241,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c2_sleep_pins_a: i2c2-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 5, ANALOG)>, /* I2C2_SCL */
@@ -222,6 +252,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
 	i2c2_pins_b: i2c2-1 {
 		pins {
@@ -242,6 +273,8 @@
 	};
 
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_clk_pins_a: ospi-port1-clk-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 0, AF10)>; /* OSPI1_CLK */
@@ -251,14 +284,20 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_clk_sleep_pins_a: ospi-port1-clk-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 0, ANALOG)>; /* OSPI1_CLK */
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_cs0_pins_a: ospi-port1-cs0-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 3, AF10)>; /* OSPI_NCS0 */
@@ -268,14 +307,20 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_cs0_sleep_pins_a: ospi-port1-cs0-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 3, ANALOG)>; /* OSPI_NCS0 */
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_io03_pins_a: ospi-port1-io03-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 4, AF10)>, /* OSPI_IO0 */
@@ -288,7 +333,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ospi_port1_io03_sleep_pins_a: ospi-port1-io03-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('D', 4, ANALOG)>, /* OSPI_IO0 */
@@ -298,7 +346,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie_pins_a: pcie-0 {
 		pins {
 			pinmux = <STM32_PINMUX('J', 0, AF4)>;
@@ -306,7 +357,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie_init_pins_a: pcie-init-0 {
 		pins {
 			pinmux = <STM32_PINMUX('J', 0, GPIO)>;
@@ -314,14 +368,20 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie_sleep_pins_a: pcie-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('J', 0, ANALOG)>;
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm3_pins_a: pwm3-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 15, AF7)>; /* TIM3_CH2 */
@@ -331,14 +391,20 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm3_sleep_pins_a: pwm3-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 15, ANALOG)>; /* TIM3_CH2 */
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm8_pins_a: pwm8-0 {
 		pins {
 			pinmux = <STM32_PINMUX('J', 5, AF8)>, /* TIM8_CH1 */
@@ -349,7 +415,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm8_sleep_pins_a: pwm8-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('J', 5, ANALOG)>, /* TIM8_CH1 */
@@ -357,7 +426,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm12_pins_a: pwm12-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 11, AF9)>; /* TIM12_CH2 */
@@ -367,14 +439,20 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pwm12_sleep_pins_a: pwm12-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 11, ANALOG)>; /* TIM12_CH2 */
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdmmc1_b4_pins_a: sdmmc1-b4-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('E', 4, AF10)>, /* SDMMC1_D0 */
@@ -394,7 +472,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdmmc1_b4_od_pins_a: sdmmc1-b4-od-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('E', 4, AF10)>, /* SDMMC1_D0 */
@@ -419,7 +500,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdmmc1_b4_sleep_pins_a: sdmmc1-b4-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('E', 4, ANALOG)>, /* SDMMC1_D0 */
@@ -431,7 +515,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spi3_pins_a: spi3-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 7, AF1)>, /* SPI3_SCK */
@@ -446,7 +533,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spi3_sleep_pins_a: spi3-sleep-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 7, ANALOG)>, /* SPI3_SCK */
@@ -455,7 +545,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tim10_counter_pins_a: tim10-counter-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 9, AF9)>; /* TIM10_CH1 */
@@ -463,7 +556,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tim10_counter_sleep_pins_a: tim10-counter-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('B', 9, ANALOG)>; /* TIM10_CH1 */
@@ -471,7 +567,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart2_pins_a: usart2-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('A', 4, AF6)>; /* USART2_TX */
@@ -485,7 +584,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart2_idle_pins_a: usart2-idle-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('A', 4, ANALOG)>; /* USART2_TX */
@@ -496,7 +598,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart2_sleep_pins_a: usart2-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 4, ANALOG)>, /* USART2_TX */
@@ -504,7 +609,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart6_pins_a: usart6-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('F', 13, AF3)>, /* USART6_TX */
@@ -520,7 +628,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart6_idle_pins_a: usart6-idle-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('F', 13, ANALOG)>, /* USART6_TX */
@@ -538,7 +649,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usart6_sleep_pins_a: usart6-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('F', 13, ANALOG)>, /* USART6_TX */
@@ -550,7 +664,10 @@
 };
 
 &pinctrl_z {
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c8_pins_a: i2c8-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, AF8)>, /* I2C8_SCL */
@@ -561,15 +678,24 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c8_sleep_pins_a: i2c8-sleep-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, ANALOG)>, /* I2C8_SCL */
 				 <STM32_PINMUX('Z', 3, ANALOG)>; /* I2C8_SDA */
 		};
 	};
+<<<<<<< HEAD
 
 	/omit-if-no-ref/
+=======
+};
+
+&pinctrl_z {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spi8_pins_a: spi8-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('Z', 2, AF3)>, /* SPI8_SCK */
@@ -584,7 +710,10 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/omit-if-no-ref/
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spi8_sleep_pins_a: spi8-sleep-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('Z', 2, ANALOG)>, /* SPI8_SCK */

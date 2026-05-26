@@ -74,9 +74,15 @@ static void *pstore_ftrace_seq_start(struct seq_file *s, loff_t *pos)
 	if (!data)
 		return NULL;
 
+<<<<<<< HEAD
 	data->off = ps->record->size % REC_SIZE;
 	data->off += *pos * REC_SIZE;
 	if (data->off + REC_SIZE > ps->record->size)
+=======
+	data->off = ps->total_size % REC_SIZE;
+	data->off += *pos * REC_SIZE;
+	if (data->off + REC_SIZE > ps->total_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	return_ptr(data);
@@ -94,7 +100,11 @@ static void *pstore_ftrace_seq_next(struct seq_file *s, void *v, loff_t *pos)
 
 	(*pos)++;
 	data->off += REC_SIZE;
+<<<<<<< HEAD
 	if (data->off + REC_SIZE > ps->record->size)
+=======
+	if (data->off + REC_SIZE > ps->total_size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	return data;
@@ -105,19 +115,30 @@ static int pstore_ftrace_seq_show(struct seq_file *s, void *v)
 	struct pstore_private *ps = s->private;
 	struct pstore_ftrace_seq_data *data = v;
 	struct pstore_ftrace_record *rec;
+<<<<<<< HEAD
 	unsigned long ip, parent_ip;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!data)
 		return 0;
 
 	rec = (struct pstore_ftrace_record *)(ps->record->buf + data->off);
 
+<<<<<<< HEAD
 	ip = decode_ip(rec->ip);
 	parent_ip = decode_ip(rec->parent_ip);
 	seq_printf(s, "CPU:%d ts:%llu %08lx  %08lx  %ps <- %pS\n",
 		   pstore_ftrace_decode_cpu(rec),
 		   pstore_ftrace_read_timestamp(rec),
 		   ip, parent_ip, (void *)ip, (void *)parent_ip);
+=======
+	seq_printf(s, "CPU:%d ts:%llu %08lx  %08lx  %ps <- %pS\n",
+		   pstore_ftrace_decode_cpu(rec),
+		   pstore_ftrace_read_timestamp(rec),
+		   rec->ip, rec->parent_ip, (void *)rec->ip,
+		   (void *)rec->parent_ip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

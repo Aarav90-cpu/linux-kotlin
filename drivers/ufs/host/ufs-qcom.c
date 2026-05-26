@@ -966,6 +966,7 @@ static void ufs_qcom_set_tx_hs_equalizer(struct ufs_hba *hba, u32 gear, u32 tx_l
 	}
 }
 
+<<<<<<< HEAD
 static int ufs_qcom_negotiate_pwr_mode(struct ufs_hba *hba,
 				       const struct ufs_pa_layer_attr *dev_max_params,
 				       struct ufs_pa_layer_attr *dev_req_params)
@@ -981,6 +982,15 @@ static int ufs_qcom_pwr_change_notify(struct ufs_hba *hba,
 				      struct ufs_pa_layer_attr *dev_req_params)
 {
 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+=======
+static int ufs_qcom_pwr_change_notify(struct ufs_hba *hba,
+				enum ufs_notify_change_status status,
+				const struct ufs_pa_layer_attr *dev_max_params,
+				struct ufs_pa_layer_attr *dev_req_params)
+{
+	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+	struct ufs_host_params *host_params = &host->host_params;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (!dev_req_params) {
@@ -990,6 +1000,16 @@ static int ufs_qcom_pwr_change_notify(struct ufs_hba *hba,
 
 	switch (status) {
 	case PRE_CHANGE:
+<<<<<<< HEAD
+=======
+		ret = ufshcd_negotiate_pwr_params(host_params, dev_max_params, dev_req_params);
+		if (ret) {
+			dev_err(hba->dev, "%s: failed to determine capabilities\n",
+					__func__);
+			return ret;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * During UFS driver probe, always update the PHY gear to match the negotiated
 		 * gear, so that, if quirk UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH is enabled,
@@ -1069,6 +1089,7 @@ static void ufs_qcom_override_pa_tx_hsg1_sync_len(struct ufs_hba *hba)
 		dev_err(hba->dev, "Failed (%d) set PA_TX_HSG1_SYNC_LENGTH\n", err);
 }
 
+<<<<<<< HEAD
 /**
  * ufs_qcom_double_t_adapt_l0l1l2l3 - Create a new adapt that doubles the
  * adaptation duration TADAPT_L0_L1_L2_L3 derived from the old adapt.
@@ -1245,12 +1266,17 @@ out:
 		ufs_qcom_limit_max_gear(hba, UFS_HS_G5);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ufs_qcom_apply_dev_quirks(struct ufs_hba *hba)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	ufs_qcom_fixup_tx_adapt_l0l1l2l3(hba);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (hba->dev_quirks & UFS_DEVICE_QUIRK_HOST_PA_SAVECONFIGTIME)
 		err = ufs_qcom_quirk_host_pa_saveconfigtime(hba);
 
@@ -1384,8 +1410,11 @@ static void ufs_qcom_set_host_caps(struct ufs_hba *hba)
 
 static void ufs_qcom_set_caps(struct ufs_hba *hba)
 {
+<<<<<<< HEAD
 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hba->caps |= UFSHCD_CAP_CLK_GATING | UFSHCD_CAP_HIBERN8_WITH_CLK_GATING;
 	hba->caps |= UFSHCD_CAP_CLK_SCALING | UFSHCD_CAP_WB_WITH_CLK_SCALING;
 	hba->caps |= UFSHCD_CAP_AUTO_BKOPS_SUSPEND;
@@ -1393,9 +1422,12 @@ static void ufs_qcom_set_caps(struct ufs_hba *hba)
 	hba->caps |= UFSHCD_CAP_AGGR_POWER_COLLAPSE;
 	hba->caps |= UFSHCD_CAP_RPM_AUTOSUSPEND;
 
+<<<<<<< HEAD
 	if (host->hw_ver.major >= 0x7)
 		hba->caps |= UFSHCD_CAP_TX_EQUALIZATION;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ufs_qcom_set_host_caps(hba);
 }
 
@@ -2510,6 +2542,7 @@ static u32 ufs_qcom_freq_to_gear_speed(struct ufs_hba *hba, unsigned long freq)
 	return min_t(u32, gear, hba->max_pwr_info.info.gear_rx);
 }
 
+<<<<<<< HEAD
 static int ufs_qcom_host_eom_config(struct ufs_hba *hba, int lane,
 				    const struct ufs_eom_coord *eom_coord,
 				    u32 target_test_count)
@@ -2891,6 +2924,8 @@ static int ufs_qcom_tx_eqtr_notify(struct ufs_hba *hba,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * struct ufs_hba_qcom_vops - UFS QCOM specific variant operations
  *
@@ -2906,7 +2941,10 @@ static const struct ufs_hba_variant_ops ufs_hba_qcom_vops = {
 	.setup_clocks           = ufs_qcom_setup_clocks,
 	.hce_enable_notify      = ufs_qcom_hce_enable_notify,
 	.link_startup_notify    = ufs_qcom_link_startup_notify,
+<<<<<<< HEAD
 	.negotiate_pwr_mode	= ufs_qcom_negotiate_pwr_mode,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.pwr_change_notify	= ufs_qcom_pwr_change_notify,
 	.apply_dev_quirks	= ufs_qcom_apply_dev_quirks,
 	.fixup_dev_quirks       = ufs_qcom_fixup_dev_quirks,
@@ -2921,9 +2959,12 @@ static const struct ufs_hba_variant_ops ufs_hba_qcom_vops = {
 	.get_outstanding_cqs	= ufs_qcom_get_outstanding_cqs,
 	.config_esi		= ufs_qcom_config_esi,
 	.freq_to_gear_speed	= ufs_qcom_freq_to_gear_speed,
+<<<<<<< HEAD
 	.get_rx_fom		= ufs_qcom_get_rx_fom,
 	.apply_tx_eqtr_settings	= ufs_qcom_apply_tx_eqtr_settings,
 	.tx_eqtr_notify		= ufs_qcom_tx_eqtr_notify,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ufs_hba_variant_ops ufs_hba_qcom_sa8255p_vops = {

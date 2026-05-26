@@ -291,6 +291,7 @@ BPF_PROG(name, ##args)
 })
 #endif /* ARRAY_ELEM_PTR */
 
+<<<<<<< HEAD
 /**
  * __sink - Hide @expr's value from the compiler and BPF verifier
  * @expr: The expression whose value should be opacified
@@ -335,6 +336,8 @@ BPF_PROG(name, ##args)
  */
 #define __sink(expr) asm volatile ("" : "+g"(expr))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * BPF declarations and helpers
  */
@@ -380,7 +383,10 @@ void bpf_task_release(struct task_struct *p) __ksym;
 
 /* cgroup */
 struct cgroup *bpf_cgroup_ancestor(struct cgroup *cgrp, int level) __ksym;
+<<<<<<< HEAD
 struct cgroup *bpf_cgroup_acquire(struct cgroup *cgrp) __ksym;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void bpf_cgroup_release(struct cgroup *cgrp) __ksym;
 struct cgroup *bpf_cgroup_from_id(u64 cgid) __ksym;
 
@@ -787,6 +793,7 @@ static inline u64 __sqrt_u64(u64 x)
 }
 
 /*
+<<<<<<< HEAD
  * ctzll -- Counts trailing zeros in an unsigned long long. If the input value
  * is zero, the return value is undefined.
  */
@@ -854,6 +861,8 @@ static inline int ctzll(u64 v)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return a value proportionally scaled to the task's weight.
  */
 static inline u64 scale_by_task_weight(const struct task_struct *p, u64 value)
@@ -870,6 +879,7 @@ static inline u64 scale_by_task_weight_inverse(const struct task_struct *p, u64 
 }
 
 
+<<<<<<< HEAD
 /*
  * Get a random u64 from the kernel's pseudo-random generator.
  */
@@ -1035,6 +1045,8 @@ static inline u64 scx_clock_irq(u32 cpu)
 	return irqt ? BPF_CORE_READ(irqt, total) : 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "compat.bpf.h"
 #include "enums.bpf.h"
 

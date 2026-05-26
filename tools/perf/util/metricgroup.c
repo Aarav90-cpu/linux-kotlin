@@ -387,6 +387,7 @@ static bool match_pm_metric_or_groups(const struct pmu_metric *pm, const char *p
 				      const char *metric_or_groups)
 {
 	const char *pm_pmu = pm->pmu ?: "cpu";
+<<<<<<< HEAD
 	struct perf_pmu *perf_pmu = NULL;
 
 	if (pm->pmu)
@@ -394,6 +395,10 @@ static bool match_pm_metric_or_groups(const struct pmu_metric *pm, const char *p
 
 	if (strcmp(pmu, "all") && strcmp(pm_pmu, pmu) &&
 	   (perf_pmu && !perf_pmu__name_wildcard_match(perf_pmu, pmu)))
+=======
+
+	if (strcmp(pmu, "all") && strcmp(pm_pmu, pmu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return match_metric_or_groups(pm->metric_group, metric_or_groups) ||
@@ -914,9 +919,16 @@ static int __add_metric(struct list_head *metric_list,
 		expr = metric_no_threshold ? pm->metric_name : pm->metric_threshold;
 		visited_node.name = "__threshold__";
 	}
+<<<<<<< HEAD
 
 	ret = expr__find_ids(expr, NULL, root_metric->pctx);
 
+=======
+	if (expr__find_ids(expr, NULL, root_metric->pctx) < 0) {
+		/* Broken metric. */
+		ret = -EINVAL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ret) {
 		/* Resolve referenced metrics. */
 		struct perf_pmu *pmu;
@@ -1100,7 +1112,11 @@ static int metricgroup__add_metric(const char *pmu, const char *metric_name, con
 	 */
 	ret = metricgroup__for_each_metric(table, metricgroup__add_metric_callback, &data);
 	if (!ret && !data.has_match)
+<<<<<<< HEAD
 		ret = -ENOENT;
+=======
+		ret = -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * add to metric_list so that they can be released
@@ -1151,8 +1167,11 @@ static int metricgroup__add_metric_list(const char *pmu, const char *list,
 					      user_requested_cpu_list,
 					      system_wide, metric_list, table);
 		if (ret == -EINVAL)
+<<<<<<< HEAD
 			pr_err("Fail to parse metric or group `%s'\n", metric_name);
 		else if (ret == -ENOENT)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pr_err("Cannot find metric or group `%s'\n", metric_name);
 
 		if (ret)
@@ -1265,8 +1284,12 @@ err_out:
 static int parse_ids(bool metric_no_merge, bool fake_pmu,
 		     struct expr_parse_ctx *ids, const char *modifier,
 		     bool group_events, const bool tool_events[TOOL_PMU__EVENT_MAX],
+<<<<<<< HEAD
 		     struct evlist **out_evlist,
 		     const char *filter_pmu)
+=======
+		     struct evlist **out_evlist)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct parse_events_error parse_error;
 	struct evlist *parsed_evlist;
@@ -1320,7 +1343,11 @@ static int parse_ids(bool metric_no_merge, bool fake_pmu,
 	}
 	pr_debug("Parsing metric events '%s'\n", events.buf);
 	parse_events_error__init(&parse_error);
+<<<<<<< HEAD
 	ret = __parse_events(parsed_evlist, events.buf, filter_pmu,
+=======
+	ret = __parse_events(parsed_evlist, events.buf, /*pmu_filter=*/NULL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     &parse_error, fake_pmu, /*warn_if_reordered=*/false,
 			     /*fake_tp=*/false);
 	if (ret) {
@@ -1423,8 +1450,12 @@ static int parse_groups(struct evlist *perf_evlist,
 					/*modifier=*/NULL,
 					/*group_events=*/false,
 					tool_events,
+<<<<<<< HEAD
 					&combined_evlist,
 					(pmu && strcmp(pmu, "all") == 0) ? NULL : pmu);
+=======
+					&combined_evlist);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (combined)
 			expr__ctx_free(combined);
@@ -1479,8 +1510,12 @@ static int parse_groups(struct evlist *perf_evlist,
 		}
 		if (!metric_evlist) {
 			ret = parse_ids(metric_no_merge, fake_pmu, m->pctx, m->modifier,
+<<<<<<< HEAD
 					m->group_events, tool_events, &m->evlist,
 					(pmu && strcmp(pmu, "all") == 0) ? NULL : pmu);
+=======
+					m->group_events, tool_events, &m->evlist);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				goto out;
 

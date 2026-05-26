@@ -24,7 +24,11 @@ prerequisite()
 		exit $ksft_skip
 	fi
 
+<<<<<<< HEAD
 	if ! ls $SYSFS/devices/system/cpu/cpu*/online > /dev/null 2>&1; then
+=======
+	if ! ls $SYSFS/devices/system/cpu/cpu* > /dev/null 2>&1; then
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		echo $msg cpu hotplug is not supported >&2
 		exit $ksft_skip
 	fi

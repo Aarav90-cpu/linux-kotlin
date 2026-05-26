@@ -95,8 +95,13 @@ increases and decreases the effective level of the quota aiming the LRU
 
 Disabled by default.
 
+<<<<<<< HEAD
 autotune_monitoring_intervals
 -----------------------------
+=======
+Auto-tune monitoring intervals
+------------------------------
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
 sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
@@ -225,10 +230,13 @@ But, setting this too high could result in increased monitoring overhead.
 Please refer to the DAMON documentation (:doc:`usage`) for more detail.  10 by
 default.
 
+<<<<<<< HEAD
 Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
 <damon_design_monitoring>` section of the design document for the rationale
 behind this lower bound.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 max_nr_regions
 --------------
 
@@ -359,8 +367,11 @@ the LRU-list based page granularity reclamation. ::
     # echo 400 > wmarks_mid
     # echo 200 > wmarks_low
     # echo Y > enabled
+<<<<<<< HEAD
 
 Note that this module (damon_lru_sort) cannot run simultaneously with other
 DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
 purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
 for more details.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

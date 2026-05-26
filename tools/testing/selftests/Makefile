@@ -38,9 +38,12 @@ TARGETS += filesystems/overlayfs
 TARGETS += filesystems/statmount
 TARGETS += filesystems/mount-notify
 TARGETS += filesystems/fuse
+<<<<<<< HEAD
 TARGETS += filesystems/move_mount
 TARGETS += filesystems/empty_mntns
 TARGETS += filesystems/fsmount_ns
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TARGETS += firmware
 TARGETS += fpu
 TARGETS += ftrace
@@ -81,7 +84,10 @@ TARGETS += net/netfilter
 TARGETS += net/openvswitch
 TARGETS += net/ovpn
 TARGETS += net/packetdrill
+<<<<<<< HEAD
 TARGETS += net/ppp
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TARGETS += net/rds
 TARGETS += net/tcp_ao
 TARGETS += nolibc
@@ -98,7 +104,10 @@ TARGETS += proc
 TARGETS += pstore
 TARGETS += ptrace
 TARGETS += openat2
+<<<<<<< HEAD
 TARGETS += rdma
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 TARGETS += resctrl
 TARGETS += riscv
 TARGETS += rlimits

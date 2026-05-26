@@ -163,6 +163,10 @@ config CPU_FREQ_GOV_ONDEMAND
 
 config CPU_FREQ_GOV_CONSERVATIVE
 	tristate "'conservative' cpufreq governor"
+<<<<<<< HEAD
+=======
+	depends on CPU_FREQ
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CPU_FREQ_GOV_COMMON
 	help
 	  'conservative' - this driver is rather similar to the 'ondemand'
@@ -187,7 +191,11 @@ config CPU_FREQ_GOV_CONSERVATIVE
 
 config CPU_FREQ_GOV_SCHEDUTIL
 	bool "'schedutil' cpufreq policy governor"
+<<<<<<< HEAD
 	depends on SMP
+=======
+	depends on CPU_FREQ && SMP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CPU_FREQ_GOV_ATTR_SET
 	select IRQ_WORK
 	help
@@ -364,6 +372,10 @@ config ACPI_CPPC_CPUFREQ_FIE
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 endif # CPU_FREQ
+=======
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 endmenu

@@ -475,7 +475,11 @@
 &lpuart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
+<<<<<<< HEAD
 	status = "okay";
+=======
+	status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bluetooth {
 		compatible = "nxp,88w8987-bt";

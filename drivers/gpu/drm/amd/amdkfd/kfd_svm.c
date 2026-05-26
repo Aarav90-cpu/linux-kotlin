@@ -628,8 +628,14 @@ svm_range_vram_node_new(struct kfd_node *node, struct svm_range *prange,
 		}
 	}
 
+<<<<<<< HEAD
 	r = dma_resv_reserve_fences(bo->tbo.base.resv, TTM_NUM_MOVE_FENCES);
 	if (r) {
+=======
+	r = dma_resv_reserve_fences(bo->tbo.base.resv, 1);
+	if (r) {
+		pr_debug("failed %d to reserve bo\n", r);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_bo_unreserve(bo);
 		goto reserve_bo_failed;
 	}
@@ -1218,8 +1224,12 @@ svm_range_get_pte_flags(struct kfd_node *node, struct amdgpu_vm *vm,
 	bool snoop = (domain != SVM_RANGE_VRAM_DOMAIN);
 	bool coherent = flags & (KFD_IOCTL_SVM_FLAG_COHERENT | KFD_IOCTL_SVM_FLAG_EXT_COHERENT);
 	bool ext_coherent = flags & KFD_IOCTL_SVM_FLAG_EXT_COHERENT;
+<<<<<<< HEAD
 	unsigned int mtype_local, mtype_remote;
 	bool is_aid_a1, is_local;
+=======
+	unsigned int mtype_local;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (domain == SVM_RANGE_VRAM_DOMAIN)
 		bo_node = prange->svm_bo->node;
@@ -1307,6 +1317,7 @@ svm_range_get_pte_flags(struct kfd_node *node, struct amdgpu_vm *vm,
 		mapping_flags |= AMDGPU_VM_MTYPE_NC;
 		break;
 	case IP_VERSION(12, 1, 0):
+<<<<<<< HEAD
 		is_aid_a1 = (node->adev->rev_id & 0x10);
 		is_local = (domain == SVM_RANGE_VRAM_DOMAIN) &&
 				(bo_node->adev == node->adev);
@@ -1324,6 +1335,22 @@ svm_range_get_pte_flags(struct kfd_node *node, struct amdgpu_vm *vm,
 		} else {
 			/* system memory or remote VRAM */
 			mapping_flags |= mtype_remote;
+=======
+		snoop = true;
+		if (domain == SVM_RANGE_VRAM_DOMAIN) {
+			mtype_local = amdgpu_mtype_local == 1 ? AMDGPU_VM_MTYPE_NC :
+								AMDGPU_VM_MTYPE_RW;
+			/* local HBM  */
+			if (bo_node->adev == node->adev)
+				mapping_flags |= mtype_local;
+			/* Remote GPU memory */
+			else
+				mapping_flags |= ext_coherent ? AMDGPU_VM_MTYPE_UC :
+								AMDGPU_VM_MTYPE_NC;
+		/* system memory accessed by the dGPU */
+		} else {
+			mapping_flags |= ext_coherent ? AMDGPU_VM_MTYPE_UC : AMDGPU_VM_MTYPE_NC;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	default:
@@ -1366,12 +1393,15 @@ svm_range_unmap_from_gpu(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 
 	pr_debug("CPU[0x%llx 0x%llx] -> GPU[0x%llx 0x%llx]\n", start, last,
 		gpu_start, gpu_end);
+<<<<<<< HEAD
 
 	if (!amdgpu_vm_ready(vm)) {
 		pr_debug("VM not ready, canceling unmap\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return amdgpu_vm_update_range(adev, vm, false, true, true, false, NULL, gpu_start,
 				      gpu_end, init_pte_value, 0, 0, NULL, NULL,
 				      fence);
@@ -1449,11 +1479,14 @@ svm_range_map_to_gpu(struct kfd_process_device *pdd, struct svm_range *prange,
 	pr_debug("svms 0x%p [0x%lx 0x%lx] readonly %d\n", prange->svms,
 		 last_start, last_start + npages - 1, readonly);
 
+<<<<<<< HEAD
 	if (!amdgpu_vm_ready(vm)) {
 		pr_debug("VM not ready, canceling map\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = offset; i < offset + npages; i++) {
 		uint64_t gpu_start;
 		uint64_t gpu_end;

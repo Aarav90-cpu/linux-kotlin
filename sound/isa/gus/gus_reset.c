@@ -6,7 +6,10 @@
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 #include <linux/time.h>
+<<<<<<< HEAD
 #include <asm/dma.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sound/core.h>
 #include <sound/gus.h>
 
@@ -264,6 +267,7 @@ void snd_gf1_free_voice(struct snd_gus_card * gus, struct snd_gus_voice *voice)
 		private_free(voice);
 }
 
+<<<<<<< HEAD
 static void snd_gf1_init_software_state(struct snd_gus_card *gus)
 {
 	unsigned int i;
@@ -276,6 +280,13 @@ static void snd_gf1_init_software_state(struct snd_gus_card *gus)
 }
 
 static void snd_gf1_hw_start(struct snd_gus_card *gus, bool initial)
+=======
+/*
+ *  call this function only by start of driver
+ */
+
+int snd_gf1_start(struct snd_gus_card * gus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int i;
 
@@ -285,6 +296,7 @@ static void snd_gf1_hw_start(struct snd_gus_card *gus, bool initial)
 	udelay(160);
 	snd_gf1_i_write8(gus, SNDRV_GF1_GB_JOYSTICK_DAC_LEVEL, gus->joystick_dac);
 
+<<<<<<< HEAD
 	if (initial) {
 		snd_gf1_init_software_state(gus);
 		snd_gf1_uart_cmd(gus, 0x03);
@@ -293,6 +305,16 @@ static void snd_gf1_hw_start(struct snd_gus_card *gus, bool initial)
 		outb(0x03, GUSP(gus, MIDICTRL));
 	}
 
+=======
+	snd_gf1_set_default_handlers(gus, SNDRV_GF1_HANDLER_ALL);
+	for (i = 0; i < 32; i++) {
+		gus->gf1.voices[i].number = i;
+		snd_gf1_set_default_handlers(gus, SNDRV_GF1_HANDLER_VOICE | i);
+	}
+
+	snd_gf1_uart_cmd(gus, 0x03);	/* huh.. this cleanup took me some time... */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gus->gf1.enh_mode) {	/* enhanced mode !!!! */
 		snd_gf1_i_write8(gus, SNDRV_GF1_GB_GLOBAL_MODE, snd_gf1_i_look8(gus, SNDRV_GF1_GB_GLOBAL_MODE) | 0x01);
 		snd_gf1_i_write8(gus, SNDRV_GF1_GB_MEMORY_CONTROL, 0x01);
@@ -301,8 +323,11 @@ static void snd_gf1_hw_start(struct snd_gus_card *gus, bool initial)
 	snd_gf1_select_active_voices(gus);
 	snd_gf1_delay(gus);
 	gus->gf1.default_voice_address = gus->gf1.memory > 0 ? 0 : 512 - 8;
+<<<<<<< HEAD
 	gus->gf1.hw_lfo = 0;
 	gus->gf1.sw_lfo = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* initialize LFOs & clear LFOs memory */
 	if (gus->gf1.enh_mode && gus->gf1.memory) {
 		gus->gf1.hw_lfo = 1;
@@ -331,6 +356,7 @@ static void snd_gf1_hw_start(struct snd_gus_card *gus, bool initial)
 		outb(gus->gf1.active_voice = 0, GUSP(gus, GF1PAGE));
 		outb(gus->mix_cntrl_reg, GUSP(gus, MIXCNTRLREG));
 	}
+<<<<<<< HEAD
 }
 
 int snd_gf1_start(struct snd_gus_card *gus)
@@ -340,6 +366,9 @@ int snd_gf1_start(struct snd_gus_card *gus)
 	 * software state that suspend/resume keeps across PM cycles.
 	 */
 	snd_gf1_hw_start(gus, true);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snd_gf1_timers_init(gus);
 	snd_gf1_look_regs(gus);
 	snd_gf1_mem_init(gus);
@@ -375,6 +404,7 @@ int snd_gf1_stop(struct snd_gus_card * gus)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 int snd_gf1_suspend(struct snd_gus_card *gus)
 {
@@ -399,3 +429,5 @@ int snd_gf1_resume(struct snd_gus_card *gus)
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

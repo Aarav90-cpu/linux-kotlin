@@ -26,7 +26,10 @@ properties:
           - mediatek,mt8183-disp-dither
       - items:
           - enum:
+<<<<<<< HEAD
               - mediatek,mt8167-disp-dither
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - mediatek,mt8186-disp-dither
               - mediatek,mt8188-disp-dither
               - mediatek,mt8192-disp-dither

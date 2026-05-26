@@ -12,14 +12,20 @@
 #include <asm/kvm_emulate.h>
 #include <asm/kvm_host.h>
 #include <asm/kvm_hyp.h>
+<<<<<<< HEAD
 #include <asm/kvm_hypevents.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <asm/kvm_mmu.h>
 
 #include <nvhe/ffa.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 #include <nvhe/pkvm.h>
+<<<<<<< HEAD
 #include <nvhe/trace.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <nvhe/trap_handler.h>
 
 DEFINE_PER_CPU(struct kvm_nvhe_init_params, kvm_init_params);
@@ -138,8 +144,11 @@ static void flush_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
 	hyp_vcpu->vcpu.arch.vsesr_el2	= host_vcpu->arch.vsesr_el2;
 
 	hyp_vcpu->vcpu.arch.vgic_cpu.vgic_v3 = host_vcpu->arch.vgic_cpu.vgic_v3;
+<<<<<<< HEAD
 
 	hyp_vcpu->vcpu.arch.pid = host_vcpu->arch.pid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void sync_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
@@ -173,6 +182,12 @@ static void handle___pkvm_vcpu_load(struct kvm_cpu_context *host_ctxt)
 	DECLARE_REG(u64, hcr_el2, host_ctxt, 3);
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vcpu = pkvm_load_hyp_vcpu(handle, vcpu_idx);
 	if (!hyp_vcpu)
 		return;
@@ -189,8 +204,17 @@ static void handle___pkvm_vcpu_load(struct kvm_cpu_context *host_ctxt)
 
 static void handle___pkvm_vcpu_put(struct kvm_cpu_context *host_ctxt)
 {
+<<<<<<< HEAD
 	struct pkvm_hyp_vcpu *hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 
+=======
+	struct pkvm_hyp_vcpu *hyp_vcpu;
+
+	if (!is_protected_kvm_enabled())
+		return;
+
+	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (hyp_vcpu)
 		pkvm_put_hyp_vcpu(hyp_vcpu);
 }
@@ -245,6 +269,7 @@ static int pkvm_refill_memcache(struct pkvm_hyp_vcpu *hyp_vcpu)
 			       &host_vcpu->arch.pkvm_memcache);
 }
 
+<<<<<<< HEAD
 static void handle___pkvm_host_donate_guest(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, pfn, host_ctxt, 1);
@@ -265,6 +290,8 @@ out:
 	cpu_reg(host_ctxt, 1) =  ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void handle___pkvm_host_share_guest(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, pfn, host_ctxt, 1);
@@ -274,6 +301,12 @@ static void handle___pkvm_host_share_guest(struct kvm_cpu_context *host_ctxt)
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 	if (!hyp_vcpu || pkvm_hyp_vcpu_is_protected(hyp_vcpu))
 		goto out;
@@ -295,6 +328,12 @@ static void handle___pkvm_host_unshare_guest(struct kvm_cpu_context *host_ctxt)
 	struct pkvm_hyp_vm *hyp_vm;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vm = get_np_pkvm_hyp_vm(handle);
 	if (!hyp_vm)
 		goto out;
@@ -312,6 +351,12 @@ static void handle___pkvm_host_relax_perms_guest(struct kvm_cpu_context *host_ct
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 	if (!hyp_vcpu || pkvm_hyp_vcpu_is_protected(hyp_vcpu))
 		goto out;
@@ -329,6 +374,12 @@ static void handle___pkvm_host_wrprotect_guest(struct kvm_cpu_context *host_ctxt
 	struct pkvm_hyp_vm *hyp_vm;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vm = get_np_pkvm_hyp_vm(handle);
 	if (!hyp_vm)
 		goto out;
@@ -348,6 +399,12 @@ static void handle___pkvm_host_test_clear_young_guest(struct kvm_cpu_context *ho
 	struct pkvm_hyp_vm *hyp_vm;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vm = get_np_pkvm_hyp_vm(handle);
 	if (!hyp_vm)
 		goto out;
@@ -364,6 +421,12 @@ static void handle___pkvm_host_mkyoung_guest(struct kvm_cpu_context *host_ctxt)
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!is_protected_kvm_enabled())
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
 	if (!hyp_vcpu || pkvm_hyp_vcpu_is_protected(hyp_vcpu))
 		goto out;
@@ -423,8 +486,17 @@ static void handle___kvm_tlb_flush_vmid(struct kvm_cpu_context *host_ctxt)
 static void handle___pkvm_tlb_flush_vmid(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(pkvm_handle_t, handle, host_ctxt, 1);
+<<<<<<< HEAD
 	struct pkvm_hyp_vm *hyp_vm = get_np_pkvm_hyp_vm(handle);
 
+=======
+	struct pkvm_hyp_vm *hyp_vm;
+
+	if (!is_protected_kvm_enabled())
+		return;
+
+	hyp_vm = get_np_pkvm_hyp_vm(handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!hyp_vm)
 		return;
 
@@ -481,15 +553,26 @@ static void handle___pkvm_init(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(phys_addr_t, phys, host_ctxt, 1);
 	DECLARE_REG(unsigned long, size, host_ctxt, 2);
+<<<<<<< HEAD
 	DECLARE_REG(unsigned long *, per_cpu_base, host_ctxt, 3);
 	DECLARE_REG(u32, hyp_va_bits, host_ctxt, 4);
+=======
+	DECLARE_REG(unsigned long, nr_cpus, host_ctxt, 3);
+	DECLARE_REG(unsigned long *, per_cpu_base, host_ctxt, 4);
+	DECLARE_REG(u32, hyp_va_bits, host_ctxt, 5);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * __pkvm_init() will return only if an error occurred, otherwise it
 	 * will tail-call in __pkvm_init_finalise() which will have to deal
 	 * with the host context directly.
 	 */
+<<<<<<< HEAD
 	cpu_reg(host_ctxt, 1) = __pkvm_init(phys, size, per_cpu_base, hyp_va_bits);
+=======
+	cpu_reg(host_ctxt, 1) = __pkvm_init(phys, size, nr_cpus, per_cpu_base,
+					    hyp_va_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void handle___pkvm_cpu_set_vector(struct kvm_cpu_context *host_ctxt)
@@ -575,6 +658,7 @@ static void handle___pkvm_init_vcpu(struct kvm_cpu_context *host_ctxt)
 	cpu_reg(host_ctxt, 1) = __pkvm_init_vcpu(handle, host_vcpu, vcpu_hva);
 }
 
+<<<<<<< HEAD
 static void handle___pkvm_vcpu_in_poison_fault(struct kvm_cpu_context *host_ctxt)
 {
 	int ret;
@@ -684,6 +768,13 @@ static void handle___vgic_v5_restore_vmcr_apr(struct kvm_cpu_context *host_ctxt)
 	DECLARE_REG(struct vgic_v5_cpu_if *, cpu_if, host_ctxt, 1);
 
 	__vgic_v5_restore_vmcr_apr(kern_hyp_va(cpu_if));
+=======
+static void handle___pkvm_teardown_vm(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(pkvm_handle_t, handle, host_ctxt, 1);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_teardown_vm(handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 typedef void (*hcall_t)(struct kvm_cpu_context *);
@@ -700,6 +791,17 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__vgic_v3_get_gic_config),
 	HANDLE_FUNC(__pkvm_prot_finalize),
 
+<<<<<<< HEAD
+=======
+	HANDLE_FUNC(__pkvm_host_share_hyp),
+	HANDLE_FUNC(__pkvm_host_unshare_hyp),
+	HANDLE_FUNC(__pkvm_host_share_guest),
+	HANDLE_FUNC(__pkvm_host_unshare_guest),
+	HANDLE_FUNC(__pkvm_host_relax_perms_guest),
+	HANDLE_FUNC(__pkvm_host_wrprotect_guest),
+	HANDLE_FUNC(__pkvm_host_test_clear_young_guest),
+	HANDLE_FUNC(__pkvm_host_mkyoung_guest),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HANDLE_FUNC(__kvm_adjust_pc),
 	HANDLE_FUNC(__kvm_vcpu_run),
 	HANDLE_FUNC(__kvm_flush_vm_context),
@@ -709,6 +811,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__kvm_tlb_flush_vmid_range),
 	HANDLE_FUNC(__kvm_flush_cpu_context),
 	HANDLE_FUNC(__kvm_timer_set_cntvoff),
+<<<<<<< HEAD
 	HANDLE_FUNC(__tracing_load),
 	HANDLE_FUNC(__tracing_unload),
 	HANDLE_FUNC(__tracing_enable),
@@ -731,15 +834,23 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_host_wrprotect_guest),
 	HANDLE_FUNC(__pkvm_host_test_clear_young_guest),
 	HANDLE_FUNC(__pkvm_host_mkyoung_guest),
+=======
+	HANDLE_FUNC(__vgic_v3_save_aprs),
+	HANDLE_FUNC(__vgic_v3_restore_vmcr_aprs),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HANDLE_FUNC(__pkvm_reserve_vm),
 	HANDLE_FUNC(__pkvm_unreserve_vm),
 	HANDLE_FUNC(__pkvm_init_vm),
 	HANDLE_FUNC(__pkvm_init_vcpu),
+<<<<<<< HEAD
 	HANDLE_FUNC(__pkvm_vcpu_in_poison_fault),
 	HANDLE_FUNC(__pkvm_force_reclaim_guest_page),
 	HANDLE_FUNC(__pkvm_reclaim_dying_guest_page),
 	HANDLE_FUNC(__pkvm_start_teardown_vm),
 	HANDLE_FUNC(__pkvm_finalize_teardown_vm),
+=======
+	HANDLE_FUNC(__pkvm_teardown_vm),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HANDLE_FUNC(__pkvm_vcpu_load),
 	HANDLE_FUNC(__pkvm_vcpu_put),
 	HANDLE_FUNC(__pkvm_tlb_flush_vmid),
@@ -748,11 +859,17 @@ static const hcall_t host_hcall[] = {
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(unsigned long, id, host_ctxt, 0);
+<<<<<<< HEAD
 	unsigned long hcall_min = 0, hcall_max = __KVM_HOST_SMCCC_FUNC_MAX;
 	hcall_t hfn;
 
 	BUILD_BUG_ON(ARRAY_SIZE(host_hcall) != __KVM_HOST_SMCCC_FUNC_MAX);
 
+=======
+	unsigned long hcall_min = 0;
+	hcall_t hfn;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If pKVM has been initialised then reject any calls to the
 	 * early "privileged" hypercalls. Note that we cannot reject
@@ -762,16 +879,25 @@ static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)
 	 * basis. This is all fine, however, since __pkvm_prot_finalize
 	 * returns -EPERM after the first call for a given CPU.
 	 */
+<<<<<<< HEAD
 	if (static_branch_unlikely(&kvm_protected_mode_initialized)) {
 		hcall_min = __KVM_HOST_SMCCC_FUNC_MIN_PKVM;
 	} else {
 		hcall_max = __KVM_HOST_SMCCC_FUNC_PKVM_ONLY;
 	}
+=======
+	if (static_branch_unlikely(&kvm_protected_mode_initialized))
+		hcall_min = __KVM_HOST_SMCCC_FUNC___pkvm_prot_finalize;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	id &= ~ARM_SMCCC_CALL_HINTS;
 	id -= KVM_HOST_SMCCC_ID(0);
 
+<<<<<<< HEAD
 	if (unlikely(id < hcall_min || id >= hcall_max))
+=======
+	if (unlikely(id < hcall_min || id >= ARRAY_SIZE(host_hcall)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto inval;
 
 	hfn = host_hcall[id];
@@ -788,14 +914,19 @@ inval:
 
 static void default_host_smc_handler(struct kvm_cpu_context *host_ctxt)
 {
+<<<<<<< HEAD
 	trace_hyp_exit(host_ctxt, HYP_REASON_SMC);
 	__kvm_hyp_host_forward_smc(host_ctxt);
 	trace_hyp_enter(host_ctxt, HYP_REASON_SMC);
+=======
+	__kvm_hyp_host_forward_smc(host_ctxt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, func_id, host_ctxt, 0);
+<<<<<<< HEAD
 	u64 esr = read_sysreg_el2(SYS_ESR);
 	bool handled;
 
@@ -809,6 +940,11 @@ static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 		cpu_reg(host_ctxt, 0) = SMCCC_RET_NOT_SUPPORTED;
 		goto exit_skip_instr;
 	}
+=======
+	bool handled;
+
+	func_id &= ~ARM_SMCCC_CALL_HINTS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	handled = kvm_host_psci_handler(host_ctxt, func_id);
 	if (!handled)
@@ -816,11 +952,15 @@ static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 	if (!handled)
 		default_host_smc_handler(host_ctxt);
 
+<<<<<<< HEAD
 exit_skip_instr:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* SMC was trapped, move ELR past the current PC. */
 	kvm_skip_host_instr();
 }
 
+<<<<<<< HEAD
 void inject_host_exception(u64 esr)
 {
 	u64 sctlr, spsr_el1, spsr_el2, exc_offset = except_type_sync;
@@ -867,6 +1007,45 @@ static void inject_host_undef64(void)
 {
 	inject_host_exception((ESR_ELx_EC_UNKNOWN << ESR_ELx_EC_SHIFT) |
 			       ESR_ELx_IL);
+=======
+/*
+ * Inject an Undefined Instruction exception into the host.
+ *
+ * This is open-coded to allow control over PSTATE construction without
+ * complicating the generic exception entry helpers.
+ */
+static void inject_undef64(void)
+{
+	u64 spsr_mask, vbar, sctlr, old_spsr, new_spsr, esr, offset;
+
+	spsr_mask = PSR_N_BIT | PSR_Z_BIT | PSR_C_BIT | PSR_V_BIT | PSR_DIT_BIT | PSR_PAN_BIT;
+
+	vbar = read_sysreg_el1(SYS_VBAR);
+	sctlr = read_sysreg_el1(SYS_SCTLR);
+	old_spsr = read_sysreg_el2(SYS_SPSR);
+
+	new_spsr = old_spsr & spsr_mask;
+	new_spsr |= PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT;
+	new_spsr |= PSR_MODE_EL1h;
+
+	if (!(sctlr & SCTLR_EL1_SPAN))
+		new_spsr |= PSR_PAN_BIT;
+
+	if (sctlr & SCTLR_ELx_DSSBS)
+		new_spsr |= PSR_SSBS_BIT;
+
+	if (system_supports_mte())
+		new_spsr |= PSR_TCO_BIT;
+
+	esr = (ESR_ELx_EC_UNKNOWN << ESR_ELx_EC_SHIFT) | ESR_ELx_IL;
+	offset = CURRENT_EL_SP_ELx_VECTOR + except_type_sync;
+
+	write_sysreg_el1(esr, SYS_ESR);
+	write_sysreg_el1(read_sysreg_el2(SYS_ELR), SYS_ELR);
+	write_sysreg_el1(old_spsr, SYS_SPSR);
+	write_sysreg_el2(vbar + offset, SYS_ELR);
+	write_sysreg_el2(new_spsr, SYS_SPSR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool handle_host_mte(u64 esr)
@@ -889,7 +1068,11 @@ static bool handle_host_mte(u64 esr)
 		return false;
 	}
 
+<<<<<<< HEAD
 	inject_host_undef64();
+=======
+	inject_undef64();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -897,6 +1080,7 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
 {
 	u64 esr = read_sysreg_el2(SYS_ESR);
 
+<<<<<<< HEAD
 
 	switch (ESR_ELx_EC(esr)) {
 	case ESR_ELx_EC_HVC64:
@@ -905,11 +1089,21 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
 		break;
 	case ESR_ELx_EC_SMC64:
 		trace_hyp_enter(host_ctxt, HYP_REASON_SMC);
+=======
+	switch (ESR_ELx_EC(esr)) {
+	case ESR_ELx_EC_HVC64:
+		handle_host_hcall(host_ctxt);
+		break;
+	case ESR_ELx_EC_SMC64:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		handle_host_smc(host_ctxt);
 		break;
 	case ESR_ELx_EC_IABT_LOW:
 	case ESR_ELx_EC_DABT_LOW:
+<<<<<<< HEAD
 		trace_hyp_enter(host_ctxt, HYP_REASON_HOST_ABORT);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		handle_host_mem_abort(host_ctxt);
 		break;
 	case ESR_ELx_EC_SYS64:
@@ -919,6 +1113,9 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
 	default:
 		BUG();
 	}
+<<<<<<< HEAD
 
 	trace_hyp_exit(host_ctxt, HYP_REASON_ERET_HOST);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

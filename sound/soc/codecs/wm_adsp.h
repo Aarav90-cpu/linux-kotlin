@@ -79,6 +79,7 @@ struct wm_adsp {
 	SOC_ENUM_EXT(dspname " Firmware", wm_adsp_fw_enum[num], \
 		     wm_adsp_fw_get, wm_adsp_fw_put)
 
+<<<<<<< HEAD
 struct wm_adsp_fw_file {
 	const struct firmware *firmware;
 	char *filename;
@@ -89,6 +90,8 @@ struct wm_adsp_fw_files {
 	struct wm_adsp_fw_file coeff;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const struct soc_enum wm_adsp_fw_enum[];
 
 int wm_adsp1_init(struct wm_adsp *dsp);
@@ -113,7 +116,10 @@ irqreturn_t wm_halo_wdt_expire(int irq, void *data);
 
 int wm_adsp_run(struct wm_adsp *dsp);
 void wm_adsp_stop(struct wm_adsp *dsp);
+<<<<<<< HEAD
 void wm_adsp_hibernate(struct wm_adsp *dsp, bool hibernate);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int wm_adsp_event(struct snd_soc_dapm_widget *w,
 		  struct snd_kcontrol *kcontrol, int event);
 
@@ -153,6 +159,7 @@ int wm_adsp_write_ctl(struct wm_adsp *dsp, const char *name,  int type,
 int wm_adsp_read_ctl(struct wm_adsp *dsp, const char *name,  int type,
 		      unsigned int alg, void *buf, size_t len);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_KUNIT)
 const char *wm_adsp_get_fwf_name_by_index(int index);
 void wm_adsp_release_firmware_files(struct wm_adsp_fw_files *fw);
@@ -162,4 +169,6 @@ int wm_adsp_firmware_request(const struct firmware **firmware,
 int wm_adsp_request_firmware_files(struct wm_adsp *dsp, struct wm_adsp_fw_files *fw);
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

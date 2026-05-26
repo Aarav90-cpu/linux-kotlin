@@ -23,6 +23,7 @@
 #include "intel_display_core.h"
 #include "intel_parent.h"
 
+<<<<<<< HEAD
 /* dpt */
 struct intel_dpt *intel_parent_dpt_create(struct intel_display *display,
 					  struct drm_gem_object *obj, size_t size)
@@ -72,6 +73,8 @@ void intel_parent_frontbuffer_flush_for_display(struct intel_display *display, s
 	display->parent->frontbuffer->flush_for_display(front);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* hdcp */
 ssize_t intel_parent_hdcp_gsc_msg_send(struct intel_display *display,
 				       struct intel_hdcp_gsc_context *gsc_context,
@@ -108,6 +111,7 @@ void intel_parent_irq_synchronize(struct intel_display *display)
 	display->parent->irq->synchronize(display->drm);
 }
 
+<<<<<<< HEAD
 /* overlay */
 bool intel_parent_overlay_is_active(struct intel_display *display)
 {
@@ -184,6 +188,8 @@ void intel_parent_overlay_cleanup(struct intel_display *display)
 	display->parent->overlay->cleanup(display->drm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* panic */
 struct intel_panic *intel_parent_panic_alloc(struct intel_display *display)
 {
@@ -217,6 +223,7 @@ void intel_parent_pc8_unblock(struct intel_display *display)
 	display->parent->pc8->unblock(display->drm);
 }
 
+<<<<<<< HEAD
 /* pcode */
 int intel_parent_pcode_read(struct intel_display *display, u32 mbox, u32 *val, u32 *val1)
 {
@@ -239,6 +246,8 @@ int intel_parent_pcode_request(struct intel_display *display, u32 mbox, u32 requ
 	return display->parent->pcode->request(display->drm, mbox, request, reply_mask, reply, timeout_base_ms);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* rps */
 bool intel_parent_rps_available(struct intel_display *display)
 {
@@ -338,6 +347,7 @@ void intel_parent_stolen_node_free(struct intel_display *display, const struct i
 	display->parent->stolen->node_free(node);
 }
 
+<<<<<<< HEAD
 /* vma */
 int intel_parent_vma_fence_id(struct intel_display *display, const struct i915_vma *vma)
 {
@@ -347,6 +357,8 @@ int intel_parent_vma_fence_id(struct intel_display *display, const struct i915_v
 	return display->parent->vma->fence_id(vma);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* generic */
 void intel_parent_fence_priority_display(struct intel_display *display, struct dma_fence *fence)
 {

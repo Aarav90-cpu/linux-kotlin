@@ -20,6 +20,10 @@ if STMMAC_ETH
 config STMMAC_SELFTESTS
 	bool "Support for STMMAC Selftests"
 	depends on INET
+<<<<<<< HEAD
+=======
+	depends on STMMAC_ETH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default n
 	help
 	  This adds support for STMMAC Selftests using ethtool. Enable this
@@ -28,6 +32,10 @@ config STMMAC_SELFTESTS
 
 config STMMAC_PLATFORM
 	tristate "STMMAC Platform bus support"
+<<<<<<< HEAD
+=======
+	depends on STMMAC_ETH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select MFD_SYSCON
 	default y
 	help
@@ -130,6 +138,7 @@ config DWMAC_MESON
 	  the stmmac device driver. This driver is used for Meson6,
 	  Meson8, Meson8b and GXBB SoCs.
 
+<<<<<<< HEAD
 config DWMAC_NUVOTON
 	tristate "Nuvoton MA35 dwmac support"
 	default ARCH_MA35
@@ -142,6 +151,8 @@ config DWMAC_NUVOTON
 	  for the stmmac device driver. The nuvoton-dwmac driver is
 	  used for MA35 series SoCs.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DWMAC_QCOM_ETHQOS
 	tristate "Qualcomm ETHQOS support"
 	default ARCH_QCOM
@@ -226,6 +237,7 @@ config DWMAC_SOPHGO
 	  for the stmmac device driver. This driver is used for the
 	  ethernet controllers on various Sophgo SoCs.
 
+<<<<<<< HEAD
 config DWMAC_SPACEMIT
 	tristate "Spacemit dwmac support"
 	depends on OF && (ARCH_SPACEMIT || COMPILE_TEST)
@@ -238,6 +250,8 @@ config DWMAC_SPACEMIT
 	  for the stmmac device driver. This driver is used for the
 	  Spacemit K3 ethernet controllers.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config DWMAC_STARFIVE
 	tristate "StarFive dwmac support"
 	depends on OF && (ARCH_STARFIVE || COMPILE_TEST)
@@ -334,6 +348,10 @@ config DWMAC_IMX8
 config DWMAC_INTEL_PLAT
 	tristate "Intel dwmac support"
 	depends on OF && COMMON_CLK
+<<<<<<< HEAD
+=======
+	depends on STMMAC_ETH
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for ethernet controllers on Intel SoCs
 
@@ -368,7 +386,11 @@ config DWMAC_VISCONTI
 	help
 	  Support for ethernet controller on Visconti SoCs.
 
+<<<<<<< HEAD
 endif # STMMAC_PLATFORM
+=======
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config STMMAC_LIBPCI
 	tristate
@@ -378,7 +400,11 @@ config STMMAC_LIBPCI
 config DWMAC_INTEL
 	tristate "Intel GMAC support"
 	default X86
+<<<<<<< HEAD
 	depends on X86 && PCI
+=======
+	depends on X86 && STMMAC_ETH && PCI
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on COMMON_CLK
 	depends on ACPI
 	help
@@ -417,4 +443,8 @@ config STMMAC_PCI
 	  If you have a controller with this interface, say Y or M here.
 
 	  If unsure, say N.
+<<<<<<< HEAD
 endif # STMMAC_ETH
+=======
+endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

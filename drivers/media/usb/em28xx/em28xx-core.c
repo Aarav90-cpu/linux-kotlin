@@ -499,8 +499,12 @@ int em28xx_audio_setup(struct em28xx *dev)
 	if (dev->chip_id == CHIP_ID_EM2870 ||
 	    dev->chip_id == CHIP_ID_EM2874 ||
 	    dev->chip_id == CHIP_ID_EM28174 ||
+<<<<<<< HEAD
 	    dev->chip_id == CHIP_ID_EM28178 ||
 	    dev->chip_id == CHIP_ID_EM2828X) {
+=======
+	    dev->chip_id == CHIP_ID_EM28178) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Digital only device - don't load any alsa module */
 		dev->int_audio_type = EM28XX_INT_AUDIO_NONE;
 		dev->usb_audio_type = EM28XX_USB_AUDIO_NONE;
@@ -620,6 +624,7 @@ const struct em28xx_led *em28xx_find_led(struct em28xx *dev,
 }
 EXPORT_SYMBOL_GPL(em28xx_find_led);
 
+<<<<<<< HEAD
 void em2828X_decoder_vmux(struct em28xx *dev, unsigned int vin)
 {
 	switch (vin) {
@@ -679,6 +684,8 @@ void em2828X_decoder_vmux(struct em28xx *dev, unsigned int vin)
 }
 EXPORT_SYMBOL_GPL(em2828X_decoder_vmux);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int em28xx_capture_start(struct em28xx *dev, int start)
 {
 	int rc;
@@ -706,16 +713,24 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 			rc = em28xx_write_reg_bits(dev,
 						   EM2874_R5F_TS_ENABLE,
 						   start ? EM2874_TS1_CAPTURE_ENABLE : 0x00,
+<<<<<<< HEAD
 						   EM2874_TS1_CAPTURE_ENABLE |
 						   EM2874_TS1_FILTER_ENABLE |
 						   EM2874_TS1_NULL_DISCARD);
+=======
+						   EM2874_TS1_CAPTURE_ENABLE | EM2874_TS1_FILTER_ENABLE | EM2874_TS1_NULL_DISCARD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			rc = em28xx_write_reg_bits(dev,
 						   EM2874_R5F_TS_ENABLE,
 						   start ? EM2874_TS2_CAPTURE_ENABLE : 0x00,
+<<<<<<< HEAD
 						   EM2874_TS2_CAPTURE_ENABLE |
 						   EM2874_TS2_FILTER_ENABLE |
 						   EM2874_TS2_NULL_DISCARD);
+=======
+						   EM2874_TS2_CAPTURE_ENABLE | EM2874_TS2_FILTER_ENABLE | EM2874_TS2_NULL_DISCARD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/* FIXME: which is the best order? */
 		/* video registers are sampled by VREF */
@@ -728,6 +743,7 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 			if (dev->is_webcam)
 				rc = em28xx_write_reg(dev, 0x13, 0x0c);
 
+<<<<<<< HEAD
 			if (dev->mode == EM28XX_ANALOG_MODE) {
 				/* Enable video capture */
 				rc = em28xx_write_reg(dev, 0x48, 0x00);
@@ -776,11 +792,27 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 				rc = em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x37);
 			}
 
+=======
+			/* Enable video capture */
+			rc = em28xx_write_reg(dev, 0x48, 0x00);
+			if (rc < 0)
+				return rc;
+
+			if (dev->mode == EM28XX_ANALOG_MODE)
+				rc = em28xx_write_reg(dev,
+						      EM28XX_R12_VINENABLE,
+						      0x67);
+			else
+				rc = em28xx_write_reg(dev,
+						      EM28XX_R12_VINENABLE,
+						      0x37);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (rc < 0)
 				return rc;
 
 			usleep_range(10000, 11000);
 		} else {
+<<<<<<< HEAD
 			if (dev->mode == EM28XX_DIGITAL_MODE && dev->chip_id == CHIP_ID_EM2828X) {
 				/* The Transport Stream Enable Register moved in em2874 */
 				if (dev->dvb_xfer_bulk) {
@@ -815,6 +847,10 @@ int em28xx_capture_start(struct em28xx *dev, int start)
 				/* disable video capture */
 				rc = em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x27);
 			}
+=======
+			/* disable video capture */
+			rc = em28xx_write_reg(dev, EM28XX_R12_VINENABLE, 0x27);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

@@ -30,8 +30,14 @@
 #include <linux/pagemap.h>
 #include <linux/pci.h>
 #include <linux/dma-buf.h>
+<<<<<<< HEAD
 #include <linux/dma-fence-unwrap.h>
+<<<<<<< HEAD
 #include <linux/uaccess.h>
+=======
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 
 #include <drm/amdgpu_drm.h>
 #include <drm/drm_drv.h>
@@ -108,7 +114,10 @@ amdgpu_gem_update_timeline_node(struct drm_file *filp,
 	*chain = dma_fence_chain_alloc();
 	if (!*chain) {
 		drm_syncobj_put(*syncobj);
+<<<<<<< HEAD
 		*syncobj = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 	}
 
@@ -261,6 +270,7 @@ static int amdgpu_gem_object_open(struct drm_gem_object *obj,
 
 	amdgpu_vm_bo_update_shared(abo);
 	bo_va = amdgpu_vm_bo_find(vm, abo);
+<<<<<<< HEAD
 	if (!bo_va) {
 		bo_va = amdgpu_vm_bo_add(adev, vm, abo);
 		r = amdgpu_evf_mgr_attach_fence(&fpriv->evf_mgr, abo);
@@ -270,6 +280,20 @@ static int amdgpu_gem_object_open(struct drm_gem_object *obj,
 		++bo_va->ref_count;
 	}
 
+=======
+	if (!bo_va)
+		bo_va = amdgpu_vm_bo_add(adev, vm, abo);
+	else
+		++bo_va->ref_count;
+
+	/* attach gfx eviction fence */
+	r = amdgpu_eviction_fence_attach(&fpriv->evf_mgr, abo);
+	if (r) {
+		DRM_DEBUG_DRIVER("Failed to attach eviction fence to BO\n");
+		amdgpu_bo_unreserve(abo);
+		return r;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_exec_fini(&exec);
 
 	/* Validate and add eviction fence to DMABuf imports with dynamic
@@ -337,7 +361,11 @@ static void amdgpu_gem_object_close(struct drm_gem_object *obj,
 	}
 
 	if (!amdgpu_vm_is_bo_always_valid(vm, bo))
+<<<<<<< HEAD
 		amdgpu_evf_mgr_detach_fence(&fpriv->evf_mgr, bo);
+=======
+		amdgpu_eviction_fence_detach(&fpriv->evf_mgr, bo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bo_va = amdgpu_vm_bo_find(vm, bo);
 	if (!bo_va || --bo_va->ref_count)
@@ -747,10 +775,18 @@ amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 	struct dma_fence *fence;
 	int r = 0;
 
+<<<<<<< HEAD
 	/* If the VM is not ready return only a stub. */
 	if (!amdgpu_vm_ready(vm))
 		return dma_fence_get_stub();
 
+=======
+	/* Always start from the VM's existing last update fence. */
+	fence = dma_fence_get(vm->last_update);
+
+	if (!amdgpu_vm_ready(vm))
+		return fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * First clean up any freed mappings in the VM.
@@ -759,7 +795,11 @@ amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 	 * schedules GPU work. If nothing needs clearing, @fence can remain as
 	 * the original vm->last_update.
 	 */
+<<<<<<< HEAD
 	r = amdgpu_vm_clear_freed(adev, vm, &vm->last_update);
+=======
+	r = amdgpu_vm_clear_freed(adev, vm, &fence);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (r)
 		goto error;
 
@@ -776,6 +816,7 @@ amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 	if (r)
 		goto error;
 
+<<<<<<< HEAD
 	if ((operation == AMDGPU_VA_OP_MAP ||
 	     operation == AMDGPU_VA_OP_REPLACE) &&
 	    !amdgpu_vm_is_bo_always_valid(vm, bo_va->base.bo)) {
@@ -798,12 +839,53 @@ amdgpu_gem_va_update_vm(struct amdgpu_device *adev,
 	}
 
 	return fence;
+=======
+	/*
+	 * Decide which fence best represents the last update:
+	 *
+	 * MAP/REPLACE:
+	 *   - For always-valid mappings, use vm->last_update.
+	 *   - Otherwise, export bo_va->last_pt_update.
+	 *
+	 * UNMAP/CLEAR:
+	 *   Keep the fence returned by amdgpu_vm_clear_freed(). If no work was
+	 *   needed, it can remain as vm->last_pt_update.
+	 *
+	 * The VM and BO update fences are always initialized to a valid value.
+	 * vm->last_update and bo_va->last_pt_update always start as valid fences.
+	 * and are never expected to be NULL.
+	 */
+	switch (operation) {
+	case AMDGPU_VA_OP_MAP:
+	case AMDGPU_VA_OP_REPLACE:
+		/*
+		 * For MAP/REPLACE, return the page table update fence for the
+		 * mapping we just modified. bo_va is expected to be valid here.
+		 */
+		dma_fence_put(fence);
+
+		if (amdgpu_vm_is_bo_always_valid(vm, bo_va->base.bo))
+			fence = dma_fence_get(vm->last_update);
+		else
+			fence = dma_fence_get(bo_va->last_pt_update);
+		break;
+	case AMDGPU_VA_OP_UNMAP:
+	case AMDGPU_VA_OP_CLEAR:
+	default:
+		/* keep @fence as returned by amdgpu_vm_clear_freed() */
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 error:
 	if (r && r != -ERESTARTSYS)
 		DRM_ERROR("Couldn't update BO_VA (%d)\n", r);
 
+<<<<<<< HEAD
 	return dma_fence_get(vm->last_update);
+=======
+	return fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
@@ -824,6 +906,10 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 	struct amdgpu_bo_va *bo_va;
 	struct drm_syncobj *timeline_syncobj = NULL;
 	struct dma_fence_chain *timeline_chain = NULL;
+<<<<<<< HEAD
+=======
+	struct dma_fence *fence;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_exec exec;
 	uint64_t vm_size, tmp;
 	int r = 0;
@@ -875,10 +961,13 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (args->flags & AMDGPU_VM_DELAY_UPDATE &&
 	    args->vm_timeline_syncobj_out)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if ((args->operation != AMDGPU_VA_OP_CLEAR) &&
 	    !(args->flags & AMDGPU_VM_PAGE_PRT)) {
 		gobj = drm_gem_object_lookup(filp, args->handle);
@@ -968,6 +1057,7 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 	 * that represents the last relevant update for this mapping. This
 	 * fence can then be exported to the user-visible VM timeline.
 	 */
+<<<<<<< HEAD
 	if (!r && !(args->flags & AMDGPU_VM_DELAY_UPDATE) &&
 	    (!adev->debug_vm || timeline_syncobj)) {
 		struct dma_fence *fence;
@@ -975,6 +1065,13 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 		fence = amdgpu_gem_va_update_vm(adev, &fpriv->vm, bo_va,
 						args->operation);
 		if (timeline_syncobj) {
+=======
+	if (!r && !(args->flags & AMDGPU_VM_DELAY_UPDATE) && !adev->debug_vm) {
+		fence = amdgpu_gem_va_update_vm(adev, &fpriv->vm, bo_va,
+						args->operation);
+
+		if (timeline_syncobj && fence) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!args->vm_timeline_point) {
 				/* Replace the existing fence when no point is given. */
 				drm_syncobj_replace_fence(timeline_syncobj,
@@ -985,7 +1082,10 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 						      timeline_chain,
 						      fence,
 						      args->vm_timeline_point);
+<<<<<<< HEAD
 				timeline_chain = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 		dma_fence_put(fence);
@@ -993,9 +1093,12 @@ int amdgpu_gem_va_ioctl(struct drm_device *dev, void *data,
 	}
 
 error:
+<<<<<<< HEAD
 	dma_fence_chain_free(timeline_chain);
 	if (timeline_syncobj)
 		drm_syncobj_put(timeline_syncobj);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	drm_exec_fini(&exec);
 error_put_gobj:
 	drm_gem_object_put(gobj);

@@ -202,10 +202,16 @@ extern void kgdb_call_nmi_hook(void *ignored);
  *
  *	On SMP systems, we need to get the attention of the other CPUs
  *	and get them into a known state.  This should do what is needed
+<<<<<<< HEAD
  *	to get the other CPUs to call kgdb_handle_exception().  Note that
  *	on some arches, the NMI approach is not used for rounding up all
  *	the CPUs.  Normally those architectures can just not implement
  *	this and get the default.
+=======
+ *	to get the other CPUs to call kgdb_wait(). Note that on some arches,
+ *	the NMI approach is not used for rounding up all the CPUs.  Normally
+ *	those architectures can just not implement this and get the default.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *	On non-SMP systems, this is not called.
  */

@@ -25,7 +25,11 @@ struct uffd_reader_args {
 
 struct uffd_desc {
 	int uffd;
+<<<<<<< HEAD
 	u64 num_readers;
+=======
+	uint64_t num_readers;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Holds the write ends of the pipes for killing the readers. */
 	int *pipefds;
 	pthread_t *readers;
@@ -33,8 +37,13 @@ struct uffd_desc {
 };
 
 struct uffd_desc *uffd_setup_demand_paging(int uffd_mode, useconds_t delay,
+<<<<<<< HEAD
 					   void *hva, u64 len,
 					   u64 num_readers,
+=======
+					   void *hva, uint64_t len,
+					   uint64_t num_readers,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   uffd_handler_t handler);
 
 void uffd_stop_demand_paging(struct uffd_desc *uffd);

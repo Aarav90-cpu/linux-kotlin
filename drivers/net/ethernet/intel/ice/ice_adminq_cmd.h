@@ -1252,7 +1252,11 @@ struct ice_aqc_get_link_status_data {
 #define ICE_AQ_LINK_PWR_QSFP_CLASS_3	2
 #define ICE_AQ_LINK_PWR_QSFP_CLASS_4	3
 	__le16 link_speed;
+<<<<<<< HEAD
 #define ICE_AQ_LINK_SPEED_M		GENMASK(11, 0)
+=======
+#define ICE_AQ_LINK_SPEED_M		0x7FF
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ICE_AQ_LINK_SPEED_10MB		BIT(0)
 #define ICE_AQ_LINK_SPEED_100MB		BIT(1)
 #define ICE_AQ_LINK_SPEED_1000MB	BIT(2)

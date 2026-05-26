@@ -200,7 +200,12 @@ static int cpumask_get(char *buf, const struct kernel_param *kp)
 	if (!cpumask_available(idle_injection_cpu_mask))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	return cpumap_print_to_pagebuf(false, buf, idle_injection_cpu_mask);
+=======
+	return bitmap_print_to_pagebuf(false, buf, cpumask_bits(idle_injection_cpu_mask),
+				       nr_cpumask_bits);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct kernel_param_ops cpumask_ops = {

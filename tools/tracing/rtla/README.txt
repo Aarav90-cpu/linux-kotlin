@@ -12,7 +12,10 @@ RTLA depends on the following libraries and tools:
  - libtracefs
  - libtraceevent
  - libcpupower (optional, for --deepest-idle-state)
+<<<<<<< HEAD
  - libcheck (optional, for unit tests)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 For BPF sample collection support, the following extra dependencies are
 required:

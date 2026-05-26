@@ -1599,16 +1599,27 @@ static const struct file_operations line_fileops = {
 #endif
 };
 
+<<<<<<< HEAD
 DEFINE_FREE(linereq_free, struct linereq *, if (!IS_ERR_OR_NULL(_T)) linereq_free(_T))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int linereq_create(struct gpio_device *gdev, void __user *ip)
 {
 	struct gpio_v2_line_request ulr;
 	struct gpio_v2_line_config *lc;
+<<<<<<< HEAD
 	struct linereq *lr __free(linereq_free) = NULL;
 	u64 flags, edflags;
 	unsigned int i;
 	int ret;
+=======
+	struct linereq *lr;
+	struct file *file;
+	u64 flags, edflags;
+	unsigned int i;
+	int fd, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (copy_from_user(&ulr, ip, sizeof(ulr)))
 		return -EFAULT;
@@ -1641,8 +1652,15 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 		/* label is only initialized if consumer is set */
 		lr->label = kstrndup(ulr.consumer, sizeof(ulr.consumer) - 1,
 				     GFP_KERNEL);
+<<<<<<< HEAD
 		if (!lr->label)
 			return -ENOMEM;
+=======
+		if (!lr->label) {
+			ret = -ENOMEM;
+			goto out_free_linereq;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_init(&lr->config_mutex);
@@ -1661,12 +1679,23 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 		u32 offset = ulr.offsets[i];
 		struct gpio_desc *desc = gpio_device_get_desc(gdev, offset);
 
+<<<<<<< HEAD
 		if (IS_ERR(desc))
 			return PTR_ERR(desc);
 
 		ret = gpiod_request_user(desc, lr->label);
 		if (ret)
 			return ret;
+=======
+		if (IS_ERR(desc)) {
+			ret = PTR_ERR(desc);
+			goto out_free_linereq;
+		}
+
+		ret = gpiod_request_user(desc, lr->label);
+		if (ret)
+			goto out_free_linereq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		lr->lines[i].desc = desc;
 		flags = gpio_v2_line_config_flags(lc, i);
@@ -1674,7 +1703,11 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 
 		ret = gpiod_set_transitory(desc, false);
 		if (ret < 0)
+<<<<<<< HEAD
 			return ret;
+=======
+			goto out_free_linereq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		edflags = flags & GPIO_V2_LINE_EDGE_DETECTOR_FLAGS;
 		/*
@@ -1686,16 +1719,28 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 
 			ret = gpiod_direction_output_nonotify(desc, val);
 			if (ret)
+<<<<<<< HEAD
 				return ret;
 		} else if (flags & GPIO_V2_LINE_FLAG_INPUT) {
 			ret = gpiod_direction_input_nonotify(desc);
 			if (ret)
 				return ret;
+=======
+				goto out_free_linereq;
+		} else if (flags & GPIO_V2_LINE_FLAG_INPUT) {
+			ret = gpiod_direction_input_nonotify(desc);
+			if (ret)
+				goto out_free_linereq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			ret = edge_detector_setup(&lr->lines[i], lc, i,
 						  edflags);
 			if (ret)
+<<<<<<< HEAD
 				return ret;
+=======
+				goto out_free_linereq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		lr->lines[i].edflags = edflags;
@@ -1710,6 +1755,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 	ret = blocking_notifier_chain_register(&gdev->device_notifier,
 					       &lr->device_unregistered_nb);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
@@ -1729,6 +1775,46 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
 		ulr.num_lines);
 
 	return 0;
+=======
+		goto out_free_linereq;
+
+	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+	if (fd < 0) {
+		ret = fd;
+		goto out_free_linereq;
+	}
+
+	file = anon_inode_getfile("gpio-line", &line_fileops, lr,
+				  O_RDONLY | O_CLOEXEC);
+	if (IS_ERR(file)) {
+		ret = PTR_ERR(file);
+		goto out_put_unused_fd;
+	}
+
+	ulr.fd = fd;
+	if (copy_to_user(ip, &ulr, sizeof(ulr))) {
+		/*
+		 * fput() will trigger the release() callback, so do not go onto
+		 * the regular error cleanup path here.
+		 */
+		fput(file);
+		put_unused_fd(fd);
+		return -EFAULT;
+	}
+
+	fd_install(fd, file);
+
+	dev_dbg(&gdev->dev, "registered chardev handle for %d lines\n",
+		lr->num_lines);
+
+	return 0;
+
+out_put_unused_fd:
+	put_unused_fd(fd);
+out_free_linereq:
+	linereq_free(lr);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_GPIO_CDEV_V1
@@ -2001,6 +2087,7 @@ static irqreturn_t lineevent_irq_handler(int irq, void *p)
 	return IRQ_WAKE_THREAD;
 }
 
+<<<<<<< HEAD
 DEFINE_FREE(lineevent_free, struct lineevent_state *, if (!IS_ERR_OR_NULL(_T)) lineevent_free(_T))
 
 static int lineevent_create(struct gpio_device *gdev, void __user *ip)
@@ -2011,6 +2098,18 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 	u32 offset;
 	u32 lflags;
 	u32 eflags;
+=======
+static int lineevent_create(struct gpio_device *gdev, void __user *ip)
+{
+	struct gpioevent_request eventreq;
+	struct lineevent_state *le;
+	struct gpio_desc *desc;
+	struct file *file;
+	u32 offset;
+	u32 lflags;
+	u32 eflags;
+	int fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int irq, irqflags = 0;
 	char *label;
@@ -2055,13 +2154,24 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 		le->label = kstrndup(eventreq.consumer_label,
 				     sizeof(eventreq.consumer_label) - 1,
 				     GFP_KERNEL);
+<<<<<<< HEAD
 		if (!le->label)
 			return -ENOMEM;
+=======
+		if (!le->label) {
+			ret = -ENOMEM;
+			goto out_free_le;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = gpiod_request_user(desc, le->label);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out_free_le;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	le->desc = desc;
 	le->eflags = eflags;
 
@@ -2069,13 +2179,24 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 
 	ret = gpiod_direction_input(desc);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out_free_le;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gpiod_line_state_notify(desc, GPIO_V2_LINE_CHANGED_REQUESTED);
 
 	irq = gpiod_to_irq(desc);
+<<<<<<< HEAD
 	if (irq <= 0)
 		return -ENODEV;
+=======
+	if (irq <= 0) {
+		ret = -ENODEV;
+		goto out_free_le;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (eflags & GPIOEVENT_REQUEST_RISING_EDGE)
 		irqflags |= test_bit(GPIOD_FLAG_ACTIVE_LOW, &desc->flags) ?
@@ -2092,11 +2213,21 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 	ret = blocking_notifier_chain_register(&gdev->device_notifier,
 					       &le->device_unregistered_nb);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	label = make_irq_label(le->label);
 	if (IS_ERR(label))
 		return PTR_ERR(label);
+=======
+		goto out_free_le;
+
+	label = make_irq_label(le->label);
+	if (IS_ERR(label)) {
+		ret = PTR_ERR(label);
+		goto out_free_le;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Request a thread to read the events */
 	ret = request_threaded_irq(irq,
@@ -2107,11 +2238,16 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 				   le);
 	if (ret) {
 		free_irq_label(label);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out_free_le;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	le->irq = irq;
 
+<<<<<<< HEAD
 	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
 		   anon_inode_getfile("gpio-event", &lineevent_fileops, le,
 				      O_RDONLY | O_CLOEXEC));
@@ -2126,6 +2262,43 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 	fd_publish(fdf);
 
 	return 0;
+=======
+	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+	if (fd < 0) {
+		ret = fd;
+		goto out_free_le;
+	}
+
+	file = anon_inode_getfile("gpio-event",
+				  &lineevent_fileops,
+				  le,
+				  O_RDONLY | O_CLOEXEC);
+	if (IS_ERR(file)) {
+		ret = PTR_ERR(file);
+		goto out_put_unused_fd;
+	}
+
+	eventreq.fd = fd;
+	if (copy_to_user(ip, &eventreq, sizeof(eventreq))) {
+		/*
+		 * fput() will trigger the release() callback, so do not go onto
+		 * the regular error cleanup path here.
+		 */
+		fput(file);
+		put_unused_fd(fd);
+		return -EFAULT;
+	}
+
+	fd_install(fd, file);
+
+	return 0;
+
+out_put_unused_fd:
+	put_unused_fd(fd);
+out_free_le:
+	lineevent_free(le);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gpio_v2_line_info_to_v1(struct gpio_v2_line_info *info_v2,
@@ -2653,6 +2826,15 @@ static int gpio_chrdev_open(struct inode *inode, struct file *file)
 	struct gpio_chardev_data *cdev;
 	int ret = -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	guard(srcu)(&gdev->srcu);
+
+	/* Fail on open if the backing gpiochip is gone */
+	if (!rcu_access_pointer(gdev->chip))
+		return -ENODEV;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cdev = kzalloc(sizeof(*cdev), GFP_KERNEL);
 	if (!cdev)
 		return -ENOMEM;
@@ -2740,9 +2922,15 @@ static const struct file_operations gpio_fileops = {
 #endif
 };
 
+<<<<<<< HEAD
 int gpiolib_cdev_register(struct gpio_chip *gc, dev_t devt)
 {
 	struct gpio_device *gdev = gc->gpiodev;
+=======
+int gpiolib_cdev_register(struct gpio_device *gdev, dev_t devt)
+{
+	struct gpio_chip *gc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	cdev_init(&gdev->chrdev, &gpio_fileops);
@@ -2760,6 +2948,17 @@ int gpiolib_cdev_register(struct gpio_chip *gc, dev_t devt)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	guard(srcu)(&gdev->srcu);
+	gc = srcu_dereference(gdev->chip, &gdev->srcu);
+	if (!gc) {
+		cdev_device_del(&gdev->chrdev, &gdev->dev);
+		destroy_workqueue(gdev->line_state_wq);
+		return -ENODEV;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpiochip_dbg(gc, "added GPIO chardev (%d:%d)\n", MAJOR(devt), gdev->id);
 
 	return 0;

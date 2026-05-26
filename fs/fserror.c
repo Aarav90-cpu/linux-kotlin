@@ -176,7 +176,11 @@ lost_event:
 lost:
 	if (inode)
 		pr_err_ratelimited(
+<<<<<<< HEAD
  "%s: lost file I/O error report for ino %llu type %u pos 0x%llx len 0x%llx error %d",
+=======
+ "%s: lost file I/O error report for ino %lu type %u pos 0x%llx len 0x%llx error %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       sb->s_id, inode->i_ino, type, pos, len, error);
 	else
 		pr_err_ratelimited(

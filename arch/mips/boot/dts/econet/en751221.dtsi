@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 /dts-v1/;
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/econet,en751221-scu.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 / {
 	compatible = "econet,en751221";
 	#address-cells = <1>;
@@ -32,6 +35,7 @@
 		#interrupt-cells = <1>;
 	};
 
+<<<<<<< HEAD
 	chip_scu: syscon@1fa20000 {
 		compatible = "econet,en751221-chip-scu", "syscon";
 		reg = <0x1fa20000 0x388>;
@@ -56,6 +60,8 @@
 		#reset-cells = <1>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intc: interrupt-controller@1fb40000 {
 		compatible = "econet,en751221-intc";
 		reg = <0x1fb40000 0x100>;
@@ -67,6 +73,7 @@
 		econet,shadow-interrupts = <7 2>, <8 3>, <13 12>, <30 29>;
 	};
 
+<<<<<<< HEAD
 	pciecfg: pciecfg@1fb80000 {
 		compatible = "mediatek,generic-pciecfg", "syscon";
 		reg = <0x1fb80000 0x1000>;
@@ -155,6 +162,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uart: serial@1fbf0000 {
 		compatible = "ns16550";
 		reg = <0x1fbf0000 0x30>;

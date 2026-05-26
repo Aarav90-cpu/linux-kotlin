@@ -27,6 +27,7 @@ properties:
     enum:
       - adi,ad4080
       - adi,ad4081
+<<<<<<< HEAD
       - adi,ad4082
       - adi,ad4083
       - adi,ad4084
@@ -34,6 +35,12 @@ properties:
       - adi,ad4086
       - adi,ad4087
       - adi,ad4088
+=======
+      - adi,ad4083
+      - adi,ad4084
+      - adi,ad4086
+      - adi,ad4087
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

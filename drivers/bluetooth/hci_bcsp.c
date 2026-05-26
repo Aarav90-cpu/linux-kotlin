@@ -585,9 +585,12 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
 	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
 		return -EUNATCH;
 
+<<<<<<< HEAD
 	if (!bcsp)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
 	       hu, count, bcsp->rx_state, bcsp->rx_count);
 

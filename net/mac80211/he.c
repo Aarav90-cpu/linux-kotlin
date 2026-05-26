@@ -108,6 +108,7 @@ static void ieee80211_he_mcs_intersection(__le16 *he_own_rx, __le16 *he_peer_rx,
 }
 
 void
+<<<<<<< HEAD
 _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 				   const struct ieee80211_sta_he_cap *own_he_cap_ptr,
 				   const u8 *he_cap_ie, u8 he_cap_len,
@@ -115,6 +116,16 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 				   struct link_sta_info *link_sta)
 {
 	struct ieee80211_sta_he_cap *he_cap = &link_sta->pub->he_cap;
+=======
+ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+				  struct ieee80211_supported_band *sband,
+				  const u8 *he_cap_ie, u8 he_cap_len,
+				  const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
+				  struct link_sta_info *link_sta)
+{
+	struct ieee80211_sta_he_cap *he_cap = &link_sta->pub->he_cap;
+	const struct ieee80211_sta_he_cap *own_he_cap_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_sta_he_cap own_he_cap;
 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
 	u8 he_ppe_size;
@@ -124,11 +135,20 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 
 	memset(he_cap, 0, sizeof(*he_cap));
 
+<<<<<<< HEAD
 	if (!he_cap_ie || !own_he_cap_ptr || !own_he_cap_ptr->has_he)
 		return;
 
 	/* NDI station are using the capabilities from the NMI station */
 	if (WARN_ON_ONCE(sdata->vif.type == NL80211_IFTYPE_NAN_DATA))
+=======
+	if (!he_cap_ie)
+		return;
+
+	own_he_cap_ptr =
+		ieee80211_get_he_iftype_cap_vif(sband, &sdata->vif);
+	if (!own_he_cap_ptr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	own_he_cap = *own_he_cap_ptr;
@@ -160,10 +180,16 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 	he_cap->has_he = true;
 
 	link_sta->cur_max_bandwidth = ieee80211_sta_cap_rx_bw(link_sta);
+<<<<<<< HEAD
 	if (sdata->vif.type != NL80211_IFTYPE_NAN)
 		link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
 
 	if (he_6ghz_capa)
+=======
+	link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
+
+	if (sband->band == NL80211_BAND_6GHZ && he_6ghz_capa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, link_sta);
 
 	ieee80211_he_mcs_intersection(&own_he_cap.he_mcs_nss_supp.rx_mcs_80,
@@ -207,6 +233,7 @@ _ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 }
 
 void
+<<<<<<< HEAD
 ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 				  struct ieee80211_supported_band *sband,
 				  const u8 *he_cap_ie, u8 he_cap_len,
@@ -224,6 +251,8 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
 }
 
 void
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ieee80211_he_op_ie_to_bss_conf(struct ieee80211_vif *vif,
 			const struct ieee80211_he_operation *he_op_ie)
 {

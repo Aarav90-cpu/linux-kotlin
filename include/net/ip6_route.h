@@ -77,6 +77,7 @@ static inline bool rt6_qualify_for_ecmp(const struct fib6_info *f6i)
 		f6i->fib6_nh->fib_nh_gw_family;
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 void ip6_route_input(struct sk_buff *skb);
 #else
@@ -85,6 +86,9 @@ static inline void ip6_route_input(struct sk_buff *skb)
 }
 #endif
 
+=======
+void ip6_route_input(struct sk_buff *skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dst_entry *ip6_route_input_lookup(struct net *net,
 					 struct net_device *dev,
 					 struct flowi6 *fl6,
@@ -126,6 +130,7 @@ int ipv6_route_ioctl(struct net *net, unsigned int cmd,
 int ip6_route_add(struct fib6_config *cfg, gfp_t gfp_flags,
 		  struct netlink_ext_ack *extack);
 int ip6_ins_rt(struct net *net, struct fib6_info *f6i);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 int ip6_del_rt(struct net *net, struct fib6_info *f6i, bool skip_notify);
 #else
@@ -135,6 +140,9 @@ static inline int ip6_del_rt(struct net *net, struct fib6_info *f6i,
 	return -EAFNOSUPPORT;
 }
 #endif
+=======
+int ip6_del_rt(struct net *net, struct fib6_info *f6i, bool skip_notify);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void rt6_flush_exceptions(struct fib6_info *f6i);
 void rt6_age_exceptions(struct fib6_info *f6i, struct fib6_gc_args *gc_args,
@@ -267,6 +275,7 @@ static inline bool ipv6_unicast_destination(const struct sk_buff *skb)
 	return rt->rt6i_flags & RTF_LOCAL;
 }
 
+<<<<<<< HEAD
 static inline bool __ipv6_anycast_destination(const struct rt6key *rt6i_dst,
 					      u32 rt6i_flags,
 					      const struct in6_addr *daddr)
@@ -277,11 +286,14 @@ static inline bool __ipv6_anycast_destination(const struct rt6key *rt6i_dst,
 	       ipv6_addr_equal(&rt6i_dst->addr, daddr));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool ipv6_anycast_destination(const struct dst_entry *dst,
 					    const struct in6_addr *daddr)
 {
 	const struct rt6_info *rt = dst_rt6_info(dst);
 
+<<<<<<< HEAD
 	return __ipv6_anycast_destination(&rt->rt6i_dst, rt->rt6i_flags, daddr);
 }
 
@@ -298,6 +310,16 @@ static inline int ip6_fragment(struct net *net, struct sock *sk,
 	return -EAFNOSUPPORT;
 }
 #endif
+=======
+	return rt->rt6i_flags & RTF_ANYCAST ||
+		(rt->rt6i_dst.plen < 127 &&
+		 !(rt->rt6i_flags & (RTF_GATEWAY | RTF_NONEXTHOP)) &&
+		 ipv6_addr_equal(&rt->rt6i_dst.addr, daddr));
+}
+
+int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+		 int (*output)(struct net *, struct sock *, struct sk_buff *));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Variant of dst_mtu() for IPv6 users */
 static inline u32 dst6_mtu(const struct dst_entry *dst)

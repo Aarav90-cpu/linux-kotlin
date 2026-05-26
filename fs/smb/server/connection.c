@@ -79,6 +79,7 @@ static int create_proc_clients(void) { return 0; }
 static void delete_proc_clients(void) {}
 #endif
 
+<<<<<<< HEAD
 static struct workqueue_struct *ksmbd_conn_wq;
 
 int ksmbd_conn_wq_init(void)
@@ -158,6 +159,8 @@ void ksmbd_conn_put(struct ksmbd_conn *conn)
 		queue_work(ksmbd_conn_wq, &conn->release_work);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * ksmbd_conn_free() - free resources of the connection instance
  *
@@ -172,6 +175,7 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
 	hash_del(&conn->hlist);
 	up_write(&conn_list_lock);
 
+<<<<<<< HEAD
 	/*
 	 * request_buf / preauth_info / mechToken are only ever accessed by the
 	 * connection handler thread that owns @conn.  ksmbd_conn_free() is
@@ -180,11 +184,20 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
 	 * ksmbd_conn_put() below is not the final putter (oplock / ksmbd_file
 	 * holders only retain the conn pointer, not these per-thread buffers).
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xa_destroy(&conn->sessions);
 	kvfree(conn->request_buf);
 	kfree(conn->preauth_info);
 	kfree(conn->mechToken);
+<<<<<<< HEAD
 	ksmbd_conn_put(conn);
+=======
+	if (atomic_dec_and_test(&conn->refcnt)) {
+		conn->transport->ops->free_transport(conn->transport);
+		kfree(conn);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -211,7 +224,10 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
 		conn->um = ERR_PTR(-EOPNOTSUPP);
 	if (IS_ERR(conn->um))
 		conn->um = NULL;
+<<<<<<< HEAD
 	INIT_WORK(&conn->release_work, __ksmbd_conn_release_work);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	atomic_set(&conn->req_running, 0);
 	atomic_set(&conn->r_count, 0);
 	atomic_set(&conn->refcnt, 1);
@@ -460,6 +476,12 @@ int ksmbd_conn_handler_loop(void *p)
 	mutex_init(&conn->srv_mutex);
 	__module_get(THIS_MODULE);
 
+<<<<<<< HEAD
+=======
+	if (t->ops->prepare && t->ops->prepare(t))
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	max_req = server_conf.max_inflight_req;
 	conn->last_active = jiffies;
 	set_freezable();
@@ -551,6 +573,10 @@ recheck:
 		}
 	}
 
+<<<<<<< HEAD
+=======
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ksmbd_conn_set_releasing(conn);
 	/* Wait till all reference dropped to the Server object*/
 	ksmbd_debug(CONN, "Wait for all pending requests(%d)\n", atomic_read(&conn->r_count));
@@ -588,7 +614,12 @@ void ksmbd_conn_r_count_dec(struct ksmbd_conn *conn)
 	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
 		wake_up(&conn->r_count_q);
 
+<<<<<<< HEAD
 	ksmbd_conn_put(conn);
+=======
+	if (atomic_dec_and_test(&conn->refcnt))
+		kfree(conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int ksmbd_conn_transport_init(void)
@@ -675,5 +706,9 @@ void ksmbd_conn_transport_destroy(void)
 	ksmbd_tcp_destroy();
 	ksmbd_rdma_stop_listening();
 	stop_sessions();
+<<<<<<< HEAD
+=======
+	ksmbd_rdma_destroy();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&init_lock);
 }

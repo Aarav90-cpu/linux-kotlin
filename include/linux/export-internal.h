@@ -37,14 +37,22 @@
  * section flag requires it. Use '%progbits' instead of '@progbits' since the
  * former apparently works on all arches according to the binutils source.
  */
+<<<<<<< HEAD
 #define __KSYMTAB(name, sym, ns)						\
+=======
+#define __KSYMTAB(name, sym, sec, ns)						\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	asm("	.section \"__ksymtab_strings\",\"aMS\",%progbits,1"	"\n"	\
 	    "__kstrtab_" #name ":"					"\n"	\
 	    "	.asciz \"" #name "\""					"\n"	\
 	    "__kstrtabns_" #name ":"					"\n"	\
 	    "	.asciz \"" ns "\""					"\n"	\
 	    "	.previous"						"\n"	\
+<<<<<<< HEAD
 	    "	.section \"___ksymtab+" #name "\", \"a\""		"\n"	\
+=======
+	    "	.section \"___ksymtab" sec "+" #name "\", \"a\""	"\n"	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__KSYM_ALIGN						"\n"	\
 	    "__ksymtab_" #name ":"					"\n"	\
 		__KSYM_REF(sym)						"\n"	\
@@ -59,6 +67,7 @@
 #define KSYM_FUNC(name)		name
 #endif
 
+<<<<<<< HEAD
 #define KSYMTAB_FUNC(name, ns)	__KSYMTAB(name, KSYM_FUNC(name), ns)
 #define KSYMTAB_DATA(name, ns)	__KSYMTAB(name, name, ns)
 
@@ -76,5 +85,16 @@
 	    "	.byte " #flags					"\n"	\
 	    "	.previous"					"\n"	\
 	)
+=======
+#define KSYMTAB_FUNC(name, sec, ns)	__KSYMTAB(name, KSYM_FUNC(name), sec, ns)
+#define KSYMTAB_DATA(name, sec, ns)	__KSYMTAB(name, name, sec, ns)
+
+#define SYMBOL_CRC(sym, crc, sec)   \
+	asm(".section \"___kcrctab" sec "+" #sym "\",\"a\""	"\n" \
+	    ".balign 4"						"\n" \
+	    "__crc_" #sym ":"					"\n" \
+	    ".long " #crc					"\n" \
+	    ".previous"						"\n")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __LINUX_EXPORT_INTERNAL_H__ */

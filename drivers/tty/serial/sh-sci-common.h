@@ -9,7 +9,10 @@
 enum SCI_PORT_TYPE {
 	RSCI_PORT_SCIF16 = BIT(7) | 0,
 	RSCI_PORT_SCIF32 = BIT(7) | 1,
+<<<<<<< HEAD
 	RSCI_PORT_SCIF32_SINGLE_TCLK = BIT(7) | 2,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum SCI_CLKS {

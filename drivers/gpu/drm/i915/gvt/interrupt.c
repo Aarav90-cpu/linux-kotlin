@@ -32,7 +32,10 @@
 #include <linux/eventfd.h>
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_gmd_interrupt_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "display/intel_display_regs.h"
 

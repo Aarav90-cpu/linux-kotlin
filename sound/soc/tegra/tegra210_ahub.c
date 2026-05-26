@@ -20,7 +20,10 @@ static int tegra_ahub_get_value_enum(struct snd_kcontrol *kctl,
 	struct snd_soc_component *cmpnt = snd_soc_dapm_kcontrol_to_component(kctl);
 	struct tegra_ahub *ahub = snd_soc_component_get_drvdata(cmpnt);
 	struct soc_enum *e = (struct soc_enum *)kctl->private_value;
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int reg, i, bit_pos = 0;
 
 	/*
@@ -36,7 +39,11 @@ static int tegra_ahub_get_value_enum(struct snd_kcontrol *kctl,
 
 		if (reg_val) {
 			bit_pos = ffs(reg_val) +
+<<<<<<< HEAD
 				  (8 * val_bytes * i);
+=======
+				  (8 * cmpnt->val_bytes * i);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 	}
@@ -60,7 +67,10 @@ static int tegra_ahub_put_value_enum(struct snd_kcontrol *kctl,
 	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_to_dapm(kctl);
 	struct soc_enum *e = (struct soc_enum *)kctl->private_value;
 	struct snd_soc_dapm_update update[TEGRA_XBAR_UPDATE_MAX_REG] = { };
+<<<<<<< HEAD
 	int val_bytes = snd_soc_component_regmap_val_bytes(cmpnt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int *item = uctl->value.enumerated.item;
 	unsigned int value = e->values[item[0]];
 	unsigned int i, bit_pos, reg_idx = 0, reg_val = 0;
@@ -71,8 +81,13 @@ static int tegra_ahub_put_value_enum(struct snd_kcontrol *kctl,
 
 	if (value) {
 		/* Get the register index and value to set */
+<<<<<<< HEAD
 		reg_idx = (value - 1) / (8 * val_bytes);
 		bit_pos = (value - 1) % (8 * val_bytes);
+=======
+		reg_idx = (value - 1) / (8 * cmpnt->val_bytes);
+		bit_pos = (value - 1) % (8 * cmpnt->val_bytes);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg_val = BIT(bit_pos);
 	}
 
@@ -2267,9 +2282,16 @@ static int tegra_ahub_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ahub);
 
 	ahub->clk = devm_clk_get(&pdev->dev, "ahub");
+<<<<<<< HEAD
 	if (IS_ERR(ahub->clk))
 		return dev_err_probe(&pdev->dev, PTR_ERR(ahub->clk),
 				     "can't retrieve AHUB clock\n");
+=======
+	if (IS_ERR(ahub->clk)) {
+		dev_err(&pdev->dev, "can't retrieve AHUB clock\n");
+		return PTR_ERR(ahub->clk);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regs = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(regs))
@@ -2277,9 +2299,16 @@ static int tegra_ahub_probe(struct platform_device *pdev)
 
 	ahub->regmap = devm_regmap_init_mmio(&pdev->dev, regs,
 					     ahub->soc_data->regmap_config);
+<<<<<<< HEAD
 	if (IS_ERR(ahub->regmap))
 		return dev_err_probe(&pdev->dev, PTR_ERR(ahub->regmap),
 				     "regmap init failed\n");
+=======
+	if (IS_ERR(ahub->regmap)) {
+		dev_err(&pdev->dev, "regmap init failed\n");
+		return PTR_ERR(ahub->regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(ahub->regmap, true);
 
@@ -2287,17 +2316,29 @@ static int tegra_ahub_probe(struct platform_device *pdev)
 					      ahub->soc_data->cmpnt_drv,
 					      ahub->soc_data->dai_drv,
 					      ahub->soc_data->num_dais);
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(&pdev->dev, err,
 				     "can't register AHUB component\n");
+=======
+	if (err) {
+		dev_err(&pdev->dev, "can't register AHUB component, err: %d\n",
+			err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_enable(&pdev->dev);
 
 	err = of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->dev);
 	if (err) {
 		pm_runtime_disable(&pdev->dev);
+<<<<<<< HEAD
 		return dev_err_probe(&pdev->dev, err,
 				     "failed to populate child nodes\n");
+=======
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;

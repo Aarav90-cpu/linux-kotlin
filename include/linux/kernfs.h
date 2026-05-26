@@ -100,6 +100,11 @@ enum kernfs_node_type {
 
 #define KERNFS_TYPE_MASK		0x000f
 #define KERNFS_FLAG_MASK		~KERNFS_TYPE_MASK
+<<<<<<< HEAD
+=======
+#define KERNFS_MAX_USER_XATTRS		128
+#define KERNFS_USER_XATTR_SIZE_LIMIT	(128 << 10)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum kernfs_node_flag {
 	KERNFS_ACTIVATED	= 0x0010,

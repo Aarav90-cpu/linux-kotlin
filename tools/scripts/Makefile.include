@@ -56,8 +56,11 @@ ifneq ($(filter %/,$(LLVM)),)
 LLVM_PREFIX := $(LLVM)
 else ifneq ($(filter -%,$(LLVM)),)
 LLVM_SUFFIX := $(LLVM)
+<<<<<<< HEAD
 else ifneq ($(LLVM),1)
 $(error Invalid value for LLVM, see Documentation/kbuild/llvm.rst)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 
 $(call allow-override,CC,$(LLVM_PREFIX)clang$(LLVM_SUFFIX))

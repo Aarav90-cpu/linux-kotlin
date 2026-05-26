@@ -15,8 +15,11 @@ struct pv_info {
 #ifdef CONFIG_PARAVIRT_XXL
 	u16 extra_user_64bit_cs;  /* __USER_CS if none */
 #endif
+<<<<<<< HEAD
 	bool io_delay;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *name;
 };
 
@@ -28,10 +31,13 @@ u64 _paravirt_ident_64(u64);
 #endif
 #define paravirt_nop	((void *)nop_func)
 
+<<<<<<< HEAD
 #ifdef CONFIG_PARAVIRT
 #define call_io_delay() pv_info.io_delay
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_PARAVIRT_SPINLOCKS
 void paravirt_set_cap(void);
 #else

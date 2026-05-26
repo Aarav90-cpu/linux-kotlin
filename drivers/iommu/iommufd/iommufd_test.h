@@ -36,6 +36,10 @@ enum {
 enum {
 	MOCK_IOMMUPT_DEFAULT = 0,
 	MOCK_IOMMUPT_HUGE,
+<<<<<<< HEAD
+=======
+	MOCK_IOMMUPT_AMDV1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* These values are true for MOCK_IOMMUPT_DEFAULT */

@@ -110,6 +110,10 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_7_1[] = {
 
 static void sdma_v7_1_set_ring_funcs(struct amdgpu_device *adev);
 static void sdma_v7_1_set_buffer_funcs(struct amdgpu_device *adev);
+<<<<<<< HEAD
+=======
+static void sdma_v7_1_set_vm_pte_funcs(struct amdgpu_device *adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdma_v7_1_set_irq_funcs(struct amdgpu_device *adev);
 static int sdma_v7_1_inst_start(struct amdgpu_device *adev,
 				uint32_t inst_mask);
@@ -1129,6 +1133,7 @@ static void sdma_v7_1_vm_set_pte_pde(struct amdgpu_ib *ib,
 	/* for physically contiguous pages (vram) */
 	u32 header = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_PTEPDE);
 
+<<<<<<< HEAD
 	/* TODO:
 	 * When VM_L2_CNTL5.WALKER_FETCH_PDE_MTYPE_ENABLE is enabled, change below MTYPE
 	 * to RW for AID A1 and UC for AID A0. NC needs additional GCR flush and need not
@@ -1144,6 +1149,14 @@ static void sdma_v7_1_vm_set_pte_pde(struct amdgpu_ib *ib,
 	 * use MTYPE_UC (0x3). For ref. MTYPE_RW=0x2 MTYPE_NC=0x0
 	 */
 	header |= SDMA_PKT_PTEPDE_COPY_HEADER_MTYPE(0x3) | SDMA_PKT_PTEPDE_COPY_HEADER_SNOOP(0x1);
+=======
+	if (amdgpu_mtype_local)
+		header |= SDMA_PKT_PTEPDE_COPY_HEADER_MTYPE(0x3);
+	else
+		header |= (SDMA_PKT_PTEPDE_COPY_HEADER_MTYPE(0x2) |
+			   SDMA_PKT_PTEPDE_COPY_HEADER_SNOOP(0x1) |
+			   SDMA_PKT_PTEPDE_COPY_HEADER_SCOPE(0x3));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ib->ptr[ib->length_dw++] = header;
 	ib->ptr[ib->length_dw++] = lower_32_bits(pe); /* dst addr */
@@ -1256,6 +1269,7 @@ static void sdma_v7_1_ring_emit_reg_write_reg_wait(struct amdgpu_ring *ring,
 	amdgpu_ring_emit_reg_wait(ring, reg1, mask, mask);
 }
 
+<<<<<<< HEAD
 static const struct amdgpu_vm_pte_funcs sdma_v7_1_vm_pte_funcs = {
 	.copy_pte_num_dw = 8,
 	.copy_pte = sdma_v7_1_vm_copy_pte,
@@ -1263,11 +1277,14 @@ static const struct amdgpu_vm_pte_funcs sdma_v7_1_vm_pte_funcs = {
 	.set_pte_pde = sdma_v7_1_vm_set_pte_pde,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sdma_v7_1_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
 	int r;
 
+<<<<<<< HEAD
 	switch (amdgpu_user_queue) {
 	case -1:
 	default:
@@ -1280,6 +1297,8 @@ static int sdma_v7_1_early_init(struct amdgpu_ip_block *ip_block)
 		break;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	r = amdgpu_sdma_init_microcode(adev, 0, true);
 	if (r) {
 		DRM_ERROR("Failed to init sdma firmware!\n");
@@ -1288,7 +1307,11 @@ static int sdma_v7_1_early_init(struct amdgpu_ip_block *ip_block)
 
 	sdma_v7_1_set_ring_funcs(adev);
 	sdma_v7_1_set_buffer_funcs(adev);
+<<<<<<< HEAD
 	amdgpu_sdma_set_vm_pte_scheds(adev, &sdma_v7_1_vm_pte_funcs);
+=======
+	sdma_v7_1_set_vm_pte_funcs(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdma_v7_1_set_irq_funcs(adev);
 	sdma_v7_1_set_mqd_funcs(adev);
 
@@ -1766,10 +1789,17 @@ static void sdma_v7_1_emit_fill_buffer(struct amdgpu_ib *ib,
 }
 
 static const struct amdgpu_buffer_funcs sdma_v7_1_buffer_funcs = {
+<<<<<<< HEAD
 	.copy_max_bytes = 1 << 30,
 	.copy_num_dw = 8,
 	.emit_copy_buffer = sdma_v7_1_emit_copy_buffer,
 	.fill_max_bytes = 1 << 30,
+=======
+	.copy_max_bytes = 0x400000,
+	.copy_num_dw = 8,
+	.emit_copy_buffer = sdma_v7_1_emit_copy_buffer,
+	.fill_max_bytes = 0x400000,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.fill_num_dw = 5,
 	.emit_fill_buffer = sdma_v7_1_emit_fill_buffer,
 };
@@ -1780,6 +1810,28 @@ static void sdma_v7_1_set_buffer_funcs(struct amdgpu_device *adev)
 	adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].ring;
 }
 
+<<<<<<< HEAD
+=======
+static const struct amdgpu_vm_pte_funcs sdma_v7_1_vm_pte_funcs = {
+	.copy_pte_num_dw = 8,
+	.copy_pte = sdma_v7_1_vm_copy_pte,
+	.write_pte = sdma_v7_1_vm_write_pte,
+	.set_pte_pde = sdma_v7_1_vm_set_pte_pde,
+};
+
+static void sdma_v7_1_set_vm_pte_funcs(struct amdgpu_device *adev)
+{
+	unsigned i;
+
+	adev->vm_manager.vm_pte_funcs = &sdma_v7_1_vm_pte_funcs;
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		adev->vm_manager.vm_pte_scheds[i] =
+			&adev->sdma.instance[i].ring.sched;
+	}
+	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct amdgpu_ip_block_version sdma_v7_1_ip_block = {
 	.type = AMD_IP_BLOCK_TYPE_SDMA,
 	.major = 7,

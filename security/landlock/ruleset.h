@@ -224,7 +224,11 @@ static inline void landlock_get_ruleset(struct landlock_ruleset *const ruleset)
  *
  * @domain: Landlock ruleset (used as a domain)
  *
+<<<<<<< HEAD
  * Return: An access_masks result of the OR of all the domain's access masks.
+=======
+ * Returns: an access_masks result of the OR of all the domain's access masks.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline struct access_masks
 landlock_union_access_masks(const struct landlock_ruleset *const domain)

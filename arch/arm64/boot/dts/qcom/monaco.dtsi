@@ -3,7 +3,10 @@
  * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
+<<<<<<< HEAD
 #include <dt-bindings/clock/qcom,dsi-phy-28nm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/clock/qcom,qcs8300-gcc.h>
 #include <dt-bindings/clock/qcom,rpmh.h>
 #include <dt-bindings/clock/qcom,sa8775p-camcc.h>
@@ -21,7 +24,10 @@
 #include <dt-bindings/power/qcom-rpmpd.h>
 #include <dt-bindings/soc/qcom,gpr.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
+<<<<<<< HEAD
 #include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/thermal/thermal.h>
 
 / {
@@ -2241,10 +2247,13 @@
 			reg = <0x0 0x016c0000 0x0 0x17080>;
 			#interconnect-cells = <2>;
 			qcom,bcm-voters = <&apps_bcm_voter>;
+<<<<<<< HEAD
 			clocks = <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
 				 <&gcc GCC_AGGRE_NOC_QUPV3_AXI_CLK>,
 				 <&gcc GCC_AGGRE_USB2_PRIM_AXI_CLK>,
 				 <&gcc GCC_AGGRE_USB3_PRIM_AXI_CLK>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		aggre2_noc: interconnect@1700000 {
@@ -2252,7 +2261,10 @@
 			reg = <0x0 0x01700000 0x0 0x1a080>;
 			#interconnect-cells = <2>;
 			qcom,bcm-voters = <&apps_bcm_voter>;
+<<<<<<< HEAD
 			clocks = <&rpmhcc RPMH_IPA_CLK>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		pcie_anoc: interconnect@1760000 {
@@ -2878,6 +2890,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		lpass_tlmm: pinctrl@3440000 {
 			compatible = "qcom,qcs8300-lpass-lpi-pinctrl", "qcom,sm8450-lpass-lpi-pinctrl";
 			reg = <0x0 0x03440000 0x0 0x20000>,
@@ -2947,6 +2960,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lpass_ag_noc: interconnect@3c40000 {
 			compatible = "qcom,qcs8300-lpass-ag-noc";
 			reg = <0x0 0x03c40000 0x0 0x17200>;
@@ -4821,6 +4836,7 @@
 			interconnect-names = "sdhc-ddr",
 					     "cpu-sdhc";
 
+<<<<<<< HEAD
 			pinctrl-names = "default", "sleep";
 			pinctrl-0 = <&sdc1_state_on>;
 			pinctrl-1 = <&sdc1_state_off>;
@@ -4836,6 +4852,13 @@
 			mmc-hs400-1_8v;
 			mmc-hs400-enhanced-strobe;
 
+=======
+			qcom,dll-config = <0x000f64ee>;
+			qcom,ddr-config = <0x80040868>;
+			supports-cqe;
+			dma-coherent;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			status = "disabled";
 
 			sdhc1_opp_table: opp-table {
@@ -5194,7 +5217,10 @@
 			reg = <0x0 0x9100000 0x0 0xf7080>;
 			#interconnect-cells = <2>;
 			qcom,bcm-voters = <&apps_bcm_voter>;
+<<<<<<< HEAD
 			clocks = <&gcc GCC_DDRSS_GPU_AXI_CLK>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		llcc: system-cache-controller@9200000 {
@@ -5263,6 +5289,7 @@
 			snps,dis_u2_susphy_quirk;
 			snps,dis_u3_susphy_quirk;
 
+<<<<<<< HEAD
 			usb-role-switch;
 			wakeup-source;
 
@@ -5286,6 +5313,11 @@
 					};
 				};
 			};
+=======
+			wakeup-source;
+
+			status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		usb_2: usb@a400000 {
@@ -5344,6 +5376,7 @@
 			qcom,select-utmi-as-pipe-clk;
 			wakeup-source;
 
+<<<<<<< HEAD
 			usb-role-switch;
 
 			status = "disabled";
@@ -5352,6 +5385,9 @@
 				usb_2_dwc3_hs: endpoint {
 				};
 			};
+=======
+			status = "disabled";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		iris: video-codec@aa00000 {
@@ -5407,19 +5443,31 @@
 
 				opp-444000000 {
 					opp-hz = /bits/ 64 <444000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_svs_l1>,
+=======
+					required-opps = <&rpmhpd_opp_nom>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_nom>;
 				};
 
 				opp-533000000 {
 					opp-hz = /bits/ 64 <533000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo>;
 				};
 
 				opp-560000000 {
 					opp-hz = /bits/ 64 <560000000>;
+<<<<<<< HEAD
 					required-opps = <&rpmhpd_opp_nom>,
+=======
+					required-opps = <&rpmhpd_opp_turbo_l1>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							<&rpmhpd_opp_turbo_l1>;
 				};
 			};
@@ -5438,6 +5486,7 @@
 			#power-domain-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		cci0: cci@ac13000 {
 			compatible = "qcom,qcs8300-cci", "qcom,msm8996-cci";
 			reg = <0x0 0x0ac13000 0x0 0x1000>;
@@ -5549,6 +5598,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		camss: isp@ac78000 {
 			compatible = "qcom,qcs8300-camss";
 
@@ -5803,6 +5854,7 @@
 						reg = <0>;
 
 						dpu_intf0_out: endpoint {
+<<<<<<< HEAD
 
 							remote-endpoint = <&mdss_dp0_in>;
 						};
@@ -5816,6 +5868,11 @@
 							remote-endpoint = <&mdss_dsi0_in>;
 						};
 					};
+=======
+							remote-endpoint = <&mdss_dp0_in>;
+						};
+					};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				mdp_opp_table: opp-table {
@@ -5843,6 +5900,7 @@
 				};
 			};
 
+<<<<<<< HEAD
 			mdss_dsi0: dsi@ae94000 {
 				compatible = "qcom,qcs8300-dsi-ctrl",
 					     "qcom,sa8775p-dsi-ctrl",
@@ -5935,6 +5993,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mdss_dp0_phy: phy@aec2a00 {
 				compatible = "qcom,qcs8300-edp-phy", "qcom,sa8775p-edp-phy";
 
@@ -6029,8 +6089,13 @@
 				dp_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6062,9 +6127,13 @@
 				 <&mdss_dp0_phy 0>,
 				 <&mdss_dp0_phy 1>,
 				 <0>, <0>,
+<<<<<<< HEAD
 				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
 				 <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>,
 				 <0>, <0>;
+=======
+				 <0>, <0>, <0>, <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&rpmhpd RPMHPD_MMCX>;
 			#clock-cells = <1>;
 			#reset-cells = <1>;
@@ -6210,6 +6279,7 @@
 			#interrupt-cells = <2>;
 			wakeup-parent = <&pdc>;
 
+<<<<<<< HEAD
 			cam0_default: cam0-default-state {
 				pins = "gpio67";
 				function = "cam_mclk";
@@ -6429,6 +6499,8 @@
 				bias-disable;
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			hs0_mi2s_active: hs0-mi2s-active-state {
 				pins = "gpio106", "gpio107", "gpio108", "gpio109";
 				function = "hs0_mi2s";
@@ -7745,6 +7817,7 @@
 							 <&apps_smmu 0x1964 0x0400>;
 						dma-coherent;
 					};
+<<<<<<< HEAD
 
 					compute-cb@5 {
 						compatible = "qcom,fastrpc-compute-cb";
@@ -7794,6 +7867,8 @@
 						iommus = <&apps_smmu 0x19cc 0x000>;
 						dma-coherent;
 					};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 			};
 		};
@@ -8309,9 +8384,16 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

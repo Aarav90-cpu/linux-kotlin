@@ -518,7 +518,10 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
 
 struct hugetlbfs_inode_info {
 	struct inode vfs_inode;
+<<<<<<< HEAD
 	struct resv_map *resv_map;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int seals;
 };
 
@@ -778,6 +781,13 @@ static inline unsigned long huge_page_size(const struct hstate *h)
 	return (unsigned long)PAGE_SIZE << h->order;
 }
 
+<<<<<<< HEAD
+=======
+extern unsigned long vma_kernel_pagesize(struct vm_area_struct *vma);
+
+extern unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned long huge_page_mask(struct hstate *h)
 {
 	return h->mask;
@@ -1191,6 +1201,19 @@ static inline unsigned long huge_page_mask(struct hstate *h)
 	return PAGE_MASK;
 }
 
+<<<<<<< HEAD
+=======
+static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+{
+	return PAGE_SIZE;
+}
+
+static inline unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+{
+	return PAGE_SIZE;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int huge_page_order(struct hstate *h)
 {
 	return 0;

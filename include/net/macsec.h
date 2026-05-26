@@ -9,7 +9,10 @@
 
 #include <linux/u64_stats_sync.h>
 #include <linux/if_vlan.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <uapi/linux/if_link.h>
 #include <uapi/linux/if_macsec.h>
 
@@ -124,7 +127,10 @@ struct macsec_dev_stats {
  * @key: key structure
  * @ssci: short secure channel identifier
  * @stats: per-SA stats
+<<<<<<< HEAD
  * @destroy_work: deferred work to free the SA in process context after RCU grace period
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct macsec_rx_sa {
 	struct macsec_key key;
@@ -138,7 +144,11 @@ struct macsec_rx_sa {
 	bool active;
 	struct macsec_rx_sa_stats __percpu *stats;
 	struct macsec_rx_sc *sc;
+<<<<<<< HEAD
 	struct rcu_work destroy_work;
+=======
+	struct rcu_head rcu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct pcpu_rx_sc_stats {
@@ -176,7 +186,10 @@ struct macsec_rx_sc {
  * @key: key structure
  * @ssci: short secure channel identifier
  * @stats: per-SA stats
+<<<<<<< HEAD
  * @destroy_work: deferred work to free the SA in process context after RCU grace period
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct macsec_tx_sa {
 	struct macsec_key key;
@@ -189,7 +202,11 @@ struct macsec_tx_sa {
 	refcount_t refcnt;
 	bool active;
 	struct macsec_tx_sa_stats __percpu *stats;
+<<<<<<< HEAD
 	struct rcu_work destroy_work;
+=======
+	struct rcu_head rcu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

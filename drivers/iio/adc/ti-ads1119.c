@@ -741,7 +741,12 @@ static int ads1119_probe(struct i2c_client *client)
 		ret = devm_request_irq(dev, client->irq, ads1119_irq_handler,
 				       IRQF_NO_THREAD, "ads1119", indio_dev);
 		if (ret)
+<<<<<<< HEAD
 			return ret;
+=======
+			return dev_err_probe(dev, ret,
+					     "Failed to allocate irq\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
 						  indio_dev->name,

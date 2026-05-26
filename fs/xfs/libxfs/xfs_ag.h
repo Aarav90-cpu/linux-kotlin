@@ -85,6 +85,11 @@ struct xfs_perag {
 	int		pag_ici_reclaimable;	/* reclaimable inodes */
 	unsigned long	pag_ici_reclaim_cursor;	/* reclaim restart point */
 
+<<<<<<< HEAD
+=======
+	struct xfs_buf_cache	pag_bcache;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* background prealloc block trimming */
 	struct delayed_work	pag_blockgc_work;
 #endif /* __KERNEL__ */

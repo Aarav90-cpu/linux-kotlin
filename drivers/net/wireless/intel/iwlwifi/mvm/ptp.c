@@ -304,9 +304,13 @@ void iwl_mvm_ptp_init(struct iwl_mvm *mvm)
 		IWL_ERR(mvm, "Failed to register PHC clock (%ld)\n",
 			PTR_ERR(mvm->ptp_data.ptp_clock));
 		mvm->ptp_data.ptp_clock = NULL;
+<<<<<<< HEAD
 	} else if (!mvm->ptp_data.ptp_clock) {
 		IWL_DEBUG_INFO(mvm, "PTP module unavailable on this kernel\n");
 	} else {
+=======
+	} else if (mvm->ptp_data.ptp_clock) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		IWL_DEBUG_INFO(mvm, "Registered PHC clock: %s, with index: %d\n",
 			       mvm->ptp_data.ptp_clock_info.name,
 			       ptp_clock_index(mvm->ptp_data.ptp_clock));

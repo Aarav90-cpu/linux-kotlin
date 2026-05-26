@@ -25,8 +25,13 @@ struct mt7996_mcu_rxd {
 };
 
 struct mt7996_mcu_uni_event {
+<<<<<<< HEAD
 	__le16 cid;
 	u8 __rsv[2];
+=======
+	u8 cid;
+	u8 __rsv[3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le32 status; /* 0: success, others: fail */
 } __packed;
 
@@ -52,10 +57,19 @@ struct mt7996_mcu_thermal_enable {
 	u8 rsv[2];
 } __packed;
 
+<<<<<<< HEAD
 struct mt7996_mcu_countdown_notify {
 	u8 omac_idx;
 	u8 count;
 	u8 csa_failure_reason; /* 0: success, 1: beacon disabled */
+=======
+struct mt7996_mcu_csa_notify {
+	struct mt7996_mcu_rxd rxd;
+
+	u8 omac_idx;
+	u8 csa_count;
+	u8 band_idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 rsv;
 } __packed;
 
@@ -145,7 +159,11 @@ struct mt7996_mcu_background_chain_ctrl {
 	u8 rsv[2];
 } __packed;
 
+<<<<<<< HEAD
 struct mt7996_mcu_eeprom_update {
+=======
+struct mt7996_mcu_eeprom {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 _rsv[4];
 
 	__le16 tag;
@@ -155,6 +173,7 @@ struct mt7996_mcu_eeprom_update {
 	__le16 buf_len;
 } __packed;
 
+<<<<<<< HEAD
 union eeprom_data {
 	struct {
 		__le32 data_len;
@@ -192,6 +211,8 @@ struct mt7996_mcu_eeprom_access_event {
 	union eeprom_data eeprom;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mt7996_mcu_phy_rx_info {
 	u8 category;
 	u8 rate;
@@ -449,6 +470,7 @@ struct bss_bcn_cntdwn_tlv {
 	__le16 tag;
 	__le16 len;
 	u8 cnt;
+<<<<<<< HEAD
 	union {
 		struct {
 			bool static_pp;
@@ -459,6 +481,9 @@ struct bss_bcn_cntdwn_tlv {
 		} cca;
 	};
 	u8 rsv;
+=======
+	u8 rsv[3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 struct bss_bcn_mbss_tlv {
@@ -518,6 +543,7 @@ struct bss_mld_tlv {
 	u8 __rsv[2];
 } __packed;
 
+<<<<<<< HEAD
 struct bss_prot_tlv {
 	__le16 tag;
 	__le16 len;
@@ -536,6 +562,8 @@ struct bss_mld_link_op_tlv {
 	u8 rsv[2];
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sta_rec_ht_uni {
 	__le16 tag;
 	__le16 len;
@@ -709,6 +737,7 @@ struct mld_setup_link {
 	u8 __rsv;
 } __packed;
 
+<<<<<<< HEAD
 struct mld_req_hdr {
 	u8 ver;
 	u8 mld_addr[ETH_ALEN];
@@ -731,6 +760,8 @@ enum {
 	UNI_CMD_MLD_RECONF_STOP_LINK = 0x04,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct hdr_trans_en {
 	__le16 tag;
 	__le16 len;
@@ -875,11 +906,14 @@ enum {
 	UNI_CHANNEL_RX_PATH,
 };
 
+<<<<<<< HEAD
 enum {
 	UNI_CHIP_CONFIG_NIC_CAPA = 3,
 	UNI_CHIP_CONFIG_DUP_WTBL = 4,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MT7996_BSS_UPDATE_MAX_SIZE	(sizeof(struct bss_req_hdr) +		\
 					 sizeof(struct mt76_connac_bss_basic_tlv) +	\
 					 sizeof(struct bss_rlm_tlv) +		\
@@ -926,7 +960,10 @@ enum {
 enum {
 	UNI_BAND_CONFIG_RADIO_ENABLE,
 	UNI_BAND_CONFIG_RTS_THRESHOLD = 0x08,
+<<<<<<< HEAD
 	UNI_BAND_CONFIG_MAC_ENABLE_CTRL = 0x0c,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum {
@@ -947,10 +984,13 @@ enum {
 };
 
 enum {
+<<<<<<< HEAD
 	UNI_EXT_EEPROM_ACCESS = 1,
 };
 
 enum {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	UNI_VOW_DRR_CTRL,
 	UNI_VOW_RX_AT_AIRTIME_EN = 0x0b,
 	UNI_VOW_RX_AT_AIRTIME_CLR_EN = 0x0e,

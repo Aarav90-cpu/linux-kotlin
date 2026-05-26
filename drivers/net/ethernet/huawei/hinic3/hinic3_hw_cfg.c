@@ -17,6 +17,7 @@ static void hinic3_parse_pub_res_cap(struct hinic3_hwdev *hwdev,
 {
 	cap->port_id = dev_cap->port_id;
 	cap->supp_svcs_bitmap = dev_cap->svc_cap_en;
+<<<<<<< HEAD
 
 	cap->cos_valid_bitmap = dev_cap->valid_cos_bitmap;
 	cap->port_cos_valid_bitmap = dev_cap->port_cos_valid_bitmap;
@@ -28,6 +29,8 @@ static void hinic3_parse_pub_res_cap(struct hinic3_hwdev *hwdev,
 
 	dev_dbg(hwdev->dev, "Port_id: 0x%x, cos_bitmap: 0x%x, Max_vf: 0x%x\n",
 		cap->port_id, cap->cos_valid_bitmap, cap->max_vf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
@@ -39,6 +42,7 @@ static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
 
 	nic_svc_cap->max_sqs = min(dev_cap->nic_max_sq_id + 1,
 				   HINIC3_CFG_MAX_QP);
+<<<<<<< HEAD
 
 	nic_svc_cap->max_rqs = min(dev_cap->nic_max_rq_id + 1,
 				   HINIC3_CFG_MAX_QP);
@@ -46,6 +50,8 @@ static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
 
 	dev_dbg(hwdev->dev, "L2nic resource capability, max_sqs: 0x%x, max_rqs: 0x%x\n",
 		nic_svc_cap->max_sqs, nic_svc_cap->max_rqs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
@@ -62,8 +68,13 @@ static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
 		hinic3_parse_l2nic_res_cap(hwdev, cap, dev_cap, type);
 }
 
+<<<<<<< HEAD
 static int hinic3_get_cap_from_fw(struct hinic3_hwdev *hwdev,
 				  enum hinic3_func_type type)
+=======
+static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
+			   enum hinic3_func_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mgmt_msg_params msg_params = {};
 	struct cfg_cmd_dev_cap dev_cap = {};
@@ -87,6 +98,7 @@ static int hinic3_get_cap_from_fw(struct hinic3_hwdev *hwdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hinic3_get_dev_cap(struct hinic3_hwdev *hwdev)
 {
 	enum hinic3_func_type type = HINIC3_FUNC_TYPE(hwdev);
@@ -110,6 +122,8 @@ static int hinic3_get_dev_cap(struct hinic3_hwdev *hwdev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hinic3_init_irq_info(struct hinic3_hwdev *hwdev)
 {
 	struct hinic3_cfg_mgmt_info *cfg_mgmt = hwdev->cfg_mgmt;
@@ -256,7 +270,11 @@ void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id)
 
 int hinic3_init_capability(struct hinic3_hwdev *hwdev)
 {
+<<<<<<< HEAD
 	return hinic3_get_dev_cap(hwdev);
+=======
+	return get_cap_from_fw(hwdev, HINIC3_FUNC_TYPE_VF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool hinic3_support_nic(struct hinic3_hwdev *hwdev)

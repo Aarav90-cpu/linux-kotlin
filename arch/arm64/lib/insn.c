@@ -338,8 +338,11 @@ u32 aarch64_insn_gen_cond_branch_imm(unsigned long pc, unsigned long addr,
 	long offset;
 
 	offset = label_imm_common(pc, addr, SZ_1M);
+<<<<<<< HEAD
 	if (offset >= SZ_1M)
 		return AARCH64_BREAK_FAULT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	insn = aarch64_insn_get_bcond_value();
 

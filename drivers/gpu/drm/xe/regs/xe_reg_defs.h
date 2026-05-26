@@ -6,13 +6,21 @@
 #ifndef _XE_REG_DEFS_H_
 #define _XE_REG_DEFS_H_
 
+<<<<<<< HEAD
 #include <drm/intel/pick.h>
 #include <drm/intel/reg_bits.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/build_bug.h>
 #include <linux/log2.h>
 #include <linux/sizes.h>
 
+<<<<<<< HEAD
+=======
+#include "compat-i915-headers/i915_reg_defs.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * XE_REG_ADDR_MAX - The upper limit on MMIO register address
  *

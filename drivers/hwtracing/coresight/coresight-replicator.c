@@ -24,6 +24,11 @@
 #define REPLICATOR_IDFILTER0		0x000
 #define REPLICATOR_IDFILTER1		0x004
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct replicator_drvdata - specifics associated to a replicator component
  * @base:	memory mapped base address for this component. Also indicates
@@ -228,7 +233,11 @@ static int replicator_probe(struct device *dev, struct resource *res)
 		dev_warn_once(dev,
 			      "Uses OBSOLETE CoreSight replicator binding\n");
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("replicator", dev);
+=======
+	desc.name = coresight_alloc_device_name(&replicator_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 

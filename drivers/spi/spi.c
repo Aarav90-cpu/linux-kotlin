@@ -91,6 +91,7 @@ static ssize_t driver_override_show(struct device *dev,
 }
 static DEVICE_ATTR_RW(driver_override);
 
+<<<<<<< HEAD
 static struct spi_statistics __percpu *spi_alloc_pcpu_stats(void)
 {
 	struct spi_statistics __percpu *pcpu_stats;
@@ -107,6 +108,27 @@ static struct spi_statistics __percpu *spi_alloc_pcpu_stats(void)
 		u64_stats_init(&stat->syncp);
 	}
 
+=======
+static struct spi_statistics __percpu *spi_alloc_pcpu_stats(struct device *dev)
+{
+	struct spi_statistics __percpu *pcpu_stats;
+
+	if (dev)
+		pcpu_stats = devm_alloc_percpu(dev, struct spi_statistics);
+	else
+		pcpu_stats = alloc_percpu_gfp(struct spi_statistics, GFP_KERNEL);
+
+	if (pcpu_stats) {
+		int cpu;
+
+		for_each_possible_cpu(cpu) {
+			struct spi_statistics *stat;
+
+			stat = per_cpu_ptr(pcpu_stats, cpu);
+			u64_stats_init(&stat->syncp);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return pcpu_stats;
 }
 
@@ -568,7 +590,11 @@ struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	spi->pcpu_statistics = spi_alloc_pcpu_stats();
+=======
+	spi->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!spi->pcpu_statistics) {
 		kfree(spi);
 		spi_controller_put(ctlr);
@@ -635,6 +661,7 @@ static inline int spi_dev_check_cs(struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct spi_dev_check_info {
 	struct spi_device *new_spi;
 	struct spi_device *parent;	/* set for ancillary devices */
@@ -655,6 +682,14 @@ static int spi_dev_check(struct device *dev, void *data)
 	if (info->parent && spi == info->parent)
 		return 0;
 
+=======
+static int spi_dev_check(struct device *dev, void *data)
+{
+	struct spi_device *spi = to_spi_device(dev);
+	struct spi_device *new_spi = data;
+	int status, idx;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (spi->controller == new_spi->controller) {
 		for (idx = 0; idx < spi->num_chipselect; idx++) {
 			status = spi_dev_check_cs(dev, spi, idx, new_spi, 0);
@@ -671,11 +706,18 @@ static void spi_cleanup(struct spi_device *spi)
 		spi->controller->cleanup(spi);
 }
 
+<<<<<<< HEAD
 static int __spi_add_device(struct spi_device *spi, struct spi_device *parent)
 {
 	struct spi_controller *ctlr = spi->controller;
 	struct device *dev = ctlr->dev.parent;
 	struct spi_dev_check_info check_info;
+=======
+static int __spi_add_device(struct spi_device *spi)
+{
+	struct spi_controller *ctlr = spi->controller;
+	struct device *dev = ctlr->dev.parent;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int status, idx;
 	u8 cs;
 
@@ -719,9 +761,13 @@ static int __spi_add_device(struct spi_device *spi, struct spi_device *parent)
 	 * chipselect **BEFORE** we call setup(), else we'll trash
 	 * its configuration.
 	 */
+<<<<<<< HEAD
 	check_info.new_spi = spi;
 	check_info.parent = parent;
 	status = bus_for_each_dev(&spi_bus_type, NULL, &check_info, spi_dev_check);
+=======
+	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (status)
 		return status;
 
@@ -783,7 +829,11 @@ int spi_add_device(struct spi_device *spi)
 	spi_dev_set_name(spi);
 
 	mutex_lock(&ctlr->add_lock);
+<<<<<<< HEAD
 	status = __spi_add_device(spi, NULL);
+=======
+	status = __spi_add_device(spi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&ctlr->add_lock);
 	return status;
 }
@@ -2726,8 +2776,13 @@ struct spi_device *spi_new_ancillary_device(struct spi_device *spi,
 
 	WARN_ON(!mutex_is_locked(&ctlr->add_lock));
 
+<<<<<<< HEAD
 	/* Register the new device, passing the parent to skip CS conflict check */
 	rc = __spi_add_device(ancillary, spi);
+=======
+	/* Register the new device */
+	rc = __spi_add_device(ancillary);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc) {
 		dev_err(&spi->dev, "failed to register ancillary device\n");
 		goto err_out;
@@ -2741,6 +2796,7 @@ err_out:
 }
 EXPORT_SYMBOL_GPL(spi_new_ancillary_device);
 
+<<<<<<< HEAD
 static void devm_spi_unregister_device(void *spi)
 {
 	spi_unregister_device(spi);
@@ -2781,6 +2837,8 @@ struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi,
 }
 EXPORT_SYMBOL_GPL(devm_spi_new_ancillary_device);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_ACPI
 struct acpi_spi_lookup {
 	struct spi_controller 	*ctlr;
@@ -3245,7 +3303,11 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
 	if (!ctlr)
 		return NULL;
 
+<<<<<<< HEAD
 	ctlr->pcpu_statistics = spi_alloc_pcpu_stats();
+=======
+	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!ctlr->pcpu_statistics) {
 		kfree(ctlr);
 		return NULL;
@@ -3442,8 +3504,13 @@ static int spi_controller_id_alloc(struct spi_controller *ctlr, int start, int e
  * device identification, boards need configuration tables telling which
  * chip is at which address.
  *
+<<<<<<< HEAD
  * This must be called from context that can sleep.
  *
+=======
+ * This must be called from context that can sleep.  It returns zero on
+ * success, else a negative error code (dropping the controller's refcount).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * After a successful return, the caller is responsible for calling
  * spi_unregister_controller().
  *
@@ -3577,8 +3644,12 @@ static void devm_spi_unregister_controller(void *ctlr)
  * Context: can sleep
  *
  * Register a SPI device as with spi_register_controller() which will
+<<<<<<< HEAD
  * automatically be unregistered (and freed unless it has been allocated using
  * devm_spi_alloc_host/target()).
+=======
+ * automatically be unregistered and freed.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: zero on success, else a negative error code.
  */
@@ -3623,8 +3694,12 @@ static int __unregister(struct device *dev, void *null)
  *
  * This must be called from context that can sleep.
  *
+<<<<<<< HEAD
  * Note that this function also drops a reference to the controller unless it
  * has been allocated using devm_spi_alloc_host/target().
+=======
+ * Note that this function also drops a reference to the controller.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 void spi_unregister_controller(struct spi_controller *ctlr)
 {
@@ -4301,7 +4376,16 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
 		 * SPI transfer length should be multiple of SPI word size
 		 * where SPI word size should be power-of-two multiple.
 		 */
+<<<<<<< HEAD
 		w_size = spi_bpw_to_bytes(xfer->bits_per_word);
+=======
+		if (xfer->bits_per_word <= 8)
+			w_size = 1;
+		else if (xfer->bits_per_word <= 16)
+			w_size = 2;
+		else
+			w_size = 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* No partial transfers accepted */
 		if (xfer->len % w_size)

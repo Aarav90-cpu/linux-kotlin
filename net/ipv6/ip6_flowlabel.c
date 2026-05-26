@@ -36,11 +36,19 @@
 /* FL hash table */
 
 #define FL_MAX_PER_SOCK	32
+<<<<<<< HEAD
 #define FL_MAX_SIZE	8192
 #define FL_HASH_MASK	255
 #define FL_HASH(l)	(ntohl(l)&FL_HASH_MASK)
 
 static int fl_size;
+=======
+#define FL_MAX_SIZE	4096
+#define FL_HASH_MASK	255
+#define FL_HASH(l)	(ntohl(l)&FL_HASH_MASK)
+
+static atomic_t fl_size = ATOMIC_INIT(0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct ip6_flowlabel __rcu *fl_ht[FL_HASH_MASK+1];
 
 static void ip6_fl_gc(struct timer_list *unused);
@@ -162,9 +170,14 @@ static void ip6_fl_gc(struct timer_list *unused)
 				ttd = fl->expires;
 				if (time_after_eq(now, ttd)) {
 					*flp = fl->next;
+<<<<<<< HEAD
 					fl_size--;
 					fl->fl_net->ipv6.flowlabel_count--;
 					fl_free(fl);
+=======
+					fl_free(fl);
+					atomic_dec(&fl_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					continue;
 				}
 				if (!sched || time_before(ttd, sched))
@@ -173,7 +186,11 @@ static void ip6_fl_gc(struct timer_list *unused)
 			flp = &fl->next;
 		}
 	}
+<<<<<<< HEAD
 	if (!sched && fl_size)
+=======
+	if (!sched && atomic_read(&fl_size))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sched = now + FL_MAX_LINGER;
 	if (sched) {
 		mod_timer(&ip6_fl_gc_timer, sched);
@@ -197,8 +214,12 @@ static void __net_exit ip6_fl_purge(struct net *net)
 			    atomic_read(&fl->users) == 0) {
 				*flp = fl->next;
 				fl_free(fl);
+<<<<<<< HEAD
 				fl_size--;
 				net->ipv6.flowlabel_count--;
+=======
+				atomic_dec(&fl_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 			}
 			flp = &fl->next;
@@ -212,10 +233,17 @@ static struct ip6_flowlabel *fl_intern(struct net *net,
 {
 	struct ip6_flowlabel *lfl;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&ip6_fl_lock);
 
 	fl->label = label & IPV6_FLOWLABEL_MASK;
 
+=======
+	fl->label = label & IPV6_FLOWLABEL_MASK;
+
+	rcu_read_lock();
+	spin_lock_bh(&ip6_fl_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (label == 0) {
 		for (;;) {
 			fl->label = htonl(get_random_u32())&IPV6_FLOWLABEL_MASK;
@@ -237,6 +265,11 @@ static struct ip6_flowlabel *fl_intern(struct net *net,
 		lfl = __fl_lookup(net, fl->label);
 		if (lfl) {
 			atomic_inc(&lfl->users);
+<<<<<<< HEAD
+=======
+			spin_unlock_bh(&ip6_fl_lock);
+			rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return lfl;
 		}
 	}
@@ -244,8 +277,14 @@ static struct ip6_flowlabel *fl_intern(struct net *net,
 	fl->lastuse = jiffies;
 	fl->next = fl_ht[FL_HASH(fl->label)];
 	rcu_assign_pointer(fl_ht[FL_HASH(fl->label)], fl);
+<<<<<<< HEAD
 	fl_size++;
 	net->ipv6.flowlabel_count++;
+=======
+	atomic_inc(&fl_size);
+	spin_unlock_bh(&ip6_fl_lock);
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return NULL;
 }
 
@@ -463,6 +502,7 @@ done:
 
 static int mem_check(struct sock *sk)
 {
+<<<<<<< HEAD
 	const int unpriv_total_limit = FL_MAX_SIZE - (FL_MAX_SIZE / 4);
 	const int unpriv_user_limit = unpriv_total_limit / 2;
 	struct net *net = sock_net(sk);
@@ -474,6 +514,12 @@ static int mem_check(struct sock *sk)
 
 	room = FL_MAX_SIZE - fl_size;
 
+=======
+	int room = FL_MAX_SIZE - atomic_read(&fl_size);
+	struct ipv6_fl_socklist *sfl;
+	int count = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (room > FL_MAX_SIZE - FL_MAX_PER_SOCK)
 		return 0;
 
@@ -484,9 +530,13 @@ static int mem_check(struct sock *sk)
 
 	if (room <= 0 ||
 	    ((count >= FL_MAX_PER_SOCK ||
+<<<<<<< HEAD
 	      (count > 0 && room < FL_MAX_SIZE / 2) ||
 	      room < FL_MAX_SIZE / 4 ||
 	      net->ipv6.flowlabel_count >= unpriv_user_limit) &&
+=======
+	      (count > 0 && room < FL_MAX_SIZE/2) || room < FL_MAX_SIZE/4) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     !capable(CAP_NET_ADMIN)))
 		return -ENOBUFS;
 
@@ -700,6 +750,7 @@ release:
 	if (!sfl1)
 		goto done;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	spin_lock_bh(&ip6_fl_lock);
 	err = mem_check(sk);
@@ -713,6 +764,13 @@ release:
 	if (err != 0)
 		goto done;
 
+=======
+	err = mem_check(sk);
+	if (err != 0)
+		goto done;
+
+	fl1 = fl_intern(net, fl, freq->flr_label);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fl1)
 		goto recheck;
 

@@ -21,13 +21,17 @@
 		ethernet0 = &ethernet0;
 		i2c1 = &i2c1;
 		serial0 = &uart7;
+<<<<<<< HEAD
 		serial2 = &uart6;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	connector-2 {
 		compatible = "gpio-usb-b-connector", "usb-b-connector";
 		label = "micro-USB";
@@ -47,6 +51,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dmic: audio-codec-0 {
 		compatible = "dmic-codec";
 		#sound-dai-cells = <0>;
@@ -58,6 +64,7 @@
 		#sound-dai-cells = <0>;
 	};
 
+<<<<<<< HEAD
 	dp-connector-0 {
 		compatible = "dp-connector";
 		label = "DP0";
@@ -91,6 +98,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sound {
 		compatible = "qcom,qcs8275-sndcard";
 		model = "MONACO-EVK";
@@ -130,6 +139,7 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	vreg_cam0_2p8: vreg-cam0-2p8 {
 		compatible = "regulator-fixed";
@@ -181,6 +191,8 @@
 		regulator-min-microvolt = <1800000>;
 		regulator-max-microvolt = <1800000>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &apps_rsc {
@@ -422,6 +434,7 @@
 	firmware-name = "qcom/qcs8300/a623_zap.mbn";
 };
 
+<<<<<<< HEAD
 &i2c0 {
 	status = "okay";
 
@@ -461,6 +474,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &i2c1 {
 	pinctrl-0 = <&qup_i2c1_default>;
 	pinctrl-names = "default";
@@ -505,11 +520,14 @@
 		reg = <0x38>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 56 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander0_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander1: gpio@39 {
@@ -517,11 +535,14 @@
 		reg = <0x39>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 16 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander1_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander2: gpio@3a {
@@ -529,11 +550,14 @@
 		reg = <0x3a>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 95 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander2_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander3: gpio@3b {
@@ -541,11 +565,14 @@
 		reg = <0x3b>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 24 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander3_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander4: gpio@3c {
@@ -553,11 +580,14 @@
 		reg = <0x3c>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 96 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander4_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander5: gpio@3d {
@@ -565,11 +595,14 @@
 		reg = <0x3d>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander5_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	expander6: gpio@3e {
@@ -577,11 +610,14 @@
 		reg = <0x3e>;
 		#gpio-cells = <2>;
 		gpio-controller;
+<<<<<<< HEAD
 		#interrupt-cells = <2>;
 		interrupt-controller;
 		interrupts-extended = <&tlmm 52 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&expander6_int>;
 		pinctrl-names = "default";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -589,6 +625,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &mdss {
 	status = "okay";
 };
@@ -613,6 +650,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pcie0 {
 	pinctrl-0 = <&pcie0_default_state>;
 	pinctrl-names = "default";
@@ -651,6 +690,7 @@
 	wake-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
 };
 
+<<<<<<< HEAD
 &pmm8620au_0_gpios {
 	usb2_id: usb2-id-state {
 		pins = "gpio9";
@@ -666,6 +706,8 @@
 	bias-pull-up;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &qupv3_id_0 {
 	firmware-name = "qcom/qcs8300/qupv3fw.elf";
 	status = "okay";
@@ -694,6 +736,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sdhc_1 {
 	vmmc-supply = <&vreg_l8a>;
 	vqmmc-supply = <&vreg_s2s>;
@@ -705,6 +748,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &serdes0 {
 	phy-supply = <&vreg_l4a>;
 
@@ -722,6 +767,10 @@
 };
 
 &tlmm {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pcie0_default_state: pcie0-default-state {
 		wake-pins {
 			pins = "gpio0";
@@ -761,6 +810,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	expander5_int: expander5-int-state {
 		pins = "gpio3";
 		function = "gpio";
@@ -773,6 +823,8 @@
 		bias-pull-up;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qup_i2c1_default: qup-i2c1-state {
 		pins = "gpio19", "gpio20";
 		function = "qup0_se1";
@@ -803,6 +855,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	expander3_int: expander3-int-state {
 		pins = "gpio24";
 		function = "gpio";
@@ -842,12 +895,15 @@
 		bias-disable;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qup_i2c15_default: qup-i2c15-state {
 		pins = "gpio91", "gpio92";
 		function = "qup1_se7";
 		drive-strength = <2>;
 		bias-pull-up;
 	};
+<<<<<<< HEAD
 
 	expander2_int: expander2-int-state {
 		pins = "gpio95";
@@ -864,6 +920,8 @@
 
 &uart6 {
 	status = "okay";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &uart7 {
@@ -907,6 +965,7 @@
 
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &usb_2 {
 	status = "okay";
@@ -923,3 +982,5 @@
 
 	status = "okay";
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -150,9 +150,12 @@
 #define IMX283_REG_PLSTMG02		CCI_REG8(0x36aa)
 #define   IMX283_PLSTMG02_VAL		0x00
 
+<<<<<<< HEAD
 #define IMX283_REG_MIPI_CLK		CCI_REG8(0x3a43)
 #define   IMX283_MIPI_CLK_NONCONTINUOUS	BIT(0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IMX283_REG_EBD_X_OUT_SIZE	CCI_REG16_LE(0x3a54)
 
 /* Test pattern generator */
@@ -569,7 +572,10 @@ struct imx283 {
 	struct v4l2_ctrl *hblank;
 	struct v4l2_ctrl *vflip;
 
+<<<<<<< HEAD
 	bool mipi_clk_noncontinuous;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long link_freq_bitmap;
 
 	u16 hmax;
@@ -993,7 +999,10 @@ static int imx283_set_pad_format(struct v4l2_subdev *sd,
 static int imx283_standby_cancel(struct imx283 *imx283)
 {
 	unsigned int link_freq_idx;
+<<<<<<< HEAD
 	u8 mipi_clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	cci_write(imx283->cci, IMX283_REG_STANDBY,
@@ -1013,10 +1022,13 @@ static int imx283_standby_cancel(struct imx283 *imx283)
 	/* Enable PLL */
 	cci_write(imx283->cci, IMX283_REG_STBPL, IMX283_STBPL_NORMAL, &ret);
 
+<<<<<<< HEAD
 	/* Configure MIPI clock mode */
 	mipi_clk = imx283->mipi_clk_noncontinuous ? IMX283_MIPI_CLK_NONCONTINUOUS : 0;
 	cci_write(imx283->cci, IMX283_REG_MIPI_CLK, mipi_clk, &ret);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Configure the MIPI link speed */
 	link_freq_idx = __ffs(imx283->link_freq_bitmap);
 	cci_multi_reg_write(imx283->cci, link_freq_reglist[link_freq_idx].regs,
@@ -1440,9 +1452,12 @@ static int imx283_parse_endpoint(struct imx283 *imx283)
 		goto done_endpoint_free;
 	}
 
+<<<<<<< HEAD
 	imx283->mipi_clk_noncontinuous =
 		bus_cfg.bus.mipi_csi2.flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = v4l2_link_freq_to_bitmap(imx283->dev, bus_cfg.link_frequencies,
 				       bus_cfg.nr_of_link_frequencies,
 				       link_frequencies, ARRAY_SIZE(link_frequencies),

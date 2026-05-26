@@ -138,15 +138,21 @@ done:
 static int rps_sock_flow_sysctl(const struct ctl_table *table, int write,
 				void *buffer, size_t *lenp, loff_t *ppos)
 {
+<<<<<<< HEAD
 	struct rps_sock_flow_table *o_sock_table, *sock_table;
 	static DEFINE_MUTEX(sock_flow_mutex);
 	rps_tag_ptr o_tag_ptr, tag_ptr;
 	unsigned int orig_size, size;
+=======
+	unsigned int orig_size, size;
+	int ret, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ctl_table tmp = {
 		.data = &size,
 		.maxlen = sizeof(size),
 		.mode = table->mode
 	};
+<<<<<<< HEAD
 	void *tofree = NULL;
 	int ret, i;
 	u8 log;
@@ -208,6 +214,63 @@ unlock:
 	mutex_unlock(&sock_flow_mutex);
 
 	kvfree_rcu_mightsleep(tofree);
+=======
+	struct rps_sock_flow_table *orig_sock_table, *sock_table;
+	static DEFINE_MUTEX(sock_flow_mutex);
+
+	mutex_lock(&sock_flow_mutex);
+
+	orig_sock_table = rcu_dereference_protected(
+					net_hotdata.rps_sock_flow_table,
+					lockdep_is_held(&sock_flow_mutex));
+	size = orig_size = orig_sock_table ? orig_sock_table->mask + 1 : 0;
+
+	ret = proc_dointvec(&tmp, write, buffer, lenp, ppos);
+
+	if (write) {
+		if (size) {
+			if (size > 1<<29) {
+				/* Enforce limit to prevent overflow */
+				mutex_unlock(&sock_flow_mutex);
+				return -EINVAL;
+			}
+			size = roundup_pow_of_two(size);
+			if (size != orig_size) {
+				sock_table =
+				    vmalloc(RPS_SOCK_FLOW_TABLE_SIZE(size));
+				if (!sock_table) {
+					mutex_unlock(&sock_flow_mutex);
+					return -ENOMEM;
+				}
+				net_hotdata.rps_cpu_mask =
+					roundup_pow_of_two(nr_cpu_ids) - 1;
+				sock_table->mask = size - 1;
+			} else
+				sock_table = orig_sock_table;
+
+			for (i = 0; i < size; i++)
+				sock_table->ents[i] = RPS_NO_CPU;
+		} else
+			sock_table = NULL;
+
+		if (sock_table != orig_sock_table) {
+			rcu_assign_pointer(net_hotdata.rps_sock_flow_table,
+					   sock_table);
+			if (sock_table) {
+				static_branch_inc(&rps_needed);
+				static_branch_inc(&rfs_needed);
+			}
+			if (orig_sock_table) {
+				static_branch_dec(&rps_needed);
+				static_branch_dec(&rfs_needed);
+				kvfree_rcu(orig_sock_table, rcu);
+			}
+		}
+	}
+
+	mutex_unlock(&sock_flow_mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 #endif /* CONFIG_RPS */
@@ -349,6 +412,7 @@ static int proc_do_rss_key(const struct ctl_table *table, int write,
 	return proc_dostring(&fake_table, write, buffer, lenp, ppos);
 }
 
+<<<<<<< HEAD
 static int proc_do_skb_defer_max(const struct ctl_table *table, int write,
 		 void *buffer, size_t *lenp, loff_t *ppos)
 {
@@ -372,6 +436,8 @@ static int proc_do_skb_defer_max(const struct ctl_table *table, int write,
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_BPF_JIT
 static int proc_dointvec_minmax_bpf_enable(const struct ctl_table *table, int write,
 					   void *buffer, size_t *lenp,
@@ -673,7 +739,11 @@ static struct ctl_table net_core_table[] = {
 		.data		= &net_hotdata.sysctl_skb_defer_max,
 		.maxlen		= sizeof(unsigned int),
 		.mode		= 0644,
+<<<<<<< HEAD
 		.proc_handler	= proc_do_skb_defer_max,
+=======
+		.proc_handler	= proc_dointvec_minmax,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.extra1		= SYSCTL_ZERO,
 	},
 };

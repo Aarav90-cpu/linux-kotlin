@@ -1892,6 +1892,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	spi@70410000 {
 		status = "okay";
 
@@ -1904,6 +1905,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clk32k_in: clock-32k {
 		compatible = "fixed-clock";
 		clock-frequency = <32768>;

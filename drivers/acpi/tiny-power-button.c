@@ -38,6 +38,7 @@ static u32 acpi_tiny_power_button_event(void *not_used)
 
 static int acpi_tiny_power_button_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
 	acpi_status status;
 
@@ -45,6 +46,11 @@ static int acpi_tiny_power_button_probe(struct platform_device *pdev)
 	if (!device)
 		return -ENODEV;
 
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+	acpi_status status;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
 		status = acpi_install_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
 							  acpi_tiny_power_button_event,

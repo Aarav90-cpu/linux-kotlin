@@ -181,6 +181,7 @@ enum dc_edid_status dm_helpers_read_local_edid(
 		struct dc_link *link,
 		struct dc_sink *sink);
 
+<<<<<<< HEAD
 void dm_helpers_read_mccs_caps(
 		struct dc_context *ctx,
 		struct dc_link *link,
@@ -191,6 +192,8 @@ void dm_helpers_mccs_vcp_set(
 		struct dc_link *link,
 		struct dc_sink *sink);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool dm_helpers_dp_handle_test_pattern_request(
 		struct dc_context *ctx,
 		const struct dc_link *link,

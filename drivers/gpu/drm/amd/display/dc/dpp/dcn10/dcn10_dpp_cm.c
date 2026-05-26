@@ -49,6 +49,12 @@
 #define FN(reg_name, field_name) \
 	dpp->tf_shift->field_name, dpp->tf_mask->field_name
 
+<<<<<<< HEAD
+=======
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof((a)[0]))
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum dcn10_coef_filter_type_sel {
 	SCL_COEF_LUMA_VERT_FILTER = 0,
 	SCL_COEF_LUMA_HORZ_FILTER = 1,

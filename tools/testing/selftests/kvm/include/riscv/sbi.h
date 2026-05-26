@@ -97,6 +97,7 @@ enum sbi_pmu_hw_generic_events_t {
 	SBI_PMU_HW_GENERAL_MAX,
 };
 
+<<<<<<< HEAD
 enum sbi_pmu_fw_generic_events_t {
 	SBI_PMU_FW_MISALIGNED_LOAD	= 0,
 	SBI_PMU_FW_MISALIGNED_STORE	= 1,
@@ -134,6 +135,8 @@ enum sbi_pmu_event_type {
 	SBI_PMU_EVENT_TYPE_FW = 0xf,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* SBI PMU counter types */
 enum sbi_pmu_ctr_type {
 	SBI_PMU_CTR_TYPE_HW = 0x0,

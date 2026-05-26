@@ -151,9 +151,15 @@ static bool nft_payload_fast_eval(const struct nft_expr *expr,
 	unsigned char *ptr;
 
 	if (priv->base == NFT_PAYLOAD_NETWORK_HEADER)
+<<<<<<< HEAD
 		ptr = skb_network_header(skb) + pkt->nhoff;
 	else {
 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO) || pkt->fragoff)
+=======
+		ptr = skb_network_header(skb);
+	else {
+		if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 		ptr = skb->data + nft_thoff(pkt);
 	}

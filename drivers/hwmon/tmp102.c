@@ -50,16 +50,22 @@
 
 #define CONVERSION_TIME_MS		35	/* in milli-seconds */
 
+<<<<<<< HEAD
 #define NUM_SAMPLE_TIMES		4
 #define DEFAULT_SAMPLE_TIME_MS		250
 static const unsigned int *sample_times = (const unsigned int []){ 125, 250, 1000, 4000 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tmp102 {
 	const char *label;
 	struct regmap *regmap;
 	u16 config_orig;
 	unsigned long ready_time;
+<<<<<<< HEAD
 	u16 sample_time;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* convert left adjusted 13-bit TMP102 register value to milliCelsius */
@@ -84,6 +90,7 @@ static int tmp102_read_string(struct device *dev, enum hwmon_sensor_types type,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tmp102_read_chip(struct device *dev, u32 attr, long *val)
 {
 	struct tmp102 *tmp102 = dev_get_drvdata(dev);
@@ -98,6 +105,10 @@ static int tmp102_read_chip(struct device *dev, u32 attr, long *val)
 }
 
 static int tmp102_read_temp(struct device *dev, u32 attr, long *val)
+=======
+static int tmp102_read(struct device *dev, enum hwmon_sensor_types type,
+		       u32 attr, int channel, long *temp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tmp102 *tmp102 = dev_get_drvdata(dev);
 	unsigned int regval;
@@ -125,12 +136,17 @@ static int tmp102_read_temp(struct device *dev, u32 attr, long *val)
 	err = regmap_read(tmp102->regmap, reg, &regval);
 	if (err < 0)
 		return err;
+<<<<<<< HEAD
 
 	*val = tmp102_reg_to_mC(regval);
+=======
+	*temp = tmp102_reg_to_mC(regval);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tmp102_read(struct device *dev, enum hwmon_sensor_types type,
 		       u32 attr, int channel, long *val)
 {
@@ -173,6 +189,10 @@ static int tmp102_write_chip(struct device *dev, u32 attr, long val)
 }
 
 static int tmp102_write_temp(struct device *dev, u32 attr, long val)
+=======
+static int tmp102_write(struct device *dev, enum hwmon_sensor_types type,
+			u32 attr, int channel, long temp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct tmp102 *tmp102 = dev_get_drvdata(dev);
 	int reg;
@@ -188,6 +208,7 @@ static int tmp102_write_temp(struct device *dev, u32 attr, long val)
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	val = clamp_val(val, -256000, 255000);
 	return regmap_write(tmp102->regmap, reg, tmp102_mC_to_reg(val));
 }
@@ -204,6 +225,10 @@ static int tmp102_write(struct device *dev, enum hwmon_sensor_types type,
 		return -EOPNOTSUPP;
 	}
 	return 0;
+=======
+	temp = clamp_val(temp, -256000, 255000);
+	return regmap_write(tmp102->regmap, reg, tmp102_mC_to_reg(temp));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static umode_t tmp102_is_visible(const void *data, enum hwmon_sensor_types type,
@@ -211,6 +236,7 @@ static umode_t tmp102_is_visible(const void *data, enum hwmon_sensor_types type,
 {
 	const struct tmp102 *tmp102 = data;
 
+<<<<<<< HEAD
 	switch (type) {
 	case hwmon_chip:
 		switch (attr) {
@@ -239,11 +265,33 @@ static umode_t tmp102_is_visible(const void *data, enum hwmon_sensor_types type,
 		break;
 	}
 	return 0;
+=======
+	if (type != hwmon_temp)
+		return 0;
+
+	switch (attr) {
+	case hwmon_temp_input:
+		return 0444;
+	case hwmon_temp_label:
+		if (tmp102->label)
+			return 0444;
+		return 0;
+	case hwmon_temp_max_hyst:
+	case hwmon_temp_max:
+		return 0644;
+	default:
+		return 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct hwmon_channel_info * const tmp102_info[] = {
 	HWMON_CHANNEL_INFO(chip,
+<<<<<<< HEAD
 			   HWMON_C_REGISTER_TZ | HWMON_C_UPDATE_INTERVAL),
+=======
+			   HWMON_C_REGISTER_TZ),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	HWMON_CHANNEL_INFO(temp,
 			   HWMON_T_INPUT | HWMON_T_LABEL | HWMON_T_MAX | HWMON_T_MAX_HYST),
 	NULL
@@ -321,8 +369,11 @@ static int tmp102_probe(struct i2c_client *client)
 	if (IS_ERR(tmp102->regmap))
 		return PTR_ERR(tmp102->regmap);
 
+<<<<<<< HEAD
 	tmp102->sample_time = DEFAULT_SAMPLE_TIME_MS;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = regmap_read(tmp102->regmap, TMP102_CONF_REG, &regval);
 	if (err < 0) {
 		dev_err(dev, "error reading config register\n");

@@ -760,7 +760,11 @@ static int __switchdev_handle_port_obj_add(struct net_device *dev,
 	/* Event is neither on a bridge nor a LAG. Check whether it is on an
 	 * interface that is in a bridge with us.
 	 */
+<<<<<<< HEAD
 	if (!foreign_dev_check_cb || port_obj_info->obj->flags & SWITCHDEV_F_NO_FOREIGN)
+=======
+	if (!foreign_dev_check_cb)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 
 	br = netdev_master_upper_dev_get(dev);

@@ -660,10 +660,13 @@ struct Scsi_Host {
 	 */
 	unsigned nr_hw_queues;
 	unsigned nr_maps;
+<<<<<<< HEAD
 
 	/* Asynchronous scan in progress */
 	bool async_scan __guarded_by(&scan_mutex);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned active_mode:2;
 
 	/*
@@ -682,6 +685,12 @@ struct Scsi_Host {
 	/* Task mgmt function in progress */
 	unsigned tmf_in_progress:1;
 
+<<<<<<< HEAD
+=======
+	/* Asynchronous scan in progress */
+	unsigned async_scan:1;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Don't resume host in EH */
 	unsigned eh_noresume:1;
 

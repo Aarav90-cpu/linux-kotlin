@@ -6,7 +6,10 @@
  * Hop Limit matching module
  * (C) 2001-2002 Maciej Soltysiak <solt@dns.toxicfilms.tv>
  */
+<<<<<<< HEAD
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/ip.h>
 #include <linux/ipv6.h>
@@ -23,6 +26,7 @@ MODULE_LICENSE("GPL");
 MODULE_ALIAS("ipt_ttl");
 MODULE_ALIAS("ip6t_hl");
 
+<<<<<<< HEAD
 static int ttl_mt_check(const struct xt_mtchk_param *par)
 {
 	const struct ipt_ttl_info *info = par->matchinfo;
@@ -35,6 +39,8 @@ static int ttl_mt_check(const struct xt_mtchk_param *par)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool ttl_mt(const struct sk_buff *skb, struct xt_action_param *par)
 {
 	const struct ipt_ttl_info *info = par->matchinfo;
@@ -54,6 +60,7 @@ static bool ttl_mt(const struct sk_buff *skb, struct xt_action_param *par)
 	return false;
 }
 
+<<<<<<< HEAD
 static int hl_mt6_check(const struct xt_mtchk_param *par)
 {
 	const struct ip6t_hl_info *info = par->matchinfo;
@@ -66,6 +73,8 @@ static int hl_mt6_check(const struct xt_mtchk_param *par)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool hl_mt6(const struct sk_buff *skb, struct xt_action_param *par)
 {
 	const struct ip6t_hl_info *info = par->matchinfo;
@@ -90,7 +99,10 @@ static struct xt_match hl_mt_reg[] __read_mostly = {
 		.name       = "ttl",
 		.revision   = 0,
 		.family     = NFPROTO_IPV4,
+<<<<<<< HEAD
 		.checkentry = ttl_mt_check,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.match      = ttl_mt,
 		.matchsize  = sizeof(struct ipt_ttl_info),
 		.me         = THIS_MODULE,
@@ -99,7 +111,10 @@ static struct xt_match hl_mt_reg[] __read_mostly = {
 		.name       = "hl",
 		.revision   = 0,
 		.family     = NFPROTO_IPV6,
+<<<<<<< HEAD
 		.checkentry = hl_mt6_check,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.match      = hl_mt6,
 		.matchsize  = sizeof(struct ip6t_hl_info),
 		.me         = THIS_MODULE,

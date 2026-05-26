@@ -72,6 +72,7 @@ struct amdxdna_cmd_preempt_data {
 	u32 prop_args[];    /* properties and regular kernel arguments */
 };
 
+<<<<<<< HEAD
 #define AMDXDNA_CMD_CTX_HEALTH_V1	1
 #define AMDXDNA_CMD_CTX_HEALTH_AIE2	0
 struct amdxdna_ctx_health {
@@ -79,6 +80,8 @@ struct amdxdna_ctx_health {
 	u32 npu_gen;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Exec buffer command header format */
 #define AMDXDNA_CMD_STATE		GENMASK(3, 0)
 #define AMDXDNA_CMD_EXTRA_CU_MASK	GENMASK(11, 10)
@@ -129,11 +132,14 @@ struct amdxdna_drv_cmd {
 	u32			result;
 };
 
+<<<<<<< HEAD
 struct app_health_report;
 union amdxdna_job_priv {
 	struct app_health_report *aie2_health;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct amdxdna_sched_job {
 	struct drm_sched_job	base;
 	struct kref		refcnt;
@@ -148,11 +154,15 @@ struct amdxdna_sched_job {
 	u64			seq;
 	struct amdxdna_drv_cmd	*drv_cmd;
 	struct amdxdna_gem_obj	*cmd_bo;
+<<<<<<< HEAD
 	union amdxdna_job_priv	priv;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t			bo_cnt;
 	struct drm_gem_object	*bos[] __counted_by(bo_cnt);
 };
 
+<<<<<<< HEAD
 #define aie2_job_health priv.aie2_health
 
 static inline u32
@@ -162,6 +172,12 @@ amdxdna_cmd_get_op(struct amdxdna_gem_obj *abo)
 
 	if (!cmd)
 		return ERT_INVALID_CMD;
+=======
+static inline u32
+amdxdna_cmd_get_op(struct amdxdna_gem_obj *abo)
+{
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return FIELD_GET(AMDXDNA_CMD_OPCODE, cmd->header);
 }
@@ -169,10 +185,14 @@ amdxdna_cmd_get_op(struct amdxdna_gem_obj *abo)
 static inline void
 amdxdna_cmd_set_state(struct amdxdna_gem_obj *abo, enum ert_cmd_state s)
 {
+<<<<<<< HEAD
 	struct amdxdna_cmd *cmd = amdxdna_gem_vmap(abo);
 
 	if (!cmd)
 		return;
+=======
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cmd->header &= ~AMDXDNA_CMD_STATE;
 	cmd->header |= FIELD_PREP(AMDXDNA_CMD_STATE, s);
@@ -181,10 +201,14 @@ amdxdna_cmd_set_state(struct amdxdna_gem_obj *abo, enum ert_cmd_state s)
 static inline enum ert_cmd_state
 amdxdna_cmd_get_state(struct amdxdna_gem_obj *abo)
 {
+<<<<<<< HEAD
 	struct amdxdna_cmd *cmd = amdxdna_gem_vmap(abo);
 
 	if (!cmd)
 		return ERT_CMD_STATE_INVALID;
+=======
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return FIELD_GET(AMDXDNA_CMD_STATE, cmd->header);
 }
@@ -193,8 +217,12 @@ void *amdxdna_cmd_get_payload(struct amdxdna_gem_obj *abo, u32 *size);
 u32 amdxdna_cmd_get_cu_idx(struct amdxdna_gem_obj *abo);
 int amdxdna_cmd_set_error(struct amdxdna_gem_obj *abo,
 			  struct amdxdna_sched_job *job, u32 cmd_idx,
+<<<<<<< HEAD
 			  enum ert_cmd_state error_state,
 			  void *err_data, size_t size);
+=======
+			  enum ert_cmd_state error_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void amdxdna_sched_job_cleanup(struct amdxdna_sched_job *job);
 void amdxdna_hwctx_remove_all(struct amdxdna_client *client);

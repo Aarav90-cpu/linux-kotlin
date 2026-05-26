@@ -30,6 +30,10 @@ extern bool perf_guest;
 
 /* General helper functions */
 void usage(const char *err) __noreturn;
+<<<<<<< HEAD
+=======
+void die(const char *err, ...) __noreturn __printf(1, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dirent;
 struct strlist;
@@ -86,8 +90,11 @@ struct perf_debuginfod {
 };
 void perf_debuginfod_setup(struct perf_debuginfod *di);
 
+<<<<<<< HEAD
 const char *perf_basename(const char *path);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char *filename_with_chroot(int pid, const char *filename);
 
 int do_realloc_array_as_needed(void **arr, size_t *arr_sz, size_t x,

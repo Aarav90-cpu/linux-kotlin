@@ -151,6 +151,7 @@ struct icp_qat_fw_comn_resp {
 	ICP_QAT_FW_COMN_CNV_FLAG_BITPOS, \
 	ICP_QAT_FW_COMN_CNV_FLAG_MASK)
 
+<<<<<<< HEAD
 #define ICP_QAT_FW_COMN_ST_BLK_FLAG_BITPOS 4
 #define ICP_QAT_FW_COMN_ST_BLK_FLAG_MASK 0x1
 #define ICP_QAT_FW_COMN_HDR_ST_BLK_FLAG_GET(hdr_flags) \
@@ -158,6 +159,8 @@ struct icp_qat_fw_comn_resp {
 	ICP_QAT_FW_COMN_ST_BLK_FLAG_BITPOS, \
 	ICP_QAT_FW_COMN_ST_BLK_FLAG_MASK)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ICP_QAT_FW_COMN_HDR_CNV_FLAG_SET(hdr_t, val) \
 	QAT_FIELD_SET((hdr_t.hdr_flags), (val), \
 	ICP_QAT_FW_COMN_CNV_FLAG_BITPOS, \

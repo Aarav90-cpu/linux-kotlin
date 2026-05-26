@@ -3,7 +3,10 @@
  * Copyright (C) STMicroelectronics 2021 - All Rights Reserved
  * Author: Alexandre Torgue <alexandre.torgue@foss.st.com> for STMicroelectronics.
  */
+<<<<<<< HEAD
 #include <dt-bindings/arm/coresight-cti-dt.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/stm32mp13-clks.h>
 #include <dt-bindings/reset/stm32mp13-resets.h>
@@ -470,8 +473,13 @@
 			compatible = "st,stm32mp13-i2c";
 			reg = <0x40012000 0x400>;
 			interrupt-names = "event", "error";
+<<<<<<< HEAD
 			interrupts-extended = <&exti 21 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clocks = <&rcc I2C1_K>;
 			resets = <&rcc I2C1_R>;
 			#address-cells = <1>;
@@ -479,7 +487,10 @@
 			dmas = <&dmamux1 33 0x400 0x1>,
 			       <&dmamux1 34 0x400 0x1>;
 			dma-names = "rx", "tx";
+<<<<<<< HEAD
 			wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			st,syscfg-fmp = <&syscfg 0x4 0x1>;
 			i2c-analog-filter;
 			status = "disabled";
@@ -489,8 +500,13 @@
 			compatible = "st,stm32mp13-i2c";
 			reg = <0x40013000 0x400>;
 			interrupt-names = "event", "error";
+<<<<<<< HEAD
 			interrupts-extended = <&exti 22 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			clocks = <&rcc I2C2_K>;
 			resets = <&rcc I2C2_R>;
 			#address-cells = <1>;
@@ -499,7 +515,10 @@
 			       <&dmamux1 36 0x400 0x1>;
 			dma-names = "rx", "tx";
 			st,syscfg-fmp = <&syscfg 0x4 0x2>;
+<<<<<<< HEAD
 			wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			i2c-analog-filter;
 			status = "disabled";
 		};
@@ -967,6 +986,7 @@
 			compatible = "st,stm32mp131-hdp";
 			reg = <0x5002a000 0x400>;
 			clocks = <&rcc HDP>;
+<<<<<<< HEAD
 			access-controllers = <&dbg_bus 1>;
 			status = "disabled";
 		};
@@ -1086,6 +1106,11 @@
 			};
 		};
 
+=======
+			status = "disabled";
+		};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mdma: dma-controller@58000000 {
 			compatible = "st,stm32h7-mdma";
 			reg = <0x58000000 0x1000>;
@@ -1248,7 +1273,11 @@
 				resets = <&rcc USART1_R>;
 				wakeup-source;
 				dmas = <&dmamux1 41 0x400 0x5>,
+<<<<<<< HEAD
 				       <&dmamux1 42 0x400 0x1>;
+=======
+				<&dmamux1 42 0x400 0x1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dma-names = "rx", "tx";
 				access-controllers = <&etzpc 16>;
 				status = "disabled";
@@ -1262,7 +1291,11 @@
 				resets = <&rcc USART2_R>;
 				wakeup-source;
 				dmas = <&dmamux1 43 0x400 0x5>,
+<<<<<<< HEAD
 				       <&dmamux1 44 0x400 0x1>;
+=======
+				<&dmamux1 44 0x400 0x1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dma-names = "rx", "tx";
 				access-controllers = <&etzpc 17>;
 				status = "disabled";
@@ -1274,7 +1307,11 @@
 				#sound-dai-cells = <0>;
 				interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
 				dmas = <&dmamux1 83 0x400 0x01>,
+<<<<<<< HEAD
 				       <&dmamux1 84 0x400 0x01>;
+=======
+				<&dmamux1 84 0x400 0x01>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dma-names = "rx", "tx";
 				access-controllers = <&etzpc 13>;
 				status = "disabled";
@@ -1314,8 +1351,13 @@
 				compatible = "st,stm32mp13-i2c";
 				reg = <0x4c004000 0x400>;
 				interrupt-names = "event", "error";
+<<<<<<< HEAD
 				interrupts-extended = <&exti 23 IRQ_TYPE_LEVEL_HIGH>,
 						      <&intc GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+=======
+				interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				clocks = <&rcc I2C3_K>;
 				resets = <&rcc I2C3_R>;
 				#address-cells = <1>;
@@ -1324,7 +1366,10 @@
 				       <&dmamux1 74 0x400 0x1>;
 				dma-names = "rx", "tx";
 				st,syscfg-fmp = <&syscfg 0x4 0x4>;
+<<<<<<< HEAD
 				wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				i2c-analog-filter;
 				access-controllers = <&etzpc 20>;
 				status = "disabled";
@@ -1334,8 +1379,13 @@
 				compatible = "st,stm32mp13-i2c";
 				reg = <0x4c005000 0x400>;
 				interrupt-names = "event", "error";
+<<<<<<< HEAD
 				interrupts-extended = <&exti 24 IRQ_TYPE_LEVEL_HIGH>,
 						      <&intc GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+=======
+				interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				clocks = <&rcc I2C4_K>;
 				resets = <&rcc I2C4_R>;
 				#address-cells = <1>;
@@ -1344,7 +1394,10 @@
 				       <&dmamux1 76 0x400 0x1>;
 				dma-names = "rx", "tx";
 				st,syscfg-fmp = <&syscfg 0x4 0x8>;
+<<<<<<< HEAD
 				wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				i2c-analog-filter;
 				access-controllers = <&etzpc 21>;
 				status = "disabled";
@@ -1354,8 +1407,13 @@
 				compatible = "st,stm32mp13-i2c";
 				reg = <0x4c006000 0x400>;
 				interrupt-names = "event", "error";
+<<<<<<< HEAD
 				interrupts-extended = <&exti 25 IRQ_TYPE_LEVEL_HIGH>,
 						      <&intc GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+=======
+				interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
+					     <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				clocks = <&rcc I2C5_K>;
 				resets = <&rcc I2C5_R>;
 				#address-cells = <1>;
@@ -1364,7 +1422,10 @@
 				       <&dmamux1 116 0x400 0x1>;
 				dma-names = "rx", "tx";
 				st,syscfg-fmp = <&syscfg 0x4 0x10>;
+<<<<<<< HEAD
 				wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				i2c-analog-filter;
 				access-controllers = <&etzpc 22>;
 				status = "disabled";
@@ -1470,9 +1531,15 @@
 				clocks = <&rcc TIM15_K>;
 				clock-names = "int";
 				dmas = <&dmamux1 105 0x400 0x1>,
+<<<<<<< HEAD
 				       <&dmamux1 106 0x400 0x1>,
 				       <&dmamux1 107 0x400 0x1>,
 				       <&dmamux1 108 0x400 0x1>;
+=======
+				<&dmamux1 106 0x400 0x1>,
+				<&dmamux1 107 0x400 0x1>,
+				<&dmamux1 108 0x400 0x1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dma-names = "ch1", "up", "trig", "com";
 				access-controllers = <&etzpc 26>;
 				status = "disabled";
@@ -1505,7 +1572,11 @@
 				clocks = <&rcc TIM16_K>;
 				clock-names = "int";
 				dmas = <&dmamux1 109 0x400 0x1>,
+<<<<<<< HEAD
 				       <&dmamux1 110 0x400 0x1>;
+=======
+				<&dmamux1 110 0x400 0x1>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dma-names = "ch1", "up";
 				access-controllers = <&etzpc 27>;
 				status = "disabled";

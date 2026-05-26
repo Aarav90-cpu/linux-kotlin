@@ -19,6 +19,11 @@
 #include <asm/arcregs.h>
 
 pgd_t swapper_pg_dir[PTRS_PER_PGD] __aligned(PAGE_SIZE);
+<<<<<<< HEAD
+=======
+char empty_zero_page[PAGE_SIZE] __aligned(PAGE_SIZE);
+EXPORT_SYMBOL(empty_zero_page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const unsigned long low_mem_start = CONFIG_LINUX_RAM_BASE;
 static unsigned long low_mem_sz;

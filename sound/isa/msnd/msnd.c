@@ -127,8 +127,16 @@ int snd_msnd_upload_host(struct snd_msnd *dev, const u8 *bin, int len)
 }
 EXPORT_SYMBOL(snd_msnd_upload_host);
 
+<<<<<<< HEAD
 static int __snd_msnd_enable_irq(struct snd_msnd *dev)
 {
+=======
+int snd_msnd_enable_irq(struct snd_msnd *dev)
+{
+	if (dev->irq_ref++)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(dev->card->dev, LOGNAME ": Enabling IRQ\n");
 
 	guard(spinlock_irqsave)(&dev->lock);
@@ -149,9 +157,23 @@ static int __snd_msnd_enable_irq(struct snd_msnd *dev)
 
 	return -EIO;
 }
+<<<<<<< HEAD
 
 static int __snd_msnd_disable_irq(struct snd_msnd *dev)
 {
+=======
+EXPORT_SYMBOL(snd_msnd_enable_irq);
+
+int snd_msnd_disable_irq(struct snd_msnd *dev)
+{
+	if (--dev->irq_ref > 0)
+		return 0;
+
+	if (dev->irq_ref < 0)
+		dev_dbg(dev->card->dev, LOGNAME ": IRQ ref count is %d\n",
+			dev->irq_ref);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(dev->card->dev, LOGNAME ": Disabling IRQ\n");
 
 	guard(spinlock_irqsave)(&dev->lock);
@@ -167,6 +189,7 @@ static int __snd_msnd_disable_irq(struct snd_msnd *dev)
 
 	return -EIO;
 }
+<<<<<<< HEAD
 
 int snd_msnd_enable_irq(struct snd_msnd *dev)
 {
@@ -200,6 +223,10 @@ int snd_msnd_force_irq(struct snd_msnd *dev, bool enable)
 }
 EXPORT_SYMBOL(snd_msnd_force_irq);
 
+=======
+EXPORT_SYMBOL(snd_msnd_disable_irq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline long get_play_delay_jiffies(struct snd_msnd *chip, long size)
 {
 	long tmp = (size * HZ * chip->play_sample_size) / 8;
@@ -527,13 +554,20 @@ static int snd_msnd_playback_trigger(struct snd_pcm_substream *substream,
 				     int cmd)
 {
 	struct snd_msnd *chip = snd_pcm_substream_chip(substream);
+<<<<<<< HEAD
 
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
+=======
+	int	result = 0;
+
+	if (cmd == SNDRV_PCM_TRIGGER_START) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_dbg(chip->card->dev, "%s(START)\n", __func__);
 		chip->banksPlayed = 0;
 		set_bit(F_WRITING, &chip->flags);
 		snd_msnd_DAPQ(chip, 1);
+<<<<<<< HEAD
 		break;
 	case SNDRV_PCM_TRIGGER_STOP:
 	case SNDRV_PCM_TRIGGER_SUSPEND:
@@ -548,6 +582,20 @@ static int snd_msnd_playback_trigger(struct snd_pcm_substream *substream,
 
 	dev_dbg(chip->card->dev, "%s() ENDE\n", __func__);
 	return 0;
+=======
+	} else if (cmd == SNDRV_PCM_TRIGGER_STOP) {
+		dev_dbg(chip->card->dev, "%s(STOP)\n", __func__);
+		/* interrupt diagnostic, comment this out later */
+		clear_bit(F_WRITING, &chip->flags);
+		snd_msnd_send_dsp_cmd(chip, HDEX_PLAY_STOP);
+	} else {
+		dev_dbg(chip->card->dev, "%s(?????)\n", __func__);
+		result = -EINVAL;
+	}
+
+	dev_dbg(chip->card->dev, "%s() ENDE\n", __func__);
+	return result;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static snd_pcm_uframes_t
@@ -611,14 +659,19 @@ static int snd_msnd_capture_trigger(struct snd_pcm_substream *substream,
 {
 	struct snd_msnd *chip = snd_pcm_substream_chip(substream);
 
+<<<<<<< HEAD
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
+=======
+	if (cmd == SNDRV_PCM_TRIGGER_START) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		chip->last_recbank = -1;
 		set_bit(F_READING, &chip->flags);
 		if (snd_msnd_send_dsp_cmd(chip, HDEX_RECORD_START) == 0)
 			return 0;
 
 		clear_bit(F_READING, &chip->flags);
+<<<<<<< HEAD
 		break;
 	case SNDRV_PCM_TRIGGER_STOP:
 	case SNDRV_PCM_TRIGGER_SUSPEND:
@@ -627,6 +680,12 @@ static int snd_msnd_capture_trigger(struct snd_pcm_substream *substream,
 		return 0;
 	default:
 		break;
+=======
+	} else if (cmd == SNDRV_PCM_TRIGGER_STOP) {
+		clear_bit(F_READING, &chip->flags);
+		snd_msnd_send_dsp_cmd(chip, HDEX_RECORD_STOP);
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return -EINVAL;
 }
@@ -695,3 +754,7 @@ EXPORT_SYMBOL(snd_msnd_pcm);
 
 MODULE_DESCRIPTION("Common routines for Turtle Beach Multisound drivers");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

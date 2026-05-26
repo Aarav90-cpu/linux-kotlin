@@ -10,18 +10,27 @@
 #include <crypto/aes.h>
 #include <crypto/algapi.h>
 #include <crypto/engine.h>
+<<<<<<< HEAD
 #include <crypto/gcm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/internal/aead.h>
 #include <crypto/internal/skcipher.h>
 
 #include "dthev2-common.h"
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/dmaengine.h>
 #include <linux/dma-mapping.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/scatterlist.h>
 
 /* Registers */
@@ -56,7 +65,10 @@
 #define DTHE_P_AES_C_LENGTH_1	0x0058
 #define DTHE_P_AES_AUTH_LENGTH	0x005C
 #define DTHE_P_AES_DATA_IN_OUT	0x0060
+<<<<<<< HEAD
 #define DTHE_P_AES_TAG_OUT	0x0070
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DTHE_P_AES_SYSCONFIG	0x0084
 #define DTHE_P_AES_IRQSTATUS	0x008C
@@ -67,10 +79,14 @@
 enum aes_ctrl_mode_masks {
 	AES_CTRL_ECB_MASK = 0x00,
 	AES_CTRL_CBC_MASK = BIT(5),
+<<<<<<< HEAD
 	AES_CTRL_CTR_MASK = BIT(6),
 	AES_CTRL_XTS_MASK = BIT(12) | BIT(11),
 	AES_CTRL_GCM_MASK = BIT(17) | BIT(16) | BIT(6),
 	AES_CTRL_CCM_MASK = BIT(18) | BIT(6),
+=======
+	AES_CTRL_XTS_MASK = BIT(12) | BIT(11),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define DTHE_AES_CTRL_MODE_CLEAR_MASK		~GENMASK(28, 5)
@@ -81,6 +97,7 @@ enum aes_ctrl_mode_masks {
 #define DTHE_AES_CTRL_KEYSIZE_24B		BIT(4)
 #define DTHE_AES_CTRL_KEYSIZE_32B		(BIT(3) | BIT(4))
 
+<<<<<<< HEAD
 #define DTHE_AES_CTRL_CTR_WIDTH_128B		(BIT(7) | BIT(8))
 
 #define DTHE_AES_CCM_L_FROM_IV_MASK		GENMASK(2, 0)
@@ -88,6 +105,8 @@ enum aes_ctrl_mode_masks {
 #define DTHE_AES_CTRL_CCM_L_FIELD_MASK		GENMASK(21, 19)
 #define DTHE_AES_CTRL_CCM_M_FIELD_MASK		GENMASK(24, 22)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DTHE_AES_CTRL_SAVE_CTX_SET		BIT(29)
 
 #define DTHE_AES_CTRL_OUTPUT_READY		BIT_MASK(0)
@@ -102,10 +121,13 @@ enum aes_ctrl_mode_masks {
 #define AES_IV_SIZE				AES_BLOCK_SIZE
 #define AES_BLOCK_WORDS				(AES_BLOCK_SIZE / sizeof(u32))
 #define AES_IV_WORDS				AES_BLOCK_WORDS
+<<<<<<< HEAD
 #define DTHE_AES_GCM_AAD_MAXLEN			(BIT_ULL(32) - 1)
 #define DTHE_AES_CCM_AAD_MAXLEN			(BIT(16) - BIT(8))
 #define DTHE_AES_CCM_CRYPT_MAXLEN		(BIT_ULL(61) - 1)
 #define POLL_TIMEOUT_INTERVAL			HZ
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int dthe_cipher_init_tfm(struct crypto_skcipher *tfm)
 {
@@ -118,27 +140,45 @@ static int dthe_cipher_init_tfm(struct crypto_skcipher *tfm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dthe_cipher_init_tfm_fallback(struct crypto_skcipher *tfm)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(tfm);
 	struct dthe_data *dev_data = dthe_get_dev(ctx);
 	const char *alg_name = crypto_tfm_alg_name(crypto_skcipher_tfm(tfm));
+=======
+static int dthe_cipher_xts_init_tfm(struct crypto_skcipher *tfm)
+{
+	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(tfm);
+	struct dthe_data *dev_data = dthe_get_dev(ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ctx->dev_data = dev_data;
 	ctx->keylen = 0;
 
+<<<<<<< HEAD
 	ctx->skcipher_fb = crypto_alloc_sync_skcipher(alg_name, 0,
 						      CRYPTO_ALG_NEED_FALLBACK);
 	if (IS_ERR(ctx->skcipher_fb)) {
 		dev_err(dev_data->dev, "fallback driver %s couldn't be loaded\n",
 			alg_name);
+=======
+	ctx->skcipher_fb = crypto_alloc_sync_skcipher("xts(aes)", 0,
+						      CRYPTO_ALG_NEED_FALLBACK);
+	if (IS_ERR(ctx->skcipher_fb)) {
+		dev_err(dev_data->dev, "fallback driver xts(aes) couldn't be loaded\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return PTR_ERR(ctx->skcipher_fb);
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void dthe_cipher_exit_tfm(struct crypto_skcipher *tfm)
+=======
+static void dthe_cipher_xts_exit_tfm(struct crypto_skcipher *tfm)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(tfm);
 
@@ -176,6 +216,7 @@ static int dthe_aes_cbc_setkey(struct crypto_skcipher *tfm, const u8 *key, unsig
 	return dthe_aes_setkey(tfm, key, keylen);
 }
 
+<<<<<<< HEAD
 static int dthe_aes_ctr_setkey(struct crypto_skcipher *tfm, const u8 *key, unsigned int keylen)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(tfm);
@@ -194,6 +235,8 @@ static int dthe_aes_ctr_setkey(struct crypto_skcipher *tfm, const u8 *key, unsig
 	return crypto_sync_skcipher_setkey(ctx->skcipher_fb, key, keylen);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dthe_aes_xts_setkey(struct crypto_skcipher *tfm, const u8 *key, unsigned int keylen)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(tfm);
@@ -209,8 +252,13 @@ static int dthe_aes_xts_setkey(struct crypto_skcipher *tfm, const u8 *key, unsig
 
 	crypto_sync_skcipher_clear_flags(ctx->skcipher_fb, CRYPTO_TFM_REQ_MASK);
 	crypto_sync_skcipher_set_flags(ctx->skcipher_fb,
+<<<<<<< HEAD
 				       crypto_skcipher_get_flags(tfm) &
 				       CRYPTO_TFM_REQ_MASK);
+=======
+				  crypto_skcipher_get_flags(tfm) &
+				  CRYPTO_TFM_REQ_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return crypto_sync_skcipher_setkey(ctx->skcipher_fb, key, keylen);
 }
@@ -274,6 +322,7 @@ static void dthe_aes_set_ctrl_key(struct dthe_tfm_ctx *ctx,
 	case DTHE_AES_CBC:
 		ctrl_val |= AES_CTRL_CBC_MASK;
 		break;
+<<<<<<< HEAD
 	case DTHE_AES_CTR:
 		ctrl_val |= AES_CTRL_CTR_MASK;
 		ctrl_val |= DTHE_AES_CTRL_CTR_WIDTH_128B;
@@ -291,6 +340,11 @@ static void dthe_aes_set_ctrl_key(struct dthe_tfm_ctx *ctx,
 		ctrl_val |= FIELD_PREP(DTHE_AES_CTRL_CCM_M_FIELD_MASK,
 				       ((ctx->authsize - 2) >> 1) & DTHE_AES_CCM_M_BITS);
 		break;
+=======
+	case DTHE_AES_XTS:
+		ctrl_val |= AES_CTRL_XTS_MASK;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (iv_in) {
@@ -303,6 +357,7 @@ static void dthe_aes_set_ctrl_key(struct dthe_tfm_ctx *ctx,
 	writel_relaxed(ctrl_val, aes_base_reg + DTHE_P_AES_CTRL);
 }
 
+<<<<<<< HEAD
 static int dthe_aes_do_fallback(struct skcipher_request *req)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(crypto_skcipher_reqtfm(req));
@@ -319,6 +374,8 @@ static int dthe_aes_do_fallback(struct skcipher_request *req)
 		crypto_skcipher_decrypt(subreq);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void dthe_aes_dma_in_callback(void *data)
 {
 	struct skcipher_request *req = (struct skcipher_request *)data;
@@ -339,7 +396,11 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 	struct scatterlist *dst = req->dst;
 
 	int src_nents = sg_nents_for_len(src, len);
+<<<<<<< HEAD
 	int dst_nents = sg_nents_for_len(dst, len);
+=======
+	int dst_nents;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	int src_mapped_nents;
 	int dst_mapped_nents;
@@ -373,6 +434,7 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 		dst_dir  = DMA_FROM_DEVICE;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * CTR mode can operate on any input length, but the hardware
 	 * requires input length to be a multiple of the block size.
@@ -413,12 +475,15 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tx_dev = dmaengine_get_dma_device(dev_data->dma_aes_tx);
 	rx_dev = dmaengine_get_dma_device(dev_data->dma_aes_rx);
 
 	src_mapped_nents = dma_map_sg(tx_dev, src, src_nents, src_dir);
 	if (src_mapped_nents == 0) {
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto aes_map_src_err;
 	}
 
@@ -429,6 +494,21 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 		if (dst_mapped_nents == 0) {
 			ret = -EINVAL;
 			goto aes_map_dst_err;
+=======
+		goto aes_err;
+	}
+
+	if (!diff_dst) {
+		dst_nents = src_nents;
+		dst_mapped_nents = src_mapped_nents;
+	} else {
+		dst_nents = sg_nents_for_len(dst, len);
+		dst_mapped_nents = dma_map_sg(rx_dev, dst, dst_nents, dst_dir);
+		if (dst_mapped_nents == 0) {
+			dma_unmap_sg(tx_dev, src, src_nents, src_dir);
+			ret = -EINVAL;
+			goto aes_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -458,8 +538,13 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 	else
 		dthe_aes_set_ctrl_key(ctx, rctx, (u32 *)req->iv);
 
+<<<<<<< HEAD
 	writel_relaxed(lower_32_bits(len), aes_base_reg + DTHE_P_AES_C_LENGTH_0);
 	writel_relaxed(upper_32_bits(len), aes_base_reg + DTHE_P_AES_C_LENGTH_1);
+=======
+	writel_relaxed(lower_32_bits(req->cryptlen), aes_base_reg + DTHE_P_AES_C_LENGTH_0);
+	writel_relaxed(upper_32_bits(req->cryptlen), aes_base_reg + DTHE_P_AES_C_LENGTH_1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dmaengine_submit(desc_in);
 	dmaengine_submit(desc_out);
@@ -491,6 +576,7 @@ static int dthe_aes_run(struct crypto_engine *engine, void *areq)
 	}
 
 aes_prep_err:
+<<<<<<< HEAD
 	if (dst_dir != DMA_BIDIRECTIONAL)
 		dma_unmap_sg(rx_dev, dst, dst_nents, dst_dir);
 aes_map_dst_err:
@@ -511,6 +597,13 @@ aes_ctr_src_alloc_err:
 			ret = dthe_aes_do_fallback(req);
 	}
 
+=======
+	dma_unmap_sg(tx_dev, src, src_nents, src_dir);
+	if (dst_dir != DMA_BIDIRECTIONAL)
+		dma_unmap_sg(rx_dev, dst, dst_nents, dst_dir);
+
+aes_err:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	local_bh_disable();
 	crypto_finalize_skcipher_request(dev_data->engine, req, ret);
 	local_bh_enable();
@@ -520,6 +613,10 @@ aes_ctr_src_alloc_err:
 static int dthe_aes_crypt(struct skcipher_request *req)
 {
 	struct dthe_tfm_ctx *ctx = crypto_skcipher_ctx(crypto_skcipher_reqtfm(req));
+<<<<<<< HEAD
+=======
+	struct dthe_aes_req_ctx *rctx = skcipher_request_ctx(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dthe_data *dev_data = dthe_get_dev(ctx);
 	struct crypto_engine *engine;
 
@@ -527,6 +624,7 @@ static int dthe_aes_crypt(struct skcipher_request *req)
 	 * If data is not a multiple of AES_BLOCK_SIZE:
 	 * - need to return -EINVAL for ECB, CBC as they are block ciphers
 	 * - need to fallback to software as H/W doesn't support Ciphertext Stealing for XTS
+<<<<<<< HEAD
 	 * - do nothing for CTR
 	 */
 	if (req->cryptlen % AES_BLOCK_SIZE) {
@@ -535,6 +633,22 @@ static int dthe_aes_crypt(struct skcipher_request *req)
 
 		if (ctx->aes_mode != DTHE_AES_CTR)
 			return -EINVAL;
+=======
+	 */
+	if (req->cryptlen % AES_BLOCK_SIZE) {
+		if (ctx->aes_mode == DTHE_AES_XTS) {
+			SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->skcipher_fb);
+
+			skcipher_request_set_callback(subreq, skcipher_request_flags(req),
+						      req->base.complete, req->base.data);
+			skcipher_request_set_crypt(subreq, req->src, req->dst,
+						   req->cryptlen, req->iv);
+
+			return rctx->enc ? crypto_skcipher_encrypt(subreq) :
+				crypto_skcipher_decrypt(subreq);
+		}
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -567,6 +681,7 @@ static int dthe_aes_decrypt(struct skcipher_request *req)
 	return dthe_aes_crypt(req);
 }
 
+<<<<<<< HEAD
 static int dthe_aead_init_tfm(struct crypto_aead *tfm)
 {
 	struct dthe_tfm_ctx *ctx = crypto_aead_ctx(tfm);
@@ -1203,6 +1318,8 @@ static int dthe_aead_decrypt(struct aead_request *req)
 	return dthe_aead_crypt(req);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct skcipher_engine_alg cipher_algs[] = {
 	{
 		.base.init			= dthe_cipher_init_tfm,
@@ -1250,6 +1367,7 @@ static struct skcipher_engine_alg cipher_algs[] = {
 		.op.do_one_request = dthe_aes_run,
 	}, /* CBC AES */
 	{
+<<<<<<< HEAD
 		.base.init			= dthe_cipher_init_tfm_fallback,
 		.base.exit			= dthe_cipher_exit_tfm,
 		.base.setkey			= dthe_aes_ctr_setkey,
@@ -1277,6 +1395,10 @@ static struct skcipher_engine_alg cipher_algs[] = {
 	{
 		.base.init			= dthe_cipher_init_tfm_fallback,
 		.base.exit			= dthe_cipher_exit_tfm,
+=======
+		.base.init			= dthe_cipher_xts_init_tfm,
+		.base.exit			= dthe_cipher_xts_exit_tfm,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.base.setkey			= dthe_aes_xts_setkey,
 		.base.encrypt			= dthe_aes_encrypt,
 		.base.decrypt			= dthe_aes_decrypt,
@@ -1301,6 +1423,7 @@ static struct skcipher_engine_alg cipher_algs[] = {
 	}, /* XTS AES */
 };
 
+<<<<<<< HEAD
 static struct aead_engine_alg aead_algs[] = {
 	{
 		.base.init			= dthe_aead_init_tfm,
@@ -1366,10 +1489,18 @@ int dthe_register_aes_algs(void)
 		crypto_engine_unregister_skciphers(cipher_algs, ARRAY_SIZE(cipher_algs));
 
 	return ret;
+=======
+int dthe_register_aes_algs(void)
+{
+	return crypto_engine_register_skciphers(cipher_algs, ARRAY_SIZE(cipher_algs));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void dthe_unregister_aes_algs(void)
 {
 	crypto_engine_unregister_skciphers(cipher_algs, ARRAY_SIZE(cipher_algs));
+<<<<<<< HEAD
 	crypto_engine_unregister_aeads(aead_algs, ARRAY_SIZE(aead_algs));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

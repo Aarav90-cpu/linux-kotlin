@@ -115,8 +115,15 @@ static int show_schedstat(struct seq_file *seq, void *v)
 		seq_printf(seq, "timestamp %lu\n", jiffies);
 	} else {
 		struct rq *rq;
+<<<<<<< HEAD
 		struct sched_domain *sd;
 		int dcount = 0;
+=======
+#ifndef CONFIG_SCHED_ALT
+		struct sched_domain *sd;
+		int dcount = 0;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cpu = (unsigned long)(v - 2);
 		rq = cpu_rq(cpu);
 
@@ -131,6 +138,10 @@ static int show_schedstat(struct seq_file *seq, void *v)
 
 		seq_printf(seq, "\n");
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* domain-specific stats */
 		rcu_read_lock();
 		for_each_domain(cpu, sd) {
@@ -161,6 +172,10 @@ static int show_schedstat(struct seq_file *seq, void *v)
 			    sd->ttwu_move_balance);
 		}
 		rcu_read_unlock();
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return 0;
 }

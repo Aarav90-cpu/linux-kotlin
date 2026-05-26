@@ -837,10 +837,16 @@ static const struct pci_device_id cafe_nand_tbl[] = {
 
 MODULE_DEVICE_TABLE(pci, cafe_nand_tbl);
 
+<<<<<<< HEAD
 static int cafe_nand_resume(struct device *dev)
 {
 	uint32_t ctrl;
 	struct pci_dev *pdev = to_pci_dev(dev);
+=======
+static int cafe_nand_resume(struct pci_dev *pdev)
+{
+	uint32_t ctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mtd_info *mtd = pci_get_drvdata(pdev);
 	struct nand_chip *chip = mtd_to_nand(mtd);
 	struct cafe_priv *cafe = nand_get_controller_data(chip);
@@ -878,14 +884,21 @@ static int cafe_nand_resume(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static DEFINE_SIMPLE_DEV_PM_OPS(cafe_nand_ops, NULL, cafe_nand_resume);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct pci_driver cafe_nand_pci_driver = {
 	.name = "CAFÉ NAND",
 	.id_table = cafe_nand_tbl,
 	.probe = cafe_nand_probe,
 	.remove = cafe_nand_remove,
+<<<<<<< HEAD
 	.driver.pm = &cafe_nand_ops,
+=======
+	.resume = cafe_nand_resume,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 module_pci_driver(cafe_nand_pci_driver);

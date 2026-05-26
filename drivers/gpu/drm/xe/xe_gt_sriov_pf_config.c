@@ -279,7 +279,11 @@ static u32 encode_config_ggtt(u32 *cfg, const struct xe_gt_sriov_config *config,
 {
 	struct xe_ggtt_node *node = config->ggtt_region;
 
+<<<<<<< HEAD
 	if (!node)
+=======
+	if (!xe_ggtt_node_allocated(node))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	return encode_ggtt(cfg, xe_ggtt_node_addr(node), xe_ggtt_node_size(node), details);
@@ -482,9 +486,29 @@ static int pf_distribute_config_ggtt(struct xe_tile *tile, unsigned int vfid, u6
 	return err ?: err2;
 }
 
+<<<<<<< HEAD
 static void pf_release_vf_config_ggtt(struct xe_gt *gt, struct xe_gt_sriov_config *config)
 {
 	xe_ggtt_node_remove(config->ggtt_region, false);
+=======
+static void pf_release_ggtt(struct xe_tile *tile, struct xe_ggtt_node *node)
+{
+	if (xe_ggtt_node_allocated(node)) {
+		/*
+		 * explicit GGTT PTE assignment to the PF using xe_ggtt_assign()
+		 * is redundant, as PTE will be implicitly re-assigned to PF by
+		 * the xe_ggtt_clear() called by below xe_ggtt_remove_node().
+		 */
+		xe_ggtt_node_remove(node, false);
+	} else {
+		xe_ggtt_node_fini(node);
+	}
+}
+
+static void pf_release_vf_config_ggtt(struct xe_gt *gt, struct xe_gt_sriov_config *config)
+{
+	pf_release_ggtt(gt_to_tile(gt), config->ggtt_region);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	config->ggtt_region = NULL;
 }
 
@@ -503,7 +527,11 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 
 	size = round_up(size, alignment);
 
+<<<<<<< HEAD
 	if (config->ggtt_region) {
+=======
+	if (xe_ggtt_node_allocated(config->ggtt_region)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = pf_distribute_config_ggtt(tile, vfid, 0, 0);
 		if (unlikely(err))
 			return err;
@@ -514,15 +542,30 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 		if (unlikely(err))
 			return err;
 	}
+<<<<<<< HEAD
 	xe_gt_assert(gt, !config->ggtt_region);
+=======
+	xe_gt_assert(gt, !xe_ggtt_node_allocated(config->ggtt_region));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!size)
 		return 0;
 
+<<<<<<< HEAD
 	node = xe_ggtt_insert_node(ggtt, size, alignment);
 	if (IS_ERR(node))
 		return PTR_ERR(node);
 
+=======
+	node = xe_ggtt_node_init(ggtt);
+	if (IS_ERR(node))
+		return PTR_ERR(node);
+
+	err = xe_ggtt_node_insert(node, size, alignment);
+	if (unlikely(err))
+		goto err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_ggtt_assign(node, vfid);
 	xe_gt_sriov_dbg_verbose(gt, "VF%u assigned GGTT %llx-%llx\n",
 				vfid, xe_ggtt_node_addr(node), xe_ggtt_node_addr(node) + size - 1);
@@ -534,7 +577,11 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
 	config->ggtt_region = node;
 	return 0;
 err:
+<<<<<<< HEAD
 	xe_ggtt_node_remove(node, false);
+=======
+	pf_release_ggtt(tile, node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -544,7 +591,11 @@ static u64 pf_get_vf_config_ggtt(struct xe_gt *gt, unsigned int vfid)
 	struct xe_ggtt_node *node = config->ggtt_region;
 
 	xe_gt_assert(gt, xe_gt_is_main_type(gt));
+<<<<<<< HEAD
 	return node ? xe_ggtt_node_size(node) : 0;
+=======
+	return xe_ggtt_node_allocated(node) ? xe_ggtt_node_size(node) : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1451,8 +1502,13 @@ int xe_gt_sriov_pf_config_set_fair_dbs(struct xe_gt *gt, unsigned int vfid,
 
 static u64 pf_get_lmem_alignment(struct xe_gt *gt)
 {
+<<<<<<< HEAD
 	return xe_device_has_lmtt(gt_to_xe(gt)) ?
 		xe_lmtt_page_size(&gt_to_tile(gt)->sriov.pf.lmtt) : XE_PAGE_SIZE;
+=======
+	/* this might be platform dependent */
+	return SZ_2M;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u64 pf_get_min_spare_lmem(struct xe_gt *gt)
@@ -1579,7 +1635,14 @@ static int pf_update_vf_lmtt(struct xe_device *xe, unsigned int vfid)
 			goto fail;
 
 		offset = 0;
+<<<<<<< HEAD
 		for_each_gt_with_type(gt, xe, gtid, BIT(XE_GT_TYPE_MAIN)) {
+=======
+		for_each_gt(gt, xe, gtid) {
+			if (xe_gt_is_media_type(gt))
+				continue;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			config = pf_pick_vf_config(gt, vfid);
 			bo = config->lmem_obj;
 			if (!bo)
@@ -1624,15 +1687,22 @@ static int pf_provision_vf_lmem(struct xe_gt *gt, unsigned int vfid, u64 size)
 	struct xe_device *xe = gt_to_xe(gt);
 	struct xe_tile *tile = gt_to_tile(gt);
 	struct xe_bo *bo;
+<<<<<<< HEAD
 	u64 alignment;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	xe_gt_assert(gt, vfid);
 	xe_gt_assert(gt, IS_DGFX(xe));
 	xe_gt_assert(gt, xe_gt_is_main_type(gt));
 
+<<<<<<< HEAD
 	alignment = pf_get_lmem_alignment(gt);
 	size = round_up(size, alignment);
+=======
+	size = round_up(size, pf_get_lmem_alignment(gt));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (config->lmem_obj) {
 		err = pf_distribute_config_lmem(gt, vfid, 0);
@@ -1648,12 +1718,21 @@ static int pf_provision_vf_lmem(struct xe_gt *gt, unsigned int vfid, u64 size)
 	if (!size)
 		return 0;
 
+<<<<<<< HEAD
 	xe_gt_assert(gt, alignment == XE_PAGE_SIZE || alignment == SZ_2M);
 	bo = xe_bo_create_pin_range_novm(xe, tile,
 					 ALIGN(size, PAGE_SIZE), 0, ~0ull,
 					 ttm_bo_type_kernel,
 					 XE_BO_FLAG_VRAM(tile->mem.vram) |
 					 (alignment == SZ_2M ? XE_BO_FLAG_NEEDS_2M : 0) |
+=======
+	xe_gt_assert(gt, pf_get_lmem_alignment(gt) == SZ_2M);
+	bo = xe_bo_create_pin_range_novm(xe, tile,
+					 ALIGN(size, PAGE_SIZE), 0, ~0ull,
+					 ttm_bo_type_kernel,
+					 XE_BO_FLAG_VRAM_IF_DGFX(tile) |
+					 XE_BO_FLAG_NEEDS_2M |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 XE_BO_FLAG_PINNED |
 					 XE_BO_FLAG_PINNED_LATE_RESTORE |
 					 XE_BO_FLAG_FORCE_USER_VRAM);
@@ -1735,6 +1814,7 @@ int xe_gt_sriov_pf_config_set_lmem(struct xe_gt *gt, unsigned int vfid, u64 size
 }
 
 /**
+<<<<<<< HEAD
  * xe_gt_sriov_pf_config_bulk_set_lmem_locked() - Provision many VFs with LMEM.
  * @gt: the &xe_gt (can't be media)
  * @vfid: starting VF identifier (can't be 0)
@@ -1773,6 +1853,9 @@ int xe_gt_sriov_pf_config_bulk_set_lmem_locked(struct xe_gt *gt, unsigned int vf
 
 /**
  * xe_gt_sriov_pf_config_bulk_set_lmem() - Provision many VFs with LMEM.
+=======
+ * xe_gt_sriov_pf_config_bulk_set_lmem - Provision many VFs with LMEM.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @gt: the &xe_gt (can't be media)
  * @vfid: starting VF identifier (can't be 0)
  * @num_vfs: number of VFs to provision
@@ -1785,6 +1868,7 @@ int xe_gt_sriov_pf_config_bulk_set_lmem_locked(struct xe_gt *gt, unsigned int vf
 int xe_gt_sriov_pf_config_bulk_set_lmem(struct xe_gt *gt, unsigned int vfid,
 					unsigned int num_vfs, u64 size)
 {
+<<<<<<< HEAD
 	guard(mutex)(xe_gt_sriov_pf_master_mutex(gt));
 
 	return xe_gt_sriov_pf_config_bulk_set_lmem_locked(gt, vfid, num_vfs, size);
@@ -1831,6 +1915,28 @@ int xe_gt_sriov_pf_config_set_lmem_locked(struct xe_gt *gt, unsigned int vfid, u
 	return pf_config_set_u64_done(gt, vfid, size,
 				      pf_get_vf_config_lmem(gt, vfid),
 				      "LMEM", err);
+=======
+	unsigned int n;
+	int err = 0;
+
+	xe_gt_assert(gt, vfid);
+	xe_gt_assert(gt, xe_gt_is_main_type(gt));
+
+	if (!num_vfs)
+		return 0;
+
+	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
+	for (n = vfid; n < vfid + num_vfs; n++) {
+		err = pf_provision_vf_lmem(gt, n, size);
+		if (err)
+			break;
+	}
+	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
+
+	return pf_config_bulk_set_u64_done(gt, vfid, num_vfs, size,
+					   xe_gt_sriov_pf_config_get_lmem,
+					   "LMEM", n, err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct xe_bo *pf_get_vf_config_lmem_obj(struct xe_gt *gt, unsigned int vfid)
@@ -1900,6 +2006,7 @@ static u64 pf_estimate_fair_lmem(struct xe_gt *gt, unsigned int num_vfs)
 	return fair;
 }
 
+<<<<<<< HEAD
 static u64 pf_profile_fair_lmem(struct xe_gt *gt, unsigned int num_vfs)
 {
 	struct xe_tile *tile = gt_to_tile(gt);
@@ -1975,6 +2082,8 @@ static bool pf_needs_provision_lmem(struct xe_gt *gt, unsigned int first_vf,
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_gt_sriov_pf_config_set_fair_lmem - Provision many VFs with fair LMEM.
  * @gt: the &xe_gt (can't be media)
@@ -1988,7 +2097,10 @@ static bool pf_needs_provision_lmem(struct xe_gt *gt, unsigned int first_vf,
 int xe_gt_sriov_pf_config_set_fair_lmem(struct xe_gt *gt, unsigned int vfid,
 					unsigned int num_vfs)
 {
+<<<<<<< HEAD
 	u64 profile;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 fair;
 
 	xe_gt_assert(gt, vfid);
@@ -1998,6 +2110,7 @@ int xe_gt_sriov_pf_config_set_fair_lmem(struct xe_gt *gt, unsigned int vfid,
 	if (!xe_device_has_lmtt(gt_to_xe(gt)))
 		return 0;
 
+<<<<<<< HEAD
 	guard(mutex)(xe_gt_sriov_pf_master_mutex(gt));
 
 	if (!pf_needs_provision_lmem(gt, vfid, num_vfs))
@@ -2014,6 +2127,16 @@ int xe_gt_sriov_pf_config_set_fair_lmem(struct xe_gt *gt, unsigned int vfid,
 				 "VRAM", fair, profile);
 
 	return xe_gt_sriov_pf_config_bulk_set_lmem_locked(gt, vfid, num_vfs, fair);
+=======
+	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
+	fair = pf_estimate_fair_lmem(gt, num_vfs);
+	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
+
+	if (!fair)
+		return -ENOSPC;
+
+	return xe_gt_sriov_pf_config_bulk_set_lmem(gt, vfid, num_vfs, fair);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2704,7 +2827,11 @@ int xe_gt_sriov_pf_config_release(struct xe_gt *gt, unsigned int vfid, bool forc
 
 static void pf_sanitize_ggtt(struct xe_ggtt_node *ggtt_region, unsigned int vfid)
 {
+<<<<<<< HEAD
 	if (ggtt_region)
+=======
+	if (xe_ggtt_node_allocated(ggtt_region))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xe_ggtt_assign(ggtt_region, vfid);
 }
 
@@ -3163,7 +3290,11 @@ int xe_gt_sriov_pf_config_print_ggtt(struct xe_gt *gt, struct drm_printer *p)
 
 	for (n = 1; n <= total_vfs; n++) {
 		config = &gt->sriov.pf.vfs[n].config;
+<<<<<<< HEAD
 		if (!config->ggtt_region)
+=======
+		if (!xe_ggtt_node_allocated(config->ggtt_region))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		string_get_size(xe_ggtt_node_size(config->ggtt_region), 1, STRING_UNITS_2,

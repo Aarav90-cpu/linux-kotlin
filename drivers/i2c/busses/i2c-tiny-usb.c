@@ -213,6 +213,15 @@ static int usb_write(struct i2c_adapter *adapter, int cmd,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void i2c_tiny_usb_free(struct i2c_tiny_usb *dev)
+{
+	usb_put_dev(dev->usb_dev);
+	kfree(dev);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int i2c_tiny_usb_probe(struct usb_interface *interface,
 			      const struct usb_device_id *id)
 {
@@ -231,7 +240,11 @@ static int i2c_tiny_usb_probe(struct usb_interface *interface,
 	if (!dev)
 		goto error;
 
+<<<<<<< HEAD
 	dev->usb_dev = interface_to_usbdev(interface);
+=======
+	dev->usb_dev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev->interface = interface;
 
 	/* save our data pointer in this interface device */
@@ -271,7 +284,12 @@ static int i2c_tiny_usb_probe(struct usb_interface *interface,
 	return 0;
 
  error:
+<<<<<<< HEAD
 	kfree(dev);
+=======
+	if (dev)
+		i2c_tiny_usb_free(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return retval;
 }
@@ -282,7 +300,11 @@ static void i2c_tiny_usb_disconnect(struct usb_interface *interface)
 
 	i2c_del_adapter(&dev->adapter);
 	usb_set_intfdata(interface, NULL);
+<<<<<<< HEAD
 	kfree(dev);
+=======
+	i2c_tiny_usb_free(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&interface->dev, "disconnected\n");
 }

@@ -36,7 +36,10 @@ enum {
 	NFSD_A_SERVER_LEASETIME,
 	NFSD_A_SERVER_SCOPE,
 	NFSD_A_SERVER_MIN_THREADS,
+<<<<<<< HEAD
 	NFSD_A_SERVER_FH_KEY,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__NFSD_A_SERVER_MAX,
 	NFSD_A_SERVER_MAX = (__NFSD_A_SERVER_MAX - 1)

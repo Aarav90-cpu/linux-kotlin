@@ -24,7 +24,10 @@ src:*include/linux/mutex*.h=emit
 src:*include/linux/rcupdate.h=emit
 src:*include/linux/refcount.h=emit
 src:*include/linux/rhashtable.h=emit
+<<<<<<< HEAD
 src:*include/linux/rtmutex*.h=emit
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 src:*include/linux/rwlock*.h=emit
 src:*include/linux/rwsem.h=emit
 src:*include/linux/sched*=emit

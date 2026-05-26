@@ -4,6 +4,10 @@
 #
 #  Author:	Antonio Quartulli <antonio@openvpn.net>
 
+<<<<<<< HEAD
 OVPN_PROTO="TCP"
+=======
+PROTO="TCP"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 source test-close-socket.sh

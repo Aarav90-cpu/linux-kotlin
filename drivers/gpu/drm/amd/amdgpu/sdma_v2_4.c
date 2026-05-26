@@ -51,6 +51,10 @@
 
 static void sdma_v2_4_set_ring_funcs(struct amdgpu_device *adev);
 static void sdma_v2_4_set_buffer_funcs(struct amdgpu_device *adev);
+<<<<<<< HEAD
+=======
+static void sdma_v2_4_set_vm_pte_funcs(struct amdgpu_device *adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sdma_v2_4_set_irq_funcs(struct amdgpu_device *adev);
 
 MODULE_FIRMWARE("amdgpu/topaz_sdma.bin");
@@ -808,6 +812,7 @@ static void sdma_v2_4_ring_emit_wreg(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, val);
 }
 
+<<<<<<< HEAD
 static const struct amdgpu_vm_pte_funcs sdma_v2_4_vm_pte_funcs = {
 	.copy_pte_num_dw = 7,
 	.copy_pte = sdma_v2_4_vm_copy_pte,
@@ -816,6 +821,8 @@ static const struct amdgpu_vm_pte_funcs sdma_v2_4_vm_pte_funcs = {
 	.set_pte_pde = sdma_v2_4_vm_set_pte_pde,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sdma_v2_4_early_init(struct amdgpu_ip_block *ip_block)
 {
 	struct amdgpu_device *adev = ip_block->adev;
@@ -829,7 +836,11 @@ static int sdma_v2_4_early_init(struct amdgpu_ip_block *ip_block)
 
 	sdma_v2_4_set_ring_funcs(adev);
 	sdma_v2_4_set_buffer_funcs(adev);
+<<<<<<< HEAD
 	amdgpu_sdma_set_vm_pte_scheds(adev, &sdma_v2_4_vm_pte_funcs);
+=======
+	sdma_v2_4_set_vm_pte_funcs(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdma_v2_4_set_irq_funcs(adev);
 
 	return 0;
@@ -1239,6 +1250,29 @@ static void sdma_v2_4_set_buffer_funcs(struct amdgpu_device *adev)
 	adev->mman.buffer_funcs_ring = &adev->sdma.instance[0].ring;
 }
 
+<<<<<<< HEAD
+=======
+static const struct amdgpu_vm_pte_funcs sdma_v2_4_vm_pte_funcs = {
+	.copy_pte_num_dw = 7,
+	.copy_pte = sdma_v2_4_vm_copy_pte,
+
+	.write_pte = sdma_v2_4_vm_write_pte,
+	.set_pte_pde = sdma_v2_4_vm_set_pte_pde,
+};
+
+static void sdma_v2_4_set_vm_pte_funcs(struct amdgpu_device *adev)
+{
+	unsigned i;
+
+	adev->vm_manager.vm_pte_funcs = &sdma_v2_4_vm_pte_funcs;
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		adev->vm_manager.vm_pte_scheds[i] =
+			&adev->sdma.instance[i].ring.sched;
+	}
+	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct amdgpu_ip_block_version sdma_v2_4_ip_block = {
 	.type = AMD_IP_BLOCK_TYPE_SDMA,
 	.major = 2,

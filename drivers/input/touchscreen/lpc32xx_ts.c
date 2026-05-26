@@ -279,7 +279,11 @@ static int lpc32xx_ts_suspend(struct device *dev)
 	 * avoid calling the TSC stop and start functions as the TSC
 	 * isn't yet clocked.
 	 */
+<<<<<<< HEAD
 	guard(mutex)(&input->mutex);
+=======
+	mutex_lock(&input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(input)) {
 		if (device_may_wakeup(dev))
@@ -288,6 +292,11 @@ static int lpc32xx_ts_suspend(struct device *dev)
 			lpc32xx_stop_tsc(tsc);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -296,7 +305,11 @@ static int lpc32xx_ts_resume(struct device *dev)
 	struct lpc32xx_tsc *tsc = dev_get_drvdata(dev);
 	struct input_dev *input = tsc->dev;
 
+<<<<<<< HEAD
 	guard(mutex)(&input->mutex);
+=======
+	mutex_lock(&input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(input)) {
 		if (device_may_wakeup(dev))
@@ -305,6 +318,11 @@ static int lpc32xx_ts_resume(struct device *dev)
 			lpc32xx_setup_tsc(tsc);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

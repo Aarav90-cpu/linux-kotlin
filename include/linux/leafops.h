@@ -607,6 +607,7 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
 }
 
 /**
+<<<<<<< HEAD
  * softleaf_is_valid_pmd_entry() - Is the specified softleaf entry obtained from
  * a PMD one that we support at PMD level?
  * @entry: Entry to check.
@@ -621,6 +622,9 @@ static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
 
 /**
  * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
+=======
+ * pmd_is_valid_softleaf() - Is this PMD entry a valid leaf entry?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @pmd: PMD entry.
  *
  * PMD leaf entries are valid only if they are device private or migration
@@ -633,6 +637,7 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
 {
 	const softleaf_t entry = softleaf_from_pmd(pmd);
 
+<<<<<<< HEAD
 	return softleaf_is_valid_pmd_entry(entry);
 }
 
@@ -654,6 +659,11 @@ static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
 		return NULL;
 	}
 	return softleaf_to_folio(entry);
+=======
+	/* Only device private, migration entries valid for PMD. */
+	return softleaf_is_device_private(entry) ||
+		softleaf_is_migration(entry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif  /* CONFIG_MMU */

@@ -97,20 +97,34 @@ struct mmu_notifier_ops {
 	 * Start-end is necessary in case the secondary MMU is mapping the page
 	 * at a smaller granularity than the primary MMU.
 	 */
+<<<<<<< HEAD
 	bool (*clear_flush_young)(struct mmu_notifier *subscription,
 				  struct mm_struct *mm,
 				  unsigned long start,
 				  unsigned long end);
+=======
+	int (*clear_flush_young)(struct mmu_notifier *subscription,
+				 struct mm_struct *mm,
+				 unsigned long start,
+				 unsigned long end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * clear_young is a lightweight version of clear_flush_young. Like the
 	 * latter, it is supposed to test-and-clear the young/accessed bitflag
 	 * in the secondary pte, but it may omit flushing the secondary tlb.
 	 */
+<<<<<<< HEAD
 	bool (*clear_young)(struct mmu_notifier *subscription,
 			    struct mm_struct *mm,
 			    unsigned long start,
 			    unsigned long end);
+=======
+	int (*clear_young)(struct mmu_notifier *subscription,
+			   struct mm_struct *mm,
+			   unsigned long start,
+			   unsigned long end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * test_young is called to check the young/accessed bitflag in
@@ -118,9 +132,15 @@ struct mmu_notifier_ops {
 	 * frequently used without actually clearing the flag or tearing
 	 * down the secondary mapping on the page.
 	 */
+<<<<<<< HEAD
 	bool (*test_young)(struct mmu_notifier *subscription,
 			   struct mm_struct *mm,
 			   unsigned long address);
+=======
+	int (*test_young)(struct mmu_notifier *subscription,
+			  struct mm_struct *mm,
+			  unsigned long address);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * invalidate_range_start() and invalidate_range_end() must be
@@ -234,6 +254,7 @@ struct mmu_notifier {
 };
 
 /**
+<<<<<<< HEAD
  * struct mmu_interval_notifier_finish - mmu_interval_notifier two-pass abstraction
  * @link: Lockless list link for the notifiers pending pass list
  * @notifier: The mmu_interval_notifier for which the finish pass is called.
@@ -259,10 +280,13 @@ struct mmu_interval_notifier_finish {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct mmu_interval_notifier_ops - callback for range notification
  * @invalidate: Upon return the caller must stop using any SPTEs within this
  *              range. This function can sleep. Return false only if sleeping
  *              was required but mmu_notifier_range_blockable(range) is false.
+<<<<<<< HEAD
  * @invalidate_start: Similar to @invalidate, but intended for two-pass notifier
  *                    callbacks where the call to @invalidate_start is the first
  *                    pass and any struct mmu_interval_notifier_finish pointer
@@ -275,16 +299,21 @@ struct mmu_interval_notifier_finish {
  *                     a non-NULL *@finish from @invalidate_start. The @finish
  *                     pointer passed here is the same one returned by
  *                     @invalidate_start.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct mmu_interval_notifier_ops {
 	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
 			   const struct mmu_notifier_range *range,
 			   unsigned long cur_seq);
+<<<<<<< HEAD
 	bool (*invalidate_start)(struct mmu_interval_notifier *interval_sub,
 				 const struct mmu_notifier_range *range,
 				 unsigned long cur_seq,
 				 struct mmu_interval_notifier_finish **finish);
 	void (*invalidate_finish)(struct mmu_interval_notifier_finish *finish);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mmu_interval_notifier {
@@ -418,12 +447,23 @@ mmu_interval_check_retry(struct mmu_interval_notifier *interval_sub,
 
 extern void __mmu_notifier_subscriptions_destroy(struct mm_struct *mm);
 extern void __mmu_notifier_release(struct mm_struct *mm);
+<<<<<<< HEAD
 bool __mmu_notifier_clear_flush_young(struct mm_struct *mm,
 		unsigned long start, unsigned long end);
 bool __mmu_notifier_clear_young(struct mm_struct *mm,
 		unsigned long start, unsigned long end);
 bool __mmu_notifier_test_young(struct mm_struct *mm,
 		unsigned long address);
+=======
+extern int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
+					  unsigned long start,
+					  unsigned long end);
+extern int __mmu_notifier_clear_young(struct mm_struct *mm,
+				      unsigned long start,
+				      unsigned long end);
+extern int __mmu_notifier_test_young(struct mm_struct *mm,
+				     unsigned long address);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int __mmu_notifier_invalidate_range_start(struct mmu_notifier_range *r);
 extern void __mmu_notifier_invalidate_range_end(struct mmu_notifier_range *r);
 extern void __mmu_notifier_arch_invalidate_secondary_tlbs(struct mm_struct *mm,
@@ -443,6 +483,7 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
 		__mmu_notifier_release(mm);
 }
 
+<<<<<<< HEAD
 static inline bool mmu_notifier_clear_flush_young(struct mm_struct *mm,
 		unsigned long start, unsigned long end)
 {
@@ -465,6 +506,32 @@ static inline bool mmu_notifier_test_young(struct mm_struct *mm,
 	if (mm_has_notifiers(mm))
 		return __mmu_notifier_test_young(mm, address);
 	return false;
+=======
+static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
+					  unsigned long start,
+					  unsigned long end)
+{
+	if (mm_has_notifiers(mm))
+		return __mmu_notifier_clear_flush_young(mm, start, end);
+	return 0;
+}
+
+static inline int mmu_notifier_clear_young(struct mm_struct *mm,
+					   unsigned long start,
+					   unsigned long end)
+{
+	if (mm_has_notifiers(mm))
+		return __mmu_notifier_clear_young(mm, start, end);
+	return 0;
+}
+
+static inline int mmu_notifier_test_young(struct mm_struct *mm,
+					  unsigned long address)
+{
+	if (mm_has_notifiers(mm))
+		return __mmu_notifier_test_young(mm, address);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void
@@ -554,6 +621,58 @@ static inline void mmu_notifier_range_init_owner(
 	range->owner = owner;
 }
 
+<<<<<<< HEAD
+=======
+#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
+({									\
+	int __young;							\
+	struct vm_area_struct *___vma = __vma;				\
+	unsigned long ___address = __address;				\
+	unsigned int ___nr = __nr;					\
+	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
+	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+						  ___address,		\
+						  ___address +		\
+						  ___nr * PAGE_SIZE);	\
+	__young;							\
+})
+
+#define pmdp_clear_flush_young_notify(__vma, __address, __pmdp)		\
+({									\
+	int __young;							\
+	struct vm_area_struct *___vma = __vma;				\
+	unsigned long ___address = __address;				\
+	__young = pmdp_clear_flush_young(___vma, ___address, __pmdp);	\
+	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+						  ___address,		\
+						  ___address +		\
+							PMD_SIZE);	\
+	__young;							\
+})
+
+#define ptep_clear_young_notify(__vma, __address, __ptep)		\
+({									\
+	int __young;							\
+	struct vm_area_struct *___vma = __vma;				\
+	unsigned long ___address = __address;				\
+	__young = ptep_test_and_clear_young(___vma, ___address, __ptep);\
+	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+					    ___address + PAGE_SIZE);	\
+	__young;							\
+})
+
+#define pmdp_clear_young_notify(__vma, __address, __pmdp)		\
+({									\
+	int __young;							\
+	struct vm_area_struct *___vma = __vma;				\
+	unsigned long ___address = __address;				\
+	__young = pmdp_test_and_clear_young(___vma, ___address, __pmdp);\
+	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+					    ___address + PMD_SIZE);	\
+	__young;							\
+})
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else /* CONFIG_MMU_NOTIFIER */
 
 struct mmu_notifier_range {
@@ -590,6 +709,7 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
 {
 }
 
+<<<<<<< HEAD
 static inline bool mmu_notifier_clear_flush_young(struct mm_struct *mm,
 		unsigned long start, unsigned long end)
 {
@@ -606,6 +726,26 @@ static inline bool mmu_notifier_test_young(struct mm_struct *mm,
 		unsigned long address)
 {
 	return false;
+=======
+static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
+					  unsigned long start,
+					  unsigned long end)
+{
+	return 0;
+}
+
+static inline int mmu_notifier_clear_young(struct mm_struct *mm,
+					   unsigned long start,
+					   unsigned long end)
+{
+	return 0;
+}
+
+static inline int mmu_notifier_test_young(struct mm_struct *mm,
+					  unsigned long address)
+{
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void
@@ -639,6 +779,14 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
 
 #define mmu_notifier_range_update_to_read_only(r) false
 
+<<<<<<< HEAD
+=======
+#define clear_flush_young_ptes_notify clear_flush_young_ptes
+#define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+#define ptep_clear_young_notify ptep_test_and_clear_young
+#define pmdp_clear_young_notify pmdp_test_and_clear_young
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void mmu_notifier_synchronize(void)
 {
 }

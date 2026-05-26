@@ -410,7 +410,11 @@ extern int of_alias_get_id(const struct device_node *np, const char *stem);
 extern int of_alias_get_highest_id(const char *stem);
 
 bool of_machine_compatible_match(const char *const *compats);
+<<<<<<< HEAD
 const struct of_device_id *of_machine_get_match(const struct of_device_id *matches);
+=======
+bool of_machine_device_match(const struct of_device_id *matches);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const void *of_machine_get_match_data(const struct of_device_id *matches);
 
 /**
@@ -426,9 +430,12 @@ static inline bool of_machine_is_compatible(const char *compat)
 	return of_machine_compatible_match(compats);
 }
 
+<<<<<<< HEAD
 int of_machine_read_compatible(const char **compatible, unsigned int index);
 int of_machine_read_model(const char **model);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int of_add_property(struct device_node *np, struct property *prop);
 extern int of_remove_property(struct device_node *np, struct property *prop);
 extern int of_update_property(struct device_node *np, struct property *newprop);
@@ -854,6 +861,7 @@ static inline int of_machine_is_compatible(const char *compat)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int of_machine_read_compatible(const char **compatible,
 					     unsigned int index)
 {
@@ -865,6 +873,8 @@ static inline int of_machine_read_model(const char **model)
 	return -ENOSYS;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int of_add_property(struct device_node *np, struct property *prop)
 {
 	return 0;
@@ -880,9 +890,15 @@ static inline bool of_machine_compatible_match(const char *const *compats)
 	return false;
 }
 
+<<<<<<< HEAD
 static inline const struct of_device_id *of_machine_get_match(const struct of_device_id *matches)
 {
 	return NULL;
+=======
+static inline bool of_machine_device_match(const struct of_device_id *matches)
+{
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline const void *
@@ -990,11 +1006,14 @@ static inline int of_numa_init(void)
 }
 #endif
 
+<<<<<<< HEAD
 static inline bool of_machine_device_match(const struct of_device_id *matches)
 {
 	return of_machine_get_match(matches) != NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline struct device_node *of_find_matching_node(
 	struct device_node *from,
 	const struct of_device_id *matches)

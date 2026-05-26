@@ -14,7 +14,10 @@
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
+<<<<<<< HEAD
 #include <drm/drm_probe_helper.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define R69328_MACP		0xb0 /* Manufacturer Access CMD Protect */
 #define   R69328_MACP_ON	0x03
@@ -33,6 +36,11 @@ struct renesas_r69328 {
 	struct regulator *vdd_supply;
 	struct regulator *vddio_supply;
 	struct gpio_desc *reset_gpio;
+<<<<<<< HEAD
+=======
+
+	bool prepared;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct renesas_r69328 *to_renesas_r69328(struct drm_panel *panel)
@@ -54,6 +62,12 @@ static int renesas_r69328_prepare(struct drm_panel *panel)
 	struct device *dev = &priv->dsi->dev;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (priv->prepared)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = regulator_enable(priv->vdd_supply);
 	if (ret) {
 		dev_err(dev, "failed to enable vdd power supply\n");
@@ -72,6 +86,10 @@ static int renesas_r69328_prepare(struct drm_panel *panel)
 
 	renesas_r69328_reset(priv);
 
+<<<<<<< HEAD
+=======
+	priv->prepared = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -117,7 +135,11 @@ static int renesas_r69328_enable(struct drm_panel *panel)
 	mipi_dsi_dcs_set_display_on_multi(&ctx);
 	mipi_dsi_msleep(&ctx, 50);
 
+<<<<<<< HEAD
 	return ctx.accum_err;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int renesas_r69328_disable(struct drm_panel *panel)
@@ -129,13 +151,23 @@ static int renesas_r69328_disable(struct drm_panel *panel)
 	mipi_dsi_msleep(&ctx, 60);
 	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
 
+<<<<<<< HEAD
 	return ctx.accum_err;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int renesas_r69328_unprepare(struct drm_panel *panel)
 {
 	struct renesas_r69328 *priv = to_renesas_r69328(panel);
 
+<<<<<<< HEAD
+=======
+	if (!priv->prepared)
+		return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpiod_set_value_cansleep(priv->reset_gpio, 1);
 
 	usleep_range(5000, 6000);
@@ -143,6 +175,10 @@ static int renesas_r69328_unprepare(struct drm_panel *panel)
 	regulator_disable(priv->vddio_supply);
 	regulator_disable(priv->vdd_supply);
 
+<<<<<<< HEAD
+=======
+	priv->prepared = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -158,13 +194,33 @@ static const struct drm_display_mode renesas_r69328_mode = {
 	.vtotal = 1280 + 6 + 3 + 1,
 	.width_mm = 59,
 	.height_mm = 105,
+<<<<<<< HEAD
 	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int renesas_r69328_get_modes(struct drm_panel *panel,
 				    struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	return drm_connector_helper_get_modes_fixed(connector, &renesas_r69328_mode);
+=======
+	struct drm_display_mode *mode;
+
+	mode = drm_mode_duplicate(connector->dev, &renesas_r69328_mode);
+	if (!mode)
+		return -ENOMEM;
+
+	drm_mode_set_name(mode);
+
+	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+	connector->display_info.width_mm = mode->width_mm;
+	connector->display_info.height_mm = mode->height_mm;
+	drm_mode_probed_add(connector, mode);
+
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct drm_panel_funcs renesas_r69328_panel_funcs = {
@@ -217,7 +273,11 @@ static int renesas_r69328_probe(struct mipi_dsi_device *dsi)
 
 	drm_panel_add(&priv->panel);
 
+<<<<<<< HEAD
 	ret = devm_mipi_dsi_attach(dev, dsi);
+=======
+	ret = mipi_dsi_attach(dsi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_panel_remove(&priv->panel);
 		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
@@ -229,6 +289,14 @@ static int renesas_r69328_probe(struct mipi_dsi_device *dsi)
 static void renesas_r69328_remove(struct mipi_dsi_device *dsi)
 {
 	struct renesas_r69328 *priv = mipi_dsi_get_drvdata(dsi);
+<<<<<<< HEAD
+=======
+	int ret;
+
+	ret = mipi_dsi_detach(dsi);
+	if (ret)
+		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_panel_remove(&priv->panel);
 }

@@ -7,7 +7,13 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/printk.h>
+=======
+#include <linux/module.h>
+#include <linux/printk.h>
+#include <linux/kernel.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/interrupt.h>
@@ -15,6 +21,10 @@
 #include <linux/io.h>
 #include <linux/clk.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
+=======
+#include <linux/sched.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kthread.h>
 #include <linux/most.h>
 #include <linux/of.h>
@@ -165,8 +175,13 @@ static int try_start_dim_transfer(struct hdm_channel *hdm_ch)
 	unsigned long flags;
 	struct dim_ch_state st;
 
+<<<<<<< HEAD
 	if (!hdm_ch || !hdm_ch->is_initialized)
 		return -EINVAL;
+=======
+	BUG_ON(!hdm_ch);
+	BUG_ON(!hdm_ch->is_initialized);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_irqsave(&dim_lock, flags);
 	if (list_empty(head)) {
@@ -187,10 +202,14 @@ static int try_start_dim_transfer(struct hdm_channel *hdm_ch)
 		return -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	if (mbo->bus_address == 0) {
 		spin_unlock_irqrestore(&dim_lock, flags);
 		return -EFAULT;
 	}
+=======
+	BUG_ON(mbo->bus_address == 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dim_enqueue_buffer(&hdm_ch->ch, mbo->bus_address, buf_size)) {
 		list_del(head->next);
 		spin_unlock_irqrestore(&dim_lock, flags);
@@ -246,9 +265,15 @@ static void retrieve_netinfo(struct dim2_hdm *dev, struct mbo *mbo)
 {
 	u8 *data = mbo->virt_address;
 
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "Node Address: 0x%03x\n", (u16)data[16] << 8 | data[17]);
 	dev->link_state = data[18];
 	dev_dbg(&dev->dev, "NIState: %d\n", dev->link_state);
+=======
+	pr_info("Node Address: 0x%03x\n", (u16)data[16] << 8 | data[17]);
+	dev->link_state = data[18];
+	pr_info("NIState: %d\n", dev->link_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(dev->mac_addrs, data + 19, 6);
 	dev->deliver_netinfo++;
 	wake_up_interruptible(&dev->netinfo_waitq);
@@ -271,8 +296,13 @@ static void service_done_flag(struct dim2_hdm *dev, int ch_idx)
 	unsigned long flags;
 	u8 *data;
 
+<<<<<<< HEAD
 	if (!hdm_ch || !hdm_ch->is_initialized)
 		return;
+=======
+	BUG_ON(!hdm_ch);
+	BUG_ON(!hdm_ch->is_initialized);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_irqsave(&dim_lock, flags);
 
@@ -457,8 +487,12 @@ static int configure_channel(struct most_interface *most_iface, int ch_idx,
 	int const ch_addr = ch_idx * 2 + 2;
 	struct hdm_channel *const hdm_ch = dev->hch + ch_idx;
 
+<<<<<<< HEAD
 	if (ch_idx < 0 || ch_idx >= DMA_CHANNELS)
 		return -EINVAL;
+=======
+	BUG_ON(ch_idx < 0 || ch_idx >= DMA_CHANNELS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (hdm_ch->is_initialized)
 		return -EPERM;
@@ -473,13 +507,22 @@ static int configure_channel(struct most_interface *most_iface, int ch_idx,
 	case MOST_CH_CONTROL:
 		new_size = dim_norm_ctrl_async_buffer_size(buf_size);
 		if (new_size == 0) {
+<<<<<<< HEAD
 			dev_err(&dev->dev, "%s: too small buffer size\n", hdm_ch->name);
+=======
+			pr_err("%s: too small buffer size\n", hdm_ch->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 		ccfg->buffer_size = new_size;
 		if (new_size != buf_size)
+<<<<<<< HEAD
 			dev_warn(&dev->dev, "%s: fixed buffer size (%d -> %d)\n",
 				 hdm_ch->name, buf_size, new_size);
+=======
+			pr_warn("%s: fixed buffer size (%d -> %d)\n",
+				hdm_ch->name, buf_size, new_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irqsave(&dim_lock, flags);
 		hal_ret = dim_init_control(&hdm_ch->ch, is_tx, ch_addr,
 					   is_tx ? new_size * 2 : new_size);
@@ -487,13 +530,22 @@ static int configure_channel(struct most_interface *most_iface, int ch_idx,
 	case MOST_CH_ASYNC:
 		new_size = dim_norm_ctrl_async_buffer_size(buf_size);
 		if (new_size == 0) {
+<<<<<<< HEAD
 			dev_err(&dev->dev, "%s: too small buffer size\n", hdm_ch->name);
+=======
+			pr_err("%s: too small buffer size\n", hdm_ch->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 		ccfg->buffer_size = new_size;
 		if (new_size != buf_size)
+<<<<<<< HEAD
 			dev_warn(&dev->dev, "%s: fixed buffer size (%d -> %d)\n",
 				 hdm_ch->name, buf_size, new_size);
+=======
+			pr_warn("%s: fixed buffer size (%d -> %d)\n",
+				hdm_ch->name, buf_size, new_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irqsave(&dim_lock, flags);
 		hal_ret = dim_init_async(&hdm_ch->ch, is_tx, ch_addr,
 					 is_tx ? new_size * 2 : new_size);
@@ -501,41 +553,71 @@ static int configure_channel(struct most_interface *most_iface, int ch_idx,
 	case MOST_CH_ISOC:
 		new_size = dim_norm_isoc_buffer_size(buf_size, sub_size);
 		if (new_size == 0) {
+<<<<<<< HEAD
 			dev_err(&dev->dev, "%s: invalid sub-buffer size or too small buffer size\n",
 				hdm_ch->name);
+=======
+			pr_err("%s: invalid sub-buffer size or too small buffer size\n",
+			       hdm_ch->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 		ccfg->buffer_size = new_size;
 		if (new_size != buf_size)
+<<<<<<< HEAD
 			dev_warn(&dev->dev, "%s: fixed buffer size (%d -> %d)\n",
 				 hdm_ch->name, buf_size, new_size);
+=======
+			pr_warn("%s: fixed buffer size (%d -> %d)\n",
+				hdm_ch->name, buf_size, new_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irqsave(&dim_lock, flags);
 		hal_ret = dim_init_isoc(&hdm_ch->ch, is_tx, ch_addr, sub_size);
 		break;
 	case MOST_CH_SYNC:
 		new_size = dim_norm_sync_buffer_size(buf_size, sub_size);
 		if (new_size == 0) {
+<<<<<<< HEAD
 			dev_err(&dev->dev, "%s: invalid sub-buffer size or too small buffer size\n",
 				hdm_ch->name);
+=======
+			pr_err("%s: invalid sub-buffer size or too small buffer size\n",
+			       hdm_ch->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 		ccfg->buffer_size = new_size;
 		if (new_size != buf_size)
+<<<<<<< HEAD
 			dev_warn(&dev->dev, "%s: fixed buffer size (%d -> %d)\n",
 				 hdm_ch->name, buf_size, new_size);
+=======
+			pr_warn("%s: fixed buffer size (%d -> %d)\n",
+				hdm_ch->name, buf_size, new_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_lock_irqsave(&dim_lock, flags);
 		hal_ret = dim_init_sync(&hdm_ch->ch, is_tx, ch_addr, sub_size);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(&dev->dev, "%s: configure failed, bad channel type: %d\n",
 			hdm_ch->name, ccfg->data_type);
+=======
+		pr_err("%s: configure failed, bad channel type: %d\n",
+		       hdm_ch->name, ccfg->data_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
 	if (hal_ret != DIM_NO_ERROR) {
 		spin_unlock_irqrestore(&dim_lock, flags);
+<<<<<<< HEAD
 		dev_err(&dev->dev, "%s: configure failed (%d), type: %d, is_tx: %d\n",
 			hdm_ch->name, hal_ret, ccfg->data_type, (int)is_tx);
+=======
+		pr_err("%s: configure failed (%d), type: %d, is_tx: %d\n",
+		       hdm_ch->name, hal_ret, ccfg->data_type, (int)is_tx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENODEV;
 	}
 
@@ -570,8 +652,12 @@ static int enqueue(struct most_interface *most_iface, int ch_idx,
 	struct hdm_channel *hdm_ch = dev->hch + ch_idx;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (ch_idx < 0 || ch_idx >= DMA_CHANNELS)
 		return -EINVAL;
+=======
+	BUG_ON(ch_idx < 0 || ch_idx >= DMA_CHANNELS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hdm_ch->is_initialized)
 		return -EPERM;
@@ -610,7 +696,11 @@ static void request_netinfo(struct most_interface *most_iface, int ch_idx,
 		return;
 
 	if (dev->atx_idx < 0) {
+<<<<<<< HEAD
 		dev_err(&dev->dev, "Async Tx Not initialized\n");
+=======
+		pr_err("Async Tx Not initialized\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -647,8 +737,12 @@ static int poison_channel(struct most_interface *most_iface, int ch_idx)
 	u8 hal_ret;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (ch_idx < 0 || ch_idx >= DMA_CHANNELS)
 		return -EINVAL;
+=======
+	BUG_ON(ch_idx < 0 || ch_idx >= DMA_CHANNELS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hdm_ch->is_initialized)
 		return -EPERM;
@@ -660,7 +754,11 @@ static int poison_channel(struct most_interface *most_iface, int ch_idx)
 		dev->atx_idx = -1;
 	spin_unlock_irqrestore(&dim_lock, flags);
 	if (hal_ret != DIM_NO_ERROR) {
+<<<<<<< HEAD
 		dev_err(&dev->dev, "HAL Failed to close channel %s\n", hdm_ch->name);
+=======
+		pr_err("HAL Failed to close channel %s\n", hdm_ch->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EFAULT;
 	}
 
@@ -802,7 +900,12 @@ static int dim2_probe(struct platform_device *pdev)
 			dev_fcnt = pdata->fcnt;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(&pdev->dev, "sync: num of frames per sub-buffer: %u\n", dev_fcnt);
+=======
+	dev_info(&pdev->dev, "sync: num of frames per sub-buffer: %u\n",
+		 dev_fcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hal_ret = dim_startup(dev->io_base, dev->clk_speed, dev_fcnt);
 	if (hal_ret != DIM_NO_ERROR) {
 		dev_err(&pdev->dev, "dim_startup failed: %d\n", hal_ret);
@@ -927,6 +1030,7 @@ static int fsl_mx6_enable(struct platform_device *pdev)
 	int ret;
 
 	dev->clk = devm_clk_get(&pdev->dev, "mlb");
+<<<<<<< HEAD
 	if (IS_ERR(dev->clk))
 		return dev_err_probe(&pdev->dev, PTR_ERR(dev->clk),
 				     "unable to get mlb clock\n");
@@ -934,12 +1038,23 @@ static int fsl_mx6_enable(struct platform_device *pdev)
 	ret = clk_prepare_enable(dev->clk);
 	if (ret) {
 		dev_err(&pdev->dev, "clk_prepare_enable failed\n");
+=======
+	if (IS_ERR_OR_NULL(dev->clk)) {
+		dev_err(&pdev->dev, "unable to get mlb clock\n");
+		return -EFAULT;
+	}
+
+	ret = clk_prepare_enable(dev->clk);
+	if (ret) {
+		dev_err(&pdev->dev, "%s\n", "clk_prepare_enable failed");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
 	if (dev->clk_speed >= CLK_2048FS) {
 		/* enable pll */
 		dev->clk_pll = devm_clk_get(&pdev->dev, "pll8_mlb");
+<<<<<<< HEAD
 		if (IS_ERR(dev->clk_pll)) {
 			clk_disable_unprepare(dev->clk);
 			return dev_err_probe(&pdev->dev, PTR_ERR(dev->clk_pll),
@@ -953,6 +1068,16 @@ static int fsl_mx6_enable(struct platform_device *pdev)
 			clk_disable_unprepare(dev->clk);
 			return ret;
 		}
+=======
+		if (IS_ERR_OR_NULL(dev->clk_pll)) {
+			dev_err(&pdev->dev, "unable to get mlb pll clock\n");
+			clk_disable_unprepare(dev->clk);
+			return -EFAULT;
+		}
+
+		writel(0x888, dev->io_base + 0x38);
+		clk_prepare_enable(dev->clk_pll);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -981,7 +1106,11 @@ static int rcar_gen2_enable(struct platform_device *pdev)
 
 	ret = clk_prepare_enable(dev->clk);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "clk_prepare_enable failed\n");
+=======
+		dev_err(&pdev->dev, "%s\n", "clk_prepare_enable failed");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -1026,7 +1155,11 @@ static int rcar_gen3_enable(struct platform_device *pdev)
 
 	ret = clk_prepare_enable(dev->clk);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "clk_prepare_enable failed\n");
+=======
+		dev_err(&pdev->dev, "%s\n", "clk_prepare_enable failed");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 

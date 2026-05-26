@@ -733,12 +733,20 @@ void vg_clk_mgr_construct(
 	if (clk_mgr->base.base.dentist_vco_freq_khz == 0)
 		clk_mgr->base.base.dentist_vco_freq_khz = 3600000;
 
+<<<<<<< HEAD
 	if (ctx->dc_bios->integrated_info &&
 	    ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType)
 		vg_bw_params.wm_table = lpddr5_wm_table;
 	else
 		vg_bw_params.wm_table = ddr4_wm_table;
 
+=======
+	if (ctx->dc_bios->integrated_info->memory_type == LpDdr5MemType) {
+		vg_bw_params.wm_table = lpddr5_wm_table;
+	} else {
+		vg_bw_params.wm_table = ddr4_wm_table;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Saved clocks configured at boot for debug purposes */
 	vg_dump_clk_registers(&clk_mgr->base.base.boot_snapshot, &clk_mgr->base.base, &log_info);
 

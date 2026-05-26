@@ -24,6 +24,7 @@
 /* ACPI notifier chain */
 static BLOCKING_NOTIFIER_HEAD(acpi_chain_head);
 
+<<<<<<< HEAD
 int acpi_notifier_call_chain(const char *device_class,
 			     const char *bus_id, u32 type, u32 data)
 {
@@ -31,6 +32,14 @@ int acpi_notifier_call_chain(const char *device_class,
 
 	strscpy(event.device_class, device_class);
 	strscpy(event.bus_id, bus_id);
+=======
+int acpi_notifier_call_chain(struct acpi_device *dev, u32 type, u32 data)
+{
+	struct acpi_bus_event event;
+
+	strscpy(event.device_class, dev->pnp.device_class);
+	strscpy(event.bus_id, dev->pnp.bus_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	event.type = type;
 	event.data = data;
 	return (blocking_notifier_call_chain(&acpi_chain_head, 0, (void *)&event)

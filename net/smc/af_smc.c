@@ -1400,8 +1400,12 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm *aclc,
 	int i;
 
 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
+<<<<<<< HEAD
 		if (ini->ism_dev[i] &&
 		    ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
+=======
+		if (ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ini->ism_selected = i;
 			return 0;
 		}
@@ -1629,8 +1633,17 @@ static void smc_connect_work(struct work_struct *work)
 	lock_sock(&smc->sk);
 	if (rc != 0 || smc->sk.sk_err) {
 		smc->sk.sk_state = SMC_CLOSED;
+<<<<<<< HEAD
 		if (!smc->sk.sk_err)
 			smc->sk.sk_err = (rc == -EAGAIN) ? EPIPE : -rc;
+=======
+		if (rc == -EPIPE || rc == -EAGAIN)
+			smc->sk.sk_err = EPIPE;
+		else if (rc == -ECONNREFUSED)
+			smc->sk.sk_err = ECONNREFUSED;
+		else if (signal_pending(current))
+			smc->sk.sk_err = -sock_intr_errno(timeo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sock_put(&smc->sk); /* passive closing */
 		goto out;
 	}
@@ -3055,6 +3068,7 @@ static int __smc_setsockopt(struct socket *sock, int level, int optname,
 
 	smc = smc_sk(sk);
 
+<<<<<<< HEAD
 	/* pre-fetch user data outside the lock */
 	if (optname == SMC_LIMIT_HS) {
 		if (optlen < sizeof(int))
@@ -3066,6 +3080,20 @@ static int __smc_setsockopt(struct socket *sock, int level, int optname,
 	lock_sock(sk);
 	switch (optname) {
 	case SMC_LIMIT_HS:
+=======
+	lock_sock(sk);
+	switch (optname) {
+	case SMC_LIMIT_HS:
+		if (optlen < sizeof(int)) {
+			rc = -EINVAL;
+			break;
+		}
+		if (copy_from_sockptr(&val, optval, sizeof(int))) {
+			rc = -EFAULT;
+			break;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		smc->limit_smc_hs = !!val;
 		rc = 0;
 		break;

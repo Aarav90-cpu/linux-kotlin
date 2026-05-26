@@ -8,7 +8,11 @@
 
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_mad.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+#include <rdma/ib_umem.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <rdma/mana-abi.h>
 #include <rdma/uverbs_ioctl.h>
 #include <linux/dmapool.h>
@@ -125,11 +129,14 @@ struct mana_ib_ah {
 	dma_addr_t dma_handle;
 };
 
+<<<<<<< HEAD
 struct mana_ib_mw {
 	struct ib_mw ibmw;
 	mana_handle_t mw_handle;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mana_ib_mr {
 	struct ib_mr ibmr;
 	struct ib_umem *umem;
@@ -741,9 +748,12 @@ void mana_drain_gsi_sqs(struct mana_ib_dev *mdev);
 int mana_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc);
 int mana_ib_arm_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags flags);
 
+<<<<<<< HEAD
 int mana_ib_alloc_mw(struct ib_mw *mw, struct ib_udata *udata);
 int mana_ib_dealloc_mw(struct ib_mw *mw);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct ib_mr *mana_ib_reg_user_mr_dmabuf(struct ib_pd *ibpd, u64 start, u64 length,
 					 u64 iova, int fd, int mr_access_flags,
 					 struct ib_dmah *dmah,

@@ -173,7 +173,11 @@ static int fd_configure_device(struct se_device *dev)
 		 */
 		dev->dev_attrib.max_write_same_len = 0xFFFF;
 
+<<<<<<< HEAD
 		if (!bdev_rot(bdev))
+=======
+		if (bdev_nonrot(bdev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->dev_attrib.is_nonrot = 1;
 	} else {
 		if (!(fd_dev->fbd_flags & FBDF_HAS_SIZE)) {

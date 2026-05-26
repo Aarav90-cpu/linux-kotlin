@@ -5,7 +5,11 @@
 
 lib-y += delay.o string.o uaccess.o find.o spinlock.o tishift.o
 lib-y += csum-partial.o
+<<<<<<< HEAD
 obj-y += mem.o
+=======
+obj-y += mem.o xor.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 lib-$(CONFIG_KPROBES) += probes.o
 lib-$(CONFIG_UPROBES) += probes.o
 obj-$(CONFIG_S390_KPROBES_SANITY_TEST) += test_kprobes_s390.o

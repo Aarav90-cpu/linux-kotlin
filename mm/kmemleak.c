@@ -241,7 +241,11 @@ static int kmemleak_skip_disable;
 /* If there are leaks that can be reported */
 static bool kmemleak_found_leaks;
 
+<<<<<<< HEAD
 static bool kmemleak_verbose = IS_ENABLED(CONFIG_DEBUG_KMEMLEAK_VERBOSE);
+=======
+static bool kmemleak_verbose;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_named(verbose, kmemleak_verbose, bool, 0600);
 
 static void kmemleak_disable(void);
@@ -1505,10 +1509,19 @@ static int scan_should_stop(void)
 	 * This function may be called from either process or kthread context,
 	 * hence the need to check for both stop conditions.
 	 */
+<<<<<<< HEAD
 	if (current->flags & PF_KTHREAD)
 		return kthread_should_stop();
 
 	return signal_pending(current);
+=======
+	if (current->mm)
+		return signal_pending(current);
+	else
+		return kthread_should_stop();
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

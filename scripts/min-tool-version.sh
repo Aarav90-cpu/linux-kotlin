@@ -31,10 +31,17 @@ llvm)
 	fi
 	;;
 rustc)
+<<<<<<< HEAD
 	echo 1.85.0
 	;;
 bindgen)
 	echo 0.71.1
+=======
+	echo 1.78.0
+	;;
+bindgen)
+	echo 0.65.1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	;;
 *)
 	echo "$1: unknown tool" >&2

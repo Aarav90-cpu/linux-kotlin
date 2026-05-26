@@ -199,6 +199,7 @@
 &mcu_pmx0 {
 	status = "okay";
 
+<<<<<<< HEAD
 	mcu_mcan0_tx_pins_default: mcu-mcan0-tx-default-pins {
 		pinctrl-single,pins = <
 			AM62DX_MCU_IOPAD(0x0034, PIN_OUTPUT, 0) /* (C7) MCU_MCAN0_TX */
@@ -235,6 +236,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pmic_irq_pins_default: pmic-irq-default-pins {
 		pinctrl-single,pins = <
 			AM62DX_IOPAD(0x01f4, PIN_INPUT, 7) /* (F17) EXTINTn.GPIO1_31 */
@@ -264,10 +267,13 @@
 &wkup_uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&wkup_uart0_pins_default>;
+<<<<<<< HEAD
 	wakeup-source = <&system_io_ddr>,
 			<&system_deep_sleep>,
 			<&system_mcu_only>,
 			<&system_standby>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bootph-all;
 	status = "reserved";
 };
@@ -281,6 +287,7 @@
 		bootph-all;
 	};
 
+<<<<<<< HEAD
 	main_uart0_pins_wakeup: main-uart0-wakeup-pins {
 		pinctrl-single,pins = <
 			AM62DX_IOPAD(0x01c8, PIN_INPUT | PIN_WKUP_EN, 0) /* (E14) UART0_RXD */
@@ -288,6 +295,8 @@
 		>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	main_i2c0_pins_default: main-i2c0-default-pins {
 		pinctrl-single,pins = <
 			AM62DX_IOPAD(0x01e0, PIN_INPUT_PULLUP, 0) /* (D17) I2C0_SCL */
@@ -634,12 +643,17 @@
 };
 
 &main_uart0 {
+<<<<<<< HEAD
 	pinctrl-names = "default", "wakeup";
 	pinctrl-0 = <&main_uart0_pins_default>;
 	pinctrl-1 = <&main_uart0_pins_wakeup>;
 	wakeup-source = <&system_deep_sleep>,
 			<&system_mcu_only>,
 			<&system_standby>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_uart0_pins_default>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bootph-all;
 	status = "okay";
 };
@@ -788,6 +802,7 @@
 	firmware-name = "am62d-c71_0-fw";
 };
 
+<<<<<<< HEAD
 &mcu_mcan0 {
 	pinctrl-names = "default", "wakeup";
 	pinctrl-0 = <&mcu_mcan0_tx_pins_default>, <&mcu_mcan0_rx_pins_default>;
@@ -817,4 +832,6 @@
 			<&system_standby>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "k3-am62a-ti-ipc-firmware.dtsi"

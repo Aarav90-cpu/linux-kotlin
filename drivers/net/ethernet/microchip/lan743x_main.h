@@ -27,7 +27,10 @@
 #define ID_REV_CHIP_REV_MASK_		(0x0000FFFF)
 #define ID_REV_CHIP_REV_A0_		(0x00000000)
 #define ID_REV_CHIP_REV_B0_		(0x00000010)
+<<<<<<< HEAD
 #define ID_REV_CHIP_REV_PCI11X1X_A0_	(0x000000A0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ID_REV_CHIP_REV_PCI11X1X_B0_	(0x000000B0)
 
 #define FPGA_REV			(0x04)

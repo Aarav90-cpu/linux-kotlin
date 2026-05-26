@@ -2710,7 +2710,11 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf)
 bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
 {
 	struct ice_hw *hw = &pf->hw;
+<<<<<<< HEAD
 	int ret;
+=======
+	unsigned int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Check software indicator */
 	switch (pf->ptp.tx_interrupt_mode) {
@@ -2731,6 +2735,7 @@ bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
 	}
 
 	/* Check hardware indicator */
+<<<<<<< HEAD
 	ret = ice_check_phy_tx_tstamp_ready(hw);
 	if (ret < 0) {
 		dev_dbg(ice_pf_to_dev(pf), "Unable to read PHY Tx timestamp ready bitmap, err %d\n",
@@ -2744,6 +2749,18 @@ bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
 	 * value if there was an error (which we checked for above).
 	 */
 	return ret > 0;
+=======
+	for (i = 0; i < ICE_GET_QUAD_NUM(hw->ptp.num_lports); i++) {
+		u64 tstamp_ready = 0;
+		int err;
+
+		err = ice_get_phy_tx_tstamp_ready(&pf->hw, i, &tstamp_ready);
+		if (err || tstamp_ready)
+			return true;
+	}
+
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2827,7 +2844,12 @@ static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
 {
 	struct device *dev = ice_pf_to_dev(pf);
 	struct ice_hw *hw = &pf->hw;
+<<<<<<< HEAD
 	int ret;
+=======
+	bool trigger_oicr = false;
+	unsigned int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pf->ptp.port.tx.has_ready_bitmap)
 		return;
@@ -2835,11 +2857,29 @@ static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
 	if (!ice_pf_src_tmr_owned(pf))
 		return;
 
+<<<<<<< HEAD
 	ret = ice_check_phy_tx_tstamp_ready(hw);
 	if (ret < 0) {
 		dev_dbg(dev, "PTP periodic task unable to read PHY timestamp ready bitmap, err %d\n",
 			ret);
 	} else if (ret) {
+=======
+	for (i = 0; i < ICE_GET_QUAD_NUM(hw->ptp.num_lports); i++) {
+		u64 tstamp_ready;
+		int err;
+
+		err = ice_get_phy_tx_tstamp_ready(&pf->hw, i, &tstamp_ready);
+		if (!err && tstamp_ready) {
+			trigger_oicr = true;
+			break;
+		}
+	}
+
+	if (trigger_oicr) {
+		/* Trigger a software interrupt, to ensure this data
+		 * gets processed.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_dbg(dev, "PTP periodic task detected waiting timestamps. Triggering Tx timestamp interrupt now.\n");
 
 		wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M);

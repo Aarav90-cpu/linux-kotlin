@@ -409,8 +409,15 @@ static int ad7266_probe(struct spi_device *spi)
 				st->gpios[i] = devm_gpiod_get(&spi->dev,
 						      ad7266_gpio_labels[i],
 						      GPIOD_OUT_LOW);
+<<<<<<< HEAD
 				if (IS_ERR(st->gpios[i]))
 					return PTR_ERR(st->gpios[i]);
+=======
+				if (IS_ERR(st->gpios[i])) {
+					ret = PTR_ERR(st->gpios[i]);
+					return ret;
+				}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 	} else {

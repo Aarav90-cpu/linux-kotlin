@@ -16,20 +16,35 @@ struct svm_test_data {
 	/* VMCB */
 	struct vmcb *vmcb; /* gva */
 	void *vmcb_hva;
+<<<<<<< HEAD
 	u64 vmcb_gpa;
+=======
+	uint64_t vmcb_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* host state-save area */
 	struct vmcb_save_area *save_area; /* gva */
 	void *save_area_hva;
+<<<<<<< HEAD
 	u64 save_area_gpa;
+=======
+	uint64_t save_area_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* MSR-Bitmap */
 	void *msr; /* gva */
 	void *msr_hva;
+<<<<<<< HEAD
 	u64 msr_gpa;
 
 	/* NPT */
 	u64 ncr3_gpa;
+=======
+	uint64_t msr_gpa;
+
+	/* NPT */
+	uint64_t ncr3_gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline void vmmcall(void)
@@ -56,9 +71,15 @@ static inline void vmmcall(void)
 		"clgi\n"	\
 		)
 
+<<<<<<< HEAD
 struct svm_test_data *vcpu_alloc_svm(struct kvm_vm *vm, gva_t *p_svm_gva);
 void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_rsp);
 void run_guest(struct vmcb *vmcb, u64 vmcb_gpa);
+=======
+struct svm_test_data *vcpu_alloc_svm(struct kvm_vm *vm, vm_vaddr_t *p_svm_gva);
+void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_rsp);
+void run_guest(struct vmcb *vmcb, uint64_t vmcb_gpa);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline bool kvm_cpu_has_npt(void)
 {

@@ -154,8 +154,15 @@ EXPORT_SYMBOL(ps2_end_command);
  */
 void ps2_drain(struct ps2dev *ps2dev, size_t maxbytes, unsigned int timeout)
 {
+<<<<<<< HEAD
 	if (WARN_ON(maxbytes > sizeof(ps2dev->cmdbuf)))
 		maxbytes = sizeof(ps2dev->cmdbuf);
+=======
+	if (maxbytes > sizeof(ps2dev->cmdbuf)) {
+		WARN_ON(1);
+		maxbytes = sizeof(ps2dev->cmdbuf);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ps2_begin_command(ps2dev);
 
@@ -268,11 +275,23 @@ int __ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)
 	int i;
 	u8 send_param[16];
 
+<<<<<<< HEAD
 	if (WARN_ON(receive > sizeof(ps2dev->cmdbuf)))
 		return -EINVAL;
 
 	if (WARN_ON(send && !param))
 		return -EINVAL;
+=======
+	if (receive > sizeof(ps2dev->cmdbuf)) {
+		WARN_ON(1);
+		return -EINVAL;
+	}
+
+	if (send && !param) {
+		WARN_ON(1);
+		return -EINVAL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memcpy(send_param, param, send);
 

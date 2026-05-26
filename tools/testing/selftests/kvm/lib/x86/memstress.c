@@ -16,7 +16,11 @@
 #include "svm_util.h"
 #include "vmx.h"
 
+<<<<<<< HEAD
 void memstress_l2_guest_code(u64 vcpu_id)
+=======
+void memstress_l2_guest_code(uint64_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	memstress_guest_code(vcpu_id);
 	vmcall();
@@ -32,7 +36,11 @@ __asm__(
 
 #define L2_GUEST_STACK_SIZE 64
 
+<<<<<<< HEAD
 static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
+=======
+static void l1_vmx_code(struct vmx_pages *vmx, uint64_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
 	unsigned long *rsp;
@@ -51,7 +59,11 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
+=======
+static void l1_svm_code(struct svm_test_data *svm, uint64_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
 	unsigned long *rsp;
@@ -67,7 +79,11 @@ static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
 }
 
 
+<<<<<<< HEAD
 static void memstress_l1_guest_code(void *data, u64 vcpu_id)
+=======
+static void memstress_l1_guest_code(void *data, uint64_t vcpu_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (this_cpu_has(X86_FEATURE_VMX))
 		l1_vmx_code(data, vcpu_id);
@@ -75,7 +91,11 @@ static void memstress_l1_guest_code(void *data, u64 vcpu_id)
 		l1_svm_code(data, vcpu_id);
 }
 
+<<<<<<< HEAD
 u64 memstress_nested_pages(int nr_vcpus)
+=======
+uint64_t memstress_nested_pages(int nr_vcpus)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * 513 page tables is enough to identity-map 256 TiB of L2 with 1G
@@ -87,7 +107,11 @@ u64 memstress_nested_pages(int nr_vcpus)
 
 static void memstress_setup_ept_mappings(struct kvm_vm *vm)
 {
+<<<<<<< HEAD
 	u64 start, end;
+=======
+	uint64_t start, end;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Identity map the first 4G and the test region with 1G pages so that
@@ -104,7 +128,11 @@ static void memstress_setup_ept_mappings(struct kvm_vm *vm)
 void memstress_setup_nested(struct kvm_vm *vm, int nr_vcpus, struct kvm_vcpu *vcpus[])
 {
 	struct kvm_regs regs;
+<<<<<<< HEAD
 	gva_t nested_gva;
+=======
+	vm_vaddr_t nested_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int vcpu_id;
 
 	TEST_REQUIRE(kvm_cpu_has_tdp());

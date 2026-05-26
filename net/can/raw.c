@@ -207,8 +207,12 @@ static void raw_rcv(struct sk_buff *oskb, void *data)
 	if (oskb->sk == sk)
 		*pflags |= MSG_CONFIRM;
 
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(sk, skb);
 	if (reason)
+=======
+	if (sock_queue_rcv_skb_reason(sk, skb, &reason) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sk_skb_reason_drop(sk, skb, reason);
 }
 
@@ -770,7 +774,11 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
 }
 
 static int raw_getsockopt(struct socket *sock, int level, int optname,
+<<<<<<< HEAD
 			  sockopt_t *opt)
+=======
+			  char __user *optval, int __user *optlen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct sock *sk = sock->sk;
 	struct raw_sock *ro = raw_sk(sk);
@@ -780,7 +788,12 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 
 	if (level != SOL_CAN_RAW)
 		return -EINVAL;
+<<<<<<< HEAD
 	len = opt->optlen;
+=======
+	if (get_user(len, optlen))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (len < 0)
 		return -EINVAL;
 
@@ -796,12 +809,21 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 			if (len < fsize) {
 				/* return -ERANGE and needed space in optlen */
 				err = -ERANGE;
+<<<<<<< HEAD
 				opt->optlen = fsize;
 			} else {
 				if (len > fsize)
 					len = fsize;
 				if (copy_to_iter(ro->filter, len,
 						 &opt->iter_out) != len)
+=======
+				if (put_user(fsize, optlen))
+					err = -EFAULT;
+			} else {
+				if (len > fsize)
+					len = fsize;
+				if (copy_to_user(optval, ro->filter, len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					err = -EFAULT;
 			}
 		} else {
@@ -810,7 +832,11 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 		release_sock(sk);
 
 		if (!err)
+<<<<<<< HEAD
 			opt->optlen = len;
+=======
+			err = put_user(len, optlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 	case CAN_RAW_ERR_FILTER:
@@ -854,6 +880,7 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 		if (len < sizeof(ro->raw_vcid_opts)) {
 			/* return -ERANGE and needed space in optlen */
 			err = -ERANGE;
+<<<<<<< HEAD
 			opt->optlen = sizeof(ro->raw_vcid_opts);
 		} else {
 			if (len > sizeof(ro->raw_vcid_opts))
@@ -864,6 +891,18 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 		}
 		if (!err)
 			opt->optlen = len;
+=======
+			if (put_user(sizeof(ro->raw_vcid_opts), optlen))
+				err = -EFAULT;
+		} else {
+			if (len > sizeof(ro->raw_vcid_opts))
+				len = sizeof(ro->raw_vcid_opts);
+			if (copy_to_user(optval, &ro->raw_vcid_opts, len))
+				err = -EFAULT;
+		}
+		if (!err)
+			err = put_user(len, optlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 	case CAN_RAW_JOIN_FILTERS:
@@ -877,8 +916,14 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
 		return -ENOPROTOOPT;
 	}
 
+<<<<<<< HEAD
 	opt->optlen = len;
 	if (copy_to_iter(val, len, &opt->iter_out) != len)
+=======
+	if (put_user(len, optlen))
+		return -EFAULT;
+	if (copy_to_user(optval, val, len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 	return 0;
 }
@@ -1085,7 +1130,11 @@ static const struct proto_ops raw_ops = {
 	.listen        = sock_no_listen,
 	.shutdown      = sock_no_shutdown,
 	.setsockopt    = raw_setsockopt,
+<<<<<<< HEAD
 	.getsockopt_iter = raw_getsockopt,
+=======
+	.getsockopt    = raw_getsockopt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sendmsg       = raw_sendmsg,
 	.recvmsg       = raw_recvmsg,
 	.mmap          = sock_no_mmap,

@@ -46,7 +46,11 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
 
 static const struct nla_policy nft_quota_policy[NFTA_QUOTA_MAX + 1] = {
 	[NFTA_QUOTA_BYTES]	= { .type = NLA_U64 },
+<<<<<<< HEAD
 	[NFTA_QUOTA_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NFT_QUOTA_F_INV),
+=======
+	[NFTA_QUOTA_FLAGS]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_QUOTA_CONSUMED]	= { .type = NLA_U64 },
 };
 
@@ -266,6 +270,10 @@ static const struct nft_expr_ops nft_quota_ops = {
 	.destroy	= nft_quota_destroy,
 	.clone		= nft_quota_clone,
 	.dump		= nft_quota_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= NFT_REDUCE_READONLY,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct nft_expr_type nft_quota_type __read_mostly = {

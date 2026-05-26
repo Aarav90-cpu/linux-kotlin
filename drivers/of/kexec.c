@@ -175,7 +175,11 @@ int __init ima_free_kexec_buffer(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	memblock_phys_free(addr, size);
+=======
+	memblock_free_late(addr, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 #endif
@@ -423,6 +427,7 @@ void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
 		if (ret)
 			goto out;
 
+<<<<<<< HEAD
 		if (image->dm_crypt_keys_addr != 0) {
 			ret = fdt_appendprop_addrrange(fdt, 0, chosen_node,
 						       "linux,dmcryptkeys",
@@ -442,6 +447,8 @@ void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
 				goto out;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CRASH_DUMP
 		/* add linux,usable-memory-range */
 		ret = fdt_appendprop_addrrange(fdt, 0, chosen_node,

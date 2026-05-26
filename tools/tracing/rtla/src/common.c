@@ -5,14 +5,22 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <getopt.h>
 #include <sys/sysinfo.h>
 
+=======
+#include <unistd.h>
+#include <getopt.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "common.h"
 
 struct trace_instance *trace_inst;
 volatile int stop_tracing;
+<<<<<<< HEAD
 int nr_cpus;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void stop_trace(int sig)
 {
@@ -42,6 +50,7 @@ static void set_signals(struct common_params *params)
 }
 
 /*
+<<<<<<< HEAD
  * unset_signals - unsets the signals to stop the tool
  */
 static void unset_signals(struct common_params *params)
@@ -84,6 +93,8 @@ int getopt_auto(int argc, char **argv, const struct option *long_opts)
 }
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * common_parse_options - parse common command line options
  *
  * @argc: argument count
@@ -113,7 +124,11 @@ int common_parse_options(int argc, char **argv, struct common_params *common)
 	};
 
 	opterr = 0;
+<<<<<<< HEAD
 	c = getopt_auto(argc, argv, long_options);
+=======
+	c = getopt_long(argc, argv, "c:C::Dd:e:H:P:", long_options, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	opterr = 1;
 
 	switch (c) {
@@ -179,7 +194,11 @@ common_apply_config(struct osnoise_tool *tool, struct common_params *params)
 	}
 
 	if (!params->cpus) {
+<<<<<<< HEAD
 		for (i = 0; i < nr_cpus; i++)
+=======
+		for (i = 0; i < sysconf(_SC_NPROCESSORS_CONF); i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			CPU_SET(i, &params->monitored_cpus);
 	}
 
@@ -219,6 +238,7 @@ out_err:
 }
 
 
+<<<<<<< HEAD
 /**
  * common_threshold_handler - handle latency threshold overflow
  * @tool: pointer to the osnoise_tool instance containing trace contexts
@@ -251,6 +271,8 @@ err:
 	return -1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int run_tool(struct tool_ops *ops, int argc, char *argv[])
 {
 	struct common_params *params;
@@ -259,7 +281,10 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
 	bool stopped;
 	int retval;
 
+<<<<<<< HEAD
 	nr_cpus = get_nprocs_conf();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	params = ops->parse_args(argc, argv);
 	if (!params)
 		exit(1);
@@ -348,10 +373,15 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
 		params->user.cgroup_name = params->cgroup_name;
 
 		retval = pthread_create(&user_thread, NULL, timerlat_u_dispatcher, &params->user);
+<<<<<<< HEAD
 		if (retval) {
 			err_msg("Error creating timerlat user-space threads\n");
 			goto out_trace;
 		}
+=======
+		if (retval)
+			err_msg("Error creating timerlat user-space threads\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	retval = ops->enable(tool);
@@ -363,7 +393,11 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
 
 	retval = ops->main(tool);
 	if (retval)
+<<<<<<< HEAD
 		goto out_signals;
+=======
+		goto out_trace;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (params->user_workload && !params->user.stopped_running) {
 		params->user.should_run = 0;
@@ -385,8 +419,11 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
 	if (ops->analyze)
 		ops->analyze(tool, stopped);
 
+<<<<<<< HEAD
 out_signals:
 	unset_signals(params);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_trace:
 	trace_events_destroy(&tool->record->trace, params->events);
 	params->events = NULL;
@@ -433,6 +470,7 @@ int top_main_loop(struct osnoise_tool *tool)
 				/* stop tracing requested, do not perform actions */
 				return 0;
 
+<<<<<<< HEAD
 			retval = common_threshold_handler(tool);
 			if (retval)
 				return retval;
@@ -441,6 +479,19 @@ int top_main_loop(struct osnoise_tool *tool)
 			if (!should_continue_tracing(params))
 				return 0;
 
+=======
+			actions_perform(&params->threshold_actions);
+
+			if (!params->threshold_actions.continue_flag)
+				/* continue flag not set, break */
+				return 0;
+
+			/* continue action reached, re-enable tracing */
+			if (record)
+				trace_instance_start(&record->trace);
+			if (tool->aa)
+				trace_instance_start(&tool->aa->trace);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			trace_instance_start(trace);
 		}
 
@@ -481,6 +532,7 @@ int hist_main_loop(struct osnoise_tool *tool)
 				/* stop tracing requested, do not perform actions */
 				break;
 
+<<<<<<< HEAD
 			retval = common_threshold_handler(tool);
 			if (retval)
 				return retval;
@@ -489,6 +541,20 @@ int hist_main_loop(struct osnoise_tool *tool)
 				return 0;
 
 			trace_instance_start(trace);
+=======
+			actions_perform(&params->threshold_actions);
+
+			if (!params->threshold_actions.continue_flag)
+				/* continue flag not set, break */
+				break;
+
+			/* continue action reached, re-enable tracing */
+			if (tool->record)
+				trace_instance_start(&tool->record->trace);
+			if (tool->aa)
+				trace_instance_start(&tool->aa->trace);
+			trace_instance_start(&tool->trace);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* is there still any user-threads ? */

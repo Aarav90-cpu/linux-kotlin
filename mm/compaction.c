@@ -518,6 +518,7 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
 	return true;
 }
 
+<<<<<<< HEAD
 static struct lruvec *
 compact_folio_lruvec_lock_irqsave(struct folio *folio, unsigned long *flags,
 				  struct compact_control *cc)
@@ -536,6 +537,8 @@ retry:
 	return lruvec;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Compaction requires the taking of some coarse locks that are potentially
  * very heavily contended. The lock should be periodically unlocked to avoid
@@ -857,7 +860,11 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 {
 	pg_data_t *pgdat = cc->zone->zone_pgdat;
 	unsigned long nr_scanned = 0, nr_isolated = 0;
+<<<<<<< HEAD
 	struct lruvec *lruvec = NULL;
+=======
+	struct lruvec *lruvec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long flags = 0;
 	struct lruvec *locked = NULL;
 	struct folio *folio = NULL;
@@ -931,7 +938,11 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 		 */
 		if (!(low_pfn % COMPACT_CLUSTER_MAX)) {
 			if (locked) {
+<<<<<<< HEAD
 				lruvec_unlock_irqrestore(locked, flags);
+=======
+				unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				locked = NULL;
 			}
 
@@ -982,7 +993,11 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 			}
 			/* for alloc_contig case */
 			if (locked) {
+<<<<<<< HEAD
 				lruvec_unlock_irqrestore(locked, flags);
+=======
+				unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				locked = NULL;
 			}
 
@@ -1071,7 +1086,11 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 			if (unlikely(page_has_movable_ops(page)) &&
 			    !PageMovableOpsIsolated(page)) {
 				if (locked) {
+<<<<<<< HEAD
 					lruvec_unlock_irqrestore(locked, flags);
+=======
+					unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					locked = NULL;
 				}
 
@@ -1171,6 +1190,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 		if (!folio_test_clear_lru(folio))
 			goto isolate_fail_put;
 
+<<<<<<< HEAD
 		if (locked)
 			lruvec = folio_lruvec(folio);
 
@@ -1182,6 +1202,20 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 			lruvec = compact_folio_lruvec_lock_irqsave(folio, &flags, cc);
 			locked = lruvec;
 
+=======
+		lruvec = folio_lruvec(folio);
+
+		/* If we already hold the lock, we can skip some rechecking */
+		if (lruvec != locked) {
+			if (locked)
+				unlock_page_lruvec_irqrestore(locked, flags);
+
+			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
+			locked = lruvec;
+
+			lruvec_memcg_debug(lruvec, folio);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * Try get exclusive access under lock. If marked for
 			 * skip, the scan is aborted unless the current context
@@ -1243,7 +1277,11 @@ isolate_success_no_list:
 isolate_fail_put:
 		/* Avoid potential deadlock in freeing page under lru_lock */
 		if (locked) {
+<<<<<<< HEAD
 			lruvec_unlock_irqrestore(locked, flags);
+=======
+			unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			locked = NULL;
 		}
 		folio_put(folio);
@@ -1259,7 +1297,11 @@ isolate_fail:
 		 */
 		if (nr_isolated) {
 			if (locked) {
+<<<<<<< HEAD
 				lruvec_unlock_irqrestore(locked, flags);
+=======
+				unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				locked = NULL;
 			}
 			putback_movable_pages(&cc->migratepages);
@@ -1291,7 +1333,11 @@ isolate_fail:
 
 isolate_abort:
 	if (locked)
+<<<<<<< HEAD
 		lruvec_unlock_irqrestore(locked, flags);
+=======
+		unlock_page_lruvec_irqrestore(locked, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (folio) {
 		folio_set_lru(folio);
 		folio_put(folio);

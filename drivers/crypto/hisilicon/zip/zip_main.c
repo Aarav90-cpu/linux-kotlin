@@ -122,8 +122,11 @@
 #define HZIP_LIT_LEN_EN_OFFSET		0x301204
 #define HZIP_LIT_LEN_EN_EN		BIT(4)
 
+<<<<<<< HEAD
 #define HZIP_MAX_CHANNEL_NUM		3
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	HZIP_HIGH_COMP_RATE,
 	HZIP_HIGH_COMP_PERF,
@@ -361,12 +364,15 @@ static struct dfx_diff_registers hzip_diff_regs[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const char *zip_channel_name[HZIP_MAX_CHANNEL_NUM] = {
 	"COMPRESS",
 	"DECOMPRESS",
 	"DAE"
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hzip_diff_regs_show(struct seq_file *s, void *unused)
 {
 	struct hisi_qm *qm = s->private;
@@ -1408,6 +1414,7 @@ static int zip_pre_store_cap_reg(struct hisi_qm *qm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void zip_set_channels(struct hisi_qm *qm)
 {
 	struct qm_channel *channel_data = &qm->channel_data;
@@ -1418,6 +1425,8 @@ static void zip_set_channels(struct hisi_qm *qm)
 		channel_data->channel_name[i] = zip_channel_name[i];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int hisi_zip_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 {
 	u64 alg_msk;
@@ -1456,7 +1465,10 @@ static int hisi_zip_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	zip_set_channels(qm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Fetch and save the value of capability registers */
 	ret = zip_pre_store_cap_reg(qm);
 	if (ret) {

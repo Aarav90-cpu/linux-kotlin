@@ -540,6 +540,7 @@ static int dw_mipi_dsi2_host_attach(struct mipi_dsi_host *host,
 	if (pdata->host_ops && pdata->host_ops->attach) {
 		ret = pdata->host_ops->attach(pdata->priv_data, device);
 		if (ret < 0)
+<<<<<<< HEAD
 			goto err_remove_bridge;
 	}
 
@@ -548,6 +549,12 @@ static int dw_mipi_dsi2_host_attach(struct mipi_dsi_host *host,
 err_remove_bridge:
 	drm_bridge_remove(&dsi2->bridge);
 	return ret;
+=======
+			return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int dw_mipi_dsi2_host_detach(struct mipi_dsi_host *host,

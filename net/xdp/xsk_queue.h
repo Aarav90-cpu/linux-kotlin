@@ -445,17 +445,29 @@ static inline void xskq_prod_write_addr_batch(struct xsk_queue *q, struct xdp_de
 	q->cached_prod = cached_prod;
 }
 
+<<<<<<< HEAD
 static inline void __xskq_prod_reserve_desc(struct xsk_queue *q,
 					    u64 addr, u32 len, u32 flags)
+=======
+static inline int xskq_prod_reserve_desc(struct xsk_queue *q,
+					 u64 addr, u32 len, u32 flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xdp_rxtx_ring *ring = (struct xdp_rxtx_ring *)q->ring;
 	u32 idx;
 
+<<<<<<< HEAD
+=======
+	if (xskq_prod_is_full(q))
+		return -ENOBUFS;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* A, matches D */
 	idx = q->cached_prod++ & q->ring_mask;
 	ring->desc[idx].addr = addr;
 	ring->desc[idx].len = len;
 	ring->desc[idx].options = flags;
+<<<<<<< HEAD
 }
 
 static inline int xskq_prod_reserve_desc(struct xsk_queue *q,
@@ -465,6 +477,8 @@ static inline int xskq_prod_reserve_desc(struct xsk_queue *q,
 		return -ENOBUFS;
 
 	__xskq_prod_reserve_desc(q, addr, len, flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

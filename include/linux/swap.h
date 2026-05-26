@@ -20,6 +20,11 @@ struct notifier_block;
 
 struct bio;
 
+<<<<<<< HEAD
+=======
+struct pagevec;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SWAP_FLAG_PREFER	0x8000	/* set if swap priority specified */
 #define SWAP_FLAG_PRIO_MASK	0x7fff
 #define SWAP_FLAG_DISCARD	0x10000 /* enable discard for swap */
@@ -206,6 +211,10 @@ enum {
 	SWP_DISCARDABLE = (1 << 2),	/* blkdev support discard */
 	SWP_DISCARDING	= (1 << 3),	/* now discarding a free cluster */
 	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
+<<<<<<< HEAD
+=======
+	SWP_CONTINUED	= (1 << 5),	/* swap_map has count continuation */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SWP_BLKDEV	= (1 << 6),	/* its a block device */
 	SWP_ACTIVATED	= (1 << 7),	/* set after swap_activate success */
 	SWP_FS_OPS	= (1 << 8),	/* swapfile operations go through fs */
@@ -220,6 +229,19 @@ enum {
 #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
 #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
 
+<<<<<<< HEAD
+=======
+/* Bit flag in swap_map */
+#define COUNT_CONTINUED	0x80	/* Flag swap_map continuation for full count */
+
+/* Special value in first swap_map */
+#define SWAP_MAP_MAX	0x3e	/* Max count */
+#define SWAP_MAP_BAD	0x3f	/* Note page is bad */
+
+/* Special value in each swap_map continuation */
+#define SWAP_CONT_MAX	0x7f	/* Max count */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The first page in the swap file is the swap header, which is always marked
  * bad to prevent it from being allocated as an entry. This also prevents the
@@ -251,7 +273,12 @@ struct swap_info_struct {
 	signed short	prio;		/* swap priority of this type */
 	struct plist_node list;		/* entry in swap_active_head */
 	signed char	type;		/* strange name for an index */
+<<<<<<< HEAD
 	unsigned int	max;		/* size of this swap device */
+=======
+	unsigned int	max;		/* extent of the swap_map */
+	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long *zeromap;		/* kvmalloc'ed bitmap to track zero pages */
 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
 	struct list_head free_clusters; /* free clusters list */
@@ -270,14 +297,26 @@ struct swap_info_struct {
 	struct completion comp;		/* seldom referenced */
 	spinlock_t lock;		/*
 					 * protect map scan related fields like
+<<<<<<< HEAD
 					 * inuse_pages and all cluster lists.
 					 * Other fields are only changed
+=======
+					 * swap_map, inuse_pages and all cluster
+					 * lists. other fields are only changed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 * at swapon/swapoff, so are protected
 					 * by swap_lock. changing flags need
 					 * hold this lock and swap_lock. If
 					 * both locks need hold, hold swap_lock
 					 * first.
 					 */
+<<<<<<< HEAD
+=======
+	spinlock_t cont_lock;		/*
+					 * protect swap count continuation page
+					 * list.
+					 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct work_struct discard_work; /* discard worker */
 	struct work_struct reclaim_work; /* reclaim worker */
 	struct list_head discard_clusters; /* discard clusters list */
@@ -310,7 +349,12 @@ extern unsigned long totalreserve_pages;
 
 /* linux/mm/swap.c */
 void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
+<<<<<<< HEAD
 		unsigned int nr_io, unsigned int nr_rotated);
+=======
+		unsigned int nr_io, unsigned int nr_rotated)
+		__releases(lruvec->lru_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void lru_note_cost_refault(struct folio *);
 void folio_add_lru(struct folio *);
 void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
@@ -352,7 +396,10 @@ extern void swap_setup(void);
 extern unsigned long zone_reclaimable_pages(struct zone *zone);
 extern unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 					gfp_t gfp_mask, nodemask_t *mask);
+<<<<<<< HEAD
 unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone_idx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
 #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
@@ -433,6 +480,10 @@ static inline long get_nr_swap_pages(void)
 }
 
 extern void si_swapinfo(struct sysinfo *);
+<<<<<<< HEAD
+=======
+extern int add_swap_count_continuation(swp_entry_t, gfp_t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int swap_type_of(dev_t device, sector_t offset);
 int find_first_swap(dev_t *device);
 extern unsigned int count_swap_pages(int, int);
@@ -498,6 +549,14 @@ static inline void free_swap_cache(struct folio *folio)
 {
 }
 
+<<<<<<< HEAD
+=======
+static inline int add_swap_count_continuation(swp_entry_t swp, gfp_t gfp_mask)
+{
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int swap_dup_entry_direct(swp_entry_t ent)
 {
 	return 0;
@@ -547,8 +606,11 @@ static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
 
 	return READ_ONCE(memcg->swappiness);
 }
+<<<<<<< HEAD
 
 void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline int mem_cgroup_swappiness(struct mem_cgroup *mem)
 {
@@ -613,6 +675,7 @@ static inline bool mem_cgroup_swap_full(struct folio *folio)
 }
 #endif
 
+<<<<<<< HEAD
 /* for_each_managed_zone_pgdat - helper macro to iterate over all managed zones in a pgdat up to
  * and including the specified highidx
  * @zone: The current zone in the iterator
@@ -632,5 +695,7 @@ static inline bool mem_cgroup_swap_full(struct folio *folio)
 			continue;				\
 		else
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __KERNEL__*/
 #endif /* _LINUX_SWAP_H */

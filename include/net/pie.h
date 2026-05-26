@@ -104,7 +104,11 @@ static inline void pie_vars_init(struct pie_vars *vars)
 	vars->dq_tstamp = DTIME_INVALID;
 	vars->accu_prob = 0;
 	vars->dq_count = DQCOUNT_INVALID;
+<<<<<<< HEAD
 	WRITE_ONCE(vars->avg_dq_rate, 0);
+=======
+	vars->avg_dq_rate = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)

@@ -6,15 +6,25 @@
 #include <linux/debugfs.h>
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
 #include "hsw_ips.h"
+=======
+
+#include "hsw_ips.h"
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_color_regs.h"
 #include "intel_de.h"
 #include "intel_display_regs.h"
 #include "intel_display_rpm.h"
 #include "intel_display_types.h"
+<<<<<<< HEAD
 #include "intel_parent.h"
+=======
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void hsw_ips_enable(const struct intel_crtc_state *crtc_state)
 {
@@ -39,8 +49,13 @@ static void hsw_ips_enable(const struct intel_crtc_state *crtc_state)
 
 	if (display->platform.broadwell) {
 		drm_WARN_ON(display->drm,
+<<<<<<< HEAD
 			    intel_parent_pcode_write(display, DISPLAY_IPS_CONTROL,
 						     val | IPS_PCODE_CONTROL));
+=======
+			    intel_pcode_write(display->drm, DISPLAY_IPS_CONTROL,
+					      val | IPS_PCODE_CONTROL));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Quoting Art Runyan: "its not safe to expect any particular
 		 * value in IPS_CTL bit 31 after enabling IPS through the
@@ -72,7 +87,11 @@ bool hsw_ips_disable(const struct intel_crtc_state *crtc_state)
 
 	if (display->platform.broadwell) {
 		drm_WARN_ON(display->drm,
+<<<<<<< HEAD
 			    intel_parent_pcode_write(display, DISPLAY_IPS_CONTROL, 0));
+=======
+			    intel_pcode_write(display->drm, DISPLAY_IPS_CONTROL, 0));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Wait for PCODE to finish disabling IPS. The BSpec specified
 		 * 42ms timeout value leads to occasional timeouts so use 100ms

@@ -241,7 +241,11 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
 
 	inet_diag_msg_common_fill(r, sk);
 	r->idiag_state = sk->sk_state;
+<<<<<<< HEAD
 	r->idiag_timer = IDIAG_TIMER_OFF;
+=======
+	r->idiag_timer = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	r->idiag_retrans = 0;
 	r->idiag_expires = 0;
 
@@ -284,16 +288,25 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
 	if (icsk_pending == ICSK_TIME_RETRANS ||
 	    icsk_pending == ICSK_TIME_REO_TIMEOUT ||
 	    icsk_pending == ICSK_TIME_LOSS_PROBE) {
+<<<<<<< HEAD
 		r->idiag_timer = IDIAG_TIMER_ON;
+=======
+		r->idiag_timer = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r->idiag_retrans = READ_ONCE(icsk->icsk_retransmits);
 		r->idiag_expires =
 			jiffies_delta_to_msecs(tcp_timeout_expires(sk) - jiffies);
 	} else if (icsk_pending == ICSK_TIME_PROBE0) {
+<<<<<<< HEAD
 		r->idiag_timer = IDIAG_TIMER_PROBE0;
+=======
+		r->idiag_timer = 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r->idiag_retrans = READ_ONCE(icsk->icsk_probes_out);
 		r->idiag_expires =
 			jiffies_delta_to_msecs(tcp_timeout_expires(sk) - jiffies);
 	} else if (timer_pending(&icsk->icsk_keepalive_timer)) {
+<<<<<<< HEAD
 		r->idiag_timer = IDIAG_TIMER_KEEPALIVE;
 		r->idiag_retrans = READ_ONCE(icsk->icsk_probes_out);
 		r->idiag_expires =
@@ -303,6 +316,12 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
 		r->idiag_timer = IDIAG_TIMER_DELACK;
 		r->idiag_expires =
 			jiffies_delta_to_msecs(icsk_delack_timeout(icsk) - jiffies);
+=======
+		r->idiag_timer = 2;
+		r->idiag_retrans = READ_ONCE(icsk->icsk_probes_out);
+		r->idiag_expires =
+			jiffies_delta_to_msecs(icsk->icsk_keepalive_timer.expires - jiffies);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if ((ext & (1 << (INET_DIAG_INFO - 1))) && handler->idiag_info_size) {

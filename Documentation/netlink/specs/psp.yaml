@@ -188,7 +188,10 @@ operations:
       name: dev-set
       doc: Set the configuration of a PSP device.
       attribute-set: dev
+<<<<<<< HEAD
       flags: [admin-perm]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       do:
         request:
           attributes:
@@ -208,7 +211,10 @@ operations:
       name: key-rotate
       doc: Rotate the device key.
       attribute-set: dev
+<<<<<<< HEAD
       flags: [admin-perm]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       do:
         request:
           attributes:
@@ -269,6 +275,7 @@ operations:
             - dev-id
             - key-rotations
             - stale-events
+<<<<<<< HEAD
             - rx-packets
             - rx-bytes
             - rx-auth-fail
@@ -277,6 +284,8 @@ operations:
             - tx-packets
             - tx-bytes
             - tx-error
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         pre: psp-device-get-locked
         post: psp-device-unlock
       dump:

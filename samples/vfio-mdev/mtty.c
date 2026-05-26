@@ -68,12 +68,18 @@
  * Global Structures
  */
 
+<<<<<<< HEAD
 static const struct class mtty_class = {
 	.name	= MTTY_CLASS_NAME
 };
 
 static struct mtty_dev {
 	dev_t		vd_devt;
+=======
+static struct mtty_dev {
+	dev_t		vd_devt;
+	struct class	*vd_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cdev	vd_cdev;
 	struct idr	vd_idr;
 	struct device	dev;
@@ -840,11 +846,26 @@ static long mtty_precopy_ioctl(struct file *filp, unsigned int cmd,
 	struct mdev_state *mdev_state = migf->mdev_state;
 	loff_t *pos = &filp->f_pos;
 	struct vfio_precopy_info info = {};
+<<<<<<< HEAD
 	int ret;
 
 	ret = vfio_check_precopy_ioctl(&mdev_state->vdev, cmd, arg, &info);
 	if (ret)
 		return ret;
+=======
+	unsigned long minsz;
+	int ret;
+
+	if (cmd != VFIO_MIG_GET_PRECOPY_INFO)
+		return -ENOTTY;
+
+	minsz = offsetofend(struct vfio_precopy_info, dirty_bytes);
+
+	if (copy_from_user(&info, (void __user *)arg, minsz))
+		return -EFAULT;
+	if (info.argsz < minsz)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&mdev_state->state_mutex);
 	if (mdev_state->state != VFIO_DEVICE_STATE_PRE_COPY &&
@@ -871,8 +892,12 @@ static long mtty_precopy_ioctl(struct file *filp, unsigned int cmd,
 	info.initial_bytes = migf->filled_size - *pos;
 	mutex_unlock(&migf->lock);
 
+<<<<<<< HEAD
 	ret = copy_to_user((void __user *)arg, &info,
 		offsetofend(struct vfio_precopy_info, dirty_bytes)) ? -EFAULT : 0;
+=======
+	ret = copy_to_user((void __user *)arg, &info, minsz) ? -EFAULT : 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	mtty_state_mutex_unlock(mdev_state);
 	return ret;
@@ -1977,6 +2002,7 @@ static int __init mtty_dev_init(void)
 	if (ret)
 		goto err_cdev;
 
+<<<<<<< HEAD
 	ret = class_register(&mtty_class);
 
 	if (ret) {
@@ -1985,6 +2011,17 @@ static int __init mtty_dev_init(void)
 	}
 
 	mtty_dev.dev.class = &mtty_class;
+=======
+	mtty_dev.vd_class = class_create(MTTY_CLASS_NAME);
+
+	if (IS_ERR(mtty_dev.vd_class)) {
+		pr_err("Error: failed to register mtty_dev class\n");
+		ret = PTR_ERR(mtty_dev.vd_class);
+		goto err_driver;
+	}
+
+	mtty_dev.dev.class = mtty_dev.vd_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mtty_dev.dev.release = mtty_device_release;
 	dev_set_name(&mtty_dev.dev, "%s", MTTY_NAME);
 
@@ -2003,7 +2040,11 @@ err_device:
 	device_del(&mtty_dev.dev);
 err_put:
 	put_device(&mtty_dev.dev);
+<<<<<<< HEAD
 	class_unregister(&mtty_class);
+=======
+	class_destroy(mtty_dev.vd_class);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_driver:
 	mdev_unregister_driver(&mtty_driver);
 err_cdev:
@@ -2022,7 +2063,12 @@ static void __exit mtty_dev_exit(void)
 	mdev_unregister_driver(&mtty_driver);
 	cdev_del(&mtty_dev.vd_cdev);
 	unregister_chrdev_region(mtty_dev.vd_devt, MINORMASK + 1);
+<<<<<<< HEAD
 	class_unregister(&mtty_class);
+=======
+	class_destroy(mtty_dev.vd_class);
+	mtty_dev.vd_class = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pr_info("mtty_dev: Unloaded!\n");
 }
 

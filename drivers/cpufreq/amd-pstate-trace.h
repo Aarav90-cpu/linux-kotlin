@@ -133,6 +133,7 @@ TRACE_EVENT(amd_pstate_epp_perf,
 		 )
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(amd_pstate_cppc_req2,
 
 	TP_PROTO(unsigned int cpu_id,
@@ -168,6 +169,8 @@ TRACE_EVENT(amd_pstate_cppc_req2,
 		 )
 );
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _AMD_PSTATE_TRACE_H */
 
 /* This part must be outside protection */

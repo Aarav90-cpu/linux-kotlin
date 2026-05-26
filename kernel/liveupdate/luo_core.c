@@ -54,7 +54,10 @@
 #include <linux/liveupdate.h>
 #include <linux/miscdevice.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/rwsem.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/sizes.h>
 #include <linux/string.h>
 #include <linux/unaligned.h>
@@ -69,11 +72,14 @@ static struct {
 	u64 liveupdate_num;
 } luo_global;
 
+<<<<<<< HEAD
 /*
  * luo_register_rwlock - Protects registration of file handlers and FLBs.
  */
 DECLARE_RWSEM(luo_register_rwlock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init early_liveupdate_param(char *buf)
 {
 	return kstrtobool(buf, &luo_global.enabled);
@@ -94,7 +100,11 @@ static int __init luo_early_startup(void)
 	}
 
 	/* Retrieve LUO subtree, and verify its format. */
+<<<<<<< HEAD
 	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys, NULL);
+=======
+	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		if (err != -ENOENT) {
 			pr_err("failed to retrieve FDT '%s' from KHO: %pe\n",
@@ -178,8 +188,12 @@ static int __init luo_fdt_setup(void)
 	if (err)
 		goto exit_free;
 
+<<<<<<< HEAD
 	err = kho_add_subtree(LUO_FDT_KHO_ENTRY_NAME, fdt_out,
 			      fdt_totalsize(fdt_out));
+=======
+	err = kho_add_subtree(LUO_FDT_KHO_ENTRY_NAME, fdt_out);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto exit_free;
 	luo_global.fdt_out = fdt_out;
@@ -237,7 +251,21 @@ int liveupdate_reboot(void)
 
 	luo_flb_serialize();
 
+<<<<<<< HEAD
 	return 0;
+=======
+	err = kho_finalize();
+	if (err) {
+		pr_err("kho_finalize failed %d\n", err);
+		/*
+		 * kho_finalize() may return libfdt errors, to aboid passing to
+		 * userspace unknown errors, change this to EAGAIN.
+		 */
+		err = -EAGAIN;
+	}
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

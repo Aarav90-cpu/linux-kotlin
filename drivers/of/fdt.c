@@ -68,7 +68,11 @@ void __init of_fdt_limit_memory(int limit)
 
 bool of_fdt_device_is_available(const void *blob, unsigned long node)
 {
+<<<<<<< HEAD
 	const char *status = fdt_stringlist_get(blob, node, "status", 0, NULL);
+=======
+	const char *status = fdt_getprop(blob, node, "status", NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!status)
 		return true;
@@ -677,6 +681,7 @@ void __init of_flat_dt_read_addr_size(const __be32 *prop, int entry_index,
  * specific compatible values.
  */
 static int of_fdt_is_compatible(const void *blob,
+<<<<<<< HEAD
 			      unsigned long node, const char *compat)
 {
 	const char *cp;
@@ -686,6 +691,24 @@ static int of_fdt_is_compatible(const void *blob,
 		score++;
 		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
 			return score;
+=======
+		      unsigned long node, const char *compat)
+{
+	const char *cp;
+	int cplen;
+	unsigned long l, score = 0;
+
+	cp = fdt_getprop(blob, node, "compatible", &cplen);
+	if (cp == NULL)
+		return 0;
+	while (cplen > 0) {
+		score++;
+		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
+			return score;
+		l = strlen(cp) + 1;
+		cp += l;
+		cplen -= l;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -734,10 +757,16 @@ const char * __init of_flat_dt_get_machine_name(void)
 	const char *name;
 	unsigned long dt_root = of_get_flat_dt_root();
 
+<<<<<<< HEAD
 	name = fdt_stringlist_get(initial_boot_params, dt_root, "model", 0, NULL);
 	if (!name)
 		name = fdt_stringlist_get(initial_boot_params, dt_root,
 					  "compatible", 0, NULL);
+=======
+	name = of_get_flat_dt_prop(dt_root, "model", NULL);
+	if (!name)
+		name = of_get_flat_dt_prop(dt_root, "compatible", NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return name;
 }
 
@@ -769,6 +798,7 @@ const void * __init of_flat_dt_match_machine(const void *default_match,
 	}
 	if (!best_data) {
 		const char *prop;
+<<<<<<< HEAD
 		int idx = 0, size;
 
 		pr_err("\n unrecognized device tree list:\n[ ");
@@ -777,6 +807,21 @@ const void * __init of_flat_dt_match_machine(const void *default_match,
 						  "compatible", idx++, &size)))
 			pr_err("'%s' ", prop);
 		pr_err("]\n\n");
+=======
+		int size;
+
+		pr_err("\n unrecognized device tree list:\n[ ");
+
+		prop = of_get_flat_dt_prop(dt_root, "compatible", &size);
+		if (prop) {
+			while (size > 0) {
+				printk("'%s' ", prop);
+				size -= strlen(prop) + 1;
+				prop += strlen(prop) + 1;
+			}
+		}
+		printk("]\n\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	}
 
@@ -855,6 +900,7 @@ static void __init early_init_dt_check_for_elfcorehdr(unsigned long node)
 		 elfcorehdr_addr, elfcorehdr_size);
 }
 
+<<<<<<< HEAD
 static void __init early_init_dt_check_for_dmcryptkeys(unsigned long node)
 {
 	const char *prop_name = "linux,dmcryptkeys";
@@ -875,6 +921,8 @@ static void __init early_init_dt_check_for_dmcryptkeys(unsigned long node)
 	fdt_delprop(initial_boot_params, node, prop_name);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
 
 /*
@@ -963,9 +1011,15 @@ int __init early_init_dt_scan_chosen_stdout(void)
 	if (offset < 0)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	p = fdt_stringlist_get(fdt, offset, "stdout-path", 0, &l);
 	if (!p)
 		p = fdt_stringlist_get(fdt, offset, "linux,stdout-path", 0, &l);
+=======
+	p = fdt_getprop(fdt, offset, "stdout-path", &l);
+	if (!p)
+		p = fdt_getprop(fdt, offset, "linux,stdout-path", &l);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!p || !l)
 		return -ENOENT;
 
@@ -1041,8 +1095,12 @@ int __init early_init_dt_scan_memory(void)
 	const void *fdt = initial_boot_params;
 
 	fdt_for_each_subnode(node, fdt, 0) {
+<<<<<<< HEAD
 		const char *type = fdt_stringlist_get(fdt, node,
 						      "device_type", 0, NULL);
+=======
+		const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const __be32 *reg;
 		int i, l;
 		bool hotpluggable;
@@ -1107,7 +1165,10 @@ int __init early_init_dt_scan_chosen(char *cmdline)
 
 	early_init_dt_check_for_initrd(node);
 	early_init_dt_check_for_elfcorehdr(node);
+<<<<<<< HEAD
 	early_init_dt_check_for_dmcryptkeys(node);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rng_seed = of_get_flat_dt_prop(node, "rng-seed", &l);
 	if (rng_seed && l > 0) {
@@ -1285,7 +1346,11 @@ void __init unflatten_device_tree(void)
 	void *fdt = initial_boot_params;
 
 	/* Save the statically-placed regions in the reserved_mem array */
+<<<<<<< HEAD
 	fdt_scan_reserved_mem_late();
+=======
+	fdt_scan_reserved_mem_reg_nodes();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Populate an empty root node when bootloader doesn't provide one */
 	if (!fdt) {

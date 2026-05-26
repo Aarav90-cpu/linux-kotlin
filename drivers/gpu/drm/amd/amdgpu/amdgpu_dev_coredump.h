@@ -31,6 +31,7 @@
 
 #define AMDGPU_COREDUMP_VERSION "1"
 
+<<<<<<< HEAD
 struct amdgpu_coredump_ring {
 	u64				rptr;
 	u64				wptr;
@@ -43,10 +44,13 @@ struct amdgpu_coredump_ib_info {
 	u32				ib_size_dw;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct amdgpu_coredump_info {
 	struct amdgpu_device            *adev;
 	struct amdgpu_task_info         reset_task_info;
 	struct timespec64               reset_time;
+<<<<<<< HEAD
 
 	bool                            skip_vram_check;
 	bool                            reset_vram_lost;
@@ -65,11 +69,19 @@ struct amdgpu_coredump_info {
 	unsigned int			pasid;
 	int				num_ibs;
 	struct amdgpu_coredump_ib_info	ibs[] __counted_by(num_ibs);
+=======
+	bool                            skip_vram_check;
+	bool                            reset_vram_lost;
+	struct amdgpu_ring              *ring;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #endif
 
 void amdgpu_coredump(struct amdgpu_device *adev, bool skip_vram_check,
 		     bool vram_lost, struct amdgpu_job *job);
+<<<<<<< HEAD
 void amdgpu_coredump_init(struct amdgpu_device *adev);
 void amdgpu_coredump_fini(struct amdgpu_device *adev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

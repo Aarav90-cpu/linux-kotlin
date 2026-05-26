@@ -119,7 +119,10 @@ enum pp_clock_type {
 	PP_ISPXCLK,
 	OD_SCLK,
 	OD_MCLK,
+<<<<<<< HEAD
 	OD_FCLK,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OD_VDDC_CURVE,
 	OD_RANGE,
 	OD_VDDGFX_OFFSET,
@@ -209,7 +212,10 @@ enum {
 enum PP_OD_DPM_TABLE_COMMAND {
 	PP_OD_EDIT_SCLK_VDDC_TABLE,
 	PP_OD_EDIT_MCLK_VDDC_TABLE,
+<<<<<<< HEAD
 	PP_OD_EDIT_FCLK_TABLE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PP_OD_EDIT_CCLK_VDDC_TABLE,
 	PP_OD_EDIT_VDDC_CURVE,
 	PP_OD_RESTORE_DEFAULT_TABLE,
@@ -586,6 +592,7 @@ enum amdgpu_metrics_attr_id {
 	AMDGPU_METRICS_ATTR_ID_GFX_BELOW_HOST_LIMIT_THM_ACC,
 	AMDGPU_METRICS_ATTR_ID_GFX_LOW_UTILIZATION_ACC,
 	AMDGPU_METRICS_ATTR_ID_GFX_BELOW_HOST_LIMIT_TOTAL_ACC,
+<<<<<<< HEAD
 	AMDGPU_METRICS_ATTR_ID_TEMPERATURE_HBM,
 	AMDGPU_METRICS_ATTR_ID_TEMPERATURE_MID,
 	AMDGPU_METRICS_ATTR_ID_TEMPERATURE_AID,
@@ -642,6 +649,8 @@ enum amdgpu_metrics_attr_id {
 	AMDGPU_METRICS_ATTR_ID_SYSTEM_TEMP_OAM_4_5_6_7_3V3_VR,
 	AMDGPU_METRICS_ATTR_ID_SYSTEM_TEMP_IBC_HSC,
 	AMDGPU_METRICS_ATTR_ID_SYSTEM_TEMP_IBC,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	AMDGPU_METRICS_ATTR_ID_MAX,
 };
 
@@ -1890,6 +1899,7 @@ struct amdgpu_partition_metrics_v1_1 {
 enum amdgpu_xgmi_link_status {
 	AMDGPU_XGMI_LINK_INACTIVE = 0,
 	AMDGPU_XGMI_LINK_ACTIVE = 1,
+<<<<<<< HEAD
 	/* Status not available */
 	AMDGPU_XGMI_LINK_NA = 2,
 };
@@ -1904,6 +1914,8 @@ struct amdgpu_baseboard_temp_metrics_v1_1 {
 	struct metrics_table_header common_header;
 	int attr_count;
 	struct gpu_metrics_attr metrics_attrs[];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif

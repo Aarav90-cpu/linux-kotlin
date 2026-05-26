@@ -196,9 +196,15 @@ static int scs_handle_fde_frame(const struct eh_frame *frame,
 			loc += *opcode++ * code_alignment_factor;
 			loc += (*opcode++ << 8) * code_alignment_factor;
 			loc += (*opcode++ << 16) * code_alignment_factor;
+<<<<<<< HEAD
 			loc += ((u64)*opcode++ << 24) * code_alignment_factor;
 			size -= 4;
 			break;
+=======
+			loc += (*opcode++ << 24) * code_alignment_factor;
+			size -= 4;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		case DW_CFA_def_cfa:
 		case DW_CFA_offset_extended:

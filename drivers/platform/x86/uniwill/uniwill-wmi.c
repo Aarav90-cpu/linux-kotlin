@@ -77,7 +77,10 @@ static struct wmi_driver uniwill_wmi_driver = {
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 	.id_table = uniwill_wmi_id_table,
+<<<<<<< HEAD
 	.min_event_size = sizeof(u32),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.notify = uniwill_wmi_notify,
 	.no_singleton = true,
 };

@@ -2598,7 +2598,10 @@ nfsd4_opnum_in_range(struct nfsd4_compoundargs *argp, struct nfsd4_op *op)
 static bool
 nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
 {
+<<<<<<< HEAD
 	struct nfsd_thread_local_info *ntli = argp->rqstp->rq_private;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct nfsd4_op *op;
 	bool cachethis = false;
 	int auth_slack= argp->rqstp->rq_auth_slack;
@@ -2691,7 +2694,11 @@ nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
 	if (argp->minorversion)
 		cachethis = false;
 	svc_reserve_auth(argp->rqstp, max_reply + readbytes);
+<<<<<<< HEAD
 	ntli->ntli_cachetype = cachethis ? RC_REPLBUFF : RC_NOCACHE;
+=======
+	argp->rqstp->rq_cachetype = cachethis ? RC_REPLBUFF : RC_NOCACHE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	argp->splice_ok = nfsd_read_splice_ok(argp->rqstp);
 	if (readcount > 1 || max_reply > PAGE_SIZE - auth_slack)
@@ -6282,6 +6289,7 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
 
 		so->so_replay.rp_status = op->status;
+<<<<<<< HEAD
 		if (len > NFSD4_REPLAY_ISIZE) {
 			char *buf = kmalloc(len, GFP_KERNEL);
 
@@ -6299,6 +6307,16 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
 		read_bytes_from_xdr_buf(xdr->buf,
 					op_status_offset + XDR_UNIT,
 					so->so_replay.rp_buf, len);
+=======
+		if (len <= NFSD4_REPLAY_ISIZE) {
+			so->so_replay.rp_buflen = len;
+			read_bytes_from_xdr_buf(xdr->buf,
+						op_status_offset + XDR_UNIT,
+						so->so_replay.rp_buf, len);
+		} else {
+			so->so_replay.rp_buflen = 0;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 status:
 	op->status = nfsd4_map_status(op->status,

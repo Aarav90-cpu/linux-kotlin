@@ -13,8 +13,13 @@
 #ifndef _LINUX_CONSOLE_STRUCT_H
 #define _LINUX_CONSOLE_STRUCT_H
 
+<<<<<<< HEAD
 #include <linux/vt.h>
 #include <linux/wait.h>
+=======
+#include <linux/wait.h>
+#include <linux/vt.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/workqueue.h>
 
 struct uni_pagedict;
@@ -58,6 +63,7 @@ struct vc_state {
 	bool		reverse;
 };
 
+<<<<<<< HEAD
 /**
  * struct vc_font - Describes a font
  * @width: The width of a single glyph in bits
@@ -85,6 +91,8 @@ struct vc_font {
 unsigned int vc_font_pitch(const struct vc_font *font);
 unsigned int vc_font_size(const struct vc_font *font);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Example: vc_data of a console that was scrolled 3 lines down.
  *
@@ -147,9 +155,15 @@ struct vc_data {
 	unsigned short	vc_complement_mask;	/* [#] Xor mask for mouse pointer */
 	unsigned short	vc_s_complement_mask;	/* Saved mouse pointer mask */
 	unsigned long	vc_pos;			/* Cursor address */
+<<<<<<< HEAD
 	/* fonts */
 	unsigned short	vc_hi_font_mask;	/* [#] Attribute set for upper 256 chars of font or 0 if not supported */
 	struct vc_font vc_font;			/* Current VC font set */
+=======
+	/* fonts */	
+	unsigned short	vc_hi_font_mask;	/* [#] Attribute set for upper 256 chars of font or 0 if not supported */
+	struct console_font vc_font;		/* Current VC font set */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned short	vc_video_erase_char;	/* Background erase character */
 	/* VT terminal data */
 	unsigned int	vc_state;		/* Escape sequence parser state */

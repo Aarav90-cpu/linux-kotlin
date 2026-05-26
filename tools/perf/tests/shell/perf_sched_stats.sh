@@ -4,6 +4,7 @@
 
 set -e
 
+<<<<<<< HEAD
 if [ "$(id -u)" != 0 ]; then
   echo "[Skip] No root permission"
   exit 2
@@ -32,6 +33,12 @@ err=0
 test_perf_sched_stats_record() {
   echo "Basic perf sched stats record test"
   if ! perf sched stats record -o "${perfdata}" true 2>&1 | \
+=======
+err=0
+test_perf_sched_stats_record() {
+  echo "Basic perf sched stats record test"
+  if ! perf sched stats record true 2>&1 | \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     grep -E -q "[ perf sched stats: Wrote samples to perf.data ]"
   then
     echo "Basic perf sched stats record test [Failed]"
@@ -43,6 +50,7 @@ test_perf_sched_stats_record() {
 
 test_perf_sched_stats_report() {
   echo "Basic perf sched stats report test"
+<<<<<<< HEAD
   perf sched stats record -o "${perfdata}" true > /dev/null
   if ! perf sched stats report -i "${perfdata}" 2>&1 | grep -E -q "Description"
   then
@@ -50,6 +58,17 @@ test_perf_sched_stats_report() {
     err=1
     return
   fi
+=======
+  perf sched stats record true > /dev/null
+  if ! perf sched stats report 2>&1 | grep -E -q "Description"
+  then
+    echo "Basic perf sched stats report test [Failed]"
+    err=1
+    rm perf.data
+    return
+  fi
+  rm perf.data
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   echo "Basic perf sched stats report test [Success]"
 }
 
@@ -66,6 +85,7 @@ test_perf_sched_stats_live() {
 
 test_perf_sched_stats_diff() {
   echo "Basic perf sched stats diff test"
+<<<<<<< HEAD
   perf sched stats record -o "${perfdata}" true > /dev/null
   perf sched stats record -o "${perfdata2}" true > /dev/null
   if ! perf sched stats diff "${perfdata}" "${perfdata2}" > /dev/null
@@ -74,6 +94,18 @@ test_perf_sched_stats_diff() {
     err=1
     return
   fi
+=======
+  perf sched stats record true > /dev/null
+  perf sched stats record true > /dev/null
+  if ! perf sched stats diff > /dev/null
+  then
+    echo "Basic perf sched stats diff test [Failed]"
+    err=1
+    rm perf.data.old perf.data
+    return
+  fi
+  rm perf.data.old perf.data
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   echo "Basic perf sched stats diff test [Success]"
 }
 
@@ -81,6 +113,9 @@ test_perf_sched_stats_record
 test_perf_sched_stats_report
 test_perf_sched_stats_live
 test_perf_sched_stats_diff
+<<<<<<< HEAD
 
 cleanup
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit $err

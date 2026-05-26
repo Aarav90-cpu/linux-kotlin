@@ -604,9 +604,17 @@ static int a4xx_pm_suspend(struct msm_gpu *gpu) {
 	return 0;
 }
 
+<<<<<<< HEAD
 static u64 a4xx_get_timestamp(struct msm_gpu *gpu)
 {
 	return gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO);
+=======
+static int a4xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
+{
+	*value = gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u64 a4xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)

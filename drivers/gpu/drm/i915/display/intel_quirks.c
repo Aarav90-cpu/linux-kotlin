@@ -86,6 +86,7 @@ static void quirk_edp_limit_rate_hbr2(struct intel_display *display)
 	drm_info(display->drm, "Applying eDP Limit rate to HBR2 quirk\n");
 }
 
+<<<<<<< HEAD
 static void quirk_disable_edp_panel_replay(struct intel_dp *intel_dp)
 {
 	struct intel_display *display = to_intel_display(intel_dp);
@@ -94,6 +95,8 @@ static void quirk_disable_edp_panel_replay(struct intel_dp *intel_dp)
 	drm_info(display->drm, "Applying disable Panel Replay quirk\n");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct intel_quirk {
 	int device;
 	int subsystem_vendor;
@@ -116,8 +119,11 @@ struct intel_dpcd_quirk {
 
 #define SINK_DEVICE_ID_ANY	SINK_DEVICE_ID(0, 0, 0, 0, 0, 0)
 
+<<<<<<< HEAD
 #define DEVICE_ID_ANY		0
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* For systems that don't have a meaningful PCI subdevice/subvendor ID */
 struct intel_dmi_quirk {
 	void (*hook)(struct intel_display *display);
@@ -261,6 +267,7 @@ static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
 		.sink_oui = SINK_OUI(0x38, 0xec, 0x11),
 		.hook = quirk_fw_sync_len,
 	},
+<<<<<<< HEAD
 	/* Dell XPS 14 DA14260 */
 	{
 		.device = DEVICE_ID_ANY,
@@ -269,6 +276,9 @@ static const struct intel_dpcd_quirk intel_dpcd_quirks[] = {
 		.sink_oui = SINK_OUI(0x00, 0x22, 0xb9),
 		.hook = quirk_disable_edp_panel_replay,
 	},
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 void intel_init_quirks(struct intel_display *display)
@@ -279,8 +289,12 @@ void intel_init_quirks(struct intel_display *display)
 	for (i = 0; i < ARRAY_SIZE(intel_quirks); i++) {
 		struct intel_quirk *q = &intel_quirks[i];
 
+<<<<<<< HEAD
 		if ((d->device == q->device ||
 		     q->device == DEVICE_ID_ANY) &&
+=======
+		if (d->device == q->device &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (d->subsystem_vendor == q->subsystem_vendor ||
 		     q->subsystem_vendor == PCI_ANY_ID) &&
 		    (d->subsystem_device == q->subsystem_device ||
@@ -303,8 +317,12 @@ void intel_init_dpcd_quirks(struct intel_dp *intel_dp,
 	for (i = 0; i < ARRAY_SIZE(intel_dpcd_quirks); i++) {
 		const struct intel_dpcd_quirk *q = &intel_dpcd_quirks[i];
 
+<<<<<<< HEAD
 		if ((d->device == q->device ||
 		     q->device == DEVICE_ID_ANY) &&
+=======
+		if (d->device == q->device &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    (d->subsystem_vendor == q->subsystem_vendor ||
 		     q->subsystem_vendor == PCI_ANY_ID) &&
 		    (d->subsystem_device == q->subsystem_device ||

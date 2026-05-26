@@ -22,6 +22,10 @@ properties:
       - mantix,mlaf057we51-x
       - ys,ys57pss36bh5gq
 
+<<<<<<< HEAD
+=======
+  port: true
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     maxItems: 1
     description: DSI virtual channel
@@ -35,13 +39,21 @@ properties:
   vddi-supply:
     description: 1.8V I/O voltage supply
 
+<<<<<<< HEAD
+=======
+  reset-gpios: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   mantix,tp-rstn-gpios:
     maxItems: 1
     description: second reset line that triggers DSI config load
 
   backlight: true
+<<<<<<< HEAD
   port: true
   reset-gpios: true
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible

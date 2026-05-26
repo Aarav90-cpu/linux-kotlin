@@ -88,3 +88,7 @@ struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx,
 
 	return fib_metrics;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(ip_fib_metrics_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

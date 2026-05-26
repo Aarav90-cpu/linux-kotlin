@@ -51,8 +51,12 @@ hw_engine_group_alloc(struct xe_device *xe)
 	if (!group)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	group->resume_wq = alloc_workqueue("xe-resume-lr-jobs-wq", WQ_PERCPU,
 					   0);
+=======
+	group->resume_wq = alloc_workqueue("xe-resume-lr-jobs-wq", 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!group->resume_wq)
 		return ERR_PTR(-ENOMEM);
 

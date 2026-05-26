@@ -26,6 +26,10 @@
 #include "demangle-rust-v0.h"
 #include "dso.h"
 #include "util.h" // lsdir()
+<<<<<<< HEAD
+=======
+#include "debug.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "event.h"
 #include "machine.h"
 #include "map.h"
@@ -65,11 +69,17 @@ struct symbol_conf symbol_conf = {
 	.time_quantum		= 100 * NSEC_PER_MSEC, /* 100ms */
 	.show_hist_headers	= true,
 	.symfs			= "",
+<<<<<<< HEAD
 	.symfs_layout_flat	= false,
 	.event_group		= true,
 	.inline_name		= true,
 	.res_sample		= 0,
 	.addr2line_timeout_ms	= 5 * 1000,
+=======
+	.event_group		= true,
+	.inline_name		= true,
+	.res_sample		= 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct map_list_node {
@@ -2364,8 +2374,12 @@ static int setup_parallelism_bitmap(void)
 {
 	struct perf_cpu_map *map;
 	struct perf_cpu cpu;
+<<<<<<< HEAD
 	unsigned int i;
 	int err = -1;
+=======
+	int i, err = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (symbol_conf.parallelism_list_str == NULL)
 		return 0;
@@ -2493,6 +2507,7 @@ int symbol__config_symfs(const struct option *opt __maybe_unused,
 			 const char *dir, int unset __maybe_unused)
 {
 	char *bf = NULL;
+<<<<<<< HEAD
 	const char *layout_str;
 	char *dir_copy;
 	int ret;
@@ -2524,11 +2539,22 @@ int symbol__config_symfs(const struct option *opt __maybe_unused,
 			return -ENOMEM;
 		symbol_conf.symfs_layout_flat = false;
 	}
+=======
+	int ret;
+
+	symbol_conf.symfs = strdup(dir);
+	if (symbol_conf.symfs == NULL)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* skip the locally configured cache if a symfs is given, and
 	 * config buildid dir to symfs/.debug
 	 */
+<<<<<<< HEAD
 	ret = asprintf(&bf, "%s/%s", symbol_conf.symfs, ".debug");
+=======
+	ret = asprintf(&bf, "%s/%s", dir, ".debug");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return -ENOMEM;
 

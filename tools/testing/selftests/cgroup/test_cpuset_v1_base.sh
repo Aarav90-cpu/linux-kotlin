@@ -18,7 +18,11 @@ write_test() {
 	echo "testing $interface $value"
 	echo $value > $dir/$interface
 	new=$(cat $dir/$interface)
+<<<<<<< HEAD
 	[[ "$value" != "$new" ]] && {
+=======
+	[[ $value -ne $(cat $dir/$interface) ]] && {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		echo "$interface write $value failed: new:$new"
 		exit 1
 	}

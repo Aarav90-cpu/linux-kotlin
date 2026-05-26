@@ -6,7 +6,10 @@
  */
 
 #include <dt-bindings/gpio/gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/leds/common.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
 #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 
@@ -28,6 +31,7 @@
 /delete-node/ &wlan_msa_mem;
 
 / {
+<<<<<<< HEAD
 	chassis-type = "handset";
 
 	aliases {
@@ -35,12 +39,17 @@
 		serial1 = &uart6;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chosen {
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
+<<<<<<< HEAD
 
 		stdout-path = "serial0:115200n8";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	reserved-memory {
@@ -48,6 +57,14 @@
 		#size-cells = <2>;
 		ranges;
 
+<<<<<<< HEAD
+=======
+		qseecom_mem: memory@b2000000 {
+			reg = <0 0xb2000000 0 0x1800000>;
+			no-map;
+		};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gpu_mem: memory@8c415000 {
 			reg = <0 0x8c415000 0 0x2000>;
 			no-map;
@@ -104,11 +121,14 @@
 			no-map;
 		};
 
+<<<<<<< HEAD
 		qseecom_mem: memory@b2000000 {
 			reg = <0 0xb2000000 0 0x1800000>;
 			no-map;
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rmtfs_mem: rmtfs-region@f0800000 {
 			compatible = "qcom,rmtfs-mem";
 			reg = <0 0xf0800000 0 0x202000>;
@@ -452,6 +472,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&dispcc {
+	status = "disabled";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &gcc {
 	protected-clocks = <GCC_QSPI_CORE_CLK>,
 			   <GCC_QSPI_CORE_CLK_SRC>,
@@ -460,6 +487,7 @@
 			   <GCC_LPASS_SWAY_CLK>;
 };
 
+<<<<<<< HEAD
 &gpi_dma0 {
 	status = "okay";
 };
@@ -468,6 +496,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &gpu {
 	status = "okay";
 };
@@ -481,6 +511,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &pm8998_gpios {
 	vol_up_pin_a: vol-up-active-state {
 		pins = "gpio6";
@@ -491,11 +522,14 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pm8998_resin {
 	linux,code = <KEY_VOLUMEDOWN>;
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &pmi8998_lpg {
 	status = "okay";
 
@@ -551,6 +585,11 @@
 };
 
 &sdhc_2 {
+=======
+&sdhc_2 {
+	status = "okay";
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
 
 	pinctrl-names = "default";
@@ -558,8 +597,60 @@
 
 	vmmc-supply = <&vreg_l21a_2p95>;
 	vqmmc-supply = <&vddpx_2>;
+<<<<<<< HEAD
 
 	status = "okay";
+=======
+};
+
+/*
+ * UFS works partially and only with clk_ignore_unused.
+ * Sometimes it crashes with I/O errors.
+ */
+&ufs_mem_hc {
+	status = "okay";
+
+	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
+
+	vcc-supply = <&vreg_l20a_2p95>;
+	vcc-max-microamp = <600000>;
+};
+
+&ufs_mem_phy {
+	status = "okay";
+
+	vdda-phy-supply = <&vdda_ufs1_core>;
+	vdda-pll-supply = <&vdda_ufs1_1p2>;
+};
+
+&usb_1 {
+	status = "okay";
+};
+
+&usb_1_dwc3 {
+	/* TODO: these devices have usb id pin */
+	dr_mode = "peripheral";
+};
+
+&usb_1_hsphy {
+	status = "okay";
+
+	vdd-supply = <&vdda_usb1_ss_core>;
+	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
+	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
+
+	qcom,imp-res-offset-value = <8>;
+	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
+	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
+	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
+};
+
+&usb_1_qmpphy {
+	status = "okay";
+
+	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
+	vdda-pll-supply = <&vdda_usb1_ss_core>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* PINCTRL - additions to nodes defined in sdm845.dtsi */
@@ -600,6 +691,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &uart6 {
 	pinctrl-0 = <&qup_uart6_4pin>;
 
@@ -682,3 +774,14 @@
 
 	status = "okay";
 };
+=======
+&pm8998_gpios {
+	vol_up_pin_a: vol-up-active-state {
+		pins = "gpio6";
+		function = "normal";
+		input-enable;
+		bias-pull-up;
+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
+	};
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -12,15 +12,20 @@
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/pci.h>
+=======
+#include <linux/module.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_data/simplefb.h>
 #include <linux/platform_device.h>
 #include <linux/sysfb.h>
 
 #include "coreboot_table.h"
 
+<<<<<<< HEAD
 #if defined(CONFIG_PCI)
 static bool framebuffer_pci_dev_is_enabled(struct pci_dev *pdev)
 {
@@ -84,15 +89,31 @@ static int framebuffer_probe(struct coreboot_device *dev)
 	struct resource res;
 	int ret;
 #if !IS_ENABLED(CONFIG_DRM_COREBOOTDRM)
+=======
+#define CB_TAG_FRAMEBUFFER 0x12
+
+static const struct simplefb_format formats[] = SIMPLEFB_FORMATS;
+
+static int framebuffer_probe(struct coreboot_device *dev)
+{
+	int i;
+	u32 length;
+	struct lb_framebuffer *fb = &dev->framebuffer;
+	struct platform_device *pdev;
+	struct resource res;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct simplefb_platform_data pdata = {
 		.width = fb->x_resolution,
 		.height = fb->y_resolution,
 		.stride = fb->bytes_per_line,
 		.format = NULL,
 	};
+<<<<<<< HEAD
 	int i;
 	static const struct simplefb_format formats[] = SIMPLEFB_FORMATS;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * On coreboot systems, the advertised LB_TAG_FRAMEBUFFER entry
@@ -110,6 +131,7 @@ static int framebuffer_probe(struct coreboot_device *dev)
 	if (!fb->physical_address)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	res = DEFINE_RES_MEM(fb->physical_address,
 			     PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line));
 	if (res.end <= res.start)
@@ -133,6 +155,8 @@ static int framebuffer_probe(struct coreboot_device *dev)
 	 *        coreboot-framebuffer devices. Remove support for
 	 *        simple-framebuffer at some point.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < ARRAY_SIZE(formats); ++i) {
 		if (fb->bits_per_pixel     == formats[i].bits_per_pixel &&
 		    fb->red_mask_pos       == formats[i].red.offset &&
@@ -143,6 +167,7 @@ static int framebuffer_probe(struct coreboot_device *dev)
 		    fb->blue_mask_size     == formats[i].blue.length)
 			pdata.format = formats[i].name;
 	}
+<<<<<<< HEAD
 	if (!pdata.format) {
 		ret = -ENODEV;
 		goto out_put_device_parent;
@@ -165,6 +190,28 @@ out_put_device_parent:
 	if (parent)
 		put_device(parent);
 	return ret;
+=======
+	if (!pdata.format)
+		return -ENODEV;
+
+	memset(&res, 0, sizeof(res));
+	res.flags = IORESOURCE_MEM;
+	res.name = "Coreboot Framebuffer";
+	res.start = fb->physical_address;
+	length = PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line);
+	res.end = res.start + length - 1;
+	if (res.end <= res.start)
+		return -EINVAL;
+
+	pdev = platform_device_register_resndata(&dev->dev,
+						 "simple-framebuffer", 0,
+						 &res, 1, &pdata,
+						 sizeof(pdata));
+	if (IS_ERR(pdev))
+		pr_warn("coreboot: could not register framebuffer\n");
+
+	return PTR_ERR_OR_ZERO(pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct coreboot_device_id framebuffer_ids[] = {

@@ -18,7 +18,11 @@
     |        mips: |  ok  |
     |       nios2: | TODO |
     |    openrisc: | TODO |
+<<<<<<< HEAD
     |      parisc: |  ok  |
+=======
+    |      parisc: | TODO |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     |     powerpc: |  ok  |
     |       riscv: |  ok  |
     |        s390: |  ok  |

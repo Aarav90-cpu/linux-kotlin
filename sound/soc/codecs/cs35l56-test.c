@@ -74,6 +74,7 @@ static const char *cs35l56_test_devm_get_vendor_specific_variant_id_none(struct 
 	return ERR_PTR(-ENOENT);
 }
 
+<<<<<<< HEAD
 static void cs35l56_test_system_name_from_ssid(struct kunit *test)
 {
 	struct cs35l56_test_priv *priv = test->priv;
@@ -146,6 +147,8 @@ static void cs35l56_test_system_name_from_property_and_spkid(struct kunit *test)
 	KUNIT_EXPECT_STREQ(test, cs35l56->dsp.system_name, "acme-spkid1");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void cs35l56_test_l56_b0_suffix_sdw(struct kunit *test)
 {
 	struct cs35l56_test_priv *priv = test->priv;
@@ -364,17 +367,31 @@ static void cs35l56_test_parse_xu_onchip_spkid(struct kunit *test)
 	struct cs35l56_test_priv *priv = test->priv;
 	struct cs35l56_private *cs35l56 = priv->cs35l56_priv;
 	struct software_node *ext0_node;
+<<<<<<< HEAD
 	int num_gpios, num_pulls;
 	int i;
 
 	for (num_gpios = 0; num_gpios < ARRAY_SIZE(param->spkid_gpios); num_gpios++) {
 		if (param->spkid_gpios[num_gpios] < 0)
+=======
+	int num_gpios = 0;
+	int num_pulls = 0;
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(param->spkid_gpios); i++, num_gpios++) {
+		if (param->spkid_gpios[i] < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 	KUNIT_ASSERT_LE(test, num_gpios, ARRAY_SIZE(cs35l56->base.onchip_spkid_gpios));
 
+<<<<<<< HEAD
 	for (num_pulls = 0; num_pulls < ARRAY_SIZE(param->spkid_pulls); num_pulls++) {
 		if (param->spkid_pulls[num_pulls] < 0)
+=======
+	for (i = 0; i < ARRAY_SIZE(param->spkid_pulls); i++, num_pulls++) {
+		if (param->spkid_pulls[i] < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 	KUNIT_ASSERT_LE(test, num_pulls, ARRAY_SIZE(cs35l56->base.onchip_spkid_pulls));
@@ -612,6 +629,7 @@ static void cs35l56_test_gpio_param_desc(const struct cs35l56_test_param *param,
 }
 
 static const struct cs35l56_test_param cs35l56_test_onchip_spkid_cases[] = {
+<<<<<<< HEAD
 	{ .spkid_gpios = { 1, -1 },		.spkid_pulls = { -1, -1 }, },
 	{ .spkid_gpios = { 1, -1 },		.spkid_pulls = { -1, -1 }, },
 	{ .spkid_gpios = { 1, -1 },		.spkid_pulls = { 1, -1 }, },
@@ -634,6 +652,20 @@ static const struct cs35l56_test_param cs35l56_test_onchip_spkid_cases[] = {
 
 	{ .spkid_gpios = { 3, 7, 1, -1 },	.spkid_pulls = { -1, -1, -1, -1 }, },
 	{ .spkid_gpios = { 3, 7, 1, -1 },	.spkid_pulls = { -1, -1, -1, -1 }, },
+=======
+	{ .spkid_gpios = { 1, -1 },		.spkid_pulls = { 1, -1 }, },
+	{ .spkid_gpios = { 1, -1 },		.spkid_pulls = { 2, -1 }, },
+
+	{ .spkid_gpios = { 7, -1 },		.spkid_pulls = { 1, -1 }, },
+	{ .spkid_gpios = { 7, -1 },		.spkid_pulls = { 2, -1 }, },
+
+	{ .spkid_gpios = { 1, 7, -1 },		.spkid_pulls = { 1, 1, -1 }, },
+	{ .spkid_gpios = { 1, 7, -1 },		.spkid_pulls = { 2, 2, -1 }, },
+
+	{ .spkid_gpios = { 7, 1, -1 },		.spkid_pulls = { 1, 1, -1 }, },
+	{ .spkid_gpios = { 7, 1, -1 },		.spkid_pulls = { 2, 2, -1 }, },
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .spkid_gpios = { 3, 7, 1, -1 },	.spkid_pulls = { 1, 1, 1, -1 }, },
 	{ .spkid_gpios = { 3, 7, 1, -1 },	.spkid_pulls = { 2, 2, 2, -1 }, },
 };
@@ -667,10 +699,13 @@ KUNIT_ARRAY_PARAM(cs35l56_test_type_rev_all, cs35l56_test_type_rev_all_param_cas
 		  cs35l56_test_type_rev_param_desc);
 
 static struct kunit_case cs35l56_test_cases_soundwire[] = {
+<<<<<<< HEAD
 	KUNIT_CASE(cs35l56_test_system_name_from_ssid),
 	KUNIT_CASE(cs35l56_test_system_name_from_ssid_and_spkid),
 	KUNIT_CASE(cs35l56_test_system_name_from_property),
 	KUNIT_CASE(cs35l56_test_system_name_from_property_and_spkid),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE(cs35l56_test_l56_b0_suffix_sdw),
 	KUNIT_CASE_PARAM(cs35l56_test_suffix_sdw, cs35l56_test_type_rev_ex_b0_gen_params),
 	KUNIT_CASE_PARAM(cs35l56_test_ssidexv2_suffix_sdw,
@@ -688,10 +723,13 @@ static struct kunit_case cs35l56_test_cases_soundwire[] = {
 };
 
 static struct kunit_case cs35l56_test_cases_not_soundwire[] = {
+<<<<<<< HEAD
 	KUNIT_CASE(cs35l56_test_system_name_from_ssid),
 	KUNIT_CASE(cs35l56_test_system_name_from_ssid_and_spkid),
 	KUNIT_CASE(cs35l56_test_system_name_from_property),
 	KUNIT_CASE(cs35l56_test_system_name_from_property_and_spkid),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE_PARAM(cs35l56_test_suffix_i2cspi, cs35l56_test_type_rev_all_gen_params),
 	KUNIT_CASE_PARAM(cs35l56_test_ssidexv2_suffix_i2cspi,
 			 cs35l56_test_type_rev_all_gen_params),

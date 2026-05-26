@@ -7,17 +7,24 @@
  */
 
 #include <linux/cleanup.h>
+<<<<<<< HEAD
 #include <linux/device/devres.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/err.h>
 #include <linux/i2c.h>
 #include <linux/i2c-atr.h>
 #include <linux/gpio/consumer.h>
 #include <linux/gpio/driver.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
 #include <linux/leds.h>
 #include <linux/module.h>
 #include <linux/math.h>
 #include <linux/types.h>
+=======
+#include <linux/module.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FPC202_NUM_PORTS 2
 #define FPC202_ALIASES_PER_PORT 2
@@ -39,6 +46,7 @@
  * ...
  * 19: P1_S1_OUT_B
  *
+<<<<<<< HEAD
  * Ports with optional LED control:
  *
  * 20: P0_S0_OUT_C (P0_S0_LED1)
@@ -55,10 +63,18 @@
 #define FPC202_GPIO_P0_S0_OUT_A 12
 #define FPC202_GPIO_P0_S0_OUT_C 20
 #define FPC202_GPIO_P0_S0_OUT_D 24
+=======
+ */
+
+#define FPC202_GPIO_COUNT 20
+#define FPC202_GPIO_P0_S0_IN_B  4
+#define FPC202_GPIO_P0_S0_OUT_A 12
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FPC202_REG_IN_A_INT    0x6
 #define FPC202_REG_IN_C_IN_B   0x7
 #define FPC202_REG_OUT_A_OUT_B 0x8
+<<<<<<< HEAD
 #define FPC202_REG_OUT_C_OUT_D 0x9
 
 #define FPC202_REG_OUT_A_OUT_B_VAL 0xa
@@ -88,6 +104,11 @@
 
 #define FPC202_LED_MAX_BRIGHTNESS 255
 
+=======
+
+#define FPC202_REG_OUT_A_OUT_B_VAL 0xa
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FPC202_REG_MOD_DEV(port, dev) (0xb4 + ((port) * 4) + (dev))
 #define FPC202_REG_AUX_DEV(port, dev) (0xb6 + ((port) * 4) + (dev))
 
@@ -101,6 +122,7 @@
 /* Even aliases are assigned to device 0 and odd aliases to device 1 */
 #define fpc202_dev_num_from_alias(alias) ((alias) % 2)
 
+<<<<<<< HEAD
 enum fpc202_led_mode {
 	FPC202_LED_MODE_OFF = 0,
 	FPC202_LED_MODE_ON = 1,
@@ -116,19 +138,27 @@ struct fpc202_led {
 	enum fpc202_led_mode mode;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct fpc202_priv {
 	struct i2c_client *client;
 	struct i2c_atr *atr;
 	struct gpio_desc *en_gpio;
 	struct gpio_chip gpio;
+<<<<<<< HEAD
 	struct fpc202_led leds[FPC202_LED_COUNT];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Lock REG_MOD/AUX_DEV and addr_caches during attach/detach */
 	struct mutex reg_dev_lock;
 
+<<<<<<< HEAD
 	/* Lock LED mode select register during accesses */
 	struct mutex led_mode_lock;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Cached device addresses for both ports and their devices */
 	u8 addr_caches[2][2];
 
@@ -158,11 +188,14 @@ static int fpc202_gpio_get_dir(int offset)
 	return offset < FPC202_GPIO_P0_S0_OUT_A ? GPIO_LINE_DIRECTION_IN : GPIO_LINE_DIRECTION_OUT;
 }
 
+<<<<<<< HEAD
 static int fpc202_gpio_has_led_caps(int offset)
 {
 	return offset >= FPC202_GPIO_P0_S0_OUT_C;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fpc202_read(struct fpc202_priv *priv, u8 reg)
 {
 	int val;
@@ -184,6 +217,7 @@ static void fpc202_set_enable(struct fpc202_priv *priv, int enable)
 	gpiod_set_value(priv->en_gpio, enable);
 }
 
+<<<<<<< HEAD
 static int fpc202_led_mode_write(struct fpc202_priv *priv,
 				 int offset,
 				 enum fpc202_led_mode mode)
@@ -215,6 +249,8 @@ static int fpc202_led_mode_set(struct fpc202_led *led, enum fpc202_led_mode mode
 	return fpc202_led_mode_write(priv, led->offset, mode);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fpc202_gpio_set(struct gpio_chip *chip, unsigned int offset,
 			   int value)
 {
@@ -222,6 +258,7 @@ static int fpc202_gpio_set(struct gpio_chip *chip, unsigned int offset,
 	int ret;
 	u8 val;
 
+<<<<<<< HEAD
 	if (fpc202_gpio_has_led_caps(offset)) {
 		ret = fpc202_led_mode_write(priv, offset,
 					    value ? FPC202_LED_MODE_ON : FPC202_LED_MODE_OFF);
@@ -232,6 +269,8 @@ static int fpc202_gpio_set(struct gpio_chip *chip, unsigned int offset,
 		return ret;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = fpc202_read(priv, FPC202_REG_OUT_A_OUT_B_VAL);
 	if (ret < 0) {
 		dev_err(&priv->client->dev, "Failed to set GPIO %d value! err %d\n", offset, ret);
@@ -260,11 +299,17 @@ static int fpc202_gpio_get(struct gpio_chip *chip, unsigned int offset)
 	} else if (offset < FPC202_GPIO_P0_S0_OUT_A) {
 		reg = FPC202_REG_IN_C_IN_B;
 		bit = BIT(offset - FPC202_GPIO_P0_S0_IN_B);
+<<<<<<< HEAD
 	} else if (!fpc202_gpio_has_led_caps(offset)) {
 		reg = FPC202_REG_OUT_A_OUT_B_VAL;
 		bit = BIT(offset - FPC202_GPIO_P0_S0_OUT_A);
 	} else {
 		return -EOPNOTSUPP;
+=======
+	} else {
+		reg = FPC202_REG_OUT_A_OUT_B_VAL;
+		bit = BIT(offset - FPC202_GPIO_P0_S0_OUT_A);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = fpc202_read(priv, reg);
@@ -286,14 +331,20 @@ static int fpc202_gpio_direction_output(struct gpio_chip *chip, unsigned int off
 					int value)
 {
 	struct fpc202_priv *priv = gpiochip_get_data(chip);
+<<<<<<< HEAD
 	u8 reg, val, bit;
 	int ret;
+=======
+	int ret;
+	u8 val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (fpc202_gpio_get_dir(offset) == GPIO_LINE_DIRECTION_IN)
 		return -EINVAL;
 
 	fpc202_gpio_set(chip, offset, value);
 
+<<<<<<< HEAD
 	if (fpc202_gpio_has_led_caps(offset)) {
 		reg = FPC202_REG_OUT_C_OUT_D;
 		bit = BIT(offset - FPC202_GPIO_P0_S0_OUT_C);
@@ -309,6 +360,15 @@ static int fpc202_gpio_direction_output(struct gpio_chip *chip, unsigned int off
 	val = (u8)ret | bit;
 
 	return fpc202_write(priv, reg, val);
+=======
+	ret = fpc202_read(priv, FPC202_REG_OUT_A_OUT_B);
+	if (ret < 0)
+		return ret;
+
+	val = (u8)ret | BIT(offset - FPC202_GPIO_P0_S0_OUT_A);
+
+	return fpc202_write(priv, FPC202_REG_OUT_A_OUT_B, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -360,15 +420,32 @@ static void fpc202_detach_addr(struct i2c_atr *atr, u32 chan_id,
 			       u16 addr)
 {
 	struct fpc202_priv *priv = i2c_atr_get_driver_data(atr);
+<<<<<<< HEAD
 	int dev_num, val;
 
 	for (dev_num = 0; dev_num < 2; dev_num++) {
+=======
+	int dev_num, reg_mod, val;
+
+	for (dev_num = 0; dev_num < 2; dev_num++) {
+		reg_mod = FPC202_REG_MOD_DEV(chan_id, dev_num);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_lock(&priv->reg_dev_lock);
 
 		val = priv->addr_caches[chan_id][dev_num];
 
 		mutex_unlock(&priv->reg_dev_lock);
 
+<<<<<<< HEAD
+=======
+		if (val < 0) {
+			dev_err(&priv->client->dev, "failed to read register 0x%x while detaching address 0x%02x\n",
+				reg_mod, addr);
+			return;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (val == (addr & 0x7f)) {
 			fpc202_write_dev_addr(priv, chan_id, dev_num, FPC202_REG_DEV_INVALID);
 			return;
@@ -381,6 +458,7 @@ static const struct i2c_atr_ops fpc202_atr_ops = {
 	.detach_addr = fpc202_detach_addr,
 };
 
+<<<<<<< HEAD
 static struct fpc202_led *fpc202_cdev_to_led(struct led_classdev *cdev)
 {
 	return container_of(cdev, struct fpc202_led, led_cdev);
@@ -558,6 +636,8 @@ free_own_gpios:
 	return ret;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fpc202_probe_port(struct fpc202_priv *priv, struct device_node *i2c_handle, int port_id)
 {
 	u16 aliases[FPC202_ALIASES_PER_PORT] = { };
@@ -596,14 +676,21 @@ static int fpc202_probe(struct i2c_client *client)
 {
 	struct device *dev = &client->dev;
 	struct fpc202_priv *priv;
+<<<<<<< HEAD
 	int ret, port_id, led_id;
+=======
+	int ret, port_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
 
 	mutex_init(&priv->reg_dev_lock);
+<<<<<<< HEAD
 	mutex_init(&priv->led_mode_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv->client = client;
 	i2c_set_clientdata(client, priv);
@@ -641,12 +728,15 @@ static int fpc202_probe(struct i2c_client *client)
 
 	i2c_atr_set_driver_data(priv->atr, priv);
 
+<<<<<<< HEAD
 	ret = fpc202_register_leds(priv);
 	if (ret) {
 		dev_err(dev, "Failed to register LEDs, err %d\n", ret);
 		goto delete_atr;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bitmap_zero(priv->probed_ports, FPC202_NUM_PORTS);
 
 	for_each_child_of_node_scoped(dev->of_node, i2c_handle) {
@@ -659,8 +749,16 @@ static int fpc202_probe(struct i2c_client *client)
 			goto unregister_chans;
 		}
 
+<<<<<<< HEAD
 		if (port_id >= FPC202_NUM_PORTS)
 			continue;
+=======
+		if (port_id > FPC202_NUM_PORTS) {
+			dev_err(dev, "port ID %d is out of range!\n", port_id);
+			ret = -EINVAL;
+			goto unregister_chans;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = fpc202_probe_port(priv, i2c_handle, port_id);
 		if (ret) {
@@ -675,18 +773,24 @@ unregister_chans:
 	for_each_set_bit(port_id, priv->probed_ports, FPC202_NUM_PORTS)
 		fpc202_remove_port(priv, port_id);
 
+<<<<<<< HEAD
 	for (led_id = 0; led_id < FPC202_LED_COUNT; led_id++)
 		if (priv->leds[led_id].gpio)
 			gpiochip_free_own_desc(priv->leds[led_id].gpio);
 
 	devres_release_group(&client->dev, fpc202_register_leds);
 delete_atr:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_atr_delete(priv->atr);
 disable_gpio:
 	fpc202_set_enable(priv, 0);
 	gpiochip_remove(&priv->gpio);
 destroy_mutex:
+<<<<<<< HEAD
 	mutex_destroy(&priv->led_mode_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_destroy(&priv->reg_dev_lock);
 out:
 	return ret;
@@ -695,11 +799,16 @@ out:
 static void fpc202_remove(struct i2c_client *client)
 {
 	struct fpc202_priv *priv = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	int port_id, led_id;
+=======
+	int port_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_set_bit(port_id, priv->probed_ports, FPC202_NUM_PORTS)
 		fpc202_remove_port(priv, port_id);
 
+<<<<<<< HEAD
 	for (led_id = 0; led_id < FPC202_LED_COUNT; led_id++)
 		if (priv->leds[led_id].gpio)
 			gpiochip_free_own_desc(priv->leds[led_id].gpio);
@@ -708,6 +817,8 @@ static void fpc202_remove(struct i2c_client *client)
 	devres_release_group(&client->dev, fpc202_register_leds);
 
 	mutex_destroy(&priv->led_mode_lock);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_destroy(&priv->reg_dev_lock);
 
 	i2c_atr_delete(priv->atr);

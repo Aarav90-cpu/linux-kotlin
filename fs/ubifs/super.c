@@ -92,7 +92,11 @@ static int validate_inode(struct ubifs_info *c, const struct inode *inode)
 		return 5;
 
 	if (!ubifs_compr_present(c, ui->compr_type)) {
+<<<<<<< HEAD
 		ubifs_warn(c, "inode %llu uses '%s' compression, but it was not compiled in",
+=======
+		ubifs_warn(c, "inode %lu uses '%s' compression, but it was not compiled in",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   inode->i_ino, ubifs_compr_name(c, ui->compr_type));
 	}
 
@@ -248,14 +252,22 @@ struct inode *ubifs_iget(struct super_block *sb, unsigned long inum)
 	return inode;
 
 out_invalid:
+<<<<<<< HEAD
 	ubifs_err(c, "inode %llu validation failed, error %d", inode->i_ino, err);
+=======
+	ubifs_err(c, "inode %lu validation failed, error %d", inode->i_ino, err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ubifs_dump_node(c, ino, UBIFS_MAX_INO_NODE_SZ);
 	ubifs_dump_inode(c, inode);
 	err = -EINVAL;
 out_ino:
 	kfree(ino);
 out:
+<<<<<<< HEAD
 	ubifs_err(c, "failed to read inode %llu, error %d", inode->i_ino, err);
+=======
+	ubifs_err(c, "failed to read inode %lu, error %d", inode->i_ino, err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iget_failed(inode);
 	return ERR_PTR(err);
 }
@@ -316,12 +328,20 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
 	 * As an optimization, do not write orphan inodes to the media just
 	 * because this is not needed.
 	 */
+<<<<<<< HEAD
 	dbg_gen("inode %llu, mode %#x, nlink %u",
+=======
+	dbg_gen("inode %lu, mode %#x, nlink %u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, (int)inode->i_mode, inode->i_nlink);
 	if (inode->i_nlink) {
 		err = ubifs_jnl_write_inode(c, inode);
 		if (err)
+<<<<<<< HEAD
 			ubifs_err(c, "can't write inode %llu, error %d",
+=======
+			ubifs_err(c, "can't write inode %lu, error %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  inode->i_ino, err);
 		else
 			err = dbg_check_inode_size(c, inode, ui->ui_size);
@@ -357,7 +377,11 @@ static void ubifs_evict_inode(struct inode *inode)
 		 */
 		goto out;
 
+<<<<<<< HEAD
 	dbg_gen("inode %llu, mode %#x", inode->i_ino, (int)inode->i_mode);
+=======
+	dbg_gen("inode %lu, mode %#x", inode->i_ino, (int)inode->i_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ubifs_assert(c, !icount_read(inode));
 
 	truncate_inode_pages_final(&inode->i_data);
@@ -375,7 +399,11 @@ static void ubifs_evict_inode(struct inode *inode)
 		 * Worst case we have a lost orphan inode wasting space, so a
 		 * simple error message is OK here.
 		 */
+<<<<<<< HEAD
 		ubifs_err(c, "can't delete inode %llu, error %d",
+=======
+		ubifs_err(c, "can't delete inode %lu, error %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  inode->i_ino, err);
 
 out:
@@ -399,7 +427,11 @@ static void ubifs_dirty_inode(struct inode *inode, int flags)
 	ubifs_assert(c, mutex_is_locked(&ui->ui_mutex));
 	if (!ui->dirty) {
 		ui->dirty = 1;
+<<<<<<< HEAD
 		dbg_gen("inode %llu",  inode->i_ino);
+=======
+		dbg_gen("inode %lu",  inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

@@ -6,6 +6,7 @@
 #include <linux/types.h>
 
 struct timerqueue_node {
+<<<<<<< HEAD
 	struct rb_node		node;
 	ktime_t			expires;
 };
@@ -21,6 +22,14 @@ struct timerqueue_linked_node {
 
 struct timerqueue_linked_head {
 	struct rb_root_linked		rb_root;
+=======
+	struct rb_node node;
+	ktime_t expires;
+};
+
+struct timerqueue_head {
+	struct rb_root_cached rb_root;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* _LINUX_TIMERQUEUE_TYPES_H */

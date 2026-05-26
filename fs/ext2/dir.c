@@ -141,7 +141,11 @@ out:
 Ebadsize:
 	if (!quiet)
 		ext2_error(sb, __func__,
+<<<<<<< HEAD
 			"size of directory #%llu is not a multiple "
+=======
+			"size of directory #%lu is not a multiple "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"of chunk size", dir->i_ino);
 	goto fail;
 Eshort:
@@ -160,7 +164,11 @@ Einumber:
 	error = "inode out of bounds";
 bad_entry:
 	if (!quiet)
+<<<<<<< HEAD
 		ext2_error(sb, __func__, "bad entry in directory #%llu: : %s - "
+=======
+		ext2_error(sb, __func__, "bad entry in directory #%lu: : %s - "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"offset=%llu, inode=%lu, rec_len=%d, name_len=%d",
 			dir->i_ino, error, folio_pos(folio) + offs,
 			(unsigned long) le32_to_cpu(p->inode),
@@ -170,7 +178,11 @@ Eend:
 	if (!quiet) {
 		p = (ext2_dirent *)(kaddr + offs);
 		ext2_error(sb, "ext2_check_folio",
+<<<<<<< HEAD
 			"entry in directory #%llu spans the page boundary"
+=======
+			"entry in directory #%lu spans the page boundary"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"offset=%llu, inode=%lu",
 			dir->i_ino, folio_pos(folio) + offs,
 			(unsigned long) le32_to_cpu(p->inode));
@@ -281,7 +293,11 @@ ext2_readdir(struct file *file, struct dir_context *ctx)
 
 		if (IS_ERR(kaddr)) {
 			ext2_error(sb, __func__,
+<<<<<<< HEAD
 				   "bad page in #%llu",
+=======
+				   "bad page in #%lu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   inode->i_ino);
 			ctx->pos += PAGE_SIZE - offset;
 			return PTR_ERR(kaddr);
@@ -383,7 +399,11 @@ struct ext2_dir_entry_2 *ext2_find_entry (struct inode *dir,
 		/* next folio is past the blocks we've got */
 		if (unlikely(n > (dir->i_blocks >> (PAGE_SHIFT - 9)))) {
 			ext2_error(dir->i_sb, __func__,
+<<<<<<< HEAD
 				"dir %llu size %lld exceeds block count %llu",
+=======
+				"dir %lu size %lld exceeds block count %llu",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				dir->i_ino, dir->i_size,
 				(unsigned long long)dir->i_blocks);
 			goto out;

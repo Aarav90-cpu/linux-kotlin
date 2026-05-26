@@ -456,6 +456,7 @@ static const struct ec_board_info board_info_crosshair_viii_impact = {
 	.family = family_amd_500_series,
 };
 
+<<<<<<< HEAD
 static const struct ec_board_info board_info_crosshair_x670e_extreme = {
 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
@@ -465,6 +466,8 @@ static const struct ec_board_info board_info_crosshair_x670e_extreme = {
 	.family = family_amd_600_series,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ec_board_info board_info_crosshair_x670e_gene = {
 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
 		SENSOR_TEMP_T_SENSOR |
@@ -635,6 +638,7 @@ static const struct ec_board_info board_info_strix_b850_i_gaming_wifi = {
 	.family = family_amd_800_series,
 };
 
+<<<<<<< HEAD
 static const struct ec_board_info board_info_strix_x470_f_gaming = {
 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
 		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT |
@@ -643,6 +647,8 @@ static const struct ec_board_info board_info_strix_x470_f_gaming = {
 	.family = family_amd_400_series,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ec_board_info board_info_strix_x470_i_gaming = {
 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
 		SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM |
@@ -767,12 +773,15 @@ static const struct ec_board_info board_info_strix_z790_e_gaming_wifi_ii = {
 	.family = family_intel_700_series,
 };
 
+<<<<<<< HEAD
 static const struct ec_board_info board_info_strix_z790_h_gaming_wifi = {
 	.sensors = SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM,
 	.mutex_path = ASUS_HW_ACCESS_MUTEX_SB_PC00_LPCB_SIO1_MUT0,
 	.family = family_intel_700_series,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ec_board_info board_info_strix_z790_i_gaming_wifi = {
 	.sensors = SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_T_SENSOR_2 |
 		SENSOR_TEMP_VRM,
@@ -848,8 +857,11 @@ static const struct dmi_system_id dmi_table[] = {
 					&board_info_crosshair_viii_hero),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VIII IMPACT",
 					&board_info_crosshair_viii_impact),
+<<<<<<< HEAD
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR X670E EXTREME",
 					&board_info_crosshair_x670e_extreme),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR X670E GENE",
 					&board_info_crosshair_x670e_gene),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR X670E HERO",
@@ -870,8 +882,11 @@ static const struct dmi_system_id dmi_table[] = {
 					&board_info_strix_b650e_i_gaming),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX B850-I GAMING WIFI",
 					&board_info_strix_b850_i_gaming_wifi),
+<<<<<<< HEAD
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X470-F GAMING",
 					&board_info_strix_x470_f_gaming),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X470-I GAMING",
 					&board_info_strix_x470_i_gaming),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X570-E GAMING",
@@ -904,8 +919,11 @@ static const struct dmi_system_id dmi_table[] = {
 					&board_info_strix_z690_e_gaming_wifi),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX Z790-E GAMING WIFI II",
 					&board_info_strix_z790_e_gaming_wifi_ii),
+<<<<<<< HEAD
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX Z790-H GAMING WIFI",
 					&board_info_strix_z790_h_gaming_wifi),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX Z790-I GAMING WIFI",
 					&board_info_strix_z790_i_gaming_wifi),
 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG ZENITH II EXTREME",

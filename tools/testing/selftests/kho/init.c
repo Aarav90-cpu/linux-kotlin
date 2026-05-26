@@ -11,6 +11,10 @@
 /* from arch/x86/include/asm/setup.h */
 #define COMMAND_LINE_SIZE	2048
 
+<<<<<<< HEAD
+=======
+#define KHO_FINALIZE "/debugfs/kho/out/finalize"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define KERNEL_IMAGE "/kernel"
 
 static int mount_filesystems(void)
@@ -21,6 +25,25 @@ static int mount_filesystems(void)
 	return mount("proc", "/proc", "proc", 0, NULL);
 }
 
+<<<<<<< HEAD
+=======
+static int kho_enable(void)
+{
+	const char enable[] = "1";
+	int fd;
+
+	fd = open(KHO_FINALIZE, O_RDWR);
+	if (fd < 0)
+		return -1;
+
+	if (write(fd, enable, sizeof(enable)) != sizeof(enable))
+		return 1;
+
+	close(fd);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static long kexec_file_load(int kernel_fd, int initrd_fd,
 			    unsigned long cmdline_len, const char *cmdline,
 			    unsigned long flags)
@@ -61,6 +84,12 @@ int main(int argc, char *argv[])
 	if (mount_filesystems())
 		goto err_reboot;
 
+<<<<<<< HEAD
+=======
+	if (kho_enable())
+		goto err_reboot;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (kexec_load())
 		goto err_reboot;
 

@@ -22,6 +22,10 @@
 #include "tool.h"
 #include "cpumap.h"
 #include "metricgroup.h"
+<<<<<<< HEAD
+=======
+#include "stat.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <errno.h>
@@ -216,6 +220,18 @@ static int process_sample_event(const struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int process_feature_event(const struct perf_tool *tool __maybe_unused,
+				 struct perf_session *session,
+				 union perf_event *event)
+{
+	if (event->feat.feat_id < HEADER_LAST_FEATURE)
+		return perf_event__process_feature(session, event);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void *__sample_reader(void *arg __maybe_unused)
 {
 	struct perf_session *session;
@@ -228,7 +244,11 @@ static void *__sample_reader(void *arg __maybe_unused)
 
 	perf_tool__init(&tool, /*ordered_events=*/false);
 	tool.sample = process_sample_event;
+<<<<<<< HEAD
 	tool.feature = perf_event__process_feature;
+=======
+	tool.feature = process_feature_event;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tool.attr = perf_event__process_attr;
 
 	session = perf_session__new(&data, &tool);

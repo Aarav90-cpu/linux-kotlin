@@ -334,6 +334,7 @@ const struct ptp_clock_info dwmac1000_ptp_clock_ops = {
  */
 void stmmac_ptp_register(struct stmmac_priv *priv)
 {
+<<<<<<< HEAD
 	unsigned int pps_out_num = priv->dma_cap.pps_out_num;
 	unsigned int n_ext_ts;
 
@@ -342,6 +343,14 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
 			 "pps outputs (%u) exceeds driver maximum, limiting to %u\n",
 			 pps_out_num, STMMAC_PPS_MAX);
 		pps_out_num = STMMAC_PPS_MAX;
+=======
+	int i;
+
+	for (i = 0; i < priv->dma_cap.pps_out_num; i++) {
+		if (i >= STMMAC_PPS_MAX)
+			break;
+		priv->pps[i].available = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Calculate the clock domain crossing (CDC) error if necessary */
@@ -352,12 +361,20 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
 	/* Update the ptp clock parameters based on feature discovery, when
 	 * available
 	 */
+<<<<<<< HEAD
 	if (pps_out_num)
 		priv->ptp_clock_ops.n_per_out = pps_out_num;
 
 	n_ext_ts = priv->dma_cap.aux_snapshot_n;
 	if (n_ext_ts)
 		priv->ptp_clock_ops.n_ext_ts = n_ext_ts;
+=======
+	if (priv->dma_cap.pps_out_num)
+		priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
+
+	if (priv->dma_cap.aux_snapshot_n)
+		priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (priv->plat->ptp_max_adj)
 		priv->ptp_clock_ops.max_adj = priv->plat->ptp_max_adj;

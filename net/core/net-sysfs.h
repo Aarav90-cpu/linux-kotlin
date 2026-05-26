@@ -13,5 +13,8 @@ int netdev_change_owner(struct net_device *, const struct net *net_old,
 
 extern struct mutex rps_default_mask_mutex;
 
+<<<<<<< HEAD
 DECLARE_STATIC_KEY_FALSE(skb_defer_disable_key);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

@@ -7,9 +7,13 @@
  * Copyright (C) 2024 MaxLinear Inc.
  */
 
+<<<<<<< HEAD
 #include <linux/bitops.h>
 #include <linux/bits.h>
 #include <linux/crc16.h>
+=======
+#include <linux/bits.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/iopoll.h>
 #include <linux/limits.h>
 #include <net/dsa.h>
@@ -17,9 +21,12 @@
 #include "mxl862xx-host.h"
 
 #define CTRL_BUSY_MASK			BIT(15)
+<<<<<<< HEAD
 #define CTRL_CRC_FLAG			BIT(14)
 
 #define LEN_RET_LEN_MASK		GENMASK(9, 0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define MXL862XX_MMD_REG_CTRL		0
 #define MXL862XX_MMD_REG_LEN_RET	1
@@ -32,6 +39,7 @@
 #define MMD_API_GET_DATA_0		5
 #define MMD_API_RST_DATA		8
 
+<<<<<<< HEAD
 #define MXL862XX_SWITCH_RESET		0x9907
 
 static void mxl862xx_crc_err_work_fn(struct work_struct *work)
@@ -185,6 +193,9 @@ static int mxl862xx_crc6_verify(u16 ctrl, u16 len_ret, int *result)
 
 	return 0;
 }
+=======
+#define MXL862XX_SWITCH_RESET 0x9907
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int mxl862xx_reg_read(struct mxl862xx_priv *priv, u32 addr)
 {
@@ -209,6 +220,7 @@ static int mxl862xx_busy_wait(struct mxl862xx_priv *priv)
 				  !(val & CTRL_BUSY_MASK), 15, 500000);
 }
 
+<<<<<<< HEAD
 /* Issue a firmware command with CRC-6 protection on the ctrl and len_ret
  * registers, wait for completion, and verify the response CRC-6.
  *
@@ -259,25 +271,58 @@ static int mxl862xx_set_data(struct mxl862xx_priv *priv, u16 words)
 {
 	u16 cmd;
 
+=======
+static int mxl862xx_set_data(struct mxl862xx_priv *priv, u16 words)
+{
+	int ret;
+	u16 cmd;
+
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_LEN_RET,
+				 MXL862XX_MMD_REG_DATA_MAX_SIZE * sizeof(u16));
+	if (ret < 0)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd = words / MXL862XX_MMD_REG_DATA_MAX_SIZE - 1;
 	if (!(cmd < 2))
 		return -EINVAL;
 
 	cmd += MMD_API_SET_DATA_0;
+<<<<<<< HEAD
 
 	return mxl862xx_issue_cmd(priv, cmd,
 				  MXL862XX_MMD_REG_DATA_MAX_SIZE * sizeof(u16));
+=======
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_CTRL,
+				 cmd | CTRL_BUSY_MASK);
+	if (ret < 0)
+		return ret;
+
+	return mxl862xx_busy_wait(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mxl862xx_get_data(struct mxl862xx_priv *priv, u16 words)
 {
+<<<<<<< HEAD
 	u16 cmd;
 
+=======
+	int ret;
+	u16 cmd;
+
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_LEN_RET,
+				 MXL862XX_MMD_REG_DATA_MAX_SIZE * sizeof(u16));
+	if (ret < 0)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd = words / MXL862XX_MMD_REG_DATA_MAX_SIZE;
 	if (!(cmd > 0 && cmd < 3))
 		return -EINVAL;
 
 	cmd += MMD_API_GET_DATA_0;
+<<<<<<< HEAD
 
 	return mxl862xx_issue_cmd(priv, cmd,
 				  MXL862XX_MMD_REG_DATA_MAX_SIZE * sizeof(u16));
@@ -293,12 +338,32 @@ static int mxl862xx_rst_data(struct mxl862xx_priv *priv)
  * round-trip (~5 MDIO transactions), so the threshold must offset that.
  */
 #define RST_DATA_THRESHOLD	5
+=======
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_CTRL,
+				 cmd | CTRL_BUSY_MASK);
+	if (ret < 0)
+		return ret;
+
+	return mxl862xx_busy_wait(priv);
+}
+
+static int mxl862xx_firmware_return(int ret)
+{
+	/* Only 16-bit values are valid. */
+	if (WARN_ON(ret & GENMASK(31, 16)))
+		return -EINVAL;
+
+	/* Interpret value as signed 16-bit integer. */
+	return (s16)ret;
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int mxl862xx_send_cmd(struct mxl862xx_priv *priv, u16 cmd, u16 size,
 			     bool quiet)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = mxl862xx_issue_cmd(priv, cmd, size);
 
 	/* Handle errors returned by the firmware as -EIO.
@@ -316,6 +381,32 @@ static int mxl862xx_send_cmd(struct mxl862xx_priv *priv, u16 cmd, u16 size,
 		     ret == MXL862XX_FW_CRC16_ERR) &&
 		    !test_and_set_bit(MXL862XX_FLAG_CRC_ERR, &priv->flags))
 			schedule_work(&priv->crc_err_work);
+=======
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_LEN_RET, size);
+	if (ret)
+		return ret;
+
+	ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_CTRL,
+				 cmd | CTRL_BUSY_MASK);
+	if (ret)
+		return ret;
+
+	ret = mxl862xx_busy_wait(priv);
+	if (ret)
+		return ret;
+
+	ret = mxl862xx_reg_read(priv, MXL862XX_MMD_REG_LEN_RET);
+	if (ret < 0)
+		return ret;
+
+	/* handle errors returned by the firmware as -EIO
+	 * The firmware is based on Zephyr OS and uses the errors as
+	 * defined in errno.h of Zephyr OS. See
+	 * https://github.com/zephyrproject-rtos/zephyr/blob/v3.7.0/lib/libc/minimal/include/errno.h
+	 */
+	ret = mxl862xx_firmware_return(ret);
+	if (ret < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!quiet)
 			dev_err(&priv->mdiodev->dev,
 				"CMD %04x returned error %d\n", cmd, ret);
@@ -329,10 +420,15 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 		      u16 size, bool read, bool quiet)
 {
 	__le16 *data = _data;
+<<<<<<< HEAD
 	bool use_rst = false;
 	unsigned int zeros;
 	int ret, cmd_ret;
 	u16 max, crc, i;
+=======
+	int ret, cmd_ret;
+	u16 max, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dev_dbg(&priv->mdiodev->dev, "CMD %04x DATA %*ph\n", cmd, size, data);
 
@@ -344,6 +440,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 	if (ret < 0)
 		goto out;
 
+<<<<<<< HEAD
 	/* If the data contains enough zero words, issue RST_DATA to zero
 	 * both the firmware buffer and MMD registers, then skip writing
 	 * zero words individually.
@@ -370,16 +467,25 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 	for (i = 0; i < max + 1; i++) {
 		u16 off = i % MXL862XX_MMD_REG_DATA_MAX_SIZE;
 		u16 val;
+=======
+	for (i = 0; i < max; i++) {
+		u16 off = i % MXL862XX_MMD_REG_DATA_MAX_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (i && off == 0) {
 			/* Send command to set data when every
 			 * MXL862XX_MMD_REG_DATA_MAX_SIZE of WORDs are written.
+<<<<<<< HEAD
 			  */
+=======
+			 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = mxl862xx_set_data(priv, i);
 			if (ret < 0)
 				goto out;
 		}
 
+<<<<<<< HEAD
 		if (i == max) {
 			/* Even size: full CRC word.
 			 * Odd size: only CRC high byte remains (low byte
@@ -408,6 +514,10 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 		ret = mxl862xx_reg_write(priv,
 					 MXL862XX_MMD_REG_DATA_FIRST + off,
 					 val);
+=======
+		ret = mxl862xx_reg_write(priv, MXL862XX_MMD_REG_DATA_FIRST + off,
+					 le16_to_cpu(data[i]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			goto out;
 	}
@@ -419,13 +529,21 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 	/* store result of mxl862xx_send_cmd() */
 	cmd_ret = ret;
 
+<<<<<<< HEAD
 	for (i = 0; i < max + 1; i++) {
+=======
+	for (i = 0; i < max; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u16 off = i % MXL862XX_MMD_REG_DATA_MAX_SIZE;
 
 		if (i && off == 0) {
 			/* Send command to fetch next batch of data when every
 			 * MXL862XX_MMD_REG_DATA_MAX_SIZE of WORDs are read.
+<<<<<<< HEAD
 			  */
+=======
+			 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = mxl862xx_get_data(priv, i);
 			if (ret < 0)
 				goto out;
@@ -435,6 +553,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 		if (ret < 0)
 			goto out;
 
+<<<<<<< HEAD
 		if (i == max) {
 			/* Even size: full CRC word.
 			 * Odd size: only CRC high byte remains (low byte
@@ -452,11 +571,20 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 			 */
 			*(uint8_t *)&data[i] = ret & 0xff;
 			crc = (ret >> 8) & 0xff;
+=======
+		if ((i * 2 + 1) == size) {
+			/* Special handling for last BYTE if it's not WORD
+			 * aligned to avoid writing beyond the allocated data
+			 * structure.
+			 */
+			*(uint8_t *)&data[i] = ret & 0xff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			data[i] = cpu_to_le16((u16)ret);
 		}
 	}
 
+<<<<<<< HEAD
 	if (crc16(0xffff, (const u8 *)data, size) != crc) {
 		if (!test_and_set_bit(MXL862XX_FLAG_CRC_ERR, &priv->flags))
 			schedule_work(&priv->crc_err_work);
@@ -464,6 +592,8 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* on success return the result of the mxl862xx_send_cmd() */
 	ret = cmd_ret;
 
@@ -492,6 +622,7 @@ out:
 
 	return ret;
 }
+<<<<<<< HEAD
 
 void mxl862xx_host_init(struct mxl862xx_priv *priv)
 {
@@ -502,3 +633,5 @@ void mxl862xx_host_shutdown(struct mxl862xx_priv *priv)
 {
 	cancel_work_sync(&priv->crc_err_work);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

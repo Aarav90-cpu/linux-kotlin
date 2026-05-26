@@ -40,6 +40,7 @@ how to translate the device into a serial number from SCSI EVPD 0x80::
 
 	echo "fencing client ${CLIENT} serial ${EVPD}" >> /var/log/pnfsd-fence.log
 	EOF
+<<<<<<< HEAD
 
 If the nfsd server needs to fence a non-responding client and the
 fencing operation fails, the server logs a warning message in the
@@ -70,3 +71,5 @@ needs to take the following actions:
     where:
 
       - clid: is the unique client identifier displayed in the system log.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

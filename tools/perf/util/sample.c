@@ -19,22 +19,32 @@ void perf_sample__init(struct perf_sample *sample, bool all)
 	if (all) {
 		memset(sample, 0, sizeof(*sample));
 	} else {
+<<<<<<< HEAD
 		sample->evsel = NULL;
 		sample->user_regs = NULL;
 		sample->intr_regs = NULL;
 		sample->merged_callchain = false;
 		sample->callchain = NULL;
+=======
+		sample->user_regs = NULL;
+		sample->intr_regs = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 void perf_sample__exit(struct perf_sample *sample)
 {
+<<<<<<< HEAD
 	zfree(&sample->user_regs);
 	zfree(&sample->intr_regs);
 	if (sample->merged_callchain) {
 		zfree(&sample->callchain);
 		sample->merged_callchain = false;
 	}
+=======
+	free(sample->user_regs);
+	free(sample->intr_regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct regs_dump *perf_sample__user_regs(struct perf_sample *sample)

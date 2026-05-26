@@ -4,7 +4,10 @@
  */
 
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <sys/un.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "kublk.h"
 
 #define MAX_NR_TGT_ARG 	64
@@ -797,8 +800,11 @@ static void ublk_submit_fetch_commands(struct ublk_thread *t)
 			q = &t->dev->q[q_id];
 			io = &q->ios[tag];
 			io->buf_index = j++;
+<<<<<<< HEAD
 			if (q->tgt_ops->pre_fetch_io)
 				q->tgt_ops->pre_fetch_io(t, q, tag, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ublk_queue_io_cmd(t, io);
 		}
 	} else {
@@ -810,8 +816,11 @@ static void ublk_submit_fetch_commands(struct ublk_thread *t)
 		for (i = 0; i < q->q_depth; i++) {
 			io = &q->ios[i];
 			io->buf_index = i;
+<<<<<<< HEAD
 			if (q->tgt_ops->pre_fetch_io)
 				q->tgt_ops->pre_fetch_io(t, q, i, false);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ublk_queue_io_cmd(t, io);
 		}
 	}
@@ -988,9 +997,12 @@ static void ublk_batch_setup_queues(struct ublk_thread *t)
 		if (t->q_map[i] == 0)
 			continue;
 
+<<<<<<< HEAD
 		if (q->tgt_ops->pre_fetch_io)
 			q->tgt_ops->pre_fetch_io(t, q, 0, true);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = ublk_batch_queue_prep_io_cmds(t, q);
 		ublk_assert(ret >= 0);
 	}
@@ -1093,6 +1105,7 @@ static int ublk_send_dev_event(const struct dev_ctx *ctx, struct ublk_dev *dev, 
 }
 
 
+<<<<<<< HEAD
 /*
  * Shared memory registration socket listener.
  *
@@ -1397,12 +1410,20 @@ static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
 {
 	const struct ublksrv_ctrl_dev_info *dinfo = &dev->dev_info;
 	struct shmem_listener_info linfo = {};
+=======
+static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
+{
+	const struct ublksrv_ctrl_dev_info *dinfo = &dev->dev_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ublk_thread_info *tinfo;
 	unsigned long long extra_flags = 0;
 	cpu_set_t *affinity_buf;
 	unsigned char (*q_thread_map)[UBLK_MAX_QUEUES] = NULL;
+<<<<<<< HEAD
 	uint64_t stop_val = 1;
 	pthread_t listener;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *thread_ret;
 	sem_t ready;
 	int ret, i;
@@ -1491,6 +1512,7 @@ static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
 		goto fail_start;
 	}
 
+<<<<<<< HEAD
 	if (ctx->htlb_path) {
 		ret = ublk_shmem_htlb_setup(ctx, dev);
 		if (ret < 0) {
@@ -1500,12 +1522,15 @@ static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ublk_ctrl_get_info(dev);
 	if (ctx->fg)
 		ublk_ctrl_dump(dev);
 	else
 		ublk_send_dev_event(ctx, dev, dev->dev_info.dev_id);
 fail_start:
+<<<<<<< HEAD
 	/*
 	 * Wait for I/O threads to exit. While waiting, a listener
 	 * thread accepts shared memory registration requests from
@@ -1529,6 +1554,11 @@ fail_start:
 		ublk_shmem_sock_destroy(dinfo->dev_id, linfo.sock_fd);
 	}
 	ublk_shmem_unregister_all();
+=======
+	/* wait until we are terminated */
+	for (i = 0; i < dev->nthreads; i++)
+		pthread_join(tinfo[i].thread, &thread_ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free(tinfo);
  fail:
 	for (i = 0; i < dinfo->nr_hw_queues; i++)
@@ -1735,6 +1765,7 @@ static int __cmd_dev_add(const struct dev_ctx *ctx)
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * The kernel may reduce nr_hw_queues (e.g. capped to nr_cpu_ids).
 	 * Cap nthreads to the actual queue count to avoid creating extra
@@ -1746,6 +1777,8 @@ static int __cmd_dev_add(const struct dev_ctx *ctx)
 	if (!ctx->per_io_tasks && dev->nthreads > info->nr_hw_queues)
 		dev->nthreads = info->nr_hw_queues;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ublk_start_daemon(ctx, dev);
 	ublk_dbg(UBLK_DBG_DEV, "%s: daemon exit %d\n", __func__, ret);
 	if (ret < 0)
@@ -1969,7 +2002,10 @@ static int cmd_dev_get_features(void)
 		FEAT_NAME(UBLK_F_SAFE_STOP_DEV),
 		FEAT_NAME(UBLK_F_BATCH_IO),
 		FEAT_NAME(UBLK_F_NO_AUTO_PART_SCAN),
+<<<<<<< HEAD
 		FEAT_NAME(UBLK_F_SHMEM_ZC),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	struct ublk_dev *dev;
 	__u64 features = 0;
@@ -2142,9 +2178,12 @@ int main(int argc, char *argv[])
 		{ "safe",		0,	NULL,  0 },
 		{ "batch",              0,      NULL, 'b'},
 		{ "no_auto_part_scan",	0,	NULL,  0 },
+<<<<<<< HEAD
 		{ "shmem_zc",		0,	NULL,  0  },
 		{ "htlb",		1,	NULL,  0  },
 		{ "rdonly_shmem_buf",	0,	NULL,  0  },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		{ 0, 0, 0, 0 }
 	};
 	const struct ublk_tgt_ops *ops = NULL;
@@ -2260,12 +2299,15 @@ int main(int argc, char *argv[])
 				ctx.safe_stop = 1;
 			if (!strcmp(longopts[option_idx].name, "no_auto_part_scan"))
 				ctx.flags |= UBLK_F_NO_AUTO_PART_SCAN;
+<<<<<<< HEAD
 			if (!strcmp(longopts[option_idx].name, "shmem_zc"))
 				ctx.flags |= UBLK_F_SHMEM_ZC;
 			if (!strcmp(longopts[option_idx].name, "htlb"))
 				ctx.htlb_path = strdup(optarg);
 			if (!strcmp(longopts[option_idx].name, "rdonly_shmem_buf"))
 				ctx.rdonly_shmem_buf = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case '?':
 			/*

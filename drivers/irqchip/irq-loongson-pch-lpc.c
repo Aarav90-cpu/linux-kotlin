@@ -13,8 +13,11 @@
 #include <linux/irqchip/chained_irq.h>
 #include <linux/irqdomain.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/syscore_ops.h>
 
 #include "irq-loongson.h"
@@ -177,10 +180,20 @@ static struct syscore pch_lpc_syscore = {
 	.ops = &pch_lpc_syscore_ops,
 };
 
+<<<<<<< HEAD
 static int __init pch_lpc_init(phys_addr_t addr, unsigned long size,
 			       struct fwnode_handle *irq_handle, int parent_irq)
 {
 	struct pch_lpc *priv;
+=======
+int __init pch_lpc_acpi_init(struct irq_domain *parent,
+					struct acpi_madt_lpc_pic *acpi_pchlpc)
+{
+	int parent_irq;
+	struct pch_lpc *priv;
+	struct irq_fwspec fwspec;
+	struct fwnode_handle *irq_handle;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = kzalloc_obj(*priv);
 	if (!priv)
@@ -188,7 +201,11 @@ static int __init pch_lpc_init(phys_addr_t addr, unsigned long size,
 
 	raw_spin_lock_init(&priv->lpc_lock);
 
+<<<<<<< HEAD
 	priv->base = ioremap(addr, size);
+=======
+	priv->base = ioremap(acpi_pchlpc->address, acpi_pchlpc->size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!priv->base)
 		goto free_priv;
 
@@ -197,6 +214,15 @@ static int __init pch_lpc_init(phys_addr_t addr, unsigned long size,
 		goto iounmap_base;
 	}
 
+<<<<<<< HEAD
+=======
+	irq_handle = irq_domain_alloc_named_fwnode("lpcintc");
+	if (!irq_handle) {
+		pr_err("Unable to allocate domain handle\n");
+		goto iounmap_base;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The LPC interrupt controller is a legacy i8259-compatible device,
 	 * which requires a static 1:1 mapping for IRQs 0-15.
@@ -206,10 +232,22 @@ static int __init pch_lpc_init(phys_addr_t addr, unsigned long size,
 						    &pch_lpc_domain_ops, priv);
 	if (!priv->lpc_domain) {
 		pr_err("Failed to create IRQ domain\n");
+<<<<<<< HEAD
 		goto iounmap_base;
 	}
 	pch_lpc_reset(priv);
 
+=======
+		goto free_irq_handle;
+	}
+	pch_lpc_reset(priv);
+
+	fwspec.fwnode = parent->fwnode;
+	fwspec.param[0] = acpi_pchlpc->cascade + GSI_MIN_PCH_IRQ;
+	fwspec.param[1] = IRQ_TYPE_LEVEL_HIGH;
+	fwspec.param_count = 2;
+	parent_irq = irq_create_fwspec_mapping(&fwspec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	irq_set_chained_handler_and_data(parent_irq, lpc_irq_dispatch, priv);
 
 	pch_lpc_priv = priv;
@@ -218,6 +256,11 @@ static int __init pch_lpc_init(phys_addr_t addr, unsigned long size,
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+free_irq_handle:
+	irq_domain_free_fwnode(irq_handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 iounmap_base:
 	iounmap(priv->base);
 free_priv:
@@ -225,6 +268,7 @@ free_priv:
 
 	return -ENOMEM;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_ACPI
 int __init pch_lpc_acpi_init(struct irq_domain *parent, struct acpi_madt_lpc_pic *acpi_pchlpc)
@@ -291,3 +335,5 @@ static int __init pch_lpc_of_init(struct device_node *node, struct device_node *
 
 IRQCHIP_DECLARE(pch_lpc, "loongson,ls7a-lpc", pch_lpc_of_init);
 #endif /* CONFIG_OF */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

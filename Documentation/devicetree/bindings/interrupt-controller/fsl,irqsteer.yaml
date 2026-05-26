@@ -12,9 +12,13 @@ maintainers:
 properties:
   compatible:
     oneOf:
+<<<<<<< HEAD
       - enum:
           - fsl,imx-irqsteer
           - nxp,s32n79-irqsteer
+=======
+      - const: fsl,imx-irqsteer
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - items:
           - enum:
               - fsl,imx8m-irqsteer

@@ -7,11 +7,16 @@
 #include <linux/bnge/hsi.h>
 #include <linux/io-64-nonatomic-lo-hi.h>
 #include <linux/refcount.h>
+<<<<<<< HEAD
 #include <linux/u64_stats_sync.h>
 #include <net/netdev_queues.h>
 #include "bnge_db.h"
 #include "bnge_hw_def.h"
 #include "bnge_link.h"
+=======
+#include "bnge_db.h"
+#include "bnge_hw_def.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct tx_bd {
 	__le32 tx_bd_len_flags_type;
@@ -226,6 +231,7 @@ struct bnge_tpa_info {
 #define BNGE_NQ_HDL_IDX(hdl)	((hdl) & BNGE_NQ_HDL_IDX_MASK)
 #define BNGE_NQ_HDL_TYPE(hdl)	(((hdl) & BNGE_NQ_HDL_TYPE_MASK) >>	\
 				 BNGE_NQ_HDL_TYPE_SHIFT)
+<<<<<<< HEAD
 #define BNGE_GET_RING_STATS64(sw, counter)		\
 	(*((sw) + offsetof(struct ctx_hw_stats, counter) / 8))
 
@@ -282,6 +288,8 @@ enum bnge_sp_event {
 	BNGE_UPDATE_PHY_SP_EVENT,
 	BNGE_PERIODIC_STATS_SP_EVENT,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct bnge_net {
 	struct bnge_dev		*bd;
@@ -340,12 +348,17 @@ struct bnge_net {
 	u32			stats_coal_ticks;
 
 	unsigned long		state;
+<<<<<<< HEAD
+=======
+#define BNGE_STATE_NAPI_DISABLED	0
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u32			msg_enable;
 	u16			max_tpa;
 	__be16			vxlan_port;
 	__be16			nge_port;
 	__be16			vxlan_gpe_port;
+<<<<<<< HEAD
 
 	unsigned int		current_interval;
 	struct timer_list	timer;
@@ -370,6 +383,8 @@ struct bnge_net {
 
 	u8			pri2cos_idx[8];
 	bool			pri2cos_valid;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define BNGE_DEFAULT_RX_RING_SIZE	511
@@ -435,6 +450,17 @@ void bnge_set_ring_params(struct bnge_dev *bd);
 	bnge_writeq(bd, (db)->db_key64 | DBR_TYPE_NQ_ARM |	\
 		    DB_RING_IDX(db, idx), (db)->doorbell)
 
+<<<<<<< HEAD
+=======
+struct bnge_stats_mem {
+	u64		*sw_stats;
+	u64		*hw_masks;
+	void		*hw_stats;
+	dma_addr_t	hw_stats_map;
+	int		len;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nqe_cn {
 	__le16	type;
 	#define NQ_CN_TYPE_MASK			0x3fUL
@@ -640,6 +666,9 @@ u8 *__bnge_alloc_rx_frag(struct bnge_net *bn, dma_addr_t *mapping,
 			 struct bnge_rx_ring_info *rxr, gfp_t gfp);
 int bnge_alloc_rx_netmem(struct bnge_net *bn, struct bnge_rx_ring_info *rxr,
 			 u16 prod, gfp_t gfp);
+<<<<<<< HEAD
 void __bnge_queue_sp_work(struct bnge_net *bn);
 void bnge_copy_hw_masks(u64 *mask_arr, __le64 *hw_mask_arr, int count);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _BNGE_NETDEV_H_ */

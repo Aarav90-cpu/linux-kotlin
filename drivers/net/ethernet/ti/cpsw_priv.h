@@ -458,7 +458,11 @@ int cpsw_tx_poll(struct napi_struct *napi_tx, int budget);
 int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget);
 int cpsw_rx_poll(struct napi_struct *napi_rx, int budget);
 void cpsw_rx_vlan_encap(struct sk_buff *skb);
+<<<<<<< HEAD
 void cpsw_soft_reset(const char *module, void __iomem *reg);
+=======
+void soft_reset(const char *module, void __iomem *reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void cpsw_set_slave_mac(struct cpsw_slave *slave, struct cpsw_priv *priv);
 void cpsw_ndo_tx_timeout(struct net_device *ndev, unsigned int txqueue);
 int cpsw_need_resplit(struct cpsw_common *cpsw);

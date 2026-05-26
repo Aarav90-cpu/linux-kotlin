@@ -19,8 +19,11 @@
 #define DEVLINK_GENL_VERSION 0x1
 #define DEVLINK_GENL_MCGRP_CONFIG_NAME "config"
 
+<<<<<<< HEAD
 #define DEVLINK_INDEX_BUS_NAME "devlink_index"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum devlink_command {
 	/* don't change the order or add anything between, this is ABI! */
 	DEVLINK_CMD_UNSPEC,
@@ -644,9 +647,12 @@ enum devlink_attr {
 	DEVLINK_ATTR_PARAM_VALUE_DEFAULT,	/* dynamic */
 	DEVLINK_ATTR_PARAM_RESET_DEFAULT,	/* flag */
 
+<<<<<<< HEAD
 	DEVLINK_ATTR_INDEX,			/* uint */
 	DEVLINK_ATTR_RESOURCE_SCOPE_MASK,	/* u32 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Add new attributes above here, update the spec in
 	 * Documentation/netlink/specs/devlink.yaml and re-generate
 	 * net/devlink/netlink_gen.c.
@@ -705,6 +711,7 @@ enum devlink_resource_unit {
 	DEVLINK_RESOURCE_UNIT_ENTRY,
 };
 
+<<<<<<< HEAD
 enum devlink_resource_scope {
 	DEVLINK_RESOURCE_SCOPE_DEV_BIT,
 	DEVLINK_RESOURCE_SCOPE_PORT_BIT,
@@ -715,6 +722,8 @@ enum devlink_resource_scope {
 #define DEVLINK_RESOURCE_SCOPE_PORT \
 	_BITUL(DEVLINK_RESOURCE_SCOPE_PORT_BIT)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum devlink_port_fn_attr_cap {
 	DEVLINK_PORT_FN_ATTR_CAP_ROCE_BIT,
 	DEVLINK_PORT_FN_ATTR_CAP_MIGRATABLE_BIT,

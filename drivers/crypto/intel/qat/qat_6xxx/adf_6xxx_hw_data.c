@@ -33,8 +33,11 @@
 #define ADF_AE_GROUP_1		GENMASK(7, 4)
 #define ADF_AE_GROUP_2		BIT(8)
 
+<<<<<<< HEAD
 #define ASB_MULTIPLIER		9
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct adf_ring_config {
 	u32 ring_mask;
 	enum adf_cfg_service_type ring_type;
@@ -84,15 +87,21 @@ static const unsigned long thrd_mask_dcpr[ADF_6XXX_MAX_ACCELENGINES] = {
 	0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x00
 };
 
+<<<<<<< HEAD
 static const unsigned long thrd_mask_wcy[ADF_6XXX_MAX_ACCELENGINES] = {
 	0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x00
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const char *const adf_6xxx_fw_objs[] = {
 	[ADF_FW_CY_OBJ] = ADF_6XXX_CY_OBJ,
 	[ADF_FW_DC_OBJ] = ADF_6XXX_DC_OBJ,
 	[ADF_FW_ADMIN_OBJ] = ADF_6XXX_ADMIN_OBJ,
+<<<<<<< HEAD
 	[ADF_FW_WCY_OBJ] = ADF_6XXX_WCY_OBJ,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct adf_fw_config adf_default_fw_config[] = {
@@ -101,12 +110,15 @@ static const struct adf_fw_config adf_default_fw_config[] = {
 	{ ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ },
 };
 
+<<<<<<< HEAD
 static const struct adf_fw_config adf_wcy_fw_config[] = {
 	{ ADF_AE_GROUP_1, ADF_FW_WCY_OBJ },
 	{ ADF_AE_GROUP_0, ADF_FW_WCY_OBJ },
 	{ ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct adf_hw_device_class adf_6xxx_class = {
 	.name = ADF_6XXX_DEVICE_NAME,
 	.type = DEV_6XXX,
@@ -131,12 +143,15 @@ static bool services_supported(unsigned long mask)
 	}
 }
 
+<<<<<<< HEAD
 static bool wcy_services_supported(unsigned long mask)
 {
 	/* The wireless SKU supports only the symmetric crypto service */
 	return mask == BIT(SVC_SYM);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int get_service(unsigned long *mask)
 {
 	if (test_and_clear_bit(SVC_ASYM, mask))
@@ -174,12 +189,17 @@ static enum adf_cfg_service_type get_ring_type(unsigned int service)
 	}
 }
 
+<<<<<<< HEAD
 static const unsigned long *get_thrd_mask(struct adf_accel_dev *accel_dev,
 					  unsigned int service)
 {
 	if (adf_6xxx_is_wcy(GET_HW_DATA(accel_dev)))
 		return (service == SVC_SYM) ? thrd_mask_wcy : NULL;
 
+=======
+static const unsigned long *get_thrd_mask(unsigned int service)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (service) {
 	case SVC_SYM:
 		return thrd_mask_sym;
@@ -217,7 +237,11 @@ static int get_rp_config(struct adf_accel_dev *accel_dev, struct adf_ring_config
 			return service;
 
 		rp_config[i].ring_type = get_ring_type(service);
+<<<<<<< HEAD
 		rp_config[i].thrd_mask = get_thrd_mask(accel_dev, service);
+=======
+		rp_config[i].thrd_mask = get_thrd_mask(service);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * If there is only one service enabled, use all ring pairs for
@@ -409,8 +433,11 @@ static void set_ssm_wdtimer(struct adf_accel_dev *accel_dev)
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTCNVL_OFFSET, ADF_SSMWDTCNVH_OFFSET, val);
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTUCSL_OFFSET, ADF_SSMWDTUCSH_OFFSET, val);
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTDCPRL_OFFSET, ADF_SSMWDTDCPRH_OFFSET, val);
+<<<<<<< HEAD
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTWCPL_OFFSET, ADF_SSMWDTWCPH_OFFSET, val);
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTWATL_OFFSET, ADF_SSMWDTWATH_OFFSET, val);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Enable watchdog timer for pke */
 	ADF_CSR_WR64_LO_HI(addr, ADF_SSMWDTPKEL_OFFSET, ADF_SSMWDTPKEH_OFFSET, val_pke);
@@ -464,6 +491,7 @@ static int reset_ring_pair(void __iomem *csr, u32 bank_number)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool adf_anti_rb_enabled(struct adf_accel_dev *accel_dev)
 {
 	struct adf_hw_device_data *hw_data = GET_HW_DATA(accel_dev);
@@ -479,6 +507,8 @@ static void adf_gen6_init_anti_rb(struct adf_anti_rb_hw_data *anti_rb_data)
 	anti_rb_data->sysfs_added = false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ring_pair_reset(struct adf_accel_dev *accel_dev, u32 bank_number)
 {
 	struct adf_hw_device_data *hw_data = accel_dev->hw_device;
@@ -511,9 +541,12 @@ static int build_comp_block(void *ctx, enum adf_dc_algo algo)
 	case QAT_DEFLATE:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_DYNAMIC;
 	break;
+<<<<<<< HEAD
 	case QAT_ZSTD:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_ZSTD_COMPRESS;
 	break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
@@ -524,6 +557,7 @@ static int build_comp_block(void *ctx, enum adf_dc_algo algo)
 	cd_pars->u.sl.comp_slice_cfg_word[0] = lower_val;
 	cd_pars->u.sl.comp_slice_cfg_word[1] = 0;
 
+<<<<<<< HEAD
 	/*
 	 * Store Auto Select Best (ASB) multiplier in the request template.
 	 * This will be used in the data path to set the actual threshold
@@ -531,6 +565,8 @@ static int build_comp_block(void *ctx, enum adf_dc_algo algo)
 	 */
 	req_tmpl->u3.asb_threshold.asb_value = ASB_MULTIPLIER;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -544,16 +580,22 @@ static int build_decomp_block(void *ctx, enum adf_dc_algo algo)
 	case QAT_DEFLATE:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_DECOMPRESS;
 	break;
+<<<<<<< HEAD
 	case QAT_ZSTD:
 		header->service_cmd_id = ICP_QAT_FW_COMP_CMD_ZSTD_DECOMPRESS;
 	break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EINVAL;
 	}
 
 	cd_pars->u.sl.comp_slice_cfg_word[0] = 0;
 	cd_pars->u.sl.comp_slice_cfg_word[1] = 0;
+<<<<<<< HEAD
 	req_tmpl->u3.asb_threshold.asb_value = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -685,12 +727,15 @@ static int adf_gen6_set_vc(struct adf_accel_dev *accel_dev)
 	return set_vc_config(accel_dev);
 }
 
+<<<<<<< HEAD
 static const struct adf_fw_config *get_fw_config(struct adf_accel_dev *accel_dev)
 {
 	return adf_6xxx_is_wcy(GET_HW_DATA(accel_dev)) ? adf_wcy_fw_config :
 							 adf_default_fw_config;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u32 get_ae_mask(struct adf_hw_device_data *self)
 {
 	unsigned long fuses = self->fuses[ADF_FUSECTL4];
@@ -713,6 +758,7 @@ static u32 get_ae_mask(struct adf_hw_device_data *self)
 	return mask;
 }
 
+<<<<<<< HEAD
 static u32 get_accel_cap_wcy(struct adf_accel_dev *accel_dev)
 {
 	u32 capabilities_sym;
@@ -745,6 +791,8 @@ static u32 get_accel_cap_wcy(struct adf_accel_dev *accel_dev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
 {
 	u32 capabilities_sym, capabilities_asym;
@@ -753,9 +801,12 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
 	u32 caps = 0;
 	u32 fusectl1;
 
+<<<<<<< HEAD
 	if (adf_6xxx_is_wcy(GET_HW_DATA(accel_dev)))
 		return get_accel_cap_wcy(accel_dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fusectl1 = GET_HW_DATA(accel_dev)->fuses[ADF_FUSECTL1];
 
 	/* Read accelerator capabilities mask */
@@ -828,19 +879,29 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
 
 static u32 uof_get_num_objs(struct adf_accel_dev *accel_dev)
 {
+<<<<<<< HEAD
 	return adf_6xxx_is_wcy(GET_HW_DATA(accel_dev)) ?
 		       ARRAY_SIZE(adf_wcy_fw_config) :
 		       ARRAY_SIZE(adf_default_fw_config);
+=======
+	return ARRAY_SIZE(adf_default_fw_config);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num)
 {
 	int num_fw_objs = ARRAY_SIZE(adf_6xxx_fw_objs);
+<<<<<<< HEAD
 	const struct adf_fw_config *fw_config;
 	int id;
 
 	fw_config = get_fw_config(accel_dev);
 	id = fw_config[obj_num].obj;
+=======
+	int id;
+
+	id = adf_default_fw_config[obj_num].obj;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (id >= num_fw_objs)
 		return NULL;
 
@@ -854,6 +915,7 @@ static const char *uof_get_name_6xxx(struct adf_accel_dev *accel_dev, u32 obj_nu
 
 static int uof_get_obj_type(struct adf_accel_dev *accel_dev, u32 obj_num)
 {
+<<<<<<< HEAD
 	const struct adf_fw_config *fw_config;
 
 	if (obj_num >= uof_get_num_objs(accel_dev))
@@ -862,14 +924,24 @@ static int uof_get_obj_type(struct adf_accel_dev *accel_dev, u32 obj_num)
 	fw_config = get_fw_config(accel_dev);
 
 	return fw_config[obj_num].obj;
+=======
+	if (obj_num >= uof_get_num_objs(accel_dev))
+		return -EINVAL;
+
+	return adf_default_fw_config[obj_num].obj;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 uof_get_ae_mask(struct adf_accel_dev *accel_dev, u32 obj_num)
 {
+<<<<<<< HEAD
 	const struct adf_fw_config *fw_config;
 
 	fw_config = get_fw_config(accel_dev);
 	return fw_config[obj_num].ae_mask;
+=======
+	return adf_default_fw_config[obj_num].ae_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const u32 *adf_get_arbiter_mapping(struct adf_accel_dev *accel_dev)
@@ -979,6 +1051,7 @@ static void adf_gen6_init_rl_data(struct adf_rl_hw_data *rl_data)
 	init_num_svc_aes(rl_data);
 }
 
+<<<<<<< HEAD
 static void adf_gen6_init_services_supported(struct adf_hw_device_data *hw_data)
 {
 	if (adf_6xxx_is_wcy(hw_data))
@@ -987,6 +1060,8 @@ static void adf_gen6_init_services_supported(struct adf_hw_device_data *hw_data)
 		hw_data->services_supported = services_supported;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void adf_init_hw_data_6xxx(struct adf_hw_device_data *hw_data)
 {
 	hw_data->dev_class = &adf_6xxx_class;
@@ -1043,12 +1118,20 @@ void adf_init_hw_data_6xxx(struct adf_hw_device_data *hw_data)
 	hw_data->stop_timer = adf_timer_stop;
 	hw_data->init_device = adf_init_device;
 	hw_data->enable_pm = enable_pm;
+<<<<<<< HEAD
 	hw_data->num_rps = ADF_GEN6_ETR_MAX_BANKS;
 	hw_data->clock_frequency = ADF_6XXX_AE_FREQ;
 	hw_data->get_svc_slice_cnt = adf_gen6_get_svc_slice_cnt;
 	hw_data->accel_capabilities_ext_mask = ADF_ACCEL_CAPABILITIES_EXT_ZSTD;
 
 	adf_gen6_init_services_supported(hw_data);
+=======
+	hw_data->services_supported = services_supported;
+	hw_data->num_rps = ADF_GEN6_ETR_MAX_BANKS;
+	hw_data->clock_frequency = ADF_6XXX_AE_FREQ;
+	hw_data->get_svc_slice_cnt = adf_gen6_get_svc_slice_cnt;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adf_gen6_init_hw_csr_ops(&hw_data->csr_ops);
 	adf_gen6_init_pf_pfvf_ops(&hw_data->pfvf_ops);
 	adf_gen6_init_dc_ops(&hw_data->dc_ops);
@@ -1056,7 +1139,10 @@ void adf_init_hw_data_6xxx(struct adf_hw_device_data *hw_data)
 	adf_gen6_init_ras_ops(&hw_data->ras_ops);
 	adf_gen6_init_tl_data(&hw_data->tl_data);
 	adf_gen6_init_rl_data(&hw_data->rl_data);
+<<<<<<< HEAD
 	adf_gen6_init_anti_rb(&hw_data->anti_rb_data);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void adf_clean_hw_data_6xxx(struct adf_hw_device_data *hw_data)

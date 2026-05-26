@@ -109,7 +109,11 @@ static int ada4250_set_offset_uv(struct iio_dev *indio_dev,
 
 	/*
 	 * Compute Range and Voltage per LSB for the Sensor Offset Calibration
+<<<<<<< HEAD
 	 * Example of computation for Range 1 and Range 2 (Current Bias Set = AVDD):
+=======
+	 * Example of computation for Range 1 and Range 2 (Curren Bias Set = AVDD):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *                     Range 1                            Range 2
 	 *   Gain   | Max Vos(mV) |   LSB(mV)        |  Max Vos(mV)  | LSB(mV) |
 	 *    2     |    X1*127   | X1=0.126(AVDD-1) |   X1*3*127    |  X1*3   |

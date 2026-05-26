@@ -333,8 +333,12 @@ static void j1939_sk_recv_one(struct j1939_sock *jsk, struct sk_buff *oskb)
 	if (skb->sk)
 		skcb->msg_flags |= MSG_DONTROUTE;
 
+<<<<<<< HEAD
 	reason = sock_queue_rcv_skb_reason(&jsk->sk, skb);
 	if (reason)
+=======
+	if (sock_queue_rcv_skb_reason(&jsk->sk, skb, &reason) < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sk_skb_reason_drop(&jsk->sk, skb, reason);
 }
 

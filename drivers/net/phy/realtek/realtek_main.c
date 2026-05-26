@@ -22,6 +22,7 @@
 #include "../phylib.h"
 #include "realtek.h"
 
+<<<<<<< HEAD
 #define RTL8201F_IER_PAGE			0x07
 #define RTL8201F_IER				0x13
 #define RTL8201F_IER_LINK			BIT(13)
@@ -30,6 +31,9 @@
 #define RTL8201F_IER_MASK			(RTL8201F_IER_ANERR | \
 						 RTL8201F_IER_DUPLEX | \
 						 RTL8201F_IER_LINK)
+=======
+#define RTL8201F_IER				0x13
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RTL8201F_ISR				0x1e
 #define RTL8201F_ISR_ANERR			BIT(15)
@@ -82,6 +86,7 @@
 
 #define RTL8211F_PHYCR2				0x19
 #define RTL8211F_CLKOUT_EN			BIT(0)
+<<<<<<< HEAD
 #define RTL8211F_SYSCLK_SSC_EN			BIT(3)
 #define RTL8211F_PHYCR2_PHY_EEE_ENABLE		BIT(5)
 #define RTL8211F_CLKOUT_SSC_EN			BIT(7)
@@ -94,6 +99,12 @@
 #define RTL8211F_SSC_RXC			0x13
 #define RTL8211F_SSC_SYSCLK			0x17
 
+=======
+#define RTL8211F_PHYCR2_PHY_EEE_ENABLE		BIT(5)
+
+#define RTL8211F_INSR				0x1d
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* RTL8211F LED configuration */
 #define RTL8211F_LEDCR_PAGE			0xd04
 #define RTL8211F_LEDCR				0x10
@@ -186,9 +197,12 @@
 
 #define RTL8224_SRAM_RTCT_LEN(pair)		(0x8028 + (pair) * 4)
 
+<<<<<<< HEAD
 #define RTL8224_VND1_MDI_PAIR_SWAP		0xa90
 #define RTL8224_VND1_MDI_POLARITY_SWAP		0xa94
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RTL8366RB_POWER_SAVE			0x15
 #define RTL8366RB_POWER_SAVE_ON			BIT(12)
 
@@ -230,9 +244,12 @@ MODULE_LICENSE("GPL");
 struct rtl821x_priv {
 	bool enable_aldps;
 	bool disable_clk_out;
+<<<<<<< HEAD
 	bool enable_clkout_ssc;
 	bool enable_rxc_ssc;
 	bool enable_sysclk_ssc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct clk *clk;
 	/* rtl8211f */
 	u16 iner;
@@ -296,12 +313,15 @@ static int rtl821x_probe(struct phy_device *phydev)
 						   "realtek,aldps-enable");
 	priv->disable_clk_out = of_property_read_bool(dev->of_node,
 						      "realtek,clkout-disable");
+<<<<<<< HEAD
 	priv->enable_clkout_ssc = of_property_read_bool(dev->of_node,
 							"realtek,clkout-ssc-enable");
 	priv->enable_rxc_ssc = of_property_read_bool(dev->of_node,
 						     "realtek,rxc-ssc-enable");
 	priv->enable_sysclk_ssc = of_property_read_bool(dev->of_node,
 							"realtek,sysclk-ssc-enable");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	phydev->priv = priv;
 
@@ -373,6 +393,7 @@ static int rtl8201_config_intr(struct phy_device *phydev)
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		val = RTL8201F_IER_MASK;
 		err = phy_write_paged(phydev, RTL8201F_IER_PAGE,
 				      RTL8201F_IER, val);
@@ -380,6 +401,13 @@ static int rtl8201_config_intr(struct phy_device *phydev)
 		val = 0;
 		err = phy_write_paged(phydev, RTL8201F_IER_PAGE,
 				      RTL8201F_IER, val);
+=======
+		val = BIT(13) | BIT(12) | BIT(11);
+		err = phy_write_paged(phydev, 0x7, RTL8201F_IER, val);
+	} else {
+		val = 0;
+		err = phy_write_paged(phydev, 0x7, RTL8201F_IER, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 
@@ -726,12 +754,19 @@ static int rtl8211f_config_aldps(struct phy_device *phydev)
 	return phy_modify(phydev, RTL8211F_PHYCR1, mask, mask);
 }
 
+<<<<<<< HEAD
 static int rtl8211f_disable_autonomous_eee(struct phy_device *phydev)
 {
+=======
+static int rtl8211f_config_phy_eee(struct phy_device *phydev)
+{
+	/* Disable PHY-mode EEE so LPI is passed to the MAC */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return phy_modify(phydev, RTL8211F_PHYCR2,
 			  RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
 }
 
+<<<<<<< HEAD
 static int rtl8211f_config_clkout_ssc(struct phy_device *phydev)
 {
 	struct rtl821x_priv *priv = phydev->priv;
@@ -830,6 +865,8 @@ static int rtl8211f_config_sysclk_ssc(struct phy_device *phydev)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rtl8211f_config_init(struct phy_device *phydev)
 {
 	struct device *dev = &phydev->mdio.dev;
@@ -846,6 +883,7 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = rtl8211f_config_rxc_ssc(phydev);
 	if (ret)
 		return ret;
@@ -858,6 +896,8 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = rtl8211f_config_clk_out(phydev);
 	if (ret) {
 		dev_err(dev, "clkout configuration failed: %pe\n",
@@ -865,7 +905,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return rtl8211f_config_phy_eee(phydev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int rtl821x_suspend(struct phy_device *phydev)
@@ -1012,7 +1056,11 @@ static int rtl8211f_led_hw_control_get(struct phy_device *phydev, u8 index,
 	if (index >= RTL8211x_LED_COUNT)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	val = phy_read_paged(phydev, RTL8211F_LEDCR_PAGE, RTL8211F_LEDCR);
+=======
+	val = phy_read_paged(phydev, 0xd04, RTL8211F_LEDCR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (val < 0)
 		return val;
 
@@ -1074,8 +1122,12 @@ static int rtl8211f_led_hw_control_set(struct phy_device *phydev, u8 index,
 	reg <<= RTL8211F_LEDCR_SHIFT * index;
 	reg |= RTL8211F_LEDCR_MODE;	 /* Mode B */
 
+<<<<<<< HEAD
 	return phy_modify_paged(phydev, RTL8211F_LEDCR_PAGE, RTL8211F_LEDCR,
 				mask, reg);
+=======
+	return phy_modify_paged(phydev, 0xd04, RTL8211F_LEDCR, mask, reg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int rtl8211e_led_hw_control_get(struct phy_device *phydev, u8 index,
@@ -1959,6 +2011,7 @@ static int rtl8224_cable_test_get_status(struct phy_device *phydev, bool *finish
 	return rtl8224_cable_test_report(phydev, finished);
 }
 
+<<<<<<< HEAD
 static int rtl8224_package_modify_mmd(struct phy_device *phydev, int devad,
 				      u32 regnum, u16 mask, u16 set)
 {
@@ -2050,6 +2103,8 @@ static int rtl8224_probe(struct phy_device *phydev)
 				     phydev->mdio.addr & ~3, 0);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
 {
 	int val;
@@ -2460,7 +2515,10 @@ static struct phy_driver realtek_drvs[] = {
 		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
 		.led_hw_control_get = rtl8211f_led_hw_control_get,
 		.led_hw_control_set = rtl8211f_led_hw_control_set,
+<<<<<<< HEAD
 		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		PHY_ID_MATCH_EXACT(RTL_8211FVD_PHYID),
 		.name		= "RTL8211F-VD Gigabit Ethernet",
@@ -2474,10 +2532,13 @@ static struct phy_driver realtek_drvs[] = {
 		.read_page	= rtl821x_read_page,
 		.write_page	= rtl821x_write_page,
 		.flags		= PHY_ALWAYS_CALL_SUSPEND,
+<<<<<<< HEAD
 		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
 		.led_hw_control_get = rtl8211f_led_hw_control_get,
 		.led_hw_control_set = rtl8211f_led_hw_control_set,
 		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}, {
 		.name		= "Generic FE-GE Realtek PHY",
 		.match_phy_device = rtlgen_match_phy_device,
@@ -2627,8 +2688,11 @@ static struct phy_driver realtek_drvs[] = {
 		PHY_ID_MATCH_EXACT(0x001ccad0),
 		.name		= "RTL8224 2.5Gbps PHY",
 		.flags		= PHY_POLL_CABLE_TEST,
+<<<<<<< HEAD
 		.probe		= rtl8224_probe,
 		.config_init	= rtl8224_config_init,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.get_features	= rtl822x_c45_get_features,
 		.config_aneg	= rtl822x_c45_config_aneg,
 		.read_status	= rtl822x_c45_read_status,

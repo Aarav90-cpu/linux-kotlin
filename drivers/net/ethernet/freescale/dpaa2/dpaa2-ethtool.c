@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /* Copyright 2014-2016 Freescale Semiconductor Inc.
+<<<<<<< HEAD
  * Copyright 2016-2022, 2024-2026 NXP
+=======
+ * Copyright 2016-2022 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/net_tstamp.h>
@@ -938,6 +942,7 @@ static void dpaa2_eth_get_channels(struct net_device *net_dev,
 				   channels->other_count;
 }
 
+<<<<<<< HEAD
 static void
 dpaa2_eth_get_rmon_stats(struct net_device *net_dev,
 			 struct ethtool_rmon_stats *rmon_stats,
@@ -993,6 +998,8 @@ dpaa2_eth_get_eth_mac_stats(struct net_device *net_dev,
 	mutex_unlock(&priv->mac_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct ethtool_ops dpaa2_ethtool_ops = {
 	.supported_coalesce_params = ETHTOOL_COALESCE_RX_USECS |
 				     ETHTOOL_COALESCE_USE_ADAPTIVE_RX,
@@ -1017,8 +1024,11 @@ const struct ethtool_ops dpaa2_ethtool_ops = {
 	.get_coalesce = dpaa2_eth_get_coalesce,
 	.set_coalesce = dpaa2_eth_set_coalesce,
 	.get_channels = dpaa2_eth_get_channels,
+<<<<<<< HEAD
 	.get_rmon_stats = dpaa2_eth_get_rmon_stats,
 	.get_pause_stats = dpaa2_eth_get_pause_stats,
 	.get_eth_ctrl_stats = dpaa2_eth_get_ctrl_stats,
 	.get_eth_mac_stats = dpaa2_eth_get_eth_mac_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

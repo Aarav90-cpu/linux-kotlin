@@ -19,6 +19,7 @@ int kprobe_multi_write_ctx(struct pt_regs *ctx)
 	ctx->ax = 0;
 	return 0;
 }
+<<<<<<< HEAD
 
 SEC("?kprobe")
 int kprobe_dummy(struct pt_regs *regs)
@@ -38,4 +39,6 @@ int BPF_PROG(fentry)
 {
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

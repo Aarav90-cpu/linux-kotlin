@@ -618,6 +618,7 @@ unsigned long vm_mmap(struct file *file, unsigned long addr,
 }
 EXPORT_SYMBOL(vm_mmap);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
 /*
  * Perform a userland memory mapping for a shadow stack into the current
@@ -647,6 +648,8 @@ unsigned long vm_mmap_shadow_stack(unsigned long addr, unsigned long len,
 }
 #endif /* CONFIG_ARCH_HAS_USER_SHADOW_STACK */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * __vmalloc_array - allocate memory for a virtually contiguous array.
  * @n: number of elements.
@@ -1164,6 +1167,7 @@ EXPORT_SYMBOL(flush_dcache_folio);
 #endif
 
 /**
+<<<<<<< HEAD
  * compat_set_desc_from_vma() - assigns VMA descriptor @desc fields from a VMA.
  * @desc: A VMA descriptor whose fields need to be set.
  * @file: The file object describing the file being mmap()'d.
@@ -1237,16 +1241,25 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
 EXPORT_SYMBOL(__compat_vma_mmap);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * compat_vma_mmap() - Apply the file's .mmap_prepare() hook to an
  * existing VMA and execute any requested actions.
  * @file: The file which possesss an f_op->mmap_prepare() hook.
  * @vma: The VMA to apply the .mmap_prepare() hook to.
  *
  * Ordinarily, .mmap_prepare() is invoked directly upon mmap(). However, certain
+<<<<<<< HEAD
  * stacked drivers invoke a nested mmap hook of an underlying file.
  *
  * Until all drivers are converted to use .mmap_prepare(), we must be
  * conservative and continue to invoke these stacked drivers using the
+=======
+ * stacked filesystems invoke a nested mmap hook of an underlying file.
+ *
+ * Until all filesystems are converted to use .mmap_prepare(), we must be
+ * conservative and continue to invoke these stacked filesystems using the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * deprecated .mmap() hook.
  *
  * However we have a problem if the underlying file system possesses an
@@ -1257,13 +1270,19 @@ EXPORT_SYMBOL(__compat_vma_mmap);
  * establishes a struct vm_area_desc descriptor, passes to the underlying
  * .mmap_prepare() hook and applies any changes performed by it.
  *
+<<<<<<< HEAD
  * Once the conversion of drivers is complete this function will no longer be
  * required and will be removed.
+=======
+ * Once the conversion of filesystems is complete this function will no longer
+ * be required and will be removed.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Returns: 0 on success or error.
  */
 int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	struct vm_area_desc desc;
 	struct mmap_action *action;
 	int err;
@@ -1278,6 +1297,40 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
 	action->hide_from_rmap_until_complete = false;
 
 	return __compat_vma_mmap(&desc, vma);
+=======
+	struct vm_area_desc desc = {
+		.mm = vma->vm_mm,
+		.file = file,
+		.start = vma->vm_start,
+		.end = vma->vm_end,
+
+		.pgoff = vma->vm_pgoff,
+		.vm_file = vma->vm_file,
+		.vma_flags = vma->flags,
+		.page_prot = vma->vm_page_prot,
+
+		.action.type = MMAP_NOTHING, /* Default */
+	};
+	int err;
+
+	err = vfs_mmap_prepare(file, &desc);
+	if (err)
+		return err;
+
+	err = mmap_action_prepare(&desc);
+	if (err)
+		return err;
+
+	set_vma_from_desc(vma, &desc);
+	err = mmap_action_complete(vma, &desc.action,
+				   /*is_compat=*/true);
+	if (err) {
+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+
+		do_munmap(current->mm, vma->vm_start, len, NULL);
+	}
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(compat_vma_mmap);
 
@@ -1315,7 +1368,11 @@ static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
  */
 void snapshot_page(struct page_snapshot *ps, const struct page *page)
 {
+<<<<<<< HEAD
 	unsigned long info, nr_pages = 1;
+=======
+	unsigned long head, nr_pages = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio *foliop;
 	int loops = 5;
 
@@ -1325,8 +1382,13 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
 again:
 	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
 	memcpy(&ps->page_snapshot, page, sizeof(*page));
+<<<<<<< HEAD
 	info = ps->page_snapshot.compound_info;
 	if (!(info & 1)) {
+=======
+	head = ps->page_snapshot.compound_head;
+	if ((head & 1) == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ps->idx = 0;
 		foliop = (struct folio *)&ps->page_snapshot;
 		if (!folio_test_large(foliop)) {
@@ -1337,6 +1399,7 @@ again:
 		}
 		foliop = (struct folio *)page;
 	} else {
+<<<<<<< HEAD
 		/* See compound_head() */
 		if (compound_info_has_mask()) {
 			unsigned long p = (unsigned long)page;
@@ -1346,6 +1409,9 @@ again:
 			foliop = (struct folio *)(info - 1);
 		}
 
+=======
+		foliop = (struct folio *)(head - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ps->idx = folio_page_idx(foliop, page);
 	}
 
@@ -1369,6 +1435,7 @@ again:
 	}
 }
 
+<<<<<<< HEAD
 static int call_vma_mapped(struct vm_area_struct *vma)
 {
 	const struct vm_operations_struct *vm_ops = vma->vm_ops;
@@ -1388,10 +1455,13 @@ static int call_vma_mapped(struct vm_area_struct *vma)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mmap_action_finish(struct vm_area_struct *vma,
 			      struct mmap_action *action, int err,
 			      bool is_compat)
 {
+<<<<<<< HEAD
 	size_t len;
 
 	if (!err)
@@ -1401,6 +1471,11 @@ static int mmap_action_finish(struct vm_area_struct *vma,
 
 	/* do_munmap() might take rmap lock, so release if held. */
 	maybe_rmap_unlock_action(vma, action);
+=======
+	if (!err && action->success_hook)
+		err = action->success_hook(vma);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If this is invoked from the compatibility layer, post-mmap() hook
 	 * logic will handle cleanup for us.
@@ -1413,8 +1488,11 @@ static int mmap_action_finish(struct vm_area_struct *vma,
 	 * only clear the newly allocated VMA, since this function is only
 	 * invoked if we do NOT merge, so we only clean up the VMA we created.
 	 */
+<<<<<<< HEAD
 	len = vma_pages(vma) << PAGE_SHIFT;
 	do_munmap(current->mm, vma->vm_start, len, NULL);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (action->error_hook) {
 		/* We may want to filter the error. */
 		err = action->error_hook(err);
@@ -1441,10 +1519,13 @@ int mmap_action_prepare(struct vm_area_desc *desc)
 		return remap_pfn_range_prepare(desc);
 	case MMAP_IO_REMAP_PFN:
 		return io_remap_pfn_range_prepare(desc);
+<<<<<<< HEAD
 	case MMAP_SIMPLE_IO_REMAP:
 		return simple_ioremap_prepare(desc);
 	case MMAP_MAP_KERNEL_PAGES:
 		return map_kernel_pages_prepare(desc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	WARN_ON_ONCE(1);
@@ -1464,7 +1545,12 @@ EXPORT_SYMBOL(mmap_action_prepare);
  * !@is_compat.
  */
 int mmap_action_complete(struct vm_area_struct *vma,
+<<<<<<< HEAD
 			 struct mmap_action *action, bool is_compat)
+=======
+			 struct mmap_action *action,
+			 bool is_compat)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err = 0;
 
@@ -1474,11 +1560,15 @@ int mmap_action_complete(struct vm_area_struct *vma,
 	case MMAP_REMAP_PFN:
 		err = remap_pfn_range_complete(vma, action);
 		break;
+<<<<<<< HEAD
 	case MMAP_MAP_KERNEL_PAGES:
 		err = map_kernel_pages_complete(vma, action);
 		break;
 	case MMAP_IO_REMAP_PFN:
 	case MMAP_SIMPLE_IO_REMAP:
+=======
+	case MMAP_IO_REMAP_PFN:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Should have been delegated. */
 		WARN_ON_ONCE(1);
 		err = -EINVAL;
@@ -1496,8 +1586,11 @@ int mmap_action_prepare(struct vm_area_desc *desc)
 		break;
 	case MMAP_REMAP_PFN:
 	case MMAP_IO_REMAP_PFN:
+<<<<<<< HEAD
 	case MMAP_SIMPLE_IO_REMAP:
 	case MMAP_MAP_KERNEL_PAGES:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON_ONCE(1); /* nommu cannot handle these. */
 		break;
 	}
@@ -1517,8 +1610,11 @@ int mmap_action_complete(struct vm_area_struct *vma,
 		break;
 	case MMAP_REMAP_PFN:
 	case MMAP_IO_REMAP_PFN:
+<<<<<<< HEAD
 	case MMAP_SIMPLE_IO_REMAP:
 	case MMAP_MAP_KERNEL_PAGES:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON_ONCE(1); /* nommu cannot handle this. */
 
 		err = -EINVAL;

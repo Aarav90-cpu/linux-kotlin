@@ -38,6 +38,7 @@ static struct cxl_driver cxl_dax_region_driver = {
 	.id = CXL_DEVICE_DAX_REGION,
 	.drv = {
 		.suppress_bind_attrs = true,
+<<<<<<< HEAD
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 };
@@ -68,6 +69,12 @@ static void __exit cxl_dax_region_exit(void)
 }
 module_exit(cxl_dax_region_exit);
 
+=======
+	},
+};
+
+module_cxl_driver(cxl_dax_region_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_ALIAS_CXL(CXL_DEVICE_DAX_REGION);
 MODULE_DESCRIPTION("CXL DAX: direct access to CXL regions");
 MODULE_LICENSE("GPL");

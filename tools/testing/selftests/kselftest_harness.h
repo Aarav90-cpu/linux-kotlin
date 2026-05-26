@@ -76,7 +76,11 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
 		memset(s, c, n);
 }
 
+<<<<<<< HEAD
 #define KSELFTEST_PRIO_TEST    20000
+=======
+#define KSELFTEST_PRIO_TEST_F  20000
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define KSELFTEST_PRIO_XFAIL   20001
 
 #define TEST_TIMEOUT_DEFAULT 30
@@ -194,7 +198,11 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
 		  .fixture = &_fixture_global, \
 		  .termsig = _signal, \
 		  .timeout = TEST_TIMEOUT_DEFAULT, }; \
+<<<<<<< HEAD
 	static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) _register_##test_name(void) \
+=======
+	static void __attribute__((constructor)) _register_##test_name(void) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ \
 		__register_test(&_##test_name##_object); \
 	} \
@@ -238,7 +246,11 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
 	FIXTURE_VARIANT(fixture_name); \
 	static struct __fixture_metadata _##fixture_name##_fixture_object = \
 		{ .name =  #fixture_name, }; \
+<<<<<<< HEAD
 	static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) \
+=======
+	static void __attribute__((constructor)) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	_register_##fixture_name##_data(void) \
 	{ \
 		__register_fixture(&_##fixture_name##_fixture_object); \
@@ -364,7 +376,11 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
 		_##fixture_name##_##variant_name##_object = \
 		{ .name = #variant_name, \
 		  .data = &_##fixture_name##_##variant_name##_variant}; \
+<<<<<<< HEAD
 	static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) \
+=======
+	static void __attribute__((constructor)) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		_register_##fixture_name##_##variant_name(void) \
 	{ \
 		__register_fixture_variant(&_##fixture_name##_fixture_object, \
@@ -468,7 +484,11 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
 			fixture_name##_teardown(_metadata, self, variant); \
 	} \
 	static struct __test_metadata *_##fixture_name##_##test_name##_object; \
+<<<<<<< HEAD
 	static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) \
+=======
+	static void __attribute__((constructor(KSELFTEST_PRIO_TEST_F))) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			_register_##fixture_name##_##test_name(void) \
 	{ \
 		struct __test_metadata *object = mmap(NULL, sizeof(*object), \
@@ -1225,6 +1245,7 @@ static void __run_test(struct __fixture_metadata *f,
 		t->exit_code = KSFT_FAIL;
 	} else if (child == 0) {
 		setpgrp();
+<<<<<<< HEAD
 
 		/* Reset state inherited from the harness */
 		ksft_reset_state();
@@ -1235,6 +1256,9 @@ static void __run_test(struct __fixture_metadata *f,
 			ksft_print_msg("Illegal usage of low-level ksft APIs in harness test\n");
 			t->exit_code = KSFT_FAIL;
 		}
+=======
+		t->fn(t, variant);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		_exit(t->exit_code);
 	} else {
 		t->pid = child;
@@ -1323,7 +1347,11 @@ static int test_harness_run(int argc, char **argv)
 	return KSFT_FAIL;
 }
 
+<<<<<<< HEAD
 static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) __constructor_order_first(void)
+=======
+static void __attribute__((constructor)) __constructor_order_first(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__constructor_order_forward = true;
 }

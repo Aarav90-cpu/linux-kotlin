@@ -147,6 +147,7 @@ int fbnic_csr_regs_len(struct fbnic_dev *fbd)
 
 	return len;
 }
+<<<<<<< HEAD
 
 /* CSR register test data
  *
@@ -275,3 +276,5 @@ enum fbnic_reg_self_test_codes fbnic_csr_regs_test(struct fbnic_dev *fbd)
 
 	return FBNIC_REG_TEST_SUCCESS;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

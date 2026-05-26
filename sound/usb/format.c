@@ -455,10 +455,13 @@ static int parse_uac2_sample_rate_range(struct snd_usb_audio *chip,
 			if (chip->usb_id == USB_ID(0x194f, 0x010d) &&
 			    !s1810c_valid_sample_rate(fp, rate))
 				goto skip_rate;
+<<<<<<< HEAD
 			/* Filter out invalid rates on Presonus Studio 1824 */
 			if (chip->usb_id == USB_ID(0x194f, 0x0107) &&
 			    !s1810c_valid_sample_rate(fp, rate))
 				goto skip_rate;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* Filter out invalid rates on Focusrite devices */
 			if (USB_ID_VENDOR(chip->usb_id) == 0x1235 &&

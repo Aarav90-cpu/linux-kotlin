@@ -36,7 +36,10 @@
 #include "coredump.h"
 #include "cmn_defs.h"
 #include "dp_cmn.h"
+<<<<<<< HEAD
 #include "thermal.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SM(_v, _f) (((_v) << _f##_LSB) & _f##_MASK)
 
@@ -157,7 +160,10 @@ enum ath12k_hw_rev {
 	ATH12K_HW_WCN7850_HW20,
 	ATH12K_HW_IPQ5332_HW10,
 	ATH12K_HW_QCC2072_HW10,
+<<<<<<< HEAD
 	ATH12K_HW_IPQ5424_HW10,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum ath12k_firmware_mode {
@@ -524,7 +530,11 @@ struct ath12k_sta {
 	u16 links_map;
 	u8 assoc_link_id;
 	u16 ml_peer_id;
+<<<<<<< HEAD
 	u16 free_logical_link_idx_map;
+=======
+	u8 num_peer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	enum ieee80211_sta_state state;
 };
@@ -589,7 +599,10 @@ struct ath12k_dbg_htt_stats {
 struct ath12k_debug {
 	struct dentry *debugfs_pdev;
 	struct dentry *debugfs_pdev_symlink;
+<<<<<<< HEAD
 	struct dentry *debugfs_pdev_symlink_default;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath12k_dbg_htt_stats htt_stats;
 	enum wmi_halphy_ctrl_path_stats_id tpc_stats_type;
 	bool tpc_request;
@@ -675,7 +688,10 @@ struct ath12k {
 	u8 pdev_idx;
 	u8 lmac_id;
 	u8 hw_link_id;
+<<<<<<< HEAD
 	u8 radio_idx;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct completion peer_assoc_done;
 	struct completion peer_delete_done;
@@ -761,8 +777,11 @@ struct ath12k {
 
 	s8 max_allowed_tx_power;
 	struct ath12k_pdev_rssi_offsets rssi_info;
+<<<<<<< HEAD
 
 	struct ath12k_thermal thermal;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ath12k_hw {
@@ -1369,6 +1388,7 @@ static inline struct ath12k_hw *ath12k_hw_to_ah(struct ieee80211_hw  *hw)
 	return hw->priv;
 }
 
+<<<<<<< HEAD
 static inline struct ath12k *ath12k_ah_to_ar(struct ath12k_hw *ah, u8 radio_idx)
 {
 	if (WARN(radio_idx >= ah->num_radio,
@@ -1376,6 +1396,15 @@ static inline struct ath12k *ath12k_ah_to_ar(struct ath12k_hw *ah, u8 radio_idx)
 		radio_idx = 0;
 
 	return &ah->radio[radio_idx];
+=======
+static inline struct ath12k *ath12k_ah_to_ar(struct ath12k_hw *ah, u8 hw_link_id)
+{
+	if (WARN(hw_link_id >= ah->num_radio,
+		 "bad hw link id %d, so switch to default link\n", hw_link_id))
+		hw_link_id = 0;
+
+	return &ah->radio[hw_link_id];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct ath12k_hw *ath12k_ar_to_ah(struct ath12k *ar)

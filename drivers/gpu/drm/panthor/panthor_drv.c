@@ -13,9 +13,13 @@
 #include <linux/pagemap.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/sched/clock.h>
 #include <linux/time64.h>
 #include <linux/time_namespace.h>
+=======
+#include <linux/time64.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <drm/drm_auth.h>
 #include <drm/drm_debugfs.h>
@@ -763,6 +767,7 @@ static void panthor_submit_ctx_cleanup(struct panthor_submit_ctx *ctx,
 	kvfree(ctx->jobs);
 }
 
+<<<<<<< HEAD
 #define VALID_TIMESTAMP_QUERY_FLAGS \
 		(DRM_PANTHOR_TIMESTAMP_GPU | \
 		 DRM_PANTHOR_TIMESTAMP_CPU_TYPE_MASK | \
@@ -771,10 +776,13 @@ static void panthor_submit_ctx_cleanup(struct panthor_submit_ctx *ctx,
 		 DRM_PANTHOR_TIMESTAMP_FREQ | \
 		 DRM_PANTHOR_TIMESTAMP_DURATION)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int panthor_query_timestamp_info(struct panthor_device *ptdev,
 					struct drm_panthor_timestamp_info *arg)
 {
 	int ret;
+<<<<<<< HEAD
 	u32 flags;
 	unsigned long irq_flags;
 	struct timespec64 cpu_ts;
@@ -822,11 +830,14 @@ static int panthor_query_timestamp_info(struct panthor_device *ptdev,
 	minimize_interruption =
 		(flags & DRM_PANTHOR_TIMESTAMP_DURATION) ||
 		(timestamp_types >= 2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = panthor_device_resume_and_get(ptdev);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (flags & DRM_PANTHOR_TIMESTAMP_FREQ) {
 #ifdef CONFIG_ARM_ARCH_TIMER
 		arg->timestamp_frequency = arch_timer_get_cntfrq();
@@ -892,6 +903,15 @@ static int panthor_query_timestamp_info(struct panthor_device *ptdev,
 		arg->cpu_timestamp_sec = 0;
 		arg->cpu_timestamp_nsec = 0;
 	}
+=======
+#ifdef CONFIG_ARM_ARCH_TIMER
+	arg->timestamp_frequency = arch_timer_get_cntfrq();
+#else
+	arg->timestamp_frequency = 0;
+#endif
+	arg->current_timestamp = gpu_read64_counter(ptdev, GPU_TIMESTAMP);
+	arg->timestamp_offset = gpu_read64(ptdev, GPU_TIMESTAMP_OFFSET);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_put(ptdev->base.dev);
 	return 0;
@@ -966,6 +986,7 @@ static int panthor_ioctl_dev_query(struct drm_device *ddev, void *data, struct d
 		return PANTHOR_UOBJ_SET(args->pointer, args->size, ptdev->csif_info);
 
 	case DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO:
+<<<<<<< HEAD
 		ret = copy_struct_from_user(&timestamp_info,
 					    sizeof(timestamp_info),
 					    u64_to_user_ptr(args->pointer),
@@ -974,6 +995,10 @@ static int panthor_ioctl_dev_query(struct drm_device *ddev, void *data, struct d
 			return ret;
 
 		ret = panthor_query_timestamp_info(ptdev, &timestamp_info);
+=======
+		ret = panthor_query_timestamp_info(ptdev, &timestamp_info);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return ret;
 
@@ -1801,7 +1826,10 @@ static void panthor_debugfs_init(struct drm_minor *minor)
  *       - adds DRM_IOCTL_PANTHOR_BO_SYNC ioctl
  *       - adds DRM_IOCTL_PANTHOR_BO_QUERY_INFO ioctl
  *       - adds drm_panthor_gpu_info::selected_coherency
+<<<<<<< HEAD
  * - 1.8 - extends DEV_QUERY_TIMESTAMP_INFO with flags
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static const struct drm_driver panthor_drm_driver = {
 	.driver_features = DRIVER_RENDER | DRIVER_GEM | DRIVER_SYNCOBJ |
@@ -1815,7 +1843,11 @@ static const struct drm_driver panthor_drm_driver = {
 	.name = "panthor",
 	.desc = "Panthor DRM driver",
 	.major = 1,
+<<<<<<< HEAD
 	.minor = 8,
+=======
+	.minor = 7,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	.gem_create_object = panthor_gem_create_object,
 	.gem_prime_import_sg_table = drm_gem_shmem_prime_import_sg_table,

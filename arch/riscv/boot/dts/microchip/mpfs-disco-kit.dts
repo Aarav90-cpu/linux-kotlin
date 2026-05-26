@@ -97,10 +97,30 @@
 };
 
 &gpio1 {
+<<<<<<< HEAD
+=======
+	interrupts = <27>, <28>, <29>, <30>,
+		     <31>, <32>, <33>, <47>,
+		     <35>, <36>, <37>, <38>,
+		     <39>, <40>, <41>, <42>,
+		     <43>, <44>, <45>, <46>,
+		     <47>, <48>, <49>, <50>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
 &gpio2 {
+<<<<<<< HEAD
+=======
+	interrupts = <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>,
+		     <53>, <53>, <53>, <53>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -116,6 +136,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &irqmux {
 	interrupt-map = <0 &plic 13>, <1 &plic 14>, <2 &plic 15>,
 			<3 &plic 16>, <4 &plic 17>, <5 &plic 18>,
@@ -145,6 +166,8 @@
 			<94 &plic 53>, <95 &plic 53>;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mac0 {
 	phy-mode = "sgmii";
 	phy-handle = <&phy0>;

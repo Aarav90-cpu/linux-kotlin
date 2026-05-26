@@ -13,8 +13,12 @@
 	HOW(NON_BSS)			\
 	HOW(TMP_NON_BSS)		\
 	HOW(TPT)			\
+<<<<<<< HEAD
 	HOW(NAN)			\
 	HOW(TDLS)
+=======
+	HOW(NAN)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const char *
 iwl_mld_get_emlsr_blocked_string(enum iwl_mld_emlsr_blocked blocked)
@@ -111,6 +115,10 @@ void iwl_mld_emlsr_tmp_non_bss_done_wk(struct wiphy *wiphy,
 }
 
 #define IWL_MLD_TRIGGER_LINK_SEL_TIME	(HZ * IWL_MLD_TRIGGER_LINK_SEL_TIME_SEC)
+<<<<<<< HEAD
+=======
+#define IWL_MLD_SCAN_EXPIRE_TIME	(HZ * IWL_MLD_SCAN_EXPIRE_TIME_SEC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Exit reasons that can cause longer EMLSR prevention */
 #define IWL_MLD_PREVENT_EMLSR_REASONS	(IWL_MLD_EMLSR_EXIT_MISSED_BEACON	| \

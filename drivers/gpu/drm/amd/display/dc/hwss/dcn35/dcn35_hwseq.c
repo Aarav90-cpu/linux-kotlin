@@ -60,15 +60,25 @@
 #include "dcn20/dcn20_hwseq.h"
 #include "dc_state_priv.h"
 
+<<<<<<< HEAD
 #define DC_LOGGER \
 	dc_ctx->logger
 #define DC_LOGGER_INIT(ctx) \
 	struct dc_context *dc_ctx = ctx
+=======
+#define DC_LOGGER_INIT(logger) \
+	struct dal_logger *dc_logger = logger
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CTX \
 	hws->ctx
 #define REG(reg)\
 	hws->regs->reg
+<<<<<<< HEAD
+=======
+#define DC_LOGGER \
+	dc_logger
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 #undef FN
@@ -331,7 +341,11 @@ static void update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 	struct pipe_ctx *odm_pipe;
 	int opp_cnt = 1;
 
+<<<<<<< HEAD
 	DC_LOGGER_INIT(stream->ctx);
+=======
+	DC_LOGGER_INIT(stream->ctx->logger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ASSERT(dsc);
 	for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe)
@@ -428,7 +442,10 @@ static unsigned int get_odm_config(struct pipe_ctx *pipe_ctx, unsigned int *opp_
 
 void dcn35_update_odm(struct dc *dc, struct dc_state *context, struct pipe_ctx *pipe_ctx)
 {
+<<<<<<< HEAD
 	(void)context;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pipe_ctx *odm_pipe;
 	int opp_cnt = 0;
 	int opp_inst[MAX_PIPES] = {0};
@@ -521,7 +538,11 @@ void dcn35_power_down_on_boot(struct dc *dc)
 {
 	struct dc_link *edp_links[MAX_NUM_EDP];
 	struct dc_link *edp_link = NULL;
+<<<<<<< HEAD
 	unsigned int edp_num;
+=======
+	int edp_num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i = 0;
 
 	dc_get_edp_links(dc, edp_links, &edp_num);
@@ -817,7 +838,10 @@ void dcn35_init_pipes(struct dc *dc, struct dc_state *context)
 void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
 			       struct dc_state *context)
 {
+<<<<<<< HEAD
 	(void)context;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
 
 	/* enable DCFCLK current DCHUB */
@@ -899,7 +923,11 @@ void dcn35_disable_plane(struct dc *dc, struct dc_state *state, struct pipe_ctx 
 	bool is_phantom = dc_state_get_pipe_subvp_type(state, pipe_ctx) == SUBVP_PHANTOM;
 	struct timing_generator *tg = is_phantom ? pipe_ctx->stream_res.tg : NULL;
 
+<<<<<<< HEAD
 	DC_LOGGER_INIT(dc->ctx);
+=======
+	DC_LOGGER_INIT(dc->ctx->logger);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pipe_ctx->plane_res.hubp || pipe_ctx->plane_res.hubp->power_gated)
 		return;
@@ -923,7 +951,11 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
 	bool hpo_frl_stream_enc_acquired = false;
 	bool hpo_dp_stream_enc_acquired = false;
 	int i = 0, j = 0;
+<<<<<<< HEAD
 	unsigned int edp_num = 0;
+=======
+	int edp_num = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dc_link *edp_links[MAX_NUM_EDP] = { NULL };
 
 	memset(update_state, 0, sizeof(struct pg_block_update));

@@ -806,7 +806,11 @@ static struct md_rdev *read_balance(struct r10conf *conf,
 		if (!do_balance)
 			break;
 
+<<<<<<< HEAD
 		nonrot = !bdev_rot(rdev->bdev);
+=======
+		nonrot = bdev_nonrot(rdev->bdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		has_nonrot_disk |= nonrot;
 		pending = atomic_read(&rdev->nr_pending);
 		if (min_pending > pending && nonrot) {

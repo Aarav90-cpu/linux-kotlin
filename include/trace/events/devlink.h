@@ -21,9 +21,15 @@ TRACE_EVENT(devlink_hwmsg,
 	TP_ARGS(devlink, incoming, type, buf, len),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(bool, incoming)
 		__field(unsigned long, type)
 		__dynamic_array(u8, buf, len)
@@ -55,9 +61,15 @@ TRACE_EVENT(devlink_hwerr,
 	TP_ARGS(devlink, err, msg),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(int, err)
 		__string(msg, msg)
 		),
@@ -85,9 +97,15 @@ TRACE_EVENT(devlink_health_report,
 	TP_ARGS(devlink, reporter_name, msg),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__string(reporter_name, reporter_name)
 		__string(msg, msg)
 	),
@@ -116,9 +134,15 @@ TRACE_EVENT(devlink_health_recover_aborted,
 	TP_ARGS(devlink, reporter_name, health_state, time_since_last_recover),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__string(reporter_name, reporter_name)
 		__field(bool, health_state)
 		__field(u64, time_since_last_recover)
@@ -150,9 +174,15 @@ TRACE_EVENT(devlink_health_reporter_state_update,
 	TP_ARGS(devlink, reporter_name, new_state),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__string(reporter_name, reporter_name)
 		__field(u8, new_state)
 	),
@@ -181,9 +211,15 @@ TRACE_EVENT(devlink_trap_report,
 	TP_ARGS(devlink, skb, metadata),
 
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__string(bus_name, devlink_bus_name(devlink))
 		__string(dev_name, devlink_dev_name(devlink))
 		__string(driver_name, devlink_dev_driver_name(devlink))
+=======
+		__string(bus_name, devlink_to_dev(devlink)->bus->name)
+		__string(dev_name, dev_name(devlink_to_dev(devlink)))
+		__string(driver_name, devlink_to_dev(devlink)->driver->name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__string(trap_name, metadata->trap_name)
 		__string(trap_group_name, metadata->trap_group_name)
 		__array(char, input_dev_name, IFNAMSIZ)

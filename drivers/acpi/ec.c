@@ -35,6 +35,12 @@
 
 #include "internal.h"
 
+<<<<<<< HEAD
+=======
+#define ACPI_EC_CLASS			"embedded_controller"
+#define ACPI_EC_DEVICE_NAME		"Embedded Controller"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* EC status register */
 #define ACPI_EC_FLAG_OBF	0x01	/* Output buffer full */
 #define ACPI_EC_FLAG_IBF	0x02	/* Input buffer full */
@@ -1676,6 +1682,7 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
 
 static int acpi_ec_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
 	struct acpi_ec *ec;
 	int ret;
@@ -1683,6 +1690,14 @@ static int acpi_ec_probe(struct platform_device *pdev)
 	device = ACPI_COMPANION(&pdev->dev);
 	if (!device)
 		return -ENODEV;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+	struct acpi_ec *ec;
+	int ret;
+
+	strscpy(acpi_device_name(device), ACPI_EC_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_EC_CLASS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (boot_ec && (boot_ec->handle == device->handle ||
 	    !strcmp(acpi_device_hid(device), ACPI_ECDT_HID))) {

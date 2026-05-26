@@ -270,7 +270,11 @@ static int cgroup_storage_get_next_key(struct bpf_map *_map, void *key,
 			goto enoent;
 
 		storage = list_next_entry(storage, list_map);
+<<<<<<< HEAD
 		if (list_entry_is_head(storage, &map->list, list_map))
+=======
+		if (!storage)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto enoent;
 	} else {
 		storage = list_first_entry(&map->list,

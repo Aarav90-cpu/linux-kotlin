@@ -706,12 +706,17 @@ static void adf4377_gpio_init(struct adf4377_state *st)
 
 static int adf4377_init(struct adf4377_state *st)
 {
+<<<<<<< HEAD
 	struct device *dev = &st->spi->dev;
+=======
+	struct spi_device *spi = st->spi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	adf4377_gpio_init(st);
 
 	ret = adf4377_soft_reset(st);
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to soft reset.\n");
 
@@ -720,6 +725,19 @@ static int adf4377_init(struct adf4377_state *st)
 	if (ret)
 		return dev_err_probe(dev, ret,
 				     "Failed to set default registers.\n");
+=======
+	if (ret) {
+		dev_err(&spi->dev, "Failed to soft reset.\n");
+		return ret;
+	}
+
+	ret = regmap_multi_reg_write(st->regmap, adf4377_reg_defaults,
+				     ARRAY_SIZE(adf4377_reg_defaults));
+	if (ret) {
+		dev_err(&spi->dev, "Failed to set default registers.\n");
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = regmap_update_bits(st->regmap, 0x00,
 				 ADF4377_0000_SDO_ACTIVE_MSK | ADF4377_0000_SDO_ACTIVE_R_MSK,
@@ -727,9 +745,16 @@ static int adf4377_init(struct adf4377_state *st)
 					    ADF4377_0000_SDO_ACTIVE_SPI_4W) |
 				 FIELD_PREP(ADF4377_0000_SDO_ACTIVE_R_MSK,
 					    ADF4377_0000_SDO_ACTIVE_SPI_4W));
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(dev, ret,
 				     "Failed to set 4-Wire Operation.\n");
+=======
+	if (ret) {
+		dev_err(&spi->dev, "Failed to set 4-Wire Operation.\n");
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	st->clkin_freq = clk_get_rate(st->clkin);
 
@@ -743,9 +768,16 @@ static int adf4377_init(struct adf4377_state *st)
 			   FIELD_PREP(ADF4377_001A_PD_PFDCP_MSK, 0) |
 			   FIELD_PREP(ADF4377_001A_PD_CLKOUT1_MSK, 0) |
 			   FIELD_PREP(ADF4377_001A_PD_CLKOUT2_MSK, 0));
+<<<<<<< HEAD
 	if (ret)
 		return dev_err_probe(dev, ret,
 				     "Failed to set power down registers.\n");
+=======
+	if (ret) {
+		dev_err(&spi->dev, "Failed to set power down registers.\n");
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Set Mux Output */
 	ret = regmap_update_bits(st->regmap, 0x1D,
@@ -877,6 +909,7 @@ static const struct iio_chan_spec adf4377_channels[] = {
 
 static int adf4377_properties_parse(struct adf4377_state *st)
 {
+<<<<<<< HEAD
 	struct device *dev = &st->spi->dev;
 	int ret;
 
@@ -906,6 +939,37 @@ static int adf4377_properties_parse(struct adf4377_state *st)
 	}
 
 	ret = device_property_match_property_string(dev, "adi,muxout-select",
+=======
+	struct spi_device *spi = st->spi;
+	int ret;
+
+	st->clkin = devm_clk_get_enabled(&spi->dev, "ref_in");
+	if (IS_ERR(st->clkin))
+		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
+				     "failed to get the reference input clock\n");
+
+	st->gpio_ce = devm_gpiod_get_optional(&st->spi->dev, "chip-enable",
+					      GPIOD_OUT_LOW);
+	if (IS_ERR(st->gpio_ce))
+		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_ce),
+				     "failed to get the CE GPIO\n");
+
+	st->gpio_enclk1 = devm_gpiod_get_optional(&st->spi->dev, "clk1-enable",
+						  GPIOD_OUT_LOW);
+	if (IS_ERR(st->gpio_enclk1))
+		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
+				     "failed to get the CE GPIO\n");
+
+	if (st->chip_info->has_gpio_enclk2) {
+		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
+							  GPIOD_OUT_LOW);
+		if (IS_ERR(st->gpio_enclk2))
+			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
+					"failed to get the CE GPIO\n");
+	}
+
+	ret = device_property_match_property_string(&spi->dev, "adi,muxout-select",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						    adf4377_muxout_modes,
 						    ARRAY_SIZE(adf4377_muxout_modes));
 	if (ret >= 0)
@@ -1050,10 +1114,16 @@ static int adf4377_probe(struct spi_device *spi)
 	struct iio_dev *indio_dev;
 	struct regmap *regmap;
 	struct adf4377_state *st;
+<<<<<<< HEAD
 	struct device *dev = &spi->dev;
 	int ret;
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+=======
+	int ret;
+
+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!indio_dev)
 		return -ENOMEM;
 
@@ -1076,7 +1146,11 @@ static int adf4377_probe(struct spi_device *spi)
 		return ret;
 
 	st->nb.notifier_call = adf4377_freq_change;
+<<<<<<< HEAD
 	ret = devm_clk_notifier_register(dev, st->clkin, &st->nb);
+=======
+	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1093,7 +1167,11 @@ static int adf4377_probe(struct spi_device *spi)
 		indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
 	}
 
+<<<<<<< HEAD
 	return devm_iio_device_register(dev, indio_dev);
+=======
+	return devm_iio_device_register(&spi->dev, indio_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct spi_device_id adf4377_id[] = {

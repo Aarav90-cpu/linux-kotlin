@@ -51,7 +51,10 @@ enum ath10k_snoc_flags {
 	ATH10K_SNOC_FLAG_MODEM_STOPPED,
 	ATH10K_SNOC_FLAG_RECOVERY,
 	ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
+<<<<<<< HEAD
 	ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct clk_bulk_data;

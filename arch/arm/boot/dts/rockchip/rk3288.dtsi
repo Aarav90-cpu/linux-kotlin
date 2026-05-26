@@ -551,6 +551,10 @@
 		pinctrl-1 = <&otp_out>;
 		pinctrl-2 = <&otp_pin>;
 		#thermal-sensor-cells = <1>;
+<<<<<<< HEAD
+=======
+		rockchip,grf = <&grf>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rockchip,hw-tshut-temp = <95000>;
 		status = "disabled";
 	};

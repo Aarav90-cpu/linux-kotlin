@@ -17,4 +17,8 @@ enum exit_test_case {
 	NUM_EXITS,
 };
 
+<<<<<<< HEAD
 #endif  // __EXIT_TEST_H__
+=======
+#endif  // # __EXIT_TEST_H__
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

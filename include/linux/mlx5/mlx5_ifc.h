@@ -469,8 +469,12 @@ struct mlx5_ifc_flow_table_prop_layout_bits {
 	u8	   table_miss_action_domain[0x1];
 	u8         termination_table[0x1];
 	u8         reformat_and_fwd_to_table[0x1];
+<<<<<<< HEAD
 	u8         forward_vhca_rx[0x1];
 	u8         reserved_at_1b[0x1];
+=======
+	u8         reserved_at_1a[0x2];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         ipsec_encrypt[0x1];
 	u8         ipsec_decrypt[0x1];
 	u8         sw_owner_v2[0x1];
@@ -1390,6 +1394,7 @@ struct mlx5_ifc_virtio_emulation_cap_bits {
 	u8         reserved_at_1c0[0x640];
 };
 
+<<<<<<< HEAD
 struct mlx5_ifc_tlp_dev_emu_capabilities_bits {
 	u8         reserved_at_0[0x20];
 
@@ -1410,6 +1415,8 @@ struct mlx5_ifc_tlp_dev_emu_capabilities_bits {
 	u8         reserved_at_200[0x600];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	MLX5_ATOMIC_CAPS_ATOMIC_SIZE_QP_1_BYTE     = 0x0,
 	MLX5_ATOMIC_CAPS_ATOMIC_SIZE_QP_2_BYTES    = 0x2,
@@ -1654,11 +1661,14 @@ enum {
 	MLX5_STEERING_FORMAT_CONNECTX_8   = 3,
 };
 
+<<<<<<< HEAD
 enum {
 	MLX5_ID_MODE_FUNCTION_INDEX   = 0,
 	MLX5_ID_MODE_FUNCTION_VHCA_ID = 1,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mlx5_ifc_cmd_hca_cap_bits {
 	u8         reserved_at_0[0x6];
 	u8         page_request_disable[0x1];
@@ -1921,8 +1931,12 @@ struct mlx5_ifc_cmd_hca_cap_bits {
 	u8         reserved_at_280[0x10];
 	u8         max_wqe_sz_sq[0x10];
 
+<<<<<<< HEAD
 	u8         icm_mng_function_id_mode[0x1];
 	u8         reserved_at_2a1[0x6];
+=======
+	u8         reserved_at_2a0[0x7];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         mkey_pcie_tph[0x1];
 	u8         reserved_at_2a8[0x1];
 	u8         tis_tir_td_order[0x1];
@@ -1974,8 +1988,12 @@ struct mlx5_ifc_cmd_hca_cap_bits {
 
 	u8         reserved_at_360[0x3];
 	u8         log_max_rq[0x5];
+<<<<<<< HEAD
 	u8         ft_alias_sw_vhca_id[0x1];
 	u8         reserved_at_369[0x2];
+=======
+	u8         reserved_at_368[0x3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         log_max_sq[0x5];
 	u8         reserved_at_370[0x3];
 	u8         log_max_tir[0x5];
@@ -1989,7 +2007,11 @@ struct mlx5_ifc_cmd_hca_cap_bits {
 	u8         log_max_rqt[0x5];
 	u8         reserved_at_390[0x3];
 	u8         log_max_rqt_size[0x5];
+<<<<<<< HEAD
 	u8         tlp_device_emulation_manager[0x1];
+=======
+	u8         reserved_at_398[0x1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8	   vnic_env_cnt_bar_uar_access[0x1];
 	u8	   vnic_env_cnt_odp_page_fault[0x1];
 	u8         log_max_tis_per_sq[0x5];
@@ -2020,14 +2042,22 @@ struct mlx5_ifc_cmd_hca_cap_bits {
 	u8         disable_local_lb_mc[0x1];
 	u8         log_min_hairpin_wq_data_sz[0x5];
 	u8         reserved_at_3e8[0x1];
+<<<<<<< HEAD
 	u8         silent_mode_set[0x1];
+=======
+	u8         silent_mode[0x1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         vhca_state[0x1];
 	u8         log_max_vlan_list[0x5];
 	u8         reserved_at_3f0[0x3];
 	u8         log_max_current_mc_list[0x5];
+<<<<<<< HEAD
 	u8         reserved_at_3f8[0x1];
 	u8         silent_mode_query[0x1];
 	u8         reserved_at_3fa[0x1];
+=======
+	u8         reserved_at_3f8[0x3];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         log_max_current_uc_list[0x5];
 
 	u8         general_obj_types[0x40];
@@ -2203,8 +2233,12 @@ struct mlx5_ifc_cmd_hca_cap_2_bits {
 	u8	   sf_eq_usage[0x1];
 	u8	   reserved_at_d3[0x5];
 	u8	   multiplane[0x1];
+<<<<<<< HEAD
 	u8	   migration_state[0x1];
 	u8	   reserved_at_da[0x6];
+=======
+	u8	   reserved_at_d9[0x7];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u8	   cross_vhca_object_to_object_supported[0x20];
 
@@ -2290,7 +2324,10 @@ enum mlx5_ifc_flow_destination_type {
 	MLX5_IFC_FLOW_DESTINATION_TYPE_VPORT        = 0x0,
 	MLX5_IFC_FLOW_DESTINATION_TYPE_FLOW_TABLE   = 0x1,
 	MLX5_IFC_FLOW_DESTINATION_TYPE_TIR          = 0x2,
+<<<<<<< HEAD
 	MLX5_IFC_FLOW_DESTINATION_TYPE_VHCA_RX	    = 0x4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MLX5_IFC_FLOW_DESTINATION_TYPE_FLOW_SAMPLER = 0x6,
 	MLX5_IFC_FLOW_DESTINATION_TYPE_UPLINK       = 0x8,
 	MLX5_IFC_FLOW_DESTINATION_TYPE_TABLE_TYPE   = 0xA,
@@ -3862,7 +3899,10 @@ union mlx5_ifc_hca_cap_union_bits {
 	struct mlx5_ifc_tls_cap_bits tls_cap;
 	struct mlx5_ifc_device_mem_cap_bits device_mem_cap;
 	struct mlx5_ifc_virtio_emulation_cap_bits virtio_emulation_cap;
+<<<<<<< HEAD
 	struct mlx5_ifc_tlp_dev_emu_capabilities_bits tlp_dev_emu_capabilities;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_ifc_macsec_cap_bits macsec_cap;
 	struct mlx5_ifc_crypto_cap_bits crypto_cap;
 	struct mlx5_ifc_ipsec_cap_bits ipsec_cap;
@@ -6277,9 +6317,13 @@ struct mlx5_ifc_query_l2_table_entry_out_bits {
 
 	u8         reserved_at_40[0xa0];
 
+<<<<<<< HEAD
 	u8         reserved_at_e0[0x11];
 	u8         silent_mode[0x1];
 	u8         reserved_at_f2[0x1];
+=======
+	u8         reserved_at_e0[0x13];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8         vlan_valid[0x1];
 	u8         vlan[0xc];
 
@@ -6295,10 +6339,14 @@ struct mlx5_ifc_query_l2_table_entry_in_bits {
 	u8         reserved_at_20[0x10];
 	u8         op_mod[0x10];
 
+<<<<<<< HEAD
 	u8         reserved_at_40[0x40];
 
 	u8         silent_mode_query[0x1];
 	u8         reserved_at_81[0x1f];
+=======
+	u8         reserved_at_40[0x60];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u8         reserved_at_a0[0x8];
 	u8         table_index[0x18];
@@ -6965,9 +7013,13 @@ struct mlx5_ifc_create_match_definer_out_bits {
 
 struct mlx5_ifc_alias_context_bits {
 	u8 vhca_id_to_be_accessed[0x10];
+<<<<<<< HEAD
 	u8 reserved_at_10[0xb];
 	u8 vhca_id_type[0x1];
 	u8 reserved_at_1c[0x1];
+=======
+	u8 reserved_at_10[0xd];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 status[0x3];
 	u8 object_id_to_be_accessed[0x20];
 	u8 reserved_at_40[0x40];
@@ -10864,9 +10916,13 @@ struct mlx5_ifc_pcam_enhanced_features_bits {
 	u8         fec_200G_per_lane_in_pplm[0x1];
 	u8         reserved_at_1e[0x2a];
 	u8         fec_100G_per_lane_in_pplm[0x1];
+<<<<<<< HEAD
 	u8         reserved_at_49[0x2];
 	u8         shp_pbmc_pbsr_support[0x1];
 	u8         reserved_at_4c[0x7];
+=======
+	u8         reserved_at_49[0xa];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8	   buffer_ownership[0x1];
 	u8	   resereved_at_54[0x14];
 	u8         fec_50G_per_lane_in_pplm[0x1];
@@ -12111,9 +12167,14 @@ struct mlx5_ifc_pbmc_reg_bits {
 	u8         port_buffer_size[0x10];
 
 	struct mlx5_ifc_bufferx_reg_bits buffer[10];
+<<<<<<< HEAD
 	struct mlx5_ifc_bufferx_reg_bits shared_headroom_pool;
 
 	u8         reserved_at_320[0x40];
+=======
+
+	u8         reserved_at_2e0[0x80];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mlx5_ifc_sbpr_reg_bits {
@@ -13323,6 +13384,7 @@ struct mlx5_ifc_query_vhca_migration_state_in_bits {
 	u8         reserved_at_60[0x20];
 };
 
+<<<<<<< HEAD
 enum {
 	MLX5_QUERY_VHCA_MIG_STATE_UNINITIALIZED = 0x0,
 	MLX5_QUERY_VHCA_MIG_STATE_OPER_MIGRATION_IDLE = 0x1,
@@ -13331,16 +13393,22 @@ enum {
 	MLX5_QUERY_VHCA_MIG_STATE_OPER_MIGRATION_INIT = 0x4,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mlx5_ifc_query_vhca_migration_state_out_bits {
 	u8         status[0x8];
 	u8         reserved_at_8[0x18];
 
 	u8         syndrome[0x20];
 
+<<<<<<< HEAD
 	u8         reserved_at_40[0x20];
 
 	u8         migration_state[0x4];
 	u8         reserved_at_64[0x1c];
+=======
+	u8         reserved_at_40[0x40];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	u8         required_umem_size[0x20];
 

@@ -128,7 +128,11 @@ void account_user_time(struct task_struct *p, u64 cputime)
 	p->utime += cputime;
 	account_group_user_time(p, cputime);
 
+<<<<<<< HEAD
 	index = (task_nice(p) > 0) ? CPUTIME_NICE : CPUTIME_USER;
+=======
+	index = task_running_nice(p) ? CPUTIME_NICE : CPUTIME_USER;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Add user time to cpustat. */
 	task_group_account_field(p, index, cputime);
@@ -152,7 +156,11 @@ void account_guest_time(struct task_struct *p, u64 cputime)
 	p->gtime += cputime;
 
 	/* Add guest time to cpustat. */
+<<<<<<< HEAD
 	if (task_nice(p) > 0) {
+=======
+	if (task_running_nice(p)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		task_group_account_field(p, CPUTIME_NICE, cputime);
 		cpustat[CPUTIME_GUEST_NICE] += cputime;
 	} else {
@@ -303,7 +311,11 @@ static inline u64 account_other_time(u64 max)
 #ifdef CONFIG_64BIT
 static inline u64 read_sum_exec_runtime(struct task_struct *t)
 {
+<<<<<<< HEAD
 	return t->se.sum_exec_runtime;
+=======
+	return tsk_seruntime(t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #else /* !CONFIG_64BIT: */
 static u64 read_sum_exec_runtime(struct task_struct *t)
@@ -313,7 +325,11 @@ static u64 read_sum_exec_runtime(struct task_struct *t)
 	struct rq *rq;
 
 	rq = task_rq_lock(t, &rf);
+<<<<<<< HEAD
 	ns = t->se.sum_exec_runtime;
+=======
+	ns = tsk_seruntime(t);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	task_rq_unlock(rq, t, &rf);
 
 	return ns;
@@ -628,7 +644,11 @@ out:
 void task_cputime_adjusted(struct task_struct *p, u64 *ut, u64 *st)
 {
 	struct task_cputime cputime = {
+<<<<<<< HEAD
 		.sum_exec_runtime = p->se.sum_exec_runtime,
+=======
+		.sum_exec_runtime = tsk_seruntime(p),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	if (task_cputime(p, &cputime.utime, &cputime.stime))

@@ -204,7 +204,11 @@ void drm_client_buffer_delete(struct drm_client_buffer *buffer)
 }
 EXPORT_SYMBOL(drm_client_buffer_delete);
 
+<<<<<<< HEAD
 struct drm_client_buffer *
+=======
+static struct drm_client_buffer *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 drm_client_buffer_create(struct drm_client_dev *client, u32 width, u32 height,
 			 u32 format, u32 handle, u32 pitch)
 {
@@ -265,7 +269,10 @@ err_delete:
 	kfree(buffer);
 	return ERR_PTR(ret);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(drm_client_buffer_create);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * drm_client_buffer_vmap_local - Map DRM client buffer into address space

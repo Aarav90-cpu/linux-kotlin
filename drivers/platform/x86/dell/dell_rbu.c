@@ -30,7 +30,10 @@
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
 
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/kstrtox.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/string.h>
@@ -620,12 +623,18 @@ static ssize_t packet_size_write(struct file *filp, struct kobject *kobj,
 				 char *buffer, loff_t pos, size_t count)
 {
 	unsigned long temp;
+<<<<<<< HEAD
 
 	if (kstrtoul(buffer, 10, &temp))
 		return -EINVAL;
 
 	spin_lock(&rbu_data.lock);
 	packet_empty_list();
+=======
+	spin_lock(&rbu_data.lock);
+	packet_empty_list();
+	sscanf(buffer, "%lu", &temp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (temp < 0xffffffff)
 		rbu_data.packetsize = temp;
 

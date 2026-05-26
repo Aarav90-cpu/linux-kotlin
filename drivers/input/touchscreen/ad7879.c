@@ -305,13 +305,22 @@ static int __maybe_unused ad7879_suspend(struct device *dev)
 {
 	struct ad7879 *ts = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
+=======
+	mutex_lock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ts->suspended && !ts->disabled && input_device_enabled(ts->input))
 		__ad7879_disable(ts);
 
 	ts->suspended = true;
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ts->input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -319,13 +328,22 @@ static int __maybe_unused ad7879_resume(struct device *dev)
 {
 	struct ad7879 *ts = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
+=======
+	mutex_lock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ts->suspended && !ts->disabled && input_device_enabled(ts->input))
 		__ad7879_enable(ts);
 
 	ts->suspended = false;
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ts->input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -334,7 +352,11 @@ EXPORT_SYMBOL(ad7879_pm_ops);
 
 static void ad7879_toggle(struct ad7879 *ts, bool disable)
 {
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
+=======
+	mutex_lock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ts->suspended && input_device_enabled(ts->input)) {
 
@@ -348,6 +370,11 @@ static void ad7879_toggle(struct ad7879 *ts, bool disable)
 	}
 
 	ts->disabled = disable;
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t ad7879_disable_show(struct device *dev,
@@ -397,20 +424,37 @@ static int ad7879_gpio_direction_input(struct gpio_chip *chip,
 					unsigned gpio)
 {
 	struct ad7879 *ts = gpiochip_get_data(chip);
+<<<<<<< HEAD
 
 	guard(mutex)(&ts->mutex);
 
 	ts->cmd_crtl2 |= AD7879_GPIO_EN | AD7879_GPIODIR | AD7879_GPIOPOL;
 	return ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
+=======
+	int err;
+
+	mutex_lock(&ts->mutex);
+	ts->cmd_crtl2 |= AD7879_GPIO_EN | AD7879_GPIODIR | AD7879_GPIOPOL;
+	err = ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
+	mutex_unlock(&ts->mutex);
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ad7879_gpio_direction_output(struct gpio_chip *chip,
 					unsigned gpio, int level)
 {
 	struct ad7879 *ts = gpiochip_get_data(chip);
+<<<<<<< HEAD
 
 	guard(mutex)(&ts->mutex);
 
+=======
+	int err;
+
+	mutex_lock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ts->cmd_crtl2 &= ~AD7879_GPIODIR;
 	ts->cmd_crtl2 |= AD7879_GPIO_EN | AD7879_GPIOPOL;
 	if (level)
@@ -418,17 +462,34 @@ static int ad7879_gpio_direction_output(struct gpio_chip *chip,
 	else
 		ts->cmd_crtl2 &= ~AD7879_GPIO_DATA;
 
+<<<<<<< HEAD
 	return ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
 }
 
 static int ad7879_gpio_get_value(struct gpio_chip *chip, unsigned int gpio)
+=======
+	err = ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
+	mutex_unlock(&ts->mutex);
+
+	return err;
+}
+
+static int ad7879_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ad7879 *ts = gpiochip_get_data(chip);
 	u16 val;
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->mutex);
 
 	val = ad7879_read(ts, AD7879_REG_CTRL2);
+=======
+	mutex_lock(&ts->mutex);
+	val = ad7879_read(ts, AD7879_REG_CTRL2);
+	mutex_unlock(&ts->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return !!(val & AD7879_GPIO_DATA);
 }
 
@@ -436,15 +497,28 @@ static int ad7879_gpio_set_value(struct gpio_chip *chip, unsigned int gpio,
 				 int value)
 {
 	struct ad7879 *ts = gpiochip_get_data(chip);
+<<<<<<< HEAD
 
 	guard(mutex)(&ts->mutex);
 
+=======
+	int ret;
+
+	mutex_lock(&ts->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (value)
 		ts->cmd_crtl2 |= AD7879_GPIO_DATA;
 	else
 		ts->cmd_crtl2 &= ~AD7879_GPIO_DATA;
 
+<<<<<<< HEAD
 	return ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
+=======
+	ret = ad7879_write(ts, AD7879_REG_CTRL2, ts->cmd_crtl2);
+	mutex_unlock(&ts->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ad7879_gpio_add(struct ad7879 *ts)

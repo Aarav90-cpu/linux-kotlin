@@ -432,7 +432,11 @@
 #define CMPLT_HDR_IPTT_OFF		0
 #define CMPLT_HDR_IPTT_MSK		(0xffff << CMPLT_HDR_IPTT_OFF)
 #define CMPLT_HDR_DEV_ID_OFF		16
+<<<<<<< HEAD
 #define CMPLT_HDR_DEV_ID_MSK		(0xffffU << CMPLT_HDR_DEV_ID_OFF)
+=======
+#define CMPLT_HDR_DEV_ID_MSK		(0xffff << CMPLT_HDR_DEV_ID_OFF)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* dw3 */
 #define SATA_DISK_IN_ERROR_STATUS_OFF	8
 #define SATA_DISK_IN_ERROR_STATUS_MSK	(0x1 << SATA_DISK_IN_ERROR_STATUS_OFF)
@@ -444,7 +448,11 @@
 #define FIS_ATA_STATUS_ERR_OFF		18
 #define FIS_ATA_STATUS_ERR_MSK		(0x1 << FIS_ATA_STATUS_ERR_OFF)
 #define FIS_TYPE_SDB_OFF		31
+<<<<<<< HEAD
 #define FIS_TYPE_SDB_MSK		(0x1U << FIS_TYPE_SDB_OFF)
+=======
+#define FIS_TYPE_SDB_MSK		(0x1 << FIS_TYPE_SDB_OFF)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* ITCT header */
 /* qw0 */
@@ -896,7 +904,11 @@ static void setup_itct_v3_hw(struct hisi_hba *hisi_hba,
 			qw0 = HISI_SAS_DEV_TYPE_SATA << ITCT_HDR_DEV_TYPE_OFF;
 		break;
 	default:
+<<<<<<< HEAD
 		dev_warn(dev, "setup itct: unsupported dev type (%u)\n",
+=======
+		dev_warn(dev, "setup itct: unsupported dev type (%d)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 sas_dev->dev_type);
 	}
 
@@ -1491,7 +1503,11 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
 		phy_id = device->phy->identify.phy_identifier;
 		hdr->dw0 |= cpu_to_le32((1U << phy_id)
 				<< CMD_HDR_PHY_ID_OFF);
+<<<<<<< HEAD
 		hdr->dw0 |= cpu_to_le32(CMD_HDR_FORCE_PHY_MSK);
+=======
+		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
 	}
 
@@ -2847,7 +2863,11 @@ static void wait_cmds_complete_timeout_v3_hw(struct hisi_hba *hisi_hba,
 static ssize_t intr_conv_v3_hw_show(struct device *dev,
 				    struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%d\n", hisi_sas_intr_conv);
+=======
+	return scnprintf(buf, PAGE_SIZE, "%u\n", hisi_sas_intr_conv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 static DEVICE_ATTR_RO(intr_conv_v3_hw);
 
@@ -3293,7 +3313,11 @@ static int debugfs_set_bist_v3_hw(struct hisi_hba *hisi_hba, bool enable)
 	u32 *fix_code = &hisi_hba->debugfs_bist_fixed_code[0];
 	struct device *dev = hisi_hba->dev;
 
+<<<<<<< HEAD
 	dev_info(dev, "BIST info:phy%u link_rate=%u code_mode=%u path_mode=%u ffe={0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x} fixed_code={0x%x, 0x%x}\n",
+=======
+	dev_info(dev, "BIST info:phy%d link_rate=%d code_mode=%d path_mode=%d ffe={0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x} fixed_code={0x%x, 0x%x}\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 phy_no, linkrate, code_mode, path_mode,
 		 ffe[FFE_SAS_1_5_GBPS], ffe[FFE_SAS_3_0_GBPS],
 		 ffe[FFE_SAS_6_0_GBPS], ffe[FFE_SAS_12_0_GBPS],
@@ -3650,7 +3674,11 @@ static void debugfs_print_reg_v3_hw(u32 *regs_val, struct seq_file *s,
 	int i;
 
 	for (i = 0; i < reg->count; i++) {
+<<<<<<< HEAD
 		u32 off = i * HISI_SAS_REG_MEM_SIZE;
+=======
+		int off = i * HISI_SAS_REG_MEM_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		const char *name;
 
 		name = debugfs_to_reg_name_v3_hw(off, reg->base_off,

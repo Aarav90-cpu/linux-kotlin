@@ -14,14 +14,19 @@
 #include <linux/workqueue.h>
 #include <linux/module.h>
 #include <linux/if_bridge.h>
+<<<<<<< HEAD
 #include <linux/if_vlan.h>
 #include <linux/types.h>
+=======
+#include <linux/dsa/loop.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/dsa.h>
 
 #define DSA_LOOP_NUM_PORTS	6
 #define DSA_LOOP_CPU_PORT	(DSA_LOOP_NUM_PORTS - 1)
 #define NUM_FIXED_PHYS		(DSA_LOOP_NUM_PORTS - 2)
 
+<<<<<<< HEAD
 struct dsa_loop_vlan {
 	u16 members;
 	u16 untagged;
@@ -54,6 +59,8 @@ struct dsa_loop_priv {
 	struct dsa_loop_port ports[DSA_MAX_PORTS];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dsa_loop_pdata {
 	/* Must be first, such that dsa_register_switch() can access this
 	 * without gory pointer manipulations

@@ -34,6 +34,7 @@ static int hsc_i2c_recv(struct hsc_data *data)
 	msg.buf = data->buffer;
 
 	ret = i2c_transfer(client->adapter, &msg, 1);
+<<<<<<< HEAD
 	if (ret < 0)
 		return ret;
 
@@ -41,6 +42,10 @@ static int hsc_i2c_recv(struct hsc_data *data)
 		return -EIO;
 
 	return 0;
+=======
+
+	return (ret == 2) ? 0 : ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hsc_i2c_probe(struct i2c_client *client)

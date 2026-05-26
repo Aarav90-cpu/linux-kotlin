@@ -4,7 +4,11 @@
  *	and 2100 (KN01) systems equipped with parity error detection
  *	logic.
  *
+<<<<<<< HEAD
  *	Copyright (c) 2005, 2026  Maciej W. Rozycki
+=======
+ *	Copyright (c) 2005  Maciej W. Rozycki
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/init.h>
@@ -134,8 +138,13 @@ static int dec_kn01_be_backend(struct pt_regs *regs, int is_fixup, int invoker)
 		action = MIPS_BE_FIXUP;
 
 	if (action != MIPS_BE_FIXUP)
+<<<<<<< HEAD
 		pr_alert_ratelimited("Bus error %s: %s %s %s at %#010lx\n",
 				     kind, agent, cycle, event, address);
+=======
+		printk(KERN_ALERT "Bus error %s: %s %s %s at %#010lx\n",
+			kind, agent, cycle, event, address);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return action;
 }

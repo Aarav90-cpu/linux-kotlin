@@ -2831,15 +2831,23 @@ static ssize_t removable_show(struct device *dev, struct device_attribute *attr,
 }
 static DEVICE_ATTR_RO(removable);
 
+<<<<<<< HEAD
 int device_add_groups(struct device *dev,
 		      const struct attribute_group *const *groups)
+=======
+int device_add_groups(struct device *dev, const struct attribute_group **groups)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return sysfs_create_groups(&dev->kobj, groups);
 }
 EXPORT_SYMBOL_GPL(device_add_groups);
 
 void device_remove_groups(struct device *dev,
+<<<<<<< HEAD
 			  const struct attribute_group *const *groups)
+=======
+			  const struct attribute_group **groups)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	sysfs_remove_groups(&dev->kobj, groups);
 }

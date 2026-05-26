@@ -210,8 +210,12 @@ static inline void update_saved_ttbr0(struct task_struct *tsk,
 	if (mm == &init_mm)
 		ttbr = phys_to_ttbr(__pa_symbol(reserved_pg_dir));
 	else
+<<<<<<< HEAD
 		ttbr = phys_to_ttbr(virt_to_phys(mm->pgd)) |
 		       FIELD_PREP(TTBRx_EL1_ASID_MASK, ASID(mm));
+=======
+		ttbr = phys_to_ttbr(virt_to_phys(mm->pgd)) | ASID(mm) << 48;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WRITE_ONCE(task_thread_info(tsk)->ttbr0, ttbr);
 }

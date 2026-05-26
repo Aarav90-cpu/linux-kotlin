@@ -353,6 +353,7 @@ static void hdmi_std_setup_channel_mapping(struct hdac_chmap *chmap,
 	if (hdmi_channel_mapping[ca][1] == 0) {
 		int hdmi_slot = 0;
 		/* fill actual channel mappings in ALSA channel (i) order */
+<<<<<<< HEAD
 		for (i = 0; i < ch_alloc->channels && hdmi_slot < 8; i++) {
 			while (!ch_alloc->speakers[7 - hdmi_slot]) {
 				/* skip zero slots */
@@ -363,6 +364,15 @@ static void hdmi_std_setup_channel_mapping(struct hdac_chmap *chmap,
 			hdmi_channel_mapping[ca][i] = (i << 4) | hdmi_slot++;
 		}
 	out:
+=======
+		for (i = 0; i < ch_alloc->channels; i++) {
+			while (!WARN_ON(hdmi_slot >= 8) &&
+			       !ch_alloc->speakers[7 - hdmi_slot])
+				hdmi_slot++; /* skip zero slots */
+
+			hdmi_channel_mapping[ca][i] = (i << 4) | hdmi_slot++;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* fill the rest of the slots with ALSA channel 0xf */
 		for (hdmi_slot = 0; hdmi_slot < 8; hdmi_slot++)
 			if (!ch_alloc->speakers[7 - hdmi_slot])

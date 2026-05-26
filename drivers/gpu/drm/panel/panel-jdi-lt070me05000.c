@@ -48,6 +48,7 @@ static inline struct jdi_panel *to_jdi_panel(struct drm_panel *panel)
 static int jdi_panel_init(struct jdi_panel *jdi)
 {
 	struct mipi_dsi_device *dsi = jdi->dsi;
+<<<<<<< HEAD
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
 
 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
@@ -58,6 +59,36 @@ static int jdi_panel_init(struct jdi_panel *jdi)
 	mipi_dsi_dcs_set_pixel_format_multi(&dsi_ctx, MIPI_DCS_PIXEL_FMT_24BIT << 4);
 	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0, jdi->mode->hdisplay - 1);
 	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0, jdi->mode->vdisplay - 1);
+=======
+	struct device *dev = &jdi->dsi->dev;
+	int ret;
+
+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+
+	ret = mipi_dsi_dcs_soft_reset(dsi);
+	if (ret < 0)
+		return ret;
+
+	usleep_range(10000, 20000);
+
+	ret = mipi_dsi_dcs_set_pixel_format(dsi, MIPI_DCS_PIXEL_FMT_24BIT << 4);
+	if (ret < 0) {
+		dev_err(dev, "failed to set pixel format: %d\n", ret);
+		return ret;
+	}
+
+	ret = mipi_dsi_dcs_set_column_address(dsi, 0, jdi->mode->hdisplay - 1);
+	if (ret < 0) {
+		dev_err(dev, "failed to set column address: %d\n", ret);
+		return ret;
+	}
+
+	ret = mipi_dsi_dcs_set_page_address(dsi, 0, jdi->mode->vdisplay - 1);
+	if (ret < 0) {
+		dev_err(dev, "failed to set page address: %d\n", ret);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * BIT(5) BCTRL = 1 Backlight Control Block On, Brightness registers
@@ -65,6 +96,7 @@ static int jdi_panel_init(struct jdi_panel *jdi)
 	 * BIT(3) BL = 1    Backlight Control On
 	 * BIT(2) DD = 0    Display Dimming is Off
 	 */
+<<<<<<< HEAD
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x24);
 
 	/* CABC off */
@@ -83,11 +115,64 @@ static int jdi_panel_init(struct jdi_panel *jdi)
 	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xb0, 0x03);
 
 	return dsi_ctx.accum_err;
+=======
+	ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+				 (u8[]){ 0x24 }, 1);
+	if (ret < 0) {
+		dev_err(dev, "failed to write control display: %d\n", ret);
+		return ret;
+	}
+
+	/* CABC off */
+	ret = mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_POWER_SAVE,
+				 (u8[]){ 0x00 }, 1);
+	if (ret < 0) {
+		dev_err(dev, "failed to set cabc off: %d\n", ret);
+		return ret;
+	}
+
+	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+	if (ret < 0) {
+		dev_err(dev, "failed to set exit sleep mode: %d\n", ret);
+		return ret;
+	}
+
+	msleep(120);
+
+	ret = mipi_dsi_generic_write(dsi, (u8[]){0xB0, 0x00}, 2);
+	if (ret < 0) {
+		dev_err(dev, "failed to set mcap: %d\n", ret);
+		return ret;
+	}
+
+	mdelay(10);
+
+	/* Interface setting, video mode */
+	ret = mipi_dsi_generic_write(dsi, (u8[])
+				     {0xB3, 0x26, 0x08, 0x00, 0x20, 0x00}, 6);
+	if (ret < 0) {
+		dev_err(dev, "failed to set display interface setting: %d\n"
+			, ret);
+		return ret;
+	}
+
+	mdelay(20);
+
+	ret = mipi_dsi_generic_write(dsi, (u8[]){0xB0, 0x03}, 2);
+	if (ret < 0) {
+		dev_err(dev, "failed to set default values for mcap: %d\n"
+			, ret);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int jdi_panel_on(struct jdi_panel *jdi)
 {
 	struct mipi_dsi_device *dsi = jdi->dsi;
+<<<<<<< HEAD
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
 
 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
@@ -95,11 +180,24 @@ static int jdi_panel_on(struct jdi_panel *jdi)
 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
 
 	return dsi_ctx.accum_err;
+=======
+	struct device *dev = &jdi->dsi->dev;
+	int ret;
+
+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+
+	ret = mipi_dsi_dcs_set_display_on(dsi);
+	if (ret < 0)
+		dev_err(dev, "failed to set display on: %d\n", ret);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void jdi_panel_off(struct jdi_panel *jdi)
 {
 	struct mipi_dsi_device *dsi = jdi->dsi;
+<<<<<<< HEAD
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
 
 	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
@@ -108,6 +206,20 @@ static void jdi_panel_off(struct jdi_panel *jdi)
 	/* Reset error to continue power-down even if display off failed */
 	dsi_ctx.accum_err = 0;
 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+=======
+	struct device *dev = &jdi->dsi->dev;
+	int ret;
+
+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+
+	ret = mipi_dsi_dcs_set_display_off(dsi);
+	if (ret < 0)
+		dev_err(dev, "failed to set display off: %d\n", ret);
+
+	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
+	if (ret < 0)
+		dev_err(dev, "failed to enter sleep mode: %d\n", ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	msleep(100);
 }

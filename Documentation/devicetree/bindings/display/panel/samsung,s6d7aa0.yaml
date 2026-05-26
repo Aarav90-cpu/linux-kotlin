@@ -44,8 +44,11 @@ properties:
   vmipi-supply:
     description: VMIPI supply, usually 1.8v.
 
+<<<<<<< HEAD
   port: true
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -67,12 +70,15 @@ examples:
             power-supply = <&display_3v3_supply>;
             reset-gpios = <&gpf0 4 GPIO_ACTIVE_LOW>;
             backlight = <&backlight>;
+<<<<<<< HEAD
 
             port {
                 panel_in: endpoint {
                     remote-endpoint = <&mdss_dsi0_out>;
                 };
             };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
     };
 

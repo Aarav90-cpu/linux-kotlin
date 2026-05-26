@@ -21,14 +21,24 @@ static void wfx_rx_handle_ba(struct wfx_vif *wvif, struct ieee80211_mgmt *mgmt)
 	if (wfx_api_older_than(wvif->wdev, 3, 6))
 		return;
 
+<<<<<<< HEAD
 	switch (mgmt->u.action.action_code) {
 	case WLAN_ACTION_ADDBA_REQ:
 		params = le16_to_cpu(mgmt->u.action.addba_req.capab);
+=======
+	switch (mgmt->u.action.u.addba_req.action_code) {
+	case WLAN_ACTION_ADDBA_REQ:
+		params = le16_to_cpu(mgmt->u.action.u.addba_req.capab);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tid = (params & IEEE80211_ADDBA_PARAM_TID_MASK) >> 2;
 		ieee80211_start_rx_ba_session_offl(vif, mgmt->sa, tid);
 		break;
 	case WLAN_ACTION_DELBA:
+<<<<<<< HEAD
 		params = le16_to_cpu(mgmt->u.action.delba.params);
+=======
+		params = le16_to_cpu(mgmt->u.action.u.delba.params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tid = (params &  IEEE80211_DELBA_PARAM_TID_MASK) >> 12;
 		ieee80211_stop_rx_ba_session_offl(vif, mgmt->sa, tid);
 		break;
@@ -80,7 +90,11 @@ void wfx_rx_cb(struct wfx_vif *wvif, const struct wfx_hif_ind_rx *arg, struct sk
 	 */
 	if (ieee80211_is_action(frame->frame_control) &&
 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+<<<<<<< HEAD
 	    skb->len > IEEE80211_MIN_ACTION_SIZE(action_code)) {
+=======
+	    skb->len > IEEE80211_MIN_ACTION_SIZE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wfx_rx_handle_ba(wvif, mgmt);
 		goto drop;
 	}

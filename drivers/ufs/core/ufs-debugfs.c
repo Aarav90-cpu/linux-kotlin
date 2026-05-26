@@ -209,6 +209,7 @@ static const struct ufs_debugfs_attr ufs_attrs[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 static int ufs_tx_eq_params_show(struct seq_file *s, void *data)
 {
 	const char *file_name = s->file->f_path.dentry->d_name.name;
@@ -468,6 +469,8 @@ static const struct ufs_debugfs_attr ufs_tx_eqtr_attrs[] = {
 	{ }
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void ufs_debugfs_hba_init(struct ufs_hba *hba)
 {
 	const struct ufs_debugfs_attr *attr;
@@ -489,6 +492,7 @@ void ufs_debugfs_hba_init(struct ufs_hba *hba)
 			    hba, &ee_usr_mask_fops);
 	debugfs_create_u32("exception_event_rate_limit_ms", 0600, hba->debugfs_root,
 			   &hba->debugfs_ee_rate_limit_ms);
+<<<<<<< HEAD
 
 	if (!(hba->caps & UFSHCD_CAP_TX_EQUALIZATION))
 		return;
@@ -520,6 +524,8 @@ void ufs_debugfs_hba_init(struct ufs_hba *hba)
 					    (void *)(uintptr_t)gear,
 					    attr->fops);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void ufs_debugfs_hba_exit(struct ufs_hba *hba)

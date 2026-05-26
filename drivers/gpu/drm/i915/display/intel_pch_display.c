@@ -6,6 +6,10 @@
 #include <drm/drm_print.h>
 
 #include "g4x_dp.h"
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_crt.h"
 #include "intel_crt_regs.h"
 #include "intel_de.h"

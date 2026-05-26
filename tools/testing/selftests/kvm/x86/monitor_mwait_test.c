@@ -67,7 +67,11 @@ static void guest_monitor_wait(void *arg)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	u64 disabled_quirks;
+=======
+	uint64_t disabled_quirks;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	struct ucall uc;

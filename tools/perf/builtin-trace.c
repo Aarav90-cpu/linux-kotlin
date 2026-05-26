@@ -21,6 +21,10 @@
 #include <bpf/libbpf.h>
 #include <bpf/btf.h>
 #endif
+<<<<<<< HEAD
+=======
+#include "util/bpf_map.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "util/rlimit.h"
 #include "builtin.h"
 #include "util/cgroup.h"
@@ -1561,9 +1565,13 @@ static bool syscall_id_equal(long key1, long key2, void *ctx __maybe_unused)
 
 static struct hashmap *alloc_syscall_stats(void)
 {
+<<<<<<< HEAD
 	struct hashmap *result = hashmap__new(syscall_id_hash, syscall_id_equal, NULL);
 
 	return IS_ERR(result) ? NULL : result;
+=======
+	return hashmap__new(syscall_id_hash, syscall_id_equal, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void delete_syscall_stats(struct hashmap *syscall_stats)
@@ -1571,7 +1579,11 @@ static void delete_syscall_stats(struct hashmap *syscall_stats)
 	struct hashmap_entry *pos;
 	size_t bkt;
 
+<<<<<<< HEAD
 	if (!syscall_stats)
+=======
+	if (syscall_stats == NULL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	hashmap__for_each_entry(syscall_stats, pos, bkt)
@@ -1587,7 +1599,11 @@ static struct thread_trace *thread_trace__new(struct trace *trace)
 		ttrace->files.max = -1;
 		if (trace->summary) {
 			ttrace->syscall_stats = alloc_syscall_stats();
+<<<<<<< HEAD
 			if (!ttrace->syscall_stats)
+=======
+			if (IS_ERR(ttrace->syscall_stats))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				zfree(&ttrace);
 		}
 	}
@@ -2001,6 +2017,7 @@ static int trace__symbols_init(struct trace *trace, int argc, const char **argv,
 	if (err < 0)
 		goto out;
 
+<<<<<<< HEAD
 	if (trace->summary_only && trace->summary_mode != SUMMARY__BY_THREAD)
 		goto out;
 
@@ -2008,6 +2025,11 @@ static int trace__symbols_init(struct trace *trace, int argc, const char **argv,
 					    evlist->core.threads, trace__tool_process,
 					    /*needs_mmap=*/callchain_param.enabled &&
 							   !trace->summary_only,
+=======
+	err = __machine__synthesize_threads(trace->host, &trace->tool, &trace->opts.target,
+					    evlist->core.threads, trace__tool_process,
+					    /*needs_mmap=*/callchain_param.enabled,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    /*mmap_data=*/false,
 					    /*nr_threads_synthesize=*/1);
 out:
@@ -2266,7 +2288,13 @@ static int trace__validate_ev_qualifier(struct trace *trace)
 	struct str_node *pos;
 	size_t nr_used = 0, nr_allocated = strlist__nr_entries(trace->ev_qualifier);
 
+<<<<<<< HEAD
 	trace->ev_qualifier_ids.entries = calloc(nr_allocated, sizeof(trace->ev_qualifier_ids.entries[0]));
+=======
+	trace->ev_qualifier_ids.entries = malloc(nr_allocated *
+						 sizeof(trace->ev_qualifier_ids.entries[0]));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (trace->ev_qualifier_ids.entries == NULL) {
 		fputs("Error:\tNot enough memory for allocating events qualifier ids\n",
 		       trace->output);
@@ -2955,7 +2983,11 @@ static int trace__sys_exit(struct trace *trace, struct evsel *evsel,
 		++trace->stats.vfs_getname;
 	}
 
+<<<<<<< HEAD
 	if (ttrace->entry_time && sample->time >= ttrace->entry_time) {
+=======
+	if (ttrace->entry_time) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		duration = sample->time - ttrace->entry_time;
 		if (trace__filter_duration(trace, duration))
 			goto out;
@@ -4464,7 +4496,11 @@ create_maps:
 
 	if (trace->summary_mode == SUMMARY__BY_TOTAL && !trace->summary_bpf) {
 		trace->syscall_stats = alloc_syscall_stats();
+<<<<<<< HEAD
 		if (!trace->syscall_stats)
+=======
+		if (IS_ERR(trace->syscall_stats))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_delete_evlist;
 	}
 
@@ -4771,7 +4807,11 @@ static int trace__replay(struct trace *trace)
 
 	if (trace->summary_mode == SUMMARY__BY_TOTAL) {
 		trace->syscall_stats = alloc_syscall_stats();
+<<<<<<< HEAD
 		if (!trace->syscall_stats)
+=======
+		if (IS_ERR(trace->syscall_stats))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out;
 	}
 
@@ -5299,6 +5339,7 @@ static int trace__parse_summary_mode(const struct option *opt, const char *str,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int trace_parse_callchain_opt(const struct option *opt,
 				     const char *arg,
 				     int unset)
@@ -5306,6 +5347,8 @@ static int trace_parse_callchain_opt(const struct option *opt,
 	return record_opts__parse_callchain(opt->value, &callchain_param, arg, unset);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int trace__config(const char *var, const char *value, void *arg)
 {
 	struct trace *trace = arg;
@@ -5453,7 +5496,11 @@ int cmd_trace(int argc, const char **argv)
 	OPT_BOOLEAN('f', "force", &trace.force, "don't complain, do it"),
 	OPT_CALLBACK(0, "call-graph", &trace.opts,
 		     "record_mode[,record_size]", record_callchain_help,
+<<<<<<< HEAD
 		     &trace_parse_callchain_opt),
+=======
+		     &record_parse_callchain_opt),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OPT_BOOLEAN(0, "libtraceevent_print", &trace.libtraceevent_print,
 		    "Use libtraceevent to print the tracepoint arguments."),
 	OPT_BOOLEAN(0, "kernel-syscall-graph", &trace.kernel_syscallchains,

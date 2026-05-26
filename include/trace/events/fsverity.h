@@ -16,7 +16,11 @@ TRACE_EVENT(fsverity_enable,
 		 const struct merkle_tree_params *params),
 	TP_ARGS(inode, params),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(u64, data_size)
 		__field(u64, tree_size)
 		__field(unsigned int, merkle_block)
@@ -29,8 +33,13 @@ TRACE_EVENT(fsverity_enable,
 		__entry->merkle_block = params->block_size;
 		__entry->num_levels = params->num_levels;
 	),
+<<<<<<< HEAD
 	TP_printk("ino %llu data_size %llu tree_size %llu merkle_block %u levels %u",
 		__entry->ino,
+=======
+	TP_printk("ino %lu data_size %llu tree_size %llu merkle_block %u levels %u",
+		(unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->data_size,
 		__entry->tree_size,
 		__entry->merkle_block,
@@ -42,7 +51,11 @@ TRACE_EVENT(fsverity_tree_done,
 		 const struct merkle_tree_params *params),
 	TP_ARGS(inode, vi, params),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(u64, data_size)
 		__field(u64, tree_size)
 		__field(unsigned int, merkle_block)
@@ -59,8 +72,13 @@ TRACE_EVENT(fsverity_tree_done,
 		memcpy(__get_dynamic_array(root_hash), vi->root_hash, __get_dynamic_array_len(root_hash));
 		memcpy(__get_dynamic_array(file_digest), vi->file_digest, __get_dynamic_array_len(file_digest));
 	),
+<<<<<<< HEAD
 	TP_printk("ino %llu data_size %llu tree_size %lld merkle_block %u levels %u root_hash %s digest %s",
 		__entry->ino,
+=======
+	TP_printk("ino %lu data_size %llu tree_size %lld merkle_block %u levels %u root_hash %s digest %s",
+		(unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->data_size,
 		__entry->tree_size,
 		__entry->merkle_block,
@@ -75,7 +93,11 @@ TRACE_EVENT(fsverity_verify_data_block,
 		 u64 data_pos),
 	TP_ARGS(inode, params, data_pos),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(u64, data_pos)
 		__field(unsigned int, merkle_block)
 	),
@@ -84,8 +106,13 @@ TRACE_EVENT(fsverity_verify_data_block,
 		__entry->data_pos = data_pos;
 		__entry->merkle_block = params->block_size;
 	),
+<<<<<<< HEAD
 	TP_printk("ino %llu data_pos %llu merkle_block %u",
 		__entry->ino,
+=======
+	TP_printk("ino %lu data_pos %llu merkle_block %u",
+		(unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->data_pos,
 		__entry->merkle_block)
 );
@@ -96,7 +123,11 @@ TRACE_EVENT(fsverity_merkle_hit,
 		 unsigned int hidx),
 	TP_ARGS(inode, data_pos, hblock_idx, level, hidx),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(u64, data_pos)
 		__field(unsigned long, hblock_idx)
 		__field(unsigned int, level)
@@ -109,8 +140,13 @@ TRACE_EVENT(fsverity_merkle_hit,
 		__entry->level = level;
 		__entry->hidx = hidx;
 	),
+<<<<<<< HEAD
 	TP_printk("ino %llu data_pos %llu hblock_idx %lu level %u hidx %u",
 		__entry->ino,
+=======
+	TP_printk("ino %lu data_pos %llu hblock_idx %lu level %u hidx %u",
+		(unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->data_pos,
 		__entry->hblock_idx,
 		__entry->level,
@@ -122,7 +158,11 @@ TRACE_EVENT(fsverity_verify_merkle_block,
 		 unsigned int level, unsigned int hidx),
 	TP_ARGS(inode, hblock_idx, level, hidx),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(unsigned long, hblock_idx)
 		__field(unsigned int, level)
 		__field(unsigned int, hidx)
@@ -133,8 +173,13 @@ TRACE_EVENT(fsverity_verify_merkle_block,
 		__entry->level = level;
 		__entry->hidx = hidx;
 	),
+<<<<<<< HEAD
 	TP_printk("ino %llu hblock_idx %lu level %u hidx %u",
 		__entry->ino,
+=======
+	TP_printk("ino %lu hblock_idx %lu level %u hidx %u",
+		(unsigned long) __entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->hblock_idx,
 		__entry->level,
 		__entry->hidx)

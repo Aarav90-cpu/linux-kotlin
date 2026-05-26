@@ -2,6 +2,10 @@
 config SCSI_BNX2X_FCOE
 	tristate "QLogic FCoE offload support"
 	depends on PCI
+<<<<<<< HEAD
+=======
+	depends on (IPV6 || IPV6=n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on LIBFC
 	depends on LIBFCOE
 	select NETDEVICES

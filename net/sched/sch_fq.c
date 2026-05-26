@@ -539,6 +539,11 @@ static bool fq_packet_beyond_horizon(const struct sk_buff *skb,
 	return unlikely((s64)skb->tstamp > (s64)(now + q->horizon));
 }
 
+<<<<<<< HEAD
+=======
+#define FQDR(reason) SKB_DROP_REASON_FQ_##reason
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		      struct sk_buff **to_free)
 {
@@ -550,7 +555,12 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 	band = fq_prio2band(q->prio2band, skb->priority & TC_PRIO_MAX);
 	if (unlikely(q->band_pkt_count[band] >= sch->limit)) {
 		q->stat_band_drops[band]++;
+<<<<<<< HEAD
 		return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_BAND_LIMIT);
+=======
+		return qdisc_drop_reason(skb, sch, to_free,
+					 FQDR(BAND_LIMIT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	now = ktime_get_ns();
@@ -562,7 +572,11 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 			if (q->horizon_drop) {
 				q->stat_horizon_drops++;
 				return qdisc_drop_reason(skb, sch, to_free,
+<<<<<<< HEAD
 							 QDISC_DROP_HORIZON_LIMIT);
+=======
+							 FQDR(HORIZON_LIMIT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			q->stat_horizon_caps++;
 			skb->tstamp = now + q->horizon;
@@ -576,7 +590,11 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		if (unlikely(f->qlen >= q->flow_plimit)) {
 			q->stat_flows_plimit++;
 			return qdisc_drop_reason(skb, sch, to_free,
+<<<<<<< HEAD
 						 QDISC_DROP_FLOW_LIMIT);
+=======
+						 FQDR(FLOW_LIMIT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (fq_flow_is_detached(f)) {
@@ -601,6 +619,10 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 
 	return NET_XMIT_SUCCESS;
 }
+<<<<<<< HEAD
+=======
+#undef FQDR
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void fq_check_throttled(struct fq_sched_data *q, u64 now)
 {

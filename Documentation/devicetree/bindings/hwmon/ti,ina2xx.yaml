@@ -29,7 +29,10 @@ properties:
       - ti,ina230
       - ti,ina231
       - ti,ina233
+<<<<<<< HEAD
       - ti,ina234
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - ti,ina237
       - ti,ina238
       - ti,ina260
@@ -114,7 +117,10 @@ allOf:
               - ti,ina228
               - ti,ina230
               - ti,ina231
+<<<<<<< HEAD
               - ti,ina234
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - ti,ina237
               - ti,ina238
               - ti,ina260
@@ -136,7 +142,10 @@ allOf:
               - ti,ina226
               - ti,ina230
               - ti,ina231
+<<<<<<< HEAD
               - ti,ina234
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - ti,ina260
               - ti,ina700
               - ti,ina780

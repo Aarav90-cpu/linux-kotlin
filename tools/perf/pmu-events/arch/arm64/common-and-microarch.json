@@ -1513,6 +1513,7 @@
         "BriefDescription": "Level 2 data cache refill, software preload"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x8150",
         "EventName": "L3D_CACHE_RW",
         "BriefDescription": "Level 3 data cache demand access."
@@ -1523,16 +1524,21 @@
         "BriefDescription": "Level 3 data cache software prefetch"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8152",
         "EventName": "L3D_CACHE_MISS",
         "BriefDescription": "Level 3 data cache demand access miss"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x8153",
         "EventName": "L3D_CACHE_REFILL_PRFM",
         "BriefDescription": "Level 3 data cache refill, software prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8154",
         "EventName": "L1D_CACHE_HWPRF",
         "BriefDescription": "Level 1 data cache hardware prefetch."
@@ -1543,11 +1549,14 @@
         "BriefDescription": "Level 2 data cache hardware prefetch."
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x8156",
         "EventName": "L3D_CACHE_HWPRF",
         "BriefDescription": "Level 3 data cache hardware prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8158",
         "EventName": "STALL_FRONTEND_MEMBOUND",
         "BriefDescription": "Frontend stall cycles, memory bound."
@@ -1703,11 +1712,14 @@
         "BriefDescription": "Level 2 data cache refill, hardware prefetch."
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x81BE",
         "EventName": "L3D_CACHE_REFILL_HWPRF",
         "BriefDescription": "Level 3 data cache refill, hardware prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x81C0",
         "EventName": "L1I_CACHE_HIT_RD",
         "BriefDescription": "Level 1 instruction cache demand fetch hit."
@@ -1738,16 +1750,20 @@
         "BriefDescription": "Level 1 instruction cache demand fetch first hit, fetched by software preload"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x81DC",
         "EventName": "L1D_CACHE_HIT_RW_FPRFM",
         "BriefDescription": "Level 1 data cache demand access first hit, fetched by software prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x81E0",
         "EventName": "L1I_CACHE_HIT_RD_FHWPRF",
         "BriefDescription": "Level 1 instruction cache demand fetch first hit, fetched by hardware prefetcher"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x81EC",
         "EventName": "L1D_CACHE_HIT_RW_FHWPRF",
         "BriefDescription": "Level 1 data cache demand access first hit, fetched by hardware prefetcher."
@@ -1763,6 +1779,8 @@
         "BriefDescription": "Level 1 data cache demand access first hit, fetched by prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8200",
         "EventName": "L1I_CACHE_HIT",
         "BriefDescription": "Level 1 instruction cache hit."
@@ -1813,16 +1831,20 @@
         "BriefDescription": "Level 1 instruction cache demand fetch line-fill buffer first hit, recently fetched by software preload"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x825C",
         "EventName": "L1D_LFB_HIT_RW_FPRFM",
         "BriefDescription": "Level 1 data cache demand access line-fill buffer first hit, recently fetched by software prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8260",
         "EventName": "L1I_LFB_HIT_RD_FHWPRF",
         "BriefDescription": "Level 1 instruction cache demand fetch line-fill buffer first hit, recently fetched by hardware prefetcher"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x826C",
         "EventName": "L1D_LFB_HIT_RW_FHWPRF",
         "BriefDescription": "Level 1 data cache demand access line-fill buffer first hit, recently fetched by hardware prefetcher."
@@ -1833,6 +1855,8 @@
         "BriefDescription": "Level 1 data cache demand access line-fill buffer first hit, recently fetched by prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8280",
         "EventName": "L1I_CACHE_PRF",
         "BriefDescription": "Level 1 instruction cache, preload or prefetch hit."
@@ -1868,11 +1892,14 @@
         "BriefDescription": "Last level cache refill"
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x828E",
         "EventName": "L3D_CACHE_REFILL_PRF",
         "BriefDescription": "Level 3 data cache refill, prefetch."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8320",
         "EventName": "L1D_CACHE_REFILL_PERCYC",
         "BriefDescription": "Level 1 data or unified cache refills in progress."
@@ -1938,6 +1965,7 @@
         "BriefDescription": "Floating-point operation speculatively_executed, smallest type is 8-bit floating-point."
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x8480",
         "EventName": "FP_SP_FIXED_MIN_OPS_SPEC",
         "BriefDescription": "Non-scalable element arithmetic operations speculatively executed, smallest type is single-precision floating-point."
@@ -1948,6 +1976,8 @@
         "BriefDescription": "Non-scalable element arithmetic operations speculatively executed, smallest type is half-precision floating-point."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x8483",
         "EventName": "FP_BF16_FIXED_MIN_OPS_SPEC",
         "BriefDescription": "Non-scalable element arithmetic operations speculatively executed, smallest type is BFloat16 floating-point."
@@ -1958,6 +1988,7 @@
         "BriefDescription": "Non-scalable element arithmetic operations speculatively executed, smallest type is 8-bit floating-point."
     },
     {
+<<<<<<< HEAD
         "EventCode": "0x8488",
         "EventName": "FP_SP_SCALE_MIN_OPS_SPEC",
         "BriefDescription": "Scalable element arithmetic operations speculatively executed, smallest type is single-precision floating-point."
@@ -1968,6 +1999,8 @@
         "BriefDescription": "Scalable element arithmetic operations speculatively executed, smallest type is half-precision floating-point."
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "EventCode": "0x848B",
         "EventName": "FP_BF16_SCALE_MIN_OPS_SPEC",
         "BriefDescription": "Scalable element arithmetic operations speculatively executed, smallest type is BFloat16 floating-point."

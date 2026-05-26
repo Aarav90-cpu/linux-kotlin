@@ -300,6 +300,10 @@ DEFINE_PER_CPU(unsigned int, tcp_orphan_count);
 EXPORT_PER_CPU_SYMBOL_GPL(tcp_orphan_count);
 
 long sysctl_tcp_mem[3] __read_mostly;
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(sysctl_tcp_mem);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DEFINE_PER_CPU(int, tcp_memory_per_cpu_fw_alloc);
 EXPORT_PER_CPU_SYMBOL_GPL(tcp_memory_per_cpu_fw_alloc);
@@ -313,6 +317,10 @@ EXPORT_SYMBOL(tcp_have_smc);
  * Current number of TCP sockets.
  */
 struct percpu_counter tcp_sockets_allocated ____cacheline_aligned_in_smp;
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_sockets_allocated);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Pressure flag: try to collapse.
@@ -336,6 +344,10 @@ void tcp_enter_memory_pressure(struct sock *sk)
 	if (!cmpxchg(&tcp_memory_pressure, 0, val))
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMEMORYPRESSURES);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_enter_memory_pressure);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_leave_memory_pressure(struct sock *sk)
 {
@@ -348,6 +360,10 @@ void tcp_leave_memory_pressure(struct sock *sk)
 		NET_ADD_STATS(sock_net(sk), LINUX_MIB_TCPMEMORYPRESSURESCHRONO,
 			      jiffies_to_msecs(jiffies - val));
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_leave_memory_pressure);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Convert seconds to retransmits based on initial and max timeout */
 static u8 secs_to_retrans(int seconds, int timeout, int rto_max)
@@ -411,6 +427,10 @@ void tcp_md5_destruct_sock(struct sock *sk)
 		static_branch_slow_dec_deferred(&tcp_md5_needed);
 	}
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_md5_destruct_sock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /* Address-family independent initialization for a tcp_sock.
@@ -478,6 +498,10 @@ void tcp_init_sock(struct sock *sk)
 	sk_sockets_allocated_inc(sk);
 	xa_init_flags(&sk->sk_user_frags, XA_FLAGS_ALLOC1);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_init_sock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tcp_tx_timestamp(struct sock *sk, struct sockcm_cookie *sockc)
 {
@@ -682,6 +706,10 @@ int tcp_ioctl(struct sock *sk, int cmd, int *karg)
 	*karg = answ;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_ioctl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_mark_push(struct tcp_sock *tp, struct sk_buff *skb)
 {
@@ -885,7 +913,13 @@ ssize_t tcp_splice_read(struct socket *sock, loff_t *ppos,
 		release_sock(sk);
 		lock_sock(sk);
 
+<<<<<<< HEAD
 		if (tcp_recv_should_stop(sk))
+=======
+		if (sk->sk_err || sk->sk_state == TCP_CLOSE ||
+		    (sk->sk_shutdown & RCV_SHUTDOWN) ||
+		    signal_pending(current))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 
@@ -896,6 +930,10 @@ ssize_t tcp_splice_read(struct socket *sock, loff_t *ppos,
 
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_splice_read);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* We allow to exceed memory limits for FIN packets to expedite
  * connection tear down and (memory) recovery.
@@ -1470,6 +1508,10 @@ void tcp_splice_eof(struct socket *sock)
 	tcp_push(sk, 0, mss_now, tp->nonagle, size_goal);
 	release_sock(sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_splice_eof);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *	Handle reading urgent data. BSD has very simple semantics for
@@ -1781,6 +1823,10 @@ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 	}
 	return copied;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_read_skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_read_done(struct sock *sk, size_t len)
 {
@@ -1825,6 +1871,10 @@ int tcp_peek_len(struct socket *sock)
 {
 	return tcp_inq(sock->sk);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_peek_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Make sure sk_rcvbuf is big enough to satisfy SO_RCVLOWAT hint */
 int tcp_set_rcvlowat(struct sock *sk, int val)
@@ -1854,10 +1904,27 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
 	}
 	return 0;
 }
+<<<<<<< HEAD
 
 void tcp_set_rcvbuf(struct sock *sk, int val)
 {
 	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
+=======
+EXPORT_IPV6_MOD(tcp_set_rcvlowat);
+
+void tcp_update_recv_tstamps(struct sk_buff *skb,
+			     struct scm_timestamping_internal *tss)
+{
+	if (skb->tstamp)
+		tss->ts[0] = ktime_to_timespec64(skb->tstamp);
+	else
+		tss->ts[0] = (struct timespec64) {0};
+
+	if (skb_hwtstamps(skb)->hwtstamp)
+		tss->ts[2] = ktime_to_timespec64(skb_hwtstamps(skb)->hwtstamp);
+	else
+		tss->ts[2] = (struct timespec64) {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_MMU
@@ -1877,6 +1944,10 @@ int tcp_mmap(struct file *file, struct socket *sock,
 	vma->vm_ops = &tcp_vm_ops;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_mmap);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
 				       u32 *offset_frag)
@@ -2078,7 +2149,11 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
 		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
 				*length + /* Mapped or pending */
 				(pages_remaining * PAGE_SIZE); /* Failed map. */
+<<<<<<< HEAD
 		zap_vma_range(vma, *address, maybe_zap_len);
+=======
+		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = 0;
 	}
 
@@ -2086,7 +2161,11 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
 		unsigned long leftover_pages = pages_remaining;
 		int bytes_mapped;
 
+<<<<<<< HEAD
 		/* We called zap_vma_range, try to reinsert. */
+=======
+		/* We called zap_page_range_single, try to reinsert. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = vm_insert_pages(vma, *address,
 				      pending_pages,
 				      &pages_remaining);
@@ -2243,7 +2322,12 @@ static int tcp_zerocopy_receive(struct sock *sk,
 	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
 	if (total_bytes_to_map) {
 		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
+<<<<<<< HEAD
 			zap_vma_range(vma, address, total_bytes_to_map);
+=======
+			zap_page_range_single(vma, address, total_bytes_to_map,
+					      NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		zc->length = total_bytes_to_map;
 		zc->recv_skip_hint = 0;
 	} else {
@@ -2349,6 +2433,7 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 {
 	int new_tstamp = sock_flag(sk, SOCK_TSTAMP_NEW);
 	u32 tsflags = READ_ONCE(sk->sk_tsflags);
+<<<<<<< HEAD
 
 	if (tss->ts[0]) {
 		if (sock_flag(sk, SOCK_RCVTSTAMP)) {
@@ -2359,13 +2444,29 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 					struct __kernel_timespec kts = {
 						.tv_sec = tv.tv_sec,
 						.tv_nsec = tv.tv_nsec,
+=======
+	bool has_timestamping = false;
+
+	if (tss->ts[0].tv_sec || tss->ts[0].tv_nsec) {
+		if (sock_flag(sk, SOCK_RCVTSTAMP)) {
+			if (sock_flag(sk, SOCK_RCVTSTAMPNS)) {
+				if (new_tstamp) {
+					struct __kernel_timespec kts = {
+						.tv_sec = tss->ts[0].tv_sec,
+						.tv_nsec = tss->ts[0].tv_nsec,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 					put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
 						 sizeof(kts), &kts);
 				} else {
 					struct __kernel_old_timespec ts_old = {
+<<<<<<< HEAD
 						.tv_sec = tv.tv_sec,
 						.tv_nsec = tv.tv_nsec,
+=======
+						.tv_sec = tss->ts[0].tv_sec,
+						.tv_nsec = tss->ts[0].tv_nsec,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 					put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMPNS_OLD,
 						 sizeof(ts_old), &ts_old);
@@ -2373,22 +2474,37 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 			} else {
 				if (new_tstamp) {
 					struct __kernel_sock_timeval stv = {
+<<<<<<< HEAD
 						.tv_sec = tv.tv_sec,
 						.tv_usec = tv.tv_nsec / 1000,
+=======
+						.tv_sec = tss->ts[0].tv_sec,
+						.tv_usec = tss->ts[0].tv_nsec / 1000,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					};
 					put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMP_NEW,
 						 sizeof(stv), &stv);
 				} else {
+<<<<<<< HEAD
 					struct __kernel_old_timeval otv = {
 						.tv_sec = tv.tv_sec,
 						.tv_usec = tv.tv_nsec / 1000,
 					};
 					put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMP_OLD,
 						 sizeof(otv), &otv);
+=======
+					struct __kernel_old_timeval tv = {
+						.tv_sec = tss->ts[0].tv_sec,
+						.tv_usec = tss->ts[0].tv_nsec / 1000,
+					};
+					put_cmsg(msg, SOL_SOCKET, SO_TIMESTAMP_OLD,
+						 sizeof(tv), &tv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				}
 			}
 		}
 
+<<<<<<< HEAD
 		if (!(tsflags & SOF_TIMESTAMPING_SOFTWARE &&
 		    (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
 		     !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))))
@@ -2404,6 +2520,27 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 
 	if (tss->ts[0] | tss->ts[2]) {
 		tss->ts[1] = 0;
+=======
+		if (tsflags & SOF_TIMESTAMPING_SOFTWARE &&
+		    (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
+		     !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER)))
+			has_timestamping = true;
+		else
+			tss->ts[0] = (struct timespec64) {0};
+	}
+
+	if (tss->ts[2].tv_sec || tss->ts[2].tv_nsec) {
+		if (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE &&
+		    (tsflags & SOF_TIMESTAMPING_RX_HARDWARE ||
+		     !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER)))
+			has_timestamping = true;
+		else
+			tss->ts[2] = (struct timespec64) {0};
+	}
+
+	if (has_timestamping) {
+		tss->ts[1] = (struct timespec64) {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sock_flag(sk, SOCK_TSTAMP_NEW))
 			put_cmsg_scm_timestamping64(msg, tss);
 		else
@@ -2754,7 +2891,14 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
 
 		if (copied) {
 			if (!timeo ||
+<<<<<<< HEAD
 			    tcp_recv_should_stop(sk))
+=======
+			    sk->sk_err ||
+			    sk->sk_state == TCP_CLOSE ||
+			    (sk->sk_shutdown & RCV_SHUTDOWN) ||
+			    signal_pending(current))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				break;
 		} else {
 			if (sock_flag(sk, SOCK_DONE))
@@ -2928,13 +3072,22 @@ recv_sndq:
 	goto out;
 }
 
+<<<<<<< HEAD
 int tcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
+=======
+int tcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
+		int *addr_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int cmsg_flags = 0, ret;
 	struct scm_timestamping_internal tss;
 
 	if (unlikely(flags & MSG_ERRQUEUE))
+<<<<<<< HEAD
 		return inet_recv_error(sk, msg, len);
+=======
+		return inet_recv_error(sk, msg, len, addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sk_can_busy_loop(sk) &&
 	    skb_queue_empty_lockless(&sk->sk_receive_queue) &&
@@ -2957,6 +3110,10 @@ int tcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags)
 	}
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_recvmsg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_set_state(struct sock *sk, int state)
 {
@@ -3086,6 +3243,10 @@ void tcp_shutdown(struct sock *sk, int how)
 			tcp_send_fin(sk);
 	}
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_shutdown);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int tcp_orphan_count_sum(void)
 {
@@ -3421,7 +3582,11 @@ int tcp_disconnect(struct sock *sk, int flags)
 	icsk->icsk_rto = TCP_TIMEOUT_INIT;
 	WRITE_ONCE(icsk->icsk_rto_min, TCP_RTO_MIN);
 	WRITE_ONCE(icsk->icsk_delack_max, TCP_DELACK_MAX);
+<<<<<<< HEAD
 	WRITE_ONCE(tp->snd_ssthresh, TCP_INFINITE_SSTHRESH);
+=======
+	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcp_snd_cwnd_set(tp, TCP_INIT_CWND);
 	tp->snd_cwnd_cnt = 0;
 	tp->is_cwnd_limited = 0;
@@ -3485,6 +3650,10 @@ int tcp_disconnect(struct sock *sk, int flags)
 	tp->rx_opt.dsack = 0;
 	tp->rx_opt.num_sacks = 0;
 	tp->rcv_ooopack = 0;
+<<<<<<< HEAD
+=======
+	tp->fast_ack_mode = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 	/* Clean up fastopen related fields */
@@ -3542,7 +3711,10 @@ static int tcp_repair_set_window(struct tcp_sock *tp, sockptr_t optbuf, int len)
 
 	tp->rcv_wnd	= opt.rcv_wnd;
 	tp->rcv_wup	= opt.rcv_wup;
+<<<<<<< HEAD
 	tp->rcv_mwnd_seq = opt.rcv_wup + opt.rcv_wnd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3598,6 +3770,10 @@ static int tcp_repair_options_est(struct sock *sk, sockptr_t optbuf,
 }
 
 DEFINE_STATIC_KEY_FALSE(tcp_tx_delay_enabled);
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_tx_delay_enabled);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tcp_enable_tx_delay(struct sock *sk, int val)
 {
@@ -3619,8 +3795,12 @@ static void tcp_enable_tx_delay(struct sock *sk, int val)
 	if (delta && sk->sk_state == TCP_ESTABLISHED) {
 		s64 srtt = (s64)tp->srtt_us + delta;
 
+<<<<<<< HEAD
 		WRITE_ONCE(tp->srtt_us,
 			   clamp_t(s64, srtt, 1, ~0U));
+=======
+		tp->srtt_us = clamp_t(s64, srtt, 1, ~0U);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Note: does not deal with non zero icsk_backoff */
 		tcp_set_rto(sk);
@@ -4183,11 +4363,16 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
 								optval, optlen);
 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_setsockopt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
 				      struct tcp_info *info)
 {
 	u64 stats[__TCP_CHRONO_MAX], total = 0;
+<<<<<<< HEAD
 	enum tcp_chrono i, cur;
 
 	/* Following READ_ONCE()s pair with WRITE_ONCE()s in tcp_chrono_set().
@@ -4200,6 +4385,14 @@ static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
 		stats[i] = READ_ONCE(tp->chrono_stat[i - 1]);
 		if (i == cur)
 			stats[i] += tcp_jiffies32 - READ_ONCE(tp->chrono_start);
+=======
+	enum tcp_chrono i;
+
+	for (i = TCP_CHRONO_BUSY; i < __TCP_CHRONO_MAX; ++i) {
+		stats[i] = tp->chrono_stat[i - 1];
+		if (i == tp->chrono_type)
+			stats[i] += tcp_jiffies32 - tp->chrono_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		stats[i] *= USEC_PER_SEC / HZ;
 		total += stats[i];
 	}
@@ -4271,6 +4464,11 @@ void tcp_get_info(struct sock *sk, struct tcp_info *info)
 		info->tcpi_options |= TCPI_OPT_ECN;
 	if (tp->ecn_flags & TCP_ECN_SEEN)
 		info->tcpi_options |= TCPI_OPT_ECN_SEEN;
+<<<<<<< HEAD
+=======
+	if (tp->ecn_flags & TCP_ECN_LOW)
+		info->tcpi_options |= TCPI_OPT_ECN_LOW;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tp->syn_data_acked)
 		info->tcpi_options |= TCPI_OPT_SYN_DATA;
 	if (tp->tcp_usec_ts)
@@ -4431,9 +4629,15 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
 	nla_put_u64_64bit(stats, TCP_NLA_SNDBUF_LIMITED,
 			  info.tcpi_sndbuf_limited, TCP_NLA_PAD);
 	nla_put_u64_64bit(stats, TCP_NLA_DATA_SEGS_OUT,
+<<<<<<< HEAD
 			  READ_ONCE(tp->data_segs_out), TCP_NLA_PAD);
 	nla_put_u64_64bit(stats, TCP_NLA_TOTAL_RETRANS,
 			  READ_ONCE(tp->total_retrans), TCP_NLA_PAD);
+=======
+			  tp->data_segs_out, TCP_NLA_PAD);
+	nla_put_u64_64bit(stats, TCP_NLA_TOTAL_RETRANS,
+			  tp->total_retrans, TCP_NLA_PAD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rate = READ_ONCE(sk->sk_pacing_rate);
 	rate64 = (rate != ~0UL) ? rate : ~0ULL;
@@ -4442,6 +4646,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
 	rate64 = tcp_compute_delivery_rate(tp);
 	nla_put_u64_64bit(stats, TCP_NLA_DELIVERY_RATE, rate64, TCP_NLA_PAD);
 
+<<<<<<< HEAD
 	nla_put_u32(stats, TCP_NLA_SND_CWND, READ_ONCE(tp->snd_cwnd));
 	nla_put_u32(stats, TCP_NLA_REORDERING, READ_ONCE(tp->reordering));
 	nla_put_u32(stats, TCP_NLA_MIN_RTT, data_race(tcp_min_rtt(tp)));
@@ -4470,14 +4675,44 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
 		    max_t(int, 0,
 			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_nxt)));
+=======
+	nla_put_u32(stats, TCP_NLA_SND_CWND, tcp_snd_cwnd(tp));
+	nla_put_u32(stats, TCP_NLA_REORDERING, tp->reordering);
+	nla_put_u32(stats, TCP_NLA_MIN_RTT, tcp_min_rtt(tp));
+
+	nla_put_u8(stats, TCP_NLA_RECUR_RETRANS,
+		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
+	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, !!tp->rate_app_limited);
+	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, tp->snd_ssthresh);
+	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
+	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
+
+	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
+	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+
+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
+			  TCP_NLA_PAD);
+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+			  TCP_NLA_PAD);
+	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
+	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
 			  TCP_NLA_PAD);
 	if (ack_skb)
 		nla_put_u8(stats, TCP_NLA_TTL,
 			   tcp_skb_ttl_or_hop_limit(ack_skb));
 
+<<<<<<< HEAD
 	nla_put_u32(stats, TCP_NLA_REHASH,
 		    READ_ONCE(tp->plb_rehash) + READ_ONCE(tp->timeout_rehash));
+=======
+	nla_put_u32(stats, TCP_NLA_REHASH, tp->plb_rehash + tp->timeout_rehash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return stats;
 }
 
@@ -4856,6 +5091,10 @@ bool tcp_bpf_bypass_getsockopt(int level, int optname)
 
 	return false;
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_bpf_bypass_getsockopt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int tcp_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
 		   int __user *optlen)
@@ -4869,6 +5108,10 @@ int tcp_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
 	return do_tcp_getsockopt(sk, level, optname, USER_SOCKPTR(optval),
 				 USER_SOCKPTR(optlen));
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_getsockopt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_TCP_MD5SIG
 void tcp_md5_hash_skb_data(struct md5_ctx *ctx, const struct sk_buff *skb,
@@ -4899,6 +5142,10 @@ void tcp_md5_hash_skb_data(struct md5_ctx *ctx, const struct sk_buff *skb,
 	skb_walk_frags(skb, frag_iter)
 		tcp_md5_hash_skb_data(ctx, frag_iter, 0);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_hash_skb_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_md5_hash_key(struct md5_ctx *ctx,
 		      const struct tcp_md5sig_key *key)
@@ -4910,6 +5157,10 @@ void tcp_md5_hash_key(struct md5_ctx *ctx,
 	 */
 	data_race(({ md5_update(ctx, key->key, keylen), 0; }));
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD(tcp_md5_hash_key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Called with rcu_read_lock() */
 static enum skb_drop_reason
@@ -4959,6 +5210,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const struct sk_buff *skb,
 
 #endif
 
+<<<<<<< HEAD
 #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
 /*
  * Parse Signature options
@@ -5012,6 +5264,8 @@ int tcp_do_parse_auth_options(const struct tcphdr *th,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Called with rcu_read_lock() */
 enum skb_drop_reason
 tcp_inbound_hash(struct sock *sk, const struct request_sock *req,
@@ -5078,6 +5332,10 @@ tcp_inbound_hash(struct sock *sk, const struct request_sock *req,
 	return tcp_inbound_md5_hash(sk, skb, saddr, daddr, family,
 				    l3index, md5_location);
 }
+<<<<<<< HEAD
+=======
+EXPORT_IPV6_MOD_GPL(tcp_inbound_hash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void tcp_done(struct sock *sk)
 {
@@ -5261,7 +5519,10 @@ static void __init tcp_struct_check(void)
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, received_ecn_bytes);
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, app_limited);
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, rcv_wnd);
+<<<<<<< HEAD
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, rcv_mwnd_seq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, rcv_tstamp);
 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_txrx, rx_opt);
 

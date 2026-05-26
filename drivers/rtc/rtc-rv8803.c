@@ -667,7 +667,17 @@ static int rv8803_probe(struct i2c_client *client)
 
 	mutex_init(&rv8803->flags_lock);
 	rv8803->client = client;
+<<<<<<< HEAD
 	rv8803->type = (uintptr_t)i2c_get_match_data(client);
+=======
+	if (client->dev.of_node) {
+		rv8803->type = (uintptr_t)of_device_get_match_data(&client->dev);
+	} else {
+		const struct i2c_device_id *id = i2c_match_id(rv8803_id, client);
+
+		rv8803->type = id->driver_data;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c_set_clientdata(client, rv8803);
 
 	flags = rv8803_read_reg(client, RV8803_FLAG);

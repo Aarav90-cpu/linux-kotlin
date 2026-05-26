@@ -31,6 +31,7 @@ int drm_sysfb_get_validated_int0(struct drm_device *dev, const char *name,
 }
 EXPORT_SYMBOL(drm_sysfb_get_validated_int0);
 
+<<<<<<< HEAD
 const struct drm_format_info *drm_sysfb_get_format(struct drm_device *dev,
 						   const struct drm_sysfb_format *formats,
 						   size_t nformats,
@@ -55,5 +56,7 @@ const struct drm_format_info *drm_sysfb_get_format(struct drm_device *dev,
 }
 EXPORT_SYMBOL(drm_sysfb_get_format);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("Helpers for DRM sysfb drivers");
 MODULE_LICENSE("GPL");

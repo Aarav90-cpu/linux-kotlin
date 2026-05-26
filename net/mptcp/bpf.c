@@ -14,7 +14,11 @@
 
 struct mptcp_sock *bpf_mptcp_sock_from_subflow(struct sock *sk)
 {
+<<<<<<< HEAD
 	if (sk && sk_fullsock(sk) && sk_is_tcp(sk) && sk_is_mptcp(sk))
+=======
+	if (sk && sk_fullsock(sk) && sk->sk_protocol == IPPROTO_TCP && sk_is_mptcp(sk))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return mptcp_sk(mptcp_subflow_ctx(sk)->conn);
 
 	return NULL;

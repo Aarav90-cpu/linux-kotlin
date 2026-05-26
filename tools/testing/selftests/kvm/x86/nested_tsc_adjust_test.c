@@ -53,9 +53,15 @@ enum {
 /* The virtual machine object. */
 static struct kvm_vm *vm;
 
+<<<<<<< HEAD
 static void check_ia32_tsc_adjust(s64 max)
 {
 	s64 adjust;
+=======
+static void check_ia32_tsc_adjust(int64_t max)
+{
+	int64_t adjust;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adjust = rdmsr(MSR_IA32_TSC_ADJUST);
 	GUEST_SYNC(adjust);
@@ -64,7 +70,11 @@ static void check_ia32_tsc_adjust(s64 max)
 
 static void l2_guest_code(void)
 {
+<<<<<<< HEAD
 	u64 l1_tsc = rdtsc() - TSC_OFFSET_VALUE;
+=======
+	uint64_t l1_tsc = rdtsc() - TSC_OFFSET_VALUE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wrmsr(MSR_IA32_TSC, l1_tsc - TSC_ADJUST_VALUE);
 	check_ia32_tsc_adjust(-2 * TSC_ADJUST_VALUE);
@@ -88,7 +98,11 @@ static void l1_guest_code(void *data)
 	 */
 	if (this_cpu_has(X86_FEATURE_VMX)) {
 		struct vmx_pages *vmx_pages = data;
+<<<<<<< HEAD
 		u32 control;
+=======
+		uint32_t control;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
 		GUEST_ASSERT(load_vmcs(vmx_pages));
@@ -117,7 +131,11 @@ static void l1_guest_code(void *data)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static void report(s64 val)
+=======
+static void report(int64_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pr_info("IA32_TSC_ADJUST is %ld (%lld * TSC_ADJUST_VALUE + %lld).\n",
 		val, val / TSC_ADJUST_VALUE, val % TSC_ADJUST_VALUE);
@@ -125,7 +143,11 @@ static void report(s64 val)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t nested_gva;
+=======
+	vm_vaddr_t nested_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 
 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX) ||

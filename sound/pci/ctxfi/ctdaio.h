@@ -32,7 +32,11 @@ enum DAIOTYP {
 	SPDIFIO,	/* S/PDIF In (Flexijack/Optical) on the card */
 	MIC,		/* Dedicated mic on Titanium HD */
 	RCA,		/* Dedicated RCA on SE-300PCIE */
+<<<<<<< HEAD
 	SPDIFI_BAY,	/* S/PDIF In on internal drive bay */
+=======
+	SPDIFI1,	/* S/PDIF In on internal Drive Bay */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NUM_DAIOTYP
 };
 

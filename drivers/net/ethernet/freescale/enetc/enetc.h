@@ -264,8 +264,11 @@ struct enetc_msg_swbd {
 };
 
 #define ENETC_REV1	0x1
+<<<<<<< HEAD
 #define ENETC_REV4	0x4
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum enetc_errata {
 	ENETC_ERR_VLAN_ISOL	= BIT(0),
 	ENETC_ERR_UCMCSWP	= BIT(1),
@@ -330,7 +333,10 @@ struct enetc_si {
 	struct workqueue_struct *workqueue;
 	struct work_struct rx_mode_task;
 	struct dentry *debugfs_root;
+<<<<<<< HEAD
 	struct enetc_msg_swbd msg; /* Only valid for VSI */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define ENETC_SI_ALIGN	32

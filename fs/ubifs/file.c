@@ -90,7 +90,11 @@ static int read_block(struct inode *inode, struct folio *folio, size_t offset,
 	return 0;
 
 dump:
+<<<<<<< HEAD
 	ubifs_err(c, "bad data node (block %u, inode %llu)",
+=======
+	ubifs_err(c, "bad data node (block %u, inode %lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  block, inode->i_ino);
 	ubifs_dump_node(c, dn, UBIFS_MAX_DATA_NODE_SZ);
 	return -EINVAL;
@@ -106,7 +110,11 @@ static int do_readpage(struct folio *folio)
 	loff_t i_size = i_size_read(inode);
 	size_t offset = 0;
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
+=======
+	dbg_gen("ino %lu, pg %lu, i_size %lld, flags %#lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, folio->index, i_size, folio->flags.f);
 	ubifs_assert(c, !folio_test_checked(folio));
 	ubifs_assert(c, !folio->private);
@@ -162,7 +170,11 @@ static int do_readpage(struct folio *folio)
 			dbg_gen("hole");
 			err = 0;
 		} else {
+<<<<<<< HEAD
 			ubifs_err(c, "cannot read page %lu of inode %llu, error %d",
+=======
+			ubifs_err(c, "cannot read page %lu of inode %lu, error %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  folio->index, inode->i_ino, err);
 		}
 	}
@@ -212,7 +224,11 @@ static int write_begin_slow(struct address_space *mapping,
 	int err, appending = !!(pos + len > inode->i_size);
 	struct folio *folio;
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pos %llu, len %u, i_size %lld",
+=======
+	dbg_gen("ino %lu, pos %llu, len %u, i_size %lld",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, pos, len, inode->i_size);
 
 	/*
@@ -526,7 +542,11 @@ static int ubifs_write_end(const struct kiocb *iocb,
 	loff_t end_pos = pos + len;
 	int appending = !!(end_pos > inode->i_size);
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
+=======
+	dbg_gen("ino %lu, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, pos, folio->index, len, copied, inode->i_size);
 
 	if (unlikely(copied < len && !folio_test_uptodate(folio))) {
@@ -599,7 +619,11 @@ static int populate_page(struct ubifs_info *c, struct folio *folio,
 	size_t offset = 0;
 	pgoff_t end_index;
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
+=======
+	dbg_gen("ino %lu, pg %lu, i_size %lld, flags %#lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, folio->index, i_size, folio->flags.f);
 
 	end_index = (i_size - 1) >> PAGE_SHIFT;
@@ -680,7 +704,11 @@ out_hole:
 	return 0;
 
 out_err:
+<<<<<<< HEAD
 	ubifs_err(c, "bad data node (block %u, inode %llu)",
+=======
+	ubifs_err(c, "bad data node (block %u, inode %lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  page_block, inode->i_ino);
 	return -EINVAL;
 }
@@ -913,7 +941,11 @@ static int do_writepage(struct folio *folio, size_t len)
 	}
 	if (err) {
 		mapping_set_error(folio->mapping, err);
+<<<<<<< HEAD
 		ubifs_err(c, "cannot write folio %lu of inode %llu, error %d",
+=======
+		ubifs_err(c, "cannot write folio %lu of inode %lu, error %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  folio->index, inode->i_ino, err);
 		ubifs_ro_mode(c, err);
 	}
@@ -987,7 +1019,11 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
 	loff_t i_size =  i_size_read(inode), synced_i_size;
 	int err, len = folio_size(folio);
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pg %lu, pg flags %#lx",
+=======
+	dbg_gen("ino %lu, pg %lu, pg flags %#lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, folio->index, folio->flags.f);
 	ubifs_assert(c, folio->private != NULL);
 
@@ -1106,7 +1142,11 @@ static int do_truncation(struct ubifs_info *c, struct inode *inode,
 	int offset = new_size & (UBIFS_BLOCK_SIZE - 1), budgeted = 1;
 	struct ubifs_inode *ui = ubifs_inode(inode);
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, size %lld -> %lld", inode->i_ino, old_size, new_size);
+=======
+	dbg_gen("ino %lu, size %lld -> %lld", inode->i_ino, old_size, new_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(&req, 0, sizeof(struct ubifs_budget_req));
 
 	/*
@@ -1258,7 +1298,11 @@ int ubifs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 	struct inode *inode = d_inode(dentry);
 	struct ubifs_info *c = inode->i_sb->s_fs_info;
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, mode %#x, ia_valid %#x",
+=======
+	dbg_gen("ino %lu, mode %#x, ia_valid %#x",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, inode->i_mode, attr->ia_valid);
 	err = setattr_prepare(&nop_mnt_idmap, dentry, attr);
 	if (err)
@@ -1308,7 +1352,11 @@ int ubifs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
 	struct ubifs_info *c = inode->i_sb->s_fs_info;
 	int err;
 
+<<<<<<< HEAD
 	dbg_gen("syncing inode %llu", inode->i_ino);
+=======
+	dbg_gen("syncing inode %lu", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (c->ro_mount)
 		/*
@@ -1495,7 +1543,11 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
 	struct ubifs_budget_req req = { .new_page = 1 };
 	int err, update_time;
 
+<<<<<<< HEAD
 	dbg_gen("ino %llu, pg %lu, i_size %lld",	inode->i_ino, folio->index,
+=======
+	dbg_gen("ino %lu, pg %lu, i_size %lld",	inode->i_ino, folio->index,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		i_size_read(inode));
 	ubifs_assert(c, !c->ro_media && !c->ro_mount);
 
@@ -1531,7 +1583,11 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
 	err = ubifs_budget_space(c, &req);
 	if (unlikely(err)) {
 		if (err == -ENOSPC)
+<<<<<<< HEAD
 			ubifs_warn(c, "out of space for mmapped file (inode number %llu)",
+=======
+			ubifs_warn(c, "out of space for mmapped file (inode number %lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   inode->i_ino);
 		return VM_FAULT_SIGBUS;
 	}

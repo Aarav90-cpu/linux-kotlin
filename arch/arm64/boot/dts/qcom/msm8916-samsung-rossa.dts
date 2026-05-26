@@ -16,15 +16,19 @@
 	constant-charge-voltage-max-microvolt = <4400000>;
 };
 
+<<<<<<< HEAD
 &charger {
 	richtek,usb-connector = <&usb_con_sm5504>;
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &mpss_mem {
 	/* Firmware for rossa needs more space */
 	reg = <0x0 0x86800000 0x0 0x5800000>;
 };
+<<<<<<< HEAD
 
 &muic_sm5504 {
 	status = "okay";
@@ -38,3 +42,5 @@
 &usb_hs_phy {
 	extcon = <&muic_sm5504>;
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

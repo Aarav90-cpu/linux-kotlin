@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 core_setmaster@master-drop-set-root,Fail
 core_setmaster@master-drop-set-shared-fd,Fail
 core_setmaster@master-drop-set-user,Fail
 kms_3d,Fail
 kms_bw@connected-linear-tiling-1-displays-2560x1440p,Fail
+=======
+kms_3d,Fail
+kms_bw@connected-linear-tiling-1-displays-1920x1080p,Fail
+kms_bw@connected-linear-tiling-1-displays-2560x1440p,Fail
+kms_bw@connected-linear-tiling-1-displays-3840x2160p,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_bw@connected-linear-tiling-2-displays-1920x1080p,Fail
 kms_bw@connected-linear-tiling-2-displays-2160x1440p,Fail
 kms_bw@connected-linear-tiling-2-displays-2560x1440p,Fail
@@ -15,7 +22,13 @@ kms_bw@linear-tiling-2-displays-1920x1080p,Fail
 kms_bw@linear-tiling-2-displays-2160x1440p,Fail
 kms_bw@linear-tiling-2-displays-2560x1440p,Fail
 kms_bw@linear-tiling-2-displays-3840x2160p,Fail
+<<<<<<< HEAD
 kms_cursor_legacy@cursor-vs-flip-atomic,Fail
+=======
+kms_color@invalid-gamma-lut-sizes,Fail
+kms_cursor_legacy@cursor-vs-flip-atomic,Fail
+kms_cursor_legacy@cursor-vs-flip-legacy,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_cursor_legacy@flip-vs-cursor-atomic,Fail
 kms_cursor_legacy@flip-vs-cursor-legacy,Fail
 kms_cursor_legacy@flip-vs-cursor-toggle,Fail
@@ -23,9 +36,15 @@ kms_cursor_legacy@flip-vs-cursor-varying-size,Fail
 kms_flip@basic-plain-flip,Fail
 kms_flip@dpms-off-confusion,Fail
 kms_flip@dpms-off-confusion-interruptible,Fail
+<<<<<<< HEAD
 kms_flip@flip-vs-blocking-wf-vblank,Fail
 kms_flip@flip-vs-dpms-on-nop,Fail
 kms_flip@flip-vs-dpms-on-nop-interruptible,Fail
+=======
+kms_flip@flip-vs-absolute-wf_vblank,Fail
+kms_flip@flip-vs-absolute-wf_vblank-interruptible,Fail
+kms_flip@flip-vs-blocking-wf-vblank,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_flip@flip-vs-expired-vblank,Fail
 kms_flip@flip-vs-expired-vblank-interruptible,Fail
 kms_flip@flip-vs-modeset-vs-hang,Fail
@@ -39,4 +58,8 @@ kms_flip@plain-flip-fb-recreate-interruptible,Fail
 kms_flip@plain-flip-interruptible,Fail
 kms_flip@plain-flip-ts-check,Fail
 kms_flip@plain-flip-ts-check-interruptible,Fail
+<<<<<<< HEAD
+=======
+kms_invalid_mode@overflow-vrefresh,Fail
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_lease@lease-uevent,Fail

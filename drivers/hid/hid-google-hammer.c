@@ -496,7 +496,11 @@ static int hammer_probe(struct hid_device *hdev,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	error = devm_add_action_or_reset(&hdev->dev, hammer_stop, hdev);
+=======
+	error = devm_add_action(&hdev->dev, hammer_stop, hdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (error)
 		return error;
 

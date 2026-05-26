@@ -3,6 +3,7 @@
 # Makefile for the ntfs3 filesystem support.
 #
 
+<<<<<<< HEAD
 # Subset of W=1 warnings
 subdir-ccflags-y += -Wextra -Wunused -Wno-unused-parameter
 subdir-ccflags-y += -Wmissing-declarations
@@ -23,6 +24,8 @@ subdir-ccflags-y += -Wno-sign-compare
 subdir-ccflags-y += -Wno-type-limits
 subdir-ccflags-y += -Wno-shift-negative-value
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # to check robot warnings
 ccflags-y += -Wint-to-pointer-cast \
 	$(call cc-option,-Wunused-but-set-variable,-Wunused-const-variable) \

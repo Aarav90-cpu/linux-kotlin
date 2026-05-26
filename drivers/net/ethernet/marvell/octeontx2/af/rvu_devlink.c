@@ -11,7 +11,10 @@
 #include "rvu_reg.h"
 #include "rvu_struct.h"
 #include "rvu_npc_hash.h"
+<<<<<<< HEAD
 #include "cn20k/npc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DRV_NAME "octeontx2-af"
 
@@ -1257,6 +1260,7 @@ enum rvu_af_dl_param_id {
 	RVU_AF_DEVLINK_PARAM_ID_NPC_MCAM_ZONE_PERCENT,
 	RVU_AF_DEVLINK_PARAM_ID_NPC_EXACT_FEATURE_DISABLE,
 	RVU_AF_DEVLINK_PARAM_ID_NPC_DEF_RULE_CNTR_ENABLE,
+<<<<<<< HEAD
 	RVU_AF_DEVLINK_PARAM_ID_NPC_DEFRAG,
 	RVU_AF_DEVLINK_PARAM_ID_NIX_MAXLF,
 };
@@ -1322,6 +1326,11 @@ static int rvu_af_npc_defrag_feature_validate(struct devlink *devlink, u32 id,
 	return -EFAULT;
 }
 
+=======
+	RVU_AF_DEVLINK_PARAM_ID_NIX_MAXLF,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rvu_af_npc_exact_feature_get(struct devlink *devlink, u32 id,
 					struct devlink_param_gset_ctx *ctx,
 					struct netlink_ext_ack *extack)
@@ -1624,6 +1633,7 @@ static const struct devlink_ops rvu_devlink_ops = {
 	.eswitch_mode_set = rvu_devlink_eswitch_mode_set,
 };
 
+<<<<<<< HEAD
 static const struct devlink_param rvu_af_dl_param_defrag[] = {
 	DEVLINK_PARAM_DRIVER(RVU_AF_DEVLINK_PARAM_ID_NPC_DEFRAG,
 			     "npc_defrag", DEVLINK_PARAM_TYPE_STRING,
@@ -1633,6 +1643,8 @@ static const struct devlink_param rvu_af_dl_param_defrag[] = {
 			     rvu_af_npc_defrag_feature_validate),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rvu_register_dl(struct rvu *rvu)
 {
 	struct rvu_devlink *rvu_dl;
@@ -1665,6 +1677,7 @@ int rvu_register_dl(struct rvu *rvu)
 		goto err_dl_health;
 	}
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev)) {
 		err = devlink_params_register(dl, rvu_af_dl_param_defrag,
 					      ARRAY_SIZE(rvu_af_dl_param_defrag));
@@ -1676,6 +1689,8 @@ int rvu_register_dl(struct rvu *rvu)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Register exact match devlink only for CN10K-B */
 	if (!rvu_npc_exact_has_match_table(rvu))
 		goto done;
@@ -1684,8 +1699,12 @@ int rvu_register_dl(struct rvu *rvu)
 				      ARRAY_SIZE(rvu_af_dl_param_exact_match));
 	if (err) {
 		dev_err(rvu->dev,
+<<<<<<< HEAD
 			"devlink exact match params register failed with error %d",
 			err);
+=======
+			"devlink exact match params register failed with error %d", err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_dl_exact_match;
 	}
 
@@ -1694,11 +1713,14 @@ done:
 	return 0;
 
 err_dl_exact_match:
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		devlink_params_unregister(dl, rvu_af_dl_param_defrag,
 					  ARRAY_SIZE(rvu_af_dl_param_defrag));
 
 err_dl_defrag:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	devlink_params_unregister(dl, rvu_af_dl_params, ARRAY_SIZE(rvu_af_dl_params));
 
 err_dl_health:
@@ -1716,10 +1738,13 @@ void rvu_unregister_dl(struct rvu *rvu)
 
 	devlink_params_unregister(dl, rvu_af_dl_params, ARRAY_SIZE(rvu_af_dl_params));
 
+<<<<<<< HEAD
 	if (is_cn20k(rvu->pdev))
 		devlink_params_unregister(dl, rvu_af_dl_param_defrag,
 					  ARRAY_SIZE(rvu_af_dl_param_defrag));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Unregister exact match devlink only for CN10K-B */
 	if (rvu_npc_exact_has_match_table(rvu))
 		devlink_params_unregister(dl, rvu_af_dl_param_exact_match,

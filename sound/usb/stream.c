@@ -79,7 +79,11 @@ static void snd_usb_audio_pcm_free(struct snd_pcm *pcm)
 static void snd_usb_init_substream(struct snd_usb_stream *as,
 				   int stream,
 				   struct audioformat *fp,
+<<<<<<< HEAD
 				   struct snd_usb_power_domain **pdptr)
+=======
+				   struct snd_usb_power_domain *pd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct snd_usb_substream *subs = &as->substream[stream];
 
@@ -105,11 +109,18 @@ static void snd_usb_init_substream(struct snd_usb_stream *as,
 	if (fp->channels > subs->channels_max)
 		subs->channels_max = fp->channels;
 
+<<<<<<< HEAD
 	if (pdptr && *pdptr) {
 		subs->str_pd = *pdptr;
 		*pdptr = NULL; /* assigned */
 		/* Initialize Power Domain to idle status D1 */
 		snd_usb_power_domain_set(subs->stream->chip, subs->str_pd,
+=======
+	if (pd) {
+		subs->str_pd = pd;
+		/* Initialize Power Domain to idle status D1 */
+		snd_usb_power_domain_set(subs->stream->chip, pd,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 UAC3_PD_STATE_D1);
 	}
 
@@ -369,8 +380,11 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
 			/*
 			 * TODO: this conversion is not complete, update it
 			 * after adding UAC3 values to asound.h
+<<<<<<< HEAD
 			 * NOTE: not all UAC3 channel relationship have a
 			 * direct ALSA chmap equivalent.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 */
 			switch (is->bChRelationship) {
 			case UAC3_CH_MONO:
@@ -395,12 +409,15 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
 			case UAC3_CH_FRONT_RIGHT_OF_CENTER:
 				map = SNDRV_CHMAP_FRC;
 				break;
+<<<<<<< HEAD
 			case UAC3_CH_FRONT_WIDE_LEFT:
 				map = SNDRV_CHMAP_FLW;
 				break;
 			case UAC3_CH_FRONT_WIDE_RIGHT:
 				map = SNDRV_CHMAP_FRW;
 				break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			case UAC3_CH_SIDE_LEFT:
 				map = SNDRV_CHMAP_SL;
 				break;
@@ -495,6 +512,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
  * if not, create a new pcm stream. note, fp is added to the substream
  * fmt_list and will be freed on the chip instance release. do not free
  * fp or do remove it from the substream fmt_list to avoid double-free.
+<<<<<<< HEAD
  *
  * pdptr is optional and can be NULL.  When it's non-NULL and the PD gets
  * assigned to the stream, *pdptr is cleared to NULL upon return.
@@ -503,6 +521,13 @@ int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
 			     int stream,
 			     struct audioformat *fp,
 			     struct snd_usb_power_domain **pdptr)
+=======
+ */
+static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+				      int stream,
+				      struct audioformat *fp,
+				      struct snd_usb_power_domain *pd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 {
 	struct snd_usb_stream *as;
@@ -535,7 +560,11 @@ int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
 		err = snd_pcm_new_stream(as->pcm, stream, 1);
 		if (err < 0)
 			return err;
+<<<<<<< HEAD
 		snd_usb_init_substream(as, stream, fp, pdptr);
+=======
+		snd_usb_init_substream(as, stream, fp, pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return add_chmap(as->pcm, stream, subs);
 	}
 
@@ -564,7 +593,11 @@ int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
 	else
 		strscpy(pcm->name, "USB Audio");
 
+<<<<<<< HEAD
 	snd_usb_init_substream(as, stream, fp, pdptr);
+=======
+	snd_usb_init_substream(as, stream, fp, pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Keep using head insertion for M-Audio Audiophile USB (tm) which has a
@@ -582,6 +615,24 @@ int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
 	return add_chmap(pcm, stream, &as->substream[stream]);
 }
 
+<<<<<<< HEAD
+=======
+int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+			     int stream,
+			     struct audioformat *fp)
+{
+	return __snd_usb_add_audio_stream(chip, stream, fp, NULL);
+}
+
+static int snd_usb_add_audio_stream_v3(struct snd_usb_audio *chip,
+				       int stream,
+				       struct audioformat *fp,
+				       struct snd_usb_power_domain *pd)
+{
+	return __snd_usb_add_audio_stream(chip, stream, fp, pd);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int parse_uac_endpoint_attributes(struct snd_usb_audio *chip,
 					 struct usb_host_interface *alts,
 					 int protocol, int iface_no)
@@ -1104,7 +1155,12 @@ found_clock:
 		}
 	}
 
+<<<<<<< HEAD
 	*pd_out = pd;
+=======
+	if (pd)
+		*pd_out = pd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return fp;
 }
@@ -1119,6 +1175,10 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
 	struct usb_interface_descriptor *altsd;
 	int i, altno, err, stream;
 	struct audioformat *fp = NULL;
+<<<<<<< HEAD
+=======
+	struct snd_usb_power_domain *pd = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool set_iface_first;
 	int num, protocol;
 
@@ -1160,12 +1220,15 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
 		if (snd_usb_apply_interface_quirk(chip, iface_no, altno))
 			continue;
 
+<<<<<<< HEAD
 		/* pd may be allocated at snd_usb_get_audioformat_uac3() and
 		 * assigned at snd_usb_add_audio_stream(); otherwise it'll be
 		 * freed automatically by cleanup at each loop.
 		 */
 		struct snd_usb_power_domain *pd __free(kfree) = NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Roland audio streaming interfaces are marked with protocols
 		 * 0/1/2, but are UAC 1 compatible.
@@ -1221,16 +1284,33 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
 			*has_non_pcm = true;
 		if ((fp->fmt_type == UAC_FORMAT_TYPE_I) == non_pcm) {
 			audioformat_free(fp);
+<<<<<<< HEAD
 			fp = NULL;
+=======
+			kfree(pd);
+			fp = NULL;
+			pd = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 
 		snd_usb_audioformat_set_sync_ep(chip, fp);
 
 		dev_dbg(&dev->dev, "%u:%d: add audio endpoint %#x\n", iface_no, altno, fp->endpoint);
+<<<<<<< HEAD
 		err = snd_usb_add_audio_stream(chip, stream, fp, &pd);
 		if (err < 0) {
 			audioformat_free(fp);
+=======
+		if (protocol == UAC_VERSION_3)
+			err = snd_usb_add_audio_stream_v3(chip, stream, fp, pd);
+		else
+			err = snd_usb_add_audio_stream(chip, stream, fp);
+
+		if (err < 0) {
+			audioformat_free(fp);
+			kfree(pd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return err;
 		}
 

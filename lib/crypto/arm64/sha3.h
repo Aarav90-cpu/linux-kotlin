@@ -12,15 +12,32 @@
 
 static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_sha3);
 
+<<<<<<< HEAD
 asmlinkage void sha3_ce_transform(struct sha3_state *state, const u8 *data,
 				  size_t nblocks, size_t block_size);
+=======
+asmlinkage size_t sha3_ce_transform(struct sha3_state *state, const u8 *data,
+				    size_t nblocks, size_t block_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void sha3_absorb_blocks(struct sha3_state *state, const u8 *data,
 			       size_t nblocks, size_t block_size)
 {
 	if (static_branch_likely(&have_sha3) && likely(may_use_simd())) {
+<<<<<<< HEAD
 		scoped_ksimd()
 			sha3_ce_transform(state, data, nblocks, block_size);
+=======
+		do {
+			size_t rem;
+
+			scoped_ksimd()
+				rem = sha3_ce_transform(state, data, nblocks,
+							block_size);
+			data += (nblocks - rem) * block_size;
+			nblocks = rem;
+		} while (nblocks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		sha3_absorb_blocks_generic(state, data, nblocks, block_size);
 	}

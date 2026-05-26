@@ -404,7 +404,10 @@ struct cx23885_dev {
 	unsigned char              radio_addr;
 	struct v4l2_subdev	   *sd_cx25840;
 	struct work_struct	   cx25840_work;
+<<<<<<< HEAD
 	unsigned int		   disable_analog;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Infrared */
 	struct v4l2_subdev         *sd_ir;

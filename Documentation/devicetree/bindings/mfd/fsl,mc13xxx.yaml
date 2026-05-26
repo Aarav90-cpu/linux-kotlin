@@ -76,6 +76,11 @@ properties:
           debounce-delay-ms:
             enum: [0, 30, 150, 750]
             default: 30
+<<<<<<< HEAD
+=======
+            description:
+              Sets the debouncing delay in milliseconds.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
           active-low:
             description: Set active when pin is pulled low.

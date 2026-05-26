@@ -21,7 +21,10 @@
 #include <linux/types.h>
 #include <linux/socket.h>
 #include <linux/sockios.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/net.h>
 #include <linux/in6.h>
 #include <linux/netdevice.h>
@@ -257,9 +260,15 @@ static struct ip_tunnel *ipip6_tunnel_locate(struct net *net,
 	if (parms->name[0]) {
 		if (!dev_valid_name(parms->name))
 			goto failed;
+<<<<<<< HEAD
 		strscpy(name, parms->name);
 	} else {
 		strscpy(name, "sit%d");
+=======
+		strscpy(name, parms->name, IFNAMSIZ);
+	} else {
+		strcpy(name, "sit%d");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	dev = alloc_netdev(sizeof(*t), name, NET_NAME_UNKNOWN,
 			   ipip6_tunnel_setup);
@@ -276,7 +285,11 @@ static struct ip_tunnel *ipip6_tunnel_locate(struct net *net,
 		goto failed_free;
 
 	if (!parms->name[0])
+<<<<<<< HEAD
 		strscpy(parms->name, dev->name);
+=======
+		strcpy(parms->name, dev->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return nt;
 
@@ -309,7 +322,11 @@ static int ipip6_tunnel_get_prl(struct net_device *dev, struct ip_tunnel_prl __u
 	struct ip_tunnel_prl kprl, *kp;
 	struct ip_tunnel_prl_entry *prl;
 	unsigned int cmax, c = 0, ca, len;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (dev == dev_to_sit_net(dev)->fb_tunnel_dev)
 		return -EINVAL;
@@ -1443,7 +1460,11 @@ static int ipip6_tunnel_init(struct net_device *dev)
 	int err;
 
 	tunnel->dev = dev;
+<<<<<<< HEAD
 	strscpy(tunnel->parms.name, dev->name);
+=======
+	strcpy(tunnel->parms.name, dev->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ipip6_tunnel_bind_dev(dev);
 
@@ -1864,7 +1885,11 @@ static int __net_init sit_init_net(struct net *net)
 	ipip6_tunnel_clone_6rd(sitn->fb_tunnel_dev, sitn);
 	ipip6_fb_tunnel_init(sitn->fb_tunnel_dev);
 
+<<<<<<< HEAD
 	strscpy(t->parms.name, sitn->fb_tunnel_dev->name);
+=======
+	strcpy(t->parms.name, sitn->fb_tunnel_dev->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_reg_dev:

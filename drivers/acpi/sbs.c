@@ -26,6 +26,11 @@
 
 #include "sbshc.h"
 
+<<<<<<< HEAD
+=======
+#define ACPI_SBS_CLASS			"sbs"
+#define ACPI_AC_CLASS			"ac_adapter"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACPI_SBS_DEVICE_NAME		"Smart Battery System"
 #define ACPI_BATTERY_DIR_NAME		"BAT%i"
 #define ACPI_AC_DIR_NAME		"AC0"
@@ -629,15 +634,22 @@ static void acpi_sbs_callback(void *context)
 
 static int acpi_sbs_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_device *device;
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct acpi_sbs *sbs;
 	int result = 0;
 	int id;
 
+<<<<<<< HEAD
 	device = ACPI_COMPANION(&pdev->dev);
 	if (!device)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sbs = kzalloc_obj(struct acpi_sbs);
 	if (!sbs) {
 		result = -ENOMEM;
@@ -650,6 +662,11 @@ static int acpi_sbs_probe(struct platform_device *pdev)
 
 	sbs->hc = dev_get_drvdata(pdev->dev.parent);
 	sbs->device = device;
+<<<<<<< HEAD
+=======
+	strscpy(acpi_device_name(device), ACPI_SBS_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_SBS_CLASS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	result = acpi_charger_add(sbs);
 	if (result && result != -ENODEV)

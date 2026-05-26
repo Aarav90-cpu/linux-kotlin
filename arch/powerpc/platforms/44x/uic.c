@@ -309,8 +309,13 @@ void __init uic_init_tree(void)
 
 			cascade_virq = irq_of_parse_and_map(np, 0);
 
+<<<<<<< HEAD
 			irq_set_chained_handler_and_data(cascade_virq,
 							 uic_irq_cascade, uic);
+=======
+			irq_set_handler_data(cascade_virq, uic);
+			irq_set_chained_handler(cascade_virq, uic_irq_cascade);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* FIXME: setup critical cascade?? */
 		}

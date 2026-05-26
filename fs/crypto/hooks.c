@@ -62,7 +62,11 @@ int fscrypt_file_open(struct inode *inode, struct file *filp)
 	dentry_parent = dget_parent(dentry);
 	if (!fscrypt_has_permitted_context(d_inode(dentry_parent), inode)) {
 		fscrypt_warn(inode,
+<<<<<<< HEAD
 			     "Inconsistent encryption context (parent directory: %llu)",
+=======
+			     "Inconsistent encryption context (parent directory: %lu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     d_inode(dentry_parent)->i_ino);
 		err = -EPERM;
 	}

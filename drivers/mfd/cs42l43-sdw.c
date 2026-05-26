@@ -178,7 +178,10 @@ static int cs42l43_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *
 
 	cs42l43->dev = dev;
 	cs42l43->sdw = sdw;
+<<<<<<< HEAD
 	cs42l43->variant_id = (long)id->driver_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cs42l43->regmap = devm_regmap_init_sdw(sdw, &cs42l43_sdw_regmap);
 	if (IS_ERR(cs42l43->regmap))
@@ -189,8 +192,12 @@ static int cs42l43_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *
 }
 
 static const struct sdw_device_id cs42l43_sdw_id[] = {
+<<<<<<< HEAD
 	SDW_SLAVE_ENTRY(0x01FA, 0x4243, (void *) CS42L43_DEVID_VAL),
 	SDW_SLAVE_ENTRY(0x01FA, 0x2A3B, (void *) CS42L43B_DEVID_VAL),
+=======
+	SDW_SLAVE_ENTRY(0x01FA, 0x4243, 0),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(sdw, cs42l43_sdw_id);

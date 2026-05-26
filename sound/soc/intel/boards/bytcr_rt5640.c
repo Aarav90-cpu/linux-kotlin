@@ -285,12 +285,19 @@ static int platform_clock_control(struct snd_soc_dapm_widget *w,
 	if (SND_SOC_DAPM_EVENT_ON(event)) {
 		ret = clk_prepare_enable(priv->mclk);
 		if (ret < 0) {
+<<<<<<< HEAD
 			dev_err(card->dev, "could not configure MCLK state: %d\n", ret);
 			return ret;
 		}
 		ret = byt_rt5640_prepare_and_enable_pll1(codec_dai, 48000);
 		if (ret < 0)
 			clk_disable_unprepare(priv->mclk);
+=======
+			dev_err(card->dev, "could not configure MCLK state\n");
+			return ret;
+		}
+		ret = byt_rt5640_prepare_and_enable_pll1(codec_dai, 48000);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * Set codec clock source to internal clock before

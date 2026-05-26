@@ -363,7 +363,11 @@ static const struct snd_soc_component_driver acp3x_i2s_component = {
 	.close		= acp3x_dma_close,
 	.hw_params	= acp3x_dma_hw_params,
 	.pointer	= acp3x_dma_pointer,
+<<<<<<< HEAD
 	.pcm_new	= acp3x_dma_new,
+=======
+	.pcm_construct	= acp3x_dma_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int acp3x_audio_probe(struct platform_device *pdev)

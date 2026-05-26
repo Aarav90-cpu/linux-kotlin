@@ -2,9 +2,12 @@
 #ifndef _UAPIBSG_H
 #define _UAPIBSG_H
 
+<<<<<<< HEAD
 #ifdef __KERNEL__
 #include <linux/build_bug.h>
 #endif /* __KERNEL__ */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 
 #define BSG_PROTOCOL_SCSI		0
@@ -66,6 +69,7 @@ struct sg_io_v4 {
 	__u32 padding;
 };
 
+<<<<<<< HEAD
 struct bsg_uring_cmd {
 	__u64 request;		/* [i], [*i] command descriptor address */
 	__u32 request_len;	/* [i] command descriptor length in bytes */
@@ -138,5 +142,7 @@ static inline __u64 bsg_scsi_res2_build(__u8 device_status, __u8 driver_status,
 		((__u64)driver_status << 8) |
 		(__u64)device_status;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _UAPIBSG_H */

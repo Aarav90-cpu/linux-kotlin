@@ -114,6 +114,10 @@ struct axi_dac_state {
 	const struct axi_dac_info *info;
 	u64 dac_clk;
 	u32 reg_config;
+<<<<<<< HEAD
+=======
+	bool int_tone;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int dac_clk_rate;
 };
 
@@ -868,13 +872,19 @@ static const struct iio_backend_ops axi_ad3552r_ops = {
 static const struct iio_backend_info axi_dac_generic = {
 	.name = "axi-dac",
 	.ops = &axi_dac_generic_ops,
+<<<<<<< HEAD
 	.caps = IIO_BACKEND_CAP_BUFFER | IIO_BACKEND_CAP_ENABLE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct iio_backend_info axi_ad3552r = {
 	.name = "axi-ad3552r",
 	.ops = &axi_ad3552r_ops,
+<<<<<<< HEAD
 	.caps = IIO_BACKEND_CAP_BUFFER | IIO_BACKEND_CAP_ENABLE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regmap_config axi_dac_regmap_config = {

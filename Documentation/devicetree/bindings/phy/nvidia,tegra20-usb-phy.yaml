@@ -16,7 +16,10 @@ properties:
     oneOf:
       - items:
           - enum:
+<<<<<<< HEAD
               - nvidia,tegra210-usb-phy
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - nvidia,tegra124-usb-phy
               - nvidia,tegra114-usb-phy
           - enum:

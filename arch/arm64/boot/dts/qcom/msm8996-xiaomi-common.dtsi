@@ -247,7 +247,11 @@
 
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mdss_dsi_default &mdss_te_default>;
+<<<<<<< HEAD
 	pinctrl-1 = <&mdss_dsi_sleep &mdss_te_default>;
+=======
+	pinctrl-1 = <&mdss_dsi_sleep &mdss_te_sleep>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &mdss_dsi0_out {
@@ -730,7 +734,18 @@
 		bias-pull-down;
 	};
 
+<<<<<<< HEAD
 	mdss_te_default: mdss-te-state {
+=======
+	mdss_te_default: mdss-te-default-state {
+		pins = "gpio10";
+		function = "mdp_vsync";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	mdss_te_sleep: mdss-te-sleep-state {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pins = "gpio10";
 		function = "mdp_vsync";
 		drive-strength = <2>;

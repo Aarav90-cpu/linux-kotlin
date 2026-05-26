@@ -91,7 +91,11 @@ struct opt3001_chip_info {
 	 */
 	int factor_integer;
 	/*
+<<<<<<< HEAD
 	 * Factor used to align decimal part of processed value to six decimal
+=======
+	 * Factor used to align decimal part of proccessed value to six decimal
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * places.
 	 */
 	int factor_decimal;

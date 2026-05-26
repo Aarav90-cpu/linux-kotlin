@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -316,7 +320,12 @@ lpfc_defer_plogi_acc(struct lpfc_hba *phba, LPFC_MBOXQ_t *login_mbox)
 	struct lpfc_iocbq *save_iocb;
 	struct lpfc_nodelist *ndlp;
 	MAILBOX_t *mb = &login_mbox->u.mb;
+<<<<<<< HEAD
 	int rc = 0;
+=======
+
+	int rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ndlp = login_mbox->ctx_ndlp;
 	save_iocb = login_mbox->ctx_u.save_iocb;
@@ -345,7 +354,11 @@ lpfc_defer_plogi_acc(struct lpfc_hba *phba, LPFC_MBOXQ_t *login_mbox)
 	 * completes.  This ensures, in Pt2Pt, that the PLOGI LS_ACC is sent
 	 * before the PRLI.
 	 */
+<<<<<<< HEAD
 	if (!test_bit(FC_PT2PT, &ndlp->vport->fc_flag) || mb->mbxStatus || rc) {
+=======
+	if (!test_bit(FC_PT2PT, &ndlp->vport->fc_flag)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Now process the REG_RPI cmpl */
 		lpfc_mbx_cmpl_reg_login(phba, login_mbox);
 		clear_bit(NLP_ACC_REGLOGIN, &ndlp->nlp_flag);
@@ -524,6 +537,7 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 		/* Issue CONFIG_LINK for SLI3 or REG_VFI for SLI4,
 		 * to account for updated TOV's / parameters
 		 */
+<<<<<<< HEAD
 		if (phba->sli_rev == LPFC_SLI_REV4) {
 			rc = lpfc_issue_reg_vfi(vport);
 		} else {
@@ -531,6 +545,15 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 						  GFP_KERNEL);
 			if (!link_mbox)
 				goto rsp_rjt;
+=======
+		if (phba->sli_rev == LPFC_SLI_REV4)
+			lpfc_issue_reg_vfi(vport);
+		else {
+			link_mbox = mempool_alloc(phba->mbox_mem_pool,
+						  GFP_KERNEL);
+			if (!link_mbox)
+				goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			lpfc_config_link(phba, link_mbox);
 			link_mbox->mbox_cmpl = lpfc_sli_def_mbox_cmpl;
 			link_mbox->vport = vport;
@@ -543,13 +566,20 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 			rc = lpfc_sli_issue_mbox(phba, link_mbox, MBX_NOWAIT);
 			if (rc == MBX_NOT_FINISHED) {
 				mempool_free(link_mbox, phba->mbox_mem_pool);
+<<<<<<< HEAD
 				goto rsp_rjt;
+=======
+				goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 		}
 
 		lpfc_can_disctmo(vport);
+<<<<<<< HEAD
 		if (rc)
 			goto rsp_rjt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	clear_bit(NLP_SUPPRESS_RSP, &ndlp->nlp_flag);
@@ -563,11 +593,19 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 
 	login_mbox = mempool_alloc(phba->mbox_mem_pool, GFP_KERNEL);
 	if (!login_mbox)
+<<<<<<< HEAD
 		goto rsp_rjt;
 
 	save_iocb = kzalloc_obj(*save_iocb);
 	if (!save_iocb)
 		goto free_login_mbox;
+=======
+		goto out;
+
+	save_iocb = kzalloc_obj(*save_iocb);
+	if (!save_iocb)
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Save info from cmd IOCB to be used in rsp after all mbox completes */
 	memcpy((uint8_t *)save_iocb, (uint8_t *)cmdiocb,
@@ -587,7 +625,11 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 	rc = lpfc_reg_rpi(phba, vport->vpi, remote_did,
 			    (uint8_t *)sp, login_mbox, ndlp->nlp_rpi);
 	if (rc)
+<<<<<<< HEAD
 		goto free_save_iocb;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	login_mbox->mbox_cmpl = lpfc_mbx_cmpl_reg_login;
 	login_mbox->vport = vport;
@@ -660,7 +702,11 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 	login_mbox->mbox_cmpl = lpfc_defer_plogi_acc;
 	login_mbox->ctx_ndlp = lpfc_nlp_get(ndlp);
 	if (!login_mbox->ctx_ndlp)
+<<<<<<< HEAD
 		goto free_save_iocb;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	login_mbox->ctx_u.save_iocb = save_iocb; /* For PLOGI ACC */
 
@@ -671,17 +717,29 @@ lpfc_rcv_plogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 	rc = lpfc_sli_issue_mbox(phba, login_mbox, MBX_NOWAIT);
 	if (rc == MBX_NOT_FINISHED) {
 		lpfc_nlp_put(ndlp);
+<<<<<<< HEAD
 		goto free_save_iocb;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	lpfc_nlp_set_state(vport, ndlp, NLP_STE_REG_LOGIN_ISSUE);
 
 	return 1;
+<<<<<<< HEAD
 
 free_save_iocb:
 	kfree(save_iocb);
 free_login_mbox:
 	mempool_free(login_mbox, phba->mbox_mem_pool);
 rsp_rjt:
+=======
+out:
+	kfree(save_iocb);
+	if (login_mbox)
+		mempool_free(login_mbox, phba->mbox_mem_pool);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	stat.un.b.lsRjtRsnCode = LSRJT_UNABLE_TPC;
 	stat.un.b.lsRjtRsnCodeExp = LSEXP_OUT_OF_RESOURCE;
 	lpfc_els_rsp_reject(vport, stat.un.lsRjtError, cmdiocb, ndlp, NULL);

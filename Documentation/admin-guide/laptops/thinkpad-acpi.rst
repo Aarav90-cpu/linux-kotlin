@@ -1522,6 +1522,7 @@ Currently 2 antenna types are supported as mentioned below:
 The property is read-only. If the platform doesn't have support the sysfs
 class is not created.
 
+<<<<<<< HEAD
 doubletap_enable
 ----------------
 
@@ -1543,6 +1544,8 @@ Values:
 
 	This setting can also be toggled via the Fn+doubletap hotkey.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Auxmac
 ------
 

@@ -29,7 +29,11 @@
 #include <linux/string.h>
 #include <linux/buffer_head.h>
 #include <linux/writeback.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mpage.h>
 #include <linux/rmap.h>
 #include <linux/namei.h>
@@ -195,9 +199,13 @@ void ext4_evict_inode(struct inode *inode)
 			ext4_warning_inode(inode, "data will be lost");
 
 		truncate_inode_pages_final(&inode->i_data);
+<<<<<<< HEAD
 		/* Avoid mballoc special inode which has no proper iops */
 		if (!EXT4_SB(inode->i_sb)->s_journal)
 			mmb_sync(&EXT4_I(inode)->i_metadata_bhs);
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto no_delete;
 	}
 
@@ -274,7 +282,11 @@ void ext4_evict_inode(struct inode *inode)
 		err = ext4_truncate(inode);
 		if (err) {
 			ext4_error_err(inode->i_sb, -err,
+<<<<<<< HEAD
 				       "couldn't truncate inode %llu (err %d)",
+=======
+				       "couldn't truncate inode %lu (err %d)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       inode->i_ino, err);
 			goto stop_handle;
 		}
@@ -354,7 +366,11 @@ void ext4_da_update_reserve_space(struct inode *inode,
 	spin_lock(&ei->i_block_reservation_lock);
 	trace_ext4_da_update_reserve_space(inode, used, quota_claim);
 	if (unlikely(used > ei->i_reserved_data_blocks)) {
+<<<<<<< HEAD
 		ext4_warning(inode->i_sb, "%s: ino %llu, used %d "
+=======
+		ext4_warning(inode->i_sb, "%s: ino %lu, used %d "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "with only %d reserved data blocks",
 			 __func__, inode->i_ino, used,
 			 ei->i_reserved_data_blocks);
@@ -417,10 +433,14 @@ int ext4_issue_zeroout(struct inode *inode, ext4_lblk_t lblk, ext4_fsblk_t pblk,
 	KUNIT_STATIC_STUB_REDIRECT(ext4_issue_zeroout, inode, lblk, pblk, len);
 
 	if (IS_ENCRYPTED(inode) && S_ISREG(inode->i_mode))
+<<<<<<< HEAD
 		return fscrypt_zeroout_range(inode,
 				(loff_t)lblk << inode->i_blkbits,
 				pblk << (inode->i_blkbits - SECTOR_SHIFT),
 				(u64)len << inode->i_blkbits);
+=======
+		return fscrypt_zeroout_range(inode, lblk, pblk, len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = sb_issue_zeroout(inode->i_sb, pblk, len, GFP_NOFS);
 	if (ret > 0)
@@ -490,7 +510,11 @@ static void ext4_map_blocks_es_recheck(handle_t *handle,
 	if (es_map->m_lblk != map->m_lblk ||
 	    es_map->m_flags != map->m_flags ||
 	    es_map->m_pblk != map->m_pblk) {
+<<<<<<< HEAD
 		printk("ES cache assertion failed for inode: %llu "
+=======
+		printk("ES cache assertion failed for inode: %lu "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       "es_cached ex [%d/%d/%llu/%x] != "
 		       "found ex [%d/%d/%llu/%x] retval %d flags %x\n",
 		       inode->i_ino, es_map->m_lblk, es_map->m_len,
@@ -530,7 +554,11 @@ static int ext4_map_query_blocks_next_in_leaf(handle_t *handle,
 	if (unlikely(retval != map2.m_len)) {
 		ext4_warning(inode->i_sb,
 			     "ES len assertion failed for inode "
+<<<<<<< HEAD
 			     "%llu: retval %d != map->m_len %d",
+=======
+			     "%lu: retval %d != map->m_len %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     inode->i_ino, retval, map2.m_len);
 		WARN_ON(1);
 	}
@@ -578,7 +606,11 @@ int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
 	if (unlikely(retval != map->m_len)) {
 		ext4_warning(inode->i_sb,
 			     "ES len assertion failed for inode "
+<<<<<<< HEAD
 			     "%llu: retval %d != map->m_len %d",
+=======
+			     "%lu: retval %d != map->m_len %d",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     inode->i_ino, retval, map->m_len);
 		WARN_ON(1);
 	}
@@ -645,7 +677,11 @@ int ext4_map_create_blocks(handle_t *handle, struct inode *inode,
 
 	if (unlikely(retval != map->m_len)) {
 		ext4_warning(inode->i_sb,
+<<<<<<< HEAD
 			     "ES len assertion failed for inode %llu: "
+=======
+			     "ES len assertion failed for inode %lu: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     "retval %d != map->m_len %d",
 			     inode->i_ino, retval, map->m_len);
 		WARN_ON(1);
@@ -952,7 +988,11 @@ int ext4_get_block_unwritten(struct inode *inode, sector_t iblock,
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	ext4_debug("ext4_get_block_unwritten: inode %llu, create flag %d\n",
+=======
+	ext4_debug("ext4_get_block_unwritten: inode %lu, create flag %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   inode->i_ino, create);
 	ret = _ext4_get_block(inode, iblock, bh_result,
 			       EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT);
@@ -1435,6 +1475,12 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
 /*
  * We need to pick up the new inode size which generic_commit_write gave us
  * `iocb` can be NULL - eg, when called from page_symlink().
+<<<<<<< HEAD
+=======
+ *
+ * ext4 never places buffers on inode->i_mapping->i_private_list.  metadata
+ * buffers are managed internally.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int ext4_write_end(const struct kiocb *iocb,
 			  struct address_space *mapping,
@@ -1468,9 +1514,16 @@ static int ext4_write_end(const struct kiocb *iocb,
 	folio_unlock(folio);
 	folio_put(folio);
 
+<<<<<<< HEAD
 	if (old_size < pos && !verity)
 		pagecache_isize_extended(inode, old_size, pos);
 
+=======
+	if (old_size < pos && !verity) {
+		pagecache_isize_extended(inode, old_size, pos);
+		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Don't mark the inode dirty under folio lock. First, it unnecessarily
 	 * makes the holding time of folio lock longer. Second, it forces lock
@@ -1585,8 +1638,15 @@ static int ext4_journalled_write_end(const struct kiocb *iocb,
 	folio_unlock(folio);
 	folio_put(folio);
 
+<<<<<<< HEAD
 	if (old_size < pos && !verity)
 		pagecache_isize_extended(inode, old_size, pos);
+=======
+	if (old_size < pos && !verity) {
+		pagecache_isize_extended(inode, old_size, pos);
+		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (size_changed) {
 		ret2 = ext4_mark_inode_dirty(handle, inode);
@@ -1668,7 +1728,11 @@ void ext4_da_release_space(struct inode *inode, int to_free)
 		 * harmless to return without any action.
 		 */
 		ext4_warning(inode->i_sb, "ext4_da_release_space: "
+<<<<<<< HEAD
 			 "ino %llu, to_free %d with only %d reserved "
+=======
+			 "ino %lu, to_free %d with only %d reserved "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 "data blocks", inode->i_ino, to_free,
 			 ei->i_reserved_data_blocks);
 		WARN_ON(1);
@@ -1756,6 +1820,7 @@ static void mpage_release_unused_pages(struct mpage_da_data *mpd,
 			BUG_ON(!folio_test_locked(folio));
 			BUG_ON(folio_test_writeback(folio));
 			if (invalidate) {
+<<<<<<< HEAD
 				if (folio_mapped(folio)) {
 					folio_clear_dirty_for_io(folio);
 					/*
@@ -1772,6 +1837,10 @@ static void mpage_release_unused_pages(struct mpage_da_data *mpd,
 						folio->index,
 						folio_nr_pages(folio), false);
 				}
+=======
+				if (folio_mapped(folio))
+					folio_clear_dirty_for_io(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				block_invalidate_folio(folio, 0,
 						folio_size(folio));
 				folio_clear_uptodate(folio);
@@ -2514,7 +2583,11 @@ static int mpage_map_and_submit_extent(handle_t *handle,
 			}
 			ext4_msg(sb, KERN_CRIT,
 				 "Delayed block allocation failed for "
+<<<<<<< HEAD
 				 "inode %llu at logical offset %llu with"
+=======
+				 "inode %lu at logical offset %llu with"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 " max blocks %u with error %d",
 				 inode->i_ino,
 				 (unsigned long long)map->m_lblk,
@@ -2558,7 +2631,11 @@ update_disksize:
 		err2 = ext4_mark_inode_dirty(handle, inode);
 		if (err2) {
 			ext4_error_err(inode->i_sb, -err2,
+<<<<<<< HEAD
 				       "Failed to mark inode %llu dirty",
+=======
+				       "Failed to mark inode %lu dirty",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       inode->i_ino);
 		}
 		if (!err)
@@ -2932,7 +3009,11 @@ retry:
 		if (IS_ERR(handle)) {
 			ret = PTR_ERR(handle);
 			ext4_msg(inode->i_sb, KERN_CRIT, "%s: jbd2_start: "
+<<<<<<< HEAD
 			       "%ld pages, ino %llu; err %d", __func__,
+=======
+			       "%ld pages, ino %lu; err %d", __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				wbc->nr_to_write, inode->i_ino, ret);
 			/* Release allocated io_end */
 			ext4_put_io_end(mpd->io_submit.io_end);
@@ -3054,16 +3135,25 @@ static int ext4_writepages(struct address_space *mapping,
 
 int ext4_normal_submit_inode_data_buffers(struct jbd2_inode *jinode)
 {
+<<<<<<< HEAD
 	loff_t range_start, range_end;
 	struct writeback_control wbc = {
 		.sync_mode = WB_SYNC_ALL,
 		.nr_to_write = LONG_MAX,
+=======
+	struct writeback_control wbc = {
+		.sync_mode = WB_SYNC_ALL,
+		.nr_to_write = LONG_MAX,
+		.range_start = jinode->i_dirty_start,
+		.range_end = jinode->i_dirty_end,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	struct mpage_da_data mpd = {
 		.inode = jinode->i_vfs_inode,
 		.wbc = &wbc,
 		.can_map = 0,
 	};
+<<<<<<< HEAD
 
 	if (!jbd2_jinode_get_dirty_range(jinode, &range_start, &range_end))
 		return 0;
@@ -3071,6 +3161,8 @@ int ext4_normal_submit_inode_data_buffers(struct jbd2_inode *jinode)
 	wbc.range_start = range_start;
 	wbc.range_end = range_end;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ext4_do_writepages(&mpd);
 }
 
@@ -3225,7 +3317,11 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	struct inode *inode = mapping->host;
 	loff_t old_size = inode->i_size;
 	bool disksize_changed = false;
+<<<<<<< HEAD
 	loff_t new_i_size;
+=======
+	loff_t new_i_size, zero_len = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	handle_t *handle;
 
 	if (unlikely(!folio_buffers(folio))) {
@@ -3269,6 +3365,7 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	folio_unlock(folio);
 	folio_put(folio);
 
+<<<<<<< HEAD
 	if (pos > old_size)
 		pagecache_isize_extended(inode, old_size, pos);
 
@@ -3278,6 +3375,21 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	handle = ext4_journal_start(inode, EXT4_HT_INODE, 1);
 	if (IS_ERR(handle))
 		return PTR_ERR(handle);
+=======
+	if (pos > old_size) {
+		pagecache_isize_extended(inode, old_size, pos);
+		zero_len = pos - old_size;
+	}
+
+	if (!disksize_changed && !zero_len)
+		return copied;
+
+	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+	if (IS_ERR(handle))
+		return PTR_ERR(handle);
+	if (zero_len)
+		ext4_zero_partial_blocks(handle, inode, old_size, zero_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ext4_mark_inode_dirty(handle, inode);
 	ext4_journal_stop(handle);
 
@@ -3462,7 +3574,11 @@ static bool ext4_inode_datasync_dirty(struct inode *inode)
 	}
 
 	/* Any metadata buffers to write? */
+<<<<<<< HEAD
 	if (mmb_has_buffers(&EXT4_I(inode)->i_metadata_bhs))
+=======
+	if (!list_empty(&inode->i_mapping->i_private_list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	return inode_state_read_once(inode) & I_DIRTY_DATASYNC;
 }
@@ -4027,11 +4143,20 @@ void ext4_set_aops(struct inode *inode)
  * ext4_punch_hole, etc) which needs to be properly zeroed out. Otherwise a
  * racing writeback can come later and flush the stale pagecache to disk.
  */
+<<<<<<< HEAD
 static struct buffer_head *ext4_load_tail_bh(struct inode *inode, loff_t from)
 {
 	unsigned int offset, blocksize, pos;
 	ext4_lblk_t iblock;
 	struct address_space *mapping = inode->i_mapping;
+=======
+static int __ext4_block_zero_page_range(handle_t *handle,
+		struct address_space *mapping, loff_t from, loff_t length)
+{
+	unsigned int offset, blocksize, pos;
+	ext4_lblk_t iblock;
+	struct inode *inode = mapping->host;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct buffer_head *bh;
 	struct folio *folio;
 	int err = 0;
@@ -4040,7 +4165,11 @@ static struct buffer_head *ext4_load_tail_bh(struct inode *inode, loff_t from)
 				    FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
 				    mapping_gfp_constraint(mapping, ~__GFP_FS));
 	if (IS_ERR(folio))
+<<<<<<< HEAD
 		return ERR_CAST(folio);
+=======
+		return PTR_ERR(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	blocksize = inode->i_sb->s_blocksize;
 
@@ -4092,11 +4221,38 @@ static struct buffer_head *ext4_load_tail_bh(struct inode *inode, loff_t from)
 			}
 		}
 	}
+<<<<<<< HEAD
 	return bh;
+=======
+	if (ext4_should_journal_data(inode)) {
+		BUFFER_TRACE(bh, "get write access");
+		err = ext4_journal_get_write_access(handle, inode->i_sb, bh,
+						    EXT4_JTR_NONE);
+		if (err)
+			goto unlock;
+	}
+	folio_zero_range(folio, offset, length);
+	BUFFER_TRACE(bh, "zeroed end of block");
+
+	if (ext4_should_journal_data(inode)) {
+		err = ext4_dirty_journalled_data(handle, bh);
+	} else {
+		mark_buffer_dirty(bh);
+		/*
+		 * Only the written block requires ordered data to prevent
+		 * exposing stale data.
+		 */
+		if (!buffer_unwritten(bh) && !buffer_delay(bh) &&
+		    ext4_should_order_data(inode))
+			err = ext4_jbd2_inode_add_write(handle, inode, from,
+					length);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unlock:
 	folio_unlock(folio);
 	folio_put(folio);
+<<<<<<< HEAD
 	return err ? ERR_PTR(err) : NULL;
 }
 
@@ -4165,10 +4321,13 @@ out:
 	folio_put(folio);
 out_handle:
 	ext4_journal_stop(handle);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
 /*
+<<<<<<< HEAD
  * Zeros out a mapping of length 'length' starting from file offset
  * 'from'.  The range to be zero'd must be contained with in one block.
  * If the specified range exceeds the end of the block it will be
@@ -4178,6 +4337,18 @@ static int ext4_block_zero_range(struct inode *inode,
 				 loff_t from, loff_t length, bool *did_zero,
 				 bool *zero_written)
 {
+=======
+ * ext4_block_zero_page_range() zeros out a mapping of length 'length'
+ * starting from file offset 'from'.  The range to be zero'd must
+ * be contained with in one block.  If the specified range exceeds
+ * the end of the block it will be shortened to end of the block
+ * that corresponds to 'from'
+ */
+static int ext4_block_zero_page_range(handle_t *handle,
+		struct address_space *mapping, loff_t from, loff_t length)
+{
+	struct inode *inode = mapping->host;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned blocksize = inode->i_sb->s_blocksize;
 	unsigned int max = blocksize - (from & (blocksize - 1));
 
@@ -4189,6 +4360,7 @@ static int ext4_block_zero_range(struct inode *inode,
 		length = max;
 
 	if (IS_DAX(inode)) {
+<<<<<<< HEAD
 		return dax_zero_range(inode, from, length, did_zero,
 				      &ext4_iomap_ops);
 	} else if (ext4_should_journal_data(inode)) {
@@ -4218,10 +4390,32 @@ int ext4_block_zero_eof(struct inode *inode, loff_t from, loff_t end)
 	offset = from & (blocksize - 1);
 	if (!offset || from >= end)
 		return 0;
+=======
+		return dax_zero_range(inode, from, length, NULL,
+				      &ext4_iomap_ops);
+	}
+	return __ext4_block_zero_page_range(handle, mapping, from, length);
+}
+
+/*
+ * ext4_block_truncate_page() zeroes out a mapping from file offset `from'
+ * up to the end of the block which corresponds to `from'.
+ * This required during truncate. We need to physically zero the tail end
+ * of that block so it doesn't yield old data if the file is later grown.
+ */
+static int ext4_block_truncate_page(handle_t *handle,
+		struct address_space *mapping, loff_t from)
+{
+	unsigned length;
+	unsigned blocksize;
+	struct inode *inode = mapping->host;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If we are processing an encrypted inode during orphan list handling */
 	if (IS_ENCRYPTED(inode) && !fscrypt_has_encryption_key(inode))
 		return 0;
 
+<<<<<<< HEAD
 	if (length > blocksize - offset)
 		length = blocksize - offset;
 
@@ -4256,6 +4450,19 @@ int ext4_zero_partial_blocks(struct inode *inode, loff_t lstart, loff_t length,
 			     bool *did_zero)
 {
 	struct super_block *sb = inode->i_sb;
+=======
+	blocksize = i_blocksize(inode);
+	length = blocksize - (from & (blocksize - 1));
+
+	return ext4_block_zero_page_range(handle, mapping, from, length);
+}
+
+int ext4_zero_partial_blocks(handle_t *handle, struct inode *inode,
+			     loff_t lstart, loff_t length)
+{
+	struct super_block *sb = inode->i_sb;
+	struct address_space *mapping = inode->i_mapping;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned partial_start, partial_end;
 	ext4_fsblk_t start, end;
 	loff_t byte_end = (lstart + length - 1);
@@ -4270,21 +4477,37 @@ int ext4_zero_partial_blocks(struct inode *inode, loff_t lstart, loff_t length,
 	/* Handle partial zero within the single block */
 	if (start == end &&
 	    (partial_start || (partial_end != sb->s_blocksize - 1))) {
+<<<<<<< HEAD
 		err = ext4_block_zero_range(inode, lstart, length, did_zero,
 					    NULL);
+=======
+		err = ext4_block_zero_page_range(handle, mapping,
+						 lstart, length);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 	/* Handle partial zero out on the start of the range */
 	if (partial_start) {
+<<<<<<< HEAD
 		err = ext4_block_zero_range(inode, lstart, sb->s_blocksize,
 					    did_zero, NULL);
+=======
+		err = ext4_block_zero_page_range(handle, mapping,
+						 lstart, sb->s_blocksize);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}
 	/* Handle partial zero out on the end of the range */
 	if (partial_end != sb->s_blocksize - 1)
+<<<<<<< HEAD
 		err = ext4_block_zero_range(inode, byte_end - partial_end,
 					    partial_end + 1, did_zero, NULL);
+=======
+		err = ext4_block_zero_page_range(handle, mapping,
+						 byte_end - partial_end,
+						 partial_end + 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -4433,7 +4656,10 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 	loff_t end = offset + length;
 	handle_t *handle;
 	unsigned int credits;
+<<<<<<< HEAD
 	bool partial_zeroed = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	trace_ext4_punch_hole(inode, offset, length, 0);
@@ -4460,6 +4686,20 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 		end = max_end;
 	length = end - offset;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Attach jinode to inode for jbd2 if we do any zeroing of partial
+	 * block.
+	 */
+	if (!IS_ALIGNED(offset | end, sb->s_blocksize)) {
+		ret = ext4_inode_attach_jinode(inode);
+		if (ret < 0)
+			return ret;
+	}
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ext4_update_disksize_before_punch(inode, offset, length);
 	if (ret)
 		return ret;
@@ -4469,6 +4709,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = ext4_zero_partial_blocks(inode, offset, length, &partial_zeroed);
 	if (ret)
 		return ret;
@@ -4481,6 +4722,10 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 
 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
 		credits = ext4_chunk_trans_extent(inode, 0);
+=======
+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+		credits = ext4_chunk_trans_extent(inode, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		credits = ext4_blocks_for_truncate(inode);
 	handle = ext4_journal_start(inode, EXT4_HT_TRUNCATE, credits);
@@ -4490,6 +4735,13 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = ext4_zero_partial_blocks(handle, inode, offset, length);
+	if (ret)
+		goto out_handle;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If there are blocks to remove, do it */
 	start_lblk = EXT4_B_TO_LBLK(inode, offset);
 	end_lblk = end >> inode->i_blkbits;
@@ -4526,7 +4778,11 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 		goto out_handle;
 
 	ext4_update_inode_fsync_trans(handle, inode, 1);
+<<<<<<< HEAD
 	if ((file->f_flags & O_SYNC) || IS_SYNC(inode))
+=======
+	if (IS_SYNC(inode))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ext4_handle_sync(handle);
 out_handle:
 	ext4_journal_stop(handle);
@@ -4597,6 +4853,10 @@ int ext4_truncate(struct inode *inode)
 	unsigned int credits;
 	int err = 0, err2;
 	handle_t *handle;
+<<<<<<< HEAD
+=======
+	struct address_space *mapping = inode->i_mapping;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * There is a possibility that we're either freeing the inode
@@ -4626,11 +4886,14 @@ int ext4_truncate(struct inode *inode)
 		err = ext4_inode_attach_jinode(inode);
 		if (err)
 			goto out_trace;
+<<<<<<< HEAD
 
 		/* Zero to the end of the block containing i_size */
 		err = ext4_block_zero_eof(inode, inode->i_size, LLONG_MAX);
 		if (err)
 			goto out_trace;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
@@ -4644,6 +4907,12 @@ int ext4_truncate(struct inode *inode)
 		goto out_trace;
 	}
 
+<<<<<<< HEAD
+=======
+	if (inode->i_size & (inode->i_sb->s_blocksize - 1))
+		ext4_block_truncate_page(handle, mapping, inode->i_size);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * We add the inode to the orphan list, so that if this
 	 * truncate spans multiple transactions, and we crash, we will
@@ -6013,6 +6282,7 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 					goto out_mmap_sem;
 			}
 
+<<<<<<< HEAD
 			/*
 			 * Update c/mtime and tail zero the EOF folio on
 			 * truncate up. ext4_truncate() handles the shrink case
@@ -6029,6 +6299,8 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 				}
 			}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			handle = ext4_journal_start(inode, EXT4_HT_INODE, 3);
 			if (IS_ERR(handle)) {
 				error = PTR_ERR(handle);
@@ -6038,6 +6310,21 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 				error = ext4_orphan_add(handle, inode);
 				orphan = 1;
 			}
+<<<<<<< HEAD
+=======
+			/*
+			 * Update c/mtime and tail zero the EOF folio on
+			 * truncate up. ext4_truncate() handles the shrink case
+			 * below.
+			 */
+			if (!shrink) {
+				inode_set_mtime_to_ts(inode,
+						      inode_set_ctime_current(inode));
+				if (oldsize & (inode->i_sb->s_blocksize - 1))
+					ext4_block_truncate_page(handle,
+							inode->i_mapping, oldsize);
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (shrink)
 				ext4_fc_track_range(handle, inode,

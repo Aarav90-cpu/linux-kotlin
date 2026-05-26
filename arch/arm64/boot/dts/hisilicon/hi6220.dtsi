@@ -799,7 +799,11 @@
 			#mbox-cells = <3>;
 		};
 
+<<<<<<< HEAD
 		dwmmc_0: mmc@f723d000 {
+=======
+		dwmmc_0: dwmmc0@f723d000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "hisilicon,hi6220-dw-mshc";
 			reg = <0x0 0xf723d000 0x0 0x1000>;
 			interrupts = <0x0 0x48 0x4>;
@@ -812,7 +816,11 @@
 				     &emmc_cfg_func &emmc_rst_cfg_func>;
 		};
 
+<<<<<<< HEAD
 		dwmmc_1: mmc@f723e000 {
+=======
+		dwmmc_1: dwmmc1@f723e000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "hisilicon,hi6220-dw-mshc";
 			hisilicon,peripheral-syscon = <&ao_ctrl>;
 			reg = <0x0 0xf723e000 0x0 0x1000>;
@@ -828,7 +836,11 @@
 			pinctrl-1 = <&sd_pmx_idle &sd_clk_cfg_idle &sd_cfg_idle>;
 		};
 
+<<<<<<< HEAD
 		dwmmc_2: mmc@f723f000 {
+=======
+		dwmmc_2: dwmmc2@f723f000 {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "hisilicon,hi6220-dw-mshc";
 			reg = <0x0 0xf723f000 0x0 0x1000>;
 			interrupts = <0x0 0x4a 0x4>;

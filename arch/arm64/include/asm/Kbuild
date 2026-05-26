@@ -17,5 +17,8 @@ generic-y += parport.h
 generic-y += user.h
 
 generated-y += cpucap-defs.h
+<<<<<<< HEAD
 generated-y += kernel-hwcap.h
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 generated-y += sysreg-defs.h

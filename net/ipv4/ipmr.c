@@ -102,8 +102,12 @@ static DEFINE_SPINLOCK(mfc_unres_lock);
 static struct kmem_cache *mrt_cachep __ro_after_init;
 
 static struct mr_table *ipmr_new_table(struct net *net, u32 id);
+<<<<<<< HEAD
 static void ipmr_free_table(struct mr_table *mrt,
 			    struct list_head *dev_kill_list);
+=======
+static void ipmr_free_table(struct mr_table *mrt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void ip_mr_forward(struct net *net, struct mr_table *mrt,
 			  struct net_device *dev, struct sk_buff *skb,
@@ -113,8 +117,12 @@ static int ipmr_cache_report(const struct mr_table *mrt,
 static void mroute_netlink_event(struct mr_table *mrt, struct mfc_cache *mfc,
 				 int cmd);
 static void igmpmsg_netlink_event(const struct mr_table *mrt, struct sk_buff *pkt);
+<<<<<<< HEAD
 static void mroute_clean_tables(struct mr_table *mrt, int flags,
 				struct list_head *dev_kill_list);
+=======
+static void mroute_clean_tables(struct mr_table *mrt, int flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void ipmr_expire_process(struct timer_list *t);
 
 #ifdef CONFIG_IP_MROUTE_MULTIPLE_TABLES
@@ -151,6 +159,19 @@ static struct mr_table *__ipmr_get_table(struct net *net, u32 id)
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+{
+	struct mr_table *mrt;
+
+	rcu_read_lock();
+	mrt = __ipmr_get_table(net, id);
+	rcu_read_unlock();
+	return mrt;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
 			   struct mr_table **mrt)
 {
@@ -242,7 +263,10 @@ static const struct fib_rules_ops __net_initconst ipmr_rules_ops_template = {
 static int __net_init ipmr_rules_init(struct net *net)
 {
 	struct fib_rules_ops *ops;
+<<<<<<< HEAD
 	LIST_HEAD(dev_kill_list);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mr_table *mrt;
 	int err;
 
@@ -266,7 +290,13 @@ static int __net_init ipmr_rules_init(struct net *net)
 	return 0;
 
 err2:
+<<<<<<< HEAD
 	ipmr_free_table(mrt, &dev_kill_list);
+=======
+	rtnl_lock();
+	ipmr_free_table(mrt);
+	rtnl_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err1:
 	fib_rules_unregister(ops);
 	return err;
@@ -274,6 +304,7 @@ err1:
 
 static void __net_exit ipmr_rules_exit(struct net *net)
 {
+<<<<<<< HEAD
 	fib_rules_unregister(net->ipv4.mr_rules_ops);
 }
 
@@ -286,6 +317,16 @@ static void __net_exit ipmr_rules_exit_rtnl(struct net *net,
 		list_del_rcu(&mrt->list);
 		ipmr_free_table(mrt, dev_kill_list);
 	}
+=======
+	struct mr_table *mrt, *next;
+
+	ASSERT_RTNL();
+	list_for_each_entry_safe(mrt, next, &net->ipv4.mr_tables, list) {
+		list_del(&mrt->list);
+		ipmr_free_table(mrt);
+	}
+	fib_rules_unregister(net->ipv4.mr_rules_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ipmr_rules_dump(struct net *net, struct notifier_block *nb,
@@ -305,10 +346,17 @@ bool ipmr_rule_default(const struct fib_rule *rule)
 }
 EXPORT_SYMBOL(ipmr_rule_default);
 #else
+<<<<<<< HEAD
+=======
+#define ipmr_for_each_table(mrt, net) \
+	for (mrt = net->ipv4.mrt; mrt; mrt = NULL)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct mr_table *ipmr_mr_table_iter(struct net *net,
 					   struct mr_table *mrt)
 {
 	if (!mrt)
+<<<<<<< HEAD
 		return rcu_dereference(net->ipv4.mrt);
 	return NULL;
 }
@@ -322,13 +370,29 @@ static struct mr_table *__ipmr_get_table(struct net *net, u32 id)
 
 #define ipmr_for_each_table(mrt, net)				\
 	for (mrt = __ipmr_get_table(net, 0); mrt; mrt = NULL)
+=======
+		return net->ipv4.mrt;
+	return NULL;
+}
+
+static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+{
+	return net->ipv4.mrt;
+}
+
+#define __ipmr_get_table ipmr_get_table
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
 			   struct mr_table **mrt)
 {
+<<<<<<< HEAD
 	*mrt = rcu_dereference(net->ipv4.mrt);
 	if (!*mrt)
 		return -EAGAIN;
+=======
+	*mrt = net->ipv4.mrt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -339,13 +403,18 @@ static int __net_init ipmr_rules_init(struct net *net)
 	mrt = ipmr_new_table(net, RT_TABLE_DEFAULT);
 	if (IS_ERR(mrt))
 		return PTR_ERR(mrt);
+<<<<<<< HEAD
 
 	rcu_assign_pointer(net->ipv4.mrt, mrt);
+=======
+	net->ipv4.mrt = mrt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static void __net_exit ipmr_rules_exit(struct net *net)
 {
+<<<<<<< HEAD
 }
 
 static void __net_exit ipmr_rules_exit_rtnl(struct net *net,
@@ -355,6 +424,11 @@ static void __net_exit ipmr_rules_exit_rtnl(struct net *net,
 
 	RCU_INIT_POINTER(net->ipv4.mrt, NULL);
 	ipmr_free_table(mrt, dev_kill_list);
+=======
+	ASSERT_RTNL();
+	ipmr_free_table(net->ipv4.mrt);
+	net->ipv4.mrt = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ipmr_rules_dump(struct net *net, struct notifier_block *nb,
@@ -375,6 +449,7 @@ bool ipmr_rule_default(const struct fib_rule *rule)
 EXPORT_SYMBOL(ipmr_rule_default);
 #endif
 
+<<<<<<< HEAD
 static struct mr_table *ipmr_get_table(struct net *net, u32 id)
 {
 	struct mr_table *mrt;
@@ -386,6 +461,8 @@ static struct mr_table *ipmr_get_table(struct net *net, u32 id)
 	return mrt;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int ipmr_hash_cmp(struct rhashtable_compare_arg *arg,
 				const void *ptr)
 {
@@ -439,6 +516,7 @@ static struct mr_table *ipmr_new_table(struct net *net, u32 id)
 			      ipmr_expire_process, ipmr_new_table_set);
 }
 
+<<<<<<< HEAD
 static void ipmr_free_table(struct mr_table *mrt, struct list_head *dev_kill_list)
 {
 	struct net *net = read_pnet(&mrt->net);
@@ -454,6 +532,19 @@ static void ipmr_free_table(struct mr_table *mrt, struct list_head *dev_kill_lis
 
 	WARN_ON_ONCE(!net_initialized(net) && !list_empty(&ipmr_dev_kill_list));
 	list_splice(&ipmr_dev_kill_list, dev_kill_list);
+=======
+static void ipmr_free_table(struct mr_table *mrt)
+{
+	struct net *net = read_pnet(&mrt->net);
+
+	WARN_ON_ONCE(!mr_can_free_table(net));
+
+	timer_shutdown_sync(&mrt->ipmr_expire_timer);
+	mroute_clean_tables(mrt, MRT_FLUSH_VIFS | MRT_FLUSH_VIFS_STATIC |
+				 MRT_FLUSH_MFC | MRT_FLUSH_MFC_STATIC);
+	rhltable_destroy(&mrt->mfc_hash);
+	kfree(mrt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Service routines creating virtual interfaces: DVMRP tunnels and PIMREG */
@@ -537,16 +628,25 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb, struct net_device *dev)
 	};
 	int err;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	err = ipmr_fib_lookup(net, &fl4, &mrt);
 	if (err < 0) {
 		rcu_read_unlock();
+=======
+	err = ipmr_fib_lookup(net, &fl4, &mrt);
+	if (err < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kfree_skb(skb);
 		return err;
 	}
 
 	DEV_STATS_ADD(dev, tx_bytes, skb->len);
 	DEV_STATS_INC(dev, tx_packets);
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Pairs with WRITE_ONCE() in vif_add() and vif_delete() */
 	ipmr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
@@ -1113,12 +1213,20 @@ static int ipmr_cache_report(const struct mr_table *mrt,
 		msg->im_vif_hi = vifi >> 8;
 		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
 		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+<<<<<<< HEAD
 		/* Add our header.
 		 * Note that code, csum and group fields are cleared.
 		 */
 		igmp = skb_put_zero(skb, sizeof(struct igmphdr));
 		igmp->type = assert;
 		msg->im_msgtype = assert;
+=======
+		/* Add our header */
+		igmp = skb_put(skb, sizeof(struct igmphdr));
+		igmp->type = assert;
+		msg->im_msgtype = assert;
+		igmp->code = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ip_hdr(skb)->tot_len = htons(skb->len);	/* Fix the length */
 		skb->transport_header = skb->network_header;
 	}
@@ -1141,19 +1249,27 @@ static int ipmr_cache_report(const struct mr_table *mrt,
 static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
 				 struct sk_buff *skb, struct net_device *dev)
 {
+<<<<<<< HEAD
 	struct net *net = read_pnet(&mrt->net);
 	const struct iphdr *iph = ip_hdr(skb);
 	struct mfc_cache *c = NULL;
+=======
+	const struct iphdr *iph = ip_hdr(skb);
+	struct mfc_cache *c;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool found = false;
 	int err;
 
 	spin_lock_bh(&mfc_unres_lock);
+<<<<<<< HEAD
 
 	if (!check_net(net)) {
 		err = -EINVAL;
 		goto err;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(c, &mrt->mfc_unres_queue, _c.list) {
 		if (c->mfc_mcastgrp == iph->daddr &&
 		    c->mfc_origin == iph->saddr) {
@@ -1166,8 +1282,15 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
 		/* Create a new entry if allowable */
 		c = ipmr_cache_alloc_unres();
 		if (!c) {
+<<<<<<< HEAD
 			err = -ENOBUFS;
 			goto err;
+=======
+			spin_unlock_bh(&mfc_unres_lock);
+
+			kfree_skb(skb);
+			return -ENOBUFS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* Fill in the new cache entry */
@@ -1177,8 +1300,22 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
 
 		/* Reflect first query at mrouted. */
 		err = ipmr_cache_report(mrt, skb, vifi, IGMPMSG_NOCACHE);
+<<<<<<< HEAD
 		if (err < 0)
 			goto err;
+=======
+
+		if (err < 0) {
+			/* If the report failed throw the cache entry
+			   out - Brad Parker
+			 */
+			spin_unlock_bh(&mfc_unres_lock);
+
+			ipmr_cache_free(c);
+			kfree_skb(skb);
+			return err;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		atomic_inc(&mrt->cache_resolve_queue_len);
 		list_add(&c->_c.list, &mrt->mfc_unres_queue);
@@ -1191,6 +1328,7 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
 
 	/* See if we can append the packet */
 	if (c->_c.mfc_un.unres.unresolved.qlen > 3) {
+<<<<<<< HEAD
 		c = NULL;
 		err = -ENOBUFS;
 		goto err;
@@ -1211,6 +1349,20 @@ err:
 	if (c)
 		ipmr_cache_free(c);
 	kfree_skb(skb);
+=======
+		kfree_skb(skb);
+		err = -ENOBUFS;
+	} else {
+		if (dev) {
+			skb->dev = dev;
+			skb->skb_iif = dev->ifindex;
+		}
+		skb_queue_tail(&c->_c.mfc_un.unres.unresolved, skb);
+		err = 0;
+	}
+
+	spin_unlock_bh(&mfc_unres_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -1221,6 +1373,10 @@ static int ipmr_mfc_delete(struct mr_table *mrt, struct mfcctl *mfc, int parent)
 	struct net *net = read_pnet(&mrt->net);
 	struct mfc_cache *c;
 
+<<<<<<< HEAD
+=======
+	/* The entries are added/deleted only under RTNL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	c = ipmr_cache_find_parent(mrt, mfc->mfcc_origin.s_addr,
 				   mfc->mfcc_mcastgrp.s_addr, parent);
@@ -1247,6 +1403,10 @@ static int ipmr_mfc_add(struct net *net, struct mr_table *mrt,
 	if (mfc->mfcc_parent >= MAXVIFS)
 		return -ENFILE;
 
+<<<<<<< HEAD
+=======
+	/* The entries are added/deleted only under RTNL */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_lock();
 	c = ipmr_cache_find_parent(mrt, mfc->mfcc_origin.s_addr,
 				   mfc->mfcc_mcastgrp.s_addr, parent);
@@ -1316,12 +1476,21 @@ static int ipmr_mfc_add(struct net *net, struct mr_table *mrt,
 }
 
 /* Close the multicast socket, and clear the vif tables etc */
+<<<<<<< HEAD
 static void mroute_clean_tables(struct mr_table *mrt, int flags,
 				struct list_head *dev_kill_list)
 {
 	struct net *net = read_pnet(&mrt->net);
 	struct mfc_cache *cache;
 	struct mr_mfc *c, *tmp;
+=======
+static void mroute_clean_tables(struct mr_table *mrt, int flags)
+{
+	struct net *net = read_pnet(&mrt->net);
+	struct mr_mfc *c, *tmp;
+	struct mfc_cache *cache;
+	LIST_HEAD(list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	/* Shut down all active vif entries */
@@ -1331,14 +1500,23 @@ static void mroute_clean_tables(struct mr_table *mrt, int flags,
 			     !(flags & MRT_FLUSH_VIFS_STATIC)) ||
 			    (!(mrt->vif_table[i].flags & VIFF_STATIC) && !(flags & MRT_FLUSH_VIFS)))
 				continue;
+<<<<<<< HEAD
 			vif_delete(mrt, i, 0, dev_kill_list);
 		}
+=======
+			vif_delete(mrt, i, 0, &list);
+		}
+		unregister_netdevice_many(&list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Wipe the cache */
 	if (flags & (MRT_FLUSH_MFC | MRT_FLUSH_MFC_STATIC)) {
+<<<<<<< HEAD
 		mutex_lock(&net->ipv4.mfc_mutex);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_for_each_entry_safe(c, tmp, &mrt->mfc_cache_list, list) {
 			if (((c->mfc_flags & MFC_STATIC) && !(flags & MRT_FLUSH_MFC_STATIC)) ||
 			    (!(c->mfc_flags & MFC_STATIC) && !(flags & MRT_FLUSH_MFC)))
@@ -1351,12 +1529,19 @@ static void mroute_clean_tables(struct mr_table *mrt, int flags,
 			mroute_netlink_event(mrt, cache, RTM_DELROUTE);
 			mr_cache_put(c);
 		}
+<<<<<<< HEAD
 
 		mutex_unlock(&net->ipv4.mfc_mutex);
 	}
 
 	if (flags & MRT_FLUSH_MFC) {
 		if (atomic_read(&mrt->cache_resolve_queue_len) != 0 || !check_net(net)) {
+=======
+	}
+
+	if (flags & MRT_FLUSH_MFC) {
+		if (atomic_read(&mrt->cache_resolve_queue_len) != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			spin_lock_bh(&mfc_unres_lock);
 			list_for_each_entry_safe(c, tmp, &mrt->mfc_unres_queue, list) {
 				list_del(&c->list);
@@ -1375,11 +1560,17 @@ static void mroute_clean_tables(struct mr_table *mrt, int flags,
 static void mrtsock_destruct(struct sock *sk)
 {
 	struct net *net = sock_net(sk);
+<<<<<<< HEAD
 	LIST_HEAD(dev_kill_list);
 	struct mr_table *mrt;
 
 	rtnl_lock();
 
+=======
+	struct mr_table *mrt;
+
+	rtnl_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ipmr_for_each_table(mrt, net) {
 		if (sk == rtnl_dereference(mrt->mroute_sk)) {
 			IPV4_DEVCONF_ALL(net, MC_FORWARDING)--;
@@ -1388,6 +1579,7 @@ static void mrtsock_destruct(struct sock *sk)
 						    NETCONFA_IFINDEX_ALL,
 						    net->ipv4.devconf_all);
 			RCU_INIT_POINTER(mrt->mroute_sk, NULL);
+<<<<<<< HEAD
 			mroute_clean_tables(mrt, MRT_FLUSH_VIFS | MRT_FLUSH_MFC,
 					    &dev_kill_list);
 		}
@@ -1395,6 +1587,11 @@ static void mrtsock_destruct(struct sock *sk)
 
 	unregister_netdevice_many(&dev_kill_list);
 
+=======
+			mroute_clean_tables(mrt, MRT_FLUSH_VIFS | MRT_FLUSH_MFC);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rtnl_unlock();
 }
 
@@ -1510,21 +1707,29 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
 		}
 		if (parent == 0)
 			parent = mfc.mfcc_parent;
+<<<<<<< HEAD
 
 		mutex_lock(&net->ipv4.mfc_mutex);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (optname == MRT_DEL_MFC || optname == MRT_DEL_MFC_PROXY)
 			ret = ipmr_mfc_delete(mrt, &mfc, parent);
 		else
 			ret = ipmr_mfc_add(net, mrt, &mfc,
 					   sk == rtnl_dereference(mrt->mroute_sk),
 					   parent);
+<<<<<<< HEAD
 
 		mutex_unlock(&net->ipv4.mfc_mutex);
 		break;
 	case MRT_FLUSH: {
 		LIST_HEAD(dev_kill_list);
 
+=======
+		break;
+	case MRT_FLUSH:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (optlen != sizeof(val)) {
 			ret = -EINVAL;
 			break;
@@ -1533,11 +1738,16 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
 			ret = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
 
 		mroute_clean_tables(mrt, val, &dev_kill_list);
 		unregister_netdevice_many(&dev_kill_list);
 		break;
 	}
+=======
+		mroute_clean_tables(mrt, val);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Control PIM assert. */
 	case MRT_ASSERT:
 		if (optlen != sizeof(val)) {
@@ -1548,7 +1758,11 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
 			ret = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
 		WRITE_ONCE(mrt->mroute_do_assert, val);
+=======
+		mrt->mroute_do_assert = val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case MRT_PIM:
 		if (!ipmr_pimsm_enabled()) {
@@ -1567,9 +1781,15 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
 		do_wrvifwhole = (val == IGMPMSG_WRVIFWHOLE);
 		val = !!val;
 		if (val != mrt->mroute_do_pim) {
+<<<<<<< HEAD
 			WRITE_ONCE(mrt->mroute_do_pim, val);
 			WRITE_ONCE(mrt->mroute_do_assert, val);
 			WRITE_ONCE(mrt->mroute_do_wrvifwhole, do_wrvifwhole);
+=======
+			mrt->mroute_do_pim = val;
+			mrt->mroute_do_assert = val;
+			mrt->mroute_do_wrvifwhole = do_wrvifwhole;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		break;
 	case MRT_TABLE:
@@ -1652,10 +1872,17 @@ int ip_mroute_getsockopt(struct sock *sk, int optname, sockptr_t optval,
 	case MRT_PIM:
 		if (!ipmr_pimsm_enabled())
 			return -ENOPROTOOPT;
+<<<<<<< HEAD
 		val = READ_ONCE(mrt->mroute_do_pim);
 		break;
 	case MRT_ASSERT:
 		val = READ_ONCE(mrt->mroute_do_assert);
+=======
+		val = mrt->mroute_do_pim;
+		break;
+	case MRT_ASSERT:
+		val = mrt->mroute_do_assert;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -ENOPROTOOPT;
@@ -2079,20 +2306,32 @@ static void ip_mr_forward(struct net *net, struct mr_table *mrt,
 
 		atomic_long_inc(&c->_c.mfc_un.res.wrong_if);
 
+<<<<<<< HEAD
 		if (true_vifi >= 0 && READ_ONCE(mrt->mroute_do_assert) &&
+=======
+		if (true_vifi >= 0 && mrt->mroute_do_assert &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    /* pimsm uses asserts, when switching from RPT to SPT,
 		     * so that we cannot check that packet arrived on an oif.
 		     * It is bad, but otherwise we would need to move pretty
 		     * large chunk of pimd to kernel. Ough... --ANK
 		     */
+<<<<<<< HEAD
 		    (READ_ONCE(mrt->mroute_do_pim) ||
+=======
+		    (mrt->mroute_do_pim ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     c->_c.mfc_un.res.ttls[true_vifi] < 255) &&
 		    time_after(jiffies,
 			       c->_c.mfc_un.res.last_assert +
 			       MFC_ASSERT_THRESH)) {
 			c->_c.mfc_un.res.last_assert = jiffies;
 			ipmr_cache_report(mrt, skb, true_vifi, IGMPMSG_WRONGVIF);
+<<<<<<< HEAD
 			if (READ_ONCE(mrt->mroute_do_wrvifwhole))
+=======
+			if (mrt->mroute_do_wrvifwhole)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ipmr_cache_report(mrt, skb, true_vifi,
 						  IGMPMSG_WRVIFWHOLE);
 		}
@@ -2400,7 +2639,11 @@ int pim_rcv_v1(struct sk_buff *skb)
 	mrt = ipmr_rt_fib_lookup(net, skb);
 	if (IS_ERR(mrt))
 		goto drop;
+<<<<<<< HEAD
 	if (!READ_ONCE(mrt->mroute_do_pim) ||
+=======
+	if (!mrt->mroute_do_pim ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    pim->group != PIM_V1_VERSION || pim->code != PIM_V1_REGISTER)
 		goto drop;
 
@@ -2552,7 +2795,11 @@ static int _ipmr_fill_mroute(struct mr_table *mrt, struct sk_buff *skb,
 				cmd, flags);
 }
 
+<<<<<<< HEAD
 static size_t mroute_msgsize(bool unresolved)
+=======
+static size_t mroute_msgsize(bool unresolved, int maxvif)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t len =
 		NLMSG_ALIGN(sizeof(struct rtmsg))
@@ -2565,7 +2812,11 @@ static size_t mroute_msgsize(bool unresolved)
 		len = len
 		      + nla_total_size(4)	/* RTA_IIF */
 		      + nla_total_size(0)	/* RTA_MULTIPATH */
+<<<<<<< HEAD
 		      + MAXVIFS * NLA_ALIGN(sizeof(struct rtnexthop))
+=======
+		      + maxvif * NLA_ALIGN(sizeof(struct rtnexthop))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						/* RTA_MFC_STATS */
 		      + nla_total_size_64bit(sizeof(struct rta_mfc_stats))
 		;
@@ -2580,7 +2831,12 @@ static void mroute_netlink_event(struct mr_table *mrt, struct mfc_cache *mfc,
 	struct sk_buff *skb;
 	int err = -ENOBUFS;
 
+<<<<<<< HEAD
 	skb = nlmsg_new(mroute_msgsize(mfc->_c.mfc_parent >= MAXVIFS),
+=======
+	skb = nlmsg_new(mroute_msgsize(mfc->_c.mfc_parent >= MAXVIFS,
+				       mrt->maxvif),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			GFP_ATOMIC);
 	if (!skb)
 		goto errout;
@@ -2722,9 +2978,15 @@ static int ipmr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
 {
 	struct net *net = sock_net(in_skb->sk);
 	struct nlattr *tb[RTA_MAX + 1];
+<<<<<<< HEAD
 	struct mfc_cache *cache;
 	struct mr_table *mrt;
 	struct sk_buff *skb;
+=======
+	struct sk_buff *skb = NULL;
+	struct mfc_cache *cache;
+	struct mr_table *mrt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__be32 src, grp;
 	u32 tableid;
 	int err;
@@ -2737,6 +2999,7 @@ static int ipmr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
 	grp = nla_get_in_addr_default(tb[RTA_DST], 0);
 	tableid = nla_get_u32_default(tb[RTA_TABLE], 0);
 
+<<<<<<< HEAD
 	skb = nlmsg_new(mroute_msgsize(false), GFP_KERNEL);
 	if (!skb) {
 		err = -ENOBUFS;
@@ -2755,12 +3018,34 @@ static int ipmr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
 	if (!cache) {
 		err = -ENOENT;
 		goto errout_unlock;
+=======
+	mrt = __ipmr_get_table(net, tableid ? tableid : RT_TABLE_DEFAULT);
+	if (!mrt) {
+		err = -ENOENT;
+		goto errout_free;
+	}
+
+	/* entries are added/deleted only under RTNL */
+	rcu_read_lock();
+	cache = ipmr_cache_find(mrt, src, grp);
+	rcu_read_unlock();
+	if (!cache) {
+		err = -ENOENT;
+		goto errout_free;
+	}
+
+	skb = nlmsg_new(mroute_msgsize(false, mrt->maxvif), GFP_KERNEL);
+	if (!skb) {
+		err = -ENOBUFS;
+		goto errout_free;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	err = ipmr_fill_mroute(mrt, skb, NETLINK_CB(in_skb).portid,
 			       nlh->nlmsg_seq, cache,
 			       RTM_NEWROUTE, 0);
 	if (err < 0)
+<<<<<<< HEAD
 		goto errout_unlock;
 
 	rcu_read_unlock();
@@ -2771,6 +3056,16 @@ errout:
 
 errout_unlock:
 	rcu_read_unlock();
+=======
+		goto errout_free;
+
+	err = rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
+
+errout:
+	return err;
+
+errout_free:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree_skb(skb);
 	goto errout;
 }
@@ -2778,17 +3073,28 @@ errout_unlock:
 static int ipmr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
 {
 	struct fib_dump_filter filter = {
+<<<<<<< HEAD
 		.rtnl_held = false,
 	};
 	int err;
 
 	rcu_read_lock();
 
+=======
+		.rtnl_held = true,
+	};
+	int err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cb->strict_check) {
 		err = ip_valid_fib_dump_req(sock_net(skb->sk), cb->nlh,
 					    &filter, cb);
 		if (err < 0)
+<<<<<<< HEAD
 			goto out;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (filter.table_id) {
@@ -2796,6 +3102,7 @@ static int ipmr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
 
 		mrt = __ipmr_get_table(sock_net(skb->sk), filter.table_id);
 		if (!mrt) {
+<<<<<<< HEAD
 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IPMR) {
 				err = skb->len;
 				goto out;
@@ -2818,6 +3125,21 @@ out:
 	rcu_read_unlock();
 
 	return err;
+=======
+			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IPMR)
+				return skb->len;
+
+			NL_SET_ERR_MSG(cb->extack, "ipv4: MR table does not exist");
+			return -ENOENT;
+		}
+		err = mr_table_dump(mrt, skb, cb, _ipmr_fill_mroute,
+				    &mfc_unres_lock, &filter);
+		return skb->len ? : err;
+	}
+
+	return mr_rtm_dumproute(skb, cb, ipmr_mr_table_iter,
+				_ipmr_fill_mroute, &mfc_unres_lock, &filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct nla_policy rtm_ipmr_policy[RTA_MAX + 1] = {
@@ -2861,10 +3183,17 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
 {
 	struct net_device *dev = NULL;
 	u32 tblid = RT_TABLE_DEFAULT;
+<<<<<<< HEAD
 	int ret, rem, iif = 0;
 	struct mr_table *mrt;
 	struct nlattr *attr;
 	struct rtmsg *rtm;
+=======
+	struct mr_table *mrt;
+	struct nlattr *attr;
+	struct rtmsg *rtm;
+	int ret, rem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = nlmsg_validate_deprecated(nlh, sizeof(*rtm), RTA_MAX,
 					rtm_ipmr_policy, extack);
@@ -2891,7 +3220,15 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
 			mfcc->mfcc_mcastgrp.s_addr = nla_get_be32(attr);
 			break;
 		case RTA_IIF:
+<<<<<<< HEAD
 			iif = nla_get_u32(attr);
+=======
+			dev = __dev_get_by_index(net, nla_get_u32(attr));
+			if (!dev) {
+				ret = -ENODEV;
+				goto out;
+			}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case RTA_MULTIPATH:
 			if (ipmr_nla_get_ttls(attr, mfcc) < 0) {
@@ -2907,6 +3244,7 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
 			break;
 		}
 	}
+<<<<<<< HEAD
 
 	rcu_read_lock();
 
@@ -2931,6 +3269,18 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
 
 unlock:
 	rcu_read_unlock();
+=======
+	mrt = __ipmr_get_table(net, tblid);
+	if (!mrt) {
+		ret = -ENOENT;
+		goto out;
+	}
+	*mrtret = mrt;
+	*mrtsock = rtm->rtm_protocol == RTPROT_MROUTED ? 1 : 0;
+	if (dev)
+		mfcc->mfcc_parent = ipmr_find_vif(mrt, dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return ret;
 }
@@ -2940,15 +3290,25 @@ static int ipmr_rtm_route(struct sk_buff *skb, struct nlmsghdr *nlh,
 			  struct netlink_ext_ack *extack)
 {
 	struct net *net = sock_net(skb->sk);
+<<<<<<< HEAD
 	int ret, mrtsock = 0, parent;
 	struct mr_table *tbl = NULL;
 	struct mfcctl mfcc;
 
+=======
+	int ret, mrtsock, parent;
+	struct mr_table *tbl;
+	struct mfcctl mfcc;
+
+	mrtsock = 0;
+	tbl = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = rtm_to_ipmr_mfcc(net, nlh, &mfcc, &mrtsock, &tbl, extack);
 	if (ret < 0)
 		return ret;
 
 	parent = ret ? mfcc.mfcc_parent : -1;
+<<<<<<< HEAD
 
 	mutex_lock(&net->ipv4.mfc_mutex);
 
@@ -2960,6 +3320,12 @@ static int ipmr_rtm_route(struct sk_buff *skb, struct nlmsghdr *nlh,
 	mutex_unlock(&net->ipv4.mfc_mutex);
 
 	return ret;
+=======
+	if (nlh->nlmsg_type == RTM_NEWROUTE)
+		return ipmr_mfc_add(net, tbl, &mfcc, mrtsock, parent);
+	else
+		return ipmr_mfc_delete(tbl, &mfcc, parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool ipmr_fill_table(struct mr_table *mrt, struct sk_buff *skb)
@@ -2969,6 +3335,7 @@ static bool ipmr_fill_table(struct mr_table *mrt, struct sk_buff *skb)
 	if (nla_put_u32(skb, IPMRA_TABLE_ID, mrt->id) ||
 	    nla_put_u32(skb, IPMRA_TABLE_CACHE_RES_QUEUE_LEN, queue_len) ||
 	    nla_put_s32(skb, IPMRA_TABLE_MROUTE_REG_VIF_NUM,
+<<<<<<< HEAD
 			READ_ONCE(mrt->mroute_reg_vif_num)) ||
 	    nla_put_u8(skb, IPMRA_TABLE_MROUTE_DO_ASSERT,
 		       READ_ONCE(mrt->mroute_do_assert)) ||
@@ -2976,6 +3343,14 @@ static bool ipmr_fill_table(struct mr_table *mrt, struct sk_buff *skb)
 		       READ_ONCE(mrt->mroute_do_pim)) ||
 	    nla_put_u8(skb, IPMRA_TABLE_MROUTE_DO_WRVIFWHOLE,
 		       READ_ONCE(mrt->mroute_do_wrvifwhole)))
+=======
+			mrt->mroute_reg_vif_num) ||
+	    nla_put_u8(skb, IPMRA_TABLE_MROUTE_DO_ASSERT,
+		       mrt->mroute_do_assert) ||
+	    nla_put_u8(skb, IPMRA_TABLE_MROUTE_DO_PIM, mrt->mroute_do_pim) ||
+	    nla_put_u8(skb, IPMRA_TABLE_MROUTE_DO_WRVIFWHOLE,
+		       mrt->mroute_do_wrvifwhole))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return true;
@@ -2988,7 +3363,11 @@ static bool ipmr_fill_vif(struct mr_table *mrt, u32 vifid, struct sk_buff *skb)
 	struct vif_device *vif;
 
 	vif = &mrt->vif_table[vifid];
+<<<<<<< HEAD
 	vif_dev = vif_dev_read(vif);
+=======
+	vif_dev = rtnl_dereference(vif->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* if the VIF doesn't exist just continue */
 	if (!vif_dev)
 		return true;
@@ -2997,6 +3376,7 @@ static bool ipmr_fill_vif(struct mr_table *mrt, u32 vifid, struct sk_buff *skb)
 	if (!vif_nest)
 		return false;
 
+<<<<<<< HEAD
 	if (nla_put_u32(skb, IPMRA_VIFA_IFINDEX, READ_ONCE(vif_dev->ifindex)) ||
 	    nla_put_u32(skb, IPMRA_VIFA_VIF_ID, vifid) ||
 	    nla_put_u16(skb, IPMRA_VIFA_FLAGS, vif->flags) ||
@@ -3007,6 +3387,18 @@ static bool ipmr_fill_vif(struct mr_table *mrt, u32 vifid, struct sk_buff *skb)
 	    nla_put_u64_64bit(skb, IPMRA_VIFA_PACKETS_IN, READ_ONCE(vif->pkt_in),
 			      IPMRA_VIFA_PAD) ||
 	    nla_put_u64_64bit(skb, IPMRA_VIFA_PACKETS_OUT, READ_ONCE(vif->pkt_out),
+=======
+	if (nla_put_u32(skb, IPMRA_VIFA_IFINDEX, vif_dev->ifindex) ||
+	    nla_put_u32(skb, IPMRA_VIFA_VIF_ID, vifid) ||
+	    nla_put_u16(skb, IPMRA_VIFA_FLAGS, vif->flags) ||
+	    nla_put_u64_64bit(skb, IPMRA_VIFA_BYTES_IN, vif->bytes_in,
+			      IPMRA_VIFA_PAD) ||
+	    nla_put_u64_64bit(skb, IPMRA_VIFA_BYTES_OUT, vif->bytes_out,
+			      IPMRA_VIFA_PAD) ||
+	    nla_put_u64_64bit(skb, IPMRA_VIFA_PACKETS_IN, vif->pkt_in,
+			      IPMRA_VIFA_PAD) ||
+	    nla_put_u64_64bit(skb, IPMRA_VIFA_PACKETS_OUT, vif->pkt_out,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      IPMRA_VIFA_PAD) ||
 	    nla_put_be32(skb, IPMRA_VIFA_LOCAL_ADDR, vif->local) ||
 	    nla_put_be32(skb, IPMRA_VIFA_REMOTE_ADDR, vif->remote)) {
@@ -3061,8 +3453,11 @@ static int ipmr_rtm_dumplink(struct sk_buff *skb, struct netlink_callback *cb)
 	s_t = cb->args[0];
 	s_e = cb->args[1];
 
+<<<<<<< HEAD
 	rcu_read_lock();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ipmr_for_each_table(mrt, net) {
 		struct nlattr *vifs, *af;
 		struct ifinfomsg *hdr;
@@ -3097,7 +3492,11 @@ static int ipmr_rtm_dumplink(struct sk_buff *skb, struct netlink_callback *cb)
 			nlmsg_end(skb, nlh);
 			goto out;
 		}
+<<<<<<< HEAD
 		for (i = 0; i < READ_ONCE(mrt->maxvif); i++) {
+=======
+		for (i = 0; i < mrt->maxvif; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (e < s_e)
 				goto skip_entry;
 			if (!ipmr_fill_vif(mrt, i, skb)) {
@@ -3119,8 +3518,11 @@ skip_table:
 	}
 
 out:
+<<<<<<< HEAD
 	rcu_read_unlock();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cb->args[1] = e;
 	cb->args[0] = t;
 
@@ -3258,7 +3660,11 @@ static const struct net_protocol pim_protocol = {
 
 static unsigned int ipmr_seq_read(const struct net *net)
 {
+<<<<<<< HEAD
 	return atomic_read(&net->ipv4.ipmr_seq) + ipmr_rules_seq_read(net);
+=======
+	return READ_ONCE(net->ipv4.ipmr_seq) + ipmr_rules_seq_read(net);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ipmr_dump(struct net *net, struct notifier_block *nb,
@@ -3279,7 +3685,11 @@ static int __net_init ipmr_notifier_init(struct net *net)
 {
 	struct fib_notifier_ops *ops;
 
+<<<<<<< HEAD
 	atomic_set(&net->ipv4.ipmr_seq, 0);
+=======
+	net->ipv4.ipmr_seq = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ops = fib_notifier_ops_register(&ipmr_notifier_ops_template, net);
 	if (IS_ERR(ops))
@@ -3298,11 +3708,16 @@ static void __net_exit ipmr_notifier_exit(struct net *net)
 /* Setup for IP multicast routing */
 static int __net_init ipmr_net_init(struct net *net)
 {
+<<<<<<< HEAD
 	LIST_HEAD(dev_kill_list);
 	int err;
 
 	mutex_init(&net->ipv4.mfc_mutex);
 
+=======
+	int err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = ipmr_notifier_init(net);
 	if (err)
 		goto ipmr_notifier_fail;
@@ -3326,8 +3741,14 @@ static int __net_init ipmr_net_init(struct net *net)
 proc_cache_fail:
 	remove_proc_entry("ip_mr_vif", net->proc_net);
 proc_vif_fail:
+<<<<<<< HEAD
 	ipmr_rules_exit_rtnl(net, &dev_kill_list);
 	ipmr_rules_exit(net);
+=======
+	rtnl_lock();
+	ipmr_rules_exit(net);
+	rtnl_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 ipmr_rules_fail:
 	ipmr_notifier_exit(net);
@@ -3341,6 +3762,7 @@ static void __net_exit ipmr_net_exit(struct net *net)
 	remove_proc_entry("ip_mr_cache", net->proc_net);
 	remove_proc_entry("ip_mr_vif", net->proc_net);
 #endif
+<<<<<<< HEAD
 	ipmr_rules_exit(net);
 	ipmr_notifier_exit(net);
 }
@@ -3349,16 +3771,34 @@ static void __net_exit ipmr_net_exit_rtnl(struct net *net,
 					  struct list_head *dev_kill_list)
 {
 	ipmr_rules_exit_rtnl(net, dev_kill_list);
+=======
+	ipmr_notifier_exit(net);
+}
+
+static void __net_exit ipmr_net_exit_batch(struct list_head *net_list)
+{
+	struct net *net;
+
+	rtnl_lock();
+	list_for_each_entry(net, net_list, exit_list)
+		ipmr_rules_exit(net);
+	rtnl_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct pernet_operations ipmr_net_ops = {
 	.init = ipmr_net_init,
 	.exit = ipmr_net_exit,
+<<<<<<< HEAD
 	.exit_rtnl = ipmr_net_exit_rtnl,
+=======
+	.exit_batch = ipmr_net_exit_batch,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct rtnl_msg_handler ipmr_rtnl_msg_handlers[] __initconst = {
 	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_GETLINK,
+<<<<<<< HEAD
 	 .dumpit = ipmr_rtm_dumplink, .flags = RTNL_FLAG_DUMP_UNLOCKED},
 	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_NEWROUTE,
 	 .doit = ipmr_rtm_route, .flags = RTNL_FLAG_DOIT_UNLOCKED},
@@ -3367,6 +3807,15 @@ static const struct rtnl_msg_handler ipmr_rtnl_msg_handlers[] __initconst = {
 	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_GETROUTE,
 	 .doit = ipmr_rtm_getroute, .dumpit = ipmr_rtm_dumproute,
 	 .flags = RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED},
+=======
+	 .dumpit = ipmr_rtm_dumplink},
+	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_NEWROUTE,
+	 .doit = ipmr_rtm_route},
+	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_DELROUTE,
+	 .doit = ipmr_rtm_route},
+	{.protocol = RTNL_FAMILY_IPMR, .msgtype = RTM_GETROUTE,
+	 .doit = ipmr_rtm_getroute, .dumpit = ipmr_rtm_dumproute},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int __init ip_mr_init(void)

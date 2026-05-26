@@ -1663,7 +1663,11 @@ static void enable_page_reporting(void)
 	 * We let the page_reporting_order parameter decide the order
 	 * in the page_reporting code
 	 */
+<<<<<<< HEAD
 	dm_device.pr_dev_info.order = PAGE_REPORTING_ORDER_UNSPECIFIED;
+=======
+	dm_device.pr_dev_info.order = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = page_reporting_register(&dm_device.pr_dev_info);
 	if (ret < 0) {
 		dm_device.pr_dev_info.report = NULL;

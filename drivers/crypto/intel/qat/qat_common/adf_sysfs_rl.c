@@ -321,7 +321,11 @@ static ssize_t cap_rem_show(struct device *dev, struct device_attribute *attr,
 {
 	struct adf_rl_interface_data *data;
 	struct adf_accel_dev *accel_dev;
+<<<<<<< HEAD
 	int rem_cap;
+=======
+	int ret, rem_cap;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	accel_dev = adf_devmgr_pci_to_accel_dev(to_pci_dev(dev));
 	if (!accel_dev)
@@ -336,19 +340,34 @@ static ssize_t cap_rem_show(struct device *dev, struct device_attribute *attr,
 	if (rem_cap < 0)
 		return rem_cap;
 
+<<<<<<< HEAD
 	return sysfs_emit(buf, "%u\n", rem_cap);
+=======
+	ret = sysfs_emit(buf, "%u\n", rem_cap);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t cap_rem_store(struct device *dev, struct device_attribute *attr,
 			     const char *buf, size_t count)
 {
+<<<<<<< HEAD
+=======
+	unsigned int val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = sysfs_match_string(rl_services, buf);
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = set_param_u(dev, CAP_REM_SRV, ret);
+=======
+	val = ret;
+	ret = set_param_u(dev, CAP_REM_SRV, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

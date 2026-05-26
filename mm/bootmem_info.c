@@ -40,10 +40,15 @@ void put_page_bootmem(struct page *page)
 	}
 }
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_SPARSEMEM_VMEMMAP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __init register_page_bootmem_info_section(unsigned long start_pfn)
 {
 	unsigned long mapsize, section_nr, i;
 	struct mem_section *ms;
+<<<<<<< HEAD
 	struct mem_section_usage *usage;
 	struct page *page;
 
@@ -54,6 +59,54 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
 	if (!preinited_vmemmap_section(ms))
 		register_page_bootmem_memmap(section_nr, pfn_to_page(start_pfn),
 					     PAGES_PER_SECTION);
+=======
+	struct page *page, *memmap;
+	struct mem_section_usage *usage;
+
+	section_nr = pfn_to_section_nr(start_pfn);
+	ms = __nr_to_section(section_nr);
+
+	/* Get section's memmap address */
+	memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+
+	/*
+	 * Get page for the memmap's phys address
+	 * XXX: need more consideration for sparse_vmemmap...
+	 */
+	page = virt_to_page(memmap);
+	mapsize = sizeof(struct page) * PAGES_PER_SECTION;
+	mapsize = PAGE_ALIGN(mapsize) >> PAGE_SHIFT;
+
+	/* remember memmap's page */
+	for (i = 0; i < mapsize; i++, page++)
+		get_page_bootmem(section_nr, page, SECTION_INFO);
+
+	usage = ms->usage;
+	page = virt_to_page(usage);
+
+	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
+
+	for (i = 0; i < mapsize; i++, page++)
+		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
+
+}
+#else /* CONFIG_SPARSEMEM_VMEMMAP */
+static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+{
+	unsigned long mapsize, section_nr, i;
+	struct mem_section *ms;
+	struct page *page, *memmap;
+	struct mem_section_usage *usage;
+
+	section_nr = pfn_to_section_nr(start_pfn);
+	ms = __nr_to_section(section_nr);
+
+	memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+
+	if (!preinited_vmemmap_section(ms))
+		register_page_bootmem_memmap(section_nr, memmap,
+				PAGES_PER_SECTION);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	usage = ms->usage;
 	page = virt_to_page(usage);
@@ -63,6 +116,10 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
 	for (i = 0; i < mapsize; i++, page++)
 		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
 }
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_SPARSEMEM_VMEMMAP */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
 {

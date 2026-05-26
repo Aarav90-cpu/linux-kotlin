@@ -830,6 +830,7 @@ static int bpf_jit_probe_post(struct bpf_jit *jit, struct bpf_prog *fp,
 }
 
 /*
+<<<<<<< HEAD
  * Sign- or zero-extend the register if necessary
  */
 static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
@@ -858,6 +859,27 @@ static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
 		else
 			/* llgfr %r,%r */
 			EMIT4(0xb9160000, r, r);
+=======
+ * Sign-extend the register if necessary
+ */
+static int sign_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
+{
+	if (!(flags & BTF_FMODEL_SIGNED_ARG))
+		return 0;
+
+	switch (size) {
+	case 1:
+		/* lgbr %r,%r */
+		EMIT4(0xb9060000, r, r);
+		return 0;
+	case 2:
+		/* lghr %r,%r */
+		EMIT4(0xb9070000, r, r);
+		return 0;
+	case 4:
+		/* lgfr %r,%r */
+		EMIT4(0xb9140000, r, r);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	case 8:
 		return 0;
@@ -1807,9 +1829,15 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
 				return -1;
 
 			for (j = 0; j < m->nr_args; j++) {
+<<<<<<< HEAD
 				if (sign_zero_extend(jit, BPF_REG_1 + j,
 						     m->arg_size[j],
 						     m->arg_flags[j]))
+=======
+				if (sign_extend(jit, BPF_REG_1 + j,
+						m->arg_size[j],
+						m->arg_flags[j]))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					return -1;
 			}
 		}
@@ -1871,21 +1899,37 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
 				 jit->prg);
 
 		/*
+<<<<<<< HEAD
 		 * if (tail_call_cnt >= MAX_TAIL_CALL_CNT)
 		 *         goto out;
 		 *
 		 * tail_call_cnt is read into %w0, which needs to be preserved
 		 * until it's incremented and flushed.
+=======
+		 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
+		 *         goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 
 		off = jit->frame_off +
 		      offsetof(struct prog_frame, tail_call_cnt);
+<<<<<<< HEAD
 		/* ly %w0,off(%r15) */
 		EMIT6_DISP_LH(0xe3000000, 0x0058, REG_W0, REG_0, REG_15, off);
 		/* clij %w0,MAX_TAIL_CALL_CNT,0xa,out */
 		patch_2_clij = jit->prg;
 		EMIT6_PCREL_RIEC(0xec000000, 0x007f, REG_W0, MAX_TAIL_CALL_CNT,
 				 0xa, jit->prg);
+=======
+		/* lhi %w0,1 */
+		EMIT4_IMM(0xa7080000, REG_W0, 1);
+		/* laal %w1,%w0,off(%r15) */
+		EMIT6_DISP_LH(0xeb000000, 0x00fa, REG_W1, REG_W0, REG_15, off);
+		/* clij %w1,MAX_TAIL_CALL_CNT-1,0x2,out */
+		patch_2_clij = jit->prg;
+		EMIT6_PCREL_RIEC(0xec000000, 0x007f, REG_W1, MAX_TAIL_CALL_CNT - 1,
+				 2, jit->prg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * prog = array->ptrs[index];
@@ -1904,12 +1948,15 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
 		patch_3_brc = jit->prg;
 		EMIT4_PCREL_RIC(0xa7040000, 8, jit->prg);
 
+<<<<<<< HEAD
 		/* tail_call_cnt++; */
 		/* ahi %w0,1 */
 		EMIT4_IMM(0xa70a0000, REG_W0, 1);
 		/* sty %w0,off(%r15) */
 		EMIT6_DISP_LH(0xe3000000, 0x0050, REG_W0, REG_0, REG_15, off);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Restore registers before calling function
 		 */
@@ -2312,22 +2359,54 @@ static struct bpf_binary_header *bpf_jit_alloc(struct bpf_jit *jit,
 /*
  * Compile eBPF program "fp"
  */
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *fp)
 {
 	struct bpf_binary_header *header;
 	struct s390_jit_data *jit_data;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+{
+	struct bpf_prog *tmp, *orig_fp = fp;
+	struct bpf_binary_header *header;
+	struct s390_jit_data *jit_data;
+	bool tmp_blinded = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool extra_pass = false;
 	struct bpf_jit jit;
 	int pass;
 
 	if (!fp->jit_requested)
+<<<<<<< HEAD
 		return fp;
+=======
+		return orig_fp;
+
+	tmp = bpf_jit_blind_constants(fp);
+	/*
+	 * If blinding was requested and we failed during blinding,
+	 * we must fall back to the interpreter.
+	 */
+	if (IS_ERR(tmp))
+		return orig_fp;
+	if (tmp != fp) {
+		tmp_blinded = true;
+		fp = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	jit_data = fp->aux->jit_data;
 	if (!jit_data) {
 		jit_data = kzalloc_obj(*jit_data);
+<<<<<<< HEAD
 		if (!jit_data)
 			return fp;
+=======
+		if (!jit_data) {
+			fp = orig_fp;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fp->aux->jit_data = jit_data;
 	}
 	if (jit_data->ctx.addrs) {
@@ -2340,27 +2419,53 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 
 	memset(&jit, 0, sizeof(jit));
 	jit.addrs = kvcalloc(fp->len + 1, sizeof(*jit.addrs), GFP_KERNEL);
+<<<<<<< HEAD
 	if (jit.addrs == NULL)
 		goto out_err;
+=======
+	if (jit.addrs == NULL) {
+		fp = orig_fp;
+		goto free_addrs;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Three initial passes:
 	 *   - 1/2: Determine clobbered registers
 	 *   - 3:   Calculate program size and addrs array
 	 */
 	for (pass = 1; pass <= 3; pass++) {
+<<<<<<< HEAD
 		if (bpf_jit_prog(&jit, fp, extra_pass))
 			goto out_err;
+=======
+		if (bpf_jit_prog(&jit, fp, extra_pass)) {
+			fp = orig_fp;
+			goto free_addrs;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	/*
 	 * Final pass: Allocate and generate program
 	 */
 	header = bpf_jit_alloc(&jit, fp);
+<<<<<<< HEAD
 	if (!header)
 		goto out_err;
 skip_init_ctx:
 	if (bpf_jit_prog(&jit, fp, extra_pass)) {
 		bpf_jit_binary_free(header);
 		goto out_err;
+=======
+	if (!header) {
+		fp = orig_fp;
+		goto free_addrs;
+	}
+skip_init_ctx:
+	if (bpf_jit_prog(&jit, fp, extra_pass)) {
+		bpf_jit_binary_free(header);
+		fp = orig_fp;
+		goto free_addrs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (bpf_jit_enable > 1) {
 		bpf_jit_dump(fp->len, jit.size, pass, jit.prg_buf);
@@ -2369,7 +2474,12 @@ skip_init_ctx:
 	if (!fp->is_func || extra_pass) {
 		if (bpf_jit_binary_lock_ro(header)) {
 			bpf_jit_binary_free(header);
+<<<<<<< HEAD
 			goto out_err;
+=======
+			fp = orig_fp;
+			goto free_addrs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		jit_data->header = header;
@@ -2387,6 +2497,7 @@ free_addrs:
 		kfree(jit_data);
 		fp->aux->jit_data = NULL;
 	}
+<<<<<<< HEAD
 
 	return fp;
 
@@ -2397,6 +2508,13 @@ out_err:
 		fp->jited_len = 0;
 	}
 	goto free_addrs;
+=======
+out:
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(fp, fp == orig_fp ?
+					   tmp : orig_fp);
+	return fp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool bpf_jit_supports_kfunc_call(void)
@@ -2477,8 +2595,13 @@ struct bpf_tramp_jit {
 	int ip_off;		/* For bpf_get_func_ip(), has to be at
 				 * (ctx - 16)
 				 */
+<<<<<<< HEAD
 	int func_meta_off;	/* For bpf_get_func_arg_cnt()/fsession, has
 				 * to be at (ctx - 8)
+=======
+	int arg_cnt_off;	/* For bpf_get_func_arg_cnt(), has to be at
+				 * (ctx - 8)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 */
 	int bpf_args_off;	/* Offset of BPF_PROG context, which consists
 				 * of BPF arguments followed by return value
@@ -2503,6 +2626,7 @@ static void load_imm64(struct bpf_jit *jit, int dst_reg, u64 val)
 	EMIT6_IMM(0xc00d0000, dst_reg, val);
 }
 
+<<<<<<< HEAD
 static void emit_store_stack_imm64(struct bpf_jit *jit, int tmp_reg, int stack_off, u64 imm)
 {
 	load_imm64(jit, tmp_reg, imm);
@@ -2510,6 +2634,8 @@ static void emit_store_stack_imm64(struct bpf_jit *jit, int tmp_reg, int stack_o
 	EMIT6_DISP_LH(0xe3000000, 0x0024, tmp_reg, REG_0, REG_15, stack_off);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
 			   const struct btf_func_model *m,
 			   struct bpf_tramp_link *tlink, bool save_ret)
@@ -2524,7 +2650,14 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
 	 * run_ctx.cookie = tlink->cookie;
 	 */
 
+<<<<<<< HEAD
 	emit_store_stack_imm64(jit, REG_W0, cookie_off, tlink->cookie);
+=======
+	/* %r0 = tlink->cookie */
+	load_imm64(jit, REG_W0, tlink->cookie);
+	/* stg %r0,cookie_off(%r15) */
+	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W0, REG_0, REG_15, cookie_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * if ((start = __bpf_prog_enter(p, &run_ctx)) == 0)
@@ -2556,7 +2689,11 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
 	EMIT6_PCREL_RILB_PTR(0xc0050000, REG_14, p->bpf_func);
 	/* stg %r2,retval_off(%r15) */
 	if (save_ret) {
+<<<<<<< HEAD
 		if (sign_zero_extend(jit, REG_2, m->ret_size, m->ret_flags))
+=======
+		if (sign_extend(jit, REG_2, m->ret_size, m->ret_flags))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -1;
 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
 			      tjit->retval_off);
@@ -2582,6 +2719,7 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int invoke_bpf(struct bpf_tramp_jit *tjit,
 		      const struct btf_func_model *m,
 		      struct bpf_tramp_links *tl, bool save_ret,
@@ -2604,6 +2742,8 @@ static int invoke_bpf(struct bpf_tramp_jit *tjit,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int alloc_stack(struct bpf_tramp_jit *tjit, size_t size)
 {
 	int stack_offset = tjit->stack_size;
@@ -2633,10 +2773,15 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	struct bpf_tramp_links *fentry = &tlinks[BPF_TRAMP_FENTRY];
 	struct bpf_tramp_links *fexit = &tlinks[BPF_TRAMP_FEXIT];
 	int nr_bpf_args, nr_reg_args, nr_stack_args;
+<<<<<<< HEAD
 	int cookie_cnt, cookie_off, fsession_cnt;
 	struct bpf_jit *jit = &tjit->common;
 	int arg, bpf_arg_off;
 	u64 func_meta;
+=======
+	struct bpf_jit *jit = &tjit->common;
+	int arg, bpf_arg_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, j;
 
 	/* Support as many stack arguments as "mvc" instruction can handle. */
@@ -2668,9 +2813,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 			return -ENOTSUPP;
 	}
 
+<<<<<<< HEAD
 	cookie_cnt = bpf_fsession_cookie_cnt(tlinks);
 	fsession_cnt = bpf_fsession_cnt(tlinks);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Calculate the stack layout.
 	 */
@@ -2683,9 +2831,14 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	tjit->backchain_off = tjit->stack_size - sizeof(u64);
 	tjit->stack_args_off = alloc_stack(tjit, nr_stack_args * sizeof(u64));
 	tjit->reg_args_off = alloc_stack(tjit, nr_reg_args * sizeof(u64));
+<<<<<<< HEAD
 	cookie_off = alloc_stack(tjit, cookie_cnt * sizeof(u64));
 	tjit->ip_off = alloc_stack(tjit, sizeof(u64));
 	tjit->func_meta_off = alloc_stack(tjit, sizeof(u64));
+=======
+	tjit->ip_off = alloc_stack(tjit, sizeof(u64));
+	tjit->arg_cnt_off = alloc_stack(tjit, sizeof(u64));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tjit->bpf_args_off = alloc_stack(tjit, nr_bpf_args * sizeof(u64));
 	tjit->retval_off = alloc_stack(tjit, sizeof(u64));
 	tjit->r7_r8_off = alloc_stack(tjit, 2 * sizeof(u64));
@@ -2772,6 +2925,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	 * arg_cnt = m->nr_args;
 	 */
 
+<<<<<<< HEAD
 	if (flags & BPF_TRAMP_F_IP_ARG)
 		emit_store_stack_imm64(jit, REG_0, tjit->ip_off, (u64)func_addr);
 	func_meta = nr_bpf_args;
@@ -2780,6 +2934,20 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	/* stg %r0,func_meta_off(%r15) */
 	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_0, REG_0, REG_15,
 		      tjit->func_meta_off);
+=======
+	if (flags & BPF_TRAMP_F_IP_ARG) {
+		/* %r0 = func_addr */
+		load_imm64(jit, REG_0, (u64)func_addr);
+		/* stg %r0,ip_off(%r15) */
+		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_0, REG_0, REG_15,
+			      tjit->ip_off);
+	}
+	/* lghi %r0,nr_bpf_args */
+	EMIT4_IMM(0xa7090000, REG_0, nr_bpf_args);
+	/* stg %r0,arg_cnt_off(%r15) */
+	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_0, REG_0, REG_15,
+		      tjit->arg_cnt_off);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
 		/*
@@ -2792,6 +2960,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 		EMIT6_PCREL_RILB_PTR(0xc0050000, REG_14, __bpf_tramp_enter);
 	}
 
+<<<<<<< HEAD
 	if (fsession_cnt) {
 		/* Clear all the session cookies' value. */
 		for (i = 0; i < cookie_cnt; i++)
@@ -2803,6 +2972,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	if (invoke_bpf(tjit, m, fentry, flags & BPF_TRAMP_F_RET_FENTRY_RET,
 		       func_meta, cookie_off))
 		return -EINVAL;
+=======
+	for (i = 0; i < fentry->nr_links; i++)
+		if (invoke_bpf_prog(tjit, m, fentry->links[i],
+				    flags & BPF_TRAMP_F_RET_FENTRY_RET))
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (fmod_ret->nr_links) {
 		/*
@@ -2879,6 +3054,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 		EMIT6_PCREL_RILC(0xc0040000, 0, (u64)im->ip_epilogue);
 	}
 
+<<<<<<< HEAD
 	/* Set the "is_return" flag for fsession. */
 	func_meta |= (1ULL << BPF_TRAMP_IS_RETURN_SHIFT);
 	if (fsession_cnt)
@@ -2889,6 +3065,13 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
 	tjit->do_fexit = jit->prg;
 	if (invoke_bpf(tjit, m, fexit, false, func_meta, cookie_off))
 		return -EINVAL;
+=======
+	/* do_fexit: */
+	tjit->do_fexit = jit->prg;
+	for (i = 0; i < fexit->nr_links; i++)
+		if (invoke_bpf_prog(tjit, m, fexit->links[i], false))
+			return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
 		im->ip_epilogue = jit->prg_buf + jit->prg;
@@ -2993,11 +3176,14 @@ bool bpf_jit_supports_arena(void)
 	return true;
 }
 
+<<<<<<< HEAD
 bool bpf_jit_supports_fsession(void)
 {
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool bpf_jit_supports_insn(struct bpf_insn *insn, bool in_arena)
 {
 	if (!in_arena)

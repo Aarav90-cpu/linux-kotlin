@@ -28,6 +28,14 @@ struct netns_mib {
 	DEFINE_SNMP_STAT(struct mptcp_mib, mptcp_statistics);
 #endif
 
+<<<<<<< HEAD
+=======
+	DEFINE_SNMP_STAT(struct udp_mib, udplite_statistics);
+#if IS_ENABLED(CONFIG_IPV6)
+	DEFINE_SNMP_STAT(struct udp_mib, udplite_stats_in6);
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DEFINE_SNMP_STAT(struct icmp_mib, icmp_statistics);
 	DEFINE_SNMP_STAT_ATOMIC(struct icmpmsg_mib, icmpmsg_statistics);
 #if IS_ENABLED(CONFIG_IPV6)

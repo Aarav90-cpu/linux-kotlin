@@ -237,7 +237,11 @@ static inline void wb_get(struct bdi_writeback *wb)
 }
 
 /**
+<<<<<<< HEAD
  * wb_put_many - decrement a wb's refcount
+=======
+ * wb_put - decrement a wb's refcount
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @wb: bdi_writeback to put
  * @nr: number of references to put
  */

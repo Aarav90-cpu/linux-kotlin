@@ -32,9 +32,15 @@ struct iwl_mld_phy {
 };
 
 static inline struct iwl_mld_phy *
+<<<<<<< HEAD
 iwl_mld_phy_from_mac80211(struct ieee80211_chanctx_conf *chanctx)
 {
 	return (void *)chanctx->drv_priv;
+=======
+iwl_mld_phy_from_mac80211(struct ieee80211_chanctx_conf *channel)
+{
+	return (void *)channel->drv_priv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Cleanup function for struct iwl_mld_phy, will be called in restart */

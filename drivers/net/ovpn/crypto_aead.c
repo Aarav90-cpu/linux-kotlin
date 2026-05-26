@@ -36,6 +36,7 @@ static int ovpn_aead_encap_overhead(const struct ovpn_crypto_key_slot *ks)
 		crypto_aead_authsize(ks->encrypt);	/* Auth Tag */
 }
 
+<<<<<<< HEAD
 /**
  * ovpn_aead_crypto_tmp_size - compute the size of a temporary object containing
  *			       an AEAD request structure with extra space for SG
@@ -134,6 +135,8 @@ static struct scatterlist *ovpn_aead_crypto_req_sg(struct crypto_aead *aead,
 			     __alignof__(struct scatterlist));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 		      struct sk_buff *skb)
 {
@@ -143,7 +146,10 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	struct scatterlist *sg;
 	int nfrags, ret;
 	u32 pktid, op;
+<<<<<<< HEAD
 	void *tmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *iv;
 
 	ovpn_skb_cb(skb)->peer = peer;
@@ -170,6 +176,7 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	if (unlikely(nfrags + 2 > (MAX_SKB_FRAGS + 2)))
 		return -ENOSPC;
 
+<<<<<<< HEAD
 	/* allocate temporary memory for iv, sg and req */
 	tmp = kmalloc(ovpn_aead_crypto_tmp_size(ks->encrypt, nfrags),
 		      GFP_ATOMIC);
@@ -181,6 +188,15 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	iv = ovpn_aead_crypto_tmp_iv(ks->encrypt, tmp);
 	req = ovpn_aead_crypto_tmp_req(ks->encrypt, iv);
 	sg = ovpn_aead_crypto_req_sg(ks->encrypt, req);
+=======
+	/* sg may be required by async crypto */
+	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
+				       (nfrags + 2), GFP_ATOMIC);
+	if (unlikely(!ovpn_skb_cb(skb)->sg))
+		return -ENOMEM;
+
+	sg = ovpn_skb_cb(skb)->sg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* sg table:
 	 * 0: op, wire nonce (AD, len=OVPN_OP_SIZE_V2+OVPN_NONCE_WIRE_SIZE),
@@ -208,6 +224,16 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	if (unlikely(ret < 0))
 		return ret;
 
+<<<<<<< HEAD
+=======
+	/* iv may be required by async crypto */
+	ovpn_skb_cb(skb)->iv = kmalloc(OVPN_NONCE_SIZE, GFP_ATOMIC);
+	if (unlikely(!ovpn_skb_cb(skb)->iv))
+		return -ENOMEM;
+
+	iv = ovpn_skb_cb(skb)->iv;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* concat 4 bytes packet id and 8 bytes nonce tail into 12 bytes
 	 * nonce
 	 */
@@ -218,7 +244,11 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	memcpy(skb->data, iv, OVPN_NONCE_WIRE_SIZE);
 
 	/* add packet op as head of additional data */
+<<<<<<< HEAD
 	op = ovpn_opcode_compose(OVPN_DATA_V2, ks->key_id, peer->tx_id);
+=======
+	op = ovpn_opcode_compose(OVPN_DATA_V2, ks->key_id, peer->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__skb_push(skb, OVPN_OPCODE_SIZE);
 	BUILD_BUG_ON(sizeof(op) != OVPN_OPCODE_SIZE);
 	*((__force __be32 *)skb->data) = htonl(op);
@@ -226,6 +256,15 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	/* AEAD Additional data */
 	sg_set_buf(sg, skb->data, OVPN_AAD_SIZE);
 
+<<<<<<< HEAD
+=======
+	req = aead_request_alloc(ks->encrypt, GFP_ATOMIC);
+	if (unlikely(!req))
+		return -ENOMEM;
+
+	ovpn_skb_cb(skb)->req = req;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* setup async crypto operation */
 	aead_request_set_tfm(req, ks->encrypt);
 	aead_request_set_callback(req, 0, ovpn_encrypt_post, skb);
@@ -246,7 +285,10 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	struct aead_request *req;
 	struct sk_buff *trailer;
 	struct scatterlist *sg;
+<<<<<<< HEAD
 	void *tmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *iv;
 
 	payload_offset = OVPN_AAD_SIZE + tag_size;
@@ -275,6 +317,7 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	if (unlikely(nfrags + 2 > (MAX_SKB_FRAGS + 2)))
 		return -ENOSPC;
 
+<<<<<<< HEAD
 	/* allocate temporary memory for iv, sg and req */
 	tmp = kmalloc(ovpn_aead_crypto_tmp_size(ks->decrypt, nfrags),
 		      GFP_ATOMIC);
@@ -286,6 +329,15 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	iv = ovpn_aead_crypto_tmp_iv(ks->decrypt, tmp);
 	req = ovpn_aead_crypto_tmp_req(ks->decrypt, iv);
 	sg = ovpn_aead_crypto_req_sg(ks->decrypt, req);
+=======
+	/* sg may be required by async crypto */
+	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
+				       (nfrags + 2), GFP_ATOMIC);
+	if (unlikely(!ovpn_skb_cb(skb)->sg))
+		return -ENOMEM;
+
+	sg = ovpn_skb_cb(skb)->sg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* sg table:
 	 * 0: op, wire nonce (AD, len=OVPN_OPCODE_SIZE+OVPN_NONCE_WIRE_SIZE),
@@ -308,11 +360,30 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
 	/* append auth_tag onto scatterlist */
 	sg_set_buf(sg + ret + 1, skb->data + OVPN_AAD_SIZE, tag_size);
 
+<<<<<<< HEAD
+=======
+	/* iv may be required by async crypto */
+	ovpn_skb_cb(skb)->iv = kmalloc(OVPN_NONCE_SIZE, GFP_ATOMIC);
+	if (unlikely(!ovpn_skb_cb(skb)->iv))
+		return -ENOMEM;
+
+	iv = ovpn_skb_cb(skb)->iv;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* copy nonce into IV buffer */
 	memcpy(iv, skb->data + OVPN_OPCODE_SIZE, OVPN_NONCE_WIRE_SIZE);
 	memcpy(iv + OVPN_NONCE_WIRE_SIZE, ks->nonce_tail_recv,
 	       OVPN_NONCE_TAIL_SIZE);
 
+<<<<<<< HEAD
+=======
+	req = aead_request_alloc(ks->decrypt, GFP_ATOMIC);
+	if (unlikely(!req))
+		return -ENOMEM;
+
+	ovpn_skb_cb(skb)->req = req;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* setup async crypto operation */
 	aead_request_set_tfm(req, ks->decrypt);
 	aead_request_set_callback(req, 0, ovpn_decrypt_post, skb);
@@ -355,11 +426,15 @@ static struct crypto_aead *ovpn_aead_init(const char *title,
 		goto error;
 	}
 
+<<<<<<< HEAD
 	/* basic AEAD assumption
 	 * all current algorithms use OVPN_NONCE_SIZE.
 	 * ovpn_aead_crypto_tmp_size and ovpn_aead_encrypt/decrypt
 	 * expect this.
 	 */
+=======
+	/* basic AEAD assumption */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (crypto_aead_ivsize(aead) != OVPN_NONCE_SIZE) {
 		pr_err("%s IV size must be %d\n", title, OVPN_NONCE_SIZE);
 		ret = -EINVAL;

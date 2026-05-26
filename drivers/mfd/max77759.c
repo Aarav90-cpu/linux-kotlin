@@ -201,6 +201,7 @@ static const struct regmap_config max77759_regmap_config_charger = {
  *         - SYSUVLO_INT
  *         - FSHIP_NOT_RD
  *     - CHGR_INT: charger
+<<<<<<< HEAD
  *       - INT1
  *         - AICL
  *         - CHGIN
@@ -219,6 +220,10 @@ static const struct regmap_config max77759_regmap_config_charger = {
  *         - CHG_STA_CV
  *         - CHG_STA_TO
  *         - CHG_STA_DONE
+=======
+ *       - CHG_INT
+ *       - CHG_INT2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum {
 	MAX77759_INT_MAXQ,
@@ -244,6 +249,7 @@ enum {
 };
 
 enum {
+<<<<<<< HEAD
 	MAX77759_CHGR_INT1_AICL,
 	MAX77759_CHGR_INT1_CHGIN,
 	MAX77759_CHGR_INT1_WCIN,
@@ -260,6 +266,10 @@ enum {
 	MAX77759_CHGR_INT2_CHG_STA_CV,
 	MAX77759_CHGR_INT2_CHG_STA_TO,
 	MAX77759_CHGR_INT2_CHG_STA_DONE,
+=======
+	MAX77759_CHARGER_INT_1,
+	MAX77759_CHARGER_INT_2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regmap_irq max77759_pmic_irqs[] = {
@@ -286,6 +296,7 @@ static const struct regmap_irq max77759_topsys_irqs[] = {
 };
 
 static const struct regmap_irq max77759_chgr_irqs[] = {
+<<<<<<< HEAD
 	REGMAP_IRQ_REG(MAX77759_CHGR_INT1_AICL, 0,
 		       MAX77759_CHGR_REG_CHG_INT_AICL),
 	REGMAP_IRQ_REG(MAX77759_CHGR_INT1_CHGIN, 0,
@@ -318,6 +329,10 @@ static const struct regmap_irq max77759_chgr_irqs[] = {
 		       MAX77759_CHGR_REG_CHG_INT2_CHG_STA_TO),
 	REGMAP_IRQ_REG(MAX77759_CHGR_INT2_CHG_STA_DONE, 1,
 		       MAX77759_CHGR_REG_CHG_INT2_CHG_STA_DONE),
+=======
+	REGMAP_IRQ_REG(MAX77759_CHARGER_INT_1, 0, GENMASK(7, 0)),
+	REGMAP_IRQ_REG(MAX77759_CHARGER_INT_2, 1, GENMASK(7, 0)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct regmap_irq_chip max77759_pmic_irq_chip = {
@@ -357,12 +372,19 @@ static const struct regmap_irq_chip max77759_topsys_irq_chip = {
 	.num_irqs = ARRAY_SIZE(max77759_topsys_irqs),
 };
 
+<<<<<<< HEAD
 static const struct regmap_irq_chip max77759_chgr_irq_chip = {
+=======
+static const struct regmap_irq_chip max77759_chrg_irq_chip = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.name = "max77759-chgr",
 	.domain_suffix = "CHGR",
 	.status_base = MAX77759_CHGR_REG_CHG_INT,
 	.mask_base = MAX77759_CHGR_REG_CHG_INT_MASK,
+<<<<<<< HEAD
 	.ack_base = MAX77759_CHGR_REG_CHG_INT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_regs = 2,
 	.irqs = max77759_chgr_irqs,
 	.num_irqs = ARRAY_SIZE(max77759_chgr_irqs),
@@ -386,6 +408,7 @@ static const struct resource max77759_gpio_resources[] = {
 };
 
 static const struct resource max77759_charger_resources[] = {
+<<<<<<< HEAD
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT1_AICL,         "AICL"),
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT1_CHGIN,        "CHGIN"),
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT1_WCIN,         "WCIN"),
@@ -402,6 +425,10 @@ static const struct resource max77759_charger_resources[] = {
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT2_CHG_STA_CV,   "CHG_STA_CV"),
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT2_CHG_STA_TO,   "CHG_STA_TO"),
 	DEFINE_RES_IRQ_NAMED(MAX77759_CHGR_INT2_CHG_STA_DONE, "CHG_STA_DONE"),
+=======
+	DEFINE_RES_IRQ_NAMED(MAX77759_CHARGER_INT_1, "INT1"),
+	DEFINE_RES_IRQ_NAMED(MAX77759_CHARGER_INT_2, "INT2"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct mfd_cell max77759_cells[] = {
@@ -642,7 +669,11 @@ static int max77759_add_chained_charger(struct i2c_client *client,
 					    max77759->regmap_charger,
 					    MAX77759_INT_CHGR,
 					    parent,
+<<<<<<< HEAD
 					    &max77759_chgr_irq_chip,
+=======
+					    &max77759_chrg_irq_chip,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    &irq_chip_data);
 	if (ret)
 		return ret;

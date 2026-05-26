@@ -144,8 +144,12 @@ static int arm_spe_info_fill(struct auxtrace_record *itr,
 			     struct perf_record_auxtrace_info *auxtrace_info,
 			     size_t priv_size)
 {
+<<<<<<< HEAD
 	unsigned int i;
 	int ret;
+=======
+	int i, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t offset;
 	struct arm_spe_recording *sper =
 			container_of(itr, struct arm_spe_recording, itr);

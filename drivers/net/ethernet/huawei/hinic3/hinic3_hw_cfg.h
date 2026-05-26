@@ -26,8 +26,11 @@ struct hinic3_irq_info {
 
 struct hinic3_nic_service_cap {
 	u16 max_sqs;
+<<<<<<< HEAD
 	u16 max_rqs;
 	u16 default_num_queues;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Device capabilities */
@@ -36,12 +39,15 @@ struct hinic3_dev_cap {
 	u16                           supp_svcs_bitmap;
 	/* Physical port */
 	u8                            port_id;
+<<<<<<< HEAD
 
 	u8                            cos_valid_bitmap;
 	u8                            port_cos_valid_bitmap;
 	/* max number of VFs that PF supports */
 	u16                           max_vf;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hinic3_nic_service_cap nic_svc_cap;
 };
 

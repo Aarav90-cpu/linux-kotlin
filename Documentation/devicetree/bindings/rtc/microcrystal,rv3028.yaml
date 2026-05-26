@@ -32,8 +32,11 @@ properties:
       - 9000
       - 15000
 
+<<<<<<< HEAD
   vdd-supply: true
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

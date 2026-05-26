@@ -772,6 +772,10 @@ static int check_urb_status(struct urb *urb)
 
 static void es2_destroy(struct es2_ap_dev *es2)
 {
+<<<<<<< HEAD
+=======
+	struct usb_device *udev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct urb *urb;
 	int i;
 
@@ -803,7 +807,14 @@ static void es2_destroy(struct es2_ap_dev *es2)
 	gb_hd_cport_release_reserved(es2->hd, ES2_CPORT_CDSI1);
 	gb_hd_cport_release_reserved(es2->hd, ES2_CPORT_CDSI0);
 
+<<<<<<< HEAD
 	gb_hd_put(es2->hd);
+=======
+	udev = es2->usb_dev;
+	gb_hd_put(es2->hd);
+
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void cport_in_callback(struct urb *urb)
@@ -1253,10 +1264,18 @@ static int ap_probe(struct usb_interface *interface,
 	bool bulk_in_found = false;
 	bool arpc_in_found = false;
 
+<<<<<<< HEAD
 	udev = interface_to_usbdev(interface);
 
 	num_cports = apb_get_cport_count(udev);
 	if (num_cports < 0) {
+=======
+	udev = usb_get_dev(interface_to_usbdev(interface));
+
+	num_cports = apb_get_cport_count(udev);
+	if (num_cports < 0) {
+		usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_err(&udev->dev, "Cannot retrieve CPort count: %d\n",
 			num_cports);
 		return num_cports;
@@ -1264,8 +1283,15 @@ static int ap_probe(struct usb_interface *interface,
 
 	hd = gb_hd_create(&es2_driver, &udev->dev, ES2_GBUF_MSG_SIZE_MAX,
 			  num_cports);
+<<<<<<< HEAD
 	if (IS_ERR(hd))
 		return PTR_ERR(hd);
+=======
+	if (IS_ERR(hd)) {
+		usb_put_dev(udev);
+		return PTR_ERR(hd);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	es2 = hd_to_es2(hd);
 	es2->hd = hd;

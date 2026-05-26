@@ -259,6 +259,7 @@
 	};
 
 	sound-wm8960-2 {
+<<<<<<< HEAD
 		compatible = "audio-graph-card2";
 		label = "wm8960-audio-2";
 		links = <&sai2_port2>;
@@ -290,6 +291,35 @@
 		widgets = "Headphone", "Headphones",
 			"Speaker", "Ext Spk",
 			"Microphone", "Mic Jack";
+=======
+		compatible = "fsl,imx-audio-wm8960";
+		model = "wm8960-audio-2";
+		audio-cpu = <&sai2>;
+		audio-codec = <&wm8960_2>;
+		audio-routing = "Headphone Jack", "HP_L",
+				"Headphone Jack", "HP_R",
+				"Ext Spk", "SPK_LP",
+				"Ext Spk", "SPK_LN",
+				"Ext Spk", "SPK_RP",
+				"Ext Spk", "SPK_RN",
+				"LINPUT1", "Mic Jack",
+				"Mic Jack", "MICB";
+	};
+
+	sound-wm8960-3 {
+		compatible = "fsl,imx-audio-wm8960";
+		model = "wm8960-audio-3";
+		audio-cpu = <&sai3>;
+		audio-codec = <&wm8960_3>;
+		audio-routing = "Headphone Jack", "HP_L",
+				"Headphone Jack", "HP_R",
+				"Ext Spk", "SPK_LP",
+				"Ext Spk", "SPK_LN",
+				"Ext Spk", "SPK_RP",
+				"Ext Spk", "SPK_RN",
+				"LINPUT1", "Mic Jack",
+				"Mic Jack", "MICB";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 
@@ -485,6 +515,7 @@
 				DCVDD-supply = <&reg_audio_1v8>;
 				SPKVDD1-supply = <&reg_audio_5v>;
 				SPKVDD2-supply = <&reg_audio_5v>;
+<<<<<<< HEAD
 
 				port {
 					capture-only;
@@ -495,6 +526,8 @@
 						remote-endpoint = <&sai2_endpoint2>;
 					};
 				};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 		};
 
@@ -524,6 +557,7 @@
 				DCVDD-supply = <&reg_audio_1v8>;
 				SPKVDD1-supply = <&reg_audio_5v>;
 				SPKVDD2-supply = <&reg_audio_5v>;
+<<<<<<< HEAD
 
 				port {
 					capture-only;
@@ -534,6 +568,8 @@
 						remote-endpoint = <&sai3_endpoint2>;
 					};
 				};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			};
 		};
 
@@ -724,6 +760,7 @@
 	pinctrl-0 = <&pinctrl_sai2>;
 	fsl,sai-asynchronous;
 	status = "okay";
+<<<<<<< HEAD
 
 	ports {
 		#address-cells = <1>;
@@ -745,6 +782,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &sai3 {
@@ -757,6 +796,7 @@
 	pinctrl-0 = <&pinctrl_sai3>;
 	fsl,sai-asynchronous;
 	status = "okay";
+<<<<<<< HEAD
 
 	ports {
 		#address-cells = <1>;
@@ -778,6 +818,8 @@
 			};
 		};
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &thermal_zones {

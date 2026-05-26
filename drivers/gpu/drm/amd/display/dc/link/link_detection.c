@@ -150,6 +150,17 @@ static enum signal_type get_basic_signal_type(struct graphics_object_id encoder,
 		default:
 			return SIGNAL_TYPE_NONE;
 		}
+<<<<<<< HEAD
+=======
+	} else if (downstream.type == OBJECT_TYPE_ENCODER) {
+		switch (downstream.id) {
+		case ENCODER_ID_EXTERNAL_NUTMEG:
+		case ENCODER_ID_EXTERNAL_TRAVIS:
+			return SIGNAL_TYPE_DISPLAY_PORT;
+		default:
+			return SIGNAL_TYPE_NONE;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return SIGNAL_TYPE_NONE;
@@ -166,10 +177,13 @@ static enum signal_type link_detect_sink_signal_type(struct dc_link *link,
 	struct audio_support *aud_support;
 	struct graphics_object_id enc_id;
 
+<<<<<<< HEAD
 	/* External DP bridges should use DP signal regardless of connector type. */
 	if (link->ext_enc_id.id)
 		return SIGNAL_TYPE_DISPLAY_PORT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (link->is_dig_mapping_flexible)
 		enc_id = (struct graphics_object_id){.id = ENCODER_ID_UNKNOWN};
 	else
@@ -352,7 +366,11 @@ static void query_dp_dual_mode_adaptor(
 			*dongle = DISPLAY_DONGLE_DP_DVI_DONGLE;
 			sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_DVI_MAX_TMDS_CLK;
 
+<<<<<<< HEAD
 			CONN_DATA_DETECT(link, type2_dongle_buf, sizeof(type2_dongle_buf),
+=======
+			CONN_DATA_DETECT(ddc->link, type2_dongle_buf, sizeof(type2_dongle_buf),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					"DP-DVI passive dongle %dMhz: ",
 					DP_ADAPTOR_DVI_MAX_TMDS_CLK / 1000);
 			return;
@@ -616,6 +634,7 @@ static bool detect_dp(struct dc_link *link,
 		link->dpcd_caps.usb4_dp_tun_info.dp_tun_cap.raw = 0;
 	}
 
+<<<<<<< HEAD
 	if (link->ext_enc_id.id) {
 		/* Fix number of connected sinks reported by external DP bridge */
 		link->dpcd_caps.sink_count.bits.SINK_COUNT = 1;
@@ -624,6 +643,8 @@ static bool detect_dp(struct dc_link *link,
 			link->preferred_link_setting.link_rate = LINK_RATE_HIGH;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -657,6 +678,11 @@ static bool wait_for_entering_dp_alt_mode(struct dc_link *link)
 	unsigned long long time_taken_in_ns;
 	int tries_taken;
 
+<<<<<<< HEAD
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * this function will only exist if we are on dcn21 (is_in_alt_mode is a
 	 *  function pointer, so checking to see if it is equal to 0 is the same
@@ -727,6 +753,11 @@ static void revert_dpia_mst_dsc_always_on_wa(struct dc_link *link)
 
 static bool discover_dp_mst_topology(struct dc_link *link, enum dc_detect_reason reason)
 {
+<<<<<<< HEAD
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LINK_INFO("link=%d, mst branch is now Connected\n",
 		  link->link_index);
 
@@ -746,6 +777,11 @@ static bool discover_dp_mst_topology(struct dc_link *link, enum dc_detect_reason
 
 bool link_reset_cur_dp_mst_topology(struct dc_link *link)
 {
+<<<<<<< HEAD
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LINK_INFO("link=%d, mst branch is now Disconnected\n",
 		  link->link_index);
 
@@ -781,6 +817,10 @@ static void restore_phy_clocks_for_destructive_link_verification(const struct dc
 }
 
 static void verify_link_capability_destructive(struct dc_link *link,
+<<<<<<< HEAD
+=======
+		struct dc_sink *sink,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enum dc_detect_reason reason)
 {
 	bool should_prepare_phy_clocks =
@@ -821,7 +861,10 @@ static void verify_link_capability_non_destructive(struct dc_link *link)
 static bool should_verify_link_capability_destructively(struct dc_link *link,
 		enum dc_detect_reason reason)
 {
+<<<<<<< HEAD
 	(void)reason;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool destrictive = false;
 	struct dc_link_settings max_link_cap;
 	bool is_link_enc_unavailable = false;
@@ -855,11 +898,19 @@ static bool should_verify_link_capability_destructively(struct dc_link *link,
 	return destrictive;
 }
 
+<<<<<<< HEAD
 static void verify_link_capability(struct dc_link *link,
 		enum dc_detect_reason reason)
 {
 	if (should_verify_link_capability_destructively(link, reason))
 		verify_link_capability_destructive(link, reason);
+=======
+static void verify_link_capability(struct dc_link *link, struct dc_sink *sink,
+		enum dc_detect_reason reason)
+{
+	if (should_verify_link_capability_destructively(link, reason))
+		verify_link_capability_destructive(link, sink, reason);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		verify_link_capability_non_destructive(link);
 }
@@ -901,6 +952,7 @@ static bool link_detect_evaluate_edid_header(uint8_t edid_header[8])
  */
 static bool link_detect_ddc_probe(struct dc_link *link)
 {
+<<<<<<< HEAD
 	enum signal_type signal = link_detect_sink_signal_type(link, DETECT_REASON_HPD);
 	enum ddc_transaction_type transaction_type = get_ddc_transaction_type(signal);
 	uint8_t edid_header[8] = {0};
@@ -916,6 +968,13 @@ static bool link_detect_ddc_probe(struct dc_link *link)
 	set_ddc_transaction_type(link->ddc, transaction_type);
 
 	ddc_probed = link_query_ddc_data(link->ddc, 0x50, &zero, 1, edid_header, sizeof(edid_header));
+=======
+	if (!link->ddc)
+		return false;
+
+	uint8_t edid_header[8] = {0};
+	bool ddc_probed = i2c_read(link->ddc, 0x50, edid_header, sizeof(edid_header));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ddc_probed)
 		return false;
@@ -940,10 +999,35 @@ static bool link_detect_ddc_probe(struct dc_link *link)
  */
 static bool link_detect_dac_load_detect(struct dc_link *link)
 {
+<<<<<<< HEAD
 	if (!link->dc->hwss.dac_load_detect)
 		return false;
 
 	return link->dc->hwss.dac_load_detect(link);
+=======
+	struct dc_bios *bios = link->ctx->dc_bios;
+	struct link_encoder *link_enc = link->link_enc;
+	enum engine_id engine_id = link_enc->preferred_engine;
+	enum dal_device_type device_type = DEVICE_TYPE_CRT;
+	enum bp_result bp_result = BP_RESULT_UNSUPPORTED;
+	uint32_t enum_id;
+
+	switch (engine_id) {
+	case ENGINE_ID_DACB:
+		enum_id = 2;
+		break;
+	case ENGINE_ID_DACA:
+	default:
+		engine_id = ENGINE_ID_DACA;
+		enum_id = 1;
+		break;
+	}
+
+	if (bios->funcs->dac_load_detection)
+		bp_result = bios->funcs->dac_load_detection(bios, engine_id, device_type, enum_id);
+
+	return bp_result == BP_RESULT_OK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -971,6 +1055,11 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 	enum dc_connection_type new_connection_type = dc_connection_none;
 	const uint32_t post_oui_delay = 30; // 30ms
 
+<<<<<<< HEAD
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dc_is_virtual_signal(link->connector_signal))
 		return false;
 
@@ -1234,6 +1323,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 		if (dc_is_hdmi_signal(link->connector_signal))
 			read_scdc_caps(link->ddc, link->local_sink);
 
+<<<<<<< HEAD
 		/* When FreeSync is toggled through OSD,
 		 * we see same EDID no matter what. Check MCCS caps
 		 * to see if we should update FreeSync caps now.
@@ -1248,6 +1338,8 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 				same_edid = false;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (link->connector_signal == SIGNAL_TYPE_DISPLAY_PORT &&
 		    sink_caps.transaction_type ==
 		    DDC_TRANSACTION_TYPE_I2C_OVER_AUX) {
@@ -1465,11 +1557,20 @@ bool link_detect(struct dc_link *link, enum dc_detect_reason reason)
 	bool is_delegated_to_mst_top_mgr = false;
 	enum dc_connection_type pre_link_type = link->type;
 
+<<<<<<< HEAD
 	is_local_sink_detect_success = detect_link_and_local_sink(link, reason);
 
 	if (is_local_sink_detect_success && link->local_sink) {
 		verify_link_capability(link, reason);
 	}
+=======
+	DC_LOGGER_INIT(link->ctx->logger);
+
+	is_local_sink_detect_success = detect_link_and_local_sink(link, reason);
+
+	if (is_local_sink_detect_success && link->local_sink)
+		verify_link_capability(link, link->local_sink, reason);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	DC_LOG_DC("%s: link_index=%d is_local_sink_detect_success=%d pre_link_type=%d link_type=%d\n", __func__,
 				link->link_index, is_local_sink_detect_success, pre_link_type, link->type);

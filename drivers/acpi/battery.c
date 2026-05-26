@@ -33,6 +33,11 @@
 #define ACPI_BATTERY_CAPACITY_VALID(capacity) \
 	((capacity) != 0 && (capacity) != ACPI_BATTERY_VALUE_UNKNOWN)
 
+<<<<<<< HEAD
+=======
+#define ACPI_BATTERY_DEVICE_NAME	"Battery"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Battery power unit: 0 means mW, 1 means mA */
 #define ACPI_BATTERY_POWER_UNIT_MA	1
 
@@ -1079,11 +1084,18 @@ static void acpi_battery_notify(acpi_handle handle, u32 event, void *data)
 	if (event == ACPI_BATTERY_NOTIFY_INFO)
 		acpi_battery_refresh(battery);
 	acpi_battery_update(battery, false);
+<<<<<<< HEAD
 	acpi_bus_generate_netlink_event(ACPI_BATTERY_CLASS,
 					dev_name(&device->dev), event,
 					acpi_battery_present(battery));
 	acpi_notifier_call_chain(ACPI_BATTERY_CLASS, acpi_device_bid(device),
 				 event, acpi_battery_present(battery));
+=======
+	acpi_bus_generate_netlink_event(device->pnp.device_class,
+					dev_name(&device->dev), event,
+					acpi_battery_present(battery));
+	acpi_notifier_call_chain(device, event, acpi_battery_present(battery));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* acpi_battery_update could remove power_supply object */
 	if (old && battery->bat)
 		power_supply_changed(battery->bat);
@@ -1215,6 +1227,7 @@ static void sysfs_battery_cleanup(struct acpi_battery *battery)
 
 static int acpi_battery_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct acpi_battery *battery;
 	struct acpi_device *device;
 	int result;
@@ -1223,6 +1236,12 @@ static int acpi_battery_probe(struct platform_device *pdev)
 	if (!device)
 		return -ENODEV;
 
+=======
+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+	struct acpi_battery *battery;
+	int result;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (device->dep_unmet)
 		return -EPROBE_DEFER;
 
@@ -1234,6 +1253,11 @@ static int acpi_battery_probe(struct platform_device *pdev)
 
 	battery->phys_dev = &pdev->dev;
 	battery->device = device;
+<<<<<<< HEAD
+=======
+	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
+	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	result = devm_mutex_init(&pdev->dev, &battery->update_lock);
 	if (result)

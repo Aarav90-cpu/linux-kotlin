@@ -20,8 +20,11 @@
 #include <asm/msi.h>
 #endif
 
+<<<<<<< HEAD
 #include "defs.h"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct device;
 struct irq_chip;
 struct irq_data;
@@ -44,6 +47,12 @@ union gpio_irq_fwspec {
 #endif
 };
 
+<<<<<<< HEAD
+=======
+#define GPIO_LINE_DIRECTION_IN	1
+#define GPIO_LINE_DIRECTION_OUT	0
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct gpio_irq_chip - GPIO interrupt controller
  */
@@ -343,6 +352,7 @@ struct gpio_irq_chip {
  * @direction_output: configures signal "offset" as output, returns 0 on
  *	success or a negative error number. This can be omitted on input-only
  *	or output-only gpio chips.
+<<<<<<< HEAD
  * @get: returns value for signal "offset", 0=low, 1=high, or negative error.
  *	the low and high values are defined as physical low on the line
  *	in/out to the connector such as a physical pad, pin or rail. The GPIO
@@ -354,6 +364,13 @@ struct gpio_irq_chip {
  * @set: assigns output value for signal "offset", returns 0 on success or
  *	negative error value. The output value follows the same semantic
  *	rules as for @get.
+=======
+ * @get: returns value for signal "offset", 0=low, 1=high, or negative error
+ * @get_multiple: reads values for multiple signals defined by "mask" and
+ *	stores them in "bits", returns 0 on success or negative error
+ * @set: assigns output value for signal "offset", returns 0 on success or
+ *       negative error value
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @set_multiple: assigns output values for multiple signals defined by
  *                "mask", returns 0 on success or negative error value
  * @set_config: optional hook for all kinds of settings. Uses the same

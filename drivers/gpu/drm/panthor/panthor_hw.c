@@ -2,8 +2,11 @@
 /* Copyright 2025 ARM Limited. All rights reserved. */
 
 #include <linux/nvmem-consumer.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_print.h>
 
 #include "panthor_device.h"
@@ -32,8 +35,11 @@ static struct panthor_hw panthor_hw_arch_v10 = {
 		.soft_reset = panthor_gpu_soft_reset,
 		.l2_power_off = panthor_gpu_l2_power_off,
 		.l2_power_on = panthor_gpu_l2_power_on,
+<<<<<<< HEAD
 		.power_changed_off = panthor_gpu_power_changed_off,
 		.power_changed_on = panthor_gpu_power_changed_on,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -58,6 +64,7 @@ static struct panthor_hw_entry panthor_hw_match[] = {
 	},
 };
 
+<<<<<<< HEAD
 static int panthor_hw_set_power_tracing(struct device *dev, void *data)
 {
 	struct panthor_device *ptdev = dev_get_drvdata(dev);
@@ -116,6 +123,8 @@ void panthor_hw_power_status_unregister(void)
 			ERR_PTR(ret));
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static char *get_gpu_model_name(struct panthor_device *ptdev)
 {
 	const u32 gpu_id = ptdev->gpu_info.gpu_id;

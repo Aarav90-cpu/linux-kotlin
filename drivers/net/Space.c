@@ -200,9 +200,30 @@ static int __init probe_list2(int unit, struct devprobe2 *p, int autoprobe)
  * look for EISA/PCI cards in addition to ISA cards).
  */
 static struct devprobe2 isa_probes[] __initdata = {
+<<<<<<< HEAD
 #if defined(CONFIG_NE2000) /* ISA (use ne2k-pci for PCI cards) */
 	{ne_probe, 0},
 #endif
+=======
+#ifdef CONFIG_3C515
+	{tc515_probe, 0},
+#endif
+#ifdef CONFIG_ULTRA
+	{ultra_probe, 0},
+#endif
+#ifdef CONFIG_WD80x3
+	{wd_probe, 0},
+#endif
+#if defined(CONFIG_NE2000) /* ISA (use ne2k-pci for PCI cards) */
+	{ne_probe, 0},
+#endif
+#ifdef CONFIG_LANCE		/* ISA/VLB (use pcnet32 for PCI cards) */
+	{lance_probe, 0},
+#endif
+#ifdef CONFIG_SMC9194
+	{smc_init, 0},
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CS89x0_ISA
 	{cs89x0_probe, 0},
 #endif

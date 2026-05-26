@@ -17,7 +17,10 @@
 #define BSSID_CAM_ENT_SIZE 0x08
 #define HFC_PAGE_UNIT 64
 #define RPWM_TRY_CNT 3
+<<<<<<< HEAD
 #define CPU_IO_RX_RETRY_CNT 3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum rtw89_mac_hwmod_sel {
 	RTW89_DMAC_SEL = 0,
@@ -334,7 +337,10 @@ enum rtw89_mac_dbg_port_sel {
 #define NAT25_CAM_BASE_ADDR_BE		0x18820000
 #define RXPLD_FLTR_CAM_BASE_ADDR_BE	0x18823000
 #define SEC_CAM_BASE_ADDR_BE		0x18824000
+<<<<<<< HEAD
 #define SEC_CAM_BASE_ADDR_BE_8922D	0x1882C000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define WOW_CAM_BASE_ADDR_BE		0x18828000
 #define MLD_TBL_BASE_ADDR_BE		0x18829000
 #define RX_CLSF_CAM_BASE_ADDR_BE	0x1882A000
@@ -940,7 +946,11 @@ struct rtw89_mac_size_set {
 	const struct rtw89_dle_size wde_size18_v1;
 	const struct rtw89_dle_size wde_size19;
 	const struct rtw89_dle_size wde_size23;
+<<<<<<< HEAD
 	const struct rtw89_dle_size wde_size30;
+=======
+	const struct rtw89_dle_size wde_size25;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct rtw89_dle_size wde_size31;
 	const struct rtw89_dle_size ple_size0;
 	const struct rtw89_dle_size ple_size1;
@@ -955,8 +965,13 @@ struct rtw89_mac_size_set {
 	const struct rtw89_dle_size ple_size19;
 	const struct rtw89_dle_size ple_size20_v1;
 	const struct rtw89_dle_size ple_size22_v1;
+<<<<<<< HEAD
 	const struct rtw89_dle_size ple_size27;
 	const struct rtw89_dle_size ple_size31;
+=======
+	const struct rtw89_dle_size ple_size32;
+	const struct rtw89_dle_size ple_size33;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct rtw89_dle_size ple_size34;
 	const struct rtw89_wde_quota wde_qt0;
 	const struct rtw89_wde_quota wde_qt1;
@@ -970,7 +985,11 @@ struct rtw89_mac_size_set {
 	const struct rtw89_wde_quota wde_qt18;
 	const struct rtw89_wde_quota wde_qt19_v1;
 	const struct rtw89_wde_quota wde_qt23;
+<<<<<<< HEAD
 	const struct rtw89_wde_quota wde_qt30;
+=======
+	const struct rtw89_wde_quota wde_qt25;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct rtw89_wde_quota wde_qt31;
 	const struct rtw89_ple_quota ple_qt0;
 	const struct rtw89_ple_quota ple_qt1;
@@ -982,8 +1001,11 @@ struct rtw89_mac_size_set {
 	const struct rtw89_ple_quota ple_qt18;
 	const struct rtw89_ple_quota ple_qt25;
 	const struct rtw89_ple_quota ple_qt26;
+<<<<<<< HEAD
 	const struct rtw89_ple_quota ple_qt27;
 	const struct rtw89_ple_quota ple_qt28;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct rtw89_ple_quota ple_qt42;
 	const struct rtw89_ple_quota ple_qt42_v2;
 	const struct rtw89_ple_quota ple_qt43;
@@ -995,8 +1017,15 @@ struct rtw89_mac_size_set {
 	const struct rtw89_ple_quota ple_qt57;
 	const struct rtw89_ple_quota ple_qt58;
 	const struct rtw89_ple_quota ple_qt59;
+<<<<<<< HEAD
 	const struct rtw89_ple_quota ple_qt61;
 	const struct rtw89_ple_quota ple_qt62;
+=======
+	const struct rtw89_ple_quota ple_qt72;
+	const struct rtw89_ple_quota ple_qt73;
+	const struct rtw89_ple_quota ple_qt74;
+	const struct rtw89_ple_quota ple_qt75;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct rtw89_ple_quota ple_qt78;
 	const struct rtw89_ple_quota ple_qt79;
 	const struct rtw89_ple_quota ple_qt_52a_wow;
@@ -1039,7 +1068,10 @@ struct rtw89_mac_gen_def {
 	struct rtw89_reg_def narrow_bw_ru_dis;
 	struct rtw89_reg_def wow_ctrl;
 	struct rtw89_reg_def agg_limit;
+<<<<<<< HEAD
 	struct rtw89_reg_def ra_agg_limit;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rtw89_reg_def txcnt_limit;
 
 	int (*check_mac_en)(struct rtw89_dev *rtwdev, u8 band,
@@ -1133,6 +1165,7 @@ extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
 extern const struct rtw89_mac_gen_def rtw89_mac_gen_be;
 
 static inline
+<<<<<<< HEAD
 u32 rtw89_mac_mem_base_addrs(struct rtw89_dev *rtwdev, u8 sel)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
@@ -1145,6 +1178,8 @@ u32 rtw89_mac_mem_base_addrs(struct rtw89_dev *rtwdev, u8 sel)
 }
 
 static inline
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u32 rtw89_mac_reg_by_idx(struct rtw89_dev *rtwdev, u32 reg_base, u8 band)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
@@ -1828,7 +1863,12 @@ static inline bool rtw89_mac_chk_preload_allow(struct rtw89_dev *rtwdev)
 	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
 		return false;
 
+<<<<<<< HEAD
 	/* The RTL8922DE will re-enable pre-load function after verification. */
+=======
+	if (rtwdev->chip->chip_id == RTL8922D && rtwdev->hal.cid == RTL8922D_CID7090)
+		return true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }

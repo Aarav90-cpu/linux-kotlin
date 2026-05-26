@@ -58,8 +58,13 @@ static void nft_symhash_eval(const struct nft_expr *expr,
 }
 
 static const struct nla_policy nft_hash_policy[NFTA_HASH_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_HASH_SREG]	= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
 	[NFTA_HASH_DREG]	= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
+=======
+	[NFTA_HASH_SREG]	= { .type = NLA_U32 },
+	[NFTA_HASH_DREG]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	[NFTA_HASH_LEN]		= NLA_POLICY_MAX(NLA_BE32, 255),
 	[NFTA_HASH_MODULUS]	= { .type = NLA_U32 },
 	[NFTA_HASH_SEED]	= { .type = NLA_U32 },
@@ -166,6 +171,19 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_jhash_reduce(struct nft_regs_track *track,
+			     const struct nft_expr *expr)
+{
+	const struct nft_jhash *priv = nft_expr_priv(expr);
+
+	nft_reg_track_cancel(track, priv->dreg, sizeof(u32));
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nft_symhash_dump(struct sk_buff *skb,
 			    const struct nft_expr *expr, bool reset)
 {
@@ -186,6 +204,33 @@ nla_put_failure:
 	return -1;
 }
 
+<<<<<<< HEAD
+=======
+static bool nft_symhash_reduce(struct nft_regs_track *track,
+			       const struct nft_expr *expr)
+{
+	struct nft_symhash *priv = nft_expr_priv(expr);
+	struct nft_symhash *symhash;
+
+	if (!nft_reg_track_cmp(track, expr, priv->dreg)) {
+		nft_reg_track_update(track, expr, priv->dreg, sizeof(u32));
+		return false;
+	}
+
+	symhash = nft_expr_priv(track->regs[priv->dreg].selector);
+	if (priv->offset != symhash->offset ||
+	    priv->modulus != symhash->modulus) {
+		nft_reg_track_update(track, expr, priv->dreg, sizeof(u32));
+		return false;
+	}
+
+	if (!track->regs[priv->dreg].bitwise)
+		return true;
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct nft_expr_type nft_hash_type;
 static const struct nft_expr_ops nft_jhash_ops = {
 	.type		= &nft_hash_type,
@@ -193,6 +238,10 @@ static const struct nft_expr_ops nft_jhash_ops = {
 	.eval		= nft_jhash_eval,
 	.init		= nft_jhash_init,
 	.dump		= nft_jhash_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_jhash_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops nft_symhash_ops = {
@@ -201,6 +250,10 @@ static const struct nft_expr_ops nft_symhash_ops = {
 	.eval		= nft_symhash_eval,
 	.init		= nft_symhash_init,
 	.dump		= nft_symhash_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_symhash_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct nft_expr_ops *

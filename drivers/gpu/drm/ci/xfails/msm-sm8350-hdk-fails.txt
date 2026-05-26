@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 core_setmaster@master-drop-set-user,Fail
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kms_3d,Fail
 kms_cursor_legacy@forked-bo,Fail
 kms_cursor_legacy@forked-move,Fail

@@ -13,20 +13,29 @@ try:
         SPEC_PATH = KSFT_DIR / "net/lib/specs"
 
         sys.path.append(tools_full_path.as_posix())
+<<<<<<< HEAD
         from net.lib.ynl.pyynl.lib import YnlFamily, NlError, NlPolicy, Netlink
+=======
+        from net.lib.ynl.pyynl.lib import YnlFamily, NlError
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     else:
         # Running in tree
         tools_full_path = KSRC / "tools"
         SPEC_PATH = KSRC / "Documentation/netlink/specs"
 
         sys.path.append(tools_full_path.as_posix())
+<<<<<<< HEAD
         from net.ynl.pyynl.lib import YnlFamily, NlError, NlPolicy, Netlink
+=======
+        from net.ynl.pyynl.lib import YnlFamily, NlError
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 except ModuleNotFoundError as e:
     ksft_pr("Failed importing `ynl` library from kernel sources")
     ksft_pr(str(e))
     ktap_result(True, comment="SKIP")
     sys.exit(4)
 
+<<<<<<< HEAD
 __all__ = [
     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
     "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily",
@@ -34,6 +43,8 @@ __all__ = [
     "PSPFamily",
 ]
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #
 # Wrapper classes, loading the right specs
 # Set schema='' to avoid jsonschema validation, it's slow
@@ -64,6 +75,7 @@ class NetshaperFamily(YnlFamily):
         super().__init__((SPEC_PATH / Path('net_shaper.yaml')).as_posix(),
                          schema='', recv_size=recv_size)
 
+<<<<<<< HEAD
 
 class NlctrlFamily(YnlFamily):
     def __init__(self, recv_size=0):
@@ -71,6 +83,8 @@ class NlctrlFamily(YnlFamily):
                          schema='', recv_size=recv_size)
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 class DevlinkFamily(YnlFamily):
     def __init__(self, recv_size=0):
         super().__init__((SPEC_PATH / Path('devlink.yaml')).as_posix(),

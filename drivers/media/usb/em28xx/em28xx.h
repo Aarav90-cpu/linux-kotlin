@@ -144,11 +144,14 @@
 #define EM2860_BOARD_MYGICA_IGRABBER              105
 #define EM2874_BOARD_HAUPPAUGE_USB_QUADHD         106
 #define EM2860_BOARD_MYGICA_UTV3                  107
+<<<<<<< HEAD
 #define EM2828X_BOARD_HAUPPAUGE_USB_LIVE2         108
 #define EM2828X_BOARD_HAUPPAUGE_935_V2            109
 #define EM2828X_BOARD_HAUPPAUGE_955_V2            110
 #define EM2828X_BOARD_HAUPPAUGE_975_V2            111
 #define EM28178_BOARD_PCTV_461E_V3                112
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Limits minimum and default number of buffers */
 #define EM28XX_MIN_BUF 4
@@ -430,6 +433,7 @@ enum em28xx_decoder {
 	EM28XX_NODECODER = 0,
 	EM28XX_TVP5150,
 	EM28XX_SAA711X,
+<<<<<<< HEAD
 	EM28XX_BUILTIN,
 };
 
@@ -438,6 +442,10 @@ enum em28xx_decoder {
 #define EM2828X_SVIDEO		1
 #define EM2828X_TELEVISION	2
 
+=======
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum em28xx_sensor {
 	EM28XX_NOSENSOR = 0,
 	EM28XX_MT9V011,
@@ -480,12 +488,15 @@ struct em28xx_button {
 	bool inverted;
 };
 
+<<<<<<< HEAD
 enum em2828x_media_pads {
 	EM2828X_PAD_INPUT,
 	EM2828X_PAD_VID_OUT,
 	EM2828X_NUM_PADS
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct em28xx_board {
 	char *name;
 	int vchannels;
@@ -610,7 +621,10 @@ struct em28xx_v4l2 {
 
 #ifdef CONFIG_MEDIA_CONTROLLER
 	struct media_pad video_pad, vbi_pad;
+<<<<<<< HEAD
 	struct media_pad decoder_pads[EM2828X_NUM_PADS];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct media_entity *decoder;
 #endif
 };
@@ -770,8 +784,11 @@ struct em28xx {
 				     char *buf, int len);
 	int (*em28xx_read_reg_req)(struct em28xx *dev, u8 req, u16 reg);
 
+<<<<<<< HEAD
 	int (*em28xx_set_analog_freq)(struct em28xx *dev, u32 freq);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum em28xx_mode mode;
 
 	// Button state polling
@@ -783,7 +800,10 @@ struct em28xx {
 	// Snapshot button input device
 	char snapshot_button_path[30];	// path of the input dev
 	struct input_dev *sbutton_input_dev;
+<<<<<<< HEAD
 	int analog_xfer_mode;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_MEDIA_CONTROLLER
 	struct media_device *media_dev;
@@ -832,8 +852,11 @@ int em28xx_write_ac97(struct em28xx *dev, u8 reg, u16 val);
 int em28xx_audio_analog_set(struct em28xx *dev);
 int em28xx_audio_setup(struct em28xx *dev);
 
+<<<<<<< HEAD
 void em2828X_decoder_vmux(struct em28xx *dev, unsigned int vin);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct em28xx_led *em28xx_find_led(struct em28xx *dev,
 					 enum em28xx_led_role role);
 int em28xx_capture_start(struct em28xx *dev, int start);

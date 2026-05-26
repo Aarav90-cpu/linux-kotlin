@@ -149,6 +149,10 @@ struct intel_gt_coredump {
 	u32 gtier[6], ngtier;
 	u32 forcewake;
 	u32 error; /* gen6+ */
+<<<<<<< HEAD
+=======
+	u32 err_int; /* gen7 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 fault_data0; /* gen8, gen9 */
 	u32 fault_data1; /* gen8, gen9 */
 	u32 done_reg;

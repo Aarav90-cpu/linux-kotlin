@@ -103,6 +103,10 @@ do_sync_xor_offs(struct page *dest, unsigned int offset,
 {
 	int i;
 	int xor_src_cnt = 0;
+<<<<<<< HEAD
+=======
+	int src_off = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *dest_buf;
 	void **srcs;
 
@@ -116,12 +120,32 @@ do_sync_xor_offs(struct page *dest, unsigned int offset,
 		if (src_list[i])
 			srcs[xor_src_cnt++] = page_address(src_list[i]) +
 				(src_offs ? src_offs[i] : offset);
+<<<<<<< HEAD
 
 	/* set destination address */
 	dest_buf = page_address(dest) + offset;
 	if (submit->flags & ASYNC_TX_XOR_ZERO_DST)
 		memset(dest_buf, 0, len);
 	xor_gen(dest_buf, srcs, xor_src_cnt, len);
+=======
+	src_cnt = xor_src_cnt;
+	/* set destination address */
+	dest_buf = page_address(dest) + offset;
+
+	if (submit->flags & ASYNC_TX_XOR_ZERO_DST)
+		memset(dest_buf, 0, len);
+
+	while (src_cnt > 0) {
+		/* process up to 'MAX_XOR_BLOCKS' sources */
+		xor_src_cnt = min(src_cnt, MAX_XOR_BLOCKS);
+		xor_blocks(xor_src_cnt, len, dest_buf, &srcs[src_off]);
+
+		/* drop completed sources */
+		src_cnt -= xor_src_cnt;
+		src_off += xor_src_cnt;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	async_tx_sync_epilog(submit);
 }
 
@@ -156,10 +180,18 @@ dma_xor_aligned_offsets(struct dma_device *device, unsigned int offset,
  *
  * honored flags: ASYNC_TX_ACK, ASYNC_TX_XOR_ZERO_DST, ASYNC_TX_XOR_DROP_DST
  *
+<<<<<<< HEAD
  * xor_gen always uses the dest as a source so the ASYNC_TX_XOR_ZERO_DST flag
  * must be set to not include dest data in the calculation.  The assumption with
  * dma engines is that they only use the destination buffer as a source when it
  * is explicitly specified in the source list.
+=======
+ * xor_blocks always uses the dest as a source so the
+ * ASYNC_TX_XOR_ZERO_DST flag must be set to not include dest data in
+ * the calculation.  The assumption with dma engines is that they only
+ * use the destination buffer as a source when it is explicitly specified
+ * in the source list.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * src_list note: if the dest is also a source it must be at index zero.
  * The contents of this array will be overwritten if a scribble region
@@ -246,10 +278,18 @@ EXPORT_SYMBOL_GPL(async_xor_offs);
  *
  * honored flags: ASYNC_TX_ACK, ASYNC_TX_XOR_ZERO_DST, ASYNC_TX_XOR_DROP_DST
  *
+<<<<<<< HEAD
  * xor_gen always uses the dest as a source so the ASYNC_TX_XOR_ZERO_DST flag
  * must be set to not include dest data in the calculation.  The assumption with
  * dma engines is that they only use the destination buffer as a source when it
  * is explicitly specified in the source list.
+=======
+ * xor_blocks always uses the dest as a source so the
+ * ASYNC_TX_XOR_ZERO_DST flag must be set to not include dest data in
+ * the calculation.  The assumption with dma engines is that they only
+ * use the destination buffer as a source when it is explicitly specified
+ * in the source list.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * src_list note: if the dest is also a source it must be at index zero.
  * The contents of this array will be overwritten if a scribble region

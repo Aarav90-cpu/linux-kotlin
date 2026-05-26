@@ -229,10 +229,17 @@ static u32 soc21_didt_rreg(struct amdgpu_device *adev, u32 reg)
 	address = SOC15_REG_OFFSET(GC, 0, regDIDT_IND_INDEX);
 	data = SOC15_REG_OFFSET(GC, 0, regDIDT_IND_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(address, (reg));
 	r = RREG32(data);
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(address, (reg));
+	r = RREG32(data);
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -243,10 +250,17 @@ static void soc21_didt_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	address = SOC15_REG_OFFSET(GC, 0, regDIDT_IND_INDEX);
 	data = SOC15_REG_OFFSET(GC, 0, regDIDT_IND_DATA);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&adev->reg.didt.lock, flags);
 	WREG32(address, (reg));
 	WREG32(data, (v));
 	spin_unlock_irqrestore(&adev->reg.didt.lock, flags);
+=======
+	spin_lock_irqsave(&adev->didt_idx_lock, flags);
+	WREG32(address, (reg));
+	WREG32(data, (v));
+	spin_unlock_irqrestore(&adev->didt_idx_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 soc21_get_config_memsize(struct amdgpu_device *adev)
@@ -589,6 +603,7 @@ static int soc21_common_early_init(struct amdgpu_ip_block *ip_block)
 	struct amdgpu_device *adev = ip_block->adev;
 
 	adev->nbio.funcs->set_reg_remap(adev);
+<<<<<<< HEAD
 	adev->reg.pcie.rreg = &amdgpu_device_indirect_rreg;
 	adev->reg.pcie.wreg = &amdgpu_device_indirect_wreg;
 	adev->reg.pcie.rreg64 = &amdgpu_device_indirect_rreg64;
@@ -598,6 +613,23 @@ static int soc21_common_early_init(struct amdgpu_ip_block *ip_block)
 
 	adev->reg.didt.rreg = &soc21_didt_rreg;
 	adev->reg.didt.wreg = &soc21_didt_wreg;
+=======
+	adev->smc_rreg = NULL;
+	adev->smc_wreg = NULL;
+	adev->pcie_rreg = &amdgpu_device_indirect_rreg;
+	adev->pcie_wreg = &amdgpu_device_indirect_wreg;
+	adev->pcie_rreg64 = &amdgpu_device_indirect_rreg64;
+	adev->pcie_wreg64 = &amdgpu_device_indirect_wreg64;
+	adev->pciep_rreg = amdgpu_device_pcie_port_rreg;
+	adev->pciep_wreg = amdgpu_device_pcie_port_wreg;
+
+	/* TODO: will add them during VCN v2 implementation */
+	adev->uvd_ctx_rreg = NULL;
+	adev->uvd_ctx_wreg = NULL;
+
+	adev->didt_rreg = &soc21_didt_rreg;
+	adev->didt_wreg = &soc21_didt_wreg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	adev->asic_funcs = &soc21_asic_funcs;
 

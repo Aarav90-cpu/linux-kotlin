@@ -1887,14 +1887,21 @@ static const struct v4l2_ctrl_ops ov8856_ctrl_ops = {
 
 static int ov8856_init_controls(struct ov8856 *ov8856)
 {
+<<<<<<< HEAD
 	struct i2c_client *client = v4l2_get_subdevdata(&ov8856->sd);
 	struct v4l2_fwnode_device_properties props;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct v4l2_ctrl_handler *ctrl_hdlr;
 	s64 exposure_max, h_blank;
 	int ret;
 
 	ctrl_hdlr = &ov8856->ctrl_handler;
+<<<<<<< HEAD
 	ret = v4l2_ctrl_handler_init(ctrl_hdlr, 10);
+=======
+	ret = v4l2_ctrl_handler_init(ctrl_hdlr, 8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1958,6 +1965,7 @@ static int ov8856_init_controls(struct ov8856 *ov8856)
 		goto err_ctrl_handler_free;
 	}
 
+<<<<<<< HEAD
 	ret = v4l2_fwnode_device_parse(&client->dev, &props);
 	if (ret)
 		goto err_ctrl_handler_free;
@@ -1967,6 +1975,8 @@ static int ov8856_init_controls(struct ov8856 *ov8856)
 	if (ret)
 		goto err_ctrl_handler_free;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ov8856->sd.ctrl_handler = ctrl_hdlr;
 
 	return 0;

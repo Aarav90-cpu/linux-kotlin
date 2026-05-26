@@ -88,19 +88,31 @@ static void amd_set_max_freq_ratio(void)
 
 	rc = cppc_get_perf_caps(0, &perf_caps);
 	if (rc) {
+<<<<<<< HEAD
 		pr_debug("Could not retrieve perf counters (%d)\n", rc);
+=======
+		pr_warn("Could not retrieve perf counters (%d)\n", rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
 	rc = amd_get_boost_ratio_numerator(0, &numerator);
 	if (rc) {
+<<<<<<< HEAD
 		pr_debug("Could not retrieve highest performance (%d)\n", rc);
+=======
+		pr_warn("Could not retrieve highest performance (%d)\n", rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 	nominal_perf = perf_caps.nominal_perf;
 
 	if (!nominal_perf) {
+<<<<<<< HEAD
 		pr_debug("Could not retrieve nominal performance\n");
+=======
+		pr_warn("Could not retrieve nominal performance\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 

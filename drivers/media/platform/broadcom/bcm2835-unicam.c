@@ -14,6 +14,13 @@
  * and TI CAL camera interface driver by
  *    Benoit Parrot <bparrot@ti.com>
  *
+<<<<<<< HEAD
+=======
+ *
+ * There are two camera drivers in the kernel for BCM283x - this one and
+ * bcm2835-camera (currently in staging).
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * This driver directly controls the Unicam peripheral - there is no
  * involvement with the VideoCore firmware. Unicam receives CSI-2 or CCP2 data
  * and writes it into SDRAM. The only potential processing options are to
@@ -338,12 +345,20 @@ static const struct unicam_format_info unicam_image_formats[] = {
 		.csi_dt		= MIPI_CSI2_DT_RGB565,
 	}, {
 		.fourcc		= V4L2_PIX_FMT_RGB24, /* rgb */
+<<<<<<< HEAD
 		.code		= MEDIA_BUS_FMT_BGR888_1X24,
+=======
+		.code		= MEDIA_BUS_FMT_RGB888_1X24,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.depth		= 24,
 		.csi_dt		= MIPI_CSI2_DT_RGB888,
 	}, {
 		.fourcc		= V4L2_PIX_FMT_BGR24, /* bgr */
+<<<<<<< HEAD
 		.code		= MEDIA_BUS_FMT_RGB888_1X24,
+=======
+		.code		= MEDIA_BUS_FMT_BGR888_1X24,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.depth		= 24,
 		.csi_dt		= MIPI_CSI2_DT_RGB888,
 	}, {
@@ -2144,13 +2159,19 @@ static int unicam_video_link_validate(struct media_link *link)
 		const struct v4l2_pix_format *fmt = &node->fmt.fmt.pix;
 		const struct unicam_format_info *fmtinfo;
 
+<<<<<<< HEAD
 		fmtinfo = unicam_find_format_by_code(format->code,
 						     UNICAM_SD_PAD_SOURCE_IMAGE);
+=======
+		fmtinfo = unicam_find_format_by_fourcc(fmt->pixelformat,
+						       UNICAM_SD_PAD_SOURCE_IMAGE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (WARN_ON(!fmtinfo)) {
 			ret = -EPIPE;
 			goto out;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Unicam initially associated BGR24 to BGR888_1X24 and RGB24 to
 		 * RGB888_1X24.
@@ -2183,6 +2204,17 @@ static int unicam_video_link_validate(struct media_link *link)
 				fmt->width, fmt->height,
 				v4l2_field_names[fmt->field],
 				format->width, format->height,
+=======
+		if (fmtinfo->code != format->code ||
+		    fmt->height != format->height ||
+		    fmt->width != format->width ||
+		    fmt->field != format->field) {
+			dev_dbg(node->dev->dev,
+				"image: (%u x %u) 0x%08x %s != (%u x %u) 0x%08x %s\n",
+				fmt->width, fmt->height, fmtinfo->code,
+				v4l2_field_names[fmt->field],
+				format->width, format->height, format->code,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				v4l2_field_names[format->field]);
 			ret = -EPIPE;
 		}

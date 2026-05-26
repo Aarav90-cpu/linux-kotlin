@@ -24,8 +24,11 @@
 
 struct inet_hashinfo;
 
+<<<<<<< HEAD
 void inet6_init_ehash_secret(void);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int __inet6_ehashfn(const u32 lhash,
 				    const u16 lport,
 				    const u32 fhash,

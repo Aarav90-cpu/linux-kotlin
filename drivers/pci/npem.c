@@ -504,7 +504,11 @@ static int pci_npem_set_led_classdev(struct npem *npem, struct npem_led *nled)
 	led->brightness_get = brightness_get;
 	led->max_brightness = 1;
 	led->default_trigger = "none";
+<<<<<<< HEAD
 	led->flags = LED_HW_PLUGGABLE;
+=======
+	led->flags = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = led_classdev_register(&npem->dev->dev, led);
 	if (ret)

@@ -33,7 +33,10 @@ void intel_vrr_dcb_increment_flip_count(struct intel_crtc_state *crtc_state,
 					struct intel_crtc *crtc);
 bool intel_vrr_is_push_sent(const struct intel_crtc_state *crtc_state);
 void intel_vrr_disable(const struct intel_crtc_state *old_crtc_state);
+<<<<<<< HEAD
 void intel_vrr_psr_frame_change_enable(const struct intel_crtc_state *crtc_state);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void intel_vrr_get_config(struct intel_crtc_state *crtc_state);
 int intel_vrr_vmax_vtotal(const struct intel_crtc_state *crtc_state);
 int intel_vrr_vmin_vtotal(const struct intel_crtc_state *crtc_state);

@@ -571,7 +571,10 @@ void scsi_put_internal_cmd(struct scsi_cmnd *scmd);
 extern void sdev_disable_disk_events(struct scsi_device *sdev);
 extern void sdev_enable_disk_events(struct scsi_device *sdev);
 extern int scsi_vpd_lun_id(struct scsi_device *, char *, size_t);
+<<<<<<< HEAD
 extern int scsi_vpd_lun_serial(struct scsi_device *, char *, size_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern int scsi_vpd_tpg_id(struct scsi_device *, int *);
 
 #ifdef CONFIG_PM

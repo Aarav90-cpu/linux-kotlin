@@ -20,6 +20,10 @@
 
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ip6_route.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #include "xfrm_inout.h"
@@ -66,9 +70,13 @@ static int xfrm4_transport_output(struct xfrm_state *x, struct sk_buff *skb)
 	struct iphdr *iph = ip_hdr(skb);
 	int ihl = iph->ihl * 4;
 
+<<<<<<< HEAD
 	if (!skb->inner_protocol)
 		skb_set_inner_transport_header(skb,
 					       skb_transport_offset(skb));
+=======
+	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb_set_network_header(skb, -x->props.header_len);
 	skb->mac_header = skb->network_header +
@@ -169,9 +177,13 @@ static int xfrm6_transport_output(struct xfrm_state *x, struct sk_buff *skb)
 	int hdr_len;
 
 	iph = ipv6_hdr(skb);
+<<<<<<< HEAD
 	if (!skb->inner_protocol)
 		skb_set_inner_transport_header(skb,
 					       skb_transport_offset(skb));
+=======
+	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hdr_len = xfrm6_hdr_offset(x, skb, &prevhdr);
 	if (hdr_len < 0)
@@ -280,10 +292,15 @@ static int xfrm4_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
 	struct iphdr *top_iph;
 	int flags;
 
+<<<<<<< HEAD
 	if (!skb->inner_protocol) {
 		skb_set_inner_network_header(skb, skb_network_offset(skb));
 		skb_set_inner_transport_header(skb, skb_transport_offset(skb));
 	}
+=======
+	skb_set_inner_network_header(skb, skb_network_offset(skb));
+	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb_set_network_header(skb, -x->props.header_len);
 	skb->mac_header = skb->network_header +
@@ -327,10 +344,15 @@ static int xfrm6_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
 	struct ipv6hdr *top_iph;
 	int dsfield;
 
+<<<<<<< HEAD
 	if (!skb->inner_protocol) {
 		skb_set_inner_network_header(skb, skb_network_offset(skb));
 		skb_set_inner_transport_header(skb, skb_transport_offset(skb));
 	}
+=======
+	skb_set_inner_network_header(skb, skb_network_offset(skb));
+	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	skb_set_network_header(skb, -x->props.header_len);
 	skb->mac_header = skb->network_header +
@@ -907,7 +929,11 @@ int xfrm6_tunnel_check_size(struct sk_buff *skb)
 		skb->protocol = htons(ETH_P_IPV6);
 
 		if (xfrm6_local_dontfrag(sk))
+<<<<<<< HEAD
 			xfrm6_local_rxpmtu(skb, mtu);
+=======
+			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else if (sk)
 			xfrm_local_error(skb, mtu);
 		else

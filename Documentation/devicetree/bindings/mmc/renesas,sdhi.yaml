@@ -106,11 +106,14 @@ properties:
   iommus:
     maxItems: 1
 
+<<<<<<< HEAD
   mux-states:
     description:
       mux controller node to route the SD/SDIO/eMMC signals from SoC to cards.
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   power-domains:
     maxItems: 1
 
@@ -280,7 +283,10 @@ examples:
         max-frequency = <195000000>;
         power-domains = <&sysc R8A7790_PD_ALWAYS_ON>;
         resets = <&cpg 314>;
+<<<<<<< HEAD
         mux-states = <&mux 0>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };
 
     sdhi1: mmc@ee120000 {

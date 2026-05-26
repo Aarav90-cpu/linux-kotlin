@@ -19,6 +19,10 @@ struct intel_display_snapshot {
 	struct intel_display_device_info info;
 	struct intel_display_runtime_info runtime_info;
 	struct intel_display_params params;
+<<<<<<< HEAD
+=======
+	struct intel_overlay_snapshot *overlay;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct intel_dmc_snapshot *dmc;
 	struct intel_display_irq_snapshot *irq;
 };
@@ -40,6 +44,10 @@ struct intel_display_snapshot *intel_display_snapshot_capture(struct intel_displ
 	intel_display_params_copy(&snapshot->params);
 
 	snapshot->irq = intel_display_irq_snapshot_capture(display);
+<<<<<<< HEAD
+=======
+	snapshot->overlay = intel_overlay_snapshot_capture(display);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	snapshot->dmc = intel_dmc_snapshot_capture(display);
 
 	return snapshot;
@@ -59,6 +67,10 @@ void intel_display_snapshot_print(const struct intel_display_snapshot *snapshot,
 	intel_display_params_dump(&snapshot->params, display->drm->driver->name, p);
 
 	intel_display_irq_snapshot_print(snapshot->irq, p);
+<<<<<<< HEAD
+=======
+	intel_overlay_snapshot_print(snapshot->overlay, p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	intel_dmc_snapshot_print(snapshot->dmc, p);
 }
 
@@ -70,6 +82,10 @@ void intel_display_snapshot_free(struct intel_display_snapshot *snapshot)
 	intel_display_params_free(&snapshot->params);
 
 	kfree(snapshot->irq);
+<<<<<<< HEAD
+=======
+	kfree(snapshot->overlay);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(snapshot->dmc);
 	kfree(snapshot);
 }

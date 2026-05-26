@@ -32,7 +32,10 @@ ath12k-$(CONFIG_ATH12K_TRACING) += trace.o
 ath12k-$(CONFIG_PM) += wow.o
 ath12k-$(CONFIG_ATH12K_COREDUMP) += coredump.o
 ath12k-$(CONFIG_NL80211_TESTMODE) += testmode.o
+<<<<<<< HEAD
 ath12k-$(CONFIG_THERMAL) += thermal.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # for tracing framework to find trace.h
 CFLAGS_trace.o := -I$(src)

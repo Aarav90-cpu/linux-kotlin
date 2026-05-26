@@ -4,6 +4,7 @@
 #
 
 config MULTIPLEXER
+<<<<<<< HEAD
 	bool
 
 config MUX_CORE
@@ -19,6 +20,12 @@ config MUX_CORE
 if MULTIPLEXER
 
 menu "Multiplexer drivers"
+=======
+	tristate
+
+menu "Multiplexer drivers"
+	depends on MULTIPLEXER
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config MUX_ADG792A
 	tristate "Analog Devices ADG792A/ADG792G Multiplexers"
@@ -71,5 +78,8 @@ config MUX_MMIO
 	  be called mux-mmio.
 
 endmenu
+<<<<<<< HEAD
 
 endif # MULTIPLEXER
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

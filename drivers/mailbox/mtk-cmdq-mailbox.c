@@ -493,14 +493,24 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
 		if (curr_pa == end_pa - CMDQ_INST_SIZE ||
 		    curr_pa == end_pa) {
 			/* set to this task directly */
+<<<<<<< HEAD
 			gce_addr = cmdq_convert_gce_addr(task->pa_base, cmdq->pdata);
 			writel(gce_addr, thread->base + CMDQ_THR_CURR_ADDR);
+=======
+			writel(task->pa_base >> cmdq->pdata->shift,
+			       thread->base + CMDQ_THR_CURR_ADDR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			cmdq_task_insert_into_thread(task);
 			smp_mb(); /* modify jump before enable thread */
 		}
+<<<<<<< HEAD
 		gce_addr = cmdq_convert_gce_addr(task->pa_base + pkt->cmd_buf_size, cmdq->pdata);
 		writel(gce_addr, thread->base + CMDQ_THR_END_ADDR);
+=======
+		writel((task->pa_base + pkt->cmd_buf_size) >> cmdq->pdata->shift,
+		       thread->base + CMDQ_THR_END_ADDR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		cmdq_thread_resume(thread);
 	}
 	list_move_tail(&task->list_entry, &thread->task_busy_list);
@@ -728,7 +738,11 @@ static int cmdq_probe(struct platform_device *pdev)
 	cmdq->mbox.ops = &cmdq_mbox_chan_ops;
 	cmdq->mbox.of_xlate = cmdq_xlate;
 
+<<<<<<< HEAD
 	/* make use of MBOX_TXDONE_BY_ACK */
+=======
+	/* make use of TXDONE_BY_ACK */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmdq->mbox.txdone_irq = false;
 	cmdq->mbox.txdone_poll = false;
 

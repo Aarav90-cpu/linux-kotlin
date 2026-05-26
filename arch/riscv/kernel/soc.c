@@ -8,7 +8,11 @@
 #include <asm/soc.h>
 
 /*
+<<<<<<< HEAD
  * This is called extremely early, before parse_dtb(), to allow initializing
+=======
+ * This is called extremly early, before parse_dtb(), to allow initializing
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * SoC hardware before memory or any device driver initialization.
  */
 void __init soc_early_init(void)

@@ -23,7 +23,11 @@
 #define GIC_LPI_OFFSET	8192
 
 static size_t nr_iterations = 1000;
+<<<<<<< HEAD
 static gpa_t gpa_base;
+=======
+static vm_paddr_t gpa_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct kvm_vm *vm;
 static struct kvm_vcpu **vcpus;
@@ -35,6 +39,7 @@ static struct test_data {
 	u32		nr_devices;
 	u32		nr_event_ids;
 
+<<<<<<< HEAD
 	gpa_t		device_table;
 	gpa_t		collection_table;
 	gpa_t		cmdq_base;
@@ -43,6 +48,16 @@ static struct test_data {
 
 	gpa_t		lpi_prop_table;
 	gpa_t		lpi_pend_tables;
+=======
+	vm_paddr_t	device_table;
+	vm_paddr_t	collection_table;
+	vm_paddr_t	cmdq_base;
+	void		*cmdq_base_va;
+	vm_paddr_t	itt_tables;
+
+	vm_paddr_t	lpi_prop_table;
+	vm_paddr_t	lpi_pend_tables;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } test_data =  {
 	.nr_cpus	= 1,
 	.nr_devices	= 1,
@@ -73,7 +88,11 @@ static void guest_setup_its_mappings(void)
 	/* Round-robin the LPIs to all of the vCPUs in the VM */
 	coll_id = 0;
 	for (device_id = 0; device_id < nr_devices; device_id++) {
+<<<<<<< HEAD
 		gpa_t itt_base = test_data.itt_tables + (device_id * SZ_64K);
+=======
+		vm_paddr_t itt_base = test_data.itt_tables + (device_id * SZ_64K);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		its_send_mapd_cmd(test_data.cmdq_base_va, device_id,
 				  itt_base, SZ_64K, true);
@@ -188,7 +207,11 @@ static void setup_test_data(void)
 	size_t pages_per_64k = vm_calc_num_guest_pages(vm->mode, SZ_64K);
 	u32 nr_devices = test_data.nr_devices;
 	u32 nr_cpus = test_data.nr_cpus;
+<<<<<<< HEAD
 	gpa_t cmdq_base;
+=======
+	vm_paddr_t cmdq_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	test_data.device_table = vm_phy_pages_alloc(vm, pages_per_64k,
 						    gpa_base,
@@ -224,7 +247,11 @@ static void setup_gic(void)
 
 static void signal_lpi(u32 device_id, u32 event_id)
 {
+<<<<<<< HEAD
 	gpa_t db_addr = GITS_BASE_GPA + GITS_TRANSLATER;
+=======
+	vm_paddr_t db_addr = GITS_BASE_GPA + GITS_TRANSLATER;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct kvm_msi msi = {
 		.address_lo	= db_addr,

@@ -296,6 +296,7 @@ static int clockevents_program_min_delta(struct clock_event_device *dev)
 
 #endif /* CONFIG_GENERIC_CLOCKEVENTS_MIN_ADJUST */
 
+<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_CLOCKEVENTS_COUPLED
 #ifdef CONFIG_GENERIC_CLOCKEVENTS_COUPLED_INLINE
 #include <asm/clock_inlined.h>
@@ -328,6 +329,8 @@ static inline bool clockevent_set_next_coupled(struct clock_event_device *dev, k
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * clockevents_program_event - Reprogram the clock event device.
  * @dev:	device to program
@@ -336,10 +339,18 @@ static inline bool clockevent_set_next_coupled(struct clock_event_device *dev, k
  *
  * Returns 0 on success, -ETIME when the event is in the past.
  */
+<<<<<<< HEAD
 int clockevents_program_event(struct clock_event_device *dev, ktime_t expires, bool force)
 {
 	int64_t delta;
 	u64 cycles;
+=======
+int clockevents_program_event(struct clock_event_device *dev, ktime_t expires,
+			      bool force)
+{
+	unsigned long long clc;
+	int64_t delta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON_ONCE(expires < 0))
 		return -ETIME;
@@ -353,6 +364,7 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires, b
 	WARN_ONCE(!clockevent_state_oneshot(dev), "Current state: %d\n",
 		  clockevent_get_state(dev));
 
+<<<<<<< HEAD
 	/* ktime_t based reprogramming for the broadcast hrtimer device */
 	if (unlikely(dev->features & CLOCK_EVT_FEAT_HRTIMER))
 		return dev->set_next_ktime(expires, dev);
@@ -360,6 +372,12 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires, b
 	if (likely(clockevent_set_next_coupled(dev, expires)))
 		return 0;
 
+=======
+	/* Shortcut for clockevent devices that can deal with ktime. */
+	if (dev->features & CLOCK_EVT_FEAT_KTIME)
+		return dev->set_next_ktime(expires, dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	delta = ktime_to_ns(ktime_sub(expires, ktime_get()));
 
 	/* Required for tick_periodic() during early boot */
@@ -368,8 +386,13 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires, b
 
 	if (delta > (int64_t)dev->min_delta_ns) {
 		delta = min(delta, (int64_t) dev->max_delta_ns);
+<<<<<<< HEAD
 		cycles = ((u64)delta * dev->mult) >> dev->shift;
 		if (!dev->set_next_event((unsigned long) cycles, dev)) {
+=======
+		clc = ((unsigned long long) delta * dev->mult) >> dev->shift;
+		if (!dev->set_next_event((unsigned long) clc, dev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->next_event_forced = 0;
 			return 0;
 		}

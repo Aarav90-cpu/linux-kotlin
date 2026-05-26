@@ -640,6 +640,7 @@ static int __maybe_unused ti_k3_rtc_suspend(struct device *dev)
 static int __maybe_unused ti_k3_rtc_resume(struct device *dev)
 {
 	struct ti_k3_rtc *priv = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret = 0;
 
 	if (k3rtc_check_unlocked(priv)) {
@@ -652,6 +653,12 @@ static int __maybe_unused ti_k3_rtc_resume(struct device *dev)
 	if (device_may_wakeup(dev))
 		disable_irq_wake(priv->irq);
 	return ret;
+=======
+
+	if (device_may_wakeup(dev))
+		disable_irq_wake(priv->irq);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static SIMPLE_DEV_PM_OPS(ti_k3_rtc_pm_ops, ti_k3_rtc_suspend, ti_k3_rtc_resume);

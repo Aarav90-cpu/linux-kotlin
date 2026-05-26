@@ -128,11 +128,20 @@ void free_pid(struct pid *pid)
 			 * is the reaper wake up the reaper.  The reaper
 			 * may be sleeping in zap_pid_ns_processes().
 			 */
+<<<<<<< HEAD
 			wake_up_process(READ_ONCE(ns->child_reaper));
 			break;
 		case PIDNS_ADDING:
 			/* Only possible if the 1st fork fails */
 			WARN_ON(READ_ONCE(ns->child_reaper));
+=======
+			wake_up_process(ns->child_reaper);
+			break;
+		case PIDNS_ADDING:
+			/* Handle a fork failure of the first process */
+			WARN_ON(ns->child_reaper);
+			ns->pid_allocated = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 
@@ -214,6 +223,15 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
 			retval = -EINVAL;
 			if (tid < 1 || tid >= pid_max[ns->level - i])
 				goto out_abort;
+<<<<<<< HEAD
+=======
+			/*
+			 * Also fail if a PID != 1 is requested and
+			 * no PID 1 exists.
+			 */
+			if (tid != 1 && !tmp->child_reaper)
+				goto out_abort;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			retval = -EPERM;
 			if (!checkpoint_restore_ns_capable(tmp->user_ns))
 				goto out_abort;
@@ -229,10 +247,13 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
 	retried_preload = false;
 	idr_preload(GFP_KERNEL);
 	spin_lock(&pidmap_lock);
+<<<<<<< HEAD
 	/* For the case when the previous attempt to create init failed */
 	if (ns->pid_allocated == PIDNS_ADDING)
 		idr_set_cursor(&ns->idr, 0);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (tmp = ns, i = ns->level; i >= 0;) {
 		int tid = set_tid[ns->level - i];
 
@@ -293,6 +314,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
 
 		pid->numbers[i].nr = nr;
 		pid->numbers[i].ns = tmp;
+<<<<<<< HEAD
 		i--;
 		retried_preload = false;
 
@@ -305,6 +327,11 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
 		}
 
 		tmp = tmp->parent;
+=======
+		tmp = tmp->parent;
+		i--;
+		retried_preload = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -317,11 +344,14 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
 	 *
 	 * This can't be done earlier because we need to preserve other
 	 * error conditions.
+<<<<<<< HEAD
 	 *
 	 * We need this even if copy_process() does the same check. If two
 	 * or more tasks from parent namespace try to inject a child into a
 	 * dead namespace, one of free_pid() calls from the copy_process()
 	 * error path may try to wakeup the possibly freed ns->child_reaper.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	retval = -ENOMEM;
 	if (unlikely(!(ns->pid_allocated & PIDNS_ADDING)))
@@ -349,6 +379,13 @@ out_free:
 		idr_remove(&upid->ns->idr, upid->nr);
 	}
 
+<<<<<<< HEAD
+=======
+	/* On failure to allocate the first pid, reset the state */
+	if (ns->pid_allocated == PIDNS_ADDING)
+		idr_set_cursor(&ns->idr, 0);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock(&pidmap_lock);
 	idr_preload_end();
 

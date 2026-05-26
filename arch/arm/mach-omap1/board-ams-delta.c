@@ -556,6 +556,7 @@ static struct gpiod_lookup_table *ams_delta_gpio_tables[] __initdata = {
 	&ams_delta_nand_gpio_table,
 };
 
+<<<<<<< HEAD
 static const struct software_node latch2_gpio_swnode = {
 	.name = LATCH2_LABEL,
 };
@@ -580,6 +581,12 @@ static const struct software_node *const latch2_gpio_swnodes[] = {
 	&latch2_gpio_swnode,
 	&latch2_gpio_hog_swnode,
 	NULL
+=======
+static struct gpiod_hog ams_delta_gpio_hogs[] = {
+	GPIO_HOG(LATCH2_LABEL, LATCH2_PIN_KEYBRD_DATAOUT, "keybrd_dataout",
+		 GPIO_ACTIVE_HIGH, GPIOD_OUT_LOW),
+	{},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct plat_serial8250_port ams_delta_modem_ports[];
@@ -704,6 +711,10 @@ static void __init ams_delta_init(void)
 
 	omap_gpio_deps_init();
 	ams_delta_latch2_init();
+<<<<<<< HEAD
+=======
+	gpiod_add_hogs(ams_delta_gpio_hogs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	omap_serial_init();
 	omap_register_i2c_bus(1, 100, NULL, 0);
@@ -712,9 +723,12 @@ static void __init ams_delta_init(void)
 	platform_add_devices(ams_delta_devices, ARRAY_SIZE(ams_delta_devices));
 
 	platform_device_register_full(&latch1_gpio_devinfo);
+<<<<<<< HEAD
 
 	software_node_register_node_group(latch2_gpio_swnodes);
 	latch2_gpio_devinfo.fwnode = software_node_fwnode(&latch2_gpio_swnode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_device_register_full(&latch2_gpio_devinfo);
 
 	/*

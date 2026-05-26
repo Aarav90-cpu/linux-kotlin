@@ -273,6 +273,7 @@ const struct nfsd4_layout_ops bl_layout_ops = {
 #endif /* CONFIG_NFSD_BLOCKLAYOUT */
 
 #ifdef CONFIG_NFSD_SCSILAYOUT
+<<<<<<< HEAD
 
 #define NFSD_MDS_PR_FENCED	XA_MARK_0
 
@@ -319,6 +320,8 @@ static inline void nfsd4_scsi_fence_clear(struct nfs4_client *clp, dev_t device)
 	xa_clear_mark(&clp->cl_dev_fences, device, NFSD_MDS_PR_FENCED);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NFSD_MDS_PR_KEY		0x0100000000000000ULL
 
 /*
@@ -388,10 +391,13 @@ nfsd4_block_get_device_info_scsi(struct super_block *sb,
 		goto out_free_dev;
 	}
 
+<<<<<<< HEAD
 	ret = nfsd4_scsi_fence_insert(clp, sb->s_bdev->bd_dev);
 	if (ret < 0)
 		goto out_free_dev;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ops->pr_register(sb->s_bdev, 0, NFSD_MDS_PR_KEY, true);
 	if (ret) {
 		pr_err("pNFS: failed to register key for device %s.\n",
@@ -444,6 +450,7 @@ nfsd4_scsi_proc_layoutcommit(struct inode *inode, struct svc_rqst *rqstp,
 	return nfsd4_block_commit_blocks(inode, lcp, iomaps, nr_iomaps);
 }
 
+<<<<<<< HEAD
 /*
  * Perform the fence operation to prevent the client from accessing the
  * block device. If a fence operation is already in progress, wait for
@@ -459,11 +466,15 @@ nfsd4_scsi_proc_layoutcommit(struct inode *inode, struct svc_rqst *rqstp,
  * Return true if client was fenced otherwise return false.
  */
 static bool
+=======
+static void
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 nfsd4_scsi_fence_client(struct nfs4_layout_stateid *ls, struct nfsd_file *file)
 {
 	struct nfs4_client *clp = ls->ls_stid.sc_client;
 	struct block_device *bdev = file->nf_file->f_path.mnt->mnt_sb->s_bdev;
 	int status;
+<<<<<<< HEAD
 	bool ret;
 
 	mutex_lock(&clp->cl_fence_mutex);
@@ -471,10 +482,13 @@ nfsd4_scsi_fence_client(struct nfs4_layout_stateid *ls, struct nfsd_file *file)
 		mutex_unlock(&clp->cl_fence_mutex);
 		return true;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	status = bdev->bd_disk->fops->pr_ops->pr_preempt(bdev, NFSD_MDS_PR_KEY,
 			nfsd4_scsi_pr_key(clp),
 			PR_EXCLUSIVE_ACCESS_REG_ONLY, true);
+<<<<<<< HEAD
 	/*
 	 * Reset to allow retry only when the command could not have
 	 * reached the device. Negative status means a local error
@@ -505,6 +519,9 @@ nfsd4_scsi_fence_client(struct nfs4_layout_stateid *ls, struct nfsd_file *file)
 
 	trace_nfsd_pnfs_fence(clp, bdev->bd_disk->disk_name, status);
 	return ret;
+=======
+	trace_nfsd_pnfs_fence(clp, bdev->bd_disk->disk_name, status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 const struct nfsd4_layout_ops scsi_layout_ops = {

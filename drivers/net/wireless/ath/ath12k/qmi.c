@@ -3339,7 +3339,11 @@ static int ath12k_qmi_aux_uc_load(struct ath12k_base *ab)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	aux_uc_mem->total_size = aux_uc_len;
+=======
+	 aux_uc_mem->total_size = aux_uc_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 copy:
 	memcpy(aux_uc_mem->vaddr, aux_uc_data, aux_uc_len);

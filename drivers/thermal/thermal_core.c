@@ -695,12 +695,25 @@ int thermal_zone_device_disable(struct thermal_zone_device *tz)
 }
 EXPORT_SYMBOL_GPL(thermal_zone_device_disable);
 
+<<<<<<< HEAD
+=======
+static bool thermal_zone_is_present(struct thermal_zone_device *tz)
+{
+	return !list_empty(&tz->node);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void thermal_zone_device_update(struct thermal_zone_device *tz,
 				enum thermal_notify_event event)
 {
 	guard(thermal_zone)(tz);
 
+<<<<<<< HEAD
 	__thermal_zone_device_update(tz, event);
+=======
+	if (thermal_zone_is_present(tz))
+		__thermal_zone_device_update(tz, event);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(thermal_zone_device_update);
 
@@ -857,7 +870,11 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 		goto free_mem;
 
 	dev->id = result;
+<<<<<<< HEAD
 	snprintf(dev->name, sizeof(dev->name), "cdev%d", dev->id);
+=======
+	sprintf(dev->name, "cdev%d", dev->id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	result =
 	    sysfs_create_link(&tz->device.kobj, &cdev->device.kobj, dev->name);
 	if (result)
@@ -972,11 +989,15 @@ static void thermal_release(struct device *dev)
 	}
 }
 
+<<<<<<< HEAD
 static const struct class thermal_class = {
 	.name = "thermal",
 	.dev_release = thermal_release,
 };
 static bool thermal_class_unavailable __ro_after_init = true;
+=======
+static struct class *thermal_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline
 void print_bind_err_msg(struct thermal_zone_device *tz,
@@ -1063,13 +1084,21 @@ __thermal_cooling_device_register(struct device_node *np,
 {
 	struct thermal_cooling_device *cdev;
 	unsigned long current_state;
+<<<<<<< HEAD
 	int ret;
+=======
+	int id, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ops || !ops->get_max_state || !ops->get_cur_state ||
 	    !ops->set_cur_state)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	if (thermal_class_unavailable)
+=======
+	if (!thermal_class)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ERR_PTR(-ENODEV);
 
 	cdev = kzalloc_obj(*cdev);
@@ -1080,6 +1109,10 @@ __thermal_cooling_device_register(struct device_node *np,
 	if (ret < 0)
 		goto out_kfree_cdev;
 	cdev->id = ret;
+<<<<<<< HEAD
+=======
+	id = ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cdev->type = kstrdup_const(type ? type : "", GFP_KERNEL);
 	if (!cdev->type) {
@@ -1092,7 +1125,11 @@ __thermal_cooling_device_register(struct device_node *np,
 	cdev->np = np;
 	cdev->ops = ops;
 	cdev->updated = false;
+<<<<<<< HEAD
 	cdev->device.class = &thermal_class;
+=======
+	cdev->device.class = thermal_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cdev->devdata = devdata;
 
 	ret = cdev->ops->get_max_state(cdev, &cdev->max_state);
@@ -1136,7 +1173,11 @@ out_cooling_dev:
 out_cdev_type:
 	kfree_const(cdev->type);
 out_ida_remove:
+<<<<<<< HEAD
 	ida_free(&thermal_cdev_ida, cdev->id);
+=======
+	ida_free(&thermal_cdev_ida, id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_kfree_cdev:
 	kfree(cdev);
 	return ERR_PTR(ret);
@@ -1540,7 +1581,11 @@ thermal_zone_device_register_with_trips(const char *type,
 	if (polling_delay && passive_delay > polling_delay)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	if (thermal_class_unavailable)
+=======
+	if (!thermal_class)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ERR_PTR(-ENODEV);
 
 	tz = kzalloc_flex(*tz, trips, num_trips);
@@ -1576,7 +1621,11 @@ thermal_zone_device_register_with_trips(const char *type,
 	if (!tz->ops.critical)
 		tz->ops.critical = thermal_zone_device_critical;
 
+<<<<<<< HEAD
 	tz->device.class = &thermal_class;
+=======
+	tz->device.class = thermal_class;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tz->devdata = devdata;
 	tz->num_trips = num_trips;
 	for_each_trip_desc(tz, td) {
@@ -1823,7 +1872,11 @@ static void thermal_zone_pm_prepare(struct thermal_zone_device *tz)
 	cancel_delayed_work(&tz->poll_queue);
 }
 
+<<<<<<< HEAD
 static void __thermal_pm_prepare(void)
+=======
+static void thermal_pm_notify_prepare(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct thermal_zone_device *tz;
 
@@ -1835,6 +1888,7 @@ static void __thermal_pm_prepare(void)
 		thermal_zone_pm_prepare(tz);
 }
 
+<<<<<<< HEAD
 void thermal_pm_prepare(void)
 {
 	if (thermal_class_unavailable)
@@ -1848,6 +1902,8 @@ void thermal_pm_prepare(void)
 	flush_workqueue(thermal_wq);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
 {
 	guard(thermal_zone)(tz);
@@ -1864,6 +1920,7 @@ static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
 	mod_delayed_work(thermal_wq, &tz->poll_queue, 0);
 }
 
+<<<<<<< HEAD
 void thermal_pm_complete(void)
 {
 	struct thermal_zone_device *tz;
@@ -1871,6 +1928,12 @@ void thermal_pm_complete(void)
 	if (thermal_class_unavailable)
 		return;
 
+=======
+static void thermal_pm_notify_complete(void)
+{
+	struct thermal_zone_device *tz;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	guard(mutex)(&thermal_list_lock);
 
 	thermal_pm_suspended = false;
@@ -1879,6 +1942,44 @@ void thermal_pm_complete(void)
 		thermal_zone_pm_complete(tz);
 }
 
+<<<<<<< HEAD
+=======
+static int thermal_pm_notify(struct notifier_block *nb,
+			     unsigned long mode, void *_unused)
+{
+	switch (mode) {
+	case PM_HIBERNATION_PREPARE:
+	case PM_RESTORE_PREPARE:
+	case PM_SUSPEND_PREPARE:
+		thermal_pm_notify_prepare();
+		/*
+		 * Allow any leftover thermal work items already on the
+		 * worqueue to complete so they don't get in the way later.
+		 */
+		flush_workqueue(thermal_wq);
+		break;
+	case PM_POST_HIBERNATION:
+	case PM_POST_RESTORE:
+	case PM_POST_SUSPEND:
+		thermal_pm_notify_complete();
+		break;
+	default:
+		break;
+	}
+	return 0;
+}
+
+static struct notifier_block thermal_pm_nb = {
+	.notifier_call = thermal_pm_notify,
+	/*
+	 * Run at the lowest priority to avoid interference between the thermal
+	 * zone resume work items spawned by thermal_pm_notify() and the other
+	 * PM notifiers.
+	 */
+	.priority = INT_MIN,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init thermal_init(void)
 {
 	int result;
@@ -1889,7 +1990,12 @@ static int __init thermal_init(void)
 	if (result)
 		goto error;
 
+<<<<<<< HEAD
 	thermal_wq = alloc_workqueue("thermal_events", WQ_POWER_EFFICIENT, 0);
+=======
+	thermal_wq = alloc_workqueue("thermal_events",
+				      WQ_FREEZABLE | WQ_POWER_EFFICIENT | WQ_PERCPU, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!thermal_wq) {
 		result = -ENOMEM;
 		goto unregister_netlink;
@@ -1899,11 +2005,34 @@ static int __init thermal_init(void)
 	if (result)
 		goto destroy_workqueue;
 
+<<<<<<< HEAD
 	result = class_register(&thermal_class);
 	if (result)
 		goto unregister_governors;
 
 	thermal_class_unavailable = false;
+=======
+	thermal_class = kzalloc_obj(*thermal_class);
+	if (!thermal_class) {
+		result = -ENOMEM;
+		goto unregister_governors;
+	}
+
+	thermal_class->name = "thermal";
+	thermal_class->dev_release = thermal_release;
+
+	result = class_register(thermal_class);
+	if (result) {
+		kfree(thermal_class);
+		thermal_class = NULL;
+		goto unregister_governors;
+	}
+
+	result = register_pm_notifier(&thermal_pm_nb);
+	if (result)
+		pr_warn("Thermal: Can not register suspend notifier, return %d\n",
+			result);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 

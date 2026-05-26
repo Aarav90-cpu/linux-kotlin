@@ -54,6 +54,7 @@ static int kbytes_to_mbits(int kbytes)
 	return DIV_ROUND_UP(kbytes * 8, 1000);
 }
 
+<<<<<<< HEAD
 static int get_current_link_bw(struct intel_dp *intel_dp)
 {
 	int rate = intel_dp_max_common_rate(intel_dp);
@@ -68,6 +69,33 @@ static int __update_tunnel_state(struct intel_dp *intel_dp, bool force_sink_upda
 	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
 	int ret;
 
+=======
+static int get_current_link_bw(struct intel_dp *intel_dp,
+			       bool *below_dprx_bw)
+{
+	int rate = intel_dp_max_common_rate(intel_dp);
+	int lane_count = intel_dp_max_common_lane_count(intel_dp);
+	int bw;
+
+	bw = intel_dp_max_link_data_rate(intel_dp, rate, lane_count);
+	*below_dprx_bw = bw < drm_dp_max_dprx_data_rate(rate, lane_count);
+
+	return bw;
+}
+
+static int update_tunnel_state(struct intel_dp *intel_dp)
+{
+	struct intel_display *display = to_intel_display(intel_dp);
+	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
+	bool old_bw_below_dprx;
+	bool new_bw_below_dprx;
+	int old_bw;
+	int new_bw;
+	int ret;
+
+	old_bw = get_current_link_bw(intel_dp, &old_bw_below_dprx);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = drm_dp_tunnel_update_state(intel_dp->tunnel);
 	if (ret < 0) {
 		drm_dbg_kms(display->drm,
@@ -79,12 +107,18 @@ static int __update_tunnel_state(struct intel_dp *intel_dp, bool force_sink_upda
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!force_sink_update &&
 	    (ret == 0 || !drm_dp_tunnel_bw_alloc_is_enabled(intel_dp->tunnel)))
+=======
+	if (ret == 0 ||
+	    !drm_dp_tunnel_bw_alloc_is_enabled(intel_dp->tunnel))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	intel_dp_update_sink_caps(intel_dp);
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -99,6 +133,14 @@ static bool has_tunnel_bw_changed(struct intel_dp *intel_dp, int old_bw)
 	/* Suppress the notification if the mode list can't change due to bw. */
 	if (old_bw == new_bw)
 		return false;
+=======
+	new_bw = get_current_link_bw(intel_dp, &new_bw_below_dprx);
+
+	/* Suppress the notification if the mode list can't change due to bw. */
+	if (old_bw_below_dprx == new_bw_below_dprx &&
+	    !new_bw_below_dprx)
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_dbg_kms(display->drm,
 		    "[DPTUN %s][ENCODER:%d:%s] Notify users about BW change: %d -> %d\n",
@@ -106,6 +148,7 @@ static bool has_tunnel_bw_changed(struct intel_dp *intel_dp, int old_bw)
 		    encoder->base.base.id, encoder->base.name,
 		    kbytes_to_mbits(old_bw), kbytes_to_mbits(new_bw));
 
+<<<<<<< HEAD
 	return true;
 }
 
@@ -129,6 +172,9 @@ static int update_tunnel_state(struct intel_dp *intel_dp)
 		return err;
 
 	return has_tunnel_bw_changed(intel_dp, old_bw) ? 1 : 0;
+=======
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -169,9 +215,17 @@ static int allocate_initial_tunnel_bw_for_pipes(struct intel_dp *intel_dp, u8 pi
 			    drm_dp_tunnel_name(intel_dp->tunnel),
 			    encoder->base.base.id, encoder->base.name,
 			    ERR_PTR(err));
+<<<<<<< HEAD
 	}
 
 	return err;
+=======
+
+		return err;
+	}
+
+	return update_tunnel_state(intel_dp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int allocate_initial_tunnel_bw(struct intel_dp *intel_dp,
@@ -187,6 +241,7 @@ static int allocate_initial_tunnel_bw(struct intel_dp *intel_dp,
 	return allocate_initial_tunnel_bw_for_pipes(intel_dp, pipe_mask);
 }
 
+<<<<<<< HEAD
 /*
  * Returns:
  * - 0 in case of success - after any tunnel detected and added to @intel_dp
@@ -195,16 +250,23 @@ static int allocate_initial_tunnel_bw(struct intel_dp *intel_dp,
  *   notification
  * - Negative error code if the tunnel detection failed
  */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int detect_new_tunnel(struct intel_dp *intel_dp, struct drm_modeset_acquire_ctx *ctx)
 {
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
 	struct drm_dp_tunnel *tunnel;
+<<<<<<< HEAD
 	int old_bw;
 	int ret;
 
 	old_bw = get_current_link_bw(intel_dp);
 
+=======
+	int ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tunnel = drm_dp_tunnel_detect(display->dp_tunnel_mgr,
 				      &intel_dp->aux);
 	if (IS_ERR(tunnel))
@@ -228,6 +290,7 @@ static int detect_new_tunnel(struct intel_dp *intel_dp, struct drm_modeset_acqui
 	}
 
 	ret = allocate_initial_tunnel_bw(intel_dp, ctx);
+<<<<<<< HEAD
 	if (ret < 0) {
 		intel_dp_tunnel_destroy(intel_dp);
 
@@ -239,6 +302,12 @@ static int detect_new_tunnel(struct intel_dp *intel_dp, struct drm_modeset_acqui
 		return ret;
 
 	return has_tunnel_bw_changed(intel_dp, old_bw) ? 1 : 0;
+=======
+	if (ret < 0)
+		intel_dp_tunnel_destroy(intel_dp);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -256,12 +325,18 @@ static int detect_new_tunnel(struct intel_dp *intel_dp, struct drm_modeset_acqui
  * tunnel. If the tunnel's state change requires this - for instance the
  * tunnel's group ID has changed - the tunnel will be dropped and recreated.
  *
+<<<<<<< HEAD
  * Returns:
  * - 0 in case of success - after any tunnel detected and added to @intel_dp
  * - 1 in case the link BW via the new or an already existing tunnel has changed
  *   in a way that requires notifying user space
  * - Negative error code, if creating a new tunnel or updating the tunnel
  *   state failed
+=======
+ * Return 0 in case of success - after any tunnel detected and added to
+ * @intel_dp - 1 in case the BW on an already existing tunnel has changed in a
+ * way that requires notifying user space.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int intel_dp_tunnel_detect(struct intel_dp *intel_dp, struct drm_modeset_acquire_ctx *ctx)
 {

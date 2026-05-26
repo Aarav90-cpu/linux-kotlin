@@ -771,7 +771,11 @@ static const struct pf0900_regulator_desc pf0900_regulators[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct pf0900_regulator_irq regu_irqs[] = {
+=======
+struct pf0900_regulator_irq regu_irqs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PF0900_REGU_IRQ(PF0900_REG_SW_ILIM_INT, PF0900_SW, REGULATOR_ERROR_OVER_CURRENT_WARN),
 	PF0900_REGU_IRQ(PF0900_REG_LDO_ILIM_INT, PF0900_LDO, REGULATOR_ERROR_OVER_CURRENT_WARN),
 	PF0900_REGU_IRQ(PF0900_REG_SW_UV_INT, PF0900_SW, REGULATOR_ERROR_UNDER_VOLTAGE_WARN),

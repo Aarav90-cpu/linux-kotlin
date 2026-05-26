@@ -33,7 +33,10 @@ properties:
           - enum:
               - mediatek,mt2712-disp-aal
               - mediatek,mt6795-disp-aal
+<<<<<<< HEAD
               - mediatek,mt8167-disp-aal
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: mediatek,mt8173-disp-aal
       - items:
           - enum:

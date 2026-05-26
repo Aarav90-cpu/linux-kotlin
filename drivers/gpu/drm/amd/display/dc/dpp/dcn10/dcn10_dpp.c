@@ -172,6 +172,7 @@ bool dpp1_get_optimal_number_of_taps(
 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
 
 	if (!dpp->ctx->dc->debug.always_scale) {
+<<<<<<< HEAD
 		if (IDENTITY_RATIO(scl_data->ratios.horz)) {
 			scl_data->taps.h_taps = 1;
 			scl_data->taps.h_taps_c = 1;
@@ -180,6 +181,12 @@ bool dpp1_get_optimal_number_of_taps(
 			scl_data->taps.v_taps = 1;
 			scl_data->taps.v_taps_c = 1;
 		}
+=======
+		if (IDENTITY_RATIO(scl_data->ratios.horz))
+			scl_data->taps.h_taps = 1;
+		if (IDENTITY_RATIO(scl_data->ratios.vert))
+			scl_data->taps.v_taps = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IDENTITY_RATIO(scl_data->ratios.horz_c))
 			scl_data->taps.h_taps_c = 1;
 		if (IDENTITY_RATIO(scl_data->ratios.vert_c))
@@ -288,7 +295,10 @@ void dpp1_cnv_setup (
 		enum dc_color_space input_color_space,
 		struct cnv_alpha_2bit_lut *alpha_2bit_lut)
 {
+<<<<<<< HEAD
 	(void)alpha_2bit_lut;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint32_t pixel_format;
 	uint32_t alpha_en;
 	enum pixel_format_description fmt ;

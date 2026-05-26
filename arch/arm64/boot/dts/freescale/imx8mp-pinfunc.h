@@ -36,7 +36,11 @@
 /* long defaults */
 #define MX8MP_USDHC_DATA_DEFAULT (MX8MP_FSEL_FAST | MX8MP_PULL_UP | \
 				  MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)
+<<<<<<< HEAD
 #define MX8MP_I2C_DEFAULT (MX8MP_PULL_UP | MX8MP_HYS_SCHMITT | \
+=======
+#define MX8MP_I2C_DEFAULT (MX8MP_DSE_X6 | MX8MP_PULL_UP | MX8MP_HYS_SCHMITT | \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   MX8MP_PULL_ENABLE | MX8MP_SION)
 
 /*

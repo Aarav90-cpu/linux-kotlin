@@ -276,6 +276,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
 		count_mthp_stat(folio_order(folio), MTHP_STAT_ZSWPOUT);
 		goto out_unlock;
 	}
+<<<<<<< HEAD
 
 	rcu_read_lock();
 	if (!mem_cgroup_zswap_writeback_enabled(folio_memcg(folio))) {
@@ -284,6 +285,12 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
 		return AOP_WRITEPAGE_ACTIVATE;
 	}
 	rcu_read_unlock();
+=======
+	if (!mem_cgroup_zswap_writeback_enabled(folio_memcg(folio))) {
+		folio_mark_dirty(folio);
+		return AOP_WRITEPAGE_ACTIVATE;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__swap_writepage(folio, swap_plug);
 	return 0;
@@ -311,11 +318,19 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
 	struct cgroup_subsys_state *css;
 	struct mem_cgroup *memcg;
 
+<<<<<<< HEAD
 	if (!folio_memcg_charged(folio))
 		return;
 
 	rcu_read_lock();
 	memcg = folio_memcg(folio);
+=======
+	memcg = folio_memcg(folio);
+	if (!memcg)
+		return;
+
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	css = cgroup_e_css(memcg->css.cgroup, &io_cgrp_subsys);
 	bio_associate_blkg_from_css(bio, css);
 	rcu_read_unlock();
@@ -454,14 +469,22 @@ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
 
 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
 	/*
+<<<<<<< HEAD
 	 * ->flags can be updated non-atomically,
+=======
+	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * but that will never affect SWP_FS_OPS, so the data_race
 	 * is safe.
 	 */
 	if (data_race(sis->flags & SWP_FS_OPS))
 		swap_writepage_fs(folio, swap_plug);
 	/*
+<<<<<<< HEAD
 	 * ->flags can be updated non-atomically,
+=======
+	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
 	 * is safe.
 	 */
@@ -497,7 +520,11 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
 			folio_mark_uptodate(folio);
 			folio_unlock(folio);
 		}
+<<<<<<< HEAD
 		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
+=======
+		count_vm_events(PSWPIN, sio->pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		for (p = 0; p < sio->pages; p++) {
 			struct folio *folio = page_folio(sio->bvec[p].bv_page);

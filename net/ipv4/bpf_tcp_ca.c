@@ -168,7 +168,11 @@ bpf_tcp_ca_get_func_proto(enum bpf_func_id func_id,
 		 */
 		if (prog_ops_moff(prog) !=
 		    offsetof(struct tcp_congestion_ops, release))
+<<<<<<< HEAD
 			return &bpf_sk_setsockopt_nodelay_proto;
+=======
+			return &bpf_sk_setsockopt_proto;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	case BPF_FUNC_getsockopt:
 		/* Since get/setsockopt is usually expected to
@@ -272,10 +276,13 @@ static void bpf_tcp_ca_cwnd_event(struct sock *sk, enum tcp_ca_event ev)
 {
 }
 
+<<<<<<< HEAD
 static void bpf_tcp_ca_cwnd_event_tx_start(struct sock *sk)
 {
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bpf_tcp_ca_in_ack_event(struct sock *sk, u32 flags)
 {
 }
@@ -284,7 +291,11 @@ static void bpf_tcp_ca_pkts_acked(struct sock *sk, const struct ack_sample *samp
 {
 }
 
+<<<<<<< HEAD
 static u32 bpf_tcp_ca_min_tso_segs(struct sock *sk)
+=======
+static u32 bpf_tcp_ca_tso_segs(struct sock *sk, unsigned int mss_now)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return 0;
 }
@@ -317,10 +328,16 @@ static struct tcp_congestion_ops __bpf_ops_tcp_congestion_ops = {
 	.cong_avoid = bpf_tcp_ca_cong_avoid,
 	.set_state = bpf_tcp_ca_set_state,
 	.cwnd_event = bpf_tcp_ca_cwnd_event,
+<<<<<<< HEAD
 	.cwnd_event_tx_start = bpf_tcp_ca_cwnd_event_tx_start,
 	.in_ack_event = bpf_tcp_ca_in_ack_event,
 	.pkts_acked = bpf_tcp_ca_pkts_acked,
 	.min_tso_segs = bpf_tcp_ca_min_tso_segs,
+=======
+	.in_ack_event = bpf_tcp_ca_in_ack_event,
+	.pkts_acked = bpf_tcp_ca_pkts_acked,
+	.tso_segs = bpf_tcp_ca_tso_segs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.cong_control = bpf_tcp_ca_cong_control,
 	.undo_cwnd = bpf_tcp_ca_undo_cwnd,
 	.sndbuf_expand = bpf_tcp_ca_sndbuf_expand,

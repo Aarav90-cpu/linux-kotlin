@@ -137,7 +137,11 @@ int nilfs_gccache_wait_and_mark_dirty(struct buffer_head *bh)
 		struct inode *inode = bh->b_folio->mapping->host;
 
 		nilfs_err(inode->i_sb,
+<<<<<<< HEAD
 			  "I/O error reading %s block for GC (ino=%llu, vblocknr=%llu)",
+=======
+			  "I/O error reading %s block for GC (ino=%lu, vblocknr=%llu)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  buffer_nilfs_node(bh) ? "node" : "data",
 			  inode->i_ino, (unsigned long long)bh->b_blocknr);
 		return -EIO;

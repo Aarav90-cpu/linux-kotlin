@@ -121,6 +121,16 @@ static const struct dpu_dspp_cfg msm8953_dspp[] = {
 
 static const struct dpu_intf_cfg msm8953_intf[] = {
 	{
+<<<<<<< HEAD
+=======
+		.name = "intf_0", .id = INTF_0,
+		.base = 0x6a000, .len = 0x268,
+		.type = INTF_NONE,
+		.prog_fetch_lines_worst_case = 14,
+		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+	}, {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.name = "intf_1", .id = INTF_1,
 		.base = 0x6a800, .len = 0x268,
 		.type = INTF_DSI,
@@ -197,7 +207,12 @@ const struct dpu_mdss_cfg dpu_msm8953_cfg = {
 	.pingpong = msm8953_pp,
 	.intf_count = ARRAY_SIZE(msm8953_intf),
 	.intf = msm8953_intf,
+<<<<<<< HEAD
 	.vbif = &msm8996_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(msm8996_vbif),
+	.vbif = msm8996_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &msm8953_perf_data,
 };
 

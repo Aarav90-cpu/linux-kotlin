@@ -446,6 +446,7 @@ void rb_erase(struct rb_node *node, struct rb_root *root)
 }
 EXPORT_SYMBOL(rb_erase);
 
+<<<<<<< HEAD
 bool rb_erase_linked(struct rb_node_linked *node, struct rb_root_linked *root)
 {
 	if (node->prev)
@@ -463,6 +464,8 @@ bool rb_erase_linked(struct rb_node_linked *node, struct rb_root_linked *root)
 }
 EXPORT_SYMBOL_GPL(rb_erase_linked);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Augmented rbtree manipulation functions.
  *

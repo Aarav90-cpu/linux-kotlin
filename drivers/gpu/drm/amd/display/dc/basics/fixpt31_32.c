@@ -503,7 +503,10 @@ struct fixed31_32 dc_fixpt_from_int_dy(unsigned int int_value,
 	unsigned int integer_bits,
 	unsigned int fractional_bits)
 {
+<<<<<<< HEAD
 	(void)integer_bits;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fixed31_32 fixpt_value = dc_fixpt_from_int(int_value);
 
 	fixpt_value.value |= (long long)frac_value << (FIXED31_32_BITS_PER_FRACTIONAL_PART - fractional_bits);

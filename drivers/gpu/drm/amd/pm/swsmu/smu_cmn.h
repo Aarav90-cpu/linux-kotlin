@@ -102,9 +102,12 @@ int smu_msg_send_async_locked(struct smu_msg_ctl *ctl,
 #define SMU_DPM_PCIE_GEN_IDX(gen)	smu_cmn_dpm_pcie_gen_idx((gen))
 #define SMU_DPM_PCIE_WIDTH_IDX(width)	smu_cmn_dpm_pcie_width_idx((width))
 
+<<<<<<< HEAD
 #define smu_cmn_update_table(smu, table_index, argument, table_data, drv2smu) \
 	smu_cmn_update_table_read_arg((smu), (table_index), (argument), (table_data), NULL, (drv2smu))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern const int link_speed[];
 
 /* Helper to Convert from PCIE Gen 1/2/3/4/5/6 to 0.1 GT/s speed units */
@@ -171,6 +174,7 @@ int smu_cmn_get_smc_version(struct smu_context *smu,
 			    uint32_t *if_version,
 			    uint32_t *smu_version);
 
+<<<<<<< HEAD
 int smu_cmn_update_table_read_arg(struct smu_context *smu,
 				  enum smu_table_id table_index,
 				  int argument,
@@ -180,6 +184,13 @@ int smu_cmn_update_table_read_arg(struct smu_context *smu,
 
 int smu_cmn_vram_cpy(struct smu_context *smu, void *dst,
 		     const void *src, size_t len);
+=======
+int smu_cmn_update_table(struct smu_context *smu,
+			 enum smu_table_id table_index,
+			 int argument,
+			 void *table_data,
+			 bool drv2smu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int smu_cmn_write_watermarks_table(struct smu_context *smu);
 
@@ -211,11 +222,17 @@ int smu_cmn_print_pcie_levels(struct smu_context *smu,
 			       struct smu_pcie_table *pcie_table,
 			       uint32_t cur_gen, uint32_t cur_lane,
 			       char *buf, int *offset);
+<<<<<<< HEAD
 void smu_cmn_reset_custom_level(struct smu_context *smu);
 
 int smu_cmn_dpm_pcie_gen_idx(int gen);
 int smu_cmn_dpm_pcie_width_idx(int width);
 int smu_cmn_check_fw_version(struct smu_context *smu);
+=======
+
+int smu_cmn_dpm_pcie_gen_idx(int gen);
+int smu_cmn_dpm_pcie_width_idx(int width);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*SMU gpu metrics */
 

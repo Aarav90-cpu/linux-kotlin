@@ -333,7 +333,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		emi-bus@b8000000 { /* External Memory Interface */
+=======
+		emi@b8000000 { /* External Memory Interface */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			compatible = "simple-bus";
 			reg = <0xb8000000 0x5000>;
 			ranges;

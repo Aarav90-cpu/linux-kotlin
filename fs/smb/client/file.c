@@ -15,6 +15,10 @@
 #include <linux/stat.h>
 #include <linux/fcntl.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/writeback.h>
 #include <linux/task_io_accounting_ops.h>
 #include <linux/delay.h>
@@ -393,7 +397,11 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon)
 	}
 	spin_unlock(&tcon->open_file_lock);
 
+<<<<<<< HEAD
 	invalidate_all_cached_dirs(tcon, true);
+=======
+	invalidate_all_cached_dirs(tcon);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&tcon->tc_lock);
 	if (tcon->status == TID_IN_FILES_INVALIDATE)
 		tcon->status = TID_NEED_TCON;
@@ -405,6 +413,7 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon)
 	 */
 }
 
+<<<<<<< HEAD
 static inline int cifs_convert_flags(unsigned int oflags, int rdwr_for_fscache)
 {
 	int flags = 0;
@@ -428,6 +437,24 @@ static inline int cifs_convert_flags(unsigned int oflags, int rdwr_for_fscache)
 	return flags | READ_CONTROL | FILE_WRITE_ATTRIBUTES |
 		FILE_READ_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA |
 		FILE_WRITE_DATA | FILE_READ_DATA;
+=======
+static inline int cifs_convert_flags(unsigned int flags, int rdwr_for_fscache)
+{
+	if ((flags & O_ACCMODE) == O_RDONLY)
+		return GENERIC_READ;
+	else if ((flags & O_ACCMODE) == O_WRONLY)
+		return rdwr_for_fscache == 1 ? (GENERIC_READ | GENERIC_WRITE) : GENERIC_WRITE;
+	else if ((flags & O_ACCMODE) == O_RDWR) {
+		/* GENERIC_ALL is too much permission to request
+		   can cause unnecessary access denied on create */
+		/* return GENERIC_ALL; */
+		return (GENERIC_READ | GENERIC_WRITE);
+	}
+
+	return (READ_CONTROL | FILE_WRITE_ATTRIBUTES | FILE_READ_ATTRIBUTES |
+		FILE_WRITE_EA | FILE_APPEND_DATA | FILE_WRITE_DATA |
+		FILE_READ_DATA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
@@ -702,7 +729,10 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
 	cfile->f_flags = file->f_flags;
 	cfile->invalidHandle = false;
 	cfile->deferred_close_scheduled = false;
+<<<<<<< HEAD
 	cfile->status_file_deleted = file->f_flags & O_TMPFILE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfile->tlink = cifs_get_tlink(tlink);
 	INIT_WORK(&cfile->oplock_break, cifs_oplock_break);
 	INIT_WORK(&cfile->put, cifsFileInfo_put_work);
@@ -734,8 +764,11 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
 
 	/* if readable file instance put first in list*/
 	spin_lock(&cinode->open_file_lock);
+<<<<<<< HEAD
 	if (file->f_flags & O_TMPFILE)
 		set_bit(CIFS_INO_TMPFILE, &cinode->flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fid->purge_cache = false;
 	server->ops->set_fid(cfile, fid, oplock);
 
@@ -1082,9 +1115,12 @@ int cifs_open(struct inode *inode, struct file *file)
 		rc = cfile ? 0 : -ENOENT;
 	}
 	if (rc == 0) {
+<<<<<<< HEAD
 		trace_smb3_open_cached(xid, tcon->tid, tcon->ses->Suid,
 				       cfile->fid.persistent_fid,
 				       file->f_flags, cfile->f_flags);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		file->private_data = cfile;
 		spin_lock(&CIFS_I(inode)->deferred_lock);
 		cifs_del_deferred_close(cfile);
@@ -1444,7 +1480,10 @@ int cifs_close(struct inode *inode, struct file *file)
 	struct cifsInodeInfo *cinode = CIFS_I(inode);
 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
 	struct cifs_deferred_close *dclose;
+<<<<<<< HEAD
 	struct cifs_tcon *tcon;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cifs_fscache_unuse_inode_cookie(inode, file->f_mode & FMODE_WRITE);
 
@@ -1471,10 +1510,13 @@ int cifs_close(struct inode *inode, struct file *file)
 					cifsFileInfo_get(cfile);
 			} else {
 				/* Deferred close for files */
+<<<<<<< HEAD
 				tcon = tlink_tcon(cfile->tlink);
 				trace_smb3_close_cached(tcon->tid, tcon->ses->Suid,
 						cfile->fid.persistent_fid,
 						cifs_sb->ctx->closetimeo);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				queue_delayed_work(deferredclose_wq,
 						&cfile->deferred, cifs_sb->ctx->closetimeo);
 				cfile->deferred_close_scheduled = true;
@@ -1638,9 +1680,12 @@ cifs_find_fid_lock_conflict(struct cifs_fid_locks *fdlocks, __u64 offset,
 			continue;
 		if (conf_lock)
 			*conf_lock = li;
+<<<<<<< HEAD
 		trace_smb3_lock_conflict(cfile->fid.persistent_fid,
 					 offset, length, type,
 					 li->offset, li->length, li->type, li->pid);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	}
 	return false;
@@ -1722,7 +1767,11 @@ cifs_lock_add(struct cifsFileInfo *cfile, struct cifsLockInfo *lock)
  */
 static int
 cifs_lock_add_if(struct cifsFileInfo *cfile, struct cifsLockInfo *lock,
+<<<<<<< HEAD
 		 bool wait, unsigned int xid)
+=======
+		 bool wait)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct cifsLockInfo *conf_lock;
 	struct cifsInodeInfo *cinode = CIFS_I(d_inode(cfile->dentry));
@@ -1737,6 +1786,7 @@ try_again:
 					lock->type, lock->flags, &conf_lock,
 					CIFS_LOCK_OP);
 	if (!exist && cinode->can_cache_brlcks) {
+<<<<<<< HEAD
 		struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
 
 		list_add_tail(&lock->llist, &cfile->llist->locks);
@@ -1744,6 +1794,9 @@ try_again:
 				       tcon->tid, tcon->ses->Suid,
 				       lock->offset, lock->length,
 				       lock->type, 1, 0);
+=======
+		list_add_tail(&lock->llist, &cfile->llist->locks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		up_write(&cinode->lock_sem);
 		return rc;
 	}
@@ -2358,7 +2411,11 @@ cifs_setlk(struct file *file, struct file_lock *flock, __u32 type,
 		if (!lock)
 			return -ENOMEM;
 
+<<<<<<< HEAD
 		rc = cifs_lock_add_if(cfile, lock, wait_flag, xid);
+=======
+		rc = cifs_lock_add_if(cfile, lock, wait_flag);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc < 0) {
 			kfree(lock);
 			return rc;
@@ -2609,12 +2666,22 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
 			     struct cifsFileInfo **ret_file)
 {
 	struct cifsFileInfo *open_file, *inv_file = NULL;
+<<<<<<< HEAD
 	bool fsuid_only, with_delete;
 	struct cifs_sb_info *cifs_sb;
 	bool any_available = false;
 	unsigned int refind = 0;
 	*ret_file = NULL;
 	int rc = -EBADF;
+=======
+	struct cifs_sb_info *cifs_sb;
+	bool any_available = false;
+	int rc = -EBADF;
+	unsigned int refind = 0;
+	bool fsuid_only = find_flags & FIND_FSUID_ONLY;
+	bool with_delete = find_flags & FIND_WITH_DELETE;
+	*ret_file = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Having a null inode here (because mapping->host was set to zero by
@@ -2628,6 +2695,7 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	if (test_bit(CIFS_INO_TMPFILE, &cifs_inode->flags))
 		find_flags = FIND_ANY;
 
@@ -2635,6 +2703,10 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
 
 	with_delete = find_flags & FIND_WITH_DELETE;
 	fsuid_only = find_flags & FIND_FSUID_ONLY;
+=======
+	cifs_sb = CIFS_SB(cifs_inode);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* only filter by fsuid on multiuser mounts */
 	if (!(cifs_sb_flags(cifs_sb) & CIFS_MOUNT_MULTIUSER))
 		fsuid_only = false;
@@ -2718,6 +2790,7 @@ find_writable_file(struct cifsInodeInfo *cifs_inode, int flags)
 	return cfile;
 }
 
+<<<<<<< HEAD
 int cifs_get_writable_path(struct cifs_tcon *tcon, const char *name,
 			   struct inode *inode, int flags,
 			   struct cifsFileInfo **ret_file)
@@ -2731,6 +2804,18 @@ int cifs_get_writable_path(struct cifs_tcon *tcon, const char *name,
 		return cifs_get_writable_file(CIFS_I(inode), flags, ret_file);
 
 	page = alloc_dentry_path();
+=======
+int
+cifs_get_writable_path(struct cifs_tcon *tcon, const char *name,
+		       int flags,
+		       struct cifsFileInfo **ret_file)
+{
+	struct cifsFileInfo *cfile;
+	void *page = alloc_dentry_path();
+
+	*ret_file = NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_lock(&tcon->open_file_lock);
 	list_for_each_entry(cfile, &tcon->openFileList, tlist) {
 		struct cifsInodeInfo *cinode;

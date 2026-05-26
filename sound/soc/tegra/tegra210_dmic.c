@@ -507,9 +507,16 @@ static int tegra210_dmic_probe(struct platform_device *pdev)
 	dev_set_drvdata(dev, dmic);
 
 	dmic->clk_dmic = devm_clk_get(dev, "dmic");
+<<<<<<< HEAD
 	if (IS_ERR(dmic->clk_dmic))
 		return dev_err_probe(dev, PTR_ERR(dmic->clk_dmic),
 				     "can't retrieve DMIC clock\n");
+=======
+	if (IS_ERR(dmic->clk_dmic)) {
+		dev_err(dev, "can't retrieve DMIC clock\n");
+		return PTR_ERR(dmic->clk_dmic);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regs = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(regs))
@@ -517,18 +524,32 @@ static int tegra210_dmic_probe(struct platform_device *pdev)
 
 	dmic->regmap = devm_regmap_init_mmio(dev, regs,
 					     &tegra210_dmic_regmap_config);
+<<<<<<< HEAD
 	if (IS_ERR(dmic->regmap))
 		return dev_err_probe(dev, PTR_ERR(dmic->regmap),
 				     "regmap init failed\n");
+=======
+	if (IS_ERR(dmic->regmap)) {
+		dev_err(dev, "regmap init failed\n");
+		return PTR_ERR(dmic->regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(dmic->regmap, true);
 
 	err = devm_snd_soc_register_component(dev, &tegra210_dmic_compnt,
 					      tegra210_dmic_dais,
 					      ARRAY_SIZE(tegra210_dmic_dais));
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(dev, err,
 				     "can't register DMIC component\n");
+=======
+	if (err) {
+		dev_err(dev, "can't register DMIC component, err: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_enable(dev);
 

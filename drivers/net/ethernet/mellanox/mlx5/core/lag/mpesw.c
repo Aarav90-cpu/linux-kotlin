@@ -16,7 +16,11 @@ static void mlx5_mpesw_metadata_cleanup(struct mlx5_lag *ldev)
 	int i;
 
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		dev = mlx5_lag_pf(ldev, i)->dev;
+=======
+		dev = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		esw = dev->priv.eswitch;
 		pf_metadata = ldev->lag_mpesw.pf_metadata[i];
 		if (!pf_metadata)
@@ -37,7 +41,11 @@ static int mlx5_mpesw_metadata_set(struct mlx5_lag *ldev)
 	int i, err;
 
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		dev = mlx5_lag_pf(ldev, i)->dev;
+=======
+		dev = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		esw = dev->priv.eswitch;
 		pf_metadata = mlx5_esw_match_metadata_alloc(esw);
 		if (!pf_metadata) {
@@ -53,7 +61,11 @@ static int mlx5_mpesw_metadata_set(struct mlx5_lag *ldev)
 	}
 
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		dev = mlx5_lag_pf(ldev, i)->dev;
+=======
+		dev = ldev->pf[i].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mlx5_notifier_call_chain(dev->priv.events, MLX5_DEV_EVENT_MULTIPORT_ESW,
 					 (void *)0);
 	}
@@ -67,9 +79,15 @@ err_metadata:
 
 static int mlx5_lag_enable_mpesw(struct mlx5_lag *ldev)
 {
+<<<<<<< HEAD
 	int idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
 	struct mlx5_core_dev *dev0;
 	int err;
+=======
+	struct mlx5_core_dev *dev0;
+	int err;
+	int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	if (ldev->mode == MLX5_LAG_MODE_MPESW)
@@ -78,10 +96,18 @@ static int mlx5_lag_enable_mpesw(struct mlx5_lag *ldev)
 	if (ldev->mode != MLX5_LAG_MODE_NONE)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (idx < 0)
 		return -EINVAL;
 
 	dev0 = mlx5_lag_pf(ldev, idx)->dev;
+=======
+	idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
+	if (idx < 0)
+		return -EINVAL;
+
+	dev0 = ldev->pf[idx].dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (mlx5_eswitch_mode(dev0) != MLX5_ESWITCH_OFFLOADS ||
 	    !MLX5_CAP_PORT_SELECTION(dev0, port_select_flow_table) ||
 	    !MLX5_CAP_GEN(dev0, create_lag_when_not_master_up) ||
@@ -104,7 +130,11 @@ static int mlx5_lag_enable_mpesw(struct mlx5_lag *ldev)
 	dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
 	mlx5_rescan_drivers_locked(dev0);
 	mlx5_ldev_for_each(i, 0, ldev) {
+<<<<<<< HEAD
 		err = mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
+=======
+		err = mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			goto err_rescan_drivers;
 	}
@@ -120,7 +150,11 @@ err_rescan_drivers:
 err_add_devices:
 	mlx5_lag_add_devices(ldev);
 	mlx5_ldev_for_each(i, 0, ldev)
+<<<<<<< HEAD
 		mlx5_eswitch_reload_ib_reps(mlx5_lag_pf(ldev, i)->dev->priv.eswitch);
+=======
+		mlx5_eswitch_reload_ib_reps(ldev->pf[i].dev->priv.eswitch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5_mpesw_metadata_cleanup(ldev);
 	return err;
 }

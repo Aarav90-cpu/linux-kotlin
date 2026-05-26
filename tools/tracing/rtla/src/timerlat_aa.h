@@ -3,7 +3,11 @@
  * Copyright (C) 2023 Red Hat Inc, Daniel Bristot de Oliveira <bristot@kernel.org>
  */
 
+<<<<<<< HEAD
 int timerlat_aa_init(struct osnoise_tool *tool, int dump_task, enum stack_format stack_format);
+=======
+int timerlat_aa_init(struct osnoise_tool *tool, int dump_task);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void timerlat_aa_destroy(void);
 
 void timerlat_auto_analysis(int irq_thresh, int thread_thresh);

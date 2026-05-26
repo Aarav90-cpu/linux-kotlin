@@ -14,7 +14,11 @@
  *
  * Data Structure
  * --------------
+<<<<<<< HEAD
  * The printk_ringbuffer is made up of 2 internal ringbuffers:
+=======
+ * The printk_ringbuffer is made up of 3 internal ringbuffers:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *   desc_ring
  *     A ring of descriptors and their meta data (such as sequence number,
@@ -224,7 +228,11 @@
  *
  *	prb_rec_init_rd(&r, &info, &text_buf[0], sizeof(text_buf));
  *
+<<<<<<< HEAD
  *	prb_for_each_record(0, &test_rb, seq, &r) {
+=======
+ *	prb_for_each_record(0, &test_rb, &seq, &r) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *		if (info.seq != seq)
  *			pr_warn("lost %llu records\n", info.seq - seq);
  *
@@ -1302,26 +1310,41 @@ static const char *get_data(struct prb_data_ring *data_ring,
 		return NULL;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Sanity check. Data-less blocks were handled earlier. */
+	if (WARN_ON_ONCE(!data_check_size(data_ring, *data_size) || !*data_size))
+		return NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* A valid data block will always be aligned to the ID size. */
 	if (WARN_ON_ONCE(blk_lpos->begin != ALIGN(blk_lpos->begin, sizeof(db->id))) ||
 	    WARN_ON_ONCE(blk_lpos->next != ALIGN(blk_lpos->next, sizeof(db->id)))) {
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * A regular data block will always have an ID and at least
 	 * 1 byte of data. Data-less blocks were handled earlier.
 	 */
 	if (WARN_ON_ONCE(*data_size <= sizeof(db->id)))
+=======
+	/* A valid data block will always have at least an ID. */
+	if (WARN_ON_ONCE(*data_size < sizeof(db->id)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	/* Subtract block ID space from size to reflect data size. */
 	*data_size -= sizeof(db->id);
 
+<<<<<<< HEAD
 	/* Sanity check the max size of the regular data block. */
 	if (WARN_ON_ONCE(!data_check_size(data_ring, *data_size)))
 		return NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return &db->data[0];
 }
 
@@ -1368,7 +1391,11 @@ static struct prb_desc *desc_reopen_last(struct prb_desc_ring *desc_ring,
 	 *
 	 * WMB from _prb_commit:A to _prb_commit:B
 	 *    matching
+<<<<<<< HEAD
 	 * MB from desc_reopen_last:A to prb_reserve_in_last:A
+=======
+	 * MB If desc_reopen_last:A to prb_reserve_in_last:A
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (!atomic_long_try_cmpxchg(&d->state_var, &prev_state_val,
 			DESC_SV(id, desc_reserved))) { /* LMM(desc_reopen_last:A) */
@@ -1773,9 +1800,15 @@ static void _prb_commit(struct prb_reserved_entry *e, unsigned long state_val)
 	 *
 	 *    Relies on:
 	 *
+<<<<<<< HEAD
 	 *    MB from _prb_commit:B to prb_commit:A
 	 *       matching
 	 *    MB from desc_reserve:D to desc_make_final:A
+=======
+	 *    MB _prb_commit:B to prb_commit:A
+	 *       matching
+	 *    MB desc_reserve:D to desc_make_final:A
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (!atomic_long_try_cmpxchg(&d->state_var, &prev_state_val,
 			DESC_SV(e->id, state_val))) { /* LMM(_prb_commit:B) */
@@ -2038,7 +2071,11 @@ u64 prb_first_seq(struct printk_ringbuffer *rb)
 		 *
 		 * MB from desc_push_tail:B to desc_reserve:F
 		 *    matching
+<<<<<<< HEAD
 		 * RMB from prb_first_seq:B to prb_first_seq:A
+=======
+		 * RMB prb_first_seq:B to prb_first_seq:A
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		smp_rmb(); /* LMM(prb_first_seq:C) */
 	}

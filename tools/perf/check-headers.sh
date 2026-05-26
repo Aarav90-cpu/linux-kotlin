@@ -6,7 +6,14 @@ NC='\033[0m' # No Color
 
 declare -a FILES=(
   "include/uapi/linux/const.h"
+<<<<<<< HEAD
   "include/uapi/linux/bits.h"
+=======
+  "include/uapi/drm/drm.h"
+  "include/uapi/drm/i915_drm.h"
+  "include/uapi/linux/bits.h"
+  "include/uapi/linux/fadvise.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "include/uapi/linux/fscrypt.h"
   "include/uapi/linux/genetlink.h"
   "include/uapi/linux/if_addr.h"
@@ -87,10 +94,14 @@ declare -a SYNC_CHECK_FILES=(
 declare -a BEAUTY_FILES=(
   "arch/x86/include/asm/irq_vectors.h"
   "arch/x86/include/uapi/asm/prctl.h"
+<<<<<<< HEAD
   "include/uapi/drm/drm.h"
   "include/uapi/drm/i915_drm.h"
   "include/linux/socket.h"
   "include/uapi/linux/fadvise.h"
+=======
+  "include/linux/socket.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "include/uapi/linux/fcntl.h"
   "include/uapi/linux/fs.h"
   "include/uapi/linux/mount.h"

@@ -474,7 +474,11 @@ static int dm_dp_mst_get_modes(struct drm_connector *connector)
 
 		if (aconnector->dc_sink) {
 			amdgpu_dm_update_freesync_caps(
+<<<<<<< HEAD
 					connector, aconnector->drm_edid, true);
+=======
+					connector, aconnector->drm_edid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if defined(CONFIG_DRM_AMD_DC_FP)
 			if (!validate_dsc_caps_on_connector(aconnector))

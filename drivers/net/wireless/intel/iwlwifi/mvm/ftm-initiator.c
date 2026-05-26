@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 /*
  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018-2026 Intel Corporation
+=======
+ * Copyright (C) 2018-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <linux/etherdevice.h>
 #include <linux/math64.h>
@@ -1409,7 +1413,12 @@ void iwl_mvm_ftm_lc_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
 	struct iwl_mvm_loc_entry *entry;
 	const u8 *ies, *lci, *civic, *msr_ie;
 	size_t ies_len, lci_len = 0, civic_len = 0;
+<<<<<<< HEAD
 	size_t baselen = IEEE80211_MIN_ACTION_SIZE(ftm);
+=======
+	size_t baselen = IEEE80211_MIN_ACTION_SIZE +
+			 sizeof(mgmt->u.action.u.ftm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static const u8 rprt_type_lci = IEEE80211_SPCT_MSR_RPRT_TYPE_LCI;
 	static const u8 rprt_type_civic = IEEE80211_SPCT_MSR_RPRT_TYPE_CIVIC;
 
@@ -1418,7 +1427,11 @@ void iwl_mvm_ftm_lc_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
 
 	lockdep_assert_held(&mvm->mutex);
 
+<<<<<<< HEAD
 	ies = mgmt->u.action.ftm.variable;
+=======
+	ies = mgmt->u.action.u.ftm.variable;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ies_len = len - baselen;
 
 	msr_ie = cfg80211_find_ie_match(WLAN_EID_MEASURE_REPORT, ies, ies_len,

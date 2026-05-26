@@ -5,6 +5,7 @@
 #define __MLX5_LAG_H__
 
 #include <linux/debugfs.h>
+<<<<<<< HEAD
 #include <linux/errno.h>
 #include <linux/xarray.h>
 #include <linux/mlx5/fs.h>
@@ -16,6 +17,10 @@
  */
 #define MLX5_LAG_XA_MARK_MASTER XA_MARK_1
 
+=======
+
+#define MLX5_LAG_MAX_HASH_BUCKETS 16
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mlx5_core.h"
 #include "mp.h"
 #include "port_sel.h"
@@ -48,7 +53,10 @@ struct lag_func {
 	struct mlx5_core_dev *dev;
 	struct net_device    *netdev;
 	bool has_drop;
+<<<<<<< HEAD
 	unsigned int idx; /* xarray index assigned by LAG */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_nb port_change_nb;
 };
 
@@ -74,7 +82,11 @@ struct mlx5_lag {
 	int			  mode_changes_in_progress;
 	u8			  v2p_map[MLX5_MAX_PORTS * MLX5_LAG_MAX_HASH_BUCKETS];
 	struct kref               ref;
+<<<<<<< HEAD
 	struct xarray             pfs;
+=======
+	struct lag_func           pf[MLX5_MAX_PORTS];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct lag_tracker        tracker;
 	struct workqueue_struct   *wq;
 	struct delayed_work       bond_work;
@@ -86,9 +98,12 @@ struct mlx5_lag {
 	/* Protect lag fields/state changes */
 	struct mutex		  lock;
 	struct lag_mpesw	  lag_mpesw;
+<<<<<<< HEAD
 	struct mlx5_flow_table   *lag_demux_ft;
 	struct mlx5_flow_group   *lag_demux_fg;
 	struct xarray		  lag_demux_rules;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline struct mlx5_lag *
@@ -97,6 +112,7 @@ mlx5_lag_dev(struct mlx5_core_dev *dev)
 	return dev->priv.lag;
 }
 
+<<<<<<< HEAD
 static inline struct lag_func *
 mlx5_lag_pf(struct mlx5_lag *ldev, unsigned int idx)
 {
@@ -125,6 +141,8 @@ mlx5_lag_pf_by_dev_idx(struct mlx5_lag *ldev, int dev_idx)
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool
 __mlx5_lag_is_active(struct mlx5_lag *ldev)
 {
@@ -139,12 +157,15 @@ mlx5_lag_is_ready(struct mlx5_lag *ldev)
 
 bool mlx5_lag_shared_fdb_supported(struct mlx5_lag *ldev);
 bool mlx5_lag_check_prereq(struct mlx5_lag *ldev);
+<<<<<<< HEAD
 int mlx5_lag_demux_init(struct mlx5_core_dev *dev,
 			struct mlx5_flow_table_attr *ft_attr);
 void mlx5_lag_demux_cleanup(struct mlx5_core_dev *dev);
 int mlx5_lag_demux_rule_add(struct mlx5_core_dev *dev, u16 vport_num,
 			    int vport_index);
 void mlx5_lag_demux_rule_del(struct mlx5_core_dev *dev, int vport_index);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void mlx5_modify_lag(struct mlx5_lag *ldev,
 		     struct lag_tracker *tracker);
 int mlx5_activate_lag(struct mlx5_lag *ldev,

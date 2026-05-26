@@ -53,8 +53,15 @@ extern const size_t modinfo_attrs_count;
 /* Provided by the linker */
 extern const struct kernel_symbol __start___ksymtab[];
 extern const struct kernel_symbol __stop___ksymtab[];
+<<<<<<< HEAD
 extern const u32 __start___kcrctab[];
 extern const u8 __start___kflagstab[];
+=======
+extern const struct kernel_symbol __start___ksymtab_gpl[];
+extern const struct kernel_symbol __stop___ksymtab_gpl[];
+extern const u32 __start___kcrctab[];
+extern const u32 __start___kcrctab_gpl[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define KMOD_PATH_LEN 256
 extern char modprobe_path[];

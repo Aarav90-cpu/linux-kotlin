@@ -228,7 +228,11 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DM_MAP_OP_ADDR)(
 	if (!err || err != -ENOENT)
 		goto err_unlock;
 
+<<<<<<< HEAD
 	op_entry = kzalloc_obj(*op_entry);
+=======
+	op_entry = kzalloc(sizeof(*op_entry), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!op_entry)
 		goto err_unlock;
 

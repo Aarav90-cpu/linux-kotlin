@@ -5,4 +5,16 @@
 #ifndef _ASM_SPARC_CLOCKSOURCE_H
 #define _ASM_SPARC_CLOCKSOURCE_H
 
+<<<<<<< HEAD
+=======
+/* VDSO clocksources */
+#define VCLOCK_NONE   0  /* Nothing userspace can do. */
+#define VCLOCK_TICK   1  /* Use %tick.  */
+#define VCLOCK_STICK  2  /* Use %stick. */
+
+struct arch_clocksource_data {
+	int vclock_mode;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _ASM_SPARC_CLOCKSOURCE_H */

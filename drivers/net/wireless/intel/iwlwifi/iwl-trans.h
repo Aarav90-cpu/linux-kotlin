@@ -1088,7 +1088,11 @@ static inline void iwl_trans_schedule_reset(struct iwl_trans *trans,
 	 */
 	trans->restart.during_reset = test_bit(STATUS_IN_SW_RESET,
 					       &trans->status);
+<<<<<<< HEAD
 	queue_delayed_work(system_dfl_wq, &trans->restart.wk, 0);
+=======
+	queue_delayed_work(system_unbound_wq, &trans->restart.wk, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void iwl_trans_fw_error(struct iwl_trans *trans,
@@ -1258,6 +1262,7 @@ bool iwl_trans_is_pm_supported(struct iwl_trans *trans);
 
 bool iwl_trans_is_ltr_enabled(struct iwl_trans *trans);
 
+<<<<<<< HEAD
 static inline bool iwl_trans_is_top_reset_supported(struct iwl_trans *trans)
 {
 	/* not supported before Sc family */
@@ -1276,4 +1281,6 @@ static inline bool iwl_trans_is_top_reset_supported(struct iwl_trans *trans)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __iwl_trans_h__ */

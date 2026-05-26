@@ -36,6 +36,10 @@
 #define IWL_MLD_PS_HEAVY_RX_THLD_PACKETS	8
 
 #define IWL_MLD_TRIGGER_LINK_SEL_TIME_SEC	30
+<<<<<<< HEAD
+=======
+#define IWL_MLD_SCAN_EXPIRE_TIME_SEC		20
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define IWL_MLD_TPT_COUNT_WINDOW (5 * HZ)
 

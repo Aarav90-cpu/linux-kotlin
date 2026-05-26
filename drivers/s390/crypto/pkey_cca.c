@@ -87,37 +87,58 @@ static int cca_apqns4key(const u8 *key, u32 keylen, u32 flags,
 	zcrypt_wait_api_operational();
 
 	if (hdr->type == TOKTYPE_CCA_INTERNAL) {
+<<<<<<< HEAD
 		const u8 *ptr_cur_mkvp = NULL;
 		const u8 *ptr_old_mkvp = NULL;
+=======
+		u64 cur_mkvp = 0, old_mkvp = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int minhwtype = ZCRYPT_CEX3C;
 
 		if (hdr->version == TOKVER_CCA_AES) {
 			struct secaeskeytoken *t = (struct secaeskeytoken *)key;
 
 			if (flags & PKEY_FLAGS_MATCH_CUR_MKVP)
+<<<<<<< HEAD
 				ptr_cur_mkvp = t->mkvp;
 			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
 				ptr_old_mkvp = t->mkvp;
+=======
+				cur_mkvp = t->mkvp;
+			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
+				old_mkvp = t->mkvp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (hdr->version == TOKVER_CCA_VLSC) {
 			struct cipherkeytoken *t = (struct cipherkeytoken *)key;
 
 			minhwtype = ZCRYPT_CEX6;
 			if (flags & PKEY_FLAGS_MATCH_CUR_MKVP)
+<<<<<<< HEAD
 				ptr_cur_mkvp = t->mkvp0;
 			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
 				ptr_old_mkvp = t->mkvp0;
+=======
+				cur_mkvp = t->mkvp0;
+			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
+				old_mkvp = t->mkvp0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			/* unknown CCA internal token type */
 			return -EINVAL;
 		}
 		rc = cca_findcard2(_apqns, &_nr_apqns, 0xFFFF, 0xFFFF,
 				   minhwtype, AES_MK_SET,
+<<<<<<< HEAD
 				   ptr_cur_mkvp, ptr_old_mkvp, xflags);
+=======
+				   cur_mkvp, old_mkvp, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto out;
 
 	} else if (hdr->type == TOKTYPE_CCA_INTERNAL_PKA) {
 		struct eccprivkeytoken *t = (struct eccprivkeytoken *)key;
+<<<<<<< HEAD
 		const u8 *ptr_cur_mkvp = NULL;
 		const u8 *ptr_old_mkvp = NULL;
 
@@ -126,13 +147,26 @@ static int cca_apqns4key(const u8 *key, u32 keylen, u32 flags,
 				ptr_cur_mkvp = t->mkvp;
 			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
 				ptr_old_mkvp = t->mkvp;
+=======
+		u64 cur_mkvp = 0, old_mkvp = 0;
+
+		if (t->secid == 0x20) {
+			if (flags & PKEY_FLAGS_MATCH_CUR_MKVP)
+				cur_mkvp = t->mkvp;
+			if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
+				old_mkvp = t->mkvp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			/* unknown CCA internal 2 token type */
 			return -EINVAL;
 		}
 		rc = cca_findcard2(_apqns, &_nr_apqns, 0xFFFF, 0xFFFF,
 				   ZCRYPT_CEX7, APKA_MK_SET,
+<<<<<<< HEAD
 				   ptr_cur_mkvp, ptr_old_mkvp, xflags);
+=======
+				   cur_mkvp, old_mkvp, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto out;
 
@@ -169,6 +203,7 @@ static int cca_apqns4type(enum pkey_key_type ktype,
 	zcrypt_wait_api_operational();
 
 	if (ktype == PKEY_TYPE_CCA_DATA || ktype == PKEY_TYPE_CCA_CIPHER) {
+<<<<<<< HEAD
 		const u8 *ptr_cur_mkvp = NULL;
 		const u8 *ptr_old_mkvp = NULL;
 		int minhwtype = ZCRYPT_CEX3C;
@@ -177,15 +212,29 @@ static int cca_apqns4type(enum pkey_key_type ktype,
 			ptr_cur_mkvp = cur_mkvp;
 		if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
 			ptr_old_mkvp = alt_mkvp;
+=======
+		u64 cur_mkvp = 0, old_mkvp = 0;
+		int minhwtype = ZCRYPT_CEX3C;
+
+		if (flags & PKEY_FLAGS_MATCH_CUR_MKVP)
+			cur_mkvp = *((u64 *)cur_mkvp);
+		if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
+			old_mkvp = *((u64 *)alt_mkvp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ktype == PKEY_TYPE_CCA_CIPHER)
 			minhwtype = ZCRYPT_CEX6;
 		rc = cca_findcard2(_apqns, &_nr_apqns, 0xFFFF, 0xFFFF,
 				   minhwtype, AES_MK_SET,
+<<<<<<< HEAD
 				   ptr_cur_mkvp, ptr_old_mkvp, xflags);
+=======
+				   cur_mkvp, old_mkvp, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto out;
 
 	} else if (ktype == PKEY_TYPE_CCA_ECC) {
+<<<<<<< HEAD
 		const u8 *ptr_cur_mkvp = NULL;
 		const u8 *ptr_old_mkvp = NULL;
 
@@ -196,6 +245,17 @@ static int cca_apqns4type(enum pkey_key_type ktype,
 		rc = cca_findcard2(_apqns, &_nr_apqns, 0xFFFF, 0xFFFF,
 				   ZCRYPT_CEX7, APKA_MK_SET,
 				   ptr_cur_mkvp, ptr_old_mkvp, xflags);
+=======
+		u64 cur_mkvp = 0, old_mkvp = 0;
+
+		if (flags & PKEY_FLAGS_MATCH_CUR_MKVP)
+			cur_mkvp = *((u64 *)cur_mkvp);
+		if (flags & PKEY_FLAGS_MATCH_ALT_MKVP)
+			old_mkvp = *((u64 *)alt_mkvp);
+		rc = cca_findcard2(_apqns, &_nr_apqns, 0xFFFF, 0xFFFF,
+				   ZCRYPT_CEX7, APKA_MK_SET,
+				   cur_mkvp, old_mkvp, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto out;
 
@@ -491,14 +551,22 @@ static int cca_verifykey(const u8 *key, u32 keylen,
 		*keybitsize = t->bitsize;
 		rc = cca_findcard2(apqns, &nr_apqns, *card, *dom,
 				   ZCRYPT_CEX3C, AES_MK_SET,
+<<<<<<< HEAD
 				   t->mkvp, NULL, xflags);
+=======
+				   t->mkvp, 0, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!rc)
 			*flags = PKEY_FLAGS_MATCH_CUR_MKVP;
 		if (rc == -ENODEV) {
 			nr_apqns = ARRAY_SIZE(apqns);
 			rc = cca_findcard2(apqns, &nr_apqns, *card, *dom,
 					   ZCRYPT_CEX3C, AES_MK_SET,
+<<<<<<< HEAD
 					   NULL, t->mkvp, xflags);
+=======
+					   0, t->mkvp, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!rc)
 				*flags = PKEY_FLAGS_MATCH_ALT_MKVP;
 		}
@@ -525,14 +593,22 @@ static int cca_verifykey(const u8 *key, u32 keylen,
 			*keybitsize = PKEY_SIZE_AES_256;
 		rc = cca_findcard2(apqns, &nr_apqns, *card, *dom,
 				   ZCRYPT_CEX6, AES_MK_SET,
+<<<<<<< HEAD
 				   t->mkvp0, NULL, xflags);
+=======
+				   t->mkvp0, 0, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!rc)
 			*flags = PKEY_FLAGS_MATCH_CUR_MKVP;
 		if (rc == -ENODEV) {
 			nr_apqns = ARRAY_SIZE(apqns);
 			rc = cca_findcard2(apqns, &nr_apqns, *card, *dom,
 					   ZCRYPT_CEX6, AES_MK_SET,
+<<<<<<< HEAD
 					   NULL, t->mkvp0, xflags);
+=======
+					   0, t->mkvp0, xflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!rc)
 				*flags = PKEY_FLAGS_MATCH_ALT_MKVP;
 		}

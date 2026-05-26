@@ -336,6 +336,7 @@ snd_hda_codec_write(struct hda_codec *codec, hda_nid_t nid, int flags,
 	return snd_hdac_codec_write(&codec->core, nid, flags, verb, parm);
 }
 
+<<<<<<< HEAD
 /* sync after write */
 static inline int
 snd_hda_codec_write_sync(struct hda_codec *codec, hda_nid_t nid, int flags,
@@ -347,6 +348,8 @@ snd_hda_codec_write_sync(struct hda_codec *codec, hda_nid_t nid, int flags,
 	return snd_hdac_codec_read(&codec->core, nid, flags, verb, parm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define snd_hda_param_read(codec, nid, param) \
 	snd_hdac_read_parm(&(codec)->core, nid, param)
 #define snd_hda_get_sub_nodes(codec, nid, start_nid) \
@@ -481,10 +484,13 @@ void snd_hda_unlock_devices(struct hda_bus *bus);
 void snd_hda_bus_reset(struct hda_bus *bus);
 void snd_hda_bus_reset_codecs(struct hda_bus *bus);
 
+<<<<<<< HEAD
 void snd_hda_codec_set_gpio(struct hda_codec *codec, unsigned int mask,
 			    unsigned int dir, unsigned int data,
 			    unsigned int delay);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int snd_hda_codec_set_name(struct hda_codec *codec, const char *name);
 
 /*

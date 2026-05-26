@@ -1,7 +1,11 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Portions of this file
+<<<<<<< HEAD
  * Copyright (C) 2018, 2020-2025 Intel Corporation
+=======
+ * Copyright (C) 2018, 2020-2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #ifndef __NET_WIRELESS_NL80211_H
 #define __NET_WIRELESS_NL80211_H
@@ -23,8 +27,12 @@ static inline u64 wdev_id(struct wireless_dev *wdev)
 }
 
 int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			  struct netlink_ext_ack *extack,
 			  struct nlattr **attrs,
+=======
+			  struct genl_info *info,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  struct cfg80211_chan_def *chandef);
 int nl80211_parse_random_mac(struct nlattr **attrs,
 			     u8 *mac_addr, u8 *mac_addr_mask);

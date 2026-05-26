@@ -38,7 +38,10 @@
 #include "intel_dpll.h"
 #include "intel_dpll_mgr.h"
 #include "intel_hti.h"
+<<<<<<< HEAD
 #include "intel_lt_phy.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_mg_phy_regs.h"
 #include "intel_pch_refclk.h"
 #include "intel_step.h"
@@ -4571,6 +4574,7 @@ static const struct intel_dpll_mgr mtl_pll_mgr = {
 	.compare_hw_state = mtl_compare_hw_state,
 };
 
+<<<<<<< HEAD
 static bool xe3plpd_pll_get_hw_state(struct intel_display *display,
 				     struct intel_dpll *pll,
 				     struct intel_dpll_hw_state *dpll_hw_state)
@@ -4735,6 +4739,8 @@ static const struct intel_dpll_mgr xe3plpd_pll_mgr = {
 	.compare_hw_state = xe3plpd_compare_hw_state,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * intel_dpll_init - Initialize DPLLs
  * @display: intel_display device
@@ -4749,11 +4755,17 @@ void intel_dpll_init(struct intel_display *display)
 
 	mutex_init(&display->dpll.lock);
 
+<<<<<<< HEAD
 	if (display->platform.dg2)
 		/* No shared DPLLs on DG2; port PLLs are part of the PHY */
 		dpll_mgr = NULL;
 	else if (DISPLAY_VER(display) >= 35)
 		dpll_mgr = &xe3plpd_pll_mgr;
+=======
+	if (DISPLAY_VER(display) >= 35 || display->platform.dg2)
+		/* No shared DPLLs on NVL or DG2; port PLLs are part of the PHY */
+		dpll_mgr = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (DISPLAY_VER(display) >= 14)
 		dpll_mgr = &mtl_pll_mgr;
 	else if (display->platform.alderlake_p)
@@ -4780,7 +4792,11 @@ void intel_dpll_init(struct intel_display *display)
 		dpll_mgr = &pch_pll_mgr;
 
 	if (!dpll_mgr)
+<<<<<<< HEAD
 		goto out_verify;
+=======
+		return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dpll_info = dpll_mgr->dpll_info;
 
@@ -4799,6 +4815,7 @@ void intel_dpll_init(struct intel_display *display)
 
 	display->dpll.mgr = dpll_mgr;
 	display->dpll.num_dpll = i;
+<<<<<<< HEAD
 
 out_verify:
 	/*
@@ -4807,6 +4824,8 @@ out_verify:
 	 */
 	intel_cx0pll_verify_plls(display);
 	intel_lt_phy_verify_plls(display);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -5076,7 +5095,10 @@ verify_single_dpll_state(struct intel_display *display,
 			 const struct intel_crtc_state *new_crtc_state)
 {
 	struct intel_dpll_hw_state dpll_hw_state = {};
+<<<<<<< HEAD
 	bool pll_mismatch = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 pipe_mask;
 	bool active;
 
@@ -5118,6 +5140,7 @@ verify_single_dpll_state(struct intel_display *display,
 				 "%s: pll enabled crtcs mismatch (expected 0x%x in 0x%x)\n",
 				 pll->info->name, pipe_mask, pll->state.pipe_mask);
 
+<<<<<<< HEAD
 	if (pll->on) {
 		const struct intel_dpll_mgr *dpll_mgr = display->dpll.mgr;
 
@@ -5130,6 +5153,11 @@ verify_single_dpll_state(struct intel_display *display,
 	}
 
 	if (INTEL_DISPLAY_STATE_WARN(display, pll_mismatch,
+=======
+	if (INTEL_DISPLAY_STATE_WARN(display,
+				     pll->on && memcmp(&pll->state.hw_state, &dpll_hw_state,
+						       sizeof(dpll_hw_state)),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     "%s: pll hw state mismatch\n",
 				     pll->info->name)) {
 		struct drm_printer p = drm_dbg_printer(display->drm, DRM_UT_KMS, NULL);

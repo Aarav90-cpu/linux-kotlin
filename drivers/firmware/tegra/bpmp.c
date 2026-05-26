@@ -32,6 +32,7 @@ channel_to_ops(struct tegra_bpmp_channel *channel)
 	return bpmp->soc->ops;
 }
 
+<<<<<<< HEAD
 struct tegra_bpmp *tegra_bpmp_get_with_id(struct device *dev, unsigned int *id)
 {
 	struct platform_device *pdev;
@@ -66,6 +67,8 @@ put:
 }
 EXPORT_SYMBOL_GPL(tegra_bpmp_get_with_id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tegra_bpmp *tegra_bpmp_get(struct device *dev)
 {
 	struct platform_device *pdev;

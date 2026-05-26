@@ -434,10 +434,13 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
 		dev = add_res->dev;
 		idx = pci_resource_num(dev, res);
 
+<<<<<<< HEAD
 		/* Skip this resource if not found in head list */
 		if (!res_to_dev_res(head, res))
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Skip resource that failed the earlier assignment and is
 		 * not optional as it would just fail again.
@@ -446,6 +449,13 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
 		    !pci_resource_is_optional(dev, idx))
 			goto out;
 
+<<<<<<< HEAD
+=======
+		/* Skip this resource if not found in head list */
+		if (!res_to_dev_res(head, res))
+			continue;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		res_name = pci_resource_name(dev, idx);
 		add_size = add_res->add_size;
 		align = add_res->min_align;
@@ -1035,7 +1045,11 @@ resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
 #define PCI_P2P_DEFAULT_IO_ALIGN	SZ_4K
 #define PCI_P2P_DEFAULT_IO_ALIGN_1K	SZ_1K
 
+<<<<<<< HEAD
 resource_size_t pci_min_window_alignment(struct pci_bus *bus, unsigned long type)
+=======
+static resource_size_t window_alignment(struct pci_bus *bus, unsigned long type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	resource_size_t align = 1, arch_align;
 
@@ -1084,7 +1098,11 @@ static void pbus_size_io(struct pci_bus *bus, resource_size_t add_size,
 	if (resource_assigned(b_res))
 		return;
 
+<<<<<<< HEAD
 	min_align = pci_min_window_alignment(bus, IORESOURCE_IO);
+=======
+	min_align = window_alignment(bus, IORESOURCE_IO);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		struct resource *r;
 
@@ -1333,6 +1351,7 @@ static void pbus_size_mem(struct pci_bus *bus, struct resource *b_res,
 			r_size = resource_size(r);
 			size += max(r_size, align);
 
+<<<<<<< HEAD
 			/*
 			 * If resource's size is larger than its alignment,
 			 * some configurations result in an unwanted gap in
@@ -1341,12 +1360,19 @@ static void pbus_size_mem(struct pci_bus *bus, struct resource *b_res,
 			 */
 			if (r_size <= align)
 				aligns[order] += align;
+=======
+			aligns[order] += align;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (order > max_order)
 				max_order = order;
 		}
 	}
 
+<<<<<<< HEAD
 	win_align = pci_min_window_alignment(bus, b_res->flags);
+=======
+	win_align = window_alignment(bus, b_res->flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	min_align = calculate_head_align(aligns, max_order);
 	min_align = max(min_align, win_align);
 	size0 = calculate_memsize(size, realloc_head ? 0 : add_size,
@@ -1844,7 +1870,10 @@ static void adjust_bridge_window(struct pci_dev *bridge, struct resource *res,
 				 resource_size_t new_size)
 {
 	resource_size_t add_size, size = resource_size(res);
+<<<<<<< HEAD
 	struct pci_dev_resource *dev_res;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (resource_assigned(res))
 		return;
@@ -1857,6 +1886,7 @@ static void adjust_bridge_window(struct pci_dev *bridge, struct resource *res,
 		pci_dbg(bridge, "bridge window %pR extended by %pa\n", res,
 			&add_size);
 	} else if (new_size < size) {
+<<<<<<< HEAD
 		int idx = pci_resource_num(bridge, res);
 
 		/*
@@ -1897,6 +1927,11 @@ static void adjust_bridge_window(struct pci_dev *bridge, struct resource *res,
 		}
 		return;
 
+=======
+		add_size = size - new_size;
+		pci_dbg(bridge, "bridge window %pR shrunken by %pa\n", res,
+			&add_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		return;
 	}

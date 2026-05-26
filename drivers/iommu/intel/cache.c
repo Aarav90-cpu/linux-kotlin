@@ -255,6 +255,10 @@ void cache_tag_unassign_domain(struct dmar_domain *domain,
 
 static unsigned long calculate_psi_aligned_address(unsigned long start,
 						   unsigned long end,
+<<<<<<< HEAD
+=======
+						   unsigned long *_pages,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						   unsigned long *_mask)
 {
 	unsigned long pages = aligned_nrpages(start, end - start + 1);
@@ -280,8 +284,15 @@ static unsigned long calculate_psi_aligned_address(unsigned long start,
 		 */
 		shared_bits = ~(pfn ^ end_pfn) & ~bitmask;
 		mask = shared_bits ? __ffs(shared_bits) : MAX_AGAW_PFN_WIDTH;
+<<<<<<< HEAD
 	}
 
+=======
+		aligned_pages = 1UL << mask;
+	}
+
+	*_pages = aligned_pages;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*_mask = mask;
 
 	return ALIGN_DOWN(start, VTD_PAGE_SIZE << mask);
@@ -327,6 +338,7 @@ static void qi_batch_add_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid
 	qi_batch_increment_index(iommu, batch);
 }
 
+<<<<<<< HEAD
 static void qi_batch_add_piotlb_all(struct intel_iommu *iommu, u16 did,
 				    u32 pasid, struct qi_batch *batch)
 {
@@ -340,6 +352,21 @@ static void qi_batch_add_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid,
 {
 	qi_desc_piotlb(did, pasid, addr, size_order, ih,
 		       &batch->descs[batch->index]);
+=======
+static void qi_batch_add_piotlb(struct intel_iommu *iommu, u16 did, u32 pasid,
+				u64 addr, unsigned long npages, bool ih,
+				struct qi_batch *batch)
+{
+	/*
+	 * npages == -1 means a PASID-selective invalidation, otherwise,
+	 * a positive value for Page-selective-within-PASID invalidation.
+	 * 0 is not a valid input.
+	 */
+	if (!npages)
+		return;
+
+	qi_desc_piotlb(did, pasid, addr, npages, ih, &batch->descs[batch->index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qi_batch_increment_index(iommu, batch);
 }
 
@@ -368,18 +395,28 @@ static bool intel_domain_use_piotlb(struct dmar_domain *domain)
 }
 
 static void cache_tag_flush_iotlb(struct dmar_domain *domain, struct cache_tag *tag,
+<<<<<<< HEAD
 				  unsigned long addr, unsigned long mask, int ih)
+=======
+				  unsigned long addr, unsigned long pages,
+				  unsigned long mask, int ih)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct intel_iommu *iommu = tag->iommu;
 	u64 type = DMA_TLB_PSI_FLUSH;
 
 	if (intel_domain_use_piotlb(domain)) {
+<<<<<<< HEAD
 		if (mask >= MAX_AGAW_PFN_WIDTH)
 			qi_batch_add_piotlb_all(iommu, tag->domain_id,
 						tag->pasid, domain->qi_batch);
 		else
 			qi_batch_add_piotlb(iommu, tag->domain_id, tag->pasid,
 					    addr, mask, ih, domain->qi_batch);
+=======
+		qi_batch_add_piotlb(iommu, tag->domain_id, tag->pasid, addr,
+				    pages, ih, domain->qi_batch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -388,7 +425,11 @@ static void cache_tag_flush_iotlb(struct dmar_domain *domain, struct cache_tag *
 	 * is too big.
 	 */
 	if (!cap_pgsel_inv(iommu->cap) ||
+<<<<<<< HEAD
 	    mask > cap_max_amask_val(iommu->cap)) {
+=======
+	    mask > cap_max_amask_val(iommu->cap) || pages == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		addr = 0;
 		mask = 0;
 		ih = 0;
@@ -437,15 +478,26 @@ void cache_tag_flush_range(struct dmar_domain *domain, unsigned long start,
 			   unsigned long end, int ih)
 {
 	struct intel_iommu *iommu = NULL;
+<<<<<<< HEAD
 	unsigned long mask, addr;
+=======
+	unsigned long pages, mask, addr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cache_tag *tag;
 	unsigned long flags;
 
 	if (start == 0 && end == ULONG_MAX) {
 		addr = 0;
+<<<<<<< HEAD
 		mask = MAX_AGAW_PFN_WIDTH;
 	} else {
 		addr = calculate_psi_aligned_address(start, end, &mask);
+=======
+		pages = -1;
+		mask = MAX_AGAW_PFN_WIDTH;
+	} else {
+		addr = calculate_psi_aligned_address(start, end, &pages, &mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock_irqsave(&domain->cache_lock, flags);
@@ -457,7 +509,11 @@ void cache_tag_flush_range(struct dmar_domain *domain, unsigned long start,
 		switch (tag->type) {
 		case CACHE_TAG_IOTLB:
 		case CACHE_TAG_NESTING_IOTLB:
+<<<<<<< HEAD
 			cache_tag_flush_iotlb(domain, tag, addr, mask, ih);
+=======
+			cache_tag_flush_iotlb(domain, tag, addr, pages, mask, ih);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case CACHE_TAG_NESTING_DEVTLB:
 			/*
@@ -475,7 +531,11 @@ void cache_tag_flush_range(struct dmar_domain *domain, unsigned long start,
 			break;
 		}
 
+<<<<<<< HEAD
 		trace_cache_tag_flush_range(tag, start, end, addr, mask);
+=======
+		trace_cache_tag_flush_range(tag, start, end, addr, pages, mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	qi_batch_flush_descs(iommu, domain->qi_batch);
 	spin_unlock_irqrestore(&domain->cache_lock, flags);
@@ -505,11 +565,19 @@ void cache_tag_flush_range_np(struct dmar_domain *domain, unsigned long start,
 			      unsigned long end)
 {
 	struct intel_iommu *iommu = NULL;
+<<<<<<< HEAD
 	unsigned long mask, addr;
 	struct cache_tag *tag;
 	unsigned long flags;
 
 	addr = calculate_psi_aligned_address(start, end, &mask);
+=======
+	unsigned long pages, mask, addr;
+	struct cache_tag *tag;
+	unsigned long flags;
+
+	addr = calculate_psi_aligned_address(start, end, &pages, &mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	spin_lock_irqsave(&domain->cache_lock, flags);
 	list_for_each_entry(tag, &domain->cache_tags, node) {
@@ -525,9 +593,15 @@ void cache_tag_flush_range_np(struct dmar_domain *domain, unsigned long start,
 
 		if (tag->type == CACHE_TAG_IOTLB ||
 		    tag->type == CACHE_TAG_NESTING_IOTLB)
+<<<<<<< HEAD
 			cache_tag_flush_iotlb(domain, tag, addr, mask, 0);
 
 		trace_cache_tag_flush_range_np(tag, start, end, addr, mask);
+=======
+			cache_tag_flush_iotlb(domain, tag, addr, pages, mask, 0);
+
+		trace_cache_tag_flush_range_np(tag, start, end, addr, pages, mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	qi_batch_flush_descs(iommu, domain->qi_batch);
 	spin_unlock_irqrestore(&domain->cache_lock, flags);

@@ -40,8 +40,12 @@
 #include <asm/irq_remapping.h>
 #include <asm/kvm_page_track.h>
 #include <asm/kvm_vcpu_regs.h>
+<<<<<<< HEAD
 #include <asm/virt.h>
 
+=======
+#include <asm/reboot.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <hyperv/hvhdk.h>
 
 #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
@@ -1099,6 +1103,7 @@ struct kvm_vcpu_arch {
 	 */
 	bool pdptrs_from_userspace;
 
+<<<<<<< HEAD
 	/*
 	 * Set if an emulated nested VM-Enter to L2 is pending completion.  KVM
 	 * must not synthesize a VM-Exit to L1 before entering L2, as VM-Exits
@@ -1114,6 +1119,8 @@ struct kvm_vcpu_arch {
 #define KVM_NESTED_RUN_PENDING_UNTRUSTED	2
 	u8 nested_run_pending;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_HYPERV)
 	hpa_t hv_root_tdp;
 #endif
@@ -1277,7 +1284,11 @@ struct kvm_x86_pmu_event_filter {
 	__u32 nr_excludes;
 	__u64 *includes;
 	__u64 *excludes;
+<<<<<<< HEAD
 	__u64 events[] __counted_by(nevents);
+=======
+	__u64 events[];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum kvm_apicv_inhibit {
@@ -1449,7 +1460,10 @@ struct kvm_arch {
 	struct kvm_pit *vpit;
 #endif
 	atomic_t vapics_in_nmi_mode;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex apic_map_lock;
 	struct kvm_apic_map __rcu *apic_map;
 	atomic_t apic_map_dirty;
@@ -1457,6 +1471,7 @@ struct kvm_arch {
 	bool apic_access_memslot_enabled;
 	bool apic_access_memslot_inhibited;
 
+<<<<<<< HEAD
 	/*
 	 * Force apicv_update_lock and apicv_nr_irq_window_req to reside in a
 	 * dedicated cacheline.  They are write-mostly, whereas most everything
@@ -1473,6 +1488,10 @@ struct kvm_arch {
 	atomic_t apicv_nr_irq_window_req;
 	____cacheline_aligned
 
+=======
+	/* Protects apicv_inhibit_reasons */
+	struct rw_semaphore apicv_update_lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long apicv_inhibit_reasons;
 
 	gpa_t wall_clock;
@@ -2128,6 +2147,12 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
 
 int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
 
+<<<<<<< HEAD
+=======
+int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t gpa,
+			  const void *val, int bytes);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern bool tdp_enabled;
 
 u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
@@ -2344,6 +2369,7 @@ static inline void kvm_clear_apicv_inhibit(struct kvm *kvm,
 	kvm_set_or_clear_apicv_inhibit(kvm, reason, false);
 }
 
+<<<<<<< HEAD
 void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc);
 
 static inline void kvm_inc_apicv_irq_window_req(struct kvm *kvm)
@@ -2356,6 +2382,8 @@ static inline void kvm_dec_apicv_irq_window_req(struct kvm *kvm)
 	kvm_inc_or_dec_irq_window_inhibit(kvm, false);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
 		       void *insn, int insn_len);
 void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);

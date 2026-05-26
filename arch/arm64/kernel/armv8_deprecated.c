@@ -610,6 +610,7 @@ static int __init armv8_deprecated_init(void)
 	}
 
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_SWP_EMULATION
 	/*
@@ -624,6 +625,8 @@ static int __init armv8_deprecated_init(void)
 	}
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (int i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
 		struct insn_emulation *ie = insn_emulations[i];
 

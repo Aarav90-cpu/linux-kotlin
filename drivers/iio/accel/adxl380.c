@@ -31,7 +31,11 @@
 #define ADXL319_ID_VAL				382
 
 #define ADXL380_DEVID_AD_REG			0x00
+<<<<<<< HEAD
 #define ADXL380_PART_ID_REG			0x02
+=======
+#define ADLX380_PART_ID_REG			0x02
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define ADXL380_X_DATA_H_REG			0x15
 #define ADXL380_Y_DATA_H_REG			0x17
@@ -1878,7 +1882,11 @@ static int adxl380_setup(struct iio_dev *indio_dev)
 	if (reg_val != ADXL380_DEVID_AD_VAL)
 		dev_warn(st->dev, "Unknown chip id %x\n", reg_val);
 
+<<<<<<< HEAD
 	ret = regmap_bulk_read(st->regmap, ADXL380_PART_ID_REG,
+=======
+	ret = regmap_bulk_read(st->regmap, ADLX380_PART_ID_REG,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       &st->transf_buf, 2);
 	if (ret)
 		return ret;

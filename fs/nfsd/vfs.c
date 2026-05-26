@@ -1163,7 +1163,11 @@ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
 	} else if (unlikely(host_err == -EINVAL)) {
 		struct inode *inode = d_inode(fhp->fh_dentry);
 
+<<<<<<< HEAD
 		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%llu\n",
+=======
+		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    inode->i_sb->s_id, inode->i_ino);
 		host_err = -ESERVERFAULT;
 	}

@@ -322,7 +322,11 @@ static int proc_tgid_net_getattr(struct mnt_idmap *idmap,
 const struct inode_operations proc_net_inode_operations = {
 	.lookup		= proc_tgid_net_lookup,
 	.getattr	= proc_tgid_net_getattr,
+<<<<<<< HEAD
 	.setattr        = proc_nochmod_setattr,
+=======
+	.setattr        = proc_setattr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int proc_tgid_net_readdir(struct file *file, struct dir_context *ctx)

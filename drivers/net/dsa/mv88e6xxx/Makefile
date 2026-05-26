@@ -21,8 +21,11 @@ mv88e6xxx-objs += serdes.o
 mv88e6xxx-objs += smi.o
 mv88e6xxx-objs += switchdev.o
 mv88e6xxx-objs += trace.o
+<<<<<<< HEAD
 mv88e6xxx-objs += tcflower.o
 mv88e6xxx-objs += tcam.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # for tracing framework to find trace.h
 CFLAGS_trace.o := -I$(src)

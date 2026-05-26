@@ -8,7 +8,10 @@
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
 #include <linux/if_arp.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/if_ether.h>
 #include <net/netlink.h>
 
@@ -78,8 +81,13 @@ hash_mac4_kadt(struct ip_set *set, const struct sk_buff *skb,
 	struct hash_mac4_elem e = { { .foo[0] = 0, .foo[1] = 0 } };
 	struct ip_set_ext ext = IP_SET_INIT_KEXT(skb, opt, set);
 
+<<<<<<< HEAD
 	if (!skb->dev || skb->dev->type != ARPHRD_ETHER ||
 	    !skb_mac_header_was_set(skb) || skb_mac_header_len(skb) < ETH_HLEN)
+=======
+	if (skb_mac_header(skb) < skb->head ||
+	    (skb_mac_header(skb) + ETH_HLEN) > skb->data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (opt->flags & IPSET_DIM_ONE_SRC)

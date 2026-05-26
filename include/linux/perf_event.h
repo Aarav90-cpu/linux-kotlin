@@ -1632,7 +1632,11 @@ static inline void perf_event_task_migrate(struct task_struct *task)
 		task->sched_migrated = 1;
 }
 
+<<<<<<< HEAD
 static inline void perf_event_task_sched_in(struct task_struct *prev,
+=======
+static __always_inline void perf_event_task_sched_in(struct task_struct *prev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    struct task_struct *task)
 {
 	if (static_branch_unlikely(&perf_sched_events))

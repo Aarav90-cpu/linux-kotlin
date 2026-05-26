@@ -72,6 +72,17 @@ extern unsigned long phys_base;
 extern unsigned long pfn_base;
 
 /*
+<<<<<<< HEAD
+=======
+ * ZERO_PAGE is a global shared page that is always zero: used
+ * for zero-mapped memory areas etc..
+ */
+extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+
+#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * In general all page table modifications should use the V8 atomic
  * swap instruction.  This insures the mmu and the cpu are in sync
  * with respect to ref/mod bits in the page tables.

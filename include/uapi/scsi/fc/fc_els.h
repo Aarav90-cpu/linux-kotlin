@@ -1030,7 +1030,11 @@ struct fc_fn_li_desc {
 					 */
 	__be32		event_count;	/* minimum number of event
 					 * occurrences during the event
+<<<<<<< HEAD
 					 * threshold to cause the LI event
+=======
+					 * threshold to caause the LI event
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 */
 	__be32		pname_count;	/* number of portname_list elements */
 	__be64		pname_list[];	/* list of N_Port_Names accessible

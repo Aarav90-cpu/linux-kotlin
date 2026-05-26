@@ -393,7 +393,11 @@ struct request_queue *bsg_setup_queue(struct device *dev, const char *name,
 
 	blk_queue_rq_timeout(q, BLK_DEFAULT_SG_TIMEOUT);
 
+<<<<<<< HEAD
 	bset->bd = bsg_register_queue(q, dev, name, bsg_transport_sg_io_fn, NULL);
+=======
+	bset->bd = bsg_register_queue(q, dev, name, bsg_transport_sg_io_fn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(bset->bd)) {
 		ret = PTR_ERR(bset->bd);
 		goto out_cleanup_queue;

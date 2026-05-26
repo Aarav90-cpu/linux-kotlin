@@ -47,6 +47,10 @@ struct mlx5e_flow_steering {
 	bool				state_destroy;
 	bool				vlan_strip_disable;
 	struct mlx5_core_dev		*mdev;
+<<<<<<< HEAD
+=======
+	struct net_device		*netdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_flow_namespace      *ns;
 	struct mlx5_flow_namespace      *egress_ns;
 #ifdef CONFIG_MLX5_EN_RXNFC
@@ -609,6 +613,7 @@ static void mlx5e_execute_l2_action(struct mlx5e_flow_steering *fs,
 }
 
 static void mlx5e_sync_netdev_addr(struct mlx5e_flow_steering *fs,
+<<<<<<< HEAD
 				   struct net_device *netdev,
 				   struct netdev_hw_addr_list *uc,
 				   struct netdev_hw_addr_list *mc)
@@ -629,6 +634,22 @@ static void mlx5e_sync_netdev_addr(struct mlx5e_flow_steering *fs,
 
 	netdev_hw_addr_list_for_each(ha, mc)
 		mlx5e_add_l2_to_hash(fs->l2.netdev_mc, ha->addr);
+=======
+				   struct net_device *netdev)
+{
+	struct netdev_hw_addr *ha;
+
+	netif_addr_lock_bh(netdev);
+
+	mlx5e_add_l2_to_hash(fs->l2.netdev_uc, netdev->dev_addr);
+	netdev_for_each_uc_addr(ha, netdev)
+		mlx5e_add_l2_to_hash(fs->l2.netdev_uc, ha->addr);
+
+	netdev_for_each_mc_addr(ha, netdev)
+		mlx5e_add_l2_to_hash(fs->l2.netdev_mc, ha->addr);
+
+	netif_addr_unlock_bh(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mlx5e_fill_addr_array(struct mlx5e_flow_steering *fs, int list_type,
@@ -730,9 +751,13 @@ static void mlx5e_apply_netdev_addr(struct mlx5e_flow_steering *fs)
 }
 
 static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
+<<<<<<< HEAD
 				     struct net_device *netdev,
 				     struct netdev_hw_addr_list *uc,
 				     struct netdev_hw_addr_list *mc)
+=======
+				     struct net_device *netdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mlx5e_l2_hash_node *hn;
 	struct hlist_node *tmp;
@@ -744,7 +769,11 @@ static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
 		hn->action = MLX5E_ACTION_DEL;
 
 	if (fs->state_destroy)
+<<<<<<< HEAD
 		mlx5e_sync_netdev_addr(fs, netdev, uc, mc);
+=======
+		mlx5e_sync_netdev_addr(fs, netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mlx5e_apply_netdev_addr(fs);
 }
@@ -828,6 +857,7 @@ static void mlx5e_destroy_promisc_table(struct mlx5e_flow_steering *fs)
 }
 
 void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
+<<<<<<< HEAD
 			       struct net_device *netdev,
 			       struct netdev_hw_addr_list *uc,
 			       struct netdev_hw_addr_list *mc)
@@ -840,6 +870,12 @@ void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
 		goto update_vport_context;
 	}
 
+=======
+			       struct net_device *netdev)
+{
+	struct mlx5e_l2_table *ea = &fs->l2;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool rx_mode_enable  = fs->state_destroy;
 	bool promisc_enabled   = rx_mode_enable && (netdev->flags & IFF_PROMISC);
 	bool allmulti_enabled  = rx_mode_enable && (netdev->flags & IFF_ALLMULTI);
@@ -866,7 +902,11 @@ void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
 	if (enable_broadcast)
 		mlx5e_add_l2_flow_rule(fs, &ea->broadcast, MLX5E_FULLMATCH);
 
+<<<<<<< HEAD
 	mlx5e_handle_netdev_addr(fs, netdev, uc, mc);
+=======
+	mlx5e_handle_netdev_addr(fs, netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (disable_broadcast)
 		mlx5e_del_l2_flow_rule(fs, &ea->broadcast);
@@ -879,7 +919,10 @@ void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
 	ea->allmulti_enabled  = allmulti_enabled;
 	ea->broadcast_enabled = broadcast_enabled;
 
+<<<<<<< HEAD
 update_vport_context:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5e_vport_context_update(fs, netdev);
 }
 
@@ -1000,9 +1043,12 @@ static int mlx5e_add_l2_flow_rule(struct mlx5e_flow_steering *fs,
 	u8 *mc_dmac;
 	u8 *mv_dmac;
 
+<<<<<<< HEAD
 	if (!ft)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spec = kvzalloc_obj(*spec);
 	if (!spec)
 		return -ENOMEM;

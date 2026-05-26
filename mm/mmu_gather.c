@@ -296,6 +296,7 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
 	call_rcu(&batch->rcu, tlb_remove_table_rcu);
 }
 
+<<<<<<< HEAD
 /**
  * tlb_remove_table_sync_rcu - synchronize with software page-table walkers
  *
@@ -315,6 +316,8 @@ void tlb_remove_table_sync_rcu(void)
 	synchronize_rcu();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
 
 static void tlb_remove_table_free(struct mmu_table_batch *batch)
@@ -358,7 +361,11 @@ static inline void __tlb_remove_table_one(void *table)
 #else
 static inline void __tlb_remove_table_one(void *table)
 {
+<<<<<<< HEAD
 	tlb_remove_table_sync_rcu();
+=======
+	tlb_remove_table_sync_one();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__tlb_remove_table(table);
 }
 #endif /* CONFIG_PT_RECLAIM */

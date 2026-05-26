@@ -4,8 +4,11 @@
  * Author: Fuad Tabba <tabba@google.com>
  */
 
+<<<<<<< HEAD
 #include <kvm/arm_hypercalls.h>
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kvm_host.h>
 #include <linux/mm.h>
 
@@ -224,7 +227,10 @@ static struct pkvm_hyp_vm **vm_table;
 
 void pkvm_hyp_vm_table_init(void *tbl)
 {
+<<<<<<< HEAD
 	BUILD_BUG_ON((u64)HANDLE_OFFSET + KVM_MAX_PVMS > (pkvm_handle_t)-1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON(vm_table);
 	vm_table = tbl;
 }
@@ -232,12 +238,19 @@ void pkvm_hyp_vm_table_init(void *tbl)
 /*
  * Return the hyp vm structure corresponding to the handle.
  */
+<<<<<<< HEAD
 struct pkvm_hyp_vm *get_vm_by_handle(pkvm_handle_t handle)
 {
 	unsigned int idx = vm_handle_to_idx(handle);
 
 	hyp_assert_lock_held(&vm_table_lock);
 
+=======
+static struct pkvm_hyp_vm *get_vm_by_handle(pkvm_handle_t handle)
+{
+	unsigned int idx = vm_handle_to_idx(handle);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(idx >= KVM_MAX_PVMS))
 		return NULL;
 
@@ -260,10 +273,14 @@ struct pkvm_hyp_vcpu *pkvm_load_hyp_vcpu(pkvm_handle_t handle,
 
 	hyp_spin_lock(&vm_table_lock);
 	hyp_vm = get_vm_by_handle(handle);
+<<<<<<< HEAD
 	if (!hyp_vm || hyp_vm->kvm.arch.pkvm.is_dying)
 		goto unlock;
 
 	if (hyp_vm->kvm.created_vcpus <= vcpu_idx)
+=======
+	if (!hyp_vm || hyp_vm->kvm.created_vcpus <= vcpu_idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto unlock;
 
 	/* Pairs with smp_store_release() in register_hyp_vcpu(). */
@@ -728,6 +745,7 @@ void __pkvm_unreserve_vm(pkvm_handle_t handle)
 	hyp_spin_unlock(&vm_table_lock);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVHE_EL2_DEBUG
 static struct pkvm_hyp_vm selftest_vm = {
 	.kvm = {
@@ -791,6 +809,8 @@ void teardown_selftest_vm(void)
 }
 #endif /* CONFIG_NVHE_EL2_DEBUG */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Initialize the hypervisor copy of the VM state using host-donated memory.
  *
@@ -942,6 +962,7 @@ teardown_donated_memory(struct kvm_hyp_memcache *mc, void *addr, size_t size)
 	unmap_donated_memory_noclear(addr, size);
 }
 
+<<<<<<< HEAD
 int __pkvm_reclaim_dying_guest_page(pkvm_handle_t handle, u64 gfn)
 {
 	struct pkvm_hyp_vm *hyp_vm = get_pkvm_hyp_vm(handle);
@@ -990,6 +1011,9 @@ unlock:
 }
 
 int __pkvm_finalize_teardown_vm(pkvm_handle_t handle)
+=======
+int __pkvm_teardown_vm(pkvm_handle_t handle)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_hyp_memcache *mc, *stage2_mc;
 	struct pkvm_hyp_vm *hyp_vm;
@@ -999,9 +1023,20 @@ int __pkvm_finalize_teardown_vm(pkvm_handle_t handle)
 	int err;
 
 	hyp_spin_lock(&vm_table_lock);
+<<<<<<< HEAD
 	hyp_vm = get_pkvm_unref_hyp_vm_locked(handle);
 	if (!hyp_vm || !hyp_vm->kvm.arch.pkvm.is_dying) {
 		err = -EINVAL;
+=======
+	hyp_vm = get_vm_by_handle(handle);
+	if (!hyp_vm) {
+		err = -ENOENT;
+		goto err_unlock;
+	}
+
+	if (WARN_ON(hyp_page_count(hyp_vm))) {
+		err = -EBUSY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_unlock;
 	}
 
@@ -1047,6 +1082,7 @@ err_unlock:
 	hyp_spin_unlock(&vm_table_lock);
 	return err;
 }
+<<<<<<< HEAD
 
 static u64 __pkvm_memshare_page_req(struct kvm_vcpu *vcpu, u64 ipa)
 {
@@ -1165,3 +1201,5 @@ bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 		smccc_set_retval(vcpu, val[0], val[1], val[2], val[3]);
 	return handled;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

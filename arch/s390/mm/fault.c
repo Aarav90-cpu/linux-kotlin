@@ -438,7 +438,11 @@ void do_secure_storage_access(struct pt_regs *regs)
 		panic("Unexpected PGM 0x3d with TEID bit 61=0");
 	}
 	if (is_kernel_fault(regs)) {
+<<<<<<< HEAD
 		folio = virt_to_folio((void *)addr);
+=======
+		folio = phys_to_folio(addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(!folio_try_get(folio)))
 			return;
 		rc = uv_convert_from_secure(folio_to_phys(folio));

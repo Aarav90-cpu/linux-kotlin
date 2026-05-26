@@ -3,7 +3,10 @@
 #define _TSO_H
 
 #include <linux/skbuff.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/ip.h>
 
 #define TSO_HEADER_SIZE		256
@@ -29,6 +32,7 @@ void tso_build_hdr(const struct sk_buff *skb, char *hdr, struct tso_t *tso,
 void tso_build_data(const struct sk_buff *skb, struct tso_t *tso, int size);
 int tso_start(struct sk_buff *skb, struct tso_t *tso);
 
+<<<<<<< HEAD
 /**
  * struct tso_dma_map - DMA mapping state for GSO payload
  * @dev: device used for DMA mapping
@@ -128,4 +132,6 @@ tso_dma_map_complete(struct device *dev,
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* _TSO_H */

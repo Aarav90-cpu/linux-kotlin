@@ -204,9 +204,14 @@ static int exfat_map_cluster(struct inode *inode, unsigned int clu_offset,
 				 * so fat-chain should be synced with
 				 * alloc-bitmap
 				 */
+<<<<<<< HEAD
 				if (exfat_chain_cont_cluster(sb, ei->start_clu,
 						num_clusters))
 					return -EIO;
+=======
+				exfat_chain_cont_cluster(sb, ei->start_clu,
+					num_clusters);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ei->flags = ALLOC_FAT_CHAIN;
 			}
 			if (new_clu.flags == ALLOC_FAT_CHAIN)
@@ -214,6 +219,10 @@ static int exfat_map_cluster(struct inode *inode, unsigned int clu_offset,
 					return -EIO;
 		}
 
+<<<<<<< HEAD
+=======
+		num_clusters += num_to_be_allocated;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*clu = new_clu.dir;
 
 		inode->i_blocks += EXFAT_CLU_TO_B(num_to_be_allocated, sbi) >> 9;
@@ -225,8 +234,20 @@ static int exfat_map_cluster(struct inode *inode, unsigned int clu_offset,
 		 * *clu = (the first cluster of the allocated chain) =>
 		 * (the last cluster of ...)
 		 */
+<<<<<<< HEAD
 		if (exfat_cluster_walk(sb, clu, num_to_be_allocated - 1, ei->flags))
 			return -EIO;
+=======
+		if (ei->flags == ALLOC_NO_FAT_CHAIN) {
+			*clu += num_to_be_allocated - 1;
+		} else {
+			while (num_to_be_allocated > 1) {
+				if (exfat_get_next_cluster(sb, clu))
+					return -EIO;
+				num_to_be_allocated--;
+			}
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*count = 1;
 	}
 
@@ -679,7 +700,11 @@ out:
 
 void exfat_evict_inode(struct inode *inode)
 {
+<<<<<<< HEAD
 	truncate_inode_pages_final(&inode->i_data);
+=======
+	truncate_inode_pages(&inode->i_data, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!inode->i_nlink) {
 		i_size_write(inode, 0);
@@ -688,6 +713,10 @@ void exfat_evict_inode(struct inode *inode)
 		mutex_unlock(&EXFAT_SB(inode->i_sb)->s_lock);
 	}
 
+<<<<<<< HEAD
+=======
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 	exfat_cache_inval_inode(inode);
 	exfat_unhash_inode(inode);

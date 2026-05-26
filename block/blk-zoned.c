@@ -16,8 +16,11 @@
 #include <linux/spinlock.h>
 #include <linux/refcount.h>
 #include <linux/mempool.h>
+<<<<<<< HEAD
 #include <linux/kthread.h>
 #include <linux/freezer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <trace/events/block.h>
 
@@ -42,8 +45,11 @@ static const char *const zone_cond_name[] = {
 /*
  * Per-zone write plug.
  * @node: hlist_node structure for managing the plug using a hash table.
+<<<<<<< HEAD
  * @entry: list_head structure for listing the plug in the disk list of active
  *         zone write plugs.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @bio_list: The list of BIOs that are currently plugged.
  * @bio_work: Work struct to handle issuing of plugged BIOs
  * @rcu_head: RCU head to free zone write plugs with an RCU grace period.
@@ -66,7 +72,10 @@ static const char *const zone_cond_name[] = {
  */
 struct blk_zone_wplug {
 	struct hlist_node	node;
+<<<<<<< HEAD
 	struct list_head	entry;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bio_list		bio_list;
 	struct work_struct	bio_work;
 	struct rcu_head		rcu_head;
@@ -417,6 +426,7 @@ int blkdev_report_zones_ioctl(struct block_device *bdev, unsigned int cmd,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int blkdev_reset_zone(struct block_device *bdev, blk_mode_t mode,
 			     struct blk_zone_range *zrange)
 {
@@ -429,10 +439,22 @@ static int blkdev_reset_zone(struct block_device *bdev, blk_mode_t mode,
 	    zrange->sector + zrange->nr_sectors > get_capacity(bdev->bd_disk))
 		/* Out of range */
 		goto out_unlock;
+=======
+static int blkdev_truncate_zone_range(struct block_device *bdev,
+		blk_mode_t mode, const struct blk_zone_range *zrange)
+{
+	loff_t start, end;
+
+	if (zrange->sector + zrange->nr_sectors <= zrange->sector ||
+	    zrange->sector + zrange->nr_sectors > get_capacity(bdev->bd_disk))
+		/* Out of range */
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	start = zrange->sector << SECTOR_SHIFT;
 	end = ((zrange->sector + zrange->nr_sectors) << SECTOR_SHIFT) - 1;
 
+<<<<<<< HEAD
 	ret = truncate_bdev_range(bdev, mode, start, end);
 	if (ret)
 		goto out_unlock;
@@ -443,6 +465,9 @@ out_unlock:
 	filemap_invalidate_unlock(bdev->bd_mapping);
 	inode_unlock(bdev->bd_mapping->host);
 	return ret;
+=======
+	return truncate_bdev_range(bdev, mode, start, end);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -455,6 +480,10 @@ int blkdev_zone_mgmt_ioctl(struct block_device *bdev, blk_mode_t mode,
 	void __user *argp = (void __user *)arg;
 	struct blk_zone_range zrange;
 	enum req_op op;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!argp)
 		return -EINVAL;
@@ -470,7 +499,19 @@ int blkdev_zone_mgmt_ioctl(struct block_device *bdev, blk_mode_t mode,
 
 	switch (cmd) {
 	case BLKRESETZONE:
+<<<<<<< HEAD
 		return blkdev_reset_zone(bdev, mode, &zrange);
+=======
+		op = REQ_OP_ZONE_RESET;
+
+		/* Invalidate the page cache, including dirty pages. */
+		inode_lock(bdev->bd_mapping->host);
+		filemap_invalidate_lock(bdev->bd_mapping);
+		ret = blkdev_truncate_zone_range(bdev, mode, &zrange);
+		if (ret)
+			goto fail;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case BLKOPENZONE:
 		op = REQ_OP_ZONE_OPEN;
 		break;
@@ -484,7 +525,19 @@ int blkdev_zone_mgmt_ioctl(struct block_device *bdev, blk_mode_t mode,
 		return -ENOTTY;
 	}
 
+<<<<<<< HEAD
 	return blkdev_zone_mgmt(bdev, op, zrange.sector, zrange.nr_sectors);
+=======
+	ret = blkdev_zone_mgmt(bdev, op, zrange.sector, zrange.nr_sectors);
+
+fail:
+	if (cmd == BLKRESETZONE) {
+		filemap_invalidate_unlock(bdev->bd_mapping);
+		inode_unlock(bdev->bd_mapping->host);
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool disk_zone_is_last(struct gendisk *disk, struct blk_zone *zone)
@@ -492,12 +545,27 @@ static bool disk_zone_is_last(struct gendisk *disk, struct blk_zone *zone)
 	return zone->start + zone->len >= get_capacity(disk);
 }
 
+<<<<<<< HEAD
 static bool disk_zone_wplug_is_full(struct gendisk *disk,
 				    struct blk_zone_wplug *zwplug)
 {
 	if (zwplug->zone_no < disk->nr_zones - 1)
 		return zwplug->wp_offset >= disk->zone_capacity;
 	return zwplug->wp_offset >= disk->last_zone_capacity;
+=======
+static bool disk_zone_is_full(struct gendisk *disk,
+			      unsigned int zno, unsigned int offset_in_zone)
+{
+	if (zno < disk->nr_zones - 1)
+		return offset_in_zone >= disk->zone_capacity;
+	return offset_in_zone >= disk->last_zone_capacity;
+}
+
+static bool disk_zone_wplug_is_full(struct gendisk *disk,
+				    struct blk_zone_wplug *zwplug)
+{
+	return disk_zone_is_full(disk, zwplug->zone_no, zwplug->wp_offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool disk_insert_zone_wplug(struct gendisk *disk,
@@ -514,11 +582,18 @@ static bool disk_insert_zone_wplug(struct gendisk *disk,
 	 * are racing with other submission context, so we may already have a
 	 * zone write plug for the same zone.
 	 */
+<<<<<<< HEAD
 	spin_lock_irqsave(&disk->zone_wplugs_hash_lock, flags);
 	hlist_for_each_entry_rcu(zwplg, &disk->zone_wplugs_hash[idx], node) {
 		if (zwplg->zone_no == zwplug->zone_no) {
 			spin_unlock_irqrestore(&disk->zone_wplugs_hash_lock,
 					       flags);
+=======
+	spin_lock_irqsave(&disk->zone_wplugs_lock, flags);
+	hlist_for_each_entry_rcu(zwplg, &disk->zone_wplugs_hash[idx], node) {
+		if (zwplg->zone_no == zwplug->zone_no) {
+			spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 		}
 	}
@@ -530,7 +605,11 @@ static bool disk_insert_zone_wplug(struct gendisk *disk,
 	 * necessarilly in the active condition.
 	 */
 	zones_cond = rcu_dereference_check(disk->zones_cond,
+<<<<<<< HEAD
 				lockdep_is_held(&disk->zone_wplugs_hash_lock));
+=======
+				lockdep_is_held(&disk->zone_wplugs_lock));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (zones_cond)
 		zwplug->cond = zones_cond[zwplug->zone_no];
 	else
@@ -538,7 +617,11 @@ static bool disk_insert_zone_wplug(struct gendisk *disk,
 
 	hlist_add_head_rcu(&zwplug->node, &disk->zone_wplugs_hash[idx]);
 	atomic_inc(&disk->nr_zone_wplugs);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&disk->zone_wplugs_hash_lock, flags);
+=======
+	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -591,6 +674,7 @@ static void disk_free_zone_wplug(struct blk_zone_wplug *zwplug)
 	WARN_ON_ONCE(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED);
 	WARN_ON_ONCE(!bio_list_empty(&zwplug->bio_list));
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&disk->zone_wplugs_hash_lock, flags);
 	blk_zone_set_cond(rcu_dereference_check(disk->zones_cond,
 				lockdep_is_held(&disk->zone_wplugs_hash_lock)),
@@ -598,6 +682,15 @@ static void disk_free_zone_wplug(struct blk_zone_wplug *zwplug)
 	hlist_del_init_rcu(&zwplug->node);
 	atomic_dec(&disk->nr_zone_wplugs);
 	spin_unlock_irqrestore(&disk->zone_wplugs_hash_lock, flags);
+=======
+	spin_lock_irqsave(&disk->zone_wplugs_lock, flags);
+	blk_zone_set_cond(rcu_dereference_check(disk->zones_cond,
+				lockdep_is_held(&disk->zone_wplugs_lock)),
+			  zwplug->zone_no, zwplug->cond);
+	hlist_del_init_rcu(&zwplug->node);
+	atomic_dec(&disk->nr_zone_wplugs);
+	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	call_rcu(&zwplug->rcu_head, disk_free_zone_wplug_rcu);
 }
@@ -623,6 +716,7 @@ static void disk_mark_zone_wplug_dead(struct blk_zone_wplug *zwplug)
 	}
 }
 
+<<<<<<< HEAD
 static inline bool disk_check_zone_wplug_dead(struct blk_zone_wplug *zwplug)
 {
 	if (!(zwplug->flags & BLK_ZONE_WPLUG_DEAD))
@@ -666,14 +760,33 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
  */
 static struct blk_zone_wplug *disk_get_or_alloc_zone_wplug(struct gendisk *disk,
 					sector_t sector, gfp_t gfp_mask)
+=======
+static void blk_zone_wplug_bio_work(struct work_struct *work);
+
+/*
+ * Get a reference on the write plug for the zone containing @sector.
+ * If the plug does not exist, it is allocated and hashed.
+ * Return a pointer to the zone write plug with the plug spinlock held.
+ */
+static struct blk_zone_wplug *disk_get_and_lock_zone_wplug(struct gendisk *disk,
+					sector_t sector, gfp_t gfp_mask,
+					unsigned long *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int zno = disk_zone_no(disk, sector);
 	struct blk_zone_wplug *zwplug;
 
 again:
 	zwplug = disk_get_zone_wplug(disk, sector);
+<<<<<<< HEAD
 	if (zwplug)
 		return zwplug;
+=======
+	if (zwplug) {
+		spin_lock_irqsave(&zwplug->lock, *flags);
+		return zwplug;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Allocate and initialize a zone write plug with an extra reference
@@ -692,15 +805,26 @@ again:
 	zwplug->wp_offset = bdev_offset_from_zone_start(disk->part0, sector);
 	bio_list_init(&zwplug->bio_list);
 	INIT_WORK(&zwplug->bio_work, blk_zone_wplug_bio_work);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&zwplug->entry);
 	zwplug->disk = disk;
 
+=======
+	zwplug->disk = disk;
+
+	spin_lock_irqsave(&zwplug->lock, *flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Insert the new zone write plug in the hash table. This can fail only
 	 * if another context already inserted a plug. Retry from the beginning
 	 * in such case.
 	 */
 	if (!disk_insert_zone_wplug(disk, zwplug)) {
+<<<<<<< HEAD
+=======
+		spin_unlock_irqrestore(&zwplug->lock, *flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mempool_free(zwplug, disk->zone_wplugs_pool);
 		goto again;
 	}
@@ -725,7 +849,10 @@ static inline void blk_zone_wplug_bio_io_error(struct blk_zone_wplug *zwplug,
  */
 static void disk_zone_wplug_abort(struct blk_zone_wplug *zwplug)
 {
+<<<<<<< HEAD
 	struct gendisk *disk = zwplug->disk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bio *bio;
 
 	lockdep_assert_held(&zwplug->lock);
@@ -739,6 +866,7 @@ static void disk_zone_wplug_abort(struct blk_zone_wplug *zwplug)
 		blk_zone_wplug_bio_io_error(zwplug, bio);
 
 	zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
+<<<<<<< HEAD
 
 	/*
 	 * If we are using the per disk zone write plugs worker thread, remove
@@ -753,6 +881,8 @@ static void disk_zone_wplug_abort(struct blk_zone_wplug *zwplug)
 		}
 		spin_unlock(&disk->zone_wplugs_list_lock);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1187,8 +1317,13 @@ void blk_zone_mgmt_bio_endio(struct bio *bio)
 	}
 }
 
+<<<<<<< HEAD
 static void disk_zone_wplug_schedule_work(struct gendisk *disk,
 					  struct blk_zone_wplug *zwplug)
+=======
+static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
+					      struct blk_zone_wplug *zwplug)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lockdep_assert_held(&zwplug->lock);
 
@@ -1201,7 +1336,10 @@ static void disk_zone_wplug_schedule_work(struct gendisk *disk,
 	 * and we also drop this reference if the work is already scheduled.
 	 */
 	WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED));
+<<<<<<< HEAD
 	WARN_ON_ONCE(blk_queue_zoned_qd1_writes(disk->queue));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	refcount_inc(&zwplug->ref);
 	if (!queue_work(disk->zone_wplugs_wq, &zwplug->bio_work))
 		disk_put_zone_wplug(zwplug);
@@ -1241,6 +1379,7 @@ static inline void disk_zone_wplug_add_bio(struct gendisk *disk,
 	bio_list_add(&zwplug->bio_list, bio);
 	trace_disk_zone_wplug_add_bio(zwplug->disk->queue, zwplug->zone_no,
 				      bio->bi_iter.bi_sector, bio_sectors(bio));
+<<<<<<< HEAD
 
 	/*
 	 * If we are using the disk zone write plugs worker instead of the per
@@ -1257,6 +1396,8 @@ static inline void disk_zone_wplug_add_bio(struct gendisk *disk,
 		}
 		spin_unlock(&disk->zone_wplugs_list_lock);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1454,7 +1595,11 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 	if (bio->bi_opf & REQ_NOWAIT)
 		gfp_mask = GFP_NOWAIT;
 
+<<<<<<< HEAD
 	zwplug = disk_get_or_alloc_zone_wplug(disk, sector, gfp_mask);
+=======
+	zwplug = disk_get_and_lock_zone_wplug(disk, sector, gfp_mask, &flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!zwplug) {
 		if (bio->bi_opf & REQ_NOWAIT)
 			bio_wouldblock_error(bio);
@@ -1463,6 +1608,7 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 		return true;
 	}
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&zwplug->lock, flags);
 
 	/*
@@ -1472,6 +1618,15 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 	 * case, fail the BIO to signal this invalid usage.
 	 */
 	if (disk_check_zone_wplug_dead(zwplug)) {
+=======
+	/*
+	 * If we got a zone write plug marked as dead, then the user is issuing
+	 * writes to a full zone, or without synchronizing with zone reset or
+	 * zone finish operations. In such case, fail the BIO to signal this
+	 * invalid usage.
+	 */
+	if (zwplug->flags & BLK_ZONE_WPLUG_DEAD) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock_irqrestore(&zwplug->lock, flags);
 		disk_put_zone_wplug(zwplug);
 		bio_io_error(bio);
@@ -1490,6 +1645,7 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 		goto queue_bio;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * For rotational devices, we will use the gendisk zone write plugs
 	 * work instead of the per zone write plug BIO work, so queue the BIO.
@@ -1497,6 +1653,8 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 	if (blk_queue_zoned_qd1_writes(disk->queue))
 		goto queue_bio;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If the zone is already plugged, add the BIO to the BIO plug list. */
 	if (zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)
 		goto queue_bio;
@@ -1519,10 +1677,14 @@ queue_bio:
 
 	if (!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)) {
 		zwplug->flags |= BLK_ZONE_WPLUG_PLUGGED;
+<<<<<<< HEAD
 		if (blk_queue_zoned_qd1_writes(disk->queue))
 			wake_up_process(disk->zone_wplugs_worker);
 		else
 			disk_zone_wplug_schedule_work(disk, zwplug);
+=======
+		disk_zone_wplug_schedule_bio_work(disk, zwplug);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_unlock_irqrestore(&zwplug->lock, flags);
@@ -1663,6 +1825,7 @@ static void disk_zone_wplug_unplug_bio(struct gendisk *disk,
 
 	spin_lock_irqsave(&zwplug->lock, flags);
 
+<<<<<<< HEAD
 	/*
 	 * For rotational devices, signal the BIO completion to the zone write
 	 * plug work. Otherwise, schedule submission of the next plugged BIO
@@ -1679,6 +1842,18 @@ static void disk_zone_wplug_unplug_bio(struct gendisk *disk,
 	if (!zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug))
 		disk_mark_zone_wplug_dead(zwplug);
 
+=======
+	/* Schedule submission of the next plugged BIO if we have one. */
+	if (!bio_list_empty(&zwplug->bio_list)) {
+		disk_zone_wplug_schedule_bio_work(disk, zwplug);
+		spin_unlock_irqrestore(&zwplug->lock, flags);
+		return;
+	}
+
+	zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
+	if (!zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug))
+		disk_mark_zone_wplug_dead(zwplug);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock_irqrestore(&zwplug->lock, flags);
 }
 
@@ -1768,9 +1943,16 @@ void blk_zone_write_plug_finish_request(struct request *req)
 	disk_put_zone_wplug(zwplug);
 }
 
+<<<<<<< HEAD
 static bool disk_zone_wplug_submit_bio(struct gendisk *disk,
 				       struct blk_zone_wplug *zwplug)
 {
+=======
+static void blk_zone_wplug_bio_work(struct work_struct *work)
+{
+	struct blk_zone_wplug *zwplug =
+		container_of(work, struct blk_zone_wplug, bio_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct block_device *bdev;
 	unsigned long flags;
 	struct bio *bio;
@@ -1786,7 +1968,11 @@ again:
 	if (!bio) {
 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
 		spin_unlock_irqrestore(&zwplug->lock, flags);
+<<<<<<< HEAD
 		return false;
+=======
+		goto put_zwplug;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	trace_blk_zone_wplug_bio(zwplug->disk->queue, zwplug->zone_no,
@@ -1800,15 +1986,23 @@ again:
 		goto again;
 	}
 
+<<<<<<< HEAD
+=======
+	bdev = bio->bi_bdev;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * blk-mq devices will reuse the extra reference on the request queue
 	 * usage counter we took when the BIO was plugged, but the submission
 	 * path for BIO-based devices will not do that. So drop this extra
 	 * reference here.
 	 */
+<<<<<<< HEAD
 	if (blk_queue_zoned_qd1_writes(disk->queue))
 		reinit_completion(&disk->zone_wplugs_worker_bio_done);
 	bdev = bio->bi_bdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
 		bdev->bd_disk->fops->submit_bio(bio);
 		blk_queue_exit(bdev->bd_disk->queue);
@@ -1816,6 +2010,7 @@ again:
 		blk_mq_submit_bio(bio);
 	}
 
+<<<<<<< HEAD
 	return true;
 }
 
@@ -1880,14 +2075,23 @@ static int disk_zone_wplugs_worker(void *data)
 	memalloc_noio_restore(noio_flag);
 
 	return 0;
+=======
+put_zwplug:
+	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
+	disk_put_zone_wplug(zwplug);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void disk_init_zone_resources(struct gendisk *disk)
 {
+<<<<<<< HEAD
 	spin_lock_init(&disk->zone_wplugs_hash_lock);
 	spin_lock_init(&disk->zone_wplugs_list_lock);
 	INIT_LIST_HEAD(&disk->zone_wplugs_list);
 	init_completion(&disk->zone_wplugs_worker_bio_done);
+=======
+	spin_lock_init(&disk->zone_wplugs_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -1903,7 +2107,10 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
 				     unsigned int pool_size)
 {
 	unsigned int i;
+<<<<<<< HEAD
 	int ret = -ENOMEM;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic_set(&disk->nr_zone_wplugs, 0);
 	disk->zone_wplugs_hash_bits =
@@ -1929,6 +2136,7 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
 	if (!disk->zone_wplugs_wq)
 		goto destroy_pool;
 
+<<<<<<< HEAD
 	disk->zone_wplugs_worker =
 		kthread_create(disk_zone_wplugs_worker, disk,
 			       "%s_zwplugs_worker", disk->disk_name);
@@ -1944,6 +2152,10 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
 destroy_wq:
 	destroy_workqueue(disk->zone_wplugs_wq);
 	disk->zone_wplugs_wq = NULL;
+=======
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 destroy_pool:
 	mempool_destroy(disk->zone_wplugs_pool);
 	disk->zone_wplugs_pool = NULL;
@@ -1951,7 +2163,11 @@ free_hash:
 	kfree(disk->zone_wplugs_hash);
 	disk->zone_wplugs_hash = NULL;
 	disk->zone_wplugs_hash_bits = 0;
+<<<<<<< HEAD
 	return ret;
+=======
+	return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void disk_destroy_zone_wplugs_hash_table(struct gendisk *disk)
@@ -1991,22 +2207,36 @@ static void disk_set_zones_cond_array(struct gendisk *disk, u8 *zones_cond)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&disk->zone_wplugs_hash_lock, flags);
 	zones_cond = rcu_replace_pointer(disk->zones_cond, zones_cond,
 				lockdep_is_held(&disk->zone_wplugs_hash_lock));
 	spin_unlock_irqrestore(&disk->zone_wplugs_hash_lock, flags);
+=======
+	spin_lock_irqsave(&disk->zone_wplugs_lock, flags);
+	zones_cond = rcu_replace_pointer(disk->zones_cond, zones_cond,
+				lockdep_is_held(&disk->zone_wplugs_lock));
+	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree_rcu_mightsleep(zones_cond);
 }
 
 void disk_free_zone_resources(struct gendisk *disk)
 {
+<<<<<<< HEAD
 	if (disk->zone_wplugs_worker) {
+=======
+<<<<<<< HEAD
+	if (disk->zone_wplugs_worker)
+>>>>>>> 7fb39c93c52e (Sync)
 		kthread_stop(disk->zone_wplugs_worker);
 		disk->zone_wplugs_worker = NULL;
 	}
 	WARN_ON_ONCE(!list_empty(&disk->zone_wplugs_list));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (disk->zone_wplugs_wq) {
 		destroy_workqueue(disk->zone_wplugs_wq);
 		disk->zone_wplugs_wq = NULL;
@@ -2035,7 +2265,10 @@ static int disk_revalidate_zone_resources(struct gendisk *disk,
 {
 	struct queue_limits *lim = &disk->queue->limits;
 	unsigned int pool_size;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	args->disk = disk;
 	args->nr_zones =
@@ -2058,6 +2291,7 @@ static int disk_revalidate_zone_resources(struct gendisk *disk,
 		pool_size =
 			min(BLK_ZONE_WPLUG_DEFAULT_POOL_SIZE, args->nr_zones);
 
+<<<<<<< HEAD
 	if (!disk->zone_wplugs_hash) {
 		ret = disk_alloc_zone_resources(disk, pool_size);
 		if (ret)
@@ -2065,6 +2299,12 @@ static int disk_revalidate_zone_resources(struct gendisk *disk,
 	}
 
 	return ret;
+=======
+	if (!disk->zone_wplugs_hash)
+		return disk_alloc_zone_resources(disk, pool_size);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2096,7 +2336,10 @@ static int disk_update_zone_resources(struct gendisk *disk,
 	disk->zone_capacity = args->zone_capacity;
 	disk->last_zone_capacity = args->last_zone_capacity;
 	disk_set_zones_cond_array(disk, args->zones_cond);
+<<<<<<< HEAD
 	args->zones_cond = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Some devices can advertise zone resource limits that are larger than
@@ -2205,6 +2448,10 @@ static int blk_revalidate_seq_zone(struct blk_zone *zone, unsigned int idx,
 	struct gendisk *disk = args->disk;
 	struct blk_zone_wplug *zwplug;
 	unsigned int wp_offset;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Remember the capacity of the first sequential zone and check
@@ -2234,9 +2481,16 @@ static int blk_revalidate_seq_zone(struct blk_zone *zone, unsigned int idx,
 	if (!wp_offset || wp_offset >= zone->capacity)
 		return 0;
 
+<<<<<<< HEAD
 	zwplug = disk_get_or_alloc_zone_wplug(disk, zone->wp, GFP_NOIO);
 	if (!zwplug)
 		return -ENOMEM;
+=======
+	zwplug = disk_get_and_lock_zone_wplug(disk, zone->wp, GFP_NOIO, &flags);
+	if (!zwplug)
+		return -ENOMEM;
+	spin_unlock_irqrestore(&zwplug->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	disk_put_zone_wplug(zwplug);
 
 	return 0;
@@ -2374,13 +2628,17 @@ int blk_revalidate_disk_zones(struct gendisk *disk)
 	}
 	memalloc_noio_restore(noio_flag);
 
+<<<<<<< HEAD
 	if (ret <= 0)
 		goto free_resources;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If zones where reported, make sure that the entire disk capacity
 	 * has been checked.
 	 */
+<<<<<<< HEAD
 	if (args.sector != capacity) {
 		pr_warn("%s: Missing zones from sector %llu\n",
 			disk->disk_name, args.sector);
@@ -2398,6 +2656,19 @@ free_resources:
 	pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
 
 	kfree(args.zones_cond);
+=======
+	if (ret > 0 && args.sector != capacity) {
+		pr_warn("%s: Missing zones from sector %llu\n",
+			disk->disk_name, args.sector);
+		ret = -ENODEV;
+	}
+
+	if (ret > 0)
+		return disk_update_zone_resources(disk, &args);
+
+	pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memflags = blk_mq_freeze_queue(q);
 	disk_free_zone_resources(disk);
 	blk_mq_unfreeze_queue(q, memflags);

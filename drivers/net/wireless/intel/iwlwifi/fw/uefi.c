@@ -402,11 +402,19 @@ static int iwl_uefi_uats_parse(struct uefi_cnv_wlan_uats_data *uats_data,
 	if (uats_data->revision != 1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	memcpy(fwrt->ap_type_cmd.mcc_to_ap_type_map,
 	       uats_data->mcc_to_ap_type_map,
 	       sizeof(fwrt->ap_type_cmd.mcc_to_ap_type_map));
 
 	fwrt->ap_type_cmd_valid = true;
+=======
+	memcpy(fwrt->uats_table.mcc_to_ap_type_map,
+	       uats_data->mcc_to_ap_type_map,
+	       sizeof(fwrt->uats_table.mcc_to_ap_type_map));
+
+	fwrt->uats_valid = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -429,6 +437,7 @@ void iwl_uefi_get_uats_table(struct iwl_trans *trans,
 }
 IWL_EXPORT_SYMBOL(iwl_uefi_get_uats_table);
 
+<<<<<<< HEAD
 void iwl_uefi_get_uneb_table(struct iwl_trans *trans,
 			     struct iwl_fw_runtime *fwrt)
 {
@@ -484,6 +493,14 @@ static void iwl_uefi_set_sar_profile(struct iwl_fw_runtime *fwrt,
 			sar_prof->chains[chain].subbands[subband] =
 				vals[chain * num_subbands + subband];
 	}
+=======
+static void iwl_uefi_set_sar_profile(struct iwl_fw_runtime *fwrt,
+				     struct uefi_sar_profile *uefi_sar_prof,
+				     u8 prof_index, bool enabled)
+{
+	memcpy(&fwrt->sar_profiles[prof_index].chains, uefi_sar_prof,
+	       sizeof(struct uefi_sar_profile));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fwrt->sar_profiles[prof_index].enabled = enabled & IWL_SAR_ENABLE_MSK;
 }
@@ -491,6 +508,7 @@ static void iwl_uefi_set_sar_profile(struct iwl_fw_runtime *fwrt,
 int iwl_uefi_get_wrds_table(struct iwl_fw_runtime *fwrt)
 {
 	struct uefi_cnv_var_wrds *data;
+<<<<<<< HEAD
 	unsigned long size;
 	unsigned long expected_size;
 	int num_subbands;
@@ -523,14 +541,31 @@ int iwl_uefi_get_wrds_table(struct iwl_fw_runtime *fwrt)
 
 	if (size != expected_size) {
 		ret = -EINVAL;
+=======
+	int ret = 0;
+
+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WRDS_NAME,
+					      "WRDS", sizeof(*data), NULL);
+	if (IS_ERR(data))
+		return -EINVAL;
+
+	if (data->revision != IWL_UEFI_WRDS_REVISION) {
+		ret = -EINVAL;
+		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WRDS revision:%d\n",
+				data->revision);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
 	/* The profile from WRDS is officially profile 1, but goes
 	 * into sar_profiles[0] (because we don't have a profile 0).
 	 */
+<<<<<<< HEAD
 	iwl_uefi_set_sar_profile(fwrt, data->vals, 0,
 				 num_subbands, data->mode);
+=======
+	iwl_uefi_set_sar_profile(fwrt, &data->sar_profile, 0, data->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	kfree(data);
 	return ret;
@@ -539,6 +574,7 @@ out:
 int iwl_uefi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 {
 	struct uefi_cnv_var_ewrd *data;
+<<<<<<< HEAD
 	unsigned long expected_size;
 	int i, ret = 0;
 	unsigned long size;
@@ -573,6 +609,23 @@ int iwl_uefi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 
 	if (size != expected_size ||
 	    data->num_profiles >= BIOS_SAR_MAX_PROFILE_NUM) {
+=======
+	int i, ret = 0;
+
+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_EWRD_NAME,
+					      "EWRD", sizeof(*data), NULL);
+	if (IS_ERR(data))
+		return -EINVAL;
+
+	if (data->revision != IWL_UEFI_EWRD_REVISION) {
+		ret = -EINVAL;
+		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI EWRD revision:%d\n",
+				data->revision);
+		goto out;
+	}
+
+	if (data->num_profiles >= BIOS_SAR_MAX_PROFILE_NUM) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		goto out;
 	}
@@ -582,8 +635,13 @@ int iwl_uefi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 		 * save them in sar_profiles[1-3] (because we don't
 		 * have profile 0).  So in the array we start from 1.
 		 */
+<<<<<<< HEAD
 		iwl_uefi_set_sar_profile(fwrt, &data->vals[i * profile_size],
 					 i + 1, num_subbands, data->mode);
+=======
+		iwl_uefi_set_sar_profile(fwrt, &data->sar_profiles[i], i + 1,
+					 data->mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	kfree(data);
@@ -593,6 +651,7 @@ out:
 int iwl_uefi_get_wgds_table(struct iwl_fw_runtime *fwrt)
 {
 	struct uefi_cnv_var_wgds *data;
+<<<<<<< HEAD
 	unsigned long expected_size;
 	unsigned long size;
 	int profile_size;
@@ -615,17 +674,30 @@ int iwl_uefi_get_wgds_table(struct iwl_fw_runtime *fwrt)
 		n_subbands = UEFI_GEO_NUM_BANDS_REV4;
 		break;
 	default:
+=======
+	int i, ret = 0;
+
+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WGDS_NAME,
+					      "WGDS", sizeof(*data), NULL);
+	if (IS_ERR(data))
+		return -EINVAL;
+
+	if (data->revision != IWL_UEFI_WGDS_REVISION) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WGDS revision:%d\n",
 				data->revision);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (size != expected_size) {
 		ret = -EINVAL;
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data->num_profiles < BIOS_GEO_MIN_PROFILE_NUM ||
 	    data->num_profiles > BIOS_GEO_MAX_PROFILE_NUM) {
 		ret = -EINVAL;
@@ -634,6 +706,7 @@ int iwl_uefi_get_wgds_table(struct iwl_fw_runtime *fwrt)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(BIOS_GEO_MAX_PROFILE_NUM >
 		    ARRAY_SIZE(fwrt->geo_profiles) ||
 		    n_subbands > ARRAY_SIZE(fwrt->geo_profiles[0].bands) ||
@@ -659,6 +732,12 @@ int iwl_uefi_get_wgds_table(struct iwl_fw_runtime *fwrt)
 				geo_prof->bands[subband].chains[chain] = *val++;
 		}
 	}
+=======
+	fwrt->geo_rev = data->revision;
+	for (i = 0; i < data->num_profiles; i++)
+		memcpy(&fwrt->geo_profiles[i], &data->geo_profiles[i],
+		       sizeof(struct iwl_geo_profile));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fwrt->geo_num_profiles = data->num_profiles;
 	fwrt->geo_enabled = true;
@@ -670,6 +749,7 @@ out:
 int iwl_uefi_get_ppag_table(struct iwl_fw_runtime *fwrt)
 {
 	struct uefi_cnv_var_ppag *data;
+<<<<<<< HEAD
 	int n_subbands;
 	u32 valid_rev;
 	int ret = 0;
@@ -704,10 +784,24 @@ parse_table:
 		ret = -EINVAL;
 		IWL_DEBUG_RADIO(fwrt,
 				"Unsupported UEFI PPAG revision:%d\n",
+=======
+	int ret = 0;
+
+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_PPAG_NAME,
+					      "PPAG", sizeof(*data), NULL);
+	if (IS_ERR(data))
+		return -EINVAL;
+
+	if (data->revision < IWL_UEFI_MIN_PPAG_REV ||
+	    data->revision > IWL_UEFI_MAX_PPAG_REV) {
+		ret = -EINVAL;
+		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI PPAG revision:%d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				data->revision);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Make sure fwrt has enough room to hold
 	 * data coming from the UEFI table
@@ -719,10 +813,13 @@ parse_table:
 		goto out;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fwrt->ppag_bios_rev = data->revision;
 	fwrt->ppag_flags = iwl_bios_get_ppag_flags(data->ppag_modes,
 						   fwrt->ppag_bios_rev);
 
+<<<<<<< HEAD
 	for (int chain = 0; chain < UEFI_PPAG_NUM_CHAINS; chain++) {
 		for (int subband = 0; subband < n_subbands; subband++)
 			fwrt->ppag_chains[chain].subbands[subband] =
@@ -730,6 +827,11 @@ parse_table:
 	}
 
 	iwl_bios_print_ppag(fwrt, n_subbands);
+=======
+	BUILD_BUG_ON(sizeof(fwrt->ppag_chains) != sizeof(data->ppag_chains));
+	memcpy(&fwrt->ppag_chains, &data->ppag_chains,
+	       sizeof(data->ppag_chains));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fwrt->ppag_bios_source = BIOS_SOURCE_UEFI;
 out:
 	kfree(data);

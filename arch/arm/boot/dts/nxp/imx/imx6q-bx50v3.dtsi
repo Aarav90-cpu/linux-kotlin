@@ -124,28 +124,40 @@
 					reg = <0>;
 					interrupt-parent = <&switch>;
 					interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 					max-speed = <100>; /* only 100Mbit/s lanes are routed */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				switchphy1: switchphy@1 {
 					reg = <1>;
 					interrupt-parent = <&switch>;
 					interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 					max-speed = <100>; /* only 100Mbit/s lanes are routed */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				switchphy2: switchphy@2 {
 					reg = <2>;
 					interrupt-parent = <&switch>;
 					interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 					max-speed = <100>; /* only 100Mbit/s lanes are routed */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				switchphy3: switchphy@3 {
 					reg = <3>;
 					interrupt-parent = <&switch>;
 					interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 					max-speed = <100>; /* only 100Mbit/s lanes are routed */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				};
 
 				switchphy4: switchphy@4 {

@@ -104,7 +104,11 @@ static bool ath12k_is_addba_resp_action_code(struct ieee80211_mgmt *mgmt)
 	if (mgmt->u.action.category != WLAN_CATEGORY_BACK)
 		return false;
 
+<<<<<<< HEAD
 	if (mgmt->u.action.action_code != WLAN_ACTION_ADDBA_RESP)
+=======
+	if (mgmt->u.action.u.addba_resp.action_code != WLAN_ACTION_ADDBA_RESP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return true;
@@ -329,6 +333,7 @@ static const struct ath12k_hw_ring_mask ath12k_wifi7_hw_ring_mask_wcn7850 = {
 };
 
 static const struct ce_ie_addr ath12k_wifi7_ce_ie_addr_ipq5332 = {
+<<<<<<< HEAD
 	.ie1_reg_addr = CE_HOST_IPQ5332_IE_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
 	.ie2_reg_addr = CE_HOST_IPQ5332_IE_2_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
 	.ie3_reg_addr = CE_HOST_IPQ5332_IE_3_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
@@ -338,6 +343,11 @@ static const struct ce_ie_addr ath12k_wifi7_ce_ie_addr_ipq5424 = {
 	.ie1_reg_addr = CE_HOST_IPQ5424_IE_ADDRESS - HAL_IPQ5424_CE_WFSS_REG_BASE,
 	.ie2_reg_addr = CE_HOST_IPQ5424_IE_2_ADDRESS - HAL_IPQ5424_CE_WFSS_REG_BASE,
 	.ie3_reg_addr = CE_HOST_IPQ5424_IE_3_ADDRESS - HAL_IPQ5424_CE_WFSS_REG_BASE,
+=======
+	.ie1_reg_addr = CE_HOST_IE_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
+	.ie2_reg_addr = CE_HOST_IE_2_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
+	.ie3_reg_addr = CE_HOST_IE_3_ADDRESS - HAL_IPQ5332_CE_WFSS_REG_BASE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct ce_remap ath12k_wifi7_ce_remap_ipq5332 = {
@@ -346,12 +356,15 @@ static const struct ce_remap ath12k_wifi7_ce_remap_ipq5332 = {
 	.cmem_offset = HAL_SEQ_WCSS_CMEM_OFFSET,
 };
 
+<<<<<<< HEAD
 static const struct ce_remap ath12k_wifi7_ce_remap_ipq5424 = {
 	.base = HAL_IPQ5424_CE_WFSS_REG_BASE,
 	.size = HAL_IPQ5424_CE_SIZE,
 	.cmem_offset = HAL_SEQ_WCSS_CMEM_OFFSET,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 	{
 		.name = "qcn9274 hw1.0",
@@ -629,7 +642,11 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 			ath12k_wifi7_target_service_to_ce_map_wlan_ipq5332,
 		.svc_to_ce_map_len = 18,
 
+<<<<<<< HEAD
 		.rxdma1_enable = true,
+=======
+		.rxdma1_enable = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.num_rxdma_per_pdev = 1,
 		.num_rxdma_dst_ring = 0,
 		.rx_mac_buf_ring = false,
@@ -638,7 +655,11 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
 				   BIT(NL80211_IFTYPE_AP) |
 				   BIT(NL80211_IFTYPE_MESH_POINT),
+<<<<<<< HEAD
 		.supports_monitor = true,
+=======
+		.supports_monitor = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		.idle_ps = false,
 		.download_calib = true,
@@ -765,6 +786,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 
 		.dp_primary_link_only = false,
 	},
+<<<<<<< HEAD
 	{
 		.name = "ipq5424 hw1.0",
 		.hw_rev = ATH12K_HW_IPQ5424_HW10,
@@ -844,6 +866,8 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 
 		.dp_primary_link_only = true,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Note: called under rcu_read_lock() */

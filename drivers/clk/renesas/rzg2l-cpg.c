@@ -1439,8 +1439,12 @@ static int rzg2l_mod_clock_mstop_show(struct seq_file *s, void *what)
 }
 DEFINE_SHOW_ATTRIBUTE(rzg2l_mod_clock_mstop);
 
+<<<<<<< HEAD
 static int rzg2l_mod_clock_endisable_helper(struct clk_hw *hw, bool enable,
 					    bool set_mstop_state)
+=======
+static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mod_clock *clock = to_mod_clock(hw);
 	struct rzg2l_cpg_priv *priv = clock->priv;
@@ -1465,11 +1469,17 @@ static int rzg2l_mod_clock_endisable_helper(struct clk_hw *hw, bool enable,
 	scoped_guard(spinlock_irqsave, &priv->rmw_lock) {
 		if (enable) {
 			writel(value, priv->base + CLK_ON_R(reg));
+<<<<<<< HEAD
 			if (set_mstop_state)
 				rzg2l_mod_clock_module_set_state(clock, false);
 		} else {
 			if (set_mstop_state)
 				rzg2l_mod_clock_module_set_state(clock, true);
+=======
+			rzg2l_mod_clock_module_set_state(clock, false);
+		} else {
+			rzg2l_mod_clock_module_set_state(clock, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			writel(value, priv->base + CLK_ON_R(reg));
 		}
 	}
@@ -1489,11 +1499,14 @@ static int rzg2l_mod_clock_endisable_helper(struct clk_hw *hw, bool enable,
 	return error;
 }
 
+<<<<<<< HEAD
 static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
 {
 	return rzg2l_mod_clock_endisable_helper(hw, enable, true);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzg2l_mod_clock_enable(struct clk_hw *hw)
 {
 	struct mod_clock *clock = to_mod_clock(hw);
@@ -1594,6 +1607,7 @@ static struct mstop *rzg2l_mod_clock_get_mstop(struct rzg2l_cpg_priv *priv, u32 
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void rzg2l_mod_clock_init_mstop_helper(struct rzg2l_cpg_priv *priv,
 					      struct mod_clock *clk)
 {
@@ -1623,6 +1637,8 @@ static void rzg2l_mod_enable_crit_clock_init_mstop(struct rzg2l_cpg_priv *priv)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rzg2l_mod_clock_init_mstop(struct rzg2l_cpg_priv *priv)
 {
 	struct mod_clock *clk;
@@ -1632,7 +1648,19 @@ static void rzg2l_mod_clock_init_mstop(struct rzg2l_cpg_priv *priv)
 		if (!clk->mstop)
 			continue;
 
+<<<<<<< HEAD
 		rzg2l_mod_clock_init_mstop_helper(priv, clk);
+=======
+		/*
+		 * Out of reset all modules are enabled. Set module state
+		 * in case associated clocks are disabled at probe. Otherwise
+		 * module is in invalid HW state.
+		 */
+		scoped_guard(spinlock_irqsave, &priv->rmw_lock) {
+			if (!rzg2l_mod_clock_is_enabled(&clk->hw))
+				rzg2l_mod_clock_module_set_state(clk, true);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1794,6 +1822,7 @@ static int __rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
 	dev_dbg(rcdev->dev, "%s id:%ld offset:0x%x\n",
 		assert ? "assert" : "deassert", id, CLK_RST_R(reg));
 
+<<<<<<< HEAD
 	if (assert) {
 		for (unsigned int i = 0; i < priv->info->num_crit_resets; i++) {
 			if (id == priv->info->crit_resets[i])
@@ -1801,6 +1830,8 @@ static int __rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!assert)
 		value |= mask;
 	writel(value, priv->base + CLK_RST_R(reg));
@@ -1838,6 +1869,7 @@ static int rzg2l_cpg_deassert(struct reset_controller_dev *rcdev,
 	return __rzg2l_cpg_assert(rcdev, id, false);
 }
 
+<<<<<<< HEAD
 static int rzg2l_cpg_deassert_crit_resets(struct reset_controller_dev *rcdev,
 					  const struct rzg2l_cpg_info *info)
 {
@@ -1852,6 +1884,8 @@ static int rzg2l_cpg_deassert_crit_resets(struct reset_controller_dev *rcdev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
 			   unsigned long id)
 {
@@ -2101,10 +2135,13 @@ static int __init rzg2l_cpg_probe(struct platform_device *pdev)
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	error = rzg2l_cpg_deassert_crit_resets(&priv->rcdev, info);
 	if (error)
 		return error;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_create_file("mstop", 0444, NULL, priv, &rzg2l_mod_clock_mstop_fops);
 	return 0;
 }
@@ -2112,6 +2149,7 @@ static int __init rzg2l_cpg_probe(struct platform_device *pdev)
 static int rzg2l_cpg_resume(struct device *dev)
 {
 	struct rzg2l_cpg_priv *priv = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret;
 
 	ret = rzg2l_cpg_deassert_crit_resets(&priv->rcdev, priv->info);
@@ -2119,6 +2157,10 @@ static int rzg2l_cpg_resume(struct device *dev)
 		return ret;
 
 	rzg2l_mod_enable_crit_clock_init_mstop(priv);
+=======
+
+	rzg2l_mod_clock_init_mstop(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2152,12 +2194,15 @@ static const struct of_device_id rzg2l_cpg_match[] = {
 		.data = &r9a08g045_cpg_info,
 	},
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CLK_R9A08G046
 	{
 		.compatible = "renesas,r9a08g046-cpg",
 		.data = &r9a08g046_cpg_info,
 	},
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CLK_R9A09G011
 	{
 		.compatible = "renesas,r9a09g011-cpg",

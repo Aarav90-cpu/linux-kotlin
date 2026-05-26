@@ -9,6 +9,7 @@
 #include <linux/nvmem-consumer.h>
 #include <linux/etherdevice.h>
 #include "mt76.h"
+<<<<<<< HEAD
 #include "mt76_connac.h"
 
 enum mt76_sku_type {
@@ -16,6 +17,8 @@ enum mt76_sku_type {
 	MT76_SKU_BACKOFF,
 	MT76_SKU_BACKOFF_BF_OFFSET,
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
 {
@@ -299,6 +302,10 @@ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
 }
 EXPORT_SYMBOL_GPL(mt76_find_channel_node);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static s8
 mt76_get_txs_delta(struct device_node *np, u8 nss)
 {
@@ -312,6 +319,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
 	return be32_to_cpu(val[nss - 1]);
 }
 
+<<<<<<< HEAD
 static inline u8 mt76_backoff_n_chains(struct mt76_dev *dev, u8 idx)
 {
 	/* 0:1T1ss, 1:2T1ss, ..., 14:5T5ss */
@@ -330,6 +338,11 @@ static void
 mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 		       const s8 *data, s8 target_power, s8 nss_delta,
 		       s8 *max_power, int n_chains, enum mt76_sku_type type)
+=======
+static void
+mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+		       s8 target_power, s8 nss_delta, s8 *max_power)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -337,6 +350,7 @@ mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 		return;
 
 	for (i = 0; i < pwr_len; i++) {
+<<<<<<< HEAD
 		u8 backoff_chain_idx = i;
 		int backoff_n_chains;
 		s8 backoff_delta;
@@ -370,11 +384,15 @@ mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 		if (type != MT76_SKU_RATE && n_chains != backoff_n_chains)
 			continue;
 
+=======
+		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*max_power = max(*max_power, pwr[i]);
 	}
 }
 
 static void
+<<<<<<< HEAD
 mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 			     s8 pwr_num, const s8 *data, size_t len,
 			     s8 target_power, s8 nss_delta, s8 *max_power,
@@ -382,6 +400,14 @@ mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 {
 	static const int connac2_backoff_ru_idx = 2;
 	int i, cur;
+=======
+mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+			     const s8 *data, size_t len, s8 target_power,
+			     s8 nss_delta)
+{
+	int i, cur;
+	s8 max_power = -128;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!data)
 		return;
@@ -391,6 +417,7 @@ mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 		if (len < pwr_len + 1)
 			break;
 
+<<<<<<< HEAD
 		/* Each RU entry (RU26, RU52, RU106, BW20, ...) in the DTS
 		 * corresponds to 10 stream combinations (1T1ss, 2T1ss, 3T1ss,
 		 * 4T1ss, 2T2ss, 3T2ss, 4T2ss, 3T3ss, 4T3ss, 4T4ss).
@@ -411,6 +438,10 @@ mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
 		mt76_apply_array_limit(dev, pwr + pwr_len * i, pwr_len, data + 1,
 				       target_power, nss_delta, max_power,
 				       n_chains, type);
+=======
+		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
+				       target_power, nss_delta, &max_power);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (--cur > 0)
 			continue;
 
@@ -432,11 +463,26 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
 	struct device_node *np;
 	const s8 *val;
 	char name[16];
+<<<<<<< HEAD
 	char band;
 	size_t len;
 	s8 max_power = -127;
 	s8 txs_delta;
 	int n_chains = hweight16(phy->chainmask);
+=======
+	u32 mcs_rates = dev->drv->mcs_rates;
+	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
+	char band;
+	size_t len;
+	s8 max_power = 0;
+	s8 max_power_backoff = -127;
+	s8 txs_delta;
+	int n_chains = hweight16(phy->chainmask);
+	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
+
+	if (!mcs_rates)
+		mcs_rates = 10;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
 	memset(&dest->path, 0, sizeof(dest->path));
@@ -474,6 +520,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
 
 	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
+<<<<<<< HEAD
 	mt76_apply_array_limit(dev, dest->cck, ARRAY_SIZE(dest->cck), val,
 			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_RATE);
 
@@ -513,6 +560,48 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
 	mt76_apply_multi_array_limit(dev, dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
 				     ARRAY_SIZE(dest->path.ru_bf), val, len, target_power,
 				     txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
+=======
+	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
+			       target_power, txs_delta, &max_power);
+
+	val = mt76_get_of_array_s8(np, "rates-ofdm",
+				   &len, ARRAY_SIZE(dest->ofdm));
+	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
+			       target_power, txs_delta, &max_power);
+
+	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
+	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
+				     ARRAY_SIZE(dest->mcs), val, len,
+				     target_power, txs_delta);
+
+	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
+	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
+				     ARRAY_SIZE(dest->ru), val, len,
+				     target_power, txs_delta);
+
+	max_power_backoff = max_power;
+	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
+	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
+			       target_power_combine, txs_delta, &max_power_backoff);
+
+	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
+	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
+			       target_power_combine, txs_delta, &max_power_backoff);
+
+	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
+	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
+			       target_power_combine, txs_delta, &max_power_backoff);
+
+	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
+	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
+				     ARRAY_SIZE(dest->path.ru), val, len,
+				     target_power_combine, txs_delta);
+
+	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
+	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
+				     ARRAY_SIZE(dest->path.ru_bf), val, len,
+				     target_power_combine, txs_delta);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return max_power;
 }

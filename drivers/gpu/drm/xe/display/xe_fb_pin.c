@@ -5,14 +5,24 @@
 
 #include <drm/ttm/ttm_bo.h>
 
+<<<<<<< HEAD
 #include "intel_display_core.h"
 #include "intel_display_types.h"
+=======
+#include "i915_vma.h"
+#include "intel_display_core.h"
+#include "intel_display_types.h"
+#include "intel_dpt.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_fb.h"
 #include "intel_fb_pin.h"
 #include "intel_fbdev.h"
 #include "xe_bo.h"
 #include "xe_device.h"
+<<<<<<< HEAD
 #include "xe_display_vma.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_ggtt.h"
 #include "xe_pm.h"
 #include "xe_vram_types.h"
@@ -49,6 +59,7 @@ write_dpt_rotated(struct xe_bo *bo, struct iosys_map *map, u32 *dpt_ofs, u32 bo_
 	*dpt_ofs = ALIGN(*dpt_ofs, 4096);
 }
 
+<<<<<<< HEAD
 static unsigned int
 write_dpt_padding(struct iosys_map *map, unsigned int dest, unsigned int pad)
 {
@@ -137,6 +148,35 @@ write_dpt_remapped(struct xe_bo *bo,
 		else
 			dest = write_dpt_remapped_tiled(bo, map, dest, plane);
 	}
+=======
+static void
+write_dpt_remapped(struct xe_bo *bo, struct iosys_map *map, u32 *dpt_ofs,
+		   u32 bo_ofs, u32 width, u32 height, u32 src_stride,
+		   u32 dst_stride)
+{
+	struct xe_device *xe = xe_bo_device(bo);
+	struct xe_ggtt *ggtt = xe_device_get_root_tile(xe)->mem.ggtt;
+	u32 column, row;
+	u64 pte = xe_ggtt_encode_pte_flags(ggtt, bo, xe->pat.idx[XE_CACHE_NONE]);
+
+	for (row = 0; row < height; row++) {
+		u32 src_idx = src_stride * row + bo_ofs;
+
+		for (column = 0; column < width; column++) {
+			u64 addr = xe_bo_addr(bo, src_idx * XE_PAGE_SIZE, XE_PAGE_SIZE);
+			iosys_map_wr(map, *dpt_ofs, u64, pte | addr);
+
+			*dpt_ofs += 8;
+			src_idx++;
+		}
+
+		/* The DE ignores the PTEs for the padding tiles */
+		*dpt_ofs += (dst_stride - width) * 8;
+	}
+
+	/* Align to next page */
+	*dpt_ofs = ALIGN(*dpt_ofs, 4096);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __xe_pin_fb_vma_dpt(const struct intel_framebuffer *fb,
@@ -183,8 +223,12 @@ static int __xe_pin_fb_vma_dpt(const struct intel_framebuffer *fb,
 						   ttm_bo_type_kernel,
 						   XE_BO_FLAG_SYSTEM |
 						   XE_BO_FLAG_GGTT |
+<<<<<<< HEAD
 						   XE_BO_FLAG_PAGETABLE |
 						   XE_BO_FLAG_FORCE_WC,
+=======
+						   XE_BO_FLAG_PAGETABLE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						   alignment, false);
 	if (IS_ERR(dpt))
 		return PTR_ERR(dpt);
@@ -199,7 +243,21 @@ static int __xe_pin_fb_vma_dpt(const struct intel_framebuffer *fb,
 			iosys_map_wr(&dpt->vmap, x * 8, u64, pte | addr);
 		}
 	} else if (view->type == I915_GTT_VIEW_REMAPPED) {
+<<<<<<< HEAD
 		write_dpt_remapped(bo, &view->remapped, &dpt->vmap);
+=======
+		const struct intel_remapped_info *remap_info = &view->remapped;
+		u32 i, dpt_ofs = 0;
+
+		for (i = 0; i < ARRAY_SIZE(remap_info->plane); i++)
+			write_dpt_remapped(bo, &dpt->vmap, &dpt_ofs,
+					   remap_info->plane[i].offset,
+					   remap_info->plane[i].width,
+					   remap_info->plane[i].height,
+					   remap_info->plane[i].src_stride,
+					   remap_info->plane[i].dst_stride);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		const struct intel_rotation_info *rot_info = &view->rotated;
 		u32 i, dpt_ofs = 0;
@@ -307,7 +365,11 @@ static int __xe_pin_fb_vma_ggtt(const struct intel_framebuffer *fb,
 		size = intel_rotation_info_size(&view->rotated) * XE_PAGE_SIZE;
 
 	pte = xe_ggtt_encode_pte_flags(ggtt, bo, xe->pat.idx[XE_CACHE_NONE]);
+<<<<<<< HEAD
 	vma->node = xe_ggtt_insert_node_transform(ggtt, bo, pte,
+=======
+	vma->node = xe_ggtt_node_insert_transform(ggtt, bo, pte,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						  ALIGN(size, align), align,
 						  view->type == I915_GTT_VIEW_NORMAL ?
 						  NULL : write_ggtt_rotated_node,
@@ -403,7 +465,12 @@ static void __xe_unpin_fb_vma(struct i915_vma *vma)
 
 	if (vma->dpt)
 		xe_bo_unpin_map_no_vm(vma->dpt);
+<<<<<<< HEAD
 	else if (vma->bo->ggtt_node[tile_id] != vma->node)
+=======
+	else if (!xe_ggtt_node_allocated(vma->bo->ggtt_node[tile_id]) ||
+		 vma->bo->ggtt_node[tile_id] != vma->node)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xe_ggtt_node_remove(vma->node, false);
 
 	ttm_bo_reserve(&vma->bo->ttm, false, false, NULL);
@@ -460,7 +527,11 @@ found:
 	refcount_inc(&vma->ref);
 	new_plane_state->ggtt_vma = vma;
 
+<<<<<<< HEAD
 	new_plane_state->surf = xe_ggtt_node_addr(new_plane_state->ggtt_vma->node) +
+=======
+	new_plane_state->surf = i915_ggtt_offset(new_plane_state->ggtt_vma) +
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		plane->surf_offset(new_plane_state);
 
 	return true;
@@ -481,7 +552,11 @@ int intel_plane_pin_fb(struct intel_plane_state *new_plane_state,
 		return 0;
 
 	/* We reject creating !SCANOUT fb's, so this is weird.. */
+<<<<<<< HEAD
 	drm_WARN_ON(bo->ttm.base.dev, !(bo->flags & XE_BO_FLAG_FORCE_WC));
+=======
+	drm_WARN_ON(bo->ttm.base.dev, !(bo->flags & XE_BO_FLAG_SCANOUT));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vma = __xe_pin_fb_vma(intel_fb, &new_plane_state->view.gtt, alignment);
 
@@ -490,7 +565,11 @@ int intel_plane_pin_fb(struct intel_plane_state *new_plane_state,
 
 	new_plane_state->ggtt_vma = vma;
 
+<<<<<<< HEAD
 	new_plane_state->surf = xe_ggtt_node_addr(new_plane_state->ggtt_vma->node) +
+=======
+	new_plane_state->surf = i915_ggtt_offset(new_plane_state->ggtt_vma) +
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		plane->surf_offset(new_plane_state);
 
 	return 0;
@@ -502,6 +581,28 @@ void intel_plane_unpin_fb(struct intel_plane_state *old_plane_state)
 	old_plane_state->ggtt_vma = NULL;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * For Xe introduce dummy intel_dpt_create which just return NULL,
+ * intel_dpt_destroy which does nothing, and fake intel_dpt_ofsset returning 0;
+ */
+struct i915_address_space *intel_dpt_create(struct intel_framebuffer *fb)
+{
+	return NULL;
+}
+
+void intel_dpt_destroy(struct i915_address_space *vm)
+{
+	return;
+}
+
+u64 intel_dpt_offset(struct i915_vma *dpt_vma)
+{
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void intel_fb_get_map(struct i915_vma *vma, struct iosys_map *map)
 {
 	*map = vma->bo->vmap;

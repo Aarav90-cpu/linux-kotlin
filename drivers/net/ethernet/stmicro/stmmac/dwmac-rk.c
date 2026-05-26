@@ -214,7 +214,11 @@ static int rk_configure_io_clksel(struct rk_priv_data *bsp_priv)
 	cru = !io;
 
 	/* The io_clksel configuration can be either:
+<<<<<<< HEAD
 	 *  0=CRU, 1=IO (rk3506, rk3528, rk3576) or
+=======
+	 *  0=CRU, 1=IO (rk3506, rk3520, rk3576) or
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *  0=IO, 1=CRU (rk3588)
 	 * where CRU means the transmit clock comes from the CRU and IO
 	 * means the transmit clock comes from IO.

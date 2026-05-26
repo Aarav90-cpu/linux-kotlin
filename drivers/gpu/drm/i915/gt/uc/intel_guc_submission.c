@@ -3385,7 +3385,11 @@ static void guc_context_sched_disable(struct intel_context *ce)
 	} else if (!intel_context_is_closed(ce) && !guc_id_pressure(guc, ce) &&
 		   delay) {
 		spin_unlock_irqrestore(&ce->guc_state.lock, flags);
+<<<<<<< HEAD
 		mod_delayed_work(system_dfl_wq,
+=======
+		mod_delayed_work(system_unbound_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 &ce->guc_state.sched_disable_delay_work,
 				 msecs_to_jiffies(delay));
 	} else {
@@ -3611,7 +3615,11 @@ static void guc_context_destroy(struct kref *kref)
 	 * take the GT PM for the first time which isn't allowed from an atomic
 	 * context.
 	 */
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &guc->submission_state.destroyed_worker);
+=======
+	queue_work(system_unbound_wq, &guc->submission_state.destroyed_worker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int guc_context_alloc(struct intel_context *ce)
@@ -4414,9 +4422,15 @@ static void start_engine(struct intel_engine_cs *engine)
 {
 	ENGINE_WRITE_FW(engine,
 			RING_MODE_GEN7,
+<<<<<<< HEAD
 			REG_MASKED_FIELD_ENABLE(GEN11_GFX_DISABLE_LEGACY_MODE));
 
 	ENGINE_WRITE_FW(engine, RING_MI_MODE, REG_MASKED_FIELD_DISABLE(STOP_RING));
+=======
+			_MASKED_BIT_ENABLE(GEN11_GFX_DISABLE_LEGACY_MODE));
+
+	ENGINE_WRITE_FW(engine, RING_MI_MODE, _MASKED_BIT_DISABLE(STOP_RING));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ENGINE_POSTING_READ(engine, RING_MI_MODE);
 }
 
@@ -5380,7 +5394,11 @@ int intel_guc_engine_failure_process_msg(struct intel_guc *guc,
 	 * A GT reset flushes this worker queue (G2H handler) so we must use
 	 * another worker to trigger a GT reset.
 	 */
+<<<<<<< HEAD
 	queue_work(system_dfl_wq, &guc->submission_state.reset_fail_worker);
+=======
+	queue_work(system_unbound_wq, &guc->submission_state.reset_fail_worker);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

@@ -1825,7 +1825,10 @@ static int icssm_prueth_probe(struct platform_device *pdev)
 			dev_err(dev, "%pOF error reading port_id %d\n",
 				eth_node, ret);
 			of_node_put(eth_node);
+<<<<<<< HEAD
 			of_node_put(eth_ports_node);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 		}
 

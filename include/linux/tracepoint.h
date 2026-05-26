@@ -202,7 +202,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
 #define TP_CONDITION(args...)	args
 
 /*
+<<<<<<< HEAD
  * Individual subsystem may have a separate configuration to
+=======
+ * Individual subsystem my have a separate configuration to
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enable their tracepoints. By default, this file will create
  * the tracepoints if CONFIG_TRACEPOINTS is defined. If a subsystem
  * wants to be able to disable its tracepoints from being created
@@ -314,10 +318,13 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
 			WARN_ONCE(!rcu_is_watching(),			\
 				  "RCU not watching for tracepoint");	\
 		}							\
+<<<<<<< HEAD
 	}								\
 	static inline void trace_call__##name(proto)			\
 	{								\
 		__do_trace_##name(args);				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
@@ -337,11 +344,14 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
 			WARN_ONCE(!rcu_is_watching(),			\
 				  "RCU not watching for tracepoint");	\
 		}							\
+<<<<<<< HEAD
 	}								\
 	static inline void trace_call__##name(proto)			\
 	{								\
 		might_fault();						\
 		__do_trace_##name(args);				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 /*
@@ -427,8 +437,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
 #define __DECLARE_TRACE_COMMON(name, proto, args, data_proto)		\
 	static inline void trace_##name(proto)				\
 	{ }								\
+<<<<<<< HEAD
 	static inline void trace_call__##name(proto)			\
 	{ }								\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	static inline int						\
 	register_trace_##name(void (*probe)(data_proto),		\
 			      void *data)				\

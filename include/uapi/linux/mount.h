@@ -110,7 +110,10 @@ enum fsconfig_command {
  * fsmount() flags.
  */
 #define FSMOUNT_CLOEXEC		0x00000001
+<<<<<<< HEAD
 #define FSMOUNT_NAMESPACE	0x00000002	/* Create the mount in a new mount namespace */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Mount attributes.

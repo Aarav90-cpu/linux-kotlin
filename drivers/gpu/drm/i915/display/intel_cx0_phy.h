@@ -25,10 +25,16 @@ struct intel_dpll_hw_state;
 struct intel_encoder;
 struct intel_hdmi;
 
+<<<<<<< HEAD
 void intel_cx0_clear_response_ready_flag(struct intel_encoder *encoder,
 					 int lane);
 bool intel_encoder_is_c10phy(struct intel_encoder *encoder);
 int intel_readout_lane_count(struct intel_encoder *encoder, int lane0, int lane1);
+=======
+void intel_clear_response_ready_flag(struct intel_encoder *encoder,
+				     int lane);
+bool intel_encoder_is_c10phy(struct intel_encoder *encoder);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void intel_mtl_pll_enable(struct intel_encoder *encoder,
 			  struct intel_dpll *pll,
 			  const struct intel_dpll_hw_state *dpll_hw_state);
@@ -78,7 +84,10 @@ bool intel_mtl_tbt_pll_readout_hw_state(struct intel_display *display,
 					struct intel_dpll_hw_state *hw_state);
 int intel_mtl_tbt_calc_port_clock(struct intel_encoder *encoder);
 
+<<<<<<< HEAD
 void intel_cx0pll_verify_plls(struct intel_display *display);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void intel_cx0_pll_power_save_wa(struct intel_display *display);
 void intel_lnl_mac_transmit_lfps(struct intel_encoder *encoder,
 				 const struct intel_crtc_state *crtc_state);

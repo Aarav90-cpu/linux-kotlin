@@ -364,11 +364,16 @@ acpi_status wmidev_evaluate_method(struct wmi_device *wdev, u8 instance, u32 met
 EXPORT_SYMBOL_GPL(wmidev_evaluate_method);
 
 /**
+<<<<<<< HEAD
  * wmidev_invoke_method - Invoke a WMI method that returns values
+=======
+ * wmidev_invoke_method - Invoke a WMI method
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @wdev: A wmi bus device from a driver
  * @instance: Instance index
  * @method_id: Method ID to call
  * @in: Mandatory WMI buffer containing input for the method call
+<<<<<<< HEAD
  * @out: Mandatory WMI buffer to return the method results
  * @min_size: Minimum size of the method result data in bytes
  *
@@ -376,11 +381,21 @@ EXPORT_SYMBOL_GPL(wmidev_evaluate_method);
  * data inside @out using kfree(). Said data is guaranteed to be aligned on a
  * 8-byte boundary. Use wmidev_invoke_procedure() for WMI methods that
  * return no values.
+=======
+ * @out: Optional WMI buffer to return the method results
+ *
+ * Invoke a WMI method, the caller must free the resulting data inside @out.
+ * Said data is guaranteed to be aligned on a 8-byte boundary.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 on success or negative error code on failure.
  */
 int wmidev_invoke_method(struct wmi_device *wdev, u8 instance, u32 method_id,
+<<<<<<< HEAD
 			 const struct wmi_buffer *in, struct wmi_buffer *out, size_t min_size)
+=======
+			 const struct wmi_buffer *in, struct wmi_buffer *out)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct wmi_block *wblock = container_of(wdev, struct wmi_block, dev);
 	struct acpi_buffer aout = { ACPI_ALLOCATE_BUFFER, NULL };
@@ -401,7 +416,14 @@ int wmidev_invoke_method(struct wmi_device *wdev, u8 instance, u32 method_id,
 		ain.pointer = in->data;
 	}
 
+<<<<<<< HEAD
 	status = wmidev_evaluate_method(wdev, instance, method_id, &ain, &aout);
+=======
+	if (out)
+		status = wmidev_evaluate_method(wdev, instance, method_id, &ain, &aout);
+	else
+		status = wmidev_evaluate_method(wdev, instance, method_id, &ain, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (wblock->gblock.flags & ACPI_WMI_STRING)
 		kfree(ain.pointer);
@@ -409,24 +431,37 @@ int wmidev_invoke_method(struct wmi_device *wdev, u8 instance, u32 method_id,
 	if (ACPI_FAILURE(status))
 		return -EIO;
 
+<<<<<<< HEAD
 	obj = aout.pointer;
 	if (!obj) {
 		if (min_size != 0)
 			return -ENOMSG;
 
+=======
+	if (!out)
+		return 0;
+
+	obj = aout.pointer;
+	if (!obj) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		out->length = 0;
 		out->data = ZERO_SIZE_PTR;
 
 		return 0;
 	}
 
+<<<<<<< HEAD
 	ret = wmi_unmarshal_acpi_object(obj, out, min_size);
+=======
+	ret = wmi_unmarshal_acpi_object(obj, out);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(obj);
 
 	return ret;
 }
 EXPORT_SYMBOL_GPL(wmidev_invoke_method);
 
+<<<<<<< HEAD
 /**
  * wmidev_invoke_procedure - Invoke a WMI method that does not return values
  * @wdev: A wmi bus device from a driver
@@ -471,6 +506,8 @@ int wmidev_invoke_procedure(struct wmi_device *wdev, u8 instance, u32 method_id,
 }
 EXPORT_SYMBOL_GPL(wmidev_invoke_procedure);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static acpi_status __query_block(struct wmi_block *wblock, u8 instance,
 				 struct acpi_buffer *out)
 {
@@ -568,6 +605,7 @@ EXPORT_SYMBOL_GPL(wmidev_block_query);
  * @wdev: A wmi bus device from a driver
  * @instance: Instance index
  * @out: WMI buffer to fill
+<<<<<<< HEAD
  * @min_size: Minimum size of the result data in bytes
  *
  * Query a WMI data block, the caller must free the resulting data inside @out
@@ -577,6 +615,15 @@ EXPORT_SYMBOL_GPL(wmidev_block_query);
  */
 int wmidev_query_block(struct wmi_device *wdev, u8 instance, struct wmi_buffer *out,
 		       size_t min_size)
+=======
+ *
+ * Query a WMI data block, the caller must free the resulting data inside @out.
+ * Said data is guaranteed to be aligned on a 8-byte boundary.
+ *
+ * Return: 0 on success or a negative error code on failure.
+ */
+int wmidev_query_block(struct wmi_device *wdev, u8 instance, struct wmi_buffer *out)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	union acpi_object *obj;
 	int ret;
@@ -585,7 +632,11 @@ int wmidev_query_block(struct wmi_device *wdev, u8 instance, struct wmi_buffer *
 	if (!obj)
 		return -EIO;
 
+<<<<<<< HEAD
 	ret = wmi_unmarshal_acpi_object(obj, out, min_size);
+=======
+	ret = wmi_unmarshal_acpi_object(obj, out);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(obj);
 
 	return ret;
@@ -888,11 +939,45 @@ static ssize_t expensive_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(expensive);
 
+<<<<<<< HEAD
+=======
+static ssize_t driver_override_show(struct device *dev, struct device_attribute *attr,
+				    char *buf)
+{
+	struct wmi_device *wdev = to_wmi_device(dev);
+	ssize_t ret;
+
+	device_lock(dev);
+	ret = sysfs_emit(buf, "%s\n", wdev->driver_override);
+	device_unlock(dev);
+
+	return ret;
+}
+
+static ssize_t driver_override_store(struct device *dev, struct device_attribute *attr,
+				     const char *buf, size_t count)
+{
+	struct wmi_device *wdev = to_wmi_device(dev);
+	int ret;
+
+	ret = driver_set_override(dev, &wdev->driver_override, buf, count);
+	if (ret < 0)
+		return ret;
+
+	return count;
+}
+static DEVICE_ATTR_RW(driver_override);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *wmi_attrs[] = {
 	&dev_attr_modalias.attr,
 	&dev_attr_guid.attr,
 	&dev_attr_instance_count.attr,
 	&dev_attr_expensive.attr,
+<<<<<<< HEAD
+=======
+	&dev_attr_driver_override.attr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 ATTRIBUTE_GROUPS(wmi);
@@ -961,6 +1046,10 @@ static void wmi_dev_release(struct device *dev)
 {
 	struct wmi_block *wblock = dev_to_wblock(dev);
 
+<<<<<<< HEAD
+=======
+	kfree(wblock->dev.driver_override);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(wblock);
 }
 
@@ -969,12 +1058,19 @@ static int wmi_dev_match(struct device *dev, const struct device_driver *driver)
 	const struct wmi_driver *wmi_driver = to_wmi_driver(driver);
 	struct wmi_block *wblock = dev_to_wblock(dev);
 	const struct wmi_device_id *id = wmi_driver->id_table;
+<<<<<<< HEAD
 	int ret;
 
 	/* When driver_override is set, only bind to the matching driver */
 	ret = device_match_driver_override(dev, driver);
 	if (ret >= 0)
 		return ret;
+=======
+
+	/* When driver_override is set, only bind to the matching driver */
+	if (wblock->dev.driver_override)
+		return !strcmp(wblock->dev.driver_override, driver->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (id == NULL)
 		return 0;
@@ -1016,7 +1112,11 @@ static int wmi_dev_probe(struct device *dev)
 	}
 
 	if (wdriver->notify || wdriver->notify_new) {
+<<<<<<< HEAD
 		if (test_bit(WMI_NO_EVENT_DATA, &wblock->flags) && wdriver->min_event_size)
+=======
+		if (test_bit(WMI_NO_EVENT_DATA, &wblock->flags) && !wdriver->no_notify_data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENODEV;
 	}
 
@@ -1095,7 +1195,10 @@ static struct class wmi_bus_class = {
 static const struct bus_type wmi_bus_type = {
 	.name = "wmi",
 	.dev_groups = wmi_groups,
+<<<<<<< HEAD
 	.driver_override = true,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.match = wmi_dev_match,
 	.uevent = wmi_dev_uevent,
 	.probe = wmi_dev_probe,
@@ -1375,6 +1478,7 @@ static int wmi_get_notify_data(struct wmi_block *wblock, union acpi_object **obj
 static void wmi_notify_driver(struct wmi_block *wblock, union acpi_object *obj)
 {
 	struct wmi_driver *driver = to_wmi_driver(wblock->dev.dev.driver);
+<<<<<<< HEAD
 	struct wmi_buffer dummy = {
 		.length = 0,
 		.data = ZERO_SIZE_PTR,
@@ -1383,6 +1487,12 @@ static void wmi_notify_driver(struct wmi_block *wblock, union acpi_object *obj)
 	int ret;
 
 	if (!obj && driver->min_event_size) {
+=======
+	struct wmi_buffer buffer;
+	int ret;
+
+	if (!obj && !driver->no_notify_data) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_warn(&wblock->dev.dev, "Event contains no event data\n");
 		return;
 	}
@@ -1392,11 +1502,19 @@ static void wmi_notify_driver(struct wmi_block *wblock, union acpi_object *obj)
 
 	if (driver->notify_new) {
 		if (!obj) {
+<<<<<<< HEAD
 			driver->notify_new(&wblock->dev, &dummy);
 			return;
 		}
 
 		ret = wmi_unmarshal_acpi_object(obj, &buffer, driver->min_event_size);
+=======
+			driver->notify_new(&wblock->dev, NULL);
+			return;
+		}
+
+		ret = wmi_unmarshal_acpi_object(obj, &buffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0) {
 			dev_warn(&wblock->dev.dev, "Failed to unmarshal event data: %d\n", ret);
 			return;

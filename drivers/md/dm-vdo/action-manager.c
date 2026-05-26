@@ -107,7 +107,11 @@ int vdo_make_action_manager(zone_count_t zones,
 			    struct action_manager **manager_ptr)
 {
 	struct action_manager *manager;
+<<<<<<< HEAD
 	int result = vdo_allocate(1, __func__, &manager);
+=======
+	int result = vdo_allocate(1, struct action_manager, __func__, &manager);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (result != VDO_SUCCESS)
 		return result;

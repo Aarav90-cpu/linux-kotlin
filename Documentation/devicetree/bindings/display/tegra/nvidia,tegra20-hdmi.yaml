@@ -82,10 +82,13 @@ properties:
     description: phandle of a display panel
     $ref: /schemas/types.yaml#/definitions/phandle
 
+<<<<<<< HEAD
   port:
     description: HDMI output port for connection to HDMI connector or bridge
     $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "#sound-dai-cells":
     const: 0
 
@@ -101,6 +104,7 @@ required:
   - reset-names
   - pll-supply
   - vdd-supply
+<<<<<<< HEAD
 
 anyOf:
   - required:
@@ -108,6 +112,10 @@ anyOf:
       - nvidia,hpd-gpio
   - required:
       - port
+=======
+  - nvidia,ddc-i2c-bus
+  - nvidia,hpd-gpio
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |

@@ -15,7 +15,10 @@
 #include "intel_dp_aux.h"
 #include "intel_psr.h"
 #include "intel_psr_regs.h"
+<<<<<<< HEAD
 #include "intel_vrr.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SILENCE_PERIOD_MIN_TIME	80
 #define SILENCE_PERIOD_MAX_TIME	180
@@ -243,6 +246,7 @@ bool intel_alpm_compute_params(struct intel_dp *intel_dp,
 	return true;
 }
 
+<<<<<<< HEAD
 int intel_alpm_lobf_min_guardband(struct intel_crtc_state *crtc_state)
 {
 	struct drm_display_mode *adjusted_mode = &crtc_state->hw.adjusted_mode;
@@ -319,11 +323,19 @@ void intel_alpm_lobf_compute_config_late(struct intel_dp *intel_dp,
 			       (first_sdp_position + waketime_in_lines);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void intel_alpm_lobf_compute_config(struct intel_dp *intel_dp,
 				    struct intel_crtc_state *crtc_state,
 				    struct drm_connector_state *conn_state)
 {
 	struct intel_display *display = to_intel_display(intel_dp);
+<<<<<<< HEAD
+=======
+	struct drm_display_mode *adjusted_mode = &crtc_state->hw.adjusted_mode;
+	int waketime_in_lines, first_sdp_position;
+	int context_latency, guardband;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (intel_dp->alpm.lobf_disable_debug) {
 		drm_dbg_kms(display->drm, "LOBF is disabled by debug flag\n");
@@ -345,8 +357,13 @@ void intel_alpm_lobf_compute_config(struct intel_dp *intel_dp,
 	if (crtc_state->has_psr)
 		return;
 
+<<<<<<< HEAD
 	if (!intel_vrr_always_use_vrr_tg(display) ||
 	    !intel_vrr_is_fixed_rr(crtc_state))
+=======
+	if (crtc_state->vrr.vmin != crtc_state->vrr.vmax ||
+	    crtc_state->vrr.vmin != crtc_state->vrr.flipline)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	if (!(intel_alpm_aux_wake_supported(intel_dp) ||
@@ -356,7 +373,21 @@ void intel_alpm_lobf_compute_config(struct intel_dp *intel_dp,
 	if (!intel_alpm_compute_params(intel_dp, crtc_state))
 		return;
 
+<<<<<<< HEAD
 	crtc_state->has_lobf = true;
+=======
+	context_latency = adjusted_mode->crtc_vblank_start - adjusted_mode->crtc_vdisplay;
+	guardband = adjusted_mode->crtc_vtotal -
+		    adjusted_mode->crtc_vdisplay - context_latency;
+	first_sdp_position = adjusted_mode->crtc_vtotal - adjusted_mode->crtc_vsync_start;
+	if (intel_alpm_aux_less_wake_supported(intel_dp))
+		waketime_in_lines = crtc_state->alpm_state.io_wake_lines;
+	else
+		waketime_in_lines = crtc_state->alpm_state.aux_less_wake_lines;
+
+	crtc_state->has_lobf = (context_latency + guardband) >
+		(first_sdp_position + waketime_in_lines);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void lnl_alpm_configure(struct intel_dp *intel_dp,
@@ -446,6 +477,7 @@ void intel_alpm_port_configure(struct intel_dp *intel_dp,
 	intel_de_write(display, PORT_ALPM_LFPS_CTL(port), lfps_ctl_val);
 }
 
+<<<<<<< HEAD
 void intel_alpm_lobf_disable(const struct intel_crtc_state *new_crtc_state)
 {
 	struct intel_display *display = to_intel_display(new_crtc_state);
@@ -454,6 +486,27 @@ void intel_alpm_lobf_disable(const struct intel_crtc_state *new_crtc_state)
 
 	for_each_intel_encoder_mask(display->drm, encoder,
 				    new_crtc_state->uapi.encoder_mask) {
+=======
+void intel_alpm_pre_plane_update(struct intel_atomic_state *state,
+				 struct intel_crtc *crtc)
+{
+	struct intel_display *display = to_intel_display(state);
+	const struct intel_crtc_state *crtc_state =
+		intel_atomic_get_new_crtc_state(state, crtc);
+	const struct intel_crtc_state *old_crtc_state =
+		intel_atomic_get_old_crtc_state(state, crtc);
+	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
+	struct intel_encoder *encoder;
+
+	if (DISPLAY_VER(display) < 20)
+		return;
+
+	if (crtc_state->has_lobf || crtc_state->has_lobf == old_crtc_state->has_lobf)
+		return;
+
+	for_each_intel_encoder_mask(display->drm, encoder,
+				    crtc_state->uapi.encoder_mask) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct intel_dp *intel_dp;
 
 		if (!intel_encoder_is_dp(encoder))
@@ -464,10 +517,19 @@ void intel_alpm_lobf_disable(const struct intel_crtc_state *new_crtc_state)
 		if (!intel_dp_is_edp(intel_dp))
 			continue;
 
+<<<<<<< HEAD
 		mutex_lock(&intel_dp->alpm.lock);
 		intel_de_write(display, ALPM_CTL(display, cpu_transcoder), 0);
 		drm_dbg_kms(display->drm, "Link off between frames (LOBF) disabled\n");
 		mutex_unlock(&intel_dp->alpm.lock);
+=======
+		if (old_crtc_state->has_lobf) {
+			mutex_lock(&intel_dp->alpm.lock);
+			intel_de_write(display, ALPM_CTL(display, cpu_transcoder), 0);
+			drm_dbg_kms(display->drm, "Link off between frames (LOBF) disabled\n");
+			mutex_unlock(&intel_dp->alpm.lock);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -488,6 +550,7 @@ void intel_alpm_enable_sink(struct intel_dp *intel_dp,
 	drm_dp_dpcd_writeb(&intel_dp->aux, DP_RECEIVER_ALPM_CONFIG, val);
 }
 
+<<<<<<< HEAD
 void intel_alpm_lobf_enable(const struct intel_crtc_state *new_crtc_state)
 {
 	struct intel_display *display = to_intel_display(new_crtc_state);
@@ -495,6 +558,24 @@ void intel_alpm_lobf_enable(const struct intel_crtc_state *new_crtc_state)
 
 	for_each_intel_encoder_mask(display->drm, encoder,
 				    new_crtc_state->uapi.encoder_mask) {
+=======
+void intel_alpm_post_plane_update(struct intel_atomic_state *state,
+				  struct intel_crtc *crtc)
+{
+	struct intel_display *display = to_intel_display(state);
+	const struct intel_crtc_state *crtc_state =
+		intel_atomic_get_new_crtc_state(state, crtc);
+	const struct intel_crtc_state *old_crtc_state =
+		intel_atomic_get_old_crtc_state(state, crtc);
+	struct intel_encoder *encoder;
+
+	if (crtc_state->has_psr || !crtc_state->has_lobf ||
+	    crtc_state->has_lobf == old_crtc_state->has_lobf)
+		return;
+
+	for_each_intel_encoder_mask(display->drm, encoder,
+				    crtc_state->uapi.encoder_mask) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct intel_dp *intel_dp;
 
 		if (!intel_encoder_is_dp(encoder))
@@ -503,8 +584,13 @@ void intel_alpm_lobf_enable(const struct intel_crtc_state *new_crtc_state)
 		intel_dp = enc_to_intel_dp(encoder);
 
 		if (intel_dp_is_edp(intel_dp)) {
+<<<<<<< HEAD
 			intel_alpm_enable_sink(intel_dp, new_crtc_state);
 			intel_alpm_configure(intel_dp, new_crtc_state);
+=======
+			intel_alpm_enable_sink(intel_dp, crtc_state);
+			intel_alpm_configure(intel_dp, crtc_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }

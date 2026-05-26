@@ -12,7 +12,10 @@
  */
 
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_privacy_screen_driver.h>
 
 /*
@@ -33,10 +36,18 @@ chromeos_privacy_screen_get_hw_state(struct drm_privacy_screen
 				     *drm_privacy_screen)
 {
 	union acpi_object *obj;
+<<<<<<< HEAD
 	struct device *privacy_screen =
 		drm_privacy_screen_get_drvdata(drm_privacy_screen);
 	acpi_handle handle = ACPI_HANDLE(privacy_screen);
 
+=======
+	acpi_handle handle;
+	struct device *privacy_screen =
+		drm_privacy_screen_get_drvdata(drm_privacy_screen);
+
+	handle = acpi_device_handle(to_acpi_device(privacy_screen));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	obj = acpi_evaluate_dsm(handle, &chromeos_privacy_screen_dsm_guid,
 				PRIV_SCRN_DSM_REVID,
 				PRIV_SCRN_DSM_FN_GET_STATUS, NULL);
@@ -65,9 +76,17 @@ chromeos_privacy_screen_set_sw_state(struct drm_privacy_screen
 				     enum drm_privacy_screen_status state)
 {
 	union acpi_object *obj = NULL;
+<<<<<<< HEAD
 	struct device *privacy_screen =
 		drm_privacy_screen_get_drvdata(drm_privacy_screen);
 	acpi_handle handle = ACPI_HANDLE(privacy_screen);
+=======
+	acpi_handle handle;
+	struct device *privacy_screen =
+		drm_privacy_screen_get_drvdata(drm_privacy_screen);
+
+	handle = acpi_device_handle(to_acpi_device(privacy_screen));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (state == PRIVACY_SCREEN_DISABLED) {
 		obj = acpi_evaluate_dsm(handle,
@@ -102,6 +121,7 @@ static const struct drm_privacy_screen_ops chromeos_privacy_screen_ops = {
 	.set_sw_state = chromeos_privacy_screen_set_sw_state,
 };
 
+<<<<<<< HEAD
 static int chromeos_privacy_screen_probe(struct platform_device *pdev)
 {
 	struct drm_privacy_screen *drm_privacy_screen =
@@ -116,14 +136,38 @@ static int chromeos_privacy_screen_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, drm_privacy_screen);
 	dev_info(&pdev->dev, "registered privacy-screen '%s'\n",
+=======
+static int chromeos_privacy_screen_add(struct acpi_device *adev)
+{
+	struct drm_privacy_screen *drm_privacy_screen =
+		drm_privacy_screen_register(&adev->dev,
+					    &chromeos_privacy_screen_ops,
+					    &adev->dev);
+
+	if (IS_ERR(drm_privacy_screen)) {
+		dev_err(&adev->dev, "Error registering privacy-screen\n");
+		return PTR_ERR(drm_privacy_screen);
+	}
+
+	adev->driver_data = drm_privacy_screen;
+	dev_info(&adev->dev, "registered privacy-screen '%s'\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 dev_name(&drm_privacy_screen->dev));
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void chromeos_privacy_screen_remove(struct platform_device *pdev)
 {
 	drm_privacy_screen_unregister(platform_get_drvdata(pdev));
+=======
+static void chromeos_privacy_screen_remove(struct acpi_device *adev)
+{
+	struct drm_privacy_screen *drm_privacy_screen =	acpi_driver_data(adev);
+
+	drm_privacy_screen_unregister(drm_privacy_screen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct acpi_device_id chromeos_privacy_screen_device_ids[] = {
@@ -132,6 +176,7 @@ static const struct acpi_device_id chromeos_privacy_screen_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, chromeos_privacy_screen_device_ids);
 
+<<<<<<< HEAD
 static struct platform_driver chromeos_privacy_screen_driver = {
 	.probe = chromeos_privacy_screen_probe,
 	.remove = chromeos_privacy_screen_remove,
@@ -142,6 +187,19 @@ static struct platform_driver chromeos_privacy_screen_driver = {
 };
 
 module_platform_driver(chromeos_privacy_screen_driver);
+=======
+static struct acpi_driver chromeos_privacy_screen_driver = {
+	.name = "chromeos_privacy_screen_driver",
+	.class = "ChromeOS",
+	.ids = chromeos_privacy_screen_device_ids,
+	.ops = {
+		.add = chromeos_privacy_screen_add,
+		.remove = chromeos_privacy_screen_remove,
+	},
+};
+
+module_acpi_driver(chromeos_privacy_screen_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("ChromeOS ACPI Privacy Screen driver");
 MODULE_AUTHOR("Rajat Jain <rajatja@google.com>");

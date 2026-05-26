@@ -46,7 +46,10 @@ config ATH10K_SNOC
 	depends on ARCH_QCOM || COMPILE_TEST
 	depends on QCOM_SMEM
 	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+<<<<<<< HEAD
 	select POWER_SEQUENCING
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select QCOM_SCM
 	select QCOM_QMI_HELPERS
 	help

@@ -657,6 +657,7 @@ struct procmap_query {
 	__u64 build_id_addr;		/* in */
 };
 
+<<<<<<< HEAD
 /*
  * Shutdown the filesystem.
  */
@@ -669,4 +670,6 @@ struct procmap_query {
 #define FS_SHUTDOWN_FLAGS_LOGFLUSH	0x1	/* flush log but not data*/
 #define FS_SHUTDOWN_FLAGS_NOLOGFLUSH	0x2	/* don't flush log nor data */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _UAPI_LINUX_FS_H */

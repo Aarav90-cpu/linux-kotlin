@@ -112,6 +112,10 @@ static const struct i915_power_well_desc hsw_power_wells_main[] = {
 				.id = HSW_DISP_PW_GLOBAL),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -145,6 +149,10 @@ static const struct i915_power_well_desc bdw_power_wells_main[] = {
 				.id = HSW_DISP_PW_GLOBAL),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B) | BIT(PIPE_C),
 	},
 };
@@ -388,6 +396,10 @@ static const struct i915_power_well_desc skl_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B) | BIT(PIPE_C),
 		.has_fuses = true,
 	}, {
@@ -466,6 +478,10 @@ static const struct i915_power_well_desc bxt_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B) | BIT(PIPE_C),
 		.has_fuses = true,
 	}, {
@@ -568,6 +584,10 @@ static const struct i915_power_well_desc glk_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B) | BIT(PIPE_C),
 		.has_fuses = true,
 	}, {
@@ -743,6 +763,10 @@ static const struct i915_power_well_desc icl_power_wells_main[] = {
 				.id = ICL_DISP_PW_3),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B),
 		.has_fuses = true,
 	}, {
@@ -908,6 +932,10 @@ static const struct i915_power_well_desc tgl_power_wells_main[] = {
 				.id = ICL_DISP_PW_3),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.irq_pipe_mask = BIT(PIPE_B),
 		.has_fuses = true,
 	}, {
@@ -1064,6 +1092,10 @@ static const struct i915_power_well_desc rkl_power_wells_main[] = {
 		),
 		.ops = &hsw_power_well_ops,
 		.irq_pipe_mask = BIT(PIPE_B),
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(
@@ -1158,6 +1190,10 @@ static const struct i915_power_well_desc dg1_power_wells_main[] = {
 		),
 		.ops = &hsw_power_well_ops,
 		.irq_pipe_mask = BIT(PIPE_B),
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(
@@ -1316,6 +1352,10 @@ static const struct i915_power_well_desc xelpd_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(
@@ -1472,6 +1512,10 @@ static const struct i915_power_well_desc xelpdp_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(
@@ -1638,6 +1682,10 @@ static const struct i915_power_well_desc xe3lpd_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(
@@ -1710,6 +1758,10 @@ static const struct i915_power_well_desc wcl_power_wells_main[] = {
 				.id = SKL_DISP_PW_2),
 		),
 		.ops = &hsw_power_well_ops,
+<<<<<<< HEAD
+=======
+		.has_vga = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.has_fuses = true,
 	}, {
 		.instances = &I915_PW_INSTANCES(

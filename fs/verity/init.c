@@ -50,7 +50,11 @@ void fsverity_msg(const struct inode *inode, const char *level,
 	vaf.fmt = fmt;
 	vaf.va = &args;
 	if (inode)
+<<<<<<< HEAD
 		printk("%sfs-verity (%s, inode %llu): %pV\n",
+=======
+		printk("%sfs-verity (%s, inode %lu): %pV\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       level, inode->i_sb->s_id, inode->i_ino, &vaf);
 	else
 		printk("%sfs-verity: %pV\n", level, &vaf);

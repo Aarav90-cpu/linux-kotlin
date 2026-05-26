@@ -551,6 +551,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of unhalted cycles when the core is stalled due to an icache or itlb miss which missed all the caches.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x35",
@@ -569,6 +570,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Counts the number of unhalted cycles when the core is stalled due to an L1 demand load miss.",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0x34",
@@ -1106,7 +1109,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 128.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1118,7 +1125,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 16.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1130,7 +1141,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 256.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1142,7 +1157,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 32.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1154,7 +1173,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 4.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1166,7 +1189,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 512.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1178,7 +1205,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 64.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1190,7 +1221,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold of 8.",
+=======
+        "BriefDescription": "Counts the number of tagged load uops retired that exceed the latency threshold defined in MEC_CR_PEBS_LD_LAT_THRESHOLD - Only counts with PEBS enabled",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1",
         "Data_LA": "1",
         "EventCode": "0xd0",
@@ -1292,7 +1327,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of stores uops retired.",
+=======
+        "BriefDescription": "Counts the number of  stores uops retired same as MEM_UOPS_RETIRED.ALL_STORES",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1,2,3,4,5,6,7",
         "Data_LA": "1",
         "EventCode": "0xd0",

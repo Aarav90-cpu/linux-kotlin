@@ -318,28 +318,55 @@ static int tegra210_ope_probe(struct platform_device *pdev)
 
 	ope->regmap = devm_regmap_init_mmio(dev, regs,
 					    &tegra210_ope_regmap_config);
+<<<<<<< HEAD
 	if (IS_ERR(ope->regmap))
 		return dev_err_probe(dev, PTR_ERR(ope->regmap),
 				     "regmap init failed\n");
+=======
+	if (IS_ERR(ope->regmap)) {
+		dev_err(dev, "regmap init failed\n");
+		return PTR_ERR(ope->regmap);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	regcache_cache_only(ope->regmap, true);
 
 	dev_set_drvdata(dev, ope);
 
 	err = tegra210_peq_regmap_init(pdev);
+<<<<<<< HEAD
 	if (err < 0)
 		return err;
 
 	err = tegra210_mbdrc_regmap_init(pdev);
 	if (err < 0)
 		return err;
+=======
+	if (err < 0) {
+		dev_err(dev, "PEQ init failed\n");
+		return err;
+	}
+
+	err = tegra210_mbdrc_regmap_init(pdev);
+	if (err < 0) {
+		dev_err(dev, "MBDRC init failed\n");
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = devm_snd_soc_register_component(dev, &tegra210_ope_cmpnt,
 					      tegra210_ope_dais,
 					      ARRAY_SIZE(tegra210_ope_dais));
+<<<<<<< HEAD
 	if (err)
 		return dev_err_probe(dev, err,
 				     "can't register OPE component\n");
+=======
+	if (err) {
+		dev_err(dev, "can't register OPE component, err: %d\n", err);
+		return err;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pm_runtime_enable(dev);
 

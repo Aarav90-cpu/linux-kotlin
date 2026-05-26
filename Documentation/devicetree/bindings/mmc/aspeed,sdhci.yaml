@@ -22,6 +22,7 @@ description: |+
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - aspeed,ast2400-sd-controller
@@ -31,6 +32,12 @@ properties:
           - const: aspeed,ast2700-sd-controller
           - const: aspeed,ast2600-sd-controller
 
+=======
+    enum:
+      - aspeed,ast2400-sd-controller
+      - aspeed,ast2500-sd-controller
+      - aspeed,ast2600-sd-controller
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     maxItems: 1
     description: Common configuration registers
@@ -43,9 +50,12 @@ properties:
     maxItems: 1
     description: The SD/SDIO controller clock gate
 
+<<<<<<< HEAD
   resets:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 patternProperties:
   "^sdhci@[0-9a-f]+$":
     type: object
@@ -54,6 +64,7 @@ patternProperties:
 
     properties:
       compatible:
+<<<<<<< HEAD
         oneOf:
           - enum:
               - aspeed,ast2400-sdhci
@@ -63,6 +74,12 @@ patternProperties:
               - const: aspeed,ast2700-sdhci
               - const: aspeed,ast2600-sdhci
 
+=======
+        enum:
+          - aspeed,ast2400-sdhci
+          - aspeed,ast2500-sdhci
+          - aspeed,ast2600-sdhci
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       reg:
         maxItems: 1
         description: The SDHCI registers
@@ -91,6 +108,7 @@ required:
   - ranges
   - clocks
 
+<<<<<<< HEAD
 if:
   properties:
     compatible:
@@ -103,6 +121,8 @@ else:
   properties:
     resets: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     #include <dt-bindings/clock/aspeed-clock.h>

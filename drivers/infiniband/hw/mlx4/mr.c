@@ -33,7 +33,10 @@
 
 #include <linux/slab.h>
 #include <rdma/ib_user_verbs.h>
+<<<<<<< HEAD
 #include <rdma/iter.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "mlx4_ib.h"
 

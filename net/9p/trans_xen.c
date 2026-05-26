@@ -283,6 +283,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
 
 			cancel_work_sync(&ring->work);
 
+<<<<<<< HEAD
 			if (!ring->intf)
 				break;
 			if (ring->irq >= 0) {
@@ -310,6 +311,27 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
 			}
 			free_page((unsigned long)ring->intf);
 			ring->intf = NULL;
+=======
+			if (!priv->rings[i].intf)
+				break;
+			if (priv->rings[i].irq > 0)
+				unbind_from_irqhandler(priv->rings[i].irq, ring);
+			if (priv->rings[i].data.in) {
+				for (j = 0;
+				     j < (1 << priv->rings[i].intf->ring_order);
+				     j++) {
+					grant_ref_t ref;
+
+					ref = priv->rings[i].intf->ref[j];
+					gnttab_end_foreign_access(ref, NULL);
+				}
+				free_pages_exact(priv->rings[i].data.in,
+				   1UL << (priv->rings[i].intf->ring_order +
+					   XEN_PAGE_SHIFT));
+			}
+			gnttab_end_foreign_access(priv->rings[i].ref, NULL);
+			free_page((unsigned long)priv->rings[i].intf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		kfree(priv->rings);
 	}
@@ -342,12 +364,15 @@ static int xen_9pfs_front_alloc_dataring(struct xenbus_device *dev,
 	int ret = -ENOMEM;
 	void *bytes = NULL;
 
+<<<<<<< HEAD
 	ring->intf = NULL;
 	ring->data.in = NULL;
 	ring->data.out = NULL;
 	ring->ref = INVALID_GRANT_REF;
 	ring->irq = -1;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_waitqueue_head(&ring->wq);
 	spin_lock_init(&ring->lock);
 	INIT_WORK(&ring->work, p9_xen_response);
@@ -393,6 +418,7 @@ out:
 		for (i--; i >= 0; i--)
 			gnttab_end_foreign_access(ring->intf->ref[i], NULL);
 		free_pages_exact(bytes, 1UL << (order + XEN_PAGE_SHIFT));
+<<<<<<< HEAD
 		ring->data.in = NULL;
 		ring->data.out = NULL;
 	}
@@ -405,6 +431,11 @@ out:
 		ring->intf = NULL;
 	}
 	ring->irq = -1;
+=======
+	}
+	gnttab_end_foreign_access(ring->ref, NULL);
+	free_page((unsigned long)ring->intf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -413,13 +444,19 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
 	int ret, i;
 	struct xenbus_transaction xbt;
 	struct xen_9pfs_front_priv *priv;
+<<<<<<< HEAD
 	char *versions, *v, *token;
 	bool version_1 = false;
 	unsigned int max_rings, max_ring_order, len = 0, version;
+=======
+	char *versions, *v;
+	unsigned int max_rings, max_ring_order, len = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	versions = xenbus_read(XBT_NIL, dev->otherend, "versions", &len);
 	if (IS_ERR(versions))
 		return PTR_ERR(versions);
+<<<<<<< HEAD
 	for (v = versions; (token = strsep(&v, ",")); ) {
 		if (!*token)
 			continue;
@@ -436,6 +473,19 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
 	if (!version_1)
 		return -EINVAL;
 
+=======
+	for (v = versions; *v; v++) {
+		if (simple_strtoul(v, &v, 10) == 1) {
+			v = NULL;
+			break;
+		}
+	}
+	if (v) {
+		kfree(versions);
+		return -EINVAL;
+	}
+	kfree(versions);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	max_rings = xenbus_read_unsigned(dev->otherend, "max-rings", 0);
 	if (max_rings < XEN_9PFS_NUM_RINGS)
 		return -EINVAL;

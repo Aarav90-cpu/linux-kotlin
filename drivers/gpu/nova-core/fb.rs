@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 use core::ops::{
     Deref,
     Range, //
@@ -10,6 +11,12 @@ use kernel::{
     dma::CoherentHandle,
     fmt,
     io::Io,
+=======
+use core::ops::Range;
+
+use kernel::{
+    device,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     prelude::*,
     ptr::{
         Alignable,
@@ -20,6 +27,10 @@ use kernel::{
 };
 
 use crate::{
+<<<<<<< HEAD
+=======
+    dma::DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     driver::Bar0,
     firmware::gsp::GspFirmware,
     gpu::Chipset,
@@ -53,7 +64,11 @@ pub(crate) struct SysmemFlush {
     chipset: Chipset,
     device: ARef<device::Device>,
     /// Keep the page alive as long as we need it.
+<<<<<<< HEAD
     page: CoherentHandle,
+=======
+    page: DmaObject,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 impl SysmemFlush {
@@ -63,7 +78,11 @@ impl SysmemFlush {
         bar: &Bar0,
         chipset: Chipset,
     ) -> Result<Self> {
+<<<<<<< HEAD
         let page = CoherentHandle::alloc(dev, kernel::page::PAGE_SIZE, GFP_KERNEL)?;
+=======
+        let page = DmaObject::new(dev, kernel::page::PAGE_SIZE)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         hal::fb_hal(chipset).write_sysmem_flush_page(bar, page.dma_handle())?;
 
@@ -99,6 +118,7 @@ impl SysmemFlush {
     }
 }
 
+<<<<<<< HEAD
 pub(crate) struct FbRange(Range<u64>);
 
 impl FbRange {
@@ -150,12 +170,15 @@ impl fmt::Debug for FbRange {
     }
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /// Layout of the GPU framebuffer memory.
 ///
 /// Contains ranges of GPU memory reserved for a given purpose during the GSP boot process.
 #[derive(Debug)]
 pub(crate) struct FbLayout {
     /// Range of the framebuffer. Starts at `0`.
+<<<<<<< HEAD
     pub(crate) fb: FbRange,
     /// VGA workspace, small area of reserved memory at the end of the framebuffer.
     pub(crate) vga_workspace: FbRange,
@@ -170,6 +193,22 @@ pub(crate) struct FbLayout {
     /// WPR2 region range, starting with an instance of `GspFwWprMeta`.
     pub(crate) wpr2: FbRange,
     pub(crate) heap: FbRange,
+=======
+    pub(crate) fb: Range<u64>,
+    /// VGA workspace, small area of reserved memory at the end of the framebuffer.
+    pub(crate) vga_workspace: Range<u64>,
+    /// FRTS range.
+    pub(crate) frts: Range<u64>,
+    /// Memory area containing the GSP bootloader image.
+    pub(crate) boot: Range<u64>,
+    /// Memory area containing the GSP firmware image.
+    pub(crate) elf: Range<u64>,
+    /// WPR2 heap.
+    pub(crate) wpr2_heap: Range<u64>,
+    /// WPR2 region range, starting with an instance of `GspFwWprMeta`.
+    pub(crate) wpr2: Range<u64>,
+    pub(crate) heap: Range<u64>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     pub(crate) vf_partition_count: u8,
 }
 
@@ -181,7 +220,11 @@ impl FbLayout {
         let fb = {
             let fb_size = hal.vidmem_size(bar);
 
+<<<<<<< HEAD
             FbRange(0..fb_size)
+=======
+            0..fb_size
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let vga_workspace = {
@@ -190,10 +233,14 @@ impl FbLayout {
                 let base = fb.end - NV_PRAMIN_SIZE;
 
                 if hal.supports_display(bar) {
+<<<<<<< HEAD
                     match bar
                         .read(regs::NV_PDISP_VGA_WORKSPACE_BASE)
                         .vga_workspace_addr()
                     {
+=======
+                    match regs::NV_PDISP_VGA_WORKSPACE_BASE::read(bar).vga_workspace_addr() {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                         Some(addr) => {
                             if addr < base {
                                 const VBIOS_WORKSPACE_SIZE: u64 = usize_as_u64(SZ_128K);
@@ -211,7 +258,11 @@ impl FbLayout {
                 }
             };
 
+<<<<<<< HEAD
             FbRange(vga_base..fb.end)
+=======
+            vga_base..fb.end
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let frts = {
@@ -219,7 +270,11 @@ impl FbLayout {
             const FRTS_SIZE: u64 = usize_as_u64(SZ_1M);
             let frts_base = vga_workspace.start.align_down(FRTS_DOWN_ALIGN) - FRTS_SIZE;
 
+<<<<<<< HEAD
             FbRange(frts_base..frts_base + FRTS_SIZE)
+=======
+            frts_base..frts_base + FRTS_SIZE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let boot = {
@@ -227,7 +282,11 @@ impl FbLayout {
             let bootloader_size = u64::from_safe_cast(gsp_fw.bootloader.ucode.size());
             let bootloader_base = (frts.start - bootloader_size).align_down(BOOTLOADER_DOWN_ALIGN);
 
+<<<<<<< HEAD
             FbRange(bootloader_base..bootloader_base + bootloader_size)
+=======
+            bootloader_base..bootloader_base + bootloader_size
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let elf = {
@@ -235,7 +294,11 @@ impl FbLayout {
             let elf_size = u64::from_safe_cast(gsp_fw.size);
             let elf_addr = (boot.start - elf_size).align_down(ELF_DOWN_ALIGN);
 
+<<<<<<< HEAD
             FbRange(elf_addr..elf_addr + elf_size)
+=======
+            elf_addr..elf_addr + elf_size
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let wpr2_heap = {
@@ -244,7 +307,11 @@ impl FbLayout {
                 gsp::LibosParams::from_chipset(chipset).wpr_heap_size(chipset, fb.end);
             let wpr2_heap_addr = (elf.start - wpr2_heap_size).align_down(WPR2_HEAP_DOWN_ALIGN);
 
+<<<<<<< HEAD
             FbRange(wpr2_heap_addr..(elf.start).align_down(WPR2_HEAP_DOWN_ALIGN))
+=======
+            wpr2_heap_addr..(elf.start).align_down(WPR2_HEAP_DOWN_ALIGN)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let wpr2 = {
@@ -252,13 +319,21 @@ impl FbLayout {
             let wpr2_addr = (wpr2_heap.start - u64::from_safe_cast(size_of::<gsp::GspFwWprMeta>()))
                 .align_down(WPR2_DOWN_ALIGN);
 
+<<<<<<< HEAD
             FbRange(wpr2_addr..frts.end)
+=======
+            wpr2_addr..frts.end
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         let heap = {
             const HEAP_SIZE: u64 = usize_as_u64(SZ_1M);
 
+<<<<<<< HEAD
             FbRange(wpr2.start - HEAP_SIZE..wpr2.start)
+=======
+            wpr2.start - HEAP_SIZE..wpr2.start
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         Ok(Self {

@@ -23,6 +23,10 @@
 #include "mtk_crtc.h"
 #include "mtk_ddp_comp.h"
 #include "mtk_drm_drv.h"
+<<<<<<< HEAD
+=======
+#include "mtk_gem.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "mtk_plane.h"
 
 /*

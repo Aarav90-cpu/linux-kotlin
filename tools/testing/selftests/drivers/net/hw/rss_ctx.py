@@ -5,15 +5,24 @@ import datetime
 import random
 import re
 import time
+<<<<<<< HEAD
 from lib.py import ksft_disruptive
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from lib.py import ksft_run, ksft_pr, ksft_exit
 from lib.py import ksft_eq, ksft_ne, ksft_ge, ksft_in, ksft_lt, ksft_true, ksft_raises
 from lib.py import NetDrvEpEnv
 from lib.py import EthtoolFamily, NetdevFamily
 from lib.py import KsftSkipEx, KsftFailEx
+<<<<<<< HEAD
 from lib.py import rand_port, rand_ports
 from lib.py import cmd, ethtool, ip, defer, CmdExitFailure, wait_file
 from lib.py import GenerateTraffic
+=======
+from lib.py import ksft_disruptive
+from lib.py import rand_port
+from lib.py import cmd, ethtool, ip, defer, GenerateTraffic, CmdExitFailure, wait_file
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 def _rss_key_str(key):
@@ -166,6 +175,7 @@ def test_rss_key_indir(cfg):
     ksft_eq(1, max(data['rss-indirection-table']))
 
     # Check we only get traffic on the first 2 queues
+<<<<<<< HEAD
 
     # Retry a few times in case the flows skew to a single queue.
     attempts = 3
@@ -177,6 +187,11 @@ def test_rss_key_indir(cfg):
             break
         ksft_pr(f"Skewed queue distribution, attempt {attempt + 1}/{attempts}: " + str(cnts))
 
+=======
+    cnts = _get_rx_cnts(cfg)
+    GenerateTraffic(cfg).wait_pkts_and_stop(20000)
+    cnts = _get_rx_cnts(cfg, prev=cnts)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     # 2 queues, 20k packets, must be at least 5k per queue
     ksft_ge(cnts[0], 5000, "traffic on main context (1/2): " + str(cnts))
     ksft_ge(cnts[1], 5000, "traffic on main context (2/2): " + str(cnts))
@@ -186,6 +201,7 @@ def test_rss_key_indir(cfg):
     # Restore, and check traffic gets spread again
     reset_indir.exec()
 
+<<<<<<< HEAD
     for attempt in range(attempts):
         cnts = _get_rx_cnts(cfg)
         GenerateTraffic(cfg).wait_pkts_and_stop(20000)
@@ -198,6 +214,11 @@ def test_rss_key_indir(cfg):
                 break
         ksft_pr(f"Skewed queue distribution, attempt {attempt + 1}/{attempts}: " + str(cnts))
 
+=======
+    cnts = _get_rx_cnts(cfg)
+    GenerateTraffic(cfg).wait_pkts_and_stop(20000)
+    cnts = _get_rx_cnts(cfg, prev=cnts)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     if qcnt > 4:
         # First two queues get less traffic than all the rest
         ksft_lt(sum(cnts[:2]), sum(cnts[2:]),
@@ -374,7 +395,11 @@ def test_hitless_key_update(cfg):
         tgen.wait_pkts_and_stop(5000)
 
     ksft_lt((t1 - t0).total_seconds(), 0.15)
+<<<<<<< HEAD
     ksft_eq(errors1 - errors0, 0)
+=======
+    ksft_eq(errors1 - errors1, 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ksft_eq(carrier1 - carrier0, 0)
 
 
@@ -472,7 +497,11 @@ def test_rss_context(cfg, ctx_cnt=1, create_with_cfg=None):
         except:
             raise KsftSkipEx("Not enough queues for the test")
 
+<<<<<<< HEAD
     ports = rand_ports(ctx_cnt)
+=======
+    ports = []
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     # Use queues 0 and 1 for normal traffic
     ethtool(f"-X {cfg.ifname} equal 2")
@@ -506,6 +535,10 @@ def test_rss_context(cfg, ctx_cnt=1, create_with_cfg=None):
         ksft_eq(min(data['rss-indirection-table']), 2 + i * 2, "Unexpected context cfg: " + str(data))
         ksft_eq(max(data['rss-indirection-table']), 2 + i * 2 + 1, "Unexpected context cfg: " + str(data))
 
+<<<<<<< HEAD
+=======
+        ports.append(rand_port())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         flow = f"flow-type tcp{cfg.addr_ipver} dst-ip {cfg.addr} dst-port {ports[i]} context {ctx_id}"
         ntuple = ethtool_create(cfg, "-N", flow)
         defer(ethtool, f"-N {cfg.ifname} delete {ntuple}")
@@ -561,7 +594,11 @@ def test_rss_context_out_of_order(cfg, ctx_cnt=4):
 
     ntuple = []
     ctx = []
+<<<<<<< HEAD
     ports = rand_ports(ctx_cnt)
+=======
+    ports = []
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def remove_ctx(idx):
         ntuple[idx].exec()
@@ -593,6 +630,10 @@ def test_rss_context_out_of_order(cfg, ctx_cnt=4):
         ctx_id = ethtool_create(cfg, "-X", f"context new start {2 + i * 2} equal 2")
         ctx.append(defer(ethtool, f"-X {cfg.ifname} context {ctx_id} delete"))
 
+<<<<<<< HEAD
+=======
+        ports.append(rand_port())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         flow = f"flow-type tcp{cfg.addr_ipver} dst-ip {cfg.addr} dst-port {ports[i]} context {ctx_id}"
         ntuple_id = ethtool_create(cfg, "-N", flow)
         ntuple.append(defer(ethtool, f"-N {cfg.ifname} delete {ntuple_id}"))
@@ -806,10 +847,16 @@ def test_rss_default_context_rule(cfg):
     ethtool(f"-N {cfg.ifname} {flow_generic}")
     defer(ethtool, f"-N {cfg.ifname} delete 1")
 
+<<<<<<< HEAD
     ports = rand_ports(2)
     # Specific high-priority rule for a random port that should stay on context 0.
     # Assign loc 0 so it is evaluated before the generic rule.
     port_main = ports[0]
+=======
+    # Specific high-priority rule for a random port that should stay on context 0.
+    # Assign loc 0 so it is evaluated before the generic rule.
+    port_main = rand_port()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     flow_main = f"flow-type tcp{cfg.addr_ipver} dst-ip {cfg.addr} dst-port {port_main} context 0 loc 0"
     ethtool(f"-N {cfg.ifname} {flow_main}")
     defer(ethtool, f"-N {cfg.ifname} delete 0")
@@ -822,7 +869,11 @@ def test_rss_default_context_rule(cfg):
                           'empty' : (2, 3) })
 
     # And that traffic for any other port is steered to the new context
+<<<<<<< HEAD
     port_other = ports[1]
+=======
+    port_other = rand_port()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     _send_traffic_check(cfg, port_other, f"context {ctx_id}",
                         { 'target': (2, 3),
                           'noise' : (0, 1) })

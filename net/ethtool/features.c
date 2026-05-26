@@ -2,9 +2,15 @@
 
 #include <net/netdev_lock.h>
 
+<<<<<<< HEAD
 #include "bitset.h"
 #include "common.h"
 #include "netlink.h"
+=======
+#include "netlink.h"
+#include "common.h"
+#include "bitset.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct features_req_info {
 	struct ethnl_req_info	base;

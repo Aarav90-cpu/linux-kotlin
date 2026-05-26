@@ -17,7 +17,10 @@ NAMES = {
           'DEV1': 'v0p1',
           'DEV2': '',
           'DUMMY': 'dummy1',
+<<<<<<< HEAD
           'ETHTOOL': '/usr/sbin/ethtool',
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  'ETH': 'eth0',
           'BATCH_FILE': './batch.txt',
           'BATCH_DIR': 'tmp',

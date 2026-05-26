@@ -142,6 +142,7 @@ static struct file_system_type ext_fs_type = {
 
 static void extents_kunit_exit(struct kunit *test)
 {
+<<<<<<< HEAD
 	struct ext4_sb_info *sbi;
 
 	if (!k_ctx.k_ei)
@@ -150,6 +151,12 @@ static void extents_kunit_exit(struct kunit *test)
 	sbi = k_ctx.k_ei->vfs_inode.i_sb->s_fs_info;
 	ext4_es_unregister_shrinker(sbi);
 	deactivate_super(sbi->s_sb);
+=======
+	struct super_block *sb = k_ctx.k_ei->vfs_inode.i_sb;
+	struct ext4_sb_info *sbi = sb->s_fs_info;
+
+	ext4_es_unregister_shrinker(sbi);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sbi);
 	kfree(k_ctx.k_ei);
 	kfree(k_ctx.k_data);
@@ -228,6 +235,7 @@ static int extents_kunit_init(struct kunit *test)
 		(struct kunit_ext_test_param *)(test->param_value);
 	int err;
 
+<<<<<<< HEAD
 	sbi = kzalloc_obj(struct ext4_sb_info);
 	if (sbi == NULL)
 		return -ENOMEM;
@@ -240,10 +248,16 @@ static int extents_kunit_init(struct kunit *test)
 
 	sbi->s_sb = sb;
 	sb->s_fs_info = sbi;
+=======
+	sb = sget(&ext_fs_type, NULL, ext_set, 0, NULL);
+	if (IS_ERR(sb))
+		return PTR_ERR(sb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sb->s_blocksize = 4096;
 	sb->s_blocksize_bits = 12;
 
+<<<<<<< HEAD
 	if (!param || !param->disable_zeroout)
 		sbi->s_extent_max_zeroout_kb = 32;
 
@@ -260,6 +274,29 @@ static int extents_kunit_init(struct kunit *test)
 	ei = k_ctx.k_ei;
 	inode = &ei->vfs_inode;
 
+=======
+	sbi = kzalloc_obj(struct ext4_sb_info);
+	if (sbi == NULL)
+		return -ENOMEM;
+
+	sbi->s_sb = sb;
+	sb->s_fs_info = sbi;
+
+	if (!param || !param->disable_zeroout)
+		sbi->s_extent_max_zeroout_kb = 32;
+
+	/* setup the mock inode */
+	k_ctx.k_ei = kzalloc_obj(struct ext4_inode_info);
+	if (k_ctx.k_ei == NULL)
+		return -ENOMEM;
+	ei = k_ctx.k_ei;
+	inode = &ei->vfs_inode;
+
+	err = ext4_es_register_shrinker(sbi);
+	if (err)
+		return err;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ext4_es_init_tree(&ei->i_es_tree);
 	rwlock_init(&ei->i_es_lock);
 	INIT_LIST_HEAD(&ei->i_es_list);
@@ -274,10 +311,15 @@ static int extents_kunit_init(struct kunit *test)
 	inode->i_sb = sb;
 
 	k_ctx.k_data = kzalloc(EXT_DATA_LEN * 4096, GFP_KERNEL);
+<<<<<<< HEAD
 	if (k_ctx.k_data == NULL) {
 		err = -ENOMEM;
 		goto out;
 	}
+=======
+	if (k_ctx.k_data == NULL)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * set the data area to a junk value
@@ -319,6 +361,7 @@ static int extents_kunit_init(struct kunit *test)
 	kunit_activate_static_stub(test, ext4_ext_zeroout, ext4_ext_zeroout_stub);
 	kunit_activate_static_stub(test, ext4_issue_zeroout,
 				   ext4_issue_zeroout_stub);
+<<<<<<< HEAD
 	up_write(&sb->s_umount);
 
 	return 0;
@@ -336,6 +379,9 @@ out_deactivate:
 	kfree(sbi);
 
 	return err;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

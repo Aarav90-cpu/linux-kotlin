@@ -2183,11 +2183,15 @@ static bool enable_rx_adap(struct xgbe_prv_data *pdata, enum xgbe_mode mode)
 
 	/* Rx-Adaptation is not supported on older platforms(< 0x30H) */
 	ver = XGMAC_GET_BITS(pdata->hw_feat.version, MAC_VR, SNPSVER);
+<<<<<<< HEAD
 	if (ver < XGBE_MAC_VER_30)
 		return false;
 
 	/* Rx adaptation not yet supported on P100a */
 	if (ver == XGBE_MAC_VER_33)
+=======
+	if (ver < 0x30)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	/* Re-driver models 4223 && 4227 do not support Rx-Adaptation */
@@ -2313,12 +2317,16 @@ static void xgbe_phy_kr_mode(struct xgbe_prv_data *pdata)
 
 static void xgbe_phy_kx_2500_mode(struct xgbe_prv_data *pdata)
 {
+<<<<<<< HEAD
 	unsigned int ver;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xgbe_phy_data *phy_data = pdata->phy_data;
 
 	xgbe_phy_set_redrv_mode(pdata);
 
+<<<<<<< HEAD
 	ver = XGMAC_GET_BITS(pdata->hw_feat.version, MAC_VR, SNPSVER);
 
 	/*
@@ -2331,6 +2339,10 @@ static void xgbe_phy_kx_2500_mode(struct xgbe_prv_data *pdata)
 	else
 		xgbe_phy_perform_ratechange(pdata, XGBE_MB_CMD_SET_2_5G,
 					    XGBE_MB_SUBCMD_NONE);
+=======
+	/* 2.5G/KX */
+	xgbe_phy_perform_ratechange(pdata, XGBE_MB_CMD_SET_2_5G, XGBE_MB_SUBCMD_NONE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	phy_data->cur_mode = XGBE_MODE_KX_2500;
 

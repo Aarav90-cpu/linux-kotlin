@@ -47,6 +47,11 @@ struct trace_noc_drvdata {
 	int			atid;
 };
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(trace_noc_devs, "traceNoc");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void trace_noc_enable_hw(struct trace_noc_drvdata *drvdata)
 {
 	u32 val;
@@ -189,7 +194,11 @@ static int _tnoc_probe(struct device *dev, struct resource *res)
 	struct coresight_desc desc = { 0 };
 	int ret;
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("traceNoc", dev);
+=======
+	desc.name = coresight_alloc_device_name(&trace_noc_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 

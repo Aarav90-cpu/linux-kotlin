@@ -11,7 +11,11 @@
 void scx_tick(struct rq *rq);
 void init_scx_entity(struct sched_ext_entity *scx);
 void scx_pre_fork(struct task_struct *p);
+<<<<<<< HEAD
 int scx_fork(struct task_struct *p, struct kernel_clone_args *kargs);
+=======
+int scx_fork(struct task_struct *p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void scx_post_fork(struct task_struct *p);
 void scx_cancel_fork(struct task_struct *p);
 bool scx_can_stop_tick(struct rq *rq);
@@ -44,7 +48,11 @@ bool scx_prio_less(const struct task_struct *a, const struct task_struct *b,
 
 static inline void scx_tick(struct rq *rq) {}
 static inline void scx_pre_fork(struct task_struct *p) {}
+<<<<<<< HEAD
 static inline int scx_fork(struct task_struct *p, struct kernel_clone_args *kargs) { return 0; }
+=======
+static inline int scx_fork(struct task_struct *p) { return 0; }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void scx_post_fork(struct task_struct *p) {}
 static inline void scx_cancel_fork(struct task_struct *p) {}
 static inline u32 scx_cpuperf_target(s32 cpu) { return 0; }

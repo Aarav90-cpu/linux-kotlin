@@ -23,8 +23,11 @@
 #include <net/tcp_states.h> /* for TCP_TIME_WAIT */
 #include <net/netfilter/nf_tables.h>
 #include <net/netfilter/nf_tables_core.h>
+<<<<<<< HEAD
 #include <net/netfilter/nf_tables_ipv4.h>
 #include <net/netfilter/nf_tables_ipv6.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/netfilter/nft_meta.h>
 #include <net/netfilter/nf_tables_offload.h>
 
@@ -133,13 +136,19 @@ nft_meta_get_eval_skugid(enum nft_meta_keys key,
 			 u32 *dest,
 			 const struct nft_pktinfo *pkt)
 {
+<<<<<<< HEAD
 	const struct sock *sk = skb_to_full_sk(pkt->skb);
 	const struct socket *sock;
 	const struct file *file;
+=======
+	struct sock *sk = skb_to_full_sk(pkt->skb);
+	struct socket *sock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sk || !sk_fullsock(sk) || !net_eq(nft_net(pkt), sock_net(sk)))
 		return false;
 
+<<<<<<< HEAD
 	/* The sk pointer remains valid as long as the skb is. The sk_socket and
 	 * file pointer may become NULL if the socket is closed. Both structures
 	 * (including file->cred) are RCU freed which means they can be accessed
@@ -149,20 +158,40 @@ nft_meta_get_eval_skugid(enum nft_meta_keys key,
 	file = sock ? READ_ONCE(sock->file) : NULL;
 	if (!file)
 		return false;
+=======
+	read_lock_bh(&sk->sk_callback_lock);
+	sock = sk->sk_socket;
+	if (!sock || !sock->file) {
+		read_unlock_bh(&sk->sk_callback_lock);
+		return false;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (key) {
 	case NFT_META_SKUID:
 		*dest = from_kuid_munged(sock_net(sk)->user_ns,
+<<<<<<< HEAD
 					 file->f_cred->fsuid);
 		break;
 	case NFT_META_SKGID:
 		*dest =	from_kgid_munged(sock_net(sk)->user_ns,
 					 file->f_cred->fsgid);
+=======
+					 sock->file->f_cred->fsuid);
+		break;
+	case NFT_META_SKGID:
+		*dest =	from_kgid_munged(sock_net(sk)->user_ns,
+					 sock->file->f_cred->fsgid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	read_unlock_bh(&sk->sk_callback_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -311,6 +340,7 @@ nft_meta_get_eval_sdifname(u32 *dest, const struct nft_pktinfo *pkt)
 	nft_meta_store_ifname(dest, dev);
 }
 
+<<<<<<< HEAD
 static void nft_meta_pktinfo_may_update(struct nft_pktinfo *pkt)
 {
 	struct sk_buff *skb = pkt->skb;
@@ -359,6 +389,8 @@ static void nft_meta_pktinfo_may_update(struct nft_pktinfo *pkt)
 	pkt->ethertype = ethertype;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void nft_meta_get_eval(const struct nft_expr *expr,
 		       struct nft_regs *regs,
 		       const struct nft_pktinfo *pkt)
@@ -372,14 +404,21 @@ void nft_meta_get_eval(const struct nft_expr *expr,
 		*dest = skb->len;
 		break;
 	case NFT_META_PROTOCOL:
+<<<<<<< HEAD
 		nft_meta_pktinfo_may_update((struct nft_pktinfo *)pkt);
 		nft_reg_store16(dest, (__force u16)pkt->ethertype);
+=======
+		nft_reg_store16(dest, (__force u16)skb->protocol);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NFT_META_NFPROTO:
 		nft_reg_store8(dest, nft_pf(pkt));
 		break;
 	case NFT_META_L4PROTO:
+<<<<<<< HEAD
 		nft_meta_pktinfo_may_update((struct nft_pktinfo *)pkt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
 			goto err;
 		nft_reg_store8(dest, pkt->tprot);
@@ -512,9 +551,15 @@ void nft_meta_set_eval(const struct nft_expr *expr,
 EXPORT_SYMBOL_GPL(nft_meta_set_eval);
 
 const struct nla_policy nft_meta_policy[NFTA_META_MAX + 1] = {
+<<<<<<< HEAD
 	[NFTA_META_DREG]	= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
 	[NFTA_META_KEY]		= NLA_POLICY_MAX(NLA_BE32, 255),
 	[NFTA_META_SREG]	= NLA_POLICY_MAX(NLA_BE32, NFT_REG32_MAX),
+=======
+	[NFTA_META_DREG]	= { .type = NLA_U32 },
+	[NFTA_META_KEY]		= NLA_POLICY_MAX(NLA_BE32, 255),
+	[NFTA_META_SREG]	= { .type = NLA_U32 },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 EXPORT_SYMBOL_GPL(nft_meta_policy);
 
@@ -797,16 +842,69 @@ static int nft_meta_get_offload(struct nft_offload_ctx *ctx,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+bool nft_meta_get_reduce(struct nft_regs_track *track,
+			 const struct nft_expr *expr)
+{
+	const struct nft_meta *priv = nft_expr_priv(expr);
+	const struct nft_meta *meta;
+
+	if (!nft_reg_track_cmp(track, expr, priv->dreg)) {
+		nft_reg_track_update(track, expr, priv->dreg, priv->len);
+		return false;
+	}
+
+	meta = nft_expr_priv(track->regs[priv->dreg].selector);
+	if (priv->key != meta->key ||
+	    priv->dreg != meta->dreg) {
+		nft_reg_track_update(track, expr, priv->dreg, priv->len);
+		return false;
+	}
+
+	if (!track->regs[priv->dreg].bitwise)
+		return true;
+
+	return nft_expr_reduce_bitwise(track, expr);
+}
+EXPORT_SYMBOL_GPL(nft_meta_get_reduce);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct nft_expr_ops nft_meta_get_ops = {
 	.type		= &nft_meta_type,
 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_meta)),
 	.eval		= nft_meta_get_eval,
 	.init		= nft_meta_get_init,
 	.dump		= nft_meta_get_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_meta_get_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.validate	= nft_meta_get_validate,
 	.offload	= nft_meta_get_offload,
 };
 
+<<<<<<< HEAD
+=======
+static bool nft_meta_set_reduce(struct nft_regs_track *track,
+				const struct nft_expr *expr)
+{
+	int i;
+
+	for (i = 0; i < NFT_REG32_NUM; i++) {
+		if (!track->regs[i].selector)
+			continue;
+
+		if (track->regs[i].selector->ops != &nft_meta_get_ops)
+			continue;
+
+		__nft_reg_track_cancel(track, i);
+	}
+
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct nft_expr_ops nft_meta_set_ops = {
 	.type		= &nft_meta_type,
 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_meta)),
@@ -814,6 +912,10 @@ static const struct nft_expr_ops nft_meta_set_ops = {
 	.init		= nft_meta_set_init,
 	.destroy	= nft_meta_set_destroy,
 	.dump		= nft_meta_set_dump,
+<<<<<<< HEAD
+=======
+	.reduce		= nft_meta_set_reduce,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.validate	= nft_meta_set_validate,
 };
 

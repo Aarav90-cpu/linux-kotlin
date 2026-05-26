@@ -135,16 +135,31 @@ struct task_struct *find_lock_task_mm(struct task_struct *p)
 {
 	struct task_struct *t;
 
+<<<<<<< HEAD
 	guard(rcu)();
+=======
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_thread(p, t) {
 		task_lock(t);
 		if (likely(t->mm))
+<<<<<<< HEAD
 			return t;
 		task_unlock(t);
 	}
 
 	return NULL;
+=======
+			goto found;
+		task_unlock(t);
+	}
+	t = NULL;
+found:
+	rcu_read_unlock();
+
+	return t;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -545,8 +560,26 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
 		 * count elevated without a good reason.
 		 */
 		if (vma_is_anonymous(vma) || !(vma->vm_flags & VM_SHARED)) {
+<<<<<<< HEAD
 			if (zap_vma_for_reaping(vma))
 				ret = false;
+=======
+			struct mmu_notifier_range range;
+			struct mmu_gather tlb;
+
+			mmu_notifier_range_init(&range, MMU_NOTIFY_UNMAP, 0,
+						mm, vma->vm_start,
+						vma->vm_end);
+			tlb_gather_mmu(&tlb, mm);
+			if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+				tlb_finish_mmu(&tlb);
+				ret = false;
+				continue;
+			}
+			unmap_page_range(&tlb, vma, range.start, range.end, NULL);
+			mmu_notifier_invalidate_range_end(&range);
+			tlb_finish_mmu(&tlb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

@@ -59,6 +59,7 @@ void tty_buffer_lock_exclusive(struct tty_port *port)
 }
 EXPORT_SYMBOL_GPL(tty_buffer_lock_exclusive);
 
+<<<<<<< HEAD
 static bool tty_buffer_queue_work(struct tty_bufhead *buf)
 {
 	struct workqueue_struct *flip_wq = READ_ONCE(buf->flip_wq);
@@ -66,6 +67,8 @@ static bool tty_buffer_queue_work(struct tty_bufhead *buf)
 	return queue_work(flip_wq ?: system_dfl_wq, &buf->work);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * tty_buffer_unlock_exclusive	-	release exclusive access
  * @port: tty port owning the flip buffer
@@ -83,7 +86,11 @@ void tty_buffer_unlock_exclusive(struct tty_port *port)
 	mutex_unlock(&buf->lock);
 
 	if (restart)
+<<<<<<< HEAD
 		tty_buffer_queue_work(buf);
+=======
+		queue_work(system_dfl_wq, &buf->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(tty_buffer_unlock_exclusive);
 
@@ -537,7 +544,11 @@ void tty_flip_buffer_push(struct tty_port *port)
 	struct tty_bufhead *buf = &port->buf;
 
 	tty_flip_buffer_commit(buf->tail);
+<<<<<<< HEAD
 	tty_buffer_queue_work(buf);
+=======
+	queue_work(system_dfl_wq, &buf->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(tty_flip_buffer_push);
 
@@ -567,7 +578,11 @@ int tty_insert_flip_string_and_push_buffer(struct tty_port *port,
 		tty_flip_buffer_commit(buf->tail);
 	spin_unlock_irqrestore(&port->lock, flags);
 
+<<<<<<< HEAD
 	tty_buffer_queue_work(buf);
+=======
+	queue_work(system_dfl_wq, &buf->work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return size;
 }
@@ -620,7 +635,11 @@ void tty_buffer_set_lock_subclass(struct tty_port *port)
 
 bool tty_buffer_restart_work(struct tty_port *port)
 {
+<<<<<<< HEAD
 	return tty_buffer_queue_work(&port->buf);
+=======
+	return queue_work(system_dfl_wq, &port->buf.work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 bool tty_buffer_cancel_work(struct tty_port *port)

@@ -38,7 +38,10 @@
 			/* rst */
 			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
 		>;
+<<<<<<< HEAD
 		bootph-all;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {

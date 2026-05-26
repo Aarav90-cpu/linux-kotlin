@@ -53,6 +53,7 @@ properties:
   "#size-cells": true
 
   compatible:
+<<<<<<< HEAD
     oneOf:
       - enum:
           - ti,am642-cpsw-nuss
@@ -65,6 +66,15 @@ properties:
           - enum:
               - ti,j722s-cpsw-nuss
           - const: ti,am642-cpsw-nuss
+=======
+    enum:
+      - ti,am642-cpsw-nuss
+      - ti,am654-cpsw-nuss
+      - ti,j7200-cpswxg-nuss
+      - ti,j721e-cpsw-nuss
+      - ti,j721e-cpswxg-nuss
+      - ti,j784s4-cpswxg-nuss
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

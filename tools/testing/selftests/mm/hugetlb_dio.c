@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/mman.h>
+<<<<<<< HEAD
 #include <sys/syscall.h>
 #include "vm_util.h"
 #include "kselftest.h"
@@ -68,6 +69,14 @@ static bool check_dio_alignment(unsigned int start_off,
 static void run_dio_using_hugetlb(int fd, unsigned int start_off,
 				unsigned int end_off, unsigned int align)
 {
+=======
+#include "vm_util.h"
+#include "kselftest.h"
+
+void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+{
+	int fd;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *buffer =  NULL;
 	char *orig_buffer = NULL;
 	size_t h_pagesize = 0;
@@ -77,9 +86,12 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
 	const int mmap_flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
 	const int mmap_prot  = PROT_READ | PROT_WRITE;
 
+<<<<<<< HEAD
 	if (!check_dio_alignment(start_off, end_off, align))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	writesize = end_off - start_off;
 
 	/* Get the default huge page size */
@@ -87,9 +99,16 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
 	if (!h_pagesize)
 		ksft_exit_fail_msg("Unable to determine huge page size\n");
 
+<<<<<<< HEAD
 	/* Reset file position since fd is shared across tests */
 	if (lseek(fd, 0, SEEK_SET) < 0)
 		ksft_exit_fail_perror("lseek failed\n");
+=======
+	/* Open the file to DIO */
+	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+	if (fd < 0)
+		ksft_exit_fail_perror("Error opening file\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get the free huge pages before allocation */
 	free_hpage_b = get_free_hugepages();
@@ -118,6 +137,10 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
 
 	/* unmap the huge page */
 	munmap(orig_buffer, h_pagesize);
+<<<<<<< HEAD
+=======
+	close(fd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get the free huge pages after unmap*/
 	free_hpage_a = get_free_hugepages();
@@ -135,15 +158,30 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
 
 int main(void)
 {
+<<<<<<< HEAD
 	int fd, align;
 	const size_t pagesize = psize();
 
 	ksft_print_header();
 
+=======
+	size_t pagesize = 0;
+	int fd;
+
+	ksft_print_header();
+
+	/* Open the file to DIO */
+	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+	if (fd < 0)
+		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
+	close(fd);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Check if huge pages are free */
 	if (!get_free_hugepages())
 		ksft_exit_skip("No free hugepage, exiting\n");
 
+<<<<<<< HEAD
 	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
 	if (fd < 0)
 		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
@@ -167,6 +205,24 @@ int main(void)
 	run_dio_using_hugetlb(fd, pagesize / 2, (pagesize * 3) + (pagesize / 2), align);
 
 	close(fd);
+=======
+	ksft_set_plan(4);
+
+	/* Get base page size */
+	pagesize  = psize();
+
+	/* start and end is aligned to pagesize */
+	run_dio_using_hugetlb(0, (pagesize * 3));
+
+	/* start is aligned but end is not aligned */
+	run_dio_using_hugetlb(0, (pagesize * 3) - (pagesize / 2));
+
+	/* start is unaligned and end is aligned */
+	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3));
+
+	/* both start and end are unaligned */
+	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3) + (pagesize / 2));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ksft_finished();
 }

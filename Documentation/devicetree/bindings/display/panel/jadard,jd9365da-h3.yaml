@@ -23,7 +23,10 @@ properties:
           - melfas,lmfbx101117480
           - radxa,display-10hd-ad001
           - radxa,display-8hd-ad002
+<<<<<<< HEAD
           - taiguanck,xti05101-01a
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - const: jadard,jd9365da-h3
 
   reg:
@@ -36,8 +39,14 @@ properties:
     description: supply regulator for VCCIO, usually 1.8V
 
   reset-gpios: true
+<<<<<<< HEAD
   backlight: true
   rotation: true
+=======
+
+  backlight: true
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   port: true
 
 required:

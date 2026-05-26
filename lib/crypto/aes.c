@@ -4,15 +4,22 @@
  * Copyright 2026 Google LLC
  */
 
+<<<<<<< HEAD
 #include <crypto/aes-cbc-macs.h>
 #include <crypto/aes.h>
 #include <crypto/utils.h>
+=======
+#include <crypto/aes.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/cache.h>
 #include <linux/crypto.h>
 #include <linux/export.h>
 #include <linux/module.h>
 #include <linux/unaligned.h>
+<<<<<<< HEAD
 #include "fips.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const u8 ____cacheline_aligned aes_sbox[] = {
 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
@@ -515,6 +522,7 @@ void aes_decrypt(const struct aes_key *key, u8 out[AES_BLOCK_SIZE],
 }
 EXPORT_SYMBOL(aes_decrypt);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_CRYPTO_LIB_AES_CBC_MACS)
 
 #ifndef aes_cbcmac_blocks_arch
@@ -744,6 +752,12 @@ static int __init aes_mod_init(void)
 #endif
 	if (fips_enabled)
 		aes_cmac_fips_test();
+=======
+#ifdef aes_mod_init_arch
+static int __init aes_mod_init(void)
+{
+	aes_mod_init_arch();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 subsys_initcall(aes_mod_init);
@@ -752,6 +766,10 @@ static void __exit aes_mod_exit(void)
 {
 }
 module_exit(aes_mod_exit);
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_DESCRIPTION("AES block cipher");
 MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");

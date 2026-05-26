@@ -567,7 +567,11 @@ struct tomoyo_address_group {
 struct tomoyo_mini_stat {
 	kuid_t uid;
 	kgid_t gid;
+<<<<<<< HEAD
 	u64 ino;
+=======
+	ino_t ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	umode_t mode;
 	dev_t dev;
 	dev_t rdev;

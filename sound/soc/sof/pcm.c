@@ -360,8 +360,13 @@ static int sof_pcm_prepare(struct snd_soc_component *component,
 	platform_params = &spcm->platform_params[substream->stream];
 	ret = sof_widget_list_setup(sdev, spcm, params, platform_params, dir);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(sdev->dev, "failed widget list set up for pcm %d dir %u\n",
 			le32_to_cpu(spcm->pcm.pcm_id), dir);
+=======
+		dev_err(sdev->dev, "failed widget list set up for pcm %d dir %d\n",
+			spcm->pcm.pcm_id, dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spcm->stream[dir].list = NULL;
 		snd_soc_dapm_dai_free_widgets(&list);
 		return ret;
@@ -651,8 +656,13 @@ static int sof_pcm_new(struct snd_soc_component *component,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(spcm->scomp->dev, "pcm%u (%s): Entry: pcm_new\n",
 		le32_to_cpu(spcm->pcm.pcm_id), spcm->pcm.pcm_name);
+=======
+	dev_dbg(spcm->scomp->dev, "pcm%u (%s): Entry: pcm_construct\n",
+		spcm->pcm.pcm_id, spcm->pcm.pcm_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* do we need to pre-allocate playback audio buffer pages */
 	if (!spcm->pcm.playback)
@@ -850,7 +860,11 @@ void snd_sof_new_platform_drv(struct snd_sof_dev *sdev)
 	pd->compress_ops = &sof_compressed_ops;
 #endif
 
+<<<<<<< HEAD
 	pd->pcm_new = sof_pcm_new;
+=======
+	pd->pcm_construct = sof_pcm_new;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pd->ignore_machine = drv_name;
 	pd->be_pcm_base = SOF_BE_PCM_BASE;
 	pd->use_dai_pcm_id = true;

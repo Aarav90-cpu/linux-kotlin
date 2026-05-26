@@ -337,7 +337,11 @@ int rvt_req_notify_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags notify_flags)
  *
  * Return: 0 for success.
  */
+<<<<<<< HEAD
 int rvt_resize_cq(struct ib_cq *ibcq, unsigned int cqe, struct ib_udata *udata)
+=======
+int rvt_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rvt_cq *cq = ibcq_to_rvtcq(ibcq);
 	u32 head, tail, n;
@@ -349,7 +353,11 @@ int rvt_resize_cq(struct ib_cq *ibcq, unsigned int cqe, struct ib_udata *udata)
 	struct rvt_k_cq_wc *k_wc = NULL;
 	struct rvt_k_cq_wc *old_k_wc = NULL;
 
+<<<<<<< HEAD
 	if (cqe > rdi->dparms.props.max_cqe)
+=======
+	if (cqe < 1 || cqe > rdi->dparms.props.max_cqe)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/*

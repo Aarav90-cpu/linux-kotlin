@@ -21,7 +21,10 @@
 #include "mds_client.h"
 #include "cache.h"
 #include "crypto.h"
+<<<<<<< HEAD
 #include "subvolume_metrics.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/ceph/ceph_features.h>
 #include <linux/ceph/decode.h>
@@ -967,6 +970,7 @@ static int __init init_caches(void)
 	if (!ceph_wb_pagevec_pool)
 		goto bad_pagevec_pool;
 
+<<<<<<< HEAD
 	error = ceph_subvolume_metrics_cache_init();
 	if (error)
 		goto bad_subvol_metrics;
@@ -975,6 +979,10 @@ static int __init init_caches(void)
 
 bad_subvol_metrics:
 	mempool_destroy(ceph_wb_pagevec_pool);
+=======
+	return 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bad_pagevec_pool:
 	kmem_cache_destroy(ceph_mds_request_cachep);
 bad_mds_req:
@@ -1011,7 +1019,10 @@ static void destroy_caches(void)
 	kmem_cache_destroy(ceph_dir_file_cachep);
 	kmem_cache_destroy(ceph_mds_request_cachep);
 	mempool_destroy(ceph_wb_pagevec_pool);
+<<<<<<< HEAD
 	ceph_subvolume_metrics_cache_destroy();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __ceph_umount_begin(struct ceph_fs_client *fsc)

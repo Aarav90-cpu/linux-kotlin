@@ -364,11 +364,18 @@ struct sbridge_dev {
 	int			seg;
 	u8			bus, mc;
 	u8			node_id, source_id;
+<<<<<<< HEAD
+=======
+	struct pci_dev		**pdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum domain		dom;
 	int			n_devs;
 	int			i_devs;
 	struct mem_ctl_info	*mci;
+<<<<<<< HEAD
 	struct pci_dev		*pdev[] __counted_by(n_devs);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct knl_pvt {
@@ -771,6 +778,7 @@ static struct sbridge_dev *alloc_sbridge_dev(int seg, u8 bus, enum domain dom,
 {
 	struct sbridge_dev *sbridge_dev;
 
+<<<<<<< HEAD
 	sbridge_dev = kzalloc_flex(*sbridge_dev, pdev, table->n_devs_per_imc);
 	if (!sbridge_dev)
 		return NULL;
@@ -779,6 +787,23 @@ static struct sbridge_dev *alloc_sbridge_dev(int seg, u8 bus, enum domain dom,
 	sbridge_dev->seg = seg;
 	sbridge_dev->bus = bus;
 	sbridge_dev->dom = dom;
+=======
+	sbridge_dev = kzalloc_obj(*sbridge_dev);
+	if (!sbridge_dev)
+		return NULL;
+
+	sbridge_dev->pdev = kzalloc_objs(*sbridge_dev->pdev,
+					 table->n_devs_per_imc);
+	if (!sbridge_dev->pdev) {
+		kfree(sbridge_dev);
+		return NULL;
+	}
+
+	sbridge_dev->seg = seg;
+	sbridge_dev->bus = bus;
+	sbridge_dev->dom = dom;
+	sbridge_dev->n_devs = table->n_devs_per_imc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_add_tail(&sbridge_dev->list, &sbridge_edac_list);
 
 	return sbridge_dev;
@@ -787,6 +812,10 @@ static struct sbridge_dev *alloc_sbridge_dev(int seg, u8 bus, enum domain dom,
 static void free_sbridge_dev(struct sbridge_dev *sbridge_dev)
 {
 	list_del(&sbridge_dev->list);
+<<<<<<< HEAD
+=======
+	kfree(sbridge_dev->pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(sbridge_dev);
 }
 

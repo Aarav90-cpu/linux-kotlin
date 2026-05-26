@@ -227,7 +227,11 @@ struct node {
 	struct node *next_sibling;
 
 	char *fullpath;
+<<<<<<< HEAD
 	size_t basenamelen;
+=======
+	int basenamelen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cell_t phandle;
 	int addr_cells, size_cells;

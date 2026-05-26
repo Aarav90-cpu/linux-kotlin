@@ -11,6 +11,7 @@
 #include <linux/rtnetlink.h>
 #include <linux/export.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/spinlock.h>
 #include <linux/workqueue.h>
 #include <kunit/visibility.h>
@@ -23,6 +24,11 @@ static LIST_HEAD(rx_mode_list);
 static DEFINE_SPINLOCK(rx_mode_lock);
 static DECLARE_WORK(rx_mode_work, netdev_rx_mode_work);
 
+=======
+
+#include "dev.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * General list handling functions
  */
@@ -490,7 +496,11 @@ void __hw_addr_unsync_dev(struct netdev_hw_addr_list *list,
 }
 EXPORT_SYMBOL(__hw_addr_unsync_dev);
 
+<<<<<<< HEAD
 void __hw_addr_flush(struct netdev_hw_addr_list *list)
+=======
+static void __hw_addr_flush(struct netdev_hw_addr_list *list)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct netdev_hw_addr *ha, *tmp;
 
@@ -501,7 +511,10 @@ void __hw_addr_flush(struct netdev_hw_addr_list *list)
 	}
 	list->count = 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_IF_KUNIT(__hw_addr_flush);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __hw_addr_init(struct netdev_hw_addr_list *list)
 {
@@ -511,6 +524,7 @@ void __hw_addr_init(struct netdev_hw_addr_list *list)
 }
 EXPORT_SYMBOL(__hw_addr_init);
 
+<<<<<<< HEAD
 static void __hw_addr_splice(struct netdev_hw_addr_list *dst,
 			     struct netdev_hw_addr_list *src)
 {
@@ -638,6 +652,8 @@ void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
 }
 EXPORT_SYMBOL_IF_KUNIT(__hw_addr_list_reconcile);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Device addresses handling functions
  */
@@ -1186,6 +1202,7 @@ void dev_mc_init(struct net_device *dev)
 	__hw_addr_init(&dev->mc);
 }
 EXPORT_SYMBOL(dev_mc_init);
+<<<<<<< HEAD
 
 static int netif_addr_lists_snapshot(struct net_device *dev,
 				     struct netdev_hw_addr_list *uc_snap,
@@ -1432,3 +1449,5 @@ void netif_rx_mode_sync(struct net_device *dev)
 		__dev_put(dev);
 	}
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

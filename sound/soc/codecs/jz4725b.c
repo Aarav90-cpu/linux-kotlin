@@ -160,6 +160,10 @@ enum {
 struct jz_icdc {
 	struct regmap *regmap;
 	void __iomem *base;
+<<<<<<< HEAD
+=======
+	struct clk *clk;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(jz4725b_adc_tlv,     0, 150, 0);
@@ -404,6 +408,11 @@ static int jz4725b_codec_dev_probe(struct snd_soc_component *component)
 	struct jz_icdc *icdc = snd_soc_component_get_drvdata(component);
 	struct regmap *map = icdc->regmap;
 
+<<<<<<< HEAD
+=======
+	clk_prepare_enable(icdc->clk);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Write CONFIGn (n=1 to 8) bits.
 	 * The value 0x0f is specified in the datasheet as a requirement.
 	 */
@@ -415,8 +424,21 @@ static int jz4725b_codec_dev_probe(struct snd_soc_component *component)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct snd_soc_component_driver jz4725b_codec = {
 	.probe			= jz4725b_codec_dev_probe,
+=======
+static void jz4725b_codec_dev_remove(struct snd_soc_component *component)
+{
+	struct jz_icdc *icdc = snd_soc_component_get_drvdata(component);
+
+	clk_disable_unprepare(icdc->clk);
+}
+
+static const struct snd_soc_component_driver jz4725b_codec = {
+	.probe			= jz4725b_codec_dev_probe,
+	.remove			= jz4725b_codec_dev_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.set_bias_level		= jz4725b_codec_set_bias_level,
 	.controls		= jz4725b_codec_controls,
 	.num_controls		= ARRAY_SIZE(jz4725b_codec_controls),
@@ -607,7 +629,10 @@ static int jz4725b_codec_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct jz_icdc *icdc;
+<<<<<<< HEAD
 	struct clk *clk;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	icdc = devm_kzalloc(dev, sizeof(*icdc), GFP_KERNEL);
@@ -623,9 +648,15 @@ static int jz4725b_codec_probe(struct platform_device *pdev)
 	if (IS_ERR(icdc->regmap))
 		return PTR_ERR(icdc->regmap);
 
+<<<<<<< HEAD
 	clk = devm_clk_get_enabled(dev, "aic");
 	if (IS_ERR(clk))
 		return PTR_ERR(clk);
+=======
+	icdc->clk = devm_clk_get(&pdev->dev, "aic");
+	if (IS_ERR(icdc->clk))
+		return PTR_ERR(icdc->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	platform_set_drvdata(pdev, icdc);
 

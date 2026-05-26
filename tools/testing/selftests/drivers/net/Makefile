@@ -6,13 +6,20 @@ TEST_INCLUDES := $(wildcard lib/py/*.py) \
 		 ../../net/lib.sh \
 
 TEST_GEN_FILES := \
+<<<<<<< HEAD
+=======
+	gro \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	napi_id_helper \
 # end of TEST_GEN_FILES
 
 TEST_PROGS := \
 	gro.py \
 	hds.py \
+<<<<<<< HEAD
 	macsec.py \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	napi_id.py \
 	napi_threaded.py \
 	netpoll_basic.py \

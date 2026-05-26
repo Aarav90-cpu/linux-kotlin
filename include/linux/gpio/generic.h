@@ -3,6 +3,7 @@
 #ifndef __LINUX_GPIO_GENERIC_H
 #define __LINUX_GPIO_GENERIC_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
 #include <linux/bug.h>
 #include <linux/cleanup.h>
@@ -12,6 +13,11 @@
 #include <linux/types.h>
 
 #include <linux/gpio/driver.h>
+=======
+#include <linux/cleanup.h>
+#include <linux/gpio/driver.h>
+#include <linux/spinlock.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct device;
 

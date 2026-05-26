@@ -57,6 +57,7 @@ properties:
       user space from
     type: boolean
 
+<<<<<<< HEAD
   part-concat-next:
     description: List of phandles to MTD partitions that need be concatenated
       with the current partition.
@@ -66,6 +67,8 @@ properties:
     items:
       maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   align:
     $ref: /schemas/types.yaml#/definitions/uint32
     minimum: 2
@@ -189,6 +192,7 @@ examples:
             reg = <0x200000 0x100000>;
             align = <0x4000>;
         };
+<<<<<<< HEAD
 
         part0: partition@400000 {
             part-concat-next = <&part1>;
@@ -200,4 +204,6 @@ examples:
             label = "part0_1";
             reg = <0x800000 0x800000>;
         };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };

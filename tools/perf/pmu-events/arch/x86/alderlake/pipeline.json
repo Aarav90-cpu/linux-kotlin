@@ -245,6 +245,7 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of near indirect JMP branch instructions retired.",
         "Counter": "0,1,2,3,4,5",
         "EventCode": "0xc4",
@@ -254,6 +255,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "This event is deprecated. Refer to new event BR_INST_RETIRED.INDIRECT_CALL",
         "Counter": "0,1,2,3,4,5",
         "Deprecated": "1",
@@ -474,6 +477,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of mispredicted near indirect JMP branch instructions retired.",
         "Counter": "0,1,2,3,4,5",
         "EventCode": "0xc5",
@@ -483,6 +487,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "This event is deprecated. Refer to new event BR_MISP_RETIRED.INDIRECT_CALL",
         "Counter": "0,1,2,3,4,5",
         "Deprecated": "1",
@@ -591,7 +597,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.THREAD]",
+=======
+        "BriefDescription": "Counts the number of unhalted core clock cycles. (Fixed event)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 1",
         "EventName": "CPU_CLK_UNHALTED.CORE",
         "PublicDescription": "Counts the number of core cycles while the core is not in a halt state. The core enters the halt state when it is running the HLT instruction. The core frequency may change from time to time. For this reason this event may have a changing ratio with regards to time. This event uses fixed counter 1.",
@@ -600,7 +610,11 @@
         "Unit": "cpu_atom"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.THREAD_P]",
+=======
+        "BriefDescription": "Counts the number of unhalted core clock cycles.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1,2,3,4,5",
         "EventCode": "0x3c",
         "EventName": "CPU_CLK_UNHALTED.CORE_P",
@@ -669,7 +683,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted reference clock cycles at TSC frequency.",
+=======
+        "BriefDescription": "Counts the number of unhalted reference clock cycles at TSC frequency. (Fixed event)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 2",
         "EventName": "CPU_CLK_UNHALTED.REF_TSC",
         "PublicDescription": "Counts the number of reference cycles that the core is not in a halt state. The core enters the halt state when it is running the HLT instruction. This event is not affected by core frequency changes and increments at a fixed frequency that is also used for the Time Stamp Counter (TSC). This event uses fixed counter 2.",
@@ -707,7 +725,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.CORE]",
+=======
+        "BriefDescription": "Counts the number of unhalted core clock cycles. (Fixed event)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 1",
         "EventName": "CPU_CLK_UNHALTED.THREAD",
         "PublicDescription": "Counts the number of core cycles while the core is not in a halt state.  The core enters the halt state when it is running the HLT instruction. The core frequency may change from time to time. For this reason this event may have a changing ratio with regards to time.  This event uses fixed counter 1.",
@@ -725,7 +747,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of unhalted core clock cycles. [This event is alias to CPU_CLK_UNHALTED.CORE_P]",
+=======
+        "BriefDescription": "Counts the number of unhalted core clock cycles.",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "0,1,2,3,4,5",
         "EventCode": "0x3c",
         "EventName": "CPU_CLK_UNHALTED.THREAD_P",
@@ -893,7 +919,11 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Fixed Counter: Counts the total number of instructions retired.",
+=======
+        "BriefDescription": "Counts the total number of instructions retired. (Fixed event)",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "Counter": "Fixed counter 0",
         "EventName": "INST_RETIRED.ANY",
         "PublicDescription": "Counts the total number of instructions that retired. For instructions that consist of multiple uops, this event counts the retirement of the last uop of the instruction. This event continues counting during hardware interrupts, traps, and inside interrupt handlers. This event uses fixed counter 0. Available PDIST counters: 32",
@@ -1292,6 +1322,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "Counts the number of CLFLUSH, CLWB, and CLDEMOTE instructions retired.",
         "Counter": "0,1,2,3,4,5",
         "EventCode": "0xe0",
@@ -1328,6 +1359,8 @@
         "Unit": "cpu_atom"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles stalled due to no store buffers available. (not including draining form sync).",
         "Counter": "0,1,2,3,4,5,6,7",
         "EventCode": "0xa2",

@@ -404,6 +404,7 @@ int snd_gus_initialize(struct snd_gus_card *gus)
 	return 0;
 }
 
+<<<<<<< HEAD
 int snd_gus_suspend(struct snd_gus_card *gus)
 {
 	int err;
@@ -440,6 +441,8 @@ int snd_gus_resume(struct snd_gus_card *gus)
 }
 EXPORT_SYMBOL(snd_gus_resume);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   /* gus_io.c */
 EXPORT_SYMBOL(snd_gf1_delay);
 EXPORT_SYMBOL(snd_gf1_write8);

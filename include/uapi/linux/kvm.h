@@ -704,11 +704,14 @@ struct kvm_enable_cap {
 #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
 #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+<<<<<<< HEAD
 
 #define KVM_VM_TYPE_ARM_PROTECTED	(1UL << 31)
 #define KVM_VM_TYPE_ARM_MASK		(KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
 					 KVM_VM_TYPE_ARM_PROTECTED)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * ioctls for /dev/kvm fds:
  */
@@ -995,7 +998,10 @@ struct kvm_enable_cap {
 #define KVM_CAP_ARM_SEA_TO_USER 245
 #define KVM_CAP_S390_USER_OPEREXEC 246
 #define KVM_CAP_S390_KEYOP 247
+<<<<<<< HEAD
 #define KVM_CAP_S390_VSIE_ESAMODE 248
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct kvm_irq_routing_irqchip {
 	__u32 irqchip;
@@ -1231,10 +1237,13 @@ enum kvm_device_type {
 #define KVM_DEV_TYPE_LOONGARCH_EIOINTC	KVM_DEV_TYPE_LOONGARCH_EIOINTC
 	KVM_DEV_TYPE_LOONGARCH_PCHPIC,
 #define KVM_DEV_TYPE_LOONGARCH_PCHPIC	KVM_DEV_TYPE_LOONGARCH_PCHPIC
+<<<<<<< HEAD
 	KVM_DEV_TYPE_LOONGARCH_DMSINTC,
 #define KVM_DEV_TYPE_LOONGARCH_DMSINTC	KVM_DEV_TYPE_LOONGARCH_DMSINTC
 	KVM_DEV_TYPE_ARM_VGIC_V5,
 #define KVM_DEV_TYPE_ARM_VGIC_V5	KVM_DEV_TYPE_ARM_VGIC_V5
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KVM_DEV_TYPE_MAX,
 

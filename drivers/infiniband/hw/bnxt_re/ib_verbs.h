@@ -108,6 +108,10 @@ struct bnxt_re_cq {
 	struct bnxt_qplib_cqe	*cql;
 #define MAX_CQL_PER_POLL	1024
 	u32			max_cql;
+<<<<<<< HEAD
+=======
+	struct ib_umem		*umem;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ib_umem		*resize_umem;
 	int			resize_cqe;
 	void			*uctx_cq_page;
@@ -163,6 +167,7 @@ struct bnxt_re_user_mmap_entry {
 	u8 mmap_flag;
 };
 
+<<<<<<< HEAD
 struct bnxt_re_dbr_obj {
 	struct bnxt_re_dev *rdev;
 	struct bnxt_qplib_dpi dpi;
@@ -170,6 +175,8 @@ struct bnxt_re_dbr_obj {
 	atomic_t usecnt; /* QPs using this dbr */
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bnxt_re_flow {
 	struct ib_flow		ib_flow;
 	struct bnxt_re_dev	*rdev;
@@ -190,6 +197,7 @@ enum {
 	BNXT_RE_UCNTX_CAP_VAR_WQE_ENABLED = 0x2ULL,
 };
 
+<<<<<<< HEAD
 static inline u32 bnxt_re_init_depth(u32 ent, u32 max,
 				     struct bnxt_re_ucontext *uctx)
 {
@@ -197,6 +205,12 @@ static inline u32 bnxt_re_init_depth(u32 ent, u32 max,
 		return min(roundup_pow_of_two(ent), max);
 
 	return ent;
+=======
+static inline u32 bnxt_re_init_depth(u32 ent, struct bnxt_re_ucontext *uctx)
+{
+	return uctx ? (uctx->cmask & BNXT_RE_UCNTX_CAP_POW2_DISABLED) ?
+		ent : roundup_pow_of_two(ent) : ent;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool bnxt_re_is_var_size_supported(struct bnxt_re_dev *rdev,
@@ -256,10 +270,14 @@ int bnxt_re_post_recv(struct ib_qp *qp, const struct ib_recv_wr *recv_wr,
 		      const struct ib_recv_wr **bad_recv_wr);
 int bnxt_re_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 		      struct uverbs_attr_bundle *attrs);
+<<<<<<< HEAD
 int bnxt_re_create_user_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 			   struct uverbs_attr_bundle *attrs);
 int bnxt_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe,
 		      struct ib_udata *udata);
+=======
+int bnxt_re_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int bnxt_re_destroy_cq(struct ib_cq *cq, struct ib_udata *udata);
 int bnxt_re_poll_cq(struct ib_cq *cq, int num_entries, struct ib_wc *wc);
 int bnxt_re_req_notify_cq(struct ib_cq *cq, enum ib_cq_notify_flags flags);
@@ -305,7 +323,10 @@ static inline u32 __to_ib_port_num(u16 port_id)
 
 unsigned long bnxt_re_lock_cqs(struct bnxt_re_qp *qp);
 void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp, unsigned long flags);
+<<<<<<< HEAD
 struct bnxt_re_user_mmap_entry*
 bnxt_re_mmap_entry_insert(struct bnxt_re_ucontext *uctx, u64 mem_offset,
 			  enum bnxt_re_mmap_flag mmap_flag, u64 *offset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __BNXT_RE_IB_VERBS_H__ */

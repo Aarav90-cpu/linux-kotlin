@@ -355,8 +355,14 @@ int aie2_error_async_events_alloc(struct amdxdna_dev_hdl *ndev)
 		return -ENOMEM;
 
 	events->buf = aie2_alloc_msg_buffer(ndev, &total_size, &events->addr);
+<<<<<<< HEAD
 	if (IS_ERR(events->buf)) {
 		ret = PTR_ERR(events->buf);
+=======
+
+	if (!events->buf) {
+		ret = -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto free_events;
 	}
 	events->size = total_size;

@@ -43,13 +43,21 @@ properties:
   no-hpd: true
   hpd-gpios: true
 
+<<<<<<< HEAD
+=======
+additionalProperties: false
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - enable-gpios
   - power-supply
 
+<<<<<<< HEAD
 additionalProperties: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 examples:
   - |
     #include <dt-bindings/clock/qcom,rpmh.h>

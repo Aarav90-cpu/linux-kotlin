@@ -449,6 +449,11 @@ static int coda_dentry_revalidate(struct inode *dir, const struct qstr *name,
 	inode = d_inode(de);
 	if (!inode || is_root_inode(inode))
 		goto out;
+<<<<<<< HEAD
+=======
+	if (is_bad_inode(inode))
+		goto bad;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cii = ITOC(d_inode(de));
 	if (!(cii->c_flags & (C_PURGE | C_FLUSH)))
@@ -468,6 +473,10 @@ static int coda_dentry_revalidate(struct inode *dir, const struct qstr *name,
 	spin_lock(&cii->c_lock);
 	cii->c_flags &= ~(C_VATTR | C_PURGE | C_FLUSH);
 	spin_unlock(&cii->c_lock);
+<<<<<<< HEAD
+=======
+bad:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 out:
 	return 1;
@@ -479,12 +488,27 @@ out:
  */
 static int coda_dentry_delete(const struct dentry * dentry)
 {
+<<<<<<< HEAD
 	struct inode *inode = d_inode(dentry);
 
 	if (!inode)
 		return 0;
 
 	if (ITOC(inode)->c_flags & C_PURGE)
+=======
+	struct inode *inode;
+	struct coda_inode_info *cii;
+
+	if (d_really_is_negative(dentry)) 
+		return 0;
+
+	inode = d_inode(dentry);
+	if (!inode || is_bad_inode(inode))
+		return 1;
+
+	cii = ITOC(inode);
+	if (cii->c_flags & C_PURGE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 1;
 
 	return 0;
@@ -524,7 +548,11 @@ int coda_revalidate_inode(struct inode *inode)
 		coda_vattr_to_iattr(inode, &attr);
 
 		if ((old_mode & S_IFMT) != (inode->i_mode & S_IFMT)) {
+<<<<<<< HEAD
 			pr_warn("inode %llu, fid %s changed type!\n",
+=======
+			pr_warn("inode %ld, fid %s changed type!\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				inode->i_ino, coda_f2s(&(cii->c_fid)));
 		}
 

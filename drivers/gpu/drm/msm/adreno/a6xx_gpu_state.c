@@ -57,7 +57,11 @@ struct a6xx_gpu_state {
 	struct msm_gpu_state_bo *gmu_hfi;
 	struct msm_gpu_state_bo *gmu_debug;
 
+<<<<<<< HEAD
 	s32 hfi_queue_history[HFI_MAX_QUEUES][HFI_HISTORY_SZ];
+=======
+	s32 hfi_queue_history[2][HFI_HISTORY_SZ];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct list_head objs;
 
@@ -361,7 +365,11 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
 			sizeof(*a6xx_state->debugbus));
 
 	if (a6xx_state->debugbus) {
+<<<<<<< HEAD
 		int i, j;
+=======
+		int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for (i = 0; i < ARRAY_SIZE(a6xx_debugbus_blocks); i++)
 			a6xx_get_debugbus_block(gpu,
@@ -369,6 +377,11 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
 				&a6xx_debugbus_blocks[i],
 				&a6xx_state->debugbus[i]);
 
+<<<<<<< HEAD
+=======
+		a6xx_state->nr_debugbus = ARRAY_SIZE(a6xx_debugbus_blocks);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * GBIF has same debugbus as of other GPU blocks, fall back to
 		 * default path if GPU uses GBIF, also GBIF uses exactly same
@@ -379,11 +392,16 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
 				&a6xx_gbif_debugbus_block,
 				&a6xx_state->debugbus[i]);
 
+<<<<<<< HEAD
 			i++;
+=======
+			a6xx_state->nr_debugbus += 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 
 		if (adreno_is_a650_family(to_adreno_gpu(gpu))) {
+<<<<<<< HEAD
 			for (j = 0; j < ARRAY_SIZE(a650_debugbus_blocks); i++, j++)
 				a6xx_get_debugbus_block(gpu,
 					a6xx_state,
@@ -392,6 +410,14 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
 		}
 
 		a6xx_state->nr_debugbus = i;
+=======
+			for (i = 0; i < ARRAY_SIZE(a650_debugbus_blocks); i++)
+				a6xx_get_debugbus_block(gpu,
+					a6xx_state,
+					&a650_debugbus_blocks[i],
+					&a6xx_state->debugbus[i]);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -1013,7 +1039,11 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
 	int i, regcount = 0;
 
+<<<<<<< HEAD
 	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
+=======
+	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < regs->count; i += 2) {
 		u32 count = RANGE(regs->registers, i);
@@ -1251,7 +1281,11 @@ static void a6xx_get_gmu_registers(struct msm_gpu *gpu,
 		_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gpucc_reg,
 			&a6xx_state->gmu_registers[2], false);
 
+<<<<<<< HEAD
 	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+=======
+	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/* Set the fence to ALLOW mode so we can access the registers */
@@ -1607,7 +1641,11 @@ struct msm_gpu_state *a6xx_gpu_state_get(struct msm_gpu *gpu)
 	}
 
 	/* If GX isn't on the rest of the data isn't going to be accessible */
+<<<<<<< HEAD
 	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+=======
+	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return &a6xx_state->base;
 
 	/* Halt SQE first */

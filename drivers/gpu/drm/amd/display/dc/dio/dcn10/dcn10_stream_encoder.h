@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+ * Copyright 2012-15 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -190,7 +194,10 @@ struct dcn10_stream_enc_registers {
 	uint32_t DIG_FE_CLK_CNTL;
 	uint32_t DIG_FE_EN_CNTL;
 	uint32_t STREAM_MAPPER_CONTROL;
+<<<<<<< HEAD
 	uint32_t DIG_FE_AUDIO_CNTL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 
@@ -599,11 +606,14 @@ struct dcn10_stream_enc_registers {
 	type DP_VID_N_INTERVAL;\
 	type DIG_FIFO_OUTPUT_PIXEL_PER_CYCLE;\
 	type DP_STEER_FIFO_ENABLE
+<<<<<<< HEAD
 
 #define SE_REG_FIELD_LIST_DCN_AUDIO_COMMON(type) \
 	type DIG_FE_INPUT_MUX_AUDIO_STREAM_SOURCE_SEL;\
 	type APG_CLOCK_ENABLE
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct dcn10_stream_encoder_shift {
 	SE_REG_FIELD_LIST_DCN1_0(uint8_t);
 	uint8_t HDMI_ACP_SEND;
@@ -612,7 +622,10 @@ struct dcn10_stream_encoder_shift {
 	SE_REG_FIELD_LIST_DCN3_1_COMMON(uint8_t);
 	SE_REG_FIELD_LIST_DCN3_5_COMMON(uint8_t);
 	SE_REG_FIELD_LIST_DCN4_01_COMMON(uint32_t);
+<<<<<<< HEAD
 	SE_REG_FIELD_LIST_DCN_AUDIO_COMMON(uint32_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn10_stream_encoder_mask {
@@ -623,7 +636,10 @@ struct dcn10_stream_encoder_mask {
 	SE_REG_FIELD_LIST_DCN3_1_COMMON(uint32_t);
 	SE_REG_FIELD_LIST_DCN3_5_COMMON(uint32_t);
 	SE_REG_FIELD_LIST_DCN4_01_COMMON(uint32_t);
+<<<<<<< HEAD
 	SE_REG_FIELD_LIST_DCN_AUDIO_COMMON(uint32_t);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dcn10_stream_encoder {

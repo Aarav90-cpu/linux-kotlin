@@ -864,6 +864,10 @@ void __futex_unqueue(struct futex_q *q)
 
 /* The key must be already stored in q->key. */
 void futex_q_lock(struct futex_q *q, struct futex_hash_bucket *hb)
+<<<<<<< HEAD
+=======
+	__acquires(&hb->lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Increment the counter before taking the lock so that
@@ -878,10 +882,17 @@ void futex_q_lock(struct futex_q *q, struct futex_hash_bucket *hb)
 	q->lock_ptr = &hb->lock;
 
 	spin_lock(&hb->lock);
+<<<<<<< HEAD
 	__acquire(q->lock_ptr);
 }
 
 void futex_q_unlock(struct futex_hash_bucket *hb)
+=======
+}
+
+void futex_q_unlock(struct futex_hash_bucket *hb)
+	__releases(&hb->lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	futex_hb_waiters_dec(hb);
 	spin_unlock(&hb->lock);
@@ -1442,15 +1453,23 @@ static void futex_cleanup(struct task_struct *tsk)
 void futex_exit_recursive(struct task_struct *tsk)
 {
 	/* If the state is FUTEX_STATE_EXITING then futex_exit_mutex is held */
+<<<<<<< HEAD
 	if (tsk->futex_state == FUTEX_STATE_EXITING) {
 		__assume_ctx_lock(&tsk->futex_exit_mutex);
 		mutex_unlock(&tsk->futex_exit_mutex);
 	}
+=======
+	if (tsk->futex_state == FUTEX_STATE_EXITING)
+		mutex_unlock(&tsk->futex_exit_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tsk->futex_state = FUTEX_STATE_DEAD;
 }
 
 static void futex_cleanup_begin(struct task_struct *tsk)
+<<<<<<< HEAD
 	__acquires(&tsk->futex_exit_mutex)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Prevent various race issues against a concurrent incoming waiter
@@ -1477,7 +1496,10 @@ static void futex_cleanup_begin(struct task_struct *tsk)
 }
 
 static void futex_cleanup_end(struct task_struct *tsk, int state)
+<<<<<<< HEAD
 	__releases(&tsk->futex_exit_mutex)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Lockless store. The only side effect is that an observer might

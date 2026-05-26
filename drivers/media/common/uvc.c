@@ -41,10 +41,13 @@ static const struct uvc_format_desc uvc_fmts[] = {
 		.fcc		= V4L2_PIX_FMT_M420,
 	},
 	{
+<<<<<<< HEAD
 		.guid		= UVC_GUID_FORMAT_P010,
 		.fcc		= V4L2_PIX_FMT_P010,
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.guid		= UVC_GUID_FORMAT_UYVY,
 		.fcc		= V4L2_PIX_FMT_UYVY,
 	},

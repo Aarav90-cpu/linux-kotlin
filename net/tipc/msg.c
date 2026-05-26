@@ -177,6 +177,7 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
 
 	if (fragid == LAST_FRAGMENT) {
 		TIPC_SKB_CB(head)->validated = 0;
+<<<<<<< HEAD
 
 		/* If the reassembled skb has been freed in
 		 * tipc_msg_validate() because of an invalid truesize,
@@ -191,6 +192,10 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
 			goto err;
 		}
 
+=======
+		if (unlikely(!tipc_msg_validate(&head)))
+			goto err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*buf = head;
 		TIPC_SKB_CB(head)->tail = NULL;
 		*headbuf = NULL;

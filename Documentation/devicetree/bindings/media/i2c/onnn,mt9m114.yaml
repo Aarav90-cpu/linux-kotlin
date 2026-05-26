@@ -17,9 +17,13 @@ description: |-
 
 properties:
   compatible:
+<<<<<<< HEAD
     enum:
       - onnn,mt9m114
       - aptina,mi1040
+=======
+    const: onnn,mt9m114
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     description: I2C device address

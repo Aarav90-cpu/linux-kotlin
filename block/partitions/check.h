@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include <linux/pagemap.h>
 #include <linux/blkdev.h>
+<<<<<<< HEAD
 #include <linux/seq_buf.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "../blk.h"
 
 /*
@@ -21,7 +24,11 @@ struct parsed_partitions {
 	int next;
 	int limit;
 	bool access_beyond_eod;
+<<<<<<< HEAD
 	struct seq_buf pp_buf;
+=======
+	char *pp_buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 typedef struct {
@@ -38,9 +45,18 @@ static inline void
 put_partition(struct parsed_partitions *p, int n, sector_t from, sector_t size)
 {
 	if (n < p->limit) {
+<<<<<<< HEAD
 		p->parts[n].from = from;
 		p->parts[n].size = size;
 		seq_buf_printf(&p->pp_buf, " %s%d", p->name, n);
+=======
+		char tmp[1 + BDEVNAME_SIZE + 10 + 1];
+
+		p->parts[n].from = from;
+		p->parts[n].size = size;
+		snprintf(tmp, sizeof(tmp), " %s%d", p->name, n);
+		strlcat(p->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

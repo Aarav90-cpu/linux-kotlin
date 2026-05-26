@@ -71,16 +71,25 @@ static inline void __flush_hugetlb_tlb_range(struct vm_area_struct *vma,
 					     unsigned long start,
 					     unsigned long end,
 					     unsigned long stride,
+<<<<<<< HEAD
 					     tlbf_t flags)
+=======
+					     bool last_level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	switch (stride) {
 #ifndef __PAGETABLE_PMD_FOLDED
 	case PUD_SIZE:
+<<<<<<< HEAD
 		__flush_tlb_range(vma, start, end, PUD_SIZE, 1, flags);
+=======
+		__flush_tlb_range(vma, start, end, PUD_SIZE, last_level, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 #endif
 	case CONT_PMD_SIZE:
 	case PMD_SIZE:
+<<<<<<< HEAD
 		__flush_tlb_range(vma, start, end, PMD_SIZE, 2, flags);
 		break;
 	case CONT_PTE_SIZE:
@@ -88,6 +97,15 @@ static inline void __flush_hugetlb_tlb_range(struct vm_area_struct *vma,
 		break;
 	default:
 		__flush_tlb_range(vma, start, end, PAGE_SIZE, TLBI_TTL_UNKNOWN, flags);
+=======
+		__flush_tlb_range(vma, start, end, PMD_SIZE, last_level, 2);
+		break;
+	case CONT_PTE_SIZE:
+		__flush_tlb_range(vma, start, end, PAGE_SIZE, last_level, 3);
+		break;
+	default:
+		__flush_tlb_range(vma, start, end, PAGE_SIZE, last_level, TLBI_TTL_UNKNOWN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -98,7 +116,11 @@ static inline void flush_hugetlb_tlb_range(struct vm_area_struct *vma,
 {
 	unsigned long stride = huge_page_size(hstate_vma(vma));
 
+<<<<<<< HEAD
 	__flush_hugetlb_tlb_range(vma, start, end, stride, TLBF_NONE);
+=======
+	__flush_hugetlb_tlb_range(vma, start, end, stride, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif /* __ASM_HUGETLB_H */

@@ -95,12 +95,18 @@ int amdxdna_hwctx_walk(struct amdxdna_client *client, void *arg,
 
 void *amdxdna_cmd_get_payload(struct amdxdna_gem_obj *abo, u32 *size)
 {
+<<<<<<< HEAD
 	struct amdxdna_cmd *cmd = amdxdna_gem_vmap(abo);
 	u32 num_masks, count;
 
 	if (!cmd)
 		return NULL;
 
+=======
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+	u32 num_masks, count;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (amdxdna_cmd_get_op(abo) == ERT_CMD_CHAIN)
 		num_masks = 0;
 	else
@@ -122,6 +128,7 @@ void *amdxdna_cmd_get_payload(struct amdxdna_gem_obj *abo, u32 *size)
 
 u32 amdxdna_cmd_get_cu_idx(struct amdxdna_gem_obj *abo)
 {
+<<<<<<< HEAD
 	struct amdxdna_cmd *cmd = amdxdna_gem_vmap(abo);
 	u32 num_masks, i;
 	u32 *cu_mask;
@@ -129,6 +136,12 @@ u32 amdxdna_cmd_get_cu_idx(struct amdxdna_gem_obj *abo)
 	if (!cmd)
 		return INVALID_CU_IDX;
 
+=======
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+	u32 num_masks, i;
+	u32 *cu_mask;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (amdxdna_cmd_get_op(abo) == ERT_CMD_CHAIN)
 		return INVALID_CU_IDX;
 
@@ -144,6 +157,7 @@ u32 amdxdna_cmd_get_cu_idx(struct amdxdna_gem_obj *abo)
 
 int amdxdna_cmd_set_error(struct amdxdna_gem_obj *abo,
 			  struct amdxdna_sched_job *job, u32 cmd_idx,
+<<<<<<< HEAD
 			  enum ert_cmd_state error_state,
 			  void *err_data, size_t size)
 {
@@ -154,12 +168,21 @@ int amdxdna_cmd_set_error(struct amdxdna_gem_obj *abo,
 	if (!cmd)
 		return -ENOMEM;
 
+=======
+			  enum ert_cmd_state error_state)
+{
+	struct amdxdna_client *client = job->hwctx->client;
+	struct amdxdna_cmd *cmd = abo->mem.kva;
+	struct amdxdna_cmd_chain *cc = NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd->header &= ~AMDXDNA_CMD_STATE;
 	cmd->header |= FIELD_PREP(AMDXDNA_CMD_STATE, error_state);
 
 	if (amdxdna_cmd_get_op(abo) == ERT_CMD_CHAIN) {
 		cc = amdxdna_cmd_get_payload(abo, NULL);
 		cc->error_index = (cmd_idx < cc->command_count) ? cmd_idx : 0;
+<<<<<<< HEAD
 		abo = amdxdna_gem_get_obj(client, cc->data[0], AMDXDNA_BO_SHARE);
 		if (!abo)
 			return -EINVAL;
@@ -172,6 +195,15 @@ int amdxdna_cmd_set_error(struct amdxdna_gem_obj *abo,
 	if (err_data)
 		memcpy(cmd->data, err_data, min(size, abo->mem.size - sizeof(*cmd)));
 
+=======
+		abo = amdxdna_gem_get_obj(client, cc->data[0], AMDXDNA_BO_CMD);
+		if (!abo)
+			return -EINVAL;
+		cmd = abo->mem.kva;
+	}
+
+	memset(cmd->data, 0xff, abo->mem.size - sizeof(*cmd));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (cc)
 		amdxdna_gem_put_obj(abo);
 
@@ -485,7 +517,11 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
 	job->drv_cmd = drv_cmd;
 
 	if (cmd_bo_hdl != AMDXDNA_INVALID_BO_HANDLE) {
+<<<<<<< HEAD
 		job->cmd_bo = amdxdna_gem_get_obj(client, cmd_bo_hdl, AMDXDNA_BO_SHARE);
+=======
+		job->cmd_bo = amdxdna_gem_get_obj(client, cmd_bo_hdl, AMDXDNA_BO_CMD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!job->cmd_bo) {
 			XDNA_ERR(xdna, "Failed to get cmd bo from %d", cmd_bo_hdl);
 			ret = -EINVAL;

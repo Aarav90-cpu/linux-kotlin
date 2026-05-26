@@ -246,10 +246,17 @@ amdgpu_connector_find_encoder(struct drm_connector *connector,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static const struct drm_edid *
 amdgpu_connector_get_hardcoded_edid(struct amdgpu_device *adev)
 {
 	return drm_edid_dup(adev->mode_info.bios_hardcoded_edid);
+=======
+static struct edid *
+amdgpu_connector_get_hardcoded_edid(struct amdgpu_device *adev)
+{
+	return drm_edid_duplicate(drm_edid_raw(adev->mode_info.bios_hardcoded_edid));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void amdgpu_connector_get_edid(struct drm_connector *connector)
@@ -268,8 +275,13 @@ static void amdgpu_connector_get_edid(struct drm_connector *connector)
 	if ((amdgpu_connector_encoder_get_dp_bridge_encoder_id(connector) !=
 	     ENCODER_OBJECT_ID_NONE) &&
 	    amdgpu_connector->ddc_bus->has_aux) {
+<<<<<<< HEAD
 		amdgpu_connector->edid = drm_edid_read_ddc(connector,
 							  &amdgpu_connector->ddc_bus->aux.ddc);
+=======
+		amdgpu_connector->edid = drm_get_edid(connector,
+						      &amdgpu_connector->ddc_bus->aux.ddc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if ((connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort) ||
 		   (connector->connector_type == DRM_MODE_CONNECTOR_eDP)) {
 		struct amdgpu_connector_atom_dig *dig = amdgpu_connector->con_priv;
@@ -277,6 +289,7 @@ static void amdgpu_connector_get_edid(struct drm_connector *connector)
 		if ((dig->dp_sink_type == CONNECTOR_OBJECT_ID_DISPLAYPORT ||
 		     dig->dp_sink_type == CONNECTOR_OBJECT_ID_eDP) &&
 		    amdgpu_connector->ddc_bus->has_aux)
+<<<<<<< HEAD
 			amdgpu_connector->edid = drm_edid_read_ddc(connector,
 								  &amdgpu_connector->ddc_bus->aux.ddc);
 		else if (amdgpu_connector->ddc_bus)
@@ -285,6 +298,16 @@ static void amdgpu_connector_get_edid(struct drm_connector *connector)
 	} else if (amdgpu_connector->ddc_bus) {
 		amdgpu_connector->edid = drm_edid_read_ddc(connector,
 							  &amdgpu_connector->ddc_bus->adapter);
+=======
+			amdgpu_connector->edid = drm_get_edid(connector,
+							      &amdgpu_connector->ddc_bus->aux.ddc);
+		else if (amdgpu_connector->ddc_bus)
+			amdgpu_connector->edid = drm_get_edid(connector,
+							      &amdgpu_connector->ddc_bus->adapter);
+	} else if (amdgpu_connector->ddc_bus) {
+		amdgpu_connector->edid = drm_get_edid(connector,
+						      &amdgpu_connector->ddc_bus->adapter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!amdgpu_connector->edid) {
@@ -292,22 +315,45 @@ static void amdgpu_connector_get_edid(struct drm_connector *connector)
 		if (((connector->connector_type == DRM_MODE_CONNECTOR_LVDS) ||
 		     (connector->connector_type == DRM_MODE_CONNECTOR_eDP))) {
 			amdgpu_connector->edid = amdgpu_connector_get_hardcoded_edid(adev);
+<<<<<<< HEAD
 			drm_edid_connector_update(connector, amdgpu_connector->edid);
+=======
+			drm_connector_update_edid_property(connector, amdgpu_connector->edid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void amdgpu_connector_free_edid(struct drm_connector *connector)
+{
+	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
+
+	kfree(amdgpu_connector->edid);
+	amdgpu_connector->edid = NULL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int amdgpu_connector_ddc_get_modes(struct drm_connector *connector)
 {
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
 	int ret;
 
 	if (amdgpu_connector->edid) {
+<<<<<<< HEAD
 		drm_edid_connector_update(connector, amdgpu_connector->edid);
 		ret = drm_edid_connector_add_modes(connector);
 		return ret;
 	}
 	drm_edid_connector_update(connector, NULL);
+=======
+		drm_connector_update_edid_property(connector, amdgpu_connector->edid);
+		ret = drm_add_edid_modes(connector, amdgpu_connector->edid);
+		return ret;
+	}
+	drm_connector_update_edid_property(connector, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -746,7 +792,11 @@ static void amdgpu_connector_destroy(struct drm_connector *connector)
 {
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
 
+<<<<<<< HEAD
 	drm_edid_free(amdgpu_connector->edid);
+=======
+	amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(amdgpu_connector->con_priv);
 	drm_connector_unregister(connector);
 	drm_connector_cleanup(connector);
@@ -865,8 +915,12 @@ amdgpu_connector_vga_detect(struct drm_connector *connector, bool force)
 		dret = amdgpu_display_ddc_probe(amdgpu_connector, false);
 	if (dret) {
 		amdgpu_connector->detected_by_load = false;
+<<<<<<< HEAD
 		drm_edid_free(amdgpu_connector->edid);
 		amdgpu_connector->edid = NULL;
+=======
+		amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_connector_get_edid(connector);
 
 		if (!amdgpu_connector->edid) {
@@ -876,14 +930,22 @@ amdgpu_connector_vga_detect(struct drm_connector *connector, bool force)
 			ret = connector_status_connected;
 		} else {
 			amdgpu_connector->use_digital =
+<<<<<<< HEAD
 				drm_edid_is_digital(amdgpu_connector->edid);
+=======
+				!!(amdgpu_connector->edid->input & DRM_EDID_INPUT_DIGITAL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* some oems have boards with separate digital and analog connectors
 			 * with a shared ddc line (often vga + hdmi)
 			 */
 			if (amdgpu_connector->use_digital && amdgpu_connector->shared_ddc) {
+<<<<<<< HEAD
 				drm_edid_free(amdgpu_connector->edid);
 				amdgpu_connector->edid = NULL;
+=======
+				amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ret = connector_status_disconnected;
 			} else {
 				ret = connector_status_connected;
@@ -978,8 +1040,12 @@ static void amdgpu_connector_shared_ddc(enum drm_connector_status *status,
 					/* hpd is our only option in this case */
 					if (!amdgpu_display_hpd_sense(adev,
 								      amdgpu_connector->hpd.hpd)) {
+<<<<<<< HEAD
 						drm_edid_free(amdgpu_connector->edid);
 						amdgpu_connector->edid = NULL;
+=======
+						amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						*status = connector_status_disconnected;
 					}
 				}
@@ -1048,8 +1114,12 @@ amdgpu_connector_dvi_detect(struct drm_connector *connector, bool force)
 	}
 	if (dret) {
 		amdgpu_connector->detected_by_load = false;
+<<<<<<< HEAD
 		drm_edid_free(amdgpu_connector->edid);
 		amdgpu_connector->edid = NULL;
+=======
+		amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		amdgpu_connector_get_edid(connector);
 
 		if (!amdgpu_connector->edid) {
@@ -1059,14 +1129,22 @@ amdgpu_connector_dvi_detect(struct drm_connector *connector, bool force)
 			broken_edid = true; /* defer use_digital to later */
 		} else {
 			amdgpu_connector->use_digital =
+<<<<<<< HEAD
 				drm_edid_is_digital(amdgpu_connector->edid);
+=======
+				!!(amdgpu_connector->edid->input & DRM_EDID_INPUT_DIGITAL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* some oems have boards with separate digital and analog connectors
 			 * with a shared ddc line (often vga + hdmi)
 			 */
 			if ((!amdgpu_connector->use_digital) && amdgpu_connector->shared_ddc) {
+<<<<<<< HEAD
 				drm_edid_free(amdgpu_connector->edid);
 				amdgpu_connector->edid = NULL;
+=======
+				amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ret = connector_status_disconnected;
 			} else {
 				ret = connector_status_connected;
@@ -1236,8 +1314,11 @@ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector
 		case CONNECTOR_OBJECT_ID_HDMI_TYPE_B:
 			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock * 2;
 			break;
+<<<<<<< HEAD
 		default:
 			return MODE_BAD;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		/* When the display EDID claims that it's an HDMI display,
@@ -1416,8 +1497,12 @@ amdgpu_connector_dp_detect(struct drm_connector *connector, bool force)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	drm_edid_free(amdgpu_connector->edid);
 	amdgpu_connector->edid = NULL;
+=======
+	amdgpu_connector_free_edid(connector);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((connector->connector_type == DRM_MODE_CONNECTOR_eDP) ||
 	    (connector->connector_type == DRM_MODE_CONNECTOR_LVDS)) {

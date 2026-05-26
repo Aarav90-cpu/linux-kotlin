@@ -715,32 +715,48 @@ static void hfsplus_asc2uni_basic_test(struct kunit *test)
 
 	/* Test simple ASCII string conversion */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "hello", 5,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "hello", 5);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &mock_env->str1, "hello");
 
 	/* Test empty string */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "", 0,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 0, be16_to_cpu(mock_env->str1.length));
 
 	/* Test single character */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "A", 1,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "A", 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &mock_env->str1, "A");
 
 	/* Test null-terminated string with explicit length */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "test\0extra", 4,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "test\0extra", 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &mock_env->str1, "test");
@@ -766,8 +782,12 @@ static void hfsplus_asc2uni_special_chars_test(struct kunit *test)
 
 	/* Test colon conversion (should become forward slash) */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, ":", 1,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, ":", 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 1, be16_to_cpu(mock_env->str1.length));
@@ -775,8 +795,12 @@ static void hfsplus_asc2uni_special_chars_test(struct kunit *test)
 
 	/* Test string with mixed special characters */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "a:b", 3,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "a:b", 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 3, be16_to_cpu(mock_env->str1.length));
@@ -786,8 +810,12 @@ static void hfsplus_asc2uni_special_chars_test(struct kunit *test)
 
 	/* Test multiple special characters */
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, ":::", 3,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, ":::", 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 3, be16_to_cpu(mock_env->str1.length));
@@ -818,8 +846,12 @@ static void hfsplus_asc2uni_buffer_limits_test(struct kunit *test)
 	memset(mock_env->buf, 'a', HFSPLUS_MAX_STRLEN);
 	result = hfsplus_asc2uni(&mock_sb->sb,
 				 &mock_env->str1, HFSPLUS_MAX_STRLEN,
+<<<<<<< HEAD
 				 mock_env->buf, HFSPLUS_MAX_STRLEN,
 				 HFS_REGULAR_NAME);
+=======
+				 mock_env->buf, HFSPLUS_MAX_STRLEN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, HFSPLUS_MAX_STRLEN,
@@ -829,8 +861,12 @@ static void hfsplus_asc2uni_buffer_limits_test(struct kunit *test)
 	memset(mock_env->buf, 'a', HFSPLUS_MAX_STRLEN + 5);
 	result = hfsplus_asc2uni(&mock_sb->sb,
 				 &mock_env->str1, HFSPLUS_MAX_STRLEN,
+<<<<<<< HEAD
 				 mock_env->buf, HFSPLUS_MAX_STRLEN + 5,
 				 HFS_REGULAR_NAME);
+=======
+				 mock_env->buf, HFSPLUS_MAX_STRLEN + 5);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, -ENAMETOOLONG, result);
 	KUNIT_EXPECT_EQ(test, HFSPLUS_MAX_STRLEN,
@@ -838,15 +874,23 @@ static void hfsplus_asc2uni_buffer_limits_test(struct kunit *test)
 
 	/* Test with smaller max_unistr_len */
 	result = hfsplus_asc2uni(&mock_sb->sb,
+<<<<<<< HEAD
 				 &mock_env->str1, 5, "toolongstring", 13,
 				 HFS_REGULAR_NAME);
+=======
+				 &mock_env->str1, 5, "toolongstring", 13);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, -ENAMETOOLONG, result);
 	KUNIT_EXPECT_EQ(test, 5, be16_to_cpu(mock_env->str1.length));
 
 	/* Test zero max length */
+<<<<<<< HEAD
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1, 0, "test", 4,
 				 HFS_REGULAR_NAME);
+=======
+	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1, 0, "test", 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, -ENAMETOOLONG, result);
 	KUNIT_EXPECT_EQ(test, 0, be16_to_cpu(mock_env->str1.length));
@@ -870,32 +914,48 @@ static void hfsplus_asc2uni_edge_cases_test(struct kunit *test)
 
 	/* Test zero length input */
 	result = hfsplus_asc2uni(&mock_sb->sb,
+<<<<<<< HEAD
 				 &ustr, HFSPLUS_MAX_STRLEN, "test", 0,
 				 HFS_REGULAR_NAME);
+=======
+				 &ustr, HFSPLUS_MAX_STRLEN, "test", 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 0, be16_to_cpu(ustr.length));
 
 	/* Test input with length mismatch */
 	result = hfsplus_asc2uni(&mock_sb->sb,
+<<<<<<< HEAD
 				 &ustr, HFSPLUS_MAX_STRLEN, "hello", 3,
 				 HFS_REGULAR_NAME);
+=======
+				 &ustr, HFSPLUS_MAX_STRLEN, "hello", 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &ustr, "hel");
 
 	/* Test with various printable ASCII characters */
 	result = hfsplus_asc2uni(&mock_sb->sb,
+<<<<<<< HEAD
 				 &ustr, HFSPLUS_MAX_STRLEN, "ABC123!@#", 9,
 				 HFS_REGULAR_NAME);
+=======
+				 &ustr, HFSPLUS_MAX_STRLEN, "ABC123!@#", 9);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &ustr, "ABC123!@#");
 
 	/* Test null character in the middle */
 	result = hfsplus_asc2uni(&mock_sb->sb,
+<<<<<<< HEAD
 				 &ustr, HFSPLUS_MAX_STRLEN, test_str, 3,
 				 HFS_REGULAR_NAME);
+=======
+				 &ustr, HFSPLUS_MAX_STRLEN, test_str, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	KUNIT_EXPECT_EQ(test, 3, be16_to_cpu(ustr.length));
@@ -924,8 +984,12 @@ static void hfsplus_asc2uni_decompose_test(struct kunit *test)
 	/* Test with decomposition disabled (default) */
 	clear_bit(HFSPLUS_SB_NODECOMPOSE, &mock_sb->sb_info.flags);
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str1,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "test", 4,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "test", 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &mock_env->str1, "test");
@@ -933,8 +997,12 @@ static void hfsplus_asc2uni_decompose_test(struct kunit *test)
 	/* Test with decomposition enabled */
 	set_bit(HFSPLUS_SB_NODECOMPOSE, &mock_sb->sb_info.flags);
 	result = hfsplus_asc2uni(&mock_sb->sb, &mock_env->str2,
+<<<<<<< HEAD
 				 HFSPLUS_MAX_STRLEN, "test", 4,
 				 HFS_REGULAR_NAME);
+=======
+				 HFSPLUS_MAX_STRLEN, "test", 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	KUNIT_EXPECT_EQ(test, 0, result);
 	check_unistr_content(test, &mock_env->str2, "test");

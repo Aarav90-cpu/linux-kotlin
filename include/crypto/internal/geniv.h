@@ -9,9 +9,17 @@
 #define _CRYPTO_INTERNAL_GENIV_H
 
 #include <crypto/internal/aead.h>
+<<<<<<< HEAD
 #include <linux/types.h>
 
 struct aead_geniv_ctx {
+=======
+#include <linux/spinlock.h>
+#include <linux/types.h>
+
+struct aead_geniv_ctx {
+	spinlock_t lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct crypto_aead *child;
 	u8 salt[] __attribute__ ((aligned(__alignof__(u32))));
 };

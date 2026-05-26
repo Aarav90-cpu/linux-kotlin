@@ -60,6 +60,10 @@ static const struct tile_info sc8180x_tile_info[] = {
 		.io_reg = REG_SIZE * id + 0x4 + offset,	\
 		.intr_cfg_reg = REG_SIZE * id + 0x8 + offset,	\
 		.intr_status_reg = REG_SIZE * id + 0xc + offset,\
+<<<<<<< HEAD
+=======
+		.intr_target_reg = REG_SIZE * id + 0x8 + offset,\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.tile = _tile,				\
 		.mux_bit = 2,				\
 		.pull_bit = 0,				\
@@ -89,6 +93,10 @@ static const struct tile_info sc8180x_tile_info[] = {
 		.io_reg = 0,				\
 		.intr_cfg_reg = 0,			\
 		.intr_status_reg = 0,			\
+<<<<<<< HEAD
+=======
+		.intr_target_reg = 0,			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.tile = EAST,				\
 		.mux_bit = -1,				\
 		.pull_bit = pull,			\
@@ -114,6 +122,10 @@ static const struct tile_info sc8180x_tile_info[] = {
 		.io_reg = 0xb6004,			\
 		.intr_cfg_reg = 0,			\
 		.intr_status_reg = 0,			\
+<<<<<<< HEAD
+=======
+		.intr_target_reg = 0,			\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.tile = SOUTH,				\
 		.mux_bit = -1,				\
 		.pull_bit = 3,				\

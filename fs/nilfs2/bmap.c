@@ -33,7 +33,11 @@ static int nilfs_bmap_convert_error(struct nilfs_bmap *bmap,
 
 	if (err == -EINVAL) {
 		__nilfs_error(inode->i_sb, fname,
+<<<<<<< HEAD
 			      "broken bmap (inode number=%llu)", inode->i_ino);
+=======
+			      "broken bmap (inode number=%lu)", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -EIO;
 	}
 	return err;
@@ -450,12 +454,17 @@ __u64 nilfs_bmap_find_target_seq(const struct nilfs_bmap *bmap, __u64 key)
 		return NILFS_BMAP_INVALID_PTR;
 }
 
+<<<<<<< HEAD
 #define NILFS_BMAP_GROUP_DIV	8	/* must be power of 2 */
 
+=======
+#define NILFS_BMAP_GROUP_DIV	8
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __u64 nilfs_bmap_find_target_in_group(const struct nilfs_bmap *bmap)
 {
 	struct inode *dat = nilfs_bmap_get_dat(bmap);
 	unsigned long entries_per_group = nilfs_palloc_entries_per_group(dat);
+<<<<<<< HEAD
 	unsigned long group;
 	u32 index;
 
@@ -469,6 +478,15 @@ __u64 nilfs_bmap_find_target_in_group(const struct nilfs_bmap *bmap)
 }
 
 
+=======
+	unsigned long group = bmap->b_inode->i_ino / entries_per_group;
+
+	return group * entries_per_group +
+		(bmap->b_inode->i_ino % NILFS_BMAP_GROUP_DIV) *
+		(entries_per_group / NILFS_BMAP_GROUP_DIV);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct lock_class_key nilfs_bmap_dat_lock_key;
 static struct lock_class_key nilfs_bmap_mdt_lock_key;
 

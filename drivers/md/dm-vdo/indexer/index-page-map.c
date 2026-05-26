@@ -38,13 +38,21 @@ int uds_make_index_page_map(const struct index_geometry *geometry,
 	int result;
 	struct index_page_map *map;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "page map", &map);
+=======
+	result = vdo_allocate(1, struct index_page_map, "page map", &map);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
 	map->geometry = geometry;
 	map->entries_per_chapter = geometry->index_pages_per_chapter - 1;
+<<<<<<< HEAD
 	result = vdo_allocate(get_entry_count(geometry), "Index Page Map Entries",
+=======
+	result = vdo_allocate(get_entry_count(geometry), u16, "Index Page Map Entries",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      &map->entries);
 	if (result != VDO_SUCCESS) {
 		uds_free_index_page_map(map);
@@ -118,7 +126,11 @@ int uds_write_index_page_map(struct index_page_map *map, struct buffered_writer 
 	u64 saved_size = uds_compute_index_page_map_save_size(map->geometry);
 	u32 i;
 
+<<<<<<< HEAD
 	result = vdo_allocate(saved_size, "page map data", &buffer);
+=======
+	result = vdo_allocate(saved_size, u8, "page map data", &buffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 
@@ -145,7 +157,11 @@ int uds_read_index_page_map(struct index_page_map *map, struct buffered_reader *
 	u64 saved_size = uds_compute_index_page_map_save_size(map->geometry);
 	u32 i;
 
+<<<<<<< HEAD
 	result = vdo_allocate(saved_size, "page map data", &buffer);
+=======
+	result = vdo_allocate(saved_size, u8, "page map data", &buffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

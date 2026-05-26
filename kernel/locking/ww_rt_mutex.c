@@ -90,7 +90,10 @@ ww_mutex_lock_interruptible(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
 EXPORT_SYMBOL(ww_mutex_lock_interruptible);
 
 void __sched ww_mutex_unlock(struct ww_mutex *lock)
+<<<<<<< HEAD
 	__no_context_analysis
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rt_mutex *rtm = &lock->base;
 

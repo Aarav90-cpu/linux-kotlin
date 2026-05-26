@@ -79,7 +79,11 @@ u32 _rtw_init_sta_priv(struct	sta_priv *pstapriv)
 	for (i = 0; i < NUM_STA; i++) {
 		_rtw_init_stainfo(psta);
 
+<<<<<<< HEAD
 		INIT_LIST_HEAD(&pstapriv->sta_hash[i]);
+=======
+		INIT_LIST_HEAD(&(pstapriv->sta_hash[i]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		list_add_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
 
@@ -149,7 +153,11 @@ u32 _rtw_free_sta_priv(struct	sta_priv *pstapriv)
 		/*delete all reordering_ctrl_timer		*/
 		spin_lock_bh(&pstapriv->sta_hash_lock);
 		for (index = 0; index < NUM_STA; index++) {
+<<<<<<< HEAD
 			phead = &pstapriv->sta_hash[index];
+=======
+			phead = &(pstapriv->sta_hash[index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			list_for_each(plist, phead) {
 				int i;
 
@@ -186,15 +194,26 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 	pfree_sta_queue = &pstapriv->free_sta_queue;
 
 	/* spin_lock_bh(&(pfree_sta_queue->lock)); */
+<<<<<<< HEAD
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 	if (list_empty(&pfree_sta_queue->queue)) {
 		/* spin_unlock_bh(&(pfree_sta_queue->lock)); */
 		spin_unlock_bh(&pstapriv->sta_hash_lock);
+=======
+	spin_lock_bh(&(pstapriv->sta_hash_lock));
+	if (list_empty(&pfree_sta_queue->queue)) {
+		/* spin_unlock_bh(&(pfree_sta_queue->lock)); */
+		spin_unlock_bh(&(pstapriv->sta_hash_lock));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 	}
 	psta = container_of(get_next(&pfree_sta_queue->queue), struct sta_info, list);
 
+<<<<<<< HEAD
 	list_del_init(&psta->list);
+=======
+	list_del_init(&(psta->list));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* spin_unlock_bh(&(pfree_sta_queue->lock)); */
 
@@ -207,11 +226,19 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 	index = wifi_mac_hash(hwaddr);
 
 	if (index >= NUM_STA) {
+<<<<<<< HEAD
 		spin_unlock_bh(&pstapriv->sta_hash_lock);
 		psta = NULL;
 		goto exit;
 	}
 	phash_list = &pstapriv->sta_hash[index];
+=======
+		spin_unlock_bh(&(pstapriv->sta_hash_lock));
+		psta = NULL;
+		goto exit;
+	}
+	phash_list = &(pstapriv->sta_hash[index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* spin_lock_bh(&(pstapriv->sta_hash_lock)); */
 
@@ -258,7 +285,11 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 
 	/* init for the sequence number of received management frame */
 	psta->RxMgmtFrameSeqNum = 0xffff;
+<<<<<<< HEAD
 	spin_unlock_bh(&pstapriv->sta_hash_lock);
+=======
+	spin_unlock_bh(&(pstapriv->sta_hash_lock));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* alloc mac id for non-bc/mc station, */
 	rtw_alloc_macid(pstapriv->padapter, psta);
 
@@ -300,7 +331,11 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 	/* vo */
 	/* spin_lock_bh(&(pxmitpriv->vo_pending.lock)); */
 	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
+<<<<<<< HEAD
 	list_del_init(&pstaxmitpriv->vo_q.tx_pending);
+=======
+	list_del_init(&(pstaxmitpriv->vo_q.tx_pending));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phwxmit = pxmitpriv->hwxmits;
 	phwxmit->accnt -= pstaxmitpriv->vo_q.qcnt;
 	pstaxmitpriv->vo_q.qcnt = 0;
@@ -309,7 +344,11 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 	/* vi */
 	/* spin_lock_bh(&(pxmitpriv->vi_pending.lock)); */
 	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
+<<<<<<< HEAD
 	list_del_init(&pstaxmitpriv->vi_q.tx_pending);
+=======
+	list_del_init(&(pstaxmitpriv->vi_q.tx_pending));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phwxmit = pxmitpriv->hwxmits + 1;
 	phwxmit->accnt -= pstaxmitpriv->vi_q.qcnt;
 	pstaxmitpriv->vi_q.qcnt = 0;
@@ -318,7 +357,11 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 	/* be */
 	/* spin_lock_bh(&(pxmitpriv->be_pending.lock)); */
 	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
+<<<<<<< HEAD
 	list_del_init(&pstaxmitpriv->be_q.tx_pending);
+=======
+	list_del_init(&(pstaxmitpriv->be_q.tx_pending));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phwxmit = pxmitpriv->hwxmits + 2;
 	phwxmit->accnt -= pstaxmitpriv->be_q.qcnt;
 	pstaxmitpriv->be_q.qcnt = 0;
@@ -327,7 +370,11 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 	/* bk */
 	/* spin_lock_bh(&(pxmitpriv->bk_pending.lock)); */
 	rtw_free_xmitframe_queue(pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
+<<<<<<< HEAD
 	list_del_init(&pstaxmitpriv->bk_q.tx_pending);
+=======
+	list_del_init(&(pstaxmitpriv->bk_q.tx_pending));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phwxmit = pxmitpriv->hwxmits + 3;
 	phwxmit->accnt -= pstaxmitpriv->bk_q.qcnt;
 	pstaxmitpriv->bk_q.qcnt = 0;
@@ -369,7 +416,11 @@ u32 rtw_free_stainfo(struct adapter *padapter, struct sta_info *psta)
 
 			plist = get_next(plist);
 
+<<<<<<< HEAD
 			list_del_init(&prframe->u.hdr.list);
+=======
+			list_del_init(&(prframe->u.hdr.list));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			rtw_free_recvframe(prframe, pfree_recv_queue);
 		}
@@ -435,7 +486,11 @@ void rtw_free_all_stainfo(struct adapter *padapter)
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
 	for (index = 0; index < NUM_STA; index++) {
+<<<<<<< HEAD
 		phead = &pstapriv->sta_hash[index];
+=======
+		phead = &(pstapriv->sta_hash[index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		list_for_each_safe(plist, tmp, phead) {
 			psta = list_entry(plist, struct sta_info, hash_list);
 
@@ -473,7 +528,11 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 
 	spin_lock_bh(&pstapriv->sta_hash_lock);
 
+<<<<<<< HEAD
 	phead = &pstapriv->sta_hash[index];
+=======
+	phead = &(pstapriv->sta_hash[index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each(plist, phead) {
 		psta = list_entry(plist, struct sta_info, hash_list);
 
@@ -491,7 +550,11 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 u32 rtw_init_bcmc_stainfo(struct adapter *padapter)
 {
 	struct sta_info *psta;
+<<<<<<< HEAD
 	u8 bcast_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+=======
+	NDIS_802_11_MAC_ADDRESS	bcast_addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	/* struct __queue	*pstapending = &padapter->xmitpriv.bm_pending; */
@@ -525,7 +588,11 @@ u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr)
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	struct __queue	*pacl_node_q = &pacl_list->acl_node_q;
 
+<<<<<<< HEAD
 	spin_lock_bh(&pacl_node_q->lock);
+=======
+	spin_lock_bh(&(pacl_node_q->lock));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	phead = get_list_head(pacl_node_q);
 	list_for_each(plist, phead) {
 		paclnode = list_entry(plist, struct rtw_wlan_acl_node, list);
@@ -536,7 +603,11 @@ u8 rtw_access_ctrl(struct adapter *padapter, u8 *mac_addr)
 				break;
 			}
 	}
+<<<<<<< HEAD
 	spin_unlock_bh(&pacl_node_q->lock);
+=======
+	spin_unlock_bh(&(pacl_node_q->lock));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (pacl_list->mode == 1) /* accept unless in deny list */
 		res = !match;

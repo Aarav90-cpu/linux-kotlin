@@ -151,8 +151,12 @@ static int wmi_obj_transform(const union acpi_object *obj, u8 *buffer)
 	return 0;
 }
 
+<<<<<<< HEAD
 int wmi_unmarshal_acpi_object(const union acpi_object *obj, struct wmi_buffer *buffer,
 			      size_t min_size)
+=======
+int wmi_unmarshal_acpi_object(const union acpi_object *obj, struct wmi_buffer *buffer)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	size_t length, alloc_length;
 	u8 *data;
@@ -162,9 +166,12 @@ int wmi_unmarshal_acpi_object(const union acpi_object *obj, struct wmi_buffer *b
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (length < min_size)
 		return -ENODATA;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ARCH_KMALLOC_MINALIGN < 8) {
 		/*
 		 * kmalloc() guarantees that the alignment of the resulting memory allocation is at

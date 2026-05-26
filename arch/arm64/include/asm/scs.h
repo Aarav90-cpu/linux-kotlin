@@ -10,11 +10,14 @@
 #ifdef CONFIG_SHADOW_CALL_STACK
 	scs_sp	.req	x18
 
+<<<<<<< HEAD
 	.macro scs_load_current_base
 	get_current_task scs_sp
 	ldr	scs_sp, [scs_sp, #TSK_TI_SCS_BASE]
 	.endm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.macro scs_load_current
 	get_current_task scs_sp
 	ldr	scs_sp, [scs_sp, #TSK_TI_SCS_SP]
@@ -24,9 +27,12 @@
 	str	scs_sp, [\tsk, #TSK_TI_SCS_SP]
 	.endm
 #else
+<<<<<<< HEAD
 	.macro scs_load_current_base
 	.endm
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.macro scs_load_current
 	.endm
 

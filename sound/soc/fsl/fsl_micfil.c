@@ -210,13 +210,17 @@ static int micfil_range_set(struct snd_kcontrol *kcontrol,
 		(struct soc_mixer_control *)kcontrol->private_value;
 	unsigned int shift = mc->shift;
 	int max_range, new_range;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	new_range = ucontrol->value.integer.value[0];
 	max_range = micfil_get_max_range(micfil);
 	if (new_range > max_range)
 		dev_warn(&micfil->pdev->dev, "range makes channel %d data unreliable\n", shift / 4);
 
+<<<<<<< HEAD
 	ret = pm_runtime_resume_and_get(cmpnt->dev);
 	if (ret)
 		return ret;
@@ -227,6 +231,11 @@ static int micfil_range_set(struct snd_kcontrol *kcontrol,
 	pm_runtime_put_autosuspend(cmpnt->dev);
 
 	return ret;
+=======
+	regmap_update_bits(micfil->regmap, REG_MICFIL_OUT_CTRL, 0xF << shift, new_range << shift);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int micfil_set_quality(struct fsl_micfil *micfil)
@@ -289,6 +298,7 @@ static int micfil_quality_set(struct snd_kcontrol *kcontrol,
 {
 	struct snd_soc_component *cmpnt = snd_kcontrol_chip(kcontrol);
 	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(cmpnt);
+<<<<<<< HEAD
 	int val = ucontrol->value.integer.value[0];
 	bool change = false;
 	int old_val;
@@ -317,6 +327,12 @@ static int micfil_quality_set(struct snd_kcontrol *kcontrol,
 	}
 
 	return change;
+=======
+
+	micfil->quality = ucontrol->value.integer.value[0];
+
+	return micfil_set_quality(micfil);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const char * const micfil_hwvad_enable[] = {
@@ -375,10 +391,13 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
 	if (val < 0 || val > 3)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = pm_runtime_resume_and_get(comp->dev);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	micfil->dc_remover = val;
 
 	/* Calculate total value for all channels */
@@ -388,10 +407,17 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
 	/* Update DC Remover mode for all channels */
 	ret = snd_soc_component_update_bits(comp, REG_MICFIL_DC_CTRL,
 					    MICFIL_DC_CTRL_CONFIG, reg_val);
+<<<<<<< HEAD
 
 	pm_runtime_put_autosuspend(comp->dev);
 
 	return ret;
+=======
+	if (ret < 0)
+		return ret;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int micfil_get_dc_remover_state(struct snd_kcontrol *kcontrol,
@@ -413,6 +439,7 @@ static int hwvad_put_enable(struct snd_kcontrol *kcontrol,
 	unsigned int *item = ucontrol->value.enumerated.item;
 	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
 	int val = snd_soc_enum_item_to_val(e, item[0]);
+<<<<<<< HEAD
 	bool change = false;
 
 	if (val < 0 || val > 1)
@@ -422,6 +449,12 @@ static int hwvad_put_enable(struct snd_kcontrol *kcontrol,
 	micfil->vad_enabled = val;
 
 	return change;
+=======
+
+	micfil->vad_enabled = val;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hwvad_get_enable(struct snd_kcontrol *kcontrol,
@@ -443,18 +476,27 @@ static int hwvad_put_init_mode(struct snd_kcontrol *kcontrol,
 	unsigned int *item = ucontrol->value.enumerated.item;
 	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
 	int val = snd_soc_enum_item_to_val(e, item[0]);
+<<<<<<< HEAD
 	bool change = false;
 
 	if (val < MICFIL_HWVAD_ENVELOPE_MODE || val > MICFIL_HWVAD_ENERGY_MODE)
 		return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 0 - Envelope-based Mode
 	 * 1 - Energy-based Mode
 	 */
+<<<<<<< HEAD
 	change = (micfil->vad_init_mode != val);
 	micfil->vad_init_mode = val;
 
 	return change;
+=======
+	micfil->vad_init_mode = val;
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hwvad_get_init_mode(struct snd_kcontrol *kcontrol,
@@ -549,6 +591,7 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
 	SOC_SINGLE("HWVAD ZCD Adjustment", REG_MICFIL_VAD0_ZCD, 8, 15, 0),
 	SOC_SINGLE("HWVAD ZCD And Behavior Switch",
 		   REG_MICFIL_VAD0_ZCD, 4, 1, 0),
+<<<<<<< HEAD
 	{
 		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
 		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
@@ -556,6 +599,9 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
 		.info = snd_soc_info_bool_ext,
 		.get = hwvad_detected,
 	},
+=======
+	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int fsl_micfil_use_verid(struct device *dev)

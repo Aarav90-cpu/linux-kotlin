@@ -25,7 +25,11 @@ struct dw_hdmi_qp_plat_data {
 	int main_irq;
 	int cec_irq;
 	unsigned long ref_clk_rate;
+<<<<<<< HEAD
 	/* Supported output formats: bitmask of @drm_output_color_format */
+=======
+	/* Supported output formats: bitmask of @hdmi_colorspace */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int supported_formats;
 	/* Maximum bits per color channel: 8, 10 or 12 */
 	unsigned int max_bpc;

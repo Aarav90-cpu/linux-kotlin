@@ -8,7 +8,11 @@
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/highmem.h>
 #include <linux/kthread.h>
 #include <linux/time.h>
@@ -180,7 +184,11 @@ static unsigned long btrfs_compr_pool_scan(struct shrinker *sh, struct shrink_co
 /*
  * Common wrappers for page allocation from compression wrappers
  */
+<<<<<<< HEAD
 struct folio *btrfs_alloc_compr_folio(struct btrfs_fs_info *fs_info, gfp_t gfp)
+=======
+struct folio *btrfs_alloc_compr_folio(struct btrfs_fs_info *fs_info)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct folio *folio = NULL;
 
@@ -200,7 +208,11 @@ struct folio *btrfs_alloc_compr_folio(struct btrfs_fs_info *fs_info, gfp_t gfp)
 		return folio;
 
 alloc:
+<<<<<<< HEAD
 	return folio_alloc(gfp, fs_info->block_min_order);
+=======
+	return folio_alloc(GFP_NOFS, fs_info->block_min_order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void btrfs_free_compr_folio(struct folio *folio)
@@ -292,7 +304,11 @@ static void end_bbio_compressed_write(struct btrfs_bio *bbio)
 	struct compressed_bio *cb = to_compressed_bio(bbio);
 	struct folio_iter fi;
 
+<<<<<<< HEAD
 	btrfs_finish_ordered_extent(cb->bbio.ordered, cb->start, cb->len,
+=======
+	btrfs_finish_ordered_extent(cb->bbio.ordered, NULL, cb->start, cb->len,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    cb->bbio.bio.bi_status == BLK_STS_OK);
 
 	if (cb->writeback)
@@ -330,6 +346,10 @@ void btrfs_submit_compressed_write(struct btrfs_ordered_extent *ordered,
 	cb->start = ordered->file_offset;
 	cb->len = ordered->num_bytes;
 	ASSERT(cb->bbio.bio.bi_iter.bi_size == ordered->disk_num_bytes);
+<<<<<<< HEAD
+=======
+	cb->compressed_len = ordered->disk_num_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cb->bbio.bio.bi_iter.bi_sector = ordered->disk_bytenr >> SECTOR_SHIFT;
 	cb->bbio.ordered = ordered;
 
@@ -368,8 +388,12 @@ struct compressed_bio *btrfs_alloc_compressed_write(struct btrfs_inode *inode,
 static noinline int add_ra_bio_pages(struct inode *inode,
 				     u64 compressed_end,
 				     struct compressed_bio *cb,
+<<<<<<< HEAD
 				     int *memstall, unsigned long *pflags,
 				     bool direct_reclaim)
+=======
+				     int *memstall, unsigned long *pflags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
 	pgoff_t end_index;
@@ -377,7 +401,10 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 	u64 cur = cb->orig_bbio->file_offset + orig_bio->bi_iter.bi_size;
 	u64 isize = i_size_read(inode);
 	int ret;
+<<<<<<< HEAD
 	gfp_t constraint_gfp, cache_gfp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct folio *folio;
 	struct extent_map *em;
 	struct address_space *mapping = inode->i_mapping;
@@ -407,6 +434,7 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 
 	end_index = (i_size_read(inode) - 1) >> PAGE_SHIFT;
 
+<<<<<<< HEAD
 	/* Avoid direct reclaim when the caller does not allow it. */
 	constraint_gfp = ~__GFP_FS;
 	cache_gfp = GFP_NOFS | __GFP_NOWARN;
@@ -419,6 +447,11 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 		pgoff_t page_end;
 		pgoff_t pg_index = cur >> PAGE_SHIFT;
 		gfp_t masked_constraint_gfp;
+=======
+	while (cur < compressed_end) {
+		pgoff_t page_end;
+		pgoff_t pg_index = cur >> PAGE_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u32 add_size;
 
 		if (pg_index > end_index)
@@ -445,6 +478,7 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 			continue;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Since add_ra_bio_pages() is always speculative, suppress
 		 * allocation warnings.
@@ -457,6 +491,14 @@ static noinline int add_ra_bio_pages(struct inode *inode,
 			break;
 
 		if (filemap_add_folio(mapping, folio, pg_index, cache_gfp)) {
+=======
+		folio = filemap_alloc_folio(mapping_gfp_constraint(mapping, ~__GFP_FS),
+					    0, NULL);
+		if (!folio)
+			break;
+
+		if (filemap_add_folio(mapping, folio, pg_index, GFP_NOFS)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* There is already a page, skip to page end */
 			cur += folio_size(folio);
 			folio_put(folio);
@@ -549,7 +591,10 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	unsigned int compressed_len;
 	const u32 min_folio_size = btrfs_min_folio_size(fs_info);
 	u64 file_offset = bbio->file_offset;
+<<<<<<< HEAD
 	gfp_t gfp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 em_len;
 	u64 em_start;
 	struct extent_map *em;
@@ -557,6 +602,7 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	int memstall = 0;
 	int ret;
 
+<<<<<<< HEAD
 	/*
 	 * If this is a readahead bio, prevent direct reclaim. This is done to
 	 * avoid stalling on speculative allocations when memory pressure is
@@ -568,6 +614,8 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	else
 		gfp = GFP_NOFS;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* we need the actual starting offset of this extent in the file */
 	read_lock(&em_tree->lock);
 	em = btrfs_lookup_extent_mapping(em_tree, file_offset, fs_info->sectorsize);
@@ -588,6 +636,10 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	em_start = em->start;
 
 	cb->len = bbio->bio.bi_iter.bi_size;
+<<<<<<< HEAD
+=======
+	cb->compressed_len = compressed_len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cb->compress_type = btrfs_extent_map_compression(em);
 	cb->orig_bbio = bbio;
 	cb->bbio.csum_search_commit_root = bbio->csum_search_commit_root;
@@ -598,7 +650,11 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 		struct folio *folio;
 		u32 cur_len = min(compressed_len - i * min_folio_size, min_folio_size);
 
+<<<<<<< HEAD
 		folio = btrfs_alloc_compr_folio(fs_info, gfp);
+=======
+		folio = btrfs_alloc_compr_folio(fs_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!folio) {
 			ret = -ENOMEM;
 			goto out_free_bio;
@@ -614,7 +670,11 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
 	ASSERT(cb->bbio.bio.bi_iter.bi_size == compressed_len);
 
 	add_ra_bio_pages(&inode->vfs_inode, em_start + em_len, cb, &memstall,
+<<<<<<< HEAD
 			 &pflags, !(bbio->bio.bi_opf & REQ_RAHEAD));
+=======
+			 &pflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cb->len = bbio->bio.bi_iter.bi_size;
 	cb->bbio.bio.bi_iter.bi_sector = bbio->bio.bi_iter.bi_sector;

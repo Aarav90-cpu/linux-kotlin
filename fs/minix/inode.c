@@ -36,7 +36,11 @@ void __minix_error_inode(struct inode *inode, const char *function,
 	vaf.fmt = fmt;
 	vaf.va = &args;
 	printk(KERN_CRIT "minix-fs error (device %s): %s:%d: "
+<<<<<<< HEAD
 	       "inode #%llu: comm %s: %pV\n",
+=======
+	       "inode #%lu: comm %s: %pV\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       inode->i_sb->s_id, function, line, inode->i_ino,
 	       current->comm, &vaf);
 	va_end(args);
@@ -48,10 +52,15 @@ static void minix_evict_inode(struct inode *inode)
 	if (!inode->i_nlink) {
 		inode->i_size = 0;
 		minix_truncate(inode);
+<<<<<<< HEAD
 	} else {
 		mmb_sync(&minix_i(inode)->i_metadata_bhs);
 	}
 	mmb_invalidate(&minix_i(inode)->i_metadata_bhs);
+=======
+	}
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 	if (!inode->i_nlink)
 		minix_free_inode(inode);
@@ -85,8 +94,11 @@ static struct inode *minix_alloc_inode(struct super_block *sb)
 	ei = alloc_inode_sb(sb, minix_inode_cachep, GFP_KERNEL);
 	if (!ei)
 		return NULL;
+<<<<<<< HEAD
 	mmb_init(&ei->i_metadata_bhs, &ei->vfs_inode.i_data);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return &ei->vfs_inode;
 }
 
@@ -524,7 +536,11 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
 		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
 		init_special_inode(inode, inode->i_mode, rdev);
 	} else {
+<<<<<<< HEAD
 		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %llu.\n",
+=======
+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       inode->i_mode, inode->i_ino);
 		make_bad_inode(inode);
 	}
@@ -546,7 +562,11 @@ static struct inode *V1_minix_iget(struct inode *inode)
 		return ERR_PTR(-EIO);
 	}
 	if (raw_inode->i_nlinks == 0) {
+<<<<<<< HEAD
 		printk("MINIX-fs: deleted inode referenced: %llu\n",
+=======
+		printk("MINIX-fs: deleted inode referenced: %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       inode->i_ino);
 		brelse(bh);
 		iget_failed(inode);
@@ -584,7 +604,11 @@ static struct inode *V2_minix_iget(struct inode *inode)
 		return ERR_PTR(-EIO);
 	}
 	if (raw_inode->i_nlinks == 0) {
+<<<<<<< HEAD
 		printk("MINIX-fs: deleted inode referenced: %llu\n",
+=======
+		printk("MINIX-fs: deleted inode referenced: %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       inode->i_ino);
 		brelse(bh);
 		iget_failed(inode);
@@ -696,7 +720,11 @@ static int minix_write_inode(struct inode *inode, struct writeback_control *wbc)
 	if (wbc->sync_mode == WB_SYNC_ALL && buffer_dirty(bh)) {
 		sync_dirty_buffer(bh);
 		if (buffer_req(bh) && !buffer_uptodate(bh)) {
+<<<<<<< HEAD
 			printk("IO error syncing minix inode [%s:%08llx]\n",
+=======
+			printk("IO error syncing minix inode [%s:%08lx]\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				inode->i_sb->s_id, inode->i_ino);
 			err = -EIO;
 		}

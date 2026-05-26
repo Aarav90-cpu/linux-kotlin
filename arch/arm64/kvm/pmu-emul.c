@@ -939,8 +939,12 @@ int kvm_arm_pmu_v3_enable(struct kvm_vcpu *vcpu)
 		 * number against the dimensions of the vgic and make sure
 		 * it's valid.
 		 */
+<<<<<<< HEAD
 		if (!irq_is_ppi(vcpu->kvm, irq) &&
 		    !vgic_valid_spi(vcpu->kvm, irq))
+=======
+		if (!irq_is_ppi(irq) && !vgic_valid_spi(vcpu->kvm, irq))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 	} else if (kvm_arm_pmu_irq_initialized(vcpu)) {
 		   return -EINVAL;
@@ -962,6 +966,7 @@ static int kvm_arm_pmu_v3_init(struct kvm_vcpu *vcpu)
 		if (!vgic_initialized(vcpu->kvm))
 			return -ENODEV;
 
+<<<<<<< HEAD
 		if (!kvm_arm_pmu_irq_initialized(vcpu)) {
 			if (!vgic_is_v5(vcpu->kvm))
 				return -ENXIO;
@@ -969,6 +974,10 @@ static int kvm_arm_pmu_v3_init(struct kvm_vcpu *vcpu)
 			/* Use the architected irq number for GICv5. */
 			vcpu->arch.pmu.irq_num = KVM_ARMV8_PMU_GICV5_IRQ;
 		}
+=======
+		if (!kvm_arm_pmu_irq_initialized(vcpu))
+			return -ENXIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		ret = kvm_vgic_set_owner(vcpu, vcpu->arch.pmu.irq_num,
 					 &vcpu->arch.pmu);
@@ -993,15 +1002,22 @@ static bool pmu_irq_is_valid(struct kvm *kvm, int irq)
 	unsigned long i;
 	struct kvm_vcpu *vcpu;
 
+<<<<<<< HEAD
 	/* On GICv5, the PMUIRQ is architecturally mandated to be PPI 23 */
 	if (vgic_is_v5(kvm) && irq != KVM_ARMV8_PMU_GICV5_IRQ)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvm_for_each_vcpu(i, vcpu, kvm) {
 		if (!kvm_arm_pmu_irq_initialized(vcpu))
 			continue;
 
+<<<<<<< HEAD
 		if (irq_is_ppi(vcpu->kvm, irq)) {
+=======
+		if (irq_is_ppi(irq)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (vcpu->arch.pmu.irq_num != irq)
 				return false;
 		} else {
@@ -1152,7 +1168,11 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
 			return -EFAULT;
 
 		/* The PMU overflow interrupt can be a PPI or a valid SPI. */
+<<<<<<< HEAD
 		if (!(irq_is_ppi(vcpu->kvm, irq) || irq_is_spi(vcpu->kvm, irq)))
+=======
+		if (!(irq_is_ppi(irq) || irq_is_spi(irq)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 
 		if (!pmu_irq_is_valid(kvm, irq))

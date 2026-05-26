@@ -5,7 +5,10 @@
 
 #include <linux/bitfield.h>
 #include <linux/bits.h>
+<<<<<<< HEAD
 #include <linux/bus/stm32_firewall.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/bus/stm32_firewall_device.h>
 #include <linux/device.h>
 #include <linux/err.h>
@@ -19,6 +22,11 @@
 #include <linux/types.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
+=======
+#include "stm32_firewall.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Corresponds to STM32_FIREWALL_MAX_EXTRA_ARGS + firewall ID */
 #define STM32_FIREWALL_MAX_ARGS		(STM32_FIREWALL_MAX_EXTRA_ARGS + 1)
 
@@ -184,6 +192,7 @@ void stm32_firewall_release_access_by_id(struct stm32_firewall *firewall, u32 su
 }
 EXPORT_SYMBOL_GPL(stm32_firewall_release_access_by_id);
 
+<<<<<<< HEAD
 int stm32_firewall_get_grant_all_access(struct device *dev, struct stm32_firewall **firewall,
 					int *nb_firewall)
 {
@@ -226,6 +235,8 @@ int stm32_firewall_get_grant_all_access(struct device *dev, struct stm32_firewal
 }
 EXPORT_SYMBOL_GPL(stm32_firewall_get_grant_all_access);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Firewall controller API */
 
 int stm32_firewall_controller_register(struct stm32_firewall_controller *firewall_controller)
@@ -282,6 +293,10 @@ EXPORT_SYMBOL_GPL(stm32_firewall_controller_unregister);
 int stm32_firewall_populate_bus(struct stm32_firewall_controller *firewall_controller)
 {
 	struct stm32_firewall *firewalls;
+<<<<<<< HEAD
+=======
+	struct device_node *child;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *parent;
 	unsigned int i;
 	int len;
@@ -291,6 +306,7 @@ int stm32_firewall_populate_bus(struct stm32_firewall_controller *firewall_contr
 
 	dev_dbg(parent, "Populating %s system bus\n", dev_name(firewall_controller->dev));
 
+<<<<<<< HEAD
 	for_each_available_child_of_node_scoped(dev_of_node(parent), child) {
 		/* The access-controllers property is mandatory for firewall bus devices */
 		len = of_count_phandle_with_args(child, "access-controllers",
@@ -301,15 +317,39 @@ int stm32_firewall_populate_bus(struct stm32_firewall_controller *firewall_contr
 		firewalls = kzalloc_objs(*firewalls, len);
 		if (!firewalls)
 			return -ENOMEM;
+=======
+	for_each_available_child_of_node(dev_of_node(parent), child) {
+		/* The access-controllers property is mandatory for firewall bus devices */
+		len = of_count_phandle_with_args(child, "access-controllers",
+						 "#access-controller-cells");
+		if (len <= 0) {
+			of_node_put(child);
+			return -EINVAL;
+		}
+
+		firewalls = kzalloc_objs(*firewalls, len);
+		if (!firewalls) {
+			of_node_put(child);
+			return -ENOMEM;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		err = stm32_firewall_get_firewall(child, firewalls, (unsigned int)len);
 		if (err) {
 			kfree(firewalls);
+<<<<<<< HEAD
+=======
+			of_node_put(child);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return err;
 		}
 
 		for (i = 0; i < len; i++) {
+<<<<<<< HEAD
 			if (firewall_controller->grant_access(firewalls[i].firewall_ctrl,
+=======
+			if (firewall_controller->grant_access(firewall_controller,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							      firewalls[i].firewall_id)) {
 				/*
 				 * Peripheral access not allowed or not defined.

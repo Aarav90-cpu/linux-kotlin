@@ -802,12 +802,21 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
 	struct rt2x00_dev *rt2x00dev;
 	int retval;
 
+<<<<<<< HEAD
+=======
+	usb_dev = usb_get_dev(usb_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_reset_device(usb_dev);
 
 	hw = ieee80211_alloc_hw(sizeof(struct rt2x00_dev), ops->hw);
 	if (!hw) {
 		rt2x00_probe_err("Failed to allocate hardware\n");
+<<<<<<< HEAD
 		return -ENOMEM;
+=======
+		retval = -ENOMEM;
+		goto exit_put_device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	usb_set_intfdata(usb_intf, hw);
@@ -849,6 +858,13 @@ exit_free_reg:
 
 exit_free_device:
 	ieee80211_free_hw(hw);
+<<<<<<< HEAD
+=======
+
+exit_put_device:
+	usb_put_dev(usb_dev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(usb_intf, NULL);
 
 	return retval;
@@ -867,7 +883,15 @@ void rt2x00usb_disconnect(struct usb_interface *usb_intf)
 	rt2x00usb_free_reg(rt2x00dev);
 	ieee80211_free_hw(hw);
 
+<<<<<<< HEAD
 	usb_set_intfdata(usb_intf, NULL);
+=======
+	/*
+	 * Free the USB device data.
+	 */
+	usb_set_intfdata(usb_intf, NULL);
+	usb_put_dev(interface_to_usbdev(usb_intf));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(rt2x00usb_disconnect);
 

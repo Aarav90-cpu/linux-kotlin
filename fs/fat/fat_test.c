@@ -29,6 +29,7 @@ struct fat_timestamp_testcase {
 	int time_offset;
 };
 
+<<<<<<< HEAD
 struct fat_unix2fat_clamp_testcase {
 	const char *name;
 	struct timespec64 ts;
@@ -45,6 +46,8 @@ struct fat_truncate_atime_testcase {
 	int time_offset;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct fat_timestamp_testcase time_test_cases[] = {
 	{
 		.name = "Earliest possible UTC (1980-01-01 00:00:00)",
@@ -136,6 +139,7 @@ static struct fat_timestamp_testcase time_test_cases[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct fat_unix2fat_clamp_testcase unix2fat_clamp_test_cases[] = {
 	{
 		.name = "Clamp to earliest FAT date for 1979-12-31 23:59:59 UTC",
@@ -192,12 +196,15 @@ static struct fat_truncate_atime_testcase truncate_atime_test_cases[] = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void time_testcase_desc(struct fat_timestamp_testcase *t,
 			       char *desc)
 {
 	strscpy(desc, t->name, KUNIT_PARAM_DESC_SIZE);
 }
 
+<<<<<<< HEAD
 static void unix2fat_clamp_testcase_desc(struct fat_unix2fat_clamp_testcase *t,
 					 char *desc)
 {
@@ -222,6 +229,9 @@ static void fat_test_set_time_offset(struct msdos_sb_info *sbi, int time_offset)
 	sbi->options.tz_set = 1;
 	sbi->options.time_offset = time_offset;
 }
+=======
+KUNIT_ARRAY_PARAM(fat_time, time_test_cases, time_testcase_desc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void fat_time_fat2unix_test(struct kunit *test)
 {
@@ -230,7 +240,12 @@ static void fat_time_fat2unix_test(struct kunit *test)
 	struct fat_timestamp_testcase *testcase =
 		(struct fat_timestamp_testcase *)test->param_value;
 
+<<<<<<< HEAD
 	fat_test_set_time_offset(&fake_sb, testcase->time_offset);
+=======
+	fake_sb.options.tz_set = 1;
+	fake_sb.options.time_offset = testcase->time_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fat_time_fat2unix(&fake_sb, &ts,
 			  testcase->time,
@@ -254,17 +269,31 @@ static void fat_time_unix2fat_test(struct kunit *test)
 	struct fat_timestamp_testcase *testcase =
 		(struct fat_timestamp_testcase *)test->param_value;
 
+<<<<<<< HEAD
 	fat_test_set_time_offset(&fake_sb, testcase->time_offset);
+=======
+	fake_sb.options.tz_set = 1;
+	fake_sb.options.time_offset = testcase->time_offset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fat_time_unix2fat(&fake_sb, &testcase->ts,
 			  &time, &date, &cs);
 	KUNIT_EXPECT_EQ_MSG(test,
+<<<<<<< HEAD
 			    testcase->time,
 			    time,
 			    "Time mismatch\n");
 	KUNIT_EXPECT_EQ_MSG(test,
 			    testcase->date,
 			    date,
+=======
+			    le16_to_cpu(testcase->time),
+			    le16_to_cpu(time),
+			    "Time mismatch\n");
+	KUNIT_EXPECT_EQ_MSG(test,
+			    le16_to_cpu(testcase->date),
+			    le16_to_cpu(date),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    "Date mismatch\n");
 	KUNIT_EXPECT_EQ_MSG(test,
 			    testcase->cs,
@@ -272,6 +301,7 @@ static void fat_time_unix2fat_test(struct kunit *test)
 			    "Centisecond mismatch\n");
 }
 
+<<<<<<< HEAD
 static void fat_time_unix2fat_clamp_test(struct kunit *test)
 {
 	static struct msdos_sb_info fake_sb;
@@ -339,15 +369,20 @@ static void fat_truncate_atime_test(struct kunit *test)
 			    "Atime truncation nanoseconds mismatch\n");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case fat_test_cases[] = {
 	KUNIT_CASE(fat_checksum_test),
 	KUNIT_CASE_PARAM(fat_time_fat2unix_test, fat_time_gen_params),
 	KUNIT_CASE_PARAM(fat_time_unix2fat_test, fat_time_gen_params),
+<<<<<<< HEAD
 	KUNIT_CASE_PARAM(fat_time_unix2fat_clamp_test,
 			 fat_unix2fat_clamp_gen_params),
 	KUNIT_CASE(fat_time_unix2fat_no_csec_test),
 	KUNIT_CASE_PARAM(fat_truncate_atime_test,
 			 fat_truncate_atime_gen_params),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 

@@ -41,6 +41,10 @@
 #include <linux/spinlock.h>
 #include <linux/compat.h>
 #include <linux/srcu.h>
+<<<<<<< HEAD
+=======
+#include <linux/hugetlb.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/sort.h>
 #include <linux/bsearch.h>
@@ -75,22 +79,38 @@ MODULE_DESCRIPTION("Kernel-based Virtual Machine (KVM) Hypervisor");
 MODULE_LICENSE("GPL");
 
 /* Architectures should define their poll value according to the halt latency */
+<<<<<<< HEAD
 unsigned int __read_mostly halt_poll_ns = KVM_HALT_POLL_NS_DEFAULT;
+=======
+unsigned int halt_poll_ns = KVM_HALT_POLL_NS_DEFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(halt_poll_ns, uint, 0644);
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns);
 
 /* Default doubles per-vcpu halt_poll_ns. */
+<<<<<<< HEAD
 unsigned int __read_mostly halt_poll_ns_grow = 2;
+=======
+unsigned int halt_poll_ns_grow = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(halt_poll_ns_grow, uint, 0644);
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_grow);
 
 /* The start value to grow halt_poll_ns from */
+<<<<<<< HEAD
 unsigned int __read_mostly halt_poll_ns_grow_start = 10000; /* 10us */
+=======
+unsigned int halt_poll_ns_grow_start = 10000; /* 10us */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(halt_poll_ns_grow_start, uint, 0644);
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_grow_start);
 
 /* Default halves per-vcpu halt_poll_ns. */
+<<<<<<< HEAD
 unsigned int __read_mostly halt_poll_ns_shrink = 2;
+=======
+unsigned int halt_poll_ns_shrink = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(halt_poll_ns_shrink, uint, 0644);
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
 
@@ -98,7 +118,11 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
  * Allow direct access (from KVM or the CPU) without MMU notifier protection
  * to unpinned pages.
  */
+<<<<<<< HEAD
 static bool __ro_after_init allow_unsafe_mappings;
+=======
+static bool allow_unsafe_mappings;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param(allow_unsafe_mappings, bool, 0444);
 
 /*
@@ -646,9 +670,17 @@ mmu_unlock:
 	return r;
 }
 
+<<<<<<< HEAD
 static __always_inline bool kvm_age_hva_range(struct mmu_notifier *mn,
 		unsigned long start, unsigned long end, gfn_handler_t handler,
 		bool flush_on_ret)
+=======
+static __always_inline int kvm_age_hva_range(struct mmu_notifier *mn,
+						unsigned long start,
+						unsigned long end,
+						gfn_handler_t handler,
+						bool flush_on_ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm *kvm = mmu_notifier_to_kvm(mn);
 	const struct kvm_mmu_notifier_range range = {
@@ -664,8 +696,15 @@ static __always_inline bool kvm_age_hva_range(struct mmu_notifier *mn,
 	return kvm_handle_hva_range(kvm, &range).ret;
 }
 
+<<<<<<< HEAD
 static __always_inline bool kvm_age_hva_range_no_flush(struct mmu_notifier *mn,
 		unsigned long start, unsigned long end, gfn_handler_t handler)
+=======
+static __always_inline int kvm_age_hva_range_no_flush(struct mmu_notifier *mn,
+						      unsigned long start,
+						      unsigned long end,
+						      gfn_handler_t handler)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return kvm_age_hva_range(mn, start, end, handler, false);
 }
@@ -825,8 +864,15 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
 		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
 }
 
+<<<<<<< HEAD
 static bool kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
 		struct mm_struct *mm, unsigned long start, unsigned long end)
+=======
+static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
+					      struct mm_struct *mm,
+					      unsigned long start,
+					      unsigned long end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	trace_kvm_age_hva(start, end);
 
@@ -834,8 +880,15 @@ static bool kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
 				 !IS_ENABLED(CONFIG_KVM_ELIDE_TLB_FLUSH_IF_YOUNG));
 }
 
+<<<<<<< HEAD
 static bool kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
 		struct mm_struct *mm, unsigned long start, unsigned long end)
+=======
+static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+					struct mm_struct *mm,
+					unsigned long start,
+					unsigned long end)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	trace_kvm_age_hva(start, end);
 
@@ -855,8 +908,14 @@ static bool kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
 	return kvm_age_hva_range_no_flush(mn, start, end, kvm_age_gfn);
 }
 
+<<<<<<< HEAD
 static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
 		struct mm_struct *mm, unsigned long address)
+=======
+static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+				       struct mm_struct *mm,
+				       unsigned long address)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	trace_kvm_test_age_hva(address);
 
@@ -1092,9 +1151,12 @@ static inline struct kvm_io_bus *kvm_get_bus_for_destruction(struct kvm *kvm,
 					 !refcount_read(&kvm->users_count));
 }
 
+<<<<<<< HEAD
 static int kvm_enable_virtualization(void);
 static void kvm_disable_virtualization(void);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
 {
 	struct kvm *kvm = kvm_arch_alloc_vm();
@@ -5567,19 +5629,32 @@ static struct miscdevice kvm_dev = {
 };
 
 #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
+<<<<<<< HEAD
 bool __ro_after_init enable_virt_at_load = true;
 module_param(enable_virt_at_load, bool, 0444);
 EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_virt_at_load);
 
+=======
+bool enable_virt_at_load = true;
+module_param(enable_virt_at_load, bool, 0444);
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_virt_at_load);
+
+__visible bool kvm_rebooting;
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_rebooting);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static DEFINE_PER_CPU(bool, virtualization_enabled);
 static DEFINE_MUTEX(kvm_usage_lock);
 static int kvm_usage_count;
 
+<<<<<<< HEAD
 __weak void kvm_arch_shutdown(void)
 {
 
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __weak void kvm_arch_enable_virtualization(void)
 {
 
@@ -5633,9 +5708,16 @@ static int kvm_offline_cpu(unsigned int cpu)
 
 static void kvm_shutdown(void *data)
 {
+<<<<<<< HEAD
 	kvm_arch_shutdown();
 
 	/*
+=======
+	/*
+	 * Disable hardware virtualization and set kvm_rebooting to indicate
+	 * that KVM has asynchronously disabled hardware virtualization, i.e.
+	 * that relevant errors and exceptions aren't entirely unexpected.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Some flavors of hardware virtualization need to be disabled before
 	 * transferring control to firmware (to perform shutdown/reboot), e.g.
 	 * on x86, virtualization can block INIT interrupts, which are used by
@@ -5644,6 +5726,10 @@ static void kvm_shutdown(void *data)
 	 * 100% comprehensive.
 	 */
 	pr_info("kvm: exiting hardware virtualization\n");
+<<<<<<< HEAD
+=======
+	kvm_rebooting = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	on_each_cpu(kvm_disable_virtualization_cpu, NULL, 1);
 }
 
@@ -5682,7 +5768,11 @@ static struct syscore kvm_syscore = {
 	.ops = &kvm_syscore_ops,
 };
 
+<<<<<<< HEAD
 static int kvm_enable_virtualization(void)
+=======
+int kvm_enable_virtualization(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int r;
 
@@ -5727,8 +5817,14 @@ err_cpuhp:
 	--kvm_usage_count;
 	return r;
 }
+<<<<<<< HEAD
 
 static void kvm_disable_virtualization(void)
+=======
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_virtualization);
+
+void kvm_disable_virtualization(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	guard(mutex)(&kvm_usage_lock);
 
@@ -5739,6 +5835,10 @@ static void kvm_disable_virtualization(void)
 	cpuhp_remove_state(CPUHP_AP_KVM_ONLINE);
 	kvm_arch_disable_virtualization();
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_virtualization);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int kvm_init_virtualization(void)
 {
@@ -5754,6 +5854,7 @@ static void kvm_uninit_virtualization(void)
 		kvm_disable_virtualization();
 }
 #else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
+<<<<<<< HEAD
 static int kvm_enable_virtualization(void)
 {
 	return 0;
@@ -5762,6 +5863,8 @@ static void kvm_disable_virtualization(void)
 {
 
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int kvm_init_virtualization(void)
 {
 	return 0;

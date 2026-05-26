@@ -84,6 +84,10 @@ static DEFINE_XARRAY(md_submodule);
 static const struct kobj_type md_ktype;
 
 static DECLARE_WAIT_QUEUE_HEAD(resync_wait);
+<<<<<<< HEAD
+=======
+static struct workqueue_struct *md_wq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This workqueue is used for sync_work to register new sync_thread, and for
@@ -97,7 +101,11 @@ static struct workqueue_struct *md_misc_wq;
 static int remove_and_add_spares(struct mddev *mddev,
 				 struct md_rdev *this);
 static void mddev_detach(struct mddev *mddev);
+<<<<<<< HEAD
 static void export_rdev(struct md_rdev *rdev);
+=======
+static void export_rdev(struct md_rdev *rdev, struct mddev *mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void md_wakeup_thread_directly(struct md_thread __rcu **thread);
 
 /*
@@ -187,6 +195,10 @@ static int rdev_init_serial(struct md_rdev *rdev)
 
 		spin_lock_init(&serial_tmp->serial_lock);
 		serial_tmp->serial_rb = RB_ROOT_CACHED;
+<<<<<<< HEAD
+=======
+		init_waitqueue_head(&serial_tmp->serial_io_wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	rdev->serial = serial;
@@ -396,19 +408,38 @@ bool md_handle_request(struct mddev *mddev, struct bio *bio)
 {
 check_suspended:
 	if (is_suspended(mddev, bio)) {
+<<<<<<< HEAD
+=======
+		DEFINE_WAIT(__wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Bail out if REQ_NOWAIT is set for the bio */
 		if (bio->bi_opf & REQ_NOWAIT) {
 			bio_wouldblock_error(bio);
 			return true;
 		}
+<<<<<<< HEAD
 		wait_event(mddev->sb_wait, !is_suspended(mddev, bio));
+=======
+		for (;;) {
+			prepare_to_wait(&mddev->sb_wait, &__wait,
+					TASK_UNINTERRUPTIBLE);
+			if (!is_suspended(mddev, bio))
+				break;
+			schedule();
+		}
+		finish_wait(&mddev->sb_wait, &__wait);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (!percpu_ref_tryget_live(&mddev->active_io))
 		goto check_suspended;
 
 	if (!mddev->pers->make_request(mddev, bio)) {
 		percpu_ref_put(&mddev->active_io);
+<<<<<<< HEAD
 		if (mddev_is_dm(mddev) && mddev->pers->prepare_suspend)
+=======
+		if (!mddev->gendisk && mddev->pers->prepare_suspend)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 		goto check_suspended;
 	}
@@ -479,6 +510,7 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
 	}
 
 	percpu_ref_kill(&mddev->active_io);
+<<<<<<< HEAD
 
 	/*
 	 * RAID456 IO can sleep in wait_for_reshape while still holding an
@@ -490,6 +522,8 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
 	    reshape_interrupted(mddev))
 		mddev->pers->prepare_suspend(mddev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (interruptible)
 		err = wait_event_interruptible(mddev->sb_wait,
 				percpu_ref_is_zero(&mddev->active_io));
@@ -679,6 +713,7 @@ static void active_io_release(struct percpu_ref *ref)
 
 static void no_op(struct percpu_ref *r) {}
 
+<<<<<<< HEAD
 static void md_bitmap_sysfs_add(struct mddev *mddev)
 {
 	if (sysfs_update_groups(&mddev->kobj, mddev->bitmap_ops->groups))
@@ -711,6 +746,15 @@ bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
 
 	if (mddev->bitmap_ops &&
 	    mddev->bitmap_ops->head.id == mddev->bitmap_id)
+=======
+static bool mddev_set_bitmap_ops(struct mddev *mddev)
+{
+	struct bitmap_operations *old = mddev->bitmap_ops;
+	struct md_submodule_head *head;
+
+	if (mddev->bitmap_id == ID_BITMAP_NONE ||
+	    (old && old->head.id == mddev->bitmap_id))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	xa_lock(&md_submodule);
@@ -728,6 +772,21 @@ bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
 
 	mddev->bitmap_ops = (void *)head;
 	xa_unlock(&md_submodule);
+<<<<<<< HEAD
+=======
+
+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group) {
+		if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
+			pr_warn("md: cannot register extra bitmap attributes for %s\n",
+				mdname(mddev));
+		else
+			/*
+			 * Inform user with KOBJ_CHANGE about new bitmap
+			 * attributes.
+			 */
+			kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 
 err:
@@ -735,6 +794,18 @@ err:
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static void mddev_clear_bitmap_ops(struct mddev *mddev)
+{
+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
+	    mddev->bitmap_ops->group)
+		sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
+
+	mddev->bitmap_ops = NULL;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int mddev_init(struct mddev *mddev)
 {
 	int err = 0;
@@ -964,7 +1035,11 @@ void mddev_unlock(struct mddev *mddev)
 	list_for_each_entry_safe(rdev, tmp, &delete, same_set) {
 		list_del_init(&rdev->same_set);
 		kobject_del(&rdev->kobj);
+<<<<<<< HEAD
 		export_rdev(rdev);
+=======
+		export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (!legacy_async_del_gendisk) {
@@ -2637,7 +2712,11 @@ void md_autodetect_dev(dev_t dev);
 /* just for claiming the bdev */
 static struct md_rdev claim_rdev;
 
+<<<<<<< HEAD
 static void export_rdev(struct md_rdev *rdev)
+=======
+static void export_rdev(struct md_rdev *rdev, struct mddev *mddev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pr_debug("md: export_rdev(%pg)\n", rdev->bdev);
 	md_rdev_clear(rdev);
@@ -2793,9 +2872,13 @@ void md_update_sb(struct mddev *mddev, int force_change)
 	if (!md_is_rdwr(mddev)) {
 		if (force_change)
 			set_bit(MD_SB_CHANGE_DEVS, &mddev->sb_flags);
+<<<<<<< HEAD
 		if (!mddev_is_dm(mddev))
 			pr_err_ratelimited("%s: can't update sb for read-only array %s\n",
 					   __func__, mdname(mddev));
+=======
+		pr_err("%s: can't update sb for read-only array %s\n", __func__, mdname(mddev));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 
@@ -4275,7 +4358,11 @@ bitmap_type_show(struct mddev *mddev, char *page)
 
 	xa_lock(&md_submodule);
 	xa_for_each(&md_submodule, i, head) {
+<<<<<<< HEAD
 		if (head->type != MD_BITMAP || head->id == ID_BITMAP_NONE)
+=======
+		if (head->type != MD_BITMAP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (mddev->bitmap_id == head->id)
@@ -4855,7 +4942,11 @@ new_dev_store(struct mddev *mddev, const char *buf, size_t len)
 	err = bind_rdev_to_array(rdev, mddev);
  out:
 	if (err)
+<<<<<<< HEAD
 		export_rdev(rdev);
+=======
+		export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mddev_unlock_and_resume(mddev);
 	if (!err)
 		md_new_event();
@@ -6055,7 +6146,14 @@ static struct attribute *md_default_attrs[] = {
 	&md_logical_block_size.attr,
 	NULL,
 };
+<<<<<<< HEAD
 ATTRIBUTE_GROUPS(md_default);
+=======
+
+static const struct attribute_group md_default_group = {
+	.attrs = md_default_attrs,
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct attribute *md_redundancy_attrs[] = {
 	&md_scan_mode.attr,
@@ -6080,6 +6178,14 @@ static const struct attribute_group md_redundancy_group = {
 	.attrs = md_redundancy_attrs,
 };
 
+<<<<<<< HEAD
+=======
+static const struct attribute_group *md_attr_groups[] = {
+	&md_default_group,
+	NULL,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t
 md_attr_show(struct kobject *kobj, struct attribute *attr, char *page)
 {
@@ -6127,6 +6233,7 @@ md_attr_store(struct kobject *kobj, struct attribute *attr,
 	}
 	spin_unlock(&all_mddevs_lock);
 	rv = entry->store(mddev, page, length);
+<<<<<<< HEAD
 
 	/*
 	 * For "array_state=clear", dropping the extra kobject reference from
@@ -6137,6 +6244,12 @@ md_attr_store(struct kobject *kobj, struct attribute *attr,
 	if (kn)
 		sysfs_unbreak_active_protection(kn);
 	mddev_put(mddev);
+=======
+	mddev_put(mddev);
+
+	if (kn)
+		sysfs_unbreak_active_protection(kn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return rv;
 }
@@ -6162,7 +6275,11 @@ static const struct sysfs_ops md_sysfs_ops = {
 static const struct kobj_type md_ktype = {
 	.release	= md_kobj_release,
 	.sysfs_ops	= &md_sysfs_ops,
+<<<<<<< HEAD
 	.default_groups	= md_default_groups,
+=======
+	.default_groups	= md_attr_groups,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int mdp_major = 0;
@@ -6452,6 +6569,7 @@ static void md_safemode_timeout(struct timer_list *t)
 
 static int start_dirty_degraded;
 
+<<<<<<< HEAD
 /*
  * Read bitmap superblock and return the bitmap_id based on disk version.
  * This is used as fallback when default bitmap version and on-disk version
@@ -6591,11 +6709,26 @@ static int md_bitmap_create(struct mddev *mddev)
 }
 
 void md_bitmap_destroy_nosysfs(struct mddev *mddev)
+=======
+static int md_bitmap_create(struct mddev *mddev)
+{
+	if (mddev->bitmap_id == ID_BITMAP_NONE)
+		return -EINVAL;
+
+	if (!mddev_set_bitmap_ops(mddev))
+		return -ENOENT;
+
+	return mddev->bitmap_ops->create(mddev);
+}
+
+static void md_bitmap_destroy(struct mddev *mddev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!md_bitmap_registered(mddev))
 		return;
 
 	mddev->bitmap_ops->destroy(mddev);
+<<<<<<< HEAD
 	mddev->bitmap_ops = NULL;
 }
 
@@ -6616,6 +6749,9 @@ static void md_bitmap_set_none(struct mddev *mddev)
 
 	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
 		md_bitmap_sysfs_add(mddev);
+=======
+	mddev_clear_bitmap_ops(mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int md_run(struct mddev *mddev)
@@ -6738,7 +6874,11 @@ int md_run(struct mddev *mddev)
 	}
 
 	/* dm-raid expect sync_thread to be frozen until resume */
+<<<<<<< HEAD
 	if (!mddev_is_dm(mddev))
+=======
+	if (mddev->gendisk)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mddev->recovery = 0;
 
 	/* may be over-ridden by personality */
@@ -6827,10 +6967,13 @@ int md_run(struct mddev *mddev)
 	if (mddev->sb_flags)
 		md_update_sb(mddev, 0);
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_MD_BITMAP) && !mddev->bitmap_info.file &&
 	    !mddev->bitmap_info.offset)
 		md_bitmap_set_none(mddev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	md_new_event();
 	return 0;
 
@@ -7295,7 +7438,11 @@ static void autorun_devices(int part)
 			rdev_for_each_list(rdev, tmp, &candidates) {
 				list_del_init(&rdev->same_set);
 				if (bind_rdev_to_array(rdev, mddev))
+<<<<<<< HEAD
 					export_rdev(rdev);
+=======
+					export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			autorun_array(mddev);
 			mddev_unlock_and_resume(mddev);
@@ -7305,7 +7452,11 @@ static void autorun_devices(int part)
 		 */
 		rdev_for_each_list(rdev, tmp, &candidates) {
 			list_del_init(&rdev->same_set);
+<<<<<<< HEAD
 			export_rdev(rdev);
+=======
+			export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		mddev_put(mddev);
 	}
@@ -7493,13 +7644,21 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 				pr_warn("md: %pg has different UUID to %pg\n",
 					rdev->bdev,
 					rdev0->bdev);
+<<<<<<< HEAD
 				export_rdev(rdev);
+=======
+				export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return -EINVAL;
 			}
 		}
 		err = bind_rdev_to_array(rdev, mddev);
 		if (err)
+<<<<<<< HEAD
 			export_rdev(rdev);
+=======
+			export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 
@@ -7542,7 +7701,11 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 			/* This was a hot-add request, but events doesn't
 			 * match, so reject it.
 			 */
+<<<<<<< HEAD
 			export_rdev(rdev);
+=======
+			export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 
@@ -7568,7 +7731,11 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 				}
 			}
 			if (has_journal || mddev->bitmap) {
+<<<<<<< HEAD
 				export_rdev(rdev);
+=======
+				export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return -EBUSY;
 			}
 			set_bit(Journal, &rdev->flags);
@@ -7583,7 +7750,11 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 				/* --add initiated by this node */
 				err = mddev->cluster_ops->add_new_disk(mddev, rdev);
 				if (err) {
+<<<<<<< HEAD
 					export_rdev(rdev);
+=======
+					export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					return err;
 				}
 			}
@@ -7593,7 +7764,11 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 		err = bind_rdev_to_array(rdev, mddev);
 
 		if (err)
+<<<<<<< HEAD
 			export_rdev(rdev);
+=======
+			export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (mddev_is_clustered(mddev)) {
 			if (info->state & (1 << MD_DISK_CANDIDATE)) {
@@ -7656,7 +7831,11 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
 
 		err = bind_rdev_to_array(rdev, mddev);
 		if (err) {
+<<<<<<< HEAD
 			export_rdev(rdev);
+=======
+			export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return err;
 		}
 	}
@@ -7768,7 +7947,11 @@ static int hot_add_disk(struct mddev *mddev, dev_t dev)
 	return 0;
 
 abort_export:
+<<<<<<< HEAD
 	export_rdev(rdev);
+=======
+	export_rdev(rdev, mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -7776,8 +7959,12 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	if (!md_bitmap_registered(mddev) ||
 	    mddev->bitmap_id == ID_BITMAP_NONE)
+=======
+	if (!md_bitmap_registered(mddev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (mddev->pers) {
@@ -7842,12 +8029,18 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
 
 			if (err) {
 				md_bitmap_destroy(mddev);
+<<<<<<< HEAD
 				md_bitmap_set_none(mddev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				fd = -1;
 			}
 		} else if (fd < 0) {
 			md_bitmap_destroy(mddev);
+<<<<<<< HEAD
 			md_bitmap_set_none(mddev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -8154,16 +8347,24 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
 				mddev->bitmap_info.default_offset;
 			mddev->bitmap_info.space =
 				mddev->bitmap_info.default_space;
+<<<<<<< HEAD
 			mddev->bitmap_id = ID_BITMAP;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rv = md_bitmap_create(mddev);
 			if (!rv)
 				rv = mddev->bitmap_ops->load(mddev);
 
+<<<<<<< HEAD
 			if (rv) {
 				md_bitmap_destroy(mddev);
 				mddev->bitmap_info.offset = 0;
 				md_bitmap_set_none(mddev);
 			}
+=======
+			if (rv)
+				md_bitmap_destroy(mddev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			struct md_bitmap_stats stats;
 
@@ -8191,7 +8392,10 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
 			}
 			md_bitmap_destroy(mddev);
 			mddev->bitmap_info.offset = 0;
+<<<<<<< HEAD
 			md_bitmap_set_none(mddev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 	md_update_sb(mddev, 1);
@@ -9378,11 +9582,17 @@ static void md_bitmap_end(struct mddev *mddev, struct md_io_clone *md_io_clone)
 
 static void md_end_clone_io(struct bio *bio)
 {
+<<<<<<< HEAD
 	struct md_io_clone *md_io_clone = container_of(bio, struct md_io_clone,
 						       bio_clone);
 	struct bio *orig_bio = md_io_clone->orig_bio;
 	struct mddev *mddev = md_io_clone->mddev;
 	struct completion *reshape_completion = bio->bi_private;
+=======
+	struct md_io_clone *md_io_clone = bio->bi_private;
+	struct bio *orig_bio = md_io_clone->orig_bio;
+	struct mddev *mddev = md_io_clone->mddev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (bio_data_dir(orig_bio) == WRITE && md_bitmap_enabled(mddev, false))
 		md_bitmap_end(mddev, md_io_clone);
@@ -9394,10 +9604,14 @@ static void md_end_clone_io(struct bio *bio)
 		bio_end_io_acct(orig_bio, md_io_clone->start_time);
 
 	bio_put(bio);
+<<<<<<< HEAD
 	if (unlikely(reshape_completion))
 		complete(reshape_completion);
 	else
 		bio_endio(orig_bio);
+=======
+	bio_endio(orig_bio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	percpu_ref_put(&mddev->active_io);
 }
 
@@ -9422,7 +9636,11 @@ static void md_clone_bio(struct mddev *mddev, struct bio **bio)
 	}
 
 	clone->bi_end_io = md_end_clone_io;
+<<<<<<< HEAD
 	clone->bi_private = NULL;
+=======
+	clone->bi_private = md_io_clone;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*bio = clone;
 }
 
@@ -9433,6 +9651,29 @@ void md_account_bio(struct mddev *mddev, struct bio **bio)
 }
 EXPORT_SYMBOL_GPL(md_account_bio);
 
+<<<<<<< HEAD
+=======
+void md_free_cloned_bio(struct bio *bio)
+{
+	struct md_io_clone *md_io_clone = bio->bi_private;
+	struct bio *orig_bio = md_io_clone->orig_bio;
+	struct mddev *mddev = md_io_clone->mddev;
+
+	if (bio_data_dir(orig_bio) == WRITE && md_bitmap_enabled(mddev, false))
+		md_bitmap_end(mddev, md_io_clone);
+
+	if (bio->bi_status && !orig_bio->bi_status)
+		orig_bio->bi_status = bio->bi_status;
+
+	if (md_io_clone->start_time)
+		bio_end_io_acct(orig_bio, md_io_clone->start_time);
+
+	bio_put(bio);
+	percpu_ref_put(&mddev->active_io);
+}
+EXPORT_SYMBOL_GPL(md_free_cloned_bio);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* md_allow_write(mddev)
  * Calling this ensures that the array is marked 'active' so that writes
  * may proceed without blocking.  It is important to call this before
@@ -10651,6 +10892,13 @@ static int __init md_init(void)
 		goto err_bitmap;
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
+=======
+	md_wq = alloc_workqueue("md", WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+	if (!md_wq)
+		goto err_wq;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	md_misc_wq = alloc_workqueue("md_misc", WQ_PERCPU, 0);
 	if (!md_misc_wq)
 		goto err_misc_wq;
@@ -10675,6 +10923,11 @@ err_mdp:
 err_md:
 	destroy_workqueue(md_misc_wq);
 err_misc_wq:
+<<<<<<< HEAD
+=======
+	destroy_workqueue(md_wq);
+err_wq:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	md_llbitmap_exit();
 err_bitmap:
 	md_bitmap_exit();
@@ -10983,6 +11236,10 @@ static __exit void md_exit(void)
 	spin_unlock(&all_mddevs_lock);
 
 	destroy_workqueue(md_misc_wq);
+<<<<<<< HEAD
+=======
+	destroy_workqueue(md_wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	md_bitmap_exit();
 }
 

@@ -697,7 +697,11 @@ static void iommu_set_root_entry(struct intel_iommu *iommu)
 		addr |= DMA_RTADDR_SMT;
 
 	raw_spin_lock_irqsave(&iommu->register_lock, flag);
+<<<<<<< HEAD
 	writeq(addr, iommu->reg + DMAR_RTADDR_REG);
+=======
+	dmar_writeq(iommu->reg + DMAR_RTADDR_REG, addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	writel(iommu->gcmd | DMA_GCMD_SRTP, iommu->reg + DMAR_GCMD_REG);
 
@@ -765,11 +769,19 @@ static void __iommu_flush_context(struct intel_iommu *iommu,
 	val |= DMA_CCMD_ICC;
 
 	raw_spin_lock_irqsave(&iommu->register_lock, flag);
+<<<<<<< HEAD
 	writeq(val, iommu->reg + DMAR_CCMD_REG);
 
 	/* Make sure hardware complete it */
 	IOMMU_WAIT_OP(iommu, DMAR_CCMD_REG,
 		readq, (!(val & DMA_CCMD_ICC)), val);
+=======
+	dmar_writeq(iommu->reg + DMAR_CCMD_REG, val);
+
+	/* Make sure hardware complete it */
+	IOMMU_WAIT_OP(iommu, DMAR_CCMD_REG,
+		dmar_readq, (!(val & DMA_CCMD_ICC)), val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
 }
@@ -806,12 +818,21 @@ void __iommu_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 	raw_spin_lock_irqsave(&iommu->register_lock, flag);
 	/* Note: Only uses first TLB reg currently */
 	if (val_iva)
+<<<<<<< HEAD
 		writeq(val_iva, iommu->reg + tlb_offset);
 	writeq(val, iommu->reg + tlb_offset + 8);
 
 	/* Make sure hardware complete it */
 	IOMMU_WAIT_OP(iommu, tlb_offset + 8,
 		readq, (!(val & DMA_TLB_IVT)), val);
+=======
+		dmar_writeq(iommu->reg + tlb_offset, val_iva);
+	dmar_writeq(iommu->reg + tlb_offset + 8, val);
+
+	/* Make sure hardware complete it */
+	IOMMU_WAIT_OP(iommu, tlb_offset + 8,
+		dmar_readq, (!(val & DMA_TLB_IVT)), val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
 
@@ -1533,7 +1554,11 @@ static int copy_translation_tables(struct intel_iommu *iommu)
 	int bus, ret;
 	bool new_ext, ext;
 
+<<<<<<< HEAD
 	rtaddr_reg = readq(iommu->reg + DMAR_RTADDR_REG);
+=======
+	rtaddr_reg = dmar_readq(iommu->reg + DMAR_RTADDR_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ext        = !!(rtaddr_reg & DMA_RTADDR_SMT);
 	new_ext    = !!sm_supported(iommu);
 
@@ -3212,6 +3237,10 @@ static bool intel_iommu_capable(struct device *dev, enum iommu_cap cap)
 
 	switch (cap) {
 	case IOMMU_CAP_CACHE_COHERENCY:
+<<<<<<< HEAD
+=======
+	case IOMMU_CAP_DEFERRED_FLUSH:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	case IOMMU_CAP_PRE_BOOT_PROTECTION:
 		return dmar_platform_optin();
@@ -3219,8 +3248,11 @@ static bool intel_iommu_capable(struct device *dev, enum iommu_cap cap)
 		return ecap_sc_support(info->iommu->ecap);
 	case IOMMU_CAP_DIRTY_TRACKING:
 		return ssads_supported(info->iommu);
+<<<<<<< HEAD
 	case IOMMU_CAP_PCI_ATS_SUPPORTED:
 		return info->ats_supported;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return false;
 	}
@@ -3530,8 +3562,13 @@ void domain_remove_dev_pasid(struct iommu_domain *domain,
 	if (!domain)
 		return;
 
+<<<<<<< HEAD
 	/* Identity domain and blocked domain have no meta data for pasid. */
 	if (domain->type == IOMMU_DOMAIN_IDENTITY || domain->type == IOMMU_DOMAIN_BLOCKED)
+=======
+	/* Identity domain has no meta data for pasid. */
+	if (domain->type == IOMMU_DOMAIN_IDENTITY)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	dmar_domain = to_dmar_domain(domain);
@@ -3545,6 +3582,7 @@ void domain_remove_dev_pasid(struct iommu_domain *domain,
 	}
 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(!dev_pasid))
 		return;
 
@@ -3552,6 +3590,14 @@ void domain_remove_dev_pasid(struct iommu_domain *domain,
 	domain_detach_iommu(dmar_domain, iommu);
 	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
 	kfree(dev_pasid);
+=======
+	cache_tag_unassign_domain(dmar_domain, dev, pasid);
+	domain_detach_iommu(dmar_domain, iommu);
+	if (!WARN_ON_ONCE(!dev_pasid)) {
+		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
+		kfree(dev_pasid);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int blocking_domain_set_dev_pasid(struct iommu_domain *domain,
@@ -3620,6 +3666,12 @@ static int intel_iommu_set_dev_pasid(struct iommu_domain *domain,
 	if (!pasid_supported(iommu) || dev_is_real_dma_subdevice(dev))
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
+=======
+	if (domain->dirty_ops)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (context_copied(iommu, info->bus, info->devfn))
 		return -EBUSY;
 
@@ -3683,6 +3735,7 @@ static void *intel_iommu_hw_info(struct device *dev, u32 *length,
 	return vtd;
 }
 
+<<<<<<< HEAD
 /* Set dirty tracking for the devices that the domain has been attached. */
 static int domain_set_dirty_tracking(struct dmar_domain *domain, bool enable)
 {
@@ -3704,6 +3757,21 @@ static int domain_set_dirty_tracking(struct dmar_domain *domain, bool enable)
 		ret = intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
 						       dev_pasid->pasid, enable);
 		if (ret)
+=======
+/*
+ * Set dirty tracking for the device list of a domain. The caller must
+ * hold the domain->lock when calling it.
+ */
+static int device_set_dirty_tracking(struct list_head *devices, bool enable)
+{
+	struct device_domain_info *info;
+	int ret = 0;
+
+	list_for_each_entry(info, devices, link) {
+		ret = intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
+						       IOMMU_NO_PASID, enable);
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 	}
 
@@ -3720,7 +3788,11 @@ static int parent_domain_set_dirty_tracking(struct dmar_domain *domain,
 	spin_lock(&domain->s1_lock);
 	list_for_each_entry(s1_domain, &domain->s1_domains, s2_link) {
 		spin_lock_irqsave(&s1_domain->lock, flags);
+<<<<<<< HEAD
 		ret = domain_set_dirty_tracking(s1_domain, enable);
+=======
+		ret = device_set_dirty_tracking(&s1_domain->devices, enable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock_irqrestore(&s1_domain->lock, flags);
 		if (ret)
 			goto err_unwind;
@@ -3731,7 +3803,12 @@ static int parent_domain_set_dirty_tracking(struct dmar_domain *domain,
 err_unwind:
 	list_for_each_entry(s1_domain, &domain->s1_domains, s2_link) {
 		spin_lock_irqsave(&s1_domain->lock, flags);
+<<<<<<< HEAD
 		domain_set_dirty_tracking(s1_domain, domain->dirty_tracking);
+=======
+		device_set_dirty_tracking(&s1_domain->devices,
+					  domain->dirty_tracking);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock_irqrestore(&s1_domain->lock, flags);
 	}
 	spin_unlock(&domain->s1_lock);
@@ -3748,7 +3825,11 @@ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
 	if (dmar_domain->dirty_tracking == enable)
 		goto out_unlock;
 
+<<<<<<< HEAD
 	ret = domain_set_dirty_tracking(dmar_domain, enable);
+=======
+	ret = device_set_dirty_tracking(&dmar_domain->devices, enable);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_unwind;
 
@@ -3765,7 +3846,12 @@ out_unlock:
 	return 0;
 
 err_unwind:
+<<<<<<< HEAD
 	domain_set_dirty_tracking(dmar_domain, dmar_domain->dirty_tracking);
+=======
+	device_set_dirty_tracking(&dmar_domain->devices,
+				  dmar_domain->dirty_tracking);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spin_unlock(&dmar_domain->lock);
 	return ret;
 }
@@ -3938,9 +4024,12 @@ static void quirk_iommu_igfx(struct pci_dev *dev)
 	disable_igfx_iommu = 1;
 }
 
+<<<<<<< HEAD
 /* Q35 integrated gfx dmar support is totally busted. */
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x29b2, quirk_iommu_igfx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* G4x/GM45 integrated gfx dmar support is totally busted. */
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2a40, quirk_iommu_igfx);
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e00, quirk_iommu_igfx);
@@ -4193,7 +4282,11 @@ int ecmd_submit_sync(struct intel_iommu *iommu, u8 ecmd, u64 oa, u64 ob)
 
 	raw_spin_lock_irqsave(&iommu->register_lock, flags);
 
+<<<<<<< HEAD
 	res = readq(iommu->reg + DMAR_ECRSP_REG);
+=======
+	res = dmar_readq(iommu->reg + DMAR_ECRSP_REG);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (res & DMA_ECMD_ECRSP_IP) {
 		ret = -EBUSY;
 		goto err;
@@ -4206,10 +4299,17 @@ int ecmd_submit_sync(struct intel_iommu *iommu, u8 ecmd, u64 oa, u64 ob)
 	 * - It's not invoked in any critical path. The extra MMIO
 	 *   write doesn't bring any performance concerns.
 	 */
+<<<<<<< HEAD
 	writeq(ob, iommu->reg + DMAR_ECEO_REG);
 	writeq(ecmd | (oa << DMA_ECMD_OA_SHIFT), iommu->reg + DMAR_ECMD_REG);
 
 	IOMMU_WAIT_OP(iommu, DMAR_ECRSP_REG, readq,
+=======
+	dmar_writeq(iommu->reg + DMAR_ECEO_REG, ob);
+	dmar_writeq(iommu->reg + DMAR_ECMD_REG, ecmd | (oa << DMA_ECMD_OA_SHIFT));
+
+	IOMMU_WAIT_OP(iommu, DMAR_ECRSP_REG, dmar_readq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      !(res & DMA_ECMD_ECRSP_IP), res);
 
 	if (res & DMA_ECMD_ECRSP_IP) {

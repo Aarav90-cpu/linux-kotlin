@@ -31,6 +31,7 @@ DEFINE_X86_SHA256_FN(sha256_blocks_avx, sha256_transform_avx);
 DEFINE_X86_SHA256_FN(sha256_blocks_avx2, sha256_transform_rorx);
 DEFINE_X86_SHA256_FN(sha256_blocks_ni, sha256_ni_transform);
 
+<<<<<<< HEAD
 #define PHE_ALIGNMENT 16
 static void sha256_blocks_phe(struct sha256_block_state *state,
 			      const u8 *data, size_t nblocks)
@@ -52,6 +53,8 @@ static void sha256_blocks_phe(struct sha256_block_state *state,
 	memcpy(state, dst, SHA256_DIGEST_SIZE);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void sha256_blocks(struct sha256_block_state *state,
 			  const u8 *data, size_t nblocks)
 {
@@ -100,10 +103,13 @@ static void sha256_mod_init_arch(void)
 	if (boot_cpu_has(X86_FEATURE_SHA_NI)) {
 		static_call_update(sha256_blocks_x86, sha256_blocks_ni);
 		static_branch_enable(&have_sha_ni);
+<<<<<<< HEAD
 	} else if (IS_ENABLED(CONFIG_CPU_SUP_ZHAOXIN) &&
 		   boot_cpu_has(X86_FEATURE_PHE_EN) &&
 		   boot_cpu_data.x86 >= 0x07) {
 		static_call_update(sha256_blocks_x86, sha256_blocks_phe);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (cpu_has_xfeatures(XFEATURE_MASK_SSE | XFEATURE_MASK_YMM,
 				     NULL) &&
 		   boot_cpu_has(X86_FEATURE_AVX)) {

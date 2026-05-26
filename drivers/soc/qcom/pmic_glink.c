@@ -23,19 +23,26 @@ enum {
 	PMIC_GLINK_CLIENT_UCSI,
 };
 
+<<<<<<< HEAD
 struct pmic_glink_data {
 	unsigned long	client_mask;
 	const char	*charger_pdr_service_name;
 	const char	*charger_pdr_service_path;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pmic_glink {
 	struct device *dev;
 	struct pdr_handle *pdr;
 
 	struct rpmsg_endpoint *ept;
 
+<<<<<<< HEAD
 	const struct pmic_glink_data *data;
+=======
+	unsigned long client_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct auxiliary_device altmode_aux;
 	struct auxiliary_device ps_aux;
@@ -298,6 +305,10 @@ static struct rpmsg_driver pmic_glink_rpmsg_driver = {
 
 static int pmic_glink_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
+=======
+	const unsigned long *match_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pdr_service *service;
 	struct pmic_glink *pg;
 	int ret;
@@ -314,10 +325,19 @@ static int pmic_glink_probe(struct platform_device *pdev)
 	spin_lock_init(&pg->client_lock);
 	mutex_init(&pg->state_lock);
 
+<<<<<<< HEAD
 	pg->data = of_device_get_match_data(&pdev->dev);
 	if (!pg->data)
 		return -EINVAL;
 
+=======
+	match_data = (unsigned long *)of_device_get_match_data(&pdev->dev);
+	if (!match_data)
+		return -EINVAL;
+
+	pg->client_mask = *match_data;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pg->pdr = pdr_handle_alloc(pmic_glink_pdr_callback, pg);
 	if (IS_ERR(pg->pdr)) {
 		ret = dev_err_probe(&pdev->dev, PTR_ERR(pg->pdr),
@@ -325,22 +345,35 @@ static int pmic_glink_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI)) {
+=======
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = pmic_glink_add_aux_device(pg, &pg->ucsi_aux, "ucsi");
 		if (ret)
 			goto out_release_pdr_handle;
 	}
+<<<<<<< HEAD
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_ALTMODE)) {
+=======
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_ALTMODE)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = pmic_glink_add_aux_device(pg, &pg->altmode_aux, "altmode");
 		if (ret)
 			goto out_release_ucsi_aux;
 	}
+<<<<<<< HEAD
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_BATT)) {
+=======
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_BATT)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = pmic_glink_add_aux_device(pg, &pg->ps_aux, "power-supply");
 		if (ret)
 			goto out_release_altmode_aux;
 	}
 
+<<<<<<< HEAD
 	if (pg->data->charger_pdr_service_name && pg->data->charger_pdr_service_path) {
 		service = pdr_add_lookup(pg->pdr, pg->data->charger_pdr_service_name,
 					 pg->data->charger_pdr_service_path);
@@ -349,6 +382,13 @@ static int pmic_glink_probe(struct platform_device *pdev)
 					    "failed adding pdr lookup for charger_pd\n");
 			goto out_release_aux_devices;
 		}
+=======
+	service = pdr_add_lookup(pg->pdr, "tms/servreg", "msm/adsp/charger_pd");
+	if (IS_ERR(service)) {
+		ret = dev_err_probe(&pdev->dev, PTR_ERR(service),
+				    "failed adding pdr lookup for charger_pd\n");
+		goto out_release_aux_devices;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_lock(&__pmic_glink_lock);
@@ -358,6 +398,7 @@ static int pmic_glink_probe(struct platform_device *pdev)
 	return 0;
 
 out_release_aux_devices:
+<<<<<<< HEAD
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_BATT))
 		pmic_glink_del_aux_device(pg, &pg->ps_aux);
 out_release_altmode_aux:
@@ -365,6 +406,15 @@ out_release_altmode_aux:
 		pmic_glink_del_aux_device(pg, &pg->altmode_aux);
 out_release_ucsi_aux:
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI))
+=======
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_BATT))
+		pmic_glink_del_aux_device(pg, &pg->ps_aux);
+out_release_altmode_aux:
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_ALTMODE))
+		pmic_glink_del_aux_device(pg, &pg->altmode_aux);
+out_release_ucsi_aux:
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pmic_glink_del_aux_device(pg, &pg->ucsi_aux);
 out_release_pdr_handle:
 	pdr_handle_release(pg->pdr);
@@ -378,17 +428,26 @@ static void pmic_glink_remove(struct platform_device *pdev)
 
 	pdr_handle_release(pg->pdr);
 
+<<<<<<< HEAD
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_BATT))
 		pmic_glink_del_aux_device(pg, &pg->ps_aux);
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_ALTMODE))
 		pmic_glink_del_aux_device(pg, &pg->altmode_aux);
 	if (pg->data->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI))
+=======
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_BATT))
+		pmic_glink_del_aux_device(pg, &pg->ps_aux);
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_ALTMODE))
+		pmic_glink_del_aux_device(pg, &pg->altmode_aux);
+	if (pg->client_mask & BIT(PMIC_GLINK_CLIENT_UCSI))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pmic_glink_del_aux_device(pg, &pg->ucsi_aux);
 
 	guard(mutex)(&__pmic_glink_lock);
 	__pmic_glink = NULL;
 }
 
+<<<<<<< HEAD
 static const struct pmic_glink_data pmic_glink_adsp_data = {
 	.client_mask = BIT(PMIC_GLINK_CLIENT_BATT) |
 		       BIT(PMIC_GLINK_CLIENT_ALTMODE) |
@@ -407,6 +466,14 @@ static const struct of_device_id pmic_glink_of_match[] = {
 	{ .compatible = "qcom,glymur-pmic-glink", .data = &pmic_glink_soccp_data },
 	{ .compatible = "qcom,kaanapali-pmic-glink", .data = &pmic_glink_soccp_data },
 	{ .compatible = "qcom,pmic-glink", .data = &pmic_glink_adsp_data },
+=======
+static const unsigned long pmic_glink_sm8450_client_mask = BIT(PMIC_GLINK_CLIENT_BATT) |
+							   BIT(PMIC_GLINK_CLIENT_ALTMODE) |
+							   BIT(PMIC_GLINK_CLIENT_UCSI);
+
+static const struct of_device_id pmic_glink_of_match[] = {
+	{ .compatible = "qcom,pmic-glink", .data = &pmic_glink_sm8450_client_mask },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(of, pmic_glink_of_match);

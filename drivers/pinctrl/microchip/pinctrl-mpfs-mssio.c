@@ -686,7 +686,11 @@ static int mpfs_pinctrl_probe(struct platform_device *pdev)
 
 	pctrl->regmap = device_node_to_regmap(pdev->dev.parent->of_node);
 	if (IS_ERR(pctrl->regmap))
+<<<<<<< HEAD
 		return dev_err_probe(dev, PTR_ERR(pctrl->regmap), "Failed to find syscon regmap\n");
+=======
+		dev_err_probe(dev, PTR_ERR(pctrl->regmap), "Failed to find syscon regmap\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pctrl->sysreg_regmap = syscon_regmap_lookup_by_compatible("microchip,mpfs-sysreg-scb");
 	if (IS_ERR(pctrl->sysreg_regmap))

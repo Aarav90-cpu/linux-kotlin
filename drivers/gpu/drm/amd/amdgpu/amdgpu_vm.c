@@ -139,6 +139,7 @@ static void amdgpu_vm_assert_locked(struct amdgpu_vm *vm)
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_vm_is_bo_always_valid - check if the BO is VM always valid
  *
  * @vm: VM to test against.
@@ -153,6 +154,8 @@ bool amdgpu_vm_is_bo_always_valid(struct amdgpu_vm *vm, struct amdgpu_bo *bo)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * amdgpu_vm_bo_evicted - vm_bo is evicted
  *
  * @vm_bo: vm_bo which is evicted
@@ -778,9 +781,18 @@ bool amdgpu_vm_need_pipeline_sync(struct amdgpu_ring *ring,
  * @need_pipe_sync: is pipe sync needed
  *
  * Emit a VM flush when it is necessary.
+<<<<<<< HEAD
  */
 void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 		     bool need_pipe_sync)
+=======
+ *
+ * Returns:
+ * 0 on success, errno otherwise.
+ */
+int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+		    bool need_pipe_sync)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct amdgpu_device *adev = ring->adev;
 	struct amdgpu_isolation *isolation = &adev->isolation[ring->xcp_id];
@@ -794,7 +806,12 @@ void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 	bool cleaner_shader_needed = false;
 	bool pasid_mapping_needed = false;
 	struct dma_fence *fence = NULL;
+<<<<<<< HEAD
 	unsigned int patch = 0;
+=======
+	unsigned int patch;
+	int r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (amdgpu_vmid_had_gpu_reset(adev, id)) {
 		gds_switch_needed = true;
@@ -822,6 +839,7 @@ void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 
 	if (!vm_flush_needed && !gds_switch_needed && !need_pipe_sync &&
 	    !cleaner_shader_needed)
+<<<<<<< HEAD
 		return;
 
 	amdgpu_ring_ib_begin(ring);
@@ -836,6 +854,11 @@ void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 	if (ring->funcs->insert_start)
 		ring->funcs->insert_start(ring);
 
+=======
+		return 0;
+
+	amdgpu_ring_ib_begin(ring);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ring->funcs->init_cond_exec)
 		patch = amdgpu_ring_init_cond_exec(ring,
 						   ring->cond_exe_gpu_addr);
@@ -866,7 +889,13 @@ void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 	}
 
 	if (vm_flush_needed || pasid_mapping_needed || cleaner_shader_needed) {
+<<<<<<< HEAD
 		amdgpu_fence_emit(ring, job->hw_vm_fence, 0);
+=======
+		r = amdgpu_fence_emit(ring, job->hw_vm_fence, 0);
+		if (r)
+			return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fence = &job->hw_vm_fence->base;
 		/* get a ref for the job */
 		dma_fence_get(fence);
@@ -911,6 +940,10 @@ void amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
 	}
 
 	amdgpu_ring_ib_end(ring);
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1978,6 +2011,10 @@ int amdgpu_vm_bo_unmap(struct amdgpu_device *adev,
 	struct amdgpu_bo_va_mapping *mapping;
 	struct amdgpu_vm *vm = bo_va->base.vm;
 	bool valid = true;
+<<<<<<< HEAD
+=======
+	int r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	saddr /= AMDGPU_GPU_PAGE_SIZE;
 
@@ -2002,8 +2039,21 @@ int amdgpu_vm_bo_unmap(struct amdgpu_device *adev,
 	 * during user requests GEM unmap IOCTL except for forcing the unmap
 	 * from user space.
 	 */
+<<<<<<< HEAD
 	if (unlikely(bo_va->userq_va_mapped))
+=======
+<<<<<<< HEAD
+	if (unlikely(atomic_read(&bo_va->userq_va_mapped) > 0))
+>>>>>>> 7fb39c93c52e (Sync)
 		amdgpu_userq_gem_va_unmap_validate(adev, mapping, saddr);
+=======
+	if (unlikely(atomic_read(&bo_va->userq_va_mapped) > 0)) {
+		r = amdgpu_userq_gem_va_unmap_validate(adev, mapping, saddr);
+		if (unlikely(r == -EBUSY))
+			dev_warn_once(adev->dev,
+				      "Attempt to unmap an active userq buffer\n");
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_del(&mapping->list);
 	amdgpu_vm_it_remove(mapping, &vm->va);
@@ -2803,8 +2853,13 @@ void amdgpu_vm_fini(struct amdgpu_device *adev, struct amdgpu_vm *vm)
 	dma_fence_put(vm->last_unlocked);
 	dma_fence_wait(vm->last_tlb_flush, false);
 	/* Make sure that all fence callbacks have completed */
+<<<<<<< HEAD
 	dma_fence_lock_irqsave(vm->last_tlb_flush, flags);
 	dma_fence_unlock_irqrestore(vm->last_tlb_flush, flags);
+=======
+	spin_lock_irqsave(vm->last_tlb_flush->lock, flags);
+	spin_unlock_irqrestore(vm->last_tlb_flush->lock, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dma_fence_put(vm->last_tlb_flush);
 
 	list_for_each_entry_safe(mapping, tmp, &vm->freed, list) {
@@ -2950,6 +3005,7 @@ int amdgpu_vm_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_vm_lock_by_pasid - return an amdgpu_vm and its root bo from a pasid, if possible.
  * @adev: amdgpu device pointer
  * @root: root BO of the VM
@@ -2994,6 +3050,8 @@ error_unref:
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * amdgpu_vm_handle_fault - graceful handling of VM faults.
  * @adev: amdgpu device pointer
  * @pasid: PASID of the VM
@@ -3008,15 +3066,25 @@ error_unref:
  * shouldn't be reported any more.
  */
 bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
+<<<<<<< HEAD
 			    u32 vmid, u32 node_id, uint64_t addr,
 			    uint64_t ts, bool write_fault)
 {
 	bool is_compute_context = false;
 	struct amdgpu_bo *root;
+=======
+			    u32 vmid, u32 node_id, uint64_t addr, uint64_t ts,
+			    bool write_fault)
+{
+	bool is_compute_context = false;
+	struct amdgpu_bo *root;
+	unsigned long irqflags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	uint64_t value, flags;
 	struct amdgpu_vm *vm;
 	int r;
 
+<<<<<<< HEAD
 	vm = amdgpu_vm_lock_by_pasid(adev, &root, pasid);
 	if (!vm)
 		return false;
@@ -3042,6 +3110,42 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
 	}
 
 	addr /= AMDGPU_GPU_PAGE_SIZE;
+=======
+	xa_lock_irqsave(&adev->vm_manager.pasids, irqflags);
+	vm = xa_load(&adev->vm_manager.pasids, pasid);
+	if (vm) {
+		root = amdgpu_bo_ref(vm->root.bo);
+		is_compute_context = vm->is_compute_context;
+	} else {
+		root = NULL;
+	}
+	xa_unlock_irqrestore(&adev->vm_manager.pasids, irqflags);
+
+	if (!root)
+		return false;
+
+	if (is_compute_context && !svm_range_restore_pages(adev, pasid, vmid,
+	    node_id, addr >> PAGE_SHIFT, ts, write_fault)) {
+		amdgpu_bo_unref(&root);
+		return true;
+	}
+
+	addr /= AMDGPU_GPU_PAGE_SIZE;
+
+	r = amdgpu_bo_reserve(root, true);
+	if (r)
+		goto error_unref;
+
+	/* Double check that the VM still exists */
+	xa_lock_irqsave(&adev->vm_manager.pasids, irqflags);
+	vm = xa_load(&adev->vm_manager.pasids, pasid);
+	if (vm && vm->root.bo != root)
+		vm = NULL;
+	xa_unlock_irqrestore(&adev->vm_manager.pasids, irqflags);
+	if (!vm)
+		goto error_unlock;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	flags = AMDGPU_PTE_VALID | AMDGPU_PTE_SNOOPED |
 		AMDGPU_PTE_SYSTEM;
 
@@ -3080,6 +3184,10 @@ error_unlock:
 	if (r < 0)
 		dev_err(adev->dev, "Can't handle page fault (%d)\n", r);
 
+<<<<<<< HEAD
+=======
+error_unref:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amdgpu_bo_unref(&root);
 
 	return false;
@@ -3240,6 +3348,23 @@ void amdgpu_vm_update_fault_cache(struct amdgpu_device *adev,
 	xa_unlock_irqrestore(&adev->vm_manager.pasids, flags);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * amdgpu_vm_is_bo_always_valid - check if the BO is VM always valid
+ *
+ * @vm: VM to test against.
+ * @bo: BO to be tested.
+ *
+ * Returns true if the BO shares the dma_resv object with the root PD and is
+ * always guaranteed to be valid inside the VM.
+ */
+bool amdgpu_vm_is_bo_always_valid(struct amdgpu_vm *vm, struct amdgpu_bo *bo)
+{
+	return bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_vm_print_task_info(struct amdgpu_device *adev,
 			       struct amdgpu_task_info *task_info)
 {
@@ -3248,6 +3373,7 @@ void amdgpu_vm_print_task_info(struct amdgpu_device *adev,
 		task_info->process_name, task_info->tgid,
 		task_info->task.comm, task_info->task.pid);
 }
+<<<<<<< HEAD
 
 void amdgpu_sdma_set_vm_pte_scheds(struct amdgpu_device *adev,
 				   const struct amdgpu_vm_pte_funcs *vm_pte_funcs)
@@ -3265,3 +3391,5 @@ void amdgpu_sdma_set_vm_pte_scheds(struct amdgpu_device *adev,
 	adev->vm_manager.vm_pte_num_scheds = adev->sdma.num_instances;
 	adev->vm_manager.vm_pte_funcs = vm_pte_funcs;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

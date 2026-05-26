@@ -32,7 +32,11 @@ struct inode *affs_iget(struct super_block *sb, unsigned long ino)
 	if (!(inode_state_read_once(inode) & I_NEW))
 		return inode;
 
+<<<<<<< HEAD
 	pr_debug("affs_iget(%llu)\n", inode->i_ino);
+=======
+	pr_debug("affs_iget(%lu)\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	block = inode->i_ino;
 	bh = affs_bread(sb, block);
@@ -171,14 +175,22 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
 	uid_t			 uid;
 	gid_t			 gid;
 
+<<<<<<< HEAD
 	pr_debug("write_inode(%llu)\n", inode->i_ino);
+=======
+	pr_debug("write_inode(%lu)\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!inode->i_nlink)
 		// possibly free block
 		return 0;
 	bh = affs_bread(sb, inode->i_ino);
 	if (!bh) {
+<<<<<<< HEAD
 		affs_error(sb, "write_inode", "Cannot read block %llu", inode->i_ino);
+=======
+		affs_error(sb,"write_inode","Cannot read block %lu",inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 	tail = AFFS_TAIL(sb, bh);
@@ -206,19 +218,32 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
 		}
 	}
 	affs_fix_checksum(sb, bh);
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	affs_brelse(bh);
 	affs_free_prealloc(inode);
 	return 0;
 }
 
 int
+<<<<<<< HEAD
 affs_setattr(struct mnt_idmap *idmap, struct dentry *dentry, struct iattr *attr)
+=======
+affs_notify_change(struct mnt_idmap *idmap, struct dentry *dentry,
+		   struct iattr *attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *inode = d_inode(dentry);
 	int error;
 
+<<<<<<< HEAD
 	pr_debug("setattr(%llu,0x%x)\n", inode->i_ino, attr->ia_valid);
+=======
+	pr_debug("notify_change(%lu,0x%x)\n", inode->i_ino, attr->ia_valid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error = setattr_prepare(&nop_mnt_idmap, dentry, attr);
 	if (error)
@@ -259,18 +284,28 @@ void
 affs_evict_inode(struct inode *inode)
 {
 	unsigned long cache_page;
+<<<<<<< HEAD
 	pr_debug("evict_inode(ino=%llu, nlink=%u)\n",
+=======
+	pr_debug("evict_inode(ino=%lu, nlink=%u)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 inode->i_ino, inode->i_nlink);
 	truncate_inode_pages_final(&inode->i_data);
 
 	if (!inode->i_nlink) {
 		inode->i_size = 0;
 		affs_truncate(inode);
+<<<<<<< HEAD
 	} else {
 		mmb_sync(&AFFS_I(inode)->i_metadata_bhs);
 	}
 
 	mmb_invalidate(&AFFS_I(inode)->i_metadata_bhs);
+=======
+	}
+
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 	affs_free_prealloc(inode);
 	cache_page = (unsigned long)AFFS_I(inode)->i_lc;
@@ -305,7 +340,11 @@ affs_new_inode(struct inode *dir)
 	bh = affs_getzeroblk(sb, block);
 	if (!bh)
 		goto err_bh;
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	affs_brelse(bh);
 
 	inode->i_uid     = current_fsuid();
@@ -354,7 +393,11 @@ affs_add_entry(struct inode *dir, struct inode *inode, struct dentry *dentry, s3
 	u32 block = 0;
 	int retval;
 
+<<<<<<< HEAD
 	pr_debug("%s(dir=%llu, inode=%llu, \"%pd\", type=%d)\n", __func__,
+=======
+	pr_debug("%s(dir=%lu, inode=%lu, \"%pd\", type=%d)\n", __func__,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 dir->i_ino, inode->i_ino, dentry, type);
 
 	retval = -EIO;
@@ -393,17 +436,29 @@ affs_add_entry(struct inode *dir, struct inode *inode, struct dentry *dentry, s3
 		AFFS_TAIL(sb, bh)->link_chain = chain;
 		AFFS_TAIL(sb, inode_bh)->link_chain = cpu_to_be32(block);
 		affs_adjust_checksum(inode_bh, block - be32_to_cpu(chain));
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(inode_bh, &AFFS_I(inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(inode_bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_nlink(inode, 2);
 		ihold(inode);
 	}
 	affs_fix_checksum(sb, bh);
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dentry->d_fsdata = (void *)(long)bh->b_blocknr;
 
 	affs_lock_dir(dir);
 	retval = affs_insert_hash(dir, bh);
+<<<<<<< HEAD
 	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
+=======
+	mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	affs_unlock_dir(dir);
 	affs_unlock_link(inode);
 

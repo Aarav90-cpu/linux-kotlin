@@ -50,7 +50,11 @@ static void gic_dist_init(enum gic_type type, unsigned int nr_cpus)
 
 void gic_init(enum gic_type type, unsigned int nr_cpus)
 {
+<<<<<<< HEAD
 	u32 cpu = guest_get_vcpuid();
+=======
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(type < GIC_TYPE_MAX);
 	GUEST_ASSERT(nr_cpus);
@@ -73,7 +77,11 @@ void gic_irq_disable(unsigned int intid)
 
 unsigned int gic_get_and_ack_irq(void)
 {
+<<<<<<< HEAD
 	u64 irqstat;
+=======
+	uint64_t irqstat;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int intid;
 
 	GUEST_ASSERT(gic_common_ops);
@@ -102,7 +110,11 @@ void gic_set_eoi_split(bool split)
 	gic_common_ops->gic_set_eoi_split(split);
 }
 
+<<<<<<< HEAD
 void gic_set_priority_mask(u64 pmr)
+=======
+void gic_set_priority_mask(uint64_t pmr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	GUEST_ASSERT(gic_common_ops);
 	gic_common_ops->gic_set_priority_mask(pmr);

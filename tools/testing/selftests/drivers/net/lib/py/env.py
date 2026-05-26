@@ -1,16 +1,24 @@
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 import ipaddress
 import os
 import time
 import json
+=======
+import os
+import time
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from pathlib import Path
 from lib.py import KsftSkipEx, KsftXfailEx
 from lib.py import ksft_setup, wait_file
 from lib.py import cmd, ethtool, ip, CmdExitFailure
 from lib.py import NetNS, NetdevSimDev
 from .remote import Remote
+<<<<<<< HEAD
 from . import bpftool, RtnlFamily, Netlink
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 class NetDrvEnvBase:
@@ -258,6 +266,7 @@ class NetDrvEpEnv(NetDrvEnvBase):
         if nsim_test is False and self._ns is not None:
             raise KsftXfailEx("Test does not work on netdevsim")
 
+<<<<<<< HEAD
     def get_local_nsim_dev(self):
         """Returns the local netdevsim device or None.
            Using this method is discouraged, as it makes tests nsim-specific.
@@ -267,6 +276,8 @@ class NetDrvEpEnv(NetDrvEnvBase):
         """
         return self._ns
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     def _require_cmd(self, comm, key, host=None):
         cached = self._required_cmd.get(comm, {})
         if cached.get(key) is None:
@@ -297,6 +308,7 @@ class NetDrvEpEnv(NetDrvEnvBase):
                 if "Operation not supported" not in e.cmd.stderr:
                     raise
 
+<<<<<<< HEAD
             self._stats_settle_time = \
                 1.25 * data.get('stats-block-usecs', 20000) / 1000 / 1000
 
@@ -505,3 +517,9 @@ class NetDrvContEnv(NetDrvEpEnv):
         value = ipv6_bytes + ifindex_bytes
         value_hex = ' '.join(f'{b:02x}' for b in value)
         bpftool(f"map update id {bss_map_id} key hex 00 00 00 00 value hex {value_hex}")
+=======
+            self._stats_settle_time = 0.025 + \
+                data.get('stats-block-usecs', 0) / 1000 / 1000
+
+        time.sleep(self._stats_settle_time)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

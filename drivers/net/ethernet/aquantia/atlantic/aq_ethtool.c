@@ -983,6 +983,7 @@ static int aq_ethtool_set_phy_tunable(struct net_device *ndev,
 	return err;
 }
 
+<<<<<<< HEAD
 static bool aq_ethtool_can_read_module_eeprom(struct aq_nic_s *aq_nic)
 {
 	return aq_nic->aq_fw_ops->read_module_eeprom ||
@@ -1015,6 +1016,8 @@ static int aq_ethtool_read_module_eeprom(struct aq_nic_s *aq_nic, u8 dev_addr,
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int aq_ethtool_get_module_info(struct net_device *ndev,
 				      struct ethtool_modinfo *modinfo)
 {
@@ -1024,6 +1027,7 @@ static int aq_ethtool_get_module_info(struct net_device *ndev,
 
 	/* Module EEPROM is only supported for controllers with external PHY */
 	if (aq_nic->aq_nic_cfg.aq_hw_caps->media_type != AQ_HW_MEDIA_TYPE_FIBRE ||
+<<<<<<< HEAD
 	    !aq_ethtool_can_read_module_eeprom(aq_nic))
 		return -EOPNOTSUPP;
 
@@ -1036,6 +1040,18 @@ static int aq_ethtool_get_module_info(struct net_device *ndev,
 	err = aq_ethtool_read_module_eeprom(aq_nic, SFF_8472_ID_ADDR,
 					    SFF_8472_DOM_TYPE_ADDR, 1,
 					    &dom_type);
+=======
+	    !aq_nic->aq_hw_ops->hw_read_module_eeprom)
+		return -EOPNOTSUPP;
+
+	err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
+		SFF_8472_ID_ADDR, SFF_8472_COMP_ADDR, 1, &compliance_val);
+	if (err)
+		return err;
+
+	err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
+		SFF_8472_ID_ADDR, SFF_8472_DOM_TYPE_ADDR, 1, &dom_type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -1056,7 +1072,11 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
 	unsigned int first, last, len;
 	int err;
 
+<<<<<<< HEAD
 	if (!aq_ethtool_can_read_module_eeprom(aq_nic))
+=======
+	if (!aq_nic->aq_hw_ops->hw_read_module_eeprom)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	first = ee->offset;
@@ -1066,8 +1086,13 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
 		len = min(last, ETH_MODULE_SFF_8079_LEN);
 		len -= first;
 
+<<<<<<< HEAD
 		err = aq_ethtool_read_module_eeprom(aq_nic, SFF_8472_ID_ADDR,
 						    first, len, data);
+=======
+		err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
+			SFF_8472_ID_ADDR, first, len, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 
@@ -1079,9 +1104,14 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
 		len -= first;
 		first -= ETH_MODULE_SFF_8079_LEN;
 
+<<<<<<< HEAD
 		err = aq_ethtool_read_module_eeprom(aq_nic,
 						    SFF_8472_DIAGNOSTICS_ADDR,
 						    first, len, data);
+=======
+		err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
+			SFF_8472_DIAGNOSTICS_ADDR, first, len, data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}

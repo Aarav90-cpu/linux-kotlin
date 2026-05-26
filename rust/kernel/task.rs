@@ -6,15 +6,27 @@
 
 use crate::{
     bindings,
+<<<<<<< HEAD
     mm::MmWithUser,
     pid_namespace::PidNamespace,
     prelude::*,
+=======
+    ffi::{c_int, c_long, c_uint},
+    mm::MmWithUser,
+    pid_namespace::PidNamespace,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     sync::aref::ARef,
     types::{NotThreadSafe, Opaque},
 };
 use core::{
+<<<<<<< HEAD
     ops::Deref,
     ptr, //
+=======
+    cmp::{Eq, PartialEq},
+    ops::Deref,
+    ptr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /// A sentinel value used for infinite timeouts.
@@ -361,6 +373,7 @@ unsafe impl crate::sync::aref::AlwaysRefCounted for Task {
     }
 }
 
+<<<<<<< HEAD
 impl PartialEq for Task {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
@@ -370,6 +383,8 @@ impl PartialEq for Task {
 
 impl Eq for Task {}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 impl Kuid {
     /// Get the current euid.
     #[inline]
@@ -427,7 +442,11 @@ pub fn might_sleep() {
         let file = kernel::file_from_location(loc);
 
         // SAFETY: `file.as_ptr()` is valid for reading and guaranteed to be nul-terminated.
+<<<<<<< HEAD
         unsafe { crate::bindings::__might_sleep(file.as_char_ptr(), loc.line() as i32) }
+=======
+        unsafe { crate::bindings::__might_sleep(file.as_ptr().cast(), loc.line() as i32) }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     // SAFETY: Always safe to call.

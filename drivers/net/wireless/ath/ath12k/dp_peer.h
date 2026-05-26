@@ -139,6 +139,10 @@ struct ath12k_dp_peer {
 	u16 sec_type;
 
 	/* Info used in MMIC verification of * RX fragments */
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm_mmic;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ieee80211_key_conf *keys[WMI_MAX_KEY_INDEX + 1];
 	struct ath12k_dp_link_peer __rcu *link_peers[ATH12K_NUM_MAX_LINKS];
 	struct ath12k_reoq_buf reoq_bufs[IEEE80211_NUM_TIDS + 1];

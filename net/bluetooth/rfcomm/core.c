@@ -1715,12 +1715,18 @@ static int rfcomm_recv_data(struct rfcomm_session *s, u8 dlci, int pf, struct sk
 	}
 
 	if (pf && d->cfc) {
+<<<<<<< HEAD
 		u8 *credits = skb_pull_data(skb, 1);
 
 		if (!credits)
 			goto drop;
 
 		d->tx_credits += *credits;
+=======
+		u8 credits = *(u8 *) skb->data; skb_pull(skb, 1);
+
+		d->tx_credits += credits;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (d->tx_credits)
 			clear_bit(RFCOMM_TX_THROTTLED, &d->flags);
 	}

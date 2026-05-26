@@ -1178,9 +1178,12 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
 		struct snd_soc_acpi_endpoint *endpoints;
 		int amp_group_id = 1;
 
+<<<<<<< HEAD
 		if (sdw_device->id.mfg_id != codec_info_list[i].vendor_id)
 			continue;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (sdw_device->id.part_id != codec_info_list[i].part_id)
 			continue;
 
@@ -1195,8 +1198,13 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
 		 * dereference
 		 */
 		if (!name_prefix) {
+<<<<<<< HEAD
 			dev_err(dev, "codec_info_list name_prefix of part id %#x-%#x is missing\n",
 				codec_info_list[i].vendor_id, codec_info_list[i].part_id);
+=======
+			dev_err(dev, "codec_info_list name_prefix of part id %#x is missing\n",
+				codec_info_list[i].part_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return NULL;
 		}
 		for (j = 0; j < codec_info_list[i].dai_num; j++) {
@@ -1230,6 +1238,7 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * codec_info_list[].is_amp is a codec-level override: for multi-function
 	 * codecs we must treat the whole codec as an AMP when it is described as
@@ -1240,6 +1249,8 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
 	if (codec_info_list[i].is_amp)
 		is_amp = true;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	adr_dev[index].adr = ((u64)sdw_device->id.class_id & 0xFF) |
 			((u64)sdw_device->id.part_id & 0xFFFF) << 8 |
 			((u64)sdw_device->id.mfg_id & 0xFFFF) << 24 |
@@ -1412,8 +1423,12 @@ static struct snd_soc_acpi_mach *hda_sdw_machine_select(struct snd_sof_dev *sdev
 		link_mask |= BIT(peripherals->array[i]->bus->link_id);
 
 	link_num = hweight32(link_mask);
+<<<<<<< HEAD
 	/* An empty adr_link is needed to terminate the adr_link loop */
 	links = devm_kcalloc(sdev->dev, link_num + 1, sizeof(*links), GFP_KERNEL);
+=======
+	links = devm_kcalloc(sdev->dev, link_num, sizeof(*links), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!links)
 		return NULL;
 

@@ -96,10 +96,13 @@
 	clock-frequency = <400000>;
 };
 
+<<<<<<< HEAD
 &pcie {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &scif0 {
 	status = "okay";
 };
@@ -111,3 +114,14 @@
 
 	status = "okay";
 };
+<<<<<<< HEAD
+=======
+
+&usb3_phy {
+	status = "okay";
+};
+
+&xhci {
+	status = "okay";
+};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

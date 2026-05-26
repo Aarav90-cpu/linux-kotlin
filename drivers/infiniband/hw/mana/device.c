@@ -17,7 +17,10 @@ static const struct ib_device_ops mana_ib_dev_ops = {
 	.uverbs_abi_ver = MANA_IB_UVERBS_ABI_VERSION,
 
 	.add_gid = mana_ib_gd_add_gid,
+<<<<<<< HEAD
 	.alloc_mw = mana_ib_alloc_mw,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alloc_pd = mana_ib_alloc_pd,
 	.alloc_ucontext = mana_ib_alloc_ucontext,
 	.create_ah = mana_ib_create_ah,
@@ -25,7 +28,10 @@ static const struct ib_device_ops mana_ib_dev_ops = {
 	.create_qp = mana_ib_create_qp,
 	.create_rwq_ind_table = mana_ib_create_rwq_ind_table,
 	.create_wq = mana_ib_create_wq,
+<<<<<<< HEAD
 	.dealloc_mw = mana_ib_dealloc_mw,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.dealloc_pd = mana_ib_dealloc_pd,
 	.dealloc_ucontext = mana_ib_dealloc_ucontext,
 	.del_gid = mana_ib_gd_del_gid,
@@ -55,7 +61,10 @@ static const struct ib_device_ops mana_ib_dev_ops = {
 
 	INIT_RDMA_OBJ_SIZE(ib_ah, mana_ib_ah, ibah),
 	INIT_RDMA_OBJ_SIZE(ib_cq, mana_ib_cq, ibcq),
+<<<<<<< HEAD
 	INIT_RDMA_OBJ_SIZE(ib_mw, mana_ib_mw, ibmw),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_RDMA_OBJ_SIZE(ib_pd, mana_ib_pd, ibpd),
 	INIT_RDMA_OBJ_SIZE(ib_qp, mana_ib_qp, ibqp),
 	INIT_RDMA_OBJ_SIZE(ib_ucontext, mana_ib_ucontext, ibucontext),

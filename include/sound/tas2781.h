@@ -131,7 +131,10 @@ enum audio_device {
 	TAS5827,
 	TAS5828,
 	TAS5830,
+<<<<<<< HEAD
 	TAS5832,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	TAS_OTHERS,
 };
 

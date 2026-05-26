@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+<<<<<<< HEAD
 #![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
 #![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 use pin_init::*;
 
 // Struct with size over 1GiB

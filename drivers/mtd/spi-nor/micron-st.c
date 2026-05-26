@@ -167,6 +167,7 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
 				  0, 20, SPINOR_OP_MT_DTR_RD,
 				  SNOR_PROTO_8_8_8_DTR);
 
+<<<<<<< HEAD
 	/*
 	 * Some batches of mt35xu512aba do not contain the OCT DTR command
 	 * information, but do support OCT DTR mode. Add the settings for
@@ -177,6 +178,8 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
 	spi_nor_set_pp_settings(&nor->params->page_programs[SNOR_CMD_PP_8_8_8_DTR],
 				SPINOR_OP_PP_4B, SNOR_PROTO_8_8_8_DTR);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nor->cmd_ext_type = SPI_NOR_EXT_REPEAT;
 	nor->params->rdsr_dummy = 8;
 	nor->params->rdsr_addr_nbytes = 0;
@@ -195,7 +198,11 @@ static const struct spi_nor_fixups mt35xu512aba_fixups = {
 	.post_sfdp = mt35xu512aba_post_sfdp_fixup,
 };
 
+<<<<<<< HEAD
 static const struct spi_nor_fixups mt35_two_die_fixups = {
+=======
+static const struct spi_nor_fixups mt35xu01gbba_fixups = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.post_sfdp = mt35xu512aba_post_sfdp_fixup,
 	.late_init = micron_st_nor_two_die_late_init,
 };
@@ -212,16 +219,35 @@ static const struct flash_info micron_nor_parts[] = {
 		.id = SNOR_ID(0x2c, 0x5b, 0x1b),
 		.mfr_flags = USE_FSR,
 		.fixup_flags = SPI_NOR_IO_MODE_EN_VOLATILE,
+<<<<<<< HEAD
 		.fixups = &mt35_two_die_fixups,
 	}, {
+=======
+		.fixups = &mt35xu01gbba_fixups,
+	}, {
+		/*
+		 * The MT35XU02GCBA flash device does not support chip erase,
+		 * according to its datasheet. It supports die erase, which
+		 * means the current driver implementation will likely need to
+		 * be converted to use die erase. Furthermore, similar to the
+		 * MT35XU01GBBA, the SPI_NOR_IO_MODE_EN_VOLATILE flag probably
+		 * needs to be enabled.
+		 *
+		 * TODO: Fix these and test on real hardware.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.id = SNOR_ID(0x2c, 0x5b, 0x1c),
 		.name = "mt35xu02g",
 		.sector_size = SZ_128K,
 		.size = SZ_256M,
 		.no_sfdp_flags = SECT_4K | SPI_NOR_OCTAL_READ,
 		.mfr_flags = USE_FSR,
+<<<<<<< HEAD
 		.fixup_flags = SPI_NOR_4B_OPCODES | SPI_NOR_IO_MODE_EN_VOLATILE,
 		.fixups = &mt35_two_die_fixups,
+=======
+		.fixup_flags = SPI_NOR_4B_OPCODES,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

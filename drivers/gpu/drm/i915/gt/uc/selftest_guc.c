@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 /*
+<<<<<<< HEAD
  * Copyright © 2021 Intel Corporation
+=======
+ * Copyright �� 2021 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include "gt/intel_gt_print.h"

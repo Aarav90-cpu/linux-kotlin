@@ -81,6 +81,7 @@ static int sg_proc_init(void);
 
 #define SG_DEFAULT_TIMEOUT mult_frac(SG_DEFAULT_TIMEOUT_USER, HZ, USER_HZ)
 
+<<<<<<< HEAD
 /* N.B. This variable is readable and writeable via
  * /proc/scsi/sg/def_reserved_size . Each time sg_open() is called a buffer
  * of this size (or less if there is not enough memory) will be reserved
@@ -89,6 +90,16 @@ static int sg_proc_init(void);
 
 /* picks up init parameter */
 static int def_reserved_size = SG_DEF_RESERVED_SIZE;
+=======
+static int sg_big_buff = SG_DEF_RESERVED_SIZE;
+/* N.B. This variable is readable and writeable via
+   /proc/scsi/sg/def_reserved_size . Each time sg_open() is called a buffer
+   of this size (or less if there is not enough memory) will be reserved
+   for use by this file descriptor. [Deprecated usage: this variable is also
+   readable via /proc/sys/kernel/sg-big-buff if the sg driver is built into
+   the kernel (i.e. it is not a module).] */
+static int def_reserved_size = -1;	/* picks up init parameter */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sg_allow_dio = SG_ALLOW_DIO_DEF;
 
 static int scatter_elem_sz = SG_SCATTER_SZ;
@@ -1623,6 +1634,7 @@ sg_remove_device(struct device *cl_dev)
 }
 
 module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
+<<<<<<< HEAD
 module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
 
 static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
@@ -1651,6 +1663,11 @@ static const struct kernel_param_ops def_reserved_size_ops = {
 
 module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
 		   S_IRUGO | S_IWUSR);
+=======
+module_param_named(def_reserved_size, def_reserved_size, int,
+		   S_IRUGO | S_IWUSR);
+module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_AUTHOR("Douglas Gilbert");
 MODULE_DESCRIPTION("SCSI generic (sg) driver");
@@ -1663,6 +1680,38 @@ MODULE_PARM_DESC(scatter_elem_sz, "scatter gather element "
 MODULE_PARM_DESC(def_reserved_size, "size of buffer reserved for each fd");
 MODULE_PARM_DESC(allow_dio, "allow direct I/O (default: 0 (disallow))");
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SYSCTL
+#include <linux/sysctl.h>
+
+static const struct ctl_table sg_sysctls[] = {
+	{
+		.procname	= "sg-big-buff",
+		.data		= &sg_big_buff,
+		.maxlen		= sizeof(int),
+		.mode		= 0444,
+		.proc_handler	= proc_dointvec,
+	},
+};
+
+static struct ctl_table_header *hdr;
+static void register_sg_sysctls(void)
+{
+	if (!hdr)
+		hdr = register_sysctl("kernel", sg_sysctls);
+}
+
+static void unregister_sg_sysctls(void)
+{
+	unregister_sysctl_table(hdr);
+}
+#else
+#define register_sg_sysctls() do { } while (0)
+#define unregister_sg_sysctls() do { } while (0)
+#endif /* CONFIG_SYSCTL */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init
 init_sg(void)
 {
@@ -1672,6 +1721,13 @@ init_sg(void)
 		scatter_elem_sz = PAGE_SIZE;
 		scatter_elem_sz_prev = scatter_elem_sz;
 	}
+<<<<<<< HEAD
+=======
+	if (def_reserved_size >= 0)
+		sg_big_buff = def_reserved_size;
+	else
+		def_reserved_size = sg_big_buff;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = register_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), 
 				    SG_MAX_DEVS, "sg");
@@ -1689,6 +1745,10 @@ init_sg(void)
 		return 0;
 	}
 	class_unregister(&sg_sysfs_class);
+<<<<<<< HEAD
+=======
+	register_sg_sysctls();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_out:
 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
 	return rc;
@@ -1697,6 +1757,10 @@ err_out:
 static void __exit
 exit_sg(void)
 {
+<<<<<<< HEAD
+=======
+	unregister_sg_sysctls();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_SCSI_PROC_FS
 	remove_proc_subtree("scsi/sg", NULL);
 #endif				/* CONFIG_SCSI_PROC_FS */
@@ -1801,7 +1865,11 @@ sg_start_req(Sg_request *srp, unsigned char *cmd)
 	}
 
 	res = blk_rq_map_user_io(rq, md, hp->dxferp, hp->dxfer_len,
+<<<<<<< HEAD
 			GFP_KERNEL, iov_count, iov_count, 1, rw);
+=======
+			GFP_ATOMIC, iov_count, iov_count, 1, rw);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!res) {
 		srp->bio = rq->bio;
 
@@ -2172,8 +2240,15 @@ sg_add_sfp(Sg_device * sdp)
 	write_unlock_irqrestore(&sdp->sfd_lock, iflags);
 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp,
 				      "sg_add_sfp: sfp=0x%p\n", sfp));
+<<<<<<< HEAD
 
 	bufflen = min_t(int, def_reserved_size,
+=======
+	if (unlikely(sg_big_buff != def_reserved_size))
+		sg_big_buff = def_reserved_size;
+
+	bufflen = min_t(int, sg_big_buff,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			max_sectors_bytes(sdp->device->request_queue));
 	sg_build_reserve(sfp, bufflen);
 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp,
@@ -2401,7 +2476,11 @@ sg_proc_write_adio(struct file *filp, const char __user *buffer,
 
 static int sg_proc_single_open_dressz(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 	return single_open(file, sg_proc_seq_show_int, &def_reserved_size);
+=======
+	return single_open(file, sg_proc_seq_show_int, &sg_big_buff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t 
@@ -2418,7 +2497,11 @@ sg_proc_write_dressz(struct file *filp, const char __user *buffer,
 	if (err)
 		return err;
 	if (k <= 1048576) {	/* limit "big buff" to 1 MB */
+<<<<<<< HEAD
 		def_reserved_size = k;
+=======
+		sg_big_buff = k;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return count;
 	}
 	return -ERANGE;
@@ -2591,7 +2674,11 @@ static int sg_proc_seq_show_debug(struct seq_file *s, void *v)
 
 	if (it && (0 == it->index))
 		seq_printf(s, "max_active_device=%d  def_reserved_size=%d\n",
+<<<<<<< HEAD
 			   (int)it->max, def_reserved_size);
+=======
+			   (int)it->max, sg_big_buff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	read_lock_irqsave(&sg_index_lock, iflags);
 	sdp = it ? sg_lookup_dev(it->index) : NULL;

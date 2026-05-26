@@ -115,6 +115,35 @@ static inline bool is_write_fault(unsigned int fsr)
 	return (fsr & FSR_WRITE) && !(fsr & FSR_CM);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool is_translation_fault(unsigned int fsr)
+{
+	int fs = fsr_fs(fsr);
+#ifdef CONFIG_ARM_LPAE
+	if ((fs & FS_MMU_NOLL_MASK) == FS_TRANS_NOLL)
+		return true;
+#else
+	if (fs == FS_L1_TRANS || fs == FS_L2_TRANS)
+		return true;
+#endif
+	return false;
+}
+
+static inline bool is_permission_fault(unsigned int fsr)
+{
+	int fs = fsr_fs(fsr);
+#ifdef CONFIG_ARM_LPAE
+	if ((fs & FS_MMU_NOLL_MASK) == FS_PERM_NOLL)
+		return true;
+#else
+	if (fs == FS_L1_PERM || fs == FS_L2_PERM)
+		return true;
+#endif
+	return false;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void die_kernel_fault(const char *msg, struct mm_struct *mm,
 			     unsigned long addr, unsigned int fsr,
 			     struct pt_regs *regs)
@@ -164,8 +193,12 @@ __do_kernel_fault(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
 
 /*
  * Something tried to access memory that isn't in our memory map..
+<<<<<<< HEAD
  * User mode accesses just cause a SIGSEGV. Ensure interrupts are enabled
  * for preempt RT.
+=======
+ * User mode accesses just cause a SIGSEGV
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void
 __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
@@ -173,8 +206,11 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
 {
 	struct task_struct *tsk = current;
 
+<<<<<<< HEAD
 	local_irq_enable();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DEBUG_USER
 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
@@ -235,6 +271,7 @@ static inline bool ttbr0_usermode_access_allowed(struct pt_regs *regs)
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * Handle a vmalloc fault, copying the non-leaf page table entries from
  * init_mm.pgd. Any kernel context can trigger this, so we must not sleep
@@ -299,6 +336,8 @@ static bool __kprobes __maybe_unused vmalloc_fault(unsigned long addr)
 	return true;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __kprobes
 do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
 			     unsigned int fsr, struct pt_regs *regs)
@@ -309,7 +348,10 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
 		 * should not be faulting in kernel space, which includes the
 		 * vector/khelper page. Handle the branch predictor hardening
 		 * while interrupts are still disabled, then send a SIGSEGV.
+<<<<<<< HEAD
 		 * Note that __do_user_fault() will enable interrupts.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		harden_branch_predictor();
 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
@@ -534,9 +576,16 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
  * directly to do_kernel_address_page_fault() to handle.
  *
  * Otherwise, we're probably faulting in the vmalloc() area, so try to fix
+<<<<<<< HEAD
  * that up via vmalloc_fault().
  *
  * If vmalloc_fault() fails, that means the non-leaf page tables did not
+=======
+ * that up. Note that we must not take any locks or enable interrupts in
+ * this case.
+ *
+ * If vmalloc() fixup fails, that means the non-leaf page tables did not
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * contain an entry for this address, so handle this via
  * do_kernel_address_page_fault().
  */
@@ -545,12 +594,74 @@ static int __kprobes
 do_translation_fault(unsigned long addr, unsigned int fsr,
 		     struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	if (addr < TASK_SIZE)
 		return do_page_fault(addr, fsr, regs);
 
 	if (!user_mode(regs) && vmalloc_fault(addr))
 		return 0;
 
+=======
+	unsigned int index;
+	pgd_t *pgd, *pgd_k;
+	p4d_t *p4d, *p4d_k;
+	pud_t *pud, *pud_k;
+	pmd_t *pmd, *pmd_k;
+
+	if (addr < TASK_SIZE)
+		return do_page_fault(addr, fsr, regs);
+
+	if (user_mode(regs))
+		goto bad_area;
+
+	index = pgd_index(addr);
+
+	pgd = cpu_get_pgd() + index;
+	pgd_k = init_mm.pgd + index;
+
+	p4d = p4d_offset(pgd, addr);
+	p4d_k = p4d_offset(pgd_k, addr);
+
+	if (p4d_none(*p4d_k))
+		goto bad_area;
+	if (!p4d_present(*p4d))
+		set_p4d(p4d, *p4d_k);
+
+	pud = pud_offset(p4d, addr);
+	pud_k = pud_offset(p4d_k, addr);
+
+	if (pud_none(*pud_k))
+		goto bad_area;
+	if (!pud_present(*pud))
+		set_pud(pud, *pud_k);
+
+	pmd = pmd_offset(pud, addr);
+	pmd_k = pmd_offset(pud_k, addr);
+
+#ifdef CONFIG_ARM_LPAE
+	/*
+	 * Only one hardware entry per PMD with LPAE.
+	 */
+	index = 0;
+#else
+	/*
+	 * On ARM one Linux PGD entry contains two hardware entries (see page
+	 * tables layout in pgtable.h). We normally guarantee that we always
+	 * fill both L1 entries. But create_mapping() doesn't follow the rule.
+	 * It can create inidividual L1 entries, so here we have to call
+	 * pmd_none() check for the entry really corresponded to address, not
+	 * for the first of pair.
+	 */
+	index = (addr >> SECTION_SHIFT) & 1;
+#endif
+	if (pmd_none(pmd_k[index]))
+		goto bad_area;
+
+	copy_pmd(pmd, pmd_k);
+	return 0;
+
+bad_area:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do_kernel_address_page_fault(current->mm, addr, fsr, regs);
 
 	return 0;

@@ -454,7 +454,11 @@ void s3fwrn5_fw_init(struct s3fwrn5_fw_info *fw_info, const char *fw_name)
 	fw_info->parity = 0x00;
 	fw_info->rsp = NULL;
 	fw_info->fw.fw = NULL;
+<<<<<<< HEAD
 	strscpy(fw_info->fw_name, fw_name);
+=======
+	strcpy(fw_info->fw_name, fw_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_completion(&fw_info->completion);
 }
 

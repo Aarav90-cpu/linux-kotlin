@@ -400,7 +400,11 @@ static int ufs_getfrag_block(struct inode *inode, sector_t fragment, struct buff
 
 	mutex_lock(&UFS_I(inode)->truncate_mutex);
 
+<<<<<<< HEAD
 	UFSD("ENTER, ino %llu, fragment %llu\n", inode->i_ino, (unsigned long long)fragment);
+=======
+	UFSD("ENTER, ino %lu, fragment %llu\n", inode->i_ino, (unsigned long long)fragment);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(!depth)) {
 		ufs_warning(sb, "ufs_get_block", "block > big");
 		err = -EIO;
@@ -595,7 +599,11 @@ static int ufs2_read_inode(struct inode *inode, struct ufs2_inode *ufs2_inode)
 	struct super_block *sb = inode->i_sb;
 	umode_t mode;
 
+<<<<<<< HEAD
 	UFSD("Reading ufs2 inode, ino %llu\n", inode->i_ino);
+=======
+	UFSD("Reading ufs2 inode, ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Copy data to the in-core inode.
 	 */
@@ -662,7 +670,11 @@ struct inode *ufs_iget(struct super_block *sb, unsigned long ino)
 
 	bh = sb_bread(sb, uspi->s_sbbase + ufs_inotofsba(inode->i_ino));
 	if (!bh) {
+<<<<<<< HEAD
 		ufs_warning(sb, "ufs_read_inode", "unable to read inode %llu\n",
+=======
+		ufs_warning(sb, "ufs_read_inode", "unable to read inode %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    inode->i_ino);
 		goto bad_inode;
 	}
@@ -793,17 +805,29 @@ static int ufs_update_inode(struct inode * inode, int do_sync)
 	struct ufs_sb_private_info *uspi = UFS_SB(sb)->s_uspi;
 	struct buffer_head * bh;
 
+<<<<<<< HEAD
 	UFSD("ENTER, ino %llu\n", inode->i_ino);
 
 	if (inode->i_ino < UFS_ROOTINO ||
 	    inode->i_ino > (uspi->s_ncg * uspi->s_ipg)) {
 		ufs_warning (sb, "ufs_read_inode", "bad inode number (%llu)\n", inode->i_ino);
+=======
+	UFSD("ENTER, ino %lu\n", inode->i_ino);
+
+	if (inode->i_ino < UFS_ROOTINO ||
+	    inode->i_ino > (uspi->s_ncg * uspi->s_ipg)) {
+		ufs_warning (sb, "ufs_read_inode", "bad inode number (%lu)\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 	}
 
 	bh = sb_bread(sb, ufs_inotofsba(inode->i_ino));
 	if (!bh) {
+<<<<<<< HEAD
 		ufs_warning (sb, "ufs_read_inode", "unable to read inode %llu\n", inode->i_ino);
+=======
+		ufs_warning (sb, "ufs_read_inode", "unable to read inode %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 	}
 	if (uspi->fs_magic == UFS2_MAGIC) {
@@ -853,6 +877,10 @@ void ufs_evict_inode(struct inode * inode)
 		ufs_update_inode(inode, inode_needs_sync(inode));
 	}
 
+<<<<<<< HEAD
+=======
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 
 	if (want_delete)
@@ -890,7 +918,11 @@ static void ufs_trunc_direct(struct inode *inode)
 	unsigned int old_tail, new_tail;
 	struct to_free ctx = {.inode = inode};
 
+<<<<<<< HEAD
 	UFSD("ENTER: ino %llu\n", inode->i_ino);
+=======
+	UFSD("ENTER: ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	new_frags = DIRECT_FRAGMENT;
 	// new_frags = first fragment past the new EOF
@@ -955,7 +987,11 @@ static void ufs_trunc_direct(struct inode *inode)
 		}
 	}
 done:
+<<<<<<< HEAD
 	UFSD("EXIT: ino %llu\n", inode->i_ino);
+=======
+	UFSD("EXIT: ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void free_full_branch(struct inode *inode, u64 ind_block, int depth)
@@ -1168,7 +1204,11 @@ static int ufs_truncate(struct inode *inode, loff_t size)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	UFSD("ENTER: ino %llu, i_size: %llu, old_i_size: %llu\n",
+=======
+	UFSD("ENTER: ino %lu, i_size: %llu, old_i_size: %llu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     inode->i_ino, (unsigned long long)size,
 	     (unsigned long long)i_size_read(inode));
 

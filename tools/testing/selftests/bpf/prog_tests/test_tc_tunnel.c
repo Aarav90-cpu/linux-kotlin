@@ -168,7 +168,11 @@ static int check_server_rx_data(struct subtest_cfg *cfg,
 
 static struct connection *connect_client_to_server(struct subtest_cfg *cfg)
 {
+<<<<<<< HEAD
 	struct network_helper_opts opts = {.timeout_ms = 1000};
+=======
+	struct network_helper_opts opts = {.timeout_ms = 500};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int family = cfg->ipproto == 6 ? AF_INET6 : AF_INET;
 	struct connection *conn = NULL;
 	int client_fd, server_fd;
@@ -206,13 +210,26 @@ static void disconnect_client_from_server(struct subtest_cfg *cfg,
 	free(conn);
 }
 
+<<<<<<< HEAD
 static int send_and_test_data(struct subtest_cfg *cfg)
+=======
+static int send_and_test_data(struct subtest_cfg *cfg, bool must_succeed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct connection *conn;
 	int err, res = -1;
 
 	conn = connect_client_to_server(cfg);
+<<<<<<< HEAD
 	if (!ASSERT_OK_PTR(conn, "connect to server"))
+=======
+	if (!must_succeed && !ASSERT_ERR_PTR(conn, "connection that must fail"))
+		goto end;
+	else if (!must_succeed)
+		return 0;
+
+	if (!ASSERT_OK_PTR(conn, "connection that must succeed"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -1;
 
 	err = send(conn->client_fd, tx_buffer, DEFAULT_TEST_DATA_SIZE, 0);
@@ -386,7 +403,11 @@ static void run_test(struct subtest_cfg *cfg)
 		goto fail;
 
 	/* Basic communication must work */
+<<<<<<< HEAD
 	if (!ASSERT_OK(send_and_test_data(cfg), "connect without any encap"))
+=======
+	if (!ASSERT_OK(send_and_test_data(cfg, true), "connect without any encap"))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 
 	/* Attach encapsulation program to client */
@@ -398,7 +419,11 @@ static void run_test(struct subtest_cfg *cfg)
 		if (!ASSERT_OK(configure_kernel_decapsulation(cfg),
 					"configure kernel decapsulation"))
 			goto fail;
+<<<<<<< HEAD
 		if (!ASSERT_OK(send_and_test_data(cfg),
+=======
+		if (!ASSERT_OK(send_and_test_data(cfg, true),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       "connect with encap prog and kern decap"))
 			goto fail;
 	}
@@ -406,7 +431,11 @@ static void run_test(struct subtest_cfg *cfg)
 	/* Replace kernel decapsulation with BPF decapsulation, test must pass */
 	if (!ASSERT_OK(configure_ebpf_decapsulation(cfg), "configure ebpf decapsulation"))
 		goto fail;
+<<<<<<< HEAD
 	ASSERT_OK(send_and_test_data(cfg), "connect with encap and decap progs");
+=======
+	ASSERT_OK(send_and_test_data(cfg, true), "connect with encap and decap progs");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 fail:
 	close_netns(nstoken);

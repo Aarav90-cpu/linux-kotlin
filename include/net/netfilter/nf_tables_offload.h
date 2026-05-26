@@ -67,6 +67,7 @@ struct nft_flow_rule {
 	struct flow_rule	*rule;
 };
 
+<<<<<<< HEAD
 static inline struct flow_action_entry *
 nft_flow_action_entry_next(struct nft_offload_ctx *ctx,
 			   struct nft_flow_rule *flow)
@@ -77,6 +78,8 @@ nft_flow_action_entry_next(struct nft_offload_ctx *ctx,
 	return &flow->rule->action.entries[ctx->num_actions++];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void nft_flow_rule_set_addr_type(struct nft_flow_rule *flow,
 				 enum flow_dissector_key_id addr_type);
 

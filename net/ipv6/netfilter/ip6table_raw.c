@@ -52,7 +52,11 @@ static int ip6table_raw_table_init(struct net *net)
 
 static void __net_exit ip6table_raw_net_pre_exit(struct net *net)
 {
+<<<<<<< HEAD
 	xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "raw");
+=======
+	ip6t_unregister_table_pre_exit(net, "raw");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void __net_exit ip6table_raw_net_exit(struct net *net)
@@ -75,6 +79,7 @@ static int __init ip6table_raw_init(void)
 		pr_info("Enabling raw table before defrag\n");
 	}
 
+<<<<<<< HEAD
 	/* Register hooks */
 	rawtable_ops = xt_hook_ops_alloc(table, ip6t_do_table);
 	if (IS_ERR(rawtable_ops))
@@ -93,13 +98,38 @@ static int __init ip6table_raw_init(void)
 	return 0;
 err_free:
 	kfree(rawtable_ops);
+=======
+	ret = xt_register_template(table, ip6table_raw_table_init);
+	if (ret < 0)
+		return ret;
+
+	/* Register hooks */
+	rawtable_ops = xt_hook_ops_alloc(table, ip6t_do_table);
+	if (IS_ERR(rawtable_ops)) {
+		xt_unregister_template(table);
+		return PTR_ERR(rawtable_ops);
+	}
+
+	ret = register_pernet_subsys(&ip6table_raw_net_ops);
+	if (ret < 0) {
+		kfree(rawtable_ops);
+		xt_unregister_template(table);
+		return ret;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
 static void __exit ip6table_raw_fini(void)
 {
+<<<<<<< HEAD
 	xt_unregister_template(&packet_raw);
 	unregister_pernet_subsys(&ip6table_raw_net_ops);
+=======
+	unregister_pernet_subsys(&ip6table_raw_net_ops);
+	xt_unregister_template(&packet_raw);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(rawtable_ops);
 }
 

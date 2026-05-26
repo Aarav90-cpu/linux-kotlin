@@ -418,6 +418,7 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
 		return;
 
 	idr_remove(global_ft.idr, fp->persistent_id);
+<<<<<<< HEAD
 	/*
 	 * Clear persistent_id so a later __ksmbd_close_fd() that runs from a
 	 * delayed putter (e.g. when a concurrent ksmbd_lookup_fd_inode()
@@ -426,6 +427,8 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
 	 * durable handle.
 	 */
 	fp->persistent_id = KSMBD_NO_FID;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
@@ -439,13 +442,22 @@ static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
 
 static void __ksmbd_remove_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
 {
+<<<<<<< HEAD
+=======
+	if (!has_file_id(fp->volatile_id))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	down_write(&fp->f_ci->m_lock);
 	list_del_init(&fp->node);
 	up_write(&fp->f_ci->m_lock);
 
+<<<<<<< HEAD
 	if (!has_file_id(fp->volatile_id))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	write_lock(&ft->lock);
 	idr_remove(ft->idr, fp->volatile_id);
 	write_unlock(&ft->lock);
@@ -483,6 +495,7 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
 		kfree(smb_lock);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Drop fp's strong reference on conn (taken in ksmbd_open_fd() /
 	 * ksmbd_reopen_durable_fd()).  Durable fps that reached the
@@ -494,6 +507,8 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
 		fp->conn = NULL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ksmbd_stream_fd(fp))
 		kfree(fp->stream.name);
 	kfree(fp->owner.name);
@@ -529,6 +544,7 @@ static struct ksmbd_file *__ksmbd_lookup_fd(struct ksmbd_file_table *ft,
 
 static void __put_fd_final(struct ksmbd_work *work, struct ksmbd_file *fp)
 {
+<<<<<<< HEAD
 	/*
 	 * Detached durable fp -- session_fd_check() cleared fp->conn at
 	 * preserve, so this fp is no longer tracked by any conn's
@@ -543,6 +559,8 @@ static void __put_fd_final(struct ksmbd_work *work, struct ksmbd_file *fp)
 		__ksmbd_close_fd(NULL, fp);
 		return;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__ksmbd_close_fd(&work->sess->file_table, fp);
 	atomic_dec(&work->conn->stats.open_files_count);
 }
@@ -785,6 +803,7 @@ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp)
 	atomic_set(&fp->refcount, 1);
 
 	fp->filp		= filp;
+<<<<<<< HEAD
 	/*
 	 * fp owns a strong reference on fp->conn for as long as fp->conn is
 	 * non-NULL, so session_fd_check() and __ksmbd_close_fd() never
@@ -793,6 +812,9 @@ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp)
 	 * (final close), and on the error paths below.
 	 */
 	fp->conn		= ksmbd_conn_get(work->conn);
+=======
+	fp->conn		= work->conn;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fp->tcon		= work->tcon;
 	fp->volatile_id		= KSMBD_NO_FID;
 	fp->persistent_id	= KSMBD_NO_FID;
@@ -814,12 +836,16 @@ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp)
 	return fp;
 
 err_out:
+<<<<<<< HEAD
 	/* fp->conn was set and refcounted before every branch here. */
 	ksmbd_conn_put(fp->conn);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kmem_cache_free(filp_cache, fp);
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 /**
  * ksmbd_update_fstate() - update an fp state under the file-table lock
  * @ft: file table that publishes @fp's volatile id
@@ -872,6 +898,17 @@ static int ksmbd_mark_fp_closed(struct ksmbd_file *fp)
 	}
 
 	return 1;
+=======
+void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
+			 unsigned int state)
+{
+	if (!fp)
+		return;
+
+	write_lock(&ft->lock);
+	fp->f_state = state;
+	write_unlock(&ft->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int
@@ -879,8 +916,12 @@ __close_file_table_ids(struct ksmbd_session *sess,
 		       struct ksmbd_tree_connect *tcon,
 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
 				    struct ksmbd_file *fp,
+<<<<<<< HEAD
 				    struct ksmbd_user *user),
 		       bool skip_preserves_fp)
+=======
+				    struct ksmbd_user *user))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ksmbd_file_table *ft = &sess->file_table;
 	struct ksmbd_file *fp;
@@ -888,20 +929,30 @@ __close_file_table_ids(struct ksmbd_session *sess,
 	int num = 0;
 
 	while (1) {
+<<<<<<< HEAD
 		int n_to_drop;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		write_lock(&ft->lock);
 		fp = idr_get_next(ft->idr, &id);
 		if (!fp) {
 			write_unlock(&ft->lock);
 			break;
 		}
+<<<<<<< HEAD
 		if (!atomic_inc_not_zero(&fp->refcount)) {
+=======
+
+		if (skip(tcon, fp, sess->user) ||
+		    !atomic_dec_and_test(&fp->refcount)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			id++;
 			write_unlock(&ft->lock);
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (skip_preserves_fp) {
 			/*
 			 * Session teardown: skip() is session_fd_check(),
@@ -973,10 +1024,18 @@ __close_file_table_ids(struct ksmbd_session *sess,
 		 * m_fp_list here because __ksmbd_remove_fd() will skip the
 		 * list unlink when volatile_id is KSMBD_NO_FID.
 		 */
+=======
+		set_close_state_blocked_works(fp);
+		idr_remove(ft->idr, fp->volatile_id);
+		fp->volatile_id = KSMBD_NO_FID;
+		write_unlock(&ft->lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		down_write(&fp->f_ci->m_lock);
 		list_del_init(&fp->node);
 		up_write(&fp->f_ci->m_lock);
 
+<<<<<<< HEAD
 		/*
 		 * Drop the references this iteration owns:
 		 *
@@ -1002,6 +1061,11 @@ __close_file_table_ids(struct ksmbd_session *sess,
 			__ksmbd_close_fd(NULL, fp);
 			num++;
 		}
+=======
+		__ksmbd_close_fd(ft, fp);
+
+		num++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		id++;
 	}
 
@@ -1055,6 +1119,7 @@ static bool ksmbd_durable_scavenger_alive(void)
 	return true;
 }
 
+<<<<<<< HEAD
 static void ksmbd_scavenger_dispose_dh(struct ksmbd_file *fp)
 {
 	/*
@@ -1077,15 +1142,33 @@ static void ksmbd_scavenger_dispose_dh(struct ksmbd_file *fp)
 	 */
 	if (atomic_sub_and_test(2, &fp->refcount))
 		__ksmbd_close_fd(NULL, fp);
+=======
+static void ksmbd_scavenger_dispose_dh(struct list_head *head)
+{
+	while (!list_empty(head)) {
+		struct ksmbd_file *fp;
+
+		fp = list_first_entry(head, struct ksmbd_file, node);
+		list_del_init(&fp->node);
+		__ksmbd_close_fd(NULL, fp);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ksmbd_durable_scavenger(void *dummy)
 {
 	struct ksmbd_file *fp = NULL;
+<<<<<<< HEAD
 	struct ksmbd_file *expired_fp;
 	unsigned int id;
 	unsigned int min_timeout = 1;
 	bool found_fp_timeout;
+=======
+	unsigned int id;
+	unsigned int min_timeout = 1;
+	bool found_fp_timeout;
+	LIST_HEAD(scavenger_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long remaining_jiffies;
 
 	__module_get(THIS_MODULE);
@@ -1095,6 +1178,11 @@ static int ksmbd_durable_scavenger(void *dummy)
 		if (try_to_freeze())
 			continue;
 
+<<<<<<< HEAD
+=======
+		found_fp_timeout = false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		remaining_jiffies = wait_event_timeout(dh_wq,
 				   ksmbd_durable_scavenger_alive() == false,
 				   __msecs_to_jiffies(min_timeout));
@@ -1103,6 +1191,7 @@ static int ksmbd_durable_scavenger(void *dummy)
 		else
 			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
 
+<<<<<<< HEAD
 		do {
 			expired_fp = NULL;
 			found_fp_timeout = false;
@@ -1136,6 +1225,25 @@ static int ksmbd_durable_scavenger(void *dummy)
 					break;
 				}
 
+=======
+		write_lock(&global_ft.lock);
+		idr_for_each_entry(global_ft.idr, fp, id) {
+			if (!fp->durable_timeout)
+				continue;
+
+			if (atomic_read(&fp->refcount) > 1 ||
+			    fp->conn)
+				continue;
+
+			found_fp_timeout = true;
+			if (fp->durable_scavenger_timeout <=
+			    jiffies_to_msecs(jiffies)) {
+				__ksmbd_remove_durable_fd(fp);
+				list_add(&fp->node, &scavenger_list);
+			} else {
+				unsigned long durable_timeout;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				durable_timeout =
 					fp->durable_scavenger_timeout -
 						jiffies_to_msecs(jiffies);
@@ -1143,11 +1251,18 @@ static int ksmbd_durable_scavenger(void *dummy)
 				if (min_timeout > durable_timeout)
 					min_timeout = durable_timeout;
 			}
+<<<<<<< HEAD
 			write_unlock(&global_ft.lock);
 
 			if (expired_fp)
 				ksmbd_scavenger_dispose_dh(expired_fp);
 		} while (expired_fp);
+=======
+		}
+		write_unlock(&global_ft.lock);
+
+		ksmbd_scavenger_dispose_dh(&scavenger_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (found_fp_timeout == false)
 			break;
@@ -1264,6 +1379,7 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
 	if (!is_reconnectable(fp))
 		return false;
 
+<<<<<<< HEAD
 	if (fp->f_state != FP_INITED)
 		return false;
 
@@ -1278,21 +1394,37 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
 	 * / ksmbd_reopen_durable_fd()), so conn stays valid for the whole
 	 * body of this function regardless of any op->conn puts below.
 	 */
+=======
+	if (ksmbd_vfs_copy_durable_owner(fp, user))
+		return false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	conn = fp->conn;
 	ci = fp->f_ci;
 	down_write(&ci->m_lock);
 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
 		if (op->conn != conn)
 			continue;
+<<<<<<< HEAD
 		ksmbd_conn_put(op->conn);
+=======
+		if (op->conn && atomic_dec_and_test(&op->conn->refcnt))
+			kfree(op->conn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		op->conn = NULL;
 	}
 	up_write(&ci->m_lock);
 
 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+<<<<<<< HEAD
 		spin_lock(&conn->llist_lock);
 		list_del_init(&smb_lock->clist);
 		spin_unlock(&conn->llist_lock);
+=======
+		spin_lock(&fp->conn->llist_lock);
+		list_del_init(&smb_lock->clist);
+		spin_unlock(&fp->conn->llist_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	fp->conn = NULL;
@@ -1303,8 +1435,11 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
 		fp->durable_scavenger_timeout =
 			jiffies_to_msecs(jiffies) + fp->durable_timeout;
 
+<<<<<<< HEAD
 	/* Drop fp's own reference on conn. */
 	ksmbd_conn_put(conn);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -1312,8 +1447,12 @@ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
 {
 	int num = __close_file_table_ids(work->sess,
 					 work->tcon,
+<<<<<<< HEAD
 					 tree_conn_fd_check,
 					 false);
+=======
+					 tree_conn_fd_check);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic_sub(num, &work->conn->stats.open_files_count);
 }
@@ -1322,8 +1461,12 @@ void ksmbd_close_session_fds(struct ksmbd_work *work)
 {
 	int num = __close_file_table_ids(work->sess,
 					 work->tcon,
+<<<<<<< HEAD
 					 session_fd_check,
 					 true);
+=======
+					 session_fd_check);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	atomic_sub(num, &work->conn->stats.open_files_count);
 }
@@ -1394,6 +1537,7 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
 
 	old_f_state = fp->f_state;
 	fp->f_state = FP_NEW;
+<<<<<<< HEAD
 
 	/*
 	 * Initialize fp's connection binding before publishing fp into the
@@ -1411,10 +1555,20 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
 		fp->conn = NULL;
 		fp->tcon = NULL;
 		ksmbd_conn_put(conn);
+=======
+	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+	if (!has_file_id(fp->volatile_id)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fp->f_state = old_f_state;
 		return -EBADF;
 	}
 
+<<<<<<< HEAD
+=======
+	fp->conn = conn;
+	fp->tcon = work->tcon;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
 		spin_lock(&conn->llist_lock);
 		list_add_tail(&smb_lock->clist, &conn->lock_list);
@@ -1426,7 +1580,12 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
 		if (op->conn)
 			continue;
+<<<<<<< HEAD
 		op->conn = ksmbd_conn_get(fp->conn);
+=======
+		op->conn = fp->conn;
+		atomic_inc(&op->conn->refcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	up_write(&ci->m_lock);
 
@@ -1455,7 +1614,11 @@ void ksmbd_destroy_file_table(struct ksmbd_session *sess)
 	if (!ft->idr)
 		return;
 
+<<<<<<< HEAD
 	__close_file_table_ids(sess, NULL, session_fd_check, true);
+=======
+	__close_file_table_ids(sess, NULL, session_fd_check);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	idr_destroy(ft->idr);
 	kfree(ft->idr);
 	ft->idr = NULL;

@@ -97,7 +97,10 @@ static const char *const blk_queue_flag_name[] = {
 	QUEUE_FLAG_NAME(NO_ELV_SWITCH),
 	QUEUE_FLAG_NAME(QOS_ENABLED),
 	QUEUE_FLAG_NAME(BIO_ISSUE_TIME),
+<<<<<<< HEAD
 	QUEUE_FLAG_NAME(ZONED_QD1_WRITES),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 #undef QUEUE_FLAG_NAME
 

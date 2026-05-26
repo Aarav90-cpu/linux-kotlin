@@ -23,7 +23,10 @@ ARM64 Architecture
     memory
     memory-tagging-extension
     mops
+<<<<<<< HEAD
     mpam
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     perf
     pointer-authentication
     ptdump

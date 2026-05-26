@@ -30,7 +30,11 @@ static void guest_nmi_handler(struct ex_regs *regs)
 {
 }
 
+<<<<<<< HEAD
 static inline void rdmsr_from_l2(u32 msr)
+=======
+static inline void rdmsr_from_l2(uint32_t msr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Currently, L1 doesn't preserve GPRs during vmexits. */
 	__asm__ __volatile__ ("rdmsr" : : "c"(msr) :
@@ -76,7 +80,11 @@ void l2_guest_code(void)
 }
 
 void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
+<<<<<<< HEAD
 		gpa_t hv_hcall_page_gpa)
+=======
+		vm_vaddr_t hv_hcall_page_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #define L2_GUEST_STACK_SIZE 64
 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
@@ -231,8 +239,13 @@ static struct kvm_vcpu *save_restore_vm(struct kvm_vm *vm,
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t vmx_pages_gva = 0, hv_pages_gva = 0;
 	gva_t hcall_page;
+=======
+	vm_vaddr_t vmx_pages_gva = 0, hv_pages_gva = 0;
+	vm_vaddr_t hcall_page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
@@ -246,7 +259,11 @@ int main(int argc, char *argv[])
 
 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
 
+<<<<<<< HEAD
 	hcall_page = vm_alloc_pages(vm, 1);
+=======
+	hcall_page = vm_vaddr_alloc_pages(vm, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(addr_gva2hva(vm, hcall_page), 0x0,  getpagesize());
 
 	vcpu_set_hv_cpuid(vcpu);

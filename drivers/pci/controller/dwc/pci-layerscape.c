@@ -13,7 +13,10 @@
 #include <linux/interrupt.h>
 #include <linux/init.h>
 #include <linux/iopoll.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/of_pci.h>
 #include <linux/of_platform.h>
 #include <linux/of_address.h>
@@ -404,6 +407,7 @@ static const struct dev_pm_ops ls_pcie_pm_ops = {
 	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
 };
 
+<<<<<<< HEAD
 static void ls_pcie_remove(struct platform_device *pdev)
 {
 	struct ls_pcie *pcie = platform_get_drvdata(pdev);
@@ -414,6 +418,10 @@ static void ls_pcie_remove(struct platform_device *pdev)
 static struct platform_driver ls_pcie_driver = {
 	.probe = ls_pcie_probe,
 	.remove = ls_pcie_remove,
+=======
+static struct platform_driver ls_pcie_driver = {
+	.probe = ls_pcie_probe,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver = {
 		.name = "layerscape-pcie",
 		.of_match_table = ls_pcie_of_match,
@@ -421,9 +429,13 @@ static struct platform_driver ls_pcie_driver = {
 		.pm = &ls_pcie_pm_ops,
 	},
 };
+<<<<<<< HEAD
 module_platform_driver(ls_pcie_driver);
 
 MODULE_AUTHOR("Minghuan Lian <Minghuan.Lian@freescale.com>");
 MODULE_DESCRIPTION("Layerscape PCIe host controller driver");
 MODULE_LICENSE("GPL");
 MODULE_DEVICE_TABLE(of, ls_pcie_of_match);
+=======
+builtin_platform_driver(ls_pcie_driver);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

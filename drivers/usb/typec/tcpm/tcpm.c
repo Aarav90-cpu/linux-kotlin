@@ -12,7 +12,10 @@
 #include <linux/jiffies.h>
 #include <linux/kernel.h>
 #include <linux/kthread.h>
+<<<<<<< HEAD
 #include <linux/minmax.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/power_supply.h>
@@ -62,7 +65,10 @@
 	S(SNK_WAIT_CAPABILITIES_TIMEOUT),	\
 	S(SNK_NEGOTIATE_CAPABILITIES),		\
 	S(SNK_NEGOTIATE_PPS_CAPABILITIES),	\
+<<<<<<< HEAD
 	S(SNK_NEGOTIATE_SPR_AVS_CAPABILITIES),	\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	S(SNK_TRANSITION_SINK),			\
 	S(SNK_TRANSITION_SINK_VBUS),		\
 	S(SNK_READY),				\
@@ -190,8 +196,12 @@
 	S(STRUCTURED_VDMS),			\
 	S(COUNTRY_INFO),			\
 	S(COUNTRY_CODES),			\
+<<<<<<< HEAD
 	S(REVISION_INFORMATION),		\
 	S(GETTING_SINK_EXTENDED_CAPABILITIES)
+=======
+	S(REVISION_INFORMATION)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define GENERATE_ENUM(e)	e
 #define GENERATE_STRING(s)	#s
@@ -232,7 +242,10 @@ enum pd_msg_request {
 	PD_MSG_DATA_SINK_CAP,
 	PD_MSG_DATA_SOURCE_CAP,
 	PD_MSG_DATA_REV,
+<<<<<<< HEAD
 	PD_MSG_EXT_SINK_CAP_EXT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum adev_actions {
@@ -309,6 +322,7 @@ struct pd_pps_data {
 	bool active;
 };
 
+<<<<<<< HEAD
 enum spr_avs_status {
 	SPR_AVS_UNKNOWN,
 	SPR_AVS_NOT_SUPPORTED,
@@ -354,6 +368,8 @@ struct pd_spr_avs_data {
 	bool active;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pd_data {
 	struct usb_power_delivery *pd;
 	struct usb_power_delivery_capabilities *source_cap;
@@ -386,6 +402,7 @@ struct pd_timings {
 	u32 snk_bc12_cmpletion_time;
 };
 
+<<<<<<< HEAD
 /* Convert microwatt to watt */
 #define UW_TO_W(pow)					((pow) / 1000000)
 
@@ -427,6 +444,8 @@ enum aug_req_type {
 	PD_SPR_AVS,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tcpm_port {
 	struct device *dev;
 
@@ -589,6 +608,7 @@ struct tcpm_port {
 
 	/* PPS */
 	struct pd_pps_data pps_data;
+<<<<<<< HEAD
 
 	/* SPR AVS */
 	struct pd_spr_avs_data spr_avs_data;
@@ -597,6 +617,11 @@ struct tcpm_port {
 	struct completion aug_supply_req_complete;
 	bool aug_supply_req_pending;
 	int aug_supply_req_status;
+=======
+	struct completion pps_complete;
+	bool pps_pending;
+	int pps_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Alternate mode data */
 	struct pd_mode_data mode_data;
@@ -680,9 +705,12 @@ struct tcpm_port {
 
 	/* Indicates maximum (revision, version) supported */
 	struct pd_revision_info pd_rev;
+<<<<<<< HEAD
 
 	struct pd_identifier pd_ident;
 	struct sink_caps_ext_data sink_caps_ext;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_DEBUG_FS
 	struct dentry *dentry;
 	struct mutex logbuffer_lock;	/* log buffer access lock */
@@ -703,9 +731,15 @@ struct altmode_vdm_event {
 	struct kthread_work work;
 	struct tcpm_port *port;
 	u32 header;
+<<<<<<< HEAD
 	int cnt;
 	enum tcpm_transmit_type tx_sop_type;
 	u32 data[] __counted_by(cnt);
+=======
+	u32 *data;
+	int cnt;
+	enum tcpm_transmit_type tx_sop_type;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char * const pd_rev[] = {
@@ -828,7 +862,11 @@ static void _tcpm_log(struct tcpm_port *port, const char *fmt, va_list args)
 
 	if (tcpm_log_full(port)) {
 		port->logbuffer_head = max(port->logbuffer_head - 1, 0);
+<<<<<<< HEAD
 		strscpy(tmpbuffer, "overflow");
+=======
+		strcpy(tmpbuffer, "overflow");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (port->logbuffer_head < 0 ||
@@ -944,10 +982,17 @@ static void tcpm_log_source_caps(struct tcpm_port *port)
 					  pdo_spr_avs_apdo_15v_to_20v_max_current_ma(pdo),
 					  pdo_spr_avs_apdo_src_peak_current(pdo));
 			else
+<<<<<<< HEAD
 				strscpy(msg, "undefined APDO");
 			break;
 		default:
 			strscpy(msg, "undefined");
+=======
+				strcpy(msg, "undefined APDO");
+			break;
+		default:
+			strcpy(msg, "undefined");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		}
 		tcpm_log(port, " PDO %d: type %d, %s",
@@ -1470,6 +1515,7 @@ static int tcpm_pd_send_sink_caps(struct tcpm_port *port)
 	return tcpm_pd_transmit(port, TCPC_TX_SOP, &msg);
 }
 
+<<<<<<< HEAD
 static int tcpm_pd_send_sink_cap_ext(struct tcpm_port *port)
 {
 	u16 operating_snk_watt = port->operating_snk_mw / 1000;
@@ -1528,6 +1574,8 @@ static int tcpm_pd_send_sink_cap_ext(struct tcpm_port *port)
 	return tcpm_pd_transmit(port, TCPC_TX_SOP, &msg);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void mod_tcpm_delayed_work(struct tcpm_port *port, unsigned int delay_ms)
 {
 	if (delay_ms) {
@@ -1814,6 +1862,10 @@ static void tcpm_queue_vdm_work(struct kthread_work *work)
 	tcpm_queue_vdm(port, event->header, event->data, event->cnt, event->tx_sop_type);
 
 port_unlock:
+<<<<<<< HEAD
+=======
+	kfree(event->data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(event);
 	mutex_unlock(&port->lock);
 }
@@ -1822,6 +1874,7 @@ static int tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
 				   const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
 {
 	struct altmode_vdm_event *event;
+<<<<<<< HEAD
 	int ret = -ENOMEM;
 
 	event = kzalloc_flex(*event, data, cnt);
@@ -1833,16 +1886,44 @@ static int tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
 	event->port = port;
 	event->header = header;
 	memcpy(event->data, data, sizeof(u32) * cnt);
+=======
+	u32 *data_cpy;
+	int ret = -ENOMEM;
+
+	event = kzalloc_obj(*event);
+	if (!event)
+		goto err_event;
+
+	data_cpy = kcalloc(cnt, sizeof(u32), GFP_KERNEL);
+	if (!data_cpy)
+		goto err_data;
+
+	kthread_init_work(&event->work, tcpm_queue_vdm_work);
+	event->port = port;
+	event->header = header;
+	memcpy(data_cpy, data, sizeof(u32) * cnt);
+	event->data = data_cpy;
+	event->cnt = cnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	event->tx_sop_type = tx_sop_type;
 
 	ret = kthread_queue_work(port->wq, &event->work);
 	if (!ret) {
 		ret = -EBUSY;
+<<<<<<< HEAD
 		goto err_data;
+=======
+		goto err_queue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 
+<<<<<<< HEAD
+=======
+err_queue:
+	kfree(data_cpy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_data:
 	kfree(event);
 err_event:
@@ -3346,7 +3427,10 @@ static void tcpm_pd_data_request(struct tcpm_port *port,
 
 	switch (type) {
 	case PD_DATA_SOURCE_CAP:
+<<<<<<< HEAD
 		port->spr_avs_data.port_partner_src_status = SPR_AVS_UNKNOWN;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < cnt; i++)
 			port->source_caps[i] = le32_to_cpu(msg->payload[i]);
 
@@ -3518,12 +3602,21 @@ static void tcpm_pd_data_request(struct tcpm_port *port,
 	}
 }
 
+<<<<<<< HEAD
 static void tcpm_aug_supply_req_complete(struct tcpm_port *port, int result)
 {
 	if (port->aug_supply_req_pending) {
 		port->aug_supply_req_status = result;
 		port->aug_supply_req_pending = false;
 		complete(&port->aug_supply_req_complete);
+=======
+static void tcpm_pps_complete(struct tcpm_port *port, int result)
+{
+	if (port->pps_pending) {
+		port->pps_status = result;
+		port->pps_pending = false;
+		complete(&port->pps_complete);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -3621,7 +3714,11 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 			/* Revert data back from any requested PPS updates */
 			port->pps_data.req_out_volt = port->supply_voltage;
 			port->pps_data.req_op_curr = port->current_limit;
+<<<<<<< HEAD
 			port->aug_supply_req_status = (type == PD_CTRL_WAIT ?
+=======
+			port->pps_status = (type == PD_CTRL_WAIT ?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    -EAGAIN : -EOPNOTSUPP);
 
 			/* Threshold was relaxed before sending Request. Restore it back. */
@@ -3631,6 +3728,7 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 
 			tcpm_set_state(port, SNK_READY, 0);
 			break;
+<<<<<<< HEAD
 		case SNK_NEGOTIATE_SPR_AVS_CAPABILITIES:
 			/* Revert data back from any requested SPR AVS updates */
 			port->spr_avs_data.req_out_volt_mv = port->supply_voltage;
@@ -3645,6 +3743,8 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 
 			tcpm_set_state(port, SNK_READY, 0);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case DR_SWAP_SEND:
 			port->swap_status = (type == PD_CTRL_WAIT ?
 					     -EAGAIN : -EOPNOTSUPP);
@@ -3697,7 +3797,10 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 		switch (port->state) {
 		case SNK_NEGOTIATE_CAPABILITIES:
 			port->pps_data.active = false;
+<<<<<<< HEAD
 			port->spr_avs_data.active = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			tcpm_set_state(port, SNK_TRANSITION_SINK, 0);
 			break;
 		case SNK_NEGOTIATE_PPS_CAPABILITIES:
@@ -3710,6 +3813,7 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 			power_supply_changed(port->psy);
 			tcpm_set_state(port, SNK_TRANSITION_SINK, 0);
 			break;
+<<<<<<< HEAD
 		case SNK_NEGOTIATE_SPR_AVS_CAPABILITIES:
 			port->spr_avs_data.active = true;
 			port->req_supply_voltage = port->spr_avs_data.req_out_volt_mv;
@@ -3717,6 +3821,8 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 			power_supply_changed(port->psy);
 			tcpm_set_state(port, SNK_TRANSITION_SINK, 0);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case SOFT_RESET_SEND:
 			if (port->ams == SOFT_RESET_AMS)
 				tcpm_ams_finish(port);
@@ -3830,6 +3936,7 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 					   PD_MSG_CTRL_NOT_SUPP,
 					   NONE_AMS);
 		break;
+<<<<<<< HEAD
 	case PD_CTRL_GET_SINK_CAP_EXT:
 		/* This is an unsupported message if port type is SRC */
 		if (port->negotiated_rev >= PD_REV30 &&
@@ -3843,6 +3950,8 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
 					   PD_MSG_CTRL_NOT_SUPP,
 					   NONE_AMS);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		tcpm_pd_handle_msg(port,
 				   port->negotiated_rev < PD_REV30 ?
@@ -4095,6 +4204,7 @@ static bool tcpm_send_queued_message(struct tcpm_port *port)
 					 ret);
 			tcpm_ams_finish(port);
 			break;
+<<<<<<< HEAD
 		case PD_MSG_EXT_SINK_CAP_EXT:
 			ret = tcpm_pd_send_sink_cap_ext(port);
 			if (ret == -EOPNOTSUPP)
@@ -4105,6 +4215,8 @@ static bool tcpm_send_queued_message(struct tcpm_port *port)
 					 ret);
 			tcpm_ams_finish(port);
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		default:
 			break;
 		}
@@ -4214,9 +4326,15 @@ static int tcpm_pd_select_pdo(struct tcpm_port *port, int *sink_pdo,
 		case PDO_TYPE_APDO:
 			if (pdo_apdo_type(pdo) == APDO_TYPE_PPS) {
 				port->pps_data.supported = true;
+<<<<<<< HEAD
 			} else if (pdo_apdo_type(pdo) == APDO_TYPE_SPR_AVS) {
 				port->spr_avs_data.port_partner_src_status = SPR_AVS_SUPPORTED;
 				port->spr_avs_data.port_partner_src_pdo_index = i;
+=======
+				port->usb_type =
+					POWER_SUPPLY_USB_TYPE_PD_PPS;
+				power_supply_changed(port->psy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			continue;
 		default:
@@ -4254,10 +4372,13 @@ static int tcpm_pd_select_pdo(struct tcpm_port *port, int *sink_pdo,
 				min_snk_mv = pdo_min_voltage(pdo);
 				break;
 			case PDO_TYPE_APDO:
+<<<<<<< HEAD
 				if (pdo_apdo_type(pdo) == APDO_TYPE_SPR_AVS) {
 					port->spr_avs_data.port_snk_status = SPR_AVS_SUPPORTED;
 					port->spr_avs_data.port_snk_pdo_index = j;
 				}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				continue;
 			default:
 				tcpm_log(port, "Invalid sink PDO type, ignoring");
@@ -4279,6 +4400,7 @@ static int tcpm_pd_select_pdo(struct tcpm_port *port, int *sink_pdo,
 		}
 	}
 
+<<<<<<< HEAD
 	if (port->spr_avs_data.port_snk_status == SPR_AVS_UNKNOWN)
 		port->spr_avs_data.port_snk_status = SPR_AVS_NOT_SUPPORTED;
 
@@ -4296,6 +4418,8 @@ static int tcpm_pd_select_pdo(struct tcpm_port *port, int *sink_pdo,
 	if (port->usb_type != POWER_SUPPLY_USB_TYPE_PD)
 		power_supply_changed(port->psy);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -4346,6 +4470,7 @@ static unsigned int tcpm_pd_select_pps_apdo(struct tcpm_port *port)
 	return src_pdo;
 }
 
+<<<<<<< HEAD
 static int tcpm_pd_select_spr_avs_apdo(struct tcpm_port *port)
 {
 	u32 req_out_volt_mv, req_op_curr_ma, src_max_curr_ma = 0, source_cap;
@@ -4428,6 +4553,8 @@ static int tcpm_pd_select_spr_avs_apdo(struct tcpm_port *port)
 	return src_pdo_index;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tcpm_pd_build_request(struct tcpm_port *port, u32 *rdo)
 {
 	unsigned int mv, ma, mw, flags;
@@ -4595,6 +4722,7 @@ static int tcpm_pd_build_pps_request(struct tcpm_port *port, u32 *rdo)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tcpm_pd_build_spr_avs_request(struct tcpm_port *port, u32 *rdo)
 {
 	u32 out_mv, op_ma, flags, snk_pdo_index, source_cap;
@@ -4650,11 +4778,15 @@ static int tcpm_pd_build_spr_avs_request(struct tcpm_port *port, u32 *rdo)
 
 static int tcpm_pd_send_aug_supply_request(struct tcpm_port *port,
 					   enum aug_req_type type)
+=======
+static int tcpm_pd_send_pps_request(struct tcpm_port *port)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pd_message msg;
 	int ret;
 	u32 rdo;
 
+<<<<<<< HEAD
 	if (type == PD_PPS) {
 		ret = tcpm_pd_build_pps_request(port, &rdo);
 	} else if (type == PD_SPR_AVS) {
@@ -4663,6 +4795,9 @@ static int tcpm_pd_send_aug_supply_request(struct tcpm_port *port,
 		tcpm_log(port, "Invalid aug_req_type %d", type);
 		ret = -EOPNOTSUPP;
 	}
+=======
+	ret = tcpm_pd_build_pps_request(port, &rdo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -4885,6 +5020,7 @@ static void tcpm_set_partner_usb_comm_capable(struct tcpm_port *port, bool capab
 		port->tcpc->set_partner_usb_comm_capable(port->tcpc, capable);
 }
 
+<<<<<<< HEAD
 static void tcpm_partner_source_caps_reset(struct tcpm_port *port)
 {
 	usb_power_delivery_unregister_capabilities(port->partner_source_caps);
@@ -4893,6 +5029,8 @@ static void tcpm_partner_source_caps_reset(struct tcpm_port *port)
 	port->spr_avs_data.active = false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void tcpm_reset_port(struct tcpm_port *port)
 {
 	tcpm_enable_auto_vbus_discharge(port, false);
@@ -4932,7 +5070,12 @@ static void tcpm_reset_port(struct tcpm_port *port)
 
 	usb_power_delivery_unregister_capabilities(port->partner_sink_caps);
 	port->partner_sink_caps = NULL;
+<<<<<<< HEAD
 	tcpm_partner_source_caps_reset(port);
+=======
+	usb_power_delivery_unregister_capabilities(port->partner_source_caps);
+	port->partner_source_caps = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_power_delivery_unregister(port->partner_pd);
 	port->partner_pd = NULL;
 }
@@ -5424,7 +5567,11 @@ static void run_state_machine(struct tcpm_port *port)
 	case SNK_UNATTACHED:
 		if (!port->non_pd_role_swap)
 			tcpm_swap_complete(port, -ENOTCONN);
+<<<<<<< HEAD
 		tcpm_aug_supply_req_complete(port, -ENOTCONN);
+=======
+		tcpm_pps_complete(port, -ENOTCONN);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcpm_snk_detach(port);
 		if (port->potential_contaminant) {
 			tcpm_set_state(port, CHECK_CONTAMINANT, 0);
@@ -5655,16 +5802,24 @@ static void run_state_machine(struct tcpm_port *port)
 		}
 		break;
 	case SNK_NEGOTIATE_PPS_CAPABILITIES:
+<<<<<<< HEAD
 	case SNK_NEGOTIATE_SPR_AVS_CAPABILITIES:
 		ret = tcpm_pd_send_aug_supply_request(port, port->state ==
 						      SNK_NEGOTIATE_PPS_CAPABILITIES ?
 						      PD_PPS : PD_SPR_AVS);
+=======
+		ret = tcpm_pd_send_pps_request(port);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0) {
 			/* Restore back to the original state */
 			tcpm_set_auto_vbus_discharge_threshold(port, TYPEC_PWR_MODE_PD,
 							       port->pps_data.active,
 							       port->supply_voltage);
+<<<<<<< HEAD
 			port->aug_supply_req_status = ret;
+=======
+			port->pps_status = ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * If this was called due to updates to sink
 			 * capabilities, and pps is no longer valid, we should
@@ -5680,6 +5835,7 @@ static void run_state_machine(struct tcpm_port *port)
 		}
 		break;
 	case SNK_TRANSITION_SINK:
+<<<<<<< HEAD
 		if (port->spr_avs_data.active) {
 			if (abs(port->req_supply_voltage - port->supply_voltage) >
 			    SPR_AVS_AVS_SMALL_STEP_V * 1000) {
@@ -5732,6 +5888,25 @@ static void run_state_machine(struct tcpm_port *port)
 				       PD_T_PS_TRANSITION);
 		}
 		break;
+=======
+		/* From the USB PD spec:
+		 * "The Sink Shall transition to Sink Standby before a positive or
+		 * negative voltage transition of VBUS. During Sink Standby
+		 * the Sink Shall reduce its power draw to pSnkStdby."
+		 *
+		 * This is not applicable to PPS though as the port can continue
+		 * to draw negotiated power without switching to standby.
+		 */
+		if (port->supply_voltage != port->req_supply_voltage && !port->pps_data.active &&
+		    port->current_limit * port->supply_voltage / 1000 > PD_P_SNK_STDBY_MW) {
+			u32 stdby_ma = PD_P_SNK_STDBY_MW * 1000 / port->supply_voltage;
+
+			tcpm_log(port, "Setting standby current %u mV @ %u mA",
+				 port->supply_voltage, stdby_ma);
+			tcpm_set_current_limit(port, stdby_ma, port->supply_voltage);
+		}
+		fallthrough;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SNK_TRANSITION_SINK_VBUS:
 		tcpm_set_state(port, hard_reset_state(port),
 			       PD_T_PS_TRANSITION);
@@ -5751,7 +5926,11 @@ static void run_state_machine(struct tcpm_port *port)
 		tcpm_typec_connect(port);
 		if (port->pd_capable && port->source_caps[0] & PDO_FIXED_DUAL_ROLE)
 			mod_enable_frs_delayed_work(port, 0);
+<<<<<<< HEAD
 		tcpm_aug_supply_req_complete(port, port->aug_supply_req_status);
+=======
+		tcpm_pps_complete(port, port->pps_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (port->ams != NONE_AMS)
 			tcpm_ams_finish(port);
@@ -5938,7 +6117,12 @@ static void run_state_machine(struct tcpm_port *port)
 		port->message_id = 0;
 		port->rx_msgid = -1;
 		/* remove existing capabilities */
+<<<<<<< HEAD
 		tcpm_partner_source_caps_reset(port);
+=======
+		usb_power_delivery_unregister_capabilities(port->partner_source_caps);
+		port->partner_source_caps = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
 		port->vdm_sm_running = false;
 		port->explicit_contract = false;
@@ -5973,7 +6157,12 @@ static void run_state_machine(struct tcpm_port *port)
 			port->message_id = 0;
 			port->rx_msgid = -1;
 			/* remove existing capabilities */
+<<<<<<< HEAD
 			tcpm_partner_source_caps_reset(port);
+=======
+			usb_power_delivery_unregister_capabilities(port->partner_source_caps);
+			port->partner_source_caps = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (tcpm_pd_send_control(port, PD_CTRL_SOFT_RESET, TCPC_TX_SOP))
 				tcpm_set_state_cond(port, hard_reset_state(port), 0);
 			else
@@ -6110,7 +6299,12 @@ static void run_state_machine(struct tcpm_port *port)
 		break;
 	case PR_SWAP_SNK_SRC_SINK_OFF:
 		/* will be source, remove existing capabilities */
+<<<<<<< HEAD
 		tcpm_partner_source_caps_reset(port);
+=======
+		usb_power_delivery_unregister_capabilities(port->partner_source_caps);
+		port->partner_source_caps = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Prevent vbus discharge circuit from turning on during PR_SWAP
 		 * as this is not a disconnect.
@@ -6258,7 +6452,11 @@ static void run_state_machine(struct tcpm_port *port)
 		break;
 	case ERROR_RECOVERY:
 		tcpm_swap_complete(port, -EPROTO);
+<<<<<<< HEAD
 		tcpm_aug_supply_req_complete(port, -EPROTO);
+=======
+		tcpm_pps_complete(port, -EPROTO);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		tcpm_set_state(port, PORT_RESET, 0);
 		break;
 	case PORT_RESET:
@@ -7234,7 +7432,11 @@ static int tcpm_try_role(struct typec_port *p, int role)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tcpm_aug_set_op_curr(struct tcpm_port *port, u16 req_op_curr_ma)
+=======
+static int tcpm_pps_set_op_curr(struct tcpm_port *port, u16 req_op_curr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int target_mw;
 	int ret;
@@ -7242,6 +7444,7 @@ static int tcpm_aug_set_op_curr(struct tcpm_port *port, u16 req_op_curr_ma)
 	mutex_lock(&port->swap_lock);
 	mutex_lock(&port->lock);
 
+<<<<<<< HEAD
 	if (port->pps_data.active) {
 		req_op_curr_ma = req_op_curr_ma -
 				 (req_op_curr_ma % RDO_PROG_CURR_MA_STEP);
@@ -7255,6 +7458,9 @@ static int tcpm_aug_set_op_curr(struct tcpm_port *port, u16 req_op_curr_ma)
 			goto port_unlock;
 		}
 	} else if (!port->spr_avs_data.active) {
+=======
+	if (!port->pps_data.active) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EOPNOTSUPP;
 		goto port_unlock;
 	}
@@ -7264,17 +7470,33 @@ static int tcpm_aug_set_op_curr(struct tcpm_port *port, u16 req_op_curr_ma)
 		goto port_unlock;
 	}
 
+<<<<<<< HEAD
 	if (port->pps_data.active)
 		port->upcoming_state = SNK_NEGOTIATE_PPS_CAPABILITIES;
 	else
 		port->upcoming_state = SNK_NEGOTIATE_SPR_AVS_CAPABILITIES;
 
+=======
+	if (req_op_curr > port->pps_data.max_curr) {
+		ret = -EINVAL;
+		goto port_unlock;
+	}
+
+	target_mw = (req_op_curr * port->supply_voltage) / 1000;
+	if (target_mw < port->operating_snk_mw) {
+		ret = -EINVAL;
+		goto port_unlock;
+	}
+
+	port->upcoming_state = SNK_NEGOTIATE_PPS_CAPABILITIES;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = tcpm_ams_start(port, POWER_NEGOTIATION);
 	if (ret == -EAGAIN) {
 		port->upcoming_state = INVALID_STATE;
 		goto port_unlock;
 	}
 
+<<<<<<< HEAD
 	reinit_completion(&port->aug_supply_req_complete);
 	if (port->pps_data.active)
 		port->pps_data.req_op_curr = req_op_curr_ma;
@@ -7289,6 +7511,22 @@ static int tcpm_aug_set_op_curr(struct tcpm_port *port, u16 req_op_curr_ma)
 		ret = -ETIMEDOUT;
 	else
 		ret = port->aug_supply_req_status;
+=======
+	/* Round down operating current to align with PPS valid steps */
+	req_op_curr = req_op_curr - (req_op_curr % RDO_PROG_CURR_MA_STEP);
+
+	reinit_completion(&port->pps_complete);
+	port->pps_data.req_op_curr = req_op_curr;
+	port->pps_status = 0;
+	port->pps_pending = true;
+	mutex_unlock(&port->lock);
+
+	if (!wait_for_completion_timeout(&port->pps_complete,
+				msecs_to_jiffies(PD_PPS_CTRL_TIMEOUT)))
+		ret = -ETIMEDOUT;
+	else
+		ret = port->pps_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	goto swap_unlock;
 
@@ -7300,7 +7538,11 @@ swap_unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tcpm_aug_set_out_volt(struct tcpm_port *port, u16 req_out_volt_mv)
+=======
+static int tcpm_pps_set_out_volt(struct tcpm_port *port, u16 req_out_volt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int target_mw;
 	int ret;
@@ -7308,6 +7550,7 @@ static int tcpm_aug_set_out_volt(struct tcpm_port *port, u16 req_out_volt_mv)
 	mutex_lock(&port->swap_lock);
 	mutex_lock(&port->lock);
 
+<<<<<<< HEAD
 	if (port->pps_data.active) {
 		req_out_volt_mv = req_out_volt_mv - (req_out_volt_mv %
 						     RDO_PROG_VOLT_MV_STEP);
@@ -7318,6 +7561,9 @@ static int tcpm_aug_set_out_volt(struct tcpm_port *port, u16 req_out_volt_mv)
 			goto port_unlock;
 		}
 	} else if (!port->spr_avs_data.active) {
+=======
+	if (!port->pps_data.active) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EOPNOTSUPP;
 		goto port_unlock;
 	}
@@ -7327,17 +7573,28 @@ static int tcpm_aug_set_out_volt(struct tcpm_port *port, u16 req_out_volt_mv)
 		goto port_unlock;
 	}
 
+<<<<<<< HEAD
 	if (port->pps_data.active)
 		port->upcoming_state = SNK_NEGOTIATE_PPS_CAPABILITIES;
 	else
 		port->upcoming_state = SNK_NEGOTIATE_SPR_AVS_CAPABILITIES;
 
+=======
+	target_mw = (port->current_limit * req_out_volt) / 1000;
+	if (target_mw < port->operating_snk_mw) {
+		ret = -EINVAL;
+		goto port_unlock;
+	}
+
+	port->upcoming_state = SNK_NEGOTIATE_PPS_CAPABILITIES;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = tcpm_ams_start(port, POWER_NEGOTIATION);
 	if (ret == -EAGAIN) {
 		port->upcoming_state = INVALID_STATE;
 		goto port_unlock;
 	}
 
+<<<<<<< HEAD
 	reinit_completion(&port->aug_supply_req_complete);
 	if (port->pps_data.active)
 		port->pps_data.req_out_volt = req_out_volt_mv;
@@ -7352,6 +7609,22 @@ static int tcpm_aug_set_out_volt(struct tcpm_port *port, u16 req_out_volt_mv)
 		ret = -ETIMEDOUT;
 	else
 		ret = port->aug_supply_req_status;
+=======
+	/* Round down output voltage to align with PPS valid steps */
+	req_out_volt = req_out_volt - (req_out_volt % RDO_PROG_VOLT_MV_STEP);
+
+	reinit_completion(&port->pps_complete);
+	port->pps_data.req_out_volt = req_out_volt;
+	port->pps_status = 0;
+	port->pps_pending = true;
+	mutex_unlock(&port->lock);
+
+	if (!wait_for_completion_timeout(&port->pps_complete,
+				msecs_to_jiffies(PD_PPS_CTRL_TIMEOUT)))
+		ret = -ETIMEDOUT;
+	else
+		ret = port->pps_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	goto swap_unlock;
 
@@ -7394,9 +7667,15 @@ static int tcpm_pps_activate(struct tcpm_port *port, bool activate)
 		goto port_unlock;
 	}
 
+<<<<<<< HEAD
 	reinit_completion(&port->aug_supply_req_complete);
 	port->aug_supply_req_status = 0;
 	port->aug_supply_req_pending = true;
+=======
+	reinit_completion(&port->pps_complete);
+	port->pps_status = 0;
+	port->pps_pending = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Trigger PPS request or move back to standard PDO contract */
 	if (activate) {
@@ -7405,6 +7684,7 @@ static int tcpm_pps_activate(struct tcpm_port *port, bool activate)
 	}
 	mutex_unlock(&port->lock);
 
+<<<<<<< HEAD
 	if (!wait_for_completion_timeout(&port->aug_supply_req_complete,
 					 msecs_to_jiffies(PD_AUG_PSY_CTRL_TIMEOUT)))
 		ret = -ETIMEDOUT;
@@ -7474,6 +7754,13 @@ static int tcpm_spr_avs_activate(struct tcpm_port *port, bool activate)
 		ret = -ETIMEDOUT;
 	else
 		ret = port->aug_supply_req_status;
+=======
+	if (!wait_for_completion_timeout(&port->pps_complete,
+				msecs_to_jiffies(PD_PPS_CTRL_TIMEOUT)))
+		ret = -ETIMEDOUT;
+	else
+		ret = port->pps_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	goto swap_unlock;
 
@@ -7629,6 +7916,7 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
 		break;
 	case SNK_NEGOTIATE_CAPABILITIES:
 	case SNK_NEGOTIATE_PPS_CAPABILITIES:
+<<<<<<< HEAD
 	case SNK_NEGOTIATE_SPR_AVS_CAPABILITIES:
 	case SNK_READY:
 	case SNK_TRANSITION_SINK:
@@ -7649,6 +7937,18 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
 		} else {
 			break;
 		}
+=======
+	case SNK_READY:
+	case SNK_TRANSITION_SINK:
+	case SNK_TRANSITION_SINK_VBUS:
+		if (port->pps_data.active)
+			port->upcoming_state = SNK_NEGOTIATE_PPS_CAPABILITIES;
+		else if (port->pd_capable)
+			port->upcoming_state = SNK_NEGOTIATE_CAPABILITIES;
+		else
+			break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		port->update_sink_caps = true;
 
 		ret = tcpm_ams_start(port, POWER_NEGOTIATION);
@@ -7785,6 +8085,7 @@ static void tcpm_fw_get_timings(struct tcpm_port *port, struct fwnode_handle *fw
 		port->timings.snk_bc12_cmpletion_time = val;
 }
 
+<<<<<<< HEAD
 static void tcpm_fw_get_pd_ident(struct tcpm_port *port)
 {
 	struct pd_identifier *pd_ident = &port->pd_ident;
@@ -7908,6 +8209,8 @@ static void tcpm_fw_get_sink_caps_ext(struct tcpm_port *port,
 		 caps->spr_op_pdp, caps->spr_max_pdp);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tcpm_fw_get_caps(struct tcpm_port *port, struct fwnode_handle *fwnode)
 {
 	struct fwnode_handle *capabilities, *caps = NULL;
@@ -8081,9 +8384,12 @@ static int tcpm_fw_get_caps(struct tcpm_port *port, struct fwnode_handle *fwnode
 		}
 	}
 
+<<<<<<< HEAD
 	if (port->port_type != TYPEC_PORT_SRC)
 		tcpm_fw_get_sink_caps_ext(port, fwnode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 put_caps:
 	if (caps != fwnode)
 		fwnode_handle_put(caps);
@@ -8126,8 +8432,11 @@ static int tcpm_fw_get_snk_vdos(struct tcpm_port *port, struct fwnode_handle *fw
 			return ret;
 	}
 
+<<<<<<< HEAD
 	tcpm_fw_get_pd_ident(port);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -8158,8 +8467,12 @@ static void tcpm_fw_get_pd_revision(struct tcpm_port *port, struct fwnode_handle
 enum tcpm_psy_online_states {
 	TCPM_PSY_OFFLINE = 0,
 	TCPM_PSY_FIXED_ONLINE,
+<<<<<<< HEAD
 	TCPM_PSY_PPS_ONLINE,
 	TCPM_PSY_SPR_AVS_ONLINE,
+=======
+	TCPM_PSY_PROG_ONLINE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static enum power_supply_property tcpm_psy_props[] = {
@@ -8177,9 +8490,13 @@ static int tcpm_psy_get_online(struct tcpm_port *port,
 {
 	if (port->vbus_charge) {
 		if (port->pps_data.active)
+<<<<<<< HEAD
 			val->intval = TCPM_PSY_PPS_ONLINE;
 		else if (port->spr_avs_data.active)
 			val->intval = TCPM_PSY_SPR_AVS_ONLINE;
+=======
+			val->intval = TCPM_PSY_PROG_ONLINE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			val->intval = TCPM_PSY_FIXED_ONLINE;
 	} else {
@@ -8194,8 +8511,11 @@ static int tcpm_psy_get_voltage_min(struct tcpm_port *port,
 {
 	if (port->pps_data.active)
 		val->intval = port->pps_data.min_volt * 1000;
+<<<<<<< HEAD
 	else if (port->spr_avs_data.active)
 		val->intval = SPR_AVS_TIER1_MIN_VOLT_MV * 1000;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		val->intval = port->supply_voltage * 1000;
 
@@ -8207,8 +8527,11 @@ static int tcpm_psy_get_voltage_max(struct tcpm_port *port,
 {
 	if (port->pps_data.active)
 		val->intval = port->pps_data.max_volt * 1000;
+<<<<<<< HEAD
 	else if (port->spr_avs_data.active)
 		val->intval = port->spr_avs_data.max_out_volt_mv * 1000;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		val->intval = port->supply_voltage * 1000;
 
@@ -8228,8 +8551,11 @@ static int tcpm_psy_get_current_max(struct tcpm_port *port,
 {
 	if (port->pps_data.active)
 		val->intval = port->pps_data.max_curr * 1000;
+<<<<<<< HEAD
 	else if (port->spr_avs_data.active)
 		val->intval = port->spr_avs_data.max_current_ma * 1000;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		val->intval = port->current_limit * 1000;
 
@@ -8305,6 +8631,7 @@ static int tcpm_psy_get_prop(struct power_supply *psy,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tcpm_disable_pps_avs(struct tcpm_port *port)
 {
 	int ret = 0;
@@ -8340,6 +8667,19 @@ static int tcpm_psy_set_online(struct tcpm_port *port,
 		if (ret)
 			break;
 		ret = tcpm_spr_avs_activate(port, true);
+=======
+static int tcpm_psy_set_online(struct tcpm_port *port,
+			       const union power_supply_propval *val)
+{
+	int ret;
+
+	switch (val->intval) {
+	case TCPM_PSY_FIXED_ONLINE:
+		ret = tcpm_pps_activate(port, false);
+		break;
+	case TCPM_PSY_PROG_ONLINE:
+		ret = tcpm_pps_activate(port, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		ret = -EINVAL;
@@ -8368,10 +8708,20 @@ static int tcpm_psy_set_prop(struct power_supply *psy,
 		ret = tcpm_psy_set_online(port, val);
 		break;
 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+<<<<<<< HEAD
 		ret = tcpm_aug_set_out_volt(port, val->intval / 1000);
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = tcpm_aug_set_op_curr(port, val->intval / 1000);
+=======
+		ret = tcpm_pps_set_out_volt(port, val->intval / 1000);
+		break;
+	case POWER_SUPPLY_PROP_CURRENT_NOW:
+		if (val->intval > port->pps_data.max_curr * 1000)
+			ret = -EINVAL;
+		else
+			ret = tcpm_pps_set_op_curr(port, val->intval / 1000);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		ret = -EINVAL;
@@ -8416,9 +8766,13 @@ static int devm_tcpm_psy_register(struct tcpm_port *port)
 	port->psy_desc.type = POWER_SUPPLY_TYPE_USB;
 	port->psy_desc.usb_types = BIT(POWER_SUPPLY_USB_TYPE_C)  |
 				   BIT(POWER_SUPPLY_USB_TYPE_PD) |
+<<<<<<< HEAD
 				   BIT(POWER_SUPPLY_USB_TYPE_PD_PPS) |
 				   BIT(POWER_SUPPLY_USB_TYPE_PD_PPS_SPR_AVS) |
 				   BIT(POWER_SUPPLY_USB_TYPE_PD_SPR_AVS);
+=======
+				   BIT(POWER_SUPPLY_USB_TYPE_PD_PPS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	port->psy_desc.properties = tcpm_psy_props;
 	port->psy_desc.num_properties = ARRAY_SIZE(tcpm_psy_props);
 	port->psy_desc.get_property = tcpm_psy_get_prop;
@@ -8513,7 +8867,11 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
 
 	init_completion(&port->tx_complete);
 	init_completion(&port->swap_complete);
+<<<<<<< HEAD
 	init_completion(&port->aug_supply_req_complete);
+=======
+	init_completion(&port->pps_complete);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcpm_debugfs_init(port);
 
 	err = tcpm_fw_get_caps(port, tcpc->fwnode);

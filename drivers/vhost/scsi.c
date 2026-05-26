@@ -2950,8 +2950,11 @@ static const struct target_core_fabric_ops vhost_scsi_ops = {
 	.tfc_tpg_base_attrs		= vhost_scsi_tpg_attrs,
 	.tfc_tpg_attrib_attrs		= vhost_scsi_tpg_attrib_attrs,
 
+<<<<<<< HEAD
 	.default_compl_type		= TARGET_QUEUE_COMPL,
 	.direct_compl_supp		= 1,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.default_submit_type		= TARGET_QUEUE_SUBMIT,
 	.direct_submit_supp		= 1,
 };

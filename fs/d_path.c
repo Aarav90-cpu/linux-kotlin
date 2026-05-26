@@ -301,6 +301,7 @@ EXPORT_SYMBOL(d_path);
 char *dynamic_dname(char *buffer, int buflen, const char *fmt, ...)
 {
 	va_list args;
+<<<<<<< HEAD
 	char *start;
 	int sz;
 
@@ -314,6 +315,20 @@ char *dynamic_dname(char *buffer, int buflen, const char *fmt, ...)
 	/* Move the formatted d_name to the end of the buffer. */
 	start = buffer + (buflen - sz);
 	return memmove(start, buffer, sz);
+=======
+	char temp[64];
+	int sz;
+
+	va_start(args, fmt);
+	sz = vsnprintf(temp, sizeof(temp), fmt, args) + 1;
+	va_end(args);
+
+	if (sz > sizeof(temp) || sz > buflen)
+		return ERR_PTR(-ENAMETOOLONG);
+
+	buffer += buflen - sz;
+	return memcpy(buffer, temp, sz);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 char *simple_dname(struct dentry *dentry, char *buffer, int buflen)

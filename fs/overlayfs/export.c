@@ -262,7 +262,11 @@ out:
 	return err;
 
 fail:
+<<<<<<< HEAD
 	pr_warn_ratelimited("failed to encode file handle (ino=%llu, err=%i)\n",
+=======
+	pr_warn_ratelimited("failed to encode file handle (ino=%lu, err=%i)\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    inode->i_ino, err);
 	goto out;
 }
@@ -349,6 +353,7 @@ static struct dentry *ovl_dentry_real_at(struct dentry *dentry, int idx)
 	return NULL;
 }
 
+<<<<<<< HEAD
 /**
  * ovl_lookup_real_one -  Lookup a child overlay dentry to get an overlay dentry whose real dentry is given
  * @connected: parent overlay dentry
@@ -364,22 +369,52 @@ static struct dentry *ovl_dentry_real_at(struct dentry *dentry, int idx)
  *   %-ECHILD if the parent of @real is no longer the real dentry for @connected.
  *   %-ESTALE if @real is not the real dentry of the found dentry.
  *   Otherwise the found dentry is returned.
+=======
+/*
+ * Lookup a child overlay dentry to get a connected overlay dentry whose real
+ * dentry is @real. If @real is on upper layer, we lookup a child overlay
+ * dentry with the same name as the real dentry. Otherwise, we need to consult
+ * index for lookup.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static struct dentry *ovl_lookup_real_one(struct dentry *connected,
 					  struct dentry *real,
 					  const struct ovl_layer *layer)
 {
+<<<<<<< HEAD
 	struct dentry *this;
+=======
+	struct inode *dir = d_inode(connected);
+	struct dentry *this, *parent = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct name_snapshot name;
 	int err;
 
 	/*
+<<<<<<< HEAD
 	 * We need to take a snapshot of real dentry name to protect us
+=======
+	 * Lookup child overlay dentry by real name. The dir mutex protects us
+	 * from racing with overlay rename. If the overlay dentry that is above
+	 * real has already been moved to a parent that is not under the
+	 * connected overlay dir, we return -ECHILD and restart the lookup of
+	 * connected real path from the top.
+	 */
+	inode_lock_nested(dir, I_MUTEX_PARENT);
+	err = -ECHILD;
+	parent = dget_parent(real);
+	if (ovl_dentry_real_at(connected, layer->idx) != parent)
+		goto fail;
+
+	/*
+	 * We also need to take a snapshot of real dentry name to protect us
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * from racing with underlying layer rename. In this case, we don't
 	 * care about returning ESTALE, only from dereferencing a free name
 	 * pointer because we hold no lock on the real dentry.
 	 */
 	take_dentry_name_snapshot(&name, real);
+<<<<<<< HEAD
 	this = lookup_noperm_unlocked(&name.name, connected);
 	release_dentry_name_snapshot(&name);
 
@@ -399,14 +434,42 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
 	if (ovl_dentry_real_at(this, layer->idx) != real)
 		goto fail;
 
+=======
+	/*
+	 * No idmap handling here: it's an internal lookup.
+	 */
+	this = lookup_noperm(&name.name, connected);
+	release_dentry_name_snapshot(&name);
+	err = PTR_ERR(this);
+	if (IS_ERR(this)) {
+		goto fail;
+	} else if (!this || !this->d_inode) {
+		dput(this);
+		err = -ENOENT;
+		goto fail;
+	} else if (ovl_dentry_real_at(this, layer->idx) != real) {
+		dput(this);
+		err = -ESTALE;
+		goto fail;
+	}
+
+out:
+	dput(parent);
+	inode_unlock(dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return this;
 
 fail:
 	pr_warn_ratelimited("failed to lookup one by real (%pd2, layer=%d, connected=%pd2, err=%i)\n",
 			    real, layer->idx, connected, err);
+<<<<<<< HEAD
 	if (!IS_ERR(this))
 		dput(this);
 	return ERR_PTR(err);
+=======
+	this = ERR_PTR(err);
+	goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct dentry *ovl_lookup_real(struct super_block *sb,

@@ -153,7 +153,11 @@ blk-crypto-fallback completes the original bio.  If the original bio is too
 large, multiple bounce bios may be required; see the code for details.
 
 For decryption, blk-crypto-fallback "wraps" the bio's completion callback
+<<<<<<< HEAD
 (``bi_end_io``) and private data (``bi_private``) with its own, unsets the
+=======
+(``bi_complete``) and private data (``bi_private``) with its own, unsets the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bio's encryption context, then submits the bio.  If the read completes
 successfully, blk-crypto-fallback restores the bio's original completion
 callback and private data, then decrypts the bio's data in-place using the

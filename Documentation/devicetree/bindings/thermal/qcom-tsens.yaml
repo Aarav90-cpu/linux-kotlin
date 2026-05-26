@@ -54,7 +54,10 @@ properties:
       - description: v2 of TSENS
         items:
           - enum:
+<<<<<<< HEAD
               - qcom,eliza-tsens
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,glymur-tsens
               - qcom,kaanapali-tsens
               - qcom,milos-tsens
@@ -72,7 +75,10 @@ properties:
               - qcom,sc8180x-tsens
               - qcom,sc8280xp-tsens
               - qcom,sdm630-tsens
+<<<<<<< HEAD
               - qcom,sdm670-tsens
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sdm845-tsens
               - qcom,sm6115-tsens
               - qcom,sm6350-tsens
@@ -83,7 +89,10 @@ properties:
               - qcom,sm8450-tsens
               - qcom,sm8550-tsens
               - qcom,sm8650-tsens
+<<<<<<< HEAD
               - qcom,sm8750-tsens
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,x1e80100-tsens
           - const: qcom,tsens-v2
 

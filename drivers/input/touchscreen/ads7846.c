@@ -289,7 +289,11 @@ static void __ads7846_enable(struct ads7846 *ts)
 
 static void ads7846_disable(struct ads7846 *ts)
 {
+<<<<<<< HEAD
 	guard(mutex)(&ts->lock);
+=======
+	mutex_lock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ts->disabled) {
 
@@ -298,11 +302,20 @@ static void ads7846_disable(struct ads7846 *ts)
 
 		ts->disabled = true;
 	}
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ads7846_enable(struct ads7846 *ts)
 {
+<<<<<<< HEAD
 	guard(mutex)(&ts->lock);
+=======
+	mutex_lock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ts->disabled) {
 
@@ -311,6 +324,11 @@ static void ads7846_enable(struct ads7846 *ts)
 		if (!ts->suspended)
 			__ads7846_enable(ts);
 	}
+<<<<<<< HEAD
+=======
+
+	mutex_unlock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*--------------------------------------------------------------------------*/
@@ -350,9 +368,16 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
 {
 	struct spi_device *spi = to_spi_device(dev);
 	struct ads7846 *ts = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int status;
 
 	struct ser_req *req __free(kfree) = kzalloc_obj(*req);
+=======
+	struct ser_req *req;
+	int status;
+
+	req = kzalloc_obj(*req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!req)
 		return -ENOMEM;
 
@@ -413,11 +438,19 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
 	CS_CHANGE(req->xfer[7]);
 	spi_message_add_tail(&req->xfer[7], &req->msg);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &ts->lock) {
 		ads7846_stop(ts);
 		status = spi_sync(spi, &req->msg);
 		ads7846_restart(ts);
 	}
+=======
+	mutex_lock(&ts->lock);
+	ads7846_stop(ts);
+	status = spi_sync(spi, &req->msg);
+	ads7846_restart(ts);
+	mutex_unlock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (status == 0) {
 		/* on-wire is a must-ignore bit, a BE12 value, then padding */
@@ -426,6 +459,10 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
 		status &= 0x0fff;
 	}
 
+<<<<<<< HEAD
+=======
+	kfree(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return status;
 }
 
@@ -433,9 +470,16 @@ static int ads7845_read12_ser(struct device *dev, unsigned command)
 {
 	struct spi_device *spi = to_spi_device(dev);
 	struct ads7846 *ts = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int status;
 
 	struct ads7845_ser_req *req __free(kfree) = kzalloc_obj(*req);
+=======
+	struct ads7845_ser_req *req;
+	int status;
+
+	req = kzalloc_obj(*req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!req)
 		return -ENOMEM;
 
@@ -447,11 +491,19 @@ static int ads7845_read12_ser(struct device *dev, unsigned command)
 	req->xfer[0].len = 3;
 	spi_message_add_tail(&req->xfer[0], &req->msg);
 
+<<<<<<< HEAD
 	scoped_guard(mutex, &ts->lock) {
 		ads7846_stop(ts);
 		status = spi_sync(spi, &req->msg);
 		ads7846_restart(ts);
 	}
+=======
+	mutex_lock(&ts->lock);
+	ads7846_stop(ts);
+	status = spi_sync(spi, &req->msg);
+	ads7846_restart(ts);
+	mutex_unlock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (status == 0) {
 		/* BE12 value, then padding */
@@ -460,6 +512,10 @@ static int ads7845_read12_ser(struct device *dev, unsigned command)
 		status &= 0x0fff;
 	}
 
+<<<<<<< HEAD
+=======
+	kfree(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return status;
 }
 
@@ -958,7 +1014,11 @@ static int ads7846_suspend(struct device *dev)
 {
 	struct ads7846 *ts = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->lock);
+=======
+	mutex_lock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!ts->suspended) {
 
@@ -971,6 +1031,11 @@ static int ads7846_suspend(struct device *dev)
 		ts->suspended = true;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ts->lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -978,7 +1043,11 @@ static int ads7846_resume(struct device *dev)
 {
 	struct ads7846 *ts = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->lock);
+=======
+	mutex_lock(&ts->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ts->suspended) {
 
@@ -991,6 +1060,11 @@ static int ads7846_resume(struct device *dev)
 			__ads7846_enable(ts);
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ts->lock);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

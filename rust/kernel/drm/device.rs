@@ -6,6 +6,7 @@
 
 use crate::{
     alloc::allocator::Kmalloc,
+<<<<<<< HEAD
     bindings, device,
     drm::{
         self,
@@ -34,6 +35,17 @@ use core::{
         NonNull, //
     },
 };
+=======
+    bindings, device, drm,
+    drm::driver::AllocImpl,
+    error::from_err_ptr,
+    error::Result,
+    prelude::*,
+    sync::aref::{ARef, AlwaysRefCounted},
+    types::Opaque,
+};
+use core::{alloc::Layout, mem, ops::Deref, ptr, ptr::NonNull};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #[cfg(CONFIG_DRM_LEGACY)]
 macro_rules! drm_legacy_fields {
@@ -119,6 +131,7 @@ impl<T: drm::Driver> Device<T> {
         // compatible `Layout`.
         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
 
+<<<<<<< HEAD
         // Use a temporary vtable without a `release` callback until `data` is initialized, so
         // init failure can release the DRM device without dropping uninitialized fields.
         let alloc_vtable = bindings::drm_driver {
@@ -128,11 +141,19 @@ impl<T: drm::Driver> Device<T> {
 
         // SAFETY:
         // - `alloc_vtable` reference remains valid until no longer used,
+=======
+        // SAFETY:
+        // - `VTABLE`, as a `const` is pinned to the read-only section of the compilation,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // - `dev` is valid by its type invarants,
         let raw_drm: *mut Self = unsafe {
             bindings::__drm_dev_alloc(
                 dev.as_raw(),
+<<<<<<< HEAD
                 &alloc_vtable,
+=======
+                &Self::VTABLE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 layout.size(),
                 mem::offset_of!(Self, dev),
             )
@@ -140,10 +161,13 @@ impl<T: drm::Driver> Device<T> {
         .cast();
         let raw_drm = NonNull::new(from_err_ptr(raw_drm)?).ok_or(ENOMEM)?;
 
+<<<<<<< HEAD
         // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
         // successful.
         let drm_dev = unsafe { Self::into_drm_device(raw_drm) };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // SAFETY: `raw_drm` is a valid pointer to `Self`.
         let raw_data = unsafe { ptr::addr_of_mut!((*raw_drm.as_ptr()).data) };
 
@@ -151,14 +175,24 @@ impl<T: drm::Driver> Device<T> {
         // - `raw_data` is a valid pointer to uninitialized memory.
         // - `raw_data` will not move until it is dropped.
         unsafe { data.__pinned_init(raw_data) }.inspect_err(|_| {
+<<<<<<< HEAD
+=======
+            // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
+            // successful.
+            let drm_dev = unsafe { Self::into_drm_device(raw_drm) };
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             // SAFETY: `__drm_dev_alloc()` was successful, hence `drm_dev` must be valid and the
             // refcount must be non-zero.
             unsafe { bindings::drm_dev_put(drm_dev) };
         })?;
 
+<<<<<<< HEAD
         // SAFETY: `drm_dev` is still private to this function.
         unsafe { (*drm_dev).driver = const { &Self::VTABLE } };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         // SAFETY: The reference count is one, and now we take ownership of that reference as a
         // `drm::Device`.
         Ok(unsafe { ARef::from_raw(raw_drm) })
@@ -256,6 +290,7 @@ unsafe impl<T: drm::Driver> Send for Device<T> {}
 // SAFETY: A `drm::Device` can be shared among threads because all immutable methods are protected
 // by the synchronization in `struct drm_device`.
 unsafe impl<T: drm::Driver> Sync for Device<T> {}
+<<<<<<< HEAD
 
 impl<T, const ID: u64> WorkItem<ID> for Device<T>
 where
@@ -314,3 +349,5 @@ where
     T::Data: HasDelayedWork<Device<T>, ID>,
 {
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -1453,16 +1453,38 @@ omap_i2c_probe(struct platform_device *pdev)
 				       (1000 * omap->speed / 8);
 	}
 
+<<<<<<< HEAD
 	omap->mux_state = devm_mux_state_get_optional_selected(&pdev->dev, NULL);
 	if (IS_ERR(omap->mux_state)) {
 		r = PTR_ERR(omap->mux_state);
 		goto err_put_pm;
+=======
+	if (of_property_present(node, "mux-states")) {
+		struct mux_state *mux_state;
+
+		mux_state = devm_mux_state_get(&pdev->dev, NULL);
+		if (IS_ERR(mux_state)) {
+			r = PTR_ERR(mux_state);
+			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
+			goto err_put_pm;
+		}
+		omap->mux_state = mux_state;
+		r = mux_state_select(omap->mux_state);
+		if (r) {
+			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
+			goto err_put_pm;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* reset ASAP, clearing any IRQs */
 	r = omap_i2c_init(omap);
 	if (r)
+<<<<<<< HEAD
 		goto err_put_pm;
+=======
+		goto err_mux_state_deselect;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (omap->rev < OMAP_I2C_OMAP1_REV_2)
 		r = devm_request_irq(&pdev->dev, omap->irq, omap_i2c_omap1_isr,
@@ -1504,6 +1526,12 @@ omap_i2c_probe(struct platform_device *pdev)
 
 err_unuse_clocks:
 	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
+<<<<<<< HEAD
+=======
+err_mux_state_deselect:
+	if (omap->mux_state)
+		mux_state_deselect(omap->mux_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_put_pm:
 	pm_runtime_put_sync(omap->dev);
 err_disable_pm:

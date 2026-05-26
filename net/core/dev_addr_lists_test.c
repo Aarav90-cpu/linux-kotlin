@@ -2,13 +2,17 @@
 
 #include <kunit/test.h>
 #include <linux/etherdevice.h>
+<<<<<<< HEAD
 #include <linux/math64.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/netdevice.h>
 #include <linux/rtnetlink.h>
 
 static const struct net_device_ops dummy_netdev_ops = {
 };
 
+<<<<<<< HEAD
 #define ADDR_A	1
 #define ADDR_B	2
 #define ADDR_C	3
@@ -17,16 +21,25 @@ struct dev_addr_test_priv {
 	u32 addr_seen;
 	u32 addr_synced;
 	u32 addr_unsynced;
+=======
+struct dev_addr_test_priv {
+	u32 addr_seen;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int dev_addr_test_sync(struct net_device *netdev, const unsigned char *a)
 {
 	struct dev_addr_test_priv *datp = netdev_priv(netdev);
 
+<<<<<<< HEAD
 	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN)) {
 		datp->addr_seen |= 1 << a[0];
 		datp->addr_synced |= 1 << a[0];
 	}
+=======
+	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN))
+		datp->addr_seen |= 1 << a[0];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -35,6 +48,7 @@ static int dev_addr_test_unsync(struct net_device *netdev,
 {
 	struct dev_addr_test_priv *datp = netdev_priv(netdev);
 
+<<<<<<< HEAD
 	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN)) {
 		datp->addr_seen &= ~(1 << a[0]);
 		datp->addr_unsynced |= 1 << a[0];
@@ -51,6 +65,13 @@ static void dev_addr_test_reset(struct net_device *netdev)
 	datp->addr_unsynced = 0;
 }
 
+=======
+	if (a[0] < 31 && !memchr_inv(a, a[0], ETH_ALEN))
+		datp->addr_seen &= ~(1 << a[0]);
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int dev_addr_test_init(struct kunit *test)
 {
 	struct dev_addr_test_priv *datp;
@@ -245,6 +266,7 @@ static void dev_addr_test_add_excl(struct kunit *test)
 	rtnl_unlock();
 }
 
+<<<<<<< HEAD
 /* Snapshot test: basic sync with no concurrent modifications.
  * Add one address, snapshot, driver syncs it, reconcile propagates
  * sync_cnt delta back to real list.
@@ -602,6 +624,8 @@ static void dev_addr_test_snapshot_benchmark(struct kunit *test)
 	rtnl_unlock();
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case dev_addr_test_cases[] = {
 	KUNIT_CASE(dev_addr_test_basic),
 	KUNIT_CASE(dev_addr_test_sync_one),
@@ -609,11 +633,14 @@ static struct kunit_case dev_addr_test_cases[] = {
 	KUNIT_CASE(dev_addr_test_del_main),
 	KUNIT_CASE(dev_addr_test_add_set),
 	KUNIT_CASE(dev_addr_test_add_excl),
+<<<<<<< HEAD
 	KUNIT_CASE(dev_addr_test_snapshot_sync),
 	KUNIT_CASE(dev_addr_test_snapshot_remove_during_sync),
 	KUNIT_CASE(dev_addr_test_snapshot_readd_during_unsync),
 	KUNIT_CASE(dev_addr_test_snapshot_add_and_remove),
 	KUNIT_CASE_SLOW(dev_addr_test_snapshot_benchmark),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 
@@ -625,6 +652,9 @@ static struct kunit_suite dev_addr_test_suite = {
 };
 kunit_test_suite(dev_addr_test_suite);
 
+<<<<<<< HEAD
 MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_DESCRIPTION("KUnit tests for struct netdev_hw_addr_list");
 MODULE_LICENSE("GPL");

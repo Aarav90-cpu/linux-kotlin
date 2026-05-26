@@ -9,7 +9,11 @@
  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
  * Copyright 2007-2010, Intel Corporation
  * Copyright(c) 2015-2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018-2026 Intel Corporation
+=======
+ * Copyright (C) 2018 - 2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include <linux/ieee80211.h>
@@ -60,7 +64,11 @@
 
 static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
 					 u8 dialog_token, u16 start_seq_num,
+<<<<<<< HEAD
 					 u16 agg_size, u16 timeout, bool ndp)
+=======
+					 u16 agg_size, u16 timeout)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ieee80211_sub_if_data *sdata = sta->sdata;
 	struct ieee80211_local *local = sdata->local;
@@ -68,7 +76,11 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
 	struct ieee80211_mgmt *mgmt;
 	u16 capab;
 
+<<<<<<< HEAD
 	skb = dev_alloc_skb(IEEE80211_MIN_ACTION_SIZE(addba_req) +
+=======
+	skb = dev_alloc_skb(sizeof(*mgmt) +
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    2 + sizeof(struct ieee80211_addba_ext_ie) +
 			    local->hw.extra_tx_headroom);
 	if (!skb)
@@ -77,6 +89,7 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
 	skb_reserve(skb, local->hw.extra_tx_headroom);
 	mgmt = ieee80211_mgmt_ba(skb, sta->sta.addr, sdata);
 
+<<<<<<< HEAD
 	skb_put(skb, 2 + sizeof(mgmt->u.action.addba_req));
 
 	mgmt->u.action.category = WLAN_CATEGORY_BACK;
@@ -84,15 +97,30 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
 		WLAN_ACTION_NDP_ADDBA_REQ : WLAN_ACTION_ADDBA_REQ;
 
 	mgmt->u.action.addba_req.dialog_token = dialog_token;
+=======
+	skb_put(skb, 1 + sizeof(mgmt->u.action.u.addba_req));
+
+	mgmt->u.action.category = WLAN_CATEGORY_BACK;
+	mgmt->u.action.u.addba_req.action_code = WLAN_ACTION_ADDBA_REQ;
+
+	mgmt->u.action.u.addba_req.dialog_token = dialog_token;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	capab = IEEE80211_ADDBA_PARAM_AMSDU_MASK;
 	capab |= IEEE80211_ADDBA_PARAM_POLICY_MASK;
 	capab |= u16_encode_bits(tid, IEEE80211_ADDBA_PARAM_TID_MASK);
 	capab |= u16_encode_bits(agg_size, IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK);
 
+<<<<<<< HEAD
 	mgmt->u.action.addba_req.capab = cpu_to_le16(capab);
 
 	mgmt->u.action.addba_req.timeout = cpu_to_le16(timeout);
 	mgmt->u.action.addba_req.start_seq_num =
+=======
+	mgmt->u.action.u.addba_req.capab = cpu_to_le16(capab);
+
+	mgmt->u.action.u.addba_req.timeout = cpu_to_le16(timeout);
+	mgmt->u.action.u.addba_req.start_seq_num =
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					cpu_to_le16(start_seq_num << 4);
 
 	if (sta->sta.deflink.he_cap.has_he)
@@ -485,8 +513,12 @@ static void ieee80211_send_addba_with_timeout(struct sta_info *sta,
 
 	/* send AddBA request */
 	ieee80211_send_addba_request(sta, tid, tid_tx->dialog_token,
+<<<<<<< HEAD
 				     tid_tx->ssn, buf_size, tid_tx->timeout,
 				     tid_tx->ndp);
+=======
+				     tid_tx->ssn, buf_size, tid_tx->timeout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	WARN_ON(test_and_set_bit(HT_AGG_STATE_SENT_ADDBA, &tid_tx->state));
 }
@@ -523,7 +555,10 @@ void ieee80211_tx_ba_session_handle_start(struct sta_info *sta, int tid)
 	 */
 	synchronize_net();
 
+<<<<<<< HEAD
 	tid_tx->ndp = ieee80211_s1g_use_ndp_ba(sdata, sta);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	params.ssn = sta->tid_seq[tid] >> 4;
 	ret = drv_ampdu_action(local, sdata, &params);
 	tid_tx->ssn = params.ssn;
@@ -641,8 +676,12 @@ int ieee80211_start_tx_ba_session(struct ieee80211_sta *pubsta, u16 tid,
 	    sdata->vif.type != NL80211_IFTYPE_MESH_POINT &&
 	    sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
 	    sdata->vif.type != NL80211_IFTYPE_AP &&
+<<<<<<< HEAD
 	    sdata->vif.type != NL80211_IFTYPE_ADHOC &&
 	    sdata->vif.type != NL80211_IFTYPE_NAN_DATA)
+=======
+	    sdata->vif.type != NL80211_IFTYPE_ADHOC)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (test_sta_flag(sta, WLAN_STA_BLOCK_BA)) {
@@ -944,9 +983,13 @@ void ieee80211_stop_tx_ba_cb(struct sta_info *sta, int tid,
 
 	if (send_delba)
 		ieee80211_send_delba(sdata, sta->sta.addr, tid,
+<<<<<<< HEAD
 				     WLAN_BACK_INITIATOR,
 				     WLAN_REASON_QSTA_NOT_USE,
 				     tid_tx->ndp);
+=======
+			WLAN_BACK_INITIATOR, WLAN_REASON_QSTA_NOT_USE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void ieee80211_stop_tx_ba_cb_irqsafe(struct ieee80211_vif *vif,
@@ -984,15 +1027,25 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
 
 	lockdep_assert_wiphy(sta->local->hw.wiphy);
 
+<<<<<<< HEAD
 	capab = le16_to_cpu(mgmt->u.action.addba_resp.capab);
+=======
+	capab = le16_to_cpu(mgmt->u.action.u.addba_resp.capab);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	amsdu = capab & IEEE80211_ADDBA_PARAM_AMSDU_MASK;
 	tid = u16_get_bits(capab, IEEE80211_ADDBA_PARAM_TID_MASK);
 	buf_size = u16_get_bits(capab, IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK);
 
 	ieee80211_retrieve_addba_ext_data(sta,
+<<<<<<< HEAD
 					  mgmt->u.action.addba_resp.variable,
 					  len - offsetof(typeof(*mgmt),
 							 u.action.addba_resp.variable),
+=======
+					  mgmt->u.action.u.addba_resp.variable,
+					  len - offsetof(typeof(*mgmt),
+							 u.action.u.addba_resp.variable),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					  &buf_size);
 
 	buf_size = min(buf_size, local->hw.max_tx_aggregation_subframes);
@@ -1005,7 +1058,11 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
 	if (!tid_tx)
 		return;
 
+<<<<<<< HEAD
 	if (mgmt->u.action.addba_resp.dialog_token != tid_tx->dialog_token) {
+=======
+	if (mgmt->u.action.u.addba_resp.dialog_token != tid_tx->dialog_token) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ht_dbg(sta->sdata, "wrong addBA response token, %pM tid %d\n",
 		       sta->sta.addr, tid);
 		return;
@@ -1035,7 +1092,11 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
 	 * is set to 0, the Buffer Size subfield is set to a value
 	 * of at least 1.
 	 */
+<<<<<<< HEAD
 	if (le16_to_cpu(mgmt->u.action.addba_resp.status)
+=======
+	if (le16_to_cpu(mgmt->u.action.u.addba_resp.status)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			== WLAN_STATUS_SUCCESS && buf_size) {
 		if (test_and_set_bit(HT_AGG_STATE_RESPONSE_RECEIVED,
 				     &tid_tx->state)) {
@@ -1052,7 +1113,11 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
 		sta->ampdu_mlme.addba_req_num[tid] = 0;
 
 		tid_tx->timeout =
+<<<<<<< HEAD
 			le16_to_cpu(mgmt->u.action.addba_resp.timeout);
+=======
+			le16_to_cpu(mgmt->u.action.u.addba_resp.timeout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (tid_tx->timeout) {
 			mod_timer(&tid_tx->session_timer,

@@ -234,8 +234,11 @@ static struct rmid_entry *resctrl_find_free_rmid(u32 closid)
  *
  * When the CLOSID and RMID are independent numbers, the first free CLOSID will
  * be returned.
+<<<<<<< HEAD
  *
  * Return: Free CLOSID on success, < 0 on failure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int resctrl_find_cleanest_closid(void)
 {

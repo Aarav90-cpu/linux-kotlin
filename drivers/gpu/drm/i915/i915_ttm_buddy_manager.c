@@ -5,7 +5,10 @@
 
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <linux/gpu_buddy.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <drm/drm_buddy.h>
 #include <drm/drm_print.h>
 #include <drm/ttm/ttm_placement.h>
@@ -17,7 +20,11 @@
 
 struct i915_ttm_buddy_manager {
 	struct ttm_resource_manager manager;
+<<<<<<< HEAD
 	struct gpu_buddy mm;
+=======
+	struct drm_buddy mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head reserved;
 	struct mutex lock;
 	unsigned long visible_size;
@@ -39,7 +46,11 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 {
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
 	struct i915_ttm_buddy_resource *bman_res;
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &bman->mm;
+=======
+	struct drm_buddy *mm = &bman->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long n_pages, lpfn;
 	u64 min_page_size;
 	u64 size;
@@ -58,6 +69,7 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 	bman_res->mm = mm;
 
 	if (place->flags & TTM_PL_FLAG_TOPDOWN)
+<<<<<<< HEAD
 		bman_res->flags |= GPU_BUDDY_TOPDOWN_ALLOCATION;
 
 	if (place->flags & TTM_PL_FLAG_CONTIGUOUS)
@@ -65,6 +77,15 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 
 	if (place->fpfn || lpfn != man->size)
 		bman_res->flags |= GPU_BUDDY_RANGE_ALLOCATION;
+=======
+		bman_res->flags |= DRM_BUDDY_TOPDOWN_ALLOCATION;
+
+	if (place->flags & TTM_PL_FLAG_CONTIGUOUS)
+		bman_res->flags |= DRM_BUDDY_CONTIGUOUS_ALLOCATION;
+
+	if (place->fpfn || lpfn != man->size)
+		bman_res->flags |= DRM_BUDDY_RANGE_ALLOCATION;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GEM_BUG_ON(!bman_res->base.size);
 	size = bman_res->base.size;
@@ -90,7 +111,11 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 		goto err_free_res;
 	}
 
+<<<<<<< HEAD
 	err = gpu_buddy_alloc_blocks(mm, (u64)place->fpfn << PAGE_SHIFT,
+=======
+	err = drm_buddy_alloc_blocks(mm, (u64)place->fpfn << PAGE_SHIFT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     (u64)lpfn << PAGE_SHIFT,
 				     (u64)n_pages << PAGE_SHIFT,
 				     min_page_size,
@@ -102,6 +127,7 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 	if (lpfn <= bman->visible_size) {
 		bman_res->used_visible_size = PFN_UP(bman_res->base.size);
 	} else {
+<<<<<<< HEAD
 		struct gpu_buddy_block *block;
 
 		list_for_each_entry(block, &bman_res->blocks, link) {
@@ -111,6 +137,17 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 			if (start < bman->visible_size) {
 				unsigned long end = start +
 					(gpu_buddy_block_size(mm, block) >> PAGE_SHIFT);
+=======
+		struct drm_buddy_block *block;
+
+		list_for_each_entry(block, &bman_res->blocks, link) {
+			unsigned long start =
+				drm_buddy_block_offset(block) >> PAGE_SHIFT;
+
+			if (start < bman->visible_size) {
+				unsigned long end = start +
+					(drm_buddy_block_size(mm, block) >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				bman_res->used_visible_size +=
 					min(end, bman->visible_size) - start;
@@ -127,7 +164,11 @@ static int i915_ttm_buddy_man_alloc(struct ttm_resource_manager *man,
 	return 0;
 
 err_free_blocks:
+<<<<<<< HEAD
 	gpu_buddy_free_list(mm, &bman_res->blocks, 0);
+=======
+	drm_buddy_free_list(mm, &bman_res->blocks, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&bman->lock);
 err_free_res:
 	ttm_resource_fini(man, &bman_res->base);
@@ -142,7 +183,11 @@ static void i915_ttm_buddy_man_free(struct ttm_resource_manager *man,
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
 
 	mutex_lock(&bman->lock);
+<<<<<<< HEAD
 	gpu_buddy_free_list(&bman->mm, &bman_res->blocks, 0);
+=======
+	drm_buddy_free_list(&bman->mm, &bman_res->blocks, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bman->visible_avail += bman_res->used_visible_size;
 	mutex_unlock(&bman->lock);
 
@@ -157,8 +202,13 @@ static bool i915_ttm_buddy_man_intersects(struct ttm_resource_manager *man,
 {
 	struct i915_ttm_buddy_resource *bman_res = to_ttm_buddy_resource(res);
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &bman->mm;
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy *mm = &bman->mm;
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!place->fpfn && !place->lpfn)
 		return true;
@@ -177,9 +227,15 @@ static bool i915_ttm_buddy_man_intersects(struct ttm_resource_manager *man,
 	/* Check each drm buddy block individually */
 	list_for_each_entry(block, &bman_res->blocks, link) {
 		unsigned long fpfn =
+<<<<<<< HEAD
 			gpu_buddy_block_offset(block) >> PAGE_SHIFT;
 		unsigned long lpfn = fpfn +
 			(gpu_buddy_block_size(mm, block) >> PAGE_SHIFT);
+=======
+			drm_buddy_block_offset(block) >> PAGE_SHIFT;
+		unsigned long lpfn = fpfn +
+			(drm_buddy_block_size(mm, block) >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (place->fpfn < lpfn && place->lpfn > fpfn)
 			return true;
@@ -195,8 +251,13 @@ static bool i915_ttm_buddy_man_compatible(struct ttm_resource_manager *man,
 {
 	struct i915_ttm_buddy_resource *bman_res = to_ttm_buddy_resource(res);
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &bman->mm;
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy *mm = &bman->mm;
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!place->fpfn && !place->lpfn)
 		return true;
@@ -210,9 +271,15 @@ static bool i915_ttm_buddy_man_compatible(struct ttm_resource_manager *man,
 	/* Check each drm buddy block individually */
 	list_for_each_entry(block, &bman_res->blocks, link) {
 		unsigned long fpfn =
+<<<<<<< HEAD
 			gpu_buddy_block_offset(block) >> PAGE_SHIFT;
 		unsigned long lpfn = fpfn +
 			(gpu_buddy_block_size(mm, block) >> PAGE_SHIFT);
+=======
+			drm_buddy_block_offset(block) >> PAGE_SHIFT;
+		unsigned long lpfn = fpfn +
+			(drm_buddy_block_size(mm, block) >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (fpfn < place->fpfn || lpfn > place->lpfn)
 			return false;
@@ -225,7 +292,11 @@ static void i915_ttm_buddy_man_debug(struct ttm_resource_manager *man,
 				     struct drm_printer *printer)
 {
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
+<<<<<<< HEAD
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&bman->lock);
 	drm_printf(printer, "default_page_size: %lluKiB\n",
@@ -294,7 +365,11 @@ int i915_ttm_buddy_man_init(struct ttm_device *bdev,
 	if (!bman)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = gpu_buddy_init(&bman->mm, size, chunk_size);
+=======
+	err = drm_buddy_init(&bman->mm, size, chunk_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_free_bman;
 
@@ -334,7 +409,11 @@ int i915_ttm_buddy_man_fini(struct ttm_device *bdev, unsigned int type)
 {
 	struct ttm_resource_manager *man = ttm_manager_type(bdev, type);
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &bman->mm;
+=======
+	struct drm_buddy *mm = &bman->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ttm_resource_manager_set_used(man, false);
@@ -346,8 +425,13 @@ int i915_ttm_buddy_man_fini(struct ttm_device *bdev, unsigned int type)
 	ttm_set_driver_manager(bdev, type, NULL);
 
 	mutex_lock(&bman->lock);
+<<<<<<< HEAD
 	gpu_buddy_free_list(mm, &bman->reserved, 0);
 	gpu_buddy_fini(mm);
+=======
+	drm_buddy_free_list(mm, &bman->reserved, 0);
+	drm_buddy_fini(mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bman->visible_avail += bman->visible_reserved;
 	WARN_ON_ONCE(bman->visible_avail != bman->visible_size);
 	mutex_unlock(&bman->lock);
@@ -372,15 +456,26 @@ int i915_ttm_buddy_man_reserve(struct ttm_resource_manager *man,
 			       u64 start, u64 size)
 {
 	struct i915_ttm_buddy_manager *bman = to_buddy_manager(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &bman->mm;
+=======
+	struct drm_buddy *mm = &bman->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long fpfn = start >> PAGE_SHIFT;
 	unsigned long flags = 0;
 	int ret;
 
+<<<<<<< HEAD
 	flags |= GPU_BUDDY_RANGE_ALLOCATION;
 
 	mutex_lock(&bman->lock);
 	ret = gpu_buddy_alloc_blocks(mm, start,
+=======
+	flags |= DRM_BUDDY_RANGE_ALLOCATION;
+
+	mutex_lock(&bman->lock);
+	ret = drm_buddy_alloc_blocks(mm, start,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     start + size,
 				     size, mm->chunk_size,
 				     &bman->reserved,

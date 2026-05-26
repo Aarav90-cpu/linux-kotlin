@@ -1663,6 +1663,7 @@ void xprt_add_backlog(struct rpc_xprt *xprt, struct rpc_task *task)
 }
 EXPORT_SYMBOL_GPL(xprt_add_backlog);
 
+<<<<<<< HEAD
 /**
  * xprt_add_backlog_noncongested - queue task on backlog
  * @xprt: transport whose backlog queue receives the task
@@ -1679,6 +1680,8 @@ void xprt_add_backlog_noncongested(struct rpc_xprt *xprt,
 }
 EXPORT_SYMBOL_GPL(xprt_add_backlog_noncongested);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool __xprt_set_rq(struct rpc_task *task, void *data)
 {
 	struct rpc_rqst *req = data;

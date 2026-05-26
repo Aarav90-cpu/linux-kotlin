@@ -47,7 +47,11 @@ static void micro_ts_toggle_receive(struct touchscreen_data *ts, bool enable)
 {
 	struct ipaq_micro *micro = ts->micro;
 
+<<<<<<< HEAD
 	guard(spinlock_irq)(&micro->lock);
+=======
+	spin_lock_irq(&micro->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (enable) {
 		micro->ts = micro_ts_receive;
@@ -56,6 +60,11 @@ static void micro_ts_toggle_receive(struct touchscreen_data *ts, bool enable)
 		micro->ts = NULL;
 		micro->ts_data = NULL;
 	}
+<<<<<<< HEAD
+=======
+
+	spin_unlock_irq(&ts->micro->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int micro_ts_open(struct input_dev *input)
@@ -131,11 +140,20 @@ static int micro_ts_resume(struct device *dev)
 	struct touchscreen_data *ts = dev_get_drvdata(dev);
 	struct input_dev *input = ts->input;
 
+<<<<<<< HEAD
 	guard(mutex)(&input->mutex);
+=======
+	mutex_lock(&input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (input_device_enabled(input))
 		micro_ts_toggle_receive(ts, true);
 
+<<<<<<< HEAD
+=======
+	mutex_unlock(&input->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 

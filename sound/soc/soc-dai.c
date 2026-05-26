@@ -283,6 +283,7 @@ err:
 EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
 
 /**
+<<<<<<< HEAD
  * snd_soc_dai_set_tdm_idle() - Configure a DAI's TDM idle mode
  * @dai: The DAI to configure
  * @tx_mask: bitmask representing idle TX slots.
@@ -323,6 +324,8 @@ int snd_soc_dai_set_tdm_idle(struct snd_soc_dai *dai,
 EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_idle);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * snd_soc_dai_set_channel_map - configure DAI audio channel map
  * @dai: DAI
  * @tx_num: how many TX channels

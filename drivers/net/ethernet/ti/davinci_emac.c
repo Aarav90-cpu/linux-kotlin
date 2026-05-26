@@ -1389,6 +1389,18 @@ static int emac_devioctl(struct net_device *ndev, struct ifreq *ifrq, int cmd)
 		return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
+=======
+static int match_first_device(struct device *dev, const void *data)
+{
+	if (dev->parent && dev->parent->of_node)
+		return of_device_is_compatible(dev->parent->of_node,
+					       "ti,davinci_mdio");
+
+	return !strncmp(dev_name(dev), "davinci_mdio", 12);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * emac_dev_open - EMAC device open
  * @ndev: The DaVinci EMAC network adapter
@@ -1408,6 +1420,10 @@ static int emac_dev_open(struct net_device *ndev)
 	int i = 0;
 	struct emac_priv *priv = netdev_priv(ndev);
 	struct phy_device *phydev = NULL;
+<<<<<<< HEAD
+=======
+	struct device *phy = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = pm_runtime_resume_and_get(&priv->pdev->dev);
 	if (ret < 0) {
@@ -1492,6 +1508,7 @@ static int emac_dev_open(struct net_device *ndev)
 		}
 	}
 
+<<<<<<< HEAD
 	/* if no phy-handle and no fixed link, use the first phy on the bus */
 	if (!phydev && !priv->phy_id) {
 		struct device_node *np;
@@ -1508,6 +1525,22 @@ static int emac_dev_open(struct net_device *ndev)
 				put_device(&bus->dev); /* of_mdio_find_bus */
 			}
 			of_node_put(np); /* of_find_compatible_node */
+=======
+	/* use the first phy on the bus if pdata did not give us a phy id */
+	if (!phydev && !priv->phy_id) {
+		/* NOTE: we can't use bus_find_device_by_name() here because
+		 * the device name is not guaranteed to be 'davinci_mdio'. On
+		 * some systems it can be 'davinci_mdio.0' so we need to use
+		 * strncmp() against the first part of the string to correctly
+		 * match it.
+		 */
+		phy = bus_find_device(&mdio_bus_type, NULL, NULL,
+				      match_first_device);
+		if (phy) {
+			priv->phy_id = dev_name(phy);
+			if (!priv->phy_id || !*priv->phy_id)
+				put_device(phy);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -1515,6 +1548,10 @@ static int emac_dev_open(struct net_device *ndev)
 		phydev = phy_connect(ndev, priv->phy_id,
 				     &emac_adjust_link,
 				     PHY_INTERFACE_MODE_MII);
+<<<<<<< HEAD
+=======
+		put_device(phy);	/* reference taken by bus_find_device */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (IS_ERR(phydev)) {
 			dev_err(emac_dev, "could not connect to phy %s\n",
 				priv->phy_id);

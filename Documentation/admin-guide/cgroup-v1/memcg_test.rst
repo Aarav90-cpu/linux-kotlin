@@ -47,19 +47,32 @@ Please note that implementation details can be changed.
 	  Called when swp_entry's refcnt goes down to 0. A charge against swap
 	  disappears.
 
+<<<<<<< HEAD
 3. charge-commit
+=======
+3. charge-commit-cancel
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 =======================
 
 	Memcg pages are charged in two steps:
 
 		- mem_cgroup_try_charge()
+<<<<<<< HEAD
 		- commit_charge()
+=======
+		- mem_cgroup_commit_charge() or mem_cgroup_cancel_charge()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	At try_charge(), there are no flags to say "this page is charged".
 	at this point, usage += PAGE_SIZE.
 
 	At commit(), the page is associated with the memcg.
 
+<<<<<<< HEAD
+=======
+	At cancel(), simply usage -= PAGE_SIZE.
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Under below explanation, we assume CONFIG_SWAP=y.
 
 4. Anonymous

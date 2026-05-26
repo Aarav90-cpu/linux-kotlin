@@ -6,7 +6,11 @@
 
  * Copyright (C) 2007 Alain Degreffe (eczema@ecze.com)
  *
+<<<<<<< HEAD
  * Original code taken from iuutool (Copyright (C) 2006 Juan Carlos Borrás)
+=======
+ * Original code taken from iuutool (Copyright (C) 2006 Juan Carlos BorrÃ¡s)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  *  And tested with help of WB Electronics
  */

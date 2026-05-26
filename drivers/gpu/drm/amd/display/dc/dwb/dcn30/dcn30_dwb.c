@@ -45,7 +45,10 @@
 
 static bool dwb3_get_caps(struct dwbc *dwbc, struct dwb_caps *caps)
 {
+<<<<<<< HEAD
 	(void)dwbc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (caps) {
 		caps->adapter_id = 0;	/* we only support 1 adapter currently */
 		caps->hw_version = DCN_VERSION_3_0;

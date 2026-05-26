@@ -61,8 +61,12 @@ static int pc263_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	struct comedi_subdevice *s;
 	int ret;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x2,
 					  0, 0x7ff, 2);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

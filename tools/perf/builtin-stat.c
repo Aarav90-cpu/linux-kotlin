@@ -164,7 +164,11 @@ struct opt_aggr_mode {
 };
 
 /* Turn command line option into most generic aggregation mode setting. */
+<<<<<<< HEAD
 static enum aggr_mode opt_aggr_mode_to_aggr_mode(const struct opt_aggr_mode *opt_mode)
+=======
+static enum aggr_mode opt_aggr_mode_to_aggr_mode(struct opt_aggr_mode *opt_mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	enum aggr_mode mode = AGGR_GLOBAL;
 
@@ -410,7 +414,11 @@ static int read_tool_counters(void)
 	struct evsel *counter;
 
 	evlist__for_each_entry(evsel_list, counter) {
+<<<<<<< HEAD
 		unsigned int idx;
+=======
+		int idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!evsel__is_tool(counter))
 			continue;
@@ -1214,6 +1222,7 @@ static int parse_cputype(const struct option *opt,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int parse_pmu_filter(const struct option *opt,
 			   const char *str,
 			   int unset __maybe_unused)
@@ -1229,13 +1238,20 @@ static int parse_pmu_filter(const struct option *opt,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int parse_cache_level(const struct option *opt,
 			     const char *str,
 			     int unset __maybe_unused)
 {
 	int level;
+<<<<<<< HEAD
 	bool *per_cache = opt->value;
 	u32 *aggr_level = opt->data;
+=======
+	struct opt_aggr_mode *opt_aggr_mode = (struct opt_aggr_mode *)opt->value;
+	u32 *aggr_level = (u32 *)opt->data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If no string is specified, aggregate based on the topology of
@@ -1273,7 +1289,11 @@ static int parse_cache_level(const struct option *opt,
 		return -EINVAL;
 	}
 out:
+<<<<<<< HEAD
 	*per_cache = true;
+=======
+	opt_aggr_mode->cache = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	*aggr_level = level;
 	return 0;
 }
@@ -1932,14 +1952,20 @@ static int default_evlist_evsel_cmp(void *priv __maybe_unused,
 	const struct evsel *lhs = container_of(lhs_core, struct evsel, core);
 	const struct perf_evsel *rhs_core = container_of(r, struct perf_evsel, node);
 	const struct evsel *rhs = container_of(rhs_core, struct evsel, core);
+<<<<<<< HEAD
 	const struct evsel *lhs_leader = evsel__leader(lhs);
 	const struct evsel *rhs_leader = evsel__leader(rhs);
 
 	if (lhs_leader == rhs_leader) {
+=======
+
+	if (evsel__leader(lhs) == evsel__leader(rhs)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Within the same group, respect the original order. */
 		return lhs_core->idx - rhs_core->idx;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Compare using leader's attributes so that all members of a group
 	 * stay together. This ensures leaders are opened before their members.
@@ -1959,6 +1985,21 @@ static int default_evlist_evsel_cmp(void *priv __maybe_unused,
 	/* Sort by leader's name. */
 	return strcmp(evsel__name((struct evsel *)lhs_leader),
 		      evsel__name((struct evsel *)rhs_leader));
+=======
+	/* Sort default metrics evsels first, and default show events before those. */
+	if (lhs->default_metricgroup != rhs->default_metricgroup)
+		return lhs->default_metricgroup ? -1 : 1;
+
+	if (lhs->default_show_events != rhs->default_show_events)
+		return lhs->default_show_events ? -1 : 1;
+
+	/* Sort by PMU type (prefers legacy types first). */
+	if (lhs->pmu != rhs->pmu)
+		return lhs->pmu->type - rhs->pmu->type;
+
+	/* Sort by name. */
+	return strcmp(evsel__name((struct evsel *)lhs), evsel__name((struct evsel *)rhs));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2328,6 +2369,7 @@ static struct perf_stat perf_stat = {
 static int __cmd_report(int argc, const char **argv)
 {
 	struct perf_session *session;
+<<<<<<< HEAD
 	struct opt_aggr_mode opt_mode = {};
 	const struct option options[] = {
 	OPT_STRING('i', "input", &input_name, "file", "input file name"),
@@ -2345,6 +2387,26 @@ static int __cmd_report(int argc, const char **argv)
 	OPT_BOOLEAN(0, "per-node", &opt_mode.node, "aggregate counts per numa node"),
 	OPT_BOOLEAN('A', "no-aggr", &opt_mode.no_aggr,
 		    "disable aggregation across CPUs or PMUs"),
+=======
+	const struct option options[] = {
+	OPT_STRING('i', "input", &input_name, "file", "input file name"),
+	OPT_SET_UINT(0, "per-socket", &perf_stat.aggr_mode,
+		     "aggregate counts per processor socket", AGGR_SOCKET),
+	OPT_SET_UINT(0, "per-die", &perf_stat.aggr_mode,
+		     "aggregate counts per processor die", AGGR_DIE),
+	OPT_SET_UINT(0, "per-cluster", &perf_stat.aggr_mode,
+		     "aggregate counts perf processor cluster", AGGR_CLUSTER),
+	OPT_CALLBACK_OPTARG(0, "per-cache", &perf_stat.aggr_mode, &perf_stat.aggr_level,
+			    "cache level",
+			    "aggregate count at this cache level (Default: LLC)",
+			    parse_cache_level),
+	OPT_SET_UINT(0, "per-core", &perf_stat.aggr_mode,
+		     "aggregate counts per physical processor core", AGGR_CORE),
+	OPT_SET_UINT(0, "per-node", &perf_stat.aggr_mode,
+		     "aggregate counts per numa node", AGGR_NODE),
+	OPT_SET_UINT('A', "no-aggr", &perf_stat.aggr_mode,
+		     "disable CPU count aggregation", AGGR_NONE),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OPT_END()
 	};
 	struct stat st;
@@ -2352,10 +2414,13 @@ static int __cmd_report(int argc, const char **argv)
 
 	argc = parse_options(argc, argv, options, stat_report_usage, 0);
 
+<<<<<<< HEAD
 	perf_stat.aggr_mode = opt_aggr_mode_to_aggr_mode(&opt_mode);
 	if (perf_stat.aggr_mode == AGGR_GLOBAL)
 		perf_stat.aggr_mode = AGGR_UNSET; /* No option found so leave unset. */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!input_name || !strlen(input_name)) {
 		if (!fstat(STDIN_FILENO, &st) && S_ISFIFO(st.st_mode))
 			input_name = "-";
@@ -2532,7 +2597,11 @@ int cmd_stat(int argc, const char **argv)
 		OPT_BOOLEAN(0, "per-die", &opt_mode.die, "aggregate counts per processor die"),
 		OPT_BOOLEAN(0, "per-cluster", &opt_mode.cluster,
 			"aggregate counts per processor cluster"),
+<<<<<<< HEAD
 		OPT_CALLBACK_OPTARG(0, "per-cache", &opt_mode.cache, &stat_config.aggr_level,
+=======
+		OPT_CALLBACK_OPTARG(0, "per-cache", &opt_mode, &stat_config.aggr_level,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				"cache level", "aggregate count at this cache level (Default: LLC)",
 				parse_cache_level),
 		OPT_BOOLEAN(0, "per-core", &opt_mode.core,
@@ -2587,10 +2656,13 @@ int cmd_stat(int argc, const char **argv)
 			"Only enable events on applying cpu with this type "
 			"for hybrid platform (e.g. core or atom)",
 			parse_cputype),
+<<<<<<< HEAD
 		OPT_CALLBACK(0, "pmu-filter", &evsel_list, "pmu",
 			"Only enable events on applying pmu with specified "
 			"for multiple pmus with same type(e.g. hisi_sicl2_cpa0 or hisi_sicl0_cpa0)",
 			parse_pmu_filter),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef HAVE_LIBPFM
 		OPT_CALLBACK(0, "pfm-events", &evsel_list, "event",
 			"libpfm4 event selector. use 'perf list' to list available events",
@@ -2774,7 +2846,11 @@ int cmd_stat(int argc, const char **argv)
 	}
 
 	if (stat_config.walltime_run_table) {
+<<<<<<< HEAD
 		stat_config.walltime_run = calloc(stat_config.run_count, sizeof(stat_config.walltime_run[0]));
+=======
+		stat_config.walltime_run = zalloc(stat_config.run_count * sizeof(stat_config.walltime_run[0]));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!stat_config.walltime_run) {
 			pr_err("failed to setup -r option");
 			goto out;

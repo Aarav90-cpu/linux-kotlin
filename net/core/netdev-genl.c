@@ -387,6 +387,7 @@ static int nla_put_napi_id(struct sk_buff *skb, const struct napi_struct *napi)
 }
 
 static int
+<<<<<<< HEAD
 netdev_nl_queue_fill_lease(struct sk_buff *rsp, struct net_device *netdev,
 			   u32 q_idx, u32 q_type)
 {
@@ -473,6 +474,12 @@ static int
 netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
 			 u32 q_idx, u32 q_type, const struct genl_info *info)
 {
+=======
+netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
+			 u32 q_idx, u32 q_type, const struct genl_info *info)
+{
+	struct pp_memory_provider_params *params;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct netdev_rx_queue *rxq;
 	struct netdev_queue *txq;
 	void *hdr;
@@ -491,10 +498,24 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
 		rxq = __netif_get_rx_queue(netdev, q_idx);
 		if (nla_put_napi_id(rsp, rxq->napi))
 			goto nla_put_failure;
+<<<<<<< HEAD
 		if (netdev_nl_queue_fill_lease(rsp, netdev, q_idx, q_type))
 			goto nla_put_failure;
 		if (netdev_nl_queue_fill_mp(rsp, netdev, rxq))
 			goto nla_put_failure;
+=======
+
+		params = &rxq->mp_params;
+		if (params->mp_ops &&
+		    params->mp_ops->nl_fill(params->mp_priv, rsp, rxq))
+			goto nla_put_failure;
+#ifdef CONFIG_XDP_SOCKETS
+		if (rxq->pool)
+			if (nla_put_empty_nest(rsp, NETDEV_A_QUEUE_XSK))
+				goto nla_put_failure;
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case NETDEV_QUEUE_TYPE_TX:
 		txq = netdev_get_tx_queue(netdev, q_idx);
@@ -993,8 +1014,12 @@ netdev_nl_get_dma_dev(struct net_device *netdev, unsigned long *rxq_bitmap,
 	for_each_set_bit(rxq_idx, rxq_bitmap, netdev->real_num_rx_queues) {
 		struct device *rxq_dma_dev;
 
+<<<<<<< HEAD
 		rxq_dma_dev = netdev_queue_get_dma_dev(netdev, rxq_idx,
 						       NETDEV_QUEUE_TYPE_RX);
+=======
+		rxq_dma_dev = netdev_queue_get_dma_dev(netdev, rxq_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dma_dev && rxq_dma_dev != dma_dev) {
 			NL_SET_ERR_MSG_FMT(extack, "DMA device mismatch between queue %u and %u (multi-PF device?)",
 					   rxq_idx, prev_rxq_idx);
@@ -1171,7 +1196,11 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
 		goto err_unlock_netdev;
 	}
 
+<<<<<<< HEAD
 	dma_dev = netdev_queue_get_dma_dev(netdev, 0, NETDEV_QUEUE_TYPE_TX);
+=======
+	dma_dev = netdev_queue_get_dma_dev(netdev, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	binding = net_devmem_bind_dmabuf(netdev, dma_dev, DMA_TO_DEVICE,
 					 dmabuf_fd, priv, info->extack);
 	if (IS_ERR(binding)) {
@@ -1196,6 +1225,7 @@ err_genlmsg_free:
 	return err;
 }
 
+<<<<<<< HEAD
 int netdev_nl_queue_create_doit(struct sk_buff *skb, struct genl_info *info)
 {
 	const int qmaxtype = ARRAY_SIZE(netdev_queue_id_nl_policy) - 1;
@@ -1363,6 +1393,8 @@ err_genlmsg_free:
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void netdev_nl_sock_priv_init(struct netdev_nl_sock *priv)
 {
 	INIT_LIST_HEAD(&priv->bindings);

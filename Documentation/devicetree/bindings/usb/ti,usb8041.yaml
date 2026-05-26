@@ -11,7 +11,10 @@ maintainers:
 
 allOf:
   - $ref: usb-device.yaml#
+<<<<<<< HEAD
   - $ref: usb-hub.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 properties:
   compatible:
@@ -31,6 +34,7 @@ properties:
     description:
       VDD power supply to the hub
 
+<<<<<<< HEAD
   peer-hub: true
 
 patternProperties:
@@ -39,12 +43,24 @@ patternProperties:
     type: object
     $ref: /schemas/usb/usb-device.yaml
     additionalProperties: true
+=======
+  peer-hub:
+    $ref: /schemas/types.yaml#/definitions/phandle
+    description:
+      phandle to the peer hub on the controller.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible
   - reg
+<<<<<<< HEAD
 
 unevaluatedProperties: false
+=======
+  - peer-hub
+
+additionalProperties: false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 examples:
   - |
@@ -60,6 +76,7 @@ examples:
             compatible = "usb451,8142";
             reg = <1>;
             peer-hub = <&hub_3_0>;
+<<<<<<< HEAD
             #address-cells = <1>;
             #size-cells = <0>;
             reset-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
@@ -68,6 +85,9 @@ examples:
               compatible = "usb123,4567";
               reg = <1>;
             };
+=======
+            reset-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         };
 
         /* 3.0 hub on port 2 */

@@ -287,6 +287,7 @@ v3d_gem_init(struct drm_device *dev)
 	for (i = 0; i < V3D_MAX_QUEUES; i++) {
 		struct v3d_queue_state *queue = &v3d->queue[i];
 
+<<<<<<< HEAD
 		queue->stats = v3d_stats_alloc();
 		if (!queue->stats) {
 			ret = -ENOMEM;
@@ -296,11 +297,20 @@ v3d_gem_init(struct drm_device *dev)
 		queue->fence_context = dma_fence_context_alloc(1);
 
 		spin_lock_init(&queue->queue_lock);
+=======
+		queue->fence_context = dma_fence_context_alloc(1);
+		memset(&queue->stats, 0, sizeof(queue->stats));
+		seqcount_init(&queue->stats.lock);
+
+		spin_lock_init(&queue->queue_lock);
+		spin_lock_init(&queue->fence_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock_init(&v3d->mm_lock);
 	ret = drmm_mutex_init(dev, &v3d->bo_lock);
 	if (ret)
+<<<<<<< HEAD
 		goto err_stats;
 	ret = drmm_mutex_init(dev, &v3d->reset_lock);
 	if (ret)
@@ -311,6 +321,18 @@ v3d_gem_init(struct drm_device *dev)
 	ret = drmm_mutex_init(dev, &v3d->cache_clean_lock);
 	if (ret)
 		goto err_stats;
+=======
+		return ret;
+	ret = drmm_mutex_init(dev, &v3d->reset_lock);
+	if (ret)
+		return ret;
+	ret = drmm_mutex_init(dev, &v3d->sched_lock);
+	if (ret)
+		return ret;
+	ret = drmm_mutex_init(dev, &v3d->cache_clean_lock);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Note: We don't allocate address 0.  Various bits of HW
 	 * treat 0 as special, such as the occlusion query counters
@@ -322,10 +344,17 @@ v3d_gem_init(struct drm_device *dev)
 			       &v3d->pt_paddr,
 			       GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
 	if (!v3d->pt) {
+<<<<<<< HEAD
 		dev_err(v3d->drm.dev,
 			"Failed to allocate page tables. Please ensure you have DMA enabled.\n");
 		ret = -ENOMEM;
 		goto err_dma_alloc;
+=======
+		drm_mm_takedown(&v3d->mm);
+		dev_err(v3d->drm.dev,
+			"Failed to allocate page tables. Please ensure you have DMA enabled.\n");
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	v3d_init_hw_state(v3d);
@@ -334,6 +363,7 @@ v3d_gem_init(struct drm_device *dev)
 	v3d_huge_mnt_init(v3d);
 
 	ret = v3d_sched_init(v3d);
+<<<<<<< HEAD
 	if (ret)
 		goto err_sched;
 
@@ -348,6 +378,16 @@ err_stats:
 		v3d_stats_put(v3d->queue[i].stats);
 
 	return ret;
+=======
+	if (ret) {
+		drm_mm_takedown(&v3d->mm);
+		dma_free_coherent(v3d->drm.dev, pt_size, (void *)v3d->pt,
+				  v3d->pt_paddr);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void
@@ -361,10 +401,15 @@ v3d_gem_destroy(struct drm_device *dev)
 	/* Waiting for jobs to finish would need to be done before
 	 * unregistering V3D.
 	 */
+<<<<<<< HEAD
 	for (q = 0; q < V3D_MAX_QUEUES; q++) {
 		WARN_ON(v3d->queue[q].active_job);
 		v3d_stats_put(v3d->queue[q].stats);
 	}
+=======
+	for (q = 0; q < V3D_MAX_QUEUES; q++)
+		WARN_ON(v3d->queue[q].active_job);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	drm_mm_takedown(&v3d->mm);
 

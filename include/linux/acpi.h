@@ -324,6 +324,7 @@ int acpi_unmap_cpu(int cpu);
 
 acpi_handle acpi_get_processor_handle(int cpu);
 
+<<<<<<< HEAD
 /**
  * acpi_get_cpu_uid() - Get ACPI Processor UID of from MADT table
  * @cpu: Logical CPU number (0-based)
@@ -335,6 +336,8 @@ acpi_handle acpi_get_processor_handle(int cpu);
  */
 int acpi_get_cpu_uid(unsigned int cpu, u32 *uid);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
 int acpi_get_ioapic_id(acpi_handle handle, u32 gsi_base, u64 *phys_addr);
 #endif
@@ -802,6 +805,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
 int acpi_mrrm_max_mem_region(void);
 #endif
 
+<<<<<<< HEAD
 #define ACPI_CMOS_RTC_IDS	\
 	{ "PNP0B00", },		\
 	{ "PNP0B01", },		\
@@ -810,6 +814,8 @@ int acpi_mrrm_max_mem_region(void);
 
 extern bool cmos_rtc_platform_device_present;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else	/* !CONFIG_ACPI */
 
 #define acpi_disabled 1
@@ -959,12 +965,15 @@ static inline int acpi_table_parse(char *id,
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 static inline int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 {
 	*uid = cpu;
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline int acpi_nvs_register(__u64 start, __u64 size)
 {
 	return 0;
@@ -1141,8 +1150,11 @@ static inline int acpi_mrrm_max_mem_region(void)
 	return 1;
 }
 
+<<<<<<< HEAD
 #define cmos_rtc_platform_device_present	false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif	/* !CONFIG_ACPI */
 
 #ifdef CONFIG_ACPI_HMAT

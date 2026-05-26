@@ -45,10 +45,17 @@ struct CLIENT_REC {
 	__le16 seq_num;     // 0x14:
 	u8 align[6];        // 0x16:
 	__le32 name_bytes;  // 0x1C: In bytes.
+<<<<<<< HEAD
 	__le16 name[64];    // 0x20: Name of client.
 };
 
 static_assert(sizeof(struct CLIENT_REC) == 0xa0);
+=======
+	__le16 name[32];    // 0x20: Name of client.
+};
+
+static_assert(sizeof(struct CLIENT_REC) == 0x60);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Two copies of these will exist at the beginning of the log file */
 struct RESTART_AREA {

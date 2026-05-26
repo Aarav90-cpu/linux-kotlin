@@ -257,7 +257,15 @@ static int deferred_devs_show(struct seq_file *s, void *data)
 }
 DEFINE_SHOW_ATTRIBUTE(deferred_devs);
 
+<<<<<<< HEAD
 static int driver_deferred_probe_timeout = CONFIG_DRIVER_DEFERRED_PROBE_TIMEOUT;
+=======
+#ifdef CONFIG_MODULES
+static int driver_deferred_probe_timeout = 10;
+#else
+static int driver_deferred_probe_timeout;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int __init deferred_probe_timeout_setup(char *str)
 {
@@ -379,7 +387,12 @@ __exitcall(deferred_probe_exit);
 
 int __device_set_driver_override(struct device *dev, const char *s, size_t len)
 {
+<<<<<<< HEAD
 	const char *new = NULL, *old;
+=======
+	const char *new, *old;
+	char *cp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!s)
 		return -EINVAL;
@@ -399,6 +412,7 @@ int __device_set_driver_override(struct device *dev, const char *s, size_t len)
 	 */
 	len = strlen(s);
 
+<<<<<<< HEAD
 	/* Handle trailing newline */
 	if (len) {
 		char *cp;
@@ -423,6 +437,39 @@ int __device_set_driver_override(struct device *dev, const char *s, size_t len)
 		dev->driver_override.name = new;
 	}
 
+=======
+	if (!len) {
+		/* Empty string passed - clear override */
+		spin_lock(&dev->driver_override.lock);
+		old = dev->driver_override.name;
+		dev->driver_override.name = NULL;
+		spin_unlock(&dev->driver_override.lock);
+		kfree(old);
+
+		return 0;
+	}
+
+	cp = strnchr(s, len, '\n');
+	if (cp)
+		len = cp - s;
+
+	new = kstrndup(s, len, GFP_KERNEL);
+	if (!new)
+		return -ENOMEM;
+
+	spin_lock(&dev->driver_override.lock);
+	old = dev->driver_override.name;
+	if (cp != s) {
+		dev->driver_override.name = new;
+		spin_unlock(&dev->driver_override.lock);
+	} else {
+		/* "\n" passed - clear override */
+		dev->driver_override.name = NULL;
+		spin_unlock(&dev->driver_override.lock);
+
+		kfree(new);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(old);
 
 	return 0;

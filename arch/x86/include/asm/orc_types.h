@@ -28,6 +28,7 @@
  * and GCC realigned stacks.
  */
 #define ORC_REG_UNDEFINED		0
+<<<<<<< HEAD
 #define ORC_REG_AX			1
 #define ORC_REG_DX			2
 #define ORC_REG_SP			3
@@ -38,6 +39,17 @@
 #define ORC_REG_PREV_SP			8
 #define ORC_REG_SP_INDIRECT		9
 #define ORC_REG_BP_INDIRECT		10
+=======
+#define ORC_REG_PREV_SP			1
+#define ORC_REG_DX			2
+#define ORC_REG_DI			3
+#define ORC_REG_BP			4
+#define ORC_REG_SP			5
+#define ORC_REG_R10			6
+#define ORC_REG_R13			7
+#define ORC_REG_BP_INDIRECT		8
+#define ORC_REG_SP_INDIRECT		9
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ORC_REG_MAX			15
 
 #define ORC_TYPE_UNDEFINED		0

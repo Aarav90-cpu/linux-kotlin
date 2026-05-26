@@ -52,6 +52,7 @@ int exit_vmx_usercopy(void)
 }
 EXPORT_SYMBOL(exit_vmx_usercopy);
 
+<<<<<<< HEAD
 /*
  * Can be called from kexec copy_page() path with MMU off. The kexec
  * code sets preempt_count to HARDIRQ_OFFSET so we return early here.
@@ -60,6 +61,9 @@ EXPORT_SYMBOL(exit_vmx_usercopy);
  * mode.
  */
 int __no_sanitize_address enter_vmx_ops(void)
+=======
+int enter_vmx_ops(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (in_interrupt())
 		return 0;

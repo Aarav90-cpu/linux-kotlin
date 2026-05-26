@@ -43,12 +43,15 @@
 		reg = <0x0 0x48000000 0x0 0xf8000000>;
 	};
 
+<<<<<<< HEAD
 	pcie_refclk: pcie-ref-clock {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <100000000>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_1p8v: regulator-1p8v {
 		compatible = "regulator-fixed";
 		regulator-name = "fixed-1.8V";
@@ -142,13 +145,22 @@
 
 &mdio0 {
 	phy0: ethernet-phy@7 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id0022.1640";
+=======
+		compatible = "ethernet-phy-id0022.1640",
+			     "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <7>;
 		interrupts-extended = <&icu 3 IRQ_TYPE_LEVEL_LOW>;
 		rxc-skew-psec = <1400>;
 		txc-skew-psec = <1400>;
 		rxdv-skew-psec = <0>;
+<<<<<<< HEAD
 		txen-skew-psec = <0>;
+=======
+		txdv-skew-psec = <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rxd0-skew-psec = <0>;
 		rxd1-skew-psec = <0>;
 		rxd2-skew-psec = <0>;
@@ -162,13 +174,22 @@
 
 &mdio1 {
 	phy1: ethernet-phy@7 {
+<<<<<<< HEAD
 		compatible = "ethernet-phy-id0022.1640";
+=======
+		compatible = "ethernet-phy-id0022.1640",
+			     "ethernet-phy-ieee802.3-c22";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <7>;
 		interrupts-extended = <&icu 16 IRQ_TYPE_LEVEL_LOW>;
 		rxc-skew-psec = <1400>;
 		txc-skew-psec = <1400>;
 		rxdv-skew-psec = <0>;
+<<<<<<< HEAD
 		txen-skew-psec = <0>;
+=======
+		txdv-skew-psec = <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rxd0-skew-psec = <0>;
 		rxd1-skew-psec = <0>;
 		rxd2-skew-psec = <0>;
@@ -180,11 +201,14 @@
 	};
 };
 
+<<<<<<< HEAD
 &pcie_port0 {
 	clocks = <&pcie_refclk>;
 	clock-names = "ref";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pinctrl {
 	eth0_pins: eth0 {
 		clk {

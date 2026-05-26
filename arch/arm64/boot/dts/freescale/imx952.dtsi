@@ -285,7 +285,11 @@
 
 	pmu {
 		compatible = "arm,cortex-a55-pmu";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	psci {
@@ -295,10 +299,17 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		clock-frequency = <24000000>;
 		arm,no-tick-in-suspend;
 		interrupt-parent = <&gic>;
@@ -672,6 +683,7 @@
 				#mbox-cells = <2>;
 				status = "disabled";
 			};
+<<<<<<< HEAD
 
 			xspi1: spi@42400000 {
 				compatible = "nxp,imx952-xspi", "nxp,imx94-xspi";
@@ -691,6 +703,8 @@
 				assigned-clock-rates = <200000000>;
 				status = "disabled";
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		aips3: bus@42800000 {
@@ -823,6 +837,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		aips5: bus@43000000 {
 			compatible = "fsl,aips-bus", "simple-bus";
 			reg = <0 0x43000000 0 0x800000>;
@@ -977,6 +992,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gpio2: gpio@43810000 {
 			compatible = "fsl,imx95-gpio", "fsl,imx8ulp-gpio";
 			reg = <0x0 0x43810000 0x0 0x1000>;
@@ -1216,6 +1233,7 @@
 				status = "disabled";
 			};
 
+<<<<<<< HEAD
 			sai1: sai@443b0000 {
 				compatible = "fsl,imx952-sai", "fsl,imx95-sai";
 				reg = <0x443b0000 0x10000>;
@@ -1250,6 +1268,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			adc1: adc@44530000 {
 				compatible = "nxp,imx93-adc";
 				reg = <0x44530000 0x10000>;
@@ -1469,6 +1489,7 @@
 			reg = <0x0 0x4c200200 0x0 0x200>,
 			      <0x0 0x4c010014 0x0 0x4>;
 		};
+<<<<<<< HEAD
 
 		sai2: sai@4c880000 {
 			compatible = "fsl,imx952-sai", "fsl,imx95-sai";
@@ -1484,5 +1505,7 @@
 			power-domains = <&scmi_devpd IMX952_PD_NETC>;
 			status = "disabled";
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

@@ -8,7 +8,10 @@
 
 struct drm_device;
 struct drm_file;
+<<<<<<< HEAD
 struct xe_bo;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int xe_vm_madvise_ioctl(struct drm_device *dev, void *data,
 			struct drm_file *file);

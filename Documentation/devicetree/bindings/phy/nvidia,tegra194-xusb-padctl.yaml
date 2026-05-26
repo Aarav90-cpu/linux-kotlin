@@ -230,10 +230,13 @@ properties:
           connector:
             type: object
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           mode:
             description: A string that determines the mode in which to
               run the port.
@@ -260,12 +263,16 @@ properties:
               voltage.
 
         dependencies:
+<<<<<<< HEAD
           usb-role-switch:
             oneOf:
               - required:
                   - connector
               - required:
                   - port
+=======
+          usb-role-switch: [ connector ]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
       usb2-1:
         type: object
@@ -277,10 +284,13 @@ properties:
           connector:
             type: object
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           mode:
             description: A string that determines the mode in which to
               run the port.
@@ -319,10 +329,13 @@ properties:
           connector:
             type: object
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           mode:
             description: A string that determines the mode in which to
               run the port.
@@ -361,10 +374,13 @@ properties:
           connector:
             type: object
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           mode:
             description: A string that determines the mode in which to
               run the port.
@@ -426,10 +442,13 @@ properties:
             description: A phandle to the regulator supplying the VBUS
               voltage.
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       usb3-1:
         type: object
         additionalProperties: false
@@ -463,10 +482,13 @@ properties:
             description: A phandle to the regulator supplying the VBUS
               voltage.
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       usb3-2:
         type: object
         additionalProperties: false
@@ -500,10 +522,13 @@ properties:
             description: A phandle to the regulator supplying the VBUS
               voltage.
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       usb3-3:
         type: object
         additionalProperties: false
@@ -537,10 +562,13 @@ properties:
             description: A phandle to the regulator supplying the VBUS
               voltage.
 
+<<<<<<< HEAD
           port:
             description: connection to a USB Type C controller
             $ref: /schemas/graph.yaml#/properties/port
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 required:

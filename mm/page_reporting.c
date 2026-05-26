@@ -12,7 +12,11 @@
 #include "internal.h"
 
 /* Initialize to an unsupported value */
+<<<<<<< HEAD
 unsigned int page_reporting_order = PAGE_REPORTING_ORDER_UNSPECIFIED;
+=======
+unsigned int page_reporting_order = -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int page_order_update_notify(const char *val, const struct kernel_param *kp)
 {
@@ -369,9 +373,14 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
 	 * pageblock_order.
 	 */
 
+<<<<<<< HEAD
 	if (page_reporting_order == PAGE_REPORTING_ORDER_UNSPECIFIED) {
 		if (prdev->order != PAGE_REPORTING_ORDER_UNSPECIFIED &&
 		    prdev->order <= MAX_PAGE_ORDER)
+=======
+	if (page_reporting_order == -1) {
+		if (prdev->order > 0 && prdev->order <= MAX_PAGE_ORDER)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			page_reporting_order = prdev->order;
 		else
 			page_reporting_order = pageblock_order;

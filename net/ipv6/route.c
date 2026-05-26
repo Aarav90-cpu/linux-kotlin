@@ -1645,10 +1645,13 @@ static unsigned int fib6_mtu(const struct fib6_result *res)
 
 		rcu_read_lock();
 		idev = __in6_dev_get(dev);
+<<<<<<< HEAD
 		if (!idev) {
 			rcu_read_unlock();
 			return 0;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mtu = READ_ONCE(idev->cnf.mtu6);
 		rcu_read_unlock();
 	}
@@ -2659,7 +2662,10 @@ void ip6_route_input(struct sk_buff *skb)
 	skb_dst_set_noref(skb, ip6_route_input_lookup(net, skb->dev,
 						      &fl6, skb, flags));
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(ip6_route_input);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 INDIRECT_CALLABLE_SCOPE struct rt6_info *ip6_pol_route_output(struct net *net,
 					     struct fib6_table *table,
@@ -3590,11 +3596,14 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
 	struct inet6_dev *idev = NULL;
 	int err;
 
+<<<<<<< HEAD
 	if (!ipv6_mod_enabled()) {
 		NL_SET_ERR_MSG(extack, "IPv6 support not enabled in kernel");
 		return -EAFNOSUPPORT;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fib6_nh->fib_nh_family = AF_INET6;
 #ifdef CONFIG_IPV6_ROUTER_PREF
 	fib6_nh->last_probe = jiffies;
@@ -4999,7 +5008,10 @@ static int fib6_ifdown(struct fib6_info *rt, void *p_arg)
 		    rt->fib6_flags & (RTF_LOCAL | RTF_ANYCAST))
 			break;
 		rt->fib6_nh->fib_nh_flags |= RTNH_F_LINKDOWN;
+<<<<<<< HEAD
 		fib6_update_sernum(net, rt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rt6_multipath_rebalance(rt);
 		break;
 	}
@@ -6837,6 +6849,10 @@ void __init ip6_route_init_special_entries(void)
   #endif
 }
 
+<<<<<<< HEAD
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
 DEFINE_BPF_ITER_FUNC(ipv6_route, struct bpf_iter_meta *meta, struct fib6_info *rt)
 
@@ -6870,6 +6886,10 @@ static void bpf_iter_unregister(void)
 	bpf_iter_unreg_target(&ipv6_route_reg_info);
 }
 #endif
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct rtnl_msg_handler ip6_route_rtnl_msg_handlers[] __initconst_or_module = {
 	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_NEWROUTE,
@@ -6930,11 +6950,19 @@ int __init ip6_route_init(void)
 	if (ret)
 		goto out_register_late_subsys;
 
+<<<<<<< HEAD
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
 	ret = bpf_iter_register();
 	if (ret)
 		goto out_register_notifier;
 #endif
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for_each_possible_cpu(cpu) {
 		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
@@ -6972,9 +7000,17 @@ out_kmem_cache:
 
 void ip6_route_cleanup(void)
 {
+<<<<<<< HEAD
 #if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
 	bpf_iter_unregister();
 #endif
+=======
+#if IS_BUILTIN(CONFIG_IPV6)
+#if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
+	bpf_iter_unregister();
+#endif
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unregister_netdevice_notifier(&ip6_route_dev_notifier);
 	unregister_pernet_subsys(&ip6_route_net_late_ops);
 	fib6_rules_cleanup();

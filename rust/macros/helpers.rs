@@ -49,6 +49,10 @@ pub(crate) fn file() -> String {
     }
 
     #[cfg(CONFIG_RUSTC_HAS_SPAN_FILE)]
+<<<<<<< HEAD
+=======
+    #[allow(clippy::incompatible_msrv)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     {
         proc_macro::Span::call_site().file()
     }

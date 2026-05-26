@@ -163,7 +163,10 @@ all_test_bpfprogs := $(foreach prog,$(wildcard *.bpf.c),$(INCLUDE_DIR)/$(patsubs
 
 auto-test-targets :=			\
 	create_dsq			\
+<<<<<<< HEAD
 	dequeue				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enq_last_no_enq_fails		\
 	ddsp_bogus_dsq_fail		\
 	ddsp_vtimelocal_fail		\
@@ -175,7 +178,10 @@ auto-test-targets :=			\
 	maximal				\
 	maybe_null			\
 	minimal				\
+<<<<<<< HEAD
 	non_scx_kfunc_deny		\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	numa				\
 	allowed_cpus			\
 	peek_dsq			\

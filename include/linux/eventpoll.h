@@ -39,6 +39,7 @@ static inline void eventpoll_release(struct file *file)
 {
 
 	/*
+<<<<<<< HEAD
 	 * Fast check to skip the slow path in the common case where the
 	 * file was never attached to an epoll. Safe without file->f_lock
 	 * because every f_ep writer excludes a concurrent __fput() on
@@ -49,6 +50,14 @@ static inline void eventpoll_release(struct file *file)
 	 *   - eventpoll_release_file() runs from __fput() itself.
 	 * We are in __fput() here, so none of those can race us: a NULL
 	 * observation truly means no epoll path has work left on @file.
+=======
+	 * Fast check to avoid the get/release of the semaphore. Since
+	 * we're doing this outside the semaphore lock, it might return
+	 * false negatives, but we don't care. It'll help in 99.99% of cases
+	 * to avoid the semaphore lock. False positives simply cannot happen
+	 * because the file in on the way to be removed and nobody ( but
+	 * eventpoll ) has still a reference to this file.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	if (likely(!READ_ONCE(file->f_ep)))
 		return;

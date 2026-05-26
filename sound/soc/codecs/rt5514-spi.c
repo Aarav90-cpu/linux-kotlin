@@ -303,7 +303,11 @@ static const struct snd_soc_component_driver rt5514_spi_component = {
 	.hw_params		= rt5514_spi_hw_params,
 	.hw_free		= rt5514_spi_hw_free,
 	.pointer		= rt5514_spi_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new		= rt5514_spi_pcm_new,
+=======
+	.pcm_construct		= rt5514_spi_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.legacy_dai_naming	= 1,
 };
 

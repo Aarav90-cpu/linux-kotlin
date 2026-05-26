@@ -648,8 +648,13 @@ static int orion_spi_probe(struct platform_device *pdev)
 	struct orion_spi *spi;
 	struct resource *r;
 	unsigned long tclk_hz;
+<<<<<<< HEAD
 	struct device_node *np;
 	int status;
+=======
+	int status = 0;
+	struct device_node *np;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	host = spi_alloc_host(&pdev->dev, sizeof(*spi));
 	if (host == NULL) {
@@ -787,7 +792,11 @@ static int orion_spi_probe(struct platform_device *pdev)
 
 	pm_runtime_put_autosuspend(&pdev->dev);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out_rel_pm:
 	pm_runtime_disable(&pdev->dev);

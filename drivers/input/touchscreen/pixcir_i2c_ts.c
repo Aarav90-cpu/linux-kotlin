@@ -410,6 +410,7 @@ static int pixcir_i2c_ts_suspend(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct pixcir_i2c_ts_data *ts = i2c_get_clientdata(client);
 	struct input_dev *input = ts->input;
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&input->mutex);
@@ -429,6 +430,28 @@ static int pixcir_i2c_ts_suspend(struct device *dev)
 	}
 
 	return 0;
+=======
+	int ret = 0;
+
+	mutex_lock(&input->mutex);
+
+	if (device_may_wakeup(&client->dev)) {
+		if (!input_device_enabled(input)) {
+			ret = pixcir_start(ts);
+			if (ret) {
+				dev_err(dev, "Failed to start\n");
+				goto unlock;
+			}
+		}
+	} else if (input_device_enabled(input)) {
+		ret = pixcir_stop(ts);
+	}
+
+unlock:
+	mutex_unlock(&input->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pixcir_i2c_ts_resume(struct device *dev)
@@ -436,6 +459,7 @@ static int pixcir_i2c_ts_resume(struct device *dev)
 	struct i2c_client *client = to_i2c_client(dev);
 	struct pixcir_i2c_ts_data *ts = i2c_get_clientdata(client);
 	struct input_dev *input = ts->input;
+<<<<<<< HEAD
 	int error;
 
 	guard(mutex)(&input->mutex);
@@ -455,6 +479,28 @@ static int pixcir_i2c_ts_resume(struct device *dev)
 	}
 
 	return 0;
+=======
+	int ret = 0;
+
+	mutex_lock(&input->mutex);
+
+	if (device_may_wakeup(&client->dev)) {
+		if (!input_device_enabled(input)) {
+			ret = pixcir_stop(ts);
+			if (ret) {
+				dev_err(dev, "Failed to stop\n");
+				goto unlock;
+			}
+		}
+	} else if (input_device_enabled(input)) {
+		ret = pixcir_start(ts);
+	}
+
+unlock:
+	mutex_unlock(&input->mutex);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(pixcir_dev_pm_ops,

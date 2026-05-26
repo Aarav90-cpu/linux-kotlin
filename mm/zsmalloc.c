@@ -1727,6 +1727,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
 	if (!zspage_write_trylock(zspage)) {
 		spin_unlock(&class->lock);
 		write_unlock(&pool->lock);
+<<<<<<< HEAD
 		/*
 		 * Return -EBUSY but not -EAGAIN: the zspage's reader-lock
 		 * owner may hold the lock for an unbounded duration due to a
@@ -1740,6 +1741,9 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
 		 * migration cannot proceed".
 		 */
 		return -EBUSY;
+=======
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* We're committed, tell the world that this is a Zsmalloc page. */

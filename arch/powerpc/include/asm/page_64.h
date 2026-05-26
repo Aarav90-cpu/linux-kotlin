@@ -84,9 +84,15 @@ extern u64 ppc64_pft_size;
 
 #endif /* __ASSEMBLER__ */
 
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS \
 	(is_32bit_task() ? \
 	 VMA_DATA_DEFAULT_FLAGS32 : VMA_DATA_DEFAULT_FLAGS64)
+=======
+#define VM_DATA_DEFAULT_FLAGS \
+	(is_32bit_task() ? \
+	 VM_DATA_DEFAULT_FLAGS32 : VM_DATA_DEFAULT_FLAGS64)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * This is the default if a program doesn't have a PT_GNU_STACK
@@ -94,12 +100,21 @@ extern u64 ppc64_pft_size;
  * stack by default, so in the absence of a PT_GNU_STACK program header
  * we turn execute permission off.
  */
+<<<<<<< HEAD
 #define VMA_STACK_DEFAULT_FLAGS32	VMA_DATA_FLAGS_EXEC
 #define VMA_STACK_DEFAULT_FLAGS64	VMA_DATA_FLAGS_NON_EXEC
 
 #define VMA_STACK_DEFAULT_FLAGS \
 	(is_32bit_task() ? \
 	 VMA_STACK_DEFAULT_FLAGS32 : VMA_STACK_DEFAULT_FLAGS64)
+=======
+#define VM_STACK_DEFAULT_FLAGS32	VM_DATA_FLAGS_EXEC
+#define VM_STACK_DEFAULT_FLAGS64	VM_DATA_FLAGS_NON_EXEC
+
+#define VM_STACK_DEFAULT_FLAGS \
+	(is_32bit_task() ? \
+	 VM_STACK_DEFAULT_FLAGS32 : VM_STACK_DEFAULT_FLAGS64)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm-generic/getorder.h>
 

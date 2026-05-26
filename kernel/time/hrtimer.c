@@ -50,6 +50,7 @@
 #include "tick-internal.h"
 
 /*
+<<<<<<< HEAD
  * Constants to set the queued state of the timer (INACTIVE, ENQUEUED)
  *
  * The callback state is kept separate in the CPU base because having it in
@@ -72,6 +73,8 @@
 #define HRTIMER_STATE_ENQUEUED	true
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * The resolution of the clocks. The resolution value is returned in
  * the clock_getres() system call to give application programmers an
  * idea of the (in)accuracy of timers. Timer values are rounded up to
@@ -99,6 +102,7 @@ static ktime_t __hrtimer_cb_get_time(clockid_t clock_id);
  * to reach a base using a clockid, hrtimer_clockid_to_base()
  * is used to convert from clockid to the proper hrtimer_base_type.
  */
+<<<<<<< HEAD
 
 #define BASE_INIT(idx, cid)			\
 	[idx] = { .index = idx, .clockid = cid }
@@ -115,6 +119,45 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
 		BASE_INIT(HRTIMER_BASE_REALTIME_SOFT,	CLOCK_REALTIME),
 		BASE_INIT(HRTIMER_BASE_BOOTTIME_SOFT,	CLOCK_BOOTTIME),
 		BASE_INIT(HRTIMER_BASE_TAI_SOFT,	CLOCK_TAI),
+=======
+DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
+{
+	.lock = __RAW_SPIN_LOCK_UNLOCKED(hrtimer_bases.lock),
+	.clock_base =
+	{
+		{
+			.index = HRTIMER_BASE_MONOTONIC,
+			.clockid = CLOCK_MONOTONIC,
+		},
+		{
+			.index = HRTIMER_BASE_REALTIME,
+			.clockid = CLOCK_REALTIME,
+		},
+		{
+			.index = HRTIMER_BASE_BOOTTIME,
+			.clockid = CLOCK_BOOTTIME,
+		},
+		{
+			.index = HRTIMER_BASE_TAI,
+			.clockid = CLOCK_TAI,
+		},
+		{
+			.index = HRTIMER_BASE_MONOTONIC_SOFT,
+			.clockid = CLOCK_MONOTONIC,
+		},
+		{
+			.index = HRTIMER_BASE_REALTIME_SOFT,
+			.clockid = CLOCK_REALTIME,
+		},
+		{
+			.index = HRTIMER_BASE_BOOTTIME_SOFT,
+			.clockid = CLOCK_BOOTTIME,
+		},
+		{
+			.index = HRTIMER_BASE_TAI_SOFT,
+			.clockid = CLOCK_TAI,
+		},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	.csd = CSD_INIT(retrigger_next_event, NULL)
 };
@@ -127,6 +170,7 @@ static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
 		return likely(base->online);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGH_RES_TIMERS
 DEFINE_STATIC_KEY_FALSE(hrtimer_highres_enabled_key);
 
@@ -146,17 +190,24 @@ static inline void hrtimer_schedule_hres_work(void)
 static inline void hrtimer_schedule_hres_work(void) { }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Functions and macros which are different for UP/SMP systems are kept in a
  * single place
  */
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * We require the migration_base for lock_hrtimer_base()/switch_hrtimer_base()
  * such that hrtimer_callback_running() can unconditionally dereference
  * timer->base->cpu_base
  */
 static struct hrtimer_cpu_base migration_cpu_base = {
+<<<<<<< HEAD
 	.clock_base = {
 		[0] = {
 			.cpu_base = &migration_cpu_base,
@@ -164,6 +215,13 @@ static struct hrtimer_cpu_base migration_cpu_base = {
 							     &migration_cpu_base.lock),
 		},
 	},
+=======
+	.clock_base = { {
+		.cpu_base = &migration_cpu_base,
+		.seq      = SEQCNT_RAW_SPINLOCK_ZERO(migration_cpu_base.seq,
+						     &migration_cpu_base.lock),
+	}, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define migration_base	migration_cpu_base.clock_base[0]
@@ -180,6 +238,7 @@ static struct hrtimer_cpu_base migration_cpu_base = {
  * possible to set timer->base = &migration_base and drop the lock: the timer
  * remains locked.
  */
+<<<<<<< HEAD
 static struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
 						    unsigned long *flags)
 	__acquires(&timer->base->lock)
@@ -187,6 +246,17 @@ static struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
 	for (;;) {
 		struct hrtimer_clock_base *base = READ_ONCE(timer->base);
 
+=======
+static
+struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
+					     unsigned long *flags)
+	__acquires(&timer->base->lock)
+{
+	struct hrtimer_clock_base *base;
+
+	for (;;) {
+		base = READ_ONCE(timer->base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (likely(base != &migration_base)) {
 			raw_spin_lock_irqsave(&base->cpu_base->lock, *flags);
 			if (likely(base == timer->base))
@@ -239,7 +309,11 @@ static bool hrtimer_suitable_target(struct hrtimer *timer, struct hrtimer_clock_
 	return expires >= new_base->cpu_base->expires_next;
 }
 
+<<<<<<< HEAD
 static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base, bool pinned)
+=======
+static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base, int pinned)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!hrtimer_base_is_online(base)) {
 		int cpu = cpumask_any_and(cpu_online_mask, housekeeping_cpumask(HK_TYPE_TIMER));
@@ -267,7 +341,12 @@ static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *
  * the timer callback is currently running.
  */
 static inline struct hrtimer_clock_base *
+<<<<<<< HEAD
 switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base, bool pinned)
+=======
+switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+		    int pinned)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hrtimer_cpu_base *new_cpu_base, *this_cpu_base;
 	struct hrtimer_clock_base *new_base;
@@ -280,12 +359,22 @@ again:
 
 	if (base != new_base) {
 		/*
+<<<<<<< HEAD
 		 * We are trying to move timer to new_base. However we can't
 		 * change timer's base while it is running, so we keep it on
 		 * the same CPU. No hassle vs. reprogramming the event source
 		 * in the high resolution case. The remote CPU will take care
 		 * of this when the timer function has completed. There is no
 		 * conflict as we hold the lock until the timer is enqueued.
+=======
+		 * We are trying to move timer to new_base.
+		 * However we can't change timer's base while it is running,
+		 * so we keep it on the same CPU. No hassle vs. reprogramming
+		 * the event source in the high resolution case. The softirq
+		 * code will take care of this when the timer function has
+		 * completed. There is no conflict as we hold the lock until
+		 * the timer is enqueued.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		if (unlikely(hrtimer_callback_running(timer)))
 			return base;
@@ -295,7 +384,12 @@ again:
 		raw_spin_unlock(&base->cpu_base->lock);
 		raw_spin_lock(&new_base->cpu_base->lock);
 
+<<<<<<< HEAD
 		if (!hrtimer_suitable_target(timer, new_base, new_cpu_base, this_cpu_base)) {
+=======
+		if (!hrtimer_suitable_target(timer, new_base, new_cpu_base,
+					     this_cpu_base)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			raw_spin_unlock(&new_base->cpu_base->lock);
 			raw_spin_lock(&base->cpu_base->lock);
 			new_cpu_base = this_cpu_base;
@@ -314,13 +408,22 @@ again:
 
 #else /* CONFIG_SMP */
 
+<<<<<<< HEAD
 static inline struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
 							   unsigned long *flags)
+=======
+static inline struct hrtimer_clock_base *
+lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__acquires(&timer->base->cpu_base->lock)
 {
 	struct hrtimer_clock_base *base = timer->base;
 
 	raw_spin_lock_irqsave(&base->cpu_base->lock, *flags);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return base;
 }
 
@@ -355,7 +458,11 @@ s64 __ktime_divns(const ktime_t kt, s64 div)
 	return dclc < 0 ? -tmp : tmp;
 }
 EXPORT_SYMBOL_GPL(__ktime_divns);
+<<<<<<< HEAD
 #endif /* BITS_PER_LONG < 64 */
+=======
+#endif /* BITS_PER_LONG >= 64 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Add two ktime values and do a safety check for overflow:
@@ -437,6 +544,7 @@ static bool hrtimer_fixup_free(void *addr, enum debug_obj_state state)
 	}
 }
 
+<<<<<<< HEAD
 /* Stub timer callback for improperly used timers. */
 static enum hrtimer_restart stub_timer(struct hrtimer *unused)
 {
@@ -468,6 +576,14 @@ static const struct debug_obj_descr hrtimer_debug_descr = {
 	.fixup_activate		= hrtimer_fixup_activate,
 	.fixup_free		= hrtimer_fixup_free,
 	.fixup_assert_init	= hrtimer_fixup_assert_init,
+=======
+static const struct debug_obj_descr hrtimer_debug_descr = {
+	.name		= "hrtimer",
+	.debug_hint	= hrtimer_debug_hint,
+	.fixup_init	= hrtimer_fixup_init,
+	.fixup_activate	= hrtimer_fixup_activate,
+	.fixup_free	= hrtimer_fixup_free,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static inline void debug_hrtimer_init(struct hrtimer *timer)
@@ -480,7 +596,12 @@ static inline void debug_hrtimer_init_on_stack(struct hrtimer *timer)
 	debug_object_init_on_stack(timer, &hrtimer_debug_descr);
 }
 
+<<<<<<< HEAD
 static inline void debug_hrtimer_activate(struct hrtimer *timer, enum hrtimer_mode mode)
+=======
+static inline void debug_hrtimer_activate(struct hrtimer *timer,
+					  enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	debug_object_activate(timer, &hrtimer_debug_descr);
 }
@@ -490,11 +611,14 @@ static inline void debug_hrtimer_deactivate(struct hrtimer *timer)
 	debug_object_deactivate(timer, &hrtimer_debug_descr);
 }
 
+<<<<<<< HEAD
 static inline void debug_hrtimer_assert_init(struct hrtimer *timer)
 {
 	debug_object_assert_init(timer, &hrtimer_debug_descr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void destroy_hrtimer_on_stack(struct hrtimer *timer)
 {
 	debug_object_free(timer, &hrtimer_debug_descr);
@@ -505,9 +629,15 @@ EXPORT_SYMBOL_GPL(destroy_hrtimer_on_stack);
 
 static inline void debug_hrtimer_init(struct hrtimer *timer) { }
 static inline void debug_hrtimer_init_on_stack(struct hrtimer *timer) { }
+<<<<<<< HEAD
 static inline void debug_hrtimer_activate(struct hrtimer *timer, enum hrtimer_mode mode) { }
 static inline void debug_hrtimer_deactivate(struct hrtimer *timer) { }
 static inline void debug_hrtimer_assert_init(struct hrtimer *timer) { }
+=======
+static inline void debug_hrtimer_activate(struct hrtimer *timer,
+					  enum hrtimer_mode mode) { }
+static inline void debug_hrtimer_deactivate(struct hrtimer *timer) { }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static inline void debug_setup(struct hrtimer *timer, clockid_t clockid, enum hrtimer_mode mode)
@@ -523,6 +653,7 @@ static inline void debug_setup_on_stack(struct hrtimer *timer, clockid_t clockid
 	trace_hrtimer_setup(timer, clockid, mode);
 }
 
+<<<<<<< HEAD
 static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
 {
 	debug_hrtimer_activate(timer, mode);
@@ -586,17 +717,91 @@ static __always_inline struct hrtimer *clock_base_next_timer(struct hrtimer_cloc
 /* Find the base with the earliest expiry */
 static void hrtimer_bases_first(struct hrtimer_cpu_base *cpu_base,unsigned int active,
 				ktime_t *expires_next, struct hrtimer **next_timer)
+=======
+static inline void debug_activate(struct hrtimer *timer,
+				  enum hrtimer_mode mode)
+{
+	debug_hrtimer_activate(timer, mode);
+	trace_hrtimer_start(timer, mode);
+}
+
+static inline void debug_deactivate(struct hrtimer *timer)
+{
+	debug_hrtimer_deactivate(timer);
+	trace_hrtimer_cancel(timer);
+}
+
+static struct hrtimer_clock_base *
+__next_base(struct hrtimer_cpu_base *cpu_base, unsigned int *active)
+{
+	unsigned int idx;
+
+	if (!*active)
+		return NULL;
+
+	idx = __ffs(*active);
+	*active &= ~(1U << idx);
+
+	return &cpu_base->clock_base[idx];
+}
+
+#define for_each_active_base(base, cpu_base, active)	\
+	while ((base = __next_base((cpu_base), &(active))))
+
+static ktime_t __hrtimer_next_event_base(struct hrtimer_cpu_base *cpu_base,
+					 const struct hrtimer *exclude,
+					 unsigned int active,
+					 ktime_t expires_next)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hrtimer_clock_base *base;
 	ktime_t expires;
 
 	for_each_active_base(base, cpu_base, active) {
+<<<<<<< HEAD
 		expires = ktime_sub(base->expires_next, base->offset);
 		if (expires < *expires_next) {
 			*expires_next = expires;
 			*next_timer = clock_base_next_timer(base);
 		}
 	}
+=======
+		struct timerqueue_node *next;
+		struct hrtimer *timer;
+
+		next = timerqueue_getnext(&base->active);
+		timer = container_of(next, struct hrtimer, node);
+		if (timer == exclude) {
+			/* Get to the next timer in the queue. */
+			next = timerqueue_iterate_next(next);
+			if (!next)
+				continue;
+
+			timer = container_of(next, struct hrtimer, node);
+		}
+		expires = ktime_sub(hrtimer_get_expires(timer), base->offset);
+		if (expires < expires_next) {
+			expires_next = expires;
+
+			/* Skip cpu_base update if a timer is being excluded. */
+			if (exclude)
+				continue;
+
+			if (timer->is_soft)
+				cpu_base->softirq_next_timer = timer;
+			else
+				cpu_base->next_timer = timer;
+		}
+	}
+	/*
+	 * clock_was_set() might have changed base->offset of any of
+	 * the clock bases so the result might be negative. Fix it up
+	 * to prevent a false positive in clockevents_program_event().
+	 */
+	if (expires_next < 0)
+		expires_next = 0;
+	return expires_next;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -619,6 +824,7 @@ static void hrtimer_bases_first(struct hrtimer_cpu_base *cpu_base,unsigned int a
  *  - HRTIMER_ACTIVE_SOFT, or
  *  - HRTIMER_ACTIVE_HARD.
  */
+<<<<<<< HEAD
 static ktime_t __hrtimer_get_next_event(struct hrtimer_cpu_base *cpu_base, unsigned int active_mask)
 {
 	struct hrtimer *next_timer = NULL;
@@ -632,15 +838,40 @@ static ktime_t __hrtimer_get_next_event(struct hrtimer_cpu_base *cpu_base, unsig
 		if (active)
 			hrtimer_bases_first(cpu_base, active, &expires_next, &next_timer);
 		cpu_base->softirq_next_timer = next_timer;
+=======
+static ktime_t
+__hrtimer_get_next_event(struct hrtimer_cpu_base *cpu_base, unsigned int active_mask)
+{
+	unsigned int active;
+	struct hrtimer *next_timer = NULL;
+	ktime_t expires_next = KTIME_MAX;
+
+	if (!cpu_base->softirq_activated && (active_mask & HRTIMER_ACTIVE_SOFT)) {
+		active = cpu_base->active_bases & HRTIMER_ACTIVE_SOFT;
+		cpu_base->softirq_next_timer = NULL;
+		expires_next = __hrtimer_next_event_base(cpu_base, NULL,
+							 active, KTIME_MAX);
+
+		next_timer = cpu_base->softirq_next_timer;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (active_mask & HRTIMER_ACTIVE_HARD) {
 		active = cpu_base->active_bases & HRTIMER_ACTIVE_HARD;
+<<<<<<< HEAD
 		if (active)
 			hrtimer_bases_first(cpu_base, active, &expires_next, &next_timer);
 		cpu_base->next_timer = next_timer;
 	}
 	return max(expires_next, 0);
+=======
+		cpu_base->next_timer = next_timer;
+		expires_next = __hrtimer_next_event_base(cpu_base, NULL, active,
+							 expires_next);
+	}
+
+	return expires_next;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ktime_t hrtimer_update_next_event(struct hrtimer_cpu_base *cpu_base)
@@ -680,8 +911,13 @@ static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)
 	ktime_t *offs_boot = &base->clock_base[HRTIMER_BASE_BOOTTIME].offset;
 	ktime_t *offs_tai = &base->clock_base[HRTIMER_BASE_TAI].offset;
 
+<<<<<<< HEAD
 	ktime_t now = ktime_get_update_offsets_now(&base->clock_was_set_seq, offs_real,
 						   offs_boot, offs_tai);
+=======
+	ktime_t now = ktime_get_update_offsets_now(&base->clock_was_set_seq,
+					    offs_real, offs_boot, offs_tai);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	base->clock_base[HRTIMER_BASE_REALTIME_SOFT].offset = *offs_real;
 	base->clock_base[HRTIMER_BASE_BOOTTIME_SOFT].offset = *offs_boot;
@@ -691,9 +927,13 @@ static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)
 }
 
 /*
+<<<<<<< HEAD
  * Is the high resolution mode active in the CPU base. This cannot use the
  * static key as the CPUs are switched to high resolution mode
  * asynchronously.
+=======
+ * Is the high resolution mode active ?
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline int hrtimer_hres_active(struct hrtimer_cpu_base *cpu_base)
 {
@@ -701,6 +941,7 @@ static inline int hrtimer_hres_active(struct hrtimer_cpu_base *cpu_base)
 		cpu_base->hres_active : 0;
 }
 
+<<<<<<< HEAD
 static inline void hrtimer_rearm_event(ktime_t expires_next, bool deferred)
 {
 	trace_hrtimer_rearm(expires_next, deferred);
@@ -708,6 +949,10 @@ static inline void hrtimer_rearm_event(ktime_t expires_next, bool deferred)
 }
 
 static void __hrtimer_reprogram(struct hrtimer_cpu_base *cpu_base, struct hrtimer *next_timer,
+=======
+static void __hrtimer_reprogram(struct hrtimer_cpu_base *cpu_base,
+				struct hrtimer *next_timer,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				ktime_t expires_next)
 {
 	cpu_base->expires_next = expires_next;
@@ -732,6 +977,7 @@ static void __hrtimer_reprogram(struct hrtimer_cpu_base *cpu_base, struct hrtime
 	if (!hrtimer_hres_active(cpu_base) || cpu_base->hang_detected)
 		return;
 
+<<<<<<< HEAD
 	hrtimer_rearm_event(expires_next, false);
 }
 
@@ -739,6 +985,22 @@ static void __hrtimer_reprogram(struct hrtimer_cpu_base *cpu_base, struct hrtime
 static void hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, bool skip_equal)
 {
 	ktime_t expires_next = hrtimer_update_next_event(cpu_base);
+=======
+	tick_program_event(expires_next, 1);
+}
+
+/*
+ * Reprogram the event source with checking both queues for the
+ * next event
+ * Called with interrupts disabled and base->lock held
+ */
+static void
+hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
+{
+	ktime_t expires_next;
+
+	expires_next = hrtimer_update_next_event(cpu_base);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (skip_equal && expires_next == cpu_base->expires_next)
 		return;
@@ -749,49 +1011,95 @@ static void hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, bool skip
 /* High resolution timer related functions */
 #ifdef CONFIG_HIGH_RES_TIMERS
 
+<<<<<<< HEAD
 /* High resolution timer enabled ? */
+=======
+/*
+ * High resolution timer enabled ?
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool hrtimer_hres_enabled __read_mostly  = true;
 unsigned int hrtimer_resolution __read_mostly = LOW_RES_NSEC;
 EXPORT_SYMBOL_GPL(hrtimer_resolution);
 
+<<<<<<< HEAD
 /* Enable / Disable high resolution mode */
+=======
+/*
+ * Enable / Disable high resolution mode
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int __init setup_hrtimer_hres(char *str)
 {
 	return (kstrtobool(str, &hrtimer_hres_enabled) == 0);
 }
+<<<<<<< HEAD
 __setup("highres=", setup_hrtimer_hres);
 
 /* hrtimer_high_res_enabled - query, if the highres mode is enabled */
 static inline bool hrtimer_is_hres_enabled(void)
+=======
+
+__setup("highres=", setup_hrtimer_hres);
+
+/*
+ * hrtimer_high_res_enabled - query, if the highres mode is enabled
+ */
+static inline int hrtimer_is_hres_enabled(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return hrtimer_hres_enabled;
 }
 
+<<<<<<< HEAD
 /* Switch to high resolution mode */
+=======
+/*
+ * Switch to high resolution mode
+ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void hrtimer_switch_to_hres(void)
 {
 	struct hrtimer_cpu_base *base = this_cpu_ptr(&hrtimer_bases);
 
 	if (tick_init_highres()) {
+<<<<<<< HEAD
 		pr_warn("Could not switch to high resolution mode on CPU %u\n",	base->cpu);
 		return;
 	}
 	base->hres_active = true;
+=======
+		pr_warn("Could not switch to high resolution mode on CPU %u\n",
+			base->cpu);
+		return;
+	}
+	base->hres_active = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hrtimer_resolution = HIGH_RES_NSEC;
 
 	tick_setup_sched_timer(true);
 	/* "Retrigger" the interrupt to get things going */
 	retrigger_next_event(NULL);
+<<<<<<< HEAD
 	hrtimer_schedule_hres_work();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #else
 
+<<<<<<< HEAD
 static inline bool hrtimer_is_hres_enabled(void) { return 0; }
 static inline void hrtimer_switch_to_hres(void) { }
 
 #endif /* CONFIG_HIGH_RES_TIMERS */
 
+=======
+static inline int hrtimer_is_hres_enabled(void) { return 0; }
+static inline void hrtimer_switch_to_hres(void) { }
+
+#endif /* CONFIG_HIGH_RES_TIMERS */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Retrigger next event is called after clock was set with interrupts
  * disabled through an SMP function call or directly from low level
@@ -826,12 +1134,22 @@ static void retrigger_next_event(void *arg)
 	 * In periodic low resolution mode, the next softirq expiration
 	 * must also be updated.
 	 */
+<<<<<<< HEAD
 	guard(raw_spinlock)(&base->lock);
 	hrtimer_update_base(base);
 	if (hrtimer_hres_active(base))
 		hrtimer_force_reprogram(base, /* skip_equal */ false);
 	else
 		hrtimer_update_next_event(base);
+=======
+	raw_spin_lock(&base->lock);
+	hrtimer_update_base(base);
+	if (hrtimer_hres_active(base))
+		hrtimer_force_reprogram(base, 0);
+	else
+		hrtimer_update_next_event(base);
+	raw_spin_unlock(&base->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -845,11 +1163,18 @@ static void hrtimer_reprogram(struct hrtimer *timer, bool reprogram)
 {
 	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
 	struct hrtimer_clock_base *base = timer->base;
+<<<<<<< HEAD
 	ktime_t expires = hrtimer_get_expires(timer);
 
 	WARN_ON_ONCE(expires < 0);
 
 	expires = ktime_sub(expires, base->offset);
+=======
+	ktime_t expires = ktime_sub(hrtimer_get_expires(timer), base->offset);
+
+	WARN_ON_ONCE(hrtimer_get_expires(timer) < 0);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * CLOCK_REALTIME timer might be requested with an absolute
 	 * expiry time which is less than base->offset. Set it to 0.
@@ -876,7 +1201,12 @@ static void hrtimer_reprogram(struct hrtimer *timer, bool reprogram)
 		timer_cpu_base->softirq_next_timer = timer;
 		timer_cpu_base->softirq_expires_next = expires;
 
+<<<<<<< HEAD
 		if (!ktime_before(expires, timer_cpu_base->expires_next) || !reprogram)
+=======
+		if (!ktime_before(expires, timer_cpu_base->expires_next) ||
+		    !reprogram)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 	}
 
@@ -890,8 +1220,16 @@ static void hrtimer_reprogram(struct hrtimer *timer, bool reprogram)
 	if (expires >= cpu_base->expires_next)
 		return;
 
+<<<<<<< HEAD
 	/* If a deferred rearm is pending skip reprogramming the device */
 	if (cpu_base->deferred_rearm)
+=======
+	/*
+	 * If the hrtimer interrupt is running, then it will reevaluate the
+	 * clock bases and reprogram the clock event device.
+	 */
+	if (cpu_base->in_hrtirq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	cpu_base->next_timer = timer;
@@ -899,7 +1237,12 @@ static void hrtimer_reprogram(struct hrtimer *timer, bool reprogram)
 	__hrtimer_reprogram(cpu_base, timer, expires);
 }
 
+<<<<<<< HEAD
 static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base, unsigned int active)
+=======
+static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base,
+			     unsigned int active)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hrtimer_clock_base *base;
 	unsigned int seq;
@@ -925,11 +1268,21 @@ static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base, unsigned int act
 	if (seq == cpu_base->clock_was_set_seq)
 		return false;
 
+<<<<<<< HEAD
 	/* If a deferred rearm is pending the remote CPU will take care of it */
 	if (cpu_base->deferred_rearm) {
 		cpu_base->deferred_needs_update = true;
 		return false;
 	}
+=======
+	/*
+	 * If the remote CPU is currently handling an hrtimer interrupt, it
+	 * will reevaluate the first expiring timer of all clock bases
+	 * before reprogramming. Nothing to do here.
+	 */
+	if (cpu_base->in_hrtirq)
+		return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Walk the affected clock bases and check whether the first expiring
@@ -940,9 +1293,15 @@ static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base, unsigned int act
 	active &= cpu_base->active_bases;
 
 	for_each_active_base(base, cpu_base, active) {
+<<<<<<< HEAD
 		struct timerqueue_linked_node *next;
 
 		next = timerqueue_linked_first(&base->active);
+=======
+		struct timerqueue_node *next;
+
+		next = timerqueue_getnext(&base->active);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		expires = ktime_sub(next->expires, base->offset);
 		if (expires < cpu_base->expires_next)
 			return true;
@@ -974,9 +1333,17 @@ static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base, unsigned int act
  */
 void clock_was_set(unsigned int bases)
 {
+<<<<<<< HEAD
 	cpumask_var_t mask;
 
 	if (!hrtimer_highres_enabled() && !tick_nohz_is_active())
+=======
+	struct hrtimer_cpu_base *cpu_base = raw_cpu_ptr(&hrtimer_bases);
+	cpumask_var_t mask;
+	int cpu;
+
+	if (!hrtimer_hres_active(cpu_base) && !tick_nohz_is_active())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_timerfd;
 
 	if (!zalloc_cpumask_var(&mask, GFP_KERNEL)) {
@@ -985,6 +1352,7 @@ void clock_was_set(unsigned int bases)
 	}
 
 	/* Avoid interrupting CPUs if possible */
+<<<<<<< HEAD
 	scoped_guard(cpus_read_lock) {
 		int cpu;
 
@@ -998,6 +1366,25 @@ void clock_was_set(unsigned int bases)
 		scoped_guard(preempt)
 			smp_call_function_many(mask, retrigger_next_event, NULL, 1);
 	}
+=======
+	cpus_read_lock();
+	for_each_online_cpu(cpu) {
+		unsigned long flags;
+
+		cpu_base = &per_cpu(hrtimer_bases, cpu);
+		raw_spin_lock_irqsave(&cpu_base->lock, flags);
+
+		if (update_needs_ipi(cpu_base, bases))
+			cpumask_set_cpu(cpu, mask);
+
+		raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+	}
+
+	preempt_disable();
+	smp_call_function_many(mask, retrigger_next_event, NULL, 1);
+	preempt_enable();
+	cpus_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_cpumask_var(mask);
 
 out_timerfd:
@@ -1032,8 +1419,16 @@ void hrtimers_resume_local(void)
 	retrigger_next_event(NULL);
 }
 
+<<<<<<< HEAD
 /* Counterpart to lock_hrtimer_base above */
 static inline void unlock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+=======
+/*
+ * Counterpart to lock_hrtimer_base above:
+ */
+static inline
+void unlock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__releases(&timer->base->cpu_base->lock)
 {
 	raw_spin_unlock_irqrestore(&timer->base->cpu_base->lock, *flags);
@@ -1050,7 +1445,11 @@ static inline void unlock_hrtimer_base(const struct hrtimer *timer, unsigned lon
  * .. note::
  *  This only updates the timer expiry value and does not requeue the timer.
  *
+<<<<<<< HEAD
  * There is also a variant of this function: hrtimer_forward_now().
+=======
+ * There is also a variant of the function hrtimer_forward_now().
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Context: Can be safely called from the callback function of @timer. If called
  *          from other contexts @timer must neither be enqueued nor running the
@@ -1060,15 +1459,24 @@ static inline void unlock_hrtimer_base(const struct hrtimer *timer, unsigned lon
  */
 u64 hrtimer_forward(struct hrtimer *timer, ktime_t now, ktime_t interval)
 {
+<<<<<<< HEAD
 	ktime_t delta;
 	u64 orun = 1;
+=======
+	u64 orun = 1;
+	ktime_t delta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	delta = ktime_sub(now, hrtimer_get_expires(timer));
 
 	if (delta < 0)
 		return 0;
 
+<<<<<<< HEAD
 	if (WARN_ON(timer->is_queued))
+=======
+	if (WARN_ON(timer->state & HRTIMER_STATE_ENQUEUED))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	if (interval < hrtimer_resolution)
@@ -1097,21 +1505,32 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
  * enqueue_hrtimer - internal function to (re)start a timer
  *
  * The timer is inserted in expiry order. Insertion into the
+<<<<<<< HEAD
  * red black tree is O(log(n)).
+=======
+ * red black tree is O(log(n)). Must hold the base lock.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Returns true when the new timer is the leftmost timer in the tree.
  */
 static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+<<<<<<< HEAD
 			    enum hrtimer_mode mode, bool was_armed)
 {
 	lockdep_assert_held(&base->cpu_base->lock);
 
 	debug_activate(timer, mode, was_armed);
+=======
+			    enum hrtimer_mode mode)
+{
+	debug_activate(timer, mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	WARN_ON_ONCE(!base->cpu_base->online);
 
 	base->cpu_base->active_bases |= 1 << base->index;
 
 	/* Pairs with the lockless read in hrtimer_is_queued() */
+<<<<<<< HEAD
 	WRITE_ONCE(timer->is_queued, HRTIMER_STATE_ENQUEUED);
 
 	if (!timerqueue_linked_add(&base->active, &timer->node))
@@ -1126,16 +1545,27 @@ static inline void base_update_next_timer(struct hrtimer_clock_base *base)
 	struct timerqueue_linked_node *next = timerqueue_linked_first(&base->active);
 
 	base->expires_next = next ? next->expires : KTIME_MAX;
+=======
+	WRITE_ONCE(timer->state, HRTIMER_STATE_ENQUEUED);
+
+	return timerqueue_add(&base->active, &timer->node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
  * __remove_hrtimer - internal function to remove a timer
  *
+<<<<<<< HEAD
+=======
+ * Caller must hold the base lock.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * High resolution timer mode reprograms the clock event device when the
  * timer is the one which expires next. The caller can disable this by setting
  * reprogram to zero. This is useful, when the context does a reprogramming
  * anyway (e.g. timer interrupt)
  */
+<<<<<<< HEAD
 static void __remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
 			     bool newstate, bool reprogram)
 {
@@ -1189,6 +1619,47 @@ static inline bool remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_ba
 
 		debug_hrtimer_deactivate(timer);
 
+=======
+static void __remove_hrtimer(struct hrtimer *timer,
+			     struct hrtimer_clock_base *base,
+			     u8 newstate, int reprogram)
+{
+	struct hrtimer_cpu_base *cpu_base = base->cpu_base;
+	u8 state = timer->state;
+
+	/* Pairs with the lockless read in hrtimer_is_queued() */
+	WRITE_ONCE(timer->state, newstate);
+	if (!(state & HRTIMER_STATE_ENQUEUED))
+		return;
+
+	if (!timerqueue_del(&base->active, &timer->node))
+		cpu_base->active_bases &= ~(1 << base->index);
+
+	/*
+	 * Note: If reprogram is false we do not update
+	 * cpu_base->next_timer. This happens when we remove the first
+	 * timer on a remote cpu. No harm as we never dereference
+	 * cpu_base->next_timer. So the worst thing what can happen is
+	 * an superfluous call to hrtimer_force_reprogram() on the
+	 * remote cpu later on if the same timer gets enqueued again.
+	 */
+	if (reprogram && timer == cpu_base->next_timer)
+		hrtimer_force_reprogram(cpu_base, 1);
+}
+
+/*
+ * remove hrtimer, called with base lock held
+ */
+static inline int
+remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+	       bool restart, bool keep_local)
+{
+	u8 state = timer->state;
+
+	if (state & HRTIMER_STATE_ENQUEUED) {
+		bool reprogram;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Remove the timer and force reprogramming when high
 		 * resolution mode is active and the timer is on the current
@@ -1197,6 +1668,7 @@ static inline bool remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_ba
 		 * reprogramming happens in the interrupt handler. This is a
 		 * rare case and less expensive than a smp call.
 		 */
+<<<<<<< HEAD
 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
 
 		__remove_hrtimer(timer, base, newstate, reprogram);
@@ -1272,6 +1744,26 @@ remove_and_enqueue_same_base(struct hrtimer *timer, struct hrtimer_clock_base *b
 		base_update_next_timer(base);
 
 	return false;
+=======
+		debug_deactivate(timer);
+		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
+
+		/*
+		 * If the timer is not restarted then reprogramming is
+		 * required if the timer is local. If it is local and about
+		 * to be restarted, avoid programming it twice (on removal
+		 * and a moment later when it's requeued).
+		 */
+		if (!restart)
+			state = HRTIMER_STATE_INACTIVE;
+		else
+			reprogram &= !keep_local;
+
+		__remove_hrtimer(timer, base, state, reprogram);
+		return 1;
+	}
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline ktime_t hrtimer_update_lowres(struct hrtimer *timer, ktime_t tim,
@@ -1290,6 +1782,7 @@ static inline ktime_t hrtimer_update_lowres(struct hrtimer *timer, ktime_t tim,
 	return tim;
 }
 
+<<<<<<< HEAD
 static void hrtimer_update_softirq_timer(struct hrtimer_cpu_base *cpu_base, bool reprogram)
 {
 	ktime_t expires = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
@@ -1297,18 +1790,39 @@ static void hrtimer_update_softirq_timer(struct hrtimer_cpu_base *cpu_base, bool
 	/*
 	 * Reprogramming needs to be triggered, even if the next soft
 	 * hrtimer expires at the same time as the next hard
+=======
+static void
+hrtimer_update_softirq_timer(struct hrtimer_cpu_base *cpu_base, bool reprogram)
+{
+	ktime_t expires;
+
+	/*
+	 * Find the next SOFT expiration.
+	 */
+	expires = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
+
+	/*
+	 * reprogramming needs to be triggered, even if the next soft
+	 * hrtimer expires at the same time than the next hard
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * hrtimer. cpu_base->softirq_expires_next needs to be updated!
 	 */
 	if (expires == KTIME_MAX)
 		return;
 
 	/*
+<<<<<<< HEAD
 	 * cpu_base->next_timer is recomputed by __hrtimer_get_next_event()
 	 * cpu_base->expires_next is only set by hrtimer_reprogram()
+=======
+	 * cpu_base->*next_timer is recomputed by __hrtimer_get_next_event()
+	 * cpu_base->*expires_next is only set by hrtimer_reprogram()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	hrtimer_reprogram(cpu_base->softirq_next_timer, reprogram);
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
 static __always_inline bool hrtimer_prefer_local(bool is_local, bool is_first, bool is_pinned)
 {
@@ -1377,6 +1891,32 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
 		tim = ktime_add_safe(tim, __hrtimer_cb_get_time(base->clockid));
 	/* Compensate for low resolution granularity */
 	tim = hrtimer_update_lowres(timer, tim, mode);
+=======
+static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+				    u64 delta_ns, const enum hrtimer_mode mode,
+				    struct hrtimer_clock_base *base)
+{
+	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
+	struct hrtimer_clock_base *new_base;
+	bool force_local, first;
+
+	/*
+	 * If the timer is on the local cpu base and is the first expiring
+	 * timer then this might end up reprogramming the hardware twice
+	 * (on removal and on enqueue). To avoid that by prevent the
+	 * reprogram on removal, keep the timer local to the current CPU
+	 * and enforce reprogramming after it is queued no matter whether
+	 * it is the new first expiring timer again or not.
+	 */
+	force_local = base->cpu_base == this_cpu_base;
+	force_local &= base->cpu_base->next_timer == timer;
+
+	/*
+	 * Don't force local queuing if this enqueue happens on a unplugged
+	 * CPU after hrtimer_cpu_dying() has been invoked.
+	 */
+	force_local &= this_cpu_base->online;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Remove an active timer from the queue. In case it is not queued
@@ -1388,6 +1928,7 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
 	 * reprogramming later if it was the first expiring timer.  This
 	 * avoids programming the underlying clock event twice (once at
 	 * removal and once after enqueue).
+<<<<<<< HEAD
 	 *
 	 * @keep_base is also true if the timer callback is running on a
 	 * remote CPU and for local pinned timers.
@@ -1423,6 +1964,34 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
 		 * callbacks.
 		 */
 		if (likely(hrtimer_base_is_online(this_cpu_base)))
+=======
+	 */
+	remove_hrtimer(timer, base, true, force_local);
+
+	if (mode & HRTIMER_MODE_REL)
+		tim = ktime_add_safe(tim, __hrtimer_cb_get_time(base->clockid));
+
+	tim = hrtimer_update_lowres(timer, tim, mode);
+
+	hrtimer_set_expires_range_ns(timer, tim, delta_ns);
+
+	/* Switch the timer base, if necessary: */
+	if (!force_local) {
+		new_base = switch_hrtimer_base(timer, base,
+					       mode & HRTIMER_MODE_PINNED);
+	} else {
+		new_base = base;
+	}
+
+	first = enqueue_hrtimer(timer, new_base, mode);
+	if (!force_local) {
+		/*
+		 * If the current CPU base is online, then the timer is
+		 * never queued on a remote CPU if it would be the first
+		 * expiring timer there.
+		 */
+		if (hrtimer_base_is_online(this_cpu_base))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return first;
 
 		/*
@@ -1430,6 +1999,7 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
 		 * already offline. If the timer is the first to expire,
 		 * kick the remote CPU to reprogram the clock event.
 		 */
+<<<<<<< HEAD
 		if (first)
 			smp_call_function_single_async(cpu_base->cpu, &cpu_base->csd);
 		return false;
@@ -1457,6 +2027,23 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
 	 */
 	hrtimer_force_reprogram(cpu_base, /* skip_equal */ true);
 	return false;
+=======
+		if (first) {
+			struct hrtimer_cpu_base *new_cpu_base = new_base->cpu_base;
+
+			smp_call_function_single_async(new_cpu_base->cpu, &new_cpu_base->csd);
+		}
+		return 0;
+	}
+
+	/*
+	 * Timer was forced to stay on the current CPU to avoid
+	 * reprogramming on removal and enqueue. Force reprogram the
+	 * hardware by evaluating the new first expiring timer.
+	 */
+	hrtimer_force_reprogram(new_base->cpu_base, 1);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1468,14 +2055,22 @@ static bool __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 del
  *		relative (HRTIMER_MODE_REL), and pinned (HRTIMER_MODE_PINNED);
  *		softirq based mode is considered for debug purpose only!
  */
+<<<<<<< HEAD
 void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim, u64 delta_ns,
 			    const enum hrtimer_mode mode)
+=======
+void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+			    u64 delta_ns, const enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hrtimer_clock_base *base;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	debug_hrtimer_assert_init(timer);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
@@ -1523,11 +2118,16 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
 
 	base = lock_hrtimer_base(timer, &flags);
 
+<<<<<<< HEAD
 	if (!hrtimer_callback_running(timer)) {
 		ret = remove_hrtimer(timer, base, HRTIMER_STATE_INACTIVE);
 		if (ret)
 			trace_hrtimer_cancel(timer);
 	}
+=======
+	if (!hrtimer_callback_running(timer))
+		ret = remove_hrtimer(timer, base, false, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	unlock_hrtimer_base(timer, &flags);
 
@@ -1561,7 +2161,12 @@ static void hrtimer_cpu_base_unlock_expiry(struct hrtimer_cpu_base *base)
  * the timer callback to finish. Drop expiry_lock and reacquire it. That
  * allows the waiter to acquire the lock and make progress.
  */
+<<<<<<< HEAD
 static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base, unsigned long flags)
+=======
+static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+				      unsigned long flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (atomic_read(&cpu_base->timer_waiters)) {
 		raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
@@ -1626,10 +2231,21 @@ void hrtimer_cancel_wait_running(const struct hrtimer *timer)
 	spin_unlock_bh(&base->cpu_base->softirq_expiry_lock);
 }
 #else
+<<<<<<< HEAD
 static inline void hrtimer_cpu_base_init_expiry_lock(struct hrtimer_cpu_base *base) { }
 static inline void hrtimer_cpu_base_lock_expiry(struct hrtimer_cpu_base *base) { }
 static inline void hrtimer_cpu_base_unlock_expiry(struct hrtimer_cpu_base *base) { }
 static inline void hrtimer_sync_wait_running(struct hrtimer_cpu_base *base, unsigned long fl) { }
+=======
+static inline void
+hrtimer_cpu_base_init_expiry_lock(struct hrtimer_cpu_base *base) { }
+static inline void
+hrtimer_cpu_base_lock_expiry(struct hrtimer_cpu_base *base) { }
+static inline void
+hrtimer_cpu_base_unlock_expiry(struct hrtimer_cpu_base *base) { }
+static inline void hrtimer_sync_wait_running(struct hrtimer_cpu_base *base,
+					     unsigned long flags) { }
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /**
@@ -1685,11 +2301,23 @@ u64 hrtimer_get_next_event(void)
 {
 	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
 	u64 expires = KTIME_MAX;
+<<<<<<< HEAD
 
 	guard(raw_spinlock_irqsave)(&cpu_base->lock);
 	if (!hrtimer_hres_active(cpu_base))
 		expires = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
 
+=======
+	unsigned long flags;
+
+	raw_spin_lock_irqsave(&cpu_base->lock, flags);
+
+	if (!hrtimer_hres_active(cpu_base))
+		expires = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
+
+	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return expires;
 }
 
@@ -1704,6 +2332,7 @@ u64 hrtimer_next_event_without(const struct hrtimer *exclude)
 {
 	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
 	u64 expires = KTIME_MAX;
+<<<<<<< HEAD
 	unsigned int active;
 
 	guard(raw_spinlock_irqsave)(&cpu_base->lock);
@@ -1718,6 +2347,28 @@ u64 hrtimer_next_event_without(const struct hrtimer *exclude)
 	if (!active)
 		return expires;
 	return hrtimer_bases_next_event_without(cpu_base, exclude, active, expires);
+=======
+	unsigned long flags;
+
+	raw_spin_lock_irqsave(&cpu_base->lock, flags);
+
+	if (hrtimer_hres_active(cpu_base)) {
+		unsigned int active;
+
+		if (!cpu_base->softirq_activated) {
+			active = cpu_base->active_bases & HRTIMER_ACTIVE_SOFT;
+			expires = __hrtimer_next_event_base(cpu_base, exclude,
+							    active, KTIME_MAX);
+		}
+		active = cpu_base->active_bases & HRTIMER_ACTIVE_HARD;
+		expires = __hrtimer_next_event_base(cpu_base, exclude, active,
+						    expires);
+	}
+
+	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+
+	return expires;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
@@ -1761,7 +2412,12 @@ ktime_t hrtimer_cb_get_time(const struct hrtimer *timer)
 }
 EXPORT_SYMBOL_GPL(hrtimer_cb_get_time);
 
+<<<<<<< HEAD
 static void __hrtimer_setup(struct hrtimer *timer, enum hrtimer_restart (*fn)(struct hrtimer *),
+=======
+static void __hrtimer_setup(struct hrtimer *timer,
+			    enum hrtimer_restart (*function)(struct hrtimer *),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			    clockid_t clock_id, enum hrtimer_mode mode)
 {
 	bool softtimer = !!(mode & HRTIMER_MODE_SOFT);
@@ -1793,6 +2449,7 @@ static void __hrtimer_setup(struct hrtimer *timer, enum hrtimer_restart (*fn)(st
 	base += hrtimer_clockid_to_base(clock_id);
 	timer->is_soft = softtimer;
 	timer->is_hard = !!(mode & HRTIMER_MODE_HARD);
+<<<<<<< HEAD
 	timer->is_lazy = !!(mode & HRTIMER_MODE_LAZY_REARM);
 	timer->base = &cpu_base->clock_base[base];
 	timerqueue_linked_init(&timer->node);
@@ -1801,6 +2458,15 @@ static void __hrtimer_setup(struct hrtimer *timer, enum hrtimer_restart (*fn)(st
 		ACCESS_PRIVATE(timer, function) = hrtimer_dummy_timeout;
 	else
 		ACCESS_PRIVATE(timer, function) = fn;
+=======
+	timer->base = &cpu_base->clock_base[base];
+	timerqueue_init(&timer->node);
+
+	if (WARN_ON_ONCE(!function))
+		ACCESS_PRIVATE(timer, function) = hrtimer_dummy_timeout;
+	else
+		ACCESS_PRIVATE(timer, function) = function;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1859,10 +2525,19 @@ bool hrtimer_active(const struct hrtimer *timer)
 		base = READ_ONCE(timer->base);
 		seq = raw_read_seqcount_begin(&base->seq);
 
+<<<<<<< HEAD
 		if (timer->is_queued || base->running == timer)
 			return true;
 
 	} while (read_seqcount_retry(&base->seq, seq) || base != READ_ONCE(timer->base));
+=======
+		if (timer->state != HRTIMER_STATE_INACTIVE ||
+		    base->running == timer)
+			return true;
+
+	} while (read_seqcount_retry(&base->seq, seq) ||
+		 base != READ_ONCE(timer->base));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return false;
 }
@@ -1876,7 +2551,11 @@ EXPORT_SYMBOL_GPL(hrtimer_active);
  *  - callback:	the timer is being ran
  *  - post:	the timer is inactive or (re)queued
  *
+<<<<<<< HEAD
  * On the read side we ensure we observe timer->is_queued and cpu_base->running
+=======
+ * On the read side we ensure we observe timer->state and cpu_base->running
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * from the same section, if anything changed while we looked at it, we retry.
  * This includes timer->base changing because sequence numbers alone are
  * insufficient for that.
@@ -1885,9 +2564,17 @@ EXPORT_SYMBOL_GPL(hrtimer_active);
  * a false negative if the read side got smeared over multiple consecutive
  * __run_hrtimer() invocations.
  */
+<<<<<<< HEAD
 static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_clock_base *base,
 			  struct hrtimer *timer, ktime_t now, unsigned long flags)
 	__must_hold(&cpu_base->lock)
+=======
+
+static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+			  struct hrtimer_clock_base *base,
+			  struct hrtimer *timer, ktime_t *now,
+			  unsigned long flags) __must_hold(&cpu_base->lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	enum hrtimer_restart (*fn)(struct hrtimer *);
 	bool expires_in_hardirq;
@@ -1899,6 +2586,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_cloc
 	base->running = timer;
 
 	/*
+<<<<<<< HEAD
 	 * Separate the ->running assignment from the ->is_queued assignment.
 	 *
 	 * As with a regular write barrier, this ensures the read side in
@@ -1908,6 +2596,17 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_cloc
 	raw_write_seqcount_barrier(&base->seq);
 
 	__remove_hrtimer(timer, base, HRTIMER_STATE_INACTIVE, false);
+=======
+	 * Separate the ->running assignment from the ->state assignment.
+	 *
+	 * As with a regular write barrier, this ensures the read side in
+	 * hrtimer_active() cannot observe base->running == NULL &&
+	 * timer->state == INACTIVE.
+	 */
+	raw_write_seqcount_barrier(&base->seq);
+
+	__remove_hrtimer(timer, base, HRTIMER_STATE_INACTIVE, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fn = ACCESS_PRIVATE(timer, function);
 
 	/*
@@ -1942,6 +2641,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_cloc
 	 * hrtimer_start_range_ns() can have popped in and enqueued the timer
 	 * for us already.
 	 */
+<<<<<<< HEAD
 	if (restart == HRTIMER_RESTART && !timer->is_queued)
 		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
 
@@ -1951,6 +2651,18 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_cloc
 	 * As with a regular write barrier, this ensures the read side in
 	 * hrtimer_active() cannot observe base->running.timer == NULL &&
 	 * timer->is_queued == INACTIVE.
+=======
+	if (restart != HRTIMER_NORESTART &&
+	    !(timer->state & HRTIMER_STATE_ENQUEUED))
+		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
+
+	/*
+	 * Separate the ->running assignment from the ->state assignment.
+	 *
+	 * As with a regular write barrier, this ensures the read side in
+	 * hrtimer_active() cannot observe base->running.timer == NULL &&
+	 * timer->state == INACTIVE.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	raw_write_seqcount_barrier(&base->seq);
 
@@ -1958,6 +2670,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base, struct hrtimer_cloc
 	base->running = NULL;
 }
 
+<<<<<<< HEAD
 static __always_inline struct hrtimer *clock_base_next_timer_safe(struct hrtimer_clock_base *base)
 {
 	struct timerqueue_linked_node *next = timerqueue_linked_first(&base->active);
@@ -1976,6 +2689,25 @@ static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,
 		struct hrtimer *timer;
 
 		while ((timer = clock_base_next_timer(base))) {
+=======
+static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,
+				 unsigned long flags, unsigned int active_mask)
+{
+	struct hrtimer_clock_base *base;
+	unsigned int active = cpu_base->active_bases & active_mask;
+
+	for_each_active_base(base, cpu_base, active) {
+		struct timerqueue_node *node;
+		ktime_t basenow;
+
+		basenow = ktime_add(now, base->offset);
+
+		while ((node = timerqueue_getnext(&base->active))) {
+			struct hrtimer *timer;
+
+			timer = container_of(node, struct hrtimer, node);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/*
 			 * The immediate goal for using the softexpires is
 			 * minimizing wakeups, not running timers at the
@@ -1991,7 +2723,11 @@ static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,
 			if (basenow < hrtimer_get_softexpires(timer))
 				break;
 
+<<<<<<< HEAD
 			__run_hrtimer(cpu_base, base, timer, basenow, flags);
+=======
+			__run_hrtimer(cpu_base, base, timer, &basenow, flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (active_mask == HRTIMER_ACTIVE_SOFT)
 				hrtimer_sync_wait_running(cpu_base, flags);
 		}
@@ -2010,7 +2746,11 @@ static __latent_entropy void hrtimer_run_softirq(void)
 	now = hrtimer_update_base(cpu_base);
 	__hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_SOFT);
 
+<<<<<<< HEAD
 	cpu_base->softirq_activated = false;
+=======
+	cpu_base->softirq_activated = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hrtimer_update_softirq_timer(cpu_base, true);
 
 	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
@@ -2020,6 +2760,7 @@ static __latent_entropy void hrtimer_run_softirq(void)
 #ifdef CONFIG_HIGH_RES_TIMERS
 
 /*
+<<<<<<< HEAD
  * Very similar to hrtimer_force_reprogram(), except it deals with
  * deferred_rearm and hang_detected.
  */
@@ -2077,6 +2818,8 @@ hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t expires_next)
 #endif  /* !CONFIG_HRTIMER_REARM_DEFERRED */
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * High resolution timer interrupt
  * Called with interrupts disabled
  */
@@ -2095,29 +2838,63 @@ void hrtimer_interrupt(struct clock_event_device *dev)
 	raw_spin_lock_irqsave(&cpu_base->lock, flags);
 	entry_time = now = hrtimer_update_base(cpu_base);
 retry:
+<<<<<<< HEAD
 	cpu_base->deferred_rearm = true;
 	/*
 	 * Set expires_next to KTIME_MAX, which prevents that remote CPUs queue
 	 * timers while __hrtimer_run_queues() is expiring the clock bases.
 	 * Timers which are re/enqueued on the local CPU are not affected by
 	 * this.
+=======
+	cpu_base->in_hrtirq = 1;
+	/*
+	 * We set expires_next to KTIME_MAX here with cpu_base->lock
+	 * held to prevent that a timer is enqueued in our queue via
+	 * the migration code. This does not affect enqueueing of
+	 * timers which run their callback and need to be requeued on
+	 * this CPU.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	cpu_base->expires_next = KTIME_MAX;
 
 	if (!ktime_before(now, cpu_base->softirq_expires_next)) {
 		cpu_base->softirq_expires_next = KTIME_MAX;
+<<<<<<< HEAD
 		cpu_base->softirq_activated = true;
+=======
+		cpu_base->softirq_activated = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raise_timer_softirq(HRTIMER_SOFTIRQ);
 	}
 
 	__hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);
 
+<<<<<<< HEAD
+=======
+	/* Reevaluate the clock bases for the [soft] next expiry */
+	expires_next = hrtimer_update_next_event(cpu_base);
+	/*
+	 * Store the new expiry value so the migration code can verify
+	 * against it.
+	 */
+	cpu_base->expires_next = expires_next;
+	cpu_base->in_hrtirq = 0;
+	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+
+	/* Reprogramming necessary ? */
+	if (!tick_program_event(expires_next, 0)) {
+		cpu_base->hang_detected = 0;
+		return;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The next timer was already expired due to:
 	 * - tracing
 	 * - long lasting callbacks
 	 * - being scheduled away when running in a VM
 	 *
+<<<<<<< HEAD
 	 * We need to prevent that we loop forever in the hrtiner interrupt
 	 * routine. We give it 3 attempts to avoid overreacting on some
 	 * spurious event.
@@ -2139,6 +2916,44 @@ retry:
 	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
 }
 
+=======
+	 * We need to prevent that we loop forever in the hrtimer
+	 * interrupt routine. We give it 3 attempts to avoid
+	 * overreacting on some spurious event.
+	 *
+	 * Acquire base lock for updating the offsets and retrieving
+	 * the current time.
+	 */
+	raw_spin_lock_irqsave(&cpu_base->lock, flags);
+	now = hrtimer_update_base(cpu_base);
+	cpu_base->nr_retries++;
+	if (++retries < 3)
+		goto retry;
+	/*
+	 * Give the system a chance to do something else than looping
+	 * here. We stored the entry time, so we know exactly how long
+	 * we spent here. We schedule the next event this amount of
+	 * time away.
+	 */
+	cpu_base->nr_hangs++;
+	cpu_base->hang_detected = 1;
+	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
+
+	delta = ktime_sub(now, entry_time);
+	if ((unsigned int)delta > cpu_base->max_hang_time)
+		cpu_base->max_hang_time = (unsigned int) delta;
+	/*
+	 * Limit it to a sensible value as we enforce a longer
+	 * delay. Give the CPU at least 100ms to catch up.
+	 */
+	if (delta > 100 * NSEC_PER_MSEC)
+		expires_next = ktime_add_ns(now, 100 * NSEC_PER_MSEC);
+	else
+		expires_next = ktime_add(now, delta);
+	tick_program_event(expires_next, 1);
+	pr_warn_once("hrtimer: interrupt took %llu ns\n", ktime_to_ns(delta));
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* !CONFIG_HIGH_RES_TIMERS */
 
 /*
@@ -2170,7 +2985,11 @@ void hrtimer_run_queues(void)
 
 	if (!ktime_before(now, cpu_base->softirq_expires_next)) {
 		cpu_base->softirq_expires_next = KTIME_MAX;
+<<<<<<< HEAD
 		cpu_base->softirq_activated = true;
+=======
+		cpu_base->softirq_activated = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		raise_timer_softirq(HRTIMER_SOFTIRQ);
 	}
 
@@ -2183,7 +3002,12 @@ void hrtimer_run_queues(void)
  */
 static enum hrtimer_restart hrtimer_wakeup(struct hrtimer *timer)
 {
+<<<<<<< HEAD
 	struct hrtimer_sleeper *t = container_of(timer, struct hrtimer_sleeper, timer);
+=======
+	struct hrtimer_sleeper *t =
+		container_of(timer, struct hrtimer_sleeper, timer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct task_struct *task = t->task;
 
 	t->task = NULL;
@@ -2201,7 +3025,12 @@ static enum hrtimer_restart hrtimer_wakeup(struct hrtimer *timer)
  * Wrapper around hrtimer_start_expires() for hrtimer_sleeper based timers
  * to allow PREEMPT_RT to tweak the delivery mode (soft/hardirq context)
  */
+<<<<<<< HEAD
 void hrtimer_sleeper_start_expires(struct hrtimer_sleeper *sl, enum hrtimer_mode mode)
+=======
+void hrtimer_sleeper_start_expires(struct hrtimer_sleeper *sl,
+				   enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * Make the enqueue delivery mode check work on RT. If the sleeper
@@ -2217,8 +3046,13 @@ void hrtimer_sleeper_start_expires(struct hrtimer_sleeper *sl, enum hrtimer_mode
 }
 EXPORT_SYMBOL_GPL(hrtimer_sleeper_start_expires);
 
+<<<<<<< HEAD
 static void __hrtimer_setup_sleeper(struct hrtimer_sleeper *sl, clockid_t clock_id,
 				    enum hrtimer_mode mode)
+=======
+static void __hrtimer_setup_sleeper(struct hrtimer_sleeper *sl,
+				    clockid_t clock_id, enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * On PREEMPT_RT enabled kernels hrtimers which are not explicitly
@@ -2254,8 +3088,13 @@ static void __hrtimer_setup_sleeper(struct hrtimer_sleeper *sl, clockid_t clock_
  * @clock_id:	the clock to be used
  * @mode:	timer mode abs/rel
  */
+<<<<<<< HEAD
 void hrtimer_setup_sleeper_on_stack(struct hrtimer_sleeper *sl, clockid_t clock_id,
 				    enum hrtimer_mode mode)
+=======
+void hrtimer_setup_sleeper_on_stack(struct hrtimer_sleeper *sl,
+				    clockid_t clock_id, enum hrtimer_mode mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	debug_setup_on_stack(&sl->timer, clock_id, mode);
 	__hrtimer_setup_sleeper(sl, clock_id, mode);
@@ -2328,11 +3167,20 @@ static long __sched hrtimer_nanosleep_restart(struct restart_block *restart)
 	return ret;
 }
 
+<<<<<<< HEAD
 long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode, const clockid_t clockid)
 {
 	struct restart_block *restart;
 	struct hrtimer_sleeper t;
 	int ret;
+=======
+long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
+		       const clockid_t clockid)
+{
+	struct restart_block *restart;
+	struct hrtimer_sleeper t;
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hrtimer_setup_sleeper_on_stack(&t, clockid, mode);
 	hrtimer_set_expires_range_ns(&t.timer, rqtp, current->timer_slack_ns);
@@ -2371,7 +3219,12 @@ SYSCALL_DEFINE2(nanosleep, struct __kernel_timespec __user *, rqtp,
 	current->restart_block.fn = do_no_restart_syscall;
 	current->restart_block.nanosleep.type = rmtp ? TT_NATIVE : TT_NONE;
 	current->restart_block.nanosleep.rmtp = rmtp;
+<<<<<<< HEAD
 	return hrtimer_nanosleep(timespec64_to_ktime(tu), HRTIMER_MODE_REL, CLOCK_MONOTONIC);
+=======
+	return hrtimer_nanosleep(timespec64_to_ktime(tu), HRTIMER_MODE_REL,
+				 CLOCK_MONOTONIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #endif
@@ -2379,7 +3232,11 @@ SYSCALL_DEFINE2(nanosleep, struct __kernel_timespec __user *, rqtp,
 #ifdef CONFIG_COMPAT_32BIT_TIME
 
 SYSCALL_DEFINE2(nanosleep_time32, struct old_timespec32 __user *, rqtp,
+<<<<<<< HEAD
 		struct old_timespec32 __user *, rmtp)
+=======
+		       struct old_timespec32 __user *, rmtp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct timespec64 tu;
 
@@ -2392,7 +3249,12 @@ SYSCALL_DEFINE2(nanosleep_time32, struct old_timespec32 __user *, rqtp,
 	current->restart_block.fn = do_no_restart_syscall;
 	current->restart_block.nanosleep.type = rmtp ? TT_COMPAT : TT_NONE;
 	current->restart_block.nanosleep.compat_rmtp = rmtp;
+<<<<<<< HEAD
 	return hrtimer_nanosleep(timespec64_to_ktime(tu), HRTIMER_MODE_REL, CLOCK_MONOTONIC);
+=======
+	return hrtimer_nanosleep(timespec64_to_ktime(tu), HRTIMER_MODE_REL,
+				 CLOCK_MONOTONIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 
@@ -2402,13 +3264,23 @@ SYSCALL_DEFINE2(nanosleep_time32, struct old_timespec32 __user *, rqtp,
 int hrtimers_prepare_cpu(unsigned int cpu)
 {
 	struct hrtimer_cpu_base *cpu_base = &per_cpu(hrtimer_bases, cpu);
+<<<<<<< HEAD
 
 	for (int i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
+=======
+	int i;
+
+	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct hrtimer_clock_base *clock_b = &cpu_base->clock_base[i];
 
 		clock_b->cpu_base = cpu_base;
 		seqcount_raw_spinlock_init(&clock_b->seq, &cpu_base->lock);
+<<<<<<< HEAD
 		timerqueue_linked_init_head(&clock_b->active);
+=======
+		timerqueue_init_head(&clock_b->active);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	cpu_base->cpu = cpu;
@@ -2422,14 +3294,23 @@ int hrtimers_cpu_starting(unsigned int cpu)
 
 	/* Clear out any left over state from a CPU down operation */
 	cpu_base->active_bases = 0;
+<<<<<<< HEAD
 	cpu_base->hres_active = false;
 	cpu_base->hang_detected = false;
+=======
+	cpu_base->hres_active = 0;
+	cpu_base->hang_detected = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpu_base->next_timer = NULL;
 	cpu_base->softirq_next_timer = NULL;
 	cpu_base->expires_next = KTIME_MAX;
 	cpu_base->softirq_expires_next = KTIME_MAX;
+<<<<<<< HEAD
 	cpu_base->softirq_activated = false;
 	cpu_base->online = true;
+=======
+	cpu_base->online = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2438,6 +3319,7 @@ int hrtimers_cpu_starting(unsigned int cpu)
 static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
 				struct hrtimer_clock_base *new_base)
 {
+<<<<<<< HEAD
 	struct timerqueue_linked_node *node;
 	struct hrtimer *timer;
 
@@ -2445,13 +3327,26 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
 		timer = hrtimer_from_timerqueue_node(node);
 		BUG_ON(hrtimer_callback_running(timer));
 		debug_hrtimer_deactivate(timer);
+=======
+	struct hrtimer *timer;
+	struct timerqueue_node *node;
+
+	while ((node = timerqueue_getnext(&old_base->active))) {
+		timer = container_of(node, struct hrtimer, node);
+		BUG_ON(hrtimer_callback_running(timer));
+		debug_deactivate(timer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Mark it as ENQUEUED not INACTIVE otherwise the
 		 * timer could be seen as !active and just vanish away
 		 * under us on another CPU
 		 */
+<<<<<<< HEAD
 		__remove_hrtimer(timer, old_base, HRTIMER_STATE_ENQUEUED, false);
+=======
+		__remove_hrtimer(timer, old_base, HRTIMER_STATE_ENQUEUED, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		timer->base = new_base;
 		/*
 		 * Enqueue the timers on the new cpu. This does not
@@ -2461,13 +3356,21 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
 		 * sort out already expired timers and reprogram the
 		 * event device.
 		 */
+<<<<<<< HEAD
 		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
+=======
+		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 int hrtimers_cpu_dying(unsigned int dying_cpu)
 {
+<<<<<<< HEAD
 	int ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
+=======
+	int i, ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct hrtimer_cpu_base *old_base, *new_base;
 
 	old_base = this_cpu_ptr(&hrtimer_bases);
@@ -2480,14 +3383,25 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
 	raw_spin_lock(&old_base->lock);
 	raw_spin_lock_nested(&new_base->lock, SINGLE_DEPTH_NESTING);
 
+<<<<<<< HEAD
 	for (int i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++)
 		migrate_hrtimer_list(&old_base->clock_base[i], &new_base->clock_base[i]);
+=======
+	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
+		migrate_hrtimer_list(&old_base->clock_base[i],
+				     &new_base->clock_base[i]);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Tell the other CPU to retrigger the next event */
 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
 
 	raw_spin_unlock(&new_base->lock);
+<<<<<<< HEAD
 	old_base->online = false;
+=======
+	old_base->online = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	raw_spin_unlock(&old_base->lock);
 
 	return 0;

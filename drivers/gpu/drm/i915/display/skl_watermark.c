@@ -7,8 +7,13 @@
 
 #include <drm/drm_blend.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
+=======
+
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "i9xx_wm.h"
 #include "intel_atomic.h"
 #include "intel_bw.h"
@@ -22,12 +27,19 @@
 #include "intel_display_rpm.h"
 #include "intel_display_types.h"
 #include "intel_display_utils.h"
+<<<<<<< HEAD
 #include "intel_display_wa.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_dram.h"
 #include "intel_fb.h"
 #include "intel_fixed.h"
 #include "intel_flipq.h"
+<<<<<<< HEAD
 #include "intel_parent.h"
+=======
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_plane.h"
 #include "intel_vblank.h"
 #include "intel_wm.h"
@@ -63,6 +75,10 @@ static void skl_sagv_disable(struct intel_display *display);
 struct skl_wm_params {
 	bool x_tiled, y_tiled;
 	bool rc_surface;
+<<<<<<< HEAD
+=======
+	bool is_planar;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 width;
 	u8 cpp;
 	u32 plane_pixel_rate;
@@ -115,8 +131,14 @@ intel_sagv_block_time(struct intel_display *display)
 		u32 val = 0;
 		int ret;
 
+<<<<<<< HEAD
 		ret = intel_parent_pcode_read(display, GEN12_PCODE_READ_SAGV_BLOCK_TIME_US,
 					      &val, NULL);
+=======
+		ret = intel_pcode_read(display->drm,
+				       GEN12_PCODE_READ_SAGV_BLOCK_TIME_US,
+				       &val, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			drm_dbg_kms(display->drm, "Couldn't read SAGV block time!\n");
 			return 0;
@@ -183,8 +205,13 @@ static void skl_sagv_enable(struct intel_display *display)
 		return;
 
 	drm_dbg_kms(display->drm, "Enabling SAGV\n");
+<<<<<<< HEAD
 	ret = intel_parent_pcode_write(display, GEN9_PCODE_SAGV_CONTROL,
 				       GEN9_SAGV_ENABLE);
+=======
+	ret = intel_pcode_write(display->drm, GEN9_PCODE_SAGV_CONTROL,
+				GEN9_SAGV_ENABLE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* We don't need to wait for SAGV when enabling */
 
@@ -216,9 +243,15 @@ static void skl_sagv_disable(struct intel_display *display)
 
 	drm_dbg_kms(display->drm, "Disabling SAGV\n");
 	/* bspec says to keep retrying for at least 1 ms */
+<<<<<<< HEAD
 	ret = intel_parent_pcode_request(display, GEN9_PCODE_SAGV_CONTROL,
 					 GEN9_SAGV_DISABLE,
 					 GEN9_SAGV_IS_DISABLED, GEN9_SAGV_IS_DISABLED, 1);
+=======
+	ret = intel_pcode_request(display->drm, GEN9_PCODE_SAGV_CONTROL,
+				  GEN9_SAGV_DISABLE,
+				  GEN9_SAGV_IS_DISABLED, GEN9_SAGV_IS_DISABLED, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Some skl systems, pre-release machines in particular,
 	 * don't actually have SAGV.
@@ -1356,6 +1389,7 @@ skl_check_wm_level(struct skl_wm_level *wm, const struct skl_ddb_entry *ddb)
 }
 
 static void
+<<<<<<< HEAD
 skl_check_wm_level_nv12(struct skl_wm_level *wm,
 			const struct skl_ddb_entry *ddb_y,
 			const struct skl_ddb_entry *ddb)
@@ -1363,6 +1397,16 @@ skl_check_wm_level_nv12(struct skl_wm_level *wm,
 	if (wm->min_ddb_alloc > skl_ddb_entry_size(ddb_y) ||
 	    wm->min_ddb_alloc_uv > skl_ddb_entry_size(ddb))
 		memset(wm, 0, sizeof(*wm));
+=======
+skl_check_nv12_wm_level(struct skl_wm_level *wm, struct skl_wm_level *uv_wm,
+			const struct skl_ddb_entry *ddb_y, const struct skl_ddb_entry *ddb)
+{
+	if (wm->min_ddb_alloc > skl_ddb_entry_size(ddb_y) ||
+	    uv_wm->min_ddb_alloc > skl_ddb_entry_size(ddb)) {
+		memset(wm, 0, sizeof(*wm));
+		memset(uv_wm, 0, sizeof(*uv_wm));
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool skl_need_wm_copy_wa(struct intel_display *display, int level,
@@ -1389,9 +1433,16 @@ struct skl_plane_ddb_iter {
 };
 
 static void
+<<<<<<< HEAD
 _skl_allocate_plane_ddb(struct skl_plane_ddb_iter *iter,
 			u16 min_ddb_alloc,
 			struct skl_ddb_entry *ddb, u64 data_rate)
+=======
+skl_allocate_plane_ddb(struct skl_plane_ddb_iter *iter,
+		       struct skl_ddb_entry *ddb,
+		       const struct skl_wm_level *wm,
+		       u64 data_rate)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 size, extra = 0;
 
@@ -1408,12 +1459,17 @@ _skl_allocate_plane_ddb(struct skl_plane_ddb_iter *iter,
 	 * to avoid skl_ddb_add_affected_planes() adding them to
 	 * the state when other planes change their allocations.
 	 */
+<<<<<<< HEAD
 	size = min_ddb_alloc + extra;
+=======
+	size = wm->min_ddb_alloc + extra;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (size)
 		iter->start = skl_ddb_entry_init(ddb, iter->start,
 						 iter->start + size);
 }
 
+<<<<<<< HEAD
 static void
 skl_allocate_plane_ddb(struct skl_plane_ddb_iter *iter,
 		       const struct skl_wm_level *wm,
@@ -1432,6 +1488,8 @@ skl_allocate_plane_ddb_nv12(struct skl_plane_ddb_iter *iter,
 	_skl_allocate_plane_ddb(iter, wm->min_ddb_alloc_uv, ddb, data_rate);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int
 skl_crtc_allocate_plane_ddb(struct intel_atomic_state *state,
 			    struct intel_crtc *crtc)
@@ -1497,7 +1555,11 @@ skl_crtc_allocate_plane_ddb(struct intel_atomic_state *state,
 			}
 
 			blocks += wm->wm[level].min_ddb_alloc;
+<<<<<<< HEAD
 			blocks += wm->wm[level].min_ddb_alloc_uv;
+=======
+			blocks += wm->uv_wm[level].min_ddb_alloc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		if (blocks <= iter.size) {
@@ -1538,6 +1600,7 @@ skl_crtc_allocate_plane_ddb(struct intel_atomic_state *state,
 			continue;
 
 		if (DISPLAY_VER(display) < 11 &&
+<<<<<<< HEAD
 		    crtc_state->nv12_planes & BIT(plane_id))
 			skl_allocate_plane_ddb_nv12(&iter, &wm->wm[level],
 						    ddb_y, crtc_state->rel_data_rate_y[plane_id],
@@ -1545,6 +1608,17 @@ skl_crtc_allocate_plane_ddb(struct intel_atomic_state *state,
 		else
 			skl_allocate_plane_ddb(&iter, &wm->wm[level],
 					       ddb, crtc_state->rel_data_rate[plane_id]);
+=======
+		    crtc_state->nv12_planes & BIT(plane_id)) {
+			skl_allocate_plane_ddb(&iter, ddb_y, &wm->wm[level],
+					       crtc_state->rel_data_rate_y[plane_id]);
+			skl_allocate_plane_ddb(&iter, ddb, &wm->uv_wm[level],
+					       crtc_state->rel_data_rate[plane_id]);
+		} else {
+			skl_allocate_plane_ddb(&iter, ddb, &wm->wm[level],
+					       crtc_state->rel_data_rate[plane_id]);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (DISPLAY_VER(display) >= 30) {
 			*min_ddb = wm->wm[0].min_ddb_alloc;
@@ -1570,7 +1644,13 @@ skl_crtc_allocate_plane_ddb(struct intel_atomic_state *state,
 
 			if (DISPLAY_VER(display) < 11 &&
 			    crtc_state->nv12_planes & BIT(plane_id))
+<<<<<<< HEAD
 				skl_check_wm_level_nv12(&wm->wm[level], ddb_y, ddb);
+=======
+				skl_check_nv12_wm_level(&wm->wm[level],
+							&wm->uv_wm[level],
+							ddb_y, ddb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			else
 				skl_check_wm_level(&wm->wm[level], ddb);
 
@@ -1686,9 +1766,16 @@ skl_compute_wm_params(const struct intel_crtc_state *crtc_state,
 	wp->y_tiled = modifier != I915_FORMAT_MOD_X_TILED &&
 		intel_fb_is_tiled_modifier(modifier);
 	wp->rc_surface = intel_fb_is_ccs_modifier(modifier);
+<<<<<<< HEAD
 
 	wp->width = width;
 	if (color_plane == 1 && intel_format_info_is_yuv_semiplanar(format, modifier))
+=======
+	wp->is_planar = intel_format_info_is_yuv_semiplanar(format, modifier);
+
+	wp->width = width;
+	if (color_plane == 1 && wp->is_planar)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wp->width /= 2;
 
 	wp->cpp = format->cpp[color_plane];
@@ -2079,11 +2166,19 @@ static int skl_build_plane_wm_uv(struct intel_crtc_state *crtc_state,
 				 const struct intel_plane_state *plane_state,
 				 struct intel_plane *plane)
 {
+<<<<<<< HEAD
 	struct intel_display *display = to_intel_display(crtc_state);
 	struct skl_plane_wm *wm = &crtc_state->wm.skl.raw.planes[plane->id];
 	struct skl_wm_level uv_wm[ARRAY_SIZE(wm->wm)] = {};
 	struct skl_wm_params wm_params;
 	int ret, level;
+=======
+	struct skl_plane_wm *wm = &crtc_state->wm.skl.raw.planes[plane->id];
+	struct skl_wm_params wm_params;
+	int ret;
+
+	wm->is_planar = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* uv plane watermarks must also be validated for NV12/Planar */
 	ret = skl_compute_plane_wm_params(crtc_state, plane_state,
@@ -2091,6 +2186,7 @@ static int skl_build_plane_wm_uv(struct intel_crtc_state *crtc_state,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	skl_compute_wm_levels(crtc_state, plane, &wm_params, uv_wm);
 
 	/*
@@ -2099,6 +2195,9 @@ static int skl_build_plane_wm_uv(struct intel_crtc_state *crtc_state,
 	 */
 	for (level = 0; level < display->wm.num_levels; level++)
 		wm->wm[level].min_ddb_alloc_uv = uv_wm[level].min_ddb_alloc;
+=======
+	skl_compute_wm_levels(crtc_state, plane, &wm_params, wm->uv_wm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2321,6 +2420,10 @@ static int skl_wm_check_vblank(struct intel_crtc_state *crtc_state)
 			 * thing as bad via min_ddb_alloc=U16_MAX?
 			 */
 			wm->wm[level].enable = false;
+<<<<<<< HEAD
+=======
+			wm->uv_wm[level].enable = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -2391,6 +2494,14 @@ static bool skl_plane_wm_equals(struct intel_display *display,
 	int level;
 
 	for (level = 0; level < display->wm.num_levels; level++) {
+<<<<<<< HEAD
+=======
+		/*
+		 * We don't check uv_wm as the hardware doesn't actually
+		 * use it. It only gets used for calculating the required
+		 * ddb allocation.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!skl_wm_level_equals(&wm1->wm[level], &wm2->wm[level]))
 			return false;
 	}
@@ -2601,6 +2712,7 @@ static char enast(bool enable)
 	return enable ? '*' : ' ';
 }
 
+<<<<<<< HEAD
 static void
 skl_print_plane_ddb_changes(struct intel_plane *plane,
 			    const struct skl_ddb_entry *old,
@@ -2625,6 +2737,16 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 
 	drm_dbg_kms(display->drm,
 		    "[PLANE:%d:%s]      level %cwm0,%cwm1,%cwm2,%cwm3,%cwm4,%cwm5,%cwm6,%cwm7,%ctwm,%cswm,%cstwm"
+=======
+static noinline_for_stack void
+skl_print_plane_changes(struct intel_display *display,
+			struct intel_plane *plane,
+			const struct skl_plane_wm *old_wm,
+			const struct skl_plane_wm *new_wm)
+{
+	drm_dbg_kms(display->drm,
+		    "[PLANE:%d:%s]   level %cwm0,%cwm1,%cwm2,%cwm3,%cwm4,%cwm5,%cwm6,%cwm7,%ctwm,%cswm,%cstwm"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    " -> %cwm0,%cwm1,%cwm2,%cwm3,%cwm4,%cwm5,%cwm6,%cwm7,%ctwm,%cswm,%cstwm\n",
 		    plane->base.base.id, plane->base.name,
 		    enast(old_wm->wm[0].enable), enast(old_wm->wm[1].enable),
@@ -2643,7 +2765,11 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 		    enast(new_wm->sagv.trans_wm.enable));
 
 	drm_dbg_kms(display->drm,
+<<<<<<< HEAD
 		    "[PLANE:%d:%s]      lines %c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%4d"
+=======
+		    "[PLANE:%d:%s]   lines %c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%4d"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      " -> %c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%3d,%c%4d\n",
 		    plane->base.base.id, plane->base.name,
 		    enast(old_wm->wm[0].ignore_lines), old_wm->wm[0].lines,
@@ -2670,7 +2796,11 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 		    enast(new_wm->sagv.trans_wm.ignore_lines), new_wm->sagv.trans_wm.lines);
 
 	drm_dbg_kms(display->drm,
+<<<<<<< HEAD
 		    "[PLANE:%d:%s]     blocks %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d"
+=======
+		    "[PLANE:%d:%s]  blocks %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    " -> %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d\n",
 		    plane->base.base.id, plane->base.name,
 		    old_wm->wm[0].blocks, old_wm->wm[1].blocks,
@@ -2689,7 +2819,11 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 		    new_wm->sagv.trans_wm.blocks);
 
 	drm_dbg_kms(display->drm,
+<<<<<<< HEAD
 		    "[PLANE:%d:%s]    min_ddb %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d"
+=======
+		    "[PLANE:%d:%s] min_ddb %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    " -> %4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%4d,%5d\n",
 		    plane->base.base.id, plane->base.name,
 		    old_wm->wm[0].min_ddb_alloc, old_wm->wm[1].min_ddb_alloc,
@@ -2706,6 +2840,7 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 		    new_wm->trans_wm.min_ddb_alloc,
 		    new_wm->sagv.wm0.min_ddb_alloc,
 		    new_wm->sagv.trans_wm.min_ddb_alloc);
+<<<<<<< HEAD
 
 	if (DISPLAY_VER(display) >= 11)
 		return;
@@ -2728,6 +2863,8 @@ skl_print_plane_wm_changes(struct intel_plane *plane,
 		    new_wm->trans_wm.min_ddb_alloc_uv,
 		    new_wm->sagv.wm0.min_ddb_alloc_uv,
 		    new_wm->sagv.trans_wm.min_ddb_alloc_uv);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -2757,6 +2894,7 @@ skl_print_wm_changes(struct intel_atomic_state *state)
 			old = &old_crtc_state->wm.skl.plane_ddb[plane_id];
 			new = &new_crtc_state->wm.skl.plane_ddb[plane_id];
 
+<<<<<<< HEAD
 			if (!skl_ddb_entry_equal(old, new))
 				skl_print_plane_ddb_changes(plane, old, new, "ddb");
 
@@ -2768,6 +2906,15 @@ skl_print_wm_changes(struct intel_atomic_state *state)
 
 			if (!skl_ddb_entry_equal(old, new))
 				skl_print_plane_ddb_changes(plane, old, new, "ddb_y");
+=======
+			if (skl_ddb_entry_equal(old, new))
+				continue;
+			drm_dbg_kms(display->drm,
+				    "[PLANE:%d:%s] ddb (%4d - %4d) -> (%4d - %4d), size %4d -> %4d\n",
+				    plane->base.base.id, plane->base.name,
+				    old->start, old->end, new->start, new->end,
+				    skl_ddb_entry_size(old), skl_ddb_entry_size(new));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		for_each_intel_plane_on_crtc(display->drm, crtc, plane) {
@@ -2780,7 +2927,11 @@ skl_print_wm_changes(struct intel_atomic_state *state)
 			if (skl_plane_wm_equals(display, old_wm, new_wm))
 				continue;
 
+<<<<<<< HEAD
 			skl_print_plane_wm_changes(plane, old_wm, new_wm);
+=======
+			skl_print_plane_changes(display, plane, old_wm, new_wm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
@@ -2793,6 +2944,14 @@ static bool skl_plane_selected_wm_equals(struct intel_plane *plane,
 	int level;
 
 	for (level = 0; level < display->wm.num_levels; level++) {
+<<<<<<< HEAD
+=======
+		/*
+		 * We don't check uv_wm as the hardware doesn't actually
+		 * use it. It only gets used for calculating the required
+		 * ddb allocation.
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!skl_wm_level_equals(skl_plane_wm_level(old_pipe_wm, plane->id, level),
 					 skl_plane_wm_level(new_pipe_wm, plane->id, level)))
 			return false;
@@ -3331,7 +3490,11 @@ static void skl_read_wm_latency(struct intel_display *display)
 
 	/* read the first set of memory latencies[0:3] */
 	val = 0; /* data0 to be programmed to 0 for first set */
+<<<<<<< HEAD
 	ret = intel_parent_pcode_read(display, GEN9_PCODE_READ_MEM_LATENCY, &val, NULL);
+=======
+	ret = intel_pcode_read(display->drm, GEN9_PCODE_READ_MEM_LATENCY, &val, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_err(display->drm, "SKL Mailbox read error = %d\n", ret);
 		return;
@@ -3344,7 +3507,11 @@ static void skl_read_wm_latency(struct intel_display *display)
 
 	/* read the second set of memory latencies[4:7] */
 	val = 1; /* data0 to be programmed to 1 for second set */
+<<<<<<< HEAD
 	ret = intel_parent_pcode_read(display, GEN9_PCODE_READ_MEM_LATENCY, &val, NULL);
+=======
+	ret = intel_pcode_read(display->drm, GEN9_PCODE_READ_MEM_LATENCY, &val, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		drm_err(display->drm, "SKL Mailbox read error = %d\n", ret);
 		return;
@@ -3461,7 +3628,11 @@ static u32 pipe_mbus_dbox_ctl(const struct intel_crtc *crtc,
 	if (DISPLAY_VER(display) >= 14)
 		val |= dbuf_state->joined_mbus ?
 			MBUS_DBOX_A_CREDIT(12) : MBUS_DBOX_A_CREDIT(8);
+<<<<<<< HEAD
 	else if (intel_display_wa(display, INTEL_DISPLAY_WA_22010947358))
+=======
+	else if (display->platform.alderlake_p)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Wa_22010947358:adl-p */
 		val |= dbuf_state->joined_mbus ?
 			MBUS_DBOX_A_CREDIT(6) : MBUS_DBOX_A_CREDIT(4);
@@ -4028,8 +4199,13 @@ void intel_wm_state_verify(struct intel_atomic_state *state,
 		}
 
 		/* DDB */
+<<<<<<< HEAD
 		hw_ddb_entry = &hw->ddb[plane->id];
 		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[plane->id];
+=======
+		hw_ddb_entry = &hw->ddb[PLANE_CURSOR];
+		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[PLANE_CURSOR];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!skl_ddb_entry_equal(hw_ddb_entry, sw_ddb_entry)) {
 			drm_err(display->drm,

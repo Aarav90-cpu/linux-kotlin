@@ -313,7 +313,10 @@ static void hubp2_program_tiling(
 	const struct dc_tiling_info *info,
 	const enum surface_pixel_format pixel_format)
 {
+<<<<<<< HEAD
 	(void)pixel_format;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	REG_UPDATE_3(DCSURF_ADDR_CONFIG,
 			NUM_PIPES, log_2(info->gfx9.num_pipes),
 			PIPE_INTERLEAVE, info->gfx9.pipe_interleave,
@@ -558,7 +561,10 @@ void hubp2_program_surface_config(
 	bool horizontal_mirror,
 	unsigned int compat_level)
 {
+<<<<<<< HEAD
 	(void)compat_level;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
 
 	hubp2_dcc_control(hubp, dcc->enable, dcc->independent_64b_blks);

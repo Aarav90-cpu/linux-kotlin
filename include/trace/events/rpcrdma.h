@@ -392,10 +392,17 @@ DECLARE_EVENT_CLASS(xprtrdma_rdch_event,
 		const struct rpc_task *task,
 		unsigned int pos,
 		struct rpcrdma_mr *mr,
+<<<<<<< HEAD
 		bool is_last
 	),
 
 	TP_ARGS(task, pos, mr, is_last),
+=======
+		int nsegs
+	),
+
+	TP_ARGS(task, pos, mr, nsegs),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_STRUCT__entry(
 		__field(unsigned int, task_id)
@@ -405,7 +412,11 @@ DECLARE_EVENT_CLASS(xprtrdma_rdch_event,
 		__field(u32, handle)
 		__field(u32, length)
 		__field(u64, offset)
+<<<<<<< HEAD
 		__field(bool, is_last)
+=======
+		__field(int, nsegs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
@@ -416,7 +427,11 @@ DECLARE_EVENT_CLASS(xprtrdma_rdch_event,
 		__entry->handle = mr->mr_handle;
 		__entry->length = mr->mr_length;
 		__entry->offset = mr->mr_offset;
+<<<<<<< HEAD
 		__entry->is_last = is_last;
+=======
+		__entry->nsegs = nsegs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_printk(SUNRPC_TRACE_TASK_SPECIFIER
@@ -424,7 +439,11 @@ DECLARE_EVENT_CLASS(xprtrdma_rdch_event,
 		__entry->task_id, __entry->client_id,
 		__entry->pos, __entry->length,
 		(unsigned long long)__entry->offset, __entry->handle,
+<<<<<<< HEAD
 		__entry->is_last ? "last" : "more"
+=======
+		__entry->nents < __entry->nsegs ? "more" : "last"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	)
 );
 
@@ -434,18 +453,31 @@ DECLARE_EVENT_CLASS(xprtrdma_rdch_event,
 					const struct rpc_task *task,	\
 					unsigned int pos,		\
 					struct rpcrdma_mr *mr,		\
+<<<<<<< HEAD
 					bool is_last			\
 				),					\
 				TP_ARGS(task, pos, mr, is_last))
+=======
+					int nsegs			\
+				),					\
+				TP_ARGS(task, pos, mr, nsegs))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DECLARE_EVENT_CLASS(xprtrdma_wrch_event,
 	TP_PROTO(
 		const struct rpc_task *task,
 		struct rpcrdma_mr *mr,
+<<<<<<< HEAD
 		bool is_last
 	),
 
 	TP_ARGS(task, mr, is_last),
+=======
+		int nsegs
+	),
+
+	TP_ARGS(task, mr, nsegs),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_STRUCT__entry(
 		__field(unsigned int, task_id)
@@ -454,7 +486,11 @@ DECLARE_EVENT_CLASS(xprtrdma_wrch_event,
 		__field(u32, handle)
 		__field(u32, length)
 		__field(u64, offset)
+<<<<<<< HEAD
 		__field(bool, is_last)
+=======
+		__field(int, nsegs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
@@ -464,7 +500,11 @@ DECLARE_EVENT_CLASS(xprtrdma_wrch_event,
 		__entry->handle = mr->mr_handle;
 		__entry->length = mr->mr_length;
 		__entry->offset = mr->mr_offset;
+<<<<<<< HEAD
 		__entry->is_last = is_last;
+=======
+		__entry->nsegs = nsegs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_printk(SUNRPC_TRACE_TASK_SPECIFIER
@@ -472,7 +512,11 @@ DECLARE_EVENT_CLASS(xprtrdma_wrch_event,
 		__entry->task_id, __entry->client_id,
 		__entry->length, (unsigned long long)__entry->offset,
 		__entry->handle,
+<<<<<<< HEAD
 		__entry->is_last ? "last" : "more"
+=======
+		__entry->nents < __entry->nsegs ? "more" : "last"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	)
 );
 
@@ -481,9 +525,15 @@ DECLARE_EVENT_CLASS(xprtrdma_wrch_event,
 				TP_PROTO(				\
 					const struct rpc_task *task,	\
 					struct rpcrdma_mr *mr,		\
+<<<<<<< HEAD
 					bool is_last			\
 				),					\
 				TP_ARGS(task, mr, is_last))
+=======
+					int nsegs			\
+				),					\
+				TP_ARGS(task, mr, nsegs))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 TRACE_DEFINE_ENUM(DMA_BIDIRECTIONAL);
 TRACE_DEFINE_ENUM(DMA_TO_DEVICE);

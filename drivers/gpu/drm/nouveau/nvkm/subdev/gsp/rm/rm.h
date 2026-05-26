@@ -124,7 +124,11 @@ struct nvkm_rm_api {
 	} *ce, *nvdec, *nvenc, *nvjpg, *ofa;
 
 	const struct nvkm_rm_api_gr {
+<<<<<<< HEAD
 		int (*get_ctxbufs_and_zcull_info)(struct r535_gr *);
+=======
+		int (*get_ctxbufs_info)(struct r535_gr *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct {
 			int (*init)(struct r535_gr *);
 			void (*fini)(struct r535_gr *);

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: MIT */
 /*
  * Copyright 2012-2026 Advanced Micro Devices, Inc.
+=======
+/*
+ * Copyright 2012-16 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -96,6 +101,7 @@ struct dcn301_clk_internal {
 	uint32_t CLK1_CLK3_BYPASS_CNTL; //dcfclk bypass
 };
 
+<<<<<<< HEAD
 struct dcn42_clk_internal {
 	int dummy;
 	uint32_t CLK8_CLK0_CURRENT_CNT; //dispclk
@@ -116,6 +122,8 @@ struct dcn42_clk_internal {
 	uint32_t CLK8_CLK_TICK_CNT__TIMER_THRESHOLD;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Will these bw structures be ASIC specific? */
 
 #define MAX_NUM_DPM_LVL		8
@@ -215,7 +223,10 @@ struct clk_state_registers_and_bypass {
 	uint32_t dcfclk_bypass;
 	uint32_t dprefclk_bypass;
 	uint32_t dispclk_bypass;
+<<<<<<< HEAD
 	uint32_t timer_threshold;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct rv1_clk_internal {

@@ -32,8 +32,11 @@ static const guid_t BOOT		= BOOT_TYPE;
 static const guid_t CRASHDUMP		= AMD_CRASHDUMP;
 static const guid_t RUNTIME		= AMD_GPU_NONSTANDARD_ERROR;
 
+<<<<<<< HEAD
 #define CPER_SIGNATURE_SZ		(sizeof(((struct cper_hdr *)0)->signature))
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __inc_entry_length(struct cper_hdr *hdr, uint32_t size)
 {
 	hdr->record_length += size;
@@ -427,6 +430,7 @@ int amdgpu_cper_generate_ce_records(struct amdgpu_device *adev,
 
 static bool amdgpu_cper_is_hdr(struct amdgpu_ring *ring, u64 pos)
 {
+<<<<<<< HEAD
 	char signature[CPER_SIGNATURE_SZ];
 
 	if ((pos << 2) >= ring->ring_size)
@@ -442,10 +446,17 @@ static bool amdgpu_cper_is_hdr(struct amdgpu_ring *ring, u64 pos)
 	}
 
 	return !memcmp(signature, "CPER", CPER_SIGNATURE_SZ);
+=======
+	struct cper_hdr *chdr;
+
+	chdr = (struct cper_hdr *)&(ring->ring[pos]);
+	return strcmp(chdr->signature, "CPER") ? false : true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 amdgpu_cper_ring_get_ent_sz(struct amdgpu_ring *ring, u64 pos)
 {
+<<<<<<< HEAD
 	struct cper_hdr chdr;
 	u64 p;
 	u32 chunk, rec_len = 0;
@@ -461,6 +472,17 @@ static u32 amdgpu_cper_ring_get_ent_sz(struct amdgpu_ring *ring, u64 pos)
 		}
 
 		rec_len = chdr.record_length;
+=======
+	struct cper_hdr *chdr;
+	u64 p;
+	u32 chunk, rec_len = 0;
+
+	chdr = (struct cper_hdr *)&(ring->ring[pos]);
+	chunk = ring->ring_size - (pos << 2);
+
+	if (!strcmp(chdr->signature, "CPER")) {
+		rec_len = chdr->record_length;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto calc;
 	}
 
@@ -469,7 +491,12 @@ static u32 amdgpu_cper_ring_get_ent_sz(struct amdgpu_ring *ring, u64 pos)
 		goto calc;
 
 	for (p = pos + 1; p <= ring->buf_mask; p++) {
+<<<<<<< HEAD
 		if (amdgpu_cper_is_hdr(ring, p)) {
+=======
+		chdr = (struct cper_hdr *)&(ring->ring[p]);
+		if (!strcmp(chdr->signature, "CPER")) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rec_len = (p - pos) << 2;
 			goto calc;
 		}

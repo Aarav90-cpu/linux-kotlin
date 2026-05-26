@@ -199,7 +199,11 @@ struct vx_cmd_info {
 void vx_init_rmh(struct vx_rmh *rmh, unsigned int cmd);
 
 /**
+<<<<<<< HEAD
  * vx_set_pipe_cmd_params - fill first command word for pipe commands
+=======
+ * vx_send_pipe_cmd_params - fill first command word for pipe commands
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @rmh: the rmh to be modified
  * @is_capture: 0 = playback, 1 = capture operation
  * @param1: first pipe-parameter

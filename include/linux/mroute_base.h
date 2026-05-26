@@ -76,7 +76,11 @@ static inline int mr_call_vif_notifiers(struct net *net,
 					struct vif_device *vif,
 					struct net_device *vif_dev,
 					unsigned short vif_index, u32 tb_id,
+<<<<<<< HEAD
 					atomic_t *ipmr_seq)
+=======
+					unsigned int *ipmr_seq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vif_entry_notifier_info info = {
 		.info = {
@@ -89,7 +93,11 @@ static inline int mr_call_vif_notifiers(struct net *net,
 	};
 
 	ASSERT_RTNL();
+<<<<<<< HEAD
 	atomic_inc(ipmr_seq);
+=======
+	(*ipmr_seq)++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return call_fib_notifiers(net, event_type, &info.info);
 }
 
@@ -198,7 +206,11 @@ static inline int mr_call_mfc_notifiers(struct net *net,
 					unsigned short family,
 					enum fib_event_type event_type,
 					struct mr_mfc *mfc, u32 tb_id,
+<<<<<<< HEAD
 					atomic_t *ipmr_seq)
+=======
+					unsigned int *ipmr_seq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mfc_entry_notifier_info info = {
 		.info = {
@@ -208,7 +220,12 @@ static inline int mr_call_mfc_notifiers(struct net *net,
 		.tb_id = tb_id
 	};
 
+<<<<<<< HEAD
 	atomic_inc(ipmr_seq);
+=======
+	ASSERT_RTNL();
+	(*ipmr_seq)++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return call_fib_notifiers(net, event_type, &info.info);
 }
 
@@ -226,7 +243,10 @@ struct mr_table_ops {
 
 /**
  * struct mr_table - a multicast routing table
+<<<<<<< HEAD
  * @work: used for table destruction
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @list: entry within a list of multicast routing tables
  * @net: net where this table belongs
  * @ops: protocol specific operations
@@ -244,7 +264,10 @@ struct mr_table_ops {
  * @mroute_reg_vif_num: PIM-device vif index
  */
 struct mr_table {
+<<<<<<< HEAD
 	struct rcu_work		work;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head	list;
 	possible_net_t		net;
 	struct mr_table_ops	ops;
@@ -276,7 +299,10 @@ void vif_device_init(struct vif_device *v,
 		     unsigned short flags,
 		     unsigned short get_iflink_mask);
 
+<<<<<<< HEAD
 void mr_table_free(struct mr_table *mrt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mr_table *
 mr_table_alloc(struct net *net, u32 id,
 	       struct mr_table_ops *ops,

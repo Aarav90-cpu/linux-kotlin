@@ -1270,9 +1270,12 @@ static const struct nla_policy br_policy[IFLA_BR_MAX + 1] = {
 		NLA_POLICY_EXACT_LEN(sizeof(struct br_boolopt_multi)),
 	[IFLA_BR_FDB_N_LEARNED] = { .type = NLA_REJECT },
 	[IFLA_BR_FDB_MAX_LEARNED] = { .type = NLA_U32 },
+<<<<<<< HEAD
 	[IFLA_BR_STP_MODE] = NLA_POLICY_RANGE(NLA_U32,
 					      BR_STP_MODE_AUTO,
 					      BR_STP_MODE_MAX),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int br_changelink(struct net_device *brdev, struct nlattr *tb[],
@@ -1309,6 +1312,7 @@ static int br_changelink(struct net_device *brdev, struct nlattr *tb[],
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (data[IFLA_BR_STP_MODE]) {
 		u32 mode = nla_get_u32(data[IFLA_BR_STP_MODE]);
 
@@ -1326,6 +1330,8 @@ static int br_changelink(struct net_device *brdev, struct nlattr *tb[],
 		br->stp_mode = mode;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (data[IFLA_BR_STP_STATE]) {
 		u32 stp_enabled = nla_get_u32(data[IFLA_BR_STP_STATE]);
 
@@ -1654,7 +1660,10 @@ static size_t br_get_size(const struct net_device *brdev)
 	       nla_total_size(sizeof(u8)) +     /* IFLA_BR_NF_CALL_ARPTABLES */
 #endif
 	       nla_total_size(sizeof(struct br_boolopt_multi)) + /* IFLA_BR_MULTI_BOOLOPT */
+<<<<<<< HEAD
 	       nla_total_size(sizeof(u32)) +    /* IFLA_BR_STP_MODE */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       0;
 }
 
@@ -1707,8 +1716,12 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
 	    nla_put(skb, IFLA_BR_MULTI_BOOLOPT, sizeof(bm), &bm) ||
 	    nla_put_u32(skb, IFLA_BR_FDB_N_LEARNED,
 			atomic_read(&br->fdb_n_learned)) ||
+<<<<<<< HEAD
 	    nla_put_u32(skb, IFLA_BR_FDB_MAX_LEARNED, br->fdb_max_learned) ||
 	    nla_put_u32(skb, IFLA_BR_STP_MODE, br->stp_mode))
+=======
+	    nla_put_u32(skb, IFLA_BR_FDB_MAX_LEARNED, br->fdb_max_learned))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EMSGSIZE;
 
 #ifdef CONFIG_BRIDGE_VLAN_FILTERING

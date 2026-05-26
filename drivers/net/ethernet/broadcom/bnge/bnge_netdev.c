@@ -39,10 +39,13 @@ static void bnge_free_stats_mem(struct bnge_net *bn,
 {
 	struct bnge_dev *bd = bn->bd;
 
+<<<<<<< HEAD
 	kfree(stats->hw_masks);
 	stats->hw_masks = NULL;
 	kfree(stats->sw_stats);
 	stats->sw_stats = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (stats->hw_stats) {
 		dma_free_coherent(bd->dev, stats->len, stats->hw_stats,
 				  stats->hw_stats_map);
@@ -51,7 +54,11 @@ static void bnge_free_stats_mem(struct bnge_net *bn,
 }
 
 static int bnge_alloc_stats_mem(struct bnge_net *bn,
+<<<<<<< HEAD
 				struct bnge_stats_mem *stats, bool alloc_masks)
+=======
+				struct bnge_stats_mem *stats)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bnge_dev *bd = bn->bd;
 
@@ -60,6 +67,7 @@ static int bnge_alloc_stats_mem(struct bnge_net *bn,
 	if (!stats->hw_stats)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	stats->sw_stats = kzalloc(stats->len, GFP_KERNEL);
 	if (!stats->sw_stats)
 		goto stats_mem_err;
@@ -77,6 +85,9 @@ static int bnge_alloc_stats_mem(struct bnge_net *bn,
 stats_mem_err:
 	bnge_free_stats_mem(bn, stats);
 	return -ENOMEM;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void bnge_free_ring_stats(struct bnge_net *bn)
@@ -95,6 +106,7 @@ static void bnge_free_ring_stats(struct bnge_net *bn)
 	}
 }
 
+<<<<<<< HEAD
 static void bnge_fill_masks(u64 *mask_arr, u64 mask, int count)
 {
 	int i;
@@ -196,6 +208,8 @@ static void bnge_free_port_stats(struct bnge_net *bn)
 	bnge_free_port_ext_stats(bn);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int bnge_alloc_ring_stats(struct bnge_net *bn)
 {
 	struct bnge_dev *bd = bn->bd;
@@ -209,13 +223,20 @@ static int bnge_alloc_ring_stats(struct bnge_net *bn)
 		struct bnge_nq_ring_info *nqr = &bnapi->nq_ring;
 
 		nqr->stats.len = size;
+<<<<<<< HEAD
 		rc = bnge_alloc_stats_mem(bn, &nqr->stats, !i);
+=======
+		rc = bnge_alloc_stats_mem(bn, &nqr->stats);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rc)
 			goto err_free_ring_stats;
 
 		nqr->hw_stats_ctx_id = INVALID_STATS_CTX_ID;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_free_ring_stats:
@@ -223,6 +244,7 @@ err_free_ring_stats:
 	return rc;
 }
 
+<<<<<<< HEAD
 static void bnge_alloc_port_ext_stats(struct bnge_net *bn)
 {
 	struct bnge_dev *bd = bn->bd;
@@ -444,6 +466,8 @@ static void bnge_sp_task(struct work_struct *work)
 	netdev_unlock(bn->netdev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bnge_free_nq_desc_arr(struct bnge_nq_ring_info *nqr)
 {
 	struct bnge_ring_struct *ring = &nqr->ring_struct;
@@ -1290,8 +1314,11 @@ static int bnge_alloc_core(struct bnge_net *bn)
 	if (rc)
 		goto err_free_core;
 
+<<<<<<< HEAD
 	bnge_init_stats(bn);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = bnge_alloc_vnics(bn);
 	if (rc)
 		goto err_free_core;
@@ -2811,8 +2838,11 @@ static void bnge_tx_enable(struct bnge_net *bn)
 	/* Make sure napi polls see @dev_state change */
 	synchronize_net();
 	netif_tx_wake_all_queues(bn->netdev);
+<<<<<<< HEAD
 	if (BNGE_LINK_IS_UP(bn->bd))
 		netif_carrier_on(bn->netdev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int bnge_open_core(struct bnge_net *bn)
@@ -2849,6 +2879,7 @@ static int bnge_open_core(struct bnge_net *bn)
 
 	bnge_enable_napi(bn);
 
+<<<<<<< HEAD
 	rc = bnge_update_phy_setting(bn);
 	if (rc) {
 		netdev_warn(bn->netdev, "failed to update PHY settings (rc: %d)\n",
@@ -2861,16 +2892,22 @@ static int bnge_open_core(struct bnge_net *bn)
 
 	set_bit(BNGE_STATE_OPEN, &bd->state);
 	set_bit(BNGE_STATE_STATS_ENABLE, &bn->state);
+=======
+	set_bit(BNGE_STATE_OPEN, &bd->state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bnge_enable_int(bn);
 
 	bnge_tx_enable(bn);
+<<<<<<< HEAD
 
 	mod_timer(&bn->timer, jiffies + bn->current_interval);
 
 	/* Poll link status and check for SFP+ module status */
 	bnge_get_port_module_status(bn);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 err_free_irq:
@@ -2899,6 +2936,7 @@ static int bnge_shutdown_nic(struct bnge_net *bn)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void bnge_add_prev_ring_stats64(struct bnge_net *bn,
 				       struct rtnl_link_stats64 *stats)
 {
@@ -3077,6 +3115,8 @@ static void bnge_save_ring_stats(struct bnge_net *bn)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bnge_close_core(struct bnge_net *bn)
 {
 	struct bnge_dev *bd = bn->bd;
@@ -3084,6 +3124,7 @@ static void bnge_close_core(struct bnge_net *bn)
 	bnge_tx_disable(bn);
 
 	clear_bit(BNGE_STATE_OPEN, &bd->state);
+<<<<<<< HEAD
 
 	timer_delete_sync(&bn->timer);
 	bnge_shutdown_nic(bn);
@@ -3095,6 +3136,10 @@ static void bnge_close_core(struct bnge_net *bn)
 	clear_bit(BNGE_STATE_STATS_ENABLE, &bn->state);
 	spin_unlock_bh(&bn->stats_lock);
 
+=======
+	bnge_shutdown_nic(bn);
+	bnge_disable_napi(bn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bnge_free_all_rings_bufs(bn);
 	bnge_free_irq(bn);
 	bnge_del_napi(bn);
@@ -3107,12 +3152,16 @@ static int bnge_close(struct net_device *dev)
 	struct bnge_net *bn = netdev_priv(dev);
 
 	bnge_close_core(bn);
+<<<<<<< HEAD
 	bnge_hwrm_shutdown_link(bn->bd);
 	bn->sp_event = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void bnge_get_queue_stats_rx(struct net_device *dev, int i,
 				    struct netdev_queue_stats_rx *stats)
 {
@@ -3192,11 +3241,16 @@ static const struct netdev_stat_ops bnge_stat_ops = {
 	.get_base_stats		= bnge_get_base_stats,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct net_device_ops bnge_netdev_ops = {
 	.ndo_open		= bnge_open,
 	.ndo_stop		= bnge_close,
 	.ndo_start_xmit		= bnge_start_xmit,
+<<<<<<< HEAD
 	.ndo_get_stats64	= bnge_get_stats64,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_features_check	= bnge_features_check,
 };
 
@@ -3338,7 +3392,10 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
 	bd->netdev = netdev;
 
 	netdev->netdev_ops = &bnge_netdev_ops;
+<<<<<<< HEAD
 	netdev->stat_ops = &bnge_stat_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bnge_set_ethtool_ops(netdev);
 
@@ -3408,6 +3465,7 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
 	if (bd->tso_max_segs)
 		netif_set_tso_max_segs(netdev, bd->tso_max_segs);
 
+<<<<<<< HEAD
 	INIT_WORK(&bn->sp_task, bnge_sp_task);
 	timer_setup(&bn->timer, bnge_timer, 0);
 	bn->current_interval = BNGE_TIMER_INTERVAL;
@@ -3420,6 +3478,8 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
 		goto err_netdev;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bn->rx_ring_size = BNGE_DEFAULT_RX_RING_SIZE;
 	bn->tx_ring_size = BNGE_DEFAULT_TX_RING_SIZE;
 	bn->rx_dir = DMA_FROM_DEVICE;
@@ -3431,6 +3491,7 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
 	bnge_init_l2_fltr_tbl(bn);
 	bnge_init_mac_addr(bd);
 
+<<<<<<< HEAD
 	rc = bnge_probe_phy(bn, true);
 	if (rc)
 		goto err_free_workq;
@@ -3440,19 +3501,28 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
 		goto err_free_workq;
 	spin_lock_init(&bn->stats_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev->request_ops_lock = true;
 	rc = register_netdev(netdev);
 	if (rc) {
 		dev_err(bd->dev, "Register netdev failed rc: %d\n", rc);
+<<<<<<< HEAD
 		goto err_free_port_stats;
+=======
+		goto err_netdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
 
+<<<<<<< HEAD
 err_free_port_stats:
 	bnge_free_port_stats(bn);
 err_free_workq:
 	destroy_workqueue(bn->bnge_pf_wq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_netdev:
 	free_netdev(netdev);
 	return rc;
@@ -3461,6 +3531,7 @@ err_netdev:
 void bnge_netdev_free(struct bnge_dev *bd)
 {
 	struct net_device *netdev = bd->netdev;
+<<<<<<< HEAD
 	struct bnge_net *bn;
 
 	bn = netdev_priv(netdev);
@@ -3474,6 +3545,10 @@ void bnge_netdev_free(struct bnge_dev *bd)
 
 	bnge_free_port_stats(bn);
 
+=======
+
+	unregister_netdev(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	free_netdev(netdev);
 	bd->netdev = NULL;
 }

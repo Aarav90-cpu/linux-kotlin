@@ -3,7 +3,10 @@
 #ifndef __MAILBOX_CONTROLLER_H
 #define __MAILBOX_CONTROLLER_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/completion.h>
 #include <linux/device.h>
 #include <linux/hrtimer.h>
@@ -12,6 +15,7 @@
 
 struct mbox_chan;
 
+<<<<<<< HEAD
 /* Sentinel value distinguishing "no active request" from "NULL message data" */
 #define MBOX_NO_MSG	((void *)-1)
 
@@ -19,6 +23,8 @@ struct mbox_chan;
 #define MBOX_TXDONE_BY_POLL	BIT(1) /* controller can read status of last TX */
 #define MBOX_TXDONE_BY_ACK	BIT(2) /* S/W ACK received by Client ticks the TX */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct mbox_chan_ops - methods to control mailbox channels
  * @send_data:	The API asks the MBOX controller driver, in atomic
@@ -62,10 +68,17 @@ struct mbox_chan_ops {
 
 /**
  * struct mbox_controller - Controller of a class of communication channels
+<<<<<<< HEAD
  * @dev:		Device backing this controller. Required.
  * @ops:		Operators that work on each communication chan. Required.
  * @chans:		Array of channels. Required.
  * @num_chans:		Number of channels in the 'chans' array. Required.
+=======
+ * @dev:		Device backing this controller
+ * @ops:		Operators that work on each communication chan
+ * @chans:		Array of channels
+ * @num_chans:		Number of channels in the 'chans' array.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @txdone_irq:		Indicates if the controller can report to API when
  *			the last transmitted data was read by the remote.
  *			Eg, if it has some TX ACK irq.
@@ -78,7 +91,10 @@ struct mbox_chan_ops {
  * @of_xlate:		Controller driver specific mapping of channel via DT
  * @poll_hrt:		API private. hrtimer used to poll for TXDONE on all
  *			channels.
+<<<<<<< HEAD
  * @poll_hrt_lock:	API private. Lock protecting access to poll_hrt.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @node:		API private. To hook into list of controllers.
  */
 struct mbox_controller {

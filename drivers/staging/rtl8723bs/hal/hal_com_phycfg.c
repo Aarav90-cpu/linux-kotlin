@@ -8,7 +8,10 @@
 #include <drv_types.h>
 #include <hal_data.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u8 PHY_GetTxPowerByRateBase(struct adapter *Adapter, u8 RfPath,
 			    enum rate_section RateSection)
@@ -424,7 +427,10 @@ void PHY_SetTxPowerIndexByRateSection(
 
 	if (RateSection == CCK) {
 		u8 cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		PHY_SetTxPowerIndexByRateArray(padapter, RFPath,
 					     pHalData->CurrentChannelBW,
 					     Channel, cckRates,
@@ -432,7 +438,10 @@ void PHY_SetTxPowerIndexByRateSection(
 
 	} else if (RateSection == OFDM) {
 		u8 ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		PHY_SetTxPowerIndexByRateArray(padapter, RFPath,
 					       pHalData->CurrentChannelBW,
 					       Channel, ofdmRates,
@@ -440,7 +449,10 @@ void PHY_SetTxPowerIndexByRateSection(
 
 	} else if (RateSection == HT_MCS0_MCS7) {
 		u8 htRates1T[]  = {MGN_MCS0, MGN_MCS1, MGN_MCS2, MGN_MCS3, MGN_MCS4, MGN_MCS5, MGN_MCS6, MGN_MCS7};
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		PHY_SetTxPowerIndexByRateArray(padapter, RFPath,
 					       pHalData->CurrentChannelBW,
 					       Channel, htRates1T,
@@ -504,7 +516,10 @@ s8 PHY_GetTxPowerTrackingOffset(struct adapter *padapter, u8 RFPath, u8 Rate)
 u8 PHY_GetRateIndexOfTxPowerByRate(u8 Rate)
 {
 	u8 index = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (Rate) {
 	case MGN_1M:
 		index = 0;
@@ -824,6 +839,7 @@ void PHY_SetTxPowerLimit(
 
 	powerLimit = powerLimit > MAX_POWER_INDEX ? MAX_POWER_INDEX : powerLimit;
 
+<<<<<<< HEAD
 	if (strcmp(Regulation, "FCC") == 0)
 		regulation = 0;
 	else if (strcmp(Regulation, "MKK") == 0)
@@ -838,13 +854,35 @@ void PHY_SetTxPowerLimit(
 	else if (strcmp(RateSection, "OFDM") == 0 && strcmp(RfPath, "1T") == 0)
 		rateSection = 1;
 	else if (strcmp(RateSection, "HT") == 0 && strcmp(RfPath, "1T") == 0)
+=======
+	if (eqNByte(Regulation, (u8 *)("FCC"), 3))
+		regulation = 0;
+	else if (eqNByte(Regulation, (u8 *)("MKK"), 3))
+		regulation = 1;
+	else if (eqNByte(Regulation, (u8 *)("ETSI"), 4))
+		regulation = 2;
+	else if (eqNByte(Regulation, (u8 *)("WW13"), 4))
+		regulation = 3;
+
+	if (eqNByte(RateSection, (u8 *)("CCK"), 3) && eqNByte(RfPath, (u8 *)("1T"), 2))
+		rateSection = 0;
+	else if (eqNByte(RateSection, (u8 *)("OFDM"), 4) && eqNByte(RfPath, (u8 *)("1T"), 2))
+		rateSection = 1;
+	else if (eqNByte(RateSection, (u8 *)("HT"), 2) && eqNByte(RfPath, (u8 *)("1T"), 2))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rateSection = 2;
 	else
 		return;
 
+<<<<<<< HEAD
 	if (strcmp(Bandwidth, "20M") == 0)
 		bandwidth = 0;
 	else if (strcmp(Bandwidth, "40M") == 0)
+=======
+	if (eqNByte(Bandwidth, (u8 *)("20M"), 3))
+		bandwidth = 0;
+	else if (eqNByte(Bandwidth, (u8 *)("40M"), 3))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bandwidth = 1;
 
 	channelIndex = phy_GetChannelIndexOfTxPowerLimit(channel);
@@ -861,7 +899,10 @@ void PHY_SetTxPowerLimit(
 void Hal_ChannelPlanToRegulation(struct adapter *Adapter, u16 ChannelPlan)
 {
 	struct hal_com_data *pHalData = GET_HAL_DATA(Adapter);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pHalData->Regulation2_4G = TXPWR_LMT_WW;
 
 	switch (ChannelPlan) {

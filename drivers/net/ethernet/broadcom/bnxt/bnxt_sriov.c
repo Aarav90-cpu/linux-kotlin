@@ -17,9 +17,15 @@
 #include <linux/etherdevice.h>
 #include <net/dcbnl.h>
 #include <linux/bnxt/hsi.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
 #include "bnxt.h"
 #include "bnxt_hwrm.h"
+=======
+#include "bnxt.h"
+#include "bnxt_hwrm.h"
+#include "bnxt_ulp.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bnxt_sriov.h"
 #include "bnxt_vfr.h"
 #include "bnxt_ethtool.h"

@@ -837,6 +837,7 @@ struct b43_dmaring *b43_setup_dmaring(struct b43_wldev *dev,
 	struct b43_dmaring *ring;
 	int i, err;
 	dma_addr_t dma_test;
+<<<<<<< HEAD
 	size_t nr_slots;
 
 	if (for_tx)
@@ -850,6 +851,20 @@ struct b43_dmaring *b43_setup_dmaring(struct b43_wldev *dev,
 
 	ring->nr_slots = nr_slots;
 
+=======
+
+	ring = kzalloc_obj(*ring);
+	if (!ring)
+		goto out;
+
+	ring->nr_slots = B43_RXRING_SLOTS;
+	if (for_tx)
+		ring->nr_slots = B43_TXRING_SLOTS;
+
+	ring->meta = kzalloc_objs(struct b43_dmadesc_meta, ring->nr_slots);
+	if (!ring->meta)
+		goto err_kfree_ring;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < ring->nr_slots; i++)
 		ring->meta->skb = B43_DMA_PTR_POISON;
 
@@ -944,6 +959,11 @@ struct b43_dmaring *b43_setup_dmaring(struct b43_wldev *dev,
       err_kfree_txhdr_cache:
 	kfree(ring->txhdr_cache);
       err_kfree_meta:
+<<<<<<< HEAD
+=======
+	kfree(ring->meta);
+      err_kfree_ring:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ring);
 	ring = NULL;
 	goto out;
@@ -1003,6 +1023,10 @@ static void b43_destroy_dmaring(struct b43_dmaring *ring,
 	free_ringmemory(ring);
 
 	kfree(ring->txhdr_cache);
+<<<<<<< HEAD
+=======
+	kfree(ring->meta);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ring);
 }
 

@@ -575,7 +575,10 @@ DEF_CONFIGFS_ATTRIB_SHOW(unmap_zeroes_data);
 DEF_CONFIGFS_ATTRIB_SHOW(max_write_same_len);
 DEF_CONFIGFS_ATTRIB_SHOW(emulate_rsoc);
 DEF_CONFIGFS_ATTRIB_SHOW(submit_type);
+<<<<<<< HEAD
 DEF_CONFIGFS_ATTRIB_SHOW(complete_type);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 DEF_CONFIGFS_ATTRIB_SHOW(atomic_max_len);
 DEF_CONFIGFS_ATTRIB_SHOW(atomic_alignment);
 DEF_CONFIGFS_ATTRIB_SHOW(atomic_granularity);
@@ -1267,6 +1270,7 @@ static ssize_t submit_type_store(struct config_item *item, const char *page,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t complete_type_store(struct config_item *item, const char *page,
 				   size_t count)
 {
@@ -1285,6 +1289,8 @@ static ssize_t complete_type_store(struct config_item *item, const char *page,
 	return count;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CONFIGFS_ATTR(, emulate_model_alias);
 CONFIGFS_ATTR(, emulate_dpo);
 CONFIGFS_ATTR(, emulate_fua_write);
@@ -1321,7 +1327,10 @@ CONFIGFS_ATTR(, max_write_same_len);
 CONFIGFS_ATTR(, alua_support);
 CONFIGFS_ATTR(, pgr_support);
 CONFIGFS_ATTR(, submit_type);
+<<<<<<< HEAD
 CONFIGFS_ATTR(, complete_type);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CONFIGFS_ATTR_RO(, atomic_max_len);
 CONFIGFS_ATTR_RO(, atomic_alignment);
 CONFIGFS_ATTR_RO(, atomic_granularity);
@@ -1370,7 +1379,10 @@ struct configfs_attribute *sbc_attrib_attrs[] = {
 	&attr_pgr_support,
 	&attr_emulate_rsoc,
 	&attr_submit_type,
+<<<<<<< HEAD
 	&attr_complete_type,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&attr_atomic_alignment,
 	&attr_atomic_max_len,
 	&attr_atomic_granularity,
@@ -1394,7 +1406,10 @@ struct configfs_attribute *passthrough_attrib_attrs[] = {
 	&attr_alua_support,
 	&attr_pgr_support,
 	&attr_submit_type,
+<<<<<<< HEAD
 	&attr_complete_type,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 EXPORT_SYMBOL(passthrough_attrib_attrs);

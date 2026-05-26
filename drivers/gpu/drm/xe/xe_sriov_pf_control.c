@@ -124,6 +124,7 @@ int xe_sriov_pf_control_reset_vf(struct xe_device *xe, unsigned int vfid)
 }
 
 /**
+<<<<<<< HEAD
  * xe_sriov_pf_control_prepare_flr() - Notify PF that VF FLR prepare has started.
  * @xe: the &xe_device
  * @vfid: the VF identifier
@@ -148,6 +149,8 @@ int xe_sriov_pf_control_prepare_flr(struct xe_device *xe, unsigned int vfid)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_sriov_pf_control_wait_flr() - Wait for a VF reset (FLR) to complete.
  * @xe: the &xe_device
  * @vfid: the VF identifier

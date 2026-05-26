@@ -87,11 +87,19 @@ struct rdma_restrack_entry {
 	 * query stage.
 	 */
 	u8			no_track : 1;
+<<<<<<< HEAD
 	/**
 	 * @kref: Protect destroy of the resource
 	 */
 	struct kref		kref;
 	/**
+=======
+	/*
+	 * @kref: Protect destroy of the resource
+	 */
+	struct kref		kref;
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @comp: Signal that all consumers of resource are completed their work
 	 */
 	struct completion	comp;

@@ -15,13 +15,19 @@ kvm-y += aia_aplic.o
 kvm-y += aia_device.o
 kvm-y += aia_imsic.o
 kvm-y += gstage.o
+<<<<<<< HEAD
 kvm-y += isa.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kvm-y += main.o
 kvm-y += mmu.o
 kvm-y += nacl.o
 kvm-y += tlb.o
 kvm-y += vcpu.o
+<<<<<<< HEAD
 kvm-y += vcpu_config.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 kvm-y += vcpu_exit.o
 kvm-y += vcpu_fp.o
 kvm-y += vcpu_insn.o

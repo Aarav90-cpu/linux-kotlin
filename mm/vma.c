@@ -38,11 +38,20 @@ struct mmap_state {
 
 	/* Determine if we can check KSM flags early in mmap() logic. */
 	bool check_ksm_early :1;
+<<<<<<< HEAD
+=======
+	/* If we map new, hold the file rmap lock on mapping. */
+	bool hold_file_rmap_lock :1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* If .mmap_prepare changed the file, we don't need to pin. */
 	bool file_doesnt_need_get :1;
 };
 
+<<<<<<< HEAD
 #define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, vma_flags_, file_) \
+=======
+#define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, vm_flags_, file_) \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mmap_state name = {					\
 		.mm = mm_,						\
 		.vmi = vmi_,						\
@@ -50,9 +59,15 @@ struct mmap_state {
 		.end = (addr_) + (len_),				\
 		.pgoff = pgoff_,					\
 		.pglen = PHYS_PFN(len_),				\
+<<<<<<< HEAD
 		.vma_flags = vma_flags_,				\
 		.file = file_,						\
 		.page_prot = vma_get_page_prot(vma_flags_),		\
+=======
+		.vm_flags = vm_flags_,					\
+		.file = file_,						\
+		.page_prot = vm_get_page_prot(vm_flags_),		\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #define VMG_MMAP_STATE(name, map_, vma_)				\
@@ -61,7 +76,11 @@ struct mmap_state {
 		.vmi = (map_)->vmi,					\
 		.start = (map_)->addr,					\
 		.end = (map_)->end,					\
+<<<<<<< HEAD
 		.vma_flags = (map_)->vma_flags,				\
+=======
+		.vm_flags = (map_)->vm_flags,				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.pgoff = (map_)->pgoff,					\
 		.file = (map_)->file,					\
 		.prev = (map_)->prev,					\
@@ -84,6 +103,7 @@ static bool vma_is_fork_child(struct vm_area_struct *vma)
 static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_next)
 {
 	struct vm_area_struct *vma = merge_next ? vmg->next : vmg->prev;
+<<<<<<< HEAD
 	vma_flags_t diff;
 
 	if (!mpol_equal(vmg->policy, vma_policy(vma)))
@@ -93,6 +113,12 @@ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_nex
 	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
 
 	if (!vma_flags_empty(&diff))
+=======
+
+	if (!mpol_equal(vmg->policy, vma_policy(vma)))
+		return false;
+	if ((vma->vm_flags ^ vmg->vm_flags) & ~VM_IGNORE_MERGE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 	if (vma->vm_file != vmg->file)
 		return false;
@@ -183,7 +209,11 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
 }
 
 /*
+<<<<<<< HEAD
  * Return true if we can merge this (vma_flags,anon_vma,file,vm_pgoff)
+=======
+ * Return true if we can merge this (vm_flags,anon_vma,file,vm_pgoff)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * in front of (at a lower virtual address and file offset than) the vma.
  *
  * We cannot merge two vmas if they have differently assigned (non-NULL)
@@ -209,7 +239,11 @@ static bool can_vma_merge_before(struct vma_merge_struct *vmg)
 }
 
 /*
+<<<<<<< HEAD
  * Return true if we can merge this (vma_flags,anon_vma,file,vm_pgoff)
+=======
+ * Return true if we can merge this (vm_flags,anon_vma,file,vm_pgoff)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * beyond (at a higher virtual address and file offset than) the vma.
  *
  * We cannot merge two vmas if they have differently assigned (non-NULL)
@@ -593,7 +627,11 @@ out_free_vma:
 static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
 		     unsigned long addr, int new_below)
 {
+<<<<<<< HEAD
 	if (vma->vm_mm->map_count >= get_sysctl_max_map_count())
+=======
+	if (vma->vm_mm->map_count >= sysctl_max_map_count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	return __split_vma(vmi, vma, addr, new_below);
@@ -808,8 +846,12 @@ static bool can_merge_remove_vma(struct vm_area_struct *vma)
 static __must_check struct vm_area_struct *vma_merge_existing_range(
 		struct vma_merge_struct *vmg)
 {
+<<<<<<< HEAD
 	vma_flags_t sticky_flags = vma_flags_and_mask(&vmg->vma_flags,
 						      VMA_STICKY_FLAGS);
+=======
+	vm_flags_t sticky_flags = vmg->vm_flags & VM_STICKY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vm_area_struct *middle = vmg->middle;
 	struct vm_area_struct *prev = vmg->prev;
 	struct vm_area_struct *next;
@@ -848,8 +890,12 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
 	 * furthermost left or right side of the VMA, then we have no chance of
 	 * merging and should abort.
 	 */
+<<<<<<< HEAD
 	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
 	    (!left_side && !right_side))
+=======
+	if (vmg->vm_flags & VM_SPECIAL || (!left_side && !right_side))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	if (left_side)
@@ -903,6 +949,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
 	vma_start_write(middle);
 
 	if (merge_right) {
+<<<<<<< HEAD
 		vma_flags_t next_sticky;
 
 		vma_start_write(next);
@@ -919,6 +966,17 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
 
 		prev_sticky = vma_flags_and_mask(&prev->flags, VMA_STICKY_FLAGS);
 		vma_flags_set_mask(&sticky_flags, prev_sticky);
+=======
+		vma_start_write(next);
+		vmg->target = next;
+		sticky_flags |= (next->vm_flags & VM_STICKY);
+	}
+
+	if (merge_left) {
+		vma_start_write(prev);
+		vmg->target = prev;
+		sticky_flags |= (prev->vm_flags & VM_STICKY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (merge_both) {
@@ -988,7 +1046,11 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
 	if (err || commit_merge(vmg))
 		goto abort;
 
+<<<<<<< HEAD
 	vma_set_flags_mask(vmg->target, sticky_flags);
+=======
+	vm_flags_set(vmg->target, sticky_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
 	vmg->state = VMA_MERGE_SUCCESS;
 	return vmg->target;
@@ -1071,8 +1133,12 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
 	vmg->state = VMA_MERGE_NOMERGE;
 
 	/* Special VMAs are unmergeable, also if no prev/next. */
+<<<<<<< HEAD
 	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
 	    (!prev && !next))
+=======
+	if ((vmg->vm_flags & VM_SPECIAL) || (!prev && !next))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	can_merge_left = can_vma_merge_left(vmg);
@@ -1167,16 +1233,23 @@ int vma_expand(struct vma_merge_struct *vmg)
 	struct vm_area_struct *target = vmg->target;
 	struct vm_area_struct *next = vmg->next;
 	bool remove_next = false;
+<<<<<<< HEAD
 	vma_flags_t sticky_flags =
 		vma_flags_and_mask(&vmg->vma_flags, VMA_STICKY_FLAGS);
 	vma_flags_t target_sticky;
+=======
+	vm_flags_t sticky_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	mmap_assert_write_locked(vmg->mm);
 	vma_start_write(target);
 
+<<<<<<< HEAD
 	target_sticky = vma_flags_and_mask(&target->flags, VMA_STICKY_FLAGS);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (next && target != next && vmg->end == next->vm_end)
 		remove_next = true;
 
@@ -1191,7 +1264,14 @@ int vma_expand(struct vma_merge_struct *vmg)
 	VM_WARN_ON_VMG(target->vm_start < vmg->start ||
 		       target->vm_end > vmg->end, vmg);
 
+<<<<<<< HEAD
 	vma_flags_set_mask(&sticky_flags, target_sticky);
+=======
+	sticky_flags = vmg->vm_flags & VM_STICKY;
+	sticky_flags |= target->vm_flags & VM_STICKY;
+	if (remove_next)
+		sticky_flags |= next->vm_flags & VM_STICKY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If we are removing the next VMA or copying from a VMA
@@ -1208,6 +1288,7 @@ int vma_expand(struct vma_merge_struct *vmg)
 		return ret;
 
 	if (remove_next) {
+<<<<<<< HEAD
 		vma_flags_t next_sticky;
 
 		vma_start_write(next);
@@ -1215,11 +1296,19 @@ int vma_expand(struct vma_merge_struct *vmg)
 
 		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
 		vma_flags_set_mask(&sticky_flags, next_sticky);
+=======
+		vma_start_write(next);
+		vmg->__remove_next = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	if (commit_merge(vmg))
 		goto nomem;
 
+<<<<<<< HEAD
 	vma_set_flags_mask(target, sticky_flags);
+=======
+	vm_flags_set(target, sticky_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 nomem:
@@ -1413,7 +1502,11 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
 		 * its limit temporarily, to help free resources as expected.
 		 */
 		if (vms->end < vms->vma->vm_end &&
+<<<<<<< HEAD
 		    vms->vma->vm_mm->map_count >= get_sysctl_max_map_count()) {
+=======
+		    vms->vma->vm_mm->map_count >= sysctl_max_map_count) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			error = -ENOMEM;
 			goto map_count_exceeded;
 		}
@@ -1459,17 +1552,28 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
 		nrpages = vma_pages(next);
 
 		vms->nr_pages += nrpages;
+<<<<<<< HEAD
 		if (vma_test(next, VMA_LOCKED_BIT))
 			vms->locked_vm += nrpages;
 
 		if (vma_test(next, VMA_ACCOUNT_BIT))
+=======
+		if (next->vm_flags & VM_LOCKED)
+			vms->locked_vm += nrpages;
+
+		if (next->vm_flags & VM_ACCOUNT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			vms->nr_accounted += nrpages;
 
 		if (is_exec_mapping(next->vm_flags))
 			vms->exec_vm += nrpages;
 		else if (is_stack_mapping(next->vm_flags))
 			vms->stack_vm += nrpages;
+<<<<<<< HEAD
 		else if (is_data_mapping_vma_flags(&next->flags))
+=======
+		else if (is_data_mapping(next->vm_flags))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			vms->data_vm += nrpages;
 
 		if (vms->uf) {
@@ -1708,6 +1812,7 @@ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
 struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
 		struct vm_area_struct *prev, struct vm_area_struct *vma,
 		unsigned long start, unsigned long end,
+<<<<<<< HEAD
 		vma_flags_t *vma_flags_ptr)
 {
 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
@@ -1715,6 +1820,15 @@ struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
 	struct vm_area_struct *ret;
 
 	vmg.vma_flags = vma_flags;
+=======
+		vm_flags_t *vm_flags_ptr)
+{
+	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+	const vm_flags_t vm_flags = *vm_flags_ptr;
+	struct vm_area_struct *ret;
+
+	vmg.vm_flags = vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = vma_modify(&vmg);
 	if (IS_ERR(ret))
@@ -1726,7 +1840,11 @@ struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
 	 * them to the caller.
 	 */
 	if (vmg.state == VMA_MERGE_SUCCESS)
+<<<<<<< HEAD
 		*vma_flags_ptr = ret->flags;
+=======
+		*vm_flags_ptr = ret->vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1756,6 +1874,7 @@ struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
 
 struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
 		struct vm_area_struct *prev, struct vm_area_struct *vma,
+<<<<<<< HEAD
 		unsigned long start, unsigned long end,
 		const vma_flags_t *vma_flags, struct vm_userfaultfd_ctx new_ctx,
 		bool give_up_on_oom)
@@ -1763,6 +1882,14 @@ struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
 
 	vmg.vma_flags = *vma_flags;
+=======
+		unsigned long start, unsigned long end, vm_flags_t vm_flags,
+		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom)
+{
+	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+
+	vmg.vm_flags = vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmg.uffd_ctx = new_ctx;
 	if (give_up_on_oom)
 		vmg.give_up_on_oom = true;
@@ -1970,6 +2097,7 @@ out:
  */
 static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *b)
 {
+<<<<<<< HEAD
 	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
 
 	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
@@ -1979,6 +2107,12 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
 		mpol_equal(vma_policy(a), vma_policy(b)) &&
 		a->vm_file == b->vm_file &&
 		vma_flags_empty(&diff) &&
+=======
+	return a->vm_end == b->vm_start &&
+		mpol_equal(vma_policy(a), vma_policy(b)) &&
+		a->vm_file == b->vm_file &&
+		!((a->vm_flags ^ b->vm_flags) & ~(VM_ACCESS_FLAGS | VM_IGNORE_MERGE)) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
 }
 
@@ -2066,13 +2200,22 @@ static bool vm_ops_needs_writenotify(const struct vm_operations_struct *vm_ops)
 
 static bool vma_is_shared_writable(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	return vma_test_all(vma, VMA_WRITE_BIT, VMA_SHARED_BIT);
+=======
+	return (vma->vm_flags & (VM_WRITE | VM_SHARED)) ==
+		(VM_WRITE | VM_SHARED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool vma_fs_can_writeback(struct vm_area_struct *vma)
 {
 	/* No managed pages to writeback. */
+<<<<<<< HEAD
 	if (vma_test(vma, VMA_PFNMAP_BIT))
+=======
+	if (vma->vm_flags & VM_PFNMAP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return false;
 
 	return vma->vm_file && vma->vm_file->f_mapping &&
@@ -2338,10 +2481,15 @@ void mm_drop_all_locks(struct mm_struct *mm)
  * We account for memory if it's a private writeable mapping,
  * not hugepages and VM_NORESERVE wasn't set.
  */
+<<<<<<< HEAD
 static bool accountable_mapping(struct mmap_state *map)
 {
 	const struct file *file = map->file;
 
+=======
+static bool accountable_mapping(struct file *file, vm_flags_t vm_flags)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * hugetlb has its own accounting separate from the core VM
 	 * VM_HUGETLB may not be set yet so we cannot check for that flag.
@@ -2349,9 +2497,13 @@ static bool accountable_mapping(struct mmap_state *map)
 	if (file && is_file_hugepages(file))
 		return false;
 
+<<<<<<< HEAD
 	return vma_flags_test(&map->vma_flags, VMA_WRITE_BIT) &&
 		!vma_flags_test_any(&map->vma_flags, VMA_NORESERVE_BIT,
 				    VMA_SHARED_BIT);
+=======
+	return (vm_flags & (VM_NORESERVE | VM_SHARED | VM_WRITE)) == VM_WRITE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -2389,7 +2541,11 @@ static void vms_abort_munmap_vmas(struct vma_munmap_struct *vms,
 
 static void update_ksm_flags(struct mmap_state *map)
 {
+<<<<<<< HEAD
 	map->vma_flags = ksm_vma_flags(map->mm, map->file, map->vma_flags);
+=======
+	map->vm_flags = ksm_vma_flags(map->mm, map->file, map->vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void set_desc_from_map(struct vm_area_desc *desc,
@@ -2450,11 +2606,19 @@ static int __mmap_setup(struct mmap_state *map, struct vm_area_desc *desc,
 	}
 
 	/* Check against address space limit. */
+<<<<<<< HEAD
 	if (!may_expand_vm(map->mm, &map->vma_flags, map->pglen - vms->nr_pages))
 		return -ENOMEM;
 
 	/* Private writable mapping: check memory availability. */
 	if (accountable_mapping(map)) {
+=======
+	if (!may_expand_vm(map->mm, map->vm_flags, map->pglen - vms->nr_pages))
+		return -ENOMEM;
+
+	/* Private writable mapping: check memory availability. */
+	if (accountable_mapping(map->file, map->vm_flags)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		map->charged = map->pglen;
 		map->charged -= vms->nr_accounted;
 		if (map->charged) {
@@ -2464,7 +2628,11 @@ static int __mmap_setup(struct mmap_state *map, struct vm_area_desc *desc,
 		}
 
 		vms->nr_accounted = 0;
+<<<<<<< HEAD
 		vma_flags_set(&map->vma_flags, VMA_ACCOUNT_BIT);
+=======
+		map->vm_flags |= VM_ACCOUNT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -2512,12 +2680,21 @@ static int __mmap_new_file_vma(struct mmap_state *map,
 	 * Drivers should not permit writability when previously it was
 	 * disallowed.
 	 */
+<<<<<<< HEAD
 	VM_WARN_ON_ONCE(!vma_flags_same_pair(&map->vma_flags, &vma->flags) &&
 			!vma_flags_test(&map->vma_flags, VMA_MAYWRITE_BIT) &&
 			vma_test(vma, VMA_MAYWRITE_BIT));
 
 	map->file = vma->vm_file;
 	map->vma_flags = vma->flags;
+=======
+	VM_WARN_ON_ONCE(map->vm_flags != vma->vm_flags &&
+			!(map->vm_flags & VM_MAYWRITE) &&
+			(vma->vm_flags & VM_MAYWRITE));
+
+	map->file = vma->vm_file;
+	map->vm_flags = vma->vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -2528,12 +2705,19 @@ static int __mmap_new_file_vma(struct mmap_state *map,
  *
  * @map:  Mapping state.
  * @vmap: Output pointer for the new VMA.
+<<<<<<< HEAD
  * @action: Any mmap_prepare action that is still to complete.
  *
  * Returns: Zero on success, or an error.
  */
 static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
 	struct mmap_action *action)
+=======
+ *
+ * Returns: Zero on success, or an error.
+ */
+static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct vma_iterator *vmi = map->vmi;
 	int error = 0;
@@ -2550,7 +2734,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
 
 	vma_iter_config(vmi, map->addr, map->end);
 	vma_set_range(vma, map->addr, map->end, map->pgoff);
+<<<<<<< HEAD
 	vma->flags = map->vma_flags;
+=======
+	vm_flags_init(vma, map->vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vma->vm_page_prot = map->page_prot;
 
 	if (vma_iter_prealloc(vmi, vma)) {
@@ -2560,7 +2748,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
 
 	if (map->file)
 		error = __mmap_new_file_vma(map, vma);
+<<<<<<< HEAD
 	else if (vma_flags_test(&map->vma_flags, VMA_SHARED_BIT))
+=======
+	else if (map->vm_flags & VM_SHARED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		error = shmem_zero_setup(vma);
 	else
 		vma_set_anonymous(vma);
@@ -2570,7 +2762,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
 
 	if (!map->check_ksm_early) {
 		update_ksm_flags(map);
+<<<<<<< HEAD
 		vma->flags = map->vma_flags;
+=======
+		vm_flags_init(vma, map->vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 #ifdef CONFIG_SPARC64
@@ -2582,7 +2778,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
 	vma_start_write(vma);
 	vma_iter_store_new(vmi, vma);
 	map->mm->map_count++;
+<<<<<<< HEAD
 	vma_link_file(vma, action->hide_from_rmap_until_complete);
+=======
+	vma_link_file(vma, map->hold_file_rmap_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * vma_merge_new_range() calls khugepaged_enter_vma() too, the below
@@ -2610,6 +2810,10 @@ free_vma:
 static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
 {
 	struct mm_struct *mm = map->mm;
+<<<<<<< HEAD
+=======
+	vm_flags_t vm_flags = vma->vm_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	perf_event_mmap(vma);
 
@@ -2617,9 +2821,15 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
 	vms_complete_munmap_vmas(&map->vms, &map->mas_detach);
 
 	vm_stat_account(mm, vma->vm_flags, map->pglen);
+<<<<<<< HEAD
 	if (vma_test(vma, VMA_LOCKED_BIT)) {
 		if (!vma_supports_mlock(vma))
 			vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+=======
+	if (vm_flags & VM_LOCKED) {
+		if (!vma_supports_mlock(vma))
+			vm_flags_clear(vma, VM_LOCKED_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			mm->locked_vm += map->pglen;
 	}
@@ -2635,7 +2845,11 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
 	 * a completely new data area).
 	 */
 	if (pgtable_supports_soft_dirty())
+<<<<<<< HEAD
 		vma_set_flags(vma, VMA_SOFTDIRTY_BIT);
+=======
+		vm_flags_set(vma, VM_SOFTDIRTY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vma_set_page_prot(vma);
 }
@@ -2649,6 +2863,11 @@ static int call_action_prepare(struct mmap_state *map,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	if (desc->action.hide_from_rmap_until_complete)
+		map->hold_file_rmap_lock = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2729,15 +2948,49 @@ static bool can_set_ksm_flags_early(struct mmap_state *map)
 	return false;
 }
 
+<<<<<<< HEAD
 static unsigned long __mmap_region(struct file *file, unsigned long addr,
 		unsigned long len, vma_flags_t vma_flags,
 		unsigned long pgoff, struct list_head *uf)
+=======
+static int call_action_complete(struct mmap_state *map,
+				struct mmap_action *action,
+				struct vm_area_struct *vma)
+{
+	int err;
+
+	err = mmap_action_complete(vma, action, /*is_compat=*/false);
+
+	/* If we held the file rmap we need to release it. */
+	if (map->hold_file_rmap_lock) {
+		struct file *file = vma->vm_file;
+
+		i_mmap_unlock_write(file->f_mapping);
+	}
+
+	if (err) {
+		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+
+		do_munmap(current->mm, vma->vm_start, len, NULL);
+	}
+
+	return err;
+}
+
+static unsigned long __mmap_region(struct file *file, unsigned long addr,
+		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
+		struct list_head *uf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mm_struct *mm = current->mm;
 	struct vm_area_struct *vma = NULL;
 	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
 	VMA_ITERATOR(vmi, mm, addr);
+<<<<<<< HEAD
 	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vma_flags, file);
+=======
+	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vm_flags, file);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct vm_area_desc desc = {
 		.mm = mm,
 		.file = file,
@@ -2768,7 +3021,11 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
 
 	/* ...but if we can't, allocate a new VMA. */
 	if (!vma) {
+<<<<<<< HEAD
 		error = __mmap_new_vma(&map, &vma, &desc.action);
+=======
+		error = __mmap_new_vma(&map, &vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (error)
 			goto unacct_error;
 		allocated_new = true;
@@ -2780,8 +3037,12 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
 	__mmap_complete(&map, vma);
 
 	if (have_mmap_prepare && allocated_new) {
+<<<<<<< HEAD
 		error = mmap_action_complete(vma, &desc.action,
 					     /*is_compat=*/false);
+=======
+		error = call_action_complete(&map, &desc.action, vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (error)
 			return error;
 	}
@@ -2828,17 +3089,29 @@ abort_munmap:
  * been performed.
  */
 unsigned long mmap_region(struct file *file, unsigned long addr,
+<<<<<<< HEAD
 			  unsigned long len, vm_flags_t vm_flags,
 			  unsigned long pgoff, struct list_head *uf)
 {
 	unsigned long ret;
 	bool writable_file_mapping = false;
 	const vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
+=======
+			  unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
+			  struct list_head *uf)
+{
+	unsigned long ret;
+	bool writable_file_mapping = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mmap_assert_write_locked(current->mm);
 
 	/* Check to see if MDWE is applicable. */
+<<<<<<< HEAD
 	if (map_deny_write_exec(&vma_flags, &vma_flags))
+=======
+	if (map_deny_write_exec(vm_flags, vm_flags))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EACCES;
 
 	/* Allow architectures to sanity-check the vm_flags. */
@@ -2846,7 +3119,11 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 		return -EINVAL;
 
 	/* Map writable and ensure this isn't a sealed memfd. */
+<<<<<<< HEAD
 	if (file && is_shared_maywrite(&vma_flags)) {
+=======
+	if (file && is_shared_maywrite_vm_flags(vm_flags)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int error = mapping_map_writable(file->f_mapping);
 
 		if (error)
@@ -2854,7 +3131,11 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 		writable_file_mapping = true;
 	}
 
+<<<<<<< HEAD
 	ret = __mmap_region(file, addr, len, vma_flags, pgoff, uf);
+=======
+	ret = __mmap_region(file, addr, len, vm_flags, pgoff, uf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Clear our write mapping regardless of error. */
 	if (writable_file_mapping)
@@ -2864,22 +3145,36 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
+=======
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * do_brk_flags() - Increase the brk vma if the flags match.
  * @vmi: The vma iterator
  * @addr: The start address
  * @len: The length of the increase
  * @vma: The vma,
+<<<<<<< HEAD
  * @vma_flags: The VMA Flags
+=======
+ * @vm_flags: The VMA Flags
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Extend the brk VMA from addr to addr + len.  If the VMA is NULL or the flags
  * do not match then create a new anonymous VMA.  Eventually we may be able to
  * do some brk-specific accounting here.
+<<<<<<< HEAD
  *
  * Returns: %0 on success, or otherwise an error.
  */
 int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
 		 unsigned long addr, unsigned long len, vma_flags_t vma_flags)
+=======
+ */
+int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+		 unsigned long addr, unsigned long len, vm_flags_t vm_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mm_struct *mm = current->mm;
 
@@ -2887,6 +3182,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
 	 * Check against address space limits by the changed size
 	 * Note: This happens *after* clearing old mappings in some code paths.
 	 */
+<<<<<<< HEAD
 	vma_flags_set_mask(&vma_flags, VMA_DATA_DEFAULT_FLAGS);
 	vma_flags_set(&vma_flags, VMA_ACCOUNT_BIT);
 	vma_flags_set_mask(&vma_flags, mm->def_vma_flags);
@@ -2896,6 +3192,14 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
 		return -ENOMEM;
 
 	if (mm->map_count > get_sysctl_max_map_count())
+=======
+	vm_flags |= VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT | mm->def_flags;
+	vm_flags = ksm_vma_flags(mm, NULL, vm_flags);
+	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+		return -ENOMEM;
+
+	if (mm->map_count > sysctl_max_map_count)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
@@ -2906,7 +3210,11 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
 	 * occur after forking, so the expand will only happen on new VMAs.
 	 */
 	if (vma && vma->vm_end == addr) {
+<<<<<<< HEAD
 		VMG_STATE(vmg, mm, vmi, addr, addr + len, vma_flags, PHYS_PFN(addr));
+=======
+		VMG_STATE(vmg, mm, vmi, addr, addr + len, vm_flags, PHYS_PFN(addr));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		vmg.prev = vma;
 		/* vmi is positioned at prev, which this mode expects. */
@@ -2927,8 +3235,13 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
 
 	vma_set_anonymous(vma);
 	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
+<<<<<<< HEAD
 	vma->flags = vma_flags;
 	vma->vm_page_prot = vm_get_page_prot(vma_flags_to_legacy(vma_flags));
+=======
+	vm_flags_init(vma, vm_flags);
+	vma->vm_page_prot = vm_get_page_prot(vm_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vma_start_write(vma);
 	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
 		goto mas_store_fail;
@@ -2939,10 +3252,17 @@ out:
 	perf_event_mmap(vma);
 	mm->total_vm += len >> PAGE_SHIFT;
 	mm->data_vm += len >> PAGE_SHIFT;
+<<<<<<< HEAD
 	if (vma_flags_test(&vma_flags, VMA_LOCKED_BIT))
 		mm->locked_vm += (len >> PAGE_SHIFT);
 	if (pgtable_supports_soft_dirty())
 		vma_set_flags(vma, VMA_SOFTDIRTY_BIT);
+=======
+	if (vm_flags & VM_LOCKED)
+		mm->locked_vm += (len >> PAGE_SHIFT);
+	if (pgtable_supports_soft_dirty())
+		vm_flags_set(vma, VM_SOFTDIRTY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 mas_store_fail:
@@ -2991,8 +3311,12 @@ retry:
 	gap = vma_iter_addr(&vmi) + info->start_gap;
 	gap += (info->align_offset - gap) & info->align_mask;
 	tmp = vma_next(&vmi);
+<<<<<<< HEAD
 	/* Avoid prev check if possible */
 	if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
+=======
+	if (tmp && (tmp->vm_flags & VM_STARTGAP_FLAGS)) { /* Avoid prev check if possible */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vm_start_gap(tmp) < gap + length - 1) {
 			low_limit = tmp->vm_end;
 			vma_iter_reset(&vmi);
@@ -3044,8 +3368,12 @@ retry:
 	gap -= (gap - info->align_offset) & info->align_mask;
 	gap_end = vma_iter_end(&vmi);
 	tmp = vma_next(&vmi);
+<<<<<<< HEAD
 	 /* Avoid prev check if possible */
 	if (tmp && vma_test_any_mask(tmp, VMA_STARTGAP_FLAGS)) {
+=======
+	if (tmp && (tmp->vm_flags & VM_STARTGAP_FLAGS)) { /* Avoid prev check if possible */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (vm_start_gap(tmp) < gap_end) {
 			high_limit = vm_start_gap(tmp);
 			vma_iter_reset(&vmi);
@@ -3075,7 +3403,11 @@ static int acct_stack_growth(struct vm_area_struct *vma,
 	unsigned long new_start;
 
 	/* address space limit tests */
+<<<<<<< HEAD
 	if (!may_expand_vm(mm, &vma->flags, grow))
+=======
+	if (!may_expand_vm(mm, vma->vm_flags, grow))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	/* Stack limit test */
@@ -3083,6 +3415,7 @@ static int acct_stack_growth(struct vm_area_struct *vma,
 		return -ENOMEM;
 
 	/* mlock limit tests */
+<<<<<<< HEAD
 	if (!mlock_future_ok(mm, vma_test(vma, VMA_LOCKED_BIT),
 			     grow << PAGE_SHIFT))
 		return -ENOMEM;
@@ -3093,6 +3426,14 @@ static int acct_stack_growth(struct vm_area_struct *vma,
 	if (vma_test(vma, VMA_GROWSUP_BIT))
 		new_start = vma->vm_start;
 #endif
+=======
+	if (!mlock_future_ok(mm, vma->vm_flags & VM_LOCKED, grow << PAGE_SHIFT))
+		return -ENOMEM;
+
+	/* Check to ensure the stack will not grow into a hugetlb-only region */
+	new_start = (vma->vm_flags & VM_GROWSUP) ? vma->vm_start :
+			vma->vm_end - size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_hugepage_only_range(vma->vm_mm, new_start, size))
 		return -EFAULT;
 
@@ -3106,7 +3447,11 @@ static int acct_stack_growth(struct vm_area_struct *vma,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_STACK_GROWSUP
+=======
+#if defined(CONFIG_STACK_GROWSUP)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * PA-RISC uses this for its stack.
  * vma is the last one with address > vma->vm_end.  Have to extend vma.
@@ -3119,7 +3464,11 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
 	int error = 0;
 	VMA_ITERATOR(vmi, mm, vma->vm_start);
 
+<<<<<<< HEAD
 	if (!vma_test(vma, VMA_GROWSUP_BIT))
+=======
+	if (!(vma->vm_flags & VM_GROWSUP))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 
 	mmap_assert_write_locked(mm);
@@ -3139,7 +3488,11 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
 
 	next = find_vma_intersection(mm, vma->vm_end, gap_addr);
 	if (next && vma_is_accessible(next)) {
+<<<<<<< HEAD
 		if (!vma_test(next, VMA_GROWSUP_BIT))
+=======
+		if (!(next->vm_flags & VM_GROWSUP))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOMEM;
 		/* Check that both stack segments have the same anon_vma? */
 	}
@@ -3173,7 +3526,11 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
 		if (vma->vm_pgoff + (size >> PAGE_SHIFT) >= vma->vm_pgoff) {
 			error = acct_stack_growth(vma, size, grow);
 			if (!error) {
+<<<<<<< HEAD
 				if (vma_test(vma, VMA_LOCKED_BIT))
+=======
+				if (vma->vm_flags & VM_LOCKED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					mm->locked_vm += grow;
 				vm_stat_account(mm, vma->vm_flags, grow);
 				anon_vma_interval_tree_pre_update_vma(vma);
@@ -3204,7 +3561,11 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
 	int error = 0;
 	VMA_ITERATOR(vmi, mm, vma->vm_start);
 
+<<<<<<< HEAD
 	if (!vma_test(vma, VMA_GROWSDOWN_BIT))
+=======
+	if (!(vma->vm_flags & VM_GROWSDOWN))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 
 	mmap_assert_write_locked(mm);
@@ -3217,7 +3578,11 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
 	prev = vma_prev(&vmi);
 	/* Check that both stack segments have the same anon_vma? */
 	if (prev) {
+<<<<<<< HEAD
 		if (!vma_test(prev, VMA_GROWSDOWN_BIT) &&
+=======
+		if (!(prev->vm_flags & VM_GROWSDOWN) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    vma_is_accessible(prev) &&
 		    (address - prev->vm_end < stack_guard_gap))
 			return -ENOMEM;
@@ -3252,7 +3617,11 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
 		if (grow <= vma->vm_pgoff) {
 			error = acct_stack_growth(vma, size, grow);
 			if (!error) {
+<<<<<<< HEAD
 				if (vma_test(vma, VMA_LOCKED_BIT))
+=======
+				if (vma->vm_flags & VM_LOCKED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					mm->locked_vm += grow;
 				vm_stat_account(mm, vma->vm_flags, grow);
 				anon_vma_interval_tree_pre_update_vma(vma);
@@ -3298,10 +3667,18 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
 {
 	unsigned long charged = vma_pages(vma);
 
+<<<<<<< HEAD
 	if (find_vma_intersection(mm, vma->vm_start, vma->vm_end))
 		return -ENOMEM;
 
 	if (vma_test(vma, VMA_ACCOUNT_BIT) &&
+=======
+
+	if (find_vma_intersection(mm, vma->vm_start, vma->vm_end))
+		return -ENOMEM;
+
+	if ((vma->vm_flags & VM_ACCOUNT) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     security_vm_enough_memory_mm(mm, charged))
 		return -ENOMEM;
 
@@ -3323,13 +3700,18 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
 	}
 
 	if (vma_link(mm, vma)) {
+<<<<<<< HEAD
 		if (vma_test(vma, VMA_ACCOUNT_BIT))
+=======
+		if (vma->vm_flags & VM_ACCOUNT)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			vm_unacct_memory(charged);
 		return -ENOMEM;
 	}
 
 	return 0;
 }
+<<<<<<< HEAD
 
 /**
  * vma_mmu_pagesize - Default MMU page size granularity for this VMA.
@@ -3351,3 +3733,5 @@ __weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
 {
 	return vma_kernel_pagesize(vma);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

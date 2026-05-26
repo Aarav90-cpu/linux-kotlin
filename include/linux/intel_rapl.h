@@ -77,6 +77,10 @@ enum rapl_primitives {
 	PSYS_TIME_WINDOW1,
 	PSYS_TIME_WINDOW2,
 	/* below are not raw primitive data */
+<<<<<<< HEAD
+=======
+	AVERAGE_POWER,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NR_RAPL_PRIMITIVES,
 };
 
@@ -127,6 +131,7 @@ struct reg_action {
 	int err;
 };
 
+<<<<<<< HEAD
 struct rapl_defaults {
 	u8 floor_freq_reg_addr;
 	int (*check_unit)(struct rapl_domain *rd);
@@ -167,6 +172,8 @@ struct rapl_primitive_info {
 	u32 flag;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct rapl_if_priv: private data for different RAPL interfaces
  * @control_type:		Each RAPL interface must have its own powercap
@@ -181,8 +188,13 @@ struct rapl_primitive_info {
  *				registers.
  * @write_raw:			Callback for writing RAPL interface specific
  *				registers.
+<<<<<<< HEAD
  * @defaults:			pointer to default settings
  * @rpi:			pointer to interface primitive info
+=======
+ * @defaults:			internal pointer to interface default settings
+ * @rpi:			internal pointer to interface primitive info
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct rapl_if_priv {
 	enum rapl_if_type type;
@@ -193,8 +205,13 @@ struct rapl_if_priv {
 	int limits[RAPL_DOMAIN_MAX];
 	int (*read_raw)(int id, struct reg_action *ra, bool pmu_ctx);
 	int (*write_raw)(int id, struct reg_action *ra);
+<<<<<<< HEAD
 	const struct rapl_defaults *defaults;
 	struct rapl_primitive_info *rpi;
+=======
+	void *defaults;
+	void *rpi;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_PERF_EVENTS
@@ -250,9 +267,12 @@ void rapl_remove_package_cpuslocked(struct rapl_package *rp);
 struct rapl_package *rapl_find_package_domain(int id, struct rapl_if_priv *priv, bool id_is_cpu);
 struct rapl_package *rapl_add_package(int id, struct rapl_if_priv *priv, bool id_is_cpu);
 void rapl_remove_package(struct rapl_package *rp);
+<<<<<<< HEAD
 int rapl_default_check_unit(struct rapl_domain *rd);
 void rapl_default_set_floor_freq(struct rapl_domain *rd, bool mode);
 u64 rapl_default_compute_time_window(struct rapl_domain *rd, u64 value, bool to_raw);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PERF_EVENTS
 int rapl_package_add_pmu(struct rapl_package *rp);

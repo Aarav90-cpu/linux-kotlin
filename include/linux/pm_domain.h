@@ -49,8 +49,13 @@
 
 struct dev_pm_domain_attach_data {
 	const char * const *pd_names;
+<<<<<<< HEAD
 	u32 num_pd_names;
 	u32 pd_flags;
+=======
+	const u32 num_pd_names;
+	const u32 pd_flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dev_pm_domain_list {
@@ -183,7 +188,10 @@ struct genpd_power_state {
 	u64 rejected;
 	u64 above;
 	u64 below;
+<<<<<<< HEAD
 	u64 usage_s2idle;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct fwnode_handle *fwnode;
 	u64 idle_time;
 	void *data;

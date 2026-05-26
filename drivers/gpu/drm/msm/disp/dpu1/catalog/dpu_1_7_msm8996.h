@@ -320,7 +320,12 @@ const struct dpu_mdss_cfg dpu_msm8996_cfg = {
 	.dsc = msm8996_dsc,
 	.intf_count = ARRAY_SIZE(msm8996_intf),
 	.intf = msm8996_intf,
+<<<<<<< HEAD
 	.vbif = &msm8996_vbif,
+=======
+	.vbif_count = ARRAY_SIZE(msm8996_vbif),
+	.vbif = msm8996_vbif,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.perf = &msm8996_perf_data,
 };
 

@@ -293,6 +293,7 @@ static bool drm_suballoc_next_hole(struct drm_suballoc_manager *sa_manager,
 }
 
 /**
+<<<<<<< HEAD
  * drm_suballoc_alloc() - Allocate uninitialized suballoc object.
  * @gfp: gfp flags used for memory allocation.
  *
@@ -324,12 +325,22 @@ EXPORT_SYMBOL(drm_suballoc_alloc);
  * @sa_manager: pointer to the sa_manager
  * @sa: The struct drm_suballoc.
  * @size: number of bytes we want to suballocate.
+=======
+ * drm_suballoc_new() - Make a suballocation.
+ * @sa_manager: pointer to the sa_manager
+ * @size: number of bytes we want to suballocate.
+ * @gfp: gfp flags used for memory allocation. Typically GFP_KERNEL but
+ *       the argument is provided for suballocations from reclaim context or
+ *       where the caller wants to avoid pipelining rather than wait for
+ *       reclaim.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @intr: Whether to perform waits interruptible. This should typically
  *        always be true, unless the caller needs to propagate a
  *        non-interruptible context from above layers.
  * @align: Alignment. Must not exceed the default manager alignment.
  *         If @align is zero, then the manager alignment is used.
  *
+<<<<<<< HEAD
  * Try to make a suballocation on a pre-allocated suballoc object of size @size,
  * which will be rounded up to the alignment specified in specified in
  * drm_suballoc_manager_init().
@@ -339,20 +350,45 @@ EXPORT_SYMBOL(drm_suballoc_alloc);
 int drm_suballoc_insert(struct drm_suballoc_manager *sa_manager,
 			struct drm_suballoc *sa, size_t size,
 			bool intr, size_t align)
+=======
+ * Try to make a suballocation of size @size, which will be rounded
+ * up to the alignment specified in specified in drm_suballoc_manager_init().
+ *
+ * Return: a new suballocated bo, or an ERR_PTR.
+ */
+struct drm_suballoc *
+drm_suballoc_new(struct drm_suballoc_manager *sa_manager, size_t size,
+		 gfp_t gfp, bool intr, size_t align)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct dma_fence *fences[DRM_SUBALLOC_MAX_QUEUES];
 	unsigned int tries[DRM_SUBALLOC_MAX_QUEUES];
 	unsigned int count;
 	int i, r;
+<<<<<<< HEAD
 
 	if (WARN_ON_ONCE(align > sa_manager->align))
 		return -EINVAL;
 	if (WARN_ON_ONCE(size > sa_manager->size || !size))
 		return -EINVAL;
+=======
+	struct drm_suballoc *sa;
+
+	if (WARN_ON_ONCE(align > sa_manager->align))
+		return ERR_PTR(-EINVAL);
+	if (WARN_ON_ONCE(size > sa_manager->size || !size))
+		return ERR_PTR(-EINVAL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!align)
 		align = sa_manager->align;
 
+<<<<<<< HEAD
+=======
+	sa = kmalloc_obj(*sa, gfp);
+	if (!sa)
+		return ERR_PTR(-ENOMEM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sa->manager = sa_manager;
 	sa->fence = NULL;
 	INIT_LIST_HEAD(&sa->olist);
@@ -369,7 +405,11 @@ int drm_suballoc_insert(struct drm_suballoc_manager *sa_manager,
 			if (drm_suballoc_try_alloc(sa_manager, sa,
 						   size, align)) {
 				spin_unlock(&sa_manager->wq.lock);
+<<<<<<< HEAD
 				return 0;
+=======
+				return sa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			/* see if we can skip over some allocations */
@@ -406,6 +446,7 @@ int drm_suballoc_insert(struct drm_suballoc_manager *sa_manager,
 	} while (!r);
 
 	spin_unlock(&sa_manager->wq.lock);
+<<<<<<< HEAD
 	sa->manager = NULL;
 	return r;
 }
@@ -448,6 +489,10 @@ drm_suballoc_new(struct drm_suballoc_manager *sa_manager, size_t size,
 	}
 
 	return sa;
+=======
+	kfree(sa);
+	return ERR_PTR(r);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL(drm_suballoc_new);
 
@@ -466,11 +511,14 @@ void drm_suballoc_free(struct drm_suballoc *suballoc,
 	if (!suballoc)
 		return;
 
+<<<<<<< HEAD
 	if (!suballoc->manager) {
 		kfree(suballoc);
 		return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sa_manager = suballoc->manager;
 
 	spin_lock(&sa_manager->wq.lock);

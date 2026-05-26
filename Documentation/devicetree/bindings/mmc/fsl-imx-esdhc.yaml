@@ -35,7 +35,10 @@ properties:
           - fsl,imx8mm-usdhc
           - fsl,imxrt1050-usdhc
           - nxp,s32g2-usdhc
+<<<<<<< HEAD
           - nxp,s32n79-usdhc
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       - items:
           - const: fsl,imx50-esdhc
           - const: fsl,imx53-esdhc

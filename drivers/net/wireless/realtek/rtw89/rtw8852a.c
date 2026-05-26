@@ -12,10 +12,17 @@
 #include "rtw8852a_table.h"
 #include "txrx.h"
 
+<<<<<<< HEAD
 #define RTW8852A_FW_FORMAT_MAX 1
 #define RTW8852A_FW_BASENAME "rtw89/rtw8852a_fw"
 #define RTW8852A_MODULE_FIRMWARE \
 	RTW89_GEN_MODULE_FWNAME(RTW8852A_FW_BASENAME, RTW8852A_FW_FORMAT_MAX)
+=======
+#define RTW8852A_FW_FORMAT_MAX 0
+#define RTW8852A_FW_BASENAME "rtw89/rtw8852a_fw"
+#define RTW8852A_MODULE_FIRMWARE \
+	RTW8852A_FW_BASENAME ".bin"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct rtw89_hfc_ch_cfg rtw8852a_hfc_chcfg_pcie[] = {
 	{128, 1896, grp_0}, /* ACH 0 */
@@ -2179,6 +2186,7 @@ static void rtw8852a_query_ppdu(struct rtw89_dev *rtwdev,
 		rtw8852a_fill_freq_with_ppdu(rtwdev, phy_ppdu, status);
 }
 
+<<<<<<< HEAD
 #define DECLARE_DIG_TABLE(name) \
 static const struct rtw89_phy_dig_gain_cfg name##_table = { \
 	.table = name, \
@@ -2230,6 +2238,8 @@ static const struct rtw89_phy_dig_gain_table rtw89_8852a_phy_dig_table = {
 	.cfg_tia_a = &rtw89_8852a_tia_gain_a_table
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_PM
 static const struct wiphy_wowlan_support rtw_wowlan_stub_8852a = {
 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT,
@@ -2316,11 +2326,16 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
 	.ops			= &rtw8852a_chip_ops,
 	.mac_def		= &rtw89_mac_gen_ax,
 	.phy_def		= &rtw89_phy_gen_ax,
+<<<<<<< HEAD
 	.fw_def			= {
 		.fw_basename	= RTW8852A_FW_BASENAME,
 		.fw_format_max	= RTW8852A_FW_FORMAT_MAX,
 		.fw_b_aid	= 0,
 	},
+=======
+	.fw_basename		= RTW8852A_FW_BASENAME,
+	.fw_format_max		= RTW8852A_FW_FORMAT_MAX,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.try_ce_fw		= false,
 	.bbmcu_nr		= 0,
 	.needed_fw_elms		= 0,
@@ -2378,7 +2393,11 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
 	.support_noise		= true,
 	.ul_tb_waveform_ctrl	= false,
 	.ul_tb_pwr_diff		= false,
+<<<<<<< HEAD
 	.rx_freq_from_ie	= true,
+=======
+	.rx_freq_frome_ie	= true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.hw_sec_hdr		= false,
 	.hw_mgmt_tx_encrypt	= false,
 	.hw_tkip_crypto		= false,
@@ -2418,10 +2437,13 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
 	.rf_para_ulink		= rtw89_btc_8852a_rf_ul,
 	.rf_para_dlink_num	= ARRAY_SIZE(rtw89_btc_8852a_rf_dl),
 	.rf_para_dlink		= rtw89_btc_8852a_rf_dl,
+<<<<<<< HEAD
 	.rf_para_ulink_v9	= NULL,
 	.rf_para_dlink_v9	= NULL,
 	.rf_para_ulink_num_v9	= 0,
 	.rf_para_dlink_num_v9	= 0,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ps_mode_supported	= BIT(RTW89_PS_MODE_RFOFF) |
 				  BIT(RTW89_PS_MODE_CLK_GATED) |
 				  BIT(RTW89_PS_MODE_PWR_GATED),

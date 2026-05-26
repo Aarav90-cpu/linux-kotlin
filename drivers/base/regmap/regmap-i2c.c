@@ -303,6 +303,7 @@ static const struct regmap_bus regmap_i2c_smbus_i2c_block_reg16 = {
 	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 2,
 };
 
+<<<<<<< HEAD
 /*
  * SMBus byte/word reg16 support for adapters that have SMBUS_BYTE_DATA
  * and SMBUS_WORD_DATA but lack I2C_FUNC_I2C and I2C_FUNC_SMBUS_I2C_BLOCK,
@@ -347,6 +348,8 @@ static const struct regmap_bus regmap_smbus_byte_word_reg16 = {
 	.max_raw_write = 1,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
 					const struct regmap_config *config)
 {
@@ -365,11 +368,14 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
 		i2c_check_functionality(i2c->adapter,
 					I2C_FUNC_SMBUS_I2C_BLOCK))
 		bus = &regmap_i2c_smbus_i2c_block_reg16;
+<<<<<<< HEAD
 	else if (config->val_bits == 8 && config->reg_bits == 16 &&
 		 i2c_check_functionality(i2c->adapter,
 					I2C_FUNC_SMBUS_BYTE_DATA |
 					I2C_FUNC_SMBUS_WORD_DATA))
 		bus = &regmap_smbus_byte_word_reg16;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (config->val_bits == 16 && config->reg_bits == 8 &&
 		 i2c_check_functionality(i2c->adapter,
 					 I2C_FUNC_SMBUS_WORD_DATA))

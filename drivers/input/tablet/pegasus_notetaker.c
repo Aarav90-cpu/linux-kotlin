@@ -36,7 +36,10 @@
  * T	Tip
  */
 
+<<<<<<< HEAD
 #include <linux/hid.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/input.h>
@@ -45,6 +48,13 @@
 #include <linux/workqueue.h>
 #include <linux/mutex.h>
 
+<<<<<<< HEAD
+=======
+/* USB HID defines */
+#define USB_REQ_GET_REPORT		0x01
+#define USB_REQ_SET_REPORT		0x09
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define USB_VENDOR_ID_PEGASUSTECH	0x0e20
 #define USB_DEVICE_ID_PEGASUS_NOTETAKER_EN100	0x0101
 
@@ -105,7 +115,11 @@ static int pegasus_control_msg(struct pegasus *pegasus, u8 *data, int len)
 
 	result = usb_control_msg(pegasus->usbdev,
 				 usb_sndctrlpipe(pegasus->usbdev, 0),
+<<<<<<< HEAD
 				 HID_REQ_SET_REPORT,
+=======
+				 USB_REQ_SET_REPORT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 USB_TYPE_VENDOR | USB_DIR_OUT,
 				 0, 0, cmd_buf, sizeof_buf,
 				 USB_CTRL_SET_TIMEOUT);

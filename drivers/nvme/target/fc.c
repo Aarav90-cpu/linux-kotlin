@@ -792,9 +792,15 @@ nvmet_fc_alloc_target_queue(struct nvmet_fc_tgt_assoc *assoc,
 	if (!queue)
 		return NULL;
 
+<<<<<<< HEAD
 	queue->work_q = alloc_workqueue("ntfc%d.%d.%d", WQ_PERCPU, 0,
 					assoc->tgtport->fc_target_port.port_num,
 					assoc->a_id, qid);
+=======
+	queue->work_q = alloc_workqueue("ntfc%d.%d.%d", 0, 0,
+				assoc->tgtport->fc_target_port.port_num,
+				assoc->a_id, qid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!queue->work_q)
 		goto out_free_queue;
 

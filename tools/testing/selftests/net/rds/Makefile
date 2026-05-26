@@ -7,7 +7,10 @@ TEST_PROGS := run.sh
 
 TEST_FILES := \
 	include.sh \
+<<<<<<< HEAD
 	settings \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	test.py \
 # end of TEST_FILES
 

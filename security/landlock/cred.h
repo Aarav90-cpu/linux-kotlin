@@ -115,7 +115,11 @@ static inline bool landlocked(const struct task_struct *const task)
  * @handle_layer: returned youngest layer handling a subset of @masks.  Not set
  *                if the function returns NULL.
  *
+<<<<<<< HEAD
  * Return: landlock_cred(@cred) if any access rights specified in @masks is
+=======
+ * Returns: landlock_cred(@cred) if any access rights specified in @masks is
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * handled, or NULL otherwise.
  */
 static inline const struct landlock_cred_security *

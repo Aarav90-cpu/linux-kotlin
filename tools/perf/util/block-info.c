@@ -303,7 +303,11 @@ static int block_range_entry(struct perf_hpp_fmt *fmt, struct perf_hpp *hpp,
 	char buf[128];
 	char *start_line, *end_line;
 
+<<<<<<< HEAD
 	symbol_conf.addr2line_disable_warn = true;
+=======
+	symbol_conf.disable_add2line_warn = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	start_line = map__srcline(he->ms.map, bi->sym->start + bi->start,
 				  he->ms.sym);

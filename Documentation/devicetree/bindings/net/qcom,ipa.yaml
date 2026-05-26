@@ -44,7 +44,10 @@ properties:
   compatible:
     oneOf:
       - enum:
+<<<<<<< HEAD
           - qcom,milos-ipa
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - qcom,msm8998-ipa
           - qcom,sc7180-ipa
           - qcom,sc7280-ipa
@@ -56,10 +59,13 @@ properties:
           - qcom,sm8550-ipa
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,qcm2290-ipa
           - const: qcom,sc7180-ipa
       - items:
           - enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8650-ipa
           - const: qcom,sm8550-ipa
 
@@ -170,6 +176,7 @@ properties:
       initializing IPA hardware.  Optional, and only used when
       Trust Zone performs early initialization.
 
+<<<<<<< HEAD
   sram:
     maxItems: 1
     description:
@@ -177,6 +184,8 @@ properties:
       on-chip SRAM), which is accessed by the IPA firmware and needs
       to be IOMMU-mapped from the OS.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - iommus

@@ -61,7 +61,11 @@ int uds_make_index_geometry(size_t bytes_per_page, u32 record_pages_per_chapter,
 	int result;
 	struct index_geometry *geometry;
 
+<<<<<<< HEAD
 	result = vdo_allocate(1, "geometry", &geometry);
+=======
+	result = vdo_allocate(1, struct index_geometry, "geometry", &geometry);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (result != VDO_SUCCESS)
 		return result;
 

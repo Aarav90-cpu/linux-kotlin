@@ -26,8 +26,14 @@ struct kernfs_iattrs {
 	struct timespec64	ia_mtime;
 	struct timespec64	ia_ctime;
 
+<<<<<<< HEAD
 	struct simple_xattrs	*xattrs;
 	struct simple_xattr_limits xattr_limits;
+=======
+	struct simple_xattrs	xattrs;
+	atomic_t		nr_user_xattrs;
+	atomic_t		user_xattr_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct kernfs_root {

@@ -19,9 +19,13 @@ properties:
     oneOf:
       - const: qcom,sm8650-lpass-lpi-pinctrl
       - items:
+<<<<<<< HEAD
           - enum:
               - qcom,glymur-lpass-lpi-pinctrl
               - qcom,sm8750-lpass-lpi-pinctrl
+=======
+          - const: qcom,sm8750-lpass-lpi-pinctrl
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: qcom,sm8650-lpass-lpi-pinctrl
 
   reg:

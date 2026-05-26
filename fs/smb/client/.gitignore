@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 smb1_mapping_table.c
 smb1_err_dos_map.c
 smb1_err_srv_map.c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 smb2_mapping_table.c

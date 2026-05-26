@@ -2033,7 +2033,11 @@ int uvc_register_video_device(struct uvc_device *dev,
 	int ret;
 
 	/* Initialize the video buffers queue. */
+<<<<<<< HEAD
 	ret = uvc_queue_init(stream, queue, type);
+=======
+	ret = uvc_queue_init(queue, type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -3167,7 +3171,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
+<<<<<<< HEAD
 	/* Intel Realsense D410/ASR depth camera */
+=======
+	/* Intel D410/ASR depth camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3176,7 +3184,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D415/ASRC depth camera */
+=======
+	/* Intel D415/ASRC depth camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3185,7 +3197,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D430/AWG depth camera */
+=======
+	/* Intel D430/AWG depth camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3194,7 +3210,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense RealSense D4M */
+=======
+	/* Intel RealSense D4M */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3203,7 +3223,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D435/AWGC depth camera */
+=======
+	/* Intel D435/AWGC depth camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3212,7 +3236,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D435i depth camera */
+=======
+	/* Intel D435i depth camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3221,6 +3249,7 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D555 Depth Camera */
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
@@ -3231,6 +3260,9 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
 	/* Intel Realsense D405 Depth Camera */
+=======
+	/* Intel D405 Depth Camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3239,7 +3271,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D455 Depth Camera */
+=======
+	/* Intel D455 Depth Camera */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3248,7 +3284,11 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D421 Depth Module */
+=======
+	/* Intel D421 Depth Module */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
 	  .idVendor		= 0x8086,
@@ -3257,6 +3297,7 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= 0,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+<<<<<<< HEAD
 	/* Intel Realsense D436 Camera */
 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
 				| USB_DEVICE_ID_MATCH_INT_INFO,
@@ -3266,6 +3307,8 @@ static const struct usb_device_id uvc_ids[] = {
 	  .bInterfaceSubClass	= 1,
 	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_UNDEFINED,
 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Generic USB Video Class */
 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_UNDEFINED) },
 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_15) },

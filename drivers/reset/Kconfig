@@ -85,9 +85,15 @@ config RESET_EIC7700
 
 config RESET_EYEQ
 	bool "Mobileye EyeQ reset controller"
+<<<<<<< HEAD
 	depends on EYEQ || COMPILE_TEST
 	select AUXILIARY_BUS
 	default EYEQ
+=======
+	depends on MACH_EYEQ5 || MACH_EYEQ6H || COMPILE_TEST
+	select AUXILIARY_BUS
+	default MACH_EYEQ5 || MACH_EYEQ6H
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This enables the Mobileye EyeQ reset controller, used in EyeQ5, EyeQ6L
 	  and EyeQ6H SoCs.
@@ -257,8 +263,11 @@ config RESET_RZG2L_USBPHY_CTRL
 config RESET_RZV2H_USB2PHY
 	tristate "Renesas RZ/V2H(P) (and similar SoCs) USB2PHY Reset driver"
 	depends on ARCH_RENESAS || COMPILE_TEST
+<<<<<<< HEAD
 	select AUXILIARY_BUS
 	select REGMAP_MMIO
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for USB2PHY Port reset Control found on the RZ/V2H(P) SoC
 	  (and similar SoCs).
@@ -293,6 +302,7 @@ config RESET_SIMPLE
 	   - SiFive FU740 SoCs
 	   - Sophgo SoCs
 
+<<<<<<< HEAD
 config RESET_SKY1
 	bool "Cix Sky1 reset controller"
 	depends on ARCH_CIX || COMPILE_TEST
@@ -300,6 +310,8 @@ config RESET_SKY1
 	help
 	  This enables the reset controller for Cix Sky1.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config RESET_SOCFPGA
 	bool "SoCFPGA Reset Driver" if COMPILE_TEST && (!ARM || !ARCH_INTEL_SOCFPGA)
 	default ARM && ARCH_INTEL_SOCFPGA
@@ -324,6 +336,7 @@ config RESET_SUNXI
 	help
 	  This enables the reset driver for Allwinner SoCs.
 
+<<<<<<< HEAD
 config RESET_TENSTORRENT_ATLANTIS
 	tristate "Tenstorrent atlantis reset driver"
 	depends on ARCH_TENSTORRENT || COMPILE_TEST
@@ -335,6 +348,8 @@ config RESET_TENSTORRENT_ATLANTIS
 	  Enable this option to be able to use hardware
 	  resets on Atalantis based systems.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config RESET_TH1520
 	tristate "T-HEAD TH1520 reset controller"
 	depends on ARCH_THEAD || COMPILE_TEST

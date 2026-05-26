@@ -14,6 +14,10 @@
 #include <asm/oplib.h>
 #include <asm/pgtable.h>
 #include <asm/trap_block.h>
+<<<<<<< HEAD
+=======
+#include <asm/xor.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void *__memscan_zero(void *, size_t);
 void *__memscan_generic(void *, int, size_t);

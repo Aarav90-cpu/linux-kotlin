@@ -29,7 +29,10 @@
 #include <drm/ttm/ttm_placement.h>
 #include "amdgpu_vram_mgr.h"
 #include "amdgpu_hmm.h"
+<<<<<<< HEAD
 #include "amdgpu_gmc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define AMDGPU_PL_GDS		(TTM_PL_PRIV + 0)
 #define AMDGPU_PL_GWS		(TTM_PL_PRIV + 1)
@@ -39,7 +42,12 @@
 #define AMDGPU_PL_MMIO_REMAP	(TTM_PL_PRIV + 5)
 #define __AMDGPU_PL_NUM	(TTM_PL_PRIV + 6)
 
+<<<<<<< HEAD
 #define AMDGPU_GTT_MAX_TRANSFER_SIZE	1024
+=======
+#define AMDGPU_GTT_MAX_TRANSFER_SIZE	512
+#define AMDGPU_GTT_NUM_TRANSFER_WINDOWS	2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern const struct attribute_group amdgpu_vram_mgr_attr_group;
 extern const struct attribute_group amdgpu_gtt_mgr_attr_group;
@@ -54,6 +62,7 @@ struct amdgpu_gtt_mgr {
 
 struct amdgpu_ttm_buffer_entity {
 	struct drm_sched_entity base;
+<<<<<<< HEAD
 	struct mutex		lock;
 	struct drm_mm_node	gart_node;
 	u64			gart_window_offs[2];
@@ -77,6 +86,8 @@ struct amdgpu_vram_resv {
 	struct amdgpu_bo	*bo;
 	void			*cpu_ptr;
 	bool			needs_cpu_map;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct amdgpu_mman {
@@ -90,6 +101,7 @@ struct amdgpu_mman {
 	struct amdgpu_ring			*buffer_funcs_ring;
 	bool					buffer_funcs_enabled;
 
+<<<<<<< HEAD
 	/* @default_entity: for workarounds, has no gart windows */
 	struct amdgpu_ttm_buffer_entity default_entity;
 	struct amdgpu_ttm_buffer_entity *clear_entities;
@@ -98,14 +110,49 @@ struct amdgpu_mman {
 	struct amdgpu_ttm_buffer_entity move_entities[TTM_NUM_MOVE_FENCES];
 	atomic_t next_move_entity;
 	u32 num_move_entities;
+=======
+	struct mutex				gtt_window_lock;
+
+	struct amdgpu_ttm_buffer_entity default_entity;
+	struct amdgpu_ttm_buffer_entity clear_entity;
+	struct amdgpu_ttm_buffer_entity move_entity;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct amdgpu_vram_mgr vram_mgr;
 	struct amdgpu_gtt_mgr gtt_mgr;
 	struct ttm_resource_manager preempt_mgr;
 
+<<<<<<< HEAD
 	bool			keep_stolen_vga_memory;
 
 	struct amdgpu_vram_resv		resv_region[AMDGPU_RESV_MAX];
+=======
+	uint64_t		stolen_vga_size;
+	struct amdgpu_bo	*stolen_vga_memory;
+	uint64_t		stolen_extended_size;
+	struct amdgpu_bo	*stolen_extended_memory;
+	bool			keep_stolen_vga_memory;
+
+	struct amdgpu_bo	*stolen_reserved_memory;
+	uint64_t		stolen_reserved_offset;
+	uint64_t		stolen_reserved_size;
+
+	/* fw reserved memory */
+	struct amdgpu_bo		*fw_reserved_memory;
+	struct amdgpu_bo		*fw_reserved_memory_extend;
+
+	/* firmware VRAM reservation */
+	u64		fw_vram_usage_start_offset;
+	u64		fw_vram_usage_size;
+	struct amdgpu_bo	*fw_vram_usage_reserved_bo;
+	void		*fw_vram_usage_va;
+
+	/* driver VRAM reservation */
+	u64		drv_vram_usage_start_offset;
+	u64		drv_vram_usage_size;
+	struct amdgpu_bo	*drv_vram_usage_reserved_bo;
+	void		*drv_vram_usage_va;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* PAGE_SIZE'd BO for process memory r/w over SDMA. */
 	struct amdgpu_bo	*sdma_access_bo;
@@ -173,6 +220,7 @@ void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
 bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
 			    struct ttm_resource *res);
 
+<<<<<<< HEAD
 void amdgpu_ttm_init_vram_resv(struct amdgpu_device *adev,
 				enum amdgpu_resv_region_id id,
 				uint64_t offset, uint64_t size,
@@ -182,6 +230,8 @@ int amdgpu_ttm_mark_vram_reserved(struct amdgpu_device *adev,
 void amdgpu_ttm_unmark_vram_reserved(struct amdgpu_device *adev,
 				     enum amdgpu_resv_region_id id);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int amdgpu_ttm_init(struct amdgpu_device *adev);
 void amdgpu_ttm_fini(struct amdgpu_device *adev);
 void amdgpu_ttm_set_buffer_funcs_status(struct amdgpu_device *adev,
@@ -202,7 +252,10 @@ int amdgpu_fill_buffer(struct amdgpu_ttm_buffer_entity *entity,
 		       struct dma_resv *resv,
 		       struct dma_fence **f,
 		       u64 k_job_id);
+<<<<<<< HEAD
 struct amdgpu_ttm_buffer_entity *amdgpu_ttm_next_clear_entity(struct amdgpu_device *adev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int amdgpu_ttm_alloc_gart(struct ttm_buffer_object *bo);
 void amdgpu_ttm_recover_gart(struct ttm_buffer_object *tbo);
@@ -219,6 +272,7 @@ static inline int amdgpu_ttm_tt_get_user_pages(struct amdgpu_bo *bo,
 }
 #endif
 
+<<<<<<< HEAD
 /**
  * amdgpu_compute_gart_address() - Returns GART address of an entity's window
  * @gmc: The &struct amdgpu_gmc instance to use
@@ -240,6 +294,8 @@ static inline u64 amdgpu_gtt_node_to_byte_offset(const struct drm_mm_node *gtt_n
 	return gtt_node->start * (u64)PAGE_SIZE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void amdgpu_ttm_tt_set_user_pages(struct ttm_tt *ttm, struct amdgpu_hmm_range *range);
 int amdgpu_ttm_tt_get_userptr(const struct ttm_buffer_object *tbo,
 			      uint64_t *user_addr);

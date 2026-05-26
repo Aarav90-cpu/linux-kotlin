@@ -909,8 +909,12 @@ union dmub_fw_meta_feature_bits {
 	struct {
 		uint32_t shared_state_link_detection : 1; /**< 1 supports link detection via shared state */
 		uint32_t cursor_offload_v1_support: 1; /**< 1 supports cursor offload */
+<<<<<<< HEAD
 		uint32_t inbox0_lock_support: 1; /**< 1 supports inbox0 lock mechanism */
 		uint32_t reserved : 29;
+=======
+		uint32_t reserved : 30;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} bits; /**< status bits */
 	uint32_t all; /**< 32-bit access to status bits */
 };
@@ -1536,12 +1540,20 @@ enum dmub_gpint_command {
 	 *       1 - Enable ips measurement
 	 */
 	DMUB_GPINT__IPS_RESIDENCY = 121,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Enable measurements for various task duration
 	 * ARGS: 0 - Disable measurement
 	 *       1 - Enable measurement
 	 */
 	DMUB_GPINT__TRACE_DMUB_WAKE_ACTIVITY = 123,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS residency in microseconds
 	 * ARGS: 0 - Return IPS1 residency
@@ -1551,18 +1563,30 @@ enum dmub_gpint_command {
 	 * RETURN: Total residency in microseconds - lower 32 bits
 	 */
 	DMUB_GPINT__GET_IPS_RESIDENCY_DURATION_US_LO = 124,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS1 histogram counts
 	 * ARGS: Bucket index
 	 * RETURN: Total count for the bucket
 	 */
 	DMUB_GPINT__GET_IPS1_HISTOGRAM_COUNTER = 125,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS2 histogram counts
 	 * ARGS: Bucket index
 	 * RETURN: Total count for the bucket
 	 */
 	DMUB_GPINT__GET_IPS2_HISTOGRAM_COUNTER = 126,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS residency
 	 * ARGS: 0 - Return IPS1 residency
@@ -1572,18 +1596,30 @@ enum dmub_gpint_command {
 	 * RETURN: Total residency in milli-percent.
 	 */
 	DMUB_GPINT__GET_IPS_RESIDENCY_PERCENT = 127,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS1_RCG histogram counts
 	 * ARGS: Bucket index
 	 * RETURN: Total count for the bucket
 	 */
 	DMUB_GPINT__GET_IPS1_RCG_HISTOGRAM_COUNTER = 128,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS1_ONO2_ON histogram counts
 	 * ARGS: Bucket index
 	 * RETURN: Total count for the bucket
 	 */
 	DMUB_GPINT__GET_IPS1_ONO2_ON_HISTOGRAM_COUNTER = 129,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS entry counter during residency measurement
 	 * ARGS: 0 - Return IPS1 entry counts
@@ -1593,6 +1629,10 @@ enum dmub_gpint_command {
 	 * RETURN: Entry counter for selected IPS mode
 	 */
 	DMUB_GPINT__GET_IPS_RESIDENCY_ENTRY_COUNTER = 130,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS inactive residency in microseconds
 	 * ARGS: 0 - Return IPS1_MAX residency
@@ -1602,6 +1642,10 @@ enum dmub_gpint_command {
 	 * RETURN: Total inactive residency in microseconds - lower 32 bits
 	 */
 	DMUB_GPINT__GET_IPS_INACTIVE_RESIDENCY_DURATION_US_LO = 131,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS inactive residency in microseconds
 	 * ARGS: 0 - Return IPS1_MAX residency
@@ -1611,6 +1655,10 @@ enum dmub_gpint_command {
 	 * RETURN: Total inactive residency in microseconds - upper 32 bits
 	 */
 	DMUB_GPINT__GET_IPS_INACTIVE_RESIDENCY_DURATION_US_HI = 132,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/**
 	 * DESC: Gets IPS residency in microseconds
 	 * ARGS: 0 - Return IPS1 residency
@@ -1669,7 +1717,11 @@ union dmub_inbox0_cmd_lock_hw {
 
 		uint32_t lock: 1;			/**< Lock */
 		uint32_t should_release: 1;		/**< Release */
+<<<<<<< HEAD
 		uint32_t reserved: 7; 			/**< Reserved for extending more clients, HW, etc. */
+=======
+		uint32_t reserved: 7;			/**< Reserved for extending more clients, HW, etc. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} bits;
 	uint32_t all;
 };
@@ -1887,6 +1939,7 @@ enum dmub_cmd_type {
 	 */
 	DMUB_CMD__PR = 94,
 
+<<<<<<< HEAD
 	/**
 	 * Command type used for all IHC commands.
 	 */
@@ -1896,6 +1949,8 @@ enum dmub_cmd_type {
 	 * Command type use for boot time crc commands.
 	 */
 	DMUB_CMD__BOOT_TIME_CRC = 96,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * Command type use for VBIOS shared commands.
@@ -2609,9 +2664,15 @@ struct dmub_fams2_stream_static_state {
 	uint8_t allow_to_target_delay_otg_vlines; // time from allow vline to target vline
 	union {
 		struct {
+<<<<<<< HEAD
 			uint8_t is_drr : 1; // stream is DRR enabled
 			uint8_t clamp_vtotal_min : 1; // clamp vtotal to min instead of nominal
 			uint8_t min_ttu_vblank_usable : 1; // if min ttu vblank is above wm, no force pstate is needed in blank
+=======
+			uint8_t is_drr: 1; // stream is DRR enabled
+			uint8_t clamp_vtotal_min: 1; // clamp vtotal to min instead of nominal
+			uint8_t min_ttu_vblank_usable: 1; // if min ttu vblank is above wm, no force pstate is needed in blank
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} bits;
 		uint8_t all;
 	} config;
@@ -4436,8 +4497,11 @@ enum dmub_cmd_replay_general_subtype {
 	REPLAY_GENERAL_CMD_SET_LOW_RR_ACTIVATE,
 	REPLAY_GENERAL_CMD_VIDEO_CONFERENCING,
 	REPLAY_GENERAL_CMD_SET_CONTINUOUSLY_RESYNC,
+<<<<<<< HEAD
 	REPLAY_GENERAL_CMD_SET_COASTING_VTOTAL_WITHOUT_FRAME_UPDATE,
 	REPLAY_GENERAL_CMD_LIVE_CAPTURE_WITH_CVT,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dmub_alpm_auxless_data {
@@ -4656,6 +4720,7 @@ struct dmub_rb_cmd_replay_enable_data {
 	 * This does not support HDMI/DP2 for now.
 	 */
 	uint8_t phy_rate;
+<<<<<<< HEAD
 	/**
 	 * @hpo_stream_enc_inst: HPO stream encoder instance
 	 */
@@ -4668,6 +4733,8 @@ struct dmub_rb_cmd_replay_enable_data {
 	 * @pad: Align structure to 4 byte boundary.
 	 */
 	uint8_t pad[2];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -4973,6 +5040,7 @@ union dmub_replay_cmd_set {
 };
 
 /**
+<<<<<<< HEAD
  * IHC command sub-types.
  */
 enum dmub_cmd_ihc_type {
@@ -5019,6 +5087,8 @@ struct dmub_rb_cmd_ihc {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * SMART POWER OLED command sub-types.
  */
 enum dmub_cmd_smart_power_oled_type {
@@ -5281,8 +5351,13 @@ enum dmub_cmd_lsdma_type {
 	 */
 	DMUB_CMD__LSDMA_LINEAR_COPY = 1,
 	/**
+<<<<<<< HEAD
 	* LSDMA copies data from source to destination linearly in sub window
 	*/
+=======
+	 * LSDMA copies data from source to destination linearly in sub window
+	 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMUB_CMD__LSDMA_LINEAR_SUB_WINDOW_COPY = 2,
 	/**
 	 * Send the tiled-to-tiled copy command
@@ -6272,7 +6347,10 @@ struct dmub_cmd_edid_cea_amd_vsdb {
 	uint16_t amd_vsdb_version;	/**< AMD VSDB version */
 	uint16_t min_frame_rate;	/**< Maximum frame rate */
 	uint16_t max_frame_rate;	/**< Minimum frame rate */
+<<<<<<< HEAD
 	uint8_t freesync_mccs_vcp_code; /**< Freesync MCCS VCP code */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -6846,6 +6924,7 @@ struct dmub_rb_cmd_pr_general_cmd {
 };
 
 /**
+<<<<<<< HEAD
  * Command type of a DMUB_CMD__BOOT_TIME_CRC command
  */
 enum dmub_cmd_boot_time_crc_type {
@@ -6869,6 +6948,8 @@ struct dmub_rb_cmd_boot_time_crc_init {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * union dmub_rb_cmd - DMUB inbox command.
  */
 union dmub_rb_cmd {
@@ -7225,6 +7306,7 @@ union dmub_rb_cmd {
 	struct dmub_rb_cmd_pr_update_state pr_update_state;
 
 	struct dmub_rb_cmd_pr_general_cmd pr_general_cmd;
+<<<<<<< HEAD
 	/**
 	 * Definition of a DMUB_CMD__IHC command.
 	 */
@@ -7233,6 +7315,8 @@ union dmub_rb_cmd {
 	 * Definition of a DMUB_CMD__BOOT_TIME_CRC_INIT command.
 	 */
 	struct dmub_rb_cmd_boot_time_crc_init boot_time_crc_init;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**

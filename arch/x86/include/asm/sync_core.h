@@ -93,7 +93,11 @@ static __always_inline void sync_core(void)
  * to user-mode. x86 implements return to user-space through sysexit,
  * sysrel, and sysretq, which are not core serializing.
  */
+<<<<<<< HEAD
 static inline void sync_core_before_usermode(void)
+=======
+static __always_inline void sync_core_before_usermode(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* With PTI, we unconditionally serialize before running user code. */
 	if (static_cpu_has(X86_FEATURE_PTI))

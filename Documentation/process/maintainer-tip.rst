@@ -352,7 +352,11 @@ following tag ordering scheme:
      Changelog text starts here....
 
    so the authorship is preserved. The 'From:' line has to be followed
+<<<<<<< HEAD
    by an empty newline. If that 'From:' line is missing, then the patch
+=======
+   by a empty newline. If that 'From:' line is missing, then the patch
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    would be attributed to the person who sent (transported, handled) it.
    The 'From:' line is automatically removed when the patch is applied
    and does not show up in the final git changelog. It merely affects

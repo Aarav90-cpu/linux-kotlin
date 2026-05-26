@@ -58,7 +58,11 @@ static void tpr_guest_irq_queue(void)
 	if (is_x2apic) {
 		x2apic_write_reg(APIC_SELF_IPI, IRQ_VECTOR);
 	} else {
+<<<<<<< HEAD
 		u32 icr, icr2;
+=======
+		uint32_t icr, icr2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		icr = APIC_DEST_SELF | APIC_DEST_PHYSICAL | APIC_DM_FIXED |
 			IRQ_VECTOR;
@@ -69,9 +73,15 @@ static void tpr_guest_irq_queue(void)
 	}
 }
 
+<<<<<<< HEAD
 static u8 tpr_guest_tpr_get(void)
 {
 	u32 taskpri;
+=======
+static uint8_t tpr_guest_tpr_get(void)
+{
+	uint32_t taskpri;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_x2apic)
 		taskpri = x2apic_read_reg(APIC_TASKPRI);
@@ -81,9 +91,15 @@ static u8 tpr_guest_tpr_get(void)
 	return GET_APIC_PRI(taskpri);
 }
 
+<<<<<<< HEAD
 static u8 tpr_guest_ppr_get(void)
 {
 	u32 procpri;
+=======
+static uint8_t tpr_guest_ppr_get(void)
+{
+	uint32_t procpri;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (is_x2apic)
 		procpri = x2apic_read_reg(APIC_PROCPRI);
@@ -93,9 +109,15 @@ static u8 tpr_guest_ppr_get(void)
 	return GET_APIC_PRI(procpri);
 }
 
+<<<<<<< HEAD
 static u8 tpr_guest_cr8_get(void)
 {
 	u64 cr8;
+=======
+static uint8_t tpr_guest_cr8_get(void)
+{
+	uint64_t cr8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	asm volatile ("mov %%cr8, %[cr8]\n\t" : [cr8] "=r"(cr8));
 
@@ -104,7 +126,11 @@ static u8 tpr_guest_cr8_get(void)
 
 static void tpr_guest_check_tpr_ppr_cr8_equal(void)
 {
+<<<<<<< HEAD
 	u8 tpr;
+=======
+	uint8_t tpr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tpr = tpr_guest_tpr_get();
 
@@ -157,19 +183,31 @@ static void tpr_guest_code(void)
 	GUEST_DONE();
 }
 
+<<<<<<< HEAD
 static u8 lapic_tpr_get(struct kvm_lapic_state *xapic)
+=======
+static uint8_t lapic_tpr_get(struct kvm_lapic_state *xapic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return GET_APIC_PRI(*((u32 *)&xapic->regs[APIC_TASKPRI]));
 }
 
+<<<<<<< HEAD
 static void lapic_tpr_set(struct kvm_lapic_state *xapic, u8 val)
+=======
+static void lapic_tpr_set(struct kvm_lapic_state *xapic, uint8_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 *taskpri = (u32 *)&xapic->regs[APIC_TASKPRI];
 
 	*taskpri = SET_APIC_PRI(*taskpri, val);
 }
 
+<<<<<<< HEAD
 static u8 sregs_tpr(struct kvm_sregs *sregs)
+=======
+static uint8_t sregs_tpr(struct kvm_sregs *sregs)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return sregs->cr8 & GENMASK(3, 0);
 }
@@ -197,7 +235,11 @@ static void test_tpr_check_tpr_cr8_equal(struct kvm_vcpu *vcpu)
 static void test_tpr_set_tpr_for_irq(struct kvm_vcpu *vcpu, bool mask)
 {
 	struct kvm_lapic_state xapic;
+<<<<<<< HEAD
 	u8 tpr;
+=======
+	uint8_t tpr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	static_assert(IRQ_VECTOR >= 16, "invalid IRQ vector number");
 	tpr = IRQ_VECTOR / 16;

@@ -31,10 +31,15 @@
 #include "dml2_translation_helper.h"
 #include "dml2_mall_phantom.h"
 #include "dml2_dc_resource_mgmt.h"
+<<<<<<< HEAD
 #include "dml2_wrapper.h"
 #include "dml2_wrapper_fpu.h"
 #include "dml21_wrapper.h"
 #include "dml21_wrapper_fpu.h"
+=======
+#include "dml21_wrapper.h"
+#include "dml2_wrapper_fpu.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void initialize_dml2_ip_params(struct dml2_context *dml2, const struct dc *in_dc, struct ip_params_st *out)
 {
@@ -548,6 +553,24 @@ void dml2_apply_debug_options(const struct dc *dc, struct dml2_context *dml2)
 	}
 }
 
+<<<<<<< HEAD
+=======
+inline struct dml2_context *dml2_allocate_memory(void)
+{
+	return (struct dml2_context *) vzalloc(sizeof(struct dml2_context));
+}
+
+void dml2_destroy(struct dml2_context *dml2)
+{
+	if (!dml2)
+		return;
+
+	if (dml2->architecture == dml2_architecture_21)
+		dml21_destroy(dml2);
+	vfree(dml2);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dml2_extract_dram_and_fclk_change_support(struct dml2_context *dml2,
 	unsigned int *fclk_change_support, unsigned int *dram_clk_change_support)
 {

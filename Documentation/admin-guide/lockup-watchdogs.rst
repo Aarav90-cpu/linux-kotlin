@@ -16,7 +16,11 @@ details), and a compile option, "BOOTPARAM_SOFTLOCKUP_PANIC", are
 provided for this.
 
 A 'hardlockup' is defined as a bug that causes the CPU to loop in
+<<<<<<< HEAD
 kernel mode for several seconds (see "Implementation" below for
+=======
+kernel mode for more than 10 seconds (see "Implementation" below for
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 details), without letting other interrupts have a chance to run.
 Similarly to the softlockup case, the current stack trace is displayed
 upon detection and the system will stay locked up unless the default
@@ -30,6 +34,7 @@ timeout is set through the confusingly named "kernel.panic" sysctl),
 to cause the system to reboot automatically after a specified amount
 of time.
 
+<<<<<<< HEAD
 Configuration
 =============
 
@@ -66,11 +71,34 @@ Softlockup Detector
 The watchdog job is scheduled by the hrtimer and runs in a stop scheduling
 thread. It updates a timestamp every time it is scheduled. If that timestamp
 is not updated for 2*watchdog_thresh seconds (the softlockup threshold) the
+=======
+Implementation
+==============
+
+The soft and hard lockup detectors are built on top of the hrtimer and
+perf subsystems, respectively. A direct consequence of this is that,
+in principle, they should work in any architecture where these
+subsystems are present.
+
+A periodic hrtimer runs to generate interrupts and kick the watchdog
+job. An NMI perf event is generated every "watchdog_thresh"
+(compile-time initialized to 10 and configurable through sysctl of the
+same name) seconds to check for hardlockups. If any CPU in the system
+does not receive any hrtimer interrupt during that time the
+'hardlockup detector' (the handler for the NMI perf event) will
+generate a kernel warning or call panic, depending on the
+configuration.
+
+The watchdog job runs in a stop scheduling thread that updates a
+timestamp every time it is scheduled. If that timestamp is not updated
+for 2*watchdog_thresh seconds (the softlockup threshold) the
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 'softlockup detector' (coded inside the hrtimer callback function)
 will dump useful debug information to the system log, after which it
 will call panic if it was instructed to do so or resume execution of
 other kernel code.
 
+<<<<<<< HEAD
 Hardlockup Detector (NMI/Perf)
 ------------------------------
 
@@ -159,6 +187,16 @@ With a default check interval of 4 seconds (watchdog_thresh = 10):
 
 Watchdog Core Exclusion
 =======================
+=======
+The period of the hrtimer is 2*watchdog_thresh/5, which means it has
+two or three chances to generate an interrupt before the hardlockup
+detector kicks in.
+
+As explained above, a kernel knob is provided that allows
+administrators to configure the period of the hrtimer and the perf
+event. The right value for a particular environment is a trade-off
+between fast response to lockups and detection overhead.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 By default, the watchdog runs on all online cores.  However, on a
 kernel configured with NO_HZ_FULL, by default the watchdog runs only

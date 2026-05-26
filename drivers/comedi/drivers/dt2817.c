@@ -103,8 +103,12 @@ static int dt2817_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	int ret;
 	struct comedi_subdevice *s;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x5,
 					  0x200, 0x3ff, 8);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x5);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

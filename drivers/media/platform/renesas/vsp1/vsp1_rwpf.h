@@ -21,9 +21,12 @@
 #define RWPF_PAD_SINK				0
 #define RWPF_PAD_SOURCE				1
 
+<<<<<<< HEAD
 #define RWPF_MIN_WIDTH				1
 #define RWPF_MIN_HEIGHT				1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct v4l2_ctrl;
 struct vsp1_dl_manager;
 struct vsp1_rwpf;
@@ -39,6 +42,12 @@ struct vsp1_rwpf {
 
 	struct vsp1_video *video;
 
+<<<<<<< HEAD
+=======
+	unsigned int max_width;
+	unsigned int max_height;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct v4l2_pix_format_mplane format;
 	const struct vsp1_format_info *fmtinfo;
 	unsigned int brx_input;

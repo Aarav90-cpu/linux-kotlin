@@ -19,6 +19,10 @@ enum rsmu_type {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct rsmu_ddata - device data structure for sub devices.
  *
  * @dev:    i2c/spi device.

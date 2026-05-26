@@ -5,7 +5,11 @@
  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
  * Copyright 2013-2014  Intel Mobile Communications GmbH
  * Copyright 2015-2017	Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright (C) 2018-2026 Intel Corporation
+=======
+ * Copyright (C) 2018-2025 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -254,8 +258,11 @@ void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
 void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
 		       struct wireless_dev *wdev)
 {
+<<<<<<< HEAD
 	struct cfg80211_nan_local_sched empty_sched = {};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lockdep_assert_held(&rdev->wiphy.mtx);
 
 	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_NAN))
@@ -264,6 +271,7 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
 	if (!wdev_running(wdev))
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * If there is a scheduled update pending, mark it as canceled, so the
 	 * empty schedule will be accepted
@@ -273,6 +281,8 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
 	/* Unschedule all */
 	cfg80211_nan_set_local_schedule(rdev, wdev, &empty_sched);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rdev_stop_nan(rdev, wdev);
 	wdev->is_running = false;
 
@@ -281,6 +291,7 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
 	rdev->opencount--;
 }
 
+<<<<<<< HEAD
 int cfg80211_nan_set_local_schedule(struct cfg80211_registered_device *rdev,
 				    struct wireless_dev *wdev,
 				    struct cfg80211_nan_local_sched *sched)
@@ -322,6 +333,8 @@ int cfg80211_nan_set_local_schedule(struct cfg80211_registered_device *rdev,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy)
 {
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
@@ -329,21 +342,32 @@ void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy)
 
 	ASSERT_RTNL();
 
+<<<<<<< HEAD
 	/*
 	 * Some netdev interfaces need to be closed before some non-netdev
 	 * ones, i.e. NAN_DATA interfaces need to be closed before the NAN
 	 * interface
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
 		if (wdev->netdev) {
 			dev_close(wdev->netdev);
 			continue;
 		}
+<<<<<<< HEAD
 	}
 
 	guard(wiphy)(wiphy);
 
 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
+=======
+
+		/* otherwise, check iftype */
+
+		guard(wiphy)(wiphy);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		switch (wdev->iftype) {
 		case NL80211_IFTYPE_P2P_DEVICE:
 			cfg80211_stop_p2p_device(rdev, wdev);
@@ -401,18 +425,26 @@ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
 
 	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
 		if (wdev->nl_owner_dead) {
+<<<<<<< HEAD
 			cfg80211_close_dependents(rdev, wdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (wdev->netdev)
 				dev_close(wdev->netdev);
 
 			guard(wiphy)(&rdev->wiphy);
 
+<<<<<<< HEAD
+=======
+			cfg80211_leave(rdev, wdev, -1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cfg80211_remove_virtual_intf(rdev, wdev);
 		}
 	}
 }
 
+<<<<<<< HEAD
 void cfg80211_close_dependents(struct cfg80211_registered_device *rdev,
 			       struct wireless_dev *wdev)
 {
@@ -428,6 +460,8 @@ void cfg80211_close_dependents(struct cfg80211_registered_device *rdev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void cfg80211_destroy_iface_wk(struct work_struct *work)
 {
 	struct cfg80211_registered_device *rdev;
@@ -835,10 +869,13 @@ int wiphy_register(struct wiphy *wiphy)
 		     !(wiphy->nan_supported_bands & BIT(NL80211_BAND_2GHZ)))))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (WARN_ON((wiphy->interface_modes & BIT(NL80211_IFTYPE_NAN_DATA)) &&
 		    !wiphy->nan_capa.phy.ht.ht_supported))
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
 		return -EINVAL;
 
@@ -1445,8 +1482,14 @@ void cfg80211_update_iface_num(struct cfg80211_registered_device *rdev,
 		rdev->num_running_monitor_ifaces += num;
 }
 
+<<<<<<< HEAD
 void cfg80211_leave_locked(struct cfg80211_registered_device *rdev,
 			   struct wireless_dev *wdev, int link_id)
+=======
+void cfg80211_leave(struct cfg80211_registered_device *rdev,
+		    struct wireless_dev *wdev,
+		    int link_id)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct net_device *dev = wdev->netdev;
 	struct cfg80211_sched_scan_request *pos, *tmp;
@@ -1497,7 +1540,10 @@ void cfg80211_leave_locked(struct cfg80211_registered_device *rdev,
 		break;
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_MONITOR:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* nothing to do */
 		break;
 	case NL80211_IFTYPE_UNSPECIFIED:
@@ -1508,6 +1554,7 @@ void cfg80211_leave_locked(struct cfg80211_registered_device *rdev,
 	}
 }
 
+<<<<<<< HEAD
 void cfg80211_leave(struct cfg80211_registered_device *rdev,
 		    struct wireless_dev *wdev, int link_id)
 {
@@ -1521,6 +1568,8 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
 	cfg80211_leave_locked(rdev, wdev, link_id);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void cfg80211_stop_link(struct wiphy *wiphy, struct wireless_dev *wdev,
 			int link_id, gfp_t gfp)
 {
@@ -1536,9 +1585,12 @@ void cfg80211_stop_link(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 	trace_cfg80211_stop_link(wiphy, wdev, link_id);
 
+<<<<<<< HEAD
 	if (wdev->iftype == NL80211_IFTYPE_NAN)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ev = kzalloc_obj(*ev, gfp);
 	if (!ev)
 		return;
@@ -1689,9 +1741,16 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
 		}
 		break;
 	case NETDEV_GOING_DOWN:
+<<<<<<< HEAD
 		cfg80211_leave(rdev, wdev, -1);
 		scoped_guard(wiphy, &rdev->wiphy)
 			cfg80211_remove_links(wdev);
+=======
+		scoped_guard(wiphy, &rdev->wiphy) {
+			cfg80211_leave(rdev, wdev, -1);
+			cfg80211_remove_links(wdev);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* since we just did cfg80211_leave() nothing to do there */
 		cancel_work_sync(&wdev->disconnect_wk);
 		cancel_work_sync(&wdev->pmsr_free_wk);
@@ -1772,6 +1831,7 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
 
 		if (rfkill_blocked(rdev->wiphy.rfkill))
 			return notifier_from_errno(-ERFKILL);
+<<<<<<< HEAD
 
 		/* NAN_DATA interfaces require a running NAN interface */
 		if (wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
@@ -1789,6 +1849,8 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
 			if (!nan_started)
 				return notifier_from_errno(-ENOLINK);
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return NOTIFY_DONE;

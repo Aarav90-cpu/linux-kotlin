@@ -483,16 +483,24 @@ qtnf_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 static int
+<<<<<<< HEAD
 qtnf_get_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		 const u8 *mac, struct station_info *sinfo)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(wdev->netdev);
+=======
+qtnf_get_station(struct wiphy *wiphy, struct net_device *dev,
+		 const u8 *mac, struct station_info *sinfo)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sinfo->generation = vif->generation;
 	return qtnf_cmd_get_sta_info(vif, mac, sinfo);
 }
 
 static int
+<<<<<<< HEAD
 qtnf_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		  int idx, u8 *mac, struct station_info *sinfo)
 {
@@ -503,6 +511,18 @@ qtnf_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 	switch (wdev->iftype) {
 	case NL80211_IFTYPE_STATION:
 		if (idx != 0 || !wdev->connected)
+=======
+qtnf_dump_station(struct wiphy *wiphy, struct net_device *dev,
+		  int idx, u8 *mac, struct station_info *sinfo)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+	const struct qtnf_sta_node *sta_node;
+	int ret;
+
+	switch (vif->wdev.iftype) {
+	case NL80211_IFTYPE_STATION:
+		if (idx != 0 || !vif->wdev.connected)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOENT;
 
 		ether_addr_copy(mac, vif->bssid);
@@ -520,9 +540,15 @@ qtnf_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 	ret = qtnf_cmd_get_sta_info(vif, mac, sinfo);
 
+<<<<<<< HEAD
 	if (wdev->iftype == NL80211_IFTYPE_AP) {
 		if (ret == -ENOENT) {
 			cfg80211_del_sta(&vif->wdev, mac, GFP_KERNEL);
+=======
+	if (vif->wdev.iftype == NL80211_IFTYPE_AP) {
+		if (ret == -ENOENT) {
+			cfg80211_del_sta(vif->netdev, mac, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sinfo->filled = 0;
 		}
 	}
@@ -532,11 +558,19 @@ qtnf_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int qtnf_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 			int link_id, u8 key_index, bool pairwise,
 			const u8 *mac_addr, struct key_params *params)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(wdev->netdev);
+=======
+static int qtnf_add_key(struct wiphy *wiphy, struct net_device *dev,
+			int link_id, u8 key_index, bool pairwise,
+			const u8 *mac_addr, struct key_params *params)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = qtnf_cmd_send_add_key(vif, key_index, pairwise, mac_addr, params);
@@ -548,11 +582,19 @@ static int qtnf_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int qtnf_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 			int link_id, u8 key_index, bool pairwise,
 			const u8 *mac_addr)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(wdev->netdev);
+=======
+static int qtnf_del_key(struct wiphy *wiphy, struct net_device *dev,
+			int link_id, u8 key_index, bool pairwise,
+			const u8 *mac_addr)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = qtnf_cmd_send_del_key(vif, key_index, pairwise, mac_addr);
@@ -587,10 +629,17 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
 }
 
 static int
+<<<<<<< HEAD
 qtnf_set_default_mgmt_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 			  int link_id, u8 key_index)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(wdev->netdev);
+=======
+qtnf_set_default_mgmt_key(struct wiphy *wiphy, struct net_device *dev,
+			  int link_id, u8 key_index)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = qtnf_cmd_send_set_default_mgmt_key(vif, key_index);
@@ -602,10 +651,17 @@ qtnf_set_default_mgmt_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 static int
+<<<<<<< HEAD
 qtnf_change_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		    const u8 *mac, struct station_parameters *params)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(wdev->netdev);
+=======
+qtnf_change_station(struct wiphy *wiphy, struct net_device *dev,
+		    const u8 *mac, struct station_parameters *params)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	ret = qtnf_cmd_send_change_sta(vif, mac, params);
@@ -617,6 +673,7 @@ qtnf_change_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 }
 
 static int
+<<<<<<< HEAD
 qtnf_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		 struct station_del_parameters *params)
 {
@@ -625,6 +682,16 @@ qtnf_del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 	if (params->mac &&
 	    (wdev->iftype == NL80211_IFTYPE_AP) &&
+=======
+qtnf_del_station(struct wiphy *wiphy, struct net_device *dev,
+		 struct station_del_parameters *params)
+{
+	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
+	int ret;
+
+	if (params->mac &&
+	    (vif->wdev.iftype == NL80211_IFTYPE_AP) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    !is_broadcast_ether_addr(params->mac) &&
 	    !qtnf_sta_list_lookup(&vif->sta_list, params->mac))
 		return 0;

@@ -5,18 +5,27 @@
  */
 
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_graph.h>
+<<<<<<< HEAD
 #include <linux/of_platform.h>
 #include <linux/pci.h>
 #include <linux/platform_device.h>
 #include <linux/pwrseq/provider.h>
 #include <linux/regulator/consumer.h>
 #include <linux/serdev.h>
+=======
+#include <linux/platform_device.h>
+#include <linux/pwrseq/provider.h>
+#include <linux/regulator/consumer.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 
 struct pwrseq_pcie_m2_pdata {
@@ -30,6 +39,7 @@ struct pwrseq_pcie_m2_ctx {
 	struct regulator_bulk_data *regs;
 	size_t num_vregs;
 	struct notifier_block nb;
+<<<<<<< HEAD
 	struct gpio_desc *w_disable1_gpio;
 	struct gpio_desc *w_disable2_gpio;
 	struct serdev_device *serdev;
@@ -38,13 +48,22 @@ struct pwrseq_pcie_m2_ctx {
 };
 
 static int pwrseq_pcie_m2_vregs_enable(struct pwrseq_device *pwrseq)
+=======
+};
+
+static int pwrseq_pcie_m2_m_vregs_enable(struct pwrseq_device *pwrseq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
 
 	return regulator_bulk_enable(ctx->num_vregs, ctx->regs);
 }
 
+<<<<<<< HEAD
 static int pwrseq_pcie_m2_vregs_disable(struct pwrseq_device *pwrseq)
+=======
+static int pwrseq_pcie_m2_m_vregs_disable(struct pwrseq_device *pwrseq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
 
@@ -53,15 +72,24 @@ static int pwrseq_pcie_m2_vregs_disable(struct pwrseq_device *pwrseq)
 
 static const struct pwrseq_unit_data pwrseq_pcie_m2_vregs_unit_data = {
 	.name = "regulators-enable",
+<<<<<<< HEAD
 	.enable = pwrseq_pcie_m2_vregs_enable,
 	.disable = pwrseq_pcie_m2_vregs_disable,
 };
 
 static const struct pwrseq_unit_data *pwrseq_pcie_m2_unit_deps[] = {
+=======
+	.enable = pwrseq_pcie_m2_m_vregs_enable,
+	.disable = pwrseq_pcie_m2_m_vregs_disable,
+};
+
+static const struct pwrseq_unit_data *pwrseq_pcie_m2_m_unit_deps[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&pwrseq_pcie_m2_vregs_unit_data,
 	NULL
 };
 
+<<<<<<< HEAD
 static int pwrseq_pci_m2_e_uart_enable(struct pwrseq_device *pwrseq)
 {
 	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
@@ -131,6 +159,11 @@ static const struct pwrseq_target_data pwrseq_pcie_m2_e_pcie_target_data = {
 	.name = "pcie",
 	.unit = &pwrseq_pcie_m2_e_pcie_unit_data,
 	.post_enable = pwrseq_pcie_m2_e_pwup_delay,
+=======
+static const struct pwrseq_unit_data pwrseq_pcie_m2_m_pcie_unit_data = {
+	.name = "pcie-enable",
+	.deps = pwrseq_pcie_m2_m_unit_deps,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pwrseq_target_data pwrseq_pcie_m2_m_pcie_target_data = {
@@ -138,21 +171,27 @@ static const struct pwrseq_target_data pwrseq_pcie_m2_m_pcie_target_data = {
 	.unit = &pwrseq_pcie_m2_m_pcie_unit_data,
 };
 
+<<<<<<< HEAD
 static const struct pwrseq_target_data *pwrseq_pcie_m2_e_targets[] = {
 	&pwrseq_pcie_m2_e_pcie_target_data,
 	&pwrseq_pcie_m2_e_uart_target_data,
 	NULL
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct pwrseq_target_data *pwrseq_pcie_m2_m_targets[] = {
 	&pwrseq_pcie_m2_m_pcie_target_data,
 	NULL
 };
 
+<<<<<<< HEAD
 static const struct pwrseq_pcie_m2_pdata pwrseq_pcie_m2_e_of_data = {
 	.targets = pwrseq_pcie_m2_e_targets,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct pwrseq_pcie_m2_pdata pwrseq_pcie_m2_m_of_data = {
 	.targets = pwrseq_pcie_m2_m_targets,
 };
@@ -177,6 +216,7 @@ static int pwrseq_pcie_m2_match(struct pwrseq_device *pwrseq,
 	return PWRSEQ_NO_MATCH;
 }
 
+<<<<<<< HEAD
 static int pwrseq_m2_pcie_create_bt_node(struct pwrseq_pcie_m2_ctx *ctx,
 					struct device_node *parent)
 {
@@ -373,6 +413,13 @@ static int pwrseq_pcie_m2_register_notifier(struct pwrseq_pcie_m2_ctx *ctx, stru
 	}
 
 	return 0;
+=======
+static void pwrseq_pcie_m2_free_regulators(void *data)
+{
+	struct pwrseq_pcie_m2_ctx *ctx = data;
+
+	regulator_bulk_free(ctx->num_vregs, ctx->regs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int pwrseq_pcie_m2_probe(struct platform_device *pdev)
@@ -386,7 +433,10 @@ static int pwrseq_pcie_m2_probe(struct platform_device *pdev)
 	if (!ctx)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, ctx);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ctx->of_node = dev_of_node(dev);
 	ctx->pdata = device_get_match_data(dev);
 	if (!ctx->pdata)
@@ -405,6 +455,7 @@ static int pwrseq_pcie_m2_probe(struct platform_device *pdev)
 
 	ctx->num_vregs = ret;
 
+<<<<<<< HEAD
 	ctx->w_disable1_gpio = devm_gpiod_get_optional(dev, "w-disable1", GPIOD_OUT_HIGH);
 	if (IS_ERR(ctx->w_disable1_gpio)) {
 		ret = dev_err_probe(dev, PTR_ERR(ctx->w_disable1_gpio),
@@ -418,6 +469,11 @@ static int pwrseq_pcie_m2_probe(struct platform_device *pdev)
 				     "Failed to get the W_DISABLE_2# GPIO\n");
 		goto err_free_regulators;
 	}
+=======
+	ret = devm_add_action_or_reset(dev, pwrseq_pcie_m2_free_regulators, ctx);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	config.parent = dev;
 	config.owner = THIS_MODULE;
@@ -426,6 +482,7 @@ static int pwrseq_pcie_m2_probe(struct platform_device *pdev)
 	config.targets = ctx->pdata->targets;
 
 	ctx->pwrseq = devm_pwrseq_device_register(dev, &config);
+<<<<<<< HEAD
 	if (IS_ERR(ctx->pwrseq)) {
 		ret = dev_err_probe(dev, PTR_ERR(ctx->pwrseq),
 				     "Failed to register the power sequencer\n");
@@ -456,6 +513,13 @@ static void pwrseq_pcie_m2_remove(struct platform_device *pdev)
 	pwrseq_pcie_m2_remove_serdev(ctx);
 
 	regulator_bulk_free(ctx->num_vregs, ctx->regs);
+=======
+	if (IS_ERR(ctx->pwrseq))
+		return dev_err_probe(dev, PTR_ERR(ctx->pwrseq),
+				     "Failed to register the power sequencer\n");
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct of_device_id pwrseq_pcie_m2_of_match[] = {
@@ -463,10 +527,13 @@ static const struct of_device_id pwrseq_pcie_m2_of_match[] = {
 		.compatible = "pcie-m2-m-connector",
 		.data = &pwrseq_pcie_m2_m_of_data,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "pcie-m2-e-connector",
 		.data = &pwrseq_pcie_m2_e_of_data,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, pwrseq_pcie_m2_of_match);
@@ -477,7 +544,10 @@ static struct platform_driver pwrseq_pcie_m2_driver = {
 		.of_match_table = pwrseq_pcie_m2_of_match,
 	},
 	.probe = pwrseq_pcie_m2_probe,
+<<<<<<< HEAD
 	.remove = pwrseq_pcie_m2_remove,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 module_platform_driver(pwrseq_pcie_m2_driver);
 

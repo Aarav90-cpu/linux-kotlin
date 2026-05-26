@@ -227,7 +227,11 @@ static unsigned int *memfd_file_seals_ptr(struct file *file)
 		     F_SEAL_WRITE | \
 		     F_SEAL_FUTURE_WRITE)
 
+<<<<<<< HEAD
 int memfd_add_seals(struct file *file, unsigned int seals)
+=======
+static int memfd_add_seals(struct file *file, unsigned int seals)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct inode *inode = file_inode(file);
 	unsigned int *file_seals;
@@ -309,7 +313,11 @@ unlock:
 	return error;
 }
 
+<<<<<<< HEAD
 int memfd_get_seals(struct file *file)
+=======
+static int memfd_get_seals(struct file *file)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int *seals = memfd_file_seals_ptr(file);
 

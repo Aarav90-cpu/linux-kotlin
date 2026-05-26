@@ -65,6 +65,7 @@ static bool dsa_int_handle_request_required(struct vfio_pci_device *device)
 
 static int dsa_probe(struct vfio_pci_device *device)
 {
+<<<<<<< HEAD
 	const u16 vendor_id = vfio_pci_config_readw(device, PCI_VENDOR_ID);
 	const u16 device_id = vfio_pci_config_readw(device, PCI_DEVICE_ID);
 
@@ -80,6 +81,12 @@ static int dsa_probe(struct vfio_pci_device *device)
 		return -EINVAL;
 	}
 
+=======
+	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL,
+				   PCI_DEVICE_ID_INTEL_DSA_SPR0))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dsa_int_handle_request_required(device)) {
 		dev_err(device, "Device requires requesting interrupt handles\n");
 		return -EINVAL;

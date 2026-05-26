@@ -85,7 +85,11 @@ extern struct page *mem_map;
 # define virt_to_page(vaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(vaddr)))
 # define virt_addr_valid(vaddr)	pfn_valid(PFN_DOWN(virt_to_phys(vaddr)))
 
+<<<<<<< HEAD
 # define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_NON_EXEC
+=======
+# define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_NON_EXEC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm-generic/memory_model.h>
 

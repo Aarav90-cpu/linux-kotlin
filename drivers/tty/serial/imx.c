@@ -1442,9 +1442,15 @@ static void imx_uart_enable_dma(struct imx_port *sport)
 
 	imx_uart_setup_ufcr(sport, TXTL_DMA, RXTL_DMA);
 
+<<<<<<< HEAD
 	/* set UCR1 except TXDMAEN which would be enabled in imx_uart_dma_tx */
 	ucr1 = imx_uart_readl(sport, UCR1);
 	ucr1 |= UCR1_RXDMAEN | UCR1_ATDMAEN;
+=======
+	/* set UCR1 */
+	ucr1 = imx_uart_readl(sport, UCR1);
+	ucr1 |= UCR1_RXDMAEN | UCR1_TXDMAEN | UCR1_ATDMAEN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	imx_uart_writel(sport, ucr1, UCR1);
 
 	sport->dma_is_enabled = 1;
@@ -1567,9 +1573,14 @@ static int imx_uart_startup(struct uart_port *port)
 	imx_uart_enable_ms(&sport->port);
 
 	if (dma_is_inited) {
+<<<<<<< HEAD
 		/* Note: enable dma request after transfer start! */
 		imx_uart_start_rx_dma(sport);
 		imx_uart_enable_dma(sport);
+=======
+		imx_uart_enable_dma(sport);
+		imx_uart_start_rx_dma(sport);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		ucr1 = imx_uart_readl(sport, UCR1);
 		ucr1 |= UCR1_RRDYEN;

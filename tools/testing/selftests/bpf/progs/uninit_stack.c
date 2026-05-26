@@ -76,7 +76,10 @@ __naked int helper_uninit_to_misc(void *ctx)
 		 * thus showing the stack state, matched by __msg().		\
 		 */					\
 		call %[dummy];				\
+<<<<<<< HEAD
 		r1 = *(u64*)(r10 - 104);		\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r0 = 0;					\
 		exit;					\
 "

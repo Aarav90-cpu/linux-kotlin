@@ -1149,6 +1149,10 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
 		mapping->flags = 0;
 		gfp_mask = mapping_gfp_mask(sdp->sd_inode->i_mapping);
 		mapping_set_gfp_mask(mapping, gfp_mask);
+<<<<<<< HEAD
+=======
+		mapping->i_private_data = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mapping->writeback_index = 0;
 	}
 

@@ -296,7 +296,11 @@ static int rockchip_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
 		 */
 		return -ENOTSUPP;
 	default:
+<<<<<<< HEAD
 		return gpiochip_generic_config(gc, offset, config);
+=======
+		return -ENOTSUPP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -582,7 +586,11 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
 	bank->gpio_chip = rockchip_gpiolib_chip;
 
 	gc = &bank->gpio_chip;
+<<<<<<< HEAD
 	gc->base = -1;
+=======
+	gc->base = bank->pin_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gc->ngpio = bank->nr_pins;
 	gc->label = bank->name;
 	gc->parent = bank->dev;
@@ -617,7 +625,11 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
 			return -ENODEV;
 
 		ret = gpiochip_add_pin_range(gc, dev_name(pctldev->dev), 0,
+<<<<<<< HEAD
 					     bank->pin_base, bank->nr_pins);
+=======
+					     gc->base, gc->ngpio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			dev_err(bank->dev, "Failed to add pin range\n");
 			goto fail;

@@ -33,9 +33,12 @@ properties:
   clocks:
     maxItems: 1
 
+<<<<<<< HEAD
   resets:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "#gpio-cells":
     const: 2
 
@@ -65,11 +68,14 @@ allOf:
           contains:
             const: microchip,mpfs-gpio
     then:
+<<<<<<< HEAD
       properties:
         ngpios:
           enum: [14, 24, 32]
         interrupts:
           minItems: 14
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
       required:
         - interrupts
         - "#interrupt-cells"
@@ -90,6 +96,7 @@ examples:
         compatible = "microchip,mpfs-gpio";
         reg = <0x20122000 0x1000>;
         clocks = <&clkcfg 25>;
+<<<<<<< HEAD
         interrupt-parent = <&irqmux>;
         gpio-controller;
         #gpio-cells = <2>;
@@ -104,5 +111,20 @@ examples:
                      <84>, <85>, <86>, <87>,
                      <88>, <89>, <90>, <91>,
                      <92>, <93>, <94>, <95>;
+=======
+        interrupt-parent = <&plic>;
+        gpio-controller;
+        #gpio-cells = <2>;
+        interrupt-controller;
+        #interrupt-cells = <2>;
+        interrupts = <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>,
+                     <53>, <53>, <53>, <53>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };
 ...

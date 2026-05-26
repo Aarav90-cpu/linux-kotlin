@@ -825,6 +825,7 @@ static void tegra_display_hub_destroy_state(struct drm_private_obj *obj,
 	kfree(hub_state);
 }
 
+<<<<<<< HEAD
 static struct drm_private_state *
 tegra_display_hub_create_state(struct drm_private_obj *obj)
 {
@@ -841,6 +842,9 @@ tegra_display_hub_create_state(struct drm_private_obj *obj)
 
 static const struct drm_private_state_funcs tegra_display_hub_state_funcs = {
 	.atomic_create_state = tegra_display_hub_create_state,
+=======
+static const struct drm_private_state_funcs tegra_display_hub_state_funcs = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.atomic_duplicate_state = tegra_display_hub_duplicate_state,
 	.atomic_destroy_state = tegra_display_hub_destroy_state,
 };
@@ -956,8 +960,18 @@ static int tegra_display_hub_init(struct host1x_client *client)
 	struct tegra_display_hub *hub = to_tegra_display_hub(client);
 	struct drm_device *drm = dev_get_drvdata(client->host);
 	struct tegra_drm *tegra = drm->dev_private;
+<<<<<<< HEAD
 
 	drm_atomic_private_obj_init(drm, &hub->base,
+=======
+	struct tegra_display_hub_state *state;
+
+	state = kzalloc_obj(*state);
+	if (!state)
+		return -ENOMEM;
+
+	drm_atomic_private_obj_init(drm, &hub->base, &state->base,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    &tegra_display_hub_state_funcs);
 
 	tegra->hub = hub;

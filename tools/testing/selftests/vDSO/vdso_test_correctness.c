@@ -11,22 +11,43 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include <sys/auxv.h>
 #include <sys/syscall.h>
+=======
+#include <sys/syscall.h>
+#include <dlfcn.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <string.h>
 #include <errno.h>
 #include <sched.h>
 #include <stdbool.h>
 #include <limits.h>
 
+<<<<<<< HEAD
 #include "parse_vdso.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "vdso_config.h"
 #include "vdso_call.h"
 #include "kselftest.h"
 
+<<<<<<< HEAD
 static const char *version;
 static const char **name;
 
+=======
+static const char **name;
+
+#ifndef SYS_getcpu
+# ifdef __x86_64__
+#  define SYS_getcpu 309
+# else
+#  define SYS_getcpu 318
+# endif
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifndef __NR_clock_gettime64
 #define __NR_clock_gettime64	403
 #endif
@@ -55,10 +76,13 @@ typedef long (*vgtod_t)(struct timeval *tv, struct timezone *tz);
 
 vgtod_t vdso_gettimeofday;
 
+<<<<<<< HEAD
 typedef time_t (*vtime_t)(__kernel_time_t *tloc);
 
 vtime_t vdso_time;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef long (*getcpu_t)(unsigned *, unsigned *, void *);
 
 getcpu_t vgetcpu;
@@ -108,31 +132,59 @@ static void *vsyscall_getcpu(void)
 
 static void fill_function_pointers(void)
 {
+<<<<<<< HEAD
 	unsigned long sysinfo_ehdr = getauxval(AT_SYSINFO_EHDR);
 
 	if (!sysinfo_ehdr) {
+=======
+	void *vdso = dlopen("linux-vdso.so.1",
+			    RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+	if (!vdso)
+		vdso = dlopen("linux-gate.so.1",
+			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+	if (!vdso)
+		vdso = dlopen("linux-vdso32.so.1",
+			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+	if (!vdso)
+		vdso = dlopen("linux-vdso64.so.1",
+			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+	if (!vdso) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		printf("[WARN]\tfailed to find vDSO\n");
 		return;
 	}
 
+<<<<<<< HEAD
 	vdso_init_from_sysinfo_ehdr(sysinfo_ehdr);
 
 	vdso_getcpu = (getcpu_t)vdso_sym(version, name[4]);
+=======
+	vdso_getcpu = (getcpu_t)dlsym(vdso, name[4]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vdso_getcpu)
 		printf("Warning: failed to find getcpu in vDSO\n");
 
 	vgetcpu = (getcpu_t) vsyscall_getcpu();
 
+<<<<<<< HEAD
 	vdso_clock_gettime = (vgettime_t)vdso_sym(version, name[1]);
+=======
+	vdso_clock_gettime = (vgettime_t)dlsym(vdso, name[1]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vdso_clock_gettime)
 		printf("Warning: failed to find clock_gettime in vDSO\n");
 
 #if defined(VDSO_32BIT)
+<<<<<<< HEAD
 	vdso_clock_gettime64 = (vgettime64_t)vdso_sym(version, name[5]);
+=======
+	vdso_clock_gettime64 = (vgettime64_t)dlsym(vdso, name[5]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!vdso_clock_gettime64)
 		printf("Warning: failed to find clock_gettime64 in vDSO\n");
 #endif
 
+<<<<<<< HEAD
 	vdso_gettimeofday = (vgtod_t)vdso_sym(version, name[0]);
 	if (!vdso_gettimeofday)
 		printf("Warning: failed to find gettimeofday in vDSO\n");
@@ -141,6 +193,12 @@ static void fill_function_pointers(void)
 	if (!vdso_time)
 		printf("Warning: failed to find time in vDSO\n");
 
+=======
+	vdso_gettimeofday = (vgtod_t)dlsym(vdso, name[0]);
+	if (!vdso_gettimeofday)
+		printf("Warning: failed to find gettimeofday in vDSO\n");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static long sys_getcpu(unsigned * cpu, unsigned * node,
@@ -164,6 +222,7 @@ static inline int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
 	return syscall(__NR_gettimeofday, tv, tz);
 }
 
+<<<<<<< HEAD
 static inline __kernel_old_time_t sys_time(__kernel_old_time_t *tloc)
 {
 #ifdef __NR_time
@@ -174,6 +233,8 @@ static inline __kernel_old_time_t sys_time(__kernel_old_time_t *tloc)
 #endif
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void test_getcpu(void)
 {
 	printf("[RUN]\tTesting getcpu...\n");
@@ -417,10 +478,17 @@ static void test_gettimeofday(void)
 		return;
 	}
 
+<<<<<<< HEAD
 	printf("\t%llu.%06lld %llu.%06lld %llu.%06lld\n",
 	       (unsigned long long)start.tv_sec, (long long)start.tv_usec,
 	       (unsigned long long)vdso.tv_sec, (long long)vdso.tv_usec,
 	       (unsigned long long)end.tv_sec, (long long)end.tv_usec);
+=======
+	printf("\t%llu.%06ld %llu.%06ld %llu.%06ld\n",
+	       (unsigned long long)start.tv_sec, start.tv_usec,
+	       (unsigned long long)vdso.tv_sec, vdso.tv_usec,
+	       (unsigned long long)end.tv_sec, end.tv_usec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!tv_leq(&start, &vdso) || !tv_leq(&vdso, &end)) {
 		printf("[FAIL]\tTimes are out of sequence\n");
@@ -440,6 +508,7 @@ static void test_gettimeofday(void)
 	VDSO_CALL(vdso_gettimeofday, 2, &vdso, NULL);
 }
 
+<<<<<<< HEAD
 static void test_time(void)
 {
 	__kernel_old_time_t start, end, vdso_ret, vdso_param;
@@ -490,6 +559,10 @@ static void test_time(void)
 int main(int argc, char **argv)
 {
 	version = versions[VDSO_VERSION];
+=======
+int main(int argc, char **argv)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	name = (const char **)&names[VDSO_NAMES];
 
 	fill_function_pointers();
@@ -497,7 +570,10 @@ int main(int argc, char **argv)
 	test_clock_gettime();
 	test_clock_gettime64();
 	test_gettimeofday();
+<<<<<<< HEAD
 	test_time();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Test getcpu() last so that, if something goes wrong setting affinity,

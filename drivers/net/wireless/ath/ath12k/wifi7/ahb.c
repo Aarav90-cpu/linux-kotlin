@@ -19,9 +19,12 @@ static const struct of_device_id ath12k_wifi7_ahb_of_match[] = {
 	{ .compatible = "qcom,ipq5332-wifi",
 	  .data = (void *)ATH12K_HW_IPQ5332_HW10,
 	},
+<<<<<<< HEAD
 	{ .compatible = "qcom,ipq5424-wifi",
 	  .data = (void *)ATH12K_HW_IPQ5424_HW10,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 
@@ -41,11 +44,14 @@ static int ath12k_wifi7_ahb_probe(struct platform_device *pdev)
 	switch (hw_rev) {
 	case ATH12K_HW_IPQ5332_HW10:
 		ab_ahb->userpd_id = ATH12K_IPQ5332_USERPD_ID;
+<<<<<<< HEAD
 		ab_ahb->scm_auth_enabled = true;
 		break;
 	case ATH12K_HW_IPQ5424_HW10:
 		ab_ahb->userpd_id = ATH12K_IPQ5332_USERPD_ID;
 		ab_ahb->scm_auth_enabled = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		return -EOPNOTSUPP;

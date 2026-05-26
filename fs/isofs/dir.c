@@ -152,7 +152,11 @@ static int do_isofs_readdir(struct inode *inode, struct file *file,
 		    de_len < de->name_len[0] +
 					sizeof(struct iso_directory_record)) {
 			printk(KERN_NOTICE "iso9660: Corrupted directory entry"
+<<<<<<< HEAD
 			       " in block %lu of inode %llu\n", block,
+=======
+			       " in block %lu of inode %lu\n", block,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       inode->i_ino);
 			brelse(bh);
 			return -EIO;

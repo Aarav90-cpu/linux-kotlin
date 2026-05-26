@@ -552,7 +552,11 @@ EXPORT_SYMBOL(drmm_connector_init);
  * @hdmi_funcs: HDMI-related callbacks for this connector
  * @connector_type: user visible type of the connector
  * @ddc: optional pointer to the associated ddc adapter
+<<<<<<< HEAD
  * @supported_formats: Bitmask of @drm_output_color_format listing supported output formats
+=======
+ * @supported_formats: Bitmask of @hdmi_colorspace listing supported output formats
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @max_bpc: Maximum bits per char the HDMI connector supports
  *
  * Initialises a preallocated HDMI connector. Connectors can be
@@ -591,10 +595,17 @@ int drmm_connector_hdmi_init(struct drm_device *dev,
 	      connector_type == DRM_MODE_CONNECTOR_HDMIB))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!supported_formats || !(supported_formats & BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444)))
 		return -EINVAL;
 
 	if (connector->ycbcr_420_allowed != !!(supported_formats & BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420)))
+=======
+	if (!supported_formats || !(supported_formats & BIT(HDMI_COLORSPACE_RGB)))
+		return -EINVAL;
+
+	if (connector->ycbcr_420_allowed != !!(supported_formats & BIT(HDMI_COLORSPACE_YUV420)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (!(max_bpc == 8 || max_bpc == 10 || max_bpc == 12))
@@ -1173,11 +1184,14 @@ static const struct drm_prop_enum_list drm_link_status_enum_list[] = {
 	{ DRM_MODE_LINK_STATUS_BAD, "Bad" },
 };
 
+<<<<<<< HEAD
 static const struct drm_prop_enum_list drm_panel_type_enum_list[] = {
 	{ DRM_MODE_PANEL_TYPE_UNKNOWN, "unknown" },
 	{ DRM_MODE_PANEL_TYPE_OLED, "OLED" },
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * drm_display_info_set_bus_formats - set the supported bus formats
  * @info: display info to store bus formats in
@@ -1431,10 +1445,17 @@ drm_hdmi_connector_get_broadcast_rgb_name(enum drm_hdmi_broadcast_rgb broadcast_
 EXPORT_SYMBOL(drm_hdmi_connector_get_broadcast_rgb_name);
 
 static const char * const output_format_str[] = {
+<<<<<<< HEAD
 	[DRM_OUTPUT_COLOR_FORMAT_RGB444]	= "RGB",
 	[DRM_OUTPUT_COLOR_FORMAT_YCBCR420]	= "YUV 4:2:0",
 	[DRM_OUTPUT_COLOR_FORMAT_YCBCR422]	= "YUV 4:2:2",
 	[DRM_OUTPUT_COLOR_FORMAT_YCBCR444]	= "YUV 4:4:4",
+=======
+	[HDMI_COLORSPACE_RGB]		= "RGB",
+	[HDMI_COLORSPACE_YUV420]	= "YUV 4:2:0",
+	[HDMI_COLORSPACE_YUV422]	= "YUV 4:2:2",
+	[HDMI_COLORSPACE_YUV444]	= "YUV 4:4:4",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -1445,7 +1466,11 @@ static const char * const output_format_str[] = {
  * valid.
  */
 const char *
+<<<<<<< HEAD
 drm_hdmi_connector_get_output_format_name(enum drm_output_color_format fmt)
+=======
+drm_hdmi_connector_get_output_format_name(enum hdmi_colorspace fmt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (fmt >= ARRAY_SIZE(output_format_str))
 		return NULL;
@@ -1506,9 +1531,12 @@ EXPORT_SYMBOL(drm_hdmi_connector_get_output_format_name);
  * 	Summarizing: Only set "DPMS" when the connector is known to be enabled,
  * 	assume that a successful SETCONFIG call also sets "DPMS" to on, and
  * 	never read back the value of "DPMS" because it can be incorrect.
+<<<<<<< HEAD
  * panel_type:
  * 	Immutable enum property to indicate the type of connected panel.
  * 	Possible values are "unknown" (default) and "OLED".
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * PATH:
  * 	Connector path property to identify how this sink is physically
  * 	connected. Used by DP MST. This should be set by calling
@@ -1859,6 +1887,7 @@ int drm_connector_create_standard_properties(struct drm_device *dev)
 		return -ENOMEM;
 	dev->mode_config.link_status_property = prop;
 
+<<<<<<< HEAD
 	prop = drm_property_create_enum(dev, DRM_MODE_PROP_IMMUTABLE, "panel_type",
 					drm_panel_type_enum_list,
 					ARRAY_SIZE(drm_panel_type_enum_list));
@@ -1866,6 +1895,8 @@ int drm_connector_create_standard_properties(struct drm_device *dev)
 		return -ENOMEM;
 	dev->mode_config.panel_type_property = prop;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	prop = drm_property_create_bool(dev, DRM_MODE_PROP_IMMUTABLE, "non-desktop");
 	if (!prop)
 		return -ENOMEM;
@@ -3641,6 +3672,7 @@ struct drm_tile_group *drm_mode_create_tile_group(struct drm_device *dev,
 	return tg;
 }
 EXPORT_SYMBOL(drm_mode_create_tile_group);
+<<<<<<< HEAD
 
 /**
  * drm_connector_attach_panel_type_property - attaches panel type property
@@ -3659,3 +3691,5 @@ void drm_connector_attach_panel_type_property(struct drm_connector *connector)
 	drm_object_attach_property(&connector->base, prop, DRM_MODE_PANEL_TYPE_UNKNOWN);
 }
 EXPORT_SYMBOL(drm_connector_attach_panel_type_property);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

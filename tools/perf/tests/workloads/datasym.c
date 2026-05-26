@@ -4,6 +4,7 @@
 #include <linux/compiler.h>
 #include "../tests.h"
 
+<<<<<<< HEAD
 struct buf {
 	char data1;
 	char reserved[55];
@@ -12,6 +13,16 @@ struct buf {
 
 /* volatile to try to avoid the compiler seeing reserved as unused. */
 static volatile struct buf workload_datasym_buf1 = {
+=======
+typedef struct _buf {
+	char data1;
+	char reserved[55];
+	char data2;
+} buf __attribute__((aligned(64)));
+
+/* volatile to try to avoid the compiler seeing reserved as unused. */
+static volatile buf workload_datasym_buf1 = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* to have this in the data section */
 	.reserved[0] = 1,
 };

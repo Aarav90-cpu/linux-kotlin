@@ -208,6 +208,7 @@ enum llbitmap_state {
 	BitNeedSync,
 	/* data is synchronizing */
 	BitSyncing,
+<<<<<<< HEAD
 	/*
 	 * Proactive sync requested for unwritten region (raid456 only).
 	 * Triggered via sysfs when user wants to pre-build XOR parity
@@ -222,6 +223,8 @@ enum llbitmap_state {
 	 * to BitDirty.
 	 */
 	BitCleanUnwritten,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BitStateCount,
 	BitNone = 0xff,
 };
@@ -246,12 +249,15 @@ enum llbitmap_action {
 	 * BitNeedSync.
 	 */
 	BitmapActionStale,
+<<<<<<< HEAD
 	/*
 	 * Proactive sync trigger for raid456 - builds XOR parity for
 	 * Unwritten regions without requiring user data write first.
 	 */
 	BitmapActionProactiveSync,
 	BitmapActionClearUnwritten,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	BitmapActionCount,
 	/* Init state is BitUnwritten */
 	BitmapActionInit,
@@ -324,8 +330,11 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionDaemon]		= BitNone,
 		[BitmapActionDiscard]		= BitNone,
 		[BitmapActionStale]		= BitNone,
+<<<<<<< HEAD
 		[BitmapActionProactiveSync]	= BitNeedSyncUnwritten,
 		[BitmapActionClearUnwritten]	= BitNone,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[BitClean] = {
 		[BitmapActionStartwrite]	= BitDirty,
@@ -336,8 +345,11 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionDaemon]		= BitNone,
 		[BitmapActionDiscard]		= BitUnwritten,
 		[BitmapActionStale]		= BitNeedSync,
+<<<<<<< HEAD
 		[BitmapActionProactiveSync]	= BitNone,
 		[BitmapActionClearUnwritten]	= BitNone,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[BitDirty] = {
 		[BitmapActionStartwrite]	= BitNone,
@@ -348,8 +360,11 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionDaemon]		= BitClean,
 		[BitmapActionDiscard]		= BitUnwritten,
 		[BitmapActionStale]		= BitNeedSync,
+<<<<<<< HEAD
 		[BitmapActionProactiveSync]	= BitNone,
 		[BitmapActionClearUnwritten]	= BitNone,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[BitNeedSync] = {
 		[BitmapActionStartwrite]	= BitNone,
@@ -360,8 +375,11 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionDaemon]		= BitNone,
 		[BitmapActionDiscard]		= BitUnwritten,
 		[BitmapActionStale]		= BitNone,
+<<<<<<< HEAD
 		[BitmapActionProactiveSync]	= BitNone,
 		[BitmapActionClearUnwritten]	= BitNone,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	[BitSyncing] = {
 		[BitmapActionStartwrite]	= BitNone,
@@ -372,6 +390,7 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionDaemon]		= BitNone,
 		[BitmapActionDiscard]		= BitUnwritten,
 		[BitmapActionStale]		= BitNeedSync,
+<<<<<<< HEAD
 		[BitmapActionProactiveSync]	= BitNone,
 		[BitmapActionClearUnwritten]	= BitNone,
 	},
@@ -410,6 +429,8 @@ static char state_machine[BitStateCount][BitmapActionCount] = {
 		[BitmapActionStale]		= BitUnwritten,
 		[BitmapActionProactiveSync]	= BitNone,
 		[BitmapActionClearUnwritten]	= BitUnwritten,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -442,7 +463,10 @@ static void llbitmap_infect_dirty_bits(struct llbitmap *llbitmap,
 			pctl->state[pos] = level_456 ? BitNeedSync : BitDirty;
 			break;
 		case BitClean:
+<<<<<<< HEAD
 		case BitCleanUnwritten:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			pctl->state[pos] = BitDirty;
 			break;
 		}
@@ -450,7 +474,11 @@ static void llbitmap_infect_dirty_bits(struct llbitmap *llbitmap,
 }
 
 static void llbitmap_set_page_dirty(struct llbitmap *llbitmap, int idx,
+<<<<<<< HEAD
 				    int offset, bool infect)
+=======
+				    int offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct llbitmap_page_ctl *pctl = llbitmap->pctl[idx];
 	unsigned int io_size = llbitmap->io_size;
@@ -465,7 +493,11 @@ static void llbitmap_set_page_dirty(struct llbitmap *llbitmap, int idx,
 	 * resync all the dirty bits, hence skip infect new dirty bits to
 	 * prevent resync unnecessary data.
 	 */
+<<<<<<< HEAD
 	if (llbitmap->mddev->degraded || !infect) {
+=======
+	if (llbitmap->mddev->degraded) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_bit(block, pctl->dirty);
 		return;
 	}
@@ -505,9 +537,13 @@ static void llbitmap_write(struct llbitmap *llbitmap, enum llbitmap_state state,
 
 	llbitmap->pctl[idx]->state[bit] = state;
 	if (state == BitDirty || state == BitNeedSync)
+<<<<<<< HEAD
 		llbitmap_set_page_dirty(llbitmap, idx, bit, true);
 	else if (state == BitNeedSyncUnwritten)
 		llbitmap_set_page_dirty(llbitmap, idx, bit, false);
+=======
+		llbitmap_set_page_dirty(llbitmap, idx, bit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct page *llbitmap_read_page(struct llbitmap *llbitmap, int idx)
@@ -654,6 +690,7 @@ static int llbitmap_cache_pages(struct llbitmap *llbitmap)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Check if all underlying disks support write_zeroes with unmap.
  */
@@ -721,6 +758,15 @@ static void llbitmap_init_state(struct llbitmap *llbitmap)
 		if (llbitmap_zero_all_disks(llbitmap))
 			state = BitCleanUnwritten;
 	}
+=======
+static void llbitmap_init_state(struct llbitmap *llbitmap)
+{
+	enum llbitmap_state state = BitUnwritten;
+	unsigned long i;
+
+	if (test_and_clear_bit(BITMAP_CLEAN, &llbitmap->flags))
+		state = BitClean;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < llbitmap->chunks; i++)
 		llbitmap_write(llbitmap, state, i);
@@ -756,10 +802,18 @@ static enum llbitmap_state llbitmap_state_machine(struct llbitmap *llbitmap,
 			goto write_bitmap;
 		}
 
+<<<<<<< HEAD
 		if (c == BitNeedSync || c == BitNeedSyncUnwritten)
 			need_resync = !mddev->degraded;
 
 		state = state_machine[c][action];
+=======
+		if (c == BitNeedSync)
+			need_resync = !mddev->degraded;
+
+		state = state_machine[c][action];
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 write_bitmap:
 		if (unlikely(mddev->degraded)) {
 			/* For degraded array, mark new data as need sync. */
@@ -786,7 +840,12 @@ write_bitmap:
 		}
 
 		llbitmap_write(llbitmap, state, start);
+<<<<<<< HEAD
 		if (state == BitNeedSync || state == BitNeedSyncUnwritten)
+=======
+
+		if (state == BitNeedSync)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			need_resync = !mddev->degraded;
 		else if (state == BitDirty &&
 			 !timer_pending(&llbitmap->pending_timer))
@@ -1356,7 +1415,11 @@ static bool llbitmap_blocks_synced(struct mddev *mddev, sector_t offset)
 	unsigned long p = offset >> llbitmap->chunkshift;
 	enum llbitmap_state c = llbitmap_read(llbitmap, p);
 
+<<<<<<< HEAD
 	return c == BitClean || c == BitDirty || c == BitCleanUnwritten;
+=======
+	return c == BitClean || c == BitDirty;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static sector_t llbitmap_skip_sync_blocks(struct mddev *mddev, sector_t offset)
@@ -1370,10 +1433,13 @@ static sector_t llbitmap_skip_sync_blocks(struct mddev *mddev, sector_t offset)
 	if (c == BitUnwritten)
 		return blocks;
 
+<<<<<<< HEAD
 	/* Skip CleanUnwritten - no user data, will be reset after recovery */
 	if (c == BitCleanUnwritten)
 		return blocks;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* For degraded array, don't skip */
 	if (mddev->degraded)
 		return 0;
@@ -1392,6 +1458,7 @@ static bool llbitmap_start_sync(struct mddev *mddev, sector_t offset,
 {
 	struct llbitmap *llbitmap = mddev->bitmap;
 	unsigned long p = offset >> llbitmap->chunkshift;
+<<<<<<< HEAD
 	enum llbitmap_state state;
 
 	/*
@@ -1403,14 +1470,21 @@ static bool llbitmap_start_sync(struct mddev *mddev, sector_t offset,
 		llbitmap_state_machine(llbitmap, 0, llbitmap->chunks - 1,
 				       BitmapActionClearUnwritten);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Handle one bit at a time, this is much simpler. And it doesn't matter
 	 * if md_do_sync() loop more times.
 	 */
 	*blocks = llbitmap->chunksize - (offset & (llbitmap->chunksize - 1));
+<<<<<<< HEAD
 	state = llbitmap_state_machine(llbitmap, p, p, BitmapActionStartsync);
 	return state == BitSyncing || state == BitSyncingUnwritten;
+=======
+	return llbitmap_state_machine(llbitmap, p, p,
+				      BitmapActionStartsync) == BitSyncing;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Something is wrong, sync_thread stop at @offset */
@@ -1616,6 +1690,7 @@ static ssize_t bits_show(struct mddev *mddev, char *page)
 	}
 
 	mutex_unlock(&mddev->bitmap_info.mutex);
+<<<<<<< HEAD
 	return sprintf(page,
 		       "unwritten %d\nclean %d\ndirty %d\n"
 		       "need sync %d\nsyncing %d\n"
@@ -1625,6 +1700,11 @@ static ssize_t bits_show(struct mddev *mddev, char *page)
 		       bits[BitNeedSync], bits[BitSyncing],
 		       bits[BitNeedSyncUnwritten], bits[BitSyncingUnwritten],
 		       bits[BitCleanUnwritten]);
+=======
+	return sprintf(page, "unwritten %d\nclean %d\ndirty %d\nneed sync %d\nsyncing %d\n",
+		       bits[BitUnwritten], bits[BitClean], bits[BitDirty],
+		       bits[BitNeedSync], bits[BitSyncing]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct md_sysfs_entry llbitmap_bits = __ATTR_RO(bits);
@@ -1697,6 +1777,7 @@ barrier_idle_store(struct mddev *mddev, const char *buf, size_t len)
 
 static struct md_sysfs_entry llbitmap_barrier_idle = __ATTR_RW(barrier_idle);
 
+<<<<<<< HEAD
 static ssize_t
 proactive_sync_store(struct mddev *mddev, const char *buf, size_t len)
 {
@@ -1724,12 +1805,17 @@ proactive_sync_store(struct mddev *mddev, const char *buf, size_t len)
 static struct md_sysfs_entry llbitmap_proactive_sync =
 	__ATTR(proactive_sync, 0200, NULL, proactive_sync_store);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *md_llbitmap_attrs[] = {
 	&llbitmap_bits.attr,
 	&llbitmap_metadata.attr,
 	&llbitmap_daemon_sleep.attr,
 	&llbitmap_barrier_idle.attr,
+<<<<<<< HEAD
 	&llbitmap_proactive_sync.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL
 };
 
@@ -1738,11 +1824,14 @@ static struct attribute_group md_llbitmap_group = {
 	.attrs = md_llbitmap_attrs,
 };
 
+<<<<<<< HEAD
 static const struct attribute_group *md_llbitmap_groups[] = {
 	&md_llbitmap_group,
 	NULL,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct bitmap_operations llbitmap_ops = {
 	.head = {
 		.type	= MD_BITMAP,
@@ -1779,7 +1868,11 @@ static struct bitmap_operations llbitmap_ops = {
 	.dirty_bits		= llbitmap_dirty_bits,
 	.write_all		= llbitmap_write_all,
 
+<<<<<<< HEAD
 	.groups			= md_llbitmap_groups,
+=======
+	.group			= &md_llbitmap_group,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int md_llbitmap_init(void)

@@ -16,6 +16,7 @@ description:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - enum:
@@ -27,6 +28,13 @@ properties:
           - qcom,wcn6750-pmu
           - qcom,wcn6855-pmu
           - qcom,wcn7850-pmu
+=======
+    enum:
+      - qcom,qca6390-pmu
+      - qcom,wcn6750-pmu
+      - qcom,wcn6855-pmu
+      - qcom,wcn7850-pmu
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   vdd-supply:
     description: VDD supply regulator handle

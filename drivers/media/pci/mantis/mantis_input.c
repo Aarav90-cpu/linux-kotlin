@@ -72,6 +72,9 @@ EXPORT_SYMBOL_GPL(mantis_input_init);
 void mantis_input_exit(struct mantis_pci *mantis)
 {
 	rc_unregister_device(mantis->rc);
+<<<<<<< HEAD
 	rc_free_device(mantis->rc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(mantis_input_exit);

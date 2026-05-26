@@ -56,7 +56,11 @@ struct mei_me_hw {
 	enum mei_pg_state pg_state;
 	bool d0i3_supported;
 	u8 hbuf_depth;
+<<<<<<< HEAD
 	int (*read_fws)(const struct mei_device *dev, int where, const char *name, u32 *val);
+=======
+	int (*read_fws)(const struct mei_device *dev, int where, u32 *val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* polling */
 	struct task_struct *polling_thread;
 	wait_queue_head_t wait_active;
@@ -104,7 +108,10 @@ static inline bool mei_me_hw_use_polling(const struct mei_me_hw *hw)
  *                         SPS firmware exclusion.
  * @MEI_ME_GSC_CFG:        Graphics System Controller
  * @MEI_ME_GSCFI_CFG:      Graphics System Controller Firmware Interface
+<<<<<<< HEAD
  * @MEI_ME_CSC_CFG:        Chassis System Controller Firmware Interface
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @MEI_ME_NUM_CFG:        Upper Sentinel.
  */
 enum mei_cfg_idx {
@@ -125,7 +132,10 @@ enum mei_cfg_idx {
 	MEI_ME_PCH15_SPS_CFG,
 	MEI_ME_GSC_CFG,
 	MEI_ME_GSCFI_CFG,
+<<<<<<< HEAD
 	MEI_ME_CSC_CFG,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MEI_ME_NUM_CFG,
 };
 

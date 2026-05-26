@@ -73,7 +73,11 @@
 
 #ifdef EXT2_XATTR_DEBUG
 # define ea_idebug(inode, f...) do { \
+<<<<<<< HEAD
 		printk(KERN_DEBUG "inode %s:%llu: ", \
+=======
+		printk(KERN_DEBUG "inode %s:%ld: ", \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_sb->s_id, inode->i_ino); \
 		printk(f); \
 		printk("\n"); \
@@ -227,7 +231,11 @@ ext2_xattr_get(struct inode *inode, int name_index, const char *name,
 	if (!ext2_xattr_header_valid(HDR(bh))) {
 bad_block:
 		ext2_error(inode->i_sb, "ext2_xattr_get",
+<<<<<<< HEAD
 			"inode %llu: bad block %d", inode->i_ino,
+=======
+			"inode %ld: bad block %d", inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			EXT2_I(inode)->i_file_acl);
 		error = -EIO;
 		goto cleanup;
@@ -313,7 +321,11 @@ ext2_xattr_list(struct dentry *dentry, char *buffer, size_t buffer_size)
 	if (!ext2_xattr_header_valid(HDR(bh))) {
 bad_block:
 		ext2_error(inode->i_sb, "ext2_xattr_list",
+<<<<<<< HEAD
 			"inode %llu: bad block %d", inode->i_ino,
+=======
+			"inode %ld: bad block %d", inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			EXT2_I(inode)->i_file_acl);
 		error = -EIO;
 		goto cleanup;
@@ -454,7 +466,11 @@ ext2_xattr_set(struct inode *inode, int name_index, const char *name,
 		if (!ext2_xattr_header_valid(header)) {
 bad_block:
 			ext2_error(sb, "ext2_xattr_set",
+<<<<<<< HEAD
 				"inode %llu: bad block %d", inode->i_ino,
+=======
+				"inode %ld: bad block %d", inode->i_ino, 
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   EXT2_I(inode)->i_file_acl);
 			error = -EIO;
 			goto cleanup;
@@ -833,7 +849,11 @@ ext2_xattr_delete_inode(struct inode *inode)
 
 	if (!ext2_data_block_valid(sbi, EXT2_I(inode)->i_file_acl, 1)) {
 		ext2_error(inode->i_sb, "ext2_xattr_delete_inode",
+<<<<<<< HEAD
 			"inode %llu: xattr block %d is out of data blocks range",
+=======
+			"inode %ld: xattr block %d is out of data blocks range",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			inode->i_ino, EXT2_I(inode)->i_file_acl);
 		goto cleanup;
 	}
@@ -841,14 +861,22 @@ ext2_xattr_delete_inode(struct inode *inode)
 	bh = sb_bread(inode->i_sb, EXT2_I(inode)->i_file_acl);
 	if (!bh) {
 		ext2_error(inode->i_sb, "ext2_xattr_delete_inode",
+<<<<<<< HEAD
 			"inode %llu: block %d read error", inode->i_ino,
+=======
+			"inode %ld: block %d read error", inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			EXT2_I(inode)->i_file_acl);
 		goto cleanup;
 	}
 	ea_bdebug(bh, "b_count=%d", atomic_read(&(bh->b_count)));
 	if (!ext2_xattr_header_valid(HDR(bh))) {
 		ext2_error(inode->i_sb, "ext2_xattr_delete_inode",
+<<<<<<< HEAD
 			"inode %llu: bad block %d", inode->i_ino,
+=======
+			"inode %ld: bad block %d", inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			EXT2_I(inode)->i_file_acl);
 		goto cleanup;
 	}
@@ -952,7 +980,11 @@ ext2_xattr_cache_find(struct inode *inode, struct ext2_xattr_header *header)
 		bh = sb_bread(inode->i_sb, ce->e_value);
 		if (!bh) {
 			ext2_error(inode->i_sb, "ext2_xattr_cache_find",
+<<<<<<< HEAD
 				"inode %llu: block %ld read error",
+=======
+				"inode %ld: block %ld read error",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				inode->i_ino, (unsigned long) ce->e_value);
 		} else {
 			lock_buffer(bh);

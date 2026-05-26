@@ -447,7 +447,11 @@ static void gud_fb_handle_damage(struct gud_device *gdrm, struct drm_framebuffer
 	}
 
 	/* Imported buffers are assumed to be WriteCombined with uncached reads */
+<<<<<<< HEAD
 	gud_flush_damage(gdrm, fb, src, !drm_gem_is_imported(fb->obj[0]), damage);
+=======
+	gud_flush_damage(gdrm, fb, src, !fb->obj[0]->import_attach, damage);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int gud_plane_atomic_check(struct drm_plane *plane,

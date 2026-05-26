@@ -753,11 +753,17 @@ static int quickspi_suspend(struct device *device)
 	if (!qsdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (!device_may_wakeup(qsdev->dev)) {
 		ret = quickspi_set_power(qsdev, HIDSPI_SLEEP);
 		if (ret)
 			return ret;
 	}
+=======
+	ret = quickspi_set_power(qsdev, HIDSPI_SLEEP);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = thc_interrupt_quiesce(qsdev->thc_hw, true);
 	if (ret)
@@ -796,8 +802,14 @@ static int quickspi_resume(struct device *device)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!device_may_wakeup(qsdev->dev))
 		return quickspi_set_power(qsdev, HIDSPI_ON);
+=======
+	ret = quickspi_set_power(qsdev, HIDSPI_ON);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -856,9 +868,12 @@ static int quickspi_poweroff(struct device *device)
 	if (!qsdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	/* Ignore the return value as platform will be poweroff soon */
 	quickspi_set_power(qsdev, HIDSPI_OFF);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = thc_interrupt_quiesce(qsdev->thc_hw, true);
 	if (ret)
 		return ret;

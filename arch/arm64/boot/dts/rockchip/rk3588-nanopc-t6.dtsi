@@ -11,7 +11,10 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
+<<<<<<< HEAD
 #include <dt-bindings/thermal/thermal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/usb/pd.h>
 #include "rk3588.dtsi"
 
@@ -90,6 +93,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	fan: pwm-fan {
 		compatible = "pwm-fan";
 		cooling-levels = <0 35 64 100 150 255>;
@@ -98,6 +102,8 @@
 		#cooling-cells = <2>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sound {
 		compatible = "simple-audio-card";
 		pinctrl-names = "default";
@@ -599,6 +605,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &package_thermal {
 	polling-delay = <1000>;
 
@@ -629,6 +636,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pcie2x1l0 {
 	reset-gpios = <&gpio4 RK_PB3 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc_3v3_pcie20>;

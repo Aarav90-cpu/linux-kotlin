@@ -53,12 +53,17 @@ inline void dc_assert_fp_enabled(void)
 {
 	int depth;
 
+<<<<<<< HEAD
 	depth = this_cpu_read(fpu_recursion_depth);
+=======
+	depth = __this_cpu_read(fpu_recursion_depth);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ASSERT(depth >= 1);
 }
 
 /**
+<<<<<<< HEAD
  * dc_is_fp_enabled - Check if FPU protection is enabled
  *
  * This function tells if the code is already under FPU protection or not. A
@@ -78,6 +83,8 @@ inline bool dc_is_fp_enabled(void)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * dc_fpu_begin - Enables FPU protection
  * @function_name: A string containing the function name for debug purposes
  *   (usually __func__)
@@ -96,7 +103,11 @@ void dc_fpu_begin(const char *function_name, const int line)
 
 	WARN_ON_ONCE(!in_task());
 	preempt_disable();
+<<<<<<< HEAD
 	depth = this_cpu_inc_return(fpu_recursion_depth);
+=======
+	depth = __this_cpu_inc_return(fpu_recursion_depth);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (depth == 1) {
 		BUG_ON(!kernel_fpu_available());
 		kernel_fpu_begin();
@@ -119,7 +130,11 @@ void dc_fpu_end(const char *function_name, const int line)
 {
 	int depth;
 
+<<<<<<< HEAD
 	depth = this_cpu_dec_return(fpu_recursion_depth);
+=======
+	depth = __this_cpu_dec_return(fpu_recursion_depth);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (depth == 0) {
 		kernel_fpu_end();
 	} else {

@@ -5,11 +5,20 @@
 #include <linux/rbtree.h>
 #include <linux/timerqueue_types.h>
 
+<<<<<<< HEAD
 bool timerqueue_add(struct timerqueue_head *head, struct timerqueue_node *node);
 bool timerqueue_del(struct timerqueue_head *head, struct timerqueue_node *node);
 struct timerqueue_node *timerqueue_iterate_next(struct timerqueue_node *node);
 
 bool timerqueue_linked_add(struct timerqueue_linked_head *head, struct timerqueue_linked_node *node);
+=======
+extern bool timerqueue_add(struct timerqueue_head *head,
+			   struct timerqueue_node *node);
+extern bool timerqueue_del(struct timerqueue_head *head,
+			   struct timerqueue_node *node);
+extern struct timerqueue_node *timerqueue_iterate_next(
+						struct timerqueue_node *node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * timerqueue_getnext - Returns the timer with the earliest expiration time
@@ -18,7 +27,12 @@ bool timerqueue_linked_add(struct timerqueue_linked_head *head, struct timerqueu
  *
  * Returns a pointer to the timer node that has the earliest expiration time.
  */
+<<<<<<< HEAD
 static inline struct timerqueue_node *timerqueue_getnext(struct timerqueue_head *head)
+=======
+static inline
+struct timerqueue_node *timerqueue_getnext(struct timerqueue_head *head)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *leftmost = rb_first_cached(&head->rb_root);
 
@@ -39,6 +53,7 @@ static inline void timerqueue_init_head(struct timerqueue_head *head)
 {
 	head->rb_root = RB_ROOT_CACHED;
 }
+<<<<<<< HEAD
 
 /* Timer queues with linked nodes */
 
@@ -81,4 +96,6 @@ static __always_inline void timerqueue_linked_init_head(struct timerqueue_linked
 	head->rb_root = RB_ROOT_LINKED;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _LINUX_TIMERQUEUE_H */

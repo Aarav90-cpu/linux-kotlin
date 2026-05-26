@@ -86,10 +86,17 @@ struct snd_soc_component_driver {
 		     unsigned int reg, unsigned int val);
 
 	/* pcm creation and destruction */
+<<<<<<< HEAD
 	int (*pcm_new)(struct snd_soc_component *component,
 		       struct snd_soc_pcm_runtime *rtd);
 	void (*pcm_free)(struct snd_soc_component *component,
 			 struct snd_pcm *pcm);
+=======
+	int (*pcm_construct)(struct snd_soc_component *component,
+			     struct snd_soc_pcm_runtime *rtd);
+	void (*pcm_destruct)(struct snd_soc_component *component,
+			     struct snd_pcm *pcm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* component wide operations */
 	int (*set_sysclk)(struct snd_soc_component *component,
@@ -224,6 +231,10 @@ struct snd_soc_component {
 	int num_dai;
 
 	struct regmap *regmap;
+<<<<<<< HEAD
+=======
+	int val_bytes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	struct mutex io_mutex;
 
@@ -326,7 +337,11 @@ int snd_soc_component_stream_event(struct snd_soc_component *component,
 int snd_soc_component_set_bias_level(struct snd_soc_component *component,
 				     enum snd_soc_bias_level level);
 
+<<<<<<< HEAD
 int snd_soc_component_regmap_val_bytes(struct snd_soc_component *component);
+=======
+void snd_soc_component_setup_regmap(struct snd_soc_component *component);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_REGMAP
 void snd_soc_component_init_regmap(struct snd_soc_component *component,
 				   struct regmap *regmap);

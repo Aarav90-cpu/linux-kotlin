@@ -1281,6 +1281,7 @@ config HIST_TRIGGERS_DEBUG
 
 source "kernel/trace/rv/Kconfig"
 
+<<<<<<< HEAD
 config TRACE_REMOTE
 	bool
 
@@ -1295,4 +1296,6 @@ config TRACE_REMOTE_TEST
 	  This trace remote includes a ring-buffer writer implementation using
 	  "simple_ring_buffer". This is solely intending for testing.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif # FTRACE

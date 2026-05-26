@@ -155,6 +155,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &cs_cti_trace {
 	status = "okay";
 };
@@ -195,6 +196,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &dts {
 	status = "okay";
 };

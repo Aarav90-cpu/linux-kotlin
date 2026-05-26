@@ -64,12 +64,15 @@
 #include "mxc-jpeg-hw.h"
 #include "mxc-jpeg.h"
 
+<<<<<<< HEAD
 #define call_void_jpeg_enc_ops(jpeg, op, args...)			\
 	do {								\
 		if ((jpeg)->enc_cfg_ops && (jpeg)->enc_cfg_ops->op)	\
 			(jpeg)->enc_cfg_ops->op(args);			\
 	} while (0)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct mxc_jpeg_fmt mxc_formats[] = {
 	{
 		.name		= "JPEG",
@@ -1036,7 +1039,15 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
 
 	if (jpeg->mode == MXC_JPEG_ENCODE &&
 	    ctx->enc_state == MXC_JPEG_ENC_CONF) {
+<<<<<<< HEAD
 		call_void_jpeg_enc_ops(jpeg, exit_config_mode, ctx);
+=======
+		q_data = mxc_jpeg_get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+		ctx->enc_state = MXC_JPEG_ENCODING;
+		dev_dbg(dev, "Encoder config finished. Start encoding...\n");
+		mxc_jpeg_enc_set_quality(dev, reg, ctx->jpeg_quality);
+		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto job_unlock;
 	}
 	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
@@ -1274,7 +1285,10 @@ static void mxc_jpeg_config_dec_desc(struct vb2_buffer *out_buf,
 
 	jpeg_src_buf = vb2_to_mxc_buf(src_buf);
 
+<<<<<<< HEAD
 	ctx->extseq = mxc_jpeg_is_extended_sequential(jpeg_src_buf->fmt);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* setup the decoding descriptor */
 	desc->next_descpt_ptr = 0; /* end of chain */
 	q_data_cap = mxc_jpeg_get_q_data(ctx, cap_type);
@@ -1338,6 +1352,7 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
 	struct mxc_jpeg_q_data *q_data;
 	enum mxc_jpeg_image_format img_fmt;
 	int w, h;
+<<<<<<< HEAD
 	bool extseq;
 
 	q_data = mxc_jpeg_get_q_data(ctx, src_buf->vb2_queue->type);
@@ -1347,6 +1362,11 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
 
 	memset(desc, 0, sizeof(struct mxc_jpeg_desc));
 	memset(cfg_desc, 0, sizeof(struct mxc_jpeg_desc));
+=======
+
+	q_data = mxc_jpeg_get_q_data(ctx, src_buf->vb2_queue->type);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	jpeg->slot_data.cfg_stream_size =
 			mxc_jpeg_setup_cfg_stream(cfg_stream_vaddr,
 						  q_data->fmt->fourcc,
@@ -1357,6 +1377,14 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
 	cfg_desc->next_descpt_ptr = desc_handle | MXC_NXT_DESCPT_EN;
 
 	cfg_desc->buf_base0 = jpeg->slot_data.cfg_stream_handle;
+<<<<<<< HEAD
+=======
+	cfg_desc->buf_base1 = 0;
+	cfg_desc->line_pitch = 0;
+	cfg_desc->stm_bufbase = 0; /* no output expected */
+	cfg_desc->stm_bufsize = 0x0;
+	cfg_desc->imgsize = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg_desc->stm_ctrl = STM_CTRL_CONFIG_MOD(1);
 	cfg_desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
 
@@ -1376,14 +1404,21 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
 	desc->stm_ctrl = STM_CTRL_CONFIG_MOD(0) |
 			 STM_CTRL_IMAGE_FORMAT(img_fmt);
 	desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
+<<<<<<< HEAD
 	if (extseq)
+=======
+	if (mxc_jpeg_is_extended_sequential(q_data->fmt))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		desc->stm_ctrl |= STM_CTRL_PIXEL_PRECISION;
 	else
 		desc->stm_ctrl &= ~STM_CTRL_PIXEL_PRECISION;
 	mxc_jpeg_addrs(desc, src_buf, dst_buf, 0);
+<<<<<<< HEAD
 
 	call_void_jpeg_enc_ops(jpeg, setup_desc, ctx);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_dbg(jpeg->dev, "cfg_desc:\n");
 	print_descriptor_info(jpeg->dev, cfg_desc);
 	dev_dbg(jpeg->dev, "enc desc:\n");
@@ -1395,6 +1430,7 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
 	mxc_jpeg_set_desc(cfg_desc_handle, reg, slot);
 }
 
+<<<<<<< HEAD
 static void mxc_jpeg_enc_start_config_manually(struct mxc_jpeg_ctx *ctx)
 {
 	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
@@ -1443,6 +1479,8 @@ static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v1 = {
 	.setup_desc = mxc_jpeg_enc_configure_desc
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct mxc_jpeg_fmt *mxc_jpeg_get_sibling_format(const struct mxc_jpeg_fmt *fmt)
 {
 	int i;
@@ -1648,10 +1686,19 @@ static void mxc_jpeg_device_run(void *priv)
 
 	if (jpeg->mode == MXC_JPEG_ENCODE) {
 		dev_dbg(dev, "Encoding on slot %d\n", ctx->slot);
+<<<<<<< HEAD
 		mxc_jpeg_config_enc_desc(&dst_buf->vb2_buf, ctx,
 					 &src_buf->vb2_buf, &dst_buf->vb2_buf);
 		/* start config phase */
 		call_void_jpeg_enc_ops(jpeg, enter_config_mode, ctx);
+=======
+		ctx->enc_state = MXC_JPEG_ENC_CONF;
+		mxc_jpeg_config_enc_desc(&dst_buf->vb2_buf, ctx,
+					 &src_buf->vb2_buf, &dst_buf->vb2_buf);
+		/* start config phase */
+		mxc_jpeg_enc_mode_conf(dev, reg,
+				       mxc_jpeg_is_extended_sequential(q_data_out->fmt));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		dev_dbg(dev, "Decoding on slot %d\n", ctx->slot);
 		print_mxc_buf(jpeg, &src_buf->vb2_buf, 0);
@@ -2895,6 +2942,7 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mxc_jpeg_get_version(void __iomem *reg)
 {
 	u32 regval;
@@ -2903,6 +2951,8 @@ static int mxc_jpeg_get_version(void __iomem *reg)
 	return GLB_CTRL_CUR_VERSION(regval);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mxc_jpeg_probe(struct platform_device *pdev)
 {
 	struct mxc_jpeg_dev *jpeg;
@@ -3035,6 +3085,7 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
 			  jpeg->dec_vdev->minor);
 
 	platform_set_drvdata(pdev, jpeg);
+<<<<<<< HEAD
 	ret = devm_pm_runtime_enable(dev);
 	if (ret) {
 		dev_err(dev, "Failed to enable runtime PM: %d\n", ret);
@@ -3064,6 +3115,14 @@ err_vdev_register:
 	/* Only release if allocation succeeded but registration failed */
 	if (jpeg->dec_vdev)
 		video_device_release(jpeg->dec_vdev);
+=======
+	pm_runtime_enable(dev);
+
+	return 0;
+
+err_vdev_register:
+	video_device_release(jpeg->dec_vdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 err_vdev_alloc:
 	v4l2_m2m_release(jpeg->m2m_dev);
@@ -3134,6 +3193,10 @@ static void mxc_jpeg_remove(struct platform_device *pdev)
 
 	mxc_jpeg_free_slot_data(jpeg);
 
+<<<<<<< HEAD
+=======
+	pm_runtime_disable(&pdev->dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	video_unregister_device(jpeg->dec_vdev);
 	v4l2_m2m_release(jpeg->m2m_dev);
 	v4l2_device_unregister(&jpeg->v4l2_dev);

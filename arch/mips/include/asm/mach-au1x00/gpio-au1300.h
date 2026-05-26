@@ -12,6 +12,10 @@
 #include <asm/io.h>
 #include <asm/mach-au1x00/au1000.h>
 
+<<<<<<< HEAD
+=======
+struct gpio;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct gpio_chip;
 
 /* with the current GPIC design, up to 128 GPIOs are possible.

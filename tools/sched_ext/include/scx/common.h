@@ -67,7 +67,10 @@ typedef int64_t s64;
 		bpf_map__set_value_size((__skel)->maps.elfsec##_##arr,			\
 				sizeof((__skel)->elfsec##_##arr->arr[0]) * (n));	\
 		(__skel)->elfsec##_##arr =						\
+<<<<<<< HEAD
 			(typeof((__skel)->elfsec##_##arr))				\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bpf_map__initial_value((__skel)->maps.elfsec##_##arr, &__sz);	\
 	} while (0)
 
@@ -75,6 +78,14 @@ typedef int64_t s64;
 #include "compat.h"
 #include "enums.h"
 
+<<<<<<< HEAD
 #include "bpf_arena_common.h"
+=======
+/* not available when building kernel tools/sched_ext */
+#if __has_include(<lib/sdt_task_defs.h>)
+#include "bpf_arena_common.h"
+#include <lib/sdt_task_defs.h>
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif	/* __SCHED_EXT_COMMON_H */

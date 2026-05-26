@@ -26,10 +26,13 @@ properties:
     $ref: /schemas/connector/usb-connector.yaml#
     unevaluatedProperties: false
 
+<<<<<<< HEAD
   orientation-gpios:
     maxItems: 1
     description: Optional orientation select control
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg

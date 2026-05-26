@@ -15,6 +15,7 @@ config PINCTRL_APQ8084
 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
 	  Qualcomm TLMM block found in the Qualcomm APQ8084 platform.
 
+<<<<<<< HEAD
 config PINCTRL_ELIZA
 	tristate "Qualcomm Technologies Inc Eliza pin controller driver"
 	depends on ARM64 || COMPILE_TEST
@@ -25,6 +26,8 @@ config PINCTRL_ELIZA
 	  Say Y here to compile statically, or M here to compile it as a module.
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PINCTRL_GLYMUR
 	tristate "Qualcomm Technologies Inc Glymur pin controller driver"
 	depends on ARM64 || COMPILE_TEST
@@ -35,6 +38,7 @@ config PINCTRL_GLYMUR
 	  Say Y here to compile statically, or M here to compile it as a module.
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config PINCTRL_HAWI
 	tristate "Qualcomm Technologies Inc Hawi pin controller driver"
 	depends on ARM64 || COMPILE_TEST
@@ -45,6 +49,8 @@ config PINCTRL_HAWI
 	  Say Y here to compile statically, or M here to compile it as a module.
 	  If unsure, say N.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PINCTRL_IPQ4019
 	tristate "Qualcomm IPQ4019 pin controller driver"
 	depends on ARM || COMPILE_TEST
@@ -68,6 +74,7 @@ config PINCTRL_IPQ8064
 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
 	  Qualcomm TLMM block found in the Qualcomm IPQ8064 platform.
 
+<<<<<<< HEAD
 config PINCTRL_IPQ5210
 	tristate "Qualcomm Technologies Inc IPQ5210 pin controller driver"
 	depends on ARM64 || COMPILE_TEST
@@ -76,6 +83,8 @@ config PINCTRL_IPQ5210
 	  Qualcomm Technologies Inc TLMM block found on the Qualcomm
 	  Technologies Inc IPQ5210 platform.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config PINCTRL_IPQ5332
 	tristate "Qualcomm Technologies Inc IPQ5332 pin controller driver"
 	depends on ARM64 || COMPILE_TEST

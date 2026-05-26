@@ -50,7 +50,11 @@ static int tps65086_gpio_get(struct gpio_chip *chip, unsigned offset)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	return !!(val & BIT(4 + offset));
+=======
+	return val & BIT(4 + offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int tps65086_gpio_set(struct gpio_chip *chip, unsigned int offset,

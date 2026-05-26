@@ -78,10 +78,14 @@ dump_arp_packet(struct nf_log_buf *m,
 	else
 		logflags = NF_LOG_DEFAULT_MASK;
 
+<<<<<<< HEAD
 	if ((logflags & NF_LOG_MACDECODE) &&
 	    skb->dev && skb->dev->type == ARPHRD_ETHER &&
 	    skb_mac_header_was_set(skb) &&
 	    skb_mac_header_len(skb) >= ETH_HLEN) {
+=======
+	if (logflags & NF_LOG_MACDECODE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nf_log_buf_add(m, "MACSRC=%pM MACDST=%pM ",
 			       eth_hdr(skb)->h_source, eth_hdr(skb)->h_dest);
 		nf_log_dump_vlan(m, skb);
@@ -168,6 +172,7 @@ static struct nf_logger nf_arp_logger __read_mostly = {
 static void nf_log_dump_sk_uid_gid(struct net *net, struct nf_log_buf *m,
 				   struct sock *sk)
 {
+<<<<<<< HEAD
 	const struct socket *sock;
 	const struct file *file;
 
@@ -183,11 +188,23 @@ static void nf_log_dump_sk_uid_gid(struct net *net, struct nf_log_buf *m,
 	file = sock ? READ_ONCE(sock->file) : NULL;
 	if (file) {
 		const struct cred *cred = file->f_cred;
+=======
+	if (!sk || !sk_fullsock(sk) || !net_eq(net, sock_net(sk)))
+		return;
+
+	read_lock_bh(&sk->sk_callback_lock);
+	if (sk->sk_socket && sk->sk_socket->file) {
+		const struct cred *cred = sk->sk_socket->file->f_cred;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		nf_log_buf_add(m, "UID=%u GID=%u ",
 			       from_kuid_munged(&init_user_ns, cred->fsuid),
 			       from_kgid_munged(&init_user_ns, cred->fsgid));
 	}
+<<<<<<< HEAD
+=======
+	read_unlock_bh(&sk->sk_callback_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static noinline_for_stack int
@@ -800,9 +817,12 @@ static void dump_mac_header(struct nf_log_buf *m,
 
 	switch (dev->type) {
 	case ARPHRD_ETHER:
+<<<<<<< HEAD
 		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) < ETH_HLEN)
 			return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nf_log_buf_add(m, "MACSRC=%pM MACDST=%pM ",
 			       eth_hdr(skb)->h_source, eth_hdr(skb)->h_dest);
 		nf_log_dump_vlan(m, skb);

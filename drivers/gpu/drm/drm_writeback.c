@@ -81,7 +81,11 @@
  *	From userspace, this property will always read as zero.
  */
 
+<<<<<<< HEAD
 #define fence_to_wb_connector(x) container_of(x->extern_lock, \
+=======
+#define fence_to_wb_connector(x) container_of(x->lock, \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					      struct drm_writeback_connector, \
 					      fence_lock)
 

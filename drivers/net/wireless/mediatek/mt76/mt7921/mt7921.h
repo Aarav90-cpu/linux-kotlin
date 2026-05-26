@@ -7,8 +7,11 @@
 #include "../mt792x.h"
 #include "regs.h"
 
+<<<<<<< HEAD
 #define MT7921_MAX_AID                  20
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MT7921_TX_RING_SIZE		2048
 #define MT7921_TX_MCU_RING_SIZE		256
 #define MT7921_TX_FWDL_RING_SIZE	128
@@ -17,9 +20,12 @@
 #define MT7921_RX_MCU_RING_SIZE		8
 #define MT7921_RX_MCU_WA_RING_SIZE	512
 
+<<<<<<< HEAD
 /* MT7902 Rx Ring0 is for both Rx Event and Tx Done Event */
 #define MT7902_RX_MCU_RING_SIZE		512
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MT7921_EEPROM_SIZE		3584
 #define MT7921_TOKEN_SIZE		8192
 
@@ -122,6 +128,7 @@ enum mt7921_rxq_id {
 	MT7921_RXQ_MCU_WM = 0,
 };
 
+<<<<<<< HEAD
 /* MT7902 assigns its MCU-WM TXQ at index 15 */
 enum mt7902_txq_id {
 	MT7902_TXQ_MCU_WM = 15,
@@ -133,6 +140,8 @@ struct mt7921_dma_layout {
 	bool has_mcu_wa;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum {
 	MT7921_CLC_POWER,
 	MT7921_CLC_CHAN,

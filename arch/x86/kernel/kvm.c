@@ -75,6 +75,15 @@ DEFINE_PER_CPU_DECRYPTED(struct kvm_steal_time, steal_time) __aligned(64) __visi
 static int has_steal_clock = 0;
 
 static int has_guest_poll = 0;
+<<<<<<< HEAD
+=======
+/*
+ * No need for any "IO delay" on KVM
+ */
+static void kvm_io_delay(void)
+{
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define KVM_TASK_SLEEP_HASHBITS 8
 #define KVM_TASK_SLEEP_HASHSIZE (1<<KVM_TASK_SLEEP_HASHBITS)
@@ -321,7 +330,11 @@ static void __init paravirt_ops_setup(void)
 	pv_info.name = "KVM";
 
 	if (kvm_para_has_feature(KVM_FEATURE_NOP_IO_DELAY))
+<<<<<<< HEAD
 		pv_info.io_delay = false;
+=======
+		pv_ops.cpu.io_delay = kvm_io_delay;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_X86_IO_APIC
 	no_timer_check = 1;

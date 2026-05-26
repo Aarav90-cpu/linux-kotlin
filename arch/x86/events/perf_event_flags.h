@@ -23,4 +23,7 @@ PERF_ARCH(PEBS_LAT_HYBRID,	0x0020000) /* ld and st lat for hybrid */
 PERF_ARCH(NEEDS_BRANCH_STACK,	0x0040000) /* require branch stack setup */
 PERF_ARCH(BRANCH_COUNTERS,	0x0080000) /* logs the counters in the extra space of each branch */
 PERF_ARCH(ACR,			0x0100000) /* Auto counter reload */
+<<<<<<< HEAD
 PERF_ARCH(UNPRIVILEGED,		0x0200000) /* Unprivileged event (wrt perf_allow_kernel()) */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

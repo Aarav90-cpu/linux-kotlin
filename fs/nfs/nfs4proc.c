@@ -4469,6 +4469,7 @@ static int _nfs4_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
 		case -ENOTSUPP:
 		case -EOPNOTSUPP:
 			server->caps &= ~NFS_CAP_DIR_DELEG;
+<<<<<<< HEAD
 			break;
 		case -NFS4ERR_INVAL:
 		case -NFS4ERR_IO:
@@ -4476,6 +4477,8 @@ static int _nfs4_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
 		case -NFS4ERR_NOTDIR:
 			clear_bit(NFS_INO_REQ_DIR_DELEG, &(NFS_I(inode)->flags));
 			status = -EAGAIN;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -4497,7 +4500,10 @@ int nfs4_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
 		default:
 			err = nfs4_handle_exception(server, err, &exception);
 			break;
+<<<<<<< HEAD
 		case -EAGAIN:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case -ENOTSUPP:
 		case -EOPNOTSUPP:
 			exception.retry = true;
@@ -4722,7 +4728,11 @@ static int _nfs4_proc_lookupp(struct inode *inode,
 	nfs_fattr_init(fattr);
 	nfs4_init_sequence(server->nfs_client, &args.seq_args, &res.seq_res, 0, 0);
 
+<<<<<<< HEAD
 	dprintk("NFS call  lookupp ino=0x%llx\n", inode->i_ino);
+=======
+	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
 				   &res.seq_res, task_flags);
 	dprintk("NFS reply lookupp: %d\n", status);
@@ -5060,7 +5070,10 @@ static int nfs4_proc_rename_done(struct rpc_task *task, struct inode *old_dir,
 					res->new_fattr->time_start,
 					NFS_INO_INVALID_NLINK |
 					    NFS_INO_INVALID_DATA);
+<<<<<<< HEAD
 			nfs_update_delegated_mtime(new_dir);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else
 			nfs4_update_changeattr(old_dir, &res->old_cinfo,
 					res->old_fattr->time_start,
@@ -9778,6 +9791,7 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
 	if (!nfs41_sequence_process(task, &lrp->res.seq_res))
 		return;
 
+<<<<<<< HEAD
 	if (task->tk_rpc_status < 0) {
 		switch (task->tk_rpc_status) {
 		case -EACCES:
@@ -9798,6 +9812,18 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
 			lrp->rpc_status = -EAGAIN;
 			break;
 		}
+=======
+	if (task->tk_rpc_status == -ETIMEDOUT) {
+		lrp->rpc_status = -EAGAIN;
+		lrp->res.lrs_present = 0;
+		return;
+	}
+	/*
+	 * Was there an RPC level error? Assume the call succeeded,
+	 * and that we need to release the layout
+	 */
+	if (task->tk_rpc_status != 0 && RPC_WAS_SENT(task)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		lrp->res.lrs_present = 0;
 		return;
 	}
@@ -10038,7 +10064,11 @@ nfs4_proc_layoutcommit(struct nfs4_layoutcommit_data *data, bool sync)
 	int status = 0;
 
 	dprintk("NFS: initiating layoutcommit call. sync %d "
+<<<<<<< HEAD
 		"lbw: %llu inode %llu\n", sync,
+=======
+		"lbw: %llu inode %lu\n", sync,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data->args.lastbytewritten,
 		data->args.inode->i_ino);
 

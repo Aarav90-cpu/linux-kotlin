@@ -42,6 +42,11 @@ team_cleanup()
 }
 
 
+<<<<<<< HEAD
+=======
+require_command teamd
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 trap cleanup EXIT
 
 tests_run

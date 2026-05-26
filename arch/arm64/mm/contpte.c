@@ -225,8 +225,12 @@ static void contpte_convert(struct mm_struct *mm, unsigned long addr,
 	 */
 
 	if (!system_supports_bbml2_noabort())
+<<<<<<< HEAD
 		__flush_tlb_range(&vma, start_addr, addr, PAGE_SIZE, 3,
 				  TLBF_NOWALKCACHE);
+=======
+		__flush_tlb_range(&vma, start_addr, addr, PAGE_SIZE, true, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__set_ptes(mm, start_addr, start_ptep, pte, CONT_PTES);
 }
@@ -509,8 +513,14 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
 }
 EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
 
+<<<<<<< HEAD
 bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep, unsigned int nr)
+=======
+int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+					unsigned long addr, pte_t *ptep,
+					unsigned int nr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * ptep_clear_flush_young() technically requires us to clear the access
@@ -525,7 +535,11 @@ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
 	 */
 
 	unsigned long end = addr + nr * PAGE_SIZE;
+<<<<<<< HEAD
 	bool young = false;
+=======
+	int young = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
 	for (; addr != end; ptep++, addr += PAGE_SIZE)
@@ -535,10 +549,18 @@ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
 }
 EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
 
+<<<<<<< HEAD
 bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
 		unsigned long addr, pte_t *ptep, unsigned int nr)
 {
 	bool young;
+=======
+int contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+				unsigned long addr, pte_t *ptep,
+				unsigned int nr)
+{
+	int young;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	young = contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
 
@@ -550,8 +572,13 @@ bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
 		 * See comment in __ptep_clear_flush_young(); same rationale for
 		 * eliding the trailing DSB applies here.
 		 */
+<<<<<<< HEAD
 		__flush_tlb_range(vma, addr, end, PAGE_SIZE, 3,
 				  TLBF_NOWALKCACHE | TLBF_NOSYNC);
+=======
+		__flush_tlb_range_nosync(vma->vm_mm, addr, end,
+					 PAGE_SIZE, true, 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return young;
@@ -684,10 +711,14 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
 			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
 
 		if (dirty)
+<<<<<<< HEAD
 			__flush_tlb_range(vma, start_addr,
 					  start_addr + CONT_PTE_SIZE,
 					  PAGE_SIZE, 3,
 					  TLBF_NOWALKCACHE | TLBF_NOBROADCAST);
+=======
+			local_flush_tlb_contpte(vma, start_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
 		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);

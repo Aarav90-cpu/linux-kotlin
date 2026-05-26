@@ -42,8 +42,11 @@ readonly KERNEL_CMDLINE="\
 	virtme.ssh virtme_ssh_channel=tcp virtme_ssh_user=$USER \
 "
 readonly LOG=$(mktemp /tmp/vsock_vmtest_XXXX.log)
+<<<<<<< HEAD
 readonly TEST_HOME="$(mktemp -d /tmp/vmtest_home_XXXX)"
 readonly SSH_KEY_PATH="${TEST_HOME}"/.ssh/id_ed25519
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # Namespace tests must use the ns_ prefix. This is checked in check_netns() and
 # is used to determine if a test needs namespace setup before test execution.
@@ -259,12 +262,16 @@ vm_ssh() {
 
 	shift
 
+<<<<<<< HEAD
 	${ns_exec} ssh -q \
 		-i "${SSH_KEY_PATH}" \
 		-o UserKnownHostsFile=/dev/null \
 		-o StrictHostKeyChecking=no \
 		-p "${SSH_HOST_PORT}" \
 		localhost "$@"
+=======
+	${ns_exec} ssh -q -o UserKnownHostsFile=/dev/null -p "${SSH_HOST_PORT}" localhost "$@"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return $?
 }
@@ -272,7 +279,10 @@ vm_ssh() {
 cleanup() {
 	terminate_pidfiles "${!PIDFILES[@]}"
 	del_namespaces
+<<<<<<< HEAD
 	rm -rf "${TEST_HOME}"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 check_args() {
@@ -390,12 +400,15 @@ handle_build() {
 	popd &>/dev/null
 }
 
+<<<<<<< HEAD
 setup_home() {
 	mkdir -p "$(dirname "${SSH_KEY_PATH}")"
 	ssh-keygen -t ed25519 -f "${SSH_KEY_PATH}" -N "" -q
 	cp "${VSOCK_TEST}" "${TEST_HOME}"/vsock_test
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 create_pidfile() {
 	local pidfile
 
@@ -429,6 +442,7 @@ terminate_pids() {
 	done
 }
 
+<<<<<<< HEAD
 vng_dry_run() {
 	# WORKAROUND: use setsid to work around a virtme-ng bug where vng hangs
 	# when called from a background process group (e.g., under make
@@ -442,6 +456,8 @@ vng_dry_run() {
 	setsid -w vng --run "$@" --dry-run &>/dev/null
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 vm_start() {
 	local pidfile=$1
 	local ns=$2
@@ -468,12 +484,15 @@ vm_start() {
 
 	if [[ "${BUILD}" -eq 1 ]]; then
 		kernel_opt="${KERNEL_CHECKOUT}"
+<<<<<<< HEAD
 	elif vng_dry_run; then
 		kernel_opt=""
 	elif vng_dry_run "${KERNEL_CHECKOUT}"; then
 		kernel_opt="${KERNEL_CHECKOUT}"
 	else
 		die "No suitable kernel found"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fi
 
 	if [[ "${ns}" != "init_ns" ]]; then
@@ -484,14 +503,21 @@ vm_start() {
 		--run \
 		${kernel_opt} \
 		${verbose_opt} \
+<<<<<<< HEAD
 		--rwdir=/root="${TEST_HOME}" \
 		--force-9p \
 		--cwd /root \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		--qemu-opts="${qemu_opts}" \
 		--qemu="${qemu}" \
 		--user root \
 		--append "${KERNEL_CMDLINE}" \
+<<<<<<< HEAD
 		&> ${logfile} &
+=======
+		--rw  &> ${logfile} &
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	timeout "${WAIT_QEMU}" \
 		bash -c 'while [[ ! -s '"${pidfile}"' ]]; do sleep 1; done; exit 0'
@@ -621,7 +647,11 @@ vm_vsock_test() {
 	# log output and use pipefail to respect vsock_test errors
 	set -o pipefail
 	if [[ "${host}" != server ]]; then
+<<<<<<< HEAD
 		vm_ssh "${ns}" -- ./vsock_test \
+=======
+		vm_ssh "${ns}" -- "${VSOCK_TEST}" \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			--mode=client \
 			--control-host="${host}" \
 			--peer-cid="${cid}" \
@@ -629,7 +659,11 @@ vm_vsock_test() {
 			2>&1 | log_guest
 		rc=$?
 	else
+<<<<<<< HEAD
 		vm_ssh "${ns}" -- ./vsock_test \
+=======
+		vm_ssh "${ns}" -- "${VSOCK_TEST}" \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			--mode=server \
 			--peer-cid="${cid}" \
 			--control-port="${port}" \
@@ -1568,7 +1602,10 @@ check_deps
 check_vng
 check_socat
 handle_build
+<<<<<<< HEAD
 setup_home
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 echo "1..${#ARGS[@]}"
 

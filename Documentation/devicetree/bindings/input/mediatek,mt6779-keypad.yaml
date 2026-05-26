@@ -10,7 +10,10 @@ maintainers:
   - Mattijs Korpershoek <mkorpershoek@kernel.org>
 
 allOf:
+<<<<<<< HEAD
   - $ref: input.yaml#
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   - $ref: /schemas/input/matrix-keymap.yaml#
 
 description: |

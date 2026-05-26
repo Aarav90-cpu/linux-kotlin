@@ -50,8 +50,12 @@ struct cppc_freq_invariance {
 static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
 static struct kthread_worker *kworker_fie;
 
+<<<<<<< HEAD
 static int cppc_perf_from_fbctrs(u64 reference_perf,
 				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+=======
+static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
 
 /**
@@ -71,7 +75,11 @@ static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
 	struct cppc_perf_fb_ctrs fb_ctrs = {0};
 	struct cppc_cpudata *cpu_data;
 	unsigned long local_freq_scale;
+<<<<<<< HEAD
 	u64 perf, ref_perf;
+=======
+	u64 perf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cpu_data = cppc_fi->cpu_data;
 
@@ -80,9 +88,13 @@ static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
 		return;
 	}
 
+<<<<<<< HEAD
 	ref_perf = cpu_data->perf_caps.reference_perf;
 	perf = cppc_perf_from_fbctrs(ref_perf,
 				     &cppc_fi->prev_perf_fb_ctrs, &fb_ctrs);
+=======
+	perf = cppc_perf_from_fbctrs(&cppc_fi->prev_perf_fb_ctrs, &fb_ctrs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!perf)
 		return;
 
@@ -290,6 +302,7 @@ static inline void cppc_freq_invariance_exit(void)
 }
 #endif /* CONFIG_ACPI_CPPC_CPUFREQ_FIE */
 
+<<<<<<< HEAD
 static void cppc_cpufreq_update_perf_limits(struct cppc_cpudata *cpu_data,
 					    struct cpufreq_policy *policy)
 {
@@ -305,6 +318,8 @@ static void cppc_cpufreq_update_perf_limits(struct cppc_cpudata *cpu_data,
 		clamp_t(u32, max_perf, caps->lowest_perf, caps->highest_perf);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
 				   unsigned int target_freq,
 				   unsigned int relation)
@@ -316,8 +331,11 @@ static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
 
 	cpu_data->perf_ctrls.desired_perf =
 			cppc_khz_to_perf(&cpu_data->perf_caps, target_freq);
+<<<<<<< HEAD
 	cppc_cpufreq_update_perf_limits(cpu_data, policy);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	freqs.old = policy->cur;
 	freqs.new = target_freq;
 
@@ -342,9 +360,14 @@ static unsigned int cppc_cpufreq_fast_switch(struct cpufreq_policy *policy,
 
 	desired_perf = cppc_khz_to_perf(&cpu_data->perf_caps, target_freq);
 	cpu_data->perf_ctrls.desired_perf = desired_perf;
+<<<<<<< HEAD
 	cppc_cpufreq_update_perf_limits(cpu_data, policy);
 
 	ret = cppc_set_perf(cpu, &cpu_data->perf_ctrls);
+=======
+	ret = cppc_set_perf(cpu, &cpu_data->perf_ctrls);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		pr_debug("Failed to set target on CPU:%d. ret:%d\n",
 			 cpu, ret);
@@ -615,12 +638,15 @@ static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
 		goto free_mask;
 	}
 
+<<<<<<< HEAD
 	ret = cppc_get_perf(cpu, &cpu_data->perf_ctrls);
 	if (ret) {
 		pr_debug("Err reading CPU%d perf ctrls: ret:%d\n", cpu, ret);
 		goto free_mask;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return cpu_data;
 
 free_mask:
@@ -750,11 +776,21 @@ static inline u64 get_delta(u64 t1, u64 t0)
 	return (u32)t1 - (u32)t0;
 }
 
+<<<<<<< HEAD
 static int cppc_perf_from_fbctrs(u64 reference_perf,
 				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1)
 {
 	u64 delta_reference, delta_delivered;
+=======
+static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+				 struct cppc_perf_fb_ctrs *fb_ctrs_t1)
+{
+	u64 delta_reference, delta_delivered;
+	u64 reference_perf;
+
+	reference_perf = fb_ctrs_t0->reference_perf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	delta_reference = get_delta(fb_ctrs_t1->reference,
 				    fb_ctrs_t0->reference);
@@ -791,7 +827,11 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
 	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
 	struct cppc_cpudata *cpu_data;
+<<<<<<< HEAD
 	u64 delivered_perf, reference_perf;
+=======
+	u64 delivered_perf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (!policy)
@@ -808,9 +848,13 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
 			return 0;
 	}
 
+<<<<<<< HEAD
 	reference_perf = cpu_data->perf_caps.reference_perf;
 	delivered_perf = cppc_perf_from_fbctrs(reference_perf,
 					       &fb_ctrs_t0, &fb_ctrs_t1);
+=======
+	delivered_perf = cppc_perf_from_fbctrs(&fb_ctrs_t0, &fb_ctrs_t1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!delivered_perf)
 		goto out_invalid_counters;
 
@@ -834,11 +878,25 @@ static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
 {
 	struct cppc_cpudata *cpu_data = policy->driver_data;
 	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
+<<<<<<< HEAD
 
 	if (state)
 		policy->cpuinfo.max_freq = cppc_perf_to_khz(caps, caps->highest_perf);
 	else
 		policy->cpuinfo.max_freq = cppc_perf_to_khz(caps, caps->nominal_perf);
+=======
+	int ret;
+
+	if (state)
+		policy->max = cppc_perf_to_khz(caps, caps->highest_perf);
+	else
+		policy->max = cppc_perf_to_khz(caps, caps->nominal_perf);
+	policy->cpuinfo.max_freq = policy->max;
+
+	ret = freq_qos_update_request(policy->max_freq_req, policy->max);
+	if (ret < 0)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -870,7 +928,10 @@ static ssize_t show_auto_select(struct cpufreq_policy *policy, char *buf)
 static ssize_t store_auto_select(struct cpufreq_policy *policy,
 				 const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	struct cppc_cpudata *cpu_data = policy->driver_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool val;
 	int ret;
 
@@ -882,6 +943,7 @@ static ssize_t store_auto_select(struct cpufreq_policy *policy,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	cpu_data->perf_ctrls.auto_sel = val;
 
 	if (val) {
@@ -905,6 +967,8 @@ static ssize_t store_auto_select(struct cpufreq_policy *policy,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return count;
 }
 
@@ -955,6 +1019,7 @@ static ssize_t store_##_name(struct cpufreq_policy *policy,		\
 CPPC_CPUFREQ_ATTR_RW_U64(auto_act_window, cppc_get_auto_act_window,
 			 cppc_set_auto_act_window)
 
+<<<<<<< HEAD
 static ssize_t
 show_energy_performance_preference_val(struct cpufreq_policy *policy, char *buf)
 {
@@ -984,19 +1049,29 @@ store_energy_performance_preference_val(struct cpufreq_policy *policy,
 
 CPPC_CPUFREQ_ATTR_RW_U64(perf_limited, cppc_get_perf_limited,
 			 cppc_set_perf_limited)
+=======
+CPPC_CPUFREQ_ATTR_RW_U64(energy_performance_preference_val,
+			 cppc_get_epp_perf, cppc_set_epp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 cpufreq_freq_attr_ro(freqdomain_cpus);
 cpufreq_freq_attr_rw(auto_select);
 cpufreq_freq_attr_rw(auto_act_window);
 cpufreq_freq_attr_rw(energy_performance_preference_val);
+<<<<<<< HEAD
 cpufreq_freq_attr_rw(perf_limited);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct freq_attr *cppc_cpufreq_attr[] = {
 	&freqdomain_cpus,
 	&auto_select,
 	&auto_act_window,
 	&energy_performance_preference_val,
+<<<<<<< HEAD
 	&perf_limited,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 

@@ -5,7 +5,10 @@
  */
 
 #include <dt-bindings/clock/qcom,dispcc-sc8280xp.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/qcom,dsi-phy-28nm.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/clock/qcom,gcc-sc8280xp.h>
 #include <dt-bindings/clock/qcom,gpucc-sc8280xp.h>
 #include <dt-bindings/clock/qcom,rpmh.h>
@@ -4653,12 +4656,16 @@
 
 					port@0 {
 						reg = <0>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss0_intf0_out: endpoint {
 							remote-endpoint = <&mdss0_dp0_in>;
 						};
 					};
 
+<<<<<<< HEAD
 					port@1 {
 						reg = <1>;
 
@@ -4678,6 +4685,10 @@
 					port@4 {
 						reg = <4>;
 
+=======
+					port@4 {
+						reg = <4>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss0_intf4_out: endpoint {
 							remote-endpoint = <&mdss0_dp1_in>;
 						};
@@ -4685,7 +4696,10 @@
 
 					port@5 {
 						reg = <5>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss0_intf5_out: endpoint {
 							remote-endpoint = <&mdss0_dp3_in>;
 						};
@@ -4693,7 +4707,10 @@
 
 					port@6 {
 						reg = <6>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss0_intf6_out: endpoint {
 							remote-endpoint = <&mdss0_dp2_in>;
 						};
@@ -4790,8 +4807,13 @@
 				mdss0_dp0_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -4812,6 +4834,7 @@
 				};
 			};
 
+<<<<<<< HEAD
 			mdss0_dsi0: dsi@ae94000 {
 				compatible = "qcom,sc8280xp-dsi-ctrl",
 					     "qcom,sa8775p-dsi-ctrl",
@@ -4995,6 +5018,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mdss0_dp1: displayport-controller@ae98000 {
 				compatible = "qcom,sc8280xp-dp";
 				reg = <0 0xae98000 0 0x200>,
@@ -5055,8 +5080,13 @@
 				mdss0_dp1_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5135,8 +5165,13 @@
 				mdss0_dp2_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5210,8 +5245,13 @@
 				mdss0_dp3_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -5284,10 +5324,17 @@
 				 <&mdss0_dp2_phy 1>,
 				 <&mdss0_dp3_phy 0>,
 				 <&mdss0_dp3_phy 1>,
+<<<<<<< HEAD
 				 <&mdss0_dsi0_phy DSI_BYTE_PLL_CLK>,
 				 <&mdss0_dsi0_phy DSI_PIXEL_PLL_CLK>,
 				 <&mdss0_dsi1_phy DSI_BYTE_PLL_CLK>,
 				 <&mdss0_dsi1_phy DSI_PIXEL_PLL_CLK>;
+=======
+				 <0>,
+				 <0>,
+				 <0>,
+				 <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&rpmhpd SC8280XP_MMCX>;
 
 			#clock-cells = <1>;
@@ -6215,12 +6262,16 @@
 
 					port@0 {
 						reg = <0>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss1_intf0_out: endpoint {
 							remote-endpoint = <&mdss1_dp0_in>;
 						};
 					};
 
+<<<<<<< HEAD
 					port@1 {
 						reg = <1>;
 
@@ -6240,6 +6291,10 @@
 					port@4 {
 						reg = <4>;
 
+=======
+					port@4 {
+						reg = <4>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss1_intf4_out: endpoint {
 							remote-endpoint = <&mdss1_dp1_in>;
 						};
@@ -6247,7 +6302,10 @@
 
 					port@5 {
 						reg = <5>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss1_intf5_out: endpoint {
 							remote-endpoint = <&mdss1_dp3_in>;
 						};
@@ -6255,7 +6313,10 @@
 
 					port@6 {
 						reg = <6>;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						mdss1_intf6_out: endpoint {
 							remote-endpoint = <&mdss1_dp2_in>;
 						};
@@ -6349,8 +6410,13 @@
 				mdss1_dp0_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6371,6 +6437,7 @@
 				};
 			};
 
+<<<<<<< HEAD
 			mdss1_dsi0: dsi@22094000 {
 				compatible = "qcom,sc8280xp-dsi-ctrl",
 					     "qcom,sa8775p-dsi-ctrl",
@@ -6535,6 +6602,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			mdss1_dp1: displayport-controller@22098000 {
 				compatible = "qcom,sc8280xp-dp";
 				reg = <0 0x22098000 0 0x200>,
@@ -6593,8 +6662,13 @@
 				mdss1_dp1_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6673,8 +6747,13 @@
 				mdss1_dp2_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6748,8 +6827,13 @@
 				mdss1_dp3_opp_table: opp-table {
 					compatible = "operating-points-v2";
 
+<<<<<<< HEAD
 					opp-162000000 {
 						opp-hz = /bits/ 64 <162000000>;
+=======
+					opp-160000000 {
+						opp-hz = /bits/ 64 <160000000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						required-opps = <&rpmhpd_opp_low_svs>;
 					};
 
@@ -6822,10 +6906,17 @@
 				 <&mdss1_dp2_phy 1>,
 				 <&mdss1_dp3_phy 0>,
 				 <&mdss1_dp3_phy 1>,
+<<<<<<< HEAD
 				 <&mdss1_dsi0_phy DSI_BYTE_PLL_CLK>,
 				 <&mdss1_dsi0_phy DSI_PIXEL_PLL_CLK>,
 				 <&mdss1_dsi1_phy DSI_BYTE_PLL_CLK>,
 				 <&mdss1_dsi1_phy DSI_PIXEL_PLL_CLK>;
+=======
+				 <0>,
+				 <0>,
+				 <0>,
+				 <0>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			power-domains = <&rpmhpd SC8280XP_MMCX>;
 
 			#clock-cells = <1>;
@@ -7040,9 +7131,16 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };

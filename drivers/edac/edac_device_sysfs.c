@@ -21,6 +21,11 @@
 #define EDAC_DEVICE_SYMLINK	"device"
 
 #define to_edacdev(k) container_of(k, struct edac_device_ctl_info, kobj)
+<<<<<<< HEAD
+=======
+#define to_edacdev_attr(a) container_of(a, struct edacdev_attribute, attr)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Set of edac_device_ctl_info attribute store/show functions
@@ -109,14 +114,22 @@ struct ctl_info_attribute {
 };
 
 #define to_ctl_info(k) container_of(k, struct edac_device_ctl_info, kobj)
+<<<<<<< HEAD
 #define to_ctl_info_attr(a) container_of_const(a, struct ctl_info_attribute, attr)
+=======
+#define to_ctl_info_attr(a) container_of(a,struct ctl_info_attribute,attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Function to 'show' fields from the edac_dev 'ctl_info' structure */
 static ssize_t edac_dev_ctl_info_show(struct kobject *kobj,
 				struct attribute *attr, char *buffer)
 {
 	struct edac_device_ctl_info *edac_dev = to_ctl_info(kobj);
+<<<<<<< HEAD
 	const struct ctl_info_attribute *ctl_info_attr = to_ctl_info_attr(attr);
+=======
+	struct ctl_info_attribute *ctl_info_attr = to_ctl_info_attr(attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctl_info_attr->show)
 		return ctl_info_attr->show(edac_dev, buffer);
@@ -129,7 +142,11 @@ static ssize_t edac_dev_ctl_info_store(struct kobject *kobj,
 				const char *buffer, size_t count)
 {
 	struct edac_device_ctl_info *edac_dev = to_ctl_info(kobj);
+<<<<<<< HEAD
 	const struct ctl_info_attribute *ctl_info_attr = to_ctl_info_attr(attr);
+=======
+	struct ctl_info_attribute *ctl_info_attr = to_ctl_info_attr(attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ctl_info_attr->store)
 		return ctl_info_attr->store(edac_dev, buffer, count);
@@ -143,7 +160,11 @@ static const struct sysfs_ops device_ctl_info_ops = {
 };
 
 #define CTL_INFO_ATTR(_name,_mode,_show,_store)        \
+<<<<<<< HEAD
 static const struct ctl_info_attribute attr_ctl_info_##_name = {      \
+=======
+static struct ctl_info_attribute attr_ctl_info_##_name = {      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr = {.name = __stringify(_name), .mode = _mode },   \
 	.show   = _show,                                        \
 	.store  = _store,                                       \
@@ -161,7 +182,11 @@ CTL_INFO_ATTR(poll_msec, S_IRUGO | S_IWUSR,
 	edac_device_ctl_poll_msec_show, edac_device_ctl_poll_msec_store);
 
 /* Base Attributes of the EDAC_DEVICE ECC object */
+<<<<<<< HEAD
 static const struct attribute *const device_ctrl_attrs[] = {
+=======
+static struct attribute *device_ctrl_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&attr_ctl_info_panic_on_ue.attr,
 	&attr_ctl_info_log_ue.attr,
 	&attr_ctl_info_log_ce.attr,
@@ -573,7 +598,12 @@ static void edac_device_delete_block(struct edac_device_ctl_info *edac_dev,
 		for (i = 0; i < block->nr_attribs; i++, sysfs_attrib++) {
 
 			/* remove each block_attrib file */
+<<<<<<< HEAD
 			sysfs_remove_file(&block->kobj, &sysfs_attrib->attr);
+=======
+			sysfs_remove_file(&block->kobj,
+				(struct attribute *) sysfs_attrib);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -723,7 +753,11 @@ static void edac_device_delete_instances(struct edac_device_ctl_info *edac_dev)
 static int edac_device_add_main_sysfs_attributes(
 			struct edac_device_ctl_info *edac_dev)
 {
+<<<<<<< HEAD
 	const struct edac_dev_sysfs_attribute *sysfs_attrib;
+=======
+	struct edac_dev_sysfs_attribute *sysfs_attrib;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err = 0;
 
 	sysfs_attrib = edac_dev->sysfs_attributes;
@@ -733,7 +767,11 @@ static int edac_device_add_main_sysfs_attributes(
 		 */
 		while (sysfs_attrib->attr.name != NULL) {
 			err = sysfs_create_file(&edac_dev->kobj,
+<<<<<<< HEAD
 				&sysfs_attrib->attr);
+=======
+				(struct attribute*) sysfs_attrib);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (err)
 				goto err_out;
 
@@ -752,7 +790,11 @@ err_out:
 static void edac_device_remove_main_sysfs_attributes(
 			struct edac_device_ctl_info *edac_dev)
 {
+<<<<<<< HEAD
 	const struct edac_dev_sysfs_attribute *sysfs_attrib;
+=======
+	struct edac_dev_sysfs_attribute *sysfs_attrib;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* if there are main attributes, defined, remove them. First,
 	 * point to the start of the array and iterate over it
@@ -761,7 +803,12 @@ static void edac_device_remove_main_sysfs_attributes(
 	sysfs_attrib = edac_dev->sysfs_attributes;
 	if (sysfs_attrib) {
 		while (sysfs_attrib->attr.name != NULL) {
+<<<<<<< HEAD
 			sysfs_remove_file(&edac_dev->kobj, &sysfs_attrib->attr);
+=======
+			sysfs_remove_file(&edac_dev->kobj,
+					(struct attribute *) sysfs_attrib);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			sysfs_attrib++;
 		}
 	}

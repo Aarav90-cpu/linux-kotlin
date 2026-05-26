@@ -19,7 +19,10 @@
 
 #include <media/vsp1.h>
 
+<<<<<<< HEAD
 struct rcar_du_cmm;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct rcar_du_group;
 struct rcar_du_vsp;
 
@@ -66,7 +69,11 @@ struct rcar_du_crtc {
 	unsigned int vblank_count;
 
 	struct rcar_du_group *group;
+<<<<<<< HEAD
 	struct rcar_du_cmm *cmm;
+=======
+	struct platform_device *cmm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rcar_du_vsp *vsp;
 	unsigned int vsp_pipe;
 

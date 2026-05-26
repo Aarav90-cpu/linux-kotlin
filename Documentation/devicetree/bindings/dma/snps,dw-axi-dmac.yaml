@@ -21,7 +21,10 @@ properties:
       - enum:
           - snps,axi-dma-1.01a
           - intel,kmb-axi-dma
+<<<<<<< HEAD
           - sophgo,cv1800b-axi-dma
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - starfive,jh7110-axi-dma
           - starfive,jh8100-axi-dma
       - items:
@@ -69,8 +72,11 @@ properties:
 
   dma-noncoherent: true
 
+<<<<<<< HEAD
   dma-coherent: true
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   resets:
     minItems: 1
     maxItems: 2

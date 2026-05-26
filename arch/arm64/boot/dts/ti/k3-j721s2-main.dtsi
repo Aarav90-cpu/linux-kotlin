@@ -37,8 +37,14 @@
 		};
 	};
 
+<<<<<<< HEAD
 	scm_conf: bus@104000 {
 		compatible = "simple-bus";
+=======
+	scm_conf: syscon@104000 {
+		compatible = "ti,j721e-system-controller", "syscon", "simple-mfd";
+		reg = <0x00 0x00104000 0x00 0x18000>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges = <0x00 0x00 0x00104000 0x18000>;
@@ -174,7 +180,11 @@
 	};
 
 	main_pmx0: pinctrl@11c000 {
+<<<<<<< HEAD
 		compatible = "ti,j7200-padconf", "pinctrl-single";
+=======
+		compatible = "pinctrl-single";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Proxy 0 addressing */
 		reg = <0x0 0x11c000 0x0 0x120>;
 		#pinctrl-cells = <1>;
@@ -184,7 +194,11 @@
 
 	/* TIMERIO pad input CTRLMMR_TIMER*_CTRL registers */
 	main_timerio_input: pinctrl@104200 {
+<<<<<<< HEAD
 		compatible = "ti,j7200-padconf", "pinctrl-single";
+=======
+		compatible = "pinctrl-single";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0x00 0x104200 0x00 0x50>;
 		#pinctrl-cells = <1>;
 		pinctrl-single,register-width = <32>;
@@ -193,7 +207,11 @@
 
 	/* TIMERIO pad output CTCTRLMMR_TIMERIO*_CTRL registers */
 	main_timerio_output: pinctrl@104280 {
+<<<<<<< HEAD
 		compatible = "ti,j7200-padconf", "pinctrl-single";
+=======
+		compatible = "pinctrl-single";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		reg = <0x00 0x104280 0x00 0x20>;
 		#pinctrl-cells = <1>;
 		pinctrl-single,register-width = <32>;
@@ -1814,6 +1832,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	dphy_tx1: phy@4481000 {
 		compatible = "ti,j721e-dphy";
 		reg = <0x00 0x04481000 0x00 0x00001000>;
@@ -1827,6 +1846,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dsi0: dsi@4800000 {
 		compatible = "ti,j721e-dsi";
 		reg = <0x00 0x04800000 0x00 0x00100000>,
@@ -1853,6 +1874,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	dsi1: dsi@4900000 {
 		compatible = "ti,j721e-dsi";
 		reg = <0x00 0x04900000 0x00 0x00100000>,
@@ -1879,6 +1901,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dss: dss@4a00000 {
 		compatible = "ti,j721e-dss";
 		reg = <0x00 0x04a00000 0x00 0x10000>, /* common_m */

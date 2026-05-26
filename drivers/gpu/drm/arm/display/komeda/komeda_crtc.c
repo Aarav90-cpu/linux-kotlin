@@ -40,7 +40,11 @@ void komeda_crtc_get_color_config(struct drm_crtc_state *crtc_st,
 
 	/* connector doesn't config any color_format, use RGB444 as default */
 	if (!conn_color_formats)
+<<<<<<< HEAD
 		conn_color_formats = BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+		conn_color_formats = DRM_COLOR_FORMAT_RGB444;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*color_depths = GENMASK(min_bpc, 0);
 	*color_formats = conn_color_formats;

@@ -49,7 +49,10 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/ethtool.h>
+<<<<<<< HEAD
 #include <linux/uio.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/filter.h>
 #include <linux/types.h>
 #include <linux/mm.h>
@@ -4057,7 +4060,11 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
 }
 
 static int packet_getsockopt(struct socket *sock, int level, int optname,
+<<<<<<< HEAD
 			     sockopt_t *opt)
+=======
+			     char __user *optval, int __user *optlen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int len;
 	int val, lv = sizeof(val);
@@ -4071,7 +4078,12 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
 	if (level != SOL_PACKET)
 		return -ENOPROTOOPT;
 
+<<<<<<< HEAD
 	len = opt->optlen;
+=======
+	if (get_user(len, optlen))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (len < 0)
 		return -EINVAL;
@@ -4120,7 +4132,11 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
 			len = sizeof(int);
 		if (len < sizeof(int))
 			return -EINVAL;
+<<<<<<< HEAD
 		if (copy_from_iter(&val, len, &opt->iter_in) != len)
+=======
+		if (copy_from_user(&val, optval, len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EFAULT;
 		switch (val) {
 		case TPACKET_V1:
@@ -4176,8 +4192,14 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
 
 	if (len > lv)
 		len = lv;
+<<<<<<< HEAD
 	opt->optlen = len;
 	if (copy_to_iter(data, len, &opt->iter_out) != len)
+=======
+	if (put_user(len, optlen))
+		return -EFAULT;
+	if (copy_to_user(optval, data, len))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EFAULT;
 	return 0;
 }
@@ -4676,7 +4698,11 @@ static const struct proto_ops packet_ops = {
 	.listen =	sock_no_listen,
 	.shutdown =	sock_no_shutdown,
 	.setsockopt =	packet_setsockopt,
+<<<<<<< HEAD
 	.getsockopt_iter =	packet_getsockopt,
+=======
+	.getsockopt =	packet_getsockopt,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.sendmsg =	packet_sendmsg,
 	.recvmsg =	packet_recvmsg,
 	.mmap =		packet_mmap,
@@ -4726,7 +4752,11 @@ static int packet_seq_show(struct seq_file *seq, void *v)
 		const struct packet_sock *po = pkt_sk(s);
 
 		seq_printf(seq,
+<<<<<<< HEAD
 			   "%pK %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6llu\n",
+=======
+			   "%pK %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   s,
 			   refcount_read(&s->sk_refcnt),
 			   s->sk_type,

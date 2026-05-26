@@ -98,7 +98,10 @@ struct cs42l43 {
 	bool sdw_pll_active;
 	bool attached;
 	bool hw_lock;
+<<<<<<< HEAD
 	long variant_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* CS42L43_CORE_EXT_H */

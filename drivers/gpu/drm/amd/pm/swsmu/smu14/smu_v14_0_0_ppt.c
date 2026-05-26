@@ -65,9 +65,12 @@
 
 #define SMU_MALL_PG_CONFIG_DEFAULT SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_ON
 
+<<<<<<< HEAD
 #define SMU14_DRIVER_IF_VERSION_SMU_V14_0_0 0x7
 #define SMU14_DRIVER_IF_VERSION_SMU_V14_0_1 0x6
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SMU_14_0_0_UMD_PSTATE_GFXCLK			700
 #define SMU_14_0_0_UMD_PSTATE_SOCCLK			678
 #define SMU_14_0_0_UMD_PSTATE_FCLK			1800
@@ -1702,7 +1705,11 @@ static int smu_v14_0_0_restore_user_od_settings(struct smu_context *smu)
 
 static const struct pptable_funcs smu_v14_0_0_ppt_funcs = {
 	.check_fw_status = smu_v14_0_check_fw_status,
+<<<<<<< HEAD
 	.check_fw_version = smu_cmn_check_fw_version,
+=======
+	.check_fw_version = smu_v14_0_check_fw_version,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.init_smc_tables = smu_v14_0_0_init_smc_tables,
 	.fini_smc_tables = smu_v14_0_0_fini_smc_tables,
 	.get_vbios_bootup_values = smu_v14_0_get_vbios_bootup_values,
@@ -1753,13 +1760,17 @@ static void smu_v14_0_0_init_msg_ctl(struct smu_context *smu)
 
 void smu_v14_0_0_set_ppt_funcs(struct smu_context *smu)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = smu->adev;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu->ppt_funcs = &smu_v14_0_0_ppt_funcs;
 	smu->feature_map = smu_v14_0_0_feature_mask_map;
 	smu->table_map = smu_v14_0_0_table_map;
 	smu->is_apu = true;
 
+<<<<<<< HEAD
 	switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
 	case IP_VERSION(14, 0, 0):
 	case IP_VERSION(14, 0, 4):
@@ -1771,5 +1782,7 @@ void smu_v14_0_0_set_ppt_funcs(struct smu_context *smu)
 		break;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu_v14_0_0_init_msg_ctl(smu);
 }

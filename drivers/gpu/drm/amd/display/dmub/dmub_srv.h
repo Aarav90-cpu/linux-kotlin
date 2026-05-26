@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: MIT */
 /*
  * Copyright 2019-2026 Advanced Micro Devices, Inc.
+=======
+/*
+ * Copyright 2019 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -120,7 +125,10 @@ enum dmub_asic {
 	DMUB_ASIC_DCN351,
 	DMUB_ASIC_DCN36,
 	DMUB_ASIC_DCN401,
+<<<<<<< HEAD
 	DMUB_ASIC_DCN42,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DMUB_ASIC_MAX,
 };
 
@@ -604,7 +612,10 @@ struct dmub_srv {
 	struct dmub_srv_dcn32_regs *regs_dcn32;
 	struct dmub_srv_dcn35_regs *regs_dcn35;
 	const struct dmub_srv_dcn401_regs *regs_dcn401;
+<<<<<<< HEAD
 	struct dmub_srv_dcn42_regs *regs_dcn42;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dmub_srv_base_funcs funcs;
 	struct dmub_srv_hw_funcs hw_funcs;
 	struct dmub_srv_inbox inbox1;

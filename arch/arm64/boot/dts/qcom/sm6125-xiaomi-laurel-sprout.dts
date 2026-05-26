@@ -82,6 +82,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	ts_vdd_supply: regulator-ts-vdd {
 		compatible = "regulator-fixed";
 		regulator-name = "ts_vdd_supply";
@@ -95,6 +96,8 @@
 		pinctrl-names = "default";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	thermal-zones {
 		rf-pa0-thermal {
 			thermal-sensors = <&pm6125_adc_tm 0>;
@@ -141,6 +144,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &i2c2 {
 	status = "okay";
 
@@ -162,6 +166,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &pm6125_adc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm>;
@@ -254,10 +260,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &qupv3_id_0 {
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &rpm_requests {
 	regulators-0 {
 		compatible = "qcom,rpm-pm6125-regulators";
@@ -425,6 +434,7 @@
 
 &tlmm {
 	gpio-reserved-ranges = <22 2>, <28 6>;
+<<<<<<< HEAD
 
 	ts_vdd_en: ts-vdd-default-state {
 		pins = "gpio83";
@@ -460,6 +470,8 @@
 		drive-strength = <2>;
 		bias-pull-down;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &ufs_mem_hc {

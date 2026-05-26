@@ -2,7 +2,11 @@
 config QAT_VFIO_PCI
 	tristate "VFIO support for QAT VF PCI devices"
 	select VFIO_PCI_CORE
+<<<<<<< HEAD
 	depends on CRYPTO_DEV_QAT_4XXX || CRYPTO_DEV_QAT_420XX || CRYPTO_DEV_QAT_6XXX
+=======
+	depends on CRYPTO_DEV_QAT_4XXX
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  This provides migration support for Intel(R) QAT Virtual Function
 	  using the VFIO framework.

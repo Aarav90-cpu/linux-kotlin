@@ -339,7 +339,11 @@ arch_initcall(activate_jump_labels);
 static void __init vmware_paravirt_ops_setup(void)
 {
 	pv_info.name = "VMware hypervisor";
+<<<<<<< HEAD
 	pv_info.io_delay = false;
+=======
+	pv_ops.cpu.io_delay = paravirt_nop;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (vmware_tsc_khz == 0)
 		return;

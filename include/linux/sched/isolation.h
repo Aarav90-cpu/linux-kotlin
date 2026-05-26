@@ -21,11 +21,14 @@ enum hk_type {
 	HK_TYPE_MAX,
 
 	/*
+<<<<<<< HEAD
 	 * HK_TYPE_KTHREAD is now an alias of HK_TYPE_DOMAIN
 	 */
 	HK_TYPE_KTHREAD = HK_TYPE_DOMAIN,
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * The following housekeeping types are only set by the nohz_full
 	 * boot commandline option. So they can share the same value.
 	 */
@@ -34,6 +37,10 @@ enum hk_type {
 	HK_TYPE_RCU     = HK_TYPE_KERNEL_NOISE,
 	HK_TYPE_MISC    = HK_TYPE_KERNEL_NOISE,
 	HK_TYPE_WQ      = HK_TYPE_KERNEL_NOISE,
+<<<<<<< HEAD
+=======
+	HK_TYPE_KTHREAD = HK_TYPE_KERNEL_NOISE
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #ifdef CONFIG_CPU_ISOLATION

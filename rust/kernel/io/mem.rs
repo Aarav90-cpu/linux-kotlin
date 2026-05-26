@@ -54,7 +54,10 @@ impl<'a> IoRequest<'a> {
     /// use kernel::{
     ///     bindings,
     ///     device::Core,
+<<<<<<< HEAD
     ///     io::Io,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///     of,
     ///     platform,
     /// };
@@ -79,9 +82,15 @@ impl<'a> IoRequest<'a> {
     ///       let io = iomem.access(pdev.as_ref())?;
     ///
     ///       // Read and write a 32-bit value at `offset`.
+<<<<<<< HEAD
     ///       let data = io.read32(offset);
     ///
     ///       io.write32(data, offset);
+=======
+    ///       let data = io.read32_relaxed(offset);
+    ///
+    ///       io.write32_relaxed(data, offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///
     ///       # Ok(SampleDriver)
     ///     }
@@ -118,7 +127,10 @@ impl<'a> IoRequest<'a> {
     /// use kernel::{
     ///     bindings,
     ///     device::Core,
+<<<<<<< HEAD
     ///     io::Io,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///     of,
     ///     platform,
     /// };
@@ -143,9 +155,15 @@ impl<'a> IoRequest<'a> {
     ///
     ///       let io = iomem.access(pdev.as_ref())?;
     ///
+<<<<<<< HEAD
     ///       let data = io.try_read32(offset)?;
     ///
     ///       io.try_write32(data, offset)?;
+=======
+    ///       let data = io.try_read32_relaxed(offset)?;
+    ///
+    ///       io.try_write32_relaxed(data, offset)?;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ///
     ///       # Ok(SampleDriver)
     ///     }

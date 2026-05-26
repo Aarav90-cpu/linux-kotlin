@@ -85,16 +85,28 @@ EXPORT_SYMBOL_GPL(pie_drop_early);
 static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 			     struct sk_buff **to_free)
 {
+<<<<<<< HEAD
 	enum qdisc_drop_reason reason = QDISC_DROP_OVERLIMIT;
+=======
+	enum skb_drop_reason reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct pie_sched_data *q = qdisc_priv(sch);
 	bool enqueue = false;
 
 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
+<<<<<<< HEAD
 		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
 		goto out;
 	}
 
 	reason = QDISC_DROP_CONGESTED;
+=======
+		q->stats.overlimit++;
+		goto out;
+	}
+
+	reason = SKB_DROP_REASON_QDISC_CONGESTED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!pie_drop_early(sch, &q->params, &q->vars, sch->qstats.backlog,
 			    skb->len)) {
@@ -104,7 +116,11 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		/* If packet is ecn capable, mark it if drop probability
 		 * is lower than 10%, else drop it.
 		 */
+<<<<<<< HEAD
 		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
+=======
+		q->stats.ecn_mark++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		enqueue = true;
 	}
 
@@ -114,15 +130,25 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		if (!q->params.dq_rate_estimator)
 			pie_set_enqueue_time(skb);
 
+<<<<<<< HEAD
 		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
 		if (qdisc_qlen(sch) > q->stats.maxq)
 			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
+=======
+		q->stats.packets_in++;
+		if (qdisc_qlen(sch) > q->stats.maxq)
+			q->stats.maxq = qdisc_qlen(sch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return qdisc_enqueue_tail(skb, sch);
 	}
 
 out:
+<<<<<<< HEAD
 	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
+=======
+	q->stats.dropped++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->vars.accu_prob = 0;
 	return qdisc_drop_reason(skb, sch, to_free, reason);
 }
@@ -219,14 +245,24 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
 	 * packet timestamp.
 	 */
 	if (!params->dq_rate_estimator) {
+<<<<<<< HEAD
 		WRITE_ONCE(vars->qdelay,
 			   backlog ? now - pie_get_enqueue_time(skb) : 0);
+=======
+		vars->qdelay = now - pie_get_enqueue_time(skb);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (vars->dq_tstamp != DTIME_INVALID)
 			dtime = now - vars->dq_tstamp;
 
 		vars->dq_tstamp = now;
 
+<<<<<<< HEAD
+=======
+		if (backlog == 0)
+			vars->qdelay = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dtime == 0)
 			return;
 
@@ -265,11 +301,19 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
 			count = count / dtime;
 
 			if (vars->avg_dq_rate == 0)
+<<<<<<< HEAD
 				WRITE_ONCE(vars->avg_dq_rate, count);
 			else
 				WRITE_ONCE(vars->avg_dq_rate,
 				    (vars->avg_dq_rate -
 				     (vars->avg_dq_rate >> 3)) + (count >> 3));
+=======
+				vars->avg_dq_rate = count;
+			else
+				vars->avg_dq_rate =
+				    (vars->avg_dq_rate -
+				     (vars->avg_dq_rate >> 3)) + (count >> 3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			/* If the queue has receded below the threshold, we hold
 			 * on to the last drain rate calculated, else we reset
@@ -374,12 +418,20 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
 		delta += MAX_PROB / (100 / 2);
 
+<<<<<<< HEAD
 	WRITE_ONCE(vars->prob, vars->prob + delta);
+=======
+	vars->prob += delta;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (delta > 0) {
 		/* prevent overflow */
 		if (vars->prob < oldprob) {
+<<<<<<< HEAD
 			WRITE_ONCE(vars->prob, MAX_PROB);
+=======
+			vars->prob = MAX_PROB;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* Prevent normalization error. If probability is at
 			 * maximum value already, we normalize it here, and
 			 * skip the check to do a non-linear drop in the next
@@ -390,7 +442,11 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
 	} else {
 		/* prevent underflow */
 		if (vars->prob > oldprob)
+<<<<<<< HEAD
 			WRITE_ONCE(vars->prob, 0);
+=======
+			vars->prob = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Non-linear drop in probability: Reduce drop probability quickly if
@@ -399,9 +455,15 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
 
 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
 		/* Reduce drop probability to 98.4% */
+<<<<<<< HEAD
 		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
 
 	WRITE_ONCE(vars->qdelay, qdelay);
+=======
+		vars->prob -= vars->prob / 64;
+
+	vars->qdelay = qdelay;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vars->backlog_old = backlog;
 
 	/* We restart the measurement cycle if the following conditions are met
@@ -499,6 +561,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 {
 	struct pie_sched_data *q = qdisc_priv(sch);
 	struct tc_pie_xstats st = {
+<<<<<<< HEAD
 		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
 				   NSEC_PER_USEC,
@@ -515,6 +578,24 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
 	/* unscale and return dq_rate in bytes per sec */
 	if (st.dq_rate_estimating)
 		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
+=======
+		.prob		= q->vars.prob << BITS_PER_BYTE,
+		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
+				   NSEC_PER_USEC,
+		.packets_in	= q->stats.packets_in,
+		.overlimit	= q->stats.overlimit,
+		.maxq		= q->stats.maxq,
+		.dropped	= q->stats.dropped,
+		.ecn_mark	= q->stats.ecn_mark,
+	};
+
+	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+	st.dq_rate_estimating = q->params.dq_rate_estimator;
+
+	/* unscale and return dq_rate in bytes per sec */
+	if (q->params.dq_rate_estimator)
+		st.avg_dq_rate = q->vars.avg_dq_rate *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
 
 	return gnet_stats_copy_app(d, &st, sizeof(st));

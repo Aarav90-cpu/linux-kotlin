@@ -650,13 +650,21 @@ __msg("mark_precise: frame0: last_idx 9 first_idx 7 subseq_idx -1")
 __msg("mark_precise: frame0: regs=r2 stack= before 8: (79) r2 = *(u64 *)(r10 -8)")
 __msg("mark_precise: frame0: regs= stack=-8 before 7: (bf) r1 = r6")
 /* note, fp-8 is precise, fp-16 is not yet precise, we'll get there */
+<<<<<<< HEAD
 __msg("mark_precise: frame0: parent state regs= stack=-8:  R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=P1 fp-16=1")
+=======
+__msg("mark_precise: frame0: parent state regs= stack=-8:  R0=1 R1=ctx() R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=P1 fp-16=1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("mark_precise: frame0: last_idx 6 first_idx 3 subseq_idx 7")
 __msg("mark_precise: frame0: regs= stack=-8 before 6: (05) goto pc+0")
 __msg("mark_precise: frame0: regs= stack=-8 before 5: (7b) *(u64 *)(r10 -16) = r0")
 __msg("mark_precise: frame0: regs= stack=-8 before 4: (b7) r0 = 1")
 __msg("mark_precise: frame0: regs= stack=-8 before 3: (7a) *(u64 *)(r10 -8) = 1")
+<<<<<<< HEAD
 __msg("10: R1=map_value(map=.data.two_byte_,ks=4,vs=2,imm=1) R2=1")
+=======
+__msg("10: R1=map_value(map=.data.two_byte_,ks=4,vs=2,off=1) R2=1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* validate load from fp-16, which was initialized using BPF_STX_MEM */
 __msg("12: (79) r2 = *(u64 *)(r10 -16)       ; R2=1 R10=fp0 fp-16=1")
 __msg("13: (0f) r1 += r2")
@@ -668,12 +676,20 @@ __msg("mark_precise: frame0: regs= stack=-16 before 9: (0f) r1 += r2")
 __msg("mark_precise: frame0: regs= stack=-16 before 8: (79) r2 = *(u64 *)(r10 -8)")
 __msg("mark_precise: frame0: regs= stack=-16 before 7: (bf) r1 = r6")
 /* now both fp-8 and fp-16 are precise, very good */
+<<<<<<< HEAD
 __msg("mark_precise: frame0: parent state regs= stack=-16:  R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=P1 fp-16=P1")
+=======
+__msg("mark_precise: frame0: parent state regs= stack=-16:  R0=1 R1=ctx() R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=P1 fp-16=P1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("mark_precise: frame0: last_idx 6 first_idx 3 subseq_idx 7")
 __msg("mark_precise: frame0: regs= stack=-16 before 6: (05) goto pc+0")
 __msg("mark_precise: frame0: regs= stack=-16 before 5: (7b) *(u64 *)(r10 -16) = r0")
 __msg("mark_precise: frame0: regs=r0 stack= before 4: (b7) r0 = 1")
+<<<<<<< HEAD
 __msg("14: R1=map_value(map=.data.two_byte_,ks=4,vs=2,imm=1) R2=1")
+=======
+__msg("14: R1=map_value(map=.data.two_byte_,ks=4,vs=2,off=1) R2=1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void stack_load_preserves_const_precision(void)
 {
 	asm volatile (
@@ -726,13 +742,21 @@ __msg("9: (0f) r1 += r2")
 __msg("mark_precise: frame0: last_idx 9 first_idx 7 subseq_idx -1")
 __msg("mark_precise: frame0: regs=r2 stack= before 8: (61) r2 = *(u32 *)(r10 -8)")
 __msg("mark_precise: frame0: regs= stack=-8 before 7: (bf) r1 = r6")
+<<<<<<< HEAD
 __msg("mark_precise: frame0: parent state regs= stack=-8:  R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=????P1 fp-16=????1")
+=======
+__msg("mark_precise: frame0: parent state regs= stack=-8:  R0=1 R1=ctx() R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=????P1 fp-16=????1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("mark_precise: frame0: last_idx 6 first_idx 3 subseq_idx 7")
 __msg("mark_precise: frame0: regs= stack=-8 before 6: (05) goto pc+0")
 __msg("mark_precise: frame0: regs= stack=-8 before 5: (63) *(u32 *)(r10 -16) = r0")
 __msg("mark_precise: frame0: regs= stack=-8 before 4: (b7) r0 = 1")
 __msg("mark_precise: frame0: regs= stack=-8 before 3: (62) *(u32 *)(r10 -8) = 1")
+<<<<<<< HEAD
 __msg("10: R1=map_value(map=.data.two_byte_,ks=4,vs=2,imm=1) R2=1")
+=======
+__msg("10: R1=map_value(map=.data.two_byte_,ks=4,vs=2,off=1) R2=1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* validate load from fp-16, which was initialized using BPF_STX_MEM */
 __msg("12: (61) r2 = *(u32 *)(r10 -16)       ; R2=1 R10=fp0 fp-16=????1")
 __msg("13: (0f) r1 += r2")
@@ -743,12 +767,20 @@ __msg("mark_precise: frame0: regs= stack=-16 before 10: (73) *(u8 *)(r1 +0) = r2
 __msg("mark_precise: frame0: regs= stack=-16 before 9: (0f) r1 += r2")
 __msg("mark_precise: frame0: regs= stack=-16 before 8: (61) r2 = *(u32 *)(r10 -8)")
 __msg("mark_precise: frame0: regs= stack=-16 before 7: (bf) r1 = r6")
+<<<<<<< HEAD
 __msg("mark_precise: frame0: parent state regs= stack=-16:  R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=????P1 fp-16=????P1")
+=======
+__msg("mark_precise: frame0: parent state regs= stack=-16:  R0=1 R1=ctx() R6=map_value(map=.data.two_byte_,ks=4,vs=2) R10=fp0 fp-8=????P1 fp-16=????P1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __msg("mark_precise: frame0: last_idx 6 first_idx 3 subseq_idx 7")
 __msg("mark_precise: frame0: regs= stack=-16 before 6: (05) goto pc+0")
 __msg("mark_precise: frame0: regs= stack=-16 before 5: (63) *(u32 *)(r10 -16) = r0")
 __msg("mark_precise: frame0: regs=r0 stack= before 4: (b7) r0 = 1")
+<<<<<<< HEAD
 __msg("14: R1=map_value(map=.data.two_byte_,ks=4,vs=2,imm=1) R2=1")
+=======
+__msg("14: R1=map_value(map=.data.two_byte_,ks=4,vs=2,off=1) R2=1")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void stack_load_preserves_const_precision_subreg(void)
 {
 	asm volatile (
@@ -780,8 +812,11 @@ __naked void stack_load_preserves_const_precision_subreg(void)
 		"r1 += r2;"
 		"*(u8 *)(r1 + 0) = r2;" /* this should be fine */
 
+<<<<<<< HEAD
 		"r2 = *(u64 *)(r10 -8);" /* keep slots alive */
 		"r2 = *(u64 *)(r10 -16);"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"r0 = 0;"
 		"exit;"
 	:
@@ -1281,6 +1316,7 @@ __naked void stack_noperfmon_spill_32bit_onto_64bit_slot(void)
 	: __clobber_all);
 }
 
+<<<<<<< HEAD
 /*
  * stacksafe(): check if 32-bit scalar spill in old state is considered
  * equivalent to STACK_MISC in cur state.
@@ -1359,4 +1395,6 @@ __naked void var_off_write_over_scalar_spill(void)
 	: __clobber_all);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

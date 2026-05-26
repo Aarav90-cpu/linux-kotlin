@@ -658,7 +658,11 @@ static ssize_t nvme_ctrl_dhchap_secret_store(struct device *dev,
 		struct nvme_dhchap_key *key, *host_key;
 		int ret;
 
+<<<<<<< HEAD
 		ret = nvme_auth_parse_key(dhchap_secret, &key);
+=======
+		ret = nvme_auth_generate_key(dhchap_secret, &key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			kfree(dhchap_secret);
 			return ret;
@@ -716,7 +720,11 @@ static ssize_t nvme_ctrl_dhchap_ctrl_secret_store(struct device *dev,
 		struct nvme_dhchap_key *key, *ctrl_key;
 		int ret;
 
+<<<<<<< HEAD
 		ret = nvme_auth_parse_key(dhchap_secret, &key);
+=======
+		ret = nvme_auth_generate_key(dhchap_secret, &key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret) {
 			kfree(dhchap_secret);
 			return ret;
@@ -829,6 +837,7 @@ static ssize_t tls_configured_key_show(struct device *dev,
 
 	return sysfs_emit(buf, "%08x\n", key_serial(key));
 }
+<<<<<<< HEAD
 
 static ssize_t tls_configured_key_store(struct device *dev,
 					struct device_attribute *attr,
@@ -872,6 +881,9 @@ static ssize_t tls_configured_key_store(struct device *dev,
 	return count;
 }
 static DEVICE_ATTR_RW(tls_configured_key);
+=======
+static DEVICE_ATTR_RO(tls_configured_key);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static ssize_t tls_keyring_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
@@ -883,6 +895,7 @@ static ssize_t tls_keyring_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(tls_keyring);
 
+<<<<<<< HEAD
 static ssize_t tls_mode_show(struct device *dev,
 			     struct device_attribute *attr, char *buf)
 {
@@ -898,11 +911,16 @@ static ssize_t tls_mode_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(tls_mode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *nvme_tls_attrs[] = {
 	&dev_attr_tls_key.attr,
 	&dev_attr_tls_configured_key.attr,
 	&dev_attr_tls_keyring.attr,
+<<<<<<< HEAD
 	&dev_attr_tls_mode.attr,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 
@@ -919,14 +937,21 @@ static umode_t nvme_tls_attrs_are_visible(struct kobject *kobj,
 	    !ctrl->opts->tls && !ctrl->opts->concat)
 		return 0;
 	if (a == &dev_attr_tls_configured_key.attr &&
+<<<<<<< HEAD
 	    !ctrl->opts->concat)
+=======
+	    (!ctrl->opts->tls_key || ctrl->opts->concat))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	if (a == &dev_attr_tls_keyring.attr &&
 	    !ctrl->opts->keyring)
 		return 0;
+<<<<<<< HEAD
 	if (a == &dev_attr_tls_mode.attr &&
 	    !ctrl->opts->tls && !ctrl->opts->concat)
 		return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return a->mode;
 }

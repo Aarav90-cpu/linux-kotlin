@@ -17,7 +17,10 @@
 #include <linux/ptrace.h>
 #include <linux/ctype.h>
 #include <linux/sysctl.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/audit.h>
 #include <linux/user_namespace.h>
 #include <linux/netfilter_ipv4.h>
@@ -410,7 +413,11 @@ static int apparmor_path_rename(const struct path *old_dir, struct dentry *old_d
 			struct path_cond cond_exchange = {
 				.mode = d_backing_inode(new_dentry)->i_mode,
 			};
+<<<<<<< HEAD
 			vfsuid = i_uid_into_vfsuid(idmap, d_backing_inode(new_dentry));
+=======
+			vfsuid = i_uid_into_vfsuid(idmap, d_backing_inode(old_dentry));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cond_exchange.uid = vfsuid_into_kuid(vfsuid);
 
 			error = aa_path_perm(OP_RENAME_SRC, current_cred(),
@@ -857,9 +864,18 @@ static int do_setattr(u64 attr, void *value, size_t size)
 
 	/* AppArmor requires that the buffer must be null terminated atm */
 	if (args[size - 1] != '\0') {
+<<<<<<< HEAD
 		largs = args = kmemdup_nul(value, size, GFP_KERNEL);
 		if (!args)
 			return -ENOMEM;
+=======
+		/* null terminate */
+		largs = args = kmalloc(size + 1, GFP_KERNEL);
+		if (!args)
+			return -ENOMEM;
+		memcpy(args, value, size);
+		args[size] = '\0';
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	error = -EINVAL;
@@ -1524,11 +1540,22 @@ static int apparmor_socket_sock_rcv_skb(struct sock *sk, struct sk_buff *skb)
 static struct aa_label *sk_peer_get_label(struct sock *sk)
 {
 	struct aa_sk_ctx *ctx = aa_sock(sk);
+<<<<<<< HEAD
+=======
+	struct aa_label *label = ERR_PTR(-ENOPROTOOPT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (rcu_access_pointer(ctx->peer))
 		return aa_get_label_rcu(&ctx->peer);
 
+<<<<<<< HEAD
 	return ERR_PTR(-ENOPROTOOPT);
+=======
+	if (sk->sk_family != PF_UNIX)
+		return ERR_PTR(-ENOPROTOOPT);
+
+	return label;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -2065,7 +2092,11 @@ static int param_get_audit(char *buffer, const struct kernel_param *kp)
 		return -EINVAL;
 	if (apparmor_initialized && !aa_current_policy_view_capable(NULL))
 		return -EPERM;
+<<<<<<< HEAD
 	return sysfs_emit(buffer, "%s\n", audit_mode_names[aa_g_audit]);
+=======
+	return sprintf(buffer, "%s", audit_mode_names[aa_g_audit]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int param_set_audit(const char *val, const struct kernel_param *kp)
@@ -2093,7 +2124,12 @@ static int param_get_mode(char *buffer, const struct kernel_param *kp)
 		return -EINVAL;
 	if (apparmor_initialized && !aa_current_policy_view_capable(NULL))
 		return -EPERM;
+<<<<<<< HEAD
 	return sysfs_emit(buffer, "%s\n", aa_profile_mode_names[aa_g_profile_mode]);
+=======
+
+	return sprintf(buffer, "%s", aa_profile_mode_names[aa_g_profile_mode]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int param_set_mode(const char *val, const struct kernel_param *kp)
@@ -2456,7 +2492,10 @@ static int __init aa_setup_dfa_engine(void)
 			    TO_ACCEPT2_FLAG(YYTD_DATA32));
 	if (IS_ERR(nulldfa)) {
 		error = PTR_ERR(nulldfa);
+<<<<<<< HEAD
 		nulldfa = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 	nullpdb->dfa = aa_get_dfa(nulldfa);

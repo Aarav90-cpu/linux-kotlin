@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 #include <generated/utsrelease.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/proc_fs.h>
 #include <linux/ethtool.h>
 #include <linux/export.h>
@@ -7,7 +10,11 @@
 #include <net/netns/generic.h>
 #include <net/bonding.h>
 
+<<<<<<< HEAD
 #define bond_version "Ethernet Channel Bonding Driver: v" UTS_RELEASE "\n"
+=======
+#include "bonding_priv.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void *bond_info_seq_start(struct seq_file *seq, loff_t *pos)
 	__acquires(RCU)
@@ -188,7 +195,10 @@ static void bond_info_show_master(struct seq_file *seq)
 	}
 }
 
+<<<<<<< HEAD
 /* Note: runs under rcu_read_lock() */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void bond_info_show_slave(struct seq_file *seq,
 				 const struct slave *slave)
 {
@@ -215,7 +225,11 @@ static void bond_info_show_slave(struct seq_file *seq,
 
 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
 		const struct port *port = &SLAVE_AD_INFO(slave)->port;
+<<<<<<< HEAD
 		const struct aggregator *agg = rcu_dereference(port->aggregator);
+=======
+		const struct aggregator *agg = port->aggregator;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (agg) {
 			seq_printf(seq, "Aggregator ID: %d\n",
@@ -292,7 +306,11 @@ void bond_create_proc_entry(struct bonding *bond)
 				bn->proc_dir, &bond_info_seq_ops, bond);
 		if (bond->proc_entry == NULL)
 			netdev_warn(bond_dev, "Cannot create /proc/net/%s/%s\n",
+<<<<<<< HEAD
 				    KBUILD_MODNAME, bond_dev->name);
+=======
+				    DRV_NAME, bond_dev->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			memcpy(bond->proc_file_name, bond_dev->name, IFNAMSIZ);
 	}
@@ -316,10 +334,17 @@ void bond_remove_proc_entry(struct bonding *bond)
 void __net_init bond_create_proc_dir(struct bond_net *bn)
 {
 	if (!bn->proc_dir) {
+<<<<<<< HEAD
 		bn->proc_dir = proc_mkdir(KBUILD_MODNAME, bn->net->proc_net);
 		if (!bn->proc_dir)
 			pr_warn("Warning: Cannot create /proc/net/%s\n",
 				KBUILD_MODNAME);
+=======
+		bn->proc_dir = proc_mkdir(DRV_NAME, bn->net->proc_net);
+		if (!bn->proc_dir)
+			pr_warn("Warning: Cannot create /proc/net/%s\n",
+				DRV_NAME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -328,7 +353,11 @@ void __net_init bond_create_proc_dir(struct bond_net *bn)
 void __net_exit bond_destroy_proc_dir(struct bond_net *bn)
 {
 	if (bn->proc_dir) {
+<<<<<<< HEAD
 		remove_proc_entry(KBUILD_MODNAME, bn->net->proc_net);
+=======
+		remove_proc_entry(DRV_NAME, bn->net->proc_net);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bn->proc_dir = NULL;
 	}
 }

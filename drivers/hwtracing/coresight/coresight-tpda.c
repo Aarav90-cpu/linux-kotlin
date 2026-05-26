@@ -20,6 +20,11 @@
 #include "coresight-trace-id.h"
 #include "coresight-tpdm.h"
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(tpda_devs, "tpda");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void tpda_clear_element_size(struct coresight_device *csdev)
 {
 	struct tpda_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
@@ -583,7 +588,11 @@ static int tpda_probe(struct amba_device *adev, const struct amba_id *id)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	desc.name = coresight_alloc_device_name("tpda", dev);
+=======
+	desc.name = coresight_alloc_device_name(&tpda_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!desc.name)
 		return -ENOMEM;
 	desc.type = CORESIGHT_DEV_TYPE_LINK;

@@ -3755,12 +3755,30 @@ static void ca0132_gpio_setup(struct hda_codec *codec)
 
 	switch (ca0132_quirk(spec)) {
 	case QUIRK_SBZ:
+<<<<<<< HEAD
 		snd_hda_codec_set_gpio(codec, 0x07, 0x07, 0x04, 0);
+=======
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_DIRECTION, 0x07);
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_MASK, 0x07);
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_DATA, 0x04);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		snd_hda_codec_write(codec, 0x01, 0,
 				AC_VERB_SET_GPIO_DATA, 0x06);
 		break;
 	case QUIRK_R3DI:
+<<<<<<< HEAD
 		snd_hda_codec_set_gpio(codec, 0x1F, 0x1E, 0x0C, 0);
+=======
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_DIRECTION, 0x1E);
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_MASK, 0x1F);
+		snd_hda_codec_write(codec, 0x01, 0,
+				AC_VERB_SET_GPIO_DATA, 0x0C);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		break;

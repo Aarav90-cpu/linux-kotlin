@@ -452,8 +452,13 @@ int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	void *qdev_vif;
 	int ret;
 
+<<<<<<< HEAD
 	dev = alloc_netdev(sizeof(struct qtnf_vif *), name,
 			   name_assign_type, ether_setup);
+=======
+	dev = alloc_netdev_mqs(sizeof(struct qtnf_vif *), name,
+			       name_assign_type, ether_setup, 1, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dev)
 		return -ENOMEM;
 

@@ -28,9 +28,12 @@ properties:
 
   vdd-supply: true
 
+<<<<<<< HEAD
   firmware-name:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   "#address-cells":
     const: 1
 
@@ -68,7 +71,10 @@ examples:
         interrupt-parent = <&pio>;
         interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
         vdd-supply = <&pp1800_prox>;
+<<<<<<< HEAD
         firmware-name = "hx9023s.bin";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         #address-cells = <1>;
         #size-cells = <0>;

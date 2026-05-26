@@ -531,26 +531,39 @@ xe_pt_stage_bind_entry(struct xe_ptw *parent, pgoff_t offset,
 	/* Is this a leaf entry ?*/
 	if (level == 0 || xe_pt_hugepte_possible(addr, next, level, xe_walk)) {
 		struct xe_res_cursor *curs = xe_walk->curs;
+<<<<<<< HEAD
 		struct xe_bo *bo = xe_vma_bo(xe_walk->vma);
 		bool is_null_or_purged = xe_vma_is_null(xe_walk->vma) ||
 					 (bo && xe_bo_is_purged(bo));
 		bool is_vram = is_null_or_purged ? false : xe_res_is_vram(curs);
+=======
+		bool is_null = xe_vma_is_null(xe_walk->vma);
+		bool is_vram = is_null ? false : xe_res_is_vram(curs);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		XE_WARN_ON(xe_walk->va_curs_start != addr);
 
 		if (xe_walk->clear_pt) {
 			pte = 0;
 		} else {
+<<<<<<< HEAD
 			/*
 			 * For purged BOs, treat like null VMAs - pass address 0.
 			 * The pte_encode_vma will set XE_PTE_NULL flag for scratch mapping.
 			 */
 			pte = vm->pt_ops->pte_encode_vma(is_null_or_purged ? 0 :
+=======
+			pte = vm->pt_ops->pte_encode_vma(is_null ? 0 :
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 							 xe_res_dma(curs) +
 							 xe_walk->dma_offset,
 							 xe_walk->vma,
 							 pat_index, level);
+<<<<<<< HEAD
 			if (!is_null_or_purged)
+=======
+			if (!is_null)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				pte |= is_vram ? xe_walk->default_vram_pte :
 					xe_walk->default_system_pte;
 
@@ -574,7 +587,11 @@ xe_pt_stage_bind_entry(struct xe_ptw *parent, pgoff_t offset,
 		if (unlikely(ret))
 			return ret;
 
+<<<<<<< HEAD
 		if (!is_null_or_purged && !xe_walk->clear_pt)
+=======
+		if (!is_null && !xe_walk->clear_pt)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			xe_res_next(curs, next - addr);
 		xe_walk->va_curs_start = next;
 		xe_walk->vma->gpuva.flags |= (XE_VMA_PTE_4K << level);
@@ -727,6 +744,7 @@ xe_pt_stage_bind(struct xe_tile *tile, struct xe_vma *vma,
 	};
 	struct xe_pt *pt = vm->pt_root[tile->id];
 	int ret;
+<<<<<<< HEAD
 	bool is_purged = false;
 
 	/*
@@ -747,6 +765,8 @@ xe_pt_stage_bind(struct xe_tile *tile, struct xe_vma *vma,
 		if (!xe_vm_has_scratch(vm))
 			xe_walk.clear_pt = true;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (range) {
 		/* Move this entire thing to xe_svm.c? */
@@ -782,11 +802,19 @@ xe_pt_stage_bind(struct xe_tile *tile, struct xe_vma *vma,
 	}
 
 	xe_walk.default_vram_pte |= XE_PPGTT_PTE_DM;
+<<<<<<< HEAD
 	xe_walk.dma_offset = (bo && !is_purged) ? vram_region_gpu_offset(bo->ttm.resource) : 0;
 	if (!range)
 		xe_bo_assert_held(bo);
 
 	if (!xe_vma_is_null(vma) && !range && !is_purged) {
+=======
+	xe_walk.dma_offset = bo ? vram_region_gpu_offset(bo->ttm.resource) : 0;
+	if (!range)
+		xe_bo_assert_held(bo);
+
+	if (!xe_vma_is_null(vma) && !range) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (xe_vma_is_userptr(vma))
 			xe_res_first_dma(to_userptr_vma(vma)->userptr.pages.dma_addr, 0,
 					 xe_vma_size(vma), &curs);

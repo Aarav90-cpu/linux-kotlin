@@ -145,7 +145,11 @@ void __init arm64_rsi_init(void)
 		return;
 	if (!rsi_version_matches())
 		return;
+<<<<<<< HEAD
 	if (WARN_ON(rsi_get_realm_config(lm_alias(&config))))
+=======
+	if (WARN_ON(rsi_get_realm_config(&config)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	prot_ns_shared = __phys_to_pte_val(BIT(config.ipa_bits - 1));
 

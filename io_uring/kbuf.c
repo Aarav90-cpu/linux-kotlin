@@ -230,7 +230,11 @@ struct io_br_sel io_buffer_select(struct io_kiocb *req, size_t *len,
 	struct io_br_sel sel = { };
 	struct io_buffer_list *bl;
 
+<<<<<<< HEAD
 	io_ring_submit_lock(ctx, issue_flags);
+=======
+	io_ring_submit_lock(req->ctx, issue_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bl = io_buffer_get_list(ctx, buf_group);
 	if (likely(bl)) {
@@ -239,7 +243,11 @@ struct io_br_sel io_buffer_select(struct io_kiocb *req, size_t *len,
 		else
 			sel.addr = io_provided_buffer_select(req, len, bl);
 	}
+<<<<<<< HEAD
 	io_ring_submit_unlock(ctx, issue_flags);
+=======
+	io_ring_submit_unlock(req->ctx, issue_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return sel;
 }
 
@@ -684,6 +692,10 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
 	}
 #endif
 
+<<<<<<< HEAD
+=======
+	bl->nr_entries = reg.ring_entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bl->mask = reg.ring_entries - 1;
 	bl->flags |= IOBL_BUF_RING;
 	bl->buf_ring = br;

@@ -78,9 +78,15 @@ static void *test_vcpu_run(void *arg)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static u32 test_get_pcpu(void)
 {
 	u32 pcpu;
+=======
+static uint32_t test_get_pcpu(void)
+{
+	uint32_t pcpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int nproc_conf;
 	cpu_set_t online_cpuset;
 
@@ -98,7 +104,11 @@ static u32 test_get_pcpu(void)
 static int test_migrate_vcpu(unsigned int vcpu_idx)
 {
 	int ret;
+<<<<<<< HEAD
 	u32 new_pcpu = test_get_pcpu();
+=======
+	uint32_t new_pcpu = test_get_pcpu();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_debug("Migrating vCPU: %u to pCPU: %u\n", vcpu_idx, new_pcpu);
 

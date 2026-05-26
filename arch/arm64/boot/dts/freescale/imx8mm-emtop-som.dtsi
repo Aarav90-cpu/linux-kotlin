@@ -60,7 +60,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pmic>;
 		interrupt-parent = <&gpio1>;
+<<<<<<< HEAD
 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		regulators {
 			buck1: BUCK1 {
@@ -194,7 +198,11 @@
 
 	pinctrl_pmic: emtop-pmic-grp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
+=======
+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 

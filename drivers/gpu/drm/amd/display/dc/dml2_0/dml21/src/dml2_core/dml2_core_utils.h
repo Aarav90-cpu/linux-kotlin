@@ -39,6 +39,9 @@ bool dml2_core_utils_is_hpo_dp_encoder(const struct dml2_stream_parameters *stre
 bool dml2_core_utils_is_dp_8b_10b_link_rate(enum dml2_output_link_dp_rate rate);
 bool dml2_core_utils_is_dp_128b_132b_link_rate(enum dml2_output_link_dp_rate rate);
 bool dml2_core_utils_is_odm_split(enum dml2_odm_mode odm_mode);
+<<<<<<< HEAD
 double dml2_core_utils_get_frame_time_us(const struct dml2_stream_parameters *stream);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __DML2_CORE_UTILS_H__ */

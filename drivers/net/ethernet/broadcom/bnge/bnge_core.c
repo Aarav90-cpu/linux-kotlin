@@ -10,7 +10,10 @@
 #include "bnge_devlink.h"
 #include "bnge_hwrm.h"
 #include "bnge_hwrm_lib.h"
+<<<<<<< HEAD
 #include "bnge_link.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION(DRV_SUMMARY);
@@ -74,6 +77,7 @@ static int bnge_func_qcaps(struct bnge_dev *bd)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -81,6 +85,8 @@ static int bnge_func_qrcaps_qcfg(struct bnge_dev *bd)
 {
 	int rc;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = bnge_hwrm_func_resc_qcaps(bd);
 	if (rc) {
 		dev_err(bd->dev, "query resc caps failure rc: %d\n", rc);
@@ -140,16 +146,23 @@ static int bnge_fw_register_dev(struct bnge_dev *bd)
 
 	bnge_hwrm_fw_set_time(bd);
 
+<<<<<<< HEAD
 	/* Get the resources and configuration from firmware */
 	rc = bnge_func_qcaps(bd);
 	if (rc) {
 		dev_err(bd->dev, "Failed querying caps rc: %d\n", rc);
+=======
+	rc =  bnge_hwrm_func_drv_rgtr(bd);
+	if (rc) {
+		dev_err(bd->dev, "Failed to rgtr with firmware rc: %d\n", rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return rc;
 	}
 
 	rc = bnge_alloc_ctx_mem(bd);
 	if (rc) {
 		dev_err(bd->dev, "Failed to allocate ctx mem rc: %d\n", rc);
+<<<<<<< HEAD
 		goto err_free_ctx_mem;
 	}
 
@@ -162,6 +175,16 @@ static int bnge_fw_register_dev(struct bnge_dev *bd)
 	rc = bnge_func_qrcaps_qcfg(bd);
 	if (rc) {
 		dev_err(bd->dev, "Failed querying resources rc: %d\n", rc);
+=======
+		goto err_func_unrgtr;
+	}
+
+	/* Get the resources and configuration from firmware */
+	rc = bnge_func_qcaps(bd);
+	if (rc) {
+		dev_err(bd->dev, "Failed initial configuration rc: %d\n", rc);
+		rc = -ENODEV;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto err_func_unrgtr;
 	}
 
@@ -170,9 +193,13 @@ static int bnge_fw_register_dev(struct bnge_dev *bd)
 	return 0;
 
 err_func_unrgtr:
+<<<<<<< HEAD
 	bnge_hwrm_func_drv_unrgtr(bd);
 err_free_ctx_mem:
 	bnge_free_ctx_mem(bd);
+=======
+	bnge_fw_unregister_dev(bd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 

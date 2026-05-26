@@ -417,11 +417,25 @@ static void init_once(void *data)
 	inode_init_once(&ei->vfs_inode);
 }
 
+<<<<<<< HEAD
+=======
+static void bdev_evict_inode(struct inode *inode)
+{
+	truncate_inode_pages_final(&inode->i_data);
+	invalidate_inode_buffers(inode); /* is it needed here? */
+	clear_inode(inode);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct super_operations bdev_sops = {
 	.statfs = simple_statfs,
 	.alloc_inode = bdev_alloc_inode,
 	.free_inode = bdev_free_inode,
 	.drop_inode = inode_just_drop,
+<<<<<<< HEAD
+=======
+	.evict_inode = bdev_evict_inode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int bd_init_fs_context(struct fs_context *fc)

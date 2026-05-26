@@ -20,6 +20,11 @@
 #include <asm/page.h>
 #include <asm/sections.h>
 
+<<<<<<< HEAD
+=======
+#include <crypto/sha1.h>
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "kallsyms_internal.h"
 #include "kexec_internal.h"
 

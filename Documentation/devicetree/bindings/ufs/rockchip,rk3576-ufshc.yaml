@@ -41,7 +41,11 @@ properties:
     maxItems: 1
 
   resets:
+<<<<<<< HEAD
     maxItems: 5
+=======
+    maxItems: 4
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reset-names:
     items:
@@ -49,7 +53,10 @@ properties:
       - const: sys
       - const: ufs
       - const: grf
+<<<<<<< HEAD
       - const: mphy
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reset-gpios:
     maxItems: 1
@@ -99,8 +106,13 @@ examples:
             interrupts = <GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH>;
             power-domains = <&power RK3576_PD_USB>;
             resets = <&cru SRST_A_UFS_BIU>, <&cru SRST_A_UFS_SYS>, <&cru SRST_A_UFS>,
+<<<<<<< HEAD
                      <&cru SRST_P_UFS_GRF>, <&cru SRST_MPHY_INIT>;
             reset-names = "biu", "sys", "ufs", "grf", "mphy";
+=======
+                     <&cru SRST_P_UFS_GRF>;
+            reset-names = "biu", "sys", "ufs", "grf";
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             reset-gpios = <&gpio4 RK_PD0 GPIO_ACTIVE_LOW>;
         };
     };

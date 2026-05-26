@@ -4,7 +4,10 @@
 
 source "fs/smb/client/Kconfig"
 source "fs/smb/server/Kconfig"
+<<<<<<< HEAD
 source "fs/smb/smbdirect/Kconfig"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 config SMBFS
 	tristate

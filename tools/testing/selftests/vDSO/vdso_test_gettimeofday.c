@@ -11,8 +11,15 @@
  */
 
 #include <stdio.h>
+<<<<<<< HEAD
 #include <sys/auxv.h>
 #include <sys/time.h>
+=======
+#ifndef NOLIBC
+#include <sys/auxv.h>
+#include <sys/time.h>
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "kselftest.h"
 #include "parse_vdso.h"

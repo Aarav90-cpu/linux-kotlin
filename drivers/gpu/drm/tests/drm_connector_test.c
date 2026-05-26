@@ -675,7 +675,11 @@ static void drm_test_connector_hdmi_init_valid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 }
@@ -695,7 +699,11 @@ static void drm_test_connector_hdmi_init_null_ddc(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       NULL,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 }
@@ -715,7 +723,11 @@ static void drm_test_connector_hdmi_init_null_vendor(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -735,7 +747,11 @@ static void drm_test_connector_hdmi_init_null_product(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -761,7 +777,11 @@ static void drm_test_connector_hdmi_init_product_valid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_MEMEQ(test,
@@ -794,7 +814,11 @@ static void drm_test_connector_hdmi_init_product_length_exact(struct kunit *test
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_MEMEQ(test,
@@ -821,7 +845,11 @@ static void drm_test_connector_hdmi_init_product_length_too_long(struct kunit *t
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -847,7 +875,11 @@ static void drm_test_connector_hdmi_init_vendor_valid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_MEMEQ(test,
@@ -879,7 +911,11 @@ static void drm_test_connector_hdmi_init_vendor_length_exact(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 	KUNIT_EXPECT_MEMEQ(test,
@@ -906,7 +942,11 @@ static void drm_test_connector_hdmi_init_vendor_length_too_long(struct kunit *te
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -926,7 +966,11 @@ static void drm_test_connector_hdmi_init_bpc_invalid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       9);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -946,7 +990,11 @@ static void drm_test_connector_hdmi_init_bpc_null(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       0);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -971,7 +1019,11 @@ static void drm_test_connector_hdmi_init_bpc_8(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 
@@ -1012,7 +1064,11 @@ static void drm_test_connector_hdmi_init_bpc_10(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       10);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 
@@ -1053,7 +1109,11 @@ static void drm_test_connector_hdmi_init_bpc_12(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       12);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 
@@ -1109,7 +1169,11 @@ static void drm_test_connector_hdmi_init_formats_no_rgb(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422),
+=======
+				       BIT(HDMI_COLORSPACE_YUV422),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -1122,17 +1186,28 @@ struct drm_connector_hdmi_init_formats_yuv420_allowed_test {
 
 #define YUV420_ALLOWED_TEST(_formats, _allowed, _result)			\
 	{									\
+<<<<<<< HEAD
 		.supported_formats = BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444) | (_formats),	\
+=======
+		.supported_formats = BIT(HDMI_COLORSPACE_RGB) | (_formats),	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.yuv420_allowed = _allowed,					\
 		.expected_result = _result,					\
 	}
 
 static const struct drm_connector_hdmi_init_formats_yuv420_allowed_test
 drm_connector_hdmi_init_formats_yuv420_allowed_tests[] = {
+<<<<<<< HEAD
 	YUV420_ALLOWED_TEST(BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420), true, 0),
 	YUV420_ALLOWED_TEST(BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420), false, -EINVAL),
 	YUV420_ALLOWED_TEST(BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422), true, -EINVAL),
 	YUV420_ALLOWED_TEST(BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422), false, 0),
+=======
+	YUV420_ALLOWED_TEST(BIT(HDMI_COLORSPACE_YUV420), true, 0),
+	YUV420_ALLOWED_TEST(BIT(HDMI_COLORSPACE_YUV420), false, -EINVAL),
+	YUV420_ALLOWED_TEST(BIT(HDMI_COLORSPACE_YUV422), true, -EINVAL),
+	YUV420_ALLOWED_TEST(BIT(HDMI_COLORSPACE_YUV422), false, 0),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void
@@ -1188,7 +1263,11 @@ static void drm_test_connector_hdmi_init_type_valid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       connector_type,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 }
@@ -1223,7 +1302,11 @@ static void drm_test_connector_hdmi_init_type_invalid(struct kunit *test)
 				       &dummy_hdmi_funcs,
 				       connector_type,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_LT(test, ret, 0);
 }
@@ -1432,10 +1515,17 @@ static void drm_test_drm_hdmi_connector_get_output_format_name(struct kunit *tes
 static const
 struct drm_hdmi_connector_get_output_format_name_test
 drm_hdmi_connector_get_output_format_name_valid_tests[] = {
+<<<<<<< HEAD
 	OUTPUT_FORMAT_TEST(DRM_OUTPUT_COLOR_FORMAT_RGB444, "RGB"),
 	OUTPUT_FORMAT_TEST(DRM_OUTPUT_COLOR_FORMAT_YCBCR420, "YUV 4:2:0"),
 	OUTPUT_FORMAT_TEST(DRM_OUTPUT_COLOR_FORMAT_YCBCR422, "YUV 4:2:2"),
 	OUTPUT_FORMAT_TEST(DRM_OUTPUT_COLOR_FORMAT_YCBCR444, "YUV 4:4:4"),
+=======
+	OUTPUT_FORMAT_TEST(HDMI_COLORSPACE_RGB, "RGB"),
+	OUTPUT_FORMAT_TEST(HDMI_COLORSPACE_YUV420, "YUV 4:2:0"),
+	OUTPUT_FORMAT_TEST(HDMI_COLORSPACE_YUV422, "YUV 4:2:2"),
+	OUTPUT_FORMAT_TEST(HDMI_COLORSPACE_YUV444, "YUV 4:4:4"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void
@@ -1500,7 +1590,11 @@ static void drm_test_drm_connector_attach_broadcast_rgb_property_hdmi_connector(
 				       &dummy_hdmi_funcs,
 				       DRM_MODE_CONNECTOR_HDMIA,
 				       &priv->ddc,
+<<<<<<< HEAD
 				       BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444),
+=======
+				       BIT(HDMI_COLORSPACE_RGB),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       8);
 	KUNIT_EXPECT_EQ(test, ret, 0);
 
@@ -1540,7 +1634,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb(struct kunit *test)
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 8, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 8, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1000ULL, rate);
 }
@@ -1561,7 +1659,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc(struct kunit *test)
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 10, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1250, rate);
 }
@@ -1580,7 +1682,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc_vic_1(struct kunit *t
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 10, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_EXPECT_EQ(test, rate, 0);
 }
 
@@ -1600,7 +1706,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc(struct kunit *test)
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 12, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1500, rate);
 }
@@ -1619,7 +1729,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc_vic_1(struct kunit *t
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 12, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_EXPECT_EQ(test, rate, 0);
 }
 
@@ -1639,7 +1753,11 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_double(struct kunit *test)
 
 	KUNIT_ASSERT_TRUE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 8, DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 8, HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, (mode->clock * 1000ULL) * 2, rate);
 }
@@ -1662,7 +1780,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_valid(struct kunit
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 8, DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 8, HDMI_COLORSPACE_YUV420);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, (mode->clock * 1000ULL) / 2, rate);
 }
@@ -1699,7 +1821,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_10_bpc(struct kuni
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 10, DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_YUV420);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 
 	KUNIT_EXPECT_EQ(test, mode->clock * 625, rate);
@@ -1724,7 +1850,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_12_bpc(struct kuni
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 12, DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_YUV420);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 
 	KUNIT_EXPECT_EQ(test, mode->clock * 750, rate);
@@ -1747,7 +1877,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_8_bpc(struct kunit
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 8, DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 8, HDMI_COLORSPACE_YUV422);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1000, rate);
 }
@@ -1769,7 +1903,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_10_bpc(struct kuni
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 10, DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_YUV422);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1000, rate);
 }
@@ -1791,7 +1929,11 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_12_bpc(struct kuni
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 
+<<<<<<< HEAD
 	rate = drm_hdmi_compute_mode_clock(mode, 12, DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+=======
+	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_YUV422);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_EQ(test, mode->clock * 1000, rate);
 }

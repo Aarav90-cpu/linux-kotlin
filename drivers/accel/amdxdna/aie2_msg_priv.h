@@ -31,7 +31,10 @@ enum aie2_msg_opcode {
 	MSG_OP_SET_RUNTIME_CONFIG          = 0x10A,
 	MSG_OP_GET_RUNTIME_CONFIG          = 0x10B,
 	MSG_OP_REGISTER_ASYNC_EVENT_MSG    = 0x10C,
+<<<<<<< HEAD
 	MSG_OP_GET_APP_HEALTH              = 0x114,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MSG_OP_MAX_DRV_OPCODE,
 	MSG_OP_GET_PROTOCOL_VERSION        = 0x301,
 	MSG_OP_MAX_OPCODE
@@ -452,6 +455,7 @@ struct config_debug_bo_req {
 struct config_debug_bo_resp {
 	enum aie2_msg_status	status;
 } __packed;
+<<<<<<< HEAD
 
 struct fatal_error_info {
 	__u32 fatal_type;         /* Fatal error type */
@@ -503,4 +507,6 @@ struct get_app_health_resp {
 	__u32 required_buffer_size;
 	__u32 reserved[7];
 } __packed;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _AIE2_MSG_PRIV_H_ */

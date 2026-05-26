@@ -57,11 +57,19 @@ static void stmmac_dwmac_mode_quirk(struct stmmac_priv *priv)
 
 	if (priv->chain_mode) {
 		dev_info(priv->device, "Chain mode enabled\n");
+<<<<<<< HEAD
 		priv->descriptor_mode = STMMAC_CHAIN_MODE;
 		mac->mode = &chain_mode_ops;
 	} else {
 		dev_info(priv->device, "Ring mode enabled\n");
 		priv->descriptor_mode = STMMAC_RING_MODE;
+=======
+		priv->mode = STMMAC_CHAIN_MODE;
+		mac->mode = &chain_mode_ops;
+	} else {
+		dev_info(priv->device, "Ring mode enabled\n");
+		priv->mode = STMMAC_RING_MODE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mac->mode = &ring_mode_ops;
 	}
 }
@@ -76,7 +84,11 @@ static int stmmac_dwmac1_quirks(struct stmmac_priv *priv)
 		/* GMAC older than 3.50 has no extended descriptors */
 		if (priv->synopsys_id >= DWMAC_CORE_3_50) {
 			dev_info(priv->device, "Enabled extended descriptors\n");
+<<<<<<< HEAD
 			priv->extend_desc = true;
+=======
+			priv->extend_desc = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			dev_warn(priv->device, "Extended descriptors not supported\n");
 		}
@@ -97,6 +109,15 @@ static int stmmac_dwmac4_quirks(struct stmmac_priv *priv)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int stmmac_dwxlgmac_quirks(struct stmmac_priv *priv)
+{
+	priv->hw->xlgmac = true;
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int stmmac_reset(struct stmmac_priv *priv)
 {
 	struct plat_stmmacenet_data *plat = priv->plat;
@@ -287,6 +308,10 @@ static const struct stmmac_hwif_entry {
 		.mmc = &dwxgmac_mmc_ops,
 		.est = &dwmac510_est_ops,
 		.setup = dwxlgmac2_setup,
+<<<<<<< HEAD
+=======
+		.quirks = stmmac_dwxlgmac_quirks,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

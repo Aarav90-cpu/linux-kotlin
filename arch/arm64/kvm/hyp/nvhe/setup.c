@@ -341,7 +341,12 @@ out:
 	__host_enter(host_ctxt);
 }
 
+<<<<<<< HEAD
 int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long *per_cpu_base, u32 hyp_va_bits)
+=======
+int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long nr_cpus,
+		unsigned long *per_cpu_base, u32 hyp_va_bits)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_nvhe_init_params *params;
 	void *virt = hyp_phys_to_virt(phys);
@@ -354,6 +359,10 @@ int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long *per_cpu_bas
 		return -EINVAL;
 
 	hyp_spin_lock_init(&pkvm_pgd_lock);
+<<<<<<< HEAD
+=======
+	hyp_nr_cpus = nr_cpus;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = divide_memory_pool(virt, size);
 	if (ret)

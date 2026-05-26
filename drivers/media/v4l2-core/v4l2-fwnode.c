@@ -465,6 +465,7 @@ static int __v4l2_fwnode_endpoint_parse(struct fwnode_handle *fwnode,
 	enum v4l2_mbus_type mbus_type;
 	int rval;
 
+<<<<<<< HEAD
 	/*
 	 * Return -EPROBE_DEFER if there's no endpoint -- in case the endpoint's
 	 * origin is a software node, it may be that the endpoint has not been
@@ -474,6 +475,10 @@ static int __v4l2_fwnode_endpoint_parse(struct fwnode_handle *fwnode,
 	 */
 	if (!fwnode)
 		return -EPROBE_DEFER;
+=======
+	if (!fwnode)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_debug("===== begin parsing endpoint %pfw\n", fwnode);
 

@@ -232,7 +232,11 @@
 			reset-assert-us = <500000>;
 			reset-deassert-us = <50000>;
 			interrupt-parent = <&gpio3>;
+<<<<<<< HEAD
 			interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
+=======
+			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			enet-phy-lane-no-swap;
 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
@@ -265,7 +269,11 @@
 			reset-assert-us = <500000>;
 			reset-deassert-us = <50000>;
 			interrupt-parent = <&gpio3>;
+<<<<<<< HEAD
 			interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+=======
+			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			enet-phy-lane-no-swap;
 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;

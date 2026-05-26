@@ -39,7 +39,12 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
 
 		sk = sock6->sock->sk;
 		lock_sock(sk);
+<<<<<<< HEAD
 		ret = ipv6_sock_mc_join(sk, ifindex, &ip->sin6.sin6_addr);
+=======
+		ret = ipv6_stub->ipv6_sock_mc_join(sk, ifindex,
+						   &ip->sin6.sin6_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		release_sock(sk);
 #endif
 	}
@@ -72,7 +77,12 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
 
 		sk = sock6->sock->sk;
 		lock_sock(sk);
+<<<<<<< HEAD
 		ret = ipv6_sock_mc_drop(sk, ifindex, &ip->sin6.sin6_addr);
+=======
+		ret = ipv6_stub->ipv6_sock_mc_drop(sk, ifindex,
+						   &ip->sin6.sin6_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		release_sock(sk);
 #endif
 	}

@@ -2355,7 +2355,11 @@ static int gfx_v9_0_sw_init(struct amdgpu_ip_block *ip_block)
 		for (i = 0; i < GFX9_NUM_SW_GFX_RINGS; i++) {
 			ring = &adev->gfx.sw_gfx_ring[i];
 			ring->ring_obj = NULL;
+<<<<<<< HEAD
 			strscpy(ring->name, amdgpu_sw_ring_name(i), sizeof(ring->name));
+=======
+			sprintf(ring->name, amdgpu_sw_ring_name(i));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ring->use_doorbell = true;
 			ring->doorbell_index = adev->doorbell_index.gfx_ring0 << 1;
 			ring->is_sw_ring = true;

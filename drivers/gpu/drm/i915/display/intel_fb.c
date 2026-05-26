@@ -16,7 +16,13 @@
 #include "intel_display_core.h"
 #include "intel_display_types.h"
 #include "intel_display_utils.h"
+<<<<<<< HEAD
 #include "intel_fb.h"
+=======
+#include "intel_dpt.h"
+#include "intel_fb.h"
+#include "intel_fb_bo.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_frontbuffer.h"
 #include "intel_parent.h"
 #include "intel_plane.h"
@@ -2102,17 +2108,28 @@ int intel_plane_compute_gtt(struct intel_plane_state *plane_state)
 
 static void intel_user_framebuffer_destroy(struct drm_framebuffer *fb)
 {
+<<<<<<< HEAD
 	struct intel_display *display = to_intel_display(fb->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct intel_framebuffer *intel_fb = to_intel_framebuffer(fb);
 
 	drm_framebuffer_cleanup(fb);
 
 	if (intel_fb_uses_dpt(fb))
+<<<<<<< HEAD
 		intel_parent_dpt_destroy(display, intel_fb->dpt);
 
 	intel_bo_framebuffer_fini(intel_fb_bo(fb));
 
 	intel_parent_frontbuffer_put(display, intel_fb->frontbuffer);
+=======
+		intel_dpt_destroy(intel_fb->dpt_vm);
+
+	intel_fb_bo_framebuffer_fini(intel_fb_bo(fb));
+
+	intel_frontbuffer_put(intel_fb->frontbuffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kfree(intel_fb->panic);
 	kfree(intel_fb);
@@ -2220,16 +2237,27 @@ int intel_framebuffer_init(struct intel_framebuffer *intel_fb,
 		return -ENOMEM;
 
 	/*
+<<<<<<< HEAD
 	 * intel_parent_frontbuffer_get() must be done before
 	 * intel_bo_framebuffer_init() to avoid set_tiling vs. addfb race.
 	 */
 	intel_fb->frontbuffer = intel_parent_frontbuffer_get(display, obj);
+=======
+	 * intel_frontbuffer_get() must be done before
+	 * intel_fb_bo_framebuffer_init() to avoid set_tiling vs. addfb race.
+	 */
+	intel_fb->frontbuffer = intel_frontbuffer_get(obj);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!intel_fb->frontbuffer) {
 		ret = -ENOMEM;
 		goto err_free_panic;
 	}
 
+<<<<<<< HEAD
 	ret = intel_bo_framebuffer_init(obj, mode_cmd);
+=======
+	ret = intel_fb_bo_framebuffer_init(obj, mode_cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		goto err_frontbuffer_put;
 
@@ -2303,6 +2331,7 @@ int intel_framebuffer_init(struct intel_framebuffer *intel_fb,
 		goto err_bo_framebuffer_fini;
 
 	if (intel_fb_uses_dpt(fb)) {
+<<<<<<< HEAD
 		struct drm_gem_object *obj = intel_fb_bo(&intel_fb->base);
 		struct intel_dpt *dpt;
 		size_t size = 0;
@@ -2318,6 +2347,18 @@ int intel_framebuffer_init(struct intel_framebuffer *intel_fb,
 		}
 
 		intel_fb->dpt = dpt;
+=======
+		struct i915_address_space *vm;
+
+		vm = intel_dpt_create(intel_fb);
+		if (IS_ERR(vm)) {
+			drm_dbg_kms(display->drm, "failed to create DPT\n");
+			ret = PTR_ERR(vm);
+			goto err_frontbuffer_put;
+		}
+
+		intel_fb->dpt_vm = vm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = drm_framebuffer_init(display->drm, fb, &intel_fb_funcs);
@@ -2330,11 +2371,19 @@ int intel_framebuffer_init(struct intel_framebuffer *intel_fb,
 
 err_free_dpt:
 	if (intel_fb_uses_dpt(fb))
+<<<<<<< HEAD
 		intel_parent_dpt_destroy(display, intel_fb->dpt);
 err_bo_framebuffer_fini:
 	intel_bo_framebuffer_fini(obj);
 err_frontbuffer_put:
 	intel_parent_frontbuffer_put(display, intel_fb->frontbuffer);
+=======
+		intel_dpt_destroy(intel_fb->dpt_vm);
+err_bo_framebuffer_fini:
+	intel_fb_bo_framebuffer_fini(obj);
+err_frontbuffer_put:
+	intel_frontbuffer_put(intel_fb->frontbuffer);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_panic:
 	kfree(intel_fb->panic);
 
@@ -2347,12 +2396,19 @@ intel_user_framebuffer_create(struct drm_device *dev,
 			      const struct drm_format_info *info,
 			      const struct drm_mode_fb_cmd2 *user_mode_cmd)
 {
+<<<<<<< HEAD
 	struct intel_display *display = to_intel_display(dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct drm_framebuffer *fb;
 	struct drm_gem_object *obj;
 	struct drm_mode_fb_cmd2 mode_cmd = *user_mode_cmd;
 
+<<<<<<< HEAD
 	obj = intel_bo_framebuffer_lookup(display, filp, &mode_cmd);
+=======
+	obj = intel_fb_bo_lookup_valid_bo(dev, filp, &mode_cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ERR(obj))
 		return ERR_CAST(obj);
 

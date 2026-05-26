@@ -23,7 +23,11 @@ void __lockfunc _raw_write_lock_bh(rwlock_t *lock)	__acquires(lock);
 void __lockfunc _raw_read_lock_irq(rwlock_t *lock)	__acquires_shared(lock);
 void __lockfunc _raw_write_lock_irq(rwlock_t *lock)	__acquires(lock);
 unsigned long __lockfunc _raw_read_lock_irqsave(rwlock_t *lock)
+<<<<<<< HEAD
 							__acquires_shared(lock);
+=======
+							__acquires(lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned long __lockfunc _raw_write_lock_irqsave(rwlock_t *lock)
 							__acquires(lock);
 int __lockfunc _raw_read_trylock(rwlock_t *lock)	__cond_acquires_shared(true, lock);
@@ -36,7 +40,11 @@ void __lockfunc _raw_read_unlock_irq(rwlock_t *lock)	__releases_shared(lock);
 void __lockfunc _raw_write_unlock_irq(rwlock_t *lock)	__releases(lock);
 void __lockfunc
 _raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+<<<<<<< HEAD
 							__releases_shared(lock);
+=======
+							__releases(lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __lockfunc
 _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
 							__releases(lock);
@@ -116,7 +124,10 @@ _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
 #endif
 
 static inline int __raw_read_trylock(rwlock_t *lock)
+<<<<<<< HEAD
 	__cond_acquires_shared(true, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	preempt_disable();
 	if (do_raw_read_trylock(lock)) {
@@ -128,7 +139,10 @@ static inline int __raw_read_trylock(rwlock_t *lock)
 }
 
 static inline int __raw_write_trylock(rwlock_t *lock)
+<<<<<<< HEAD
 	__cond_acquires(true, lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	preempt_disable();
 	if (do_raw_write_trylock(lock)) {

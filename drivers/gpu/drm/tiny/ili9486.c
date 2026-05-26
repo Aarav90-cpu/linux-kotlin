@@ -36,6 +36,7 @@
 #define ILI9486_MADCTL_MX       BIT(6)
 #define ILI9486_MADCTL_MY       BIT(7)
 
+<<<<<<< HEAD
 struct ili9486_device {
 	struct mipi_dbi_dev dbidev;
 
@@ -50,6 +51,8 @@ static struct ili9486_device *to_ili9486_device(struct drm_device *dev)
 	return container_of(drm_to_mipi_dbi_dev(dev), struct ili9486_device, dbidev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The PiScreen/waveshare rpi-lcd-35 has a SPI to 16-bit parallel bus converter
  * in front of the  display controller. This means that 8-bit values have to be
@@ -108,6 +111,7 @@ static int waveshare_command(struct mipi_dbi *mipi, u8 *cmd, u8 *par,
 	return ret;
 }
 
+<<<<<<< HEAD
 static const u32 ili9486_plane_formats[] = {
 	DRM_MIPI_DBI_PLANE_FORMATS,
 };
@@ -131,11 +135,22 @@ static void ili9486_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	struct drm_device *drm = crtc->dev;
 	struct ili9486_device *ili9486 = to_ili9486_device(drm);
 	struct mipi_dbi_dev *dbidev = &ili9486->dbidev;
+=======
+static void waveshare_enable(struct drm_simple_display_pipe *pipe,
+			     struct drm_crtc_state *crtc_state,
+			     struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi *dbi = &dbidev->dbi;
 	u8 addr_mode;
 	int ret, idx;
 
+<<<<<<< HEAD
 	if (!drm_dev_enter(drm, &idx))
+=======
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	DRM_DEBUG_KMS("\n");
@@ -187,12 +202,17 @@ static void ili9486_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	}
 	addr_mode |= ILI9486_MADCTL_BGR;
 	mipi_dbi_command(dbi, MIPI_DCS_SET_ADDRESS_MODE, addr_mode);
+<<<<<<< HEAD
 
 	backlight_enable(dbidev->backlight);
+=======
+	mipi_dbi_enable_flush(dbidev, crtc_state, plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs ili9486_crtc_helper_funcs = {
 	DRM_MIPI_DBI_CRTC_HELPER_FUNCS,
 	.atomic_enable = ili9486_crtc_helper_atomic_enable,
@@ -222,6 +242,10 @@ static const struct drm_mode_config_helper_funcs ili9486_mode_config_helper_func
 
 static const struct drm_mode_config_funcs ili9486_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
+=======
+static const struct drm_simple_display_pipe_funcs waveshare_pipe_funcs = {
+	DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS(waveshare_enable),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct drm_display_mode waveshare_mode = {
@@ -260,11 +284,15 @@ MODULE_DEVICE_TABLE(spi, ili9486_id);
 static int ili9486_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
+<<<<<<< HEAD
 	struct ili9486_device *ili9486;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi_dev *dbidev;
 	struct drm_device *drm;
 	struct mipi_dbi *dbi;
 	struct gpio_desc *dc;
+<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
@@ -276,6 +304,16 @@ static int ili9486_probe(struct spi_device *spi)
 	if (IS_ERR(ili9486))
 		return PTR_ERR(ili9486);
 	dbidev = &ili9486->dbidev;
+=======
+	u32 rotation = 0;
+	int ret;
+
+	dbidev = devm_drm_dev_alloc(dev, &ili9486_driver,
+				    struct mipi_dbi_dev, drm);
+	if (IS_ERR(dbidev))
+		return PTR_ERR(dbidev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
 
@@ -300,6 +338,7 @@ static int ili9486_probe(struct spi_device *spi)
 	dbi->command = waveshare_command;
 	dbi->read_commands = NULL;
 
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &waveshare_mode, ili9486_plane_formats[0],
 				    rotation, 0);
 	if (ret)
@@ -347,6 +386,10 @@ static int ili9486_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &ili9486_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init(dbidev, &waveshare_pipe_funcs,
+				&waveshare_mode, rotation);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

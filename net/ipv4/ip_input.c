@@ -319,6 +319,7 @@ static bool ip_can_use_hint(const struct sk_buff *skb, const struct iphdr *iph,
 	       ip_hdr(hint)->tos == iph->tos;
 }
 
+<<<<<<< HEAD
 static int tcp_v4_early_demux(struct sk_buff *skb)
 {
 	struct net *net = dev_net_rcu(skb->dev);
@@ -358,6 +359,8 @@ static int tcp_v4_early_demux(struct sk_buff *skb)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ip_rcv_finish_core(struct net *net,
 			      struct sk_buff *skb, struct net_device *dev,
 			      const struct sk_buff *hint)

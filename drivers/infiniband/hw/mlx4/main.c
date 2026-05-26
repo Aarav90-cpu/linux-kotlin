@@ -50,7 +50,10 @@
 #include <rdma/ib_user_verbs.h>
 #include <rdma/ib_addr.h>
 #include <rdma/ib_cache.h>
+<<<<<<< HEAD
 #include <rdma/uverbs_ioctl.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <net/bonding.h>
 
@@ -446,10 +449,23 @@ static int mlx4_ib_query_device(struct ib_device *ibdev,
 	struct mlx4_clock_params clock_params;
 
 	if (uhw->inlen) {
+<<<<<<< HEAD
 		err = ib_copy_validate_udata_in_cm(uhw, cmd, reserved, 0);
 		if (err)
 			return err;
 
+=======
+		if (uhw->inlen < sizeof(cmd))
+			return -EINVAL;
+
+		err = ib_copy_from_udata(&cmd, uhw, sizeof(cmd));
+		if (err)
+			return err;
+
+		if (cmd.comp_mask)
+			return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cmd.reserved)
 			return -EINVAL;
 	}
@@ -2156,7 +2172,11 @@ static int __mlx4_ib_alloc_diag_counters(struct mlx4_ib_dev *ibdev,
 	if (!*pdescs)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	*offset = kzalloc_objs(**offset, num_counters);
+=======
+	*offset = kcalloc(num_counters, sizeof(**offset), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*offset)
 		goto err;
 
@@ -2520,7 +2540,10 @@ static const struct ib_device_ops mlx4_ib_dev_ops = {
 	.attach_mcast = mlx4_ib_mcg_attach,
 	.create_ah = mlx4_ib_create_ah,
 	.create_cq = mlx4_ib_create_cq,
+<<<<<<< HEAD
 	.create_user_cq = mlx4_ib_create_user_cq,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.create_qp = mlx4_ib_create_qp,
 	.create_srq = mlx4_ib_create_srq,
 	.dealloc_pd = mlx4_ib_dealloc_pd,
@@ -2563,7 +2586,11 @@ static const struct ib_device_ops mlx4_ib_dev_ops = {
 	.reg_user_mr = mlx4_ib_reg_user_mr,
 	.req_notify_cq = mlx4_ib_arm_cq,
 	.rereg_user_mr = mlx4_ib_rereg_user_mr,
+<<<<<<< HEAD
 	.resize_user_cq = mlx4_ib_resize_cq,
+=======
+	.resize_cq = mlx4_ib_resize_cq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.report_port_event = mlx4_ib_port_event,
 
 	INIT_RDMA_OBJ_SIZE(ib_ah, mlx4_ib_ah, ibah),

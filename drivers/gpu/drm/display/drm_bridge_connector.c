@@ -789,7 +789,11 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
 	struct drm_connector *connector;
 	struct i2c_adapter *ddc = NULL;
 	struct drm_bridge *panel_bridge __free(drm_bridge_put) = NULL;
+<<<<<<< HEAD
 	unsigned int supported_formats = BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
+=======
+	unsigned int supported_formats = BIT(HDMI_COLORSPACE_RGB);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int max_bpc = 8;
 	bool support_hdcp = false;
 	int connector_type;
@@ -826,6 +830,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
 		if (!bridge->ycbcr_420_allowed)
 			connector->ycbcr_420_allowed = false;
 
+<<<<<<< HEAD
 		/*
 		 * Ensure the last bridge declares OP_EDID or OP_MODES or both.
 		 */
@@ -839,6 +844,11 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
 				bridge_connector->bridge_edid = drm_bridge_get(bridge);
 			if (bridge->ops & DRM_BRIDGE_OP_MODES)
 				bridge_connector->bridge_modes = drm_bridge_get(bridge);
+=======
+		if (bridge->ops & DRM_BRIDGE_OP_EDID) {
+			drm_bridge_put(bridge_connector->bridge_edid);
+			bridge_connector->bridge_edid = drm_bridge_get(bridge);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		if (bridge->ops & DRM_BRIDGE_OP_HPD) {
 			drm_bridge_put(bridge_connector->bridge_hpd);
@@ -848,6 +858,13 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
 			drm_bridge_put(bridge_connector->bridge_detect);
 			bridge_connector->bridge_detect = drm_bridge_get(bridge);
 		}
+<<<<<<< HEAD
+=======
+		if (bridge->ops & DRM_BRIDGE_OP_MODES) {
+			drm_bridge_put(bridge_connector->bridge_modes);
+			bridge_connector->bridge_modes = drm_bridge_get(bridge);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (bridge->ops & DRM_BRIDGE_OP_HDMI) {
 			if (bridge_connector->bridge_hdmi)
 				return ERR_PTR(-EBUSY);
@@ -960,7 +977,11 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
 
 	if (bridge_connector->bridge_hdmi) {
 		if (!connector->ycbcr_420_allowed)
+<<<<<<< HEAD
 			supported_formats &= ~BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+			supported_formats &= ~BIT(HDMI_COLORSPACE_YUV420);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		bridge_connector->hdmi_funcs = drm_bridge_connector_hdmi_funcs;
 

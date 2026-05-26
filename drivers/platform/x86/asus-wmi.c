@@ -125,6 +125,10 @@ module_param(fnlock_default, bool, 0444);
 #define NVIDIA_TEMP_MIN		75
 #define NVIDIA_TEMP_MAX		87
 
+<<<<<<< HEAD
+=======
+#define ASUS_SCREENPAD_BRIGHT_MIN 20
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ASUS_SCREENPAD_BRIGHT_MAX 255
 #define ASUS_SCREENPAD_BRIGHT_DEFAULT 60
 
@@ -1556,10 +1560,14 @@ static ssize_t charge_control_end_threshold_show(struct device *device,
 						 struct device_attribute *attr,
 						 char *buf)
 {
+<<<<<<< HEAD
 	if ((charge_end_threshold >= 0) && (charge_end_threshold <= 100))
 		return sysfs_emit(buf, "%d\n", charge_end_threshold);
 
 	return -ENODATA;
+=======
+	return sysfs_emit(buf, "%d\n", charge_end_threshold);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEVICE_ATTR_RW(charge_control_end_threshold);
@@ -1582,11 +1590,19 @@ static int asus_wmi_battery_add(struct power_supply *battery, struct acpi_batter
 		return -ENODEV;
 
 	/* The charge threshold is only reset when the system is power cycled,
+<<<<<<< HEAD
 	 * and we can't read the current threshold, however the majority of
 	 * platforms retains it, therefore signal the threshold as unknown
 	 * until user explicitly sets it to a new value.
 	 */
 	charge_end_threshold = -1;
+=======
+	 * and we can't get the current threshold so let set it to 100% when
+	 * a battery is added.
+	 */
+	asus_wmi_set_devstate(ASUS_WMI_DEVID_RSOC, 100, NULL);
+	charge_end_threshold = 100;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -4410,17 +4426,26 @@ static int read_screenpad_brightness(struct backlight_device *bd)
 		return err;
 	/* The device brightness can only be read if powered, so return stored */
 	if (err == BACKLIGHT_POWER_OFF)
+<<<<<<< HEAD
 		return bd->props.brightness;
+=======
+		return asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &retval);
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	return retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK;
+=======
+	return (retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK) - ASUS_SCREENPAD_BRIGHT_MIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int update_screenpad_bl_status(struct backlight_device *bd)
 {
+<<<<<<< HEAD
 	u32 ctrl_param = bd->props.brightness;
 	int err = 0;
 
@@ -4439,6 +4464,34 @@ static int update_screenpad_bl_status(struct backlight_device *bd)
 		if (err < 0)
 			return err;
 	}
+=======
+	struct asus_wmi *asus = bl_get_data(bd);
+	int power, err = 0;
+	u32 ctrl_param;
+
+	power = read_screenpad_backlight_power(asus);
+	if (power < 0)
+		return power;
+
+	if (bd->props.power != power) {
+		if (power != BACKLIGHT_POWER_ON) {
+			/* Only brightness > 0 can power it back on */
+			ctrl_param = asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
+			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT,
+						    ctrl_param, NULL);
+		} else {
+			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
+		}
+	} else if (power == BACKLIGHT_POWER_ON) {
+		/* Only set brightness if powered on or we get invalid/unsync state */
+		ctrl_param = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT, ctrl_param, NULL);
+	}
+
+	/* Ensure brightness is stored to turn back on with */
+	if (err == 0)
+		asus->driver->screenpad_brightness = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return err;
 }
@@ -4456,19 +4509,37 @@ static int asus_screenpad_init(struct asus_wmi *asus)
 	int err, power;
 	int brightness = 0;
 
+<<<<<<< HEAD
 	power = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_SCREENPAD_POWER);
 	if (power < 0)
 		return power;
 
 	if (power) {
+=======
+	power = read_screenpad_backlight_power(asus);
+	if (power < 0)
+		return power;
+
+	if (power != BACKLIGHT_POWER_OFF) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &brightness);
 		if (err < 0)
 			return err;
 	}
+<<<<<<< HEAD
 
 	memset(&props, 0, sizeof(struct backlight_properties));
 	props.type = BACKLIGHT_RAW; /* ensure this bd is last to be picked */
 	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX;
+=======
+	/* default to an acceptable min brightness on boot if too low */
+	if (brightness < ASUS_SCREENPAD_BRIGHT_MIN)
+		brightness = ASUS_SCREENPAD_BRIGHT_DEFAULT;
+
+	memset(&props, 0, sizeof(struct backlight_properties));
+	props.type = BACKLIGHT_RAW; /* ensure this bd is last to be picked */
+	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX - ASUS_SCREENPAD_BRIGHT_MIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bd = backlight_device_register("asus_screenpad",
 				       &asus->platform_device->dev, asus,
 				       &asus_screenpad_bl_ops, &props);
@@ -4479,7 +4550,11 @@ static int asus_screenpad_init(struct asus_wmi *asus)
 
 	asus->screenpad_backlight_device = bd;
 	asus->driver->screenpad_brightness = brightness;
+<<<<<<< HEAD
 	bd->props.brightness = brightness;
+=======
+	bd->props.brightness = brightness - ASUS_SCREENPAD_BRIGHT_MIN;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bd->props.power = power;
 	backlight_update_status(bd);
 
@@ -5404,3 +5479,20 @@ void asus_wmi_unregister_driver(struct asus_wmi_driver *driver)
 	used = false;
 }
 EXPORT_SYMBOL_GPL(asus_wmi_unregister_driver);
+<<<<<<< HEAD
+=======
+
+static int __init asus_wmi_init(void)
+{
+	pr_info("ASUS WMI generic driver loaded\n");
+	return 0;
+}
+
+static void __exit asus_wmi_exit(void)
+{
+	pr_info("ASUS WMI generic driver unloaded\n");
+}
+
+module_init(asus_wmi_init);
+module_exit(asus_wmi_exit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -183,7 +183,10 @@ static int cros_ec_regulator_probe(struct platform_device *pdev)
 	desc->owner = THIS_MODULE;
 	desc->type = REGULATOR_VOLTAGE;
 	desc->ops = &cros_ec_regulator_voltage_ops;
+<<<<<<< HEAD
 	desc->supply_name = "vin";
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = cros_ec_regulator_init_info(dev, drvdata);
 	if (ret < 0)

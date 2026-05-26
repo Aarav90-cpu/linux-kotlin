@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
  * IPv6 specific functions of netfilter core
  *
  * Rusty Russell (C) 2000
+=======
+/*
+ * IPv6 specific functions of netfilter core
+ *
+ * Rusty Russell (C) 2000 -- This code is GPL.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Patrick McHardy (C) 2006-2012
  */
 #include <linux/kernel.h>
@@ -86,6 +93,24 @@ int ip6_route_me_harder(struct net *net, struct sock *sk_partial, struct sk_buff
 }
 EXPORT_SYMBOL(ip6_route_me_harder);
 
+<<<<<<< HEAD
+=======
+static int nf_ip6_reroute(struct sk_buff *skb,
+			  const struct nf_queue_entry *entry)
+{
+	struct ip6_rt_info *rt_info = nf_queue_entry_reroute(entry);
+
+	if (entry->state.hook == NF_INET_LOCAL_OUT) {
+		const struct ipv6hdr *iph = ipv6_hdr(skb);
+		if (!ipv6_addr_equal(&iph->daddr, &rt_info->daddr) ||
+		    !ipv6_addr_equal(&iph->saddr, &rt_info->saddr) ||
+		    skb->mark != rt_info->mark)
+			return ip6_route_me_harder(entry->state.net, entry->state.sk, skb);
+	}
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __nf_ip6_route(struct net *net, struct dst_entry **dst,
 		   struct flowi *fl, bool strict)
 {
@@ -228,3 +253,39 @@ blackhole:
 	return 0;
 }
 EXPORT_SYMBOL_GPL(br_ip6_fragment);
+<<<<<<< HEAD
+=======
+
+static const struct nf_ipv6_ops ipv6ops = {
+#if IS_MODULE(CONFIG_IPV6)
+	.chk_addr		= ipv6_chk_addr,
+	.route_me_harder	= ip6_route_me_harder,
+	.dev_get_saddr		= ipv6_dev_get_saddr,
+	.route			= __nf_ip6_route,
+#if IS_ENABLED(CONFIG_SYN_COOKIES)
+	.cookie_init_sequence	= __cookie_v6_init_sequence,
+	.cookie_v6_check	= __cookie_v6_check,
+#endif
+#endif
+	.route_input		= ip6_route_input,
+	.fragment		= ip6_fragment,
+	.reroute		= nf_ip6_reroute,
+#if IS_MODULE(CONFIG_IPV6)
+	.br_fragment		= br_ip6_fragment,
+#endif
+};
+
+int __init ipv6_netfilter_init(void)
+{
+	RCU_INIT_POINTER(nf_ipv6_ops, &ipv6ops);
+	return 0;
+}
+
+/* This can be called from inet6_init() on errors, so it cannot
+ * be marked __exit. -DaveM
+ */
+void ipv6_netfilter_fini(void)
+{
+	RCU_INIT_POINTER(nf_ipv6_ops, NULL);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

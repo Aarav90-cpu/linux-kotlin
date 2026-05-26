@@ -43,6 +43,12 @@ void nft_meta_set_destroy(const struct nft_ctx *ctx,
 int nft_meta_set_validate(const struct nft_ctx *ctx,
 			  const struct nft_expr *expr);
 
+<<<<<<< HEAD
+=======
+bool nft_meta_get_reduce(struct nft_regs_track *track,
+			 const struct nft_expr *expr);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nft_inner_tun_ctx;
 void nft_meta_inner_eval(const struct nft_expr *expr,
 			 struct nft_regs *regs, const struct nft_pktinfo *pkt,

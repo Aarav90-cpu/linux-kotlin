@@ -141,10 +141,16 @@
 			interrupts = <1 10>;
 		};
 
+<<<<<<< HEAD
 	};
 
 	vc4: gpu {
 		compatible = "brcm,bcm2835-vc4";
+=======
+		vc4: gpu {
+			compatible = "brcm,bcm2835-vc4";
+		};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 };
 

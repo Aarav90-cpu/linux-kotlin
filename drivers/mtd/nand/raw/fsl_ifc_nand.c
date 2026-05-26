@@ -7,7 +7,10 @@
  * Author: Dipen Dudhat <Dipen.Dudhat@freescale.com>
  */
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/types.h>
@@ -864,6 +867,7 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
 
 	/* Fill in fsl_ifc_mtd structure */
 	mtd->dev.parent = priv->dev;
+<<<<<<< HEAD
 
 	struct device_node *np __free(device_node) =
 		of_get_next_child_with_prefix(priv->dev->of_node, NULL, "nand");
@@ -872,6 +876,9 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
 		nand_set_flash_node(chip, np);
 	else
 		nand_set_flash_node(chip, priv->dev->of_node);
+=======
+	nand_set_flash_node(chip, priv->dev->of_node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* fill in nand_chip structure */
 	/* set up function call table */

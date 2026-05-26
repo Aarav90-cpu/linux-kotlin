@@ -54,7 +54,10 @@ struct fbnic_rmon_stats {
 struct fbnic_pause_stats {
 	struct fbnic_stat_counter tx_pause_frames;
 	struct fbnic_stat_counter rx_pause_frames;
+<<<<<<< HEAD
 	struct fbnic_stat_counter tx_pause_storm_events;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct fbnic_eth_mac_stats {

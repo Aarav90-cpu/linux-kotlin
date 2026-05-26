@@ -287,7 +287,11 @@ level.
 Check presence of other Intel(R) SST features
 ---------------------------------------------
 
+<<<<<<< HEAD
 Each of the performance profiles also specifies whether there is support of
+=======
+Each of the performance profiles also specifies weather there is support of
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 other two Intel(R) SST features (Intel(R) Speed Select Technology - Base Frequency
 (Intel(R) SST-BF) and Intel(R) Speed Select Technology - Turbo Frequency (Intel
 SST-TF)).

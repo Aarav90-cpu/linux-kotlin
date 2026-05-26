@@ -80,7 +80,11 @@ static inline void check_join(pthread_t thread, void **retval)
 	TEST_ASSERT(r == 0, "%s: failed to join thread", __func__);
 }
 
+<<<<<<< HEAD
 static void run_test(u32 run)
+=======
+static void run_test(uint32_t run)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
@@ -88,7 +92,11 @@ static void run_test(u32 run)
 	pthread_t threads[VCPU_NUM];
 	pthread_t throw_away;
 	void *b;
+<<<<<<< HEAD
 	u32 i, j;
+=======
+	uint32_t i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	CPU_ZERO(&cpu_set);
 	for (i = 0; i < VCPU_NUM; i++)
@@ -149,7 +157,11 @@ void wait_for_child_setup(pid_t pid)
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 	u32 i;
+=======
+	uint32_t i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int s, r;
 	pid_t pid;
 

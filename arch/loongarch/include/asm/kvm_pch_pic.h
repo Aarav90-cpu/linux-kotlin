@@ -68,9 +68,15 @@ struct loongarch_pch_pic {
 	uint64_t pch_pic_base;
 };
 
+<<<<<<< HEAD
 struct kvm_kernel_irq_routing_entry;
 int kvm_loongarch_register_pch_pic_device(void);
 void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level);
 int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int level);
+=======
+int kvm_loongarch_register_pch_pic_device(void);
+void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level);
+void pch_msi_set_irq(struct kvm *kvm, int irq, int level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __ASM_KVM_PCH_PIC_H */

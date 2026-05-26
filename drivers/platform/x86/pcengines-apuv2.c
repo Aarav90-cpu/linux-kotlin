@@ -294,8 +294,12 @@ static int __init apu_board_init(void)
 	}
 
 	apu_gpio_pdev = apu_create_pdev(AMD_FCH_GPIO_DRIVER_NAME,
+<<<<<<< HEAD
 					id->driver_data, sizeof(struct amd_fch_gpio_pdata),
 					&apu2_gpiochip_node);
+=======
+					id->driver_data, sizeof(struct amd_fch_gpio_pdata), NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = PTR_ERR_OR_ZERO(apu_gpio_pdev);
 	if (err)
 		goto err_unregister_swnodes;

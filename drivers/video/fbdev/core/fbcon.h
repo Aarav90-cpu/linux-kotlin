@@ -11,7 +11,10 @@
 #ifndef _VIDEO_FBCON_H
 #define _VIDEO_FBCON_H
 
+<<<<<<< HEAD
 #include <linux/font.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/types.h>
 #include <linux/vt_buffer.h>
 #include <linux/vt_kern.h>
@@ -26,7 +29,12 @@
 
 struct fbcon_display {
     /* Filled in by the low-level console driver */
+<<<<<<< HEAD
     font_data_t *fontdata;
+=======
+    const u_char *fontdata;
+    int userfont;                   /* != 0 if fontdata kmalloc()ed */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
     u_short scrollmode;             /* Scroll Method, use fb_scrollmode() */
 #endif
@@ -80,6 +88,7 @@ struct fbcon_par {
 	int    graphics;
 	bool   initialized;
 	int    rotate;
+<<<<<<< HEAD
 	char  *cursor_data;
 #ifdef CONFIG_FRAMEBUFFER_CONSOLE_ROTATION
 	struct {
@@ -91,6 +100,15 @@ struct fbcon_par {
 #endif
 	u8    *cursor_src;
 	u32    cursor_size;
+=======
+	int    cur_rotate;
+	char  *cursor_data;
+	u8    *fontbuffer;
+	u8    *fontdata;
+	u8    *cursor_src;
+	u32    cursor_size;
+	u32    fd_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	const struct fbcon_bitops *bitops;
 };
@@ -196,8 +214,11 @@ extern void fbcon_set_tileops(struct vc_data *vc, struct fb_info *info);
 extern void fbcon_set_bitops_ur(struct fbcon_par *par);
 extern int  soft_cursor(struct fb_info *info, struct fb_cursor *cursor);
 
+<<<<<<< HEAD
 void fbcon_fill_cursor_mask(struct fbcon_par *par, struct vc_data *vc, unsigned char *mask);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBCON_ATTRIBUTE_UNDERLINE 1
 #define FBCON_ATTRIBUTE_REVERSE   2
 #define FBCON_ATTRIBUTE_BOLD      4

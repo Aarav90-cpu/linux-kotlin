@@ -9,7 +9,10 @@
 #include <linux/module.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/devm-helpers.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pm_runtime.h>
 #include <linux/power_supply.h>
 #include <linux/power/bq24190_charger.h>
@@ -2088,11 +2091,16 @@ static int bq24190_probe(struct i2c_client *client)
 	bdi->charge_type = POWER_SUPPLY_CHARGE_TYPE_FAST;
 	bdi->f_reg = 0;
 	bdi->ss_reg = BQ24190_REG_SS_VBUS_STAT_MASK; /* impossible state */
+<<<<<<< HEAD
 
 	ret = devm_delayed_work_autocancel(dev, &bdi->input_current_limit_work,
 					   bq24190_input_current_limit_work);
 	if (ret)
 		return ret;
+=======
+	INIT_DELAYED_WORK(&bdi->input_current_limit_work,
+			  bq24190_input_current_limit_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	i2c_set_clientdata(client, bdi);
 
@@ -2202,6 +2210,10 @@ static void bq24190_remove(struct i2c_client *client)
 	struct bq24190_dev_info *bdi = i2c_get_clientdata(client);
 	int error;
 
+<<<<<<< HEAD
+=======
+	cancel_delayed_work_sync(&bdi->input_current_limit_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = pm_runtime_resume_and_get(bdi->dev);
 	if (error < 0)
 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", error);

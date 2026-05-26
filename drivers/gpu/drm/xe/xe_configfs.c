@@ -15,7 +15,10 @@
 
 #include "instructions/xe_mi_commands.h"
 #include "xe_configfs.h"
+<<<<<<< HEAD
 #include "xe_defaults.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "xe_gt_types.h"
 #include "xe_hw_engine_types.h"
 #include "xe_module.h"
@@ -264,7 +267,10 @@ struct xe_config_group_device {
 		bool enable_psmi;
 		struct {
 			unsigned int max_vfs;
+<<<<<<< HEAD
 			bool admin_only_pf;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} sriov;
 	} config;
 
@@ -282,8 +288,12 @@ static const struct xe_config_device device_defaults = {
 	.survivability_mode = false,
 	.enable_psmi = false,
 	.sriov = {
+<<<<<<< HEAD
 		.max_vfs = XE_DEFAULT_MAX_VFS,
 		.admin_only_pf = XE_DEFAULT_ADMIN_ONLY_PF,
+=======
+		.max_vfs = UINT_MAX,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -900,6 +910,7 @@ static ssize_t sriov_max_vfs_store(struct config_item *item, const char *page, s
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t sriov_admin_only_pf_show(struct config_item *item, char *page)
 {
 	struct xe_config_group_device *dev = to_xe_config_group_device(item->ci_parent);
@@ -934,6 +945,12 @@ CONFIGFS_ATTR(sriov_, admin_only_pf);
 static struct configfs_attribute *xe_config_sriov_attrs[] = {
 	&sriov_attr_max_vfs,
 	&sriov_attr_admin_only_pf,
+=======
+CONFIGFS_ATTR(sriov_, max_vfs);
+
+static struct configfs_attribute *xe_config_sriov_attrs[] = {
+	&sriov_attr_max_vfs,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NULL,
 };
 
@@ -944,8 +961,11 @@ static bool xe_config_sriov_is_visible(struct config_item *item,
 
 	if (attr == &sriov_attr_max_vfs && dev->mode != XE_SRIOV_MODE_PF)
 		return false;
+<<<<<<< HEAD
 	if (attr == &sriov_attr_admin_only_pf && dev->mode != XE_SRIOV_MODE_PF)
 		return false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
@@ -1099,7 +1119,10 @@ static void dump_custom_dev_config(struct pci_dev *pdev,
 	PRI_CUSTOM_ATTR("%llx", engines_allowed);
 	PRI_CUSTOM_ATTR("%d", enable_psmi);
 	PRI_CUSTOM_ATTR("%d", survivability_mode);
+<<<<<<< HEAD
 	PRI_CUSTOM_ATTR("%u", sriov.admin_only_pf);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #undef PRI_CUSTOM_ATTR
 }
@@ -1279,6 +1302,7 @@ u32 xe_configfs_get_ctx_restore_post_bb(struct pci_dev *pdev,
 
 #ifdef CONFIG_PCI_IOV
 /**
+<<<<<<< HEAD
  * xe_configfs_admin_only_pf() - Get PF's operational mode.
  * @pdev: the &pci_dev device
  *
@@ -1305,6 +1329,8 @@ bool xe_configfs_admin_only_pf(struct pci_dev *pdev)
 	return admin_only_pf;
 }
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * xe_configfs_get_max_vfs() - Get number of VFs that could be managed
  * @pdev: the &pci_dev device
  *

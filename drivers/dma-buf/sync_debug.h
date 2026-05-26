@@ -47,7 +47,11 @@ struct sync_timeline {
 
 static inline struct sync_timeline *dma_fence_parent(struct dma_fence *fence)
 {
+<<<<<<< HEAD
 	return container_of(fence->extern_lock, struct sync_timeline, lock);
+=======
+	return container_of(fence->lock, struct sync_timeline, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

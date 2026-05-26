@@ -2108,8 +2108,13 @@ int __netlink_change_ngroups(struct sock *sk, unsigned int groups)
  * This changes the number of multicast groups that are available
  * on a certain netlink family. Note that it is not possible to
  * change the number of groups to below 32. Also note that it does
+<<<<<<< HEAD
  * not implicitly clear listeners from groups that are removed when
  * the number of groups is reduced.
+=======
+ * not implicitly call netlink_clear_multicast_users() when the
+ * number of groups is reduced.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @sk: The kernel netlink socket, as returned by netlink_kernel_create().
  * @groups: The new number of groups.
@@ -2700,7 +2705,11 @@ static int netlink_native_seq_show(struct seq_file *seq, void *v)
 		struct sock *s = v;
 		struct netlink_sock *nlk = nlk_sk(s);
 
+<<<<<<< HEAD
 		seq_printf(seq, "%pK %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8llu\n",
+=======
+		seq_printf(seq, "%pK %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   s,
 			   s->sk_protocol,
 			   nlk->portid,

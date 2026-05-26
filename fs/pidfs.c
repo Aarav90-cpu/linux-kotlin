@@ -8,8 +8,11 @@
 #include <linux/mount.h>
 #include <linux/pid.h>
 #include <linux/pidfs.h>
+<<<<<<< HEAD
 #include <linux/sched/signal.h>
 #include <linux/signal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/pid_namespace.h>
 #include <linux/poll.h>
 #include <linux/proc_fs.h>
@@ -24,7 +27,10 @@
 #include <net/net_namespace.h>
 #include <linux/coredump.h>
 #include <linux/rhashtable.h>
+<<<<<<< HEAD
 #include <linux/llist.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/xattr.h>
 #include <linux/cookie.h>
 
@@ -34,6 +40,10 @@
 #define PIDFS_PID_DEAD ERR_PTR(-ESRCH)
 
 static struct kmem_cache *pidfs_attr_cachep __ro_after_init;
+<<<<<<< HEAD
+=======
+static struct kmem_cache *pidfs_xattr_cachep __ro_after_init;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static struct path pidfs_root_path = {};
 
@@ -48,15 +58,24 @@ enum pidfs_attr_mask_bits {
 	PIDFS_ATTR_BIT_COREDUMP	= 1,
 };
 
+<<<<<<< HEAD
 struct pidfs_anon_attr {
 	unsigned long attr_mask;
+=======
+struct pidfs_attr {
+	unsigned long attr_mask;
+	struct simple_xattrs *xattrs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct /* exit info */ {
 		__u64 cgroupid;
 		__s32 exit_code;
 	};
 	__u32 coredump_mask;
 	__u32 coredump_signal;
+<<<<<<< HEAD
 	__u32 coredump_code;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct rhashtable pidfs_ino_ht;
@@ -95,6 +114,7 @@ static const struct rhashtable_params pidfs_ino_ht_params = {
  * inode number and the inode generation number to compare or
  * use file handles.
  */
+<<<<<<< HEAD
 struct pidfs_attr {
 	struct simple_xattrs *xattrs;
 	union {
@@ -102,6 +122,8 @@ struct pidfs_attr {
 		struct llist_node pidfs_llist;
 	};
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #if BITS_PER_LONG == 32
 
@@ -187,6 +209,7 @@ void pidfs_remove_pid(struct pid *pid)
 				       pidfs_ino_ht_params);
 }
 
+<<<<<<< HEAD
 static LLIST_HEAD(pidfs_free_list);
 
 static void pidfs_free_attr_work(struct work_struct *work)
@@ -211,6 +234,12 @@ static DECLARE_WORK(pidfs_free_work, pidfs_free_attr_work);
 void pidfs_free_pid(struct pid *pid)
 {
 	struct pidfs_attr *attr = pid->attr;
+=======
+void pidfs_free_pid(struct pid *pid)
+{
+	struct pidfs_attr *attr __free(kfree) = no_free_ptr(pid->attr);
+	struct simple_xattrs *xattrs __free(kfree) = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Any dentry must've been wiped from the pid by now.
@@ -229,10 +258,16 @@ void pidfs_free_pid(struct pid *pid)
 	if (IS_ERR(attr))
 		return;
 
+<<<<<<< HEAD
 	if (likely(!attr->xattrs))
 		kfree(attr);
 	else if (llist_add(&attr->pidfs_llist, &pidfs_free_list))
 		schedule_work(&pidfs_free_work);
+=======
+	xattrs = no_free_ptr(attr->xattrs);
+	if (xattrs)
+		simple_xattrs_free(xattrs, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_PROC_FS
@@ -361,8 +396,12 @@ static __u32 pidfs_coredump_mask(unsigned long mm_flags)
 			      PIDFD_INFO_EXIT | \
 			      PIDFD_INFO_COREDUMP | \
 			      PIDFD_INFO_SUPPORTED_MASK | \
+<<<<<<< HEAD
 			      PIDFD_INFO_COREDUMP_SIGNAL | \
 			      PIDFD_INFO_COREDUMP_CODE)
+=======
+			      PIDFD_INFO_COREDUMP_SIGNAL)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
 {
@@ -376,7 +415,11 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
 	const struct cred *c;
 	__u64 mask;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(struct pidfd_info) != PIDFD_INFO_SIZE_VER3);
+=======
+	BUILD_BUG_ON(sizeof(struct pidfd_info) != PIDFD_INFO_SIZE_VER2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!uinfo)
 		return -EINVAL;
@@ -409,10 +452,16 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
 	if (mask & PIDFD_INFO_COREDUMP) {
 		if (test_bit(PIDFS_ATTR_BIT_COREDUMP, &attr->attr_mask)) {
 			smp_rmb();
+<<<<<<< HEAD
 			kinfo.mask |= PIDFD_INFO_COREDUMP | PIDFD_INFO_COREDUMP_SIGNAL | PIDFD_INFO_COREDUMP_CODE;
 			kinfo.coredump_mask = attr->coredump_mask;
 			kinfo.coredump_signal = attr->coredump_signal;
 			kinfo.coredump_code = attr->coredump_code;
+=======
+			kinfo.mask |= PIDFD_INFO_COREDUMP | PIDFD_INFO_COREDUMP_SIGNAL;
+			kinfo.coredump_mask = attr->coredump_mask;
+			kinfo.coredump_signal = attr->coredump_signal;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -667,6 +716,7 @@ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	return open_namespace(ns_common);
 }
 
+<<<<<<< HEAD
 static int pidfs_file_release(struct inode *inode, struct file *file)
 {
 	struct pid *pid = inode->i_private;
@@ -689,6 +739,9 @@ static int pidfs_file_release(struct inode *inode, struct file *file)
 
 static const struct file_operations pidfs_file_operations = {
 	.release	= pidfs_file_release,
+=======
+static const struct file_operations pidfs_file_operations = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.poll		= pidfd_poll,
 #ifdef CONFIG_PROC_FS
 	.show_fdinfo	= pidfd_show_fdinfo,
@@ -783,9 +836,14 @@ void pidfs_coredump(const struct coredump_params *cprm)
 			      PIDFD_COREDUMPED;
 	/* If coredumping is set to skip we should never end up here. */
 	VFS_WARN_ON_ONCE(attr->coredump_mask & PIDFD_COREDUMP_SKIP);
+<<<<<<< HEAD
 	/* Expose the signal number and code that caused the coredump. */
 	attr->coredump_signal = cprm->siginfo->si_signo;
 	attr->coredump_code = cprm->siginfo->si_code;
+=======
+	/* Expose the signal number that caused the coredump. */
+	attr->coredump_signal = cprm->siginfo->si_signo;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smp_wmb();
 	set_bit(PIDFS_ATTR_BIT_COREDUMP, &attr->attr_mask);
 }
@@ -1063,7 +1121,11 @@ static int pidfs_xattr_get(const struct xattr_handler *handler,
 
 	xattrs = READ_ONCE(attr->xattrs);
 	if (!xattrs)
+<<<<<<< HEAD
 		return -ENODATA;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	name = xattr_full_name(handler, suffix);
 	return simple_xattr_get(xattrs, name, value, size);
@@ -1083,16 +1145,32 @@ static int pidfs_xattr_set(const struct xattr_handler *handler,
 	/* Ensure we're the only one to set @attr->xattrs. */
 	WARN_ON_ONCE(!inode_is_locked(inode));
 
+<<<<<<< HEAD
 	xattrs = simple_xattrs_lazy_alloc(&attr->xattrs, value, flags);
 	if (IS_ERR_OR_NULL(xattrs))
 		return PTR_ERR(xattrs);
+=======
+	xattrs = READ_ONCE(attr->xattrs);
+	if (!xattrs) {
+		xattrs = kmem_cache_zalloc(pidfs_xattr_cachep, GFP_KERNEL);
+		if (!xattrs)
+			return -ENOMEM;
+
+		simple_xattrs_init(xattrs);
+		smp_store_release(&pid->attr->xattrs, xattrs);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	name = xattr_full_name(handler, suffix);
 	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
 	if (IS_ERR(old_xattr))
 		return PTR_ERR(old_xattr);
 
+<<<<<<< HEAD
 	simple_xattr_free_rcu(old_xattr);
+=======
+	simple_xattr_free(old_xattr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -1139,11 +1217,19 @@ struct file *pidfs_alloc_file(struct pid *pid, unsigned int flags)
 	int ret;
 
 	/*
+<<<<<<< HEAD
 	 * Ensure that internal pidfd flags don't overlap with each
 	 * other or with uapi pidfd flags.
 	 */
 	BUILD_BUG_ON(hweight32(PIDFD_THREAD | PIDFD_NONBLOCK |
 				PIDFD_STALE | PIDFD_AUTOKILL) != 4);
+=======
+	 * Ensure that PIDFD_STALE can be passed as a flag without
+	 * overloading other uapi pidfd flags.
+	 */
+	BUILD_BUG_ON(PIDFD_STALE == PIDFD_THREAD);
+	BUILD_BUG_ON(PIDFD_STALE == PIDFD_NONBLOCK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = path_from_stashed(&pid->stashed, pidfs_mnt, get_pid(pid), &path);
 	if (ret < 0)
@@ -1154,12 +1240,18 @@ struct file *pidfs_alloc_file(struct pid *pid, unsigned int flags)
 	flags &= ~PIDFD_STALE;
 	flags |= O_RDWR;
 	pidfd_file = dentry_open(&path, flags, current_cred());
+<<<<<<< HEAD
 	/*
 	 * Raise PIDFD_THREAD and PIDFD_AUTOKILL explicitly as
 	 * do_dentry_open() strips O_EXCL and O_TRUNC.
 	 */
 	if (!IS_ERR(pidfd_file))
 		pidfd_file->f_flags |= (flags & (PIDFD_THREAD | PIDFD_AUTOKILL));
+=======
+	/* Raise PIDFD_THREAD explicitly as do_dentry_open() strips it. */
+	if (!IS_ERR(pidfd_file))
+		pidfd_file->f_flags |= (flags & PIDFD_THREAD);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return pidfd_file;
 }
@@ -1173,6 +1265,14 @@ void __init pidfs_init(void)
 					 (SLAB_HWCACHE_ALIGN | SLAB_RECLAIM_ACCOUNT |
 					  SLAB_ACCOUNT | SLAB_PANIC), NULL);
 
+<<<<<<< HEAD
+=======
+	pidfs_xattr_cachep = kmem_cache_create("pidfs_xattr_cache",
+					       sizeof(struct simple_xattrs), 0,
+					       (SLAB_HWCACHE_ALIGN | SLAB_RECLAIM_ACCOUNT |
+						SLAB_ACCOUNT | SLAB_PANIC), NULL);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pidfs_mnt = kern_mount(&pidfs_type);
 	if (IS_ERR(pidfs_mnt))
 		panic("Failed to mount pidfs pseudo filesystem");

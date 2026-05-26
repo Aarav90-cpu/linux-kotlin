@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
 /* Copyright 2013-2016 Freescale Semiconductor Inc.
+<<<<<<< HEAD
  * Copyright 2019, 2024-2026 NXP
+=======
+ * Copyright 2019 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #ifndef _FSL_DPMAC_CMD_H
 #define _FSL_DPMAC_CMD_H
@@ -28,8 +32,11 @@
 
 #define DPMAC_CMDID_SET_PROTOCOL	DPMAC_CMD(0x0c7)
 
+<<<<<<< HEAD
 #define DPMAC_CMDID_GET_STATISTICS	DPMAC_CMD(0x0c8)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Macros for accessing command fields smaller than 1byte */
 #define DPMAC_MASK(field)        \
 	GENMASK(DPMAC_##field##_SHIFT + DPMAC_##field##_SIZE - 1, \
@@ -84,6 +91,7 @@ struct dpmac_rsp_get_api_version {
 struct dpmac_cmd_set_protocol {
 	u8 eth_if;
 };
+<<<<<<< HEAD
 
 struct dpmac_cmd_get_statistics {
 	__le64 iova_cnt;
@@ -91,4 +99,6 @@ struct dpmac_cmd_get_statistics {
 	__le32 num_cnt;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _FSL_DPMAC_CMD_H */

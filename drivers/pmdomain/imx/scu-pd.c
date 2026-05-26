@@ -326,7 +326,10 @@ static void imx_sc_pd_get_console_rsrc(void)
 		return;
 
 	imx_con_rsrc = specs.args[0];
+<<<<<<< HEAD
 	of_node_put(specs.np);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)

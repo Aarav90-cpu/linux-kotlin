@@ -1369,6 +1369,7 @@ void phy_error(struct phy_device *phydev)
 EXPORT_SYMBOL(phy_error);
 
 /**
+<<<<<<< HEAD
  * phy_write_barrier - ensure the last write completed for this PHY device
  * @phydev: target phy_device struct
  *
@@ -1385,11 +1386,14 @@ static void phy_write_barrier(struct phy_device *phydev)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * phy_disable_interrupts - Disable the PHY interrupts from the PHY side
  * @phydev: target phy_device struct
  */
 int phy_disable_interrupts(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	int err;
 
 	/* Disable PHY interrupts */
@@ -1399,6 +1403,10 @@ int phy_disable_interrupts(struct phy_device *phydev)
 
 	phy_write_barrier(phydev);
 	return 0;
+=======
+	/* Disable PHY interrupts */
+	return phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

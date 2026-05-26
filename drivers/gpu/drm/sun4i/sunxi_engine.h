@@ -114,7 +114,11 @@ struct sunxi_engine_ops {
 	void (*vblank_quirk)(struct sunxi_engine *engine);
 
 	/**
+<<<<<<< HEAD
 	 * @mode_set:
+=======
+	 * @mode_set
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * This callback is used to set mode related parameters
 	 * like interlacing, screen size, etc. once per mode set.
@@ -131,7 +135,10 @@ struct sunxi_engine_ops {
  * @node:	the of device node of the engine
  * @regs:	the regmap of the engine
  * @id:		the id of the engine (-1 if not used)
+<<<<<<< HEAD
  * @list:	engine list management
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct sunxi_engine {
 	const struct sunxi_engine_ops	*ops;
@@ -141,6 +148,10 @@ struct sunxi_engine {
 
 	int id;
 
+<<<<<<< HEAD
+=======
+	/* Engine list management */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head		list;
 };
 
@@ -163,9 +174,12 @@ sunxi_engine_commit(struct sunxi_engine *engine,
  * sunxi_engine_layers_init() - Create planes (layers) for the engine
  * @drm:	pointer to the drm_device for which planes will be created
  * @engine:	pointer to the engine
+<<<<<<< HEAD
  *
  * Returns: The array of struct drm_plane backing the layers, or an
  *		error pointer on failure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline struct drm_plane **
 sunxi_engine_layers_init(struct drm_device *drm, struct sunxi_engine *engine)

@@ -557,7 +557,11 @@ struct bpf_kprobe_opts {
 	size_t sz;
 	/* custom user-provided value fetchable through bpf_get_attach_cookie() */
 	__u64 bpf_cookie;
+<<<<<<< HEAD
 	/* function offset, or raw address if func_name == NULL */
+=======
+	/* function's offset to install kprobe to */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t offset;
 	/* kprobe is return probe */
 	bool retprobe;
@@ -565,6 +569,7 @@ struct bpf_kprobe_opts {
 	enum probe_attach_mode attach_mode;
 	size_t :0;
 };
+<<<<<<< HEAD
 
 #define bpf_kprobe_opts__last_field attach_mode
 
@@ -595,6 +600,13 @@ bpf_program__attach_kprobe(const struct bpf_program *prog, bool retprobe,
  * @return Reference to the newly created BPF link; or NULL is returned on
  * error, error code is stored in errno
  */
+=======
+#define bpf_kprobe_opts__last_field attach_mode
+
+LIBBPF_API struct bpf_link *
+bpf_program__attach_kprobe(const struct bpf_program *prog, bool retprobe,
+			   const char *func_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 LIBBPF_API struct bpf_link *
 bpf_program__attach_kprobe_opts(const struct bpf_program *prog,
                                 const char *func_name,
@@ -2046,6 +2058,7 @@ LIBBPF_API int libbpf_register_prog_handler(const char *sec,
  */
 LIBBPF_API int libbpf_unregister_prog_handler(int handler_id);
 
+<<<<<<< HEAD
 /**
  * @brief **bpf_program__clone()** loads a single BPF program from a prepared
  * BPF object into the kernel, returning its file descriptor.
@@ -2063,6 +2076,8 @@ LIBBPF_API int libbpf_unregister_prog_handler(int handler_id);
  */
 LIBBPF_API int bpf_program__clone(struct bpf_program *prog, const struct bpf_prog_load_opts *opts);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

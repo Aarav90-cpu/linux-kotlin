@@ -57,6 +57,16 @@ do { \
 	(RECORD)->retired_row_pfn = tmp; \
 } while (0)
 
+<<<<<<< HEAD
+=======
+enum ras_gpu_health_status {
+	RAS_GPU_HEALTH_NONE = 0,
+	RAS_GPU_HEALTH_USABLE = 1,
+	RAS_GPU_RETIRED__ECC_REACH_THRESHOLD = 2,
+	RAS_GPU_IN_BAD_STATUS = 3,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum ras_eeprom_err_type {
 	RAS_EEPROM_ERR_NA,
 	RAS_EEPROM_ERR_RECOVERABLE,

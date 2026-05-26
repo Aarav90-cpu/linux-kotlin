@@ -61,7 +61,11 @@ struct cs42l43_codec {
 	unsigned int refclk_freq;
 	struct completion pll_ready;
 
+<<<<<<< HEAD
 	unsigned int decim_cache[6];
+=======
+	unsigned int decim_cache[4];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int adc_ena;
 	unsigned int hp_ena;
 
@@ -103,7 +107,11 @@ struct cs42l43_codec {
 	bool hp_ilimited;
 	int hp_ilimit_count;
 
+<<<<<<< HEAD
 	struct snd_kcontrol *kctl[7];
+=======
+	struct snd_kcontrol *kctl[5];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if IS_REACHABLE(CONFIG_SND_SOC_CS42L43_SDW)

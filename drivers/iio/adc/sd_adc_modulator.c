@@ -77,7 +77,10 @@ static const struct iio_backend_ops sd_backend_ops = {
 static const struct iio_backend_info sd_backend_info = {
 	.name = "sd-modulator",
 	.ops = &sd_backend_ops,
+<<<<<<< HEAD
 	.caps = IIO_BACKEND_CAP_ENABLE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int iio_sd_mod_register(struct platform_device *pdev)

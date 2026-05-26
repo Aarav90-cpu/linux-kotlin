@@ -81,6 +81,7 @@ tables being allocated.
 Error reports
 ~~~~~~~~~~~~~
 
+<<<<<<< HEAD
 The boot parameter ``kfence.fault`` can be used to control the behavior when a
 KFENCE error is detected:
 
@@ -88,6 +89,8 @@ KFENCE error is detected:
 - ``kfence.fault=oops``: Print the error report and oops.
 - ``kfence.fault=panic``: Print the error report and panic.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 A typical out-of-bounds access looks like this::
 
     ==================================================================

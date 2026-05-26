@@ -218,9 +218,14 @@ static __initdata struct {
 static int __init fdt_find_hyper_node(unsigned long node, const char *uname,
 				      int depth, void *data)
 {
+<<<<<<< HEAD
 	const char *s = NULL;
 	int len;
 	size_t prefix_len = strlen(hyper_node.prefix);
+=======
+	const void *s = NULL;
+	int len;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (depth != 1 || strcmp(uname, "hypervisor") != 0)
 		return 0;
@@ -229,10 +234,16 @@ static int __init fdt_find_hyper_node(unsigned long node, const char *uname,
 		hyper_node.found = true;
 
 	s = of_get_flat_dt_prop(node, "compatible", &len);
+<<<<<<< HEAD
 	if (s && len > 0 && strnlen(s, len) < len &&
 	    len > prefix_len + 3 &&
 	    !strncmp(hyper_node.prefix, s, prefix_len))
 		hyper_node.version = s + prefix_len;
+=======
+	if (strlen(hyper_node.prefix) + 3  < len &&
+	    !strncmp(hyper_node.prefix, s, strlen(hyper_node.prefix)))
+		hyper_node.version = s + strlen(hyper_node.prefix);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Check if Xen supports EFI by checking whether there is the

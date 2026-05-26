@@ -232,13 +232,20 @@ static void liteeth_setup_slots(struct liteeth *priv)
 
 static int liteeth_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct net_device *netdev;
 	void __iomem *buf_base;
 	struct liteeth *priv;
 	int irq, err;
 
+<<<<<<< HEAD
 	netdev = devm_alloc_etherdev(dev, sizeof(*priv));
+=======
+	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!netdev)
 		return -ENOMEM;
 
@@ -247,9 +254,15 @@ static int liteeth_probe(struct platform_device *pdev)
 
 	priv = netdev_priv(netdev);
 	priv->netdev = netdev;
+<<<<<<< HEAD
 	priv->dev = dev;
 
 	netdev->tstats = devm_netdev_alloc_pcpu_stats(dev,
+=======
+	priv->dev = &pdev->dev;
+
+	netdev->tstats = devm_netdev_alloc_pcpu_stats(&pdev->dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 						      struct pcpu_sw_netstats);
 	if (!netdev->tstats)
 		return -ENOMEM;
@@ -277,15 +290,25 @@ static int liteeth_probe(struct platform_device *pdev)
 	priv->tx_base = buf_base + priv->num_rx_slots * priv->slot_size;
 	priv->tx_slot = 0;
 
+<<<<<<< HEAD
 	err = of_get_ethdev_address(dev->of_node, netdev);
+=======
+	err = of_get_ethdev_address(pdev->dev.of_node, netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		eth_hw_addr_random(netdev);
 
 	netdev->netdev_ops = &liteeth_netdev_ops;
 
+<<<<<<< HEAD
 	err = devm_register_netdev(dev, netdev);
 	if (err) {
 		dev_err(dev, "Failed to register netdev %d\n", err);
+=======
+	err = register_netdev(netdev);
+	if (err) {
+		dev_err(&pdev->dev, "Failed to register netdev %d\n", err);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return err;
 	}
 
@@ -295,6 +318,16 @@ static int liteeth_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void liteeth_remove(struct platform_device *pdev)
+{
+	struct net_device *netdev = platform_get_drvdata(pdev);
+
+	unregister_netdev(netdev);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct of_device_id liteeth_of_match[] = {
 	{ .compatible = "litex,liteeth" },
 	{ }
@@ -303,6 +336,10 @@ MODULE_DEVICE_TABLE(of, liteeth_of_match);
 
 static struct platform_driver liteeth_driver = {
 	.probe = liteeth_probe,
+<<<<<<< HEAD
+=======
+	.remove = liteeth_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = liteeth_of_match,

@@ -148,10 +148,16 @@ struct flow_offload_tuple {
 	/* All members above are keys for lookups, see flow_offload_hash(). */
 	struct { }			__hash;
 
+<<<<<<< HEAD
 	u16				dir:2,
 					xmit_type:3,
 					encap_num:2,
 					needs_gso_segment:1,
+=======
+	u8				dir:2,
+					xmit_type:3,
+					encap_num:2,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					tun_num:2,
 					in_vlan_ingress:2;
 	u16				mtu;
@@ -233,7 +239,10 @@ struct nf_flow_route {
 			u32			hw_ifindex;
 			u8			h_source[ETH_ALEN];
 			u8			h_dest[ETH_ALEN];
+<<<<<<< HEAD
 			u8			needs_gso_segment:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} out;
 		enum flow_offload_xmit_type	xmit_type;
 	} tuple[FLOW_OFFLOAD_DIR_MAX];

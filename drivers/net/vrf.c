@@ -112,8 +112,13 @@ struct netns_vrf {
 };
 
 struct net_vrf {
+<<<<<<< HEAD
 	struct rtable		*rth;
 	struct rt6_info		*rt6;
+=======
+	struct rtable __rcu	*rth;
+	struct rt6_info	__rcu	*rt6;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_IPV6)
 	struct fib6_table	*fib6_table;
 #endif
@@ -648,6 +653,7 @@ static struct sk_buff *vrf_ip6_out_redirect(struct net_device *vrf_dev,
 					    struct sk_buff *skb)
 {
 	struct net_vrf *vrf = netdev_priv(vrf_dev);
+<<<<<<< HEAD
 	struct rt6_info *rt6;
 
 	rt6 = vrf->rt6;
@@ -655,6 +661,28 @@ static struct sk_buff *vrf_ip6_out_redirect(struct net_device *vrf_dev,
 
 	skb_dst_drop(skb);
 	skb_dst_set(skb, &rt6->dst);
+=======
+	struct dst_entry *dst = NULL;
+	struct rt6_info *rt6;
+
+	rcu_read_lock();
+
+	rt6 = rcu_dereference(vrf->rt6);
+	if (likely(rt6)) {
+		dst = &rt6->dst;
+		dst_hold(dst);
+	}
+
+	rcu_read_unlock();
+
+	if (unlikely(!dst)) {
+		vrf_tx_error(vrf_dev, skb);
+		return NULL;
+	}
+
+	skb_dst_drop(skb);
+	skb_dst_set(skb, dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return skb;
 }
@@ -737,11 +765,30 @@ static struct sk_buff *vrf_ip6_out(struct net_device *vrf_dev,
 /* holding rtnl */
 static void vrf_rt6_release(struct net_device *dev, struct net_vrf *vrf)
 {
+<<<<<<< HEAD
 	struct rt6_info *rt6 = vrf->rt6;
 
 	if (rt6) {
 		dst_dev_put(&rt6->dst);
 		dst_release(&rt6->dst);
+=======
+	struct rt6_info *rt6 = rtnl_dereference(vrf->rt6);
+	struct net *net = dev_net(dev);
+	struct dst_entry *dst;
+
+	RCU_INIT_POINTER(vrf->rt6, NULL);
+	synchronize_rcu();
+
+	/* move dev in dst's to loopback so this VRF device can be deleted
+	 * - based on dst_ifdown
+	 */
+	if (rt6) {
+		dst = &rt6->dst;
+		netdev_ref_replace(dst->dev, net->loopback_dev,
+				   &dst->dev_tracker, GFP_KERNEL);
+		dst->dev = net->loopback_dev;
+		dst_release(dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -768,7 +815,11 @@ static int vrf_rt6_create(struct net_device *dev)
 
 	rt6->dst.output	= vrf_output6;
 
+<<<<<<< HEAD
 	vrf->rt6 = rt6;
+=======
+	rcu_assign_pointer(vrf->rt6, rt6);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc = 0;
 out:
@@ -854,6 +905,7 @@ static struct sk_buff *vrf_ip_out_redirect(struct net_device *vrf_dev,
 					   struct sk_buff *skb)
 {
 	struct net_vrf *vrf = netdev_priv(vrf_dev);
+<<<<<<< HEAD
 	struct rtable *rth;
 
 	rth = vrf->rth;
@@ -861,6 +913,28 @@ static struct sk_buff *vrf_ip_out_redirect(struct net_device *vrf_dev,
 
 	skb_dst_drop(skb);
 	skb_dst_set(skb, &rth->dst);
+=======
+	struct dst_entry *dst = NULL;
+	struct rtable *rth;
+
+	rcu_read_lock();
+
+	rth = rcu_dereference(vrf->rth);
+	if (likely(rth)) {
+		dst = &rth->dst;
+		dst_hold(dst);
+	}
+
+	rcu_read_unlock();
+
+	if (unlikely(!dst)) {
+		vrf_tx_error(vrf_dev, skb);
+		return NULL;
+	}
+
+	skb_dst_drop(skb);
+	skb_dst_set(skb, dst);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return skb;
 }
@@ -960,10 +1034,30 @@ static struct sk_buff *vrf_l3_out(struct net_device *vrf_dev,
 /* holding rtnl */
 static void vrf_rtable_release(struct net_device *dev, struct net_vrf *vrf)
 {
+<<<<<<< HEAD
 	struct rtable *rth = vrf->rth;
 
 	dst_dev_put(&rth->dst);
 	dst_release(&rth->dst);
+=======
+	struct rtable *rth = rtnl_dereference(vrf->rth);
+	struct net *net = dev_net(dev);
+	struct dst_entry *dst;
+
+	RCU_INIT_POINTER(vrf->rth, NULL);
+	synchronize_rcu();
+
+	/* move dev in dst's to loopback so this VRF device can be deleted
+	 * - based on dst_ifdown
+	 */
+	if (rth) {
+		dst = &rth->dst;
+		netdev_ref_replace(dst->dev, net->loopback_dev,
+				   &dst->dev_tracker, GFP_KERNEL);
+		dst->dev = net->loopback_dev;
+		dst_release(dst);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int vrf_rtable_create(struct net_device *dev)
@@ -981,7 +1075,11 @@ static int vrf_rtable_create(struct net_device *dev)
 
 	rth->dst.output	= vrf_output;
 
+<<<<<<< HEAD
 	vrf->rth = rth;
+=======
+	rcu_assign_pointer(vrf->rth, rth);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1034,7 +1132,10 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
 
 err:
 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
+<<<<<<< HEAD
 	synchronize_net();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1054,6 +1155,7 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
 }
 
 /* inverse of do_vrf_add_slave */
+<<<<<<< HEAD
 static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
 			    bool needs_sync)
 {
@@ -1064,6 +1166,12 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
 	 */
 	if (needs_sync)
 		synchronize_net();
+=======
+static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+{
+	netdev_upper_dev_unlink(port_dev, dev);
+	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cycle_netdev(port_dev, NULL);
 
@@ -1072,7 +1180,11 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
 
 static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
 {
+<<<<<<< HEAD
 	return do_vrf_del_slave(dev, port_dev, true);
+=======
+	return do_vrf_del_slave(dev, port_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void vrf_dev_uninit(struct net_device *dev)
@@ -1626,7 +1738,11 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
 	struct list_head *iter;
 
 	netdev_for_each_lower_dev(dev, port_dev, iter)
+<<<<<<< HEAD
 		do_vrf_del_slave(dev, port_dev, false);
+=======
+		vrf_del_slave(dev, port_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vrf_map_unregister_dev(dev);
 
@@ -1758,7 +1874,11 @@ static int vrf_device_event(struct notifier_block *unused,
 			goto out;
 
 		vrf_dev = netdev_master_upper_dev_get(dev);
+<<<<<<< HEAD
 		do_vrf_del_slave(vrf_dev, dev, false);
+=======
+		vrf_del_slave(vrf_dev, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 out:
 	return NOTIFY_DONE;

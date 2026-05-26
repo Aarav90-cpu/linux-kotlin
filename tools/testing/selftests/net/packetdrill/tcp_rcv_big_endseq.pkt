@@ -36,7 +36,11 @@
 
   +0 read(4, ..., 100000) = 4000
 
+<<<<<<< HEAD
 // If queue is empty, accept a packet even if its end_seq is above rcv_mwnd_seq
+=======
+// If queue is empty, accept a packet even if its end_seq is above wup + rcv_wnd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   +0 < P. 4001:54001(50000) ack 1 win 257
    * > .  1:1(0) ack 54001 win 0
 

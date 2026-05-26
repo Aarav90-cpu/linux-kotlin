@@ -14,6 +14,10 @@ mediatek-drm-y := mtk_crtc.o \
 		  mtk_dsi.o \
 		  mtk_dpi.o \
 		  mtk_ethdr.o \
+<<<<<<< HEAD
+=======
+		  mtk_gem.o \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  mtk_mdp_rdma.o \
 		  mtk_padding.o \
 		  mtk_plane.o

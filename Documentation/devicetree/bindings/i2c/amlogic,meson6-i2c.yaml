@@ -16,6 +16,7 @@ allOf:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - enum:
@@ -25,6 +26,12 @@ properties:
           - amlogic,meson6-i2c # Meson6, Meson8 and compatible SoCs
           - amlogic,meson-gxbb-i2c # GXBB and compatible SoCs
           - amlogic,meson-axg-i2c # AXG and compatible SoCs
+=======
+    enum:
+      - amlogic,meson6-i2c # Meson6, Meson8 and compatible SoCs
+      - amlogic,meson-gxbb-i2c # GXBB and compatible SoCs
+      - amlogic,meson-axg-i2c # AXG and compatible SoCs
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1

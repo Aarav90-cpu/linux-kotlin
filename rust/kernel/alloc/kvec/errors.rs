@@ -15,7 +15,10 @@ impl<T> fmt::Debug for PushError<T> {
 }
 
 impl<T> From<PushError<T>> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: PushError<T>) -> Error {
         // Returning ENOMEM isn't appropriate because the system is not out of memory. The vector
         // is just full and we are refusing to resize it.
@@ -33,7 +36,10 @@ impl fmt::Debug for RemoveError {
 }
 
 impl From<RemoveError> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: RemoveError) -> Error {
         EINVAL
     }
@@ -57,7 +63,10 @@ impl<T> fmt::Debug for InsertError<T> {
 }
 
 impl<T> From<InsertError<T>> for Error {
+<<<<<<< HEAD
     #[inline]
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     fn from(_: InsertError<T>) -> Error {
         EINVAL
     }

@@ -109,6 +109,7 @@ int exception_tail_call(struct __sk_buff *ctx) {
 	return ret + 8;
 }
 
+<<<<<<< HEAD
 __weak
 void throw_11(void)
 {
@@ -123,6 +124,8 @@ int exception_throw_from_void_global(struct __sk_buff *ctx)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __noinline int exception_ext_global(struct __sk_buff *ctx)
 {
 	volatile int ret = 0;

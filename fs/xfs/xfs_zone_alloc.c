@@ -174,6 +174,7 @@ xfs_open_zone_mark_full(
 	WRITE_ONCE(rtg->rtg_open_zone, NULL);
 
 	spin_lock(&zi->zi_open_zones_lock);
+<<<<<<< HEAD
 	if (oz->oz_is_gc)
 		zi->zi_nr_open_gc_zones--;
 	else
@@ -201,6 +202,44 @@ xfs_zone_inc_written(
 	oz->oz_written += len;
 	if (oz->oz_written == rtg_blocks(oz->oz_rtg))
 		xfs_open_zone_mark_full(oz);
+=======
+	if (oz->oz_is_gc) {
+		ASSERT(current == zi->zi_gc_thread);
+		zi->zi_open_gc_zone = NULL;
+	} else {
+		zi->zi_nr_open_zones--;
+		list_del_init(&oz->oz_entry);
+	}
+	spin_unlock(&zi->zi_open_zones_lock);
+	xfs_open_zone_put(oz);
+
+	wake_up_all(&zi->zi_zone_wait);
+	if (used < rtg_blocks(rtg))
+		xfs_zone_account_reclaimable(rtg, rtg_blocks(rtg) - used);
+}
+
+static void
+xfs_zone_record_blocks(
+	struct xfs_trans	*tp,
+	struct xfs_open_zone	*oz,
+	xfs_fsblock_t		fsbno,
+	xfs_filblks_t		len)
+{
+	struct xfs_mount	*mp = tp->t_mountp;
+	struct xfs_rtgroup	*rtg = oz->oz_rtg;
+	struct xfs_inode	*rmapip = rtg_rmap(rtg);
+
+	trace_xfs_zone_record_blocks(oz, xfs_rtb_to_rgbno(mp, fsbno), len);
+
+	xfs_rtgroup_lock(rtg, XFS_RTGLOCK_RMAP);
+	xfs_rtgroup_trans_join(tp, rtg, XFS_RTGLOCK_RMAP);
+	rmapip->i_used_blocks += len;
+	ASSERT(rmapip->i_used_blocks <= rtg_blocks(rtg));
+	oz->oz_written += len;
+	if (oz->oz_written == rtg_blocks(rtg))
+		xfs_open_zone_mark_full(oz);
+	xfs_trans_log_inode(tp, rmapip, XFS_ILOG_CORE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -218,7 +257,13 @@ xfs_zone_skip_blocks(
 	trace_xfs_zone_skip_blocks(oz, 0, len);
 
 	xfs_rtgroup_lock(rtg, XFS_RTGLOCK_RMAP);
+<<<<<<< HEAD
 	xfs_zone_inc_written(oz, len);
+=======
+	oz->oz_written += len;
+	if (oz->oz_written == rtg_blocks(rtg))
+		xfs_open_zone_mark_full(oz);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xfs_rtgroup_unlock(rtg, XFS_RTGLOCK_RMAP);
 
 	xfs_add_frextents(rtg_mount(rtg), len);
@@ -233,8 +278,11 @@ xfs_zoned_map_extent(
 	xfs_fsblock_t		old_startblock)
 {
 	struct xfs_bmbt_irec	data;
+<<<<<<< HEAD
 	struct xfs_rtgroup	*rtg = oz->oz_rtg;
 	struct xfs_inode	*rmapip = rtg_rmap(rtg);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			nmaps = 1;
 	int			error;
 
@@ -293,6 +341,7 @@ xfs_zoned_map_extent(
 		}
 	}
 
+<<<<<<< HEAD
 	trace_xfs_zone_record_blocks(oz,
 		xfs_rtb_to_rgbno(tp->t_mountp, new->br_startblock),
 		new->br_blockcount);
@@ -302,6 +351,9 @@ xfs_zoned_map_extent(
 	ASSERT(rmapip->i_used_blocks <= rtg_blocks(rtg));
 	xfs_zone_inc_written(oz, new->br_blockcount);
 	xfs_trans_log_inode(tp, rmapip, XFS_ILOG_CORE);
+=======
+	xfs_zone_record_blocks(tp, oz, new->br_startblock, new->br_blockcount);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Map the new blocks into the data fork. */
 	xfs_bmap_map_extent(tp, ip, XFS_DATA_FORK, new);
@@ -559,9 +611,12 @@ xfs_try_use_zone(
 	struct xfs_open_zone	*oz,
 	unsigned int		goodness)
 {
+<<<<<<< HEAD
 	if (oz->oz_is_gc)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (oz->oz_allocated == rtg_blocks(oz->oz_rtg))
 		return false;
 
@@ -683,11 +738,18 @@ xfs_select_zone_nowait(
 	if (oz)
 		goto out_unlock;
 
+<<<<<<< HEAD
 	if (pack_tight) {
 		oz = xfs_select_open_zone_mru(zi, write_hint);
 		if (oz)
 			goto out_unlock;
 	}
+=======
+	if (pack_tight)
+		oz = xfs_select_open_zone_mru(zi, write_hint);
+	if (oz)
+		goto out_unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * See if we can open a new zone and use that so that data for different
@@ -698,7 +760,11 @@ xfs_select_zone_nowait(
 		goto out_unlock;
 
 	/*
+<<<<<<< HEAD
 	 * Try to find a zone that is an ok match to colocate data with.
+=======
+	 * Try to find an zone that is an ok match to colocate data with.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	oz = xfs_select_open_zone_lru(zi, write_hint, XFS_ZONE_ALLOC_OK);
 	if (oz)
@@ -1170,7 +1236,11 @@ xfs_calc_open_zones(
 
 	if (bdev_open_zones && bdev_open_zones < mp->m_max_open_zones) {
 		mp->m_max_open_zones = bdev_open_zones;
+<<<<<<< HEAD
 		xfs_info(mp, "limiting open zones to %u due to hardware limit.",
+=======
+		xfs_info(mp, "limiting open zones to %u due to hardware limit.\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			bdev_open_zones);
 	}
 
@@ -1217,7 +1287,11 @@ xfs_alloc_zone_info(
 	return zi;
 
 out_free_bitmaps:
+<<<<<<< HEAD
 	while (--i >= 0)
+=======
+	while (--i > 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvfree(zi->zi_used_bucket_bitmap[i]);
 	kfree(zi);
 	return NULL;
@@ -1235,6 +1309,7 @@ xfs_free_zone_info(
 	kfree(zi);
 }
 
+<<<<<<< HEAD
 static int
 xfs_report_zones(
 	struct xfs_mount	*mp,
@@ -1329,6 +1404,8 @@ xfs_finish_spurious_open_zones(
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int
 xfs_mount_zones(
 	struct xfs_mount	*mp)
@@ -1337,6 +1414,10 @@ xfs_mount_zones(
 		.zone_capacity	= mp->m_groups[XG_TYPE_RTG].blocks,
 		.zone_size	= xfs_rtgroup_raw_size(mp),
 	};
+<<<<<<< HEAD
+=======
+	struct xfs_rtgroup	*rtg = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int			error;
 
 	if (!mp->m_rtdev_targp) {
@@ -1366,6 +1447,7 @@ xfs_mount_zones(
 	if (!mp->m_zone_info)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	error = xfs_report_zones(mp, &iz);
 	if (error)
 		goto out_free_zone_info;
@@ -1377,6 +1459,11 @@ xfs_mount_zones(
 	xfs_set_freecounter(mp, XC_FREE_RTAVAILABLE, iz.available);
 	xfs_set_freecounter(mp, XC_FREE_RTEXTENTS,
 			iz.available + iz.reclaimable);
+=======
+	xfs_info(mp, "%u zones of %u blocks (%u max open zones)",
+		 mp->m_sb.sb_rgcount, iz.zone_capacity, mp->m_max_open_zones);
+	trace_xfs_zones_mount(mp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The writeback code switches between inodes regularly to provide
@@ -1402,6 +1489,25 @@ xfs_mount_zones(
 		XFS_FSB_TO_B(mp, min(iz.zone_capacity, XFS_MAX_BMBT_EXTLEN)) >>
 			PAGE_SHIFT;
 
+<<<<<<< HEAD
+=======
+	while ((rtg = xfs_rtgroup_next(mp, rtg))) {
+		xfs_rgblock_t		write_pointer;
+
+		error = xfs_query_write_pointer(&iz, rtg, &write_pointer);
+		if (!error)
+			error = xfs_init_zone(&iz, rtg, write_pointer);
+		if (error) {
+			xfs_rtgroup_rele(rtg);
+			goto out_free_zone_info;
+		}
+	}
+
+	xfs_set_freecounter(mp, XC_FREE_RTAVAILABLE, iz.available);
+	xfs_set_freecounter(mp, XC_FREE_RTEXTENTS,
+			iz.available + iz.reclaimable);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * The user may configure GC to free up a percentage of unused blocks.
 	 * By default this is 0. GC will always trigger at the minimum level
@@ -1412,10 +1518,13 @@ xfs_mount_zones(
 	error = xfs_zone_gc_mount(mp);
 	if (error)
 		goto out_free_zone_info;
+<<<<<<< HEAD
 
 	xfs_info(mp, "%u zones of %u blocks (%u max open zones)",
 		 mp->m_sb.sb_rgcount, iz.zone_capacity, mp->m_max_open_zones);
 	trace_xfs_zones_mount(mp);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 out_free_zone_info:

@@ -582,7 +582,10 @@ static const struct of_device_id dsi_phy_dt_match[] = {
 #endif
 	{}
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, dsi_phy_dt_match);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Currently, we only support one SoC for each PHY type. When we have multiple

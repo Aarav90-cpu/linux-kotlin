@@ -10,7 +10,11 @@
 #include "fw/api/txq.h"
 
 /* Highest firmware core release supported */
+<<<<<<< HEAD
 #define IWL_SC_UCODE_CORE_MAX	102
+=======
+#define IWL_SC_UCODE_CORE_MAX	101
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Lowest firmware API version supported */
 #define IWL_SC_UCODE_API_MIN	100

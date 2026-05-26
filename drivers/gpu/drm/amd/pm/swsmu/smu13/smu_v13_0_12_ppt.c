@@ -49,6 +49,7 @@
 #undef pr_info
 #undef pr_debug
 
+<<<<<<< HEAD
 #define hbm_stack_mask_valid(umc_mask) \
 	(((umc_mask) & 0x3) == 0x3)
 
@@ -56,6 +57,8 @@
 	for ((stack_idx) = 0; (umc_mask); \
 	     (umc_mask) >>= 2, (stack_idx)++) \
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SMU_13_0_12_FEA_MAP(smu_feature, smu_13_0_12_feature)                    \
 	[smu_feature] = { 1, (smu_13_0_12_feature) }
 
@@ -269,9 +272,14 @@ static void smu_v13_0_12_init_xgmi_data(struct smu_context *smu,
 	int ret;
 
 	if (smu_table->tables[SMU_TABLE_SMU_METRICS].version >= 0x13) {
+<<<<<<< HEAD
 		max_width = (uint8_t)SMUQ10_ROUND(static_metrics->MaxXgmiWidth);
 		max_speed =
 			(uint16_t)SMUQ10_ROUND(static_metrics->MaxXgmiBitrate);
+=======
+		max_width = (uint8_t)static_metrics->MaxXgmiWidth;
+		max_speed = (uint16_t)static_metrics->MaxXgmiBitrate;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = 0;
 	} else {
 		MetricsTable_t *metrics = (MetricsTable_t *)smu_table->metrics_table;
@@ -479,6 +487,7 @@ static int smu_v13_0_12_get_system_metrics_table(struct smu_context *smu)
 	}
 
 	amdgpu_hdp_invalidate(smu->adev, NULL);
+<<<<<<< HEAD
 
 	ret = smu_cmn_vram_cpy(smu, sys_table->cache.buffer,
 			       table->cpu_addr,
@@ -487,6 +496,11 @@ static int smu_v13_0_12_get_system_metrics_table(struct smu_context *smu)
 		return ret;
 
 	smu_table_cache_update_time(sys_table, jiffies);
+=======
+	smu_table_cache_update_time(sys_table, jiffies);
+	memcpy(sys_table->cache.buffer, table->cpu_addr,
+	       smu_v13_0_12_get_system_metrics_size());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -847,7 +861,11 @@ void smu_v13_0_12_get_gpu_metrics(struct smu_context *smu, void **table,
 				  struct smu_v13_0_6_gpu_metrics *gpu_metrics)
 {
 	struct amdgpu_device *adev = smu->adev;
+<<<<<<< HEAD
 	int ret = 0, xcc_id, inst, i, j, idx;
+=======
+	int ret = 0, xcc_id, inst, i, j;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 num_jpeg_rings_gpu_metrics;
 	MetricsTable_t *metrics;
 
@@ -862,6 +880,7 @@ void smu_v13_0_12_get_gpu_metrics(struct smu_context *smu, void **table,
 	gpu_metrics->temperature_vrsoc =
 		SMUQ10_ROUND(metrics->MaxVrTemperature);
 
+<<<<<<< HEAD
 	if (smu_v13_0_6_cap_supported(smu,
 				      SMU_CAP(TEMP_AID_XCD_HBM))) {
 		if (adev->umc.active_mask) {
@@ -887,6 +906,8 @@ void smu_v13_0_12_get_gpu_metrics(struct smu_context *smu, void **table,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_metrics->average_gfx_activity =
 		SMUQ10_ROUND(metrics->SocketGfxBusy);
 	gpu_metrics->average_umc_activity =
@@ -1002,9 +1023,12 @@ void smu_v13_0_12_get_gpu_metrics(struct smu_context *smu, void **table,
 				[i] = SMUQ10_ROUND(
 				metrics->GfxclkBelowHostLimitTotalAcc[inst]);
 		}
+<<<<<<< HEAD
 		if (smu_v13_0_6_cap_supported(smu,
 					      SMU_CAP(TEMP_AID_XCD_HBM)))
 			gpu_metrics->temperature_xcd[i] = metrics->XcdTemperature[inst];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	gpu_metrics->xgmi_link_width = metrics->XgmiWidth;

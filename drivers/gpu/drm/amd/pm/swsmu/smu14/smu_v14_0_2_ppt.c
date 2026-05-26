@@ -68,8 +68,11 @@ static const struct smu_feature_bits smu_v14_0_2_dpm_features = {
 		  SMU_FEATURE_BIT_INIT(FEATURE_DPM_FCLK_BIT) }
 };
 
+<<<<<<< HEAD
 #define SMU14_DRIVER_IF_VERSION_SMU_V14_0_2 0x2E
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE	0x4000
 #define DEBUGSMC_MSG_Mode1Reset        2
 #define LINK_SPEED_MAX					3
@@ -661,13 +664,21 @@ static int smu_v14_0_2_get_smu_metrics_data(struct smu_context *smu,
 			*value = metrics->AverageGfxclkFrequencyPreDs;
 		break;
 	case METRICS_AVERAGE_FCLK:
+<<<<<<< HEAD
 		if (smu_safe_u16_nn(metrics->AverageUclkActivity) <= SMU_14_0_2_BUSY_THRESHOLD)
+=======
+		if (metrics->AverageUclkActivity <= SMU_14_0_2_BUSY_THRESHOLD)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*value = metrics->AverageFclkFrequencyPostDs;
 		else
 			*value = metrics->AverageFclkFrequencyPreDs;
 		break;
 	case METRICS_AVERAGE_UCLK:
+<<<<<<< HEAD
 		if (smu_safe_u16_nn(metrics->AverageUclkActivity) <= SMU_14_0_2_BUSY_THRESHOLD)
+=======
+		if (metrics->AverageUclkActivity <= SMU_14_0_2_BUSY_THRESHOLD)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			*value = metrics->AverageMemclkFrequencyPostDs;
 		else
 			*value = metrics->AverageMemclkFrequencyPreDs;
@@ -688,7 +699,11 @@ static int smu_v14_0_2_get_smu_metrics_data(struct smu_context *smu,
 		*value = metrics->AverageGfxActivity;
 		break;
 	case METRICS_AVERAGE_MEMACTIVITY:
+<<<<<<< HEAD
 		*value = smu_safe_u16_nn(metrics->AverageUclkActivity);
+=======
+		*value = metrics->AverageUclkActivity;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case METRICS_AVERAGE_VCNACTIVITY:
 		*value = max(metrics->AverageVcn0ActivityPercentage,
@@ -2147,7 +2162,11 @@ static ssize_t smu_v14_0_2_get_gpu_metrics(struct smu_context *smu,
 					     metrics->AvgTemperature[TEMP_VR_MEM1]);
 
 	gpu_metrics->average_gfx_activity = metrics->AverageGfxActivity;
+<<<<<<< HEAD
 	gpu_metrics->average_umc_activity = smu_safe_u16_nn(metrics->AverageUclkActivity);
+=======
+	gpu_metrics->average_umc_activity = metrics->AverageUclkActivity;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_metrics->average_mm_activity = max(metrics->AverageVcn0ActivityPercentage,
 					       metrics->Vcn1ActivityPercentage);
 
@@ -2159,7 +2178,11 @@ static ssize_t smu_v14_0_2_get_gpu_metrics(struct smu_context *smu,
 	else
 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPreDs;
 
+<<<<<<< HEAD
 	if (smu_safe_u16_nn(metrics->AverageUclkActivity) <= SMU_14_0_2_BUSY_THRESHOLD)
+=======
+	if (metrics->AverageUclkActivity <= SMU_14_0_2_BUSY_THRESHOLD)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		gpu_metrics->average_uclk_frequency = metrics->AverageMemclkFrequencyPostDs;
 	else
 		gpu_metrics->average_uclk_frequency = metrics->AverageMemclkFrequencyPreDs;
@@ -2214,6 +2237,7 @@ static void smu_v14_0_2_dump_od_table(struct smu_context *smu,
 						   od_table->OverDriveTable.UclkFmax);
 }
 
+<<<<<<< HEAD
 #define OD_ERROR_MSG_MAP(msg) \
 	[msg] = #msg
 
@@ -2269,6 +2293,19 @@ static int smu_v14_0_2_upload_overdrive_table(struct smu_context *smu,
 				od_error_type);
 		}
 	}
+=======
+static int smu_v14_0_2_upload_overdrive_table(struct smu_context *smu,
+					      OverDriveTableExternal_t *od_table)
+{
+	int ret;
+	ret = smu_cmn_update_table(smu,
+				   SMU_TABLE_OVERDRIVE,
+				   0,
+				   (void *)od_table,
+				   true);
+	if (ret)
+		dev_err(smu->adev->dev, "Failed to upload overdrive table!\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -2848,7 +2885,11 @@ static const struct pptable_funcs smu_v14_0_2_ppt_funcs = {
 	.fini_power = smu_v14_0_fini_power,
 	.check_fw_status = smu_v14_0_check_fw_status,
 	.setup_pptable = smu_v14_0_2_setup_pptable,
+<<<<<<< HEAD
 	.check_fw_version = smu_cmn_check_fw_version,
+=======
+	.check_fw_version = smu_v14_0_check_fw_version,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.set_driver_table_location = smu_v14_0_set_driver_table_location,
 	.system_features_control = smu_v14_0_system_features_control,
 	.set_allowed_mask = smu_v14_0_set_allowed_mask,
@@ -2913,6 +2954,9 @@ void smu_v14_0_2_set_ppt_funcs(struct smu_context *smu)
 	smu->table_map = smu_v14_0_2_table_map;
 	smu->pwr_src_map = smu_v14_0_2_pwr_src_map;
 	smu->workload_map = smu_v14_0_2_workload_map;
+<<<<<<< HEAD
 	smu->smc_driver_if_version = SMU14_DRIVER_IF_VERSION_SMU_V14_0_2;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	smu_v14_0_2_init_msg_ctl(smu);
 }

@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0-only
 config INFINIBAND_IPOIB
 	tristate "IP-over-InfiniBand"
+<<<<<<< HEAD
 	depends on NETDEVICES && INET
+=======
+	depends on NETDEVICES && INET && (IPV6 || IPV6=n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for the IP-over-InfiniBand protocol (IPoIB). This
 	  transports IP packets over InfiniBand so you can use your IB

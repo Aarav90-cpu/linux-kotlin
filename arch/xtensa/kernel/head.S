@@ -381,3 +381,9 @@ ENTRY(swapper_pg_dir)
 	.fill	PAGE_SIZE, 1, 0
 END(swapper_pg_dir)
 #endif
+<<<<<<< HEAD
+=======
+ENTRY(empty_zero_page)
+	.fill	PAGE_SIZE, 1, 0
+END(empty_zero_page)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

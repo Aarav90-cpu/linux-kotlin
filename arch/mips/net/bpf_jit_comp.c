@@ -909,10 +909,19 @@ bool bpf_jit_needs_zext(void)
 	return true;
 }
 
+<<<<<<< HEAD
 struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_prog *prog)
 {
 	struct bpf_binary_header *header = NULL;
 	struct jit_context ctx;
+=======
+struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+{
+	struct bpf_prog *tmp, *orig_prog = prog;
+	struct bpf_binary_header *header = NULL;
+	struct jit_context ctx;
+	bool tmp_blinded = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int tmp_idx;
 	unsigned int image_size;
 	u8 *image_ptr;
@@ -923,7 +932,23 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	 * the interpreter.
 	 */
 	if (!prog->jit_requested)
+<<<<<<< HEAD
 		return prog;
+=======
+		return orig_prog;
+	/*
+	 * If constant blinding was enabled and we failed during blinding
+	 * then we must fall back to the interpreter. Otherwise, we save
+	 * the new JITed code.
+	 */
+	tmp = bpf_jit_blind_constants(prog);
+	if (IS_ERR(tmp))
+		return orig_prog;
+	if (tmp != prog) {
+		tmp_blinded = true;
+		prog = tmp;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(&ctx, 0, sizeof(ctx));
 	ctx.program = prog;
@@ -1011,10 +1036,20 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
 	prog->jited_len = image_size;
 
 out:
+<<<<<<< HEAD
+=======
+	if (tmp_blinded)
+		bpf_jit_prog_release_other(prog, prog == orig_prog ?
+					   tmp : orig_prog);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(ctx.descriptors);
 	return prog;
 
 out_err:
+<<<<<<< HEAD
+=======
+	prog = orig_prog;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (header)
 		bpf_jit_binary_free(header);
 	goto out;

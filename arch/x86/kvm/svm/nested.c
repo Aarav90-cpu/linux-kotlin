@@ -116,12 +116,17 @@ static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
 	if (!nested_npt_enabled(svm))
 		return true;
 
+<<<<<<< HEAD
 	if (!(svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE))
+=======
+	if (!(svm->nested.ctl.virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	return false;
 }
 
+<<<<<<< HEAD
 void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
 {
 	struct vmcb_ctrl_area_cached *vmcb12_ctrl = &svm->nested.ctl;
@@ -138,6 +143,29 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
 		vmcb02->control.intercepts[i] = vmcb01->control.intercepts[i];
 
 	if (vmcb12_ctrl->int_ctl & V_INTR_MASKING_MASK) {
+=======
+void recalc_intercepts(struct vcpu_svm *svm)
+{
+	struct vmcb_control_area *c, *h;
+	struct vmcb_ctrl_area_cached *g;
+	unsigned int i;
+
+	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
+
+	if (!is_guest_mode(&svm->vcpu))
+		return;
+
+	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
+
+	c = &svm->vmcb->control;
+	h = &svm->vmcb01.ptr->control;
+	g = &svm->nested.ctl;
+
+	for (i = 0; i < MAX_INTERCEPT; i++)
+		c->intercepts[i] = h->intercepts[i];
+
+	if (g->int_ctl & V_INTR_MASKING_MASK) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * If L2 is active and V_INTR_MASKING is enabled in vmcb12,
 		 * disable intercept of CR8 writes as L2's CR8 does not affect
@@ -148,6 +176,7 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
 		 * the effective RFLAGS.IF for L1 interrupts will never be set
 		 * while L2 is running (L2's RFLAGS.IF doesn't affect L1 IRQs).
 		 */
+<<<<<<< HEAD
 		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_CR8_WRITE);
 		if (!(vmcb01->save.rflags & X86_EFLAGS_IF))
 			vmcb_clr_intercept(&vmcb02->control, INTERCEPT_VINTR);
@@ -169,6 +198,19 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
 	 */
 	if (!vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_PAUSE))
 		vmcb_clr_intercept(&vmcb02->control, INTERCEPT_PAUSE);
+=======
+		vmcb_clr_intercept(c, INTERCEPT_CR8_WRITE);
+		if (!(svm->vmcb01.ptr->save.rflags & X86_EFLAGS_IF))
+			vmcb_clr_intercept(c, INTERCEPT_VINTR);
+	}
+
+	for (i = 0; i < MAX_INTERCEPT; i++)
+		c->intercepts[i] |= g->intercepts[i];
+
+	/* If SMI is not intercepted, ignore guest SMI intercept as well  */
+	if (!intercept_smi)
+		vmcb_clr_intercept(c, INTERCEPT_SMI);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (nested_vmcb_needs_vls_intercept(svm)) {
 		/*
@@ -176,10 +218,17 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
 		 * we must intercept these instructions to correctly
 		 * emulate them in case L1 doesn't intercept them.
 		 */
+<<<<<<< HEAD
 		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMLOAD);
 		vmcb_set_intercept(&vmcb02->control, INTERCEPT_VMSAVE);
 	} else {
 		WARN_ON_ONCE(!(vmcb02->control.misc_ctl2 & SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE));
+=======
+		vmcb_set_intercept(c, INTERCEPT_VMLOAD);
+		vmcb_set_intercept(c, INTERCEPT_VMSAVE);
+	} else {
+		WARN_ON(!(c->virt_ext & VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -339,6 +388,7 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
 }
 
+<<<<<<< HEAD
 static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
 {
 	/*
@@ -389,6 +439,10 @@ static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
 
 static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
 				       struct vmcb_ctrl_area_cached *control)
+=======
+static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+					 struct vmcb_ctrl_area_cached *control)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
 		return false;
@@ -396,7 +450,11 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
 	if (CC(control->asid == 0))
 		return false;
 
+<<<<<<< HEAD
 	if (CC((control->misc_ctl & SVM_MISC_ENABLE_NP) &&
+=======
+	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	       !kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
 		return false;
 
@@ -412,15 +470,23 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (CC(!nested_svm_check_event_inj(vcpu, control->event_inj)))
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
 /* Common checks that apply to both L1 and L2 state.  */
+<<<<<<< HEAD
 static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
 				   struct vmcb_save_area_cached *save)
+=======
+static bool __nested_vmcb_check_save(struct kvm_vcpu *vcpu,
+				     struct vmcb_save_area_cached *save)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (CC(!(save->efer & EFER_SVME)))
 		return false;
@@ -458,12 +524,35 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
 	return true;
 }
 
+<<<<<<< HEAD
 int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 
 	if (!nested_vmcb_check_save(vcpu, &svm->nested.save) ||
 	    !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
+=======
+static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu)
+{
+	struct vcpu_svm *svm = to_svm(vcpu);
+	struct vmcb_save_area_cached *save = &svm->nested.save;
+
+	return __nested_vmcb_check_save(vcpu, save);
+}
+
+static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
+{
+	struct vcpu_svm *svm = to_svm(vcpu);
+	struct vmcb_ctrl_area_cached *ctl = &svm->nested.ctl;
+
+	return __nested_vmcb_check_controls(vcpu, ctl);
+}
+
+int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
+{
+	if (!nested_vmcb_check_save(vcpu) ||
+	    !nested_vmcb_check_controls(vcpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	return 0;
@@ -498,6 +587,7 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
 	nested_svm_sanitize_intercept(vcpu, to, SKINIT);
 	nested_svm_sanitize_intercept(vcpu, to, RDPRU);
 
+<<<<<<< HEAD
 	/* Always clear SVM_MISC_ENABLE_NP if the guest cannot use NPTs */
 	to->misc_ctl = from->misc_ctl;
 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
@@ -511,11 +601,27 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
 	to->int_ctl             = from->int_ctl;
 	to->int_vector          = from->int_vector & SVM_INT_VECTOR_MASK;
 	to->int_state           = from->int_state & SVM_INTERRUPT_SHADOW_MASK;
+=======
+	/* Always clear SVM_NESTED_CTL_NP_ENABLE if the guest cannot use NPTs */
+	to->nested_ctl          = from->nested_ctl;
+	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
+		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
+
+	to->iopm_base_pa        = from->iopm_base_pa;
+	to->msrpm_base_pa       = from->msrpm_base_pa;
+	to->tsc_offset          = from->tsc_offset;
+	to->tlb_ctl             = from->tlb_ctl;
+	to->erap_ctl            = from->erap_ctl;
+	to->int_ctl             = from->int_ctl;
+	to->int_vector          = from->int_vector;
+	to->int_state           = from->int_state;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	to->exit_code           = from->exit_code;
 	to->exit_info_1         = from->exit_info_1;
 	to->exit_info_2         = from->exit_info_2;
 	to->exit_int_info       = from->exit_int_info;
 	to->exit_int_info_err   = from->exit_int_info_err;
+<<<<<<< HEAD
 	to->event_inj           = from->event_inj & ~SVM_EVTINJ_RESERVED_BITS;
 	to->event_inj_err       = from->event_inj_err;
 	to->next_rip            = from->next_rip;
@@ -527,10 +633,28 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
 	/* Copy asid here because nested_vmcb_check_controls() will check it */
 	to->asid           = from->asid;
 	to->clean = from->clean;
+=======
+	to->event_inj           = from->event_inj;
+	to->event_inj_err       = from->event_inj_err;
+	to->next_rip            = from->next_rip;
+	to->nested_cr3          = from->nested_cr3;
+	to->virt_ext            = from->virt_ext;
+	to->pause_filter_count  = from->pause_filter_count;
+	to->pause_filter_thresh = from->pause_filter_thresh;
+
+	/* Copy asid here because nested_vmcb_check_controls will check it.  */
+	to->asid           = from->asid;
+	to->msrpm_base_pa &= ~0x0fffULL;
+	to->iopm_base_pa  &= ~0x0fffULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_KVM_HYPERV
 	/* Hyper-V extensions (Enlightened VMCB) */
 	if (kvm_hv_hypercall_enabled(vcpu)) {
+<<<<<<< HEAD
+=======
+		to->clean = from->clean;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		memcpy(&to->hv_enlightenments, &from->hv_enlightenments,
 		       sizeof(to->hv_enlightenments));
 	}
@@ -546,6 +670,7 @@ void nested_copy_vmcb_control_to_cache(struct vcpu_svm *svm,
 static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
 					     struct vmcb_save_area *from)
 {
+<<<<<<< HEAD
 	to->es = from->es;
 	to->cs = from->cs;
 	to->ss = from->ss;
@@ -574,6 +699,21 @@ static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
 	to->cr2 = from->cr2;
 
 	svm_copy_lbrs(to, from);
+=======
+	/*
+	 * Copy only fields that are validated, as we need them
+	 * to avoid TOC/TOU races.
+	 */
+	to->cs = from->cs;
+
+	to->efer = from->efer;
+	to->cr0 = from->cr0;
+	to->cr3 = from->cr3;
+	to->cr4 = from->cr4;
+
+	to->dr6 = from->dr6;
+	to->dr7 = from->dr7;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
@@ -604,7 +744,11 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
 	 * int_ctl (because it was never recognized while L2 was running).
 	 */
 	if (svm_is_intercept(svm, INTERCEPT_VINTR) &&
+<<<<<<< HEAD
 	    !vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_VINTR))
+=======
+	    !test_bit(INTERCEPT_VINTR, (unsigned long *)svm->nested.ctl.intercepts))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mask &= ~V_IRQ_MASK;
 
 	if (nested_vgif_enabled(svm))
@@ -713,6 +857,7 @@ void nested_vmcb02_compute_g_pat(struct vcpu_svm *svm)
 static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
 {
 	return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+<<<<<<< HEAD
 		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
 }
 
@@ -720,6 +865,13 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 {
 	struct vmcb_ctrl_area_cached *control = &svm->nested.ctl;
 	struct vmcb_save_area_cached *save = &svm->nested.save;
+=======
+		(to_svm(vcpu)->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
+}
+
+static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool new_vmcb12 = false;
 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
@@ -735,6 +887,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 		svm->nested.force_msr_bitmap_recalc = true;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_SEG))) {
 		vmcb02->save.es = save->es;
 		vmcb02->save.cs = save->cs;
@@ -747,10 +900,25 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DT))) {
 		vmcb02->save.gdtr = save->gdtr;
 		vmcb02->save.idtr = save->idtr;
+=======
+	if (unlikely(new_vmcb12 || vmcb_is_dirty(vmcb12, VMCB_SEG))) {
+		vmcb02->save.es = vmcb12->save.es;
+		vmcb02->save.cs = vmcb12->save.cs;
+		vmcb02->save.ss = vmcb12->save.ss;
+		vmcb02->save.ds = vmcb12->save.ds;
+		vmcb02->save.cpl = vmcb12->save.cpl;
+		vmcb_mark_dirty(vmcb02, VMCB_SEG);
+	}
+
+	if (unlikely(new_vmcb12 || vmcb_is_dirty(vmcb12, VMCB_DT))) {
+		vmcb02->save.gdtr = vmcb12->save.gdtr;
+		vmcb02->save.idtr = vmcb12->save.idtr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmcb_mark_dirty(vmcb02, VMCB_DT);
 	}
 
 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) &&
+<<<<<<< HEAD
 	    (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_CET)))) {
 		vmcb02->save.s_cet  = save->s_cet;
 		vmcb02->save.isst_addr = save->isst_addr;
@@ -759,12 +927,23 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 	}
 
 	kvm_set_rflags(vcpu, save->rflags | X86_EFLAGS_FIXED);
+=======
+	    (unlikely(new_vmcb12 || vmcb_is_dirty(vmcb12, VMCB_CET)))) {
+		vmcb02->save.s_cet  = vmcb12->save.s_cet;
+		vmcb02->save.isst_addr = vmcb12->save.isst_addr;
+		vmcb02->save.ssp = vmcb12->save.ssp;
+		vmcb_mark_dirty(vmcb02, VMCB_CET);
+	}
+
+	kvm_set_rflags(vcpu, vmcb12->save.rflags | X86_EFLAGS_FIXED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm_set_efer(vcpu, svm->nested.save.efer);
 
 	svm_set_cr0(vcpu, svm->nested.save.cr0);
 	svm_set_cr4(vcpu, svm->nested.save.cr4);
 
+<<<<<<< HEAD
 	svm->vcpu.arch.cr2 = save->cr2;
 
 	kvm_rax_write(vcpu, save->rax);
@@ -777,6 +956,20 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 	vmcb02->save.rip = save->rip;
 
 	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
+=======
+	svm->vcpu.arch.cr2 = vmcb12->save.cr2;
+
+	kvm_rax_write(vcpu, vmcb12->save.rax);
+	kvm_rsp_write(vcpu, vmcb12->save.rsp);
+	kvm_rip_write(vcpu, vmcb12->save.rip);
+
+	/* In case we don't even reach vcpu_run, the fields are not updated */
+	vmcb02->save.rax = vmcb12->save.rax;
+	vmcb02->save.rsp = vmcb12->save.rsp;
+	vmcb02->save.rip = vmcb12->save.rip;
+
+	if (unlikely(new_vmcb12 || vmcb_is_dirty(vmcb12, VMCB_DR))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmcb02->save.dr7 = svm->nested.save.dr7 | DR7_FIXED_1;
 		svm->vcpu.arch.dr6  = svm->nested.save.dr6 | DR6_ACTIVE_LOW;
 		vmcb_mark_dirty(vmcb02, VMCB_DR);
@@ -787,7 +980,11 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
 		 * svm_set_msr's definition of reserved bits.
 		 */
+<<<<<<< HEAD
 		svm_copy_lbrs(&vmcb02->save, save);
+=======
+		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
 	} else {
 		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
@@ -825,10 +1022,18 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	u32 int_ctl_vmcb01_bits = V_INTR_MASKING_MASK;
 	u32 int_ctl_vmcb12_bits = V_TPR_MASK | V_IRQ_INJECTION_BITS_MASK;
 
+<<<<<<< HEAD
 	struct vmcb_ctrl_area_cached *vmcb12_ctrl = &svm->nested.ctl;
 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
 	struct kvm_vcpu *vcpu = &svm->vcpu;
+=======
+	struct kvm_vcpu *vcpu = &svm->vcpu;
+	struct vmcb *vmcb01 = svm->vmcb01.ptr;
+	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
+	u32 pause_count12;
+	u32 pause_thresh12;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nested_svm_transition_tlb_flush(vcpu);
 
@@ -841,7 +1046,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 */
 
 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_VGIF) &&
+<<<<<<< HEAD
 	    (vmcb12_ctrl->int_ctl & V_GIF_ENABLE_MASK))
+=======
+	    (svm->nested.ctl.int_ctl & V_GIF_ENABLE_MASK))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int_ctl_vmcb12_bits |= (V_GIF_MASK | V_GIF_ENABLE_MASK);
 	else
 		int_ctl_vmcb01_bits |= (V_GIF_MASK | V_GIF_ENABLE_MASK);
@@ -857,6 +1066,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 						V_NMI_BLOCKING_MASK);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Copied from vmcb01.  msrpm_base can be overwritten later.
 	 *
@@ -867,6 +1077,10 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 * to L1 GPAs, so the same NPTs can be used for L1 and L2.
 	 */
 	vmcb02->control.misc_ctl = vmcb01->control.misc_ctl & SVM_MISC_ENABLE_NP;
+=======
+	/* Copied from vmcb01.  msrpm_base can be overwritten later.  */
+	vmcb02->control.nested_ctl = vmcb01->control.nested_ctl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
 	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
@@ -893,7 +1107,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 * L1 re-enters L2, the same instruction will trigger a VM-Exit and the
 	 * entire cycle start over.
 	 */
+<<<<<<< HEAD
 	if (vmcb02->save.rip && (svm->nested.last_bus_lock_rip == vmcb02->save.rip))
+=======
+	if (vmcb02->save.rip && (svm->nested.ctl.bus_lock_rip == vmcb02->save.rip))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vmcb02->control.bus_lock_counter = 1;
 	else
 		vmcb02->control.bus_lock_counter = 0;
@@ -907,9 +1125,16 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	if (nested_npt_enabled(svm))
 		nested_svm_init_mmu_context(vcpu);
 
+<<<<<<< HEAD
 	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(vcpu->arch.l1_tsc_offset,
 							   vmcb12_ctrl->tsc_offset,
 							   svm->tsc_ratio_msr);
+=======
+	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
+			vcpu->arch.l1_tsc_offset,
+			svm->nested.ctl.tsc_offset,
+			svm->tsc_ratio_msr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vmcb02->control.tsc_offset = vcpu->arch.tsc_offset;
 
@@ -918,6 +1143,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 		nested_svm_update_tsc_ratio_msr(vcpu);
 
 	vmcb02->control.int_ctl             =
+<<<<<<< HEAD
 		(vmcb12_ctrl->int_ctl & int_ctl_vmcb12_bits) |
 		(vmcb01->control.int_ctl & int_ctl_vmcb01_bits);
 
@@ -925,6 +1151,15 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	vmcb02->control.int_state           = vmcb12_ctrl->int_state;
 	vmcb02->control.event_inj           = vmcb12_ctrl->event_inj;
 	vmcb02->control.event_inj_err       = vmcb12_ctrl->event_inj_err;
+=======
+		(svm->nested.ctl.int_ctl & int_ctl_vmcb12_bits) |
+		(vmcb01->control.int_ctl & int_ctl_vmcb01_bits);
+
+	vmcb02->control.int_vector          = svm->nested.ctl.int_vector;
+	vmcb02->control.int_state           = svm->nested.ctl.int_state;
+	vmcb02->control.event_inj           = svm->nested.ctl.event_inj;
+	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * If nrips is exposed to L1, take NextRIP as-is.  Otherwise, L1
@@ -934,8 +1169,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 * the CPU and/or KVM and should be used regardless of L1's support.
 	 */
 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+<<<<<<< HEAD
 	    !vcpu->arch.nested_run_pending)
 		vmcb02->control.next_rip = vmcb12_ctrl->next_rip;
+=======
+	    !svm->nested.nested_run_pending)
+		vmcb02->control.next_rip = svm->nested.ctl.next_rip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
 
@@ -946,6 +1186,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
 		svm->soft_int_injected = true;
 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+<<<<<<< HEAD
 		    !vcpu->arch.nested_run_pending)
 			svm->soft_int_next_rip = vmcb12_ctrl->next_rip;
 	}
@@ -963,6 +1204,43 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 		vmcb02->control.pause_filter_thresh = vmcb12_ctrl->pause_filter_thresh;
 	else
 		vmcb02->control.pause_filter_thresh = 0;
+=======
+		    !svm->nested.nested_run_pending)
+			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
+	}
+
+	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
+
+	if (!nested_vmcb_needs_vls_intercept(svm))
+		vmcb02->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+
+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_PAUSEFILTER))
+		pause_count12 = svm->nested.ctl.pause_filter_count;
+	else
+		pause_count12 = 0;
+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_PFTHRESHOLD))
+		pause_thresh12 = svm->nested.ctl.pause_filter_thresh;
+	else
+		pause_thresh12 = 0;
+	if (kvm_pause_in_guest(svm->vcpu.kvm)) {
+		/* use guest values since host doesn't intercept PAUSE */
+		vmcb02->control.pause_filter_count = pause_count12;
+		vmcb02->control.pause_filter_thresh = pause_thresh12;
+
+	} else {
+		/* start from host values otherwise */
+		vmcb02->control.pause_filter_count = vmcb01->control.pause_filter_count;
+		vmcb02->control.pause_filter_thresh = vmcb01->control.pause_filter_thresh;
+
+		/* ... but ensure filtering is disabled if so requested.  */
+		if (vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_PAUSE)) {
+			if (!pause_count12)
+				vmcb02->control.pause_filter_count = 0;
+			if (!pause_thresh12)
+				vmcb02->control.pause_filter_thresh = 0;
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Take ALLOW_LARGER_RAP from vmcb12 even though it should be safe to
@@ -973,7 +1251,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 * L2 is the "guest").
 	 */
 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
+<<<<<<< HEAD
 		vmcb02->control.erap_ctl = (vmcb12_ctrl->erap_ctl &
+=======
+		vmcb02->control.erap_ctl = (svm->nested.ctl.erap_ctl &
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					    ERAP_CONTROL_ALLOW_LARGER_RAP) |
 					   ERAP_CONTROL_CLEAR_RAP;
 
@@ -981,7 +1263,11 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
 	 * Merge guest and host intercepts - must be called with vcpu in
 	 * guest-mode to take effect.
 	 */
+<<<<<<< HEAD
 	nested_vmcb02_recalc_intercepts(svm);
+=======
+	recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void nested_svm_copy_common_state(struct vmcb *from_vmcb, struct vmcb *to_vmcb)
@@ -996,15 +1282,23 @@ static void nested_svm_copy_common_state(struct vmcb *from_vmcb, struct vmcb *to
 	to_vmcb->save.spec_ctrl = from_vmcb->save.spec_ctrl;
 }
 
+<<<<<<< HEAD
 int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 	struct vmcb_ctrl_area_cached *control = &svm->nested.ctl;
 	struct vmcb_save_area_cached *save = &svm->nested.save;
+=======
+int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+			 struct vmcb *vmcb12, bool from_vmrun)
+{
+	struct vcpu_svm *svm = to_svm(vcpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	trace_kvm_nested_vmenter(svm->vmcb->save.rip,
 				 vmcb12_gpa,
+<<<<<<< HEAD
 				 save->rip,
 				 control->int_ctl,
 				 control->event_inj,
@@ -1019,6 +1313,22 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
 				    control->intercepts[INTERCEPT_WORD3],
 				    control->intercepts[INTERCEPT_WORD4],
 				    control->intercepts[INTERCEPT_WORD5]);
+=======
+				 vmcb12->save.rip,
+				 vmcb12->control.int_ctl,
+				 vmcb12->control.event_inj,
+				 vmcb12->control.nested_ctl,
+				 vmcb12->control.nested_cr3,
+				 vmcb12->save.cr3,
+				 KVM_ISA_SVM);
+
+	trace_kvm_nested_intercepts(vmcb12->control.intercepts[INTERCEPT_CR] & 0xffff,
+				    vmcb12->control.intercepts[INTERCEPT_CR] >> 16,
+				    vmcb12->control.intercepts[INTERCEPT_EXCEPTION],
+				    vmcb12->control.intercepts[INTERCEPT_WORD3],
+				    vmcb12->control.intercepts[INTERCEPT_WORD4],
+				    vmcb12->control.intercepts[INTERCEPT_WORD5]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 	svm->nested.vmcb12_gpa = vmcb12_gpa;
@@ -1029,7 +1339,11 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
 
 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
 	nested_vmcb02_prepare_control(svm);
+<<<<<<< HEAD
 	nested_vmcb02_prepare_save(svm);
+=======
+	nested_vmcb02_prepare_save(svm, vmcb12);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
 				  nested_npt_enabled(svm), from_vmrun);
@@ -1049,6 +1363,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
@@ -1077,10 +1392,17 @@ static int nested_svm_copy_vmcb12_to_cache(struct kvm_vcpu *vcpu, u64 vmcb12_gpa
 	return r;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int nested_svm_vmrun(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 	int ret;
+<<<<<<< HEAD
+=======
+	struct vmcb *vmcb12;
+	struct kvm_host_map map;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 vmcb12_gpa;
 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
 
@@ -1101,15 +1423,21 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(!svm->nested.initialized))
 		return -EINVAL;
 
 	vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
 	if (!page_address_valid(vcpu, vmcb12_gpa)) {
+=======
+	vmcb12_gpa = svm->vmcb->save.rax;
+	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvm_inject_gp(vcpu, 0);
 		return 1;
 	}
 
+<<<<<<< HEAD
 	ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
 	if (ret) {
 		if (ret == -EFAULT)
@@ -1122,6 +1450,28 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
 	/* At this point, VMRUN is guaranteed to not fault; advance RIP. */
 	ret = kvm_skip_emulated_instruction(vcpu);
 
+=======
+	ret = kvm_skip_emulated_instruction(vcpu);
+
+	vmcb12 = map.hva;
+
+	if (WARN_ON_ONCE(!svm->nested.initialized))
+		return -EINVAL;
+
+	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
+	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
+
+	if (nested_svm_check_cached_vmcb12(vcpu) < 0) {
+		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+		vmcb12->control.exit_info_1  = 0;
+		vmcb12->control.exit_info_2  = 0;
+		vmcb12->control.event_inj = 0;
+		vmcb12->control.event_inj_err = 0;
+		svm_set_gif(svm, false);
+		goto out;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Since vmcb01 is not in use, we can use it to store some of the L1
 	 * state.
@@ -1135,6 +1485,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
 	if (!npt_enabled)
 		vmcb01->save.cr3 = kvm_read_cr3(vcpu);
 
+<<<<<<< HEAD
 	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
 
 	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, true) ||
@@ -1149,6 +1500,27 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
 
 		nested_svm_vmexit(svm);
 	}
+=======
+	svm->nested.nested_run_pending = 1;
+
+	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true))
+		goto out_exit_err;
+
+	if (nested_svm_merge_msrpm(vcpu))
+		goto out;
+
+out_exit_err:
+	svm->nested.nested_run_pending = 0;
+
+	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+	svm->vmcb->control.exit_info_1  = 0;
+	svm->vmcb->control.exit_info_2  = 0;
+
+	nested_svm_vmexit(svm);
+
+out:
+	kvm_vcpu_unmap(vcpu, &map);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -1281,20 +1653,39 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
 	/* Exit Guest-Mode */
 	leave_guest_mode(vcpu);
 	svm->nested.vmcb12_gpa = 0;
+<<<<<<< HEAD
 
 	kvm_warn_on_nested_run_pending(vcpu);
+=======
+	WARN_ON_ONCE(svm->nested.nested_run_pending);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
 
 	/* in case we halted in L2 */
 	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
 
+<<<<<<< HEAD
 	/*
 	 * Invalidate last_bus_lock_rip unless KVM is still waiting for the
 	 * guest to make forward progress before re-enabling bus lock detection.
 	 */
 	if (!vmcb02->control.bus_lock_counter)
 		svm->nested.last_bus_lock_rip = INVALID_GPA;
+=======
+	if (!kvm_pause_in_guest(vcpu->kvm)) {
+		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+		vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
+
+	}
+
+	/*
+	 * Invalidate bus_lock_rip unless KVM is still waiting for the guest
+	 * to make forward progress before re-enabling bus lock detection.
+	 */
+	if (!vmcb02->control.bus_lock_counter)
+		svm->nested.ctl.bus_lock_rip = INVALID_GPA;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	nested_svm_copy_common_state(svm->nested.vmcb02.ptr, svm->vmcb01.ptr);
 
@@ -1486,7 +1877,11 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
 	struct vcpu_svm *svm = to_svm(vcpu);
 
 	if (is_guest_mode(vcpu)) {
+<<<<<<< HEAD
 		vcpu->arch.nested_run_pending = 0;
+=======
+		svm->nested.nested_run_pending = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		svm->nested.vmcb12_gpa = INVALID_GPA;
 
 		leave_guest_mode(vcpu);
@@ -1671,7 +2066,11 @@ static int svm_check_nested_events(struct kvm_vcpu *vcpu)
 	 * previously injected event, the pending exception occurred while said
 	 * event was being delivered and thus needs to be handled.
 	 */
+<<<<<<< HEAD
 	bool block_nested_exceptions = vcpu->arch.nested_run_pending;
+=======
+	bool block_nested_exceptions = svm->nested.nested_run_pending;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * New events (not exceptions) are only recognized at instruction
 	 * boundaries.  If an event needs reinjection, then KVM is handling a
@@ -1806,12 +2205,21 @@ static void nested_copy_vmcb_cache_to_control(struct vmcb_control_area *dst,
 	dst->exit_info_2          = from->exit_info_2;
 	dst->exit_int_info        = from->exit_int_info;
 	dst->exit_int_info_err    = from->exit_int_info_err;
+<<<<<<< HEAD
 	dst->misc_ctl		  = from->misc_ctl;
 	dst->event_inj            = from->event_inj;
 	dst->event_inj_err        = from->event_inj_err;
 	dst->next_rip             = from->next_rip;
 	dst->nested_cr3		  = from->nested_cr3;
 	dst->misc_ctl2		  = from->misc_ctl2;
+=======
+	dst->nested_ctl           = from->nested_ctl;
+	dst->event_inj            = from->event_inj;
+	dst->event_inj_err        = from->event_inj_err;
+	dst->next_rip             = from->next_rip;
+	dst->nested_cr3           = from->nested_cr3;
+	dst->virt_ext              = from->virt_ext;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dst->pause_filter_count   = from->pause_filter_count;
 	dst->pause_filter_thresh  = from->pause_filter_thresh;
 	/* 'clean' and 'hv_enlightenments' are not changed by KVM */
@@ -1846,7 +2254,11 @@ static int svm_get_nested_state(struct kvm_vcpu *vcpu,
 		kvm_state.size += KVM_STATE_NESTED_SVM_VMCB_SIZE;
 		kvm_state.flags |= KVM_STATE_NESTED_GUEST_MODE;
 
+<<<<<<< HEAD
 		if (vcpu->arch.nested_run_pending)
+=======
+		if (svm->nested.nested_run_pending)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			kvm_state.flags |= KVM_STATE_NESTED_RUN_PENDING;
 	}
 
@@ -1946,12 +2358,20 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
 
 	ret = -EINVAL;
 	__nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
+<<<<<<< HEAD
 	if (!nested_vmcb_check_controls(vcpu, &ctl_cached))
+=======
+	if (!__nested_vmcb_check_controls(vcpu, &ctl_cached))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_free;
 
 	/*
 	 * Processor state contains L2 state.  Check that it is
+<<<<<<< HEAD
 	 * valid for guest mode (see nested_vmcb_check_save()).
+=======
+	 * valid for guest mode (see nested_vmcb_check_save).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	cr0 = kvm_read_cr0(vcpu);
         if (((cr0 & X86_CR0_CD) == 0) && (cr0 & X86_CR0_NW))
@@ -1965,7 +2385,11 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
 	if (!(save->cr0 & X86_CR0_PG) ||
 	    !(save->cr0 & X86_CR0_PE) ||
 	    (save->rflags & X86_EFLAGS_VM) ||
+<<<<<<< HEAD
 	    !nested_vmcb_check_save(vcpu, &save_cached))
+=======
+	    !__nested_vmcb_check_save(vcpu, &save_cached))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out_free;
 
 
@@ -1983,10 +2407,15 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
 
 	svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
 
+<<<<<<< HEAD
 	if (kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING)
 		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
 	else
 		vcpu->arch.nested_run_pending = 0;
+=======
+	svm->nested.nested_run_pending =
+		!!(kvm_state->flags & KVM_STATE_NESTED_RUN_PENDING);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	svm->nested.vmcb12_gpa = kvm_state->hdr.svm.vmcb_pa;
 

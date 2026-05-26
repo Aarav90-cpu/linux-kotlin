@@ -67,11 +67,14 @@
 		#size-cells = <1>;
 	};
 
+<<<<<<< HEAD
 	pmu {
 		compatible = "arm,cortex-a7-pmu";
 		interrupts = <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	soc {
 		compatible = "simple-bus";
 		ranges;
@@ -283,6 +286,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		xlcdc: lcd-controller@e1400000 {
 			compatible = "microchip,sama7d65-xlcdc";
 			reg = <0xe1400000 0x2000>;
@@ -318,6 +322,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		aes: crypto@e1600000 {
 			compatible = "microchip,sama7d65-aes", "atmel,at91sam9g46-aes";
 			reg = <0xe1600000 0x100>;

@@ -62,7 +62,11 @@ void * __meminit vmemmap_alloc_block(unsigned long size, int node)
 	if (slab_is_available()) {
 		gfp_t gfp_mask = GFP_KERNEL|__GFP_RETRY_MAYFAIL|__GFP_NOWARN;
 		int order = get_order(size);
+<<<<<<< HEAD
 		static bool warned __meminitdata;
+=======
+		static bool warned;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct page *page;
 
 		page = alloc_pages_node(node, gfp_mask, order);
@@ -303,6 +307,62 @@ int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Undo populate_hvo, and replace it with a normal base page mapping.
+ * Used in memory init in case a HVO mapping needs to be undone.
+ *
+ * This can happen when it is discovered that a memblock allocated
+ * hugetlb page spans multiple zones, which can only be verified
+ * after zones have been initialized.
+ *
+ * We know that:
+ * 1) The first @headsize / PAGE_SIZE vmemmap pages were individually
+ *    allocated through memblock, and mapped.
+ *
+ * 2) The rest of the vmemmap pages are mirrors of the last head page.
+ */
+int __meminit vmemmap_undo_hvo(unsigned long addr, unsigned long end,
+				      int node, unsigned long headsize)
+{
+	unsigned long maddr, pfn;
+	pte_t *pte;
+	int headpages;
+
+	/*
+	 * Should only be called early in boot, so nothing will
+	 * be accessing these page structures.
+	 */
+	WARN_ON(!early_boot_irqs_disabled);
+
+	headpages = headsize >> PAGE_SHIFT;
+
+	/*
+	 * Clear mirrored mappings for tail page structs.
+	 */
+	for (maddr = addr + headsize; maddr < end; maddr += PAGE_SIZE) {
+		pte = virt_to_kpte(maddr);
+		pte_clear(&init_mm, maddr, pte);
+	}
+
+	/*
+	 * Clear and free mappings for head page and first tail page
+	 * structs.
+	 */
+	for (maddr = addr; headpages-- > 0; maddr += PAGE_SIZE) {
+		pte = virt_to_kpte(maddr);
+		pfn = pte_pfn(ptep_get(pte));
+		pte_clear(&init_mm, maddr, pte);
+		memblock_phys_free(PFN_PHYS(pfn), PAGE_SIZE);
+	}
+
+	flush_tlb_kernel_range(addr, end);
+
+	return vmemmap_populate(addr, end, node, NULL);
+}
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Write protect the mirrored tail page structs for HVO. This will be
  * called from the hugetlb code when gathering and initializing the
  * memblock allocated gigantic pages. The write protect can't be
@@ -325,6 +385,7 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
 static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
 {
@@ -373,6 +434,18 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
 	tail = vmemmap_get_tail(order, zone);
 	if (!tail)
 		return -ENOMEM;
+=======
+/*
+ * Populate vmemmap pages HVO-style. The first page contains the head
+ * page and needed tail pages, the other ones are mirrors of the first
+ * page.
+ */
+int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+				       int node, unsigned long headsize)
+{
+	pte_t *pte;
+	unsigned long maddr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
 		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
@@ -384,9 +457,14 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
 	 * Reuse the last page struct page mapped above for the rest.
 	 */
 	return vmemmap_populate_range(maddr, end, node, NULL,
+<<<<<<< HEAD
 				      page_to_pfn(tail), 0);
 }
 #endif
+=======
+					pte_pfn(ptep_get(pte)), 0);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
 				      unsigned long addr, unsigned long next)
@@ -591,6 +669,7 @@ void __init sparse_vmemmap_init_nid_late(int nid)
 	hugetlb_vmemmap_init_late(nid);
 }
 #endif
+<<<<<<< HEAD
 
 static void subsection_mask_set(unsigned long *map, unsigned long pfn,
 		unsigned long nr_pages)
@@ -895,3 +974,5 @@ void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
 	section_deactivate(pfn, nr_pages, altmap);
 }
 #endif /* CONFIG_MEMORY_HOTPLUG */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

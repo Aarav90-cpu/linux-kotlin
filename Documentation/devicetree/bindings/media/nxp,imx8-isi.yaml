@@ -24,7 +24,10 @@ properties:
       - fsl,imx8ulp-isi
       - fsl,imx91-isi
       - fsl,imx93-isi
+<<<<<<< HEAD
       - fsl,imx95-isi
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -51,7 +54,11 @@ properties:
   interrupts:
     description: Processing pipeline interrupts, one per pipeline
     minItems: 1
+<<<<<<< HEAD
     maxItems: 8
+=======
+    maxItems: 2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   power-domains:
     maxItems: 1
@@ -100,7 +107,10 @@ allOf:
     then:
       properties:
         interrupts:
+<<<<<<< HEAD
           minItems: 2
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           maxItems: 2
         ports:
           properties:
@@ -122,6 +132,7 @@ allOf:
       required:
         - fsl,blk-ctrl
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -145,6 +156,8 @@ allOf:
             - port@2
             - port@3
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

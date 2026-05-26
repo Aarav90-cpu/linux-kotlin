@@ -328,6 +328,7 @@
         "Unit": "cpu_core"
     },
     {
+<<<<<<< HEAD
         "BriefDescription": "ICACHE_TAG.STALLS_INUSE",
         "Counter": "0,1,2,3",
         "EventCode": "0x83",
@@ -346,6 +347,8 @@
         "Unit": "cpu_core"
     },
     {
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         "BriefDescription": "Cycles Decode Stream Buffer (DSB) is delivering any Uop",
         "Counter": "0,1,2,3",
         "CounterMask": "1",

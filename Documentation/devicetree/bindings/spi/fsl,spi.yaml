@@ -59,7 +59,11 @@ unevaluatedProperties: false
 
 examples:
   - |
+<<<<<<< HEAD
     #include <dt-bindings/gpio/gpio.h>
+=======
+    #include <dt-bindings/interrupt-controller/irq.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     spi@4c0 {
         compatible = "fsl,spi";
@@ -67,8 +71,13 @@ examples:
         cell-index = <0>;
         interrupts = <82 0>;
         mode = "cpu";
+<<<<<<< HEAD
         cs-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>,        // device reg=<0>
                    <&gpio 19 GPIO_ACTIVE_HIGH>;        // device reg=<1>
+=======
+        cs-gpios = <&gpio 18 IRQ_TYPE_EDGE_RISING          // device reg=<0>
+                    &gpio 19 IRQ_TYPE_EDGE_RISING>;        // device reg=<1>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     };
 
 ...

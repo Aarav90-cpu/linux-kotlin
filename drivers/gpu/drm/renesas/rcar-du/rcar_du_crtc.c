@@ -519,7 +519,11 @@ static void rcar_du_cmm_setup(struct drm_crtc *crtc)
 	if (drm_lut)
 		cmm_config.lut.table = (struct drm_color_lut *)drm_lut->data;
 
+<<<<<<< HEAD
 	rcar_cmm_setup(rcrtc->cmm->dev, &cmm_config);
+=======
+	rcar_cmm_setup(rcrtc->cmm, &cmm_config);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* -----------------------------------------------------------------------------
@@ -668,7 +672,11 @@ static void rcar_du_crtc_stop(struct rcar_du_crtc *rcrtc)
 		rcar_du_vsp_disable(rcrtc);
 
 	if (rcrtc->cmm)
+<<<<<<< HEAD
 		rcar_cmm_disable(rcrtc->cmm->dev);
+=======
+		rcar_cmm_disable(rcrtc->cmm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Select switch sync mode. This stops display operation and configures
@@ -727,7 +735,11 @@ static void rcar_du_crtc_atomic_enable(struct drm_crtc *crtc,
 	struct rcar_du_device *rcdu = rcrtc->dev;
 
 	if (rcrtc->cmm)
+<<<<<<< HEAD
 		rcar_cmm_enable(rcrtc->cmm->dev);
+=======
+		rcar_cmm_enable(rcrtc->cmm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcar_du_crtc_get(rcrtc);
 
 	/*
@@ -1300,8 +1312,13 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 		return ret;
 
 	/* CMM might be disabled for this CRTC. */
+<<<<<<< HEAD
 	if (rcdu->cmms[swindex].dev) {
 		rcrtc->cmm = &rcdu->cmms[swindex];
+=======
+	if (rcdu->cmms[swindex]) {
+		rcrtc->cmm = rcdu->cmms[swindex];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rgrp->cmms_mask |= BIT(hwindex % 2);
 
 		drm_mode_crtc_set_gamma_size(crtc, CM2_LUT_SIZE);

@@ -984,7 +984,10 @@ static int cs35l45_runtime_suspend(struct device *dev)
 	if (!cs35l45->dsp.preloaded || !cs35l45->dsp.cs_dsp.running)
 		return 0;
 
+<<<<<<< HEAD
 	wm_adsp_hibernate(&cs35l45->dsp, true);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cs35l45_enter_hibernate(cs35l45);
 
 	regcache_cache_only(cs35l45->regmap, true);
@@ -1015,8 +1018,11 @@ static int cs35l45_runtime_resume(struct device *dev)
 	if (ret != 0)
 		dev_warn(cs35l45->dev, "regcache_sync failed: %d\n", ret);
 
+<<<<<<< HEAD
 	wm_adsp_hibernate(&cs35l45->dsp, false);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Clear global error status */
 	regmap_clear_bits(cs35l45->regmap, CS35L45_ERROR_RELEASE, CS35L45_GLOBAL_ERR_RLS_MASK);
 	regmap_set_bits(cs35l45->regmap, CS35L45_ERROR_RELEASE, CS35L45_GLOBAL_ERR_RLS_MASK);

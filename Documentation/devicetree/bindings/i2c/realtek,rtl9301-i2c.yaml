@@ -15,8 +15,11 @@ description:
   assigned to either I2C controller.
   RTL9310 SoCs have equal capabilities but support 12 common SDA lines which
   can be assigned to either I2C controller.
+<<<<<<< HEAD
   RTL9607C SoCs have equal capabilities but each controller only supports 1
   SCL/SDA line.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 properties:
   compatible:
@@ -36,7 +39,10 @@ properties:
       - enum:
           - realtek,rtl9301-i2c
           - realtek,rtl9310-i2c
+<<<<<<< HEAD
           - realtek,rtl9607-i2c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     items:
@@ -54,9 +60,12 @@ properties:
       The SCL line number of this I2C controller.
     enum: [ 0, 1 ]
 
+<<<<<<< HEAD
   clocks:
     maxItems: 1
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 patternProperties:
   '^i2c@[0-9ab]$':
     $ref: /schemas/i2c/i2c-controller.yaml
@@ -87,6 +96,7 @@ allOf:
     then:
       patternProperties:
         '^i2c@[89ab]$': false
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -96,6 +106,8 @@ allOf:
       required:
         - realtek,scl
         - clocks
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 required:
   - compatible

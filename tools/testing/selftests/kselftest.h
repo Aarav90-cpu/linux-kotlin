@@ -399,7 +399,10 @@ static inline __noreturn void ksft_exit_fail(void)
 #define ksft_finished()			\
 	ksft_exit(ksft_plan ==		\
 		  ksft_cnt.ksft_pass +	\
+<<<<<<< HEAD
 		  ksft_cnt.ksft_xpass +	\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  ksft_cnt.ksft_xfail +	\
 		  ksft_cnt.ksft_xskip)
 
@@ -450,7 +453,11 @@ static inline __noreturn __printf(1, 2) void ksft_exit_skip(const char *msg, ...
 	 */
 	if (ksft_plan || ksft_test_num()) {
 		ksft_cnt.ksft_xskip++;
+<<<<<<< HEAD
 		printf("ok %u # SKIP ", ksft_test_num());
+=======
+		printf("ok %u # SKIP ", 1 + ksft_test_num());
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		printf("1..0 # SKIP ");
 	}
@@ -476,6 +483,7 @@ static inline int ksft_min_kernel_version(unsigned int min_major,
 	return major > min_major || (major == min_major && minor >= min_minor);
 }
 
+<<<<<<< HEAD
 static inline void ksft_reset_state(void)
 {
 	ksft_cnt.ksft_pass = 0;
@@ -487,4 +495,6 @@ static inline void ksft_reset_state(void)
 	ksft_plan = 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __KSELFTEST_H */

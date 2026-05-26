@@ -22,7 +22,11 @@ rdma_rxe-y := \
 	rxe_mcast.o \
 	rxe_task.o \
 	rxe_net.o \
+<<<<<<< HEAD
 	rxe_hw_counters.o \
 	rxe_ns.o
+=======
+	rxe_hw_counters.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 rdma_rxe-$(CONFIG_INFINIBAND_ON_DEMAND_PAGING) += rxe_odp.o

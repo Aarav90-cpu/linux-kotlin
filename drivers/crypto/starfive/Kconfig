@@ -10,7 +10,11 @@ config CRYPTO_DEV_JH7110
 	select CRYPTO_HMAC
 	select CRYPTO_SHA256
 	select CRYPTO_SHA512
+<<<<<<< HEAD
 	select CRYPTO_SM3
+=======
+	select CRYPTO_SM3_GENERIC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_RSA
 	select CRYPTO_AES
 	select CRYPTO_CCM

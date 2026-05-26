@@ -76,10 +76,26 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
  *
  * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
  */
+<<<<<<< HEAD
 unsigned int sysctl_sched_base_slice			= 700000ULL;
 static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
 
 __read_mostly unsigned int sysctl_sched_migration_cost	= 500000UL;
+=======
+#ifdef CONFIG_ZEN_INTERACTIVE
+unsigned int sysctl_sched_base_slice			= 400000ULL;
+static unsigned int normalized_sysctl_sched_base_slice	= 400000ULL;
+#else
+unsigned int sysctl_sched_base_slice			= 700000ULL;
+static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
+#endif
+
+#ifdef CONFIG_ZEN_INTERACTIVE
+__read_mostly unsigned int sysctl_sched_migration_cost	= 300000UL;
+#else
+__read_mostly unsigned int sysctl_sched_migration_cost	= 500000UL;
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int __init setup_sched_thermal_decay_shift(char *str)
 {
@@ -122,8 +138,17 @@ int __weak arch_asym_cpu_priority(int cpu)
  *
  * (default: 5 msec, units: microseconds)
  */
+<<<<<<< HEAD
 static unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
 #endif
+=======
+#ifdef CONFIG_ZEN_INTERACTIVE
+static unsigned int sysctl_sched_cfs_bandwidth_slice		= 3000UL;
+#else
+static unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
+#endif
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_NUMA_BALANCING
 /* Restrict the NUMA promotion throughput (MB/s) for each target node. */
@@ -225,7 +250,10 @@ void __init sched_init_granularity(void)
 	update_sysctl();
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_64BIT
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define WMULT_CONST	(~0U)
 #define WMULT_SHIFT	32
 
@@ -284,12 +312,15 @@ static u64 __calc_delta(u64 delta_exec, unsigned long weight, struct load_weight
 
 	return mul_u64_u32_shr(delta_exec, fact, shift);
 }
+<<<<<<< HEAD
 #else
 static u64 __calc_delta(u64 delta_exec, unsigned long weight, struct load_weight *lw)
 {
 	return (delta_exec * weight) / lw->weight;
 }
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * delta /= w
@@ -672,6 +703,7 @@ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
  * Since zero_vruntime closely tracks the per-task service, these
  * deltas: (v_i - v0), will be in the order of the maximal (virtual) lag
  * induced in the system due to quantisation.
+<<<<<<< HEAD
  */
 static inline unsigned long avg_vruntime_weight(struct cfs_rq *cfs_rq, unsigned long w)
 {
@@ -743,12 +775,31 @@ sum_w_vruntime_add(struct cfs_rq *cfs_rq, struct sched_entity *se)
 		return sum_w_vruntime_add_paranoid(cfs_rq, se);
 
 	__sum_w_vruntime_add(cfs_rq, se);
+=======
+ *
+ * Also, we use scale_load_down() to reduce the size.
+ *
+ * As measured, the max (key * weight) value was ~44 bits for a kernel build.
+ */
+static void
+sum_w_vruntime_add(struct cfs_rq *cfs_rq, struct sched_entity *se)
+{
+	unsigned long weight = scale_load_down(se->load.weight);
+	s64 key = entity_key(cfs_rq, se);
+
+	cfs_rq->sum_w_vruntime += key * weight;
+	cfs_rq->sum_weight += weight;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
 sum_w_vruntime_sub(struct cfs_rq *cfs_rq, struct sched_entity *se)
 {
+<<<<<<< HEAD
 	unsigned long weight = avg_vruntime_weight(cfs_rq, se->load.weight);
+=======
+	unsigned long weight = scale_load_down(se->load.weight);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s64 key = entity_key(cfs_rq, se);
 
 	cfs_rq->sum_w_vruntime -= key * weight;
@@ -790,7 +841,11 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
 		s64 runtime = cfs_rq->sum_w_vruntime;
 
 		if (curr) {
+<<<<<<< HEAD
 			unsigned long w = avg_vruntime_weight(cfs_rq, curr->load.weight);
+=======
+			unsigned long w = scale_load_down(curr->load.weight);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			runtime += entity_key(cfs_rq, curr) * w;
 			weight += w;
@@ -800,7 +855,11 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
 		if (runtime < 0)
 			runtime -= (weight - 1);
 
+<<<<<<< HEAD
 		delta = div64_long(runtime, weight);
+=======
+		delta = div_s64(runtime, weight);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (curr) {
 		/*
 		 * When there is but one element, it is the average.
@@ -829,11 +888,16 @@ static inline u64 cfs_rq_max_slice(struct cfs_rq *cfs_rq);
  *
  *   -r_max < lag < max(r_max, q)
  */
+<<<<<<< HEAD
 static s64 entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se, u64 avruntime)
+=======
+static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u64 max_slice = cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
 	s64 vlag, limit;
 
+<<<<<<< HEAD
 	vlag = avruntime - se->vruntime;
 	limit = calc_delta_fair(max_slice, se);
 
@@ -872,6 +936,14 @@ bool update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
 	se->vlag = vlag;
 
 	return avruntime - vlag != se->vruntime;
+=======
+	WARN_ON_ONCE(!se->on_rq);
+
+	vlag = avg_vruntime(cfs_rq) - se->vruntime;
+	limit = calc_delta_fair(max_slice, se);
+
+	se->vlag = clamp(vlag, -limit, limit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -882,11 +954,19 @@ bool update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
  *
  * lag_i >= 0 -> V >= v_i
  *
+<<<<<<< HEAD
  *     \Sum (v_i - v0)*w_i
  * V = ------------------- + v0
  *          \Sum w_i
  *
  * lag_i >= 0 -> \Sum (v_i - v0)*w_i >= (v_i - v0)*(\Sum w_i)
+=======
+ *     \Sum (v_i - v)*w_i
+ * V = ------------------ + v
+ *          \Sum w_i
+ *
+ * lag_i >= 0 -> \Sum (v_i - v)*w_i >= (v_i - v)*(\Sum w_i)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Note: using 'avg_vruntime() > se->vruntime' is inaccurate due
  *       to the loss in precision caused by the division.
@@ -894,16 +974,25 @@ bool update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
 static int vruntime_eligible(struct cfs_rq *cfs_rq, u64 vruntime)
 {
 	struct sched_entity *curr = cfs_rq->curr;
+<<<<<<< HEAD
 	s64 key, avg = cfs_rq->sum_w_vruntime;
 	long load = cfs_rq->sum_weight;
 
 	if (curr && curr->on_rq) {
 		unsigned long weight = avg_vruntime_weight(cfs_rq, curr->load.weight);
+=======
+	s64 avg = cfs_rq->sum_w_vruntime;
+	long load = cfs_rq->sum_weight;
+
+	if (curr && curr->on_rq) {
+		unsigned long weight = scale_load_down(curr->load.weight);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		avg += entity_key(cfs_rq, curr) * weight;
 		load += weight;
 	}
 
+<<<<<<< HEAD
 	key = vruntime_op(vruntime, "-", cfs_rq->zero_vruntime);
 
 	/*
@@ -934,6 +1023,9 @@ static int vruntime_eligible(struct cfs_rq *cfs_rq, u64 vruntime)
 #else /* 32bit */
 	return avg >= key * load;
 #endif
+=======
+	return avg >= vruntime_op(vruntime, "-", cfs_rq->zero_vruntime) * load;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
@@ -1133,7 +1225,11 @@ static inline void cancel_protect_slice(struct sched_entity *se)
  *
  * Which allows tree pruning through eligibility.
  */
+<<<<<<< HEAD
 static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
+=======
+static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *node = cfs_rq->tasks_timeline.rb_root.rb_node;
 	struct sched_entity *se = __pick_first_entity(cfs_rq);
@@ -1150,7 +1246,11 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
 	/*
 	 * Picking the ->next buddy will affect latency but not fairness.
 	 */
+<<<<<<< HEAD
 	if (sched_feat(PICK_BUDDY) && protect &&
+=======
+	if (sched_feat(PICK_BUDDY) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    cfs_rq->next && entity_eligible(cfs_rq, cfs_rq->next)) {
 		/* ->next will never be delayed */
 		WARN_ON_ONCE(cfs_rq->next->sched_delayed);
@@ -1204,6 +1304,14 @@ found:
 	return best;
 }
 
+<<<<<<< HEAD
+=======
+static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+{
+	return __pick_eevdf(cfs_rq, true);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq)
 {
 	struct rb_node *last = rb_last(&cfs_rq->tasks_timeline.rb_root);
@@ -3962,6 +4070,7 @@ dequeue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
 		    se_weight(se) * -se->avg.load_sum);
 }
 
+<<<<<<< HEAD
 static void
 rescale_entity(struct sched_entity *se, unsigned long weight, bool rel_vprot)
 {
@@ -4064,23 +4173,38 @@ rescale_entity(struct sched_entity *se, unsigned long weight, bool rel_vprot)
 	if (rel_vprot)
 		se->vprot = div64_long(se->vprot * old_weight, weight);
 }
+=======
+static void place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
 			    unsigned long weight)
 {
 	bool curr = cfs_rq->curr == se;
 	bool rel_vprot = false;
+<<<<<<< HEAD
 	u64 avruntime = 0;
+=======
+	u64 vprot;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (se->on_rq) {
 		/* commit outstanding execution time */
 		update_curr(cfs_rq);
+<<<<<<< HEAD
 		avruntime = avg_vruntime(cfs_rq);
 		se->vlag = entity_lag(cfs_rq, se, avruntime);
 		se->deadline -= avruntime;
 		se->rel_deadline = 1;
 		if (curr && protect_slice(se)) {
 			se->vprot -= avruntime;
+=======
+		update_entity_lag(cfs_rq, se);
+		se->deadline -= se->vruntime;
+		se->rel_deadline = 1;
+		if (curr && protect_slice(se)) {
+			vprot = se->vprot - se->vruntime;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			rel_vprot = true;
 		}
 
@@ -4091,23 +4215,46 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
 	}
 	dequeue_load_avg(cfs_rq, se);
 
+<<<<<<< HEAD
 	rescale_entity(se, weight, rel_vprot);
+=======
+	/*
+	 * Because we keep se->vlag = V - v_i, while: lag_i = w_i*(V - v_i),
+	 * we need to scale se->vlag when w_i changes.
+	 */
+	se->vlag = div_s64(se->vlag * se->load.weight, weight);
+	if (se->rel_deadline)
+		se->deadline = div_s64(se->deadline * se->load.weight, weight);
+
+	if (rel_vprot)
+		vprot = div_s64(vprot * se->load.weight, weight);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	update_load_set(&se->load, weight);
 
 	do {
 		u32 divider = get_pelt_divider(&se->avg);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		se->avg.load_avg = div_u64(se_weight(se) * se->avg.load_sum, divider);
 	} while (0);
 
 	enqueue_load_avg(cfs_rq, se);
 	if (se->on_rq) {
+<<<<<<< HEAD
 		if (rel_vprot)
 			se->vprot += avruntime;
 		se->deadline += avruntime;
 		se->rel_deadline = 0;
 		se->vruntime = avruntime - se->vlag;
 
+=======
+		place_entity(cfs_rq, se, 0);
+		if (rel_vprot)
+			se->vprot = se->vruntime + vprot;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		update_load_add(&cfs_rq->load, se->load.weight);
 		if (!curr)
 			__enqueue_entity(cfs_rq, se);
@@ -5381,7 +5528,10 @@ static void
 place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 {
 	u64 vslice, vruntime = avg_vruntime(cfs_rq);
+<<<<<<< HEAD
 	bool update_zero = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	s64 lag = 0;
 
 	if (!se->custom_slice)
@@ -5398,7 +5548,11 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 	 */
 	if (sched_feat(PLACE_LAG) && cfs_rq->nr_queued && se->vlag) {
 		struct sched_entity *curr = cfs_rq->curr;
+<<<<<<< HEAD
 		long load, weight;
+=======
+		unsigned long load;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		lag = se->vlag;
 
@@ -5456,6 +5610,7 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 		 */
 		load = cfs_rq->sum_weight;
 		if (curr && curr->on_rq)
+<<<<<<< HEAD
 			load += avg_vruntime_weight(cfs_rq, curr->load.weight);
 
 		weight = avg_vruntime_weight(cfs_rq, se->load.weight);
@@ -5486,14 +5641,26 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 		 */
 		if (weight > load)
 			update_zero = true;
+=======
+			load += scale_load_down(curr->load.weight);
+
+		lag *= load + scale_load_down(se->load.weight);
+		if (WARN_ON_ONCE(!load))
+			load = 1;
+		lag = div_s64(lag, load);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	se->vruntime = vruntime - lag;
 
+<<<<<<< HEAD
 	if (update_zero)
 		update_zero_vruntime(cfs_rq, -lag);
 
 	if (sched_feat(PLACE_REL_DEADLINE) && se->rel_deadline) {
+=======
+	if (se->rel_deadline) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		se->deadline += se->vruntime;
 		se->rel_deadline = 0;
 		return;
@@ -5643,6 +5810,16 @@ static void clear_delayed(struct sched_entity *se)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static inline void finish_delayed_dequeue_entity(struct sched_entity *se)
+{
+	clear_delayed(se);
+	if (sched_feat(DELAY_ZERO) && se->vlag > 0)
+		se->vlag = 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool
 dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 {
@@ -5668,7 +5845,10 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 		if (sched_feat(DELAY_DEQUEUE) && delay &&
 		    !entity_eligible(cfs_rq, se)) {
 			update_load_avg(cfs_rq, se, 0);
+<<<<<<< HEAD
 			update_entity_lag(cfs_rq, se);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			set_delayed(se);
 			return false;
 		}
@@ -5708,7 +5888,11 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 	update_cfs_group(se);
 
 	if (flags & DEQUEUE_DELAYED)
+<<<<<<< HEAD
 		clear_delayed(se);
+=======
+		finish_delayed_dequeue_entity(se);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cfs_rq->nr_queued == 0) {
 		update_idle_cfs_rq_clock_pelt(cfs_rq);
@@ -5778,11 +5962,19 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags);
  * 4) do not run the "skip" process, if something else is available
  */
 static struct sched_entity *
+<<<<<<< HEAD
 pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq, bool protect)
 {
 	struct sched_entity *se;
 
 	se = pick_eevdf(cfs_rq, protect);
+=======
+pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq)
+{
+	struct sched_entity *se;
+
+	se = pick_eevdf(cfs_rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (se->sched_delayed) {
 		dequeue_entities(rq, se, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
 		/*
@@ -5838,7 +6030,11 @@ entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)
 	 * validating it and just reschedule.
 	 */
 	if (queued) {
+<<<<<<< HEAD
 		resched_curr(rq_of(cfs_rq));
+=======
+		resched_curr_lazy(rq_of(cfs_rq));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	}
 #endif
@@ -7043,6 +7239,7 @@ static inline void sched_fair_update_stop_tick(struct rq *rq, struct task_struct
 static void hrtick_start_fair(struct rq *rq, struct task_struct *p)
 {
 	struct sched_entity *se = &p->se;
+<<<<<<< HEAD
 	unsigned long scale = 1024;
 	unsigned long util = 0;
 	u64 vdelta;
@@ -7078,6 +7275,29 @@ static void hrtick_start_fair(struct rq *rq, struct task_struct *p)
 
 /*
  * Called on enqueue to start the hrtick when h_nr_queued becomes more than 1.
+=======
+
+	WARN_ON_ONCE(task_rq(p) != rq);
+
+	if (rq->cfs.h_nr_queued > 1) {
+		u64 ran = se->sum_exec_runtime - se->prev_sum_exec_runtime;
+		u64 slice = se->slice;
+		s64 delta = slice - ran;
+
+		if (delta < 0) {
+			if (task_current_donor(rq, p))
+				resched_curr(rq);
+			return;
+		}
+		hrtick_start(rq, delta);
+	}
+}
+
+/*
+ * called from enqueue/dequeue and updates the hrtick when the
+ * current task is from our class and nr_running is low enough
+ * to matter.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static void hrtick_update(struct rq *rq)
 {
@@ -7086,9 +7306,12 @@ static void hrtick_update(struct rq *rq)
 	if (!hrtick_enabled_fair(rq) || donor->sched_class != &fair_sched_class)
 		return;
 
+<<<<<<< HEAD
 	if (hrtick_active(rq))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hrtick_start_fair(rq, donor);
 }
 #else /* !CONFIG_SCHED_HRTICK: */
@@ -7104,15 +7327,27 @@ static inline void hrtick_update(struct rq *rq)
 
 static inline bool cpu_overutilized(int cpu)
 {
+<<<<<<< HEAD
 	unsigned long rq_util_max;
+=======
+	unsigned long  rq_util_min, rq_util_max;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sched_energy_enabled())
 		return false;
 
+<<<<<<< HEAD
 	rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
 
 	/* Return true only if the utilization doesn't fit CPU's capacity */
 	return !util_fits_cpu(cpu_util_cfs(cpu), 0, rq_util_max, cpu);
+=======
+	rq_util_min = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MIN);
+	rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
+
+	/* Return true only if the utilization doesn't fit CPU's capacity */
+	return !util_fits_cpu(cpu_util_cfs(cpu), rq_util_min, rq_util_max, cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -7150,6 +7385,7 @@ static int sched_idle_rq(struct rq *rq)
 			rq->nr_running);
 }
 
+<<<<<<< HEAD
 static int choose_sched_idle_rq(struct rq *rq, struct task_struct *p)
 {
 	return sched_idle_rq(rq) && !task_has_idle_policy(p);
@@ -7159,6 +7395,11 @@ static int choose_idle_cpu(int cpu, struct task_struct *p)
 {
 	return available_idle_cpu(cpu) ||
 	       choose_sched_idle_rq(cpu_rq(cpu), p);
+=======
+static int sched_idle_cpu(int cpu)
+{
+	return sched_idle_rq(cpu_rq(cpu));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void
@@ -7174,6 +7415,7 @@ requeue_delayed_entity(struct sched_entity *se)
 	WARN_ON_ONCE(!se->sched_delayed);
 	WARN_ON_ONCE(!se->on_rq);
 
+<<<<<<< HEAD
 	if (update_entity_lag(cfs_rq, se)) {
 		cfs_rq->nr_queued--;
 		if (se != cfs_rq->curr)
@@ -7182,6 +7424,20 @@ requeue_delayed_entity(struct sched_entity *se)
 		if (se != cfs_rq->curr)
 			__enqueue_entity(cfs_rq, se);
 		cfs_rq->nr_queued++;
+=======
+	if (sched_feat(DELAY_ZERO)) {
+		update_entity_lag(cfs_rq, se);
+		if (se->vlag > 0) {
+			cfs_rq->nr_queued--;
+			if (se != cfs_rq->curr)
+				__dequeue_entity(cfs_rq, se);
+			se->vlag = 0;
+			place_entity(cfs_rq, se, 0);
+			if (se != cfs_rq->curr)
+				__enqueue_entity(cfs_rq, se);
+			cfs_rq->nr_queued++;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	update_load_avg(cfs_rq, se, 0);
@@ -7412,6 +7668,12 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
 		WARN_ON_ONCE(!task_sleep);
 		WARN_ON_ONCE(p->on_rq != 1);
 
+<<<<<<< HEAD
+=======
+		/* Fix-up what dequeue_task_fair() skipped */
+		hrtick_update(rq);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Fix-up what block_task() skipped.
 		 *
@@ -7445,6 +7707,11 @@ static bool dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 	/*
 	 * Must not reference @p after dequeue_entities(DEQUEUE_DELAYED).
 	 */
+<<<<<<< HEAD
+=======
+
+	hrtick_update(rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return true;
 }
 
@@ -7714,7 +7981,11 @@ sched_balance_find_dst_group_cpu(struct sched_group *group, struct task_struct *
 		if (!sched_core_cookie_match(rq, p))
 			continue;
 
+<<<<<<< HEAD
 		if (choose_sched_idle_rq(rq, p))
+=======
+		if (sched_idle_cpu(i))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return i;
 
 		if (available_idle_cpu(i)) {
@@ -7805,7 +8076,12 @@ static inline int sched_balance_find_dst_cpu(struct sched_domain *sd, struct tas
 
 static inline int __select_idle_cpu(int cpu, struct task_struct *p)
 {
+<<<<<<< HEAD
 	if (choose_idle_cpu(cpu, p) && sched_cpu_cookie_match(cpu_rq(cpu), p))
+=======
+	if ((available_idle_cpu(cpu) || sched_idle_cpu(cpu)) &&
+	    sched_cpu_cookie_match(cpu_rq(cpu), p))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return cpu;
 
 	return -1;
@@ -7878,8 +8154,12 @@ static int select_idle_core(struct task_struct *p, int core, struct cpumask *cpu
 		if (!available_idle_cpu(cpu)) {
 			idle = false;
 			if (*idle_cpu == -1) {
+<<<<<<< HEAD
 				if (choose_sched_idle_rq(cpu_rq(cpu), p) &&
 				    cpumask_test_cpu(cpu, cpus)) {
+=======
+				if (sched_idle_cpu(cpu) && cpumask_test_cpu(cpu, cpus)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					*idle_cpu = cpu;
 					break;
 				}
@@ -7914,7 +8194,11 @@ static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int t
 		 */
 		if (!cpumask_test_cpu(cpu, sched_domain_span(sd)))
 			continue;
+<<<<<<< HEAD
 		if (choose_idle_cpu(cpu, p))
+=======
+		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return cpu;
 	}
 
@@ -7953,6 +8237,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool 
 {
 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_rq_mask);
 	int i, cpu, idle_cpu = -1, nr = INT_MAX;
+<<<<<<< HEAD
 
 	if (sched_feat(SIS_UTIL)) {
 		/*
@@ -7973,6 +8258,23 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool 
 	if (!cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr))
 		return -1;
 
+=======
+	struct sched_domain_shared *sd_share;
+
+	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
+
+	if (sched_feat(SIS_UTIL)) {
+		sd_share = rcu_dereference_all(per_cpu(sd_llc_shared, target));
+		if (sd_share) {
+			/* because !--nr is the condition to stop scan */
+			nr = READ_ONCE(sd_share->nr_idle_scan) + 1;
+			/* overloaded LLC is unlikely to have idle cpu/core */
+			if (nr == 1)
+				return -1;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (static_branch_unlikely(&sched_cluster_active)) {
 		struct sched_group *sg = sd->groups;
 
@@ -8041,7 +8343,11 @@ select_idle_capacity(struct task_struct *p, struct sched_domain *sd, int target)
 	for_each_cpu_wrap(cpu, cpus, target) {
 		unsigned long cpu_cap = capacity_of(cpu);
 
+<<<<<<< HEAD
 		if (!choose_idle_cpu(cpu, p))
+=======
+		if (!available_idle_cpu(cpu) && !sched_idle_cpu(cpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		fits = util_fits_cpu(task_util, util_min, util_max, cpu);
@@ -8112,7 +8418,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
 	 */
 	lockdep_assert_irqs_disabled();
 
+<<<<<<< HEAD
 	if (choose_idle_cpu(target, p) &&
+=======
+	if ((available_idle_cpu(target) || sched_idle_cpu(target)) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    asym_fits_cpu(task_util, util_min, util_max, target))
 		return target;
 
@@ -8120,7 +8430,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
 	 * If the previous CPU is cache affine and idle, don't be stupid:
 	 */
 	if (prev != target && cpus_share_cache(prev, target) &&
+<<<<<<< HEAD
 	    choose_idle_cpu(prev, p) &&
+=======
+	    (available_idle_cpu(prev) || sched_idle_cpu(prev)) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    asym_fits_cpu(task_util, util_min, util_max, prev)) {
 
 		if (!static_branch_unlikely(&sched_cluster_active) ||
@@ -8152,7 +8466,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
 	if (recent_used_cpu != prev &&
 	    recent_used_cpu != target &&
 	    cpus_share_cache(recent_used_cpu, target) &&
+<<<<<<< HEAD
 	    choose_idle_cpu(recent_used_cpu, p) &&
+=======
+	    (available_idle_cpu(recent_used_cpu) || sched_idle_cpu(recent_used_cpu)) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    cpumask_test_cpu(recent_used_cpu, p->cpus_ptr) &&
 	    asym_fits_cpu(task_util, util_min, util_max, recent_used_cpu)) {
 
@@ -8652,9 +8970,16 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 	struct perf_domain *pd;
 	struct energy_env eenv;
 
+<<<<<<< HEAD
 	pd = rcu_dereference_all(rd->pd);
 	if (!pd)
 		return target;
+=======
+	rcu_read_lock();
+	pd = rcu_dereference_all(rd->pd);
+	if (!pd)
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Energy-aware wake-up happens on the lowest sched_domain starting
@@ -8664,13 +8989,21 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 	while (sd && !cpumask_test_cpu(prev_cpu, sched_domain_span(sd)))
 		sd = sd->parent;
 	if (!sd)
+<<<<<<< HEAD
 		return target;
+=======
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	target = prev_cpu;
 
 	sync_entity_load_avg(&p->se);
 	if (!task_util_est(p) && p_util_min == 0)
+<<<<<<< HEAD
 		return target;
+=======
+		goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	eenv_task_busy_time(&eenv, p, prev_cpu);
 
@@ -8765,7 +9098,11 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 						    prev_cpu);
 			/* CPU utilization has changed */
 			if (prev_delta < base_energy)
+<<<<<<< HEAD
 				return target;
+=======
+				goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			prev_delta -= base_energy;
 			prev_actual_cap = cpu_actual_cap;
 			best_delta = min(best_delta, prev_delta);
@@ -8789,7 +9126,11 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 						   max_spare_cap_cpu);
 			/* CPU utilization has changed */
 			if (cur_delta < base_energy)
+<<<<<<< HEAD
 				return target;
+=======
+				goto unlock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cur_delta -= base_energy;
 
 			/*
@@ -8806,6 +9147,10 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 			best_actual_cap = cpu_actual_cap;
 		}
 	}
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if ((best_fits > prev_fits) ||
 	    ((best_fits > 0) && (best_delta < prev_delta)) ||
@@ -8813,6 +9158,14 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
 		target = best_energy_cpu;
 
 	return target;
+<<<<<<< HEAD
+=======
+
+unlock:
+	rcu_read_unlock();
+
+	return target;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -8857,6 +9210,10 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 		want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
 	}
 
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for_each_domain(cpu, tmp) {
 		/*
 		 * If both 'cpu' and 'prev_cpu' are part of this domain,
@@ -8882,6 +9239,7 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 			break;
 	}
 
+<<<<<<< HEAD
 	/* Slow path */
 	if (unlikely(sd))
 		return sched_balance_find_dst_cpu(sd, p, cpu, prev_cpu, sd_flag);
@@ -8889,6 +9247,16 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 	/* Fast path */
 	if (wake_flags & WF_TTWU)
 		return select_idle_sibling(p, prev_cpu, new_cpu);
+=======
+	if (unlikely(sd)) {
+		/* Slow path */
+		new_cpu = sched_balance_find_dst_cpu(sd, p, cpu, prev_cpu, sd_flag);
+	} else if (wake_flags & WF_TTWU) { /* XXX always ? */
+		/* Fast path */
+		new_cpu = select_idle_sibling(p, prev_cpu, new_cpu);
+	}
+	rcu_read_unlock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return new_cpu;
 }
@@ -9056,7 +9424,11 @@ static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wake_f
 {
 	enum preempt_wakeup_action preempt_action = PREEMPT_WAKEUP_PICK;
 	struct task_struct *donor = rq->donor;
+<<<<<<< HEAD
 	struct sched_entity *nse, *se = &donor->se, *pse = &p->se;
+=======
+	struct sched_entity *se = &donor->se, *pse = &p->se;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cfs_rq *cfs_rq = task_cfs_rq(donor);
 	int cse_is_idle, pse_is_idle;
 
@@ -9167,6 +9539,7 @@ static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wake_f
 	}
 
 pick:
+<<<<<<< HEAD
 	nse = pick_next_entity(rq, cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT);
 	/* If @p has become the most eligible task, force preemption */
 	if (nse == pse)
@@ -9179,6 +9552,13 @@ pick:
 	 */
 	if (!nse && cfs_rq->nr_queued)
 		goto pick;
+=======
+	/*
+	 * If @p has become the most eligible task, force preemption.
+	 */
+	if (__pick_eevdf(cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT) == pse)
+		goto preempt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sched_feat(RUN_TO_PARITY))
 		update_protect_slice(cfs_rq, se);
@@ -9186,10 +9566,15 @@ pick:
 	return;
 
 preempt:
+<<<<<<< HEAD
 	if (preempt_action == PREEMPT_WAKEUP_SHORT) {
 		cancel_protect_slice(se);
 		clear_buddies(cfs_rq, se);
 	}
+=======
+	if (preempt_action == PREEMPT_WAKEUP_SHORT)
+		cancel_protect_slice(se);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	resched_curr_lazy(rq);
 }
@@ -9215,7 +9600,11 @@ again:
 
 		throttled |= check_cfs_rq_runtime(cfs_rq);
 
+<<<<<<< HEAD
 		se = pick_next_entity(rq, cfs_rq, true);
+=======
+		se = pick_next_entity(rq, cfs_rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!se)
 			goto again;
 		cfs_rq = group_cfs_rq(se);
@@ -10037,6 +10426,35 @@ next:
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * attach_task() -- attach the task detached by detach_task() to its new rq.
+ */
+static void attach_task(struct rq *rq, struct task_struct *p)
+{
+	lockdep_assert_rq_held(rq);
+
+	WARN_ON_ONCE(task_rq(p) != rq);
+	activate_task(rq, p, ENQUEUE_NOCLOCK);
+	wakeup_preempt(rq, p, 0);
+}
+
+/*
+ * attach_one_task() -- attaches the task returned from detach_one_task() to
+ * its new rq.
+ */
+static void attach_one_task(struct rq *rq, struct task_struct *p)
+{
+	struct rq_flags rf;
+
+	rq_lock(rq, &rf);
+	update_rq_clock(rq);
+	attach_task(rq, p);
+	rq_unlock(rq, &rf);
+}
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * attach_tasks() -- attaches all tasks detached by detach_tasks() to their
  * new rq.
  */
@@ -10273,7 +10691,10 @@ struct sg_lb_stats {
 	unsigned int group_asym_packing;	/* Tasks should be moved to preferred CPU */
 	unsigned int group_smt_balance;		/* Task on busy SMT be moved */
 	unsigned long group_misfit_task_load;	/* A CPU has a task too big for its capacity */
+<<<<<<< HEAD
 	unsigned int group_overutilized;	/* At least one CPU is overutilized in the group */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NUMA_BALANCING
 	unsigned int nr_numa_running;
 	unsigned int nr_preferred_running;
@@ -10506,6 +10927,7 @@ group_has_capacity(unsigned int imbalance_pct, struct sg_lb_stats *sgs)
 static inline bool
 group_is_overloaded(unsigned int imbalance_pct, struct sg_lb_stats *sgs)
 {
+<<<<<<< HEAD
 	/*
 	 * With EAS and uclamp, 1 CPU in the group must be overutilized to
 	 * consider the group overloaded.
@@ -10513,6 +10935,8 @@ group_is_overloaded(unsigned int imbalance_pct, struct sg_lb_stats *sgs)
 	if (sched_energy_enabled() && !sgs->group_overutilized)
 		return false;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (sgs->sum_nr_running <= sgs->group_weight)
 		return false;
 
@@ -10696,12 +11120,21 @@ sched_reduced_capacity(struct rq *rq, struct sched_domain *sd)
  * @group: sched_group whose statistics are to be updated.
  * @sgs: variable to hold the statistics for this group.
  * @sg_overloaded: sched_group is overloaded
+<<<<<<< HEAD
+=======
+ * @sg_overutilized: sched_group is overutilized
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline void update_sg_lb_stats(struct lb_env *env,
 				      struct sd_lb_stats *sds,
 				      struct sched_group *group,
 				      struct sg_lb_stats *sgs,
+<<<<<<< HEAD
 				      bool *sg_overloaded)
+=======
+				      bool *sg_overloaded,
+				      bool *sg_overutilized)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i, nr_running, local_group, sd_flags = env->sd->flags;
 	bool balancing_at_rd = !env->sd->parent;
@@ -10723,7 +11156,11 @@ static inline void update_sg_lb_stats(struct lb_env *env,
 		sgs->sum_nr_running += nr_running;
 
 		if (cpu_overutilized(i))
+<<<<<<< HEAD
 			sgs->group_overutilized = 1;
+=======
+			*sg_overutilized = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * No need to call idle_cpu() if nr_running is not 0
@@ -11299,7 +11736,10 @@ static void update_idle_cpu_scan(struct lb_env *env,
 				 unsigned long sum_util)
 {
 	struct sched_domain_shared *sd_share;
+<<<<<<< HEAD
 	struct sched_domain *sd = env->sd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int llc_weight, pct;
 	u64 x, y, tmp;
 	/*
@@ -11313,7 +11753,15 @@ static void update_idle_cpu_scan(struct lb_env *env,
 	if (!sched_feat(SIS_UTIL) || env->idle == CPU_NEWLY_IDLE)
 		return;
 
+<<<<<<< HEAD
 	sd_share = sd->shared;
+=======
+	llc_weight = per_cpu(sd_llc_size, env->dst_cpu);
+	if (env->sd->span_weight != llc_weight)
+		return;
+
+	sd_share = rcu_dereference_all(per_cpu(sd_llc_shared, env->dst_cpu));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!sd_share)
 		return;
 
@@ -11347,11 +11795,18 @@ static void update_idle_cpu_scan(struct lb_env *env,
 	 */
 	/* equation [3] */
 	x = sum_util;
+<<<<<<< HEAD
 	llc_weight = sd->span_weight;
 	do_div(x, llc_weight);
 
 	/* equation [4] */
 	pct = sd->imbalance_pct;
+=======
+	do_div(x, llc_weight);
+
+	/* equation [4] */
+	pct = env->sd->imbalance_pct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tmp = x * x * pct * pct;
 	do_div(tmp, 10000 * SCHED_CAPACITY_SCALE);
 	tmp = min_t(long, tmp, SCHED_CAPACITY_SCALE);
@@ -11392,15 +11847,22 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
 				update_group_capacity(env->sd, env->dst_cpu);
 		}
 
+<<<<<<< HEAD
 		update_sg_lb_stats(env, sds, sg, sgs, &sg_overloaded);
+=======
+		update_sg_lb_stats(env, sds, sg, sgs, &sg_overloaded, &sg_overutilized);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!local_group && update_sd_pick_busiest(env, sds, sg, sgs)) {
 			sds->busiest = sg;
 			sds->busiest_stat = *sgs;
 		}
 
+<<<<<<< HEAD
 		sg_overutilized |= sgs->group_overutilized;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Now, start updating sd_lb_stats */
 		sds->total_load += sgs->group_load;
 		sds->total_capacity += sgs->group_capacity;
@@ -12521,6 +12983,7 @@ static inline void update_newidle_stats(struct sched_domain *sd, unsigned int su
 	sd->newidle_success += success;
 
 	if (sd->newidle_call >= 1024) {
+<<<<<<< HEAD
 		u64 now = sched_clock();
 		s64 delta = now - sd->newidle_stamp;
 		sd->newidle_stamp = now;
@@ -12545,6 +13008,9 @@ static inline void update_newidle_stats(struct sched_domain *sd, unsigned int su
 		ratio += sd->newidle_success;
 
 		sd->newidle_ratio = min(1024, ratio);
+=======
+		sd->newidle_ratio = sd->newidle_success;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sd->newidle_call /= 2;
 		sd->newidle_success /= 2;
 	}
@@ -12591,7 +13057,11 @@ static void sched_balance_domains(struct rq *rq, enum cpu_idle_type idle)
 {
 	int continue_balancing = 1;
 	int cpu = rq->cpu;
+<<<<<<< HEAD
 	int busy = idle != CPU_IDLE && !sched_idle_rq(rq);
+=======
+	int busy = idle != CPU_IDLE && !sched_idle_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long interval;
 	struct sched_domain *sd;
 	/* Earliest time when we have to do rebalance again */
@@ -12629,7 +13099,11 @@ static void sched_balance_domains(struct rq *rq, enum cpu_idle_type idle)
 				 * state even if we migrated tasks. Update it.
 				 */
 				idle = idle_cpu(cpu);
+<<<<<<< HEAD
 				busy = !idle && !sched_idle_rq(rq);
+=======
+				busy = !idle && !sched_idle_cpu(cpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			sd->last_balance = jiffies;
 			interval = get_sd_balance_interval(sd, busy);
@@ -12674,14 +13148,22 @@ static inline int on_null_domain(struct rq *rq)
  */
 static inline int find_new_ilb(void)
 {
+<<<<<<< HEAD
 	int this_cpu = smp_processor_id();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct cpumask *hk_mask;
 	int ilb_cpu;
 
 	hk_mask = housekeeping_cpumask(HK_TYPE_KERNEL_NOISE);
 
 	for_each_cpu_and(ilb_cpu, nohz.idle_cpus_mask, hk_mask) {
+<<<<<<< HEAD
 		if (ilb_cpu == this_cpu)
+=======
+
+		if (ilb_cpu == smp_processor_id())
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 
 		if (idle_cpu(ilb_cpu))
@@ -13251,7 +13733,11 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
 		if (sd->flags & SD_BALANCE_NEWIDLE) {
 			unsigned int weight = 1;
 
+<<<<<<< HEAD
 			if (sched_feat(NI_RANDOM) && sd->newidle_ratio < 1024) {
+=======
+			if (sched_feat(NI_RANDOM)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				/*
 				 * Throw a 1k sided dice; and only run
 				 * newidle_balance according to the success
@@ -13694,8 +14180,16 @@ static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
 		entity_tick(cfs_rq, se, queued);
 	}
 
+<<<<<<< HEAD
 	if (queued)
 		return;
+=======
+	if (queued) {
+		if (!need_resched())
+			hrtick_start_fair(rq, curr);
+		return;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (static_branch_unlikely(&sched_numa_balancing))
 		task_tick_numa(rq, curr);
@@ -14277,7 +14771,11 @@ void show_numa_stats(struct task_struct *p, struct seq_file *m)
 			tpf = p->numa_faults[task_faults_idx(NUMA_MEM, node, 1)];
 		}
 		if (ng) {
+<<<<<<< HEAD
 			gsf = ng->faults[task_faults_idx(NUMA_MEM, node, 0)];
+=======
+			gsf = ng->faults[task_faults_idx(NUMA_MEM, node, 0)],
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpf = ng->faults[task_faults_idx(NUMA_MEM, node, 1)];
 		}
 		print_numa_stats(m, node, tsf, tpf, gsf, gpf);

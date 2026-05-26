@@ -365,7 +365,10 @@ struct ieee80211_vif_chanctx_switch {
  * @BSS_CHANGED_MLD_VALID_LINKS: MLD valid links status changed.
  * @BSS_CHANGED_MLD_TTLM: negotiated TID to link mapping was changed
  * @BSS_CHANGED_TPE: transmit power envelope changed
+<<<<<<< HEAD
  * @BSS_CHANGED_NAN_LOCAL_SCHED: NAN local schedule changed (NAN mode only)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 enum ieee80211_bss_change {
 	BSS_CHANGED_ASSOC		= 1<<0,
@@ -403,7 +406,10 @@ enum ieee80211_bss_change {
 	BSS_CHANGED_MLD_VALID_LINKS	= BIT_ULL(33),
 	BSS_CHANGED_MLD_TTLM		= BIT_ULL(34),
 	BSS_CHANGED_TPE			= BIT_ULL(35),
+<<<<<<< HEAD
 	BSS_CHANGED_NAN_LOCAL_SCHED	= BIT_ULL(36),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* when adding here, make sure to change ieee80211_reconfig */
 };
@@ -868,6 +874,7 @@ struct ieee80211_bss_conf {
 	u8 s1g_long_beacon_period;
 };
 
+<<<<<<< HEAD
 #define IEEE80211_NAN_MAX_CHANNELS 3
 
 /**
@@ -936,6 +943,8 @@ struct ieee80211_nan_peer_sched {
 	struct ieee80211_nan_channel channels[] __counted_by(n_channels);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * enum mac80211_tx_info_flags - flags to describe transmission information/status
  *
@@ -1987,8 +1996,11 @@ enum ieee80211_offload_flags {
 	IEEE80211_OFFLOAD_DECAP_ENABLED		= BIT(2),
 };
 
+<<<<<<< HEAD
 #define IEEE80211_NAN_AVAIL_BLOB_MAX_LEN	54
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct ieee80211_eml_params - EHT Operating mode notification parameters
  *
@@ -2015,6 +2027,7 @@ struct ieee80211_eml_params {
 };
 
 /**
+<<<<<<< HEAD
  * struct ieee80211_nan_sched_cfg - NAN schedule configuration
  * @channels: array of NAN channels. A channel entry is in use if
  *	channels[i].chanreq.oper.chan is not NULL.
@@ -2041,6 +2054,8 @@ struct ieee80211_nan_sched_cfg {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct ieee80211_vif_cfg - interface configuration
  * @assoc: association status
  * @ibss_joined: indicates whether this station is part of an IBSS or not
@@ -2068,7 +2083,10 @@ struct ieee80211_nan_sched_cfg {
  *	your driver/device needs to do.
  * @ap_addr: AP MLD address, or BSSID for non-MLO connections
  *	(station mode only)
+<<<<<<< HEAD
  * @nan_sched: NAN schedule parameters. &struct ieee80211_nan_sched_cfg
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ieee80211_vif_cfg {
 	/* association related data */
@@ -2087,8 +2105,11 @@ struct ieee80211_vif_cfg {
 	bool s1g;
 	bool idle;
 	u8 ap_addr[ETH_ALEN] __aligned(2);
+<<<<<<< HEAD
 	/* Protected by the wiphy mutex */
 	struct ieee80211_nan_sched_cfg nan_sched;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define IEEE80211_TTLM_NUM_TIDS 8
@@ -2175,7 +2196,10 @@ enum ieee80211_neg_ttlm_res {
  * @drv_priv: data area for driver use, will always be aligned to
  *	sizeof(void \*).
  * @txq: the multicast data TX queue
+<<<<<<< HEAD
  * @txq_mgmt: the mgmt frame TX queue, currently only exists for NAN devices
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @offload_flags: 802.3 -> 802.11 enapsulation offload flags, see
  *	&enum ieee80211_offload_flags.
  */
@@ -2194,7 +2218,10 @@ struct ieee80211_vif {
 	u8 hw_queue[IEEE80211_NUM_ACS];
 
 	struct ieee80211_txq *txq;
+<<<<<<< HEAD
 	struct ieee80211_txq *txq_mgmt;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	netdev_features_t netdev_features;
 	u32 driver_flags;
@@ -2580,6 +2607,7 @@ struct ieee80211_sta_aggregates {
  * @uhr_cap: UHR capabilities of this STA
  * @s1g_cap: S1G capabilities of this STA
  * @agg: per-link data for multi-link aggregation
+<<<<<<< HEAD
  * @bandwidth: current bandwidth the station can receive with.
  *	This is the minimum between the peer's capabilities and our own
  *	operating channel width; Invalid for NAN since that is operating on
@@ -2589,6 +2617,13 @@ struct ieee80211_sta_aggregates {
  *	notifications and capabilities. The value is only valid after
  *	the station moves to associated state. Invalid for NAN since it
  *	operates on multiple configurations of rx_nss.
+=======
+ * @bandwidth: current bandwidth the station can receive with
+ * @rx_nss: in HT/VHT, the maximum number of spatial streams the
+ *	station can receive at the moment, changed by operating mode
+ *	notifications and capabilities. The value is only valid after
+ *	the station moves to associated state.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @txpwr: the station tx power configuration
  *
  */
@@ -2670,8 +2705,11 @@ struct ieee80211_link_sta {
  * @valid_links: bitmap of valid links, or 0 for non-MLO
  * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
  * @epp_peer: indicates that the peer is an EPP peer.
+<<<<<<< HEAD
  * @nmi: For NDI stations, pointer to the NMI station of the peer.
  * @nan_sched: NAN peer schedule for this station. Valid only for NMI stations.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ieee80211_sta {
 	u8 addr[ETH_ALEN] __aligned(2);
@@ -2700,11 +2738,14 @@ struct ieee80211_sta {
 	struct ieee80211_link_sta deflink;
 	struct ieee80211_link_sta __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
 
+<<<<<<< HEAD
 	struct ieee80211_sta __rcu *nmi;
 
 	/* should only be accessed with the wiphy mutex held */
 	struct ieee80211_nan_peer_sched *nan_sched;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* must be last */
 	u8 drv_priv[] __aligned(sizeof(void *));
 };
@@ -2938,8 +2979,11 @@ struct ieee80211_txq {
  *	station has a unique address, i.e. each station entry can be identified
  *	by just its MAC address; this prevents, for example, the same station
  *	from connecting to two virtual AP interfaces at the same time.
+<<<<<<< HEAD
  *	Note that this doesn't apply for NAN, in which the peer's NMI address
  *	can be equal to its NDI address.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * @IEEE80211_HW_SUPPORTS_REORDERING_BUFFER: Hardware (or driver) manages the
  *	reordering buffer internally, guaranteeing mac80211 receives frames in
@@ -3029,9 +3073,12 @@ struct ieee80211_txq {
  *	HW flag so drivers can opt in according to their own control, e.g. in
  *	testing.
  *
+<<<<<<< HEAD
  * @IEEE80211_HW_SUPPORTS_NDP_BLOCKACK: HW can transmit/receive S1G NDP
  *	BlockAck frames.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
  */
 enum ieee80211_hw_flags {
@@ -3092,7 +3139,10 @@ enum ieee80211_hw_flags {
 	IEEE80211_HW_DISALLOW_PUNCTURING,
 	IEEE80211_HW_HANDLES_QUIET_CSA,
 	IEEE80211_HW_STRICT,
+<<<<<<< HEAD
 	IEEE80211_HW_SUPPORTS_NDP_BLOCKACK,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* keep last, obviously */
 	NUM_IEEE80211_HW_FLAGS
@@ -4606,12 +4656,15 @@ struct ieee80211_prep_tx_info {
  * @del_nan_func: Remove a NAN function. The driver must call
  *	ieee80211_nan_func_terminated() with
  *	NL80211_NAN_FUNC_TERM_REASON_USER_REQUEST reason code upon removal.
+<<<<<<< HEAD
  * @nan_peer_sched_changed: Notifies the driver that the peer NAN schedule
  *	has changed. The new schedule is available via sta->nan_sched.
  *	Note that the channel_entry blob might not match the actual chandef
  *	since the bandwidth of the chandef is the minimum of the local and peer
  *	bandwidth. It is the driver responsibility to remove the peer schedule
  *	when the NMI station is removed.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @can_aggregate_in_amsdu: Called in order to determine if HW supports
  *	aggregating two specific frames in the same A-MSDU. The relation
  *	between the skbs should be symmetric and transitive. Note that while
@@ -5017,8 +5070,11 @@ struct ieee80211_ops {
 	void (*del_nan_func)(struct ieee80211_hw *hw,
 			    struct ieee80211_vif *vif,
 			    u8 instance_id);
+<<<<<<< HEAD
 	int (*nan_peer_sched_changed)(struct ieee80211_hw *hw,
 				      struct ieee80211_sta *sta);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool (*can_aggregate_in_amsdu)(struct ieee80211_hw *hw,
 				       struct sk_buff *head,
 				       struct sk_buff *skb);
@@ -7516,6 +7572,7 @@ void ieee80211_disable_rssi_reports(struct ieee80211_vif *vif);
 int ieee80211_ave_rssi(struct ieee80211_vif *vif, int link_id);
 
 /**
+<<<<<<< HEAD
  * ieee80211_calculate_rx_timestamp - calculate timestamp in frame
  * @hw: pointer as obtained from ieee80211_alloc_hw()
  * @status: RX status
@@ -7534,6 +7591,8 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_hw *hw,
 				     unsigned int mpdu_offset);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ieee80211_report_wowlan_wakeup - report WoWLAN wakeup
  * @vif: virtual interface
  * @wakeup: wakeup reason(s)
@@ -7879,6 +7938,7 @@ void ieee80211_nan_func_match(struct ieee80211_vif *vif,
 			      gfp_t gfp);
 
 /**
+<<<<<<< HEAD
  * ieee80211_nan_sched_update_done - notify that NAN schedule update is done
  *
  * This function is called by the driver to notify mac80211 that the NAN
@@ -7890,6 +7950,8 @@ void ieee80211_nan_func_match(struct ieee80211_vif *vif,
 void ieee80211_nan_sched_update_done(struct ieee80211_vif *vif);
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ieee80211_calc_rx_airtime - calculate estimated transmission airtime for RX.
  *
  * This function calculates the estimated airtime usage of a frame based on the
@@ -7925,22 +7987,32 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
  * ieee80211_get_fils_discovery_tmpl - Get FILS discovery template.
  * @hw: pointer obtained from ieee80211_alloc_hw().
  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
+<<<<<<< HEAD
  * @link_id: valid link_id during MLO or 0 for non-MLO.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The driver is responsible for freeing the returned skb.
  *
  * Return: FILS discovery template. %NULL on error.
  */
 struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 						  struct ieee80211_vif *vif,
 						  unsigned int link_id);
+=======
+						  struct ieee80211_vif *vif);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * ieee80211_get_unsol_bcast_probe_resp_tmpl - Get unsolicited broadcast
  *	probe response template.
  * @hw: pointer obtained from ieee80211_alloc_hw().
  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
+<<<<<<< HEAD
  * @link_id: valid link_id during MLO or 0 for non-MLO.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The driver is responsible for freeing the returned skb.
  *
@@ -7948,8 +8020,12 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
  */
 struct sk_buff *
 ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 					  struct ieee80211_vif *vif,
 					  unsigned int link_id);
+=======
+					  struct ieee80211_vif *vif);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * ieee80211_obss_color_collision_notify - notify userland about a BSS color
@@ -8125,6 +8201,7 @@ int ieee80211_emulate_switch_vif_chanctx(struct ieee80211_hw *hw,
  * Return: %true iff the vif is a NAN interface and NAN is started
  */
 bool ieee80211_vif_nan_started(struct ieee80211_vif *vif);
+<<<<<<< HEAD
 
 /**
  * ieee80211_encrypt_tx_skb - Encrypt the transmit skb
@@ -8132,4 +8209,6 @@ bool ieee80211_vif_nan_started(struct ieee80211_vif *vif);
  * Return: 0 if success and non-zero on error
  */
 int ieee80211_encrypt_tx_skb(struct sk_buff *skb);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* MAC80211_H */

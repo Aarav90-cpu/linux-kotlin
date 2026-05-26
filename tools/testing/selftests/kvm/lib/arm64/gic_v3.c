@@ -50,13 +50,21 @@ static void gicv3_gicd_wait_for_rwp(void)
 	}
 }
 
+<<<<<<< HEAD
 static inline volatile void *gicr_base_cpu(u32 cpu)
+=======
+static inline volatile void *gicr_base_cpu(uint32_t cpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Align all the redistributors sequentially */
 	return GICR_BASE_GVA + cpu * SZ_64K * 2;
 }
 
+<<<<<<< HEAD
 static void gicv3_gicr_wait_for_rwp(u32 cpu)
+=======
+static void gicv3_gicr_wait_for_rwp(uint32_t cpu)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int count = 100000; /* 1s */
 
@@ -66,7 +74,11 @@ static void gicv3_gicr_wait_for_rwp(u32 cpu)
 	}
 }
 
+<<<<<<< HEAD
 static void gicv3_wait_for_rwp(u32 cpu_or_dist)
+=======
+static void gicv3_wait_for_rwp(uint32_t cpu_or_dist)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (cpu_or_dist & DIST_BIT)
 		gicv3_gicd_wait_for_rwp();
@@ -91,34 +103,56 @@ static enum gicv3_intid_range get_intid_range(unsigned int intid)
 	return INVALID_RANGE;
 }
 
+<<<<<<< HEAD
 static u64 gicv3_read_iar(void)
 {
 	u64 irqstat = read_sysreg_s(SYS_ICC_IAR1_EL1);
+=======
+static uint64_t gicv3_read_iar(void)
+{
+	uint64_t irqstat = read_sysreg_s(SYS_ICC_IAR1_EL1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dsb(sy);
 	return irqstat;
 }
 
+<<<<<<< HEAD
 static void gicv3_write_eoir(u32 irq)
+=======
+static void gicv3_write_eoir(uint32_t irq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	write_sysreg_s(irq, SYS_ICC_EOIR1_EL1);
 	isb();
 }
 
+<<<<<<< HEAD
 static void gicv3_write_dir(u32 irq)
+=======
+static void gicv3_write_dir(uint32_t irq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	write_sysreg_s(irq, SYS_ICC_DIR_EL1);
 	isb();
 }
 
+<<<<<<< HEAD
 static void gicv3_set_priority_mask(u64 mask)
+=======
+static void gicv3_set_priority_mask(uint64_t mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	write_sysreg_s(mask, SYS_ICC_PMR_EL1);
 }
 
 static void gicv3_set_eoi_split(bool split)
 {
+<<<<<<< HEAD
 	u32 val;
+=======
+	uint32_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * All other fields are read-only, so no need to read CTLR first. In
@@ -129,29 +163,48 @@ static void gicv3_set_eoi_split(bool split)
 	isb();
 }
 
+<<<<<<< HEAD
 u32 gicv3_reg_readl(u32 cpu_or_dist, u64 offset)
+=======
+uint32_t gicv3_reg_readl(uint32_t cpu_or_dist, uint64_t offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	volatile void *base = cpu_or_dist & DIST_BIT ? GICD_BASE_GVA
 			: sgi_base_from_redist(gicr_base_cpu(cpu_or_dist));
 	return readl(base + offset);
 }
 
+<<<<<<< HEAD
 void gicv3_reg_writel(u32 cpu_or_dist, u64 offset, u32 reg_val)
+=======
+void gicv3_reg_writel(uint32_t cpu_or_dist, uint64_t offset, uint32_t reg_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	volatile void *base = cpu_or_dist & DIST_BIT ? GICD_BASE_GVA
 			: sgi_base_from_redist(gicr_base_cpu(cpu_or_dist));
 	writel(reg_val, base + offset);
 }
 
+<<<<<<< HEAD
 u32 gicv3_getl_fields(u32 cpu_or_dist, u64 offset, u32 mask)
+=======
+uint32_t gicv3_getl_fields(uint32_t cpu_or_dist, uint64_t offset, uint32_t mask)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return gicv3_reg_readl(cpu_or_dist, offset) & mask;
 }
 
+<<<<<<< HEAD
 void gicv3_setl_fields(u32 cpu_or_dist, u64 offset,
 		       u32 mask, u32 reg_val)
 {
 	u32 tmp = gicv3_reg_readl(cpu_or_dist, offset) & ~mask;
+=======
+void gicv3_setl_fields(uint32_t cpu_or_dist, uint64_t offset,
+		uint32_t mask, uint32_t reg_val)
+{
+	uint32_t tmp = gicv3_reg_readl(cpu_or_dist, offset) & ~mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tmp |= (reg_val & mask);
 	gicv3_reg_writel(cpu_or_dist, offset, tmp);
@@ -165,6 +218,7 @@ void gicv3_setl_fields(u32 cpu_or_dist, u64 offset,
  * map that doesn't implement it; like GICR_WAKER's offset of 0x0014 being
  * marked as "Reserved" in the Distributor map.
  */
+<<<<<<< HEAD
 static void gicv3_access_reg(u32 intid, u64 offset,
 			     u32 reg_bits, u32 bits_per_field,
 			     bool write, u32 *val)
@@ -173,6 +227,16 @@ static void gicv3_access_reg(u32 intid, u64 offset,
 	enum gicv3_intid_range intid_range = get_intid_range(intid);
 	u32 fields_per_reg, index, mask, shift;
 	u32 cpu_or_dist;
+=======
+static void gicv3_access_reg(uint32_t intid, uint64_t offset,
+		uint32_t reg_bits, uint32_t bits_per_field,
+		bool write, uint32_t *val)
+{
+	uint32_t cpu = guest_get_vcpuid();
+	enum gicv3_intid_range intid_range = get_intid_range(intid);
+	uint32_t fields_per_reg, index, mask, shift;
+	uint32_t cpu_or_dist;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	GUEST_ASSERT(bits_per_field <= reg_bits);
 	GUEST_ASSERT(!write || *val < (1U << bits_per_field));
@@ -197,32 +261,54 @@ static void gicv3_access_reg(u32 intid, u64 offset,
 	*val = gicv3_getl_fields(cpu_or_dist, offset, mask) >> shift;
 }
 
+<<<<<<< HEAD
 static void gicv3_write_reg(u32 intid, u64 offset,
 			    u32 reg_bits, u32 bits_per_field, u32 val)
+=======
+static void gicv3_write_reg(uint32_t intid, uint64_t offset,
+		uint32_t reg_bits, uint32_t bits_per_field, uint32_t val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_access_reg(intid, offset, reg_bits,
 			bits_per_field, true, &val);
 }
 
+<<<<<<< HEAD
 static u32 gicv3_read_reg(u32 intid, u64 offset,
 			  u32 reg_bits, u32 bits_per_field)
 {
 	u32 val;
+=======
+static uint32_t gicv3_read_reg(uint32_t intid, uint64_t offset,
+		uint32_t reg_bits, uint32_t bits_per_field)
+{
+	uint32_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gicv3_access_reg(intid, offset, reg_bits,
 			bits_per_field, false, &val);
 	return val;
 }
 
+<<<<<<< HEAD
 static void gicv3_set_priority(u32 intid, u32 prio)
+=======
+static void gicv3_set_priority(uint32_t intid, uint32_t prio)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_write_reg(intid, GICD_IPRIORITYR, 32, 8, prio);
 }
 
 /* Sets the intid to be level-sensitive or edge-triggered. */
+<<<<<<< HEAD
 static void gicv3_irq_set_config(u32 intid, bool is_edge)
 {
 	u32 val;
+=======
+static void gicv3_irq_set_config(uint32_t intid, bool is_edge)
+{
+	uint32_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* N/A for private interrupts. */
 	GUEST_ASSERT(get_intid_range(intid) == SPI_RANGE);
@@ -230,57 +316,99 @@ static void gicv3_irq_set_config(u32 intid, bool is_edge)
 	gicv3_write_reg(intid, GICD_ICFGR, 32, 2, val);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_enable(u32 intid)
 {
 	bool is_spi = get_intid_range(intid) == SPI_RANGE;
 	u32 cpu = guest_get_vcpuid();
+=======
+static void gicv3_irq_enable(uint32_t intid)
+{
+	bool is_spi = get_intid_range(intid) == SPI_RANGE;
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gicv3_write_reg(intid, GICD_ISENABLER, 32, 1, 1);
 	gicv3_wait_for_rwp(is_spi ? DIST_BIT : cpu);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_disable(u32 intid)
 {
 	bool is_spi = get_intid_range(intid) == SPI_RANGE;
 	u32 cpu = guest_get_vcpuid();
+=======
+static void gicv3_irq_disable(uint32_t intid)
+{
+	bool is_spi = get_intid_range(intid) == SPI_RANGE;
+	uint32_t cpu = guest_get_vcpuid();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	gicv3_write_reg(intid, GICD_ICENABLER, 32, 1, 1);
 	gicv3_wait_for_rwp(is_spi ? DIST_BIT : cpu);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_set_active(u32 intid)
+=======
+static void gicv3_irq_set_active(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_write_reg(intid, GICD_ISACTIVER, 32, 1, 1);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_clear_active(u32 intid)
+=======
+static void gicv3_irq_clear_active(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_write_reg(intid, GICD_ICACTIVER, 32, 1, 1);
 }
 
+<<<<<<< HEAD
 static bool gicv3_irq_get_active(u32 intid)
+=======
+static bool gicv3_irq_get_active(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return gicv3_read_reg(intid, GICD_ISACTIVER, 32, 1);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_set_pending(u32 intid)
+=======
+static void gicv3_irq_set_pending(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_write_reg(intid, GICD_ISPENDR, 32, 1, 1);
 }
 
+<<<<<<< HEAD
 static void gicv3_irq_clear_pending(u32 intid)
+=======
+static void gicv3_irq_clear_pending(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	gicv3_write_reg(intid, GICD_ICPENDR, 32, 1, 1);
 }
 
+<<<<<<< HEAD
 static bool gicv3_irq_get_pending(u32 intid)
+=======
+static bool gicv3_irq_get_pending(uint32_t intid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return gicv3_read_reg(intid, GICD_ISPENDR, 32, 1);
 }
 
 static void gicv3_enable_redist(volatile void *redist_base)
 {
+<<<<<<< HEAD
 	u32 val = readl(redist_base + GICR_WAKER);
+=======
+	uint32_t val = readl(redist_base + GICR_WAKER);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int count = 100000; /* 1s */
 
 	val &= ~GICR_WAKER_ProcessorSleep;
@@ -293,10 +421,17 @@ static void gicv3_enable_redist(volatile void *redist_base)
 	}
 }
 
+<<<<<<< HEAD
 static void gicv3_set_group(u32 intid, bool grp)
 {
 	u32 cpu_or_dist;
 	u32 val;
+=======
+static void gicv3_set_group(uint32_t intid, bool grp)
+{
+	uint32_t cpu_or_dist;
+	uint32_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	cpu_or_dist = (get_intid_range(intid) == SPI_RANGE) ? DIST_BIT : guest_get_vcpuid();
 	val = gicv3_reg_readl(cpu_or_dist, GICD_IGROUPR + (intid / 32) * 4);
@@ -424,8 +559,13 @@ const struct gic_common_ops gicv3_ops = {
 	.gic_irq_set_group = gicv3_set_group,
 };
 
+<<<<<<< HEAD
 void gic_rdist_enable_lpis(gpa_t cfg_table, size_t cfg_table_size,
 			   gpa_t pend_table)
+=======
+void gic_rdist_enable_lpis(vm_paddr_t cfg_table, size_t cfg_table_size,
+			   vm_paddr_t pend_table)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	volatile void *rdist_base = gicr_base_cpu(guest_get_vcpuid());
 

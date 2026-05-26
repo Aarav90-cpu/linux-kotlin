@@ -161,7 +161,11 @@ static int parse_one(char *param,
 char *parse_args(const char *doing,
 		 char *args,
 		 const struct kernel_param *params,
+<<<<<<< HEAD
 		 unsigned int num,
+=======
+		 unsigned num,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 s16 min_level,
 		 s16 max_level,
 		 void *arg, parse_unknown_fn unknown)
@@ -745,6 +749,18 @@ void module_param_sysfs_remove(struct module *mod)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+void destroy_params(const struct kernel_param *params, unsigned num)
+{
+	unsigned int i;
+
+	for (i = 0; i < num; i++)
+		if (params[i].ops->free)
+			params[i].ops->free(params[i].arg);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct module_kobject * __init_or_module
 lookup_or_create_module_kobject(const char *name)
 {
@@ -976,6 +992,7 @@ static int __init param_sysfs_builtin_init(void)
 late_initcall(param_sysfs_builtin_init);
 
 #endif /* CONFIG_SYSFS */
+<<<<<<< HEAD
 
 #ifdef CONFIG_MODULES
 
@@ -994,3 +1011,5 @@ void module_destroy_params(const struct kernel_param *params, unsigned int num)
 }
 
 #endif /* CONFIG_MODULES */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

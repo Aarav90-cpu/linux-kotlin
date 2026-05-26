@@ -1016,7 +1016,11 @@ static int nfs4_xdr_dec_cb_offload(struct rpc_rqst *rqstp,
 	.p_decode  = nfs4_xdr_dec_##restype,				\
 	.p_arglen  = NFS4_enc_##argtype##_sz,				\
 	.p_replen  = NFS4_dec_##restype##_sz,				\
+<<<<<<< HEAD
 	.p_statidx = NFSPROC4_CLNT_##proc,				\
+=======
+	.p_statidx = NFSPROC4_CB_##call,				\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.p_name    = #proc,						\
 }
 
@@ -1032,6 +1036,7 @@ static const struct rpc_procinfo nfs4_cb_procedures[] = {
 	PROC(CB_GETATTR,	COMPOUND,	cb_getattr,	cb_getattr),
 };
 
+<<<<<<< HEAD
 #define NFS4_CB_PROGRAM	0x40000000
 #define NFS4_CB_VERSION	1
 
@@ -1040,6 +1045,41 @@ struct nfsd_net_cb {
 	const struct rpc_version *versions[NFS4_CB_VERSION + 1];
 	struct rpc_program	program;
 	struct rpc_stat		stat;
+=======
+static unsigned int nfs4_cb_counts[ARRAY_SIZE(nfs4_cb_procedures)];
+static const struct rpc_version nfs_cb_version4 = {
+/*
+ * Note on the callback rpc program version number: despite language in rfc
+ * 5661 section 18.36.3 requiring servers to use 4 in this field, the
+ * official xdr descriptions for both 4.0 and 4.1 specify version 1, and
+ * in practice that appears to be what implementations use.  The section
+ * 18.36.3 language is expected to be fixed in an erratum.
+ */
+	.number			= 1,
+	.nrprocs		= ARRAY_SIZE(nfs4_cb_procedures),
+	.procs			= nfs4_cb_procedures,
+	.counts			= nfs4_cb_counts,
+};
+
+static const struct rpc_version *nfs_cb_version[2] = {
+	[1] = &nfs_cb_version4,
+};
+
+static const struct rpc_program cb_program;
+
+static struct rpc_stat cb_stats = {
+	.program		= &cb_program
+};
+
+#define NFS4_CALLBACK 0x40000000
+static const struct rpc_program cb_program = {
+	.name			= "nfs4_cb",
+	.number			= NFS4_CALLBACK,
+	.nrvers			= ARRAY_SIZE(nfs_cb_version),
+	.version		= nfs_cb_version,
+	.stats			= &cb_stats,
+	.pipe_dir_name		= "nfsd4_cb",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int max_cb_time(struct net *net)
@@ -1115,7 +1155,10 @@ static const struct cred *get_backchannel_cred(struct nfs4_client *clp, struct r
 
 static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *conn, struct nfsd4_session *ses)
 {
+<<<<<<< HEAD
 	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int maxtime = max_cb_time(clp->net);
 	struct rpc_timeout	timeparms = {
 		.to_initval	= maxtime,
@@ -1128,14 +1171,22 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
 		.addrsize	= conn->cb_addrlen,
 		.saddress	= (struct sockaddr *) &conn->cb_saddr,
 		.timeout	= &timeparms,
+<<<<<<< HEAD
 		.version	= NFS4_CB_VERSION,
+=======
+		.program	= &cb_program,
+		.version	= 1,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.flags		= (RPC_CLNT_CREATE_NOPING | RPC_CLNT_CREATE_QUIET),
 		.cred		= current_cred(),
 	};
 	struct rpc_clnt *client;
 	const struct cred *cred;
 
+<<<<<<< HEAD
 	args.program = &nn->nfsd_cb->program;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (clp->cl_minorversion == 0) {
 		if (!clp->cl_cred.cr_principal &&
 		    (clp->cl_cred.cr_flavor >= RPC_AUTH_GSS_KRB5)) {
@@ -1762,6 +1813,7 @@ bool nfsd4_run_cb(struct nfsd4_callback *cb)
 		nfsd41_cb_inflight_end(clp);
 	return queued;
 }
+<<<<<<< HEAD
 
 /**
  * nfsd_net_cb_shutdown - release per-netns callback RPC program resources
@@ -1829,3 +1881,5 @@ int nfsd_net_cb_init(struct nfsd_net *nn)
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

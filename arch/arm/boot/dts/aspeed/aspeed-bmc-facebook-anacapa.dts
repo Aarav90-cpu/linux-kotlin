@@ -300,12 +300,15 @@
 &i2c0 {
 	status = "okay";
 
+<<<<<<< HEAD
 	eeprom@50 {
 		compatible = "atmel,24c2048";
 		reg = <0x50>;
 		pagesize = <128>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c-mux@70 {
 		compatible = "nxp,pca9546";
 		reg = <0x70>;
@@ -340,12 +343,15 @@
 &i2c1 {
 	status = "okay";
 
+<<<<<<< HEAD
 	eeprom@50 {
 		compatible = "atmel,24c2048";
 		reg = <0x50>;
 		pagesize = <128>;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	i2c-mux@70 {
 		compatible = "nxp,pca9546";
 		reg = <0x70>;
@@ -814,6 +820,7 @@
 			reg = <7>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+<<<<<<< HEAD
 
 			nfc@28 {
 				compatible = "nxp,nxp-nci-i2c";
@@ -824,6 +831,8 @@
 
 				enable-gpios = <&sgpiom0 241 GPIO_ACTIVE_HIGH>;
 			};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };

@@ -126,6 +126,7 @@ static void enic_intr_coal_set_rx(struct enic *enic, u32 timer)
 	}
 }
 
+<<<<<<< HEAD
 static void enic_get_supp_adv_media_type(struct net_device *netdev,
 					 struct ethtool_link_ksettings *ecmd)
 {
@@ -273,13 +274,25 @@ static void enic_get_supp_adv_media_type(struct net_device *netdev,
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int enic_get_ksettings(struct net_device *netdev,
 			      struct ethtool_link_ksettings *ecmd)
 {
 	struct enic *enic = netdev_priv(netdev);
 	struct ethtool_link_settings *base = &ecmd->base;
 
+<<<<<<< HEAD
 	enic_get_supp_adv_media_type(netdev, ecmd);
+=======
+	ethtool_link_ksettings_add_link_mode(ecmd, supported,
+					     10000baseT_Full);
+	ethtool_link_ksettings_add_link_mode(ecmd, supported, FIBRE);
+	ethtool_link_ksettings_add_link_mode(ecmd, advertising,
+					     10000baseT_Full);
+	ethtool_link_ksettings_add_link_mode(ecmd, advertising, FIBRE);
+	base->port = PORT_FIBRE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (netif_carrier_ok(netdev)) {
 		base->speed = vnic_dev_port_speed(enic->vdev);

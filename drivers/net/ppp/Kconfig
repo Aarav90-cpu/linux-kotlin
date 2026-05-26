@@ -13,9 +13,16 @@ config PPP
 	  otherwise you can't use it; most Internet access providers these
 	  days support PPP rather than SLIP.
 
+<<<<<<< HEAD
 	  To use PPP, you need an additional program called pppd, available at
 	  <https://ppp.samba.org>.  Make sure that you have the version of pppd
 	  recommended in <file:Documentation/Changes>.
+=======
+	  To use PPP, you need an additional program called pppd as described
+	  in the PPP-HOWTO, available at
+	  <http://www.tldp.org/docs.html#howto>.  Make sure that you have
+	  the version of pppd recommended in <file:Documentation/Changes>.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  The PPP option enlarges your kernel by about 16 KB.
 
 	  There are actually two versions of PPP: the traditional PPP for
@@ -36,6 +43,10 @@ if PPP
 
 config PPP_BSDCOMP
 	tristate "PPP BSD-Compress compression"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for the BSD-Compress compression method for PPP, which uses
 	  the LZW compression method to compress each PPP packet before it is
@@ -54,6 +65,10 @@ config PPP_BSDCOMP
 
 config PPP_DEFLATE
 	tristate "PPP Deflate compression"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select ZLIB_INFLATE
 	select ZLIB_DEFLATE
 	help
@@ -68,6 +83,10 @@ config PPP_DEFLATE
 
 config PPP_FILTER
 	bool "PPP filtering"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say Y here if you want to be able to filter the packets passing over
 	  PPP interfaces.  This allows you to control which packets count as
@@ -80,6 +99,10 @@ config PPP_FILTER
 
 config PPP_MPPE
 	tristate "PPP MPPE compression (encryption)"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRYPTO_LIB_ARC4
 	select CRYPTO_LIB_SHA1
 	help
@@ -91,6 +114,10 @@ config PPP_MPPE
 
 config PPP_MULTILINK
 	bool "PPP multilink support"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  PPP multilink is a protocol (defined in RFC 1990) which allows you
 	  to combine several (logical or physical) lines into one logical PPP
@@ -103,7 +130,11 @@ config PPP_MULTILINK
 
 config PPPOATM
 	tristate "PPP over ATM"
+<<<<<<< HEAD
 	depends on ATM
+=======
+	depends on ATM && PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support PPP (Point to Point Protocol) encapsulated in ATM frames.
 	  This implementation does not yet comply with section 8 of RFC2364,
@@ -112,6 +143,7 @@ config PPPOATM
 
 config PPPOE
 	tristate "PPP over Ethernet"
+<<<<<<< HEAD
 	help
 	  Support for PPP over Ethernet.
 
@@ -119,6 +151,17 @@ config PPPOE
 	  To work in server mode, the pppoe-server command from the RP-PPPoE
 	  package is also required, available at
 	  <https://dianne.skoll.ca/projects/rp-pppoe/>.
+=======
+	depends on PPP
+	help
+	  Support for PPP over Ethernet.
+
+	  This driver requires the latest version of pppd from the CVS
+	  repository at cvs.samba.org.  Alternatively, see the
+	  RoaringPenguin package (<http://www.roaringpenguin.com/pppoe>)
+	  which contains instruction on how to use this driver (under
+	  the heading "Kernel mode PPPoE").
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 choice
 	prompt "Number of PPPoE hash bits"
@@ -156,7 +199,11 @@ config PPPOE_HASH_BITS
 
 config PPTP
 	tristate "PPP over IPv4 (PPTP)"
+<<<<<<< HEAD
 	depends on NET_IPGRE_DEMUX
+=======
+	depends on PPP && NET_IPGRE_DEMUX
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for PPP over IPv4.(Point-to-Point Tunneling Protocol)
 
@@ -167,7 +214,11 @@ config PPTP
 
 config PPPOL2TP
 	tristate "PPP over L2TP"
+<<<<<<< HEAD
 	depends on L2TP
+=======
+	depends on L2TP && PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Support for PPP-over-L2TP socket family. L2TP is a protocol
 	  used by ISPs and enterprises to tunnel PPP traffic over UDP
@@ -176,6 +227,10 @@ if TTY
 
 config PPP_ASYNC
 	tristate "PPP support for async serial ports"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	select CRC_CCITT
 	help
 	  Say Y (or M) here if you want to be able to use PPP over standard
@@ -189,6 +244,10 @@ config PPP_ASYNC
 
 config PPP_SYNC_TTY
 	tristate "PPP support for sync tty ports"
+<<<<<<< HEAD
+=======
+	depends on PPP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	help
 	  Say Y (or M) here if you want to be able to use PPP over synchronous
 	  (HDLC) tty devices, such as the SyncLink adapter. These devices

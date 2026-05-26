@@ -3,12 +3,17 @@
 #
 # Copyright (C) 2019-2022 Red Hat, Inc. Daniel Bristot de Oliveira <bristot@kernel.org>
 #
+<<<<<<< HEAD
 # Automata class: parse an automaton in dot file digraph format into a python object
+=======
+# Automata object: parse an automata in dot file digraph format into a python object
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #
 # For further information, see:
 #   Documentation/trace/rv/deterministic_automata.rst
 
 import ntpath
+<<<<<<< HEAD
 import re
 from typing import Iterator
 from itertools import islice
@@ -37,12 +42,18 @@ class Automata:
     """Automata class: Reads a dot file and parses it as an automaton.
 
     It supports both deterministic and hybrid automata.
+=======
+
+class Automata:
+    """Automata class: Reads a dot file and part it as an automata.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     Attributes:
         dot_file: A dot file with an state_automaton definition.
     """
 
     invalid_state_str = "INVALID_STATE"
+<<<<<<< HEAD
     init_marker = "__init_"
     node_marker = "{node"
     # val can be numerical, uppercase (constant or macro), lowercase (parameter or function)
@@ -61,12 +72,15 @@ class Automata:
         (?P<unit>[a-z]{1,2})?            # optional unit for numerical values
         """, re.VERBOSE)
     constraint_reset = re.compile(r"^reset\((?P<env>[a-zA-Z_][a-zA-Z0-9_]+)\)")
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def __init__(self, file_path, model_name=None):
         self.__dot_path = file_path
         self.name = model_name or self.__get_model_name()
         self.__dot_lines = self.__open_dot()
         self.states, self.initial_state, self.final_states = self.__get_state_variables()
+<<<<<<< HEAD
         self.env_types = {}
         self.env_stored = set()
         self.constraint_vars = set()
@@ -77,20 +91,34 @@ class Automata:
         self.env_stored = sorted(self.env_stored)
         self.constraint_vars = sorted(self.constraint_vars)
         self.self_loop_reset_events = sorted(self.self_loop_reset_events)
+=======
+        self.events = self.__get_event_variables()
+        self.function = self.__create_matrix()
+        self.events_start, self.events_start_run = self.__store_init_events()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def __get_model_name(self) -> str:
         basename = ntpath.basename(self.__dot_path)
         if not basename.endswith(".dot") and not basename.endswith(".gv"):
             print("not a dot file")
+<<<<<<< HEAD
             raise AutomataError(f"not a dot file: {self.__dot_path}")
 
         model_name = ntpath.splitext(basename)[0]
         if not model_name:
             raise AutomataError(f"not a dot file: {self.__dot_path}")
+=======
+            raise Exception("not a dot file: %s" % self.__dot_path)
+
+        model_name = ntpath.splitext(basename)[0]
+        if model_name.__len__() == 0:
+            raise Exception("not a dot file: %s" % self.__dot_path)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         return model_name
 
     def __open_dot(self) -> list[str]:
+<<<<<<< HEAD
         dot_lines = []
         try:
             with open(self.__dot_path) as dot_file:
@@ -139,18 +167,57 @@ class Automata:
         if cursor == len(self.__dot_lines):
             raise AutomataError("Dot file ended after event beginning")
 
+=======
+        cursor = 0
+        dot_lines = []
+        try:
+            dot_file = open(self.__dot_path)
+        except:
+            raise Exception("Cannot open the file: %s" % self.__dot_path)
+
+        dot_lines = dot_file.read().splitlines()
+        dot_file.close()
+
+        # checking the first line:
+        line = dot_lines[cursor].split()
+
+        if (line[0] != "digraph") and (line[1] != "state_automaton"):
+            raise Exception("Not a valid .dot format: %s" % self.__dot_path)
+        else:
+            cursor += 1
+        return dot_lines
+
+    def __get_cursor_begin_states(self) -> int:
+        cursor = 0
+        while self.__dot_lines[cursor].split()[0] != "{node":
+            cursor += 1
+        return cursor
+
+    def __get_cursor_begin_events(self) -> int:
+        cursor = 0
+        while self.__dot_lines[cursor].split()[0] != "{node":
+            cursor += 1
+        while self.__dot_lines[cursor].split()[0] == "{node":
+            cursor += 1
+        # skip initial state transition
+        cursor += 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         return cursor
 
     def __get_state_variables(self) -> tuple[list[str], str, list[str]]:
         # wait for node declaration
         states = []
         final_states = []
+<<<<<<< HEAD
         initial_state = ""
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         has_final_states = False
         cursor = self.__get_cursor_begin_states()
 
         # process nodes
+<<<<<<< HEAD
         for line in islice(self.__dot_lines, cursor, None):
             split_line = line.split()
             if not split_line or split_line[0] != self.node_marker:
@@ -174,11 +241,36 @@ class Automata:
 
         if not initial_state:
             raise AutomataError("The automaton doesn't have an initial state")
+=======
+        while self.__dot_lines[cursor].split()[0] == "{node":
+            line = self.__dot_lines[cursor].split()
+            raw_state = line[-1]
+
+            #  "enabled_fired"}; -> enabled_fired
+            state = raw_state.replace('"', '').replace('};', '').replace(',','_')
+            if state[0:7] == "__init_":
+                initial_state = state[7:]
+            else:
+                states.append(state)
+                if "doublecircle" in self.__dot_lines[cursor]:
+                    final_states.append(state)
+                    has_final_states = True
+
+                if "ellipse" in self.__dot_lines[cursor]:
+                    final_states.append(state)
+                    has_final_states = True
+
+            cursor += 1
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         states = sorted(set(states))
         states.remove(initial_state)
 
+<<<<<<< HEAD
         # Insert the initial state at the beginning of the states
+=======
+        # Insert the initial state at the bein og the states
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         states.insert(0, initial_state)
 
         if not has_final_states:
@@ -186,6 +278,7 @@ class Automata:
 
         return states, initial_state, final_states
 
+<<<<<<< HEAD
     def __get_event_variables(self) -> tuple[list[str], list[str]]:
         events: list[str] = []
         envs: list[str] = []
@@ -275,6 +368,33 @@ class Automata:
         return env
 
     def __create_matrix(self) -> tuple[list[list[str]], dict[_ConstraintKey, list[str]]]:
+=======
+    def __get_event_variables(self) -> list[str]:
+        # here we are at the begin of transitions, take a note, we will return later.
+        cursor = self.__get_cursor_begin_events()
+
+        events = []
+        while self.__dot_lines[cursor].lstrip()[0] == '"':
+            # transitions have the format:
+            # "all_fired" -> "both_fired" [ label = "disable_irq" ];
+            #  ------------ event is here ------------^^^^^
+            if self.__dot_lines[cursor].split()[1] == "->":
+                line = self.__dot_lines[cursor].split()
+                event = line[-2].replace('"','')
+
+                # when a transition has more than one lables, they are like this
+                # "local_irq_enable\nhw_local_irq_enable_n"
+                # so split them.
+
+                event = event.replace("\\n", " ")
+                for i in event.split():
+                    events.append(i)
+            cursor += 1
+
+        return sorted(set(events))
+
+    def __create_matrix(self) -> list[list[str]]:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         # transform the array into a dictionary
         events = self.events
         states = self.states
@@ -291,12 +411,17 @@ class Automata:
             nr_state += 1
 
         # declare the matrix....
+<<<<<<< HEAD
         matrix = [[self.invalid_state_str for _ in range(nr_event)] for _ in range(nr_state)]
         constraints: dict[_ConstraintKey, list[str]] = {}
+=======
+        matrix = [[ self.invalid_state_str for x in range(nr_event)] for y in range(nr_state)]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         # and we are back! Let's fill the matrix
         cursor = self.__get_cursor_begin_events()
 
+<<<<<<< HEAD
         for line in map(str.lstrip,
                         islice(self.__dot_lines, cursor, None)):
 
@@ -325,15 +450,36 @@ class Automata:
                     constraints[_StateConstraintKey(states_dict[state])] = constr
 
         return matrix, constraints
+=======
+        while self.__dot_lines[cursor].lstrip()[0] == '"':
+            if self.__dot_lines[cursor].split()[1] == "->":
+                line = self.__dot_lines[cursor].split()
+                origin_state = line[0].replace('"','').replace(',','_')
+                dest_state = line[2].replace('"','').replace(',','_')
+                possible_events = line[-2].replace('"','').replace("\\n", " ")
+                for event in possible_events.split():
+                    matrix[states_dict[origin_state]][events_dict[event]] = dest_state
+            cursor += 1
+
+        return matrix
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     def __store_init_events(self) -> tuple[list[bool], list[bool]]:
         events_start = [False] * len(self.events)
         events_start_run = [False] * len(self.events)
+<<<<<<< HEAD
         for i in range(len(self.events)):
             curr_event_will_init = 0
             curr_event_from_init = False
             curr_event_used = 0
             for j in range(len(self.states)):
+=======
+        for i, _ in enumerate(self.events):
+            curr_event_will_init = 0
+            curr_event_from_init = False
+            curr_event_used = 0
+            for j, _ in enumerate(self.states):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 if self.function[j][i] != self.invalid_state_str:
                     curr_event_used += 1
                 if self.function[j][i] == self.initial_state:
@@ -356,6 +502,7 @@ class Automata:
         if any(self.events_start):
             return False
         return self.events_start_run[self.events.index(event)]
+<<<<<<< HEAD
 
     def is_hybrid_automata(self) -> bool:
         return bool(self.envs)
@@ -366,3 +513,5 @@ class Automata:
         constraint, false if it is a state constraint
         """
         return isinstance(key, _EventConstraintKey)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

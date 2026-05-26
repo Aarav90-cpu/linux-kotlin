@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 /*
+<<<<<<< HEAD
  * Copyright (c) 2022-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+=======
+ * Copyright (c) 2022 TQ-Systems GmbH <linux@ew.tq-group.com>,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * D-82229 Seefeld, Germany.
  * Author: Alexander Stein
  */
@@ -8,6 +12,13 @@
 /dts-v1/;
 /plugin/;
 
+<<<<<<< HEAD
+=======
+&{/} {
+	compatible = "tq,imx8mp-tqma8mpql-mba8mpxl", "tq,imx8mp-tqma8mpql", "fsl,imx8mp";
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &backlight_lvds {
 	status = "okay";
 };

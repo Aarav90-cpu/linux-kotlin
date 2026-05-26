@@ -5,6 +5,7 @@
 // Copyright 2021 Rabeeh Khoury <rabeeh@solid-run.com>
 // Copyright 2023 Josua Mayer <josua@solid-run.com>
 
+<<<<<<< HEAD
 / {
 	model = "SolidRun LX2162A System on Module";
 	compatible = "solidrun,lx2162a-som", "fsl,lx2160a";
@@ -15,6 +16,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &crypto {
 	status = "okay";
 };
@@ -87,7 +90,11 @@
 &i2c5 {
 	status = "okay";
 
+<<<<<<< HEAD
 	som_rtc: rtc@6f {
+=======
+	rtc@6f {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		compatible = "microchip,mcp7940x";
 		reg = <0x6f>;
 	};

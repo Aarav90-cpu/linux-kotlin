@@ -800,6 +800,7 @@ static int input_default_getkeycode(struct input_dev *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * input_default_setkeycode - default setkeycode method
  * @dev: input device which keymap is being updated.
@@ -817,13 +818,21 @@ static int input_default_getkeycode(struct input_dev *dev,
 int input_default_setkeycode(struct input_dev *dev,
 			     const struct input_keymap_entry *ke,
 			     unsigned int *old_keycode)
+=======
+static int input_default_setkeycode(struct input_dev *dev,
+				    const struct input_keymap_entry *ke,
+				    unsigned int *old_keycode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned int index;
 	int error;
 	int i;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&dev->event_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!dev->keycodesize)
 		return -EINVAL;
 
@@ -877,7 +886,10 @@ int input_default_setkeycode(struct input_dev *dev,
 	__set_bit(ke->keycode, dev->keybit);
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(input_default_setkeycode);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * input_get_keycode - retrieve keycode currently mapped to a given scancode

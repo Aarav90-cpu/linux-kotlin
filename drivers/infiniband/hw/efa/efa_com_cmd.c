@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 /*
+<<<<<<< HEAD
  * Copyright 2018-2026 Amazon.com, Inc. or its affiliates. All rights reserved.
+=======
+ * Copyright 2018-2025 Amazon.com, Inc. or its affiliates. All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 #include "efa_com.h"
@@ -479,14 +483,22 @@ int efa_com_get_device_attr(struct efa_com_dev *edev,
 
 	edev->supported_features = resp.u.device_attr.supported_features;
 	err = efa_com_get_feature(edev, &resp,
+<<<<<<< HEAD
 				  EFA_ADMIN_QUEUE_ATTR_1);
 	if (err) {
 		ibdev_err_ratelimited(edev->efa_dev,
 				      "Failed to get queue attributes1 %d\n",
+=======
+				  EFA_ADMIN_QUEUE_ATTR);
+	if (err) {
+		ibdev_err_ratelimited(edev->efa_dev,
+				      "Failed to get queue attributes %d\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      err);
 		return err;
 	}
 
+<<<<<<< HEAD
 	result->max_qp = resp.u.queue_attr_1.max_qp;
 	result->max_sq_depth = resp.u.queue_attr_1.max_sq_depth;
 	result->max_rq_depth = resp.u.queue_attr_1.max_rq_depth;
@@ -519,6 +531,25 @@ int efa_com_get_device_attr(struct efa_com_dev *edev,
 	} else {
 		result->inline_buf_size_ex = result->inline_buf_size;
 	}
+=======
+	result->max_qp = resp.u.queue_attr.max_qp;
+	result->max_sq_depth = resp.u.queue_attr.max_sq_depth;
+	result->max_rq_depth = resp.u.queue_attr.max_rq_depth;
+	result->max_cq = resp.u.queue_attr.max_cq;
+	result->max_cq_depth = resp.u.queue_attr.max_cq_depth;
+	result->inline_buf_size = resp.u.queue_attr.inline_buf_size;
+	result->max_sq_sge = resp.u.queue_attr.max_wr_send_sges;
+	result->max_rq_sge = resp.u.queue_attr.max_wr_recv_sges;
+	result->max_mr = resp.u.queue_attr.max_mr;
+	result->max_mr_pages = resp.u.queue_attr.max_mr_pages;
+	result->max_pd = resp.u.queue_attr.max_pd;
+	result->max_ah = resp.u.queue_attr.max_ah;
+	result->max_llq_size = resp.u.queue_attr.max_llq_size;
+	result->sub_cqs_per_cq = resp.u.queue_attr.sub_cqs_per_cq;
+	result->max_wr_rdma_sge = resp.u.queue_attr.max_wr_rdma_sges;
+	result->max_tx_batch = resp.u.queue_attr.max_tx_batch;
+	result->min_sq_depth = resp.u.queue_attr.min_sq_depth;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = efa_com_get_feature(edev, &resp, EFA_ADMIN_NETWORK_ATTR);
 	if (err) {

@@ -832,14 +832,27 @@ int tegra_pinctrl_probe(struct platform_device *pdev,
 	int fn, gn, gfn;
 	unsigned long backup_regs_size = 0;
 
+<<<<<<< HEAD
 	pmx = devm_kzalloc(&pdev->dev,
 			struct_size(pmx, pingroup_configs, soc_data->ngroups), GFP_KERNEL);
+=======
+	pmx = devm_kzalloc(&pdev->dev, sizeof(*pmx), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pmx)
 		return -ENOMEM;
 
 	pmx->dev = &pdev->dev;
 	pmx->soc = soc_data;
+<<<<<<< HEAD
 	pmx->num_pingroup_configs = soc_data->ngroups;
+=======
+
+	pmx->pingroup_configs = devm_kcalloc(&pdev->dev,
+					     pmx->soc->ngroups, sizeof(*pmx->pingroup_configs),
+					     GFP_KERNEL);
+	if (!pmx->pingroup_configs)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Each mux group will appear in 4 functions' list of groups.

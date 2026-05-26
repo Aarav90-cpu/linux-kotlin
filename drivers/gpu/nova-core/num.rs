@@ -215,6 +215,7 @@ impl_const_into!(usize => { u8, u16, u32 });
 impl_const_into!(u64 => { u8, u16, u32 });
 impl_const_into!(u32 => { u8, u16 });
 impl_const_into!(u16 => { u8 });
+<<<<<<< HEAD
 
 /// Creates an enum type associated to a [`Bounded`](kernel::num::Bounded), with a [`From`]
 /// conversion to the associated `Bounded` and either a [`TryFrom`] or `From` conversion from the
@@ -295,3 +296,5 @@ macro_rules! bounded_enum {
         }
     }
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

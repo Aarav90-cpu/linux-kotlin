@@ -14,6 +14,11 @@
  *
  * The only non-static object here is ext2_dir_inode_operations.
  *
+<<<<<<< HEAD
+=======
+ * TODO: get rid of kmap() use, add readahead.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Copyright (C) 1992, 1993, 1994, 1995
  * Remy Card (card@masi.ibp.fr)
  * Laboratoire MASI - Institut Blaise Pascal
@@ -291,10 +296,14 @@ static int ext2_unlink(struct inode *dir, struct dentry *dentry)
 		goto out;
 
 	inode_set_ctime_to_ts(inode, inode_get_ctime(dir));
+<<<<<<< HEAD
 
 	if (inode->i_nlink)
 		inode_dec_link_count(inode);
 
+=======
+	inode_dec_link_count(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = 0;
 out:
 	return err;

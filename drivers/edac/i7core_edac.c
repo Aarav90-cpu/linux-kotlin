@@ -240,9 +240,15 @@ struct pci_id_table {
 struct i7core_dev {
 	struct list_head	list;
 	u8			socket;
+<<<<<<< HEAD
 	struct mem_ctl_info	*mci;
 	int			n_devs;
 	struct pci_dev		*pdev[] __counted_by(n_devs);
+=======
+	struct pci_dev		**pdev;
+	int			n_devs;
+	struct mem_ctl_info	*mci;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct i7core_pvt {
@@ -455,12 +461,27 @@ static struct i7core_dev *alloc_i7core_dev(u8 socket,
 {
 	struct i7core_dev *i7core_dev;
 
+<<<<<<< HEAD
 	i7core_dev = kzalloc_flex(*i7core_dev, pdev, table->n_devs);
 	if (!i7core_dev)
 		return NULL;
 
 	i7core_dev->n_devs = table->n_devs;
 	i7core_dev->socket = socket;
+=======
+	i7core_dev = kzalloc_obj(*i7core_dev);
+	if (!i7core_dev)
+		return NULL;
+
+	i7core_dev->pdev = kzalloc_objs(*i7core_dev->pdev, table->n_devs);
+	if (!i7core_dev->pdev) {
+		kfree(i7core_dev);
+		return NULL;
+	}
+
+	i7core_dev->socket = socket;
+	i7core_dev->n_devs = table->n_devs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	list_add_tail(&i7core_dev->list, &i7core_edac_list);
 
 	return i7core_dev;
@@ -469,6 +490,10 @@ static struct i7core_dev *alloc_i7core_dev(u8 socket,
 static void free_i7core_dev(struct i7core_dev *i7core_dev)
 {
 	list_del(&i7core_dev->list);
+<<<<<<< HEAD
+=======
+	kfree(i7core_dev->pdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(i7core_dev);
 }
 

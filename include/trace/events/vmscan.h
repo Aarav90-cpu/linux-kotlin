@@ -124,6 +124,7 @@ TRACE_EVENT(mm_vmscan_wakeup_kswapd,
 
 DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
 
+<<<<<<< HEAD
 	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
 
 	TP_ARGS(gfp_flags, order, memcg),
@@ -146,33 +147,71 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
 		__entry->ent.pid,
 		__entry->memcg_id,
 		__event_in_irq() ? "(in-irq)" : "")
+=======
+	TP_PROTO(int order, gfp_t gfp_flags),
+
+	TP_ARGS(order, gfp_flags),
+
+	TP_STRUCT__entry(
+		__field(	int,	order		)
+		__field(	unsigned long,	gfp_flags	)
+	),
+
+	TP_fast_assign(
+		__entry->order		= order;
+		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
+	),
+
+	TP_printk("order=%d gfp_flags=%s",
+		__entry->order,
+		show_gfp_flags(__entry->gfp_flags))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_direct_reclaim_begin,
 
+<<<<<<< HEAD
 	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
 
 	TP_ARGS(gfp_flags, order, memcg)
+=======
+	TP_PROTO(int order, gfp_t gfp_flags),
+
+	TP_ARGS(order, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 #ifdef CONFIG_MEMCG
 DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_memcg_reclaim_begin,
 
+<<<<<<< HEAD
 	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
 
 	TP_ARGS(gfp_flags, order, memcg)
+=======
+	TP_PROTO(int order, gfp_t gfp_flags),
+
+	TP_ARGS(order, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_memcg_softlimit_reclaim_begin,
 
+<<<<<<< HEAD
 	TP_PROTO(gfp_t gfp_flags, int order, struct mem_cgroup *memcg),
 
 	TP_ARGS(gfp_flags, order, memcg)
+=======
+	TP_PROTO(int order, gfp_t gfp_flags),
+
+	TP_ARGS(order, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 #endif /* CONFIG_MEMCG */
 
 DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
 
+<<<<<<< HEAD
 	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 
 	TP_ARGS(nr_reclaimed, memcg),
@@ -180,10 +219,19 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
 	TP_STRUCT__entry(
 		__field(	unsigned long,	nr_reclaimed	)
 		__field(	u64,	memcg_id	)
+=======
+	TP_PROTO(unsigned long nr_reclaimed),
+
+	TP_ARGS(nr_reclaimed),
+
+	TP_STRUCT__entry(
+		__field(	unsigned long,	nr_reclaimed	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
 		__entry->nr_reclaimed	= nr_reclaimed;
+<<<<<<< HEAD
 		__entry->memcg_id	= mem_cgroup_id(memcg);
 	),
 
@@ -192,28 +240,51 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
 		__entry->ent.pid,
 		__entry->memcg_id,
 		__event_in_irq() ? "(in-irq)" : "")
+=======
+	),
+
+	TP_printk("nr_reclaimed=%lu", __entry->nr_reclaimed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_direct_reclaim_end,
 
+<<<<<<< HEAD
 	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 
 	TP_ARGS(nr_reclaimed, memcg)
+=======
+	TP_PROTO(unsigned long nr_reclaimed),
+
+	TP_ARGS(nr_reclaimed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 #ifdef CONFIG_MEMCG
 DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_memcg_reclaim_end,
 
+<<<<<<< HEAD
 	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 
 	TP_ARGS(nr_reclaimed, memcg)
+=======
+	TP_PROTO(unsigned long nr_reclaimed),
+
+	TP_ARGS(nr_reclaimed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_memcg_softlimit_reclaim_end,
 
+<<<<<<< HEAD
 	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 
 	TP_ARGS(nr_reclaimed, memcg)
+=======
+	TP_PROTO(unsigned long nr_reclaimed),
+
+	TP_ARGS(nr_reclaimed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 #endif /* CONFIG_MEMCG */
 
@@ -221,33 +292,52 @@ TRACE_EVENT(mm_shrink_slab_start,
 	TP_PROTO(struct shrinker *shr, struct shrink_control *sc,
 		long nr_objects_to_shrink, unsigned long cache_items,
 		unsigned long long delta, unsigned long total_scan,
+<<<<<<< HEAD
 		int priority, struct mem_cgroup *memcg),
 
 	TP_ARGS(shr, sc, nr_objects_to_shrink, cache_items, delta, total_scan,
 		priority, memcg),
+=======
+		int priority),
+
+	TP_ARGS(shr, sc, nr_objects_to_shrink, cache_items, delta, total_scan,
+		priority),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TP_STRUCT__entry(
 		__field(struct shrinker *, shr)
 		__field(void *, shrink)
+<<<<<<< HEAD
+=======
+		__field(int, nid)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(long, nr_objects_to_shrink)
 		__field(unsigned long, gfp_flags)
 		__field(unsigned long, cache_items)
 		__field(unsigned long long, delta)
 		__field(unsigned long, total_scan)
 		__field(int, priority)
+<<<<<<< HEAD
 		__field(int, nid)
 		__field(u64, memcg_id)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
 		__entry->shr = shr;
 		__entry->shrink = shr->scan_objects;
+<<<<<<< HEAD
+=======
+		__entry->nid = sc->nid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->nr_objects_to_shrink = nr_objects_to_shrink;
 		__entry->gfp_flags = (__force unsigned long)sc->gfp_mask;
 		__entry->cache_items = cache_items;
 		__entry->delta = delta;
 		__entry->total_scan = total_scan;
 		__entry->priority = priority;
+<<<<<<< HEAD
 		__entry->nid = sc->nid;
 		__entry->memcg_id = mem_cgroup_id(memcg);
 	),
@@ -258,17 +348,30 @@ TRACE_EVENT(mm_shrink_slab_start,
 		__entry->nid,
 		__entry->ent.pid,
 		__entry->memcg_id,
+=======
+	),
+
+	TP_printk("%pS %p: nid: %d objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d",
+		__entry->shrink,
+		__entry->shr,
+		__entry->nid,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__entry->nr_objects_to_shrink,
 		show_gfp_flags(__entry->gfp_flags),
 		__entry->cache_items,
 		__entry->delta,
 		__entry->total_scan,
+<<<<<<< HEAD
 		__entry->priority,
 		__event_in_irq() ? "(in-irq)" : "")
+=======
+		__entry->priority)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 TRACE_EVENT(mm_shrink_slab_end,
 	TP_PROTO(struct shrinker *shr, int nid, int shrinker_retval,
+<<<<<<< HEAD
 		long unused_scan_cnt, long new_scan_cnt, long total_scan, struct mem_cgroup *memcg),
 
 	TP_ARGS(shr, nid, shrinker_retval, unused_scan_cnt, new_scan_cnt,
@@ -283,10 +386,26 @@ TRACE_EVENT(mm_shrink_slab_end,
 		__field(int, nid)
 		__field(int, retval)
 		__field(u64, memcg_id)
+=======
+		long unused_scan_cnt, long new_scan_cnt, long total_scan),
+
+	TP_ARGS(shr, nid, shrinker_retval, unused_scan_cnt, new_scan_cnt,
+		total_scan),
+
+	TP_STRUCT__entry(
+		__field(struct shrinker *, shr)
+		__field(int, nid)
+		__field(void *, shrink)
+		__field(long, unused_scan)
+		__field(long, new_scan)
+		__field(int, retval)
+		__field(long, total_scan)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	),
 
 	TP_fast_assign(
 		__entry->shr = shr;
+<<<<<<< HEAD
 		__entry->shrink = shr->scan_objects;
 		__entry->unused_scan = unused_scan_cnt;
 		__entry->new_scan = new_scan_cnt;
@@ -307,6 +426,24 @@ TRACE_EVENT(mm_shrink_slab_end,
 		__entry->total_scan,
 		__entry->retval,
 		__event_in_irq() ? "(in-irq)" : "")
+=======
+		__entry->nid = nid;
+		__entry->shrink = shr->scan_objects;
+		__entry->unused_scan = unused_scan_cnt;
+		__entry->new_scan = new_scan_cnt;
+		__entry->retval = shrinker_retval;
+		__entry->total_scan = total_scan;
+	),
+
+	TP_printk("%pS %p: nid: %d unused scan count %ld new scan count %ld total_scan %ld last shrinker return val %d",
+		__entry->shrink,
+		__entry->shr,
+		__entry->nid,
+		__entry->unused_scan,
+		__entry->new_scan,
+		__entry->total_scan,
+		__entry->retval)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 TRACE_EVENT(mm_vmscan_lru_isolate,
@@ -535,9 +672,15 @@ TRACE_EVENT(mm_vmscan_node_reclaim_begin,
 
 DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_node_reclaim_end,
 
+<<<<<<< HEAD
 	TP_PROTO(unsigned long nr_reclaimed, struct mem_cgroup *memcg),
 
 	TP_ARGS(nr_reclaimed, memcg)
+=======
+	TP_PROTO(unsigned long nr_reclaimed),
+
+	TP_ARGS(nr_reclaimed)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 );
 
 TRACE_EVENT(mm_vmscan_throttled,

@@ -123,6 +123,7 @@ cleanup:
 	test_attach_probe_manual__destroy(skel);
 }
 
+<<<<<<< HEAD
 /* manual attach address-based kprobe/kretprobe testings */
 static void test_attach_kprobe_by_addr(enum probe_attach_mode attach_mode)
 {
@@ -257,6 +258,8 @@ cleanup:
 	test_attach_probe_manual__destroy(skel);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* attach uprobe/uretprobe long event name testings */
 static void test_attach_uprobe_long_event_name(void)
 {
@@ -354,6 +357,7 @@ static void test_attach_kprobe_write_ctx(void)
 
 	kprobe_write_ctx__destroy(skel);
 }
+<<<<<<< HEAD
 
 static void test_freplace_kprobe_write_ctx(void)
 {
@@ -411,16 +415,21 @@ out:
 	kprobe_write_ctx__destroy(skel_ext);
 	kprobe_write_ctx__destroy(skel_kprobe);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static void test_attach_kprobe_write_ctx(void)
 {
 	test__skip();
 }
+<<<<<<< HEAD
 
 static void test_freplace_kprobe_write_ctx(void)
 {
 	test__skip();
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 static void test_attach_probe_auto(struct test_attach_probe *skel)
@@ -612,6 +621,7 @@ void test_attach_probe(void)
 		test_attach_probe_manual(PROBE_ATTACH_MODE_PERF);
 	if (test__start_subtest("manual-link"))
 		test_attach_probe_manual(PROBE_ATTACH_MODE_LINK);
+<<<<<<< HEAD
 	if (test__start_subtest("kprobe-perf-by-addr"))
 		test_attach_kprobe_by_addr(PROBE_ATTACH_MODE_PERF);
 	if (test__start_subtest("kprobe-link-by-addr"))
@@ -627,6 +637,8 @@ void test_attach_probe(void)
 		test_attach_probe_dup_sym(PROBE_ATTACH_MODE_PERF);
 	if (test__start_subtest("dup-sym-link"))
 		test_attach_probe_dup_sym(PROBE_ATTACH_MODE_LINK);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (test__start_subtest("auto"))
 		test_attach_probe_auto(skel);
@@ -645,8 +657,11 @@ void test_attach_probe(void)
 		test_attach_kprobe_long_event_name();
 	if (test__start_subtest("kprobe-write-ctx"))
 		test_attach_kprobe_write_ctx();
+<<<<<<< HEAD
 	if (test__start_subtest("freplace-kprobe-write-ctx"))
 		test_freplace_kprobe_write_ctx();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 cleanup:
 	test_attach_probe__destroy(skel);

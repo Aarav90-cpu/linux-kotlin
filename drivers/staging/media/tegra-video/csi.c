@@ -12,7 +12,10 @@
 #include <linux/of_graph.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/tegra-mipi-cal.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <media/v4l2-fwnode.h>
 
@@ -21,6 +24,20 @@
 
 #define MHZ			1000000
 
+<<<<<<< HEAD
+=======
+static inline struct tegra_csi *
+host1x_client_to_csi(struct host1x_client *client)
+{
+	return container_of(client, struct tegra_csi, client);
+}
+
+static inline struct tegra_csi_channel *to_csi_chan(struct v4l2_subdev *subdev)
+{
+	return container_of(subdev, struct tegra_csi_channel, subdev);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * CSI is a separate subdevice which has 6 source pads to generate
  * test pattern. CSI subdevice pad ops are used only for TPG and
@@ -445,6 +462,7 @@ static const struct v4l2_subdev_ops tegra_csi_ops = {
 	.pad    = &tegra_csi_pad_ops,
 };
 
+<<<<<<< HEAD
 struct v4l2_subdev *tegra_channel_get_remote_csi_subdev(struct tegra_vi_channel *chan)
 {
 	struct media_pad *pad;
@@ -461,6 +479,8 @@ struct v4l2_subdev *tegra_channel_get_remote_csi_subdev(struct tegra_vi_channel 
 	return subdev->ops == &tegra_csi_ops ? subdev : NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tegra_csi_channel_alloc(struct tegra_csi *csi,
 				   struct device_node *node,
 				   unsigned int port_num, unsigned int lanes,
@@ -710,8 +730,11 @@ static int __maybe_unused csi_runtime_suspend(struct device *dev)
 
 	clk_bulk_disable_unprepare(csi->soc->num_clks, csi->clks);
 
+<<<<<<< HEAD
 	regulator_disable(csi->vdd);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -720,6 +743,7 @@ static int __maybe_unused csi_runtime_resume(struct device *dev)
 	struct tegra_csi *csi = dev_get_drvdata(dev);
 	int ret;
 
+<<<<<<< HEAD
 	ret = regulator_enable(csi->vdd);
 	if (ret) {
 		dev_err(dev, "failed to enable VDD supply: %d\n", ret);
@@ -737,6 +761,15 @@ static int __maybe_unused csi_runtime_resume(struct device *dev)
 disable_vdd:
 	regulator_disable(csi->vdd);
 	return ret;
+=======
+	ret = clk_bulk_prepare_enable(csi->soc->num_clks, csi->clks);
+	if (ret < 0) {
+		dev_err(csi->dev, "failed to enable clocks: %d\n", ret);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int tegra_csi_init(struct host1x_client *client)
@@ -814,11 +847,14 @@ static int tegra_csi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	csi->vdd = devm_regulator_get(&pdev->dev, "avdd-dsi-csi");
 	if (IS_ERR(csi->vdd))
 		return dev_err_probe(&pdev->dev, PTR_ERR(csi->vdd),
 				     "failed to get VDD supply");
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pdev->dev.pm_domain) {
 		ret = -ENOENT;
 		dev_warn(&pdev->dev, "PM domain is not attached: %d\n", ret);
@@ -827,6 +863,7 @@ static int tegra_csi_probe(struct platform_device *pdev)
 
 	csi->dev = &pdev->dev;
 	csi->ops = csi->soc->ops;
+<<<<<<< HEAD
 
 	if (csi->soc->mipi_ops) {
 		ret = devm_tegra_mipi_add_provider(&pdev->dev, pdev->dev.of_node,
@@ -838,6 +875,8 @@ static int tegra_csi_probe(struct platform_device *pdev)
 
 	mutex_init(&csi->mipi_lock);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	platform_set_drvdata(pdev, csi);
 	pm_runtime_enable(&pdev->dev);
 
@@ -870,12 +909,15 @@ static void tegra_csi_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id tegra_csi_of_id_table[] = {
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC)
 	{ .compatible = "nvidia,tegra20-csi", .data = &tegra20_csi_soc },
 #endif
 #if defined(CONFIG_ARCH_TEGRA_3x_SOC)
 	{ .compatible = "nvidia,tegra30-csi", .data = &tegra30_csi_soc },
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(CONFIG_ARCH_TEGRA_210_SOC)
 	{ .compatible = "nvidia,tegra210-csi", .data = &tegra210_csi_soc },
 #endif

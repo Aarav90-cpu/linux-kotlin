@@ -54,7 +54,11 @@ PROG COMMANDS
 |     **cgroup/sendmsg4** | **cgroup/sendmsg6** | **cgroup/sendmsg_unix** |
 |     **cgroup/recvmsg4** | **cgroup/recvmsg6** | **cgroup/recvmsg_unix** | **cgroup/sysctl** |
 |     **cgroup/getsockopt** | **cgroup/setsockopt** | **cgroup/sock_release** |
+<<<<<<< HEAD
 |     **struct_ops** | **fentry** | **fexit** | **fsession** | **freplace** | **sk_lookup**
+=======
+|     **struct_ops** | **fentry** | **fexit** | **freplace** | **sk_lookup**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 | }
 | *ATTACH_TYPE* := {
 |     **sk_msg_verdict** | **sk_skb_verdict** | **sk_skb_stream_verdict** |

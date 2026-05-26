@@ -135,6 +135,12 @@ static const struct drm_plane_funcs primary_plane_funcs = {
  *
  * This is purely a backwards compatibility helper for old drivers. Drivers
  * should instead implement their own primary plane. Atomic drivers must do so.
+<<<<<<< HEAD
+=======
+ * Drivers with the above hardware restriction can look into using &struct
+ * drm_simple_display_pipe, which encapsulates the above limitations into a nice
+ * interface.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Returns:
  * Zero on success, error code on failure.

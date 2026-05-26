@@ -22,7 +22,10 @@
 #include <uapi/linux/btrfs_tree.h>
 #include "messages.h"
 #include "extent-io-tree.h"
+<<<<<<< HEAD
 #include "fs.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct block_device;
 struct bdev_handle;
@@ -214,12 +217,15 @@ struct btrfs_device {
 
 	/* Bandwidth limit for scrub, in bytes */
 	u64 scrub_speed_max;
+<<<<<<< HEAD
 
 	/*
 	 * A temporary number of allocated space during per-profile
 	 * available space calculation.
 	 */
 	u64 per_profile_allocated;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -465,6 +471,7 @@ struct btrfs_fs_devices {
 	/* Device to be used for reading in case of RAID1. */
 	u64 read_devid;
 #endif
+<<<<<<< HEAD
 
 	/*
 	 * Each value indicates the available space for that profile.
@@ -474,6 +481,8 @@ struct btrfs_fs_devices {
 	 */
 	u64 per_profile_avail[BTRFS_NR_RAID_TYPES];
 	spinlock_t per_profile_lock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define BTRFS_MAX_DEVS(info) ((BTRFS_MAX_ITEM_SIZE(info)	\
@@ -903,6 +912,7 @@ int btrfs_bg_type_to_factor(u64 flags);
 const char *btrfs_bg_type_to_raid_name(u64 flags);
 int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
 bool btrfs_verify_dev_items(const struct btrfs_fs_info *fs_info);
+<<<<<<< HEAD
 void btrfs_update_per_profile_avail(struct btrfs_fs_info *fs_info);
 
 static inline bool btrfs_get_per_profile_avail(struct btrfs_fs_info *fs_info,
@@ -921,6 +931,8 @@ static inline bool btrfs_get_per_profile_avail(struct btrfs_fs_info *fs_info,
 	return uptodate;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool btrfs_repair_one_zone(struct btrfs_fs_info *fs_info, u64 logical);
 
 bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);

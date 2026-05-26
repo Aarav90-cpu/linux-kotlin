@@ -14,5 +14,8 @@ panthor-y := \
 	panthor_sched.o
 
 obj-$(CONFIG_DRM_PANTHOR) += panthor.o
+<<<<<<< HEAD
 
 CFLAGS_panthor_gpu.o := -I$(src)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

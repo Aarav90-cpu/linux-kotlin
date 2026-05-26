@@ -250,7 +250,10 @@ void opp1_set_dyn_expansion(
 	enum dc_color_depth color_dpth,
 	enum signal_type signal)
 {
+<<<<<<< HEAD
 	(void)color_sp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn10_opp *oppn10 = TO_DCN10_OPP(opp);
 
 	REG_UPDATE_2(FMT_DYNAMIC_EXP_CNTL,

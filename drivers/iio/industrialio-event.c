@@ -256,7 +256,10 @@ static const char * const iio_ev_info_text[] = {
 	[IIO_EV_INFO_TAP2_MIN_DELAY] = "tap2_min_delay",
 	[IIO_EV_INFO_RUNNING_PERIOD] = "runningperiod",
 	[IIO_EV_INFO_RUNNING_COUNT] = "runningcount",
+<<<<<<< HEAD
 	[IIO_EV_INFO_SCALE] = "scale",
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static enum iio_event_direction iio_ev_attr_dir(struct iio_dev_attr *attr)

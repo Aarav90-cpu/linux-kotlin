@@ -13,6 +13,9 @@ struct intel_colorop;
 struct intel_colorop *to_intel_colorop(struct drm_colorop *colorop);
 struct intel_colorop *intel_colorop_alloc(void);
 struct intel_colorop *intel_colorop_create(enum intel_color_block id);
+<<<<<<< HEAD
 void intel_colorop_destroy(struct drm_colorop *colorop);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* __INTEL_COLOROP_H__ */

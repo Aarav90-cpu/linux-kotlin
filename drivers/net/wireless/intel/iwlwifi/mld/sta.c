@@ -398,6 +398,7 @@ static u32 iwl_mld_get_htc_flags(struct ieee80211_link_sta *link_sta)
 	return htc_flags;
 }
 
+<<<<<<< HEAD
 /* Note: modifies the command depending on FW command version */
 static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
 				struct iwl_sta_cfg_cmd *cmd)
@@ -434,6 +435,14 @@ static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
 	}
 
 	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, cmd, len);
+=======
+static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
+				const struct iwl_sta_cfg_cmd *cmd)
+{
+	int ret = iwl_mld_send_cmd_pdu(mld,
+				       WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD),
+				       cmd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		IWL_ERR(mld, "STA_CONFIG_CMD send failed, ret=0x%x\n", ret);
 	return ret;
@@ -461,8 +470,13 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
 		return -EINVAL;
 
 	cmd.sta_id = cpu_to_le32(fw_id);
+<<<<<<< HEAD
 	cmd.link_mask = cpu_to_le32(BIT(mld_link->fw_id));
 	cmd.station_type = cpu_to_le32(mld_sta->sta_type);
+=======
+	cmd.station_type = cpu_to_le32(mld_sta->sta_type);
+	cmd.link_id = cpu_to_le32(mld_link->fw_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memcpy(&cmd.peer_mld_address, sta->addr, ETH_ALEN);
 	memcpy(&cmd.peer_link_address, link_sta->addr, ETH_ALEN);
@@ -528,7 +542,11 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
 	return iwl_mld_send_sta_cmd(mld, &cmd);
 }
 
+<<<<<<< HEAD
 static IWL_MLD_ALLOC_FN(link_sta, link_sta)
+=======
+IWL_MLD_ALLOC_FN(link_sta, link_sta)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int
 iwl_mld_add_link_sta(struct iwl_mld *mld, struct ieee80211_link_sta *link_sta)
@@ -755,14 +773,22 @@ iwl_mld_init_sta(struct iwl_mld *mld, struct ieee80211_sta *sta,
 }
 
 int iwl_mld_add_sta(struct iwl_mld *mld, struct ieee80211_sta *sta,
+<<<<<<< HEAD
 		    struct ieee80211_vif *vif)
+=======
+		    struct ieee80211_vif *vif, enum iwl_fw_sta_type type)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
 	struct ieee80211_link_sta *link_sta;
 	int link_id;
 	int ret;
 
+<<<<<<< HEAD
 	ret = iwl_mld_init_sta(mld, sta, vif, STATION_TYPE_PEER);
+=======
+	ret = iwl_mld_init_sta(mld, sta, vif, type);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -938,7 +964,11 @@ static void iwl_mld_count_mpdu(struct ieee80211_link_sta *link_sta, int queue,
 	if (!(mld_vif->emlsr.blocked_reasons & IWL_MLD_EMLSR_BLOCKED_TPT))
 		goto unlock;
 
+<<<<<<< HEAD
 	for (int i = 0; i < IWL_FW_MAX_LINKS; i++)
+=======
+	for (int i = 0; i <= IWL_FW_MAX_LINK_ID; i++)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		total_mpdus += tx ? queue_counter->per_link[i].tx :
 				    queue_counter->per_link[i].rx;
 
@@ -1012,7 +1042,11 @@ iwl_mld_add_internal_sta_to_fw(struct iwl_mld *mld,
 		return iwl_mld_send_aux_sta_cmd(mld, internal_sta);
 
 	cmd.sta_id = cpu_to_le32((u8)internal_sta->sta_id);
+<<<<<<< HEAD
 	cmd.link_mask = cpu_to_le32(BIT(fw_link_id));
+=======
+	cmd.link_id = cpu_to_le32(fw_link_id);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cmd.station_type = cpu_to_le32(internal_sta->sta_type);
 
 	/* FW doesn't allow to add a IGTK/BIGTK if the sta isn't marked as MFP.

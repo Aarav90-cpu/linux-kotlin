@@ -53,7 +53,10 @@ extern atomic_t ima_setxattr_allowed_hash_algorithms;
 struct ima_algo_desc {
 	struct crypto_shash *tfm;
 	enum hash_algo algo;
+<<<<<<< HEAD
 	unsigned int digest_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* set during initialization */
@@ -145,7 +148,10 @@ struct ima_kexec_hdr {
 #define IMA_DIGSIG_REQUIRED	0x01000000
 #define IMA_PERMIT_DIRECTIO	0x02000000
 #define IMA_NEW_FILE		0x04000000
+<<<<<<< HEAD
 #define IMA_SIGV3_REQUIRED	0x08000000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IMA_FAIL_UNVERIFIABLE_SIGS	0x10000000
 #define IMA_MODSIG_ALLOWED	0x20000000
 #define IMA_CHECK_BLACKLIST	0x40000000
@@ -178,6 +184,7 @@ struct ima_kexec_hdr {
 				 IMA_BPRM_APPRAISED | IMA_READ_APPRAISED | \
 				 IMA_CREDS_APPRAISED)
 
+<<<<<<< HEAD
 /*
  * IMA iint cache atomic_flags
  *
@@ -204,6 +211,9 @@ struct ima_kexec_hdr {
  * measurement list and to also emit an audit message.
  *
  */
+=======
+/* IMA iint cache atomic_flags */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IMA_CHANGE_XATTR	0
 #define IMA_UPDATE_XATTR	1
 #define IMA_CHANGE_ATTR		2

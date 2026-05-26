@@ -281,9 +281,12 @@ enum ieee80211_back_actioncode {
 	WLAN_ACTION_ADDBA_REQ = 0,
 	WLAN_ACTION_ADDBA_RESP = 1,
 	WLAN_ACTION_DELBA = 2,
+<<<<<<< HEAD
 	WLAN_ACTION_NDP_ADDBA_REQ = 128,
 	WLAN_ACTION_NDP_ADDBA_RESP = 129,
 	WLAN_ACTION_NDP_DELBA = 130,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* BACK (block-ack) parties */

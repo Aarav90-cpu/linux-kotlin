@@ -21,6 +21,7 @@ static int usb_port_block_power_off;
 
 static const struct attribute_group *port_dev_group[];
 
+<<<<<<< HEAD
 static bool usb_port_allow_power_off(struct usb_device *hdev,
 				     struct usb_hub *hub,
 				     struct usb_port *port_dev)
@@ -35,6 +36,8 @@ static bool usb_port_allow_power_off(struct usb_device *hdev,
 	       usb_acpi_power_manageable(hdev, port_dev->portnum - 1);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t early_stop_show(struct device *dev,
 			    struct device_attribute *attr, char *buf)
 {
@@ -820,10 +823,17 @@ int usb_hub_create_port_device(struct usb_hub *hub, int port1)
 	device_enable_async_suspend(&port_dev->dev);
 
 	/*
+<<<<<<< HEAD
 	 * Keep hidden the ability to enable port-poweroff if neither the
 	 * USB hub nor platform firmware can manage downstream port power.
 	 */
 	if (!usb_port_allow_power_off(hdev, hub, port_dev))
+=======
+	 * Keep hidden the ability to enable port-poweroff if the hub
+	 * does not support power switching.
+	 */
+	if (!hub_is_port_power_switchable(hub))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/* Attempt to let userspace take over the policy. */

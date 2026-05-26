@@ -1273,7 +1273,11 @@ static int get_ts_format(struct mlx5_ib_dev *dev, struct mlx5_ib_cq *cq,
 		}
 		return MLX5_TIMESTAMP_FORMAT_REAL_TIME;
 	}
+<<<<<<< HEAD
 	if (cq->private_flags & MLX5_IB_CQ_PR_TIMESTAMP_COMPLETION) {
+=======
+	if (cq->create_flags & IB_UVERBS_CQ_FLAGS_TIMESTAMP_COMPLETION) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!fr_sup) {
 			mlx5_ib_dbg(dev,
 				    "Free running TS format is not supported\n");
@@ -1603,11 +1607,14 @@ static int create_raw_packet_qp(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
 	}
 
 	if (qp->rq.wqe_cnt) {
+<<<<<<< HEAD
 		if (!rq->base.ubuffer.umem) {
 			err = -EINVAL;
 			goto err_destroy_sq;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->base.container_mibqp = qp;
 
 		if (qp->flags & IB_QP_CREATE_CVLAN_STRIPPING)
@@ -4712,12 +4719,29 @@ int mlx5_ib_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		return -ENOSYS;
 
 	if (udata && udata->inlen) {
+<<<<<<< HEAD
 		err = ib_copy_validate_udata_in_cm(udata, ucmd, ece_options,
 						   MLX5_IB_MODIFY_QP_OOO_DP);
 		if (err)
 			return err;
 
 		if (memchr_inv(&ucmd.burst_info.reserved, 0,
+=======
+		if (udata->inlen < offsetofend(typeof(ucmd), ece_options))
+			return -EINVAL;
+
+		if (udata->inlen > sizeof(ucmd) &&
+		    !ib_is_udata_cleared(udata, sizeof(ucmd),
+					 udata->inlen - sizeof(ucmd)))
+			return -EOPNOTSUPP;
+
+		if (ib_copy_from_udata(&ucmd, udata,
+				       min(udata->inlen, sizeof(ucmd))))
+			return -EFAULT;
+
+		if (ucmd.comp_mask & ~MLX5_IB_MODIFY_QP_OOO_DP ||
+		    memchr_inv(&ucmd.burst_info.reserved, 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       sizeof(ucmd.burst_info.reserved)))
 			return -EOPNOTSUPP;
 
@@ -5384,6 +5408,7 @@ static int prepare_user_rq(struct ib_pd *pd,
 			   struct mlx5_ib_rwq *rwq)
 {
 	struct mlx5_ib_dev *dev = to_mdev(pd->device);
+<<<<<<< HEAD
 	struct mlx5_ib_create_wq ucmd;
 	int err;
 
@@ -5396,6 +5421,35 @@ static int prepare_user_rq(struct ib_pd *pd,
 	}
 
 	if (ucmd.comp_mask & MLX5_IB_CREATE_WQ_STRIDING_RQ) {
+=======
+	struct mlx5_ib_create_wq ucmd = {};
+	int err;
+	size_t required_cmd_sz;
+
+	required_cmd_sz = offsetofend(struct mlx5_ib_create_wq,
+				      single_stride_log_num_of_bytes);
+	if (udata->inlen < required_cmd_sz) {
+		mlx5_ib_dbg(dev, "invalid inlen\n");
+		return -EINVAL;
+	}
+
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd))) {
+		mlx5_ib_dbg(dev, "inlen is not supported\n");
+		return -EOPNOTSUPP;
+	}
+
+	if (ib_copy_from_udata(&ucmd, udata, min(sizeof(ucmd), udata->inlen))) {
+		mlx5_ib_dbg(dev, "copy failed\n");
+		return -EFAULT;
+	}
+
+	if (ucmd.comp_mask & (~MLX5_IB_CREATE_WQ_STRIDING_RQ)) {
+		mlx5_ib_dbg(dev, "invalid comp mask\n");
+		return -EOPNOTSUPP;
+	} else if (ucmd.comp_mask & MLX5_IB_CREATE_WQ_STRIDING_RQ) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!MLX5_CAP_GEN(dev->mdev, striding_rq)) {
 			mlx5_ib_dbg(dev, "Striding RQ is not supported\n");
 			return -EOPNOTSUPP;
@@ -5608,6 +5662,10 @@ int mlx5_ib_modify_wq(struct ib_wq *wq, struct ib_wq_attr *wq_attr,
 	struct mlx5_ib_dev *dev = to_mdev(wq->device);
 	struct mlx5_ib_rwq *rwq = to_mrwq(wq);
 	struct mlx5_ib_modify_wq ucmd = {};
+<<<<<<< HEAD
+=======
+	size_t required_cmd_sz;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int curr_wq_state;
 	int wq_state;
 	int inlen;
@@ -5615,11 +5673,27 @@ int mlx5_ib_modify_wq(struct ib_wq *wq, struct ib_wq_attr *wq_attr,
 	void *rqc;
 	void *in;
 
+<<<<<<< HEAD
 	err = ib_copy_validate_udata_in_cm(udata, ucmd, reserved, 0);
 	if (err)
 		return err;
 
 	if (ucmd.reserved)
+=======
+	required_cmd_sz = offsetofend(struct mlx5_ib_modify_wq, reserved);
+	if (udata->inlen < required_cmd_sz)
+		return -EINVAL;
+
+	if (udata->inlen > sizeof(ucmd) &&
+	    !ib_is_udata_cleared(udata, sizeof(ucmd),
+				 udata->inlen - sizeof(ucmd)))
+		return -EOPNOTSUPP;
+
+	if (ib_copy_from_udata(&ucmd, udata, min(sizeof(ucmd), udata->inlen)))
+		return -EFAULT;
+
+	if (ucmd.comp_mask || ucmd.reserved)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	inlen = MLX5_ST_SZ_BYTES(modify_rq_in);

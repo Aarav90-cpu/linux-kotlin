@@ -47,12 +47,39 @@ static int ip_vs_conn_tab_bits = CONFIG_IP_VS_TAB_BITS;
 module_param_named(conn_tab_bits, ip_vs_conn_tab_bits, int, 0444);
 MODULE_PARM_DESC(conn_tab_bits, "Set connections' hash size");
 
+<<<<<<< HEAD
 /* Max table size */
 int ip_vs_conn_tab_size __read_mostly;
+=======
+/* size and mask values */
+int ip_vs_conn_tab_size __read_mostly;
+static int ip_vs_conn_tab_mask __read_mostly;
+
+/*
+ *  Connection hash table: for input and output packets lookups of IPVS
+ */
+static struct hlist_head *ip_vs_conn_tab __read_mostly;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*  SLAB cache for IPVS connections */
 static struct kmem_cache *ip_vs_conn_cachep __read_mostly;
 
+<<<<<<< HEAD
+=======
+/*  counter for no client port connections */
+static atomic_t ip_vs_conn_no_cport_cnt = ATOMIC_INIT(0);
+
+/* random value for IPVS connection hash */
+static unsigned int ip_vs_conn_rnd __read_mostly;
+
+/*
+ *  Fine locking granularity for big connection hash table
+ */
+#define CT_LOCKARRAY_BITS  5
+#define CT_LOCKARRAY_SIZE  (1<<CT_LOCKARRAY_BITS)
+#define CT_LOCKARRAY_MASK  (CT_LOCKARRAY_SIZE-1)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* We need an addrstrlen that works with or without v6 */
 #ifdef CONFIG_IP_VS_IPV6
 #define IP_VS_ADDRSTRLEN INET6_ADDRSTRLEN
@@ -60,6 +87,7 @@ static struct kmem_cache *ip_vs_conn_cachep __read_mostly;
 #define IP_VS_ADDRSTRLEN (8+1)
 #endif
 
+<<<<<<< HEAD
 /* Connection hashing:
  * - hash (add conn) and unhash (del conn) are safe for RCU readers walking
  * the bucket, they will not jump to another bucket or hash table and to miss
@@ -156,6 +184,25 @@ static inline void conn_tab_unlock(struct hlist_bl_head *head,
 		hlist_bl_unlock(head2);
 	hlist_bl_unlock(head);
 	local_bh_enable();
+=======
+struct ip_vs_aligned_lock
+{
+	spinlock_t	l;
+} __attribute__((__aligned__(SMP_CACHE_BYTES)));
+
+/* lock array for conn table */
+static struct ip_vs_aligned_lock
+__ip_vs_conntbl_lock_array[CT_LOCKARRAY_SIZE] __cacheline_aligned;
+
+static inline void ct_write_lock_bh(unsigned int key)
+{
+	spin_lock_bh(&__ip_vs_conntbl_lock_array[key&CT_LOCKARRAY_MASK].l);
+}
+
+static inline void ct_write_unlock_bh(unsigned int key)
+{
+	spin_unlock_bh(&__ip_vs_conntbl_lock_array[key&CT_LOCKARRAY_MASK].l);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ip_vs_conn_expire(struct timer_list *t);
@@ -163,6 +210,7 @@ static void ip_vs_conn_expire(struct timer_list *t);
 /*
  *	Returns hash value for IPVS connection entry
  */
+<<<<<<< HEAD
 static u32 ip_vs_conn_hashkey(struct ip_vs_rht *t, int af, unsigned int proto,
 			      const union nf_inet_addr *addr, __be16 port,
 			      const union nf_inet_addr *laddr, __be16 lport)
@@ -196,10 +244,37 @@ static unsigned int ip_vs_conn_hashkey_param(const struct ip_vs_conn_param *p,
 
 	if (p->pe_data && p->pe->hashkey_raw)
 		return p->pe->hashkey_raw(p, t, inverse);
+=======
+static unsigned int ip_vs_conn_hashkey(struct netns_ipvs *ipvs, int af, unsigned int proto,
+				       const union nf_inet_addr *addr,
+				       __be16 port)
+{
+#ifdef CONFIG_IP_VS_IPV6
+	if (af == AF_INET6)
+		return (jhash_3words(jhash(addr, 16, ip_vs_conn_rnd),
+				    (__force u32)port, proto, ip_vs_conn_rnd) ^
+			((size_t)ipvs>>8)) & ip_vs_conn_tab_mask;
+#endif
+	return (jhash_3words((__force u32)addr->ip, (__force u32)port, proto,
+			    ip_vs_conn_rnd) ^
+		((size_t)ipvs>>8)) & ip_vs_conn_tab_mask;
+}
+
+static unsigned int ip_vs_conn_hashkey_param(const struct ip_vs_conn_param *p,
+					     bool inverse)
+{
+	const union nf_inet_addr *addr;
+	__be16 port;
+
+	if (p->pe_data && p->pe->hashkey_raw)
+		return p->pe->hashkey_raw(p, ip_vs_conn_rnd, inverse) &
+			ip_vs_conn_tab_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (likely(!inverse)) {
 		addr = p->caddr;
 		port = p->cport;
+<<<<<<< HEAD
 		laddr = p->vaddr;
 		lport = p->vport;
 	} else {
@@ -227,6 +302,22 @@ static unsigned int ip_vs_conn_hashkey_conn(struct ip_vs_rht *t,
 		ip_vs_conn_fill_param(cp->ipvs, cp->af, cp->protocol,
 				      &cp->daddr, cp->dport, &cp->caddr,
 				      cp->cport, &p);
+=======
+	} else {
+		addr = p->vaddr;
+		port = p->vport;
+	}
+
+	return ip_vs_conn_hashkey(p->ipvs, p->af, p->protocol, addr, port);
+}
+
+static unsigned int ip_vs_conn_hashkey_conn(const struct ip_vs_conn *cp)
+{
+	struct ip_vs_conn_param p;
+
+	ip_vs_conn_fill_param(cp->ipvs, cp->af, cp->protocol,
+			      &cp->caddr, cp->cport, NULL, 0, &p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (cp->pe) {
 		p.pe = cp->pe;
@@ -234,25 +325,38 @@ static unsigned int ip_vs_conn_hashkey_conn(struct ip_vs_rht *t,
 		p.pe_data_len = cp->pe_data_len;
 	}
 
+<<<<<<< HEAD
 	return ip_vs_conn_hashkey_param(&p, t, out);
 }
 
 /*	Hashes ip_vs_conn in conn_tab
+=======
+	return ip_vs_conn_hashkey_param(&p, false);
+}
+
+/*
+ *	Hashes ip_vs_conn in ip_vs_conn_tab by netns,proto,addr,port.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	returns bool success.
  */
 static inline int ip_vs_conn_hash(struct ip_vs_conn *cp)
 {
+<<<<<<< HEAD
 	struct netns_ipvs *ipvs = cp->ipvs;
 	struct hlist_bl_head *head, *head2;
 	u32 hash_key, hash_key2;
 	struct ip_vs_rht *t;
 	u32 hash, hash2;
 	bool use2;
+=======
+	unsigned int hash;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
 		return 0;
 
+<<<<<<< HEAD
 	/* New entries go into recent table */
 	t = rcu_dereference(ipvs->conn_tab);
 	t = rcu_dereference(t->new_tbl);
@@ -329,13 +433,99 @@ static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
 	conn_tab_unlock(head, head2);
 
 	rcu_read_unlock();
+=======
+	/* Hash by protocol, client address and port */
+	hash = ip_vs_conn_hashkey_conn(cp);
+
+	ct_write_lock_bh(hash);
+	spin_lock(&cp->lock);
+
+	if (!(cp->flags & IP_VS_CONN_F_HASHED)) {
+		cp->flags |= IP_VS_CONN_F_HASHED;
+		refcount_inc(&cp->refcnt);
+		hlist_add_head_rcu(&cp->c_list, &ip_vs_conn_tab[hash]);
+		ret = 1;
+	} else {
+		pr_err("%s(): request for already hashed, called from %pS\n",
+		       __func__, __builtin_return_address(0));
+		ret = 0;
+	}
+
+	spin_unlock(&cp->lock);
+	ct_write_unlock_bh(hash);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
 
 
 /*
+<<<<<<< HEAD
  *  Gets ip_vs_conn associated with supplied parameters in the conn_tab.
+=======
+ *	UNhashes ip_vs_conn from ip_vs_conn_tab.
+ *	returns bool success. Caller should hold conn reference.
+ */
+static inline int ip_vs_conn_unhash(struct ip_vs_conn *cp)
+{
+	unsigned int hash;
+	int ret;
+
+	/* unhash it and decrease its reference counter */
+	hash = ip_vs_conn_hashkey_conn(cp);
+
+	ct_write_lock_bh(hash);
+	spin_lock(&cp->lock);
+
+	if (cp->flags & IP_VS_CONN_F_HASHED) {
+		hlist_del_rcu(&cp->c_list);
+		cp->flags &= ~IP_VS_CONN_F_HASHED;
+		refcount_dec(&cp->refcnt);
+		ret = 1;
+	} else
+		ret = 0;
+
+	spin_unlock(&cp->lock);
+	ct_write_unlock_bh(hash);
+
+	return ret;
+}
+
+/* Try to unlink ip_vs_conn from ip_vs_conn_tab.
+ * returns bool success.
+ */
+static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
+{
+	unsigned int hash;
+	bool ret = false;
+
+	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
+		return refcount_dec_if_one(&cp->refcnt);
+
+	hash = ip_vs_conn_hashkey_conn(cp);
+
+	ct_write_lock_bh(hash);
+	spin_lock(&cp->lock);
+
+	if (cp->flags & IP_VS_CONN_F_HASHED) {
+		/* Decrease refcnt and unlink conn only if we are last user */
+		if (refcount_dec_if_one(&cp->refcnt)) {
+			hlist_del_rcu(&cp->c_list);
+			cp->flags &= ~IP_VS_CONN_F_HASHED;
+			ret = true;
+		}
+	}
+
+	spin_unlock(&cp->lock);
+	ct_write_unlock_bh(hash);
+
+	return ret;
+}
+
+
+/*
+ *  Gets ip_vs_conn associated with supplied parameters in the ip_vs_conn_tab.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *  Called for pkts coming from OUTside-to-INside.
  *	p->caddr, p->cport: pkt source address (foreign host)
  *	p->vaddr, p->vport: pkt dest address (load balancer)
@@ -343,6 +533,7 @@ static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
 static inline struct ip_vs_conn *
 __ip_vs_conn_in_get(const struct ip_vs_conn_param *p)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKET_RCU();
 	struct netns_ipvs *ipvs = p->ipvs;
 	struct ip_vs_conn_hnode *hn;
@@ -379,6 +570,28 @@ __ip_vs_conn_in_get(const struct ip_vs_conn_param *p)
 					}
 				}
 			}
+=======
+	unsigned int hash;
+	struct ip_vs_conn *cp;
+
+	hash = ip_vs_conn_hashkey_param(p, false);
+
+	rcu_read_lock();
+
+	hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[hash], c_list) {
+		if (p->cport == cp->cport && p->vport == cp->vport &&
+		    cp->af == p->af &&
+		    ip_vs_addr_equal(p->af, p->caddr, &cp->caddr) &&
+		    ip_vs_addr_equal(p->af, p->vaddr, &cp->vaddr) &&
+		    ((!p->cport) ^ (!(cp->flags & IP_VS_CONN_F_NO_CPORT))) &&
+		    p->protocol == cp->protocol &&
+		    cp->ipvs == p->ipvs) {
+			if (!__ip_vs_conn_get(cp))
+				continue;
+			/* HIT */
+			rcu_read_unlock();
+			return cp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -392,6 +605,7 @@ struct ip_vs_conn *ip_vs_conn_in_get(const struct ip_vs_conn_param *p)
 	struct ip_vs_conn *cp;
 
 	cp = __ip_vs_conn_in_get(p);
+<<<<<<< HEAD
 	if (!cp) {
 		struct netns_ipvs *ipvs = p->ipvs;
 		int af_id = ip_vs_af_index(p->af);
@@ -402,6 +616,12 @@ struct ip_vs_conn *ip_vs_conn_in_get(const struct ip_vs_conn_param *p)
 			cport_zero_p.cport = 0;
 			cp = __ip_vs_conn_in_get(&cport_zero_p);
 		}
+=======
+	if (!cp && atomic_read(&ip_vs_conn_no_cport_cnt)) {
+		struct ip_vs_conn_param cport_zero_p = *p;
+		cport_zero_p.cport = 0;
+		cp = __ip_vs_conn_in_get(&cport_zero_p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	IP_VS_DBG_BUF(9, "lookup/in %s %s:%d->%s:%d %s\n",
@@ -451,6 +671,7 @@ EXPORT_SYMBOL_GPL(ip_vs_conn_in_get_proto);
 /* Get reference to connection template */
 struct ip_vs_conn *ip_vs_ct_in_get(const struct ip_vs_conn_param *p)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKET_RCU();
 	struct netns_ipvs *ipvs = p->ipvs;
 	struct ip_vs_conn_hnode *hn;
@@ -498,6 +719,39 @@ struct ip_vs_conn *ip_vs_ct_in_get(const struct ip_vs_conn_param *p)
 			}
 		}
 
+=======
+	unsigned int hash;
+	struct ip_vs_conn *cp;
+
+	hash = ip_vs_conn_hashkey_param(p, false);
+
+	rcu_read_lock();
+
+	hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[hash], c_list) {
+		if (unlikely(p->pe_data && p->pe->ct_match)) {
+			if (cp->ipvs != p->ipvs)
+				continue;
+			if (p->pe == cp->pe && p->pe->ct_match(p, cp)) {
+				if (__ip_vs_conn_get(cp))
+					goto out;
+			}
+			continue;
+		}
+
+		if (cp->af == p->af &&
+		    ip_vs_addr_equal(p->af, p->caddr, &cp->caddr) &&
+		    /* protocol should only be IPPROTO_IP if
+		     * p->vaddr is a fwmark */
+		    ip_vs_addr_equal(p->protocol == IPPROTO_IP ? AF_UNSPEC :
+				     p->af, p->vaddr, &cp->vaddr) &&
+		    p->vport == cp->vport && p->cport == cp->cport &&
+		    cp->flags & IP_VS_CONN_F_TEMPLATE &&
+		    p->protocol == cp->protocol &&
+		    cp->ipvs == p->ipvs) {
+			if (__ip_vs_conn_get(cp))
+				goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	cp = NULL;
 
@@ -513,12 +767,17 @@ struct ip_vs_conn *ip_vs_ct_in_get(const struct ip_vs_conn_param *p)
 	return cp;
 }
 
+<<<<<<< HEAD
 /* Gets ip_vs_conn associated with supplied parameters in the conn_tab.
+=======
+/* Gets ip_vs_conn associated with supplied parameters in the ip_vs_conn_tab.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Called for pkts coming from inside-to-OUTside.
  *	p->caddr, p->cport: pkt source address (inside host)
  *	p->vaddr, p->vport: pkt dest address (foreign host) */
 struct ip_vs_conn *ip_vs_conn_out_get(const struct ip_vs_conn_param *p)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKET_RCU();
 	struct netns_ipvs *ipvs = p->ipvs;
 	const union nf_inet_addr *saddr;
@@ -566,15 +825,60 @@ struct ip_vs_conn *ip_vs_conn_out_get(const struct ip_vs_conn_param *p)
 	cp = NULL;
 
 out:
+=======
+	unsigned int hash;
+	struct ip_vs_conn *cp, *ret=NULL;
+	const union nf_inet_addr *saddr;
+	__be16 sport;
+
+	/*
+	 *	Check for "full" addressed entries
+	 */
+	hash = ip_vs_conn_hashkey_param(p, true);
+
+	rcu_read_lock();
+
+	hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[hash], c_list) {
+		if (p->vport != cp->cport)
+			continue;
+
+		if (IP_VS_FWD_METHOD(cp) != IP_VS_CONN_F_MASQ) {
+			sport = cp->vport;
+			saddr = &cp->vaddr;
+		} else {
+			sport = cp->dport;
+			saddr = &cp->daddr;
+		}
+
+		if (p->cport == sport && cp->af == p->af &&
+		    ip_vs_addr_equal(p->af, p->vaddr, &cp->caddr) &&
+		    ip_vs_addr_equal(p->af, p->caddr, saddr) &&
+		    p->protocol == cp->protocol &&
+		    cp->ipvs == p->ipvs) {
+			if (!__ip_vs_conn_get(cp))
+				continue;
+			/* HIT */
+			ret = cp;
+			break;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 
 	IP_VS_DBG_BUF(9, "lookup/out %s %s:%d->%s:%d %s\n",
 		      ip_vs_proto_name(p->protocol),
 		      IP_VS_DBG_ADDR(p->af, p->caddr), ntohs(p->cport),
 		      IP_VS_DBG_ADDR(p->af, p->vaddr), ntohs(p->vport),
+<<<<<<< HEAD
 		      cp ? "hit" : "not hit");
 
 	return cp;
+=======
+		      ret ? "hit" : "not hit");
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct ip_vs_conn *
@@ -619,6 +923,7 @@ void ip_vs_conn_put(struct ip_vs_conn *cp)
  */
 void ip_vs_conn_fill_cport(struct ip_vs_conn *cp, __be16 cport)
 {
+<<<<<<< HEAD
 	struct hlist_bl_head *head, *head2, *head_new;
 	bool use2 = ip_vs_conn_use_hash2(cp);
 	struct netns_ipvs *ipvs = cp->ipvs;
@@ -919,6 +1224,22 @@ out:
 	queue_delayed_work(system_unbound_wq, &ipvs->conn_resize_work,
 			   more_work ? 1 : 2 * HZ);
 }
+=======
+	if (ip_vs_conn_unhash(cp)) {
+		spin_lock_bh(&cp->lock);
+		if (cp->flags & IP_VS_CONN_F_NO_CPORT) {
+			atomic_dec(&ip_vs_conn_no_cport_cnt);
+			cp->flags &= ~IP_VS_CONN_F_NO_CPORT;
+			cp->cport = cport;
+		}
+		spin_unlock_bh(&cp->lock);
+
+		/* hash on new dport */
+		ip_vs_conn_hash(cp);
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  *	Bind a connection entry with the corresponding packet_xmit.
@@ -1202,11 +1523,25 @@ int ip_vs_check_template(struct ip_vs_conn *ct, struct ip_vs_dest *cdest)
 			      IP_VS_DBG_ADDR(ct->daf, &ct->daddr),
 			      ntohs(ct->dport));
 
+<<<<<<< HEAD
 		/* Invalidate the connection template. Prefer to avoid
 		 * rehashing, it will move it as first in chain, so use
 		 * only dport as indication, it is not a hash key.
 		 */
 		ct->dport = htons(0xffff);
+=======
+		/*
+		 * Invalidate the connection template
+		 */
+		if (ct->vport != htons(0xffff)) {
+			if (ip_vs_conn_unhash(ct)) {
+				ct->dport = htons(0xffff);
+				ct->vport = htons(0xffff);
+				ct->cport = 0;
+				ip_vs_conn_hash(ct);
+			}
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/*
 		 * Simply decrease the refcnt of the template,
@@ -1301,11 +1636,16 @@ static void ip_vs_conn_expire(struct timer_list *t)
 		if (unlikely(cp->app != NULL))
 			ip_vs_unbind_app(cp);
 		ip_vs_unbind_dest(cp);
+<<<<<<< HEAD
 		if (unlikely(cp->flags & IP_VS_CONN_F_NO_CPORT)) {
 			int af_id = ip_vs_af_index(cp->af);
 
 			atomic_dec(&ipvs->no_cport_conns[af_id]);
 		}
+=======
+		if (cp->flags & IP_VS_CONN_F_NO_CPORT)
+			atomic_dec(&ip_vs_conn_no_cport_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
 			ip_vs_conn_rcu_free(&cp->rcu_head);
 		else
@@ -1347,7 +1687,11 @@ void ip_vs_conn_expire_now(struct ip_vs_conn *cp)
 
 
 /*
+<<<<<<< HEAD
  *	Create a new connection entry and hash it into the conn_tab
+=======
+ *	Create a new connection entry and hash it into the ip_vs_conn_tab
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct ip_vs_conn *
 ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
@@ -1365,6 +1709,7 @@ ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	INIT_HLIST_BL_NODE(&cp->hn0.node);
 	INIT_HLIST_BL_NODE(&cp->hn1.node);
 	timer_setup(&cp->timer, ip_vs_conn_expire, 0);
@@ -1372,6 +1717,12 @@ ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 	cp->hn0.dir	   = 0;
 	cp->af		   = p->af;
 	cp->hn1.dir	   = 1;
+=======
+	INIT_HLIST_NODE(&cp->c_list);
+	timer_setup(&cp->timer, ip_vs_conn_expire, 0);
+	cp->ipvs	   = ipvs;
+	cp->af		   = p->af;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cp->daf		   = dest_af;
 	cp->protocol	   = p->protocol;
 	ip_vs_addr_set(p->af, &cp->caddr, p->caddr);
@@ -1415,11 +1766,16 @@ ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 	cp->out_seq.delta = 0;
 
 	atomic_inc(&ipvs->conn_count);
+<<<<<<< HEAD
 	if (unlikely(flags & IP_VS_CONN_F_NO_CPORT)) {
 		int af_id = ip_vs_af_index(cp->af);
 
 		atomic_inc(&ipvs->no_cport_conns[af_id]);
 	}
+=======
+	if (flags & IP_VS_CONN_F_NO_CPORT)
+		atomic_inc(&ip_vs_conn_no_cport_cnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Bind the connection with a destination server */
 	cp->dest = NULL;
@@ -1452,7 +1808,11 @@ ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 	if (ip_vs_conntrack_enabled(ipvs))
 		cp->flags |= IP_VS_CONN_F_NFCT;
 
+<<<<<<< HEAD
 	/* Hash it in the conn_tab finally */
+=======
+	/* Hash it in the ip_vs_conn_tab finally */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ip_vs_conn_hash(cp);
 
 	return cp;
@@ -1464,6 +1824,7 @@ ip_vs_conn_new(const struct ip_vs_conn_param *p, int dest_af,
 #ifdef CONFIG_PROC_FS
 struct ip_vs_iter_state {
 	struct seq_net_private	p;
+<<<<<<< HEAD
 	struct ip_vs_rht	*t;
 	int			gen;
 	u32			bucket;
@@ -1496,11 +1857,33 @@ static void *ip_vs_conn_array(struct seq_file *seq)
 			if (skip >= iter->skip_elems) {
 				iter->bucket = idx;
 				return hn;
+=======
+	unsigned int		bucket;
+	unsigned int		skip_elems;
+};
+
+static void *ip_vs_conn_array(struct ip_vs_iter_state *iter)
+{
+	int idx;
+	struct ip_vs_conn *cp;
+
+	for (idx = iter->bucket; idx < ip_vs_conn_tab_size; idx++) {
+		unsigned int skip = 0;
+
+		hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[idx], c_list) {
+			/* __ip_vs_conn_get() is not needed by
+			 * ip_vs_conn_seq_show and ip_vs_conn_sync_seq_show
+			 */
+			if (skip >= iter->skip_elems) {
+				iter->bucket = idx;
+				return cp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 
 			++skip;
 		}
 
+<<<<<<< HEAD
 		if (!(idx & 31)) {
 			cond_resched_rcu();
 			/* New table installed ? */
@@ -1508,6 +1891,10 @@ static void *ip_vs_conn_array(struct seq_file *seq)
 				break;
 		}
 		iter->skip_elems = 0;
+=======
+		iter->skip_elems = 0;
+		cond_resched_rcu();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	iter->bucket = idx;
@@ -1518,6 +1905,7 @@ static void *ip_vs_conn_seq_start(struct seq_file *seq, loff_t *pos)
 	__acquires(RCU)
 {
 	struct ip_vs_iter_state *iter = seq->private;
+<<<<<<< HEAD
 	struct net *net = seq_file_net(seq);
 	struct netns_ipvs *ipvs = net_ipvs(net);
 
@@ -1525,17 +1913,26 @@ static void *ip_vs_conn_seq_start(struct seq_file *seq, loff_t *pos)
 	iter->gen = atomic_read(&ipvs->conn_tab_changes);
 	smp_rmb(); /* ipvs->conn_tab and conn_tab_changes */
 	iter->t = rcu_dereference(ipvs->conn_tab);
+=======
+
+	rcu_read_lock();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (*pos == 0) {
 		iter->skip_elems = 0;
 		iter->bucket = 0;
 		return SEQ_START_TOKEN;
 	}
 
+<<<<<<< HEAD
 	return ip_vs_conn_array(seq);
+=======
+	return ip_vs_conn_array(iter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void *ip_vs_conn_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 {
+<<<<<<< HEAD
 	struct ip_vs_iter_state *iter = seq->private;
 	struct ip_vs_conn_hnode *hn = v;
 	struct hlist_bl_node *e;
@@ -1558,12 +1955,31 @@ static void *ip_vs_conn_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 			continue;
 		iter->skip_elems++;
 		return hn;
+=======
+	struct ip_vs_conn *cp = v;
+	struct ip_vs_iter_state *iter = seq->private;
+	struct hlist_node *e;
+
+	++*pos;
+	if (v == SEQ_START_TOKEN)
+		return ip_vs_conn_array(iter);
+
+	/* more on same hash chain? */
+	e = rcu_dereference(hlist_next_rcu(&cp->c_list));
+	if (e) {
+		iter->skip_elems++;
+		return hlist_entry(e, struct ip_vs_conn, c_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	iter->skip_elems = 0;
 	iter->bucket++;
 
+<<<<<<< HEAD
 	return ip_vs_conn_array(seq);
+=======
+	return ip_vs_conn_array(iter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ip_vs_conn_seq_stop(struct seq_file *seq, void *v)
@@ -1579,12 +1995,22 @@ static int ip_vs_conn_seq_show(struct seq_file *seq, void *v)
 		seq_puts(seq,
    "Pro FromIP   FPrt ToIP     TPrt DestIP   DPrt State       Expires PEName PEData\n");
 	else {
+<<<<<<< HEAD
 		struct ip_vs_conn_hnode *hn = v;
 		const struct ip_vs_conn *cp = ip_vs_hn0_to_conn(hn);
+=======
+		const struct ip_vs_conn *cp = v;
+		struct net *net = seq_file_net(seq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		char pe_data[IP_VS_PENAME_MAXLEN + IP_VS_PEDATA_MAXLEN + 3];
 		size_t len = 0;
 		char dbuf[IP_VS_ADDRSTRLEN];
 
+<<<<<<< HEAD
+=======
+		if (!net_eq(cp->ipvs->net, net))
+			return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (cp->pe_data) {
 			pe_data[0] = ' ';
 			len = strlen(cp->pe->name);
@@ -1656,6 +2082,13 @@ static int ip_vs_conn_sync_seq_show(struct seq_file *seq, void *v)
    "Pro FromIP   FPrt ToIP     TPrt DestIP   DPrt State       Origin Expires\n");
 	else {
 		const struct ip_vs_conn *cp = v;
+<<<<<<< HEAD
+=======
+		struct net *net = seq_file_net(seq);
+
+		if (!net_eq(cp->ipvs->net, net))
+			return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_IP_VS_IPV6
 		if (cp->daf == AF_INET6)
@@ -1702,7 +2135,10 @@ static const struct seq_operations ip_vs_conn_sync_seq_ops = {
 };
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SYSCTL
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Randomly drop connection entries before running out of memory
  * Can be used for DATA and CTL conns. For TPL conns there are exceptions:
@@ -1712,7 +2148,16 @@ static const struct seq_operations ip_vs_conn_sync_seq_ops = {
  */
 static inline int todrop_entry(struct ip_vs_conn *cp)
 {
+<<<<<<< HEAD
 	struct netns_ipvs *ipvs = cp->ipvs;
+=======
+	/*
+	 * The drop rate array needs tuning for real environments.
+	 * Called from timer bh only => no locking
+	 */
+	static const signed char todrop_rate[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+	static signed char todrop_counter[9] = {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	/* if the conn entry hasn't lasted for 60 seconds, don't drop it.
@@ -1721,6 +2166,7 @@ static inline int todrop_entry(struct ip_vs_conn *cp)
 	if (time_before(cp->timeout + jiffies, cp->timer.expires + 60*HZ))
 		return 0;
 
+<<<<<<< HEAD
 	/* Drop only conns with number of incoming packets in [1..8] range */
 	i = atomic_read(&cp->in_pkts);
 	if (i > 8 || i < 1)
@@ -1732,6 +2178,17 @@ static inline int todrop_entry(struct ip_vs_conn *cp)
 
 	/* Prefer to drop conns with less number of incoming packets */
 	ipvs->dropentry_counters[i] = i + 1;
+=======
+	/* Don't drop the entry if its number of incoming packets is not
+	   located in [0, 8] */
+	i = atomic_read(&cp->in_pkts);
+	if (i > 8 || i < 0) return 0;
+
+	if (!todrop_rate[i]) return 0;
+	if (--todrop_counter[i] > 0) return 0;
+
+	todrop_counter[i] = todrop_rate[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -1745,6 +2202,7 @@ static inline bool ip_vs_conn_ops_mode(struct ip_vs_conn *cp)
 	return svc && (svc->flags & IP_VS_SVC_F_ONEPACKET);
 }
 
+<<<<<<< HEAD
 void ip_vs_random_dropentry(struct netns_ipvs *ipvs)
 {
 	struct ip_vs_conn_hnode *hn;
@@ -1772,6 +2230,24 @@ void ip_vs_random_dropentry(struct netns_ipvs *ipvs)
 			if (hn->dir != 0)
 				continue;
 			cp = ip_vs_hn0_to_conn(hn);
+=======
+/* Called from keventd and must protect itself from softirqs */
+void ip_vs_random_dropentry(struct netns_ipvs *ipvs)
+{
+	int idx;
+	struct ip_vs_conn *cp;
+
+	rcu_read_lock();
+	/*
+	 * Randomly scan 1/32 of the whole table every second
+	 */
+	for (idx = 0; idx < (ip_vs_conn_tab_size>>5); idx++) {
+		unsigned int hash = get_random_u32() & ip_vs_conn_tab_mask;
+
+		hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[hash], c_list) {
+			if (cp->ipvs != ipvs)
+				continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (atomic_read(&cp->n_control))
 				continue;
 			if (cp->flags & IP_VS_CONN_F_TEMPLATE) {
@@ -1818,6 +2294,7 @@ drop:
 			IP_VS_DBG(4, "drop connection\n");
 			ip_vs_conn_del(cp);
 		}
+<<<<<<< HEAD
 		if (!(idx & 31)) {
 			cond_resched_rcu();
 			t = rcu_dereference(ipvs->conn_tab);
@@ -1855,6 +2332,29 @@ flush_again:
 			if (hn->dir != 0)
 				continue;
 			cp = ip_vs_hn0_to_conn(hn);
+=======
+		cond_resched_rcu();
+	}
+	rcu_read_unlock();
+}
+
+
+/*
+ *      Flush all the connection entries in the ip_vs_conn_tab
+ */
+static void ip_vs_conn_flush(struct netns_ipvs *ipvs)
+{
+	int idx;
+	struct ip_vs_conn *cp, *cp_c;
+
+flush_again:
+	rcu_read_lock();
+	for (idx = 0; idx < ip_vs_conn_tab_size; idx++) {
+
+		hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[idx], c_list) {
+			if (cp->ipvs != ipvs)
+				continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (atomic_read(&cp->n_control))
 				continue;
 			cp_c = cp->control;
@@ -1875,6 +2375,7 @@ flush_again:
 		schedule();
 		goto flush_again;
 	}
+<<<<<<< HEAD
 
 unreg:
 	/* Unregister the hash table and release it after RCU grace period.
@@ -1893,11 +2394,14 @@ unreg:
 			break;
 		t = p;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_SYSCTL
 void ip_vs_expire_nodest_conn_flush(struct netns_ipvs *ipvs)
 {
+<<<<<<< HEAD
 	DECLARE_IP_VS_RHT_WALK_BUCKETS_RCU();
 	unsigned int resched_score = 0;
 	struct ip_vs_conn *cp, *cp_c;
@@ -1920,6 +2424,18 @@ repeat:
 				continue;
 			cp = ip_vs_hn0_to_conn(hn);
 			resched_score++;
+=======
+	int idx;
+	struct ip_vs_conn *cp, *cp_c;
+	struct ip_vs_dest *dest;
+
+	rcu_read_lock();
+	for (idx = 0; idx < ip_vs_conn_tab_size; idx++) {
+		hlist_for_each_entry_rcu(cp, &ip_vs_conn_tab[idx], c_list) {
+			if (cp->ipvs != ipvs)
+				continue;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dest = cp->dest;
 			if (!dest || (dest->flags & IP_VS_DEST_F_AVAILABLE))
 				continue;
@@ -1934,6 +2450,7 @@ repeat:
 				IP_VS_DBG(4, "del controlling connection\n");
 				ip_vs_conn_del(cp_c);
 			}
+<<<<<<< HEAD
 			resched_score += 10;
 		}
 		resched_score++;
@@ -1953,6 +2470,15 @@ repeat:
 	}
 
 out:
+=======
+		}
+		cond_resched_rcu();
+
+		/* netns clean up started, abort delayed work */
+		if (!READ_ONCE(ipvs->enable))
+			break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 }
 #endif
@@ -1962,6 +2488,7 @@ out:
  */
 int __net_init ip_vs_conn_net_init(struct netns_ipvs *ipvs)
 {
+<<<<<<< HEAD
 	int idx;
 
 	atomic_set(&ipvs->conn_count, 0);
@@ -1971,6 +2498,9 @@ int __net_init ip_vs_conn_net_init(struct netns_ipvs *ipvs)
 	RCU_INIT_POINTER(ipvs->conn_tab, NULL);
 	atomic_set(&ipvs->conn_tab_changes, 0);
 	ipvs->sysctl_conn_lfactor = ip_vs_conn_default_load_factor(ipvs);
+=======
+	atomic_set(&ipvs->conn_count, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_PROC_FS
 	if (!proc_create_net("ip_vs_conn", 0, ipvs->net->proc_net,
@@ -2006,6 +2536,7 @@ void __net_exit ip_vs_conn_net_cleanup(struct netns_ipvs *ipvs)
 
 int __init ip_vs_conn_init(void)
 {
+<<<<<<< HEAD
 	int min = IP_VS_CONN_TAB_MIN_BITS;
 	int max = IP_VS_CONN_TAB_MAX_BITS;
 	size_t tab_array_size;
@@ -2014,28 +2545,73 @@ int __init ip_vs_conn_init(void)
 	max_avail = order_base_2(totalram_pages()) + PAGE_SHIFT;
 	/* 64-bit: 27 bits at 64GB, 32-bit: 20 bits at 512MB */
 	max_avail += 1;		/* hash table loaded at 50% */
+=======
+	size_t tab_array_size;
+	int max_avail;
+#if BITS_PER_LONG > 32
+	int max = 27;
+#else
+	int max = 20;
+#endif
+	int min = 8;
+	int idx;
+
+	max_avail = order_base_2(totalram_pages()) + PAGE_SHIFT;
+	max_avail -= 2;		/* ~4 in hash row */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	max_avail -= 1;		/* IPVS up to 1/2 of mem */
 	max_avail -= order_base_2(sizeof(struct ip_vs_conn));
 	max = clamp(max_avail, min, max);
 	ip_vs_conn_tab_bits = clamp(ip_vs_conn_tab_bits, min, max);
 	ip_vs_conn_tab_size = 1 << ip_vs_conn_tab_bits;
+<<<<<<< HEAD
+=======
+	ip_vs_conn_tab_mask = ip_vs_conn_tab_size - 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Allocate the connection hash table and initialize its list heads
 	 */
 	tab_array_size = array_size(ip_vs_conn_tab_size,
+<<<<<<< HEAD
 				    sizeof(struct hlist_bl_head));
 
 	/* Allocate ip_vs_conn slab cache */
 	ip_vs_conn_cachep = KMEM_CACHE(ip_vs_conn, SLAB_HWCACHE_ALIGN);
 	if (!ip_vs_conn_cachep)
 		return -ENOMEM;
+=======
+				    sizeof(*ip_vs_conn_tab));
+	ip_vs_conn_tab = kvmalloc_objs(*ip_vs_conn_tab, ip_vs_conn_tab_size);
+	if (!ip_vs_conn_tab)
+		return -ENOMEM;
+
+	/* Allocate ip_vs_conn slab cache */
+	ip_vs_conn_cachep = KMEM_CACHE(ip_vs_conn, SLAB_HWCACHE_ALIGN);
+	if (!ip_vs_conn_cachep) {
+		kvfree(ip_vs_conn_tab);
+		return -ENOMEM;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	pr_info("Connection hash table configured (size=%d, memory=%zdKbytes)\n",
 		ip_vs_conn_tab_size, tab_array_size / 1024);
 	IP_VS_DBG(0, "Each connection entry needs %zd bytes at least\n",
 		  sizeof(struct ip_vs_conn));
 
+<<<<<<< HEAD
+=======
+	for (idx = 0; idx < ip_vs_conn_tab_size; idx++)
+		INIT_HLIST_HEAD(&ip_vs_conn_tab[idx]);
+
+	for (idx = 0; idx < CT_LOCKARRAY_SIZE; idx++)  {
+		spin_lock_init(&__ip_vs_conntbl_lock_array[idx].l);
+	}
+
+	/* calculate the random value for connection hash */
+	get_random_bytes(&ip_vs_conn_rnd, sizeof(ip_vs_conn_rnd));
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -2045,4 +2621,8 @@ void ip_vs_conn_cleanup(void)
 	rcu_barrier();
 	/* Release the empty cache */
 	kmem_cache_destroy(ip_vs_conn_cachep);
+<<<<<<< HEAD
+=======
+	kvfree(ip_vs_conn_tab);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

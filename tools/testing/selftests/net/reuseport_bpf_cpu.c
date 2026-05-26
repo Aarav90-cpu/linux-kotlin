@@ -228,6 +228,7 @@ static void test(int *rcv_fd, int len, int family, int proto)
 		close(rcv_fd[cpu]);
 }
 
+<<<<<<< HEAD
 static void setup_netns(void)
 {
 	if (unshare(CLONE_NEWNET))
@@ -236,12 +237,17 @@ static void setup_netns(void)
 		error(1, 0, "failed to bring up lo interface in netns");
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int main(void)
 {
 	int *rcv_fd, cpus;
 
+<<<<<<< HEAD
 	setup_netns();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpus = sysconf(_SC_NPROCESSORS_ONLN);
 	if (cpus <= 0)
 		error(1, errno, "failed counting cpus");

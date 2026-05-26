@@ -5,7 +5,10 @@
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/device.h>
@@ -16,7 +19,10 @@
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/scatterlist.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/slab.h>
 #include <linux/timekeeping.h>
 #include <uapi/linux/map_benchmark.h>
@@ -33,6 +39,7 @@ struct map_benchmark_data {
 	atomic64_t loops;
 };
 
+<<<<<<< HEAD
 struct map_benchmark_ops {
 	void *(*prepare)(struct map_benchmark_data *map);
 	void (*unprepare)(void *mparam);
@@ -246,6 +253,19 @@ static int map_benchmark_thread(void *data)
 	void *mparam = mb_ops->prepare(map);
 
 	if (!mparam)
+=======
+static int map_benchmark_thread(void *data)
+{
+	void *buf;
+	dma_addr_t dma_addr;
+	struct map_benchmark_data *map = data;
+	int npages = map->bparam.granule;
+	u64 size = npages * PAGE_SIZE;
+	int ret = 0;
+
+	buf = alloc_pages_exact(size, GFP_KERNEL);
+	if (!buf)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 
 	while (!kthread_should_stop())  {
@@ -253,12 +273,32 @@ static int map_benchmark_thread(void *data)
 		ktime_t map_stime, map_etime, unmap_stime, unmap_etime;
 		ktime_t map_delta, unmap_delta;
 
+<<<<<<< HEAD
 		mb_ops->initialize_data(mparam);
 		map_stime = ktime_get();
 		ret = mb_ops->do_map(mparam);
 		if (ret)
 			goto out;
 
+=======
+		/*
+		 * for a non-coherent device, if we don't stain them in the
+		 * cache, this will give an underestimate of the real-world
+		 * overhead of BIDIRECTIONAL or TO_DEVICE mappings;
+		 * 66 means evertything goes well! 66 is lucky.
+		 */
+		if (map->dir != DMA_FROM_DEVICE)
+			memset(buf, 0x66, size);
+
+		map_stime = ktime_get();
+		dma_addr = dma_map_single(map->dev, buf, size, map->dir);
+		if (unlikely(dma_mapping_error(map->dev, dma_addr))) {
+			pr_err("dma_map_single failed on %s\n",
+				dev_name(map->dev));
+			ret = -ENOMEM;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		map_etime = ktime_get();
 		map_delta = ktime_sub(map_etime, map_stime);
 
@@ -266,8 +306,12 @@ static int map_benchmark_thread(void *data)
 		ndelay(map->bparam.dma_trans_ns);
 
 		unmap_stime = ktime_get();
+<<<<<<< HEAD
 		mb_ops->do_unmap(mparam);
 
+=======
+		dma_unmap_single(map->dev, dma_addr, size, map->dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unmap_etime = ktime_get();
 		unmap_delta = ktime_sub(unmap_etime, unmap_stime);
 
@@ -302,7 +346,11 @@ static int map_benchmark_thread(void *data)
 	}
 
 out:
+<<<<<<< HEAD
 	mb_ops->unprepare(mparam);
+=======
+	free_pages_exact(buf, size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -403,12 +451,15 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
 
 	switch (cmd) {
 	case DMA_MAP_BENCHMARK:
+<<<<<<< HEAD
 		if (map->bparam.map_mode < 0 ||
 		    map->bparam.map_mode >= DMA_MAP_BENCH_MODE_MAX) {
 			pr_err("invalid map mode\n");
 			return -EINVAL;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (map->bparam.threads == 0 ||
 		    map->bparam.threads > DMA_MAP_MAX_THREADS) {
 			pr_err("invalid thread number\n");

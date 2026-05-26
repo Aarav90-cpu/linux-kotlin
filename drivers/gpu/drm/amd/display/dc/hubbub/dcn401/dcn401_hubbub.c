@@ -70,7 +70,10 @@ bool hubbub401_program_urgent_watermarks(
 		unsigned int refclk_mhz,
 		bool safe_to_lower)
 {
+<<<<<<< HEAD
 	(void)refclk_mhz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 	bool wm_pending = false;
 
@@ -189,7 +192,10 @@ bool hubbub401_program_stutter_watermarks(
 		unsigned int refclk_mhz,
 		bool safe_to_lower)
 {
+<<<<<<< HEAD
 	(void)refclk_mhz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 	bool wm_pending = false;
 
@@ -289,7 +295,10 @@ bool hubbub401_program_pstate_watermarks(
 		unsigned int refclk_mhz,
 		bool safe_to_lower)
 {
+<<<<<<< HEAD
 	(void)refclk_mhz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 	bool wm_pending = false;
 
@@ -417,7 +426,10 @@ bool hubbub401_program_usr_watermarks(
 		unsigned int refclk_mhz,
 		bool safe_to_lower)
 {
+<<<<<<< HEAD
 	(void)refclk_mhz;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 	bool wm_pending = false;
 
@@ -1155,6 +1167,11 @@ void dcn401_program_compbuf_segments(struct hubbub *hubbub, unsigned compbuf_siz
 {
 	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
 
+<<<<<<< HEAD
+=======
+	unsigned int cur_compbuf_size_seg = 0;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (safe_to_increase || compbuf_size_seg <= hubbub2->compbuf_size_segments) {
 		if (compbuf_size_seg > hubbub2->compbuf_size_segments) {
 			REG_WAIT(DCHUBBUB_DET0_CTRL, DET0_SIZE_CURRENT, hubbub2->det0_size, 1, 100);
@@ -1167,6 +1184,11 @@ void dcn401_program_compbuf_segments(struct hubbub *hubbub, unsigned compbuf_siz
 				+ hubbub2->det3_size + compbuf_size_seg <= hubbub2->crb_size_segs);
 		REG_UPDATE(DCHUBBUB_COMPBUF_CTRL, COMPBUF_SIZE, compbuf_size_seg);
 		hubbub2->compbuf_size_segments = compbuf_size_seg;
+<<<<<<< HEAD
+=======
+
+		ASSERT(REG_GET(DCHUBBUB_COMPBUF_CTRL, CONFIG_ERROR, &cur_compbuf_size_seg) && !cur_compbuf_size_seg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

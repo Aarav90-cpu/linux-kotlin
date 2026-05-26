@@ -6,6 +6,10 @@
 #include "vdso.h"
 #include "namespaces.h"
 #include <errno.h>
+<<<<<<< HEAD
+=======
+#include <libgen.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdlib.h>
 #include <string.h>
 #include <symbol.h> // filename__read_build_id
@@ -195,9 +199,12 @@ static struct dso *__dsos__find_by_longname_id(struct dsos *dsos,
 
 int __dsos__add(struct dsos *dsos, struct dso *dso)
 {
+<<<<<<< HEAD
 	if (!dso)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dsos->cnt == dsos->allocated) {
 		unsigned int to_allocate = 2;
 		struct dso **temp;
@@ -296,6 +303,7 @@ struct dso *dsos__find(struct dsos *dsos, const char *name, bool cmp_short)
 
 static void dso__set_basename(struct dso *dso)
 {
+<<<<<<< HEAD
 	bool allocated = false;
 	const char *base;
 	int tid;
@@ -311,6 +319,36 @@ static void dso__set_basename(struct dso *dso)
 		base = perf_basename(dso__long_name(dso));
 	}
 	dso__set_short_name(dso, base, allocated);
+=======
+	char *base, *lname;
+	int tid;
+
+	if (perf_pid_map_tid(dso__long_name(dso), &tid)) {
+		if (asprintf(&base, "[JIT] tid %d", tid) < 0)
+			return;
+	} else {
+	      /*
+	       * basename() may modify path buffer, so we must pass
+               * a copy.
+               */
+		lname = strdup(dso__long_name(dso));
+		if (!lname)
+			return;
+
+		/*
+		 * basename() may return a pointer to internal
+		 * storage which is reused in subsequent calls
+		 * so copy the result.
+		 */
+		base = strdup(basename(lname));
+
+		free(lname);
+
+		if (!base)
+			return;
+	}
+	dso__set_short_name(dso, base, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct dso *__dsos__addnew_id(struct dsos *dsos, const char *name, const struct dso_id *id)

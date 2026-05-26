@@ -1818,15 +1818,24 @@ static struct enet_cb *bcmgenet_put_txcb(struct bcmgenet_priv *priv,
 {
 	struct enet_cb *tx_cb_ptr;
 
+<<<<<<< HEAD
+=======
+	tx_cb_ptr = ring->cbs;
+	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Rewinding local write pointer */
 	if (ring->write_ptr == ring->cb_ptr)
 		ring->write_ptr = ring->end_ptr;
 	else
 		ring->write_ptr--;
 
+<<<<<<< HEAD
 	tx_cb_ptr = ring->cbs;
 	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return tx_cb_ptr;
 }
 
@@ -1984,7 +1993,10 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
 		drop = (ring->prod_index - ring->c_index) & DMA_C_INDEX_MASK;
 		released += drop;
 		ring->prod_index = ring->c_index & DMA_C_INDEX_MASK;
+<<<<<<< HEAD
 		ring->free_bds += drop;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		while (drop--) {
 			cb_ptr = bcmgenet_put_txcb(priv, ring);
 			skb = cb_ptr->skb;
@@ -1996,7 +2008,10 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
 		}
 		if (skb)
 			dev_consume_skb_any(skb);
+<<<<<<< HEAD
 		netdev_tx_reset_queue(netdev_get_tx_queue(dev, ring->index));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bcmgenet_tdma_ring_writel(priv, ring->index,
 					  ring->prod_index, TDMA_PROD_INDEX);
 		wr_ptr = ring->write_ptr * WORDS_PER_BD(priv);
@@ -3476,6 +3491,7 @@ static void bcmgenet_dump_tx_queue(struct bcmgenet_tx_ring *ring)
 static void bcmgenet_timeout(struct net_device *dev, unsigned int txqueue)
 {
 	struct bcmgenet_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	struct bcmgenet_tx_ring *ring = &priv->tx_rings[txqueue];
 	struct netdev_queue *txq = netdev_get_tx_queue(dev, txqueue);
 
@@ -3493,6 +3509,29 @@ static void bcmgenet_timeout(struct net_device *dev, unsigned int txqueue)
 	BCMGENET_STATS64_INC((&ring->stats64), errors);
 
 	netif_tx_wake_queue(txq);
+=======
+	u32 int1_enable = 0;
+	unsigned int q;
+
+	netif_dbg(priv, tx_err, dev, "bcmgenet_timeout\n");
+
+	for (q = 0; q <= priv->hw_params->tx_queues; q++)
+		bcmgenet_dump_tx_queue(&priv->tx_rings[q]);
+
+	bcmgenet_tx_reclaim_all(dev);
+
+	for (q = 0; q <= priv->hw_params->tx_queues; q++)
+		int1_enable |= (1 << q);
+
+	/* Re-enable TX interrupts if disabled */
+	bcmgenet_intrl2_1_writel(priv, int1_enable, INTRL2_CPU_MASK_CLEAR);
+
+	netif_trans_update(dev);
+
+	BCMGENET_STATS64_INC((&priv->tx_rings[txqueue].stats64), errors);
+
+	netif_tx_wake_all_queues(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #define MAX_MDF_FILTER	17

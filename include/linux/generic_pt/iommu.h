@@ -66,6 +66,7 @@ struct pt_iommu {
 	struct device *iommu_device;
 };
 
+<<<<<<< HEAD
 static inline struct pt_iommu *iommupt_from_domain(struct iommu_domain *domain)
 {
 	if (!IS_ENABLED(CONFIG_IOMMU_PT) || !domain->is_iommupt)
@@ -73,6 +74,8 @@ static inline struct pt_iommu *iommupt_from_domain(struct iommu_domain *domain)
 	return container_of(domain, struct pt_iommu, domain);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct pt_iommu_info - Details about the IOMMU page table
  *
@@ -88,6 +91,7 @@ struct pt_iommu_info {
 
 struct pt_iommu_ops {
 	/**
+<<<<<<< HEAD
 	 * @map_range: Install translation for an IOVA range
 	 * @iommu_table: Table to manipulate
 	 * @iova: IO virtual address to start
@@ -138,6 +142,8 @@ struct pt_iommu_ops {
 			      struct iommu_iotlb_gather *iotlb_gather);
 
 	/**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * @set_dirty: Make the iova write dirty
 	 * @iommu_table: Table to manipulate
 	 * @iova: IO virtual address to start
@@ -251,6 +257,17 @@ struct pt_iommu_cfg {
 #define IOMMU_PROTOTYPES(fmt)                                                  \
 	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
 						  dma_addr_t iova);            \
+<<<<<<< HEAD
+=======
+	int pt_iommu_##fmt##_map_pages(struct iommu_domain *domain,            \
+				       unsigned long iova, phys_addr_t paddr,  \
+				       size_t pgsize, size_t pgcount,          \
+				       int prot, gfp_t gfp, size_t *mapped);   \
+	size_t pt_iommu_##fmt##_unmap_pages(                                   \
+		struct iommu_domain *domain, unsigned long iova,               \
+		size_t pgsize, size_t pgcount,                                 \
+		struct iommu_iotlb_gather *iotlb_gather);                      \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
 		struct iommu_domain *domain, unsigned long iova, size_t size,  \
 		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
@@ -271,7 +288,13 @@ struct pt_iommu_cfg {
  * iommu_pt
  */
 #define IOMMU_PT_DOMAIN_OPS(fmt)                        \
+<<<<<<< HEAD
 	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys
+=======
+	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys, \
+	.map_pages = &pt_iommu_##fmt##_map_pages,       \
+	.unmap_pages = &pt_iommu_##fmt##_unmap_pages
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IOMMU_PT_DIRTY_OPS(fmt) \
 	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
 
@@ -322,6 +345,7 @@ struct pt_iommu_vtdss_hw_info {
 
 IOMMU_FORMAT(vtdss, vtdss_pt);
 
+<<<<<<< HEAD
 struct pt_iommu_riscv_64_cfg {
 	struct pt_iommu_cfg common;
 };
@@ -333,6 +357,8 @@ struct pt_iommu_riscv_64_hw_info {
 
 IOMMU_FORMAT(riscv_64, riscv_64pt);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pt_iommu_x86_64_cfg {
 	struct pt_iommu_cfg common;
 	/* 4 is a 57 bit 5 level table */

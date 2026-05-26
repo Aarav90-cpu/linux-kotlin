@@ -104,11 +104,16 @@ AMD_DISPLAY_FILES += $(AMD_DAL_OPTC_DCN35)
 
 ###############################################################################
 
+<<<<<<< HEAD
+=======
+###############################################################################
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 OPTC_DCN401 = dcn401_optc.o
 
 AMD_DAL_OPTC_DCN401 = $(addprefix $(AMDDALPATH)/dc/optc/dcn401/,$(OPTC_DCN401))
 
 AMD_DISPLAY_FILES += $(AMD_DAL_OPTC_DCN401)
+<<<<<<< HEAD
 
 ###############################################################################
 
@@ -118,5 +123,7 @@ AMD_DAL_OPTC_DCN42 = $(addprefix $(AMDDALPATH)/dc/optc/dcn42/,$(OPTC_DCN42))
 
 AMD_DISPLAY_FILES += $(AMD_DAL_OPTC_DCN42)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 

@@ -187,7 +187,10 @@ static inline u64 vgic_ich_hcr_trap_bits(void)
  * registers regardless of the hardware backed GIC used.
  */
 struct vgic_vmcr {
+<<<<<<< HEAD
 	u32	en; /* GICv5-specific */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32	grpen0;
 	u32	grpen1;
 
@@ -364,6 +367,7 @@ void vgic_debug_init(struct kvm *kvm);
 void vgic_debug_destroy(struct kvm *kvm);
 
 int vgic_v5_probe(const struct gic_kvm_info *info);
+<<<<<<< HEAD
 void vgic_v5_reset(struct kvm_vcpu *vcpu);
 int vgic_v5_init(struct kvm *kvm);
 int vgic_v5_map_resources(struct kvm *kvm);
@@ -377,6 +381,8 @@ void vgic_v5_set_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr);
 void vgic_v5_get_vmcr(struct kvm_vcpu *vcpu, struct vgic_vmcr *vmcr);
 void vgic_v5_restore_state(struct kvm_vcpu *vcpu);
 void vgic_v5_save_state(struct kvm_vcpu *vcpu);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline int vgic_v3_max_apr_idx(struct kvm_vcpu *vcpu)
 {
@@ -439,6 +445,18 @@ void vgic_its_invalidate_all_caches(struct kvm *kvm);
 int vgic_its_inv_lpi(struct kvm *kvm, struct vgic_irq *irq);
 int vgic_its_invall(struct kvm_vcpu *vcpu);
 
+<<<<<<< HEAD
+=======
+bool system_supports_direct_sgis(void);
+bool vgic_supports_direct_msis(struct kvm *kvm);
+bool vgic_supports_direct_sgis(struct kvm *kvm);
+
+static inline bool vgic_supports_direct_irqs(struct kvm *kvm)
+{
+	return vgic_supports_direct_msis(kvm) || vgic_supports_direct_sgis(kvm);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int vgic_v4_init(struct kvm *kvm);
 void vgic_v4_teardown(struct kvm *kvm);
 void vgic_v4_configure_vsgis(struct kvm *kvm);
@@ -452,11 +470,14 @@ static inline bool kvm_has_gicv3(struct kvm *kvm)
 	return kvm_has_feat(kvm, ID_AA64PFR0_EL1, GIC, IMP);
 }
 
+<<<<<<< HEAD
 static inline bool kvm_has_gicv5(struct kvm *kvm)
 {
 	return kvm_has_feat(kvm, ID_AA64PFR2_EL1, GCIE, IMP);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void vgic_v3_flush_nested(struct kvm_vcpu *vcpu);
 void vgic_v3_sync_nested(struct kvm_vcpu *vcpu);
 void vgic_v3_load_nested(struct kvm_vcpu *vcpu);
@@ -464,6 +485,7 @@ void vgic_v3_put_nested(struct kvm_vcpu *vcpu);
 void vgic_v3_handle_nested_maint_irq(struct kvm_vcpu *vcpu);
 void vgic_v3_nested_update_mi(struct kvm_vcpu *vcpu);
 
+<<<<<<< HEAD
 static inline bool vgic_host_has_gicv3(void)
 {
 	/*
@@ -490,6 +512,17 @@ static inline bool vgic_supports_direct_irqs(struct kvm *kvm)
 		return true;
 
 	return vgic_supports_direct_msis(kvm) || vgic_supports_direct_sgis(kvm);
+=======
+static inline bool vgic_is_v3_compat(struct kvm *kvm)
+{
+	return cpus_have_final_cap(ARM64_HAS_GICV5_CPUIF) &&
+		kvm_vgic_global_state.has_gcie_v3_compat;
+}
+
+static inline bool vgic_is_v3(struct kvm *kvm)
+{
+	return kvm_vgic_global_state.type == VGIC_V3 || vgic_is_v3_compat(kvm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int vgic_its_debug_init(struct kvm_device *dev);

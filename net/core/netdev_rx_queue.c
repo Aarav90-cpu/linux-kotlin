@@ -10,6 +10,7 @@
 #include "dev.h"
 #include "page_pool_priv.h"
 
+<<<<<<< HEAD
 void netdev_rx_queue_lease(struct netdev_rx_queue *rxq_dst,
 			   struct netdev_rx_queue *rxq_src)
 {
@@ -95,6 +96,17 @@ bool netif_rxq_has_mp(struct net_device *dev, unsigned int rxq_idx)
 	return false;
 }
 
+=======
+/* See also page_pool_is_unreadable() */
+bool netif_rxq_has_unreadable_mp(struct net_device *dev, int idx)
+{
+	struct netdev_rx_queue *rxq = __netif_get_rx_queue(dev, idx);
+
+	return !!rxq->mp_params.mp_ops;
+}
+EXPORT_SYMBOL(netif_rxq_has_unreadable_mp);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int netdev_rx_queue_reconfig(struct net_device *dev,
 				    unsigned int rxq_idx,
 				    struct netdev_queue_config *qcfg_old,
@@ -184,9 +196,15 @@ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
 }
 EXPORT_SYMBOL_NS_GPL(netdev_rx_queue_restart, "NETDEV_INTERNAL");
 
+<<<<<<< HEAD
 static int __netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
 			       const struct pp_memory_provider_params *p,
 			       struct netlink_ext_ack *extack)
+=======
+int __net_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
+		      const struct pp_memory_provider_params *p,
+		      struct netlink_ext_ack *extack)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct netdev_queue_mgmt_ops *qops = dev->queue_mgmt_ops;
 	struct netdev_queue_config qcfg[2];
@@ -196,6 +214,15 @@ static int __netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
 	if (!qops)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
+=======
+	if (rxq_idx >= dev->real_num_rx_queues) {
+		NL_SET_ERR_MSG(extack, "rx queue index out of range");
+		return -ERANGE;
+	}
+	rxq_idx = array_index_nospec(rxq_idx, dev->real_num_rx_queues);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (dev->cfg->hds_config != ETHTOOL_TCP_DATA_SPLIT_ENABLED) {
 		NL_SET_ERR_MSG(extack, "tcp-data-split is disabled");
 		return -EINVAL;
@@ -242,6 +269,7 @@ err_clear_mp:
 	return ret;
 }
 
+<<<<<<< HEAD
 int netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
 		      const struct pp_memory_provider_params *p,
 		      struct netlink_ext_ack *extack)
@@ -271,18 +299,39 @@ int netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
 
 	netdev_lock(dev);
 	ret = __netif_mp_open_rxq(dev, rxq_idx, p, extack);
+=======
+int net_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
+		    struct pp_memory_provider_params *p)
+{
+	int ret;
+
+	netdev_lock(dev);
+	ret = __net_mp_open_rxq(dev, rxq_idx, p, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	netdev_unlock(dev);
 	return ret;
 }
 
+<<<<<<< HEAD
 static void __netif_mp_close_rxq(struct net_device *dev, unsigned int rxq_idx,
 				 const struct pp_memory_provider_params *old_p)
+=======
+void __net_mp_close_rxq(struct net_device *dev, unsigned int ifq_idx,
+			const struct pp_memory_provider_params *old_p)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct netdev_queue_config qcfg[2];
 	struct netdev_rx_queue *rxq;
 	int err;
 
+<<<<<<< HEAD
 	rxq = __netif_get_rx_queue(dev, rxq_idx);
+=======
+	if (WARN_ON_ONCE(ifq_idx >= dev->real_num_rx_queues))
+		return;
+
+	rxq = __netif_get_rx_queue(dev, ifq_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Callers holding a netdev ref may get here after we already
 	 * went thru shutdown via dev_memory_provider_uninstall().
@@ -295,6 +344,7 @@ static void __netif_mp_close_rxq(struct net_device *dev, unsigned int rxq_idx,
 			 rxq->mp_params.mp_priv != old_p->mp_priv))
 		return;
 
+<<<<<<< HEAD
 	netdev_queue_config(dev, rxq_idx, &qcfg[0]);
 	memset(&rxq->mp_params, 0, sizeof(rxq->mp_params));
 	netdev_queue_config(dev, rxq_idx, &qcfg[1]);
@@ -347,3 +397,20 @@ void netif_rxq_cleanup_unlease(struct netdev_rx_queue *phys_rxq,
 	__netif_mp_uninstall_rxq(virt_rxq, p);
 	__netif_mp_close_rxq(phys_rxq->dev, rxq_idx, p);
 }
+=======
+	netdev_queue_config(dev, ifq_idx, &qcfg[0]);
+	memset(&rxq->mp_params, 0, sizeof(rxq->mp_params));
+	netdev_queue_config(dev, ifq_idx, &qcfg[1]);
+
+	err = netdev_rx_queue_reconfig(dev, ifq_idx, &qcfg[0], &qcfg[1]);
+	WARN_ON(err && err != -ENETDOWN);
+}
+
+void net_mp_close_rxq(struct net_device *dev, unsigned ifq_idx,
+		      struct pp_memory_provider_params *old_p)
+{
+	netdev_lock(dev);
+	__net_mp_close_rxq(dev, ifq_idx, old_p);
+	netdev_unlock(dev);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

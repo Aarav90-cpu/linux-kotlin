@@ -402,15 +402,19 @@ static ssize_t rfi_restriction_show(struct device *dev,
 	return sysfs_emit(buf, "%llu\n", resp);
 }
 
+<<<<<<< HEAD
  /* ddr_data_rate */
 static const struct mmio_reg nvl_ddr_data_rate_reg = { 1, 0xE0, 10, 0x3FF, 2};
 
 static const struct mmio_reg *ddr_data_rate_reg;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t ddr_data_rate_show(struct device *dev,
 				  struct device_attribute *attr,
 				  char *buf)
 {
+<<<<<<< HEAD
 	u64 resp;
 
 	if (ddr_data_rate_reg) {
@@ -427,6 +431,15 @@ static ssize_t ddr_data_rate_show(struct device *dev,
 		if (ret)
 			return ret;
 	}
+=======
+	u16 id = 0x0107;
+	u64 resp;
+	int ret;
+
+	ret = processor_thermal_send_mbox_read_cmd(to_pci_dev(dev), id, &resp);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return sysfs_emit(buf, "%llu\n", resp);
 }
@@ -475,7 +488,10 @@ int proc_thermal_rfim_add(struct pci_dev *pdev, struct proc_thermal_device *proc
 		case PCI_DEVICE_ID_INTEL_NVL_H_THERMAL:
 		case PCI_DEVICE_ID_INTEL_NVL_S_THERMAL:
 			dlvr_mmio_regs_table = nvl_dlvr_mmio_regs;
+<<<<<<< HEAD
 			ddr_data_rate_reg = &nvl_ddr_data_rate_reg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			dlvr_mmio_regs_table = dlvr_mmio_regs;

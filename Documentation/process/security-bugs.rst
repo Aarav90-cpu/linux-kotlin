@@ -66,6 +66,7 @@ In addition, the following information are highly desirable:
     the issue appear. It is useful to share them, as they can be helpful to
     keep end users protected during the time it takes them to apply the fix.
 
+<<<<<<< HEAD
 What qualifies as a security bug
 --------------------------------
 
@@ -102,6 +103,8 @@ a real vulnerability.  Reporting ordinary bugs to the security list, however,
 does not make them move faster and consumes triage capacity that other reports
 need.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Identifying contacts
 --------------------
 
@@ -110,7 +113,11 @@ affected subsystem's maintainers and Cc: the Linux kernel security team.  Do
 not send it to a public list at this stage, unless you have good reasons to
 consider the issue as being public or trivial to discover (e.g. result of a
 widely available automated vulnerability scanning tool that can be repeated by
+<<<<<<< HEAD
 anyone, or use of AI-based tools).
+=======
+anyone).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 If you're sending a report for issues affecting multiple parts in the kernel,
 even if they're fairly similar issues, please send individual messages (think
@@ -167,6 +174,7 @@ the Linux kernel security team only.  Your message will be triaged, and you
 will receive instructions about whom to contact, if needed.  Your message may
 equally be forwarded as-is to the relevant maintainers.
 
+<<<<<<< HEAD
 Responsible use of AI to find bugs
 ----------------------------------
 
@@ -225,6 +233,8 @@ there is no need to consume a maintainer's time with an unimportant report. If
 the issue is clearly trivial and publicly discoverable, you should report it
 directly to the public mailing lists.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 Sending the report
 ------------------
 
@@ -242,6 +252,7 @@ run additional tests.  Reports where the reporter does not respond promptly
 or cannot effectively discuss their findings may be abandoned if the
 communication does not quickly improve.
 
+<<<<<<< HEAD
 The report must be sent to maintainers.  If there are two or fewer
 recipients in your message, you must also always Cc: the Linux kernel
 security team who will ensure the message is delivered to the proper
@@ -251,6 +262,9 @@ security team for your first few reports or when seeking specific help,
 such as when resending a message which got no response within a week.
 Once you have become comfortable with the process for a few reports, it is
 no longer necessary to Cc: the security list when sending to large teams.
+=======
+The report must be sent to maintainers, with the security team in ``Cc:``.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 The Linux kernel security team can be contacted by email at
 <security@kernel.org>.  This is a private list of security officers
 who will help verify the bug report and assist developers working on a fix.

@@ -5,9 +5,15 @@
 Driver-related behavior tests for RSS.
 """
 
+<<<<<<< HEAD
 from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_ge
 from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx, ksft_raises
 from lib.py import defer, ethtool, CmdExitFailure
+=======
+from lib.py import ksft_run, ksft_exit, ksft_ge
+from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx
+from lib.py import defer, ethtool
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from lib.py import EthtoolFamily, NlError
 from lib.py import NetDrvEnv
 
@@ -45,6 +51,7 @@ def _maybe_create_context(cfg, create_context):
     return ctx_id
 
 
+<<<<<<< HEAD
 def _require_dynamic_indir_size(cfg, ch_max):
     """Skip if the device does not dynamically size its indirection table."""
     ethtool(f"-X {cfg.ifname} default")
@@ -57,6 +64,8 @@ def _require_dynamic_indir_size(cfg, ch_max):
         raise KsftSkipEx("Device does not dynamically size indirection table")
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 @ksft_variants([
     KsftNamedVariant("main", False),
     KsftNamedVariant("ctx", True),
@@ -88,6 +97,7 @@ def indir_size_4x(cfg, create_context):
         _test_rss_indir_size(cfg, test_max, context=ctx_id)
 
 
+<<<<<<< HEAD
 @ksft_variants([
     KsftNamedVariant("main", False),
     KsftNamedVariant("ctx", True),
@@ -298,14 +308,20 @@ def resize_nonperiodic_no_corruption(cfg, create_context):
             "Channel count changed after failed resize")
 
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def main() -> None:
     """ Ksft boiler plate main """
     with NetDrvEnv(__file__) as cfg:
         cfg.ethnl = EthtoolFamily()
+<<<<<<< HEAD
         ksft_run([indir_size_4x, resize_periodic,
                   resize_below_user_size_reject,
                   resize_nonperiodic_reject,
                   resize_nonperiodic_no_corruption], args=(cfg, ))
+=======
+        ksft_run([indir_size_4x], args=(cfg, ))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ksft_exit()
 
 

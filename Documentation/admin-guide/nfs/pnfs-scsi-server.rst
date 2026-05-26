@@ -22,6 +22,7 @@ option and the underlying SCSI device support persistent reservations.
 On the client make sure the kernel has the CONFIG_PNFS_BLOCK option
 enabled, and the file system is mounted using the NFSv4.1 protocol
 version (mount -o vers=4.1).
+<<<<<<< HEAD
 
 If the nfsd server needs to fence a non-responding client and the
 fencing operation fails, the server logs a warning message in the
@@ -53,3 +54,5 @@ needs to take the following actions:
 
       - clid: is the unique client identifier displayed in the system log.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

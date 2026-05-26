@@ -865,8 +865,11 @@ static void nfs_local_call_write(struct work_struct *work)
 	file_start_write(filp);
 	n_iters = atomic_read(&iocb->n_iters);
 	for (int i = 0; i < n_iters ; i++) {
+<<<<<<< HEAD
 		size_t icount;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (iocb->iter_is_dio_aligned[i]) {
 			iocb->kiocb.ki_flags |= IOCB_DIRECT;
 			/* Only use AIO completion if DIO-aligned segment is last */
@@ -883,6 +886,7 @@ static void nfs_local_call_write(struct work_struct *work)
 		if (status == -EIOCBQUEUED)
 			continue;
 		/* Break on completion, errors, or short writes */
+<<<<<<< HEAD
 		icount = iov_iter_count(&iocb->iters[i]);
 		if (nfs_local_pgio_done(iocb, status) || status < 0 ||
 		    (size_t)status < icount) {
@@ -893,6 +897,10 @@ static void nfs_local_call_write(struct work_struct *work)
 				set_bit(NFS_CONTEXT_WRITE_SYNC,
 					&ctx->open_context->flags);
 			}
+=======
+		if (nfs_local_pgio_done(iocb, status) || status < 0 ||
+		    (size_t)status < iov_iter_count(&iocb->iters[i])) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			nfs_local_write_iocb_done(iocb);
 			break;
 		}
@@ -911,9 +919,12 @@ static void nfs_local_do_write(struct nfs_local_kiocb *iocb,
 		__func__, hdr->args.count, hdr->args.offset,
 		(hdr->args.stable == NFS_UNSTABLE) ?  "unstable" : "stable");
 
+<<<<<<< HEAD
 	if (test_bit(NFS_CONTEXT_WRITE_SYNC,
 		     &hdr->req->wb_lock_context->open_context->flags))
 		hdr->args.stable = NFS_FILE_SYNC;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	switch (hdr->args.stable) {
 	default:
 		break;

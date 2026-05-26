@@ -96,7 +96,10 @@ struct snd_interwave {
 	struct snd_gus_card *gus;
 	struct snd_wss *wss;
 #ifdef SNDRV_STB
+<<<<<<< HEAD
 	struct snd_i2c_bus *i2c_bus;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct resource *i2c_res;
 #endif
 	unsigned short gus_status_reg;
@@ -364,6 +367,7 @@ struct rom_hdr {
 	/* 511 */ unsigned char csum;
 };
 
+<<<<<<< HEAD
 static const unsigned int snd_interwave_memory_configs[] = {
 	0x00000001, 0x00000101, 0x01010101, 0x00000401,
 	0x04040401, 0x00040101, 0x04040101, 0x00000004,
@@ -388,6 +392,20 @@ static void snd_interwave_detect_memory(struct snd_gus_card *gus)
 	int bank_pos, pages;
 	unsigned int i, lmct;
 	int lmc_cfg;
+=======
+static void snd_interwave_detect_memory(struct snd_gus_card *gus)
+{
+	static const unsigned int lmc[13] =
+	{
+		0x00000001, 0x00000101, 0x01010101, 0x00000401,
+		0x04040401, 0x00040101, 0x04040101, 0x00000004,
+		0x00000404, 0x04040404, 0x00000010, 0x00001010,
+		0x10101010
+	};
+
+	int bank_pos, pages;
+	unsigned int i, lmct;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int psizes[4];
 	unsigned char iwave[8];
 	unsigned char csum;
@@ -412,6 +430,7 @@ static void snd_interwave_detect_memory(struct snd_gus_card *gus)
 #if 0
 		dev_dbg(gus->card->dev, "lmct = 0x%08x\n", lmct);
 #endif
+<<<<<<< HEAD
 		lmc_cfg = snd_interwave_find_memory_config(lmct);
 		if (lmc_cfg >= 0) {
 #if 0
@@ -426,6 +445,19 @@ static void snd_interwave_detect_memory(struct snd_gus_card *gus)
 					(snd_gf1_look16(gus, SNDRV_GF1_GW_MEMORY_CONFIG) & 0xfff0) |
 					2);
 		}
+=======
+		for (i = 0; i < ARRAY_SIZE(lmc); i++)
+			if (lmct == lmc[i]) {
+#if 0
+				dev_dbg(gus->card->dev, "found !!! %i\n", i);
+#endif
+				snd_gf1_write16(gus, SNDRV_GF1_GW_MEMORY_CONFIG, (snd_gf1_look16(gus, SNDRV_GF1_GW_MEMORY_CONFIG) & 0xfff0) | i);
+				snd_interwave_bank_sizes(gus, psizes);
+				break;
+			}
+		if (i >= ARRAY_SIZE(lmc) && !gus->gf1.enh_mode)
+			 snd_gf1_write16(gus, SNDRV_GF1_GW_MEMORY_CONFIG, (snd_gf1_look16(gus, SNDRV_GF1_GW_MEMORY_CONFIG) & 0xfff0) | 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		for (i = 0; i < 4; i++) {
 			gus->gf1.mem_alloc.banks_8[i].address =
 			    gus->gf1.mem_alloc.banks_16[i].address = i << 22;
@@ -470,6 +502,7 @@ static void snd_interwave_detect_memory(struct snd_gus_card *gus)
 		snd_interwave_reset(gus);
 }
 
+<<<<<<< HEAD
 static void __snd_interwave_restore_regs(struct snd_gus_card *gus)
 {
 	snd_gf1_write8(gus, SNDRV_GF1_GB_COMPATIBILITY, 0x1f);
@@ -486,12 +519,29 @@ static void snd_interwave_init(int dev, struct snd_gus_card *gus)
 	scoped_guard(spinlock_irqsave, &gus->reg_lock) {
 		snd_gf1_write8(gus, SNDRV_GF1_GB_SOUND_BLASTER_CONTROL, 0x00);
 		__snd_interwave_restore_regs(gus);
+=======
+static void snd_interwave_init(int dev, struct snd_gus_card *gus)
+{
+	/* ok.. some InterWave specific initialization */
+	scoped_guard(spinlock_irqsave, &gus->reg_lock) {
+		snd_gf1_write8(gus, SNDRV_GF1_GB_SOUND_BLASTER_CONTROL, 0x00);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_COMPATIBILITY, 0x1f);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_DECODE_CONTROL, 0x49);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_VERSION_NUMBER, 0x11);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_MPU401_CONTROL_A, 0x00);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_MPU401_CONTROL_B, 0x30);
+		snd_gf1_write8(gus, SNDRV_GF1_GB_EMULATION_IRQ, 0x00);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	gus->equal_irq = 1;
 	gus->codec_flag = 1;
 	gus->interwave = 1;
 	gus->max_flag = 1;
 	gus->joystick_dac = joystick_dac[dev];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct snd_kcontrol_new snd_interwave_controls[] = {
@@ -744,7 +794,10 @@ static int snd_interwave_probe(struct snd_card *card, int dev,
 		err = snd_tea6330t_update_mixer(card, i2c_bus, 0, 1);
 		if (err < 0)
 			return err;
+<<<<<<< HEAD
 		iwcard->i2c_bus = i2c_bus;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 #endif
 
@@ -849,6 +902,7 @@ static int snd_interwave_isa_probe(struct device *pdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static void snd_interwave_restore_regs(struct snd_gus_card *gus)
 {
@@ -940,6 +994,12 @@ static struct isa_driver snd_interwave_driver = {
 	.suspend	= snd_interwave_isa_suspend,
 	.resume		= snd_interwave_isa_resume,
 #endif
+=======
+static struct isa_driver snd_interwave_driver = {
+	.match		= snd_interwave_isa_match,
+	.probe		= snd_interwave_isa_probe,
+	/* FIXME: suspend,resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.driver		= {
 		.name	= INTERWAVE_DRIVER
 	},
@@ -979,6 +1039,7 @@ static int snd_interwave_pnp_detect(struct pnp_card_link *pcard,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int snd_interwave_pnpc_suspend(struct pnp_card_link *pcard,
 				      pm_message_t state)
@@ -992,15 +1053,21 @@ static int snd_interwave_pnpc_resume(struct pnp_card_link *pcard)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct pnp_card_driver interwave_pnpc_driver = {
 	.flags = PNP_DRIVER_RES_DISABLE,
 	.name = INTERWAVE_PNP_DRIVER,
 	.id_table = snd_interwave_pnpids,
 	.probe = snd_interwave_pnp_detect,
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	.suspend	= snd_interwave_pnpc_suspend,
 	.resume		= snd_interwave_pnpc_resume,
 #endif
+=======
+	/* FIXME: suspend,resume */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* CONFIG_PNP */

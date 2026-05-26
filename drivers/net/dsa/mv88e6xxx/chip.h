@@ -135,14 +135,20 @@ struct mv88e6xxx_info {
 	unsigned int num_ports;
 	unsigned int num_internal_phys;
 	unsigned int num_gpio;
+<<<<<<< HEAD
 	unsigned int num_tcam_entries;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int max_vid;
 	unsigned int max_sid;
 	unsigned int port_base_addr;
 	unsigned int phy_base_addr;
 	unsigned int global1_addr;
 	unsigned int global2_addr;
+<<<<<<< HEAD
 	unsigned int tcam_addr;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int age_time_coeff;
 	unsigned int g1_irqs;
 	unsigned int g2_irqs;
@@ -212,7 +218,10 @@ struct mv88e6xxx_avb_ops;
 struct mv88e6xxx_ptp_ops;
 struct mv88e6xxx_pcs_ops;
 struct mv88e6xxx_cc_coeffs;
+<<<<<<< HEAD
 struct mv88e6xxx_tcam_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct mv88e6xxx_irq {
 	u16 masked;
@@ -342,10 +351,13 @@ struct mv88e6xxx_hw_stat {
 	int type;
 };
 
+<<<<<<< HEAD
 struct mv88e6xxx_tcam {
 	struct list_head entries;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct mv88e6xxx_chip {
 	const struct mv88e6xxx_info *info;
 
@@ -451,6 +463,7 @@ struct mv88e6xxx_chip {
 
 	/* FID map */
 	DECLARE_BITMAP(fid_bitmap, MV88E6XXX_N_FID);
+<<<<<<< HEAD
 
 	/* TCAM entries */
 	struct mv88e6xxx_tcam tcam;
@@ -480,6 +493,8 @@ struct mv88e6xxx_tcam_entry {
 	struct mv88e6xxx_tcam_key key;
 	struct mv88e6xxx_tcam_action action;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mv88e6xxx_bus_ops {
@@ -714,11 +729,14 @@ struct mv88e6xxx_ops {
 
 	/* Max Frame Size */
 	int (*set_max_frame_size)(struct mv88e6xxx_chip *chip, int mtu);
+<<<<<<< HEAD
 
 	int (*port_enable_tcam)(struct mv88e6xxx_chip *chip, int port);
 
 	/* Ternary Content Addressable Memory operations */
 	const struct mv88e6xxx_tcam_ops *tcam_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mv88e6xxx_irq_ops {
@@ -793,12 +811,15 @@ struct mv88e6xxx_pcs_ops {
 
 };
 
+<<<<<<< HEAD
 struct mv88e6xxx_tcam_ops {
 	int (*entry_add)(struct mv88e6xxx_chip *chip,
 			 struct mv88e6xxx_tcam_entry *entry, u8 idx);
 	int (*flush_tcam)(struct mv88e6xxx_chip *chip);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool mv88e6xxx_has_stu(struct mv88e6xxx_chip *chip)
 {
 	return chip->info->max_sid > 0 &&
@@ -816,11 +837,14 @@ static inline bool mv88e6xxx_has_lag(struct mv88e6xxx_chip *chip)
 	return !!chip->info->global2_addr;
 }
 
+<<<<<<< HEAD
 static inline bool mv88e6xxx_has_tcam(struct mv88e6xxx_chip *chip)
 {
 	return !!chip->info->tcam_addr;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline unsigned int mv88e6xxx_num_databases(struct mv88e6xxx_chip *chip)
 {
 	return chip->info->num_databases;

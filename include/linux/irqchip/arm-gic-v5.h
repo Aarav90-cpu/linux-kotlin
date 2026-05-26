@@ -25,6 +25,7 @@
 #define GICV5_HWIRQ_TYPE_SPI		UL(0x3)
 
 /*
+<<<<<<< HEAD
  * Architected PPIs
  */
 #define GICV5_ARCH_PPI_S_DB_PPI		0x0
@@ -47,6 +48,8 @@
 #define GICV5_ARCH_PPI_TRBIRQ		0x1f
 
 /*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Tables attributes
  */
 #define GICV5_NO_READ_ALLOC		0b0
@@ -387,11 +390,14 @@ int gicv5_spi_irq_set_type(struct irq_data *d, unsigned int type);
 int gicv5_irs_iste_alloc(u32 lpi);
 void gicv5_irs_syncr(void);
 
+<<<<<<< HEAD
 /* Embedded in kvm.arch */
 struct gicv5_vpe {
 	bool			resident;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct gicv5_its_devtab_cfg {
 	union {
 		struct {

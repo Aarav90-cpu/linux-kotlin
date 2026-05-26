@@ -46,12 +46,16 @@ int pfn_is_map_memory(unsigned long pfn);
 
 #endif /* !__ASSEMBLER__ */
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_MTE
 #define VMA_DATA_DEFAULT_FLAGS	append_vma_flags(VMA_DATA_FLAGS_TSK_EXEC, \
 						 VMA_MTE_ALLOWED_BIT)
 #else
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
 #endif
+=======
+#define VM_DATA_DEFAULT_FLAGS	(VM_DATA_FLAGS_TSK_EXEC | VM_MTE_ALLOWED)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <asm-generic/getorder.h>
 

@@ -514,12 +514,20 @@ int luo_session_deserialize(void)
 {
 	struct luo_session_header *sh = &luo_session_global.incoming;
 	static bool is_deserialized;
+<<<<<<< HEAD
 	static int saved_err;
 	int err;
 
 	/* If has been deserialized, always return the same error code */
 	if (is_deserialized)
 		return saved_err;
+=======
+	static int err;
+
+	/* If has been deserialized, always return the same error code */
+	if (is_deserialized)
+		return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	is_deserialized = true;
 	if (!sh->active)
@@ -545,11 +553,17 @@ int luo_session_deserialize(void)
 
 		session = luo_session_alloc(sh->ser[i].name);
 		if (IS_ERR(session)) {
+<<<<<<< HEAD
 			pr_warn("Failed to allocate session [%.*s] during deserialization %pe\n",
 				(int)sizeof(sh->ser[i].name),
 				sh->ser[i].name, session);
 			err = PTR_ERR(session);
 			goto save_err;
+=======
+			pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
+				sh->ser[i].name, session);
+			return PTR_ERR(session);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		err = luo_session_insert(sh, session);
@@ -557,7 +571,11 @@ int luo_session_deserialize(void)
 			pr_warn("Failed to insert session [%s] %pe\n",
 				session->name, ERR_PTR(err));
 			luo_session_free(session);
+<<<<<<< HEAD
 			goto save_err;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		scoped_guard(mutex, &session->mutex) {
@@ -567,7 +585,11 @@ int luo_session_deserialize(void)
 		if (err) {
 			pr_warn("Failed to deserialize files for session [%s] %pe\n",
 				session->name, ERR_PTR(err));
+<<<<<<< HEAD
 			goto save_err;
+=======
+			return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 
@@ -576,9 +598,12 @@ int luo_session_deserialize(void)
 	sh->ser = NULL;
 
 	return 0;
+<<<<<<< HEAD
 save_err:
 	saved_err = err;
 	return err;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int luo_session_serialize(void)
@@ -612,3 +637,49 @@ err_undo:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
+ *
+ * Acquires exclusive write locks on both incoming and outgoing session lists.
+ * It then validates no sessions exist in either list.
+ *
+ * This mechanism is used during file handler un/registration to ensure that no
+ * sessions are currently using the handler, and no new sessions can be created
+ * while un/registration is in progress.
+ *
+ * This prevents registering new handlers while sessions are active or
+ * while deserialization is in progress.
+ *
+ * Return:
+ * true  - System is quiescent (0 sessions) and locked.
+ * false - Active sessions exist. The locks are released internally.
+ */
+bool luo_session_quiesce(void)
+{
+	down_write(&luo_session_global.incoming.rwsem);
+	down_write(&luo_session_global.outgoing.rwsem);
+
+	if (luo_session_global.incoming.count ||
+	    luo_session_global.outgoing.count) {
+		up_write(&luo_session_global.outgoing.rwsem);
+		up_write(&luo_session_global.incoming.rwsem);
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * luo_session_resume - Unlock session lists and resume normal activity.
+ *
+ * Releases the exclusive locks acquired by a successful call to
+ * luo_session_quiesce().
+ */
+void luo_session_resume(void)
+{
+	up_write(&luo_session_global.outgoing.rwsem);
+	up_write(&luo_session_global.incoming.rwsem);
+}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -13,12 +13,19 @@
 #include <net/devlink.h>
 #include <net/netdev_lock.h>
 #include <linux/bnxt/hsi.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bnxt.h"
 #include "bnxt_hwrm.h"
 #include "bnxt_vfr.h"
 #include "bnxt_devlink.h"
 #include "bnxt_ethtool.h"
+<<<<<<< HEAD
+=======
+#include "bnxt_ulp.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "bnxt_ptp.h"
 #include "bnxt_coredump.h"
 #include "bnxt_nvm_defs.h"
@@ -440,13 +447,21 @@ static int bnxt_dl_reload_down(struct devlink *dl, bool netns_change,
 					   "reload is unsupported while VFs are allocated or being configured");
 			netdev_unlock(bp->dev);
 			rtnl_unlock();
+<<<<<<< HEAD
 			bnxt_ulp_start(bp);
+=======
+			bnxt_ulp_start(bp, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EOPNOTSUPP;
 		}
 		if (bp->dev->reg_state == NETREG_UNREGISTERED) {
 			netdev_unlock(bp->dev);
 			rtnl_unlock();
+<<<<<<< HEAD
 			bnxt_ulp_start(bp);
+=======
+			bnxt_ulp_start(bp, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENODEV;
 		}
 		if (netif_running(bp->dev))
@@ -578,8 +593,13 @@ static int bnxt_dl_reload_up(struct devlink *dl, enum devlink_reload_action acti
 	}
 	netdev_unlock(bp->dev);
 	rtnl_unlock();
+<<<<<<< HEAD
 	if (!rc && action == DEVLINK_RELOAD_ACTION_DRIVER_REINIT)
 		bnxt_ulp_start(bp);
+=======
+	if (action == DEVLINK_RELOAD_ACTION_DRIVER_REINIT)
+		bnxt_ulp_start(bp, rc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return rc;
 }
 

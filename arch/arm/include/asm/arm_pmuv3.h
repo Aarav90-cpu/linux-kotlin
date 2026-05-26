@@ -238,6 +238,7 @@ static inline void kvm_vcpu_pmu_resync_el0(void) {}
 
 static inline bool pmuv3_implemented(int pmuver)
 {
+<<<<<<< HEAD
 	/*
 	 * PMUVer follows the standard ID scheme for an unsigned field with the
 	 * exception of 0xF (IMP_DEF) which is treated specially and implies
@@ -245,6 +246,8 @@ static inline bool pmuv3_implemented(int pmuver)
 	 *
 	 * See DDI0487L.a D24.1.3.2 for more details.
 	 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return !(pmuver == ARMV8_PMU_DFR_VER_IMP_DEF ||
 		 pmuver == ARMV8_PMU_DFR_VER_NI);
 }

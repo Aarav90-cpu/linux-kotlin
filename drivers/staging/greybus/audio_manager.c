@@ -105,6 +105,21 @@ void gb_audio_manager_remove_all(void)
 }
 EXPORT_SYMBOL_GPL(gb_audio_manager_remove_all);
 
+<<<<<<< HEAD
+=======
+struct gb_audio_manager_module *gb_audio_manager_get_module(int id)
+{
+	struct gb_audio_manager_module *module;
+
+	down_read(&modules_rwsem);
+	module = gb_audio_manager_get_locked(id);
+	kobject_get(&module->kobj);
+	up_read(&modules_rwsem);
+	return module;
+}
+EXPORT_SYMBOL_GPL(gb_audio_manager_get_module);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void gb_audio_manager_put_module(struct gb_audio_manager_module *module)
 {
 	kobject_put(&module->kobj);

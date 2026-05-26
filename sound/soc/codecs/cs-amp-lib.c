@@ -716,8 +716,11 @@ int cs_amp_get_vendor_spkid(struct device *dev)
 {
 	int i, ret;
 
+<<<<<<< HEAD
 	KUNIT_STATIC_STUB_REDIRECT(cs_amp_get_vendor_spkid, dev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE) &&
 	    !IS_ENABLED(CONFIG_SND_SOC_CS_AMP_LIB_TEST_HOOKS))
 		return -ENOENT;

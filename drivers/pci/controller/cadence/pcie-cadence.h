@@ -115,8 +115,11 @@ struct cdns_pcie {
  * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
  * @ecam_supported: Whether the ECAM is supported
  * @no_inbound_map: Whether inbound mapping is supported
+<<<<<<< HEAD
  * @quirk_broken_aspm_l0s: Disable ASPM L0s support as quirk
  * @quirk_broken_aspm_l1: Disable ASPM L1 support as quirk
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct cdns_pcie_rc {
 	struct cdns_pcie	pcie;
@@ -129,8 +132,11 @@ struct cdns_pcie_rc {
 	unsigned int		quirk_detect_quiet_flag:1;
 	unsigned int            ecam_supported:1;
 	unsigned int            no_inbound_map:1;
+<<<<<<< HEAD
 	unsigned int            quirk_broken_aspm_l0s:1;
 	unsigned int            quirk_broken_aspm_l1:1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -342,6 +348,7 @@ static inline u16 cdns_pcie_rp_readw(struct cdns_pcie *pcie, u32 reg)
 	return cdns_pcie_read_sz(addr, 0x2);
 }
 
+<<<<<<< HEAD
 static inline void cdns_pcie_rp_writel(struct cdns_pcie *pcie,
 				       u32 reg, u32 value)
 {
@@ -357,6 +364,8 @@ static inline u32 cdns_pcie_rp_readl(struct cdns_pcie *pcie, u32 reg)
 	return cdns_pcie_read_sz(addr, 0x4);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void cdns_pcie_hpa_rp_writeb(struct cdns_pcie *pcie,
 					   u32 reg, u8 value)
 {

@@ -1080,11 +1080,19 @@ static void d71_improc_update(struct komeda_component *c,
 	mask |= IPS_CTRL_YUV | IPS_CTRL_CHD422 | IPS_CTRL_CHD420;
 
 	/* config color format */
+<<<<<<< HEAD
 	if (st->color_format == DRM_OUTPUT_COLOR_FORMAT_YCBCR420)
 		ctrl |= IPS_CTRL_YUV | IPS_CTRL_CHD422 | IPS_CTRL_CHD420;
 	else if (st->color_format == DRM_OUTPUT_COLOR_FORMAT_YCBCR422)
 		ctrl |= IPS_CTRL_YUV | IPS_CTRL_CHD422;
 	else if (st->color_format == DRM_OUTPUT_COLOR_FORMAT_YCBCR444)
+=======
+	if (st->color_format == DRM_COLOR_FORMAT_YCBCR420)
+		ctrl |= IPS_CTRL_YUV | IPS_CTRL_CHD422 | IPS_CTRL_CHD420;
+	else if (st->color_format == DRM_COLOR_FORMAT_YCBCR422)
+		ctrl |= IPS_CTRL_YUV | IPS_CTRL_CHD422;
+	else if (st->color_format == DRM_COLOR_FORMAT_YCBCR444)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ctrl |= IPS_CTRL_YUV;
 
 	malidp_write32_mask(reg, BLK_CONTROL, mask, ctrl);
@@ -1145,12 +1153,21 @@ static int d71_improc_init(struct d71_dev *d71,
 
 	improc = to_improc(c);
 	improc->supported_color_depths = BIT(8) | BIT(10);
+<<<<<<< HEAD
 	improc->supported_color_formats = BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444) |
 					  BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444) |
 					  BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
 	value = malidp_read32(reg, BLK_INFO);
 	if (value & IPS_INFO_CHD420)
 		improc->supported_color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR420);
+=======
+	improc->supported_color_formats = DRM_COLOR_FORMAT_RGB444 |
+					  DRM_COLOR_FORMAT_YCBCR444 |
+					  DRM_COLOR_FORMAT_YCBCR422;
+	value = malidp_read32(reg, BLK_INFO);
+	if (value & IPS_INFO_CHD420)
+		improc->supported_color_formats |= DRM_COLOR_FORMAT_YCBCR420;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	improc->supports_csc = true;
 	improc->supports_gamma = true;

@@ -132,12 +132,25 @@ int ima_measurements_show(struct seq_file *m, void *v)
 	char *template_name;
 	u32 pcr, namelen, template_data_len; /* temporary fields */
 	bool is_ima_template = false;
+<<<<<<< HEAD
 	int i, algo_idx;
 
 	algo_idx = ima_sha1_idx;
 
 	if (m->file != NULL)
 		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+=======
+	enum hash_algo algo;
+	int i, algo_idx;
+
+	algo_idx = ima_sha1_idx;
+	algo = HASH_ALGO_SHA1;
+
+	if (m->file != NULL) {
+		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+		algo = ima_algo_array[algo_idx].algo;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* get entry */
 	e = qe->entry;
@@ -156,8 +169,12 @@ int ima_measurements_show(struct seq_file *m, void *v)
 	ima_putc(m, &pcr, sizeof(e->pcr));
 
 	/* 2nd: template digest */
+<<<<<<< HEAD
 	ima_putc(m, e->digests[algo_idx].digest,
 		 ima_algo_array[algo_idx].digest_size);
+=======
+	ima_putc(m, e->digests[algo_idx].digest, hash_digest_size[algo]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 3rd: template name size */
 	namelen = !ima_canonical_fmt ? strlen(template_name) :
@@ -226,12 +243,25 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
 	struct ima_queue_entry *qe = v;
 	struct ima_template_entry *e;
 	char *template_name;
+<<<<<<< HEAD
 	int i, algo_idx;
 
 	algo_idx = ima_sha1_idx;
 
 	if (m->file != NULL)
 		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+=======
+	enum hash_algo algo;
+	int i, algo_idx;
+
+	algo_idx = ima_sha1_idx;
+	algo = HASH_ALGO_SHA1;
+
+	if (m->file != NULL) {
+		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+		algo = ima_algo_array[algo_idx].algo;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* get entry */
 	e = qe->entry;
@@ -245,8 +275,12 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
 	seq_printf(m, "%2d ", e->pcr);
 
 	/* 2nd: template hash */
+<<<<<<< HEAD
 	ima_print_digest(m, e->digests[algo_idx].digest,
 			 ima_algo_array[algo_idx].digest_size);
+=======
+	ima_print_digest(m, e->digests[algo_idx].digest, hash_digest_size[algo]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 3th:  template name */
 	seq_printf(m, " %s", template_name);
@@ -398,24 +432,34 @@ static int __init create_securityfs_measurement_lists(void)
 		char file_name[NAME_MAX + 1];
 		struct dentry *dentry;
 
+<<<<<<< HEAD
 		if (algo == HASH_ALGO__LAST)
 			sprintf(file_name, "ascii_runtime_measurements_tpm_alg_%x",
 				ima_tpm_chip->allocated_banks[i].alg_id);
 		else
 			sprintf(file_name, "ascii_runtime_measurements_%s",
 				hash_algo_name[algo]);
+=======
+		sprintf(file_name, "ascii_runtime_measurements_%s",
+			hash_algo_name[algo]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
 						ima_dir, (void *)(uintptr_t)i,
 						&ima_ascii_measurements_ops);
 		if (IS_ERR(dentry))
 			return PTR_ERR(dentry);
 
+<<<<<<< HEAD
 		if (algo == HASH_ALGO__LAST)
 			sprintf(file_name, "binary_runtime_measurements_tpm_alg_%x",
 				ima_tpm_chip->allocated_banks[i].alg_id);
 		else
 			sprintf(file_name, "binary_runtime_measurements_%s",
 				hash_algo_name[algo]);
+=======
+		sprintf(file_name, "binary_runtime_measurements_%s",
+			hash_algo_name[algo]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
 						ima_dir, (void *)(uintptr_t)i,
 						&ima_measurements_ops);

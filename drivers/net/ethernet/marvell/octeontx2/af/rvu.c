@@ -22,7 +22,10 @@
 #include "rvu_npc_hash.h"
 #include "cn20k/reg.h"
 #include "cn20k/api.h"
+<<<<<<< HEAD
 #include "cn20k/npc.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DRV_NAME	"rvu_af"
 #define DRV_STRING      "Marvell OcteonTX2 RVU Admin Function Driver"
@@ -600,7 +603,10 @@ check_pf:
 
 static int rvu_setup_msix_resources(struct rvu *rvu)
 {
+<<<<<<< HEAD
 	struct altaf_intr_notify *altaf_intr_data;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct rvu_hwinfo *hw = rvu->hw;
 	int pf, vf, numvfs, hwvf, err;
 	int nvecs, offset, max_msix;
@@ -707,6 +713,7 @@ setup_vfmsix:
 	rvu->msix_base_iova = iova;
 	rvu->msixtr_base_phy = phy_addr;
 
+<<<<<<< HEAD
 	if (is_rvu_otx2(rvu) || is_cn20k(rvu->pdev))
 		return 0;
 
@@ -731,6 +738,9 @@ fail:
 	dma_unmap_resource(rvu->dev, phy_addr, max_msix * PCI_MSIX_ENTRY_SIZE,
 			   DMA_BIDIRECTIONAL, 0);
 	return -EFAULT;
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rvu_reset_msix(struct rvu *rvu)
@@ -1421,6 +1431,10 @@ static void rvu_detach_block(struct rvu *rvu, int pcifunc, int blktype)
 	if (blkaddr < 0)
 		return;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	block = &hw->block[blkaddr];
 
 	num_lfs = rvu_get_rsrc_mapcount(pfvf, block->addr);
@@ -1491,6 +1505,7 @@ static int rvu_detach_rsrcs(struct rvu *rvu, struct rsrc_detach *detach,
 			else if ((blkid == BLKADDR_CPT1) && !detach->cptlfs)
 				continue;
 		}
+<<<<<<< HEAD
 
 		if (detach_all ||
 		    (detach && (blkid == BLKADDR_NIX0 ||
@@ -1498,6 +1513,8 @@ static int rvu_detach_rsrcs(struct rvu *rvu, struct rsrc_detach *detach,
 		     detach->nixlf))
 			npc_cn20k_dft_rules_free(rvu, pcifunc);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rvu_detach_block(rvu, pcifunc, block->type);
 	}
 
@@ -1781,12 +1798,15 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
 		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
 		if (err)
 			goto fail2;
+<<<<<<< HEAD
 
 		if (is_cn20k(rvu->pdev)) {
 			err = npc_cn20k_dft_rules_alloc(rvu, pcifunc);
 			if (err)
 				goto fail3;
 		}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (attach->sso) {
@@ -1800,7 +1820,11 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
 		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
 				       attach->sso, attach);
 		if (err)
+<<<<<<< HEAD
 			goto fail4;
+=======
+			goto fail3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (attach->ssow) {
@@ -1809,7 +1833,11 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
 		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
 				       attach->ssow, attach);
 		if (err)
+<<<<<<< HEAD
 			goto fail5;
+=======
+			goto fail4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (attach->timlfs) {
@@ -1818,7 +1846,11 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
 		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
 				       attach->timlfs, attach);
 		if (err)
+<<<<<<< HEAD
 			goto fail6;
+=======
+			goto fail5;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (attach->cptlfs) {
@@ -1828,12 +1860,17 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
 		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
 				       attach->cptlfs, attach);
 		if (err)
+<<<<<<< HEAD
 			goto fail7;
+=======
+			goto fail6;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mutex_unlock(&rvu->rsrc_lock);
 	return 0;
 
+<<<<<<< HEAD
 fail7:
 	if (attach->timlfs)
 		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
@@ -1850,6 +1887,20 @@ fail4:
 	if (is_cn20k(rvu->pdev))
 		npc_cn20k_dft_rules_free(rvu, pcifunc);
 
+=======
+fail6:
+	if (attach->timlfs)
+		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
+
+fail5:
+	if (attach->ssow)
+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
+
+fail4:
+	if (attach->sso)
+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fail3:
 	if (attach->nixlf)
 		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
@@ -2226,6 +2277,7 @@ int rvu_mbox_handler_ndc_sync_op(struct rvu *rvu,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void rvu_notify_altaf(struct rvu *rvu, u16 pcifunc, u64 op)
 {
 	int pf, vf;
@@ -2253,6 +2305,8 @@ static void rvu_notify_altaf(struct rvu *rvu, u16 pcifunc, u64 op)
 	usleep_range(5000, 6000);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int rvu_process_mbox_msg(struct otx2_mbox *mbox, int devid,
 				struct mbox_msghdr *req)
 {
@@ -2336,8 +2390,12 @@ static void __rvu_mbox_handler(struct rvu_work *mwork, int type, bool poll)
 
 	offset = mbox->rx_start + ALIGN(sizeof(*req_hdr), MBOX_MSG_ALIGN);
 
+<<<<<<< HEAD
 	if (req_hdr->sig && rvu->altaf_ready &&
 	    !(is_rvu_otx2(rvu) || is_cn20k(rvu->pdev))) {
+=======
+	if (req_hdr->sig && !(is_rvu_otx2(rvu) || is_cn20k(rvu->pdev))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req_hdr->opt_msg = mw->mbox_wrk[devid].num_msgs;
 		rvu_write64(rvu, BLKADDR_NIX0, RVU_AF_BAR2_SEL,
 			    RVU_AF_BAR2_PFID);
@@ -2645,7 +2703,11 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
 	}
 
 	mw->mbox_wq = alloc_workqueue("%s",
+<<<<<<< HEAD
 				      WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_PERCPU,
+=======
+				      WQ_HIGHPRI | WQ_MEM_RECLAIM,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				      num, name);
 	if (!mw->mbox_wq) {
 		err = -ENOMEM;
@@ -2846,6 +2908,7 @@ static void rvu_blklf_teardown(struct rvu *rvu, u16 pcifunc, u8 blkaddr)
 	block = &rvu->hw->block[blkaddr];
 	num_lfs = rvu_get_rsrc_mapcount(rvu_get_pfvf(rvu, pcifunc),
 					block->addr);
+<<<<<<< HEAD
 
 	if (block->addr == BLKADDR_TIM && rvu->altaf_ready) {
 		rvu_notify_altaf(rvu, pcifunc, ALTAF_FLR);
@@ -2856,6 +2919,8 @@ static void rvu_blklf_teardown(struct rvu *rvu, u16 pcifunc, u8 blkaddr)
 	    rvu->altaf_ready)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!num_lfs)
 		return;
 	for (slot = 0; slot < num_lfs; slot++) {
@@ -3139,12 +3204,21 @@ static int rvu_afvf_msix_vectors_num_ok(struct rvu *rvu)
 
 static int rvu_register_interrupts(struct rvu *rvu)
 {
+<<<<<<< HEAD
 	int i, ret, offset, pf_vec_start;
 
 	rvu->num_vec = pci_msix_vec_count(rvu->pdev);
 
 	rvu->irq_name = devm_kcalloc(rvu->dev, rvu->num_vec,
 				     NAME_SIZE, GFP_KERNEL);
+=======
+	int ret, offset, pf_vec_start;
+
+	rvu->num_vec = pci_msix_vec_count(rvu->pdev);
+
+	rvu->irq_name = devm_kmalloc_array(rvu->dev, rvu->num_vec,
+					   NAME_SIZE, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rvu->irq_name)
 		return -ENOMEM;
 
@@ -3330,6 +3404,7 @@ static int rvu_register_interrupts(struct rvu *rvu)
 	if (ret)
 		goto fail;
 
+<<<<<<< HEAD
 	for (i = 0; i < rvu->num_vec; i++) {
 		if (strstr(&rvu->irq_name[i * NAME_SIZE], "Mbox") ||
 		    strstr(&rvu->irq_name[i * NAME_SIZE], "FLR"))
@@ -3337,6 +3412,8 @@ static int rvu_register_interrupts(struct rvu *rvu)
 					 cpumask_of(0));
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 fail:
@@ -3365,8 +3442,13 @@ static int rvu_flr_init(struct rvu *rvu)
 			    cfg | BIT_ULL(22));
 	}
 
+<<<<<<< HEAD
 	rvu->flr_wq = alloc_workqueue("rvu_afpf_flr",
 				      WQ_HIGHPRI | WQ_MEM_RECLAIM, 0);
+=======
+	rvu->flr_wq = alloc_ordered_workqueue("rvu_afpf_flr",
+					      WQ_HIGHPRI | WQ_MEM_RECLAIM);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rvu->flr_wq)
 		return -ENOMEM;
 

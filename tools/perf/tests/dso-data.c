@@ -58,7 +58,11 @@ struct test_data_offset {
 	int size;
 };
 
+<<<<<<< HEAD
 static struct test_data_offset offsets[] = {
+=======
+struct test_data_offset offsets[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Fill first cache page. */
 	{
 		.offset = 10,

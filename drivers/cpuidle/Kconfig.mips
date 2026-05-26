@@ -4,7 +4,11 @@
 #
 config MIPS_CPS_CPUIDLE
 	bool "CPU Idle driver for MIPS CPS platforms"
+<<<<<<< HEAD
 	depends on MIPS_CPS
+=======
+	depends on CPU_IDLE && MIPS_CPS
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	depends on SYS_SUPPORTS_MIPS_CPS
 	select ARCH_NEEDS_CPU_IDLE_COUPLED if MIPS_MT || CPU_MIPSR6
 	select GENERIC_CLOCKEVENTS_BROADCAST if SMP

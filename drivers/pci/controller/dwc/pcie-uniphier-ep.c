@@ -203,6 +203,18 @@ static void uniphier_pcie_stop_link(struct dw_pcie *pci)
 	uniphier_pcie_ltssm_enable(priv, false);
 }
 
+<<<<<<< HEAD
+=======
+static void uniphier_pcie_ep_init(struct dw_pcie_ep *ep)
+{
+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+	enum pci_barno bar;
+
+	for (bar = BAR_0; bar <= BAR_5; bar++)
+		dw_pcie_ep_reset_bar(pci, bar);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int uniphier_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep)
 {
 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
@@ -274,6 +286,10 @@ uniphier_pcie_get_features(struct dw_pcie_ep *ep)
 }
 
 static const struct dw_pcie_ep_ops uniphier_pcie_ep_ops = {
+<<<<<<< HEAD
+=======
+	.init = uniphier_pcie_ep_init,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.raise_irq = uniphier_pcie_ep_raise_irq,
 	.get_features = uniphier_pcie_get_features,
 };
@@ -416,9 +432,17 @@ static const struct uniphier_pcie_ep_soc_data uniphier_pro5_data = {
 		.msix_capable = false,
 		.align = 1 << 16,
 		.bar[BAR_0] = { .only_64bit = true, },
+<<<<<<< HEAD
 		.bar[BAR_2] = { .only_64bit = true, },
 		.bar[BAR_4] = { .type = BAR_DISABLED, },
 		.bar[BAR_5] = { .type = BAR_DISABLED, },
+=======
+		.bar[BAR_1] = { .type = BAR_RESERVED, },
+		.bar[BAR_2] = { .only_64bit = true, },
+		.bar[BAR_3] = { .type = BAR_RESERVED, },
+		.bar[BAR_4] = { .type = BAR_RESERVED, },
+		.bar[BAR_5] = { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 
@@ -433,8 +457,16 @@ static const struct uniphier_pcie_ep_soc_data uniphier_nx1_data = {
 		.msix_capable = false,
 		.align = 1 << 12,
 		.bar[BAR_0] = { .only_64bit = true, },
+<<<<<<< HEAD
 		.bar[BAR_2] = { .only_64bit = true, },
 		.bar[BAR_4] = { .only_64bit = true, },
+=======
+		.bar[BAR_1] = { .type = BAR_RESERVED, },
+		.bar[BAR_2] = { .only_64bit = true, },
+		.bar[BAR_3] = { .type = BAR_RESERVED, },
+		.bar[BAR_4] = { .only_64bit = true, },
+		.bar[BAR_5] = { .type = BAR_RESERVED, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 };
 

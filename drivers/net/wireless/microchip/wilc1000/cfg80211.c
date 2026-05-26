@@ -534,7 +534,11 @@ static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int add_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
+=======
+static int add_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   u8 key_index, bool pairwise, const u8 *mac_addr,
 		   struct key_params *params)
 
@@ -544,7 +548,11 @@ static int add_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 	const u8 *tx_mic = NULL;
 	u8 mode = WILC_FW_SEC_NO;
 	u8 op_mode;
+<<<<<<< HEAD
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct wilc_vif *vif = netdev_priv(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_priv *priv = &vif->priv;
 	struct wilc_wfi_key *key;
 
@@ -632,19 +640,31 @@ static int add_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 		break;
 
 	default:
+<<<<<<< HEAD
 		netdev_err(wdev->netdev, "%s: Unsupported cipher\n", __func__);
+=======
+		netdev_err(netdev, "%s: Unsupported cipher\n", __func__);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -ENOTSUPP;
 	}
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static int del_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
+=======
+static int del_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   u8 key_index,
 		   bool pairwise,
 		   const u8 *mac_addr)
 {
+<<<<<<< HEAD
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct wilc_vif *vif = netdev_priv(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_priv *priv = &vif->priv;
 
 	if (!pairwise && (key_index == 4 || key_index == 5)) {
@@ -680,12 +700,20 @@ static int del_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int get_key(struct wiphy *wiphy, struct wireless_dev *wdev, int link_id,
+=======
+static int get_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   u8 key_index, bool pairwise, const u8 *mac_addr,
 		   void *cookie,
 		   void (*callback)(void *cookie, struct key_params *))
 {
+<<<<<<< HEAD
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct wilc_vif *vif = netdev_priv(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_priv *priv = &vif->priv;
 	struct  key_params key_params;
 
@@ -725,18 +753,31 @@ static int set_default_key(struct wiphy *wiphy, struct net_device *netdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int set_default_mgmt_key(struct wiphy *wiphy, struct wireless_dev *wdev,
 				int link_id, u8 key_index)
 {
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+static int set_default_mgmt_key(struct wiphy *wiphy, struct net_device *netdev,
+				int link_id, u8 key_index)
+{
+	struct wilc_vif *vif = netdev_priv(netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return wilc_set_default_mgmt_key_index(vif, key_index);
 }
 
+<<<<<<< HEAD
 static int get_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		       const u8 *mac, struct station_info *sinfo)
 {
 	struct net_device *dev = wdev->netdev;
+=======
+static int get_station(struct wiphy *wiphy, struct net_device *dev,
+		       const u8 *mac, struct station_info *sinfo)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_vif *vif = netdev_priv(dev);
 	struct wilc_priv *priv = &vif->priv;
 	struct wilc *wilc = vif->wilc;
@@ -1313,10 +1354,17 @@ static int set_cqm_rssi_config(struct wiphy *wiphy, struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 			int idx, u8 *mac, struct station_info *sinfo)
 {
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+static int dump_station(struct wiphy *wiphy, struct net_device *dev,
+			int idx, u8 *mac, struct station_info *sinfo)
+{
+	struct wilc_vif *vif = netdev_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (idx != 0)
@@ -1451,11 +1499,19 @@ static int stop_ap(struct wiphy *wiphy, struct net_device *dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int add_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		       const u8 *mac, struct station_parameters *params)
 {
 	int ret = 0;
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+static int add_station(struct wiphy *wiphy, struct net_device *dev,
+		       const u8 *mac, struct station_parameters *params)
+{
+	int ret = 0;
+	struct wilc_vif *vif = netdev_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_priv *priv = &vif->priv;
 
 	if (vif->iftype == WILC_AP_MODE || vif->iftype == WILC_GO_MODE) {
@@ -1464,18 +1520,30 @@ static int add_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 		ret = wilc_add_station(vif, mac, params);
 		if (ret)
+<<<<<<< HEAD
 			netdev_err(wdev->netdev, "Host add station fail\n");
+=======
+			netdev_err(dev, "Host add station fail\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static int del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
+=======
+static int del_station(struct wiphy *wiphy, struct net_device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		       struct station_del_parameters *params)
 {
 	const u8 *mac = params->mac;
 	int ret = 0;
+<<<<<<< HEAD
 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+=======
+	struct wilc_vif *vif = netdev_priv(dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct wilc_priv *priv = &vif->priv;
 	struct sta_info *info;
 
@@ -1489,6 +1557,7 @@ static int del_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 	ret = wilc_del_station(vif, mac);
 	if (ret)
+<<<<<<< HEAD
 		netdev_err(wdev->netdev, "Host delete station fail\n");
 	return ret;
 }
@@ -1502,6 +1571,22 @@ static int change_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 		ret = wilc_edit_station(vif, mac, params);
 		if (ret)
 			netdev_err(wdev->netdev, "Host edit station fail\n");
+=======
+		netdev_err(dev, "Host delete station fail\n");
+	return ret;
+}
+
+static int change_station(struct wiphy *wiphy, struct net_device *dev,
+			  const u8 *mac, struct station_parameters *params)
+{
+	int ret = 0;
+	struct wilc_vif *vif = netdev_priv(dev);
+
+	if (vif->iftype == WILC_AP_MODE || vif->iftype == WILC_GO_MODE) {
+		ret = wilc_edit_station(vif, mac, params);
+		if (ret)
+			netdev_err(dev, "Host edit station fail\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return ret;
 }

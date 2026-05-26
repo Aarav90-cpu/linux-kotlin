@@ -181,6 +181,7 @@ SYM_FUNC_END(__pmull_p8_16x64)
 
 	pmull16x64_\p	fold_consts, \reg1, v8
 
+<<<<<<< HEAD
 	rev64		v11.16b, v11.16b
 	rev64		v12.16b, v12.16b
 
@@ -188,6 +189,15 @@ SYM_FUNC_END(__pmull_p8_16x64)
 
 	ext		v11.16b, v11.16b, v11.16b, #8
 	ext		v12.16b, v12.16b, v12.16b, #8
+=======
+CPU_LE(	rev64		v11.16b, v11.16b		)
+CPU_LE(	rev64		v12.16b, v12.16b		)
+
+	pmull16x64_\p	fold_consts, \reg2, v9
+
+CPU_LE(	ext		v11.16b, v11.16b, v11.16b, #8	)
+CPU_LE(	ext		v12.16b, v12.16b, v12.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	eor		\reg1\().16b, \reg1\().16b, v8.16b
 	eor		\reg2\().16b, \reg2\().16b, v9.16b
@@ -220,6 +230,7 @@ SYM_FUNC_END(__pmull_p8_16x64)
 	ldp		q4, q5, [buf, #0x40]
 	ldp		q6, q7, [buf, #0x60]
 	add		buf, buf, #0x80
+<<<<<<< HEAD
 	rev64		v0.16b, v0.16b
 	rev64		v1.16b, v1.16b
 	rev64		v2.16b, v2.16b
@@ -236,6 +247,24 @@ SYM_FUNC_END(__pmull_p8_16x64)
 	ext		v5.16b, v5.16b, v5.16b, #8
 	ext		v6.16b, v6.16b, v6.16b, #8
 	ext		v7.16b, v7.16b, v7.16b, #8
+=======
+CPU_LE(	rev64		v0.16b, v0.16b			)
+CPU_LE(	rev64		v1.16b, v1.16b			)
+CPU_LE(	rev64		v2.16b, v2.16b			)
+CPU_LE(	rev64		v3.16b, v3.16b			)
+CPU_LE(	rev64		v4.16b, v4.16b			)
+CPU_LE(	rev64		v5.16b, v5.16b			)
+CPU_LE(	rev64		v6.16b, v6.16b			)
+CPU_LE(	rev64		v7.16b, v7.16b			)
+CPU_LE(	ext		v0.16b, v0.16b, v0.16b, #8	)
+CPU_LE(	ext		v1.16b, v1.16b, v1.16b, #8	)
+CPU_LE(	ext		v2.16b, v2.16b, v2.16b, #8	)
+CPU_LE(	ext		v3.16b, v3.16b, v3.16b, #8	)
+CPU_LE(	ext		v4.16b, v4.16b, v4.16b, #8	)
+CPU_LE(	ext		v5.16b, v5.16b, v5.16b, #8	)
+CPU_LE(	ext		v6.16b, v6.16b, v6.16b, #8	)
+CPU_LE(	ext		v7.16b, v7.16b, v7.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// XOR the first 16 data *bits* with the initial CRC value.
 	movi		v8.16b, #0
@@ -288,8 +317,13 @@ SYM_FUNC_END(__pmull_p8_16x64)
 	pmull16x64_\p	fold_consts, v7, v8
 	eor		v7.16b, v7.16b, v8.16b
 	ldr		q0, [buf], #16
+<<<<<<< HEAD
 	rev64		v0.16b, v0.16b
 	ext		v0.16b, v0.16b, v0.16b, #8
+=======
+CPU_LE(	rev64		v0.16b, v0.16b			)
+CPU_LE(	ext		v0.16b, v0.16b, v0.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	eor		v7.16b, v7.16b, v0.16b
 	subs		len, len, #16
 	b.ge		.Lfold_16_bytes_loop_\@
@@ -310,8 +344,13 @@ SYM_FUNC_END(__pmull_p8_16x64)
 	// v0 = last 16 original data bytes
 	add		buf, buf, len
 	ldr		q0, [buf, #-16]
+<<<<<<< HEAD
 	rev64		v0.16b, v0.16b
 	ext		v0.16b, v0.16b, v0.16b, #8
+=======
+CPU_LE(	rev64		v0.16b, v0.16b			)
+CPU_LE(	ext		v0.16b, v0.16b, v0.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// v1 = high order part of second chunk: v7 left-shifted by 'len' bytes.
 	adr_l		x4, .Lbyteshift_table + 16
@@ -344,8 +383,13 @@ SYM_FUNC_END(__pmull_p8_16x64)
 
 	// Load the first 16 data bytes.
 	ldr		q7, [buf], #0x10
+<<<<<<< HEAD
 	rev64		v7.16b, v7.16b
 	ext		v7.16b, v7.16b, v7.16b, #8
+=======
+CPU_LE(	rev64		v7.16b, v7.16b			)
+CPU_LE(	ext		v7.16b, v7.16b, v7.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// XOR the first 16 data *bits* with the initial CRC value.
 	movi		v0.16b, #0
@@ -382,8 +426,13 @@ SYM_FUNC_START(crc_t10dif_pmull_p8)
 
 	crc_t10dif_pmull p8
 
+<<<<<<< HEAD
 	rev64		v7.16b, v7.16b
 	ext		v7.16b, v7.16b, v7.16b, #8
+=======
+CPU_LE(	rev64		v7.16b, v7.16b			)
+CPU_LE(	ext		v7.16b, v7.16b, v7.16b, #8	)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	str		q7, [x3]
 
 	frame_pop

@@ -72,10 +72,13 @@ struct tk_read_base {
  * @id:				The timekeeper ID
  * @tkr_raw:			The readout base structure for CLOCK_MONOTONIC_RAW
  * @raw_sec:			CLOCK_MONOTONIC_RAW  time in seconds
+<<<<<<< HEAD
  * @cs_id:			The ID of the current clocksource
  * @cs_ns_to_cyc_mult:		Multiplicator for nanoseconds to cycles conversion
  * @cs_ns_to_cyc_shift:		Shift value for nanoseconds to cycles conversion
  * @cs_ns_to_cyc_maxns:		Maximum nanoseconds to cyles conversion range
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @clock_was_set_seq:		The sequence number of clock was set events
  * @cs_was_changed_seq:		The sequence number of clocksource change events
  * @clock_valid:		Indicator for valid clock
@@ -163,10 +166,13 @@ struct timekeeper {
 	u64			raw_sec;
 
 	/* Cachline 3 and 4 (timekeeping internal variables): */
+<<<<<<< HEAD
 	enum clocksource_ids	cs_id;
 	u32			cs_ns_to_cyc_mult;
 	u32			cs_ns_to_cyc_shift;
 	u64			cs_ns_to_cyc_maxns;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int		clock_was_set_seq;
 	u8			cs_was_changed_seq;
 	u8			clock_valid;

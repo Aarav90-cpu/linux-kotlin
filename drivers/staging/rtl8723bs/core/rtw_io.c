@@ -75,7 +75,10 @@ int rtw_write8(struct adapter *adapter, u32 addr, u8 val)
 
 	return RTW_STATUS_CODE(ret);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw_write16(struct adapter *adapter, u32 addr, u16 val)
 {
 	/* struct	io_queue	*pio_queue = (struct io_queue *)adapter->pio_queue; */
@@ -89,7 +92,10 @@ int rtw_write16(struct adapter *adapter, u32 addr, u16 val)
 	ret = _write16(pintfhdl, addr, val);
 	return RTW_STATUS_CODE(ret);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw_write32(struct adapter *adapter, u32 addr, u32 val)
 {
 	/* struct	io_queue	*pio_queue = (struct io_queue *)adapter->pio_queue; */
@@ -116,9 +122,13 @@ u32 rtw_write_port(struct adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 	return _write_port(pintfhdl, addr, cnt, pmem);
 }
 
+<<<<<<< HEAD
 int rtw_init_io_priv(struct adapter *padapter,
 		     void (*set_intf_ops)(struct adapter *padapter,
 					  struct _io_ops *pops))
+=======
+int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapter *padapter, struct _io_ops *pops))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct io_priv *piopriv = &padapter->iopriv;
 	struct intf_hdl *pintf = &piopriv->intf;
@@ -136,8 +146,12 @@ int rtw_init_io_priv(struct adapter *padapter,
 }
 
 /*
+<<<<<<< HEAD
  * Increase and check if the continual_io_error of this @param dvobjprive
  * is larger than MAX_CONTINUAL_IO_ERR
+=======
+ * Increase and check if the continual_io_error of this @param dvobjprive is larger than MAX_CONTINUAL_IO_ERR
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @return true:
  * @return false:
  */

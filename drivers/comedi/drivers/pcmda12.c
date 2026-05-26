@@ -120,6 +120,7 @@ static int pcmda12_attach(struct comedi_device *dev,
 	struct comedi_subdevice *s;
 	int ret;
 
+<<<<<<< HEAD
 	/*
 	 * The datasheet says it requires 16 contiguous addresses and is
 	 * "configurable on any even sixteen port boundary".  So require
@@ -128,6 +129,9 @@ static int pcmda12_attach(struct comedi_device *dev,
 	 */
 	ret = comedi_check_request_region(dev, it->options[0], 0x10,
 					  0, 0x3ff, 32);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

@@ -60,7 +60,10 @@
 #include <dt-bindings/gpio/tegra186-gpio.h>
 #include <dt-bindings/gpio/tegra194-gpio.h>
 #include <dt-bindings/gpio/tegra234-gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/gpio/nvidia,tegra264-gpio.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <dt-bindings/soc/tegra-pmc.h>
 
 #define PMC_CNTRL			0x0
@@ -181,6 +184,7 @@
 #define WAKE_AOWAKE_CNTRL(x) (0x000 + ((x) << 2))
 #define WAKE_AOWAKE_CNTRL_LEVEL (1 << 3)
 #define WAKE_AOWAKE_CNTRL_SR_CAPTURE_EN (1 << 1)
+<<<<<<< HEAD
 #define WAKE_AOWAKE_MASK_W(_pmc, x) \
 	((_pmc)->soc->regs->aowake_mask_w + ((x) << 2))
 #define WAKE_AOWAKE_STATUS_W(_pmc, x) \
@@ -193,6 +197,21 @@
 	((_pmc)->soc->regs->aowake_sw_status + ((x) << 2))
 
 #define WAKE_AOWAKE_CTRL_INTR_POLARITY BIT(0)
+=======
+#define WAKE_AOWAKE_MASK_W(x) (0x180 + ((x) << 2))
+#define WAKE_AOWAKE_MASK_R(x) (0x300 + ((x) << 2))
+#define WAKE_AOWAKE_STATUS_W(x) (0x30c + ((x) << 2))
+#define WAKE_AOWAKE_STATUS_R(x) (0x48c + ((x) << 2))
+#define WAKE_AOWAKE_TIER0_ROUTING(x) (0x4b4 + ((x) << 2))
+#define WAKE_AOWAKE_TIER1_ROUTING(x) (0x4c0 + ((x) << 2))
+#define WAKE_AOWAKE_TIER2_ROUTING(x) (0x4cc + ((x) << 2))
+#define WAKE_AOWAKE_SW_STATUS_W_0	0x49c
+#define WAKE_AOWAKE_SW_STATUS(x)	(0x4a0 + ((x) << 2))
+#define WAKE_LATCH_SW			0x498
+
+#define WAKE_AOWAKE_CTRL 0x4f4
+#define  WAKE_AOWAKE_CTRL_INTR_POLARITY BIT(0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define SW_WAKE_ID		83 /* wake83 */
 
@@ -201,9 +220,12 @@
 #define  TEGRA_SMC_PMC_READ	0xaa
 #define  TEGRA_SMC_PMC_WRITE	0xbb
 
+<<<<<<< HEAD
 /* Tegra264 and later */
 #define PMC_IMPL_SDMMC1_HV_PADCTL_0	0x41004
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct pmc_clk {
 	struct clk_hw hw;
 	struct tegra_pmc *pmc;
@@ -297,6 +319,7 @@ struct tegra_io_pad_soc {
 	unsigned int dpd;
 	unsigned int request;
 	unsigned int status;
+<<<<<<< HEAD
 	const char *name;
 };
 
@@ -307,6 +330,12 @@ struct tegra_io_pad_vctrl {
 	unsigned int ena_1v8;
 };
 
+=======
+	unsigned int voltage;
+	const char *name;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct tegra_pmc_regs {
 	unsigned int scratch0;
 	unsigned int rst_status;
@@ -314,6 +343,7 @@ struct tegra_pmc_regs {
 	unsigned int rst_source_mask;
 	unsigned int rst_level_shift;
 	unsigned int rst_level_mask;
+<<<<<<< HEAD
 	unsigned int aowake_mask_w;
 	unsigned int aowake_status_w;
 	unsigned int aowake_status_r;
@@ -322,6 +352,8 @@ struct tegra_pmc_regs {
 	unsigned int aowake_sw_status;
 	unsigned int aowake_latch_sw;
 	unsigned int aowake_ctrl;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tegra_wake_event {
@@ -376,13 +408,20 @@ struct tegra_pmc_soc {
 	bool has_tsense_reset;
 	bool has_gpu_clamps;
 	bool needs_mbist_war;
+<<<<<<< HEAD
 	bool has_io_pad_wren;
+=======
+	bool has_impl_33v_pwr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool maybe_tz_only;
 
 	const struct tegra_io_pad_soc *io_pads;
 	unsigned int num_io_pads;
+<<<<<<< HEAD
 	const struct tegra_io_pad_vctrl *io_pad_vctrls;
 	unsigned int num_io_pad_vctrls;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	const struct pinctrl_pin_desc *pin_descs;
 	unsigned int num_pin_descs;
@@ -456,10 +495,14 @@ struct tegra_pmc_soc {
  * @wake_sw_status_map: Bitmap to hold raw status of wakes without mask
  * @wake_cntrl_level_map: Bitmap to hold wake levels to be programmed in
  *     cntrl register associated with each wake during system suspend.
+<<<<<<< HEAD
  * @reboot_notifier: PMC reboot notifier handler
  * @syscore: syscore suspend/resume callbacks
  * @wake_work: IRQ work handler for processing wake-up events.
  * @wake_status: Status of wake-up events.
+=======
+ * @syscore: syscore suspend/resume callbacks
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct tegra_pmc {
 	struct device *dev;
@@ -1026,7 +1069,11 @@ static struct tegra_pmc *tegra_pmc_get(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * devm_tegra_pmc_get() - find the PMC for a given device
+=======
+ * tegra_pmc_get() - find the PMC for a given device
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @dev: device for which to find the PMC
  *
  * Returns a pointer to the PMC on success or an ERR_PTR()-encoded error code
@@ -1710,6 +1757,7 @@ tegra_io_pad_find(struct tegra_pmc *pmc, enum tegra_io_pad id)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static const struct tegra_io_pad_vctrl *
 tegra_io_pad_vctrl_find(struct tegra_pmc *pmc, enum tegra_io_pad id)
 {
@@ -1722,6 +1770,8 @@ tegra_io_pad_vctrl_find(struct tegra_pmc *pmc, enum tegra_io_pad id)
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int tegra_io_pad_prepare(struct tegra_pmc *pmc,
 				const struct tegra_io_pad_soc *pad,
 				unsigned long *request,
@@ -1780,7 +1830,11 @@ static void tegra_io_pad_unprepare(struct tegra_pmc *pmc)
 }
 
 /**
+<<<<<<< HEAD
  * tegra_pmc_io_pad_power_enable() - enable power to I/O pad
+=======
+ * tegra_io_pad_power_enable() - enable power to I/O pad
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @pmc: power management controller
  * @id: Tegra I/O pad ID for which to enable power
  *
@@ -1917,6 +1971,7 @@ static int tegra_io_pad_is_powered(struct tegra_pmc *pmc, enum tegra_io_pad id)
 static int tegra_io_pad_set_voltage(struct tegra_pmc *pmc, enum tegra_io_pad id,
 				    int voltage)
 {
+<<<<<<< HEAD
 	const struct tegra_io_pad_vctrl *pad;
 	u32 value;
 
@@ -1949,6 +2004,46 @@ static int tegra_io_pad_set_voltage(struct tegra_pmc *pmc, enum tegra_io_pad id,
 
 	tegra_pmc_writel(pmc, value, pad->offset);
 
+=======
+	const struct tegra_io_pad_soc *pad;
+	u32 value;
+
+	pad = tegra_io_pad_find(pmc, id);
+	if (!pad)
+		return -ENOENT;
+
+	if (pad->voltage == UINT_MAX)
+		return -ENOTSUPP;
+
+	mutex_lock(&pmc->powergates_lock);
+
+	if (pmc->soc->has_impl_33v_pwr) {
+		value = tegra_pmc_readl(pmc, PMC_IMPL_E_33V_PWR);
+
+		if (voltage == TEGRA_IO_PAD_VOLTAGE_1V8)
+			value &= ~BIT(pad->voltage);
+		else
+			value |= BIT(pad->voltage);
+
+		tegra_pmc_writel(pmc, value, PMC_IMPL_E_33V_PWR);
+	} else {
+		/* write-enable PMC_PWR_DET_VALUE[pad->voltage] */
+		value = tegra_pmc_readl(pmc, PMC_PWR_DET);
+		value |= BIT(pad->voltage);
+		tegra_pmc_writel(pmc, value, PMC_PWR_DET);
+
+		/* update I/O voltage */
+		value = tegra_pmc_readl(pmc, PMC_PWR_DET_VALUE);
+
+		if (voltage == TEGRA_IO_PAD_VOLTAGE_1V8)
+			value &= ~BIT(pad->voltage);
+		else
+			value |= BIT(pad->voltage);
+
+		tegra_pmc_writel(pmc, value, PMC_PWR_DET_VALUE);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_unlock(&pmc->powergates_lock);
 
 	usleep_range(100, 250);
@@ -1958,6 +2053,7 @@ static int tegra_io_pad_set_voltage(struct tegra_pmc *pmc, enum tegra_io_pad id,
 
 static int tegra_io_pad_get_voltage(struct tegra_pmc *pmc, enum tegra_io_pad id)
 {
+<<<<<<< HEAD
 	const struct tegra_io_pad_vctrl *pad;
 	u32 value;
 
@@ -1968,6 +2064,24 @@ static int tegra_io_pad_get_voltage(struct tegra_pmc *pmc, enum tegra_io_pad id)
 	value = tegra_pmc_readl(pmc, pad->offset);
 
 	if ((value & BIT(pad->ena_3v3)) == 0)
+=======
+	const struct tegra_io_pad_soc *pad;
+	u32 value;
+
+	pad = tegra_io_pad_find(pmc, id);
+	if (!pad)
+		return -ENOENT;
+
+	if (pad->voltage == UINT_MAX)
+		return -ENOTSUPP;
+
+	if (pmc->soc->has_impl_33v_pwr)
+		value = tegra_pmc_readl(pmc, PMC_IMPL_E_33V_PWR);
+	else
+		value = tegra_pmc_readl(pmc, PMC_PWR_DET_VALUE);
+
+	if ((value & BIT(pad->voltage)) == 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return TEGRA_IO_PAD_VOLTAGE_1V8;
 
 	return TEGRA_IO_PAD_VOLTAGE_3V3;
@@ -2651,20 +2765,34 @@ static int tegra186_pmc_irq_set_wake(struct irq_data *data, unsigned int on)
 	bit = data->hwirq % 32;
 
 	/* clear wake status */
+<<<<<<< HEAD
 	writel(0x1, pmc->wake + WAKE_AOWAKE_STATUS_W(pmc, data->hwirq));
 
 	/* route wake to tier 2 */
 	value = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(pmc, offset));
+=======
+	writel(0x1, pmc->wake + WAKE_AOWAKE_STATUS_W(data->hwirq));
+
+	/* route wake to tier 2 */
+	value = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(offset));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!on)
 		value &= ~(1 << bit);
 	else
 		value |= 1 << bit;
 
+<<<<<<< HEAD
 	writel(value, pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(pmc, offset));
 
 	/* enable wakeup event */
 	writel(!!on, pmc->wake + WAKE_AOWAKE_MASK_W(pmc, data->hwirq));
+=======
+	writel(value, pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(offset));
+
+	/* enable wakeup event */
+	writel(!!on, pmc->wake + WAKE_AOWAKE_MASK_W(data->hwirq));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -3331,7 +3459,11 @@ static void wke_write_wake_levels(struct tegra_pmc *pmc)
 
 static void wke_clear_sw_wake_status(struct tegra_pmc *pmc)
 {
+<<<<<<< HEAD
 	wke_32kwritel(pmc, 1, pmc->soc->regs->aowake_sw_status_w);
+=======
+	wke_32kwritel(pmc, 1, WAKE_AOWAKE_SW_STATUS_W_0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void wke_read_sw_wake_status(struct tegra_pmc *pmc)
@@ -3344,7 +3476,11 @@ static void wke_read_sw_wake_status(struct tegra_pmc *pmc)
 
 	wke_clear_sw_wake_status(pmc);
 
+<<<<<<< HEAD
 	wke_32kwritel(pmc, 1, pmc->soc->regs->aowake_latch_sw);
+=======
+	wke_32kwritel(pmc, 1, WAKE_LATCH_SW);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * WAKE_AOWAKE_SW_STATUS is edge triggered, so in order to
@@ -3362,12 +3498,20 @@ static void wke_read_sw_wake_status(struct tegra_pmc *pmc)
 	 */
 	udelay(300);
 
+<<<<<<< HEAD
 	wke_32kwritel(pmc, 0, pmc->soc->regs->aowake_latch_sw);
+=======
+	wke_32kwritel(pmc, 0, WAKE_LATCH_SW);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bitmap_zero(pmc->wake_sw_status_map, pmc->soc->max_wake_events);
 
 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
+<<<<<<< HEAD
 		status = readl(pmc->wake + WAKE_AOWAKE_SW_STATUS(pmc, i));
+=======
+		status = readl(pmc->wake + WAKE_AOWAKE_SW_STATUS(i));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		for_each_set_bit(wake, &status, 32)
 			set_bit(wake + (i * 32), pmc->wake_sw_status_map);
@@ -3381,12 +3525,20 @@ static void wke_clear_wake_status(struct tegra_pmc *pmc)
 	u32 mask;
 
 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
+<<<<<<< HEAD
 		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(pmc, i));
 		status = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(pmc, i)) & mask;
 
 		for_each_set_bit(wake, &status, 32)
 			wke_32kwritel(pmc, 0x1, WAKE_AOWAKE_STATUS_W(pmc,
 							(i * 32) + wake));
+=======
+		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(i));
+		status = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
+
+		for_each_set_bit(wake, &status, 32)
+			wke_32kwritel(pmc, 0x1, WAKE_AOWAKE_STATUS_W((i * 32) + wake));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -3397,9 +3549,14 @@ static void tegra186_pmc_wake_syscore_resume(void *data)
 	u32 mask;
 
 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
+<<<<<<< HEAD
 		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(pmc, i));
 		pmc->wake_status[i] = readl(pmc->wake +
 					    WAKE_AOWAKE_STATUS_R(pmc, i)) & mask;
+=======
+		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(i));
+		pmc->wake_status[i] = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Schedule IRQ work to process wake IRQs (if any) */
@@ -3547,7 +3704,11 @@ static const struct tegra_pmc_soc tegra20_pmc_soc = {
 	.has_tsense_reset = false,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = true,
+=======
+	.has_impl_33v_pwr = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.maybe_tz_only = false,
 	.num_io_pads = 0,
 	.io_pads = NULL,
@@ -3609,7 +3770,11 @@ static const struct tegra_pmc_soc tegra30_pmc_soc = {
 	.has_tsense_reset = true,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = true,
+=======
+	.has_impl_33v_pwr = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.maybe_tz_only = false,
 	.num_io_pads = 0,
 	.io_pads = NULL,
@@ -3659,7 +3824,11 @@ static const u8 tegra114_cpu_powergates[] = {
 };
 
 static const struct tegra_pmc_soc tegra114_pmc_soc = {
+<<<<<<< HEAD
 	.supports_core_domain = true,
+=======
+	.supports_core_domain = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_powergates = ARRAY_SIZE(tegra114_powergates),
 	.powergates = tegra114_powergates,
 	.num_cpu_powergates = ARRAY_SIZE(tegra114_cpu_powergates),
@@ -3667,7 +3836,11 @@ static const struct tegra_pmc_soc tegra114_pmc_soc = {
 	.has_tsense_reset = true,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = true,
+=======
+	.has_impl_33v_pwr = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.maybe_tz_only = false,
 	.num_io_pads = 0,
 	.io_pads = NULL,
@@ -3721,12 +3894,17 @@ static const u8 tegra124_cpu_powergates[] = {
 	TEGRA_POWERGATE_CPU3,
 };
 
+<<<<<<< HEAD
 #define TEGRA_IO_PAD(_id, _dpd, _request, _status, _name)	\
+=======
+#define TEGRA_IO_PAD(_id, _dpd, _request, _status, _voltage, _name)	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	((struct tegra_io_pad_soc) {					\
 		.id		= (_id),				\
 		.dpd		= (_dpd),				\
 		.request	= (_request),				\
 		.status		= (_status),				\
+<<<<<<< HEAD
 		.name		= (_name),				\
 	})
 
@@ -3738,6 +3916,12 @@ static const u8 tegra124_cpu_powergates[] = {
 		.ena_1v8	= 0,					\
 	})
 
+=======
+		.voltage	= (_voltage),				\
+		.name		= (_name),				\
+	})
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TEGRA_IO_PIN_DESC(_id, _name)	\
 	((struct pinctrl_pin_desc) {	\
 		.number	= (_id),	\
@@ -3745,6 +3929,7 @@ static const u8 tegra124_cpu_powergates[] = {
 	})
 
 static const struct tegra_io_pad_soc tegra124_io_pads[] = {
+<<<<<<< HEAD
 	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x1b8, 0x1bc, "audio"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_BB, 15, 0x1b8, 0x1bc, "bb"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 4, 0x1c0, 0x1c4, "cam"),
@@ -3775,6 +3960,38 @@ static const struct tegra_io_pad_soc tegra124_io_pads[] = {
 	TEGRA_IO_PAD(TEGRA_IO_PAD_USB1, 10, 0x1b8, 0x1bc, "usb1"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_USB2, 11, 0x1b8, 0x1bc, "usb2"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_USB_BIAS, 12, 0x1b8, 0x1bc, "usb_bias"),
+=======
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x1b8, 0x1bc, UINT_MAX, "audio"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_BB, 15, 0x1b8, 0x1bc, UINT_MAX, "bb"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 4, 0x1c0, 0x1c4, UINT_MAX, "cam"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_COMP, 22, 0x1b8, 0x1bc, UINT_MAX, "comp"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x1b8, 0x1bc, UINT_MAX, "csia"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x1b8, 0x1bc, UINT_MAX, "csib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIE, 12, 0x1c0, 0x1c4, UINT_MAX, "csie"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSI, 2, 0x1b8, 0x1bc, UINT_MAX, "dsi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIB, 7, 0x1c0, 0x1c4, UINT_MAX, "dsib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIC, 8, 0x1c0, 0x1c4, UINT_MAX, "dsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSID, 9, 0x1c0, 0x1c4, UINT_MAX, "dsid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI, 28, 0x1b8, 0x1bc, UINT_MAX, "hdmi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HSIC, 19, 0x1b8, 0x1bc, UINT_MAX, "hsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HV, 6, 0x1c0, 0x1c4, UINT_MAX, "hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_LVDS, 25, 0x1c0, 0x1c4, UINT_MAX, "lvds"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_MIPI_BIAS, 3, 0x1b8, 0x1bc, UINT_MAX, "mipi-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_NAND, 13, 0x1b8, 0x1bc, UINT_MAX, "nand"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_BIAS, 4, 0x1b8, 0x1bc, UINT_MAX, "pex-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK1, 5, 0x1b8, 0x1bc, UINT_MAX, "pex-clk1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK2, 6, 0x1b8, 0x1bc, UINT_MAX, "pex-clk2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CNTRL, 0, 0x1c0, 0x1c4, UINT_MAX, "pex-cntrl"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC1, 1, 0x1c0, 0x1c4, UINT_MAX, "sdmmc1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC3, 2, 0x1c0, 0x1c4, UINT_MAX, "sdmmc3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC4, 3, 0x1c0, 0x1c4, UINT_MAX, "sdmmc4"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SYS_DDC, 26, 0x1c0, 0x1c4, UINT_MAX, "sys_ddc"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART, 14, 0x1b8, 0x1bc, UINT_MAX, "uart"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB0, 9, 0x1b8, 0x1bc, UINT_MAX, "usb0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB1, 10, 0x1b8, 0x1bc, UINT_MAX, "usb1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB2, 11, 0x1b8, 0x1bc, UINT_MAX, "usb2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB_BIAS, 12, 0x1b8, 0x1bc, UINT_MAX, "usb_bias"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pinctrl_pin_desc tegra124_pin_descs[] = {
@@ -3819,7 +4036,11 @@ static const struct tegra_pmc_soc tegra124_pmc_soc = {
 	.has_tsense_reset = true,
 	.has_gpu_clamps = true,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = true,
+=======
+	.has_impl_33v_pwr = false,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.maybe_tz_only = false,
 	.num_io_pads = ARRAY_SIZE(tegra124_io_pads),
 	.io_pads = tegra124_io_pads,
@@ -3875,6 +4096,7 @@ static const u8 tegra210_cpu_powergates[] = {
 };
 
 static const struct tegra_io_pad_soc tegra210_io_pads[] = {
+<<<<<<< HEAD
 	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x1b8, 0x1bc, "audio"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO_HV, 29, 0x1c0, 0x1c4, "audio-hv"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 4, 0x1c0, 0x1c4, "cam"),
@@ -3929,6 +4151,48 @@ static const struct tegra_io_pad_vctrl tegra210_io_pad_vctrls[] = {
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_SPI_HV, PMC_PWR_DET_VALUE, 23),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_UART, PMC_PWR_DET_VALUE, 2),
 };
+=======
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x1b8, 0x1bc, 5, "audio"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO_HV, 29, 0x1c0, 0x1c4, 18, "audio-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 4, 0x1c0, 0x1c4, 10, "cam"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x1b8, 0x1bc, UINT_MAX, "csia"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x1b8, 0x1bc, UINT_MAX, "csib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIC, 10, 0x1c0, 0x1c4, UINT_MAX, "csic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSID, 11, 0x1c0, 0x1c4, UINT_MAX, "csid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIE, 12, 0x1c0, 0x1c4, UINT_MAX, "csie"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIF, 13, 0x1c0, 0x1c4, UINT_MAX, "csif"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DBG, 25, 0x1b8, 0x1bc, 19, "dbg"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DEBUG_NONAO, 26, 0x1b8, 0x1bc, UINT_MAX, "debug-nonao"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DMIC, 18, 0x1c0, 0x1c4, 20, "dmic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DP, 19, 0x1c0, 0x1c4, UINT_MAX, "dp"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSI, 2, 0x1b8, 0x1bc, UINT_MAX, "dsi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIB, 7, 0x1c0, 0x1c4, UINT_MAX, "dsib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIC, 8, 0x1c0, 0x1c4, UINT_MAX, "dsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSID, 9, 0x1c0, 0x1c4, UINT_MAX, "dsid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EMMC, 3, 0x1c0, 0x1c4, UINT_MAX, "emmc"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EMMC2, 5, 0x1c0, 0x1c4, UINT_MAX, "emmc2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_GPIO, 27, 0x1b8, 0x1bc, 21, "gpio"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI, 28, 0x1b8, 0x1bc, UINT_MAX, "hdmi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HSIC, 19, 0x1b8, 0x1bc, UINT_MAX, "hsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_LVDS, 25, 0x1c0, 0x1c4, UINT_MAX, "lvds"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_MIPI_BIAS, 3, 0x1b8, 0x1bc, UINT_MAX, "mipi-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_BIAS, 4, 0x1b8, 0x1bc, UINT_MAX, "pex-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK1, 5, 0x1b8, 0x1bc, UINT_MAX, "pex-clk1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK2, 6, 0x1b8, 0x1bc, UINT_MAX, "pex-clk2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CNTRL, UINT_MAX, UINT_MAX, UINT_MAX, 11, "pex-cntrl"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC1, 1, 0x1c0, 0x1c4, 12, "sdmmc1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC3, 2, 0x1c0, 0x1c4, 13, "sdmmc3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SPI, 14, 0x1c0, 0x1c4, 22, "spi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SPI_HV, 15, 0x1c0, 0x1c4, 23, "spi-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART, 14, 0x1b8, 0x1bc, 2, "uart"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB0, 9, 0x1b8, 0x1bc, UINT_MAX, "usb0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB1, 10, 0x1b8, 0x1bc, UINT_MAX, "usb1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB2, 11, 0x1b8, 0x1bc, UINT_MAX, "usb2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB3, 18, 0x1b8, 0x1bc, UINT_MAX, "usb3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB_BIAS, 12, 0x1b8, 0x1bc, UINT_MAX, "usb-bias"),
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct pinctrl_pin_desc tegra210_pin_descs[] = {
 	TEGRA_IO_PIN_DESC(TEGRA_IO_PAD_AUDIO, "audio"),
 	TEGRA_IO_PIN_DESC(TEGRA_IO_PAD_AUDIO_HV, "audio-hv"),
@@ -3993,12 +4257,19 @@ static const struct tegra_pmc_soc tegra210_pmc_soc = {
 	.has_tsense_reset = true,
 	.has_gpu_clamps = true,
 	.needs_mbist_war = true,
+<<<<<<< HEAD
 	.has_io_pad_wren = true,
 	.maybe_tz_only = true,
 	.num_io_pads = ARRAY_SIZE(tegra210_io_pads),
 	.io_pads = tegra210_io_pads,
 	.num_io_pad_vctrls = ARRAY_SIZE(tegra210_io_pad_vctrls),
 	.io_pad_vctrls = tegra210_io_pad_vctrls,
+=======
+	.has_impl_33v_pwr = false,
+	.maybe_tz_only = true,
+	.num_io_pads = ARRAY_SIZE(tegra210_io_pads),
+	.io_pads = tegra210_io_pads,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_pin_descs = ARRAY_SIZE(tegra210_pin_descs),
 	.pin_descs = tegra210_pin_descs,
 	.regs = &tegra20_pmc_regs,
@@ -4021,6 +4292,7 @@ static const struct tegra_pmc_soc tegra210_pmc_soc = {
 };
 
 static const struct tegra_io_pad_soc tegra186_io_pads[] = {
+<<<<<<< HEAD
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x74, 0x78, "csia"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x74, 0x78, "csib"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_DSI, 2, 0x74, 0x78, "dsi"),
@@ -4068,6 +4340,46 @@ static const struct tegra_io_pad_vctrl tegra186_io_pad_vctrls[] = {
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_SDMMC3_HV, PMC_IMPL_E_33V_PWR, 6),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AUDIO_HV, PMC_IMPL_E_33V_PWR, 1),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AO_HV, PMC_IMPL_E_33V_PWR, 0),
+=======
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x74, 0x78, UINT_MAX, "csia"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x74, 0x78, UINT_MAX, "csib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSI, 2, 0x74, 0x78, UINT_MAX, "dsi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_MIPI_BIAS, 3, 0x74, 0x78, UINT_MAX, "mipi-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK_BIAS, 4, 0x74, 0x78, UINT_MAX, "pex-clk-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK3, 5, 0x74, 0x78, UINT_MAX, "pex-clk3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK2, 6, 0x74, 0x78, UINT_MAX, "pex-clk2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK1, 7, 0x74, 0x78, UINT_MAX, "pex-clk1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB0, 9, 0x74, 0x78, UINT_MAX, "usb0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB1, 10, 0x74, 0x78, UINT_MAX, "usb1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB2, 11, 0x74, 0x78, UINT_MAX, "usb2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_USB_BIAS, 12, 0x74, 0x78, UINT_MAX, "usb-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART, 14, 0x74, 0x78, UINT_MAX, "uart"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x74, 0x78, UINT_MAX, "audio"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HSIC, 19, 0x74, 0x78, UINT_MAX, "hsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DBG, 25, 0x74, 0x78, UINT_MAX, "dbg"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP0, 28, 0x74, 0x78, UINT_MAX, "hdmi-dp0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP1, 29, 0x74, 0x78, UINT_MAX, "hdmi-dp1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CNTRL, 0, 0x7c, 0x80, UINT_MAX, "pex-cntrl"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC2_HV, 2, 0x7c, 0x80, 5, "sdmmc2-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC4, 4, 0x7c, 0x80, UINT_MAX, "sdmmc4"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 6, 0x7c, 0x80, UINT_MAX, "cam"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIB, 8, 0x7c, 0x80, UINT_MAX, "dsib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSIC, 9, 0x7c, 0x80, UINT_MAX, "dsic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DSID, 10, 0x7c, 0x80, UINT_MAX, "dsid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIC, 11, 0x7c, 0x80, UINT_MAX, "csic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSID, 12, 0x7c, 0x80, UINT_MAX, "csid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIE, 13, 0x7c, 0x80, UINT_MAX, "csie"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIF, 14, 0x7c, 0x80, UINT_MAX, "csif"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SPI, 15, 0x7c, 0x80, UINT_MAX, "spi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UFS, 17, 0x7c, 0x80, UINT_MAX, "ufs"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DMIC_HV, 20, 0x7c, 0x80, 2, "dmic-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EDP, 21, 0x7c, 0x80, UINT_MAX, "edp"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC1_HV, 23, 0x7c, 0x80, 4, "sdmmc1-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC3_HV, 24, 0x7c, 0x80, 6, "sdmmc3-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CONN, 28, 0x7c, 0x80, UINT_MAX, "conn"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO_HV, 29, 0x7c, 0x80, 1, "audio-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AO_HV, UINT_MAX, UINT_MAX, UINT_MAX, 0, "ao-hv"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pinctrl_pin_desc tegra186_pin_descs[] = {
@@ -4118,6 +4430,7 @@ static const struct tegra_pmc_regs tegra186_pmc_regs = {
 	.rst_source_mask = 0x3c,
 	.rst_level_shift = 0x0,
 	.rst_level_mask = 0x3,
+<<<<<<< HEAD
 	.aowake_mask_w = 0x180,
 	.aowake_status_w = 0x30c,
 	.aowake_status_r = 0x48c,
@@ -4126,6 +4439,8 @@ static const struct tegra_pmc_regs tegra186_pmc_regs = {
 	.aowake_sw_status = 0x4a0,
 	.aowake_latch_sw = 0x498,
 	.aowake_ctrl = 0x4f4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void tegra186_pmc_init(struct tegra_pmc *pmc)
@@ -4158,14 +4473,22 @@ static void tegra186_pmc_setup_irq_polarity(struct tegra_pmc *pmc,
 		return;
 	}
 
+<<<<<<< HEAD
 	value = readl(wake + pmc->soc->regs->aowake_ctrl);
+=======
+	value = readl(wake + WAKE_AOWAKE_CTRL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (invert)
 		value |= WAKE_AOWAKE_CTRL_INTR_POLARITY;
 	else
 		value &= ~WAKE_AOWAKE_CTRL_INTR_POLARITY;
 
+<<<<<<< HEAD
 	writel(value, wake + pmc->soc->regs->aowake_ctrl);
+=======
+	writel(value, wake + WAKE_AOWAKE_CTRL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iounmap(wake);
 }
@@ -4207,12 +4530,19 @@ static const struct tegra_pmc_soc tegra186_pmc_soc = {
 	.has_tsense_reset = false,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = false,
 	.maybe_tz_only = false,
 	.num_io_pads = ARRAY_SIZE(tegra186_io_pads),
 	.io_pads = tegra186_io_pads,
 	.num_io_pad_vctrls = ARRAY_SIZE(tegra186_io_pad_vctrls),
 	.io_pad_vctrls = tegra186_io_pad_vctrls,
+=======
+	.has_impl_33v_pwr = true,
+	.maybe_tz_only = false,
+	.num_io_pads = ARRAY_SIZE(tegra186_io_pads),
+	.io_pads = tegra186_io_pads,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_pin_descs = ARRAY_SIZE(tegra186_pin_descs),
 	.pin_descs = tegra186_pin_descs,
 	.regs = &tegra186_pmc_regs,
@@ -4237,6 +4567,7 @@ static const struct tegra_pmc_soc tegra186_pmc_soc = {
 };
 
 static const struct tegra_io_pad_soc tegra194_io_pads[] = {
+<<<<<<< HEAD
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x74, 0x78, "csia"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x74, 0x78, "csib"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_MIPI_BIAS, 3, 0x74, 0x78, "mipi-bias"),
@@ -4293,6 +4624,57 @@ static const struct tegra_io_pad_vctrl tegra194_io_pad_vctrls[] = {
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_SDMMC3_HV, PMC_IMPL_E_33V_PWR, 6),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AUDIO_HV, PMC_IMPL_E_33V_PWR, 1),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AO_HV, PMC_IMPL_E_33V_PWR, 0),
+=======
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0x74, 0x78, UINT_MAX, "csia"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0x74, 0x78, UINT_MAX, "csib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_MIPI_BIAS, 3, 0x74, 0x78, UINT_MAX, "mipi-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK_BIAS, 4, 0x74, 0x78, UINT_MAX, "pex-clk-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK3, 5, 0x74, 0x78, UINT_MAX, "pex-clk3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK2, 6, 0x74, 0x78, UINT_MAX, "pex-clk2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK1, 7, 0x74, 0x78, UINT_MAX, "pex-clk1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EQOS, 8, 0x74, 0x78, UINT_MAX, "eqos"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK_2_BIAS, 9, 0x74, 0x78, UINT_MAX, "pex-clk-2-bias"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CLK_2, 10, 0x74, 0x78, UINT_MAX, "pex-clk-2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DAP3, 11, 0x74, 0x78, UINT_MAX, "dap3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DAP5, 12, 0x74, 0x78, UINT_MAX, "dap5"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART, 14, 0x74, 0x78, UINT_MAX, "uart"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PWR_CTL, 15, 0x74, 0x78, UINT_MAX, "pwr-ctl"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SOC_GPIO53, 16, 0x74, 0x78, UINT_MAX, "soc-gpio53"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO, 17, 0x74, 0x78, UINT_MAX, "audio"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_GP_PWM2, 18, 0x74, 0x78, UINT_MAX, "gp-pwm2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_GP_PWM3, 19, 0x74, 0x78, UINT_MAX, "gp-pwm3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SOC_GPIO12, 20, 0x74, 0x78, UINT_MAX, "soc-gpio12"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SOC_GPIO13, 21, 0x74, 0x78, UINT_MAX, "soc-gpio13"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SOC_GPIO10, 22, 0x74, 0x78, UINT_MAX, "soc-gpio10"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART4, 23, 0x74, 0x78, UINT_MAX, "uart4"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UART5, 24, 0x74, 0x78, UINT_MAX, "uart5"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_DBG, 25, 0x74, 0x78, UINT_MAX, "dbg"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP3, 26, 0x74, 0x78, UINT_MAX, "hdmi-dp3"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP2, 27, 0x74, 0x78, UINT_MAX, "hdmi-dp2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP0, 28, 0x74, 0x78, UINT_MAX, "hdmi-dp0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP1, 29, 0x74, 0x78, UINT_MAX, "hdmi-dp1"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CNTRL, 0, 0x7c, 0x80, UINT_MAX, "pex-cntrl"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_CTL2, 1, 0x7c, 0x80, UINT_MAX, "pex-ctl2"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_L0_RST, 2, 0x7c, 0x80, UINT_MAX, "pex-l0-rst"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_L1_RST, 3, 0x7c, 0x80, UINT_MAX, "pex-l1-rst"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC4, 4, 0x7c, 0x80, UINT_MAX, "sdmmc4"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_PEX_L5_RST, 5, 0x7c, 0x80, UINT_MAX, "pex-l5-rst"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CAM, 6, 0x7c, 0x80, UINT_MAX, "cam"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIC, 11, 0x7c, 0x80, UINT_MAX, "csic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSID, 12, 0x7c, 0x80, UINT_MAX, "csid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIE, 13, 0x7c, 0x80, UINT_MAX, "csie"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIF, 14, 0x7c, 0x80, UINT_MAX, "csif"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SPI, 15, 0x7c, 0x80, UINT_MAX, "spi"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UFS, 17, 0x7c, 0x80, UINT_MAX, "ufs"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIG, 18, 0x7c, 0x80, UINT_MAX, "csig"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIH, 19, 0x7c, 0x80, UINT_MAX, "csih"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EDP, 21, 0x7c, 0x80, UINT_MAX, "edp"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC1_HV, 23, 0x7c, 0x80, 4, "sdmmc1-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC3_HV, 24, 0x7c, 0x80, 6, "sdmmc3-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CONN, 28, 0x7c, 0x80, UINT_MAX, "conn"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO_HV, 29, 0x7c, 0x80, 1, "audio-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AO_HV, UINT_MAX, UINT_MAX, UINT_MAX, 0, "ao-hv"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pinctrl_pin_desc tegra194_pin_descs[] = {
@@ -4354,6 +4736,7 @@ static const struct tegra_pmc_regs tegra194_pmc_regs = {
 	.rst_source_mask = 0x7c,
 	.rst_level_shift = 0x0,
 	.rst_level_mask = 0x3,
+<<<<<<< HEAD
 	.aowake_mask_w = 0x180,
 	.aowake_status_w = 0x30c,
 	.aowake_status_r = 0x48c,
@@ -4362,6 +4745,8 @@ static const struct tegra_pmc_regs tegra194_pmc_regs = {
 	.aowake_sw_status = 0x4a0,
 	.aowake_latch_sw = 0x498,
 	.aowake_ctrl = 0x4f4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char * const tegra194_reset_sources[] = {
@@ -4411,12 +4796,19 @@ static const struct tegra_pmc_soc tegra194_pmc_soc = {
 	.has_tsense_reset = false,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = false,
 	.maybe_tz_only = false,
 	.num_io_pads = ARRAY_SIZE(tegra194_io_pads),
 	.io_pads = tegra194_io_pads,
 	.num_io_pad_vctrls = ARRAY_SIZE(tegra194_io_pad_vctrls),
 	.io_pad_vctrls = tegra194_io_pad_vctrls,
+=======
+	.has_impl_33v_pwr = true,
+	.maybe_tz_only = false,
+	.num_io_pads = ARRAY_SIZE(tegra194_io_pads),
+	.io_pads = tegra194_io_pads,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_pin_descs = ARRAY_SIZE(tegra194_pin_descs),
 	.pin_descs = tegra194_pin_descs,
 	.regs = &tegra194_pmc_regs,
@@ -4441,6 +4833,7 @@ static const struct tegra_pmc_soc tegra194_pmc_soc = {
 };
 
 static const struct tegra_io_pad_soc tegra234_io_pads[] = {
+<<<<<<< HEAD
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0xe0c0, 0xe0c4, "csia"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0xe0c0, 0xe0c4, "csib"),
 	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP0, 0, 0xe0d0, 0xe0d4, "hdmi-dp0"),
@@ -4463,6 +4856,23 @@ static const struct tegra_io_pad_vctrl tegra234_io_pad_vctrls[] = {
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_SDMMC3_HV, PMC_IMPL_E_33V_PWR, 6),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AUDIO_HV, PMC_IMPL_E_33V_PWR, 1),
 	TEGRA_IO_PAD_VCTRL(TEGRA_IO_PAD_AO_HV, PMC_IMPL_E_33V_PWR, 0),
+=======
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIA, 0, 0xe0c0, 0xe0c4, UINT_MAX, "csia"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIB, 1, 0xe0c0, 0xe0c4, UINT_MAX, "csib"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_HDMI_DP0, 0, 0xe0d0, 0xe0d4, UINT_MAX, "hdmi-dp0"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIC, 2, 0xe0c0, 0xe0c4, UINT_MAX, "csic"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSID, 3, 0xe0c0, 0xe0c4, UINT_MAX, "csid"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIE, 4, 0xe0c0, 0xe0c4, UINT_MAX, "csie"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIF, 5, 0xe0c0, 0xe0c4, UINT_MAX, "csif"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_UFS, 0, 0xe064, 0xe068, UINT_MAX, "ufs"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_EDP, 1, 0xe05c, 0xe060, UINT_MAX, "edp"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC1_HV, 0, 0xe054, 0xe058, 4, "sdmmc1-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_SDMMC3_HV, UINT_MAX, UINT_MAX, UINT_MAX, 6, "sdmmc3-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AUDIO_HV, UINT_MAX, UINT_MAX, UINT_MAX, 1, "audio-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_AO_HV, UINT_MAX, UINT_MAX, UINT_MAX, 0, "ao-hv"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIG, 6, 0xe0c0, 0xe0c4, UINT_MAX, "csig"),
+	TEGRA_IO_PAD(TEGRA_IO_PAD_CSIH, 7, 0xe0c0, 0xe0c4, UINT_MAX, "csih"),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const struct pinctrl_pin_desc tegra234_pin_descs[] = {
@@ -4490,6 +4900,7 @@ static const struct tegra_pmc_regs tegra234_pmc_regs = {
 	.rst_source_mask = 0xfc,
 	.rst_level_shift = 0x0,
 	.rst_level_mask = 0x3,
+<<<<<<< HEAD
 	.aowake_mask_w = 0x180,
 	.aowake_status_w = 0x30c,
 	.aowake_status_r = 0x48c,
@@ -4498,6 +4909,8 @@ static const struct tegra_pmc_regs tegra234_pmc_regs = {
 	.aowake_sw_status = 0x4a0,
 	.aowake_latch_sw = 0x498,
 	.aowake_ctrl = 0x4f4,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char * const tegra234_reset_sources[] = {
@@ -4567,12 +4980,19 @@ static const struct tegra_pmc_soc tegra234_pmc_soc = {
 	.has_tsense_reset = false,
 	.has_gpu_clamps = false,
 	.needs_mbist_war = false,
+<<<<<<< HEAD
 	.has_io_pad_wren = false,
 	.maybe_tz_only = false,
 	.num_io_pads = ARRAY_SIZE(tegra234_io_pads),
 	.io_pads = tegra234_io_pads,
 	.num_io_pad_vctrls = ARRAY_SIZE(tegra234_io_pad_vctrls),
 	.io_pad_vctrls = tegra234_io_pad_vctrls,
+=======
+	.has_impl_33v_pwr = true,
+	.maybe_tz_only = false,
+	.num_io_pads = ARRAY_SIZE(tegra234_io_pads),
+	.io_pads = tegra234_io_pads,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.num_pin_descs = ARRAY_SIZE(tegra234_pin_descs),
 	.pin_descs = tegra234_pin_descs,
 	.regs = &tegra234_pmc_regs,
@@ -4595,6 +5015,7 @@ static const struct tegra_pmc_soc tegra234_pmc_soc = {
 	.has_single_mmio_aperture = false,
 };
 
+<<<<<<< HEAD
 #define TEGRA264_IO_PAD_VCTRL(_id, _offset, _ena_3v3, _ena_1v8)		\
 	((struct tegra_io_pad_vctrl) {					\
 		.id		= (_id),				\
@@ -4639,6 +5060,8 @@ static const struct pinctrl_pin_desc tegra264_pin_descs[] = {
 	TEGRA_IO_PIN_DESC(TEGRA_IO_PAD_CSIH, "csih"),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct tegra_pmc_regs tegra264_pmc_regs = {
 	.scratch0 = 0x684,
 	.rst_status = 0x4,
@@ -4646,6 +5069,7 @@ static const struct tegra_pmc_regs tegra264_pmc_regs = {
 	.rst_source_mask = 0x1fc,
 	.rst_level_shift = 0x0,
 	.rst_level_mask = 0x3,
+<<<<<<< HEAD
 	.aowake_mask_w = 0x200,
 	.aowake_status_w = 0x410,
 	.aowake_status_r = 0x610,
@@ -4654,6 +5078,8 @@ static const struct tegra_pmc_regs tegra264_pmc_regs = {
 	.aowake_sw_status = 0x628,
 	.aowake_latch_sw = 0x620,
 	.aowake_ctrl = 0x68c,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static const char * const tegra264_reset_sources[] = {
@@ -4747,6 +5173,7 @@ static const char * const tegra264_reset_sources[] = {
 };
 
 static const struct tegra_wake_event tegra264_wake_events[] = {
+<<<<<<< HEAD
 	TEGRA_WAKE_IRQ("pmu", 0, 727),
 	TEGRA_WAKE_GPIO("power", 5, 1, TEGRA264_AON_GPIO(AA, 5)),
 	TEGRA_WAKE_IRQ("rtc", 65, 548),
@@ -4767,6 +5194,12 @@ static const struct tegra_pmc_soc tegra264_pmc_soc = {
 	.io_pad_vctrls = tegra264_io_pad_vctrls,
 	.num_pin_descs = ARRAY_SIZE(tegra264_pin_descs),
 	.pin_descs = tegra264_pin_descs,
+=======
+};
+
+static const struct tegra_pmc_soc tegra264_pmc_soc = {
+	.has_impl_33v_pwr = true,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.regs = &tegra264_pmc_regs,
 	.init = tegra186_pmc_init,
 	.setup_irq_polarity = tegra186_pmc_setup_irq_polarity,

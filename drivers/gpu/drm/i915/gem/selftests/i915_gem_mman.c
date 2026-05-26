@@ -1159,7 +1159,10 @@ static int __igt_mmap_migrate(struct intel_memory_region **placements,
 	struct drm_i915_gem_object *obj;
 	struct i915_request *rq = NULL;
 	struct vm_area_struct *area;
+<<<<<<< HEAD
 	struct file *mock_file;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long addr;
 	LIST_HEAD(objects);
 	u64 offset;
@@ -1179,6 +1182,7 @@ static int __igt_mmap_migrate(struct intel_memory_region **placements,
 		goto out_put;
 
 	/*
+<<<<<<< HEAD
 	 * Pretend to open("/dev/dri/card0"), which will eventually create a GEM
 	 * context along with multiple GEM objects (for paging structures and
 	 * scratch) that are placed in mappable portion of GPU memory.
@@ -1198,6 +1202,18 @@ static int __igt_mmap_migrate(struct intel_memory_region **placements,
 	if (IS_ERR_VALUE(addr)) {
 		err = addr;
 		goto out_fput;
+=======
+	 * This will eventually create a GEM context, due to opening dummy drm
+	 * file, which needs a tiny amount of mappable device memory for the top
+	 * level paging structures(and perhaps scratch), so make sure we
+	 * allocate early, to avoid tears.
+	 */
+	addr = igt_mmap_offset(i915, offset, obj->base.size,
+			       PROT_WRITE, MAP_SHARED);
+	if (IS_ERR_VALUE(addr)) {
+		err = addr;
+		goto out_put;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mmap_read_lock(current->mm);
@@ -1304,9 +1320,12 @@ static int __igt_mmap_migrate(struct intel_memory_region **placements,
 out_addr:
 	vm_munmap(addr, obj->base.size);
 
+<<<<<<< HEAD
 out_fput:
 	fput(mock_file);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_put:
 	i915_gem_object_put(obj);
 	igt_close_objects(i915, &objects);

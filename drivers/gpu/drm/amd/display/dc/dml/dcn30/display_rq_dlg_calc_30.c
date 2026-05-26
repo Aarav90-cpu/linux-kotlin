@@ -50,7 +50,10 @@ static double get_refcyc_per_delivery(struct display_mode_lib *mode_lib,
 	unsigned int delivery_width,
 	unsigned int req_per_swath_ub)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	double refcyc_per_delivery = 0.0;
 
 	if (vratio <= 1.0) {
@@ -805,7 +808,10 @@ static void calculate_ttu_cursor(struct display_mode_lib *mode_lib,
 	unsigned int cur_width,
 	enum cursor_bpp cur_bpp)
 {
+<<<<<<< HEAD
 	(void)mode_lib;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int cur_src_width = cur_width;
 	unsigned int cur_req_size = 0;
 	unsigned int cur_req_width = 0;
@@ -898,9 +904,12 @@ static void dml_rq_dlg_get_dlg_params(struct display_mode_lib *mode_lib,
 	const bool ignore_viewport_pos,
 	const bool immediate_flip_support)
 {
+<<<<<<< HEAD
 	(void)vm_en;
 	(void)ignore_viewport_pos;
 	(void)immediate_flip_support;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const display_pipe_source_params_st *src = &e2e_pipe_param[pipe_idx].pipe.src;
 	const display_pipe_dest_params_st *dst = &e2e_pipe_param[pipe_idx].pipe.dest;
 	const display_output_params_st *dout = &e2e_pipe_param[pipe_idx].dout;

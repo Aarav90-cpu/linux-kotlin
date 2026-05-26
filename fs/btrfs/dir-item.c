@@ -253,7 +253,13 @@ int btrfs_check_dir_item_collision(struct btrfs_root *root, u64 dir_ino,
 		/* Nothing found, we're safe */
 		if (ret == -ENOENT)
 			return 0;
+<<<<<<< HEAD
 		return ret;
+=======
+
+		if (ret < 0)
+			return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* we found an item, look for our name in the item */

@@ -15,7 +15,10 @@ TEST_PROGS := \
 	big_tcp.sh \
 	bind_bhash.sh \
 	bpf_offload.py \
+<<<<<<< HEAD
 	bridge_stp_mode.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bridge_vlan_dump.sh \
 	broadcast_ether_dst.sh \
 	broadcast_pmtu.sh \
@@ -46,7 +49,10 @@ TEST_PROGS := \
 	io_uring_zerocopy_tx.sh \
 	ioam6.sh \
 	ip6_gre_headroom.sh \
+<<<<<<< HEAD
 	ip6_tunnel.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ip_defrag.sh \
 	ip_local_port_range.sh \
 	ipv6_flowlabel.sh \
@@ -57,7 +63,10 @@ TEST_PROGS := \
 	l2tp.sh \
 	link_netns.py \
 	lwt_dst_cache_ref_loop.sh \
+<<<<<<< HEAD
 	macvlan_mcast_shared_mac.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	msg_zerocopy.sh \
 	nat6to4.sh \
 	ndisc_unsolicited_na_test.sh \
@@ -65,9 +74,13 @@ TEST_PROGS := \
 	netdevice.sh \
 	netns-name.sh \
 	netns-sysctl.sh \
+<<<<<<< HEAD
 	nk_qlease.py \
 	nl_netdev.py \
 	nl_nlctrl.py \
+=======
+	nl_netdev.py \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pmtu.sh \
 	psock_snd.sh \
 	reuseaddr_ports_exhausted.sh \
@@ -96,7 +109,10 @@ TEST_PROGS := \
 	srv6_hl2encap_red_l2vpn_test.sh \
 	srv6_iptunnel_cache.sh \
 	stress_reuseport_listen.sh \
+<<<<<<< HEAD
 	tcp_ecmp_failover.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	tcp_fastopen_backup_key.sh \
 	test_bpf.sh \
 	test_bridge_backup_port.sh \
@@ -127,7 +143,10 @@ TEST_PROGS := \
 	vrf_route_leaking.sh \
 	vrf_strict_mode_test.sh \
 	xfrm_policy.sh \
+<<<<<<< HEAD
 	xfrm_state.sh \
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 # end of TEST_PROGS
 
 TEST_PROGS_EXTENDED := \

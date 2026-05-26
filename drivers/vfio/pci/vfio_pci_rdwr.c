@@ -198,6 +198,7 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
 }
 EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
 
+<<<<<<< HEAD
 /*
  * The barmap is set up in vfio_pci_core_enable().  Callers use this
  * function to check that the BAR resources are requested or that the
@@ -207,6 +208,29 @@ int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
 {
 	if (IS_ERR(vdev->barmap[bar]))
 		return PTR_ERR(vdev->barmap[bar]);
+=======
+int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+{
+	struct pci_dev *pdev = vdev->pdev;
+	int ret;
+	void __iomem *io;
+
+	if (vdev->barmap[bar])
+		return 0;
+
+	ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+	if (ret)
+		return ret;
+
+	io = pci_iomap(pdev, bar, 0);
+	if (!io) {
+		pci_release_selected_regions(pdev, 1 << bar);
+		return -ENOMEM;
+	}
+
+	vdev->barmap[bar] = io;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);

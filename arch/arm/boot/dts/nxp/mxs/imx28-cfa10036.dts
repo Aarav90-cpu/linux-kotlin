@@ -21,7 +21,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&led_pins_cfa10036>;
 
+<<<<<<< HEAD
 		led-power {
+=======
+		power {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gpios = <&gpio3 4 1>;
 			default-state = "on";
 		};

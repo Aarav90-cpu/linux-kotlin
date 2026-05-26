@@ -1,7 +1,11 @@
 /*******************************************************************
  * This file is part of the Emulex Linux Device Driver for         *
  * Fibre Channel Host Bus Adapters.                                *
+<<<<<<< HEAD
  * Copyright (C) 2017-2026 Broadcom. All Rights Reserved. The term *
+=======
+ * Copyright (C) 2017-2025 Broadcom. All Rights Reserved. The term *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.     *
  * Copyright (C) 2004-2016 Emulex.  All rights reserved.           *
  * EMULEX and SLI are trademarks of Emulex.                        *
@@ -136,12 +140,24 @@ void lpfc_wqe_cmd_template(void)
 	bf_set(wqe_dbde, &wqe->fcp_iread.wqe_com, 0);
 	bf_set(wqe_wqes, &wqe->fcp_iread.wqe_com, 1);
 
+<<<<<<< HEAD
 	/* Word 11 */
 	bf_set(wqe_cmd_type, &wqe->fcp_iread.wqe_com, COMMAND_DATA_IN);
 	bf_set(wqe_cqid, &wqe->fcp_iread.wqe_com, LPFC_WQE_CQ_ID_DEFAULT);
 
 	/* Word 12 - is zero */
 
+=======
+	/* Word 11 - pbde is variable */
+	bf_set(wqe_cmd_type, &wqe->fcp_iread.wqe_com, COMMAND_DATA_IN);
+	bf_set(wqe_cqid, &wqe->fcp_iread.wqe_com, LPFC_WQE_CQ_ID_DEFAULT);
+	bf_set(wqe_pbde, &wqe->fcp_iread.wqe_com, 0);
+
+	/* Word 12 - is zero */
+
+	/* Word 13, 14, 15 - PBDE is variable */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* IWRITE template */
 	wqe = &lpfc_iwrite_cmd_template;
 	memset(wqe, 0, sizeof(union lpfc_wqe128));
@@ -173,12 +189,24 @@ void lpfc_wqe_cmd_template(void)
 	bf_set(wqe_dbde, &wqe->fcp_iwrite.wqe_com, 0);
 	bf_set(wqe_wqes, &wqe->fcp_iwrite.wqe_com, 1);
 
+<<<<<<< HEAD
 	/* Word 11 */
 	bf_set(wqe_cmd_type, &wqe->fcp_iwrite.wqe_com, COMMAND_DATA_OUT);
 	bf_set(wqe_cqid, &wqe->fcp_iwrite.wqe_com, LPFC_WQE_CQ_ID_DEFAULT);
 
 	/* Word 12 - is zero */
 
+=======
+	/* Word 11 - pbde is variable */
+	bf_set(wqe_cmd_type, &wqe->fcp_iwrite.wqe_com, COMMAND_DATA_OUT);
+	bf_set(wqe_cqid, &wqe->fcp_iwrite.wqe_com, LPFC_WQE_CQ_ID_DEFAULT);
+	bf_set(wqe_pbde, &wqe->fcp_iwrite.wqe_com, 0);
+
+	/* Word 12 - is zero */
+
+	/* Word 13, 14, 15 - PBDE is variable */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* ICMND template */
 	wqe = &lpfc_icmnd_cmd_template;
 	memset(wqe, 0, sizeof(union lpfc_wqe128));
@@ -211,6 +239,10 @@ void lpfc_wqe_cmd_template(void)
 	/* Word 11 */
 	bf_set(wqe_cmd_type, &wqe->fcp_icmd.wqe_com, COMMAND_DATA_IN);
 	bf_set(wqe_cqid, &wqe->fcp_icmd.wqe_com, LPFC_WQE_CQ_ID_DEFAULT);
+<<<<<<< HEAD
+=======
+	bf_set(wqe_pbde, &wqe->fcp_icmd.wqe_com, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Word 12, 13, 14, 15 - is zero */
 }
@@ -4565,6 +4597,7 @@ void
 lpfc_sli_abort_iocb_ring(struct lpfc_hba *phba, struct lpfc_sli_ring *pring)
 {
 	LIST_HEAD(tx_completions);
+<<<<<<< HEAD
 	spinlock_t *plock;		/* for transmit queue access */
 	struct lpfc_iocbq *iocb, *next_iocb;
 	int offline;
@@ -4600,6 +4633,61 @@ lpfc_sli_abort_iocb_ring(struct lpfc_hba *phba, struct lpfc_sli_ring *pring)
 	if (!offline)
 		lpfc_issue_hb_tmo(phba);
 
+=======
+	LIST_HEAD(txcmplq_completions);
+	struct lpfc_iocbq *iocb, *next_iocb;
+	int offline;
+
+	if (pring->ringno == LPFC_ELS_RING) {
+		lpfc_fabric_abort_hba(phba);
+	}
+	offline = pci_channel_offline(phba->pcidev);
+
+	/* Error everything on txq and txcmplq
+	 * First do the txq.
+	 */
+	if (phba->sli_rev >= LPFC_SLI_REV4) {
+		spin_lock_irq(&pring->ring_lock);
+		list_splice_init(&pring->txq, &tx_completions);
+		pring->txq_cnt = 0;
+
+		if (offline) {
+			list_splice_init(&pring->txcmplq,
+					 &txcmplq_completions);
+		} else {
+			/* Next issue ABTS for everything on the txcmplq */
+			list_for_each_entry_safe(iocb, next_iocb,
+						 &pring->txcmplq, list)
+				lpfc_sli_issue_abort_iotag(phba, pring,
+							   iocb, NULL);
+		}
+		spin_unlock_irq(&pring->ring_lock);
+	} else {
+		spin_lock_irq(&phba->hbalock);
+		list_splice_init(&pring->txq, &tx_completions);
+		pring->txq_cnt = 0;
+
+		if (offline) {
+			list_splice_init(&pring->txcmplq, &txcmplq_completions);
+		} else {
+			/* Next issue ABTS for everything on the txcmplq */
+			list_for_each_entry_safe(iocb, next_iocb,
+						 &pring->txcmplq, list)
+				lpfc_sli_issue_abort_iotag(phba, pring,
+							   iocb, NULL);
+		}
+		spin_unlock_irq(&phba->hbalock);
+	}
+
+	if (offline) {
+		/* Cancel all the IOCBs from the completions list */
+		lpfc_sli_cancel_iocbs(phba, &txcmplq_completions,
+				      IOSTAT_LOCAL_REJECT, IOERR_SLI_ABORTED);
+	} else {
+		/* Make sure HBA is alive */
+		lpfc_issue_hb_tmo(phba);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Cancel all the IOCBs from the completions list */
 	lpfc_sli_cancel_iocbs(phba, &tx_completions, IOSTAT_LOCAL_REJECT,
 			      IOERR_SLI_ABORTED);
@@ -8725,6 +8813,17 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
 		ftr_rsp++;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Performance Hints are ONLY for FCoE */
+	if (test_bit(HBA_FCOE_MODE, &phba->hba_flag)) {
+		if (bf_get(lpfc_mbx_rq_ftr_rsp_perfh, &mqe->un.req_ftrs))
+			phba->sli3_options |= LPFC_SLI4_PERFH_ENABLED;
+		else
+			phba->sli3_options &= ~LPFC_SLI4_PERFH_ENABLED;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If the port cannot support the host's requested features
 	 * then turn off the global config parameters to disable the
@@ -14322,6 +14421,7 @@ lpfc_sli4_sp_handle_mbox_event(struct lpfc_hba *phba, struct lpfc_mcqe *mcqe)
 	/* Get the reference to the active mbox command */
 	spin_lock_irqsave(&phba->hbalock, iflags);
 	pmb = phba->sli.mbox_active;
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&phba->hbalock, iflags);
 	if (unlikely(!pmb)) {
 		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
@@ -14331,6 +14431,15 @@ lpfc_sli4_sp_handle_mbox_event(struct lpfc_hba *phba, struct lpfc_mcqe *mcqe)
 				mcqe->mcqe_tag1, mcqe->trailer);
 		goto out_no_mqe_complete;
 	}
+=======
+	if (unlikely(!pmb)) {
+		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
+				"1832 No pending MBOX command to handle\n");
+		spin_unlock_irqrestore(&phba->hbalock, iflags);
+		goto out_no_mqe_complete;
+	}
+	spin_unlock_irqrestore(&phba->hbalock, iflags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mqe = &pmb->u.mqe;
 	pmbox = (MAILBOX_t *)&pmb->u.mqe;
 	mbox = phba->mbox;
@@ -14705,6 +14814,7 @@ lpfc_sli4_sp_handle_rcqe(struct lpfc_hba *phba, struct lpfc_rcqe *rcqe)
 					atomic_read(&tgtp->rcv_fcp_cmd_out),
 					atomic_read(&tgtp->xmt_fcp_release));
 		}
+<<<<<<< HEAD
 		hrq->RQ_discard_frm++;
 		fallthrough;
 	case FC_STATUS_INSUFF_BUF_NEED_BUF:
@@ -14721,6 +14831,13 @@ lpfc_sli4_sp_handle_rcqe(struct lpfc_hba *phba, struct lpfc_rcqe *rcqe)
 		/* For SLI3, post more buffers if possible. No action for SLI4.
 		 * SLI4 is reposting immediately after processing the RQE.
 		 */
+=======
+		fallthrough;
+
+	case FC_STATUS_INSUFF_BUF_NEED_BUF:
+		hrq->RQ_no_posted_buf++;
+		/* Post more buffers if possible */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_bit(HBA_POST_RECEIVE_BUFFER, &phba->hba_flag);
 		workposted = true;
 		break;

@@ -441,16 +441,23 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
 	struct buffer_head *bh = NULL;
 	struct ocfs2_group_desc *bg = NULL;
 
+<<<<<<< HEAD
 	unsigned int max_bits, max_bitmap_bits, num_clusters;
+=======
+	unsigned int max_bits, num_clusters;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int offset = 0, cluster, chunk;
 	unsigned int chunk_free, last_chunksize = 0;
 
 	if (!le32_to_cpu(rec->c_free))
 		goto bail;
 
+<<<<<<< HEAD
 	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
 					      osb->s_feature_incompat);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	do {
 		if (!bg)
 			blkno = le64_to_cpu(rec->c_blkno);
@@ -482,6 +489,7 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
 			continue;
 
 		max_bits = le16_to_cpu(bg->bg_bits);
+<<<<<<< HEAD
 
 		/*
 		 * Non-coherent scans read raw blocks and do not get the
@@ -495,6 +503,8 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
 			max_bits = max_bitmap_bits;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		offset = 0;
 
 		for (chunk = 0; chunk < chunks_in_group; chunk++) {

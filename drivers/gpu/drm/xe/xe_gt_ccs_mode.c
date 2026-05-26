@@ -14,7 +14,10 @@
 #include "xe_mmio.h"
 #include "xe_pm.h"
 #include "xe_sriov.h"
+<<<<<<< HEAD
 #include "xe_sriov_pf.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void __xe_gt_apply_ccs_mode(struct xe_gt *gt, u32 num_engines)
 {
@@ -90,11 +93,14 @@ void xe_gt_apply_ccs_mode(struct xe_gt *gt)
 	__xe_gt_apply_ccs_mode(gt, gt->ccs_mode);
 }
 
+<<<<<<< HEAD
 static bool gt_ccs_mode_default(struct xe_gt *gt)
 {
 	return gt->ccs_mode == 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t
 num_cslices_show(struct device *kdev,
 		 struct device_attribute *attr, char *buf)
@@ -124,6 +130,15 @@ ccs_mode_store(struct device *kdev, struct device_attribute *attr,
 	u32 num_engines, num_slices;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (IS_SRIOV(xe)) {
+		xe_gt_dbg(gt, "Can't change compute mode when running as %s\n",
+			  xe_sriov_mode_to_string(xe_device_sriov_mode(xe)));
+		return -EOPNOTSUPP;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = kstrtou32(buff, 0, &num_engines);
 	if (ret)
 		return ret;
@@ -140,12 +155,19 @@ ccs_mode_store(struct device *kdev, struct device_attribute *attr,
 	}
 
 	/* CCS mode can only be updated when there are no drm clients */
+<<<<<<< HEAD
 	guard(mutex)(&xe->drm.filelist_mutex);
 	if (!list_empty(&xe->drm.filelist)) {
+=======
+	mutex_lock(&xe->drm.filelist_mutex);
+	if (!list_empty(&xe->drm.filelist)) {
+		mutex_unlock(&xe->drm.filelist_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xe_gt_dbg(gt, "Rejecting compute mode change as there are active drm clients\n");
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	if (gt->ccs_mode == num_engines)
 		return count;
 
@@ -170,6 +192,17 @@ ccs_mode_store(struct device *kdev, struct device_attribute *attr,
 	/* We may end PF lockdown once CCS mode is default again */
 	if (gt_ccs_mode_default(gt) && IS_SRIOV_PF(xe))
 		xe_sriov_pf_end_lockdown(xe);
+=======
+	if (gt->ccs_mode != num_engines) {
+		xe_gt_info(gt, "Setting compute mode to %d\n", num_engines);
+		gt->ccs_mode = num_engines;
+		xe_gt_record_user_engines(gt);
+		guard(xe_pm_runtime)(xe);
+		xe_gt_reset(gt);
+	}
+
+	mutex_unlock(&xe->drm.filelist_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return count;
 }

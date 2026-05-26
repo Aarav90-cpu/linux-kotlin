@@ -1318,8 +1318,12 @@ auart_console_write(struct console *co, const char *str, unsigned int count)
 	s = auart_port[co->index];
 	port = &s->port;
 
+<<<<<<< HEAD
 	if (clk_enable(s->clk))
 		return;
+=======
+	clk_enable(s->clk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* First save the CR then disable the interrupts */
 	old_ctrl2 = mxs_read(s, REG_CTRL2);

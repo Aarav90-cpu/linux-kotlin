@@ -239,9 +239,12 @@ static struct hfs_bnode *hfs_bnode_split(struct hfs_find_data *fd)
 	struct hfs_bnode_desc node_desc;
 	int num_recs, new_rec_off, new_off, old_rec_off;
 	int data_start, data_end, size;
+<<<<<<< HEAD
 	size_t rec_off_tbl_size;
 	size_t node_desc_size = sizeof(struct hfs_bnode_desc);
 	size_t rec_size = sizeof(__be16);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tree = fd->tree;
 	node = fd->bnode;
@@ -268,22 +271,35 @@ static struct hfs_bnode *hfs_bnode_split(struct hfs_find_data *fd)
 		return next_node;
 	}
 
+<<<<<<< HEAD
 	rec_off_tbl_size = node->num_recs * rec_size;
 	size = tree->node_size / 2;
 	size -= node_desc_size;
 	size -= rec_off_tbl_size;
 	old_rec_off = tree->node_size - (2 * rec_size);
 
+=======
+	size = tree->node_size / 2 - node->num_recs * 2 - 14;
+	old_rec_off = tree->node_size - 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	num_recs = 1;
 	for (;;) {
 		data_start = hfs_bnode_read_u16(node, old_rec_off);
 		if (data_start > size)
 			break;
+<<<<<<< HEAD
 		old_rec_off -= rec_size;
 		if (++num_recs < node->num_recs)
 			continue;
 		hfs_bnode_put(node);
 		hfs_bnode_unlink(new_node);
+=======
+		old_rec_off -= 2;
+		if (++num_recs < node->num_recs)
+			continue;
+		/* panic? */
+		hfs_bnode_put(node);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hfs_bnode_put(new_node);
 		if (next_node)
 			hfs_bnode_put(next_node);
@@ -294,7 +310,11 @@ static struct hfs_bnode *hfs_bnode_split(struct hfs_find_data *fd)
 		/* new record is in the lower half,
 		 * so leave some more space there
 		 */
+<<<<<<< HEAD
 		old_rec_off += rec_size;
+=======
+		old_rec_off += 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		num_recs--;
 		data_start = hfs_bnode_read_u16(node, old_rec_off);
 	} else {
@@ -302,28 +322,47 @@ static struct hfs_bnode *hfs_bnode_split(struct hfs_find_data *fd)
 		hfs_bnode_get(new_node);
 		fd->bnode = new_node;
 		fd->record -= num_recs;
+<<<<<<< HEAD
 		fd->keyoffset -= data_start - node_desc_size;
 		fd->entryoffset -= data_start - node_desc_size;
+=======
+		fd->keyoffset -= data_start - 14;
+		fd->entryoffset -= data_start - 14;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	new_node->num_recs = node->num_recs - num_recs;
 	node->num_recs = num_recs;
 
+<<<<<<< HEAD
 	new_rec_off = tree->node_size - rec_size;
 	new_off = node_desc_size;
+=======
+	new_rec_off = tree->node_size - 2;
+	new_off = 14;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size = data_start - new_off;
 	num_recs = new_node->num_recs;
 	data_end = data_start;
 	while (num_recs) {
 		hfs_bnode_write_u16(new_node, new_rec_off, new_off);
+<<<<<<< HEAD
 		old_rec_off -= rec_size;
 		new_rec_off -= rec_size;
+=======
+		old_rec_off -= 2;
+		new_rec_off -= 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		data_end = hfs_bnode_read_u16(node, old_rec_off);
 		new_off = data_end - size;
 		num_recs--;
 	}
 	hfs_bnode_write_u16(new_node, new_rec_off, new_off);
+<<<<<<< HEAD
 	hfs_bnode_copy(new_node, node_desc_size,
 			node, data_start, data_end - data_start);
+=======
+	hfs_bnode_copy(new_node, 14, node, data_start, data_end - data_start);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* update new bnode header */
 	node_desc.next = cpu_to_be32(new_node->next);

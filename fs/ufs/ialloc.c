@@ -63,7 +63,11 @@ void ufs_free_inode (struct inode * inode)
 	int is_directory;
 	unsigned ino, cg, bit;
 	
+<<<<<<< HEAD
 	UFSD("ENTER, ino %llu\n", inode->i_ino);
+=======
+	UFSD("ENTER, ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sb = inode->i_sb;
 	uspi = UFS_SB(sb)->s_uspi;
@@ -317,7 +321,11 @@ cg_found:
 		bh = sb_bread(sb, uspi->s_sbbase + ufs_inotofsba(inode->i_ino));
 		if (!bh) {
 			ufs_warning(sb, "ufs_read_inode",
+<<<<<<< HEAD
 				    "unable to read inode %llu\n",
+=======
+				    "unable to read inode %lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    inode->i_ino);
 			err = -EIO;
 			goto fail_remove_inode;
@@ -336,7 +344,11 @@ cg_found:
 	}
 	mutex_unlock(&sbi->s_lock);
 
+<<<<<<< HEAD
 	UFSD("allocating inode %llu\n", inode->i_ino);
+=======
+	UFSD("allocating inode %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	UFSD("EXIT\n");
 	return inode;
 

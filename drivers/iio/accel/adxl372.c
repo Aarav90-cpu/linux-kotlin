@@ -1,13 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0+
 /*
+<<<<<<< HEAD
  * ADXL371/ADXL372 3-Axis Digital Accelerometer core driver
+=======
+ * ADXL372 3-Axis Digital Accelerometer core driver
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Copyright 2018 Analog Devices Inc.
  */
 
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/cleanup.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/module.h>
@@ -181,6 +188,7 @@ enum adxl372_odr {
 	ADXL372_ODR_1600HZ,
 	ADXL372_ODR_3200HZ,
 	ADXL372_ODR_6400HZ,
+<<<<<<< HEAD
 	ADXL372_ODR_NUM
 };
 
@@ -191,6 +199,8 @@ enum adxl371_odr {
 	ADXL371_ODR_2560HZ,
 	ADXL371_ODR_5120HZ,
 	ADXL371_ODR_NUM
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum adxl372_bandwidth {
@@ -225,6 +235,7 @@ enum adxl372_fifo_mode {
 	ADXL372_FIFO_OLD_SAVED
 };
 
+<<<<<<< HEAD
 static const int adxl372_samp_freq_tbl[ADXL372_ODR_NUM] = {
 	[ADXL372_ODR_400HZ] = 400,
 	[ADXL372_ODR_800HZ] = 800,
@@ -286,6 +297,16 @@ const struct adxl372_chip_info adxl372_chip_info = {
 };
 EXPORT_SYMBOL_NS_GPL(adxl372_chip_info, "IIO_ADXL372");
 
+=======
+static const int adxl372_samp_freq_tbl[5] = {
+	400, 800, 1600, 3200, 6400,
+};
+
+static const int adxl372_bw_freq_tbl[5] = {
+	200, 400, 800, 1600, 3200,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct adxl372_axis_lookup {
 	unsigned int bits;
 	enum adxl372_fifo_format fifo_format;
@@ -321,12 +342,17 @@ static const struct iio_event_spec adxl372_events[] = {
 	.modified = 1,							\
 	.channel2 = IIO_MOD_##axis,					\
 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+<<<<<<< HEAD
 	.info_mask_shared_by_type =					\
 		BIT(IIO_CHAN_INFO_SCALE) |				\
 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
 		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),	\
 	.info_mask_shared_by_type_available =				\
 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
+=======
+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+				    BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),	\
 	.scan_index = index,						\
 	.scan_type = {							\
@@ -347,7 +373,10 @@ static const struct iio_chan_spec adxl372_channels[] = {
 };
 
 struct adxl372_state {
+<<<<<<< HEAD
 	const struct adxl372_chip_info	*chip_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int				irq;
 	struct device			*dev;
 	struct regmap			*regmap;
@@ -405,6 +434,7 @@ static ssize_t adxl372_write_threshold_value(struct iio_dev *indio_dev, unsigned
 	struct adxl372_state *st = iio_priv(indio_dev);
 	int ret;
 
+<<<<<<< HEAD
 	guard(mutex)(&st->threshold_m);
 
 	ret = regmap_write(st->regmap, addr, ADXL372_THRESH_VAL_H_SEL(threshold));
@@ -413,6 +443,20 @@ static ssize_t adxl372_write_threshold_value(struct iio_dev *indio_dev, unsigned
 
 	return regmap_update_bits(st->regmap, addr + 1, GENMASK(7, 5),
 				  ADXL372_THRESH_VAL_L_SEL(threshold) << 5);
+=======
+	mutex_lock(&st->threshold_m);
+	ret = regmap_write(st->regmap, addr, ADXL372_THRESH_VAL_H_SEL(threshold));
+	if (ret < 0)
+		goto unlock;
+
+	ret = regmap_update_bits(st->regmap, addr + 1, GENMASK(7, 5),
+				 ADXL372_THRESH_VAL_L_SEL(threshold) << 5);
+
+unlock:
+	mutex_unlock(&st->threshold_m);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int adxl372_read_axis(struct adxl372_state *st, u8 addr)
@@ -536,6 +580,7 @@ static int adxl372_set_activity_time_ms(struct adxl372_state *st,
 	int ret;
 
 	/*
+<<<<<<< HEAD
 	 * The scale factor of the TIME_ACT register depends on the ODR.
 	 * A higher scale factor is used at the maximum ODR and a lower
 	 * one at all other rates.
@@ -544,6 +589,15 @@ static int adxl372_set_activity_time_ms(struct adxl372_state *st,
 		scale_factor = st->chip_info->act_time_scale_us;
 	else
 		scale_factor = st->chip_info->act_time_scale_low_us;
+=======
+	 * 3.3 ms per code is the scale factor of the TIME_ACT register for
+	 * ODR = 6400 Hz. It is 6.6 ms per code for ODR = 3200 Hz and below.
+	 */
+	if (st->odr == ADXL372_ODR_6400HZ)
+		scale_factor = 3300;
+	else
+		scale_factor = 6600;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reg_val = DIV_ROUND_CLOSEST(act_time_ms * 1000, scale_factor);
 
@@ -567,6 +621,7 @@ static int adxl372_set_inactivity_time_ms(struct adxl372_state *st,
 	int ret;
 
 	/*
+<<<<<<< HEAD
 	 * The scale factor of the TIME_INACT register depends on the ODR.
 	 * A higher scale factor is used at the maximum ODR and a lower
 	 * one at all other rates.
@@ -575,6 +630,15 @@ static int adxl372_set_inactivity_time_ms(struct adxl372_state *st,
 		scale_factor = st->chip_info->inact_time_scale_ms;
 	else
 		scale_factor = st->chip_info->inact_time_scale_low_ms;
+=======
+	 * 13 ms per code is the scale factor of the TIME_INACT register for
+	 * ODR = 6400 Hz. It is 26 ms per code for ODR = 3200 Hz and below.
+	 */
+	if (st->odr == ADXL372_ODR_6400HZ)
+		scale_factor = 13;
+	else
+		scale_factor = 26;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	res = DIV_ROUND_CLOSEST(inact_time_ms, scale_factor);
 	reg_val_h = (res >> 8) & 0xFF;
@@ -784,7 +848,11 @@ static int adxl372_setup(struct adxl372_state *st)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = adxl372_set_odr(st, st->chip_info->max_odr);
+=======
+	ret = adxl372_set_odr(st, ADXL372_ODR_6400HZ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0)
 		return ret;
 
@@ -844,10 +912,17 @@ static int adxl372_read_raw(struct iio_dev *indio_dev,
 		*val2 = ADXL372_USCALE;
 		return IIO_VAL_INT_PLUS_MICRO;
 	case IIO_CHAN_INFO_SAMP_FREQ:
+<<<<<<< HEAD
 		*val = st->chip_info->samp_freq_tbl[st->odr];
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
 		*val = st->chip_info->bw_freq_tbl[st->bw];
+=======
+		*val = adxl372_samp_freq_tbl[st->odr];
+		return IIO_VAL_INT;
+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+		*val = adxl372_bw_freq_tbl[st->bw];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return IIO_VAL_INT;
 	}
 
@@ -863,6 +938,7 @@ static int adxl372_write_raw(struct iio_dev *indio_dev,
 
 	switch (info) {
 	case IIO_CHAN_INFO_SAMP_FREQ:
+<<<<<<< HEAD
 		odr_index = adxl372_find_closest_match(st->chip_info->samp_freq_tbl,
 						       st->chip_info->num_freqs,
 						       val);
@@ -874,6 +950,25 @@ static int adxl372_write_raw(struct iio_dev *indio_dev,
 		if (ret < 0)
 			return ret;
 		/* Recalculate inactivity time as the timer period depends on ODR */
+=======
+		odr_index = adxl372_find_closest_match(adxl372_samp_freq_tbl,
+					ARRAY_SIZE(adxl372_samp_freq_tbl),
+					val);
+		ret = adxl372_set_odr(st, odr_index);
+		if (ret < 0)
+			return ret;
+		/*
+		 * The timer period depends on the ODR selected.
+		 * At 3200 Hz and below, it is 6.6 ms; at 6400 Hz, it is 3.3 ms
+		 */
+		ret = adxl372_set_activity_time_ms(st, st->act_time_ms);
+		if (ret < 0)
+			return ret;
+		/*
+		 * The timer period depends on the ODR selected.
+		 * At 3200 Hz and below, it is 26 ms; at 6400 Hz, it is 13 ms
+		 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = adxl372_set_inactivity_time_ms(st, st->inact_time_ms);
 		if (ret < 0)
 			return ret;
@@ -886,9 +981,15 @@ static int adxl372_write_raw(struct iio_dev *indio_dev,
 
 		return ret;
 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+<<<<<<< HEAD
 		bw_index = adxl372_find_closest_match(st->chip_info->bw_freq_tbl,
 						      st->chip_info->num_freqs,
 						      val);
+=======
+		bw_index = adxl372_find_closest_match(adxl372_bw_freq_tbl,
+					ARRAY_SIZE(adxl372_bw_freq_tbl),
+					val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return adxl372_set_bandwidth(st, bw_index);
 	default:
 		return -EINVAL;
@@ -1018,6 +1119,27 @@ static int adxl372_write_event_config(struct iio_dev *indio_dev, const struct ii
 	return adxl372_set_interrupts(st, st->int1_bitmask, 0);
 }
 
+<<<<<<< HEAD
+=======
+static ssize_t adxl372_show_filter_freq_avail(struct device *dev,
+					      struct device_attribute *attr,
+					      char *buf)
+{
+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+	struct adxl372_state *st = iio_priv(indio_dev);
+	int i;
+	size_t len = 0;
+
+	for (i = 0; i <= st->odr; i++)
+		len += scnprintf(buf + len, PAGE_SIZE - len,
+				 "%d ", adxl372_bw_freq_tbl[i]);
+
+	buf[len - 1] = '\n';
+
+	return len;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t adxl372_get_fifo_enabled(struct device *dev,
 					  struct device_attribute *attr,
 					  char *buf)
@@ -1185,6 +1307,7 @@ static const struct iio_trigger_ops adxl372_peak_data_trigger_ops = {
 	.set_trigger_state = adxl372_peak_dready_trig_set_state,
 };
 
+<<<<<<< HEAD
 static int adxl372_read_avail(struct iio_dev *indio_dev,
 			      struct iio_chan_spec const *chan,
 			      const int **vals, int *type, int *length,
@@ -1217,6 +1340,27 @@ static const struct iio_info adxl372_info = {
 	.read_raw = adxl372_read_raw,
 	.write_raw = adxl372_write_raw,
 	.read_avail = adxl372_read_avail,
+=======
+static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("400 800 1600 3200 6400");
+static IIO_DEVICE_ATTR(in_accel_filter_low_pass_3db_frequency_available,
+		       0444, adxl372_show_filter_freq_avail, NULL, 0);
+
+static struct attribute *adxl372_attributes[] = {
+	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+	&iio_dev_attr_in_accel_filter_low_pass_3db_frequency_available.dev_attr.attr,
+	NULL,
+};
+
+static const struct attribute_group adxl372_attrs_group = {
+	.attrs = adxl372_attributes,
+};
+
+static const struct iio_info adxl372_info = {
+	.validate_trigger = &adxl372_validate_trigger,
+	.attrs = &adxl372_attrs_group,
+	.read_raw = adxl372_read_raw,
+	.write_raw = adxl372_write_raw,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.read_event_config = adxl372_read_event_config,
 	.write_event_config = adxl372_write_event_config,
 	.read_event_value = adxl372_read_event_value,
@@ -1231,6 +1375,7 @@ bool adxl372_readable_noinc_reg(struct device *dev, unsigned int reg)
 }
 EXPORT_SYMBOL_NS_GPL(adxl372_readable_noinc_reg, "IIO_ADXL372");
 
+<<<<<<< HEAD
 static int adxl372_buffer_setup(struct iio_dev *indio_dev)
 {
 	struct adxl372_state *st = iio_priv(indio_dev);
@@ -1282,6 +1427,10 @@ static int adxl372_buffer_setup(struct iio_dev *indio_dev)
 
 int adxl372_probe(struct device *dev, struct regmap *regmap,
 		  int irq, const struct adxl372_chip_info *chip_info)
+=======
+int adxl372_probe(struct device *dev, struct regmap *regmap,
+		  int irq, const char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct iio_dev *indio_dev;
 	struct adxl372_state *st;
@@ -1297,12 +1446,16 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
 	st->dev = dev;
 	st->regmap = regmap;
 	st->irq = irq;
+<<<<<<< HEAD
 	st->chip_info = chip_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_init(&st->threshold_m);
 
 	indio_dev->channels = adxl372_channels;
 	indio_dev->num_channels = ARRAY_SIZE(adxl372_channels);
+<<<<<<< HEAD
 	indio_dev->name = chip_info->name;
 	indio_dev->info = &adxl372_info;
 
@@ -1312,6 +1465,12 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
 	} else {
 		indio_dev->modes = INDIO_DIRECT_MODE;
 	}
+=======
+	indio_dev->available_scan_masks = adxl372_channel_masks;
+	indio_dev->name = name;
+	indio_dev->info = &adxl372_info;
+	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = adxl372_setup(st);
 	if (ret < 0) {
@@ -1319,8 +1478,53 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (chip_info->fifo_supported) {
 		ret = adxl372_buffer_setup(indio_dev);
+=======
+	ret = devm_iio_triggered_buffer_setup_ext(dev,
+						  indio_dev, NULL,
+						  adxl372_trigger_handler,
+						  IIO_BUFFER_DIRECTION_IN,
+						  &adxl372_buffer_ops,
+						  adxl372_fifo_attributes);
+	if (ret < 0)
+		return ret;
+
+	if (st->irq) {
+		st->dready_trig = devm_iio_trigger_alloc(dev,
+							 "%s-dev%d",
+							 indio_dev->name,
+							 iio_device_id(indio_dev));
+		if (st->dready_trig == NULL)
+			return -ENOMEM;
+
+		st->peak_datardy_trig = devm_iio_trigger_alloc(dev,
+							       "%s-dev%d-peak",
+							       indio_dev->name,
+							       iio_device_id(indio_dev));
+		if (!st->peak_datardy_trig)
+			return -ENOMEM;
+
+		st->dready_trig->ops = &adxl372_trigger_ops;
+		st->peak_datardy_trig->ops = &adxl372_peak_data_trigger_ops;
+		iio_trigger_set_drvdata(st->dready_trig, indio_dev);
+		iio_trigger_set_drvdata(st->peak_datardy_trig, indio_dev);
+		ret = devm_iio_trigger_register(dev, st->dready_trig);
+		if (ret < 0)
+			return ret;
+
+		ret = devm_iio_trigger_register(dev, st->peak_datardy_trig);
+		if (ret < 0)
+			return ret;
+
+		indio_dev->trig = iio_trigger_get(st->dready_trig);
+
+		ret = devm_request_irq(dev, st->irq,
+				       iio_trigger_generic_data_rdy_poll,
+				       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+				       indio_dev->name, st->dready_trig);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return ret;
 	}
@@ -1330,6 +1534,10 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
 EXPORT_SYMBOL_NS_GPL(adxl372_probe, "IIO_ADXL372");
 
 MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
+<<<<<<< HEAD
 MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
 MODULE_DESCRIPTION("Analog Devices ADXL371/ADXL372 3-axis accelerometer driver");
+=======
+MODULE_DESCRIPTION("Analog Devices ADXL372 3-axis accelerometer driver");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

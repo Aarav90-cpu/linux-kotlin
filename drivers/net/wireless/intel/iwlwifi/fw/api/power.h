@@ -269,7 +269,10 @@ enum iwl_dev_tx_power_cmd_mode {
 #define IWL_NUM_CHAIN_LIMITS	2
 #define IWL_NUM_SUB_BANDS_V1	5
 #define IWL_NUM_SUB_BANDS_V2	11
+<<<<<<< HEAD
 #define IWL_NUM_SUB_BANDS_V3	12
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * struct iwl_dev_tx_power_common - Common part of the TX power reduction cmd
@@ -426,6 +429,7 @@ struct iwl_dev_tx_power_cmd_v10 {
 	__le32 flags;
 } __packed; /* TX_REDUCED_POWER_API_S_VER_10 */
 
+<<<<<<< HEAD
 struct iwl_dev_tx_power_cmd_v11 {
 	__le16 per_chain[IWL_NUM_CHAIN_TABLES_V2][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V3];
 	u8 per_chain_restriction_changed;
@@ -434,30 +438,43 @@ struct iwl_dev_tx_power_cmd_v11 {
 	__le32 flags;
 } __packed; /* TX_REDUCED_POWER_API_S_VER_11 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * struct iwl_dev_tx_power_cmd - TX power reduction command (multiversion)
  * @common: common part of the command
  * @v9: version 9 part of the command
  * @v10: version 10 part of the command
+<<<<<<< HEAD
  * @v11: version 11 part of the command
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct iwl_dev_tx_power_cmd {
 	struct iwl_dev_tx_power_common common;
 	union {
 		struct iwl_dev_tx_power_cmd_v9 v9;
 		struct iwl_dev_tx_power_cmd_v10 v10;
+<<<<<<< HEAD
 		struct iwl_dev_tx_power_cmd_v11 v11;
 	};
 } __packed; /* TX_REDUCED_POWER_API_S_VER_9
 	     * TX_REDUCED_POWER_API_S_VER_10
 	     * TX_REDUCED_POWER_API_S_VER_11
 	     */
+=======
+	};
+} __packed; /* TX_REDUCED_POWER_API_S_VER_9_VER10 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define IWL_NUM_GEO_PROFILES		3
 #define IWL_NUM_GEO_PROFILES_V3		8
 #define IWL_NUM_BANDS_PER_CHAIN_V1	2
 #define IWL_NUM_BANDS_PER_CHAIN_V2	3
+<<<<<<< HEAD
 #define IWL_NUM_BANDS_PER_CHAIN_V6	4
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * enum iwl_geo_per_chain_offset_operation - type of operation
@@ -539,6 +556,7 @@ struct iwl_geo_tx_power_profiles_cmd_v5 {
 	__le32 table_revision;
 } __packed; /* PER_CHAIN_LIMIT_OFFSET_CMD_VER_5 */
 
+<<<<<<< HEAD
 /**
  * struct iwl_geo_tx_power_profiles_cmd_v6 - struct for PER_CHAIN_LIMIT_OFFSET_CMD cmd.
  * @ops: operations, value from &enum iwl_geo_per_chain_offset_operation
@@ -551,13 +569,18 @@ struct iwl_geo_tx_power_profiles_cmd_v6 {
 	struct iwl_bios_config_hdr bios_hdr;
 } __packed; /* PER_CHAIN_LIMIT_OFFSET_CMD_VER_6 */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 union iwl_geo_tx_power_profiles_cmd {
 	struct iwl_geo_tx_power_profiles_cmd_v1 v1;
 	struct iwl_geo_tx_power_profiles_cmd_v2 v2;
 	struct iwl_geo_tx_power_profiles_cmd_v3 v3;
 	struct iwl_geo_tx_power_profiles_cmd_v4 v4;
 	struct iwl_geo_tx_power_profiles_cmd_v5 v5;
+<<<<<<< HEAD
 	struct iwl_geo_tx_power_profiles_cmd_v6 v6;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -601,7 +624,10 @@ enum iwl_ppag_flags {
  * @v1: command version 1 structure.
  * @v5: command version 5 structure.
  * @v7: command version 7 structure.
+<<<<<<< HEAD
  * @v8: command version 8 structure.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @v1.flags: values from &enum iwl_ppag_flags
  * @v1.gain: table of antenna gain values per chain and sub-band
  * @v1.reserved: reserved
@@ -610,8 +636,11 @@ enum iwl_ppag_flags {
  * @v7.ppag_config_info: see @struct bios_value_u32
  * @v7.gain: table of antenna gain values per chain and sub-band
  * @v7.reserved: reserved
+<<<<<<< HEAD
  * @v8.ppag_config_info: see @struct bios_value_u32
  * @v8.gain: table of antenna gain values per chain and sub-band
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 union iwl_ppag_table_cmd {
 	struct {
@@ -629,10 +658,13 @@ union iwl_ppag_table_cmd {
 		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
 		s8 reserved[2];
 	} __packed v7; /* PER_PLAT_ANTENNA_GAIN_CMD_API_S_VER_7 */
+<<<<<<< HEAD
 	struct {
 		struct bios_value_u32 ppag_config_info;
 		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V3];
 	} __packed v8; /* PER_PLAT_ANTENNA_GAIN_CMD_API_S_VER_8 */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 } __packed;
 
 #define IWL_PPAG_CMD_V1_MASK (IWL_PPAG_ETSI_MASK | IWL_PPAG_CHINA_MASK)

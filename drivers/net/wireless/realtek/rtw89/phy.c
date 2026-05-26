@@ -775,6 +775,7 @@ void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct rtw89_sta_link *rtwsta_
 	rtw89_fw_h2c_ra(rtwdev, ra, csi);
 }
 
+<<<<<<< HEAD
 void rtw89_phy_ra_recalc_agg_limit(struct rtw89_dev *rtwdev)
 {
 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
@@ -802,6 +803,8 @@ void rtw89_phy_ra_recalc_agg_limit(struct rtw89_dev *rtwdev)
 	rtw89_write32_idx(rtwdev, ra_limit->addr, ra_limit->mask, agg_num, RTW89_MAC_1);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u8 rtw89_phy_get_txsc(struct rtw89_dev *rtwdev,
 		      const struct rtw89_chan *chan,
 		      enum rtw89_bandwidth dbw)
@@ -1686,10 +1689,17 @@ static void rtw89_phy_config_rf_reg_noio(struct rtw89_dev *rtwdev,
 				     (struct rtw89_fw_h2c_rf_reg_info *)extra_data);
 }
 
+<<<<<<< HEAD
 void rtw89_phy_config_rf_reg(struct rtw89_dev *rtwdev,
 			     const struct rtw89_reg2_def *reg,
 			     enum rtw89_rf_path rf_path,
 			     void *extra_data)
+=======
+static void rtw89_phy_config_rf_reg(struct rtw89_dev *rtwdev,
+				    const struct rtw89_reg2_def *reg,
+				    enum rtw89_rf_path rf_path,
+				    void *extra_data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (reg->addr == 0xfe) {
 		mdelay(50);
@@ -1808,7 +1818,11 @@ static int rtw89_phy_sel_headline(struct rtw89_dev *rtwdev,
 }
 
 static void rtw89_phy_init_reg(struct rtw89_dev *rtwdev,
+<<<<<<< HEAD
 			       const struct rtw89_phy_table *table, bool by_acv,
+=======
+			       const struct rtw89_phy_table *table,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       void (*config)(struct rtw89_dev *rtwdev,
 					      const struct rtw89_reg2_def *reg,
 					      enum rtw89_rf_path rf_path,
@@ -1817,8 +1831,13 @@ static void rtw89_phy_init_reg(struct rtw89_dev *rtwdev,
 {
 	const struct rtw89_reg2_def *reg;
 	enum rtw89_rf_path rf_path = table->rf_path;
+<<<<<<< HEAD
 	u8 cv = by_acv ? rtwdev->hal.acv : rtwdev->hal.cv;
 	u8 rfe = rtwdev->efuse.rfe_type;
+=======
+	u8 rfe = rtwdev->efuse.rfe_type;
+	u8 cv = rtwdev->hal.cv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 i;
 	u32 headline_size = 0, headline_idx = 0;
 	u32 target = 0, cfg_target;
@@ -1885,16 +1904,26 @@ void rtw89_phy_init_bb_reg(struct rtw89_dev *rtwdev)
 	const struct rtw89_phy_table *bb_gain_table;
 
 	bb_table = elm_info->bb_tbl ? elm_info->bb_tbl : chip->bb_table;
+<<<<<<< HEAD
 	rtw89_phy_init_reg(rtwdev, bb_table, false, rtw89_phy_config_bb_reg, NULL);
 	if (rtwdev->dbcc_en)
 		rtw89_phy_init_reg(rtwdev, bb_table, false, rtw89_phy_config_bb_reg,
+=======
+	rtw89_phy_init_reg(rtwdev, bb_table, rtw89_phy_config_bb_reg, NULL);
+	if (rtwdev->dbcc_en)
+		rtw89_phy_init_reg(rtwdev, bb_table, rtw89_phy_config_bb_reg,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   (void *)RTW89_PHY_1);
 
 	rtw89_chip_init_txpwr_unit(rtwdev);
 
 	bb_gain_table = elm_info->bb_gain ? elm_info->bb_gain : chip->bb_gain_table;
 	if (bb_gain_table)
+<<<<<<< HEAD
 		rtw89_phy_init_reg(rtwdev, bb_gain_table, false,
+=======
+		rtw89_phy_init_reg(rtwdev, bb_gain_table,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   chip->phy_def->config_bb_gain, NULL);
 
 	rtw89_phy_bb_reset(rtwdev);
@@ -2000,7 +2029,10 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
 	const struct rtw89_chip_info *chip = rtwdev->chip;
 	const struct rtw89_phy_table *rf_table;
 	struct rtw89_fw_h2c_rf_reg_info *rf_reg_info;
+<<<<<<< HEAD
 	bool by_acv = chip->chip_id == RTL8922D;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 path;
 
 	rf_reg_info = kzalloc_obj(*rf_reg_info);
@@ -2016,7 +2048,11 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
 		else
 			config = rf_table->config ? rf_table->config :
 				 rtw89_phy_config_rf_reg;
+<<<<<<< HEAD
 		rtw89_phy_init_reg(rtwdev, rf_table, by_acv, config, (void *)rf_reg_info);
+=======
+		rtw89_phy_init_reg(rtwdev, rf_table, config, (void *)rf_reg_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (rtw89_phy_config_rf_reg_fw(rtwdev, rf_reg_info))
 			rtw89_warn(rtwdev, "rf path %d reg h2c config failed\n",
 				   rf_reg_info->rf_path);
@@ -2057,7 +2093,11 @@ static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
 	rtw89_phy_preinit_rf_nctl(rtwdev);
 
 	nctl_table = elm_info->rf_nctl ? elm_info->rf_nctl : chip->nctl_table;
+<<<<<<< HEAD
 	rtw89_phy_init_reg(rtwdev, nctl_table, false, rtw89_phy_config_bb_reg, NULL);
+=======
+	rtw89_phy_init_reg(rtwdev, nctl_table, rtw89_phy_config_bb_reg, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (chip->nctl_post_table)
 		rtw89_rfk_parser(rtwdev, chip->nctl_post_table);
@@ -3214,8 +3254,12 @@ struct rtw89_phy_iter_ra_data {
 
 static void __rtw89_phy_c2h_ra_rpt_iter(struct rtw89_sta_link *rtwsta_link,
 					struct ieee80211_link_sta *link_sta,
+<<<<<<< HEAD
 					struct rtw89_phy_iter_ra_data *ra_data,
 					bool *changed)
+=======
+					struct rtw89_phy_iter_ra_data *ra_data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rtw89_dev *rtwdev = ra_data->rtwdev;
 	const struct rtw89_c2h_ra_rpt *c2h =
@@ -3224,7 +3268,11 @@ static void __rtw89_phy_c2h_ra_rpt_iter(struct rtw89_sta_link *rtwsta_link,
 	const struct rtw89_chip_info *chip = rtwdev->chip;
 	bool format_v1 = chip->chip_gen == RTW89_CHIP_BE;
 	u8 mode, rate, bw, giltf, mac_id;
+<<<<<<< HEAD
 	u16 legacy_bitrate, amsdu_len;
+=======
+	u16 legacy_bitrate;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool valid;
 	u8 mcs = 0;
 	u8 t;
@@ -3321,6 +3369,7 @@ static void __rtw89_phy_c2h_ra_rpt_iter(struct rtw89_sta_link *rtwsta_link,
 			     u16_encode_bits(mode, RTW89_HW_RATE_MASK_MOD) |
 			     u16_encode_bits(rate, RTW89_HW_RATE_MASK_VAL);
 	ra_report->might_fallback_legacy = mcs <= 2;
+<<<<<<< HEAD
 
 	amsdu_len = get_max_amsdu_len(rtwdev, ra_report);
 	if (link_sta->agg.max_rc_amsdu_len != amsdu_len) {
@@ -3328,6 +3377,9 @@ static void __rtw89_phy_c2h_ra_rpt_iter(struct rtw89_sta_link *rtwsta_link,
 		*changed = true;
 	}
 
+=======
+	link_sta->agg.max_rc_amsdu_len = get_max_amsdu_len(rtwdev, ra_report);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rtwsta_link->max_agg_wait = link_sta->agg.max_rc_amsdu_len / 1500 - 1;
 }
 
@@ -3338,18 +3390,27 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
 	struct rtw89_sta_link *rtwsta_link;
 	struct ieee80211_link_sta *link_sta;
 	unsigned int link_id;
+<<<<<<< HEAD
 	bool changed = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rcu_read_lock();
 
 	rtw89_sta_for_each_link(rtwsta, rtwsta_link, link_id) {
 		link_sta = rtw89_sta_rcu_dereference_link(rtwsta_link, false);
+<<<<<<< HEAD
 		__rtw89_phy_c2h_ra_rpt_iter(rtwsta_link, link_sta, ra_data, &changed);
 	}
 
 	if (changed)
 		ieee80211_sta_recalc_aggregates(sta);
 
+=======
+		__rtw89_phy_c2h_ra_rpt_iter(rtwsta_link, link_sta, ra_data);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 }
 
@@ -4899,7 +4960,11 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
 {
 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
 	const struct rtw89_chip_info *chip = rtwdev->chip;
+<<<<<<< HEAD
 	u8 sc_xi_val = 0, sc_xo_val = 0;
+=======
+	u8 sc_xi_val, sc_xo_val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!force && cfo->crystal_cap == crystal_cap)
 		return;

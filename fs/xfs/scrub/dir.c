@@ -492,12 +492,16 @@ xchk_directory_data_bestfree(
 		goto out;
 	xchk_buffer_recheck(sc, bp);
 
+<<<<<<< HEAD
 	if (xfs_has_crc(sc->mp)) {
 		struct xfs_dir3_data_hdr    *hdr3 = bp->b_addr;
 
 		if (hdr3->pad)
 			xchk_fblock_set_preen(sc, XFS_DATA_FORK, lblk);
 	}
+=======
+	/* XXX: Check xfs_dir3_data_hdr.pad is zero once we start setting it. */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
 		goto out_buf;

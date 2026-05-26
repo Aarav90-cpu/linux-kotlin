@@ -201,7 +201,11 @@ static const struct xe_mmio_range xe2lpg_dss_steering_table[] = {
 	{ 0x009680, 0x0096FF },         /* DSS */
 	{ 0x00D800, 0x00D87F },         /* SLICE */
 	{ 0x00DC00, 0x00DCFF },         /* SLICE */
+<<<<<<< HEAD
 	{ 0x00DE00, 0x00E8FF },         /* DSS (0xE000-0xE0FF reserved) */
+=======
+	{ 0x00DE80, 0x00E8FF },         /* DSS (0xE000-0xE0FF reserved) */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ 0x00E980, 0x00E9FF },         /* SLICE */
 	{ 0x013000, 0x0133FF },         /* DSS (0x13000-0x131FF), SLICE (0x13200-0x133FF) */
 	{},
@@ -280,6 +284,7 @@ static const struct xe_mmio_range xe3p_xpc_instance0_steering_table[] = {
 	{},
 };
 
+<<<<<<< HEAD
 static const struct xe_mmio_range xe3p_lpg_instance0_steering_table[] = {
 	{ 0x004000, 0x004AFF },         /* GAM, rsvd, GAMWKR */
 	{ 0x008700, 0x00887F },         /* NODE */
@@ -293,6 +298,8 @@ static const struct xe_mmio_range xe3p_lpg_instance0_steering_table[] = {
 	{},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void init_steering_l3bank(struct xe_gt *gt)
 {
 	struct xe_device *xe = gt_to_xe(gt);
@@ -518,6 +525,12 @@ void xe_gt_mcr_init_early(struct xe_gt *gt)
 
 	spin_lock_init(&gt->mcr_lock);
 
+<<<<<<< HEAD
+=======
+	if (IS_SRIOV_VF(xe))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (gt->info.type == XE_GT_TYPE_MEDIA) {
 		drm_WARN_ON(&xe->drm, MEDIA_VER(xe) < 13);
 
@@ -532,14 +545,26 @@ void xe_gt_mcr_init_early(struct xe_gt *gt)
 		}
 	} else {
 		if (GRAPHICS_VERx100(xe) == 3511) {
+<<<<<<< HEAD
+=======
+			/*
+			 * TODO: there are some ranges in bspec with missing
+			 * termination: [0x00B000, 0x00B0FF] and
+			 * [0x00D880, 0x00D8FF] (NODE); [0x00B100, 0x00B3FF]
+			 * (L3BANK). Update them here once bspec is updated.
+			 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			gt->steering[DSS].ranges = xe3p_xpc_xecore_steering_table;
 			gt->steering[GAM1].ranges = xe3p_xpc_gam_grp1_steering_table;
 			gt->steering[INSTANCE0].ranges = xe3p_xpc_instance0_steering_table;
 			gt->steering[L3BANK].ranges = xelpg_l3bank_steering_table;
 			gt->steering[NODE].ranges = xe3p_xpc_node_steering_table;
+<<<<<<< HEAD
 		} else if (GRAPHICS_VERx100(xe) >= 3510) {
 			gt->steering[DSS].ranges = xe2lpg_dss_steering_table;
 			gt->steering[INSTANCE0].ranges = xe3p_lpg_instance0_steering_table;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else if (GRAPHICS_VER(xe) >= 20) {
 			gt->steering[DSS].ranges = xe2lpg_dss_steering_table;
 			gt->steering[SQIDI_PSMI].ranges = xe2lpg_sqidi_psmi_steering_table;
@@ -575,6 +600,12 @@ void xe_gt_mcr_init_early(struct xe_gt *gt)
  */
 void xe_gt_mcr_init(struct xe_gt *gt)
 {
+<<<<<<< HEAD
+=======
+	if (IS_SRIOV_VF(gt_to_xe(gt)))
+		return;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Select non-terminated steering target for each type */
 	for (int i = 0; i < NUM_STEERING_TYPES; i++) {
 		gt->steering[i].initialized = true;

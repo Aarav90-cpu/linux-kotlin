@@ -1652,14 +1652,20 @@ static int set_v4lstd(struct i2c_client *client)
 	struct cx25840_state *state = to_state(i2c_get_clientdata(client));
 	u8 fmt = 0;	/* zero is autodetect */
 	u8 pal_m = 0;
+<<<<<<< HEAD
 	u8 pal_n = 0;
 	u8 ntsc_j = 0;
 	u8 tmp_reg = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* First tests should be against specific std */
 	if (state->std == V4L2_STD_NTSC_M_JP) {
 		fmt = 0x2;
+<<<<<<< HEAD
 		ntsc_j = 0x80;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (state->std == V4L2_STD_NTSC_443) {
 		fmt = 0x3;
 	} else if (state->std == V4L2_STD_PAL_M) {
@@ -1667,7 +1673,10 @@ static int set_v4lstd(struct i2c_client *client)
 		fmt = 0x5;
 	} else if (state->std == V4L2_STD_PAL_N) {
 		fmt = 0x6;
+<<<<<<< HEAD
 		pal_n = 0x40;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (state->std == V4L2_STD_PAL_Nc) {
 		fmt = 0x7;
 	} else if (state->std == V4L2_STD_PAL_60) {
@@ -1694,6 +1703,7 @@ static int set_v4lstd(struct i2c_client *client)
 		/* Set format to NTSC-M */
 		cx25840_and_or(client, 0x400, ~0xf, 1);
 		/* Turn off LCOMB */
+<<<<<<< HEAD
 		cx25840_and_or(client, 0x47b, ~0x6, 0);
 	} else if (fmt == 0xc) { /* SECAM - Step 9c - toggle CKILLEN */
 		tmp_reg = cx25840_read(client, 0x401);
@@ -1718,6 +1728,12 @@ static int set_v4lstd(struct i2c_client *client)
 	else if (ntsc_j)        /* cx25840 datasheet table 3-19 */
 		cx25840_and_or(client, 0x403, ~0x80, ntsc_j);
 
+=======
+		cx25840_and_or(client, 0x47b, ~6, 0);
+	}
+	cx25840_and_or(client, 0x400, ~0xf, fmt);
+	cx25840_and_or(client, 0x403, ~0x3, pal_m);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (is_cx23888(state))
 		cx23888_std_setup(client);
 	else

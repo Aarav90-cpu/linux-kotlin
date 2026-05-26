@@ -10,6 +10,10 @@
 /* Load init_shadow_call_stack to gp. */
 .macro scs_load_init_stack
 	la	gp, init_shadow_call_stack
+<<<<<<< HEAD
+=======
+	XIP_FIXUP_OFFSET gp
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 .endm
 
 /* Load the per-CPU IRQ shadow call stack to gp. */

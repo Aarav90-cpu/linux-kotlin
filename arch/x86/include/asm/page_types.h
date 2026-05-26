@@ -26,7 +26,11 @@
 
 #define PAGE_OFFSET		((unsigned long)__PAGE_OFFSET)
 
+<<<<<<< HEAD
 #define VMA_DATA_DEFAULT_FLAGS	VMA_DATA_FLAGS_TSK_EXEC
+=======
+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Physical address where kernel should be loaded. */
 #define LOAD_PHYSICAL_ADDR	__ALIGN_KERNEL_MASK(CONFIG_PHYSICAL_START, CONFIG_PHYSICAL_ALIGN - 1)

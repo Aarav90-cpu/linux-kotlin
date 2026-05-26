@@ -26,7 +26,10 @@
 #include "panthor_mmu.h"
 #include "panthor_regs.h"
 #include "panthor_sched.h"
+<<<<<<< HEAD
 #include "panthor_trace.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define CSF_FW_NAME "mali_csffw.bin"
 
@@ -581,7 +584,11 @@ static int panthor_fw_load_section_entry(struct panthor_device *ptdev,
 
 	if (hdr.flags & CSF_FW_BINARY_IFACE_ENTRY_PROT) {
 		drm_warn(&ptdev->base,
+<<<<<<< HEAD
 			 "Firmware protected mode entry is not supported, ignoring");
+=======
+			 "Firmware protected mode entry not be supported, ignoring");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -750,7 +757,11 @@ static int panthor_fw_load_entry(struct panthor_device *ptdev,
 
 	if ((iter->offset % sizeof(u32)) ||
 	    (CSF_FW_BINARY_ENTRY_SIZE(ehdr) % sizeof(u32))) {
+<<<<<<< HEAD
 		drm_err(&ptdev->base, "Firmware entry is not 32-bit aligned, offset=0x%x size=0x%x\n",
+=======
+		drm_err(&ptdev->base, "Firmware entry isn't 32 bit aligned, offset=0x%x size=0x%x\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			(u32)(iter->offset - sizeof(u32)), CSF_FW_BINARY_ENTRY_SIZE(ehdr));
 		return -EINVAL;
 	}
@@ -1061,12 +1072,15 @@ static void panthor_fw_init_global_iface(struct panthor_device *ptdev)
 
 static void panthor_job_irq_handler(struct panthor_device *ptdev, u32 status)
 {
+<<<<<<< HEAD
 	u32 duration;
 	u64 start = 0;
 
 	if (tracepoint_enabled(gpu_job_irq))
 		start = ktime_get_ns();
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_write(ptdev, JOB_INT_CLEAR, status);
 
 	if (!ptdev->fw->booted && (status & JOB_INT_GLOBAL_IF))
@@ -1079,12 +1093,15 @@ static void panthor_job_irq_handler(struct panthor_device *ptdev, u32 status)
 		return;
 
 	panthor_sched_report_fw_events(ptdev, status);
+<<<<<<< HEAD
 
 	if (tracepoint_enabled(gpu_job_irq) && start) {
 		if (check_sub_overflow(ktime_get_ns(), start, &duration))
 			duration = U32_MAX;
 		trace_gpu_job_irq(ptdev->base.dev, status, duration);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 PANTHOR_IRQ_HANDLER(job, JOB, panthor_job_irq_handler);
 
@@ -1093,8 +1110,12 @@ static int panthor_fw_start(struct panthor_device *ptdev)
 	bool timedout = false;
 
 	ptdev->fw->booted = false;
+<<<<<<< HEAD
 	panthor_job_irq_enable_events(&ptdev->fw->irq, ~0);
 	panthor_job_irq_resume(&ptdev->fw->irq);
+=======
+	panthor_job_irq_resume(&ptdev->fw->irq, ~0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	gpu_write(ptdev, MCU_CONTROL, MCU_CONTROL_AUTO);
 
 	if (!wait_event_timeout(ptdev->fw->req_waitqueue,

@@ -6,7 +6,10 @@
 
 #include <drm/drm_managed.h>
 #include <drm/drm_drv.h>
+<<<<<<< HEAD
 #include <drm/drm_buddy.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <drm/ttm/ttm_placement.h>
 #include <drm/ttm/ttm_range_manager.h>
@@ -17,6 +20,7 @@
 #include "xe_ttm_vram_mgr.h"
 #include "xe_vram_types.h"
 
+<<<<<<< HEAD
 static inline struct gpu_buddy_block *
 xe_ttm_vram_mgr_first_block(struct list_head *list)
 {
@@ -27,6 +31,18 @@ static inline bool xe_is_vram_mgr_blocks_contiguous(struct gpu_buddy *mm,
 						    struct list_head *head)
 {
 	struct gpu_buddy_block *block;
+=======
+static inline struct drm_buddy_block *
+xe_ttm_vram_mgr_first_block(struct list_head *list)
+{
+	return list_first_entry_or_null(list, struct drm_buddy_block, link);
+}
+
+static inline bool xe_is_vram_mgr_blocks_contiguous(struct drm_buddy *mm,
+						    struct list_head *head)
+{
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 start, size;
 
 	block = xe_ttm_vram_mgr_first_block(head);
@@ -34,12 +50,21 @@ static inline bool xe_is_vram_mgr_blocks_contiguous(struct gpu_buddy *mm,
 		return false;
 
 	while (head != block->link.next) {
+<<<<<<< HEAD
 		start = gpu_buddy_block_offset(block);
 		size = gpu_buddy_block_size(mm, block);
 
 		block = list_entry(block->link.next, struct gpu_buddy_block,
 				   link);
 		if (start + size != gpu_buddy_block_offset(block))
+=======
+		start = drm_buddy_block_offset(block);
+		size = drm_buddy_block_size(mm, block);
+
+		block = list_entry(block->link.next, struct drm_buddy_block,
+				   link);
+		if (start + size != drm_buddy_block_offset(block))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 	}
 
@@ -53,7 +78,11 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 {
 	struct xe_ttm_vram_mgr *mgr = to_xe_ttm_vram_mgr(man);
 	struct xe_ttm_vram_mgr_resource *vres;
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &mgr->mm;
+=======
+	struct drm_buddy *mm = &mgr->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 size, min_page_size;
 	unsigned long lpfn;
 	int err;
@@ -80,6 +109,7 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 	INIT_LIST_HEAD(&vres->blocks);
 
 	if (place->flags & TTM_PL_FLAG_TOPDOWN)
+<<<<<<< HEAD
 		vres->flags |= GPU_BUDDY_TOPDOWN_ALLOCATION;
 
 	if (place->flags & TTM_PL_FLAG_CONTIGUOUS)
@@ -87,6 +117,12 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 
 	if (place->fpfn || lpfn != man->size >> PAGE_SHIFT)
 		vres->flags |= GPU_BUDDY_RANGE_ALLOCATION;
+=======
+		vres->flags |= DRM_BUDDY_TOPDOWN_ALLOCATION;
+
+	if (place->fpfn || lpfn != man->size >> PAGE_SHIFT)
+		vres->flags |= DRM_BUDDY_RANGE_ALLOCATION;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON(!vres->base.size)) {
 		err = -EINVAL;
@@ -114,12 +150,25 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 		goto error_unlock;
 	}
 
+<<<<<<< HEAD
 	err = gpu_buddy_alloc_blocks(mm, (u64)place->fpfn << PAGE_SHIFT,
+=======
+	if (place->fpfn + (size >> PAGE_SHIFT) != lpfn &&
+	    place->flags & TTM_PL_FLAG_CONTIGUOUS) {
+		size = roundup_pow_of_two(size);
+		min_page_size = size;
+
+		lpfn = max_t(unsigned long, place->fpfn + (size >> PAGE_SHIFT), lpfn);
+	}
+
+	err = drm_buddy_alloc_blocks(mm, (u64)place->fpfn << PAGE_SHIFT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				     (u64)lpfn << PAGE_SHIFT, size,
 				     min_page_size, &vres->blocks, vres->flags);
 	if (err)
 		goto error_unlock;
 
+<<<<<<< HEAD
 	if (lpfn <= mgr->visible_size >> PAGE_SHIFT) {
 		vres->used_visible_size = size;
 	} else {
@@ -130,6 +179,23 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 
 			if (start < mgr->visible_size) {
 				u64 end = start + gpu_buddy_block_size(mm, block);
+=======
+	if (place->flags & TTM_PL_FLAG_CONTIGUOUS) {
+		if (!drm_buddy_block_trim(mm, NULL, vres->base.size, &vres->blocks))
+			size = vres->base.size;
+	}
+
+	if (lpfn <= mgr->visible_size >> PAGE_SHIFT) {
+		vres->used_visible_size = size;
+	} else {
+		struct drm_buddy_block *block;
+
+		list_for_each_entry(block, &vres->blocks, link) {
+			u64 start = drm_buddy_block_offset(block);
+
+			if (start < mgr->visible_size) {
+				u64 end = start + drm_buddy_block_size(mm, block);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 				vres->used_visible_size +=
 					min(end, mgr->visible_size) - start;
@@ -149,11 +215,19 @@ static int xe_ttm_vram_mgr_new(struct ttm_resource_manager *man,
 	 * the object.
 	 */
 	if (vres->base.placement & TTM_PL_FLAG_CONTIGUOUS) {
+<<<<<<< HEAD
 		struct gpu_buddy_block *block = list_first_entry(&vres->blocks,
 								 typeof(*block),
 								 link);
 
 		vres->base.start = gpu_buddy_block_offset(block) >> PAGE_SHIFT;
+=======
+		struct drm_buddy_block *block = list_first_entry(&vres->blocks,
+								 typeof(*block),
+								 link);
+
+		vres->base.start = drm_buddy_block_offset(block) >> PAGE_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		vres->base.start = XE_BO_INVALID_OFFSET;
 	}
@@ -175,10 +249,17 @@ static void xe_ttm_vram_mgr_del(struct ttm_resource_manager *man,
 	struct xe_ttm_vram_mgr_resource *vres =
 		to_xe_ttm_vram_mgr_resource(res);
 	struct xe_ttm_vram_mgr *mgr = to_xe_ttm_vram_mgr(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &mgr->mm;
 
 	mutex_lock(&mgr->lock);
 	gpu_buddy_free_list(mm, &vres->blocks, 0);
+=======
+	struct drm_buddy *mm = &mgr->mm;
+
+	mutex_lock(&mgr->lock);
+	drm_buddy_free_list(mm, &vres->blocks, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mgr->visible_avail += vres->used_visible_size;
 	mutex_unlock(&mgr->lock);
 
@@ -191,7 +272,11 @@ static void xe_ttm_vram_mgr_debug(struct ttm_resource_manager *man,
 				  struct drm_printer *printer)
 {
 	struct xe_ttm_vram_mgr *mgr = to_xe_ttm_vram_mgr(man);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &mgr->mm;
+=======
+	struct drm_buddy *mm = &mgr->mm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&mgr->lock);
 	drm_printf(printer, "default_page_size: %lluKiB\n",
@@ -214,8 +299,13 @@ static bool xe_ttm_vram_mgr_intersects(struct ttm_resource_manager *man,
 	struct xe_ttm_vram_mgr *mgr = to_xe_ttm_vram_mgr(man);
 	struct xe_ttm_vram_mgr_resource *vres =
 		to_xe_ttm_vram_mgr_resource(res);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &mgr->mm;
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy *mm = &mgr->mm;
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!place->fpfn && !place->lpfn)
 		return true;
@@ -225,9 +315,15 @@ static bool xe_ttm_vram_mgr_intersects(struct ttm_resource_manager *man,
 
 	list_for_each_entry(block, &vres->blocks, link) {
 		unsigned long fpfn =
+<<<<<<< HEAD
 			gpu_buddy_block_offset(block) >> PAGE_SHIFT;
 		unsigned long lpfn = fpfn +
 			(gpu_buddy_block_size(mm, block) >> PAGE_SHIFT);
+=======
+			drm_buddy_block_offset(block) >> PAGE_SHIFT;
+		unsigned long lpfn = fpfn +
+			(drm_buddy_block_size(mm, block) >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (place->fpfn < lpfn && place->lpfn > fpfn)
 			return true;
@@ -244,8 +340,13 @@ static bool xe_ttm_vram_mgr_compatible(struct ttm_resource_manager *man,
 	struct xe_ttm_vram_mgr *mgr = to_xe_ttm_vram_mgr(man);
 	struct xe_ttm_vram_mgr_resource *vres =
 		to_xe_ttm_vram_mgr_resource(res);
+<<<<<<< HEAD
 	struct gpu_buddy *mm = &mgr->mm;
 	struct gpu_buddy_block *block;
+=======
+	struct drm_buddy *mm = &mgr->mm;
+	struct drm_buddy_block *block;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!place->fpfn && !place->lpfn)
 		return true;
@@ -255,9 +356,15 @@ static bool xe_ttm_vram_mgr_compatible(struct ttm_resource_manager *man,
 
 	list_for_each_entry(block, &vres->blocks, link) {
 		unsigned long fpfn =
+<<<<<<< HEAD
 			gpu_buddy_block_offset(block) >> PAGE_SHIFT;
 		unsigned long lpfn = fpfn +
 			(gpu_buddy_block_size(mm, block) >> PAGE_SHIFT);
+=======
+			drm_buddy_block_offset(block) >> PAGE_SHIFT;
+		unsigned long lpfn = fpfn +
+			(drm_buddy_block_size(mm, block) >> PAGE_SHIFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (fpfn < place->fpfn || lpfn > place->lpfn)
 			return false;
@@ -287,7 +394,11 @@ static void xe_ttm_vram_mgr_fini(struct drm_device *dev, void *arg)
 
 	WARN_ON_ONCE(mgr->visible_avail != mgr->visible_size);
 
+<<<<<<< HEAD
 	gpu_buddy_fini(&mgr->mm);
+=======
+	drm_buddy_fini(&mgr->mm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ttm_resource_manager_cleanup(&mgr->manager);
 
@@ -318,7 +429,11 @@ int __xe_ttm_vram_mgr_init(struct xe_device *xe, struct xe_ttm_vram_mgr *mgr,
 	mgr->visible_avail = io_size;
 
 	ttm_resource_manager_init(man, &xe->ttm, size);
+<<<<<<< HEAD
 	err = gpu_buddy_init(&mgr->mm, man->size, default_page_size);
+=======
+	err = drm_buddy_init(&mgr->mm, man->size, default_page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -366,7 +481,11 @@ int xe_ttm_vram_mgr_alloc_sgt(struct xe_device *xe,
 	if (!*sgt)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	/* Determine the number of GPU_BUDDY blocks to export */
+=======
+	/* Determine the number of DRM_BUDDY blocks to export */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xe_res_first(res, offset, length, &cursor);
 	while (cursor.remaining) {
 		num_entries++;
@@ -383,10 +502,17 @@ int xe_ttm_vram_mgr_alloc_sgt(struct xe_device *xe,
 		sg->length = 0;
 
 	/*
+<<<<<<< HEAD
 	 * Walk down GPU_BUDDY blocks to populate scatterlist nodes
 	 * @note: Use iterator api to get first the GPU_BUDDY block
 	 * and the number of bytes from it. Access the following
 	 * GPU_BUDDY block(s) if more buffer needs to exported
+=======
+	 * Walk down DRM_BUDDY blocks to populate scatterlist nodes
+	 * @note: Use iterator api to get first the DRM_BUDDY block
+	 * and the number of bytes from it. Access the following
+	 * DRM_BUDDY block(s) if more buffer needs to exported
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	xe_res_first(res, offset, length, &cursor);
 	for_each_sgtable_sg((*sgt), sg, i) {

@@ -73,11 +73,16 @@
 #define IQS5XX_CSTM_LEN		(IQS5XX_PMAP_END + 1 - IQS5XX_CSTM)
 #define IQS5XX_PMAP_LEN		(IQS5XX_PMAP_END + 1 - IQS5XX_CHKSM)
 
+<<<<<<< HEAD
 /* Length of firmware header in hexadecimal characters */
 #define IQS5XX_REC_HDR_LEN_HEX	(1 /* start */ + 2 /* size */ + \
 				 4 /* addr */ + 2 /* type */)
 #define IQS5XX_REC_HDR_SIZE	4 /* size + addr (2 bytes) + type, in bytes*/
 #define IQS5XX_REC_DATA_SIZE	255 /* maximum size of the data portion */
+=======
+#define IQS5XX_REC_HDR_LEN	4
+#define IQS5XX_REC_LEN_MAX	255
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define IQS5XX_REC_TYPE_DATA	0x00
 #define IQS5XX_REC_TYPE_EOF	0x01
 
@@ -101,6 +106,17 @@ struct iqs5xx_dev_id_info {
 	u8 bl_status;
 } __packed;
 
+<<<<<<< HEAD
+=======
+struct iqs5xx_ihex_rec {
+	char start;
+	char len[2];
+	char addr[4];
+	char type[2];
+	char data[2];
+} __packed;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct iqs5xx_touch_data {
 	__be16 abs_x;
 	__be16 abs_y;
@@ -351,7 +367,11 @@ static int iqs5xx_bl_open(struct i2c_client *client)
 }
 
 static int iqs5xx_bl_write(struct i2c_client *client,
+<<<<<<< HEAD
 			   u16 bl_addr, const u8 *pmap_data, u16 pmap_len)
+=======
+			   u16 bl_addr, u8 *pmap_data, u16 pmap_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct i2c_msg msg;
 	int ret, i;
@@ -390,7 +410,11 @@ msg_fail:
 }
 
 static int iqs5xx_bl_verify(struct i2c_client *client,
+<<<<<<< HEAD
 			    u16 bl_addr, const u8 *pmap_data, u16 pmap_len)
+=======
+			    u16 bl_addr, u8 *pmap_data, u16 pmap_len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct i2c_msg msg;
 	int ret, i;
@@ -441,21 +465,40 @@ static int iqs5xx_set_state(struct i2c_client *client, u8 state)
 	if (!iqs5xx->dev_id_info.bl_status)
 		return 0;
 
+<<<<<<< HEAD
 	guard(mutex)(&iqs5xx->lock);
+=======
+	mutex_lock(&iqs5xx->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Addressing the device outside of a communication window prompts it
 	 * to assert the RDY output, so disable the interrupt line to prevent
 	 * the handler from servicing a false interrupt.
 	 */
+<<<<<<< HEAD
 	guard(disable_irq)(&client->irq);
+=======
+	disable_irq(client->irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error1 = iqs5xx_write_byte(client, IQS5XX_SYS_CTRL1, state);
 	error2 = iqs5xx_write_byte(client, IQS5XX_END_COMM, 0);
 
 	usleep_range(50, 100);
+<<<<<<< HEAD
 
 	return error1 ?: error2;
+=======
+	enable_irq(client->irq);
+
+	mutex_unlock(&iqs5xx->lock);
+
+	if (error1)
+		return error1;
+
+	return error2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int iqs5xx_open(struct input_dev *input)
@@ -692,13 +735,23 @@ static irqreturn_t iqs5xx_irq(int irq, void *data)
 static int iqs5xx_fw_file_parse(struct i2c_client *client,
 				const char *fw_file, u8 *pmap)
 {
+<<<<<<< HEAD
+=======
+	const struct firmware *fw;
+	struct iqs5xx_ihex_rec *rec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t pos = 0;
 	int error, i;
 	u16 rec_num = 1;
 	u16 rec_addr;
 	u8 rec_len, rec_type, rec_chksm, chksm;
+<<<<<<< HEAD
 	u8 rec_hdr[IQS5XX_REC_HDR_SIZE];
 	u8 rec_data[IQS5XX_REC_DATA_SIZE];
+=======
+	u8 rec_hdr[IQS5XX_REC_HDR_LEN];
+	u8 rec_data[IQS5XX_REC_LEN_MAX];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Firmware exported from the vendor's configuration tool deviates from
@@ -709,7 +762,10 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 	 * Because the ihex2fw tool tolerates neither (1) nor (2), the slightly
 	 * nonstandard ihex firmware is parsed directly by the driver.
 	 */
+<<<<<<< HEAD
 	const struct firmware *fw __free(firmware) = NULL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	error = request_firmware(&fw, fw_file, &client->dev);
 	if (error) {
 		dev_err(&client->dev, "Failed to request firmware %s: %d\n",
@@ -718,6 +774,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 	}
 
 	do {
+<<<<<<< HEAD
 		if (pos + IQS5XX_REC_HDR_LEN_HEX > fw->size) {
 			dev_err(&client->dev, "Insufficient firmware size\n");
 			return -EINVAL;
@@ -737,11 +794,35 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 			return error;
 		}
 		pos += IQS5XX_REC_HDR_LEN_HEX;
+=======
+		if (pos + sizeof(*rec) > fw->size) {
+			dev_err(&client->dev, "Insufficient firmware size\n");
+			error = -EINVAL;
+			break;
+		}
+		rec = (struct iqs5xx_ihex_rec *)(fw->data + pos);
+		pos += sizeof(*rec);
+
+		if (rec->start != ':') {
+			dev_err(&client->dev, "Invalid start at record %u\n",
+				rec_num);
+			error = -EINVAL;
+			break;
+		}
+
+		error = hex2bin(rec_hdr, rec->len, sizeof(rec_hdr));
+		if (error) {
+			dev_err(&client->dev, "Invalid header at record %u\n",
+				rec_num);
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		rec_len = *rec_hdr;
 		rec_addr = get_unaligned_be16(rec_hdr + sizeof(rec_len));
 		rec_type = *(rec_hdr + sizeof(rec_len) + sizeof(rec_addr));
 
+<<<<<<< HEAD
 		/*
 		 * Check if we have enough data for the data portion of the
 		 * record, as well as the checksum byte. Everything is doubled
@@ -767,6 +848,29 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 			return error;
 		}
 		pos += 2;
+=======
+		if (pos + rec_len * 2 > fw->size) {
+			dev_err(&client->dev, "Insufficient firmware size\n");
+			error = -EINVAL;
+			break;
+		}
+		pos += (rec_len * 2);
+
+		error = hex2bin(rec_data, rec->data, rec_len);
+		if (error) {
+			dev_err(&client->dev, "Invalid data at record %u\n",
+				rec_num);
+			break;
+		}
+
+		error = hex2bin(&rec_chksm,
+				rec->data + rec_len * 2, sizeof(rec_chksm));
+		if (error) {
+			dev_err(&client->dev, "Invalid checksum at record %u\n",
+				rec_num);
+			break;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		chksm = 0;
 		for (i = 0; i < sizeof(rec_hdr); i++)
@@ -790,6 +894,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 				dev_err(&client->dev,
 					"Invalid address at record %u\n",
 					rec_num);
+<<<<<<< HEAD
 				return -EINVAL;
 			}
 
@@ -806,6 +911,25 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 			return -EINVAL;
 		}
 
+=======
+				error = -EINVAL;
+			} else {
+				memcpy(pmap + rec_addr - IQS5XX_CHKSM,
+				       rec_data, rec_len);
+			}
+			break;
+		case IQS5XX_REC_TYPE_EOF:
+			break;
+		default:
+			dev_err(&client->dev, "Invalid type at record %u\n",
+				rec_num);
+			error = -EINVAL;
+		}
+
+		if (error)
+			break;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rec_num++;
 		while (pos < fw->size) {
 			if (*(fw->data + pos) == ':')
@@ -814,6 +938,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 		}
 	} while (rec_type != IQS5XX_REC_TYPE_EOF);
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -821,6 +946,35 @@ static int iqs5xx_update_firmware(struct iqs5xx_private *iqs5xx, const u8 *pmap)
 {
 	struct i2c_client *client = iqs5xx->client;
 	int error;
+=======
+	release_firmware(fw);
+
+	return error;
+}
+
+static int iqs5xx_fw_file_write(struct i2c_client *client, const char *fw_file)
+{
+	struct iqs5xx_private *iqs5xx = i2c_get_clientdata(client);
+	int error, error_init = 0;
+	u8 *pmap;
+
+	pmap = kzalloc(IQS5XX_PMAP_LEN, GFP_KERNEL);
+	if (!pmap)
+		return -ENOMEM;
+
+	error = iqs5xx_fw_file_parse(client, fw_file, pmap);
+	if (error)
+		goto err_kfree;
+
+	mutex_lock(&iqs5xx->lock);
+
+	/*
+	 * Disable the interrupt line in case the first attempt(s) to enter the
+	 * bootloader don't happen quickly enough, in which case the device may
+	 * assert the RDY output until the next attempt.
+	 */
+	disable_irq(client->irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	iqs5xx->dev_id_info.bl_status = 0;
 
@@ -828,20 +982,33 @@ static int iqs5xx_update_firmware(struct iqs5xx_private *iqs5xx, const u8 *pmap)
 	if (error) {
 		error = iqs5xx_bl_open(client);
 		if (error)
+<<<<<<< HEAD
 			return error;
+=======
+			goto err_reset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	error = iqs5xx_bl_write(client, IQS5XX_CHKSM, pmap, IQS5XX_PMAP_LEN);
 	if (error)
+<<<<<<< HEAD
 		return error;
 
 	error = iqs5xx_bl_cmd(client, IQS5XX_BL_CMD_CRC, 0);
 	if (error)
 		return error;
+=======
+		goto err_reset;
+
+	error = iqs5xx_bl_cmd(client, IQS5XX_BL_CMD_CRC, 0);
+	if (error)
+		goto err_reset;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	error = iqs5xx_bl_verify(client, IQS5XX_CSTM,
 				 pmap + IQS5XX_CHKSM_LEN + IQS5XX_APP_LEN,
 				 IQS5XX_CSTM_LEN);
+<<<<<<< HEAD
 	if (error)
 		return error;
 
@@ -872,6 +1039,10 @@ static int iqs5xx_fw_file_write(struct i2c_client *client, const char *fw_file)
 
 	error = iqs5xx_update_firmware(iqs5xx, pmap);
 
+=======
+
+err_reset:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	iqs5xx_reset(client);
 	usleep_range(15000, 15100);
 
@@ -879,7 +1050,18 @@ static int iqs5xx_fw_file_write(struct i2c_client *client, const char *fw_file)
 	if (!iqs5xx->dev_id_info.bl_status)
 		error_init = error_init ? : -EINVAL;
 
+<<<<<<< HEAD
 	return error ?: error_init;
+=======
+	enable_irq(client->irq);
+
+	mutex_unlock(&iqs5xx->lock);
+
+err_kfree:
+	kfree(pmap);
+
+	return error ? : error_init;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static ssize_t fw_file_store(struct device *dev,
@@ -975,6 +1157,7 @@ static int iqs5xx_suspend(struct device *dev)
 {
 	struct iqs5xx_private *iqs5xx = dev_get_drvdata(dev);
 	struct input_dev *input = iqs5xx->input;
+<<<<<<< HEAD
 
 	if (!input || device_may_wakeup(dev))
 		return 0;
@@ -984,12 +1167,28 @@ static int iqs5xx_suspend(struct device *dev)
 		return iqs5xx_set_state(iqs5xx->client, IQS5XX_SUSPEND);
 
 	return 0;
+=======
+	int error = 0;
+
+	if (!input || device_may_wakeup(dev))
+		return error;
+
+	mutex_lock(&input->mutex);
+
+	if (input_device_enabled(input))
+		error = iqs5xx_set_state(iqs5xx->client, IQS5XX_SUSPEND);
+
+	mutex_unlock(&input->mutex);
+
+	return error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int iqs5xx_resume(struct device *dev)
 {
 	struct iqs5xx_private *iqs5xx = dev_get_drvdata(dev);
 	struct input_dev *input = iqs5xx->input;
+<<<<<<< HEAD
 
 	if (!input || device_may_wakeup(dev))
 		return 0;
@@ -999,6 +1198,21 @@ static int iqs5xx_resume(struct device *dev)
 		return iqs5xx_set_state(iqs5xx->client, IQS5XX_RESUME);
 
 	return 0;
+=======
+	int error = 0;
+
+	if (!input || device_may_wakeup(dev))
+		return error;
+
+	mutex_lock(&input->mutex);
+
+	if (input_device_enabled(input))
+		error = iqs5xx_set_state(iqs5xx->client, IQS5XX_RESUME);
+
+	mutex_unlock(&input->mutex);
+
+	return error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(iqs5xx_pm, iqs5xx_suspend, iqs5xx_resume);

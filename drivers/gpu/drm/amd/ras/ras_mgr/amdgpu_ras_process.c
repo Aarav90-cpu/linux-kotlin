@@ -103,6 +103,7 @@ int amdgpu_ras_process_handle_consumption_interrupt(struct amdgpu_device *adev, 
 	if (!ih_info)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (amdgpu_sriov_vf(adev)) {
 		if (adev->virt.ops && adev->virt.ops->ras_poison_handler)
 			adev->virt.ops->ras_poison_handler(adev, ih_info->block);
@@ -113,6 +114,8 @@ int amdgpu_ras_process_handle_consumption_interrupt(struct amdgpu_device *adev, 
 		return 0;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(&req, 0, sizeof(req));
 	req.block = ih_info->block;
 	req.data = ih_info->data;

@@ -643,10 +643,13 @@
 
 #define THC_M_PRT_SPI_DUTYC_CFG_SPI_CSA_CK_DELAY_VAL		GENMASK(3, 0)
 #define THC_M_PRT_SPI_DUTYC_CFG_SPI_CSA_CK_DELAY_EN		BIT(25)
+<<<<<<< HEAD
 #define THC_M_PRT_SPI_DUTYC_CFG_SPI_TCRF_HALF_DIV_EN		BIT(30)
 #define THC_M_PRT_SPI_DUTYC_CFG_SPI_TCWF_HALF_DIV_EN		BIT(31)
 
 #define THC_M_PRT_SPARE_REG_SPI_CLK_INV_ENABLE			BIT(2)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* CS Assertion delay default value */
 #define THC_CSA_CK_DELAY_VAL_DEFAULT		4

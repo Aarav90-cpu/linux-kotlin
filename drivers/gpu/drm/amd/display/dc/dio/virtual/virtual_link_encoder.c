@@ -30,6 +30,7 @@
 
 static bool virtual_link_encoder_validate_output_with_stream(
 	struct link_encoder *enc,
+<<<<<<< HEAD
 	const struct dc_stream_state *stream) {
 		(void)enc;
 		(void)stream;
@@ -46,12 +47,22 @@ static void virtual_link_encoder_setup(
 		(void)enc;
 		(void)signal;
 	}
+=======
+	const struct dc_stream_state *stream) { return true; }
+
+static void virtual_link_encoder_hw_init(struct link_encoder *enc) {}
+
+static void virtual_link_encoder_setup(
+	struct link_encoder *enc,
+	enum signal_type signal) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_enable_tmds_output(
 	struct link_encoder *enc,
 	enum clock_source_id clock_source,
 	enum dc_color_depth color_depth,
 	enum signal_type signal,
+<<<<<<< HEAD
 	uint32_t pixel_clock) {
 		(void)enc;
 		(void)clock_source;
@@ -59,19 +70,27 @@ static void virtual_link_encoder_enable_tmds_output(
 		(void)signal;
 		(void)pixel_clock;
 	}
+=======
+	uint32_t pixel_clock) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_enable_dp_output(
 	struct link_encoder *enc,
 	const struct dc_link_settings *link_settings,
+<<<<<<< HEAD
 	enum clock_source_id clock_source) {
 		(void)enc;
 		(void)link_settings;
 		(void)clock_source;
 	}
+=======
+	enum clock_source_id clock_source) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_enable_dp_mst_output(
 	struct link_encoder *enc,
 	const struct dc_link_settings *link_settings,
+<<<<<<< HEAD
 	enum clock_source_id clock_source) {
 		(void)enc;
 		(void)link_settings;
@@ -84,10 +103,18 @@ static void virtual_link_encoder_disable_output(
 		(void)link_enc;
 		(void)signal;
 	}
+=======
+	enum clock_source_id clock_source) {}
+
+static void virtual_link_encoder_disable_output(
+	struct link_encoder *link_enc,
+	enum signal_type signal) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_dp_set_lane_settings(
 	struct link_encoder *enc,
 	const struct dc_link_settings *link_settings,
+<<<<<<< HEAD
 	const struct dc_lane_settings lane_settings[LANE_COUNT_DP_MAX]) {
 		(void)enc;
 		(void)link_settings;
@@ -107,15 +134,30 @@ static void virtual_link_encoder_update_mst_stream_allocation_table(
 		(void)enc;
 		(void)table;
 	}
+=======
+	const struct dc_lane_settings lane_settings[LANE_COUNT_DP_MAX]) {}
+
+static void virtual_link_encoder_dp_set_phy_pattern(
+	struct link_encoder *enc,
+	const struct encoder_set_dp_phy_pattern_param *param) {}
+
+static void virtual_link_encoder_update_mst_stream_allocation_table(
+	struct link_encoder *enc,
+	const struct link_mst_stream_allocation_table *table) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_connect_dig_be_to_fe(
 	struct link_encoder *enc,
 	enum engine_id engine,
+<<<<<<< HEAD
 	bool connect) {
 		(void)enc;
 		(void)engine;
 		(void)connect;
 	}
+=======
+	bool connect) {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void virtual_link_encoder_destroy(struct link_encoder **enc)
 {
@@ -126,7 +168,10 @@ static void virtual_link_encoder_destroy(struct link_encoder **enc)
 static void virtual_link_encoder_get_max_link_cap(struct link_encoder *enc,
 		struct dc_link_settings *link_settings)
 {
+<<<<<<< HEAD
 	(void)enc;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set Default link settings */
 	struct dc_link_settings max_link_cap = {LANE_COUNT_FOUR, LINK_RATE_HIGH,
 				LINK_SPREAD_05_DOWNSPREAD_30KHZ, false, 0};

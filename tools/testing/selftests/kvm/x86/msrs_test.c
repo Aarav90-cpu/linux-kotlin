@@ -81,7 +81,11 @@ static u64 fixup_rdmsr_val(u32 msr, u64 want)
 	 * is supposed to emulate that behavior based on guest vendor model
 	 * (which is the same as the host vendor model for this test).
 	 */
+<<<<<<< HEAD
 	if (!host_cpu_is_amd_compatible)
+=======
+	if (!host_cpu_is_amd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return want;
 
 	switch (msr) {

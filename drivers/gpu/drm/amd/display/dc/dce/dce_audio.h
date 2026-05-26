@@ -151,6 +151,18 @@ struct audio *dce_audio_create(
 		const struct dce_audio_shift *shifts,
 		const struct dce_audio_mask *masks);
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_DRM_AMD_DC_SI)
+struct audio *dce60_audio_create(
+		struct dc_context *ctx,
+		unsigned int inst,
+		const struct dce_audio_registers *reg,
+		const struct dce_audio_shift *shifts,
+		const struct dce_audio_mask *masks);
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void dce_aud_destroy(struct audio **audio);
 
 void dce_aud_hw_init(struct audio *audio);

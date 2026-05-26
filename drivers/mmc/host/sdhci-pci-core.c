@@ -20,6 +20,10 @@
 #include <linux/scatterlist.h>
 #include <linux/io.h>
 #include <linux/iopoll.h>
+<<<<<<< HEAD
+=======
+#include <linux/gpio.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/gpio/machine.h>
 #include <linux/pm_runtime.h>
 #include <linux/pm_qos.h>

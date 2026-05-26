@@ -641,3 +641,7 @@ resource_size_t cxl_rcd_component_reg_phys(struct device *dev,
 		return CXL_RESOURCE_NONE;
 	return __rcrb_to_component(dev, &dport->rcrb, CXL_RCRB_UPSTREAM);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_NS_GPL(cxl_rcd_component_reg_phys, "CXL");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

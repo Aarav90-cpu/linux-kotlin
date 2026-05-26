@@ -35,7 +35,11 @@ static int btrfs_uuid_tree_lookup(struct btrfs_root *uuid_root, const u8 *uuid,
 	struct btrfs_key key;
 
 	if (WARN_ON_ONCE(!uuid_root))
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		return -ENOENT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	path = btrfs_alloc_path();
 	if (!path)
@@ -92,6 +96,12 @@ int btrfs_uuid_tree_add(struct btrfs_trans_handle *trans, const u8 *uuid, u8 typ
 	if (ret != -ENOENT)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	if (WARN_ON_ONCE(!uuid_root))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	btrfs_uuid_to_key(uuid, type, &key);
 
 	path = btrfs_alloc_path();
@@ -513,7 +523,11 @@ skip:
 
 out:
 	btrfs_free_path(path);
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(trans))
+=======
+	if (trans && !IS_ERR(trans))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_end_transaction(trans);
 	if (ret)
 		btrfs_warn(fs_info, "btrfs_uuid_scan_kthread failed %d", ret);

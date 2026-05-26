@@ -1,10 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
+<<<<<<< HEAD
  * The LTC2305 is a  2-Channel, 12-Bit SAR ADC with an I2C Interface.
  * The LTC2309 is an 8-Channel, 12-Bit SAR ADC with an I2C Interface.
  *
  * Datasheet:
  * https://www.analog.com/media/en/technical-documentation/data-sheets/23015fb.pdf
+=======
+ * The LTC2309 is an 8-Channel, 12-Bit SAR ADC with an I2C Interface.
+ *
+ * Datasheet:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * https://www.analog.com/media/en/technical-documentation/data-sheets/2309fd.pdf
  *
  * Copyright (c) 2023, Liam Beguin <liambeguin@gmail.com>
@@ -43,6 +49,7 @@ struct ltc2309 {
 };
 
 /* Order matches expected channel address, See datasheet Table 1. */
+<<<<<<< HEAD
 enum ltc2305_channels {
 	LTC2305_CH0_CH1 = 0x0,
 	LTC2305_CH1_CH0 = 0x4,
@@ -67,6 +74,25 @@ enum ltc2309_channels {
 	LTC2309_CH3     = 0xd,
 	LTC2309_CH5     = 0xe,
 	LTC2309_CH7     = 0xf,
+=======
+enum ltc2309_channels {
+	LTC2309_CH0_CH1 = 0,
+	LTC2309_CH2_CH3,
+	LTC2309_CH4_CH5,
+	LTC2309_CH6_CH7,
+	LTC2309_CH1_CH0,
+	LTC2309_CH3_CH2,
+	LTC2309_CH5_CH4,
+	LTC2309_CH7_CH6,
+	LTC2309_CH0,
+	LTC2309_CH2,
+	LTC2309_CH4,
+	LTC2309_CH6,
+	LTC2309_CH1,
+	LTC2309_CH3,
+	LTC2309_CH5,
+	LTC2309_CH7,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define LTC2309_CHAN(_chan, _addr) {				\
@@ -89,6 +115,7 @@ enum ltc2309_channels {
 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
 }
 
+<<<<<<< HEAD
 static const struct iio_chan_spec ltc2305_channels[] = {
 	LTC2309_CHAN(0, LTC2305_CH0),
 	LTC2309_CHAN(1, LTC2305_CH1),
@@ -96,6 +123,8 @@ static const struct iio_chan_spec ltc2305_channels[] = {
 	LTC2309_DIFF_CHAN(1, 0, LTC2305_CH1_CH0),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct iio_chan_spec ltc2309_channels[] = {
 	LTC2309_CHAN(0, LTC2309_CH0),
 	LTC2309_CHAN(1, LTC2309_CH1),
@@ -115,6 +144,7 @@ static const struct iio_chan_spec ltc2309_channels[] = {
 	LTC2309_DIFF_CHAN(7, 6, LTC2309_CH7_CH6),
 };
 
+<<<<<<< HEAD
 struct ltc2309_chip_info {
 	const char *name;
 	const struct iio_chan_spec *channels;
@@ -133,6 +163,8 @@ static const struct ltc2309_chip_info ltc2309_chip_info = {
 	.num_channels = ARRAY_SIZE(ltc2309_channels),
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ltc2309_read_raw_channel(struct ltc2309 *ltc2309,
 				    unsigned long address, int *val)
 {
@@ -192,7 +224,10 @@ static const struct iio_info ltc2309_info = {
 
 static int ltc2309_probe(struct i2c_client *client)
 {
+<<<<<<< HEAD
 	const struct ltc2309_chip_info *chip_info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_dev *indio_dev;
 	struct ltc2309 *ltc2309;
 	int ret;
@@ -202,6 +237,7 @@ static int ltc2309_probe(struct i2c_client *client)
 		return -ENOMEM;
 
 	ltc2309 = iio_priv(indio_dev);
+<<<<<<< HEAD
 	chip_info = i2c_get_match_data(client);
 
 	ltc2309->dev = &indio_dev->dev;
@@ -211,6 +247,15 @@ static int ltc2309_probe(struct i2c_client *client)
 	indio_dev->modes = INDIO_DIRECT_MODE;
 	indio_dev->channels = chip_info->channels;
 	indio_dev->num_channels = chip_info->num_channels;
+=======
+	ltc2309->dev = &indio_dev->dev;
+	ltc2309->client = client;
+
+	indio_dev->name = "ltc2309";
+	indio_dev->modes = INDIO_DIRECT_MODE;
+	indio_dev->channels = ltc2309_channels;
+	indio_dev->num_channels = ARRAY_SIZE(ltc2309_channels);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	indio_dev->info = &ltc2309_info;
 
 	ret = devm_regulator_get_enable_read_voltage(&client->dev, "vref");
@@ -226,15 +271,23 @@ static int ltc2309_probe(struct i2c_client *client)
 }
 
 static const struct of_device_id ltc2309_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "lltc,ltc2305", .data = &ltc2305_chip_info },
 	{ .compatible = "lltc,ltc2309", .data = &ltc2309_chip_info },
+=======
+	{ .compatible = "lltc,ltc2309" },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(of, ltc2309_of_match);
 
 static const struct i2c_device_id ltc2309_id[] = {
+<<<<<<< HEAD
 	{ "ltc2305", (kernel_ulong_t)&ltc2305_chip_info },
 	{ "ltc2309", (kernel_ulong_t)&ltc2309_chip_info },
+=======
+	{ "ltc2309" },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ltc2309_id);

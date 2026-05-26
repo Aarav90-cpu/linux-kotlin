@@ -3917,8 +3917,13 @@ static void hci_isodata_packet(struct hci_dev *hdev, struct sk_buff *skb)
 
 	err = iso_recv(hdev, handle, skb, flags);
 	if (err == -ENOENT)
+<<<<<<< HEAD
 		bt_dev_err_ratelimited(hdev, "ISO packet for unknown connection handle %d",
 				       handle);
+=======
+		bt_dev_err(hdev, "ISO packet for unknown connection handle %d",
+			   handle);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else if (err)
 		bt_dev_dbg(hdev, "ISO packet recv for handle %d failed: %d",
 			   handle, err);

@@ -753,7 +753,11 @@ static inline bool ice_is_xdp_ena_vsi(struct ice_vsi *vsi)
 
 static inline void ice_set_ring_xdp(struct ice_tx_ring *ring)
 {
+<<<<<<< HEAD
 	set_bit(ICE_TX_RING_FLAGS_XDP, ring->flags);
+=======
+	ring->flags |= ICE_TX_FLAGS_RING_XDP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -778,7 +782,11 @@ static inline bool ice_is_txtime_ena(const struct ice_tx_ring *ring)
  */
 static inline bool ice_is_txtime_cfg(const struct ice_tx_ring *ring)
 {
+<<<<<<< HEAD
 	return test_bit(ICE_TX_RING_FLAGS_TXTIME, ring->flags);
+=======
+	return !!(ring->flags & ICE_TX_FLAGS_TXTIME);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**

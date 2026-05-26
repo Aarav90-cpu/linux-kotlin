@@ -59,7 +59,11 @@ int mem2node__init(struct mem2node *map, struct perf_env *env)
 		max += bitmap_weight(n->set, n->size);
 	}
 
+<<<<<<< HEAD
 	entries = calloc(max, sizeof(*entries));
+=======
+	entries = zalloc(sizeof(*entries) * max);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!entries)
 		return -ENOMEM;
 

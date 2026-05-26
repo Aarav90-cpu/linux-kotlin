@@ -216,7 +216,11 @@ ieee80211_bss_info_update(struct ieee80211_local *local,
 
 		if (link_conf) {
 			bss_meta.parent_tsf =
+<<<<<<< HEAD
 				ieee80211_calculate_rx_timestamp(&local->hw,
+=======
+				ieee80211_calculate_rx_timestamp(local,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 								 rx_status,
 								 len + FCS_LEN,
 								 24);

@@ -36,6 +36,10 @@
 #include <linux/uaccess.h>
 #include <linux/vfio.h>
 #include <linux/workqueue.h>
+<<<<<<< HEAD
+=======
+#include <linux/notifier.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mm_inline.h>
 #include <linux/overflow.h>
 #include "vfio.h"

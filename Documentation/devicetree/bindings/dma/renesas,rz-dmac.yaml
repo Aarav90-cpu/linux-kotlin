@@ -19,7 +19,10 @@ properties:
               - renesas,r9a07g044-dmac # RZ/G2{L,LC}
               - renesas,r9a07g054-dmac # RZ/V2L
               - renesas,r9a08g045-dmac # RZ/G3S
+<<<<<<< HEAD
               - renesas,r9a08g046-dmac # RZ/G3L
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: renesas,rz-dmac
 
       - items:
@@ -30,6 +33,7 @@ properties:
 
       - const: renesas,r9a09g057-dmac # RZ/V2H(P)
 
+<<<<<<< HEAD
       - const: renesas,r9a09g077-dmac # RZ/T2H
 
       - items:
@@ -37,6 +41,8 @@ properties:
               - renesas,r9a09g087-dmac # RZ/N2H
           - const: renesas,r9a09g077-dmac
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   reg:
     items:
       - description: Control and channel register block
@@ -44,12 +50,36 @@ properties:
     minItems: 1
 
   interrupts:
+<<<<<<< HEAD
     minItems: 16
     maxItems: 17
 
   interrupt-names:
     minItems: 16
     maxItems: 17
+=======
+    maxItems: 17
+
+  interrupt-names:
+    items:
+      - const: error
+      - const: ch0
+      - const: ch1
+      - const: ch2
+      - const: ch3
+      - const: ch4
+      - const: ch5
+      - const: ch6
+      - const: ch7
+      - const: ch8
+      - const: ch9
+      - const: ch10
+      - const: ch11
+      - const: ch12
+      - const: ch13
+      - const: ch14
+      - const: ch15
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   clocks:
     items:
@@ -120,6 +150,7 @@ allOf:
         compatible:
           contains:
             enum:
+<<<<<<< HEAD
               - renesas,rz-dmac
               - renesas,r9a09g057-dmac
     then:
@@ -149,11 +180,16 @@ allOf:
         compatible:
           contains:
             enum:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - renesas,r9a07g043-dmac
               - renesas,r9a07g044-dmac
               - renesas,r9a07g054-dmac
               - renesas,r9a08g045-dmac
+<<<<<<< HEAD
               - renesas,r9a08g046-dmac
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     then:
       properties:
         reg:
@@ -212,6 +248,7 @@ allOf:
         - renesas,icu
         - resets
 
+<<<<<<< HEAD
   - if:
       properties:
         compatible:
@@ -255,6 +292,8 @@ allOf:
         - power-domains
         - renesas,icu
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:

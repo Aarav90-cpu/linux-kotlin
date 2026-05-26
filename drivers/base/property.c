@@ -38,8 +38,11 @@ EXPORT_SYMBOL_GPL(__dev_fwnode_const);
  * @propname: Name of the property
  *
  * Check if property @propname is present in the device firmware description.
+<<<<<<< HEAD
  * This function is the unambiguous way to check that given property is present
  * in the device firmware description.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: true if property @propname is present. Otherwise, returns false.
  */
@@ -54,10 +57,13 @@ EXPORT_SYMBOL_GPL(device_property_present);
  * @fwnode: Firmware node whose property to check
  * @propname: Name of the property
  *
+<<<<<<< HEAD
  * Check if property @propname is present in the firmware node description.
  * This function is the unambiguous way to check that given property is present
  * in the firmware node description.
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Return: true if property @propname is present. Otherwise, returns false.
  */
 bool fwnode_property_present(const struct fwnode_handle *fwnode,
@@ -81,9 +87,15 @@ EXPORT_SYMBOL_GPL(fwnode_property_present);
  * @dev: Device whose property is being checked
  * @propname: Name of the property
  *
+<<<<<<< HEAD
  * Use device_property_present() to check for the property presence.
  *
  * Return: if property @propname is true or false in the device firmware description.
+=======
+ * Return if property @propname is true or false in the device firmware description.
+ *
+ * Return: true if property @propname is present. Otherwise, returns false.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 bool device_property_read_bool(const struct device *dev, const char *propname)
 {
@@ -96,9 +108,13 @@ EXPORT_SYMBOL_GPL(device_property_read_bool);
  * @fwnode: Firmware node whose property to check
  * @propname: Name of the property
  *
+<<<<<<< HEAD
  * Use fwnode_property_present() to check for the property presence.
  *
  * Return: if property @propname is true or false in the firmware node description.
+=======
+ * Return if property @propname is true or false in the firmware description.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 bool fwnode_property_read_bool(const struct fwnode_handle *fwnode,
 			     const char *propname)
@@ -602,8 +618,11 @@ EXPORT_SYMBOL_GPL(fwnode_property_match_property_string);
  *	    %-ENOENT when the index is out of bounds, the index has an empty
  *		     reference or the property was not found
  *	    %-EINVAL on parse error
+<<<<<<< HEAD
  *	    %-ENOTCONN when the remote firmware node exists but has not been
  *		       registered yet
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
 				       const char *prop, const char *nargs_prop,

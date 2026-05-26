@@ -4914,7 +4914,11 @@ qla2x00_fw_ready(scsi_qla_host_t *vha)
 	unsigned long	wtime, mtime, cs84xx_time;
 	uint16_t	min_wait;	/* Minimum wait time if loop is down */
 	uint16_t	wait_time;	/* Wait time if loop is coming ready */
+<<<<<<< HEAD
 	uint16_t	state[16];
+=======
+	uint16_t	state[6];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct qla_hw_data *ha = vha->hw;
 
 	if (IS_QLAFX00(vha->hw))

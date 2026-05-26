@@ -1557,7 +1557,11 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DEVX_OBJ_CREATE)(
 	if (IS_ERR(cmd_out))
 		return PTR_ERR(cmd_out);
 
+<<<<<<< HEAD
 	obj = kzalloc_obj(*obj);
+=======
+	obj = kzalloc(sizeof(struct devx_obj), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!obj)
 		return -ENOMEM;
 
@@ -2158,7 +2162,11 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DEVX_SUBSCRIBE_EVENT)(
 		if (err)
 			goto err;
 
+<<<<<<< HEAD
 		event_sub = kzalloc_obj(*event_sub);
+=======
+		event_sub = kzalloc(sizeof(*event_sub), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!event_sub) {
 			err = -ENOMEM;
 			goto err;
@@ -2398,7 +2406,11 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DEVX_UMEM_REG)(
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	obj = kzalloc_obj(*obj);
+=======
+	obj = kzalloc(sizeof(struct devx_umem), GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!obj)
 		return -ENOMEM;
 

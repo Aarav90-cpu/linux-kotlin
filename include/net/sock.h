@@ -81,6 +81,7 @@
  * mini-semaphore synchronizes multiple users amongst themselves.
  */
 typedef struct {
+<<<<<<< HEAD
 	union {
 		struct slock_owned {
 			int		owned;
@@ -88,6 +89,10 @@ typedef struct {
 		};
 		long	combined;
 	};
+=======
+	spinlock_t		slock;
+	int			owned;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	wait_queue_head_t	wq;
 	/*
 	 * We express the mutex-alike socket_lock semantics
@@ -126,14 +131,22 @@ typedef __u64 __bitwise __addrpair;
  *	@skc_bypass_prot_mem: bypass the per-protocol memory accounting for skb
  *	@skc_bound_dev_if: bound device index if != 0
  *	@skc_bind_node: bind hash linkage for various protocol lookup tables
+<<<<<<< HEAD
  *	@skc_portaddr_node: second hash linkage for UDP
+=======
+ *	@skc_portaddr_node: second hash linkage for UDP/UDP-Lite protocol
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	@skc_prot: protocol handlers inside a network family
  *	@skc_net: reference to the network namespace of this socket
  *	@skc_v6_daddr: IPV6 destination address
  *	@skc_v6_rcv_saddr: IPV6 source address
  *	@skc_cookie: socket's cookie value
  *	@skc_node: main hash linkage for various protocol lookup tables
+<<<<<<< HEAD
  *	@skc_nulls_node: main hash linkage for TCP
+=======
+ *	@skc_nulls_node: main hash linkage for TCP/UDP/UDP-Lite protocol
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	@skc_tx_queue_mapping: tx queue number for this connection
  *	@skc_rx_queue_mapping: rx queue number for this connection
  *	@skc_flags: place holder for sk_flags
@@ -542,7 +555,11 @@ struct sock {
 	rwlock_t		sk_callback_lock;
 	u32			sk_ack_backlog;
 	u32			sk_max_ack_backlog;
+<<<<<<< HEAD
 	u64			sk_ino;
+=======
+	unsigned long		sk_ino;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	spinlock_t		sk_peer_lock;
 	int			sk_bind_phc;
 	struct pid		*sk_peer_pid;
@@ -1321,7 +1338,11 @@ struct proto {
 	int			(*sendmsg)(struct sock *sk, struct msghdr *msg,
 					   size_t len);
 	int			(*recvmsg)(struct sock *sk, struct msghdr *msg,
+<<<<<<< HEAD
 					   size_t len, int flags);
+=======
+					   size_t len, int flags, int *addr_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void			(*splice_eof)(struct socket *sock);
 	int			(*bind)(struct sock *sk,
 					struct sockaddr_unsized *addr, int addr_len);
@@ -1392,6 +1413,10 @@ struct proto {
 
 	union {
 		struct inet_hashinfo	*hashinfo;
+<<<<<<< HEAD
+=======
+		struct udp_table	*udp_table;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct raw_hashinfo	*raw_hash;
 		struct smc_hashinfo	*smc_hash;
 	} h;
@@ -1713,6 +1738,10 @@ static inline void lock_sock(struct sock *sk)
 	lock_sock_nested(sk, 0);
 }
 
+<<<<<<< HEAD
+=======
+void __lock_sock(struct sock *sk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void __release_sock(struct sock *sk);
 void release_sock(struct sock *sk);
 
@@ -2143,7 +2172,11 @@ static inline void sock_graft(struct sock *sk, struct socket *parent)
 	write_unlock_bh(&sk->sk_callback_lock);
 }
 
+<<<<<<< HEAD
 static inline u64 sock_i_ino(const struct sock *sk)
+=======
+static inline unsigned long sock_i_ino(const struct sock *sk)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/* Paired with WRITE_ONCE() in sock_graft() and sock_orphan() */
 	return READ_ONCE(sk->sk_ino);
@@ -2502,6 +2535,7 @@ int __sk_queue_drop_skb(struct sock *sk, struct sk_buff_head *sk_queue,
 					   struct sk_buff *skb));
 int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb);
 
+<<<<<<< HEAD
 enum skb_drop_reason
 sock_queue_rcv_skb_reason(struct sock *sk, struct sk_buff *skb);
 
@@ -2519,6 +2553,14 @@ static inline int sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
 	default:
 		return -EPERM;
 	}
+=======
+int sock_queue_rcv_skb_reason(struct sock *sk, struct sk_buff *skb,
+			      enum skb_drop_reason *reason);
+
+static inline int sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
+{
+	return sock_queue_rcv_skb_reason(sk, skb, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int sock_queue_err_skb(struct sock *sk, struct sk_buff *skb);

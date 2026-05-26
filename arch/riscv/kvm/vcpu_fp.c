@@ -13,7 +13,10 @@
 #include <linux/nospec.h>
 #include <linux/uaccess.h>
 #include <asm/cpufeature.h>
+<<<<<<< HEAD
 #include <asm/kvm_isa.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #ifdef CONFIG_FPU
 void kvm_riscv_vcpu_fp_reset(struct kvm_vcpu *vcpu)
@@ -61,17 +64,29 @@ void kvm_riscv_vcpu_guest_fp_restore(struct kvm_cpu_context *cntx,
 void kvm_riscv_vcpu_host_fp_save(struct kvm_cpu_context *cntx)
 {
 	/* No need to check host sstatus as it can be modified outside */
+<<<<<<< HEAD
 	if (!kvm_riscv_isa_check_host(D))
 		__kvm_riscv_fp_d_save(cntx);
 	else if (!kvm_riscv_isa_check_host(F))
+=======
+	if (riscv_isa_extension_available(NULL, d))
+		__kvm_riscv_fp_d_save(cntx);
+	else if (riscv_isa_extension_available(NULL, f))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__kvm_riscv_fp_f_save(cntx);
 }
 
 void kvm_riscv_vcpu_host_fp_restore(struct kvm_cpu_context *cntx)
 {
+<<<<<<< HEAD
 	if (!kvm_riscv_isa_check_host(D))
 		__kvm_riscv_fp_d_restore(cntx);
 	else if (!kvm_riscv_isa_check_host(F))
+=======
+	if (riscv_isa_extension_available(NULL, d))
+		__kvm_riscv_fp_d_restore(cntx);
+	else if (riscv_isa_extension_available(NULL, f))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__kvm_riscv_fp_f_restore(cntx);
 }
 #endif

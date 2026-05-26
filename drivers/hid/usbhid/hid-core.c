@@ -1364,17 +1364,30 @@ static int usbhid_probe(struct usb_interface *intf, const struct usb_device_id *
 {
 	struct usb_host_interface *interface = intf->cur_altsetting;
 	struct usb_device *dev = interface_to_usbdev(intf);
+<<<<<<< HEAD
 	struct usb_endpoint_descriptor *ep;
 	struct usbhid_device *usbhid;
 	struct hid_device *hid;
+=======
+	struct usbhid_device *usbhid;
+	struct hid_device *hid;
+	unsigned int n, has_in = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t len;
 	int ret;
 
 	dbg_hid("HID probe called for ifnum %d\n",
 			intf->altsetting->desc.bInterfaceNumber);
 
+<<<<<<< HEAD
 	ret = usb_find_int_in_endpoint(interface, &ep);
 	if (ret) {
+=======
+	for (n = 0; n < interface->desc.bNumEndpoints; n++)
+		if (usb_endpoint_is_int_in(&interface->endpoint[n].desc))
+			has_in++;
+	if (!has_in) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hid_err(intf, "couldn't find an input interrupt endpoint\n");
 		return -ENODEV;
 	}
@@ -1551,7 +1564,11 @@ static int hid_post_reset(struct usb_interface *intf)
 	 * configuration descriptors passed, we already know that
 	 * the size of the HID report descriptor has not changed.
 	 */
+<<<<<<< HEAD
 	rdesc = kmalloc(hid->dev_rsize, GFP_NOIO);
+=======
+	rdesc = kmalloc(hid->dev_rsize, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rdesc)
 		return -ENOMEM;
 

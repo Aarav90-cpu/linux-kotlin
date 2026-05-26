@@ -173,13 +173,22 @@ static int find_vol1_partitions(struct parsed_partitions *state,
 {
 	sector_t blk;
 	int counter;
+<<<<<<< HEAD
+=======
+	char tmp[64];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	Sector sect;
 	unsigned char *data;
 	loff_t offset, size;
 	struct vtoc_format1_label f1;
 	int secperblk;
 
+<<<<<<< HEAD
 	seq_buf_printf(&state->pp_buf, "VOL1/%8s:", name);
+=======
+	snprintf(tmp, sizeof(tmp), "VOL1/%8s:", name);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * get start of VTOC from the disk label and then search for format1
 	 * and format8 labels
@@ -217,7 +226,11 @@ static int find_vol1_partitions(struct parsed_partitions *state,
 		blk++;
 		data = read_part_sector(state, blk * secperblk, &sect);
 	}
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!data)
 		return -1;
@@ -235,9 +248,17 @@ static int find_lnx1_partitions(struct parsed_partitions *state,
 				dasd_information2_t *info)
 {
 	loff_t offset, geo_size, size;
+<<<<<<< HEAD
 	int secperblk;
 
 	seq_buf_printf(&state->pp_buf, "LNX1/%8s:", name);
+=======
+	char tmp[64];
+	int secperblk;
+
+	snprintf(tmp, sizeof(tmp), "LNX1/%8s:", name);
+	strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	secperblk = blocksize >> 9;
 	if (label->lnx.ldl_version == 0xf2) {
 		size = label->lnx.formatted_blocks * secperblk;
@@ -254,7 +275,11 @@ static int find_lnx1_partitions(struct parsed_partitions *state,
 		size = nr_sectors;
 		if (size != geo_size) {
 			if (!info) {
+<<<<<<< HEAD
 				seq_buf_puts(&state->pp_buf, "\n");
+=======
+				strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				return 1;
 			}
 			if (!strcmp(info->type, "ECKD"))
@@ -266,7 +291,11 @@ static int find_lnx1_partitions(struct parsed_partitions *state,
 	/* first and only partition starts in the first block after the label */
 	offset = labelsect + secperblk;
 	put_partition(state, 1, offset, size - offset);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -278,6 +307,10 @@ static int find_cms1_partitions(struct parsed_partitions *state,
 				sector_t labelsect)
 {
 	loff_t offset, size;
+<<<<<<< HEAD
+=======
+	char tmp[64];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int secperblk;
 
 	/*
@@ -286,12 +319,22 @@ static int find_cms1_partitions(struct parsed_partitions *state,
 	blocksize = label->cms.block_size;
 	secperblk = blocksize >> 9;
 	if (label->cms.disk_offset != 0) {
+<<<<<<< HEAD
 		seq_buf_printf(&state->pp_buf, "CMS1/%8s(MDSK):", name);
+=======
+		snprintf(tmp, sizeof(tmp), "CMS1/%8s(MDSK):", name);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* disk is reserved minidisk */
 		offset = label->cms.disk_offset * secperblk;
 		size = (label->cms.block_count - 1) * secperblk;
 	} else {
+<<<<<<< HEAD
 		seq_buf_printf(&state->pp_buf, "CMS1/%8s:", name);
+=======
+		snprintf(tmp, sizeof(tmp), "CMS1/%8s:", name);
+		strlcat(state->pp_buf, tmp, PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Special case for FBA devices:
 		 * If an FBA device is CMS formatted with blocksize > 512 byte
@@ -307,7 +350,11 @@ static int find_cms1_partitions(struct parsed_partitions *state,
 	}
 
 	put_partition(state, 1, offset, size-offset);
+<<<<<<< HEAD
 	seq_buf_puts(&state->pp_buf, "\n");
+=======
+	strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 1;
 }
 
@@ -384,11 +431,19 @@ int ibm_partition(struct parsed_partitions *state)
 		 */
 		res = 1;
 		if (info->format == DASD_FORMAT_LDL) {
+<<<<<<< HEAD
 			seq_buf_puts(&state->pp_buf, "(nonl)");
 			size = nr_sectors;
 			offset = (info->label_block + 1) * (blocksize >> 9);
 			put_partition(state, 1, offset, size-offset);
 			seq_buf_puts(&state->pp_buf, "\n");
+=======
+			strlcat(state->pp_buf, "(nonl)", PAGE_SIZE);
+			size = nr_sectors;
+			offset = (info->label_block + 1) * (blocksize >> 9);
+			put_partition(state, 1, offset, size-offset);
+			strlcat(state->pp_buf, "\n", PAGE_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else
 		res = 0;

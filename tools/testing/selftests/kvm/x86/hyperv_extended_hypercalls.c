@@ -15,19 +15,34 @@
 /* Any value is fine */
 #define EXT_CAPABILITIES 0xbull
 
+<<<<<<< HEAD
 static void guest_code(gpa_t in_pg_gpa, gpa_t out_pg_gpa,
 		       gva_t out_pg_gva)
 {
 	u64 *output_gva;
+=======
+static void guest_code(vm_paddr_t in_pg_gpa, vm_paddr_t out_pg_gpa,
+		       vm_vaddr_t out_pg_gva)
+{
+	uint64_t *output_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
 	wrmsr(HV_X64_MSR_HYPERCALL, in_pg_gpa);
 
+<<<<<<< HEAD
 	output_gva = (u64 *)out_pg_gva;
 
 	hyperv_hypercall(HV_EXT_CALL_QUERY_CAPABILITIES, in_pg_gpa, out_pg_gpa);
 
 	/* TLFS states output will be a u64 value */
+=======
+	output_gva = (uint64_t *)out_pg_gva;
+
+	hyperv_hypercall(HV_EXT_CALL_QUERY_CAPABILITIES, in_pg_gpa, out_pg_gpa);
+
+	/* TLFS states output will be a uint64_t value */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	GUEST_ASSERT_EQ(*output_gva, EXT_CAPABILITIES);
 
 	GUEST_DONE();
@@ -35,12 +50,21 @@ static void guest_code(gpa_t in_pg_gpa, gpa_t out_pg_gpa,
 
 int main(void)
 {
+<<<<<<< HEAD
 	gva_t hcall_out_page;
 	gva_t hcall_in_page;
 	struct kvm_vcpu *vcpu;
 	struct kvm_run *run;
 	struct kvm_vm *vm;
 	u64 *outval;
+=======
+	vm_vaddr_t hcall_out_page;
+	vm_vaddr_t hcall_in_page;
+	struct kvm_vcpu *vcpu;
+	struct kvm_run *run;
+	struct kvm_vm *vm;
+	uint64_t *outval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ucall uc;
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_HYPERV_CPUID));
@@ -57,11 +81,19 @@ int main(void)
 	vcpu_set_hv_cpuid(vcpu);
 
 	/* Hypercall input */
+<<<<<<< HEAD
 	hcall_in_page = vm_alloc_pages(vm, 1);
 	memset(addr_gva2hva(vm, hcall_in_page), 0x0, vm->page_size);
 
 	/* Hypercall output */
 	hcall_out_page = vm_alloc_pages(vm, 1);
+=======
+	hcall_in_page = vm_vaddr_alloc_pages(vm, 1);
+	memset(addr_gva2hva(vm, hcall_in_page), 0x0, vm->page_size);
+
+	/* Hypercall output */
+	hcall_out_page = vm_vaddr_alloc_pages(vm, 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(addr_gva2hva(vm, hcall_out_page), 0x0, vm->page_size);
 
 	vcpu_args_set(vcpu, 3, addr_gva2gpa(vm, hcall_in_page),

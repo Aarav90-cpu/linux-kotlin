@@ -2,7 +2,10 @@
 /* Copyright(c) 2018-2019  Realtek Corporation
  */
 
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/pci.h>
 #include "main.h"
@@ -1745,6 +1748,7 @@ const struct pci_error_handlers rtw_pci_err_handler = {
 };
 EXPORT_SYMBOL(rtw_pci_err_handler);
 
+<<<<<<< HEAD
 static int rtw_pci_disable_caps(const struct dmi_system_id *dmi)
 {
 	uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
@@ -1773,6 +1777,8 @@ static const struct dmi_system_id rtw_pci_quirks[] = {
 	{}
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int rtw_pci_probe(struct pci_dev *pdev,
 		  const struct pci_device_id *id)
 {
@@ -1800,8 +1806,11 @@ int rtw_pci_probe(struct pci_dev *pdev,
 	rtwpci = (struct rtw_pci *)rtwdev->priv;
 	atomic_set(&rtwpci->link_usage, 1);
 
+<<<<<<< HEAD
 	dmi_check_system(rtw_pci_quirks);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = rtw_core_init(rtwdev);
 	if (ret)
 		goto err_release_hw;

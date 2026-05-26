@@ -34,15 +34,22 @@ struct {
 private(A) struct bpf_spin_lock lock;
 private(A) struct bpf_rb_root rbtree __contains(foo, node);
 
+<<<<<<< HEAD
 __noinline void *exception_cb_bad_ret_type1(u64 cookie)
+=======
+__noinline void *exception_cb_bad_ret_type(u64 cookie)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return NULL;
 }
 
+<<<<<<< HEAD
 __noinline void exception_cb_bad_ret_type2(u64 cookie)
 {
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __noinline int exception_cb_bad_arg_0(void)
 {
 	return 0;
@@ -59,8 +66,13 @@ __noinline int exception_cb_ok_arg_small(int a)
 }
 
 SEC("?tc")
+<<<<<<< HEAD
 __exception_cb(exception_cb_bad_ret_type1)
 __failure __msg("Global function exception_cb_bad_ret_type1() return value not void or scalar.")
+=======
+__exception_cb(exception_cb_bad_ret_type)
+__failure __msg("Global function exception_cb_bad_ret_type() doesn't return scalar.")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int reject_exception_cb_type_1(struct __sk_buff *ctx)
 {
 	bpf_throw(0);
@@ -94,6 +106,7 @@ int reject_exception_cb_type_4(struct __sk_buff *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 SEC("?tc")
 __exception_cb(exception_cb_bad_ret_type2)
 __failure __msg("exception cb cannot return void")
@@ -103,6 +116,8 @@ int reject_exception_cb_type_5(struct __sk_buff *ctx)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __noinline
 static int timer_cb(void *map, int *key, struct bpf_timer *timer)
 {
@@ -366,6 +381,7 @@ int reject_exception_throw_cb_diff(struct __sk_buff *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 __weak
 void foo(void)
 {
@@ -381,6 +397,8 @@ int reject_out_of_range_global_throw(struct __sk_buff *skb)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __noinline static int always_throws(void)
 {
 	bpf_throw(0);

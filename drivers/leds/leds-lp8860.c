@@ -89,12 +89,17 @@
  * @client: Pointer to the I2C client
  * @led_dev: led class device pointer
  * @regmap: Devices register map
+<<<<<<< HEAD
+=======
+ * @eeprom_regmap: EEPROM register map
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct lp8860_led {
 	struct mutex lock;
 	struct i2c_client *client;
 	struct led_classdev led_dev;
 	struct regmap *regmap;
+<<<<<<< HEAD
 };
 
 static bool program_eeprom;
@@ -107,6 +112,11 @@ MODULE_PARM_DESC(program_eeprom, "Program the configuration EEPROM on device sta
  * up to 1000 cycles. To program this EEPROM using this driver, update the below
  * table and set the module param "program_eeprom" to 1
  */
+=======
+	struct regmap *eeprom_regmap;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const struct reg_sequence lp8860_eeprom_disp_regs[] = {
 	{ LP8860_EEPROM_REG_0, 0xed },
 	{ LP8860_EEPROM_REG_1, 0xdf },
@@ -135,6 +145,35 @@ static const struct reg_sequence lp8860_eeprom_disp_regs[] = {
 	{ LP8860_EEPROM_REG_24, 0x3E },
 };
 
+<<<<<<< HEAD
+=======
+static int lp8860_unlock_eeprom(struct lp8860_led *led)
+{
+	int ret;
+
+	guard(mutex)(&led->lock);
+
+	ret = regmap_write(led->regmap, LP8860_EEPROM_UNLOCK, LP8860_EEPROM_CODE_1);
+	if (ret) {
+		dev_err(&led->client->dev, "EEPROM Unlock failed\n");
+		return ret;
+	}
+
+	ret = regmap_write(led->regmap, LP8860_EEPROM_UNLOCK, LP8860_EEPROM_CODE_2);
+	if (ret) {
+		dev_err(&led->client->dev, "EEPROM Unlock failed\n");
+		return ret;
+	}
+	ret = regmap_write(led->regmap, LP8860_EEPROM_UNLOCK, LP8860_EEPROM_CODE_3);
+	if (ret) {
+		dev_err(&led->client->dev, "EEPROM Unlock failed\n");
+		return ret;
+	}
+
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int lp8860_fault_check(struct lp8860_led *led)
 {
 	int ret, fault;
@@ -193,6 +232,7 @@ static int lp8860_brightness_set(struct led_classdev *led_cdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lp8860_program_eeprom(struct lp8860_led *led)
 {
 	int ret, reg_count;
@@ -227,17 +267,48 @@ static int lp8860_program_eeprom(struct lp8860_led *led)
 	if (ret) {
 		dev_err(&led->client->dev, "Failed writing EEPROM\n");
 		return ret;
+=======
+static int lp8860_init(struct lp8860_led *led)
+{
+	unsigned int read_buf;
+	int ret, reg_count;
+
+	ret = lp8860_fault_check(led);
+	if (ret)
+		goto out;
+
+	ret = regmap_read(led->regmap, LP8860_STATUS, &read_buf);
+	if (ret)
+		goto out;
+
+	ret = lp8860_unlock_eeprom(led);
+	if (ret) {
+		dev_err(&led->client->dev, "Failed unlocking EEPROM\n");
+		goto out;
+	}
+
+	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
+	ret = regmap_multi_reg_write(led->eeprom_regmap, lp8860_eeprom_disp_regs, reg_count);
+	if (ret) {
+		dev_err(&led->client->dev, "Failed writing EEPROM\n");
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = regmap_write(led->regmap, LP8860_EEPROM_UNLOCK, LP8860_LOCK_EEPROM);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = regmap_write(led->regmap,
 			LP8860_EEPROM_CNTRL,
 			LP8860_PROGRAM_EEPROM);
 	if (ret) {
 		dev_err(&led->client->dev, "Failed programming EEPROM\n");
+<<<<<<< HEAD
 		return ret;
 	}
 
@@ -259,6 +330,28 @@ static const struct regmap_config lp8860_regmap_config = {
 	.val_bits = 8,
 	.rd_table = &lp8860_reg_table,
 	.wr_table = &lp8860_reg_table,
+=======
+		goto out;
+	}
+
+	return ret;
+
+out:
+	return ret;
+}
+
+static const struct regmap_config lp8860_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 8,
+
+	.max_register = LP8860_EEPROM_UNLOCK,
+};
+
+static const struct regmap_config lp8860_eeprom_regmap_config = {
+	.reg_bits = 8,
+	.val_bits = 8,
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.max_register = LP8860_EEPROM_REG_24,
 };
 
@@ -312,12 +405,27 @@ static int lp8860_probe(struct i2c_client *client)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (program_eeprom) {
 		ret = lp8860_program_eeprom(led);
 		if (ret)
 			return ret;
 	}
 
+=======
+	led->eeprom_regmap = devm_regmap_init_i2c(client, &lp8860_eeprom_regmap_config);
+	if (IS_ERR(led->eeprom_regmap)) {
+		ret = PTR_ERR(led->eeprom_regmap);
+		dev_err(&client->dev, "Failed to allocate register map: %d\n",
+			ret);
+		return ret;
+	}
+
+	ret = lp8860_init(led);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	init_data.fwnode = of_fwnode_handle(child_node);
 	init_data.devicename = LP8860_NAME;
 	init_data.default_label = ":display_cluster";

@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-only
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/delay.h>
 #include <linux/clk-provider.h>
 #include <linux/io.h>
@@ -12,8 +15,11 @@
 #include <dt-bindings/clock/en7523-clk.h>
 #include <dt-bindings/reset/airoha,en7523-reset.h>
 #include <dt-bindings/reset/airoha,en7581-reset.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/econet,en751221-scu.h>
 #include <dt-bindings/reset/econet,en751221-scu.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define RST_NR_PER_BANK			32
 
@@ -36,14 +42,18 @@
 #define   REG_RESET_CONTROL_PCIEHB	BIT(29)
 #define   REG_RESET_CONTROL_PCIE1	BIT(27)
 #define   REG_RESET_CONTROL_PCIE2	BIT(26)
+<<<<<<< HEAD
 #define REG_HIR				0x064
 #define   REG_HIR_MASK			GENMASK(31, 16)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* EN7581 */
 #define REG_NP_SCU_PCIC			0x88
 #define REG_NP_SCU_SSTR			0x9c
 #define REG_PCIE_XSI0_SEL_MASK		GENMASK(14, 13)
 #define REG_PCIE_XSI1_SEL_MASK		GENMASK(12, 11)
 #define REG_CRYPTO_CLKSRC2		0x20c
+<<<<<<< HEAD
 /* EN751221 */
 #define EN751221_REG_SPI_DIV		0x0cc
 #define EN751221_REG_SPI_DIV_MASK	GENMASK(31, 8)
@@ -80,6 +90,11 @@ enum en_hir {
 	HIR_EN7581	= 13,
 	HIR_MAX		= 14,
 };
+=======
+
+#define REG_RST_CTRL2			0x830
+#define REG_RST_CTRL1			0x834
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct en_clk_desc {
 	int id;
@@ -131,8 +146,11 @@ static const u32 bus7581_base[] = { 600000000, 540000000 };
 static const u32 npu7581_base[] = { 800000000, 750000000, 720000000, 600000000 };
 static const u32 crypto_base[] = { 540000000, 480000000 };
 static const u32 emmc7581_base[] = { 200000000, 150000000 };
+<<<<<<< HEAD
 /* EN751221 */
 static const u32 gsw751221_base[] = { 500000000, 250000000, 400000000, 200000000 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct en_clk_desc en7523_base_clks[] = {
 	{
@@ -340,6 +358,7 @@ static const u16 en7581_rst_ofs[] = {
 	REG_RST_CTRL1,
 };
 
+<<<<<<< HEAD
 static const u16 en751221_rst_ofs[] = {
 	REG_RST_CTRL2,
 	REG_RST_CTRL1,
@@ -347,6 +366,8 @@ static const u16 en751221_rst_ofs[] = {
 	EN751221_REG_RST_USB,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static const u16 en7523_rst_map[] = {
 	/* RST_CTRL2 */
 	[EN7523_XPON_PHY_RST]		= 0,
@@ -452,6 +473,7 @@ static const u16 en7581_rst_map[] = {
 	[EN7581_XPON_MAC_RST]		= RST_NR_PER_BANK + 31,
 };
 
+<<<<<<< HEAD
 static const u16 en751221_rst_map[] = {
 	/* RST_CTRL2 */
 	[EN751221_XPON_PHY_RST]		= 0,
@@ -507,6 +529,10 @@ static const u16 en751221_rst_map[] = {
 static int en7581_reset_register(struct device *dev, void __iomem *base,
 				 const u16 *rst_map, int nr_resets,
 				 const u16 *rst_reg_ofs);
+=======
+static int en7581_reset_register(struct device *dev, void __iomem *base,
+				 const u16 *rst_map, int nr_resets);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static u32 en7523_get_base_rate(const struct en_clk_desc *desc, u32 val)
 {
@@ -704,8 +730,12 @@ static int en7523_clk_hw_init(struct platform_device *pdev,
 	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
 
 	return en7581_reset_register(&pdev->dev, np_base, en7523_rst_map,
+<<<<<<< HEAD
 				     ARRAY_SIZE(en7523_rst_map),
 				     en7581_rst_ofs);
+=======
+				     ARRAY_SIZE(en7523_rst_map));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void en7581_register_clocks(struct device *dev, struct clk_hw_onecell_data *clk_data,
@@ -806,8 +836,12 @@ static const struct reset_control_ops en7581_reset_ops = {
 };
 
 static int en7581_reset_register(struct device *dev, void __iomem *base,
+<<<<<<< HEAD
 				 const u16 *rst_map, int nr_resets,
 				 const u16 *rst_reg_ofs)
+=======
+				 const u16 *rst_map, int nr_resets)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct en_rst_data *rst_data;
 
@@ -815,7 +849,11 @@ static int en7581_reset_register(struct device *dev, void __iomem *base,
 	if (!rst_data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	rst_data->bank_ofs = rst_reg_ofs;
+=======
+	rst_data->bank_ofs = en7581_rst_ofs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rst_data->idx_map = rst_map;
 	rst_data->base = base;
 
@@ -854,6 +892,7 @@ static int en7581_clk_hw_init(struct platform_device *pdev,
 	writel(val | 3, base + REG_NP_SCU_PCIC);
 
 	return en7581_reset_register(&pdev->dev, base, en7581_rst_map,
+<<<<<<< HEAD
 				     ARRAY_SIZE(en7581_rst_map),
 				     en7581_rst_ofs);
 }
@@ -955,6 +994,9 @@ static int en751221_clk_hw_init(struct platform_device *pdev,
 	return en7581_reset_register(&pdev->dev, base, en751221_rst_map,
 				     ARRAY_SIZE(en751221_rst_map),
 				     en751221_rst_ofs);
+=======
+				     ARRAY_SIZE(en7581_rst_map));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int en7523_clk_probe(struct platform_device *pdev)
@@ -1001,6 +1043,7 @@ static const struct en_clk_soc_data en7581_data = {
 	.hw_init = en7581_clk_hw_init,
 };
 
+<<<<<<< HEAD
 static const struct en_clk_soc_data en751221_data = {
 	.num_clocks = EN751221_MAX_CLKS,
 	.pcie_ops = {
@@ -1015,6 +1058,11 @@ static const struct of_device_id of_match_clk_en7523[] = {
 	{ .compatible = "airoha,en7523-scu", .data = &en7523_data },
 	{ .compatible = "airoha,en7581-scu", .data = &en7581_data },
 	{ .compatible = "econet,en751221-scu", .data = &en751221_data },
+=======
+static const struct of_device_id of_match_clk_en7523[] = {
+	{ .compatible = "airoha,en7523-scu", .data = &en7523_data },
+	{ .compatible = "airoha,en7581-scu", .data = &en7581_data },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ }
 };
 

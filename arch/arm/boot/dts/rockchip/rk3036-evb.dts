@@ -16,6 +16,11 @@
 
 &emac {
 	phy = <&phy0>;
+<<<<<<< HEAD
+=======
+	phy-reset-duration = <10>; /* millisecond */
+	phy-reset-gpios = <&gpio2 RK_PC6 GPIO_ACTIVE_LOW>; /* PHY_RST */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pinctrl-names = "default";
 	pinctrl-0 = <&emac_xfer>, <&emac_mdio>;
 	status = "okay";
@@ -26,8 +31,11 @@
 
 		phy0: ethernet-phy@0 {
 			reg = <0>;
+<<<<<<< HEAD
 			reset-gpios = <&gpio2 RK_PC6 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 };

@@ -6,7 +6,10 @@
  *  Author:	Antonio Quartulli <antonio@openvpn.net>
  */
 
+<<<<<<< HEAD
 #include <stdint.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdbool.h>
@@ -104,7 +107,11 @@ struct ovpn_ctx {
 
 	sa_family_t sa_family;
 
+<<<<<<< HEAD
 	unsigned long peer_id, tx_id;
+=======
+	unsigned long peer_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long lport;
 
 	union {
@@ -134,9 +141,12 @@ struct ovpn_ctx {
 	enum ovpn_key_slot key_slot;
 	int key_id;
 
+<<<<<<< HEAD
 	uint32_t mark;
 	bool asymm_id;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *peers_file;
 };
 
@@ -525,6 +535,7 @@ static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (ctx->mark != 0) {
 		ret = setsockopt(s, SOL_SOCKET, SO_MARK, (void *)&ctx->mark,
 				 sizeof(ctx->mark));
@@ -534,6 +545,8 @@ static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (family == AF_INET6) {
 		opt = 0;
 		if (setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, &opt,
@@ -662,8 +675,11 @@ static int ovpn_new_peer(struct ovpn_ctx *ovpn, bool is_tcp)
 
 	attr = nla_nest_start(ctx->nl_msg, OVPN_A_PEER);
 	NLA_PUT_U32(ctx->nl_msg, OVPN_A_PEER_ID, ovpn->peer_id);
+<<<<<<< HEAD
 	if (ovpn->asymm_id)
 		NLA_PUT_U32(ctx->nl_msg, OVPN_A_PEER_TX_ID, ovpn->tx_id);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NLA_PUT_U32(ctx->nl_msg, OVPN_A_PEER_SOCKET, ovpn->socket);
 
 	if (!is_tcp) {
@@ -782,10 +798,13 @@ static int ovpn_handle_peer(struct nl_msg *msg, void (*arg)__always_unused)
 		fprintf(stderr, "* Peer %u\n",
 			nla_get_u32(pattrs[OVPN_A_PEER_ID]));
 
+<<<<<<< HEAD
 	if (pattrs[OVPN_A_PEER_TX_ID])
 		fprintf(stderr, "\tTX peer ID %u\n",
 			nla_get_u32(pattrs[OVPN_A_PEER_TX_ID]));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (pattrs[OVPN_A_PEER_SOCKET_NETNSID])
 		fprintf(stderr, "\tsocket NetNS ID: %d\n",
 			nla_get_s32(pattrs[OVPN_A_PEER_SOCKET_NETNSID]));
@@ -1535,9 +1554,12 @@ static int ovpn_handle_msg(struct nl_msg *msg, void *arg)
 	case OVPN_CMD_PEER_DEL_NTF:
 		fprintf(stdout, "received CMD_PEER_DEL_NTF\n");
 		break;
+<<<<<<< HEAD
 	case OVPN_CMD_PEER_FLOAT_NTF:
 		fprintf(stdout, "received CMD_PEER_FLOAT_NTF\n");
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case OVPN_CMD_KEY_SWAP_NTF:
 		fprintf(stdout, "received CMD_KEY_SWAP_NTF\n");
 		break;
@@ -1676,6 +1698,7 @@ static void usage(const char *cmd)
 	fprintf(stderr, "\tiface: ovpn interface name\n");
 
 	fprintf(stderr,
+<<<<<<< HEAD
 		"* listen <iface> <lport> <id_type> <peers_file> [ipv6]: listen for incoming peer TCP connections\n");
 	fprintf(stderr, "\tiface: ovpn interface name\n");
 	fprintf(stderr, "\tlport: TCP port to listen to\n");
@@ -1687,22 +1710,37 @@ static void usage(const char *cmd)
 	fprintf(stderr,
 		"\tpeers_file: file containing one peer per line: Line format:\n");
 	fprintf(stderr, "\t\t<peer_id> <tx_id> <vpnaddr>\n");
+=======
+		"* listen <iface> <lport> <peers_file> [ipv6]: listen for incoming peer TCP connections\n");
+	fprintf(stderr, "\tiface: ovpn interface name\n");
+	fprintf(stderr, "\tlport: TCP port to listen to\n");
+	fprintf(stderr,
+		"\tpeers_file: file containing one peer per line: Line format:\n");
+	fprintf(stderr, "\t\t<peer_id> <vpnaddr>\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fprintf(stderr,
 		"\tipv6: whether the socket should listen to the IPv6 wildcard address\n");
 
 	fprintf(stderr,
+<<<<<<< HEAD
 		"* connect <iface> <peer_id> <tx_id> <raddr> <rport> [key_file]: start connecting peer of TCP-based VPN session\n");
 	fprintf(stderr, "\tiface: ovpn interface name\n");
 	fprintf(stderr,
 		"\tpeer_id: peer ID found in data packets received from this peer\n");
 	fprintf(stderr,
 		"\ttx_id: peer ID to be used when sending to this peer, 'none' for symmetric peer ID\n");
+=======
+		"* connect <iface> <peer_id> <raddr> <rport> [key_file]: start connecting peer of TCP-based VPN session\n");
+	fprintf(stderr, "\tiface: ovpn interface name\n");
+	fprintf(stderr, "\tpeer_id: peer ID of the connecting peer\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fprintf(stderr, "\traddr: peer IP address to connect to\n");
 	fprintf(stderr, "\trport: peer TCP port to connect to\n");
 	fprintf(stderr,
 		"\tkey_file: file containing the symmetric key for encryption\n");
 
 	fprintf(stderr,
+<<<<<<< HEAD
 		"* new_peer <iface> <peer_id> <tx_id> <lport> <raddr> <rport> [vpnaddr]: add new peer\n");
 	fprintf(stderr, "\tiface: ovpn interface name\n");
 	fprintf(stderr,
@@ -1710,11 +1748,19 @@ static void usage(const char *cmd)
 	fprintf(stderr,
 		"\ttx_id: peer ID to be used when sending to this peer, 'none' for symmetric peer ID\n");
 	fprintf(stderr, "\tlport: local UDP port to bind to\n");
+=======
+		"* new_peer <iface> <peer_id> <lport> <raddr> <rport> [vpnaddr]: add new peer\n");
+	fprintf(stderr, "\tiface: ovpn interface name\n");
+	fprintf(stderr, "\tlport: local UDP port to bind to\n");
+	fprintf(stderr,
+		"\tpeer_id: peer ID to be used in data packets to/from this peer\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fprintf(stderr, "\traddr: peer IP address\n");
 	fprintf(stderr, "\trport: peer UDP port\n");
 	fprintf(stderr, "\tvpnaddr: peer VPN IP\n");
 
 	fprintf(stderr,
+<<<<<<< HEAD
 		"* new_multi_peer <iface> <lport> <id_type> <peers_file> [mark]: add multiple peers as listed in the file\n");
 	fprintf(stderr, "\tiface: ovpn interface name\n");
 	fprintf(stderr, "\tlport: local UDP port to bind to\n");
@@ -1728,6 +1774,14 @@ static void usage(const char *cmd)
 	fprintf(stderr,
 		"\t\t<peer_id> <tx_id> <raddr> <rport> <laddr> <lport> <vpnaddr>\n");
 	fprintf(stderr, "\tmark: socket FW mark value\n");
+=======
+		"* new_multi_peer <iface> <lport> <peers_file>: add multiple peers as listed in the file\n");
+	fprintf(stderr, "\tiface: ovpn interface name\n");
+	fprintf(stderr, "\tlport: local UDP port to bind to\n");
+	fprintf(stderr,
+		"\tpeers_file: text file containing one peer per line. Line format:\n");
+	fprintf(stderr, "\t\t<peer_id> <raddr> <rport> <vpnaddr>\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fprintf(stderr,
 		"* set_peer <iface> <peer_id> <keepalive_interval> <keepalive_timeout>: set peer attributes\n");
@@ -1840,6 +1894,7 @@ out:
 }
 
 static int ovpn_parse_new_peer(struct ovpn_ctx *ovpn, const char *peer_id,
+<<<<<<< HEAD
 			       const char *tx_id, const char *raddr,
 			       const char *rport, const char *vpnip)
 {
@@ -1857,6 +1912,17 @@ static int ovpn_parse_new_peer(struct ovpn_ctx *ovpn, const char *peer_id,
 		}
 	}
 
+=======
+			       const char *raddr, const char *rport,
+			       const char *vpnip)
+{
+	ovpn->peer_id = strtoul(peer_id, NULL, 10);
+	if (errno == ERANGE || ovpn->peer_id > PEER_ID_UNDEF) {
+		fprintf(stderr, "peer ID value out of range\n");
+		return -1;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ovpn_parse_remote(ovpn, raddr, rport, vpnip);
 }
 
@@ -1983,8 +2049,13 @@ static void ovpn_waitbg(void)
 
 static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
 {
+<<<<<<< HEAD
 	char peer_id[10], tx_id[10], vpnip[INET6_ADDRSTRLEN], laddr[128];
 	char lport[10], raddr[128], rport[10];
+=======
+	char peer_id[10], vpnip[INET6_ADDRSTRLEN], laddr[128], lport[10];
+	char raddr[128], rport[10];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int n, ret;
 	FILE *fp;
 
@@ -2011,8 +2082,12 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
 
 		int num_peers = 0;
 
+<<<<<<< HEAD
 		while ((n = fscanf(fp, "%s %s %s\n", peer_id, tx_id,
 				   vpnip)) == 3) {
+=======
+		while ((n = fscanf(fp, "%s %s\n", peer_id, vpnip)) == 2) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct ovpn_ctx peer_ctx = { 0 };
 
 			if (num_peers == MAX_PEERS) {
@@ -2022,7 +2097,10 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
 
 			peer_ctx.ifindex = ovpn->ifindex;
 			peer_ctx.sa_family = ovpn->sa_family;
+<<<<<<< HEAD
 			peer_ctx.asymm_id = ovpn->asymm_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			peer_ctx.socket = ovpn_accept(ovpn);
 			if (peer_ctx.socket < 0) {
@@ -2033,8 +2111,13 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
 			/* store peer sockets to test TCP I/O */
 			ovpn->cli_sockets[num_peers] = peer_ctx.socket;
 
+<<<<<<< HEAD
 			ret = ovpn_parse_new_peer(&peer_ctx, peer_id, tx_id,
 						  NULL, NULL, vpnip);
+=======
+			ret = ovpn_parse_new_peer(&peer_ctx, peer_id, NULL,
+						  NULL, vpnip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret < 0) {
 				fprintf(stderr, "error while parsing line\n");
 				return -1;
@@ -2102,17 +2185,28 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
 			return -1;
 		}
 
+<<<<<<< HEAD
 		while ((n = fscanf(fp, "%s %s %s %s %s %s %s\n", peer_id, tx_id,
 				   laddr, lport, raddr, rport, vpnip)) == 7) {
+=======
+		while ((n = fscanf(fp, "%s %s %s %s %s %s\n", peer_id, laddr,
+				   lport, raddr, rport, vpnip)) == 6) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct ovpn_ctx peer_ctx = { 0 };
 
 			peer_ctx.ifindex = ovpn->ifindex;
 			peer_ctx.socket = ovpn->socket;
 			peer_ctx.sa_family = AF_UNSPEC;
+<<<<<<< HEAD
 			peer_ctx.asymm_id = ovpn->asymm_id;
 
 			ret = ovpn_parse_new_peer(&peer_ctx, peer_id, tx_id,
 						  raddr, rport, vpnip);
+=======
+
+			ret = ovpn_parse_new_peer(&peer_ctx, peer_id, raddr,
+						  rport, vpnip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret < 0) {
 				fprintf(stderr, "error while parsing line\n");
 				return -1;
@@ -2208,7 +2302,11 @@ static int ovpn_parse_cmd_args(struct ovpn_ctx *ovpn, int argc, char *argv[])
 	case CMD_DEL_IFACE:
 		break;
 	case CMD_LISTEN:
+<<<<<<< HEAD
 		if (argc < 6)
+=======
+		if (argc < 5)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 
 		ovpn->lport = strtoul(argv[3], NULL, 10);
@@ -2217,6 +2315,7 @@ static int ovpn_parse_cmd_args(struct ovpn_ctx *ovpn, int argc, char *argv[])
 			return -1;
 		}
 
+<<<<<<< HEAD
 		if (strcmp(argv[4], "SYMM") == 0) {
 			ovpn->asymm_id = false;
 		} else if (strcmp(argv[4], "ASYMM") == 0) {
@@ -2241,43 +2340,85 @@ static int ovpn_parse_cmd_args(struct ovpn_ctx *ovpn, int argc, char *argv[])
 
 		ret = ovpn_parse_new_peer(ovpn, argv[3], argv[4], argv[5],
 					  argv[6], NULL);
+=======
+		ovpn->peers_file = argv[4];
+
+		ovpn->sa_family = AF_INET;
+		if (argc > 5 && !strcmp(argv[5], "ipv6"))
+			ovpn->sa_family = AF_INET6;
+		break;
+	case CMD_CONNECT:
+		if (argc < 6)
+			return -EINVAL;
+
+		ovpn->sa_family = AF_INET;
+
+		ret = ovpn_parse_new_peer(ovpn, argv[3], argv[4], argv[5],
+					  NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0) {
 			fprintf(stderr, "Cannot parse remote peer data\n");
 			return -1;
 		}
 
+<<<<<<< HEAD
 		if (argc > 7) {
+=======
+		if (argc > 6) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ovpn->key_slot = OVPN_KEY_SLOT_PRIMARY;
 			ovpn->key_id = 0;
 			ovpn->cipher = OVPN_CIPHER_ALG_AES_GCM;
 			ovpn->key_dir = KEY_DIR_OUT;
 
+<<<<<<< HEAD
 			ret = ovpn_parse_key(argv[7], ovpn);
+=======
+			ret = ovpn_parse_key(argv[6], ovpn);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				return -1;
 		}
 		break;
 	case CMD_NEW_PEER:
+<<<<<<< HEAD
 		if (argc < 8)
 			return -EINVAL;
 
 		ovpn->asymm_id = strcmp(argv[4], "none");
 
 		ovpn->lport = strtoul(argv[5], NULL, 10);
+=======
+		if (argc < 7)
+			return -EINVAL;
+
+		ovpn->lport = strtoul(argv[4], NULL, 10);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (errno == ERANGE || ovpn->lport > 65535) {
 			fprintf(stderr, "lport value out of range\n");
 			return -1;
 		}
 
+<<<<<<< HEAD
 		const char *vpnip = (argc > 8) ? argv[8] : NULL;
 
 		ret = ovpn_parse_new_peer(ovpn, argv[3], argv[4], argv[6],
 					  argv[7], vpnip);
+=======
+		const char *vpnip = (argc > 7) ? argv[7] : NULL;
+
+		ret = ovpn_parse_new_peer(ovpn, argv[3], argv[5], argv[6],
+					  vpnip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret < 0)
 			return -1;
 		break;
 	case CMD_NEW_MULTI_PEER:
+<<<<<<< HEAD
 		if (argc < 6)
+=======
+		if (argc < 5)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 
 		ovpn->lport = strtoul(argv[3], NULL, 10);
@@ -2286,6 +2427,7 @@ static int ovpn_parse_cmd_args(struct ovpn_ctx *ovpn, int argc, char *argv[])
 			return -1;
 		}
 
+<<<<<<< HEAD
 		if (!strcmp(argv[4], "SYMM")) {
 			ovpn->asymm_id = false;
 		} else if (!strcmp(argv[4], "ASYMM")) {
@@ -2305,6 +2447,9 @@ static int ovpn_parse_cmd_args(struct ovpn_ctx *ovpn, int argc, char *argv[])
 				return -1;
 			}
 		}
+=======
+		ovpn->peers_file = argv[4];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case CMD_SET_PEER:
 		if (argc < 6)

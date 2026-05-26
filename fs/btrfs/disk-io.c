@@ -50,6 +50,10 @@
 #include "relocation.h"
 #include "scrub.h"
 #include "super.h"
+<<<<<<< HEAD
+=======
+#include "delayed-inode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define BTRFS_SUPER_FLAG_SUPP	(BTRFS_HEADER_FLAG_WRITTEN |\
 				 BTRFS_HEADER_FLAG_RELOC |\
@@ -109,12 +113,17 @@ static void csum_tree_block(struct extent_buffer *buf, u8 *result)
  * detect blocks that either didn't get written at all or got written
  * in the wrong place.
  */
+<<<<<<< HEAD
 int btrfs_buffer_uptodate(struct extent_buffer *eb, u64 parent_transid,
 			  const struct btrfs_tree_parent_check *check)
+=======
+int btrfs_buffer_uptodate(struct extent_buffer *eb, u64 parent_transid, bool atomic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (!extent_buffer_uptodate(eb))
 		return 0;
 
+<<<<<<< HEAD
 	if (!parent_transid || btrfs_header_generation(eb) == parent_transid) {
 		/*
 		 * On a cache hit, the caller may still need tree parent
@@ -126,6 +135,16 @@ int btrfs_buffer_uptodate(struct extent_buffer *eb, u64 parent_transid,
 	}
 
 	if (btrfs_header_generation(eb) != parent_transid) {
+=======
+	if (!parent_transid || btrfs_header_generation(eb) == parent_transid)
+		return 1;
+
+	if (atomic)
+		return -EAGAIN;
+
+	if (!extent_buffer_uptodate(eb) ||
+	    btrfs_header_generation(eb) != parent_transid) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err_rl(eb->fs_info,
 "parent transid verify failed on logical %llu mirror %u wanted %llu found %llu",
 			eb->start, eb->read_mirror,
@@ -733,7 +752,11 @@ void btrfs_global_root_delete(struct btrfs_root *root)
 }
 
 struct btrfs_root *btrfs_global_root(struct btrfs_fs_info *fs_info,
+<<<<<<< HEAD
 				     const struct btrfs_key *key)
+=======
+				     struct btrfs_key *key)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *node;
 	struct btrfs_root *root = NULL;
@@ -770,7 +793,11 @@ static u64 btrfs_global_root_id(struct btrfs_fs_info *fs_info, u64 bytenr)
 
 struct btrfs_root *btrfs_csum_root(struct btrfs_fs_info *fs_info, u64 bytenr)
 {
+<<<<<<< HEAD
 	const struct btrfs_key key = {
+=======
+	struct btrfs_key key = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.objectid = BTRFS_CSUM_TREE_OBJECTID,
 		.type = BTRFS_ROOT_ITEM_KEY,
 		.offset = btrfs_global_root_id(fs_info, bytenr),
@@ -781,7 +808,11 @@ struct btrfs_root *btrfs_csum_root(struct btrfs_fs_info *fs_info, u64 bytenr)
 
 struct btrfs_root *btrfs_extent_root(struct btrfs_fs_info *fs_info, u64 bytenr)
 {
+<<<<<<< HEAD
 	const struct btrfs_key key = {
+=======
+	struct btrfs_key key = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.objectid = BTRFS_EXTENT_TREE_OBJECTID,
 		.type = BTRFS_ROOT_ITEM_KEY,
 		.offset = btrfs_global_root_id(fs_info, bytenr),
@@ -997,11 +1028,16 @@ static struct btrfs_root *read_tree_root_path(struct btrfs_root *tree_root,
 		root->node = NULL;
 		goto fail;
 	}
+<<<<<<< HEAD
 
 	ret = btrfs_buffer_uptodate(root->node, generation, &check);
 	if (unlikely(ret <= 0)) {
 		if (ret == 0)
 			ret = -EIO;
+=======
+	if (unlikely(!btrfs_buffer_uptodate(root->node, generation, false))) {
+		ret = -EIO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto fail;
 	}
 
@@ -1556,7 +1592,11 @@ sleep:
 		wake_up_process(fs_info->cleaner_kthread);
 		mutex_unlock(&fs_info->transaction_kthread_mutex);
 
+<<<<<<< HEAD
 		if (unlikely(BTRFS_FS_ERROR(fs_info)))
+=======
+		if (BTRFS_FS_ERROR(fs_info))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_cleanup_transaction(fs_info);
 		if (!kthread_should_stop() &&
 				(!btrfs_transaction_blocked(fs_info) ||
@@ -2031,6 +2071,14 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
 		btrfs_put_root(log_tree_root);
 		return ret;
 	}
+<<<<<<< HEAD
+=======
+	if (unlikely(!extent_buffer_uptodate(log_tree_root->node))) {
+		btrfs_err(fs_info, "failed to read log tree");
+		btrfs_put_root(log_tree_root);
+		return -EIO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* returns with log_tree_root freed on success */
 	ret = btrfs_recover_log_trees(log_tree_root);
@@ -2300,6 +2348,7 @@ static int validate_sys_chunk_array(const struct btrfs_fs_info *fs_info,
 		return -EUCLEAN;
 	}
 
+<<<<<<< HEAD
 	/* It must hold at least one key and one chunk. */
 	if (unlikely(sys_array_size < sizeof(struct btrfs_disk_key) +
 		     sizeof(struct btrfs_chunk))) {
@@ -2309,6 +2358,8 @@ static int validate_sys_chunk_array(const struct btrfs_fs_info *fs_info,
 		return -EUCLEAN;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (cur < sys_array_size) {
 		struct btrfs_disk_key *disk_key;
 		struct btrfs_chunk *chunk;
@@ -2375,11 +2426,19 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 	int ret = 0;
 	const bool ignore_flags = btrfs_test_opt(fs_info, IGNORESUPERFLAGS);
 
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_magic(sb) != BTRFS_MAGIC)) {
 		btrfs_err(fs_info, "no valid FS found");
 		ret = -EINVAL;
 	}
 	if (unlikely(btrfs_super_flags(sb) & ~BTRFS_SUPER_FLAG_SUPP)) {
+=======
+	if (btrfs_super_magic(sb) != BTRFS_MAGIC) {
+		btrfs_err(fs_info, "no valid FS found");
+		ret = -EINVAL;
+	}
+	if ((btrfs_super_flags(sb) & ~BTRFS_SUPER_FLAG_SUPP)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!ignore_flags) {
 			btrfs_err(fs_info,
 			"unrecognized or unsupported super flag 0x%llx",
@@ -2391,17 +2450,29 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 				   btrfs_super_flags(sb) & ~BTRFS_SUPER_FLAG_SUPP);
 		}
 	}
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_root_level(sb) >= BTRFS_MAX_LEVEL)) {
+=======
+	if (btrfs_super_root_level(sb) >= BTRFS_MAX_LEVEL) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "tree_root level too big: %d >= %d",
 				btrfs_super_root_level(sb), BTRFS_MAX_LEVEL);
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_chunk_root_level(sb) >= BTRFS_MAX_LEVEL)) {
+=======
+	if (btrfs_super_chunk_root_level(sb) >= BTRFS_MAX_LEVEL) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "chunk_root level too big: %d >= %d",
 				btrfs_super_chunk_root_level(sb), BTRFS_MAX_LEVEL);
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_log_root_level(sb) >= BTRFS_MAX_LEVEL)) {
+=======
+	if (btrfs_super_log_root_level(sb) >= BTRFS_MAX_LEVEL) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "log_root level too big: %d >= %d",
 				btrfs_super_log_root_level(sb), BTRFS_MAX_LEVEL);
 		ret = -EINVAL;
@@ -2411,65 +2482,110 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 	 * Check sectorsize and nodesize first, other check will need it.
 	 * Check all possible sectorsize(4K, 8K, 16K, 32K, 64K) here.
 	 */
+<<<<<<< HEAD
 	if (unlikely(!is_power_of_2(sectorsize) || sectorsize < BTRFS_MIN_BLOCKSIZE ||
 		     sectorsize > BTRFS_MAX_METADATA_BLOCKSIZE)) {
+=======
+	if (!is_power_of_2(sectorsize) || sectorsize < BTRFS_MIN_BLOCKSIZE ||
+	    sectorsize > BTRFS_MAX_METADATA_BLOCKSIZE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "invalid sectorsize %llu", sectorsize);
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(!btrfs_supported_blocksize(sectorsize))) {
+=======
+	if (!btrfs_supported_blocksize(sectorsize)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 			"sectorsize %llu not yet supported for page size %lu",
 			sectorsize, PAGE_SIZE);
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(!is_power_of_2(nodesize) || nodesize < sectorsize ||
 		     nodesize > BTRFS_MAX_METADATA_BLOCKSIZE)) {
 		btrfs_err(fs_info, "invalid nodesize %llu", nodesize);
 		ret = -EINVAL;
 	}
 	if (unlikely(nodesize != le32_to_cpu(sb->__unused_leafsize))) {
+=======
+	if (!is_power_of_2(nodesize) || nodesize < sectorsize ||
+	    nodesize > BTRFS_MAX_METADATA_BLOCKSIZE) {
+		btrfs_err(fs_info, "invalid nodesize %llu", nodesize);
+		ret = -EINVAL;
+	}
+	if (nodesize != le32_to_cpu(sb->__unused_leafsize)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "invalid leafsize %u, should be %llu",
 			  le32_to_cpu(sb->__unused_leafsize), nodesize);
 		ret = -EINVAL;
 	}
 
 	/* Root alignment check */
+<<<<<<< HEAD
 	if (unlikely(!IS_ALIGNED(btrfs_super_root(sb), sectorsize))) {
+=======
+	if (!IS_ALIGNED(btrfs_super_root(sb), sectorsize)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "tree_root block unaligned: %llu",
 			  btrfs_super_root(sb));
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(!IS_ALIGNED(btrfs_super_chunk_root(sb), sectorsize))) {
+=======
+	if (!IS_ALIGNED(btrfs_super_chunk_root(sb), sectorsize)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "chunk_root block unaligned: %llu",
 			   btrfs_super_chunk_root(sb));
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(!IS_ALIGNED(btrfs_super_log_root(sb), sectorsize))) {
+=======
+	if (!IS_ALIGNED(btrfs_super_log_root(sb), sectorsize)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "log_root block unaligned: %llu",
 			  btrfs_super_log_root(sb));
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(!fs_info->fs_devices->temp_fsid &&
 		     memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0)) {
+=======
+	if (!fs_info->fs_devices->temp_fsid &&
+	    memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
 			  sb->fsid, fs_info->fs_devices->fsid);
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
 			    BTRFS_FSID_SIZE) != 0)) {
+=======
+	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
+		   BTRFS_FSID_SIZE) != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
 			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(memcmp(fs_info->fs_devices->metadata_uuid, sb->dev_item.fsid,
 			    BTRFS_FSID_SIZE) != 0)) {
+=======
+	if (memcmp(fs_info->fs_devices->metadata_uuid, sb->dev_item.fsid,
+		   BTRFS_FSID_SIZE) != 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 			"dev_item UUID does not match metadata fsid: %pU != %pU",
 			fs_info->fs_devices->metadata_uuid, sb->dev_item.fsid);
@@ -2480,9 +2596,15 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 	 * Artificial requirement for block-group-tree to force newer features
 	 * (free-space-tree, no-holes) so the test matrix is smaller.
 	 */
+<<<<<<< HEAD
 	if (unlikely(btrfs_fs_compat_ro(fs_info, BLOCK_GROUP_TREE) &&
 		     (!btrfs_fs_compat_ro(fs_info, FREE_SPACE_TREE_VALID) ||
 		      !btrfs_fs_incompat(fs_info, NO_HOLES)))) {
+=======
+	if (btrfs_fs_compat_ro(fs_info, BLOCK_GROUP_TREE) &&
+	    (!btrfs_fs_compat_ro(fs_info, FREE_SPACE_TREE_VALID) ||
+	     !btrfs_fs_incompat(fs_info, NO_HOLES))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 		"block-group-tree feature requires free-space-tree and no-holes");
 		ret = -EINVAL;
@@ -2493,25 +2615,43 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 		 * Reduce test matrix for remap tree by requiring block-group-tree
 		 * and no-holes. Free-space-tree is a hard requirement.
 		 */
+<<<<<<< HEAD
 		if (unlikely(!btrfs_fs_compat_ro(fs_info, FREE_SPACE_TREE_VALID) ||
 			     !btrfs_fs_incompat(fs_info, NO_HOLES) ||
 			     !btrfs_fs_compat_ro(fs_info, BLOCK_GROUP_TREE))) {
+=======
+		if (!btrfs_fs_compat_ro(fs_info, FREE_SPACE_TREE_VALID) ||
+		    !btrfs_fs_incompat(fs_info, NO_HOLES) ||
+		    !btrfs_fs_compat_ro(fs_info, BLOCK_GROUP_TREE)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_err(fs_info,
 "remap-tree feature requires free-space-tree, no-holes, and block-group-tree");
 			ret = -EINVAL;
 		}
 
+<<<<<<< HEAD
 		if (unlikely(btrfs_fs_incompat(fs_info, MIXED_GROUPS))) {
+=======
+		if (btrfs_fs_incompat(fs_info, MIXED_GROUPS)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_err(fs_info, "remap-tree not supported with mixed-bg");
 			ret = -EINVAL;
 		}
 
+<<<<<<< HEAD
 		if (unlikely(btrfs_fs_incompat(fs_info, ZONED))) {
+=======
+		if (btrfs_fs_incompat(fs_info, ZONED)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_err(fs_info, "remap-tree not supported with zoned devices");
 			ret = -EINVAL;
 		}
 
+<<<<<<< HEAD
 		if (unlikely(sectorsize > PAGE_SIZE)) {
+=======
+		if (sectorsize > PAGE_SIZE) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			btrfs_err(fs_info, "remap-tree not supported when block size > page size");
 			ret = -EINVAL;
 		}
@@ -2521,47 +2661,102 @@ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
 	 * Hint to catch really bogus numbers, bitflips or so, more exact checks are
 	 * done later
 	 */
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_bytes_used(sb) < 6 * btrfs_super_nodesize(sb))) {
+=======
+	if (btrfs_super_bytes_used(sb) < 6 * btrfs_super_nodesize(sb)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "bytes_used is too small %llu",
 			  btrfs_super_bytes_used(sb));
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(!is_power_of_2(btrfs_super_stripesize(sb)))) {
+=======
+	if (!is_power_of_2(btrfs_super_stripesize(sb))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "invalid stripesize %u",
 			  btrfs_super_stripesize(sb));
 		ret = -EINVAL;
 	}
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_num_devices(sb) > (1UL << 31)))
 		btrfs_warn(fs_info, "suspicious number of devices: %llu",
 			   btrfs_super_num_devices(sb));
 	if (unlikely(btrfs_super_num_devices(sb) == 0)) {
+=======
+	if (btrfs_super_num_devices(sb) > (1UL << 31))
+		btrfs_warn(fs_info, "suspicious number of devices: %llu",
+			   btrfs_super_num_devices(sb));
+	if (btrfs_super_num_devices(sb) == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "number of devices is 0");
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(mirror_num >= 0 &&
 		     btrfs_super_bytenr(sb) != btrfs_sb_offset(mirror_num))) {
+=======
+	if (mirror_num >= 0 &&
+	    btrfs_super_bytenr(sb) != btrfs_sb_offset(mirror_num)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info, "super offset mismatch %llu != %llu",
 			  btrfs_super_bytenr(sb), btrfs_sb_offset(mirror_num));
 		ret = -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(ret))
+=======
+	if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 
 	ret = validate_sys_chunk_array(fs_info, sb);
 
 	/*
+<<<<<<< HEAD
 	 * The generation is a global counter, we'll trust it more than the others
 	 * but it's still possible that it's the one that's wrong.
 	 */
 	if (unlikely(btrfs_super_generation(sb) < btrfs_super_chunk_root_generation(sb)))
+=======
+	 * Obvious sys_chunk_array corruptions, it must hold at least one key
+	 * and one chunk
+	 */
+	if (btrfs_super_sys_array_size(sb) > BTRFS_SYSTEM_CHUNK_ARRAY_SIZE) {
+		btrfs_err(fs_info, "system chunk array too big %u > %u",
+			  btrfs_super_sys_array_size(sb),
+			  BTRFS_SYSTEM_CHUNK_ARRAY_SIZE);
+		ret = -EINVAL;
+	}
+	if (btrfs_super_sys_array_size(sb) < sizeof(struct btrfs_disk_key)
+			+ sizeof(struct btrfs_chunk)) {
+		btrfs_err(fs_info, "system chunk array too small %u < %zu",
+			  btrfs_super_sys_array_size(sb),
+			  sizeof(struct btrfs_disk_key)
+			  + sizeof(struct btrfs_chunk));
+		ret = -EINVAL;
+	}
+
+	/*
+	 * The generation is a global counter, we'll trust it more than the others
+	 * but it's still possible that it's the one that's wrong.
+	 */
+	if (btrfs_super_generation(sb) < btrfs_super_chunk_root_generation(sb))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_warn(fs_info,
 			"suspicious: generation < chunk_root_generation: %llu < %llu",
 			btrfs_super_generation(sb),
 			btrfs_super_chunk_root_generation(sb));
+<<<<<<< HEAD
 	if (unlikely(btrfs_super_generation(sb) < btrfs_super_cache_generation(sb) &&
 		     btrfs_super_cache_generation(sb) != (u64)-1))
+=======
+	if (btrfs_super_generation(sb) < btrfs_super_cache_generation(sb)
+	    && btrfs_super_cache_generation(sb) != (u64)-1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_warn(fs_info,
 			"suspicious: generation < cache_generation: %llu < %llu",
 			btrfs_super_generation(sb),
@@ -2592,7 +2787,11 @@ static int btrfs_validate_write_super(struct btrfs_fs_info *fs_info,
 	int ret;
 
 	ret = btrfs_validate_super(fs_info, sb, -1);
+<<<<<<< HEAD
 	if (unlikely(ret < 0))
+=======
+	if (ret < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	if (unlikely(!btrfs_supported_super_csum(btrfs_super_csum_type(sb)))) {
 		ret = -EUCLEAN;
@@ -2609,7 +2808,11 @@ static int btrfs_validate_write_super(struct btrfs_fs_info *fs_info,
 		goto out;
 	}
 out:
+<<<<<<< HEAD
 	if (unlikely(ret < 0))
+=======
+	if (ret < 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(fs_info,
 		"super block corruption detected before writing it to disk");
 	return ret;
@@ -2630,6 +2833,14 @@ static int load_super_root(struct btrfs_root *root, u64 bytenr, u64 gen, int lev
 		root->node = NULL;
 		return ret;
 	}
+<<<<<<< HEAD
+=======
+	if (unlikely(!extent_buffer_uptodate(root->node))) {
+		free_extent_buffer(root->node);
+		root->node = NULL;
+		return -EIO;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	btrfs_set_root_node(&root->root_item, root->node);
 	root->commit_root = btrfs_root_node(root);
@@ -3660,7 +3871,11 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
 
 	if (fs_info->uuid_root &&
 	    (btrfs_test_opt(fs_info, RESCAN_UUID_TREE) ||
+<<<<<<< HEAD
 	     !test_bit(BTRFS_FS_UPDATE_UUID_TREE_GEN, &fs_info->flags))) {
+=======
+	     fs_info->generation != btrfs_super_uuid_tree_generation(disk_super))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_info(fs_info, "checking UUID tree");
 		ret = btrfs_check_uuid_tree(fs_info);
 		if (ret) {
@@ -3752,7 +3967,12 @@ static void btrfs_end_super_write(struct bio *bio)
  * Write superblock @sb to the @device. Do not wait for completion, all the
  * folios we use for writing are locked.
  *
+<<<<<<< HEAD
  * Write @max_mirrors copies of the superblock. Note that max_mirrors must be
+=======
+ * Write @max_mirrors copies of the superblock, where 0 means default that fit
+ * the expected device size at commit time. Note that max_mirrors must be
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * same for write and wait phases.
  *
  * Return number of errors when folio is not found or submission fails.
@@ -3768,6 +3988,12 @@ static int write_dev_supers(struct btrfs_device *device,
 
 	atomic_set(&device->sb_write_errors, 0);
 
+<<<<<<< HEAD
+=======
+	if (max_mirrors == 0)
+		max_mirrors = BTRFS_SUPER_MIRROR_MAX;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < max_mirrors; i++) {
 		struct folio *folio;
 		struct bio *bio;
@@ -3852,13 +4078,23 @@ static int wait_dev_supers(struct btrfs_device *device, int max_mirrors)
 	int ret;
 	u64 bytenr;
 
+<<<<<<< HEAD
+=======
+	if (max_mirrors == 0)
+		max_mirrors = BTRFS_SUPER_MIRROR_MAX;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < max_mirrors; i++) {
 		struct folio *folio;
 
 		ret = btrfs_sb_log_location(device, i, READ, &bytenr);
 		if (ret == -ENOENT) {
 			break;
+<<<<<<< HEAD
 		} else if (unlikely(ret < 0)) {
+=======
+		} else if (ret < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			errors++;
 			if (i == 0)
 				primary_failed = true;
@@ -3880,8 +4116,14 @@ static int wait_dev_supers(struct btrfs_device *device, int max_mirrors)
 	}
 
 	errors += atomic_read(&device->sb_write_errors);
+<<<<<<< HEAD
 
 	if (unlikely(primary_failed || errors >= BTRFS_SUPER_PRIMARY_WRITE_ERROR)) {
+=======
+	if (errors >= BTRFS_SUPER_PRIMARY_WRITE_ERROR)
+		primary_failed = true;
+	if (primary_failed) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		btrfs_err(device->fs_info, "error writing primary super block to device %llu",
 			  device->devid);
 		return -1;
@@ -3932,7 +4174,11 @@ static bool wait_dev_flush(struct btrfs_device *device)
 
 	wait_for_completion_io(&device->flush_wait);
 
+<<<<<<< HEAD
 	if (unlikely(bio->bi_status)) {
+=======
+	if (bio->bi_status) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		set_bit(BTRFS_DEV_STATE_FLUSH_FAILED, &device->dev_state);
 		btrfs_dev_stat_inc_and_print(device, BTRFS_DEV_STAT_FLUSH_ERRS);
 		return true;
@@ -3970,7 +4216,11 @@ static int barrier_all_devices(struct btrfs_fs_info *info)
 	list_for_each_entry(dev, head, dev_list) {
 		if (test_bit(BTRFS_DEV_STATE_MISSING, &dev->dev_state))
 			continue;
+<<<<<<< HEAD
 		if (unlikely(!dev->bdev)) {
+=======
+		if (!dev->bdev) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			errors_wait++;
 			continue;
 		}
@@ -3978,7 +4228,11 @@ static int barrier_all_devices(struct btrfs_fs_info *info)
 		    !test_bit(BTRFS_DEV_STATE_WRITEABLE, &dev->dev_state))
 			continue;
 
+<<<<<<< HEAD
 		if (unlikely(wait_dev_flush(dev)))
+=======
+		if (wait_dev_flush(dev))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			errors_wait++;
 	}
 
@@ -4021,18 +4275,27 @@ int btrfs_get_num_tolerated_disk_barrier_failures(u64 flags)
 	return min_tolerated;
 }
 
+<<<<<<< HEAD
 int write_all_supers(struct btrfs_trans_handle *trans)
 {
 	struct btrfs_fs_info *fs_info = trans->fs_info;
+=======
+int write_all_supers(struct btrfs_fs_info *fs_info, int max_mirrors)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct list_head *head;
 	struct btrfs_device *dev;
 	struct btrfs_super_block *sb;
 	struct btrfs_dev_item *dev_item;
+<<<<<<< HEAD
 	int max_mirrors;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int do_barriers;
 	int max_errors;
 	int total_errors = 0;
+<<<<<<< HEAD
 
 	do_barriers = !btrfs_test_opt(fs_info, NOBARRIER);
 
@@ -4042,6 +4305,18 @@ int write_all_supers(struct btrfs_trans_handle *trans)
 	} else {
 		/* We are called from transaction commit. */
 		max_mirrors = BTRFS_SUPER_MIRROR_MAX;
+=======
+	u64 flags;
+
+	do_barriers = !btrfs_test_opt(fs_info, NOBARRIER);
+
+	/*
+	 * max_mirrors == 0 indicates we're from commit_transaction,
+	 * not from fsync where the tree roots in fs_info have not
+	 * been consistent on disk.
+	 */
+	if (max_mirrors == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = backup_super_roots(fs_info);
 		if (ret < 0)
 			return ret;
@@ -4056,19 +4331,32 @@ int write_all_supers(struct btrfs_trans_handle *trans)
 
 	if (do_barriers) {
 		ret = barrier_all_devices(fs_info);
+<<<<<<< HEAD
 		if (unlikely(ret)) {
 			mutex_unlock(
 				&fs_info->fs_devices->device_list_mutex);
 			btrfs_abort_transaction(trans, ret);
 			btrfs_err(fs_info, "error while submitting device barriers");
+=======
+		if (ret) {
+			mutex_unlock(
+				&fs_info->fs_devices->device_list_mutex);
+			btrfs_handle_fs_error(fs_info, ret,
+					      "errors while submitting device barriers.");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return ret;
 		}
 	}
 
+<<<<<<< HEAD
 	btrfs_set_super_flags(sb, btrfs_super_flags(sb) | BTRFS_HEADER_FLAG_WRITTEN);
 
 	list_for_each_entry(dev, head, dev_list) {
 		if (unlikely(!dev->bdev)) {
+=======
+	list_for_each_entry(dev, head, dev_list) {
+		if (!dev->bdev) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			total_errors++;
 			continue;
 		}
@@ -4090,6 +4378,7 @@ int write_all_supers(struct btrfs_trans_handle *trans)
 		memcpy(dev_item->fsid, dev->fs_devices->metadata_uuid,
 		       BTRFS_FSID_SIZE);
 
+<<<<<<< HEAD
 		ret = btrfs_validate_write_super(fs_info, sb);
 		if (unlikely(ret < 0)) {
 			mutex_unlock(&fs_info->fs_devices->device_list_mutex);
@@ -4101,6 +4390,21 @@ int write_all_supers(struct btrfs_trans_handle *trans)
 
 		ret = write_dev_supers(dev, sb, max_mirrors);
 		if (unlikely(ret))
+=======
+		flags = btrfs_super_flags(sb);
+		btrfs_set_super_flags(sb, flags | BTRFS_HEADER_FLAG_WRITTEN);
+
+		ret = btrfs_validate_write_super(fs_info, sb);
+		if (unlikely(ret < 0)) {
+			mutex_unlock(&fs_info->fs_devices->device_list_mutex);
+			btrfs_handle_fs_error(fs_info, -EUCLEAN,
+				"unexpected superblock corruption detected");
+			return -EUCLEAN;
+		}
+
+		ret = write_dev_supers(dev, sb, max_mirrors);
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			total_errors++;
 	}
 	if (unlikely(total_errors > max_errors)) {
@@ -4109,27 +4413,47 @@ int write_all_supers(struct btrfs_trans_handle *trans)
 		mutex_unlock(&fs_info->fs_devices->device_list_mutex);
 
 		/* FUA is masked off if unsupported and can't be the reason */
+<<<<<<< HEAD
 		btrfs_abort_transaction(trans, -EIO);
 		btrfs_err(fs_info, "%d errors while writing supers", total_errors);
+=======
+		btrfs_handle_fs_error(fs_info, -EIO,
+				      "%d errors while writing supers",
+				      total_errors);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 
 	total_errors = 0;
 	list_for_each_entry(dev, head, dev_list) {
+<<<<<<< HEAD
 		if (unlikely(!dev->bdev))
+=======
+		if (!dev->bdev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		if (!test_bit(BTRFS_DEV_STATE_IN_FS_METADATA, &dev->dev_state) ||
 		    !test_bit(BTRFS_DEV_STATE_WRITEABLE, &dev->dev_state))
 			continue;
 
 		ret = wait_dev_supers(dev, max_mirrors);
+<<<<<<< HEAD
 		if (unlikely(ret))
+=======
+		if (ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			total_errors++;
 	}
 	mutex_unlock(&fs_info->fs_devices->device_list_mutex);
 	if (unlikely(total_errors > max_errors)) {
+<<<<<<< HEAD
 		btrfs_abort_transaction(trans, -EIO);
 		btrfs_err(fs_info, "%d errors while writing supers", total_errors);
+=======
+		btrfs_handle_fs_error(fs_info, -EIO,
+				      "%d errors while writing supers",
+				      total_errors);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EIO;
 	}
 	return 0;
@@ -4148,7 +4472,11 @@ void btrfs_drop_and_free_fs_root(struct btrfs_fs_info *fs_info,
 		drop_ref = true;
 	spin_unlock(&fs_info->fs_roots_radix_lock);
 
+<<<<<<< HEAD
 	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+=======
+	if (BTRFS_FS_ERROR(fs_info)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ASSERT(root->log_root == NULL);
 		if (root->reloc_root) {
 			btrfs_put_root(root->reloc_root);
@@ -4434,6 +4762,16 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
 
 	btrfs_put_block_group_cache(fs_info);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * we must make sure there is not any read request to
+	 * submit after we stopping all workers.
+	 */
+	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
+	btrfs_stop_all_workers(fs_info);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* We shouldn't have any transaction open at this point */
 	warn_about_uncommitted_trans(fs_info);
 
@@ -4442,6 +4780,7 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
 	btrfs_free_fs_roots(fs_info);
 
 	/*
+<<<<<<< HEAD
 	 * We must make sure there is not any read request to
 	 * submit after we stop all workers.
 	 */
@@ -4449,6 +4788,8 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
 	btrfs_stop_all_workers(fs_info);
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * We must free the block groups after dropping the fs_roots as we could
 	 * have had an IO error and have left over tree log blocks that aren't
 	 * cleaned up until the fs roots are freed.  This makes the block group
@@ -4686,7 +5027,10 @@ static void btrfs_destroy_marked_extents(struct btrfs_fs_info *fs_info,
 			free_extent_buffer_stale(eb);
 		}
 	}
+<<<<<<< HEAD
 	btrfs_extent_io_tree_release(dirty_pages);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,

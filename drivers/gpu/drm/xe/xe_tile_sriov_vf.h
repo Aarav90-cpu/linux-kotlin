@@ -10,6 +10,12 @@
 
 struct xe_tile;
 
+<<<<<<< HEAD
+=======
+int xe_tile_sriov_vf_prepare_ggtt(struct xe_tile *tile);
+void xe_tile_sriov_vf_deballoon_ggtt_locked(struct xe_tile *tile);
+void xe_tile_sriov_vf_fixup_ggtt_nodes_locked(struct xe_tile *tile, s64 shift);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u64 xe_tile_sriov_vf_ggtt(struct xe_tile *tile);
 void xe_tile_sriov_vf_ggtt_store(struct xe_tile *tile, u64 ggtt_size);
 u64 xe_tile_sriov_vf_ggtt_base(struct xe_tile *tile);

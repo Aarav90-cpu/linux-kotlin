@@ -87,7 +87,10 @@ void a8xx_gpu_get_slice_info(struct msm_gpu *gpu)
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
 	const struct a6xx_info *info = adreno_gpu->info->a6xx;
+<<<<<<< HEAD
 	struct device *dev = &gpu->pdev->dev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 slice_mask;
 
 	if (adreno_gpu->info->family < ADRENO_8XX_GEN1)
@@ -111,6 +114,7 @@ void a8xx_gpu_get_slice_info(struct msm_gpu *gpu)
 
 	/* Chip ID depends on the number of slices available. So update it */
 	adreno_gpu->chip_id |= FIELD_PREP(GENMASK(7, 4), hweight32(slice_mask));
+<<<<<<< HEAD
 
 	/* Update the gpu-name to reflect the slice config: */
 	const char *name = devm_kasprintf(dev, GFP_KERNEL,
@@ -120,6 +124,8 @@ void a8xx_gpu_get_slice_info(struct msm_gpu *gpu)
 		devm_kfree(dev, adreno_gpu->base.name);
 		adreno_gpu->base.name = name;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 a8xx_get_first_slice(struct a6xx_gpu *a6xx_gpu)
@@ -183,7 +189,11 @@ void a8xx_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 	/* Update HW if this is the current ring and we are not in preempt*/
 	if (!a6xx_in_preempt(a6xx_gpu)) {
 		if (a6xx_gpu->cur_ring == ring)
+<<<<<<< HEAD
 			a6xx_fenced_write(a6xx_gpu, REG_A6XX_CP_RB_WPTR, wptr, BIT(0), false);
+=======
+			gpu_write(gpu, REG_A6XX_CP_RB_WPTR, wptr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		else
 			ring->restore_wptr = true;
 	} else {
@@ -396,6 +406,7 @@ static void a8xx_nonctxt_config(struct msm_gpu *gpu, u32 *gmem_protect)
 	a8xx_aperture_clear(gpu);
 }
 
+<<<<<<< HEAD
 static void a8xx_patch_pwrup_reglist(struct msm_gpu *gpu)
 {
 	const struct adreno_reglist_pipe_list *dyn_pwrup_reglist;
@@ -505,6 +516,10 @@ static int a8xx_cp_init(struct msm_gpu *gpu)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+=======
+static int a8xx_cp_init(struct msm_gpu *gpu)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct msm_ringbuffer *ring = gpu->rb[0];
 	u32 mask;
 
@@ -512,7 +527,11 @@ static int a8xx_cp_init(struct msm_gpu *gpu)
 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
 	OUT_RING(ring, BIT(27));
 
+<<<<<<< HEAD
 	OUT_PKT7(ring, CP_ME_INIT, 7);
+=======
+	OUT_PKT7(ring, CP_ME_INIT, 4);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Use multiple HW contexts */
 	mask = BIT(0);
@@ -526,9 +545,12 @@ static int a8xx_cp_init(struct msm_gpu *gpu)
 	/* Disable save/restore of performance counters across preemption */
 	mask |= BIT(6);
 
+<<<<<<< HEAD
 	/* Enable the register init list with the spinlock */
 	mask |= BIT(8);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	OUT_RING(ring, mask);
 
 	/* Enable multiple hardware contexts */
@@ -540,6 +562,7 @@ static int a8xx_cp_init(struct msm_gpu *gpu)
 	/* Operation mode mask */
 	OUT_RING(ring, 0x00000002);
 
+<<<<<<< HEAD
 	/* Lo address */
 	OUT_RING(ring, lower_32_bits(a6xx_gpu->pwrup_reglist_iova));
 	/* Hi address */
@@ -548,6 +571,8 @@ static int a8xx_cp_init(struct msm_gpu *gpu)
 	/* Enable dyn pwrup list with triplets (offset, value, pipe) */
 	OUT_RING(ring, BIT(31));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	a6xx_flush(gpu, ring);
 	return a8xx_idle(gpu, ring) ? 0 : -EINVAL;
 }
@@ -776,8 +801,11 @@ static int hw_init(struct msm_gpu *gpu)
 	gpu_write64(gpu, REG_A6XX_CP_RB_RPTR_ADDR, shadowptr(a6xx_gpu, gpu->rb[0]));
 	gpu_write64(gpu, REG_A8XX_CP_RB_RPTR_ADDR_BV, rbmemptr(gpu->rb[0], bv_rptr));
 
+<<<<<<< HEAD
 	a8xx_preempt_hw_init(gpu);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (i = 0; i < gpu->nr_rings; i++)
 		a6xx_gpu->shadow[i] = 0;
 
@@ -832,6 +860,7 @@ static int hw_init(struct msm_gpu *gpu)
 	WARN_ON(!gmem_protect);
 	a8xx_aperture_clear(gpu);
 
+<<<<<<< HEAD
 	if (!a6xx_gpu->pwrup_reglist_emitted) {
 		a8xx_patch_pwrup_reglist(gpu);
 		a6xx_gpu->pwrup_reglist_emitted = true;
@@ -843,18 +872,26 @@ out:
 	/* Last step - yield the ringbuffer */
 	a8xx_preempt_start(gpu);
 
+=======
+	/* Enable hardware clockgating */
+	a8xx_set_hwcg(gpu, true);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Tell the GMU that we are done touching the GPU and it can start power
 	 * management
 	 */
 	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
 
+<<<<<<< HEAD
 	if (!ret && (refcount_read(&gpu->sysprof_active) > 1)) {
 		ret = a6xx_gmu_set_oob(gmu, GMU_OOB_PERFCOUNTER_SET);
 		if (!ret)
 			set_bit(GMU_STATUS_OOB_PERF_SET, &gmu->status);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -1252,11 +1289,19 @@ irqreturn_t a8xx_irq(struct msm_gpu *gpu)
 
 	if (status & A6XX_RBBM_INT_0_MASK_CP_CACHE_FLUSH_TS) {
 		msm_gpu_retire(gpu);
+<<<<<<< HEAD
 		a8xx_preempt_trigger(gpu);
 	}
 
 	if (status & A6XX_RBBM_INT_0_MASK_CP_SW)
 		a8xx_preempt_irq(gpu);
+=======
+		a6xx_preempt_trigger(gpu);
+	}
+
+	if (status & A6XX_RBBM_INT_0_MASK_CP_SW)
+		a6xx_preempt_irq(gpu);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return IRQ_HANDLED;
 }
@@ -1318,6 +1363,7 @@ void a8xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu, bool gx_
 	gpu_write(gpu, REG_A6XX_GBIF_HALT, 0x0);
 }
 
+<<<<<<< HEAD
 u64 a8xx_gmu_get_timestamp(struct msm_gpu *gpu)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
@@ -1331,6 +1377,25 @@ u64 a8xx_gmu_get_timestamp(struct msm_gpu *gpu)
 	} while (unlikely(count_hi != temp));
 
 	return (count_hi << 32) | count_lo;
+=======
+int a8xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
+{
+	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+
+	mutex_lock(&a6xx_gpu->gmu.lock);
+
+	/* Force the GPU power on so we can read this register */
+	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
+
+	*value = gpu_read64(gpu, REG_A8XX_CP_ALWAYS_ON_COUNTER);
+
+	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
+
+	mutex_unlock(&a6xx_gpu->gmu.lock);
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 u64 a8xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)

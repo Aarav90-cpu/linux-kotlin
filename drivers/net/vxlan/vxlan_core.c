@@ -19,6 +19,10 @@
 #include <net/arp.h>
 #include <net/ndisc.h>
 #include <net/gro.h>
+<<<<<<< HEAD
+=======
+#include <net/ipv6_stubs.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/ip.h>
 #include <net/icmp.h>
 #include <net/rtnetlink.h>
@@ -2029,11 +2033,20 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
 	struct vxlan_dev *vxlan = netdev_priv(dev);
 	const struct in6_addr *daddr;
 	const struct ipv6hdr *iphdr;
+<<<<<<< HEAD
+=======
+	struct inet6_dev *in6_dev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct neighbour *n;
 	struct nd_msg *msg;
 
 	rcu_read_lock();
+<<<<<<< HEAD
 	if (unlikely(!ipv6_mod_enabled()))
+=======
+	in6_dev = __in6_dev_get(dev);
+	if (!in6_dev)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 
 	iphdr = ipv6_hdr(skb);
@@ -2044,7 +2057,11 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
 	    ipv6_addr_is_multicast(&msg->target))
 		goto out;
 
+<<<<<<< HEAD
 	n = neigh_lookup(&nd_tbl, &msg->target, dev);
+=======
+	n = neigh_lookup(ipv6_stub->nd_tbl, &msg->target, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (n) {
 		struct vxlan_rdst *rdst = NULL;
@@ -2129,15 +2146,26 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
 	{
 		struct ipv6hdr *pip6;
 
+<<<<<<< HEAD
 		/* check if ipv6.disable=1 set during boot was set
 		 * during booting so nd_tbl is not initialized
 		 */
 		if (!ipv6_mod_enabled())
+=======
+		/* check if nd_tbl is not initiliazed due to
+		 * ipv6.disable=1 set during boot
+		 */
+		if (!ipv6_stub->nd_tbl)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return false;
 		if (!pskb_may_pull(skb, sizeof(struct ipv6hdr)))
 			return false;
 		pip6 = ipv6_hdr(skb);
+<<<<<<< HEAD
 		n = neigh_lookup(&nd_tbl, &pip6->daddr, dev);
+=======
+		n = neigh_lookup(ipv6_stub->nd_tbl, &pip6->daddr, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!n && (vxlan->cfg.flags & VXLAN_F_L3MISS)) {
 			union vxlan_addr ipa = {
 				.sin6.sin6_addr = pip6->daddr,

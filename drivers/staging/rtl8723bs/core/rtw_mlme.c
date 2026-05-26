@@ -262,6 +262,7 @@ void rtw_free_network_queue(struct adapter *padapter, u8 isfreeall)
 	spin_unlock_bh(&scanned_queue->lock);
 }
 
+<<<<<<< HEAD
 bool rtw_if_up(struct adapter *padapter)
 {
 	if (padapter->bDriverStopped || padapter->bSurpriseRemoved ||
@@ -269,6 +270,19 @@ bool rtw_if_up(struct adapter *padapter)
 		return false;
 
 	return true;
+=======
+signed int rtw_if_up(struct adapter *padapter)
+{
+	signed int res;
+
+	if (padapter->bDriverStopped || padapter->bSurpriseRemoved ||
+		!check_fwstate(&padapter->mlmepriv, _FW_LINKED))
+		res = false;
+	else
+		res =  true;
+
+	return res;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rtw_generate_random_ibss(u8 *pibss)
@@ -326,18 +340,35 @@ struct	wlan_network *rtw_find_network(struct __queue *scanned_queue, u8 *addr)
 	return pnetwork;
 }
 
+<<<<<<< HEAD
 bool rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork)
 {
+=======
+int rtw_is_same_ibss(struct adapter *adapter, struct wlan_network *pnetwork)
+{
+	int ret = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
 
 	if ((psecuritypriv->dot11PrivacyAlgrthm != _NO_PRIVACY_) &&
 		    (pnetwork->network.privacy == 0))
+<<<<<<< HEAD
 		return false;
 	else if ((psecuritypriv->dot11PrivacyAlgrthm == _NO_PRIVACY_) &&
 		 (pnetwork->network.privacy == 1))
 		return false;
 
 	return true;
+=======
+		ret = false;
+	else if ((psecuritypriv->dot11PrivacyAlgrthm == _NO_PRIVACY_) &&
+		 (pnetwork->network.privacy == 1))
+		ret = false;
+	else
+		ret = true;
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 inline int is_same_ess(struct wlan_bssid_ex *a, struct wlan_bssid_ex *b)
@@ -588,14 +619,23 @@ void rtw_add_network(struct adapter *adapter, struct wlan_bssid_ex *pnetwork)
  * (4) HT
  * (5) others
  */
+<<<<<<< HEAD
 static bool rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwork)
+=======
+int rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwork);
+int rtw_is_desired_network(struct adapter *adapter, struct wlan_network *pnetwork)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
 	u32 desired_encmode;
 	u32 privacy;
 	uint wps_ielen;
+<<<<<<< HEAD
 	bool bselected = true;
+=======
+	int bselected = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	desired_encmode = psecuritypriv->ndisencryptstatus;
 	privacy = pnetwork->network.privacy;
@@ -869,10 +909,18 @@ void rtw_indicate_connect(struct adapter *padapter)
 		set_fwstate(pmlmepriv, _FW_LINKED);
 
 		if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) ||
+<<<<<<< HEAD
 		    check_fwstate(pmlmepriv, WIFI_ADHOC_STATE))
 			rtw_cfg80211_ibss_indicate_connect(padapter);
 		else
 			rtw_cfg80211_indicate_connect(padapter);
+=======
+		    check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)) {
+			rtw_cfg80211_ibss_indicate_connect(padapter);
+		} else {
+			rtw_cfg80211_indicate_connect(padapter);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		netif_carrier_on(padapter->pnetdev);
 
@@ -1145,8 +1193,15 @@ void rtw_reset_securitypriv(struct adapter *adapter)
 /* if join_res > 0, for (fw_state ==WIFI_ADHOC_STATE), we only check if "ptarget_wlan" exist. */
 /* if join_res > 0, update "cur_network->network" from "pnetwork->network" if (ptarget_wlan != NULL). */
 /*  */
+<<<<<<< HEAD
 void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 {
+=======
+/* define REJOIN */
+void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
+{
+	static u8 __maybe_unused retry;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sta_info *ptarget_sta = NULL, *pcur_sta = NULL;
 	struct	sta_priv *pstapriv = &adapter->stapriv;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
@@ -1163,16 +1218,90 @@ void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 
 	spin_lock_bh(&pmlmepriv->lock);
 
+<<<<<<< HEAD
 	pmlmepriv->link_detect_info.traffic_transition_count = 0;
 	pmlmepriv->link_detect_info.low_power_transition_count = 0;
 
 	if (pnetwork->join_res == -4) {
+=======
+	pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
+	pmlmepriv->LinkDetectInfo.LowPowerTransitionCount = 0;
+
+	if (pnetwork->join_res > 0) {
+		spin_lock_bh(&pmlmepriv->scanned_queue.lock);
+		retry = 0;
+		if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING)) {
+			/* s1. find ptarget_wlan */
+			if (check_fwstate(pmlmepriv, _FW_LINKED)) {
+				if (the_same_macaddr) {
+					ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, cur_network->network.mac_address);
+				} else {
+					pcur_wlan = rtw_find_network(&pmlmepriv->scanned_queue, cur_network->network.mac_address);
+					if (pcur_wlan)
+						pcur_wlan->fixed = false;
+
+					pcur_sta = rtw_get_stainfo(pstapriv, cur_network->network.mac_address);
+					if (pcur_sta)
+						rtw_free_stainfo(adapter,  pcur_sta);
+
+					ptarget_wlan = rtw_find_network(&pmlmepriv->scanned_queue, pnetwork->network.mac_address);
+					if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
+						if (ptarget_wlan)
+							ptarget_wlan->fixed = true;
+					}
+				}
+
+			} else {
+				ptarget_wlan = _rtw_find_same_network(&pmlmepriv->scanned_queue, pnetwork);
+				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
+					if (ptarget_wlan)
+						ptarget_wlan->fixed = true;
+				}
+			}
+
+			/* s2. update cur_network */
+			if (ptarget_wlan) {
+				rtw_joinbss_update_network(adapter, ptarget_wlan, pnetwork);
+			} else {
+				netdev_dbg(adapter->pnetdev,
+					   "Can't find ptarget_wlan when joinbss_event callback\n");
+				spin_unlock_bh(&pmlmepriv->scanned_queue.lock);
+				goto ignore_joinbss_callback;
+			}
+
+			/* s3. find ptarget_sta & update ptarget_sta after update cur_network only for station mode */
+			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
+				ptarget_sta = rtw_joinbss_update_stainfo(adapter, pnetwork);
+				if (!ptarget_sta) {
+					spin_unlock_bh(&pmlmepriv->scanned_queue.lock);
+					goto ignore_joinbss_callback;
+				}
+			}
+
+			/* s4. indicate connect */
+			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
+				pmlmepriv->cur_network_scanned = ptarget_wlan;
+				rtw_indicate_connect(adapter);
+			}
+
+			spin_unlock_bh(&pmlmepriv->scanned_queue.lock);
+
+			spin_unlock_bh(&pmlmepriv->lock);
+			/* s5. Cancel assoc_timer */
+			timer_delete_sync(&pmlmepriv->assoc_timer);
+			spin_lock_bh(&pmlmepriv->lock);
+		} else {
+			spin_unlock_bh(&pmlmepriv->scanned_queue.lock);
+		}
+	} else if (pnetwork->join_res == -4) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rtw_reset_securitypriv(adapter);
 		_set_timer(&pmlmepriv->assoc_timer, 1);
 
 		if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING))
 			_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
+<<<<<<< HEAD
 		spin_unlock_bh(&pmlmepriv->lock);
 		return;
 	}
@@ -1251,6 +1380,37 @@ void rtw_joinbss_event_prehandle(struct adapter *adapter, u8 *pbuf)
 	spin_unlock_bh(&pmlmepriv->lock);
 	/* s5. Cancel assoc_timer */
 	timer_delete_sync(&pmlmepriv->assoc_timer);
+=======
+	} else {/* if join_res < 0 (join fails), then try again */
+
+		#ifdef REJOIN
+		res = _FAIL;
+		if (retry < 2)
+			res = rtw_select_and_join_from_scanned_queue(pmlmepriv);
+
+		if (res == _SUCCESS) {
+			/* extend time of assoc_timer */
+			_set_timer(&pmlmepriv->assoc_timer, MAX_JOIN_TIMEOUT);
+			retry++;
+		} else if (res == 2) {/* there is no need to wait for join */
+			_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
+			rtw_indicate_connect(adapter);
+		} else {
+		#endif
+
+			_set_timer(&pmlmepriv->assoc_timer, 1);
+			_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
+
+		#ifdef REJOIN
+			retry = 0;
+		}
+		#endif
+	}
+
+ignore_joinbss_callback:
+
+	spin_unlock_bh(&pmlmepriv->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void rtw_joinbss_event_callback(struct adapter *adapter, u8 *pbuf)
@@ -1587,7 +1747,11 @@ static void rtw_auto_scan_handler(struct adapter *padapter)
 			if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING))
 				goto exit;
 
+<<<<<<< HEAD
 			if (pmlmepriv->link_detect_info.busy_traffic)
+=======
+			if (pmlmepriv->LinkDetectInfo.bBusyTraffic)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto exit;
 		}
 
@@ -1615,12 +1779,21 @@ void rtw_dynamic_check_timer_handler(struct adapter *adapter)
 	if ((adapter_to_pwrctl(adapter)->fw_current_in_ps_mode)
 		&& !(hal_btcoex_IsBtControlLps(adapter))
 		) {
+<<<<<<< HEAD
 		bool should_enter_ps;
 
 		linked_status_chk(adapter);
 
 		should_enter_ps = traffic_status_watchdog(adapter, true);
 		if (should_enter_ps) {
+=======
+		u8 bEnterPS;
+
+		linked_status_chk(adapter);
+
+		bEnterPS = traffic_status_watchdog(adapter, 1);
+		if (bEnterPS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			/* rtw_lps_ctrl_wk_cmd(adapter, LPS_CTRL_ENTER, 1); */
 			rtw_hal_dm_watchdog_in_lps(adapter);
 		} else {
@@ -1675,7 +1848,11 @@ static int rtw_check_roaming_candidate(struct mlme_priv *mlme
 		goto exit;
 
 	/* got specific addr to roam */
+<<<<<<< HEAD
 	if (!is_zero_ether_addr(mlme->roam_tgt_addr)) {
+=======
+	if (!is_zero_mac_addr(mlme->roam_tgt_addr)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!memcmp(mlme->roam_tgt_addr, competitor->network.mac_address, ETH_ALEN))
 			goto update;
 		else
@@ -2479,7 +2656,12 @@ void rtw_issue_addbareq_cmd(struct adapter *padapter, struct xmit_frame *pxmitfr
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 	s32 bmcst = is_multicast_ether_addr(pattrib->ra);
 
+<<<<<<< HEAD
 	if (bmcst || (padapter->mlmepriv.link_detect_info.num_tx_ok_in_period < 100))
+=======
+	/* if (bmcst || (padapter->mlmepriv.LinkDetectInfo.bTxBusyTraffic == false)) */
+	if (bmcst || (padapter->mlmepriv.LinkDetectInfo.NumTxOkInPeriod < 100))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	priority = pattrib->priority;
@@ -2566,7 +2748,11 @@ void _rtw_roaming(struct adapter *padapter, struct wlan_network *tgt_network)
 	}
 }
 
+<<<<<<< HEAD
 bool rtw_linked_check(struct adapter *padapter)
+=======
+signed int rtw_linked_check(struct adapter *padapter)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) ||
 	    check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {

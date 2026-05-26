@@ -10,7 +10,10 @@
 #include "dpu_formats.h"
 #include "dpu_trace.h"
 #include "disp/msm_disp_snapshot.h"
+<<<<<<< HEAD
 #include "msm_dsc_helper.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <drm/display/drm_dsc_helper.h>
 #include <drm/drm_managed.h>
@@ -137,7 +140,10 @@ static void drm_mode_to_intf_timing_params(
 		timing->width = timing->width * drm_dsc_get_bpp_int(dsc) /
 				(dsc->bits_per_component * 3);
 		timing->xres = timing->width;
+<<<<<<< HEAD
 		timing->dce_bytes_per_line = msm_dsc_get_bytes_per_line(dsc);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 

@@ -1696,7 +1696,11 @@ static inline struct pic32_gpio_bank *irqd_to_bank(struct irq_data *d)
 }
 
 static inline struct pic32_gpio_bank *pctl_to_bank(struct pic32_pinctrl *pctl,
+<<<<<<< HEAD
 						unsigned int pin)
+=======
+						unsigned pin)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return &pctl->gpio_banks[pin / PINS_PER_BANK];
 }
@@ -1709,7 +1713,11 @@ static int pic32_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
 }
 
 static const char *pic32_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
+<<<<<<< HEAD
 						    unsigned int group)
+=======
+						    unsigned group)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 
@@ -1717,9 +1725,15 @@ static const char *pic32_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
 }
 
 static int pic32_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+<<<<<<< HEAD
 					    unsigned int group,
 					    const unsigned int **pins,
 					    unsigned int *num_pins)
+=======
+					    unsigned group,
+					    const unsigned **pins,
+					    unsigned *num_pins)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 
@@ -1745,7 +1759,11 @@ static int pic32_pinmux_get_functions_count(struct pinctrl_dev *pctldev)
 }
 
 static const char *
+<<<<<<< HEAD
 pic32_pinmux_get_function_name(struct pinctrl_dev *pctldev, unsigned int func)
+=======
+pic32_pinmux_get_function_name(struct pinctrl_dev *pctldev, unsigned func)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 
@@ -1753,9 +1771,15 @@ pic32_pinmux_get_function_name(struct pinctrl_dev *pctldev, unsigned int func)
 }
 
 static int pic32_pinmux_get_function_groups(struct pinctrl_dev *pctldev,
+<<<<<<< HEAD
 						unsigned int func,
 						const char * const **groups,
 						unsigned int * const num_groups)
+=======
+						unsigned func,
+						const char * const **groups,
+						unsigned * const num_groups)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 
@@ -1766,7 +1790,11 @@ static int pic32_pinmux_get_function_groups(struct pinctrl_dev *pctldev,
 }
 
 static int pic32_pinmux_enable(struct pinctrl_dev *pctldev,
+<<<<<<< HEAD
 				   unsigned int func, unsigned int group)
+=======
+				   unsigned func, unsigned group)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 	const struct pic32_pin_group *pg = &pctl->groups[group];
@@ -1795,7 +1823,11 @@ static int pic32_pinmux_enable(struct pinctrl_dev *pctldev,
 
 static int pic32_gpio_request_enable(struct pinctrl_dev *pctldev,
 				     struct pinctrl_gpio_range *range,
+<<<<<<< HEAD
 				     unsigned int offset)
+=======
+				     unsigned offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 	struct pic32_gpio_bank *bank = gpiochip_get_data(range->gc);
@@ -1810,7 +1842,11 @@ static int pic32_gpio_request_enable(struct pinctrl_dev *pctldev,
 }
 
 static int pic32_gpio_direction_input(struct gpio_chip *chip,
+<<<<<<< HEAD
 					  unsigned int offset)
+=======
+					  unsigned offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_gpio_bank *bank = gpiochip_get_data(chip);
 	u32 mask = BIT(offset);
@@ -1820,7 +1856,11 @@ static int pic32_gpio_direction_input(struct gpio_chip *chip,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int pic32_gpio_get(struct gpio_chip *chip, unsigned int offset)
+=======
+static int pic32_gpio_get(struct gpio_chip *chip, unsigned offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_gpio_bank *bank = gpiochip_get_data(chip);
 
@@ -1842,7 +1882,11 @@ static int pic32_gpio_set(struct gpio_chip *chip, unsigned int offset,
 }
 
 static int pic32_gpio_direction_output(struct gpio_chip *chip,
+<<<<<<< HEAD
 					   unsigned int offset, int value)
+=======
+					   unsigned offset, int value)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_gpio_bank *bank = gpiochip_get_data(chip);
 	u32 mask = BIT(offset);
@@ -1855,7 +1899,11 @@ static int pic32_gpio_direction_output(struct gpio_chip *chip,
 
 static int pic32_gpio_set_direction(struct pinctrl_dev *pctldev,
 					      struct pinctrl_gpio_range *range,
+<<<<<<< HEAD
 					      unsigned int offset, bool input)
+=======
+					      unsigned offset, bool input)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct gpio_chip *chip = range->gc;
 
@@ -1876,12 +1924,20 @@ static const struct pinmux_ops pic32_pinmux_ops = {
 	.gpio_set_direction = pic32_gpio_set_direction,
 };
 
+<<<<<<< HEAD
 static int pic32_pinconf_get(struct pinctrl_dev *pctldev, unsigned int pin,
+=======
+static int pic32_pinconf_get(struct pinctrl_dev *pctldev, unsigned pin,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 unsigned long *config)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 	struct pic32_gpio_bank *bank = pctl_to_bank(pctl, pin);
+<<<<<<< HEAD
 	unsigned int param = pinconf_to_config_param(*config);
+=======
+	unsigned param = pinconf_to_config_param(*config);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 mask = BIT(pin - bank->gpio_chip.base);
 	u32 arg;
 
@@ -1917,12 +1973,21 @@ static int pic32_pinconf_get(struct pinctrl_dev *pctldev, unsigned int pin,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int pic32_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
 				 unsigned long *configs, unsigned int num_configs)
 {
 	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
 	struct pic32_gpio_bank *bank = pctl_to_bank(pctl, pin);
 	unsigned int param;
+=======
+static int pic32_pinconf_set(struct pinctrl_dev *pctldev, unsigned pin,
+				 unsigned long *configs, unsigned num_configs)
+{
+	struct pic32_pinctrl *pctl = pinctrl_dev_get_drvdata(pctldev);
+	struct pic32_gpio_bank *bank = pctl_to_bank(pctl, pin);
+	unsigned param;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 arg;
 	unsigned int i;
 	u32 offset = pin - bank->gpio_chip.base;
@@ -1938,7 +2003,11 @@ static int pic32_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
 		switch (param) {
 		case PIN_CONFIG_BIAS_PULL_UP:
 			dev_dbg(pctl->dev, "   pullup\n");
+<<<<<<< HEAD
 			writel(mask, bank->reg_base + PIC32_SET(CNPU_REG));
+=======
+			writel(mask, bank->reg_base +PIC32_SET(CNPU_REG));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		case PIN_CONFIG_BIAS_PULL_DOWN:
 			dev_dbg(pctl->dev, "   pulldown\n");
@@ -1987,7 +2056,11 @@ static struct pinctrl_desc pic32_pinctrl_desc = {
 	.owner = THIS_MODULE,
 };
 
+<<<<<<< HEAD
 static int pic32_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
+=======
+static int pic32_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct pic32_gpio_bank *bank = gpiochip_get_data(chip);
 
@@ -2174,10 +2247,23 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
 	if (IS_ERR(pctl->reg_base))
 		return PTR_ERR(pctl->reg_base);
 
+<<<<<<< HEAD
 	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
 	if (IS_ERR(pctl->clk)) {
 		ret = PTR_ERR(pctl->clk);
 		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+=======
+	pctl->clk = devm_clk_get(&pdev->dev, NULL);
+	if (IS_ERR(pctl->clk)) {
+		ret = PTR_ERR(pctl->clk);
+		dev_err(&pdev->dev, "clk get failed\n");
+		return ret;
+	}
+
+	ret = clk_prepare_enable(pctl->clk);
+	if (ret) {
+		dev_err(&pdev->dev, "clk enable failed\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -2233,10 +2319,23 @@ static int pic32_gpio_probe(struct platform_device *pdev)
 	if (irq < 0)
 		return irq;
 
+<<<<<<< HEAD
 	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
 	if (IS_ERR(bank->clk)) {
 		ret = PTR_ERR(bank->clk);
 		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+=======
+	bank->clk = devm_clk_get(&pdev->dev, NULL);
+	if (IS_ERR(bank->clk)) {
+		ret = PTR_ERR(bank->clk);
+		dev_err(&pdev->dev, "clk get failed\n");
+		return ret;
+	}
+
+	ret = clk_prepare_enable(bank->clk);
+	if (ret) {
+		dev_err(&pdev->dev, "clk enable failed\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return ret;
 	}
 
@@ -2253,7 +2352,11 @@ static int pic32_gpio_probe(struct platform_device *pdev)
 	girq->default_type = IRQ_TYPE_NONE;
 	girq->handler = handle_level_irq;
 	girq->parents[0] = irq;
+<<<<<<< HEAD
 	ret = devm_gpiochip_add_data(&pdev->dev, &bank->gpio_chip, bank);
+=======
+	ret = gpiochip_add_data(&bank->gpio_chip, bank);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0) {
 		dev_err(&pdev->dev, "Failed to add GPIO chip %u: %d\n",
 			id, ret);

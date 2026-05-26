@@ -14,6 +14,7 @@
 
 #define NFSDDBG_FACILITY		NFSDDBG_LOCKD
 
+<<<<<<< HEAD
 /**
  * nlm_fopen - Open an NFSD file
  * @rqstp: NLM RPC procedure execution context
@@ -28,6 +29,21 @@
  */
 static int nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f,
 		     struct file **filp, int flags)
+=======
+#ifdef CONFIG_LOCKD_V4
+#define nlm_stale_fh	nlm4_stale_fh
+#define nlm_failed	nlm4_failed
+#else
+#define nlm_stale_fh	nlm_lck_denied_nolocks
+#define nlm_failed	nlm_lck_denied_nolocks
+#endif
+/*
+ * Note: we hold the dentry use count while the file is open.
+ */
+static __be32
+nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f, struct file **filp,
+		int mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	__be32		nfserr;
 	int		access;
@@ -48,6 +64,7 @@ static int nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f,
 	 * if NFSEXP_NOAUTHNLM is set.  Some older clients use AUTH_NULL
 	 * for NLM requests.
 	 */
+<<<<<<< HEAD
 	access = (flags == O_WRONLY) ? NFSD_MAY_WRITE : NFSD_MAY_READ;
 	access |= NFSD_MAY_NLM | NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_BYPASS_GSS;
 	nfserr = nfsd_open(rqstp, &fh, S_IFREG, access, filp);
@@ -59,6 +76,20 @@ static int nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f,
 	case nfserr_jukebox:
 		/*
 		 * This error can indicate a presence of a conflicting
+=======
+	access = (mode == O_WRONLY) ? NFSD_MAY_WRITE : NFSD_MAY_READ;
+	access |= NFSD_MAY_NLM | NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_BYPASS_GSS;
+	nfserr = nfsd_open(rqstp, &fh, S_IFREG, access, filp);
+	fh_put(&fh);
+	/* We return nlm error codes as nlm doesn't know
+	 * about nfsd, but nfsd does know about nlm..
+	 */
+	switch (nfserr) {
+	case nfs_ok:
+		return 0;
+	case nfserr_jukebox:
+		/* this error can indicate a presence of a conflicting
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * delegation to an NLM lock request. Options are:
 		 * (1) For now, drop this request and make the client
 		 * retry. When delegation is returned, client's lock retry
@@ -66,11 +97,16 @@ static int nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f,
 		 * (2) NLM4_DENIED as per "spec" signals to the client
 		 * that the lock is unavailable now but client can retry.
 		 * Linux client implementation does not. It treats
+<<<<<<< HEAD
 		 * NLM4_DENIED same as NLM4_FAILED and fails the request.
+=======
+		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 * (3) For the future, treat this as blocked lock and try
 		 * to callback when the delegation is returned but might
 		 * not have a proper lock request to block on.
 		 */
+<<<<<<< HEAD
 		return -EWOULDBLOCK;
 	case nfserr_stale:
 		return -ESTALE;
@@ -85,6 +121,16 @@ static int nlm_fopen(struct svc_rqst *rqstp, struct nfs_fh *f,
  * nlm_fclose - Close an NFSD file
  * @filp: a struct file that was opened by nlm_fopen()
  */
+=======
+		return nlm_drop_reply;
+	case nfserr_stale:
+		return nlm_stale_fh;
+	default:
+		return nlm_failed;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void
 nlm_fclose(struct file *filp)
 {

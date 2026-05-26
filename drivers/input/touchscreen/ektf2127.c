@@ -187,10 +187,17 @@ static int ektf2127_suspend(struct device *dev)
 {
 	struct ektf2127_ts *ts = i2c_get_clientdata(to_i2c_client(dev));
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
 
 	if (input_device_enabled(ts->input))
 		ektf2127_stop(ts->input);
+=======
+	mutex_lock(&ts->input->mutex);
+	if (input_device_enabled(ts->input))
+		ektf2127_stop(ts->input);
+	mutex_unlock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -199,10 +206,17 @@ static int ektf2127_resume(struct device *dev)
 {
 	struct ektf2127_ts *ts = i2c_get_clientdata(to_i2c_client(dev));
 
+<<<<<<< HEAD
 	guard(mutex)(&ts->input->mutex);
 
 	if (input_device_enabled(ts->input))
 		ektf2127_start(ts->input);
+=======
+	mutex_lock(&ts->input->mutex);
+	if (input_device_enabled(ts->input))
+		ektf2127_start(ts->input);
+	mutex_unlock(&ts->input->mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }

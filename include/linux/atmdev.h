@@ -309,12 +309,16 @@ struct atm_ioctl {
 
 /**
  * register_atm_ioctl - register handler for ioctl operations
+<<<<<<< HEAD
  * @ioctl: ioctl handler to register
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Special (non-device) handlers of ioctl's should
  * register here. If you're a normal device, you should
  * set .ioctl in your atmdev_ops instead.
  */
+<<<<<<< HEAD
 void register_atm_ioctl(struct atm_ioctl *ioctl);
 
 /**
@@ -322,6 +326,14 @@ void register_atm_ioctl(struct atm_ioctl *ioctl);
  * @ioctl: ioctl handler to deregister
  */
 void deregister_atm_ioctl(struct atm_ioctl *ioctl);
+=======
+void register_atm_ioctl(struct atm_ioctl *);
+
+/**
+ * deregister_atm_ioctl - remove the ioctl handler
+ */
+void deregister_atm_ioctl(struct atm_ioctl *);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 
 /* register_atmdevice_notifier - register atm_dev notify events

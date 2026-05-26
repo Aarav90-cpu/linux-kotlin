@@ -200,7 +200,10 @@ u32 cpsw_sl_reg_read(struct cpsw_sl *sl, enum cpsw_sl_regs reg)
 	dev_dbg(sl->dev, "cpsw_sl: reg: %04X r 0x%08X\n", sl->regs[reg], val);
 	return val;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_reg_read);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_sl_reg_write(struct cpsw_sl *sl, enum cpsw_sl_regs reg, u32 val)
 {
@@ -213,7 +216,10 @@ void cpsw_sl_reg_write(struct cpsw_sl *sl, enum cpsw_sl_regs reg, u32 val)
 	dev_dbg(sl->dev, "cpsw_sl: reg: %04X w 0x%08X\n", sl->regs[reg], val);
 	writel(val, sl->sl_base + sl->regs[reg]);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_reg_write);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct cpsw_sl_dev_id *cpsw_sl_match_id(
 		const struct cpsw_sl_dev_id *id,
@@ -254,7 +260,10 @@ struct cpsw_sl *cpsw_sl_get(const char *device_id, struct device *dev,
 
 	return sl;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_get);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_sl_reset(struct cpsw_sl *sl, unsigned long tmo)
 {
@@ -273,7 +282,10 @@ void cpsw_sl_reset(struct cpsw_sl *sl, unsigned long tmo)
 	if (cpsw_sl_reg_read(sl, CPSW_SL_SOFT_RESET) & CPSW_SL_SOFT_RESET_BIT)
 		dev_err(sl->dev, "cpsw_sl failed to soft-reset.\n");
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_reset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u32 cpsw_sl_ctl_set(struct cpsw_sl *sl, u32 ctl_funcs)
 {
@@ -291,7 +303,10 @@ u32 cpsw_sl_ctl_set(struct cpsw_sl *sl, u32 ctl_funcs)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_ctl_set);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 u32 cpsw_sl_ctl_clr(struct cpsw_sl *sl, u32 ctl_funcs)
 {
@@ -309,13 +324,19 @@ u32 cpsw_sl_ctl_clr(struct cpsw_sl *sl, u32 ctl_funcs)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_ctl_clr);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void cpsw_sl_ctl_reset(struct cpsw_sl *sl)
 {
 	cpsw_sl_reg_write(sl, CPSW_SL_MACCONTROL, 0);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_ctl_reset);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int cpsw_sl_wait_for_idle(struct cpsw_sl *sl, unsigned long tmo)
 {
@@ -333,7 +354,10 @@ int cpsw_sl_wait_for_idle(struct cpsw_sl *sl, unsigned long tmo)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cpsw_sl_wait_for_idle);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("TI Ethernet Switch media-access-controller (MAC) submodule");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

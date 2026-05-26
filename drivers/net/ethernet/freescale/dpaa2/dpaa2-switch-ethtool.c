@@ -3,7 +3,11 @@
  * DPAA2 Ethernet Switch ethtool support
  *
  * Copyright 2014-2016 Freescale Semiconductor Inc.
+<<<<<<< HEAD
  * Copyright 2017-2018, 2024-2026 NXP
+=======
+ * Copyright 2017-2018 NXP
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  */
 
@@ -210,6 +214,7 @@ static void dpaa2_switch_ethtool_get_stats(struct net_device *netdev,
 	mutex_unlock(&port_priv->mac_lock);
 }
 
+<<<<<<< HEAD
 static void
 dpaa2_switch_get_rmon_stats(struct net_device *netdev,
 			    struct ethtool_rmon_stats *rmon_stats,
@@ -253,6 +258,8 @@ dpaa2_switch_get_eth_mac_stats(struct net_device *net_dev,
 	mutex_unlock(&port_priv->mac_lock);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const struct ethtool_ops dpaa2_switch_port_ethtool_ops = {
 	.get_drvinfo		= dpaa2_switch_get_drvinfo,
 	.get_link		= ethtool_op_get_link,
@@ -261,7 +268,10 @@ const struct ethtool_ops dpaa2_switch_port_ethtool_ops = {
 	.get_strings		= dpaa2_switch_ethtool_get_strings,
 	.get_ethtool_stats	= dpaa2_switch_ethtool_get_stats,
 	.get_sset_count		= dpaa2_switch_ethtool_get_sset_count,
+<<<<<<< HEAD
 	.get_rmon_stats		= dpaa2_switch_get_rmon_stats,
 	.get_eth_ctrl_stats	= dpaa2_switch_get_ctrl_stats,
 	.get_eth_mac_stats	= dpaa2_switch_get_eth_mac_stats,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

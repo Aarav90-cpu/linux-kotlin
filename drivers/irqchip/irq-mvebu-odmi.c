@@ -217,7 +217,11 @@ err_unmap:
 	for (i = 0; i < odmis_count; i++) {
 		struct odmi_data *odmi = &odmis[i];
 
+<<<<<<< HEAD
 		if (!IS_ERR_OR_NULL(odmi->base))
+=======
+		if (odmi->base && !IS_ERR(odmi->base))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			iounmap(odmis[i].base);
 	}
 	bitmap_free(odmis_bm);

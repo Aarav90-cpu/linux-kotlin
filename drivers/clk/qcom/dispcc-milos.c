@@ -4,10 +4,19 @@
  * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
  */
 
+<<<<<<< HEAD
 #include <linux/clk-provider.h>
 #include <linux/kernel.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+=======
+#include <linux/clk.h>
+#include <linux/clk-provider.h>
+#include <linux/err.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/of.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
@@ -392,6 +401,10 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
+=======
+		.flags = CLK_SET_RATE_PARENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.ops = &clk_regmap_div_ops,
 	},
 };
@@ -906,7 +919,11 @@ static struct clk_alpha_pll *disp_cc_milos_plls[] = {
 	&disp_cc_pll0,
 };
 
+<<<<<<< HEAD
 static const u32 disp_cc_milos_critical_cbcrs[] = {
+=======
+static u32 disp_cc_milos_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0xe06c, /* DISP_CC_SLEEP_CLK */
 	0xe04c, /* DISP_CC_XO_CLK */
 };
@@ -926,7 +943,11 @@ static void disp_cc_milos_clk_regs_configure(struct device *dev, struct regmap *
 }
 
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data disp_cc_milos_driver_data = {
+=======
+static struct qcom_cc_driver_data disp_cc_milos_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = disp_cc_milos_plls,
 	.num_alpha_plls = ARRAY_SIZE(disp_cc_milos_plls),
 	.clk_cbcrs = disp_cc_milos_critical_cbcrs,

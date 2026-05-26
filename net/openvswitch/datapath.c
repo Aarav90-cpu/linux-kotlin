@@ -2184,6 +2184,7 @@ error:
 	return err;
 }
 
+<<<<<<< HEAD
 static size_t ovs_vport_cmd_msg_size(void)
 {
 	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
@@ -2218,6 +2219,11 @@ static size_t ovs_vport_cmd_msg_size(void)
 static struct sk_buff *ovs_vport_cmd_alloc_info(void)
 {
 	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+=======
+static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+{
+	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
@@ -2227,7 +2233,11 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
 	struct sk_buff *skb;
 	int retval;
 
+<<<<<<< HEAD
 	skb = ovs_vport_cmd_alloc_info();
+=======
+	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!skb)
 		return ERR_PTR(-ENOMEM);
 

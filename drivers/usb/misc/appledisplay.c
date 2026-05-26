@@ -12,7 +12,10 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/hid.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/usb.h>
 #include <linux/backlight.h>
 #include <linux/timer.h>
@@ -21,6 +24,12 @@
 
 #define APPLE_VENDOR_ID		0x05AC
 
+<<<<<<< HEAD
+=======
+#define USB_REQ_GET_REPORT	0x01
+#define USB_REQ_SET_REPORT	0x09
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ACD_USB_TIMEOUT		250
 
 #define ACD_USB_EDID		0x0302
@@ -138,7 +147,11 @@ static int appledisplay_bl_update_status(struct backlight_device *bd)
 	retval = usb_control_msg(
 		pdata->udev,
 		usb_sndctrlpipe(pdata->udev, 0),
+<<<<<<< HEAD
 		HID_REQ_SET_REPORT,
+=======
+		USB_REQ_SET_REPORT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
 		ACD_USB_BRIGHTNESS,
 		0,
@@ -161,7 +174,11 @@ static int appledisplay_bl_get_brightness(struct backlight_device *bd)
 	retval = usb_control_msg(
 		pdata->udev,
 		usb_rcvctrlpipe(pdata->udev, 0),
+<<<<<<< HEAD
 		HID_REQ_GET_REPORT,
+=======
+		USB_REQ_GET_REPORT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
 		ACD_USB_BRIGHTNESS,
 		0,

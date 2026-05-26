@@ -411,8 +411,13 @@ static struct wmi_driver yogabook_wmi_driver = {
 		.name = "yogabook-wmi",
 		.pm = pm_sleep_ptr(&yogabook_pm_ops),
 	},
+<<<<<<< HEAD
 	.id_table = yogabook_wmi_id_table,
 	.min_event_size = 0,
+=======
+	.no_notify_data = true,
+	.id_table = yogabook_wmi_id_table,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.probe = yogabook_wmi_probe,
 	.remove = yogabook_wmi_remove,
 	.notify = yogabook_wmi_notify,

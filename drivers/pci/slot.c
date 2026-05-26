@@ -42,6 +42,7 @@ static ssize_t address_read_file(struct pci_slot *slot, char *buf)
 				  pci_domain_nr(slot->bus),
 				  slot->bus->number);
 
+<<<<<<< HEAD
 	/*
 	 * Preserve legacy ABI expectations that hotplug drivers that manage
 	 * multiple devices per slot emit 0 for the device number.
@@ -51,6 +52,8 @@ static ssize_t address_read_file(struct pci_slot *slot, char *buf)
 				  pci_domain_nr(slot->bus),
 				  slot->bus->number);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return sysfs_emit(buf, "%04x:%02x:%02x\n",
 			  pci_domain_nr(slot->bus),
 			  slot->bus->number,
@@ -82,8 +85,12 @@ static void pci_slot_release(struct kobject *kobj)
 
 	down_read(&pci_bus_sem);
 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
+<<<<<<< HEAD
 		if (slot->number == PCI_SLOT_ALL_DEVICES ||
 		    PCI_SLOT(dev->devfn) == slot->number)
+=======
+		if (PCI_SLOT(dev->devfn) == slot->number)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->slot = NULL;
 	up_read(&pci_bus_sem);
 
@@ -106,6 +113,7 @@ static struct attribute *pci_slot_default_attrs[] = {
 	&pci_slot_attr_cur_speed.attr,
 	NULL,
 };
+<<<<<<< HEAD
 
 static const struct attribute_group pci_slot_default_group = {
 	.attrs = pci_slot_default_attrs,
@@ -118,6 +126,9 @@ static const struct attribute_group *pci_slot_default_groups[] = {
 #endif
 	NULL,
 };
+=======
+ATTRIBUTE_GROUPS(pci_slot_default);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct kobj_type pci_slot_ktype = {
 	.sysfs_ops = &pci_slot_sysfs_ops,
@@ -187,8 +198,12 @@ void pci_dev_assign_slot(struct pci_dev *dev)
 
 	mutex_lock(&pci_slot_mutex);
 	list_for_each_entry(slot, &dev->bus->slots, list)
+<<<<<<< HEAD
 		if (slot->number == PCI_SLOT_ALL_DEVICES ||
 		    PCI_SLOT(dev->devfn) == slot->number)
+=======
+		if (PCI_SLOT(dev->devfn) == slot->number)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->slot = slot;
 	mutex_unlock(&pci_slot_mutex);
 }
@@ -210,8 +225,12 @@ static struct pci_slot *get_slot(struct pci_bus *parent, int slot_nr)
 /**
  * pci_create_slot - create or increment refcount for physical PCI slot
  * @parent: struct pci_bus of parent bridge
+<<<<<<< HEAD
  * @slot_nr: PCI_SLOT(pci_dev->devfn), -1 for placeholder, or
  *	PCI_SLOT_ALL_DEVICES
+=======
+ * @slot_nr: PCI_SLOT(pci_dev->devfn) or -1 for placeholder
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @name: user visible string presented in /sys/bus/pci/slots/<name>
  * @hotplug: set if caller is hotplug driver, NULL otherwise
  *
@@ -245,6 +264,7 @@ static struct pci_slot *get_slot(struct pci_bus *parent, int slot_nr)
  * consist solely of a dddd:bb tuple, where dddd is the PCI domain of the
  * %struct pci_bus and bb is the bus number. In other words, the devfn of
  * the 'placeholder' slot will not be displayed.
+<<<<<<< HEAD
  *
  * Bus-wide slots:
  * For PCIe hotplug, the physical slot encompasses the entire secondary
@@ -255,6 +275,8 @@ static struct pci_slot *get_slot(struct pci_bus *parent, int slot_nr)
  * to create a slot that matches all devices on the bus. Unlike placeholder
  * slots, bus-wide slots go through normal slot lookup and reuse existing
  * slots if present.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
 				 const char *name,
@@ -318,8 +340,12 @@ placeholder:
 
 	down_read(&pci_bus_sem);
 	list_for_each_entry(dev, &parent->devices, bus_list)
+<<<<<<< HEAD
 		if (slot_nr == PCI_SLOT_ALL_DEVICES ||
 		    PCI_SLOT(dev->devfn) == slot_nr)
+=======
+		if (PCI_SLOT(dev->devfn) == slot_nr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev->slot = slot;
 	up_read(&pci_bus_sem);
 

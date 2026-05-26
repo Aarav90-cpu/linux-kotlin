@@ -5,11 +5,18 @@
 
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_de.h"
 #include "intel_display_core.h"
 #include "intel_display_regs.h"
 #include "intel_display_wa.h"
+<<<<<<< HEAD
 #include "intel_step.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void gen11_display_wa_apply(struct intel_display *display)
 {
@@ -32,6 +39,7 @@ static void adlp_display_wa_apply(struct intel_display *display)
 	intel_de_rmw(display, GEN8_CHICKEN_DCPR_1, DDI_CLOCK_REG_ACCESS, 0);
 }
 
+<<<<<<< HEAD
 static void xe3plpd_display_wa_apply(struct intel_display *display)
 {
 	/* Wa_22021451799 */
@@ -43,6 +51,11 @@ void intel_display_wa_apply(struct intel_display *display)
 	if (DISPLAY_VER(display) == 35)
 		xe3plpd_display_wa_apply(display);
 	else if (display->platform.alderlake_p)
+=======
+void intel_display_wa_apply(struct intel_display *display)
+{
+	if (display->platform.alderlake_p)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		adlp_display_wa_apply(display);
 	else if (DISPLAY_VER(display) == 12)
 		xe_d_display_wa_apply(display);
@@ -70,6 +83,7 @@ static bool intel_display_needs_wa_16025573575(struct intel_display *display)
 bool __intel_display_wa(struct intel_display *display, enum intel_display_wa wa, const char *name)
 {
 	switch (wa) {
+<<<<<<< HEAD
 	case INTEL_DISPLAY_WA_1409120013:
 		return IS_DISPLAY_VER(display, 11, 12);
 	case INTEL_DISPLAY_WA_1409767108:
@@ -128,10 +142,21 @@ bool __intel_display_wa(struct intel_display *display, enum intel_display_wa wa,
 			IS_DISPLAY_STEP(display, STEP_A0, STEP_D0);
 	case INTEL_DISPLAY_WA_16011863758:
 		return DISPLAY_VER(display) >= 11;
+=======
+	case INTEL_DISPLAY_WA_13012396614:
+		return DISPLAY_VERx100(display) == 3000;
+	case INTEL_DISPLAY_WA_14011503117:
+		return DISPLAY_VER(display) == 13;
+	case INTEL_DISPLAY_WA_14025769978:
+		return DISPLAY_VER(display) == 35;
+	case INTEL_DISPLAY_WA_15018326506:
+		return display->platform.battlemage;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case INTEL_DISPLAY_WA_16023588340:
 		return intel_display_needs_wa_16023588340(display);
 	case INTEL_DISPLAY_WA_16025573575:
 		return intel_display_needs_wa_16025573575(display);
+<<<<<<< HEAD
 	case INTEL_DISPLAY_WA_16025596647:
 		return DISPLAY_VER(display) == 20 &&
 			IS_DISPLAY_VERx100_STEP(display, 3000,
@@ -153,6 +178,12 @@ bool __intel_display_wa(struct intel_display *display, enum intel_display_wa wa,
 		return IS_DISPLAY_VER(display, 14, 35);
 	default:
 		drm_WARN(display->drm, 1, "Missing Wa: %s\n", name);
+=======
+	case INTEL_DISPLAY_WA_22014263786:
+		return IS_DISPLAY_VERx100(display, 1100, 1400);
+	default:
+		drm_WARN(display->drm, 1, "Missing Wa number: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 

@@ -274,10 +274,13 @@ Repeat mmap() invocation this number of times.
 --cycles::
 Use perf's cpu-cycles event instead of gettimeofday syscall.
 
+<<<<<<< HEAD
 -t::
 --threads=<NUM>::
 Create multiple threads to call mmap/munmap concurrently.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 SUITES FOR 'numa'
 ~~~~~~~~~~~~~~~~~
 *mem*::

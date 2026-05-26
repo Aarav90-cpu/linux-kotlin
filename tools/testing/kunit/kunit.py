@@ -63,7 +63,10 @@ class KunitExecRequest(KunitParseRequest):
 	run_isolated: Optional[str]
 	list_tests: bool
 	list_tests_attr: bool
+<<<<<<< HEAD
 	list_suites: bool
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 @dataclass
 class KunitRequest(KunitExecRequest, KunitBuildRequest):
@@ -169,12 +172,15 @@ def exec_tests(linux: kunit_kernel.LinuxSourceTree, request: KunitExecRequest) -
 		for line in attr_output:
 			print(line.rstrip())
 		return KunitResult(status=KunitStatus.SUCCESS, elapsed_time=0.0)
+<<<<<<< HEAD
 	if request.list_suites:
 		tests = _list_tests(linux, request)
 		output = _suites_from_test_list(tests)
 		for line in output:
 			print(line.rstrip())
 		return KunitResult(status=KunitStatus.SUCCESS, elapsed_time=0.0)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if request.run_isolated:
 		tests = _list_tests(linux, request)
 		if request.run_isolated == 'test':
@@ -445,9 +451,12 @@ def add_exec_opts(parser: argparse.ArgumentParser) -> None:
 	parser.add_argument('--list_tests_attr', help='If set, list all tests and test '
 			    'attributes.',
 			    action='store_true')
+<<<<<<< HEAD
 	parser.add_argument('--list_suites', help='If set, list all suites that will be '
 			    'run.',
 			    action='store_true')
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 def add_parse_opts(parser: argparse.ArgumentParser) -> None:
 	parser.add_argument('--raw_output', help='If set don\'t parse output from kernel. '
@@ -511,8 +520,12 @@ def run_handler(cli_args: argparse.Namespace) -> None:
 					kernel_args=cli_args.kernel_args,
 					run_isolated=cli_args.run_isolated,
 					list_tests=cli_args.list_tests,
+<<<<<<< HEAD
 					list_tests_attr=cli_args.list_tests_attr,
 					list_suites=cli_args.list_suites)
+=======
+					list_tests_attr=cli_args.list_tests_attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	result = run_tests(linux, request)
 	if result.status != KunitStatus.SUCCESS:
 		sys.exit(1)
@@ -561,8 +574,12 @@ def exec_handler(cli_args: argparse.Namespace) -> None:
 					kernel_args=cli_args.kernel_args,
 					run_isolated=cli_args.run_isolated,
 					list_tests=cli_args.list_tests,
+<<<<<<< HEAD
 					list_tests_attr=cli_args.list_tests_attr,
 					list_suites=cli_args.list_suites)
+=======
+					list_tests_attr=cli_args.list_tests_attr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	result = exec_tests(linux, exec_request)
 	stdout.print_with_timestamp((
 		'Elapsed time: %.3fs\n') % (result.elapsed_time))

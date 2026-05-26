@@ -69,8 +69,11 @@
 					/* (how hard it is to drag */
 					/* with Z-axis pressed) */
 
+<<<<<<< HEAD
 #define TP_DOUBLETAP		0x58	/* TrackPoint doubletap register */
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define TP_MINDRAG		0x59	/* Minimum amount of force needed */
 					/* to trigger dragging */
 
@@ -112,9 +115,12 @@
 					   external device will be forced to 1 */
 #define TP_MASK_EXT_TAG			0x04
 
+<<<<<<< HEAD
 /* Doubletap register values */
 #define TP_DOUBLETAP_ENABLE	0xFF	/* Enable value */
 #define TP_DOUBLETAP_DISABLE	0xFE	/* Disable value */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Power on Self Test Results */
 #define TP_POR_SUCCESS		0x3B

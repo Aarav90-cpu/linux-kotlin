@@ -150,6 +150,7 @@ config USB_DWC3_IMX8MP
 	  functionality.
 	  Say 'Y' or 'M' if you have one such device.
 
+<<<<<<< HEAD
 config USB_DWC3_IMX
 	tristate "NXP iMX Platform"
 	depends on OF && COMMON_CLK
@@ -162,6 +163,8 @@ config USB_DWC3_IMX
 	  of DesignWare Core.
 	  Say 'Y' or 'M' if you have one such device.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config USB_DWC3_XILINX
 	tristate "Xilinx Platforms"
 	depends on (ARCH_ZYNQMP || COMPILE_TEST) && OF

@@ -22,5 +22,10 @@ ucc_geth_driver-objs := ucc_geth.o ucc_geth_ethtool.o
 obj-$(CONFIG_FSL_FMAN) += fman/
 obj-$(CONFIG_FSL_DPAA_ETH) += dpaa/
 
+<<<<<<< HEAD
 obj-y += dpaa2/
+=======
+obj-$(CONFIG_FSL_DPAA2_ETH) += dpaa2/
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-y += enetc/

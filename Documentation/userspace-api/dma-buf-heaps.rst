@@ -16,6 +16,7 @@ following heaps:
 
  - The ``system`` heap allocates virtually contiguous, cacheable, buffers.
 
+<<<<<<< HEAD
  - The ``system_cc_shared`` heap allocates virtually contiguous, cacheable,
    buffers using shared (decrypted) memory. It is only present on
    confidential computing (CoCo) VMs where memory encryption is active
@@ -23,6 +24,8 @@ following heaps:
    bit cleared, making them accessible for device DMA without TDISP
    support. On non-CoCo VM configurations, this heap is not registered.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  - The ``default_cma_region`` heap allocates physically contiguous,
    cacheable, buffers. Only present if a CMA region is present. Such a
    region is usually created either through the kernel commandline

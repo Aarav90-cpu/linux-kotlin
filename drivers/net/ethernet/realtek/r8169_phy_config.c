@@ -14,9 +14,12 @@
 
 #include "r8169.h"
 
+<<<<<<< HEAD
 #define LINK_SPEED_10M_PLL_OFF		BIT(0)
 #define ALDPS_PLL_OFF			BIT(1)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 typedef void (*rtl_phy_cfg_fct)(struct rtl8169_private *tp,
 				struct phy_device *phydev);
 
@@ -1105,6 +1108,7 @@ static void rtl8125d_hw_phy_config(struct rtl8169_private *tp,
 	rtl8125_config_eee_phy(phydev);
 }
 
+<<<<<<< HEAD
 static void rtl8125cp_hw_phy_config(struct rtl8169_private *tp,
 				    struct phy_device *phydev)
 {
@@ -1127,6 +1131,8 @@ static void rtl8125cp_hw_phy_config(struct rtl8169_private *tp,
 	rtl8125_config_eee_phy(phydev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rtl8125bp_hw_phy_config(struct rtl8169_private *tp,
 				    struct phy_device *phydev)
 {
@@ -1369,7 +1375,10 @@ void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
 		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
 		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
 		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
+<<<<<<< HEAD
 		[RTL_GIGA_MAC_VER_65] = rtl8125cp_hw_phy_config,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		[RTL_GIGA_MAC_VER_66] = rtl8125bp_hw_phy_config,
 		[RTL_GIGA_MAC_VER_70] = rtl8126a_hw_phy_config,
 		[RTL_GIGA_MAC_VER_80] = rtl8127a_1_hw_phy_config,

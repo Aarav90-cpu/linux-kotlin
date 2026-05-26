@@ -101,7 +101,11 @@ required:
 unevaluatedProperties: false
 
 allOf:
+<<<<<<< HEAD
   - $ref: nand-controller-legacy.yaml
+=======
+  - $ref: nand-controller.yaml
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   - if:
       properties:

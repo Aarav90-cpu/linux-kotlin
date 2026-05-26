@@ -190,7 +190,11 @@ struct tsl2772_chip {
 };
 
 /*
+<<<<<<< HEAD
  * Different devices require different coefficients, and these numbers were
+=======
+ * Different devices require different coefficents, and these numbers were
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * derived from the 'Lux Equation' section of the various device datasheets.
  * All of these coefficients assume a Glass Attenuation (GA) factor of 1.
  * The coefficients are multiplied by 1000 to avoid floating point operations.

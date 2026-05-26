@@ -4,10 +4,17 @@
  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  */
 
+<<<<<<< HEAD
 #include <linux/fips.h>
 #include <linux/ieee80211.h>
 #include <linux/kernel.h>
 #include <linux/skbuff.h>
+=======
+#include <linux/ieee80211.h>
+#include <linux/kernel.h>
+#include <linux/skbuff.h>
+#include <crypto/hash.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "core.h"
 #include "debug.h"
 #include "debugfs_htt_stats.h"
@@ -3183,13 +3190,25 @@ static void ath11k_dp_rx_frag_timer(struct timer_list *timer)
 int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id)
 {
 	struct ath11k_base *ab = ar->ab;
+<<<<<<< HEAD
+=======
+	struct crypto_shash *tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct ath11k_peer *peer;
 	struct dp_rx_tid *rx_tid;
 	int i;
 
+<<<<<<< HEAD
 	if (fips_enabled) {
 		ath11k_warn(ab, "This driver is disabled due to FIPS\n");
 		return -ENOENT;
+=======
+	tfm = crypto_alloc_shash("michael_mic", 0, 0);
+	if (IS_ERR(tfm)) {
+		ath11k_warn(ab, "failed to allocate michael_mic shash: %ld\n",
+			    PTR_ERR(tfm));
+		return PTR_ERR(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	spin_lock_bh(&ab->base_lock);
@@ -3198,6 +3217,10 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
 	if (!peer) {
 		ath11k_warn(ab, "failed to find the peer to set up fragment info\n");
 		spin_unlock_bh(&ab->base_lock);
+<<<<<<< HEAD
+=======
+		crypto_free_shash(tfm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOENT;
 	}
 
@@ -3208,12 +3231,60 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
 		skb_queue_head_init(&rx_tid->rx_frags);
 	}
 
+<<<<<<< HEAD
+=======
+	peer->tfm_mmic = tfm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	peer->dp_setup_done = true;
 	spin_unlock_bh(&ab->base_lock);
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int ath11k_dp_rx_h_michael_mic(struct crypto_shash *tfm, u8 *key,
+				      struct ieee80211_hdr *hdr, u8 *data,
+				      size_t data_len, u8 *mic)
+{
+	SHASH_DESC_ON_STACK(desc, tfm);
+	u8 mic_hdr[16] = {};
+	u8 tid = 0;
+	int ret;
+
+	if (!tfm)
+		return -EINVAL;
+
+	desc->tfm = tfm;
+
+	ret = crypto_shash_setkey(tfm, key, 8);
+	if (ret)
+		goto out;
+
+	ret = crypto_shash_init(desc);
+	if (ret)
+		goto out;
+
+	/* TKIP MIC header */
+	memcpy(mic_hdr, ieee80211_get_DA(hdr), ETH_ALEN);
+	memcpy(mic_hdr + ETH_ALEN, ieee80211_get_SA(hdr), ETH_ALEN);
+	if (ieee80211_is_data_qos(hdr->frame_control))
+		tid = ieee80211_get_tid(hdr);
+	mic_hdr[12] = tid;
+
+	ret = crypto_shash_update(desc, mic_hdr, 16);
+	if (ret)
+		goto out;
+	ret = crypto_shash_update(desc, data, data_len);
+	if (ret)
+		goto out;
+	ret = crypto_shash_final(desc, mic);
+out:
+	shash_desc_zero(desc);
+	return ret;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ath11k_dp_rx_h_verify_tkip_mic(struct ath11k *ar, struct ath11k_peer *peer,
 					  struct sk_buff *msdu)
 {
@@ -3222,7 +3293,11 @@ static int ath11k_dp_rx_h_verify_tkip_mic(struct ath11k *ar, struct ath11k_peer 
 	struct ieee80211_key_conf *key_conf;
 	struct ieee80211_hdr *hdr;
 	u8 mic[IEEE80211_CCMP_MIC_LEN];
+<<<<<<< HEAD
 	int head_len, tail_len;
+=======
+	int head_len, tail_len, ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	size_t data_len;
 	u32 hdr_len, hal_rx_desc_sz = ar->ab->hw_params.hal_desc_sz;
 	u8 *key, *data;
@@ -3248,8 +3323,13 @@ static int ath11k_dp_rx_h_verify_tkip_mic(struct ath11k *ar, struct ath11k_peer 
 	data_len = msdu->len - head_len - tail_len;
 	key = &key_conf->key[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY];
 
+<<<<<<< HEAD
 	michael_mic(key, hdr, data, data_len, mic);
 	if (memcmp(mic, data + data_len, IEEE80211_CCMP_MIC_LEN))
+=======
+	ret = ath11k_dp_rx_h_michael_mic(peer->tfm_mmic, key, hdr, data, data_len, mic);
+	if (ret || memcmp(mic, data + data_len, IEEE80211_CCMP_MIC_LEN))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto mic_fail;
 
 	return 0;

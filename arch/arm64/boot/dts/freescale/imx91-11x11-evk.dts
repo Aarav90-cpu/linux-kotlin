@@ -23,7 +23,10 @@
 		i2c2 = &lpi2c3;
 		mmc0 = &usdhc1;
 		mmc1 = &usdhc2;
+<<<<<<< HEAD
 		mmc2 = &usdhc3;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rtc0 = &bbnsm_rtc;
 		serial0 = &lpuart1;
 		serial1 = &lpuart2;
@@ -58,6 +61,7 @@
 		enable-active-high;
 	};
 
+<<<<<<< HEAD
 	reg_m2_pwr: regulator-m2-pwr {
 		compatible = "regulator-fixed";
 		regulator-name = "M.2-power";
@@ -67,6 +71,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reg_usdhc2_vmmc: regulator-usdhc2 {
 		compatible = "regulator-fixed";
 		off-on-delay-us = <12000>;
@@ -79,6 +85,7 @@
 		enable-active-high;
 	};
 
+<<<<<<< HEAD
 	reg_usdhc3_vmmc: regulator-usdhc3 {
 		compatible = "regulator-fixed";
 		regulator-name = "WLAN_EN";
@@ -96,6 +103,8 @@
 		enable-active-high;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reserved-memory {
 		ranges;
 		#address-cells = <2>;
@@ -171,11 +180,14 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	usdhc3_pwrseq: usdhc3_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&pcal6524 12 GPIO_ACTIVE_LOW>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 &adc1 {
@@ -278,12 +290,15 @@
 		interrupt-parent = <&gpio3>;
 		pinctrl-0 = <&pinctrl_pcal6524>;
 		pinctrl-names = "default";
+<<<<<<< HEAD
 
 		m2-pcm-level-shifter-hog {
 			gpio-hog;
 			gpios = <19 GPIO_ACTIVE_HIGH>;
 			output-high;
 		};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	pmic@25 {
@@ -552,7 +567,10 @@
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+<<<<<<< HEAD
 	fsl,tuning-step = <1>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -567,6 +585,7 @@
 	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_gpio_sleep>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
 	vmmc-supply = <&reg_usdhc2_vmmc>;
+<<<<<<< HEAD
 	fsl,tuning-step = <1>;
 	status = "okay";
 };
@@ -583,6 +602,8 @@
 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
 	vmmc-supply = <&reg_usdhc3_vmmc>;
 	wakeup-source;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	status = "okay";
 };
 
@@ -905,6 +926,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_usdhc3: usdhc3grp {
 		fsl,pins = <
 			MX91_PAD_SD3_CLK__USDHC3_CLK                            0x1582
@@ -948,4 +970,6 @@
 			MX91_PAD_SD3_DATA3__GPIO3_IO25                           0x31e
 		>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

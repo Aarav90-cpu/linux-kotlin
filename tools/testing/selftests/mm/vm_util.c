@@ -764,6 +764,7 @@ int unpoison_memory(unsigned long pfn)
 
 	return ret > 0 ? 0 : -errno;
 }
+<<<<<<< HEAD
 
 void write_file(const char *path, const char *buf, size_t buflen)
 {
@@ -788,3 +789,5 @@ void write_file(const char *path, const char *buf, size_t buflen)
 		ksft_exit_fail_msg("%s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
 				path, (int)(buflen - 1), buf, buflen - 1, numwritten);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

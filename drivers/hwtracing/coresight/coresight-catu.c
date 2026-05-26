@@ -30,6 +30,11 @@
 #define catu_dbg(x, ...) do {} while (0)
 #endif
 
+<<<<<<< HEAD
+=======
+DEFINE_CORESIGHT_DEVLIST(catu_devs, "catu");
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct catu_etr_buf {
 	struct tmc_sg_table *catu_table;
 	dma_addr_t sladdr;
@@ -528,7 +533,11 @@ static int __catu_probe(struct device *dev, struct resource *res)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	catu_desc.name = coresight_alloc_device_name("catu", dev);
+=======
+	catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!catu_desc.name)
 		return -ENOMEM;
 

@@ -239,7 +239,10 @@ struct dml2_configuration_options {
 
 	bool use_clock_dc_limits;
 	bool gpuvm_enable;
+<<<<<<< HEAD
 	bool hostvm_enable;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool force_tdlut_enable;
 	void *bb_from_dmub;
 };

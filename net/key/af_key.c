@@ -3804,7 +3804,11 @@ static int pfkey_seq_show(struct seq_file *f, void *v)
 	if (v == SEQ_START_TOKEN)
 		seq_printf(f ,"sk       RefCnt Rmem   Wmem   User   Inode\n");
 	else
+<<<<<<< HEAD
 		seq_printf(f, "%pK %-6d %-6u %-6u %-6u %-6llu\n",
+=======
+		seq_printf(f, "%pK %-6d %-6u %-6u %-6u %-6lu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			       s,
 			       refcount_read(&s->sk_refcnt),
 			       sk_rmem_alloc_get(s),

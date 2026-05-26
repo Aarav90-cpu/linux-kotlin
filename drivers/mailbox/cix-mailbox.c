@@ -12,6 +12,11 @@
 #include <linux/module.h>
 #include <linux/platform_device.h>
 
+<<<<<<< HEAD
+=======
+#include "mailbox.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The maximum transmission size is 32 words or 128 bytes.
  */
@@ -403,7 +408,11 @@ static int cix_mbox_startup(struct mbox_chan *chan)
 	int index = cp->index, ret;
 	u32 val;
 
+<<<<<<< HEAD
 	ret = request_irq(priv->irq, cix_mbox_isr, IRQF_NO_SUSPEND,
+=======
+	ret = request_irq(priv->irq, cix_mbox_isr, 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  dev_name(priv->dev), chan);
 	if (ret) {
 		dev_err(priv->dev, "Unable to acquire IRQ %d\n", priv->irq);
@@ -413,7 +422,11 @@ static int cix_mbox_startup(struct mbox_chan *chan)
 	switch (cp->type) {
 	case CIX_MBOX_TYPE_DB:
 		/* Overwrite txdone_method for DB channel */
+<<<<<<< HEAD
 		chan->txdone_method = MBOX_TXDONE_BY_ACK;
+=======
+		chan->txdone_method = TXDONE_BY_ACK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fallthrough;
 	case CIX_MBOX_TYPE_REG:
 		if (priv->dir == CIX_MBOX_TX) {

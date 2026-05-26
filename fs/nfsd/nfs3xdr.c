@@ -1069,7 +1069,11 @@ svcxdr_encode_entry3_common(struct nfsd3_readdirres *resp, const char *name,
  *
  * Return values:
  *   %0: Entry was successfully encoded.
+<<<<<<< HEAD
  *   %-EINVAL: An encoding problem occurred, secondary status code in resp->common.err
+=======
+ *   %-EINVAL: An encoding problem occured, secondary status code in resp->common.err
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * On exit, the following fields are updated:
  *   - resp->xdr
@@ -1144,7 +1148,11 @@ out_noattrs:
  *
  * Return values:
  *   %0: Entry was successfully encoded.
+<<<<<<< HEAD
  *   %-EINVAL: An encoding problem occurred, secondary status code in resp->common.err
+=======
+ *   %-EINVAL: An encoding problem occured, secondary status code in resp->common.err
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * On exit, the following fields are updated:
  *   - resp->xdr

@@ -136,12 +136,20 @@ struct virtio_rpmsg_channel {
 #define RPMSG_RESERVED_ADDRESSES	(1024)
 
 static void virtio_rpmsg_destroy_ept(struct rpmsg_endpoint *ept);
+<<<<<<< HEAD
 static int virtio_rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int len);
 static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, const void *data,
 			       int len, u32 dst);
 static int virtio_rpmsg_trysend(struct rpmsg_endpoint *ept, const void *data,
 				int len);
 static int virtio_rpmsg_trysendto(struct rpmsg_endpoint *ept, const void *data,
+=======
+static int virtio_rpmsg_send(struct rpmsg_endpoint *ept, void *data, int len);
+static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, void *data, int len,
+			       u32 dst);
+static int virtio_rpmsg_trysend(struct rpmsg_endpoint *ept, void *data, int len);
+static int virtio_rpmsg_trysendto(struct rpmsg_endpoint *ept, void *data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  int len, u32 dst);
 static __poll_t virtio_rpmsg_poll(struct rpmsg_endpoint *ept, struct file *filp,
 				  poll_table *wait);
@@ -491,7 +499,11 @@ static void *get_a_tx_buf(struct virtproc_info *vrp)
  */
 static int rpmsg_send_offchannel_raw(struct rpmsg_device *rpdev,
 				     u32 src, u32 dst,
+<<<<<<< HEAD
 				     const void *data, int len, bool wait)
+=======
+				     void *data, int len, bool wait)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
 	struct virtproc_info *vrp = vch->vrp;
@@ -581,7 +593,11 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static int virtio_rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int len)
+=======
+static int virtio_rpmsg_send(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rpmsg_device *rpdev = ept->rpdev;
 	u32 src = ept->addr, dst = rpdev->dst;
@@ -589,8 +605,13 @@ static int virtio_rpmsg_send(struct rpmsg_endpoint *ept, const void *data, int l
 	return rpmsg_send_offchannel_raw(rpdev, src, dst, data, len, true);
 }
 
+<<<<<<< HEAD
 static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, const void *data,
 			       int len, u32 dst)
+=======
+static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, void *data, int len,
+			       u32 dst)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rpmsg_device *rpdev = ept->rpdev;
 	u32 src = ept->addr;
@@ -598,8 +619,12 @@ static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, const void *data,
 	return rpmsg_send_offchannel_raw(rpdev, src, dst, data, len, true);
 }
 
+<<<<<<< HEAD
 static int virtio_rpmsg_trysend(struct rpmsg_endpoint *ept, const void *data,
 				int len)
+=======
+static int virtio_rpmsg_trysend(struct rpmsg_endpoint *ept, void *data, int len)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rpmsg_device *rpdev = ept->rpdev;
 	u32 src = ept->addr, dst = rpdev->dst;
@@ -607,7 +632,11 @@ static int virtio_rpmsg_trysend(struct rpmsg_endpoint *ept, const void *data,
 	return rpmsg_send_offchannel_raw(rpdev, src, dst, data, len, false);
 }
 
+<<<<<<< HEAD
 static int virtio_rpmsg_trysendto(struct rpmsg_endpoint *ept, const void *data,
+=======
+static int virtio_rpmsg_trysendto(struct rpmsg_endpoint *ept, void *data,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				  int len, u32 dst)
 {
 	struct rpmsg_device *rpdev = ept->rpdev;

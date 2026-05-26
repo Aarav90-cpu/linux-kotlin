@@ -162,6 +162,7 @@ properties:
       this affects the expected delay in ps before latching a value to
       an output pin.
 
+<<<<<<< HEAD
   input-threshold-voltage-microvolt:
     description: Specifies the input voltage level of the pin in microvolts.
       This defines the reference for  VIH (Input High Voltage) and VIL
@@ -262,5 +263,14 @@ allOf:
             - bias-pull-down
         - required:
             - bias-pull-pin-default
+=======
+if:
+  required:
+    - skew-delay
+then:
+  properties:
+    skew-delay-input-ps: false
+    skew-delay-output-ps: false
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 additionalProperties: true

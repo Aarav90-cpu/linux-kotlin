@@ -714,10 +714,17 @@ static bool fnd_is_empty(struct ntfs_fnd *fnd)
  */
 static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
 				  const struct INDEX_HDR *hdr, const void *key,
+<<<<<<< HEAD
 				  size_t key_len, const void *ctx, int *diff,
 				  NTFS_CMP_FUNC cmp)
 {
 	struct NTFS_DE *e, *found = NULL;
+=======
+				  size_t key_len, const void *ctx, int *diff)
+{
+	struct NTFS_DE *e, *found = NULL;
+	NTFS_CMP_FUNC cmp = indx->cmp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int min_idx = 0, mid_idx, max_idx = 0;
 	int diff2;
 	int table_size = 8;
@@ -727,6 +734,12 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
 	u32 total = le32_to_cpu(hdr->total);
 	u16 offs[128];
 
+<<<<<<< HEAD
+=======
+	if (unlikely(!cmp))
+		return NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fill_table:
 	if (end > total)
 		return NULL;
@@ -797,8 +810,12 @@ binary_search:
 static struct NTFS_DE *hdr_insert_de(const struct ntfs_index *indx,
 				     struct INDEX_HDR *hdr,
 				     const struct NTFS_DE *de,
+<<<<<<< HEAD
 				     struct NTFS_DE *before, const void *ctx,
 				     NTFS_CMP_FUNC cmp)
+=======
+				     struct NTFS_DE *before, const void *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int diff;
 	size_t off = PtrOffset(hdr, before);
@@ -821,7 +838,11 @@ static struct NTFS_DE *hdr_insert_de(const struct ntfs_index *indx,
 	}
 	/* No insert point is applied. Get it manually. */
 	before = hdr_find_e(indx, hdr, de + 1, le16_to_cpu(de->key_size), ctx,
+<<<<<<< HEAD
 			    &diff, cmp);
+=======
+			    &diff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!before)
 		return NULL;
 	off = PtrOffset(hdr, before);
@@ -913,6 +934,13 @@ int indx_init(struct ntfs_index *indx, struct ntfs_sb_info *sbi,
 
 	init_rwsem(&indx->run_lock);
 
+<<<<<<< HEAD
+=======
+	indx->cmp = get_cmp_func(root);
+	if (!indx->cmp)
+		goto out;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 out:
@@ -1135,7 +1163,10 @@ int indx_find(struct ntfs_index *indx, struct ntfs_inode *ni,
 	int err;
 	struct NTFS_DE *e;
 	struct indx_node *node;
+<<<<<<< HEAD
 	NTFS_CMP_FUNC cmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!root)
 		root = indx_get_root(&ni->dir, ni, NULL, NULL);
@@ -1145,6 +1176,7 @@ int indx_find(struct ntfs_index *indx, struct ntfs_inode *ni,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	cmp = get_cmp_func(root);
 	if (unlikely(!cmp)) {
 		WARN_ON_ONCE(1);
@@ -1155,6 +1187,12 @@ int indx_find(struct ntfs_index *indx, struct ntfs_inode *ni,
 	e = fnd->level ? fnd->de[fnd->level - 1] : fnd->root_de;
 	if (e && !de_is_last(e) &&
 	    !(*cmp)(key, key_len, e + 1, le16_to_cpu(e->key_size), ctx)) {
+=======
+	/* Check cache. */
+	e = fnd->level ? fnd->de[fnd->level - 1] : fnd->root_de;
+	if (e && !de_is_last(e) &&
+	    !(*indx->cmp)(key, key_len, e + 1, le16_to_cpu(e->key_size), ctx)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*entry = e;
 		*diff = 0;
 		return 0;
@@ -1164,7 +1202,11 @@ int indx_find(struct ntfs_index *indx, struct ntfs_inode *ni,
 	fnd_clear(fnd);
 
 	/* Lookup entry that is <= to the search value. */
+<<<<<<< HEAD
 	e = hdr_find_e(indx, &root->ihdr, key, key_len, ctx, diff, cmp);
+=======
+	e = hdr_find_e(indx, &root->ihdr, key, key_len, ctx, diff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!e)
 		return -EINVAL;
 
@@ -1184,7 +1226,11 @@ int indx_find(struct ntfs_index *indx, struct ntfs_inode *ni,
 
 		/* Lookup entry that is <= to the search value. */
 		e = hdr_find_e(indx, &node->index->ihdr, key, key_len, ctx,
+<<<<<<< HEAD
 			       diff, cmp);
+=======
+			       diff);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!e) {
 			put_indx_node(node);
 			return -EINVAL;
@@ -1482,7 +1528,10 @@ out1:
 	run_deallocate(sbi, &run, false);
 
 out:
+<<<<<<< HEAD
 	run_close(&run);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -1587,7 +1636,11 @@ out1:
 static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
 				 const struct NTFS_DE *new_de,
 				 struct NTFS_DE *root_de, const void *ctx,
+<<<<<<< HEAD
 				 struct ntfs_fnd *fnd, bool undo, NTFS_CMP_FUNC cmp)
+=======
+				 struct ntfs_fnd *fnd, bool undo)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err = 0;
 	struct NTFS_DE *e, *e0, *re;
@@ -1628,7 +1681,11 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
 	if ((undo || asize + ds_root < sbi->max_bytes_per_attr) &&
 	    mi_resize_attr(mi, attr, ds_root)) {
 		hdr->total = cpu_to_le32(hdr_total + ds_root);
+<<<<<<< HEAD
 		e = hdr_insert_de(indx, hdr, new_de, root_de, ctx, cmp);
+=======
+		e = hdr_insert_de(indx, hdr, new_de, root_de, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON(!e);
 		fnd_clear(fnd);
 		fnd->root_de = e;
@@ -1769,7 +1826,11 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
 	 * Now root is a parent for new index buffer.
 	 * Insert NewEntry a new buffer.
 	 */
+<<<<<<< HEAD
 	e = hdr_insert_de(indx, hdr, new_de, NULL, ctx, cmp);
+=======
+	e = hdr_insert_de(indx, hdr, new_de, NULL, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!e) {
 		err = -EINVAL;
 		goto out_put_n;
@@ -1799,7 +1860,11 @@ out_free_root:
 static int
 indx_insert_into_buffer(struct ntfs_index *indx, struct ntfs_inode *ni,
 			struct INDEX_ROOT *root, const struct NTFS_DE *new_de,
+<<<<<<< HEAD
 			const void *ctx, int level, struct ntfs_fnd *fnd, NTFS_CMP_FUNC cmp)
+=======
+			const void *ctx, int level, struct ntfs_fnd *fnd)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int err;
 	const struct NTFS_DE *sp;
@@ -1816,7 +1881,11 @@ indx_insert_into_buffer(struct ntfs_index *indx, struct ntfs_inode *ni,
 
 	/* Try the most easy case. */
 	e = fnd->level - 1 == level ? fnd->de[level] : NULL;
+<<<<<<< HEAD
 	e = hdr_insert_de(indx, hdr1, new_de, e, ctx, cmp);
+=======
+	e = hdr_insert_de(indx, hdr1, new_de, e, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	fnd->de[level] = e;
 	if (e) {
 		/* Just write updated index into disk. */
@@ -1893,12 +1962,20 @@ indx_insert_into_buffer(struct ntfs_index *indx, struct ntfs_inode *ni,
 	 * (depending on sp <=> new_de).
 	 */
 	hdr_insert_de(indx,
+<<<<<<< HEAD
 		      (*cmp)(new_de + 1, le16_to_cpu(new_de->key_size),
+=======
+		      (*indx->cmp)(new_de + 1, le16_to_cpu(new_de->key_size),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   up_e + 1, le16_to_cpu(up_e->key_size),
 				   ctx) < 0 ?
 			      hdr2 :
 			      hdr1,
+<<<<<<< HEAD
 		      new_de, NULL, ctx, cmp);
+=======
+		      new_de, NULL, ctx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	indx_mark_used(indx, ni, new_vbn >> indx->idx2vbn_bits);
 
@@ -1913,14 +1990,22 @@ indx_insert_into_buffer(struct ntfs_index *indx, struct ntfs_inode *ni,
 	 */
 	if (!level) {
 		/* Insert in root. */
+<<<<<<< HEAD
 		err = indx_insert_into_root(indx, ni, up_e, NULL, ctx, fnd, 0, cmp);
+=======
+		err = indx_insert_into_root(indx, ni, up_e, NULL, ctx, fnd, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * The target buffer's parent is another index buffer.
 		 * TODO: Remove recursion.
 		 */
 		err = indx_insert_into_buffer(indx, ni, root, up_e, ctx,
+<<<<<<< HEAD
 					      level - 1, fnd, cmp);
+=======
+					      level - 1, fnd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (err) {
@@ -1954,7 +2039,10 @@ int indx_insert_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 	struct NTFS_DE *e;
 	struct ntfs_fnd *fnd_a = NULL;
 	struct INDEX_ROOT *root;
+<<<<<<< HEAD
 	NTFS_CMP_FUNC cmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!fnd) {
 		fnd_a = fnd_get();
@@ -1971,12 +2059,15 @@ int indx_insert_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	cmp = get_cmp_func(root);
 	if (unlikely(!cmp)) {
 		WARN_ON_ONCE(1);
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (fnd_is_empty(fnd)) {
 		/*
 		 * Find the spot the tree where we want to
@@ -2000,13 +2091,21 @@ int indx_insert_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 		 * new entry into it.
 		 */
 		err = indx_insert_into_root(indx, ni, new_de, fnd->root_de, ctx,
+<<<<<<< HEAD
 					    fnd, undo, cmp);
+=======
+					    fnd, undo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * Found a leaf buffer, so we'll insert the new entry into it.
 		 */
 		err = indx_insert_into_buffer(indx, ni, root, new_de, ctx,
+<<<<<<< HEAD
 					      fnd->level - 1, fnd, cmp);
+=======
+					      fnd->level - 1, fnd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	indx->version += 1;
@@ -2300,7 +2399,10 @@ int indx_delete_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 	u32 e_size, root_size, new_root_size;
 	size_t trim_bit;
 	const struct INDEX_NAMES *in;
+<<<<<<< HEAD
 	NTFS_CMP_FUNC cmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fnd = fnd_get();
 	if (!fnd) {
@@ -2320,12 +2422,15 @@ int indx_delete_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	cmp = get_cmp_func(root);
 	if (unlikely(!cmp)) {
 		WARN_ON_ONCE(1);
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Locate the entry to remove. */
 	err = indx_find(indx, ni, root, key, key_len, ctx, &diff, &e, fnd);
 	if (err)
@@ -2392,9 +2497,15 @@ int indx_delete_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
 			err = level ? indx_insert_into_buffer(indx, ni, root,
 							      re, ctx,
 							      fnd->level - 1,
+<<<<<<< HEAD
 							      fnd, cmp) :
 				      indx_insert_into_root(indx, ni, re, e,
 							    ctx, fnd, 0, cmp);
+=======
+							      fnd) :
+				      indx_insert_into_root(indx, ni, re, e,
+							    ctx, fnd, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			kfree(re);
 
 			if (err)
@@ -2689,7 +2800,10 @@ int indx_update_dup(struct ntfs_inode *ni, struct ntfs_sb_info *sbi,
 	struct INDEX_ROOT *root;
 	struct mft_inode *mi;
 	struct ntfs_index *indx = &ni->dir;
+<<<<<<< HEAD
 	NTFS_CMP_FUNC cmp;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	fnd = fnd_get();
 	if (!fnd)
@@ -2701,12 +2815,15 @@ int indx_update_dup(struct ntfs_inode *ni, struct ntfs_sb_info *sbi,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	cmp = get_cmp_func(root);
 	if (unlikely(!cmp)) {
 		WARN_ON_ONCE(1);
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Find entry in directory. */
 	err = indx_find(indx, ni, root, fname, fname_full_size(fname), sbi,
 			&diff, &e, fnd);

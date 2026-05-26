@@ -378,6 +378,13 @@ static void dra7xx_pcie_ep_init(struct dw_pcie_ep *ep)
 {
 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
 	struct dra7xx_pcie *dra7xx = to_dra7xx_pcie(pci);
+<<<<<<< HEAD
+=======
+	enum pci_barno bar;
+
+	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
+		dw_pcie_ep_reset_bar(pci, bar);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	dra7xx_pcie_enable_wrapper_interrupts(dra7xx);
 }

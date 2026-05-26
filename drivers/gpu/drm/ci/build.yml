@@ -1,6 +1,10 @@
 .build:
   extends:
+<<<<<<< HEAD
     - .build-rules
+=======
+    - .container+build-rules
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   stage: build-only
   artifacts:
     paths:
@@ -133,10 +137,13 @@ debian-arm32-asan:
   rules:
     - when: never
 
+<<<<<<< HEAD
 debian-x86_64-msan:
   rules:
     - when: never
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 debian-arm64:
   rules:
     - when: never
@@ -157,7 +164,11 @@ debian-arm64-ubsan:
   rules:
     - when: never
 
+<<<<<<< HEAD
 debian-build-x86_64:
+=======
+debian-build-testing:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   rules:
     - when: never
 
@@ -181,11 +192,31 @@ debian-release:
   rules:
     - when: never
 
+<<<<<<< HEAD
 debian-riscv64:
   rules:
     - when: never
 
 debian-s390x:
+=======
+debian-s390x:
+  rules:
+    - when: never
+
+debian-testing:
+  rules:
+    - when: never
+
+debian-testing-asan:
+  rules:
+    - when: never
+
+debian-testing-msan:
+  rules:
+    - when: never
+
+debian-testing-ubsan:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   rules:
     - when: never
 
@@ -197,6 +228,7 @@ debian-x86_32:
   rules:
     - when: never
 
+<<<<<<< HEAD
 debian-x86_64:
   rules:
     - when: never
@@ -209,6 +241,8 @@ debian-x86_64-ubsan:
   rules:
     - when: never
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 fedora-release:
   rules:
     - when: never

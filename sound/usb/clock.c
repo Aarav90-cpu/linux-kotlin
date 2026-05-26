@@ -208,6 +208,7 @@ static bool uac_clock_source_is_valid_quirk(struct snd_usb_audio *chip,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Quirk for older MOTU AVB / hybrid interfaces
 	 *
 	 * These devices take more than 2 seconds to switch sample rate or
@@ -220,6 +221,13 @@ static bool uac_clock_source_is_valid_quirk(struct snd_usb_audio *chip,
 	 */
 	if (chip->usb_id == USB_ID(0x07fd, 0x0004) ||  /* MicroBook IIc */
 	    chip->usb_id == USB_ID(0x07fd, 0x0005)) {  /* 1248 / 624 / 8A / UltraLite AVB / ... */
+=======
+	 * MOTU MicroBook IIc
+	 * Sample rate changes takes more than 2 seconds for this device. Clock
+	 * validity request returns false during that period.
+	 */
+	if (chip->usb_id == USB_ID(0x07fd, 0x0004)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		count = 0;
 
 		while ((!ret) && (count < 50)) {

@@ -14,7 +14,10 @@
 
 #include <linux/types.h>
 #include <linux/integrity.h>
+<<<<<<< HEAD
 #include <linux/secure_boot.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <crypto/sha1.h>
 #include <crypto/hash.h>
 #include <linux/key.h>
@@ -131,7 +134,11 @@ struct modsig;
 #ifdef CONFIG_INTEGRITY_SIGNATURE
 
 int integrity_digsig_verify(const unsigned int id, const char *sig, int siglen,
+<<<<<<< HEAD
 			    const char *digest, int digestlen, u8 algo);
+=======
+			    const char *digest, int digestlen);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int integrity_modsig_verify(unsigned int id, const struct modsig *modsig);
 
 int __init integrity_init_keyring(const unsigned int id);
@@ -142,8 +149,12 @@ int __init integrity_load_cert(const unsigned int id, const char *source,
 
 static inline int integrity_digsig_verify(const unsigned int id,
 					  const char *sig, int siglen,
+<<<<<<< HEAD
 					  const char *digest, int digestlen,
 					  u8 algo)
+=======
+					  const char *digest, int digestlen)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return -EOPNOTSUPP;
 }
@@ -171,14 +182,18 @@ static inline int __init integrity_load_cert(const unsigned int id,
 #ifdef CONFIG_INTEGRITY_ASYMMETRIC_KEYS
 int asymmetric_verify(struct key *keyring, const char *sig,
 		      int siglen, const char *data, int datalen);
+<<<<<<< HEAD
 int asymmetric_verify_v3(struct key *keyring, const char *sig,
 			 int siglen, const char *data, int datalen, u8 algo);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #else
 static inline int asymmetric_verify(struct key *keyring, const char *sig,
 				    int siglen, const char *data, int datalen)
 {
 	return -EOPNOTSUPP;
 }
+<<<<<<< HEAD
 
 static inline int asymmetric_verify_v3(struct key *keyring,
 				       const char *sig, int siglen,
@@ -186,6 +201,8 @@ static inline int asymmetric_verify_v3(struct key *keyring,
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #ifdef CONFIG_IMA_APPRAISE_MODSIG

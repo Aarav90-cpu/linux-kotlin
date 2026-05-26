@@ -16,13 +16,20 @@
 #include <linux/sunrpc/clnt.h>
 #include <linux/sunrpc/addr.h>
 #include <linux/sunrpc/svc.h>
+<<<<<<< HEAD
+=======
+#include <linux/lockd/lockd.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mutex.h>
 
 #include <linux/sunrpc/svc_xprt.h>
 
 #include <net/ipv6.h>
 
+<<<<<<< HEAD
 #include "lockd.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "netns.h"
 
 #define NLMDBG_FACILITY		NLMDBG_HOSTCACHE
@@ -306,6 +313,7 @@ void nlmclnt_release_host(struct nlm_host *host)
 	}
 }
 
+<<<<<<< HEAD
 /* Callback for rpc_cancel_tasks() - matches all tasks for cancellation */
 static bool nlmclnt_match_all(const struct rpc_task *task, const void *data)
 {
@@ -335,6 +343,8 @@ void nlmclnt_shutdown_rpc_clnt(struct nlm_host *host)
 }
 EXPORT_SYMBOL_GPL(nlmclnt_shutdown_rpc_clnt);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * nlmsvc_lookup_host - Find an NLM host handle matching a remote client
  * @rqstp: incoming NLM request

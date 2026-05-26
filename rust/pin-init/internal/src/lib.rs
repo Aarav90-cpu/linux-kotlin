@@ -6,7 +6,11 @@
 
 //! `pin-init` proc macros.
 
+<<<<<<< HEAD
 #![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+=======
+#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 // Documentation is done in the pin-init crate instead.
 #![allow(missing_docs)]
 

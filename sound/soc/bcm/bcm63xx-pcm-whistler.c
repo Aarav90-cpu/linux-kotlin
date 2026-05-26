@@ -386,7 +386,11 @@ static const struct snd_soc_component_driver bcm63xx_soc_platform = {
 	.prepare = bcm63xx_pcm_prepare,
 	.trigger = bcm63xx_pcm_trigger,
 	.pointer = bcm63xx_pcm_pointer,
+<<<<<<< HEAD
 	.pcm_new = bcm63xx_soc_pcm_new,
+=======
+	.pcm_construct = bcm63xx_soc_pcm_new,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 int bcm63xx_soc_platform_probe(struct platform_device *pdev,

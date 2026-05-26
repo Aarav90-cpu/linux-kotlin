@@ -83,7 +83,10 @@ extern "C" {
  *  - &DRM_IOCTL_XE_OBSERVATION
  *  - &DRM_IOCTL_XE_MADVISE
  *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
+<<<<<<< HEAD
  *  - &DRM_IOCTL_XE_VM_GET_PROPERTY
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 /*
@@ -108,7 +111,10 @@ extern "C" {
 #define DRM_XE_MADVISE			0x0c
 #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS	0x0d
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x0e
+<<<<<<< HEAD
 #define DRM_XE_VM_GET_PROPERTY		0x0f
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Must be kept compact -- no holes */
 
@@ -127,7 +133,10 @@ extern "C" {
 #define DRM_IOCTL_XE_MADVISE			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
 #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
 #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
+<<<<<<< HEAD
 #define DRM_IOCTL_XE_VM_GET_PROPERTY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_GET_PROPERTY, struct drm_xe_vm_get_property)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: Xe IOCTL Extensions
@@ -338,6 +347,13 @@ struct drm_xe_mem_region {
 	__u64 total_size;
 	/**
 	 * @used: Estimate of the memory used in bytes for this region.
+<<<<<<< HEAD
+=======
+	 *
+	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
+	 * accounting.  Without this the value here will always equal
+	 * zero.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 */
 	__u64 used;
 	/**
@@ -362,7 +378,13 @@ struct drm_xe_mem_region {
 	 * @cpu_visible_used: Estimate of CPU visible memory used, in
 	 * bytes.
 	 *
+<<<<<<< HEAD
 	 * Note this is only currently tracked for
+=======
+	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
+	 * accounting. Without this the value here will always equal
+	 * zero.  Note this is only currently tracked for
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * DRM_XE_MEM_REGION_CLASS_VRAM regions (for other types the value
 	 * here will always be zero).
 	 */
@@ -409,9 +431,12 @@ struct drm_xe_query_mem_regions {
  *    - %DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT - Flag is set if the
  *      device supports the userspace hint %DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION.
  *      This is exposed only on Xe2+.
+<<<<<<< HEAD
  *    - %DRM_XE_QUERY_CONFIG_FLAG_HAS_DISABLE_STATE_CACHE_PERF_FIX - Flag is set
  *      if a queue can be creaed with
  *      %DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *  - %DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - Minimal memory alignment
  *    required by this device, typically SZ_4K or SZ_64K
  *  - %DRM_XE_QUERY_CONFIG_VA_BITS - Maximum bits of a virtual address
@@ -431,8 +456,11 @@ struct drm_xe_query_config {
 	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_LOW_LATENCY	(1 << 1)
 	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR	(1 << 2)
 	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
+<<<<<<< HEAD
 	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_DISABLE_STATE_CACHE_PERF_FIX	(1 << 4)
 	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT    (1 << 5)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
 #define DRM_XE_QUERY_CONFIG_VA_BITS			3
 #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
@@ -977,11 +1005,14 @@ struct drm_xe_gem_mmap_offset {
  *    demand when accessed, and also allows per-VM overcommit of memory.
  *    The xe driver internally uses recoverable pagefaults to implement
  *    this.
+<<<<<<< HEAD
  *  - %DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT - Requires also
  *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE. This disallows per-VM overcommit
  *    but only during a &DRM_IOCTL_XE_VM_BIND operation with the
  *    %DRM_XE_VM_BIND_FLAG_IMMEDIATE flag set. This may be useful for
  *    user-space naively probing the amount of available memory.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct drm_xe_vm_create {
 	/** @extensions: Pointer to the first extension struct, if any */
@@ -990,7 +1021,10 @@ struct drm_xe_vm_create {
 #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
 #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
 #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
+<<<<<<< HEAD
 #define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @flags: Flags */
 	__u32 flags;
 
@@ -1061,6 +1095,7 @@ struct drm_xe_vm_destroy {
  *    not invoke autoreset. Neither will stack variables going out of scope.
  *    Therefore it's recommended to always explicitly reset the madvises when
  *    freeing the memory backing a region used in a &DRM_IOCTL_XE_MADVISE call.
+<<<<<<< HEAD
  *  - %DRM_XE_VM_BIND_FLAG_DECOMPRESS - Request on-device decompression for a MAP.
  *    When set on a MAP bind operation, request the driver schedule an on-device
  *    in-place decompression (via the migrate/resolve path) for the GPU mapping
@@ -1068,6 +1103,8 @@ struct drm_xe_vm_destroy {
  *    other ops is rejected. The bind's pat_index must select the device's
  *    "no-compression" PAT. Only meaningful for VRAM-backed BOs on devices that
  *    support Flat CCS and the required HW generation XE2+.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The @prefetch_mem_region_instance for %DRM_XE_VM_BIND_OP_PREFETCH can also be:
  *  - %DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC, which ensures prefetching occurs in
@@ -1118,9 +1155,13 @@ struct drm_xe_vm_bind_op {
 	 * incoherent GT access is possible.
 	 *
 	 * Note: For userptr and externally imported dma-buf the kernel expects
+<<<<<<< HEAD
 	 * either 1WAY or 2WAY for the @pat_index. Starting from NVL-P, for
 	 * userptr, svm, madvise and externally imported dma-buf the kernel expects
 	 * either 2WAY or 1WAY and XA @pat_index.
+=======
+	 * either 1WAY or 2WAY for the @pat_index.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * For DRM_XE_VM_BIND_FLAG_NULL bindings there are no KMD restrictions
 	 * on the @pat_index. For such mappings there is no actual memory being
@@ -1177,7 +1218,10 @@ struct drm_xe_vm_bind_op {
 #define DRM_XE_VM_BIND_FLAG_CHECK_PXP	(1 << 4)
 #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR	(1 << 5)
 #define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET	(1 << 6)
+<<<<<<< HEAD
 #define DRM_XE_VM_BIND_FLAG_DECOMPRESS (1 << 7)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @flags: Bind flags */
 	__u32 flags;
 
@@ -1267,6 +1311,7 @@ struct drm_xe_vm_bind {
 	__u64 reserved[2];
 };
 
+<<<<<<< HEAD
 /** struct xe_vm_fault - Describes faults for %DRM_XE_VM_GET_PROPERTY_FAULTS */
 struct xe_vm_fault {
 	/** @address: Canonical address of the fault */
@@ -1350,6 +1395,8 @@ struct drm_xe_vm_get_property {
 	__u64 reserved[3];
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * struct drm_xe_exec_queue_create - Input of &DRM_IOCTL_XE_EXEC_QUEUE_CREATE
  *
@@ -1386,9 +1433,12 @@ struct drm_xe_vm_get_property {
  *  - %DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY - Set the queue
  *    priority within the multi-queue group. Current valid priority values are 0–2
  *    (default is 1), with higher values indicating higher priority.
+<<<<<<< HEAD
  *  - %DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX - Set the queue to
  *    enable render color cache keying on BTP+BTI instead of just BTI
  *    (only valid for render queues).
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The example below shows how to use @drm_xe_exec_queue_create to create
  * a simple exec_queue (no parallel submission) of class
@@ -1433,7 +1483,10 @@ struct drm_xe_exec_queue_create {
 #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP		4
 #define     DRM_XE_MULTI_GROUP_CREATE				(1ull << 63)
 #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY	5
+<<<<<<< HEAD
 #define   DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX	6
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @extensions: Pointer to the first extension struct, if any */
 	__u64 extensions;
 
@@ -2172,7 +2225,10 @@ struct drm_xe_query_eu_stall {
  *  - DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC: Set preferred memory location.
  *  - DRM_XE_MEM_RANGE_ATTR_ATOMIC: Set atomic access policy.
  *  - DRM_XE_MEM_RANGE_ATTR_PAT: Set page attribute table index.
+<<<<<<< HEAD
  *  - DRM_XE_VMA_ATTR_PURGEABLE_STATE: Set purgeable state for BOs.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Example:
  *
@@ -2205,7 +2261,10 @@ struct drm_xe_madvise {
 #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
 #define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
 #define DRM_XE_MEM_RANGE_ATTR_PAT		2
+<<<<<<< HEAD
 #define DRM_XE_VMA_ATTR_PURGEABLE_STATE		3
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @type: type of attribute */
 	__u32 type;
 
@@ -2296,6 +2355,7 @@ struct drm_xe_madvise {
 			/** @pat_index.reserved: Reserved */
 			__u64 reserved;
 		} pat_index;
+<<<<<<< HEAD
 
 		/**
 		 * @purge_state_val: Purgeable state configuration
@@ -2362,6 +2422,8 @@ struct drm_xe_madvise {
 			 */
 			__u64 retained_ptr;
 		} purge_state_val;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	/** @reserved: Reserved */
@@ -2530,6 +2592,7 @@ struct drm_xe_exec_queue_set_property {
 	__u64 reserved[2];
 };
 
+<<<<<<< HEAD
 /**
  * DOC: Xe DRM RAS
  *
@@ -2609,6 +2672,8 @@ enum drm_xe_ras_error_component {
 	[DRM_XE_RAS_ERR_COMP_SOC_INTERNAL] = "soc-internal"		\
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(__cplusplus)
 }
 #endif

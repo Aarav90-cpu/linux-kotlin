@@ -66,9 +66,12 @@ static inline struct branch_entry *perf_sample__branch_entries(struct perf_sampl
 {
 	u64 *entry = (u64 *)sample->branch_stack;
 
+<<<<<<< HEAD
 	if (entry == NULL)
 		return NULL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	entry++;
 	if (sample->no_hw_idx)
 		return (struct branch_entry *)entry;

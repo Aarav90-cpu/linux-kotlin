@@ -20,7 +20,10 @@
 /* Mali-display product IDs */
 #define MALIDP_D71_PRODUCT_ID	0x0071
 #define MALIDP_D32_PRODUCT_ID	0x0032
+<<<<<<< HEAD
 #define LINLONDP_D6_PRODUCT_ID	0x0060
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 union komeda_config_id {
 	struct {

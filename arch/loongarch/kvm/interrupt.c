@@ -7,7 +7,10 @@
 #include <linux/errno.h>
 #include <asm/kvm_csr.h>
 #include <asm/kvm_vcpu.h>
+<<<<<<< HEAD
 #include <asm/kvm_dmsintc.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static unsigned int priority_to_irq[EXCCODE_INT_NUM] = {
 	[INT_TI]	= CPU_TIMER,
@@ -34,12 +37,21 @@ static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
 	if (priority < EXCCODE_INT_NUM)
 		irq = priority_to_irq[priority];
 
+<<<<<<< HEAD
 	switch (priority) {
 	case INT_AVEC:
 		if (!kvm_guest_has_msgint(&vcpu->arch))
 			break;
 		dmsintc_inject_irq(vcpu);
 		fallthrough;
+=======
+	if (kvm_guest_has_msgint(&vcpu->arch) && (priority == INT_AVEC)) {
+		set_gcsr_estat(irq);
+		return 1;
+	}
+
+	switch (priority) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case INT_TI:
 	case INT_IPI:
 	case INT_SWI0:
@@ -73,11 +85,20 @@ static int kvm_irq_clear(struct kvm_vcpu *vcpu, unsigned int priority)
 	if (priority < EXCCODE_INT_NUM)
 		irq = priority_to_irq[priority];
 
+<<<<<<< HEAD
 	switch (priority) {
 	case INT_AVEC:
 		if (!kvm_guest_has_msgint(&vcpu->arch))
 			break;
 		fallthrough;
+=======
+	if (kvm_guest_has_msgint(&vcpu->arch) && (priority == INT_AVEC)) {
+		clear_gcsr_estat(irq);
+		return 1;
+	}
+
+	switch (priority) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case INT_TI:
 	case INT_IPI:
 	case INT_SWI0:

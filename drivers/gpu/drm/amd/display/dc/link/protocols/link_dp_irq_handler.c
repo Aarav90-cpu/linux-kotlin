@@ -223,10 +223,16 @@ static void handle_hpd_irq_vesa_replay_sink(struct dc_link *link)
 	}
 }
 
+<<<<<<< HEAD
 static void handle_hpd_irq_replay_sink(struct dc_link *link, bool *need_re_enable)
 {
 	union dpcd_replay_configuration replay_configuration = {0};
 	union dpcd_replay_configuration replay_sink_status = {0};
+=======
+static void handle_hpd_irq_replay_sink(struct dc_link *link)
+{
+	union dpcd_replay_configuration replay_configuration = {0};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*AMD Replay version reuse DP_PSR_ERROR_STATUS for REPLAY_ERROR status.*/
 	union psr_error_status replay_error_status = {0};
 	bool ret = false;
@@ -266,6 +272,7 @@ static void handle_hpd_irq_replay_sink(struct dc_link *link, bool *need_re_enabl
 		&replay_error_status.raw,
 		sizeof(replay_error_status.raw));
 
+<<<<<<< HEAD
 	dm_helpers_dp_read_dpcd(
 		link->ctx,
 		link,
@@ -277,6 +284,11 @@ static void handle_hpd_irq_replay_sink(struct dc_link *link, bool *need_re_enabl
 		replay_configuration.bits.DESYNC_ERROR_STATUS ||
 		replay_configuration.bits.STATE_TRANSITION_ERROR_STATUS ||
 		replay_sink_status.bits.SINK_DEVICE_REPLAY_STATUS == 0x7) {
+=======
+	if (replay_error_status.bits.LINK_CRC_ERROR ||
+		replay_configuration.bits.DESYNC_ERROR_STATUS ||
+		replay_configuration.bits.STATE_TRANSITION_ERROR_STATUS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		bool allow_active;
 
 		link->replay_settings.config.replay_error_status.raw |= replay_error_status.raw;
@@ -308,7 +320,12 @@ static void handle_hpd_irq_replay_sink(struct dc_link *link, bool *need_re_enabl
 		if (link->replay_settings.replay_allow_active) {
 			allow_active = false;
 			edp_set_replay_allow_active(link, &allow_active, true, false, NULL);
+<<<<<<< HEAD
 			*need_re_enable = true;
+=======
+			allow_active = true;
+			edp_set_replay_allow_active(link, &allow_active, true, false, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 }
@@ -468,7 +485,10 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
 	union device_service_irq device_service_clear = {0};
 	enum dc_status result;
 	bool status = false;
+<<<<<<< HEAD
 	bool replay_re_enable_needed = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (out_link_loss)
 		*out_link_loss = false;
@@ -528,7 +548,11 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
 		/* PSR-related error was detected and handled */
 		return true;
 
+<<<<<<< HEAD
 	handle_hpd_irq_replay_sink(link, &replay_re_enable_needed);
+=======
+	handle_hpd_irq_replay_sink(link);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If PSR-related error handled, Main link may be off,
 	 * so do not handle as a normal sink status change interrupt.
@@ -547,6 +571,7 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
 		return false;
 	}
 
+<<<<<<< HEAD
 	/* Handle 'Downstream port status' case for all DP link types.
 	 * If we got sink count changed it means
 	 * Downstream port status changed,
@@ -557,6 +582,18 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
 	if (dp_parse_link_loss_status(
 			link,
 			&hpd_irq_dpcd_data)) {
+=======
+	/* For now we only handle 'Downstream port status' case.
+	 * If we got sink count changed it means
+	 * Downstream port status changed,
+	 * then DM should call DC to do the detection.
+	 * NOTE: Do not handle link loss on eDP since it is internal link
+	 */
+	if ((link->connector_signal != SIGNAL_TYPE_EDP) &&
+			dp_parse_link_loss_status(
+					link,
+					&hpd_irq_dpcd_data)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Connectivity log: link loss */
 		CONN_DATA_LINK_LOSS(link,
 					hpd_irq_dpcd_data.raw,
@@ -585,11 +622,14 @@ bool dp_handle_hpd_rx_irq(struct dc_link *link,
 			!= link->dpcd_sink_count)
 		status = true;
 
+<<<<<<< HEAD
 	if (replay_re_enable_needed) {
 		bool allow_active = true;
 
 		edp_set_replay_allow_active(link, &allow_active, true, false, NULL);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* reasons for HPD RX:
 	 * 1. Link Loss - ie Re-train the Link
 	 * 2. MST sideband message

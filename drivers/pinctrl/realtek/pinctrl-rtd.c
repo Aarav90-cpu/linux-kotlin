@@ -30,20 +30,29 @@ struct rtd_pinctrl {
 	struct pinctrl_desc desc;
 	const struct rtd_pinctrl_desc *info;
 	struct regmap *regmap_pinctrl;
+<<<<<<< HEAD
 	u32 **saved_regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* custom pinconf parameters */
 #define RTD_DRIVE_STRENGH_P (PIN_CONFIG_END + 1)
 #define RTD_DRIVE_STRENGH_N (PIN_CONFIG_END + 2)
 #define RTD_DUTY_CYCLE (PIN_CONFIG_END + 3)
+<<<<<<< HEAD
 #define RTD_HIGH_VIL (PIN_CONFIG_END + 4)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct pinconf_generic_params rtd_custom_bindings[] = {
 	{"realtek,drive-strength-p", RTD_DRIVE_STRENGH_P, 0},
 	{"realtek,drive-strength-n", RTD_DRIVE_STRENGH_N, 0},
 	{"realtek,duty-cycle", RTD_DUTY_CYCLE, 0},
+<<<<<<< HEAD
 	{"realtek,high-vil-microvolt", RTD_HIGH_VIL, 0},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static int rtd_pinctrl_get_groups_count(struct pinctrl_dev *pcdev)
@@ -282,7 +291,11 @@ static const struct rtd_pin_sconfig_desc *rtd_pinctrl_find_sconfig(struct rtd_pi
 static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 				unsigned int pinnr,
 				enum pin_config_param param,
+<<<<<<< HEAD
 				unsigned int arg)
+=======
+				enum pin_config_param arg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	const struct rtd_pin_config_desc *config_desc;
 	const struct rtd_pin_sconfig_desc *sconfig_desc;
@@ -290,21 +303,33 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 	u16 strength;
 	u32 val;
 	u32 mask;
+<<<<<<< HEAD
 	u32 pulsel_off, pulen_off, smt_off, curr_off, pow_off, reg_off, p_off, n_off,
 	    input_volt_off, sr_off, hvil_off;
+=======
+	u32 pulsel_off, pulen_off, smt_off, curr_off, pow_off, reg_off, p_off, n_off;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const char *name = data->info->pins[pinnr].name;
 	int ret = 0;
 
 	config_desc = rtd_pinctrl_find_config(data, pinnr);
 	if (!config_desc) {
+<<<<<<< HEAD
 		dev_err(data->dev, "Pin config unsupported for pin: %s\n", name);
+=======
+		dev_err(data->dev, "Not support pin config for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOTSUPP;
 	}
 	switch ((u32)param) {
 	case PIN_CONFIG_INPUT_SCHMITT:
 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
 		if (config_desc->smt_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Input schmitt unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support input schmitt for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		smt_off = config_desc->base_bit + config_desc->smt_offset;
@@ -317,7 +342,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 
 	case PIN_CONFIG_DRIVE_PUSH_PULL:
 		if (config_desc->pud_en_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Push pull unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support push pull for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		pulen_off = config_desc->base_bit + config_desc->pud_en_offset;
@@ -329,7 +358,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 
 	case PIN_CONFIG_BIAS_DISABLE:
 		if (config_desc->pud_en_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Bias disable unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support bias disable for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		pulen_off = config_desc->base_bit + config_desc->pud_en_offset;
@@ -341,7 +374,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 
 	case PIN_CONFIG_BIAS_PULL_UP:
 		if (config_desc->pud_en_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Bias pull up unsupported for pin:%s\n", name);
+=======
+			dev_err(data->dev, "Not support bias pull up for pin:%s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		pulen_off = config_desc->base_bit + config_desc->pud_en_offset;
@@ -354,7 +391,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 
 	case PIN_CONFIG_BIAS_PULL_DOWN:
 		if (config_desc->pud_en_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Bias pull down unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support bias pull down for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		pulen_off = config_desc->base_bit + config_desc->pud_en_offset;
@@ -388,7 +429,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 				return -EINVAL;
 			break;
 		case NA:
+<<<<<<< HEAD
 			dev_err(data->dev, "Drive strength unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support drive strength for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		default:
 			return -EINVAL;
@@ -398,7 +443,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 
 	case PIN_CONFIG_POWER_SOURCE:
 		if (config_desc->power_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Power source unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support power source for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		reg_off = config_desc->reg_offset;
@@ -412,6 +461,7 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 		val = set_val ? mask : 0;
 		break;
 
+<<<<<<< HEAD
 	case PIN_CONFIG_SLEW_RATE:
 		if (config_desc->slew_rate_offset == NA) {
 			dev_err(data->dev, "Slew rate setting unsupported for pin: %s\n", name);
@@ -477,6 +527,12 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 		sconfig_desc = rtd_pinctrl_find_sconfig(data, pinnr);
 		if (!sconfig_desc) {
 			dev_err(data->dev, "P driving unsupported for pin: %s\n", name);
+=======
+	case RTD_DRIVE_STRENGH_P:
+		sconfig_desc = rtd_pinctrl_find_sconfig(data, pinnr);
+		if (!sconfig_desc) {
+			dev_err(data->dev, "Not support P driving for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		set_val = arg;
@@ -493,7 +549,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 	case RTD_DRIVE_STRENGH_N:
 		sconfig_desc = rtd_pinctrl_find_sconfig(data, pinnr);
 		if (!sconfig_desc) {
+<<<<<<< HEAD
 			dev_err(data->dev, "N driving unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support N driving for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		set_val = arg;
@@ -510,7 +570,11 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 	case RTD_DUTY_CYCLE:
 		sconfig_desc = rtd_pinctrl_find_sconfig(data, pinnr);
 		if (!sconfig_desc || sconfig_desc->dcycle_offset == NA) {
+<<<<<<< HEAD
 			dev_err(data->dev, "Duty cycle unsupported for pin: %s\n", name);
+=======
+			dev_err(data->dev, "Not support duty cycle for pin: %s\n", name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -ENOTSUPP;
 		}
 		set_val = arg;
@@ -521,8 +585,13 @@ static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
 		break;
 
 	default:
+<<<<<<< HEAD
 		dev_dbg(data->dev, "unsupported pinconf: %d\n", (u32)param);
 		return -ENOTSUPP;
+=======
+		dev_err(data->dev, "unsupported pinconf: %d\n", (u32)param);
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	ret = regmap_update_bits(data->regmap_pinctrl, reg_off, mask, val);
@@ -605,6 +674,7 @@ static const struct regmap_config rtd_pinctrl_regmap_config = {
 	.use_relaxed_mmio = true,
 };
 
+<<<<<<< HEAD
 static int rtd_pinctrl_init_pm(struct rtd_pinctrl *data)
 {
 	const struct rtd_pin_range *pin_range = data->info->pin_range;
@@ -632,15 +702,27 @@ static int rtd_pinctrl_init_pm(struct rtd_pinctrl *data)
 int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_desc *desc)
 {
 	struct rtd_pinctrl *data;
+=======
+int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_desc *desc)
+{
+	struct rtd_pinctrl *data;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	data->base = devm_platform_ioremap_resource(pdev, 0);
 	if (IS_ERR(data->base))
 		return dev_err_probe(&pdev->dev, PTR_ERR(data->base),
 				     "Failed to ioremap resource\n");
+=======
+	data->base = of_iomap(pdev->dev.of_node, 0);
+	if (!data->base)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data->dev = &pdev->dev;
 	data->info = desc;
@@ -656,6 +738,7 @@ int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_des
 	data->regmap_pinctrl = devm_regmap_init_mmio(data->dev, data->base,
 						     &rtd_pinctrl_regmap_config);
 
+<<<<<<< HEAD
 	if (IS_ERR(data->regmap_pinctrl))
 		return dev_err_probe(data->dev, PTR_ERR(data->regmap_pinctrl),
 				     "Failed to init regmap\n");
@@ -664,11 +747,26 @@ int rtd_pinctrl_probe(struct platform_device *pdev, const struct rtd_pinctrl_des
 	if (IS_ERR(data->pcdev))
 		return dev_err_probe(data->dev, PTR_ERR(data->pcdev),
 				     "Failed to register pinctrl\n");
+=======
+	if (IS_ERR(data->regmap_pinctrl)) {
+		dev_err(data->dev, "failed to init regmap: %ld\n",
+			PTR_ERR(data->regmap_pinctrl));
+		ret = PTR_ERR(data->regmap_pinctrl);
+		goto unmap;
+	}
+
+	data->pcdev = pinctrl_register(&data->desc, &pdev->dev, data);
+	if (IS_ERR(data->pcdev)) {
+		ret = PTR_ERR(data->pcdev);
+		goto unmap;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	platform_set_drvdata(pdev, data);
 
 	dev_dbg(&pdev->dev, "probed\n");
 
+<<<<<<< HEAD
 	if (data->info->pin_range) {
 		if (rtd_pinctrl_init_pm(data))
 			return -ENOMEM;
@@ -748,3 +846,15 @@ EXPORT_SYMBOL_GPL(realtek_pinctrl_pm_ops);
 
 MODULE_DESCRIPTION("Realtek DHC SoC pinctrl driver");
 MODULE_LICENSE("GPL");
+=======
+	return 0;
+
+unmap:
+	iounmap(data->base);
+	return ret;
+}
+EXPORT_SYMBOL(rtd_pinctrl_probe);
+
+MODULE_DESCRIPTION("Realtek DHC SoC pinctrl driver");
+MODULE_LICENSE("GPL v2");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -275,9 +275,15 @@ static const unsigned int ad4170_reg_size[] = {
 };
 
 enum ad4170_ref_buf {
+<<<<<<< HEAD
 	AD4170_REF_BUF_PRE,	/* Pre-charge reference buffer */
 	AD4170_REF_BUF_FULL,	/* Full reference buffering */
 	AD4170_REF_BUF_BYPASS,	/* Bypass reference buffering */
+=======
+	AD4170_REF_BUF_PRE,	/* Pre-charge referrence buffer */
+	AD4170_REF_BUF_FULL,	/* Full referrence buffering */
+	AD4170_REF_BUF_BYPASS,	/* Bypass referrence buffering */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* maps adi,positive/negative-reference-buffer property values to enum */

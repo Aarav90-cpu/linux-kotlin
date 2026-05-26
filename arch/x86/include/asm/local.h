@@ -106,7 +106,11 @@ static inline bool local_add_negative(long i, local_t *l)
 static inline long local_add_return(long i, local_t *l)
 {
 	long __i = i;
+<<<<<<< HEAD
 	asm volatile(_ASM_XADD "%0, %1"
+=======
+	asm volatile(_ASM_XADD "%0, %1;"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		     : "+r" (i), "+m" (l->a.counter)
 		     : : "memory");
 	return i + __i;

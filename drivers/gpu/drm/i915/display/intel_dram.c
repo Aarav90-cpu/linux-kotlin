@@ -7,6 +7,7 @@
 
 #include <drm/drm_managed.h>
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 
 #include "intel_display_core.h"
@@ -15,6 +16,15 @@
 #include "intel_dram.h"
 #include "intel_mchbar_regs.h"
 #include "intel_parent.h"
+=======
+
+#include "i915_reg.h"
+#include "intel_display_core.h"
+#include "intel_display_utils.h"
+#include "intel_dram.h"
+#include "intel_mchbar_regs.h"
+#include "intel_pcode.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_uncore.h"
 #include "vlv_iosf_sb.h"
 
@@ -693,8 +703,13 @@ static int icl_pcode_read_mem_global_info(struct intel_display *display,
 	u32 val = 0;
 	int ret;
 
+<<<<<<< HEAD
 	ret = intel_parent_pcode_read(display, ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
 				      ICL_PCODE_MEM_SS_READ_GLOBAL_INFO, &val, NULL);
+=======
+	ret = intel_pcode_read(display->drm, ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
+			       ICL_PCODE_MEM_SS_READ_GLOBAL_INFO, &val, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

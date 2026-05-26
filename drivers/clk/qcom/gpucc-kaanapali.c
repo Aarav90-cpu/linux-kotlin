@@ -6,6 +6,10 @@
 #include <linux/clk-provider.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
@@ -423,7 +427,11 @@ static struct clk_alpha_pll *gpu_cc_kaanapali_plls[] = {
 	&gpu_cc_pll0,
 };
 
+<<<<<<< HEAD
 static const u32 gpu_cc_kaanapali_critical_cbcrs[] = {
+=======
+static u32 gpu_cc_kaanapali_critical_cbcrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	0x9008, /* GPU_CC_CXO_AON_CLK */
 	0x93e8, /* GPU_CC_RSCC_HUB_AON_CLK */
 	0x9004, /* GPU_CC_RSCC_XO_AON_CLK */
@@ -437,7 +445,11 @@ static const struct regmap_config gpu_cc_kaanapali_regmap_config = {
 	.fast_io = true,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data gpu_cc_kaanapali_driver_data = {
+=======
+static struct qcom_cc_driver_data gpu_cc_kaanapali_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = gpu_cc_kaanapali_plls,
 	.num_alpha_plls = ARRAY_SIZE(gpu_cc_kaanapali_plls),
 	.clk_cbcrs = gpu_cc_kaanapali_critical_cbcrs,

@@ -6,10 +6,17 @@
 #ifndef _XE_TILE_H_
 #define _XE_TILE_H_
 
+<<<<<<< HEAD
 #include "xe_tile_types.h"
 
 struct xe_device;
 struct xe_pagemap;
+=======
+#include "xe_device_types.h"
+
+struct xe_pagemap;
+struct xe_tile;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 int xe_tile_init_early(struct xe_tile *tile, struct xe_device *xe, u8 id);
 int xe_tile_init_noalloc(struct xe_tile *tile);

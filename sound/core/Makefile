@@ -23,7 +23,10 @@ snd-pcm-$(CONFIG_SND_PCM_IEC958) += pcm_iec958.o
 # for trace-points
 CFLAGS_pcm_lib.o := -I$(src)
 CFLAGS_pcm_native.o := -I$(src)
+<<<<<<< HEAD
 CFLAGS_control.o := -I$(src)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 snd-pcm-dmaengine-y := pcm_dmaengine.o
 

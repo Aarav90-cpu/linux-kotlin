@@ -1640,9 +1640,23 @@ static void writecache_io_hints(struct dm_target *ti, struct queue_limits *limit
 {
 	struct dm_writecache *wc = ti->private;
 
+<<<<<<< HEAD
 	dm_stack_bs_limits(limits, wc->block_size);
 }
 
+=======
+	if (limits->logical_block_size < wc->block_size)
+		limits->logical_block_size = wc->block_size;
+
+	if (limits->physical_block_size < wc->block_size)
+		limits->physical_block_size = wc->block_size;
+
+	if (limits->io_min < wc->block_size)
+		limits->io_min = wc->block_size;
+}
+
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void writecache_writeback_endio(struct bio *bio)
 {
 	struct writeback_struct *wb = container_of(bio, struct writeback_struct, bio);

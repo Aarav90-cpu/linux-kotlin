@@ -94,10 +94,16 @@ void ext2_evict_inode(struct inode * inode)
 		if (inode->i_blocks)
 			ext2_truncate_blocks(inode, 0);
 		ext2_xattr_delete_inode(inode);
+<<<<<<< HEAD
 	} else {
 		mmb_sync(&EXT2_I(inode)->i_metadata_bhs);
 	}
 	mmb_invalidate(&EXT2_I(inode)->i_metadata_bhs);
+=======
+	}
+
+	invalidate_inode_buffers(inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clear_inode(inode);
 
 	ext2_discard_reservation(inode);
@@ -527,7 +533,11 @@ static int ext2_alloc_branch(struct inode *inode,
 		}
 		set_buffer_uptodate(bh);
 		unlock_buffer(bh);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(bh, &EXT2_I(inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* We used to sync bh here if IS_SYNC(inode).
 		 * But we now rely upon generic_write_sync()
 		 * and b_inode_buffers.  But not for directories.
@@ -598,7 +608,11 @@ static void ext2_splice_branch(struct inode *inode,
 
 	/* had we spliced it onto indirect block? */
 	if (where->bh)
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(where->bh, &EXT2_I(inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(where->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	inode_set_ctime_current(inode);
 	mark_inode_dirty(inode);
@@ -639,8 +653,12 @@ static int ext2_get_blocks(struct inode *inode,
 	int count = 0;
 	ext2_fsblk_t first_block = 0;
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(maxblocks == 0))
 		return -EINVAL;
+=======
+	BUG_ON(maxblocks == 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	depth = ext2_block_to_path(inode,iblock,offsets,&blocks_to_boundary);
 
@@ -1154,7 +1172,11 @@ static void ext2_free_branches(struct inode *inode, __le32 *p, __le32 *q, int de
 			 */ 
 			if (!bh) {
 				ext2_error(inode->i_sb, "ext2_free_branches",
+<<<<<<< HEAD
 					"Read failure, inode=%llu, block=%ld",
+=======
+					"Read failure, inode=%ld, block=%ld",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					inode->i_ino, nr);
 				continue;
 			}
@@ -1212,8 +1234,12 @@ static void __ext2_truncate_blocks(struct inode *inode, loff_t offset)
 		if (partial == chain)
 			mark_inode_dirty(inode);
 		else
+<<<<<<< HEAD
 			mmb_mark_buffer_dirty(partial->bh,
 					      &EXT2_I(inode)->i_metadata_bhs);
+=======
+			mark_buffer_dirty_inode(partial->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ext2_free_branches(inode, &nr, &nr+1, (chain+n-1) - partial);
 	}
 	/* Clear the ends of indirect blocks on the shared branch */
@@ -1222,8 +1248,12 @@ static void __ext2_truncate_blocks(struct inode *inode, loff_t offset)
 				   partial->p + 1,
 				   (__le32*)partial->bh->b_data+addr_per_block,
 				   (chain+n-1) - partial);
+<<<<<<< HEAD
 		mmb_mark_buffer_dirty(partial->bh,
 				      &EXT2_I(inode)->i_metadata_bhs);
+=======
+		mark_buffer_dirty_inode(partial->bh, inode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		brelse (partial->bh);
 		partial--;
 	}
@@ -1306,7 +1336,11 @@ static int ext2_setsize(struct inode *inode, loff_t newsize)
 
 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
 	if (inode_needs_sync(inode)) {
+<<<<<<< HEAD
 		mmb_sync(&EXT2_I(inode)->i_metadata_bhs);
+=======
+		sync_mapping_buffers(inode->i_mapping);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sync_inode_metadata(inode, 1);
 	} else {
 		mark_inode_dirty(inode);

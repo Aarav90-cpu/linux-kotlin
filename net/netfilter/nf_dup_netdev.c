@@ -13,6 +13,25 @@
 #include <net/netfilter/nf_tables_offload.h>
 #include <net/netfilter/nf_dup_netdev.h>
 
+<<<<<<< HEAD
+=======
+#define NF_RECURSION_LIMIT	2
+
+#ifndef CONFIG_PREEMPT_RT
+static u8 *nf_get_nf_dup_skb_recursion(void)
+{
+	return this_cpu_ptr(&softnet_data.xmit.nf_dup_skb_recursion);
+}
+#else
+
+static u8 *nf_get_nf_dup_skb_recursion(void)
+{
+	return &current->net_xmit.nf_dup_skb_recursion;
+}
+
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void nf_do_netdev_egress(struct sk_buff *skb, struct net_device *dev,
 				enum nf_dev_hooks hook)
 {
@@ -79,10 +98,14 @@ int nft_fwd_dup_netdev_offload(struct nft_offload_ctx *ctx,
 	if (!dev)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	entry = nft_flow_action_entry_next(ctx, flow);
 	if (!entry)
 		return -E2BIG;
 
+=======
+	entry = &flow->rule->action.entries[ctx->num_actions++];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	entry->id = id;
 	entry->dev = dev;
 

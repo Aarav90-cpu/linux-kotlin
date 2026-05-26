@@ -93,22 +93,39 @@ static struct pernet_operations frame_nat_net_ops = {
 
 static int __init ebtable_nat_init(void)
 {
+<<<<<<< HEAD
 	int ret = register_pernet_subsys(&frame_nat_net_ops);
+=======
+	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
 	if (ret)
 		unregister_pernet_subsys(&frame_nat_net_ops);
+=======
+	ret = register_pernet_subsys(&frame_nat_net_ops);
+	if (ret) {
+		ebt_unregister_template(&frame_nat);
+		return ret;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
 
 static void __exit ebtable_nat_fini(void)
 {
+<<<<<<< HEAD
 	ebt_unregister_template(&frame_nat);
 	unregister_pernet_subsys(&frame_nat_net_ops);
+=======
+	unregister_pernet_subsys(&frame_nat_net_ops);
+	ebt_unregister_template(&frame_nat);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 module_init(ebtable_nat_init);

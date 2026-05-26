@@ -157,8 +157,12 @@ static int arm_cca_report_new(struct tsm_report *report, void *data)
 		} while (info.result == RSI_INCOMPLETE &&
 			 info.offset < RSI_GRANULE_SIZE);
 
+<<<<<<< HEAD
 		/* Break out in case of failure */
 		if (info.result != RSI_SUCCESS && info.result != RSI_INCOMPLETE) {
+=======
+		if (info.result != RSI_SUCCESS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -ENXIO;
 			token_size = 0;
 			goto exit_free_granule_page;

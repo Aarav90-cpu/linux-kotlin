@@ -63,7 +63,15 @@ unsigned long transparent_hugepage_flags __read_mostly =
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
 	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
 #endif
+<<<<<<< HEAD
 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
+=======
+#ifdef CONFIG_ZEN_INTERACTIVE
+	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG)|
+#else
+	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
 	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
 
@@ -100,6 +108,7 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
 	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
 }
 
+<<<<<<< HEAD
 /* If returns true, we are unable to access the VMA's folios. */
 static bool vma_is_special_huge(const struct vm_area_struct *vma)
 {
@@ -108,6 +117,8 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
 	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
 					 vm_flags_t vm_flags,
 					 enum tva_type type,
@@ -121,8 +132,13 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
 	/* Check the intersection of requested and supported orders. */
 	if (vma_is_anonymous(vma))
 		supported_orders = THP_ORDERS_ALL_ANON;
+<<<<<<< HEAD
 	else if (vma_is_dax(vma) || vma_is_special_huge(vma))
 		supported_orders = THP_ORDERS_ALL_SPECIAL_DAX;
+=======
+	else if (vma_is_special_huge(vma))
+		supported_orders = THP_ORDERS_ALL_SPECIAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
 
@@ -324,6 +340,7 @@ static ssize_t enabled_show(struct kobject *kobj,
 	return sysfs_emit(buf, "%s\n", output);
 }
 
+<<<<<<< HEAD
 enum anon_enabled_mode {
 	ANON_ENABLED_ALWAYS	= 0,
 	ANON_ENABLED_INHERIT	= 1,
@@ -371,10 +388,13 @@ static bool set_global_enabled_mode(enum global_enabled_mode mode)
 	return changed;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t enabled_store(struct kobject *kobj,
 			     struct kobj_attribute *attr,
 			     const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	int mode;
 
 	mode = sysfs_match_string(global_enabled_mode_strings, buf);
@@ -395,6 +415,28 @@ static ssize_t enabled_store(struct kobject *kobj,
 		set_recommended_min_free_kbytes();
 	}
 	return count;
+=======
+	ssize_t ret = count;
+
+	if (sysfs_streq(buf, "always")) {
+		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+		set_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+	} else if (sysfs_streq(buf, "madvise")) {
+		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+		set_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+	} else if (sysfs_streq(buf, "never")) {
+		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+	} else
+		ret = -EINVAL;
+
+	if (ret > 0) {
+		int err = start_stop_khugepaged();
+		if (err)
+			ret = err;
+	}
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kobj_attribute enabled_attr = __ATTR_RW(enabled);
@@ -570,6 +612,7 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
 	return sysfs_emit(buf, "%s\n", output);
 }
 
+<<<<<<< HEAD
 static bool set_anon_enabled_mode(int order, enum anon_enabled_mode mode)
 {
 	static unsigned long *enabled_orders[] = {
@@ -592,11 +635,14 @@ static bool set_anon_enabled_mode(int order, enum anon_enabled_mode mode)
 	return changed;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static ssize_t anon_enabled_store(struct kobject *kobj,
 				  struct kobj_attribute *attr,
 				  const char *buf, size_t count)
 {
 	int order = to_thpsize(kobj)->order;
+<<<<<<< HEAD
 	int mode;
 
 	mode = sysfs_match_string(anon_enabled_mode_strings, buf);
@@ -618,6 +664,45 @@ static ssize_t anon_enabled_store(struct kobject *kobj,
 	}
 
 	return count;
+=======
+	ssize_t ret = count;
+
+	if (sysfs_streq(buf, "always")) {
+		spin_lock(&huge_anon_orders_lock);
+		clear_bit(order, &huge_anon_orders_inherit);
+		clear_bit(order, &huge_anon_orders_madvise);
+		set_bit(order, &huge_anon_orders_always);
+		spin_unlock(&huge_anon_orders_lock);
+	} else if (sysfs_streq(buf, "inherit")) {
+		spin_lock(&huge_anon_orders_lock);
+		clear_bit(order, &huge_anon_orders_always);
+		clear_bit(order, &huge_anon_orders_madvise);
+		set_bit(order, &huge_anon_orders_inherit);
+		spin_unlock(&huge_anon_orders_lock);
+	} else if (sysfs_streq(buf, "madvise")) {
+		spin_lock(&huge_anon_orders_lock);
+		clear_bit(order, &huge_anon_orders_always);
+		clear_bit(order, &huge_anon_orders_inherit);
+		set_bit(order, &huge_anon_orders_madvise);
+		spin_unlock(&huge_anon_orders_lock);
+	} else if (sysfs_streq(buf, "never")) {
+		spin_lock(&huge_anon_orders_lock);
+		clear_bit(order, &huge_anon_orders_always);
+		clear_bit(order, &huge_anon_orders_inherit);
+		clear_bit(order, &huge_anon_orders_madvise);
+		spin_unlock(&huge_anon_orders_lock);
+	} else
+		ret = -EINVAL;
+
+	if (ret > 0) {
+		int err;
+
+		err = start_stop_khugepaged();
+		if (err)
+			ret = err;
+	}
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct kobj_attribute anon_enabled_attr =
@@ -1218,6 +1303,7 @@ retry:
 
 static struct deferred_split *folio_split_queue_lock(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct deferred_split *queue;
 
 	rcu_read_lock();
@@ -1229,11 +1315,15 @@ static struct deferred_split *folio_split_queue_lock(struct folio *folio)
 	rcu_read_unlock();
 
 	return queue;
+=======
+	return split_queue_lock(folio_nid(folio), folio_memcg(folio));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct deferred_split *
 folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
 {
+<<<<<<< HEAD
 	struct deferred_split *queue;
 
 	rcu_read_lock();
@@ -1241,6 +1331,9 @@ folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
 	rcu_read_unlock();
 
 	return queue;
+=======
+	return split_queue_lock_irqsave(folio_nid(folio), folio_memcg(folio), flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void split_queue_unlock(struct deferred_split *queue)
@@ -2418,6 +2511,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
 	mm_dec_nr_ptes(mm);
 }
 
+<<<<<<< HEAD
 static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
 		pmd_t pmdval, struct folio *folio, bool is_present)
 {
@@ -2493,12 +2587,23 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	bool has_deposit;
 	spinlock_t *ptl;
 	pmd_t orig_pmd;
+=======
+int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+		 pmd_t *pmd, unsigned long addr)
+{
+	pmd_t orig_pmd;
+	spinlock_t *ptl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	tlb_change_page_size(tlb, HPAGE_PMD_SIZE);
 
 	ptl = __pmd_trans_huge_lock(pmd, vma);
 	if (!ptl)
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * For architectures like ppc64 we look at deposited pgtable
 	 * when calling pmdp_huge_get_and_clear. So do the
@@ -2509,6 +2614,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 						tlb->fullmm);
 	arch_check_zapped_pmd(vma, orig_pmd);
 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+<<<<<<< HEAD
 
 	is_present = pmd_present(orig_pmd);
 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
@@ -2522,6 +2628,66 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	if (is_present && folio)
 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
 	return true;
+=======
+	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
+		if (arch_needs_pgtable_deposit())
+			zap_deposited_table(tlb->mm, pmd);
+		spin_unlock(ptl);
+	} else if (is_huge_zero_pmd(orig_pmd)) {
+		if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
+			zap_deposited_table(tlb->mm, pmd);
+		spin_unlock(ptl);
+	} else {
+		struct folio *folio = NULL;
+		int flush_needed = 1;
+
+		if (pmd_present(orig_pmd)) {
+			struct page *page = pmd_page(orig_pmd);
+
+			folio = page_folio(page);
+			folio_remove_rmap_pmd(folio, page, vma);
+			WARN_ON_ONCE(folio_mapcount(folio) < 0);
+			VM_BUG_ON_PAGE(!PageHead(page), page);
+		} else if (pmd_is_valid_softleaf(orig_pmd)) {
+			const softleaf_t entry = softleaf_from_pmd(orig_pmd);
+
+			folio = softleaf_to_folio(entry);
+			flush_needed = 0;
+
+			if (!thp_migration_supported())
+				WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+		}
+
+		if (folio_test_anon(folio)) {
+			zap_deposited_table(tlb->mm, pmd);
+			add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+		} else {
+			if (arch_needs_pgtable_deposit())
+				zap_deposited_table(tlb->mm, pmd);
+			add_mm_counter(tlb->mm, mm_counter_file(folio),
+				       -HPAGE_PMD_NR);
+
+			/*
+			 * Use flush_needed to indicate whether the PMD entry
+			 * is present, instead of checking pmd_present() again.
+			 */
+			if (flush_needed && pmd_young(orig_pmd) &&
+			    likely(vma_has_recency(vma)))
+				folio_mark_accessed(folio);
+		}
+
+		if (folio_is_device_private(folio)) {
+			folio_remove_rmap_pmd(folio, &folio->page, vma);
+			WARN_ON_ONCE(folio_mapcount(folio) < 0);
+			folio_put(folio);
+		}
+
+		spin_unlock(ptl);
+		if (flush_needed)
+			tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+	}
+	return 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifndef pmd_move_must_withdraw
@@ -2966,7 +3132,11 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
 	arch_check_zapped_pud(vma, orig_pud);
 	tlb_remove_pud_tlb_entry(tlb, pud, addr);
+<<<<<<< HEAD
 	if (vma_is_special_huge(vma)) {
+=======
+	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		spin_unlock(ptl);
 		/* No zero page support yet */
 	} else {
@@ -3074,7 +3244,11 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
 	for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
 		pte_t entry;
 
+<<<<<<< HEAD
 		entry = pfn_pte(zero_pfn(addr), vma->vm_page_prot);
+=======
+		entry = pfn_pte(my_zero_pfn(addr), vma->vm_page_prot);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		entry = pte_mkspecial(entry);
 		if (pmd_uffd_wp(old_pmd))
 			entry = pte_mkuffd_wp(entry);
@@ -3117,7 +3291,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
 		 */
 		if (arch_needs_pgtable_deposit())
 			zap_deposited_table(mm, pmd);
+<<<<<<< HEAD
 		if (vma_is_special_huge(vma))
+=======
+		if (!vma_is_dax(vma) && vma_is_special_huge(vma))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return;
 		if (unlikely(pmd_is_migration_entry(old_pmd))) {
 			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
@@ -4010,7 +4188,11 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
 		folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
 
 		if (do_lru)
+<<<<<<< HEAD
 			lruvec_unlock(lruvec);
+=======
+			unlock_page_lruvec(lruvec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (ci)
 			swap_cluster_unlock(ci);
@@ -4208,7 +4390,11 @@ out_unlock:
 		i_mmap_unlock_read(mapping);
 out:
 	xas_destroy(&xas);
+<<<<<<< HEAD
 	if (is_pmd_order(old_order))
+=======
+	if (old_order == HPAGE_PMD_ORDER)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
 	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
 	return ret;
@@ -4683,6 +4869,7 @@ next:
 
 static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct *vma)
 {
+<<<<<<< HEAD
 	if (vma_is_dax(vma))
 		return true;
 	if (vma_is_special_huge(vma))
@@ -4693,6 +4880,10 @@ static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct *vma)
 		return true;
 
 	return false;
+=======
+	return vma_is_special_huge(vma) || (vma->vm_flags & VM_IO) ||
+		    is_vm_hugetlb_page(vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int split_huge_pages_pid(int pid, unsigned long vaddr_start,

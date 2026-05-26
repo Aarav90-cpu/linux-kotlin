@@ -1026,6 +1026,7 @@ int comedi_load_firmware(struct comedi_device *dev, struct device *hw_dev,
 				   unsigned long context),
 			 unsigned long context);
 
+<<<<<<< HEAD
 int __comedi_check_request_region(struct comedi_device *dev,
 				  unsigned long start, unsigned long len,
 				  unsigned long minstart, unsigned long maxend,
@@ -1075,6 +1076,12 @@ static inline int comedi_request_region(struct comedi_device *dev,
 	return comedi_check_request_region(dev, start, len, 0, ~0ul, 1);
 }
 
+=======
+int __comedi_request_region(struct comedi_device *dev,
+			    unsigned long start, unsigned long len);
+int comedi_request_region(struct comedi_device *dev,
+			  unsigned long start, unsigned long len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void comedi_legacy_detach(struct comedi_device *dev);
 
 int comedi_auto_config(struct device *hardware_device,

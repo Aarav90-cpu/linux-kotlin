@@ -56,12 +56,15 @@ static struct irq_ops arch_timer_irq_ops = {
 	.get_input_level = kvm_arch_timer_get_input_level,
 };
 
+<<<<<<< HEAD
 static struct irq_ops arch_timer_irq_ops_vgic_v5 = {
 	.get_input_level = kvm_arch_timer_get_input_level,
 	.queue_irq_unlock = vgic_v5_ppi_queue_irq_unlock,
 	.set_direct_injection = vgic_v5_set_ppi_dvi,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nr_timers(struct kvm_vcpu *vcpu)
 {
 	if (!vcpu_has_nv(vcpu))
@@ -453,6 +456,7 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
 	if (userspace_irqchip(vcpu->kvm))
 		return;
 
+<<<<<<< HEAD
 	/* Skip injecting on GICv5 for directly injected (DVI'd) timers */
 	if (vgic_is_v5(vcpu->kvm)) {
 		struct timer_map map;
@@ -464,6 +468,8 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
 			return;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kvm_vgic_inject_irq(vcpu->kvm, vcpu,
 			    timer_irq(timer_ctx),
 			    timer_ctx->irq.level,
@@ -691,7 +697,10 @@ static void kvm_timer_vcpu_load_gic(struct arch_timer_context *ctx)
 		phys_active = kvm_vgic_map_is_active(vcpu, timer_irq(ctx));
 
 	phys_active |= ctx->irq.level;
+<<<<<<< HEAD
 	phys_active |= vgic_is_v5(vcpu->kvm);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	set_timer_irq_phys_active(ctx, phys_active);
 }
@@ -758,11 +767,21 @@ static void kvm_timer_vcpu_load_nested_switch(struct kvm_vcpu *vcpu,
 
 		ret = kvm_vgic_map_phys_irq(vcpu,
 					    map->direct_vtimer->host_timer_irq,
+<<<<<<< HEAD
 					    timer_irq(map->direct_vtimer));
 		WARN_ON_ONCE(ret);
 		ret = kvm_vgic_map_phys_irq(vcpu,
 					    map->direct_ptimer->host_timer_irq,
 					    timer_irq(map->direct_ptimer));
+=======
+					    timer_irq(map->direct_vtimer),
+					    &arch_timer_irq_ops);
+		WARN_ON_ONCE(ret);
+		ret = kvm_vgic_map_phys_irq(vcpu,
+					    map->direct_ptimer->host_timer_irq,
+					    timer_irq(map->direct_ptimer),
+					    &arch_timer_irq_ops);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON_ONCE(ret);
 	}
 }
@@ -880,8 +899,12 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
 	get_timer_map(vcpu, &map);
 
 	if (static_branch_likely(&has_gic_active_state)) {
+<<<<<<< HEAD
 		/* We don't do NV on GICv5, yet */
 		if (vcpu_has_nv(vcpu) && !vgic_is_v5(vcpu->kvm))
+=======
+		if (vcpu_has_nv(vcpu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			kvm_timer_vcpu_load_nested_switch(vcpu, &map);
 
 		kvm_timer_vcpu_load_gic(map.direct_vtimer);
@@ -951,12 +974,15 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
 
 	if (kvm_vcpu_is_blocking(vcpu))
 		kvm_timer_blocking(vcpu);
+<<<<<<< HEAD
 
 	if (vgic_is_v5(vcpu->kvm)) {
 		set_timer_irq_phys_active(map.direct_vtimer, false);
 		if (map.direct_ptimer)
 			set_timer_irq_phys_active(map.direct_ptimer, false);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void kvm_timer_sync_nested(struct kvm_vcpu *vcpu)
@@ -1120,6 +1146,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
 		      HRTIMER_MODE_ABS_HARD);
 }
 
+<<<<<<< HEAD
 /*
  * This is always called during kvm_arch_init_vm, but will also be
  * called from kvm_vgic_create if we have a vGICv5.
@@ -1133,6 +1160,12 @@ void kvm_timer_init_vm(struct kvm *kvm)
 	 */
 	for (int i = 0; i < NR_KVM_TIMERS; i++)
 		kvm->arch.timer_data.ppi[i] = get_vgic_ppi(kvm, default_ppi[i]);
+=======
+void kvm_timer_init_vm(struct kvm *kvm)
+{
+	for (int i = 0; i < NR_KVM_TIMERS; i++)
+		kvm->arch.timer_data.ppi[i] = default_ppi[i];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void kvm_timer_cpu_up(void)
@@ -1301,6 +1334,7 @@ static int timer_irq_set_irqchip_state(struct irq_data *d,
 
 static void timer_irq_eoi(struct irq_data *d)
 {
+<<<<<<< HEAD
 	/*
 	 * On a GICv5 host, we still need to call EOI on the parent for
 	 * PPIs. The host driver already handles irqs which are forwarded to
@@ -1310,6 +1344,9 @@ static void timer_irq_eoi(struct irq_data *d)
 	 */
 	if (!irqd_is_forwarded_to_vcpu(d) ||
 	    kvm_vgic_global_state.type == VGIC_V5)
+=======
+	if (!irqd_is_forwarded_to_vcpu(d))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		irq_chip_eoi_parent(d);
 }
 
@@ -1373,8 +1410,12 @@ static int kvm_irq_init(struct arch_timer_kvm_info *info)
 	host_vtimer_irq = info->virtual_irq;
 	kvm_irq_fixup_flags(host_vtimer_irq, &host_vtimer_irq_flags);
 
+<<<<<<< HEAD
 	if (kvm_vgic_global_state.no_hw_deactivation ||
 	    kvm_vgic_global_state.type == VGIC_V5) {
+=======
+	if (kvm_vgic_global_state.no_hw_deactivation) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct fwnode_handle *fwnode;
 		struct irq_data *data;
 
@@ -1392,8 +1433,12 @@ static int kvm_irq_init(struct arch_timer_kvm_info *info)
 			return -ENOMEM;
 		}
 
+<<<<<<< HEAD
 		if (kvm_vgic_global_state.no_hw_deactivation)
 			arch_timer_irq_ops.flags |= VGIC_IRQ_SW_RESAMPLE;
+=======
+		arch_timer_irq_ops.flags |= VGIC_IRQ_SW_RESAMPLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON(irq_domain_push_irq(domain, host_vtimer_irq,
 					    (void *)TIMER_VTIMER));
 	}
@@ -1543,6 +1588,7 @@ static bool timer_irqs_are_valid(struct kvm_vcpu *vcpu)
 		if (kvm_vgic_set_owner(vcpu, irq, ctx))
 			break;
 
+<<<<<<< HEAD
 		/* With GICv5, the default PPI is what you get -- nothing else */
 		if (vgic_is_v5(vcpu->kvm) && irq != get_vgic_ppi(vcpu->kvm, default_ppi[i]))
 			break;
@@ -1555,6 +1601,13 @@ static bool timer_irqs_are_valid(struct kvm_vcpu *vcpu)
 		 * style PPI where the type is encoded in the top-bits.
 		 */
 		ppis |= BIT(irq & 0x1f);
+=======
+		/*
+		 * We know by construction that we only have PPIs, so
+		 * all values are less than 32.
+		 */
+		ppis |= BIT(irq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	valid = hweight32(ppis) == nr_timers(vcpu);
@@ -1592,7 +1645,10 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
 {
 	struct arch_timer_cpu *timer = vcpu_timer(vcpu);
 	struct timer_map map;
+<<<<<<< HEAD
 	struct irq_ops *ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (timer->enabled)
@@ -1613,6 +1669,7 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
 
 	get_timer_map(vcpu, &map);
 
+<<<<<<< HEAD
 	ops = vgic_is_v5(vcpu->kvm) ? &arch_timer_irq_ops_vgic_v5 :
 				      &arch_timer_irq_ops;
 
@@ -1629,6 +1686,22 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
 		ret = kvm_vgic_map_phys_irq(vcpu,
 					    map.direct_ptimer->host_timer_irq,
 					    timer_irq(map.direct_ptimer));
+=======
+	ret = kvm_vgic_map_phys_irq(vcpu,
+				    map.direct_vtimer->host_timer_irq,
+				    timer_irq(map.direct_vtimer),
+				    &arch_timer_irq_ops);
+	if (ret)
+		return ret;
+
+	if (map.direct_ptimer) {
+		ret = kvm_vgic_map_phys_irq(vcpu,
+					    map.direct_ptimer->host_timer_irq,
+					    timer_irq(map.direct_ptimer),
+					    &arch_timer_irq_ops);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -1655,6 +1728,7 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
 	if (get_user(irq, uaddr))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if (!(irq_is_ppi(vcpu->kvm, irq)))
 		return -EINVAL;
 
@@ -1663,6 +1737,17 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
 	if (test_bit(KVM_ARCH_FLAG_TIMER_PPIS_IMMUTABLE,
 		     &vcpu->kvm->arch.flags)) {
 		return -EBUSY;
+=======
+	if (!(irq_is_ppi(irq)))
+		return -EINVAL;
+
+	mutex_lock(&vcpu->kvm->arch.config_lock);
+
+	if (test_bit(KVM_ARCH_FLAG_TIMER_PPIS_IMMUTABLE,
+		     &vcpu->kvm->arch.flags)) {
+		ret = -EBUSY;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	switch (attr->attr) {
@@ -1679,7 +1764,12 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
 		idx = TIMER_HPTIMER;
 		break;
 	default:
+<<<<<<< HEAD
 		return -ENXIO;
+=======
+		ret = -ENXIO;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -1689,6 +1779,11 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
 	 */
 	vcpu->kvm->arch.timer_data.ppi[idx] = irq;
 
+<<<<<<< HEAD
+=======
+out:
+	mutex_unlock(&vcpu->kvm->arch.config_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 

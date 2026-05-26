@@ -10,10 +10,13 @@
 # checksyscalls.sh gcc gcc-options
 #
 
+<<<<<<< HEAD
 set -e
 
 reference_table="$(dirname $0)/../arch/x86/entry/syscalls/syscall_32.tbl"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ignore_list() {
 cat << EOF
 #include <asm/types.h>
@@ -273,6 +276,7 @@ syscall_list() {
 	done
 }
 
+<<<<<<< HEAD
 (ignore_list && syscall_list ${reference_table}) | \
 $* -Wno-error -Wno-unused-macros -E -x c - > /dev/null
 
@@ -280,3 +284,7 @@ $* -Wno-error -Wno-unused-macros -E -x c - > /dev/null
 if [ -n "${DEPFILE}" ]; then
 	echo "${0}: ${0} ${reference_table}" >> "${DEPFILE}"
 fi
+=======
+(ignore_list && syscall_list $(dirname $0)/../arch/x86/entry/syscalls/syscall_32.tbl) | \
+$* -Wno-error -Wno-unused-macros -E -x c - > /dev/null
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

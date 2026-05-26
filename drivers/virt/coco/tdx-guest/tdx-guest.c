@@ -309,11 +309,14 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (quote_buf->status != GET_QUOTE_SUCCESS) {
 		pr_debug("GetQuote request failed, status:%llx\n", quote_buf->status);
 		return -EIO;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	out_len = READ_ONCE(quote_buf->out_len);
 
 	if (out_len > TDX_QUOTE_MAX_LEN)

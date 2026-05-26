@@ -1253,7 +1253,12 @@ static int aw88081_i2c_probe(struct i2c_client *i2c)
 	struct aw88081 *aw88081;
 	int ret;
 
+<<<<<<< HEAD
 	if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C))
+=======
+	ret = i2c_check_functionality(i2c->adapter, I2C_FUNC_I2C);
+	if (!ret)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return dev_err_probe(&i2c->dev, -ENXIO, "check_functionality failed");
 
 	aw88081 = devm_kzalloc(&i2c->dev, sizeof(*aw88081), GFP_KERNEL);

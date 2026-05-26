@@ -250,12 +250,19 @@ static void fill_backlight_transform_table(struct dmcu_iram_parameters params,
 	unsigned int lut_index;
 
 	table->backlight_thresholds[0] = 0;
+<<<<<<< HEAD
 	ASSERT(params.backlight_lut_array[0] <= 0xFFFF);
 	table->backlight_offsets[0] = (uint16_t)params.backlight_lut_array[0];
 	table->backlight_thresholds[num_entries-1] = 0xFFFF;
 	ASSERT(params.backlight_lut_array[params.backlight_lut_array_size - 1] <= 0xFFFF);
 	table->backlight_offsets[num_entries-1] =
 		(uint16_t)params.backlight_lut_array[params.backlight_lut_array_size - 1];
+=======
+	table->backlight_offsets[0] = params.backlight_lut_array[0];
+	table->backlight_thresholds[num_entries-1] = 0xFFFF;
+	table->backlight_offsets[num_entries-1] =
+		params.backlight_lut_array[params.backlight_lut_array_size - 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup all brightness levels between 0% and 100% exclusive
 	 * Fills brightness-to-backlight transform table. Backlight custom curve
@@ -267,6 +274,7 @@ static void fill_backlight_transform_table(struct dmcu_iram_parameters params,
 	 */
 	for (i = 1; i+1 < num_entries; i++) {
 		lut_index = (params.backlight_lut_array_size - 1) * i / (num_entries - 1);
+<<<<<<< HEAD
 
 		ASSERT(lut_index < params.backlight_lut_array_size);
 
@@ -278,6 +286,14 @@ static void fill_backlight_transform_table(struct dmcu_iram_parameters params,
 
 		table->backlight_thresholds[i] = cpu_to_be16((uint16_t)threshold_val);
 		table->backlight_offsets[i]    = cpu_to_be16((uint16_t)offset_val);
+=======
+		ASSERT(lut_index < params.backlight_lut_array_size);
+
+		table->backlight_thresholds[i] =
+			cpu_to_be16(DIV_ROUNDUP((i * 65536), num_entries));
+		table->backlight_offsets[i] =
+			cpu_to_be16(params.backlight_lut_array[lut_index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -289,12 +305,19 @@ static void fill_backlight_transform_table_v_2_2(struct dmcu_iram_parameters par
 	unsigned int lut_index;
 
 	table->backlight_thresholds[0] = 0;
+<<<<<<< HEAD
 	ASSERT(params.backlight_lut_array[0] <= 0xFFFF);
 	table->backlight_offsets[0] = (uint16_t)params.backlight_lut_array[0];
 	table->backlight_thresholds[num_entries-1] = 0xFFFF;
 	ASSERT(params.backlight_lut_array[params.backlight_lut_array_size - 1] <= 0xFFFF);
 	table->backlight_offsets[num_entries-1] =
 		(uint16_t)params.backlight_lut_array[params.backlight_lut_array_size - 1];
+=======
+	table->backlight_offsets[0] = params.backlight_lut_array[0];
+	table->backlight_thresholds[num_entries-1] = 0xFFFF;
+	table->backlight_offsets[num_entries-1] =
+		params.backlight_lut_array[params.backlight_lut_array_size - 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup all brightness levels between 0% and 100% exclusive
 	 * Fills brightness-to-backlight transform table. Backlight custom curve
@@ -308,6 +331,7 @@ static void fill_backlight_transform_table_v_2_2(struct dmcu_iram_parameters par
 		lut_index = DIV_ROUNDUP((i * params.backlight_lut_array_size), num_entries);
 		ASSERT(lut_index < params.backlight_lut_array_size);
 
+<<<<<<< HEAD
 		unsigned int threshold_val = DIV_ROUNDUP((i * 65536), num_entries);
 		unsigned int offset_val = params.backlight_lut_array[lut_index];
 
@@ -318,6 +342,14 @@ static void fill_backlight_transform_table_v_2_2(struct dmcu_iram_parameters par
 			cpu_to_be16((uint16_t)threshold_val) : cpu_to_le16((uint16_t)threshold_val);
 		table->backlight_offsets[i] = (big_endian) ?
 			cpu_to_be16((uint16_t)offset_val) : cpu_to_le16((uint16_t)offset_val);
+=======
+		table->backlight_thresholds[i] = (big_endian) ?
+			cpu_to_be16(DIV_ROUNDUP((i * 65536), num_entries)) :
+			cpu_to_le16(DIV_ROUNDUP((i * 65536), num_entries));
+		table->backlight_offsets[i] = (big_endian) ?
+			cpu_to_be16(params.backlight_lut_array[lut_index]) :
+			cpu_to_le16(params.backlight_lut_array[lut_index]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -753,12 +785,18 @@ bool dmub_init_abm_config(struct resource_pool *res_pool,
 	}
 
 	if (params.backlight_ramping_override) {
+<<<<<<< HEAD
 
 		ASSERT(params.backlight_ramping_reduction <= 0xFFFF);
 		ASSERT(params.backlight_ramping_start <= 0xFFFF);
 		for (i = 0; i < NUM_AGGR_LEVEL; i++) {
 			config.blRampReduction[i] = (uint16_t)params.backlight_ramping_reduction;
 			config.blRampStart[i]     = (uint16_t)params.backlight_ramping_start;
+=======
+		for (i = 0; i < NUM_AGGR_LEVEL; i++) {
+			config.blRampReduction[i] = params.backlight_ramping_reduction;
+			config.blRampStart[i] = params.backlight_ramping_start;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	} else {
 		for (i = 0; i < NUM_AGGR_LEVEL; i++) {
@@ -1076,7 +1114,10 @@ void calculate_replay_link_off_frame_count(struct dc_link *link,
 bool fill_custom_backlight_caps(unsigned int config_no, struct dm_acpi_atif_backlight_caps *caps)
 {
 	unsigned int data_points_size;
+<<<<<<< HEAD
 	uint64_t caps_size;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (config_no >= ARRAY_SIZE(custom_backlight_profiles))
 		return false;
@@ -1084,9 +1125,13 @@ bool fill_custom_backlight_caps(unsigned int config_no, struct dm_acpi_atif_back
 	data_points_size = custom_backlight_profiles[config_no].num_data_points
 			* sizeof(custom_backlight_profiles[config_no].data_points[0]);
 
+<<<<<<< HEAD
 	caps_size = sizeof(struct dm_acpi_atif_backlight_caps) - sizeof(caps->data_points) + data_points_size;
 	ASSERT(caps_size <= 0xFFFF);
 	caps->size = (uint16_t)caps_size;
+=======
+	caps->size = sizeof(struct dm_acpi_atif_backlight_caps) - sizeof(caps->data_points) + data_points_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	caps->flags = 0;
 	caps->error_code = 0;
 	caps->ac_level_percentage = custom_backlight_profiles[config_no].ac_level_percentage;

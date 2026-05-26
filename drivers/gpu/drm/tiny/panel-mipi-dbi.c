@@ -233,6 +233,7 @@ static void panel_mipi_dbi_commands_execute(struct mipi_dbi *dbi,
 	}
 }
 
+<<<<<<< HEAD
 struct panel_mipi_dbi_device {
 	struct mipi_dbi_dev dbidev;
 
@@ -273,6 +274,20 @@ static void panel_mipi_dbi_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 		return;
 
 	drm_dbg(drm, "\n");
+=======
+static void panel_mipi_dbi_enable(struct drm_simple_display_pipe *pipe,
+				  struct drm_crtc_state *crtc_state,
+				  struct drm_plane_state *plane_state)
+{
+	struct mipi_dbi_dev *dbidev = drm_to_mipi_dbi_dev(pipe->crtc.dev);
+	struct mipi_dbi *dbi = &dbidev->dbi;
+	int ret, idx;
+
+	if (!drm_dev_enter(pipe->crtc.dev, &idx))
+		return;
+
+	drm_dbg(pipe->crtc.dev, "\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = mipi_dbi_poweron_conditional_reset(dbidev);
 	if (ret < 0)
@@ -280,11 +295,16 @@ static void panel_mipi_dbi_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	if (!ret)
 		panel_mipi_dbi_commands_execute(dbi, dbidev->driver_private);
 
+<<<<<<< HEAD
 	backlight_enable(dbidev->backlight);
+=======
+	mipi_dbi_enable_flush(dbidev, crtc_state, plane_state);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out_exit:
 	drm_dev_exit(idx);
 }
 
+<<<<<<< HEAD
 static const struct drm_crtc_helper_funcs panel_mipi_dbi_crtc_helper_funcs = {
 	DRM_MIPI_DBI_CRTC_HELPER_FUNCS,
 	.atomic_enable = panel_mipi_dbi_crtc_helper_atomic_enable,
@@ -314,6 +334,10 @@ static const struct drm_mode_config_helper_funcs panel_mipi_dbi_mode_config_help
 
 static const struct drm_mode_config_funcs panel_mipi_dbi_mode_config_funcs = {
 	DRM_MIPI_DBI_MODE_CONFIG_FUNCS,
+=======
+static const struct drm_simple_display_pipe_funcs panel_mipi_dbi_pipe_funcs = {
+	DRM_MIPI_DBI_SIMPLE_DISPLAY_PIPE_FUNCS(panel_mipi_dbi_enable),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 DEFINE_DRM_GEM_DMA_FOPS(panel_mipi_dbi_fops);
@@ -372,15 +396,22 @@ static int panel_mipi_dbi_get_mode(struct mipi_dbi_dev *dbidev, struct drm_displ
 static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
+<<<<<<< HEAD
 	struct panel_mipi_dbi_device *panel_mipi_dbi;
 	struct mipi_dbi_dev *dbidev;
 	struct drm_device *drm;
 	struct drm_display_mode mode;
+=======
+	struct drm_display_mode mode;
+	struct mipi_dbi_dev *dbidev;
+	struct drm_device *drm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mipi_dbi *dbi;
 	struct gpio_desc *dc;
 	unsigned int bpp;
 	size_t buf_size;
 	u32 formats[2];
+<<<<<<< HEAD
 	struct drm_plane *plane;
 	struct drm_crtc *crtc;
 	struct drm_encoder *encoder;
@@ -393,6 +424,14 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
 	if (IS_ERR(panel_mipi_dbi))
 		return PTR_ERR(panel_mipi_dbi);
 	dbidev = &panel_mipi_dbi->dbidev;
+=======
+	int ret;
+
+	dbidev = devm_drm_dev_alloc(dev, &panel_mipi_dbi_driver, struct mipi_dbi_dev, drm);
+	if (IS_ERR(dbidev))
+		return PTR_ERR(dbidev);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dbi = &dbidev->dbi;
 	drm = &dbidev->drm;
 
@@ -439,6 +478,7 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
 		return ret;
 
 	buf_size = DIV_ROUND_UP(mode.hdisplay * mode.vdisplay * bpp, 8);
+<<<<<<< HEAD
 	ret = drm_mipi_dbi_dev_init(dbidev, &mode, formats[0], 0, buf_size);
 	if (ret)
 		return ret;
@@ -487,6 +527,11 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
 	drm_connector_helper_add(connector, &panel_mipi_dbi_connector_helper_funcs);
 
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = mipi_dbi_dev_init_with_formats(dbidev, &panel_mipi_dbi_pipe_funcs,
+					     formats, ARRAY_SIZE(formats),
+					     &mode, 0, buf_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

@@ -60,11 +60,19 @@ pmt_memcpy64_fromio(void *to, const u64 __iomem *from, size_t count)
 	return count;
 }
 
+<<<<<<< HEAD
 int pmt_telem_read_mmio(struct device *dev, struct pmt_callbacks *cb, u32 guid, void *buf,
 			void __iomem *addr, loff_t off, u32 count)
 {
 	if (cb && cb->read_telem)
 		return cb->read_telem(dev, guid, buf, off, count);
+=======
+int pmt_telem_read_mmio(struct pci_dev *pdev, struct pmt_callbacks *cb, u32 guid, void *buf,
+			void __iomem *addr, loff_t off, u32 count)
+{
+	if (cb && cb->read_telem)
+		return cb->read_telem(pdev, guid, buf, off, count);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	addr += off;
 
@@ -99,7 +107,11 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
 	if (count > entry->size - off)
 		count = entry->size - off;
 
+<<<<<<< HEAD
 	count = pmt_telem_read_mmio(entry->ep->dev, entry->cb, entry->header.guid, buf,
+=======
+	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    entry->base, off, count);
 
 	return count;
@@ -208,7 +220,11 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
 				    struct intel_vsec_device *ivdev,
 				    struct resource *disc_res)
 {
+<<<<<<< HEAD
 	struct pci_dev *pci_dev = to_pci_dev(ivdev->dev);
+=======
+	struct pci_dev *pci_dev = ivdev->pcidev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev = &ivdev->auxdev.dev;
 	struct intel_pmt_header *header = &entry->header;
 	u8 bir;

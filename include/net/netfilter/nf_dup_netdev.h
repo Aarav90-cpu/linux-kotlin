@@ -3,12 +3,16 @@
 #define _NF_DUP_NETDEV_H_
 
 #include <net/netfilter/nf_tables.h>
+<<<<<<< HEAD
 #include <linux/netdevice.h>
 #include <linux/sched.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void nf_dup_netdev_egress(const struct nft_pktinfo *pkt, int oif);
 void nf_fwd_netdev_egress(const struct nft_pktinfo *pkt, int oif);
 
+<<<<<<< HEAD
 #define NF_RECURSION_LIMIT	2
 
 static inline u8 *nf_get_nf_dup_skb_recursion(void)
@@ -20,6 +24,8 @@ static inline u8 *nf_get_nf_dup_skb_recursion(void)
 #endif
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct nft_offload_ctx;
 struct nft_flow_rule;
 

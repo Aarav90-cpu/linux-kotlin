@@ -24,8 +24,12 @@ Performance monitor support
    thunderx2-pmu
    alibaba_pmu
    dwc_pcie_pmu
+<<<<<<< HEAD
    nvidia-tegra241-pmu
    nvidia-tegra410-pmu
+=======
+   nvidia-pmu
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
    meson-ddr-pmu
    cxl
    ampere_cspmu

@@ -15,9 +15,15 @@
 
 #define DEFAULT_RISCV_GUEST_STACK_VADDR_MIN	0xac0000
 
+<<<<<<< HEAD
 static gva_t exception_handlers;
 
 bool __vcpu_has_ext(struct kvm_vcpu *vcpu, u64 ext)
+=======
+static vm_vaddr_t exception_handlers;
+
+bool __vcpu_has_ext(struct kvm_vcpu *vcpu, uint64_t ext)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long value = 0;
 	int ret;
@@ -27,32 +33,53 @@ bool __vcpu_has_ext(struct kvm_vcpu *vcpu, u64 ext)
 	return !ret && !!value;
 }
 
+<<<<<<< HEAD
 static u64 pte_addr(struct kvm_vm *vm, u64 entry)
+=======
+static uint64_t pte_addr(struct kvm_vm *vm, uint64_t entry)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return ((entry & PGTBL_PTE_ADDR_MASK) >> PGTBL_PTE_ADDR_SHIFT) <<
 		PGTBL_PAGE_SIZE_SHIFT;
 }
 
+<<<<<<< HEAD
 static u64 ptrs_per_pte(struct kvm_vm *vm)
 {
 	return PGTBL_PAGE_SIZE / sizeof(u64);
 }
 
 static u64 pte_index_mask[] = {
+=======
+static uint64_t ptrs_per_pte(struct kvm_vm *vm)
+{
+	return PGTBL_PAGE_SIZE / sizeof(uint64_t);
+}
+
+static uint64_t pte_index_mask[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PGTBL_L0_INDEX_MASK,
 	PGTBL_L1_INDEX_MASK,
 	PGTBL_L2_INDEX_MASK,
 	PGTBL_L3_INDEX_MASK,
 };
 
+<<<<<<< HEAD
 static u32 pte_index_shift[] = {
+=======
+static uint32_t pte_index_shift[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PGTBL_L0_INDEX_SHIFT,
 	PGTBL_L1_INDEX_SHIFT,
 	PGTBL_L2_INDEX_SHIFT,
 	PGTBL_L3_INDEX_SHIFT,
 };
 
+<<<<<<< HEAD
 static u64 pte_index(struct kvm_vm *vm, gva_t gva, int level)
+=======
+static uint64_t pte_index(struct kvm_vm *vm, vm_vaddr_t gva, int level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	TEST_ASSERT(level > -1,
 		"Negative page table level (%d) not possible", level);
@@ -75,6 +102,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
 	vm->mmu.pgd_created = true;
 }
 
+<<<<<<< HEAD
 void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 {
 	u64 *ptep, next_ppn;
@@ -94,6 +122,28 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 		gpa, vm->max_gfn, vm->page_size);
 
 	ptep = addr_gpa2hva(vm, vm->mmu.pgd) + pte_index(vm, gva, level) * 8;
+=======
+void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
+{
+	uint64_t *ptep, next_ppn;
+	int level = vm->mmu.pgtable_levels - 1;
+
+	TEST_ASSERT((vaddr % vm->page_size) == 0,
+		"Virtual address not on page boundary,\n"
+		"  vaddr: 0x%lx vm->page_size: 0x%x", vaddr, vm->page_size);
+	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid,
+		(vaddr >> vm->page_shift)),
+		"Invalid virtual address, vaddr: 0x%lx", vaddr);
+	TEST_ASSERT((paddr % vm->page_size) == 0,
+		"Physical address not on page boundary,\n"
+		"  paddr: 0x%lx vm->page_size: 0x%x", paddr, vm->page_size);
+	TEST_ASSERT((paddr >> vm->page_shift) <= vm->max_gfn,
+		"Physical address beyond maximum supported,\n"
+		"  paddr: 0x%lx vm->max_gfn: 0x%lx vm->page_size: 0x%x",
+		paddr, vm->max_gfn, vm->page_size);
+
+	ptep = addr_gpa2hva(vm, vm->mmu.pgd) + pte_index(vm, vaddr, level) * 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!*ptep) {
 		next_ppn = vm_alloc_page_table(vm) >> PGTBL_PAGE_SIZE_SHIFT;
 		*ptep = (next_ppn << PGTBL_PTE_ADDR_SHIFT) |
@@ -103,7 +153,11 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 
 	while (level > -1) {
 		ptep = addr_gpa2hva(vm, pte_addr(vm, *ptep)) +
+<<<<<<< HEAD
 		       pte_index(vm, gva, level) * 8;
+=======
+		       pte_index(vm, vaddr, level) * 8;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!*ptep && level > 0) {
 			next_ppn = vm_alloc_page_table(vm) >>
 				   PGTBL_PAGE_SIZE_SHIFT;
@@ -113,6 +167,7 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 		level--;
 	}
 
+<<<<<<< HEAD
 	gpa = gpa >> PGTBL_PAGE_SIZE_SHIFT;
 	*ptep = (gpa << PGTBL_PTE_ADDR_SHIFT) |
 		PGTBL_PTE_PERM_MASK | PGTBL_PTE_VALID_MASK;
@@ -121,6 +176,16 @@ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
 gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
 {
 	u64 *ptep;
+=======
+	paddr = paddr >> PGTBL_PAGE_SIZE_SHIFT;
+	*ptep = (paddr << PGTBL_PTE_ADDR_SHIFT) |
+		PGTBL_PTE_PERM_MASK | PGTBL_PTE_VALID_MASK;
+}
+
+vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
+{
+	uint64_t *ptep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int level = vm->mmu.pgtable_levels - 1;
 
 	if (!vm->mmu.pgd_created)
@@ -147,12 +212,21 @@ unmapped_gva:
 	exit(1);
 }
 
+<<<<<<< HEAD
 static void pte_dump(FILE *stream, struct kvm_vm *vm, u8 indent,
 		     u64 page, int level)
 {
 #ifdef DEBUG
 	static const char *const type[] = { "pte", "pmd", "pud", "p4d"};
 	u64 pte, *ptep;
+=======
+static void pte_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent,
+		     uint64_t page, int level)
+{
+#ifdef DEBUG
+	static const char *const type[] = { "pte", "pmd", "pud", "p4d"};
+	uint64_t pte, *ptep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (level < 0)
 		return;
@@ -169,11 +243,19 @@ static void pte_dump(FILE *stream, struct kvm_vm *vm, u8 indent,
 #endif
 }
 
+<<<<<<< HEAD
 void virt_arch_dump(FILE *stream, struct kvm_vm *vm, u8 indent)
 {
 	struct kvm_mmu *mmu = &vm->mmu;
 	int level = mmu->pgtable_levels - 1;
 	u64 pgd, *ptep;
+=======
+void virt_arch_dump(FILE *stream, struct kvm_vm *vm, uint8_t indent)
+{
+	struct kvm_mmu *mmu = &vm->mmu;
+	int level = mmu->pgtable_levels - 1;
+	uint64_t pgd, *ptep;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!mmu->pgd_created)
 		return;
@@ -232,7 +314,11 @@ void riscv_vcpu_mmu_setup(struct kvm_vcpu *vcpu)
 	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(satp), satp);
 }
 
+<<<<<<< HEAD
 void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+=======
+void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, uint8_t indent)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct kvm_riscv_core core;
 
@@ -310,20 +396,34 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.pc), (unsigned long)guest_code);
 }
 
+<<<<<<< HEAD
 struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 {
 	int r;
 	size_t stack_size;
 	unsigned long stack_gva;
+=======
+struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
+{
+	int r;
+	size_t stack_size;
+	unsigned long stack_vaddr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long current_gp = 0;
 	struct kvm_mp_state mps;
 	struct kvm_vcpu *vcpu;
 
 	stack_size = vm->page_size == 4096 ? DEFAULT_STACK_PGS * vm->page_size :
 					     vm->page_size;
+<<<<<<< HEAD
 	stack_gva = __vm_alloc(vm, stack_size,
 			       DEFAULT_RISCV_GUEST_STACK_VADDR_MIN,
 			       MEM_REGION_DATA);
+=======
+	stack_vaddr = __vm_vaddr_alloc(vm, stack_size,
+				       DEFAULT_RISCV_GUEST_STACK_VADDR_MIN,
+				       MEM_REGION_DATA);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vcpu = __vm_vcpu_add(vm, vcpu_id);
 	riscv_vcpu_mmu_setup(vcpu);
@@ -343,7 +443,11 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.gp), current_gp);
 
 	/* Setup stack pointer and program counter of guest */
+<<<<<<< HEAD
 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.sp), stack_gva + stack_size);
+=======
+	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.sp), stack_vaddr + stack_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Setup sscratch for guest_get_vcpuid() */
 	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(sscratch), vcpu_id);
@@ -357,7 +461,11 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
 void vcpu_args_set(struct kvm_vcpu *vcpu, unsigned int num, ...)
 {
 	va_list ap;
+<<<<<<< HEAD
 	u64 id = RISCV_CORE_REG(regs.a0);
+=======
+	uint64_t id = RISCV_CORE_REG(regs.a0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	TEST_ASSERT(num >= 1 && num <= 8, "Unsupported number of args,\n"
@@ -392,7 +500,11 @@ void vcpu_args_set(struct kvm_vcpu *vcpu, unsigned int num, ...)
 			id = RISCV_CORE_REG(regs.a7);
 			break;
 		}
+<<<<<<< HEAD
 		vcpu_set_reg(vcpu, id, va_arg(ap, u64));
+=======
+		vcpu_set_reg(vcpu, id, va_arg(ap, uint64_t));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	va_end(ap);
@@ -448,10 +560,17 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
 
 void vm_init_vector_tables(struct kvm_vm *vm)
 {
+<<<<<<< HEAD
 	vm->handlers = __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
 				  MEM_REGION_DATA);
 
 	*(gva_t *)addr_gva2hva(vm, (gva_t)(&exception_handlers)) = vm->handlers;
+=======
+	vm->handlers = __vm_vaddr_alloc(vm, sizeof(struct handlers),
+				   vm->page_size, MEM_REGION_DATA);
+
+	*(vm_vaddr_t *)addr_gva2hva(vm, (vm_vaddr_t)(&exception_handlers)) = vm->handlers;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void vm_install_exception_handler(struct kvm_vm *vm, int vector, exception_handler_fn handler)
@@ -469,7 +588,11 @@ void vm_install_interrupt_handler(struct kvm_vm *vm, exception_handler_fn handle
 	handlers->exception_handlers[1][0] = handler;
 }
 
+<<<<<<< HEAD
 u32 guest_get_vcpuid(void)
+=======
+uint32_t guest_get_vcpuid(void)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return csr_read(CSR_SSCRATCH);
 }
@@ -543,10 +666,17 @@ void kvm_selftest_arch_init(void)
 unsigned long riscv64_get_satp_mode(void)
 {
 	int kvm_fd, vm_fd, vcpu_fd, err;
+<<<<<<< HEAD
 	u64 val;
 	struct kvm_one_reg reg = {
 		.id     = RISCV_CONFIG_REG(satp_mode),
 		.addr   = (u64)&val,
+=======
+	uint64_t val;
+	struct kvm_one_reg reg = {
+		.id     = RISCV_CONFIG_REG(satp_mode),
+		.addr   = (uint64_t)&val,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	kvm_fd = open_kvm_dev_path_or_exit();
@@ -565,8 +695,11 @@ unsigned long riscv64_get_satp_mode(void)
 
 	return val;
 }
+<<<<<<< HEAD
 
 bool kvm_arch_has_default_irqchip(void)
 {
 	return kvm_check_cap(KVM_CAP_IRQCHIP);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

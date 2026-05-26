@@ -111,8 +111,11 @@ static const struct xe_reg ver_35_runtime_regs[] = {
 	XE2_GT_COMPUTE_DSS_2,		/* _MMIO(0x914c) */
 	XE2_GT_GEOMETRY_DSS_1,		/* _MMIO(0x9150) */
 	XE2_GT_GEOMETRY_DSS_2,		/* _MMIO(0x9154) */
+<<<<<<< HEAD
 	XE3P_XPC_GT_GEOMETRY_DSS_3,	/* _MMIO(0x915c) */
 	XE3P_XPC_GT_COMPUTE_DSS_3,	/* _MMIO(0x9160) */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SERVICE_COPY_ENABLE,		/* _MMIO(0x9170) */
 };
 

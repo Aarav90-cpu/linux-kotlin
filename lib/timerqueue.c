@@ -82,6 +82,7 @@ struct timerqueue_node *timerqueue_iterate_next(struct timerqueue_node *node)
 	return container_of(next, struct timerqueue_node, node);
 }
 EXPORT_SYMBOL_GPL(timerqueue_iterate_next);
+<<<<<<< HEAD
 
 #define __node_2_tq_linked(_n) \
 	container_of(rb_entry((_n), struct rb_node_linked, node), struct timerqueue_linked_node, node)
@@ -96,3 +97,5 @@ bool timerqueue_linked_add(struct timerqueue_linked_head *head, struct timerqueu
 	return rb_add_linked(&node->node, &head->rb_root, __tq_linked_less);
 }
 EXPORT_SYMBOL_GPL(timerqueue_linked_add);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -37,7 +37,11 @@
 #define TPGS_MODE_EXPLICIT		0x2
 
 #define ALUA_RTPG_SIZE			128
+<<<<<<< HEAD
 #define ALUA_FAILOVER_TIMEOUT		255	/* max 255 (8-bit value) */
+=======
+#define ALUA_FAILOVER_TIMEOUT		60
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define ALUA_FAILOVER_RETRIES		5
 #define ALUA_RTPG_DELAY_MSECS		5
 #define ALUA_RTPG_RETRY_DELAY		2

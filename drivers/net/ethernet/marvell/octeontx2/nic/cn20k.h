@@ -10,13 +10,17 @@
 
 #include "otx2_common.h"
 
+<<<<<<< HEAD
 struct otx2_flow_config;
 struct otx2_tc_flow;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void cn20k_init(struct otx2_nic *pfvf);
 int cn20k_register_pfvf_mbox_intr(struct otx2_nic *pf, int numvfs);
 void cn20k_disable_pfvf_mbox_intr(struct otx2_nic *pf, int numvfs);
 void cn20k_enable_pfvf_mbox_intr(struct otx2_nic *pf, int numvfs);
+<<<<<<< HEAD
 void cn20k_tc_update_mcam_table_del_req(struct otx2_nic *nic,
 					struct otx2_flow_config *flow_cfg,
 					struct otx2_tc_flow *node);
@@ -28,4 +32,6 @@ int cn20k_tc_alloc_entry(struct otx2_nic *nic,
 			 struct otx2_tc_flow *new_node,
 			 struct npc_install_flow_req *dummy);
 int cn20k_tc_free_mcam_entry(struct otx2_nic *nic, u16 entry);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* CN20K_H */

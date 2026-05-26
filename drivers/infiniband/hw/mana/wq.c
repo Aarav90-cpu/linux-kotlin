@@ -11,6 +11,7 @@ struct ib_wq *mana_ib_create_wq(struct ib_pd *pd,
 {
 	struct mana_ib_dev *mdev =
 		container_of(pd->device, struct mana_ib_dev, ib_dev);
+<<<<<<< HEAD
 	struct mana_ib_create_wq ucmd;
 	struct mana_ib_wq *wq;
 	int err;
@@ -18,6 +19,21 @@ struct ib_wq *mana_ib_create_wq(struct ib_pd *pd,
 	err = ib_copy_validate_udata_in(udata, ucmd, reserved);
 	if (err)
 		return ERR_PTR(err);
+=======
+	struct mana_ib_create_wq ucmd = {};
+	struct mana_ib_wq *wq;
+	int err;
+
+	if (udata->inlen < sizeof(ucmd))
+		return ERR_PTR(-EINVAL);
+
+	err = ib_copy_from_udata(&ucmd, udata, min(sizeof(ucmd), udata->inlen));
+	if (err) {
+		ibdev_dbg(&mdev->ib_dev,
+			  "Failed to copy from udata for create wq, %d\n", err);
+		return ERR_PTR(err);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	wq = kzalloc_obj(*wq);
 	if (!wq)

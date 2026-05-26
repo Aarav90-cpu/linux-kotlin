@@ -437,10 +437,16 @@ static unsigned long nr_mtrr_spare_reg __initdata =
 
 static int __init parse_mtrr_spare_reg(char *arg)
 {
+<<<<<<< HEAD
 	if (!arg)
 		return -EINVAL;
 
 	return kstrtoul(arg, 0, &nr_mtrr_spare_reg);
+=======
+	if (arg)
+		nr_mtrr_spare_reg = simple_strtoul(arg, NULL, 0);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 early_param("mtrr_spare_reg_nr", parse_mtrr_spare_reg);
 

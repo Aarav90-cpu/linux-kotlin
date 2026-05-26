@@ -294,9 +294,12 @@ struct intel_display {
 	/* Parent, or core, driver functions exposed to display */
 	const struct intel_display_parent_interface *parent;
 
+<<<<<<< HEAD
 	/* list of all intel_crtcs sorted by pipe */
 	struct list_head pipe_list;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Display functions */
 	struct {
 		/* Top level crtc-ish functions */

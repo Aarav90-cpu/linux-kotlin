@@ -18,6 +18,7 @@
 s{((0x)?[0-9a-fA-F]+)(.*\[([\*\ ]{4})\])}{
 
 	($num,$pat,$bits) = ($1,$3,$4);
+<<<<<<< HEAD
 
 	$bits =~ s/([^\s0])|(.)/ defined($1) + 0 /ge;
 
@@ -27,6 +28,17 @@ s{((0x)?[0-9a-fA-F]+)(.*\[([\*\ ]{4})\])}{
 
 	#print "$num,$pat,$bits\n";
 
+=======
+	
+	$bits =~ s/([^\s0])|(.)/ defined($1) + 0 /ge;
+	
+	$num = ord(pack("B8", $bits));
+	$num |= $num >> 4;
+	$num = sprintf("0x%.2x", $num);
+	
+	#print "$num,$pat,$bits\n";
+	
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	$num . $pat;
 }ge;
 
@@ -39,7 +51,11 @@ __END__;
    MSBit to LSBit = left to right.
  */
 
+<<<<<<< HEAD
 #include "font.h"
+=======
+#include <linux/font.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define FONTDATAMAX 1536
 

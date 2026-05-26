@@ -344,7 +344,11 @@ out:
 static void update_ref_ctr_warn(struct uprobe *uprobe,
 				struct mm_struct *mm, short d)
 {
+<<<<<<< HEAD
 	pr_warn("ref_ctr %s failed for inode: 0x%llx offset: "
+=======
+	pr_warn("ref_ctr %s failed for inode: 0x%lx offset: "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"0x%llx ref_ctr_offset: 0x%llx of mm: 0x%p\n",
 		d > 0 ? "increment" : "decrement", uprobe->inode->i_ino,
 		(unsigned long long) uprobe->offset,
@@ -982,7 +986,11 @@ static struct uprobe *insert_uprobe(struct uprobe *uprobe)
 static void
 ref_ctr_mismatch_warn(struct uprobe *cur_uprobe, struct uprobe *uprobe)
 {
+<<<<<<< HEAD
 	pr_warn("ref_ctr_offset mismatch. inode: 0x%llx offset: 0x%llx "
+=======
+	pr_warn("ref_ctr_offset mismatch. inode: 0x%lx offset: 0x%llx "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"ref_ctr_offset(old): 0x%llx ref_ctr_offset(new): 0x%llx\n",
 		uprobe->inode->i_ino, (unsigned long long) uprobe->offset,
 		(unsigned long long) cur_uprobe->ref_ctr_offset,

@@ -76,7 +76,11 @@ TEST(abi_version)
 	const struct landlock_ruleset_attr ruleset_attr = {
 		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_FILE,
 	};
+<<<<<<< HEAD
 	ASSERT_EQ(9, landlock_create_ruleset(NULL, 0,
+=======
+	ASSERT_EQ(8, landlock_create_ruleset(NULL, 0,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					     LANDLOCK_CREATE_RULESET_VERSION));
 
 	ASSERT_EQ(-1, landlock_create_ruleset(&ruleset_attr, 0,

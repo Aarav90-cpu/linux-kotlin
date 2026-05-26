@@ -28,6 +28,7 @@ extern asmlinkage __kernel_size_t strlen(const char *);
 
 #define __HAVE_ARCH_STRNCMP
 extern asmlinkage int strncmp(const char *cs, const char *ct, size_t count);
+<<<<<<< HEAD
 
 #define __HAVE_ARCH_STRNLEN
 extern asmlinkage __kernel_size_t strnlen(const char *, size_t);
@@ -37,6 +38,8 @@ extern asmlinkage char *strchr(const char *, int);
 
 #define __HAVE_ARCH_STRRCHR
 extern asmlinkage char *strrchr(const char *, int);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 /* For those files which don't want to check by kasan. */

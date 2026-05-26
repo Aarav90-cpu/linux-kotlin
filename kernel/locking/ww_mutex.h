@@ -4,6 +4,7 @@
 
 #define MUTEX		mutex
 #define MUTEX_WAITER	mutex_waiter
+<<<<<<< HEAD
 #define WAIT_LOCK	wait_lock
 
 /*
@@ -41,11 +42,22 @@ __ww_waiter_next(struct mutex *lock, struct mutex_waiter *w)
 	 * been observed.
 	 */
 	if (lock->first_waiter == w)
+=======
+
+static inline struct mutex_waiter *
+__ww_waiter_first(struct mutex *lock)
+{
+	struct mutex_waiter *w;
+
+	w = list_first_entry(&lock->wait_list, struct mutex_waiter, list);
+	if (list_entry_is_head(w, &lock->wait_list, list))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	return w;
 }
 
+<<<<<<< HEAD
 /*
  * for (cur = __ww_waiter_last(); cur; cur = __ww_waiter_prev())
  *
@@ -63,24 +75,62 @@ __ww_waiter_prev(struct mutex *lock, struct mutex_waiter *w)
 		return NULL;
 
 	return list_prev_entry(w, list);
+=======
+static inline struct mutex_waiter *
+__ww_waiter_next(struct mutex *lock, struct mutex_waiter *w)
+{
+	w = list_next_entry(w, list);
+	if (list_entry_is_head(w, &lock->wait_list, list))
+		return NULL;
+
+	return w;
+}
+
+static inline struct mutex_waiter *
+__ww_waiter_prev(struct mutex *lock, struct mutex_waiter *w)
+{
+	w = list_prev_entry(w, list);
+	if (list_entry_is_head(w, &lock->wait_list, list))
+		return NULL;
+
+	return w;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct mutex_waiter *
 __ww_waiter_last(struct mutex *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
 {
 	struct mutex_waiter *w = lock->first_waiter;
 
 	if (w)
 		w = list_prev_entry(w, list);
+=======
+{
+	struct mutex_waiter *w;
+
+	w = list_last_entry(&lock->wait_list, struct mutex_waiter, list);
+	if (list_entry_is_head(w, &lock->wait_list, list))
+		return NULL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return w;
 }
 
 static inline void
 __ww_waiter_add(struct mutex *lock, struct mutex_waiter *waiter, struct mutex_waiter *pos)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
 {
 	__mutex_add_waiter(lock, waiter, pos);
+=======
+{
+	struct list_head *p = &lock->wait_list;
+	if (pos)
+		p = &pos->list;
+	__mutex_add_waiter(lock, waiter, p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline struct task_struct *
@@ -96,19 +146,28 @@ __ww_mutex_has_waiters(struct mutex *lock)
 }
 
 static inline void lock_wait_lock(struct mutex *lock, unsigned long *flags)
+<<<<<<< HEAD
 	__acquires(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	raw_spin_lock_irqsave(&lock->wait_lock, *flags);
 }
 
 static inline void unlock_wait_lock(struct mutex *lock, unsigned long *flags)
+<<<<<<< HEAD
 	__releases(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	raw_spin_unlock_irqrestore(&lock->wait_lock, *flags);
 }
 
 static inline void lockdep_assert_wait_lock_held(struct mutex *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lockdep_assert_held(&lock->wait_lock);
 }
@@ -117,11 +176,17 @@ static inline void lockdep_assert_wait_lock_held(struct mutex *lock)
 
 #define MUTEX		rt_mutex
 #define MUTEX_WAITER	rt_mutex_waiter
+<<<<<<< HEAD
 #define WAIT_LOCK	rtmutex.wait_lock
 
 static inline struct rt_mutex_waiter *
 __ww_waiter_first(struct rt_mutex *lock)
 	__must_hold(&lock->rtmutex.wait_lock)
+=======
+
+static inline struct rt_mutex_waiter *
+__ww_waiter_first(struct rt_mutex *lock)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *n = rb_first(&lock->rtmutex.waiters.rb_root);
 	if (!n)
@@ -149,7 +214,10 @@ __ww_waiter_prev(struct rt_mutex *lock, struct rt_mutex_waiter *w)
 
 static inline struct rt_mutex_waiter *
 __ww_waiter_last(struct rt_mutex *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rb_node *n = rb_last(&lock->rtmutex.waiters.rb_root);
 	if (!n)
@@ -171,25 +239,37 @@ __ww_mutex_owner(struct rt_mutex *lock)
 
 static inline bool
 __ww_mutex_has_waiters(struct rt_mutex *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return rt_mutex_has_waiters(&lock->rtmutex);
 }
 
 static inline void lock_wait_lock(struct rt_mutex *lock, unsigned long *flags)
+<<<<<<< HEAD
 	__acquires(&lock->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	raw_spin_lock_irqsave(&lock->rtmutex.wait_lock, *flags);
 }
 
 static inline void unlock_wait_lock(struct rt_mutex *lock, unsigned long *flags)
+<<<<<<< HEAD
 	__releases(&lock->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	raw_spin_unlock_irqrestore(&lock->rtmutex.wait_lock, *flags);
 }
 
 static inline void lockdep_assert_wait_lock_held(struct rt_mutex *lock)
+<<<<<<< HEAD
 	__must_hold(&lock->rtmutex.wait_lock)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lockdep_assert_held(&lock->rtmutex.wait_lock);
 }
@@ -282,6 +362,10 @@ __ww_ctx_less(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
 
 		/* equal static prio */
 
+<<<<<<< HEAD
+=======
+#ifndef	CONFIG_SCHED_ALT
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (dl_prio(a_prio)) {
 			if (dl_time_before(b->task->dl.deadline,
 					   a->task->dl.deadline))
@@ -291,6 +375,10 @@ __ww_ctx_less(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
 					   b->task->dl.deadline))
 				return false;
 		}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* equal prio */
 	}
@@ -320,11 +408,19 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
 		debug_mutex_wake_waiter(lock, waiter);
 #endif
 		/*
+<<<<<<< HEAD
 		 * When waking up the task to die, be sure to set the
 		 * blocked_on to PROXY_WAKING. Otherwise we can see
 		 * circular blocked_on relationships that can't resolve.
 		 */
 		set_task_blocked_on_waking(waiter->task, lock);
+=======
+		 * When waking up the task to die, be sure to clear the
+		 * blocked_on pointer. Otherwise we can see circular
+		 * blocked_on relationships that can't resolve.
+		 */
+		__clear_task_blocked_on(waiter->task, lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		wake_q_add(wake_q, waiter->task);
 	}
 
@@ -342,7 +438,10 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
 			     struct ww_acquire_ctx *ww_ctx,
 			     struct ww_acquire_ctx *hold_ctx,
 			     struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->WAIT_LOCK)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct task_struct *owner = __ww_mutex_owner(lock);
 
@@ -375,15 +474,25 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
 		 */
 		if (owner != current) {
 			/*
+<<<<<<< HEAD
 			 * When waking up the task to wound, be sure to set the
 			 * blocked_on to PROXY_WAKING. Otherwise we can see
 			 * circular blocked_on relationships that can't resolve.
+=======
+			 * When waking up the task to wound, be sure to clear the
+			 * blocked_on pointer. Otherwise we can see circular
+			 * blocked_on relationships that can't resolve.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			 *
 			 * NOTE: We pass NULL here instead of lock, because we
 			 * are waking the mutex owner, who may be currently
 			 * blocked on a different mutex.
 			 */
+<<<<<<< HEAD
 			set_task_blocked_on_waking(owner, NULL);
+=======
+			__clear_task_blocked_on(owner, NULL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			wake_q_add(wake_q, owner);
 		}
 		return true;
@@ -407,7 +516,10 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
 static void
 __ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx,
 			 struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->WAIT_LOCK)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct MUTEX_WAITER *cur;
 
@@ -434,7 +546,10 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
 {
 	DEFINE_WAKE_Q(wake_q);
 	unsigned long flags;
+<<<<<<< HEAD
 	bool has_waiters;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ww_mutex_lock_acquired(lock, ctx);
 
@@ -456,8 +571,12 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
 	 * __ww_mutex_add_waiter() and makes sure we either observe ww->ctx
 	 * and/or !empty list.
 	 */
+<<<<<<< HEAD
 	has_waiters = data_race(__ww_mutex_has_waiters(&lock->base));
 	if (likely(!has_waiters))
+=======
+	if (likely(!__ww_mutex_has_waiters(&lock->base)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	/*
@@ -503,7 +622,10 @@ __ww_mutex_kill(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
 static inline int
 __ww_mutex_check_kill(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
 		      struct ww_acquire_ctx *ctx)
+<<<<<<< HEAD
 	__must_hold(&lock->WAIT_LOCK)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ww_mutex *ww = container_of(lock, struct ww_mutex, base);
 	struct ww_acquire_ctx *hold_ctx = READ_ONCE(ww->ctx);
@@ -554,7 +676,10 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
 		      struct MUTEX *lock,
 		      struct ww_acquire_ctx *ww_ctx,
 		      struct wake_q_head *wake_q)
+<<<<<<< HEAD
 	__must_hold(&lock->WAIT_LOCK)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct MUTEX_WAITER *cur, *pos = NULL;
 	bool is_wait_die;

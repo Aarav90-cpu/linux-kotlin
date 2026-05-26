@@ -50,7 +50,11 @@ static bool is_known_namespace(const char *name)
 	return true;
 }
 
+<<<<<<< HEAD
 static u32 hfsplus_init_header_node(struct inode *attr_file,
+=======
+static void hfsplus_init_header_node(struct inode *attr_file,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					u32 clump_size,
 					char *buf, u16 node_size)
 {
@@ -59,7 +63,10 @@ static u32 hfsplus_init_header_node(struct inode *attr_file,
 	u16 offset;
 	__be16 *rec_offsets;
 	u32 hdr_node_map_rec_bits;
+<<<<<<< HEAD
 	u32 map_nodes = 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	char *bmp;
 	u32 used_nodes;
 	u32 used_bmp_bytes;
@@ -94,6 +101,10 @@ static u32 hfsplus_init_header_node(struct inode *attr_file,
 	hdr_node_map_rec_bits = 8 * (node_size - offset - (4 * sizeof(u16)));
 	if (be32_to_cpu(head->node_count) > hdr_node_map_rec_bits) {
 		u32 map_node_bits;
+<<<<<<< HEAD
+=======
+		u32 map_nodes;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		desc->next = cpu_to_be32(be32_to_cpu(head->leaf_tail) + 1);
 		map_node_bits = 8 * (node_size - sizeof(struct hfs_bnode_desc) -
@@ -116,6 +127,7 @@ static u32 hfsplus_init_header_node(struct inode *attr_file,
 	*bmp = ~(0xFF >> used_nodes);
 	offset += hdr_node_map_rec_bits / 8;
 	*--rec_offsets = cpu_to_be16(offset);
+<<<<<<< HEAD
 
 	return map_nodes;
 }
@@ -193,10 +205,13 @@ int hfsplus_write_attributes_file_node(struct inode *attr_file, char *buf,
 	}
 
 	return 0;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int hfsplus_create_attributes_file(struct super_block *sb)
 {
+<<<<<<< HEAD
 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
 	struct inode *attr_file;
 	struct hfsplus_inode_info *hip;
@@ -210,6 +225,19 @@ static int hfsplus_create_attributes_file(struct super_block *sb)
 	int index;
 	int old_state = HFSPLUS_EMPTY_ATTR_TREE;
 	int err = 0;
+=======
+	int err = 0;
+	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+	struct inode *attr_file;
+	struct hfsplus_inode_info *hip;
+	u32 clump_size;
+	u16 node_size = HFSPLUS_ATTR_TREE_NODE_SIZE;
+	char *buf;
+	int index, written;
+	struct address_space *mapping;
+	struct page *page;
+	int old_state = HFSPLUS_EMPTY_ATTR_TREE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	hfs_dbg("ino %d\n", HFSPLUS_ATTR_CNID);
 
@@ -274,7 +302,11 @@ check_attr_tree_state_again:
 	}
 
 	while (hip->alloc_blocks < hip->clump_blocks) {
+<<<<<<< HEAD
 		err = hfsplus_file_extend(attr_file, true);
+=======
+		err = hfsplus_file_extend(attr_file, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(err)) {
 			pr_err("failed to extend attributes file\n");
 			goto end_attr_file_creation;
@@ -291,6 +323,7 @@ check_attr_tree_state_again:
 		goto end_attr_file_creation;
 	}
 
+<<<<<<< HEAD
 	map_nodes = hfsplus_init_header_node(attr_file, clump_size, buf, node_size);
 
 	desc = (struct hfs_bnode_desc *)buf;
@@ -318,6 +351,32 @@ check_attr_tree_state_again:
 	}
 
 	hfsplus_mark_inode_dirty(HFSPLUS_ATTR_TREE_I(sb), HFSPLUS_I_ATTR_DIRTY);
+=======
+	hfsplus_init_header_node(attr_file, clump_size, buf, node_size);
+
+	mapping = attr_file->i_mapping;
+
+	index = 0;
+	written = 0;
+	for (; written < node_size; index++, written += PAGE_SIZE) {
+		void *kaddr;
+
+		page = read_mapping_page(mapping, index, NULL);
+		if (IS_ERR(page)) {
+			err = PTR_ERR(page);
+			goto failed_header_node_init;
+		}
+
+		kaddr = kmap_atomic(page);
+		memcpy(kaddr, buf + written,
+			min_t(size_t, PAGE_SIZE, node_size - written));
+		kunmap_atomic(kaddr);
+
+		set_page_dirty(page);
+		put_page(page);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hfsplus_mark_inode_dirty(attr_file, HFSPLUS_I_ATTR_DIRTY);
 
 	sbi->attr_tree = hfs_btree_open(sb, HFSPLUS_ATTR_CNID);
@@ -359,7 +418,11 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 	u16 folder_finderinfo_len = sizeof(DInfo) + sizeof(DXInfo);
 	u16 file_finderinfo_len = sizeof(FInfo) + sizeof(FXInfo);
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, name %s, value %p, size %zu\n",
+=======
+	hfs_dbg("ino %lu, name %s, value %p, size %zu\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, name ? name : NULL,
 		value, size);
 
@@ -396,11 +459,16 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 				hfs_bnode_write(cat_fd.bnode, &entry,
 					cat_fd.entryoffset,
 					sizeof(struct hfsplus_cat_folder));
+<<<<<<< HEAD
 				hfsplus_mark_inode_dirty(
 						HFSPLUS_CAT_TREE_I(inode->i_sb),
 						HFSPLUS_I_CAT_DIRTY);
 				hfsplus_mark_inode_dirty(inode,
 							 HFSPLUS_I_CAT_DIRTY);
+=======
+				hfsplus_mark_inode_dirty(inode,
+						HFSPLUS_I_CAT_DIRTY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				err = -ERANGE;
 				goto end_setxattr;
@@ -412,11 +480,16 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 				hfs_bnode_write(cat_fd.bnode, &entry,
 					cat_fd.entryoffset,
 					sizeof(struct hfsplus_cat_file));
+<<<<<<< HEAD
 				hfsplus_mark_inode_dirty(
 						HFSPLUS_CAT_TREE_I(inode->i_sb),
 						HFSPLUS_I_CAT_DIRTY);
 				hfsplus_mark_inode_dirty(inode,
 							 HFSPLUS_I_CAT_DIRTY);
+=======
+				hfsplus_mark_inode_dirty(inode,
+						HFSPLUS_I_CAT_DIRTY);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			} else {
 				err = -ERANGE;
 				goto end_setxattr;
@@ -469,8 +542,11 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 		hfs_bnode_write_u16(cat_fd.bnode, cat_fd.entryoffset +
 				offsetof(struct hfsplus_cat_folder, flags),
 				cat_entry_flags);
+<<<<<<< HEAD
 		hfsplus_mark_inode_dirty(HFSPLUS_CAT_TREE_I(inode->i_sb),
 					 HFSPLUS_I_CAT_DIRTY);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hfsplus_mark_inode_dirty(inode, HFSPLUS_I_CAT_DIRTY);
 	} else if (cat_entry_type == HFSPLUS_FILE) {
 		cat_entry_flags = hfs_bnode_read_u16(cat_fd.bnode,
@@ -482,8 +558,11 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 		hfs_bnode_write_u16(cat_fd.bnode, cat_fd.entryoffset +
 				    offsetof(struct hfsplus_cat_file, flags),
 				    cat_entry_flags);
+<<<<<<< HEAD
 		hfsplus_mark_inode_dirty(HFSPLUS_CAT_TREE_I(inode->i_sb),
 					 HFSPLUS_I_CAT_DIRTY);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hfsplus_mark_inode_dirty(inode, HFSPLUS_I_CAT_DIRTY);
 	} else {
 		pr_err("invalid catalog entry type\n");
@@ -491,8 +570,11 @@ int __hfsplus_setxattr(struct inode *inode, const char *name,
 		goto end_setxattr;
 	}
 
+<<<<<<< HEAD
 	inode_set_ctime_current(inode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 end_setxattr:
 	hfs_find_exit(&cat_fd);
 	hfs_dbg("finished: res %d\n", err);
@@ -541,7 +623,11 @@ int hfsplus_setxattr(struct inode *inode, const char *name,
 		NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN + 1;
 	int res;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, name %s, prefix %s, prefixlen %zu, "
+=======
+	hfs_dbg("ino %lu, name %s, prefix %s, prefixlen %zu, "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		"value %p, size %zu\n",
 		inode->i_ino, name ? name : NULL,
 		prefix ? prefix : NULL, prefixlen,
@@ -643,10 +729,17 @@ ssize_t __hfsplus_getxattr(struct inode *inode, const char *name,
 
 	res = hfsplus_find_attr(inode->i_sb, inode->i_ino, name, &fd);
 	if (res) {
+<<<<<<< HEAD
 		if (res == -ENOENT || res == -ENODATA)
 			res = -ENODATA;
 		else
 			pr_err("xattr search failed\n");
+=======
+		if (res == -ENOENT)
+			res = -ENODATA;
+		else
+			pr_err("xattr searching failed\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
@@ -701,7 +794,11 @@ ssize_t hfsplus_getxattr(struct inode *inode, const char *name,
 	int res;
 	char *xattr_name;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, name %s, prefix %s\n",
+=======
+	hfs_dbg("ino %lu, name %s, prefix %s\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, name ? name : NULL,
 		prefix ? prefix : NULL);
 
@@ -811,7 +908,11 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
 	size_t strbuf_size;
 	int xattr_name_len;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu\n", inode->i_ino);
+=======
+	hfs_dbg("ino %lu\n", inode->i_ino);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!is_xattr_operation_supported(inode))
 		return -EOPNOTSUPP;
@@ -838,7 +939,11 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
 
 	err = hfsplus_find_attr(inode->i_sb, inode->i_ino, NULL, &fd);
 	if (err) {
+<<<<<<< HEAD
 		if (err == -ENOENT || err == -ENODATA) {
+=======
+		if (err == -ENOENT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			res = 0;
 			goto end_listxattr;
 		} else {
@@ -913,7 +1018,11 @@ static int hfsplus_removexattr(struct inode *inode, const char *name)
 	int is_xattr_acl_deleted;
 	int is_all_xattrs_deleted;
 
+<<<<<<< HEAD
 	hfs_dbg("ino %llu, name %s\n",
+=======
+	hfs_dbg("ino %lu, name %s\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		inode->i_ino, name ? name : NULL);
 
 	if (!HFSPLUS_SB(inode->i_sb)->attr_tree)
@@ -956,8 +1065,11 @@ static int hfsplus_removexattr(struct inode *inode, const char *name)
 		hfs_bnode_write_u16(cat_fd.bnode, cat_fd.entryoffset +
 				offsetof(struct hfsplus_cat_folder, flags),
 				flags);
+<<<<<<< HEAD
 		hfsplus_mark_inode_dirty(HFSPLUS_CAT_TREE_I(inode->i_sb),
 					 HFSPLUS_I_CAT_DIRTY);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hfsplus_mark_inode_dirty(inode, HFSPLUS_I_CAT_DIRTY);
 	} else if (cat_entry_type == HFSPLUS_FILE) {
 		flags = hfs_bnode_read_u16(cat_fd.bnode, cat_fd.entryoffset +
@@ -969,8 +1081,11 @@ static int hfsplus_removexattr(struct inode *inode, const char *name)
 		hfs_bnode_write_u16(cat_fd.bnode, cat_fd.entryoffset +
 				offsetof(struct hfsplus_cat_file, flags),
 				flags);
+<<<<<<< HEAD
 		hfsplus_mark_inode_dirty(HFSPLUS_CAT_TREE_I(inode->i_sb),
 					 HFSPLUS_I_CAT_DIRTY);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hfsplus_mark_inode_dirty(inode, HFSPLUS_I_CAT_DIRTY);
 	} else {
 		pr_err("invalid catalog entry type\n");
@@ -978,8 +1093,11 @@ static int hfsplus_removexattr(struct inode *inode, const char *name)
 		goto end_removexattr;
 	}
 
+<<<<<<< HEAD
 	inode_set_ctime_current(inode);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 end_removexattr:
 	hfs_find_exit(&cat_fd);
 

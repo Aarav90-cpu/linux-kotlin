@@ -8,7 +8,10 @@
 #include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
 #include <linux/slab.h>
@@ -19,8 +22,11 @@
 #include <sound/soc.h>
 #include "bus.h"
 
+<<<<<<< HEAD
 #define SDW_PORT_PREP_POLL_USEC	1000
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Array of supported rows and columns as per MIPI SoundWire Specification 1.1
  *
@@ -446,6 +452,10 @@ static int sdw_prep_deprep_slave_ports(struct sdw_bus *bus,
 				       struct sdw_port_runtime *p_rt,
 				       bool prep)
 {
+<<<<<<< HEAD
+=======
+	struct completion *port_ready;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct sdw_dpn_prop *dpn_prop;
 	struct sdw_prepare_ch prep_ch;
 	u32 imp_def_interrupts;
@@ -520,6 +530,7 @@ static int sdw_prep_deprep_slave_ports(struct sdw_bus *bus,
 			return ret;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Poll for NOT_PREPARED==0. Cannot use the interrupt because
 		 * this code holds bus_lock which blocks interrupt handling.
@@ -532,6 +543,16 @@ static int sdw_prep_deprep_slave_ports(struct sdw_bus *bus,
 			if (val < 0)
 				ret = val;
 
+=======
+		/* Wait for completion on port ready */
+		port_ready = &s_rt->slave->port_ready[prep_ch.num];
+		wait_for_completion_timeout(port_ready,
+			msecs_to_jiffies(ch_prep_timeout));
+
+		val = sdw_read_no_pm(s_rt->slave, SDW_DPN_PREPARESTATUS(p_rt->num));
+		if ((val < 0) || (val & p_rt->ch_mask)) {
+			ret = (val < 0) ? val : -ETIMEDOUT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			dev_err(&s_rt->slave->dev,
 				"Chn prep failed for port %d: %d\n", prep_ch.num, ret);
 			return ret;

@@ -79,7 +79,11 @@ static const struct rhashtable_params fprobe_rht_params = {
 };
 
 /* Node insertion and deletion requires the fprobe_mutex */
+<<<<<<< HEAD
 static int __insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
+=======
+static int insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
@@ -92,7 +96,11 @@ static int __insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *f
 	return ret;
 }
 
+<<<<<<< HEAD
 static void __delete_fprobe_node(struct fprobe_hlist_node *node)
+=======
+static void delete_fprobe_node(struct fprobe_hlist_node *node)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	lockdep_assert_held(&fprobe_mutex);
 
@@ -250,6 +258,7 @@ static inline int __fprobe_kprobe_handler(unsigned long ip, unsigned long parent
 	return ret;
 }
 
+<<<<<<< HEAD
 static int fprobe_fgraph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops *gops,
 			       struct ftrace_regs *fregs);
 static void fprobe_return(struct ftrace_graph_ret *trace,
@@ -309,6 +318,9 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
 
 #if defined(CONFIG_DYNAMIC_FTRACE_WITH_ARGS) || defined(CONFIG_DYNAMIC_FTRACE_WITH_REGS)
 
+=======
+#if defined(CONFIG_DYNAMIC_FTRACE_WITH_ARGS) || defined(CONFIG_DYNAMIC_FTRACE_WITH_REGS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* ftrace_ops callback, this processes fprobes which have only entry_handler. */
 static void fprobe_ftrace_entry(unsigned long ip, unsigned long parent_ip,
 	struct ftrace_ops *ops, struct ftrace_regs *fregs)
@@ -351,10 +363,14 @@ static struct ftrace_ops fprobe_ftrace_ops = {
 	.func	= fprobe_ftrace_entry,
 	.flags	= FTRACE_OPS_FL_SAVE_ARGS,
 };
+<<<<<<< HEAD
 /* Number of ftrace fprobe nodes */
 static int nr_ftrace_fprobes;
 /* Is fprobe_ftrace_ops registered? */
 static bool fprobe_ftrace_registered;
+=======
+static int fprobe_ftrace_active;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int fprobe_ftrace_add_ips(unsigned long *addrs, int num)
 {
@@ -366,12 +382,17 @@ static int fprobe_ftrace_add_ips(unsigned long *addrs, int num)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!fprobe_ftrace_registered) {
+=======
+	if (!fprobe_ftrace_active) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = register_ftrace_function(&fprobe_ftrace_ops);
 		if (ret) {
 			ftrace_free_filter(&fprobe_ftrace_ops);
 			return ret;
 		}
+<<<<<<< HEAD
 		fprobe_ftrace_registered = true;
 	}
 	return 0;
@@ -386,13 +407,28 @@ static void __fprobe_ftrace_unregister(void)
 	}
 }
 
+=======
+	}
+	fprobe_ftrace_active++;
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void fprobe_ftrace_remove_ips(unsigned long *addrs, int num)
 {
 	lockdep_assert_held(&fprobe_mutex);
 
+<<<<<<< HEAD
 	if (!nr_ftrace_fprobes)
 		__fprobe_ftrace_unregister();
 	else if (num)
+=======
+	fprobe_ftrace_active--;
+	if (!fprobe_ftrace_active) {
+		unregister_ftrace_function(&fprobe_ftrace_ops);
+		ftrace_free_filter(&fprobe_ftrace_ops);
+	} else if (num)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ftrace_set_filter_ips(&fprobe_ftrace_ops, addrs, num, 1, 0);
 }
 
@@ -401,6 +437,7 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
 	return !fp->exit_handler;
 }
 
+<<<<<<< HEAD
 /* Node insertion and deletion requires the fprobe_mutex */
 static int insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
 {
@@ -435,6 +472,8 @@ static void delete_fprobe_node(struct fprobe_hlist_node *node)
 	__delete_fprobe_node(node);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace)
 {
 	struct rhlist_head *head, *pos;
@@ -464,6 +503,7 @@ static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace)
 #ifdef CONFIG_MODULES
 static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
 {
+<<<<<<< HEAD
 	if (!nr_fgraph_fprobes)
 		__fprobe_graph_unregister();
 	else if (cnt)
@@ -473,6 +513,10 @@ static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
 		__fprobe_ftrace_unregister();
 	else if (cnt)
 		ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, 1, 0);
+=======
+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
+	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, 1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 #else
@@ -490,6 +534,7 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
 	return false;
 }
 
+<<<<<<< HEAD
 /* Node insertion and deletion requires the fprobe_mutex */
 static int insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
 {
@@ -516,6 +561,8 @@ static void delete_fprobe_node(struct fprobe_hlist_node *node)
 	__delete_fprobe_node(node);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace __maybe_unused)
 {
 	struct rhlist_head *head, *pos;
@@ -542,10 +589,14 @@ static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace __maybe_unused)
 #ifdef CONFIG_MODULES
 static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
 {
+<<<<<<< HEAD
 	if (!nr_fgraph_fprobes)
 		__fprobe_graph_unregister();
 	else if (cnt)
 		ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
+=======
+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 #endif /* !CONFIG_DYNAMIC_FTRACE_WITH_ARGS && !CONFIG_DYNAMIC_FTRACE_WITH_REGS */
@@ -631,6 +682,11 @@ static int fprobe_fgraph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops
 				used += FPROBE_HEADER_SIZE_IN_LONG + size_words;
 		}
 	}
+<<<<<<< HEAD
+=======
+	if (used < reserved_words)
+		memset(fgraph_data + used, 0, reserved_words - used);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If any exit_handler is set, data must be used. */
 	return used != 0;
@@ -673,6 +729,51 @@ static void fprobe_return(struct ftrace_graph_ret *trace,
 }
 NOKPROBE_SYMBOL(fprobe_return);
 
+<<<<<<< HEAD
+=======
+static struct fgraph_ops fprobe_graph_ops = {
+	.entryfunc	= fprobe_fgraph_entry,
+	.retfunc	= fprobe_return,
+};
+static int fprobe_graph_active;
+
+/* Add @addrs to the ftrace filter and register fgraph if needed. */
+static int fprobe_graph_add_ips(unsigned long *addrs, int num)
+{
+	int ret;
+
+	lockdep_assert_held(&fprobe_mutex);
+
+	ret = ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 0, 0);
+	if (ret)
+		return ret;
+
+	if (!fprobe_graph_active) {
+		ret = register_ftrace_graph(&fprobe_graph_ops);
+		if (WARN_ON_ONCE(ret)) {
+			ftrace_free_filter(&fprobe_graph_ops.ops);
+			return ret;
+		}
+	}
+	fprobe_graph_active++;
+	return 0;
+}
+
+/* Remove @addrs from the ftrace filter and unregister fgraph if possible. */
+static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
+{
+	lockdep_assert_held(&fprobe_mutex);
+
+	fprobe_graph_active--;
+	/* Q: should we unregister it ? */
+	if (!fprobe_graph_active) {
+		unregister_ftrace_graph(&fprobe_graph_ops);
+		ftrace_free_filter(&fprobe_graph_ops.ops);
+	} else if (num)
+		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_MODULES
 
 #define FPROBE_IPS_BATCH_INIT 128
@@ -749,6 +850,7 @@ again:
 	} while (node == ERR_PTR(-EAGAIN) && !retry);
 	rhashtable_walk_exit(&iter);
 	/* Remove any ips from hash table(s) */
+<<<<<<< HEAD
 	fprobe_remove_ips(alist.addrs, alist.index);
 	/*
 	 * If we break rhashtable walk loop except for -EAGAIN, we need
@@ -757,6 +859,18 @@ again:
 	 */
 	if (retry)
 		goto again;
+=======
+	if (alist.index > 0) {
+		fprobe_remove_ips(alist.addrs, alist.index);
+		/*
+		 * If we break rhashtable walk loop except for -EAGAIN, we need
+		 * to restart looping from start for safety. Anyway, this is
+		 * not a hotpath.
+		 */
+		if (retry)
+			goto again;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_unlock(&fprobe_mutex);
 
@@ -1093,6 +1207,7 @@ static int unregister_fprobe_nolock(struct fprobe *fp)
 }
 
 /**
+<<<<<<< HEAD
  * unregister_fprobe_async() - Unregister fprobe without RCU GP wait
  * @fp: A fprobe data structure to be unregistered.
  *
@@ -1102,6 +1217,16 @@ static int unregister_fprobe_nolock(struct fprobe *fp)
  * Return 0 if @fp is unregistered successfully, -errno if not.
  */
 int unregister_fprobe_async(struct fprobe *fp)
+=======
+ * unregister_fprobe() - Unregister fprobe.
+ * @fp: A fprobe data structure to be unregistered.
+ *
+ * Unregister fprobe (and remove ftrace hooks from the function entries).
+ *
+ * Return 0 if @fp is unregistered successfully, -errno if not.
+ */
+int unregister_fprobe(struct fprobe *fp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	guard(mutex)(&fprobe_mutex);
 	if (!fp || !fprobe_registered(fp))
@@ -1109,6 +1234,7 @@ int unregister_fprobe_async(struct fprobe *fp)
 
 	return unregister_fprobe_nolock(fp);
 }
+<<<<<<< HEAD
 
 /**
  * unregister_fprobe() - Unregister fprobe with RCU GP wait
@@ -1127,6 +1253,8 @@ int unregister_fprobe(struct fprobe *fp)
 		synchronize_rcu();
 	return ret;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(unregister_fprobe);
 
 static int __init fprobe_initcall(void)

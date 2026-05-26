@@ -115,7 +115,10 @@ struct tegra_csi_ops {
  * struct tegra_csi_soc - NVIDIA Tegra CSI SoC structure
  *
  * @ops: csi hardware operations
+<<<<<<< HEAD
  * @mipi_ops: MIPI calibration operations
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @csi_max_channels: supported max streaming channels
  * @clk_names: csi and cil clock names
  * @num_clks: total clocks count
@@ -124,7 +127,10 @@ struct tegra_csi_ops {
  */
 struct tegra_csi_soc {
 	const struct tegra_csi_ops *ops;
+<<<<<<< HEAD
 	const struct tegra_mipi_ops *mipi_ops;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int csi_max_channels;
 	const char * const *clk_names;
 	unsigned int num_clks;
@@ -132,12 +138,15 @@ struct tegra_csi_soc {
 	unsigned int tpg_frmrate_table_size;
 };
 
+<<<<<<< HEAD
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC)
 extern const struct tegra_csi_soc tegra20_csi_soc;
 #endif
 #if defined(CONFIG_ARCH_TEGRA_3x_SOC)
 extern const struct tegra_csi_soc tegra30_csi_soc;
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if defined(CONFIG_ARCH_TEGRA_210_SOC)
 extern const struct tegra_csi_soc tegra210_csi_soc;
 #endif
@@ -149,10 +158,15 @@ extern const struct tegra_csi_soc tegra210_csi_soc;
  * @client: host1x_client struct
  * @iomem: register base
  * @clks: clock for CSI and CIL
+<<<<<<< HEAD
  * @vdd: vdd regulator for CSI hardware, usually avdd_dsi_csi
  * @soc: pointer to SoC data structure
  * @ops: csi operations
  * @mipi_lock: for MIPI calibration operations
+=======
+ * @soc: pointer to SoC data structure
+ * @ops: csi operations
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @csi_chans: list head for CSI channels
  */
 struct tegra_csi {
@@ -160,6 +174,7 @@ struct tegra_csi {
 	struct host1x_client client;
 	void __iomem *iomem;
 	struct clk_bulk_data *clks;
+<<<<<<< HEAD
 	struct regulator *vdd;
 	const struct tegra_csi_soc *soc;
 	const struct tegra_csi_ops *ops;
@@ -177,6 +192,13 @@ static inline struct tegra_csi_channel *to_csi_chan(struct v4l2_subdev *subdev)
 	return container_of(subdev, struct tegra_csi_channel, subdev);
 }
 
+=======
+	const struct tegra_csi_soc *soc;
+	const struct tegra_csi_ops *ops;
+	struct list_head csi_chans;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void tegra_csi_error_recover(struct v4l2_subdev *subdev);
 void tegra_csi_calc_settle_time(struct tegra_csi_channel *csi_chan,
 				u8 csi_port_num,

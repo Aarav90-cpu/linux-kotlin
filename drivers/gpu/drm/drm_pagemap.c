@@ -154,6 +154,7 @@ static void drm_pagemap_zdd_put(struct drm_pagemap_zdd *zdd)
 }
 
 /**
+<<<<<<< HEAD
  * drm_pagemap_migration_unlock_put_folio() - Put a migration folio
  * @folio: Pointer to the folio to put
  *
@@ -163,6 +164,17 @@ static void drm_pagemap_migration_unlock_put_folio(struct folio *folio)
 {
 	folio_unlock(folio);
 	folio_put(folio);
+=======
+ * drm_pagemap_migration_unlock_put_page() - Put a migration page
+ * @page: Pointer to the page to put
+ *
+ * This function unlocks and puts a page.
+ */
+static void drm_pagemap_migration_unlock_put_page(struct page *page)
+{
+	unlock_page(page);
+	put_page(page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -177,6 +189,7 @@ static void drm_pagemap_migration_unlock_put_pages(unsigned long npages,
 {
 	unsigned long i;
 
+<<<<<<< HEAD
 	for (i = 0; i < npages;) {
 		struct page *page;
 		struct folio *folio;
@@ -194,25 +207,46 @@ static void drm_pagemap_migration_unlock_put_pages(unsigned long npages,
 
 next:
 		i += NR_PAGES(order);
+=======
+	for (i = 0; i < npages; ++i) {
+		struct page *page;
+
+		if (!migrate_pfn[i])
+			continue;
+
+		page = migrate_pfn_to_page(migrate_pfn[i]);
+		drm_pagemap_migration_unlock_put_page(page);
+		migrate_pfn[i] = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
 /**
  * drm_pagemap_get_devmem_page() - Get a reference to a device memory page
  * @page: Pointer to the page
+<<<<<<< HEAD
  * @order: Order
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @zdd: Pointer to the GPU SVM zone device data
  *
  * This function associates the given page with the specified GPU SVM zone
  * device data and initializes it for zone device usage.
  */
 static void drm_pagemap_get_devmem_page(struct page *page,
+<<<<<<< HEAD
 					unsigned int order,
 					struct drm_pagemap_zdd *zdd)
 {
 	zone_device_folio_init((struct folio *)page, zdd->dpagemap->pagemap,
 			       order);
 	folio_set_zone_device_data(page_folio(page), drm_pagemap_zdd_get(zdd));
+=======
+					struct drm_pagemap_zdd *zdd)
+{
+	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+	zone_device_page_init(page, page_pgmap(page), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -255,7 +289,11 @@ static int drm_pagemap_migrate_map_pages(struct device *dev,
 		order = folio_order(folio);
 
 		if (is_device_private_page(page)) {
+<<<<<<< HEAD
 			struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
+=======
+			struct drm_pagemap_zdd *zdd = page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct drm_pagemap *dpagemap = zdd->dpagemap;
 			struct drm_pagemap_addr addr;
 
@@ -326,7 +364,11 @@ static void drm_pagemap_migrate_unmap_pages(struct device *dev,
 			goto next;
 
 		if (is_zone_device_page(page)) {
+<<<<<<< HEAD
 			struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
+=======
+			struct drm_pagemap_zdd *zdd = page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct drm_pagemap *dpagemap = zdd->dpagemap;
 
 			dpagemap->ops->device_unmap(dpagemap, dev, &pagemap_addr[i]);
@@ -456,6 +498,7 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * drm_pagemap_cpages() - Count collected pages
  * @migrate_pfn: Array of migrate_pfn entries to account
  * @npages: Number of entries in @migrate_pfn
@@ -491,6 +534,8 @@ static int drm_pagemap_cpages(unsigned long *migrate_pfn, unsigned long npages)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * drm_pagemap_migrate_to_devmem() - Migrate a struct mm_struct range to device memory
  * @devmem_allocation: The device memory allocation to migrate to.
  * The caller should hold a reference to the device memory allocation,
@@ -527,7 +572,11 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 		.end		= end,
 		.pgmap_owner	= pagemap->owner,
 		.flags		= MIGRATE_VMA_SELECT_SYSTEM | MIGRATE_VMA_SELECT_DEVICE_COHERENT |
+<<<<<<< HEAD
 		MIGRATE_VMA_SELECT_DEVICE_PRIVATE | MIGRATE_VMA_SELECT_COMPOUND,
+=======
+		MIGRATE_VMA_SELECT_DEVICE_PRIVATE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 	unsigned long i, npages = npages_in_range(start, end);
 	unsigned long own_pages = 0, migrated_pages = 0;
@@ -592,8 +641,12 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 		goto err_free;
 	}
 
+<<<<<<< HEAD
 	if (migrate.cpages != npages &&
 	    drm_pagemap_cpages(migrate.src, npages) != npages) {
+=======
+	if (migrate.cpages != npages) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Some pages to migrate. But we want to migrate all or
 		 * nothing. Raced or unknown device pages.
@@ -633,6 +686,7 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 
 	own_pages = 0;
 
+<<<<<<< HEAD
 	for (i = 0; i < npages;) {
 		unsigned long j;
 		struct page *page = pfn_to_page(migrate.dst[i]);
@@ -644,12 +698,26 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 		if (src_page && is_device_private_page(src_page)) {
 			struct drm_pagemap_zdd *src_zdd =
 				drm_pagemap_page_zone_device_data(src_page);
+=======
+	for (i = 0; i < npages; ++i) {
+		struct page *page = pfn_to_page(migrate.dst[i]);
+		struct page *src_page = migrate_pfn_to_page(migrate.src[i]);
+		cur.start = i;
+
+		pages[i] = NULL;
+		if (src_page && is_device_private_page(src_page)) {
+			struct drm_pagemap_zdd *src_zdd = src_page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (page_pgmap(src_page) == pagemap &&
 			    !mdetails->can_migrate_same_pagemap) {
 				migrate.dst[i] = 0;
 				own_pages++;
+<<<<<<< HEAD
 				goto next;
+=======
+				continue;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			}
 			if (mdetails->source_peer_migrates) {
 				cur.dpagemap = src_zdd->dpagemap;
@@ -665,6 +733,7 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 			pages[i] = page;
 		}
 		migrate.dst[i] = migrate_pfn(migrate.dst[i]);
+<<<<<<< HEAD
 
 		if (migrate.src[i] & MIGRATE_PFN_COMPOUND) {
 			drm_WARN_ONCE(dpagemap->drm, src_page &&
@@ -679,6 +748,9 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 		}
 
 		drm_pagemap_get_devmem_page(page, order, zdd);
+=======
+		drm_pagemap_get_devmem_page(page, zdd);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* If we switched the migrating drm_pagemap, migrate previous pages now */
 		err = drm_pagemap_migrate_range(devmem_allocation, migrate.src, migrate.dst,
@@ -688,11 +760,15 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
 			npages = i + 1;
 			goto err_finalize;
 		}
+<<<<<<< HEAD
 
 next:
 		i += NR_PAGES(order);
 	}
 
+=======
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cur.start = npages;
 	cur.ops = NULL; /* Force migration */
 	err = drm_pagemap_migrate_range(devmem_allocation, migrate.src, migrate.dst,
@@ -782,8 +858,13 @@ static int drm_pagemap_migrate_populate_ram_pfn(struct vm_area_struct *vas,
 			goto next;
 
 		if (fault_page) {
+<<<<<<< HEAD
 			if (drm_pagemap_page_zone_device_data(src_page) !=
 			    drm_pagemap_page_zone_device_data(fault_page))
+=======
+			if (src_page->zone_device_data !=
+			    fault_page->zone_device_data)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto next;
 		}
 
@@ -801,8 +882,11 @@ static int drm_pagemap_migrate_populate_ram_pfn(struct vm_area_struct *vas,
 		page = folio_page(folio, 0);
 		mpfn[i] = migrate_pfn(page_to_pfn(page));
 
+<<<<<<< HEAD
 		if (order)
 			mpfn[i] |= MIGRATE_PFN_COMPOUND;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 next:
 		if (page)
 			addr += page_size(page);
@@ -1058,6 +1142,7 @@ retry:
 	if (err)
 		goto err_finalize;
 
+<<<<<<< HEAD
 	for (i = 0; i < npages;) {
 		unsigned int order = 0;
 
@@ -1067,6 +1152,10 @@ retry:
 
 		i += NR_PAGES(order);
 	}
+=======
+	for (i = 0; i < npages; ++i)
+		pages[i] = migrate_pfn_to_page(src[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
 	if (err)
@@ -1119,8 +1208,12 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
 		.vma		= vas,
 		.pgmap_owner	= page_pgmap(page)->owner,
 		.flags		= MIGRATE_VMA_SELECT_DEVICE_PRIVATE |
+<<<<<<< HEAD
 				  MIGRATE_VMA_SELECT_DEVICE_COHERENT |
 				  MIGRATE_VMA_SELECT_COMPOUND,
+=======
+		MIGRATE_VMA_SELECT_DEVICE_COHERENT,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.fault_page	= page,
 	};
 	struct drm_pagemap_migrate_details mdetails = {};
@@ -1134,7 +1227,11 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
 	void *buf;
 	int i, err = 0;
 
+<<<<<<< HEAD
 	zdd = drm_pagemap_page_zone_device_data(page);
+=======
+	zdd = page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (time_before64(get_jiffies_64(), zdd->devmem_allocation->timeslice_expiration))
 		return 0;
 
@@ -1186,6 +1283,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
 	if (err)
 		goto err_finalize;
 
+<<<<<<< HEAD
 	for (i = 0; i < npages;) {
 		unsigned int order = 0;
 
@@ -1195,6 +1293,10 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
 
 		i += NR_PAGES(order);
 	}
+=======
+	for (i = 0; i < npages; ++i)
+		pages[i] = migrate_pfn_to_page(migrate.src[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
 	if (err)
@@ -1224,9 +1326,13 @@ err_out:
  */
 static void drm_pagemap_folio_free(struct folio *folio)
 {
+<<<<<<< HEAD
 	struct page *page = folio_page(folio, 0);
 
 	drm_pagemap_zdd_put(drm_pagemap_page_zone_device_data(page));
+=======
+	drm_pagemap_zdd_put(folio->page.zone_device_data);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -1242,7 +1348,11 @@ static void drm_pagemap_folio_free(struct folio *folio)
  */
 static vm_fault_t drm_pagemap_migrate_to_ram(struct vm_fault *vmf)
 {
+<<<<<<< HEAD
 	struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(vmf->page);
+=======
+	struct drm_pagemap_zdd *zdd = vmf->page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	err = __drm_pagemap_migrate_to_ram(vmf->vma,
@@ -1252,6 +1362,7 @@ static vm_fault_t drm_pagemap_migrate_to_ram(struct vm_fault *vmf)
 	return err ? VM_FAULT_SIGBUS : 0;
 }
 
+<<<<<<< HEAD
 static void drm_pagemap_folio_split(struct folio *orig_folio, struct folio *new_folio)
 {
 	struct drm_pagemap_zdd *zdd;
@@ -1268,6 +1379,11 @@ static const struct dev_pagemap_ops drm_pagemap_pagemap_ops = {
 	.folio_free = drm_pagemap_folio_free,
 	.migrate_to_ram = drm_pagemap_migrate_to_ram,
 	.folio_split = drm_pagemap_folio_split,
+=======
+static const struct dev_pagemap_ops drm_pagemap_pagemap_ops = {
+	.folio_free = drm_pagemap_folio_free,
+	.migrate_to_ram = drm_pagemap_migrate_to_ram,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -1321,7 +1437,11 @@ EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
  */
 struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page)
 {
+<<<<<<< HEAD
 	struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
+=======
+	struct drm_pagemap_zdd *zdd = page->zone_device_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return zdd->devmem_allocation->dpagemap;
 }

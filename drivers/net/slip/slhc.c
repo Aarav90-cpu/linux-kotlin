@@ -80,9 +80,15 @@
 #include <linux/unaligned.h>
 
 static unsigned char *encode(unsigned char *cp, unsigned short n);
+<<<<<<< HEAD
 static long decode(unsigned char **cpp, const unsigned char *end);
 static unsigned char * put16(unsigned char *cp, unsigned short x);
 static long pull16(unsigned char **cpp, const unsigned char *end);
+=======
+static long decode(unsigned char **cpp);
+static unsigned char * put16(unsigned char *cp, unsigned short x);
+static unsigned short pull16(unsigned char **cpp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* Allocate compression data structure
  *	slots must be in range 0 to 255 (zero meaning no compression)
@@ -190,6 +196,7 @@ encode(unsigned char *cp, unsigned short n)
 	return cp;
 }
 
+<<<<<<< HEAD
 /* Pull a 16-bit integer in host order from buffer in network byte order.
  * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
  */
@@ -200,12 +207,21 @@ pull16(unsigned char **cpp, const unsigned char *end)
 
 	if (*cpp + 2 > end)
 		return -1;
+=======
+/* Pull a 16-bit integer in host order from buffer in network byte order */
+static unsigned short
+pull16(unsigned char **cpp)
+{
+	short rval;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rval = *(*cpp)++;
 	rval <<= 8;
 	rval |= *(*cpp)++;
 	return rval;
 }
 
+<<<<<<< HEAD
 /* Decode a number. Returns -1 if the buffer is exhausted. */
 static long
 decode(unsigned char **cpp, const unsigned char *end)
@@ -218,6 +234,20 @@ decode(unsigned char **cpp, const unsigned char *end)
 	if (x == 0)
 		return pull16(cpp, end);
 	return x & 0xff;
+=======
+/* Decode a number */
+static long
+decode(unsigned char **cpp)
+{
+	int x;
+
+	x = *(*cpp)++;
+	if(x == 0){
+		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
+	} else {
+		return x & 0xff;		/* -1 if PULLCHAR returned error */
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -503,7 +533,10 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
 	struct cstate *cs;
 	int len, hdrlen;
 	unsigned char *cp = icp;
+<<<<<<< HEAD
 	const unsigned char *end = icp + isize;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* We've got a compressed packet; read the change byte */
 	comp->sls_i_compressed++;
@@ -511,8 +544,11 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
 		comp->sls_i_error++;
 		return 0;
 	}
+<<<<<<< HEAD
 	if (!comp->rstate)
 		goto bad;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	changes = *cp++;
 	if(changes & NEW_C){
 		/* Make sure the state index is in range, then grab the state.
@@ -541,8 +577,11 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
 	thp = &cs->cs_tcp;
 	ip = &cs->cs_ip;
 
+<<<<<<< HEAD
 	if (cp + 2 > end)
 		goto bad;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	thp->check = *(__sum16 *)cp;
 	cp += 2;
 
@@ -573,26 +612,42 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
 	default:
 		if(changes & NEW_U){
 			thp->urg = 1;
+<<<<<<< HEAD
 			if((x = decode(&cp, end)) == -1) {
+=======
+			if((x = decode(&cp)) == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto bad;
 			}
 			thp->urg_ptr = htons(x);
 		} else
 			thp->urg = 0;
 		if(changes & NEW_W){
+<<<<<<< HEAD
 			if((x = decode(&cp, end)) == -1) {
+=======
+			if((x = decode(&cp)) == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto bad;
 			}
 			thp->window = htons( ntohs(thp->window) + x);
 		}
 		if(changes & NEW_A){
+<<<<<<< HEAD
 			if((x = decode(&cp, end)) == -1) {
+=======
+			if((x = decode(&cp)) == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto bad;
 			}
 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
 		}
 		if(changes & NEW_S){
+<<<<<<< HEAD
 			if((x = decode(&cp, end)) == -1) {
+=======
+			if((x = decode(&cp)) == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto bad;
 			}
 			thp->seq = htonl( ntohl(thp->seq) + x);
@@ -600,7 +655,11 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
 		break;
 	}
 	if(changes & NEW_I){
+<<<<<<< HEAD
 		if((x = decode(&cp, end)) == -1) {
+=======
+		if((x = decode(&cp)) == -1) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto bad;
 		}
 		ip->id = htons (ntohs (ip->id) + x);
@@ -658,10 +717,13 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
 	struct cstate *cs;
 	unsigned int ihl;
 
+<<<<<<< HEAD
 	if (!comp->rstate) {
 		comp->sls_i_error++;
 		return slhc_toss(comp);
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* The packet is shorter than a legal IP header.
 	 * Also make sure isize is positive.
 	 */

@@ -406,7 +406,11 @@ do {									\
 			  schedule())
 
 /**
+<<<<<<< HEAD
  * wait_var_event_interruptible - wait for a variable to be updated and notified
+=======
+ * wait_var_event_killable - wait for a variable to be updated and notified
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @var: the address of variable being waited on
  * @condition: the condition to wait for
  *
@@ -492,7 +496,11 @@ do {									\
  * wait_var_event_mutex - wait for a variable to be updated under a mutex
  * @var: the address of the variable being waited on
  * @condition: condition to wait for
+<<<<<<< HEAD
  * @lock: the mutex which protects updates to the variable
+=======
+ * @mutex: the mutex which protects updates to the variable
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Wait for a condition which can only be reliably tested while holding
  * a mutex.  The variables assessed in the condition will normal be

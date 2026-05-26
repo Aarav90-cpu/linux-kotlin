@@ -11,6 +11,7 @@
 extern bool is_forced_emulation_enabled;
 
 struct pte_masks {
+<<<<<<< HEAD
 	u64 present;
 	u64 writable;
 	u64 user;
@@ -24,6 +25,21 @@ struct pte_masks {
 	u64 s;
 
 	u64 always_set;
+=======
+	uint64_t present;
+	uint64_t writable;
+	uint64_t user;
+	uint64_t readable;
+	uint64_t executable;
+	uint64_t accessed;
+	uint64_t dirty;
+	uint64_t huge;
+	uint64_t nx;
+	uint64_t c;
+	uint64_t s;
+
+	uint64_t always_set;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct kvm_mmu_arch {
@@ -33,12 +49,21 @@ struct kvm_mmu_arch {
 struct kvm_mmu;
 
 struct kvm_vm_arch {
+<<<<<<< HEAD
 	gva_t gdt;
 	gva_t tss;
 	gva_t idt;
 
 	u64 c_bit;
 	u64 s_bit;
+=======
+	vm_vaddr_t gdt;
+	vm_vaddr_t tss;
+	vm_vaddr_t idt;
+
+	uint64_t c_bit;
+	uint64_t s_bit;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int sev_fd;
 	bool is_pt_protected;
 };
@@ -62,7 +87,11 @@ do {											\
 				     : "+m" (mem)					\
 				     : "r" (val) : "memory");				\
 	} else {									\
+<<<<<<< HEAD
 		u64 __old = READ_ONCE(mem);					\
+=======
+		uint64_t __old = READ_ONCE(mem);					\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 											\
 		__asm__ __volatile__(KVM_FEP LOCK_PREFIX "cmpxchg %[new], %[ptr]"	\
 				     : [ptr] "+m" (mem), [old] "+a" (__old)		\

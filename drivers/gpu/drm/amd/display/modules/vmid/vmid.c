@@ -57,10 +57,14 @@ static void clear_entry_from_vmid_table(struct core_vmid *core_vmid, unsigned in
 static void evict_vmids(struct core_vmid *core_vmid)
 {
 	int i;
+<<<<<<< HEAD
 	int ord_int = dc_get_vmid_use_vector(core_vmid->dc);
 
 	ASSERT(ord_int >= 0 && ord_int <= 0xFFFF);
 	uint16_t ord = (uint16_t)ord_int;
+=======
+	uint16_t ord = dc_get_vmid_use_vector(core_vmid->dc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	// At this point any positions with value 0 are unused vmids, evict them
 	for (i = 1; i < core_vmid->num_vmid; i++) {
@@ -123,8 +127,12 @@ uint8_t mod_vmid_get_for_ptb(struct mod_vmid *mod_vmid, uint64_t ptb)
 			ASSERT(0);
 	}
 
+<<<<<<< HEAD
 	ASSERT(vmid >= 0 && vmid <= 0xFF);
 	return (uint8_t)vmid;
+=======
+	return vmid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void mod_vmid_reset(struct mod_vmid *mod_vmid)

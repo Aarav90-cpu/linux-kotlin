@@ -6,7 +6,10 @@
 #include <net/dst.h>
 #include <net/ip.h>
 #include <net/ip6_fib.h>
+<<<<<<< HEAD
 #include <net/ip6_route.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct sch_frag_data {
 	unsigned long dst;
@@ -128,7 +131,12 @@ static int sch_fragment(struct net *net, struct sk_buff *skb,
 		skb_dst_set_noref(skb, &sch_frag_rt.dst);
 		IP6CB(skb)->frag_max_size = mru;
 
+<<<<<<< HEAD
 		ret = ip6_fragment(net, skb->sk, skb, sch_frag_xmit);
+=======
+		ret = ipv6_stub->ipv6_fragment(net, skb->sk, skb,
+					       sch_frag_xmit);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		local_unlock_nested_bh(&sch_frag_data_storage.bh_lock);
 		refdst_drop(orig_dst);
 	} else {

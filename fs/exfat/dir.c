@@ -93,12 +93,20 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
 	clu_offset = EXFAT_DEN_TO_CLU(dentry, sbi);
 	exfat_chain_dup(&clu, &dir);
 
+<<<<<<< HEAD
 	if (clu.flags == ALLOC_FAT_CHAIN) {
+=======
+	if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+		clu.dir += clu_offset;
+		clu.size -= clu_offset;
+	} else {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* hint_information */
 		if (clu_offset > 0 && ei->hint_bmap.off != EXFAT_EOF_CLUSTER &&
 		    ei->hint_bmap.off > 0 && clu_offset >= ei->hint_bmap.off) {
 			clu_offset -= ei->hint_bmap.off;
 			clu.dir = ei->hint_bmap.clu;
+<<<<<<< HEAD
 			clu.size -= ei->hint_bmap.off;
 		}
 	}
@@ -106,6 +114,18 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
 	if (exfat_chain_advance(sb, &clu, clu_offset))
 		return -EIO;
 
+=======
+		}
+
+		while (clu_offset > 0 && clu.dir != EXFAT_EOF_CLUSTER) {
+			if (exfat_get_next_cluster(sb, &(clu.dir)))
+				return -EIO;
+
+			clu_offset--;
+		}
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (clu.dir != EXFAT_EOF_CLUSTER && dentry < max_dentries) {
 		i = dentry & (dentries_per_clu - 1);
 
@@ -154,8 +174,20 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
 			return 0;
 		}
 
+<<<<<<< HEAD
 		if (exfat_chain_advance(sb, &clu, 1))
 			return -EIO;
+=======
+		if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+			if (--clu.size > 0)
+				clu.dir++;
+			else
+				clu.dir = EXFAT_EOF_CLUSTER;
+		} else {
+			if (exfat_get_next_cluster(sb, &(clu.dir)))
+				return -EIO;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 out:
@@ -236,7 +268,11 @@ get_new:
 		 */
 		if (err == -EIO) {
 			cpos += 1 << (sb->s_blocksize_bits);
+<<<<<<< HEAD
 			cpos &= ~(loff_t)(sb->s_blocksize - 1);
+=======
+			cpos &= ~(sb->s_blocksize - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 
 		err = -EIO;
@@ -477,7 +513,10 @@ void exfat_init_ext_entry(struct exfat_entry_set_cache *es, int num_entries,
 	unsigned short *uniname = p_uniname->name;
 	struct exfat_dentry *ep;
 
+<<<<<<< HEAD
 	es->num_entries = num_entries;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ep = exfat_get_dentry_cached(es, ES_IDX_FILE);
 	ep->dentry.file.num_ext = (unsigned char)(num_entries - 1);
 
@@ -549,6 +588,41 @@ int exfat_put_dentry_set(struct exfat_entry_set_cache *es, int sync)
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static int exfat_walk_fat_chain(struct super_block *sb,
+		struct exfat_chain *p_dir, unsigned int byte_offset,
+		unsigned int *clu)
+{
+	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+	unsigned int clu_offset;
+	unsigned int cur_clu;
+
+	clu_offset = EXFAT_B_TO_CLU(byte_offset, sbi);
+	cur_clu = p_dir->dir;
+
+	if (p_dir->flags == ALLOC_NO_FAT_CHAIN) {
+		cur_clu += clu_offset;
+	} else {
+		while (clu_offset > 0) {
+			if (exfat_get_next_cluster(sb, &cur_clu))
+				return -EIO;
+			if (cur_clu == EXFAT_EOF_CLUSTER) {
+				exfat_fs_error(sb,
+					"invalid dentry access beyond EOF (clu : %u, eidx : %d)",
+					p_dir->dir,
+					EXFAT_B_TO_DEN(byte_offset));
+				return -EIO;
+			}
+			clu_offset--;
+		}
+	}
+
+	*clu = cur_clu;
+	return 0;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int exfat_find_location(struct super_block *sb, struct exfat_chain *p_dir,
 			       int entry, sector_t *sector, int *offset)
 {
@@ -558,6 +632,7 @@ static int exfat_find_location(struct super_block *sb, struct exfat_chain *p_dir
 
 	off = EXFAT_DEN_TO_B(entry);
 
+<<<<<<< HEAD
 	clu = p_dir->dir;
 	ret = exfat_cluster_walk(sb, &clu, EXFAT_B_TO_CLU(off, sbi), p_dir->flags);
 	if (ret)
@@ -571,6 +646,12 @@ static int exfat_find_location(struct super_block *sb, struct exfat_chain *p_dir
 		return -EIO;
 	}
 
+=======
+	ret = exfat_walk_fat_chain(sb, p_dir, off, &clu);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!exfat_test_bitmap(sb, clu)) {
 		exfat_err(sb, "failed to test cluster bit(%u)", clu);
 		return -EIO;
@@ -588,11 +669,52 @@ static int exfat_find_location(struct super_block *sb, struct exfat_chain *p_dir
 	return 0;
 }
 
+<<<<<<< HEAD
 struct exfat_dentry *exfat_get_dentry(struct super_block *sb,
 		struct exfat_chain *p_dir, int entry, struct buffer_head **bh)
 {
 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
 	unsigned int sect_per_clus = sbi->sect_per_clus;
+=======
+#define EXFAT_MAX_RA_SIZE     (128*1024)
+static int exfat_dir_readahead(struct super_block *sb, sector_t sec)
+{
+	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+	struct buffer_head *bh;
+	unsigned int max_ra_count = EXFAT_MAX_RA_SIZE >> sb->s_blocksize_bits;
+	unsigned int page_ra_count = PAGE_SIZE >> sb->s_blocksize_bits;
+	unsigned int adj_ra_count = max(sbi->sect_per_clus, page_ra_count);
+	unsigned int ra_count = min(adj_ra_count, max_ra_count);
+
+	/* Read-ahead is not required */
+	if (sbi->sect_per_clus == 1)
+		return 0;
+
+	if (sec < sbi->data_start_sector) {
+		exfat_err(sb, "requested sector is invalid(sect:%llu, root:%llu)",
+			  (unsigned long long)sec, sbi->data_start_sector);
+		return -EIO;
+	}
+
+	/* Not sector aligned with ra_count, resize ra_count to page size */
+	if ((sec - sbi->data_start_sector) & (ra_count - 1))
+		ra_count = page_ra_count;
+
+	bh = sb_find_get_block(sb, sec);
+	if (!bh || !buffer_uptodate(bh)) {
+		unsigned int i;
+
+		for (i = 0; i < ra_count; i++)
+			sb_breadahead(sb, (sector_t)(sec + i));
+	}
+	brelse(bh);
+	return 0;
+}
+
+struct exfat_dentry *exfat_get_dentry(struct super_block *sb,
+		struct exfat_chain *p_dir, int entry, struct buffer_head **bh)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int dentries_per_page = EXFAT_B_TO_DEN(PAGE_SIZE);
 	int off;
 	sector_t sec;
@@ -605,6 +727,7 @@ struct exfat_dentry *exfat_get_dentry(struct super_block *sb,
 	if (exfat_find_location(sb, p_dir, entry, &sec, &off))
 		return NULL;
 
+<<<<<<< HEAD
 	if (sect_per_clus > 1 &&
 	    (entry & (dentries_per_page - 1)) == 0) {
 		sector_t ra = sec;
@@ -617,6 +740,11 @@ struct exfat_dentry *exfat_get_dentry(struct super_block *sb,
 
 		exfat_blk_readahead(sb, sec, &ra, &cnt, sec + ra_count - 1);
 	}
+=======
+	if (p_dir->dir != EXFAT_FREE_CLUSTER &&
+			!(entry & (dentries_per_page - 1)))
+		exfat_dir_readahead(sb, sec);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	*bh = sb_bread(sb, sec);
 	if (!*bh)
@@ -756,7 +884,13 @@ static int __exfat_get_dentry_set(struct exfat_entry_set_cache *es,
 		if (exfat_is_last_sector_in_cluster(sbi, sec)) {
 			unsigned int clu = exfat_sector_to_cluster(sbi, sec);
 
+<<<<<<< HEAD
 			if (exfat_cluster_walk(sb, &clu, 1, p_dir->flags))
+=======
+			if (p_dir->flags == ALLOC_NO_FAT_CHAIN)
+				clu++;
+			else if (exfat_get_next_cluster(sb, &clu))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				goto put_es;
 			sec = exfat_cluster_to_sector(sbi, clu);
 		} else {
@@ -1072,12 +1206,28 @@ rewind:
 			step = DIRENT_STEP_FILE;
 		}
 
+<<<<<<< HEAD
 		if (exfat_chain_advance(sb, &clu, 1))
 			return -EIO;
 
 		/* break if the cluster chain includes a loop */
 		if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
 			goto not_found;
+=======
+		if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+			if (--clu.size > 0)
+				clu.dir++;
+			else
+				clu.dir = EXFAT_EOF_CLUSTER;
+		} else {
+			if (exfat_get_next_cluster(sb, &clu.dir))
+				return -EIO;
+
+			/* break if the cluster chain includes a loop */
+			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
+				goto not_found;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 not_found:
@@ -1112,7 +1262,18 @@ found:
 	if (!((dentry + 1) & (dentries_per_clu - 1))) {
 		int ret = 0;
 
+<<<<<<< HEAD
 		ret = exfat_chain_advance(sb, &clu, 1);
+=======
+		if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+			if (--clu.size > 0)
+				clu.dir++;
+			else
+				clu.dir = EXFAT_EOF_CLUSTER;
+		} else {
+			ret = exfat_get_next_cluster(sb, &clu.dir);
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (ret || clu.dir == EXFAT_EOF_CLUSTER) {
 			/* just initialized hint_stat */
@@ -1157,12 +1318,29 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
 			count++;
 		}
 
+<<<<<<< HEAD
 		if (exfat_chain_advance(sb, &clu, 1))
 			return -EIO;
 
 		if (unlikely(++clu_count > sbi->used_clusters)) {
 			exfat_fs_error(sb, "FAT or bitmap is corrupted");
 			return -EIO;
+=======
+		if (clu.flags == ALLOC_NO_FAT_CHAIN) {
+			if (--clu.size > 0)
+				clu.dir++;
+			else
+				clu.dir = EXFAT_EOF_CLUSTER;
+		} else {
+			if (exfat_get_next_cluster(sb, &(clu.dir)))
+				return -EIO;
+
+			if (unlikely(++clu_count > sbi->used_clusters)) {
+				exfat_fs_error(sb, "FAT or bitmap is corrupted");
+				return -EIO;
+			}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 	}
 

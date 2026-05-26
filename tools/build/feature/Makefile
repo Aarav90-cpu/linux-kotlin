@@ -50,7 +50,10 @@ FILES=                                          \
          test-timerfd.bin                       \
          test-libbabeltrace.bin                 \
          test-libcapstone.bin			\
+<<<<<<< HEAD
          test-libcheck.bin			\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
          test-compile-32.bin                    \
          test-compile-x32.bin                   \
          test-zlib.bin                          \
@@ -104,18 +107,25 @@ else
   endif
 endif
 
+<<<<<<< HEAD
 ifeq ($(findstring -static,${LDFLAGS}),-static)
   PKG_CONFIG += --static
 endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 all: $(FILES)
 
 __BUILD = $(CC) $(CFLAGS) -MD -Wall -Werror -o $@ $(patsubst %.bin,%.c,$(@F)) $(LDFLAGS)
   BUILD = $(__BUILD) > $(@:.bin=.make.output) 2>&1
   BUILD_BFD = $(BUILD) -DPACKAGE='"perf"' -lbfd -ldl
+<<<<<<< HEAD
   BUILD_ALL = $(BUILD) -fstack-protector-all -O2 -D_FORTIFY_SOURCE=2 -ldw -lelf -lnuma -lelf -lslang \
 	      $(FLAGS_PERL_EMBED) $(FLAGS_PYTHON_EMBED) -ldl -lz -llzma -lzstd \
 	      $(shell $(PKG_CONFIG) --libs --cflags openssl 2>/dev/null)
+=======
+  BUILD_ALL = $(BUILD) -fstack-protector-all -O2 -D_FORTIFY_SOURCE=2 -ldw -lelf -lnuma -lelf -lslang $(FLAGS_PERL_EMBED) $(FLAGS_PYTHON_EMBED) -ldl -lz -llzma -lzstd -lssl
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 __BUILDXX = $(CXX) $(CXXFLAGS) -MD -Wall -Werror -o $@ $(patsubst %.bin,%.cpp,$(@F)) $(LDFLAGS)
   BUILDXX = $(__BUILDXX) > $(@:.bin=.make.output) 2>&1
@@ -314,9 +324,12 @@ $(OUTPUT)test-libbabeltrace.bin:
 $(OUTPUT)test-libcapstone.bin:
 	$(BUILD) # -lcapstone provided by $(FEATURE_CHECK_LDFLAGS-libcapstone)
 
+<<<<<<< HEAD
 $(OUTPUT)test-libcheck.bin:
 	$(BUILD) # -lcheck is provided by $(FEATURE_CHECK_LDFLAGS-libcheck)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 $(OUTPUT)test-compile-32.bin:
 	$(CC) -m32 -Wall -Werror -o $@ test-compile.c
 
@@ -394,7 +407,11 @@ $(OUTPUT)test-libpfm4.bin:
 	$(BUILD) -lpfm
 
 $(OUTPUT)test-libopenssl.bin:
+<<<<<<< HEAD
 	$(BUILD) $(shell $(PKG_CONFIG) --libs --cflags openssl 2>/dev/null)
+=======
+	$(BUILD) -lssl
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 $(OUTPUT)test-bpftool-skeletons.bin:
 	$(SYSTEM_BPFTOOL) version | grep '^features:.*skeletons' \

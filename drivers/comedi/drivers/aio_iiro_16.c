@@ -1,15 +1,25 @@
 // SPDX-License-Identifier: GPL-2.0+
 /*
  * aio_iiro_16.c
+<<<<<<< HEAD
  * Comedi driver for ACCES I/O Products 104-IIRO-16 board
+=======
+ * Comedi driver for Access I/O Products 104-IIRO-16 board
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Copyright (C) 2006 C&C Technologies, Inc.
  */
 
 /*
  * Driver: aio_iiro_16
+<<<<<<< HEAD
  * Description: ACCES I/O Products PC/104 Isolated Input/Relay Output Board
  * Author: Zachary Ware <zach.ware@cctechnol.com>
  * Devices: [ACCES I/O] 104-IIRO-16 (aio_iiro_16)
+=======
+ * Description: Access I/O Products PC/104 Isolated Input/Relay Output Board
+ * Author: Zachary Ware <zach.ware@cctechnol.com>
+ * Devices: [Access I/O] 104-IIRO-16 (aio_iiro_16)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Status: experimental
  *
  * Configuration Options:
@@ -167,8 +177,12 @@ static int aio_iiro_16_attach(struct comedi_device *dev,
 	struct comedi_subdevice *s;
 	int ret;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x8,
 					  0x100, 0x3ff, 0x8);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x8);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -232,5 +246,9 @@ static struct comedi_driver aio_iiro_16_driver = {
 module_comedi_driver(aio_iiro_16_driver);
 
 MODULE_AUTHOR("Comedi https://www.comedi.org");
+<<<<<<< HEAD
 MODULE_DESCRIPTION("Comedi driver for ACCES I/O Products 104-IIRO-16 board");
+=======
+MODULE_DESCRIPTION("Comedi driver for Access I/O Products 104-IIRO-16 board");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 MODULE_LICENSE("GPL");

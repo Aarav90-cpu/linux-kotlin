@@ -762,12 +762,15 @@ static inline u32 nvme_bytes_to_numd(size_t len)
 	return (len >> 2) - 1;
 }
 
+<<<<<<< HEAD
 /* Decode a 2-byte "0's based"/"0-based" field */
 static inline u32 from0based(__le16 value)
 {
 	return (u32)le16_to_cpu(value) + 1;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline bool nvme_is_ana_error(u16 status)
 {
 	switch (status & NVME_SCT_SC_MASK) {

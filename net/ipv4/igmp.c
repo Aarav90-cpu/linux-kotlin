@@ -122,6 +122,7 @@
  * contradict to specs provided this delay is small enough.
  */
 
+<<<<<<< HEAD
 static bool IGMP_V1_SEEN(const struct in_device *in_dev)
 {
 	unsigned long seen;
@@ -145,6 +146,18 @@ static bool IGMP_V2_SEEN(const struct in_device *in_dev)
 	seen = READ_ONCE(in_dev->mr_v2_seen);
 	return seen && time_before(jiffies, seen);
 }
+=======
+#define IGMP_V1_SEEN(in_dev) \
+	(IPV4_DEVCONF_ALL_RO(dev_net(in_dev->dev), FORCE_IGMP_VERSION) == 1 || \
+	 IN_DEV_CONF_GET((in_dev), FORCE_IGMP_VERSION) == 1 || \
+	 ((in_dev)->mr_v1_seen && \
+	  time_before(jiffies, (in_dev)->mr_v1_seen)))
+#define IGMP_V2_SEEN(in_dev) \
+	(IPV4_DEVCONF_ALL_RO(dev_net(in_dev->dev), FORCE_IGMP_VERSION) == 2 || \
+	 IN_DEV_CONF_GET((in_dev), FORCE_IGMP_VERSION) == 2 || \
+	 ((in_dev)->mr_v2_seen && \
+	  time_before(jiffies, (in_dev)->mr_v2_seen)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static int unsolicited_report_interval(struct in_device *in_dev)
 {
@@ -967,21 +980,39 @@ static bool igmp_heard_query(struct in_device *in_dev, struct sk_buff *skb,
 	int			max_delay;
 	int			mark = 0;
 	struct net		*net = dev_net(in_dev->dev);
+<<<<<<< HEAD
 	unsigned long seen;
 
 	if (len == 8) {
 		seen = jiffies + READ_ONCE(in_dev->mr_qrv) * READ_ONCE(in_dev->mr_qi) +
 		       READ_ONCE(in_dev->mr_qri);
+=======
+
+
+	if (len == 8) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ih->code == 0) {
 			/* Alas, old v1 router presents here. */
 
 			max_delay = IGMP_QUERY_RESPONSE_INTERVAL;
+<<<<<<< HEAD
 			WRITE_ONCE(in_dev->mr_v1_seen, seen);
+=======
+			in_dev->mr_v1_seen = jiffies +
+				(in_dev->mr_qrv * in_dev->mr_qi) +
+				in_dev->mr_qri;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			group = 0;
 		} else {
 			/* v2 router present */
 			max_delay = ih->code*(HZ/IGMP_TIMER_SCALE);
+<<<<<<< HEAD
 			WRITE_ONCE(in_dev->mr_v2_seen, seen);
+=======
+			in_dev->mr_v2_seen = jiffies +
+				(in_dev->mr_qrv * in_dev->mr_qi) +
+				in_dev->mr_qri;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		/* cancel the interface change timer */
 		WRITE_ONCE(in_dev->mr_ifc_count, 0);
@@ -1006,8 +1037,11 @@ static bool igmp_heard_query(struct in_device *in_dev, struct sk_buff *skb,
 		if (!max_delay)
 			max_delay = 1;	/* can't mod w/ 0 */
 	} else { /* v3 */
+<<<<<<< HEAD
 		unsigned long mr_qi;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!pskb_may_pull(skb, sizeof(struct igmpv3_query)))
 			return true;
 
@@ -1028,16 +1062,27 @@ static bool igmp_heard_query(struct in_device *in_dev, struct sk_buff *skb,
 		 * received value was zero, use the default or statically
 		 * configured value.
 		 */
+<<<<<<< HEAD
 		WRITE_ONCE(in_dev->mr_qrv,
 			   ih3->qrv ?: READ_ONCE(net->ipv4.sysctl_igmp_qrv));
 		mr_qi = IGMPV3_QQIC(ih3->qqic)*HZ ?: IGMP_QUERY_INTERVAL;
 		WRITE_ONCE(in_dev->mr_qi, mr_qi);
+=======
+		in_dev->mr_qrv = ih3->qrv ?: READ_ONCE(net->ipv4.sysctl_igmp_qrv);
+		in_dev->mr_qi = IGMPV3_QQIC(ih3->qqic)*HZ ?: IGMP_QUERY_INTERVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* RFC3376, 8.3. Query Response Interval:
 		 * The number of seconds represented by the [Query Response
 		 * Interval] must be less than the [Query Interval].
 		 */
+<<<<<<< HEAD
 		if (READ_ONCE(in_dev->mr_qri) >= mr_qi)
 			WRITE_ONCE(in_dev->mr_qri, (mr_qi/HZ - 1) * HZ);
+=======
+		if (in_dev->mr_qri >= in_dev->mr_qi)
+			in_dev->mr_qri = (in_dev->mr_qi/HZ - 1)*HZ;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!group) { /* general query */
 			if (ih3->nsrcs)

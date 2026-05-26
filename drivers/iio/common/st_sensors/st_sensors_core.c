@@ -501,12 +501,22 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
 
 	byte_for_channel = DIV_ROUND_UP(ch->scan_type.realbits +
 					ch->scan_type.shift, 8);
+<<<<<<< HEAD
 	outdata = sdata->buffer_data;
+=======
+	outdata = kmalloc(byte_for_channel, GFP_DMA | GFP_KERNEL);
+	if (!outdata)
+		return -ENOMEM;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = regmap_bulk_read(sdata->regmap, ch->address,
 			       outdata, byte_for_channel);
 	if (err < 0)
+<<<<<<< HEAD
 		return err;
+=======
+		goto st_sensors_free_memory;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (byte_for_channel == 1)
 		*data = (s8)*outdata;
@@ -515,7 +525,14 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
 	else if (byte_for_channel == 3)
 		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
 
+<<<<<<< HEAD
 	return 0;
+=======
+st_sensors_free_memory:
+	kfree(outdata);
+
+	return err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int st_sensors_read_info_raw(struct iio_dev *indio_dev,

@@ -203,6 +203,10 @@ static void mci_release(struct device *dev)
 		kfree(mci->csrows);
 	}
 	kfree(mci->pvt_info);
+<<<<<<< HEAD
+=======
+	kfree(mci->layers);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kfree(mci);
 }
 
@@ -360,12 +364,22 @@ struct mem_ctl_info *edac_mc_alloc(unsigned int mc_num,
 			per_rank = true;
 	}
 
+<<<<<<< HEAD
 	mci = kzalloc_flex(*mci, layers, n_layers);
 	if (!mci)
 		return NULL;
 
 	mci->n_layers = n_layers;
 	memcpy(mci->layers, layers, sizeof(*layer) * n_layers);
+=======
+	mci = kzalloc_obj(struct mem_ctl_info);
+	if (!mci)
+		return NULL;
+
+	mci->layers = kzalloc_objs(struct edac_mc_layer, n_layers);
+	if (!mci->layers)
+		goto error;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mci->dev.release = mci_release;
 	device_initialize(&mci->dev);
@@ -377,6 +391,11 @@ struct mem_ctl_info *edac_mc_alloc(unsigned int mc_num,
 	/* setup index and various internal pointers */
 	mci->mc_idx = mc_num;
 	mci->tot_dimms = tot_dimms;
+<<<<<<< HEAD
+=======
+	mci->n_layers = n_layers;
+	memcpy(mci->layers, layers, sizeof(*layer) * n_layers);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mci->nr_csrows = tot_csrows;
 	mci->num_cschannel = tot_channels;
 	mci->csbased = per_rank;

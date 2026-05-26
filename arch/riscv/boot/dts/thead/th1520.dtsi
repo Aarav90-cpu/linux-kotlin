@@ -585,6 +585,7 @@
 			#clock-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		hdmi: hdmi@ffef540000 {
 			compatible = "thead,th1520-dw-hdmi";
 			reg = <0xff 0xef540000 0x0 0x40000>;
@@ -651,6 +652,8 @@
 			};
 		};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmac0: dma-controller@ffefc00000 {
 			compatible = "snps,axi-dma-1.01a";
 			reg = <0xff 0xefc00000 0x0 0x1000>;
@@ -819,10 +822,13 @@
 			reg-names = "common", "ts", "pd", "vm";
 			clocks = <&aonsys_clk>;
 			#thermal-sensor-cells = <1>;
+<<<<<<< HEAD
 			moortec,ts-coeff-g = <42740>;
 			moortec,ts-coeff-h = <220500>;
 			moortec,ts-coeff-j = <(-160)>;
 			moortec,ts-coeff-cal5 = <4094>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		gpio@fffff52000 {

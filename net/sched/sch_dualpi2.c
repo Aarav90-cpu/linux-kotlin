@@ -393,11 +393,21 @@ static int dualpi2_enqueue_skb(struct sk_buff *skb, struct Qdisc *sch,
 		qdisc_qstats_overlimit(sch);
 		if (skb_in_l_queue(skb))
 			qdisc_qstats_overlimit(q->l_queue);
+<<<<<<< HEAD
 		return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
 	}
 
 	if (q->drop_early && must_drop(sch, q, skb)) {
 		qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_CONGESTED);
+=======
+		return qdisc_drop_reason(skb, sch, to_free,
+					 SKB_DROP_REASON_QDISC_OVERLIMIT);
+	}
+
+	if (q->drop_early && must_drop(sch, q, skb)) {
+		qdisc_drop_reason(skb, sch, to_free,
+				  SKB_DROP_REASON_QDISC_CONGESTED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
 	}
 
@@ -571,11 +581,19 @@ static int do_step_aqm(struct dualpi2_sched_data *q, struct sk_buff *skb,
 }
 
 static void drop_and_retry(struct dualpi2_sched_data *q, struct sk_buff *skb,
+<<<<<<< HEAD
 			   struct Qdisc *sch, enum qdisc_drop_reason reason)
 {
 	++q->deferred_drops_cnt;
 	q->deferred_drops_len += qdisc_pkt_len(skb);
 	qdisc_dequeue_drop(sch, skb, reason);
+=======
+			   struct Qdisc *sch, enum skb_drop_reason reason)
+{
+	++q->deferred_drops_cnt;
+	q->deferred_drops_len += qdisc_pkt_len(skb);
+	kfree_skb_reason(skb, reason);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	qdisc_qstats_drop(sch);
 }
 
@@ -590,13 +608,23 @@ static struct sk_buff *dualpi2_qdisc_dequeue(struct Qdisc *sch)
 
 	while ((skb = dequeue_packet(sch, q, &credit_change, now))) {
 		if (!q->drop_early && must_drop(sch, q, skb)) {
+<<<<<<< HEAD
 			drop_and_retry(q, skb, sch, QDISC_DROP_CONGESTED);
+=======
+			drop_and_retry(q, skb, sch,
+				       SKB_DROP_REASON_QDISC_CONGESTED);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 
 		if (skb_in_l_queue(skb) && do_step_aqm(q, skb, now)) {
 			qdisc_qstats_drop(q->l_queue);
+<<<<<<< HEAD
 			drop_and_retry(q, skb, sch, QDISC_DROP_L4S_STEP_NON_ECN);
+=======
+			drop_and_retry(q, skb, sch,
+				       SKB_DROP_REASON_DUALPI2_STEP_DROP);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			continue;
 		}
 
@@ -868,6 +896,7 @@ static int dualpi2_change(struct Qdisc *sch, struct nlattr *opt,
 	old_backlog = sch->qstats.backlog;
 	while (qdisc_qlen(sch) > sch->limit ||
 	       q->memory_used > q->memory_limit) {
+<<<<<<< HEAD
 		struct sk_buff *skb = NULL;
 
 		if (qdisc_qlen(sch) > qdisc_qlen(q->l_queue)) {
@@ -897,6 +926,13 @@ static int dualpi2_change(struct Qdisc *sch, struct nlattr *opt,
 			WARN_ON_ONCE(1);
 			break;
 		}
+=======
+		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
+
+		q->memory_used -= skb->truesize;
+		qdisc_qstats_backlog_dec(sch, skb);
+		rtnl_qdisc_drop(skb, sch);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	qdisc_tree_reduce_backlog(sch, old_qlen - qdisc_qlen(sch),
 				  old_backlog - sch->qstats.backlog);
@@ -937,10 +973,13 @@ static int dualpi2_init(struct Qdisc *sch, struct nlattr *opt,
 	struct dualpi2_sched_data *q = qdisc_priv(sch);
 	int err;
 
+<<<<<<< HEAD
 	sch->flags |= TCQ_F_DEQUEUE_DROPS;
 	hrtimer_setup(&q->pi2_timer, dualpi2_timer, CLOCK_MONOTONIC,
 		      HRTIMER_MODE_ABS_PINNED_SOFT);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	q->l_queue = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
 				       TC_H_MAKE(sch->handle, 1), extack);
 	if (!q->l_queue)
@@ -952,6 +991,11 @@ static int dualpi2_init(struct Qdisc *sch, struct nlattr *opt,
 
 	q->sch = sch;
 	dualpi2_reset_default(sch);
+<<<<<<< HEAD
+=======
+	hrtimer_setup(&q->pi2_timer, dualpi2_timer, CLOCK_MONOTONIC,
+		      HRTIMER_MODE_ABS_PINNED_SOFT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (opt && nla_len(opt)) {
 		err = dualpi2_change(sch, opt, extack);

@@ -67,7 +67,11 @@ void io_msg_ring_cleanup(struct io_kiocb *req)
 
 static inline bool io_msg_need_remote(struct io_ring_ctx *target_ctx)
 {
+<<<<<<< HEAD
 	return target_ctx->int_flags & IO_RING_F_TASK_COMPLETE;
+=======
+	return target_ctx->task_complete;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_msg_tw_complete(struct io_tw_req tw_req, io_tw_token_t tw)

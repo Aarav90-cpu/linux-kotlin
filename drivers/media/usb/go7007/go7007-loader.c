@@ -41,7 +41,13 @@ static int go7007_loader_probe(struct usb_interface *interface,
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	usbdev = interface_to_usbdev(interface);
+=======
+	usbdev = usb_get_dev(interface_to_usbdev(interface));
+	if (!usbdev)
+		goto failed2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (usbdev->descriptor.bNumConfigurations != 1) {
 		dev_err(&interface->dev, "can't handle multiple config\n");
@@ -94,6 +100,10 @@ static int go7007_loader_probe(struct usb_interface *interface,
 	return 0;
 
 failed2:
+<<<<<<< HEAD
+=======
+	usb_put_dev(usbdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dev_err(&interface->dev, "probe failed\n");
 	return -ENODEV;
 }
@@ -101,6 +111,10 @@ failed2:
 static void go7007_loader_disconnect(struct usb_interface *interface)
 {
 	dev_info(&interface->dev, "disconnect\n");
+<<<<<<< HEAD
+=======
+	usb_put_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	usb_set_intfdata(interface, NULL);
 }
 

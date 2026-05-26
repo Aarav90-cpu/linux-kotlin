@@ -56,7 +56,11 @@ static void fuse_add_dirent_to_cache(struct file *file,
 	}
 	version = fi->rdc.version;
 	size = fi->rdc.size;
+<<<<<<< HEAD
 	offset = offset_in_page(size);
+=======
+	offset = size & ~PAGE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	index = size >> PAGE_SHIFT;
 	/* Dirent doesn't fit in current page?  Jump to next page. */
 	if (offset + reclen > PAGE_SIZE) {
@@ -396,7 +400,11 @@ static enum fuse_parse_result fuse_parse_cache(struct fuse_file *ff,
 					       void *addr, unsigned int size,
 					       struct dir_context *ctx)
 {
+<<<<<<< HEAD
 	unsigned int offset = offset_in_page(ff->readdir.cache_off);
+=======
+	unsigned int offset = ff->readdir.cache_off & ~PAGE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum fuse_parse_result res = FOUND_NONE;
 
 	WARN_ON(offset >= size);
@@ -522,13 +530,21 @@ retry_locked:
 	index = ff->readdir.cache_off >> PAGE_SHIFT;
 
 	if (index == (fi->rdc.size >> PAGE_SHIFT))
+<<<<<<< HEAD
 		size = offset_in_page(fi->rdc.size);
+=======
+		size = fi->rdc.size & ~PAGE_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	else
 		size = PAGE_SIZE;
 	spin_unlock(&fi->rdc.lock);
 
 	/* EOF? */
+<<<<<<< HEAD
 	if (offset_in_page(ff->readdir.cache_off) == size)
+=======
+	if ((ff->readdir.cache_off & ~PAGE_MASK) == size)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	page = find_get_page_flags(file->f_mapping, index,

@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 /*
  * Copyright(c) 2019 - 2021 Intel Corporation
+<<<<<<< HEAD
  * Copyright(c) 2024 - 2025 Intel Corporation
+=======
+ * Copyright(c) 2024 Intel Corporation
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 #include <fw/api/commands.h>
 #include "img.h"
 
+<<<<<<< HEAD
 u8 iwl_fw_lookup_cmd_bios_supported_revision(const struct iwl_fw *fw,
 					     enum bios_source table_source,
 					     u32 cmd_id, u8 def)
@@ -36,6 +41,8 @@ u8 iwl_fw_lookup_cmd_bios_supported_revision(const struct iwl_fw *fw,
 }
 EXPORT_SYMBOL_GPL(iwl_fw_lookup_cmd_bios_supported_revision);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 u8 iwl_fw_lookup_cmd_ver(const struct iwl_fw *fw, u32 cmd_id, u8 def)
 {
 	const struct iwl_fw_cmd_version *entry;

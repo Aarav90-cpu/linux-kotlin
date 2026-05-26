@@ -12,6 +12,10 @@
 #include "mad.h"
 #include "trace.h"
 #include "qp.h"
+<<<<<<< HEAD
+=======
+#include "vnic.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /* the reset value from the FM is supposed to be 0xffff, handle both */
 #define OPA_LINK_WIDTH_RESET_OLD 0x0fff

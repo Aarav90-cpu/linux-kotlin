@@ -29,6 +29,10 @@
 #include <drm/drm_file.h>
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_crtc.h"
 #include "intel_de.h"
 #include "intel_display_power_well.h"
@@ -39,6 +43,10 @@
 #include "intel_dmc.h"
 #include "intel_dmc_regs.h"
 #include "intel_flipq.h"
+<<<<<<< HEAD
+=======
+#include "intel_step.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /**
  * DOC: DMC Firmware Support
@@ -417,12 +425,24 @@ bool intel_dmc_has_payload(struct intel_display *display)
 	return has_dmc_id_fw(display, DMC_FW_MAIN);
 }
 
+<<<<<<< HEAD
 static void initialize_stepping_info(struct intel_display *display, struct stepping_info *si)
 {
 	const char *step_name = DISPLAY_RUNTIME_INFO(display)->step_name;
 
 	si->stepping = step_name[0] ?: '*';
 	si->substepping = step_name[1] ?: '*';
+=======
+static const struct stepping_info *
+intel_get_stepping_info(struct intel_display *display,
+			struct stepping_info *si)
+{
+	const char *step_name = intel_step_name(INTEL_DISPLAY_STEP(display));
+
+	si->stepping = step_name[0];
+	si->substepping = step_name[1];
+	return si;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void gen9_set_dc_state_debugmask(struct intel_display *display)
@@ -1270,7 +1290,12 @@ static int parse_dmc_fw(struct intel_dmc *dmc, const struct firmware *fw)
 	struct intel_css_header *css_header;
 	struct intel_package_header *package_header;
 	struct intel_dmc_header_base *dmc_header;
+<<<<<<< HEAD
 	struct stepping_info si = {};
+=======
+	struct stepping_info display_info = { '*', '*'};
+	const struct stepping_info *si = intel_get_stepping_info(display, &display_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum intel_dmc_id dmc_id;
 	u32 readcount = 0;
 	u32 r, offset;
@@ -1278,8 +1303,11 @@ static int parse_dmc_fw(struct intel_dmc *dmc, const struct firmware *fw)
 	if (!fw)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	initialize_stepping_info(display, &si);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Extract CSS Header information */
 	css_header = (struct intel_css_header *)fw->data;
 	r = parse_dmc_fw_css(dmc, css_header, fw->size);
@@ -1290,7 +1318,11 @@ static int parse_dmc_fw(struct intel_dmc *dmc, const struct firmware *fw)
 
 	/* Extract Package Header information */
 	package_header = (struct intel_package_header *)&fw->data[readcount];
+<<<<<<< HEAD
 	r = parse_dmc_fw_package(dmc, package_header, &si, fw->size - readcount);
+=======
+	r = parse_dmc_fw_package(dmc, package_header, si, fw->size - readcount);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!r)
 		return -EINVAL;
 

@@ -25,7 +25,11 @@ TRACE_EVENT(zonefs_zone_mgmt,
 	    TP_ARGS(sb, z, op),
 	    TP_STRUCT__entry(
 			     __field(dev_t, dev)
+<<<<<<< HEAD
 			     __field(u64, ino)
+=======
+			     __field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     __field(enum req_op, op)
 			     __field(sector_t, sector)
 			     __field(sector_t, nr_sectors)
@@ -38,8 +42,13 @@ TRACE_EVENT(zonefs_zone_mgmt,
 			   __entry->sector = z->z_sector;
 			   __entry->nr_sectors = z->z_size >> SECTOR_SHIFT;
 	    ),
+<<<<<<< HEAD
 	    TP_printk("bdev=(%d,%d), ino=%llu op=%s, sector=%llu, nr_sectors=%llu",
 		      show_dev(__entry->dev), __entry->ino,
+=======
+	    TP_printk("bdev=(%d,%d), ino=%lu op=%s, sector=%llu, nr_sectors=%llu",
+		      show_dev(__entry->dev), (unsigned long)__entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      blk_op_str(__entry->op), __entry->sector,
 		      __entry->nr_sectors
 	    )
@@ -50,7 +59,11 @@ TRACE_EVENT(zonefs_file_dio_append,
 	    TP_ARGS(inode, size, ret),
 	    TP_STRUCT__entry(
 			     __field(dev_t, dev)
+<<<<<<< HEAD
 			     __field(u64, ino)
+=======
+			     __field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     __field(sector_t, sector)
 			     __field(ssize_t, size)
 			     __field(loff_t, wpoffset)
@@ -65,8 +78,13 @@ TRACE_EVENT(zonefs_file_dio_append,
 				zonefs_inode_zone(inode)->z_wpoffset;
 			   __entry->ret = ret;
 	    ),
+<<<<<<< HEAD
 	    TP_printk("bdev=(%d, %d), ino=%llu, sector=%llu, size=%zu, wpoffset=%llu, ret=%zu",
 		      show_dev(__entry->dev), __entry->ino,
+=======
+	    TP_printk("bdev=(%d, %d), ino=%lu, sector=%llu, size=%zu, wpoffset=%llu, ret=%zu",
+		      show_dev(__entry->dev), (unsigned long)__entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      __entry->sector, __entry->size, __entry->wpoffset,
 		      __entry->ret
 	    )
@@ -77,7 +95,11 @@ TRACE_EVENT(zonefs_iomap_begin,
 	    TP_ARGS(inode, iomap),
 	    TP_STRUCT__entry(
 			     __field(dev_t, dev)
+<<<<<<< HEAD
 			     __field(u64, ino)
+=======
+			     __field(ino_t, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			     __field(u64, addr)
 			     __field(loff_t, offset)
 			     __field(u64, length)
@@ -89,8 +111,13 @@ TRACE_EVENT(zonefs_iomap_begin,
 			   __entry->offset = iomap->offset;
 			   __entry->length = iomap->length;
 	    ),
+<<<<<<< HEAD
 	    TP_printk("bdev=(%d,%d), ino=%llu, addr=%llu, offset=%llu, length=%llu",
 		      show_dev(__entry->dev), __entry->ino,
+=======
+	    TP_printk("bdev=(%d,%d), ino=%lu, addr=%llu, offset=%llu, length=%llu",
+		      show_dev(__entry->dev), (unsigned long)__entry->ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		      __entry->addr, __entry->offset, __entry->length
 	    )
 );

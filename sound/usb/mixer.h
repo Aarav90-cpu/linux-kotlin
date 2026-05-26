@@ -44,7 +44,11 @@ struct usb_mixer_interface {
 	void (*private_suspend)(struct usb_mixer_interface *mixer);
 };
 
+<<<<<<< HEAD
 #define MAX_CHANNELS	64	/* max logical channels */
+=======
+#define MAX_CHANNELS	16	/* max logical channels */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum {
 	USB_MIXER_BOOLEAN,
@@ -81,7 +85,11 @@ struct usb_mixer_elem_list {
 struct usb_mixer_elem_info {
 	struct usb_mixer_elem_list head;
 	unsigned int control;	/* CS or ICN (high byte) */
+<<<<<<< HEAD
 	u64 cmask; /* channel mask bitmap: 0 = master */
+=======
+	unsigned int cmask; /* channel mask bitmap: 0 = master */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int idx_off; /* Control index offset */
 	unsigned int ch_readonly;
 	unsigned int master_readonly;

@@ -5810,7 +5810,11 @@ static void __intel_pmu_check_dyn_constr(struct event_constraint *constr,
 			}
 
 			if (check_fail) {
+<<<<<<< HEAD
 				pr_warn("The two events 0x%llx and 0x%llx may not be "
+=======
+				pr_info("The two events 0x%llx and 0x%llx may not be "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					"fully scheduled under some circumstances as "
 					"%s.\n",
 					c1->code, c2->code, dyn_constr_type_name[type]);
@@ -5823,7 +5827,10 @@ static void intel_pmu_check_dyn_constr(struct pmu *pmu,
 				       struct event_constraint *constr,
 				       u64 cntr_mask)
 {
+<<<<<<< HEAD
 	u64 gp_mask = GENMASK_ULL(INTEL_PMC_MAX_GENERIC - 1, 0);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	enum dyn_constr_type i;
 	u64 mask;
 
@@ -5838,6 +5845,7 @@ static void intel_pmu_check_dyn_constr(struct pmu *pmu,
 				mask = x86_pmu.lbr_counters;
 			break;
 		case DYN_CONSTR_ACR_CNTR:
+<<<<<<< HEAD
 			mask = hybrid(pmu, acr_cntr_mask64) & gp_mask;
 			break;
 		case DYN_CONSTR_ACR_CAUSE:
@@ -5857,6 +5865,22 @@ static void intel_pmu_check_dyn_constr(struct pmu *pmu,
 				mask = hybrid(pmu, arch_pebs_cap).pdists &
 				       gp_mask;
 			}
+=======
+			mask = hybrid(pmu, acr_cntr_mask64) & GENMASK_ULL(INTEL_PMC_MAX_GENERIC - 1, 0);
+			break;
+		case DYN_CONSTR_ACR_CAUSE:
+			if (hybrid(pmu, acr_cntr_mask64) == hybrid(pmu, acr_cause_mask64))
+				continue;
+			mask = hybrid(pmu, acr_cause_mask64) & GENMASK_ULL(INTEL_PMC_MAX_GENERIC - 1, 0);
+			break;
+		case DYN_CONSTR_PEBS:
+			if (x86_pmu.arch_pebs)
+				mask = hybrid(pmu, arch_pebs_cap).counters;
+			break;
+		case DYN_CONSTR_PDIST:
+			if (x86_pmu.arch_pebs)
+				mask = hybrid(pmu, arch_pebs_cap).pdists;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			break;
 		default:
 			pr_warn("Unsupported dynamic constraint type %d\n", i);

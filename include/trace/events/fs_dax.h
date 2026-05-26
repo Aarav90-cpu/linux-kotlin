@@ -12,7 +12,11 @@ DECLARE_EVENT_CLASS(dax_pmd_fault_class,
 		pgoff_t max_pgoff, int result),
 	TP_ARGS(inode, vmf, max_pgoff, result),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(unsigned long, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(unsigned long, vm_start)
 		__field(unsigned long, vm_end)
 		__field(vm_flags_t, vm_flags)
@@ -35,7 +39,11 @@ DECLARE_EVENT_CLASS(dax_pmd_fault_class,
 		__entry->max_pgoff = max_pgoff;
 		__entry->result = result;
 	),
+<<<<<<< HEAD
 	TP_printk("dev %d:%d ino %#llx %s %s address %#lx vm_start "
+=======
+	TP_printk("dev %d:%d ino %#lx %s %s address %#lx vm_start "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"%#lx vm_end %#lx pgoff %#lx max_pgoff %#lx %s",
 		MAJOR(__entry->dev),
 		MINOR(__entry->dev),
@@ -66,7 +74,11 @@ DECLARE_EVENT_CLASS(dax_pmd_load_hole_class,
 		void *radix_entry),
 	TP_ARGS(inode, vmf, zero_folio, radix_entry),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(unsigned long, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(vm_flags_t, vm_flags)
 		__field(unsigned long, address)
 		__field(struct folio *, zero_folio)
@@ -81,7 +93,11 @@ DECLARE_EVENT_CLASS(dax_pmd_load_hole_class,
 		__entry->zero_folio = zero_folio;
 		__entry->radix_entry = radix_entry;
 	),
+<<<<<<< HEAD
 	TP_printk("dev %d:%d ino %#llx %s address %#lx zero_folio %p "
+=======
+	TP_printk("dev %d:%d ino %#lx %s address %#lx zero_folio %p "
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			"radix_entry %#lx",
 		MAJOR(__entry->dev),
 		MINOR(__entry->dev),
@@ -106,7 +122,11 @@ DECLARE_EVENT_CLASS(dax_pte_fault_class,
 	TP_PROTO(struct inode *inode, struct vm_fault *vmf, int result),
 	TP_ARGS(inode, vmf, result),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(unsigned long, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(vm_flags_t, vm_flags)
 		__field(unsigned long, address)
 		__field(pgoff_t, pgoff)
@@ -123,7 +143,11 @@ DECLARE_EVENT_CLASS(dax_pte_fault_class,
 		__entry->pgoff = vmf->pgoff;
 		__entry->result = result;
 	),
+<<<<<<< HEAD
 	TP_printk("dev %d:%d ino %#llx %s %s address %#lx pgoff %#lx %s",
+=======
+	TP_printk("dev %d:%d ino %#lx %s %s address %#lx pgoff %#lx %s",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAJOR(__entry->dev),
 		MINOR(__entry->dev),
 		__entry->ino,
@@ -150,7 +174,11 @@ DECLARE_EVENT_CLASS(dax_writeback_range_class,
 	TP_PROTO(struct inode *inode, pgoff_t start_index, pgoff_t end_index),
 	TP_ARGS(inode, start_index, end_index),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(unsigned long, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(pgoff_t, start_index)
 		__field(pgoff_t, end_index)
 		__field(dev_t, dev)
@@ -161,7 +189,11 @@ DECLARE_EVENT_CLASS(dax_writeback_range_class,
 		__entry->start_index = start_index;
 		__entry->end_index = end_index;
 	),
+<<<<<<< HEAD
 	TP_printk("dev %d:%d ino %#llx pgoff %#lx-%#lx",
+=======
+	TP_printk("dev %d:%d ino %#lx pgoff %#lx-%#lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAJOR(__entry->dev),
 		MINOR(__entry->dev),
 		__entry->ino,
@@ -182,7 +214,11 @@ TRACE_EVENT(dax_writeback_one,
 	TP_PROTO(struct inode *inode, pgoff_t pgoff, pgoff_t pglen),
 	TP_ARGS(inode, pgoff, pglen),
 	TP_STRUCT__entry(
+<<<<<<< HEAD
 		__field(u64, ino)
+=======
+		__field(unsigned long, ino)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__field(pgoff_t, pgoff)
 		__field(pgoff_t, pglen)
 		__field(dev_t, dev)
@@ -193,7 +229,11 @@ TRACE_EVENT(dax_writeback_one,
 		__entry->pgoff = pgoff;
 		__entry->pglen = pglen;
 	),
+<<<<<<< HEAD
 	TP_printk("dev %d:%d ino %#llx pgoff %#lx pglen %#lx",
+=======
+	TP_printk("dev %d:%d ino %#lx pgoff %#lx pglen %#lx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		MAJOR(__entry->dev),
 		MINOR(__entry->dev),
 		__entry->ino,

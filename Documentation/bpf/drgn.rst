@@ -26,8 +26,13 @@ about these objects, including id, type and name.
 
 The main use-case `bpf_inspect.py`_ covers is to show BPF programs of types
 ``BPF_PROG_TYPE_EXT`` and ``BPF_PROG_TYPE_TRACING`` attached to other BPF
+<<<<<<< HEAD
 programs via ``freplace``/``fentry``/``fexit``/``fsession`` mechanisms, since
 there is no user-space API to get this information.
+=======
+programs via ``freplace``/``fentry``/``fexit`` mechanisms, since there is no
+user-space API to get this information.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 Getting started
 ===============

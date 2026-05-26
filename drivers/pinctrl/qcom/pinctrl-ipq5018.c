@@ -32,6 +32,10 @@
 		.io_reg = 0x4 + REG_SIZE * id,		\
 		.intr_cfg_reg = 0x8 + REG_SIZE * id,	\
 		.intr_status_reg = 0xc + REG_SIZE * id,	\
+<<<<<<< HEAD
+=======
+		.intr_target_reg = 0x8 + REG_SIZE * id,	\
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.mux_bit = 2,			\
 		.pull_bit = 0,			\
 		.drv_bit = 6,			\

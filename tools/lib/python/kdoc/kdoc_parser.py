@@ -13,8 +13,12 @@ import sys
 import re
 from pprint import pformat
 
+<<<<<<< HEAD
 from kdoc.c_lex import CTokenizer, tokenizer_set_log
 from kdoc.kdoc_re import KernRe
+=======
+from kdoc.kdoc_re import NestedMatch, KernRe
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from kdoc.kdoc_item import KdocItem
 
 #
@@ -71,9 +75,146 @@ doc_begin_func = KernRe(str(doc_com) +			# initial " * '
                         cache = False)
 
 #
+<<<<<<< HEAD
 # Ancillary functions
 #
 
+=======
+# Here begins a long set of transformations to turn structure member prefixes
+# and macro invocations into something we can parse and generate kdoc for.
+#
+struct_args_pattern = r'([^,)]+)'
+
+struct_xforms = [
+    # Strip attributes
+    (KernRe(r"__attribute__\s*\(\([a-z0-9,_\*\s\(\)]*\)\)", flags=re.I | re.S, cache=False), ' '),
+    (KernRe(r'\s*__aligned\s*\([^;]*\)', re.S), ' '),
+    (KernRe(r'\s*__counted_by\s*\([^;]*\)', re.S), ' '),
+    (KernRe(r'\s*__counted_by_(le|be)\s*\([^;]*\)', re.S), ' '),
+    (KernRe(r'\s*__packed\s*', re.S), ' '),
+    (KernRe(r'\s*CRYPTO_MINALIGN_ATTR', re.S), ' '),
+    (KernRe(r'\s*__private', re.S), ' '),
+    (KernRe(r'\s*__rcu', re.S), ' '),
+    (KernRe(r'\s*____cacheline_aligned_in_smp', re.S), ' '),
+    (KernRe(r'\s*____cacheline_aligned', re.S), ' '),
+    (KernRe(r'\s*__cacheline_group_(begin|end)\([^\)]+\);'), ''),
+    #
+    # Unwrap struct_group macros based on this definition:
+    # __struct_group(TAG, NAME, ATTRS, MEMBERS...)
+    # which has variants like: struct_group(NAME, MEMBERS...)
+    # Only MEMBERS arguments require documentation.
+    #
+    # Parsing them happens on two steps:
+    #
+    # 1. drop struct group arguments that aren't at MEMBERS,
+    #    storing them as STRUCT_GROUP(MEMBERS)
+    #
+    # 2. remove STRUCT_GROUP() ancillary macro.
+    #
+    # The original logic used to remove STRUCT_GROUP() using an
+    # advanced regex:
+    #
+    #   \bSTRUCT_GROUP(\(((?:(?>[^)(]+)|(?1))*)\))[^;]*;
+    #
+    # with two patterns that are incompatible with
+    # Python re module, as it has:
+    #
+    #   - a recursive pattern: (?1)
+    #   - an atomic grouping: (?>...)
+    #
+    # I tried a simpler version: but it didn't work either:
+    #   \bSTRUCT_GROUP\(([^\)]+)\)[^;]*;
+    #
+    # As it doesn't properly match the end parenthesis on some cases.
+    #
+    # So, a better solution was crafted: there's now a NestedMatch
+    # class that ensures that delimiters after a search are properly
+    # matched. So, the implementation to drop STRUCT_GROUP() will be
+    # handled in separate.
+    #
+    (KernRe(r'\bstruct_group\s*\(([^,]*,)', re.S), r'STRUCT_GROUP('),
+    (KernRe(r'\bstruct_group_attr\s*\(([^,]*,){2}', re.S), r'STRUCT_GROUP('),
+    (KernRe(r'\bstruct_group_tagged\s*\(([^,]*),([^,]*),', re.S), r'struct \1 \2; STRUCT_GROUP('),
+    (KernRe(r'\b__struct_group\s*\(([^,]*,){3}', re.S), r'STRUCT_GROUP('),
+    #
+    # Replace macros
+    #
+    # TODO: use NestedMatch for FOO($1, $2, ...) matches
+    #
+    # it is better to also move those to the NestedMatch logic,
+    # to ensure that parentheses will be properly matched.
+    #
+    (KernRe(r'__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)', re.S),
+     r'DECLARE_BITMAP(\1, __ETHTOOL_LINK_MODE_MASK_NBITS)'),
+    (KernRe(r'DECLARE_PHY_INTERFACE_MASK\s*\(([^\)]+)\)', re.S),
+     r'DECLARE_BITMAP(\1, PHY_INTERFACE_MODE_MAX)'),
+    (KernRe(r'DECLARE_BITMAP\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+            re.S), r'unsigned long \1[BITS_TO_LONGS(\2)]'),
+    (KernRe(r'DECLARE_HASHTABLE\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+            re.S), r'unsigned long \1[1 << ((\2) - 1)]'),
+    (KernRe(r'DECLARE_KFIFO\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern +
+            r',\s*' + struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+    (KernRe(r'DECLARE_KFIFO_PTR\s*\(' + struct_args_pattern + r',\s*' +
+            struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+    (KernRe(r'(?:__)?DECLARE_FLEX_ARRAY\s*\(' + struct_args_pattern + r',\s*' +
+            struct_args_pattern + r'\)', re.S), r'\1 \2[]'),
+    (KernRe(r'DEFINE_DMA_UNMAP_ADDR\s*\(' + struct_args_pattern + r'\)', re.S), r'dma_addr_t \1'),
+    (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
+]
+#
+# Regexes here are guaranteed to have the end delimiter matching
+# the start delimiter. Yet, right now, only one replace group
+# is allowed.
+#
+struct_nested_prefixes = [
+    (re.compile(r'\bSTRUCT_GROUP\('), r'\1'),
+]
+
+#
+# Transforms for function prototypes
+#
+function_xforms  = [
+    (KernRe(r"^static +"), ""),
+    (KernRe(r"^extern +"), ""),
+    (KernRe(r"^asmlinkage +"), ""),
+    (KernRe(r"^inline +"), ""),
+    (KernRe(r"^__inline__ +"), ""),
+    (KernRe(r"^__inline +"), ""),
+    (KernRe(r"^__always_inline +"), ""),
+    (KernRe(r"^noinline +"), ""),
+    (KernRe(r"^__FORTIFY_INLINE +"), ""),
+    (KernRe(r"__init +"), ""),
+    (KernRe(r"__init_or_module +"), ""),
+    (KernRe(r"__exit +"), ""),
+    (KernRe(r"__deprecated +"), ""),
+    (KernRe(r"__flatten +"), ""),
+    (KernRe(r"__meminit +"), ""),
+    (KernRe(r"__must_check +"), ""),
+    (KernRe(r"__weak +"), ""),
+    (KernRe(r"__sched +"), ""),
+    (KernRe(r"_noprof"), ""),
+    (KernRe(r"__always_unused *"), ""),
+    (KernRe(r"__printf\s*\(\s*\d*\s*,\s*\d*\s*\) +"), ""),
+    (KernRe(r"__(?:re)?alloc_size\s*\(\s*\d+\s*(?:,\s*\d+\s*)?\) +"), ""),
+    (KernRe(r"__diagnose_as\s*\(\s*\S+\s*(?:,\s*\d+\s*)*\) +"), ""),
+    (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
+    (KernRe(r"__attribute_const__ +"), ""),
+    (KernRe(r"__attribute__\s*\(\((?:[\w\s]+(?:\([^)]*\))?\s*,?)+\)\)\s+"), ""),
+]
+
+#
+# Ancillary functions
+#
+
+def apply_transforms(xforms, text):
+    """
+    Apply a set of transforms to a block of text.
+    """
+    for search, subst in xforms:
+        text = search.sub(subst, text)
+    return text
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 multi_space = KernRe(r'\s\s+')
 def trim_whitespace(s):
     """
@@ -85,9 +226,21 @@ def trim_private_members(text):
     """
     Remove ``struct``/``enum`` members that have been marked "private".
     """
+<<<<<<< HEAD
 
     tokens = CTokenizer(text)
     return str(tokens)
+=======
+    # First look for a "public:" block that ends a private region, then
+    # handle the "private until the end" case.
+    #
+    text = KernRe(r'/\*\s*private:.*?/\*\s*public:.*?\*/', flags=re.S).sub('', text)
+    text = KernRe(r'/\*\s*private:.*', flags=re.S).sub('', text)
+    #
+    # We needed the comments to do the above, but now we can take them out.
+    #
+    return KernRe(r'\s*/\*.*?\*/\s*', flags=re.S).sub('', text).strip()
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 class state:
     """
@@ -140,7 +293,11 @@ class KernelEntry:
         self.parametertypes = {}
         self.parameterdesc_start_lines = {}
 
+<<<<<<< HEAD
         self.sections_start_lines = {}
+=======
+        self.section_start_lines = {}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         self.sections = {}
 
         self.anon_struct_union = False
@@ -220,7 +377,11 @@ class KernelEntry:
                 self.sections[name] += '\n' + contents
             else:
                 self.sections[name] = contents
+<<<<<<< HEAD
                 self.sections_start_lines[name] = self.new_start_line
+=======
+                self.section_start_lines[name] = self.new_start_line
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 self.new_start_line = 0
 
 #        self.config.log.debug("Section: %s : %s", name, pformat(vars(self)))
@@ -246,15 +407,22 @@ class KernelDoc:
     #: String to write when a parameter is not described.
     undescribed = "-- undescribed --"
 
+<<<<<<< HEAD
     def __init__(self, config, fname, xforms, store_src=False):
+=======
+    def __init__(self, config, fname):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """Initialize internal variables"""
 
         self.fname = fname
         self.config = config
+<<<<<<< HEAD
         self.xforms = xforms
         self.store_src = store_src
 
         tokenizer_set_log(self.config.log, f"{self.fname}: CMatch: ")
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         # Initial state for the state machines
         self.state = state.NORMAL
@@ -317,7 +485,11 @@ class KernelDoc:
         for section in ["Description", "Return"]:
             if section in sections and not sections[section].rstrip():
                 del sections[section]
+<<<<<<< HEAD
         item.set_sections(sections, self.entry.sections_start_lines)
+=======
+        item.set_sections(sections, self.entry.section_start_lines)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         item.set_params(self.entry.parameterlist, self.entry.parameterdescs,
                         self.entry.parametertypes,
                         self.entry.parameterdesc_start_lines)
@@ -439,11 +611,14 @@ class KernelDoc:
             # Ignore argument attributes
             arg = KernRe(r'\sPOS0?\s').sub(' ', arg)
 
+<<<<<<< HEAD
             # Replace '[at_least ' with '[static '.  This allows sphinx to parse
             # array parameter declarations like 'char A[at_least 4]', where
             # 'at_least' is #defined to 'static' by the kernel headers.
             arg = arg.replace('[at_least ', '[static ')
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             # Strip leading/trailing spaces
             arg = arg.strip()
             arg = KernRe(r'\s+').sub(' ', arg, count=1)
@@ -722,15 +897,22 @@ class KernelDoc:
         return declaration
 
 
+<<<<<<< HEAD
     def dump_struct(self, ln, proto, source):
+=======
+    def dump_struct(self, ln, proto):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store an entry for a ``struct`` or ``union``
         """
         #
         # Do the basic parse to get the pieces of the declaration.
         #
+<<<<<<< HEAD
         source = source
         proto = trim_private_members(proto)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         struct_parts = self.split_struct_proto(proto)
         if not struct_parts:
             self.emit_msg(ln, f"{proto} error: Cannot parse struct or union!")
@@ -744,8 +926,17 @@ class KernelDoc:
         #
         # Go through the list of members applying all of our transformations.
         #
+<<<<<<< HEAD
         members = self.xforms.apply("struct", members)
 
+=======
+        members = trim_private_members(members)
+        members = apply_transforms(struct_xforms, members)
+
+        nested = NestedMatch()
+        for search, sub in struct_nested_prefixes:
+            members = nested.sub(search, sub, members)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         #
         # Deal with embedded struct and union members, and drop enums entirely.
         #
@@ -759,11 +950,18 @@ class KernelDoc:
                                    declaration_name)
         self.check_sections(ln, declaration_name, decl_type)
         self.output_declaration(decl_type, declaration_name,
+<<<<<<< HEAD
                                 source=source,
                                 definition=self.format_struct_decl(declaration),
                                 purpose=self.entry.declaration_purpose)
 
     def dump_enum(self, ln, proto, source):
+=======
+                                definition=self.format_struct_decl(declaration),
+                                purpose=self.entry.declaration_purpose)
+
+    def dump_enum(self, ln, proto):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store an ``enum`` inside self.entries array.
         """
@@ -771,8 +969,11 @@ class KernelDoc:
         # Strip preprocessor directives.  Note that this depends on the
         # trailing semicolon we added in process_proto_type().
         #
+<<<<<<< HEAD
         source = source
         proto = trim_private_members(proto)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         proto = KernRe(r'#\s*((define|ifdef|if)\s+|endif)[^;]*;', flags=re.S).sub('', proto)
         #
         # Parse out the name and members of the enum.  Typedef form first.
@@ -780,7 +981,11 @@ class KernelDoc:
         r = KernRe(r'typedef\s+enum\s*\{(.*)\}\s*(\w*)\s*;')
         if r.search(proto):
             declaration_name = r.group(2)
+<<<<<<< HEAD
             members = r.group(1)
+=======
+            members = trim_private_members(r.group(1))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         #
         # Failing that, look for a straight enum
         #
@@ -788,7 +993,11 @@ class KernelDoc:
             r = KernRe(r'enum\s+(\w*)\s*\{(.*)\}')
             if r.match(proto):
                 declaration_name = r.group(1)
+<<<<<<< HEAD
                 members = r.group(2)
+=======
+                members = trim_private_members(r.group(2))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         #
         # OK, this isn't going to work.
         #
@@ -817,10 +1026,16 @@ class KernelDoc:
         member_set = set()
         members = KernRe(r'\([^;)]*\)').sub('', members)
         for arg in members.split(','):
+<<<<<<< HEAD
             arg = KernRe(r'^\s*(\w+).*').sub(r'\1', arg)
             if not arg.strip():
                 continue
 
+=======
+            if not arg:
+                continue
+            arg = KernRe(r'^\s*(\w+).*').sub(r'\1', arg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             self.entry.parameterlist.append(arg)
             if arg not in self.entry.parameterdescs:
                 self.entry.parameterdescs[arg] = self.undescribed
@@ -836,23 +1051,46 @@ class KernelDoc:
                               f"Excess enum value '@{k}' description in '{declaration_name}'")
 
         self.output_declaration('enum', declaration_name,
+<<<<<<< HEAD
                                 source=source,
                                 purpose=self.entry.declaration_purpose)
 
     def dump_var(self, ln, proto, source):
+=======
+                                purpose=self.entry.declaration_purpose)
+
+    def dump_var(self, ln, proto):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store variables that are part of kAPI.
         """
         VAR_ATTRIBS = [
             "extern",
+<<<<<<< HEAD
             "const",
         ]
         OPTIONAL_VAR_ATTR = r"^(?:\b(?:" +"|".join(VAR_ATTRIBS) +r")\b\s*)*"
+=======
+        ]
+        OPTIONAL_VAR_ATTR = "^(?:" + "|".join(VAR_ATTRIBS) + ")?"
+
+        sub_prefixes = [
+            (KernRe(r"__read_mostly"), ""),
+            (KernRe(r"__ro_after_init"), ""),
+            (KernRe(r"(?://.*)$"), ""),
+            (KernRe(r"(?:/\*.*\*/)"), ""),
+            (KernRe(r";$"), ""),
+            (KernRe(r"=.*"), ""),
+        ]
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         #
         # Store the full prototype before modifying it
         #
+<<<<<<< HEAD
         source = source
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         full_proto = proto
         declaration_name = None
 
@@ -873,7 +1111,12 @@ class KernelDoc:
         # Drop comments and macros to have a pure C prototype
         #
         if not declaration_name:
+<<<<<<< HEAD
             proto = self.xforms.apply("var", proto)
+=======
+            for r, sub in sub_prefixes:
+                proto = r.sub(sub, proto)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         proto = proto.rstrip()
 
@@ -883,17 +1126,28 @@ class KernelDoc:
 
         default_val = None
 
+<<<<<<< HEAD
         r= KernRe(OPTIONAL_VAR_ATTR + r"\s*[\w_\s]*\s+(?:\*+)?([\w_]+)\s*[\d\]\[]*\s*(=.*)?")
+=======
+        r= KernRe(OPTIONAL_VAR_ATTR + r"\w.*\s+(?:\*+)?([\w_]+)\s*[\d\]\[]*\s*(=.*)?")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         if r.match(proto):
             if not declaration_name:
                 declaration_name = r.group(1)
 
             default_val = r.group(2)
         else:
+<<<<<<< HEAD
             r= KernRe(OPTIONAL_VAR_ATTR + r"(?:[\w_\s]*)?\s+(?:\*+)?(?:[\w_]+)\s*[\d\]\[]*\s*(=.*)?")
 
             if r.match(proto):
                 default_val = r.group(1)
+=======
+            r= KernRe(OPTIONAL_VAR_ATTR + r"(?:\w.*)?\s+(?:\*+)?(?:[\w_]+)\s*[\d\]\[]*\s*(=.*)?")
+        if r.match(proto):
+            default_val = r.group(1)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         if not declaration_name:
            self.emit_msg(ln,f"{proto}: can't parse variable")
            return
@@ -902,17 +1156,25 @@ class KernelDoc:
             default_val = default_val.lstrip("=").strip()
 
         self.output_declaration("var", declaration_name,
+<<<<<<< HEAD
                                 source=source,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                 full_proto=full_proto,
                                 default_val=default_val,
                                 purpose=self.entry.declaration_purpose)
 
+<<<<<<< HEAD
     def dump_declaration(self, ln, prototype, source):
+=======
+    def dump_declaration(self, ln, prototype):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store a data declaration inside self.entries array.
         """
 
         if self.entry.decl_type == "enum":
+<<<<<<< HEAD
             self.dump_enum(ln, prototype, source)
         elif self.entry.decl_type == "typedef":
             self.dump_typedef(ln, prototype, source)
@@ -920,20 +1182,43 @@ class KernelDoc:
             self.dump_struct(ln, prototype, source)
         elif self.entry.decl_type == "var":
             self.dump_var(ln, prototype, source)
+=======
+            self.dump_enum(ln, prototype)
+        elif self.entry.decl_type == "typedef":
+            self.dump_typedef(ln, prototype)
+        elif self.entry.decl_type in ["union", "struct"]:
+            self.dump_struct(ln, prototype)
+        elif self.entry.decl_type == "var":
+            self.dump_var(ln, prototype)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         else:
             # This would be a bug
             self.emit_message(ln, f'Unknown declaration type: {self.entry.decl_type}')
 
+<<<<<<< HEAD
     def dump_function(self, ln, prototype, source):
+=======
+    def dump_function(self, ln, prototype):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store a function or function macro inside self.entries array.
         """
 
+<<<<<<< HEAD
         source = source
         found = func_macro = False
         return_type = ''
         decl_type = 'function'
 
+=======
+        found = func_macro = False
+        return_type = ''
+        decl_type = 'function'
+        #
+        # Apply the initial transformations.
+        #
+        prototype = apply_transforms(function_xforms, prototype)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         #
         # If we have a macro, remove the "#define" at the front.
         #
@@ -952,11 +1237,14 @@ class KernelDoc:
                 declaration_name = r.group(1)
                 func_macro = True
                 found = True
+<<<<<<< HEAD
         else:
             #
             # Apply the initial transformations.
             #
             prototype = self.xforms.apply("func", prototype)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         # Yes, this truly is vile.  We are looking for:
         # 1. Return type (may be nothing if we're looking at a macro)
@@ -1022,14 +1310,21 @@ class KernelDoc:
         # Store the result.
         #
         self.output_declaration(decl_type, declaration_name,
+<<<<<<< HEAD
                                 source=source,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                 typedef=('typedef' in return_type),
                                 functiontype=return_type,
                                 purpose=self.entry.declaration_purpose,
                                 func_macro=func_macro)
 
 
+<<<<<<< HEAD
     def dump_typedef(self, ln, proto, source):
+=======
+    def dump_typedef(self, ln, proto):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Store a ``typedef`` inside self.entries array.
         """
@@ -1040,8 +1335,11 @@ class KernelDoc:
         typedef_ident = r'\*?\s*(\w\S+)\s*'
         typedef_args = r'\s*\((.*)\);'
 
+<<<<<<< HEAD
         source = source
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         typedef1 = KernRe(typedef_type + r'\(' + typedef_ident + r'\)' + typedef_args)
         typedef2 = KernRe(typedef_type + typedef_ident + typedef_args)
 
@@ -1062,7 +1360,10 @@ class KernelDoc:
             self.create_parameter_list(ln, 'function', args, ',', declaration_name)
 
             self.output_declaration('function', declaration_name,
+<<<<<<< HEAD
                                     source=source,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                     typedef=True,
                                     functiontype=return_type,
                                     purpose=self.entry.declaration_purpose)
@@ -1080,7 +1381,10 @@ class KernelDoc:
                 return
 
             self.output_declaration('typedef', declaration_name,
+<<<<<<< HEAD
                                     source=source,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                                     purpose=self.entry.declaration_purpose)
             return
 
@@ -1118,7 +1422,11 @@ class KernelDoc:
         function_set.add(symbol)
         return True
 
+<<<<<<< HEAD
     def process_normal(self, ln, line, source):
+=======
+    def process_normal(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         STATE_NORMAL: looking for the ``/**`` to begin everything.
         """
@@ -1132,7 +1440,11 @@ class KernelDoc:
         # next line is always the function name
         self.state = state.NAME
 
+<<<<<<< HEAD
     def process_name(self, ln, line, source):
+=======
+    def process_name(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         STATE_NAME: Looking for the "name - description" line
         """
@@ -1265,7 +1577,11 @@ class KernelDoc:
         return False
 
 
+<<<<<<< HEAD
     def process_decl(self, ln, line, source):
+=======
+    def process_decl(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         STATE_DECLARATION: We've seen the beginning of a declaration.
         """
@@ -1294,7 +1610,11 @@ class KernelDoc:
             self.emit_msg(ln, f"bad line: {line}")
 
 
+<<<<<<< HEAD
     def process_special(self, ln, line, source):
+=======
+    def process_special(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         STATE_SPECIAL_SECTION: a section ending with a blank line.
         """
@@ -1345,7 +1665,11 @@ class KernelDoc:
             # Unknown line, ignore
             self.emit_msg(ln, f"bad line: {line}")
 
+<<<<<<< HEAD
     def process_body(self, ln, line, source):
+=======
+    def process_body(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         STATE_BODY: the bulk of a kerneldoc comment.
         """
@@ -1359,7 +1683,11 @@ class KernelDoc:
             # Unknown line, ignore
             self.emit_msg(ln, f"bad line: {line}")
 
+<<<<<<< HEAD
     def process_inline_name(self, ln, line, source):
+=======
+    def process_inline_name(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """STATE_INLINE_NAME: beginning of docbook comments within a prototype."""
 
         if doc_inline_sect.search(line):
@@ -1372,6 +1700,7 @@ class KernelDoc:
         elif doc_content.search(line):
             self.emit_msg(ln, f"Incorrect use of kernel-doc format: {line}")
             self.state = state.PROTO
+<<<<<<< HEAD
 
             #
             # Don't let it add partial comments at the code, as breaks the
@@ -1381,6 +1710,11 @@ class KernelDoc:
         # else ... ??
 
     def process_inline_text(self, ln, line, source):
+=======
+        # else ... ??
+
+    def process_inline_text(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """STATE_INLINE_TEXT: docbook comments within a prototype."""
 
         if doc_inline_end.search(line):
@@ -1466,7 +1800,11 @@ class KernelDoc:
 
         return proto
 
+<<<<<<< HEAD
     def process_proto_function(self, ln, line, source):
+=======
+    def process_proto_function(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """Ancillary routine to process a function prototype."""
 
         # strip C99-style comments to end of line
@@ -1508,10 +1846,17 @@ class KernelDoc:
             #
             # ... and we're done
             #
+<<<<<<< HEAD
             self.dump_function(ln, self.entry.prototype, source)
             self.reset_state(ln)
 
     def process_proto_type(self, ln, line, source):
+=======
+            self.dump_function(ln, self.entry.prototype)
+            self.reset_state(ln)
+
+    def process_proto_type(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """
         Ancillary routine to process a type.
         """
@@ -1541,7 +1886,11 @@ class KernelDoc:
                 elif chunk == '}':
                     self.entry.brcount -= 1
                 elif chunk == ';' and self.entry.brcount <= 0:
+<<<<<<< HEAD
                     self.dump_declaration(ln, self.entry.prototype, source)
+=======
+                    self.dump_declaration(ln, self.entry.prototype)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     self.reset_state(ln)
                     return
         #
@@ -1550,7 +1899,11 @@ class KernelDoc:
         #
         self.entry.prototype += ' '
 
+<<<<<<< HEAD
     def process_proto(self, ln, line, source):
+=======
+    def process_proto(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """STATE_PROTO: reading a function/whatever prototype."""
 
         if doc_inline_oneline.search(line):
@@ -1562,18 +1915,31 @@ class KernelDoc:
             self.state = state.INLINE_NAME
 
         elif self.entry.decl_type == 'function':
+<<<<<<< HEAD
             self.process_proto_function(ln, line, source)
 
         else:
             self.process_proto_type(ln, line, source)
 
     def process_docblock(self, ln, line, source):
+=======
+            self.process_proto_function(ln, line)
+
+        else:
+            self.process_proto_type(ln, line)
+
+    def process_docblock(self, ln, line):
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
         """STATE_DOCBLOCK: within a ``DOC:`` block."""
 
         if doc_end.search(line):
             self.dump_section()
+<<<<<<< HEAD
             self.output_declaration("doc", self.entry.identifier,
                                     source=source)
+=======
+            self.output_declaration("doc", self.entry.identifier)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             self.reset_state(ln)
 
         elif doc_content.search(line):
@@ -1624,8 +1990,11 @@ class KernelDoc:
         prev = ""
         prev_ln = None
         export_table = set()
+<<<<<<< HEAD
         self.state = state.NORMAL
         source = ""
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
         try:
             with open(self.fname, "r", encoding="utf8",
@@ -1652,12 +2021,15 @@ class KernelDoc:
                                           ln, state.name[self.state],
                                           line)
 
+<<<<<<< HEAD
                     if self.store_src:
                         if source and self.state == state.NORMAL:
                             source = ""
                         elif self.state != state.NORMAL:
                             source += line + "\n"
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                     # This is an optimization over the original script.
                     # There, when export_file was used for the same file,
                     # it was read twice. Here, we use the already-existing
@@ -1665,11 +2037,16 @@ class KernelDoc:
                     #
                     if (self.state != state.NORMAL) or \
                        not self.process_export(export_table, line):
+<<<<<<< HEAD
                         prev_state = self.state
                         # Hand this line to the appropriate state handler
                         self.state_actions[self.state](self, ln, line, source)
                         if prev_state == state.NORMAL and self.state != state.NORMAL:
                             source += line + "\n"
+=======
+                        # Hand this line to the appropriate state handler
+                        self.state_actions[self.state](self, ln, line)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             self.emit_unused_warnings()
 

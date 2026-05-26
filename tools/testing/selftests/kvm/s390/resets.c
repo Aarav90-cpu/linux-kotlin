@@ -20,7 +20,11 @@
 
 struct kvm_s390_irq buf[ARBITRARY_NON_ZERO_VCPU_ID + LOCAL_IRQS];
 
+<<<<<<< HEAD
 static u8 regs_null[512];
+=======
+static uint8_t regs_null[512];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static void guest_code_initial(void)
 {
@@ -57,9 +61,15 @@ static void guest_code_initial(void)
 		);
 }
 
+<<<<<<< HEAD
 static void test_one_reg(struct kvm_vcpu *vcpu, u64 id, u64 value)
 {
 	u64 eval_reg;
+=======
+static void test_one_reg(struct kvm_vcpu *vcpu, uint64_t id, uint64_t value)
+{
+	uint64_t eval_reg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	eval_reg = vcpu_get_reg(vcpu, id);
 	TEST_ASSERT(eval_reg == value, "value == 0x%lx", value);

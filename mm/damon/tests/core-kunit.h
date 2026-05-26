@@ -693,7 +693,10 @@ static void damos_test_commit_quota(struct kunit *test)
 		.reset_interval = 1,
 		.ms = 2,
 		.sz = 3,
+<<<<<<< HEAD
 		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_CONSIST,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.weight_sz = 4,
 		.weight_nr_accesses = 5,
 		.weight_age = 6,
@@ -702,7 +705,10 @@ static void damos_test_commit_quota(struct kunit *test)
 		.reset_interval = 7,
 		.ms = 8,
 		.sz = 9,
+<<<<<<< HEAD
 		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.weight_sz = 10,
 		.weight_nr_accesses = 11,
 		.weight_age = 12,
@@ -716,7 +722,10 @@ static void damos_test_commit_quota(struct kunit *test)
 	KUNIT_EXPECT_EQ(test, dst.reset_interval, src.reset_interval);
 	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
 	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
+<<<<<<< HEAD
 	KUNIT_EXPECT_EQ(test, dst.goal_tuner, src.goal_tuner);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
 	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
 	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
@@ -1060,6 +1069,7 @@ static void damon_test_commit_target_regions(struct kunit *test)
 			(unsigned long[][2]) {{3, 8}, {8, 10}}, 2);
 }
 
+<<<<<<< HEAD
 static void damon_test_commit_ctx(struct kunit *test)
 {
 	struct damon_ctx *src, *dst;
@@ -1081,6 +1091,8 @@ static void damon_test_commit_ctx(struct kunit *test)
 	damon_destroy_ctx(dst);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void damos_test_filter_out(struct kunit *test)
 {
 	struct damon_target *t;
@@ -1263,6 +1275,7 @@ static void damon_test_set_filters_default_reject(struct kunit *test)
 	damos_free_filter(target_filter);
 }
 
+<<<<<<< HEAD
 static void damon_test_apply_min_nr_regions_for(struct kunit *test,
 		unsigned long sz_regions, unsigned long min_region_sz,
 		unsigned long min_nr_regions,
@@ -1336,6 +1349,8 @@ static void damon_test_is_last_region(struct kunit *test)
 	damon_free_target(t);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case damon_test_cases[] = {
 	KUNIT_CASE(damon_test_target),
 	KUNIT_CASE(damon_test_regions),
@@ -1359,12 +1374,18 @@ static struct kunit_case damon_test_cases[] = {
 	KUNIT_CASE(damos_test_commit_pageout),
 	KUNIT_CASE(damos_test_commit_migrate_hot),
 	KUNIT_CASE(damon_test_commit_target_regions),
+<<<<<<< HEAD
 	KUNIT_CASE(damon_test_commit_ctx),
 	KUNIT_CASE(damos_test_filter_out),
 	KUNIT_CASE(damon_test_feed_loop_next_input),
 	KUNIT_CASE(damon_test_set_filters_default_reject),
 	KUNIT_CASE(damon_test_apply_min_nr_regions),
 	KUNIT_CASE(damon_test_is_last_region),
+=======
+	KUNIT_CASE(damos_test_filter_out),
+	KUNIT_CASE(damon_test_feed_loop_next_input),
+	KUNIT_CASE(damon_test_set_filters_default_reject),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{},
 };
 

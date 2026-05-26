@@ -68,6 +68,7 @@ struct xe_pagefault {
 		/** @consumer.asid: address space ID */
 		u32 asid;
 		/**
+<<<<<<< HEAD
 		 * @consumer.access_type: access type and prefetch flag packed
 		 * into a u8.
 		 */
@@ -82,12 +83,30 @@ struct xe_pagefault {
 #define XE_PAGEFAULT_TYPE_LEVEL_NACK		0xff	/* Producer indicates nack fault */
 #define XE_PAGEFAULT_LEVEL_MASK			GENMASK(3, 0)
 #define XE_PAGEFAULT_TYPE_MASK			GENMASK(7, 4)
+=======
+		 * @consumer.access_type: access type, u8 rather than enum to
+		 * keep size compact
+		 */
+		u8 access_type;
+		/**
+		 * @consumer.fault_type: fault type, u8 rather than enum to
+		 * keep size compact
+		 */
+		u8 fault_type;
+#define XE_PAGEFAULT_LEVEL_NACK		0xff	/* Producer indicates nack fault */
+		/** @consumer.fault_level: fault level */
+		u8 fault_level;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/** @consumer.engine_class: engine class */
 		u8 engine_class;
 		/** @consumer.engine_instance: engine instance */
 		u8 engine_instance;
 		/** consumer.reserved: reserved bits for future expansion */
+<<<<<<< HEAD
 		u64 reserved;
+=======
+		u8 reserved[7];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} consumer;
 	/**
 	 * @producer: State for the producer (i.e., HW/FW interface). Populated

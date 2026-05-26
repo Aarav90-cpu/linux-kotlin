@@ -24,9 +24,12 @@ properties:
     maxItems: 1
     description: Identifier for the voltage regulator to ChromeOS EC.
 
+<<<<<<< HEAD
   vin-supply:
     description: Input supply phandle
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 required:
   - compatible
   - reg
@@ -51,7 +54,10 @@ examples:
                 regulator-min-microvolt = <1800000>;
                 regulator-max-microvolt = <3300000>;
                 reg = <0>;
+<<<<<<< HEAD
                 vin-supply = <&pp4200_s5>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
             };
         };
     };

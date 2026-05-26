@@ -218,7 +218,11 @@ enum surface_pixel_format {
 
 
 /* Pixel format */
+<<<<<<< HEAD
 enum dc_pixel_format {
+=======
+enum pixel_format {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*graph*/
 	PIXEL_FORMAT_UNINITIALIZED,
 	PIXEL_FORMAT_INDEX8,
@@ -271,6 +275,7 @@ enum tile_split_values_new {
 	DC_SURF_TILE_SPLIT_1KB = 0x4,
 };
 
+<<<<<<< HEAD
 enum otg_pwa_sync_mode {
 	DC_OTG_PWA_FRAME_SYNC_MODE_VSYNC = 0x0,
 	DC_OTG_PWA_FRAME_SYNC_MODE_VSTARTUP = 0x1,
@@ -280,6 +285,8 @@ struct otc_pwa_frame_sync {
 	uint32_t pwa_frame_sync_line_offset;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* TODO: These values come from hardware spec. We need to readdress this
  * if they ever change.
  */
@@ -445,10 +452,13 @@ enum dc_gfxversion {
 			enum swizzle_mode_addr3_values swizzle;
 		} gfx_addr3;/*gfx with addr3 and above*/
 	};
+<<<<<<< HEAD
 
 	struct {
 		bool avoid_full_update_on_tiling_change;
 	} flags;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Rotation angle */
@@ -1150,7 +1160,10 @@ struct mcif_buf_params {
 	unsigned int		warmup_pitch;
 	unsigned int		swlock;
 	unsigned int		p_vmid;
+<<<<<<< HEAD
 	uint8_t				tmz_id;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 
@@ -1176,6 +1189,7 @@ struct phy_state {
 	enum symclk_state symclk_state;
 };
 
+<<<<<<< HEAD
 enum cm_hist_tap_point {
 	CM_HIST_TAP_POINT_1,
 	CM_HIST_TAP_POINT_2,
@@ -1239,5 +1253,7 @@ struct cm_hist {
 	uint32_t ch2[256];
 	uint32_t ch3[256];
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* DC_HW_TYPES_H */
 

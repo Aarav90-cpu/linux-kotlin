@@ -14,7 +14,10 @@
 
 #define REG_MEMC_CNTRLR_CONFIG		0x00
 #define  CNTRLR_CONFIG_LPDDR4_SHIFT	5
+<<<<<<< HEAD
 #define  CNTRLR_CONFIG_LPDDR5_SHIFT	6
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define  CNTRLR_CONFIG_MASK		0xf
 #define REG_MEMC_SRPD_CFG_21		0x20
 #define REG_MEMC_SRPD_CFG_20		0x34
@@ -35,15 +38,23 @@ struct brcmstb_memc {
 	u32 srpd_offset;
 };
 
+<<<<<<< HEAD
 static int brcmstb_memc_uses_lpddr45(struct brcmstb_memc *memc)
+=======
+static int brcmstb_memc_uses_lpddr4(struct brcmstb_memc *memc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	void __iomem *config = memc->ddr_ctrl + REG_MEMC_CNTRLR_CONFIG;
 	u32 reg;
 
 	reg = readl_relaxed(config) & CNTRLR_CONFIG_MASK;
 
+<<<<<<< HEAD
 	return reg == CNTRLR_CONFIG_LPDDR4_SHIFT ||
 	       reg == CNTRLR_CONFIG_LPDDR5_SHIFT;
+=======
+	return reg == CNTRLR_CONFIG_LPDDR4_SHIFT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int brcmstb_memc_srpd_config(struct brcmstb_memc *memc,
@@ -97,7 +108,11 @@ static ssize_t srpd_store(struct device *dev, struct device_attribute *attr,
 	 * dynamic tuning process will also get affected by the inactivity
 	 * timeout, thus making it non functional.
 	 */
+<<<<<<< HEAD
 	if (brcmstb_memc_uses_lpddr45(memc))
+=======
+	if (brcmstb_memc_uses_lpddr4(memc))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EOPNOTSUPP;
 
 	ret = kstrtouint(buf, 10, &val);

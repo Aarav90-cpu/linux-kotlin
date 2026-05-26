@@ -13,10 +13,17 @@
  * @list: this DPLL list entry
  * @dev: pointer to multi-function parent device
  * @id: DPLL index
+<<<<<<< HEAD
  * @check_count: periodic check counter
  * @phase_monitor: is phase offset monitor enabled
  * @freq_monitor: is frequency monitor enabled
  * @ops: DPLL device operations for this instance
+=======
+ * @refsel_mode: reference selection mode
+ * @forced_ref: selected reference in forced reference lock mode
+ * @check_count: periodic check counter
+ * @phase_monitor: is phase offset monitor enabled
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @dpll_dev: pointer to registered DPLL device
  * @tracker: tracking object for the acquired reference
  * @lock_status: last saved DPLL lock status
@@ -27,10 +34,17 @@ struct zl3073x_dpll {
 	struct list_head		list;
 	struct zl3073x_dev		*dev;
 	u8				id;
+<<<<<<< HEAD
 	u8				check_count;
 	bool				phase_monitor;
 	bool				freq_monitor;
 	struct dpll_device_ops		ops;
+=======
+	u8				refsel_mode;
+	u8				forced_ref;
+	u8				check_count;
+	bool				phase_monitor;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct dpll_device		*dpll_dev;
 	dpll_tracker			tracker;
 	enum dpll_lock_status		lock_status;

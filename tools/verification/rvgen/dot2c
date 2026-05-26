@@ -16,6 +16,10 @@
 if __name__ == '__main__':
     from rvgen import dot2c
     import argparse
+<<<<<<< HEAD
+=======
+    import sys
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
     parser = argparse.ArgumentParser(description='dot2c: converts a .dot file into a C structure')
     parser.add_argument('dot_file',  help='The dot file to be converted')

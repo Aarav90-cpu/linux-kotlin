@@ -1280,7 +1280,11 @@ static int ip6mr_device_event(struct notifier_block *this,
 
 static unsigned int ip6mr_seq_read(const struct net *net)
 {
+<<<<<<< HEAD
 	return atomic_read(&net->ipv6.ipmr_seq) + ip6mr_rules_seq_read(net);
+=======
+	return READ_ONCE(net->ipv6.ipmr_seq) + ip6mr_rules_seq_read(net);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ip6mr_dump(struct net *net, struct notifier_block *nb,
@@ -1305,7 +1309,11 @@ static int __net_init ip6mr_notifier_init(struct net *net)
 {
 	struct fib_notifier_ops *ops;
 
+<<<<<<< HEAD
 	atomic_set(&net->ipv6.ipmr_seq, 0);
+=======
+	net->ipv6.ipmr_seq = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ops = fib_notifier_ops_register(&ip6mr_notifier_ops_template, net);
 	if (IS_ERR(ops))

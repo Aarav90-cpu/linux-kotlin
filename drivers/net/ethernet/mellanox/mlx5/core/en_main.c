@@ -369,6 +369,7 @@ static int mlx5e_rq_alloc_mpwqe_info(struct mlx5e_rq *rq, int node)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mlx5e_rq_alloc_mpwqe_linear_info(struct mlx5e_rq *rq, int node,
 					    struct mlx5e_params *params,
 					    struct mlx5e_rq_opt_param *rqo)
@@ -404,6 +405,8 @@ static int mlx5e_rq_alloc_mpwqe_linear_info(struct mlx5e_rq *rq, int node,
 
 	return 0;
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static u8 mlx5e_mpwrq_access_mode(enum mlx5e_mpwrq_umr_mode umr_mode)
 {
@@ -671,18 +674,28 @@ static void mlx5e_rq_timeout_work(struct work_struct *timeout_work)
 
 static int mlx5e_alloc_mpwqe_rq_drop_page(struct mlx5e_rq *rq)
 {
+<<<<<<< HEAD
 	/* xsk can have page_shift < PAGE_SHIFT */
 	u16 page_order = max_t(s16, rq->mpwqe.page_shift - PAGE_SHIFT, 0);
 	u32 page_size = BIT(PAGE_SHIFT + page_order);
 
 	rq->wqe_overflow.page = alloc_pages(GFP_KERNEL, page_order);
+=======
+	rq->wqe_overflow.page = alloc_page(GFP_KERNEL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rq->wqe_overflow.page)
 		return -ENOMEM;
 
 	rq->wqe_overflow.addr = dma_map_page(rq->pdev, rq->wqe_overflow.page, 0,
+<<<<<<< HEAD
 					     page_size, rq->buff.map_dir);
 	if (dma_mapping_error(rq->pdev, rq->wqe_overflow.addr)) {
 		__free_pages(rq->wqe_overflow.page, page_order);
+=======
+					     PAGE_SIZE, rq->buff.map_dir);
+	if (dma_mapping_error(rq->pdev, rq->wqe_overflow.addr)) {
+		__free_page(rq->wqe_overflow.page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -ENOMEM;
 	}
 	return 0;
@@ -690,12 +703,18 @@ static int mlx5e_alloc_mpwqe_rq_drop_page(struct mlx5e_rq *rq)
 
 static void mlx5e_free_mpwqe_rq_drop_page(struct mlx5e_rq *rq)
 {
+<<<<<<< HEAD
 	u16 page_order = max_t(s16, rq->mpwqe.page_shift - PAGE_SHIFT, 0);
 	u32 page_size = BIT(PAGE_SHIFT + page_order);
 
 	dma_unmap_page(rq->pdev, rq->wqe_overflow.addr, page_size,
 		       rq->buff.map_dir);
 	 __free_pages(rq->wqe_overflow.page, page_order);
+=======
+	 dma_unmap_page(rq->pdev, rq->wqe_overflow.addr, PAGE_SIZE,
+			rq->buff.map_dir);
+	 __free_page(rq->wqe_overflow.page);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mlx5e_init_rxq_rq(struct mlx5e_channel *c, struct mlx5e_params *params,
@@ -822,7 +841,11 @@ static int mlx5e_create_rq_hd_mkey(struct mlx5_core_dev *mdev,
 
 static int mlx5_rq_shampo_alloc(struct mlx5_core_dev *mdev,
 				struct mlx5e_params *params,
+<<<<<<< HEAD
 				struct mlx5e_rq_param *rq_param,
+=======
+				struct mlx5e_rq_param *rqp,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				struct mlx5e_rq *rq,
 				int node)
 {
@@ -833,7 +856,11 @@ static int mlx5_rq_shampo_alloc(struct mlx5_core_dev *mdev,
 	if (!test_bit(MLX5E_RQ_STATE_SHAMPO, &rq->state))
 		return 0;
 
+<<<<<<< HEAD
 	hd_per_wq = mlx5e_shampo_hd_per_wq(mdev, params, rq_param);
+=======
+	hd_per_wq = mlx5e_shampo_hd_per_wq(mdev, params, rqp);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hd_buf_size = hd_per_wq * BIT(MLX5E_SHAMPO_LOG_HEADER_ENTRY_SIZE);
 	nentries = hd_buf_size / PAGE_SIZE;
 	if (!nentries) {
@@ -893,6 +920,7 @@ static void mlx5e_rq_free_shampo(struct mlx5e_rq *rq)
 }
 
 static int mlx5e_alloc_rq(struct mlx5e_params *params,
+<<<<<<< HEAD
 			  struct mlx5e_rq_param *rq_param,
 			  struct mlx5e_rq_opt_param *rqo,
 			  int node, struct mlx5e_rq *rq)
@@ -900,12 +928,25 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 	void *rqc_wq = MLX5_ADDR_OF(rqc, rq_param->rqc, wq);
 	struct mlx5_core_dev *mdev = rq->mdev;
 	u32 pool_order = 0;
+=======
+			  struct mlx5e_xsk_param *xsk,
+			  struct mlx5e_rq_param *rqp,
+			  int node, struct mlx5e_rq *rq)
+{
+	struct mlx5_core_dev *mdev = rq->mdev;
+	void *rqc = rqp->rqc;
+	void *rqc_wq = MLX5_ADDR_OF(rqc, rqc, wq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 pool_size;
 	int wq_sz;
 	int err;
 	int i;
 
+<<<<<<< HEAD
 	rq_param->wq.db_numa_node = node;
+=======
+	rqp->wq.db_numa_node = node;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	INIT_WORK(&rq->recover_work, mlx5e_rq_err_cqe_work);
 	INIT_WORK(&rq->rx_timeout_work, mlx5e_rq_timeout_work);
 
@@ -914,28 +955,49 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 	RCU_INIT_POINTER(rq->xdp_prog, params->xdp_prog);
 
 	rq->buff.map_dir = params->xdp_prog ? DMA_BIDIRECTIONAL : DMA_FROM_DEVICE;
+<<<<<<< HEAD
 	rq->buff.headroom = mlx5e_get_rq_headroom(mdev, params, rqo);
+=======
+	rq->buff.headroom = mlx5e_get_rq_headroom(mdev, params, xsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pool_size = 1 << params->log_rq_mtu_frames;
 
 	rq->mkey_be = cpu_to_be32(mdev->mlx5e_res.hw_objs.mkey);
 
 	switch (rq->wq_type) {
 	case MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ:
+<<<<<<< HEAD
 		err = mlx5_wq_ll_create(mdev, &rq_param->wq, rqc_wq,
 					&rq->mpwqe.wq, &rq->wq_ctrl);
 		if (err)
 			goto err_rq_xdp_prog;
 
+=======
+		err = mlx5_wq_ll_create(mdev, &rqp->wq, rqc_wq, &rq->mpwqe.wq,
+					&rq->wq_ctrl);
+		if (err)
+			goto err_rq_xdp_prog;
+
+		err = mlx5e_alloc_mpwqe_rq_drop_page(rq);
+		if (err)
+			goto err_rq_wq_destroy;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->mpwqe.wq.db = &rq->mpwqe.wq.db[MLX5_RCV_DBR];
 
 		wq_sz = mlx5_wq_ll_get_size(&rq->mpwqe.wq);
 
+<<<<<<< HEAD
 		rq->mpwqe.page_shift = mlx5e_mpwrq_page_shift(mdev, rqo);
 		err = mlx5e_alloc_mpwqe_rq_drop_page(rq);
 		if (err)
 			goto err_rq_wq_destroy;
 
 		rq->mpwqe.umr_mode = mlx5e_mpwrq_umr_mode(mdev, rqo);
+=======
+		rq->mpwqe.page_shift = mlx5e_mpwrq_page_shift(mdev, xsk);
+		rq->mpwqe.umr_mode = mlx5e_mpwrq_umr_mode(mdev, xsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->mpwqe.pages_per_wqe =
 			mlx5e_mpwrq_pages_per_wqe(mdev, rq->mpwqe.page_shift,
 						  rq->mpwqe.umr_mode);
@@ -947,6 +1009,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 						 rq->mpwqe.umr_mode);
 
 		pool_size = rq->mpwqe.pages_per_wqe <<
+<<<<<<< HEAD
 			mlx5e_mpwqe_get_log_rq_size(mdev, params, rqo);
 		pool_order = rq->mpwqe.page_shift - PAGE_SHIFT;
 
@@ -955,6 +1018,16 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 								rqo);
 		rq->mpwqe.num_strides =
 			BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, rqo));
+=======
+			mlx5e_mpwqe_get_log_rq_size(mdev, params, xsk);
+
+		if (!mlx5e_rx_mpwqe_is_linear_skb(mdev, params, xsk) && params->xdp_prog)
+			pool_size *= 2; /* additional page per packet for the linear part */
+
+		rq->mpwqe.log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, xsk);
+		rq->mpwqe.num_strides =
+			BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, xsk));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->mpwqe.min_wqe_bulk = mlx5e_mpwqe_get_min_wqe_bulk(wq_sz);
 
 		rq->buff.frame0_sz = (1 << rq->mpwqe.log_stride_sz);
@@ -967,6 +1040,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 		if (err)
 			goto err_rq_mkey;
 
+<<<<<<< HEAD
 		err = mlx5e_rq_alloc_mpwqe_linear_info(rq, node, params, rqo);
 		if (err)
 			goto err_free_mpwqe_info;
@@ -979,6 +1053,16 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 	default: /* MLX5_WQ_TYPE_CYCLIC */
 		err = mlx5_wq_cyc_create(mdev, &rq_param->wq, rqc_wq,
 					 &rq->wqe.wq, &rq->wq_ctrl);
+=======
+		err = mlx5_rq_shampo_alloc(mdev, params, rqp, rq, node);
+		if (err)
+			goto err_free_mpwqe_info;
+
+		break;
+	default: /* MLX5_WQ_TYPE_CYCLIC */
+		err = mlx5_wq_cyc_create(mdev, &rqp->wq, rqc_wq, &rq->wqe.wq,
+					 &rq->wq_ctrl);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			goto err_rq_xdp_prog;
 
@@ -986,7 +1070,11 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 
 		wq_sz = mlx5_wq_cyc_get_size(&rq->wqe.wq);
 
+<<<<<<< HEAD
 		rq->wqe.info = rq_param->frags_info;
+=======
+		rq->wqe.info = rqp->frags_info;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		rq->buff.frame0_sz = rq->wqe.info.arr[0].frag_stride;
 
 		err = mlx5e_init_wqe_alloc_info(rq, node);
@@ -994,7 +1082,11 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 			goto err_rq_wq_destroy;
 	}
 
+<<<<<<< HEAD
 	if (mlx5e_rqo_xsk_param(rqo)) {
+=======
+	if (xsk) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = xdp_rxq_info_reg_mem_model(&rq->xdp_rxq,
 						 MEM_TYPE_XSK_BUFF_POOL, NULL);
 		if (err)
@@ -1004,6 +1096,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 		/* Create a page_pool and register it with rxq */
 		struct page_pool_params pp_params = { 0 };
 
+<<<<<<< HEAD
 		if (WARN_ON(BIT(PAGE_SHIFT + pool_order) / 64 >
 			    MLX5E_PAGECNT_BIAS_MAX)) {
 			err = -E2BIG;
@@ -1011,6 +1104,9 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 		}
 
 		pp_params.order     = pool_order;
+=======
+		pp_params.order     = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
 		pp_params.pool_size = pool_size;
 		pp_params.nid       = node;
@@ -1018,7 +1114,11 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
 		pp_params.napi      = rq->cq.napi;
 		pp_params.netdev    = rq->netdev;
 		pp_params.dma_dir   = rq->buff.map_dir;
+<<<<<<< HEAD
 		pp_params.max_len   = BIT(PAGE_SHIFT + pool_order);
+=======
+		pp_params.max_len   = PAGE_SIZE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pp_params.queue_idx = rq->ix;
 
 		/* Shampo header data split allow for unreadable netmem */
@@ -1089,8 +1189,11 @@ err_free_by_rq_type:
 	switch (rq->wq_type) {
 	case MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ:
 		mlx5e_rq_free_shampo(rq);
+<<<<<<< HEAD
 err_free_mpwqe_linear_info:
 		kvfree(rq->mpwqe.linear_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_free_mpwqe_info:
 		kvfree(rq->mpwqe.info);
 err_rq_mkey:
@@ -1118,7 +1221,10 @@ static void mlx5e_free_rq(struct mlx5e_rq *rq)
 	switch (rq->wq_type) {
 	case MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ:
 		mlx5e_rq_free_shampo(rq);
+<<<<<<< HEAD
 		kvfree(rq->mpwqe.linear_info);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		kvfree(rq->mpwqe.info);
 		mlx5_core_destroy_mkey(rq->mdev, be32_to_cpu(rq->mpwqe.umr_mkey_be));
 		mlx5e_free_mpwqe_rq_drop_page(rq);
@@ -1140,8 +1246,12 @@ static void mlx5e_free_rq(struct mlx5e_rq *rq)
 	xdp_rxq_info_unreg(&rq->xdp_rxq);
 }
 
+<<<<<<< HEAD
 int mlx5e_create_rq(struct mlx5e_rq *rq, struct mlx5e_rq_param *rq_param,
 		    u16 q_counter)
+=======
+int mlx5e_create_rq(struct mlx5e_rq *rq, struct mlx5e_rq_param *param, u16 q_counter)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mlx5_core_dev *mdev = rq->mdev;
 	u8 ts_format;
@@ -1163,7 +1273,11 @@ int mlx5e_create_rq(struct mlx5e_rq *rq, struct mlx5e_rq_param *rq_param,
 	rqc = MLX5_ADDR_OF(create_rq_in, in, ctx);
 	wq  = MLX5_ADDR_OF(rqc, rqc, wq);
 
+<<<<<<< HEAD
 	memcpy(rqc, rq_param->rqc, sizeof(rq_param->rqc));
+=======
+	memcpy(rqc, param->rqc, sizeof(param->rqc));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	MLX5_SET(rqc,  rqc, cqn,		rq->cq.mcq.cqn);
 	MLX5_SET(rqc,  rqc, state,		MLX5_RQC_STATE_RST);
@@ -1358,8 +1472,11 @@ void mlx5e_free_rx_descs(struct mlx5e_rq *rq)
 			mlx5_wq_ll_pop(wq, wqe_ix_be,
 				       &wqe->next.next_wqe_index);
 		}
+<<<<<<< HEAD
 
 		mlx5e_mpwqe_dealloc_linear_page(rq);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		struct mlx5_wq_cyc *wq = &rq->wqe.wq;
 		u16 missing = mlx5_wq_cyc_missing(wq);
@@ -1381,8 +1498,13 @@ void mlx5e_free_rx_descs(struct mlx5e_rq *rq)
 
 }
 
+<<<<<<< HEAD
 int mlx5e_open_rq(struct mlx5e_params *params, struct mlx5e_rq_param *rq_param,
 		  struct mlx5e_rq_opt_param *rqo, int node, u16 q_counter,
+=======
+int mlx5e_open_rq(struct mlx5e_params *params, struct mlx5e_rq_param *param,
+		  struct mlx5e_xsk_param *xsk, int node, u16 q_counter,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		  struct mlx5e_rq *rq)
 {
 	struct mlx5_core_dev *mdev = rq->mdev;
@@ -1391,11 +1513,19 @@ int mlx5e_open_rq(struct mlx5e_params *params, struct mlx5e_rq_param *rq_param,
 	if (params->packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
 		__set_bit(MLX5E_RQ_STATE_SHAMPO, &rq->state);
 
+<<<<<<< HEAD
 	err = mlx5e_alloc_rq(params, rq_param, rqo, node, rq);
 	if (err)
 		return err;
 
 	err = mlx5e_create_rq(rq, rq_param, q_counter);
+=======
+	err = mlx5e_alloc_rq(params, xsk, param, node, rq);
+	if (err)
+		return err;
+
+	err = mlx5e_create_rq(rq, param, q_counter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_free_rq;
 
@@ -2564,20 +2694,33 @@ static int mlx5e_set_tx_maxrate(struct net_device *dev, int index, u32 rate)
 	return err;
 }
 
+<<<<<<< HEAD
 static int mlx5e_open_rxq_rq(struct mlx5e_channel *c,
 			     struct mlx5e_params *params,
 			     struct mlx5e_rq_param *rq_param,
 			     struct mlx5e_rq_opt_param *rqo)
+=======
+static int mlx5e_open_rxq_rq(struct mlx5e_channel *c, struct mlx5e_params *params,
+			     struct mlx5e_rq_param *rq_params)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 q_counter = c->priv->q_counter[c->sd_ix];
 	int err;
 
+<<<<<<< HEAD
 	err = mlx5e_init_rxq_rq(c, params, rq_param->xdp_frag_size, &c->rq);
 	if (err)
 		return err;
 
 	return mlx5e_open_rq(params, rq_param, rqo, cpu_to_node(c->cpu),
 			     q_counter, &c->rq);
+=======
+	err = mlx5e_init_rxq_rq(c, params, rq_params->xdp_frag_size, &c->rq);
+	if (err)
+		return err;
+
+	return mlx5e_open_rq(params, rq_params, NULL, cpu_to_node(c->cpu), q_counter, &c->rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static struct mlx5e_icosq *
@@ -2680,7 +2823,11 @@ static int mlx5e_open_queues(struct mlx5e_channel *c,
 	if (err)
 		goto err_close_icosq;
 
+<<<<<<< HEAD
 	err = mlx5e_open_rxq_rq(c, params, &cparam->rq, &cparam->rq_opt);
+=======
+	err = mlx5e_open_rxq_rq(c, params, &cparam->rq);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_close_sqs;
 
@@ -2825,7 +2972,10 @@ static void mlx5e_channel_pick_doorbell(struct mlx5e_channel *c)
 
 static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
 			      struct mlx5e_params *params,
+<<<<<<< HEAD
 			      struct netdev_queue_config *qcfg,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			      struct xsk_buff_pool *xsk_pool,
 			      struct mlx5e_channel **cp)
 {
@@ -2859,7 +3009,11 @@ static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
 		goto err_free;
 	}
 
+<<<<<<< HEAD
 	err = mlx5e_build_channel_param(mdev, params, qcfg, cparam);
+=======
+	err = mlx5e_build_channel_param(mdev, params, cparam);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto err_free;
 
@@ -2890,8 +3044,12 @@ static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
 
 	if (xsk_pool) {
 		mlx5e_build_xsk_param(xsk_pool, &xsk);
+<<<<<<< HEAD
 		mlx5e_build_xsk_channel_param(priv->mdev, params, &xsk, cparam);
 		err = mlx5e_open_xsk(priv, params, cparam, xsk_pool, c);
+=======
+		err = mlx5e_open_xsk(priv, params, &xsk, xsk_pool, c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (unlikely(err))
 			goto err_close_queues;
 	}
@@ -2984,8 +3142,12 @@ int mlx5e_open_channels(struct mlx5e_priv *priv,
 		if (chs->params.xdp_prog)
 			xsk_pool = mlx5e_xsk_get_pool(&chs->params, chs->params.xsk, i);
 
+<<<<<<< HEAD
 		err = mlx5e_open_channel(priv, i, &chs->params, NULL,
 					 xsk_pool, &chs->c[i]);
+=======
+		err = mlx5e_open_channel(priv, i, &chs->params, xsk_pool, &chs->c[i]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			goto err_close_channels;
 	}
@@ -3641,6 +3803,7 @@ static void mlx5e_free_drop_rq(struct mlx5e_rq *rq)
 
 static int mlx5e_alloc_drop_rq(struct mlx5_core_dev *mdev,
 			       struct mlx5e_rq *rq,
+<<<<<<< HEAD
 			       struct mlx5e_rq_param *rq_param)
 {
 	void *rqc_wq = MLX5_ADDR_OF(rqc, rq_param->rqc, wq);
@@ -3649,6 +3812,17 @@ static int mlx5e_alloc_drop_rq(struct mlx5_core_dev *mdev,
 	rq_param->wq.db_numa_node = rq_param->wq.buf_numa_node;
 
 	err = mlx5_wq_cyc_create(mdev, &rq_param->wq, rqc_wq, &rq->wqe.wq,
+=======
+			       struct mlx5e_rq_param *param)
+{
+	void *rqc = param->rqc;
+	void *rqc_wq = MLX5_ADDR_OF(rqc, rqc, wq);
+	int err;
+
+	param->wq.db_numa_node = param->wq.buf_numa_node;
+
+	err = mlx5_wq_cyc_create(mdev, &param->wq, rqc_wq, &rq->wqe.wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				 &rq->wq_ctrl);
 	if (err)
 		return err;
@@ -4142,6 +4316,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
 
 static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	queue_work(priv->wq, &priv->set_rx_mode_work);
 }
 
@@ -4152,6 +4327,19 @@ static void mlx5e_set_rx_mode(struct net_device *dev,
 	struct mlx5e_priv *priv = netdev_priv(dev);
 
 	mlx5e_fs_set_rx_mode_work(priv->fs, dev, uc, mc);
+=======
+	if (mlx5e_is_uplink_rep(priv))
+		return; /* no rx mode for uplink rep */
+
+	queue_work(priv->wq, &priv->set_rx_mode_work);
+}
+
+static void mlx5e_set_rx_mode(struct net_device *dev)
+{
+	struct mlx5e_priv *priv = netdev_priv(dev);
+
+	mlx5e_nic_set_rx_mode(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int mlx5e_set_mac(struct net_device *netdev, void *addr)
@@ -4648,7 +4836,10 @@ static bool mlx5e_xsk_validate_mtu(struct net_device *netdev,
 	for (ix = 0; ix < chs->params.num_channels; ix++) {
 		struct xsk_buff_pool *xsk_pool =
 			mlx5e_xsk_get_pool(&chs->params, chs->params.xsk, ix);
+<<<<<<< HEAD
 		struct mlx5e_rq_opt_param rqo = {0};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct mlx5e_xsk_param xsk;
 		int max_xdp_mtu;
 
@@ -4656,6 +4847,7 @@ static bool mlx5e_xsk_validate_mtu(struct net_device *netdev,
 			continue;
 
 		mlx5e_build_xsk_param(xsk_pool, &xsk);
+<<<<<<< HEAD
 		rqo.xsk = &xsk;
 		max_xdp_mtu = mlx5e_xdp_max_mtu(new_params, &rqo);
 
@@ -4663,6 +4855,14 @@ static bool mlx5e_xsk_validate_mtu(struct net_device *netdev,
 		if (!mlx5e_validate_xsk_param(new_params, &rqo, mdev) ||
 		    new_params->sw_mtu > max_xdp_mtu) {
 			u32 hr = mlx5e_get_linear_rq_headroom(new_params, &rqo);
+=======
+		max_xdp_mtu = mlx5e_xdp_max_mtu(new_params, &xsk);
+
+		/* Validate XSK params and XDP MTU in advance */
+		if (!mlx5e_validate_xsk_param(new_params, &xsk, mdev) ||
+		    new_params->sw_mtu > max_xdp_mtu) {
+			u32 hr = mlx5e_get_linear_rq_headroom(new_params, &xsk);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			int max_mtu_frame, max_mtu_page, max_mtu;
 
 			/* Two criteria must be met:
@@ -5326,7 +5526,11 @@ const struct net_device_ops mlx5e_netdev_ops = {
 	.ndo_setup_tc            = mlx5e_setup_tc,
 	.ndo_select_queue        = mlx5e_select_queue,
 	.ndo_get_stats64         = mlx5e_get_stats,
+<<<<<<< HEAD
 	.ndo_set_rx_mode_async   = mlx5e_set_rx_mode,
+=======
+	.ndo_set_rx_mode         = mlx5e_set_rx_mode,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.ndo_set_mac_address     = mlx5e_set_mac,
 	.ndo_vlan_rx_add_vid     = mlx5e_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid    = mlx5e_vlan_rx_kill_vid,
@@ -5613,6 +5817,7 @@ static const struct netdev_stat_ops mlx5e_stat_ops = {
 
 struct mlx5_qmgmt_data {
 	struct mlx5e_channel *c;
+<<<<<<< HEAD
 };
 
 static void mlx5e_queue_default_qcfg(struct net_device *dev,
@@ -5659,6 +5864,11 @@ static bool mlx5e_queue_validate_page_size(struct net_device *dev,
 	return true;
 }
 
+=======
+	struct mlx5e_channel_param cparam;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mlx5e_queue_mem_alloc(struct net_device *dev,
 				 struct netdev_queue_config *qcfg,
 				 void *newq, int queue_index)
@@ -5667,6 +5877,10 @@ static int mlx5e_queue_mem_alloc(struct net_device *dev,
 	struct mlx5e_priv *priv = netdev_priv(dev);
 	struct mlx5e_channels *chs = &priv->channels;
 	struct mlx5e_params params = chs->params;
+<<<<<<< HEAD
+=======
+	struct mlx5_core_dev *mdev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int err;
 
 	mutex_lock(&priv->state_lock);
@@ -5690,6 +5904,7 @@ static int mlx5e_queue_mem_alloc(struct net_device *dev,
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	if (!mlx5e_queue_validate_page_size(dev, qcfg, queue_index)) {
 		netdev_err(priv->netdev, "High order pages are supported only in Zero-Copy mode\n");
 		err = -EINVAL;
@@ -5698,6 +5913,14 @@ static int mlx5e_queue_mem_alloc(struct net_device *dev,
 
 	err = mlx5e_open_channel(priv, queue_index, &params, qcfg, NULL,
 				 &new->c);
+=======
+	mdev = mlx5_sd_ch_ix_get_dev(priv->mdev, queue_index);
+	err = mlx5e_build_channel_param(mdev, &params, &new->cparam);
+	if (err)
+		goto unlock;
+
+	err = mlx5e_open_channel(priv, queue_index, &params, NULL, &new->c);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unlock:
 	mutex_unlock(&priv->state_lock);
 	return err;
@@ -5776,9 +5999,12 @@ static const struct netdev_queue_mgmt_ops mlx5e_queue_mgmt_ops = {
 	.ndo_queue_start	=	mlx5e_queue_start,
 	.ndo_queue_stop		=	mlx5e_queue_stop,
 	.ndo_queue_get_dma_dev	=	mlx5e_queue_get_dma_dev,
+<<<<<<< HEAD
 	.ndo_default_qcfg       =	mlx5e_queue_default_qcfg,
 	.ndo_validate_qcfg	=	mlx5e_queue_validate_qcfg,
 	.supported_params       =	QCFG_RX_PAGE_SIZE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static void mlx5e_build_nic_netdev(struct net_device *netdev)
@@ -6023,6 +6249,10 @@ static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
 	if (take_rtnl)
 		rtnl_lock();
 
+<<<<<<< HEAD
+=======
+	mlx5e_psp_register(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* update XDP supported features */
 	mlx5e_set_xdp_feature(priv);
 
@@ -6035,6 +6265,10 @@ static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
 static void mlx5e_nic_cleanup(struct mlx5e_priv *priv)
 {
 	mlx5e_health_destroy_reporters(priv);
+<<<<<<< HEAD
+=======
+	mlx5e_psp_unregister(priv);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5e_ktls_cleanup(priv);
 	mlx5e_psp_cleanup(priv);
 	mlx5e_fs_cleanup(priv->fs);
@@ -6158,7 +6392,10 @@ static void mlx5e_nic_enable(struct mlx5e_priv *priv)
 
 	mlx5e_fs_init_l2_addr(priv->fs, netdev);
 	mlx5e_ipsec_init(priv);
+<<<<<<< HEAD
 	mlx5e_psp_register(priv);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = mlx5e_macsec_init(priv);
 	if (err)
@@ -6229,7 +6466,10 @@ static void mlx5e_nic_disable(struct mlx5e_priv *priv)
 	mlx5_lag_remove_netdev(mdev, priv->netdev);
 	mlx5_vxlan_reset_to_default(mdev->vxlan);
 	mlx5e_macsec_cleanup(priv);
+<<<<<<< HEAD
 	mlx5e_psp_unregister(priv);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5e_ipsec_cleanup(priv);
 }
 
@@ -6311,11 +6551,16 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
 {
 	struct mlx5e_priv *priv = container_of(work, struct mlx5e_priv,
 					       set_rx_mode_work);
+<<<<<<< HEAD
 	struct net_device *dev = priv->netdev;
 
 	netdev_lock_ops(dev);
 	mlx5e_fs_set_rx_mode_work(priv->fs, dev, NULL, NULL);
 	netdev_unlock_ops(dev);
+=======
+
+	return mlx5e_fs_set_rx_mode_work(priv->fs, priv->netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* mlx5e generic netdev management API (move to en_common.c) */
@@ -6525,6 +6770,7 @@ int mlx5e_attach_netdev(struct mlx5e_priv *priv)
 
 	/* max number of channels may have changed */
 	max_nch = mlx5e_calc_max_nch(priv->mdev, priv->netdev, profile);
+<<<<<<< HEAD
 
 	/* Locking is required by ethtool_rxfh_indir_lost() (sends
 	 * ETHTOOL_MSG_RSS_NTF) and by netif_set_real_num_*_queues in case
@@ -6536,12 +6782,18 @@ int mlx5e_attach_netdev(struct mlx5e_priv *priv)
 		netdev_lock(priv->netdev);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (priv->channels.params.num_channels > max_nch) {
 		mlx5_core_warn(priv->mdev, "MLX5E: Reducing number of channels to %d\n", max_nch);
 		/* Reducing the number of channels - RXFH has to be reset, and
 		 * mlx5e_num_channels_changed below will build the RQT.
 		 */
+<<<<<<< HEAD
 		ethtool_rxfh_indir_lost(priv->netdev);
+=======
+		priv->netdev->priv_flags &= ~IFF_RXFH_CONFIGURED;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		priv->channels.params.num_channels = max_nch;
 		if (priv->channels.params.mqprio.mode == TC_MQPRIO_MODE_CHANNEL) {
 			mlx5_core_warn(priv->mdev, "MLX5E: Disabling MQPRIO channel mode\n");
@@ -6558,7 +6810,19 @@ int mlx5e_attach_netdev(struct mlx5e_priv *priv)
 	/* 1. Set the real number of queues in the kernel the first time.
 	 * 2. Set our default XPS cpumask.
 	 * 3. Build the RQT.
+<<<<<<< HEAD
 	 */
+=======
+	 *
+	 * Locking is required by netif_set_real_num_*_queues in case the
+	 * netdev has been registered by this point (if this function was called
+	 * in the reload or resume flow).
+	 */
+	if (need_lock) {
+		rtnl_lock();
+		netdev_lock(priv->netdev);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = mlx5e_num_channels_changed(priv);
 	if (need_lock) {
 		netdev_unlock(priv->netdev);
@@ -6774,11 +7038,17 @@ static int mlx5e_resume(struct auxiliary_device *adev)
 		return err;
 
 	actual_adev = mlx5_sd_get_adev(mdev, adev, edev->idx);
+<<<<<<< HEAD
 	if (actual_adev) {
 		err = _mlx5e_resume(actual_adev);
 		mlx5_sd_put_adev(actual_adev, adev);
 	}
 	return err;
+=======
+	if (actual_adev)
+		return _mlx5e_resume(actual_adev);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int _mlx5e_suspend(struct auxiliary_device *adev, bool pre_netdev_reg)
@@ -6817,8 +7087,11 @@ static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
 		err = _mlx5e_suspend(actual_adev, false);
 
 	mlx5_sd_cleanup(mdev);
+<<<<<<< HEAD
 	if (actual_adev)
 		mlx5_sd_put_adev(actual_adev, adev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return err;
 }
 
@@ -6877,6 +7150,7 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
 		goto err_resume;
 	}
 
+<<<<<<< HEAD
 	/* mlx5e_fix_features() returns early when the device is not present
 	 * to avoid dereferencing cleared priv during profile changes.
 	 * This also causes it to be a no-op during register_netdev(), where
@@ -6885,6 +7159,8 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
 	 */
 	mlx5e_update_features(netdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mlx5e_dcbnl_init_app(priv);
 	mlx5_core_uplink_netdev_set(mdev, netdev);
 	mlx5e_params_print_info(mdev, &priv->channels.params);
@@ -6916,6 +7192,7 @@ static int mlx5e_probe(struct auxiliary_device *adev,
 		return err;
 
 	actual_adev = mlx5_sd_get_adev(mdev, adev, edev->idx);
+<<<<<<< HEAD
 	if (actual_adev) {
 		err = _mlx5e_probe(actual_adev);
 		if (err)
@@ -6929,6 +7206,11 @@ sd_cleanup:
 	if (actual_adev)
 		mlx5_sd_put_adev(actual_adev, adev);
 	return err;
+=======
+	if (actual_adev)
+		return _mlx5e_probe(actual_adev);
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void _mlx5e_remove(struct auxiliary_device *adev)
@@ -6980,8 +7262,11 @@ static void mlx5e_remove(struct auxiliary_device *adev)
 		_mlx5e_remove(actual_adev);
 
 	mlx5_sd_cleanup(mdev);
+<<<<<<< HEAD
 	if (actual_adev)
 		mlx5_sd_put_adev(actual_adev, adev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct auxiliary_device_id mlx5e_id_table[] = {

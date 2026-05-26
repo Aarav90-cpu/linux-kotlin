@@ -66,8 +66,11 @@ struct xe_exec_queue_group {
 	bool sync_pending;
 	/** @banned: Group banned */
 	bool banned;
+<<<<<<< HEAD
 	/** @stopped: Group is stopped, protected by list_lock */
 	bool stopped;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -134,8 +137,11 @@ struct xe_exec_queue {
 #define EXEC_QUEUE_FLAG_LOW_LATENCY		BIT(5)
 /* for migration (kernel copy, clear, bind) jobs */
 #define EXEC_QUEUE_FLAG_MIGRATE			BIT(6)
+<<<<<<< HEAD
 /* for programming COMMON_SLICE_CHICKEN3 on first submission */
 #define EXEC_QUEUE_FLAG_DISABLE_STATE_CACHE_PERF_FIX	BIT(7)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/**
 	 * @flags: flags for this exec queue, should statically setup aside from ban
@@ -163,6 +169,7 @@ struct xe_exec_queue {
 		struct xe_exec_queue_group *group;
 		/** @multi_queue.link: Link into group's secondary queues list */
 		struct list_head link;
+<<<<<<< HEAD
 		/**
 		 * @multi_queue.priority: Queue priority within the multi-queue group.
 		 * It is protected by @multi_queue.lock.
@@ -170,6 +177,10 @@ struct xe_exec_queue {
 		enum xe_multi_queue_priority priority;
 		/** @multi_queue.lock: Lock for protecting certain members */
 		spinlock_t lock;
+=======
+		/** @multi_queue.priority: Queue priority within the multi-queue group */
+		enum xe_multi_queue_priority priority;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/** @multi_queue.pos: Position of queue within the multi-queue group */
 		u8 pos;
 		/** @multi_queue.valid: Queue belongs to a multi queue group */
@@ -220,9 +231,12 @@ struct xe_exec_queue {
 		struct dma_fence *last_fence;
 	} tlb_inval[XE_EXEC_QUEUE_TLB_INVAL_COUNT];
 
+<<<<<<< HEAD
 	/** @vm_exec_queue_link: Link to track exec queue within a VM's list of exec queues. */
 	struct list_head vm_exec_queue_link;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @pxp: PXP info tracking */
 	struct {
 		/** @pxp.type: PXP session type used by this queue */
@@ -259,11 +273,14 @@ struct xe_exec_queue {
 	u64 tlb_flush_seqno;
 	/** @hw_engine_group_link: link into exec queues in the same hw engine group */
 	struct list_head hw_engine_group_link;
+<<<<<<< HEAD
 	/**
 	 * @lrc_lookup_lock: Lock for protecting lrc array access. Only used when
 	 * running in parallel to queue creation is possible.
 	 */
 	spinlock_t lrc_lookup_lock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/** @lrc: logical ring context for this exec queue */
 	struct xe_lrc *lrc[] __counted_by(width);
 };
@@ -318,8 +335,11 @@ struct xe_exec_queue_ops {
 	void (*resume)(struct xe_exec_queue *q);
 	/** @reset_status: check exec queue reset status */
 	bool (*reset_status)(struct xe_exec_queue *q);
+<<<<<<< HEAD
 	/** @active: check exec queue is active */
 	bool (*active)(struct xe_exec_queue *q);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif

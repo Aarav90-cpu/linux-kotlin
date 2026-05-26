@@ -1205,7 +1205,11 @@ static int max9286_gpiochip_get(struct gpio_chip *chip, unsigned int offset)
 {
 	struct max9286_priv *priv = gpiochip_get_data(chip);
 
+<<<<<<< HEAD
 	return !!(priv->gpio_state & BIT(offset));
+=======
+	return priv->gpio_state & BIT(offset);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int max9286_register_gpio(struct max9286_priv *priv)

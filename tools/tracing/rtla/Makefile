@@ -33,14 +33,20 @@ DOCSRC		:= ../../../Documentation/tools/rtla/
 FEATURE_TESTS	:= libtraceevent
 FEATURE_TESTS	+= libtracefs
 FEATURE_TESTS	+= libcpupower
+<<<<<<< HEAD
 FEATURE_TESTS	+= libcheck
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FEATURE_TESTS	+= libbpf
 FEATURE_TESTS	+= clang-bpf-co-re
 FEATURE_TESTS	+= bpftool-skeletons
 FEATURE_DISPLAY	:= libtraceevent
 FEATURE_DISPLAY	+= libtracefs
 FEATURE_DISPLAY	+= libcpupower
+<<<<<<< HEAD
 FEATURE_DISPLAY	+= libcheck
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 FEATURE_DISPLAY	+= libbpf
 FEATURE_DISPLAY	+= clang-bpf-co-re
 FEATURE_DISPLAY	+= bpftool-skeletons
@@ -49,7 +55,10 @@ all: $(RTLA)
 
 include $(srctree)/tools/build/Makefile.include
 include Makefile.rtla
+<<<<<<< HEAD
 include tests/unit/Makefile.unit
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 # check for dependencies only on required targets
 NON_CONFIG_TARGETS := clean install tarball doc doc_clean doc_install
@@ -112,8 +121,11 @@ clean: doc_clean fixdep-clean
 	$(Q)rm -f rtla rtla-static fixdep FEATURE-DUMP rtla-*
 	$(Q)rm -rf feature
 	$(Q)rm -f src/timerlat.bpf.o src/timerlat.skel.h example/timerlat_bpf_action.o
+<<<<<<< HEAD
 	$(Q)rm -f $(UNIT_TESTS)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 check: $(RTLA) tests/bpf/bpf_action_map.o
 	RTLA=$(RTLA) BPFTOOL=$(SYSTEM_BPFTOOL) prove -o -f -v tests/
 examples: example/timerlat_bpf_action.o

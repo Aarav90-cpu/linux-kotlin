@@ -8,6 +8,10 @@
 #include <drm/drm_print.h>
 
 #include "g4x_hdmi.h"
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_atomic.h"
 #include "intel_audio.h"
 #include "intel_connector.h"

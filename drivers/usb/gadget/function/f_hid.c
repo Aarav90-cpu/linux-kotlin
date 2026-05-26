@@ -1278,10 +1278,15 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 
 	/* create char device */
 	hidg->cdev = cdev_alloc();
+<<<<<<< HEAD
 	if (!hidg->cdev) {
 		status = -ENOMEM;
 		goto fail_free_all;
 	}
+=======
+	if (!hidg->cdev)
+		goto fail_free_all;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hidg->cdev->ops = &f_hidg_fops;
 
 	status = cdev_device_add(hidg->cdev, &hidg->dev);

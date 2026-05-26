@@ -69,7 +69,10 @@ bool __bitmap_or_equal(const unsigned long *bitmap1,
 	tmp = (bitmap1[k] | bitmap2[k]) ^ bitmap3[k];
 	return (tmp & BITMAP_LAST_WORD_MASK(bits)) == 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(__bitmap_or_equal);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __bitmap_complement(unsigned long *dst, const unsigned long *src, unsigned int bits)
 {
@@ -361,6 +364,7 @@ unsigned int __bitmap_weighted_or(unsigned long *dst, const unsigned long *bitma
 {
 	return BITMAP_WEIGHT(({dst[idx] = bitmap1[idx] | bitmap2[idx]; dst[idx]; }), bits);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(__bitmap_weighted_or);
 
 unsigned int __bitmap_weighted_xor(unsigned long *dst, const unsigned long *bitmap1,
@@ -369,6 +373,8 @@ unsigned int __bitmap_weighted_xor(unsigned long *dst, const unsigned long *bitm
 	return BITMAP_WEIGHT(({dst[idx] = bitmap1[idx] ^ bitmap2[idx]; dst[idx]; }), bits);
 }
 EXPORT_SYMBOL(__bitmap_weighted_xor);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 void __bitmap_set(unsigned long *map, unsigned int start, int len)
 {

@@ -202,7 +202,18 @@ struct odm_rate_adaptive {
 /*  */
 /*  Declare for common info */
 /*  */
+<<<<<<< HEAD
 #define MAX_PATH_NUM_8723B		1
+=======
+#define MAX_PATH_NUM_92CS		2
+#define MAX_PATH_NUM_8188E		1
+#define MAX_PATH_NUM_8192E		2
+#define MAX_PATH_NUM_8723B		1
+#define MAX_PATH_NUM_8812A		2
+#define MAX_PATH_NUM_8821A		1
+#define MAX_PATH_NUM_8814A		4
+#define MAX_PATH_NUM_8822B		2
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define IQK_THRESHOLD			8
 #define DPK_THRESHOLD			4
@@ -650,6 +661,13 @@ struct ant_detected_info {
 /*  2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration. */
 /*  */
 struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
+<<<<<<< HEAD
+=======
+	/* struct timer_list	FastAntTrainingTimer; */
+	/*  */
+	/* 	Add for different team use temporarily */
+	/*  */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct adapter *Adapter;		/*  For CE/NIC team */
 	/*  WHen you use Adapter or priv pointer, you must make sure the pointer is ready. */
 	bool odm_ready;
@@ -669,6 +687,20 @@ struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
 	u8 ControlChannel;
 /*  ODM HANDLE, DRIVER NEEDS NOT TO HOOK------ */
 
+<<<<<<< HEAD
+=======
+/* REMOVED COMMON INFO---------- */
+	/* u8 		PseudoMacPhyMode; */
+	/* bool			*BTCoexist; */
+	/* bool			PseudoBtCoexist; */
+	/* u8 		OPMode; */
+	/* bool			bAPMode; */
+	/* bool			bClientMode; */
+	/* bool			bAdHocMode; */
+	/* bool			bSlaveOfDMSP; */
+/* REMOVED COMMON INFO---------- */
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* 1  COMMON INFORMATION */
 
 	/*  */
@@ -751,6 +783,10 @@ struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
 	u8 *pAntennaTest;
 	bool *pbNet_closed;
 	u8 *mp_mode;
+<<<<<<< HEAD
+=======
+	/* u8 	*pAidMap; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 *pu1ForcedIgiLb;
 /*  For 8723B IQK----------- */
 	bool *pIs1Antenna;
@@ -849,9 +885,24 @@ struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
 
 	/*  Latest packet phy info (ODM write) */
 	struct odm_phy_dbg_info PhyDbgInfo;
+<<<<<<< HEAD
 
 	/*  Latest packet phy info (ODM write) */
 	struct odm_mac_status_info *pMacInfo;
+=======
+	/* PHY_INFO_88E		PhyInfo; */
+
+	/*  Latest packet phy info (ODM write) */
+	struct odm_mac_status_info *pMacInfo;
+	/* MAC_INFO_88E		MacInfo; */
+
+	/*  Different Team independent structure?? */
+
+	/*  */
+	/* TX_RTP_CMN		TX_retrpo; */
+	/* TX_RTP_88E		TX_retrpo; */
+	/* TX_RTP_8195		TX_retrpo; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*  */
 	/* ODM Structure */
@@ -877,6 +928,18 @@ struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
 	/*  */
 
 	/* common */
+<<<<<<< HEAD
+=======
+	/* u8 DM_Type; */
+	/* u8    PSD_Report_RXHP[80];    Add By Gary */
+	/* u8    PSD_func_flag;                Add By Gary */
+	/* for DIG */
+	/* u8 bDMInitialGainEnable; */
+	/* u8 binitialized;  for dm_initial_gain_Multi_STA use. */
+	/* for Antenna diversity */
+	/* u8 AntDivCfg; 0:OFF , 1:ON, 2:by efuse */
+	/* PSTA_INFO_T RSSI_target; */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	bool *pbDriverStopped;
 	bool *pbDriverIsGoingToPnpSetPowerSleep;
@@ -944,7 +1007,11 @@ struct dm_odm_t { /* DM_Out_Source_Dynamic_Mechanism_Structure */
 	#endif
 };
 
+<<<<<<< HEAD
 enum odm_rf_content {
+=======
+ enum odm_rf_content {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	odm_radioa_txt = 0x1000,
 	odm_radiob_txt = 0x1001,
 	odm_radioc_txt = 0x1002,

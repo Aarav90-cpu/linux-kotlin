@@ -17,7 +17,11 @@ enum hrtimer_restart {
 
 /**
  * struct hrtimer - the basic hrtimer structure
+<<<<<<< HEAD
  * @node:	Linked timerqueue node, which also manages node.expires,
+=======
+ * @node:	timerqueue node, which also manages node.expires,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *		the absolute expiry time in the hrtimers internal
  *		representation. The time is related to the clock on
  *		which the timer is based. Is setup by adding
@@ -28,17 +32,25 @@ enum hrtimer_restart {
  *		was armed.
  * @function:	timer expiry callback function
  * @base:	pointer to the timer base (per cpu and per clock)
+<<<<<<< HEAD
  * @is_queued:	Indicates whether a timer is enqueued or not
+=======
+ * @state:	state information (See bit values above)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @is_rel:	Set if the timer was armed relative
  * @is_soft:	Set if hrtimer will be expired in soft interrupt context.
  * @is_hard:	Set if hrtimer will be expired in hard interrupt context
  *		even on RT.
+<<<<<<< HEAD
  * @is_lazy:	Set if the timer is frequently rearmed to avoid updates
  *		of the clock event device
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * The hrtimer structure must be initialized by hrtimer_setup()
  */
 struct hrtimer {
+<<<<<<< HEAD
 	struct timerqueue_linked_node	node;
 	struct hrtimer_clock_base	*base;
 	bool				is_queued;
@@ -48,6 +60,16 @@ struct hrtimer {
 	bool				is_lazy;
 	ktime_t				_softexpires;
 	enum hrtimer_restart		(*__private function)(struct hrtimer *);
+=======
+	struct timerqueue_node		node;
+	ktime_t				_softexpires;
+	enum hrtimer_restart		(*__private function)(struct hrtimer *);
+	struct hrtimer_clock_base	*base;
+	u8				state;
+	u8				is_rel;
+	u8				is_soft;
+	u8				is_hard;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #endif /* _LINUX_HRTIMER_TYPES_H */

@@ -47,8 +47,13 @@ static struct hns_roce_qp *hns_roce_qp_lookup(struct hns_roce_dev *hr_dev,
 
 	xa_lock_irqsave(&hr_dev->qp_table_xa, flags);
 	qp = __hns_roce_qp_lookup(hr_dev, qpn);
+<<<<<<< HEAD
 	if (qp && !refcount_inc_not_zero(&qp->refcount))
 		qp = NULL;
+=======
+	if (qp)
+		refcount_inc(&qp->refcount);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xa_unlock_irqrestore(&hr_dev->qp_table_xa, flags);
 
 	if (!qp)
@@ -1023,6 +1028,7 @@ static void free_qp_db(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
 static int alloc_kernel_wrid(struct hns_roce_dev *hr_dev,
 			     struct hns_roce_qp *hr_qp)
 {
+<<<<<<< HEAD
 	u64 *sq_wrid, *rq_wrid = NULL;
 	int ret;
 
@@ -1033,6 +1039,23 @@ static int alloc_kernel_wrid(struct hns_roce_dev *hr_dev,
 	if (hr_qp->rq.wqe_cnt) {
 		rq_wrid = kzalloc_objs(*rq_wrid, hr_qp->rq.wqe_cnt);
 		if (!rq_wrid) {
+=======
+	struct ib_device *ibdev = &hr_dev->ib_dev;
+	u64 *sq_wrid = NULL;
+	u64 *rq_wrid = NULL;
+	int ret;
+
+	sq_wrid = kcalloc(hr_qp->sq.wqe_cnt, sizeof(u64), GFP_KERNEL);
+	if (!sq_wrid) {
+		ibdev_err(ibdev, "failed to alloc SQ wrid.\n");
+		return -ENOMEM;
+	}
+
+	if (hr_qp->rq.wqe_cnt) {
+		rq_wrid = kcalloc(hr_qp->rq.wqe_cnt, sizeof(u64), GFP_KERNEL);
+		if (!rq_wrid) {
+			ibdev_err(ibdev, "failed to alloc RQ wrid.\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ret = -ENOMEM;
 			goto err_sq;
 		}
@@ -1130,11 +1153,21 @@ static int set_qp_param(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
 	}
 
 	if (udata) {
+<<<<<<< HEAD
 		ret = ib_copy_validate_udata_in_cm(
 			udata, *ucmd, reserved,
 			HNS_ROCE_CREATE_QP_MASK_CONGEST_TYPE);
 		if (ret)
 			return ret;
+=======
+		ret = ib_copy_from_udata(ucmd, udata,
+					 min(udata->inlen, sizeof(*ucmd)));
+		if (ret) {
+			ibdev_err(ibdev,
+				  "failed to copy QP ucmd, ret = %d\n", ret);
+			return ret;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		uctx = rdma_udata_to_drv_context(udata, struct hns_roce_ucontext,
 						 ibucontext);
@@ -1252,8 +1285,13 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 
 	hr_qp->ibqp.qp_num = hr_qp->qpn;
 	hr_qp->event = hns_roce_ib_qp_event;
+<<<<<<< HEAD
 	init_completion(&hr_qp->free);
 	refcount_set_release(&hr_qp->refcount, 1);
+=======
+	refcount_set(&hr_qp->refcount, 1);
+	init_completion(&hr_qp->free);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 

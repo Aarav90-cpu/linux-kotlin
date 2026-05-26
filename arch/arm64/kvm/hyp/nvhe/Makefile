@@ -17,7 +17,11 @@ ccflags-y += -fno-stack-protector	\
 hostprogs := gen-hyprel
 HOST_EXTRACFLAGS += -I$(objtree)/include
 
+<<<<<<< HEAD
 lib-objs := clear_page.o copy_page.o memcpy.o memset.o tishift.o
+=======
+lib-objs := clear_page.o copy_page.o memcpy.o memset.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 lib-objs := $(addprefix ../../../lib/, $(lib-objs))
 
 CFLAGS_switch.nvhe.o += -Wno-override-init
@@ -26,6 +30,7 @@ hyp-obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o hyp-init.o host.o 
 	 hyp-main.o hyp-smp.o psci-relay.o early_alloc.o page_alloc.o \
 	 cache.o setup.o mm.o mem_protect.o sys_regs.o pkvm.o stacktrace.o ffa.o
 hyp-obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
+<<<<<<< HEAD
 	 ../fpsimd.o ../hyp-entry.o ../exception.o ../pgtable.o ../vgic-v5-sr.o
 hyp-obj-y += ../../../kernel/smccc-call.o
 hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
@@ -35,6 +40,13 @@ hyp-obj-y += $(lib-objs)
 # Path to simple_ring_buffer.c
 CFLAGS_trace.nvhe.o += -I$(srctree)/kernel/trace/
 
+=======
+	 ../fpsimd.o ../hyp-entry.o ../exception.o ../pgtable.o
+hyp-obj-y += ../../../kernel/smccc-call.o
+hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
+hyp-obj-y += $(lib-objs)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ##
 ## Build rules for compiling nVHE hyp code
 ## Output of this folder is `kvm_nvhe.o`, a partially linked object

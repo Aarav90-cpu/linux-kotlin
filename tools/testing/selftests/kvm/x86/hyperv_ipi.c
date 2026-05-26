@@ -18,7 +18,11 @@
 
 #define IPI_VECTOR	 0xfe
 
+<<<<<<< HEAD
 static volatile u64 ipis_rcvd[RECEIVER_VCPU_ID_2 + 1];
+=======
+static volatile uint64_t ipis_rcvd[RECEIVER_VCPU_ID_2 + 1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct hv_vpset {
 	u64 format;
@@ -45,13 +49,21 @@ struct hv_send_ipi_ex {
 	struct hv_vpset vp_set;
 };
 
+<<<<<<< HEAD
 static inline void hv_init(gpa_t pgs_gpa)
+=======
+static inline void hv_init(vm_vaddr_t pgs_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
 	wrmsr(HV_X64_MSR_HYPERCALL, pgs_gpa);
 }
 
+<<<<<<< HEAD
 static void receiver_code(void *hcall_page, gpa_t pgs_gpa)
+=======
+static void receiver_code(void *hcall_page, vm_vaddr_t pgs_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 vcpu_id;
 
@@ -85,7 +97,11 @@ static inline void nop_loop(void)
 		asm volatile("nop");
 }
 
+<<<<<<< HEAD
 static void sender_guest_code(void *hcall_page, gpa_t pgs_gpa)
+=======
+static void sender_guest_code(void *hcall_page, vm_vaddr_t pgs_gpa)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct hv_send_ipi *ipi = (struct hv_send_ipi *)hcall_page;
 	struct hv_send_ipi_ex *ipi_ex = (struct hv_send_ipi_ex *)hcall_page;
@@ -243,7 +259,11 @@ int main(int argc, char *argv[])
 {
 	struct kvm_vm *vm;
 	struct kvm_vcpu *vcpu[3];
+<<<<<<< HEAD
 	gva_t hcall_page;
+=======
+	vm_vaddr_t hcall_page;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pthread_t threads[2];
 	int stage = 1, r;
 	struct ucall uc;
@@ -253,7 +273,11 @@ int main(int argc, char *argv[])
 	vm = vm_create_with_one_vcpu(&vcpu[0], sender_guest_code);
 
 	/* Hypercall input/output */
+<<<<<<< HEAD
 	hcall_page = vm_alloc_pages(vm, 2);
+=======
+	hcall_page = vm_vaddr_alloc_pages(vm, 2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memset(addr_gva2hva(vm, hcall_page), 0x0, 2 * getpagesize());
 
 

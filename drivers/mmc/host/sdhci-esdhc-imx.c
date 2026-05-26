@@ -216,8 +216,11 @@
 #define ESDHC_FLAG_DUMMY_PAD		BIT(19)
 
 #define ESDHC_AUTO_TUNING_WINDOW	3
+<<<<<<< HEAD
 /* 100ms timeout for data inhibit */
 #define ESDHC_DATA_INHIBIT_WAIT_US	100000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum wp_types {
 	ESDHC_WP_NONE,		/* no WP, neither controller nor gpio */
@@ -323,6 +326,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
 	.quirks = SDHCI_QUIRK_NO_LED,
 };
 
+<<<<<<< HEAD
 static struct esdhc_soc_data usdhc_s32n79_data = {
 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
@@ -331,6 +335,8 @@ static struct esdhc_soc_data usdhc_s32n79_data = {
 	.quirks = SDHCI_QUIRK_NO_LED,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct esdhc_soc_data usdhc_imx7ulp_data = {
 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
@@ -418,7 +424,10 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
 	{ .compatible = "fsl,imx95-usdhc", .data = &usdhc_imx95_data, },
 	{ .compatible = "fsl,imxrt1050-usdhc", .data = &usdhc_imxrt1050_data, },
 	{ .compatible = "nxp,s32g2-usdhc", .data = &usdhc_s32g2_data, },
+<<<<<<< HEAD
 	{ .compatible = "nxp,s32n79-usdhc", .data = &usdhc_s32n79_data, },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
@@ -1464,6 +1473,7 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
 
 static void esdhc_reset(struct sdhci_host *host, u8 mask)
 {
+<<<<<<< HEAD
 	u32 present_state;
 	int ret;
 
@@ -1480,6 +1490,8 @@ static void esdhc_reset(struct sdhci_host *host, u8 mask)
 				 "timeout waiting for data transfer completion\n");
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sdhci_and_cqhci_reset(host, mask);
 
 	sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
@@ -1822,6 +1834,11 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
 
 	of_property_read_u32(np, "fsl,strobe-dll-delay-target",
 				&boarddata->strobe_dll_delay_target);
+<<<<<<< HEAD
+=======
+	if (of_property_read_bool(np, "no-1-8-v"))
+		host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
 		boarddata->delay_line = 0;
@@ -1840,7 +1857,13 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	sdhci_get_property(pdev);
+=======
+	/* HS400/HS400ES require 8 bit bus */
+	if (!(host->mmc->caps & MMC_CAP_8_BIT_DATA))
+		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mmc_gpio_get_cd(host->mmc) >= 0)
 		host->quirks &= ~SDHCI_QUIRK_BROKEN_CARD_DETECTION;

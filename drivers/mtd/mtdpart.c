@@ -18,7 +18,10 @@
 #include <linux/err.h>
 #include <linux/of.h>
 #include <linux/of_platform.h>
+<<<<<<< HEAD
 #include <linux/mtd/concat.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "mtdcore.h"
 
@@ -410,11 +413,14 @@ int add_mtd_partitions(struct mtd_info *parent,
 			goto err_del_partitions;
 		}
 
+<<<<<<< HEAD
 		if (IS_REACHABLE(CONFIG_MTD_VIRT_CONCAT)) {
 			if (mtd_virt_concat_add(child))
 				continue;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mutex_lock(&master->master.partitions_lock);
 		list_add_tail(&child->part.node, &parent->partitions);
 		mutex_unlock(&master->master.partitions_lock);

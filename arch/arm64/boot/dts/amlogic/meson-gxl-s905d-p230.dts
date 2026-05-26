@@ -84,8 +84,12 @@
 		reset-gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
 
 		interrupt-parent = <&gpio_intc>;
+<<<<<<< HEAD
 		/* MAC_INTR on GPIOZ_15 */
 		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		eee-broken-1000t;
 	};
 };

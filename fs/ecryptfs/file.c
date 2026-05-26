@@ -253,7 +253,11 @@ static int ecryptfs_open(struct inode *inode, struct file *file)
 	if (rc)
 		goto out_put;
 	ecryptfs_printk(KERN_DEBUG, "inode w/ addr = [0x%p], i_ino = "
+<<<<<<< HEAD
 			"[0x%.16llx] size: [0x%.16llx]\n", inode, inode->i_ino,
+=======
+			"[0x%.16lx] size: [0x%.16llx]\n", inode, inode->i_ino,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			(unsigned long long)i_size_read(inode));
 	goto out;
 out_put:

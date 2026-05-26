@@ -381,6 +381,7 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
 	}
 }
 
+<<<<<<< HEAD
 #define RECV_PEEK_RETRY_USEC (10 * 1000)
 
 /* Receive bytes in a buffer and check the return value.
@@ -389,6 +390,10 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
  * expected_ret bytes. The function returns on error, EOF, or timeout
  * as usual.
  *
+=======
+/* Receive bytes in a buffer and check the return value.
+ *
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * expected_ret:
  *  <0 Negative errno (for testing errors)
  *   0 End-of-file
@@ -409,6 +414,7 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
 		if (ret <= 0)
 			break;
 
+<<<<<<< HEAD
 		if (flags & MSG_PEEK) {
 			if (ret >= expected_ret) {
 				nread = ret;
@@ -418,6 +424,8 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
 			continue;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nread += ret;
 	} while (nread < len);
 	timeout_end();

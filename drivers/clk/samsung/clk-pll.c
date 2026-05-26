@@ -201,9 +201,12 @@ static const struct clk_ops samsung_pll3000_clk_ops = {
 #define PLL35XX_LOCK_STAT_SHIFT	(29)
 #define PLL35XX_ENABLE_SHIFT	(31)
 
+<<<<<<< HEAD
 /* A9FRACM is similar to PLL35xx, except that MDIV is bit different */
 #define PLLA9FRACM_MDIV_SHIFT	(14)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static unsigned long samsung_pll35xx_recalc_rate(struct clk_hw *hw,
 				unsigned long parent_rate)
 {
@@ -212,12 +215,16 @@ static unsigned long samsung_pll35xx_recalc_rate(struct clk_hw *hw,
 	u64 fvco = parent_rate;
 
 	pll_con = readl_relaxed(pll->con_reg);
+<<<<<<< HEAD
 
 	if (pll->type == pll_a9fracm)
 		mdiv = (pll_con >> PLLA9FRACM_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
 	else
 		mdiv = (pll_con >> PLL35XX_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
 
+=======
+	mdiv = (pll_con >> PLL35XX_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pdiv = (pll_con >> PLL35XX_PDIV_SHIFT) & PLL35XX_PDIV_MASK;
 	sdiv = (pll_con >> PLL35XX_SDIV_SHIFT) & PLL35XX_SDIV_MASK;
 
@@ -227,6 +234,7 @@ static unsigned long samsung_pll35xx_recalc_rate(struct clk_hw *hw,
 	return (unsigned long)fvco;
 }
 
+<<<<<<< HEAD
 static inline bool samsung_pll35xx_mp_change(u32 pll_type,
 					     const struct samsung_pll_rate_table *rate, u32 pll_con)
 {
@@ -236,6 +244,14 @@ static inline bool samsung_pll35xx_mp_change(u32 pll_type,
 		old_mdiv = (pll_con >> PLLA9FRACM_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
 	else
 		old_mdiv = (pll_con >> PLL35XX_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
+=======
+static inline bool samsung_pll35xx_mp_change(
+		const struct samsung_pll_rate_table *rate, u32 pll_con)
+{
+	u32 old_mdiv, old_pdiv;
+
+	old_mdiv = (pll_con >> PLL35XX_MDIV_SHIFT) & PLL35XX_MDIV_MASK;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	old_pdiv = (pll_con >> PLL35XX_PDIV_SHIFT) & PLL35XX_PDIV_MASK;
 
 	return (rate->mdiv != old_mdiv || rate->pdiv != old_pdiv);
@@ -247,12 +263,15 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
 	struct samsung_clk_pll *pll = to_clk_pll(hw);
 	const struct samsung_pll_rate_table *rate;
 	u32 tmp;
+<<<<<<< HEAD
 	u32 mdiv_shift;
 
 	if (pll->type == pll_a9fracm)
 		mdiv_shift = PLLA9FRACM_MDIV_SHIFT;
 	else
 		mdiv_shift = PLL35XX_MDIV_SHIFT;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Get required rate settings from table */
 	rate = samsung_get_pll_settings(pll, drate);
@@ -264,7 +283,11 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
 
 	tmp = readl_relaxed(pll->con_reg);
 
+<<<<<<< HEAD
 	if (!(samsung_pll35xx_mp_change(pll->type, rate, tmp))) {
+=======
+	if (!(samsung_pll35xx_mp_change(rate, tmp))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* If only s change, change just s value only*/
 		tmp &= ~(PLL35XX_SDIV_MASK << PLL35XX_SDIV_SHIFT);
 		tmp |= rate->sdiv << PLL35XX_SDIV_SHIFT;
@@ -274,7 +297,11 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
 	}
 
 	/* Set PLL lock time. */
+<<<<<<< HEAD
 	if (pll->type == pll_142xx || pll->type == pll_1017x || pll->type == pll_a9fracm)
+=======
+	if (pll->type == pll_142xx || pll->type == pll_1017x)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
 			pll->lock_reg);
 	else
@@ -282,10 +309,17 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
 			pll->lock_reg);
 
 	/* Change PLL PMS values */
+<<<<<<< HEAD
 	tmp &= ~((PLL35XX_MDIV_MASK << mdiv_shift) |
 			(PLL35XX_PDIV_MASK << PLL35XX_PDIV_SHIFT) |
 			(PLL35XX_SDIV_MASK << PLL35XX_SDIV_SHIFT));
 	tmp |= (rate->mdiv << mdiv_shift) |
+=======
+	tmp &= ~((PLL35XX_MDIV_MASK << PLL35XX_MDIV_SHIFT) |
+			(PLL35XX_PDIV_MASK << PLL35XX_PDIV_SHIFT) |
+			(PLL35XX_SDIV_MASK << PLL35XX_SDIV_SHIFT));
+	tmp |= (rate->mdiv << PLL35XX_MDIV_SHIFT) |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			(rate->pdiv << PLL35XX_PDIV_SHIFT) |
 			(rate->sdiv << PLL35XX_SDIV_SHIFT);
 	writel_relaxed(tmp, pll->con_reg);
@@ -1445,6 +1479,7 @@ static const struct clk_ops samsung_pll1031x_clk_min_ops = {
 	.recalc_rate = samsung_pll1031x_recalc_rate,
 };
 
+<<<<<<< HEAD
 /*
  * PLLA9FRACO Clock Type
  */
@@ -1588,6 +1623,8 @@ static const struct clk_ops samsung_a9fraco_clk_min_ops = {
 	.recalc_rate = samsung_a9fraco_recalc_rate,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 				const struct samsung_pll_clock *pll_clk)
 {
@@ -1637,7 +1674,10 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 	case pll_1452x:
 	case pll_142xx:
 	case pll_1017x:
+<<<<<<< HEAD
 	case pll_a9fracm:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		pll->enable_offs = PLL35XX_ENABLE_SHIFT;
 		pll->lock_offs = PLL35XX_LOCK_STAT_SHIFT;
 		if (!pll->rate_table)
@@ -1739,6 +1779,7 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 		else
 			init.ops = &samsung_pll1031x_clk_ops;
 		break;
+<<<<<<< HEAD
 	case pll_a9fraco:
 		pll->enable_offs = PLLA9FRACO_ENABLE_SHIFT;
 		pll->lock_offs = PLLA9FRACO_LOCK_STAT_SHIFT;
@@ -1747,6 +1788,8 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 		else
 			init.ops = &samsung_a9fraco_clk_ops;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		pr_warn("%s: Unknown pll type for pll clk %s\n",
 			__func__, pll_clk->name);

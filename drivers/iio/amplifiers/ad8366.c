@@ -5,6 +5,7 @@
  *   AD8366 Dual-Digital Variable Gain Amplifier (VGA)
  *   ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
  *   ADL5240 Digitally controlled variable gain amplifier (VGA)
+<<<<<<< HEAD
  *   ADRF5702: 0.125 dB LSB, 8-Bit, Silicon Digital Attenuator, 50 MHz to 20 GHz
  *   ADRF5703: 0.25 dB LSB, 7-Bit, Silicon Digital Attenuator, 9 kHz to 20 GHz
  *   ADRF5720: 0.5 dB LSB, 6-Bit, Silicon Digital Attenuator, 9 kHz to 40 GHz
@@ -45,12 +46,53 @@ struct ad8366_info {
 	size_t num_channels;
 	size_t (*pack_code)(const unsigned char *code, size_t num_channels,
 			    unsigned char *data);
+=======
+ *   HMC792A 0.25 dB LSB GaAs MMIC 6-Bit Digital Attenuator
+ *   HMC1119 0.25 dB LSB, 7-Bit, Silicon Digital Attenuator
+ *
+ * Copyright 2012-2019 Analog Devices Inc.
+ */
+
+#include <linux/device.h>
+#include <linux/kernel.h>
+#include <linux/slab.h>
+#include <linux/sysfs.h>
+#include <linux/spi/spi.h>
+#include <linux/regulator/consumer.h>
+#include <linux/gpio/consumer.h>
+#include <linux/err.h>
+#include <linux/module.h>
+#include <linux/bitrev.h>
+
+#include <linux/iio/iio.h>
+#include <linux/iio/sysfs.h>
+
+enum ad8366_type {
+	ID_AD8366,
+	ID_ADA4961,
+	ID_ADL5240,
+	ID_HMC792,
+	ID_HMC1119,
+};
+
+struct ad8366_info {
+	int gain_min;
+	int gain_max;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct ad8366_state {
 	struct spi_device	*spi;
+<<<<<<< HEAD
 	struct mutex            lock; /* protect sensor state */
 	unsigned char		ch[2];
+=======
+	struct regulator	*reg;
+	struct mutex            lock; /* protect sensor state */
+	struct gpio_desc	*reset_gpio;
+	unsigned char		ch[2];
+	enum ad8366_type	type;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct ad8366_info *info;
 	/*
 	 * DMA (thus cache coherency maintenance) may require the
@@ -59,6 +101,7 @@ struct ad8366_state {
 	unsigned char		data[2] __aligned(IIO_DMA_MINALIGN);
 };
 
+<<<<<<< HEAD
 static size_t ad8366_pack_code(const unsigned char *code, size_t num_channels,
 			       unsigned char *data)
 {
@@ -201,6 +244,62 @@ static int ad8366_write_code(struct ad8366_state *st)
 		st->data[0] = st->ch[0];
 
 	return spi_write(st->spi, st->data, len);
+=======
+static const struct ad8366_info ad8366_infos[] = {
+	[ID_AD8366] = {
+		.gain_min = 4500,
+		.gain_max = 20500,
+	},
+	[ID_ADA4961] = {
+		.gain_min = -6000,
+		.gain_max = 15000,
+	},
+	[ID_ADL5240] = {
+		.gain_min = -11500,
+		.gain_max = 20000,
+	},
+	[ID_HMC792] = {
+		.gain_min = -15750,
+		.gain_max = 0,
+	},
+	[ID_HMC1119] = {
+		.gain_min = -31750,
+		.gain_max = 0,
+	},
+};
+
+static int ad8366_write(struct iio_dev *indio_dev,
+			unsigned char ch_a, unsigned char ch_b)
+{
+	struct ad8366_state *st = iio_priv(indio_dev);
+	int ret;
+
+	switch (st->type) {
+	case ID_AD8366:
+		ch_a = bitrev8(ch_a & 0x3F);
+		ch_b = bitrev8(ch_b & 0x3F);
+
+		st->data[0] = ch_b >> 4;
+		st->data[1] = (ch_b << 4) | (ch_a >> 2);
+		break;
+	case ID_ADA4961:
+		st->data[0] = ch_a & 0x1F;
+		break;
+	case ID_ADL5240:
+		st->data[0] = (ch_a & 0x3F);
+		break;
+	case ID_HMC792:
+	case ID_HMC1119:
+		st->data[0] = ch_a;
+		break;
+	}
+
+	ret = spi_write(st->spi, st->data, indio_dev->num_channels);
+	if (ret < 0)
+		dev_err(&indio_dev->dev, "write failed (%d)", ret);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ad8366_read_raw(struct iio_dev *indio_dev,
@@ -210,7 +309,10 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
 			   long m)
 {
 	struct ad8366_state *st = iio_priv(indio_dev);
+<<<<<<< HEAD
 	const struct ad8366_info *inf = st->info;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 	int code, gain = 0;
 
@@ -218,8 +320,30 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
 	switch (m) {
 	case IIO_CHAN_INFO_HARDWAREGAIN:
 		code = st->ch[chan->channel];
+<<<<<<< HEAD
 		gain = inf->gain_step > 0 ? inf->gain_min : inf->gain_max;
 		gain += inf->gain_step * code;
+=======
+
+		switch (st->type) {
+		case ID_AD8366:
+			gain = code * 253 + 4500;
+			break;
+		case ID_ADA4961:
+			gain = 15000 - code * 1000;
+			break;
+		case ID_ADL5240:
+			gain = 20000 - 31500 + code * 500;
+			break;
+		case ID_HMC792:
+			gain = -1 * code * 500;
+			break;
+		case ID_HMC1119:
+			gain = -1 * code * 250;
+			break;
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Values in dB */
 		*val = gain / 1000;
 		*val2 = (gain % 1000) * 1000;
@@ -254,14 +378,38 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
 	if (gain > inf->gain_max || gain < inf->gain_min)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	gain -= inf->gain_step > 0 ? inf->gain_min : inf->gain_max;
 	code = DIV_ROUND_CLOSEST(gain, inf->gain_step);
+=======
+	switch (st->type) {
+	case ID_AD8366:
+		code = (gain - 4500) / 253;
+		break;
+	case ID_ADA4961:
+		code = (15000 - gain) / 1000;
+		break;
+	case ID_ADL5240:
+		code = ((gain - 500 - 20000) / 500) & 0x3F;
+		break;
+	case ID_HMC792:
+		code = (abs(gain) / 500) & 0x3F;
+		break;
+	case ID_HMC1119:
+		code = (abs(gain) / 250) & 0x7F;
+		break;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&st->lock);
 	switch (mask) {
 	case IIO_CHAN_INFO_HARDWAREGAIN:
 		st->ch[chan->channel] = code;
+<<<<<<< HEAD
 		ret = ad8366_write_code(st);
+=======
+		ret = ad8366_write(indio_dev, st->ch[0], st->ch[1]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		ret = -EINVAL;
@@ -302,21 +450,35 @@ static const struct iio_chan_spec ad8366_channels[] = {
 	AD8366_CHAN(1),
 };
 
+<<<<<<< HEAD
 static int ad8366_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
 	struct gpio_desc *enable_gpio;
 	struct reset_control *rstc;
+=======
+static const struct iio_chan_spec ada4961_channels[] = {
+	AD8366_CHAN(0),
+};
+
+static int ad8366_probe(struct spi_device *spi)
+{
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct iio_dev *indio_dev;
 	struct ad8366_state *st;
 	int ret;
 
+<<<<<<< HEAD
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+=======
+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (indio_dev == NULL)
 		return -ENOMEM;
 
 	st = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	ret = devm_mutex_init(dev, &st->lock);
 	if (ret)
 		return ret;
@@ -365,10 +527,88 @@ static const struct spi_device_id ad8366_id[] = {
 	{ "hmc1018a", (kernel_ulong_t)&hmc1018_chip_info },
 	{ "hmc1019a", (kernel_ulong_t)&hmc1019_chip_info },
 	{ "hmc1119", (kernel_ulong_t)&hmc1119_chip_info },
+=======
+	st->reg = devm_regulator_get(&spi->dev, "vcc");
+	if (!IS_ERR(st->reg)) {
+		ret = regulator_enable(st->reg);
+		if (ret)
+			return ret;
+	}
+
+	spi_set_drvdata(spi, indio_dev);
+	mutex_init(&st->lock);
+	st->spi = spi;
+	st->type = spi_get_device_id(spi)->driver_data;
+
+	switch (st->type) {
+	case ID_AD8366:
+		indio_dev->channels = ad8366_channels;
+		indio_dev->num_channels = ARRAY_SIZE(ad8366_channels);
+		break;
+	case ID_ADA4961:
+	case ID_ADL5240:
+	case ID_HMC792:
+	case ID_HMC1119:
+		st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_HIGH);
+		if (IS_ERR(st->reset_gpio)) {
+			ret = PTR_ERR(st->reset_gpio);
+			goto error_disable_reg;
+		}
+		indio_dev->channels = ada4961_channels;
+		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
+		break;
+	default:
+		dev_err(&spi->dev, "Invalid device ID\n");
+		ret = -EINVAL;
+		goto error_disable_reg;
+	}
+
+	st->info = &ad8366_infos[st->type];
+	indio_dev->name = spi_get_device_id(spi)->name;
+	indio_dev->info = &ad8366_info;
+	indio_dev->modes = INDIO_DIRECT_MODE;
+
+	ret = ad8366_write(indio_dev, 0, 0);
+	if (ret < 0)
+		goto error_disable_reg;
+
+	ret = iio_device_register(indio_dev);
+	if (ret)
+		goto error_disable_reg;
+
+	return 0;
+
+error_disable_reg:
+	if (!IS_ERR(st->reg))
+		regulator_disable(st->reg);
+
+	return ret;
+}
+
+static void ad8366_remove(struct spi_device *spi)
+{
+	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+	struct ad8366_state *st = iio_priv(indio_dev);
+	struct regulator *reg = st->reg;
+
+	iio_device_unregister(indio_dev);
+
+	if (!IS_ERR(reg))
+		regulator_disable(reg);
+}
+
+static const struct spi_device_id ad8366_id[] = {
+	{"ad8366",  ID_AD8366},
+	{"ada4961", ID_ADA4961},
+	{"adl5240", ID_ADL5240},
+	{"hmc792a", ID_HMC792},
+	{"hmc1119", ID_HMC1119},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, ad8366_id);
 
+<<<<<<< HEAD
 static const struct of_device_id ad8366_of_match[] = {
 	{ .compatible = "adi,ad8366", .data = &ad8366_chip_info },
 	{ .compatible = "adi,ada4961", .data = &ada4961_chip_info },
@@ -393,6 +633,14 @@ static struct spi_driver ad8366_driver = {
 		.of_match_table	= ad8366_of_match,
 	},
 	.probe		= ad8366_probe,
+=======
+static struct spi_driver ad8366_driver = {
+	.driver = {
+		.name	= KBUILD_MODNAME,
+	},
+	.probe		= ad8366_probe,
+	.remove		= ad8366_remove,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.id_table	= ad8366_id,
 };
 

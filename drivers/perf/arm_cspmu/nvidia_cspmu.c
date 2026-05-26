@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
+<<<<<<< HEAD
  * Copyright (c) 2022-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+=======
+ * Copyright (c) 2022-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  */
 
@@ -8,7 +12,10 @@
 
 #include <linux/io.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/topology.h>
 
 #include "arm_cspmu.h"
@@ -22,6 +29,7 @@
 #define NV_CNVL_PORT_COUNT           4ULL
 #define NV_CNVL_FILTER_ID_MASK       GENMASK_ULL(NV_CNVL_PORT_COUNT - 1, 0)
 
+<<<<<<< HEAD
 #define NV_UCF_SRC_COUNT             3ULL
 #define NV_UCF_DST_COUNT             4ULL
 #define NV_UCF_FILTER_ID_MASK        GENMASK_ULL(11, 0)
@@ -60,6 +68,8 @@
 #define NV_PCIE_TGT_ADDR_MASK_LO     0xD44
 #define NV_PCIE_TGT_ADDR_MASK_HI     0xD48
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define NV_GENERIC_FILTER_ID_MASK    GENMASK_ULL(31, 0)
 
 #define NV_PRODID_MASK	(PMIIDR_PRODUCTID | PMIIDR_VARIANT | PMIIDR_REVISION)
@@ -163,6 +173,7 @@ static struct attribute *mcf_pmu_event_attrs[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static struct attribute *ucf_pmu_event_attrs[] = {
 	ARM_CSPMU_EVENT_ATTR(bus_cycles,            0x1D),
 
@@ -212,6 +223,8 @@ static struct attribute *pcie_tgt_pmu_event_attrs[] = {
 	NULL
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *generic_pmu_event_attrs[] = {
 	ARM_CSPMU_EVENT_ATTR(cycles, ARM_CSPMU_EVT_CYCLES_DEFAULT),
 	NULL,
@@ -240,6 +253,7 @@ static struct attribute *cnvlink_pmu_format_attrs[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static struct attribute *ucf_pmu_format_attrs[] = {
 	ARM_CSPMU_FORMAT_EVENT_ATTR,
 	ARM_CSPMU_FORMAT_ATTR(src_loc_noncpu, "config1:0"),
@@ -274,6 +288,8 @@ static struct attribute *pcie_tgt_pmu_format_attrs[] = {
 	NULL
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct attribute *generic_pmu_format_attrs[] = {
 	ARM_CSPMU_FORMAT_EVENT_ATTR,
 	ARM_CSPMU_FORMAT_FILTER_ATTR,
@@ -305,6 +321,7 @@ nv_cspmu_get_name(const struct arm_cspmu *cspmu)
 	return ctx->name;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_ACPI) && defined(CONFIG_ARM64)
 static int nv_cspmu_get_inst_id(const struct arm_cspmu *cspmu, u32 *id)
 {
@@ -331,6 +348,8 @@ static int nv_cspmu_get_inst_id(const struct arm_cspmu *cspmu, u32 *id)
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static u32 nv_cspmu_event_filter(const struct perf_event *event)
 {
 	const struct nv_cspmu_ctx *ctx =
@@ -376,6 +395,7 @@ static void nv_cspmu_set_ev_filter(struct arm_cspmu *cspmu,
 	}
 }
 
+<<<<<<< HEAD
 static void nv_cspmu_reset_ev_filter(struct arm_cspmu *cspmu,
 				     const struct perf_event *event)
 {
@@ -390,6 +410,8 @@ static void nv_cspmu_reset_ev_filter(struct arm_cspmu *cspmu,
 		writel(0, cspmu->base0 + PMEVFILT2R + offset);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void nv_cspmu_set_cc_filter(struct arm_cspmu *cspmu,
 				   const struct perf_event *event)
 {
@@ -398,6 +420,7 @@ static void nv_cspmu_set_cc_filter(struct arm_cspmu *cspmu,
 	writel(filter, cspmu->base0 + PMCCFILTR);
 }
 
+<<<<<<< HEAD
 static u32 ucf_pmu_event_filter(const struct perf_event *event)
 {
 	u32 ret, filter, src, dst;
@@ -778,6 +801,12 @@ enum nv_cspmu_name_fmt {
 	NAME_FMT_GENERIC,
 	NAME_FMT_SOCKET,
 	NAME_FMT_SOCKET_INST,
+=======
+
+enum nv_cspmu_name_fmt {
+	NAME_FMT_GENERIC,
+	NAME_FMT_SOCKET
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct nv_cspmu_match {
@@ -881,6 +910,7 @@ static const struct nv_cspmu_match nv_cspmu_match[] = {
 	  },
 	},
 	{
+<<<<<<< HEAD
 	  .prodid = 0x2CF20000,
 	  .prodid_mask = NV_PRODID_MASK,
 	  .name_pattern = "nvidia_ucf_pmu_%u",
@@ -938,6 +968,8 @@ static const struct nv_cspmu_match nv_cspmu_match[] = {
 	  }
 	},
 	{
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  .prodid = 0,
 	  .prodid_mask = 0,
 	  .name_pattern = "nvidia_uncore_pmu_%u",
@@ -960,7 +992,11 @@ static const struct nv_cspmu_match nv_cspmu_match[] = {
 static char *nv_cspmu_format_name(const struct arm_cspmu *cspmu,
 				  const struct nv_cspmu_match *match)
 {
+<<<<<<< HEAD
 	char *name = NULL;
+=======
+	char *name;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev = cspmu->dev;
 
 	static atomic_t pmu_generic_idx = {0};
@@ -974,6 +1010,7 @@ static char *nv_cspmu_format_name(const struct arm_cspmu *cspmu,
 				       socket);
 		break;
 	}
+<<<<<<< HEAD
 	case NAME_FMT_SOCKET_INST: {
 		const int cpu = cpumask_first(&cspmu->associated_cpus);
 		const int socket = cpu_to_node(cpu);
@@ -984,10 +1021,18 @@ static char *nv_cspmu_format_name(const struct arm_cspmu *cspmu,
 					match->name_pattern, socket, inst_id);
 		break;
 	}
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NAME_FMT_GENERIC:
 		name = devm_kasprintf(dev, GFP_KERNEL, match->name_pattern,
 				       atomic_fetch_inc(&pmu_generic_idx));
 		break;
+<<<<<<< HEAD
+=======
+	default:
+		name = NULL;
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return name;
@@ -1028,12 +1073,17 @@ static int nv_cspmu_init_ops(struct arm_cspmu *cspmu)
 	cspmu->impl.ctx = ctx;
 
 	/* NVIDIA specific callbacks. */
+<<<<<<< HEAD
 	SET_OP(validate_event, impl_ops, match, NULL);
 	SET_OP(event_type, impl_ops, match, NULL);
 	SET_OP(is_cycle_counter_event, impl_ops, match, NULL);
 	SET_OP(set_cc_filter, impl_ops, match, nv_cspmu_set_cc_filter);
 	SET_OP(set_ev_filter, impl_ops, match, nv_cspmu_set_ev_filter);
 	SET_OP(reset_ev_filter, impl_ops, match, NULL);
+=======
+	SET_OP(set_cc_filter, impl_ops, match, nv_cspmu_set_cc_filter);
+	SET_OP(set_ev_filter, impl_ops, match, nv_cspmu_set_ev_filter);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SET_OP(get_event_attrs, impl_ops, match, nv_cspmu_get_event_attrs);
 	SET_OP(get_format_attrs, impl_ops, match, nv_cspmu_get_format_attrs);
 	SET_OP(get_name, impl_ops, match, nv_cspmu_get_name);

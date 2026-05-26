@@ -46,6 +46,10 @@ struct dma_fence_chain {
 		 */
 		struct irq_work work;
 	};
+<<<<<<< HEAD
+=======
+	spinlock_t lock;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 

@@ -36,6 +36,7 @@
 
 };
 
+<<<<<<< HEAD
 &fch_gpio0 {
 	status = "okay";
 };
@@ -52,6 +53,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &iomuxc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hog>;
@@ -102,6 +105,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &s5_gpio0 {
 	status = "okay";
 };
@@ -114,6 +118,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart2 {
 	status = "okay";
 };

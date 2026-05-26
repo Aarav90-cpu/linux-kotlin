@@ -17,7 +17,10 @@ static void setup_unoptimized_display_config_with_meta(const struct dml2_instanc
 
 static void setup_speculative_display_config_with_meta(const struct dml2_instance *dml, struct display_configuation_with_meta *out, const struct dml2_display_cfg *display_config)
 {
+<<<<<<< HEAD
 	(void)dml;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcpy(&out->display_config, display_config, sizeof(struct dml2_display_cfg));
 	out->stage1.min_clk_index_for_latency = 0;
 }
@@ -473,7 +476,10 @@ static unsigned int count_elements_in_span(int *array, unsigned int array_size, 
 static bool calculate_h_split_for_scaling_transform(int full_vp_width, int h_active, int num_pipes,
 	enum dml2_scaling_transform scaling_transform, int *pipe_vp_x_start, int *pipe_vp_x_end)
 {
+<<<<<<< HEAD
 	(void)h_active;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, slice_width;
 	const char MAX_SCL_VP_OVERLAP = 3;
 	bool success = false;

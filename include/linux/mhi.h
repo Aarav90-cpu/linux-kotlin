@@ -86,6 +86,7 @@ enum mhi_ch_type {
 };
 
 /**
+<<<<<<< HEAD
  * struct mhi_buf - MHI Buffer description
  * @buf: Virtual address of the buffer
  * @name: Buffer label. For offload channel, configurations name must be:
@@ -102,16 +103,25 @@ struct mhi_buf {
 };
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct image_info - Firmware and RDDM table
  * @mhi_buf: Buffer for firmware and RDDM table
  * @entries: # of entries in table
  */
 struct image_info {
+<<<<<<< HEAD
+=======
+	struct mhi_buf *mhi_buf;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* private: from internal.h */
 	struct bhi_vec_entry *bhi_vec;
 	/* public: */
 	u32 entries;
+<<<<<<< HEAD
 	struct mhi_buf mhi_buf[] __counted_by(entries);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /**
@@ -505,6 +515,25 @@ struct mhi_result {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * struct mhi_buf - MHI Buffer description
+ * @buf: Virtual address of the buffer
+ * @name: Buffer label. For offload channel, configurations name must be:
+ *        ECA - Event context array data
+ *        CCA - Channel context array data
+ * @dma_addr: IOMMU address of the buffer
+ * @len: # of bytes
+ */
+struct mhi_buf {
+	void *buf;
+	const char *name;
+	dma_addr_t dma_addr;
+	size_t len;
+};
+
+/**
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct mhi_driver - Structure representing a MHI client driver
  * @probe: CB function for client driver probe function
  * @remove: CB function for client driver remove function

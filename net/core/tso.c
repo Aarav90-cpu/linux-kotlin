@@ -3,7 +3,10 @@
 #include <linux/if_vlan.h>
 #include <net/ip.h>
 #include <net/tso.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/unaligned.h>
 
 void tso_build_hdr(const struct sk_buff *skb, char *hdr, struct tso_t *tso,
@@ -88,6 +91,7 @@ int tso_start(struct sk_buff *skb, struct tso_t *tso)
 	return hdr_len;
 }
 EXPORT_SYMBOL(tso_start);
+<<<<<<< HEAD
 
 static int tso_dma_iova_try(struct device *dev, struct tso_dma_map *map,
 			    phys_addr_t phys, size_t linear_len,
@@ -356,3 +360,5 @@ bool tso_dma_map_next(struct tso_dma_map *map, dma_addr_t *addr,
 	return true;
 }
 EXPORT_SYMBOL(tso_dma_map_next);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

@@ -63,10 +63,13 @@ static void mctp_test_fragment(struct kunit *test)
 		if (!skb2)
 			break;
 
+<<<<<<< HEAD
 		/* avoid copying single-skb messages */
 		if (first && last)
 			KUNIT_EXPECT_PTR_EQ(test, skb, skb2);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hdr2 = mctp_hdr(skb2);
 
 		tag_mask = MCTP_HDR_TAG_MASK | MCTP_HDR_FLAG_TO;
@@ -174,9 +177,13 @@ static void mctp_rx_input_test_to_desc(const struct mctp_rx_input_test *t,
 KUNIT_ARRAY_PARAM(mctp_rx_input, mctp_rx_input_tests,
 		  mctp_rx_input_test_to_desc);
 
+<<<<<<< HEAD
 /* set up a local dev (with addr 8), route on EID 8, and a socket listening on
  * type 0
  */
+=======
+/* set up a local dev, route on EID 8, and a socket listening on type 0 */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __mctp_route_test_init(struct kunit *test,
 				   struct mctp_test_dev **devp,
 				   struct mctp_dst *dst,
@@ -193,10 +200,13 @@ static void __mctp_route_test_init(struct kunit *test,
 	if (netid != MCTP_NET_ANY)
 		WRITE_ONCE(dev->mdev->net, netid);
 
+<<<<<<< HEAD
 	dev->mdev->addrs = kmalloc_objs(u8, 1, GFP_KERNEL);
 	dev->mdev->num_addrs = 1;
 	dev->mdev->addrs[0] = 8;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mctp_test_dst_setup(test, dst, dev, 68);
 
 	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, &sock);
@@ -914,6 +924,7 @@ static void mctp_test_route_input_cloned_frag(struct kunit *test)
 	__mctp_route_test_fini(test, dev, &dst, sock);
 }
 
+<<<<<<< HEAD
 /* check we can receive an incoming packet with the null EID as daddr, when
  * no RTN_LOCAL routes are present.
  */
@@ -956,6 +967,8 @@ static void mctp_test_route_input_null_eid(struct kunit *test)
 	mctp_test_destroy_dev(dev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #if IS_ENABLED(CONFIG_MCTP_FLOWS)
 
 static void mctp_test_flow_init(struct kunit *test,
@@ -976,6 +989,14 @@ static void mctp_test_flow_init(struct kunit *test,
 	 */
 	__mctp_route_test_init(test, &dev, dst, sock, MCTP_NET_ANY);
 
+<<<<<<< HEAD
+=======
+	/* Assign a single EID. ->addrs is freed on mctp netdev release */
+	dev->mdev->addrs = kmalloc(sizeof(u8), GFP_KERNEL);
+	dev->mdev->num_addrs = 1;
+	dev->mdev->addrs[0] = 8;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb = alloc_skb(len + sizeof(struct mctp_hdr) + 1, GFP_KERNEL);
 	KUNIT_ASSERT_TRUE(test, skb);
 	__mctp_cb(skb);
@@ -1101,6 +1122,11 @@ static void mctp_test_route_output_key_create(struct kunit *test)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
 	WRITE_ONCE(dev->mdev->net, netid);
 
+<<<<<<< HEAD
+=======
+	mctp_test_dst_setup(test, &dst, dev, 68);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, &sock);
 	KUNIT_ASSERT_EQ(test, rc, 0);
 
@@ -1108,8 +1134,11 @@ static void mctp_test_route_output_key_create(struct kunit *test)
 	dev->mdev->num_addrs = 1;
 	dev->mdev->addrs[0] = src_eid;
 
+<<<<<<< HEAD
 	mctp_test_dst_setup(test, &dst, dev, 68);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	skb = alloc_skb(sizeof(struct mctp_hdr) + 1 + len, GFP_KERNEL);
 	KUNIT_ASSERT_TRUE(test, skb);
 	__mctp_cb(skb);
@@ -1208,7 +1237,11 @@ static void mctp_test_route_gw_lookup(struct kunit *test)
 	struct mctp_test_dev *dev;
 	int rc;
 
+<<<<<<< HEAD
 	dev = mctp_test_create_dev_with_addr(8);
+=======
+	dev = mctp_test_create_dev();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
 
 	/* 8 (local) -> 10 (gateway) via 9 (direct) */
@@ -1238,7 +1271,11 @@ static void mctp_test_route_gw_loop(struct kunit *test)
 	struct mctp_test_dev *dev;
 	int rc;
 
+<<<<<<< HEAD
 	dev = mctp_test_create_dev_with_addr(8);
+=======
+	dev = mctp_test_create_dev();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
 
 	/* two routes using each other as the gw */
@@ -1297,7 +1334,11 @@ static void mctp_test_route_gw_mtu(struct kunit *test)
 	unsigned int netid;
 	int rc;
 
+<<<<<<< HEAD
 	dev = mctp_test_create_dev_with_addr(8);
+=======
+	dev = mctp_test_create_dev();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
 	dev->ndev->mtu = mtus->dev;
 	mdev = dev->mdev;
@@ -1612,6 +1653,7 @@ cleanup:
 	__mctp_route_test_fini(test, dev, &dst, sock_ty0);
 }
 
+<<<<<<< HEAD
 static void mctp_test_route_output_direct_no_eids(struct kunit *test)
 {
 	struct mctp_dst dst = { 0 };
@@ -1723,6 +1765,8 @@ static void mctp_test_route_output_extaddr_no_eids(struct kunit *test)
 	mctp_test_destroy_dev(dev);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct kunit_case mctp_test_cases[] = {
 	KUNIT_CASE_PARAM(mctp_test_fragment, mctp_frag_gen_params),
 	KUNIT_CASE_PARAM(mctp_test_rx_input, mctp_rx_input_gen_params),
@@ -1735,7 +1779,10 @@ static struct kunit_case mctp_test_cases[] = {
 	KUNIT_CASE(mctp_test_route_input_sk_fail_frag),
 	KUNIT_CASE(mctp_test_route_input_multiple_nets_bind),
 	KUNIT_CASE(mctp_test_route_input_multiple_nets_key),
+<<<<<<< HEAD
 	KUNIT_CASE(mctp_test_route_input_null_eid),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	KUNIT_CASE(mctp_test_packet_flow),
 	KUNIT_CASE(mctp_test_fragment_flow),
 	KUNIT_CASE(mctp_test_route_output_key_create),
@@ -1746,9 +1793,12 @@ static struct kunit_case mctp_test_cases[] = {
 	KUNIT_CASE_PARAM(mctp_test_route_gw_mtu, mctp_route_gw_mtu_gen_params),
 	KUNIT_CASE(mctp_test_route_gw_output),
 	KUNIT_CASE_PARAM(mctp_test_bind_lookup, mctp_bind_lookup_gen_params),
+<<<<<<< HEAD
 	KUNIT_CASE(mctp_test_route_output_direct_no_eids),
 	KUNIT_CASE(mctp_test_route_output_gw_no_eids),
 	KUNIT_CASE(mctp_test_route_output_extaddr_no_eids),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 

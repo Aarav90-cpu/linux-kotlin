@@ -68,6 +68,26 @@ static struct resource *get_pci_domain_busn_res(int domain_nr)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Some device drivers need know if PCI is initiated.
+ * Basically, we think PCI is not initiated when there
+ * is no device to be found on the pci_bus_type.
+ */
+int no_pci_devices(void)
+{
+	struct device *dev;
+	int no_devices;
+
+	dev = bus_find_next_device(&pci_bus_type, NULL);
+	no_devices = (dev == NULL);
+	put_device(dev);
+	return no_devices;
+}
+EXPORT_SYMBOL(no_pci_devices);
+
+/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * PCI Bus Class
  */
 static void release_pcibus_dev(struct device *dev)
@@ -378,9 +398,12 @@ static void pci_read_bridge_io(struct pci_dev *dev, struct resource *res,
 	unsigned long io_mask, io_granularity, base, limit;
 	struct pci_bus_region region;
 
+<<<<<<< HEAD
 	if (!dev->io_window)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	io_mask = PCI_IO_RANGE_MASK;
 	io_granularity = 0x1000;
 	if (dev->io_window_1k) {
@@ -451,9 +474,12 @@ static void pci_read_bridge_mmio_pref(struct pci_dev *dev, struct resource *res,
 	pci_bus_addr_t base, limit;
 	struct pci_bus_region region;
 
+<<<<<<< HEAD
 	if (!dev->pref_window)
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pci_read_config_word(dev, PCI_PREF_MEMORY_BASE, &mem_base_lo);
 	pci_read_config_word(dev, PCI_PREF_MEMORY_LIMIT, &mem_limit_lo);
 	base64 = (mem_base_lo & PCI_PREF_RANGE_MASK) << 16;
@@ -772,6 +798,7 @@ const unsigned char pcie_link_speed[] = {
 };
 EXPORT_SYMBOL_GPL(pcie_link_speed);
 
+<<<<<<< HEAD
 /**
  * pcie_get_link_speed - Get speed value from PCIe generation number
  * @speed: PCIe speed (1-based: 1 = 2.5GT, 2 = 5GT, ...)
@@ -788,6 +815,8 @@ unsigned char pcie_get_link_speed(unsigned int speed)
 }
 EXPORT_SYMBOL_GPL(pcie_get_link_speed);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 const char *pci_speed_string(enum pci_bus_speed speed)
 {
 	/* Indexed by the pci_bus_speed enum */
@@ -2493,6 +2522,10 @@ static void pci_release_dev(struct device *dev)
 	pci_release_of_node(pci_dev);
 	pcibios_release_device(pci_dev);
 	pci_bus_put(pci_dev->bus);
+<<<<<<< HEAD
+=======
+	kfree(pci_dev->driver_override);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bitmap_free(pci_dev->dma_alias_mask);
 	dev_dbg(dev, "device released\n");
 	kfree(pci_dev);

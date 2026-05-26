@@ -20,8 +20,13 @@
 
 static void guest_code(bool tdp_enabled)
 {
+<<<<<<< HEAD
 	u64 error_code;
 	u64 vector;
+=======
+	uint64_t error_code;
+	uint64_t vector;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vector = kvm_asm_safe_ec(FLDS_MEM_EAX, error_code, "a"(MEM_REGION_GVA));
 
@@ -47,8 +52,13 @@ int main(int argc, char *argv[])
 	struct kvm_vcpu *vcpu;
 	struct kvm_vm *vm;
 	struct ucall uc;
+<<<<<<< HEAD
 	u64 *hva;
 	gpa_t gpa;
+=======
+	uint64_t *hva;
+	uint64_t gpa;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int rc;
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_SMALLER_MAXPHYADDR));

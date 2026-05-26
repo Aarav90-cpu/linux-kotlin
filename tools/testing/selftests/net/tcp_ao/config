@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 CONFIG_CRYPTO_CMAC=y
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 CONFIG_CRYPTO_HMAC=y
 CONFIG_CRYPTO_RMD160=y
 CONFIG_CRYPTO_SHA1=y

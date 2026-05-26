@@ -629,7 +629,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 	case KVM_CAP_IRQFD_RESAMPLE:
 	case KVM_CAP_S390_USER_OPEREXEC:
 	case KVM_CAP_S390_KEYOP:
+<<<<<<< HEAD
 	case KVM_CAP_S390_VSIE_ESAMODE:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		r = 1;
 		break;
 	case KVM_CAP_SET_GUEST_DEBUG2:
@@ -927,11 +930,14 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
 		icpt_operexc_on_all_vcpus(kvm);
 		r = 0;
 		break;
+<<<<<<< HEAD
 	case KVM_CAP_S390_VSIE_ESAMODE:
 		VM_EVENT(kvm, 3, "%s", "ENABLE: CAP_S390_VSIE_ESAMODE");
 		kvm->arch.allow_vsie_esamode = 1;
 		r = 0;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		r = -EINVAL;
 		break;
@@ -5654,7 +5660,13 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 				   struct kvm_memory_slot *new,
 				   enum kvm_mr_change change)
 {
+<<<<<<< HEAD
 	if (kvm_is_ucontrol(kvm) && new && new->id < KVM_USER_MEM_SLOTS)
+=======
+	gpa_t size;
+
+	if (kvm_is_ucontrol(kvm) && new->id < KVM_USER_MEM_SLOTS)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/* When we are protected, we should not change the memory slots */
@@ -5663,6 +5675,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 
 	if (change != KVM_MR_DELETE && change != KVM_MR_FLAGS_ONLY) {
 		/*
+<<<<<<< HEAD
 		 * A few sanity checks. The memory in userland is ok to be
 		 * fragmented into various different vmas. It is okay to mmap()
 		 * and munmap() stuff in this slot after doing this call at any
@@ -5671,6 +5684,22 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
 		if (new->userspace_addr & ~PAGE_MASK)
 			return -EINVAL;
 		if ((new->base_gfn + new->npages) * PAGE_SIZE > kvm->arch.mem_limit)
+=======
+		 * A few sanity checks. We can have memory slots which have to be
+		 * located/ended at a segment boundary (1MB). The memory in userland is
+		 * ok to be fragmented into various different vmas. It is okay to mmap()
+		 * and munmap() stuff in this slot after doing this call at any time
+		 */
+
+		if (new->userspace_addr & 0xffffful)
+			return -EINVAL;
+
+		size = new->npages * PAGE_SIZE;
+		if (size & 0xffffful)
+			return -EINVAL;
+
+		if ((new->base_gfn * PAGE_SIZE) + size > kvm->arch.mem_limit)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 	}
 

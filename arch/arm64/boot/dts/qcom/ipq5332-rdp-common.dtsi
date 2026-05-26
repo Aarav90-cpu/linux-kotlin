@@ -78,6 +78,7 @@
 		drive-strength = <8>;
 		bias-pull-down;
 	};
+<<<<<<< HEAD
 
 	qpic_snand_default_state: qpic-snand-default-state {
 		clock-pins {
@@ -122,4 +123,6 @@
 		nand-ecc-strength = <4>;
 		nand-ecc-step-size = <512>;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

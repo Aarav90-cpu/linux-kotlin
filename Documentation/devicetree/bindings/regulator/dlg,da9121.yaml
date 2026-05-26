@@ -81,6 +81,7 @@ properties:
       Specify the polling period, measured in milliseconds, between interrupt status
       update checks. Range 1000-10000 ms.
 
+<<<<<<< HEAD
   dlg,no-gpio-control:
     type: boolean
     description: |
@@ -89,6 +90,8 @@ properties:
       registers. GPIO pins connected as output pins are not required to be strapped to a
       fixed level. Not allowed together with enable-gpios.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   regulators:
     type: object
     additionalProperties: false
@@ -142,6 +145,7 @@ allOf:
           properties:
             buck2: false
 
+<<<<<<< HEAD
   - if:
       required:
         - dlg,no-gpio-control
@@ -153,6 +157,8 @@ allOf:
               properties:
                 enable-gpios: false
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 additionalProperties: false
 
 examples:
@@ -188,6 +194,7 @@ examples:
     };
 
   - |
+<<<<<<< HEAD
     #include <dt-bindings/interrupt-controller/irq.h>
     #include <dt-bindings/regulator/dlg,da9121-regulator.h>
     i2c {
@@ -218,6 +225,8 @@ examples:
     };
 
   - |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     #include <dt-bindings/gpio/gpio.h>
     #include <dt-bindings/interrupt-controller/irq.h>
     #include <dt-bindings/regulator/dlg,da9121-regulator.h>

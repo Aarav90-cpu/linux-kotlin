@@ -467,6 +467,7 @@ static const struct pinctrl_ops rockchip_pctrl_ops = {
  * Hardware access
  */
 
+<<<<<<< HEAD
 static struct rockchip_mux_recalced_data rv1103b_mux_recalced_data[] = {
 	{
 		.num = 1,
@@ -483,6 +484,8 @@ static struct rockchip_mux_recalced_data rv1103b_mux_recalced_data[] = {
 	},
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct rockchip_mux_recalced_data rv1108_mux_recalced_data[] = {
 	{
 		.num = 1,
@@ -1188,9 +1191,12 @@ static int rockchip_get_mux(struct rockchip_pin_bank *bank, int pin)
 	else
 		regmap = info->regmap_base;
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin >= 12)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctrl->type == RK3506) {
 		if (bank->bank_num == 1)
 			regmap = info->regmap_ioc1;
@@ -1317,9 +1323,12 @@ static int rockchip_set_mux(struct rockchip_pin_bank *bank, int pin, int mux)
 	else
 		regmap = info->regmap_base;
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin >= 12)
 		return 0;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ctrl->type == RK3506) {
 		if (bank->bank_num == 1)
 			regmap = info->regmap_ioc1;
@@ -1517,6 +1526,7 @@ static int px30_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
 	return 0;
 }
 
+<<<<<<< HEAD
 #define RV1103B_DRV_BITS_PER_PIN		8
 #define RV1103B_DRV_PINS_PER_REG		2
 #define RV1103B_DRV_GPIO0_A_OFFSET		0x40100
@@ -1725,6 +1735,8 @@ static int rv1103b_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define RV1108_PULL_PMU_OFFSET		0x10
 #define RV1108_PULL_OFFSET		0x110
 #define RV1108_PULL_PINS_PER_REG	8
@@ -3212,9 +3224,12 @@ static int rockchip_get_drive_perpin(struct rockchip_pin_bank *bank,
 	u8 bit;
 	int drv_type = bank->drv[pin_num / 8].drv_type;
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && pin_num >= 12)
 		drv_type = DRV_TYPE_IO_LEVEL_2_BIT;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = ctrl->drv_calc_reg(bank, pin_num, &regmap, &reg, &bit);
 	if (ret)
 		return ret;
@@ -3276,11 +3291,14 @@ static int rockchip_get_drive_perpin(struct rockchip_pin_bank *bank,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12) {
 		data = data >> 10;
 		return data & 0x3;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data >>= bit;
 	data &= (1 << rmask_bits) - 1;
 
@@ -3309,8 +3327,12 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
 		rmask_bits = RK3588_DRV_BITS_PER_PIN;
 		ret = strength;
 		goto config;
+<<<<<<< HEAD
 	} else if (ctrl->type == RV1103B ||
 		   ctrl->type == RK3506 ||
+=======
+	} else if (ctrl->type == RK3506 ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		   ctrl->type == RK3528 ||
 		   ctrl->type == RK3562 ||
 		   ctrl->type == RK3568) {
@@ -3421,12 +3443,15 @@ config:
 			ret = strength;
 		}
 	}
+<<<<<<< HEAD
 
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12) {
 		rmask_bits = 2;
 		ret = strength;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* enable the write to the equivalent lower bits */
 	data = ((1 << rmask_bits) - 1) << (bit + 16);
 	rmask = data | (data >> 16);
@@ -3481,7 +3506,10 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
 				? PIN_CONFIG_BIAS_PULL_PIN_DEFAULT
 				: PIN_CONFIG_BIAS_DISABLE;
 	case PX30:
+<<<<<<< HEAD
 	case RV1103B:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case RV1108:
 	case RK3188:
 	case RK3288:
@@ -3497,9 +3525,12 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
 		pull_type = bank->pull_type[pin_num / 8];
 		data >>= bit;
 		data &= (1 << RK3188_PULL_BITS_PER_PIN) - 1;
+<<<<<<< HEAD
 
 		if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12)
 			pull_type = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * In the TRM, pull-up being 1 for everything except the GPIO0_D3-D6,
 		 * where that pull up value becomes 3.
@@ -3546,7 +3577,10 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
 		ret = regmap_write(regmap, reg, data);
 		break;
 	case PX30:
+<<<<<<< HEAD
 	case RV1103B:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case RV1108:
 	case RV1126:
 	case RK3188:
@@ -3562,8 +3596,11 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
 	case RK3576:
 	case RK3588:
 		pull_type = bank->pull_type[pin_num / 8];
+<<<<<<< HEAD
 		if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12)
 			pull_type = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EINVAL;
 		for (i = 0; i < ARRAY_SIZE(rockchip_pull_list[pull_type]);
 			i++) {
@@ -3669,11 +3706,14 @@ static int rockchip_get_schmitt(struct rockchip_pin_bank *bank, int pin_num)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12) {
 		data >>= 8;
 		return data & 0x3;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	data >>= bit;
 	switch (ctrl->type) {
 	case RK3562:
@@ -3730,12 +3770,15 @@ static int rockchip_set_schmitt(struct rockchip_pin_bank *bank,
 		}
 	}
 
+<<<<<<< HEAD
 	if (ctrl->type == RV1103B && bank->bank_num == 2 && pin_num >= 12) {
 		data = 0x3 << (bit + 16);
 		rmask = data | (data >> 16);
 		data |= ((enable ? 0x3 : 0) << bit);
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return regmap_update_bits(regmap, reg, rmask, data);
 }
 
@@ -3842,7 +3885,10 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
 	case RK3066B:
 		return pull ? false : true;
 	case PX30:
+<<<<<<< HEAD
 	case RV1103B:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case RV1108:
 	case RV1126:
 	case RK3188:
@@ -4578,6 +4624,7 @@ static struct rockchip_pin_ctrl px30_pin_ctrl = {
 		.schmitt_calc_reg	= px30_calc_schmitt_reg_and_bit,
 };
 
+<<<<<<< HEAD
 static struct rockchip_pin_bank rv1103b_pin_banks[] = {
 	PIN_BANK_IOMUX_FLAGS_OFFSET_DRV_FLAGS(0, 32, "gpio0",
 				    IOMUX_WIDTH_4BIT,
@@ -4623,6 +4670,8 @@ static struct rockchip_pin_ctrl rv1103b_pin_ctrl __maybe_unused = {
 	.schmitt_calc_reg	= rv1103b_calc_schmitt_reg_and_bit,
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static struct rockchip_pin_bank rv1108_pin_banks[] = {
 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU,
 					     IOMUX_SOURCE_PMU,
@@ -5259,8 +5308,11 @@ static struct rockchip_pin_ctrl rk3588_pin_ctrl = {
 static const struct of_device_id rockchip_pinctrl_dt_match[] = {
 	{ .compatible = "rockchip,px30-pinctrl",
 		.data = &px30_pin_ctrl },
+<<<<<<< HEAD
 	{ .compatible = "rockchip,rv1103b-pinctrl",
 		.data = &rv1103b_pin_ctrl },
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ .compatible = "rockchip,rv1108-pinctrl",
 		.data = &rv1108_pin_ctrl },
 	{ .compatible = "rockchip,rv1126-pinctrl",

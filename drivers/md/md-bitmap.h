@@ -125,7 +125,11 @@ struct bitmap_operations {
 	void (*set_pages)(void *data, unsigned long pages);
 	void (*free)(void *data);
 
+<<<<<<< HEAD
 	const struct attribute_group **groups;
+=======
+	struct attribute_group *group;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* the bitmap API */

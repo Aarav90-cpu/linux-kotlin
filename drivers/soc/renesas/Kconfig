@@ -390,6 +390,7 @@ config ARCH_R9A08G045
 	help
 	  This enables support for the Renesas RZ/G3S SoC variants.
 
+<<<<<<< HEAD
 config ARCH_R9A08G046
 	bool "ARM64 Platform support for R9A08G046 (RZ/G3L)"
 	default y if ARCH_RENESAS
@@ -398,6 +399,8 @@ config ARCH_R9A08G046
 	help
 	  This enables support for the Renesas RZ/G3L SoC variants.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config ARCH_R9A09G011
 	bool "ARM64 Platform support for R9A09G011 (RZ/V2M)"
 	default y if ARCH_RENESAS
@@ -482,10 +485,13 @@ config SYSC_R9A08G045
 	bool "Renesas System controller support for R9A08G045 (RZ/G3S)" if COMPILE_TEST
 	select SYSC_RZ
 
+<<<<<<< HEAD
 config SYSC_R9A08G046
 	bool "Renesas System controller support for R9A08G046 (RZ/G3L)" if COMPILE_TEST
 	select SYSC_RZ
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config SYS_R9A09G047
 	bool "Renesas System controller support for R9A09G047 (RZ/G3E)" if COMPILE_TEST
 	select SYSC_RZ

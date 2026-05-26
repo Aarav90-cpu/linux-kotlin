@@ -34,7 +34,10 @@
 #include <linux/sched/mm.h>
 #include <linux/msi.h>
 #include <uapi/linux/iommufd.h>
+<<<<<<< HEAD
 #include <linux/generic_pt/iommu.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "dma-iommu.h"
 #include "iommu-priv.h"
@@ -62,6 +65,7 @@ struct iommu_group {
 	int id;
 	struct iommu_domain *default_domain;
 	struct iommu_domain *blocking_domain;
+<<<<<<< HEAD
 	struct iommu_domain *domain;
 	struct list_head entry;
 	unsigned int owner_cnt;
@@ -70,6 +74,16 @@ struct iommu_group {
 	 * If non-zero, concurrent domain attachments are rejected.
 	 */
 	unsigned int recovery_cnt;
+=======
+	/*
+	 * During a group device reset, @resetting_domain points to the physical
+	 * domain, while @domain points to the attached domain before the reset.
+	 */
+	struct iommu_domain *resetting_domain;
+	struct iommu_domain *domain;
+	struct list_head entry;
+	unsigned int owner_cnt;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	void *owner;
 };
 
@@ -77,6 +91,7 @@ struct group_device {
 	struct list_head list;
 	struct device *dev;
 	char *name;
+<<<<<<< HEAD
 	/*
 	 * Device is blocked for a pending recovery while its group->domain is
 	 * retained. This can happen when:
@@ -84,12 +99,15 @@ struct group_device {
 	 */
 	bool blocked;
 	unsigned int reset_depth;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* Iterate over each struct group_device in a struct iommu_group */
 #define for_each_group_device(group, pos) \
 	list_for_each_entry(pos, &(group)->devices, list)
 
+<<<<<<< HEAD
 static struct group_device *__dev_to_gdev(struct device *dev)
 {
 	struct iommu_group *group = dev->iommu_group;
@@ -104,6 +122,8 @@ static struct group_device *__dev_to_gdev(struct device *dev)
 	return NULL;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct iommu_group_attribute {
 	struct attribute attr;
 	ssize_t (*show)(struct iommu_group *group, char *buf);
@@ -2217,8 +2237,11 @@ EXPORT_SYMBOL_GPL(iommu_attach_device);
 
 int iommu_deferred_attach(struct device *dev, struct iommu_domain *domain)
 {
+<<<<<<< HEAD
 	struct group_device *gdev;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * This is called on the dma mapping fast path so avoid locking. This is
 	 * racy, but we have an expectation that the driver will setup its DMAs
@@ -2229,18 +2252,27 @@ int iommu_deferred_attach(struct device *dev, struct iommu_domain *domain)
 
 	guard(mutex)(&dev->iommu_group->mutex);
 
+<<<<<<< HEAD
 	gdev = __dev_to_gdev(dev);
 	if (WARN_ON(!gdev))
 		return -ENODEV;
 
 	/*
 	 * This is a concurrent attach during device recovery. Reject it until
+=======
+	/*
+	 * This is a concurrent attach during a device reset. Reject it until
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
 	 *
 	 * Note that this might fail the iommu_dma_map(). But there's nothing
 	 * more we can do here.
 	 */
+<<<<<<< HEAD
 	if (gdev->blocked)
+=======
+	if (dev->iommu_group->resetting_domain)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 	return __iommu_attach_device(domain, dev, NULL);
 }
@@ -2297,6 +2329,7 @@ EXPORT_SYMBOL_GPL(iommu_get_domain_for_dev);
 struct iommu_domain *iommu_driver_get_domain_for_dev(struct device *dev)
 {
 	struct iommu_group *group = dev->iommu_group;
+<<<<<<< HEAD
 	struct group_device *gdev;
 
 	lockdep_assert_held(&group->mutex);
@@ -2305,16 +2338,30 @@ struct iommu_domain *iommu_driver_get_domain_for_dev(struct device *dev)
 	if (WARN_ON(!gdev))
 		return NULL;
 
+=======
+
+	lockdep_assert_held(&group->mutex);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Driver handles the low-level __iommu_attach_device(), including the
 	 * one invoked by pci_dev_reset_iommu_done() re-attaching the device to
 	 * the cached group->domain. In this case, the driver must get the old
+<<<<<<< HEAD
 	 * domain from group->blocking_domain rather than group->domain. This
 	 * prevents it from re-attaching the device from group->domain (old) to
 	 * group->domain (new).
 	 */
 	if (gdev->blocked)
 		return group->blocking_domain;
+=======
+	 * domain from group->resetting_domain rather than group->domain. This
+	 * prevents it from re-attaching the device from group->domain (old) to
+	 * group->domain (new).
+	 */
+	if (group->resetting_domain)
+		return group->resetting_domain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return group->domain;
 }
@@ -2473,11 +2520,18 @@ static int __iommu_group_set_domain_internal(struct iommu_group *group,
 		return -EINVAL;
 
 	/*
+<<<<<<< HEAD
 	 * This is a concurrent attach during device recovery. Reject it until
 	 * pci_dev_reset_iommu_done() attaches the device to group->domain, if
 	 * IOMMU_SET_DOMAIN_MUST_SUCCEED is not set.
 	 */
 	if (group->recovery_cnt && !(flags & IOMMU_SET_DOMAIN_MUST_SUCCEED))
+=======
+	 * This is a concurrent attach during a device reset. Reject it until
+	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
+	 */
+	if (group->resetting_domain)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 
 	/*
@@ -2488,6 +2542,7 @@ static int __iommu_group_set_domain_internal(struct iommu_group *group,
 	 */
 	result = 0;
 	for_each_group_device(group, gdev) {
+<<<<<<< HEAD
 		/*
 		 * Device under recovery is attached to group->blocking_domain.
 		 * Don't change that. pci_dev_reset_iommu_done() will re-attach
@@ -2495,6 +2550,8 @@ static int __iommu_group_set_domain_internal(struct iommu_group *group,
 		 */
 		if (gdev->blocked)
 			continue;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = __iommu_device_set_domain(group, gdev->dev, new_domain,
 						group->domain, flags);
 		if (ret) {
@@ -2613,6 +2670,7 @@ out_set_count:
 	return pgsize;
 }
 
+<<<<<<< HEAD
 static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
 				    unsigned long iova, phys_addr_t paddr,
 				    size_t size, int prot, gfp_t gfp,
@@ -2625,6 +2683,31 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
 	if (WARN_ON(!ops->map_pages))
 		return -ENODEV;
 
+=======
+int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+{
+	const struct iommu_domain_ops *ops = domain->ops;
+	unsigned long orig_iova = iova;
+	unsigned int min_pagesz;
+	size_t orig_size = size;
+	phys_addr_t orig_paddr = paddr;
+	int ret = 0;
+
+	might_sleep_if(gfpflags_allow_blocking(gfp));
+
+	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
+		return -EINVAL;
+
+	if (WARN_ON(!ops->map_pages || domain->pgsize_bitmap == 0UL))
+		return -ENODEV;
+
+	/* Discourage passing strange GFP flags */
+	if (WARN_ON_ONCE(gfp & (__GFP_COMP | __GFP_DMA | __GFP_DMA32 |
+				__GFP_HIGHMEM)))
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* find out the minimum page size supported */
 	min_pagesz = 1 << __ffs(domain->pgsize_bitmap);
 
@@ -2642,18 +2725,27 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
 	pr_debug("map: iova 0x%lx pa %pa size 0x%zx\n", iova, &paddr, size);
 
 	while (size) {
+<<<<<<< HEAD
 		size_t pgsize, count, op_mapped = 0;
+=======
+		size_t pgsize, count, mapped = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		pgsize = iommu_pgsize(domain, iova, paddr, size, &count);
 
 		pr_debug("mapping: iova 0x%lx pa %pa pgsize 0x%zx count %zu\n",
 			 iova, &paddr, pgsize, count);
 		ret = ops->map_pages(domain, iova, paddr, pgsize, count, prot,
+<<<<<<< HEAD
 				     gfp, &op_mapped);
+=======
+				     gfp, &mapped);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Some pages may have been mapped, even if an error occurred,
 		 * so we should account for those so they can be unmapped.
 		 */
+<<<<<<< HEAD
 		*mapped += op_mapped;
 		if (ret)
 			return ret;
@@ -2663,6 +2755,26 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
 		paddr += op_mapped;
 	}
 	return 0;
+=======
+		size -= mapped;
+
+		if (ret)
+			break;
+
+		iova += mapped;
+		paddr += mapped;
+	}
+
+	/* unroll mapping in case something went wrong */
+	if (ret) {
+		iommu_unmap(domain, orig_iova, orig_size - size);
+	} else {
+		trace_map(orig_iova, orig_paddr, orig_size);
+		iommu_debug_map(domain, orig_paddr, orig_size);
+	}
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int iommu_sync_map(struct iommu_domain *domain, unsigned long iova, size_t size)
@@ -2674,6 +2786,7 @@ int iommu_sync_map(struct iommu_domain *domain, unsigned long iova, size_t size)
 	return ops->iotlb_sync_map(domain, iova, size);
 }
 
+<<<<<<< HEAD
 int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
 		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
 {
@@ -2706,6 +2819,8 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int iommu_map(struct iommu_domain *domain, unsigned long iova,
 	      phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
 {
@@ -2723,6 +2838,7 @@ int iommu_map(struct iommu_domain *domain, unsigned long iova,
 }
 EXPORT_SYMBOL_GPL(iommu_map);
 
+<<<<<<< HEAD
 static size_t
 __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
 			   size_t size, struct iommu_iotlb_gather *iotlb_gather)
@@ -2732,6 +2848,21 @@ __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
 	unsigned int min_pagesz;
 
 	if (WARN_ON(!ops->unmap_pages))
+=======
+static size_t __iommu_unmap(struct iommu_domain *domain,
+			    unsigned long iova, size_t size,
+			    struct iommu_iotlb_gather *iotlb_gather)
+{
+	const struct iommu_domain_ops *ops = domain->ops;
+	size_t unmapped_page, unmapped = 0;
+	unsigned long orig_iova = iova;
+	unsigned int min_pagesz;
+
+	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
+		return 0;
+
+	if (WARN_ON(!ops->unmap_pages || domain->pgsize_bitmap == 0UL))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/* find out the minimum page size supported */
@@ -2750,6 +2881,11 @@ __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
 
 	pr_debug("unmap this: iova 0x%lx size 0x%zx\n", iova, size);
 
+<<<<<<< HEAD
+=======
+	iommu_debug_unmap_begin(domain, iova, size);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Keep iterating until we either unmap 'size' bytes (or more)
 	 * or we hit an area that isn't mapped.
@@ -2775,6 +2911,7 @@ __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
 		unmapped += unmapped_page;
 	}
 
+<<<<<<< HEAD
 	return unmapped;
 }
 
@@ -2798,6 +2935,10 @@ static size_t __iommu_unmap(struct iommu_domain *domain, unsigned long iova,
 						      iotlb_gather);
 	trace_unmap(iova, size, unmapped);
 	iommu_debug_unmap_end(domain, iova, size, unmapped);
+=======
+	trace_unmap(orig_iova, size, unmapped);
+	iommu_debug_unmap_end(domain, orig_iova, size, unmapped);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return unmapped;
 }
 
@@ -3600,12 +3741,16 @@ static void __iommu_remove_group_pasid(struct iommu_group *group,
 	struct group_device *device;
 
 	for_each_group_device(group, device) {
+<<<<<<< HEAD
 		/*
 		 * A group-level detach cannot fail, even if there is a blocked
 		 * device. In fact, blocked devices must be already detached for
 		 * a pending device recovery.
 		 */
 		if (!device->blocked && device->dev->iommu->max_pasids > 0)
+=======
+		if (device->dev->iommu->max_pasids > 0)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			iommu_remove_dev_pasid(device->dev, pasid, domain);
 	}
 }
@@ -3650,10 +3795,17 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
 	mutex_lock(&group->mutex);
 
 	/*
+<<<<<<< HEAD
 	 * This is a concurrent attach during device recovery. Reject it until
 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
 	 */
 	if (group->recovery_cnt) {
+=======
+	 * This is a concurrent attach during a device reset. Reject it until
+	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
+	 */
+	if (group->resetting_domain) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EBUSY;
 		goto out_unlock;
 	}
@@ -3743,10 +3895,17 @@ int iommu_replace_device_pasid(struct iommu_domain *domain,
 	mutex_lock(&group->mutex);
 
 	/*
+<<<<<<< HEAD
 	 * This is a concurrent attach during device recovery. Reject it until
 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
 	 */
 	if (group->recovery_cnt) {
+=======
+	 * This is a concurrent attach during a device reset. Reject it until
+	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
+	 */
+	if (group->resetting_domain) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EBUSY;
 		goto out_unlock;
 	}
@@ -4017,12 +4176,20 @@ EXPORT_SYMBOL_NS_GPL(iommu_replace_group_handle, "IOMMUFD_INTERNAL");
  * routine wants to block any IOMMU activity: translation and ATS invalidation.
  *
  * This function attaches the device's RID/PASID(s) the group->blocking_domain,
+<<<<<<< HEAD
  * incrementing the group->recovery_cnt, to allow the IOMMU driver pausing any
+=======
+ * setting the group->resetting_domain. This allows the IOMMU driver pausing any
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * IOMMU activity while leaving the group->domain pointer intact. Later when the
  * reset is finished, pci_dev_reset_iommu_done() can restore everything.
  *
  * Caller must use pci_dev_reset_iommu_prepare() with pci_dev_reset_iommu_done()
+<<<<<<< HEAD
  * before/after the core-level reset routine, to decrement the recovery_cnt.
+=======
+ * before/after the core-level reset routine, to unset the resetting_domain.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 on success or negative error code if the preparation failed.
  *
@@ -4035,7 +4202,10 @@ EXPORT_SYMBOL_NS_GPL(iommu_replace_group_handle, "IOMMUFD_INTERNAL");
 int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
 {
 	struct iommu_group *group = pdev->dev.iommu_group;
+<<<<<<< HEAD
 	struct group_device *gdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long pasid;
 	void *entry;
 	int ret;
@@ -4045,6 +4215,7 @@ int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
 
 	guard(mutex)(&group->mutex);
 
+<<<<<<< HEAD
 	gdev = __dev_to_gdev(&pdev->dev);
 	if (WARN_ON(!gdev))
 		return -ENODEV;
@@ -4057,11 +4228,21 @@ int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
 		gdev->reset_depth--;
 		return ret;
 	}
+=======
+	/* Re-entry is not allowed */
+	if (WARN_ON(group->resetting_domain))
+		return -EBUSY;
+
+	ret = __iommu_group_alloc_blocking_domain(group);
+	if (ret)
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Stage RID domain at blocking_domain while retaining group->domain */
 	if (group->domain != group->blocking_domain) {
 		ret = __iommu_attach_device(group->blocking_domain, &pdev->dev,
 					    group->domain);
+<<<<<<< HEAD
 		if (ret) {
 			gdev->reset_depth--;
 			return ret;
@@ -4076,11 +4257,19 @@ int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
 	gdev->blocked = true;
 
 	/*
+=======
+		if (ret)
+			return ret;
+	}
+
+	/*
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Stage PASID domains at blocking_domain while retaining pasid_array.
 	 *
 	 * The pasid_array is mostly fenced by group->mutex, except one reader
 	 * in iommu_attach_handle_get(), so it's safe to read without xa_lock.
 	 */
+<<<<<<< HEAD
 	if (pdev->dev.iommu->max_pasids > 0) {
 		xa_for_each_start(&group->pasid_array, pasid, entry, 1) {
 			struct iommu_domain *pasid_dom =
@@ -4091,10 +4280,18 @@ int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
 	}
 
 	group->recovery_cnt++;
+=======
+	xa_for_each_start(&group->pasid_array, pasid, entry, 1)
+		iommu_remove_dev_pasid(&pdev->dev, pasid,
+				       pasid_array_entry_to_domain(entry));
+
+	group->resetting_domain = group->blocking_domain;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(pci_dev_reset_iommu_prepare);
 
+<<<<<<< HEAD
 static int __group_device_cmp_dma_alias(struct pci_dev *dev, u16 alias,
 					void *data)
 {
@@ -4130,14 +4327,22 @@ static bool group_device_dma_alias_is_blocked(struct iommu_group *group,
 	return false;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * pci_dev_reset_iommu_done() - Restore IOMMU after a PCI device reset is done
  * @pdev: PCI device that has finished a reset routine
  *
  * After a PCIe device finishes a reset routine, it wants to restore its IOMMU
+<<<<<<< HEAD
  * activity, including new translation and cache invalidation, by re-attaching
  * all RID/PASID of the device back to the domains retained in the core-level
  * structure.
+=======
+ * IOMMU activity, including new translation as well as cache invalidation, by
+ * re-attaching all RID/PASID of the device's back to the domains retained in
+ * the core-level structure.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Caller must pair it with a successful pci_dev_reset_iommu_prepare().
  *
@@ -4147,7 +4352,10 @@ static bool group_device_dma_alias_is_blocked(struct iommu_group *group,
 void pci_dev_reset_iommu_done(struct pci_dev *pdev)
 {
 	struct iommu_group *group = pdev->dev.iommu_group;
+<<<<<<< HEAD
 	struct group_device *gdev;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long pasid;
 	void *entry;
 
@@ -4156,6 +4364,7 @@ void pci_dev_reset_iommu_done(struct pci_dev *pdev)
 
 	guard(mutex)(&group->mutex);
 
+<<<<<<< HEAD
 	gdev = __dev_to_gdev(&pdev->dev);
 	if (WARN_ON(!gdev))
 		return;
@@ -4190,11 +4399,24 @@ void pci_dev_reset_iommu_done(struct pci_dev *pdev)
 	 * initialized yet
 	 */
 	if (group->domain && group->domain != group->blocking_domain) {
+=======
+	/* pci_dev_reset_iommu_prepare() was bypassed for the device */
+	if (!group->resetting_domain)
+		return;
+
+	/* pci_dev_reset_iommu_prepare() was not successfully called */
+	if (WARN_ON(!group->blocking_domain))
+		return;
+
+	/* Re-attach RID domain back to group->domain */
+	if (group->domain != group->blocking_domain) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		WARN_ON(__iommu_attach_device(group->domain, &pdev->dev,
 					      group->blocking_domain));
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Update gdev->blocked upon the domain change, as it is used to return
 	 * the correct domain in iommu_driver_get_domain_for_dev() that might be
 	 * called in a set_dev_pasid callback function.
@@ -4202,11 +4424,14 @@ void pci_dev_reset_iommu_done(struct pci_dev *pdev)
 	gdev->blocked = false;
 
 	/*
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 * Re-attach PASID domains back to the domains retained in pasid_array.
 	 *
 	 * The pasid_array is mostly fenced by group->mutex, except one reader
 	 * in iommu_attach_handle_get(), so it's safe to read without xa_lock.
 	 */
+<<<<<<< HEAD
 	if (pdev->dev.iommu->max_pasids > 0) {
 		xa_for_each_start(&group->pasid_array, pasid, entry, 1) {
 			struct iommu_domain *pasid_dom =
@@ -4220,6 +4445,14 @@ void pci_dev_reset_iommu_done(struct pci_dev *pdev)
 
 	if (!WARN_ON(group->recovery_cnt == 0))
 		group->recovery_cnt--;
+=======
+	xa_for_each_start(&group->pasid_array, pasid, entry, 1)
+		WARN_ON(__iommu_set_group_pasid(
+			pasid_array_entry_to_domain(entry), group, pasid,
+			group->blocking_domain));
+
+	group->resetting_domain = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(pci_dev_reset_iommu_done);
 

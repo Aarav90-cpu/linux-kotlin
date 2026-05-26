@@ -369,16 +369,22 @@ out:
 static void iwl_mld_update_link_sig(struct ieee80211_vif *vif, int sig,
 				    struct ieee80211_bss_conf *bss_conf)
 {
+<<<<<<< HEAD
 	struct iwl_mld_link *link = iwl_mld_link_from_mac80211(bss_conf);
 	struct iwl_mld *mld = iwl_mld_vif_from_mac80211(vif)->mld;
 	int exit_emlsr_thresh;
 	int last_event;
+=======
+	struct iwl_mld *mld = iwl_mld_vif_from_mac80211(vif)->mld;
+	int exit_emlsr_thresh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (sig == 0) {
 		IWL_DEBUG_RX(mld, "RSSI is 0 - skip signal based decision\n");
 		return;
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(!link))
 		return;
 
@@ -402,6 +408,9 @@ static void iwl_mld_update_link_sig(struct ieee80211_vif *vif, int sig,
 						  sig, GFP_KERNEL);
 		}
 	}
+=======
+	/* TODO: task=statistics handle CQM notifications */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!iwl_mld_emlsr_active(vif)) {
 		/* We're not in EMLSR and our signal is bad,
@@ -431,13 +440,22 @@ iwl_mld_process_per_link_stats(struct iwl_mld *mld,
 	u32 total_airtime_usec = 0;
 
 	for (u32 fw_id = 0;
+<<<<<<< HEAD
 	     fw_id < mld->fw->ucode_capa.num_links;
+=======
+	     fw_id < ARRAY_SIZE(mld->fw_id_to_bss_conf);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	     fw_id++) {
 		const struct iwl_stats_ntfy_per_link *link_stats;
 		struct ieee80211_bss_conf *bss_conf;
 		int sig;
 
+<<<<<<< HEAD
 		bss_conf = iwl_mld_fw_id_to_link_conf(mld, fw_id);
+=======
+		bss_conf = wiphy_dereference(mld->wiphy,
+					     mld->fw_id_to_bss_conf[fw_id]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!bss_conf || bss_conf->vif->type != NL80211_IFTYPE_STATION)
 			continue;
 

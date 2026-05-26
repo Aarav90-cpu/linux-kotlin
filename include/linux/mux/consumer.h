@@ -16,8 +16,11 @@ struct device;
 struct mux_control;
 struct mux_state;
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MULTIPLEXER)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 unsigned int mux_control_states(struct mux_control *mux);
 int __must_check mux_control_select_delay(struct mux_control *mux,
 					  unsigned int state,
@@ -56,6 +59,7 @@ int mux_control_deselect(struct mux_control *mux);
 int mux_state_deselect(struct mux_state *mstate);
 
 struct mux_control *mux_control_get(struct device *dev, const char *mux_name);
+<<<<<<< HEAD
 struct mux_control *mux_control_get_optional(struct device *dev, const char *mux_name);
 void mux_control_put(struct mux_control *mux);
 
@@ -160,5 +164,13 @@ static inline struct mux_state *devm_mux_state_get_optional_selected(struct devi
 }
 
 #endif /* CONFIG_MULTIPLEXER */
+=======
+void mux_control_put(struct mux_control *mux);
+
+struct mux_control *devm_mux_control_get(struct device *dev,
+					 const char *mux_name);
+struct mux_state *devm_mux_state_get(struct device *dev,
+				     const char *mux_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #endif /* _LINUX_MUX_CONSUMER_H */

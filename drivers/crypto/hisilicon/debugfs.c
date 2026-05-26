@@ -45,8 +45,13 @@ struct qm_dfx_item {
 
 struct qm_cmd_dump_item {
 	const char *cmd;
+<<<<<<< HEAD
 	const char *info_name;
 	int (*dump_fn)(struct hisi_qm *qm, char *cmd, const char *info_name);
+=======
+	char *info_name;
+	int (*dump_fn)(struct hisi_qm *qm, char *cmd, char *info_name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct qm_dfx_item qm_dfx_files[] = {
@@ -151,7 +156,11 @@ static ssize_t qm_cmd_read(struct file *filp, char __user *buffer,
 }
 
 static void dump_show(struct hisi_qm *qm, void *info,
+<<<<<<< HEAD
 		     unsigned int info_size, const char *info_name)
+=======
+		     unsigned int info_size, char *info_name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = &qm->pdev->dev;
 	u8 *info_curr = info;
@@ -165,7 +174,11 @@ static void dump_show(struct hisi_qm *qm, void *info,
 	}
 }
 
+<<<<<<< HEAD
 static int qm_sqc_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_sqc_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = &qm->pdev->dev;
 	struct qm_sqc sqc;
@@ -202,7 +215,11 @@ static int qm_sqc_dump(struct hisi_qm *qm, char *s, const char *name)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qm_cqc_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_cqc_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = &qm->pdev->dev;
 	struct qm_cqc cqc;
@@ -239,7 +256,11 @@ static int qm_cqc_dump(struct hisi_qm *qm, char *s, const char *name)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qm_eqc_aeqc_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_eqc_aeqc_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = &qm->pdev->dev;
 	struct qm_aeqc aeqc;
@@ -305,7 +326,11 @@ static int q_dump_param_parse(struct hisi_qm *qm, char *s,
 
 	ret = kstrtou32(presult, 0, e_id);
 	if (ret || *e_id >= q_depth) {
+<<<<<<< HEAD
 		dev_err(dev, "Please input sqe num (0-%d)", q_depth - 1);
+=======
+		dev_err(dev, "Please input sqe num (0-%u)", q_depth - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -317,7 +342,11 @@ static int q_dump_param_parse(struct hisi_qm *qm, char *s,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qm_sq_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_sq_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u16 sq_depth = qm->qp_array->sq_depth;
 	struct hisi_qp *qp;
@@ -345,7 +374,11 @@ static int qm_sq_dump(struct hisi_qm *qm, char *s, const char *name)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qm_cq_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_cq_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct qm_cqe *cqe_curr;
 	struct hisi_qp *qp;
@@ -363,7 +396,11 @@ static int qm_cq_dump(struct hisi_qm *qm, char *s, const char *name)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qm_eq_aeq_dump(struct hisi_qm *qm, char *s, const char *name)
+=======
+static int qm_eq_aeq_dump(struct hisi_qm *qm, char *s, char *name)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct device *dev = &qm->pdev->dev;
 	u16 xeq_depth;
@@ -388,7 +425,11 @@ static int qm_eq_aeq_dump(struct hisi_qm *qm, char *s, const char *name)
 	}
 
 	if (xeqe_id >= xeq_depth) {
+<<<<<<< HEAD
 		dev_err(dev, "Please input eqe or aeqe num (0-%d)", xeq_depth - 1);
+=======
+		dev_err(dev, "Please input eqe or aeqe num (0-%u)", xeq_depth - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -1040,6 +1081,7 @@ void hisi_qm_show_last_dfx_regs(struct hisi_qm *qm)
 	}
 }
 
+<<<<<<< HEAD
 static int qm_usage_percent(struct hisi_qm *qm, int chan_num)
 {
 	u32 val, used_bw, total_bw;
@@ -1091,6 +1133,8 @@ static int qm_usage_show(struct seq_file *s, void *unused)
 }
 DEFINE_SHOW_ATTRIBUTE(qm_usage);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int qm_diff_regs_show(struct seq_file *s, void *unused)
 {
 	struct hisi_qm *qm = s->private;
@@ -1210,9 +1254,12 @@ void hisi_qm_debug_init(struct hisi_qm *qm)
 		debugfs_create_file("diff_regs", 0444, qm->debug.qm_d,
 					qm, &qm_diff_regs_fops);
 
+<<<<<<< HEAD
 	if (qm->ver >= QM_HW_V5)
 		debugfs_create_file("dev_usage", 0444, qm->debug.debug_root, qm, &qm_usage_fops);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	debugfs_create_file("regs", 0444, qm->debug.qm_d, qm, &qm_regs_fops);
 
 	debugfs_create_file("cmd", 0600, qm->debug.qm_d, qm, &qm_cmd_fops);

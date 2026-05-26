@@ -67,7 +67,10 @@ properties:
 
       - items:
           - enum:
+<<<<<<< HEAD
               - qcom,eliza-dp
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
               - qcom,sm8750-dp
           - const: qcom,sm8650-dp
 

@@ -454,10 +454,18 @@ void nvme_end_req(struct request *req)
 	blk_mq_end_request(req, status);
 }
 
+<<<<<<< HEAD
 static void __nvme_complete_rq(struct request *req)
 {
 	struct nvme_ctrl *ctrl = nvme_req(req)->ctrl;
 
+=======
+void nvme_complete_rq(struct request *req)
+{
+	struct nvme_ctrl *ctrl = nvme_req(req)->ctrl;
+
+	trace_nvme_complete_rq(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nvme_cleanup_cmd(req);
 
 	/*
@@ -492,12 +500,15 @@ static void __nvme_complete_rq(struct request *req)
 		return;
 	}
 }
+<<<<<<< HEAD
 
 void nvme_complete_rq(struct request *req)
 {
 	trace_nvme_complete_rq(req);
 	__nvme_complete_rq(req);
 }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 EXPORT_SYMBOL_GPL(nvme_complete_rq);
 
 void nvme_complete_batch_req(struct request *req)
@@ -518,7 +529,11 @@ blk_status_t nvme_host_path_error(struct request *req)
 {
 	nvme_req(req)->status = NVME_SC_HOST_PATH_ERROR;
 	blk_mq_set_request_complete(req);
+<<<<<<< HEAD
 	__nvme_complete_rq(req);
+=======
+	nvme_complete_rq(req);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return BLK_STS_OK;
 }
 EXPORT_SYMBOL_GPL(nvme_host_path_error);
@@ -1880,7 +1895,10 @@ static bool nvme_init_integrity(struct nvme_ns_head *head,
 		break;
 	}
 
+<<<<<<< HEAD
 	bi->flags |= BLK_SPLIT_INTERVAL_CAPABLE;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bi->metadata_size = head->ms;
 	if (bi->csum_type) {
 		bi->pi_tuple_size = head->pi_size;
@@ -1889,6 +1907,29 @@ static bool nvme_init_integrity(struct nvme_ns_head *head,
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+static void nvme_config_discard(struct nvme_ns *ns, struct queue_limits *lim)
+{
+	struct nvme_ctrl *ctrl = ns->ctrl;
+
+	if (ctrl->dmrsl && ctrl->dmrsl <= nvme_sect_to_lba(ns->head, UINT_MAX))
+		lim->max_hw_discard_sectors =
+			nvme_lba_to_sect(ns->head, ctrl->dmrsl);
+	else if (ctrl->oncs & NVME_CTRL_ONCS_DSM)
+		lim->max_hw_discard_sectors = UINT_MAX;
+	else
+		lim->max_hw_discard_sectors = 0;
+
+	lim->discard_granularity = lim->logical_block_size;
+
+	if (ctrl->dmrl)
+		lim->max_discard_segments = ctrl->dmrl;
+	else
+		lim->max_discard_segments = NVME_DSM_MAX_RANGES;
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static bool nvme_ns_ids_equal(struct nvme_ns_ids *a, struct nvme_ns_ids *b)
 {
 	return uuid_equal(&a->uuid, &b->uuid) &&
@@ -2064,6 +2105,7 @@ static void nvme_set_ctrl_limits(struct nvme_ctrl *ctrl,
 }
 
 static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
+<<<<<<< HEAD
 		struct nvme_id_ns_nvm *nvm, struct queue_limits *lim)
 {
 	struct nvme_ns_head *head = ns->head;
@@ -2073,6 +2115,14 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
 	u32 npdg = 1, npda = 1;
 	bool valid = true;
 	u8 optperf;
+=======
+		struct queue_limits *lim)
+{
+	struct nvme_ns_head *head = ns->head;
+	u32 bs = 1U << head->lba_shift;
+	u32 atomic_bs, phys_bs, io_opt = 0;
+	bool valid = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * The block layer can't support LBA sizes larger than the page size
@@ -2087,12 +2137,16 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
 	phys_bs = bs;
 	atomic_bs = nvme_configure_atomic_write(ns, id, lim, bs);
 
+<<<<<<< HEAD
 	optperf = id->nsfeat >> NVME_NS_FEAT_OPTPERF_SHIFT;
 	if (ctrl->vs >= NVME_VS(2, 1, 0))
 		optperf &= NVME_NS_FEAT_OPTPERF_MASK_2_1;
 	else
 		optperf &= NVME_NS_FEAT_OPTPERF_MASK;
 	if (optperf) {
+=======
+	if (id->nsfeat & NVME_NS_FEAT_IO_OPT) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* NPWG = Namespace Preferred Write Granularity */
 		phys_bs = bs * (1 + le16_to_cpu(id->npwg));
 		/* NOWS = Namespace Optimal Write Size */
@@ -2109,6 +2163,7 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
 	lim->physical_block_size = min(phys_bs, atomic_bs);
 	lim->io_min = phys_bs;
 	lim->io_opt = io_opt;
+<<<<<<< HEAD
 	if ((ctrl->quirks & NVME_QUIRK_DEALLOCATE_ZEROES) &&
 	    (ctrl->oncs & NVME_CTRL_ONCS_DSM))
 		lim->max_write_zeroes_sectors = UINT_MAX;
@@ -2157,6 +2212,13 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
 		lim->max_discard_segments = ctrl->dmrl;
 	else
 		lim->max_discard_segments = NVME_DSM_MAX_RANGES;
+=======
+	if ((ns->ctrl->quirks & NVME_QUIRK_DEALLOCATE_ZEROES) &&
+	    (ns->ctrl->oncs & NVME_CTRL_ONCS_DSM))
+		lim->max_write_zeroes_sectors = UINT_MAX;
+	else
+		lim->max_write_zeroes_sectors = ns->ctrl->max_zeroes_sectors;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return valid;
 }
 
@@ -2390,7 +2452,11 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
 	}
 	lbaf = nvme_lbaf_index(id->flbas);
 
+<<<<<<< HEAD
 	if (nvme_id_cns_ok(ns->ctrl, NVME_ID_CNS_CS_NS)) {
+=======
+	if (ns->ctrl->ctratt & NVME_CTRL_ATTR_ELBAS) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = nvme_identify_ns_nvm(ns->ctrl, info->nsid, &nvm);
 		if (ret < 0)
 			goto out;
@@ -2418,9 +2484,16 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
 	nvme_set_ctrl_limits(ns->ctrl, &lim, false);
 	nvme_configure_metadata(ns->ctrl, ns->head, id, nvm, info);
 	nvme_set_chunk_sectors(ns, id, &lim);
+<<<<<<< HEAD
 	if (!nvme_update_disk_info(ns, id, nvm, &lim))
 		capacity = 0;
 
+=======
+	if (!nvme_update_disk_info(ns, id, &lim))
+		capacity = 0;
+
+	nvme_config_discard(ns, &lim);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (IS_ENABLED(CONFIG_BLK_DEV_ZONED) &&
 	    ns->head->ids.csi == NVME_CSI_ZNS)
 		nvme_update_zone_info(ns, &lim, &zi);
@@ -3049,7 +3122,11 @@ static const struct nvme_core_quirk_entry core_quirks[] = {
 		 *
 		 * The device is left in a state where it is also not possible
 		 * to use "nvme set-feature" to disable APST, but booting with
+<<<<<<< HEAD
 		 * nvme_core.default_ps_max_latency_us=0 works.
+=======
+		 * nvme_core.default_ps_max_latency=0 works.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		 */
 		.vid = 0x1e0f,
 		.mn = "KCD6XVUL6T40",
@@ -3749,10 +3826,13 @@ int nvme_init_ctrl_finish(struct nvme_ctrl *ctrl, bool was_suspended)
 		ret = nvme_hwmon_init(ctrl);
 		if (ret == -EINTR)
 			return ret;
+<<<<<<< HEAD
 
 		if (!nvme_ctrl_sgl_supported(ctrl))
 			dev_info(ctrl->device,
 				"passthrough uses implicit buffer lengths\n");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	clear_bit(NVME_CTRL_DIRTY_CAPABILITY, &ctrl->flags);
@@ -4092,8 +4172,12 @@ static int nvme_init_ns_head(struct nvme_ns *ns, struct nvme_ns_info *info)
 	mutex_unlock(&ctrl->subsys->lock);
 
 #ifdef CONFIG_NVME_MULTIPATH
+<<<<<<< HEAD
 	if (cancel_delayed_work(&head->remove_work))
 		module_put(THIS_MODULE);
+=======
+	cancel_delayed_work(&head->remove_work);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	return 0;
 
@@ -5045,8 +5129,13 @@ void nvme_start_ctrl(struct nvme_ctrl *ctrl)
 		nvme_mpath_update(ctrl);
 	}
 
+<<<<<<< HEAD
 	set_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags);
 	nvme_change_uevent(ctrl, "NVME_EVENT=connected");
+=======
+	nvme_change_uevent(ctrl, "NVME_EVENT=connected");
+	set_bit(NVME_CTRL_STARTED_ONCE, &ctrl->flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(nvme_start_ctrl);
 

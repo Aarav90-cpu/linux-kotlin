@@ -53,7 +53,11 @@ static ssize_t blk_mq_hw_sysfs_show(struct kobject *kobj,
 	struct request_queue *q;
 	ssize_t res;
 
+<<<<<<< HEAD
 	entry = container_of_const(attr, struct blk_mq_hw_ctx_sysfs_entry, attr);
+=======
+	entry = container_of(attr, struct blk_mq_hw_ctx_sysfs_entry, attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	hctx = container_of(kobj, struct blk_mq_hw_ctx, kobj);
 	q = hctx->queue;
 
@@ -101,6 +105,7 @@ static ssize_t blk_mq_hw_sysfs_cpus_show(struct blk_mq_hw_ctx *hctx, char *page)
 	return pos + ret;
 }
 
+<<<<<<< HEAD
 static const struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_tags = {
 	.attr = {.name = "nr_tags", .mode = 0444 },
 	.show = blk_mq_hw_sysfs_nr_tags_show,
@@ -110,11 +115,26 @@ static const struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_reserved_tags =
 	.show = blk_mq_hw_sysfs_nr_reserved_tags_show,
 };
 static const struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_cpus = {
+=======
+static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_tags = {
+	.attr = {.name = "nr_tags", .mode = 0444 },
+	.show = blk_mq_hw_sysfs_nr_tags_show,
+};
+static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_reserved_tags = {
+	.attr = {.name = "nr_reserved_tags", .mode = 0444 },
+	.show = blk_mq_hw_sysfs_nr_reserved_tags_show,
+};
+static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_cpus = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.attr = {.name = "cpu_list", .mode = 0444 },
 	.show = blk_mq_hw_sysfs_cpus_show,
 };
 
+<<<<<<< HEAD
 static const struct attribute *const default_hw_ctx_attrs[] = {
+=======
+static struct attribute *default_hw_ctx_attrs[] = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	&blk_mq_hw_sysfs_nr_tags.attr,
 	&blk_mq_hw_sysfs_nr_reserved_tags.attr,
 	&blk_mq_hw_sysfs_cpus.attr,

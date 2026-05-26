@@ -61,4 +61,17 @@ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
 extern bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end);
 
 extern void cma_reserve_pages_on_error(struct cma *cma);
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_DMA_CMA
+extern bool cma_skip_dt_default_reserved_mem(void);
+#else
+static inline bool cma_skip_dt_default_reserved_mem(void)
+{
+	return false;
+}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif

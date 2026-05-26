@@ -369,6 +369,18 @@ static struct ns_common *pidns_for_children_get(struct task_struct *task)
 	}
 	task_unlock(task);
 
+<<<<<<< HEAD
+=======
+	if (ns) {
+		read_lock(&tasklist_lock);
+		if (!ns->child_reaper) {
+			put_pid_ns(ns);
+			ns = NULL;
+		}
+		read_unlock(&tasklist_lock);
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ns ? &ns->ns : NULL;
 }
 

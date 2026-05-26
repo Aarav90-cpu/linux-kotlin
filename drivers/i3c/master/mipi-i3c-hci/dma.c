@@ -754,10 +754,14 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
 		if (!(ibi_status & IBI_LAST_STATUS)) {
 			ibi_size += chunks * rh->ibi_chunk_sz;
 		} else {
+<<<<<<< HEAD
 			if (chunks) {
 				ibi_size += (chunks - 1) * rh->ibi_chunk_sz;
 				ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
 			}
+=======
+			ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			last_ptr = ptr;
 			break;
 		}

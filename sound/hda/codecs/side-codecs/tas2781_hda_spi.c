@@ -132,6 +132,7 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
 	int ret, val;
 
 	/*
+<<<<<<< HEAD
 	 * In TAS2781 SPI mode, when accessing non-book-zero or page numbers
 	 * greater than 1 in book 0, an additional byte must be read. The
 	 * first byte in such cases is a dummy byte and should be ignored.
@@ -144,6 +145,12 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
 	} else {
 		ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
 	}
+=======
+	 * In our TAS2781 SPI mode, read/write was masked in last bit of
+	 * address, it cause regmap_update_bits() not work as expected.
+	 */
+	ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret < 0) {
 		dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
 		return ret;
@@ -796,7 +803,10 @@ static int tas2781_hda_spi_probe(struct spi_device *spi)
 	}
 	if (strstr(dev_name(&spi->dev), "TXNW2781")) {
 		device_name = "TXNW2781";
+<<<<<<< HEAD
 		tas_hda->priv->chip_id = TAS2781;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		dev_err(tas_priv->dev, "Unmatched spi dev %s\n",
 			dev_name(&spi->dev));

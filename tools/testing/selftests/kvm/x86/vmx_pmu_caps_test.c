@@ -52,16 +52,26 @@ static const union perf_capabilities format_caps = {
 	.pebs_format = -1,
 };
 
+<<<<<<< HEAD
 static void guest_test_perf_capabilities_gp(u64 val)
 {
 	u8 vector = wrmsr_safe(MSR_IA32_PERF_CAPABILITIES, val);
+=======
+static void guest_test_perf_capabilities_gp(uint64_t val)
+{
+	uint8_t vector = wrmsr_safe(MSR_IA32_PERF_CAPABILITIES, val);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	__GUEST_ASSERT(vector == GP_VECTOR,
 		       "Expected #GP for value '0x%lx', got %s",
 		       val, ex_str(vector));
 }
 
+<<<<<<< HEAD
 static void guest_code(u64 current_val)
+=======
+static void guest_code(uint64_t current_val)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int i;
 
@@ -129,7 +139,11 @@ KVM_ONE_VCPU_TEST(vmx_pmu_caps, basic_perf_capabilities, guest_code)
 
 KVM_ONE_VCPU_TEST(vmx_pmu_caps, fungible_perf_capabilities, guest_code)
 {
+<<<<<<< HEAD
 	const u64 fungible_caps = host_cap.capabilities & ~immutable_caps.capabilities;
+=======
+	const uint64_t fungible_caps = host_cap.capabilities & ~immutable_caps.capabilities;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int bit;
 
 	for_each_set_bit(bit, &fungible_caps, 64) {
@@ -148,7 +162,11 @@ KVM_ONE_VCPU_TEST(vmx_pmu_caps, fungible_perf_capabilities, guest_code)
  */
 KVM_ONE_VCPU_TEST(vmx_pmu_caps, immutable_perf_capabilities, guest_code)
 {
+<<<<<<< HEAD
 	const u64 reserved_caps = (~host_cap.capabilities |
+=======
+	const uint64_t reserved_caps = (~host_cap.capabilities |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					immutable_caps.capabilities) &
 				       ~format_caps.capabilities;
 	union perf_capabilities val = host_cap;
@@ -210,7 +228,11 @@ KVM_ONE_VCPU_TEST(vmx_pmu_caps, lbr_perf_capabilities, guest_code)
 
 KVM_ONE_VCPU_TEST(vmx_pmu_caps, perf_capabilities_unsupported, guest_code)
 {
+<<<<<<< HEAD
 	u64 val;
+=======
+	uint64_t val;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, r;
 
 	vcpu_set_msr(vcpu, MSR_IA32_PERF_CAPABILITIES, host_cap.capabilities);

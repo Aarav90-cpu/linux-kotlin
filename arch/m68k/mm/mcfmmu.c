@@ -41,6 +41,11 @@ void __init paging_init(void)
 	unsigned long next_pgtable;
 	int i;
 
+<<<<<<< HEAD
+=======
+	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pg_dir = swapper_pg_dir;
 	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
 

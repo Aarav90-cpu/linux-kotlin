@@ -76,7 +76,11 @@ static long bpf_cgrp_storage_update_elem(struct bpf_map *map, void *key,
 		return PTR_ERR(cgroup);
 
 	sdata = bpf_local_storage_update(cgroup, (struct bpf_local_storage_map *)map,
+<<<<<<< HEAD
 					 value, map_flags, false);
+=======
+					 value, map_flags, false, GFP_ATOMIC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cgroup_put(cgroup);
 	return PTR_ERR_OR_ZERO(sdata);
 }
@@ -114,7 +118,11 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
 
 static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
 {
+<<<<<<< HEAD
 	return bpf_local_storage_map_alloc(attr, &cgroup_cache);
+=======
+	return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void cgroup_storage_map_free(struct bpf_map *map)
@@ -122,8 +130,14 @@ static void cgroup_storage_map_free(struct bpf_map *map)
 	bpf_local_storage_map_free(map, &cgroup_cache);
 }
 
+<<<<<<< HEAD
 BPF_CALL_4(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
 	   void *, value, u64, flags)
+=======
+/* *gfp_flags* is a hidden argument provided by the verifier */
+BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
+	   void *, value, u64, flags, gfp_t, gfp_flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct bpf_local_storage_data *sdata;
 
@@ -142,7 +156,11 @@ BPF_CALL_4(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
 	if (!percpu_ref_is_dying(&cgroup->self.refcnt) &&
 	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE))
 		sdata = bpf_local_storage_update(cgroup, (struct bpf_local_storage_map *)map,
+<<<<<<< HEAD
 						 value, BPF_NOEXIST, false);
+=======
+						 value, BPF_NOEXIST, false, gfp_flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 out:
 	return IS_ERR_OR_NULL(sdata) ? (unsigned long)NULL : (unsigned long)sdata->data;

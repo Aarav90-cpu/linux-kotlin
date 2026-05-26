@@ -339,6 +339,10 @@ MODULE_DEVICE_TABLE(of, rt5575_of_match);
 static struct i2c_driver rt5575_i2c_driver = {
 	.driver = {
 		.name = "rt5575",
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.of_match_table = rt5575_of_match,
 	},
 	.probe = rt5575_i2c_probe,

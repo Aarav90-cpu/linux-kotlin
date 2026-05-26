@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: MIT
 /*
  * Copyright 2019-2026 Advanced Micro Devices, Inc.
+=======
+/*
+ * Copyright 2019 Advanced Micro Devices, Inc.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,6 +28,10 @@
  * Authors: AMD
  *
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "../dmub_srv.h"
 #include "dmub_dcn20.h"
 #include "dmub_dcn21.h"
@@ -40,7 +49,10 @@
 #include "dmub_dcn351.h"
 #include "dmub_dcn36.h"
 #include "dmub_dcn401.h"
+<<<<<<< HEAD
 #include "dmub_dcn42.h"
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "os_types.h"
 /*
  * Note: the DMUB service is standalone. No additional headers should be
@@ -88,7 +100,10 @@
 
 static struct dmub_srv_dcn32_regs dmub_srv_dcn32_regs;
 static struct dmub_srv_dcn35_regs dmub_srv_dcn35_regs;
+<<<<<<< HEAD
 struct dmub_srv_dcn42_regs dmub_srv_dcn42_regs;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static inline uint32_t dmub_align(uint32_t val, uint32_t factor)
 {
@@ -412,6 +427,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
 			funcs->is_hw_powered_up = dmub_dcn35_is_hw_powered_up;
 			funcs->should_detect = dmub_dcn35_should_detect;
 			break;
+<<<<<<< HEAD
 	case DMUB_ASIC_DCN42:
 			dmub->regs_dcn42 = &dmub_srv_dcn42_regs;
 			funcs->configure_dmub_in_system_memory = dmub_dcn42_configure_dmub_in_system_memory;
@@ -470,6 +486,8 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
 			funcs->is_hw_powered_up = dmub_dcn42_is_hw_powered_up;
 			funcs->should_detect = dmub_dcn42_should_detect;
 			break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	case DMUB_ASIC_DCN401:
 		dmub->regs_dcn401 = &dmub_srv_dcn401_regs;
@@ -1034,8 +1052,13 @@ enum dmub_status dmub_srv_wait_for_auto_load(struct dmub_srv *dmub,
 static void dmub_srv_update_reg_inbox0_status(struct dmub_srv *dmub)
 {
 	if (dmub->reg_inbox0.is_pending) {
+<<<<<<< HEAD
 		dmub->reg_inbox0.is_pending = (dmub->hw_funcs.read_reg_inbox0_rsp_int_status &&
 				!dmub->hw_funcs.read_reg_inbox0_rsp_int_status(dmub)) != 0;
+=======
+		dmub->reg_inbox0.is_pending = dmub->hw_funcs.read_reg_inbox0_rsp_int_status &&
+				!dmub->hw_funcs.read_reg_inbox0_rsp_int_status(dmub);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!dmub->reg_inbox0.is_pending) {
 			/* ack the rsp interrupt */
@@ -1320,7 +1343,11 @@ void dmub_srv_set_power_state(struct dmub_srv *dmub, enum dmub_srv_power_state_t
 
 enum dmub_status dmub_srv_reg_cmd_execute(struct dmub_srv *dmub, union dmub_rb_cmd *cmd)
 {
+<<<<<<< HEAD
 	uint64_t num_pending = 0;
+=======
+	uint32_t num_pending = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!dmub->hw_init)
 		return DMUB_STATUS_INVALID;
@@ -1348,7 +1375,11 @@ enum dmub_status dmub_srv_reg_cmd_execute(struct dmub_srv *dmub, union dmub_rb_c
 
 	dmub->reg_inbox0.num_submitted++;
 	dmub->reg_inbox0.is_pending = true;
+<<<<<<< HEAD
 	dmub->reg_inbox0.is_multi_pending = cmd->cmd_common.header.multi_cmd_pending != 0;
+=======
+	dmub->reg_inbox0.is_multi_pending = cmd->cmd_common.header.multi_cmd_pending;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return DMUB_STATUS_OK;
 }

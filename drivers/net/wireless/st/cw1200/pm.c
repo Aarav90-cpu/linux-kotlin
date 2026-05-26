@@ -264,12 +264,20 @@ int cw1200_wow_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
 		wiphy_err(priv->hw->wiphy,
 			  "PM request failed: %d. WoW is disabled.\n", ret);
 		cw1200_wow_resume(hw);
+<<<<<<< HEAD
+=======
+		mutex_unlock(&priv->conf_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EBUSY;
 	}
 
 	/* Force resume if event is coming from the device. */
 	if (atomic_read(&priv->bh_rx)) {
 		cw1200_wow_resume(hw);
+<<<<<<< HEAD
+=======
+		mutex_unlock(&priv->conf_mutex);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EAGAIN;
 	}
 

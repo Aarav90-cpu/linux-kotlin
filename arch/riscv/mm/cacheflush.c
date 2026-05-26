@@ -29,7 +29,11 @@ void flush_icache_all(void)
 	 * Make sure all previous writes to the D$ are ordered before making
 	 * the IPI. The RISC-V spec states that a hart must execute a data fence
 	 * before triggering a remote fence.i in order to make the modification
+<<<<<<< HEAD
 	 * visible for remote harts.
+=======
+	 * visable for remote harts.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * IPIs on RISC-V are triggered by MMIO writes to either CLINT or
 	 * S-IMSIC, so the fence ensures previous data writes "happen before"

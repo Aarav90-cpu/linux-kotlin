@@ -37,6 +37,7 @@ static void otx2_clear_ntuple_flow_info(struct otx2_nic *pfvf, struct otx2_flow_
 	flow_cfg->max_flows = 0;
 }
 
+<<<<<<< HEAD
 static int otx2_mcam_pfl_info_get(struct otx2_nic *pfvf, bool *is_x2,
 				  u16 *x4_slots)
 {
@@ -129,6 +130,8 @@ static int otx2_get_dft_rl_idx(struct otx2_nic *pfvf, u16 *mcam_idx)
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int otx2_free_ntuple_mcam_entries(struct otx2_nic *pfvf)
 {
 	struct otx2_flow_config *flow_cfg = pfvf->flow_cfg;
@@ -161,10 +164,14 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 	struct otx2_flow_config *flow_cfg = pfvf->flow_cfg;
 	struct npc_mcam_alloc_entry_req *req;
 	struct npc_mcam_alloc_entry_rsp *rsp;
+<<<<<<< HEAD
 	u16 dft_idx = 0, x4_slots = 0;
 	int ent, allocated = 0, ref;
 	bool is_x2 = false;
 	int rc;
+=======
+	int ent, allocated = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Free current ones and allocate new ones with requested count */
 	otx2_free_ntuple_mcam_entries(pfvf);
@@ -181,6 +188,7 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (is_cn20k(pfvf->pdev)) {
 		rc = otx2_mcam_pfl_info_get(pfvf, &is_x2, &x4_slots);
 		if (rc) {
@@ -197,6 +205,8 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&pfvf->mbox.lock);
 
 	/* In a single request a max of NPC_MAX_NONCONTIG_ENTRIES MCAM entries
@@ -207,11 +217,15 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 		if (!req)
 			goto exit;
 
+<<<<<<< HEAD
 		req->kw_type = is_x2 ? NPC_MCAM_KEY_X2 : NPC_MCAM_KEY_X4;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		req->contig = false;
 		req->count = (count - allocated) > NPC_MAX_NONCONTIG_ENTRIES ?
 				NPC_MAX_NONCONTIG_ENTRIES : count - allocated;
 
+<<<<<<< HEAD
 		ref = 0;
 
 		if (is_cn20k(pfvf->pdev)) {
@@ -219,10 +233,13 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 			ref = dft_idx;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Allocate higher priority entries for PFs, so that VF's entries
 		 * will be on top of PF.
 		 */
 		if (!is_otx2_vf(pfvf->pcifunc)) {
+<<<<<<< HEAD
 			req->ref_prio = NPC_MCAM_HIGHER_PRIO;
 			ref = flow_cfg->def_ent[0];
 		}
@@ -232,6 +249,12 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
 
 		req->ref_entry = ref;
 
+=======
+			req->priority = NPC_MCAM_HIGHER_PRIO;
+			req->ref_entry = flow_cfg->def_ent[0];
+		}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Send message to AF */
 		if (otx2_sync_mbox_msg(&pfvf->mbox))
 			goto exit;
@@ -287,6 +310,7 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
 	struct npc_get_field_status_rsp *frsp;
 	struct npc_mcam_alloc_entry_req *req;
 	struct npc_mcam_alloc_entry_rsp *rsp;
+<<<<<<< HEAD
 	int vf_vlan_max_flows, count;
 	int rc, ref, prio, ent;
 	u16 dft_idx;
@@ -305,6 +329,10 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
 		ref = dft_idx;
 		prio = NPC_MCAM_HIGHER_PRIO;
 	}
+=======
+	int vf_vlan_max_flows;
+	int ent, count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	vf_vlan_max_flows = pfvf->total_vfs * OTX2_PER_VF_VLAN_FLOWS;
 	count = flow_cfg->ucast_flt_cnt +
@@ -323,11 +351,16 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	req->kw_type = NPC_MCAM_KEY_X2;
 	req->contig = false;
 	req->count = count;
 	req->ref_prio = prio;
 	req->ref_entry = ref;
+=======
+	req->contig = false;
+	req->count = count;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Send message to AF */
 	if (otx2_sync_mbox_msg(&pfvf->mbox)) {
@@ -962,7 +995,11 @@ static int otx2_prepare_ipv6_flow(struct ethtool_rx_flow_spec *fsp,
 }
 
 static int otx2_prepare_flow_request(struct ethtool_rx_flow_spec *fsp,
+<<<<<<< HEAD
 				     struct npc_install_flow_req *req)
+=======
+			      struct npc_install_flow_req *req)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ethhdr *eth_mask = &fsp->m_u.ether_spec;
 	struct ethhdr *eth_hdr = &fsp->h_u.ether_spec;
@@ -1088,6 +1125,7 @@ static int otx2_prepare_flow_request(struct ethtool_rx_flow_spec *fsp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int otx2_get_kw_type(struct otx2_nic *pfvf,
 			    struct npc_install_flow_req *fl_req,
 			    u8 *kw_type)
@@ -1140,6 +1178,8 @@ static int otx2_get_kw_type(struct otx2_nic *pfvf,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int otx2_is_flow_rule_dmacfilter(struct otx2_nic *pfvf,
 					struct ethtool_rx_flow_spec *fsp)
 {
@@ -1168,12 +1208,16 @@ static int otx2_is_flow_rule_dmacfilter(struct otx2_nic *pfvf,
 
 static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
 {
+<<<<<<< HEAD
 	struct otx2_flow_config *flow_cfg = pfvf->flow_cfg;
 	struct npc_install_flow_req *req, treq = { 0 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 ring_cookie = flow->flow_spec.ring_cookie;
 #ifdef CONFIG_DCB
 	int vlan_prio, qidx, pfc_rule = 0;
 #endif
+<<<<<<< HEAD
 	int err, vf = 0, off, sz;
 	bool modify = false;
 	u8 kw_type = 0;
@@ -1203,6 +1247,10 @@ static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
 			modify = true;
 		}
 	}
+=======
+	struct npc_install_flow_req *req;
+	int err, vf = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&pfvf->mbox.lock);
 	req = otx2_mbox_alloc_msg_npc_install_flow(&pfvf->mbox);
@@ -1211,6 +1259,7 @@ static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (modify) {
 		off = offsetof(struct npc_install_flow_req, packet);
 		sz = sizeof(struct npc_install_flow_req) - off;
@@ -1234,6 +1283,16 @@ static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
 		   flow_cfg->flow_ent[flow->location],
 		   flow->location, kw_type);
 
+=======
+	err = otx2_prepare_flow_request(&flow->flow_spec, req);
+	if (err) {
+		/* free the allocated msg above */
+		otx2_mbox_reset(&pfvf->mbox.mbox, 0);
+		mutex_unlock(&pfvf->mbox.lock);
+		return err;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	req->entry = flow->entry;
 	req->intf = NIX_INTF_RX;
 	req->set_cntr = 1;

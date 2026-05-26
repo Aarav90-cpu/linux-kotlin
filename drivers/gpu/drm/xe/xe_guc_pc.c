@@ -92,6 +92,7 @@
  * Render-C states is also a GuC PC feature that is now enabled in Xe for
  * all platforms.
  *
+<<<<<<< HEAD
  * Implementation details:
  * -----------------------
  * The implementation for GuC Power Management features is split as follows:
@@ -103,6 +104,8 @@
  * There is some cross interaction between these where host C6 will need to be
  * enabled when we plan to skip GuC RC. Also, the GuC RC mode is currently
  * overridden through 0x3003 which is an SLPC H2G call.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 
 static struct xe_guc *pc_to_guc(struct xe_guc_pc *pc)
@@ -264,6 +267,7 @@ static int pc_action_unset_param(struct xe_guc_pc *pc, u8 id)
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * xe_guc_pc_action_set_param() - Set value of SLPC param
  * @pc: Xe_GuC_PC instance
@@ -293,6 +297,22 @@ int xe_guc_pc_action_unset_param(struct xe_guc_pc *pc, u8 id)
 {
 	xe_device_assert_mem_access(pc_to_xe(pc));
 	return pc_action_unset_param(pc, id);
+=======
+static int pc_action_setup_gucrc(struct xe_guc_pc *pc, u32 mode)
+{
+	struct xe_guc_ct *ct = pc_to_ct(pc);
+	u32 action[] = {
+		GUC_ACTION_HOST2GUC_SETUP_PC_GUCRC,
+		mode,
+	};
+	int ret;
+
+	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
+	if (ret && !(xe_device_wedged(pc_to_xe(pc)) && ret == -ECANCELED))
+		xe_gt_err(pc_to_gt(pc), "GuC RC enable mode=%u failed: %pe\n",
+			  mode, ERR_PTR(ret));
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static u32 decode_freq(u32 raw)
@@ -756,6 +776,7 @@ enum xe_gt_idle_state xe_guc_pc_c_status(struct xe_guc_pc *pc)
 	if (GRAPHICS_VERx100(gt_to_xe(gt)) >= 1270) {
 		reg = xe_mmio_read32(&gt->mmio, MTL_MIRROR_TARGET_WP1);
 		gt_c_state = REG_FIELD_GET(MTL_CC_MASK, reg);
+<<<<<<< HEAD
 
 		/*
 		 * There are higher level sleep states that will cause this
@@ -764,6 +785,8 @@ enum xe_gt_idle_state xe_guc_pc_c_status(struct xe_guc_pc *pc)
 		 */
 		if (gt_c_state == MTL_CRST)
 			gt_c_state = GT_C6;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		reg = xe_mmio_read32(&gt->mmio, GT_CORE_STATUS);
 		gt_c_state = REG_FIELD_GET(RCN_MASK, reg);
@@ -1084,6 +1107,58 @@ int xe_guc_pc_restore_stashed_freq(struct xe_guc_pc *pc)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * xe_guc_pc_gucrc_disable - Disable GuC RC
+ * @pc: Xe_GuC_PC instance
+ *
+ * Disables GuC RC by taking control of RC6 back from GuC.
+ *
+ * Return: 0 on success, negative error code on error.
+ */
+int xe_guc_pc_gucrc_disable(struct xe_guc_pc *pc)
+{
+	struct xe_device *xe = pc_to_xe(pc);
+	struct xe_gt *gt = pc_to_gt(pc);
+	int ret = 0;
+
+	if (xe->info.skip_guc_pc)
+		return 0;
+
+	ret = pc_action_setup_gucrc(pc, GUCRC_HOST_CONTROL);
+	if (ret)
+		return ret;
+
+	return xe_gt_idle_disable_c6(gt);
+}
+
+/**
+ * xe_guc_pc_override_gucrc_mode - override GUCRC mode
+ * @pc: Xe_GuC_PC instance
+ * @mode: new value of the mode.
+ *
+ * Return: 0 on success, negative error code on error
+ */
+int xe_guc_pc_override_gucrc_mode(struct xe_guc_pc *pc, enum slpc_gucrc_mode mode)
+{
+	guard(xe_pm_runtime)(pc_to_xe(pc));
+	return pc_action_set_param(pc, SLPC_PARAM_PWRGATE_RC_MODE, mode);
+}
+
+/**
+ * xe_guc_pc_unset_gucrc_mode - unset GUCRC mode override
+ * @pc: Xe_GuC_PC instance
+ *
+ * Return: 0 on success, negative error code on error
+ */
+int xe_guc_pc_unset_gucrc_mode(struct xe_guc_pc *pc)
+{
+	guard(xe_pm_runtime)(pc_to_xe(pc));
+	return pc_action_unset_param(pc, SLPC_PARAM_PWRGATE_RC_MODE);
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void pc_init_pcode_freq(struct xe_guc_pc *pc)
 {
 	u32 min = DIV_ROUND_CLOSEST(pc->rpn_freq, GT_FREQUENCY_MULTIPLIER);
@@ -1232,6 +1307,12 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
 		return -ETIMEDOUT;
 
 	if (xe->info.skip_guc_pc) {
+<<<<<<< HEAD
+=======
+		if (xe->info.platform != XE_PVC)
+			xe_gt_idle_enable_c6(gt);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Request max possible since dynamic freq mgmt is not enabled */
 		pc_set_cur_freq(pc, UINT_MAX);
 		return 0;
@@ -1273,6 +1354,18 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	if (xe->info.platform == XE_PVC) {
+		xe_guc_pc_gucrc_disable(pc);
+		return 0;
+	}
+
+	ret = pc_action_setup_gucrc(pc, GUCRC_FIRMWARE_CONTROL);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Enable SLPC Optimized Strategy for compute */
 	ret = pc_action_set_strategy(pc, SLPC_OPTIMIZED_STRATEGY_COMPUTE);
 
@@ -1292,8 +1385,15 @@ int xe_guc_pc_stop(struct xe_guc_pc *pc)
 {
 	struct xe_device *xe = pc_to_xe(pc);
 
+<<<<<<< HEAD
 	if (xe->info.skip_guc_pc)
 		return 0;
+=======
+	if (xe->info.skip_guc_pc) {
+		xe_gt_idle_disable_c6(pc_to_gt(pc));
+		return 0;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mutex_lock(&pc->freq_lock);
 	pc->freq_ready = false;
@@ -1314,7 +1414,12 @@ static void xe_guc_pc_fini_hw(void *arg)
 	if (xe_device_wedged(xe))
 		return;
 
+<<<<<<< HEAD
 	CLASS(xe_force_wake, fw_ref)(gt_to_fw(pc_to_gt(pc)), XE_FW_GT);
+=======
+	CLASS(xe_force_wake, fw_ref)(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL);
+	xe_guc_pc_gucrc_disable(pc);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	XE_WARN_ON(xe_guc_pc_stop(pc));
 
 	/* Bind requested freq to mert_freq_cap before unload */

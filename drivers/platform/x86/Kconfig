@@ -113,6 +113,7 @@ config GIGABYTE_WMI
 	  To compile this driver as a module, choose M here: the module will
 	  be called gigabyte-wmi.
 
+<<<<<<< HEAD
 config BITLAND_MIFS_WMI
 	tristate "Bitland MIFS (MiInterface) WMI driver"
 	depends on ACPI_WMI
@@ -132,6 +133,8 @@ config BITLAND_MIFS_WMI
 	  To compile this driver as a module, choose M here: the module will
           be called bitland-mifs-wmi.
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 config ACERHDF
 	tristate "Acer Aspire One temperature and fan driver"
 	depends on ACPI_EC && THERMAL

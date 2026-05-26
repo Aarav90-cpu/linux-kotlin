@@ -251,6 +251,7 @@ xchk_ino_set_preen(
 	trace_xchk_ino_preen(sc, ino, __return_address);
 }
 
+<<<<<<< HEAD
 /* Record a block indexed by a file fork that could be optimized. */
 void
 xchk_fblock_set_preen(
@@ -262,6 +263,8 @@ xchk_fblock_set_preen(
 	trace_xchk_fblock_preen(sc, whichfork, offset, __return_address);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Record something being wrong with the filesystem primary superblock. */
 void
 xchk_set_corrupt(

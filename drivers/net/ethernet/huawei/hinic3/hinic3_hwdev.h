@@ -76,7 +76,10 @@ struct hinic3_hwdev {
 	u32                         wq_page_size;
 	u8                          max_cmdq;
 	ulong                       func_state;
+<<<<<<< HEAD
 	int                         chip_present_flag;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct hinic3_event_info {

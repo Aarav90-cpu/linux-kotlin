@@ -226,7 +226,11 @@ static int __init map_properties(void)
 		 */
 		data->len = 0;
 		memunmap(data);
+<<<<<<< HEAD
 		memblock_phys_free(pa_data + sizeof(*data), data_len);
+=======
+		memblock_free_late(pa_data + sizeof(*data), data_len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		return ret;
 	}

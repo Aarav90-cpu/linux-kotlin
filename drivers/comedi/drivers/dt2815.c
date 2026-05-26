@@ -144,8 +144,12 @@ static int dt2815_attach(struct comedi_device *dev, struct comedi_devconfig *it)
 	const struct comedi_lrange *current_range_type, *voltage_range_type;
 	int ret;
 
+<<<<<<< HEAD
 	ret = comedi_check_request_region(dev, it->options[0], 0x2,
 					  0x200, 0x3ff, 2);
+=======
+	ret = comedi_request_region(dev, it->options[0], 0x2);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 

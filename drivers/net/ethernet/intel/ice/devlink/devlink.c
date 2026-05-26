@@ -1245,8 +1245,11 @@ static int ice_devlink_reinit_up(struct ice_pf *pf)
 		return err;
 	}
 
+<<<<<<< HEAD
 	ice_init_dev_hw(pf);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* load MSI-X values */
 	ice_set_min_max_msix(pf);
 

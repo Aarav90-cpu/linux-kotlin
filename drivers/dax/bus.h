@@ -3,9 +3,13 @@
 #ifndef __DAX_BUS_H__
 #define __DAX_BUS_H__
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
 #include <linux/range.h>
 #include <linux/workqueue.h>
+=======
+#include <linux/range.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 struct dev_dax;
 struct resource;
@@ -33,7 +37,10 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data);
 enum dax_driver_type {
 	DAXDRV_KMEM_TYPE,
 	DAXDRV_DEVICE_TYPE,
+<<<<<<< HEAD
 	DAXDRV_FSDEV_TYPE,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct dax_device_driver {
@@ -44,8 +51,11 @@ struct dax_device_driver {
 	void (*remove)(struct dev_dax *dev);
 };
 
+<<<<<<< HEAD
 #define to_dax_drv(__drv) container_of_const(__drv, struct dax_device_driver, drv)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int __dax_driver_register(struct dax_device_driver *dax_drv,
 		struct module *module, const char *mod_name);
 #define dax_driver_register(driver) \
@@ -54,6 +64,7 @@ void dax_driver_unregister(struct dax_device_driver *dax_drv);
 void kill_dev_dax(struct dev_dax *dev_dax);
 bool static_dev_dax(struct dev_dax *dev_dax);
 
+<<<<<<< HEAD
 struct hmem_platform_device {
 	struct platform_device pdev;
 	struct work_struct work;
@@ -72,6 +83,8 @@ void dax_hmem_flush_work(void);
 static inline void dax_hmem_flush_work(void) { }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define MODULE_ALIAS_DAX_DEVICE(type) \
 	MODULE_ALIAS("dax:t" __stringify(type) "*")
 #define DAX_DEVICE_MODALIAS_FMT "dax:t%d"

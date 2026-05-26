@@ -22,6 +22,7 @@
 #include <linux/auxiliary_bus.h>
 #include <net/netdev_lock.h>
 #include <linux/bnxt/hsi.h>
+<<<<<<< HEAD
 #include <linux/bnxt/ulp.h>
 
 #include "bnxt.h"
@@ -57,6 +58,18 @@ static struct bnxt_aux_device bnxt_aux_devices[__BNXT_AUXDEV_MAX] = {{
 static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
 {
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
+=======
+
+#include "bnxt.h"
+#include "bnxt_hwrm.h"
+#include "bnxt_ulp.h"
+
+static DEFINE_IDA(bnxt_aux_dev_ids);
+
+static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
+{
+	struct bnxt_en_dev *edev = bp->edev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int num_msix, i;
 
 	if (!edev->ulp_tbl->msix_requested) {
@@ -76,75 +89,118 @@ static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
 
 int bnxt_get_ulp_msix_num(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (edev)
 		return edev->ulp_num_msix_vec;
+=======
+	if (bp->edev)
+		return bp->edev->ulp_num_msix_vec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 void bnxt_set_ulp_msix_num(struct bnxt *bp, int num)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (edev)
 		edev->ulp_num_msix_vec = num;
+=======
+	if (bp->edev)
+		bp->edev->ulp_num_msix_vec = num;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_get_ulp_msix_num_in_use(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (bnxt_ulp_registered(edev))
 		return edev->ulp_num_msix_vec;
+=======
+	if (bnxt_ulp_registered(bp->edev))
+		return bp->edev->ulp_num_msix_vec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 int bnxt_get_ulp_stat_ctxs(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (edev)
 		return edev->ulp_num_ctxs;
+=======
+	if (bp->edev)
+		return bp->edev->ulp_num_ctxs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 void bnxt_set_ulp_stat_ctxs(struct bnxt *bp, int num_ulp_ctx)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (edev)
 		edev->ulp_num_ctxs = num_ulp_ctx;
+=======
+	if (bp->edev)
+		bp->edev->ulp_num_ctxs = num_ulp_ctx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int bnxt_get_ulp_stat_ctxs_in_use(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (bnxt_ulp_registered(edev))
 		return edev->ulp_num_ctxs;
+=======
+	if (bnxt_ulp_registered(bp->edev))
+		return bp->edev->ulp_num_ctxs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 void bnxt_set_dflt_ulp_stat_ctxs(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
 
 	if (edev) {
 		edev->ulp_num_ctxs = BNXT_MIN_ROCE_STAT_CTXS;
+=======
+	if (bp->edev) {
+		bp->edev->ulp_num_ctxs = BNXT_MIN_ROCE_STAT_CTXS;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* Reserve one additional stat_ctx for PF0 (except
 		 * on 1-port NICs) as it also creates one stat_ctx
 		 * for PF1 in case of RoCE bonding.
 		 */
 		if (BNXT_PF(bp) && !bp->pf.port_id &&
 		    bp->port_count > 1)
+<<<<<<< HEAD
 			edev->ulp_num_ctxs++;
+=======
+			bp->edev->ulp_num_ctxs++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		/* Reserve one additional stat_ctx when the device is capable
 		 * of supporting port mirroring on RDMA device.
 		 */
 		if (BNXT_MIRROR_ON_ROCE_CAP(bp))
+<<<<<<< HEAD
 			edev->ulp_num_ctxs++;
+=======
+			bp->edev->ulp_num_ctxs++;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -175,6 +231,7 @@ int bnxt_register_dev(struct bnxt_en_dev *edev,
 	ulp->handle = handle;
 	rcu_assign_pointer(ulp->ulp_ops, ulp_ops);
 
+<<<<<<< HEAD
 	if (test_bit(BNXT_STATE_OPEN, &bp->state)) {
 		rc = bnxt_hwrm_vnic_cfg(bp, &bp->vnic_info[BNXT_VNIC_DEFAULT]);
 		if (rc) {
@@ -187,6 +244,14 @@ int bnxt_register_dev(struct bnxt_en_dev *edev,
 	edev->ulp_tbl->msix_requested = bnxt_get_ulp_msix_num(bp);
 
 	bnxt_fill_msix_vecs(bp, edev->msix_entries);
+=======
+	if (test_bit(BNXT_STATE_OPEN, &bp->state))
+		bnxt_hwrm_vnic_cfg(bp, &bp->vnic_info[BNXT_VNIC_DEFAULT]);
+
+	edev->ulp_tbl->msix_requested = bnxt_get_ulp_msix_num(bp);
+
+	bnxt_fill_msix_vecs(bp, bp->edev->msix_entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 exit:
 	mutex_unlock(&edev->en_dev_lock);
 	netdev_unlock(dev);
@@ -272,6 +337,7 @@ EXPORT_SYMBOL(bnxt_send_msg);
 
 void bnxt_ulp_stop(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	int i;
 
 	mutex_lock(&bp->auxdev_lock);
@@ -298,6 +364,22 @@ void bnxt_ulp_stop(struct bnxt *bp)
 		}
 
 		edev->flags |= BNXT_EN_FLAG_ULP_STOPPED;
+=======
+	struct bnxt_aux_priv *aux_priv = bp->aux_priv;
+	struct bnxt_en_dev *edev = bp->edev;
+
+	if (!edev)
+		return;
+
+	mutex_lock(&edev->en_dev_lock);
+	if (!bnxt_ulp_registered(edev) ||
+	    (edev->flags & BNXT_EN_FLAG_ULP_STOPPED))
+		goto ulp_stop_exit;
+
+	edev->flags |= BNXT_EN_FLAG_ULP_STOPPED;
+	if (aux_priv) {
+		struct auxiliary_device *adev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		adev = &aux_priv->aux_dev;
 		if (adev->dev.driver) {
@@ -308,6 +390,7 @@ void bnxt_ulp_stop(struct bnxt *bp)
 			edev->en_state = bp->state;
 			adrv->suspend(adev, pm);
 		}
+<<<<<<< HEAD
 		mutex_unlock(&edev->en_dev_lock);
 	}
 	mutex_unlock(&bp->auxdev_lock);
@@ -337,6 +420,31 @@ void bnxt_ulp_start(struct bnxt *bp)
 		if (edev->ulp_tbl->msix_requested)
 			bnxt_fill_msix_vecs(bp, edev->msix_entries);
 
+=======
+	}
+ulp_stop_exit:
+	mutex_unlock(&edev->en_dev_lock);
+}
+
+void bnxt_ulp_start(struct bnxt *bp, int err)
+{
+	struct bnxt_aux_priv *aux_priv = bp->aux_priv;
+	struct bnxt_en_dev *edev = bp->edev;
+
+	if (!edev || err)
+		return;
+
+	mutex_lock(&edev->en_dev_lock);
+	if (!bnxt_ulp_registered(edev) ||
+	    !(edev->flags & BNXT_EN_FLAG_ULP_STOPPED))
+		goto ulp_start_exit;
+
+	if (edev->ulp_tbl->msix_requested)
+		bnxt_fill_msix_vecs(bp, edev->msix_entries);
+
+	if (aux_priv) {
+		struct auxiliary_device *adev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		adev = &aux_priv->aux_dev;
 		if (adev->dev.driver) {
@@ -346,23 +454,38 @@ void bnxt_ulp_start(struct bnxt *bp)
 			edev->en_state = bp->state;
 			adrv->resume(adev);
 		}
+<<<<<<< HEAD
 clear_flag_continue:
 		edev->flags &= ~BNXT_EN_FLAG_ULP_STOPPED;
 		mutex_unlock(&edev->en_dev_lock);
 	}
 	mutex_unlock(&bp->auxdev_lock);
+=======
+	}
+ulp_start_exit:
+	edev->flags &= ~BNXT_EN_FLAG_ULP_STOPPED;
+	mutex_unlock(&edev->en_dev_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void bnxt_ulp_irq_stop(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
+=======
+	struct bnxt_en_dev *edev = bp->edev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bnxt_ulp_ops *ops;
 	bool reset = false;
 
 	if (!edev)
 		return;
 
+<<<<<<< HEAD
 	if (bnxt_ulp_registered(edev)) {
+=======
+	if (bnxt_ulp_registered(bp->edev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct bnxt_ulp *ulp = edev->ulp_tbl;
 
 		if (!ulp->msix_requested)
@@ -379,13 +502,21 @@ void bnxt_ulp_irq_stop(struct bnxt *bp)
 
 void bnxt_ulp_irq_restart(struct bnxt *bp, int err)
 {
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
+=======
+	struct bnxt_en_dev *edev = bp->edev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bnxt_ulp_ops *ops;
 
 	if (!edev)
 		return;
 
+<<<<<<< HEAD
 	if (bnxt_ulp_registered(edev)) {
+=======
+	if (bnxt_ulp_registered(bp->edev)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct bnxt_ulp *ulp = edev->ulp_tbl;
 		struct bnxt_msix_entry *ent = NULL;
 
@@ -410,7 +541,11 @@ void bnxt_ulp_irq_restart(struct bnxt *bp, int err)
 void bnxt_ulp_async_events(struct bnxt *bp, struct hwrm_async_event_cmpl *cmpl)
 {
 	u16 event_id = le16_to_cpu(cmpl->event_id);
+<<<<<<< HEAD
 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
+=======
+	struct bnxt_en_dev *edev = bp->edev;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct bnxt_ulp_ops *ops;
 	struct bnxt_ulp *ulp;
 
@@ -451,6 +586,7 @@ void bnxt_register_async_events(struct bnxt_en_dev *edev,
 }
 EXPORT_SYMBOL(bnxt_register_async_events);
 
+<<<<<<< HEAD
 void bnxt_aux_devices_uninit(struct bnxt *bp)
 {
 	struct bnxt_aux_priv *aux_priv;
@@ -466,6 +602,20 @@ void bnxt_aux_devices_uninit(struct bnxt *bp)
 		}
 	}
 	mutex_unlock(&bp->auxdev_lock);
+=======
+void bnxt_rdma_aux_device_uninit(struct bnxt *bp)
+{
+	struct bnxt_aux_priv *aux_priv;
+	struct auxiliary_device *adev;
+
+	/* Skip if no auxiliary device init was done. */
+	if (!bp->aux_priv)
+		return;
+
+	aux_priv = bp->aux_priv;
+	adev = &aux_priv->aux_dev;
+	auxiliary_device_uninit(adev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void bnxt_aux_dev_release(struct device *dev)
@@ -474,6 +624,7 @@ static void bnxt_aux_dev_release(struct device *dev)
 		container_of(dev, struct bnxt_aux_priv, aux_dev.dev);
 	struct bnxt *bp = netdev_priv(aux_priv->edev->net);
 
+<<<<<<< HEAD
 	kfree(aux_priv->edev->ulp_tbl);
 	bp->edev[aux_priv->id] = NULL;
 	kfree(aux_priv->edev);
@@ -493,6 +644,22 @@ void bnxt_aux_devices_del(struct bnxt *bp)
 		}
 	}
 	mutex_unlock(&bp->auxdev_lock);
+=======
+	ida_free(&bnxt_aux_dev_ids, aux_priv->id);
+	kfree(aux_priv->edev->ulp_tbl);
+	bp->edev = NULL;
+	kfree(aux_priv->edev);
+	kfree(aux_priv);
+	bp->aux_priv = NULL;
+}
+
+void bnxt_rdma_aux_device_del(struct bnxt *bp)
+{
+	if (!bp->edev)
+		return;
+
+	auxiliary_device_delete(&bp->aux_priv->aux_dev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void bnxt_set_edev_info(struct bnxt_en_dev *edev, struct bnxt *bp)
@@ -522,6 +689,7 @@ static void bnxt_set_edev_info(struct bnxt_en_dev *edev, struct bnxt *bp)
 	edev->bar0 = bp->bar0;
 }
 
+<<<<<<< HEAD
 void bnxt_aux_devices_add(struct bnxt *bp)
 {
 	struct auxiliary_device *aux_dev;
@@ -547,11 +715,32 @@ void bnxt_aux_devices_add(struct bnxt *bp)
 }
 
 void bnxt_aux_devices_init(struct bnxt *bp)
+=======
+void bnxt_rdma_aux_device_add(struct bnxt *bp)
+{
+	struct auxiliary_device *aux_dev;
+	int rc;
+
+	if (!bp->edev)
+		return;
+
+	aux_dev = &bp->aux_priv->aux_dev;
+	rc = auxiliary_device_add(aux_dev);
+	if (rc) {
+		netdev_warn(bp->dev, "Failed to add auxiliary device for ROCE\n");
+		auxiliary_device_uninit(aux_dev);
+		bp->flags &= ~BNXT_FLAG_ROCE_CAP;
+	}
+}
+
+void bnxt_rdma_aux_device_init(struct bnxt *bp)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct auxiliary_device *aux_dev;
 	struct bnxt_aux_priv *aux_priv;
 	struct bnxt_en_dev *edev;
 	struct bnxt_ulp *ulp;
+<<<<<<< HEAD
 	int rc, idx;
 
 	mutex_lock(&bp->auxdev_lock);
@@ -624,4 +813,62 @@ void bnxt_auxdev_id_free(struct bnxt *bp, int id)
 {
 	if (bp->auxdev_id >= 0)
 		ida_free(&bnxt_aux_dev_ids, id);
+=======
+	int rc;
+
+	if (!(bp->flags & BNXT_FLAG_ROCE_CAP))
+		return;
+
+	aux_priv = kzalloc_obj(*bp->aux_priv);
+	if (!aux_priv)
+		goto exit;
+
+	aux_priv->id = ida_alloc(&bnxt_aux_dev_ids, GFP_KERNEL);
+	if (aux_priv->id < 0) {
+		netdev_warn(bp->dev,
+			    "ida alloc failed for ROCE auxiliary device\n");
+		kfree(aux_priv);
+		goto exit;
+	}
+
+	aux_dev = &aux_priv->aux_dev;
+	aux_dev->id = aux_priv->id;
+	aux_dev->name = "rdma";
+	aux_dev->dev.parent = &bp->pdev->dev;
+	aux_dev->dev.release = bnxt_aux_dev_release;
+
+	rc = auxiliary_device_init(aux_dev);
+	if (rc) {
+		ida_free(&bnxt_aux_dev_ids, aux_priv->id);
+		kfree(aux_priv);
+		goto exit;
+	}
+	bp->aux_priv = aux_priv;
+
+	/* From this point, all cleanup will happen via the .release callback &
+	 * any error unwinding will need to include a call to
+	 * auxiliary_device_uninit.
+	 */
+	edev = kzalloc_obj(*edev);
+	if (!edev)
+		goto aux_dev_uninit;
+
+	aux_priv->edev = edev;
+
+	ulp = kzalloc_obj(*ulp);
+	if (!ulp)
+		goto aux_dev_uninit;
+
+	edev->ulp_tbl = ulp;
+	bp->edev = edev;
+	bnxt_set_edev_info(edev, bp);
+	bp->ulp_num_msix_want = bnxt_set_dflt_ulp_msix(bp);
+
+	return;
+
+aux_dev_uninit:
+	auxiliary_device_uninit(aux_dev);
+exit:
+	bp->flags &= ~BNXT_FLAG_ROCE_CAP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

@@ -12,7 +12,11 @@ void foo(struct __sk_buff *skb)
 }
 
 SEC("tc")
+<<<<<<< HEAD
 __success
+=======
+__failure __msg("foo() doesn't return scalar")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int global_func7(struct __sk_buff *skb)
 {
 	foo(skb);

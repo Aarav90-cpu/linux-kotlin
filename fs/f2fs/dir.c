@@ -368,7 +368,11 @@ start_find_entry:
 
 	max_depth = F2FS_I(dir)->i_current_depth;
 	if (unlikely(max_depth > MAX_DIR_HASH_DEPTH)) {
+<<<<<<< HEAD
 		f2fs_warn(F2FS_I_SB(dir), "Corrupted max_depth of %llu: %u",
+=======
+		f2fs_warn(F2FS_I_SB(dir), "Corrupted max_depth of %lu: %u",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			  dir->i_ino, max_depth);
 		max_depth = MAX_DIR_HASH_DEPTH;
 		f2fs_i_depth_write(dir, max_depth);

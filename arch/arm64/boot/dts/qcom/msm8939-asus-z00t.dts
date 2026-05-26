@@ -147,6 +147,7 @@
 		pinctrl-names = "default";
 	};
 
+<<<<<<< HEAD
 	light-sensor@60 {
 		compatible = "capella,cm36686", "vishay,vcnl4040";
 		reg = <0x60>;
@@ -161,6 +162,8 @@
 		pinctrl-names = "default";
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	imu@68 {
 		compatible = "invensense,mpu6515";
 		reg = <0x68>;
@@ -344,6 +347,7 @@
 		drive-strength = <2>;
 		bias-disable;
 	};
+<<<<<<< HEAD
 
 	light_int_default: light-int-default-state {
 		pins = "gpio113";
@@ -351,4 +355,6 @@
 		drive-strength = <16>;
 		bias-pull-up;
 	};
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };

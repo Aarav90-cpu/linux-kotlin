@@ -5134,10 +5134,17 @@ static void rtl8xxxu_dump_action(struct device *dev,
 	if (!(rtl8xxxu_debug & RTL8XXXU_DEBUG_ACTION))
 		return;
 
+<<<<<<< HEAD
 	switch (mgmt->u.action.action_code) {
 	case WLAN_ACTION_ADDBA_RESP:
 		cap = le16_to_cpu(mgmt->u.action.addba_resp.capab);
 		timeout = le16_to_cpu(mgmt->u.action.addba_resp.timeout);
+=======
+	switch (mgmt->u.action.u.addba_resp.action_code) {
+	case WLAN_ACTION_ADDBA_RESP:
+		cap = le16_to_cpu(mgmt->u.action.u.addba_resp.capab);
+		timeout = le16_to_cpu(mgmt->u.action.u.addba_resp.timeout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_info(dev, "WLAN_ACTION_ADDBA_RESP: "
 			 "timeout %i, tid %02x, buf_size %02x, policy %02x, "
 			 "status %02x\n",
@@ -5145,11 +5152,19 @@ static void rtl8xxxu_dump_action(struct device *dev,
 			 (cap & IEEE80211_ADDBA_PARAM_TID_MASK) >> 2,
 			 (cap & IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK) >> 6,
 			 (cap >> 1) & 0x1,
+<<<<<<< HEAD
 			 le16_to_cpu(mgmt->u.action.addba_resp.status));
 		break;
 	case WLAN_ACTION_ADDBA_REQ:
 		cap = le16_to_cpu(mgmt->u.action.addba_req.capab);
 		timeout = le16_to_cpu(mgmt->u.action.addba_req.timeout);
+=======
+			 le16_to_cpu(mgmt->u.action.u.addba_resp.status));
+		break;
+	case WLAN_ACTION_ADDBA_REQ:
+		cap = le16_to_cpu(mgmt->u.action.u.addba_req.capab);
+		timeout = le16_to_cpu(mgmt->u.action.u.addba_req.timeout);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dev_info(dev, "WLAN_ACTION_ADDBA_REQ: "
 			 "timeout %i, tid %02x, buf_size %02x, policy %02x\n",
 			 timeout,
@@ -5159,7 +5174,11 @@ static void rtl8xxxu_dump_action(struct device *dev,
 		break;
 	default:
 		dev_info(dev, "action frame %02x\n",
+<<<<<<< HEAD
 			 mgmt->u.action.action_code);
+=======
+			 mgmt->u.action.u.addba_resp.action_code);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	}
 }
@@ -7686,12 +7705,19 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
 	int ret;
 	int untested = 1;
 
+<<<<<<< HEAD
 	udev = interface_to_usbdev(interface);
+=======
+	udev = usb_get_dev(interface_to_usbdev(interface));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (id->idVendor) {
 	case USB_VENDOR_ID_REALTEK:
 		switch(id->idProduct) {
+<<<<<<< HEAD
 		case 0x0179:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		case 0x1724:
 		case 0x8176:
 		case 0x8178:
@@ -7745,8 +7771,15 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
 	}
 
 	hw = ieee80211_alloc_hw(sizeof(struct rtl8xxxu_priv), &rtl8xxxu_ops);
+<<<<<<< HEAD
 	if (!hw)
 		return -ENOMEM;
+=======
+	if (!hw) {
+		ret = -ENOMEM;
+		goto err_put_dev;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	priv = hw->priv;
 	priv->hw = hw;
@@ -7888,6 +7921,11 @@ err_set_intfdata:
 	mutex_destroy(&priv->h2c_mutex);
 
 	ieee80211_free_hw(hw);
+<<<<<<< HEAD
+=======
+err_put_dev:
+	usb_put_dev(udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -7920,6 +7958,10 @@ static void rtl8xxxu_disconnect(struct usb_interface *interface)
 			 "Device still attached, trying to reset\n");
 		usb_reset_device(priv->udev);
 	}
+<<<<<<< HEAD
+=======
+	usb_put_dev(priv->udev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ieee80211_free_hw(hw);
 }
 

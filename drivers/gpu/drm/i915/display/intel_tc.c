@@ -7,6 +7,10 @@
 
 #include <drm/drm_print.h>
 
+<<<<<<< HEAD
+=======
+#include "i915_reg.h"
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include "intel_atomic.h"
 #include "intel_cx0_phy_regs.h"
 #include "intel_ddi.h"
@@ -1844,7 +1848,11 @@ bool intel_tc_port_link_reset(struct intel_digital_port *dig_port)
 	if (!intel_tc_port_link_needs_reset(dig_port))
 		return false;
 
+<<<<<<< HEAD
 	queue_delayed_work(system_dfl_wq,
+=======
+	queue_delayed_work(system_unbound_wq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   &to_tc_port(dig_port)->link_reset_work,
 			   msecs_to_jiffies(2000));
 
@@ -1925,7 +1933,11 @@ void intel_tc_port_unlock(struct intel_digital_port *dig_port)
 	struct intel_tc_port *tc = to_tc_port(dig_port);
 
 	if (!tc->link_refcount && tc->mode != TC_PORT_DISCONNECTED)
+<<<<<<< HEAD
 		queue_delayed_work(system_dfl_wq, &tc->disconnect_phy_work,
+=======
+		queue_delayed_work(system_unbound_wq, &tc->disconnect_phy_work,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   msecs_to_jiffies(1000));
 
 	mutex_unlock(&tc->lock);

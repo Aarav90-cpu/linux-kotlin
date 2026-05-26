@@ -52,6 +52,10 @@ extern unsigned int zlib_dfltcc_support;
 #define ZLIB_DFLTCC_INFLATE_ONLY	3
 #define ZLIB_DFLTCC_FULL_DEBUG		4
 
+<<<<<<< HEAD
+=======
+extern unsigned long ident_map_size;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 extern unsigned long max_mappable;
 
 /* The Write Back bit position in the physaddr is given by the SLPC PCI */

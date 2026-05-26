@@ -224,9 +224,41 @@ void iio_kfifo_free(struct iio_buffer *r)
 }
 EXPORT_SYMBOL(iio_kfifo_free);
 
+<<<<<<< HEAD
 static void devm_iio_kfifo_release(void *buffer)
 {
 	iio_kfifo_free(buffer);
+=======
+static void devm_iio_kfifo_release(struct device *dev, void *res)
+{
+	iio_kfifo_free(*(struct iio_buffer **)res);
+}
+
+/**
+ * devm_iio_kfifo_allocate - Resource-managed iio_kfifo_allocate()
+ * @dev:		Device to allocate kfifo buffer for
+ *
+ * RETURNS:
+ * Pointer to allocated iio_buffer on success, NULL on failure.
+ */
+static struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev)
+{
+	struct iio_buffer **ptr, *r;
+
+	ptr = devres_alloc(devm_iio_kfifo_release, sizeof(*ptr), GFP_KERNEL);
+	if (!ptr)
+		return NULL;
+
+	r = iio_kfifo_allocate();
+	if (r) {
+		*ptr = r;
+		devres_add(dev, ptr);
+	} else {
+		devres_free(ptr);
+	}
+
+	return r;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -236,12 +268,19 @@ static void devm_iio_kfifo_release(void *buffer)
  * @setup_ops: The setup_ops required to configure the HW part of the buffer (optional)
  * @buffer_attrs: Extra sysfs buffer attributes for this IIO buffer
  *
+<<<<<<< HEAD
  * This function allocates a kfifo buffer via iio_kfifo_allocate() and
  * attaches it to the IIO device via iio_device_attach_buffer().
  * This is meant to be a bit of a short-hand/helper function as there are a few
  * drivers that seem to do this.
  *
  * Return: 0 on success, negative error code on failure.
+=======
+ * This function allocates a kfifo buffer via devm_iio_kfifo_allocate() and
+ * attaches it to the IIO device via iio_device_attach_buffer().
+ * This is meant to be a bit of a short-hand/helper function as there are a few
+ * drivers that seem to do this.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
 				    struct iio_dev *indio_dev,
@@ -249,6 +288,7 @@ int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
 				    const struct iio_dev_attr **buffer_attrs)
 {
 	struct iio_buffer *buffer;
+<<<<<<< HEAD
 	int ret;
 
 	buffer = iio_kfifo_allocate();
@@ -259,6 +299,13 @@ int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
 	if (ret)
 		return ret;
 
+=======
+
+	buffer = devm_iio_kfifo_allocate(dev);
+	if (!buffer)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	indio_dev->modes |= INDIO_BUFFER_SOFTWARE;
 	indio_dev->setup_ops = setup_ops;
 

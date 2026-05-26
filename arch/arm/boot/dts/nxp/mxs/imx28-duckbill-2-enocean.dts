@@ -13,17 +13,29 @@
 	compatible = "i2se,duckbill-2-enocean", "i2se,duckbill-2", "fsl,imx28";
 
 	leds {
+<<<<<<< HEAD
 		led-enocean-blue {
+=======
+		enocean-blue {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "duckbill:blue:enocean";
 			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
 		};
 
+<<<<<<< HEAD
 		led-enocean-red {
+=======
+		enocean-red {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "duckbill:red:enocean";
 			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
 		};
 
+<<<<<<< HEAD
 		led-enocean-green {
+=======
+		enocean-green {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			label = "duckbill:green:enocean";
 			gpios = <&gpio3 2 GPIO_ACTIVE_LOW>;
 		};

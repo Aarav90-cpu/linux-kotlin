@@ -12,7 +12,10 @@
 #include <linux/alloc_tag.h>
 #include <linux/atomic.h>
 #include <linux/compiler.h>
+<<<<<<< HEAD
 #include <linux/irq_work_types.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/mutex.h>
 #include <linux/workqueue_types.h>
 
@@ -50,7 +53,10 @@ typedef int (*rht_obj_cmpfn_t)(struct rhashtable_compare_arg *arg,
  * @head_offset: Offset of rhash_head in struct to be hashed
  * @max_size: Maximum size while expanding
  * @min_size: Minimum size while shrinking
+<<<<<<< HEAD
  * @insecure_elasticity: Set to true to disable chain length checks
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @automatic_shrinking: Enable automatic shrinking of tables
  * @hashfn: Hash function (default: jhash2 if !(key_len % 4), or jhash)
  * @obj_hashfn: Function to hash object
@@ -63,7 +69,10 @@ struct rhashtable_params {
 	u16			head_offset;
 	unsigned int		max_size;
 	u16			min_size;
+<<<<<<< HEAD
 	bool			insecure_elasticity;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool			automatic_shrinking;
 	rht_hashfn_t		hashfn;
 	rht_obj_hashfn_t	obj_hashfn;
@@ -78,7 +87,10 @@ struct rhashtable_params {
  * @p: Configuration parameters
  * @rhlist: True if this is an rhltable
  * @run_work: Deferred worker to expand/shrink asynchronously
+<<<<<<< HEAD
  * @run_irq_work: Bounces the @run_work kick through hard IRQ context.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @mutex: Mutex to protect current/future table swapping
  * @lock: Spin lock to protect walker list
  * @nelems: Number of elements in table
@@ -90,7 +102,10 @@ struct rhashtable {
 	struct rhashtable_params	p;
 	bool				rhlist;
 	struct work_struct		run_work;
+<<<<<<< HEAD
 	struct irq_work			run_irq_work;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mutex                    mutex;
 	spinlock_t			lock;
 	atomic_t			nelems;

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 menu "Apple"
 
 config SND_SOC_APPLE_MCA

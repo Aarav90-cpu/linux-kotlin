@@ -138,6 +138,7 @@ int usdt_sib(struct pt_regs *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef __TARGET_ARCH_x86
 int executed;
 unsigned long expected_ip;
@@ -150,4 +151,6 @@ int usdt_executed(struct pt_regs *ctx)
 	return 0;
 }
 #endif
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 char _license[] SEC("license") = "GPL";

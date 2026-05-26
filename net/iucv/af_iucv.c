@@ -127,8 +127,11 @@ static inline void low_nmcpy(unsigned char *dst, char *src)
  * if the socket data len is > 7, the function returns 8.
  *
  * Use this function to allocate socket buffers to store iucv message data.
+<<<<<<< HEAD
  *
  * Returns: Length of the IUCV message.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline size_t iucv_msg_length(struct iucv_message *msg)
 {
@@ -147,7 +150,11 @@ static inline size_t iucv_msg_length(struct iucv_message *msg)
  * @state:	first iucv sk state
  * @state2:	second iucv sk state
  *
+<<<<<<< HEAD
  * Returns: true if the socket is either in the first or second state.
+=======
+ * Returns true if the socket in either in the first or second state.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int iucv_sock_in_state(struct sock *sk, int state, int state2)
 {
@@ -158,9 +165,15 @@ static int iucv_sock_in_state(struct sock *sk, int state, int state2)
  * iucv_below_msglim() - function to check if messages can be sent
  * @sk:		sock structure
  *
+<<<<<<< HEAD
  * Returns: true, if either the socket is not connected (no iucv path for
  * checking the message limit) or if the send queue length is lower
  * than the message limit.
+=======
+ * Returns true if the send queue length is lower than the message limit.
+ * Always returns true if the socket is not connected (no iucv path for
+ * checking the message limit).
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline int iucv_below_msglim(struct sock *sk)
 {
@@ -885,7 +898,11 @@ static int iucv_sock_getname(struct socket *sock, struct sockaddr *addr,
  * list and the socket data len at index 7 (last byte).
  * See also iucv_msg_length().
  *
+<<<<<<< HEAD
  * Returns: the return code from the iucv_message_send() call.
+=======
+ * Returns the error code from the iucv_message_send() call.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static int iucv_send_iprm(struct iucv_path *path, struct iucv_message *msg,
 			  struct sk_buff *skb)

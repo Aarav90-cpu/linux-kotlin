@@ -110,9 +110,12 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
 	len = thread__comm_len(h->thread);
 	if (hists__new_col_len(hists, HISTC_COMM, len))
 		hists__set_col_len(hists, HISTC_THREAD, len + 8);
+<<<<<<< HEAD
 	if (hists->hpp_list->comm_nodigit)
 		hists__new_col_len(hists, HISTC_COMM_NODIGIT,
 				   (u16) sort__comm_nodigit_len(h));
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (h->ms.map) {
 		len = dso__name_len(map__dso(h->ms.map));
@@ -1151,7 +1154,11 @@ iter_prepare_cumulative_entry(struct hist_entry_iter *iter,
 	 * cumulated only one time to prevent entries more than 100%
 	 * overhead.
 	 */
+<<<<<<< HEAD
 	he_cache = calloc(cursor->nr + 1, sizeof(*he_cache));
+=======
+	he_cache = malloc(sizeof(*he_cache) * (cursor->nr + 1));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (he_cache == NULL)
 		return -ENOMEM;
 

@@ -13,6 +13,21 @@
 
 struct virt_booter_data virt_bi_data;
 
+<<<<<<< HEAD
+=======
+#define VIRT_CTRL_REG_FEATURES	0x00
+#define VIRT_CTRL_REG_CMD	0x04
+
+static struct resource ctrlres;
+
+enum {
+	CMD_NOOP,
+	CMD_RESET,
+	CMD_HALT,
+	CMD_PANIC,
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void virt_get_model(char *str)
 {
 	/* str is 80 characters long */
@@ -21,9 +36,31 @@ static void virt_get_model(char *str)
 		(u8)(virt_bi_data.qemu_version >> 16),
 		(u8)(virt_bi_data.qemu_version >> 8));
 }
+<<<<<<< HEAD
 static void virt_reset(void)
 {
 	do_kernel_restart(NULL);
+=======
+
+static void virt_halt(void)
+{
+	void __iomem *base = (void __iomem *)virt_bi_data.ctrl.mmio;
+
+	iowrite32be(CMD_HALT, base + VIRT_CTRL_REG_CMD);
+	local_irq_disable();
+	while (1)
+		;
+}
+
+static void virt_reset(void)
+{
+	void __iomem *base = (void __iomem *)virt_bi_data.ctrl.mmio;
+
+	iowrite32be(CMD_RESET, base + VIRT_CTRL_REG_CMD);
+	local_irq_disable();
+	while (1)
+		;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -85,8 +122,26 @@ void __init config_virt(void)
 		 virt_bi_data.tty.mmio);
 	setup_earlycon(earlycon);
 
+<<<<<<< HEAD
+=======
+	ctrlres = (struct resource)
+		   DEFINE_RES_MEM_NAMED(virt_bi_data.ctrl.mmio, 0x100,
+					"virtctrl");
+
+	if (request_resource(&iomem_resource, &ctrlres)) {
+		pr_err("Cannot allocate virt controller resource\n");
+		return;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mach_init_IRQ = virt_init_IRQ;
 	mach_sched_init = virt_sched_init;
 	mach_get_model = virt_get_model;
 	mach_reset = virt_reset;
+<<<<<<< HEAD
+=======
+	mach_halt = virt_halt;
+
+	register_platform_power_off(virt_halt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }

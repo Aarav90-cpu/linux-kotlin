@@ -312,5 +312,8 @@ struct resource_pool *dcn35_create_resource_pool(
 #define DPP_REG_LIST_DCN35_RI(id)\
 	DPP_REG_LIST_DCN30_COMMON_RI(id)
 
+<<<<<<< HEAD
 void dcn35_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* _DCN35_RESOURCE_H_ */

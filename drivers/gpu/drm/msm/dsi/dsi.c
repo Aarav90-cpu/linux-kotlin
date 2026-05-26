@@ -198,7 +198,10 @@ static const struct of_device_id dt_match[] = {
 	{ .compatible = "qcom,dsi-ctrl-6g-qcm2290" },
 	{}
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, dt_match);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 static const struct dev_pm_ops dsi_pm_ops = {
 	SET_RUNTIME_PM_OPS(msm_dsi_runtime_suspend, msm_dsi_runtime_resume, NULL)

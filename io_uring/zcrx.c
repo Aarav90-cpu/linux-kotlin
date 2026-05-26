@@ -63,7 +63,11 @@ static int io_area_max_shift(struct io_zcrx_mem *mem)
 	unsigned i;
 
 	for_each_sgtable_dma_sg(sgt, sg, i)
+<<<<<<< HEAD
 		shift = min(shift, __ffs(sg_dma_len(sg)));
+=======
+		shift = min(shift, __ffs(sg->length));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return shift;
 }
 
@@ -127,10 +131,17 @@ static int io_import_dmabuf(struct io_zcrx_ifq *ifq,
 	int dmabuf_fd = area_reg->dmabuf_fd;
 	int i, ret;
 
+<<<<<<< HEAD
 	if (!ifq->dev)
 		return -EINVAL;
 	if (off)
 		return -EINVAL;
+=======
+	if (off)
+		return -EINVAL;
+	if (WARN_ON_ONCE(!ifq->dev))
+		return -EFAULT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!IS_ENABLED(CONFIG_DMA_SHARED_BUFFER))
 		return -EINVAL;
 
@@ -194,7 +205,10 @@ static int io_import_umem(struct io_zcrx_ifq *ifq,
 {
 	struct page **pages;
 	int nr_pages, ret;
+<<<<<<< HEAD
 	bool mapped = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (area_reg->dmabuf_fd)
 		return -EINVAL;
@@ -208,6 +222,7 @@ static int io_import_umem(struct io_zcrx_ifq *ifq,
 	ret = sg_alloc_table_from_pages(&mem->page_sg_table, pages, nr_pages,
 					0, (unsigned long)nr_pages << PAGE_SHIFT,
 					GFP_KERNEL_ACCOUNT);
+<<<<<<< HEAD
 	if (ret)
 		goto out_err;
 
@@ -217,20 +232,32 @@ static int io_import_umem(struct io_zcrx_ifq *ifq,
 		if (ret < 0)
 			goto out_err;
 		mapped = true;
+=======
+	if (ret) {
+		unpin_user_pages(pages, nr_pages);
+		kvfree(pages);
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	mem->account_pages = io_count_account_pages(pages, nr_pages);
 	ret = io_account_mem(ifq->user, ifq->mm_account, mem->account_pages);
+<<<<<<< HEAD
 	if (ret < 0) {
 		mem->account_pages = 0;
 		goto out_err;
 	}
+=======
+	if (ret < 0)
+		mem->account_pages = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	mem->sgt = &mem->page_sg_table;
 	mem->pages = pages;
 	mem->nr_folios = nr_pages;
 	mem->size = area_reg->len;
 	return ret;
+<<<<<<< HEAD
 out_err:
 	if (mapped)
 		dma_unmap_sgtable(ifq->dev, &mem->page_sg_table,
@@ -239,6 +266,8 @@ out_err:
 	unpin_user_pages(pages, nr_pages);
 	kvfree(pages);
 	return ret;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_release_area_mem(struct io_zcrx_mem *mem)
@@ -289,10 +318,15 @@ static void io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
 		return;
 	area->is_mapped = false;
 
+<<<<<<< HEAD
 	if (area->nia.niovs) {
 		for (i = 0; i < area->nia.num_niovs; i++)
 			net_mp_niov_set_dma_addr(&area->nia.niovs[i], 0);
 	}
+=======
+	for (i = 0; i < area->nia.num_niovs; i++)
+		net_mp_niov_set_dma_addr(&area->nia.niovs[i], 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (area->mem.is_dmabuf) {
 		io_release_dmabuf(&area->mem);
@@ -302,6 +336,7 @@ static void io_zcrx_unmap_area(struct io_zcrx_ifq *ifq,
 	}
 }
 
+<<<<<<< HEAD
 static void zcrx_sync_for_device(struct page_pool *pp, struct io_zcrx_ifq *zcrx,
 				 netmem_ref *netmems, unsigned nr)
 {
@@ -319,6 +354,47 @@ static void zcrx_sync_for_device(struct page_pool *pp, struct io_zcrx_ifq *zcrx,
 		__dma_sync_single_for_device(dev, dma_addr + pp->p.offset,
 					     niov_size, pp->p.dma_dir);
 	}
+=======
+static int io_zcrx_map_area(struct io_zcrx_ifq *ifq, struct io_zcrx_area *area)
+{
+	int ret;
+
+	guard(mutex)(&ifq->pp_lock);
+	if (area->is_mapped)
+		return 0;
+
+	if (!area->mem.is_dmabuf) {
+		ret = dma_map_sgtable(ifq->dev, &area->mem.page_sg_table,
+				      DMA_FROM_DEVICE, IO_DMA_ATTR);
+		if (ret < 0)
+			return ret;
+	}
+
+	ret = io_populate_area_dma(ifq, area);
+	if (ret && !area->mem.is_dmabuf)
+		dma_unmap_sgtable(ifq->dev, &area->mem.page_sg_table,
+				  DMA_FROM_DEVICE, IO_DMA_ATTR);
+	if (ret == 0)
+		area->is_mapped = true;
+	return ret;
+}
+
+static void io_zcrx_sync_for_device(struct page_pool *pool,
+				    struct net_iov *niov)
+{
+#if defined(CONFIG_HAS_DMA) && defined(CONFIG_DMA_NEED_SYNC)
+	dma_addr_t dma_addr;
+
+	unsigned niov_size;
+
+	if (!dma_dev_need_sync(pool->p.dev))
+		return;
+
+	niov_size = 1U << io_pp_to_ifq(pool)->niov_shift;
+	dma_addr = page_pool_get_dma_addr_netmem(net_iov_to_netmem(niov));
+	__dma_sync_single_for_device(pool->p.dev, dma_addr + pool->p.offset,
+				     niov_size, pool->p.dma_dir);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 }
 
@@ -386,6 +462,7 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
 		return -EINVAL;
 
 	mmap_offset = IORING_MAP_OFF_ZCRX_REGION;
+<<<<<<< HEAD
 	mmap_offset += (u64)id << IORING_OFF_ZCRX_SHIFT;
 
 	ret = io_create_region(ctx, &ifq->rq_region, rd, mmap_offset);
@@ -397,14 +474,32 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
 	ifq->rq.rqes = (struct io_uring_zcrx_rqe *)(ptr + off);
 
 	memset(ifq->rq.ring, 0, sizeof(*ifq->rq.ring));
+=======
+	mmap_offset += id << IORING_OFF_PBUF_SHIFT;
+
+	ret = io_create_region(ctx, &ifq->region, rd, mmap_offset);
+	if (ret < 0)
+		return ret;
+
+	ptr = io_region_get_ptr(&ifq->region);
+	ifq->rq_ring = (struct io_uring *)ptr;
+	ifq->rqes = (struct io_uring_zcrx_rqe *)(ptr + off);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
 static void io_free_rbuf_ring(struct io_zcrx_ifq *ifq)
 {
+<<<<<<< HEAD
 	io_free_region(ifq->user, &ifq->rq_region);
 	ifq->rq.ring = NULL;
 	ifq->rq.rqes = NULL;
+=======
+	io_free_region(ifq->user, &ifq->region);
+	ifq->rq_ring = NULL;
+	ifq->rqes = NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void io_zcrx_free_area(struct io_zcrx_ifq *ifq,
@@ -426,6 +521,7 @@ static void io_zcrx_free_area(struct io_zcrx_ifq *ifq,
 static int io_zcrx_append_area(struct io_zcrx_ifq *ifq,
 				struct io_zcrx_area *area)
 {
+<<<<<<< HEAD
 	bool kern_readable = !area->mem.is_dmabuf;
 
 	if (WARN_ON_ONCE(ifq->area))
@@ -433,6 +529,10 @@ static int io_zcrx_append_area(struct io_zcrx_ifq *ifq,
 	if (WARN_ON_ONCE(ifq->kern_readable != kern_readable))
 		return -EINVAL;
 
+=======
+	if (ifq->area)
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ifq->area = area;
 	return 0;
 }
@@ -452,8 +552,11 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
 			return -EINVAL;
 		buf_size_shift = ilog2(reg->rx_buf_len);
 	}
+<<<<<<< HEAD
 	if (!ifq->dev && buf_size_shift != PAGE_SHIFT)
 		return -EOPNOTSUPP;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = -ENOMEM;
 	area = kzalloc_obj(*area);
@@ -464,10 +567,15 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
 	ret = io_import_area(ifq, &area->mem, area_reg);
 	if (ret)
 		goto err;
+<<<<<<< HEAD
 	if (ifq->dev)
 		area->is_mapped = true;
 
 	if (ifq->dev && buf_size_shift > io_area_max_shift(&area->mem)) {
+=======
+
+	if (buf_size_shift > io_area_max_shift(&area->mem)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -ERANGE;
 		goto err;
 	}
@@ -495,6 +603,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
 	for (i = 0; i < nr_iovs; i++) {
 		struct net_iov *niov = &area->nia.niovs[i];
 
+<<<<<<< HEAD
 		net_iov_init(niov, &area->nia, NET_IOV_IOURING);
 		area->freelist[i] = i;
 		atomic_set(&area->user_refs[i], 0);
@@ -504,6 +613,12 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
 		ret = io_populate_area_dma(ifq, area);
 		if (ret)
 			goto err;
+=======
+		niov->owner = &area->nia;
+		area->freelist[i] = i;
+		atomic_set(&area->user_refs[i], 0);
+		niov->type = NET_IOV_IOURING;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	area->free_count = nr_iovs;
@@ -530,7 +645,11 @@ static struct io_zcrx_ifq *io_zcrx_ifq_alloc(struct io_ring_ctx *ctx)
 		return NULL;
 
 	ifq->if_rxq = -1;
+<<<<<<< HEAD
 	spin_lock_init(&ifq->rq.lock);
+=======
+	spin_lock_init(&ifq->rq_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_init(&ifq->pp_lock);
 	refcount_set(&ifq->refs, 1);
 	refcount_set(&ifq->user_refs, 1);
@@ -563,11 +682,16 @@ static void io_close_queue(struct io_zcrx_ifq *ifq)
 	}
 
 	if (netdev) {
+<<<<<<< HEAD
 		if (ifq->if_rxq != -1) {
 			netdev_lock(netdev);
 			netif_mp_close_rxq(netdev, ifq->if_rxq, &p);
 			netdev_unlock(netdev);
 		}
+=======
+		if (ifq->if_rxq != -1)
+			net_mp_close_rxq(netdev, ifq->if_rxq, &p);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		netdev_put(netdev, &netdev_tracker);
 	}
 	ifq->if_rxq = -1;
@@ -606,6 +730,7 @@ static void io_zcrx_return_niov_freelist(struct net_iov *niov)
 	area->freelist[area->free_count++] = net_iov_idx(niov);
 }
 
+<<<<<<< HEAD
 static struct net_iov *zcrx_get_free_niov(struct io_zcrx_area *area)
 {
 	unsigned niov_idx;
@@ -619,6 +744,8 @@ static struct net_iov *zcrx_get_free_niov(struct io_zcrx_area *area)
 	return &area->nia.niovs[niov_idx];
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void io_zcrx_return_niov(struct net_iov *niov)
 {
 	netmem_ref netmem = net_iov_to_netmem(niov);
@@ -673,7 +800,11 @@ struct io_mapped_region *io_zcrx_get_region(struct io_ring_ctx *ctx,
 
 	lockdep_assert_held(&ctx->mmap_lock);
 
+<<<<<<< HEAD
 	return ifq ? &ifq->rq_region : NULL;
+=======
+	return ifq ? &ifq->region : NULL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int zcrx_box_release(struct inode *inode, struct file *file)
@@ -784,6 +915,7 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int zcrx_register_netdev(struct io_zcrx_ifq *ifq,
 				struct io_uring_zcrx_ifq_reg *reg,
 				struct io_uring_zcrx_area_reg *area)
@@ -828,6 +960,12 @@ netdev_put_unlock:
 int io_register_zcrx(struct io_ring_ctx *ctx,
 		     struct io_uring_zcrx_ifq_reg __user *arg)
 {
+=======
+int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+			  struct io_uring_zcrx_ifq_reg __user *arg)
+{
+	struct pp_memory_provider_params mp_param = {};
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct io_uring_zcrx_area_reg area;
 	struct io_uring_zcrx_ifq_reg reg;
 	struct io_uring_region_desc rd;
@@ -851,15 +989,22 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
 		return -EFAULT;
 	if (!mem_is_zero(&reg.__resv, sizeof(reg.__resv)) || reg.zcrx_id)
 		return -EINVAL;
+<<<<<<< HEAD
 	if (reg.flags & ~ZCRX_SUPPORTED_REG_FLAGS)
 		return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (reg.flags & ZCRX_REG_IMPORT)
 		return import_zcrx(ctx, arg, &reg);
 	if (copy_from_user(&rd, u64_to_user_ptr(reg.region_ptr), sizeof(rd)))
 		return -EFAULT;
+<<<<<<< HEAD
 	if (reg.if_rxq == -1 || !reg.rq_entries)
 		return -EINVAL;
 	if ((reg.if_rxq || reg.if_idx) && (reg.flags & ZCRX_REG_NODEV))
+=======
+	if (reg.if_rxq == -1 || !reg.rq_entries || reg.flags)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	if (reg.rq_entries > IO_RQ_MAX_ENTRIES) {
 		if (!(ctx->flags & IORING_SETUP_CLAMP))
@@ -883,7 +1028,11 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
 		mmgrab(ctx->mm_account);
 		ifq->mm_account = ctx->mm_account;
 	}
+<<<<<<< HEAD
 	ifq->rq.nr_entries = reg.rq_entries;
+=======
+	ifq->rq_entries = reg.rq_entries;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	scoped_guard(mutex, &ctx->mmap_lock) {
 		/* preallocate id */
@@ -896,6 +1045,7 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	ifq->kern_readable = !(area.flags & IORING_ZCRX_AREA_DMABUF);
 
 	if (!(reg.flags & ZCRX_REG_NODEV)) {
@@ -907,6 +1057,35 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
 		if (ret)
 			goto err;
 	}
+=======
+	ifq->netdev = netdev_get_by_index_lock(current->nsproxy->net_ns, reg.if_idx);
+	if (!ifq->netdev) {
+		ret = -ENODEV;
+		goto err;
+	}
+	netdev_hold(ifq->netdev, &ifq->netdev_tracker, GFP_KERNEL);
+
+	ifq->dev = netdev_queue_get_dma_dev(ifq->netdev, reg.if_rxq);
+	if (!ifq->dev) {
+		ret = -EOPNOTSUPP;
+		goto netdev_put_unlock;
+	}
+	get_device(ifq->dev);
+
+	ret = io_zcrx_create_area(ifq, &area, &reg);
+	if (ret)
+		goto netdev_put_unlock;
+
+	if (reg.rx_buf_len)
+		mp_param.rx_page_size = 1U << ifq->niov_shift;
+	mp_param.mp_ops = &io_uring_pp_zc_ops;
+	mp_param.mp_priv = ifq;
+	ret = __net_mp_open_rxq(ifq->netdev, reg.if_rxq, &mp_param, NULL);
+	if (ret)
+		goto netdev_put_unlock;
+	netdev_unlock(ifq->netdev);
+	ifq->if_rxq = reg.if_rxq;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	reg.zcrx_id = id;
 
@@ -926,6 +1105,11 @@ int io_register_zcrx(struct io_ring_ctx *ctx,
 		goto err;
 	}
 	return 0;
+<<<<<<< HEAD
+=======
+netdev_put_unlock:
+	netdev_unlock(ifq->netdev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err:
 	scoped_guard(mutex, &ctx->mmap_lock)
 		xa_erase(&ctx->zcrx_ctxs, id);
@@ -934,14 +1118,34 @@ ifq_free:
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline bool is_zcrx_entry_marked(struct io_ring_ctx *ctx, unsigned long id)
 {
 	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_1);
+=======
+static struct net_iov *__io_zcrx_get_free_niov(struct io_zcrx_area *area)
+{
+	unsigned niov_idx;
+
+	lockdep_assert_held(&area->freelist_lock);
+
+	niov_idx = area->freelist[--area->free_count];
+	return &area->nia.niovs[niov_idx];
+}
+
+static inline bool is_zcrx_entry_marked(struct io_ring_ctx *ctx, unsigned long id)
+{
+	return xa_get_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline void set_zcrx_entry_mark(struct io_ring_ctx *ctx, unsigned long id)
 {
+<<<<<<< HEAD
 	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_1);
+=======
+	xa_set_mark(&ctx->zcrx_ctxs, id, XA_MARK_0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void io_terminate_zcrx(struct io_ring_ctx *ctx)
@@ -964,7 +1168,11 @@ void io_terminate_zcrx(struct io_ring_ctx *ctx)
 	}
 }
 
+<<<<<<< HEAD
 void io_unregister_zcrx(struct io_ring_ctx *ctx)
+=======
+void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct io_zcrx_ifq *ifq;
 
@@ -991,6 +1199,7 @@ void io_unregister_zcrx(struct io_ring_ctx *ctx)
 	xa_destroy(&ctx->zcrx_ctxs);
 }
 
+<<<<<<< HEAD
 static inline u32 zcrx_rq_entries(struct zcrx_rq *rq)
 {
 	u32 entries;
@@ -1004,6 +1213,22 @@ static struct io_uring_zcrx_rqe *zcrx_next_rqe(struct zcrx_rq *rq, unsigned mask
 	unsigned int idx = rq->cached_head++ & mask;
 
 	return &rq->rqes[idx];
+=======
+static inline u32 io_zcrx_rqring_entries(struct io_zcrx_ifq *ifq)
+{
+	u32 entries;
+
+	entries = smp_load_acquire(&ifq->rq_ring->tail) - ifq->cached_rq_head;
+	return min(entries, ifq->rq_entries);
+}
+
+static struct io_uring_zcrx_rqe *io_zcrx_get_rqe(struct io_zcrx_ifq *ifq,
+						 unsigned mask)
+{
+	unsigned int idx = ifq->cached_rq_head++ & mask;
+
+	return &ifq->rqes[idx];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline bool io_parse_rqe(struct io_uring_zcrx_rqe *rqe,
@@ -1029,6 +1254,7 @@ static inline bool io_parse_rqe(struct io_uring_zcrx_rqe *rqe,
 	return true;
 }
 
+<<<<<<< HEAD
 static unsigned io_zcrx_ring_refill(struct page_pool *pp,
 				    struct io_zcrx_ifq *ifq,
 				    netmem_ref *netmems, unsigned to_alloc)
@@ -1047,6 +1273,23 @@ static unsigned io_zcrx_ring_refill(struct page_pool *pp,
 
 	do {
 		struct io_uring_zcrx_rqe *rqe = zcrx_next_rqe(rq, mask);
+=======
+static void io_zcrx_ring_refill(struct page_pool *pp,
+				struct io_zcrx_ifq *ifq)
+{
+	unsigned int mask = ifq->rq_entries - 1;
+	unsigned int entries;
+
+	guard(spinlock_bh)(&ifq->rq_lock);
+
+	entries = io_zcrx_rqring_entries(ifq);
+	entries = min_t(unsigned, entries, PP_ALLOC_CACHE_REFILL);
+	if (unlikely(!entries))
+		return;
+
+	do {
+		struct io_uring_zcrx_rqe *rqe = io_zcrx_get_rqe(ifq, mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct net_iov *niov;
 		netmem_ref netmem;
 
@@ -1064,6 +1307,7 @@ static unsigned io_zcrx_ring_refill(struct page_pool *pp,
 			continue;
 		}
 
+<<<<<<< HEAD
 		netmems[allocated] = netmem;
 		allocated++;
 	} while (--entries);
@@ -1089,11 +1333,35 @@ static unsigned io_zcrx_refill_slow(struct page_pool *pp, struct io_zcrx_ifq *if
 		netmems[allocated] = net_iov_to_netmem(niov);
 	}
 	return allocated;
+=======
+		io_zcrx_sync_for_device(pp, niov);
+		net_mp_netmem_place_in_cache(pp, netmem);
+	} while (--entries);
+
+	smp_store_release(&ifq->rq_ring->head, ifq->cached_rq_head);
+}
+
+static void io_zcrx_refill_slow(struct page_pool *pp, struct io_zcrx_ifq *ifq)
+{
+	struct io_zcrx_area *area = ifq->area;
+
+	guard(spinlock_bh)(&area->freelist_lock);
+
+	while (area->free_count && pp->alloc.count < PP_ALLOC_CACHE_REFILL) {
+		struct net_iov *niov = __io_zcrx_get_free_niov(area);
+		netmem_ref netmem = net_iov_to_netmem(niov);
+
+		net_mp_niov_set_page_pool(pp, niov);
+		io_zcrx_sync_for_device(pp, niov);
+		net_mp_netmem_place_in_cache(pp, netmem);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static netmem_ref io_pp_zc_alloc_netmems(struct page_pool *pp, gfp_t gfp)
 {
 	struct io_zcrx_ifq *ifq = io_pp_to_ifq(pp);
+<<<<<<< HEAD
 	netmem_ref *netmems = pp->alloc.cache;
 	unsigned to_alloc = PP_ALLOC_CACHE_REFILL;
 	unsigned allocated;
@@ -1114,6 +1382,22 @@ out_return:
 	allocated--;
 	pp->alloc.count += allocated;
 	return netmems[allocated];
+=======
+
+	/* pp should already be ensuring that */
+	if (unlikely(pp->alloc.count))
+		goto out_return;
+
+	io_zcrx_ring_refill(pp, ifq);
+	if (likely(pp->alloc.count))
+		goto out_return;
+
+	io_zcrx_refill_slow(pp, ifq);
+	if (!pp->alloc.count)
+		return 0;
+out_return:
+	return pp->alloc.cache[--pp->alloc.count];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static bool io_pp_zc_release_netmem(struct page_pool *pp, netmem_ref netmem)
@@ -1132,6 +1416,10 @@ static bool io_pp_zc_release_netmem(struct page_pool *pp, netmem_ref netmem)
 static int io_pp_zc_init(struct page_pool *pp)
 {
 	struct io_zcrx_ifq *ifq = io_pp_to_ifq(pp);
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (WARN_ON_ONCE(!ifq))
 		return -EINVAL;
@@ -1144,6 +1432,13 @@ static int io_pp_zc_init(struct page_pool *pp)
 	if (pp->p.dma_dir != DMA_FROM_DEVICE)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
+=======
+	ret = io_zcrx_map_area(ifq, ifq->area);
+	if (ret)
+		return ret;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	refcount_inc(&ifq->refs);
 	return 0;
 }
@@ -1191,6 +1486,7 @@ static const struct memory_provider_ops io_uring_pp_zc_ops = {
 };
 
 static unsigned zcrx_parse_rq(netmem_ref *netmem_array, unsigned nr,
+<<<<<<< HEAD
 			      struct io_zcrx_ifq *zcrx, struct zcrx_rq *rq)
 {
 	unsigned int mask = rq->nr_entries - 1;
@@ -1199,6 +1495,16 @@ static unsigned zcrx_parse_rq(netmem_ref *netmem_array, unsigned nr,
 	nr = min(nr, zcrx_rq_entries(rq));
 	for (i = 0; i < nr; i++) {
 		struct io_uring_zcrx_rqe *rqe = zcrx_next_rqe(rq, mask);
+=======
+			      struct io_zcrx_ifq *zcrx)
+{
+	unsigned int mask = zcrx->rq_entries - 1;
+	unsigned int i;
+
+	nr = min(nr, io_zcrx_rqring_entries(zcrx));
+	for (i = 0; i < nr; i++) {
+		struct io_uring_zcrx_rqe *rqe = io_zcrx_get_rqe(zcrx, mask);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct net_iov *niov;
 
 		if (!io_parse_rqe(rqe, zcrx, &niov))
@@ -1206,7 +1512,11 @@ static unsigned zcrx_parse_rq(netmem_ref *netmem_array, unsigned nr,
 		netmem_array[i] = net_iov_to_netmem(niov);
 	}
 
+<<<<<<< HEAD
 	smp_store_release(&rq->ring->head, rq->cached_head);
+=======
+	smp_store_release(&zcrx->rq_ring->head, zcrx->cached_rq_head);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return i;
 }
 
@@ -1240,10 +1550,15 @@ static int zcrx_flush_rq(struct io_ring_ctx *ctx, struct io_zcrx_ifq *zcrx,
 		return -EINVAL;
 
 	do {
+<<<<<<< HEAD
 		struct zcrx_rq *rq = &zcrx->rq;
 
 		scoped_guard(spinlock_bh, &rq->lock) {
 			nr = zcrx_parse_rq(netmems, ZCRX_FLUSH_BATCH, zcrx, rq);
+=======
+		scoped_guard(spinlock_bh, &zcrx->rq_lock) {
+			nr = zcrx_parse_rq(netmems, ZCRX_FLUSH_BATCH, zcrx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			zcrx_return_buffers(netmems, nr);
 		}
 
@@ -1252,7 +1567,11 @@ static int zcrx_flush_rq(struct io_ring_ctx *ctx, struct io_zcrx_ifq *zcrx,
 		if (fatal_signal_pending(current))
 			break;
 		cond_resched();
+<<<<<<< HEAD
 	} while (nr == ZCRX_FLUSH_BATCH && total < zcrx->rq.nr_entries);
+=======
+	} while (nr == ZCRX_FLUSH_BATCH && total < zcrx->rq_entries);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -1262,8 +1581,11 @@ int io_zcrx_ctrl(struct io_ring_ctx *ctx, void __user *arg, unsigned nr_args)
 	struct zcrx_ctrl ctrl;
 	struct io_zcrx_ifq *zcrx;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(ctrl.zc_export) != sizeof(ctrl.zc_flush));
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nr_args)
 		return -EINVAL;
 	if (copy_from_user(&ctrl, arg, sizeof(ctrl)))
@@ -1316,11 +1638,21 @@ static struct net_iov *io_alloc_fallback_niov(struct io_zcrx_ifq *ifq)
 	struct io_zcrx_area *area = ifq->area;
 	struct net_iov *niov = NULL;
 
+<<<<<<< HEAD
 	if (!ifq->kern_readable)
 		return NULL;
 
 	scoped_guard(spinlock_bh, &area->freelist_lock)
 		niov = zcrx_get_free_niov(area);
+=======
+	if (area->mem.is_dmabuf)
+		return NULL;
+
+	scoped_guard(spinlock_bh, &area->freelist_lock) {
+		if (area->free_count)
+			niov = __io_zcrx_get_free_niov(area);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (niov)
 		page_pool_fragment_netmem(net_iov_to_netmem(niov), 1);

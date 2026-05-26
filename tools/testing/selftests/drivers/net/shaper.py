@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0
 
+<<<<<<< HEAD
 import errno
 
 from lib.py import ksft_run, ksft_exit
 from lib.py import ksft_eq, ksft_raises, ksft_true, KsftSkipEx
+=======
+from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_true, KsftSkipEx
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 from lib.py import EthtoolFamily, NetshaperFamily
 from lib.py import NetDrvEnv
 from lib.py import NlError
@@ -441,6 +445,7 @@ def queue_update(cfg, nl_shaper) -> None:
         nl_shaper.delete({'ifindex': cfg.ifindex,
                           'handle': {'scope': 'queue', 'id': i}})
 
+<<<<<<< HEAD
 def dup_leaves(cfg, nl_shaper) -> None:
     """ Ensure that the kernel rejects duplicate leaves. """
     if not cfg.groups:
@@ -456,6 +461,8 @@ def dup_leaves(cfg, nl_shaper) -> None:
                    'bw-max': 10000})
     ksft_eq(cm.exception.error, errno.EINVAL)
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 def main() -> None:
     with NetDrvEnv(__file__, queue_count=4) as cfg:
         cfg.queues = False
@@ -471,9 +478,13 @@ def main() -> None:
                   basic_groups,
                   qgroups,
                   delegation,
+<<<<<<< HEAD
                   dup_leaves,
                   queue_update],
                  args=(cfg, NetshaperFamily()))
+=======
+                  queue_update], args=(cfg, NetshaperFamily()))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     ksft_exit()
 
 

@@ -183,6 +183,7 @@ struct l2nic_cmd_lro_timer {
 /* IEEE 802.1Qaz std */
 #define L2NIC_DCB_COS_MAX     0x8
 
+<<<<<<< HEAD
 struct l2nic_cmd_pause_config {
 	struct mgmt_msg_head msg_head;
 	u8                   port_id;
@@ -195,6 +196,9 @@ struct l2nic_cmd_pause_config {
 };
 
 struct l2nic_cmd_rss_ctx_tbl {
+=======
+struct l2nic_cmd_set_rss_ctx_tbl {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mgmt_msg_head msg_head;
 	u16                  func_id;
 	u16                  rsvd1;
@@ -249,7 +253,10 @@ enum l2nic_cmd {
 	L2NIC_CMD_CFG_RSS_HASH_KEY    = 63,
 	L2NIC_CMD_CFG_RSS_HASH_ENGINE = 64,
 	L2NIC_CMD_SET_RSS_CTX_TBL     = 65,
+<<<<<<< HEAD
 	L2NIC_CMD_CFG_PAUSE_INFO      = 101,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	L2NIC_CMD_QOS_DCB_STATE       = 110,
 	L2NIC_CMD_FORCE_PKT_DROP      = 113,
 	L2NIC_CMD_MAX                 = 256,
@@ -271,8 +278,11 @@ enum l2nic_ucode_cmd {
 enum mag_cmd {
 	MAG_CMD_SET_PORT_ENABLE = 6,
 	MAG_CMD_GET_LINK_STATUS = 7,
+<<<<<<< HEAD
 
 	MAG_CMD_GET_PORT_INFO   = 153,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* firmware also use this cmd report link event to driver */

@@ -907,11 +907,21 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
 	return &cg->pll[pll].div[div];
 }
 
+<<<<<<< HEAD
 static struct clk * __init __printf(7, 8)
 create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
 		  const struct clk_ops *ops, unsigned long min_rate,
 		  unsigned long max_rate, unsigned long pct80_rate,
 		  const char *fmt, ...)
+=======
+static struct clk * __init create_mux_common(struct clockgen *cg,
+					     struct mux_hwclock *hwc,
+					     const struct clk_ops *ops,
+					     unsigned long min_rate,
+					     unsigned long max_rate,
+					     unsigned long pct80_rate,
+					     const char *fmt, int idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct clk_init_data init = {};
 	struct clk *clk;
@@ -919,11 +929,16 @@ create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
 	const char *parent_names[NUM_MUX_PARENTS];
 	char name[32];
 	int i, j;
+<<<<<<< HEAD
 	va_list args;
 
 	va_start(args, fmt);
 	vsnprintf(name, sizeof(name), fmt, args);
 	va_end(args);
+=======
+
+	snprintf(name, sizeof(name), fmt, idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
 		unsigned long rate;

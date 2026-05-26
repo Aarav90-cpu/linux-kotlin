@@ -11,6 +11,7 @@
 
 #include <uapi/linux/net_shaper.h>
 
+<<<<<<< HEAD
 /* Integer value ranges */
 static const struct netlink_range_validation net_shaper_a_handle_id_range = {
 	.max	= NET_SHAPER_MAX_HANDLE_ID,
@@ -20,6 +21,12 @@ static const struct netlink_range_validation net_shaper_a_handle_id_range = {
 const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1] = {
 	[NET_SHAPER_A_HANDLE_SCOPE] = NLA_POLICY_MAX(NLA_U32, 3),
 	[NET_SHAPER_A_HANDLE_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &net_shaper_a_handle_id_range),
+=======
+/* Common nested types */
+const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1] = {
+	[NET_SHAPER_A_HANDLE_SCOPE] = NLA_POLICY_MAX(NLA_U32, 3),
+	[NET_SHAPER_A_HANDLE_ID] = { .type = NLA_U32, },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 const struct nla_policy net_shaper_leaf_info_nl_policy[NET_SHAPER_A_WEIGHT + 1] = {

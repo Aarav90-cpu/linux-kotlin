@@ -106,9 +106,14 @@ int cg_read_strcmp(const char *cgroup, const char *control,
 	/* Handle the case of comparing against empty string */
 	if (!expected)
 		return -1;
+<<<<<<< HEAD
 
 	/* needs size > 1, otherwise cg_read() reads 0 bytes */
 	size = (expected[0] == '\0') ? 2 : strlen(expected) + 1;
+=======
+	else
+		size = strlen(expected) + 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	buf = malloc(size);
 	if (!buf)

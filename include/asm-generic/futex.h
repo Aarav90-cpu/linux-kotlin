@@ -25,9 +25,13 @@
  *			  argument and comparison of the previous
  *			  futex value with another constant.
  *
+<<<<<<< HEAD
  * @op:		operation to execute
  * @oparg:	argument of the operation
  * @oval:	previous value at @uaddr on successful return
+=======
+ * @encoded_op:	encoded operation to execute
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @uaddr:	pointer to user space address
  *
  * Return:

@@ -23,7 +23,11 @@ static const char * const config_usage[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static enum actions {
+=======
+enum actions {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ACTION_LIST = 1
 } actions;
 

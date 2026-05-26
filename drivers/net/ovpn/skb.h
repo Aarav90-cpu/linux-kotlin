@@ -18,6 +18,7 @@
 #include <linux/socket.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 /**
  * struct ovpn_cb - ovpn skb control block
  * @peer: the peer this skb was received from/sent to
@@ -31,6 +32,14 @@ struct ovpn_cb {
 	struct ovpn_peer *peer;
 	struct ovpn_crypto_key_slot *ks;
 	void *crypto_tmp;
+=======
+struct ovpn_cb {
+	struct ovpn_peer *peer;
+	struct ovpn_crypto_key_slot *ks;
+	struct aead_request *req;
+	struct scatterlist *sg;
+	u8 *iv;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int payload_offset;
 	bool nosignal;
 };

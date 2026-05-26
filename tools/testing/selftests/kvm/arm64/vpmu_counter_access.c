@@ -33,20 +33,35 @@ struct vpmu_vm {
 static struct vpmu_vm vpmu_vm;
 
 struct pmreg_sets {
+<<<<<<< HEAD
 	u64 set_reg_id;
 	u64 clr_reg_id;
+=======
+	uint64_t set_reg_id;
+	uint64_t clr_reg_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define PMREG_SET(set, clr) {.set_reg_id = set, .clr_reg_id = clr}
 
+<<<<<<< HEAD
 static u64 get_pmcr_n(u64 pmcr)
+=======
+static uint64_t get_pmcr_n(uint64_t pmcr)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	return FIELD_GET(ARMV8_PMU_PMCR_N, pmcr);
 }
 
+<<<<<<< HEAD
 static u64 get_counters_mask(u64 n)
 {
 	u64 mask = BIT(ARMV8_PMU_CYCLE_IDX);
+=======
+static uint64_t get_counters_mask(uint64_t n)
+{
+	uint64_t mask = BIT(ARMV8_PMU_CYCLE_IDX);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (n)
 		mask |= GENMASK(n - 1, 0);
@@ -89,7 +104,11 @@ static inline void write_sel_evtyper(int sel, unsigned long val)
 
 static void pmu_disable_reset(void)
 {
+<<<<<<< HEAD
 	u64 pmcr = read_sysreg(pmcr_el0);
+=======
+	uint64_t pmcr = read_sysreg(pmcr_el0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Reset all counters, disabling them */
 	pmcr &= ~ARMV8_PMU_PMCR_E;
@@ -169,7 +188,11 @@ struct pmc_accessor pmc_accessors[] = {
 
 #define GUEST_ASSERT_BITMAP_REG(regname, mask, set_expected)			 \
 {										 \
+<<<<<<< HEAD
 	u64 _tval = read_sysreg(regname);					 \
+=======
+	uint64_t _tval = read_sysreg(regname);					 \
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 										 \
 	if (set_expected)							 \
 		__GUEST_ASSERT((_tval & mask),					 \
@@ -185,7 +208,11 @@ struct pmc_accessor pmc_accessors[] = {
  * Check if @mask bits in {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers
  * are set or cleared as specified in @set_expected.
  */
+<<<<<<< HEAD
 static void check_bitmap_pmu_regs(u64 mask, bool set_expected)
+=======
+static void check_bitmap_pmu_regs(uint64_t mask, bool set_expected)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	GUEST_ASSERT_BITMAP_REG(pmcntenset_el0, mask, set_expected);
 	GUEST_ASSERT_BITMAP_REG(pmcntenclr_el0, mask, set_expected);
@@ -207,7 +234,11 @@ static void check_bitmap_pmu_regs(u64 mask, bool set_expected)
  */
 static void test_bitmap_pmu_regs(int pmc_idx, bool set_op)
 {
+<<<<<<< HEAD
 	u64 pmcr_n, test_bit = BIT(pmc_idx);
+=======
+	uint64_t pmcr_n, test_bit = BIT(pmc_idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool set_expected = false;
 
 	if (set_op) {
@@ -232,7 +263,11 @@ static void test_bitmap_pmu_regs(int pmc_idx, bool set_op)
  */
 static void test_access_pmc_regs(struct pmc_accessor *acc, int pmc_idx)
 {
+<<<<<<< HEAD
 	u64 write_data, read_data;
+=======
+	uint64_t write_data, read_data;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Disable all PMCs and reset all PMCs to zero. */
 	pmu_disable_reset();
@@ -287,11 +322,19 @@ static void test_access_pmc_regs(struct pmc_accessor *acc, int pmc_idx)
 }
 
 #define INVALID_EC	(-1ul)
+<<<<<<< HEAD
 u64 expected_ec = INVALID_EC;
 
 static void guest_sync_handler(struct ex_regs *regs)
 {
 	u64 esr, ec;
+=======
+uint64_t expected_ec = INVALID_EC;
+
+static void guest_sync_handler(struct ex_regs *regs)
+{
+	uint64_t esr, ec;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	esr = read_sysreg(esr_el1);
 	ec = ESR_ELx_EC(esr);
@@ -351,9 +394,15 @@ static void test_access_invalid_pmc_regs(struct pmc_accessor *acc, int pmc_idx)
  * if reading/writing PMU registers for implemented or unimplemented
  * counters works as expected.
  */
+<<<<<<< HEAD
 static void guest_code(u64 expected_pmcr_n)
 {
 	u64 pmcr, pmcr_n, unimp_mask;
+=======
+static void guest_code(uint64_t expected_pmcr_n)
+{
+	uint64_t pmcr, pmcr_n, unimp_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i, pmc;
 
 	__GUEST_ASSERT(expected_pmcr_n <= ARMV8_PMU_MAX_GENERAL_COUNTERS,
@@ -402,12 +451,21 @@ static void guest_code(u64 expected_pmcr_n)
 static void create_vpmu_vm(void *guest_code)
 {
 	struct kvm_vcpu_init init;
+<<<<<<< HEAD
 	u8 pmuver, ec;
 	u64 dfr0, irq = 23;
 	struct kvm_device_attr irq_attr = {
 		.group = KVM_ARM_VCPU_PMU_V3_CTRL,
 		.attr = KVM_ARM_VCPU_PMU_V3_IRQ,
 		.addr = (u64)&irq,
+=======
+	uint8_t pmuver, ec;
+	uint64_t dfr0, irq = 23;
+	struct kvm_device_attr irq_attr = {
+		.group = KVM_ARM_VCPU_PMU_V3_CTRL,
+		.attr = KVM_ARM_VCPU_PMU_V3_IRQ,
+		.addr = (uint64_t)&irq,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	};
 
 	/* The test creates the vpmu_vm multiple times. Ensure a clean state */
@@ -443,7 +501,11 @@ static void destroy_vpmu_vm(void)
 	kvm_vm_free(vpmu_vm.vm);
 }
 
+<<<<<<< HEAD
 static void run_vcpu(struct kvm_vcpu *vcpu, u64 pmcr_n)
+=======
+static void run_vcpu(struct kvm_vcpu *vcpu, uint64_t pmcr_n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ucall uc;
 
@@ -489,9 +551,15 @@ static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters, bool 
  * Create a guest with one vCPU, set the PMCR_EL0.N for the vCPU to @pmcr_n,
  * and run the test.
  */
+<<<<<<< HEAD
 static void run_access_test(u64 pmcr_n)
 {
 	u64 sp;
+=======
+static void run_access_test(uint64_t pmcr_n)
+{
+	uint64_t sp;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_vcpu *vcpu;
 	struct kvm_vcpu_init init;
 
@@ -514,7 +582,11 @@ static void run_access_test(u64 pmcr_n)
 	aarch64_vcpu_setup(vcpu, &init);
 	vcpu_init_descriptor_tables(vcpu);
 	vcpu_set_reg(vcpu, ctxt_reg_alias(vcpu, SYS_SP_EL1), sp);
+<<<<<<< HEAD
 	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pc), (u64)guest_code);
+=======
+	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pc), (uint64_t)guest_code);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	run_vcpu(vcpu, pmcr_n);
 
@@ -531,12 +603,21 @@ static struct pmreg_sets validity_check_reg_sets[] = {
  * Create a VM, and check if KVM handles the userspace accesses of
  * the PMU register sets in @validity_check_reg_sets[] correctly.
  */
+<<<<<<< HEAD
 static void run_pmregs_validity_test(u64 pmcr_n)
 {
 	int i;
 	struct kvm_vcpu *vcpu;
 	u64 set_reg_id, clr_reg_id, reg_val;
 	u64 valid_counters_mask, max_counters_mask;
+=======
+static void run_pmregs_validity_test(uint64_t pmcr_n)
+{
+	int i;
+	struct kvm_vcpu *vcpu;
+	uint64_t set_reg_id, clr_reg_id, reg_val;
+	uint64_t valid_counters_mask, max_counters_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
 	vcpu = vpmu_vm.vcpu;
@@ -588,7 +669,11 @@ static void run_pmregs_validity_test(u64 pmcr_n)
  * the vCPU to @pmcr_n, which is larger than the host value.
  * The attempt should fail as @pmcr_n is too big to set for the vCPU.
  */
+<<<<<<< HEAD
 static void run_error_test(u64 pmcr_n)
+=======
+static void run_error_test(uint64_t pmcr_n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	pr_debug("Error test with pmcr_n %lu (larger than the host)\n", pmcr_n);
 
@@ -600,9 +685,15 @@ static void run_error_test(u64 pmcr_n)
  * Return the default number of implemented PMU event counters excluding
  * the cycle counter (i.e. PMCR_EL0.N value) for the guest.
  */
+<<<<<<< HEAD
 static u64 get_pmcr_n_limit(void)
 {
 	u64 pmcr;
+=======
+static uint64_t get_pmcr_n_limit(void)
+{
+	uint64_t pmcr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	create_vpmu_vm(guest_code);
 	pmcr = vcpu_get_reg(vpmu_vm.vcpu, KVM_ARM64_SYS_REG(SYS_PMCR_EL0));
@@ -624,7 +715,11 @@ static bool kvm_supports_nr_counters_attr(void)
 
 int main(void)
 {
+<<<<<<< HEAD
 	u64 i, pmcr_n;
+=======
+	uint64_t i, pmcr_n;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_ARM_PMU_V3));
 	TEST_REQUIRE(kvm_supports_vgic_v3());

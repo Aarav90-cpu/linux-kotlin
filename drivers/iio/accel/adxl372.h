@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0+ */
 /*
+<<<<<<< HEAD
  * ADXL371/ADXL372 3-Axis Digital Accelerometer
+=======
+ * ADXL372 3-Axis Digital Accelerometer
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Copyright 2018 Analog Devices Inc.
  */
@@ -10,6 +14,7 @@
 
 #define ADXL372_REVID	0x03
 
+<<<<<<< HEAD
 struct adxl372_chip_info {
 	const char *name;
 	const int *samp_freq_tbl;
@@ -28,6 +33,10 @@ extern const struct adxl372_chip_info adxl372_chip_info;
 
 int adxl372_probe(struct device *dev, struct regmap *regmap,
 		  int irq, const struct adxl372_chip_info *chip_info);
+=======
+int adxl372_probe(struct device *dev, struct regmap *regmap,
+		  int irq, const char *name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool adxl372_readable_noinc_reg(struct device *dev, unsigned int reg);
 
 #endif /* _ADXL372_H_ */

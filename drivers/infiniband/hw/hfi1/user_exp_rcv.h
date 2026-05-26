@@ -22,8 +22,13 @@ struct tid_user_buf {
 	unsigned long length;
 	unsigned int npages;
 	struct page **pages;
+<<<<<<< HEAD
 	unsigned int n_psets;
 	struct tid_pageset psets[];
+=======
+	struct tid_pageset *psets;
+	unsigned int n_psets;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct tid_rb_node {

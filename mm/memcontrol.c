@@ -34,7 +34,11 @@
 #include <linux/shmem_fs.h>
 #include <linux/hugetlb.h>
 #include <linux/pagemap.h>
+<<<<<<< HEAD
 #include <linux/folio_batch.h>
+=======
+#include <linux/pagevec.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/vm_event_item.h>
 #include <linux/smp.h>
 #include <linux/page-flags.h>
@@ -206,6 +210,7 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
 	return objcg;
 }
 
+<<<<<<< HEAD
 static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memcg,
 							 struct mem_cgroup *parent,
 							 int nid)
@@ -300,6 +305,28 @@ retry:
 	}
 
 	reparent_state_local(memcg, parent);
+=======
+static void memcg_reparent_objcgs(struct mem_cgroup *memcg,
+				  struct mem_cgroup *parent)
+{
+	struct obj_cgroup *objcg, *iter;
+
+	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
+
+	spin_lock_irq(&objcg_lock);
+
+	/* 1) Ready to reparent active objcg. */
+	list_add(&objcg->list, &memcg->objcg_list);
+	/* 2) Reparent active objcg and already reparented objcgs to parent. */
+	list_for_each_entry(iter, &memcg->objcg_list, list)
+		WRITE_ONCE(iter->memcg, parent);
+	/* 3) Move already reparented objcgs to the parent's list */
+	list_splice(&memcg->objcg_list, &parent->objcg_list);
+
+	spin_unlock_irq(&objcg_lock);
+
+	percpu_ref_kill(&objcg->refcnt);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -315,7 +342,11 @@ DEFINE_STATIC_KEY_FALSE(memcg_bpf_enabled_key);
 EXPORT_SYMBOL(memcg_bpf_enabled_key);
 
 /**
+<<<<<<< HEAD
  * get_mem_cgroup_css_from_folio - acquire a css of the memcg associated with a folio
+=======
+ * mem_cgroup_css_from_folio - css of the memcg associated with a folio
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @folio: folio of interest
  *
  * If memcg is bound to the default hierarchy, css of the memcg associated
@@ -325,6 +356,7 @@ EXPORT_SYMBOL(memcg_bpf_enabled_key);
  * If memcg is bound to a traditional hierarchy, the css of root_mem_cgroup
  * is returned.
  */
+<<<<<<< HEAD
 struct cgroup_subsys_state *get_mem_cgroup_css_from_folio(struct folio *folio)
 {
 	struct mem_cgroup *memcg;
@@ -335,6 +367,16 @@ struct cgroup_subsys_state *get_mem_cgroup_css_from_folio(struct folio *folio)
 	memcg = get_mem_cgroup_from_folio(folio);
 
 	return memcg ? &memcg->css : &root_mem_cgroup->css;
+=======
+struct cgroup_subsys_state *mem_cgroup_css_from_folio(struct folio *folio)
+{
+	struct mem_cgroup *memcg = folio_memcg(folio);
+
+	if (!memcg || !cgroup_subsys_on_dfl(memory_cgrp_subsys))
+		memcg = root_mem_cgroup;
+
+	return &memcg->css;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -393,7 +435,10 @@ static const unsigned int memcg_node_stat_items[] = {
 	NR_SHMEM_THPS,
 	NR_FILE_THPS,
 	NR_ANON_THPS,
+<<<<<<< HEAD
 	NR_VMALLOC,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	NR_KERNEL_STACK_KB,
 	NR_PAGETABLE,
 	NR_SECONDARY_PAGETABLE,
@@ -407,6 +452,7 @@ static const unsigned int memcg_node_stat_items[] = {
 	PGDEMOTE_DIRECT,
 	PGDEMOTE_KHUGEPAGED,
 	PGDEMOTE_PROACTIVE,
+<<<<<<< HEAD
 	PGSTEAL_KSWAPD,
 	PGSTEAL_DIRECT,
 	PGSTEAL_KHUGEPAGED,
@@ -420,6 +466,8 @@ static const unsigned int memcg_node_stat_items[] = {
 	PGSCAN_ANON,
 	PGSCAN_FILE,
 	PGREFILL,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_HUGETLB_PAGE
 	NR_HUGETLB,
 #endif
@@ -429,10 +477,17 @@ static const unsigned int memcg_stat_items[] = {
 	MEMCG_SWAP,
 	MEMCG_SOCK,
 	MEMCG_PERCPU_B,
+<<<<<<< HEAD
 	MEMCG_KMEM,
 	MEMCG_ZSWAP_B,
 	MEMCG_ZSWAPPED,
 	MEMCG_ZSWAP_INCOMP,
+=======
+	MEMCG_VMALLOC,
+	MEMCG_KMEM,
+	MEMCG_ZSWAP_B,
+	MEMCG_ZSWAPPED,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
@@ -525,6 +580,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
 	return x;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEMCG_V1
 static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
 				     enum node_stat_item idx, long val);
@@ -549,6 +605,8 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
 }
 #endif
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* Subset of vm_event_item to report for memcg event stats */
 static const unsigned int memcg_vm_event_stat[] = {
 #ifdef CONFIG_MEMCG_V1
@@ -557,8 +615,22 @@ static const unsigned int memcg_vm_event_stat[] = {
 #endif
 	PSWPIN,
 	PSWPOUT,
+<<<<<<< HEAD
 	PGFAULT,
 	PGMAJFAULT,
+=======
+	PGSCAN_KSWAPD,
+	PGSCAN_DIRECT,
+	PGSCAN_KHUGEPAGED,
+	PGSCAN_PROACTIVE,
+	PGSTEAL_KSWAPD,
+	PGSTEAL_DIRECT,
+	PGSTEAL_KHUGEPAGED,
+	PGSTEAL_PROACTIVE,
+	PGFAULT,
+	PGMAJFAULT,
+	PGREFILL,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	PGACTIVATE,
 	PGDEACTIVATE,
 	PGLAZYFREE,
@@ -608,7 +680,11 @@ static inline int memcg_events_index(enum vm_event_item idx)
 
 struct memcg_vmstats_percpu {
 	/* Stats updates since the last flush */
+<<<<<<< HEAD
 	unsigned long			stats_updates;
+=======
+	unsigned int			stats_updates;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Cached pointers for fast iteration in memcg_rstat_updated() */
 	struct memcg_vmstats_percpu __percpu	*parent_pcpu;
@@ -639,7 +715,11 @@ struct memcg_vmstats {
 	unsigned long		events_pending[NR_MEMCG_EVENTS];
 
 	/* Stats updates since the last flush */
+<<<<<<< HEAD
 	atomic_long_t		stats_updates;
+=======
+	atomic_t		stats_updates;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /*
@@ -665,16 +745,28 @@ static u64 flush_last_time;
 
 static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
 {
+<<<<<<< HEAD
 	return atomic_long_read(&vmstats->stats_updates) >
 		MEMCG_CHARGE_BATCH * num_online_cpus();
 }
 
 static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
+=======
+	return atomic_read(&vmstats->stats_updates) >
+		MEMCG_CHARGE_BATCH * num_online_cpus();
+}
+
+static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				       int cpu)
 {
 	struct memcg_vmstats_percpu __percpu *statc_pcpu;
 	struct memcg_vmstats_percpu *statc;
+<<<<<<< HEAD
 	unsigned long stats_updates;
+=======
+	unsigned int stats_updates;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!val)
 		return;
@@ -697,7 +789,11 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
 			continue;
 
 		stats_updates = this_cpu_xchg(statc_pcpu->stats_updates, 0);
+<<<<<<< HEAD
 		atomic_long_add(stats_updates, &statc->vmstats->stats_updates);
+=======
+		atomic_add(stats_updates, &statc->vmstats->stats_updates);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 }
 
@@ -705,7 +801,11 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
 {
 	bool needs_flush = memcg_vmstats_needs_flush(memcg->vmstats);
 
+<<<<<<< HEAD
 	trace_memcg_flush_stats(memcg, atomic_long_read(&memcg->vmstats->stats_updates),
+=======
+	trace_memcg_flush_stats(memcg, atomic_read(&memcg->vmstats->stats_updates),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		force, needs_flush);
 
 	if (!force && !needs_flush)
@@ -784,6 +884,7 @@ static int memcg_page_state_unit(int item);
  * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
  * up non-zero sub-page updates to 1 page as zero page updates are ignored.
  */
+<<<<<<< HEAD
 static long memcg_state_val_in_pages(int idx, long val)
 {
 	int unit = memcg_page_state_unit(idx);
@@ -860,6 +961,16 @@ static void __mod_memcg_state(struct mem_cgroup *memcg,
 	trace_mod_memcg_state(memcg, idx, val);
 
 	put_cpu();
+=======
+static int memcg_state_val_in_pages(int idx, int val)
+{
+	int unit = memcg_page_state_unit(idx);
+
+	if (!val || unit == PAGE_SIZE)
+		return val;
+	else
+		return max(val * unit / PAGE_SIZE, 1UL);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -871,14 +982,33 @@ static void __mod_memcg_state(struct mem_cgroup *memcg,
 void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
 		       int val)
 {
+<<<<<<< HEAD
 	bool rcu_locked = false;
+=======
+	int i = memcg_stats_index(idx);
+	int cpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mem_cgroup_disabled())
 		return;
 
+<<<<<<< HEAD
 	memcg = get_non_dying_memcg_start(memcg, &rcu_locked);
 	__mod_memcg_state(memcg, idx, val);
 	get_non_dying_memcg_end(rcu_locked);
+=======
+	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+		return;
+
+	cpu = get_cpu();
+
+	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+	val = memcg_state_val_in_pages(idx, val);
+	memcg_rstat_updated(memcg, val, cpu);
+	trace_mod_memcg_state(memcg, idx, val);
+
+	put_cpu();
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_MEMCG_V1
@@ -898,6 +1028,7 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
 #endif
 	return x;
 }
+<<<<<<< HEAD
 
 void reparent_memcg_state_local(struct mem_cgroup *memcg,
 				struct mem_cgroup *parent, int idx)
@@ -913,12 +1044,28 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
 				     enum node_stat_item idx, long val)
 {
 	struct mem_cgroup *memcg = pn->memcg;
+=======
+#endif
+
+static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+				     enum node_stat_item idx,
+				     int val)
+{
+	struct mem_cgroup_per_node *pn;
+	struct mem_cgroup *memcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i = memcg_stats_index(idx);
 	int cpu;
 
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
 		return;
 
+<<<<<<< HEAD
+=======
+	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+	memcg = pn->memcg;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cpu = get_cpu();
 
 	/* Update memcg */
@@ -934,6 +1081,7 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
 	put_cpu();
 }
 
+<<<<<<< HEAD
 static void mod_memcg_lruvec_state(struct lruvec *lruvec,
 				     enum node_stat_item idx,
 				     int val)
@@ -952,6 +1100,8 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
 	get_non_dying_memcg_end(rcu_locked);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * mod_lruvec_state - update lruvec memory statistics
  * @lruvec: the lruvec
@@ -1172,16 +1322,24 @@ again:
 /**
  * get_mem_cgroup_from_folio - Obtain a reference on a given folio's memcg.
  * @folio: folio from which memcg should be extracted.
+<<<<<<< HEAD
  *
  * See folio_memcg() for folio->objcg/memcg binding rules.
  */
 struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
 {
 	struct mem_cgroup *memcg;
+=======
+ */
+struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
+{
+	struct mem_cgroup *memcg = folio_memcg(folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (mem_cgroup_disabled())
 		return NULL;
 
+<<<<<<< HEAD
 	if (!folio_memcg_charged(folio))
 		return root_mem_cgroup;
 
@@ -1189,6 +1347,11 @@ struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
 	do {
 		memcg = folio_memcg(folio);
 	} while (unlikely(!css_tryget(&memcg->css)));
+=======
+	rcu_read_lock();
+	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
+		memcg = root_mem_cgroup;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 	return memcg;
 }
@@ -1385,6 +1548,26 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
 	}
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DEBUG_VM
+void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
+{
+	struct mem_cgroup *memcg;
+
+	if (mem_cgroup_disabled())
+		return;
+
+	memcg = folio_memcg(folio);
+
+	if (!memcg)
+		VM_BUG_ON_FOLIO(!mem_cgroup_is_root(lruvec_memcg(lruvec)), folio);
+	else
+		VM_BUG_ON_FOLIO(lruvec_memcg(lruvec) != memcg, folio);
+}
+#endif
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * folio_lruvec_lock - Lock the lruvec for a folio.
  * @folio: Pointer to the folio.
@@ -1394,6 +1577,7 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
  * - folio_test_lru false
  * - folio frozen (refcount of 0)
  *
+<<<<<<< HEAD
  * Return: The lruvec this folio is on with its lock held and rcu read lock held.
  */
 struct lruvec *folio_lruvec_lock(struct folio *folio)
@@ -1408,6 +1592,16 @@ retry:
 		spin_unlock(&lruvec->lru_lock);
 		goto retry;
 	}
+=======
+ * Return: The lruvec this folio is on with its lock held.
+ */
+struct lruvec *folio_lruvec_lock(struct folio *folio)
+{
+	struct lruvec *lruvec = folio_lruvec(folio);
+
+	spin_lock(&lruvec->lru_lock);
+	lruvec_memcg_debug(lruvec, folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return lruvec;
 }
@@ -1422,6 +1616,7 @@ retry:
  * - folio frozen (refcount of 0)
  *
  * Return: The lruvec this folio is on with its lock held and interrupts
+<<<<<<< HEAD
  * disabled and rcu read lock held.
  */
 struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
@@ -1436,6 +1631,16 @@ retry:
 		spin_unlock_irq(&lruvec->lru_lock);
 		goto retry;
 	}
+=======
+ * disabled.
+ */
+struct lruvec *folio_lruvec_lock_irq(struct folio *folio)
+{
+	struct lruvec *lruvec = folio_lruvec(folio);
+
+	spin_lock_irq(&lruvec->lru_lock);
+	lruvec_memcg_debug(lruvec, folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return lruvec;
 }
@@ -1451,11 +1656,16 @@ retry:
  * - folio frozen (refcount of 0)
  *
  * Return: The lruvec this folio is on with its lock held and interrupts
+<<<<<<< HEAD
  * disabled and rcu read lock held.
+=======
+ * disabled.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
 		unsigned long *flags)
 {
+<<<<<<< HEAD
 	struct lruvec *lruvec;
 
 	rcu_read_lock();
@@ -1466,6 +1676,12 @@ retry:
 		spin_unlock_irqrestore(&lruvec->lru_lock, *flags);
 		goto retry;
 	}
+=======
+	struct lruvec *lruvec = folio_lruvec(folio);
+
+	spin_lock_irqsave(&lruvec->lru_lock, *flags);
+	lruvec_memcg_debug(lruvec, folio);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return lruvec;
 }
@@ -1481,7 +1697,11 @@ retry:
  * to or just after a page is removed from an lru list.
  */
 void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+<<<<<<< HEAD
 				int zid, long nr_pages)
+=======
+				int zid, int nr_pages)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct mem_cgroup_per_node *mz;
 	unsigned long *lru_size;
@@ -1498,7 +1718,11 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
 
 	size = *lru_size;
 	if (WARN_ONCE(size < 0,
+<<<<<<< HEAD
 		"%s(%p, %d, %ld): lru_size %ld\n",
+=======
+		"%s(%p, %d, %d): lru_size %ld\n",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		__func__, lruvec, lru, nr_pages, size)) {
 		VM_BUG_ON(1);
 		*lru_size = 0;
@@ -1552,12 +1776,19 @@ static const struct memory_stat memory_stats[] = {
 	{ "sec_pagetables",		NR_SECONDARY_PAGETABLE		},
 	{ "percpu",			MEMCG_PERCPU_B			},
 	{ "sock",			MEMCG_SOCK			},
+<<<<<<< HEAD
 	{ "vmalloc",			NR_VMALLOC			},
+=======
+	{ "vmalloc",			MEMCG_VMALLOC			},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ "shmem",			NR_SHMEM			},
 #ifdef CONFIG_ZSWAP
 	{ "zswap",			MEMCG_ZSWAP_B			},
 	{ "zswapped",			MEMCG_ZSWAPPED			},
+<<<<<<< HEAD
 	{ "zswap_incomp",		MEMCG_ZSWAP_INCOMP		},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 	{ "file_mapped",		NR_FILE_MAPPED			},
 	{ "file_dirty",			NR_FILE_DIRTY			},
@@ -1594,6 +1825,7 @@ static const struct memory_stat memory_stats[] = {
 	{ "pgdemote_direct",		PGDEMOTE_DIRECT		},
 	{ "pgdemote_khugepaged",	PGDEMOTE_KHUGEPAGED	},
 	{ "pgdemote_proactive",		PGDEMOTE_PROACTIVE	},
+<<<<<<< HEAD
 	{ "pgsteal_kswapd",		PGSTEAL_KSWAPD		},
 	{ "pgsteal_direct",		PGSTEAL_DIRECT		},
 	{ "pgsteal_khugepaged",		PGSTEAL_KHUGEPAGED	},
@@ -1603,6 +1835,8 @@ static const struct memory_stat memory_stats[] = {
 	{ "pgscan_khugepaged",		PGSCAN_KHUGEPAGED	},
 	{ "pgscan_proactive",		PGSCAN_PROACTIVE	},
 	{ "pgrefill",			PGREFILL		},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NUMA_BALANCING
 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
 #endif
@@ -1646,6 +1880,7 @@ static int memcg_page_state_output_unit(int item)
 	case PGDEMOTE_DIRECT:
 	case PGDEMOTE_KHUGEPAGED:
 	case PGDEMOTE_PROACTIVE:
+<<<<<<< HEAD
 	case PGSTEAL_KSWAPD:
 	case PGSTEAL_DIRECT:
 	case PGSTEAL_KHUGEPAGED:
@@ -1655,6 +1890,8 @@ static int memcg_page_state_output_unit(int item)
 	case PGSCAN_KHUGEPAGED:
 	case PGSCAN_PROACTIVE:
 	case PGREFILL:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_NUMA_BALANCING
 	case PGPROMOTE_SUCCESS:
 #endif
@@ -1726,6 +1963,7 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
 
 	/* Accumulated memory events */
 	seq_buf_printf(s, "pgscan %lu\n",
+<<<<<<< HEAD
 		       memcg_page_state(memcg, PGSCAN_KSWAPD) +
 		       memcg_page_state(memcg, PGSCAN_DIRECT) +
 		       memcg_page_state(memcg, PGSCAN_PROACTIVE) +
@@ -1735,6 +1973,17 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
 		       memcg_page_state(memcg, PGSTEAL_DIRECT) +
 		       memcg_page_state(memcg, PGSTEAL_PROACTIVE) +
 		       memcg_page_state(memcg, PGSTEAL_KHUGEPAGED));
+=======
+		       memcg_events(memcg, PGSCAN_KSWAPD) +
+		       memcg_events(memcg, PGSCAN_DIRECT) +
+		       memcg_events(memcg, PGSCAN_PROACTIVE) +
+		       memcg_events(memcg, PGSCAN_KHUGEPAGED));
+	seq_buf_printf(s, "pgsteal %lu\n",
+		       memcg_events(memcg, PGSTEAL_KSWAPD) +
+		       memcg_events(memcg, PGSTEAL_DIRECT) +
+		       memcg_events(memcg, PGSTEAL_PROACTIVE) +
+		       memcg_events(memcg, PGSTEAL_KHUGEPAGED));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	for (i = 0; i < ARRAY_SIZE(memcg_vm_event_stat); i++) {
 #ifdef CONFIG_MEMCG_V1
@@ -2573,7 +2822,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
 	struct page_counter *counter;
 	unsigned long nr_reclaimed;
 	bool passed_oom = false;
+<<<<<<< HEAD
 	unsigned int reclaim_options;
+=======
+	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	bool drained = false;
 	bool raised_max_event = false;
 	unsigned long pflags;
@@ -2587,7 +2840,10 @@ retry:
 		/* Avoid the refill and flush of the older stock */
 		batch = nr_pages;
 
+<<<<<<< HEAD
 	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!do_memsw_account() ||
 	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
 		if (page_counter_try_charge(&memcg->memory, batch, &counter))
@@ -2769,17 +3025,29 @@ static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
 	return try_charge_memcg(memcg, gfp_mask, nr_pages);
 }
 
+<<<<<<< HEAD
 static void commit_charge(struct folio *folio, struct obj_cgroup *objcg)
 {
 	VM_BUG_ON_FOLIO(folio_memcg_charged(folio), folio);
 	/*
 	 * Any of the following ensures folio's objcg stability:
+=======
+static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+{
+	VM_BUG_ON_FOLIO(folio_memcg_charged(folio), folio);
+	/*
+	 * Any of the following ensures page's memcg stability:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	 *
 	 * - the page lock
 	 * - LRU isolation
 	 * - exclusive reference
 	 */
+<<<<<<< HEAD
 	folio->memcg_data = (unsigned long)objcg;
+=======
+	folio->memcg_data = (unsigned long)memcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
@@ -2881,6 +3149,7 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
 
 static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
 {
+<<<<<<< HEAD
 	int nid = numa_node_id();
 
 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
@@ -2901,6 +3170,16 @@ static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *me
 	objcg = __get_obj_cgroup_from_memcg(memcg);
 	rcu_read_unlock();
 
+=======
+	struct obj_cgroup *objcg = NULL;
+
+	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+		objcg = rcu_dereference(memcg->objcg);
+		if (likely(objcg && obj_cgroup_tryget(objcg)))
+			break;
+		objcg = NULL;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return objcg;
 }
 
@@ -2959,7 +3238,10 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
 {
 	struct mem_cgroup *memcg;
 	struct obj_cgroup *objcg;
+<<<<<<< HEAD
 	int nid = numa_node_id();
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (IS_ENABLED(CONFIG_MEMCG_NMI_UNSAFE) && in_nmi())
 		return NULL;
@@ -2976,39 +3258,80 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
 		 * Objcg reference is kept by the task, so it's safe
 		 * to use the objcg by the current task.
 		 */
+<<<<<<< HEAD
 		return objcg ? : rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
+=======
+		return objcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	memcg = this_cpu_read(int_active_memcg);
 	if (unlikely(memcg))
 		goto from_memcg;
 
+<<<<<<< HEAD
 	return rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
 
 from_memcg:
 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+=======
+	return NULL;
+
+from_memcg:
+	objcg = NULL;
+	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Memcg pointer is protected by scope (see set_active_memcg())
 		 * and is pinning the corresponding objcg, so objcg can't go
 		 * away and can be used within the scope without any additional
 		 * protection.
 		 */
+<<<<<<< HEAD
 		objcg = rcu_dereference_check(memcg->nodeinfo[nid]->objcg, 1);
 		if (likely(objcg))
 			return objcg;
 	}
 
 	return rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
+=======
+		objcg = rcu_dereference_check(memcg->objcg, 1);
+		if (likely(objcg))
+			break;
+	}
+
+	return objcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
 {
 	struct obj_cgroup *objcg;
 
+<<<<<<< HEAD
 	objcg = folio_objcg(folio);
 	if (objcg)
 		obj_cgroup_get(objcg);
 
+=======
+	if (!memcg_kmem_online())
+		return NULL;
+
+	if (folio_memcg_kmem(folio)) {
+		objcg = __folio_objcg(folio);
+		obj_cgroup_get(objcg);
+	} else {
+		struct mem_cgroup *memcg;
+
+		rcu_read_lock();
+		memcg = __folio_memcg(folio);
+		if (memcg)
+			objcg = __get_obj_cgroup_from_memcg(memcg);
+		else
+			objcg = NULL;
+		rcu_read_unlock();
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return objcg;
 }
 
@@ -3109,7 +3432,11 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
 	int ret = 0;
 
 	objcg = current_obj_cgroup();
+<<<<<<< HEAD
 	if (objcg && !obj_cgroup_is_root(objcg)) {
+=======
+	if (objcg) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = obj_cgroup_charge_pages(objcg, gfp, 1 << order);
 		if (!ret) {
 			obj_cgroup_get(objcg);
@@ -3138,6 +3465,7 @@ void __memcg_kmem_uncharge_page(struct page *page, int order)
 	obj_cgroup_put(objcg);
 }
 
+<<<<<<< HEAD
 static struct obj_stock_pcp *trylock_stock(void)
 {
 	if (local_trylock(&obj_stock.lock))
@@ -3153,15 +3481,20 @@ static void unlock_stock(struct obj_stock_pcp *stock)
 }
 
 /* Call after __refill_obj_stock() to ensure stock->cached_objg == objcg */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void __account_obj_stock(struct obj_cgroup *objcg,
 				struct obj_stock_pcp *stock, int nr,
 				struct pglist_data *pgdat, enum node_stat_item idx)
 {
 	int *bytes;
 
+<<<<<<< HEAD
 	if (!stock || READ_ONCE(stock->cached_objcg) != objcg)
 		goto direct;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * Save vmstat data in stock and skip vmstat array update unless
 	 * accumulating over a page of vmstat data or when pgdat changes.
@@ -3201,11 +3534,15 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
 			nr = 0;
 		}
 	}
+<<<<<<< HEAD
 direct:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nr)
 		mod_objcg_mlstate(objcg, pgdat, idx, nr);
 }
 
+<<<<<<< HEAD
 static bool __consume_obj_stock(struct obj_cgroup *objcg,
 				struct obj_stock_pcp *stock,
 				unsigned int nr_bytes)
@@ -3220,16 +3557,36 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
 }
 
 static bool consume_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes)
+=======
+static bool consume_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+			      struct pglist_data *pgdat, enum node_stat_item idx)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct obj_stock_pcp *stock;
 	bool ret = false;
 
+<<<<<<< HEAD
 	stock = trylock_stock();
 	if (!stock)
 		return ret;
 
 	ret = __consume_obj_stock(objcg, stock, nr_bytes);
 	unlock_stock(stock);
+=======
+	if (!local_trylock(&obj_stock.lock))
+		return ret;
+
+	stock = this_cpu_ptr(&obj_stock);
+	if (objcg == READ_ONCE(stock->cached_objcg) && stock->nr_bytes >= nr_bytes) {
+		stock->nr_bytes -= nr_bytes;
+		ret = true;
+
+		if (pgdat)
+			__account_obj_stock(objcg, stock, nr_bytes, pgdat, idx);
+	}
+
+	local_unlock(&obj_stock.lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
@@ -3313,6 +3670,7 @@ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
 	return flush;
 }
 
+<<<<<<< HEAD
 static void __refill_obj_stock(struct obj_cgroup *objcg,
 			       struct obj_stock_pcp *stock,
 			       unsigned int nr_bytes,
@@ -3321,12 +3679,28 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
 	unsigned int nr_pages = 0;
 
 	if (!stock) {
+=======
+static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+		bool allow_uncharge, int nr_acct, struct pglist_data *pgdat,
+		enum node_stat_item idx)
+{
+	struct obj_stock_pcp *stock;
+	unsigned int nr_pages = 0;
+
+	if (!local_trylock(&obj_stock.lock)) {
+		if (pgdat)
+			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nr_pages = nr_bytes >> PAGE_SHIFT;
 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	stock = this_cpu_ptr(&obj_stock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
 		drain_obj_stock(stock);
 		obj_cgroup_get(objcg);
@@ -3338,16 +3712,27 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
 	}
 	stock->nr_bytes += nr_bytes;
 
+<<<<<<< HEAD
+=======
+	if (pgdat)
+		__account_obj_stock(objcg, stock, nr_acct, pgdat, idx);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
 		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
 		stock->nr_bytes &= (PAGE_SIZE - 1);
 	}
 
+<<<<<<< HEAD
+=======
+	local_unlock(&obj_stock.lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	if (nr_pages)
 		obj_cgroup_uncharge_pages(objcg, nr_pages);
 }
 
+<<<<<<< HEAD
 static void refill_obj_stock(struct obj_cgroup *objcg,
 			     unsigned int nr_bytes,
 			     bool allow_uncharge)
@@ -3377,6 +3762,15 @@ int obj_cgroup_charge(struct obj_cgroup *objcg, gfp_t gfp, size_t size)
 	int ret;
 
 	if (likely(consume_obj_stock(objcg, size)))
+=======
+static int obj_cgroup_charge_account(struct obj_cgroup *objcg, gfp_t gfp, size_t size,
+				     struct pglist_data *pgdat, enum node_stat_item idx)
+{
+	unsigned int nr_pages, nr_bytes;
+	int ret;
+
+	if (likely(consume_obj_stock(objcg, size, pgdat, idx)))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/*
@@ -3402,16 +3796,40 @@ int obj_cgroup_charge(struct obj_cgroup *objcg, gfp_t gfp, size_t size)
 	 * bytes is (sizeof(object) + PAGE_SIZE - 2) if there is no data
 	 * race.
 	 */
+<<<<<<< HEAD
 	ret = __obj_cgroup_charge(objcg, gfp, size, &remainder);
 	if (!ret && remainder)
 		refill_obj_stock(objcg, remainder, false);
+=======
+	nr_pages = size >> PAGE_SHIFT;
+	nr_bytes = size & (PAGE_SIZE - 1);
+
+	if (nr_bytes)
+		nr_pages += 1;
+
+	ret = obj_cgroup_charge_pages(objcg, gfp, nr_pages);
+	if (!ret && (nr_bytes || pgdat))
+		refill_obj_stock(objcg, nr_bytes ? PAGE_SIZE - nr_bytes : 0,
+					 false, size, pgdat, idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return ret;
 }
 
+<<<<<<< HEAD
 void obj_cgroup_uncharge(struct obj_cgroup *objcg, size_t size)
 {
 	refill_obj_stock(objcg, size, true);
+=======
+int obj_cgroup_charge(struct obj_cgroup *objcg, gfp_t gfp, size_t size)
+{
+	return obj_cgroup_charge_account(objcg, gfp, size, NULL, 0);
+}
+
+void obj_cgroup_uncharge(struct obj_cgroup *objcg, size_t size)
+{
+	refill_obj_stock(objcg, size, true, 0, NULL, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static inline size_t obj_full_size(struct kmem_cache *s)
@@ -3426,7 +3844,10 @@ static inline size_t obj_full_size(struct kmem_cache *s)
 bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
 				  gfp_t flags, size_t size, void **p)
 {
+<<<<<<< HEAD
 	size_t obj_size = obj_full_size(s);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct obj_cgroup *objcg;
 	struct slab *slab;
 	unsigned long off;
@@ -3438,7 +3859,11 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
 	 * obj_cgroup_get() is used to get a permanent reference.
 	 */
 	objcg = current_obj_cgroup();
+<<<<<<< HEAD
 	if (!objcg || obj_cgroup_is_root(objcg))
+=======
+	if (!objcg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 
 	/*
@@ -3467,7 +3892,10 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
 	for (i = 0; i < size; i++) {
 		unsigned long obj_exts;
 		struct slabobj_ext *obj_ext;
+<<<<<<< HEAD
 		struct obj_stock_pcp *stock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		slab = virt_to_slab(p[i]);
 
@@ -3487,6 +3915,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
 		 * TODO: we could batch this until slab_pgdat(slab) changes
 		 * between iterations, with a more complicated undo
 		 */
+<<<<<<< HEAD
 		stock = trylock_stock();
 		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
 			size_t remainder;
@@ -3501,6 +3930,11 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
 		__account_obj_stock(objcg, stock, obj_size,
 				    slab_pgdat(slab), cache_vmstat_idx(s));
 		unlock_stock(stock);
+=======
+		if (obj_cgroup_charge_account(objcg, flags, obj_full_size(s),
+					slab_pgdat(slab), cache_vmstat_idx(s)))
+			return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		obj_exts = slab_obj_exts(slab);
 		get_slab_obj_exts(obj_exts);
@@ -3522,7 +3956,10 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
 	for (int i = 0; i < objects; i++) {
 		struct obj_cgroup *objcg;
 		struct slabobj_ext *obj_ext;
+<<<<<<< HEAD
 		struct obj_stock_pcp *stock;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		unsigned int off;
 
 		off = obj_to_index(s, slab, p[i]);
@@ -3532,6 +3969,7 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
 			continue;
 
 		obj_ext->objcg = NULL;
+<<<<<<< HEAD
 
 		stock = trylock_stock();
 		__refill_obj_stock(objcg, stock, obj_size, true);
@@ -3539,6 +3977,10 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
 				    slab_pgdat(slab), cache_vmstat_idx(s));
 		unlock_stock(stock);
 
+=======
+		refill_obj_stock(objcg, obj_size, true, -obj_size,
+				 slab_pgdat(slab), cache_vmstat_idx(s));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		obj_cgroup_put(objcg);
 	}
 }
@@ -3570,6 +4012,7 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
 		return;
 
 	new_refs = (1 << (old_order - new_order)) - 1;
+<<<<<<< HEAD
 	obj_cgroup_get_many(folio_objcg(folio), new_refs);
 }
 
@@ -3580,10 +4023,38 @@ static void memcg_online_kmem(struct mem_cgroup *memcg)
 
 	if (unlikely(mem_cgroup_is_root(memcg)))
 		return;
+=======
+	css_get_many(&__folio_memcg(folio)->css, new_refs);
+}
+
+static int memcg_online_kmem(struct mem_cgroup *memcg)
+{
+	struct obj_cgroup *objcg;
+
+	if (mem_cgroup_kmem_disabled())
+		return 0;
+
+	if (unlikely(mem_cgroup_is_root(memcg)))
+		return 0;
+
+	objcg = obj_cgroup_alloc();
+	if (!objcg)
+		return -ENOMEM;
+
+	objcg->memcg = memcg;
+	rcu_assign_pointer(memcg->objcg, objcg);
+	obj_cgroup_get(objcg);
+	memcg->orig_objcg = objcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	static_branch_enable(&memcg_kmem_online_key);
 
 	memcg->kmemcg_id = memcg->id.id;
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void memcg_offline_kmem(struct mem_cgroup *memcg)
@@ -3597,7 +4068,20 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
 		return;
 
 	parent = parent_mem_cgroup(memcg);
+<<<<<<< HEAD
 	memcg_reparent_list_lrus(memcg, parent);
+=======
+	if (!parent)
+		parent = root_mem_cgroup;
+
+	memcg_reparent_list_lrus(memcg, parent);
+
+	/*
+	 * Objcg's reparenting must be after list_lru's, make sure list_lru
+	 * helpers won't use parent's list_lru until child is drained.
+	 */
+	memcg_reparent_objcgs(memcg, parent);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 #ifdef CONFIG_CGROUP_WRITEBACK
@@ -3848,7 +4332,17 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
 	}
 }
 
+<<<<<<< HEAD
 static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+=======
+void __maybe_unused mem_cgroup_private_id_get_many(struct mem_cgroup *memcg,
+					   unsigned int n)
+{
+	refcount_add(n, &memcg->id.ref);
+}
+
+static void mem_cgroup_private_id_put_many(struct mem_cgroup *memcg, unsigned int n)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	if (refcount_sub_and_test(n, &memcg->id.ref)) {
 		mem_cgroup_private_id_remove(memcg);
@@ -3858,9 +4352,20 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned 
 	}
 }
 
+<<<<<<< HEAD
 struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
 {
 	while (!refcount_add_not_zero(n, &memcg->id.ref)) {
+=======
+static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg)
+{
+	mem_cgroup_private_id_put_many(memcg, 1);
+}
+
+struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg)
+{
+	while (!refcount_inc_not_zero(&memcg->id.ref)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * The root cgroup cannot be destroyed, so it's refcount must
 		 * always be >= 1.
@@ -3870,6 +4375,11 @@ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
 			break;
 		}
 		memcg = parent_mem_cgroup(memcg);
+<<<<<<< HEAD
+=======
+		if (!memcg)
+			memcg = root_mem_cgroup;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	return memcg;
 }
@@ -3934,8 +4444,11 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
 	if (!pn->lruvec_stats_percpu)
 		goto fail;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&pn->objcg_list);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	lruvec_init(&pn->lruvec);
 	pn->memcg = memcg;
 
@@ -3950,6 +4463,7 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
 {
 	int node;
 
+<<<<<<< HEAD
 	for_each_node(node) {
 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[node];
 		if (!pn)
@@ -3958,6 +4472,12 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
 		obj_cgroup_put(pn->orig_objcg);
 		free_mem_cgroup_per_node_info(pn);
 	}
+=======
+	obj_cgroup_put(memcg->orig_objcg);
+
+	for_each_node(node)
+		free_mem_cgroup_per_node_info(memcg->nodeinfo[node]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	memcg1_free_events(memcg);
 	kfree(memcg->vmstats);
 	free_percpu(memcg->vmstats_percpu);
@@ -4028,6 +4548,10 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
 #endif
 	memcg1_memcg_init(memcg);
 	memcg->kmemcg_id = -1;
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&memcg->objcg_list);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #ifdef CONFIG_CGROUP_WRITEBACK
 	INIT_LIST_HEAD(&memcg->cgwb_list);
 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
@@ -4103,10 +4627,16 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
 static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
 {
 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
 	int nid;
 
 	memcg_online_kmem(memcg);
+=======
+
+	if (memcg_online_kmem(memcg))
+		goto remove_id;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * A memcg must be visible for expand_shrinker_info()
@@ -4116,6 +4646,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
 	if (alloc_shrinker_info(memcg))
 		goto offline_kmem;
 
+<<<<<<< HEAD
 	for_each_node(nid) {
 		objcg = obj_cgroup_alloc();
 		if (!objcg)
@@ -4130,6 +4661,8 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
 		memcg->nodeinfo[nid]->orig_objcg = objcg;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
 		queue_delayed_work(system_dfl_wq, &stats_flush_dwork,
 				   FLUSH_TIME);
@@ -4152,6 +4685,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
 	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
 
 	return 0;
+<<<<<<< HEAD
 free_objcg:
 	for_each_node(nid) {
 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
@@ -4173,6 +4707,11 @@ free_objcg:
 	free_shrinker_info(memcg);
 offline_kmem:
 	memcg_offline_kmem(memcg);
+=======
+offline_kmem:
+	memcg_offline_kmem(memcg);
+remove_id:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mem_cgroup_private_id_remove(memcg);
 	return -ENOMEM;
 }
@@ -4190,19 +4729,26 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
 
 	memcg_offline_kmem(memcg);
 	reparent_deferred_split_queue(memcg);
+<<<<<<< HEAD
 	/*
 	 * The reparenting of objcg must be after the reparenting of the
 	 * list_lru and deferred_split_queue above, which ensures that they will
 	 * not mistakenly get the parent list_lru and deferred_split_queue.
 	 */
 	memcg_reparent_objcgs(memcg);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	reparent_shrinker_deferred(memcg);
 	wb_memcg_offline(memcg);
 	lru_gen_offline_memcg(memcg);
 
 	drain_all_stock(memcg);
 
+<<<<<<< HEAD
 	mem_cgroup_private_id_put(memcg, 1);
+=======
+	mem_cgroup_private_id_put(memcg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
@@ -4428,8 +4974,13 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
 	}
 	WRITE_ONCE(statc->stats_updates, 0);
 	/* We are in a per-cpu loop here, only do the atomic write once */
+<<<<<<< HEAD
 	if (atomic_long_read(&memcg->vmstats->stats_updates))
 		atomic_long_set(&memcg->vmstats->stats_updates, 0);
+=======
+	if (atomic_read(&memcg->vmstats->stats_updates))
+		atomic_set(&memcg->vmstats->stats_updates, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void mem_cgroup_fork(struct task_struct *task)
@@ -5006,6 +5557,7 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
 static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
 			gfp_t gfp)
 {
+<<<<<<< HEAD
 	int ret = 0;
 	struct obj_cgroup *objcg;
 
@@ -5020,6 +5572,18 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
 	commit_charge(folio, objcg);
 	memcg1_commit_charge(folio, memcg);
 
+=======
+	int ret;
+
+	ret = try_charge(memcg, gfp, folio_nr_pages(folio));
+	if (ret)
+		goto out;
+
+	css_get(&memcg->css);
+	commit_charge(folio, memcg);
+	memcg1_commit_charge(folio, memcg);
+out:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 
@@ -5105,7 +5669,11 @@ int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
 }
 
 struct uncharge_gather {
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
+=======
+	struct mem_cgroup *memcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned long nr_memory;
 	unsigned long pgpgout;
 	unsigned long nr_kmem;
@@ -5119,6 +5687,7 @@ static inline void uncharge_gather_clear(struct uncharge_gather *ug)
 
 static void uncharge_batch(const struct uncharge_gather *ug)
 {
+<<<<<<< HEAD
 	struct mem_cgroup *memcg;
 
 	rcu_read_lock();
@@ -5137,17 +5706,37 @@ static void uncharge_batch(const struct uncharge_gather *ug)
 
 	/* drop reference from uncharge_folio */
 	obj_cgroup_put(ug->objcg);
+=======
+	if (ug->nr_memory) {
+		memcg_uncharge(ug->memcg, ug->nr_memory);
+		if (ug->nr_kmem) {
+			mod_memcg_state(ug->memcg, MEMCG_KMEM, -ug->nr_kmem);
+			memcg1_account_kmem(ug->memcg, -ug->nr_kmem);
+		}
+		memcg1_oom_recover(ug->memcg);
+	}
+
+	memcg1_uncharge_batch(ug->memcg, ug->pgpgout, ug->nr_memory, ug->nid);
+
+	/* drop reference from uncharge_folio */
+	css_put(&ug->memcg->css);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
 {
 	long nr_pages;
+<<<<<<< HEAD
+=======
+	struct mem_cgroup *memcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct obj_cgroup *objcg;
 
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 
 	/*
 	 * Nobody should be changing or seriously looking at
+<<<<<<< HEAD
 	 * folio objcg at this point, we have fully exclusive
 	 * access to the folio.
 	 */
@@ -5165,6 +5754,35 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
 
 		/* pairs with obj_cgroup_put in uncharge_batch */
 		obj_cgroup_get(objcg);
+=======
+	 * folio memcg or objcg at this point, we have fully
+	 * exclusive access to the folio.
+	 */
+	if (folio_memcg_kmem(folio)) {
+		objcg = __folio_objcg(folio);
+		/*
+		 * This get matches the put at the end of the function and
+		 * kmem pages do not hold memcg references anymore.
+		 */
+		memcg = get_mem_cgroup_from_objcg(objcg);
+	} else {
+		memcg = __folio_memcg(folio);
+	}
+
+	if (!memcg)
+		return;
+
+	if (ug->memcg != memcg) {
+		if (ug->memcg) {
+			uncharge_batch(ug);
+			uncharge_gather_clear(ug);
+		}
+		ug->memcg = memcg;
+		ug->nid = folio_nid(folio);
+
+		/* pairs with css_put in uncharge_batch */
+		css_get(&memcg->css);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	nr_pages = folio_nr_pages(folio);
@@ -5172,17 +5790,33 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
 	if (folio_memcg_kmem(folio)) {
 		ug->nr_memory += nr_pages;
 		ug->nr_kmem += nr_pages;
+<<<<<<< HEAD
 	} else {
 		/* LRU pages aren't accounted at the root level */
 		if (!obj_cgroup_is_root(objcg))
+=======
+
+		folio->memcg_data = 0;
+		obj_cgroup_put(objcg);
+	} else {
+		/* LRU pages aren't accounted at the root level */
+		if (!mem_cgroup_is_root(memcg))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			ug->nr_memory += nr_pages;
 		ug->pgpgout++;
 
 		WARN_ON_ONCE(folio_unqueue_deferred_split(folio));
+<<<<<<< HEAD
 	}
 
 	folio->memcg_data = 0;
 	obj_cgroup_put(objcg);
+=======
+		folio->memcg_data = 0;
+	}
+
+	css_put(&memcg->css);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 void __mem_cgroup_uncharge(struct folio *folio)
@@ -5206,7 +5840,11 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
 	uncharge_gather_clear(&ug);
 	for (i = 0; i < folios->nr; i++)
 		uncharge_folio(folios->folios[i], &ug);
+<<<<<<< HEAD
 	if (ug.objcg)
+=======
+	if (ug.memcg)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		uncharge_batch(&ug);
 }
 
@@ -5223,7 +5861,10 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
 void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 {
 	struct mem_cgroup *memcg;
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	long nr_pages = folio_nr_pages(new);
 
 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
@@ -5238,6 +5879,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 	if (folio_memcg_charged(new))
 		return;
 
+<<<<<<< HEAD
 	objcg = folio_objcg(old);
 	VM_WARN_ON_ONCE_FOLIO(!objcg, old);
 	if (!objcg)
@@ -5247,15 +5889,30 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 	memcg = obj_cgroup_memcg(objcg);
 	/* Force-charge the new page. The old one will be freed soon */
 	if (!obj_cgroup_is_root(objcg)) {
+=======
+	memcg = folio_memcg(old);
+	VM_WARN_ON_ONCE_FOLIO(!memcg, old);
+	if (!memcg)
+		return;
+
+	/* Force-charge the new page. The old one will be freed soon */
+	if (!mem_cgroup_is_root(memcg)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		page_counter_charge(&memcg->memory, nr_pages);
 		if (do_memsw_account())
 			page_counter_charge(&memcg->memsw, nr_pages);
 	}
 
+<<<<<<< HEAD
 	obj_cgroup_get(objcg);
 	commit_charge(new, objcg);
 	memcg1_commit_charge(new, memcg);
 	rcu_read_unlock();
+=======
+	css_get(&memcg->css);
+	commit_charge(new, memcg);
+	memcg1_commit_charge(new, memcg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /**
@@ -5271,7 +5928,11 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
  */
 void mem_cgroup_migrate(struct folio *old, struct folio *new)
 {
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
+=======
+	struct mem_cgroup *memcg;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
 	VM_BUG_ON_FOLIO(!folio_test_locked(new), new);
@@ -5282,6 +5943,7 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
 	if (mem_cgroup_disabled())
 		return;
 
+<<<<<<< HEAD
 	objcg = folio_objcg(old);
 	/*
 	 * Note that it is normal to see !objcg for a hugetlb folio.
@@ -5294,6 +5956,20 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
 
 	/* Transfer the charge and the objcg ref */
 	commit_charge(new, objcg);
+=======
+	memcg = folio_memcg(old);
+	/*
+	 * Note that it is normal to see !memcg for a hugetlb folio.
+	 * For e.g, it could have been allocated when memory_hugetlb_accounting
+	 * was not selected.
+	 */
+	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(old) && !memcg, old);
+	if (!memcg)
+		return;
+
+	/* Transfer the charge and the css ref */
+	commit_charge(new, memcg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Warning should never happen, so don't worry about refcount non-0 */
 	WARN_ON_ONCE(folio_unqueue_deferred_split(old));
@@ -5476,11 +6152,15 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, swp_entry_t entry)
 	unsigned int nr_pages = folio_nr_pages(folio);
 	struct page_counter *counter;
 	struct mem_cgroup *memcg;
+<<<<<<< HEAD
 	struct obj_cgroup *objcg;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (do_memsw_account())
 		return 0;
 
+<<<<<<< HEAD
 	objcg = folio_objcg(folio);
 	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
 	if (!objcg)
@@ -5497,14 +6177,38 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, swp_entry_t entry)
 	memcg = mem_cgroup_private_id_get_online(memcg, nr_pages);
 	/* memcg is pined by memcg ID. */
 	rcu_read_unlock();
+=======
+	memcg = folio_memcg(folio);
+
+	VM_WARN_ON_ONCE_FOLIO(!memcg, folio);
+	if (!memcg)
+		return 0;
+
+	if (!entry.val) {
+		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+		return 0;
+	}
+
+	memcg = mem_cgroup_private_id_get_online(memcg);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!mem_cgroup_is_root(memcg) &&
 	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
 		memcg_memory_event(memcg, MEMCG_SWAP_MAX);
 		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+<<<<<<< HEAD
 		mem_cgroup_private_id_put(memcg, nr_pages);
 		return -ENOMEM;
 	}
+=======
+		mem_cgroup_private_id_put(memcg);
+		return -ENOMEM;
+	}
+
+	/* Get references for the tail pages, too */
+	if (nr_pages > 1)
+		mem_cgroup_private_id_get_many(memcg, nr_pages - 1);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
 
 	swap_cgroup_record(folio, mem_cgroup_private_id(memcg), entry);
@@ -5533,7 +6237,11 @@ void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
 				page_counter_uncharge(&memcg->swap, nr_pages);
 		}
 		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+<<<<<<< HEAD
 		mem_cgroup_private_id_put(memcg, nr_pages);
+=======
+		mem_cgroup_private_id_put_many(memcg, nr_pages);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	rcu_read_unlock();
 }
@@ -5554,21 +6262,35 @@ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
 bool mem_cgroup_swap_full(struct folio *folio)
 {
 	struct mem_cgroup *memcg;
+<<<<<<< HEAD
 	bool ret = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
 
 	if (vm_swap_full())
 		return true;
+<<<<<<< HEAD
 	if (do_memsw_account() || !folio_memcg_charged(folio))
 		return ret;
 
 	rcu_read_lock();
 	memcg = folio_memcg(folio);
+=======
+	if (do_memsw_account())
+		return false;
+
+	memcg = folio_memcg(folio);
+	if (!memcg)
+		return false;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
 		unsigned long usage = page_counter_read(&memcg->swap);
 
 		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
+<<<<<<< HEAD
 		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
 			ret = true;
 			break;
@@ -5577,6 +6299,13 @@ bool mem_cgroup_swap_full(struct folio *folio)
 	rcu_read_unlock();
 
 	return ret;
+=======
+		    usage * 2 >= READ_ONCE(memcg->swap.max))
+			return true;
+	}
+
+	return false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __init setup_swap_account(char *s)
@@ -5772,9 +6501,12 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
 		return;
 
+<<<<<<< HEAD
 	if (obj_cgroup_is_root(objcg))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
 
 	/* PF_MEMALLOC context, charging must succeed */
@@ -5785,8 +6517,11 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
 	memcg = obj_cgroup_memcg(objcg);
 	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
 	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+<<<<<<< HEAD
 	if (size == PAGE_SIZE)
 		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, 1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 }
 
@@ -5804,17 +6539,23 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
 		return;
 
+<<<<<<< HEAD
 	if (obj_cgroup_is_root(objcg))
 		return;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	obj_cgroup_uncharge(objcg, size);
 
 	rcu_read_lock();
 	memcg = obj_cgroup_memcg(objcg);
 	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
 	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+<<<<<<< HEAD
 	if (size == PAGE_SIZE)
 		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, -1);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rcu_read_unlock();
 }
 

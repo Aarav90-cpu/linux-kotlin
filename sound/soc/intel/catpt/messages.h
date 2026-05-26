@@ -69,7 +69,10 @@ struct catpt_fw_version {
 int catpt_ipc_get_fw_version(struct catpt_dev *cdev,
 			     struct catpt_fw_version *version);
 
+<<<<<<< HEAD
 /* PIN_IDs represent both, individual streams and the general mixer. */
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 enum catpt_pin_id {
 	CATPT_PIN_ID_SYSTEM = 0,
 	CATPT_PIN_ID_REFERENCE = 1,
@@ -80,8 +83,11 @@ enum catpt_pin_id {
 	CATPT_PIN_ID_MIXER = 7,
 	CATPT_PIN_ID_BLUETOOTH_CAPTURE = 8,
 	CATPT_PIN_ID_BLUETOOTH_RENDER = 9,
+<<<<<<< HEAD
 	/* 10 is reserved */
 	CATPT_PIN_ID_INVALID = 11,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 enum catpt_path_id {

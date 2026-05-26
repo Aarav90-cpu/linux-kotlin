@@ -19,8 +19,18 @@ staging directory.
   IPU7 driver is expected to work with the common IPU module in future.
 
 - Register definition cleanup
+<<<<<<< HEAD
   Add IPU7 prefix for IPU7 specific registers and related macros. Some
   ISYS IO sub-blocks register definitions are offset values from specific
   sub-block base, but it is not clear and well suited for driver to use,
   need to update the register definitions to make it more clear and
   readable.
+=======
+  Cleanup the register definitions - remove some unnecessary definitions
+  remove 'U' suffix for hexadecimal and decimal values and add IPU7 prefix
+  for IPU7 specific registers.
+  Some ISYS IO sub-blocks register definitions are offset values from
+  specific sub-block base, but it is not clear and well suited for driver
+  to use, need to update the register definitions to make it more clear
+  and readable.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

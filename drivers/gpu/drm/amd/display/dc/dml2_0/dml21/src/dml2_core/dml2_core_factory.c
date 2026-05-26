@@ -21,7 +21,10 @@ bool dml2_core_create(enum dml2_project_id project_id, struct dml2_core_instance
 	case dml2_project_dcn4x_stage1:
 		result = false;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn40:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_dcn4x_stage2:
 	case dml2_project_dcn4x_stage2_auto_drr_svp:
 		out->initialize = &core_dcn4_initialize;
@@ -31,6 +34,7 @@ bool dml2_core_create(enum dml2_project_id project_id, struct dml2_core_instance
 		out->calculate_mcache_allocation = &core_dcn4_calculate_mcache_allocation;
 		result = true;
 		break;
+<<<<<<< HEAD
 	case dml2_project_dcn42:
 		out->initialize = &core_dcn42_initialize;
 		out->mode_support = &core_dcn4_mode_support;
@@ -39,6 +43,8 @@ bool dml2_core_create(enum dml2_project_id project_id, struct dml2_core_instance
 		out->calculate_mcache_allocation = &core_dcn4_calculate_mcache_allocation;
 		result = true;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case dml2_project_invalid:
 	default:
 		break;

@@ -7,9 +7,12 @@ ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
 lib-y			+= strcmp.o
 lib-y			+= strlen.o
 lib-y			+= strncmp.o
+<<<<<<< HEAD
 lib-y			+= strnlen.o
 lib-y			+= strchr.o
 lib-y			+= strrchr.o
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 endif
 lib-y			+= csum.o
 ifeq ($(CONFIG_MMU), y)
@@ -19,4 +22,8 @@ lib-$(CONFIG_MMU)	+= uaccess.o
 lib-$(CONFIG_64BIT)	+= tishift.o
 lib-$(CONFIG_RISCV_ISA_ZICBOZ)	+= clear_page.o
 obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+<<<<<<< HEAD
+=======
+lib-$(CONFIG_RISCV_ISA_V)	+= xor.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 lib-$(CONFIG_RISCV_ISA_V)	+= riscv_v_helpers.o

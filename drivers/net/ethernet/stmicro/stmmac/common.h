@@ -257,7 +257,10 @@ struct stmmac_safety_stats {
 	(sizeof(struct stmmac_safety_stats) / sizeof(unsigned long))
 
 /* CSR Frequency Access Defines*/
+<<<<<<< HEAD
 #define CSR_F_20M	20000000
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CSR_F_35M	35000000
 #define CSR_F_60M	60000000
 #define CSR_F_100M	100000000
@@ -278,6 +281,12 @@ struct stmmac_safety_stats {
 #define FLOW_TX		2
 #define FLOW_AUTO	(FLOW_TX | FLOW_RX)
 
+<<<<<<< HEAD
+=======
+/* PCS defines */
+#define STMMAC_PCS_SGMII	(1 << 1)
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define SF_DMA_MODE 1		/* DMA STORE-AND-FORWARD Operation Mode */
 
 /* DMA HW feature register fields */
@@ -443,8 +452,13 @@ struct dma_features {
 	unsigned int number_rx_channel;
 	unsigned int number_tx_channel;
 	/* TX and RX number of queues */
+<<<<<<< HEAD
 	u8 number_rx_queues;
 	u8 number_tx_queues;
+=======
+	unsigned int number_rx_queues;
+	unsigned int number_tx_queues;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* PPS output */
 	unsigned int pps_out_num;
 	/* Number of Traffic Classes */
@@ -605,9 +619,18 @@ struct mac_link {
 struct mii_regs {
 	unsigned int addr;	/* MII Address */
 	unsigned int data;	/* MII Data */
+<<<<<<< HEAD
 	u32 addr_mask;		/* MII address mask */
 	u32 reg_mask;		/* MII reg mask */
 	u32 clk_csr_mask;
+=======
+	unsigned int addr_shift;	/* MII address shift */
+	unsigned int reg_shift;		/* MII reg shift */
+	unsigned int addr_mask;		/* MII address mask */
+	unsigned int reg_mask;		/* MII reg mask */
+	unsigned int clk_csr_shift;
+	unsigned int clk_csr_mask;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mac_device_info {
@@ -629,6 +652,11 @@ struct mac_device_info {
 	unsigned int unicast_filter_entries;
 	unsigned int mcast_bits_log2;
 	unsigned int rx_csum;
+<<<<<<< HEAD
+=======
+	unsigned int pcs;
+	unsigned int xlgmac;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int num_vlan;
 	u32 vlan_filter[32];
 	bool vlan_fail_q_en;

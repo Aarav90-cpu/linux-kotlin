@@ -41,6 +41,7 @@
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
 			reg = <0xf00>;
+<<<<<<< HEAD
 			clocks = <&smc1 IMX7ULP_CLK_ARM>,
 				 <&scg1 IMX7ULP_CLK_CORE>,
 				 <&scg1 IMX7ULP_CLK_SYS_SEL>,
@@ -69,6 +70,8 @@
 			opp-hz = /bits/ 64 <720000000>;
 			opp-microvolt = <1125000>;
 			clock-latency-ns = <150000>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 	};
 

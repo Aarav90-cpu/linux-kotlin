@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
+<<<<<<< HEAD
  * Copyright (c) 2026 Christian Brauner <brauner@kernel.org>
  *
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * Test for OPEN_TREE_NAMESPACE flag.
  *
  * Test that open_tree() with OPEN_TREE_NAMESPACE creates a new mount
@@ -52,6 +55,34 @@ static int get_mnt_ns_id_from_path(const char *path, uint64_t *mnt_ns_id)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#define STATMOUNT_BUFSIZE (1 << 15)
+
+static struct statmount *statmount_alloc(uint64_t mnt_id, uint64_t mnt_ns_id, uint64_t mask)
+{
+	struct statmount *buf;
+	size_t bufsize = STATMOUNT_BUFSIZE;
+	int ret;
+
+	for (;;) {
+		buf = malloc(bufsize);
+		if (!buf)
+			return NULL;
+
+		ret = statmount(mnt_id, mnt_ns_id, mask, buf, bufsize, 0);
+		if (ret == 0)
+			return buf;
+
+		free(buf);
+		if (errno != EOVERFLOW)
+			return NULL;
+
+		bufsize <<= 1;
+	}
+}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void log_mount(struct __test_metadata *_metadata, struct statmount *sm)
 {
 	const char *fs_type = "";
@@ -92,7 +123,11 @@ static void dump_mounts(struct __test_metadata *_metadata, uint64_t mnt_ns_id)
 				     STATMOUNT_MNT_BASIC |
 				     STATMOUNT_FS_TYPE |
 				     STATMOUNT_MNT_ROOT |
+<<<<<<< HEAD
 				     STATMOUNT_MNT_POINT, 0);
+=======
+				     STATMOUNT_MNT_POINT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!sm) {
 			TH_LOG("  [%zd] mnt_id %llu: statmount failed: %s",
 			       i, (unsigned long long)list[i], strerror(errno));
@@ -198,7 +233,11 @@ FIXTURE_SETUP(open_tree_ns)
 		SKIP(return, "open_tree() syscall not supported");
 
 	/* Check if statmount/listmount are supported */
+<<<<<<< HEAD
 	ret = statmount(0, 0, 0, 0, NULL, 0, 0);
+=======
+	ret = statmount(0, 0, 0, NULL, 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret == -1 && errno == ENOSYS)
 		SKIP(return, "statmount() syscall not supported");
 
@@ -317,7 +356,11 @@ TEST_F(open_tree_ns, verify_mount_properties)
 	ASSERT_GE(nr_mounts, 1);
 
 	/* Get info about the root mount (the bind mount, rootfs is hidden) */
+<<<<<<< HEAD
 	ret = statmount(list[0], new_ns_id, 0, STATMOUNT_MNT_BASIC, &sm, sizeof(sm), 0);
+=======
+	ret = statmount(list[0], new_ns_id, STATMOUNT_MNT_BASIC, &sm, sizeof(sm), 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ASSERT_EQ(ret, 0);
 
 	ASSERT_NE(sm.mnt_id, sm.mnt_parent_id);
@@ -429,7 +472,11 @@ FIXTURE_SETUP(open_tree_ns_userns)
 		SKIP(return, "open_tree() syscall not supported");
 
 	/* Check if statmount/listmount are supported */
+<<<<<<< HEAD
 	ret = statmount(0, 0, 0, 0, NULL, 0, 0);
+=======
+	ret = statmount(0, 0, 0, NULL, 0, 0);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret == -1 && errno == ENOSYS)
 		SKIP(return, "statmount() syscall not supported");
 }
@@ -723,7 +770,11 @@ TEST_F(open_tree_ns_userns, umount_fails_einval)
 			const char *mnt_point;
 
 			sm = statmount_alloc(list[i], new_ns_id,
+<<<<<<< HEAD
 					     STATMOUNT_MNT_POINT, 0);
+=======
+					     STATMOUNT_MNT_POINT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!sm)
 				_exit(11);
 
@@ -840,7 +891,11 @@ TEST_F(open_tree_ns_userns, umount_succeeds)
 			const char *mnt_point;
 
 			sm = statmount_alloc(list[i], new_ns_id,
+<<<<<<< HEAD
 					     STATMOUNT_MNT_POINT, 0);
+=======
+					     STATMOUNT_MNT_POINT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (!sm)
 				_exit(11);
 
@@ -881,7 +936,11 @@ TEST_F(open_tree_ns_userns, umount_succeeds)
 		ASSERT_FALSE(true) TH_LOG("setns into new namespace failed");
 		break;
 	case 7:
+<<<<<<< HEAD
 		ASSERT_FALSE(true) TH_LOG("umount failed but should have succeeded");
+=======
+		ASSERT_FALSE(true) TH_LOG("umount succeeded but should have failed with EINVAL");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	case 9:
 		ASSERT_FALSE(true) TH_LOG("listmount failed");
@@ -980,7 +1039,11 @@ TEST_F(open_tree_ns_unbindable, recursive_skips_on_unbindable)
 		struct statmount *sm;
 		const char *mnt_point;
 
+<<<<<<< HEAD
 		sm = statmount_alloc(list[i], new_ns_id, STATMOUNT_MNT_POINT, 0);
+=======
+		sm = statmount_alloc(list[i], new_ns_id, STATMOUNT_MNT_POINT);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ASSERT_NE(sm, NULL) {
 			TH_LOG("statmount_alloc failed for mnt_id %llu",
 			       (unsigned long long)list[i]);

@@ -316,9 +316,12 @@ static const struct ufs_dev_quirk ufs_fixups[] = {
 	  .model = "THGLF2G9D8KBADG",
 	  .quirk = UFS_DEVICE_QUIRK_PA_TACTIVATE },
 	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
+<<<<<<< HEAD
 	  .model = "THGJFJT0E25BAIP",
 	  .quirk = UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT },
 	{ .wmanufacturerid = UFS_VENDOR_TOSHIBA,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	  .model = "THGJFJT1E45BATP",
 	  .quirk = UFS_DEVICE_QUIRK_NO_TIMESTAMP_SUPPORT },
 	{}
@@ -337,7 +340,15 @@ static inline void ufshcd_add_delay_before_dme_cmd(struct ufs_hba *hba);
 static int ufshcd_host_reset_and_restore(struct ufs_hba *hba);
 static void ufshcd_resume_clkscaling(struct ufs_hba *hba);
 static void ufshcd_suspend_clkscaling(struct ufs_hba *hba);
+<<<<<<< HEAD
 static irqreturn_t ufshcd_intr(int irq, void *__hba);
+=======
+static int ufshcd_scale_clks(struct ufs_hba *hba, unsigned long freq,
+			     bool scale_up);
+static irqreturn_t ufshcd_intr(int irq, void *__hba);
+static int ufshcd_change_power_mode(struct ufs_hba *hba,
+			     struct ufs_pa_layer_attr *pwr_mode);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ufshcd_setup_hba_vreg(struct ufs_hba *hba, bool on);
 static int ufshcd_setup_vreg(struct ufs_hba *hba, bool on);
 static inline int ufshcd_config_vreg_hpm(struct ufs_hba *hba,
@@ -1211,7 +1222,12 @@ static int ufshcd_opp_set_rate(struct ufs_hba *hba, unsigned long freq)
  *
  * Return: 0 if successful; < 0 upon failure.
  */
+<<<<<<< HEAD
 int ufshcd_scale_clks(struct ufs_hba *hba, unsigned long freq, bool scale_up)
+=======
+static int ufshcd_scale_clks(struct ufs_hba *hba, unsigned long freq,
+			     bool scale_up)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret = 0;
 	ktime_t start = ktime_get();
@@ -1365,6 +1381,7 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * ufshcd_pause_command_processing - Pause command processing
  * @hba: per-adapter instance
  * @timeout_us: timeout in microseconds to wait for pending commands to finish
@@ -1407,6 +1424,8 @@ void ufshcd_resume_command_processing(struct ufs_hba *hba)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ufshcd_scale_gear - scale up/down UFS gear
  * @hba: per adapter instance
  * @target_gear: target gear to scale to
@@ -1451,8 +1470,12 @@ static int ufshcd_scale_gear(struct ufs_hba *hba, u32 target_gear, bool scale_up
 
 config_pwr_mode:
 	/* check if the power mode needs to be changed or not? */
+<<<<<<< HEAD
 	ret = ufshcd_config_pwr_mode(hba, &new_pwr_info,
 				     UFSHCD_PMC_POLICY_DONT_FORCE);
+=======
+	ret = ufshcd_config_pwr_mode(hba, &new_pwr_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		dev_err(hba->dev, "%s: failed err %d, old gear: (tx %d rx %d), new gear: (tx %d rx %d)",
 			__func__, ret,
@@ -4293,8 +4316,12 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
 			pwr_mode_change = true;
 		}
 		if (pwr_mode_change) {
+<<<<<<< HEAD
 			ret = ufshcd_change_power_mode(hba, &temp_pwr_info,
 						       UFSHCD_PMC_POLICY_DONT_FORCE);
+=======
+			ret = ufshcd_change_power_mode(hba, &temp_pwr_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (ret)
 				goto out;
 		}
@@ -4318,8 +4345,12 @@ int ufshcd_dme_get_attr(struct ufs_hba *hba, u32 attr_sel,
 
 	if (peer && (hba->quirks & UFSHCD_QUIRK_DME_PEER_ACCESS_AUTO_MODE)
 	    && pwr_mode_change)
+<<<<<<< HEAD
 		ufshcd_change_power_mode(hba, &orig_pwr_info,
 					 UFSHCD_PMC_POLICY_DONT_FORCE);
+=======
+		ufshcd_change_power_mode(hba, &orig_pwr_info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	return ret;
 }
@@ -4386,18 +4417,28 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
 	ret = __ufshcd_send_uic_cmd(hba, cmd);
 	if (ret) {
 		dev_err(hba->dev,
+<<<<<<< HEAD
 			"pwr ctrl cmd 0x%x with (MIBattribute 0x%x, mode 0x%x) uic error %d\n",
 			cmd->command, UIC_GET_ATTR_ID(cmd->argument1),
 			cmd->argument3, ret);
+=======
+			"pwr ctrl cmd 0x%x with mode 0x%x uic error %d\n",
+			cmd->command, cmd->argument3, ret);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto out;
 	}
 
 	if (!wait_for_completion_timeout(hba->uic_async_done,
 					 msecs_to_jiffies(uic_cmd_timeout))) {
 		dev_err(hba->dev,
+<<<<<<< HEAD
 			"pwr ctrl cmd 0x%x with (MIBattribute 0x%x, mode 0x%x) completion timeout\n",
 			cmd->command, UIC_GET_ATTR_ID(cmd->argument1),
 			cmd->argument3);
+=======
+			"pwr ctrl cmd 0x%x with mode 0x%x completion timeout\n",
+			cmd->command, cmd->argument3);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (!cmd->cmd_active) {
 			dev_err(hba->dev, "%s: Power Mode Change operation has been completed, go check UPMCRS\n",
@@ -4413,16 +4454,24 @@ check_upmcrs:
 	status = ufshcd_get_upmcrs(hba);
 	if (status != PWR_LOCAL) {
 		dev_err(hba->dev,
+<<<<<<< HEAD
 			"pwr ctrl cmd 0x%x with (MIBattribute 0x%x, mode 0x%x) failed, host upmcrs:0x%x\n",
 			cmd->command, UIC_GET_ATTR_ID(cmd->argument1),
 			cmd->argument3, status);
+=======
+			"pwr ctrl cmd 0x%x failed, host upmcrs:0x%x\n",
+			cmd->command, status);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = (status != PWR_OK) ? status : -1;
 	}
 out:
 	if (ret) {
 		ufshcd_print_host_state(hba);
 		ufshcd_print_pwr_info(hba);
+<<<<<<< HEAD
 		ufshcd_print_tx_eq_params(hba);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ufshcd_print_evt_hist(hba);
 	}
 
@@ -4441,6 +4490,7 @@ out_unlock:
 }
 
 /**
+<<<<<<< HEAD
  * ufshcd_uic_tx_eqtr - Perform UIC TX Equalization Training
  * @hba: per adapter instance
  * @gear: target gear for EQTR
@@ -4464,6 +4514,8 @@ int ufshcd_uic_tx_eqtr(struct ufs_hba *hba, int gear)
 }
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * ufshcd_send_bsg_uic_cmd - Send UIC commands requested via BSG layer and retrieve the result
  * @hba: per adapter instance
  * @uic_cmd: UIC command
@@ -4726,6 +4778,7 @@ static int ufshcd_get_max_pwr_mode(struct ufs_hba *hba)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * ufshcd_dme_change_power_mode() - UniPro DME Power Mode change sequence
  * @hba: per-adapter instance
@@ -4748,11 +4801,19 @@ static int ufshcd_get_max_pwr_mode(struct ufs_hba *hba)
 static int ufshcd_dme_change_power_mode(struct ufs_hba *hba,
 					struct ufs_pa_layer_attr *pwr_mode,
 					enum ufshcd_pmc_policy pmc_policy)
+=======
+static int ufshcd_change_power_mode(struct ufs_hba *hba,
+			     struct ufs_pa_layer_attr *pwr_mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int ret;
 
 	/* if already configured to the requested pwr_mode */
+<<<<<<< HEAD
 	if (pmc_policy == UFSHCD_PMC_POLICY_DONT_FORCE &&
+=======
+	if (!hba->force_pmc &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    pwr_mode->gear_rx == hba->pwr_info.gear_rx &&
 	    pwr_mode->gear_tx == hba->pwr_info.gear_tx &&
 	    pwr_mode->lane_rx == hba->pwr_info.lane_rx &&
@@ -4832,6 +4893,7 @@ static int ufshcd_dme_change_power_mode(struct ufs_hba *hba,
 }
 
 /**
+<<<<<<< HEAD
  * ufshcd_change_power_mode() - Change UFS Link Power Mode
  * @hba: per-adapter instance
  * @pwr_mode: pointer to the target power mode (gear/lane) attributes
@@ -4866,16 +4928,26 @@ EXPORT_SYMBOL_GPL(ufshcd_change_power_mode);
  * @hba: per-adapter instance
  * @desired_pwr_mode: desired power configuration
  * @pmc_policy: Power Mode change policy
+=======
+ * ufshcd_config_pwr_mode - configure a new power mode
+ * @hba: per-adapter instance
+ * @desired_pwr_mode: desired power configuration
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * Return: 0 upon success; < 0 upon failure.
  */
 int ufshcd_config_pwr_mode(struct ufs_hba *hba,
+<<<<<<< HEAD
 			   struct ufs_pa_layer_attr *desired_pwr_mode,
 			   enum ufshcd_pmc_policy pmc_policy)
+=======
+		struct ufs_pa_layer_attr *desired_pwr_mode)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ufs_pa_layer_attr final_params = { 0 };
 	int ret;
 
+<<<<<<< HEAD
 	ret = ufshcd_vops_negotiate_pwr_mode(hba, desired_pwr_mode,
 					     &final_params);
 	if (ret) {
@@ -4893,6 +4965,21 @@ int ufshcd_config_pwr_mode(struct ufs_hba *hba,
 			 ufs_hs_rate_to_str(final_params.hs_rate), ret);
 
 	return ufshcd_change_power_mode(hba, &final_params, pmc_policy);
+=======
+	ret = ufshcd_vops_pwr_change_notify(hba, PRE_CHANGE,
+					desired_pwr_mode, &final_params);
+
+	if (ret)
+		memcpy(&final_params, desired_pwr_mode, sizeof(final_params));
+
+	ret = ufshcd_change_power_mode(hba, &final_params);
+
+	if (!ret)
+		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
+					&final_params);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(ufshcd_config_pwr_mode);
 
@@ -5706,11 +5793,16 @@ static irqreturn_t ufshcd_uic_cmd_compl(struct ufs_hba *hba, u32 intr_status)
 
 	guard(spinlock_irqsave)(hba->host->host_lock);
 	cmd = hba->active_uic_cmd;
+<<<<<<< HEAD
 	if (!cmd) {
 		dev_err(hba->dev,
 			"No active UIC command. Maybe a timeout occurred?\n");
 		return retval;
 	}
+=======
+	if (!cmd)
+		return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (ufshcd_is_auto_hibern8_error(hba, intr_status))
 		hba->errors |= (UFSHCD_UIC_HIBERN8_MASK & intr_status);
@@ -6914,7 +7006,10 @@ again:
 		spin_unlock_irqrestore(hba->host->host_lock, flags);
 		ufshcd_print_host_state(hba);
 		ufshcd_print_pwr_info(hba);
+<<<<<<< HEAD
 		ufshcd_print_tx_eq_params(hba);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ufshcd_print_evt_hist(hba);
 		ufshcd_print_tmrs(hba, hba->outstanding_tasks);
 		ufshcd_print_trs_all(hba, pr_prdt);
@@ -6973,13 +7068,22 @@ again:
 		 * are sent via bsg and/or sysfs.
 		 */
 		down_write(&hba->clk_scaling_lock);
+<<<<<<< HEAD
 		pmc_err = ufshcd_config_pwr_mode(hba, &hba->pwr_info,
 						 UFSHCD_PMC_POLICY_FORCE);
+=======
+		hba->force_pmc = true;
+		pmc_err = ufshcd_config_pwr_mode(hba, &(hba->pwr_info));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (pmc_err) {
 			needs_reset = true;
 			dev_err(hba->dev, "%s: Failed to restore power mode, err = %d\n",
 					__func__, pmc_err);
 		}
+<<<<<<< HEAD
+=======
+		hba->force_pmc = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ufshcd_print_pwr_info(hba);
 		up_write(&hba->clk_scaling_lock);
 		spin_lock_irqsave(hba->host->host_lock, flags);
@@ -7105,6 +7209,7 @@ static irqreturn_t ufshcd_update_uic_error(struct ufs_hba *hba)
 	}
 
 	reg = ufshcd_readl(hba, REG_UIC_ERROR_CODE_DME);
+<<<<<<< HEAD
 	if (reg & UIC_DME_ERROR) {
 		ufshcd_update_evt_hist(hba, UFS_EVT_DME_ERR, reg);
 
@@ -7118,6 +7223,12 @@ static irqreturn_t ufshcd_update_uic_error(struct ufs_hba *hba)
 				sysfs_notify_dirent(hba->dme_qos_sysfs_handle);
 		}
 
+=======
+	if ((reg & UIC_DME_ERROR) &&
+	    (reg & UIC_DME_ERROR_CODE_MASK)) {
+		ufshcd_update_evt_hist(hba, UFS_EVT_DME_ERR, reg);
+		hba->uic_error |= UFSHCD_UIC_DME_ERROR;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		retval |= IRQ_HANDLED;
 	}
 
@@ -7187,7 +7298,10 @@ static irqreturn_t ufshcd_check_errors(struct ufs_hba *hba, u32 intr_status)
 			ufshcd_dump_regs(hba, 0, UFSHCI_REG_SPACE_SIZE,
 					 "host_regs: ");
 			ufshcd_print_pwr_info(hba);
+<<<<<<< HEAD
 			ufshcd_print_tx_eq_params(hba);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		}
 		ufshcd_schedule_eh_work(hba);
 		retval |= IRQ_HANDLED;
@@ -7236,17 +7350,28 @@ static irqreturn_t ufshcd_tmc_handler(struct ufs_hba *hba)
 /**
  * ufshcd_handle_mcq_cq_events - handle MCQ completion queue events
  * @hba: per adapter instance
+<<<<<<< HEAD
  * @reset_iag: true, to reset MCQ IAG counter and timer of the CQ
  *
  * Return: IRQ_HANDLED if interrupt is handled.
  */
 static irqreturn_t ufshcd_handle_mcq_cq_events(struct ufs_hba *hba, bool reset_iag)
+=======
+ *
+ * Return: IRQ_HANDLED if interrupt is handled.
+ */
+static irqreturn_t ufshcd_handle_mcq_cq_events(struct ufs_hba *hba)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct ufs_hw_queue *hwq;
 	unsigned long outstanding_cqs;
 	unsigned int nr_queues;
 	int i, ret;
+<<<<<<< HEAD
 	u32 events, reg;
+=======
+	u32 events;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	ret = ufshcd_vops_get_outstanding_cqs(hba, &outstanding_cqs);
 	if (ret)
@@ -7261,12 +7386,15 @@ static irqreturn_t ufshcd_handle_mcq_cq_events(struct ufs_hba *hba, bool reset_i
 		if (events)
 			ufshcd_mcq_write_cqis(hba, events, i);
 
+<<<<<<< HEAD
 		if (reset_iag) {
 			reg = ufshcd_mcq_read_mcqiacr(hba, i);
 			reg |= INT_AGGR_COUNTER_AND_TIMER_RESET;
 			ufshcd_mcq_write_mcqiacr(hba, reg, i);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (events & UFSHCD_MCQ_CQIS_TAIL_ENT_PUSH_STS)
 			ufshcd_mcq_poll_cqe_lock(hba, hwq);
 	}
@@ -7300,10 +7428,14 @@ static irqreturn_t ufshcd_sl_intr(struct ufs_hba *hba, u32 intr_status)
 		retval |= ufshcd_transfer_req_compl(hba);
 
 	if (intr_status & MCQ_CQ_EVENT_STATUS)
+<<<<<<< HEAD
 		retval |= ufshcd_handle_mcq_cq_events(hba, false);
 
 	if (intr_status & MCQ_IAG_EVENT_STATUS)
 		retval |= ufshcd_handle_mcq_cq_events(hba, true);
+=======
+		retval |= ufshcd_handle_mcq_cq_events(hba);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return retval;
 }
@@ -7371,12 +7503,17 @@ static irqreturn_t ufshcd_intr(int irq, void *__hba)
 	struct ufs_hba *hba = __hba;
 	u32 intr_status, enabled_intr_status;
 
+<<<<<<< HEAD
 	/*
 	 * Handle interrupt in thread if MCQ or ESI is disabled,
 	 * and no active UIC command.
 	 */
 	if ((!hba->mcq_enabled || !hba->mcq_esi_enabled) &&
 	    !hba->active_uic_cmd)
+=======
+	/* Move interrupt handling to thread when MCQ & ESI are not enabled */
+	if (!hba->mcq_enabled || !hba->mcq_esi_enabled)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return IRQ_WAKE_THREAD;
 
 	intr_status = ufshcd_readl(hba, REG_INTERRUPT_STATUS);
@@ -7983,7 +8120,10 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
 		ufshcd_print_evt_hist(hba);
 		ufshcd_print_host_state(hba);
 		ufshcd_print_pwr_info(hba);
+<<<<<<< HEAD
 		ufshcd_print_tx_eq_params(hba);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ufshcd_print_tr(hba, cmd, true);
 	} else {
 		ufshcd_print_tr(hba, cmd, false);
@@ -8961,8 +9101,11 @@ static void ufshcd_tune_unipro_params(struct ufs_hba *hba)
 
 	if (hba->dev_quirks & UFS_DEVICE_QUIRK_PA_HIBER8TIME)
 		ufshcd_quirk_override_pa_h8time(hba);
+<<<<<<< HEAD
 
 	ufshcd_apply_valid_tx_eq_settings(hba);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void ufshcd_clear_dbg_ufs_stats(struct ufs_hba *hba)
@@ -9259,6 +9402,7 @@ static void ufshcd_config_mcq(struct ufs_hba *hba)
 		 hba->nutrs);
 }
 
+<<<<<<< HEAD
 /**
  * ufshcd_get_op_mode - get UFS operating mode.
  * @hba: per-adapter instance
@@ -9283,6 +9427,8 @@ static enum ufs_op_mode ufshcd_get_op_mode(struct ufs_hba *hba)
 	return HS_MODE;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int ufshcd_post_device_init(struct ufs_hba *hba)
 {
 	int ret;
@@ -9291,12 +9437,15 @@ static int ufshcd_post_device_init(struct ufs_hba *hba)
 
 	/* UFS device is also active now */
 	ufshcd_set_ufs_dev_active(hba);
+<<<<<<< HEAD
 
 	/* Indicate that DME QoS Monitor has been reset */
 	atomic_set(&hba->dme_qos_notification, 0x1);
 	if (hba->dme_qos_sysfs_handle)
 		sysfs_notify_dirent(hba->dme_qos_sysfs_handle);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ufshcd_force_reset_auto_bkops(hba);
 
 	ufshcd_set_timestamp_attr(hba);
@@ -9305,6 +9454,7 @@ static int ufshcd_post_device_init(struct ufs_hba *hba)
 		return 0;
 
 	/*
+<<<<<<< HEAD
 	 * Set the right value to bRefClkFreq in LS_MODE before attempting to
 	 * switch to HS gears.
 	 */
@@ -9315,6 +9465,15 @@ static int ufshcd_post_device_init(struct ufs_hba *hba)
 	/* Gear up to HS gear. */
 	ret = ufshcd_config_pwr_mode(hba, &hba->max_pwr_info.info,
 				     UFSHCD_PMC_POLICY_DONT_FORCE);
+=======
+	 * Set the right value to bRefClkFreq before attempting to
+	 * switch to HS gears.
+	 */
+	if (hba->dev_ref_clk_freq != REF_CLK_FREQ_INVAL)
+		ufshcd_set_dev_ref_clk(hba);
+	/* Gear up to HS gear. */
+	ret = ufshcd_config_pwr_mode(hba, &hba->max_pwr_info.info);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret) {
 		dev_err(hba->dev, "%s: Failed setting power mode, err = %d\n",
 			__func__, ret);
@@ -9932,7 +10091,10 @@ static void ufshcd_hba_exit(struct ufs_hba *hba)
 		hba->is_powered = false;
 		ufs_put_device_desc(hba);
 	}
+<<<<<<< HEAD
 	sysfs_put(hba->dme_qos_sysfs_handle);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int ufshcd_execute_start_stop(struct scsi_device *sdev,
@@ -10132,13 +10294,19 @@ static void ufshcd_vreg_set_lpm(struct ufs_hba *hba)
 #ifdef CONFIG_PM
 static int ufshcd_vreg_set_hpm(struct ufs_hba *hba)
 {
+<<<<<<< HEAD
 	bool vcc_on = false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret = 0;
 
 	if (ufshcd_is_ufs_dev_poweroff(hba) && ufshcd_is_link_off(hba) &&
 	    !hba->dev_info.is_lu_power_on_wp) {
 		ret = ufshcd_setup_vreg(hba, true);
+<<<<<<< HEAD
 		vcc_on = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (!ufshcd_is_ufs_dev_active(hba)) {
 		if (!ufshcd_is_link_active(hba)) {
 			ret = ufshcd_config_vreg_hpm(hba, hba->vreg_info.vccq);
@@ -10149,7 +10317,10 @@ static int ufshcd_vreg_set_hpm(struct ufs_hba *hba)
 				goto vccq_lpm;
 		}
 		ret = ufshcd_toggle_vreg(hba->dev, hba->vreg_info.vcc, true);
+<<<<<<< HEAD
 		vcc_on = true;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	goto out;
 
@@ -10158,6 +10329,7 @@ vccq_lpm:
 vcc_disable:
 	ufshcd_toggle_vreg(hba->dev, hba->vreg_info.vcc, false);
 out:
+<<<<<<< HEAD
 	/*
 	 * On platforms with a slow VCC ramp-up, a delay is needed after
 	 * turning on VCC to ensure the voltage is stable before the
@@ -10167,6 +10339,8 @@ out:
 	    hba->vreg_info.vcc && !hba->vreg_info.vcc->always_on)
 		usleep_range(1000, 1100);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return ret;
 }
 #endif /* CONFIG_PM */
@@ -11272,8 +11446,11 @@ initialized:
 		goto out_disable;
 
 	ufs_sysfs_add_nodes(hba->dev);
+<<<<<<< HEAD
 	hba->dme_qos_sysfs_handle = sysfs_get_dirent(hba->dev->kobj.sd,
 						     "dme_qos_notification");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	async_schedule(ufshcd_async_scan, hba);
 
 	device_enable_async_suspend(dev);

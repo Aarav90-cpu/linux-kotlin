@@ -1974,7 +1974,11 @@ static int rsnd_probe(struct platform_device *pdev)
 	 *	asoc register
 	 */
 	ci = 0;
+<<<<<<< HEAD
 	for (i = 0; i < RSND_MAX_COMPONENT && priv->component_dais[i] > 0; i++) {
+=======
+	for (i = 0; priv->component_dais[i] > 0; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int nr = priv->component_dais[i];
 
 		ret = devm_snd_soc_register_component(dev, &rsnd_soc_component,

@@ -3,8 +3,13 @@
  * Copyright © 2023 Intel Corporation
  */
 
+<<<<<<< HEAD
 #ifndef _XE_GT_IDLE_TYPES_H_
 #define _XE_GT_IDLE_TYPES_H_
+=======
+#ifndef _XE_GT_IDLE_SYSFS_TYPES_H_
+#define _XE_GT_IDLE_SYSFS_TYPES_H_
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include <linux/spinlock.h>
 #include <linux/types.h>
@@ -40,4 +45,8 @@ struct xe_gt_idle {
 	u64 (*idle_residency)(struct xe_guc_pc *pc);
 };
 
+<<<<<<< HEAD
 #endif /* _XE_GT_IDLE_TYPES_H_ */
+=======
+#endif /* _XE_GT_IDLE_SYSFS_TYPES_H_ */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

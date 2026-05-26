@@ -317,8 +317,12 @@ int scx_alloc_free_idx(struct scx_allocator *alloc, __u64 idx)
 		};
 
 		/* Zero out one word at a time. */
+<<<<<<< HEAD
 		for (i = zero; i < (alloc->pool.elem_size - sizeof(struct sdt_data)) / 8
 		     && can_loop; i++) {
+=======
+		for (i = zero; i < alloc->pool.elem_size / 8 && can_loop; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			data->payload[i] = 0;
 		}
 	}
@@ -644,7 +648,11 @@ void BPF_STRUCT_OPS(sdt_enqueue, struct task_struct *p, u64 enq_flags)
 
 void BPF_STRUCT_OPS(sdt_dispatch, s32 cpu, struct task_struct *prev)
 {
+<<<<<<< HEAD
 	scx_bpf_dsq_move_to_local(SHARED_DSQ, 0);
+=======
+	scx_bpf_dsq_move_to_local(SHARED_DSQ);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 s32 BPF_STRUCT_OPS_SLEEPABLE(sdt_init_task, struct task_struct *p,

@@ -15,6 +15,7 @@ description:
 
 properties:
   compatible:
+<<<<<<< HEAD
     oneOf:
       - items:
           - const: microchip,mpfs-mss-top-sysreg
@@ -25,6 +26,12 @@ properties:
           - const: microchip,mpfs-mss-top-sysreg
           - const: syscon
           - const: simple-mfd
+=======
+    items:
+      - const: microchip,mpfs-mss-top-sysreg
+      - const: syscon
+      - const: simple-mfd
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   reg:
     maxItems: 1
@@ -44,10 +51,13 @@ properties:
       of PolarFire clock/reset IDs.
     const: 1
 
+<<<<<<< HEAD
   interrupt-controller@54:
     type: object
     $ref: /schemas/soc/microchip/microchip,mpfs-irqmux.yaml
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
   pinctrl@200:
     type: object
     $ref: /schemas/pinctrl/microchip,mpfs-pinctrl-iomux0.yaml

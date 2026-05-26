@@ -296,7 +296,11 @@
 
 	pinctrl_pmic: pmicirqgrp {
 		fsl,pins = <
+<<<<<<< HEAD
 			MX8MP_IOMUXC_NAND_ALE__GPIO3_IO00	0x1c0
+=======
+			MX8MP_IOMUXC_NAND_ALE__GPIO3_IO00	0x41
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		>;
 	};
 

@@ -211,7 +211,11 @@ static struct clk_alpha_pll *ipa5424_apss_plls[] = {
 	&ipq5424_apss_pll,
 };
 
+<<<<<<< HEAD
 static const struct qcom_cc_driver_data ipa5424_apss_driver_data = {
+=======
+static struct qcom_cc_driver_data ipa5424_apss_driver_data = {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.alpha_plls = ipa5424_apss_plls,
 	.num_alpha_plls = ARRAY_SIZE(ipa5424_apss_plls),
 };

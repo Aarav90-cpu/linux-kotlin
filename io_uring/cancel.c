@@ -156,6 +156,7 @@ int io_async_cancel_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 		cancel->fd = READ_ONCE(sqe->fd);
 	}
 	if (cancel->flags & IORING_ASYNC_CANCEL_OP) {
+<<<<<<< HEAD
 		u32 op;
 
 		if (cancel->flags & IORING_ASYNC_CANCEL_ANY)
@@ -166,6 +167,11 @@ int io_async_cancel_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 			return -EINVAL;
 
 		cancel->opcode = op;
+=======
+		if (cancel->flags & IORING_ASYNC_CANCEL_ANY)
+			return -EINVAL;
+		cancel->opcode = READ_ONCE(sqe->len);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	return 0;
@@ -561,8 +567,13 @@ __cold bool io_uring_try_cancel_requests(struct io_ring_ctx *ctx,
 	ret |= io_waitid_remove_all(ctx, tctx, cancel_all);
 	ret |= io_futex_remove_all(ctx, tctx, cancel_all);
 	ret |= io_uring_try_cancel_uring_cmd(ctx, tctx, cancel_all);
+<<<<<<< HEAD
 	ret |= io_kill_timeouts(ctx, tctx, cancel_all);
 	mutex_unlock(&ctx->uring_lock);
+=======
+	mutex_unlock(&ctx->uring_lock);
+	ret |= io_kill_timeouts(ctx, tctx, cancel_all);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (tctx)
 		ret |= io_run_task_work() > 0;
 	else

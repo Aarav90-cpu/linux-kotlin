@@ -21,7 +21,10 @@
 #include <linux/nospec.h>
 #include <linux/etherdevice.h>
 #include <linux/if_vlan.h>
+<<<<<<< HEAD
 #include <linux/random.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <net/net_namespace.h>
 #include <net/genetlink.h>
 #include <net/cfg80211.h>
@@ -333,6 +336,7 @@ static int validate_nan_cluster_id(const struct nlattr *attr,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int validate_nan_avail_blob(const struct nlattr *attr,
 				   struct netlink_ext_ack *extack)
 {
@@ -424,12 +428,15 @@ static int validate_nan_ulw(const struct nlattr *attr,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int validate_uhr_capa(const struct nlattr *attr,
 			     struct netlink_ext_ack *extack)
 {
 	const u8 *data = nla_data(attr);
 	unsigned int len = nla_len(attr);
 
+<<<<<<< HEAD
 	if (!ieee80211_uhr_capa_size_ok(data, len, false))
 		return -EINVAL;
 	return 0;
@@ -444,6 +451,9 @@ static int validate_uhr_operation(const struct nlattr *attr,
 	if (!ieee80211_uhr_oper_size_ok(data, len, false))
 		return -EINVAL;
 	return 0;
+=======
+	return ieee80211_uhr_capa_size_ok(data, len, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* policy for the attributes */
@@ -647,6 +657,7 @@ nl80211_nan_band_conf_policy[NL80211_NAN_BAND_CONF_ATTR_MAX + 1] = {
 };
 
 static const struct nla_policy
+<<<<<<< HEAD
 nl80211_nan_peer_map_policy[NL80211_NAN_PEER_MAP_ATTR_MAX + 1] = {
 	[NL80211_NAN_PEER_MAP_ATTR_MAP_ID] = NLA_POLICY_MAX(NLA_U8, 15),
 	[NL80211_NAN_PEER_MAP_ATTR_TIME_SLOTS] =
@@ -654,6 +665,8 @@ nl80211_nan_peer_map_policy[NL80211_NAN_PEER_MAP_ATTR_MAX + 1] = {
 };
 
 static const struct nla_policy
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 nl80211_nan_conf_policy[NL80211_NAN_CONF_ATTR_MAX + 1] = {
 	[NL80211_NAN_CONF_CLUSTER_ID] =
 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_nan_cluster_id,
@@ -1058,6 +1071,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
 	[NL80211_ATTR_UHR_CAPABILITY] =
 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_uhr_capa, 255),
 	[NL80211_ATTR_DISABLE_UHR] = { .type = NLA_FLAG },
+<<<<<<< HEAD
 	[NL80211_ATTR_UHR_OPERATION] =
 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_uhr_operation),
 	[NL80211_ATTR_NAN_CHANNEL] = NLA_POLICY_NESTED(nl80211_policy),
@@ -1076,6 +1090,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
 	[NL80211_ATTR_NAN_MAX_CHAN_SWITCH_TIME] = { .type = NLA_U16 },
 	[NL80211_ATTR_NAN_PEER_MAPS] =
 		NLA_POLICY_NESTED_ARRAY(nl80211_nan_peer_map_policy),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 /* policy for the key attributes */
@@ -1276,6 +1292,7 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
 			rtnl_unlock();
 			return -ENODEV;
 		}
+<<<<<<< HEAD
 
 		/*
 		 * The first invocation validated the wdev's netns against
@@ -1288,6 +1305,8 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
 			return -ENODEV;
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		*rdev = wiphy_to_rdev(wiphy);
 		*wdev = NULL;
 
@@ -1475,12 +1494,15 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
 		if ((chan->flags & IEEE80211_CHAN_NO_UHR) &&
 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_UHR))
 			goto nla_put_failure;
+<<<<<<< HEAD
 		if (chan->cac_start_time &&
 		    nla_put_u64_64bit(msg,
 				      NL80211_FREQUENCY_ATTR_CAC_START_TIME,
 				      chan->cac_start_time,
 				      NL80211_FREQUENCY_ATTR_PAD))
 			goto nla_put_failure;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
@@ -1848,7 +1870,10 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
 			return 0;
 		return -ENOLINK;
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (wiphy_ext_feature_isset(wdev->wiphy,
 					    NL80211_EXT_FEATURE_SECURE_NAN))
 			return 0;
@@ -2805,6 +2830,7 @@ fail:
 	return -ENOBUFS;
 }
 
+<<<<<<< HEAD
 static int nl80211_put_nan_phy_cap(struct wiphy *wiphy, struct sk_buff *msg)
 {
 	struct nlattr *nl_phy_cap;
@@ -2867,6 +2893,8 @@ fail:
 	return -ENOBUFS;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
 {
 	struct nlattr *nan_caps;
@@ -2893,9 +2921,12 @@ static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
 		       wiphy->nan_capa.dev_capabilities))
 		goto fail;
 
+<<<<<<< HEAD
 	if (nl80211_put_nan_phy_cap(wiphy, msg))
 		goto fail;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	nla_nest_end(msg, nan_caps);
 
 	return 0;
@@ -3781,10 +3812,18 @@ static bool nl80211_can_set_dev_channel(struct wireless_dev *wdev)
 }
 
 static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				  struct netlink_ext_ack *extack,
 				  struct nlattr **attrs, bool monitor,
 				  struct cfg80211_chan_def *chandef)
 {
+=======
+				  struct genl_info *info, bool monitor,
+				  struct cfg80211_chan_def *chandef)
+{
+	struct netlink_ext_ack *extack = info->extack;
+	struct nlattr **attrs = info->attrs;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 control_freq;
 
 	if (!attrs[NL80211_ATTR_WIPHY_FREQ]) {
@@ -3794,10 +3833,17 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
 	}
 
 	control_freq = MHZ_TO_KHZ(
+<<<<<<< HEAD
 			nla_get_u32(attrs[NL80211_ATTR_WIPHY_FREQ]));
 	if (attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET])
 		control_freq +=
 		    nla_get_u32(attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET]);
+=======
+			nla_get_u32(info->attrs[NL80211_ATTR_WIPHY_FREQ]));
+	if (info->attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET])
+		control_freq +=
+		    nla_get_u32(info->attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	memset(chandef, 0, sizeof(*chandef));
 	chandef->chan = ieee80211_get_channel_khz(&rdev->wiphy, control_freq);
@@ -3826,9 +3872,12 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
 		case NL80211_CHAN_HT20:
 		case NL80211_CHAN_HT40PLUS:
 		case NL80211_CHAN_HT40MINUS:
+<<<<<<< HEAD
 			if (chandef->chan->band == NL80211_BAND_60GHZ ||
 			    chandef->chan->band == NL80211_BAND_S1GHZ)
 				return -EINVAL;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			cfg80211_chandef_create(chandef, chandef->chan,
 						chantype);
 			/* user input for center_freq is incorrect */
@@ -3871,6 +3920,7 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
 			attrs[NL80211_ATTR_S1G_PRIMARY_2MHZ]);
 	}
 
+<<<<<<< HEAD
 	if (attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
 		chandef->edmg.channels =
 		      nla_get_u8(attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
@@ -3878,36 +3928,64 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
 		if (attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
 			chandef->edmg.bw_config =
 		     nla_get_u8(attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
+=======
+	if (info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
+		chandef->edmg.channels =
+		      nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
+
+		if (info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
+			chandef->edmg.bw_config =
+		     nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		chandef->edmg.bw_config = 0;
 		chandef->edmg.channels = 0;
 	}
 
+<<<<<<< HEAD
 	if (attrs[NL80211_ATTR_PUNCT_BITMAP]) {
 		chandef->punctured =
 			nla_get_u32(attrs[NL80211_ATTR_PUNCT_BITMAP]);
+=======
+	if (info->attrs[NL80211_ATTR_PUNCT_BITMAP]) {
+		chandef->punctured =
+			nla_get_u32(info->attrs[NL80211_ATTR_PUNCT_BITMAP]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		if (chandef->punctured &&
 		    !wiphy_ext_feature_isset(&rdev->wiphy,
 					     NL80211_EXT_FEATURE_PUNCT)) {
+<<<<<<< HEAD
 			NL_SET_ERR_MSG_ATTR(extack,
 					    attrs[NL80211_ATTR_WIPHY_FREQ],
 					    "driver doesn't support puncturing");
+=======
+			NL_SET_ERR_MSG(extack,
+				       "driver doesn't support puncturing");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		}
 	}
 
 	if (!cfg80211_chandef_valid(chandef)) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG_ATTR(extack, attrs[NL80211_ATTR_WIPHY_FREQ],
 				    "invalid channel definition");
+=======
+		NL_SET_ERR_MSG(extack, "invalid channel definition");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
 	if (!_cfg80211_chandef_usable(&rdev->wiphy, chandef,
 				      IEEE80211_CHAN_DISABLED,
 				      monitor ? IEEE80211_CHAN_CAN_MONITOR : 0)) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG_ATTR(extack, attrs[NL80211_ATTR_WIPHY_FREQ],
 				    "(extension) channel is disabled");
+=======
+		NL_SET_ERR_MSG(extack, "(extension) channel is disabled");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 	}
 
@@ -3922,11 +4000,18 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
 }
 
 int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 			  struct netlink_ext_ack *extack,
 			  struct nlattr **attrs,
 			  struct cfg80211_chan_def *chandef)
 {
 	return _nl80211_parse_chandef(rdev, extack, attrs, false, chandef);
+=======
+			  struct genl_info *info,
+			  struct cfg80211_chan_def *chandef)
+{
+	return _nl80211_parse_chandef(rdev, info, false, chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
@@ -3953,7 +4038,11 @@ static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
 		link_id = 0;
 	}
 
+<<<<<<< HEAD
 	result = _nl80211_parse_chandef(rdev, info->extack, info->attrs,
+=======
+	result = _nl80211_parse_chandef(rdev, info,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					iftype == NL80211_IFTYPE_MONITOR,
 					&chandef);
 	if (result)
@@ -5071,8 +5160,11 @@ static int nl80211_del_interface(struct sk_buff *skb, struct genl_info *info)
 	else
 		dev_close(wdev->netdev);
 
+<<<<<<< HEAD
 	cfg80211_close_dependents(rdev, wdev);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	mutex_lock(&rdev->wiphy.mtx);
 
 	return cfg80211_remove_virtual_intf(rdev, wdev);
@@ -5172,7 +5264,11 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	int err;
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
+=======
+	struct net_device *dev = info->user_ptr[1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u8 key_idx = 0;
 	const u8 *mac_addr = NULL;
 	bool pairwise;
@@ -5183,6 +5279,10 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
 	struct sk_buff *msg;
 	bool bigtk_support = false;
 	int link_id = nl80211_link_id_or_invalid(info->attrs);
+<<<<<<< HEAD
+=======
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (wiphy_ext_feature_isset(&rdev->wiphy,
 				    NL80211_EXT_FEATURE_BEACON_PROTECTION))
@@ -5234,10 +5334,14 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
 	cookie.msg = msg;
 	cookie.idx = key_idx;
 
+<<<<<<< HEAD
 	if ((wdev->netdev &&
 	     nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex)) ||
 	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
 			      NL80211_ATTR_PAD) ||
+=======
+	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    nla_put_u8(msg, NL80211_ATTR_KEY_IDX, key_idx))
 		goto nla_put_failure;
 	if (mac_addr &&
@@ -5248,7 +5352,11 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
 	if (err)
 		goto free_msg;
 
+<<<<<<< HEAD
 	err = rdev_get_key(rdev, wdev, link_id, key_idx, pairwise, mac_addr,
+=======
+	err = rdev_get_key(rdev, dev, link_id, key_idx, pairwise, mac_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			   &cookie, get_key_callback);
 
 	if (err)
@@ -5272,8 +5380,14 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	struct key_parse key;
 	int err;
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	int link_id = nl80211_link_id_or_invalid(info->attrs);
+=======
+	struct net_device *dev = info->user_ptr[1];
+	int link_id = nl80211_link_id_or_invalid(info->attrs);
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = nl80211_parse_key(info, &key);
 	if (err)
@@ -5293,9 +5407,12 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 		if (!rdev->ops->set_default_key)
 			return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 		if (!wdev->netdev)
 			return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = nl80211_key_allowed(wdev);
 		if (err)
 			return err;
@@ -5304,7 +5421,11 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		err = rdev_set_default_key(rdev, wdev->netdev, link_id, key.idx,
+=======
+		err = rdev_set_default_key(rdev, dev, link_id, key.idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					   key.def_uni, key.def_multi);
 
 		if (err)
@@ -5329,7 +5450,11 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		err = rdev_set_default_mgmt_key(rdev, wdev, link_id, key.idx);
+=======
+		err = rdev_set_default_mgmt_key(rdev, dev, link_id, key.idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 
@@ -5352,8 +5477,12 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		return rdev_set_default_beacon_key(rdev, wdev, link_id,
 						   key.idx);
+=======
+		return rdev_set_default_beacon_key(rdev, dev, link_id, key.idx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else if (key.p.mode == NL80211_KEY_SET_TX &&
 		   wiphy_ext_feature_isset(&rdev->wiphy,
 					   NL80211_EXT_FEATURE_EXT_KEY_ID)) {
@@ -5369,7 +5498,11 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
 		if (err)
 			return err;
 
+<<<<<<< HEAD
 		return rdev_add_key(rdev, wdev, link_id, key.idx,
+=======
+		return rdev_add_key(rdev, dev, link_id, key.idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				    NL80211_KEYTYPE_PAIRWISE,
 				    mac_addr, &key.p);
 	}
@@ -5381,10 +5514,18 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	int err;
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	struct key_parse key;
 	const u8 *mac_addr = NULL;
 	int link_id = nl80211_link_id_or_invalid(info->attrs);
+=======
+	struct net_device *dev = info->user_ptr[1];
+	struct key_parse key;
+	const u8 *mac_addr = NULL;
+	int link_id = nl80211_link_id_or_invalid(info->attrs);
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = nl80211_parse_key(info, &key);
 	if (err)
@@ -5435,7 +5576,11 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
 				key.type == NL80211_KEYTYPE_PAIRWISE);
 
 	if (!err) {
+<<<<<<< HEAD
 		err = rdev_add_key(rdev, wdev, link_id, key.idx,
+=======
+		err = rdev_add_key(rdev, dev, link_id, key.idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   key.type == NL80211_KEYTYPE_PAIRWISE,
 				    mac_addr, &key.p);
 		if (err)
@@ -5449,10 +5594,18 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	int err;
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	u8 *mac_addr = NULL;
 	struct key_parse key;
 	int link_id = nl80211_link_id_or_invalid(info->attrs);
+=======
+	struct net_device *dev = info->user_ptr[1];
+	u8 *mac_addr = NULL;
+	struct key_parse key;
+	int link_id = nl80211_link_id_or_invalid(info->attrs);
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	err = nl80211_parse_key(info, &key);
 	if (err)
@@ -5491,7 +5644,11 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
 				key.type == NL80211_KEYTYPE_PAIRWISE);
 
 	if (!err)
+<<<<<<< HEAD
 		err = rdev_del_key(rdev, wdev, link_id, key.idx,
+=======
+		err = rdev_del_key(rdev, dev, link_id, key.idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				   key.type == NL80211_KEYTYPE_PAIRWISE,
 				   mac_addr);
 
@@ -6037,7 +6194,11 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
 	 */
 	BUILD_BUG_ON(NL80211_MAX_SUPP_HT_RATES > IEEE80211_HT_MCS_MASK_LEN * 8);
 	nla_for_each_nested(tx_rates, attrs[attr], rem) {
+<<<<<<< HEAD
 		int band = nla_type(tx_rates);
+=======
+		enum nl80211_band band = nla_type(tx_rates);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		int err;
 
 		if (band < 0 || band >= NUM_NL80211_BANDS)
@@ -6711,6 +6872,19 @@ static int nl80211_calculate_ap_params(struct cfg80211_ap_settings *params)
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	cap = cfg80211_find_ext_elem(WLAN_EID_EXT_UHR_OPER, ies, ies_len);
+	if (cap) {
+		if (!cap->datalen)
+			return -EINVAL;
+		params->uhr_oper = (void *)(cap->data + 1);
+		if (!ieee80211_uhr_oper_size_ok((const u8 *)params->uhr_oper,
+						cap->datalen - 1, true))
+			return -EINVAL;
+	}
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -6756,10 +6930,13 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
 					     NL80211_EXT_FEATURE_EPPKE) &&
 		    auth_type == NL80211_AUTHTYPE_EPPKE)
 			return false;
+<<<<<<< HEAD
 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
 					     NL80211_EXT_FEATURE_IEEE8021X_AUTH) &&
 		    auth_type == NL80211_AUTHTYPE_IEEE8021X)
 			return false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	case NL80211_CMD_CONNECT:
 		if (!(rdev->wiphy.features & NL80211_FEATURE_SAE) &&
@@ -6781,10 +6958,13 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
 					     NL80211_EXT_FEATURE_EPPKE) &&
 		    auth_type == NL80211_AUTHTYPE_EPPKE)
 			return false;
+<<<<<<< HEAD
 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
 					     NL80211_EXT_FEATURE_IEEE8021X_AUTH) &&
 		    auth_type == NL80211_AUTHTYPE_IEEE8021X)
 			return false;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return true;
 	case NL80211_CMD_START_AP:
 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
@@ -7034,8 +7214,12 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
 	}
 
 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+<<<<<<< HEAD
 		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 					    &params->chandef);
+=======
+		err = nl80211_parse_chandef(rdev, info, &params->chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			goto out;
 	} else if (wdev->valid_links) {
@@ -7152,9 +7336,12 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	if (info->attrs[NL80211_ATTR_UHR_OPERATION])
 		params->uhr_oper = nla_data(info->attrs[NL80211_ATTR_UHR_OPERATION]);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = nl80211_validate_ap_phy_operation(params);
 	if (err)
 		goto out;
@@ -7317,6 +7504,7 @@ static int parse_station_flags(struct genl_info *info,
 		if ((params->sta_flags_mask |
 		     params->sta_flags_set) & BIT(__NL80211_STA_FLAG_INVALID))
 			return -EINVAL;
+<<<<<<< HEAD
 
 		if ((iftype == NL80211_IFTYPE_NAN ||
 		     iftype == NL80211_IFTYPE_NAN_DATA) &&
@@ -7337,6 +7525,8 @@ static int parse_station_flags(struct genl_info *info,
 			params->sta_flags_set |= BIT(NL80211_STA_FLAG_WME);
 		}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 	}
 
@@ -7744,7 +7934,11 @@ nla_put_failure:
 static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
 				u32 seq, int flags,
 				struct cfg80211_registered_device *rdev,
+<<<<<<< HEAD
 				struct wireless_dev *wdev,
+=======
+				struct net_device *dev,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				const u8 *mac_addr, struct station_info *sinfo,
 				bool link_stats)
 {
@@ -7760,10 +7954,14 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
 		return -1;
 	}
 
+<<<<<<< HEAD
 	if ((wdev->netdev &&
 	     nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex)) ||
 	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
 			      NL80211_ATTR_PAD) ||
+=======
+	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr) ||
 	    nla_put_u32(msg, NL80211_ATTR_GENERATION, sinfo->generation))
 		goto nla_put_failure;
@@ -8219,7 +8417,11 @@ static int nl80211_dump_station(struct sk_buff *skb,
 	/* nl80211_prepare_wdev_dump acquired it in the successful case */
 	__acquire(&rdev->wiphy.mtx);
 
+<<<<<<< HEAD
 	if (!wdev->netdev && wdev->iftype != NL80211_IFTYPE_NAN) {
+=======
+	if (!wdev->netdev) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		err = -EINVAL;
 		goto out_err;
 	}
@@ -8242,7 +8444,11 @@ static int nl80211_dump_station(struct sk_buff *skb,
 			sinfo_alloc = true;
 		}
 
+<<<<<<< HEAD
 		err = rdev_dump_station(rdev, wdev, sta_idx,
+=======
+		err = rdev_dump_station(rdev, wdev->netdev, sta_idx,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					mac_addr, &sinfo);
 		if (err == -ENOENT)
 			break;
@@ -8260,7 +8466,11 @@ static int nl80211_dump_station(struct sk_buff *skb,
 		if (nl80211_send_station(skb, NL80211_CMD_NEW_STATION,
 				NETLINK_CB(cb->skb).portid,
 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
+<<<<<<< HEAD
 				rdev, wdev, mac_addr,
+=======
+				rdev, wdev->netdev, mac_addr,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 				&sinfo, false) < 0)
 			goto out;
 
@@ -8281,7 +8491,11 @@ static int nl80211_dump_station(struct sk_buff *skb,
 static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
+=======
+	struct net_device *dev = info->user_ptr[1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct station_info sinfo;
 	struct sk_buff *msg;
 	u8 *mac_addr = NULL;
@@ -8289,9 +8503,12 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
 
 	memset(&sinfo, 0, sizeof(sinfo));
 
+<<<<<<< HEAD
 	if (!wdev->netdev)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!info->attrs[NL80211_ATTR_MAC])
 		return -EINVAL;
 
@@ -8308,7 +8525,11 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
 		}
 	}
 
+<<<<<<< HEAD
 	err = rdev_get_station(rdev, wdev, mac_addr, &sinfo);
+=======
+	err = rdev_get_station(rdev, dev, mac_addr, &sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		cfg80211_sinfo_release_content(&sinfo);
 		return err;
@@ -8325,7 +8546,11 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
 
 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION,
 				 info->snd_portid, info->snd_seq, 0,
+<<<<<<< HEAD
 				 rdev, wdev, mac_addr, &sinfo, false) < 0) {
+=======
+				 rdev, dev, mac_addr, &sinfo, false) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nlmsg_free(msg);
 		return -ENOBUFS;
 	}
@@ -8406,12 +8631,19 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
 			return -EINVAL;
 		if (params->link_sta_params.supported_rates)
 			return -EINVAL;
+<<<<<<< HEAD
 		if (statype != CFG80211_STA_NAN_MGMT &&
 		    (params->link_sta_params.ht_capa ||
 		     params->link_sta_params.vht_capa ||
 		     params->link_sta_params.he_capa))
 			return -EINVAL;
 		if (params->ext_capab || params->link_sta_params.eht_capa ||
+=======
+		if (params->ext_capab || params->link_sta_params.ht_capa ||
+		    params->link_sta_params.vht_capa ||
+		    params->link_sta_params.he_capa ||
+		    params->link_sta_params.eht_capa ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    params->link_sta_params.uhr_capa)
 			return -EINVAL;
 		if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
@@ -8483,6 +8715,7 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
 		    params->plink_action != NL80211_PLINK_ACTION_BLOCK)
 			return -EINVAL;
 		break;
+<<<<<<< HEAD
 	case CFG80211_STA_NAN_MGMT:
 		if (params->sta_flags_mask &
 		    ~(BIT(NL80211_STA_FLAG_AUTHORIZED) |
@@ -8496,6 +8729,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
 		      BIT(NL80211_STA_FLAG_WME)))
 			return -EINVAL;
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/*
@@ -8702,18 +8937,25 @@ static int nl80211_parse_sta_txpower_setting(struct genl_info *info,
 static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	struct net_device *dev = wdev->netdev;
+=======
+	struct net_device *dev = info->user_ptr[1];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct station_parameters params;
 	u8 *mac_addr;
 	int err;
 
 	memset(&params, 0, sizeof(params));
 
+<<<<<<< HEAD
 	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN &&
 	    wdev->iftype != NL80211_IFTYPE_NAN_DATA)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rdev->ops->change_station)
 		return -EOPNOTSUPP;
 
@@ -8786,7 +9028,11 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
 			nla_len(info->attrs[NL80211_ATTR_STA_EXT_CAPABILITY]);
 	}
 
+<<<<<<< HEAD
 	if (parse_station_flags(info, wdev->iftype, &params))
+=======
+	if (parse_station_flags(info, dev->ieee80211_ptr->iftype, &params))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (info->attrs[NL80211_ATTR_STA_PLINK_ACTION])
@@ -8846,7 +9092,11 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
 	if (IS_ERR(params.vlan))
 		return PTR_ERR(params.vlan);
 
+<<<<<<< HEAD
 	switch (wdev->iftype) {
+=======
+	switch (dev->ieee80211_ptr->iftype) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NL80211_IFTYPE_AP:
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_P2P_GO:
@@ -8854,8 +9104,11 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
 	case NL80211_IFTYPE_STATION:
 	case NL80211_IFTYPE_ADHOC:
 	case NL80211_IFTYPE_MESH_POINT:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN:
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		break;
 	default:
 		err = -EOPNOTSUPP;
@@ -8863,7 +9116,11 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
 	}
 
 	/* driver will call cfg80211_check_station_change() */
+<<<<<<< HEAD
 	err = rdev_change_station(rdev, wdev, mac_addr, &params);
+=======
+	err = rdev_change_station(rdev, dev, mac_addr, &params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
  out_put_vlan:
 	dev_put(params.vlan);
@@ -8875,8 +9132,13 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	int err;
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	struct net_device *dev = wdev->netdev;
+=======
+	struct net_device *dev = info->user_ptr[1];
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct station_parameters params;
 	u8 *mac_addr = NULL;
 	u32 auth_assoc = BIT(NL80211_STA_FLAG_AUTHENTICATED) |
@@ -8884,15 +9146,19 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 
 	memset(&params, 0, sizeof(params));
 
+<<<<<<< HEAD
 	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!rdev->ops->add_station)
 		return -EOPNOTSUPP;
 
 	if (!info->attrs[NL80211_ATTR_MAC])
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (wdev->iftype == NL80211_IFTYPE_NAN ||
 	    wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
 		if (info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES])
@@ -8918,6 +9184,17 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 		    !info->attrs[NL80211_ATTR_PEER_AID])
 			return -EINVAL;
 	}
+=======
+	if (!info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
+		return -EINVAL;
+
+	if (!info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES])
+		return -EINVAL;
+
+	if (!info->attrs[NL80211_ATTR_STA_AID] &&
+	    !info->attrs[NL80211_ATTR_PEER_AID])
+		return -EINVAL;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	params.link_sta_params.link_id =
 		nl80211_link_id_or_invalid(info->attrs);
@@ -8933,6 +9210,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 		mac_addr = nla_data(info->attrs[NL80211_ATTR_MAC]);
 	}
 
+<<<<<<< HEAD
 	if (info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]) {
 		params.link_sta_params.supported_rates =
 			nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
@@ -8943,6 +9221,14 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 	if (info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
 		params.listen_interval =
 			nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
+=======
+	params.link_sta_params.supported_rates =
+		nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
+	params.link_sta_params.supported_rates_len =
+		nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
+	params.listen_interval =
+		nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (info->attrs[NL80211_ATTR_VLAN_ID])
 		params.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
@@ -8956,12 +9242,20 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 		 * and is NOT supported for AP interface
 		 */
 		params.support_p2p_ps =
+<<<<<<< HEAD
 			wdev->iftype == NL80211_IFTYPE_P2P_GO;
+=======
+			dev->ieee80211_ptr->iftype == NL80211_IFTYPE_P2P_GO;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (info->attrs[NL80211_ATTR_PEER_AID])
 		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_PEER_AID]);
+<<<<<<< HEAD
 	else if (info->attrs[NL80211_ATTR_STA_AID])
+=======
+	else
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_STA_AID]);
 
 	if (info->attrs[NL80211_ATTR_STA_CAPABILITY]) {
@@ -9062,7 +9356,11 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (parse_station_flags(info, wdev->iftype, &params))
+=======
+	if (parse_station_flags(info, dev->ieee80211_ptr->iftype, &params))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/* HT/VHT requires QoS, but if we don't have that just ignore HT/VHT
@@ -9082,6 +9380,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (wdev->iftype == NL80211_IFTYPE_NAN ||
 	    wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
 		if (params.sta_modify_mask & STATION_PARAM_APPLY_UAPSD)
@@ -9092,6 +9391,8 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Ensure that HT/VHT capabilities are not set for 6 GHz HE STA */
 	if (params.link_sta_params.he_6ghz_capa &&
 	    (params.link_sta_params.ht_capa || params.link_sta_params.vht_capa))
@@ -9100,7 +9401,11 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 	/* When you run into this, adjust the code below for the new flag */
 	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 8);
 
+<<<<<<< HEAD
 	switch (wdev->iftype) {
+=======
+	switch (dev->ieee80211_ptr->iftype) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case NL80211_IFTYPE_AP:
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_P2P_GO:
@@ -9184,11 +9489,14 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 		 */
 		params.sta_flags_mask &= ~BIT(NL80211_STA_FLAG_AUTHORIZED);
 		break;
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN:
 		break;
 	case NL80211_IFTYPE_NAN_DATA:
 		params.nmi_mac = nla_data(info->attrs[NL80211_ATTR_NAN_NMI_MAC]);
 		break;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -9214,7 +9522,11 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
 	params.epp_peer =
 		nla_get_flag(info->attrs[NL80211_ATTR_EPP_PEER]);
 
+<<<<<<< HEAD
 	err = rdev_add_station(rdev, wdev, mac_addr, &params);
+=======
+	err = rdev_add_station(rdev, dev, mac_addr, &params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 out:
 	dev_put(params.vlan);
 	return err;
@@ -9223,16 +9535,24 @@ out:
 static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
 {
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+<<<<<<< HEAD
 	struct wireless_dev *wdev = info->user_ptr[1];
 	struct net_device *dev = wdev->netdev;
+=======
+	struct net_device *dev = info->user_ptr[1];
+	struct wireless_dev *wdev = dev->ieee80211_ptr;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct station_del_parameters params;
 	int link_id = nl80211_link_id_or_invalid(info->attrs);
 
 	memset(&params, 0, sizeof(params));
 
+<<<<<<< HEAD
 	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN)
 		return -EINVAL;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (info->attrs[NL80211_ATTR_MAC])
 		params.mac = nla_data(info->attrs[NL80211_ATTR_MAC]);
 
@@ -9241,8 +9561,11 @@ static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
 	case NL80211_IFTYPE_AP_VLAN:
 	case NL80211_IFTYPE_MESH_POINT:
 	case NL80211_IFTYPE_P2P_GO:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN:
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* always accept these */
 		break;
 	case NL80211_IFTYPE_ADHOC:
@@ -9290,7 +9613,11 @@ static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
 
 	params.link_id = link_id;
 
+<<<<<<< HEAD
 	return rdev_del_station(rdev, wdev, &params);
+=======
+	return rdev_del_station(rdev, dev, &params);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int nl80211_send_mpath(struct sk_buff *msg, u32 portid, u32 seq,
@@ -10974,7 +11301,11 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
 		nla_for_each_nested(attr,
 				    info->attrs[NL80211_ATTR_SCAN_SUPP_RATES],
 				    tmp) {
+<<<<<<< HEAD
 			int band = nla_type(attr);
+=======
+			enum nl80211_band band = nla_type(attr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 			if (band < 0 || band >= NUM_NL80211_BANDS) {
 				err = -EINVAL;
@@ -11605,7 +11936,11 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
 	if (dfs_region == NL80211_DFS_UNSET)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -11671,7 +12006,10 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
 	wdev->links[link_id].cac_started = true;
 	wdev->links[link_id].cac_start_time = jiffies;
 	wdev->links[link_id].cac_time_ms = cac_time_ms;
+<<<<<<< HEAD
 	cfg80211_set_cac_state(wiphy, &chandef, true);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return 0;
 }
@@ -11694,7 +12032,11 @@ static int nl80211_notify_radar_detection(struct sk_buff *skb,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err) {
 		GENL_SET_ERR_MSG(info, "Unable to extract chandef info");
 		return err;
@@ -11879,8 +12221,12 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
 		goto free;
 
 skip_beacons:
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 				    &params.chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &params.chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		goto free;
 
@@ -12395,8 +12741,12 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
 	     auth_type == NL80211_AUTHTYPE_FILS_SK ||
 	     auth_type == NL80211_AUTHTYPE_FILS_SK_PFS ||
 	     auth_type == NL80211_AUTHTYPE_FILS_PK ||
+<<<<<<< HEAD
 	     auth_type == NL80211_AUTHTYPE_EPPKE ||
 	     auth_type == NL80211_AUTHTYPE_IEEE8021X) &&
+=======
+	     auth_type == NL80211_AUTHTYPE_EPPKE) &&
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	    !info->attrs[NL80211_ATTR_AUTH_DATA])
 		return -EINVAL;
 
@@ -12405,8 +12755,12 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
 		    auth_type != NL80211_AUTHTYPE_FILS_SK &&
 		    auth_type != NL80211_AUTHTYPE_FILS_SK_PFS &&
 		    auth_type != NL80211_AUTHTYPE_FILS_PK &&
+<<<<<<< HEAD
 		    auth_type != NL80211_AUTHTYPE_EPPKE &&
 		    auth_type != NL80211_AUTHTYPE_IEEE8021X)
+=======
+		    auth_type != NL80211_AUTHTYPE_EPPKE)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			return -EINVAL;
 		req.auth_data = nla_data(info->attrs[NL80211_ATTR_AUTH_DATA]);
 		req.auth_data_len = nla_len(info->attrs[NL80211_ATTR_AUTH_DATA]);
@@ -13103,8 +13457,12 @@ static int nl80211_join_ibss(struct sk_buff *skb, struct genl_info *info)
 		ibss.ie_len = nla_len(info->attrs[NL80211_ATTR_IE]);
 	}
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 				    &ibss.chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &ibss.chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -13879,6 +14237,7 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
 	if (IS_ERR(net))
 		return PTR_ERR(net);
 
+<<<<<<< HEAD
 	/*
 	 * The caller already has CAP_NET_ADMIN over the source netns
 	 * (enforced by GENL_UNS_ADMIN_PERM on the genl op). Mirror the
@@ -13892,6 +14251,8 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
 		return -EPERM;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	err = 0;
 
 	/* check if anything to do */
@@ -14115,7 +14476,11 @@ static int nl80211_remain_on_channel(struct sk_buff *skb,
 	    duration > rdev->wiphy.max_remain_on_channel_duration)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -14232,7 +14597,10 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
 	case NL80211_IFTYPE_P2P_DEVICE:
 		break;
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!wiphy_ext_feature_isset(wdev->wiphy,
 					     NL80211_EXT_FEATURE_SECURE_NAN) &&
 		    !(wdev->wiphy->nan_capa.flags &
@@ -14296,7 +14664,10 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
 	case NL80211_IFTYPE_P2P_GO:
 		break;
 	case NL80211_IFTYPE_NAN:
+<<<<<<< HEAD
 	case NL80211_IFTYPE_NAN_DATA:
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!wiphy_ext_feature_isset(wdev->wiphy,
 					     NL80211_EXT_FEATURE_SECURE_NAN) &&
 		    !(wdev->wiphy->nan_capa.flags &
@@ -14333,8 +14704,12 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
 	 */
 	chandef.chan = NULL;
 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+<<<<<<< HEAD
 		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 					    &chandef);
+=======
+		err = nl80211_parse_chandef(rdev, info, &chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	}
@@ -14566,7 +14941,11 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
 
 		mac_addr = wdev->links[0].client.current_bss->pub.bssid;
 
+<<<<<<< HEAD
 		err = rdev_get_station(rdev, wdev, mac_addr, &sinfo);
+=======
+		err = rdev_get_station(rdev, dev, mac_addr, &sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 
@@ -14736,8 +15115,12 @@ static int nl80211_join_ocb(struct sk_buff *skb, struct genl_info *info)
 	struct ocb_setup setup = {};
 	int err;
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 				    &setup.chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &setup.chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -14812,8 +15195,12 @@ static int nl80211_join_mesh(struct sk_buff *skb, struct genl_info *info)
 		cfg.auto_open_plinks = false;
 
 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+<<<<<<< HEAD
 		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
 					    &setup.chandef);
+=======
+		err = nl80211_parse_chandef(rdev, info, &setup.chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (err)
 			return err;
 	} else {
@@ -15804,6 +16191,7 @@ static int nl80211_register_unexpected_frame(struct sk_buff *skb,
 	struct wireless_dev *wdev = dev->ieee80211_ptr;
 
 	if (wdev->iftype != NL80211_IFTYPE_AP &&
+<<<<<<< HEAD
 	    wdev->iftype != NL80211_IFTYPE_P2P_GO &&
 	    wdev->iftype != NL80211_IFTYPE_NAN_DATA)
 		return -EINVAL;
@@ -15812,6 +16200,15 @@ static int nl80211_register_unexpected_frame(struct sk_buff *skb,
 		return -EBUSY;
 
 	wdev->unexpected_nlportid = info->snd_portid;
+=======
+	    wdev->iftype != NL80211_IFTYPE_P2P_GO)
+		return -EINVAL;
+
+	if (wdev->ap_unexpected_nlportid)
+		return -EBUSY;
+
+	wdev->ap_unexpected_nlportid = info->snd_portid;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 }
 
@@ -16067,6 +16464,7 @@ static int nl80211_parse_nan_conf(struct wiphy *wiphy,
 		return err;
 
 	changed |= CFG80211_NAN_CONF_CHANGED_CONFIG;
+<<<<<<< HEAD
 	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start) {
 		ether_addr_copy(conf->cluster_id,
 				nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]));
@@ -16077,6 +16475,11 @@ static int nl80211_parse_nan_conf(struct wiphy *wiphy,
 		conf->cluster_id[3] = 0x01;
 		get_random_bytes(&conf->cluster_id[4], 2);
 	}
+=======
+	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start)
+		conf->cluster_id =
+			nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (attrs[NL80211_NAN_CONF_EXTRA_ATTRS]) {
 		conf->extra_nan_attrs =
@@ -16207,10 +16610,13 @@ static int nl80211_stop_nan(struct sk_buff *skb, struct genl_info *info)
 	if (wdev->iftype != NL80211_IFTYPE_NAN)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	cfg80211_close_dependents(rdev, wdev);
 
 	guard(wiphy)(&rdev->wiphy);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	cfg80211_stop_nan(rdev, wdev);
 
 	return 0;
@@ -16710,6 +17116,7 @@ nla_put_failure:
 }
 EXPORT_SYMBOL(cfg80211_nan_func_terminated);
 
+<<<<<<< HEAD
 void cfg80211_nan_sched_update_done(struct wireless_dev *wdev, bool success,
 				    gfp_t gfp)
 {
@@ -17186,6 +17593,8 @@ static int nl80211_nan_set_local_sched(struct sk_buff *skb,
 	return cfg80211_nan_set_local_schedule(rdev, wdev, sched);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int nl80211_get_protocol_features(struct sk_buff *skb,
 					 struct genl_info *info)
 {
@@ -17776,7 +18185,11 @@ static int nl80211_tdls_channel_switch(struct sk_buff *skb,
 	    !info->attrs[NL80211_ATTR_OPER_CLASS])
 		return -EINVAL;
 
+<<<<<<< HEAD
 	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+=======
+	err = nl80211_parse_chandef(rdev, info, &chandef);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -18155,7 +18568,11 @@ static int nl80211_probe_mesh_link(struct sk_buff *skb, struct genl_info *info)
 	    !ether_addr_equal(buf + ETH_ALEN, dev->dev_addr))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	err = rdev_get_station(rdev, wdev, dest, &sinfo);
+=======
+	err = rdev_get_station(rdev, dev, dest, &sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (err)
 		return err;
 
@@ -18850,9 +19267,12 @@ nl80211_epcs_cfg(struct sk_buff *skb, struct genl_info *info)
 		 NL80211_FLAG_CLEAR_SKB)		\
 	SELECTOR(__sel, WDEV_UP,			\
 		 NL80211_FLAG_NEED_WDEV_UP)		\
+<<<<<<< HEAD
 	SELECTOR(__sel, WDEV_UP_CLEAR,			\
 		 NL80211_FLAG_NEED_WDEV_UP |		\
 		 NL80211_FLAG_CLEAR_SKB)		\
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SELECTOR(__sel, WDEV_UP_LINK,			\
 		 NL80211_FLAG_NEED_WDEV_UP |		\
 		 NL80211_FLAG_MLO_VALID_LINK_ID)	\
@@ -18861,11 +19281,15 @@ nl80211_epcs_cfg(struct sk_buff *skb, struct genl_info *info)
 		 NL80211_FLAG_NEED_RTNL)		\
 	SELECTOR(__sel, WIPHY_CLEAR,			\
 		 NL80211_FLAG_NEED_WIPHY |		\
+<<<<<<< HEAD
 		 NL80211_FLAG_CLEAR_SKB)		\
 	SELECTOR(__sel, WDEV_UP_RTNL_NOMTX,		\
 		 NL80211_FLAG_NEED_WDEV_UP |		\
 		 NL80211_FLAG_NO_WIPHY_MTX |		\
 		 NL80211_FLAG_NEED_RTNL)
+=======
+		 NL80211_FLAG_CLEAR_SKB)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum nl80211_internal_flags_selector {
 #define SELECTOR(_, name, value)	NL80211_IFL_SEL_##name,
@@ -19189,7 +19613,11 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_get_key,
 		.flags = GENL_UNS_ADMIN_PERM,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_SET_KEY,
@@ -19197,7 +19625,11 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.doit = nl80211_set_key,
 		.flags = GENL_UNS_ADMIN_PERM,
 		/* cannot use NL80211_FLAG_MLO_VALID_LINK_ID, depends on key */
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP |
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 NL80211_FLAG_CLEAR_SKB),
 	},
 	{
@@ -19205,7 +19637,11 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_new_key,
 		.flags = GENL_UNS_ADMIN_PERM,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP |
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 NL80211_FLAG_CLEAR_SKB),
 	},
 	{
@@ -19213,7 +19649,11 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_del_key,
 		.flags = GENL_UNS_ADMIN_PERM,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_SET_BEACON,
@@ -19244,21 +19684,33 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_get_station,
 		.dumpit = nl80211_dump_station,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_SET_STATION,
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_set_station,
 		.flags = GENL_UNS_ADMIN_PERM,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_NEW_STATION,
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_new_station,
 		.flags = GENL_UNS_ADMIN_PERM,
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_DEL_STATION,
@@ -19269,7 +19721,11 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		 * whether MAC address is passed or not. If MAC address is
 		 * passed, then even during MLO, link ID is not required.
 		 */
+<<<<<<< HEAD
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
+=======
+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	},
 	{
 		.cmd = NL80211_CMD_GET_MPATH,
@@ -19702,7 +20158,10 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.doit = nl80211_stop_nan,
 		.flags = GENL_ADMIN_PERM,
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP |
+<<<<<<< HEAD
 					 NL80211_FLAG_NO_WIPHY_MTX |
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 					 NL80211_FLAG_NEED_RTNL),
 	},
 	{
@@ -19853,7 +20312,10 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.cmd = NL80211_CMD_SET_PMK,
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_set_pmk,
+<<<<<<< HEAD
 		.flags = GENL_UNS_ADMIN_PERM,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
 					 NL80211_FLAG_CLEAR_SKB),
 	},
@@ -19861,7 +20323,10 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.cmd = NL80211_CMD_DEL_PMK,
 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
 		.doit = nl80211_del_pmk,
+<<<<<<< HEAD
 		.flags = GENL_UNS_ADMIN_PERM,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
 	},
 	{
@@ -19999,6 +20464,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.flags = GENL_UNS_ADMIN_PERM,
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
 	},
+<<<<<<< HEAD
 	{
 		.cmd = NL80211_CMD_NAN_SET_LOCAL_SCHED,
 		.doit = nl80211_nan_set_local_sched,
@@ -20011,6 +20477,8 @@ static const struct genl_small_ops nl80211_small_ops[] = {
 		.flags = GENL_ADMIN_PERM,
 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 static struct genl_family nl80211_fam __ro_after_init = {
@@ -21215,6 +21683,7 @@ void cfg80211_tx_mgmt_expired(struct wireless_dev *wdev, u64 cookie,
 }
 EXPORT_SYMBOL(cfg80211_tx_mgmt_expired);
 
+<<<<<<< HEAD
 void cfg80211_new_sta(struct wireless_dev *wdev, const u8 *mac_addr,
 		      struct station_info *sinfo, gfp_t gfp)
 {
@@ -21223,13 +21692,27 @@ void cfg80211_new_sta(struct wireless_dev *wdev, const u8 *mac_addr,
 	struct sk_buff *msg;
 
 	trace_cfg80211_new_sta(wdev, mac_addr, sinfo);
+=======
+void cfg80211_new_sta(struct net_device *dev, const u8 *mac_addr,
+		      struct station_info *sinfo, gfp_t gfp)
+{
+	struct wiphy *wiphy = dev->ieee80211_ptr->wiphy;
+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+	struct sk_buff *msg;
+
+	trace_cfg80211_new_sta(dev, mac_addr, sinfo);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
 	if (!msg)
 		return;
 
 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION, 0, 0, 0,
+<<<<<<< HEAD
 				 rdev, wdev, mac_addr, sinfo, false) < 0) {
+=======
+				 rdev, dev, mac_addr, sinfo, false) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nlmsg_free(msg);
 		return;
 	}
@@ -21239,10 +21722,17 @@ void cfg80211_new_sta(struct wireless_dev *wdev, const u8 *mac_addr,
 }
 EXPORT_SYMBOL(cfg80211_new_sta);
 
+<<<<<<< HEAD
 void cfg80211_del_sta_sinfo(struct wireless_dev *wdev, const u8 *mac_addr,
 			    struct station_info *sinfo, gfp_t gfp)
 {
 	struct wiphy *wiphy = wdev->wiphy;
+=======
+void cfg80211_del_sta_sinfo(struct net_device *dev, const u8 *mac_addr,
+			    struct station_info *sinfo, gfp_t gfp)
+{
+	struct wiphy *wiphy = dev->ieee80211_ptr->wiphy;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 	struct sk_buff *msg;
 	struct station_info empty_sinfo = {};
@@ -21250,7 +21740,11 @@ void cfg80211_del_sta_sinfo(struct wireless_dev *wdev, const u8 *mac_addr,
 	if (!sinfo)
 		sinfo = &empty_sinfo;
 
+<<<<<<< HEAD
 	trace_cfg80211_del_sta(wdev, mac_addr);
+=======
+	trace_cfg80211_del_sta(dev, mac_addr);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
 	if (!msg) {
@@ -21259,7 +21753,11 @@ void cfg80211_del_sta_sinfo(struct wireless_dev *wdev, const u8 *mac_addr,
 	}
 
 	if (nl80211_send_station(msg, NL80211_CMD_DEL_STATION, 0, 0, 0,
+<<<<<<< HEAD
 				 rdev, wdev, mac_addr, sinfo, false) < 0) {
+=======
+				 rdev, dev, mac_addr, sinfo, false) < 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		nlmsg_free(msg);
 		return;
 	}
@@ -21311,7 +21809,11 @@ static bool __nl80211_unexpected_frame(struct net_device *dev, u8 cmd,
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
 	struct sk_buff *msg;
 	void *hdr;
+<<<<<<< HEAD
 	u32 nlportid = READ_ONCE(wdev->unexpected_nlportid);
+=======
+	u32 nlportid = READ_ONCE(wdev->ap_unexpected_nlportid);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!nlportid)
 		return false;
@@ -21351,8 +21853,12 @@ bool cfg80211_rx_spurious_frame(struct net_device *dev, const u8 *addr,
 	trace_cfg80211_rx_spurious_frame(dev, addr, link_id);
 
 	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_AP &&
+<<<<<<< HEAD
 		    wdev->iftype != NL80211_IFTYPE_P2P_GO &&
 		    wdev->iftype != NL80211_IFTYPE_NAN_DATA)) {
+=======
+		    wdev->iftype != NL80211_IFTYPE_P2P_GO)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		trace_cfg80211_return_bool(false);
 		return false;
 	}
@@ -21972,6 +22478,7 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
 }
 EXPORT_SYMBOL(cfg80211_ch_switch_notify);
 
+<<<<<<< HEAD
 void cfg80211_incumbent_signal_notify(struct wiphy *wiphy,
 				      const struct cfg80211_chan_def *chandef,
 				      u32 signal_interference_bitmap,
@@ -22012,6 +22519,8 @@ nla_put_failure:
 }
 EXPORT_SYMBOL(cfg80211_incumbent_signal_notify);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void cfg80211_ch_switch_started_notify(struct net_device *dev,
 				       struct cfg80211_chan_def *chandef,
 				       unsigned int link_id, u8 count,
@@ -22114,6 +22623,7 @@ nl80211_radar_notify(struct cfg80211_registered_device *rdev,
 			goto nla_put_failure;
 	}
 
+<<<<<<< HEAD
 	if (rdev->background_radar_wdev &&
 	    cfg80211_chandef_identical(&rdev->background_radar_chandef,
 				       chandef)) {
@@ -22121,6 +22631,8 @@ nl80211_radar_notify(struct cfg80211_registered_device *rdev,
 			goto nla_put_failure;
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (nla_put_u32(msg, NL80211_ATTR_RADAR_EVENT, event))
 		goto nla_put_failure;
 
@@ -22922,6 +23434,7 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
 }
 EXPORT_SYMBOL(cfg80211_nan_cluster_joined);
 
+<<<<<<< HEAD
 void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
 			     const u8 *ulw, size_t ulw_len, gfp_t gfp)
 {
@@ -23013,6 +23526,8 @@ void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
 }
 EXPORT_SYMBOL(cfg80211_nan_channel_evac);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* initialisation/exit functions */
 
 int __init nl80211_init(void)

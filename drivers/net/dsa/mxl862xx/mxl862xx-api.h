@@ -3,7 +3,10 @@
 #ifndef __MXL862XX_API_H
 #define __MXL862XX_API_H
 
+<<<<<<< HEAD
 #include <linux/bits.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/if_ether.h>
 
 /**
@@ -36,6 +39,7 @@ struct mxl862xx_register_mod {
 } __packed;
 
 /**
+<<<<<<< HEAD
  * enum mxl862xx_mac_table_filter - Source/Destination MAC address filtering
  *
  * @MXL862XX_MAC_FILTER_NONE: no filter
@@ -198,6 +202,8 @@ struct mxl862xx_mac_table_query {
 } __packed;
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enum mxl862xx_mac_clear_type - MAC table clear type
  * @MXL862XX_MAC_CLEAR_PHY_PORT: clear dynamic entries based on port_id
  * @MXL862XX_MAC_CLEAR_DYNAMIC: clear all dynamic entries
@@ -302,6 +308,7 @@ enum mxl862xx_bridge_port_egress_meter {
 };
 
 /**
+<<<<<<< HEAD
  * struct mxl862xx_qos_meter_cfg - Rate meter configuration
  * @enable: Enable/disable meter
  * @meter_id: Meter ID (assigned by firmware on alloc)
@@ -336,6 +343,8 @@ struct mxl862xx_qos_meter_cfg {
 } __packed;
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enum mxl862xx_bridge_forward_mode - Bridge forwarding type of packet
  * @MXL862XX_BRIDGE_FORWARD_FLOOD: Packet is flooded to port members of
  *                                 ingress bridge port
@@ -653,7 +662,11 @@ struct mxl862xx_pmapper {
  */
 struct mxl862xx_bridge_port_config {
 	__le16 bridge_port_id;
+<<<<<<< HEAD
 	__le32 mask; /* enum mxl862xx_bridge_port_config_mask */
+=======
+	__le32 mask; /* enum mxl862xx_bridge_port_config_mask  */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__le16 bridge_id;
 	u8 ingress_extended_vlan_enable;
 	__le16 ingress_extended_vlan_block_id;
@@ -732,6 +745,7 @@ struct mxl862xx_cfg {
 } __packed;
 
 /**
+<<<<<<< HEAD
  * enum mxl862xx_extended_vlan_filter_type - Extended VLAN filter tag type
  * @MXL862XX_EXTENDEDVLAN_FILTER_TYPE_NORMAL: Normal tagged
  * @MXL862XX_EXTENDEDVLAN_FILTER_TYPE_NO_FILTER: No filter (wildcard)
@@ -1061,6 +1075,8 @@ struct mxl862xx_vlanfilter_config {
 } __packed;
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * enum mxl862xx_ss_sp_tag_mask - Special tag valid field indicator bits
  * @MXL862XX_SS_SP_TAG_MASK_RX: valid RX special tag mode
  * @MXL862XX_SS_SP_TAG_MASK_TX: valid TX special tag mode
@@ -1185,6 +1201,7 @@ struct mxl862xx_ctp_port_assignment {
 } __packed;
 
 /**
+<<<<<<< HEAD
  * enum mxl862xx_stp_port_state - Spanning Tree Protocol port states
  * @MXL862XX_STP_PORT_STATE_FORWARD: Forwarding state
  * @MXL862XX_STP_PORT_STATE_DISABLE: Disabled/Discarding state
@@ -1211,6 +1228,8 @@ struct mxl862xx_stp_port_cfg {
 } __packed;
 
 /**
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * struct mxl862xx_sys_fw_image_version - Firmware version information
  * @iv_major: firmware major version
  * @iv_minor: firmware minor version
@@ -1224,6 +1243,7 @@ struct mxl862xx_sys_fw_image_version {
 	__le32 iv_build_num;
 } __packed;
 
+<<<<<<< HEAD
 /**
  * enum mxl862xx_port_type - Port Type
  * @MXL862XX_LOGICAL_PORT: Logical Port
@@ -1366,4 +1386,6 @@ struct mxl862xx_rmon_port_cnt {
 	__le64 tx_good_bytes;
 } __packed;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif /* __MXL862XX_API_H */

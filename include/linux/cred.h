@@ -33,14 +33,21 @@ struct group_info {
 
 /**
  * get_group_info - Get a reference to a group info structure
+<<<<<<< HEAD
  * @gi: The group info to reference
+=======
+ * @group_info: The group info to reference
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *
  * This gets a reference to a set of supplementary groups.
  *
  * If the caller is accessing a task's credentials, they must hold the RCU read
  * lock when reading.
+<<<<<<< HEAD
  *
  * Returns: @gi
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline struct group_info *get_group_info(struct group_info *gi)
 {
@@ -211,8 +218,11 @@ DEFINE_CLASS(override_creds,
  * usage count.  The purpose of this is to attempt to catch at compile time the
  * accidental alteration of a set of credentials that should be considered
  * immutable.
+<<<<<<< HEAD
  *
  * Returns: @cred when the references are acquired, NULL otherwise.
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  */
 static inline const struct cred *get_cred_many(const struct cred *cred, int nr)
 {
@@ -250,8 +260,13 @@ static inline const struct cred *get_cred_rcu(const struct cred *cred)
 }
 
 /**
+<<<<<<< HEAD
  * put_cred_many - Release a reference to a set of credentials
  * @_cred: The credentials to release
+=======
+ * put_cred - Release a reference to a set of credentials
+ * @cred: The credentials to release
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  * @nr: Number of references to release
  *
  * Release a reference to a set of credentials, deleting them when the last ref

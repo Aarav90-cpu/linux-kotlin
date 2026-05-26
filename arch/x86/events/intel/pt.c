@@ -1591,6 +1591,10 @@ void intel_pt_handle_vmx(int on)
 
 	local_irq_restore(flags);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_FOR_KVM(intel_pt_handle_vmx);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * PMU callbacks

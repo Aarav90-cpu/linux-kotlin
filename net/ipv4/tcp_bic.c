@@ -74,7 +74,11 @@ static void bictcp_init(struct sock *sk)
 	bictcp_reset(ca);
 
 	if (initial_ssthresh)
+<<<<<<< HEAD
 		WRITE_ONCE(tcp_sk(sk)->snd_ssthresh, initial_ssthresh);
+=======
+		tcp_sk(sk)->snd_ssthresh = initial_ssthresh;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*

@@ -28,13 +28,20 @@ int
 timerlat_apply_config(struct osnoise_tool *tool, struct timerlat_params *params)
 {
 	int retval;
+<<<<<<< HEAD
 	const char *const rtla_no_bpf = getenv("RTLA_NO_BPF");
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Try to enable BPF, unless disabled explicitly.
 	 * If BPF enablement fails, fall back to tracefs mode.
 	 */
+<<<<<<< HEAD
 	if (rtla_no_bpf && strncmp_static(rtla_no_bpf, "1") == 0) {
+=======
+	if (getenv("RTLA_NO_BPF") && strncmp(getenv("RTLA_NO_BPF"), "1", 2) == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		debug_msg("RTLA_NO_BPF set, disabling BPF\n");
 		params->mode = TRACING_MODE_TRACEFS;
 	} else if (!tep_find_event_by_name(tool->trace.tep, "osnoise", "timerlat_sample")) {
@@ -100,7 +107,11 @@ out_err:
 int timerlat_enable(struct osnoise_tool *tool)
 {
 	struct timerlat_params *params = to_timerlat_params(tool->params);
+<<<<<<< HEAD
 	int retval, i;
+=======
+	int retval, nr_cpus, i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (params->dma_latency >= 0) {
 		dma_latency_fd = set_cpu_dma_latency(params->dma_latency);
@@ -116,7 +127,13 @@ int timerlat_enable(struct osnoise_tool *tool)
 			return -1;
 		}
 
+<<<<<<< HEAD
 		for_each_monitored_cpu(i, &params->common) {
+=======
+		nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+		for_each_monitored_cpu(i, nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (save_cpu_idle_disable_state(i) < 0) {
 				err_msg("Could not save cpu idle state.\n");
 				return -1;
@@ -133,7 +150,11 @@ int timerlat_enable(struct osnoise_tool *tool)
 		if (!tool->aa)
 			return -1;
 
+<<<<<<< HEAD
 		retval = timerlat_aa_init(tool->aa, params->dump_tasks, params->stack_format);
+=======
+		retval = timerlat_aa_init(tool->aa, params->dump_tasks);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (retval) {
 			err_msg("Failed to enable the auto analysis instance\n");
 			return retval;
@@ -213,13 +234,21 @@ void timerlat_analyze(struct osnoise_tool *tool, bool stopped)
 void timerlat_free(struct osnoise_tool *tool)
 {
 	struct timerlat_params *params = to_timerlat_params(tool->params);
+<<<<<<< HEAD
+=======
+	int nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int i;
 
 	timerlat_aa_destroy();
 	if (dma_latency_fd >= 0)
 		close(dma_latency_fd);
 	if (params->deepest_idle_state >= -1) {
+<<<<<<< HEAD
 		for_each_monitored_cpu(i, &params->common) {
+=======
+		for_each_monitored_cpu(i, nr_cpus, &params->common) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			restore_cpu_idle_disable_state(i);
 		}
 	}
@@ -270,7 +299,11 @@ int timerlat_main(int argc, char *argv[])
 
 	if ((strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "--help") == 0)) {
 		timerlat_usage(0);
+<<<<<<< HEAD
 	} else if (str_has_prefix(argv[1], "-")) {
+=======
+	} else if (strncmp(argv[1], "-", 1) == 0) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/* the user skipped the tool, call the default one */
 		run_tool(&timerlat_top_ops, argc, argv);
 		exit(0);

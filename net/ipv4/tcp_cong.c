@@ -238,6 +238,10 @@ void tcp_init_congestion_control(struct sock *sk)
 	struct inet_connection_sock *icsk = inet_csk(sk);
 
 	tcp_sk(sk)->prior_ssthresh = 0;
+<<<<<<< HEAD
+=======
+	tcp_sk(sk)->fast_ack_mode = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (icsk->icsk_ca_ops->init)
 		icsk->icsk_ca_ops->init(sk);
 	if (tcp_ca_needs_ecn(sk))

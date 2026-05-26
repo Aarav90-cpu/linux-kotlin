@@ -78,7 +78,10 @@ enum smu_v13_0_6_caps {
 	SMU_CAP(RAS_EEPROM),
 	SMU_CAP(FAST_PPT),
 	SMU_CAP(SYSTEM_POWER_METRICS),
+<<<<<<< HEAD
 	SMU_CAP(TEMP_AID_XCD_HBM),
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	SMU_CAP(ALL),
 };
 
@@ -88,8 +91,11 @@ enum smu_v13_0_6_caps {
 #define SMU_13_0_6_MAX_XCC 8
 #define SMU_13_0_6_MAX_VCN 4
 #define SMU_13_0_6_MAX_JPEG 40
+<<<<<<< HEAD
 #define SMU_13_0_6_MAX_AID 4
 #define SMU_13_0_6_MAX_HBM_STACKS 8
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 extern void smu_v13_0_6_set_ppt_funcs(struct smu_context *smu);
 bool smu_v13_0_6_cap_supported(struct smu_context *smu, enum smu_v13_0_6_caps cap);
@@ -225,6 +231,7 @@ extern const struct ras_smu_drv smu_v13_0_12_ras_smu_drv;
 		  SMU_13_0_6_MAX_XCC);                                         \
 	SMU_ARRAY(SMU_MATTR(GFX_BELOW_HOST_LIMIT_TOTAL_ACC), SMU_MUNIT(NONE),  \
 		  SMU_MTYPE(U64), gfx_below_host_limit_total_acc,              \
+<<<<<<< HEAD
 		  SMU_13_0_6_MAX_XCC);					       \
 	SMU_ARRAY(SMU_MATTR(TEMPERATURE_HBM), SMU_MUNIT(TEMP_1),               \
 		  SMU_MTYPE(U16), temperature_hbm,                             \
@@ -234,6 +241,9 @@ extern const struct ras_smu_drv smu_v13_0_12_ras_smu_drv;
 	SMU_ARRAY(SMU_MATTR(TEMPERATURE_XCD), SMU_MUNIT(TEMP_1),               \
 		  SMU_MTYPE(U16), temperature_xcd, SMU_13_0_6_MAX_XCC);        \
 
+=======
+		  SMU_13_0_6_MAX_XCC);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 DECLARE_SMU_METRICS_CLASS(smu_v13_0_6_gpu_metrics, SMU_13_0_6_METRICS_FIELDS);
 void smu_v13_0_12_get_gpu_metrics(struct smu_context *smu, void **table,

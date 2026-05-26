@@ -44,6 +44,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	firmware {
 		firmware: rpi-firmware {
 			compatible = "raspberrypi,bcm2835-firmware", "simple-mfd";
@@ -68,6 +69,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	sd_io_1v8_reg: sd-io-1v8-reg {
 		compatible = "regulator-gpio";
 		regulator-name = "vdd-sd-io";
@@ -213,6 +216,36 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&soc {
+	firmware: firmware {
+		compatible = "raspberrypi,bcm2835-firmware", "simple-mfd";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		mboxes = <&mailbox>;
+		dma-ranges;
+
+		firmware_clocks: clocks {
+			compatible = "raspberrypi,firmware-clocks";
+			#clock-cells = <1>;
+		};
+
+		reset: reset {
+			compatible = "raspberrypi,firmware-reset";
+			#reset-cells = <1>;
+		};
+	};
+
+	power: power {
+		compatible = "raspberrypi,bcm2835-power";
+		firmware = <&firmware>;
+		#power-domain-cells = <1>;
+	};
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* uarta communicates with the BT module */
 &uarta {
 	uart-has-rtscts;
@@ -249,7 +282,10 @@
 &pcie2 {
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &v3d {
 	clocks = <&firmware_clocks 5>;
 };
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)

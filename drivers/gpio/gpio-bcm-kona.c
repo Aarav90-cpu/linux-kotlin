@@ -58,6 +58,18 @@
 #define LOCK_CODE				0xffffffff
 #define UNLOCK_CODE				0x00000000
 
+<<<<<<< HEAD
+=======
+struct bcm_kona_gpio {
+	void __iomem *reg_base;
+	int num_bank;
+	raw_spinlock_t lock;
+	struct gpio_chip gpio_chip;
+	struct irq_domain *irq_domain;
+	struct bcm_kona_gpio_bank *banks;
+};
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 struct bcm_kona_gpio_bank {
 	int id;
 	int irq;
@@ -81,6 +93,7 @@ struct bcm_kona_gpio_bank {
 	struct bcm_kona_gpio *kona_gpio;
 };
 
+<<<<<<< HEAD
 struct bcm_kona_gpio {
 	void __iomem *reg_base;
 	int num_bank;
@@ -90,6 +103,8 @@ struct bcm_kona_gpio {
 	struct bcm_kona_gpio_bank banks[] __counted_by(num_bank);
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static inline void bcm_kona_gpio_write_lock_regs(void __iomem *reg_base,
 						int bank_id, u32 lockcode)
 {
@@ -584,6 +599,15 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
 	int ret;
 	int i;
 
+<<<<<<< HEAD
+=======
+	kona_gpio = devm_kzalloc(dev, sizeof(*kona_gpio), GFP_KERNEL);
+	if (!kona_gpio)
+		return -ENOMEM;
+
+	kona_gpio->gpio_chip = template_chip;
+	chip = &kona_gpio->gpio_chip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ret = platform_irq_count(pdev);
 	if (!ret) {
 		dev_err(dev, "Couldn't determine # GPIO banks\n");
@@ -591,11 +615,14 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
 	} else if (ret < 0) {
 		return dev_err_probe(dev, ret, "Couldn't determine GPIO banks\n");
 	}
+<<<<<<< HEAD
 
 	kona_gpio = devm_kzalloc(dev, struct_size(kona_gpio, banks, ret), GFP_KERNEL);
 	if (!kona_gpio)
 		return -ENOMEM;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	kona_gpio->num_bank = ret;
 
 	if (kona_gpio->num_bank > GPIO_MAX_BANK_NUM) {
@@ -603,9 +630,19 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
 			GPIO_MAX_BANK_NUM);
 		return -ENXIO;
 	}
+<<<<<<< HEAD
 
 	kona_gpio->gpio_chip = template_chip;
 	chip = &kona_gpio->gpio_chip;
+=======
+	kona_gpio->banks = devm_kcalloc(dev,
+					kona_gpio->num_bank,
+					sizeof(*kona_gpio->banks),
+					GFP_KERNEL);
+	if (!kona_gpio->banks)
+		return -ENOMEM;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->parent = dev;
 	chip->ngpio = kona_gpio->num_bank * GPIO_PER_BANK;
 

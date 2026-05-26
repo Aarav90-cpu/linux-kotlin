@@ -9,8 +9,11 @@
 #include <linux/const.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 struct fbnic_dev;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_TLV_MSG_ALIGN(len)	ALIGN(len, sizeof(u32))
 #define FBNIC_TLV_MSG_SIZE(len)		\
 		(FBNIC_TLV_MSG_ALIGN(len) / sizeof(u32))
@@ -155,6 +158,7 @@ int fbnic_tlv_parser_error(void *opaque, struct fbnic_tlv_msg **results);
 #define fta_get_str(_results, _id, _dst, _dstsize) \
 	fbnic_tlv_attr_get_string(_results[_id], _dst, _dstsize)
 
+<<<<<<< HEAD
 #define FBNIC_TLV_MSG_ID_TEST	0
 
 enum fbnic_tlv_test_attr_id {
@@ -180,6 +184,8 @@ int fbnic_tlv_parser_test(void *opaque, struct fbnic_tlv_msg **results);
 #define FBNIC_TLV_MSG_TEST \
 	FBNIC_TLV_PARSER(TEST, fbnic_tlv_test_index, \
 			 fbnic_tlv_parser_test)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define FBNIC_TLV_MSG_ERROR \
 	FBNIC_TLV_PARSER(UNKNOWN, NULL, fbnic_tlv_parser_error)
 #endif /* _FBNIC_TLV_H_ */

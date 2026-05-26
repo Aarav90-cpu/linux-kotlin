@@ -21,11 +21,18 @@
  */
 #define BIOS_SAR_MAX_CHAINS_PER_PROFILE 4
 #define BIOS_SAR_NUM_CHAINS             2
+<<<<<<< HEAD
 #define BIOS_SAR_MAX_SUB_BANDS_NUM      12
 #define BIOS_PPAG_MAX_SUB_BANDS_NUM     12
 
 #define BIOS_GEO_NUM_CHAINS		2
 #define BIOS_GEO_MAX_NUM_BANDS		4
+=======
+#define BIOS_SAR_MAX_SUB_BANDS_NUM      11
+
+#define BIOS_GEO_NUM_CHAINS		2
+#define BIOS_GEO_MAX_NUM_BANDS		3
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define BIOS_GEO_MAX_PROFILE_NUM	8
 #define BIOS_GEO_MIN_PROFILE_NUM	3
 
@@ -101,7 +108,11 @@ struct iwl_geo_profile {
 
 /* Same thing as with SAR, all revisions fit in revision 2 */
 struct iwl_ppag_chain {
+<<<<<<< HEAD
 	s8 subbands[BIOS_PPAG_MAX_SUB_BANDS_NUM];
+=======
+	s8 subbands[BIOS_SAR_MAX_SUB_BANDS_NUM];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct iwl_tas_data {
@@ -181,9 +192,12 @@ enum iwl_dsm_masks_reg {
 
 struct iwl_fw_runtime;
 
+<<<<<<< HEAD
 /* Print the PPAG table as read from BIOS */
 void iwl_bios_print_ppag(struct iwl_fw_runtime *fwrt, int n_subbands);
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool iwl_sar_geo_support(struct iwl_fw_runtime *fwrt);
 
 int iwl_sar_geo_fill_table(struct iwl_fw_runtime *fwrt,
@@ -194,6 +208,13 @@ int iwl_sar_fill_profile(struct iwl_fw_runtime *fwrt,
 			 __le16 *per_chain, u32 n_tables, u32 n_subbands,
 			 int prof_a, int prof_b);
 
+<<<<<<< HEAD
+=======
+int iwl_fill_ppag_table(struct iwl_fw_runtime *fwrt,
+			union iwl_ppag_table_cmd *cmd,
+			int *cmd_size);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 bool iwl_is_ppag_approved(struct iwl_fw_runtime *fwrt);
 
 bool iwl_is_tas_approved(void);

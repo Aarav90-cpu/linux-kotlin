@@ -8,6 +8,7 @@
 
 #include <linux/mm.h>
 
+<<<<<<< HEAD
 #include "xe_tlb_inval.h"
 #include "xe_trace_bo.h"
 
@@ -19,6 +20,10 @@ static void xe_userptr_assert_in_notifier(struct xe_vm *vm)
 			dma_resv_held(xe_vm_resv(vm))));
 }
 
+=======
+#include "xe_trace_bo.h"
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /**
  * xe_vma_userptr_check_repin() - Advisory check for repin needed
  * @uvma: The userptr vma
@@ -82,6 +87,7 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
 				    &ctx);
 }
 
+<<<<<<< HEAD
 static struct mmu_interval_notifier_finish *
 xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma, bool is_deferred)
 {
@@ -150,14 +156,25 @@ xe_vma_userptr_complete_tlb_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma)
 
 static struct mmu_interval_notifier_finish *
 xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+=======
+static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_userptr *userptr = &uvma->userptr;
 	struct xe_vma *vma = &uvma->vma;
 	struct dma_resv_iter cursor;
 	struct dma_fence *fence;
+<<<<<<< HEAD
 	bool signaled = true;
 
 	xe_userptr_assert_in_notifier(vm);
+=======
+	struct drm_gpusvm_ctx ctx = {
+		.in_notifier = true,
+		.read_only = xe_vma_read_only(vma),
+	};
+	long err;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Tell exec and rebind worker they need to repin and rebind this
@@ -179,6 +196,7 @@ xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
 	 */
 	dma_resv_iter_begin(&cursor, xe_vm_resv(vm),
 			    DMA_RESV_USAGE_BOOKKEEP);
+<<<<<<< HEAD
 	dma_resv_for_each_fence_unlocked(&cursor, fence) {
 		dma_fence_enable_sw_signaling(fence);
 		if (signaled && !dma_fence_is_signaled(fence))
@@ -204,6 +222,29 @@ static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
 					    const struct mmu_notifier_range *range,
 					    unsigned long cur_seq,
 					    struct mmu_interval_notifier_finish **p_finish)
+=======
+	dma_resv_for_each_fence_unlocked(&cursor, fence)
+		dma_fence_enable_sw_signaling(fence);
+	dma_resv_iter_end(&cursor);
+
+	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+				    DMA_RESV_USAGE_BOOKKEEP,
+				    false, MAX_SCHEDULE_TIMEOUT);
+	XE_WARN_ON(err <= 0);
+
+	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+		err = xe_vm_invalidate_vma(vma);
+		XE_WARN_ON(err);
+	}
+
+	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
+}
+
+static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+				   const struct mmu_notifier_range *range,
+				   unsigned long cur_seq)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct xe_userptr_vma *uvma = container_of(mni, typeof(*uvma), userptr.notifier);
 	struct xe_vma *vma = &uvma->vma;
@@ -216,21 +257,32 @@ static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
 		return false;
 
 	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+<<<<<<< HEAD
 	       "NOTIFIER PASS1: addr=0x%016llx, range=0x%016llx",
+=======
+	       "NOTIFIER: addr=0x%016llx, range=0x%016llx",
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xe_vma_start(vma), xe_vma_size(vma));
 
 	down_write(&vm->svm.gpusvm.notifier_lock);
 	mmu_interval_set_seq(mni, cur_seq);
 
+<<<<<<< HEAD
 	*p_finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
 
 	up_write(&vm->svm.gpusvm.notifier_lock);
 	if (!*p_finish)
 		trace_xe_vma_userptr_invalidate_complete(vma);
+=======
+	__vma_userptr_invalidate(vm, uvma);
+	up_write(&vm->svm.gpusvm.notifier_lock);
+	trace_xe_vma_userptr_invalidate_complete(vma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return true;
 }
 
+<<<<<<< HEAD
 static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish *finish)
 {
 	struct xe_userptr_vma *uvma = container_of(finish, typeof(*uvma), userptr.finish);
@@ -258,6 +310,10 @@ static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish
 static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
 	.invalidate_start = xe_vma_userptr_invalidate_start,
 	.invalidate_finish = xe_vma_userptr_invalidate_finish,
+=======
+static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+	.invalidate = vma_userptr_invalidate,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
@@ -269,7 +325,10 @@ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
  */
 void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
 {
+<<<<<<< HEAD
 	static struct mmu_interval_notifier_finish *finish;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
 
 	/* Protect against concurrent userptr pinning */
@@ -285,12 +344,16 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
 	if (!mmu_interval_read_retry(&uvma->userptr.notifier,
 				     uvma->userptr.pages.notifier_seq))
 		uvma->userptr.pages.notifier_seq -= 2;
+<<<<<<< HEAD
 
 	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
 	if (finish)
 		finish = xe_vma_userptr_do_inval(vm, uvma, true);
 	if (finish)
 		xe_vma_userptr_complete_tlb_inval(vm, uvma);
+=======
+	__vma_userptr_invalidate(vm, uvma);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 #endif
 

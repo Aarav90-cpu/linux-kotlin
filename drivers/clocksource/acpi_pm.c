@@ -98,7 +98,11 @@ static struct clocksource clocksource_acpi_pm = {
 	.rating		= 200,
 	.read		= acpi_pm_read,
 	.mask		= (u64)ACPI_PM_MASK,
+<<<<<<< HEAD
 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS | CLOCK_SOURCE_CALIBRATED,
+=======
+	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.suspend	= acpi_pm_suspend,
 	.resume		= acpi_pm_resume,
 };
@@ -243,6 +247,11 @@ static int __init init_acpi_pm_clocksource(void)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
+=======
+	if (tsc_clocksource_watchdog_disabled())
+		clocksource_acpi_pm.flags |= CLOCK_SOURCE_MUST_VERIFY;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return clocksource_register_hz(&clocksource_acpi_pm, PMTMR_TICKS_PER_SEC);
 }
 

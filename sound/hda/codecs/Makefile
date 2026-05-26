@@ -7,6 +7,10 @@ snd-hda-codec-cm9825-y :=	cm9825.o
 snd-hda-codec-analog-y :=	analog.o
 snd-hda-codec-ca0110-y :=	ca0110.o
 snd-hda-codec-ca0132-y :=	ca0132.o
+<<<<<<< HEAD
+=======
+snd-hda-codec-cmedia-y :=	cmedia.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 snd-hda-codec-conexant-y :=	conexant.o
 snd-hda-codec-idt-y :=		sigmatel.o
 snd-hda-codec-senarytech-y :=	senarytech.o
@@ -25,6 +29,10 @@ obj-$(CONFIG_SND_HDA_CODEC_CM9825) += snd-hda-codec-cm9825.o
 obj-$(CONFIG_SND_HDA_CODEC_ANALOG) += snd-hda-codec-analog.o
 obj-$(CONFIG_SND_HDA_CODEC_CA0110) += snd-hda-codec-ca0110.o
 obj-$(CONFIG_SND_HDA_CODEC_CA0132) += snd-hda-codec-ca0132.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SND_HDA_CODEC_CMEDIA) += snd-hda-codec-cmedia.o
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 obj-$(CONFIG_SND_HDA_CODEC_CONEXANT) += snd-hda-codec-conexant.o
 obj-$(CONFIG_SND_HDA_CODEC_SIGMATEL) += snd-hda-codec-idt.o
 obj-$(CONFIG_SND_HDA_CODEC_SENARYTECH) += snd-hda-codec-senarytech.o

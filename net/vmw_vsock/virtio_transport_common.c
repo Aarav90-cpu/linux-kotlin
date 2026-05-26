@@ -60,6 +60,11 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
 		return false;
 
 	/* Check that transport can send data in zerocopy mode. */
+<<<<<<< HEAD
+=======
+	t_ops = virtio_transport_get_ops(info->vsk);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (t_ops->can_msgzerocopy) {
 		int pages_to_send = iov_iter_npages(iov_iter, MAX_SKB_FRAGS);
 
@@ -70,6 +75,49 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+					   struct sk_buff *skb,
+					   struct msghdr *msg,
+<<<<<<< HEAD
+					   size_t pkt_len,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+					   bool zerocopy)
+{
+	struct ubuf_info *uarg;
+
+	if (msg->msg_ubuf) {
+		uarg = msg->msg_ubuf;
+		net_zcopy_get(uarg);
+	} else {
+<<<<<<< HEAD
+		struct ubuf_info_msgzc *uarg_zc;
+
+		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+					    pkt_len, NULL, false);
+=======
+		struct iov_iter *iter = &msg->msg_iter;
+		struct ubuf_info_msgzc *uarg_zc;
+
+		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+					    iter->count,
+					    NULL, false);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+		if (!uarg)
+			return -1;
+
+		uarg_zc = uarg_to_msgzc(uarg);
+		uarg_zc->zerocopy = zerocopy ? 1 : 0;
+	}
+
+	skb_zcopy_init(skb, uarg);
+
+	return 0;
+}
+
+>>>>>>> 7fb39c93c52e (Sync)
 static int virtio_transport_fill_skb(struct sk_buff *skb,
 				     struct virtio_vsock_pkt_info *info,
 				     size_t len,
@@ -371,7 +419,37 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
 			break;
 		}
 
+<<<<<<< HEAD
 		skb_zcopy_set(skb, uarg, NULL);
+=======
+		/* We process buffer part by part, allocating skb on
+		 * each iteration. If this is last skb for this buffer
+		 * and MSG_ZEROCOPY mode is in use - we must allocate
+		 * completion for the current syscall.
+<<<<<<< HEAD
+		 *
+		 * Pass pkt_len because msg iter is already consumed
+		 * by virtio_transport_fill_skb(), so iter->count
+		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+		 * accounting done by msg_zerocopy_realloc().
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+		 */
+		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+			if (virtio_transport_init_zcopy_skb(vsk, skb,
+							    info->msg,
+<<<<<<< HEAD
+							    pkt_len,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+							    can_zcopy)) {
+				kfree_skb(skb);
+				ret = -ENOMEM;
+				break;
+			}
+		}
+>>>>>>> 7fb39c93c52e (Sync)
 
 		virtio_transport_inc_tx_pkt(vvs, skb);
 
@@ -417,8 +495,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
 static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
 					u32 len)
 {
+<<<<<<< HEAD
 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
 
+<<<<<<< HEAD
 	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
 	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
 	 * metadata. Check payload against buf_alloc to be sure the other
@@ -427,6 +507,12 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
 	 */
 	if ((u64)vvs->buf_used + len > vvs->buf_alloc ||
 	    skb_overhead > vvs->buf_alloc)
+=======
+	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+=======
+	if (vvs->buf_used + len > vvs->buf_alloc)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
+>>>>>>> 7fb39c93c52e (Sync)
 		return false;
 
 	vvs->rx_bytes += len;

@@ -31,6 +31,10 @@ static int index[SNDRV_CARDS] = SNDRV_DEFAULT_IDX; /* Index 0-max */
 static char *id[SNDRV_CARDS] = SNDRV_DEFAULT_STR; /* Id for card */
 static bool enable[SNDRV_CARDS] = SNDRV_DEFAULT_ENABLE_PNP; /* Enable card */
 static struct sfire_chip *chips[SNDRV_CARDS] = SNDRV_DEFAULT_PTR;
+<<<<<<< HEAD
+=======
+static struct usb_device *devices[SNDRV_CARDS] = SNDRV_DEFAULT_PTR;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 module_param_array(index, int, NULL, 0444);
 MODULE_PARM_DESC(index, "Index value for the 6fire sound device");
@@ -43,6 +47,7 @@ static DEFINE_MUTEX(register_mutex);
 
 static void usb6fire_chip_abort(struct sfire_chip *chip)
 {
+<<<<<<< HEAD
 	if (chip->pcm)
 		usb6fire_pcm_abort(chip);
 	if (chip->midi)
@@ -51,12 +56,25 @@ static void usb6fire_chip_abort(struct sfire_chip *chip)
 		usb6fire_comm_abort(chip);
 	if (chip->control)
 		usb6fire_control_abort(chip);
+=======
+	if (chip) {
+		if (chip->pcm)
+			usb6fire_pcm_abort(chip);
+		if (chip->midi)
+			usb6fire_midi_abort(chip);
+		if (chip->comm)
+			usb6fire_comm_abort(chip);
+		if (chip->control)
+			usb6fire_control_abort(chip);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void usb6fire_card_free(struct snd_card *card)
 {
 	struct sfire_chip *chip = card->private_data;
 
+<<<<<<< HEAD
 	if (chip->pcm)
 		usb6fire_pcm_destroy(chip);
 	if (chip->midi)
@@ -65,6 +83,18 @@ static void usb6fire_card_free(struct snd_card *card)
 		usb6fire_comm_destroy(chip);
 	if (chip->control)
 		usb6fire_control_destroy(chip);
+=======
+	if (chip) {
+		if (chip->pcm)
+			usb6fire_pcm_destroy(chip);
+		if (chip->midi)
+			usb6fire_midi_destroy(chip);
+		if (chip->comm)
+			usb6fire_comm_destroy(chip);
+		if (chip->control)
+			usb6fire_control_destroy(chip);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int usb6fire_chip_probe(struct usb_interface *intf,
@@ -78,6 +108,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
 	struct snd_card *card = NULL;
 
 	/* look if we already serve this card and return if so */
+<<<<<<< HEAD
 	guard(mutex)(&register_mutex);
 	for (i = 0; i < SNDRV_CARDS; i++) {
 		if (chips[i] && chips[i]->dev == device) {
@@ -90,6 +121,23 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
 	if (regidx < 0) {
 		dev_err(&intf->dev, "too many cards registered.\n");
 		return -ENODEV;
+=======
+	scoped_guard(mutex, &register_mutex) {
+		for (i = 0; i < SNDRV_CARDS; i++) {
+			if (devices[i] == device) {
+				if (chips[i])
+					chips[i]->intf_count++;
+				usb_set_intfdata(intf, chips[i]);
+				return 0;
+			} else if (!devices[i] && regidx < 0)
+				regidx = i;
+		}
+		if (regidx < 0) {
+			dev_err(&intf->dev, "too many cards registered.\n");
+			return -ENODEV;
+		}
+		devices[regidx] = device;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* check, if firmware is present on device, upload it if not */
@@ -116,6 +164,10 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
 			device->bus->busnum, device->devnum);
 
 	chip = card->private_data;
+<<<<<<< HEAD
+=======
+	chips[regidx] = chip;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	chip->dev = device;
 	chip->regidx = regidx;
 	chip->intf_count = 1;
@@ -143,10 +195,14 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
 		dev_err(&intf->dev, "cannot register card.");
 		goto destroy_chip;
 	}
+<<<<<<< HEAD
 
 	usb_set_intfdata(intf, chip);
 	chips[regidx] = chip;
 
+=======
+	usb_set_intfdata(intf, chip);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return 0;
 
 destroy_chip:
@@ -159,6 +215,7 @@ static void usb6fire_chip_disconnect(struct usb_interface *intf)
 	struct sfire_chip *chip;
 	struct snd_card *card;
 
+<<<<<<< HEAD
 	guard(mutex)(&register_mutex);
 	chip = usb_get_intfdata(intf);
 	/* if !chip, fw upload has been performed */
@@ -184,6 +241,32 @@ static void usb6fire_chip_disconnect(struct usb_interface *intf)
 	usb6fire_chip_abort(chip);
 	if (card)
 		snd_card_free_when_closed(card);
+=======
+	chip = usb_get_intfdata(intf);
+	if (chip) { /* if !chip, fw upload has been performed */
+		chip->intf_count--;
+		if (!chip->intf_count) {
+			scoped_guard(mutex, &register_mutex) {
+				devices[chip->regidx] = NULL;
+				chips[chip->regidx] = NULL;
+			}
+
+			/*
+			 * Save card pointer before teardown.
+			 * snd_card_free_when_closed() may free card (and
+			 * the embedded chip) immediately, so it must be
+			 * called last and chip must not be accessed after.
+			 */
+			card = chip->card;
+			chip->shutdown = true;
+			if (card)
+				snd_card_disconnect(card);
+			usb6fire_chip_abort(chip);
+			if (card)
+				snd_card_free_when_closed(card);
+		}
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct usb_device_id device_table[] = {

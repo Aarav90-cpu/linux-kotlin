@@ -98,6 +98,10 @@ struct dpu_hw_vbif {
 	struct dpu_hw_blk_reg_map hw;
 
 	/* vbif */
+<<<<<<< HEAD
+=======
+	enum dpu_vbif idx;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	const struct dpu_vbif_cfg *cap;
 
 	/* ops */

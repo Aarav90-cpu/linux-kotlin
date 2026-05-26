@@ -41,6 +41,10 @@ static int tsc2007_read_raw(struct iio_dev *indio_dev,
 	struct tsc2007_iio *iio = iio_priv(indio_dev);
 	struct tsc2007 *tsc = iio->ts;
 	int adc_chan = chan->channel;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (adc_chan >= ARRAY_SIZE(tsc2007_iio_channel))
 		return -EINVAL;
@@ -48,7 +52,11 @@ static int tsc2007_read_raw(struct iio_dev *indio_dev,
 	if (mask != IIO_CHAN_INFO_RAW)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	guard(mutex)(&tsc->mlock);
+=======
+	mutex_lock(&tsc->mlock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	switch (chan->channel) {
 	case 0:
@@ -91,7 +99,15 @@ static int tsc2007_read_raw(struct iio_dev *indio_dev,
 	/* Prepare for next touch reading - power down ADC, enable PENIRQ */
 	tsc2007_xfer(tsc, PWRDOWN);
 
+<<<<<<< HEAD
 	return IIO_VAL_INT;
+=======
+	mutex_unlock(&tsc->mlock);
+
+	ret = IIO_VAL_INT;
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static const struct iio_info tsc2007_iio_info = {

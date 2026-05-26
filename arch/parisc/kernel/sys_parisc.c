@@ -50,6 +50,7 @@ static inline unsigned long COLOR_ALIGN(unsigned long addr,
 }
 
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
 #define STACK_SIZE_DEFAULT (USER_WIDE_MODE			\
 			? (1 << 30)	/* 1 GB */		\
@@ -57,6 +58,11 @@ static inline unsigned long COLOR_ALIGN(unsigned long addr,
 #else
 #define STACK_SIZE_DEFAULT (1 << 30)
 #endif
+=======
+#define STACK_SIZE_DEFAULT (USER_WIDE_MODE			\
+			? (1 << 30)	/* 1 GB */		\
+			: (CONFIG_STACK_MAX_DEFAULT_SIZE_MB*1024*1024))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 unsigned long calc_max_stack_size(unsigned long stack_max)
 {
@@ -220,7 +226,11 @@ asmlinkage long parisc_truncate64(const char __user * path,
 asmlinkage long parisc_ftruncate64(unsigned int fd,
 					unsigned int high, unsigned int low)
 {
+<<<<<<< HEAD
 	return ksys_ftruncate(fd, (long)high << 32 | low, FTRUNCATE_LFS);
+=======
+	return ksys_ftruncate(fd, (long)high << 32 | low);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /* stubs for the benefit of the syscall_table since truncate64 and truncate 
@@ -231,7 +241,11 @@ asmlinkage long sys_truncate64(const char __user * path, unsigned long length)
 }
 asmlinkage long sys_ftruncate64(unsigned int fd, unsigned long length)
 {
+<<<<<<< HEAD
 	return ksys_ftruncate(fd, length, FTRUNCATE_LFS);
+=======
+	return ksys_ftruncate(fd, length);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 asmlinkage long sys_fcntl64(unsigned int fd, unsigned int cmd, unsigned long arg)
 {

@@ -29,6 +29,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -40,6 +41,8 @@
 		};
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	thermal-zones {
 		cpu-thermal {
 			polling-delay = <1000>;
@@ -132,6 +135,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &dpu {
 	status = "okay";
 };
@@ -146,6 +150,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins>;

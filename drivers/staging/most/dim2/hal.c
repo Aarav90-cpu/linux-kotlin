@@ -11,8 +11,14 @@
 #include "hal.h"
 #include "errors.h"
 #include "reg.h"
+<<<<<<< HEAD
 #include <linux/io.h>
 #include <linux/kernel.h>
+=======
+#include <linux/stddef.h>
+#include <linux/kernel.h>
+#include <linux/io.h>
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 /*
  * Size factor for isochronous DBR buffer.
@@ -44,6 +50,11 @@
 #define DBR_SIZE  (16 * 1024) /* specified by IP */
 #define DBR_BLOCK_SIZE  (DBR_SIZE / 32 / DBR_MAP_SIZE)
 
+<<<<<<< HEAD
+=======
+#define ROUND_UP_TO(x, d)  (DIV_ROUND_UP(x, (d)) * (d))
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /* -------------------------------------------------------------------------- */
 /* generic helper functions and macros */
 
@@ -755,7 +766,11 @@ static u8 init_ctrl_async(struct dim_channel *ch, u8 type, u8 is_tx,
 		return DIM_INIT_ERR_CHANNEL_ADDRESS;
 
 	if (!ch->dbr_size)
+<<<<<<< HEAD
 		ch->dbr_size = round_up(hw_buffer_size, DBR_BLOCK_SIZE);
+=======
+		ch->dbr_size = ROUND_UP_TO(hw_buffer_size, DBR_BLOCK_SIZE);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	ch->dbr_addr = alloc_dbr(ch->dbr_size);
 	if (ch->dbr_addr >= DBR_SIZE)
 		return DIM_INIT_ERR_OUT_OF_MEMORY;

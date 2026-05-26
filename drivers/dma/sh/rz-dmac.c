@@ -16,7 +16,10 @@
 #include <linux/interrupt.h>
 #include <linux/iopoll.h>
 #include <linux/irqchip/irq-renesas-rzv2h.h>
+<<<<<<< HEAD
 #include <linux/irqchip/irq-renesas-rzt2h.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #include <linux/list.h>
 #include <linux/module.h>
 #include <linux/of.h>
@@ -96,6 +99,7 @@ struct rz_dmac_icu {
 	u8 dmac_index;
 };
 
+<<<<<<< HEAD
 struct rz_dmac_info {
 	void (*icu_register_dma_req)(struct platform_device *icu_dev,
 				     u8 dmac_index, u8 dmac_channel, u16 req_no);
@@ -106,6 +110,11 @@ struct rz_dmac {
 	struct dma_device engine;
 	struct rz_dmac_icu icu;
 	const struct rz_dmac_info *info;
+=======
+struct rz_dmac {
+	struct dma_device engine;
+	struct rz_dmac_icu icu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct device *dev;
 	struct reset_control *rstc;
 	void __iomem *base;
@@ -114,6 +123,11 @@ struct rz_dmac {
 	unsigned int n_channels;
 	struct rz_dmac_chan *channels;
 
+<<<<<<< HEAD
+=======
+	bool has_icu;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	DECLARE_BITMAP(modules, 1024);
 };
 
@@ -124,12 +138,18 @@ struct rz_dmac {
  * Registers
  */
 
+<<<<<<< HEAD
 #define CRTB				0x0020
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CHSTAT				0x0024
 #define CHCTRL				0x0028
 #define CHCFG				0x002c
 #define NXLA				0x0038
+<<<<<<< HEAD
 #define CRLA				0x003c
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #define DCTRL				0x0000
 
@@ -140,12 +160,18 @@ struct rz_dmac {
 #define CHANNEL_8_15_COMMON_BASE	0x0700
 
 #define CHSTAT_ER			BIT(4)
+<<<<<<< HEAD
 #define CHSTAT_SUS			BIT(3)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CHSTAT_EN			BIT(0)
 
 #define CHCTRL_CLRINTMSK		BIT(17)
 #define CHCTRL_CLRSUS			BIT(9)
+<<<<<<< HEAD
 #define CHCTRL_SETSUS			BIT(8)
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #define CHCTRL_CLRTC			BIT(6)
 #define CHCTRL_CLREND			BIT(5)
 #define CHCTRL_CLRRQ			BIT(4)
@@ -276,12 +302,21 @@ static void rz_dmac_enable_hw(struct rz_dmac_chan *channel)
 {
 	struct dma_chan *chan = &channel->vc.chan;
 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u32 nxla;
 	u32 chctrl;
 	u32 chstat;
 
 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
 
+<<<<<<< HEAD
+=======
+	local_irq_save(flags);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rz_dmac_lmdesc_recycle(channel);
 
 	nxla = channel->lmdesc.base_dma +
@@ -296,6 +331,11 @@ static void rz_dmac_enable_hw(struct rz_dmac_chan *channel)
 		rz_dmac_ch_writel(channel, CHCTRL_SWRST, CHCTRL, 1);
 		rz_dmac_ch_writel(channel, chctrl, CHCTRL, 1);
 	}
+<<<<<<< HEAD
+=======
+
+	local_irq_restore(flags);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static void rz_dmac_disable_hw(struct rz_dmac_chan *channel)
@@ -321,6 +361,7 @@ static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
 	rz_dmac_ext_writel(dmac, dmars32, dmars_offset);
 }
 
+<<<<<<< HEAD
 static void rz_dmac_set_dma_req_no(struct rz_dmac *dmac, unsigned int index,
 				   int req_no)
 {
@@ -331,6 +372,8 @@ static void rz_dmac_set_dma_req_no(struct rz_dmac *dmac, unsigned int index,
 		rz_dmac_set_dmars_register(dmac, index, req_no);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static void rz_dmac_prepare_desc_for_memcpy(struct rz_dmac_chan *channel)
 {
 	struct dma_chan *chan = &channel->vc.chan;
@@ -348,7 +391,17 @@ static void rz_dmac_prepare_desc_for_memcpy(struct rz_dmac_chan *channel)
 	lmdesc->chext = 0;
 	lmdesc->header = HEADER_LV;
 
+<<<<<<< HEAD
 	rz_dmac_set_dma_req_no(dmac, channel->index, dmac->info->default_dma_req_no);
+=======
+	if (dmac->has_icu) {
+		rzv2h_icu_register_dma_req(dmac->icu.pdev, dmac->icu.dmac_index,
+					   channel->index,
+					   RZV2H_ICU_DMAC_REQ_NO_DEFAULT);
+	} else {
+		rz_dmac_set_dmars_register(dmac, channel->index, 0);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	channel->chcfg = chcfg;
 	channel->chctrl = CHCTRL_STG | CHCTRL_SETEN;
@@ -399,7 +452,16 @@ static void rz_dmac_prepare_descs_for_slave_sg(struct rz_dmac_chan *channel)
 
 	channel->lmdesc.tail = lmdesc;
 
+<<<<<<< HEAD
 	rz_dmac_set_dma_req_no(dmac, channel->index, channel->mid_rid);
+=======
+	if (dmac->has_icu) {
+		rzv2h_icu_register_dma_req(dmac->icu.pdev, dmac->icu.dmac_index,
+					   channel->index, channel->mid_rid);
+	} else {
+		rz_dmac_set_dmars_register(dmac, channel->index, channel->mid_rid);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	channel->chctrl = CHCTRL_SETEN;
 }
@@ -464,12 +526,24 @@ static void rz_dmac_free_chan_resources(struct dma_chan *chan)
 {
 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+<<<<<<< HEAD
 	struct rz_dmac_desc *desc, *_desc;
 	unsigned long flags;
 
 	spin_lock_irqsave(&channel->vc.lock, flags);
 
 	rz_lmdesc_setup(channel, channel->lmdesc.base);
+=======
+	struct rz_lmdesc *lmdesc = channel->lmdesc.base;
+	struct rz_dmac_desc *desc, *_desc;
+	unsigned long flags;
+	unsigned int i;
+
+	spin_lock_irqsave(&channel->vc.lock, flags);
+
+	for (i = 0; i < DMAC_NR_LMDESC; i++)
+		lmdesc[i].header = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rz_dmac_disable_hw(channel);
 	list_splice_tail_init(&channel->ld_active, &channel->ld_free);
@@ -561,12 +635,23 @@ rz_dmac_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 static int rz_dmac_terminate_all(struct dma_chan *chan)
 {
 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+	struct rz_lmdesc *lmdesc = channel->lmdesc.base;
+	unsigned long flags;
+	unsigned int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	LIST_HEAD(head);
 
 	spin_lock_irqsave(&channel->vc.lock, flags);
 	rz_dmac_disable_hw(channel);
+<<<<<<< HEAD
 	rz_lmdesc_setup(channel, channel->lmdesc.base);
+=======
+	for (i = 0; i < DMAC_NR_LMDESC; i++)
+		lmdesc[i].header = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	list_splice_tail_init(&channel->ld_active, &channel->ld_free);
 	list_splice_tail_init(&channel->ld_queue, &channel->ld_free);
@@ -677,6 +762,7 @@ static void rz_dmac_device_synchronize(struct dma_chan *chan)
 	if (ret < 0)
 		dev_warn(dmac->dev, "DMA Timeout");
 
+<<<<<<< HEAD
 	rz_dmac_set_dma_req_no(dmac, channel->index, dmac->info->default_dma_req_no);
 }
 
@@ -856,6 +942,15 @@ static int rz_dmac_device_resume(struct dma_chan *chan)
 	return read_poll_timeout_atomic(rz_dmac_ch_readl, val,
 					!(val & CHSTAT_SUS), 1, 1024,
 					false, channel, CHSTAT, 1);
+=======
+	if (dmac->has_icu) {
+		rzv2h_icu_register_dma_req(dmac->icu.pdev, dmac->icu.dmac_index,
+					   channel->index,
+					   RZV2H_ICU_DMAC_REQ_NO_DEFAULT);
+	} else {
+		rz_dmac_set_dmars_register(dmac, channel->index, 0);
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -867,7 +962,11 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
 {
 	struct dma_chan *chan = &channel->vc.chan;
 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+<<<<<<< HEAD
 	u32 chstat;
+=======
+	u32 chstat, chctrl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	chstat = rz_dmac_ch_readl(channel, CHSTAT, 1);
 	if (chstat & CHSTAT_ER) {
@@ -876,6 +975,7 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
 
 		scoped_guard(spinlock_irqsave, &channel->vc.lock)
 			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+<<<<<<< HEAD
 		return;
 	}
 
@@ -884,6 +984,15 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
 	 * zeros to CHCTRL is just ignored by HW.
 	 */
 	rz_dmac_ch_writel(channel, CHCTRL_CLREND, CHCTRL, 1);
+=======
+		goto done;
+	}
+
+	chctrl = rz_dmac_ch_readl(channel, CHCTRL, 1);
+	rz_dmac_ch_writel(channel, chctrl | CHCTRL_CLREND, CHCTRL, 1);
+done:
+	return;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static irqreturn_t rz_dmac_irq_handler(int irq, void *dev_id)
@@ -1047,6 +1156,7 @@ static int rz_dmac_parse_of_icu(struct device *dev, struct rz_dmac *dmac)
 	uint32_t dmac_index;
 	int ret;
 
+<<<<<<< HEAD
 	if (!dmac->info->icu_register_dma_req)
 		return 0;
 
@@ -1054,6 +1164,16 @@ static int rz_dmac_parse_of_icu(struct device *dev, struct rz_dmac *dmac)
 	if (ret)
 		return ret;
 
+=======
+	ret = of_parse_phandle_with_fixed_args(np, "renesas,icu", 1, 0, &args);
+	if (ret == -ENOENT)
+		return 0;
+	if (ret)
+		return ret;
+
+	dmac->has_icu = true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dmac->icu.pdev = of_find_device_by_node(args.np);
 	of_node_put(args.np);
 	if (!dmac->icu.pdev) {
@@ -1108,7 +1228,10 @@ static int rz_dmac_probe(struct platform_device *pdev)
 	if (!dmac)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dmac->info = device_get_match_data(&pdev->dev);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	dmac->dev = &pdev->dev;
 	platform_set_drvdata(pdev, dmac);
 
@@ -1126,13 +1249,18 @@ static int rz_dmac_probe(struct platform_device *pdev)
 	if (IS_ERR(dmac->base))
 		return PTR_ERR(dmac->base);
 
+<<<<<<< HEAD
 	if (!dmac->info->icu_register_dma_req) {
+=======
+	if (!dmac->has_icu) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		dmac->ext_base = devm_platform_ioremap_resource(pdev, 1);
 		if (IS_ERR(dmac->ext_base))
 			return PTR_ERR(dmac->ext_base);
 	}
 
 	/* Register interrupt handler for error */
+<<<<<<< HEAD
 	irq = platform_get_irq_byname_optional(pdev, irqname);
 	if (irq > 0) {
 		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
@@ -1142,6 +1270,18 @@ static int rz_dmac_probe(struct platform_device *pdev)
 				irq, ret);
 			return ret;
 		}
+=======
+	irq = platform_get_irq_byname(pdev, irqname);
+	if (irq < 0)
+		return irq;
+
+	ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
+			       irqname, NULL);
+	if (ret) {
+		dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+			irq, ret);
+		return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	/* Initialize the channels. */
@@ -1179,7 +1319,10 @@ static int rz_dmac_probe(struct platform_device *pdev)
 	engine = &dmac->engine;
 	dma_cap_set(DMA_SLAVE, engine->cap_mask);
 	dma_cap_set(DMA_MEMCPY, engine->cap_mask);
+<<<<<<< HEAD
 	engine->residue_granularity = DMA_RESIDUE_GRANULARITY_BURST;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rz_dmac_writel(dmac, DCTRL_DEFAULT, CHANNEL_0_7_COMMON_BASE + DCTRL);
 	rz_dmac_writel(dmac, DCTRL_DEFAULT, CHANNEL_8_15_COMMON_BASE + DCTRL);
 
@@ -1187,15 +1330,22 @@ static int rz_dmac_probe(struct platform_device *pdev)
 
 	engine->device_alloc_chan_resources = rz_dmac_alloc_chan_resources;
 	engine->device_free_chan_resources = rz_dmac_free_chan_resources;
+<<<<<<< HEAD
 	engine->device_tx_status = rz_dmac_tx_status;
+=======
+	engine->device_tx_status = dma_cookie_status;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	engine->device_prep_slave_sg = rz_dmac_prep_slave_sg;
 	engine->device_prep_dma_memcpy = rz_dmac_prep_dma_memcpy;
 	engine->device_config = rz_dmac_config;
 	engine->device_terminate_all = rz_dmac_terminate_all;
 	engine->device_issue_pending = rz_dmac_issue_pending;
 	engine->device_synchronize = rz_dmac_device_synchronize;
+<<<<<<< HEAD
 	engine->device_pause = rz_dmac_device_pause;
 	engine->device_resume = rz_dmac_device_resume;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	engine->copy_align = DMAENGINE_ALIGN_1_BYTE;
 	dma_set_max_seg_size(engine->dev, U32_MAX);
@@ -1249,6 +1399,7 @@ static void rz_dmac_remove(struct platform_device *pdev)
 	pm_runtime_disable(&pdev->dev);
 }
 
+<<<<<<< HEAD
 static const struct rz_dmac_info rz_dmac_v2h_info = {
 	.icu_register_dma_req = rzv2h_icu_register_dma_req,
 	.default_dma_req_no = RZV2H_ICU_DMAC_REQ_NO_DEFAULT,
@@ -1267,6 +1418,11 @@ static const struct of_device_id of_rz_dmac_match[] = {
 	{ .compatible = "renesas,r9a09g057-dmac", .data = &rz_dmac_v2h_info },
 	{ .compatible = "renesas,r9a09g077-dmac", .data = &rz_dmac_t2h_info },
 	{ .compatible = "renesas,rz-dmac", .data = &rz_dmac_generic_info },
+=======
+static const struct of_device_id of_rz_dmac_match[] = {
+	{ .compatible = "renesas,r9a09g057-dmac", },
+	{ .compatible = "renesas,rz-dmac", },
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{ /* Sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, of_rz_dmac_match);

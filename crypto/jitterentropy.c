@@ -68,7 +68,11 @@ struct rand_data {
 	 * of the RNG are marked as SENSITIVE. A user must not
 	 * access that information while the RNG executes its loops to
 	 * calculate the next random value. */
+<<<<<<< HEAD
 	struct sha3_ctx *hash_state;	/* SENSITIVE hash state entropy pool */
+=======
+	void *hash_state;		/* SENSITIVE hash state entropy pool */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	__u64 prev_time;		/* SENSITIVE Previous time stamp */
 	__u64 last_delta;		/* SENSITIVE stuck test */
 	__s64 last_delta2;		/* SENSITIVE stuck test */
@@ -417,9 +421,16 @@ static __u64 jent_loop_shuffle(unsigned int bits, unsigned int min)
  * time [in] time stamp to be injected
  * stuck [in] Is the time stamp identified as stuck?
  *
+<<<<<<< HEAD
  * Output: updated hash context in the entropy collector
  */
 static void jent_condition_data(struct rand_data *ec, __u64 time, int stuck)
+=======
+ * Output:
+ * updated hash context in the entropy collector or error code
+ */
+static int jent_condition_data(struct rand_data *ec, __u64 time, int stuck)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 #define SHA3_HASH_LOOP (1<<3)
 	struct {
@@ -434,8 +445,13 @@ static void jent_condition_data(struct rand_data *ec, __u64 time, int stuck)
 		ec->apt_base
 	};
 
+<<<<<<< HEAD
 	jent_hash_time(ec->hash_state, time, (u8 *)&addtl, sizeof(addtl),
 		       SHA3_HASH_LOOP, stuck);
+=======
+	return jent_hash_time(ec->hash_state, time, (u8 *)&addtl, sizeof(addtl),
+			      SHA3_HASH_LOOP, stuck);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*
@@ -537,7 +553,12 @@ static int jent_measure_jitter(struct rand_data *ec, __u64 *ret_current_delta)
 	stuck = jent_stuck(ec, current_delta);
 
 	/* Now call the next noise sources which also injects the data */
+<<<<<<< HEAD
 	jent_condition_data(ec, current_delta, stuck);
+=======
+	if (jent_condition_data(ec, current_delta, stuck))
+		stuck = 1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* return the raw entropy value */
 	if (ret_current_delta)
@@ -595,7 +616,11 @@ static void jent_gen_entropy(struct rand_data *ec)
  * @return 0 when request is fulfilled or an error
  *
  * The following error codes can occur:
+<<<<<<< HEAD
  *	-1	entropy_collector is NULL
+=======
+ *	-1	entropy_collector is NULL or the generation failed
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
  *	-2	Intermittent health failure
  *	-3	Permanent health failure
  */
@@ -638,7 +663,12 @@ int jent_read_entropy(struct rand_data *ec, unsigned char *data,
 		}
 
 		tocopy = min(DATA_SIZE_BITS / 8, len);
+<<<<<<< HEAD
 		jent_read_random_block(ec->hash_state, p, tocopy);
+=======
+		if (jent_read_random_block(ec->hash_state, p, tocopy))
+			return -1;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 		len -= tocopy;
 		p += tocopy;
@@ -653,7 +683,11 @@ int jent_read_entropy(struct rand_data *ec, unsigned char *data,
 
 struct rand_data *jent_entropy_collector_alloc(unsigned int osr,
 					       unsigned int flags,
+<<<<<<< HEAD
 					       struct sha3_ctx *hash_state)
+=======
+					       void *hash_state)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	struct rand_data *entropy_collector;
 
@@ -701,8 +735,13 @@ void jent_entropy_collector_free(struct rand_data *entropy_collector)
 	jent_zfree(entropy_collector);
 }
 
+<<<<<<< HEAD
 int jent_entropy_init(unsigned int osr, unsigned int flags,
 		      struct sha3_ctx *hash_state, struct rand_data *p_ec)
+=======
+int jent_entropy_init(unsigned int osr, unsigned int flags, void *hash_state,
+		      struct rand_data *p_ec)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	/*
 	 * If caller provides an allocated ec, reuse it which implies that the

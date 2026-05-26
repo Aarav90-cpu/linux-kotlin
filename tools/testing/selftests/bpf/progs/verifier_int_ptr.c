@@ -65,7 +65,11 @@ __naked void ptr_to_long_half_uninitialized(void)
 
 SEC("cgroup/sysctl")
 __description("arg pointer to long misaligned")
+<<<<<<< HEAD
 __failure __msg("misaligned stack access off -20+0 size 8")
+=======
+__failure __msg("misaligned stack access off 0+-20+0 size 8")
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 __naked void arg_ptr_to_long_misaligned(void)
 {
 	asm volatile ("					\

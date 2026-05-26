@@ -396,8 +396,13 @@ static void tcpnv_acked(struct sock *sk, const struct ack_sample *sample)
 
 			/* We have enough data to determine we are congested */
 			ca->nv_allow_cwnd_growth = 0;
+<<<<<<< HEAD
 			WRITE_ONCE(tp->snd_ssthresh,
 				   (nv_ssthresh_factor * max_win) >> 3);
+=======
+			tp->snd_ssthresh =
+				(nv_ssthresh_factor * max_win) >> 3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			if (tcp_snd_cwnd(tp) - max_win > 2) {
 				/* gap > 2, we do exponential cwnd decrease */
 				int dec;

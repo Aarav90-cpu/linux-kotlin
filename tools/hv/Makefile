@@ -2,7 +2,11 @@
 # Makefile for Hyper-V tools
 include ../scripts/Makefile.include
 
+<<<<<<< HEAD
 ARCH ?= $(shell uname -m 2>/dev/null)
+=======
+ARCH := $(shell uname -m 2>/dev/null)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 sbindir ?= /usr/sbin
 libexecdir ?= /usr/libexec
 sharedstatedir ?= /var/lib
@@ -20,7 +24,11 @@ override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
 override CFLAGS += -Wno-address-of-packed-member
 
 ALL_TARGETS := hv_kvp_daemon hv_vss_daemon
+<<<<<<< HEAD
 ifneq ($(filter x86_64 x86,$(ARCH)),)
+=======
+ifneq ($(ARCH), aarch64)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 ALL_TARGETS += hv_fcopy_uio_daemon
 endif
 ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))

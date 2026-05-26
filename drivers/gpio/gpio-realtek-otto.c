@@ -351,10 +351,13 @@ static const struct of_device_id realtek_gpio_of_match[] = {
 	{
 		.compatible = "realtek,rtl9310-gpio",
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "realtek,rtl9607-gpio",
 		.data = (void *)GPIO_PORTS_REVERSED,
 	},
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{}
 };
 MODULE_DEVICE_TABLE(of, realtek_gpio_of_match);

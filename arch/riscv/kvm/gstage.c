@@ -12,21 +12,37 @@
 #include <asm/kvm_gstage.h>
 
 #ifdef CONFIG_64BIT
+<<<<<<< HEAD
 unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init = 3;
 #else
 unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init = 2;
+=======
+unsigned long kvm_riscv_gstage_mode __ro_after_init = HGATP_MODE_SV39X4;
+unsigned long kvm_riscv_gstage_pgd_levels __ro_after_init = 3;
+#else
+unsigned long kvm_riscv_gstage_mode __ro_after_init = HGATP_MODE_SV32X4;
+unsigned long kvm_riscv_gstage_pgd_levels __ro_after_init = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 #endif
 
 #define gstage_pte_leaf(__ptep)	\
 	(pte_val(*(__ptep)) & (_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC))
 
+<<<<<<< HEAD
 static inline unsigned long gstage_pte_index(struct kvm_gstage *gstage,
 					     gpa_t addr, u32 level)
+=======
+static inline unsigned long gstage_pte_index(gpa_t addr, u32 level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	unsigned long mask;
 	unsigned long shift = HGATP_PAGE_SHIFT + (kvm_riscv_gstage_index_bits * level);
 
+<<<<<<< HEAD
 	if (level == gstage->pgd_levels - 1)
+=======
+	if (level == (kvm_riscv_gstage_pgd_levels - 1))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		mask = (PTRS_PER_PTE * (1UL << kvm_riscv_gstage_pgd_xbits)) - 1;
 	else
 		mask = PTRS_PER_PTE - 1;
@@ -39,13 +55,21 @@ static inline unsigned long gstage_pte_page_vaddr(pte_t pte)
 	return (unsigned long)pfn_to_virt(__page_val_to_pfn(pte_val(pte)));
 }
 
+<<<<<<< HEAD
 static int gstage_page_size_to_level(struct kvm_gstage *gstage, unsigned long page_size,
 				     u32 *out_level)
+=======
+static int gstage_page_size_to_level(unsigned long page_size, u32 *out_level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	u32 i;
 	unsigned long psz = 1UL << 12;
 
+<<<<<<< HEAD
 	for (i = 0; i < gstage->pgd_levels; i++) {
+=======
+	for (i = 0; i < kvm_riscv_gstage_pgd_levels; i++) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (page_size == (psz << (i * kvm_riscv_gstage_index_bits))) {
 			*out_level = i;
 			return 0;
@@ -55,23 +79,37 @@ static int gstage_page_size_to_level(struct kvm_gstage *gstage, unsigned long pa
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int gstage_level_to_page_order(struct kvm_gstage *gstage, u32 level,
 				      unsigned long *out_pgorder)
 {
 	if (gstage->pgd_levels < level)
+=======
+static int gstage_level_to_page_order(u32 level, unsigned long *out_pgorder)
+{
+	if (kvm_riscv_gstage_pgd_levels < level)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	*out_pgorder = 12 + (level * kvm_riscv_gstage_index_bits);
 	return 0;
 }
 
+<<<<<<< HEAD
 static int gstage_level_to_page_size(struct kvm_gstage *gstage, u32 level,
 				     unsigned long *out_pgsize)
+=======
+static int gstage_level_to_page_size(u32 level, unsigned long *out_pgsize)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 {
 	int rc;
 	unsigned long page_order = PAGE_SHIFT;
 
+<<<<<<< HEAD
 	rc = gstage_level_to_page_order(gstage, level, &page_order);
+=======
+	rc = gstage_level_to_page_order(level, &page_order);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (rc)
 		return rc;
 
@@ -83,11 +121,19 @@ bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
 			       pte_t **ptepp, u32 *ptep_level)
 {
 	pte_t *ptep;
+<<<<<<< HEAD
 	u32 current_level = gstage->pgd_levels - 1;
 
 	*ptep_level = current_level;
 	ptep = (pte_t *)gstage->pgd;
 	ptep = &ptep[gstage_pte_index(gstage, addr, current_level)];
+=======
+	u32 current_level = kvm_riscv_gstage_pgd_levels - 1;
+
+	*ptep_level = current_level;
+	ptep = (pte_t *)gstage->pgd;
+	ptep = &ptep[gstage_pte_index(addr, current_level)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	while (ptep && pte_val(ptep_get(ptep))) {
 		if (gstage_pte_leaf(ptep)) {
 			*ptep_level = current_level;
@@ -99,7 +145,11 @@ bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
 			current_level--;
 			*ptep_level = current_level;
 			ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
+<<<<<<< HEAD
 			ptep = &ptep[gstage_pte_index(gstage, addr, current_level)];
+=======
+			ptep = &ptep[gstage_pte_index(addr, current_level)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} else {
 			ptep = NULL;
 		}
@@ -112,7 +162,11 @@ static void gstage_tlb_flush(struct kvm_gstage *gstage, u32 level, gpa_t addr)
 {
 	unsigned long order = PAGE_SHIFT;
 
+<<<<<<< HEAD
 	if (gstage_level_to_page_order(gstage, level, &order))
+=======
+	if (gstage_level_to_page_order(level, &order))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 	addr &= ~(BIT(order) - 1);
 
@@ -127,9 +181,15 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
 			     struct kvm_mmu_memory_cache *pcache,
 			     const struct kvm_gstage_mapping *map)
 {
+<<<<<<< HEAD
 	u32 current_level = gstage->pgd_levels - 1;
 	pte_t *next_ptep = (pte_t *)gstage->pgd;
 	pte_t *ptep = &next_ptep[gstage_pte_index(gstage, map->addr, current_level)];
+=======
+	u32 current_level = kvm_riscv_gstage_pgd_levels - 1;
+	pte_t *next_ptep = (pte_t *)gstage->pgd;
+	pte_t *ptep = &next_ptep[gstage_pte_index(map->addr, current_level)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (current_level < map->level)
 		return -EINVAL;
@@ -153,7 +213,11 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
 		}
 
 		current_level--;
+<<<<<<< HEAD
 		ptep = &next_ptep[gstage_pte_index(gstage, map->addr, current_level)];
+=======
+		ptep = &next_ptep[gstage_pte_index(map->addr, current_level)];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (pte_val(*ptep) != pte_val(map->pte)) {
@@ -165,6 +229,7 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void kvm_riscv_gstage_update_pte_prot(struct kvm_gstage *gstage, u32 level,
 					     gpa_t addr, pte_t *ptep, pgprot_t prot)
 {
@@ -181,22 +246,32 @@ static void kvm_riscv_gstage_update_pte_prot(struct kvm_gstage *gstage, u32 leve
 	gstage_tlb_flush(gstage, level, addr);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
 			      struct kvm_mmu_memory_cache *pcache,
 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
 			      bool page_rdonly, bool page_exec,
 			      struct kvm_gstage_mapping *out_map)
 {
+<<<<<<< HEAD
 	bool found_leaf;
 	u32 ptep_level;
 	pgprot_t prot;
 	pte_t *ptep;
+=======
+	pgprot_t prot;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	out_map->addr = gpa;
 	out_map->level = 0;
 
+<<<<<<< HEAD
 	ret = gstage_page_size_to_level(gstage, page_size, &out_map->level);
+=======
+	ret = gstage_page_size_to_level(page_size, &out_map->level);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return ret;
 
@@ -224,6 +299,7 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
 		else
 			prot = PAGE_WRITE;
 	}
+<<<<<<< HEAD
 
 	found_leaf = kvm_riscv_gstage_get_leaf(gstage, gpa, &ptep, &ptep_level);
 	if (found_leaf) {
@@ -261,12 +337,15 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
 		}
 	}
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	out_map->pte = pfn_pte(PFN_DOWN(hpa), prot);
 	out_map->pte = pte_mkdirty(out_map->pte);
 
 	return kvm_riscv_gstage_set_pte(gstage, pcache, out_map);
 }
 
+<<<<<<< HEAD
 static inline unsigned long make_child_pte(unsigned long huge_pte, int index,
 					   unsigned long child_page_size)
 {
@@ -337,6 +416,8 @@ int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
 	return 0;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
 {
@@ -345,7 +426,11 @@ void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
 	u32 next_ptep_level;
 	unsigned long next_page_size, page_size;
 
+<<<<<<< HEAD
 	ret = gstage_level_to_page_size(gstage, ptep_level, &page_size);
+=======
+	ret = gstage_level_to_page_size(ptep_level, &page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (ret)
 		return;
 
@@ -357,7 +442,11 @@ void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
 	if (ptep_level && !gstage_pte_leaf(ptep)) {
 		next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
 		next_ptep_level = ptep_level - 1;
+<<<<<<< HEAD
 		ret = gstage_level_to_page_size(gstage, next_ptep_level, &next_page_size);
+=======
+		ret = gstage_level_to_page_size(next_ptep_level, &next_page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			return;
 
@@ -391,7 +480,11 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
 
 	while (addr < end) {
 		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
+<<<<<<< HEAD
 		ret = gstage_level_to_page_size(gstage, ptep_level, &page_size);
+=======
+		ret = gstage_level_to_page_size(ptep_level, &page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			break;
 
@@ -425,16 +518,27 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
 
 	while (addr < end) {
 		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
+<<<<<<< HEAD
 		ret = gstage_level_to_page_size(gstage, ptep_level, &page_size);
+=======
+		ret = gstage_level_to_page_size(ptep_level, &page_size);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (ret)
 			break;
 
 		if (!found_leaf)
 			goto next;
 
+<<<<<<< HEAD
 		addr = ALIGN_DOWN(addr, page_size);
 		kvm_riscv_gstage_op_pte(gstage, addr, ptep,
 					ptep_level, GSTAGE_OP_WP);
+=======
+		if (!(addr & (page_size - 1)) && ((end - addr) >= page_size))
+			kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+						ptep_level, GSTAGE_OP_WP);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 next:
 		addr += page_size;
 	}
@@ -446,34 +550,59 @@ void __init kvm_riscv_gstage_mode_detect(void)
 	/* Try Sv57x4 G-stage mode */
 	csr_write(CSR_HGATP, HGATP_MODE_SV57X4 << HGATP_MODE_SHIFT);
 	if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV57X4) {
+<<<<<<< HEAD
 		kvm_riscv_gstage_max_pgd_levels = 5;
+=======
+		kvm_riscv_gstage_mode = HGATP_MODE_SV57X4;
+		kvm_riscv_gstage_pgd_levels = 5;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto done;
 	}
 
 	/* Try Sv48x4 G-stage mode */
 	csr_write(CSR_HGATP, HGATP_MODE_SV48X4 << HGATP_MODE_SHIFT);
 	if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV48X4) {
+<<<<<<< HEAD
 		kvm_riscv_gstage_max_pgd_levels = 4;
+=======
+		kvm_riscv_gstage_mode = HGATP_MODE_SV48X4;
+		kvm_riscv_gstage_pgd_levels = 4;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto done;
 	}
 
 	/* Try Sv39x4 G-stage mode */
 	csr_write(CSR_HGATP, HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
 	if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV39X4) {
+<<<<<<< HEAD
 		kvm_riscv_gstage_max_pgd_levels = 3;
+=======
+		kvm_riscv_gstage_mode = HGATP_MODE_SV39X4;
+		kvm_riscv_gstage_pgd_levels = 3;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto done;
 	}
 #else /* CONFIG_32BIT */
 	/* Try Sv32x4 G-stage mode */
 	csr_write(CSR_HGATP, HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
 	if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV32X4) {
+<<<<<<< HEAD
 		kvm_riscv_gstage_max_pgd_levels = 2;
+=======
+		kvm_riscv_gstage_mode = HGATP_MODE_SV32X4;
+		kvm_riscv_gstage_pgd_levels = 2;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		goto done;
 	}
 #endif
 
 	/* KVM depends on !HGATP_MODE_OFF */
+<<<<<<< HEAD
 	kvm_riscv_gstage_max_pgd_levels = 0;
+=======
+	kvm_riscv_gstage_mode = HGATP_MODE_OFF;
+	kvm_riscv_gstage_pgd_levels = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 done:
 	csr_write(CSR_HGATP, 0);

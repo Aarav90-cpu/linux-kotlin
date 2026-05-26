@@ -550,7 +550,11 @@ struct mlx5_debugfs_entries {
 };
 
 enum mlx5_func_type {
+<<<<<<< HEAD
 	MLX5_SELF,
+=======
+	MLX5_PF,
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	MLX5_VF,
 	MLX5_SF,
 	MLX5_HOST_PF,
@@ -705,12 +709,29 @@ struct mlx5_st;
 
 enum {
 	MLX5_PROF_MASK_QP_SIZE		= (u64)1 << 0,
+<<<<<<< HEAD
+=======
+	MLX5_PROF_MASK_MR_CACHE		= (u64)1 << 1,
+};
+
+enum {
+	MKEY_CACHE_LAST_STD_ENTRY = 20,
+	MLX5_IMR_KSM_CACHE_ENTRY,
+	MAX_MKEY_CACHE_ENTRIES
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mlx5_profile {
 	u64	mask;
 	u8	log_max_qp;
 	u8	num_cmd_caches;
+<<<<<<< HEAD
+=======
+	struct {
+		int	size;
+		int	limit;
+	} mr_cache[MAX_MKEY_CACHE_ENTRIES];
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mlx5_hca_cap {
@@ -744,6 +765,10 @@ struct mlx5_core_dev {
 	} caps;
 	struct mlx5_timeouts	*timeouts;
 	u64			sys_image_guid;
+<<<<<<< HEAD
+=======
+	phys_addr_t		iseg_base;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct mlx5_init_seg __iomem *iseg;
 	phys_addr_t             bar_addr;
 	enum mlx5_device_state	state;
@@ -786,7 +811,10 @@ struct mlx5_core_dev {
 	enum mlx5_wc_state wc_state;
 	/* sync write combining state */
 	struct mutex wc_state_lock;
+<<<<<<< HEAD
 	struct devlink *shd;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 };
 
 struct mlx5_db {

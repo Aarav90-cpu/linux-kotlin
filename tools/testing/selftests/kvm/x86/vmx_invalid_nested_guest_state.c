@@ -52,7 +52,11 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	gva_t vmx_pages_gva;
+=======
+	vm_vaddr_t vmx_pages_gva;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	struct kvm_sregs sregs;
 	struct kvm_vcpu *vcpu;
 	struct kvm_run *run;

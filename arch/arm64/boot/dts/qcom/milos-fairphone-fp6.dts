@@ -29,6 +29,7 @@
 	gpio-keys {
 		compatible = "gpio-keys";
 
+<<<<<<< HEAD
 		pinctrl-0 = <&volume_up_default>, <&hall_sensor_default>;
 		pinctrl-names = "default";
 
@@ -42,6 +43,11 @@
 			wakeup-source;
 		};
 
+=======
+		pinctrl-0 = <&volume_up_default>;
+		pinctrl-names = "default";
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		key-volume-up {
 			label = "Volume Up";
 			gpios = <&pm7550_gpios 6 GPIO_ACTIVE_LOW>;
@@ -326,8 +332,11 @@
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+<<<<<<< HEAD
 			/* Hall sensor VDD */
 			regulator-always-on;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		};
 
 		vreg_l11b: ldo11 {
@@ -541,6 +550,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &cci0 {
 	status = "okay";
 };
@@ -591,6 +601,8 @@
 	};
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &gcc {
 	protected-clocks = <GCC_PCIE_1_AUX_CLK>, <GCC_PCIE_1_AUX_CLK_SRC>,
 			   <GCC_PCIE_1_CFG_AHB_CLK>, <GCC_PCIE_1_MSTR_AXI_CLK>,
@@ -817,6 +829,7 @@
 		bias-pull-up;
 	};
 
+<<<<<<< HEAD
 	hall_sensor_default: hall-sensor-default-state {
 		pins = "gpio70";
 		function = "gpio";
@@ -824,6 +837,8 @@
 		bias-disable;
 	};
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	pm8008_int_default: pm8008-int-default-state {
 		pins = "gpio125";
 		function = "gpio";
@@ -836,6 +851,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &ufs_mem_hc {
 	reset-gpios = <&tlmm 167 GPIO_ACTIVE_LOW>;
 
@@ -854,6 +870,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 &usb_1 {
 	dr_mode = "otg";
 

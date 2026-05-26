@@ -52,6 +52,7 @@
 #define SNP_GUEST_VMM_ERR_GENERIC       (~0U)
 
 /* enable/disable SEV support */
+<<<<<<< HEAD
 static bool __ro_after_init sev_enabled = true;
 module_param_named(sev, sev_enabled, bool, 0444);
 
@@ -64,6 +65,20 @@ static bool __ro_after_init sev_snp_enabled = true;
 module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
 
 static unsigned int __ro_after_init nr_ciphertext_hiding_asids;
+=======
+static bool sev_enabled = true;
+module_param_named(sev, sev_enabled, bool, 0444);
+
+/* enable/disable SEV-ES support */
+static bool sev_es_enabled = true;
+module_param_named(sev_es, sev_es_enabled, bool, 0444);
+
+/* enable/disable SEV-SNP support */
+static bool sev_snp_enabled = true;
+module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
+
+static unsigned int nr_ciphertext_hiding_asids;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 module_param_named(ciphertext_hiding_asids, nr_ciphertext_hiding_asids, uint, 0444);
 
 #define AP_RESET_HOLD_NONE		0
@@ -107,6 +122,7 @@ static unsigned int nr_asids;
 static unsigned long *sev_asid_bitmap;
 static unsigned long *sev_reclaim_asid_bitmap;
 
+<<<<<<< HEAD
 static __always_inline void kvm_lockdep_assert_sev_lock_held(struct kvm *kvm)
 {
 #ifdef CONFIG_PROVE_LOCKING
@@ -146,6 +162,8 @@ static bool sev_snp_guest(struct kvm *kvm)
 	return ____sev_snp_guest(kvm);
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int snp_decommission_context(struct kvm *kvm);
 
 struct enc_region {
@@ -237,6 +255,7 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
 	misc_cg_uncharge(type, sev->misc_cg, 1);
 }
 
+<<<<<<< HEAD
 static unsigned int sev_alloc_asid(unsigned int min_asid, unsigned int max_asid)
 {
 	unsigned int asid;
@@ -259,6 +278,8 @@ again:
 	return asid;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
 {
 	/*
@@ -266,6 +287,10 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
 	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
 	 */
 	unsigned int min_asid, max_asid, asid;
+<<<<<<< HEAD
+=======
+	bool retry = true;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	int ret;
 
 	if (vm_type == KVM_X86_SNP_VM) {
@@ -289,6 +314,7 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
 	if (min_asid > max_asid)
 		return -ENOTTY;
 
+<<<<<<< HEAD
 	WARN_ON_ONCE(sev->misc_cg);
 	sev->misc_cg = get_current_misc_cg();
 	ret = sev_misc_cg_try_charge(sev);
@@ -297,16 +323,48 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
 
 	asid = sev_alloc_asid(min_asid, max_asid);
 	if (asid > max_asid) {
+=======
+	WARN_ON(sev->misc_cg);
+	sev->misc_cg = get_current_misc_cg();
+	ret = sev_misc_cg_try_charge(sev);
+	if (ret) {
+		put_misc_cg(sev->misc_cg);
+		sev->misc_cg = NULL;
+		return ret;
+	}
+
+	mutex_lock(&sev_bitmap_lock);
+
+again:
+	asid = find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
+	if (asid > max_asid) {
+		if (retry && __sev_recycle_asids(min_asid, max_asid)) {
+			retry = false;
+			goto again;
+		}
+		mutex_unlock(&sev_bitmap_lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		ret = -EBUSY;
 		goto e_uncharge;
 	}
 
+<<<<<<< HEAD
 	sev->asid = asid;
 	return 0;
 
 e_uncharge:
 	sev_misc_cg_uncharge(sev);
 e_put_cg:
+=======
+	__set_bit(asid, sev_asid_bitmap);
+
+	mutex_unlock(&sev_bitmap_lock);
+
+	sev->asid = asid;
+	return 0;
+e_uncharge:
+	sev_misc_cg_uncharge(sev);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	put_misc_cg(sev->misc_cg);
 	sev->misc_cg = NULL;
 	return ret;
@@ -725,9 +783,18 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
 				    unsigned int flags)
 {
 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+<<<<<<< HEAD
 	unsigned long npages, total_npages, lock_limit;
 	struct page **pages;
 	int npinned, ret;
+=======
+	unsigned long npages, size;
+	int npinned;
+	unsigned long locked, lock_limit;
+	struct page **pages;
+	unsigned long first, last;
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	lockdep_assert_held(&kvm->lock);
 
@@ -736,6 +803,7 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
 
 	/*
 	 * Calculate the number of pages that need to be pinned to cover the
+<<<<<<< HEAD
 	 * entire range.  Note!  This isn't simply PFN_DOWN(ulen), as KVM
 	 * doesn't require the incoming address+size to be page aligned!
 	 */
@@ -761,6 +829,31 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
 	 * pin_user_pages_fast() takes the number of pages as a 32-bit int.
 	 */
 	pages = kvzalloc_objs(*pages, npages, GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
+=======
+	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
+	 * doesn't require the incoming address+size to be page aligned!
+	 */
+	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
+	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
+	npages = (last - first + 1);
+	if (npages > INT_MAX)
+		return ERR_PTR(-EINVAL);
+
+	locked = sev->pages_locked + npages;
+	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+	if (locked > lock_limit && !capable(CAP_IPC_LOCK)) {
+		pr_err("SEV: %lu locked pages exceed the lock limit of %lu.\n", locked, lock_limit);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	/* Avoid using vmalloc for smaller buffers. */
+	size = npages * sizeof(struct page *);
+	if (size > PAGE_SIZE)
+		pages = __vmalloc(size, GFP_KERNEL_ACCOUNT);
+	else
+		pages = kmalloc(size, GFP_KERNEL_ACCOUNT);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (!pages)
 		return ERR_PTR(-ENOMEM);
 
@@ -773,7 +866,11 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
 	}
 
 	*n = npages;
+<<<<<<< HEAD
 	sev->pages_locked = total_npages;
+=======
+	sev->pages_locked = locked;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	return pages;
 
@@ -1084,6 +1181,7 @@ static int sev_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
 	if (kvm_is_vcpu_creation_in_progress(kvm))
 		return -EBUSY;
 
+<<<<<<< HEAD
 	ret = kvm_lock_all_vcpus(kvm);
 	if (ret)
 		return ret;
@@ -1096,6 +1194,21 @@ static int sev_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
 
 	kvm_unlock_all_vcpus(kvm);
 	return ret;
+=======
+	kvm_for_each_vcpu(i, vcpu, kvm) {
+		ret = mutex_lock_killable(&vcpu->mutex);
+		if (ret)
+			return ret;
+
+		ret = __sev_launch_update_vmsa(kvm, vcpu, &argp->error);
+
+		mutex_unlock(&vcpu->mutex);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int sev_launch_measure(struct kvm *kvm, struct kvm_sev_cmd *argp)
@@ -2415,6 +2528,10 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
 	struct kvm_memory_slot *memslot;
 	long npages, count;
 	void __user *src;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!sev_snp_guest(kvm) || !sev->snp_context)
 		return -EINVAL;
@@ -2459,11 +2576,21 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
 	 * initial expected state and better guard against unexpected
 	 * situations.
 	 */
+<<<<<<< HEAD
 	guard(mutex)(&kvm->slots_lock);
 
 	memslot = gfn_to_memslot(kvm, params.gfn_start);
 	if (!kvm_slot_has_gmem(memslot))
 		return -EINVAL;
+=======
+	mutex_lock(&kvm->slots_lock);
+
+	memslot = gfn_to_memslot(kvm, params.gfn_start);
+	if (!kvm_slot_has_gmem(memslot)) {
+		ret = -EINVAL;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sev_populate_args.sev_fd = argp->sev_fd;
 	sev_populate_args.type = params.type;
@@ -2474,6 +2601,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
 		argp->error = sev_populate_args.fw_error;
 		pr_debug("%s: kvm_gmem_populate failed, ret %ld (fw_error %d)\n",
 			 __func__, count, argp->error);
+<<<<<<< HEAD
 		return -EIO;
 	}
 
@@ -2486,6 +2614,24 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
 		return -EFAULT;
 
 	return 0;
+=======
+		ret = -EIO;
+	} else {
+		params.gfn_start += count;
+		params.len -= count * PAGE_SIZE;
+		if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+			params.uaddr += count * PAGE_SIZE;
+
+		ret = 0;
+		if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+			ret = -EFAULT;
+	}
+
+out:
+	mutex_unlock(&kvm->slots_lock);
+
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
@@ -2645,17 +2791,29 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
 	if (copy_from_user(&sev_cmd, argp, sizeof(struct kvm_sev_cmd)))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	guard(mutex)(&kvm->lock);
 
 	/* Only the enc_context_owner handles some memory enc operations. */
 	if (is_mirroring_enc_context(kvm) &&
 	    !is_cmd_allowed_from_mirror(sev_cmd.id))
 		return -EINVAL;
+=======
+	mutex_lock(&kvm->lock);
+
+	/* Only the enc_context_owner handles some memory enc operations. */
+	if (is_mirroring_enc_context(kvm) &&
+	    !is_cmd_allowed_from_mirror(sev_cmd.id)) {
+		r = -EINVAL;
+		goto out;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * Once KVM_SEV_INIT2 initializes a KVM instance as an SNP guest, only
 	 * allow the use of SNP-specific commands.
 	 */
+<<<<<<< HEAD
 	if (sev_snp_guest(kvm) && sev_cmd.id < KVM_SEV_SNP_LAUNCH_START)
 		return -EPERM;
 
@@ -2663,6 +2821,19 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
 	case KVM_SEV_ES_INIT:
 		if (!sev_es_enabled)
 			return -ENOTTY;
+=======
+	if (sev_snp_guest(kvm) && sev_cmd.id < KVM_SEV_SNP_LAUNCH_START) {
+		r = -EPERM;
+		goto out;
+	}
+
+	switch (sev_cmd.id) {
+	case KVM_SEV_ES_INIT:
+		if (!sev_es_enabled) {
+			r = -ENOTTY;
+			goto out;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		fallthrough;
 	case KVM_SEV_INIT:
 		r = sev_guest_init(kvm, &sev_cmd);
@@ -2734,12 +2905,22 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
 		r = snp_enable_certs(kvm);
 		break;
 	default:
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		r = -EINVAL;
+		goto out;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	if (copy_to_user(argp, &sev_cmd, sizeof(struct kvm_sev_cmd)))
 		r = -EFAULT;
 
+<<<<<<< HEAD
+=======
+out:
+	mutex_unlock(&kvm->lock);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return r;
 }
 
@@ -2759,6 +2940,12 @@ int sev_mem_enc_register_region(struct kvm *kvm,
 	if (is_mirroring_enc_context(kvm))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
+		return -EINVAL;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	region = kzalloc_obj(*region, GFP_KERNEL_ACCOUNT);
 	if (!region)
 		return -ENOMEM;
@@ -2819,11 +3006,16 @@ int sev_mem_enc_unregister_region(struct kvm *kvm,
 				  struct kvm_enc_region *range)
 {
 	struct enc_region *region;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* If kvm is mirroring encryption context it isn't responsible for it */
 	if (is_mirroring_enc_context(kvm))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	guard(mutex)(&kvm->lock);
 
 	if (!sev_guest(kvm))
@@ -2832,12 +3024,35 @@ int sev_mem_enc_unregister_region(struct kvm *kvm,
 	region = find_enc_region(kvm, range);
 	if (!region)
 		return -EINVAL;
+=======
+	mutex_lock(&kvm->lock);
+
+	if (!sev_guest(kvm)) {
+		ret = -ENOTTY;
+		goto failed;
+	}
+
+	region = find_enc_region(kvm, range);
+	if (!region) {
+		ret = -EINVAL;
+		goto failed;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	sev_writeback_caches(kvm);
 
 	__unregister_enc_region_locked(kvm, region);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	mutex_unlock(&kvm->lock);
+	return 0;
+
+failed:
+	mutex_unlock(&kvm->lock);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
@@ -2932,6 +3147,7 @@ static int snp_decommission_context(struct kvm *kvm)
 	return 0;
 }
 
+<<<<<<< HEAD
 void sev_vm_init(struct kvm *kvm)
 {
 	switch (kvm->arch.vm_type) {
@@ -2954,6 +3170,8 @@ void sev_vm_init(struct kvm *kvm)
 	}
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 void sev_vm_destroy(struct kvm *kvm)
 {
 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
@@ -3300,6 +3518,7 @@ void sev_guest_memory_reclaimed(struct kvm *kvm)
 	 * With SNP+gmem, private/encrypted memory is unreachable via the
 	 * hva-based mmu notifiers, i.e. these events are explicitly scoped to
 	 * shared pages, where there's no need to flush caches.
+<<<<<<< HEAD
 	 *
 	 * Checking for SEV+ outside of kvm->lock is safe as __sev_guest_init()
 	 * can only be done before vCPUs are created, caches can be incoherent
@@ -3308,6 +3527,10 @@ void sev_guest_memory_reclaimed(struct kvm *kvm)
 	 * the in-progress invalidation).
 	 */
 	if (!____sev_guest(kvm) || ____sev_snp_guest(kvm))
+=======
+	 */
+	if (!sev_guest(kvm) || sev_snp_guest(kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	sev_writeback_caches(kvm);
@@ -3317,7 +3540,11 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm;
 
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu))
+=======
+	if (!sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return;
 
 	svm = to_svm(vcpu);
@@ -3327,7 +3554,11 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
 	 * a guest-owned page. Transition the page to hypervisor state before
 	 * releasing it back to the system.
 	 */
+<<<<<<< HEAD
 	if (is_sev_snp_guest(vcpu)) {
+=======
+	if (sev_snp_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
 
 		if (kvm_rmp_make_shared(vcpu->kvm, pfn, PG_LEVEL_4K))
@@ -3528,7 +3759,11 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
 			goto vmgexit_err;
 		break;
 	case SVM_VMGEXIT_AP_CREATION:
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu))
+=======
+		if (!sev_snp_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto vmgexit_err;
 		if (lower_32_bits(control->exit_info_1) != SVM_VMGEXIT_AP_DESTROY)
 			if (!kvm_ghcb_rax_is_valid(svm))
@@ -3542,12 +3777,20 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
 	case SVM_VMGEXIT_TERM_REQUEST:
 		break;
 	case SVM_VMGEXIT_PSC:
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu) || !kvm_ghcb_sw_scratch_is_valid(svm))
+=======
+		if (!sev_snp_guest(vcpu->kvm) || !kvm_ghcb_sw_scratch_is_valid(svm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto vmgexit_err;
 		break;
 	case SVM_VMGEXIT_GUEST_REQUEST:
 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu) ||
+=======
+		if (!sev_snp_guest(vcpu->kvm) ||
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		    !PAGE_ALIGNED(control->exit_info_1) ||
 		    !PAGE_ALIGNED(control->exit_info_2) ||
 		    control->exit_info_1 == control->exit_info_2)
@@ -3621,8 +3864,12 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
 int pre_sev_run(struct vcpu_svm *svm, int cpu)
 {
 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
+<<<<<<< HEAD
 	struct kvm_vcpu *vcpu = &svm->vcpu;
 	struct kvm *kvm = vcpu->kvm;
+=======
+	struct kvm *kvm = svm->vcpu.kvm;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	unsigned int asid = sev_get_asid(kvm);
 
 	/*
@@ -3630,7 +3877,11 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
 	 * VMSA, e.g. if userspace forces the vCPU to be RUNNABLE after an SNP
 	 * AP Destroy event.
 	 */
+<<<<<<< HEAD
 	if (is_sev_es_guest(vcpu) && !VALID_PAGE(svm->vmcb->control.vmsa_pa))
+=======
+	if (sev_es_guest(kvm) && !VALID_PAGE(svm->vmcb->control.vmsa_pa))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	/*
@@ -4176,6 +4427,7 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
 	sev_ret_code fw_err = 0;
 	int ret;
 
+<<<<<<< HEAD
 	if (!is_sev_snp_guest(&svm->vcpu))
 		return -EINVAL;
 
@@ -4183,6 +4435,17 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
 
 	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE))
 		return -EIO;
+=======
+	if (!sev_snp_guest(kvm))
+		return -EINVAL;
+
+	mutex_lock(&sev->guest_req_mutex);
+
+	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE)) {
+		ret = -EIO;
+		goto out_unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	data.gctx_paddr = __psp_pa(sev->snp_context);
 	data.req_paddr = __psp_pa(sev->guest_req_buf);
@@ -4195,16 +4458,33 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
 	 */
 	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &fw_err);
 	if (ret && !fw_err)
+<<<<<<< HEAD
 		return ret;
 
 	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
 		return -EIO;
+=======
+		goto out_unlock;
+
+	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE)) {
+		ret = -EIO;
+		goto out_unlock;
+	}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* No action is requested *from KVM* if there was a firmware error. */
 	svm_vmgexit_no_action(svm, SNP_GUEST_ERR(0, fw_err));
 
+<<<<<<< HEAD
 	/* resume guest */
 	return 1;
+=======
+	ret = 1; /* resume guest */
+
+out_unlock:
+	mutex_unlock(&sev->guest_req_mutex);
+	return ret;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 static int snp_req_certs_err(struct vcpu_svm *svm, u32 vmm_error)
@@ -4239,12 +4519,19 @@ static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
 
 static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
 {
+<<<<<<< HEAD
 	struct kvm_vcpu *vcpu = &svm->vcpu;
 	struct kvm *kvm = vcpu->kvm;
 
 	u8 msg_type;
 
 	if (!is_sev_snp_guest(vcpu))
+=======
+	struct kvm *kvm = svm->vcpu.kvm;
+	u8 msg_type;
+
+	if (!sev_snp_guest(kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return -EINVAL;
 
 	if (kvm_read_guest(kvm, req_gpa + offsetof(struct snp_guest_msg_hdr, msg_type),
@@ -4263,6 +4550,10 @@ static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t r
 	 */
 	if (msg_type == SNP_MSG_REPORT_REQ) {
 		struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+<<<<<<< HEAD
+=======
+		struct kvm_vcpu *vcpu = &svm->vcpu;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		u64 data_npages;
 		gpa_t data_gpa;
 
@@ -4379,7 +4670,11 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
 				  GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
 		break;
 	case GHCB_MSR_PREF_GPA_REQ:
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu))
+=======
+		if (!sev_snp_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_terminate;
 
 		set_ghcb_msr_bits(svm, GHCB_MSR_PREF_GPA_NONE, GHCB_MSR_GPA_VALUE_MASK,
@@ -4390,7 +4685,11 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
 	case GHCB_MSR_REG_GPA_REQ: {
 		u64 gfn;
 
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu))
+=======
+		if (!sev_snp_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_terminate;
 
 		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_GPA_VALUE_MASK,
@@ -4405,7 +4704,11 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
 		break;
 	}
 	case GHCB_MSR_PSC_REQ:
+<<<<<<< HEAD
 		if (!is_sev_snp_guest(vcpu))
+=======
+		if (!sev_snp_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			goto out_terminate;
 
 		ret = snp_begin_psc_msr(svm, control->ghcb_gpa);
@@ -4478,7 +4781,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
 	sev_es_sync_from_ghcb(svm);
 
 	/* SEV-SNP guest requires that the GHCB GPA must be registered */
+<<<<<<< HEAD
 	if (is_sev_snp_guest(vcpu) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
+=======
+	if (sev_snp_guest(svm->vcpu.kvm) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		vcpu_unimpl(&svm->vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n", ghcb_gpa);
 		return -EINVAL;
 	}
@@ -4491,6 +4798,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
 
 	switch (control->exit_code) {
 	case SVM_VMGEXIT_MMIO_READ:
+<<<<<<< HEAD
 	case SVM_VMGEXIT_MMIO_WRITE: {
 		bool is_write = control->exit_code == SVM_VMGEXIT_MMIO_WRITE;
 
@@ -4502,6 +4810,27 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
 				      control->exit_info_2, svm->sev_es.ghcb_sa);
 		break;
 	}
+=======
+		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
+		if (ret)
+			break;
+
+		ret = kvm_sev_es_mmio_read(vcpu,
+					   control->exit_info_1,
+					   control->exit_info_2,
+					   svm->sev_es.ghcb_sa);
+		break;
+	case SVM_VMGEXIT_MMIO_WRITE:
+		ret = setup_vmgexit_scratch(svm, false, control->exit_info_2);
+		if (ret)
+			break;
+
+		ret = kvm_sev_es_mmio_write(vcpu,
+					    control->exit_info_1,
+					    control->exit_info_2,
+					    svm->sev_es.ghcb_sa);
+		break;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	case SVM_VMGEXIT_NMI_COMPLETE:
 		++vcpu->stat.nmi_window_exits;
 		svm->nmi_masked = false;
@@ -4648,7 +4977,11 @@ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
 	struct kvm_sev_info *sev = to_kvm_sev_info(svm->vcpu.kvm);
 	struct vmcb *vmcb = svm->vmcb01.ptr;
 
+<<<<<<< HEAD
 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV_ES;
+=======
+	svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ES_ENABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/*
 	 * An SEV-ES guest requires a VMSA area that is a separate from the
@@ -4688,7 +5021,11 @@ static void sev_es_init_vmcb(struct vcpu_svm *svm, bool init_event)
 	if (!sev_vcpu_has_debug_swap(svm)) {
 		vmcb_set_intercept(&vmcb->control, INTERCEPT_DR7_READ);
 		vmcb_set_intercept(&vmcb->control, INTERCEPT_DR7_WRITE);
+<<<<<<< HEAD
 		svm_mark_intercepts_dirty(svm);
+=======
+		recalc_intercepts(svm);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	} else {
 		/*
 		 * Disable #DB intercept iff DebugSwap is enabled.  KVM doesn't
@@ -4719,7 +5056,11 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
 {
 	struct kvm_vcpu *vcpu = &svm->vcpu;
 
+<<<<<<< HEAD
 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV;
+=======
+	svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ENABLE;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	clr_exception_intercept(svm, UD_VECTOR);
 
 	/*
@@ -4728,10 +5069,17 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
 	 */
 	clr_exception_intercept(svm, GP_VECTOR);
 
+<<<<<<< HEAD
 	if (init_event && is_sev_snp_guest(vcpu))
 		sev_snp_init_protected_guest_state(vcpu);
 
 	if (is_sev_es_guest(vcpu))
+=======
+	if (init_event && sev_snp_guest(vcpu->kvm))
+		sev_snp_init_protected_guest_state(vcpu);
+
+	if (sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		sev_es_init_vmcb(svm, init_event);
 }
 
@@ -4742,7 +5090,11 @@ int sev_vcpu_create(struct kvm_vcpu *vcpu)
 
 	mutex_init(&svm->sev_es.snp_vmsa_mutex);
 
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu))
+=======
+	if (!sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return 0;
 
 	/*
@@ -4762,6 +5114,11 @@ int sev_vcpu_create(struct kvm_vcpu *vcpu)
 
 void sev_es_prepare_switch_to_guest(struct vcpu_svm *svm, struct sev_es_save_area *hostsa)
 {
+<<<<<<< HEAD
+=======
+	struct kvm *kvm = svm->vcpu.kvm;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * All host state for SEV-ES guests is categorized into three swap types
 	 * based on how it is handled by hardware during a world switch:
@@ -4800,8 +5157,12 @@ void sev_es_prepare_switch_to_guest(struct vcpu_svm *svm, struct sev_es_save_are
 	 * loaded with the correct values *if* the CPU writes the MSRs.
 	 */
 	if (sev_vcpu_has_debug_swap(svm) ||
+<<<<<<< HEAD
 	    (cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP) &&
 	     is_sev_snp_guest(&svm->vcpu))) {
+=======
+	    (sev_snp_guest(kvm) && cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP))) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		hostsa->dr0_addr_mask = amd_get_dr_addr_mask(0);
 		hostsa->dr1_addr_mask = amd_get_dr_addr_mask(1);
 		hostsa->dr2_addr_mask = amd_get_dr_addr_mask(2);
@@ -5165,7 +5526,11 @@ struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
 	int error = 0;
 	int ret;
 
+<<<<<<< HEAD
 	if (!is_sev_es_guest(vcpu))
+=======
+	if (!sev_es_guest(vcpu->kvm))
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		return NULL;
 
 	/*
@@ -5178,7 +5543,11 @@ struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
 	sev = to_kvm_sev_info(vcpu->kvm);
 
 	/* Check if the SEV policy allows debugging */
+<<<<<<< HEAD
 	if (is_sev_snp_guest(vcpu)) {
+=======
+	if (sev_snp_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if (!(sev->policy & SNP_POLICY_MASK_DEBUG))
 			return NULL;
 	} else {
@@ -5186,7 +5555,11 @@ struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
 			return NULL;
 	}
 
+<<<<<<< HEAD
 	if (is_sev_snp_guest(vcpu)) {
+=======
+	if (sev_snp_guest(vcpu->kvm)) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		struct sev_data_snp_dbg dbg = {0};
 
 		vmsa = snp_alloc_firmware_page(__GFP_ZERO);

@@ -27,6 +27,7 @@ properties:
   interrupts:
     maxItems: 1
 
+<<<<<<< HEAD
   vin1-supply:
     description:
       Power supply for BUCK1. Required if BUCK1 is defined.
@@ -62,6 +63,10 @@ properties:
   dldoin2-supply:
     description:
       Power supply for DLDO5-7. Required if any are defined.
+=======
+  vin-supply:
+    description: Input supply phandle.
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
   regulators:
     type: object
@@ -91,10 +96,13 @@ examples:
             compatible = "spacemit,p1";
             reg = <0x41>;
             interrupts = <64>;
+<<<<<<< HEAD
             vin1-supply = <&reg_vcc_5v>;
             vin5-supply = <&reg_vcc_5v>;
             aldoin-supply = <&reg_vcc_5v>;
             dldoin1-supply = <&buck5>;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
             regulators {
                 buck1 {
@@ -105,6 +113,7 @@ examples:
                     regulator-always-on;
                 };
 
+<<<<<<< HEAD
                 buck5: buck5 {
                     regulator-name = "buck5";
                     regulator-min-microvolt = <500000>;
@@ -113,6 +122,8 @@ examples:
                     regulator-always-on;
                 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
                 aldo1 {
                     regulator-name = "aldo1";
                     regulator-min-microvolt = <500000>;

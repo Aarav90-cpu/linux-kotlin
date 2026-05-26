@@ -39,6 +39,7 @@ struct fuse_copy_state {
 	} ring;
 };
 
+<<<<<<< HEAD
 /* fud->fc gets assigned to this value when /dev/fuse is closed */
 #define FUSE_DEV_FC_DISCONNECTED ((struct fuse_conn *) 1)
 
@@ -69,6 +70,20 @@ static inline struct fuse_dev *__fuse_get_dev(struct file *file)
 		return NULL;
 
 	return fud;
+=======
+#define FUSE_DEV_SYNC_INIT ((struct fuse_dev *) 1)
+#define FUSE_DEV_PTR_MASK (~1UL)
+
+static inline struct fuse_dev *__fuse_get_dev(struct file *file)
+{
+	/*
+	 * Lockless access is OK, because file->private data is set
+	 * once during mount and is valid until the file is released.
+	 */
+	struct fuse_dev *fud = READ_ONCE(file->private_data);
+
+	return (typeof(fud)) ((unsigned long) fud & FUSE_DEV_PTR_MASK);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 struct fuse_dev *fuse_get_dev(struct file *file);

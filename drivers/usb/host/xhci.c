@@ -536,16 +536,44 @@ static void xhci_set_dev_notifications(struct xhci_hcd *xhci)
 	writel(dev_notf, &xhci->op_regs->dev_notification);
 }
 
+<<<<<<< HEAD
 /* Setup basic xHCI registers */
 static void xhci_init(struct usb_hcd *hcd)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Starting %s", __func__);
+=======
+/*
+ * Initialize memory for HCD and xHC (one-time init).
+ *
+ * Program the PAGESIZE register, initialize the device context array, create
+ * device contexts (?), set up a command ring segment (or two?), create event
+ * ring (one for now).
+ */
+static int xhci_init(struct usb_hcd *hcd)
+{
+	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+	int retval;
+
+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Starting %s", __func__);
+	spin_lock_init(&xhci->lock);
+
+	INIT_LIST_HEAD(&xhci->cmd_list);
+	INIT_DELAYED_WORK(&xhci->cmd_timer, xhci_handle_command_timeout);
+	init_completion(&xhci->cmd_ring_stop_completion);
+	xhci_hcd_page_size(xhci);
+	memset(xhci->devs, 0, MAX_HC_SLOTS * sizeof(*xhci->devs));
+
+	retval = xhci_mem_init(xhci, GFP_KERNEL);
+	if (retval)
+		return retval;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* Set the Number of Device Slots Enabled to the maximum supported value */
 	xhci_enable_max_dev_slots(xhci);
 
+<<<<<<< HEAD
 	/* Initialize the Command ring */
 	xhci_ring_init(xhci, xhci->cmd_ring);
 	/*
@@ -554,6 +582,8 @@ static void xhci_init(struct usb_hcd *hcd)
 	 * disabling LPM, we only need to reserve one TRB for all devices.
 	 */
 	xhci->cmd_ring_reserved_trbs = 1;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/* Set the address in the Command Ring Control register */
 	xhci_set_cmd_ring_deq(xhci);
 
@@ -567,7 +597,10 @@ static void xhci_init(struct usb_hcd *hcd)
 	xhci_set_dev_notifications(xhci);
 
 	/* Initialize the Primary interrupter */
+<<<<<<< HEAD
 	xhci_ring_init(xhci, xhci->interrupters[0]->event_ring);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	xhci_add_interrupter(xhci, 0);
 	xhci->interrupters[0]->isoc_bei_interval = AVOID_BEI_INTERVAL_MAX;
 
@@ -578,6 +611,10 @@ static void xhci_init(struct usb_hcd *hcd)
 	}
 
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Finished %s", __func__);
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 
 /*-------------------------------------------------------------------------*/
@@ -957,11 +994,19 @@ static bool xhci_pending_portevent(struct xhci_hcd *xhci)
  */
 int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 {
+<<<<<<< HEAD
 	int			err;
 	unsigned int		delay = XHCI_MAX_HALT_USEC * 2;
 	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
 	u32			command;
 	u32			usbsts;
+=======
+	int			rc = 0;
+	unsigned int		delay = XHCI_MAX_HALT_USEC * 2;
+	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
+	u32			command;
+	u32			res;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hcd->state)
 		return 0;
@@ -1007,10 +1052,18 @@ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 	/* Some chips from Fresco Logic need an extraordinary delay */
 	delay *= (xhci->quirks & XHCI_SLOW_SUSPEND) ? 10 : 1;
 
+<<<<<<< HEAD
 	err = xhci_handshake(&xhci->op_regs->status, STS_HALT, STS_HALT, delay);
 	if (err) {
 		xhci_warn(xhci, "Clearing Run/Stop bit failed %d\n", err);
 		goto handshake_error;
+=======
+	if (xhci_handshake(&xhci->op_regs->status,
+		      STS_HALT, STS_HALT, delay)) {
+		xhci_warn(xhci, "WARN: xHC CMD_RUN timeout\n");
+		spin_unlock_irq(&xhci->lock);
+		return -ETIMEDOUT;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	xhci_clear_command_ring(xhci);
 
@@ -1021,6 +1074,7 @@ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 	command = readl(&xhci->op_regs->command);
 	command |= CMD_CSS;
 	writel(command, &xhci->op_regs->command);
+<<<<<<< HEAD
 
 	err = xhci_handshake(&xhci->op_regs->status, STS_SAVE, 0, 20 * USEC_PER_MSEC);
 	usbsts = readl(&xhci->op_regs->status);
@@ -1049,6 +1103,30 @@ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 		xhci->broken_suspend = 1;
 	} else if (usbsts & STS_SRE) {
 		xhci_warn(xhci, "Suspend Save Error (SRE), USBSTS 0x%08x\n", usbsts);
+=======
+	xhci->broken_suspend = 0;
+	if (xhci_handshake(&xhci->op_regs->status,
+				STS_SAVE, 0, 20 * 1000)) {
+	/*
+	 * AMD SNPS xHC 3.0 occasionally does not clear the
+	 * SSS bit of USBSTS and when driver tries to poll
+	 * to see if the xHC clears BIT(8) which never happens
+	 * and driver assumes that controller is not responding
+	 * and times out. To workaround this, its good to check
+	 * if SRE and HCE bits are not set (as per xhci
+	 * Section 5.4.2) and bypass the timeout.
+	 */
+		res = readl(&xhci->op_regs->status);
+		if ((xhci->quirks & XHCI_SNPS_BROKEN_SUSPEND) &&
+		    (((res & STS_SRE) == 0) &&
+				((res & STS_HCE) == 0))) {
+			xhci->broken_suspend = 1;
+		} else {
+			xhci_warn(xhci, "WARN: xHC save state timeout\n");
+			spin_unlock_irq(&xhci->lock);
+			return -ETIMEDOUT;
+		}
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 	spin_unlock_irq(&xhci->lock);
 
@@ -1064,11 +1142,15 @@ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup)
 				__func__);
 	}
 
+<<<<<<< HEAD
 	return 0;
 
 handshake_error:
 	spin_unlock_irq(&xhci->lock);
 	return -ETIMEDOUT;
+=======
+	return rc;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 }
 EXPORT_SYMBOL_GPL(xhci_suspend);
 
@@ -1082,11 +1164,18 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 {
 	u32			command, temp = 0;
 	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
+<<<<<<< HEAD
 	struct xhci_segment	*seg;
 	int			retval = 0;
 	bool			pending_portevent = false;
 	bool			suspended_usb3_devs = false;
 	bool			reset_registers = false;
+=======
+	int			retval = 0;
+	bool			comp_timer_running = false;
+	bool			pending_portevent = false;
+	bool			suspended_usb3_devs = false;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!hcd->state)
 		return 0;
@@ -1105,11 +1194,18 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 
 	spin_lock_irq(&xhci->lock);
 
+<<<<<<< HEAD
 	if (power_lost || xhci->broken_suspend || xhci->quirks & XHCI_RESET_ON_RESUME) {
 		xhci_dbg(xhci, "HC state lost, performing host controller reset\n");
 		reset_registers = true;
 	} else {
 		xhci_dbg(xhci, "HC state intact, continuing without reset\n");
+=======
+	if (xhci->quirks & XHCI_RESET_ON_RESUME || xhci->broken_suspend)
+		power_lost = true;
+
+	if (!power_lost) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		/*
 		 * Some controllers might lose power during suspend, so wait
 		 * for controller not ready bit to clear, just as in xHC init.
@@ -1142,6 +1238,7 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 			spin_unlock_irq(&xhci->lock);
 			return -ETIMEDOUT;
 		}
+<<<<<<< HEAD
 
 		/* re-initialize the HC on Restore Error, or Host Controller Error */
 		temp = readl(&xhci->op_regs->status);
@@ -1152,6 +1249,21 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 	}
 
 	if (reset_registers) {
+=======
+	}
+
+	temp = readl(&xhci->op_regs->status);
+
+	/* re-initialize the HC on Restore Error, or Host Controller Error */
+	if ((temp & (STS_SRE | STS_HCE)) &&
+	    !(xhci->xhc_state & XHCI_STATE_REMOVING)) {
+		if (!power_lost)
+			xhci_warn(xhci, "xHC error in resume, USBSTS 0x%x, Reinit\n", temp);
+		power_lost = true;
+	}
+
+	if (power_lost) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		if ((xhci->quirks & XHCI_COMP_MODE_QUIRK) &&
 				!(xhci_all_ports_seen_u0(xhci))) {
 			timer_delete_sync(&xhci->comp_mode_recovery_timer);
@@ -1175,6 +1287,7 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 		if (retval)
 			return retval;
 
+<<<<<<< HEAD
 		cancel_delayed_work_sync(&xhci->cmd_timer);
 
 		/* Delete all remaining commands */
@@ -1202,6 +1315,29 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 		 * first with the primary HCD, and then with the secondary HCD.
 		 * If we don't do the same, the host will never be started.
 		 */
+=======
+		xhci_dbg(xhci, "// Disabling event ring interrupts\n");
+		temp = readl(&xhci->op_regs->status);
+		writel((temp & ~0x1fff) | STS_EINT, &xhci->op_regs->status);
+		xhci_disable_interrupter(xhci, xhci->interrupters[0]);
+
+		xhci_dbg(xhci, "cleaning up memory\n");
+		xhci_mem_cleanup(xhci);
+		xhci_debugfs_exit(xhci);
+		xhci_dbg(xhci, "xhci_stop completed - status = %x\n",
+			    readl(&xhci->op_regs->status));
+
+		/* USB core calls the PCI reinit and start functions twice:
+		 * first with the primary HCD, and then with the secondary HCD.
+		 * If we don't do the same, the host will never be started.
+		 */
+		xhci_dbg(xhci, "Initialize the xhci_hcd\n");
+		retval = xhci_init(hcd);
+		if (retval)
+			return retval;
+		comp_timer_running = true;
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		xhci_dbg(xhci, "Start the primary HCD\n");
 		retval = xhci_run(hcd);
 		if (!retval && xhci->shared_hcd) {
@@ -1245,6 +1381,7 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 
 	xhci_dbc_resume(xhci);
 
+<<<<<<< HEAD
 	/*
 	 * Resume roothubs only if there are pending events.
 	 * USB 3 devices resend U3 LFPS wake after a 100ms delay if
@@ -1266,15 +1403,48 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
 		usb_hcd_resume_root_hub(hcd);
 	}
 
+=======
+	if (retval == 0) {
+		/*
+		 * Resume roothubs only if there are pending events.
+		 * USB 3 devices resend U3 LFPS wake after a 100ms delay if
+		 * the first wake signalling failed, give it that chance if
+		 * there are suspended USB 3 devices.
+		 */
+		if (xhci->usb3_rhub.bus_state.suspended_ports ||
+		    xhci->usb3_rhub.bus_state.bus_suspended)
+			suspended_usb3_devs = true;
+
+		pending_portevent = xhci_pending_portevent(xhci);
+
+		if (suspended_usb3_devs && !pending_portevent && is_auto_resume) {
+			msleep(120);
+			pending_portevent = xhci_pending_portevent(xhci);
+		}
+
+		if (pending_portevent) {
+			if (xhci->shared_hcd)
+				usb_hcd_resume_root_hub(xhci->shared_hcd);
+			usb_hcd_resume_root_hub(hcd);
+		}
+	}
+done:
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	/*
 	 * If system is subject to the Quirk, Compliance Mode Timer needs to
 	 * be re-initialized Always after a system resume. Ports are subject
 	 * to suffer the Compliance Mode issue again. It doesn't matter if
 	 * ports have entered previously to U0 before system's suspension.
 	 */
+<<<<<<< HEAD
 	if (xhci->quirks & XHCI_COMP_MODE_QUIRK)
 		compliance_mode_recovery_timer_init(xhci);
 done:
+=======
+	if ((xhci->quirks & XHCI_COMP_MODE_QUIRK) && !comp_timer_running)
+		compliance_mode_recovery_timer_init(xhci);
+
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	if (xhci->quirks & XHCI_ASMEDIA_MODIFY_FLOWCONTROL)
 		usb_asmedia_modifyflowcontrol(to_pci_dev(hcd->self.controller));
 
@@ -3201,12 +3371,16 @@ void xhci_reset_bandwidth(struct usb_hcd *hcd, struct usb_device *udev)
 }
 EXPORT_SYMBOL_GPL(xhci_reset_bandwidth);
 
+<<<<<<< HEAD
 /*
  * Get the available bandwidth of the ports under the xhci roothub.
  * EIO means the command failed: command not implemented or unsupported
  * speed (TRB Error), some ASMedia complete with Parameter Error when
  * querying the root hub (slot_id = 0), or other error or timeout.
  */
+=======
+/* Get the available bandwidth of the ports under the xhci roothub */
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 int xhci_get_port_bandwidth(struct xhci_hcd *xhci, struct xhci_container_ctx *ctx,
 			    u8 dev_speed)
 {
@@ -3235,8 +3409,11 @@ int xhci_get_port_bandwidth(struct xhci_hcd *xhci, struct xhci_container_ctx *ct
 	spin_unlock_irqrestore(&xhci->lock, flags);
 
 	wait_for_completion(cmd->completion);
+<<<<<<< HEAD
 	if (cmd->status != COMP_SUCCESS)
 		ret = -EIO;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 err_out:
 	kfree(cmd->completion);
 	kfree(cmd);
@@ -5527,6 +5704,7 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 		dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
 	}
 
+<<<<<<< HEAD
 	spin_lock_init(&xhci->lock);
 	INIT_LIST_HEAD(&xhci->cmd_list);
 	INIT_DELAYED_WORK(&xhci->cmd_timer, xhci_handle_command_timeout);
@@ -5542,6 +5720,14 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 
 	/* Initialize HCD and host controller data structures */
 	xhci_init(hcd);
+=======
+	xhci_dbg(xhci, "Calling HCD init\n");
+	/* Initialize HCD and host controller data structures. */
+	retval = xhci_init(hcd);
+	if (retval)
+		return retval;
+	xhci_dbg(xhci, "Called HCD init\n");
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (xhci_hcd_is_usb3(hcd))
 		xhci_hcd_init_usb3_data(xhci, hcd);

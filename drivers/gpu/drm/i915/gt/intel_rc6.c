@@ -7,8 +7,11 @@
 #include <linux/string_helpers.h>
 
 #include <drm/drm_print.h>
+<<<<<<< HEAD
 #include <drm/intel/intel_pcode_regs.h>
 #include <drm/intel/intel_gmd_interrupt_regs.h>
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 #include "display/vlv_clock.h"
 #include "gem/i915_gem_region.h"
@@ -378,9 +381,15 @@ static void chv_rc6_enable(struct intel_rc6 *rc6)
 
 	/* Allows RC6 residency counter to work */
 	intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_ENABLE(VLV_COUNT_RANGE_HIGH |
 						      VLV_MEDIA_RC6_COUNT_EN |
 						      VLV_RENDER_RC6_COUNT_EN));
+=======
+			      _MASKED_BIT_ENABLE(VLV_COUNT_RANGE_HIGH |
+						 VLV_MEDIA_RC6_COUNT_EN |
+						 VLV_RENDER_RC6_COUNT_EN));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	/* 3: Enable RC6 */
 	rc6->ctl_enable = GEN7_RC_CTL_TO_MODE;
@@ -403,11 +412,19 @@ static void vlv_rc6_enable(struct intel_rc6 *rc6)
 
 	/* Allows RC6 residency counter to work */
 	intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_ENABLE(VLV_COUNT_RANGE_HIGH |
 						      VLV_MEDIA_RC0_COUNT_EN |
 						      VLV_RENDER_RC0_COUNT_EN |
 						      VLV_MEDIA_RC6_COUNT_EN |
 						      VLV_RENDER_RC6_COUNT_EN));
+=======
+			      _MASKED_BIT_ENABLE(VLV_COUNT_RANGE_HIGH |
+						 VLV_MEDIA_RC0_COUNT_EN |
+						 VLV_RENDER_RC0_COUNT_EN |
+						 VLV_MEDIA_RC6_COUNT_EN |
+						 VLV_RENDER_RC6_COUNT_EN));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	rc6->ctl_enable =
 	    GEN7_RC_CTL_TO_MODE | VLV_RC_CTL_CTX_RST_PARALLEL;
@@ -763,17 +780,29 @@ static u64 vlv_residency_raw(struct intel_uncore *uncore, const i915_reg_t reg)
 	 * set the high bit to be safe.
 	 */
 	intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
+<<<<<<< HEAD
 			      REG_MASKED_FIELD_ENABLE(VLV_COUNT_RANGE_HIGH));
+=======
+			      _MASKED_BIT_ENABLE(VLV_COUNT_RANGE_HIGH));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	upper = intel_uncore_read_fw(uncore, reg);
 	do {
 		tmp = upper;
 
 		intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
+<<<<<<< HEAD
 				      REG_MASKED_FIELD_DISABLE(VLV_COUNT_RANGE_HIGH));
 		lower = intel_uncore_read_fw(uncore, reg);
 
 		intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
 				      REG_MASKED_FIELD_ENABLE(VLV_COUNT_RANGE_HIGH));
+=======
+				      _MASKED_BIT_DISABLE(VLV_COUNT_RANGE_HIGH));
+		lower = intel_uncore_read_fw(uncore, reg);
+
+		intel_uncore_write_fw(uncore, VLV_COUNTER_CONTROL,
+				      _MASKED_BIT_ENABLE(VLV_COUNT_RANGE_HIGH));
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		upper = intel_uncore_read_fw(uncore, reg);
 	} while (upper != tmp && --loop);
 

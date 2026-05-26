@@ -4306,8 +4306,13 @@ static int validate_retpoline(struct objtool_file *file)
 	list_for_each_entry(insn, &file->retpoline_call_list, call_node) {
 		struct symbol *sym = insn->sym;
 
+<<<<<<< HEAD
 		if (sym && (is_notype_sym(sym) ||
 			    is_func_sym(sym)) && !sym->nocfi) {
+=======
+		if (sym && (sym->type == STT_NOTYPE ||
+			    sym->type == STT_FUNC) && !sym->nocfi) {
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 			struct instruction *prev =
 				prev_insn_same_sym(file, insn);
 

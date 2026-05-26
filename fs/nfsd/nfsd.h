@@ -82,11 +82,14 @@ extern atomic_t			nfsd_th_cnt;		/* number of available threads */
 
 extern const struct seq_operations nfs_exports_op;
 
+<<<<<<< HEAD
 struct nfsd_thread_local_info {
 	struct nfs4_client	**ntli_lease_breaker;
 	int			ntli_cachetype;
 };
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * Common void argument and result helpers
  */
@@ -160,7 +163,10 @@ static inline void nfsd_debugfs_exit(void) {}
 #endif
 
 extern bool nfsd_disable_splice_read __read_mostly;
+<<<<<<< HEAD
 extern bool nfsd_delegts_enabled __read_mostly;
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 enum {
 	/* Any new NFSD_IO enum value must be added at the end */

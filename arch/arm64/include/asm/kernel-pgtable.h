@@ -68,12 +68,16 @@
 #define KERNEL_SEGMENT_COUNT	5
 
 #if SWAPPER_BLOCK_SIZE > SEGMENT_ALIGN
+<<<<<<< HEAD
 /*
  * KERNEL_SEGMENT_COUNT counts the permanent kernel VMAs. The early mapping
  * has one additional split, [_text, _stext). Reserve one more page for the
  * SWAPPER_BLOCK_SIZE-unaligned boundaries.
  */
 #define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 2)
+=======
+#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 1)
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 /*
  * The initial ID map consists of the kernel image, mapped as two separate
  * segments, and may appear misaligned wrt the swapper block size. This means

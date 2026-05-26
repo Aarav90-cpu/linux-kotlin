@@ -726,10 +726,15 @@ out:
 static irqreturn_t lance_dma_merr_int(int irq, void *dev_id)
 {
 	struct net_device *dev = dev_id;
+<<<<<<< HEAD
 	u64 ldp = ioasic_read(IO_REG_LANCE_DMA_P);
 
 	pr_err_ratelimited("%s: DMA error at %#010llx\n", dev->name,
 			   (ldp & 0x1f) << 29 | (ldp & 0xffffffe0) >> 3);
+=======
+
+	printk(KERN_ERR "%s: DMA error\n", dev->name);
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	return IRQ_HANDLED;
 }
 

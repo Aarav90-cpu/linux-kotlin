@@ -94,6 +94,7 @@ impl Context {
         }
         let mut manager = self.manager.lock();
         manager.all_procs.retain(|p| !Arc::ptr_eq(p, proc));
+<<<<<<< HEAD
 
         // Shrink the vector if it has significant unused capacity to avoid memory waste,
         // but use a conservative strategy to prevent shrink-then-regrow oscillation.
@@ -105,6 +106,8 @@ impl Context {
             // is just an optimization; the vector remains valid even if shrinking fails.
             let _ = manager.all_procs.shrink_to(len * 2, GFP_KERNEL);
         }
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
     }
 
     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {

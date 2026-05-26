@@ -23,7 +23,10 @@ properties:
       - items:
           - enum:
               - mediatek,mt7623-mipi-tx
+<<<<<<< HEAD
               - mediatek,mt8167-mipi-tx
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
           - const: mediatek,mt2701-mipi-tx
       - items:
           - enum:

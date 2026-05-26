@@ -20,6 +20,11 @@ static const struct mana_stats_desc mana_eth_stats[] = {
 					tx_cqe_unknown_type)},
 	{"tx_linear_pkt_cnt", offsetof(struct mana_ethtool_stats,
 				       tx_linear_pkt_cnt)},
+<<<<<<< HEAD
+=======
+	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
+					rx_coalesced_err)},
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
 					rx_cqe_unknown_type)},
 };
@@ -149,7 +154,11 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
 {
 	struct mana_port_context *apc = netdev_priv(ndev);
 	unsigned int num_queues = apc->num_queues;
+<<<<<<< HEAD
 	int i, j;
+=======
+	int i;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (stringset != ETH_SS_STATS)
 		return;
@@ -168,9 +177,12 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
 		ethtool_sprintf(&data, "rx_%d_xdp_drop", i);
 		ethtool_sprintf(&data, "rx_%d_xdp_tx", i);
 		ethtool_sprintf(&data, "rx_%d_xdp_redirect", i);
+<<<<<<< HEAD
 		ethtool_sprintf(&data, "rx_%d_pkt_len0_err", i);
 		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
 			ethtool_sprintf(&data, "rx_%d_coalesced_cqe_%d", i, j + 2);
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (i = 0; i < num_queues; i++) {
@@ -204,8 +216,11 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
 	u64 xdp_xmit;
 	u64 xdp_drop;
 	u64 xdp_tx;
+<<<<<<< HEAD
 	u64 pkt_len0_err;
 	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	u64 tso_packets;
 	u64 tso_bytes;
 	u64 tso_inner_packets;
@@ -214,7 +229,11 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
 	u64 short_pkt_fmt;
 	u64 csum_partial;
 	u64 mana_map_err;
+<<<<<<< HEAD
 	int q, i = 0, j;
+=======
+	int q, i = 0;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 
 	if (!apc->port_is_up)
 		return;
@@ -244,9 +263,12 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
 			xdp_drop = rx_stats->xdp_drop;
 			xdp_tx = rx_stats->xdp_tx;
 			xdp_redirect = rx_stats->xdp_redirect;
+<<<<<<< HEAD
 			pkt_len0_err = rx_stats->pkt_len0_err;
 			for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
 				coalesced_cqe[j] = rx_stats->coalesced_cqe[j];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
 
 		data[i++] = packets;
@@ -254,9 +276,12 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
 		data[i++] = xdp_drop;
 		data[i++] = xdp_tx;
 		data[i++] = xdp_redirect;
+<<<<<<< HEAD
 		data[i++] = pkt_len0_err;
 		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
 			data[i++] = coalesced_cqe[j];
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	}
 
 	for (q = 0; q < num_queues; q++) {
@@ -399,6 +424,7 @@ static void mana_get_channels(struct net_device *ndev,
 	channel->combined_count = apc->num_queues;
 }
 
+<<<<<<< HEAD
 #define MANA_RX_CQE_NSEC_DEF 2048
 static int mana_get_coalesce(struct net_device *ndev,
 			     struct ethtool_coalesce *ec,
@@ -454,6 +480,8 @@ static int mana_set_coalesce(struct net_device *ndev,
 	return err;
 }
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 static int mana_set_channels(struct net_device *ndev,
 			     struct ethtool_channels *channels)
 {
@@ -574,7 +602,10 @@ static int mana_get_link_ksettings(struct net_device *ndev,
 }
 
 const struct ethtool_ops mana_ethtool_ops = {
+<<<<<<< HEAD
 	.supported_coalesce_params = ETHTOOL_COALESCE_RX_CQE_FRAMES,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_ethtool_stats	= mana_get_ethtool_stats,
 	.get_sset_count		= mana_get_sset_count,
 	.get_strings		= mana_get_strings,
@@ -585,8 +616,11 @@ const struct ethtool_ops mana_ethtool_ops = {
 	.set_rxfh		= mana_set_rxfh,
 	.get_channels		= mana_get_channels,
 	.set_channels		= mana_set_channels,
+<<<<<<< HEAD
 	.get_coalesce		= mana_get_coalesce,
 	.set_coalesce		= mana_set_coalesce,
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	.get_ringparam          = mana_get_ringparam,
 	.set_ringparam          = mana_set_ringparam,
 	.get_link_ksettings	= mana_get_link_ksettings,

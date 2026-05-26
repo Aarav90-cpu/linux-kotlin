@@ -3341,16 +3341,24 @@ static int acpi_nfit_probe(struct platform_device *pdev)
 	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
 	struct acpi_nfit_desc *acpi_desc;
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct acpi_table_header *tbl;
 	struct acpi_device *adev;
+=======
+	struct acpi_device *adev = ACPI_COMPANION(dev);
+	struct acpi_table_header *tbl;
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	acpi_status status = AE_OK;
 	acpi_size sz;
 	int rc = 0;
 
+<<<<<<< HEAD
 	adev = ACPI_COMPANION(&pdev->dev);
 	if (!adev)
 		return -ENODEV;
 
+=======
+>>>>>>> 34de6d11a83a (Added Spport for Kotlin and Java)
 	rc = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
 					     acpi_nfit_notify, dev);
 	if (rc)
